@@ -6,87 +6,76 @@
 <title>色彩情绪 · AI CG Studio</title>
 <link rel="stylesheet" href="../css/design-system.css">
 <style>
-  .page { max-width: 900px; margin: 0 auto; padding: var(--s-5) var(--s-4); }
-
-  .nav-back {
-    display: inline-flex; align-items: center; gap: var(--s-2);
-    color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4);
-  }
+  .page { max-width: 960px; margin: 0 auto; padding: var(--s-5) var(--s-4); }
+  .nav-back { display: inline-flex; align-items: center; gap: var(--s-2); color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4); }
   .nav-back:hover { color: var(--accent); }
-
-  h1.title {
-    font-size: 2rem; font-weight: 800;
-    background: linear-gradient(135deg, #E8E8F0 50%, #F06292);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: var(--s-2);
-  }
+  h1.title { font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, #E8E8F0 50%, #F06292); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: var(--s-2); }
   .subtitle { color: var(--text-secondary); margin-bottom: var(--s-6); }
 
   /* Mood selector */
-  .mood-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: var(--s-3); margin-bottom: var(--s-6);
-  }
-  .mood-card {
-    background: var(--bg-surface); border: 2px solid var(--border-soft);
-    border-radius: var(--r-lg); padding: var(--s-3); text-align: center;
-    cursor: pointer; transition: all var(--t-fast);
-  }
+  .mood-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: var(--s-3); margin-bottom: var(--s-6); }
+  .mood-card { background: var(--bg-surface); border: 2px solid var(--border-soft); border-radius: var(--r-lg); overflow: hidden; cursor: pointer; transition: all var(--t-fast); }
   .mood-card:hover { transform: translateY(-2px); }
   .mood-card.active { border-color: currentColor; box-shadow: 0 0 20px currentColor; }
-  .mood-icon { font-size: 1.8rem; margin-bottom: var(--s-1); }
+  .mood-strip { display: flex; height: 36px; }
+  .mood-swatch { flex: 1; }
+  .mood-body { padding: var(--s-2) var(--s-3); }
   .mood-name { font-weight: 600; font-size: 0.9rem; }
   .mood-en { font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono); }
 
-  /* Result panel */
-  .result-panel {
-    background: var(--bg-deep); border: 1px solid var(--border-soft);
-    border-radius: var(--r-xl); padding: var(--s-5); margin-bottom: var(--s-5);
-    display: none;
-  }
+  /* Result */
+  .result-panel { display: none; background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-xl); padding: var(--s-5); margin-bottom: var(--s-5); }
   .result-panel.show { display: block; animation: fadeIn var(--t-base); }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .result-panel h3 { margin-bottom: var(--s-4); display: flex; align-items: center; gap: var(--s-2); font-size: 1.2rem; }
 
-  .result-panel h3 { margin-bottom: var(--s-4); display: flex; align-items: center; gap: var(--s-2); }
-
-  /* Palette strip */
-  .palette {
-    display: flex; gap: var(--s-2); margin-bottom: var(--s-4);
-  }
-  .palette-swatch {
-    flex: 1; height: 64px; border-radius: var(--r-md);
-    display: flex; align-items: flex-end; justify-content: center;
-    padding-bottom: var(--s-2);
-    font-family: var(--font-mono); font-size: 0.72rem; color: rgba(255,255,255,0.85);
-    font-weight: 600; text-shadow: 0 1px 3px rgba(0,0,0,0.5);
-    transition: transform var(--t-fast);
-  }
+  .palette { display: flex; gap: var(--s-2); margin-bottom: var(--s-4); }
+  .palette-swatch { flex: 1; height: 72px; border-radius: var(--r-md); display: flex; align-items: flex-end; justify-content: center; padding-bottom: var(--s-2); font-family: var(--font-mono); font-size: 0.72rem; color: rgba(255,255,255,0.85); font-weight: 600; text-shadow: 0 1px 3px rgba(0,0,0,0.5); transition: transform var(--t-fast); }
   .palette-swatch:hover { transform: scale(1.05); }
 
-  .mapping-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: var(--s-3); margin-bottom: var(--s-4);
-  }
-  .mapping-item {
-    background: var(--bg-surface); border: 1px solid var(--border-soft);
-    border-radius: var(--r-md); padding: var(--s-3);
-  }
+  .mapping-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--s-3); margin-bottom: var(--s-4); }
+  .mapping-item { background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: var(--s-3); }
   .mapping-label { font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--s-1); }
   .mapping-value { font-size: 0.95rem; font-weight: 600; color: var(--text-primary); }
 
-  .prompt-output {
-    background: var(--bg-elevated); border-radius: var(--r-md);
-    padding: var(--s-4); font-family: var(--font-mono); font-size: 0.83rem;
-    line-height: 1.8; color: var(--text-secondary); word-break: break-all;
-  }
+  .prompt-output { background: var(--bg-elevated); border-radius: var(--r-md); padding: var(--s-4); font-family: var(--font-mono); font-size: 0.83rem; line-height: 1.8; color: var(--text-secondary); margin-bottom: var(--s-3); word-break: break-all; border: 1px solid var(--border-soft); }
+  .prompt-output .q { color: var(--mood-joy); }
+  .prompt-output .c { color: var(--accent); }
+  .prompt-output .t { color: var(--info); }
+  .prompt-output .l { color: var(--success); }
+  .prompt-output .violate { background: rgba(239,83,80,0.2); color: var(--danger); padding: 0 4px; border-radius: 3px; text-decoration: underline; }
 
-  .reset-btn {
-    background: none; border: 1px solid var(--border-soft); color: var(--text-secondary);
-    padding: var(--s-2) var(--s-4); border-radius: var(--r-md); cursor: pointer;
-    font-size: 0.85rem; transition: all var(--t-fast);
-  }
+  .art-warn { display: none; align-items: center; gap: var(--s-2); background: rgba(255,167,38,0.12); border: 1px solid var(--warning); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); margin-bottom: var(--s-3); color: var(--warning); font-size: 0.82rem; font-weight: 500; }
+  .art-warn.show { display: flex; }
+
+  /* Art-direction reference */
+  .art-ref { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-3); margin-bottom: var(--s-5); }
+  .art-ref-card { border-radius: var(--r-lg); padding: var(--s-4); border: 1px solid var(--border-soft); }
+  .art-ref-card.good { background: rgba(102,187,106,0.06); border-color: rgba(102,187,106,0.3); }
+  .art-ref-card.bad { background: rgba(239,83,80,0.06); border-color: rgba(239,83,80,0.3); }
+  .art-ref-title { font-size: 0.95rem; font-weight: 700; margin-bottom: var(--s-2); }
+  .art-ref-card.good .art-ref-title { color: var(--success); }
+  .art-ref-card.bad .art-ref-title { color: var(--danger); }
+  .art-tag { display: inline-block; font-size: 0.78rem; padding: 3px 10px; border-radius: 20px; margin: 2px 3px; font-weight: 600; }
+  .art-tag.ok { background: rgba(102,187,106,0.12); color: var(--success); }
+  .art-tag.no { background: rgba(239,83,80,0.12); color: var(--danger); }
+
+  .lighting-ref { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: var(--s-2); margin-bottom: var(--s-5); }
+  .lighting-mini { background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: var(--s-3); text-align: center; }
+  .lighting-icon { font-size: 1.5rem; margin-bottom: 2px; }
+  .lighting-name { font-weight: 600; font-size: 0.85rem; }
+  .lighting-reason { font-size: 0.72rem; color: var(--accent); font-style: italic; margin-top: 2px; line-height: 1.3; }
+
+  .result-actions { display: flex; gap: var(--s-2); flex-wrap: wrap; margin-top: var(--s-3); }
+  .reset-btn { background: none; border: 1px solid var(--border-soft); color: var(--text-secondary); padding: var(--s-2) var(--s-4); border-radius: var(--r-md); cursor: pointer; font-size: 0.85rem; transition: all var(--t-fast); }
   .reset-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .info-callout { background: var(--accent-soft); border: 1px solid var(--accent); border-radius: var(--r-md); padding: var(--s-3) var(--s-4); margin-bottom: var(--s-5); font-size: 0.88rem; color: var(--text-primary); }
+  .info-callout strong { color: var(--accent); }
+
+  @media (max-width: 768px) {
+    .art-ref { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
@@ -96,11 +85,11 @@
     <div class="nav-brand"><span class="dot"></span> AI CG Studio</div>
     <div class="nav-links">
       <a href="../index.html">首页</a>
-      <a href="docs/worldview.html">世界观</a>
-      <a href="docs/philosophy.html">哲学</a>
-      <a href="docs/art-direction.html">美术规范</a>
-      <a href="../tools/director-flow.html">导演模式</a>
-      <a href="docs/roadmap.html">路线</a>
+      <a href="../docs/worldview.html">世界观</a>
+      <a href="../docs/philosophy.html">哲学</a>
+      <a href="../docs/art-direction.html">美术规范</a>
+      <a href="../tools/prompt-builder.html">导演工作台</a>
+      <a href="../docs/roadmap.html">路线</a>
     </div>
   </div>
 </nav>
@@ -109,10 +98,15 @@
   <a href="../index.html" class="nav-back">← 回首页</a>
 
   <h1 class="title">🎨 色彩情绪 (Color Script)</h1>
-  <p class="subtitle">动画行业常用技术。用户选情绪 → 系统自动映射色彩 → 光照 → Prompt。</p>
+  <p class="subtile">动画行业核心技术 — 情绪 → 色相 → 光照 → Prompt 自动映射</p>
+
+  <div class="info-callout">
+    <strong>🎯 设计理念</strong> &nbsp;|&nbsp; 色相与情绪绑定 (暖黄=温馨, 粉色=羞怯, 蓝紫=忧伤神秘)。美术规范第 1.2 节: 克制为主、反对糖水色。
+    选一个情绪, 系统自动翻译色彩语言 + 光照理由 → Prompt token。
+  </div>
 
   <!-- Mood selector -->
-  <p style="color: var(--text-primary); font-weight: 600; margin-bottom: var(--s-3);">今天的情绪色彩？</p>
+  <p style="color:var(--text-primary);font-weight:600;margin-bottom:var(--s-3);">今天的情绪色彩?</p>
   <div class="mood-grid" id="moodGrid"></div>
 
   <!-- Result -->
@@ -120,131 +114,147 @@
     <h3 id="resultTitle">🎨 情绪 → 色彩 → 光照</h3>
     <div class="palette" id="paletteStrip"></div>
     <div class="mapping-grid" id="mappingGrid"></div>
-    <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--s-2);">自动生成的 Prompt 片段:</p>
+    <div class="art-warn" id="artWarn">⚠️ 检测到违反美术规范的标签</div>
+    <div class="prompt-label" style="font-size:0.78rem;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:var(--s-1);">自动翻译 Prompt</div>
     <div class="prompt-output" id="promptOutput"></div>
-    <button class="reset-btn mt-4" onclick="reset()">🔄 换一个情绪</button>
+    <div class="result-actions">
+      <button class="btn btn-primary" id="csCopyBtn">📋 复制 Prompt</button>
+      <button class="btn btn-ghost" id="csExportBtn">⬇️ 导出 .txt</button>
+      <a href="../tools/prompt-builder.html" class="btn btn-ghost" id="csDirectorLink">🎬 加载到导演工作台 →</a>
+      <button class="reset-btn" onclick="reset()">🔄 换一个情绪</button>
+    </div>
   </div>
+
+  <!-- Art-direction reference -->
+  <h2 style="margin-top:var(--s-6);margin-bottom:var(--s-3);">📖 美术规范 · 色彩对照</h2>
+  <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:var(--s-3);">写每一条 Prompt 前, 问自己: "这符合我们的美术规范吗?"</p>
+  <div class="art-ref">
+    <div class="art-ref-card good">
+      <div class="art-ref-title">✅ 推崇使用</div>
+      <div>
+        <span class="art-tag ok">soft colors</span> <span class="art-tag ok">pastel tones</span> <span class="art-tag ok">warm atmosphere</span> <span class="art-tag ok">gentle palette</span> <span class="art-tag ok">muted tones</span> <span class="art-tag ok">harmonious colors</span> <span class="art-tag ok">warm soft lighting</span> <span class="art-tag ok">backlit glow</span>
+      </div>
+    </div>
+    <div class="art-ref-card bad">
+      <div class="art-ref-title">❌ 禁止使用</div>
+      <div>
+        <span class="art-tag no">neon</span> <span class="art-tag no">glowing</span> <span class="art-tag no">oversaturated</span> <span class="art-tag no">vivid colors</span> <span class="art-tag no">rainbow</span> <span class="art-tag no">high contrast</span> <span class="art-tag no">harsh lighting</span>
+      </div>
+    </div>
+  </div>
+
+  <h2 style="margin-top:var(--s-6);margin-bottom:var(--s-3);">💡 光照规范 · 每个光源都有理由</h2>
+  <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:var(--s-3);">光源不能为好看而堆, 它必须服务于故事与时间。</p>
+  <div class="lighting-ref">
+    <div class="lighting-mini"><div class="lighting-icon">🌅</div><div class="lighting-name">夕阳</div><div class="lighting-reason">放学/黄昏/温馨/回忆</div></div>
+    <div class="lighting-mini"><div class="lighting-icon">🪟</div><div class="lighting-name">窗光</div><div class="lighting-reason">室内/安静/治愈/独处</div></div>
+    <div class="lighting-mini"><div class="lighting-icon">🌄</div><div class="lighting-name">逆光</div><div class="lighting-reason">神秘/回忆/感动/剪影</div></div>
+    <div class="lighting-mini"><div class="lighting-icon">🌙</div><div class="lighting-name">月光</div><div class="lighting-reason">夜晚/孤独/宁静/思念</div></div>
+    <div class="lighting-mini"><div class="lighting-icon">🏮</div><div class="lighting-name">夜灯</div><div class="lighting-reason">夜祭/温馨/安全感/传统</div></div>
+    <div class="lighting-mini"><div class="lighting-icon">☁️</div><div class="lighting-name">阴天柔光</div><div class="lighting-reason">平静/文艺/清新/日常</div></div>
+  </div>
+
+  <footer class="footer">
+    <p>AI CG Studio · From Story to Scene</p>
+    <p class="muted mt-4">色彩情绪 · 情绪 → 色彩 → 光照 → Prompt</p>
+  </footer>
 </article>
 
 <script>
+/* ============================================================
+   色彩情绪 v1.0 — Art-direction aligned
+   情绪 → 色相 → 光照 → Prompt token 自动映射
+   ============================================================ */
+
 const MOODS = [
-  {
-    id: 'joy', icon: '☀️', name: '快乐', en: 'Joy', color: '#FFD54F',
-    palette: ['#FFE082', '#FFD54F', '#FFB300', '#FF8F00', '#FFF8E1'],
-    mapping: {
-      '色相': '暖黄色 / 浅橙色 / 柔粉',
-      '光照': 'Golden Hour / 午后阳光 / 明亮',
-      '氛围': '活力 / 温暖 / 清爽',
-      '天气': '晴天 / 微风'
-    },
-    prompt: 'warm yellow tones, golden hour, bright sunlight, cheerful atmosphere, soft breeze, warm color palette, vibrant but soft'
-  },
-  {
-    id: 'love', icon: '💕', name: '恋爱', en: 'Love', color: '#F06292',
-    palette: ['#F8BBD0', '#F06292', '#EC407A', '#AD1457', '#FFF0F5'],
-    mapping: {
-      '色相': '夕阳 / 粉色 / 暖光',
-      '光照': 'Golden Hour / 逆光 / 柔光',
-      '氛围': '暧昧 / 心跳 / 羞怯',
-      '天气': '黄昏 / 樱花季'
-    },
-    prompt: 'pink tone, golden hour, warm light, backlit, romantic atmosphere, soft glow, blush, cherry blossom color, dreamy'
-  },
-  {
-    id: 'calm', icon: '🍃', name: '平静', en: 'Calm', color: '#81C784',
-    palette: ['#C8E6C9', '#81C784', '#4CAF50', '#2E7D32', '#F1F8E9'],
-    mapping: {
-      '色相': '淡绿 / 青绿 / 奶白',
-      '光照': '阴天柔光 / 窗光 / 自然光',
-      '氛围': '安静 / 治愈 / 文艺',
-      '天气': '多云 / 雨后'
-    },
-    prompt: 'soft green tones, overcast light, window light, calm atmosphere, peaceful, gentle colors, clean aesthetic, healing'
-  },
-  {
-    id: 'sad', icon: '🌧', name: '忧伤', en: 'Sad', color: '#64B5F6',
-    palette: ['#BBDEFB', '#64B5F6', '#1E88E5', '#0D47A1', '#E3F2FD'],
-    mapping: {
-      '色相': '蓝色 / 灰蓝 / 冷调',
-      '光照': '月光 / 阴天 / 冷调窗光',
-      '氛围': '孤独 / 回忆 / 思念',
-      '天气': '雨天 / 阴天 / 夜晚'
-    },
-    prompt: 'blue tones, cool color palette, rainy day, overcast, melancholic atmosphere, lonely, nostalgic, soft blue light'
-  },
-  {
-    id: 'tension', icon: '🌙', name: '神秘', en: 'Mystery', color: '#BA68C8',
-    palette: ['#E1BEE7', '#BA68C8', '#8E24AA', '#4A148C', '#F3E5F5'],
-    mapping: {
-      '色相': '紫蓝 / 深紫 / 冷调',
-      '光照': '月光 / 逆光 / 暗调',
-      '氛围': '神秘 / 距离 / 梦幻',
-      '天气': '夜晚 / 雾 / 雨'
-    },
-    prompt: 'purple and blue tones, moonlight, backlit, rim light, mysterious atmosphere, ethereal, dreamlike, cool shadows'
-  },
-  {
-    id: 'warmth', icon: '🏮', name: '温馨', en: 'Warmth', color: '#FFB74D',
-    palette: ['#FFE0B2', '#FFB74D', '#F57C00', '#E65100', '#FFF3E0'],
-    mapping: {
-      '色相': '暖橙 / 橘红 / 米黄',
-      '光照': '夜灯 / 烛光 / 室内暖光',
-      '氛围': '安全感 / 家庭 / 治愈',
-      '天气': '夜晚 / 秋雨'
-    },
-    prompt: 'warm orange tones, lantern light, indoor warm light, cozy atmosphere, candlelight, safe feeling, homely, autumn warmth'
-  }
+  { id:'joy', icon:'☀️', name:'快乐', en:'Joy', color:'#FFD54F', palette:['#FFE082','#FFD54F','#FFB300','#FF8F00','#FFF8E1'], mapping:{'色相':'暖黄色 / 浅橙色 / 柔粉','光照':'Golden Hour / 午后阳光 / 明亮','氛围':'活力 / 温暖 / 清爽','天气':'晴天 / 微风'}, prompt:'warm yellow tones, golden hour, bright sunlight, cheerful atmosphere, soft breeze, warm color palette, vibrant but soft' },
+  { id:'love', icon:'💕', name:'恋爱', en:'Love', color:'#F06292', palette:['#F8BBD0','#F06292','#EC407A','#AD1457','#FFF0F5'], mapping:{'色相':'夕阳 / 粉色 / 暖光','光照':'Golden Hour / 逆光 / 柔光','氛围':'暧昧 / 心跳 / 羞怯','天气':'黄昏 / 樱花季'}, prompt:'pink tone, golden hour, warm light, backlit, romantic atmosphere, soft glow, blush, cherry blossom color, dreamy' },
+  { id:'calm', icon:'🍃', name:'平静', en:'Calm', color:'#81C784', palette:['#C8E6C9','#81C784','#4CAF50','#2E7D32','#F1F8E9'], mapping:{'色相':'淡绿 / 青绿 / 奶白','光照':'阴天柔光 / 窗光 / 自然光','氛围':'安静 / 治愈 / 文艺','天气':'多云 / 雨后'}, prompt:'soft green tones, overcast light, window light, calm atmosphere, peaceful, gentle colors, clean aesthetic, healing' },
+  { id:'sad', icon:'🌧', name:'忧伤', en:'Sad', color:'#64B5F6', palette:['#BBDEFB','#64B5F6','#1E88E5','#0D47A1','#E3F2FD'], mapping:{'色相':'蓝色 / 灰蓝 / 冷调','光照':'月光 / 阴天 / 冷调窗光','氛围':'孤独 / 回忆 / 思念','天气':'雨天 / 阴天 / 夜晚'}, prompt:'blue tones, cool color palette, rainy day, overcast, melancholic atmosphere, lonely, nostalgic, soft blue light' },
+  { id:'tension', icon:'🌙', name:'神秘', en:'Mystery', color:'#BA68C8', palette:['#E1BEE7','#BA68C8','#8E24AA','#4A148C','#F3E5F5'], mapping:{'色相':'紫蓝 / 深紫 / 冷调','光照':'月光 / 逆光 / 暗调','氛围':'神秘 / 距离 / 梦幻','天气':'夜晚 / 雾 / 雨'}, prompt:'purple and blue tones, moonlight, backlit, rim light, mysterious atmosphere, ethereal, dreamlike, cool shadows' },
+  { id:'warmth', icon:'🏮', name:'温馨', en:'Warmth', color:'#FFB74D', palette:['#FFE0B2','#FFB74D','#F57C00','#E65100','#FFF3E0'], mapping:{'色相':'暖橙 / 橘红 / 米黄','光照':'夜灯 / 烛光 / 室内暖光','氛围':'安全感 / 家庭 / 治愈','天气':'夜晚 / 秋雨'}, prompt:'warm orange tones, lantern light, indoor warm light, cozy atmosphere, candlelight, safe feeling, homely, autumn warmth' }
 ];
 
-function init() {
-  const grid = document.getElementById('moodGrid');
-  grid.innerHTML = MOODS.map(m => `
-    <div class="mood-card" data-id="${m.id}" style="color:${m.color}" onclick="selectMood('${m.id}')">
-      <div class="mood-icon">${m.icon}</div>
-      <div class="mood-name">${m.name}</div>
-      <div class="mood-en">${m.en}</div>
-    </div>
-  `).join('');
+const BANNED_TAGS = ['neon','glowing','oversaturated','vivid colors','vivid','rainbow','high contrast','harsh lighting','extremely detailed','ultra detailed'];
+
+function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function checkViolation(text){
+  var lower=text.toLowerCase();
+  return BANNED_TAGS.filter(function(b){ return lower.indexOf(b.toLowerCase())>-1; });
+}
+function norm(t){ return t.split(',').map(function(s){ return s.trim().replace(/[\s-]+/g,'_'); }).join(', '); }
+function colorizePrompt(text){
+  return norm(text).split(',').map(function(tk){
+    var t=tk.trim(); var low=t.toLowerCase().replace(/[\s\/]+/g,'_');
+    var isBad=BANNED_TAGS.some(function(b){ return low===b.toLowerCase().replace(/[\s\/]+/g,'_') || low.indexOf(b.toLowerCase().replace(/[\s\/]+/g,'_'))>-1; });
+    return isBad ? '<span class="violate">'+escapeHtml(t)+'</span>' : escapeHtml(t);
+  }).join(',');
+}
+function copyText(text){
+  navigator.clipboard.writeText(text).then(function(){ showToast('📋 已复制到剪贴板'); }, function(){ prompt('请手动复制', text); });
+}
+function showToast(msg){
+  var t=document.getElementById('cs-toast');
+  if(!t){ t=document.createElement('div'); t.id='cs-toast'; t.style.cssText='position:fixed;left:50%;bottom:32px;transform:translateX(-50%);z-index:9999;background:var(--bg-surface);border:1px solid var(--accent);color:var(--text-primary);padding:10px 20px;border-radius:8px;font-size:0.85rem;box-shadow:0 4px 16px rgba(0,0,0,0.4);opacity:0;transition:opacity .2s;'; document.body.appendChild(t); }
+  t.textContent=msg; t.style.opacity='1'; clearTimeout(toast._tid); toast._tid=setTimeout(function(){ t.style.opacity='0'; },1600);
 }
 
-function selectMood(id) {
-  document.querySelectorAll('.mood-card').forEach(c => c.classList.remove('active'));
-  document.querySelector(`.mood-card[data-id="${id}"]`).classList.add('active');
-  const mood = MOODS.find(m => m.id === id);
-  renderResult(mood);
+var selectedMood = null;
+
+function init(){
+  var grid=document.getElementById('moodGrid');
+  grid.innerHTML=MOODS.map(function(m){
+    return '<div class="mood-card" data-id="'+m.id+'" style="color:'+m.color+'" onclick="selectMood(\''+m.id+'\')"><div class="mood-strip">'+m.palette.map(function(c){return '<div class="mood-swatch" style="background:'+c+'"></div>';}).join('')+'</div><div class="mood-body"><div class="mood-name">'+m.icon+' '+m.name+'</div><div class="mood-en">'+m.en+'</div></div></div>';
+  }).join('');
 }
 
-function renderResult(mood) {
-  const panel = document.getElementById('resultPanel');
+function selectMood(id){
+  document.querySelectorAll('.mood-card').forEach(function(c){ c.classList.toggle('active', c.dataset.id===id); });
+  var mood=MOODS.find(function(m){ return m.id===id; });
+  if(!mood) return;
+  selectedMood = mood;
+  var panel=document.getElementById('resultPanel');
   panel.classList.add('show');
-  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-  document.getElementById('resultTitle').innerHTML =
-    `<span style="color:${mood.color}">${mood.icon}</span> ${mood.name} → 色彩 → 光照`;
-
-  document.getElementById('paletteStrip').innerHTML = mood.palette.map(c =>
-    `<div class="palette-swatch" style="background:${c}">${c}</div>`
-  ).join('');
-
-  const mappingEl = document.getElementById('mappingGrid');
-  mappingEl.innerHTML = Object.entries(mood.mapping).map(([k, v]) => `
-    <div class="mapping-item">
-      <div class="mapping-label">${k}</div>
-      <div class="mapping-value">${v}</div>
-    </div>
-  `).join('');
-
-  document.getElementById('promptOutput').textContent = mood.prompt;
+  document.getElementById('resultTitle').innerHTML='<span style="color:'+mood.color+'">'+mood.icon+'</span> '+mood.name+' → 色彩 → 光照';
+  document.getElementById('paletteStrip').innerHTML=mood.palette.map(function(c){ return '<div class="palette-swatch" style="background:'+c+'">'+c+'</div>'; }).join('');
+  var mapEl=document.getElementById('mappingGrid');
+  mapEl.innerHTML=Object.entries(mood.mapping).map(function(e){ return '<div class="mapping-item"><div class="mapping-label">'+e[0]+'</div><div class="mapping-value">'+e[1]+'</div></div>'; }).join('');
+  var violations=checkViolation(mood.prompt);
+  var artWarn=document.getElementById('artWarn');
+  artWarn.classList.toggle('show', violations.length>0);
+  artWarn.textContent=violations.length ? '⚠️ 检测到 '+violations.length+' 个违反美术规范的标签: '+violations.join(', ') : '';
+  document.getElementById('promptOutput').innerHTML=colorizePrompt(mood.prompt);
+  // update director link
+  var link=document.getElementById('csDirectorLink');
+  if(link) link.href='../tools/prompt-builder.html?mood='+mood.id;
+  panel.scrollIntoView({ behavior:'smooth', block:'start' });
 }
 
-function reset() {
-  document.querySelectorAll('.mood-card').forEach(c => c.classList.remove('active'));
+function reset(){
+  document.querySelectorAll('.mood-card').forEach(function(c){ c.classList.remove('active'); });
   document.getElementById('resultPanel').classList.remove('show');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  selectedMood=null;
+  window.scrollTo({ top:0, behavior:'smooth' });
 }
+
+// bind copy + export
+document.addEventListener('DOMContentLoaded', function(){
+  var cBtn=document.getElementById('csCopyBtn');
+  var eBtn=document.getElementById('csExportBtn');
+  if(cBtn) cBtn.onclick=function(){
+    if(!selectedMood) return;
+    copyText(selectedMood.prompt);
+  };
+  if(eBtn) eBtn.onclick=function(){
+    if(!selectedMood) return;
+    var body=selectedMood.prompt+'\n\n# mood: '+selectedMood.id+'\n# usage: 复制到 Prompt Builder v5 Step 4 色彩氛围';
+    var blob=new Blob([body],{type:'text/plain'});
+    var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='color-'+selectedMood.id+'.txt';
+    a.click(); URL.revokeObjectURL(a.href); showToast('⬇️ 已导出');
+  };
+});
 
 init();
 </script>
-
 </body>
 </html>

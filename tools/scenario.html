@@ -3,97 +3,94 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>剧本模式 · AI CG Studio</title>
+<title>剧本模式 · Scene Gallery · AI CG Studio</title>
 <link rel="stylesheet" href="../css/design-system.css">
 <style>
-  .page { max-width: 900px; margin: 0 auto; padding: var(--s-5) var(--s-4); }
-
-  .nav-back {
-    display: inline-flex; align-items: center; gap: var(--s-2);
-    color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4);
-  }
+  .page { max-width: 980px; margin: 0 auto; padding: var(--s-5) var(--s-4); }
+  .nav-back { display: inline-flex; align-items: center; gap: var(--s-2); color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4); }
   .nav-back:hover { color: var(--accent); }
+  h1.title { font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, #E8E8F0 50%, #F06292); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: var(--s-2); }
+  .subtitle { color: var(--text-secondary); margin-bottom: var(--s-4); }
 
-  h1.title {
-    font-size: 2rem; font-weight: 800;
-    background: linear-gradient(135deg, #E8E8F0 50%, #F06292);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: var(--s-2);
-  }
-  .subtitle { color: var(--text-secondary); margin-bottom: var(--s-6); }
+  /* Header controls */
+  .viewer-header-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--s-3); margin-bottom: var(--s-4); }
+  .char-toggle { display: inline-flex; gap: 6px; }
+  .char-btn { padding: 8px 18px; border-radius: var(--r-md); border: 2px solid var(--border-soft); background: var(--bg-surface); color: var(--text-secondary); cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: all var(--t-fast); }
+  .char-btn:hover { border-color: var(--accent); }
+  .char-btn.active { border-color: var(--accent); background: var(--accent-soft); color: var(--text-primary); box-shadow: 0 0 12px var(--accent-glow); }
 
   /* Scenario list */
-  .scenario-list {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: var(--s-3); margin-bottom: var(--s-6);
-  }
-  .scenario-card {
-    background: var(--bg-surface); border: 1px solid var(--border-soft);
-    border-radius: var(--r-lg); padding: var(--s-4); cursor: pointer;
-    transition: all var(--t-fast);
-  }
+  .scenario-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--s-3); margin-bottom: var(--s-6); }
+  .scenario-card { background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-lg); padding: var(--s-4); cursor: pointer; transition: all var(--t-fast); }
   .scenario-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .scenario-card.active { border-color: var(--accent); background: var(--accent-soft); }
   .scenario-icon { font-size: 1.6rem; margin-bottom: var(--s-2); }
   .scenario-name { font-weight: 700; font-size: 1.05rem; margin-bottom: var(--s-1); }
   .scenario-en { font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono); margin-bottom: var(--s-2); }
   .scenario-desc { font-size: 0.85rem; color: var(--text-secondary); }
   .scenario-count { font-size: 0.75rem; color: var(--accent); margin-top: var(--s-2); }
 
-  /* Scenario viewer */
-  .viewer {
-    display: none; background: var(--bg-deep); border: 1px solid var(--border-soft);
-    border-radius: var(--r-xl); padding: var(--s-5); margin-bottom: var(--s-5);
-  }
+  /* Viewer */
+  .viewer { display: none; background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-xl); padding: var(--s-5); margin-bottom: var(--s-5); }
   .viewer.show { display: block; animation: fadeIn var(--t-base); }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .viewer-h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: var(--s-1); }
+  .viewer-en { font-family: var(--font-mono); color: var(--text-muted); font-size: 0.85rem; }
 
-  .viewer-header { margin-bottom: var(--s-4); }
-  .viewer-header h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: var(--s-1); }
-  .viewer-header .viewer-en { font-family: var(--font-mono); color: var(--text-muted); font-size: 0.85rem; }
+  /* Act */
+  .act { background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-lg); padding: var(--s-4); margin-bottom: var(--s-3); }
+  .act-head { display: flex; align-items: baseline; gap: var(--s-3); margin-bottom: var(--s-2); flex-wrap: wrap; }
+  .act-num { font-family: var(--font-mono); font-size: 0.85rem; font-weight: 700; color: var(--accent); background: var(--accent-soft); padding: 3px 10px; border-radius: 12px; }
+  .act-title { font-size: 1.1rem; font-weight: 700; }
+  .act-en { font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono); margin-bottom: var(--s-2); }
+  .act-desc { font-size: 0.88rem; color: var(--text-secondary); margin-bottom: var(--s-3); font-style: italic; }
 
-  /* Acts timeline */
-  .acts { display: flex; flex-direction: column; gap: var(--s-3); margin-bottom: var(--s-4); }
-  .act {
-    display: flex; gap: var(--s-4); background: var(--bg-surface);
-    border: 1px solid var(--border-soft); border-radius: var(--r-lg);
-    padding: var(--s-4); cursor: pointer; transition: all var(--t-fast);
-  }
-  .act:hover { border-color: var(--accent); }
-  .act.active { border-color: var(--accent); background: var(--accent-soft); }
-  .act-num {
-    flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%;
-    background: var(--bg-elevated); border: 1px solid var(--border-soft);
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-mono); font-weight: 700; color: var(--accent);
-    font-size: 0.85rem;
-  }
-  .act-info { flex: 1; }
-  .act-title { font-weight: 600; margin-bottom: 4px; }
-  .act-en { font-size: 0.8rem; color: var(--text-muted); margin-bottom: var(--s-2); }
-  .act-desc { font-size: 0.88rem; color: var(--text-secondary); }
+  /* Scene grid */
+  .scene-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: var(--s-2); margin-bottom: var(--s-3); }
+  .scene-meta { background: var(--bg-elevated); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); text-align: center; }
+  .scene-meta .label { font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .scene-meta .value { font-size: 0.85rem; font-weight: 600; color: var(--accent); margin-top: 2px; }
+  .lock-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 0.7rem; font-weight: 600; color: var(--success); background: rgba(102,187,106,0.1); padding: 2px 8px; border-radius: 10px; }
 
-  /* Act detail (prompt) */
-  .act-detail {
-    display: none; background: var(--bg-base); border: 1px solid var(--accent);
-    border-radius: var(--r-lg); padding: var(--s-4); margin-top: var(--s-3);
-  }
-  .act-detail.show { display: block; animation: fadeIn var(--t-fast); }
-  .act-detail h4 { font-size: 0.9rem; color: var(--accent); margin-bottom: var(--s-2); }
-  .act-prompt {
-    background: var(--bg-elevated); border-radius: var(--r-md);
-    padding: var(--s-3); font-family: var(--font-mono); font-size: 0.8rem;
-    line-height: 1.8; color: var(--text-secondary); margin-bottom: var(--s-3);
-    word-break: break-all; white-space: pre-wrap;
-  }
-  .act-actions { display: flex; gap: var(s-2); }
+  /* Prompt (strict module order, each line = one module) */
+  .prompt-label { font-size: 0.78rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--s-1); }
+  .prompt-output { background: var(--bg-deep); border-radius: var(--r-md); padding: var(--s-3); font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.8; color: var(--text-secondary); margin-bottom: var(--s-3); white-space: pre-wrap; word-break: break-all; border: 1px solid var(--border-soft); }
+  .prompt-output .mod { display: block; padding: 1px 0; }
+  .prompt-output .m-q { color: var(--mood-joy); }
+  .prompt-output .m-c { color: var(--accent); }
+  .prompt-output .m-cl { color: #CE93D8; }
+  .prompt-output .m-s { color: var(--info); }
+  .prompt-output .m-e { color: #FFB74D; }
+  .prompt-output .m-sh { color: #81C784; }
+  .prompt-output .m-co { color: #81C784; }
+  .prompt-output .m-l { color: var(--mood-warmth); }
+  .prompt-output .m-d { color: var(--text-muted); }
+  .prompt-output .m-lora { color: var(--success); }
+  .prompt-output .violate { background: rgba(239,83,80,0.2); color: var(--danger); padding: 0 4px; border-radius: 3px; text-decoration: underline; }
 
-  .back-btn {
-    background: none; border: 1px solid var(--border-soft); color: var(--text-secondary);
-    padding: var(--s-2) var(--s-4); border-radius: var(--r-md); cursor: pointer;
-    font-size: 0.85rem; transition: all var(--t-fast);
-  }
+  .neg-output { background: rgba(239,83,80,0.04); border: 1px solid rgba(239,83,80,0.2); border-radius: var(--r-md); padding: var(--s-3); font-family: var(--font-mono); font-size: 0.78rem; color: var(--danger); line-height: 1.8; white-space: pre-wrap; word-break: break-all; }
+  .neg-section { margin-top: var(--s-3); padding-top: var(--s-3); border-top: 1px solid var(--border-soft); }
+  .neg-layer { margin-bottom: var(--s-2); }
+  .neg-layer-label { font-size: 0.72rem; font-weight: 600; color: var(--text-muted); margin-bottom: 2px; }
+
+  .art-warn { display: none; align-items: center; gap: var(--s-2); background: rgba(255,167,38,0.12); border: 1px solid var(--warning); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); margin-bottom: var(--s-3); color: var(--warning); font-size: 0.82rem; font-weight: 500; }
+  .art-warn.show { display: flex; }
+
+  .res-rec { background: var(--accent-soft); border: 1px solid var(--accent); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); margin-bottom: var(--s-3); font-size: 0.85rem; color: var(--text-primary); display: flex; align-items: flex-start; gap: var(--s-2); flex-wrap: wrap; }
+  .res-rec strong { color: var(--accent); }
+  .res-icon { flex-shrink: 0; }
+
+  .act-actions { display: flex; gap: var(--s-2); flex-wrap: wrap; margin-top: var(--s-3); }
+  .back-btn { background: none; border: 1px solid var(--border-soft); color: var(--text-secondary); padding: var(--s-2) var(--s-4); border-radius: var(--r-md); cursor: pointer; font-size: 0.85rem; transition: all var(--t-fast); }
   .back-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .info-callout { background: var(--accent-soft); border: 1px solid var(--accent); border-radius: var(--r-md); padding: var(--s-3) var(--s-4); margin-bottom: var(--s-5); font-size: 0.88rem; color: var(--text-primary); }
+  .info-callout strong { color: var(--accent); }
+
+  @media (max-width: 768px) {
+    .viewer-header-row { flex-direction: column; align-items: flex-start; }
+    .page { padding: var(--s-4) var(--s-3); }
+  }
 </style>
 </head>
 <body>
@@ -103,11 +100,11 @@
     <div class="nav-brand"><span class="dot"></span> AI CG Studio</div>
     <div class="nav-links">
       <a href="../index.html">首页</a>
-      <a href="docs/worldview.html">世界观</a>
-      <a href="docs/philosophy.html">哲学</a>
-      <a href="docs/art-direction.html">美术规范</a>
-      <a href="../tools/director-flow.html">导演模式</a>
-      <a href="docs/roadmap.html">路线</a>
+      <a href="../docs/worldview.html">世界观</a>
+      <a href="../docs/philosophy.html">哲学</a>
+      <a href="../docs/art-direction.html">美术规范</a>
+      <a href="../tools/prompt-builder.html">导演工作台</a>
+      <a href="../docs/roadmap.html">路线</a>
     </div>
   </div>
 </nav>
@@ -115,142 +112,335 @@
 <article class="page">
   <a href="../index.html" class="nav-back">← 回首页</a>
 
-  <h1 class="title">📖 剧本模式 (Scenario)</h1>
-  <p class="subtitle">Galgame CG 不是单张的，是一套。选择一个剧本，逐幕欣赏。</p>
+  <h1 class="title">🎞 剧本模式 (Scenario)</h1>
+  <p class="subtitle">多幕 CG 剧本 — 每一幕都是一个完整的 SC0001 Scene 规范 (10 模块 · 美术规范自检 · Negative 分层)</p>
 
-  <!-- Scenario list -->
+  <div class="info-callout">
+    <strong>🎯 设计理念</strong> &nbsp;|&nbsp; 每一幕 = 一个 <strong>Scene</strong>。切换右上角角色, 全部幕的提示词自动在 宁宁 ⟷ 夏目 之间转换。
+    浏览获得灵感, 或 <em>"在导演工作台打开"</em> 直接演完这张 CG。数据源: <code>../data/scene-library.json</code> (40/500 场景目标)
+  </div>
+
   <div class="scenario-list" id="scenarioList"></div>
 
-  <!-- Viewer -->
   <div class="viewer" id="viewer">
-    <div class="viewer-header">
-      <h2 id="viewerTitle"></h2>
-      <div class="viewer-en" id="viewerEn"></div>
+    <div class="viewer-header-row">
+      <div>
+        <h2 class="viewer-h2" id="viewerTitle"></h2>
+        <div class="viewer-en" id="viewerEn"></div>
+      </div>
+      <div class="char-toggle">
+        <button class="char-btn active" data-char="nene" onclick="switchChar('nene')">🌸 宁宁</button>
+        <button class="char-btn" data-char="natsume" onclick="switchChar('natsume')">🍂 夏目</button>
+      </div>
     </div>
-    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4)" id="viewerDesc"></p>
+    <p style="color:var(--text-secondary);font-size:0.92rem;margin-bottom:var(--s-4);font-style:italic;" id="viewerDesc"></p>
     <div class="acts" id="acts"></div>
     <button class="back-btn" onclick="backToList()">← 返回剧本列表</button>
   </div>
 </article>
 
+<footer class="footer">
+  <p>AI CG Studio · From Story to Scene</p>
+  <p class="muted mt-4">剧本模式 · 每一幕都是一个 SC0001 Scene 规范</p>
+</footer>
+
 <script>
+/* ============================================================
+   剧本模式 v1.5 — Scene-spec aligned · strict 10-module prompt
+   每一幕 = SC0001: Quality / Character / Clothing / Scene /
+            Emotion / Shot / Composition / Lighting / Details / LoRA
+   角色切换自动转换 宁宁 ⟷ 夏目 (char + traits + LoRA line)
+   ============================================================ */
+
+const BANNED_TAGS = ['neon','glowing','oversaturated','vivid colors','vivid','rainbow','high contrast','harsh lighting','extremely detailed','ultra detailed'];
+const LOCK_PARAMS = 'CFG 5 · DPM++ 2M SDE · Steps 28 · Hires 0.45';
+const BASE_NEG = 'lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name';
+const CHAR_TRAITS = { nene:'ahoge, teardrop', natsume:'mole_under_eye, elegant face' };
+const CHAR_NAME = { nene:'ayachi_nene', natsume:'shiki_natsume' };
+
+// ---- Resolution 推荐 (对齐 scene-spec Resolution 速查) ----
+// 每帧的 resolution 不是随便选 — 由镜头语言 (shot) + 场景叙事决定
+const RES_MAP = {
+  'Square':      { dim:'1024 × 1024',  vram:'~10GB', reason:'方形 · 头像 / 特写 / 通用' },
+  'Half-body':   { dim:'832 × 1216',   vram:'~10GB', reason:'竖版半身 · 肖像感 · 内心独白' },
+  'Full CG':     { dim:'1216 × 832',   vram:'~10GB', reason:'横版全身 · 场景为主 · 故事感 ★★★' },
+  'Wide CG':     { dim:'1344 × 768',   vram:'~12GB', reason:'超宽画幅 · 风景 / 电影感 / 留白' },
+  'Tall':        { dim:'768 × 1344',   vram:'~12GB', reason:'竖版插画 · 人物主体 / 海报感' },
+  'Close-up':    { dim:'832 × 1216',   vram:'~10GB', reason:'近景特写 · 表情 / 情绪 / 亲密感' },
+  'Portrait':    { dim:'832 × 1216',   vram:'~10GB', reason:'半身肖像 · 人物聚焦 · 柔美感' },
+  'Mobile':      { dim:'720 × 1280',   vram:'~8GB',  reason:'手机竖屏壁纸' }
+};
+// shot -> 推荐 resolution 理由 (解释为什么这帧选这个分辨率)
+const SHOT_RES_REASON = {
+  'close-up':   '近景特写需要竖版 Half-body 让脸部占画面核心',
+  'medium shot':'半身叙事最适合 Half-body 肖像构图',
+  'wide shot':   '全身 + 场景叙事 = Full CG 横版展开',
+  'pov':         '第一人称沉浸 = Half-body 贴近观众',
+  'low angle':   '仰视力量感 = Tall 竖版强化高度',
+  'high angle':  '俯视可爱 = Square 方形聚焦',
+  'side view':   '侧面剪影 = Full CG 横版讲故事',
+  'turning back':'回眸瞬间 = Half-body 捕捉肩颈线条',
+  'selfie':      '自拍亲密 = Close-up 贴近脸部',
+  'detail':      '局部特写 = Close-up 聚焦手部/眼神',
+  'walking away':'背影纵深感 = Full CG 留白叙事'
+};
+
+// ---- Prompts use {{char}} + {{traits}} placeholders, substituted at render time ----
 const SCENARIOS = [
   {
-    id: 'promise', icon: '🌸', name: '放学后的约定', en: 'After-School Promise',
-    desc: '放学以后，她一直在校门口等你。花瓣落在肩上，她没有说，只是笑了起来。',
-    acts: [
-      { title: '空 · 教室', en: 'Empty Classroom', desc: '夕阳从窗户照进来，教室里已经没有人了。',
-        prompt: 'empty classroom, afternoon, sunlight through window, desks, chalkboard, warm light, peaceful, deserted, nostalgic, sakura petals outside window, dust in sunlight' },
-      { title: '走廊', en: 'School Hallway', desc: '她抱着书，走过长长的走廊。脚步声回响。',
-        prompt: 'school hallway, long corridor, tiled floor, windows on one side, warm afternoon light, perspective depth, echo atmosphere, empty, soft shadows' },
-      { title: '校门口', en: 'School Gate', desc: '她站在校门口，背着书包，望着道路远方。',
-        prompt: '1girl, school uniform, school gate, standing, looking afar, backpack, relaxed posture, golden hour, warm light, soft shadows, slight breeze, petals floating in air' },
-      { title: '回眸', en: 'The Turn', desc: '她看见你，终于露出了笑容。樱花落在肩上。',
-        prompt: '1girl, ayachi_nene, school uniform, cherry blossoms in bloom, petals floating, looking back, over shoulder, gentle smile, soft eyes, golden hour, backlit, depth of field, <lora:nene:0.75>' }
+    id:'promise', icon:'🌸', name:'放学后的约定', en:'After-School Promise',
+    desc:'放学以后，她一直在校门口等你。花瓣落在肩上，她没有说，只是笑了起来。',
+    acts:[
+      { n:'01', title:'空 · 教室', en:'Empty Classroom', desc:'夕阳从窗户照进来，教室里已经没有人了。',
+        emotion:'期待', res:'Half-body', lora:0.75, neg:'night, snow, autumn leaves',
+        prompt:'masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed\n1girl, solo, {{char}}, {{traits}}\nschool uniform\nclassroom, window, afternoon, sunlight streaming, dust motes\ngentle smile, soft eyes, looking through window, expectant\nclose-up, upper body\ncentered composition, by window, soft focus\nwindow light, soft afternoon glow, warm, quiet atmosphere\nbeautiful detailed eyes, depth of field' },
+      { n:'02', title:'走廊', en:'School Hallway', desc:'她抱着书，走过长长的走廊。脚步声回响。',
+        emotion:'紧张', res:'Half-body', lora:0.75, neg:'night, darkness, sunny, bright sunlight, outdoor',
+        prompt:'masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed\n1girl, solo, {{char}}, {{traits}}\nschool uniform\nschool hallway, long corridor, tiled floor, windows on one side\nnervous, walking, looking ahead, gentle\nmedium shot, walking away, from behind\nleft composition, leading lines, perspective depth\nafternoon light, soft glow through windows, quiet\nbeautiful detailed eyes, depth of field, echo atmosphere' },
+      { n:'03', title:'校门口', en:'School Gate', desc:'她站在校门口，背着书包，望着道路远方。',
+        emotion:'期待', res:'Full CG', lora:0.75, neg:'night, snow, autumn leaves, indoor',
+        prompt:'masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed\n1girl, solo, {{char}}, {{traits}}\nschool uniform, backpack\nschool gate, road stretching, sakura trees, golden hour sky\nstanding, looking afar, expectant, gentle posture\nwide shot, full body, distant\nrule of thirds, by school gate, depth\ngolden hour, warm light, backlit, soft shadows\nhair blowing, petals floating, depth of field' },
+      { n:'04', title:'回眸', en:'The Turn', desc:'她看见你，终于露出了笑容。樱花落在肩上。',
+        emotion:'温柔', res:'Half-body', lora:0.75, neg:'night, darkness, snow, rain',
+        prompt:'masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed\n1girl, solo, {{char}}, {{traits}}\nschool uniform, pleated skirt\nschool gate, cherry blossoms in bloom, petals floating\ngentle smile, soft eyes, blush, looking at viewer\nmedium shot, looking back, over shoulder\nrule of thirds, by school gate, depth\ngolden hour, backlit, soft shadows, warm atmosphere\nbeautiful detailed eyes, depth of field' }
     ]
   },
   {
-    id: 'cafe', icon: '☕', name: '咖啡店的午后', en: 'Cafe Afternoon',
-    desc: '午后三点。她坐在窗边，捧起一杯热咖啡，望着街上来来往往的人。',
-    acts: [
-      { title: '窗边的位置', en: 'Window Seat', desc: '阳光透过玻璃，落在她的发梢。咖啡冒着热气。',
-        prompt: 'cafe interior, window seat, sunlight through glass, warm glow on hair, cup of coffee, steam rising, cozy interior, indoor plants, wooden furniture, soft lighting' },
-      { title: '发呆', en: 'Daydreaming', desc: '她望着窗外，眼神柔软。不知道在想什么。',
-        prompt: '1girl, by window, cafe, soft expression, relaxed posture, cup in hands, gentle eyes looking outside, warm lighting, cozy atmosphere, relaxed, natural pose' },
-      { title: '发现你', en: 'She Spots You', desc: '她转过头，恰好和你的视线对上。',
-        prompt: '1girl, looking at viewer, gentle smile, surprise then happiness, soft blush, window light, cafe background, beautiful detailed eyes, warm atmosphere, intimate' }
+    id:'cafe', icon:'☕', name:'咖啡店的午后', en:'Cafe Afternoon',
+    desc:'午后三点。她坐在窗边，捧起一杯热咖啡，望着街上来来往往的人。',
+    acts:[
+      { n:'01', title:'窗边的位置', en:'Window Seat', desc:'阳光透过玻璃，落在她的发梢。咖啡冒着热气。',
+        emotion:'放松', res:'Half-body', lora:0.75, neg:'night, outdoor, sunny, bright sunlight, rain',
+        prompt:'masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed\n1girl, solo, {{char}}, {{traits}}\ncafe, casual clothes, apron\nwindow seat, sunlight through glass, warm glow on hair, cup of coffee, steam\nrelaxed, soft expression, looking outside, daydreaming\nmedium shot, upper body, intimate\nby window, centered, foreground bokeh\nwindow light, warm afternoon glow, soft, cozy\nbeautiful detailed eyes, depth of field' },
+      { n:'02', title:'发呆', en:'Daydreaming', desc:'她望着窗外，眼神柔软。不知道在想什么。',
+        emotion:'平静', res:'Close-up', lora:0.75, neg:'night, outdoor, action, dramatic, rain',
+        prompt:'masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed\n1girl, solo, {{char}}, {{traits}}\ncafe interior, cup in hands, soft gaze\nrelaxed, gentle eyes looking outside, peaceful, serene\nclose-up, face focus, intimate\ncentered, soft background blur\nwindow light, warm glow, quiet atmosphere\nbeautiful detailed eyes, beautiful detailed hair, depth of field' },
+      { n:'03', title:'发现你', en:'She Spots You', desc:'她转过头，恰好和你的视线对上。',
+        emotion:'惊喜', res:'Half-body', lora:0.75, neg:'night, outdoor, dramatic, cluttered',
+        prompt:'masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed\n1girl, solo, {{char}}, {{traits}}\ncafe, window seat, cup in hands\ngentle smile, surprise then happiness, soft blush, looking at viewer\nmedium shot, turning to viewer, intimate\nby window, rule of thirds\nwindow light, soft glow, warm atmosphere, intimate\nbeautiful detailed eyes, depth of field' }
     ]
   },
   {
-    id: 'rainy', icon: '🌧', name: '雨天的共伞', en: 'Sharing an Umbrella',
-    desc: '突然下起雨。两个人挤在一把伞下。肩膀贴着肩膀。沉默比语言多。',
-    acts: [
-      { title: '雨落', en: 'Rain Falls', desc: '天空变暗。雨点打在柏油路上。她没有伞。',
-        prompt: 'rainy street, grey sky, rain falling, wet road, reflections, puddles, overcast lighting, urban, melancholic atmosphere, cool tones, lonely' },
-      { title: '递伞', en: 'The Umbrella', desc: '你递过伞。她愣了一下，接过去，指尖微凉。',
-        prompt: '1girl, holding umbrella, looking at viewer, gentle surprise, soft expression, rain in background, wet street, cool color tones, warm interaction, intimate atmosphere' },
-      { title: '共伞', en: 'Under One Umbrella', desc: '两个人挤在一把伞下。没有人说话。雨声很大。',
-        prompt: '1girl, under umbrella, rain, close to viewer, intimate distance, looking away shy, slight blush, rain reflections, soft lighting, romantic atmosphere, wet hair strands, umbrella edge' }
+    id:'rainy', icon:'🌧', name:'雨天的共伞', en:'Sharing an Umbrella',
+    desc:'突然下起雨。两个人挤在一把伞下。肩膀贴着肩膀。沉默比语言多。',
+    acts:[
+      { n:'01', title:'雨落', en:'Rain Falls', desc:'天空变暗。雨点打在柏油路上。她没有伞。',
+        emotion:'失落', res:'Wide CG', lora:0.75, neg:'sunny, bright lighting, day, summer, cherry blossoms',
+        prompt:'masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed\n1girl, solo, {{char}}, {{traits}}\nschool uniform, no umbrella, wet\nrainy street, wet road, puddle reflections, grey sky\nsad, distant gaze, walking alone\nwide shot, full body, small in frame\nrule of thirds, leading lines, depth\novercast, cool tones, soft diffused light, rainy atmosphere\nbeautiful detailed eyes, depth of field, melancholic' },
+      { n:'02', title:'递伞', en:'The Umbrella', desc:'你递过伞。她愣了一下，接过去，指尖微凉。',
+        emotion:'羞怯', res:'Half-body', lora:0.75, neg:'sunny, bright lighting, day, summer, dramatic',
+        prompt:'masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed\n1girl, solo, {{char}}, {{traits}}\nschool uniform, holding umbrella, rain in background\ngentle surprise, soft expression, shy, slight blush, looking at viewer\nmedium shot, upper body, intimate\ncentered, foreground umbrella edge\novercast, cool color tones, warm interaction, soft\nbeautiful detailed eyes, depth of field' },
+      { n:'03', title:'共伞', en:'Under One Umbrella', desc:'两个人挤在一把伞下。没有人说话。雨声很大。',
+        emotion:'亲密', res:'Close-up', lora:0.75, neg:'sunny, bright lighting, day, summer, outdoor',
+        prompt:'masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed\n1girl, solo, {{char}}, {{traits}}\nunder umbrella, rain, close to viewer\nshy, looking away, slight blush, intimate\nclose-up, face and umbrella edge, intimate distance\ncentered, foreground framing\novercast, rainy atmosphere, soft lighting, cool tones\nbeautiful detailed eyes, beautiful detailed hair, depth of field' }
     ]
   },
   {
-    id: 'festival', icon: '🎆', name: '夏日祭烟花', en: 'Summer Festival',
-    desc: '夏日祭。她穿着浴衣，在烟花下仰起头。那一刻，全世界都是她的背景。',
-    acts: [
-      { title: '准备', en: 'Getting Ready', desc: '她系好浴衣的带子，对着镜子转了一圈。',
-        prompt: '1girl, yukata, kimono, getting ready, traditional Japanese room, warm interior light, soft fabric, elegant, calm before festival, playful spin' },
-      { title: '祭典', en: 'Festival Streets', desc: '人来人往的摊位街。金鱼捞、苹果糖、面具。灯火温暖。',
-        prompt: 'summer festival, festival stalls, lanterns, yukata crowd, night, warm golden lights, lively atmosphere, food stalls, cotton candy, traditional Japanese festival' },
-      { title: '烟花', en: 'Fireworks', desc: '她站在河边，烟花在头顶绽放。她仰起头，眼睛里有光。',
-        prompt: '1girl, yukata, fireworks in sky, night, looking up, wonder in eyes, colorful explosions, river reflection, festival lights, romantic atmosphere, beautiful detailed eyes, depth of field' }
+    id:'festival', icon:'🎆', name:'夏日祭烟花', en:'Summer Festival',
+    desc:'夏日祭。她穿着浴衣，在烟花下仰起头。那一刻，全世界都是她的背景。',
+    acts:[
+      { n:'01', title:'准备', en:'Getting Ready', desc:'她系好浴衣的带子，对着镜子转了一圈。',
+        emotion:'开心', res:'Half-body', lora:0.75, neg:'night darkness, rainy, overcast, outdoor',
+        prompt:'masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed\n1girl, solo, {{char}}, {{traits}}\nyukata, kimono, traditional Japanese room, mirror\nplayful, calm before festival, looking at viewer, excited\nmedium shot, full figure, elegant\ncentered, interior framing\nwarm interior light, soft glow, elegant, serene\nhair blowing, beautiful detailed eyes, depth of field' },
+      { n:'02', title:'祭典', en:'Festival Streets', desc:'人来人往的摊位街。金鱼捞、苹果糖、面具。灯火温暖。',
+        emotion:'日常', res:'Wide CG', lora:0.75, neg:'day, bright sunlight, indoor, bedroom',
+        prompt:'masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed\n1girl, solo, {{char}}, {{traits}}\nyukata, festival stroll\nsummer festival stalls, lanterns, night, warm golden lights\nrelaxed, taking in the scene, gentle smile\nwide shot, full body, environmental\nrule of thirds, layered framing, depth\nlantern light, warm glow, night scene, lively yet cozy\nbeautiful detailed eyes, depth of field' },
+      { n:'03', title:'烟花', en:'Fireworks', desc:'她站在河边，烟花在头顶绽放。她仰起头，眼睛里有光。',
+        emotion:'幸福', res:'Full CG', lora:0.75, neg:'day, bright sunlight, indoor, rainy',
+        prompt:'masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed\n1girl, solo, {{char}}, {{traits}}\nyukata, fireworks in sky, night\nlooking up, wonder in eyes, colorful explosions, river reflection\nwide shot, full body, looking up, cinematic\ncentered, dramatic sky, foreground depth\nfireworks light, colorful explosions, warm glow, night, dreamlike\nbeautiful detailed eyes, depth of field, cinematic lighting' }
+    ]
+  },
+  {
+    id:'snow', icon:'❄️', name:'冬日的初雪', en:'First Snow',
+    desc:'今年的第一场雪。她围着你织的围巾，在神社前合掌祈祷。',
+    acts:[
+      { n:'01', title:'雪落', en:'Snowfall', desc:'天空飘下第一片雪。她伸手去接，耳朵冻得通红。',
+        emotion:'平静', res:'Full CG', lora:0.75, neg:'summer, cherry blossoms, sunny, rain, autumn leaves',
+        prompt:'masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed\n1girl, solo, {{char}}, {{traits}}\nwinter coat, scarf, snow falling, breath vapor\ncalm, serene, looking up, gentle smile\nwide shot, full body, standing in snow\nrule of thirds, layered depth, atmospheric\novercast, soft cool light, snowflakes falling, serene\nbeautiful detailed eyes, depth of field, cold atmosphere' },
+      { n:'02', title:'合掌', en:'Prayer', desc:'她在神社前双手合掌，闭上眼睛许愿。',
+        emotion:'认真', res:'Half-body', lora:0.75, neg:'summer, bright lighting, indoor, action',
+        prompt:'masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed\n1girl, solo, {{char}}, {{traits}}\nwinter coat, scarf, shrine, torii gate, snow\npraying, eyes closed, serious, serene\nmedium shot, upper body, near\ncentered, by torii, foreground snowflakes\nsoft winter light, cool tones, quiet, spiritual\nbeautiful detailed eyes, beautiful detailed hair, depth of field' },
+      { n:'03', title:'回眸微笑', en:'The Turn & Smile', desc:'她祈祷完，转过头来，看见你在等她。',
+        emotion:'幸福', res:'Half-body', lora:0.75, neg:'rain, sunny, summer, dramatic',
+        prompt:'masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed\n1girl, solo, {{char}}, {{traits}}\nwinter coat, shrine, snow, torii gate\ngentle smile, soft eyes, blush, looking at viewer\nmedium shot, turning to viewer, intimate\nrule of thirds, by torii, depth\nsoft winter light, backlit by snow, warm despite cold\nbeautiful detailed eyes, depth of field, snowflakes' }
+    ]
+  },
+  {
+    id:'library', icon:'📚', name:'图书馆的午后', en:'Library Afternoon',
+    desc:'午后的图书馆，阳光斜照。她在书架间找到一个座位，安静地读书。',
+    acts:[
+      { n:'01', title:'书架之间', en:'Between Shelves', desc:'她在高耸的书架间穿行，指尖划过书脊。',
+        emotion:'平静', res:'Half-body', lora:0.75, neg:'night, outdoor, rain, sunny, action',
+        prompt:'masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed\n1girl, solo, {{char}}, {{traits}}\nschool uniform, casual\nlibrary, tall bookshelves, afternoon lightbeam, dust motes\ncalm, browsing, gentle curiosity\nmedium shot, full figure, environmental\nleading lines, depth, rule of thirds\nwindow light, warm afternoon glow, dust in sunbeams, quiet\nbeautiful detailed eyes, beautiful detailed hair, depth of field' },
+      { n:'02', title:'读书', en:'Reading', desc:'她找到一个角落坐下，低头翻书。光線落在发梢。',
+        emotion:'认真', res:'Close-up', lora:0.75, neg:'night, outdoor, action, dramatic, cluttered',
+        prompt:'masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed\n1girl, solo, {{char}}, {{traits}}\nschool uniform, reading, book in hands\nlibrary corner, sunlight on hair, quiet, peaceful\nconcentrated, looking down, serene\nclose-up, face and book, intimate\ncentered, soft background blur\nwindow light, warm glow, golden hour, serene\nbeautiful detailed eyes, depth of field' },
+      { n:'03', title:'相遇', en:'The Encounter', desc:'你来找书，偶然抬头，和正在读书的她视线相遇。',
+        emotion:'羞怯', res:'Half-body', lora:0.75, neg:'night, outdoor, dramatic, rain',
+        prompt:'masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed\n1girl, solo, {{char}}, {{traits}}\nschool uniform, library, bookshelf\ngentle surprise, soft blush, looking at viewer, shy\nmedium shot, eye contact, intimate\nlayered foreground books, rule of thirds\nwindow light, warm afternoon glow, quiet, intimate\nbeautiful detailed eyes, depth of field' }
+    ]
+  },
+  {
+    id:'seaside', icon:'🌊', name:'海边的黄昏', en:'Seaside Dusk',
+    desc:'暑假的尾声。她赤脚走在沙滩上，夕阳把影子拉得很长。',
+    acts:[
+      { n:'01', title:'海边', en:'The Shore', desc:'她脱了鞋，赤脚走在沙滩上，浪花轻吻脚踝。',
+        emotion:'放松', res:'Full CG', lora:0.75, neg:'night, snow, winter, indoor, school',
+        prompt:'masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed\n1girl, solo, {{char}}, {{traits}}\nsundress, barefoot, summer\nbeach, ocean waves, golden hour, footprints in sand\nrelaxed, looking at sea, gentle smile\nwide shot, full body, environmental\nrule of thirds, by waterline, depth\ngolden hour, warm ocean breeze, soft glow, beach atmosphere\nhair blowing, beautiful detailed eyes, depth of field' },
+      { n:'02', title:'拾贝', en:'Shell Hunting', desc:'她弯腰捡起一枚贝壳，认真端详。',
+        emotion:'认真', res:'Half-body', lora:0.75, neg:'night, indoor, rain, winter, snow',
+        prompt:'masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed\n1girl, solo, {{char}}, {{traits}}\nsundress, beach, shell in hand\ncurious, looking down, concentrated\nmedium shot, upper body, near\ncentered, foreground bokeh waves\ngolden hour, backlit, warm summer glow, soft\nbeautiful detailed eyes, depth of field' },
+      { n:'03', title:'黄昏回望', en:'The Dusk Turn', desc:'她感觉到你的视线，转过头来，夕阳映在她的脸上。',
+        emotion:'温柔', res:'Close-up', lora:0.75, neg:'night, indoor, rain, winter',
+        prompt:'masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed\n1girl, solo, {{char}}, {{traits}}\nsundress, beach, sunset ocean\ngentle smile, soft eyes, blush, looking at viewer\nclose-up, face and ocean backdrop, intimate\ncentered, rim light silhouette\ngolden hour, rim light, backlit halo, romantic\nbeautiful detailed eyes, beautiful detailed hair, depth of field' }
+    ]
+  },
+  {
+    id:'sakura', icon:'🌸', name:'樱花树下的初恋', en:'Under the Sakura',
+    desc:'春天的公园，樱花盛开。她站在树下等人，花瓣落在发梢。',
+    acts:[
+      { n:'01', title:'等待', en:'Waiting', desc:'她站在樱花树下，不时看一眼路的尽头。',
+        emotion:'期待', res:'Full CG', lora:0.75, neg:'night, snow, autumn leaves, winter, rain',
+        prompt:'masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed\n1girl, solo, {{char}}, {{traits}}\nschool uniform, spring coat\npark, sakura tree in full bloom, petals floating, afternoon\nexpectant, looking at path, gentle, hopeful\nwide shot, full body, among sakura\nrule of thirds, layered foreground petals, depth\nsoft spring light, warm pink glow, petals in air, dreamlike\nhair blowing, beautiful detailed eyes, depth of field' },
+      { n:'02', title:'落樱', en:'Falling Petals', desc:'一阵风来，花瓣如雪落下。她伸手去接。',
+        emotion:'开心', res:'Half-body', lora:0.75, neg:'night, snow, autumn leaves, indoor',
+        prompt:'masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed\n1girl, solo, {{char}}, {{traits}}\nschool uniform, cherry blossoms falling\npark, sakura tree, petals in air, spring afternoon\nhappy, looking up, reaching for petals, playful\nmedium shot, upper body, near\ncentered, foreground petals framing\nsoft spring light, pink glow, petals, airy\nhair blowing, beautiful detailed eyes, depth of field' },
+      { n:'03', title:'重逢', en:'Reunion', desc:'她终于看见你，笑了。花瓣停在发梢。',
+        emotion:'幸福', res:'Half-body', lora:0.75, neg:'night, snow, rain, autumn leaves',
+        prompt:'masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed\n1girl, solo, {{char}}, {{traits}}\nschool uniform, sakura in hair\npark, sakura tree, petals on ground, spring\ngentle smile, eyes lighting up, blush, looking at viewer\nmedium shot, upper body, intimate\nrule of thirds, foreground sakura branches\nsoft spring light, warm glow, petals falling, romantic\nbeautiful detailed eyes, depth of field' }
     ]
   }
 ];
 
-function init() {
-  const list = document.getElementById('scenarioList');
-  list.innerHTML = SCENARIOS.map(s => `
-    <div class="scenario-card" onclick="openScenario('${s.id}')">
-      <div class="scenario-icon">${s.icon}</div>
-      <div class="scenario-name">${s.name}</div>
-      <div class="scenario-en">${s.en}</div>
-      <div class="scenario-desc">${s.desc}</div>
-      <div class="scenario-count">${s.acts.length} 幕 · 点击查看</div>
-    </div>
-  `).join('');
+// ---- state ----
+let currentChar = 'nene';
+let currentScenario = null;
+
+// ---- helpers ----
+function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function renderPrompt(char){
+  var traits = CHAR_TRAITS[char];
+  var name = CHAR_NAME[char];
+  return function(modules){
+    return modules.map(function(line){
+      var cls = 'm-q';
+      if (modules.indexOf(line) === 1) cls = 'm-c';
+      else if (modules.indexOf(line) === 2) cls = 'm-cl';
+      else if (modules.indexOf(line) === 3) cls = 'm-s';
+      else if (modules.indexOf(line) === 4) cls = 'm-e';
+      else if (modules.indexOf(line) === 5) cls = 'm-sh';
+      else if (modules.indexOf(line) === 6) cls = 'm-co';
+      else if (modules.indexOf(line) === 7) cls = 'm-l';
+      else if (modules.indexOf(line) === 8) cls = 'm-d';
+      else if (modules.indexOf(line) === 9) cls = 'm-lora';
+      var parts = line.split(',').map(function(tk){
+        var t = tk.trim();
+        if (!t) return '';
+        var low = t.toLowerCase();
+        var isBad = BANNED_TAGS.some(function(b){ return low === b.toLowerCase() || low.indexOf(b.toLowerCase()) > -1; });
+        return isBad ? '<span class="violate">' + escapeHtml(t) + '</span>' : escapeHtml(t);
+      }).join(', ');
+      return '<span class="mod ' + cls + '">' + parts + '</span>';
+    }).join('\n');
+  };
+}
+const LORA_ID = { nene:'ayachi_nene_v11:0.8', natsume:'shiki_natsume_v11:0.8' };
+// 空格/连字符 → 下划线 规范化
+function norm(t){ return t.split(',').map(function(s){ return s.trim().replace(/[\s-]+/g,'_'); }).join(', '); }
+function substitutePrompt(tpl, char){
+  return tpl.split('\n').map(function(line){
+    return line.replace(/\{\{char\}\}/g, CHAR_NAME[char]).replace(/\{\{traits\}\}/g, CHAR_TRAITS[char]);
+  }).join('\n');
+}
+function buildFullPrompt(tpl, char, lora){
+  return norm(substitutePrompt(tpl, char)) + ',\n<lora:' + LORA_ID[char] + '>';
+}
+function checkViolation(text){
+  var lower = text.toLowerCase();
+  return BANNED_TAGS.filter(function(b){ return lower.indexOf(b.toLowerCase()) > -1; });
+}
+function showToast(msg){
+  var t = document.getElementById('sv-toast');
+  if (!t) { t = document.createElement('div'); t.id = 'sv-toast'; t.style.cssText = 'position:fixed;left:50%;bottom:32px;transform:translateX(-50%);z-index:9999;background:var(--bg-surface);border:1px solid var(--accent);color:var(--text-primary);padding:10px 20px;border-radius:8px;font-size:0.85rem;box-shadow:0 4px 16px rgba(0,0,0,0.4);opacity:0;transition:opacity .2s;'; document.body.appendChild(t); }
+  t.textContent = msg; t.style.opacity = '1'; clearTimeout(showToast._tid); showToast._tid = setTimeout(function(){ t.style.opacity = '0'; }, 1600);
+}
+function copyText(text){
+  navigator.clipboard.writeText(text).then(function(){
+    showToast('📋 已复制 (' + text.split(',').length + ' tokens)');
+  }, function(){ prompt('请手动复制', text); });
 }
 
-function openScenario(id) {
-  const s = SCENARIOS.find(x => x.id === id);
+// ---- render ----
+function init(){
+  var list = document.getElementById('scenarioList');
+  list.innerHTML = SCENARIOS.map(function(s){
+    return '<div class="scenario-card" data-id="' + s.id + '" onclick="openScenario(\'' + s.id + '\')"><div class="scenario-icon">' + s.icon + '</div><div class="scenario-name">' + s.name + '</div><div class="scenario-en">' + s.en + '</div><div class="scenario-desc">' + s.desc + '</div><div class="scenario-count">' + s.acts.length + ' 幕 · 点击查看</div></div>';
+  }).join('');
+}
+
+function switchChar(c){
+  currentChar = c;
+  document.querySelectorAll('.char-btn').forEach(function(b){ b.classList.toggle('active', b.dataset.char === c); });
+  if (currentScenario) renderViewer(currentScenario);
+}
+
+function openScenario(id){
+  var s = SCENARIOS.find(function(x){ return x.id === id; });
   if (!s) return;
-
+  currentScenario = s;
+  document.querySelectorAll('.scenario-card').forEach(function(card){ card.classList.toggle('active', card.dataset.id === id); });
   document.getElementById('scenarioList').style.display = 'none';
-  const viewer = document.getElementById('viewer');
+  var viewer = document.getElementById('viewer');
   viewer.classList.add('show');
-  viewer.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-  document.getElementById('viewerTitle').textContent = `${s.icon} ${s.name}`;
+  document.getElementById('viewerTitle').textContent = s.icon + ' ' + s.name;
   document.getElementById('viewerEn').textContent = s.en;
   document.getElementById('viewerDesc').textContent = s.desc;
-
-  document.getElementById('acts').innerHTML = s.acts.map((a, i) => `
-    <div class="act" onclick="toggleAct(this)">
-      <div class="act-num">${String(i + 1).padStart(2, '0')}</div>
-      <div class="act-info">
-        <div class="act-title">${a.title}</div>
-        <div class="act-en">${a.en}</div>
-        <div class="act-desc">${a.desc}</div>
-      </div>
-      <div class="act-detail">
-        <h4>📝 这一幕的 Prompt</h4>
-        <div class="act-prompt">${a.prompt}</div>
-        <div class="act-actions">
-          <button class="btn btn-primary" onclick="event.stopPropagation(); copyText('${a.prompt.replace(/'/g, "\\'")}')">📋 复制</button>
-        </div>
-      </div>
-    </div>
-  `).join('');
+  renderViewer(s);
+  viewer.scrollIntoView({ behavior:'smooth', block:'start' });
 }
 
-function toggleAct(el) {
-  el.classList.toggle('active');
-  el.querySelector('.act-detail').classList.toggle('show');
+function renderViewer(s){
+  var renderMod = renderPrompt(currentChar);
+  document.getElementById('acts').innerHTML = s.acts.map(function(a){
+    var modPrompt = substitutePrompt(a.prompt, currentChar);
+    var modules = modPrompt.split('\n');
+    modules.push('<lora:' + CHAR_NAME[currentChar] + '_v11:' + a.lora + '>');
+    var violations = checkViolation(modPrompt);
+    var fullPrompt = buildFullPrompt(a.prompt, currentChar, a.lora);
+    // resolution 推荐: 名称 + 尺寸 + VRAM + 为什么这帧选这个
+    var resInfo = RES_MAP[a.res] || RES_MAP['Half-body'];
+    var shotKey = (function(){
+      // 从 prompt modules[5] (shot 模块) 第一词匹配
+      var shotLine = modules[5] || '';
+      var first = shotLine.split(',')[0].trim().replace('-',' ');
+      return SHOT_RES_REASON[first] || SHOT_RES_REASON[shotLine.split(',')[0].trim()] || '';
+    })();
+    var resReason = shotKey || resInfo.reason;
+    return '<div class="act"><div class="act-head"><span class="act-num">' + a.n + '</span><h3 class="act-title">' + a.title + '</h3></div><div class="act-en">' + a.en + '</div><div class="act-desc">' + a.desc + '</div>' +
+      '<div class="scene-grid"><div class="scene-meta"><div class="label">情绪</div><div class="value">' + a.emotion + '</div></div><div class="scene-meta"><div class="label">角色</div><div class="value">' + currentChar + '</div></div><div class="scene-meta"><div class="label">Resolution</div><div class="value" title="' + resInfo.dim + '">' + a.res + '</div></div><div class="scene-meta"><div class="label">LoRA</div><div class="value">' + a.lora + '</div></div><div class="scene-meta"><div class="label">锁定参数 <span class="lock-badge">🔒</span></div><div class="value" style="font-size:0.72rem">' + LOCK_PARAMS + '</div></div></div>' +
+      '<div class="res-rec"><span class="res-icon">📐</span><strong>推荐 ' + a.res + ' (' + resInfo.dim + ' · ' + resInfo.vram + ')</strong> — ' + resReason + '</div>' +
+      (violations.length ? '<div class="art-warn show">⚠️ 本幕含 ' + violations.length + ' 个违反美术规范的词: ' + violations.join(', ') + '</div>' : '') +
+      '<div class="prompt-label">Positive (10 模块)</div><div class="prompt-output">' + renderMod(modules) + '</div>' +
+      '<div class="neg-section"><div class="prompt-label" style="color:var(--danger)">Negative</div><div class="neg-layer"><div class="neg-layer-label">基础层 (永远带)</div><div class="neg-output">' + BASE_NEG + '</div></div><div class="neg-layer"><div class="neg-layer-label">场景特定层</div><div class="neg-output">' + a.neg + '</div></div></div>' +
+      '<div class="act-actions"><button class="btn btn-primary" data-fullprompt="' + escapeHtml(fullPrompt).replace(/"/g, '&quot;') + '" onclick="copyActPrompt(this)">📋 复制本幕 Prompt</button><a href="../tools/prompt-builder.html" class="btn btn-ghost">🎬 在导演工作台打开 →</a></div></div>';
+  }).join('');
 }
 
-function copyText(text) {
-  navigator.clipboard.writeText(text).then(() => {
-    alert('📋 已复制到剪贴板');
-  });
+function copyActPrompt(btn){
+  var p = btn.getAttribute('data-fullprompt');
+  if (!p) return;
+  copyText(p);
 }
 
-function backToList() {
+function backToList(){
   document.getElementById('viewer').classList.remove('show');
   document.getElementById('scenarioList').style.display = 'grid';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  document.querySelectorAll('.scenario-card').forEach(function(c){ c.classList.remove('active'); });
+  currentScenario = null;
+  window.scrollTo({ top:0, behavior:'smooth' });
 }
 
 init();
 </script>
-
 </body>
 </html>
