@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>创作哲学 · AI CG Studio</title>
+<link rel="stylesheet" href="../css/design-system.css">
+<style>
+  .page { max-width: 800px; margin: 0 auto; padding: var(--s-5) var(--s-4); }
+
+  .nav-back {
+    display: inline-flex; align-items: center; gap: var(--s-2);
+    color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4);
+  }
+  .nav-back:hover { color: var(--accent); }
+
+  h1.title {
+    font-size: 2rem; font-weight: 800;
+    background: linear-gradient(135deg, #E8E8F0 50%, #F06292);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: var(--s-2);
+  }
+  .subtitle { color: var(--text-secondary); margin-bottom: var(--s-6); }
+
+  .principle {
+    background: var(--bg-surface); border: 1px solid var(--border-soft);
+    border-radius: var(--r-lg); padding: var(--s-5); margin-bottom: var(--s-4);
+    transition: border-color var(--t-fast);
+  }
+  .principle:hover { border-color: var(--accent); }
+  .principle-num {
+    font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700;
+    color: var(--accent); text-transform: uppercase; letter-spacing: 0.06em;
+    margin-bottom: var(--s-2);
+  }
+  .principle h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: var(--s-3); }
+
+  .wrong-right {
+    display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-3); margin-top: var(--s-3);
+  }
+  .wrong, .good {
+    border-radius: var(--r-md); padding: var(--s-3); font-size: 0.88rem;
+  }
+  .wrong { background: rgba(239,83,80,0.06); border: 1px solid rgba(239,83,80,0.25); }
+  .good  { background: rgba(102,187,106,0.06); border: 1px solid rgba(102,187,106,0.25); }
+  .wrong .label { color: var(--danger); font-weight: 600; margin-bottom: var(--s-1); }
+  .good .label { color: var(--success); font-weight: 600; margin-bottom: var(--s-1); }
+  .wrong p, .good p { font-size: 0.85rem; color: var(--text-secondary); margin: 0; }
+
+  .flow-compose {
+    display: flex; align-items: center; gap: var(--s-2); flex-wrap: wrap;
+    background: var(--bg-deep); border-radius: var(--r-lg); padding: var(--s-4);
+    margin: var(--s-4) 0;
+  }
+  .flow-block {
+    background: var(--bg-surface); border: 1px solid var(--border-soft);
+    border-radius: var(--r-md); padding: var(--s-2) var(--s-3);
+    font-size: 0.85rem; font-weight: 500;
+  }
+  .flow-arrow { color: var(--accent); font-weight: 700; }
+
+  @media (max-width: 768px) {
+    .wrong-right { grid-template-columns: 1fr; }
+    .flow-compose { flex-direction: column; }
+    .flow-arrow { transform: rotate(90deg); }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand"><span class="dot"></span> AI CG Studio</div>
+    <div class="nav-links">
+      <a href="../index.html">首页</a>
+      <a href="worldview.html">世界观</a>
+      <a href="philosophy.html" class="active">哲学</a>
+      <a href="art-direction.html">美术规范</a>
+      <a href="../tools/director-flow.html">导演模式</a>
+      <a href="roadmap.html">路线</a>
+    </div>
+  </div>
+</nav>
+
+<article class="page">
+  <a href="../index.html" class="nav-back">← 回首页</a>
+
+  <h1 class="title">💡 创作哲学 (Philosophy)</h1>
+  <p class="subtitle">所有功能设计的原点。每个决策回到这里对齐。</p>
+
+  <!-- Principle 1 -->
+  <div class="principle">
+    <div class="principle-num">第零原则（最高）</div>
+    <h3>Prompt 描述图片。Scene 描述瞬间。</h3>
+    <p style="color: var(--text-secondary)">这是整个项目的根基。一张优秀的 CG，不是因为 Prompt 很长而优秀，而是因为它捕捉到了一个值得记住的瞬间。</p>
+    <p style="font-size: 0.9rem; color: var(--accent); margin-top: var(--s-2)">用户不是在"写 Prompt"，而是在"导演一个 Scene"。Prompt 自动系统生成，用户甚至不需要知道。</p>
+  </div>
+
+  <!-- Principle 1b -->
+  <div class="principle">
+    <div class="principle-num">第零原则补充</div>
+    <h3>Scene Engineering > Prompt Engineering</h3>
+    <p style="color: var(--text-secondary)">
+      AI 圈几乎所有工具都在解决 <strong>"Prompt 怎么写？"</strong>。<br>
+      没人在解决 <strong>"画面怎么设计？"</strong>
+    </p>
+    <p style="color: var(--text-secondary); margin-top: var(--s-2)">
+      这是两个完全不同的问题。训练好的 LoRA 也需要回答：<br>
+      用什么场景测试？ 用什么镜头测试？ 用什么光照测试？ 怎样判断 LoRA 是否稳定？<br>
+      <strong>这些都超出了 Prompt 的范畴，属于 Scene。</strong>
+    </p>
+    <p style="font-size: 0.9rem; color: var(--accent); margin-top: var(--s-2)">
+      进化链：Prompt Engineering → Scene Engineering → Visual Story Engineering
+    </p>
+  </div>
+
+  <!-- Principle 1 (original) -->
+  <div class="principle">
+    <div class="principle-num">第一原则</div>
+    <h3>先有画面，后有 Prompt</h3>
+    <p style="color: var(--text-secondary)">Prompt 永远是最后一步。脑海里的画面 → 故事 → 情绪 → 镜头 → 构图 → Prompt。</p>
+    <div class="wrong-right">
+      <div class="wrong">
+        <div class="label">❌ 错误</div>
+        <p>Prompt → 生成 → 希望好看</p>
+      </div>
+      <div class="good">
+        <div class="label">✅ 正确</div>
+        <p>脑海画面 → 故事 → 情绪 → 镜头 → 构图 → Prompt</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Principle 2 -->
+  <div class="principle">
+    <div class="principle-num">第二原则</div>
+    <h3>一张 CG 必须讲一个故事</h3>
+    <p style="color: var(--text-secondary)">没有故事的 CG 只是一个美少女站在那里。有了故事，她才是"放学后在教室等你的那个人"。</p>
+    <div class="wrong-right">
+      <div class="wrong">
+        <div class="label">❌ 空洞</div>
+        <p>女孩站着。女孩笑着。</p>
+      </div>
+      <div class="good">
+        <div class="label">✅ 有故事</div>
+        <p>放学以后，她一直在教室等你。她看见你以后，终于露出了笑容。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Principle 3 -->
+  <div class="principle">
+    <div class="principle-num">第三原则</div>
+    <h3>人物永远是第一主角</h3>
+    <p style="color: var(--text-secondary)">人物 ★★★★★ · 背景 ★★★☆☆ · 特效 ★★☆☆☆。任何元素都不能抢人物。</p>
+    <p style="font-size: 0.9rem; color: var(--accent); margin-top: var(--s-2)">背景服务人物。不是人物服务背景。</p>
+  </div>
+
+  <!-- Principle 4 -->
+  <div class="principle">
+    <div class="principle-num">第四原则</div>
+    <h3>每个元素都要有理由</h3>
+    <p style="color: var(--text-secondary)">为什么是夕阳？故事发生在放学。为什么是樱花？这是春天。为什么回头？她在等你。</p>
+    <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: var(--s-2)">Prompt 不应该出现无意义标签。</p>
+  </div>
+
+  <!-- Flow -->
+  <h2 style="margin-top: var(--s-6); margin-bottom: var(--s-3);">导演模式创作流程</h2>
+  <p style="color: var(--text-secondary); margin-bottom: var(--s-3);">9 步完成一张 CG，像导演一样思考。</p>
+  <div class="flow-compose">
+    <div class="flow-block">📖 故事</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-block">👤 人物</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-block">💭 情绪</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-block">🎬 场景</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-block">⏰ 时间</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-block">🌦 天气</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-block">🎥 镜头</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-block">🖼 构图</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-block">💡 光照</div>
+  </div>
+
+  <!-- Scene vs Tag -->
+  <h2 style="margin-top: var(--s-6); margin-bottom: var(--s-3);">Scene ≠ Prompt ≠ 标签</h2>
+  <div class="wrong-right">
+    <div class="wrong">
+      <div class="label">❌ 不要这样想</div>
+      <p>站着、笑、学校、校服、夕阳</p>
+    </div>
+    <div class="good">
+      <div class="label">✅ 应该这样想</div>
+      <p>放学以后，她站在校门口一直等你，风吹起头发，夕阳照在她脸上</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top: var(--s-5); margin-bottom: var(--s-3);">场景 > 标签</h3>
+  <div class="card-grid">
+    <div class="card">
+      <p style="color: var(--text-muted); font-size: 0.85rem;">不是"教室"</p>
+      <p style="color: var(--accent); font-weight: 600;">是"放学后的教室"</p>
+    </div>
+    <div class="card">
+      <p style="color: var(--text-muted); font-size: 0.85rem;">不是"卧室"</p>
+      <p style="color: var(--accent); font-weight: 600;">是"睡前的一句晚安"</p>
+    </div>
+    <div class="card">
+      <p style="color: var(--text-muted); font-size: 0.85rem;">不是"神社"</p>
+      <p style="color: var(--accent); font-weight: 600;">是"新年的第一次祈福"</p>
+    </div>
+    <div class="card">
+      <p style="color: var(--text-muted); font-size: 0.85rem;">不是"海边"</p>
+      <p style="color: var(--accent); font-weight: 600;">是"第一次一起看海"</p>
+    </div>
+  </div>
+
+  <!-- Quality > Quantity -->
+  <div class="callout" style="margin-top: var(--s-6);">
+    <strong>质量 > 数量</strong>
+    <p style="margin-top: var(--s-2)">
+      别人：5000 Prompt<br>
+      我们：500 Scene<br><br>
+      每一条都有故事、情绪、镜头、构图、推荐参数。这就是质量。
+    </p>
+  </div>
+
+  <!-- Target users -->
+  <h2 style="margin-top: var(--s-6); margin-bottom: var(--s-3);">目标用户</h2>
+  <div class="card-grid">
+    <div class="card h4" style="font-size: 0.95rem;">🎨 想用 AI 生成 Galgame CG 的创作者</div>
+    <div class="card h4" style="font-size: 0.95rem;">🖼 有角色 LoRA 但不知道怎么出图的玩家</div>
+    <div class="card h4" style="font-size: 0.95rem;">✨ 想快速获得高质量二次元插画的用户</div>
+  </div>
+
+  <footer class="footer">
+    <p>AI CG Studio · Philosophy v1.0</p>
+    <p class="muted mt-4">所有功能设计的灵魂。</p>
+  </footer>
+</article>
+
+</body>
+</html>

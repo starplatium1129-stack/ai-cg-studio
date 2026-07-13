@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>路线 · AI CG Studio</title>
+<link rel="stylesheet" href="../css/design-system.css">
+<style>
+  .page { max-width: 900px; margin: 0 auto; padding: var(--s-5) var(--s-4); }
+  .nav-back {
+    display: inline-flex; align-items: center; gap: var(--s-2);
+    color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4);
+  }
+  .nav-back:hover { color: var(--accent); }
+  h1.title {
+    font-size: 2rem; font-weight: 800;
+    background: linear-gradient(135deg, #E8E8F0 50%, #F06292);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; margin-bottom: var(--s-2);
+  }
+  .subtitle { color: var(--text-secondary); margin-bottom: var(--s-5); }
+
+  /* Timeline */
+  .timeline { position: relative; padding-left: var(--s-7); }
+  .timeline::before {
+    content: ''; position: absolute; left: 18px; top: 0; bottom: 0;
+    width: 2px; background: var(--border-soft);
+  }
+
+  .version {
+    position: relative; margin-bottom: var(--s-6);
+  }
+  .version::before {
+    content: ''; position: absolute; left: -30px; top: var(--s-3);
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--accent); border: 3px solid var(--bg-base);
+    box-shadow: 0 0 0 2px var(--accent);
+  }
+  .version.done::before { background: var(--success); box-shadow: 0 0 0 2px var(--success); }
+  .version.current::before {
+    background: var(--accent); box-shadow: 0 0 0 4px var(--accent-glow);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 4px var(--accent-glow); }
+    50% { box-shadow: 0 0 0 8px rgba(240,98,146,0.4); }
+  }
+
+  .version-card {
+    background: var(--bg-surface); border: 1px solid var(--border-soft);
+    border-radius: var(--r-lg); padding: var(--s-4);
+    transition: border-color var(--t-fast);
+  }
+  .version-card:hover { border-color: var(--accent); }
+  .version.done .version-card { border-color: rgba(102,187,106,0.3); }
+  .version.current .version-card { border-color: var(--accent); box-shadow: 0 0 20px var(--accent-glow); }
+
+  .version-header {
+    display: flex; align-items: baseline; gap: var(--s-3); margin-bottom: var(--s-2);
+  }
+  .version-num {
+    font-family: var(--font-mono); font-size: 0.85rem; font-weight: 700;
+    color: var(--accent); background: var(--accent-soft);
+    padding: 3px 10px; border-radius: 12px;
+  }
+  .version.done .version-num { background: rgba(102,187,106,0.12); color: var(--success); }
+  .version.current .version-num { background: var(--accent); color: var(--text-inverse); }
+
+  .version-name { font-size: 1.15rem; font-weight: 700; }
+  .version-tag {
+    font-size: 0.75rem; padding: 2px 8px; border-radius: 10px;
+    background: var(--bg-elevated); color: var(--text-muted);
+    margin-left: auto; font-weight: 500;
+  }
+  .version.done .version-tag { background: rgba(102,187,106,0.12); color: var(--success); }
+  .version.current .version-tag { background: rgba(255,167,38,0.15); color: var(--warning); }
+
+  .version-desc { font-size: 0.88rem; color: var(--text-secondary); margin-bottom: var(--s-3); }
+
+  .feature-list { list-style: none; display: flex; flex-direction: column; gap: var(--s-2); }
+  .feature-list li {
+    font-size: 0.88rem; color: var(--text-secondary);
+    display: flex; align-items: flex-start; gap: var(--s-2);
+  }
+  .feature-list li::before {
+    content: '→'; color: var(--accent); font-weight: 700; flex-shrink: 0;
+  }
+  .version.done .feature-list li::before { content: '✓'; color: var(--success); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand"><span class="dot"></span> AI CG Studio</div>
+    <div class="nav-links">
+      <a href="../index.html">首页</a>
+      <a href="worldview.html">世界观</a>
+      <a href="philosophy.html">哲学</a>
+      <a href="art-direction.html">美术规范</a>
+      <a href="../tools/director-flow.html">导演模式</a>
+      <a href="roadmap.html" class="active">路线</a>
+    </div>
+  </div>
+</nav>
+
+<article class="page">
+  <a href="../index.html" class="nav-back">← 回首页</a>
+
+  <h1 class="title">🗺 后续路线 (Roadmap)</h1>
+  <p class="subtitle">从理念到产品。根据实际使用情况调整。</p>
+
+  <div class="timeline">
+
+    <!-- v0.5 (current) -->
+    <div class="version current">
+      <div class="version-card">
+        <div class="version-header">
+          <div class="version-num">v0.5</div>
+          <div class="version-name">文档与理念奠基</div>
+          <div class="version-tag">🚧 进行中</div>
+        </div>
+        <div class="version-desc">世界观 + 哲学 + 美术规范 + 导演模式交互原型 + 色彩情绪 + 剧本模式</div>
+        <ul class="feature-list">
+          <li>世界观 / 哲学 / 美术规范 / 标签规范 / Prompt 规范 / Scene 规范 / 质量评分 — 8 份 spec docs</li>
+          <li>导演模式 — 7 步完整交互 (Story → Character → Emotion → Shot → Composition → Lighting → Prompt → CG)</li>
+          <li>色彩情绪 — 6 种情绪 → 色板 → 光照 → Prompt 自动映射</li>
+          <li>剧本模式 — 4 个官方剧本 × 多幕 CG 脚本</li>
+          <li>统一设计系统 (深灰底 + 樱花粉点缀)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- v1 -->
+    <div class="version">
+      <div class="version-card">
+        <div class="version-header">
+          <div class="version-num">v1.0</div>
+          <div class="version-name">Prompt Builder 3.0</div>
+          <div class="version-tag">下一版</div>
+        </div>
+        <div class="version-desc">整合工具 + 数据。真正的"AI Galgame CG 创作工作台"。</div>
+        <ul class="feature-list">
+          <li>整合现有 Prompt_Builder.html 升级为 v3.0</li>
+          <li>三 Tab: 导演模式 / 剧本模式 / 手动标签 (保留原有)</li>
+          <li>Scene 库 (JSON 数据, 500 Scene 目标)</li>
+          <li>历史记录 + 收藏 (localStorage)</li>
+          <li>一键导出 Prompt + 参数截图</li>
+          <li>实时预览图占位 (未来接 Stable Diffusion API)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- v2 -->
+    <div class="version">
+      <div class="version-card">
+        <div class="version-header">
+          <div class="version-num">v2.0</div>
+          <div class="version-name">Scene 库扩展</div>
+          <div class="version-tag">规划</div>
+        </div>
+        <div class="version-desc">从"工具"进化为"平台"。社区可以贡献 Scene。</div>
+        <ul class="feature-list">
+          <li>Scene 库扩展到 500+ (多角色、多情绪、多季节)</li>
+          <li>Scene 分类检索 (情绪/场景/季节/适用)</li>
+          <li>用户 Scene 提交 + 审核</li>
+          <li>官方 Scene 满足 ⭐⭐⭐⭐⭐ 才能入库</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- v3 -->
+    <div class="version">
+      <div class="version-card">
+        <div class="version-header">
+          <div class="version-num">v3.0</div>
+          <div class="version-name">智能导演</div>
+          <div class="version-tag">规划</div>
+        </div>
+        <div class="version-desc">AI 辅助创作。输入一句话, 自动生成完整导演决策。</div>
+        <ul class="feature-list">
+          <li>输入一句话 → AI 建议情绪/镜头/构图/光照</li>
+          <li>LLM 自动写 Scene 故事描述</li>
+          <li>风格迁移 (参考图 → 色彩/光照 Prompt)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- v4 -->
+    <div class="version">
+      <div class="version-card">
+        <div class="version-header">
+          <div class="version-num">v4.0</div>
+          <div class="version-name">图片管理</div>
+          <div class="version-tag">规划</div>
+        </div>
+        <div class="version-desc">不只是生成, 还要管理。</div>
+        <ul class="feature-list">
+          <li>出图自动保存到本地 gallery</li>
+          <li>Prompt + 参数 + 图片 一键对比</li>
+          <li>相似图检索 (根据 Prompt)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- v5 -->
+    <div class="version">
+      <div class="version-card">
+        <div class="version-header">
+          <div class="version-num">v5.0</div>
+          <div class="version-name">LoRA 管理</div>
+          <div class="version-tag">规划</div>
+        </div>
+        <div class="version-desc">角色 LoRA 全生命周期管理。</div>
+        <ul class="feature-list">
+          <li>LoRA 库浏览 (预览图 + 推荐参数)</li>
+          <li>训练数据管理</li>
+          <li>LoRA 效果对比 (同一 Prompt, 不同 LoRA)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- v6 -->
+    <div class="version">
+      <div class="version-card">
+        <div class="version-header">
+          <div class="version-num">v6.0</div>
+          <div class="version-name">ComfyUI 集成</div>
+          <div class="version-tag">远期</div>
+        </div>
+        <div class="version-desc">不只是 Prompt 工具, 而是完整 workflow 节点。</div>
+        <ul class="feature-list">
+          <li>一键导出 ComfyUI workflow JSON</li>
+          <li>ComfyUI 参数自动映射</li>
+          <li>Hires.fix / ControlNet / IP-Adapter 自动生成</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- v7 -->
+    <div class="version">
+      <div class="version-card">
+        <div class="version-header">
+          <div class="version-num">v7.0</div>
+          <div class="version-name">云同步 + 社区</div>
+          <div class="version-tag">远期</div>
+        </div>
+        <div class="version-desc">从个人工具进化为社区平台。</div>
+        <ul class="feature-list">
+          <li>用户账号 + 云端收藏/历史同步</li>
+          <li>Scene 官方商店 + 订阅</li>
+          <li>创作者主页 + 作品集</li>
+          <li>多语言 (中/英/日)</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Core principle remain -->
+  <div class="callout" style="margin-top: var(--s-6);">
+    <strong>🌸 无论哪个版本, 都不违反 <a href="worldview.html">The Three Rules</a>:</strong>
+    <ul style="margin-top: var(--s-2); padding-left: var(--s-4); color: var(--text-secondary);">
+      <li><strong>Scene First</strong> — 先有 Scene, 后有 Prompt</li>
+      <li><strong>Character First</strong> — 人物永远是画面中心</li>
+      <li><strong>Emotion First</strong> — 用户记住的不是 Prompt, 而是画面带来的回忆</li>
+    </ul>
+  </div>
+
+  <footer class="footer">
+    <p>AI CG Studio · Roadmap v1.0</p>
+    <p class="muted mt-4">根据实际使用情况调整。不为了版本号赶工。</p>
+  </footer>
+</article>
+
+</body>
+</html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>标签规范 · AI CG Studio</title>
+<link rel="stylesheet" href="../css/design-system.css">
+<style>
+  .page { max-width: 900px; margin: 0 auto; padding: var(--s-5) var(--s-4); }
+  .nav-back {
+    display: inline-flex; align-items: center; gap: var(--s-2);
+    color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4);
+  }
+  .nav-back:hover { color: var(--accent); }
+  h1.title {
+    font-size: 2rem; font-weight: 800;
+    background: linear-gradient(135deg, #E8E8F0 50%, #F06292);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; margin-bottom: var(--s-2);
+  }
+  .subtitle { color: var(--text-secondary); margin-bottom: var(--s-5); }
+
+  /* Search & filter */
+  .search-bar {
+    display: flex; gap: var(--s-3); margin-bottom: var(--s-4);
+    flex-wrap: wrap;
+  }
+  .search-input {
+    flex: 1; min-width: 200px;
+    background: var(--bg-surface); border: 1px solid var(--border-soft);
+    border-radius: var(--r-md); padding: var(--s-2) var(--s-3);
+    color: var(--text-primary); font-size: 0.9rem;
+    outline: none; transition: border-color var(--t-fast);
+  }
+  .search-input:focus { border-color: var(--accent); }
+
+  .cat-tabs {
+    display: flex; gap: var(--s-2); flex-wrap: wrap; margin-bottom: var(--s-4);
+  }
+  .cat-tab {
+    padding: 6px 14px; border-radius: 20px;
+    background: var(--bg-surface); border: 1px solid var(--border-soft);
+    font-size: 0.82rem; font-weight: 500; color: var(--text-secondary);
+    cursor: pointer; transition: all var(--t-fast);
+  }
+  .cat-tab:hover { border-color: var(--accent); }
+  .cat-tab.active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+
+  /* Tag dictionary */
+  .tag-table { width: 100%; }
+  .tag-row {
+    display: grid; grid-template-columns: 180px 1fr 200px;
+    gap: var(--s-3); padding: var(--s-3);
+    border-bottom: 1px solid var(--border-soft); align-items: center;
+  }
+  .tag-row:hover { background: var(--bg-hover); }
+  .tag-row.head {
+    font-size: 0.78rem; font-weight: 600; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.05em;
+    border-bottom: 2px solid var(--border-soft);
+  }
+  .tag-row.head:hover { background: none; }
+  .tag-cn { font-weight: 600; color: var(--text-primary); }
+  .tag-en { font-family: var(--font-mono); font-size: 0.83rem; color: var(--accent); word-break: break-all; }
+  .tag-note { font-size: 0.82rem; color: var(--text-muted); }
+
+  .empty-result {
+    text-align: center; padding: var(--s-7);
+    color: var(--text-muted); font-size: 0.9rem;
+  }
+
+  /* Don't do */
+  .bad-example {
+    background: rgba(239,83,80,0.06); border: 1px solid rgba(239,83,80,0.25);
+    border-radius: var(--r-md); padding: var(--s-3); margin-top: 4px;
+    font-size: 0.82rem; color: var(--danger);
+  }
+  .bad-example strong { color: var(--text-primary); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand"><span class="dot"></span> AI CG Studio</div>
+    <div class="nav-links">
+      <a href="../index.html">首页</a>
+      <a href="worldview.html">世界观</a>
+      <a href="philosophy.html">哲学</a>
+      <a href="art-direction.html">美术规范</a>
+      <a href="../tools/director-flow.html">导演模式</a>
+      <a href="roadmap.html">路线</a>
+    </div>
+  </div>
+</nav>
+
+<article class="page">
+  <a href="../index.html" class="nav-back">← 回首页</a>
+
+  <h1 class="title">🏷 标签规范 (Tag Standard)</h1>
+  <p class="subtitle">每条标签唯一。用户永远写中文/选中文，系统翻译为英文 Prompt。</p>
+
+  <!-- Search -->
+  <div class="search-bar">
+    <input class="search-input" id="search" placeholder="搜索中文 / 英文 / 备注..." oninput="filterTags()">
+  </div>
+
+  <!-- Cat tabs -->
+  <div class="cat-tabs" id="catTabs"></div>
+
+  <!-- Tag table -->
+  <div class="tag-row head">
+    <div>中文</div>
+    <div>英文 Prompt</div>
+    <div>备注</div>
+  </div>
+  <div id="tagList"></div>
+  <div class="empty-result" id="emptyResult" style="display:none">🔍 没有匹配的标签</div>
+
+  <!-- Don't do example -->
+  <h2 style="margin-top: var(--s-7); margin-bottom: var(--s-3);">❌ 示范：这样以后就乱了</h2>
+  <div class="bad-example">
+    <strong>有人写：</strong>Walk / Walking / Walk Slowly / Go / Stroll<br>
+    <strong>以后就乱了。</strong>
+  </div>
+  <div class="callout" style="margin-top: var(--s-3);">
+    <strong>标准：</strong>永远只选 <code>walking</code>。系统内部唯一，用户看到中文"走路"。
+  </div>
+
+  <footer class="footer">
+    <p>AI CG Studio · Tag Standard v1.0</p>
+    <p class="muted mt-4">每隔一段时间更新扩展，但永远保持唯一性。</p>
+  </footer>
+</article>
+
+<script>
+const TAGS = [
+  // === 动作 ===
+  { cat: '动作', cn: '站立', en: 'standing', note: '默认姿态' },
+  { cat: '动作', cn: '走路', en: 'walking', note: '唯一标准' },
+  { cat: '动作', cn: '跑步', en: 'running', note: '' },
+  { cat: '动作', cn: '坐姿', en: 'sitting', note: '' },
+  { cat: '动作', cn: '跪姿', en: 'kneeling', note: '' },
+  { cat: '动作', cn: '趴着', en: 'lying on stomach', note: '' },
+  { cat: '动作', cn: '躺着', en: 'lying on back', note: '' },
+  { cat: '动作', cn: '蹲下', en: 'squatting', note: '' },
+  { cat: '动作', cn: '靠着', en: 'leaning against', note: '墙/栏杆/树' },
+  { cat: '动作', cn: '牵手', en: 'holding hands', note: '' },
+  { cat: '动作', cn: '拥抱', en: 'hugging', note: '' },
+  { cat: '动作', cn: '回头', en: 'looking back, over shoulder', note: '' },
+
+  // === 情绪 ===
+  { cat: '情绪', cn: '开心', en: 'happy, bright smile, joyful expression', note: '不写 smile' },
+  { cat: '情绪', cn: '害羞', en: 'shy, blushing, looking away', note: '' },
+  { cat: '情绪', cn: '恋爱', en: 'in love, gentle smile, soft eyes, blush', note: '' },
+  { cat: '情绪', cn: '期待', en: 'expectant, hopeful, bright eyes', note: '' },
+  { cat: '情绪', cn: '放松', en: 'relaxed, gentle expression, calm', note: '' },
+  { cat: '情绪', cn: '想念', en: 'missing, longing look, distant gaze', note: '' },
+  { cat: '情绪', cn: '委屈', en: 'teary eyes, pout, vulnerable', note: '' },
+  { cat: '情绪', cn: '撒娇', en: 'pouting, playful, acting cute', note: '' },
+  { cat: '情绪', cn: '认真', en: 'serious, determined, focused', note: '' },
+  { cat: '情绪', cn: '困倦', en: 'sleepy, half-closed eyes, drowsy', note: '' },
+  { cat: '情绪', cn: '惊讶', en: 'surprised, wide eyes, shocked', note: '' },
+  { cat: '情绪', cn: '平静', en: 'calm, peaceful, serene', note: '' },
+
+  // === 镜头 ===
+  { cat: '镜头', cn: '近景', en: 'close-up, upper face', note: '胸部以上' },
+  { cat: '镜头', cn: '中景', en: 'medium shot, waist up', note: '腰以上' },
+  { cat: '镜头', cn: '远景', en: 'wide shot, full body', note: '全身' },
+  { cat: '镜头', cn: '特写', en: 'close-up detail', note: '手部/眼睛细节' },
+  { cat: '镜头', cn: 'POV', en: 'pov, first person view', note: '玩家视角' },
+  { cat: '镜头', cn: '仰视', en: 'low angle, looking up', note: '从下往上' },
+  { cat: '镜头', cn: '俯视', en: 'high angle, looking down', note: '从上往下' },
+  { cat: '镜头', cn: '侧面', en: 'side view, profile', note: '' },
+  { cat: '镜头', cn: '回头', en: 'looking back, over shoulder', note: '' },
+  { cat: '镜头', cn: '自拍', en: 'selfie, phone camera', note: '' },
+
+  // === 构图 ===
+  { cat: '构图', cn: '居中', en: 'centered composition, symmetric', note: '' },
+  { cat: '构图', cn: '三分法', en: 'rule of thirds, off-center', note: '' },
+  { cat: '构图', cn: '左构图', en: 'left composition', note: '人物偏左' },
+  { cat: '构图', cn: '右构图', en: 'right composition', note: '人物偏右' },
+  { cat: '构图', cn: '前景遮挡', en: 'foreground framing, depth', note: '' },
+  { cat: '构图', cn: '框架构图', en: 'framed composition', note: '窗/门框' },
+  { cat: '构图', cn: '窗边构图', en: 'by window, against window', note: '' },
+
+  // === 光照 ===
+  { cat: '光照', cn: '夕阳', en: 'golden hour, warm light, sunset glow', note: '放学/黄昏' },
+  { cat: '光照', cn: '窗光', en: 'window light, soft, diffused', note: '室内/安静' },
+  { cat: '光照', cn: '逆光', en: 'backlit, rim light, silhouette edge', note: '神秘/回忆' },
+  { cat: '光照', cn: '月光', en: 'moonlight, cool tones', note: '夜晚/孤独' },
+  { cat: '光照', cn: '夜灯', en: 'lantern light, warm glow', note: '夜晚温馨' },
+  { cat: '光照', cn: '阴天柔光', en: 'overcast, soft diffused light', note: '文艺/清新' },
+  { cat: '光照', cn: '霓虹灯', en: 'neon lights, city night', note: '现代/夜' },
+  { cat: '光照', cn: '烛光', en: 'candlelight, warm flickering', note: '温暖/浪漫' }
+];
+
+let activeCat = '全部';
+let searchTerm = '';
+
+function init() {
+  const cats = ['全部', ...new Set(TAGS.map(t => t.cat))];
+  document.getElementById('catTabs').innerHTML = cats.map(c =>
+    `<div class="cat-tab ${c === activeCat ? 'active' : ''}" onclick="setCat('${c}')">${c}</div>`
+  ).join('');
+  render();
+}
+
+function setCat(c) {
+  activeCat = c;
+  document.querySelectorAll('.cat-tab').forEach(t => t.classList.toggle('active', t.textContent === c));
+  render();
+}
+
+function filterTags() {
+  searchTerm = document.getElementById('search').value.trim().toLowerCase();
+  render();
+}
+
+function render() {
+  let filtered = TAGS;
+  if (activeCat !== '全部') filtered = filtered.filter(t => t.cat === activeCat);
+  if (searchTerm) {
+    filtered = filtered.filter(t =>
+      t.cn.toLowerCase().includes(searchTerm) ||
+      t.en.toLowerCase().includes(searchTerm) ||
+      t.note.toLowerCase().includes(searchTerm)
+    );
+  }
+
+  const el = document.getElementById('tagList');
+  const empty = document.getElementById('emptyResult');
+
+  if (filtered.length === 0) {
+    el.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  el.innerHTML = filtered.map(t => `
+    <div class="tag-row">
+      <div class="tag-cn">${t.cn}</div>
+      <div class="tag-en">${t.en}</div>
+      <div class="tag-note">${t.note}</div>
+    </div>
+  `).join('');
+}
+
+init();
+</script>
+
+</body>
+</html>

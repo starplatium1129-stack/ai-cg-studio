@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>世界观 · AI CG Studio</title>
+<link rel="stylesheet" href="../css/design-system.css">
+<style>
+  .worldview {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: var(--s-6) var(--s-4);
+  }
+  .worldview h1 {
+    font-size: 2.4rem; font-weight: 800;
+    margin-bottom: var(--s-3);
+    background: linear-gradient(135deg, #E8E8F0 50%, #F06292);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .worldview .lede {
+    font-size: 1.15rem; color: var(--text-secondary);
+    margin-bottom: var(--s-6);
+    line-height: 1.8;
+  }
+  .worldview h2 {
+    font-size: 1.3rem;
+    margin-top: var(--s-7);
+    margin-bottom: var(--s-4);
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .worldview p {
+    font-size: 1.02rem;
+    line-height: 1.9;
+    margin-bottom: var(--s-4);
+    color: var(--text-secondary);
+  }
+  .worldview p strong { color: var(--text-primary); font-weight: 600; }
+
+  .manifesto {
+    background: linear-gradient(135deg, var(--accent-soft), rgba(240,98,146,0.04));
+    border: 1px solid var(--accent);
+    border-radius: var(--r-xl);
+    padding: var(--s-6);
+    margin: var(--s-6) 0;
+    box-shadow: 0 0 40px var(--accent-glow);
+  }
+  .manifesto p {
+    font-size: 1.15rem;
+    color: var(--text-primary);
+    line-height: 1.9;
+    margin-bottom: var(--s-3);
+    text-align: center;
+  }
+  .manifesto .signature {
+    text-align: center;
+    font-family: var(--font-mono);
+    color: var(--accent);
+    font-size: 0.9rem;
+    margin-top: var(--s-4);
+  }
+
+  .quote-wide {
+    font-size: 1.2rem;
+    text-align: center;
+    padding: var(--s-6);
+    color: var(--text-primary);
+    font-style: italic;
+    border-top: 1px solid var(--border-soft);
+    border-bottom: 1px solid var(--border-soft);
+    margin: var(--s-6) 0;
+  }
+
+  .nav-back {
+    display: inline-flex; align-items: center; gap: var(--s-2);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: var(--s-5);
+    transition: color var(--t-fast);
+  }
+  .nav-back:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand"><span class="dot"></span> AI CG Studio</div>
+    <div class="nav-links">
+      <a href="../index.html">首页</a>
+      <a href="worldview.html" class="active">世界观</a>
+      <a href="philosophy.html">哲学</a>
+      <a href="art-direction.html">美术规范</a>
+      <a href="../tools/director-flow.html">导演模式</a>
+      <a href="roadmap.html">路线</a>
+    </div>
+  </div>
+</nav>
+
+<article class="worldview">
+  <a href="../index.html" class="nav-back">← 回首页</a>
+
+  <h1>🌍 世界观 (Worldview)</h1>
+  <p class="lede">
+    这份文档不讲技术，不讲功能。<br>
+    只回答一个问题：<strong>我们为什么做这件事？</strong>
+  </p>
+
+  <div class="manifesto">
+    <p>希望 AI 创作者不再面对一堆冰冷的标签，</p>
+    <p>而是能够像 Galgame 原画师一样，</p>
+    <p>从<strong>故事</strong>、<strong>情绪</strong>、<strong>镜头</strong>和<strong>光影</strong>开始思考，</p>
+    <p>让每一张图片都成为一个有温度的场景。</p>
+    <div class="signature">— AI CG Studio · Scene Library for AI Artists</div>
+  </div>
+
+  <h2>一、问题：为什么 AI 图"少点什么"？</h2>
+  <p>
+    你试过吗？花了半小时拼 Prompt，加了十几个标签，出来的图—<br>
+    清晰、锐利、"好看"。
+  </p>
+  <p>
+    但总觉得<strong>少了点什么</strong>。
+  </p>
+  <p>
+    不是 Prompt 不够长。不是细节不够多。<br>
+    而是画面里没有一个人在<strong>等</strong>你。
+  </p>
+
+  <div class="quote-wide">
+    "没有导演思维的 AI 创作，只是堆标签。"
+  </div>
+
+  <h2>二、另一个世界：Galgame 是怎么创作的？</h2>
+  <p>
+    一张 Galgame CG，从来不是原画师一个人决定的。<br>
+    它是<strong>编剧、导演、原画、摄影、色彩</strong>五个角色共同决定的。
+  </p>
+  <p>
+    导演说："放学以后，她在校门口等你。"<br>
+    色彩说："夕阳，暖调，风。"<br>
+    摄影说："逆光，回头，浅景深。"
+  </p>
+  <p>
+    然后原画师才开始动笔。
+  </p>
+  <p>
+    最后那张 CG 放在游戏里，玩家看到的不是标签，<br>
+    <strong>是一个故事、一段回忆、一种情绪。</strong>
+  </p>
+
+  <h2>三、现状：AI 创作者面对的世界</h2>
+  <p>
+    现在 AI 创作者面对的是什么？
+  </p>
+  <p>
+    <code>1girl, smile, school uniform, sunset, masterpiece, best quality...</code>
+  </p>
+  <p>
+    一串标签。冷冰冰。没有故事。
+  </p>
+  <p>
+    用户想画的是"放学后她在樱花树下等人"，<br>
+    却只能输入"1girl, cherry blossom, waiting, school"。
+  </p>
+  <p>
+    AI 能听懂标签，但听不懂<strong>故事</strong>。<br>
+    — 除非我们帮它翻译。
+  </p>
+
+  <h2>四、我们想做的事</h2>
+  <p>
+    我们想做一面<strong>镜子</strong>：
+  </p>
+  <p>
+    让用户看到的不是一堆标签，<br>
+    而是自己脑海里的画面。
+  </p>
+  <p>
+    用户说"我想画一张她放学后等人的 CG"，<br>
+    系统帮他把故事翻译成：
+  </p>
+  <p>
+    情绪（期待、温柔）<br>
+    → 镜头（远景、逆光、回头）<br>
+    → 色彩（夕阳、暖调、樱花色）<br>
+    → 构图（三分法、人物居中偏左）<br>
+    → Prompt（一串串精致的标签）<br>
+    → 最终画面
+  </p>
+  <p>
+    用户永远不需要直接面对标签。<br>
+    系统负责翻译。
+  </p>
+
+  <div class="quote-wide">
+    "Prompt 只是语言，Scene 才是画面。"
+  </div>
+
+  <h2>五、这个工具不属于谁</h2>
+  <p>
+    它不是一个 Prompt 收藏夹。<br>
+    它不是一个标签管理工具。<br>
+    它不是另一个"AI 绘画网站"。
+  </p>
+  <p>
+    它是<strong>AI Galgame CG 创作工作台</strong>：
+  </p>
+  <p>
+    帮助创作者像<strong>游戏原画师</strong>一样思考，<br>
+    不像<strong>AI 使用者</strong>一样堆 Prompt。
+  </p>
+
+  <h2>六、最终目标</h2>
+  <p>
+    这个工具不是让用户说：
+  </p>
+  <p>
+    "我不会写 Prompt。"
+  </p>
+  <p>
+    而是让用户说：
+  </p>
+  <p>
+    "我想画一个放学后在樱花树下等人的宁宁。"
+  </p>
+  <p>
+    然后剩下的工作，工具替他完成。
+  </p>
+
+  <h2>七、产品原则</h2>
+  <p>
+    以后无论项目多大，增加多少功能，<strong>都不能违反这三条</strong>：
+  </p>
+
+  <div class="three-rules" style="margin: var(--s-5) 0;">
+    <div class="rule-card">
+      <div class="rule-num">RULE 01</div>
+      <div class="rule-name">Scene First</div>
+      <p class="rule-desc">先有 Scene，后有 Prompt。Prompt 永远是最后一步。</p>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">RULE 02</div>
+      <div class="rule-name">Character First</div>
+      <p class="rule-desc">人物永远是画面中心。任何元素都服务于角色。</p>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">RULE 03</div>
+      <div class="rule-name">Emotion First</div>
+      <p class="rule-desc">用户记住的不是 Prompt，而是画面带来的回忆。</p>
+    </div>
+  </div>
+
+  <div class="quote-wide">
+    "从故事，到画面。"<br>
+    <span style="font-size: 0.95rem; color: var(--text-muted); font-family: var(--font-mono);">From Story to Scene.</span>
+  </div>
+
+  <h2>八、给未来的话</h2>
+  <p>
+    如果有一天，这个项目不再是一个人维护，<br>
+    而是有其他人参与开发—
+  </p>
+  <p>
+    请记住这份文档。<br>
+    它会成为整个项目最重要的方向指引。
+  </p>
+  <p>
+    很多成熟的产品都有自己的设计哲学。<br>
+    <strong>这份世界观，就是这个项目的灵魂。</strong>
+  </p>
+
+  <h2>九、两句话说清我们</h2>
+  <p>
+    <strong>Prompt 描述图片。Scene 描述瞬间。</strong>
+  </p>
+  <p>
+    一张优秀的 CG，不是因为 Prompt 很长而优秀，<br>
+    而是因为它捕捉到了一个值得记住的瞬间。
+  </p>
+  <p>
+    别人: 5000 条 Prompt。<br>
+    我们: 500 个 Scene。
+  </p>
+  <p>完全不是一个东西。</p>
+
+  <div class="footer">
+    <p>AI CG Studio · Worldview v1.0 · Scene Library for AI Artists</p>
+    <p class="muted">这份文档永不废弃，每个版本迭代都回到这里对齐。</p>
+  </div>
+</article>
+
+</body>
+</html>

@@ -1,0 +1,14 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Temp
+*.log
+*.swp
+*.bak
+*~
+
+# Node (如果以后加)
+node_modules/

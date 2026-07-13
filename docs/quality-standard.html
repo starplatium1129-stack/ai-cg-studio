@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>质量评分 · AI CG Studio</title>
+<link rel="stylesheet" href="../css/design-system.css">
+<style>
+  .page { max-width: 900px; margin: 0 auto; padding: var(--s-5) var(--s-4); }
+  .nav-back {
+    display: inline-flex; align-items: center; gap: var(--s-2);
+    color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4);
+  }
+  .nav-back:hover { color: var(--accent); }
+  h1.title {
+    font-size: 2rem; font-weight: 800;
+    background: linear-gradient(135deg, #E8E8F0 50%, #F06292);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; margin-bottom: var(--s-2);
+  }
+  .subtitle { color: var(--text-secondary); margin-bottom: var(--s-5); }
+
+  /* Score card */
+  .score-card {
+    background: var(--bg-surface); border: 1px solid var(--border-soft);
+    border-radius: var(--r-lg); padding: var(--s-4); margin-bottom: var(--s-3);
+    transition: border-color var(--t-fast);
+  }
+  .score-card:hover { border-color: var(--accent); }
+
+  .score-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: var(--s-3);
+  }
+  .score-name { font-weight: 600; font-size: 1.05rem; }
+  .score-stars { font-size: 1.1rem; letter-spacing: 2px; }
+  .score-stars .filled { color: var(--mood-joy); }
+  .score-stars .empty { color: var(--border-strong); }
+
+  .score-bar {
+    background: var(--bg-deep); border-radius: var(--r-sm);
+    height: 6px; overflow: hidden; margin-bottom: var(--s-2);
+  }
+  .score-fill {
+    height: 100%; border-radius: var(--r-sm);
+    background: linear-gradient(90deg, var(--accent), var(--mood-love));
+  }
+  .score-desc { font-size: 0.85rem; color: var(--text-muted); }
+
+  /* Radar-like visual */
+  .radar-demo {
+    background: var(--bg-deep); border: 1px solid var(--border-soft);
+    border-radius: var(--r-xl); padding: var(--s-5); margin: var(--s-5) 0;
+  }
+  .radar-demo h3 { margin-bottom: var(--s-4); text-align: center; }
+
+  .quality-dim {
+    display: flex; align-items: center; gap: var(--s-3);
+    margin-bottom: var(--s-3);
+  }
+  .quality-label {
+    width: 120px; flex-shrink: 0;
+    font-size: 0.88rem; font-weight: 500; color: var(--text-secondary);
+  }
+  .quality-bar {
+    flex: 1; background: var(--bg-elevated); border-radius: var(--r-sm);
+    height: 24px; overflow: hidden; position: relative;
+  }
+  .quality-fill {
+    height: 100%; border-radius: var(--r-sm);
+    display: flex; align-items: center; padding-left: var(--s-2);
+    font-size: 0.78rem; font-weight: 600; color: var(--text-inverse);
+    transition: width var(--t-base);
+  }
+  .q-stability { background: linear-gradient(90deg, var(--info), #81D4FA); }
+  .q-face { background: linear-gradient(90deg, var(--accent), #F48FB1); }
+  .q-bg { background: linear-gradient(90deg, var(--mood-calm), #A5D6A7); }
+  .q-lora { background: linear-gradient(90deg, var(--mood-love), #F8BBD0); }
+  .q-wallpaper { background: linear-gradient(90deg, var(--mood-warmth), #FFCC80); }
+  .q-beginner { background: linear-gradient(90deg, var(--mood-tension), #CE93D8); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand"><span class="dot"></span> AI CG Studio</div>
+    <div class="nav-links">
+      <a href="../index.html">首页</a>
+      <a href="worldview.html">世界观</a>
+      <a href="philosophy.html">哲学</a>
+      <a href="art-direction.html">美术规范</a>
+      <a href="../tools/director-flow.html">导演模式</a>
+      <a href="roadmap.html">路线</a>
+    </div>
+  </div>
+</nav>
+
+<article class="page">
+  <a href="../index.html" class="nav-back">← 回首页</a>
+
+  <h1 class="title">⭐ 质量评分 (Quality Standard)</h1>
+  <p class="subtitle">每个官方 Scene 都要经过这 6 个维度的审核。⭐⭐⭐⭐⭐ 才能入库。</p>
+
+  <!-- Radar demo -->
+  <div class="radar-demo">
+    <h3>示例: SC0001 · 放学后的回眸</h3>
+    <div class="quality-dim">
+      <div class="quality-label">人物稳定</div>
+      <div class="quality-bar"><div class="quality-fill q-stability" style="width:80%">★★★★☆ 4.0</div></div>
+    </div>
+    <div class="quality-dim">
+      <div class="quality-label">脸部稳定</div>
+      <div class="quality-bar"><div class="quality-fill q-face" style="width:100%">★★★★★ 5.0</div></div>
+    </div>
+    <div class="quality-dim">
+      <div class="quality-label">背景丰富</div>
+      <div class="quality-bar"><div class="quality-fill q-bg" style="width:80%">★★★★☆ 4.0</div></div>
+    </div>
+    <div class="quality-dim">
+      <div class="quality-label">LoRA 适配</div>
+      <div class="quality-bar"><div class="quality-fill q-lora" style="width:100%">★★★★★ 5.0</div></div>
+    </div>
+    <div class="quality-dim">
+      <div class="quality-label">壁纸级</div>
+      <div class="quality-bar"><div class="quality-fill q-wallpaper" style="width:100%">★★★★★ 5.0</div></div>
+    </div>
+    <div class="quality-dim">
+      <div class="quality-label">新手推荐</div>
+      <div class="quality-bar"><div class="quality-fill q-beginner" style="width:100%">★★★★★ 5.0</div></div>
+    </div>
+  </div>
+
+  <!-- Score dimension cards -->
+  <h2 style="margin-bottom: var(--s-4);">评分维度详解</h2>
+
+  <div class="score-card">
+    <div class="score-header">
+      <div class="score-name">👤 人物稳定</div>
+      <div class="score-stars"><span class="filled">★★★★</span><span class="empty">★</span></div>
+    </div>
+    <div class="score-bar"><div class="score-fill" style="width:80%"></div></div>
+    <div class="score-desc">身份一致、服装稳定、比例自然。不崩坏、不畸形。</div>
+  </div>
+
+  <div class="score-card">
+    <div class="score-header">
+      <div class="score-name">😊 脸部稳定</div>
+      <div class="score-stars"><span class="filled">★★★★★</span></div>
+    </div>
+    <div class="score-bar"><div class="score-fill" style="width:100%"></div></div>
+    <div class="score-desc">眼睛清晰、表情一致、不扭曲。最重要的维度。</div>
+  </div>
+
+  <div class="score-card">
+    <div class="score-header">
+      <div class="score-name">🖼 背景丰富</div>
+      <div class="score-stars"><span class="filled">★★★★</span><span class="empty">★</span></div>
+    </div>
+    <div class="score-bar"><div class="score-fill" style="width:80%"></div></div>
+    <div class="score-desc">场景细节、空间感、与人物融合。不单调、不杂乱。</div>
+  </div>
+
+  <div class="score-card">
+    <div class="score-header">
+      <div class="score-name">🌸 LoRA 适配</div>
+      <div class="score-stars"><span class="filled">★★★★★</span></div>
+    </div>
+    <div class="score-bar"><div class="score-fill" style="width:100%"></div></div>
+    <div class="score-desc">角色识别度高。换脸率 95%+，默认权重即可用。</div>
+  </div>
+
+  <div class="score-card">
+    <div class="score-header">
+      <div class="score-name">🖥 壁纸级</div>
+      <div class="score-stars"><span class="filled">★★★★★</span></div>
+    </div>
+    <div class="score-bar"><div class="score-fill" style="width:100%"></div></div>
+    <div class="score-desc">直接可以作壁纸。构图+色彩+光影都到位。</div>
+  </div>
+
+  <div class="score-card">
+    <div class="score-header">
+      <div class="score-name">🌱 新手推荐</div>
+      <div class="score-stars"><span class="filled">★★★★★</span></div>
+    </div>
+    <div class="score-bar"><div class="score-fill" style="width:100%"></div></div>
+    <div class="score-desc">默认设置即可出图。不需微调、不需重试、不需后期。</div>
+  </div>
+
+  <!-- Acceptance criteria -->
+  <h2 style="margin-top: var(--s-6); margin-bottom: var(--s-3);">入库标准</h2>
+  <div class="callout">
+    <strong>官方 Scene 必须满足 ⭐⭐⭐⭐⭐:</strong>
+    <ul style="margin-top: var(--s-2); padding-left: var(--s-4); color: var(--text-secondary);">
+      <li>人物主体明确</li>
+      <li>故事完整</li>
+      <li>Prompt 结构规范</li>
+      <li>Illustrious 适配</li>
+      <li>容易出图</li>
+    </ul>
+  </div>
+
+  <footer class="footer">
+    <p>AI CG Studio · Quality Standard v1.0</p>
+    <p class="muted mt-4">质量 > 数量。每一条都经得起审核。</p>
+  </footer>
+</article>
+
+</body>
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>剧本模式 · AI CG Studio</title>
+<link rel="stylesheet" href="../css/design-system.css">
+<style>
+  .page { max-width: 900px; margin: 0 auto; padding: var(--s-5) var(--s-4); }
+
+  .nav-back {
+    display: inline-flex; align-items: center; gap: var(--s-2);
+    color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4);
+  }
+  .nav-back:hover { color: var(--accent); }
+
+  h1.title {
+    font-size: 2rem; font-weight: 800;
+    background: linear-gradient(135deg, #E8E8F0 50%, #F06292);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: var(--s-2);
+  }
+  .subtitle { color: var(--text-secondary); margin-bottom: var(--s-6); }
+
+  /* Scenario list */
+  .scenario-list {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: var(--s-3); margin-bottom: var(--s-6);
+  }
+  .scenario-card {
+    background: var(--bg-surface); border: 1px solid var(--border-soft);
+    border-radius: var(--r-lg); padding: var(--s-4); cursor: pointer;
+    transition: all var(--t-fast);
+  }
+  .scenario-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .scenario-icon { font-size: 1.6rem; margin-bottom: var(--s-2); }
+  .scenario-name { font-weight: 700; font-size: 1.05rem; margin-bottom: var(--s-1); }
+  .scenario-en { font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono); margin-bottom: var(--s-2); }
+  .scenario-desc { font-size: 0.85rem; color: var(--text-secondary); }
+  .scenario-count { font-size: 0.75rem; color: var(--accent); margin-top: var(--s-2); }
+
+  /* Scenario viewer */
+  .viewer {
+    display: none; background: var(--bg-deep); border: 1px solid var(--border-soft);
+    border-radius: var(--r-xl); padding: var(--s-5); margin-bottom: var(--s-5);
+  }
+  .viewer.show { display: block; animation: fadeIn var(--t-base); }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .viewer-header { margin-bottom: var(--s-4); }
+  .viewer-header h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: var(--s-1); }
+  .viewer-header .viewer-en { font-family: var(--font-mono); color: var(--text-muted); font-size: 0.85rem; }
+
+  /* Acts timeline */
+  .acts { display: flex; flex-direction: column; gap: var(--s-3); margin-bottom: var(--s-4); }
+  .act {
+    display: flex; gap: var(--s-4); background: var(--bg-surface);
+    border: 1px solid var(--border-soft); border-radius: var(--r-lg);
+    padding: var(--s-4); cursor: pointer; transition: all var(--t-fast);
+  }
+  .act:hover { border-color: var(--accent); }
+  .act.active { border-color: var(--accent); background: var(--accent-soft); }
+  .act-num {
+    flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%;
+    background: var(--bg-elevated); border: 1px solid var(--border-soft);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-weight: 700; color: var(--accent);
+    font-size: 0.85rem;
+  }
+  .act-info { flex: 1; }
+  .act-title { font-weight: 600; margin-bottom: 4px; }
+  .act-en { font-size: 0.8rem; color: var(--text-muted); margin-bottom: var(--s-2); }
+  .act-desc { font-size: 0.88rem; color: var(--text-secondary); }
+
+  /* Act detail (prompt) */
+  .act-detail {
+    display: none; background: var(--bg-base); border: 1px solid var(--accent);
+    border-radius: var(--r-lg); padding: var(--s-4); margin-top: var(--s-3);
+  }
+  .act-detail.show { display: block; animation: fadeIn var(--t-fast); }
+  .act-detail h4 { font-size: 0.9rem; color: var(--accent); margin-bottom: var(--s-2); }
+  .act-prompt {
+    background: var(--bg-elevated); border-radius: var(--r-md);
+    padding: var(--s-3); font-family: var(--font-mono); font-size: 0.8rem;
+    line-height: 1.8; color: var(--text-secondary); margin-bottom: var(--s-3);
+    word-break: break-all; white-space: pre-wrap;
+  }
+  .act-actions { display: flex; gap: var(s-2); }
+
+  .back-btn {
+    background: none; border: 1px solid var(--border-soft); color: var(--text-secondary);
+    padding: var(--s-2) var(--s-4); border-radius: var(--r-md); cursor: pointer;
+    font-size: 0.85rem; transition: all var(--t-fast);
+  }
+  .back-btn:hover { border-color: var(--accent); color: var(--accent); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand"><span class="dot"></span> AI CG Studio</div>
+    <div class="nav-links">
+      <a href="../index.html">首页</a>
+      <a href="docs/worldview.html">世界观</a>
+      <a href="docs/philosophy.html">哲学</a>
+      <a href="docs/art-direction.html">美术规范</a>
+      <a href="../tools/director-flow.html">导演模式</a>
+      <a href="docs/roadmap.html">路线</a>
+    </div>
+  </div>
+</nav>
+
+<article class="page">
+  <a href="../index.html" class="nav-back">← 回首页</a>
+
+  <h1 class="title">📖 剧本模式 (Scenario)</h1>
+  <p class="subtitle">Galgame CG 不是单张的，是一套。选择一个剧本，逐幕欣赏。</p>
+
+  <!-- Scenario list -->
+  <div class="scenario-list" id="scenarioList"></div>
+
+  <!-- Viewer -->
+  <div class="viewer" id="viewer">
+    <div class="viewer-header">
+      <h2 id="viewerTitle"></h2>
+      <div class="viewer-en" id="viewerEn"></div>
+    </div>
+    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4)" id="viewerDesc"></p>
+    <div class="acts" id="acts"></div>
+    <button class="back-btn" onclick="backToList()">← 返回剧本列表</button>
+  </div>
+</article>
+
+<script>
+const SCENARIOS = [
+  {
+    id: 'promise', icon: '🌸', name: '放学后的约定', en: 'After-School Promise',
+    desc: '放学以后，她一直在校门口等你。花瓣落在肩上，她没有说，只是笑了起来。',
+    acts: [
+      { title: '空 · 教室', en: 'Empty Classroom', desc: '夕阳从窗户照进来，教室里已经没有人了。',
+        prompt: 'empty classroom, afternoon, sunlight through window, desks, chalkboard, warm light, peaceful, deserted, nostalgic, sakura petals outside window, dust in sunlight' },
+      { title: '走廊', en: 'School Hallway', desc: '她抱着书，走过长长的走廊。脚步声回响。',
+        prompt: 'school hallway, long corridor, tiled floor, windows on one side, warm afternoon light, perspective depth, echo atmosphere, empty, soft shadows' },
+      { title: '校门口', en: 'School Gate', desc: '她站在校门口，背着书包，望着道路远方。',
+        prompt: '1girl, school uniform, school gate, standing, looking afar, backpack, relaxed posture, golden hour, warm light, soft shadows, slight breeze, petals floating in air' },
+      { title: '回眸', en: 'The Turn', desc: '她看见你，终于露出了笑容。樱花落在肩上。',
+        prompt: '1girl, ayachi_nene, school uniform, cherry blossoms in bloom, petals floating, looking back, over shoulder, gentle smile, soft eyes, golden hour, backlit, depth of field, <lora:nene:0.75>' }
+    ]
+  },
+  {
+    id: 'cafe', icon: '☕', name: '咖啡店的午后', en: 'Cafe Afternoon',
+    desc: '午后三点。她坐在窗边，捧起一杯热咖啡，望着街上来来往往的人。',
+    acts: [
+      { title: '窗边的位置', en: 'Window Seat', desc: '阳光透过玻璃，落在她的发梢。咖啡冒着热气。',
+        prompt: 'cafe interior, window seat, sunlight through glass, warm glow on hair, cup of coffee, steam rising, cozy interior, indoor plants, wooden furniture, soft lighting' },
+      { title: '发呆', en: 'Daydreaming', desc: '她望着窗外，眼神柔软。不知道在想什么。',
+        prompt: '1girl, by window, cafe, soft expression, relaxed posture, cup in hands, gentle eyes looking outside, warm lighting, cozy atmosphere, relaxed, natural pose' },
+      { title: '发现你', en: 'She Spots You', desc: '她转过头，恰好和你的视线对上。',
+        prompt: '1girl, looking at viewer, gentle smile, surprise then happiness, soft blush, window light, cafe background, beautiful detailed eyes, warm atmosphere, intimate' }
+    ]
+  },
+  {
+    id: 'rainy', icon: '🌧', name: '雨天的共伞', en: 'Sharing an Umbrella',
+    desc: '突然下起雨。两个人挤在一把伞下。肩膀贴着肩膀。沉默比语言多。',
+    acts: [
+      { title: '雨落', en: 'Rain Falls', desc: '天空变暗。雨点打在柏油路上。她没有伞。',
+        prompt: 'rainy street, grey sky, rain falling, wet road, reflections, puddles, overcast lighting, urban, melancholic atmosphere, cool tones, lonely' },
+      { title: '递伞', en: 'The Umbrella', desc: '你递过伞。她愣了一下，接过去，指尖微凉。',
+        prompt: '1girl, holding umbrella, looking at viewer, gentle surprise, soft expression, rain in background, wet street, cool color tones, warm interaction, intimate atmosphere' },
+      { title: '共伞', en: 'Under One Umbrella', desc: '两个人挤在一把伞下。没有人说话。雨声很大。',
+        prompt: '1girl, under umbrella, rain, close to viewer, intimate distance, looking away shy, slight blush, rain reflections, soft lighting, romantic atmosphere, wet hair strands, umbrella edge' }
+    ]
+  },
+  {
+    id: 'festival', icon: '🎆', name: '夏日祭烟花', en: 'Summer Festival',
+    desc: '夏日祭。她穿着浴衣，在烟花下仰起头。那一刻，全世界都是她的背景。',
+    acts: [
+      { title: '准备', en: 'Getting Ready', desc: '她系好浴衣的带子，对着镜子转了一圈。',
+        prompt: '1girl, yukata, kimono, getting ready, traditional Japanese room, warm interior light, soft fabric, elegant, calm before festival, playful spin' },
+      { title: '祭典', en: 'Festival Streets', desc: '人来人往的摊位街。金鱼捞、苹果糖、面具。灯火温暖。',
+        prompt: 'summer festival, festival stalls, lanterns, yukata crowd, night, warm golden lights, lively atmosphere, food stalls, cotton candy, traditional Japanese festival' },
+      { title: '烟花', en: 'Fireworks', desc: '她站在河边，烟花在头顶绽放。她仰起头，眼睛里有光。',
+        prompt: '1girl, yukata, fireworks in sky, night, looking up, wonder in eyes, colorful explosions, river reflection, festival lights, romantic atmosphere, beautiful detailed eyes, depth of field' }
+    ]
+  }
+];
+
+function init() {
+  const list = document.getElementById('scenarioList');
+  list.innerHTML = SCENARIOS.map(s => `
+    <div class="scenario-card" onclick="openScenario('${s.id}')">
+      <div class="scenario-icon">${s.icon}</div>
+      <div class="scenario-name">${s.name}</div>
+      <div class="scenario-en">${s.en}</div>
+      <div class="scenario-desc">${s.desc}</div>
+      <div class="scenario-count">${s.acts.length} 幕 · 点击查看</div>
+    </div>
+  `).join('');
+}
+
+function openScenario(id) {
+  const s = SCENARIOS.find(x => x.id === id);
+  if (!s) return;
+
+  document.getElementById('scenarioList').style.display = 'none';
+  const viewer = document.getElementById('viewer');
+  viewer.classList.add('show');
+  viewer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  document.getElementById('viewerTitle').textContent = `${s.icon} ${s.name}`;
+  document.getElementById('viewerEn').textContent = s.en;
+  document.getElementById('viewerDesc').textContent = s.desc;
+
+  document.getElementById('acts').innerHTML = s.acts.map((a, i) => `
+    <div class="act" onclick="toggleAct(this)">
+      <div class="act-num">${String(i + 1).padStart(2, '0')}</div>
+      <div class="act-info">
+        <div class="act-title">${a.title}</div>
+        <div class="act-en">${a.en}</div>
+        <div class="act-desc">${a.desc}</div>
+      </div>
+      <div class="act-detail">
+        <h4>📝 这一幕的 Prompt</h4>
+        <div class="act-prompt">${a.prompt}</div>
+        <div class="act-actions">
+          <button class="btn btn-primary" onclick="event.stopPropagation(); copyText('${a.prompt.replace(/'/g, "\\'")}')">📋 复制</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleAct(el) {
+  el.classList.toggle('active');
+  el.querySelector('.act-detail').classList.toggle('show');
+}
+
+function copyText(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    alert('📋 已复制到剪贴板');
+  });
+}
+
+function backToList() {
+  document.getElementById('viewer').classList.remove('show');
+  document.getElementById('scenarioList').style.display = 'grid';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+init();
+</script>
+
+</body>
+</html>

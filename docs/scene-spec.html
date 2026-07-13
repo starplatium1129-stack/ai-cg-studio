@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scene 规范 · AI CG Studio</title>
+<link rel="stylesheet" href="../css/design-system.css">
+<style>
+  .page { max-width: 900px; margin: 0 auto; padding: var(--s-5) var(--s-4); }
+  .nav-back {
+    display: inline-flex; align-items: center; gap: var(--s-2);
+    color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4);
+  }
+  .nav-back:hover { color: var(--accent); }
+  h1.title {
+    font-size: 2rem; font-weight: 800;
+    background: linear-gradient(135deg, #E8E8F0 50%, #F06292);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; margin-bottom: var(--s-2);
+  }
+  .subtitle { color: var(--text-secondary); margin-bottom: var(--s-5); }
+
+  /* SC template */
+  .template {
+    background: var(--bg-deep); border: 1px solid var(--border-soft);
+    border-radius: var(--r-lg); padding: var(--s-5); margin-bottom: var(--s-5);
+  }
+  .template h3 { margin-bottom: var(--s-4); font-size: 1.1rem; }
+
+  .field { margin-bottom: var(--s-4); }
+  .field-label {
+    font-size: 0.78rem; font-weight: 600; color: var(--accent);
+    text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--s-1);
+  }
+  .field-value { font-size: 0.95rem; color: var(--text-primary); line-height: 1.7; }
+  .field-value.muted { color: var(--text-muted); font-style: italic; }
+
+  /* Example scene */
+  .example-scene {
+    background: var(--bg-surface); border: 1px solid var(--border-soft);
+    border-radius: var(--r-lg); padding: var(--s-5); margin-bottom: var(--s-4);
+    transition: border-color var(--t-fast);
+  }
+  .example-scene:hover { border-color: var(--accent); }
+
+  .scene-header {
+    display: flex; align-items: baseline; gap: var(--s-3); margin-bottom: var(--s-3);
+  }
+  .scene-id {
+    font-family: var(--font-mono); font-size: 0.85rem; font-weight: 700;
+    color: var(--accent); background: var(--accent-soft);
+    padding: 3px 10px; border-radius: 12px;
+  }
+  .scene-title { font-size: 1.2rem; font-weight: 700; }
+
+  .scene-story {
+    font-size: 1rem; color: var(--text-primary); margin-bottom: var(--s-3);
+    font-style: italic;
+  }
+  .scene-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: var(--s-2); margin-bottom: var(--s-3);
+  }
+  .scene-meta {
+    background: var(--bg-elevated); border-radius: var(--r-md);
+    padding: var(--s-2) var(--s-3); text-align: center;
+  }
+  .scene-meta .label { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; }
+  .scene-meta .value { font-size: 0.9rem; font-weight: 600; color: var(--accent); margin-top: 2px; }
+
+  .scene-prompt {
+    background: var(--bg-deep); border-radius: var(--r-md);
+    padding: var(--s-3); font-family: var(--font-mono); font-size: 0.78rem;
+    line-height: 1.8; color: var(--text-secondary); margin-bottom: var(--s-3);
+    white-space: pre-wrap; word-break: break-all;
+  }
+  .scene-neg {
+    background: rgba(239,83,80,0.05); border: 1px solid rgba(239,83,80,0.2);
+    border-radius: var(--r-md); padding: var(--s-3);
+    font-family: var(--font-mono); font-size: 0.78rem;
+    color: var(--danger); line-height: 1.8; white-space: pre-wrap;
+  }
+
+  /* Locked parameter badge */
+  .lock-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 0.72rem; font-weight: 600;
+    color: var(--success); background: rgba(102,187,106,0.1);
+    padding: 2px 8px; border-radius: 10px;
+    margin-left: var(--s-2);
+  }
+  .param-ref {
+    background: var(--bg-surface); border: 1px solid var(--border-soft);
+    border-radius: var(--r-lg); padding: var(--s-5); margin-bottom: var(--s-4);
+  }
+  .param-ref h4 { font-size: 1.05rem; margin-bottom: var(--s-3); }
+  .param-ref .note { font-size: 0.83rem; color: var(--text-muted); margin-bottom: var(--s-3); }
+
+  /* Resolution grid */
+  .res-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: var(--s-3); margin-bottom: var(--s-4);
+  }
+  .res-card {
+    background: var(--bg-surface); border: 1px solid var(--border-soft);
+    border-radius: var(--r-lg); padding: var(--s-3);
+    transition: border-color var(--t-fast);
+  }
+  .res-card:hover { border-color: var(--accent); }
+  .res-top {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: var(--s-2);
+  }
+  .res-name { font-weight: 700; font-size: 0.9rem; }
+  .res-vram {
+    font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700;
+    color: var(--warning); background: rgba(255,167,38,0.1);
+    padding: 2px 7px; border-radius: 8px;
+  }
+  .res-res { font-family: var(--font-mono); font-size: 0.83rem; color: var(--accent); margin-bottom: 2px; }
+  .res-use { font-size: 0.78rem; color: var(--text-muted); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand"><span class="dot"></span> AI CG Studio</div>
+    <div class="nav-links">
+      <a href="../index.html">首页</a>
+      <a href="worldview.html">世界观</a>
+      <a href="philosophy.html">哲学</a>
+      <a href="art-direction.html">美术规范</a>
+      <a href="../tools/director-flow.html">导演模式</a>
+      <a href="roadmap.html">路线</a>
+    </div>
+  </div>
+</nav>
+
+<article class="page">
+  <a href="../index.html" class="nav-back">← 回首页</a>
+
+  <h1 class="title">🎞 Scene 规范 (Scene Specification)</h1>
+  <p class="subtitle">Prompt 以后不要编号。Scene 才是编号单位。</p>
+
+  <!-- Template -->
+  <div class="template">
+    <h3>📋 SC0001 模板 — 官方 Scene 必填字段</h3>
+    <div class="field"><div class="field-label">Scene ID</div><div class="field-value">SC' + 四位数字 (SC0001, SC0002...)</div></div>
+    <div class="field"><div class="field-label">标题</div><div class="field-value">中文 Scene 名，有温度 (例: 放学后的回眸)</div></div>
+    <div class="field"><div class="field-label">故事</div><div class="field-value">一句话故事描述。谁在什么地方、在做什么、为什么。</div></div>
+    <div class="field"><div class="field-label">情绪</div><div class="field-value">核心情绪 (恋爱、期待、害羞...)</div></div>
+    <div class="field"><div class="field-label">推荐角色</div><div class="field-value">ayachi_nene / shiki_natsume / 通用</div></div>
+    <div class="field"><div class="field-label">Resolution</div><div class="field-value">8 档, 带 VRAM 要求 (详见下方速查)</div></div>
+    <div class="field"><div class="field-label">推荐 LoRA 权重</div><div class="field-value">0.75 (默认) / 范围 0.6–0.8</div></div>
+    <div class="field"><div class="field-label">Positive</div><div class="field-value">遵循 <a href="prompt-spec.html">Prompt Spec</a> 的 9 模块顺序。<em>每 Scene 唯一变量。</em></div></div>
+    <div class="field"><div class="field-label">Negative</div><div class="field-value">基础层 (通用 17 词) + 场景特定层 (3–5 词)</div></div>
+    <div class="field">
+      <div class="field-label">锁定参数 <span class="lock-badge">🔒 永远不动</span></div>
+      <div class="field-value">CFG 5 · Sampler DPM++ 2M SDE · Steps 28 · Hires denoise 0.45</div>
+    </div>
+    <div class="field"><div class="field-label">标签</div><div class="field-value">用于 Scene 库检索的标签</div></div>
+  </div>
+
+  <!-- Example 1 -->
+  <h2 style="margin-bottom: var(--s-4);">官方 Scene 示例</h2>
+
+  <div class="example-scene">
+    <div class="scene-header">
+      <div class="scene-id">SC0001</div>
+      <div class="scene-title">放学后的回眸</div>
+    </div>
+    <div class="scene-story">放学以后，她一直在校门口等你。当她看见你走过来，转过头，笑了起来。</div>
+    <div class="scene-grid">
+      <div class="scene-meta"><div class="label">情绪</div><div class="value">期待 · 温柔</div></div>
+      <div class="scene-meta"><div class="label">角色</div><div class="value">宁宁</div></div>
+      <div class="scene-meta"><div class="label">Resolution</div><div class="value">Full CG</div></div>
+      <div class="scene-meta"><div class="label">LoRA</div><div class="value">0.75</div></div>
+      <div class="scene-meta">
+        <div class="label">锁定参数 <span style="font-size:0.65rem;color:var(--success)">🔒</span></div>
+        <div class="value" style="font-size:0.8rem">CFG 5 · DPM++ 2M SDE · S28</div>
+      </div>
+    </div>
+    <div class="field-label" style="margin-bottom: var(--s-2);">Positive</div>
+    <div class="scene-prompt">masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed,
+1girl, solo, ayachi_nene, ahoge, teardrop,
+school uniform, pleated skirt,
+school gate, cherry blossoms in bloom, petals floating,
+gentle smile, soft eyes, blush, looking at viewer,
+medium shot, looking back, over shoulder,
+rule of thirds, by school gate, depth,
+golden hour, backlit, soft shadows, warm atmosphere,
+hair blowing, depth of field, cinematic lighting,
+&lt;lora:ayachi_nene:0.75&gt;</div>
+    <div class="field-label" style="margin-bottom: var(--s-2);">Negative (基础 + 场景特定)</div>
+    <div class="scene-neg">lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name, night, darkness, snow, autumn leaves</div>
+  </div>
+
+  <!-- Example 2 -->
+  <div class="example-scene">
+    <div class="scene-header">
+      <div class="scene-id">SC0002</div>
+      <div class="scene-title">雨天共伞</div>
+    </div>
+    <div class="scene-story">突然下起雨。两个人挤在一把伞下。肩膀贴着肩膀。沉默比语言多。</div>
+    <div class="scene-grid">
+      <div class="scene-meta"><div class="label">情绪</div><div class="value">羞怯 · 亲密</div></div>
+      <div class="scene-meta"><div class="label">角色</div><div class="value">宁宁</div></div>
+      <div class="scene-meta"><div class="label">Resolution</div><div class="value">Half-body</div></div>
+      <div class="scene-meta"><div class="label">LoRA</div><div class="value">0.75</div></div>
+      <div class="scene-meta">
+        <div class="label">锁定参数 <span style="font-size:0.65rem;color:var(--success)">🔒</span></div>
+        <div class="value" style="font-size:0.8rem">CFG 5 · DPM++ 2M SDE · S28</div>
+      </div>
+    </div>
+    <div class="field-label" style="margin-bottom: var(--s-2);">Positive</div>
+    <div class="scene-prompt">masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed,
+1girl, solo, ayachi_nene, ahoge, teardrop,
+school uniform, wet clothes, wet hair,
+rainy street, wet road, puddles, reflections,
+shy, slight blush, looking away, gentle,
+under umbrella, close to viewer, intimate,
+centered composition, foreground umbrella edge,
+overcast, cool tones, soft diffused light, rainy atmosphere,
+looking at viewer, beautiful detailed eyes, depth of field,
+&lt;lora:ayachi_nene:0.75&gt;</div>
+    <div class="field-label" style="margin-bottom: var(--s-2);">Negative (基础 + 场景特定)</div>
+    <div class="scene-neg">lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name, sunny, bright lighting, autumn leaves, snow, summer</div>
+  </div>
+
+  <!-- Locked parameters -->
+  <h2 style="margin-top: var(--s-7); margin-bottom: var(--s-3);">🔒 锁定参数 <span class="lock-badge">永远不动</span></h2>
+  <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4);">设一次, 保存, 以后再也不会改。每 Scene 唯一变的只有 <strong>Positive + Negative</strong>。</p>
+
+  <table>
+    <thead>
+      <tr><th>参数</th><th>值</th><th>唯一例外</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>CFG</strong></td><td>5 (永远)</td><td>暗调场景 (月夜/夜灯/暗室) → 5.5</td></tr>
+      <tr><td><strong>Sampler</strong></td><td>DPM++ 2M SDE (永远)</td><td>无</td></tr>
+      <tr><td><strong>Steps</strong></td><td>28 (永远)</td><td>无</td></tr>
+      <tr><td><strong>Hires Denoise</strong></td><td>0.45 (永远)</td><td>追求更锐利 → 0.40</td></tr>
+      <tr><td><strong>Hires Steps</strong></td><td>12–15 (永远)</td><td>无</td></tr>
+      <tr><td><strong>LoRA 权重</strong></td><td>0.75 (默认)</td><td>过拟合 → 降到 0.6; 不够明显 → 升到 0.85</td></tr>
+    </tbody>
+  </table>
+
+  <!-- Resolution -->
+  <h2 style="margin-top: var(--s-7); margin-bottom: var(--s-3);">📐 Resolution 速查</h2>
+  <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4);">按用途选一档。<strong>VRAM 是单卡峰值。</strong></p>
+
+  <div class="res-grid">
+    <div class="res-card">
+      <div class="res-top"><div class="res-name">Square</div><div class="res-vram">~10GB</div></div>
+      <div class="res-res">1024 × 1024</div>
+      <div class="res-use">全身标准 · 一般 CG · 头像</div>
+    </div>
+    <div class="res-card">
+      <div class="res-top"><div class="res-name">Half-body</div><div class="res-vram">~10GB</div></div>
+      <div class="res-res">832 × 1216</div>
+      <div class="res-use">半身肖像 · 特写 · 宁静</div>
+    </div>
+    <div class="res-card">
+      <div class="res-top"><div class="res-name">Full CG</div><div class="res-vram">~10GB</div></div>
+      <div class="res-res">1216 × 832</div>
+      <div class="res-use">横版全身 CG · 场景为主 · ★★★ 推荐</div>
+    </div>
+    <div class="res-card">
+      <div class="res-top"><div class="res-name">Wide CG</div><div class="res-vram">~12GB</div></div>
+      <div class="res-res">1344 × 768</div>
+      <div class="res-use">超宽风景 · 电影感 · 侧身</div>
+    </div>
+    <div class="res-card">
+      <div class="res-top"><div class="res-name">Tall</div><div class="res-vram">~12GB</div></div>
+      <div class="res-res">768 × 1344</div>
+      <div class="res-use">竖版插画 · 人体展示</div>
+    </div>
+    <div class="res-card">
+      <div class="res-top"><div class="res-name">2K Portrait</div><div class="res-vram">~14GB</div></div>
+      <div class="res-res">1536 × 1536</div>
+      <div class="res-use">高清头像 · 细节丰富</div>
+    </div>
+    <div class="res-card">
+      <div class="res-top"><div class="res-name">2K CG</div><div class="res-vram">~16GB</div></div>
+      <div class="res-res">1664 × 1152</div>
+      <div class="res-use">大尺寸横版 · Hires.fix 直出 · 16GB 卡上限</div>
+    </div>
+    <div class="res-card">
+      <div class="res-top"><div class="res-name">Mobile Wallpaper</div><div class="res-vram">~8GB</div></div>
+      <div class="res-res">720 × 1280</div>
+      <div class="res-use">手机竖屏壁纸</div>
+    </div>
+  </div>
+
+  <!-- Hires.fix -->
+  <h2 style="margin-top: var(--s-7); margin-bottom: var(--s-3);">🔍 Hires.fix 输出</h2>
+  <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4);">可选步骤。需要更大尺寸时启用, 参数永远如上表锁死。</p>
+  <table>
+    <thead>
+      <tr><th>用途</th><th>倍数</th><th>Output</th><th>Denoise</th><th>Steps</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1.5x Full CG</td><td>1.5x</td><td>1824 × 1248</td><td>0.45</td><td>12–15</td></tr>
+      <tr><td>2x 方形</td><td>2x</td><td>2048 × 2048</td><td>0.40</td><td>15</td></tr>
+      <tr><td>1.5x 半身</td><td>1.5x</td><td>1248 × 1824</td><td>0.45</td><td>12–15</td></tr>
+      <tr><td>2x 头像</td><td>2x</td><td>2048 × 2048</td><td>0.40</td><td>15</td></tr>
+    </tbody>
+  </table>
+
+  <!-- Negative reference -->
+  <h2 style="margin-top: var(--s-7); margin-bottom: var(--s-3);">🛡 Negative 速查</h2>
+
+  <div class="param-ref" style="margin-bottom: var(--s-4);">
+    <h4>📌 基础层 (永远带, 17 词)</h4>
+    <p class="note">任何 Scene 都不改。直接复制。</p>
+    <div class="scene-prompt" style="margin:0">lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name</div>
+  </div>
+
+  <div class="param-ref">
+    <h4>📌 场景特定层 (每场景选 3–5 词叠加到基础层)</h4>
+    <p class="note">按场景类型查表。对立的东西不能同时出现就加。</p>
+    <table>
+      <thead>
+        <tr><th>场景特征</th><th>加这些词</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>白天 / 晴天</td><td><code>night, darkness, rainy</code></td></tr>
+        <tr><td>夜晚 / 月光</td><td><code>day, bright sunlight, sunny</code></td></tr>
+        <tr><td>室内</td><td><code>outdoor, sky, landscape</code></td></tr>
+        <tr><td>室外 / 风景</td><td><code>indoor, room, bedroom</code></td></tr>
+        <tr><td>干净背景</td><td><code>cluttered, messy, complex background</code></td></tr>
+        <tr><td>单人</td><td><code>multiple girls, 2girls, boys</code></td></tr>
+        <tr><td>肖像 / 特写</td><td><code>full body, wide shot</code></td></tr>
+        <tr><td>全身构图</td><td><code>close-up, portrait, partial face</code></td></tr>
+        <tr><td>治愈 / 安静</td><td><code>dramatic, action, fight, weapon</code></td></tr>
+        <tr><td>春天 / 樱花</td><td><code>autumn leaves, snow, winter</code></td></tr>
+        <tr><td>秋天 / 红叶</td><td><code>cherry blossoms, spring, summer</code></td></tr>
+        <tr><td>冬天 / 雪</td><td><code>summer, warm weather, cherry blossoms</code></td></tr>
+        <tr><td>现代 / 日常</td><td><code>fantasy, magical, historical</code></td></tr>
+        <tr><td>幻想 / 异想</td><td><code>modern, realistic, city, school</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <footer class="footer">
+    <p>AI CG Studio · Scene Specification v2.0</p>
+    <p class="muted mt-4">Resolution + 锁定参数 + 负面库 — 一次设, 以后永远只变 Scene。</p>
+  </footer>
+</article>
+
+</body>
+</html>

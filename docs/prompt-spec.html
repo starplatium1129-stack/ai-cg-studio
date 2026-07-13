@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt 规范 · AI CG Studio</title>
+<link rel="stylesheet" href="../css/design-system.css">
+<style>
+  .page { max-width: 900px; margin: 0 auto; padding: var(--s-5) var(--s-4); }
+  .nav-back {
+    display: inline-flex; align-items: center; gap: var(--s-2);
+    color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4);
+  }
+  .nav-back:hover { color: var(--accent); }
+  h1.title {
+    font-size: 2rem; font-weight: 800;
+    background: linear-gradient(135deg, #E8E8F0 50%, #F06292);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; margin-bottom: var(--s-2);
+  }
+  .subtitle { color: var(--text-secondary); margin-bottom: var(--s-5); }
+
+  /* Module list */
+  .module {
+    display: flex; align-items: flex-start; gap: var(--s-4);
+    background: var(--bg-surface); border: 1px solid var(--border-soft);
+    border-radius: var(--r-lg); padding: var(--s-4); margin-bottom: var(--s-3);
+    transition: border-color var(--t-fast);
+  }
+  .module:hover { border-color: var(--accent); }
+  .module-num {
+    flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%;
+    background: var(--accent-soft); border: 1px solid var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-weight: 700; color: var(--accent);
+    font-size: 0.85rem;
+  }
+  .module-content h4 { font-size: 1rem; font-weight: 600; margin-bottom: 4px; }
+  .module-content h4 .cn { color: var(--text-muted); font-weight: 400; font-size: 0.85rem; margin-left: var(--s-2); }
+  .module-content p { font-size: 0.88rem; color: var(--text-secondary); margin-bottom: var(--s-2); }
+  .example { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted); background: var(--bg-deep); padding: var(--s-2); border-radius: var(--r-sm); }
+
+  /* Live demo */
+  .demo-frame {
+    background: var(--bg-deep); border: 2px solid var(--accent);
+    border-radius: var(--r-xl); padding: var(--s-5); margin: var(--s-5) 0;
+    box-shadow: 0 0 32px var(--accent-glow);
+  }
+  .demo-frame h3 { margin-bottom: var(--s-4); }
+
+  .module-toggle {
+    display: flex; flex-wrap: wrap; gap: var(--s-2); margin-bottom: var(--s-4);
+  }
+  .toggle {
+    display: inline-flex; align-items: center; gap: var(--s-2);
+    padding: 6px 14px; border-radius: 20px;
+    background: var(--bg-elevated); border: 1px solid var(--border-soft);
+    font-size: 0.82rem; font-weight: 500; color: var(--text-secondary);
+    cursor: pointer; transition: all var(--t-fast);
+    user-select: none;
+  }
+  .toggle:hover { border-color: var(--accent); }
+  .toggle.on { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+  .toggle .swatch { width: 10px; height: 10px; border-radius: 50%; }
+
+  .output-prompt {
+    background: var(--bg-base); border-radius: var(--r-md);
+    padding: var(--s-4); font-family: var(--font-mono); font-size: 0.82rem;
+    line-height: 1.9; color: var(--text-secondary); word-break: break-all;
+    white-space: pre-wrap; min-height: 80px;
+  }
+
+  .output-prompt .q { color: var(--info); }
+  .output-prompt .c { color: var(--accent); }
+  .output-prompt .e { color: var(--mood-joy); }
+  .output-prompt .s { color: var(--mood-calm); }
+  .output-prompt .l { color: var(--mood-warmth); }
+  .output-prompt .x { color: var(--mood-love); }
+  .output-prompt .lo { color: var(--mood-tension); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand"><span class="dot"></span> AI CG Studio</div>
+    <div class="nav-links">
+      <a href="../index.html">首页</a>
+      <a href="worldview.html">世界观</a>
+      <a href="philosophy.html">哲学</a>
+      <a href="art-direction.html">美术规范</a>
+      <a href="../tools/director-flow.html">导演模式</a>
+      <a href="roadmap.html">路线</a>
+    </div>
+  </div>
+</nav>
+
+<article class="page">
+  <a href="../index.html" class="nav-back">← 回首页</a>
+
+  <h1 class="title">📝 Prompt 规范 (Prompt Specification)</h1>
+  <p class="subtitle">永远按这个顺序。永远不能乱。</p>
+
+  <!-- module list -->
+  <div class="module">
+    <div class="module-num">1</div>
+    <div class="module-content">
+      <h4>Quality <span class="cn">质量</span></h4>
+      <p>永远第一位。每张 CG 共享的质量基准。</p>
+      <div class="example">masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed</div>
+    </div>
+  </div>
+
+  <div class="module">
+    <div class="module-num">2</div>
+    <div class="module-content">
+      <h4>Character <span class="cn">角色</span></h4>
+      <p>触发词 + 特征。人物永远第二位。</p>
+      <div class="example">1girl, solo, ayachi_nene, ahoge, teardrop</div>
+    </div>
+  </div>
+
+  <div class="module">
+    <div class="module-num">3</div>
+    <div class="module-content">
+      <h4>Story <span class="cn">故事</span></h4>
+      <p>一句话场景。告诉 AI 她在哪里、在做什么。</p>
+      <div class="example">after school, school gate, waiting</div>
+    </div>
+  </div>
+
+  <div class="module">
+    <div class="module-num">4</div>
+    <div class="module-content">
+      <h4>Emotion <span class="cn">情绪</span></h4>
+      <p>情绪 → 表情/体态。系统从情绪库自动翻译。</p>
+      <div class="example">gentle smile, soft eyes, blush, looking at viewer</div>
+    </div>
+  </div>
+
+  <div class="module">
+    <div class="module-num">5</div>
+    <div class="module-content">
+      <h4>Camera <span class="cn">镜头</span></h4>
+      <p>镜头语言。近景、中景、POV、仰视、回头……</p>
+      <div class="example">medium shot, looking back, over shoulder</div>
+    </div>
+  </div>
+
+  <div class="module">
+    <div class="module-num">6</div>
+    <div class="module-content">
+      <h4>Composition <span class="cn">构图</span></h4>
+      <p>居中、三分法、左构图、框架构图……</p>
+      <div class="example">rule of thirds, by window, depth</div>
+    </div>
+  </div>
+
+  <div class="module">
+    <div class="module-num">7</div>
+    <div class="module-content">
+      <h4>Lighting <span class="cn">光照</span></h4>
+      <p>光源。每个光源都要有理由。</p>
+      <div class="example">golden hour, backlit, soft shadows, warm atmosphere</div>
+    </div>
+  </div>
+
+  <div class="module">
+    <div class="module-num">8</div>
+    <div class="module-content">
+      <h4>Extra <span class="cn">附加细节</span></h4>
+      <p>头发的飘动、浅景深、电影级光照……锦上添花。</p>
+      <div class="example">hair blowing, depth of field, cinematic lighting</div>
+    </div>
+  </div>
+
+  <div class="module">
+    <div class="module-num">9</div>
+    <div class="module-content">
+      <h4>LoRA <span class="cn">角色 LoRA</span></h4>
+      <p>永远最后。权重 0.6–0.8。</p>
+      <div class="example">&lt;lora:ayachi_nene:0.75&gt;</div>
+    </div>
+  </div>
+
+  <!-- Live demo -->
+  <div class="demo-frame">
+    <h3>🔬 实时拼接演示</h3>
+    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-3);">点击开关，查看 Prompt 如何变化：</p>
+    <div class="module-toggle" id="toggles"></div>
+    <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: var(--s-2);">生成的 Prompt（按顺序拼接）：</p>
+    <div class="output-prompt" id="output"></div>
+    <button class="btn btn-ghost mt-4" onclick="resetModules()">🔄 重置</button>
+  </div>
+
+  <!-- LoRA weight guide -->
+  <h2 style="margin-top: var(--s-6); margin-bottom: var(--s-3);">LoRA 权重指南</h2>
+  <table>
+    <thead><tr><th>权重</th><th>效果</th><th>适用场景</th></tr></thead>
+    <tbody>
+      <tr><td>0.5–0.6</td><td>轻微影响，保留底模风格</td><td>融合多种 LoRA</td></tr>
+      <tr><td>0.7–0.8</td><td>标准强度，推荐日常</td><td>单 LoRA 出图 ★</td></tr>
+      <tr><td>0.9–1.0</td><td>强烈影响，性格明显</td><td>纯 LoRA 风格、特写</td></tr>
+      <tr><td>&gt;1.0</td><td>不推荐</td><td>容易过拟合、崩坏</td></tr>
+    </tbody>
+  </table>
+
+  <footer class="footer">
+    <p>AI CG Studio · Prompt Specification v1.0</p>
+  </footer>
+</article>
+
+<script>
+const MODULES = [
+  { id: 'q', on: true, cls: 'q', label: 'Quality',    text: 'masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed' },
+  { id: 'c', on: true, cls: 'c', label: 'Character',  text: '1girl, solo, ayachi_nene, ahoge, teardrop' },
+  { id: 's', on: true, cls: 's', label: 'Story',      text: 'after school, school gate, waiting' },
+  { id: 'e', on: true, cls: 'e', label: 'Emotion',    text: 'gentle smile, soft eyes, blush, looking at viewer' },
+  { id: 'a', on: true, cls: 'a', label: 'Camera',     text: 'medium shot, looking back, over shoulder' },
+  { id: 'o', on: true, cls: 'o', label: 'Composition',text: 'rule of thirds, by window, depth' },
+  { id: 'l', on: true, cls: 'l', label: 'Lighting',   text: 'golden hour, backlit, soft shadows, warm atmosphere' },
+  { id: 'x', on: true, cls: 'x', label: 'Extra',      text: 'hair blowing, depth of field, cinematic lighting' },
+  { id: 'lo',on:true, cls: 'lo',label: 'LoRA',       text: '<lora:ayachi_nene:0.75>' }
+];
+
+function init() {
+  const el = document.getElementById('toggles');
+  el.innerHTML = MODULES.map(m => `
+    <div class="toggle on" data-id="${m.id}" onclick="toggleModule('${m.id}')">
+      ${m.label}
+    </div>
+  `).join('');
+  render();
+}
+
+function toggleModule(id) {
+  const m = MODULES.find(x => x.id === id);
+  m.on = !m.on;
+  const el = document.querySelector(`.toggle[data-id="${id}"]`);
+  el.classList.toggle('on', m.on);
+  render();
+}
+
+function render() {
+  const parts = MODULES.filter(m => m.on).map(m => `<span class="${m.cls}">${m.text}</span>`);
+  document.getElementById('output').innerHTML = parts.join(',\n');
+}
+
+function resetModules() {
+  MODULES.forEach(m => m.on = true);
+  document.querySelectorAll('.toggle').forEach(t => t.classList.add('on'));
+  render();
+}
+
+init();
+</script>
+
+</body>
+</html>

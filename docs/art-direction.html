@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>美术风格规范 · AI CG Studio</title>
+<link rel="stylesheet" href="../css/design-system.css">
+<style>
+  .page { max-width: 900px; margin: 0 auto; padding: var(--s-6) var(--s-4); }
+
+  .nav-back {
+    display: inline-flex; align-items: center; gap: var(--s-2);
+    color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4);
+  }
+  .nav-back:hover { color: var(--accent); }
+
+  .page-title {
+    font-size: 2rem; font-weight: 800;
+    background: linear-gradient(135deg, #E8E8F0 50%, #F06292);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: var(--s-2);
+  }
+  .page-subtitle { color: var(--text-secondary); font-size: 1.05rem; margin-bottom: var(--s-6); }
+
+  /* Mood colors showcase */
+  .spectrum {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: var(--s-3); margin: var(--s-4) 0;
+  }
+  .swatch {
+    border-radius: var(--r-lg); overflow: hidden;
+    border: 1px solid var(--border-soft);
+    transition: transform var(--t-fast);
+  }
+  .swatch:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .swatch-color { height: 72px; }
+  .swatch-body { background: var(--bg-surface); padding: var(--s-3); }
+  .swatch-name { font-weight: 600; font-size: 0.9rem; margin-bottom: 2px; }
+  .swatch-desc { font-size: 0.8rem; color: var(--text-muted); }
+  .swatch-tag {
+    display: inline-block; font-size: 0.72rem;
+    padding: 2px 8px; border-radius: 10px; margin-top: var(--s-2);
+    font-weight: 600;
+  }
+  .ok { background: rgba(102,187,106,0.15); color: var(--success); }
+  .no { background: rgba(239,83,80,0.15); color: var(--danger); }
+
+  /* Lighting direction demo */
+  .light-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: var(--s-3); margin: var(--s-4) 0;
+  }
+  .light-card {
+    background: var(--bg-surface); border: 1px solid var(--border-soft);
+    border-radius: var(--r-lg); padding: var(--s-4); text-align: center;
+    transition: all var(--t-fast);
+  }
+  .light-card:hover { border-color: var(--accent); }
+  .light-icon { font-size: 2rem; margin-bottom: var(--s-2); }
+  .light-name { font-weight: 600; font-size: 0.95rem; margin-bottom: var(--s-2); }
+  .light-cn { font-size: 0.85rem; color: var(--accent); margin-bottom: var(--s-2); }
+  .light-desc { font-size: 0.8rem; color: var(--text-muted); }
+
+  /* Demo area (prompt simulation) */
+  .demo-frame {
+    background: var(--bg-deep); border: 1px solid var(--border-soft);
+    border-radius: var(--r-xl); padding: var(--s-5); margin: var(--s-5) 0;
+  }
+  .demo-frame h3 { margin-bottom: var(--s-3); display: flex; align-items: center; gap: var(--s-2); }
+  .demo-prompt {
+    background: var(--bg-elevated); border-radius: var(--r-md);
+    padding: var(--s-4); font-family: var(--font-mono); font-size: 0.85rem;
+    line-height: 1.8; color: var(--text-secondary); margin-top: var(--s-3);
+    word-break: break-all;
+  }
+  .demo-prompt .quality { color: var(--info); }
+  .demo-prompt .character { color: var(--accent); }
+  .demo-prompt .emotion { color: var(--mood-joy); }
+  .demo-prompt .lighting { color: var(--mood-warmth); }
+  .demo-prompt .scene { color: var(--mood-calm); }
+  .demo-prompt .lora { color: var(--mood-love); }
+
+  .rule-box {
+    display: flex; gap: var(--s-4); align-items: flex-start;
+    background: var(--bg-surface); border: 1px solid var(--border-soft);
+    border-radius: var(--r-lg); padding: var(--s-4); margin-bottom: var(--s-3);
+    transition: border-color var(--t-fast);
+  }
+  .rule-box:hover { border-color: var(--accent); }
+  .rule-icon { font-size: 1.6rem; flex-shrink: 0; }
+  .rule-content h4 { font-size: 1.05rem; font-weight: 600; margin-bottom: var(--s-1); }
+  .rule-content p { font-size: 0.9rem; color: var(--text-secondary); margin: 0; }
+  .rule-content .keywords { margin-top: var(--s-2); }
+  .rule-content .keywords span {
+    display: inline-block; font-size: 0.78rem; padding: 2px 8px;
+    border-radius: 10px; margin-right: var(--s-1); background: var(--bg-elevated);
+    color: var(--text-muted);
+  }
+  .rule-content .keywords span.ok { background: rgba(102,187,106,0.12); color: var(--success); }
+  .rule-content .keywords span.no { background: rgba(239,83,80,0.12); color: var(--danger); }
+
+  .comparison {
+    display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-4); margin: var(--s-4) 0;
+  }
+  .comparison .bad {
+    border: 1px solid rgba(239,83,80,0.3); border-radius: var(--r-lg);
+    padding: var(--s-4); background: rgba(239,83,80,0.04);
+  }
+  .comparison .good {
+    border: 1px solid rgba(102,187,106,0.3); border-radius: var(--r-lg);
+    padding: var(--s-4); background: rgba(102,187,106,0.04);
+  }
+  .comparison h4 { font-size: 1rem; font-weight: 600; margin-bottom: var(--s-2); }
+  .comparison .bad h4 { color: var(--danger); }
+  .comparison .good h4 { color: var(--success); }
+  .comparison p { font-size: 0.9rem; color: var(--text-secondary); margin: 0; }
+  .comparison ul { margin-top: var(--s-2); padding-left: var(--s-4); }
+  .comparison li { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 4px; }
+
+  @media (max-width: 768px) {
+    .comparison { grid-template-columns: 1fr; }
+    .page-title { font-size: 1.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand"><span class="dot"></span> AI CG Studio</div>
+    <div class="nav-links">
+      <a href="../index.html">首页</a>
+      <a href="worldview.html">世界观</a>
+      <a href="philosophy.html">哲学</a>
+      <a href="art-direction.html" class="active">美术规范</a>
+      <a href="../tools/director-flow.html">导演模式</a>
+      <a href="roadmap.html">路线</a>
+    </div>
+  </div>
+</nav>
+
+<article class="page">
+  <a href="../index.html" class="nav-back">← 回首页</a>
+
+  <h1 class="page-title">🎨 美术风格规范 (Art Direction)</h1>
+  <p class="page-subtitle">这是整个项目最重要的规范。直接决定 Prompt 库的视觉方向。</p>
+
+  <!-- Vision definition -->
+  <div class="demo-frame">
+    <h3>🎯 画面风格 · 精确分类</h3>
+    <p style="color: var(--text-secondary); margin-bottom: var(--s-3)">
+      不是"AI 风""动漫风""二次元"这种笼统词。继续细分：
+    </p>
+    <div class="spectrum">
+      <div class="swatch">
+        <div class="swatch-color" style="background: linear-gradient(135deg, #FF9EC4, #FFD3E0);"></div>
+        <div class="swatch-body">
+          <div class="swatch-name">Galgame</div>
+          <div class="swatch-desc">视觉小说 CG 风格</div>
+          <span class="swatch-tag ok">✅ 主风格</span>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: linear-gradient(135deg, #FFB86C, #FFD8A8);"></div>
+        <div class="swatch-body">
+          <div class="swatch-name">Yuzusoft</div>
+          <div class="swatch-desc">柚子社 — 柔和清新</div>
+          <span class="swatch-tag ok">✅ 参考</span>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: linear-gradient(135deg, #81C784, #C8E6C9);"></div>
+        <div class="swatch-body">
+          <div class="swatch-name">Palette</div>
+          <div class="swatch-desc">调色板 — 童话治愈</div>
+          <span class="swatch-tag ok">✅ 参考</span>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: linear-gradient(135deg, #64B5F6, #BBDEFB);"></div>
+        <div class="swatch-body">
+          <div class="swatch-name">Smee</div>
+          <div class="swatch-desc">Smee — 甜萌日常</div>
+          <span class="swatch-tag ok">✅ 参考</span>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: linear-gradient(135deg, #BA68C8, #E1BEE7);"></div>
+        <div class="swatch-body">
+          <div class="swatch-name">Lump of Sugar</div>
+          <div class="swatch-desc">方糖社 — 华丽古典</div>
+          <span class="swatch-tag ok">✅ 参考</span>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: linear-gradient(135deg, #444, #888);"></div>
+        <div class="swatch-body">
+          <div class="swatch-name">写实 / HDR / 电影</div>
+          <div class="swatch-desc">真实感渲染、影视作品</div>
+          <span class="swatch-tag no">❌ 禁用</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Color -->
+  <section class="section">
+    <h2>一、色彩规范</h2>
+
+    <div class="rule-box">
+      <div class="rule-icon">🎨</div>
+      <div class="rule-content">
+        <h4>饱和度 — 克制为主</h4>
+        <p>AI 生成容易"糖水色"。我们限制高饱和, 推中饱和 + 柔和色调。画面通透、清爽、舒服。</p>
+        <div class="keywords">
+          <span class="ok">✅ 中饱和</span>
+          <span class="ok">✅ 柔和</span>
+          <span class="ok">✅ 通透</span>
+          <span class="ok">✅ 清爽</span>
+          <span class="no">❌ 高饱和</span>
+          <span class="no">❌ 糖水色</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="rule-box">
+      <div class="rule-icon">🌈</div>
+      <div class="rule-content">
+        <h4>色相 — 与情绪绑定</h4>
+        <p>不用随机选色。情绪 → 色相 → 光照 (详见 <a href="../tools/color-script.html">Color Script</a>)。每张 CG 有主色调。</p>
+        <div class="keywords">
+          <span class="ok">✅ 暖黄 — 温暖幸福</span>
+          <span class="ok">✅ 粉色 — 恋爱羞怯</span>
+          <span class="ok">✅ 蓝紫 — 忧伤神秘</span>
+          <span class="ok">✅ 绿色 — 治愈平静</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="comparison">
+      <div class="bad">
+        <h4>❌ 禁止使用</h4>
+        <ul>
+          <li>neon, glowing, oversaturated</li>
+          <li>vivid colors, rainbow</li>
+          <li>high contrast, harsh lighting</li>
+        </ul>
+      </div>
+      <div class="good">
+        <h4>✅ 推崇使用</h4>
+        <ul>
+          <li>soft colors, pastel tones</li>
+          <li>warm atmosphere, gentle palette</li>
+          <li>muted tones, harmonious colors</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lighting -->
+  <section class="section">
+    <h2>二、光照规范</h2>
+
+    <div class="rule-box">
+      <div class="rule-icon">💡</div>
+      <div class="rule-content">
+        <h4>光源逻辑</h4>
+        <p>每个光源都要有理由。"夕阳"是因为故事发生在放学。"窗光"是因为她在室内。不能为了好看堆光源。</p>
+        <div class="keywords">
+          <span class="ok">✅ 夕阳 — 放学 / 黄昏</span>
+          <span class="ok">✅ 窗光 — 室内 / 安静</span>
+          <span class="ok">✅ 逆光 — 神秘 / 回忆</span>
+          <span class="ok">✅ 月光 — 夜晚 / 孤独</span>
+          <span class="no">❌ HDR — 真实感破坏</span>
+          <span class="no">❌ 电影级对比 — 太硬</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="light-grid">
+      <div class="light-card">
+        <div class="light-icon">🌅</div>
+        <div class="light-name">Golden Hour</div>
+        <div class="light-cn">夕阳 / 暖调</div>
+        <div class="light-desc">放学、温馨、回忆</div>
+      </div>
+      <div class="light-card">
+        <div class="light-icon">🪟</div>
+        <div class="light-name">Window Light</div>
+        <div class="light-cn">窗光 / 柔调</div>
+        <div class="light-desc">室内、安静、治愈</div>
+      </div>
+      <div class="light-card">
+        <div class="light-icon">🌄</div>
+        <div class="light-name">Backlight</div>
+        <div class="light-cn">逆光 / 剪影</div>
+        <div class="light-desc">神秘、回忆、感动</div>
+      </div>
+      <div class="light-card">
+        <div class="light-icon">🌙</div>
+        <div class="light-name">Moonlight</div>
+        <div class="light-cn">月光 / 冷调</div>
+        <div class="light-desc">夜晚、孤独、宁静</div>
+      </div>
+      <div class="light-card">
+        <div class="light-icon">🏮</div>
+        <div class="light-name">Lantern</div>
+        <div class="light-cn">夜灯 / 暖调</div>
+        <div class="light-desc">夜晚、温馨、安全感</div>
+      </div>
+      <div class="light-card">
+        <div class="light-icon">☁️</div>
+        <div class="light-name">Overcast</div>
+        <div class="light-cn">阴天 / 柔调</div>
+        <div class="light-desc">平静、文艺、清新</div>
+      </div>
+    </div>
+
+    <div class="demo-frame">
+      <h3>📝 Prompt 示例 — 光照模块写法</h3>
+      <div class="demo-prompt">
+        <span class="quality">masterpiece, best quality,</span><br>
+        <span class="lighting">golden hour, warm light, soft shadows, backlit, depth of field,</span><br>
+        <span class="scene">school gate, cherry blossoms, sunset sky</span>
+      </div>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: var(--s-3)">
+        ✓ 光源有理由: 夕阳 → 放学时间。✓ 不堆。✓ 克制。
+      </p>
+    </div>
+  </section>
+
+  <!-- Character -->
+  <section class="section">
+    <h2>三、人物规范</h2>
+
+    <div class="rule-box">
+      <div class="rule-icon">👤</div>
+      <div class="rule-content">
+        <h4>视觉层级 — 人物永远第一主角</h4>
+        <p>表情 ★★★★★ > 眼睛 ★★★★★ > 头发 ★★★★☆ > 身体 ★★★★☆ > 服装 ★★★☆☆ > 背景 ★★☆☆☆</p>
+        <div class="keywords">
+          <span class="ok">✅ 眼睛 = 第一视觉中心</span>
+          <span class="ok">✅ 脸部占画面核心</span>
+          <span class="ok">✅ 头发有层次和光泽</span>
+          <span class="ok">✅ 身体比例自然</span>
+          <span class="ok">✅ 手势自然</span>
+          <span class="no">❌ 背景抢主体</span>
+          <span class="no">❌ 杂乱元素堆砌</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="rule-box">
+      <div class="rule-icon">✨</div>
+      <div class="rule-content">
+        <h4>Illustrious 偏爱标签（保留真正有用的）</h4>
+        <p>Illustrious 训练集自带高质量审美。以下是经过筛选后"不出问题"的标签:</p>
+        <div class="keywords" style="margin-top: var(--s-2)">
+          <span class="ok">golden hour</span>
+          <span class="ok">window light</span>
+          <span class="ok">soft shadows</span>
+          <span class="ok">cinematic composition</span>
+          <span class="ok">depth of field</span>
+          <span class="ok">hair blowing</span>
+          <span class="ok">beautiful detailed eyes</span>
+          <span class="ok">warm atmosphere</span>
+        </div>
+        <div class="keywords" style="margin-top: var(--s-2)">
+          <span class="no">extremely detailed (有时脸变形)</span>
+          <span class="no">8k (Illustrious 已学会)</span>
+          <span class="no">ultra detailed (redundancy)</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Background -->
+  <section class="section">
+    <h2>四、背景规范</h2>
+
+    <div class="rule-box">
+      <div class="rule-icon">🖼</div>
+      <div class="rule-content">
+        <h4>背景服务人物</h4>
+        <p>背景永远不能抢主体。作用是: 告诉观众"她在哪里"、"什么时候"、"什么氛围"。</p>
+        <div class="keywords">
+          <span class="ok">✅ 保持空气感</span>
+          <span class="ok">✅ 减少杂乱元素</span>
+          <span class="ok">✅ 服务人物情绪</span>
+          <span class="ok">✅ 暗示时间/地点</span>
+          <span class="no">❌ 过于精细 (抢人物)</span>
+          <span class="no">❌ 杂乱物品堆积</span>
+          <span class="no">❌ 不合理的空间关系</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-frame">
+      <h3>📝 完整 Prompt 示例 — 美术规范落地</h3>
+      <p style="font-size: 0.9rem; color: var(--text-secondary)">
+        <strong>Scene: 放学后的约定</strong> · 夕阳 · 温润 · 宁宁
+      </p>
+      <div class="demo-prompt">
+        <span class="quality">masterpiece, best quality, newest, very aesthetic, absurdres,</span><br>
+        1girl, solo,<br>
+        <span class="character">ayachi_nene, ahoge, teardrop,</span><br>
+        <span class="emotion">gentle smile, soft eyes, blush, looking at viewer,</span><br>
+        school uniform, pleated skirt,<br>
+        <span class="scene">school gate, cherry blossoms in bloom, petals floating,</span><br>
+        <span class="lighting">golden hour, backlit, soft shadows, depth of field, warm atmosphere,</span><br>
+        <span class="lora">&lt;lora:ayachi_nene:0.75&gt;</span>
+      </div>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: var(--s-3)">
+        ✓ 色彩克制 (暖调为主) · ✓ 光源有理由 (夕阳 → 放学) · ✓ 人物为主 · ✓ 背景简洁
+      </p>
+    </div>
+  </section>
+
+  <!-- Final callout -->
+  <div class="callout">
+    <strong>📌 核心记忆</strong>
+    <p style="margin-top: var(--s-2)">
+      这套规范不是限制创作, 而是保证"每张 CG 都是 Galgame 该有的样子"。<br>
+      写每一条 Prompt 前, 问自己: <em>这符合我们的美术规范吗?</em>
+    </p>
+  </div>
+
+  <footer class="footer">
+    <p>AI CG Studio · Art Direction v1.0</p>
+    <p class="muted mt-4">这份规范是整个 Prompt 库的视觉方向。</p>
+  </footer>
+</article>
+
+</body>
+</html>
