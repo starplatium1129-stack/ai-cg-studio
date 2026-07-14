@@ -1399,9 +1399,6 @@ function resetDirector() {
 }
 
 // ========== ACTIONS ==========
-function getPlainPrompt() {
-  return document.getElementById('preview').innerText.replace(/\[NEG\] /g,'').replace(/\n/g, ', ').replace(/,\s*,/g, ',').replace(/\s+/g,' ').trim();
-}
 function copyPrompt() {
   const text = getPlainPrompt(); if (!text) return;
   navigator.clipboard.writeText(text).then(() => flash('📋 已复制'));
