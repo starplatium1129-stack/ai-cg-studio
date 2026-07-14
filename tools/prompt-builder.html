@@ -47,6 +47,9 @@
   .scene-meta { display:flex; flex-wrap:wrap; gap:4px; }
   .scene-tag { font-size:0.65rem; padding:2px 6px; background:var(--bg-deep); border-radius:var(--r-sm); color:var(--text-muted); }
   .scene-tag.emotion { background:var(--accent-soft); color:var(--accent); }
+  /* 故事联想 tag 高亮 */
+  .tag-chip[data-suggested="1"] { outline:1px dashed var(--accent); opacity:1; }
+  .tag-chip[data-suggested="1"]::after { content:' · 📖'; font-size:0.6em; }</｜DSML｜parameter>
 
   .panel { background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-lg); padding: var(--s-4); }
   .panel-title { font-size: 0.78rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--s-3); }
@@ -291,7 +294,7 @@
       </div>
 
       <div class="panel">
-        <div class="panel-title">🏷 手动标签 Tags</div>
+        <div class="panel-title" style="display:flex;align-items:center">🏷 手动标签 Tags <button class="btn btn-ghost" style="margin-left:auto;font-size:0.7rem;padding:2px 8px" onclick="suggestTagsFromStory()">💡 按故事推荐</button></div>
         <div class="cat-tabs" id="catTabs"></div>
         <div class="tag-pool" id="tagPool"></div>
         <div class="tag-section-title">推荐 · Illustrious 优化</div>
@@ -672,7 +675,8 @@ function bindControls() {
     tab.onclick = () => switchTab(tab.dataset.tab, tab);
   });
   document.getElementById('sceneSearch').oninput = e => filterScenes(e.target.value);
-  document.getElementById('storyInput').oninput = e => { state.story = e.target.value; };
+  document.getElementById('storyInput').oninput = e => { state.story = e.target.value; clearStorySuggestions(); };
+  document.querySelector('.story-chips').addEventListener('click', e => { if (e.target.classList.contains('story-chip')) setTimeout(clearStorySuggestions, 0); });
 }
 
 // ========== DIRECTOR STEPS ==========
@@ -913,6 +917,13 @@ function renderManualTags() {
   renderCatTabs();
   renderTagPool('tagPool', (TAGS[currentCat] || []), '');
   renderTagPool('tagPoolBanned', BANNED_TAGS, 'banned');
+  applyStorySuggestions();
+}
+function applyStorySuggestions() {
+  if (!state._storySuggestions) return;
+  document.querySelectorAll('#tagPool .tag-chip, #tagPoolRecommended .tag-chip').forEach(c => {
+    c.setAttribute('data-suggested', state._storySuggestions.has(c.dataset.tag) ? '1' : '0');
+  });
 }
 function renderCatTabs() {
   const el = document.getElementById('catTabs'); el.innerHTML = '';
@@ -920,9 +931,51 @@ function renderCatTabs() {
     const b = document.createElement('div');
     b.className = 'cat-tab' + (cat === currentCat ? ' active' : '');
     b.innerHTML = CAT_LABELS[cat] + ' <small style="opacity:0.5;font-size:0.65rem;">' + cat + '</small>';
-    b.onclick = () => { currentCat = cat; renderManualTags(); };
+    b.onclick = () => { currentCat = cat; renderManualTags(); applyStorySuggestions(); };
     el.appendChild(b);
   });
+}
+// 故事联想:中文关键词 → 匹配 tag 高亮推荐(不强制勾选,用户一眼看到相关 tag)
+const STORY_KEYWORD_TAGS = {
+  '海边':'beach','沙滩':'beach','海浪':'beach','海边':'beach','大海':'beach','海滨':'beach',
+  '神社':'shrine','巫女':'shrine','祭典':'shrine','祭典':'summer_festival','夏日祭':'summer_festival','烟花':'summer_festival','花火':'summer_festival','浴衣':'yukata',
+  '咖啡馆':'cafe','咖啡':'cafe','拿铁':'cafe','窗边':'window_light','窗':'window_light','窗户':'window_light','阳光':'window_light',
+  '公园':'park','树下':'park','樱花':'cherry_blossoms','花瓣':'petals','飘落':'petals',
+  '教室':'classroom','学校':'classroom','校服':'school_uniform','上学':'school_uniform',
+  '图书馆':'library','读书':'library','书店':'library',
+  '天台':'school_rooftop','屋顶':'school_rooftop','楼顶':'school_rooftop',
+  '车站':'train_station','火车站':'train_station','月台':'train_station',
+  '卧室':'bedroom','房间':'bedroom','床上':'bedroom','睡衣':'pajamas',
+  '日落':'sunset','黄昏':'sunset','傍晚':'sunset','夕阳':'sunset','晚霞':'sunset',
+  '夜晚':'night','夜':'night','晚上':'night','月亮':'moonlight','月光':'moonlight','月色':'moonlight','中秋':'moonlight',
+  '烛光':'candlelight','蜡烛':'candlelight','烛':'candlelight',
+  '雪':'snow','下雪':'snow','雪花':'snow','冬天':'snow','冬':'snow',
+  '雨':'rain','下雨':'rain','雨伞':'rain','撑伞':'rain',
+  '回头看':'looking_back','回眸':'looking_back','回头':'looking_back','转身':'looking_back',
+  '微笑':'smile','笑':'smile','大笑':'laughing','哈哈':'laughing',
+  '脸红':'blush','害羞':'shy','羞':'shy',
+  '哭泣':'crying','哭':'crying','眼泪':'tear','流泪':'tear','泪':'tear',
+  '生气':'angry','怒':'angry','愤怒':'angry',
+  '惊讶':'surprised','吃惊':'surprised','吓':'surprised',
+  '闭眼':'closed_eyes','眠':'sleepy','睡':'sleepy','睡觉':'sleepy','打盹':'sleepy',
+  '和服':'kimono','韩服':'hanbok','旗袍':'china_dress','女仆':'maid','围裙':'apron',
+  '泳装':'swimsuit','游泳':'swimsuit','海边泳':'swimsuit',
+  '卧':'lying','躺':'lying','坐':'sitting','站':'standing','走':'walking','跑':'running','跳':'jumping'
+};
+function suggestTagsFromStory() {
+  const s = (state.story || '').toLowerCase();
+  if (!s.trim()) { flash('📖 请先写一句话故事'); return; }
+  const matched = new Set();
+  Object.keys(STORY_KEYWORD_TAGS).forEach(kw => { if (s.includes(kw)) matched.add(STORY_KEYWORD_TAGS[kw]); });
+  if (!matched.size) { flash('💡 没有匹配到关键词,试试:海边/黄昏/樱花/神社/教室/…'); return; }
+  let added = 0;
+  matched.forEach(tag => { if (!state.manualTags.has(tag)) { state.manualTags.add(tag); added++; } });
+  state._storySuggestions = matched;
+  renderManualTags(); renderTraits(); renderSelRow(); updateLivePreview();
+  flash('📖 故事匹配:从故事添加 ' + added + ' 个 tag' + (added<matched.length?('(部分已存在)'):''));
+}
+function clearStorySuggestions() {
+  if (state._storySuggestions) { state._storySuggestions = null; document.querySelectorAll('.tag-chip[data-suggested]').forEach(c => c.setAttribute('data-suggested','0')); }
 }
 function renderTagPool(tag, items, cls) {
   const el = document.getElementById(tag); el.innerHTML = '';
