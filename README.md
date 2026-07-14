@@ -91,6 +91,7 @@ AI-CG-Studio/
 │   ├── scenario-spec.html              # 剧本规范 · 多幕 CG 脚本标准
 │   └── roadmap.html                    # v0.5 → v7.0
 └── tools/                              # 可交互创作工具
+    ├── scene-explorer.html             # 🌸 Scene Explorer — 70 场景视觉浏览
     ├── prompt-builder.html             # 导演工作台 · Story-first · 实时预览 / 历史 / 导出
     ├── scenario.html                   # 剧本模式 · 多幕 CG · Scene-spec 展示
     └── color-script.html               # 情绪 → 色板 → 光照 · 美术规范对照
