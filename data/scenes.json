@@ -3783,7 +3783,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,shiki_natsume,study, sitting, book, serious, looking_away, glasses, cold",
-    "category": "校园"
+    "category": "校园",
+    "emotion": "认真"
   },
   {
     "id": "sc124",
@@ -3818,7 +3819,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,shiki_natsume,bar, sitting, holding, sake, drunk, looking_up, warm",
-    "category": "R15"
+    "category": "R15",
+    "emotion": "开心"
   },
   {
     "id": "sc125",
@@ -3853,7 +3855,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,shiki_natsume,school, rain, umbrella, standing, blush, looking_away, wet",
-    "category": "校园"
+    "category": "校园",
+    "emotion": "羞怯"
   },
   {
     "id": "sc126",
@@ -3887,7 +3890,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,shiki_natsume,school, standing, blush, looking_away, locker, embarrassed",
-    "category": "R15"
+    "category": "R15",
+    "emotion": "羞怯"
   },
   {
     "id": "sc127",
@@ -3922,7 +3926,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,shiki_natsume,bedroom, bed, lying, sick, holding, blush, looking_away",
-    "category": "日常"
+    "category": "日常",
+    "emotion": "羞怯"
   },
   {
     "id": "sc128",
@@ -3956,7 +3961,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,shiki_natsume,school, standing, looking_away, blush, school_uniform, awkward",
-    "category": "校园"
+    "category": "校园",
+    "emotion": "开心"
   },
   {
     "id": "sc129",
@@ -3990,7 +3996,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,shiki_natsume,kitchen, apron, holding, looking_away, cooking, smile",
-    "category": "日常"
+    "category": "日常",
+    "emotion": "开心"
   },
   {
     "id": "sc130",
@@ -4024,7 +4031,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,ayachi_nene,school, standing, blush, looking_away, hair_ribbon, cat",
-    "category": "校园"
+    "category": "校园",
+    "emotion": "羞怯"
   },
   {
     "id": "sc131",
@@ -4058,7 +4066,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,ayachi_nene,bedroom, lying, blush, looking_away, tail, succubus",
-    "category": "R15"
+    "category": "R15",
+    "emotion": "羞怯"
   },
   {
     "id": "sc132",
@@ -4092,7 +4101,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,ayachi_nene,library, standing, blush, looking_away, succubus, flustered",
-    "category": "R15"
+    "category": "R15",
+    "emotion": "恋爱"
   },
   {
     "id": "sc133",
@@ -4126,7 +4136,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,ayachi_nene,school, standing, blush, looking_away, glasses, school_uniform",
-    "category": "校园"
+    "category": "校园",
+    "emotion": "羞怯"
   },
   {
     "id": "sc134",
@@ -4160,7 +4171,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,ayachi_nene,bedroom, sitting, blush, embarrassed, game, console",
-    "category": "R15"
+    "category": "R15",
+    "emotion": "羞怯"
   },
   {
     "id": "sc135",
@@ -4194,7 +4206,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,ayachi_nene,school, standing, blush, holding, box, valentine",
-    "category": "R15"
+    "category": "R15",
+    "emotion": "羞怯"
   },
   {
     "id": "sc136",
@@ -4227,7 +4240,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,shiki_natsume,school, standing, blush, looking_away, school_uniform",
-    "category": "校园"
+    "category": "校园",
+    "emotion": "羞怯"
   },
   {
     "id": "sc137",
@@ -4260,7 +4274,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,shiki_natsume,cafe, standing, blush, looking_away, apron",
-    "category": "R15"
+    "category": "R15",
+    "emotion": "羞怯"
   },
   {
     "id": "sc138",
@@ -4293,7 +4308,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,shiki_natsume,cafe, sitting, blush, holding, cup",
-    "category": "R15"
+    "category": "R15",
+    "emotion": "羞怯"
   },
   {
     "id": "sc139",
@@ -4327,7 +4343,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,shiki_natsume,bedroom, standing, blush, looking_away, maid, dress",
-    "category": "R15"
+    "category": "R15",
+    "emotion": "羞怯"
   },
   {
     "id": "sc140",
@@ -4361,7 +4378,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,shiki_natsume,kitchen, standing, blush, holding, cake, cooking",
-    "category": "日常"
+    "category": "日常",
+    "emotion": "羞怯"
   },
   {
     "id": "sc141",
@@ -4395,7 +4413,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,shiki_natsume,hospital, sitting, blush, looking_away, sick, apple",
-    "category": "R15"
+    "category": "R15",
+    "emotion": "羞怯"
   },
   {
     "id": "sc142",
@@ -4429,7 +4448,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,ayachi_nene,school, sitting, sleepy, yawn, looking_at_viewer, casual",
-    "category": "校园"
+    "category": "校园",
+    "emotion": "困倦"
   },
   {
     "id": "sc143",
@@ -4462,7 +4482,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,ayachi_nene,train, sitting, sleeping, looking_away, close",
-    "category": "旅行"
+    "category": "旅行",
+    "emotion": "困倦"
   },
   {
     "id": "sc144",
@@ -4495,7 +4516,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,ayachi_nene,classroom, bending, looking_at_viewer, blush, school_uniform",
-    "category": "校园"
+    "category": "校园",
+    "emotion": "羞怯"
   },
   {
     "id": "sc145",
@@ -4528,7 +4550,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,ayachi_nene,school, running, looking_at_viewer, smile, hair_ribbon",
-    "category": "校园"
+    "category": "校园",
+    "emotion": "开心"
   },
   {
     "id": "sc146",
@@ -4561,7 +4584,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,ayachi_nene,classroom, sitting, blush, looking_away, flustered",
-    "category": "R15"
+    "category": "R15",
+    "emotion": "羞怯"
   },
   {
     "id": "sc147",
@@ -4595,7 +4619,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,ayachi_nene,beach, standing, wind, wet, looking_at_viewer, swimsuit",
-    "category": "R15"
+    "category": "R15",
+    "emotion": "羞怯"
   },
   {
     "id": "sc148",
@@ -4628,7 +4653,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,ayachi_nene,bedroom, night, whisper, looking_at_viewer, succubus",
-    "category": "R15"
+    "category": "R15",
+    "emotion": "诱惑"
   },
   {
     "id": "sc149",
@@ -4661,7 +4687,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,ayachi_nene,bathroom, wet, looking_at_viewer, blush, towel",
-    "category": "R15"
+    "category": "R15",
+    "emotion": "羞怯"
   },
   {
     "id": "sc150",
@@ -4695,7 +4722,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,shiki_natsume,school, sitting, reading, smile, looking_away, book",
-    "category": "校园"
+    "category": "校园",
+    "emotion": "恋爱"
   },
   {
     "id": "sc151",
@@ -4728,7 +4756,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,shiki_natsume,bedroom, lap_pillow, lying, looking_at_viewer, blush",
-    "category": "R15"
+    "category": "R15",
+    "emotion": "羞怯"
   },
   {
     "id": "sc152",
@@ -4762,7 +4791,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,shiki_natsume,school, standing, close, looking_at_viewer, blush, suit",
-    "category": "R15"
+    "category": "R15",
+    "emotion": "羞怯"
   },
   {
     "id": "sc153",
@@ -4796,7 +4826,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,shiki_natsume,bar, sitting, drunk, holding, looking_at_viewer, flustered",
-    "category": "R15"
+    "category": "R15",
+    "emotion": "开心"
   },
   {
     "id": "sc154",
@@ -4829,7 +4860,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,shiki_natsume,bedroom, night, looking_at_viewer, pajamas, blush",
-    "category": "R15"
+    "category": "R15",
+    "emotion": "羞怯"
   },
   {
     "id": "sc155",
@@ -4863,7 +4895,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,shiki_natsume,city, walking, holding_hands, looking_away, blush, casual_clothes",
-    "category": "R15"
+    "category": "R15",
+    "emotion": "羞怯"
   },
   {
     "id": "sc156",
@@ -4896,7 +4929,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,shiki_natsume,cafe, sitting, looking_at_viewer, glasses, apron",
-    "category": "日常"
+    "category": "日常",
+    "emotion": "羞怯"
   },
   {
     "id": "sc157",
@@ -4929,7 +4963,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,shiki_natsume,hospital, bed, sick, looking_at_viewers, 微笑",
-    "category": "R15"
+    "category": "R15",
+    "emotion": "开心"
   },
   {
     "id": "sc158",
@@ -4963,7 +4998,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,ayachi_nene,bedroom, standing, succubus, looking_away, tail, revealing",
-    "category": "R15"
+    "category": "R15",
+    "emotion": "紧张"
   },
   {
     "id": "sc159",
@@ -4996,7 +5032,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,ayachi_nene,beach, standing, swimsuit, looking_back, bare_shoulders",
-    "category": "R15"
+    "category": "R15",
+    "emotion": "羞怯"
   },
   {
     "id": "sc160",
@@ -5030,7 +5067,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,ayachi_nene,cafe, standing, maid, cat, looking_at_viewer, apron",
-    "category": "日常"
+    "category": "日常",
+    "emotion": "开心"
   },
   {
     "id": "sc161",
@@ -5064,7 +5102,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,ayachi_nene,street, rain, wet, looking_away, wet_clothes, transparent",
-    "category": "R15"
+    "category": "R15",
+    "emotion": "羞怯"
   },
   {
     "id": "sc162",
@@ -5097,7 +5136,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,ayachi_nene,bedroom, standing, shirt, looking_at_viewer, bare_shoulders",
-    "category": "R15"
+    "category": "R15",
+    "emotion": "诱惑"
   },
   {
     "id": "sc163",
@@ -5130,7 +5170,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,ayachi_nene,gym, lying, sport_clothes, looking_at_viewer, bare_skin",
-    "category": "R15"
+    "category": "R15",
+    "emotion": "羞怯"
   },
   {
     "id": "sc164",
@@ -5163,7 +5204,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,ayachi_nene,onsen, standing, towel, bare_shoulders, steamy",
-    "category": "R15"
+    "category": "R15",
+    "emotion": "羞怯"
   },
   {
     "id": "sc165",
@@ -5196,7 +5238,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,ayachi_nene,park, standing, sport_clothes, looking_away, sports_bra",
-    "category": "R15"
+    "category": "R15",
+    "emotion": "羞怯"
   },
   {
     "id": "sc166",
@@ -5229,7 +5272,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,ayachi_nene,classroom, bending, looking_at_viewer, skirt_lift, mini_skirt",
-    "category": "R15"
+    "category": "R15",
+    "emotion": "羞怯"
   },
   {
     "id": "sc167",
@@ -5263,7 +5307,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,shiki_natsume,bedroom, standing, maid, looking_at_viewer, apron, frills",
-    "category": "R15"
+    "category": "R15",
+    "emotion": "羞怯"
   },
   {
     "id": "sc168",
@@ -5297,7 +5342,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,shiki_natsume,cafe, standing, apron, looking_at_viewer, shirt, undressing",
-    "category": "R15"
+    "category": "R15",
+    "emotion": "幸福"
   },
   {
     "id": "sc169",
@@ -5330,7 +5376,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,shiki_natsume,night, standing, kimono, looking_away, bare_shoulders",
-    "category": "R15"
+    "category": "R15",
+    "emotion": "认真"
   },
   {
     "id": "sc170",
@@ -5364,7 +5411,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,shiki_natsume,cafe, standing, wet, looking_away, wet_clothes, maid",
-    "category": "R15"
+    "category": "R15",
+    "emotion": "羞怯"
   },
   {
     "id": "sc171",
@@ -5397,7 +5445,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,shiki_natsume,city, bending, looking_at_viewer, skirt, thighhighs",
-    "category": "R15"
+    "category": "R15",
+    "emotion": "羞怯"
   },
   {
     "id": "sc172",
@@ -5430,7 +5479,8 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,shiki_natsume,bedroom, standing, looking_at_viewer, hair_down, elegant",
-    "category": "R15"
+    "category": "R15",
+    "emotion": "认真"
   },
   {
     "id": "sc173",
@@ -5464,6 +5514,7 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,shiki_natsume,bedroom, lying, looking_away, sick, lingerie, red",
-    "category": "R15"
+    "category": "R15",
+    "emotion": "恋爱"
   }
 ]
