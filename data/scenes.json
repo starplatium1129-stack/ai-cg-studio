@@ -4377,5 +4377,523 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,shiki_natsume,hospital, sitting, blush, looking_away, sick, apple"
+  },
+  {
+    "id": "sc142",
+    "title": "打哈欠的宁宁",
+    "cat": "日常",
+    "story": "午后她趴在课桌上打哈欠,眼角挤出泪花,嘴巴张开的样子让你心脏漏一拍「…你在看什么啦」",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v11",
+    "emo": "困倦",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "school",
+      "sitting",
+      "sleepy",
+      "yawn",
+      "looking_at_viewer",
+      "casual"
+    ],
+    "mature": false,
+    "location": "school",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,ayachi_nene,school, sitting, sleepy, yawn, looking_at_viewer, casual"
+  },
+  {
+    "id": "sc143",
+    "title": "靠在你肩上睡着",
+    "cat": "日常",
+    "story": "电车里她靠着你的肩睡着了,呼吸轻轻扫过你的脖子,你不敢动怕弄醒她",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v11",
+    "emo": "幸福",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "train",
+      "sitting",
+      "sleeping",
+      "looking_away",
+      "close"
+    ],
+    "mature": false,
+    "location": "train",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,ayachi_nene,train, sitting, sleeping, looking_away, close"
+  },
+  {
+    "id": "sc144",
+    "title": "弯腰捡东西",
+    "cat": "日常",
+    "story": "她弯腰捡掉落的笔,领口微微打开,你慌忙移开视线,她抬头就抓到你在偷看「…色狼」",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v11",
+    "emo": "害羞",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "classroom",
+      "bending",
+      "looking_at_viewer",
+      "blush",
+      "school_uniform"
+    ],
+    "mature": false,
+    "location": "classroom",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,ayachi_nene,classroom, bending, looking_at_viewer, blush, school_uniform"
+  },
+  {
+    "id": "sc145",
+    "title": "向你跑来的宁宁",
+    "cat": "日常",
+    "story": "她远远看到你就跑过来,裙摆飞扬,笑容比阳光还耀眼,跳到你面前「想你了!」",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v11",
+    "emo": "开心",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "school",
+      "running",
+      "looking_at_viewer",
+      "smile",
+      "hair_ribbon"
+    ],
+    "mature": false,
+    "location": "school",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,ayachi_nene,school, running, looking_at_viewer, smile, hair_ribbon"
+  },
+  {
+    "id": "sc146",
+    "title": "害羞的舔唇",
+    "cat": "恋爱",
+    "story": "她说话前先舔了下嘴唇,你想入非非,她察觉后用书挡住嘴「…你在乱想什么啦」",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v11",
+    "emo": "害羞",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "classroom",
+      "sitting",
+      "blush",
+      "looking_away",
+      "flustered"
+    ],
+    "mature": true,
+    "location": "classroom",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,ayachi_nene,classroom, sitting, blush, looking_away, flustered"
+  },
+  {
+    "id": "sc147",
+    "title": "在海里湿透的身影",
+    "cat": "日常",
+    "story": "海风掀起她的裙摆,她按住裙角瞪你「别看!」但你自己心脏已经快停了",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v11",
+    "emo": "害羞",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "beach",
+      "standing",
+      "wind",
+      "wet",
+      "looking_at_viewer",
+      "swimsuit"
+    ],
+    "mature": true,
+    "location": "beach",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,ayachi_nene,beach, standing, wind, wet, looking_at_viewer, swimsuit"
+  },
+  {
+    "id": "sc148",
+    "title": "夜里的呢喃",
+    "cat": "恋爱",
+    "story": "黑暗里她贴着你耳朵说「…你知道吗,我每天都在收集你的碎片」,呼出的气让你全身发麻",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v11",
+    "emo": "诱惑",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "bedroom",
+      "night",
+      "whisper",
+      "looking_at_viewer",
+      "succubus"
+    ],
+    "mature": true,
+    "location": "bedroom",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,ayachi_nene,bedroom, night, whisper, looking_at_viewer, succubus"
+  },
+  {
+    "id": "sc149",
+    "title": "湿发洗澡后",
+    "cat": "日常",
+    "story": "她洗完澡头发滴水,只裹浴巾就走出来,看到你就把浴巾往上拉「!你就不能先敲门」",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v11",
+    "emo": "害羞",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "bathroom",
+      "wet",
+      "looking_at_viewer",
+      "blush",
+      "towel"
+    ],
+    "mature": true,
+    "location": "bathroom",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,ayachi_nene,bathroom, wet, looking_at_viewer, blush, towel"
+  },
+  {
+    "id": "sc150",
+    "title": "难得的微笑",
+    "cat": "日常",
+    "story": "她低头看漫画,主角告白时嘴角不自觉弯了一下,你看到就忘了呼吸「…你看到了?」她立刻收起笑容",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emo": "幸福",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "school",
+      "sitting",
+      "reading",
+      "smile",
+      "looking_away",
+      "book"
+    ],
+    "mature": false,
+    "location": "school",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,shiki_natsume,school, sitting, reading, smile, looking_away, book"
+  },
+  {
+    "id": "sc151",
+    "title": "膝枕的夏目",
+    "cat": "恋爱",
+    "story": "她躺在你膝上,难得安静,你低头看她,她睫毛轻轻颤动「…不要一直盯着我看」声音比平时软很多",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emo": "幸福",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "bedroom",
+      "lap_pillow",
+      "lying",
+      "looking_at_viewer",
+      "blush"
+    ],
+    "mature": true,
+    "location": "bedroom",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,shiki_natsume,bedroom, lap_pillow, lying, looking_at_viewer, blush"
+  },
+  {
+    "id": "sc152",
+    "title": "帮你整理领带",
+    "cat": "日常",
+    "story": "她踮起脚尖帮你整理领带,脸离你十公分,呼吸扫过你的下巴,完成后退后半步「…歪了不好看」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emo": "害羞",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "school",
+      "standing",
+      "close",
+      "looking_at_viewer",
+      "blush",
+      "suit"
+    ],
+    "mature": true,
+    "location": "school",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,shiki_natsume,school, standing, close, looking_at_viewer, blush, suit"
+  },
+  {
+    "id": "sc153",
+    "title": "喝醉后软化的夏目",
+    "cat": "恋爱",
+    "story": "喝醉的她少了平时的冷,搂着你的手臂说「今天特别想见你」,完全不知道这句话能让心脏停跳",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emo": "害羞",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "bar",
+      "sitting",
+      "drunk",
+      "holding",
+      "looking_at_viewer",
+      "flustered"
+    ],
+    "mature": true,
+    "location": "bar",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,shiki_natsume,bar, sitting, drunk, holding, looking_at_viewer, flustered"
+  },
+  {
+    "id": "sc154",
+    "title": "睡衣夏目的锁骨",
+    "cat": "日常",
+    "story": "她穿睡衣来应门,领口微微敞开,锁骨在灯光下像月牙,她发现你看就拉高领口「…进来吧」声音很小",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emo": "害羞",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "bedroom",
+      "night",
+      "looking_at_viewer",
+      "pajamas",
+      "blush"
+    ],
+    "mature": true,
+    "location": "bedroom",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,shiki_natsume,bedroom, night, looking_at_viewer, pajamas, blush"
+  },
+  {
+    "id": "sc155",
+    "title": "罕见的主动牵手",
+    "cat": "日常",
+    "story": "她第一次主动牵你的手,指尖微凉,手心却在出汗,一路都没说话,你心跳全程120",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emo": "害羞",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "city",
+      "walking",
+      "holding_hands",
+      "looking_away",
+      "blush",
+      "casual_clothes"
+    ],
+    "mature": true,
+    "location": "city",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,shiki_natsume,city, walking, holding_hands, looking_away, blush, casual_clothes"
+  },
+  {
+    "id": "sc156",
+    "title": "摘下眼镜的样子",
+    "cat": "日常",
+    "story": "她摘下眼镜揉鼻梁,刘海散落露出完整的脸,你才发现她眼睛这么好看,她戴回眼镜瞪你「…在看什么」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emo": "害羞",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "cafe",
+      "sitting",
+      "looking_at_viewer",
+      "glasses",
+      "apron"
+    ],
+    "mature": false,
+    "location": "cafe",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,shiki_natsume,cafe, sitting, looking_at_viewer, glasses, apron"
+  },
+  {
+    "id": "sc157",
+    "title": "病弱的夏目",
+    "cat": "日常",
+    "story": "她躺在床上输液,脸色苍白却对你笑「…只是小感冒」,你想亲她额头却怕弄疼她",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emo": "幸福",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "hospital",
+      "bed",
+      "sick",
+      "looking_at_viewers",
+      "微笑"
+    ],
+    "mature": true,
+    "location": "hospital",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,shiki_natsume,hospital, bed, sick, looking_at_viewers, 微笑"
   }
 ]
