@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gallery · AI CG Studio</title>
 <link rel="stylesheet" href="../css/design-system.css">
+<link rel="stylesheet" href="../css/scene-card.css">
 <script src="nav.js"></script>
+<script src="scene-card.js"></script>
 <script src="theme.js"></script>
 <style>
   .page { max-width: 1200px; margin: 0 auto; padding: var(--s-6) var(--s-5); }
@@ -21,19 +23,21 @@
 
   .timeline-group { margin-bottom: var(--s-6); }
   .timeline-head { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: var(--s-3); padding-left: var(--s-2); border-left: 2px solid var(--accent); }
-
   .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--s-4); }
-  .gal-card { background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-lg); overflow: hidden; cursor: pointer; transition: border-color var(--t-fast), transform var(--t-fast); }
-  .gal-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-  .gal-thumb { aspect-ratio: 4/3; background: linear-gradient(135deg, var(--bg-deep), var(--bg-elevated)); display: flex; align-items: center; justify-content: center; font-size: 2.4rem; position: relative; overflow: hidden; }
-  .gal-thumb::after { content:""; position:absolute; inset:0; background: radial-gradient(circle at 30% 30%, var(--accent-glow), transparent 60%); opacity: 0.45; }
+
+  /* Gallery 卡扩展块(统一 SceneCard + 业务独特内容) */
+  .gal-cover { aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; font-size: 2.4rem; position: relative; overflow: hidden; }
+  .gal-cover::after { content:""; position:absolute; inset:0; background: radial-gradient(circle at 30% 30%, var(--accent-glow), transparent 60%); opacity: 0.45; }
   .gal-ver { position: absolute; top: var(--s-2); left: var(--s-2); background: var(--bg-surface); border-radius: 12px; padding: 2px 8px; font-size: 0.7rem; font-weight: 600; z-index: 2; }
   .gal-fav { position: absolute; top: var(--s-2); right: var(--s-2); z-index: 2; font-size: 1rem; }
-  .gal-body { padding: var(--s-3); }
-  .gal-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .gal-meta { font-size: 0.75rem; color: var(--text-muted); margin-bottom: var(--s-2); }
-  .gal-stars { font-size: 0.78rem; color: var(--text-muted); }
-  .gal-stars .on { color: var(--mood-joy); }
+  .gal-seed { font-size: 0.72rem; color: var(--text-muted); margin-top: var(--s-1); }
+  .gal-rating { display: inline-flex; gap: 1px; font-size: 0.78rem; color: var(--text-muted); }
+  .gal-rating .on { color: var(--mood-joy); }
+
+  @media (max-width: 600px) {
+    .gallery-grid { grid-template-columns: 1fr 1fr; }
+    .detail-props { grid-template-columns: repeat(2, 1fr); }
+  }
 
   /* detail overlay */
   .detail-overlay { position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.65); display: none; align-items: center; justify-content: center; padding: var(--s-4); }
@@ -93,9 +97,13 @@
   let scenes = [], loras = [], history = [], filterFav = false;
 
   function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-  function stars(n){ return '<span class="gal-stars">'+'★'.repeat(n)+'☆'.repeat(5-n)+'<span>'; }
+  function stars(n){ return '<span class="sc-stars">'+[1,2,3,4,5].map(function(i){return '<span class="'+(i<=n?'on':'')+'">★</span>';}).join('')+'</span>'; }
   function avgRating(r){ if(!r) return 0; return Math.round((r.face+r.expression+r.composition+r.hands+r.atmosphere)/5); }
   function sceneTitle(id){ const s = scenes.find(x=>x.id===id); return s ? s.title : (id||'—'); }
+  function charName(id){
+    const s = scenes.find(x=>x.id===id); if (s){ return s.char==='nene'?'宁宁':(s.char==='natsume'?'夏目':(s.char||'·')); }
+    return '·';
+  }
   function loraName(id){
     if(!id) return '—';
     const l = loras.find(x=> x.id===id || (x.name && id && (x.name===id || id.startsWith(x.name)) ));
@@ -144,16 +152,16 @@
 
   function card(h){
     const avg = avgRating(h.rating);
-    return `<div class="gal-card" onclick="window.__openDetail(${h.id})">
-      <div class="gal-thumb">
-        🎬
+    return `<div class="sc sc-grid" onclick="window.__openDetail(${h.id})">
+      <div class="sc-band" style="height:130px;">
+        <div class="gal-cover" style="position:absolute;inset:0;">🎬</div>
         <span class="gal-ver">v${h.version||1}</span>
         ${h.favorite?'<span class="gal-fav">💜</span>':''}
       </div>
-      <div class="gal-body">
-        <div class="gal-title">${esc(sceneTitle(h.scene))}</div>
-        <div class="gal-meta">${esc(h.character)} · seed ${h.seed||'—'} · ${fmtDate(h.timestamp)}</div>
-        <div>${stars(avg)}</div>
+      <div class="sc-body">
+        <div class="sc-title">${esc(sceneTitle(h.scene))}</div>
+        <div class="sc-meta"><span class="sc-meta-l">${stars(avg)}</span><span class="sc-meta-r">${esc(charName(h.scene))} · ${fmtDate(h.timestamp)}</span></div>
+        <div class="gal-seed">seed ${h.seed||'—'}</div>
       </div>
     </div>`;
   }

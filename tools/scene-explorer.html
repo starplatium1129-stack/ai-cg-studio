@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Scene Explorer · AI CG Studio</title>
 <link rel="stylesheet" href="../css/design-system.css">
+<link rel="stylesheet" href="../css/scene-card.css">
 <script src="nav.js"></script>
+<script src="scene-card.js"></script>
 <script src="theme.js"></script>
 <style>
   .page { max-width: 1100px; margin: 0 auto; padding: var(--s-5) var(--s-4); }
@@ -28,23 +30,18 @@
 
   /* Grid */
   .scene-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--s-4); }
-  .scene-card { background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-lg); padding: var(--s-4); cursor: pointer; transition: all var(--t-fast); display: flex; flex-direction: column; }
-  .scene-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: var(--shadow-md); }
-  .scene-name { font-weight: 700; font-size: 1.05rem; margin-bottom: var(--s-2); display: flex; align-items: baseline; gap: var(--s-2); }
-  .mature-dot { font-size: 0.7rem; vertical-align: super; }
-  .scene-story { font-size: 0.88rem; color: var(--text-secondary); margin-bottom: var(--s-3); line-height: 1.6; font-style: italic; flex: 1; }
-  .scene-spec { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-2); margin-bottom: var(--s-3); }
-  .spec-item { background: var(--bg-deep); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); }
-  .spec-label { font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
-  .spec-value { font-size: 0.82rem; font-weight: 600; color: var(--accent); margin-top: 2px; }
-  .scene-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: var(--s-3); }
-  .scene-tag { padding: 2px 8px; background: var(--bg-elevated); border-radius: 20px; font-size: 0.7rem; color: var(--text-secondary); }
-  .scene-tag.emotion { color: var(--accent); border: 1px solid var(--accent); background: var(--accent-soft); }
-  .scene-tag.char-color { color: var(--info); }
-  .scene-card-footer { display: flex; gap: var(--s-2); }
-  .scene-card-footer .btn { flex: 1; padding: var(--s-2); font-size: 0.82rem; }
 
-  .empty-state { text-align: center; padding: var(--s-8); color: var(--text-muted); }
+  /* Explorer 卡内扩展块(统一SceneCard + 业务独特内容) */
+  .ex-spec { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-2); margin-bottom: var(--s-2); }
+  .ex-spec-item { background: var(--bg-deep); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); }
+  .ex-spec-label { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .ex-spec-value { font-size: 0.8rem; font-weight: 600; color: var(--accent); margin-top: 2px; }
+  .ex-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: var(--s-2); }
+  .ex-tag { padding: 2px 8px; background: var(--bg-elevated); border-radius: 20px; font-size: 0.68rem; color: var(--text-secondary); }
+  .ex-tag.ex-emotion { color: var(--accent); border: 1px solid var(--accent); background: var(--accent-soft); }
+  .ex-tag.ex-char { color: var(--info); }
+  .ex-actions { display: flex; gap: var(--s-2); }
+  .ex-actions .btn { flex: 1; padding: var(--s-2); font-size: 0.82rem; }
 
   @media (max-width: 768px) {
     .scene-grid { grid-template-columns: 1fr; }
@@ -113,13 +110,13 @@ function loadScenes(){
       }
     })
     .catch(function(err){
-      if (grid) grid.innerHTML = '<div class="empty-state">⚠️ 场景数据加载失败。<br>请通过 <code>localhost</code> 访问(不要用 file:// 直接打开)。<br><small>' + err.message + '</small></div>';
+      if (grid) grid.innerHTML = '<div class="sc-empty"><div class="ic">⚠️</div><p>场景数据加载失败。<br>请通过 <code>localhost</code> 访问(不要用 file:// 直接打开)。<br><small>' + err.message + '</small></p></div>';
     });
 }
 loadScenes();
 
 function renderSceneCats(){
-  var cats = ['全部'].concat(Array.from(new Set(SCENES.map(function(s){ return s.category || '其他'; })));
+  var cats = ['全部'].concat(Array.from(new Set(SCENES.map(function(s){ return s.category || '其他'; }))));
   var el = document.getElementById('sceneCats'); el.innerHTML = '';
   cats.forEach(function(c){
     var b = document.createElement('div');
@@ -142,31 +139,42 @@ function renderScenes(){
     var todMap = {morning:'清晨',afternoon:'午后',sunset:'黄昏',night:'夜晚',dawn:'黎明',evening:'夜晚'};
     var tod = s.timeOfDay ? (todMap[s.timeOfDay]||s.timeOfDay) : '';
     var charName = s.char === 'nene' ? '宁宁' : (s.char === 'natsume' ? '夏目' : s.char);
-    var card = document.createElement('div'); card.className = 'scene-card';
-    var tags = s.tags.slice(0,3).map(function(t){ return '<span class="scene-tag">'+t+'</span>'; }).join('');
-    card.innerHTML =
-      '<div class="scene-name">' + s.title + (s.mature ? ' <span class="mature-dot">🔞</span>' : '') + '</div>' +
-      '<div class="scene-story">' + s.story + '</div>' +
-      '<div class="scene-spec">' +
-        '<div class="spec-item"><div class="spec-label">情绪</div><div class="spec-value">' + s.emotion + '</div></div>' +
-        '<div class="spec-item"><div class="spec-label">角色</div><div class="spec-value">' + charName + '</div></div>' +
-        '<div class="spec-item"><div class="spec-label">季节</div><div class="spec-value">' + (season || '—') + '</div></div>' +
-        '<div class="spec-item"><div class="spec-label">时段</div><div class="spec-value">' + (tod || '—') + '</div></div>' +
-      '</div>' +
-      '<div class="scene-tags">' +
-        '<span class="scene-tag emotion">' + s.emotion + '</span>' +
-        '<span class="scene-tag char-color">' + s.char + '</span>' +
-        (s.category ? '<span class="scene-tag">' + s.category + '</span>' : '') +
-        (season ? '<span class="scene-tag">' + season + '</span>' : '') + tags +
-      '</div>' +
-      '<div class="scene-card-footer">' +
-        '<button class="btn btn-primary" onclick="openDirector(\'' + s.id + '\')">🎬 导演这张</button>' +
-        '<button class="btn btn-ghost" onclick="showDetail(\'' + s.id + '\')">📖 故事</button>' +
-      '</div>';
-    grid.appendChild(card);
+    grid.appendChild(createSceneCard(s, {
+      mode: 'grid',
+      clickable: false,
+      suppressTags: true,
+      onPick: function(){ openDirector(s.id); },
+      beforeActions: function(scene){
+        var tags = scene.tags.slice(0,3).map(function(t){ return '<span class="ex-tag">'+t+'</span>'; }).join('');
+        return '' +
+          '<div class="ex-spec">' +
+            '<div class="ex-spec-item"><div class="ex-spec-label">情绪</div><div class="ex-spec-value">' + (scene.emotion||'') + '</div></div>' +
+            '<div class="ex-spec-item"><div class="ex-spec-label">角色</div><div class="ex-spec-value">' + charName + '</div></div>' +
+            '<div class="ex-spec-item"><div class="ex-spec-label">季节</div><div class="ex-spec-value">' + (season||'—') + '</div></div>' +
+            '<div class="ex-spec-item"><div class="ex-spec-label">时段</div><div class="ex-spec-value">' + (tod||'—') + '</div></div>' +
+          '</div>' +
+          '<div class="ex-tags">' +
+            '<span class="ex-tag ex-emotion">' + (scene.emotion||'') + '</span>' +
+            '<span class="ex-tag ex-char">' + (scene.char||'') + '</span>' +
+            tags +
+          '</div>' +
+          '<div class="ex-actions">' +
+            '<button class="btn btn-primary" data-dir="' + scene.id + '">🎬 导演这张</button>' +
+            '<button class="btn btn-ghost" data-detail="' + scene.id + '">📖 故事</button>' +
+          '</div>';
+      }
+    }));
   });
-  if (!grid.children.length) { grid.innerHTML = '<div class="empty-state">没有匹配的场景。<br>试试切到其他分类或清除搜索。</div>'; }
+  if (!grid.children.length) { grid.innerHTML = '<div class="sc-empty"><div class="ic">🌸</div><p>没有匹配的场景。<br>试试切到其他分类或清除搜索。</p></div>'; }
 }
+
+// 事件委托(explorer 卡由 createSceneCard 生成,按钮用 data 属性)
+document.addEventListener('click', function(e){
+  var dir = e.target.closest('[data-dir]');
+  if (dir){ openDirector(dir.getAttribute('data-dir')); return; }
+  var det = e.target.closest('[data-detail]');
+  if (det){ showDetail(det.getAttribute('data-detail')); }
+});
 
 function filterScenes(q){ renderScenes(); }
 

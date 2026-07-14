@@ -5,10 +5,11 @@
      opt.clickable  true → 整卡 click 触发 onPick
      opt.onPick     scene => void      整卡点击
      opt.actions   [{label,icon,primary(true|false),href?,onclick?}] 最多 2 个按钮
+     opt.suppressTags  true → 不渲染默认 .sc-tags,全交给 beforeActions(explorer 用它接管标签区)
      opt.rating    0..5
      opt.meta      覆盖底部 meta(默认 scene.category + weather)
-
-   造型:深色底 + 卡片内结构完全组件化,不再重写 HTML。
+     opt.beforeActions(html, scene)  钩子:注入 extra markup(在 .sc-actions 位之前),
+                                      返回 html 字符串追加到 .sc-body。Explorer 用它插 spec/标签/按钮。
    ============================================================ */
 (function () {
   'use strict';
@@ -55,12 +56,15 @@
     var limit = mode === 'strip' ? 2 : 3;
     var tags = (scene.tags || []).slice(0, limit);
     if (scene.emotion && tags.length < limit) tags.push(scene.emotion);
-    html += '<div class="sc-tags">' + tags.map(function(t){ return '<span class="sc-tag">' + esc(t) + '</span>'; }).join('') + '</div>';
+    if (!opt.suppressTags) html += '<div class="sc-tags">' + tags.map(function(t){ return '<span class="sc-tag">' + esc(t) + '</span>'; }).join('') + '</div>';
 
     // meta 行
     var ratingHtml = (opt.rating != null && opt.rating > 0) ? stars(opt.rating) : '';
     var metaText = opt.meta || [(scene.season||''), (scene.weather||'')].filter(Boolean).join(' · ');
     html += '<div class="sc-meta"><span class="sc-meta-l">' + ratingHtml + '</span><span class="sc-meta-r">' + esc(metaText) + '</span></div>';
+
+    // 钩子:在按钮位前注入自定义 markup(Explorer 用它插 spec/标签/footer)
+    if (typeof opt.beforeActions === 'function') html += opt.beforeActions(scene);
 
     // 操作按钮
     if (opt.actions && opt.actions.length) {
