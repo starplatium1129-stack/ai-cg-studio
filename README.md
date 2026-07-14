@@ -1,8 +1,8 @@
 # AI CG Studio
 
-> **像导演一样创作 Galgame CG**
+> **Direct your Galgame CG like a director**
 >
-> 不是写 Prompt。选一个 Scene,讲一个瞬间,让 AI 完成画面。
+> Not writing Prompts. Pick a Scene, tell a moment, let AI paint.
 
 中文: [README_zh.md](README_zh.md)
 

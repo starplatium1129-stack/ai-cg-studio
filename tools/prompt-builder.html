@@ -632,6 +632,13 @@ function restoreFromEntry(h, isVariant){
   document.querySelectorAll('#opt-lighting .option').forEach(function(o){ o.classList.toggle('selected', o.dataset.id === state.selections.lighting); });
   document.querySelectorAll('#opt-composition .option').forEach(function(o){ o.classList.toggle('selected', o.dataset.id === state.selections.composition); });
   document.querySelectorAll('#moodGrid .mood-card').forEach(function(m){ m.classList.toggle('selected', m.dataset.id === state.colorMood); });
+  // 恢复出图参数:cfg / steps / sampler / size / seed / negative
+  if (h.cfg!=null){ var _cfg=document.getElementById('cfg'); if(_cfg) _cfg.value=h.cfg; }
+  if (h.steps!=null){ var _st=document.getElementById('steps'); if(_st) _st.value=h.steps; }
+  if (h.sampler!=null){ var _sa=document.getElementById('sampler'); if(_sa) _sa.value=h.sampler; }
+  if (h.size!=null){ var _sz=document.getElementById('size'); if(_sz) _sz.value=h.size; }
+  if (h.seed!=null && isFinite(Number(h.seed))){ window.__lastSeed__=Number(h.seed); }
+  var _neg=document.getElementById('negative'); if(_neg){ _neg.checked = h.negative ? true : false; }
   renderManualTags(); renderTraits(); renderSelRow();
   flash('↩️ 已载入' + (isVariant ? '变体' : '重新生成') + ': v' + (h.version||1));
 }
@@ -861,7 +868,9 @@ function renderLightHint(hint, title) {
 }
 function clearLightHint() { const el=document.getElementById('sceneLightHint'); if(el) el.classList.remove('show'); }
 function findEmotionId(name) {
-  const m = { '开心':'happy','害羞':'shy','思念':'miss','期待':'expect','紧张':'nervous','温柔':'gentle','感动':'moved','失落':'sad','平静':'calm','幸福':'joyful','放松':'relaxed','认真':'serious','恋爱':'love','困倦':'sleepy','撒娇':'spoiled','委屈':'wronged' };
+  const m = { '开心':'happy','害羞':'shy','思念':'miss','期待':'expect','紧张':'nervous','温柔':'gentle','感动':'moved','失落':'sad','平静':'calm','幸福':'joyful','放松':'relaxed','认真':'serious','恋爱':'love','困倦':'sleepy','撒娇':'spoiled','委屈':'wronged',
+    /* scenes.json 中额外的情绪值映射到最接近的 EMOTION */
+    '惊喜':'expect','忧郁':'sad','悲伤':'sad','坚强':'serious','日常':'calm','羞怯':'shy','诱惑':'love','热烈':'love','亲密':'love' };
   return m[name] || null;
 }
 // ========== SCENE LIBRARY (内联, file:// / http:// 通用) ==========
@@ -965,8 +974,8 @@ function buildParts() {
   }
   if (sel.emotion.length) parts.push({ cls:'t', text: norm(sel.emotion.map(e => PROMPT_MAP.emotion[e]).join(', ')) });
   if (sel.shot) parts.push({ cls:'t', text: norm(SHOT_PROMPT[sel.shot] || '') });
-  if (sel.lighting) parts.push({ cls:'c', text: norm(LIGHTING_PROMPT[sel.lighting]) });
-  if (sel.composition) parts.push({ cls:'t', text: norm(COMPOSITION_PROMPT[sel.composition]) });
+  if (sel.lighting) parts.push({ cls:'c', text: norm(LIGHTING_PROMPT[sel.lighting] || '') });
+  if (sel.composition) parts.push({ cls:'t', text: norm(COMPOSITION_PROMPT[sel.composition] || '') });
   if (state.manualTags.size) parts.push({ cls:'t', text: norm(Array.from(state.manualTags).join(', ')) });
   // 智能 tail:按镜头/场景决定附加,避免 POV+looking_at_viewer 矛盾 / 夜景+cinematic_lighting 违和
   if (tail && !state.concise) {
@@ -1270,7 +1279,7 @@ function renderHistory() {
     </div>`;
   }).join('');
 }
-function loadHistoryId(id) { const h = state.history.find(x => x.id === id); if (h) flash('↩️ 已载入 (' + (h.sceneTitle||h.character) + ')'); }
+function loadHistoryId(id) { const h = state.history.find(x => x.id === id); if (h) restoreFromEntry(h, false); }
 function copyHistoryId(id) { const h = state.history.find(x => x.id === id); if (!h) return; navigator.clipboard.writeText(h.prompt||'').then(() => flash('📋 已复制')); }
 function deleteHistoryId(id) { state.history = state.history.filter(x => x.id !== id); localStorage.setItem(HIS_KEY, JSON.stringify(state.history)); renderHistory(); }
 
