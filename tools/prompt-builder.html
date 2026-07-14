@@ -23,7 +23,15 @@
   /* ---- 三栏工作台 ---- */
   .director-workspace { display: grid; grid-template-columns: 1fr 1.15fr 1fr; gap: var(--s-4); align-items: start; }
   .director-col { display: flex; flex-direction: column; gap: var(--s-4); min-width: 0; }
+  /* Prompt 降级:决策卡视觉优先(右栏桌面端提到中栏前面) */
+  .col-right { order: -1; }
   .col-center { position: sticky; top: var(--s-5); }
+  /* Prompt 监视器默认折叠 */
+  .monitor-preview-collapsed .preview-output,
+  .monitor-preview-collapsed .token-row,
+  .monitor-preview-collapsed .art-warn { display: none; }
+  .monitor-toggle { display:inline-block; margin-left:auto; font-size:0.75rem; opacity:0.7; cursor:pointer; }
+  .monitor-toggle:hover { opacity:1; }
 
   .panel { background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-lg); padding: var(--s-4); }
   .panel-title { font-size: 0.78rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--s-3); }
@@ -203,12 +211,12 @@
     .director-workspace { grid-template-columns: 1fr 1.3fr; }
     .col-left { grid-column: 1 / -1; flex-direction: row; flex-wrap: wrap; }
     .col-left .panel { flex: 1; min-width: 240px; }
-    .col-right { grid-column: 2; }
+    .col-right { grid-column: 2; order: 0; }
     .col-center { grid-column: 1; grid-row: 2; position: static; }
   }
   @media (max-width: 768px) {
     .director-workspace { grid-template-columns: 1fr; }
-    .col-left, .col-center, .col-right { grid-column: 1; }
+    .col-left, .col-center, .col-right { grid-column: 1; order: 0; }
     .col-left { flex-direction: column; }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -282,10 +290,10 @@
 
     <!-- ===== 中栏: Prompt 监视器 ===== -->
     <div class="director-col col-center">
-      <div class="monitor">
+      <div class="monitor monitor-preview-collapsed" id="promptMonitor">
         <div class="monitor-corners"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
         <div class="monitor-rec"><span class="dot"></span> SCENE</div>
-        <div class="panel-title">✨ Prompt 实时预览</div>
+        <div class="panel-title" style="display:flex;align-items:center">✨ Prompt 实时预览 <span class="monitor-toggle" id="monitorToggle" onclick="toggleMonitor()">展开 ▶</span></div>
         <div class="preview-output" id="preview">(选择左侧 Scene 或在右侧做导演决策,Prompt 在这里实时生成)</div>
         <div class="token-row"><span class="token-counter" id="liveTokCount"><span class="num">0</span> tok <span class="bar"><i></i></span> / 77</span></div>
         <div class="art-warn" id="artWarn">⚠️ 检测到违反美术规范的标签</div>
@@ -312,7 +320,7 @@
 
       <div class="result-frame" id="resultStep">
         <div class="panel-title">📝 输出 Result</div>
-        <div class="preview-output" id="finalPrompt" style="display:none"></div>
+        <div class="preview-output" id="finalPrompt"></div>
         <div class="preview-actions">
           <button class="btn btn-ghost" onclick="toggleResult()">展开 Prompt</button>
           <button class="btn btn-primary" onclick="copyPrompt()">📋 复制</button>
@@ -1285,6 +1293,8 @@ function deleteHistoryId(id) { state.history = state.history.filter(x => x.id !=
 
 // ========== TRAIN ==========
 function toggleTrain() { const c = document.getElementById('trainContent'); const b = document.querySelector('.toggle-btn'); c.classList.toggle('open'); b.classList.toggle('open'); }
+function toggleMonitor() { const m=document.getElementById('promptMonitor'); const t=document.getElementById('monitorToggle'); m.classList.toggle('monitor-preview-collapsed'); const collapsed=m.classList.contains('monitor-preview-collapsed'); if(t) t.textContent = collapsed ? '展开 ▶' : '收起 ▼'; }
+function toggleResult() { const f=document.getElementById('finalPrompt'); if(!f) return; const collapsed=(f.style.display==='none'||!f.style.display); f.style.display=collapsed?'block':'none'; if(event.target && event.target.tagName==='BUTTON') event.target.textContent = collapsed?'收起 Prompt':'展开 Prompt'; }
 
 // ========== TOAST ==========
 let toastTimer;
