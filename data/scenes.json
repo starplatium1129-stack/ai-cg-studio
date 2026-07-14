@@ -4895,5 +4895,524 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,shiki_natsume,hospital, bed, sick, looking_at_viewers, 微笑"
+  },
+  {
+    "id": "sc158",
+    "title": "魅魔装的完全体",
+    "cat": "恋爱",
+    "story": "她穿上完整魅魔装站在你面前,布料少得可怜,蝙蝠尾巴紧张地卷起来「…转过去!三十秒!」",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v11",
+    "emo": "害羞",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "bedroom",
+      "standing",
+      "succubus",
+      "looking_away",
+      "tail",
+      "revealing"
+    ],
+    "mature": true,
+    "location": "bedroom",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,ayachi_nene,bedroom, standing, succubus, looking_away, tail, revealing"
+  },
+  {
+    "id": "sc159",
+    "title": "泳衣的背扣",
+    "cat": "恋爱",
+    "story": "泳衣背扣怎么也扣不好,她背对你求助「…帮我弄一下」露背泳衣让你大脑宕机",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v11",
+    "emo": "害羞",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "beach",
+      "standing",
+      "swimsuit",
+      "looking_back",
+      "bare_shoulders"
+    ],
+    "mature": true,
+    "location": "beach",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,ayachi_nene,beach, standing, swimsuit, looking_back, bare_shoulders"
+  },
+  {
+    "id": "sc160",
+    "title": "猫娘女仆",
+    "cat": "日常",
+    "story": "她穿女仆装+猫耳发带「宁宁酱喵~」,这套组合的杀伤力让你当场红到耳朵",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v11",
+    "emo": "开心",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "cafe",
+      "standing",
+      "maid",
+      "cat",
+      "looking_at_viewer",
+      "apron"
+    ],
+    "mature": false,
+    "location": "cafe",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,ayachi_nene,cafe, standing, maid, cat, looking_at_viewer, apron"
+  },
+  {
+    "id": "sc161",
+    "title": "湿身衬衫",
+    "cat": "日常",
+    "story": "突如其来的暴雨把她衬衫浇透,白色布料贴在身上什么都看到,她双手抱胸「别看!」但你自己已经说不出话",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v11",
+    "emo": "害羞",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "street",
+      "rain",
+      "wet",
+      "looking_away",
+      "wet_clothes",
+      "transparent"
+    ],
+    "mature": true,
+    "location": "street",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,ayachi_nene,street, rain, wet, looking_away, wet_clothes, transparent"
+  },
+  {
+    "id": "sc162",
+    "title": "睡衣没扣的两颗扣子",
+    "cat": "恋爱",
+    "story": "她穿着你的大号T恤,领口大得能看到锁骨和更深的地方,「…扣子都掉了」但她没打算扣起来",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v11",
+    "emo": "诱惑",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "bedroom",
+      "standing",
+      "shirt",
+      "looking_at_viewer",
+      "bare_shoulders"
+    ],
+    "mature": true,
+    "location": "bedroom",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,ayachi_nene,bedroom, standing, shirt, looking_at_viewer, bare_shoulders"
+  },
+  {
+    "id": "sc163",
+    "title": "体操服摔倒",
+    "cat": "日常",
+    "story": "体育课她摔倒在地,体操服蹭上去露出腰侧,你伸手想拉她就看到大片肌肤,两个人都红了脸",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v11",
+    "emo": "害羞",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "gym",
+      "lying",
+      "sport_clothes",
+      "looking_at_viewer",
+      "bare_skin"
+    ],
+    "mature": true,
+    "location": "gym",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,ayachi_nene,gym, lying, sport_clothes, looking_at_viewer, bare_skin"
+  },
+  {
+    "id": "sc164",
+    "title": "温泉浴巾滑落",
+    "cat": "恋爱",
+    "story": "温泉浴巾突然松开,她来不及抓住就被看个正着,尖叫一声蹲下去「变态!」",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v11",
+    "emo": "害羞",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "onsen",
+      "standing",
+      "towel",
+      "bare_shoulders",
+      "steamy"
+    ],
+    "mature": true,
+    "location": "onsen",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,ayachi_nene,onsen, standing, towel, bare_shoulders, steamy"
+  },
+  {
+    "id": "sc165",
+    "title": "运动bra外露",
+    "cat": "日常",
+    "story": "她锻炼完直接把外套脱了只剩运动bra,发现你在看就甩外套打你「…男生都是这种眼神吗!」",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v11",
+    "emo": "害羞",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "park",
+      "standing",
+      "sport_clothes",
+      "looking_away",
+      "sports_bra"
+    ],
+    "mature": true,
+    "location": "park",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,ayachi_nene,park, standing, sport_clothes, looking_away, sports_bra"
+  },
+  {
+    "id": "sc166",
+    "title": "迷你裙弯腰",
+    "cat": "恋爱",
+    "story": "迷你裙弯腰捡东西,从你的视角度能看到绝对领域,她起身发现你僵住就瞪了一眼「在看哪里啦!」",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v11",
+    "emo": "害羞",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "classroom",
+      "bending",
+      "looking_at_viewer",
+      "skirt_lift",
+      "mini_skirt"
+    ],
+    "mature": true,
+    "location": "classroom",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,ayachi_nene,classroom, bending, looking_at_viewer, skirt_lift, mini_skirt"
+  },
+  {
+    "id": "sc167",
+    "title": "女仆装的夏目",
+    "cat": "恋爱",
+    "story": "她说「这是个人爱好」,转身穿上黑白蕾丝女仆装,蝴蝶结系带勒出腰线「…不要盯着超过三秒」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emo": "害羞",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "bedroom",
+      "standing",
+      "maid",
+      "looking_at_viewer",
+      "apron",
+      "frills"
+    ],
+    "mature": true,
+    "location": "bedroom",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,shiki_natsume,bedroom, standing, maid, looking_at_viewer, apron, frills"
+  },
+  {
+    "id": "sc168",
+    "title": "脱围裙那一刻",
+    "cat": "恋爱",
+    "story": "咖啡馆打烊,她解下围裙的瞬间,衬衫领口松开两颗扣子,你才发觉她今天的打扮和平时不一样「…打烊了,回去吧」但声音很温柔",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emo": "诱惑",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "cafe",
+      "standing",
+      "apron",
+      "looking_at_viewer",
+      "shirt",
+      "undressing"
+    ],
+    "mature": true,
+    "location": "cafe",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,shiki_natsume,cafe, standing, apron, looking_at_viewer, shirt, undressing"
+  },
+  {
+    "id": "sc169",
+    "title": "夏目的锁骨",
+    "cat": "恋爱",
+    "story": "浴衣领口滑落到肩膀,她没发现你在看,月光下锁骨像大理石雕像,察觉后立刻拉上去「…这里冷」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emo": "害羞",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "night",
+      "standing",
+      "kimono",
+      "looking_away",
+      "bare_shoulders"
+    ],
+    "mature": true,
+    "location": "night",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,shiki_natsume,night, standing, kimono, looking_away, bare_shoulders"
+  },
+  {
+    "id": "sc170",
+    "title": "湿透的女仆",
+    "cat": "日常",
+    "story": "雨天没带伞的她落汤鸡一样跑进店里,女仆装贴在身上,你递毛巾她立刻抱住胸口「…去开暖气!」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emo": "害羞",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "cafe",
+      "standing",
+      "wet",
+      "looking_away",
+      "wet_clothes",
+      "maid"
+    ],
+    "mature": true,
+    "location": "cafe",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,shiki_natsume,cafe, standing, wet, looking_away, wet_clothes, maid"
+  },
+  {
+    "id": "sc171",
+    "title": "夏目的绝对领域",
+    "cat": "恋爱",
+    "story": "她穿高袜短裙弯腰系鞋带,这个视角能看到绝对领域和大腿,她起身发现你整个人僵住「…你的脸很红」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emo": "害羞",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "city",
+      "bending",
+      "looking_at_viewer",
+      "skirt",
+      "thighhighs"
+    ],
+    "mature": true,
+    "location": "city",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,shiki_natsume,city, bending, looking_at_viewer, skirt, thighhighs"
+  },
+  {
+    "id": "sc172",
+    "title": "解开头发的夏目",
+    "cat": "恋爱",
+    "story": "她散下平时扎好的长发,整个人的冷都融化了「…只是解开而已」但你已经看得说不出话",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emo": "诱惑",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "bedroom",
+      "standing",
+      "looking_at_viewer",
+      "hair_down",
+      "elegant"
+    ],
+    "mature": true,
+    "location": "bedroom",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,shiki_natsume,bedroom, standing, looking_at_viewer, hair_down, elegant"
+  },
+  {
+    "id": "sc173",
+    "title": "夏目的红色内衣",
+    "cat": "恋爱",
+    "story": "她感冒发烧你照顾她,脱外套时才发现里面穿的红色内衣「…别看!这只是刚好有这件」她脸红到不正常",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emo": "害羞",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "bedroom",
+      "lying",
+      "looking_away",
+      "sick",
+      "lingerie",
+      "red"
+    ],
+    "mature": true,
+    "location": "bedroom",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,shiki_natsume,bedroom, lying, looking_away, sick, lingerie, red"
   }
 ]
