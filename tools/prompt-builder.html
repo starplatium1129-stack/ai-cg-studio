@@ -32,16 +32,18 @@
   .monitor-preview-collapsed .art-warn { display: none; }
   .monitor-toggle { display:inline-block; margin-left:auto; font-size:0.75rem; opacity:0.7; cursor:pointer; }
   .monitor-toggle:hover { opacity:1; }
-  /* Scene 卡片色带(与 scene-card.js 同 weather 配色,区分场景) */
+  /* Scene 卡片色带(按分类着色,直观区分场景类型) */
   .scene-card { position:relative; padding:var(--s-3); background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-md); cursor:pointer; transition:border-color var(--t-fast), transform var(--t-fast); overflow:hidden; flex-shrink:0; min-height:0; }
   .scene-card:hover { border-color:var(--accent); transform:translateY(-2px); }
   .scene-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:4px; border-radius:var(--r-md) 0 0 var(--r-md); }
-  .scene-card[data-weather="晴"]::before { background:linear-gradient(180deg,#FFD54F,#FFB300); }
-  .scene-card[data-weather="多云"]::before { background:linear-gradient(180deg,#B0BEC5,#78909C); }
-  .scene-card[data-weather="阴"]::before { background:linear-gradient(180deg,#90A4AE,#546E7A); }
-  .scene-card[data-weather="雨"]::before { background:linear-gradient(180deg,#64B5F6,#1E88E5); }
-  .scene-card[data-weather="雪"]::before { background:linear-gradient(180deg,#E3F2FD,#90CAF9); }
-  .scene-card[data-weather="彩虹"]::before { background:linear-gradient(180deg,#F8BBD0,#CE93D8); }
+  .scene-card[data-category="校园"]::before { background:linear-gradient(180deg,#81C784,#388E3C); }
+  .scene-card[data-category="祭典"]::before { background:linear-gradient(180deg,#FF8A65,#D84315); }
+  .scene-card[data-category="节日"]::before { background:linear-gradient(180deg,#F06292,#C2185B); }
+  .scene-card[data-category="日常"]::before { background:linear-gradient(180deg,#4FC3F7,#0288D1); }
+  .scene-card[data-category="旅行"]::before { background:linear-gradient(180deg,#80DEEA,#00838F); }
+  .scene-card[data-category="恋爱"]::before { background:linear-gradient(180deg,#CE93D8,#6A1B9A); }
+  .scene-card[data-category="亲密"]::before { background:linear-gradient(180deg,#FF80AB,#AD1457); }
+  .scene-card[data-category="R15"]::before { background:linear-gradient(180deg,#CFD8DC,#37474F); }
   .scene-name { font-weight:700; font-size:0.92rem; margin-bottom:2px; }
   .scene-story { font-size:0.78rem; color:var(--text-secondary); margin-bottom:var(--s-2); line-height:1.5; }
   .scene-meta { display:flex; flex-wrap:wrap; gap:4px; }
@@ -820,7 +822,7 @@ function renderSceneCats() {
 function renderScenes() {
   const grid = document.getElementById('sceneGrid'); grid.innerHTML = '';
   SCENES.forEach((s, idx) => {
-    const card = document.createElement('div'); card.className = 'scene-card'; card.dataset.idx = idx; card.dataset.weather = s.weather || '';
+    const card = document.createElement('div'); card.className = 'scene-card'; card.dataset.idx = idx; card.dataset.category = s.category || '日常';
     const season = s.season ? ({春:'🌸',夏:'☀️',秋:'🍂',冬:'❄️'}[s.season]||'') + s.season : '';
     const tod = s.timeOfDay ? ({morning:'清晨',afternoon:'午后',sunset:'黄昏',night:'夜晚'}[s.timeOfDay]||s.timeOfDay) : '';
     card.innerHTML = `
