@@ -12,3 +12,5 @@ Thumbs.db
 
 # Node (如果以后加)
 node_modules/
+# Claude Code 本地配置
+.claude/
