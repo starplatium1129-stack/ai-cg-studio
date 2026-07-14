@@ -141,10 +141,10 @@ AI-CG-Studio/
 
 ```bash
 git clone https://github.com/starplatium1129-stack/ai-cg-studio.git
-cd ai-cg-studio
+cd ai-cg-studio/AI-CG-Studio
 # 双击 index.html, 或:
 python -m http.server 8090
-# 然后访问 http://localhost:8090
+# 然后访问 http://localhost:8090/index.html
 ```
 
 无需其他。纯 HTML + CSS + 原生 JS,零依赖(除 Google Fonts)。
