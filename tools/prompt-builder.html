@@ -3,267 +3,184 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prompt Builder · 导演工作台 · AI CG Studio</title>
+<title>Director · 导演工作台 · AI CG Studio</title>
 <link rel="stylesheet" href="../css/design-system.css">
 <script src="nav.js"></script>
 <script src="theme.js"></script>
 <style>
   /* ============================================================
-     Prompt Builder v5 — 导演工作台 (Story-first, Prompt-last)
-     世界观:
-       "用户永远不需要直接面对标签。系统负责翻译。"
-       "Prompt 只是语言，Scene 才是画面。"
+     Director — 三栏工作台 (Scene-first, Prompt-last)
+     左栏=剧本(Story·Character·Scene·Tags) 中栏=监视器(Prompt 预览)
+     右栏=导演台(5 张决策卡 + Generate)
      ============================================================ */
-  .pb { max-width: 1000px; margin: 0 auto; padding: var(--s-5) var(--s-4); }
-  .nav-back { display: inline-flex; align-items: center; gap: var(--s-2); color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4); }
+  .pb { max-width: 1400px; margin: 0 auto; padding: var(--s-5) var(--s-4) var(--s-7); }
+  .nav-back { display: inline-flex; align-items: center; gap: var(--s-2); color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4); text-decoration: none; }
   .nav-back:hover { color: var(--accent); }
-  .pb-header { text-align: center; margin-bottom: var(--s-5); }
-  .pb-title { font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, #E8E8F0 50%, #F06292); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: var(--s-2); }
-  .pb-sub { color: var(--text-secondary); }
-  .pb-ver { display: inline-block; font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent); border: 1px solid var(--accent); border-radius: 20px; padding: 1px 10px; margin-top: var(--s-2); letter-spacing: 0.05em; }
+  .pb-header { margin-bottom: var(--s-5); }
+  .pb-title { font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, var(--text-primary) 60%, var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: var(--s-1); }
+  .pb-sub { color: var(--text-secondary); font-size: 0.92rem; }
 
-  /* ---- Tabs ---- */
-  .pb-tabs { display: flex; gap: var(--s-2); margin-bottom: var(--s-4); flex-wrap: wrap; }
-  .pb-tab { padding: var(--s-2) var(--s-4); border-radius: var(--r-md); border: 1px solid var(--border-soft); background: var(--bg-surface); color: var(--text-secondary); cursor: pointer; font-size: 0.9rem; font-weight: 500; transition: all var(--t-fast); }
-  .pb-tab:hover { border-color: var(--accent); color: var(--accent); }
-  .pb-tab.active { background: var(--accent); color: var(--text-inverse); border-color: var(--accent); }
-  .pb-panel { display: none; animation: pbIn var(--t-base); }
-  .pb-panel.active { display: block; }
-  @keyframes pbIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  /* ---- 三栏工作台 ---- */
+  .director-workspace { display: grid; grid-template-columns: 1fr 1.15fr 1fr; gap: var(--s-4); align-items: start; }
+  .director-col { display: flex; flex-direction: column; gap: var(--s-4); min-width: 0; }
+  .col-center { position: sticky; top: var(--s-5); }
 
-  /* ---- Director step nav ---- */
-  .step-nav-bar { display: flex; align-items: center; gap: var(--s-2); margin-bottom: var(--s-4); overflow-x: auto; padding-bottom: 4px; }
-  .step-dot { display: flex; align-items: center; gap: 4px; cursor: pointer; flex-shrink: 0; }
-  .step-dot-num { width: 26px; height: 26px; border-radius: 50%; background: var(--bg-surface); border: 1px solid var(--border-soft); color: var(--text-muted); display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700; transition: all var(--t-fast); }
-  .step-dot.active .step-dot-num { background: var(--accent); color: var(--text-inverse); border-color: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
-  .step-dot.done .step-dot-num { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
-  .step-dot-label { font-size: 0.78rem; color: var(--text-muted); white-space: nowrap; }
-  .step-dot.active .step-dot-label { color: var(--text-primary); font-weight: 600; }
-  .step-line { flex: 1; height: 1px; background: var(--border-soft); min-width: 16px; }
+  .panel { background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-lg); padding: var(--s-4); }
+  .panel-title { font-size: 0.78rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--s-3); }
 
-  /* ---- Steps ---- */
-  .step { display: none; animation: fadeIn var(--t-base); }
-  .step.active { display: block; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-  .step-title { font-size: 1.15rem; font-weight: 700; margin-bottom: var(--s-2); display: flex; align-items: center; gap: var(--s-2); }
-  .step-desc { color: var(--text-secondary); margin-bottom: var(--s-3); font-size: 0.92rem; }
-  .step-actions { display: flex; justify-content: space-between; gap: var(--s-3); margin-top: var(--s-5); }
-
-  /* ---- Story input ---- */
-  .story-input { width: 100%; min-height: 80px; padding: var(--s-3) var(--s-4); background: var(--bg-deep); border: 2px solid var(--border-soft); border-radius: var(--r-lg); color: var(--text-primary); font-size: 1rem; line-height: 1.7; outline: none; transition: border-color var(--t-fast); resize: vertical; font-family: var(--font-sans); }
+  /* Story */
+  .story-input { width: 100%; min-height: 70px; padding: var(--s-3); background: var(--bg-deep); border: 2px solid var(--border-soft); border-radius: var(--r-lg); color: var(--text-primary); font-size: 0.95rem; line-height: 1.7; outline: none; transition: border-color var(--t-fast); resize: vertical; font-family: var(--font-sans); box-sizing: border-box; }
   .story-input:focus { border-color: var(--accent); }
   .story-input::placeholder { color: var(--text-muted); }
   .story-chips { display: flex; flex-wrap: wrap; gap: var(--s-1); margin-top: var(--s-2); }
-  .story-chip { padding: 4px 12px; background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: 20px; cursor: pointer; font-size: 0.8rem; color: var(--text-secondary); transition: all var(--t-fast); }
+  .story-chip { padding: 4px 12px; background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: 20px; cursor: pointer; font-size: 0.78rem; color: var(--text-secondary); transition: all var(--t-fast); }
   .story-chip:hover { border-color: var(--accent); color: var(--accent); }
 
-  /* ---- Char toggle ---- */
-  .char-row { display: flex; gap: var(--s-3); margin-bottom: var(--s-4); }
-  .char-btn { flex: 1; padding: var(--s-3); border-radius: var(--r-lg); border: 2px solid var(--border-soft); background: var(--bg-surface); color: var(--text-secondary); cursor: pointer; font-size: 0.95rem; font-weight: 600; transition: all var(--t-fast); }
+  /* Character */
+  .char-row { display: flex; gap: var(--s-3); }
+  .char-btn { flex: 1; padding: var(--s-2); border-radius: var(--r-md); border: 2px solid var(--border-soft); background: var(--bg-surface); color: var(--text-secondary); cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: all var(--t-fast); }
   .char-btn:hover { border-color: var(--accent); }
-  .char-btn.active { border-color: var(--accent); background: var(--accent-soft); color: var(--text-primary); box-shadow: 0 0 16px var(--accent-glow); }
+  .char-btn.active { border-color: var(--accent); background: var(--accent-soft); color: var(--text-primary); box-shadow: 0 0 14px var(--accent-glow); }
+  .traits-row { display: flex; gap: var(--s-2); flex-wrap: wrap; margin-top: var(--s-3); }
+  .trait-chip { padding: 3px 10px; background: var(--bg-elevated); border-radius: 12px; font-size: 0.75rem; color: var(--text-secondary); }
+  .traits-row:empty { margin-top: 0; }
 
-  /* ---- Option cards (single select) ---- */
-  .options { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--s-3); }
-  .option { background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-lg); padding: var(--s-3); text-align: center; cursor: pointer; transition: all var(--t-fast); }
-  .option:hover { border-color: var(--accent); background: var(--accent-soft); transform: translateY(-2px); }
-  .option.selected { border-color: var(--accent); background: var(--accent-soft); box-shadow: 0 0 14px var(--accent-glow); }
-  .option-icon { font-size: 1.6rem; margin-bottom: 2px; }
-  .option-name { font-weight: 600; font-size: 0.92rem; color: var(--text-primary); }
-  .option-en { font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 4px; }
-  .option-reason { font-size: 0.72rem; color: var(--accent); font-style: italic; margin-top: 4px; line-height: 1.4; }
-
-  /* ---- Chips (multi-select) ---- */
-  .chip-grid { display: flex; flex-wrap: wrap; gap: var(--s-2); }
-  .chip-select { display: inline-flex; align-items: center; gap: var(--s-1); padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 500; background: var(--bg-elevated); border: 1px solid var(--border-soft); color: var(--text-secondary); cursor: pointer; transition: all var(--t-fast); }
-  .chip-select:hover { border-color: var(--accent); color: var(--accent); }
-  .chip-select.selected { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
-
-  /* ---- Color moods ---- */
-  .mood-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: var(--s-3); }
-  .mood-card { background: var(--bg-surface); border: 2px solid var(--border-soft); border-radius: var(--r-lg); overflow: hidden; cursor: pointer; transition: all var(--t-fast); }
-  .mood-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-  .mood-card.selected { border-color: var(--accent); box-shadow: 0 0 16px var(--accent-glow); }
-  .mood-strip { display: flex; height: 36px; }
-  .mood-swatch { flex: 1; }
-  .mood-body { padding: var(--s-2) var(--s-3); }
-  .mood-name { font-weight: 600; font-size: 0.88rem; }
-  .mood-desc { font-size: 0.72rem; color: var(--text-muted); }
-
-  /* ---- Result card ---- */
-  .result-frame { background: linear-gradient(135deg, var(--bg-deep), rgba(240,98,146,0.04)); border: 2px solid var(--accent); border-radius: var(--r-xl); padding: var(--s-5); margin-top: var(--s-4); box-shadow: 0 0 32px var(--accent-glow); animation: fadeIn var(--t-base); }
-  .result-title { font-size: 1.2rem; font-weight: 700; margin-bottom: var(--s-3); display: flex; align-items: center; gap: var(--s-2); }
-  .result-story { background: var(--bg-elevated); border-radius: var(--r-md); padding: var(--s-3); margin-bottom: var(--s-4); font-size: 1rem; color: var(--text-primary); line-height: 1.8; font-style: italic; border-left: 3px solid var(--accent); }
-  .summary { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: var(--s-3); margin-bottom: var(--s-4); }
-  .summary-item { background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); text-align: center; }
-  .summary-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
-  .summary-value { font-size: 0.88rem; font-weight: 600; color: var(--accent); margin-top: 2px; }
-
-  /* ---- Prompt collapsible ---- */
-  .prompt-collapse { background: var(--bg-elevated); border: 1px solid var(--border-soft); border-radius: var(--r-md); }
-  .prompt-collapse-btn { width: 100%; padding: var(--s-3); background: none; border: none; color: var(--text-secondary); font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: var(--s-2); transition: color var(--t-fast); text-align: left; font-family: var(--font-sans); }
-  .prompt-collapse-btn:hover { color: var(--accent); }
-  .prompt-collapse-btn .arrow { display: inline-block; transition: transform var(--t-fast); font-size: 0.7rem; }
-  .prompt-collapse-btn.open .arrow { transform: rotate(90deg); }
-  .prompt-collapse-body { display: none; padding: 0 var(--s-3) var(--s-3); }
-  .prompt-collapse-body.open { display: block; }
-  .prompt-output { background: var(--bg-deep); border-radius: var(--r-sm); padding: var(--s-3); font-family: var(--font-mono); font-size: 0.82rem; line-height: 1.8; color: var(--text-secondary); word-break: break-all; white-space: pre-wrap; border: 1px solid var(--border-soft); }
-  .prompt-output .q { color: var(--mood-joy); }
-  .prompt-output .c { color: var(--accent); }
-  .prompt-output .t { color: var(--info); }
-  .prompt-output .l { color: var(--success); }
-  .prompt-output .n { color: var(--danger); }
-  .prompt-output .violate { background: rgba(239,83,80,0.2); color: var(--danger); padding: 0 4px; border-radius: 3px; text-decoration: underline; }
-  .tk-cn { opacity:0.55; font-size:0.72em; color: var(--accent); font-family: var(--font-sans); font-weight:400; }
-
-  /* ---- Art-direction warning ---- */
-  .art-warn { display: none; align-items: center; gap: var(--s-2); background: rgba(255,167,38,0.12); border: 1px solid var(--warning); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); margin-bottom: var(--s-3); color: var(--warning); font-size: 0.85rem; font-weight: 500; }
-  .art-warn.show { display: flex; }
-
-  /* ---- Token counter ---- */
-  .token-counter { display:inline-flex; align-items:center; gap:6px; font-family: var(--font-mono); font-size:0.78rem; font-weight:600; padding:2px 10px; border-radius:20px; background: var(--bg-surface); border:1px solid var(--border-soft); }
-  .token-counter .bar { width:60px; height:6px; border-radius:3px; background: var(--bg-elevated); overflow:hidden; }
-  .token-counter .bar > i { display:block; height:100%; border-radius:3px; transition: width var(--t-base), background var(--t-base); }
-  .token-counter.ok { color: var(--success); } .token-counter.ok .bar > i { background: var(--success); }
-  .token-counter.warn { color: var(--warning); } .token-counter.warn .bar > i { background: var(--warning); }
-  .token-counter.over { color: var(--danger); } .token-counter.over .bar > i { background: var(--danger); }
-  .token-counter.dim { opacity:0.6; }
-
-  /* ---- Scene-aware lighting hint ---- */
-  .scene-light-hint { display:none; align-items:center; gap:6px; font-size:0.78rem; color:var(--info); margin-top: var(--s-1); }
-  .scene-light-hint.show { display:flex; }
-  .scene-light-hint button { background:var(--info-soft); border:1px solid var(--info); color:var(--info); border-radius:12px; padding:1px 8px; font-size:0.72rem; cursor:pointer; }
-
-  /* ---- Concise mode toggle ---- */
-  .mode-toggle { display:flex; align-items:center; gap:6px; margin-left:auto; }
-  .mode-toggle label { font-size:0.78rem; color:var(--text-secondary); display:flex; align-items:center; gap:4px; cursor:pointer; }
-  .mode-toggle input { accent-color: var(--accent); width:32px; height:16px; appearance:none; background:var(--bg-elevated); border:1px solid var(--border-soft); border-radius:10px; position:relative; cursor:pointer; transition:background var(--t-fast); }
-  .mode-toggle input:checked { background:var(--accent); border-color:var(--accent); }
-  .mode-toggle input::after { content:''; position:absolute; top:1px; left:1px; width:12px; height:12px; border-radius:50%; background:var(--text-primary); transition:transform var(--t-fast); }
-  .mode-toggle input:checked::after { transform:translateX(16px); }
-
-  /* ---- Scene picker (inside step 1) ---- */
-  .scene-mini-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--s-2); }
-  .scene-mini-card { background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); cursor: pointer; transition: all var(--t-fast); }
-  .scene-mini-card:hover { border-color: var(--accent); transform: translateY(-1px); }
-  .scene-mini-name { font-weight: 600; font-size: 0.85rem; color: var(--text-primary); margin-bottom: 2px; }
-  .scene-mini-story { font-size: 0.72rem; color: var(--text-muted); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-
-  /* ---- Scene grid (tab 2) ---- */
-  .scene-cats { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-bottom: var(--s-3); }
-  .scene-cat { padding: 5px 14px; border: 1px solid var(--border-soft); background: var(--bg-surface); color: var(--text-secondary); border-radius: 20px; cursor: pointer; font-size: 0.82rem; font-weight: 500; transition: all var(--t-fast); }
+  /* Scene library (compact list) */
+  .scene-search { width: 100%; padding: var(--s-2) var(--s-3); background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-md); color: var(--text-primary); font-size: 0.85rem; outline: none; margin-bottom: var(--s-2); }
+  .scene-search:focus { border-color: var(--accent); }
+  .scene-search::placeholder { color: var(--text-muted); }
+  .scene-cats { display: flex; flex-wrap: wrap; gap: var(--s-1); margin-bottom: var(--s-2); }
+  .scene-cat { padding: 3px 10px; border: 1px solid var(--border-soft); background: var(--bg-surface); color: var(--text-secondary); border-radius: 16px; cursor: pointer; font-size: 0.72rem; font-weight: 500; transition: all var(--t-fast); }
   .scene-cat:hover { border-color: var(--accent); color: var(--accent); }
   .scene-cat.active { background: var(--accent); color: var(--text-inverse); border-color: var(--accent); }
-  .scene-search { width: 100%; padding: var(--s-2) var(--s-3); background: var(--bg-elevated); border: 1px solid var(--border-soft); border-radius: var(--r-md); color: var(--text-primary); font-size: 0.85rem; outline: none; margin-bottom: var(--s-4); }
-  .scene-search:focus { border-color: var(--accent); }
-  .scene-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--s-3); max-height: 520px; overflow-y: auto; padding-right: 4px; }
-  .scene-card { background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-lg); padding: var(--s-4); cursor: pointer; transition: all var(--t-fast); }
-  .scene-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: var(--shadow-md); }
-  .mature-dot { font-size: 0.7rem; vertical-align: super; margin-left: 2px; }
-  .scene-name { font-weight: 700; font-size: 1rem; color: var(--text-primary); margin-bottom: var(--s-1); }
-  .scene-story { font-size: 0.82rem; color: var(--text-secondary); margin-bottom: var(--s-2); line-height: 1.5; }
-  .scene-meta { display: flex; flex-wrap: wrap; gap: var(--s-1); }
-  .scene-tag { padding: 2px 8px; background: var(--bg-elevated); border-radius: 20px; font-size: 0.68rem; color: var(--text-secondary); }
-  .scene-tag.emotion { color: var(--accent); border: 1px solid var(--accent); background: var(--accent-soft); }
-  .scene-tag.char-color { color: var(--info); }
+  .scene-list { display: flex; flex-direction: column; gap: 2px; max-height: 200px; overflow-y: auto; }
+  .scene-list::-webkit-scrollbar { width: 4px; }
+  .scene-list::-webkit-scrollbar-thumb { background: var(--border-soft); border-radius: 2px; }
+  .scene-item { display: flex; align-items: center; gap: var(--s-2); padding: 4px 8px; border-radius: var(--r-sm); cursor: pointer; transition: background var(--t-fast); }
+  .scene-item:hover { background: var(--bg-hover); }
+  .scene-item .si-name { font-size: 0.8rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; }
+  .scene-item .si-emo { font-size: 0.68rem; color: var(--text-muted); }
 
-  /* ---- Manual tags (tab 3) ---- */
-  .tag-section-title { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--success); margin-bottom: var(--s-2); }
-  .tag-section-title.banned { color: var(--danger); }
-  .cat-tabs { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-bottom: var(--s-3); }
-  .cat-tab { padding: 6px 14px; border: 1px solid var(--border-soft); background: var(--bg-surface); color: var(--text-secondary); border-radius: 20px; cursor: pointer; font-size: 0.82rem; font-weight: 500; transition: all var(--t-fast); }
-  .cat-tab:hover { border-color: var(--accent); color: var(--accent); }
-  .cat-tab.active { background: var(--accent); color: var(--text-inverse); border-color: var(--accent); }
-  .tag-pool { display: flex; flex-wrap: wrap; gap: var(--s-2); padding: var(--s-3); background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-lg); max-height: 320px; overflow-y: auto; }
-  .tag-chip { display: inline-flex; align-items: center; gap: 4px; padding: 5px 12px; border-radius: 20px; font-size: 0.82rem; font-weight: 500; background: var(--bg-surface); border: 1px solid var(--border-soft); color: var(--text-secondary); cursor: pointer; transition: all var(--t-fast); }
+  /* Tags */
+  .cat-tabs { display: flex; gap: var(--s-1); flex-wrap: wrap; margin-bottom: var(--s-2); }
+  .cat-tab { padding: 3px 10px; border: 1px solid var(--border-soft); background: var(--bg-surface); color: var(--text-secondary); border-radius: 14px; cursor: pointer; font-size: 0.7rem; transition: all var(--t-fast); }
+  .cat-tab:hover { border-color: var(--accent); }
+  .cat-tab.active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+  .tag-pool { display: flex; flex-wrap: wrap; gap: 4px; }
+  .tag-chip { padding: 2px 8px; background: var(--bg-elevated); border: 1px solid var(--border-soft); border-radius: 12px; font-size: 0.7rem; color: var(--text-secondary); cursor: pointer; transition: all var(--t-fast); }
   .tag-chip:hover { border-color: var(--accent); color: var(--accent); }
   .tag-chip.active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
-  .tag-chip.recommended { border-color: var(--success); color: var(--success); }
-  .tag-chip.recommended.active { background: rgba(102,187,106,0.15); }
-  .tag-chip.banned { border-color: rgba(239,83,80,0.4); color: var(--text-muted); cursor: not-allowed; opacity: 0.6; }
-  .tag-chip.banned:hover { border-color: var(--danger); color: var(--danger); }
-  .tag-chip.banned.active { background: rgba(239,83,80,0.15); border-color: var(--danger); color: var(--danger); opacity: 1; }
-  .tag-chip small { font-size: 0.68rem; color: var(--text-muted); margin-left: 2px; }
-  .sel-row { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-3); min-height: 30px; align-items: center; }
-  .sel-chip { display: inline-flex; align-items: center; gap: var(--s-1); padding: 4px 10px; background: var(--accent-soft); border: 1px solid var(--accent); border-radius: 20px; font-size: 0.78rem; color: var(--accent); }
-  .sel-chip .x { cursor: pointer; font-weight: 700; opacity: 0.8; }
+  .tag-chip.banned { color: var(--danger); border-color: rgba(239,83,80,0.3); text-decoration: line-through; opacity: 0.7; }
+  .tag-section-title { font-size: 0.72rem; color: var(--text-muted); margin: var(--s-3) 0 var(--s-1); }
+  .tag-section-title.banned { color: rgba(239,83,80,0.7); }
+  .sel-row { display: flex; flex-wrap: wrap; gap: 4px; min-height: 22px; }
+  .sel-chip { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; background: var(--accent-soft); border: 1px solid var(--accent); border-radius: 12px; font-size: 0.72rem; color: var(--accent); }
+  .sel-chip .x { cursor: pointer; opacity: 0.6; }
   .sel-chip .x:hover { opacity: 1; }
 
-  /* ---- Controls (shared base) ---- */
-  .preview-card { border: 1px solid var(--accent); }
-  .preview-card .card-title { color: var(--accent); }
-  .preview { background: var(--bg-deep); border-radius: var(--r-md); padding: var(--s-4); font-family: var(--font-mono); font-size: 0.82rem; line-height: 1.8; white-space: break-spaces; word-break: break-all; border: 1px solid var(--border-soft); min-height: 80px; max-height: 260px; overflow-y: auto; }
-  .preview .q { color: var(--mood-joy); }
-  .preview .c { color: var(--accent); }
-  .preview .t { color: var(--info); }
-  .preview .l { color: var(--success); }
-  .preview .n { color: var(--danger); }
-  .preview-actions { display: flex; gap: var(--s-2); margin-top: var(--s-3); flex-wrap: wrap; }
+  /* ---- 中栏: Prompt 监视器 ---- */
+  .monitor { background: linear-gradient(135deg, var(--bg-deep), rgba(240,98,146,0.04)); border: 2px solid var(--accent); border-radius: var(--r-xl); padding: var(--s-4); position: relative; }
+  .monitor-corners { position: absolute; inset: 6px; pointer-events: none; }
+  .monitor-corners i { position: absolute; width: 14px; height: 14px; border-color: var(--accent); border-style: solid; opacity: 0.5; }
+  .monitor-corners .tl { top: 0; left: 0; border-width: 2px 0 0 2px; }
+  .monitor-corners .tr { top: 0; right: 0; border-width: 2px 2px 0 0; }
+  .monitor-corners .bl { bottom: 0; left: 0; border-width: 0 0 2px 2px; }
+  .monitor-corners .br { bottom: 0; right: 0; border-width: 0 2px 2px 0; }
+  .monitor-rec { position: absolute; top: 10px; right: 14px; font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent); display: flex; align-items: center; gap: 4px; }
+  .monitor-rec .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: blink 1.4s 3; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+  .preview-output { background: var(--bg-base); border-radius: var(--r-md); padding: var(--s-3); font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.8; word-break: break-all; white-space: pre-wrap; color: var(--text-secondary); min-height: 50px; border: 1px solid var(--border-soft); }
+  .preview-output .q { color: var(--mood-joy); }
+  .preview-output .c { color: var(--accent); }
+  .preview-output .t { color: var(--info); }
+  .preview-output .l { color: var(--success); }
+  .preview-output .n { color: var(--danger); }
+  .preview-output .violate { background: rgba(239,83,80,0.2); color: var(--danger); padding: 0 4px; border-radius: 3px; text-decoration: underline; }
+  .token-row { display: flex; align-items: center; gap: var(--s-2); margin-top: var(--s-2); }
+  .token-counter { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-secondary); display: inline-flex; align-items: center; gap: 6px; }
+  .token-counter .bar { width: 60px; height: 4px; background: var(--bg-deep); border-radius: 2px; overflow: hidden; }
+  .token-counter .bar i { display: block; height: 100%; background: var(--success); }
+  .token-counter.warn .bar i { background: var(--warning); }
+  .token-counter.over .bar i { background: var(--danger); }
+  .art-warn { display: none; align-items: center; gap: var(--s-2); background: rgba(255,167,38,0.12); border: 1px solid var(--warning); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); margin-top: var(--s-3); color: var(--warning); font-size: 0.82rem; font-weight: 500; }
+  .preview-actions { display: flex; gap: var(--s-2); flex-wrap: wrap; margin-top: var(--s-3); }
+  .preview-actions .btn { font-size: 0.8rem; padding: var(--s-1) var(--s-3); }
+  .result-frame { margin-top: var(--s-4); border-top: 1px solid var(--border-soft); padding-top: var(--s-3); }
 
-  .controls-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--s-3); }
-  .ctrl { margin-bottom: 4px; }
-  .ctrl label { display: block; font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 4px; font-weight: 500; }
-  .ctrl input[type="range"] { width: 100%; accent-color: var(--accent); }
-  .ctrl .val { font-family: var(--font-mono); color: var(--accent); font-weight: 700; font-size: 0.9rem; }
-  .ctrl select { width: 100%; padding: var(--s-2); background: var(--bg-elevated); border: 1px solid var(--border-soft); border-radius: var(--r-md); color: var(--text-primary); font-size: 0.85rem; outline: none; }
+  /* Params */
+  .controls-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: var(--s-3); }
+  .ctrl { display: flex; flex-direction: column; gap: 2px; }
+  .ctrl label { font-size: 0.7rem; color: var(--text-muted); }
+  .ctrl select { background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-sm); color: var(--text-primary); padding: 4px 6px; font-size: 0.8rem; outline: none; }
   .ctrl select:focus { border-color: var(--accent); }
-  .toggle-row { display: flex; align-items: center; gap: 8px; padding-top: 18px; }
-  .toggle-row label { font-size: 0.85rem; color: var(--text-secondary); }
-  .switch { position: relative; display: inline-block; width: 40px; height: 22px; }
+  .ctrl.toggle-row { flex-direction: row; align-items: center; gap: 6px; }
+  .ctrl.toggle-row label { font-size: 0.78rem; color: var(--text-secondary); }
+  .switch { position: relative; display: inline-block; width: 32px; height: 18px; flex-shrink: 0; }
   .switch input { opacity: 0; width: 0; height: 0; }
-  .slider { position: absolute; cursor: pointer; inset: 0; background: var(--bg-elevated); border: 1px solid var(--border-soft); border-radius: 22px; transition: var(--t-fast); }
-  .slider:before { content: ""; position: absolute; height: 16px; width: 16px; left: 2px; bottom: 2px; background: var(--text-secondary); border-radius: 50%; transition: var(--t-fast); }
-  .switch input:checked + .slider { background: var(--accent-soft); border-color: var(--accent); }
-  .switch input:checked + .slider:before { transform: translateX(18px); background: var(--accent); }
+  .slider { position: absolute; cursor: pointer; inset: 0; background: var(--border-soft); border-radius: 18px; transition: var(--t-fast); }
+  .slider:before { content: ""; position: absolute; height: 13px; width: 13px; left: 2.5px; bottom: 2.5px; background: var(--text-primary); border-radius: 50%; transition: var(--t-fast); }
+  .switch input:checked + .slider { background: var(--accent); }
+  .switch input:checked + .slider:before { transform: translateX(14px); }
 
-  /* ---- History ---- */
-  .history-list { display: flex; flex-direction: column; gap: var(--s-2); max-height: 220px; overflow-y: auto; }
-  .history-item { display: flex; align-items: center; gap: var(--s-2); background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); }
-  .history-item:hover { border-color: var(--accent); }
-  .history-text { flex: 1; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .history-meta { font-size: 0.68rem; color: var(--text-muted); white-space: nowrap; }
-  .history-actions { display: flex; gap: var(--s-1); }
-  .history-actions button { background: var(--bg-elevated); border: 1px solid var(--border-soft); color: var(--text-secondary); border-radius: var(--r-sm); padding: 2px 8px; font-size: 0.72rem; cursor: pointer; transition: all var(--t-fast); }
-  .history-actions button:hover { border-color: var(--accent); color: var(--accent); }
-  .history-empty { color: var(--text-muted); font-size: 0.85rem; text-align: center; padding: var(--s-4); }
+  /* ---- 右栏: 导演台 ---- */
+  .director-card { background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-lg); padding: var(--s-3); }
+  .director-card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--s-2); }
+  .director-card-name { font-size: 0.82rem; font-weight: 700; color: var(--text-primary); }
+  .director-card-selected { font-size: 0.7rem; color: var(--accent); font-family: var(--font-mono); text-align: right; max-width: 55%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .options { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: var(--s-2); }
+  .option { background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: var(--s-2); text-align: center; cursor: pointer; transition: all var(--t-fast); }
+  .option:hover { border-color: var(--accent); background: var(--accent-soft); transform: translateY(-1px); }
+  .option.selected { border-color: var(--accent); background: var(--accent-soft); box-shadow: 0 0 10px var(--accent-glow); }
+  .option-icon { font-size: 1.1rem; }
+  .option-name { font-weight: 600; font-size: 0.78rem; color: var(--text-primary); }
+  .option-en { font-size: 0.6rem; color: var(--text-muted); font-family: var(--font-mono); }
+  .option-reason { display: none; }
+  .option:hover .option-reason, .option.selected .option-reason { display: block; font-size: 0.6rem; color: var(--accent); font-style: italic; margin-top: 2px; line-height: 1.3; }
+  .chip-grid { display: flex; flex-wrap: wrap; gap: 4px; }
+  .chip-select { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 16px; font-size: 0.78rem; font-weight: 500; background: var(--bg-deep); border: 1px solid var(--border-soft); color: var(--text-secondary); cursor: pointer; transition: all var(--t-fast); }
+  .chip-select:hover { border-color: var(--accent); color: var(--accent); }
+  .chip-select.selected { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+  .mood-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)); gap: var(--s-2); }
+  .mood-card { border: 2px solid var(--border-soft); border-radius: var(--r-md); overflow: hidden; cursor: pointer; transition: all var(--t-fast); }
+  .mood-card:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .mood-card.selected { border-color: var(--accent); box-shadow: 0 0 12px var(--accent-glow); }
+  .mood-strip { display: flex; height: 20px; }
+  .mood-swatch { flex: 1; }
+  .mood-body { padding: 2px 5px; }
+  .mood-name { font-weight: 600; font-size: 0.7rem; }
+  .generate-btn { width: 100%; margin-top: var(--s-4); padding: var(--s-3); font-size: 1rem; }
 
-  /* ---- Info grid (train) ---- */
-  .info-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: var(--s-3); }
-  .info-item { background: var(--bg-surface); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); border: 1px solid var(--border-soft); }
-  .info-item .label { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 2px; }
-  .info-item .val { font-size: 0.82rem; color: var(--accent); font-family: var(--font-mono); }
+  /* History */
+  .history-wrap { margin-top: var(--s-6); }
+  .history-list { display: flex; flex-direction: column; gap: var(--s-2); margin-top: var(--s-3); }
+  .history-item { background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: var(--s-3); display: flex; align-items: center; gap: var(--s-3); }
+  .history-main { flex: 1; min-width: 0; }
+  .history-text { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .history-meta { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; }
+  .history-actions { display: flex; gap: var(--s-1); flex-shrink: 0; }
+  .history-actions .btn { padding: var(--s-1) var(--s-2); font-size: 0.75rem; }
+  .star-row { display: inline-flex; gap: 1px; font-size: 0.7rem; color: var(--text-muted); }
+  .star-row .on { color: var(--mood-joy); }
 
-  /* ---- Collapsible ---- */
-  .toggle-btn { width: 100%; padding: var(--s-3) var(--s-4); background: var(--bg-surface); border: 1px solid var(--border-soft); color: var(--text-primary); border-radius: var(--r-md); cursor: pointer; font-size: 0.9rem; text-align: left; transition: all var(--t-fast); }
-  .toggle-btn:hover { border-color: var(--accent); }
-  .toggle-btn .arrow { display: inline-block; transition: transform var(--t-fast); margin-right: var(--s-1); }
-  .toggle-btn.open .arrow { transform: rotate(90deg); }
-  .collapsible { display: none; }
-  .collapsible.open { display: block; animation: pbIn var(--t-fast); }
+  /* Training / negative */
+  .collapsible { border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: var(--s-3); margin-top: var(--s-4); }
+  .collapsible-btn { background: none; border: none; color: var(--text-secondary); font-size: 0.82rem; cursor: pointer; display: flex; align-items: center; gap: var(--s-2); font-family: var(--font-sans); width: 100%; text-align: left; padding: 0; }
+  .collapsible-btn .arrow { transition: transform var(--t-fast); font-size: 0.7rem; }
+  .collapsible-btn.open .arrow { transform: rotate(90deg); }
+  .collapsible-body { display: none; margin-top: var(--s-3); }
+  .collapsible-body.open { display: block; }
+  .info-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: var(--s-3); }
+  .info-item { background: var(--bg-deep); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); }
+  .info-item .label { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .info-item .val { font-size: 0.82rem; font-weight: 600; color: var(--accent); margin-top: 2px; }
+  .callout { padding: var(--s-3) var(--s-4); border-radius: var(--r-md); margin-top: var(--s-3); }
+  .callout-warn { background: rgba(255,167,38,0.1); border: 1px solid rgba(255,167,38,0.3); color: var(--warning); }
+  .neg-output { background: var(--bg-deep); border-radius: var(--r-sm); padding: var(--s-2); font-family: var(--font-mono); font-size: 0.75rem; line-height: 1.7; word-break: break-all; white-space: pre-wrap; max-height: 100px; overflow-y: auto; }
 
-  /* ---- Hidden ---- */
-  .hidden { display: none !important; }
-
-  @media (max-width: 768px) {
-    .field-grid, .controls-grid { grid-template-columns: repeat(2, 1fr); }
-    .pb-title { font-size: 1.5rem; }
-    .options { grid-template-columns: repeat(2, 1fr); }
-    .step-nav-bar { flex-wrap: wrap; }
-  }
-
-  /* ============ Review Modal ============ */
-  .review-overlay {
-    position: fixed; inset: 0; z-index: 9999;
-    background: rgba(0,0,0,0.6);
-    display: none; align-items: center; justify-content: center;
-    padding: var(--s-4);
-  }
+  /* Review modal */
+  .review-overlay { position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; padding: var(--s-4); }
   .review-overlay.open { display: flex; }
-  .review-card {
-    width: 100%; max-width: 460px; max-height: 90vh; overflow-y: auto;
-    background: var(--bg-surface); border: 1px solid var(--accent);
-    border-radius: var(--r-xl); padding: var(--s-6); box-shadow: var(--shadow-lg);
-  }
+  .review-card { width: 100%; max-width: 460px; max-height: 90vh; overflow-y: auto; background: var(--bg-surface); border: 1px solid var(--accent); border-radius: var(--r-xl); padding: var(--s-6); box-shadow: var(--shadow-lg); }
   .review-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--s-4); }
   .review-head h3 { margin: 0; font-size: 1.2rem; }
   .review-x { background: none; border: none; color: var(--text-muted); font-size: 1.3rem; cursor: pointer; }
@@ -276,278 +193,205 @@
   .review-star:hover { transform: scale(1.15); }
   .review-fav { display: flex; align-items: center; gap: var(--s-3); margin-bottom: var(--s-4); }
   .review-fav-label { font-size: 0.88rem; font-weight: 600; }
-  .review-fav-toggle {
-    display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 20px;
-    border: 1px solid var(--border-soft); cursor: pointer; font-size: 0.85rem; transition: all var(--t-fast);
-  }
+  .review-fav-toggle { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border-soft); cursor: pointer; font-size: 0.85rem; transition: all var(--t-fast); }
   .review-fav-toggle.on { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
   .review-notes { width: 100%; min-height: 60px; resize: vertical; background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); color: var(--text-primary); font-family: var(--font-sans); font-size: 0.88rem; outline: none; margin-bottom: var(--s-4); }
   .review-notes:focus { border-color: var(--accent); }
   .review-submit { width: 100%; }
-  @media (prefers-reduced-motion: reduce) { .review-star { transition: none; } }
+
+  @media (max-width: 1200px) {
+    .director-workspace { grid-template-columns: 1fr 1.3fr; }
+    .col-left { grid-column: 1 / -1; flex-direction: row; flex-wrap: wrap; }
+    .col-left .panel { flex: 1; min-width: 240px; }
+    .col-right { grid-column: 2; }
+    .col-center { grid-column: 1; grid-row: 2; position: static; }
+  }
+  @media (max-width: 768px) {
+    .director-workspace { grid-template-columns: 1fr; }
+    .col-left, .col-center, .col-right { grid-column: 1; }
+    .col-left { flex-direction: column; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    .monitor-rec .dot, .review-star { animation: none; transition: none; }
+  }
+
 </style>
 </head>
 <body data-nav="director">
 
-<!-- Review Modal -->
-<div class="review-overlay" id="reviewOverlay">
-  <div class="review-card" id="reviewCard">
-    <div class="review-head">
-      <h3>⭐ 评价这张 CG</h3>
-      <button class="review-x" onclick="closeReview()" aria-label="关闭">✕</button>
-    </div>
-    <div id="reviewAxes"></div>
-    <div class="review-fav">
-      <span class="review-fav-label">推荐收藏</span>
-      <div class="review-fav-toggle" id="reviewFav" onclick="toggleFav()">💜 收藏</div>
-    </div>
-    <textarea class="review-notes" id="reviewNotes" placeholder="备注(可选) — 例如:这个表情非常符合宁宁"></textarea>
-    <button class="btn btn-primary review-submit" onclick="submitReview()">提交评价</button>
-  </div>
-</div>
-
+<!-- Nav (populated by tools/nav.js) -->
 <nav class="nav">
   <div class="nav-inner">
     <div class="nav-brand"><span class="dot"></span> AI CG Studio</div>
-    <div class="nav-links">
-    </div>
+    <div class="nav-links"></div>
   </div>
 </nav>
 
 <article class="pb">
   <a href="../index.html" class="nav-back">← 回首页</a>
-
   <div class="pb-header">
-    <h1 class="pb-title">🌸 Prompt Builder · 导演工作台</h1>
-    <p class="pb-sub">从一句话故事开始，像 Galgame 原画师一样思考。Prompt 由系统翻译，你无需面对标签。</p>
-    <span class="pb-ver">v5.0 · story-first</span>
+    <h1 class="pb-title">🎬 Director · 导演工作台</h1>
+    <p class="pb-sub">选一个 Scene,像导演一样定情绪、镜头、光照。Prompt 自动生成。</p>
   </div>
 
-  <!-- Tabs -->
-  <div class="pb-tabs">
-    <div class="pb-tab active" data-tab="director">🎬 导演模式</div>
-    <div class="pb-tab" data-tab="scenes">🎞 Scene 库</div>
-    <div class="pb-tab" data-tab="manual">🏷 手动标签</div>
-  </div>
+  <!-- ============ 三栏工作台 ============ -->
+  <div class="director-workspace">
 
-  <!-- ============ Tab 1: DIRECTOR ============ -->
-  <section class="pb-panel active" id="tab-director">
-    <!-- progress nav -->
-    <div class="step-nav-bar">
-      <div class="step-dot active" data-step="1" onclick="goStep(1)"><div class="step-dot-num">1</div><span class="step-dot-label">故事</span></div>
-      <div class="step-line"></div>
-      <div class="step-dot" data-step="2" onclick="goStep(2)"><div class="step-dot-num">2</div><span class="step-dot-label">情绪·镜头</span></div>
-      <div class="step-line"></div>
-      <div class="step-dot" data-step="3" onclick="goStep(3)"><div class="step-dot-num">3</div><span class="step-dot-label">光照·构图</span></div>
-      <div class="step-line"></div>
-      <div class="step-dot" data-step="4" onclick="goStep(4)"><div class="step-dot-num">4</div><span class="step-dot-label">色彩氛围</span></div>
-    </div>
-
-    <!-- Step 1: Story + Character -->
-    <div class="step active" data-step="1">
-      <div class="step-title">📖 今天想画一个什么故事？</div>
-      <p class="step-desc">一句话描述脑海里的画面。故事是起点，Prompt 永远最后才出现。</p>
-      <textarea class="story-input" id="storyInput" placeholder="例：放学后在樱花树下等人的宁宁"></textarea>
-      <div class="story-chips">
-        <span class="story-chip" onclick="setStory(this)">放学后在樱花树下等人的宁宁</span>
-        <span class="story-chip" onclick="setStory(this)">第一次在海边看日出的夏目</span>
-        <span class="story-chip" onclick="setStory(this)">夏夜祭典穿浴衣看烟花</span>
-        <span class="story-chip" onclick="setStory(this)">雪天围围巾的温柔一幕</span>
-        <span class="story-chip" onclick="setStory(this)">考试失利天台的安慰</span>
-        <span class="story-chip" onclick="setStory(this)">圣诞夜交换惊喜礼物</span>
-      </div>
-      <div class="char-row" style="margin-top: var(--s-4);">
-        <button class="char-btn active" data-char="nene" onclick="setChar('nene',this)">🌸 宁宁</button>
-        <button class="char-btn" data-char="natsume" onclick="setChar('natsume',this)">🍂 夏目</button>
-      </div>
-      <div class="pb-section-title">或者从一个官方 Scene 开始</div>
-      <div class="scene-mini-grid" id="sceneMiniGrid"></div>
-      <div class="step-actions">
-        <div></div>
-        <button class="btn btn-primary" onclick="nextStep()">下一步 · 情绪&镜头 →</button>
-      </div>
-    </div>
-
-    <!-- Step 2: Emotion + Shot -->
-    <div class="step" data-step="2">
-      <div class="step-title">💭 情绪 · 🎥 镜头</div>
-      <p class="step-desc">她现在什么心情？用什么镜头语言讲这个故事？</p>
-      <div class="pb-section-title">情绪 (可多选)</div>
-      <div class="chip-grid" id="chip-emotion"></div>
-      <div class="pb-section-title" style="margin-top: var(--s-4);">镜头</div>
-      <div class="options" id="opt-shot"></div>
-      <div class="step-actions">
-        <button class="btn btn-ghost" onclick="prevStep()">← 上一步</button>
-        <button class="btn btn-primary" onclick="nextStep()">下一步 · 光照&构图 →</button>
-      </div>
-    </div>
-
-    <!-- Step 3: Lighting + Composition -->
-    <div class="step" data-step="3">
-      <div class="step-title">💡 光照 · 🖼 构图</div>
-      <p class="step-desc">光从哪里来？人物在画面什么位置？每个选择都有理由。</p>
-      <div class="pb-section-title">光照</div>
-      <div class="scene-light-hint" id="sceneLightHint"></div>
-      <div class="options" id="opt-lighting"></div>
-      <div class="pb-section-title" style="margin-top: var(--s-4);">构图</div>
-      <div class="options" id="opt-composition"></div>
-      <div class="step-actions">
-        <button class="btn btn-ghost" onclick="prevStep()">← 上一步</button>
-        <button class="btn btn-primary" onclick="nextStep()">下一步 · 色彩氛围 →</button>
-      </div>
-    </div>
-
-    <!-- Step 4: Color Mood -->
-    <div class="step" data-step="4">
-      <div class="step-title">🎨 色彩氛围</div>
-      <p class="step-desc">整张 CG 的主色调。情绪 = 色相 = 光照，三者统一。</p>
-      <div class="mood-grid" id="moodGrid"></div>
-      <div class="step-actions">
-        <button class="btn btn-ghost" onclick="prevStep()">← 上一步</button>
-        <button class="btn btn-primary" onclick="generate()">✨ 导演这张 CG</button>
-      </div>
-    </div>
-
-    <!-- Result -->
-    <div class="step" data-step="5" id="resultStep">
-      <div class="result-frame">
-        <div class="result-title">✨ 你的 Scene 已经准备好了</div>
-        <div class="result-story" id="resultStory"></div>
-        <div class="summary" id="resultSummary"></div>
-        <div class="art-warn" id="artWarn">⚠️ 检测到 N 个标签违反美术规范</div>
-        <div class="pb-section-title">📝 输出 Prompt</div>
-        <div class="prompt-collapse" id="promptCollapse">
-          <button class="prompt-collapse-btn" id="promptCollapseBtn" onclick="togglePrompt()">
-            <span class="arrow">▶</span> 系统已翻译 <span id="promptTokenCount">0</span> 个 token
-          </button>
-          <div class="prompt-collapse-body" id="promptBody">
-            <div class="prompt-output" id="finalPrompt"></div>
-            <div style="margin-top: var(--s-2); display:flex; align-items:center; gap:var(--s-2);"><span class="token-counter ok" id="resultTokCount"><span class="num">0</span> tok <span class="bar"><i></i></span></span> <span style="font-size:0.72rem;color:var(--text-muted);">/ SD CLIP 窗口 ~77</span></div>
-            <div class="preview-actions" style="margin-top: var(--s-3);">
-              <button class="btn btn-primary" onclick="copyPrompt()">📋 复制 Prompt</button>
-              <button class="btn btn-ghost" onclick="exportPrompt()">⬇️ 导出 .txt</button>
-              <button class="btn btn-ghost" onclick="exportPNG()">📷 导出 PNG</button>
-              <button class="btn btn-ghost" onclick="saveHistory()">💾 保存</button>
-            </div>
-          </div>
+    <!-- ===== 左栏: 剧本 ===== -->
+    <div class="director-col col-left">
+      <div class="panel">
+        <div class="panel-title">📖 故事 Story</div>
+        <textarea class="story-input" id="storyInput" placeholder="一句话描述脑海里的画面…"></textarea>
+        <div class="story-chips">
+          <span class="story-chip" onclick="setStory(this)">放学后在樱花树下等人的宁宁</span>
+          <span class="story-chip" onclick="setStory(this)">第一次在海边看日出的夏目</span>
+          <span class="story-chip" onclick="setStory(this)">夏夜祭典穿浴衣看烟花</span>
+          <span class="story-chip" onclick="setStory(this)">雪天围围巾的温柔一幕</span>
         </div>
       </div>
-      <div class="step-actions">
-        <button class="btn btn-ghost" onclick="resetDirector()">🎬 再来一次</button>
-        <button class="btn btn-primary" onclick="openReview()">⭐ 评价这张 CG</button>
-        <button class="btn btn-ghost" onclick="document.getElementById('promptCollapseBtn').click()">展开 Prompt</button>
+
+      <div class="panel">
+        <div class="panel-title">👤 角色 Character</div>
+        <div class="char-row">
+          <button class="char-btn active" data-char="nene" onclick="setChar('nene',this)">🌸 宁宁</button>
+          <button class="char-btn" data-char="natsume" onclick="setChar('natsume',this)">🍂 夏目</button>
+        </div>
+        <div class="traits-row" id="traitsRow"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">🎞 Scene 库</div>
+        <input type="text" class="scene-search" placeholder="搜索场景 / 情绪 / 标签…" id="sceneSearch" oninput="filterScenes(this.value)">
+        <div class="scene-cats" id="sceneCats"></div>
+        <div class="scene-list" id="sceneGrid"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">🏷 手动标签 Tags</div>
+        <div class="cat-tabs" id="catTabs"></div>
+        <div class="tag-pool" id="tagPool"></div>
+        <div class="tag-section-title">推荐 · Illustrious 优化</div>
+        <div class="tag-pool" id="tagPoolRecommended"></div>
+        <div class="tag-section-title banned">美术规范禁用</div>
+        <div class="tag-pool" id="tagPoolBanned"></div>
+        <div class="panel-title" style="margin-top:var(--s-3)">已选 (<span id="selCount">0</span>)</div>
+        <div class="sel-row" id="selRow"></div>
       </div>
     </div>
-  </section>
 
-  <!-- ============ Tab 2: SCENES ============ -->
-  <section class="pb-panel" id="tab-scenes">
-    <div class="pb-section-title">官方 Scene 库 <span id="sceneCountBadge" style="color:var(--text-muted);font-weight:400;">· 加载中…</span></div>
-    <input type="text" class="scene-search" placeholder="🔍 搜索场景 / 情绪 / 标签…" id="sceneSearch">
-    <div class="scene-cats" id="sceneCats"></div>
-    <div class="scene-grid" id="sceneGrid"></div>
-  </section>
-
-  <!-- ============ Tab 3: MANUAL ============ -->
-  <section class="pb-panel" id="tab-manual">
-    <div class="pb-section-title">人物特征</div>
-    <div class="char-row">
-      <button class="char-btn active" data-char="nene" onclick="setChar('nene',this)">🌸 宁宁</button>
-      <button class="char-btn" data-char="natsume" onclick="setChar('natsume',this)">🍂 夏目</button>
-    </div>
-    <div class="traits-row" id="traitsRow"></div>
-    <div class="tag-section-title">推荐标签 · Illustrious 优化</div>
-    <div class="tag-pool" id="tagPoolRecommended" style="margin-bottom: var(--s-4);"></div>
-    <div class="pb-section-title">完整标签库</div>
-    <div class="cat-tabs" id="catTabs"></div>
-    <div class="tag-pool" id="tagPool"></div>
-    <div class="tag-section-title banned" style="margin-top: var(--s-4);">美术规范禁用 (neon/glowing/oversaturated...)</div>
-    <div class="tag-pool" id="tagPoolBanned"></div>
-    <div class="pb-section-title" style="margin-top: var(--s-4);">已选标签 (<span id="selCount">0</span>)</div>
-    <div class="sel-row" id="selRow"></div>
-  </section>
-
-  <!-- ============ SHARED BASE: CONTROLS ============ -->
-  <div class="card" style="margin-top: var(--s-5);">
-    <div class="card-title">⚙️ 出图参数</div>
-    <div class="controls-grid">
-      <div class="ctrl"><label>CFG Scale</label><select id="cfg"><option>3</option><option>4</option><option selected>5</option><option>6</option><option>7</option><option>8</option><option>9</option></select></div>
-      <div class="ctrl"><label>Steps</label><select id="steps"><option>20</option><option selected>28</option><option>35</option><option>40</option><option>50</option></select></div>
-      <div class="ctrl"><label>Sampler</label><select id="sampler"><option>DPM++ 2M SDE Karras</option><option>DPM++ 2M Karras</option><option>Euler a</option><option>DPM++ SDE Karras</option></select></div>
-      <div class="ctrl"><label>尺寸</label><select id="size"><option>832×1216</option><option>1024×1024</option><option>1216×832</option></select></div>
-      <div class="ctrl toggle-row"><label class="switch"><input type="checkbox" id="quality" checked><span class="slider"></span></label><label for="quality">质量前缀</label></div>
-      <div class="ctrl toggle-row"><label class="switch"><input type="checkbox" id="tail" checked><span class="slider"></span></label><label for="tail">镜头/画质收束</label></div>
-      <div class="ctrl toggle-row"><label class="switch"><input type="checkbox" id="negative"><span class="slider"></span></label><label for="negative">附带负面</label></div>
-    </div>
-  </div>
-
-  <!-- ============ SHARED BASE: LIVE PREVIEW ============ -->
-  <div class="card preview-card" style="margin-top: var(--s-4);">
-    <div class="card-title">✨ 实时 Prompt <span style="font-size:0.75rem;color:var(--text-muted);font-weight:400;">(折叠以专注故事)</span>
-      <span class="mode-toggle"><label><input type="checkbox" id="conciseToggle" onchange="toggleConcise(this.checked)"> 精简</label></span>
-      <span class="token-counter ok" id="liveTokCount"><span class="num">0</span> tok <span class="bar"><i></i></span></span>
-    </div>
-    <div class="prompt-collapse">
-      <button class="prompt-collapse-btn" onclick="toggleLivePrompt()">
-        <span class="arrow" id="liveArrow">▶</span> 系统实时翻译中 · 点击展开
-      </button>
-      <div class="prompt-collapse-body" id="livePreviewBody">
-        <div class="preview" id="preview"></div>
+    <!-- ===== 中栏: Prompt 监视器 ===== -->
+    <div class="director-col col-center">
+      <div class="monitor">
+        <div class="monitor-corners"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
+        <div class="monitor-rec"><span class="dot"></span> SCENE</div>
+        <div class="panel-title">✨ Prompt 实时预览</div>
+        <div class="preview-output" id="preview">(选择左侧 Scene 或在右侧做导演决策,Prompt 在这里实时生成)</div>
+        <div class="token-row"><span class="token-counter" id="liveTokCount"><span class="num">0</span> tok <span class="bar"><i></i></span> / 77</span></div>
+        <div class="art-warn" id="artWarn">⚠️ 检测到违反美术规范的标签</div>
         <div class="preview-actions">
           <button class="btn btn-primary" onclick="copyPrompt()">📋 复制</button>
-          <button class="btn btn-ghost" onclick="exportPrompt()">⬇️ 导出 .txt</button>
-          <button class="btn btn-ghost" onclick="exportPNG()">📷 导出 PNG</button>
+          <button class="btn btn-ghost" onclick="exportPrompt()">⬇️ TXT</button>
+          <button class="btn btn-ghost" onclick="exportPNG()">📷 PNG</button>
           <button class="btn btn-ghost" onclick="saveHistory()">💾 保存</button>
-          <button class="btn btn-ghost" onclick="clearAll()">🗑 清空</button>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:var(--s-4)">
+        <div class="panel-title">⚙️ 出图参数</div>
+        <div class="controls-grid">
+          <div class="ctrl"><label>CFG</label><select id="cfg"><option>3</option><option>4</option><option selected>5</option><option>6</option><option>7</option><option>8</option><option>9</option></select></div>
+          <div class="ctrl"><label>Steps</label><select id="steps"><option>20</option><option selected>28</option><option>35</option><option>40</option><option>50</option></select></div>
+          <div class="ctrl"><label>Sampler</label><select id="sampler"><option>DPM++ 2M SDE Karras</option><option>DPM++ 2M Karras</option><option>Euler a</option><option>DPM++ SDE Karras</option></select></div>
+          <div class="ctrl"><label>尺寸</label><select id="size"><option>832×1216</option><option>1024×1024</option><option>1216×832</option></select></div>
+          <div class="ctrl toggle-row"><label class="switch"><input type="checkbox" id="quality" checked><span class="slider"></span></label><label for="quality">质量前缀</label></div>
+          <div class="ctrl toggle-row"><label class="switch"><input type="checkbox" id="tail" checked><span class="slider"></span></label><label for="tail">镜头收束</label></div>
+          <div class="ctrl toggle-row"><label class="switch"><input type="checkbox" id="negative"><span class="slider"></span></label><label for="negative">负面</label></div>
+        </div>
+      </div>
+
+      <div class="result-frame" id="resultStep">
+        <div class="panel-title">📝 输出 Result</div>
+        <div class="preview-output" id="finalPrompt" style="display:none"></div>
+        <div class="preview-actions">
+          <button class="btn btn-ghost" onclick="toggleResult()">展开 Prompt</button>
+          <button class="btn btn-primary" onclick="copyPrompt()">📋 复制</button>
+          <button class="btn btn-ghost" onclick="openReview()">⭐ 评价</button>
+          <button class="btn btn-ghost" onclick="resetDirector()">🎬 再来一次</button>
         </div>
       </div>
     </div>
+
+    <!-- ===== 右栏: 导演台 ===== -->
+    <div class="director-col col-right">
+      <div class="director-card">
+        <div class="director-card-head"><span class="director-card-name">💭 情绪 Emotion</span><span class="director-card-selected" id="selEmotion"></span></div>
+        <div class="chip-grid" id="chip-emotion"></div>
+      </div>
+      <div class="director-card">
+        <div class="director-card-head"><span class="director-card-name">🎥 镜头 Shot</span><span class="director-card-selected" id="selShot"></span></div>
+        <div class="options" id="opt-shot"></div>
+      </div>
+      <div class="director-card">
+        <div class="director-card-head"><span class="director-card-name">💡 光照 Lighting</span><span class="director-card-selected" id="selLighting"></span></div>
+        <div class="options" id="opt-lighting"></div>
+      </div>
+      <div class="director-card">
+        <div class="director-card-head"><span class="director-card-name">🖼 构图 Composition</span><span class="director-card-selected" id="selComposition"></span></div>
+        <div class="options" id="opt-composition"></div>
+      </div>
+      <div class="director-card">
+        <div class="director-card-head"><span class="director-card-name">🎨 色彩 Color</span><span class="director-card-selected" id="selColor"></span></div>
+        <div class="mood-grid" id="moodGrid"></div>
+      </div>
+      <button class="btn btn-primary generate-btn" onclick="generate()">✨ 导演这张 CG</button>
+    </div>
   </div>
 
-  <!-- ============ SHARED BASE: HISTORY ============ -->
-  <div class="card" style="margin-top: var(--s-4);">
-    <div class="card-title">📜 历史记录 (<span id="hisCount">0</span>) · localStorage</div>
+  <!-- ============ 历史 ============ -->
+  <div class="history-wrap">
+    <div class="panel-title">📜 历史记录 (<span id="hisCount">0</span>) · 本地</div>
     <div class="history-list" id="historyList"></div>
   </div>
 
-  <!-- ============ SHARED BASE: TRAINING INFO ============ -->
-  <button class="toggle-btn" onclick="toggleTrain()" style="margin-top: var(--s-4);">
-    <span class="arrow">▶</span> 训练参数 / 负面提示词 / 设计规范
-  </button>
-  <div class="collapsible" id="trainContent">
-    <div class="card" style="margin-top: var(--s-2);">
-      <div class="card-title">⚙️ 宁宁 v11 训练配置 (OneTrainer)</div>
+  <!-- ============ 辅助信息 ============ -->
+  <div class="collapsible">
+    <button class="collapsible-btn" onclick="toggleTrain()">
+      <span class="arrow">▶</span> 训练参数 / 负面提示词 / 美术规范
+    </button>
+    <div class="collapsible-body" id="trainContent">
       <div class="info-grid">
         <div class="info-item"><div class="label">底模</div><div class="val">waiIllustriousSDXL_v170</div></div>
         <div class="info-item"><div class="label">Sampler</div><div class="val">DPM++ 2M SDE Karras</div></div>
         <div class="info-item"><div class="label">Steps</div><div class="val">28</div></div>
         <div class="info-item"><div class="label">CFG</div><div class="val">5</div></div>
-        <div class="info-item"><div class="label">Clip Skip</div><div class="val">1</div></div>
         <div class="info-item"><div class="label">Optimizer</div><div class="val">AdamW8bit</div></div>
-        <div class="info-item"><div class="label">UNet LR</div><div class="val">1e-4</div></div>
-        <div class="info-item"><div class="label">TE LR</div><div class="val">3e-5</div></div>
-        <div class="info-item"><div class="label">Scheduler</div><div class="val">CONSTANT</div></div>
         <div class="info-item"><div class="label">Rank/Alpha</div><div class="val">32/32</div></div>
-        <div class="info-item"><div class="label">Batch</div><div class="val">4</div></div>
-        <div class="info-item"><div class="label">Crop Jitter</div><div class="val">OFF</div></div>
       </div>
-    </div>
-    <div class="card" style="margin-top: var(--s-3);">
-      <div class="card-title">🚫 通用负面提示词</div>
-      <div class="preview" style="max-height:120px;"><span class="n">worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate</span></div>
-    </div>
-    <div class="callout callout-warn" style="margin-top: var(--s-3);">
-      <strong>Three Rules · 自检</strong> — 每个 UI 回答: "这帮用户更快更好出一张 CG 吗?" Scene 先行 · Character 先行 · Emotion 先行 · Prompt 永远最后一步。
+      <div class="neg-output" style="margin-top:var(--s-3)">worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate</div>
+      <div class="callout callout-warn">Scene 先行 · Character 先行 · Emotion 先行 · Prompt 永远最后一步。</div>
     </div>
   </div>
+
+<!-- Review Modal (moved out of flow, appended via script) -->
+<div class="review-overlay" id="reviewOverlay">
+  <div class="review-card" id="reviewCard">
+    <div class="review-head"><h3>⭐ 评价这张 CG</h3><button class="review-x" onclick="closeReview()" aria-label="关闭">✕</button></div>
+    <div id="reviewAxes"></div>
+    <div class="review-fav"><span class="review-fav-label">推荐收藏</span><div class="review-fav-toggle" id="reviewFav" onclick="toggleFav()">💜 收藏</div></div>
+    <textarea class="review-notes" id="reviewNotes" placeholder="备注(可选)"></textarea>
+    <button class="btn btn-primary review-submit" onclick="submitReview()">提交评价</button>
+  </div>
+</div>
 </article>
 
 <footer class="footer">
-  <p>AI CG Studio · From Story to Scene</p>
-  <p class="muted mt-4">Prompt Builder v5.0 · 导演工作台 · 故事优先, Prompt 最后</p>
+  <p>AI CG Studio · 像导演一样创作每一个瞬间</p>
+  <p class="muted mt-4">Prompt Builder · Scene-first · Story-first</p>
 </footer>
 
 <script>
+
 /* ============================================================
    Prompt Builder v5 — 导演工作台 (Story-first, Prompt-last)
    世界观对齐:
@@ -744,17 +588,17 @@ function init() {
   buildTraits();
   renderEmotion(); renderShot(); renderLighting(); renderComposition();
   renderColorMoods(); renderTraits(); renderManualTags();
-  renderSceneMini(); bindControls();
+  bindControls();
   ['quality','tail','negative','cfg','steps','sampler','size'].forEach(id => {
     const el = document.getElementById(id); if (el) el.onchange = updateLivePreview;
   });
-  updateStepUI(); loadSceneLibrary(); renderHistory(); updateLivePreview();
+  loadSceneLibrary(); renderHistory(); updateLivePreview();
   // URL params: ?mood=xxx -> step 4 select mood; ?scene=xxx -> load scene by id; ?regen=ID / ?variant=ID -> restore from history
   try {
     var qp = new URLSearchParams(window.location.search);
     var mood = qp.get('mood');
     var sceneId = qp.get('scene');
-    if (mood) { selectMood(mood); goStep(4); }
+    if (mood) { selectMood(mood); }
     if (sceneId && SCENES.length) { var sf = SCENES.find(function(s){ return s.id === sceneId; }); if (sf) loadScene(sf); }
     var regenId = qp.get('regen'), variantId = qp.get('variant');
     var refId = regenId || variantId;
@@ -951,7 +795,7 @@ function renderSceneCats() {
     b.onclick = () => { SCENE_CAT = c; renderSceneCats(); filterScenes(document.getElementById('sceneSearch').value); };
     el.appendChild(b);
   });
-  document.getElementById('sceneCountBadge').textContent = '· ' + SCENES.length + ' 场景';
+  var _cb=document.getElementById('sceneCountBadge'); if(_cb) _cb.textContent = '· '+SCENES.length+' Scenes';
 }
 function renderScenes() {
   const grid = document.getElementById('sceneGrid'); grid.innerHTML = '';
@@ -1197,8 +1041,8 @@ function generate() {
   const s = state.selections;
   window.__lastSeed__ = Math.floor(Math.random() * 999999999);
   const charName = CHARACTER.find(c => c.id === state.char)?.name || state.char;
-  document.getElementById('resultStory').textContent = state.story || '(未写故事 — 仍然可以出图, 但画面会缺少灵魂)';
-  const summaryEl = document.getElementById('resultSummary');
+  const resultEl = document.getElementById('resultStep');
+  const summaryEl = resultEl.querySelector('.generate-summary');
   const items = [
     { label:'人物', value: charName },
     { label:'情绪', value: s.emotion.map(e => EMOTION.find(x=>x.id===e)?.name).filter(Boolean).join(' / ') || '—' },
@@ -1207,17 +1051,17 @@ function generate() {
     { label:'构图', value: COMPOSITION.find(x=>x.id===s.composition)?.name || '—' },
     { label:'色彩', value: COLOR_MOODS.find(x=>x.id===state.colorMood)?.name || '—' }
   ];
-  summaryEl.innerHTML = items.map(i => `<div class="summary-item"><div class="summary-label">${i.label}</div><div class="summary-value">${i.value}</div></div>`).join('');
+  if(summaryEl) summaryEl.innerHTML = items.map(i => '<div class="summary-item"><div class="summary-label">'+i.label+'</div><div class="summary-value">'+i.value+'</div></div>').join('');
   const parts = buildParts();
   const fullText = parts.map(p => p.text).join(', ');
   const violations = checkArtDirection(fullText);
   const artWarn = document.getElementById('artWarn');
-  artWarn.classList.toggle('show', violations.length > 0);
-  artWarn.textContent = violations.length ? '⚠️ 检测到 ' + violations.length + ' 个标签违反美术规范: ' + violations.join(', ') : '';
+  artWarn.style.display = violations.length ? 'flex' : 'none';
+  artWarn.textContent = violations.length ? '⚠️ 检测到 '+violations.length+' 个标签违反美术规范: '+violations.join(', ') : '';
   document.getElementById('finalPrompt').innerHTML = colorizeParts(parts);
-  document.getElementById('promptTokenCount').textContent = parts.length;
-  goStep(5);
-  document.getElementById('resultStep').scrollIntoView({ behavior:'smooth', block:'start' });
+  document.getElementById('finalPrompt').style.display = 'block';
+  if(resultEl) resultEl.scrollIntoView({ behavior:'smooth', block:'start' });
+  flash('✨ Prompt 已生成');
 }
 function togglePrompt() {
   const btn = document.getElementById('promptCollapseBtn');
@@ -1443,7 +1287,7 @@ function submitReview(){
 document.getElementById('reviewOverlay').addEventListener('click', function(e){ if (e.target === this) closeReview(); });
 
 loadData();
-</script>
 
+</script>
 </body>
 </html>

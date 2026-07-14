@@ -11,13 +11,14 @@
   'use strict';
 
   // 用户可见的导航项(创作流,概念已折叠)
+  // Create = 全站最大入口,Director 为内部实现名,对用户隐身
   var NAV = [
     { id:'scene',     label:'Scene Library', href:'tools/scene-explorer.html', icon:'🌸' },
-    { id:'director',  label:'Director',      href:'tools/prompt-builder.html', icon:'🎬' },
+    { id:'director',  label:'Create',        href:'tools/prompt-builder.html', icon:'✨' },
+    { id:'gallery',   label:'Gallery',       href:'tools/gallery.html',        icon:'🎞' },
     { id:'character', label:'Character',     href:'tools/character.html',      icon:'👤' },
     { id:'style',     label:'Style',         href:'tools/style.html',          icon:'🎨' },
     { id:'lora',      label:'LoRA',          href:'tools/lora.html',           icon:'🧪' },
-    { id:'gallery',   label:'Gallery',       href:'tools/gallery.html',        icon:'🎞' },
     { id:'docs',      label:'Docs',          href:'docs/philosophy.html',      icon:'📖' }
   ];
 

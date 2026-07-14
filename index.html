@@ -12,19 +12,29 @@
      Home — 导演场记板美学
      ============================================================ */
 
-  /* ---------- Hero ---------- */
-  .home-hero {
-    padding: var(--s-8) 0 var(--s-7);
-    display: grid;
-    grid-template-columns: 7fr 5fr;
-    gap: var(--s-6);
-    align-items: center;
+  /* ---------- Story → Scene → Prompt → Image chain ---------- */
+  .chain { display: flex; align-items: center; gap: var(--s-2); margin: var(--s-5) 0; flex-wrap: wrap; }
+  .chain-step {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--bg-surface); border: 1px solid var(--border-soft);
+    border-radius: var(--r-md); padding: 6px 14px; font-size: 0.85rem; font-weight: 600;
   }
+  .chain-step .ic { font-size: 1rem; }
+  .chain-step .en { font-size: 0.7rem; color: var(--text-muted); font-weight: 400; }
+  .chain-step.final {
+    border-color: var(--accent);
+    background: linear-gradient(135deg, var(--accent-soft), var(--bg-surface));
+    box-shadow: 0 0 12px var(--accent-glow);
+  }
+  .chain-arrow { color: var(--text-muted); font-size: 0.9rem; }
+
+  /* ---------- Hero (10s rule) ---------- */
+  .home-hero { padding: var(--s-8) 0 var(--s-7); }
   .hero-copy .eyebrow { margin-bottom: var(--s-3); }
   .hero-title {
-    font-size: clamp(2.2rem, 4vw, 3.4rem);
+    font-size: clamp(2.4rem, 4.5vw, 3.8rem);
     font-weight: 800;
-    line-height: 1.15;
+    line-height: 1.12;
     margin-bottom: var(--s-4);
     letter-spacing: -0.02em;
   }
@@ -34,14 +44,28 @@
     background-clip: text;
   }
   .hero-sub {
-    font-size: 1.15rem;
-    color: var(--text-secondary);
-    margin-bottom: var(--s-5);
-    max-width: 460px;
-    line-height: 1.7;
+    font-size: 1.15rem; color: var(--text-secondary);
+    margin-bottom: var(--s-5); max-width: 520px; line-height: 1.7;
   }
-  .hero-ctas { display: flex; gap: var(--s-3); flex-wrap: wrap; }
-  .hero-ctas .btn { padding: var(--s-3) var(--s-5); font-size: 1rem; }
+  .ctas { display: flex; gap: var(--s-3); flex-wrap: wrap; margin-bottom: var(--s-4); align-items: center; }
+  .cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: var(--s-3) var(--s-5); font-size: 1rem;
+    border-radius: var(--r-lg); font-weight: 700; text-decoration: none;
+    transition: transform var(--t-fast), box-shadow var(--t-fast), background var(--t-fast);
+  }
+  .cta-primary {
+    background: var(--accent); color: var(--text-inverse);
+    box-shadow: 0 0 18px var(--accent-glow), 0 4px 14px rgba(0,0,0,0.18);
+    padding: var(--s-4) var(--s-6); font-size: 1.1rem;
+  }
+  .cta-primary:hover { transform: translateY(-2px); box-shadow: 0 0 24px var(--accent-glow), 0 6px 20px rgba(0,0,0,0.25); }
+  .cta-ghost {
+    background: var(--bg-surface); color: var(--text-primary);
+    border: 1px solid var(--border-soft);
+  }
+  .cta-ghost:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .cta .ic { font-size: 1.1rem; }
 
   /* Scene strip — horizontal scroll of real scenes */
   .hero-strip {
@@ -93,7 +117,9 @@
   .strip-cell .s-tag { font-size: 0.62rem; padding: 1px 6px; border-radius: 10px; background: var(--bg-elevated); color: var(--text-secondary); }
 
   @media (max-width: 768px) {
-    .home-hero { grid-template-columns: 1fr; gap: var(--s-5); }
+    .chain { gap: var(--s-1); }
+    .chain-arrow { display: none; }
+    .chain-step { font-size: 0.78rem; padding: 5px 10px; }
   }
 
   /* ---------- Section ---------- */
@@ -218,44 +244,52 @@
   </div>
 </nav>
 
-<!-- Hero -->
+<!-- Hero (10s rule) -->
 <section class="container">
   <div class="home-hero">
     <div class="hero-copy">
       <span class="eyebrow">🌸 AI CG Studio</span>
-      <h1 class="hero-title">今天,<br>我想画一个<br><span class="accent">什么 Scene?</span></h1>
-      <p class="hero-sub">选一个场景种子,像导演一样定情绪、镜头、光照。<br>Prompt 自动生成 — 你只需要讲那个瞬间。</p>
-      <div class="hero-ctas">
-        <a href="tools/scene-explorer.html" class="btn btn-primary">🌸 浏览 Scene Library</a>
-        <a href="tools/prompt-builder.html" class="btn btn-ghost">🎬 开始 Director</a>
+      <h1 class="hero-title">今天,<br>我想讲一个<br><span class="accent">什么故事?</span></h1>
+      <p class="hero-sub">不保存 Prompt,保存「那个瞬间」。<br>选一个 Scene,像导演一样定情绪、镜头、光照,Prompt 自动来。</p>
+      <div class="ctas">
+        <a href="tools/prompt-builder.html" class="cta cta-primary"><span class="ic">✨</span> 开始创作</a>
+        <a href="tools/scene-explorer.html" class="cta cta-ghost"><span class="ic">🌸</span> 浏览 Scene</a>
+        <a href="tools/gallery.html" class="cta cta-ghost"><span class="ic">🎞</span> 查看作品</a>
+      </div>
+      <div class="chain">
+        <div class="chain-step"><span class="ic">📖</span> 故事 <span class="en">Story</span></div>
+        <span class="chain-arrow">→</span>
+        <div class="chain-step"><span class="ic">🎬</span> 场景 <span class="en">Scene</span></div>
+        <span class="chain-arrow">→</span>
+        <div class="chain-step"><span class="ic">⚙️</span> 组装 <span class="en">Prompt</span></div>
+        <span class="chain-arrow">→</span>
+        <div class="chain-step final"><span class="ic">🖼</span> 画面 <span class="en">Image</span></div>
       </div>
     </div>
     <aside class="hero-strip" id="heroStrip">
-      <div class="strip-label"><span class="dot"></span> Scene 胶片 · 实时推荐</div>
+      <div class="strip-label"><span class="dot"></span> Scene 胶片 · 真实场景</div>
       <div class="strip-scroll" id="stripScroll"></div>
     </aside>
   </div>
 </section>
 
-<!-- 最近创作 -->
+<!-- 作品展示(本地历史,空态引导创作) -->
 <section class="container home-section" id="recentSection">
   <div class="home-section-head">
-    <div><h2>最近创作</h2><p class="hint">浏览器本地记录 · 最近 6 张 CG</p></div>
-    <a href="tools/prompt-builder.html" class="link">打开 Director →</a>
+    <div><h2>作品展示</h2><p class="hint">浏览器本地记录 · 最近 6 张 CG</p></div>
+    <a href="tools/prompt-builder.html" class="link">开始创作 →</a>
   </div>
   <div id="recentList" class="recent-row"></div>
 </section>
 
-<!-- 创作入口(与导航一致) -->
+<!-- 创作工作台(4 入口,三秒看懂) -->
 <section class="container home-section">
-  <div class="home-section-head"><div><h2>创作工作台</h2></div></div>
+  <div class="home-section-head"><div><h2>创作工作台</h2><p class="hint">不保存 Prompt,保存「那个瞬间」</p></div></div>
   <div class="tools-grid">
-    <a href="tools/scene-explorer.html" class="tool-card"><span class="ic">🌸</span><span class="t">Scene Library</span><p class="d">70 个官方场景种子,每个都是一张 CG 的起点。</p><span class="go">浏览场景 →</span></a>
-    <a href="tools/prompt-builder.html" class="tool-card"><span class="ic">🎬</span><span class="t">Director</span><p class="d">Story-first:选情绪、镜头、光照,Prompt 自动生成。</p><span class="go">开始 Director →</span></a>
-    <a href="tools/character.html" class="tool-card"><span class="ic">👤</span><span class="t">Character</span><p class="d">角色卡 + 视觉 DNA + 绑定 LoRA 与推荐场景。</p><span class="go">管理角色 →</span></a>
-    <a href="tools/style.html" class="tool-card"><span class="ic">🎨</span><span class="t">Style</span><p class="d">色彩 = 情绪 = 光照。选一个 Style,整个画面统一。</p><span class="go">选择风格 →</span></a>
-    <a href="tools/lora.html" class="tool-card"><span class="ic">🧪</span><span class="t">LoRA</span><p class="d">角色 LoRA 库:训练参数 + 推荐权重,Director 自动插入。</p><span class="go">查看 LoRA →</span></a>
-    <a href="tools/gallery.html" class="tool-card"><span class="ic">🎞</span><span class="t">Gallery</span><p class="d">我的创作时间线,支持收藏、评分、重新生成。</p><span class="go">打开图库 →</span></a>
+    <a href="tools/scene-explorer.html" class="tool-card"><span class="ic">🌸</span><span class="t">Scene Library</span><p class="d">70 个官方场景种子。每个都是「一个瞬间」,不是「一段文字」。</p><span class="go">浏览场景 →</span></a>
+    <a href="tools/prompt-builder.html" class="tool-card"><span class="ic">🎬</span><span class="t">Director</span><p class="d">Story-first:情绪、镜头、色彩、光照,Prompt 是最后一步。</p><span class="go">开始导演 →</span></a>
+    <a href="tools/character.html" class="tool-card"><span class="ic">👤</span><span class="t">Character</span><p class="d">角色卡 + 视觉 DNA + 绑定 LoRA,Director 自动插入。</p><span class="go">管理角色 →</span></a>
+    <a href="tools/scenario.html" class="tool-card"><span class="ic">🎨</span><span class="t">Color Script</span><p class="d">色彩 = 情绪 = 光照。选一个 Color Script,整个画面统一。</p><span class="go">选择色彩 →</span></a>
   </div>
 </section>
 
