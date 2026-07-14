@@ -1,0 +1,20 @@
+[
+  {
+    "id": "P001",
+    "name": "Anime CG Template",
+    "positive": "masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed, {character}, {scene}, {emotion}, {camera}, anime illustration",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+  },
+  {
+    "id": "P002",
+    "name": "Soft Portrait",
+    "positive": "masterpiece, best quality, {character}, soft lighting, {emotion}, looking_at_viewer, close_up, depth_of_field, bokeh, warm colors, anime illustration",
+    "negative": "worst quality, low quality, bad anatomy, bad hands, extra fingers"
+  },
+  {
+    "id": "P003",
+    "name": "Full Body Scene",
+    "positive": "masterpiece, best quality, {character}, full_body, {scene}, {camera}, {lighting}, environmental, wide angle, anime illustration",
+    "negative": "worst quality, low quality, bad anatomy, cropped, bad hands, extra fingers"
+  }
+]

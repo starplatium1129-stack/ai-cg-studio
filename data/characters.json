@@ -1,0 +1,44 @@
+[
+  {
+    "id": "NENE_001",
+    "name": "绫地宁宁",
+    "alias": ["Ayachi Nene", "Nene", "宁宁"],
+    "type": "heroine",
+    "visual_dna": {
+      "hair": "long flowing hair",
+      "eyes": "blue eyes",
+      "style": "elegant anime girl"
+    },
+    "personality": ["gentle", "quiet", "mysterious", "shy"],
+    "lora": {
+      "name": "ayachi_nene_v11",
+      "weight": 0.8,
+      "recommended_scene": ["sc001", "sc002", "sc003", "sc007", "sc008", "sc010"]
+    },
+    "traits": [
+      { "tag": "ahoge", "label": "呆毛" },
+      { "tag": "teardrop", "label": "泪滴妆" }
+    ]
+  },
+  {
+    "id": "NAT_001",
+    "name": "四季夏目",
+    "alias": ["Shiki Natsume", "Natsume", "夏目"],
+    "type": "heroine",
+    "visual_dna": {
+      "hair": "long flowing hair",
+      "eyes": "gold eyes",
+      "style": "refined anime girl"
+    },
+    "personality": ["cheerful", "elegant", "caring", "curious"],
+    "lora": {
+      "name": "shiki_natsume_v11",
+      "weight": 0.8,
+      "recommended_scene": ["sc005", "sc011", "sc013", "sc016", "sc018", "sc029"]
+    },
+    "traits": [
+      { "tag": "mole_under_eye", "label": "泪痣" },
+      { "tag": "elegant_face", "label": "优雅面容" }
+    ]
+  }
+]

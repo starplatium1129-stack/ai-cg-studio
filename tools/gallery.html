@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gallery · AI CG Studio</title>
+<link rel="stylesheet" href="../css/design-system.css">
+<script src="theme.js"></script>
+<style>
+  .page { max-width: 1200px; margin: 0 auto; padding: var(--s-6) var(--s-5); }
+  .nav-back { display: inline-flex; align-items: center; gap: var(--s-2); color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4); }
+  .nav-back:hover { color: var(--accent); }
+  h1.title { font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, #E8E8F0 50%, #F06292); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: var(--s-2); }
+  .subtitle { color: var(--text-secondary); margin-bottom: var(--s-5); }
+
+  .toolbar { display: flex; gap: var(--s-3); flex-wrap: wrap; align-items: center; margin-bottom: var(--s-5); }
+  .toolbar .filter { padding: 6px 14px; border: 1px solid var(--border-soft); background: var(--bg-surface); border-radius: 20px; font-size: 0.82rem; cursor: pointer; color: var(--text-secondary); transition: all var(--t-fast); }
+  .toolbar .filter.active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+  .toolbar .count { margin-left: auto; font-size: 0.85rem; color: var(--text-muted); }
+
+  .timeline-group { margin-bottom: var(--s-6); }
+  .timeline-head { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: var(--s-3); padding-left: var(--s-2); border-left: 2px solid var(--accent); }
+
+  .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--s-4); }
+  .gal-card { background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-lg); overflow: hidden; cursor: pointer; transition: border-color var(--t-fast), transform var(--t-fast); }
+  .gal-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .gal-thumb { aspect-ratio: 4/3; background: linear-gradient(135deg, var(--bg-deep), var(--bg-elevated)); display: flex; align-items: center; justify-content: center; font-size: 2.4rem; position: relative; overflow: hidden; }
+  .gal-thumb::after { content:""; position:absolute; inset:0; background: radial-gradient(circle at 30% 30%, var(--accent-glow), transparent 60%); opacity: 0.45; }
+  .gal-ver { position: absolute; top: var(--s-2); left: var(--s-2); background: var(--bg-surface); border-radius: 12px; padding: 2px 8px; font-size: 0.7rem; font-weight: 600; z-index: 2; }
+  .gal-fav { position: absolute; top: var(--s-2); right: var(--s-2); z-index: 2; font-size: 1rem; }
+  .gal-body { padding: var(--s-3); }
+  .gal-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .gal-meta { font-size: 0.75rem; color: var(--text-muted); margin-bottom: var(--s-2); }
+  .gal-stars { font-size: 0.78rem; color: var(--text-muted); }
+  .gal-stars .on { color: var(--mood-joy); }
+
+  /* detail overlay */
+  .detail-overlay { position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.65); display: none; align-items: center; justify-content: center; padding: var(--s-4); }
+  .detail-overlay.open { display: flex; }
+  .detail-card { width: 100%; max-width: 760px; max-height: 90vh; overflow-y: auto; background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-xl); padding: var(--s-6); }
+  .detail-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s-3); margin-bottom: var(--s-4); }
+  .detail-head h3 { margin: 0; font-size: 1.3rem; }
+  .detail-x { background: none; border: none; color: var(--text-muted); font-size: 1.3rem; cursor: pointer; }
+  .detail-x:hover { color: var(--accent); }
+  .detail-props { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: var(--s-2); margin-bottom: var(--s-4); }
+  .detail-prop { background: var(--bg-deep); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); }
+  .detail-prop .l { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .detail-prop .v { font-size: 0.82rem; font-weight: 600; color: var(--accent); }
+  .detail-rating { display: flex; gap: var(--s-3); flex-wrap: wrap; margin-bottom: var(--s-4); }
+  .detail-rating .axis { background: var(--bg-deep); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); font-size: 0.78rem; }
+  .detail-rating .axis .nm { color: var(--text-muted); margin-right: 4px; }
+  .detail-prompt { background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: var(--s-3); font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.6; white-space: pre-wrap; word-break: break-word; color: var(--text-primary); margin-bottom: var(--s-4); max-height: 240px; overflow-y: auto; }
+  .detail-actions { display: flex; gap: var(--s-3); flex-wrap: wrap; }
+  .detail-actions .btn { flex: 1; min-width: 140px; }
+
+  .empty { text-align: center; padding: var(--s-8); color: var(--text-muted); }
+  .empty .ic { font-size: 2.4rem; margin-bottom: var(--s-3); }
+
+  @media (max-width: 600px) {
+    .gallery-grid { grid-template-columns: 1fr 1fr; }
+    .detail-props { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand"><span class="dot"></span> AI CG Studio</div>
+    <div class="nav-links">
+      <a href="../index.html">首页</a>
+      <a href="scene-explorer.html">场景</a>
+      <a href="prompt-builder.html">导演台</a>
+      <a href="gallery.html" class="active">Gallery</a>
+    </div>
+  </div>
+</nav>
+
+<article class="page">
+  <a href="../index.html" class="nav-back">← 回首页</a>
+  <h1 class="title">🎞 Gallery</h1>
+  <p class="subtitle">每一次生成都是一个版本。点击卡片展开详情与再创作。</p>
+  <div class="toolbar" id="toolbar"></div>
+  <div id="gallery"></div>
+</article>
+
+<!-- detail overlay -->
+<div class="detail-overlay" id="detailOverlay">
+  <div class="detail-card" id="detailCard"></div>
+</div>
+
+<footer class="footer"><p>AI CG Studio · From Story to Scene</p></footer>
+
+<script>
+(function(){
+  const HIS_KEY = 'aics_pb_history';
+  let scenes = [], loras = [], history = [], filterFav = false;
+
+  function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function stars(n){ return '<span class="gal-stars">'+'★'.repeat(n)+'☆'.repeat(5-n)+'<span>'; }
+  function avgRating(r){ if(!r) return 0; return Math.round((r.face+r.expression+r.composition+r.hands+r.atmosphere)/5); }
+  function sceneTitle(id){ const s = scenes.find(x=>x.id===id); return s ? s.title : (id||'—'); }
+  function loraName(id){
+    if(!id) return '—';
+    const l = loras.find(x=> x.id===id || (x.name && id && (x.name===id || id.startsWith(x.name)) ));
+    return l ? l.name : id;
+  }
+  function fmtDate(ts){ return new Date(ts).toLocaleString('zh-CN', { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' }); }
+
+  function dayKey(ts){
+    const d = new Date(ts); const now = new Date();
+    const start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const diff = (start - d)/86400000;
+    if(diff < 1) return '今天';
+    if(diff < 7) return '本周';
+    return '更早';
+  }
+
+  function grouped(list){
+    const order = ['今天','本周','更早'];
+    const g = {};
+    list.forEach(h=>{ const k = dayKey(h.timestamp); (g[k]=g[k]||[]).push(h); });
+    return order.filter(k=>g[k] && g[k].length).map(k=>({key:k, items:g[k]}));
+  }
+
+  function render(){
+    const toolbar = document.getElementById('toolbar');
+    const total = history.length;
+    const favCount = history.filter(h=>h.favorite).length;
+    toolbar.innerHTML = `<button class="filter ${filterFav?'active':''}" onclick="window.__setFavFilter()">
+      💜 收藏 ${favCount}
+    </button><span class="count">${filterFav ? favCount+' / ' : ''}${total} 条记录</span>`;
+
+    const list = filterFav ? history.filter(h=>h.favorite) : history;
+    const gal = document.getElementById('gallery');
+    if(!list.length){
+      gal.innerHTML = filterFav ? '<div class="empty"><div class="ic">💜</div><p>还没有收藏。在导演台评价时开启「推荐收藏」。</p></div>'
+        : '<div class="empty"><div class="ic">🎞</div><p>还没有创作记录。去导演台生成第一张 CG。</p><a href="prompt-builder.html" class="btn btn-primary">🎬 开始创作</a></div>';
+      return;
+    }
+    const groups = grouped(list);
+    gal.innerHTML = groups.map(g=>{
+      return `<div class="timeline-group"><div class="timeline-head">${g.key}</div><div class="gallery-grid">${
+        g.items.map(h=>card(h)).join('')
+      }</div></div>`;
+    }).join('');
+  }
+
+  function card(h){
+    const avg = avgRating(h.rating);
+    return `<div class="gal-card" onclick="window.__openDetail(${h.id})">
+      <div class="gal-thumb">
+        🎬
+        <span class="gal-ver">v${h.version||1}</span>
+        ${h.favorite?'<span class="gal-fav">💜</span>':''}
+      </div>
+      <div class="gal-body">
+        <div class="gal-title">${esc(sceneTitle(h.scene))}</div>
+        <div class="gal-meta">${esc(h.character)} · seed ${h.seed||'—'} · ${fmtDate(h.timestamp)}</div>
+        <div>${stars(avg)}</div>
+      </div>
+    </div>`;
+  }
+
+  function openDetail(id){
+    const h = history.find(x=>x.id===id); if(!h) return;
+    const avg = avgRating(h.rating);
+    const axes = ['face','expression','composition','hands','atmosphere'];
+    const axisNm = {face:'人物',expression:'表情',composition:'构图',hands:'手部',atmosphere:'氛围'};
+    const card = document.getElementById('detailCard');
+    card.innerHTML = `
+      <div class="detail-head">
+        <div><h3>${esc(sceneTitle(h.scene))}</h3><div style="color:var(--text-muted);font-size:0.85rem;">v${h.version||1} · ${esc(h.character)} · ${fmtDate(h.timestamp)}</div></div>
+        <button class="detail-x" onclick="window.__closeDetail()" aria-label="关闭">✕</button>
+      </div>
+      <div class="detail-props">
+        <div class="detail-prop"><div class="l">LoRA</div><div class="v">${esc(loraName(h.lora))}</div></div>
+        <div class="detail-prop"><div class="l">Seed</div><div class="v">${h.seed||'—'}</div></div>
+        <div class="detail-prop"><div class="l">CFG</div><div class="v">${h.cfg||'—'}</div></div>
+        <div class="detail-prop"><div class="l">Steps</div><div class="v">${h.steps||'—'}</div></div>
+        <div class="detail-prop"><div class="l">Sampler</div><div class="v">${esc(h.sampler)||'—'}</div></div>
+        <div class="detail-prop"><div class="l">尺寸</div><div class="v">${h.size||'—'}</div></div>
+      </div>
+      <div class="detail-rating">${axes.map(k=>`<span class="axis"><span class="nm">${axisNm[k]}</span>${'★'.repeat(h.rating&&h.rating[k]||0)}${'☆'.repeat(5-(h.rating&&h.rating[k]||0))}</span>`).join('')}</div>
+      <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:var(--s-2);">故事</div>
+      <div style="font-style:italic;color:var(--text-secondary);margin-bottom:var(--s-4);">${esc(h.story||'(未写故事)')}</div>
+      <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:var(--s-2);">Prompt</div>
+      <div class="detail-prompt">${esc(h.prompt||'')}</div>
+      ${h.notes?`<div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:var(--s-2);">备注</div><div style="color:var(--text-secondary);margin-bottom:var(--s-4);font-size:0.88rem;">${esc(h.notes)}</div>`:''}
+      <div class="detail-actions">
+        <a href="prompt-builder.html?scene=${h.scene}&regen=${h.id}" class="btn btn-primary">🔄 重新生成</a>
+        <a href="prompt-builder.html?scene=${h.scene}&variant=${h.id}" class="btn btn-ghost">✨ 生成变体</a>
+        <button class="btn btn-ghost" onclick="window.__copyPrompt(${h.id})">📋 复制 Prompt</button>
+      </div>
+    `;
+    document.getElementById('detailOverlay').classList.add('open');
+  }
+
+  function closeDetail(){ document.getElementById('detailOverlay').classList.remove('open'); }
+  function copyPrompt(id){ const h=history.find(x=>x.id===id); if(!h||!h.prompt) return; navigator.clipboard.writeText(h.prompt).then(()=>{ flashTemp('📋 已复制'); }); }
+  function flashTemp(msg){
+    let t=document.getElementById('gal-toast');
+    if(!t){ t=document.createElement('div'); t.id='gal-toast'; t.style.cssText='position:fixed;left:50%;bottom:32px;transform:translateX(-50%);z-index:99999;background:var(--bg-surface);border:1px solid var(--accent);color:var(--text-primary);padding:8px 16px;border-radius:8px;font-size:0.85rem;opacity:0;transition:opacity .2s;'; document.body.appendChild(t); }
+    t.textContent=msg; t.style.opacity='1'; clearTimeout(window.__tt); window.__tt=setTimeout(()=>t.style.opacity='0',1400);
+  }
+  function setFavFilter(){ filterFav = !filterFav; render(); }
+
+  window.__openDetail = openDetail;
+  window.__closeDetail = closeDetail;
+  window.__copyPrompt = copyPrompt;
+  window.__setFavFilter = setFavFilter;
+  document.getElementById('detailOverlay').addEventListener('click', function(e){ if(e.target===this) closeDetail(); });
+
+  // boot
+  history = (()=>{ try { return JSON.parse(localStorage.getItem(HIS_KEY))||[]; } catch { return []; } })();
+  Promise.all([
+    fetch('../data/scenes.json').then(r=>r.json()).then(d=>scenes=d).catch(()=>{}),
+    fetch('../data/loras.json').then(r=>r.json()).then(d=>loras=d).catch(()=>{})
+  ]).then(render);
+})();
+</script>
+</body>
+</html>

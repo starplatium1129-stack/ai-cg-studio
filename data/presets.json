@@ -1,0 +1,32 @@
+[
+  {
+    "id": "PRESET_ANIME_CG",
+    "name": "Galgame CG",
+    "model": "waiIllustriousSDXL_v170",
+    "sampler": "DPM++ 2M Karras",
+    "steps": 30,
+    "cfg": 5.5,
+    "resolution": "832x1216",
+    "hires": { "enabled": true, "denoise": 0.4, "upscale": 1.5 }
+  },
+  {
+    "id": "PRESET_PORTRAIT",
+    "name": "Portrait",
+    "model": "waiIllustriousSDXL_v170",
+    "sampler": "DPM++ 2M Karras",
+    "steps": 28,
+    "cfg": 5.0,
+    "resolution": "1024x1024",
+    "hires": { "enabled": true, "denoise": 0.35, "upscale": 1.5 }
+  },
+  {
+    "id": "PRESET_FULL_BODY",
+    "name": "Full Body",
+    "model": "waiIllustriousSDXL_v170",
+    "sampler": "DPM++ 2M Karras",
+    "steps": 30,
+    "cfg": 5.5,
+    "resolution": "832x1216",
+    "hires": { "enabled": true, "denoise": 0.4, "upscale": 1.5 }
+  }
+]

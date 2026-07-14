@@ -1,0 +1,19 @@
+{
+  "_schema": "Generation History — localStorage key: aics_pb_history. Each entry is one generated image snapshot. Array capped at 30 entries in the UI (see tools/prompt-builder.html).",
+  "_fields": {
+    "id": "number — unique timestamp-based id",
+    "scene": "string — scene id (e.g. sc001)",
+    "character": "string — character id (e.g. nene)",
+    "lora": "string — lora id (e.g. L_NENE_V11)",
+    "prompt": "string — full positive prompt used",
+    "negative": "string — negative prompt used",
+    "seed": "number — RNG seed",
+    "rating": { "face": 0, "expression": 0, "composition": 0, "hands": 0, "atmosphere": 0 },
+    "favorite": false,
+    "notes": "string — user notes",
+    "version": 1,
+    "parent_id": "string|null — previous version id for Scene versioning",
+    "timestamp": "number — ms epoch"
+  },
+  "history": []
+}

@@ -1,144 +1,209 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI CG Studio · From Story to Scene</title>
+<title>AI CG Studio · 今天,我想讲一个什么故事?</title>
 <link rel="stylesheet" href="css/design-system.css">
+<script src="tools/theme.js"></script>
 <style>
-  /* Home page specific */
-  .hero {
-    padding: var(--s-8) 0;
-    text-align: center;
+  /* ============================================================
+     Home — 导演场记板美学
+     ============================================================ */
+
+  /* ---------- Hero ---------- */
+  .home-hero {
+    padding: var(--s-8) 0 var(--s-7);
+    display: grid;
+    grid-template-columns: 7fr 5fr;
+    gap: var(--s-6);
+    align-items: center;
   }
-  .hero h1 {
-    font-size: 3rem; font-weight: 800; line-height: 1.2;
+  .hero-copy .eyebrow { margin-bottom: var(--s-3); }
+  .hero-title {
+    font-size: clamp(2.2rem, 4vw, 3.4rem);
+    font-weight: 800;
+    line-height: 1.15;
     margin-bottom: var(--s-4);
-    background: linear-gradient(135deg, #E8E8F0 40%, #F06292 100%);
+    letter-spacing: -0.02em;
+  }
+  .hero-title .accent {
+    background: linear-gradient(135deg, var(--accent) 60%, var(--mood-love));
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  .hero .tagline {
-    font-size: 1.25rem; color: var(--text-secondary);
-    margin-bottom: var(--s-6);
+  .hero-sub {
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    margin-bottom: var(--s-5);
+    max-width: 460px;
+    line-height: 1.7;
   }
-  .hero .tagline em { color: var(--accent); font-style: normal; font-weight: 600; }
+  .hero-ctas { display: flex; gap: var(--s-3); flex-wrap: wrap; }
+  .hero-ctas .btn { padding: var(--s-3) var(--s-5); font-size: 1rem; }
 
-  .slogan-box {
-    display: inline-block;
-    background: var(--bg-surface);
-    border: 1px solid var(--accent);
-    border-radius: var(--r-lg);
-    padding: var(--s-4) var(--s-6);
-    margin-bottom: var(--s-6);
-    box-shadow: 0 0 32px var(--accent-glow);
-    text-align: left;
-  }
-  .slogan-box .zh { font-size: 1.4rem; font-weight: 700; color: var(--text-primary); }
-  .slogan-box .en { font-size: 0.9rem; color: var(--text-muted); margin-top: var(--s-1); font-family: var(--font-mono); }
-  .slogan-box .divider { height: 1px; background: var(--border-soft); margin: var(--s-3) 0; }
-  .slogan-box .core-idea { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.7; font-style: italic; }
-
-  .vs-table {
-    display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-4);
-    margin-bottom: var(--s-6);
-  }
-  .vs-card {
-    background: var(--bg-surface); border-radius: var(--r-lg);
-    padding: var(--s-5); text-align: center;
-    transition: border-color var(--t-fast);
-  }
-  .vs-card.bad { border: 1px solid rgba(239,83,80,0.3); }
-  .vs-card.good { border: 1px solid var(--accent); box-shadow: 0 0 20px var(--accent-glow); }
-  .vs-label { font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--s-3); }
-  .vs-card.bad .vs-label { color: var(--danger); }
-  .vs-card.good .vs-label { color: var(--accent); }
-  .vs-title { font-size: 1.1rem; font-weight: 700; margin-bottom: var(--s-3); }
-  .vs-en { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted); margin-bottom: var(--s-3); }
-  .vs-example { background: var(--bg-deep); border-radius: var(--r-md); padding: var(--s-3); text-align: left; }
-  .vs-example .row { display: flex; align-items: center; gap: var(--s-2); margin-bottom: 2px; font-family: var(--font-mono); font-size: 0.78rem; }
-  .vs-example .row .num { color: var(--text-muted); width: 26px; flex-shrink: 0; }
-  .vs-example .row .txt { color: var(--text-secondary); }
-  .vs-card.good .vs-example .row .txt { color: var(--text-primary); }
-
-  .three-rules {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: var(--s-4);
-    margin: var(--s-6) 0;
-  }
-  .rule-card {
+  /* Scene strip — horizontal scroll of real scenes */
+  .hero-strip {
+    position: relative;
     background: var(--bg-surface);
     border: 1px solid var(--border-soft);
-    border-radius: var(--r-lg);
-    padding: var(--s-5);
-    text-align: left;
-    transition: all var(--t-base);
+    border-radius: var(--r-xl);
+    padding: var(--s-4);
+    overflow: hidden;
   }
-  .rule-card:hover {
-    border-color: var(--accent);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+  .hero-strip::before {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 60%, var(--bg-surface));
+    pointer-events: none;
+    z-index: 2;
   }
-  .rule-num {
-    font-family: var(--font-mono);
-    font-size: 0.8rem; font-weight: 700;
-    color: var(--accent);
-    margin-bottom: var(--s-2);
+  .strip-label {
+    display: flex; align-items: center; gap: var(--s-2);
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--text-muted);
+    margin-bottom: var(--s-3);
   }
-  .rule-name { font-size: 1.15rem; font-weight: 700; margin-bottom: var(--s-2); }
-  .rule-desc { font-size: 0.9rem; color: var(--text-secondary); margin: 0; }
-
-  .nav-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: var(--s-3);
-    margin: var(--s-5) 0;
+  .strip-label .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 6px var(--accent-glow); }
+  .strip-scroll {
+    display: flex; gap: var(--s-3);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: var(--s-2);
+    position: relative; z-index: 1;
   }
-  .nav-card {
-    display: flex; align-items: center; gap: var(--s-3);
-    background: var(--bg-surface);
-    border: 1px solid var(--border-soft);
-    border-radius: var(--r-md);
-    padding: var(--s-3) var(--s-4);
-    color: var(--text-primary);
-    font-weight: 500;
-    transition: all var(--t-fast);
-    text-decoration: none;
-  }
-  .nav-card:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-    background: var(--accent-soft);
-  }
-  .nav-card .icon { font-size: 1.3rem; }
-  .nav-card .arrow { margin-left: auto; color: var(--text-muted); }
-
-  .flow-demo {
+  .strip-scroll::-webkit-scrollbar { height: 4px; }
+  .strip-scroll::-webkit-scrollbar-thumb { background: var(--border-soft); border-radius: 2px; }
+  .strip-cell {
+    flex: 0 0 200px;
+    scroll-snap-align: start;
     background: var(--bg-deep);
     border: 1px solid var(--border-soft);
-    border-radius: var(--r-lg);
-    padding: var(--s-5);
-    margin: var(--s-5) 0;
-  }
-  .flow-steps {
-    display: flex; align-items: center; justify-content: center;
-    flex-wrap: wrap; gap: var(--s-2);
-  }
-  .flow-step {
-    background: var(--bg-surface);
-    border: 1px solid var(--border-soft);
     border-radius: var(--r-md);
-    padding: var(--s-2) var(--s-3);
-    font-size: 0.85rem; font-weight: 500;
-    color: var(--text-secondary);
+    padding: var(--s-3);
+    cursor: pointer;
+    transition: border-color var(--t-fast), transform var(--t-fast);
   }
-  .flow-arrow { color: var(--accent); font-weight: 700; }
+  .strip-cell:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .strip-cell .s-title { font-size: 0.88rem; font-weight: 700; margin-bottom: var(--s-1); }
+  .strip-cell .s-story { font-size: 0.76rem; color: var(--text-muted); line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .strip-cell .s-meta { margin-top: var(--s-2); display: flex; gap: 4px; flex-wrap: wrap; }
+  .strip-cell .s-tag { font-size: 0.62rem; padding: 1px 6px; border-radius: 10px; background: var(--bg-elevated); color: var(--text-secondary); }
 
   @media (max-width: 768px) {
-    .hero h1 { font-size: 2rem; }
-    .flow-steps { flex-direction: column; }
-    .flow-arrow { transform: rotate(90deg); }
+    .home-hero { grid-template-columns: 1fr; gap: var(--s-5); }
+  }
+
+  /* ---------- Section ---------- */
+  .home-section { padding: var(--s-6) 0; border-top: 1px solid var(--border-soft); }
+  .home-section-head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: var(--s-5); gap: var(--s-4); }
+  .home-section-head h2 { font-size: 1.35rem; margin-bottom: var(--s-1); }
+  .home-section-head .hint { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
+  .home-section-head .link { font-size: 0.85rem; flex-shrink: 0; }
+
+  /* ---------- Recent strip (history) ---------- */
+  .recent-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--s-4); }
+  .recent-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--r-lg);
+    padding: var(--s-4);
+    display: flex; flex-direction: column;
+    transition: border-color var(--t-fast), transform var(--t-fast);
+  }
+  .recent-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .recent-thumb {
+    aspect-ratio: 4 / 3;
+    background: linear-gradient(135deg, var(--bg-deep), var(--bg-elevated));
+    border-radius: var(--r-md);
+    margin-bottom: var(--s-3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .recent-thumb::after {
+    content: ""; position: absolute; inset: 0;
+    background: radial-gradient(circle at 30% 30%, var(--accent-glow), transparent 60%);
+    opacity: 0.5;
+  }
+  .recent-title { font-weight: 700; font-size: 0.95rem; margin-bottom: var(--s-1); }
+  .recent-meta { font-size: 0.75rem; color: var(--text-muted); margin-bottom: var(--s-2); }
+  .recent-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-top: auto; }
+  .recent-tags .t { font-size: 0.65rem; padding: 1px 7px; border-radius: 10px; background: var(--bg-elevated); color: var(--text-secondary); }
+
+  .star-row { display: inline-flex; gap: 1px; font-size: 0.78rem; color: var(--text-muted); }
+  .star-row .on { color: var(--mood-joy); }
+
+  /* ---------- Inspiration triple ---------- */
+  .inspo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-4); }
+  @media (max-width: 860px) { .inspo-grid { grid-template-columns: 1fr; } }
+  .inspo-col {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--r-lg);
+    padding: var(--s-5);
+  }
+  .inspo-col-head { display: flex; align-items: center; gap: var(--s-2); margin-bottom: var(--s-4); }
+  .inspo-col-head .ic { font-size: 1.2rem; }
+  .inspo-col-head h3 { font-size: 1rem; margin: 0; }
+  .inspo-col-head .sub { font-size: 0.75rem; color: var(--text-muted); margin: 0; }
+  .inspo-list { display: flex; flex-direction: column; gap: var(--s-2); }
+  .inspo-item {
+    display: flex; align-items: center; gap: var(--s-3);
+    padding: var(--s-2) var(--s-3);
+    border-radius: var(--r-md);
+    cursor: pointer;
+    transition: background var(--t-fast);
+    text-decoration: none;
+    color: var(--text-primary);
+  }
+  .inspo-item:hover { background: var(--bg-hover); }
+  .inspo-item .rank { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); width: 22px; flex-shrink: 0; }
+  .inspo-item .ttl { font-size: 0.88rem; font-weight: 600; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .inspo-item .emo { font-size: 0.7rem; color: var(--text-muted); flex-shrink: 0; }
+
+  /* ---------- Tools ---------- */
+  .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--s-3); }
+  .tool-card {
+    display: flex; flex-direction: column; gap: var(--s-2);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--r-lg);
+    padding: var(--s-5);
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: border-color var(--t-fast), transform var(--t-fast);
+    position: relative;
+    overflow: hidden;
+  }
+  .tool-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .tool-card .ic { font-size: 1.6rem; }
+  .tool-card .t { font-weight: 700; font-size: 1rem; }
+  .tool-card .d { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; margin: 0; flex: 1; }
+  .tool-card .go { font-size: 0.78rem; color: var(--accent); margin-top: var(--s-2); }
+  .tool-card.coming { opacity: 0.55; }
+  .tool-card.coming::after {
+    content: "即将推出";
+    position: absolute; top: var(--s-3); right: var(--s-3);
+    font-size: 0.65rem; padding: 2px 8px; border-radius: 20px;
+    background: var(--bg-elevated); border: 1px solid var(--border-soft);
+    color: var(--text-muted);
+  }
+
+  /* ---------- Empty state ---------- */
+  .empty {
+    text-align: center; padding: var(--s-7) var(--s-5);
+    background: var(--bg-surface);
+    border: 1px dashed var(--border-soft);
+    border-radius: var(--r-lg);
+  }
+  .empty .ic { font-size: 2.4rem; margin-bottom: var(--s-3); }
+  .empty p { color: var(--text-muted); margin-bottom: var(--s-4); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .strip-cell, .recent-card, .tool-card { transition: none; }
   }
 </style>
 </head>
@@ -150,151 +215,231 @@
     <div class="nav-brand"><span class="dot"></span> AI CG Studio</div>
     <div class="nav-links">
       <a href="index.html" class="active">首页</a>
+      <a href="tools/scene-explorer.html">场景</a>
+      <a href="tools/prompt-builder.html">导演台</a>
       <a href="docs/worldview.html">世界观</a>
-      <a href="docs/philosophy.html">哲学</a>
-      <a href="docs/art-direction.html">美术规范</a>
-      <a href="tools/prompt-builder.html">导演模式</a>
       <a href="docs/roadmap.html">路线</a>
     </div>
   </div>
 </nav>
 
 <!-- Hero -->
-<section class="hero container">
-  <div class="slogan-box">
-    <div class="zh">从故事,到画面</div>
-    <div class="en">From Story to Scene</div>
-    <div class="divider"></div>
-    <div class="core-idea">今天想创作什么?<br>不是写 Prompt — 而是讲一个故事,<br>从脑海里那个瞬间开始。</div>
-  </div>
-  <h1>AI CG Studio</h1>
-  <p class="tagline">不是写 Prompt,而是<em>导演</em>一张 CG</p>
-  <p class="sub" style="color:var(--text-muted);font-size:0.85rem;margin-top:4px;">每一张优秀的 CG,都始于一个故事。</p>
-  <div class="flex gap-4" style="justify-content:center">
-    <a href="tools/prompt-builder.html" class="btn btn-primary">🎬 今天想创作什么?</a>
-    <a href="docs/worldview.html" class="btn btn-ghost">了解理念</a>
-  </div>
-</section>
-
-<!-- VS Competitors -->
 <section class="container">
-  <h2 class="t-center">为什么我们不是"另一个 Prompt 工具"</h2>
-  <p class="t-center muted mb-4">这是两种完全不同的创作方式</p>
-  <div class="vs-table">
-    <div class="vs-card bad">
-      <div class="vs-label">❌ 别人给</div>
-      <div class="vs-title">5000 条 Prompt</div>
-      <div class="vs-en">Prompt Library</div>
-      <div class="vs-example">
-        <div class="row"><span class="num">P001</span><span class="txt">1girl, smile, school</span></div>
-        <div class="row"><span class="num">P002</span><span class="txt">1girl, sky, sunset</span></div>
-        <div class="row"><span class="num">P003</span><span class="txt">solo, park, happy</span></div>
-        <div class="row"><span class="num">P004</span><span class="txt">beautiful, detailed</span></div>
-        <div class="row"><span class="num">P005</span><span class="txt">masterpiece, best</span></div>
+  <div class="home-hero">
+    <div class="hero-copy">
+      <span class="eyebrow">🌸 AI CG Studio</span>
+      <h1 class="hero-title">今天,<br>我想讲一个<br><span class="accent">什么故事?</span></h1>
+      <p class="hero-sub">不是写 Prompt — 而是像导演一样,从脑海里那个瞬间开始。选择一种情绪,一个场景,让 AI 帮你完成剩下的。</p>
+      <div class="hero-ctas">
+        <a href="tools/prompt-builder.html" class="btn btn-primary">🎬 新建 CG</a>
+        <a href="tools/scene-explorer.html" class="btn btn-ghost">🌸 浏览场景</a>
       </div>
     </div>
-    <div class="vs-card good">
-      <div class="vs-label">✅ 我们给</div>
-      <div class="vs-title">500 个 Scene</div>
-      <div class="vs-en">Scene Library for AI Artists</div>
-      <div class="vs-example">
-        <div class="row"><span class="num">SC001</span><span class="txt">放学后的回眸</span></div>
-        <div class="row"><span class="num">SC002</span><span class="txt">雨后的神社</span></div>
-        <div class="row"><span class="num">SC003</span><span class="txt">第一次约会</span></div>
-        <div class="row"><span class="num">SC004</span><span class="txt">窗边看书</span></div>
-        <div class="row"><span class="num">SC005</span><span class="txt">雪夜回家</span></div>
-      </div>
-    </div>
+    <aside class="hero-strip" id="heroStrip">
+      <div class="strip-label"><span class="dot"></span> 场景胶片 · 实时</div>
+      <div class="strip-scroll" id="stripScroll"></div>
+    </aside>
   </div>
 </section>
 
-<!-- Three Rules -->
-<section class="container">
-  <h2 class="t-center">🌸 产品原则 (The Three Rules)</h2>
-  <p class="t-center muted mb-4">无论增加什么功能，都不能违反这三条</p>
-  <div class="three-rules">
-    <div class="rule-card">
-      <div class="rule-num">RULE 01</div>
-      <div class="rule-name">Scene First</div>
-      <p class="rule-desc">先有 Scene，后有 Prompt。Prompt 永远是最后一步。</p>
+<!-- Recent work -->
+<section class="container home-section">
+  <div class="home-section-head">
+    <div>
+      <h2>最近创作</h2>
+      <p class="hint">从浏览器本地记录读取 · 不超过 6 条</p>
     </div>
-    <div class="rule-card">
-      <div class="rule-num">RULE 02</div>
-      <div class="rule-name">Character First</div>
-      <p class="rule-desc">人物永远是画面中心。任何背景、光效、构图，都服务于角色。</p>
-    </div>
-    <div class="rule-card">
-      <div class="rule-num">RULE 03</div>
-      <div class="rule-name">Emotion First</div>
-      <p class="rule-desc">用户记住的不是 Prompt，而是"这张图让我想起了那个放学后的黄昏"。</p>
-    </div>
+    <a href="tools/prompt-builder.html" class="link">打开导演台 →</a>
   </div>
+  <div id="recentList" class="recent-row"></div>
 </section>
 
-<!-- Flow -->
-<section class="container">
-  <h2 class="t-center">创作流程</h2>
-  <p class="t-center muted mb-4">不是堆标签，而是像导演一样思考</p>
-  <div class="flow-demo">
-    <div class="flow-steps">
-      <div class="flow-step">📖 故事</div>
-      <span class="flow-arrow">→</span>
-      <div class="flow-step">👤 人物</div>
-      <span class="flow-arrow">→</span>
-      <div class="flow-step">💭 情绪</div>
-      <span class="flow-arrow">→</span>
-      <div class="flow-step">🎥 镜头</div>
-      <span class="flow-arrow">→</span>
-      <div class="flow-step">🖼 构图</div>
-      <span class="flow-arrow">→</span>
-      <div class="flow-step">💡 光照</div>
-      <span class="flow-arrow">→</span>
-      <div class="flow-step">📝 Prompt</div>
-      <span class="flow-arrow">→</span>
-      <div class="flow-step" style="border-color:var(--accent);color:var(--accent)">✨ CG</div>
+<!-- Inspiration triple -->
+<section class="container home-section">
+  <div class="home-section-head">
+    <div>
+      <h2>灵感推荐</h2>
+      <p class="hint">每组互不重复 · 点击直接进入导演台</p>
     </div>
   </div>
+  <div class="inspo-grid" id="inspoGrid"></div>
 </section>
 
 <!-- Tools -->
-<section class="container">
-  <h2 class="t-center">创作工具</h2>
-  <div class="nav-grid">
-    <a href="tools/scene-explorer.html" class="nav-card">
-      <span class="icon">🌸</span> 场景探索 <span class="arrow">→</span>
+<section class="container home-section">
+  <div class="home-section-head">
+    <div><h2>创作工具</h2></div>
+  </div>
+  <div class="tools-grid">
+    <a href="tools/scene-explorer.html" class="tool-card">
+      <span class="ic">🌸</span>
+      <span class="t">场景探索</span>
+      <p class="d">浏览 70 个官方场景,每个都是一张完整 CG 的种子。</p>
+      <span class="go">开始浏览 →</span>
     </a>
-    <a href="tools/prompt-builder.html" class="nav-card">
-      <span class="icon">🎬</span> 导演工作台 <span class="arrow">→</span>
+    <a href="tools/prompt-builder.html" class="tool-card">
+      <span class="ic">🎬</span>
+      <span class="t">导演工作台</span>
+      <p class="d">Story-first:选情绪、镜头、光照,Prompt 自动生成。</p>
+      <span class="go">开始导演 →</span>
     </a>
-    <a href="tools/scenario.html" class="nav-card">
-      <span class="icon">📖</span> 剧本模式 <span class="arrow">→</span>
+    <a href="javascript:void(0)" class="tool-card coming">
+      <span class="ic">👤</span>
+      <span class="t">角色库</span>
+      <p class="d">管理你的角色卡、服装 DNA 与场景适配。</p>
+      <span class="go">即将推出 →</span>
     </a>
-    <a href="tools/color-script.html" class="nav-card">
-      <span class="icon">🎨</span> 色彩情绪 <span class="arrow">→</span>
+    <a href="javascript:void(0)" class="tool-card coming">
+      <span class="ic">🧪</span>
+      <span class="t">LoRA 实验室</span>
+      <p class="d">测试、评分、版本对比,沉淀你的训练经验。</p>
+      <span class="go">即将推出 →</span>
+    </a>
+    <a href="tools/scenario.html" class="tool-card">
+      <span class="ic">📖</span>
+      <span class="t">剧本模式</span>
+      <p class="d">多场景串联,为同一角色创作故事序列。</p>
+      <span class="go">进入 →</span>
     </a>
   </div>
 </section>
 
 <!-- Docs -->
-<section class="container">
-  <h2 class="t-center">项目文档</h2>
-  <div class="nav-grid">
-    <a href="docs/worldview.html" class="nav-card"><span class="icon">🌍</span> 世界观 <span class="arrow">→</span></a>
-    <a href="docs/philosophy.html" class="nav-card"><span class="icon">💡</span> 创作哲学 <span class="arrow">→</span></a>
-    <a href="docs/art-direction.html" class="nav-card"><span class="icon">🎨</span> 美术规范 <span class="arrow">→</span></a>
-    <a href="docs/prompt-spec.html" class="nav-card"><span class="icon">📝</span> Prompt 规范 <span class="arrow">→</span></a>
-    <a href="docs/tag-standard.html" class="nav-card"><span class="icon">🏷</span> 标签规范 <span class="arrow">→</span></a>
-    <a href="docs/scene-spec.html" class="nav-card"><span class="icon">🎞</span> Scene 规范 <span class="arrow">→</span></a>
-    <a href="docs/quality-standard.html" class="nav-card"><span class="icon">⭐</span> 质量评分 <span class="arrow">→</span></a>
-    <a href="docs/roadmap.html" class="nav-card"><span class="icon">🗺</span> 路线 <span class="arrow">→</span></a>
+<section class="container home-section">
+  <div class="home-section-head">
+    <div><h2>项目文档</h2></div>
+    <a href="docs/roadmap.html" class="link">路线图 →</a>
+  </div>
+  <div class="tools-grid">
+    <a href="docs/worldview.html" class="tool-card"><span class="ic">🌍</span><span class="t">世界观</span><p class="d">创作宇宙的基础设定与边界。</p></a>
+    <a href="docs/philosophy.html" class="tool-card"><span class="ic">💡</span><span class="t">创作哲学</span><p class="d">为什么 Scene 不是 Prompt。</p></a>
+    <a href="docs/art-direction.html" class="tool-card"><span class="ic">🎨</span><span class="t">美术规范</span><p class="d">颜色、构图、拒绝清单。</p></a>
+    <a href="docs/tag-standard.html" class="tool-card"><span class="ic">🏷</span><span class="t">标签规范</span><p class="d">内部唯一英文,用户只写中文。</p></a>
+    <a href="docs/scene-spec.html" class="tool-card"><span class="ic">🎞</span><span class="t">Scene 规范</span><p class="d">17 字段完整定义。</p></a>
+    <a href="docs/quality-standard.html" class="tool-card"><span class="ic">⭐</span><span class="t">质量评分</span><p class="d">5 轴评分标准。</p></a>
   </div>
 </section>
 
-<!-- Footer -->
 <footer class="footer">
   <p>AI CG Studio · From Story to Scene</p>
-  <p class="muted mt-4">希望 AI 创作者不再面对冰冷标签，而是像 Galgame 原画师一样思考</p>
+  <p class="muted mt-4">Prompt 描述的是图片。Scene 描述的是瞬间。而真正值得被记住的,不是 Prompt,而是那个瞬间。</p>
 </footer>
 
+<script>
+/* ============================================================
+   Home — driven by data/scenes.json + localStorage aics_pb_history
+   ============================================================ */
+(function(){
+  const HIS_KEY = 'aics_pb_history';
+
+  // ---- utilities ----
+  function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function stars(r){
+    const n = Math.round(r||0);
+    return '<span class="star-row">' + [1,2,3,4,5].map(i=>'<span class="'+(i<=n?'on':'')+'">★</span>').join('') + '</span>';
+  }
+  function timeAgo(ts){
+    if(!ts) return '';
+    const d = Date.now() - ts;
+    const m = Math.floor(d/60000);
+    if(m<1) return '刚刚';
+    if(m<60) return m+' 分钟前';
+    const h = Math.floor(m/60);
+    if(h<24) return h+' 小时前';
+    const day = Math.floor(h/24);
+    if(day<30) return day+' 天前';
+    return new Date(ts).toLocaleDateString('zh-CN');
+  }
+  function pick(arr, n){
+    const a = arr.slice(); const out = [];
+    for(let i=0;i<n && a.length;i++){ out.push(a.splice(Math.floor(Math.random()*a.length),1)[0]); }
+    return out;
+  }
+
+  // ---- render scene strip (Hero) ----
+  function renderStrip(scenes){
+    const el = document.getElementById('stripScroll');
+    if(!scenes || !scenes.length){ el.innerHTML = '<span class="s-title" style="color:var(--text-muted)">暂无场景</span>'; return; }
+    const pick = scenes.slice(0, 10);
+    el.innerHTML = pick.map(s=>`
+      <div class="strip-cell" onclick="document.location.href='tools/prompt-builder.html?scene=${esc(s.id)}'">
+        <div class="s-title">${esc(s.title)}${s.mature?' <small style="color:var(--accent)">🔞</small>':''}</div>
+        <div class="s-story">${esc(s.story)}</div>
+        <div class="s-meta">
+          <span class="s-tag">${esc(s.emotion)}</span>
+          <span class="s-tag">${esc(s.season||'')}</span>
+        </div>
+      </div>`).join('');
+  }
+
+  // ---- render recent (history) ----
+  function renderRecent(history){
+    const el = document.getElementById('recentList');
+    if(!history || !history.length){
+      el.innerHTML = `<div class="empty" style="grid-column:1/-1">
+        <div class="ic">🎞</div>
+        <p>还没有创作。<br>去导演台生成第一张 CG,它会出现在这里。</p>
+        <a href="tools/prompt-builder.html" class="btn btn-primary">🎬 开始第一个</a>
+      </div>`;
+      return;
+    }
+    const items = history.slice(0, 6);
+    el.innerHTML = items.map(h=>{
+      const sc = (window.__scenes__||[]).find(s=>s.id===h.scene);
+      const title = esc(sc ? sc.title : (h.scene||'未命名'));
+      const tags = sc ? sc.tags.slice(0,3) : [];
+      const rating = h.rating ? (h.rating.atmosphere || h.rating.overall || 0) : 0;
+      return `<div class="recent-card">
+        <div class="recent-thumb">🎬</div>
+        <div class="recent-title">${title}</div>
+        <div class="recent-meta">${esc(h.char||'·')} · ${timeAgo(h.timestamp)}${h.version?' · v'+h.version:''}</div>
+        <div>${stars(rating)}</div>
+        <div class="recent-tags">${tags.map(t=>'<span class="t">'+esc(t)+'</span>').join('')}</div>
+      </div>`;
+    }).join('');
+  }
+
+  // ---- render inspiration triple ----
+  function renderInspo(scenes){
+    const el = document.getElementById('inspoGrid');
+    if(!scenes || !scenes.length){ el.innerHTML = '<p class="muted">载入中…</div>'; return; }
+    // official: fixed first 3; today: date-seeded; hot: top by a heuristic (mature last)
+    const official = scenes.slice(0, 3);
+    const today = pick(scenes, 3);
+    const hot = scenes.slice().sort((a,b)=>(b.tags.length||0)-(a.tags.length||0)).slice(0, 3);
+
+    function col(id, items, label, sub, icon, rank){
+      const list = items.map((s,i)=>`
+        <a href="tools/prompt-builder.html?scene=${esc(s.id)}" class="inspo-item">
+          <span class="rank">${rank? (i+1+'.'):''}</span>
+          <span class="ttl">${esc(s.title)}</span>
+          <span class="emo">${esc(s.emotion)}</span>
+        </a>`).join('');
+      return `<div class="inspo-col">
+        <div class="inspo-col-head"><span class="ic">${icon}</span><div><h3>${label}</h3><p class="sub">${sub}</p></div></div>
+        <div class="inspo-list">${list}</div>
+      </div>`;
+    }
+    el.innerHTML =
+      col('c1', official, '官方推荐', '精选 3 个种子场景', '🌱', false) +
+      col('c2', today, '今日灵感', '每次打开都不同', '☀️', false) +
+      col('c3', hot, '热门 Scene', '标签最丰富的瞬间', '🔥', true);
+  }
+
+  // ---- boot ----
+  fetch('data/scenes.json')
+    .then(r=>r.json())
+    .then(scenes=>{
+      window.__scenes__ = scenes;
+      renderStrip(scenes);
+      renderInspo(scenes);
+      try { renderRecent(JSON.parse(localStorage.getItem(HIS_KEY))||[]); } catch(e){ renderRecent([]); }
+    })
+    .catch(err=>{
+      console.warn('scenes load fail', err);
+      document.getElementById('stripScroll').innerHTML = '<span class="s-title" style="color:var(--text-muted)">⚠️ 场景数据加载失败,请用 localhost 访问。</span>';
+    });
+})();
+</script>
 </body>
 </html>

@@ -1,24 +1,25 @@
 /* ============================================================
    AI CG Studio · Design System
    Style: VSCode / Figma / Notion — 克制、专业、深灰底 + 樱花粉点缀
+   Theme: dark(#17171C 中性深灰) / light(#FAF7F2 暖白) 双主题切换
    ============================================================ */
 
 :root {
-  /* ---- Core palette ---- */
-  --bg-deep:       #1A1A2E;     /* 最深背景 */
-  --bg-base:       #1E1E2E;     /* 页面背景 */
-  --bg-surface:    #252540;     /* 卡片/区块 */
-  --bg-elevated:   #2A2A3D;     /* 浮层/输入框 */
-  --bg-hover:      #32324D;     /* 悬停态 */
+  /* ---- Core palette (dark default, overridden in [data-theme="light"]) ---- */
+  --bg-deep:       #14141A;     /* 最深背景 */
+  --bg-base:       #17171C;     /* 页面背景(中性深灰,去蓝紫) */
+  --bg-surface:    #23232A;     /* 卡片/区块 */
+  --bg-elevated:   #2A2A33;     /* 浮层/输入框 */
+  --bg-hover:      #34343D;     /* 悬停态 */
 
-  --border-soft:   #3A3A55;
-  --border-strong: #4A4A6A;
+  --border-soft:   #3A3A46;
+  --border-strong: #4E4E5C;
 
   /* ---- Text ---- */
   --text-primary:   #E8E8F0;   /* 主文字 */
   --text-secondary: #A8A8C0;   /* 副文字 */
   --text-muted:     #6A6A88;   /* 占位/说明 */
-  --text-inverse:   #1A1A2E;   /* 粉底白字反色 */
+  --text-inverse:   #17171C;   /* 粉底深色字反色 */
 
   /* ---- Accent (樱花粉 — 仅高亮/CTAs) ---- */
   --accent:         #F06292;
@@ -41,7 +42,7 @@
   --mood-warmth:    #FFB74D;
 
   /* ---- Typography ---- */
-  --font-sans:      "HarmonyOS Sans SC", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-sans:      "Noto Sans SC", "HarmonyOS Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
   --font-mono:      "JetBrains Mono", "Fira Code", "Consolas", monospace;
 
   /* ---- Spacing scale (8px base) ---- */
@@ -59,6 +60,29 @@
   /* ---- Transition ---- */
   --t-fast: 150ms ease;
   --t-base: 240ms ease;
+}
+
+/* ============================================================
+   Light theme (PDD §6.3: 暖白 #FAF7F2 / 纸张 / 画册 / 设计稿感)
+   ============================================================ */
+[data-theme="light"] {
+  --bg-deep:       #F0ECE6;     /* 最深背景(米灰) */
+  --bg-base:       #FAF7F2;     /* 页面背景(暖白) */
+  --bg-surface:    #FFFFFF;     /* 卡片/区块(纯白) */
+  --bg-elevated:   #F5F2ED;     /* 浮层/输入框 */
+  --bg-hover:      #EBE7E0;     /* 悬停态 */
+
+  --border-soft:   #E0DCE6;
+  --border-strong: #C8C2D0;
+
+  --text-primary:   #2C2C3A;   /* 主文字(深灰黑) */
+  --text-secondary: #5A5A6E;   /* 副文字 */
+  --text-muted:     #8C8C9E;   /* 占位/说明 */
+  --text-inverse:   #FFFFFF;   /* 粉底白字反色 */
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
 }
 
 /* ---- Reset ---- */
@@ -127,6 +151,26 @@ img { max-width: 100%; display: block; }
   transition: color var(--t-fast);
 }
 .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+
+/* ---- Theme toggle ---- */
+.theme-toggle {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border-soft);
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--t-fast);
+  font-size: 1rem;
+  line-height: 1;
+}
+.theme-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: rotate(-15deg);
+}
+.theme-toggle-icon { pointer-events: none; }
 
 /* ---- Page header ---- */
 .page-header {

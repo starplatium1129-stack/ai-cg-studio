@@ -1,0 +1,1022 @@
+[
+  {
+    "id": "tag_001",
+    "cat": "Character",
+    "en": "ayachi_nene",
+    "cn": "绫地宁宁",
+    "weight": 1,
+    "related": []
+  },
+  {
+    "id": "tag_002",
+    "cat": "Character",
+    "en": "shiki_natsume",
+    "cn": "四季夏目",
+    "weight": 1,
+    "related": []
+  },
+  {
+    "id": "tag_003",
+    "cat": "Clothing",
+    "en": "school_uniform",
+    "cn": "校服",
+    "weight": 0.8,
+    "related": [
+      "tag_025"
+    ]
+  },
+  {
+    "id": "tag_004",
+    "cat": "Clothing",
+    "en": "sailor_uniform",
+    "cn": "水手服",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_005",
+    "cat": "Clothing",
+    "en": "blazer",
+    "cn": "西装外套",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_006",
+    "cat": "Clothing",
+    "en": "pleated_skirt",
+    "cn": "百褶裙",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_007",
+    "cat": "Clothing",
+    "en": "plaid_skirt",
+    "cn": "格子裙",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_008",
+    "cat": "Clothing",
+    "en": "kimono",
+    "cn": "和服",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_009",
+    "cat": "Clothing",
+    "en": "yukata",
+    "cn": "浴衣",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_010",
+    "cat": "Clothing",
+    "en": "china_dress",
+    "cn": "旗袍",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_011",
+    "cat": "Clothing",
+    "en": "hanbok",
+    "cn": "韩服",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_012",
+    "cat": "Clothing",
+    "en": "maid",
+    "cn": "女仆",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_013",
+    "cat": "Clothing",
+    "en": "witch",
+    "cn": "魔女",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_014",
+    "cat": "Clothing",
+    "en": "cape",
+    "cn": "斗篷",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_015",
+    "cat": "Clothing",
+    "en": "elf",
+    "cn": "精灵",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_016",
+    "cat": "Clothing",
+    "en": "angel",
+    "cn": "天使",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_017",
+    "cat": "Clothing",
+    "en": "casual_clothes",
+    "cn": "私服",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_018",
+    "cat": "Clothing",
+    "en": "hoodie",
+    "cn": "连帽衫",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_019",
+    "cat": "Clothing",
+    "en": "sweater",
+    "cn": "毛衣",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_020",
+    "cat": "Clothing",
+    "en": "dress",
+    "cn": "连衣裙",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_021",
+    "cat": "Clothing",
+    "en": "pajamas",
+    "cn": "睡衣",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_022",
+    "cat": "Clothing",
+    "en": "swimsuit",
+    "cn": "泳装",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_023",
+    "cat": "Clothing",
+    "en": "apron",
+    "cn": "围裙",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_024",
+    "cat": "Clothing",
+    "en": "sport_clothes",
+    "cn": "运动装",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_025",
+    "cat": "Action",
+    "en": "standing",
+    "cn": "站",
+    "weight": 0.8,
+    "related": [
+      "tag_003"
+    ]
+  },
+  {
+    "id": "tag_026",
+    "cat": "Action",
+    "en": "sitting",
+    "cn": "坐",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_027",
+    "cat": "Action",
+    "en": "walking",
+    "cn": "走",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_028",
+    "cat": "Action",
+    "en": "running",
+    "cn": "跑",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_029",
+    "cat": "Action",
+    "en": "lying",
+    "cn": "躺",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_030",
+    "cat": "Action",
+    "en": "kneeling",
+    "cn": "跪",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_031",
+    "cat": "Action",
+    "en": "stretching",
+    "cn": "伸展",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_032",
+    "cat": "Action",
+    "en": "leaning",
+    "cn": "倚靠",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_033",
+    "cat": "Action",
+    "en": "jumping",
+    "cn": "跳",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_034",
+    "cat": "Action",
+    "en": "arms_crossed",
+    "cn": "抱臂",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_035",
+    "cat": "Action",
+    "en": "hand_on_hip",
+    "cn": "叉腰",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_036",
+    "cat": "Action",
+    "en": "arm_up",
+    "cn": "举手",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_037",
+    "cat": "Emotion",
+    "en": "smile",
+    "cn": "微笑",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_038",
+    "cat": "Emotion",
+    "en": "laughing",
+    "cn": "大笑",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_039",
+    "cat": "Emotion",
+    "en": "blush",
+    "cn": "脸红",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_040",
+    "cat": "Emotion",
+    "en": "shy",
+    "cn": "害羞",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_041",
+    "cat": "Emotion",
+    "en": "surprised",
+    "cn": "惊讶",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_042",
+    "cat": "Emotion",
+    "en": "angry",
+    "cn": "生气",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_043",
+    "cat": "Emotion",
+    "en": "pouting",
+    "cn": "嘟嘴",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_044",
+    "cat": "Emotion",
+    "en": "sad",
+    "cn": "悲伤",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_045",
+    "cat": "Emotion",
+    "en": "crying",
+    "cn": "哭泣",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_046",
+    "cat": "Emotion",
+    "en": "wink",
+    "cn": "眨眼",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_047",
+    "cat": "Emotion",
+    "en": "closed_eyes",
+    "cn": "闭眼",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_048",
+    "cat": "Emotion",
+    "en": "looking_back",
+    "cn": "回眸",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_049",
+    "cat": "Scene",
+    "en": "cherry_blossoms",
+    "cn": "樱花",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_050",
+    "cat": "Scene",
+    "en": "rain",
+    "cn": "雨",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_051",
+    "cat": "Scene",
+    "en": "snow",
+    "cn": "雪",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_052",
+    "cat": "Scene",
+    "en": "sunset",
+    "cn": "日落",
+    "weight": 0.8,
+    "related": [
+      "tag_064"
+    ]
+  },
+  {
+    "id": "tag_053",
+    "cat": "Scene",
+    "en": "night",
+    "cn": "夜晚",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_054",
+    "cat": "Scene",
+    "en": "moonlight",
+    "cn": "月光",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_055",
+    "cat": "Scene",
+    "en": "classroom",
+    "cn": "教室",
+    "weight": 0.8,
+    "related": [
+      "tag_065"
+    ]
+  },
+  {
+    "id": "tag_056",
+    "cat": "Scene",
+    "en": "library",
+    "cn": "图书馆",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_057",
+    "cat": "Scene",
+    "en": "school_rooftop",
+    "cn": "天台",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_058",
+    "cat": "Scene",
+    "en": "beach",
+    "cn": "海边",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_059",
+    "cat": "Scene",
+    "en": "shrine",
+    "cn": "神社",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_060",
+    "cat": "Scene",
+    "en": "bedroom",
+    "cn": "卧室",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_061",
+    "cat": "Scene",
+    "en": "cafe",
+    "cn": "咖啡厅",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_062",
+    "cat": "Scene",
+    "en": "park",
+    "cn": "公园",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_063",
+    "cat": "Scene",
+    "en": "train_station",
+    "cn": "车站",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_064",
+    "cat": "Lighting",
+    "en": "golden_hour",
+    "cn": "黄金时刻",
+    "weight": 0.8,
+    "related": [
+      "tag_052"
+    ]
+  },
+  {
+    "id": "tag_065",
+    "cat": "Lighting",
+    "en": "window_light",
+    "cn": "窗光",
+    "weight": 0.8,
+    "related": [
+      "tag_055"
+    ]
+  },
+  {
+    "id": "tag_066",
+    "cat": "Lighting",
+    "en": "backlighting",
+    "cn": "逆光",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_067",
+    "cat": "Lighting",
+    "en": "soft_lighting",
+    "cn": "柔光",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_068",
+    "cat": "Lighting",
+    "en": "rim_light",
+    "cn": "轮廓光",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_069",
+    "cat": "Lighting",
+    "en": "sun_flare",
+    "cn": "镜头光晕",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_070",
+    "cat": "Lighting",
+    "en": "volumetric",
+    "cn": "体积光",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_071",
+    "cat": "Lighting",
+    "en": "dramatic",
+    "cn": "戏剧光",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_072",
+    "cat": "Appearance",
+    "en": "hair_blowing",
+    "cn": "风吹发",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_073",
+    "cat": "Appearance",
+    "en": "petals",
+    "cn": "花瓣",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_074",
+    "cat": "Appearance",
+    "en": "bokeh",
+    "cn": "焦外",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_075",
+    "cat": "Appearance",
+    "en": "lens_flare",
+    "cn": "镜头光晕",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_076",
+    "cat": "Appearance",
+    "en": "dust_motes",
+    "cn": "浮尘",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_077",
+    "cat": "Appearance",
+    "en": "sunbeam",
+    "cn": "阳光",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_078",
+    "cat": "Appearance",
+    "en": "sweat",
+    "cn": "汗水",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_079",
+    "cat": "Appearance",
+    "en": "tear",
+    "cn": "眼泪",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_080",
+    "cat": "Appearance",
+    "en": "ribbon",
+    "cn": "丝带",
+    "weight": 0.8,
+    "related": []
+  },
+  {
+    "id": "tag_081",
+    "cat": "Action",
+    "en": "lying on stomach",
+    "cn": "趴着",
+    "weight": 0.85,
+    "related": []
+  },
+  {
+    "id": "tag_082",
+    "cat": "Action",
+    "en": "lying on back",
+    "cn": "躺着",
+    "weight": 0.85,
+    "related": []
+  },
+  {
+    "id": "tag_083",
+    "cat": "Action",
+    "en": "squatting",
+    "cn": "蹲下",
+    "weight": 0.85,
+    "related": []
+  },
+  {
+    "id": "tag_084",
+    "cat": "Action",
+    "en": "leaning against",
+    "cn": "靠着",
+    "weight": 0.85,
+    "related": []
+  },
+  {
+    "id": "tag_085",
+    "cat": "Action",
+    "en": "holding hands",
+    "cn": "牵手",
+    "weight": 0.85,
+    "related": []
+  },
+  {
+    "id": "tag_086",
+    "cat": "Action",
+    "en": "hugging",
+    "cn": "拥抱",
+    "weight": 0.85,
+    "related": []
+  },
+  {
+    "id": "tag_087",
+    "cat": "Action",
+    "en": "looking back, over shoulder",
+    "cn": "回头",
+    "weight": 0.85,
+    "related": []
+  },
+  {
+    "id": "tag_088",
+    "cat": "Emotion",
+    "en": "happy, bright smile, joyful expression",
+    "cn": "开心",
+    "weight": 0.9,
+    "related": []
+  },
+  {
+    "id": "tag_089",
+    "cat": "Emotion",
+    "en": "in love, gentle smile, soft eyes, blush",
+    "cn": "恋爱",
+    "weight": 0.9,
+    "related": []
+  },
+  {
+    "id": "tag_090",
+    "cat": "Emotion",
+    "en": "expectant, hopeful, bright eyes",
+    "cn": "期待",
+    "weight": 0.9,
+    "related": []
+  },
+  {
+    "id": "tag_091",
+    "cat": "Emotion",
+    "en": "relaxed, gentle expression, calm",
+    "cn": "放松",
+    "weight": 0.9,
+    "related": []
+  },
+  {
+    "id": "tag_092",
+    "cat": "Emotion",
+    "en": "missing, longing look, distant gaze",
+    "cn": "想念",
+    "weight": 0.9,
+    "related": []
+  },
+  {
+    "id": "tag_093",
+    "cat": "Emotion",
+    "en": "teary eyes, pout, vulnerable",
+    "cn": "委屈",
+    "weight": 0.9,
+    "related": []
+  },
+  {
+    "id": "tag_094",
+    "cat": "Emotion",
+    "en": "serious, determined, focused",
+    "cn": "认真",
+    "weight": 0.9,
+    "related": []
+  },
+  {
+    "id": "tag_095",
+    "cat": "Emotion",
+    "en": "sleepy, half-closed eyes, drowsy",
+    "cn": "困倦",
+    "weight": 0.9,
+    "related": []
+  },
+  {
+    "id": "tag_096",
+    "cat": "Emotion",
+    "en": "calm, peaceful, serene",
+    "cn": "平静",
+    "weight": 0.9,
+    "related": []
+  },
+  {
+    "id": "tag_097",
+    "cat": "Camera",
+    "en": "close-up, upper face",
+    "cn": "近景",
+    "weight": 0.85,
+    "related": []
+  },
+  {
+    "id": "tag_098",
+    "cat": "Camera",
+    "en": "medium shot, waist up",
+    "cn": "中景",
+    "weight": 0.85,
+    "related": []
+  },
+  {
+    "id": "tag_099",
+    "cat": "Camera",
+    "en": "wide shot, full body",
+    "cn": "远景",
+    "weight": 0.85,
+    "related": []
+  },
+  {
+    "id": "tag_100",
+    "cat": "Camera",
+    "en": "close-up detail",
+    "cn": "特写",
+    "weight": 0.85,
+    "related": []
+  },
+  {
+    "id": "tag_101",
+    "cat": "Camera",
+    "en": "pov, first person view",
+    "cn": "POV",
+    "weight": 0.85,
+    "related": []
+  },
+  {
+    "id": "tag_102",
+    "cat": "Camera",
+    "en": "low angle, looking up",
+    "cn": "仰视",
+    "weight": 0.85,
+    "related": []
+  },
+  {
+    "id": "tag_103",
+    "cat": "Camera",
+    "en": "high angle, looking down",
+    "cn": "俯视",
+    "weight": 0.85,
+    "related": []
+  },
+  {
+    "id": "tag_104",
+    "cat": "Camera",
+    "en": "side view, profile",
+    "cn": "侧面",
+    "weight": 0.85,
+    "related": []
+  },
+  {
+    "id": "tag_105",
+    "cat": "Camera",
+    "en": "selfie, phone camera",
+    "cn": "自拍",
+    "weight": 0.85,
+    "related": []
+  },
+  {
+    "id": "tag_106",
+    "cat": "Camera",
+    "en": "centered composition, symmetric",
+    "cn": "居中",
+    "weight": 0.85,
+    "related": []
+  },
+  {
+    "id": "tag_107",
+    "cat": "Camera",
+    "en": "rule of thirds, off-center",
+    "cn": "三分法",
+    "weight": 0.85,
+    "related": []
+  },
+  {
+    "id": "tag_108",
+    "cat": "Camera",
+    "en": "left composition",
+    "cn": "左构图",
+    "weight": 0.85,
+    "related": []
+  },
+  {
+    "id": "tag_109",
+    "cat": "Camera",
+    "en": "right composition",
+    "cn": "右构图",
+    "weight": 0.85,
+    "related": []
+  },
+  {
+    "id": "tag_110",
+    "cat": "Camera",
+    "en": "foreground framing, depth",
+    "cn": "前景遮挡",
+    "weight": 0.85,
+    "related": []
+  },
+  {
+    "id": "tag_111",
+    "cat": "Camera",
+    "en": "framed composition",
+    "cn": "框架构图",
+    "weight": 0.85,
+    "related": []
+  },
+  {
+    "id": "tag_112",
+    "cat": "Camera",
+    "en": "by window, against window",
+    "cn": "窗边构图",
+    "weight": 0.85,
+    "related": []
+  },
+  {
+    "id": "tag_113",
+    "cat": "Lighting",
+    "en": "golden hour, warm light, sunset glow",
+    "cn": "夕阳",
+    "weight": 0.85,
+    "related": []
+  },
+  {
+    "id": "tag_114",
+    "cat": "Lighting",
+    "en": "window light, soft, diffused",
+    "cn": "窗光",
+    "weight": 0.85,
+    "related": []
+  },
+  {
+    "id": "tag_115",
+    "cat": "Lighting",
+    "en": "backlit, rim light, silhouette edge",
+    "cn": "逆光",
+    "weight": 0.85,
+    "related": []
+  },
+  {
+    "id": "tag_116",
+    "cat": "Lighting",
+    "en": "lantern light, warm glow",
+    "cn": "夜灯",
+    "weight": 0.85,
+    "related": []
+  },
+  {
+    "id": "tag_117",
+    "cat": "Lighting",
+    "en": "overcast, soft diffused light",
+    "cn": "阴天柔光",
+    "weight": 0.85,
+    "related": []
+  },
+  {
+    "id": "tag_118",
+    "cat": "Lighting",
+    "en": "city night, colored lights",
+    "cn": "霓虹灯",
+    "weight": 0.85,
+    "related": []
+  },
+  {
+    "id": "tag_119",
+    "cat": "Lighting",
+    "en": "candlelight, warm flickering",
+    "cn": "烛光",
+    "weight": 0.85,
+    "related": []
+  },
+  {
+    "id": "tag_120",
+    "cat": "Style",
+    "en": "anime illustration",
+    "cn": "二次元",
+    "weight": 1,
+    "related": []
+  },
+  {
+    "id": "tag_121",
+    "cat": "Style",
+    "en": "visual novel CG",
+    "cn": "Galgame CG",
+    "weight": 0.95,
+    "related": []
+  },
+  {
+    "id": "tag_122",
+    "cat": "Style",
+    "en": "game illustration",
+    "cn": "游戏插画",
+    "weight": 0.9,
+    "related": []
+  },
+  {
+    "id": "tag_123",
+    "cat": "Quality",
+    "en": "masterpiece",
+    "cn": "杰作",
+    "weight": 1,
+    "related": []
+  },
+  {
+    "id": "tag_124",
+    "cat": "Quality",
+    "en": "best quality",
+    "cn": "最高质量",
+    "weight": 1,
+    "related": []
+  },
+  {
+    "id": "tag_125",
+    "cat": "Quality",
+    "en": "highly detailed",
+    "cn": "高精度",
+    "weight": 0.85,
+    "related": []
+  },
+  {
+    "id": "tag_126",
+    "cat": "Quality",
+    "en": "absurdres",
+    "cn": "超高清",
+    "weight": 0.8,
+    "related": []
+  }
+]

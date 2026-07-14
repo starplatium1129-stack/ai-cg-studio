@@ -1,0 +1,22 @@
+[
+  {
+    "id": "L_NENE_V11",
+    "name": "ayachi_nene_v11",
+    "base_model": "waiIllustriousSDXL_v170",
+    "trainer": "OneTrainer",
+    "dataset": { "images": 130, "resolution": 1024 },
+    "training": { "epoch": 30, "rank": 32, "alpha": 32 },
+    "recommended_weight": { "portrait": 0.85, "fullbody": 0.75, "complex_scene": 0.7 },
+    "test_scene": ["sc001", "sc010", "sc025", "sc034", "sc049"]
+  },
+  {
+    "id": "L_NAT_V11",
+    "name": "shiki_natsume_v11",
+    "base_model": "waiIllustriousSDXL_v170",
+    "trainer": "OneTrainer",
+    "dataset": { "images": 125, "resolution": 1024 },
+    "training": { "epoch": 30, "rank": 32, "alpha": 32 },
+    "recommended_weight": { "portrait": 0.85, "fullbody": 0.75, "complex_scene": 0.7 },
+    "test_scene": ["sc005", "sc011", "sc029", "sc037", "sc043"]
+  }
+]
