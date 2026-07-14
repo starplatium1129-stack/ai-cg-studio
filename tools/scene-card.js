@@ -31,13 +31,14 @@
     card.setAttribute('role', 'button');
     card.tabIndex = 0;
 
-    // 视觉预览色带(scene天气 → 色调)
+    // 视觉预览色带(按分类着色)
     var theme = {
-      '晴':'linear-gradient(135deg,#FFD54F,#FFB300)','多云':'linear-gradient(135deg,#B0BEC5,#78909C)',
-      '阴':'linear-gradient(135deg,#90A4AE,#546E7A)','雨':'linear-gradient(135deg,#64B5F6,#1E88E5)',
-      '雪':'linear-gradient(135deg,#E3F2FD,#90CAF9)','彩虹':'linear-gradient(135deg,#F8BBD0,#CE93D8)'
+      '校园':'linear-gradient(135deg,#81C784,#388E3C)','祭典':'linear-gradient(135deg,#FF8A65,#D84315)',
+      '节日':'linear-gradient(135deg,#F06292,#C2185B)','日常':'linear-gradient(135deg,#4FC3F7,#0288D1)',
+      '旅行':'linear-gradient(135deg,#80DEEA,#00838F)','恋爱':'linear-gradient(135deg,#CE93D8,#6A1B9A)',
+      '亲密':'linear-gradient(135deg,#FF80AB,#AD1457)','R15':'linear-gradient(135deg,#CFD8DB,#37474F)'
     };
-    var band = theme[scene.weather] || 'linear-gradient(135deg,var(--bg-deep),var(--bg-elevated))';
+    var band = theme[scene.category] || 'linear-gradient(135deg,var(--bg-deep),var(--bg-elevated))';
 
     var html = '';
 
