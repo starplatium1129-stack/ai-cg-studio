@@ -88,10 +88,10 @@
   .scene-item .si-emo { font-size: 0.68rem; color: var(--text-muted); }
 
   /* Tags */
-  .cat-tabs { display: flex; gap: var(--s-1); flex-wrap: wrap; margin-bottom: var(--s-2); }
-  .cat-tab { padding: 3px 10px; border: 1px solid var(--border-soft); background: var(--bg-surface); color: var(--text-secondary); border-radius: 14px; cursor: pointer; font-size: 0.7rem; transition: all var(--t-fast); }
-  .cat-tab:hover { border-color: var(--accent); }
-  .cat-tab.active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+  .cat-tabs { display: flex; gap: var(--s-1); flex-wrap: wrap; margin-bottom: var(--s-3); padding-bottom: var(--s-2); border-bottom: 1px solid var(--border-soft); }
+  .cat-tab { padding: 4px 14px; border: 1px solid var(--border-soft); background: var(--bg-deep); color: var(--text-secondary); border-radius: 16px; cursor: pointer; font-size: 0.72rem; font-weight: 600; transition: all var(--t-fast); }
+  .cat-tab:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .cat-tab.active { background: var(--accent); border-color: var(--accent); color: var(--bg-deep); }
   .tag-pool { display: flex; flex-wrap: wrap; gap: 4px; }
   .tag-chip { padding: 2px 8px; background: var(--bg-elevated); border: 1px solid var(--border-soft); border-radius: 12px; font-size: 0.7rem; color: var(--text-secondary); cursor: pointer; transition: all var(--t-fast); }
   .tag-chip:hover { border-color: var(--accent); color: var(--accent); }
