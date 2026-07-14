@@ -2390,19 +2390,35 @@
     "category": "旅行",
     "story": "夜晚在山顶露营，她指着天空说那是我们的星座",
     "char": "natsume",
-    "character": ["natsume"],
+    "character": [
+      "natsume"
+    ],
     "lora": "shiki_natsume_v11",
     "emotion": "幸福",
     "season": "夏",
     "time": "夜晚",
     "timeOfDay": "night",
-    "tags": ["starry_sky", "mountain", "camping", "night", "moonlight", "looking_up", "pointing", "romantic", "warm_lighting"],
+    "tags": [
+      "starry_sky",
+      "mountain",
+      "camping",
+      "night",
+      "moonlight",
+      "looking_up",
+      "pointing",
+      "romantic",
+      "warm_lighting"
+    ],
     "mature": false,
     "location": "山顶",
     "weather": "晴",
     "camera": "全身远景",
     "lighting": "月光",
-    "usage": ["展示图", "头像", "CG"],
+    "usage": [
+      "展示图",
+      "头像",
+      "CG"
+    ],
     "prompt": "1girl, shiki_natsume, joyful, gentle_smile, starry_sky, mountain, camping, night, moonlight, looking_up, pointing, romantic, warm_lighting",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
   },
@@ -2412,19 +2428,33 @@
     "category": "旅行",
     "story": "她撑着伞穿过竹林，雨水顺着伞骨滴落",
     "char": "nene",
-    "character": ["nene"],
+    "character": [
+      "nene"
+    ],
     "lora": "ayachi_nene_v11",
     "emotion": "平静",
     "season": "夏",
     "time": "午后",
     "timeOfDay": "afternoon",
-    "tags": ["bamboo_forest", "rain", "umbrella", "standing", "looking_at_viewer", "reflection", "muted_tones", "soft_lighting"],
+    "tags": [
+      "bamboo_forest",
+      "rain",
+      "umbrella",
+      "standing",
+      "looking_at_viewer",
+      "reflection",
+      "muted_tones",
+      "soft_lighting"
+    ],
     "mature": false,
     "location": "竹林",
     "weather": "雨",
     "camera": "全身中景",
     "lighting": "阴天光",
-    "usage": ["展示图", "CG"],
+    "usage": [
+      "展示图",
+      "CG"
+    ],
     "prompt": "1girl, ayachi_nene, calm, peaceful_expression, bamboo_forest, rain, umbrella, standing, looking_at_viewer, reflection, muted_tones, soft_lighting",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
   },
@@ -2434,19 +2464,33 @@
     "category": "旅行",
     "story": "她裹着浴衣坐在温泉边，雾气缭绕",
     "char": "natsume",
-    "character": ["natsume"],
+    "character": [
+      "natsume"
+    ],
     "lora": "shiki_natsume_v11",
     "emotion": "放松",
     "season": "冬",
     "time": "傍晚",
     "timeOfDay": "sunset",
-    "tags": ["yukata", "hot_spring", "steam", "sitting", "looking_away", "lantern", "warm_atmosphere", "traditional"],
+    "tags": [
+      "yukata",
+      "hot_spring",
+      "steam",
+      "sitting",
+      "looking_away",
+      "lantern",
+      "warm_atmosphere",
+      "traditional"
+    ],
     "mature": false,
     "location": "温泉",
     "weather": "雪",
     "camera": "半身中景",
     "lighting": "灯笼光",
-    "usage": ["展示图", "CG"],
+    "usage": [
+      "展示图",
+      "CG"
+    ],
     "prompt": "1girl, shiki_natsume, relaxed, gentle_expression, yukata, hot_spring, steam, sitting, looking_away, lantern, warm_atmosphere, traditional",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
   },
@@ -2456,19 +2500,34 @@
     "category": "恋爱",
     "story": "她在摩天轮前等你，手里拿着棉花糖",
     "char": "nene",
-    "character": ["nene"],
+    "character": [
+      "nene"
+    ],
     "lora": "ayachi_nene_v11",
     "emotion": "期待",
     "season": "夏",
     "time": "黄昏",
     "timeOfDay": "sunset",
-    "tags": ["amusement_park", "ferris_wheel", "sunset", "holding", "cotton_candy", "casual_clothes", "looking_at_viewer", "dating"],
+    "tags": [
+      "amusement_park",
+      "ferris_wheel",
+      "sunset",
+      "holding",
+      "cotton_candy",
+      "casual_clothes",
+      "looking_at_viewer",
+      "dating"
+    ],
     "mature": false,
     "location": "游乐园",
     "weather": "晴",
     "camera": "全身中景",
     "lighting": "黄金时刻",
-    "usage": ["展示图", "头像", "CG"],
+    "usage": [
+      "展示图",
+      "头像",
+      "CG"
+    ],
     "prompt": "1girl, ayachi_nene, expectant, hopeful, bright_eyes, amusement_park, ferris_wheel, sunset, holding, cotton_candy, casual_clothes, looking_at_viewer, dating",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
   },
@@ -2478,19 +2537,34 @@
     "category": "恋爱",
     "story": "她趴在玻璃前看鱼，蓝色的光映在她脸上",
     "char": "natsume",
-    "character": ["natsume"],
+    "character": [
+      "natsume"
+    ],
     "lora": "shiki_natsume_v11",
     "emotion": "惊喜",
     "season": "夏",
     "time": "午后",
     "timeOfDay": "afternoon",
-    "tags": ["aquarium", "blue_lighting", "fish", "leaning_against", "looking_away", "amazed", "reflection", "dating"],
+    "tags": [
+      "aquarium",
+      "blue_lighting",
+      "fish",
+      "leaning_against",
+      "looking_away",
+      "amazed",
+      "reflection",
+      "dating"
+    ],
     "mature": false,
     "location": "水族馆",
     "weather": "晴",
     "camera": "半身中景",
     "lighting": "逆光",
-    "usage": ["展示图", "头像", "CG"],
+    "usage": [
+      "展示图",
+      "头像",
+      "CG"
+    ],
     "prompt": "1girl, shiki_natsume, surprised, amazed, aquarium, blue_lighting, fish, leaning_against, looking_away, reflection, dating",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
   },
@@ -2500,19 +2574,34 @@
     "category": "旅行",
     "story": "她站在向日葵田中间，转身对你笑",
     "char": "nene",
-    "character": ["nene"],
+    "character": [
+      "nene"
+    ],
     "lora": "ayachi_nene_v11",
     "emotion": "开心",
     "season": "夏",
     "time": "午后",
     "timeOfDay": "afternoon",
-    "tags": ["sunflower", "field", "looking_back", "bright_smile", "dress", "summer", "sunlight", "warm_lighting"],
+    "tags": [
+      "sunflower",
+      "field",
+      "looking_back",
+      "bright_smile",
+      "dress",
+      "summer",
+      "sunlight",
+      "warm_lighting"
+    ],
     "mature": false,
     "location": "向日葵田",
     "weather": "晴",
     "camera": "全身中景",
     "lighting": "阳光",
-    "usage": ["展示图", "头像", "CG"],
+    "usage": [
+      "展示图",
+      "头像",
+      "CG"
+    ],
     "prompt": "1girl, ayachi_nene, happy, bright_smile, joyful_expression, sunflower, field, looking_back, dress, summer, sunlight, warm_lighting",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
   },
@@ -2522,19 +2611,34 @@
     "category": "日常",
     "story": "她跪坐在榻榻米上，双手捧着茶碗",
     "char": "natsume",
-    "character": ["natsume"],
+    "character": [
+      "natsume"
+    ],
     "lora": "shiki_natsume_v11",
     "emotion": "温柔",
     "season": "秋",
     "time": "午后",
     "timeOfDay": "afternoon",
-    "tags": ["kimono", "tea_ceremony", "tatami", "kneeling", "holding", "gentle", "traditional", "window_light", "harmonious_colors"],
+    "tags": [
+      "kimono",
+      "tea_ceremony",
+      "tatami",
+      "kneeling",
+      "holding",
+      "gentle",
+      "traditional",
+      "window_light",
+      "harmonious_colors"
+    ],
     "mature": false,
     "location": "茶室",
     "weather": "晴",
     "camera": "半身中景",
     "lighting": "窗光",
-    "usage": ["展示图", "CG"],
+    "usage": [
+      "展示图",
+      "CG"
+    ],
     "prompt": "1girl, shiki_natsume, gentle_expression, calm, kimono, tea_ceremony, tatami, kneeling, holding, traditional, window_light, harmonious_colors",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
   },
@@ -2544,19 +2648,34 @@
     "category": "节日",
     "story": "她站在鸟居下，初雪落在她的发梢",
     "char": "nene",
-    "character": ["nene"],
+    "character": [
+      "nene"
+    ],
     "lora": "ayachi_nene_v11",
     "emotion": "感动",
     "season": "冬",
     "time": "清晨",
     "timeOfDay": "morning",
-    "tags": ["shrine", "snow", "torii_gate", "kimono", "standing", "looking_up", "moved", "winter", "soft_lighting"],
+    "tags": [
+      "shrine",
+      "snow",
+      "torii_gate",
+      "kimono",
+      "standing",
+      "looking_up",
+      "moved",
+      "winter",
+      "soft_lighting"
+    ],
     "mature": false,
     "location": "神社",
     "weather": "雪",
     "camera": "全身远景",
     "lighting": "柔和光",
-    "usage": ["展示图", "CG"],
+    "usage": [
+      "展示图",
+      "CG"
+    ],
     "prompt": "1girl, ayachi_nene, moved, teary_eyes, shrine, snow, torii_gate, kimono, standing, looking_up, winter, soft_lighting",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
   },
@@ -2566,19 +2685,34 @@
     "category": "日常",
     "story": "她坐在书架间的梯子上，低头看书",
     "char": "natsume",
-    "character": ["natsume"],
+    "character": [
+      "natsume"
+    ],
     "lora": "shiki_natsume_v11",
     "emotion": "认真",
     "season": "秋",
     "time": "午后",
     "timeOfDay": "afternoon",
-    "tags": ["bookstore", "bookshelf", "sitting", "reading", "serious", "dust_motes", "window_light", "cozy", "ladder"],
+    "tags": [
+      "bookstore",
+      "bookshelf",
+      "sitting",
+      "reading",
+      "serious",
+      "dust_motes",
+      "window_light",
+      "cozy",
+      "ladder"
+    ],
     "mature": false,
     "location": "旧书店",
     "weather": "晴",
     "camera": "半身中景",
     "lighting": "窗光",
-    "usage": ["展示图", "CG"],
+    "usage": [
+      "展示图",
+      "CG"
+    ],
     "prompt": "1girl, shiki_natsume, serious, determined, focused_expression, bookstore, bookshelf, sitting, reading, dust_motes, window_light, cozy, ladder",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
   },
@@ -2588,19 +2722,37 @@
     "category": "恋爱",
     "story": "黄昏的海边，她终于鼓起勇气说出那句话",
     "char": "nene",
-    "character": ["nene"],
+    "character": [
+      "nene"
+    ],
     "lora": "ayachi_nene_v11",
     "emotion": "害羞",
     "season": "夏",
     "time": "黄昏",
     "timeOfDay": "sunset",
-    "tags": ["beach", "sunset", "ocean", "blush", "shy", "looking_at_viewer", "dress", "wind", "hair_blowing", "romantic", "golden_hour"],
+    "tags": [
+      "beach",
+      "sunset",
+      "ocean",
+      "blush",
+      "shy",
+      "looking_at_viewer",
+      "dress",
+      "wind",
+      "hair_blowing",
+      "romantic",
+      "golden_hour"
+    ],
     "mature": false,
     "location": "海边",
     "weather": "晴",
     "camera": "半身中景",
     "lighting": "黄金时刻",
-    "usage": ["展示图", "头像", "CG"],
+    "usage": [
+      "展示图",
+      "头像",
+      "CG"
+    ],
     "prompt": "1girl, ayachi_nene, shy, blushing, looking_at_viewer, beach, sunset, ocean, dress, wind, hair_blowing, romantic, golden_hour",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
   },
@@ -2610,19 +2762,34 @@
     "category": "日常",
     "story": "她枕着坐垫睡着了，阳光从纸门漏进来",
     "char": "natsume",
-    "character": ["natsume"],
+    "character": [
+      "natsume"
+    ],
     "lora": "shiki_natsume_v11",
     "emotion": "困倦",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
-    "tags": ["tatami", "lying", "sleeping", "sleepy", "sunbeam", "casual_clothes", "relaxed", "peaceful", "cozy"],
+    "tags": [
+      "tatami",
+      "lying",
+      "sleeping",
+      "sleepy",
+      "sunbeam",
+      "casual_clothes",
+      "relaxed",
+      "peaceful",
+      "cozy"
+    ],
     "mature": false,
     "location": "和室",
     "weather": "晴",
     "camera": "全身中景",
     "lighting": "窗光",
-    "usage": ["展示图", "CG"],
+    "usage": [
+      "展示图",
+      "CG"
+    ],
     "prompt": "1girl, shiki_natsume, sleepy, half_closed_eyes, drowsy, tatami, lying, sleeping, sunbeam, casual_clothes, relaxed, peaceful, cozy",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
   },
@@ -2632,19 +2799,35 @@
     "category": "日常",
     "story": "她坐在缘侧，抬头看着满月",
     "char": "nene",
-    "character": ["nene"],
+    "character": [
+      "nene"
+    ],
     "lora": "ayachi_nene_v11",
     "emotion": "思念",
     "season": "秋",
     "time": "夜晚",
     "timeOfDay": "night",
-    "tags": ["engawa", "moonlight", "night", "sitting", "looking_up", "miss", "kimono", "traditional", "bokeh", "blue_lighting"],
+    "tags": [
+      "engawa",
+      "moonlight",
+      "night",
+      "sitting",
+      "looking_up",
+      "miss",
+      "kimono",
+      "traditional",
+      "bokeh",
+      "blue_lighting"
+    ],
     "mature": false,
     "location": "日式庭院",
     "weather": "晴",
     "camera": "全身远景",
     "lighting": "月光",
-    "usage": ["展示图", "CG"],
+    "usage": [
+      "展示图",
+      "CG"
+    ],
     "prompt": "1girl, ayachi_nene, missing_someone, longing_look, distant_gaze, engawa, moonlight, night, sitting, looking_up, kimono, traditional, bokeh, blue_lighting",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
   },
@@ -2654,19 +2837,34 @@
     "category": "旅行",
     "story": "她走在枫叶铺满的石板路上，回头看你",
     "char": "natsume",
-    "character": ["natsume"],
+    "character": [
+      "natsume"
+    ],
     "lora": "shiki_natsume_v11",
     "emotion": "开心",
     "season": "秋",
     "time": "午后",
     "timeOfDay": "afternoon",
-    "tags": ["autumn", "maple_leaves", "walking", "looking_back", "bright_smile", "casual_clothes", "muted_tones", "warm_lighting", "path"],
+    "tags": [
+      "autumn",
+      "maple_leaves",
+      "walking",
+      "looking_back",
+      "bright_smile",
+      "casual_clothes",
+      "muted_tones",
+      "warm_lighting",
+      "path"
+    ],
     "mature": false,
     "location": "枫叶步道",
     "weather": "晴",
     "camera": "全身远景",
     "lighting": "阳光",
-    "usage": ["展示图", "CG"],
+    "usage": [
+      "展示图",
+      "CG"
+    ],
     "prompt": "1girl, shiki_natsume, happy, bright_smile, joyful_expression, autumn, maple_leaves, walking, looking_back, casual_clothes, muted_tones, warm_lighting, path",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
   },
@@ -2676,19 +2874,34 @@
     "category": "祭典",
     "story": "她穿浴衣抬头看烟花，木屐踩着石板",
     "char": "nene",
-    "character": ["nene"],
+    "character": [
+      "nene"
+    ],
     "lora": "ayachi_nene_v11",
     "emotion": "幸福",
     "season": "夏",
     "time": "夜晚",
     "timeOfDay": "night",
-    "tags": ["yukata", "fireworks", "summer_festival", "night", "looking_up", "amazed", "crowd", "lantern", "festival"],
+    "tags": [
+      "yukata",
+      "fireworks",
+      "summer_festival",
+      "night",
+      "looking_up",
+      "amazed",
+      "crowd",
+      "lantern",
+      "festival"
+    ],
     "mature": false,
     "location": "祭典会场",
     "weather": "晴",
     "camera": "全身远景",
     "lighting": "灯笼光",
-    "usage": ["展示图", "CG"],
+    "usage": [
+      "展示图",
+      "CG"
+    ],
     "prompt": "1girl, ayachi_nene, joyful, in_love, gentle_smile, yukata, fireworks, summer_festival, night, looking_up, amazed, lantern, festival",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
   },
@@ -2698,19 +2911,34 @@
     "category": "日常",
     "story": "她坐在角落，一只猫蜷在她腿上睡着了",
     "char": "natsume",
-    "character": ["natsume"],
+    "character": [
+      "natsume"
+    ],
     "lora": "shiki_natsume_v11",
     "emotion": "温柔",
     "season": "冬",
     "time": "午后",
     "timeOfDay": "afternoon",
-    "tags": ["cat_cafe", "cat", "sitting", "gentle", "sweater", "cozy", "window_light", "warm_atmosphere", "soft_lighting"],
+    "tags": [
+      "cat_cafe",
+      "cat",
+      "sitting",
+      "gentle",
+      "sweater",
+      "cozy",
+      "window_light",
+      "warm_atmosphere",
+      "soft_lighting"
+    ],
     "mature": false,
     "location": "猫咖啡",
     "weather": "晴",
     "camera": "半身中景",
     "lighting": "窗光",
-    "usage": ["展示图", "CG"],
+    "usage": [
+      "展示图",
+      "CG"
+    ],
     "prompt": "1girl, shiki_natsume, gentle_expression, calm, peaceful, cat_cafe, cat, sitting, sweater, cozy, window_light, warm_atmosphere, soft_lighting",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
   },
@@ -2720,19 +2948,34 @@
     "category": "日常",
     "story": "她撑着伞站在路口，天空出现一道彩虹",
     "char": "nene",
-    "character": ["nene"],
+    "character": [
+      "nene"
+    ],
     "lora": "ayachi_nene_v11",
     "emotion": "惊喜",
     "season": "夏",
     "time": "午后",
     "timeOfDay": "afternoon",
-    "tags": ["rainbow", "after_rain", "umbrella", "standing", "looking_up", "amazed", "school_uniform", "reflection", "puddle"],
+    "tags": [
+      "rainbow",
+      "after_rain",
+      "umbrella",
+      "standing",
+      "looking_up",
+      "amazed",
+      "school_uniform",
+      "reflection",
+      "puddle"
+    ],
     "mature": false,
     "location": "路口",
     "weather": "彩虹",
     "camera": "全身远景",
     "lighting": "柔和光",
-    "usage": ["展示图", "CG"],
+    "usage": [
+      "展示图",
+      "CG"
+    ],
     "prompt": "1girl, ayachi_nene, surprised, amazed, rainbow, rain, umbrella, standing, looking_up, school_uniform, reflection, puddle",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
   },
@@ -2742,19 +2985,34 @@
     "category": "日常",
     "story": "她刚睡醒，穿着睡衣坐在床边揉眼睛",
     "char": "natsume",
-    "character": ["natsume"],
+    "character": [
+      "natsume"
+    ],
     "lora": "shiki_natsume_v11",
     "emotion": "困倦",
     "season": "春",
     "time": "清晨",
     "timeOfDay": "morning",
-    "tags": ["bedroom", "pajamas", "sitting", "sleepy", "bed", "morning_light", "sunbeam", "cozy", "rubbing_eyes"],
+    "tags": [
+      "bedroom",
+      "pajamas",
+      "sitting",
+      "sleepy",
+      "bed",
+      "morning_light",
+      "sunbeam",
+      "cozy",
+      "rubbing_eyes"
+    ],
     "mature": false,
     "location": "宿舍",
     "weather": "晴",
     "camera": "半身中景",
     "lighting": "窗光",
-    "usage": ["展示图", "CG"],
+    "usage": [
+      "展示图",
+      "CG"
+    ],
     "prompt": "1girl, shiki_natsume, sleepy, half_closed_eyes, drowsy, bedroom, pajamas, sitting, bed, morning_light, sunbeam, cozy, rubbing_eyes",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
   },
@@ -2764,19 +3022,33 @@
     "category": "日常",
     "story": "她站在一幅画前沉思，光影洒在她身上",
     "char": "nene",
-    "character": ["nene"],
+    "character": [
+      "nene"
+    ],
     "lora": "ayachi_nene_v11",
     "emotion": "认真",
     "season": "秋",
     "time": "午后",
     "timeOfDay": "afternoon",
-    "tags": ["art_gallery", "standing", "looking_away", "serious", "casual_clothes", "museum_lighting", "shadow", "contemplating"],
+    "tags": [
+      "art_gallery",
+      "standing",
+      "looking_away",
+      "serious",
+      "casual_clothes",
+      "museum_lighting",
+      "shadow",
+      "contemplating"
+    ],
     "mature": false,
     "location": "画廊",
     "weather": "晴",
     "camera": "全身远景",
     "lighting": "柔光",
-    "usage": ["展示图", "CG"],
+    "usage": [
+      "展示图",
+      "CG"
+    ],
     "prompt": "1girl, ayachi_nene, serious, determined, focused_expression, art_gallery, standing, looking_away, casual_clothes, museum_lighting, shadow, contemplating",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
   },
@@ -2786,19 +3058,34 @@
     "category": "旅行",
     "story": "她坐在野餐垫上，递给你一块三明治",
     "char": "natsume",
-    "character": ["natsume"],
+    "character": [
+      "natsume"
+    ],
     "lora": "shiki_natsume_v11",
     "emotion": "开心",
     "season": "夏",
     "time": "午后",
     "timeOfDay": "afternoon",
-    "tags": ["lake", "picnic", "sitting", "holding", "offering", "bright_smile", "casual_clothes", "sunlight", "nature"],
+    "tags": [
+      "lake",
+      "picnic",
+      "sitting",
+      "holding",
+      "offering",
+      "bright_smile",
+      "casual_clothes",
+      "sunlight",
+      "nature"
+    ],
     "mature": false,
     "location": "湖畔",
     "weather": "晴",
     "camera": "半身中景",
     "lighting": "阳光",
-    "usage": ["展示图", "CG"],
+    "usage": [
+      "展示图",
+      "CG"
+    ],
     "prompt": "1girl, shiki_natsume, happy, bright_smile, joyful_expression, lake, picnic, sitting, holding, offering, casual_clothes, sunlight, nature",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
   },
@@ -2808,20 +3095,731 @@
     "category": "恋爱",
     "story": "她站在樱花树下，花瓣如雪般飘落",
     "char": "nene",
-    "character": ["nene"],
+    "character": [
+      "nene"
+    ],
     "lora": "ayachi_nene_v11",
     "emotion": "温柔",
     "season": "春",
     "time": "清晨",
     "timeOfDay": "morning",
-    "tags": ["cherry_blossoms", "petals", "standing", "looking_at_viewer", "gentle", "school_uniform", "wind", "soft_lighting", "romantic", "spring"],
+    "tags": [
+      "cherry_blossoms",
+      "petals",
+      "standing",
+      "looking_at_viewer",
+      "gentle",
+      "school_uniform",
+      "wind",
+      "soft_lighting",
+      "romantic",
+      "spring"
+    ],
     "mature": false,
     "location": "樱花道",
     "weather": "晴",
     "camera": "全身远景",
     "lighting": "晨光",
-    "usage": ["展示图", "头像", "CG"],
+    "usage": [
+      "展示图",
+      "头像",
+      "CG"
+    ],
     "prompt": "1girl, ayachi_nene, gentle_expression, calm, peaceful, cherry_blossoms, petals, standing, looking_at_viewer, school_uniform, wind, soft_lighting, romantic, spring",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+  },
+  {
+    "id": "sc091",
+    "title": "浴室的水汽",
+    "category": "亲密",
+    "story": "浴室的门没关严,她裹着浴巾探出头喊你递衣服",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emotion": "害羞",
+    "season": "冬",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "tags": [
+      "bathroom",
+      "towel",
+      "shy",
+      "steamy",
+      "looking_at_viewer",
+      "wet_hair",
+      "bare_shoulders"
+    ],
+    "mature": true,
+    "location": "浴室",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "夜灯",
+    "prompt": "1girl,shiki_natsume,bathroom, towel, shy, steamy, looking_at_viewer, wet_hair",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "usage": [
+      "展示图"
+    ]
+  },
+  {
+    "id": "sc092",
+    "title": "起床后十分钟",
+    "category": "亲密",
+    "story": "她刚起床披着你的衬衫,领口滑到肩膀",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v11",
+    "emotion": "困倦",
+    "season": "春",
+    "time": "清晨",
+    "timeOfDay": "morning",
+    "tags": [
+      "bedroom",
+      "shirt",
+      "sleepy",
+      "morning_light",
+      "bare_legs",
+      "sitting",
+      "bed",
+      "rumpled"
+    ],
+    "mature": true,
+    "location": "卧室",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "晨光",
+    "prompt": "1girl,ayachi_nene,bedroom, shirt, sleepy, morning_light, bare_legs, sitting",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "usage": [
+      "展示图"
+    ]
+  },
+  {
+    "id": "sc093",
+    "title": "雨夜共伞",
+    "category": "R15",
+    "story": "两人共一把伞,她整个人贴在你身上",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emotion": "紧张",
+    "season": "夏",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "tags": [
+      "rain",
+      "umbrella",
+      "wet",
+      "close",
+      "blushing",
+      "city_night",
+      "neon",
+      "reflection"
+    ],
+    "mature": true,
+    "location": "街上",
+    "weather": "雨",
+    "camera": "半身中景",
+    "lighting": "夜灯",
+    "prompt": "1girl,shiki_natsume,rain, umbrella, wet, close, blushing, city_night",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "usage": [
+      "展示图"
+    ]
+  },
+  {
+    "id": "sc094",
+    "title": "婚纱的裙摆",
+    "category": "恋爱",
+    "story": "试纱时她转了个圈,裙摆像花一样绽开",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v11",
+    "emotion": "幸福",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "wedding_dress",
+      "turning",
+      "bright_smile",
+      "dress",
+      "sparkle",
+      "fitting_room",
+      "romantic",
+      "white"
+    ],
+    "mature": false,
+    "location": "婚纱店",
+    "weather": "晴",
+    "camera": "全身中景",
+    "lighting": "窗光",
+    "prompt": "1girl,ayachi_nene,wedding_dress, turning, bright_smile, dress, sparkle, fitting_room",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "usage": [
+      "展示图"
+    ]
+  },
+  {
+    "id": "sc095",
+    "title": "没拉好的浴巾",
+    "category": "亲密",
+    "story": "她从浴室出来,浴巾滑落到地上,你正好转身",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emotion": "惊讶",
+    "season": "夏",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "tags": [
+      "bathroom",
+      "towel",
+      "surprised",
+      "wet_hair",
+      "bare_shoulders",
+      "wet_skin",
+      "looking_back"
+    ],
+    "mature": true,
+    "location": "浴室",
+    "weather": "晴",
+    "camera": "全身中景",
+    "lighting": "柔光",
+    "prompt": "1girl,shiki_natsume,bathroom, towel, surprised, wet_hair, bare_shoulders, wet_skin",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "usage": [
+      "展示图"
+    ]
+  },
+  {
+    "id": "sc096",
+    "title": "深夜的厨房",
+    "category": "R15",
+    "story": "凌晨两点她穿你的T恤在偷吃冰淇淋被你抓个正着",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v11",
+    "emotion": "羞怯",
+    "season": "夏",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "tags": [
+      "kitchen",
+      "night",
+      "t_shirt",
+      "bare_legs",
+      "eating",
+      "embarrassed",
+      "holding",
+      "intimate"
+    ],
+    "mature": true,
+    "location": "厨房",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "夜灯",
+    "prompt": "1girl,ayachi_nene,kitchen, night, t_shirt, bare_legs, eating, embarrassed",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "usage": [
+      "展示图"
+    ]
+  },
+  {
+    "id": "sc097",
+    "title": "海边的泳装",
+    "category": "R15",
+    "story": "沙滩上她弯腰调整泳装肩带,浪花打湿了腿",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emotion": "放松",
+    "season": "夏",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "beach",
+      "swimsuit",
+      "bikini",
+      "ocean",
+      "bending",
+      "wet",
+      "sand",
+      "sunlight"
+    ],
+    "mature": true,
+    "location": "海边",
+    "weather": "晴",
+    "camera": "全身中景",
+    "lighting": "阳光",
+    "prompt": "1girl,shiki_natsume,beach, swimsuit, bikini, ocean, bending, wet",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "usage": [
+      "展示图"
+    ]
+  },
+  {
+    "id": "sc098",
+    "title": "沙发上的膝枕",
+    "category": "R15",
+    "story": "她躺在你腿上,抬头看着你的脸",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v11",
+    "emotion": "幸福",
+    "season": "秋",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "sofa",
+      "lap_pillow",
+      "lying",
+      "looking_up",
+      "gentle",
+      "casual",
+      "tender",
+      "couch"
+    ],
+    "mature": true,
+    "location": "客厅",
+    "weather": "晴",
+    "camera": "面部特写",
+    "lighting": "窗光",
+    "prompt": "1girl,ayachi_nene,sofa, lap_pillow, lying, looking_up, gentle, casual",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "usage": [
+      "展示图"
+    ]
+  },
+  {
+    "id": "sc099",
+    "title": "只有两人的电梯",
+    "category": "R15",
+    "story": "电梯停了她被挤在角落,你的手臂撑在她两侧",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emotion": "紧张",
+    "season": "秋",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "tags": [
+      "elevator",
+      "close",
+      "against_wall",
+      "looking_at_viewer",
+      "nervous",
+      "city",
+      "neon"
+    ],
+    "mature": true,
+    "location": "电梯",
+    "weather": "晴",
+    "camera": "面部特写",
+    "lighting": "顶光",
+    "prompt": "1girl,shiki_natsume,elevator, close, against_wall, looking_at_viewer, nervous, city",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "usage": [
+      "展示图"
+    ]
+  },
+  {
+    "id": "sc100",
+    "title": "圣诞早晨的床单",
+    "category": "亲密",
+    "story": "圣诞节早晨她特意穿了那套内衣等你拆礼物",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v11",
+    "emotion": "害羞",
+    "season": "冬",
+    "time": "清晨",
+    "timeOfDay": "morning",
+    "tags": [
+      "bedroom",
+      "lingerie",
+      "bed",
+      "christmas",
+      "shy",
+      "red",
+      "smiling",
+      "present"
+    ],
+    "mature": true,
+    "location": "卧室",
+    "weather": "雪",
+    "camera": "半身中景",
+    "lighting": "晨光",
+    "prompt": "1girl,ayachi_nene,bedroom, lingerie, bed, christmas, shy, red",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "usage": [
+      "展示图"
+    ]
+  },
+  {
+    "id": "sc101",
+    "title": "只扣了一半的衬衫",
+    "category": "亲密",
+    "story": "她洗完澡穿你的衬衫,只扣了三颗扣子",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emotion": "诱惑",
+    "season": "夏",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "tags": [
+      "bedroom",
+      "shirt",
+      "unbuttoned",
+      "bare_shoulders",
+      "wet_hair",
+      "looking_away",
+      "sitting",
+      "bed"
+    ],
+    "mature": true,
+    "location": "卧室",
+    "weather": "晴",
+    "camera": "全身中景",
+    "lighting": "夜灯",
+    "prompt": "1girl,shiki_natsume,bedroom, shirt, unbuttoned, bare_shoulders, wet_hair, looking_away",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "usage": [
+      "展示图"
+    ]
+  },
+  {
+    "id": "sc102",
+    "title": "从背后抱你",
+    "category": "R15",
+    "story": "你洗碗的时候她从背后环住你的腰,脸贴在你背上",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v11",
+    "emotion": "温柔",
+    "season": "冬",
+    "time": "傍晚",
+    "timeOfDay": "sunset",
+    "tags": [
+      "kitchen",
+      "hug_from_behind",
+      "laughing",
+      "cozy",
+      "home",
+      "apron",
+      "warm"
+    ],
+    "mature": true,
+    "location": "厨房",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "黄金时刻",
+    "prompt": "1girl,ayachi_nene,kitchen, hug_from_behind, laughing, cozy, home, apron",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "usage": [
+      "展示图"
+    ]
+  },
+  {
+    "id": "sc103",
+    "title": "沙滩上的浴巾",
+    "category": "R15",
+    "story": "她裹着浴巾坐在沙滩上看海,风吹起她的湿发",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emotion": "放松",
+    "season": "夏",
+    "time": "黄昏",
+    "timeOfDay": "sunset",
+    "tags": [
+      "beach",
+      "towel",
+      "sitting",
+      "wind",
+      "wet_hair",
+      "sunset",
+      "ocean",
+      "looking_away"
+    ],
+    "mature": true,
+    "location": "海边",
+    "weather": "晴",
+    "camera": "全身远景",
+    "lighting": "黄金时刻",
+    "prompt": "1girl,shiki_natsume,beach, towel, sitting, wind, wet_hair, sunset",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "usage": [
+      "展示图"
+    ]
+  },
+  {
+    "id": "sc104",
+    "title": "深夜的沙发",
+    "category": "R15",
+    "story": "电影演到一半她已经在沙发上睡着了,头靠在你肩上",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v11",
+    "emotion": "幸福",
+    "season": "秋",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "tags": [
+      "sofa",
+      "sleeping",
+      "head_on_shoulder",
+      "tv",
+      "intimate",
+      "warm",
+      "cozy",
+      "home"
+    ],
+    "mature": true,
+    "location": "客厅",
+    "weather": "晴",
+    "camera": "面部特写",
+    "lighting": "屏幕光",
+    "prompt": "1girl,ayachi_nene,sofa, sleeping, head_on_shoulder, tv, intimate, warm",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "usage": [
+      "展示图"
+    ]
+  },
+  {
+    "id": "sc105",
+    "title": "醉酒的她",
+    "category": "亲密",
+    "story": "她喝了两杯就脸红,靠在你身上说没醉",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emotion": "羞怯",
+    "season": "冬",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "tags": [
+      "bar",
+      "drunk",
+      "blushing",
+      "close",
+      "smiling",
+      "holding",
+      "intimate",
+      "casual_clothes"
+    ],
+    "mature": true,
+    "location": "酒吧",
+    "weather": "晴",
+    "camera": "面部特写",
+    "lighting": "霓虹",
+    "prompt": "1girl,shiki_natsume,bar, drunk, blushing, close, smiling, holding",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "usage": [
+      "展示图"
+    ]
+  },
+  {
+    "id": "sc106",
+    "title": "床上的卷发",
+    "category": "R15",
+    "story": "她趴床上看漫画,肩带滑到手臂,你离她只有一拳",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v11",
+    "emotion": "放松",
+    "season": "秋",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "bedroom",
+      "lying_stomach",
+      "casual",
+      "straps",
+      "bare_shoulders",
+      "close",
+      "manga",
+      "intimate"
+    ],
+    "mature": true,
+    "location": "卧室",
+    "weather": "晴",
+    "camera": "特写",
+    "lighting": "窗光",
+    "prompt": "1girl,ayachi_nene,bedroom, lying_stomach, casual, straps, bare_shoulders, close",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "usage": [
+      "展示图"
+    ]
+  },
+  {
+    "id": "sc107",
+    "title": "穿反的T恤",
+    "category": "R15",
+    "story": "她穿你的T恤下摆长到大腿,领口大得能看到锁骨",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emotion": "开心",
+    "season": "春",
+    "time": "清晨",
+    "timeOfDay": "morning",
+    "tags": [
+      "bedroom",
+      "oversized_tshirt",
+      "bare_legs",
+      "morning",
+      "smiling",
+      "holding",
+      "soft",
+      "intimate"
+    ],
+    "mature": true,
+    "location": "卧室",
+    "weather": "晴",
+    "camera": "全身中景",
+    "lighting": "晨光",
+    "prompt": "1girl,shiki_natsume,bedroom, oversized_tshirt, bare_legs, morning, smiling, holding",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "usage": [
+      "展示图"
+    ]
+  },
+  {
+    "id": "sc108",
+    "title": "只属于两人的电车",
+    "category": "R15",
+    "story": "末班电车几乎没人她坐在你旁边靠着你的手臂",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v11",
+    "emotion": "困倦",
+    "season": "冬",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "tags": [
+      "train",
+      "window",
+      "sleeping",
+      "close",
+      "leaning",
+      "reflection",
+      "city_lights"
+    ],
+    "mature": true,
+    "location": "电车",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "prompt": "1girl,ayachi_nene,train, window, sleeping, close, leaning, reflection",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "usage": [
+      "展示图"
+    ]
+  },
+  {
+    "id": "sc109",
+    "title": "漫展后的更衣室",
+    "category": "亲密",
+    "story": "她刚脱下cos服穿着内衣在镜子前拆假发",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emotion": "放松",
+    "season": "夏",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "tags": [
+      "changing_room",
+      "lingerie",
+      "mirror",
+      "makeup",
+      "looking_in_mirror",
+      "smiling",
+      "cosplay"
+    ],
+    "mature": true,
+    "location": "更衣室",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "顶光",
+    "prompt": "1girl,shiki_natsume,changing_room, lingerie, mirror, makeup, looking_in_mirror, smiling",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "usage": [
+      "展示图"
+    ]
+  },
+  {
+    "id": "sc110",
+    "title": "阳台的秘密",
+    "category": "亲密",
+    "story": "夜晚的阳台她点燃一根烟,火光映在你脸上",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emotion": "诱惑",
+    "season": "夏",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "tags": [
+      "balcony",
+      "night",
+      "cigarette",
+      "smoke",
+      "looking_at_viewer",
+      "intimate",
+      "city_lights",
+      "moonlight"
+    ],
+    "mature": true,
+    "location": "阳台",
+    "weather": "晴",
+    "camera": "面部特写",
+    "lighting": "月光",
+    "prompt": "1girl,shiki_natsume,balcony, night, cigarette, smoke, looking_at_viewer, intimate",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "usage": [
+      "展示图"
+    ]
   }
 ]
