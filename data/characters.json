@@ -2,53 +2,111 @@
   {
     "id": "NENE_001",
     "name": "绫地宁宁",
-    "alias": ["Ayachi Nene", "Nene", "宁宁"],
+    "alias": [
+      "Ayachi Nene",
+      "Nene",
+      "宁宁"
+    ],
     "type": "heroine",
     "visual_dna": {
-      "hair": "long silver hair",
+      "hair": "",
       "hair_color": "",
-      "eyes": "blue eyes",
-      "style": "elegant anime girl",
+      "eyes": "",
+      "style": "succubus anime girl",
       "signature": "cat ear headband"
     },
-    "personality": ["energetic","curious about human world","airheaded","playful","catchphrase sugoi","casual"],
-    "likes": ["cute things","human culture","otaku"],
-    "speech": "energetic, casual, says sugoi frequently",
+    "personality": [
+      "energetic",
+      "catchphrase sugoi",
+      "secretly a succubus",
+      "easily embarrassed",
+      "popular at school"
+    ],
+    "likes": [
+      "cute things",
+      "human culture",
+      "otaku",
+      "collecting heart shards"
+    ],
+    "speech": "energetic, casual, says sugoi frequently, very shy about her succubus side",
     "source": "柚子社 魔女の夜宴 Succubus Feast",
     "lora": {
       "name": "ayachi_nene_v11",
       "weight": 0.8,
-      "recommended_scene": ["sc001", "sc002", "sc003", "sc007", "sc008", "sc010"]
+      "recommended_scene": [
+        "sc001",
+        "sc002",
+        "sc003",
+        "sc007",
+        "sc008",
+        "sc010"
+      ]
     },
     "traits": [
-      { "tag": "ahoge", "label": "呆毛" },
-      { "tag": "hair_ribbon", "label": "发带" }
+      {
+        "tag": "hair_ribbon",
+        "label": "猫耳发带"
+      },
+      {
+        "tag": "hair_ribbon",
+        "label": "发带"
+      }
     ]
   },
   {
     "id": "NAT_001",
     "name": "四季夏目",
-    "alias": ["Shiki Natsume", "Natsume", "夏目"],
+    "alias": [
+      "Shiki Natsume",
+      "Natsume",
+      "夏目"
+    ],
     "type": "heroine",
     "visual_dna": {
-      "hair": "long lavender purple hair",
+      "hair": "",
       "hair_color": "",
-      "eyes": "gold eyes",
-      "style": "refined anime girl",
+      "eyes": "",
+      "style": "cafe waitress tsundere anime girl",
       "signature": "mole under eye (teardrop)"
     },
-    "personality": ["tsundere","proud","easily flustered","café staff","loves baking cake"],
-    "likes": ["cafe work","baking cake","sweets"],
-    "speech": "initially cold, flustered easily when caring",
-    "source": "柚子社 喫茶ステラ Café Stella",
+    "personality": [
+      "tsundere",
+      "called emotionless card-rejecting girl",
+      "not good at bright smiles",
+      "sweet tooth",
+      "sickly since childhood",
+      "cafe is her life"
+    ],
+    "likes": [
+      "cafe work",
+      "sweet food",
+      "maid outfit",
+      "quiet bars",
+      "hospitalized often"
+    ],
+    "speech": "cold at first, flustered easily, teasing when drunk, embarrassed after",
+    "source": "柚子社 星光咖啡馆与死神之蝶 Café Stella",
     "lora": {
       "name": "shiki_natsume_v11",
       "weight": 0.8,
-      "recommended_scene": ["sc005", "sc011", "sc013", "sc016", "sc018", "sc029"]
+      "recommended_scene": [
+        "sc005",
+        "sc011",
+        "sc013",
+        "sc016",
+        "sc018",
+        "sc029"
+      ]
     },
     "traits": [
-      { "tag": "mole_under_eye", "label": "泪痣" },
-      { "tag": "elegant_face", "label": "优雅面容" }
+      {
+        "tag": "mole_under_eye",
+        "label": "泪痣"
+      },
+      {
+        "tag": "elegant_face",
+        "label": "优雅面容"
+      }
     ]
   }
 ]
