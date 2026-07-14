@@ -3984,5 +3984,398 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,shiki_natsume,kitchen, apron, holding, looking_away, cooking, smile"
+  },
+  {
+    "id": "sc130",
+    "title": "被夸猫耳可爱",
+    "cat": "日常",
+    "story": "她在整理书架,你随口说「你戴猫耳好可爱」,她整个人从脖子红到耳朵「可、可爱什么!这只是市售的普通发箍!」就跑了",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v11",
+    "emo": "害羞",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "school",
+      "standing",
+      "blush",
+      "looking_away",
+      "hair_ribbon",
+      "cat"
+    ],
+    "mature": false,
+    "location": "school",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,ayachi_nene,school, standing, blush, looking_away, hair_ribbon, cat"
+  },
+  {
+    "id": "sc131",
+    "title": "魅魔尾巴被摸",
+    "cat": "恋爱",
+    "story": "你第一次摸她藏着的尾巴尖,她整个人弹起来「那里不行…比被看到更…」脸埋进枕头说不出完整话",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v11",
+    "emo": "害羞",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "bedroom",
+      "lying",
+      "blush",
+      "looking_away",
+      "tail",
+      "succubus"
+    ],
+    "mature": true,
+    "location": "bedroom",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,ayachi_nene,bedroom, lying, blush, looking_away, tail, succubus"
+  },
+  {
+    "id": "sc132",
+    "title": "心跳加速",
+    "cat": "恋爱",
+    "story": "图书馆她靠着你手臂翻书,魅魔体质突然发作,你把脸凑近闻了闻「你是不是在发情」她整个人冒烟躲进书架后面",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v11",
+    "emo": "害羞",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "library",
+      "standing",
+      "blush",
+      "looking_away",
+      "succubus",
+      "flustered"
+    ],
+    "mature": true,
+    "location": "library",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,ayachi_nene,library, standing, blush, looking_away, succubus, flustered"
+  },
+  {
+    "id": "sc133",
+    "title": "被叫「魅魔前辈」",
+    "cat": "日常",
+    "story": "学妹叫了她一声「宁宁前辈」,她条件反射回头,猫耳发带歪了都没发觉,被看到就用书挡住脸「不要一直盯着看」",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v11",
+    "emo": "害羞",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "school",
+      "standing",
+      "blush",
+      "looking_away",
+      "glasses",
+      "school_uniform"
+    ],
+    "mature": false,
+    "location": "school",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,ayachi_nene,school, standing, blush, looking_away, glasses, school_uniform"
+  },
+  {
+    "id": "sc134",
+    "title": "误触开关",
+    "cat": "日常",
+    "story": "她手里的游戏手柄滑落砸到肚子「哎」一声,正好触发桌上的自慰器开关,发出震动声,她尖叫着把它甩飞,脸红得像煮熟的虾",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v11",
+    "emo": "害羞",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "bedroom",
+      "sitting",
+      "blush",
+      "embarrassed",
+      "game",
+      "console"
+    ],
+    "mature": true,
+    "location": "bedroom",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,ayachi_nene,bedroom, sitting, blush, embarrassed, game, console"
+  },
+  {
+    "id": "sc135",
+    "title": "害羞的告白",
+    "cat": "恋爱",
+    "story": "情人节她塞给你一盒巧克力「义理义理!」说完就跑了,绕了一圈又回来小声「…本命也可以啦,你这个笨蛋」",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v11",
+    "emo": "害羞",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "school",
+      "standing",
+      "blush",
+      "holding",
+      "box",
+      "valentine"
+    ],
+    "mature": true,
+    "location": "school",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,ayachi_nene,school, standing, blush, holding, box, valentine"
+  },
+  {
+    "id": "sc136",
+    "title": "被叫「枣子姐」",
+    "cat": "日常",
+    "story": "你叫她「枣子姐」,她没回头但耳朵红了,走了一步才回头「…谁准你叫那个外号的」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emo": "害羞",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "school",
+      "standing",
+      "blush",
+      "looking_away",
+      "school_uniform"
+    ],
+    "mature": false,
+    "location": "school",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,shiki_natsume,school, standing, blush, looking_away, school_uniform"
+  },
+  {
+    "id": "sc137",
+    "title": "醉酒告白次日",
+    "cat": "恋爱",
+    "story": "你复述昨晚她说过的告白,她面无表情「我不记得」但耳朵红到滴血,你指了指她她就转身「…证据不足」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emo": "害羞",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "cafe",
+      "standing",
+      "blush",
+      "looking_away",
+      "apron"
+    ],
+    "mature": true,
+    "location": "cafe",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,shiki_natsume,cafe, standing, blush, looking_away, apron"
+  },
+  {
+    "id": "sc138",
+    "title": "看到爱情电影",
+    "cat": "日常",
+    "story": "咖啡馆放送爱情片,女主角告白时你看了她一眼,她假装喝咖啡但杯子在抖「…只是代入剧情」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emo": "害羞",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "cafe",
+      "sitting",
+      "blush",
+      "holding",
+      "cup"
+    ],
+    "mature": true,
+    "location": "cafe",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,shiki_natsume,cafe, sitting, blush, holding, cup"
+  },
+  {
+    "id": "sc139",
+    "title": "试穿女仆装被抓",
+    "cat": "日常",
+    "story": "她试穿新女仆装还没拉好拉链,推门就发现你在门口,立刻门关上「等、等三十秒!」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emo": "害羞",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "bedroom",
+      "standing",
+      "blush",
+      "looking_away",
+      "maid",
+      "dress"
+    ],
+    "mature": true,
+    "location": "bedroom",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,shiki_natsume,bedroom, standing, blush, looking_away, maid, dress"
+  },
+  {
+    "id": "sc140",
+    "title": "做饭被夸好吃",
+    "cat": "日常",
+    "story": "你吃了她做的戚风蛋糕说「好吃」,她低头切盘子边缘「…只做了两人份,你那份不算」实际做了四人份",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emo": "害羞",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "kitchen",
+      "standing",
+      "blush",
+      "holding",
+      "cake",
+      "cooking"
+    ],
+    "mature": false,
+    "location": "kitchen",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,shiki_natsume,kitchen, standing, blush, holding, cake, cooking"
+  },
+  {
+    "id": "sc141",
+    "title": "病号害羞",
+    "cat": "日常",
+    "story": "住院你帮她削苹果,果皮不断,她说「…给我」手不小心碰到就缩回去,脸红到不敢看你",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emo": "害羞",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "hospital",
+      "sitting",
+      "blush",
+      "looking_away",
+      "sick",
+      "apple"
+    ],
+    "mature": true,
+    "location": "hospital",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,shiki_natsume,hospital, sitting, blush, looking_away, sick, apple"
   }
 ]
