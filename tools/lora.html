@@ -16,6 +16,11 @@
   .lora-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: var(--s-4); }
   .lora-card { background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-xl); padding: var(--s-5); }
   .lora-name { font-size: 1.2rem; font-weight: 800; font-family: var(--font-mono); color: var(--accent); margin-bottom: var(--s-1); }
+  .lora-desc { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: var(--s-3); line-height: 1.55; }
+  .lora-pill-row { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: var(--s-3); }
+  .lora-pill { padding: 2px 8px; background: var(--bg-elevated); border-radius: 12px; font-size: 0.68rem; color: var(--text-secondary); }
+  .lora-pill.trigger { color: var(--accent); border: 1px solid var(--accent); background: var(--accent-soft); }
+  .lora-pill.char { color: var(--info); }
   .lora-trainer { font-size: 0.78rem; color: var(--text-muted); margin-bottom: var(--s-3); }
   .lora-row { display: flex; gap: var(--s-2); margin-bottom: var(--s-2); }
   .lora-row .lab { font-size: 0.72rem; color: var(--text-muted); width: 80px; flex-shrink: 0; padding-top: 2px; }
@@ -53,19 +58,38 @@
     .then(function(r){ return r.json(); })
     .then(function(loras){
       grid.innerHTML = loras.map(function(l){
-        var dt = l.dataset || {}, tr = l.training || {}, rw = l.recommended_weight || '';
-        var weights = '';
+        var dt = l.dataset || {}, tr = l.training || {}, rw = l.recommended_weight || {};
+        // 触发词 + 角色 + 兼容模型 + 版本(pills 样式内联,避 CSS 缓存)
+        var pills = '';
+        if(l.trigger) pills += '<span style="padding:2px 8px;border-radius:12px;font-size:0.68rem;color:var(--accent);border:1px solid var(--accent);background:var(--accent-soft);margin-right:4px;">触发词: '+esc(l.trigger)+'</span>';
+        if(l.character) pills += '<span style="padding:2px 8px;border-radius:12px;font-size:0.68rem;color:var(--info);background:var(--bg-elevated);margin-right:4px;">角色: '+esc(l.character)+'</span>';
+        if(l.version) pills += '<span style="padding:2px 8px;border-radius:12px;font-size:0.68rem;color:var(--text-secondary);background:var(--bg-elevated);margin-right:4px;">v'+esc(l.version)+'</span>';
+        (l.compatible_models||[]).forEach(function(m){ pills += '<span style="padding:2px 8px;border-radius:12px;font-size:0.68rem;color:var(--text-secondary);background:var(--bg-elevated);margin-right:4px;">'+esc(m)+'</span>'; });
+
+        // 推荐强度进度条(strength 单值,保留旧 recommended_weight 多场景显示为次级)
+        var strengthBar = '';
+        if(l.strength){
+          strengthBar = '<div class="lora-row"><span class="lab">推荐强度</span>'+
+            '<div class="weight-bar"><div class="weight-track"><div class="weight-fill" style="width:'+pct(l.strength.default)+'"></div></div>'+
+            '<span class="weight-num">'+esc(l.strength.default)+'</span></div>'+
+            '<span style="font-size:0.7rem;color:var(--text-muted);margin-left:6px;">(范围 '+esc(l.strength.min)+'–'+esc(l.strength.max)+')</span>'+
+            '</div>';
+        }
+        var subWeights = '';
         Object.keys(rw).forEach(function(k){
-          weights += '<div class="lora-row"><span class="lab">'+esc(k)+'</span>'+
+          subWeights += '<div class="lora-row"><span class="lab">'+esc(k)+'</span>'+
             '<div class="weight-bar"><div class="weight-track"><div class="weight-fill" style="width:'+pct(rw[k])+'"></div></div>'+
             '<span class="weight-num">'+esc(rw[k])+'</span></div></div>';
         });
+
         return '<div class="lora-card">' +
           '<div class="lora-name">'+esc(l.name)+'</div>' +
-          '<div class="lora-trainer">'+esc(l.trainer)+' · '+esc(dt.images)+' imgs @ '+esc(dt.resolution)+'px · rank '+esc(tr.rank)+'</div>' +
-          '<div class="lora-row"><span class="lab">底模</span><div class="val">'+esc(l.base_model)+'</div></div>' +
-          '<div class="lora-row"><span class="lab">训练</span><div class="val">epoch '+esc(tr.epoch)+' · alpha '+esc(tr.alpha)+'</div></div>' +
-          (weights ? '<div class="lora-row"><span class="lab">推荐权重</span><div class="val">'+weights+'</div></div>':'') +
+          (l.description ? '<div class="lora-desc">'+esc(l.description)+'</div>':'') +
+          (pills ? '<div class="lora-pill-row">'+pills+'</div>':'') +
+          strengthBar +
+          (subWeights ? '<div style="margin-top:var(--s-2);'+ (strengthBar?'border-top:1px solid var(--border-soft);padding-top:var(--s-2);':'') +'">'+subWeights+'</div>' :'') +
+          '<div class="lora-trainer">'+esc(l.trainer)+' · '+esc(dt.images)+' imgs @ '+esc(dt.resolution)+'px · rank '+esc(tr.rank)+' · '+(l.base_model||'')+'</div>' +
+          '<div class="lora-row"><span class="lab">测试场景</span><div class="val">'+esc((l.test_scene||[]).slice(0,5).join(', '))+'</div></div>' +
         '</div>';
       }).join('');
     })

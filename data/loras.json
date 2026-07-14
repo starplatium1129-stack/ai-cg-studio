@@ -2,21 +2,35 @@
   {
     "id": "L_NENE_V11",
     "name": "ayachi_nene_v11",
-    "base_model": "waiIllustriousSDXL_v170",
-    "trainer": "OneTrainer",
+    "version": "1.1.0",
+    "trigger": "ayachi_nene",
+    "character": "NENE_001",
+    "strength": { "default": 0.8, "min": 0.5, "max": 1.0 },
+    "compatible_models": ["waiIllustriousSDXL_v170", "illustriousXL_v20"],
+    "test_scene": ["sc001", "sc010", "sc025", "sc034", "sc049"],
+    "test_grid": "grids/nene_v11_grid.webp",
+    "description": "绫地宁宁角色 LoRA,基于 130 张 1024px 数据集微调。适用全身 / 半身 / 复杂场景。(旧 recommended_weight 场景差分已统一为 strength 单值推荐)",
     "dataset": { "images": 130, "resolution": 1024 },
     "training": { "epoch": 30, "rank": 32, "alpha": 32 },
     "recommended_weight": { "portrait": 0.85, "fullbody": 0.75, "complex_scene": 0.7 },
-    "test_scene": ["sc001", "sc010", "sc025", "sc034", "sc049"]
+    "base_model": "waiIllustriousSDXL_v170",
+    "trainer": "OneTrainer"
   },
   {
     "id": "L_NAT_V11",
     "name": "shiki_natsume_v11",
-    "base_model": "waiIllustriousSDXL_v170",
-    "trainer": "OneTrainer",
+    "version": "1.1.0",
+    "trigger": "shiki_natsume",
+    "character": "NAT_001",
+    "strength": { "default": 0.8, "min": 0.5, "max": 1.0 },
+    "compatible_models": ["waiIllustriousSDXL_v170", "illustriousXL_v20"],
+    "test_scene": ["sc005", "sc011", "sc029", "sc037", "sc043"],
+    "test_grid": "grids/natsume_v11_grid.webp",
+    "description": "四季夏目角色 LoRA,基于 125 张 1024px 数据集微调。适用全身 / 半身 / 复杂场景。",
     "dataset": { "images": 125, "resolution": 1024 },
     "training": { "epoch": 30, "rank": 32, "alpha": 32 },
     "recommended_weight": { "portrait": 0.85, "fullbody": 0.75, "complex_scene": 0.7 },
-    "test_scene": ["sc005", "sc011", "sc029", "sc037", "sc043"]
+    "base_model": "waiIllustriousSDXL_v170",
+    "trainer": "OneTrainer"
   }
 ]
