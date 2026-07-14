@@ -863,7 +863,31 @@ function filterScenes(q) {
 }
 window._loadSceneByIdx = function(idx) { if (SCENES[idx]) loadScene(SCENES[idx]); };
 // scene tag → 推荐光照 (scene-aware)
-const SCENE_LIGHT_HINT = { sunset:'sunset', golden_hour:'sunset', dusk:'sunset', window:'window_light', window_light:'window_light', soft_light:'window_light', afternoon_light:'window_light', from_behind:'backlighting', silhouette:'backlighting', moonlight:'moonlight', night:'night_lamp', lantern:'night_lamp', lanterns:'night_lamp', neon:'neon', candle:'candlelight', candlelight:'candlelight', overcast:'overcast' };
+const SCENE_LIGHT_HINT = { sunset:'golden', golden_hour:'golden', dusk:'golden', sunset_glow:'golden', golden:'golden', warm_light:'golden', backlit:'back', window:'window', window_light:'window', soft_light:'window', afternoon_light:'window', afternoon:'window', sunlight:'window', sunbeam:'window', sun_flare:'golden', morning_light:'window', morning:'window', sunrise:'window', from_behind:'back', silhouette:'back', rim_light:'back', moonlight:'moon', moon:'moon', night:'lantern', lantern:'lantern', lanterns:'lantern', lantern_light:'lantern', festival:'lantern', fireworks:'lantern', hot_spring:'lantern', neon:'lantern', camping:'moon', candle:'lantern', candlelight:'lantern', overcast:'overcast', soft_diffused:'overcast', cloudy:'overcast', starry_sky:'moon', starry:'moon', blue_lighting:'moon', rain:'overcast', wet:'overcast', after_rain:'window', diffused:'overcast', dramatic:'back', soft_shadows:'window', bokeh:'window' };
+const CAMERA_TO_SHOT = { '半身中景':'medium','全身远景':'wide','全身中景':'wide','特写':'close','特写镜头':'close','面部特写':'close','远景':'wide','中景':'medium','全身':'wide','半身':'medium' };
+const CAMERA_TO_SHOT_BY_TAG = { close_up:'close', close_up_detail:'detail', pov:'pov', wide_shot:'wide', full_body:'wide', medium_shot:'medium', upper_face:'close', hands_or_face:'detail', profile:'side', from_the_side:'side' };
+function sceneColorMood(s) {
+  if (s.weather==='雨'||s.weather==='彩虹') return 'sad';
+  if (s.timeOfDay==='night') return 'tension';
+  if (s.weather==='雪') return 'calm';
+  const emoMap = { '恋爱':'love','开心':'joy','幸福':'joy','期待':'love','害羞':'love','感动':'warmth','温柔':'warmth','思念':'sad','失落':'sad','委屈':'sad','平静':'calm','放松':'calm','认真':'calm','困倦':'calm','紧张':'tension','生气':'tension','惊讶':'tension' };
+  if (s.emotion && emoMap[s.emotion]) return emoMap[s.emotion];
+  if (s.season==='春') return 'joy';
+  if (s.season==='夏') return 'warmth';
+  if (s.season==='秋') return 'calm';
+  if (s.season==='冬') return 'sad';
+  return null;
+}
+function sceneShot(s) {
+  if (s.camera && CAMERA_TO_SHOT[s.camera]) return CAMERA_TO_SHOT[s.camera];
+  for (const t of s.tags) { if (CAMERA_TO_SHOT_BY_TAG[t]) return CAMERA_TO_SHOT_BY_TAG[t]; }
+  return null;
+}
+function sceneComposition(s) {
+  const tagComp = { framed:'frame', door:'frame', torii_gate:'frame', archway:'frame', window:'bywindow', looking_at_viewer:'center', standing:'center', centered:'center', profile:'side', from_the_side:'side', layered:'foreground', depth:'foreground', through:'frame', bokeh:'foreground' };
+  for (const t of s.tags) { if (tagComp[t]) return tagComp[t]; }
+  return null;
+}
 function loadScene(s) {
   state.__sceneId = s.id;
   document.getElementById('storyInput').value = s.story; state.story = s.story;
@@ -880,6 +904,15 @@ function loadScene(s) {
   let hintLight = null;
   for (const t of s.tags) { if (SCENE_LIGHT_HINT[t]) { hintLight = SCENE_LIGHT_HINT[t]; break; } }
   if (hintLight) { selectLighting(hintLight); state.selections.lighting = hintLight; document.querySelector('#opt-lighting .option[data-id="'+hintLight+'"]')?.classList.add('selected'); }
+  // scene-aware color mood
+  const mood = sceneColorMood(s);
+  if (mood) { state.colorMood = mood; document.querySelectorAll('#moodGrid .mood-card').forEach(c => c.classList.toggle('selected', c.dataset.id === mood)); }
+  // scene-aware shot
+  const shot = sceneShot(s);
+  if (shot) { state.selections.shot = shot; document.querySelectorAll('#opt-shot .option').forEach(o => o.classList.toggle('selected', o.dataset.id === shot)); }
+  // scene-aware composition
+  const comp = sceneComposition(s);
+  if (comp) { state.selections.composition = comp; selectComposition(comp); }
   renderLightHint(hintLight, s.title);
   switchTab('director', document.querySelectorAll('.pb-tab')[0]);
   goStep(1);
