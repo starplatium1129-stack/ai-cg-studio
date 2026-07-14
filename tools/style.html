@@ -23,6 +23,14 @@
   .mood-desc { font-size: 0.72rem; color: var(--text-muted); line-height: 1.4; }
   .section-title { font-size: 1.15rem; font-weight: 700; margin: var(--s-6) 0 var(--s-3); }
   .add-btn { margin-top: var(--s-4); }
+
+  @media (max-width: 768px) {
+    .page { padding: var(--s-4) var(--s-3); }
+    .mood-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+  }
+  @media (max-width: 480px) {
+    .mood-grid { grid-template-columns: repeat(2, 1fr); }
+  }
 </style>
 </head>
 <body>

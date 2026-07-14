@@ -32,6 +32,14 @@
   .char-scenes .s:hover { background: var(--accent-soft); }
   .char-lora { font-size: 0.82rem; color: var(--text-secondary); }
   .char-lora code { color: var(--accent); font-family: var(--font-mono); }
+
+  @media (max-width: 768px) {
+    .page { padding: var(--s-4) var(--s-3); }
+    .char-top { flex-direction: column; gap: var(--s-2); align-items: flex-start; }
+  }
+  @media (max-width: 480px) {
+    .char-name { font-size: 1.3rem; }
+  }
 </style>
 </head>
 <body>

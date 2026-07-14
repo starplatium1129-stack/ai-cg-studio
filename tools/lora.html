@@ -29,6 +29,14 @@
   .weight-track { flex: 1; height: 6px; background: var(--bg-deep); border-radius: 3px; overflow: hidden; }
   .weight-fill { height: 100%; background: var(--accent); }
   .weight-num { font-family: var(--font-mono); font-size: 0.78rem; color: var(--accent); width: 36px; }
+  @media (max-width: 768px) {
+    .lora-grid { grid-template-columns: 1fr; }
+    .page { padding: var(--s-4) var(--s-3); }
+  }
+  @media (max-width: 480px) {
+    .lora-card { padding: var(--s-4); }
+    .lora-name { font-size: 1rem; }
+  }
 </style>
 </head>
 <body>
