@@ -11,9 +11,10 @@
       "style": "elegant anime girl",
       "signature": "cat ear headband"
     },
-    "personality": ["energetic","loyal","easily impressed (sugoi!)","tsundere","clueless about love","aikido skilled"],
-    "likes": ["aikodo","childhood friend","gyoza"],
-    "speech": "casual, playful, \"sugoi!\" catchphrase"
+    "personality": ["energetic","curious about human world","airheaded","playful","catchphrase sugoi","casual"],
+    "likes": ["cute things","human culture","otaku"],
+    "speech": "energetic, casual, says sugoi frequently",
+    "source": "柚子社 魔女の夜宴 Succubus Feast",
     "lora": {
       "name": "ayachi_nene_v11",
       "weight": 0.8,
@@ -36,9 +37,10 @@
       "style": "refined anime girl",
       "signature": "mole under eye (teardrop)"
     },
-    "personality": ["elegant","shy","polite","tsundere","tea ceremony","loves baking cake"],
-    "likes": ["cooking","cake","kimono","tea ceremony"],
-    "speech": "polite, refined, stumbles when embarrassed"
+    "personality": ["tsundere","proud","easily flustered","café staff","loves baking cake"],
+    "likes": ["cafe work","baking cake","sweets"],
+    "speech": "initially cold, flustered easily when caring",
+    "source": "柚子社 喫茶ステラ Café Stella",
     "lora": {
       "name": "shiki_natsume_v11",
       "weight": 0.8,
