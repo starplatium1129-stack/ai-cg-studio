@@ -513,16 +513,9 @@ const SHOT_REASON = {
   detail:'手部/眼神/小动作'
 };
 const SHOT_PROMPT = {
-  close:'close_up, upper_face, detailed_expression, intimate',
-  medium:'medium_shot, waist_up, upper_body, natural_dialogue',
-  wide:'wide_shot, full_body, full_body_portrait, environmental',
-  pov:'pov, first_person_view, looking_at_viewer, immersive',
-  low:'low_angle, looking_up, from_below, powerful',
-  high:'high_angle, looking_down, from_above, cute',
-  side:'side_view, profile, from_the_side, silhouette',
-  turn:'turning_back, looking_back, over_shoulder, over_shoulder',
-  over:'selfie, phone_camera, close_face, candid',
-  detail:'close_up_detail, focus_on_hands_or_face, macro'
+  close:'close_up', medium:'medium_shot', wide:'wide_shot',
+  pov:'pov', low:'low_angle', high:'high_angle',
+  side:'side_view', turn:'looking_back', over:'selfie', detail:'close_up_detail'
 };
 const LIGHTING = [
   { id:'golden',   icon:'🌅', name:'夕阳 Golden Hour', en:'Golden Hour' },
@@ -538,12 +531,9 @@ const LIGHTING_REASON = {
   lantern:'夜祭/温馨/安全感/传统', overcast:'平静/文艺/清新/日常'
 };
 const LIGHTING_PROMPT = {
-  golden:'golden hour, warm light, backlit, soft shadows, sunset glow',
-  window:'window light, soft indoor lighting, diffused light, quiet atmosphere',
-  back:'backlit, rim light, silhouette edge, dramatic',
-  moon:'moonlight, cool tones, night, soft blue light, serene',
-  lantern:'lantern light, warm glow, night scene, cozy atmosphere, traditional',
-  overcast:'overcast, soft diffused light, cloudy, gentle tones'
+  golden:'golden hour', window:'window light',
+  back:'backlit', moon:'moonlight',
+  lantern:'lantern light', overcast:'overcast'
 };
 const COMPOSITION = [
   { id:'center',     icon:'🎯', name:'居中', en:'Center' },
@@ -555,32 +545,28 @@ const COMPOSITION = [
   { id:'bywindow',   icon:'🏔', name:'窗边', en:'By Window' }
 ];
 const COMPOSITION_PROMPT = {
-  center:'centered composition, subject centered, symmetric', rule3:'rule of thirds, off-center composition',
-  left:'left composition, subject on left side', right:'right composition, subject on right side',
-  foreground:'foreground framing, depth, layered', frame:'framed composition, through window or door',
-  bywindow:'by window, against window, window-side, airy'
+  center:'centered composition', rule3:'rule of thirds',
+  left:'left composition', right:'right composition',
+  foreground:'foreground framing', frame:'framed composition',
+  bywindow:'by window'
 };
 
 const COLOR_MOODS = [
-  { id:'joy',     icon:'☀️', name:'快乐', en:'Joy',     colors:['#FFE082','#FFD54F','#FFB300','#FF8F00','#FFF8E1'], desc:'暖黄/浅橙/明亮', prompt:'warm yellow tones, golden hour, bright sunlight, cheerful atmosphere, soft breeze, vibrant but soft' },
-  { id:'love',    icon:'💕', name:'恋爱', en:'Love',    colors:['#F8BBD0','#F06292','#EC407A','#AD1457','#FFF0F5'], desc:'夕阳/粉色/暖光', prompt:'pink tone, golden hour, warm light, backlit, romantic atmosphere, soft glow, blush, dreamy' },
-  { id:'calm',    icon:'🍃', name:'平静', en:'Calm',    colors:['#C8E6C9','#81C784','#4CAF50','#2E7D32','#F1F8E9'], desc:'淡绿/青绿/奶白', prompt:'soft green tones, overcast light, window light, calm atmosphere, peaceful, gentle colors, healing' },
-  { id:'sad',     icon:'🌧', name:'忧伤', en:'Sad',     colors:['#BBDEFB','#64B5F6','#1E88E5','#0D47A1','#E3F2FD'], desc:'蓝色/灰蓝/冷调', prompt:'blue tones, cool color palette, rainy day, overcast, melancholic atmosphere, lonely, nostalgic' },
-  { id:'tension', icon:'🌙', name:'神秘', en:'Mystery', colors:['#E1BEE7','#BA68C8','#8E24AA','#4A148C','#F3E5F5'], desc:'紫蓝/深紫/冷调', prompt:'purple and blue tones, moonlight, backlit, rim light, mysterious atmosphere, ethereal, dreamlike' },
-  { id:'warmth',  icon:'🏮', name:'温馨', en:'Warmth',  colors:['#FFE0B2','#FFB74D','#F57C00','#E65100','#FFF3E0'], desc:'暖橙/橘红/米黄', prompt:'warm orange tones, cozy glow, soft lighting, home atmosphere, candlelight, intimate, safe' }
+  { id:'joy',     icon:'☀️', name:'快乐', en:'Joy',     colors:['#FFE082','#FFD54F','#FFB300','#FF8F00','#FFF8E1'], desc:'暖黄/浅橙/明亮', prompt:'warm yellow tones' },
+  { id:'love',    icon:'💕', name:'恋爱', en:'Love',    colors:['#F8BBD0','#F06292','#EC407A','#AD1457','#FFF0F5'], desc:'夕阳/粉色/暖光', prompt:'pink tone, warm light' },
+  { id:'calm',    icon:'🍃', name:'平静', en:'Calm',    colors:['#C8E6C9','#81C784','#4CAF50','#2E7D32','#F1F8E9'], desc:'淡绿/青绿/奶白', prompt:'soft green tones, window light' },
+  { id:'sad',     icon:'🌧', name:'忧伤', en:'Sad',     colors:['#BBDEFB','#64B5F6','#1E88E5','#0D47A1','#E3F2FD'], desc:'蓝色/灰蓝/冷调', prompt:'blue tones, cool palette' },
+  { id:'tension', icon:'🌙', name:'神秘', en:'Mystery', colors:['#E1BEE7','#BA68C8','#8E24AA','#4A148C','#F3E5F5'], desc:'紫蓝/深紫/冷调', prompt:'purple and blue tones' },
+  { id:'warmth',  icon:'🏮', name:'温馨', en:'Warmth',  colors:['#FFE0B2','#FFB74D','#F57C00','#E65100','#FFF3E0'], desc:'暖橙/橘红/米黄', prompt:'warm orange tones, candlelight' }
 ];
 const MOOD_EMOTION_MAP = { joy:['happy','joyful','relaxed'], love:['love','shy','expect'], calm:['calm','gentle','relaxed'], sad:['sad','miss','wronged'], tension:['nervous','serious','calm'], warmth:['gentle','moved','joyful'] };
 
 const PROMPT_MAP = {
   emotion: {
-    happy:'happy, bright_smile, joyful_expression, cheerful', shy:'shy, blushing, looking_away, reserved_smile',
-    miss:'missing_someone, longing_look, distant_gaze', expect:'expectant, hopeful, bright_eyes, slight_smile',
-    nervous:'nervous, gentle_smile, blushing, soft_eyes', gentle:'gentle_expression, calm, natural_pose',
-    moved:'teary_eyes, moved, vulnerable_expression', sad:'sad, distant_gaze, melancholic',
-    calm:'calm, peaceful_expression, gentle, serene', joyful:'in_love, gentle_smile, soft_eyes, blush, warm_gaze',
-    relaxed:'relaxed, gentle_expression, calm, natural_pose', serious:'serious, determined, focused_expression',
-    love:'in_love, gentle_smile, soft_eyes, blush, warm_gaze', sleepy:'sleepy, half_closed_eyes, drowsy, tired',
-    spoiled:'pouting, playful, acting_cute, childish', wronged:'teary_eyes, pout, vulnerable_expression'
+    happy:'bright_smile', shy:'shy, blushing', miss:'longing_look', expect:'expectant, bright_eyes',
+    nervous:'nervous, blushing', gentle:'gentle_expression', moved:'teary_eyes', sad:'sad',
+    calm:'calm', joyful:'in_love, blush', relaxed:'relaxed', serious:'serious',
+    love:'in_love, blush', sleepy:'sleepy', spoiled:'pouting', wronged:'teary_eyes, pout'
   },
   character: { nene:'1girl, ayachi_nene', natsume:'1girl, shiki_natsume' }
 };
@@ -1062,7 +1048,6 @@ function buildParts() {
   const sel = state.selections;
   const char = state.char;
   const parts = [];
-  if (quality) parts.push({ cls:'q', text: norm('masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed') });
   const charLine = PROMPT_MAP.character[char];
   const traitTags = (char === 'nene' ? TRAITS.nene : TRAITS.natsume).filter(t => state.manualTags.has(t.tag)).map(t => t.tag);
   parts.push({ cls:'c', text: norm(traitTags.length ? charLine + ', ' + traitTags.join(', ') : charLine) });
@@ -1091,9 +1076,8 @@ function buildParts() {
     const sceneTags = state.manualTags;
     const isPov = sel.shot === 'pov' || sceneTags.has('pov');
     const isNight = sceneTags.has('night') || sceneTags.has('night') || sel.lighting === 'moonlight' || sel.lighting === 'night_lamp' || sel.lighting === 'neon';
-    const tailToks = ['looking_at_viewer','beautiful_detailed_eyes','beautiful_detailed_hair','depth_of_field','cinematic_lighting'].filter(t => {
-      if (t === 'looking_at_viewer' && isPov) return false;      // POV 第一人称不需要"看观众"
-      if (t === 'cinematic_lighting' && isNight) return false;    // 夜景不需要电影光(月光/夜灯自带氛围)
+    const tailToks = ['depth_of_field'].filter(t => {
+      if (t === 'looking_at_viewer' && isPov) return false;
       return true;
     });
     if (tailToks.length) parts.push({ cls:'c', text: norm(tailToks.join(', ')) });
