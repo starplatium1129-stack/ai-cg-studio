@@ -1663,7 +1663,7 @@
     "id": "sc056",
     "title": "海边的泳装",
     "category": "R15",
-    "story": "她穿着泳装从海里走出来，害羞地拉低衣摆，「泳装太暴露了…你会觉得我是魅魔吗」",
+    "story": "她穿着泳装从海里走出来，害羞地拉低衣摆，「泳装太暴露了…你会觉得我是魔女吗」",
     "char": "nene",
     "character": [
       "nene"
@@ -3636,7 +3636,7 @@
       "holding",
       "glow",
       "looking_at_viewer",
-      "succubus"
+      "witch"
     ],
     "mature": false,
     "location": "shrine",
@@ -4038,7 +4038,7 @@
       "blush",
       "looking_away",
       "tail",
-      "succubus"
+      "witch"
     ],
     "mature": true,
     "location": "bedroom",
@@ -4055,7 +4055,7 @@
     "id": "sc132",
     "title": "心跳加速",
     "cat": "恋爱",
-    "story": "图书馆她靠着你手臂翻书,魅魔体质突然发作,你把脸凑近闻了闻「你是不是在发情」她整个人冒烟躲进书架后面",
+    "story": "图书馆她靠着你手臂翻书,魔女体质突然发作,你把脸凑近闻了闻「你是不是在发情」她整个人冒烟躲进书架后面",
     "char": "nene",
     "character": [
       "nene"
@@ -4070,7 +4070,7 @@
       "standing",
       "blush",
       "looking_away",
-      "succubus",
+      "witch",
       "flustered"
     ],
     "mature": true,
@@ -4591,7 +4591,7 @@
       "night",
       "whisper",
       "looking_at_viewer",
-      "succubus"
+      "witch"
     ],
     "mature": true,
     "location": "bedroom",
@@ -4900,7 +4900,7 @@
     "id": "sc158",
     "title": "魅魔装的完全体",
     "cat": "恋爱",
-    "story": "她穿上完整魅魔装站在你面前,布料少得可怜,蝙蝠尾巴紧张地卷起来「…转过去!三十秒!」",
+    "story": "她穿上完整魔女装站在你面前,布料少得可怜,蝙蝠尾巴紧张地卷起来「…转过去!三十秒!」",
     "char": "nene",
     "character": [
       "nene"
@@ -4913,7 +4913,7 @@
     "tags": [
       "bedroom",
       "standing",
-      "succubus",
+      "witch",
       "looking_away",
       "tail",
       "revealing"
