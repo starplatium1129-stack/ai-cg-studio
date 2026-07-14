@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI CG Studio · 今天,我想讲一个什么故事?</title>
 <link rel="stylesheet" href="css/design-system.css">
+<script src="tools/nav.js"></script>
 <script src="tools/theme.js"></script>
 <style>
   /* ============================================================
@@ -209,17 +210,11 @@
 </head>
 <body>
 
-<!-- Nav -->
+<!-- Nav (populated by tools/nav.js) -->
 <nav class="nav">
   <div class="nav-inner">
     <div class="nav-brand"><span class="dot"></span> AI CG Studio</div>
-    <div class="nav-links">
-      <a href="index.html" class="active">首页</a>
-      <a href="tools/scene-explorer.html">场景</a>
-      <a href="tools/prompt-builder.html">导演台</a>
-      <a href="docs/worldview.html">世界观</a>
-      <a href="docs/roadmap.html">路线</a>
-    </div>
+    <div class="nav-links"></div>
   </div>
 </nav>
 
@@ -228,103 +223,46 @@
   <div class="home-hero">
     <div class="hero-copy">
       <span class="eyebrow">🌸 AI CG Studio</span>
-      <h1 class="hero-title">今天,<br>我想讲一个<br><span class="accent">什么故事?</span></h1>
-      <p class="hero-sub">不是写 Prompt — 而是像导演一样,从脑海里那个瞬间开始。选择一种情绪,一个场景,让 AI 帮你完成剩下的。</p>
+      <h1 class="hero-title">今天,<br>我想画一个<br><span class="accent">什么 Scene?</span></h1>
+      <p class="hero-sub">选一个场景种子,像导演一样定情绪、镜头、光照。<br>Prompt 自动生成 — 你只需要讲那个瞬间。</p>
       <div class="hero-ctas">
-        <a href="tools/prompt-builder.html" class="btn btn-primary">🎬 新建 CG</a>
-        <a href="tools/scene-explorer.html" class="btn btn-ghost">🌸 浏览场景</a>
+        <a href="tools/scene-explorer.html" class="btn btn-primary">🌸 浏览 Scene Library</a>
+        <a href="tools/prompt-builder.html" class="btn btn-ghost">🎬 开始 Director</a>
       </div>
     </div>
     <aside class="hero-strip" id="heroStrip">
-      <div class="strip-label"><span class="dot"></span> 场景胶片 · 实时</div>
+      <div class="strip-label"><span class="dot"></span> Scene 胶片 · 实时推荐</div>
       <div class="strip-scroll" id="stripScroll"></div>
     </aside>
   </div>
 </section>
 
-<!-- Recent work -->
-<section class="container home-section">
+<!-- 最近创作 -->
+<section class="container home-section" id="recentSection">
   <div class="home-section-head">
-    <div>
-      <h2>最近创作</h2>
-      <p class="hint">从浏览器本地记录读取 · 不超过 6 条</p>
-    </div>
-    <a href="tools/prompt-builder.html" class="link">打开导演台 →</a>
+    <div><h2>最近创作</h2><p class="hint">浏览器本地记录 · 最近 6 张 CG</p></div>
+    <a href="tools/prompt-builder.html" class="link">打开 Director →</a>
   </div>
   <div id="recentList" class="recent-row"></div>
 </section>
 
-<!-- Inspiration triple -->
+<!-- 创作入口(与导航一致) -->
 <section class="container home-section">
-  <div class="home-section-head">
-    <div>
-      <h2>灵感推荐</h2>
-      <p class="hint">每组互不重复 · 点击直接进入导演台</p>
-    </div>
-  </div>
-  <div class="inspo-grid" id="inspoGrid"></div>
-</section>
-
-<!-- Tools -->
-<section class="container home-section">
-  <div class="home-section-head">
-    <div><h2>创作工具</h2></div>
-  </div>
+  <div class="home-section-head"><div><h2>创作工作台</h2></div></div>
   <div class="tools-grid">
-    <a href="tools/scene-explorer.html" class="tool-card">
-      <span class="ic">🌸</span>
-      <span class="t">场景探索</span>
-      <p class="d">浏览 70 个官方场景,每个都是一张完整 CG 的种子。</p>
-      <span class="go">开始浏览 →</span>
-    </a>
-    <a href="tools/prompt-builder.html" class="tool-card">
-      <span class="ic">🎬</span>
-      <span class="t">导演工作台</span>
-      <p class="d">Story-first:选情绪、镜头、光照,Prompt 自动生成。</p>
-      <span class="go">开始导演 →</span>
-    </a>
-    <a href="javascript:void(0)" class="tool-card coming">
-      <span class="ic">👤</span>
-      <span class="t">角色库</span>
-      <p class="d">管理你的角色卡、服装 DNA 与场景适配。</p>
-      <span class="go">即将推出 →</span>
-    </a>
-    <a href="javascript:void(0)" class="tool-card coming">
-      <span class="ic">🧪</span>
-      <span class="t">LoRA 实验室</span>
-      <p class="d">测试、评分、版本对比,沉淀你的训练经验。</p>
-      <span class="go">即将推出 →</span>
-    </a>
-    <a href="tools/scenario.html" class="tool-card">
-      <span class="ic">📖</span>
-      <span class="t">剧本模式</span>
-      <p class="d">多场景串联,为同一角色创作故事序列。</p>
-      <span class="go">进入 →</span>
-    </a>
-  </div>
-</section>
-
-<!-- Docs -->
-<section class="container home-section">
-  <div class="home-section-head">
-    <div><h2>项目文档</h2></div>
-    <a href="docs/roadmap.html" class="link">路线图 →</a>
-  </div>
-  <div class="tools-grid">
-    <a href="docs/worldview.html" class="tool-card"><span class="ic">🌍</span><span class="t">世界观</span><p class="d">创作宇宙的基础设定与边界。</p></a>
-    <a href="docs/philosophy.html" class="tool-card"><span class="ic">💡</span><span class="t">创作哲学</span><p class="d">为什么 Scene 不是 Prompt。</p></a>
-    <a href="docs/art-direction.html" class="tool-card"><span class="ic">🎨</span><span class="t">美术规范</span><p class="d">颜色、构图、拒绝清单。</p></a>
-    <a href="docs/tag-standard.html" class="tool-card"><span class="ic">🏷</span><span class="t">标签规范</span><p class="d">内部唯一英文,用户只写中文。</p></a>
-    <a href="docs/scene-spec.html" class="tool-card"><span class="ic">🎞</span><span class="t">Scene 规范</span><p class="d">17 字段完整定义。</p></a>
-    <a href="docs/quality-standard.html" class="tool-card"><span class="ic">⭐</span><span class="t">质量评分</span><p class="d">5 轴评分标准。</p></a>
+    <a href="tools/scene-explorer.html" class="tool-card"><span class="ic">🌸</span><span class="t">Scene Library</span><p class="d">70 个官方场景种子,每个都是一张 CG 的起点。</p><span class="go">浏览场景 →</span></a>
+    <a href="tools/prompt-builder.html" class="tool-card"><span class="ic">🎬</span><span class="t">Director</span><p class="d">Story-first:选情绪、镜头、光照,Prompt 自动生成。</p><span class="go">开始 Director →</span></a>
+    <a href="tools/character.html" class="tool-card"><span class="ic">👤</span><span class="t">Character</span><p class="d">角色卡 + 视觉 DNA + 绑定 LoRA 与推荐场景。</p><span class="go">管理角色 →</span></a>
+    <a href="tools/style.html" class="tool-card"><span class="ic">🎨</span><span class="t">Style</span><p class="d">色彩 = 情绪 = 光照。选一个 Style,整个画面统一。</p><span class="go">选择风格 →</span></a>
+    <a href="tools/lora.html" class="tool-card"><span class="ic">🧪</span><span class="t">LoRA</span><p class="d">角色 LoRA 库:训练参数 + 推荐权重,Director 自动插入。</p><span class="go">查看 LoRA →</span></a>
+    <a href="tools/gallery.html" class="tool-card"><span class="ic">🎞</span><span class="t">Gallery</span><p class="d">我的创作时间线,支持收藏、评分、重新生成。</p><span class="go">打开图库 →</span></a>
   </div>
 </section>
 
 <footer class="footer">
-  <p>AI CG Studio · From Story to Scene</p>
-  <p class="muted mt-4">Prompt 描述的是图片。Scene 描述的是瞬间。而真正值得被记住的,不是 Prompt,而是那个瞬间。</p>
+  <p>AI CG Studio · 像导演一样创作每一个瞬间</p>
+  <p class="muted mt-4">Prompt 描述的是图片。Scene 描述的是瞬间。</p>
 </footer>
-
 <script>
 /* ============================================================
    Home — driven by data/scenes.json + localStorage aics_pb_history
@@ -349,11 +287,6 @@
     const day = Math.floor(h/24);
     if(day<30) return day+' 天前';
     return new Date(ts).toLocaleDateString('zh-CN');
-  }
-  function pick(arr, n){
-    const a = arr.slice(); const out = [];
-    for(let i=0;i<n && a.length;i++){ out.push(a.splice(Math.floor(Math.random()*a.length),1)[0]); }
-    return out;
   }
 
   // ---- render scene strip (Hero) ----
@@ -399,40 +332,12 @@
     }).join('');
   }
 
-  // ---- render inspiration triple ----
-  function renderInspo(scenes){
-    const el = document.getElementById('inspoGrid');
-    if(!scenes || !scenes.length){ el.innerHTML = '<p class="muted">载入中…</div>'; return; }
-    // official: fixed first 3; today: date-seeded; hot: top by a heuristic (mature last)
-    const official = scenes.slice(0, 3);
-    const today = pick(scenes, 3);
-    const hot = scenes.slice().sort((a,b)=>(b.tags.length||0)-(a.tags.length||0)).slice(0, 3);
-
-    function col(id, items, label, sub, icon, rank){
-      const list = items.map((s,i)=>`
-        <a href="tools/prompt-builder.html?scene=${esc(s.id)}" class="inspo-item">
-          <span class="rank">${rank? (i+1+'.'):''}</span>
-          <span class="ttl">${esc(s.title)}</span>
-          <span class="emo">${esc(s.emotion)}</span>
-        </a>`).join('');
-      return `<div class="inspo-col">
-        <div class="inspo-col-head"><span class="ic">${icon}</span><div><h3>${label}</h3><p class="sub">${sub}</p></div></div>
-        <div class="inspo-list">${list}</div>
-      </div>`;
-    }
-    el.innerHTML =
-      col('c1', official, '官方推荐', '精选 3 个种子场景', '🌱', false) +
-      col('c2', today, '今日灵感', '每次打开都不同', '☀️', false) +
-      col('c3', hot, '热门 Scene', '标签最丰富的瞬间', '🔥', true);
-  }
-
   // ---- boot ----
   fetch('data/scenes.json')
     .then(r=>r.json())
     .then(scenes=>{
       window.__scenes__ = scenes;
       renderStrip(scenes);
-      renderInspo(scenes);
       try { renderRecent(JSON.parse(localStorage.getItem(HIS_KEY))||[]); } catch(e){ renderRecent([]); }
     })
     .catch(err=>{

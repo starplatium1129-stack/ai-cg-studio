@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark" data-nav="character">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Character · AI CG Studio</title>
+<link rel="stylesheet" href="../css/design-system.css">
+<script src="nav.js"></script>
+<script src="theme.js"></script>
+<style>
+  .page { max-width: 1000px; margin: 0 auto; padding: var(--s-6) var(--s-5); }
+  .nav-back { display: inline-flex; align-items: center; gap: var(--s-2); color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4); }
+  .nav-back:hover { color: var(--accent); }
+  h1.title { font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, #E8E8F0 50%, #F06292); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: var(--s-2); }
+  .subtitle { color: var(--text-secondary); margin-bottom: var(--s-6); }
+  .char-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: var(--s-5); }
+  .char-card { background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-xl); padding: var(--s-5); }
+  .char-top { display: flex; align-items: center; gap: var(--s-3); margin-bottom: var(--s-4); }
+  .char-avatar { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--mood-tension)); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; flex-shrink: 0; }
+  .char-name { font-size: 1.3rem; font-weight: 800; }
+  .char-en { font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent); }
+  .char-section { margin-bottom: var(--s-3); }
+  .char-section .lab { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: var(--s-1); }
+  .char-dna { display: flex; gap: var(--s-2); flex-wrap: wrap; }
+  .char-dna .chip { padding: 3px 10px; background: var(--bg-elevated); border-radius: 12px; font-size: 0.78rem; color: var(--text-secondary); }
+  .char-traits { display: flex; gap: var(--s-2); flex-wrap: wrap; }
+  .trait { display: inline-flex; align-items: center; gap: 4px; padding: 4px 12px; background: var(--accent-soft); border: 1px solid var(--accent); border-radius: 20px; font-size: 0.82rem; }
+  .char-personality { display: flex; gap: 6px; flex-wrap: wrap; }
+  .char-personality .p { padding: 2px 10px; background: var(--bg-deep); border-radius: 12px; font-size: 0.78rem; color: var(--text-secondary); }
+  .char-scenes { display: flex; gap: 6px; flex-wrap: wrap; }
+  .char-scenes .s { padding: 2px 10px; background: var(--bg-deep); border-radius: 12px; font-size: 0.78rem; color: var(--accent); text-decoration: none; }
+  .char-scenes .s:hover { background: var(--accent-soft); }
+  .char-lora { font-size: 0.82rem; color: var(--text-secondary); }
+  .char-lora code { color: var(--accent); font-family: var(--font-mono); }
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand"><span class="dot"></span> AI CG Studio</div>
+    <div class="nav-links"></div>
+  </div>
+</nav>
+
+<article class="page">
+  <a href="../index.html" class="nav-back">← 回首页</a>
+  <h1 class="title">👤 Character Library</h1>
+  <p class="subtitle">你的角色卡。每个角色拥有视觉 DNA、性格特质、绑定 LoRA 与推荐场景 — 在 Director 中选择即自动加载。</p>
+  <div class="char-grid" id="charGrid"></div>
+</article>
+
+<footer class="footer"><p>AI CG Studio · Character as the center of every Scene</p></footer>
+
+<script>
+(function(){
+  var grid = document.getElementById('charGrid');
+  function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  fetch('../data/characters.json')
+    .then(function(r){ return r.json(); })
+    .then(function(chars){
+      grid.innerHTML = chars.map(function(c){
+        var dna = c.visual_dna || {};
+        var traits = (c.traits||[]).map(function(t){ return '<span class="trait">'+esc(t.icon||'✨')+' '+esc(t.label)+'</span>'; }).join('');
+        var pers = (c.personality||[]).map(function(p){ return '<span class="p">'+esc(p)+'</span>'; }).join('');
+        var scenes = (c.lora && c.lora.recommended_scene || []).map(function(s){ return '<a class="s" href="prompt-builder.html?scene='+esc(s)+'">'+esc(s)+'</a>'; }).join('');
+        var lora = c.lora ? '<div class="char-lora">LoRA: <code>'+esc(c.lora.name)+'</code> · 权重 '+esc(c.lora.weight)+'</div>' : '';
+        return '<div class="char-card">' +
+          '<div class="char-top"><div class="char-avatar">'+(c.id==='NENE_001'?'🌸':'🍂')+'</div><div><div class="char-name">'+esc(c.name)+'</div><div class="char-en">'+esc((c.alias||[]).join(' / '))+'</div></div></div>' +
+          '<div class="char-section"><div class="lab">Visual DNA</div><div class="char-dna"><span class="chip">'+esc(dna.hair||'')+'</span><span class="chip">'+esc(dna.eyes||'')+'</span><span class="chip">'+esc(dna.style||'')+'</span></div></div>' +
+          '<div class="char-section"><div class="lab">Traits</div><div class="char-traits">'+traits+'</div></div>' +
+          '<div class="char-section"><div class="lab">Personality</div><div class="char-personality">'+pers+'</div></div>' +
+          (lora ? '<div class="char-section"><div class="lab">LoRA</div>'+lora+'</div>':'') +
+          (scenes ? '<div class="char-section"><div class="lab">推荐 Scene</div><div class="char-scenes">'+scenes+'</div></div>':'') +
+        '</div>';
+      }).join('');
+    })
+    .catch(function(e){ grid.innerHTML = '<p class="muted">⚠️ 角色数据加载失败:'+e.message+'</p>'; });
+})();
+</script>
+</body>
+</html>

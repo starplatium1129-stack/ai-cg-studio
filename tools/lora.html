@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark" data-nav="lora">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LoRA · AI CG Studio</title>
+<link rel="stylesheet" href="../css/design-system.css">
+<script src="nav.js"></script>
+<script src="theme.js"></script>
+<style>
+  .page { max-width: 1000px; margin: 0 auto; padding: var(--s-6) var(--s-5); }
+  .nav-back { display: inline-flex; align-items: center; gap: var(--s-2); color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4); }
+  .nav-back:hover { color: var(--accent); }
+  h1.title { font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, #E8E8F0 50%, #F06292); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: var(--s-2); }
+  .subtitle { color: var(--text-secondary); margin-bottom: var(--s-5); }
+  .lora-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: var(--s-4); }
+  .lora-card { background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-xl); padding: var(--s-5); }
+  .lora-name { font-size: 1.2rem; font-weight: 800; font-family: var(--font-mono); color: var(--accent); margin-bottom: var(--s-1); }
+  .lora-trainer { font-size: 0.78rem; color: var(--text-muted); margin-bottom: var(--s-3); }
+  .lora-row { display: flex; gap: var(--s-2); margin-bottom: var(--s-2); }
+  .lora-row .lab { font-size: 0.72rem; color: var(--text-muted); width: 80px; flex-shrink: 0; padding-top: 2px; }
+  .lora-row .val { font-size: 0.85rem; color: var(--text-secondary); }
+  .weight-bar { display: flex; align-items: center; gap: 8px; flex: 1; }
+  .weight-track { flex: 1; height: 6px; background: var(--bg-deep); border-radius: 3px; overflow: hidden; }
+  .weight-fill { height: 100%; background: var(--accent); }
+  .weight-num { font-family: var(--font-mono); font-size: 0.78rem; color: var(--accent); width: 36px; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand"><span class="dot"></span> AI CG Studio</div>
+    <div class="nav-links"></div>
+  </div>
+</nav>
+
+<article class="page">
+  <a href="../index.html" class="nav-back">← 回首页</a>
+  <h1 class="title">🧪 LoRA Lab</h1>
+  <p class="subtitle">角色 LoRA 库。每个 LoRA 由训练集 + 参数沉淀而来 — 在 Director 中自动插入对应权重。</p>
+  <div class="lora-grid" id="loraGrid"></div>
+</article>
+
+<footer class="footer"><p>AI CG Studio · Trained once, reused forever</p></footer>
+
+<script>
+(function(){
+  var grid = document.getElementById('loraGrid');
+  function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function pct(n){ return Math.round((n||0)*100)+'%'; }
+  fetch('../data/loras.json')
+    .then(function(r){ return r.json(); })
+    .then(function(loras){
+      grid.innerHTML = loras.map(function(l){
+        var dt = l.dataset || {}, tr = l.training || {}, rw = l.recommended_weight || '';
+        var weights = '';
+        Object.keys(rw).forEach(function(k){
+          weights += '<div class="lora-row"><span class="lab">'+esc(k)+'</span>'+
+            '<div class="weight-bar"><div class="weight-track"><div class="weight-fill" style="width:'+pct(rw[k])+'"></div></div>'+
+            '<span class="weight-num">'+esc(rw[k])+'</span></div></div>';
+        });
+        return '<div class="lora-card">' +
+          '<div class="lora-name">'+esc(l.name)+'</div>' +
+          '<div class="lora-trainer">'+esc(l.trainer)+' · '+esc(dt.images)+' imgs @ '+esc(dt.resolution)+'px · rank '+esc(tr.rank)+'</div>' +
+          '<div class="lora-row"><span class="lab">底模</span><div class="val">'+esc(l.base_model)+'</div></div>' +
+          '<div class="lora-row"><span class="lab">训练</span><div class="val">epoch '+esc(tr.epoch)+' · alpha '+esc(tr.alpha)+'</div></div>' +
+          (weights ? '<div class="lora-row"><span class="lab">推荐权重</span><div class="val">'+weights+'</div></div>':'') +
+        '</div>';
+      }).join('');
+    })
+    .catch(function(e){ grid.innerHTML = '<p class="muted">⚠️ LoRA 数据加载失败:'+e.message+'</p>'; });
+})();
+</script>
+</body>
+</html>
