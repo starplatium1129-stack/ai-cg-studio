@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI CG Studio · 今天,我想讲一个什么故事?</title>
 <link rel="stylesheet" href="css/design-system.css">
+<link rel="stylesheet" href="css/scene-card.css">
 <script src="tools/nav.js"></script>
+<script src="tools/scene-card.js"></script>
 <script src="tools/theme.js"></script>
 <style>
   /* ============================================================
@@ -100,21 +102,6 @@
   }
   .strip-scroll::-webkit-scrollbar { height: 4px; }
   .strip-scroll::-webkit-scrollbar-thumb { background: var(--border-soft); border-radius: 2px; }
-  .strip-cell {
-    flex: 0 0 200px;
-    scroll-snap-align: start;
-    background: var(--bg-deep);
-    border: 1px solid var(--border-soft);
-    border-radius: var(--r-md);
-    padding: var(--s-3);
-    cursor: pointer;
-    transition: border-color var(--t-fast), transform var(--t-fast);
-  }
-  .strip-cell:hover { border-color: var(--accent); transform: translateY(-2px); }
-  .strip-cell .s-title { font-size: 0.88rem; font-weight: 700; margin-bottom: var(--s-1); }
-  .strip-cell .s-story { font-size: 0.76rem; color: var(--text-muted); line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-  .strip-cell .s-meta { margin-top: var(--s-2); display: flex; gap: 4px; flex-wrap: wrap; }
-  .strip-cell .s-tag { font-size: 0.62rem; padding: 1px 6px; border-radius: 10px; background: var(--bg-elevated); color: var(--text-secondary); }
 
   @media (max-width: 768px) {
     .chain { gap: var(--s-1); }
@@ -128,68 +115,6 @@
   .home-section-head h2 { font-size: 1.35rem; margin-bottom: var(--s-1); }
   .home-section-head .hint { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
   .home-section-head .link { font-size: 0.85rem; flex-shrink: 0; }
-
-  /* ---------- Recent strip (history) ---------- */
-  .recent-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--s-4); }
-  .recent-card {
-    background: var(--bg-surface);
-    border: 1px solid var(--border-soft);
-    border-radius: var(--r-lg);
-    padding: var(--s-4);
-    display: flex; flex-direction: column;
-    transition: border-color var(--t-fast), transform var(--t-fast);
-  }
-  .recent-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-  .recent-thumb {
-    aspect-ratio: 4 / 3;
-    background: linear-gradient(135deg, var(--bg-deep), var(--bg-elevated));
-    border-radius: var(--r-md);
-    margin-bottom: var(--s-3);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 2rem;
-    position: relative;
-    overflow: hidden;
-  }
-  .recent-thumb::after {
-    content: ""; position: absolute; inset: 0;
-    background: radial-gradient(circle at 30% 30%, var(--accent-glow), transparent 60%);
-    opacity: 0.5;
-  }
-  .recent-title { font-weight: 700; font-size: 0.95rem; margin-bottom: var(--s-1); }
-  .recent-meta { font-size: 0.75rem; color: var(--text-muted); margin-bottom: var(--s-2); }
-  .recent-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-top: auto; }
-  .recent-tags .t { font-size: 0.65rem; padding: 1px 7px; border-radius: 10px; background: var(--bg-elevated); color: var(--text-secondary); }
-
-  .star-row { display: inline-flex; gap: 1px; font-size: 0.78rem; color: var(--text-muted); }
-  .star-row .on { color: var(--mood-joy); }
-
-  /* ---------- Inspiration triple ---------- */
-  .inspo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-4); }
-  @media (max-width: 860px) { .inspo-grid { grid-template-columns: 1fr; } }
-  .inspo-col {
-    background: var(--bg-surface);
-    border: 1px solid var(--border-soft);
-    border-radius: var(--r-lg);
-    padding: var(--s-5);
-  }
-  .inspo-col-head { display: flex; align-items: center; gap: var(--s-2); margin-bottom: var(--s-4); }
-  .inspo-col-head .ic { font-size: 1.2rem; }
-  .inspo-col-head h3 { font-size: 1rem; margin: 0; }
-  .inspo-col-head .sub { font-size: 0.75rem; color: var(--text-muted); margin: 0; }
-  .inspo-list { display: flex; flex-direction: column; gap: var(--s-2); }
-  .inspo-item {
-    display: flex; align-items: center; gap: var(--s-3);
-    padding: var(--s-2) var(--s-3);
-    border-radius: var(--r-md);
-    cursor: pointer;
-    transition: background var(--t-fast);
-    text-decoration: none;
-    color: var(--text-primary);
-  }
-  .inspo-item:hover { background: var(--bg-hover); }
-  .inspo-item .rank { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); width: 22px; flex-shrink: 0; }
-  .inspo-item .ttl { font-size: 0.88rem; font-weight: 600; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .inspo-item .emo { font-size: 0.7rem; color: var(--text-muted); flex-shrink: 0; }
 
   /* ---------- Tools ---------- */
   .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--s-3); }
@@ -230,7 +155,7 @@
   .empty p { color: var(--text-muted); margin-bottom: var(--s-4); }
 
   @media (prefers-reduced-motion: reduce) {
-    .strip-cell, .recent-card, .tool-card { transition: none; }
+    .sc, .tool-card { transition: none; }
   }
 </style>
 </head>
@@ -306,10 +231,6 @@
 
   // ---- utilities ----
   function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-  function stars(r){
-    const n = Math.round(r||0);
-    return '<span class="star-row">' + [1,2,3,4,5].map(i=>'<span class="'+(i<=n?'on':'')+'">★</span>').join('') + '</span>';
-  }
   function timeAgo(ts){
     if(!ts) return '';
     const d = Date.now() - ts;
@@ -327,43 +248,37 @@
   function renderStrip(scenes){
     const el = document.getElementById('stripScroll');
     if(!scenes || !scenes.length){ el.innerHTML = '<span class="s-title" style="color:var(--text-muted)">暂无场景</span>'; return; }
-    const pick = scenes.slice(0, 10);
-    el.innerHTML = pick.map(s=>`
-      <div class="strip-cell" onclick="document.location.href='tools/prompt-builder.html?scene=${esc(s.id)}'">
-        <div class="s-title">${esc(s.title)}${s.mature?' <small style="color:var(--accent)">🔞</small>':''}</div>
-        <div class="s-story">${esc(s.story)}</div>
-        <div class="s-meta">
-          <span class="s-tag">${esc(s.emotion)}</span>
-          <span class="s-tag">${esc(s.season||'')}</span>
-        </div>
-      </div>`).join('');
+    el.innerHTML = '';
+    scenes.slice(0, 10).forEach(s=>{
+      el.appendChild(createSceneCard(s, {
+        mode: 'strip',
+        onPick: function(){ window.location.href = 'tools/prompt-builder.html?scene=' + encodeURIComponent(s.id); }
+      }));
+    });
   }
 
   // ---- render recent (history) ----
   function renderRecent(history){
     const el = document.getElementById('recentList');
     if(!history || !history.length){
-      el.innerHTML = `<div class="empty" style="grid-column:1/-1">
-        <div class="ic">🎞</div>
-        <p>还没有创作。<br>去导演台生成第一张 CG,它会出现在这里。</p>
-        <a href="tools/prompt-builder.html" class="btn btn-primary">🎬 开始第一个</a>
-      </div>`;
+      el.innerHTML = `<div class="sc-empty"><div class="ic">🎞</div><p>还没有创作。<br>去导演台生成第一张 CG,它会出现在这里。</p><a href="tools/prompt-builder.html" class="btn btn-primary">🎬 开始第一个</a></div>`;
       return;
     }
-    const items = history.slice(0, 6);
-    el.innerHTML = items.map(h=>{
+    el.innerHTML = '';
+    history.slice(0, 6).forEach(h=>{
       const sc = (window.__scenes__||[]).find(s=>s.id===h.scene);
-      const title = esc(sc ? sc.title : (h.scene||'未命名'));
-      const tags = sc ? sc.tags.slice(0,3) : [];
       const rating = h.rating ? (h.rating.atmosphere || h.rating.overall || 0) : 0;
-      return `<div class="recent-card">
-        <div class="recent-thumb">🎬</div>
-        <div class="recent-title">${title}</div>
-        <div class="recent-meta">${esc(h.char||'·')} · ${timeAgo(h.timestamp)}${h.version?' · v'+h.version:''}</div>
-        <div>${stars(rating)}</div>
-        <div class="recent-tags">${tags.map(t=>'<span class="t">'+esc(t)+'</span>').join('')}</div>
-      </div>`;
-    }).join('');
+      el.appendChild(createSceneCard(sc || { id:h.scene, title:h.scene||'未命名', story:'' }, {
+        mode: 'recent',
+        clickable: false,
+        rating: rating,
+        meta: [(h.char||'·'), timeAgo(h.timestamp), h.version?('v'+h.version):''].filter(Boolean).join(' · '),
+        actions: [
+          { label:'重新生成', icon:'🔄', primary:true, href:'tools/prompt-builder.html?scene=' + encodeURIComponent(h.scene) + '&regen=' + encodeURIComponent(h.id) },
+          { label:'变体', icon:'✨', primary:false, href:'tools/prompt-builder.html?scene=' + encodeURIComponent(h.scene) + '&variant=' + encodeURIComponent(h.id) }
+        ]
+      }));
+    });
   }
 
   // ---- boot ----

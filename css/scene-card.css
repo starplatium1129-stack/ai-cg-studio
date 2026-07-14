@@ -1,0 +1,78 @@
+/* ============================================================
+   Scene Card — 统一场景卡片(modifier:sc-strip / sc-recent)
+   grid = 默认(Explorer / Gallery / 作品展示)
+   strip = 首页 hero 胶片(200px 窄卡,横向滚动)
+   recent = 作品卡(代 rating + actions)
+   ============================================================ */
+.sc {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  cursor: pointer;
+  transition: border-color var(--t-fast), transform var(--t-fast), box-shadow var(--t-fast);
+  min-width: 0;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+.sc:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.sc:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ---- 视觉预览色带 ---- */
+.sc-band {
+  height: 64px; position: relative; flex-shrink: 0;
+  display: flex; align-items: flex-end; padding: var(--s-2);
+}
+.sc-cat {
+  margin-left: auto; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em;
+  background: rgba(0,0,0,0.45); color: #fff; padding: 2px 8px; border-radius: 10px;
+}
+.sc-badge {
+  position: absolute; top: 6px; right: 6px; font-size: 0.7rem;
+  background: var(--accent); color: var(--text-inverse); padding: 1px 6px; border-radius: 8px;
+}
+
+/* ---- 主体 ---- */
+.sc-body { padding: var(--s-3); display: flex; flex-direction: column; gap: var(--s-1); min-width: 0; }
+.sc-title { font-weight: 700; font-size: 0.92rem; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sc-story { font-size: 0.76rem; color: var(--text-muted); line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.sc-tags { display: flex; gap: 4px; flex-wrap: wrap; }
+.sc-tag { font-size: 0.62rem; padding: 1px 6px; border-radius: 10px; background: var(--bg-elevated); color: var(--text-secondary); }
+.sc-meta { display: flex; align-items: center; justify-content: space-between; gap: 4px; font-size: 0.7rem; color: var(--text-muted); }
+.sc-meta-l { flex-shrink: 0; }
+.sc-meta-r { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: right; }
+.sc-stars { display: inline-flex; gap: 1px; color: var(--text-muted); }
+.sc-stars .on { color: var(--mood-joy); }
+
+/* ---- 操作按钮 ---- */
+.sc-actions { display: flex; gap: 4px; margin-top: var(--s-1); }
+.sc-btn {
+  flex: 1; text-align: center; font-size: 0.75rem; font-weight: 600;
+  padding: 5px 8px; border-radius: 12px; text-decoration: none;
+  border: 1px solid var(--border-soft); color: var(--text-secondary);
+  background: var(--bg-deep);
+  transition: border-color var(--t-fast), color var(--t-fast);
+  white-space: nowrap;
+}
+.sc-btn:hover { border-color: var(--accent); color: var(--accent); }
+.sc-btn-primary { background: var(--accent); color: var(--text-inverse); border-color: var(--accent); }
+.sc-btn-primary:hover { background: var(--accent); color: var(--text-inverse); opacity: 0.92; }
+
+/* ---- strip 修饰 ---- */
+.sc-strip { width: 200px; flex: 0 0 200px; scroll-snap-align: start; }
+.sc-strip .sc-band { height: 36px; }
+.sc-strip .sc-story { -webkit-line-clamp: 3; }
+.sc-strip .sc-cat, .sc-strip .sc-rating { display: none; }
+
+/* ---- recent 修饰 ---- */
+.sc-recent .sc-band { height: 96px; }
+.sc-recent .sc-story { -webkit-line-clamp: 2; }
+
+/* ---- 空态 ---- */
+.sc-empty {
+  grid-column: 1 / -1; text-align: center; padding: var(--s-7) var(--s-5);
+  background: var(--bg-surface); border: 1px dashed var(--border-soft); border-radius: var(--r-lg);
+}
+.sc-empty .ic { font-size: 2.4rem; margin-bottom: var(--s-3); }
+.sc-empty p { color: var(--text-muted); margin-bottom: var(--s-4); }

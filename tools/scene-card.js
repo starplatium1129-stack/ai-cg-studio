@@ -1,0 +1,100 @@
+/* ============================================================
+   Scene Card — 统一场景卡片组件
+   JS create: window.createSceneCard(scene, opt)
+     opt.mode      'grid'(默认) | 'strip'(首页胶片窄卡) | 'recent'(作品卡)
+     opt.clickable  true → 整卡 click 触发 onPick
+     opt.onPick     scene => void      整卡点击
+     opt.actions   [{label,icon,primary(true|false),href?,onclick?}] 最多 2 个按钮
+     opt.rating    0..5
+     opt.meta      覆盖底部 meta(默认 scene.category + weather)
+
+   造型:深色底 + 卡片内结构完全组件化,不再重写 HTML。
+   ============================================================ */
+(function () {
+  'use strict';
+  if (window.createSceneCard) return;
+
+  function esc(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function stars(r){
+    r = Math.round(r || 0);
+    return '<span class="sc-stars">' + [1,2,3,4,5].map(function(i){ return '<span class="' + (i<=r?'on':'') + '">★</span>'; }).join('') + '</span>';
+  }
+
+  window.createSceneCard = function (scene, opt) {
+    opt = opt || {};
+    var mode = opt.mode || 'grid';
+    var clickable = opt.clickable !== false && mode !== 'strip';
+
+    var card = document.createElement('div');
+    card.className = 'sc sc-' + mode;
+    card.setAttribute('role', 'button');
+    card.tabIndex = 0;
+
+    // 视觉预览色带(scene天气 → 色调)
+    var theme = {
+      '晴':'linear-gradient(135deg,#FFD54F,#FFB300)','多云':'linear-gradient(135deg,#B0BEC5,#78909C)',
+      '阴':'linear-gradient(135deg,#90A4AE,#546E7A)','雨':'linear-gradient(135deg,#64B5F6,#1E88E5)',
+      '雪':'linear-gradient(135deg,#E3F2FD,#90CAF9)','彩虹':'linear-gradient(135deg,#F8BBD0,#CE93D8)'
+    };
+    var band = theme[scene.weather] || 'linear-gradient(135deg,var(--bg-deep),var(--bg-elevated))';
+
+    var html = '';
+
+    // 预览条
+    html += '<div class="sc-band" style="background:' + band + '">';
+    if (scene.mature) html += '<span class="sc-badge">🔞</span>';
+    if (mode === 'grid') html += '<span class="sc-cat">' + esc(scene.category || '场景') + '</span>';
+    html += '</div>';
+
+    // 主体
+    html += '<div class="sc-body">';
+    html += '<div class="sc-title">' + esc(scene.title || '未命名') + '</div>';
+    if (mode !== 'strip') html += '<div class="sc-story">' + esc(scene.story || '') + '</div>';
+
+    // 标签(最多 3 条,strip 模式 2 条)
+    var limit = mode === 'strip' ? 2 : 3;
+    var tags = (scene.tags || []).slice(0, limit);
+    if (scene.emotion && tags.length < limit) tags.push(scene.emotion);
+    html += '<div class="sc-tags">' + tags.map(function(t){ return '<span class="sc-tag">' + esc(t) + '</span>'; }).join('') + '</div>';
+
+    // meta 行
+    var ratingHtml = (opt.rating != null && opt.rating > 0) ? stars(opt.rating) : '';
+    var metaText = opt.meta || [(scene.season||''), (scene.weather||'')].filter(Boolean).join(' · ');
+    html += '<div class="sc-meta"><span class="sc-meta-l">' + ratingHtml + '</span><span class="sc-meta-r">' + esc(metaText) + '</span></div>';
+
+    // 操作按钮
+    if (opt.actions && opt.actions.length) {
+      html += '<div class="sc-actions">';
+      opt.actions.forEach(function(a){
+        var cls = 'sc-btn' + (a.primary ? ' sc-btn-primary' : '');
+        var attrs = '';
+        if (a.href) attrs += ' href="' + esc(a.href) + '"';
+        if (a.onclick) attrs += ' data-onclick="1"';
+        html += '<a class="' + cls + '"' + attrs + '>' + (a.icon||'') + ' ' + esc(a.label) + '</a>';
+      });
+      html += '</div>';
+    }
+
+    html += '</div>'; // .sc-body
+    card.innerHTML = html;
+
+    // 事件绑定
+    function firePick(e){
+      e.preventDefault();
+      if (opt.onPick) opt.onPick(scene, e);
+    }
+    if (clickable && opt.onPick) {
+      card.addEventListener('click', firePick);
+      card.addEventListener('keydown', function(e){ if (e.key==='Enter' || e.key===' ') firePick(e); });
+    }
+    if (opt.actions) {
+      card.querySelectorAll('.sc-btn[data-onclick]').forEach(function(btn, i){
+        btn.addEventListener('click', function(e){
+          e.stopPropagation();
+          if (opt.actions[i] && opt.actions[i].onclick) opt.actions[i].onclick(scene, e);
+        });
+      });
+    }
+    return card;
+  };
+})();
