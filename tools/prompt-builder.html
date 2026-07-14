@@ -1321,7 +1321,19 @@ function buildParts() {
   if (tail) parts.push({ cls:'c', text: norm('looking_at_viewer, beautiful_detailed_eyes, beautiful_detailed_hair, depth_of_field, cinematic_lighting') });
   parts.push({ cls:'l', text: '<lora:' + LORA_ID[char] + '>' });
   if (neg) parts.push({ cls:'n', text: '[NEG] ' + norm(NEGATIVE) });
-  return parts;
+
+  // 跨模块去重: normalize 后比对 token,保留首次出现位置(顺序不变)
+  const seen = new Set();
+  const deduped = parts.map(p => {
+    const tokens = p.text.split(',').map(t => t.trim()).filter(Boolean).filter(t => {
+      const k = t.toLowerCase().replace(/[\s\/]+/g,'_');
+      if (seen.has(k)) return false;
+      seen.add(k);
+      return true;
+    });
+    return { cls: p.cls, text: tokens.join(', ') };
+  }).filter(p => p.text.length > 0);
+  return deduped;
 }
 
 function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
