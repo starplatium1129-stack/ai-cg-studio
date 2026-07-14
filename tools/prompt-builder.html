@@ -118,6 +118,28 @@
   .art-warn { display: none; align-items: center; gap: var(--s-2); background: rgba(255,167,38,0.12); border: 1px solid var(--warning); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); margin-bottom: var(--s-3); color: var(--warning); font-size: 0.85rem; font-weight: 500; }
   .art-warn.show { display: flex; }
 
+  /* ---- Token counter ---- */
+  .token-counter { display:inline-flex; align-items:center; gap:6px; font-family: var(--font-mono); font-size:0.78rem; font-weight:600; padding:2px 10px; border-radius:20px; background: var(--bg-surface); border:1px solid var(--border-soft); }
+  .token-counter .bar { width:60px; height:6px; border-radius:3px; background: var(--bg-elevated); overflow:hidden; }
+  .token-counter .bar > i { display:block; height:100%; border-radius:3px; transition: width var(--t-base), background var(--t-base); }
+  .token-counter.ok { color: var(--success); } .token-counter.ok .bar > i { background: var(--success); }
+  .token-counter.warn { color: var(--warning); } .token-counter.warn .bar > i { background: var(--warning); }
+  .token-counter.over { color: var(--danger); } .token-counter.over .bar > i { background: var(--danger); }
+  .token-counter.dim { opacity:0.6; }
+
+  /* ---- Scene-aware lighting hint ---- */
+  .scene-light-hint { display:none; align-items:center; gap:6px; font-size:0.78rem; color:var(--info); margin-top: var(--s-1); }
+  .scene-light-hint.show { display:flex; }
+  .scene-light-hint button { background:var(--info-soft); border:1px solid var(--info); color:var(--info); border-radius:12px; padding:1px 8px; font-size:0.72rem; cursor:pointer; }
+
+  /* ---- Concise mode toggle ---- */
+  .mode-toggle { display:flex; align-items:center; gap:6px; margin-left:auto; }
+  .mode-toggle label { font-size:0.78rem; color:var(--text-secondary); display:flex; align-items:center; gap:4px; cursor:pointer; }
+  .mode-toggle input { accent-color: var(--accent); width:32px; height:16px; appearance:none; background:var(--bg-elevated); border:1px solid var(--border-soft); border-radius:10px; position:relative; cursor:pointer; transition:background var(--t-fast); }
+  .mode-toggle input:checked { background:var(--accent); border-color:var(--accent); }
+  .mode-toggle input::after { content:''; position:absolute; top:1px; left:1px; width:12px; height:12px; border-radius:50%; background:var(--text-primary); transition:transform var(--t-fast); }
+  .mode-toggle input:checked::after { transform:translateX(16px); }
+
   /* ---- Scene picker (inside step 1) ---- */
   .scene-mini-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--s-2); }
   .scene-mini-card { background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); cursor: pointer; transition: all var(--t-fast); }
@@ -316,6 +338,7 @@
       <div class="step-title">💡 光照 · 🖼 构图</div>
       <p class="step-desc">光从哪里来？人物在画面什么位置？每个选择都有理由。</p>
       <div class="pb-section-title">光照</div>
+      <div class="scene-light-hint" id="sceneLightHint"></div>
       <div class="options" id="opt-lighting"></div>
       <div class="pb-section-title" style="margin-top: var(--s-4);">构图</div>
       <div class="options" id="opt-composition"></div>
@@ -350,6 +373,7 @@
           </button>
           <div class="prompt-collapse-body" id="promptBody">
             <div class="prompt-output" id="finalPrompt"></div>
+            <div style="margin-top: var(--s-2); display:flex; align-items:center; gap:var(--s-2);"><span class="token-counter ok" id="resultTokCount"><span class="num">0</span> tok <span class="bar"><i></i></span></span> <span style="font-size:0.72rem;color:var(--text-muted);">/ SD CLIP 窗口 ~77</span></div>
             <div class="preview-actions" style="margin-top: var(--s-3);">
               <button class="btn btn-primary" onclick="copyPrompt()">📋 复制 Prompt</button>
               <button class="btn btn-ghost" onclick="exportPrompt()">⬇️ 导出 .txt</button>
@@ -409,7 +433,10 @@
 
   <!-- ============ SHARED BASE: LIVE PREVIEW ============ -->
   <div class="card preview-card" style="margin-top: var(--s-4);">
-    <div class="card-title">✨ 实时 Prompt <span style="font-size:0.75rem;color:var(--text-muted);font-weight:400;">(折叠以专注故事)</span></div>
+    <div class="card-title">✨ 实时 Prompt <span style="font-size:0.75rem;color:var(--text-muted);font-weight:400;">(折叠以专注故事)</span>
+      <span class="mode-toggle"><label><input type="checkbox" id="conciseToggle" onchange="toggleConcise(this.checked)"> 精简</label></span>
+      <span class="token-counter ok" id="liveTokCount"><span class="num">0</span> tok <span class="bar"><i></i></span></span>
+    </div>
     <div class="prompt-collapse">
       <button class="prompt-collapse-btn" onclick="toggleLivePrompt()">
         <span class="arrow" id="liveArrow">▶</span> 系统实时翻译中 · 点击展开
@@ -666,6 +693,7 @@ const state = {
   selections: { emotion:[], shot:null, lighting:null, composition:null },
   colorMood: null,
   manualTags: new Set(),
+  concise: false,
   history: loadHistory()
 };
 
@@ -878,6 +906,8 @@ function filterScenes(q) {
   });
 }
 window._loadSceneByIdx = function(idx) { if (SCENES[idx]) loadScene(SCENES[idx]); };
+// scene tag → 推荐光照 (scene-aware)
+const SCENE_LIGHT_HINT = { sunset:'sunset', golden_hour:'sunset', dusk:'sunset', window:'window_light', window_light:'window_light', soft_light:'window_light', afternoon_light:'window_light', from_behind:'backlighting', silhouette:'backlighting', moonlight:'moonlight', night:'night_lamp', lantern:'night_lamp', lanterns:'night_lamp', neon:'neon', candle:'candlelight', candlelight:'candlelight', overcast:'overcast' };
 function loadScene(s) {
   document.getElementById('storyInput').value = s.story; state.story = s.story;
   const charId = s.char === 'ayachi_nene' ? 'nene' : (s.char === 'shiki_natsume' ? 'natsume' : (CHARACTER.find(c=>c.id===s.char) ? s.char : 'nene'));
@@ -889,11 +919,24 @@ function loadScene(s) {
   renderManualTags(); renderTraits(); renderSelRow();
   state.selections.shot = null; state.selections.lighting = null; state.selections.composition = null; state.colorMood = null;
   document.querySelectorAll('#opt-shot .option,#opt-lighting .option,#opt-composition .option,#moodGrid .mood-card').forEach(o => o.classList.remove('selected'));
+  // scene-aware lighting:从 scene tag 推断并自动预填光照
+  let hintLight = null;
+  for (const t of s.tags) { if (SCENE_LIGHT_HINT[t]) { hintLight = SCENE_LIGHT_HINT[t]; break; } }
+  if (hintLight) { selectLighting(hintLight); state.selections.lighting = hintLight; document.querySelector('#opt-lighting .option[data-id="'+hintLight+'"]')?.classList.add('selected'); }
+  renderLightHint(hintLight, s.title);
   switchTab('director', document.querySelectorAll('.pb-tab')[0]);
   goStep(1);
   flash('🎞 Scene 已加载: ' + s.title);
   updateLivePreview();
 }
+function renderLightHint(hint, title) {
+  const el = document.getElementById('sceneLightHint'); if (!el) return;
+  if (!hint) { el.classList.remove('show'); return; }
+  const lm = { sunset:'夕阳光', window_light:'窗光', backlighting:'逆光', moonlight:'月光', night_lamp:'夜灯', neon:'霓虹', candlelight:'烛光', overcast:'阴天' };
+  el.classList.add('show');
+  el.innerHTML = '💡 <span>Scene 推荐光照: <b>' + (lm[hint]||hint) + '</b></span><button onclick="clearLightHint()">✕</button>';
+}
+function clearLightHint() { const el=document.getElementById('sceneLightHint'); if(el) el.classList.remove('show'); }
 function findEmotionId(name) {
   const m = { '开心':'happy','害羞':'shy','思念':'miss','期待':'expect','紧张':'nervous','温柔':'gentle','感动':'moved','失落':'sad','平静':'calm','幸福':'joyful','放松':'relaxed','认真':'serious','恋爱':'love','困倦':'sleepy','撒娇':'spoiled','委屈':'wronged' };
   return m[name] || null;
@@ -1309,6 +1352,17 @@ function buildParts() {
   const charLine = PROMPT_MAP.character[char];
   const traitTags = (char === 'nene' ? TRAITS.nene : TRAITS.natsume).filter(t => state.manualTags.has(t.tag)).map(t => t.tag);
   parts.push({ cls:'c', text: norm(traitTags.length ? charLine + ', ' + traitTags.join(', ') : charLine) });
+  // 精简模式:只保留 quality + character(+traits) + top5 manualTags + LoRA + neg,砍掉中间 5 模块
+  if (state.concise) {
+    if (state.manualTags.size) {
+      const top = Array.from(state.manualTags).slice(0, 5);
+      parts.push({ cls:'t', text: norm(top.join(', ')) });
+    }
+    parts.push({ cls:'l', text: '<lora:' + LORA_ID[char] + '>' });
+    if (neg) parts.push({ cls:'n', text: '[NEG] ' + norm(NEGATIVE) });
+    const seen = new Set();
+    return parts.map(p => { const toks = p.text.split(',').map(t=>t.trim()).filter(Boolean).filter(t => { const k=t.toLowerCase().replace(/[\s\/]+/g,'_'); if(seen.has(k))return false; seen.add(k); return true; }); return { cls:p.cls, text:toks.join(', ') }; }).filter(p=>p.text.length>0);
+  }
   if (state.colorMood) {
     const m = COLOR_MOODS.find(x => x.id === state.colorMood);
     if (m) parts.push({ cls:'t', text: norm(m.prompt) });
@@ -1318,7 +1372,18 @@ function buildParts() {
   if (sel.lighting) parts.push({ cls:'c', text: norm(LIGHTING_PROMPT[sel.lighting]) });
   if (sel.composition) parts.push({ cls:'t', text: norm(COMPOSITION_PROMPT[sel.composition]) });
   if (state.manualTags.size) parts.push({ cls:'t', text: norm(Array.from(state.manualTags).join(', ')) });
-  if (tail) parts.push({ cls:'c', text: norm('looking_at_viewer, beautiful_detailed_eyes, beautiful_detailed_hair, depth_of_field, cinematic_lighting') });
+  // 智能 tail:按镜头/场景决定附加,避免 POV+looking_at_viewer 矛盾 / 夜景+cinematic_lighting 违和
+  if (tail && !state.concise) {
+    const sceneTags = state.manualTags;
+    const isPov = sel.shot === 'pov' || sceneTags.has('pov');
+    const isNight = sceneTags.has('night') || sceneTags.has('night') || sel.lighting === 'moonlight' || sel.lighting === 'night_lamp' || sel.lighting === 'neon';
+    const tailToks = ['looking_at_viewer','beautiful_detailed_eyes','beautiful_detailed_hair','depth_of_field','cinematic_lighting'].filter(t => {
+      if (t === 'looking_at_viewer' && isPov) return false;      // POV 第一人称不需要"看观众"
+      if (t === 'cinematic_lighting' && isNight) return false;    // 夜景不需要电影光(月光/夜灯自带氛围)
+      return true;
+    });
+    if (tailToks.length) parts.push({ cls:'c', text: norm(tailToks.join(', ')) });
+  }
   parts.push({ cls:'l', text: '<lora:' + LORA_ID[char] + '>' });
   if (neg) parts.push({ cls:'n', text: '[NEG] ' + norm(NEGATIVE) });
 
@@ -1357,6 +1422,16 @@ function updateLivePreview() {
   const parts = buildParts();
   document.getElementById('preview').innerHTML = colorizeParts(parts);
   document.getElementById('preview').dataset.raw = parts.map(p => p.text).join('\n');
+  // token 计数 + 进度条 (SD1.5 CLIP 窗口 ~77)
+  const tokCount = parts.reduce((n,p)=> n + p.text.split(',').filter(t=>t.trim()).length, 0);
+  const pct = Math.min(100, Math.round(tokCount/77*100));
+  const lvl = tokCount > 77 ? 'over' : tokCount > 60 ? 'warn' : 'ok';
+  ['liveTokCount','resultTokCount'].forEach(id=>{
+    const el = document.getElementById(id); if(!el) return;
+    el.className = 'token-counter ' + lvl;
+    el.querySelector('.num').textContent = tokCount;
+    el.querySelector('.bar > i').style.width = pct + '%';
+  });
 }
 function getPlainPrompt() {
   // 始终返回纯英文, 保留模块间换行, 供 SD 使用
@@ -1411,6 +1486,16 @@ function resetDirector() {
 }
 
 // ========== ACTIONS ==========
+function toggleConcise(on) {
+  state.concise = !!on;
+  // 精简模式下隐藏次要模块参数 (保留 quality/tail/negative, 其他 UI 不动但 buildParts 忽略)
+  ['emotion','shot','lighting','composition'].forEach(k => {
+    const row = document.querySelector('#opt-' + (k==='emotion'?'emotion':k));
+  });
+  document.querySelectorAll('#chip-emotion .chip-select,#moodGrid .mood-card').forEach(o => o.style.opacity = on ? '0.4' : '1');
+  document.querySelectorAll('#opt-shot .option,#opt-lighting .option,#opt-composition .option').forEach(o => o.style.opacity = on ? '0.4' : '1');
+  updateLivePreview();
+}
 function copyPrompt() {
   const text = getPlainPrompt(); if (!text) return;
   navigator.clipboard.writeText(text).then(() => flash('📋 已复制'));
