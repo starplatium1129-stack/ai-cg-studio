@@ -5,7 +5,8 @@
     "alias": ["Ayachi Nene", "Nene", "宁宁"],
     "type": "heroine",
     "visual_dna": {
-      "hair": "long flowing hair",
+      "hair": "long flowing silver hair",
+      "hair_color": "silver_hair",
       "eyes": "blue eyes",
       "style": "elegant anime girl"
     },
