@@ -3749,5 +3749,240 @@
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
     "prompt": "1girl,ayachi_nene,library, standing, holding, map, book, smile, pointing"
+  },
+  {
+    "id": "sc123",
+    "title": "冷着脸说帮你补习",
+    "cat": "日常",
+    "story": "她坐在对面摊开课本,面无表情讲了两道题,发现你盯着她就用书挡住脸「…听题别看脸」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emo": "serious",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "study",
+      "sitting",
+      "book",
+      "serious",
+      "looking_away",
+      "glasses",
+      "cold"
+    ],
+    "mature": false,
+    "location": "study",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,shiki_natsume,study, sitting, book, serious, looking_away, glasses, cold"
+  },
+  {
+    "id": "sc124",
+    "title": "喝醉后抱着你肩膀说喜欢",
+    "cat": "恋爱",
+    "story": "平时高冷的她三杯甜酒下肚,突然把头靠在你肩「…我说了喜欢,你自己听的」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emo": "害羞",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "bar",
+      "sitting",
+      "holding",
+      "sake",
+      "drunk",
+      "looking_up",
+      "warm"
+    ],
+    "mature": true,
+    "location": "bar",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,shiki_natsume,bar, sitting, holding, sake, drunk, looking_up, warm"
+  },
+  {
+    "id": "sc125",
+    "title": "雨天一把伞",
+    "cat": "日常",
+    "story": "放学暴雨她把唯一的伞塞给你「…只是别感冒传染我」自己淋雨跑,你追上去拽住她手腕她脸红到耳朵",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emo": "紧张",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "school",
+      "rain",
+      "umbrella",
+      "standing",
+      "blush",
+      "looking_away",
+      "wet"
+    ],
+    "mature": false,
+    "location": "school",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,shiki_natsume,school, rain, umbrella, standing, blush, looking_away, wet"
+  },
+  {
+    "id": "sc126",
+    "title": "告白后躲在储物柜后面",
+    "cat": "恋爱",
+    "story": "她告白后转身就走,发现你跟过来就躲到储物柜后面「…别过来让我一个人」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emo": "害羞",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "school",
+      "standing",
+      "blush",
+      "looking_away",
+      "locker",
+      "embarrassed"
+    ],
+    "mature": true,
+    "location": "school",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,shiki_natsume,school, standing, blush, looking_away, locker, embarrassed"
+  },
+  {
+    "id": "sc127",
+    "title": "试体温时抓住你袖口",
+    "cat": "日常",
+    "story": "感冒试体温她皱眉看着温度计,你靠近时突然抓住你袖口「…只是刚好抽筋」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emo": "失落",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "bedroom",
+      "bed",
+      "lying",
+      "sick",
+      "holding",
+      "blush",
+      "looking_away"
+    ],
+    "mature": false,
+    "location": "bedroom",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,shiki_natsume,bedroom, bed, lying, sick, holding, blush, looking_away"
+  },
+  {
+    "id": "sc128",
+    "title": "喝醉后的次日「我没说什么」",
+    "cat": "恋爱",
+    "story": "昨晚她醉后说了很多告白,第二天见面她面无表情「…我什么都不记得」耳朵却红了",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emo": "害羞",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "school",
+      "standing",
+      "looking_away",
+      "blush",
+      "school_uniform",
+      "awkward"
+    ],
+    "mature": false,
+    "location": "school",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,shiki_natsume,school, standing, looking_away, blush, school_uniform, awkward"
+  },
+  {
+    "id": "sc129",
+    "title": "做饭时让别偷看厨房",
+    "cat": "日常",
+    "story": "厨房她穿着围裙做料理,察觉你在偷看就把门关上「…料理要保密,」十分钟后小声「好了可以进来了」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emo": "幸福",
+    "season": "春",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "kitchen",
+      "apron",
+      "holding",
+      "looking_away",
+      "cooking",
+      "smile"
+    ],
+    "mature": false,
+    "location": "kitchen",
+    "weather": "晴",
+    "camera": "半身中景",
+    "lighting": "窗光",
+    "usage": [
+      "展示图"
+    ],
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl,shiki_natsume,kitchen, apron, holding, looking_away, cooking, smile"
   }
 ]
