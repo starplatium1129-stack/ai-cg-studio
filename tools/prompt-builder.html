@@ -1147,7 +1147,47 @@ function exportPNG() {
 
 // ========== HISTORY ==========
 const HIS_KEY = 'aics_pb_history';
-function loadHistory() { try { return JSON.parse(localStorage.getItem(HIS_KEY)) || []; } catch { return []; } }
+const HIS_SCHEMA_VERSION = 2; // 当前 schema 版本,迁移时比对
+
+// 校验 + 迁移:旧 history 条目可能缺字段(升级 schema 时平滑补全)
+// 规则:seed ∈ [0, 2^32-1]、rating 5 轴 0..5、补 lora/negative/notes/favorite
+function migrateHistory(list){
+  var changed = false;
+  var RAXES = ['face','expression','composition','hands','atmosphere'];
+  var out = list.map(function(h){
+    var e = Object.assign({}, h);
+    // id:必须可比较;旧缺失用 timestamp
+    if(e.id == null){ e.id = e.timestamp || 0; changed = true; }
+    // timestamp
+    if(e.timestamp == null){ e.timestamp = e.id; changed = true; }
+    // seed:整数 + 范围 clamp 到 [0, 2^32-1]
+    var seedNum = Number(e.seed);
+    if(!Number.isFinite(seedNum)){ e.seed = Math.floor(Math.random()*4294967295); changed = true; }
+    else { seedNum = Math.max(0, Math.min(4294967295, Math.floor(seedNum))); if(seedNum !== e.seed){ e.seed = seedNum; changed = true; } }
+    // rating:5 轴,每轴 0..5 clamp
+    var r = e.rating || {};
+    var nr = {}; var rdirty = false;
+    RAXES.forEach(function(k){ var v=Number(r[k]); if(!Number.isFinite(v)){ v=0; rdirty=true; } nr[k]=Math.max(0,Math.min(5,Math.round(v))); });
+    if(rdirty){ e.rating = nr; changed = true; }
+    // favorite / notes / negative
+    if(typeof e.favorite !== 'boolean'){ e.favorite = !!e.favorite; changed = true; }
+    if(typeof e.notes !== 'string'){ e.notes = e.notes == null ? '' : String(e.notes); changed = true; }
+    if(e.negative == null){ e.negative = NEGATIVE; changed = true; }
+    // lora:旧数据可能缺(原 baseEntry 未写 lora 字段时)
+    if(e.lora == null && e.character && LORA_ID && LORA_ID[e.character]){ e.lora = LORA_ID[e.character]; changed = true; }
+    return e;
+  });
+  return { list: out, changed: changed };
+}
+
+function loadHistory() {
+  var raw = [];
+  try { raw = JSON.parse(localStorage.getItem(HIS_KEY)) || []; } catch(e){ raw = []; }
+  if(!Array.isArray(raw)) raw = [];
+  var res = migrateHistory(raw);
+  if(res.changed){ try{ localStorage.setItem(HIS_KEY, JSON.stringify(res.list)); }catch(e){} }
+  return res.list;
+}
 // 版本链:同 scene+character 的最新条目决定新版本号
 function nextVersion(history, scene, character){
   const same = history.filter(h => h.scene === scene && h.character === character);
@@ -1158,6 +1198,11 @@ function nextVersion(history, scene, character){
 function baseEntry(){
   const sel = state.selections;
   const sceneTitle = (window.__scenes__||[]).find(s=>s.id===state.__sceneId);
+  // seed 严格校验:整数 ∈ [0, 2^32-1]
+  var rawSeed = window.__lastSeed__;
+  var seedNum = Number(rawSeed);
+  if(!Number.isFinite(seedNum)) seedNum = Math.floor(Math.random()*4294967295);
+  seedNum = Math.max(0, Math.min(4294967295, Math.floor(seedNum)));
   return {
     id: Date.now(),
     timestamp: Date.now(),
@@ -1172,11 +1217,12 @@ function baseEntry(){
     colorMood: state.colorMood,
     story: state.story,
     prompt: getPlainPrompt(),
+    negative: NEGATIVE,
     cfg: document.getElementById('cfg') ? document.getElementById('cfg').value : '',
     steps: document.getElementById('steps') ? document.getElementById('steps').value : '',
     sampler: document.getElementById('sampler') ? document.getElementById('sampler').value : '',
     size: document.getElementById('size') ? document.getElementById('size').value : '',
-    seed: (window.__lastSeed__ || Math.floor(Math.random()*999999999)),
+    seed: seedNum,
     rating: { face:0, expression:0, composition:0, hands:0, atmosphere:0 },
     favorite: false,
     notes: '',
@@ -1287,6 +1333,7 @@ function submitReview(){
 document.getElementById('reviewOverlay').addEventListener('click', function(e){ if (e.target === this) closeReview(); });
 
 loadData();
+window.__bootProbe = { stateHistLen: (state.history||[]).length };
 
 </script>
 </body>
