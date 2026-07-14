@@ -1064,9 +1064,8 @@ function buildParts() {
   const parts = [];
   if (quality) parts.push({ cls:'q', text: norm('masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed') });
   const charLine = PROMPT_MAP.character[char];
-  const hairColor = char === 'nene' ? 'silver_hair' : (char === 'natsume' ? 'brown_hair' : '');
   const traitTags = (char === 'nene' ? TRAITS.nene : TRAITS.natsume).filter(t => state.manualTags.has(t.tag)).map(t => t.tag);
-  parts.push({ cls:'c', text: norm((hairColor ? hairColor + ', ' : '') + (traitTags.length ? charLine + ', ' + traitTags.join(', ') : charLine)) });
+  parts.push({ cls:'c', text: norm(traitTags.length ? charLine + ', ' + traitTags.join(', ') : charLine) });
   // 精简模式:只保留 quality + character(+traits) + top5 manualTags + LoRA + neg,砍掉中间 5 模块
   if (state.concise) {
     if (state.manualTags.size) {

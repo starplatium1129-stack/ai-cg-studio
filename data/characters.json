@@ -5,12 +5,15 @@
     "alias": ["Ayachi Nene", "Nene", "宁宁"],
     "type": "heroine",
     "visual_dna": {
-      "hair": "long flowing silver hair",
-      "hair_color": "silver_hair",
+      "hair": "long silver hair",
+      "hair_color": "",
       "eyes": "blue eyes",
-      "style": "elegant anime girl"
+      "style": "elegant anime girl",
+      "signature": "cat ear headband"
     },
-    "personality": ["gentle", "quiet", "mysterious", "shy"],
+    "personality": ["energetic","loyal","easily impressed (sugoi!)","tsundere","clueless about love","aikido skilled"],
+    "likes": ["aikodo","childhood friend","gyoza"],
+    "speech": "casual, playful, \"sugoi!\" catchphrase"
     "lora": {
       "name": "ayachi_nene_v11",
       "weight": 0.8,
@@ -27,11 +30,15 @@
     "alias": ["Shiki Natsume", "Natsume", "夏目"],
     "type": "heroine",
     "visual_dna": {
-      "hair": "long flowing hair",
+      "hair": "long lavender purple hair",
+      "hair_color": "",
       "eyes": "gold eyes",
-      "style": "refined anime girl"
+      "style": "refined anime girl",
+      "signature": "mole under eye (teardrop)"
     },
-    "personality": ["cheerful", "elegant", "caring", "curious"],
+    "personality": ["elegant","shy","polite","tsundere","tea ceremony","loves baking cake"],
+    "likes": ["cooking","cake","kimono","tea ceremony"],
+    "speech": "polite, refined, stumbles when embarrassed"
     "lora": {
       "name": "shiki_natsume_v11",
       "weight": 0.8,
