@@ -795,6 +795,8 @@ function highlightScenesByStory(txt) {
   window.__obSceneHL = setTimeout(() => document.querySelectorAll('.scene-card[data-recommended="1"]').forEach(c => c.dataset.recommended = '0'), 2500);
 }
 function setChar(c, btn) {
+  if (state.char === c) return;
+  const hadScene = !!state.__sceneId;
   state.char = c;
   document.querySelectorAll('.char-btn').forEach(b => {
     const on = b.dataset.char === c;
@@ -802,9 +804,19 @@ function setChar(c, btn) {
     b.style.background = on ? 'var(--accent-soft)' : 'var(--bg-surface)';
     b.style.borderColor = on ? 'var(--accent)' : 'var(--border-soft)';
   });
+  resetSceneAndDecisions();
   renderTraits(); renderManualTags();
   markStepDone(2);
+  goStep(1);
   updateLivePreview();
+  if (hadScene) flash('已切换至 ' + (c === 'nene' ? '宁宁' : '夏目') + '，场景已重置');
+}
+function resetSceneAndDecisions() {
+  state.__sceneId = null; state.story = '';
+  document.getElementById('storyInput').value = '';
+  state.selections.emotion = []; state.selections.shot = null; state.selections.lighting = null; state.selections.composition = null;
+  state.colorMood = null; state.manualTags = new Set();
+  document.querySelectorAll('#chip-emotion .chip-select.selected,#opt-shot .option.selected,#opt-lighting .option.selected,#opt-composition .option.selected,#moodGrid .mood-card.selected').forEach(o => o.classList.remove('selected'));
 }
 
 // ===== Render options =====
