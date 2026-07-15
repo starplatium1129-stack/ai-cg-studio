@@ -32,6 +32,28 @@
   .monitor-preview-collapsed .art-warn { display: none; }
   .monitor-toggle { display:inline-block; margin-left:auto; font-size:0.75rem; opacity:0.7; cursor:pointer; }
   .monitor-toggle:hover { opacity:1; }
+  /* Step workflow */
+  .stepbar { display:flex; align-items:center; gap:0; padding:var(--s-3) 0 var(--s-5); }
+  .step { flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; position:relative; }
+  .step::before { content:''; position:absolute; top:14px; left:50%; width:100%; height:2px; background:var(--border-soft); z-index:0; }
+  .step:last-child::before { display:none; }
+  .step.done::before { background:var(--accent); }
+  .step-num {
+    width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-size:0.75rem; font-weight:700; border:2px solid var(--border-soft); background:var(--bg-surface);
+    color:var(--text-muted); position:relative; z-index:1; transition:all var(--t-fast);
+  }
+  .step.active .step-num { border-color:var(--accent); color:var(--accent); box-shadow:0 0 12px var(--accent-glow); }
+  .step.done .step-num { background:var(--accent); border-color:var(--accent); color:var(--text-inverse); }
+  .step-label { font-size:0.68rem; color:var(--text-muted); font-weight:500; }
+  .step.active .step-label { color:var(--accent); font-weight:600; }
+  .step.done .step-label { color:var(--text-primary); }
+  .step-panel { scroll-margin-top:var(--s-6); }
+  .step-panel.dim { opacity:0.55; pointer-events:none; transition:opacity var(.t-fast); }
+  #stepResult { display:none; }
+  body.step-4 #stepResult { display:block; }
+  .generate-btn { width:100%; padding:var(--s-3); font-size:1rem; }
+  .generate-btn:disabled { opacity:0.5; cursor:not-allowed; }
   /* Scene 卡片色带(按分类着色,直观区分场景类型) */
   .scene-card { position:relative; padding:var(--s-3); background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-md); cursor:pointer; transition:border-color var(--t-fast), transform var(--t-fast); overflow:hidden; flex-shrink:0; min-height:0; }
   .scene-card:hover { border-color:var(--accent); transform:translateY(-2px); }
@@ -263,12 +285,20 @@
     <p class="pb-sub">选一个 Scene,像导演一样定情绪、镜头、光照。Prompt 自动生成。</p>
   </div>
 
+  <!-- ============ Step workflow ============ -->
+  <div class="stepbar" id="stepbar">
+    <div class="step active" data-step="1"><div class="step-num">1</div><div class="step-label">场景 Scene</div></div>
+    <div class="step" data-step="2"><div class="step-num">2</div><div class="step-label">角色 Character</div></div>
+    <div class="step" data-step="3"><div class="step-num">3</div><div class="step-label">导演 Decisions</div></div>
+    <div class="step" data-step="4"><div class="step-num">4</div><div class="step-label">结果 Result</div></div>
+  </div>
+
   <!-- ============ 三栏工作台 ============ -->
   <div class="director-workspace">
 
     <!-- ===== 左栏: 剧本 ===== -->
     <div class="director-col col-left">
-      <div class="panel">
+      <div class="panel step-panel" id="stepStory">
         <div class="panel-title">📖 故事 Story</div>
         <textarea class="story-input" id="storyInput" placeholder="一句话描述脑海里的画面…"></textarea>
         <div class="story-chips">
@@ -279,7 +309,7 @@
         </div>
       </div>
 
-      <div class="panel">
+      <div class="panel step-panel" id="stepChar">
         <div class="panel-title">👤 角色 Character</div>
         <div class="char-row">
           <button class="char-btn active" data-char="nene" onclick="setChar('nene',this)">🌸 宁宁</button>
@@ -288,7 +318,7 @@
         <div class="traits-row" id="traitsRow"></div>
       </div>
 
-      <div class="panel">
+      <div class="panel step-panel" id="stepScene">
         <div class="panel-title">🎞 Scene 库</div>
         <input type="text" class="scene-search" placeholder="搜索场景 / 情绪 / 标签…" id="sceneSearch" oninput="filterScenes(this.value)">
         <div class="scene-cats" id="sceneCats"></div>
@@ -338,7 +368,7 @@
         </div>
       </div>
 
-      <div class="result-frame" id="resultStep">
+      <div class="result-frame step-panel" id="stepResult">
         <div class="panel-title">📝 输出 Result</div>
         <div class="preview-output" id="finalPrompt"></div>
         <div class="preview-actions">
@@ -351,7 +381,7 @@
     </div>
 
     <!-- ===== 右栏: 导演台 ===== -->
-    <div class="director-col col-right">
+    <div class="director-col col-right step-panel" id="stepDecisions">
       <div class="director-card">
         <div class="director-card-head"><span class="director-card-name">💭 情绪 Emotion</span><span class="director-card-selected" id="selEmotion"></span></div>
         <div class="chip-grid" id="chip-emotion"></div>
@@ -584,8 +614,7 @@ const RECOMMENDED_TAGS = [
 let TAGS = {};
 
 const NEGATIVE = 'worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate';
-let CURRENT_STEP = 1;
-const TOTAL_STEPS = 4;
+let CURRENT_STEP = 1; // 1=Scene, 2=Char, 3=Decisions, 4=Result
 
 const state = {
   story: '',
@@ -603,6 +632,7 @@ function init() {
   renderEmotion(); renderShot(); renderLighting(); renderComposition();
   renderColorMoods(); renderTraits(); renderManualTags();
   bindControls();
+  CURRENT_STEP = 1; updateStepUI();
   ['quality','tail','negative','cfg','steps','sampler','size'].forEach(id => {
     const el = document.getElementById(id); if (el) el.onchange = updateLivePreview;
   });
@@ -667,26 +697,23 @@ function bindControls() {
   document.querySelector('.story-chips').addEventListener('click', e => { if (e.target.classList.contains('story-chip')) setTimeout(clearStorySuggestions, 0); });
 }
 
-// ========== DIRECTOR STEPS ==========
+// ========== WORKFLOW STEPS (Scene → Char → Decisions → Result) ==========
 function updateStepUI() {
-  document.querySelectorAll('.step').forEach(s => s.classList.toggle('active', +s.dataset.step === CURRENT_STEP));
-  document.querySelectorAll('.step-dot').forEach(d => {
-    const n = +d.dataset.step;
-    d.classList.toggle('active', n === CURRENT_STEP);
-    d.classList.toggle('done', n < CURRENT_STEP && n !== 5);
+  document.querySelectorAll('#stepbar .step').forEach(s => {
+    const n = +s.dataset.step;
+    s.classList.toggle('active', n === CURRENT_STEP);
+    s.classList.toggle('done', n < CURRENT_STEP);
   });
+  // dim non-active panels
+  ['stepScene','stepChar','stepDecisions'].forEach((id,i) => {
+    const el = document.getElementById(id);
+    if(el) el.classList.toggle('dim', i+1 !== CURRENT_STEP);
+  });
+  // result visibility
+  document.body.classList.toggle('step-4', CURRENT_STEP >= 4);
 }
-function goStep(n) {
-  CURRENT_STEP = n; updateStepUI();
-  if (n === 1 || n === 5) {}
-}
-function nextStep() {
-  if (CURRENT_STEP === 1 && !state.story.trim()) { flash('📖 请先写一句话故事'); return; }
-  if (CURRENT_STEP === 2 && !state.selections.shot) { flash('🎥 请选一个镜头'); return; }
-  if (CURRENT_STEP === 3 && (!state.selections.lighting || !state.selections.composition)) { flash('💡 请完成光照 + 构图'); return; }
-  if (CURRENT_STEP < TOTAL_STEPS) { CURRENT_STEP++; updateStepUI(); }
-}
-function prevStep() { if (CURRENT_STEP > 1) { CURRENT_STEP--; updateStepUI(); } }
+function markStepDone(n) { if(CURRENT_STEP === n) { CURRENT_STEP = n+1; updateStepUI(); } }
+function goStep(n) { CURRENT_STEP = Math.max(1, Math.min(4, n)); updateStepUI(); }
 
 function setStory(el) {
   document.getElementById('storyInput').value = el.textContent;
@@ -700,7 +727,9 @@ function setChar(c, btn) {
     b.style.background = on ? 'var(--accent-soft)' : 'var(--bg-surface)';
     b.style.borderColor = on ? 'var(--accent)' : 'var(--border-soft)';
   });
-  renderTraits(); renderManualTags(); updateLivePreview();
+  renderTraits(); renderManualTags();
+  markStepDone(2);
+  updateLivePreview();
 }
 
 // ===== Render options =====
@@ -903,7 +932,7 @@ function loadScene(s) {
   if (comp) { state.selections.composition = comp; selectComposition(comp); }
   renderLightHint(hintLight, s.title);
   switchTab('director', document.querySelectorAll('.pb-tab')[0]);
-  goStep(1);
+  markStepDone(1); // 场景选完 → 进入角色步骤
   flash('🎞 Scene 已加载: ' + s.title);
   updateLivePreview();
 }
@@ -1145,17 +1174,7 @@ function generate() {
   const s = state.selections;
   window.__lastSeed__ = Math.floor(Math.random() * 999999999);
   const charName = CHARACTER.find(c => c.id === state.char)?.name || state.char;
-  const resultEl = document.getElementById('resultStep');
-  const summaryEl = resultEl.querySelector('.generate-summary');
-  const items = [
-    { label:'人物', value: charName },
-    { label:'情绪', value: s.emotion.map(e => EMOTION.find(x=>x.id===e)?.name).filter(Boolean).join(' / ') || '—' },
-    { label:'镜头', value: SHOT.find(x=>x.id===s.shot)?.name || '—' },
-    { label:'光照', value: LIGHTING.find(x=>x.id===s.lighting)?.name || '—' },
-    { label:'构图', value: COMPOSITION.find(x=>x.id===s.composition)?.name || '—' },
-    { label:'色彩', value: COLOR_MOODS.find(x=>x.id===state.colorMood)?.name || '—' }
-  ];
-  if(summaryEl) summaryEl.innerHTML = items.map(i => '<div class="summary-item"><div class="summary-label">'+i.label+'</div><div class="summary-value">'+i.value+'</div></div>').join('');
+  const resultEl = document.getElementById('stepResult');
   const parts = buildParts();
   const fullText = parts.map(p => p.text).join(', ');
   const violations = checkArtDirection(fullText);
@@ -1164,6 +1183,7 @@ function generate() {
   artWarn.textContent = violations.length ? '⚠️ 检测到 '+violations.length+' 个标签违反美术规范: '+violations.join(', ') : '';
   document.getElementById('finalPrompt').innerHTML = colorizeParts(parts);
   document.getElementById('finalPrompt').style.display = 'block';
+  goStep(4);
   if(resultEl) resultEl.scrollIntoView({ behavior:'smooth', block:'start' });
   flash('✨ Prompt 已生成');
 }
