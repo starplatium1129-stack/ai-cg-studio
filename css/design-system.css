@@ -259,6 +259,23 @@ pre code { background: none; padding: 0; color: var(--text-primary); }
   gap: var(--s-4);
 }
 
+/* ---- Card levels · 三级卡片 ----
+   info    L1 静态展示 (详情/列表项/参考)   — 低密度,弱边
+   create  L2 可点击 (网格/选择器)         — 中密度,hover 上移
+   direct  L3 主操作 (单点入口/角色/项目)   — 高密度,accent 渐变边 + 强阴影
+   阶梯: shadow-sm → md → lg
+*/
+.card-info   { background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-lg); padding: var(--s-5); }
+.card-create { background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-lg); padding: var(--s-3); transition: border-color var(--t-fast), transform var(--t-fast), box-shadow var(--t-fast); }
+.card-create:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.card-direct { background: linear-gradient(135deg, var(--accent-soft), var(--bg-surface)); border: 1px solid var(--accent); border-radius: var(--r-xl); padding: var(--s-5); box-shadow: var(--shadow-sm); transition: box-shadow var(--t-fast), transform var(--t-fast); }
+.card-direct:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+
+/* shadow 阶梯修饰 — 与三级叠加使用 */
+.card-level-1 { box-shadow: var(--shadow-sm); }
+.card-level-2 { box-shadow: var(--shadow-md); }
+.card-level-3 { box-shadow: var(--shadow-lg); }
+
 /* ---- Button ---- */
 .btn {
   display: inline-flex; align-items: center; gap: var(--s-2);
