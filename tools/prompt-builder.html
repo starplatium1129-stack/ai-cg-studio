@@ -61,7 +61,8 @@
   .scene-card .scene-direct-btn { position:absolute; right:var(--s-2); bottom:var(--s-2); display:none; z-index:3; padding:3px 10px; font-size:0.72rem; font-weight:600; background:var(--accent); color:var(--text-inverse); border-radius:20px; box-shadow:var(--shadow-md); cursor:pointer; border:none; transition:transform var(--t-fast); }
   .scene-card:hover .scene-direct-btn { display:inline-flex; }
   .scene-card .scene-direct-btn:hover { transform:scale(1.06); }
-  .scene-card[data-recommended="1"] { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-glow), var(--shadow-md); animation:obScenePulse 1.2s ease 2; }
+  .scene-card[data-recommended="1"], .scene-card[data-char-match="1"] { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-glow), var(--shadow-md); animation:obScenePulse 1.2s ease 2; }
+  .scene-card[data-char-match="0"] { opacity:0.45; }
   @keyframes obScenePulse { 0%,100%{box-shadow:0 0 0 2px var(--accent-glow),var(--shadow-md);} 50%{box-shadow:0 0 0 6px var(--accent-glow),var(--shadow-lg);} }
   .scene-card[data-category="校园"]::before { background:linear-gradient(180deg,#81C784,#388E3C); }
   .scene-card[data-category="祭典"]::before { background:linear-gradient(180deg,#FF8A65,#D84315); }
@@ -808,8 +809,23 @@ function setChar(c, btn) {
   renderTraits(); renderManualTags();
   markStepDone(2);
   goStep(1);
+  highlightCharScenes(c);
   updateLivePreview();
   if (hadScene) flash('已切换至 ' + (c === 'nene' ? '宁宁' : '夏目') + '，场景已重置');
+  else flash('已切换至 ' + (c === 'nene' ? '宁宁' : '夏目') + '，推荐场景已高亮');
+}
+function highlightCharScenes(c) {
+  const label = c === 'nene' ? 'nene' : 'natsume';
+  let count = 0;
+  document.querySelectorAll('.scene-card').forEach(card => {
+    const idx = parseInt(card.dataset.idx, 10); const s = SCENES[idx];
+    const match = s && (s.char === label || s.char === (c === 'nene' ? 'ayachi_nene' : 'shiki_natsume') || (Array.isArray(s.character) && s.character.includes(c)));
+    card.dataset.charMatch = match ? '1' : '0';
+    if (match) count++;
+  });
+  clearTimeout(window.__charHL);
+  window.__charHL = setTimeout(() => document.querySelectorAll('.scene-card[data-char-match="1"]').forEach(card => card.dataset.charMatch = '0'), 3000);
+  document.getElementById('sceneGrid')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 function resetSceneAndDecisions() {
   state.__sceneId = null; state.story = '';
