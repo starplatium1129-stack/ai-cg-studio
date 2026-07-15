@@ -14,7 +14,7 @@
   h1.title { font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, #E8E8F0 50%, #F06292); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: var(--s-2); }
   .subtitle { color: var(--text-secondary); margin-bottom: var(--s-5); }
   .lora-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: var(--s-4); }
-  .lora-card { background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-xl); padding: var(--s-5); }
+  .lora-card { padding: var(--s-5); }
   .lora-name { font-size: 1.2rem; font-weight: 800; font-family: var(--font-mono); color: var(--accent); margin-bottom: var(--s-1); }
   .lora-desc { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: var(--s-3); line-height: 1.55; }
   .lora-pill-row { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: var(--s-3); }
@@ -90,7 +90,7 @@
             '<span class="weight-num">'+esc(rw[k])+'</span></div></div>';
         });
 
-        return '<div class="lora-card">' +
+        return '<div class="lora-card card-info card-level-1">' +
           '<div class="lora-name">'+esc(l.name)+'</div>' +
           (l.description ? '<div class="lora-desc">'+esc(l.description)+'</div>':'') +
           (pills ? '<div class="lora-pill-row">'+pills+'</div>':'') +

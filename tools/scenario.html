@@ -370,7 +370,7 @@ function copyText(text){
 function init(){
   var list = document.getElementById('scenarioList');
   list.innerHTML = SCENARIOS.map(function(s){
-    return '<div class="scenario-card" data-id="' + s.id + '" onclick="openScenario(\'' + s.id + '\')"><div class="scenario-icon">' + s.icon + '</div><div class="scenario-name">' + s.name + '</div><div class="scenario-en">' + s.en + '</div><div class="scenario-desc">' + s.desc + '</div><div class="scenario-count">' + s.acts.length + ' 幕 · 点击查看</div></div>';
+    return '<div class="scenario-card card-create card-level-2" data-id="' + s.id + '" onclick="openScenario(\'' + s.id + '\')"><div class="scenario-icon">' + s.icon + '</div><div class="scenario-name">' + s.name + '</div><div class="scenario-en">' + s.en + '</div><div class="scenario-desc">' + s.desc + '</div><div class="scenario-count">' + s.acts.length + ' 幕 · 点击查看</div></div>';
   }).join('');
 }
 
