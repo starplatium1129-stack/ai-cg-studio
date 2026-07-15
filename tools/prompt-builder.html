@@ -58,6 +58,11 @@
   .scene-card { position:relative; padding:var(--s-3); background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-md); cursor:pointer; transition:border-color var(--t-fast), transform var(--t-fast); overflow:hidden; flex-shrink:0; min-height:0; }
   .scene-card:hover { border-color:var(--accent); transform:translateY(-2px); }
   .scene-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:4px; border-radius:var(--r-md) 0 0 var(--r-md); }
+  .scene-card .scene-direct-btn { position:absolute; right:var(--s-2); bottom:var(--s-2); display:none; z-index:3; padding:3px 10px; font-size:0.72rem; font-weight:600; background:var(--accent); color:var(--text-inverse); border-radius:20px; box-shadow:var(--shadow-md); cursor:pointer; border:none; transition:transform var(--t-fast); }
+  .scene-card:hover .scene-direct-btn { display:inline-flex; }
+  .scene-card .scene-direct-btn:hover { transform:scale(1.06); }
+  .scene-card[data-recommended="1"] { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-glow), var(--shadow-md); animation:obScenePulse 1.2s ease 2; }
+  @keyframes obScenePulse { 0%,100%{box-shadow:0 0 0 2px var(--accent-glow),var(--shadow-md);} 50%{box-shadow:0 0 0 6px var(--accent-glow),var(--shadow-lg);} }
   .scene-card[data-category="校园"]::before { background:linear-gradient(180deg,#81C784,#388E3C); }
   .scene-card[data-category="祭典"]::before { background:linear-gradient(180deg,#FF8A65,#D84315); }
   .scene-card[data-category="节日"]::before { background:linear-gradient(180deg,#F06292,#C2185B); }
@@ -198,7 +203,8 @@
   .mood-swatch { flex: 1; }
   .mood-body { padding: 2px 5px; }
   .mood-name { font-weight: 600; font-size: 0.7rem; }
-  .generate-btn { width: 100%; margin-top: var(--s-4); padding: var(--s-3); font-size: 1rem; }
+  .generate-btn { width: 100%; margin-top: var(--s-4); padding: var(--s-3); font-size: 1rem; position: sticky; bottom: var(--s-3); z-index: 50; box-shadow: 0 -8px 24px rgba(0,0,0,0.3); }
+  .generate-btn:disabled { opacity:0.5; cursor:not-allowed; }
 
   /* History */
   .history-wrap { margin-top: var(--s-6); }
@@ -249,6 +255,18 @@
   .review-notes:focus { border-color: var(--accent); }
   .review-image-source { border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: var(--s-3); margin-bottom: var(--s-3); background: var(--bg-deep); }
   .review-image-source.primary { border-color: color-mix(in srgb, var(--accent) 55%, var(--border-soft)); }
+  /* Onboarding modal */
+  .ob-overlay { position:fixed; inset:0; z-index:9980; background:rgba(20,20,26,0.72); backdrop-filter:blur(2px); display:none; }
+  body[data-ob-active="1"] .ob-overlay { display:block; }
+  .ob-spot { position:absolute; border:2px solid var(--accent); border-radius:var(--r-lg); box-shadow:0 0 0 9999px rgba(20,20,26,0.72), 0 0 24px var(--accent-glow); transition:all var(--t-base); pointer-events:none; }
+  .ob-card { position:absolute; width:260px; background:var(--bg-surface); border:1px solid var(--accent); border-radius:var(--r-lg); padding:var(--s-4); box-shadow:var(--shadow-lg); z-index:9981; }
+  .ob-step { font-size:0.7rem; color:var(--text-muted); margin-bottom:var(--s-1); }
+  .ob-title { font-size:0.95rem; font-weight:600; color:var(--text-primary); margin-bottom:var(--s-3); }
+  .ob-actions { display:flex; justify-content:flex-end; gap:var(--s-2); }
+  @media (max-width: 768px){ .ob-card { left:50% !important; transform:translateX(-50%); bottom:var(--s-6); top:auto !important; width:calc(100% - var(--s-6)); } }
+  /* Quick preset select */
+  #presetSelect { width:100%; background:var(--bg-deep); border:1px solid var(--accent); border-radius:var(--r-sm); color:var(--text-primary); padding:6px 8px; font-size:0.85rem; outline:none; }
+  #presetSelect:focus { box-shadow: 0 0 0 2px var(--accent-glow); }
   .review-file-row { display: flex; align-items: center; gap: var(--s-2); flex-wrap: wrap; }
   .review-file-input { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
   .review-file-name { min-width: 0; flex: 1; color: var(--text-secondary); font-size: .78rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -372,8 +390,9 @@
       <div class="panel" style="margin-top:var(--s-4)">
         <div class="panel-title">⚙️ 出图参数</div>
         <div class="controls-grid">
-          <div class="ctrl"><label>CFG</label><select id="cfg"><option>3</option><option>4</option><option selected>5</option><option>6</option><option>7</option><option>8</option><option>9</option></select></div>
-          <div class="ctrl"><label>Steps</label><select id="steps"><option>20</option><option selected>28</option><option>35</option><option>40</option><option>50</option></select></div>
+          <div class="ctrl" style="grid-column:1/-1;margin-bottom:var(--s-2)"><label>快速预设</label><select id="presetSelect"><option value="">— 自定义 —</option></select></div>
+          <div class="ctrl"><label>CFG</label><select id="cfg"><option>3</option><option>4</option><option selected>5</option><option>5.5</option><option>6</option><option>7</option><option>8</option><option>9</option></select></div>
+          <div class="ctrl"><label>Steps</label><select id="steps"><option>20</option><option selected>28</option><option>30</option><option>35</option><option>40</option><option>50</option></select></div>
           <div class="ctrl"><label>Sampler</label><select id="sampler"><option>DPM++ 2M SDE Karras</option><option>DPM++ 2M Karras</option><option>Euler a</option><option>DPM++ SDE Karras</option></select></div>
           <div class="ctrl"><label>尺寸</label><select id="size"><option>832×1216</option><option>1024×1024</option><option>1216×832</option></select></div>
           <div class="ctrl toggle-row"><label class="switch"><input type="checkbox" id="quality" checked><span class="slider"></span></label><label for="quality">质量前缀</label></div>
@@ -470,6 +489,19 @@
   </div>
 </div>
 </article>
+
+<!-- Onboarding -->
+<div class="ob-overlay" id="obOverlay">
+  <div class="ob-spot" id="obSpot"></div>
+  <div class="ob-card" id="obCard">
+    <div class="ob-step" id="obStepNum">1/3</div>
+    <div class="ob-title" id="obTitle"></div>
+    <div class="ob-actions">
+      <button class="btn btn-ghost" id="obSkip" type="button">跳过</button>
+      <button class="btn btn-primary" id="obNext" type="button">下一步</button>
+    </div>
+  </div>
+</div>
 
 <footer class="footer">
   <p>AI CG Studio · 像导演一样创作每一个瞬间</p>
@@ -745,8 +777,22 @@ function markStepDone(n) { if(CURRENT_STEP === n) { CURRENT_STEP = n+1; updateSt
 function goStep(n) { CURRENT_STEP = Math.max(1, Math.min(4, n)); updateStepUI(); }
 
 function setStory(el) {
-  document.getElementById('storyInput').value = el.textContent;
-  state.story = el.textContent;
+  const txt = el.textContent;
+  document.getElementById('storyInput').value = txt;
+  state.story = txt;
+  if (typeof suggestTagsFromStory === 'function') suggestTagsFromStory();
+  highlightScenesByStory(txt);
+}
+const SCENE_KW = ['海边','神社','祭典','烟花','浴衣','咖啡馆','樱花','教室','日落','夜晚','雪','雨','回眸','微笑','脸红','闭眼','和服','泳装','卧室','天台','车站','公园','图书馆','月亮','烛光','厨房','商场','海边','神社','烟花','夕阳','清晨'];
+function highlightScenesByStory(txt) {
+  const hit = SCENE_KW.filter(w => txt.includes(w));
+  document.querySelectorAll('.scene-card').forEach(card => {
+    const idx = parseInt(card.dataset.idx, 10); const s = SCENES[idx]; if (!s) return;
+    const hay = (s.title + s.story + (s.tags||[]).join('') + (s.season||'') + (s.timeOfDay||''));
+    card.dataset.recommended = hit.some(w => hay.includes(w)) ? '1' : '0';
+  });
+  clearTimeout(window.__obSceneHL);
+  window.__obSceneHL = setTimeout(() => document.querySelectorAll('.scene-card[data-recommended="1"]').forEach(c => c.dataset.recommended = '0'), 2500);
 }
 function setChar(c, btn) {
   state.char = c;
@@ -895,6 +941,9 @@ function renderScenes() {
         ${s.tags.slice(0,3).map(t => `<span class="scene-tag">${t}</span>`).join('')}
       </div>`;
     card.onclick = () => loadScene(s);
+    const directBtn = document.createElement('button'); directBtn.className = 'scene-direct-btn'; directBtn.textContent = '🎬 导演这张'; directBtn.type = 'button';
+    directBtn.addEventListener('click', (e) => { e.stopPropagation(); loadScene(s); goStep(3); document.getElementById('stepDecisions').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+    card.appendChild(directBtn);
     grid.appendChild(card);
   });
 }
@@ -1369,6 +1418,54 @@ async function submitReview(){if(reviewState.submitting)return;reviewState.notes
 document.getElementById('reviewOverlay').addEventListener('click',function(e){if(e.target===this)closeReview();});window.addEventListener('pagehide',revokeReviewPreview);
 
 loadData();
+const OB_KEY = 'aics_pb_onboarded';
+const OB_STEPS = [
+  { sel: '#stepScene', title: '选一张场景卡 = 一键种子', sub: '自动填故事/情绪/光照' },
+  { sel: '#stepDecisions', title: '已预填情绪/镜头/光照', sub: '可改可不改' },
+  { sel: '.generate-btn', title: '点这里出 Prompt', sub: 'Prompt 实时生成' },
+];
+let OB_IDX = 0;
+function startOnboard() { if (localStorage.getItem(OB_KEY)) return; document.body.setAttribute('data-ob-active', '1'); OB_IDX = 0; renderOnboard(); }
+function renderOnboard() {
+  const step = OB_STEPS[OB_IDX]; if (!step) { endOnboard(); return; }
+  const spot = document.getElementById('obSpot'), card = document.getElementById('obCard'), tgt = document.querySelector(step.sel);
+  if (!tgt) { endOnboard(); return; }
+  const r = tgt.getBoundingClientRect();
+  spot.style.top = (r.top - 6) + 'px'; spot.style.left = (r.left - 6) + 'px'; spot.style.width = (r.width + 12) + 'px'; spot.style.height = (r.height + 12) + 'px';
+  let cx = r.right + 16, cy = r.top;
+  if (cx + 280 > window.innerWidth) cx = Math.max(16, r.left - 280);
+  if (cx < 16) cx = 16;
+  card.style.left = cx + 'px'; card.style.top = cy + 'px';
+  document.getElementById('obStepNum').textContent = (OB_IDX + 1) + '/' + OB_STEPS.length;
+  document.getElementById('obTitle').textContent = step.title;
+  document.getElementById('obNext').textContent = OB_IDX === OB_STEPS.length - 1 ? '完成' : '下一步';
+}
+function nextOnboard() { OB_IDX++; if (OB_IDX >= OB_STEPS.length) { endOnboard(); return; } renderOnboard(); }
+function endOnboard() { localStorage.setItem(OB_KEY, '1'); document.body.removeAttribute('data-ob-active'); }
+document.getElementById('obNext').addEventListener('click', nextOnboard);
+document.getElementById('obSkip').addEventListener('click', endOnboard);
+window.addEventListener('resize', function () { if (document.body.hasAttribute('data-ob-active')) renderOnboard(); });
+/* preset select */
+const PRESETS = [
+  { id: 'PRESET_ANIME_CG', name: 'Galgame CG', cfg: '5.5', steps: '30', sampler: 'DPM++ 2M Karras', size: '832×1216' },
+  { id: 'PRESET_PORTRAIT', name: 'Portrait', cfg: '5', steps: '28', sampler: 'DPM++ 2M Karras', size: '1024×1024' },
+  { id: 'PRESET_FULL_BODY', name: 'Full Body', cfg: '5.5', steps: '30', sampler: 'DPM++ 2M Karras', size: '832×1216' },
+];
+function initPresetSelect() {
+  const sel = document.getElementById('presetSelect'); if (!sel) return;
+  PRESETS.forEach(p => { const o = document.createElement('option'); o.value = p.id; o.textContent = p.name; sel.appendChild(o); });
+  sel.addEventListener('change', function () { applyPreset(this.value); });
+}
+function applyPreset(id) {
+  const p = PRESETS.find(x => x.id === id); if (!p) return;
+  document.getElementById('cfg').value = p.cfg;
+  document.getElementById('steps').value = p.steps;
+  document.getElementById('sampler').value = p.sampler;
+  document.getElementById('size').value = p.size;
+  flash('🎚 已应用预设: ' + p.name); updateLivePreview();
+}
+initPresetSelect();
+setTimeout(startOnboard, 800);
 window.__bootProbe = { stateHistLen: (state.history||[]).length };
 
 </script>
