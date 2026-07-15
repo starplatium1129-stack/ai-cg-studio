@@ -21,6 +21,10 @@
       "title": "樱花树下的约定",
       "description": "樱花落在猫耳发带上，她踮脚挥手，笑容亮过春日光线。"
     },
+    "identity": {"role": "隐藏的魅魔", "age": "17", "occupation": "高中二年级", "faction": "魔女の夜宴"},
+    "voice": "すごい！你真的来了！",
+    "tags": ["猫耳发带", "学院制服", "琥珀金瞳", "侧马尾", "魅魔"],
+    "bg_story": "绫地宁宁是隐藏在校园中的魅魔。表面上她是开朗活泼的学生，暗地里却收集「心之碎片」来维持魔女身份。她对人类文化充满好奇，口头禅是『すごい！』。",
     "palette": ["樱花粉", "奶油白", "晴空蓝"],
     "weather": ["春日晴", "樱花微风", "黄昏暖光"],
     "speech": "energetic, casual, says sugoi frequently, very shy about her succubus side",
@@ -57,6 +61,10 @@
       "title": "闭店后的咖啡馆",
       "description": "暖灯映过吧台，她放下杯子回眸，泪痣与紫发留住安静余韵。"
     },
+    "identity": {"role": "reclusive cafe waitress", "age": "18", "occupation": "咖啡馆女仆", "faction": "星光咖啡馆"},
+    "voice": "别盯着…愿望会说出口的。",
+    "tags": ["泪痣", "紫黑长发", "齐刘海", "女仆装", "傲娇"],
+    "bg_story": "四季夏目是星光咖啡馆的 reclusive 女仆。她的左眼下有泪痣，看似冷淡却嘴硬心软。她最爱甜食和最安静的笑容。",
     "palette": ["紫罗兰", "焦糖棕", "暖金"],
     "weather": ["雨夜", "阴天", "室内暖灯"],
     "speech": "cold at first, flustered easily, teasing when drunk, embarrassed after",

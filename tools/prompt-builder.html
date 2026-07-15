@@ -715,6 +715,12 @@ function init() {
     var qp = new URLSearchParams(window.location.search);
     var mood = qp.get('mood');
     var sceneId = qp.get('scene');
+    var charId = qp.get('char');
+    if (charId) {
+      var key = (charId === 'NENE_001' || charId === 'nene' || charId === 'ayachi_nene') ? 'nene' : (charId === 'NAT_001' || charId === 'natsume' || charId === 'shiki_natsume' ? 'natsume' : '');
+      if (key && key !== state.char) setChar(key);
+      if (key) flash('已切换至 ' + (key === 'nene' ? '宁宁' : '夏目'));
+    }
     if (mood) { selectMood(mood); }
     if (sceneId && SCENES.length) { var sf = SCENES.find(function(s){ return s.id === sceneId; }); if (sf) loadScene(sf); }
     var regenId = qp.get('regen'), variantId = qp.get('variant');

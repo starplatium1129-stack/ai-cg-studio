@@ -26,6 +26,24 @@
   .character-name { font-size: 1.8rem; font-weight: 800; }
   .character-alias { color: var(--accent); font: .8rem var(--font-mono); margin-top: var(--s-1); }
   .character-desc { color: var(--text-secondary); line-height: 1.7; margin: var(--s-3) 0 var(--s-4); }
+  .identity-row { display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; font-size: .85rem; color: var(--text-muted); margin-bottom: var(--s-2); }
+  .identity-row .item { background: var(--bg-deep); border-radius: 999px; padding: 2px 10px; }
+  .identity-row .role { color: var(--accent); font-weight: 600; background: var(--accent-soft); }
+  .voice-block { border-left: 3px solid var(--accent); padding: var(--s-2) var(--s-3); margin: var(--s-3) 0; background: var(--accent-soft); border-radius: 0 var(--r-sm) var(--r-sm) 0; font-style: italic; color: var(--text-secondary); font-size: .9rem; }
+  .voice-label { display: block; font-size: .65rem; text-transform: uppercase; letter-spacing: .08em; color: var(--accent); margin-bottom: 2px; font-style: normal; }
+  .tags-grid { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: var(--s-3); }
+  .tag-chip { border-radius: 999px; font-size: .78rem; padding: 3px 10px; color: #fff; }
+  .tag-chip.m0 { background: var(--mood-joy); }
+  .tag-chip.m1 { background: var(--mood-love); }
+  .tag-chip.m2 { background: var(--mood-calm); }
+  .tag-chip.m3 { background: var(--mood-sad); }
+  .tag-chip.m4 { background: var(--mood-tension); }
+  .tag-chip.m5 { background: var(--mood-warmth); }
+  .bg-story { font-size: .85rem; color: var(--text-secondary); line-height: 1.7; margin-top: var(--s-3); max-height: 80px; overflow: hidden; position: relative; cursor: pointer; transition: max-height .3s; }
+  .bg-story.expanded { max-height: 500px; }
+  .bg-story::after { content: '… 展开'; position: absolute; bottom: 0; right: 0; background: linear-gradient(90deg, transparent, var(--bg-surface)); padding-left: 40px; color: var(--accent); font-size: .75rem; }
+  .bg-story.expanded::after { content: none; }
+  .one-click-btn { width: 100%; margin-top: var(--s-4); padding: var(--s-3); font-size: 1rem; }
   .detail-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); }
   .detail-section { background: var(--bg-deep); border-radius: var(--r-md); padding: var(--s-3); }
   .detail-section.wide { grid-column: 1 / -1; }
@@ -67,24 +85,34 @@
       function render(){
         var c = characters.filter(function(item){ return item.id === current; })[0];
         var dna = c.visual_dna || {};
-        var recommendations = (c.lora && c.lora.recommended_scene || []).map(function(id){ return scenes.filter(function(scene){ return scene.id === id; })[0]; }).filter(Boolean);
+        var id = c.identity || {};
+        var recommendations = (c.lora && c.lora.recommended_scene || []).map(function(sceneId){ return scenes.filter(function(scene){ return scene.id === sceneId; })[0]; }).filter(Boolean);
         tabs.innerHTML = characters.map(function(item){ return '<button class="character-tab '+(item.id === current ? 'active' : '')+'" role="tab" aria-selected="'+(item.id === current)+'" data-id="'+esc(item.id)+'">'+esc(item.icon)+' '+esc(item.name)+'</button>'; }).join('');
+        var moodClasses=['m0','m1','m2','m3','m4','m5'];
+        var tagsHtml = (c.tags || []).map(function(t,i){ return '<span class="tag-chip '+moodClasses[i%6]+'">'+esc(t)+'</span>'; }).join('');
+        var identityHtml = (id.role || id.age || id.occupation || id.faction) ?
+          '<div class="identity-row">'+(id.role?'<span class="item role">'+esc(id.role)+'</span>':'')+(id.age?'<span class="item">'+esc(id.age)+'岁</span>':'')+(id.occupation?'<span class="item">'+esc(id.occupation)+'</span>':'')+(id.faction?'<span class="item">'+esc(id.faction)+'</span>':'')+'</div>' : '';
+        var voiceHtml = c.voice ? '<div class="voice-block"><span class="voice-label">口头禅</span>'+esc(c.voice)+'</div>' : '';
+        var bgHtml = c.bg_story ? '<div class="bg-story" onclick="this.classList.toggle(\'expanded\')">'+esc(c.bg_story)+'</div>' : '';
         center.innerHTML = '<section class="character-hero">'+
           '<div class="portrait '+(c.id === 'NAT_001' ? 'natsume' : '')+'"><span class="portrait-icon">'+esc(c.icon)+'</span><span class="portrait-source">'+esc(c.source)+'</span></div>'+
-          '<div><h2 class="character-name">'+esc(c.name)+'</h2><div class="character-alias">'+esc((c.alias || []).join(' / '))+'</div><p class="character-desc">'+esc(c.speech)+'</p>'+
+          '<div><h2 class="character-name">'+esc(c.name)+'</h2>'+identityHtml+'<div class="character-alias">'+esc((c.alias || []).join(' / '))+'</div>'+voiceHtml+
+          '<div class="tags-grid">'+tagsHtml+'</div>'+bgHtml+
           '<div class="detail-grid">'+
-            '<section class="detail-section wide"><div class="lab">Visual DNA</div><div class="chips">'+chips([dna.hair, dna.eyes, dna.hairstyle, dna.uniform, dna.expression, dna.signature])+'</div></section>'+
             '<section class="detail-section"><div class="lab">性格标签</div><div class="chips">'+chips(c.personality, 'trait')+'</div></section>'+
             '<section class="detail-section"><div class="lab">喜欢的事物</div><div class="chips">'+chips(c.likes)+'</div></section>'+
             '<section class="detail-section"><div class="lab">推荐色彩</div><div class="chips">'+chips(c.palette)+'</div></section>'+
             '<section class="detail-section"><div class="lab">推荐天气</div><div class="chips">'+chips(c.weather)+'</div></section>'+
-            '<section class="detail-section wide"><div class="lab">LoRA</div><div class="char-lora"><code>'+esc(c.lora.name)+'</code> · 权重 '+esc(c.lora.weight)+'</div></section>'+
-          '</div></div></section>'+
+            '<section class="detail-section"><div class="lab">Visual DNA</div><div class="chips">'+chips([dna.hair, dna.eyes, dna.hairstyle, dna.uniform, dna.expression, dna.signature])+'</div></section>'+
+            '<section class="detail-section"><div class="lab">LoRA</div><div class="char-lora"><code>'+esc(c.lora.name)+'</code> · 权重 '+esc(c.lora.weight)+'</div></section>'+
+          '</div>'+
+          '<a class="btn btn-primary one-click-btn" href="tools/prompt-builder.html?char='+encodeURIComponent(c.id)+'">✨ 一键生成 Prompt</a>'+
+          '</div></section>'+
           '<section class="cg-card"><div class="lab">Classic CG</div><div class="cg-title">'+esc(c.classic_cg.title)+'</div><div class="cg-story">'+esc(c.classic_cg.description)+'</div></section>'+
           '<section><h2 class="recommend-title">推荐 Scene · '+recommendations.length+' 条</h2><div class="recommend-grid" id="recommendGrid"></div></section>';
         tabs.querySelectorAll('[data-id]').forEach(function(tab){ tab.addEventListener('click', function(){ current = tab.getAttribute('data-id'); render(); }); });
         var grid = document.getElementById('recommendGrid');
-        recommendations.forEach(function(scene){ grid.appendChild(window.createSceneCard(scene, { actions: [{ label: '在 Director 打开', primary: true, href: 'prompt-builder.html?scene=' + encodeURIComponent(scene.id) }] })); });
+        recommendations.forEach(function(scene){ grid.appendChild(window.createSceneCard(scene, { actions: [{ label: '在 Director 打开', primary: true, href: 'tools/prompt-builder.html?scene=' + encodeURIComponent(scene.id) }] })); });
       }
       render();
     })
