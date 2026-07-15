@@ -247,11 +247,20 @@
   .ob-overlay { position:fixed; inset:0; z-index:9980; background:rgba(20,20,26,0.72); backdrop-filter:blur(2px); display:none; }
   body[data-ob-active="1"] .ob-overlay { display:block; }
   .ob-spot { position:absolute; border:2px solid var(--accent); border-radius:var(--r-lg); box-shadow:0 0 0 9999px rgba(20,20,26,0.72), 0 0 24px var(--accent-glow); transition:all var(--t-base); pointer-events:none; }
-  .ob-card { position:absolute; width:260px; background:var(--bg-surface); border:1px solid var(--accent); border-radius:var(--r-lg); padding:var(--s-4); box-shadow:var(--shadow-lg); z-index:9981; }
+  .ob-card { position:absolute; width:300px; background:var(--bg-surface); border:1px solid var(--accent); border-radius:var(--r-lg); padding:var(--s-4); box-shadow:var(--shadow-lg); z-index:9981; }
   .ob-step { font-size:0.7rem; color:var(--text-muted); margin-bottom:var(--s-1); }
   .ob-title { font-size:0.95rem; font-weight:600; color:var(--text-primary); margin-bottom:var(--s-3); }
   .ob-actions { display:flex; justify-content:flex-end; gap:var(--s-2); }
-  @media (max-width: 768px){ .ob-card { left:50% !important; transform:translateX(-50%); bottom:var(--s-6); top:auto !important; width:calc(100% - var(--s-6)); } }
+  @media (max-width: 768px){
+    .ob-card {
+      left:50% !important;
+      transform:translateX(-50%);
+      bottom:var(--s-6);
+      top:auto !important;
+      width:calc(100% - var(--s-6));
+      max-width: 400px;
+    }
+  }
   /* Quick preset select */
   #presetSelect { width:100%; background:var(--bg-deep); border:1px solid var(--accent); border-radius:var(--r-sm); color:var(--text-primary); padding:6px 8px; font-size:0.85rem; outline:none; }
   #presetSelect:focus { box-shadow: 0 0 0 2px var(--accent-glow); }
@@ -1544,7 +1553,12 @@ function renderOnboard() {
   const r = tgt.getBoundingClientRect();
   spot.style.top = (r.top - 6) + 'px'; spot.style.left = (r.left - 6) + 'px'; spot.style.width = (r.width + 12) + 'px'; spot.style.height = (r.height + 12) + 'px';
   let cx = r.right + 16, cy = r.top;
-  if (cx + 280 > window.innerWidth) cx = Math.max(16, r.left - 280);
+  if (cx + 320 > window.innerWidth) {
+    cx = Math.max(16, r.left - 320);
+    if (window.innerWidth < 768) {
+      cy = Math.max(16, window.innerHeight - 300);
+    }
+  }
   if (cx < 16) cx = 16;
   card.style.left = cx + 'px'; card.style.top = cy + 'px';
   document.getElementById('obStepNum').textContent = (OB_IDX + 1) + '/' + OB_STEPS.length;
