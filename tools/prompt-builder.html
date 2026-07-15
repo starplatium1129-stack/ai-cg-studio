@@ -34,22 +34,6 @@
   .monitor-toggle:hover { opacity:1; }
   /* Step workflow */
   .stepbar { display:flex; align-items:center; gap:0; padding:var(--s-3) 0 var(--s-5); }
-  .step { flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; position:relative; }
-  .step::before { content:''; position:absolute; top:14px; left:50%; width:100%; height:2px; background:var(--border-soft); z-index:0; }
-  .step:last-child::before { display:none; }
-  .step.done::before { background:var(--accent); }
-  .step-num {
-    width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center;
-    font-size:0.75rem; font-weight:700; border:2px solid var(--border-soft); background:var(--bg-surface);
-    color:var(--text-muted); position:relative; z-index:1; transition:all var(--t-fast);
-  }
-  .step.active .step-num { border-color:var(--accent); color:var(--accent); box-shadow:0 0 12px var(--accent-glow); }
-  .step.done .step-num { background:var(--accent); border-color:var(--accent); color:var(--text-inverse); }
-  .step-label { font-size:0.68rem; color:var(--text-muted); font-weight:500; }
-  .step.active .step-label { color:var(--accent); font-weight:600; }
-  .step.done .step-label { color:var(--text-primary); }
-  .step-panel { scroll-margin-top:var(--s-6); }
-  .step-panel.dim { opacity:0.55; pointer-events:none; transition:opacity var(.t-fast); }
   #stepResult { display:none; }
   body.step-4 #stepResult { display:block; }
   .generate-btn { width:100%; padding:var(--s-3); font-size:1rem; }
@@ -106,6 +90,9 @@
   .scene-search:focus { border-color: var(--accent); }
   .scene-search::placeholder { color: var(--text-muted); }
   .scene-cats { display: flex; flex-wrap: wrap; gap: var(--s-1); margin-bottom: var(--s-2); }
+  .scene-filter-row { display:flex; align-items:center; gap:var(--s-2); margin-bottom:var(--s-2); }
+  .scene-filter-row label { font-size:0.78rem; color:var(--text-muted); }
+  #sceneCharFilter { background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-sm); color:var(--text-primary); padding:4px 8px; font-size:0.82rem; outline:none; flex:1; }
   .scene-cat { padding: 3px 10px; border: 1px solid var(--border-soft); background: var(--bg-surface); color: var(--text-secondary); border-radius: 16px; cursor: pointer; font-size: 0.72rem; font-weight: 500; transition: all var(--t-fast); }
   .scene-cat:hover { border-color: var(--accent); color: var(--accent); }
   .scene-cat.active { background: var(--accent); color: var(--text-inverse); border-color: var(--accent); }
@@ -294,6 +281,14 @@
     .col-left, .col-center, .col-right { grid-column: 1; order: 0; }
     .col-left { flex-direction: column; }
   }
+  .guide-bar {
+    padding: var(--s-3) var(--s-4); margin-bottom: var(--s-4);
+    background: var(--bg-surface); border: 1px solid var(--border-soft);
+    border-left: 3px solid var(--accent); border-radius: var(--r-md);
+    font-size: 0.88rem; color: var(--text-secondary); text-align: center;
+    transition: color var(--t-fast);
+  }
+  .guide-bar.warn { color: var(--danger); border-left-color: var(--danger); }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
     .monitor-rec .dot, .review-star { animation: none; transition: none; }
@@ -318,13 +313,8 @@
     <p class="pb-sub">选一个 Scene,像导演一样定情绪、镜头、光照。Prompt 自动生成。</p>
   </div>
 
-  <!-- ============ Step workflow ============ -->
-  <div class="stepbar" id="stepbar">
-    <div class="step active" data-step="1"><div class="step-num">1</div><div class="step-label">场景 Scene</div></div>
-    <div class="step" data-step="2"><div class="step-num">2</div><div class="step-label">角色 Character</div></div>
-    <div class="step" data-step="3"><div class="step-num">3</div><div class="step-label">导演 Decisions</div></div>
-    <div class="step" data-step="4"><div class="step-num">4</div><div class="step-label">结果 Result</div></div>
-  </div>
+  <!-- ============ 引导条 ============ -->
+  <div class="guide-bar" id="guideBar">写一个故事，或选一张场景卡</div>
 
   <!-- ============ 三栏工作台 ============ -->
   <div class="director-workspace">
@@ -345,8 +335,8 @@
       <div class="panel step-panel" id="stepChar">
         <div class="panel-title">👤 角色 Character</div>
         <div class="char-row">
-          <button class="char-btn active" data-char="nene" onclick="setChar('nene',this)">🌸 宁宁</button>
-          <button class="char-btn" data-char="natsume" onclick="setChar('natsume',this)">🍂 夏目</button>
+          <button class="char-btn active" data-char="nene" onclick="setChar('nene')">🌸 宁宁</button>
+          <button class="char-btn" data-char="natsume" onclick="setChar('natsume')">🍂 夏目</button>
         </div>
         <div class="traits-row" id="traitsRow"></div>
       </div>
@@ -355,6 +345,14 @@
         <div class="panel-title">🎞 Scene 库</div>
         <input type="text" class="scene-search" placeholder="搜索场景 / 情绪 / 标签…" id="sceneSearch" oninput="filterScenes(this.value)">
         <div class="scene-cats" id="sceneCats"></div>
+        <div class="scene-filter-row">
+          <label>角色</label>
+          <select id="sceneCharFilter" onchange="filterScenes(document.getElementById('sceneSearch').value)">
+            <option value="all">全部</option>
+            <option value="nene">🌸 宁宁</option>
+            <option value="natsume">🍂 夏目</option>
+          </select>
+        </div>
         <div class="scene-list" id="sceneGrid"></div>
       </div>
 
@@ -694,7 +692,7 @@ function init() {
   renderEmotion(); renderShot(); renderLighting(); renderComposition();
   renderColorMoods(); renderTraits(); renderManualTags();
   bindControls();
-  CURRENT_STEP = 1; updateStepUI();
+  CURRENT_STEP = 1; updateGuideBar();
   ['quality','tail','negative','cfg','steps','sampler','size'].forEach(id => {
     const el = document.getElementById(id); if (el) el.onchange = updateLivePreview;
   });
@@ -760,22 +758,18 @@ function bindControls() {
 }
 
 // ========== WORKFLOW STEPS (Scene → Char → Decisions → Result) ==========
-function updateStepUI() {
-  document.querySelectorAll('#stepbar .step').forEach(s => {
-    const n = +s.dataset.step;
-    s.classList.toggle('active', n === CURRENT_STEP);
-    s.classList.toggle('done', n < CURRENT_STEP);
-  });
-  // dim non-active panels
-  ['stepScene','stepChar','stepDecisions'].forEach((id,i) => {
-    const el = document.getElementById(id);
-    if(el) el.classList.toggle('dim', i+1 !== CURRENT_STEP);
-  });
-  // result visibility
-  document.body.classList.toggle('step-4', CURRENT_STEP >= 4);
+function updateGuideBar() {
+  const guide = document.getElementById('guideBar'); if (!guide) return;
+  const charLabel = state.char === 'nene' ? '宁宁' : '夏目';
+  const filled = ['emotion','shot','lighting','composition'].filter(k => state.selections[k] && (k === 'emotion' ? state.selections[k].length > 0 : true)).length + (state.colorMood ? 1 : 0);
+  let txt = '写一个故事，或选一张场景卡';
+  if (state.__sceneId && filled === 0) txt = `已选「${charLabel}」场景，再定情绪/镜头或点导演`;
+  else if (filled > 0) txt = `已填 ${filled} 项决策，点「导演这张 CG」出 Prompt`;
+  else if (state.story.trim()) txt = '已写故事，现在选一张场景卡';
+  guide.textContent = txt;
 }
-function markStepDone(n) { if(CURRENT_STEP === n) { CURRENT_STEP = n+1; updateStepUI(); } }
-function goStep(n) { CURRENT_STEP = Math.max(1, Math.min(4, n)); updateStepUI(); }
+function markStepDone(n) { updateGuideBar(); }
+function goStep(n) { CURRENT_STEP = Math.max(1, Math.min(4, n)); document.body.classList.toggle('step-4', CURRENT_STEP >= 4); updateGuideBar(); }
 
 function setStory(el) {
   const txt = el.textContent;
@@ -795,9 +789,8 @@ function highlightScenesByStory(txt) {
   clearTimeout(window.__obSceneHL);
   window.__obSceneHL = setTimeout(() => document.querySelectorAll('.scene-card[data-recommended="1"]').forEach(c => c.dataset.recommended = '0'), 2500);
 }
-function setChar(c, btn, keepScene) {
+function setChar(c) {
   if (state.char === c) return;
-  const hadScene = !!state.__sceneId;
   state.char = c;
   document.querySelectorAll('.char-btn').forEach(b => {
     const on = b.dataset.char === c;
@@ -805,14 +798,13 @@ function setChar(c, btn, keepScene) {
     b.style.background = on ? 'var(--accent-soft)' : 'var(--bg-surface)';
     b.style.borderColor = on ? 'var(--accent)' : 'var(--border-soft)';
   });
-  if (!keepScene) resetSceneAndDecisions();
-  renderTraits(); renderManualTags();
-  markStepDone(2);
-  goStep(1);
   highlightCharScenes(c);
+  const _scf=document.getElementById('sceneCharFilter'); if(_scf){_scf.value=c==='nene'?'nene':'natsume';}
+  filterScenes(document.getElementById('sceneSearch').value);
+  renderTraits(); renderManualTags();
   updateLivePreview();
-  if (!keepScene && hadScene) flash('已切换至 ' + (c === 'nene' ? '宁宁' : '夏目') + '，场景已重置');
-  else flash('已切换至 ' + (c === 'nene' ? '宁宁' : '夏目') + '，推荐场景已高亮');
+  updateGuideBar();
+  flash('已切换至 ' + (c === 'nene' ? '宁宁' : '夏目') + '，推荐场景已高亮');
 }
 function highlightCharScenes(c) {
   const label = c === 'nene' ? 'nene' : 'natsume';
@@ -977,11 +969,13 @@ function renderScenes() {
 }
 function filterScenes(q) {
   const ql = (q || '').toLowerCase();
+  const charSel = (document.getElementById('sceneCharFilter') || {}).value || 'all';
   document.querySelectorAll('.scene-card').forEach(card => {
     const s = SCENES[parseInt(card.dataset.idx, 10)];
     const catOk = SCENE_CAT === '全部' || (s.category || '其他') === SCENE_CAT;
+    const charOk = charSel === 'all' || s.char === charSel || s.char === (charSel === 'nene' ? 'ayachi_nene' : 'shiki_natsume') || (Array.isArray(s.character) && s.character.includes(charSel));
     const hay = (s.title + s.story + s.emotion + s.char + s.tags.join('')).toLowerCase();
-    card.style.display = (catOk && (!ql || hay.includes(ql))) ? 'block' : 'none';
+    card.style.display = (catOk && charOk && (!ql || hay.includes(ql))) ? 'block' : 'none';
   });
 }
 window._loadSceneByIdx = function(idx) { if (SCENES[idx]) loadScene(SCENES[idx]); };
@@ -1015,7 +1009,7 @@ function loadScene(s) {
   state.__sceneId = s.id;
   document.getElementById('storyInput').value = s.story; state.story = s.story;
   const charId = (s.char === 'ayachi_nene' || s.char === 'nene') ? 'nene' : (s.char === 'shiki_natsume' || s.char === 'natsume' ? 'natsume' : (CHARACTER.find(c=>c.id===s.char) ? s.char : 'nene'));
-  setChar(charId, null, true);
+  if (charId !== state.char) setChar(charId);
   state.__sceneId = s.id;
   document.getElementById('storyInput').value = s.story;
   state.story = s.story;
@@ -1280,6 +1274,7 @@ function getPlainPrompt() {
 
 // ====== GENERATE ======
 function generate() {
+  if (!state.__sceneId) { flash('⚠️ 请先选一张场景卡'); document.getElementById('sceneGrid')?.scrollIntoView({behavior:'smooth',block:'start'}); return; }
   const s = state.selections;
   window.__lastSeed__ = Math.floor(Math.random() * 999999999);
   const charName = CHARACTER.find(c => c.id === state.char)?.name || state.char;
@@ -1309,10 +1304,10 @@ function toggleLivePrompt() {
   if (arrow) arrow.style.transform = body.classList.contains('open') ? 'rotate(90deg)' : '';
 }
 function resetDirector() {
-  state.story = ''; state.selections = { emotion:[], shot:null, lighting:null, composition:null }; state.colorMood = null;
+  state.story = ''; state.__sceneId = null; state.selections = { emotion:[], shot:null, lighting:null, composition:null }; state.colorMood = null; state.manualTags = new Set();
   document.getElementById('storyInput').value = '';
-  document.querySelectorAll('#chip-emotion .chip-select,#opt-shot .option,#opt-lighting .option,#opt-composition .option,#moodGrid .mood-card').forEach(o => o.classList.remove('selected'));
-  goStep(1); updateLivePreview();
+  document.querySelectorAll('#chip-emotion .chip-select.selected,#opt-shot .option.selected,#opt-lighting .option.selected,#opt-composition .option.selected,#moodGrid .mood-card.selected').forEach(o => o.classList.remove('selected'));
+  updateLivePreview(); updateGuideBar(); flash('🔄 已重置');
 }
 
 // ========== ACTIONS ==========
