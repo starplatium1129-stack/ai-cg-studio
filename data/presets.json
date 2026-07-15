@@ -7,7 +7,7 @@
     "steps": 30,
     "cfg": 5.5,
     "resolution": "832x1216",
-    "hires": { "enabled": true, "denoise": 0.4, "upscale": 1.5 }
+    "hires": { "enabled": true, "denoise": 0.3, "upscale": 1.5 }
   },
   {
     "id": "PRESET_PORTRAIT",
@@ -17,7 +17,7 @@
     "steps": 28,
     "cfg": 5.0,
     "resolution": "1024x1024",
-    "hires": { "enabled": true, "denoise": 0.35, "upscale": 1.5 }
+    "hires": { "enabled": true, "denoise": 0.3, "upscale": 1.5 }
   },
   {
     "id": "PRESET_FULL_BODY",
@@ -27,6 +27,6 @@
     "steps": 30,
     "cfg": 5.5,
     "resolution": "832x1216",
-    "hires": { "enabled": true, "denoise": 0.4, "upscale": 1.5 }
+    "hires": { "enabled": true, "denoise": 0.3, "upscale": 1.5 }
   }
 ]
