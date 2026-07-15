@@ -73,7 +73,7 @@
   .scene-tag.emotion { background:var(--accent-soft); color:var(--accent); }
   /* 故事联想 tag 高亮 */
   .tag-chip[data-suggested="1"] { outline:1px dashed var(--accent); opacity:1; }
-  .tag-chip[data-suggested="1"]::after { content:' · 📖'; font-size:0.6em; }</｜DSML｜parameter>
+  .tag-chip[data-suggested="1"]::after { content:' · 📖'; font-size:0.6em; }
 
   .panel { background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-lg); padding: var(--s-4); }
   .panel-title { font-size: 0.78rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--s-3); }
@@ -247,7 +247,21 @@
   .review-fav-toggle.on { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
   .review-notes { width: 100%; min-height: 60px; resize: vertical; background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); color: var(--text-primary); font-family: var(--font-sans); font-size: 0.88rem; outline: none; margin-bottom: var(--s-4); }
   .review-notes:focus { border-color: var(--accent); }
+  .review-image-source { border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: var(--s-3); margin-bottom: var(--s-3); background: var(--bg-deep); }
+  .review-image-source.primary { border-color: color-mix(in srgb, var(--accent) 55%, var(--border-soft)); }
+  .review-file-row { display: flex; align-items: center; gap: var(--s-2); flex-wrap: wrap; }
+  .review-file-input { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
+  .review-file-name { min-width: 0; flex: 1; color: var(--text-secondary); font-size: .78rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .review-file-remove { display: none; }
+  .review-file-remove.show { display: inline-flex; }
+  .review-image-hint { color: var(--text-muted); font-size: .72rem; margin-top: var(--s-2); }
+  .review-image-url { width: 100%; background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); color: var(--text-primary); font: .82rem var(--font-mono); outline: none; }
+  .review-image-url:focus { border-color: var(--accent); }
+  .review-image-feedback { min-height: 1.2em; color: var(--danger); font-size: .75rem; margin: var(--s-1) 0; }
+  .review-image-preview { display: none; width: 100%; aspect-ratio: 16 / 9; object-fit: contain; background: var(--bg-deep); border-radius: var(--r-md); border: 1px solid var(--border-soft); margin-bottom: var(--s-4); }
+  .review-image-preview.show { display: block; }
   .review-submit { width: 100%; }
+  .review-submit:disabled { opacity: .55; cursor: wait; }
 
   @media (max-width: 1200px) {
     .director-workspace { grid-template-columns: 1fr 1.3fr; }
@@ -437,8 +451,22 @@
     <div class="review-head"><h3>⭐ 评价这张 CG</h3><button class="review-x" onclick="closeReview()" aria-label="关闭">✕</button></div>
     <div id="reviewAxes"></div>
     <div class="review-fav"><span class="review-fav-label">推荐收藏</span><div class="review-fav-toggle" id="reviewFav" onclick="toggleFav()">💜 收藏</div></div>
+    <div class="review-image-source primary">
+      <label class="review-axis-label" for="reviewImageFile">导入生成图</label>
+      <div class="review-file-row">
+        <input class="review-file-input" id="reviewImageFile" type="file" accept="image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp" onchange="updateReviewImageFile()">
+        <label class="btn btn-primary" for="reviewImageFile">选择本地图片</label>
+        <span class="review-file-name" id="reviewImageFileName">未选择图片</span>
+        <button class="btn btn-ghost review-file-remove" id="reviewImageRemove" type="button" onclick="removeReviewImageFile()">移除</button>
+      </div>
+      <div class="review-image-hint">PNG、JPG、WebP。图片只保存在此浏览器。</div>
+    </div>
+    <label class="review-axis-label" for="reviewImageUrl">或使用图片 URL（可选）</label>
+    <input class="review-image-url" id="reviewImageUrl" type="url" inputmode="url" placeholder="https://example.com/cg.png" oninput="updateReviewImageUrl()">
+    <div class="review-image-feedback" id="reviewImageFeedback" role="status" aria-live="polite"></div>
+    <img class="review-image-preview" id="reviewImagePreview" alt="生成图预览" referrerpolicy="no-referrer">
     <textarea class="review-notes" id="reviewNotes" placeholder="备注(可选)"></textarea>
-    <button class="btn btn-primary review-submit" onclick="submitReview()">提交评价</button>
+    <button class="btn btn-primary review-submit" id="reviewSubmit" onclick="submitReview()">保存评价</button>
   </div>
 </div>
 </article>
@@ -448,6 +476,7 @@
   <p class="muted mt-4">Prompt Builder · Scene-first · Story-first</p>
 </footer>
 
+<script src="image-store.js?v=1"></script>
 <script>
 
 /* ============================================================
@@ -1271,132 +1300,39 @@ function exportPNG() {
 
 // ========== HISTORY ==========
 const HIS_KEY = 'aics_pb_history';
-const HIS_SCHEMA_VERSION = 2; // 当前 schema 版本,迁移时比对
-
-// 校验 + 迁移:旧 history 条目可能缺字段(升级 schema 时平滑补全)
-// 规则:seed ∈ [0, 2^32-1]、rating 5 轴 0..5、补 lora/negative/notes/favorite
+const HIS_SCHEMA_VERSION = 4;
+function normalizeImageUrl(value){
+  if(typeof value !== 'string' || !value.trim()) return '';
+  try { var url=new URL(value.trim(),window.location.href); return url.protocol==='http:'||url.protocol==='https:'?url.href:''; } catch(e){ return ''; }
+}
 function migrateHistory(list){
-  var changed = false;
-  var RAXES = ['face','expression','composition','hands','atmosphere'];
-  var out = list.map(function(h){
-    var e = Object.assign({}, h);
-    // id:必须可比较;旧缺失用 timestamp
-    if(e.id == null){ e.id = e.timestamp || 0; changed = true; }
-    // timestamp
-    if(e.timestamp == null){ e.timestamp = e.id; changed = true; }
-    // seed:整数 + 范围 clamp 到 [0, 2^32-1]
-    var seedNum = Number(e.seed);
-    if(!Number.isFinite(seedNum)){ e.seed = Math.floor(Math.random()*4294967295); changed = true; }
-    else { seedNum = Math.max(0, Math.min(4294967295, Math.floor(seedNum))); if(seedNum !== e.seed){ e.seed = seedNum; changed = true; } }
-    // rating:5 轴,每轴 0..5 clamp
-    var r = e.rating || {};
-    var nr = {}; var rdirty = false;
-    RAXES.forEach(function(k){ var v=Number(r[k]); if(!Number.isFinite(v)){ v=0; rdirty=true; } nr[k]=Math.max(0,Math.min(5,Math.round(v))); });
-    if(rdirty){ e.rating = nr; changed = true; }
-    // favorite / notes / negative
-    if(typeof e.favorite !== 'boolean'){ e.favorite = !!e.favorite; changed = true; }
-    if(typeof e.notes !== 'string'){ e.notes = e.notes == null ? '' : String(e.notes); changed = true; }
-    if(e.negative == null){ e.negative = NEGATIVE; changed = true; }
-    // lora:旧数据可能缺(原 baseEntry 未写 lora 字段时)
-    if(e.lora == null && e.character && LORA_ID && LORA_ID[e.character]){ e.lora = LORA_ID[e.character]; changed = true; }
-    return e;
+  var changed=false, axes=['face','expression','composition','hands','atmosphere'];
+  var out=list.filter(function(h){return h&&typeof h==='object';}).map(function(h){
+    var e=Object.assign({},h);
+    if(e.id==null){e.id=e.timestamp||0;changed=true;} if(e.timestamp==null){e.timestamp=e.id;changed=true;}
+    var seed=Number(e.seed); if(!Number.isFinite(seed)){e.seed=Math.floor(Math.random()*4294967295);changed=true;} else {seed=Math.max(0,Math.min(4294967295,Math.floor(seed)));if(seed!==e.seed){e.seed=seed;changed=true;}}
+    var r=e.rating||{},nr={},dirty=false; axes.forEach(function(k){var v=Number(r[k]);if(!Number.isFinite(v)){v=0;dirty=true;}nr[k]=Math.max(0,Math.min(5,Math.round(v)));}); if(dirty){e.rating=nr;changed=true;}
+    if(typeof e.favorite!=='boolean'){e.favorite=!!e.favorite;changed=true;} if(typeof e.notes!=='string'){e.notes=e.notes==null?'':String(e.notes);changed=true;} if(e.negative==null){e.negative=NEGATIVE;changed=true;}
+    var imageId=typeof e.image_id==='string'?e.image_id.trim():''; if(e.image_id!==imageId){e.image_id=imageId;changed=true;}
+    var imageUrl=normalizeImageUrl(e.image_url); if(e.image_url!==imageUrl){e.image_url=imageUrl;changed=true;}
+    if(e.lora==null&&e.character&&LORA_ID&&LORA_ID[e.character]){e.lora=LORA_ID[e.character];changed=true;} return e;
   });
-  return { list: out, changed: changed };
+  if(out.length!==list.length)changed=true; return {list:out,changed:changed};
 }
-
-function loadHistory() {
-  var raw = [];
-  try { raw = JSON.parse(localStorage.getItem(HIS_KEY)) || []; } catch(e){ raw = []; }
-  if(!Array.isArray(raw)) raw = [];
-  var res = migrateHistory(raw);
-  if(res.changed){ try{ localStorage.setItem(HIS_KEY, JSON.stringify(res.list)); }catch(e){} }
-  return res.list;
-}
-// 版本链:同 scene+character 的最新条目决定新版本号
-function nextVersion(history, scene, character){
-  const same = history.filter(h => h.scene === scene && h.character === character);
-  if (!same.length) return { version:1, parent_id:null };
-  const latest = same.reduce((a,b)=> (b.version||0) > (a.version||0) ? b : a);
-  return { version:(latest.version||0)+1, parent_id:latest.id };
-}
+function loadHistory(){var raw=[];try{raw=JSON.parse(localStorage.getItem(HIS_KEY))||[];}catch(e){}if(!Array.isArray(raw))raw=[];var res=migrateHistory(raw);if(res.changed){try{localStorage.setItem(HIS_KEY,JSON.stringify(res.list));}catch(e){}}return res.list;}
+function nextVersion(history,scene,character){const same=history.filter(h=>h.scene===scene&&h.character===character);if(!same.length)return{version:1,parent_id:null};const latest=same.reduce((a,b)=>(b.version||0)>(a.version||0)?b:a);return{version:(latest.version||0)+1,parent_id:latest.id};}
 function baseEntry(){
-  const sel = state.selections;
-  const sceneTitle = (window.__scenes__||[]).find(s=>s.id===state.__sceneId);
-  // seed 严格校验:整数 ∈ [0, 2^32-1]
-  var rawSeed = window.__lastSeed__;
-  var seedNum = Number(rawSeed);
-  if(!Number.isFinite(seedNum)) seedNum = Math.floor(Math.random()*4294967295);
-  seedNum = Math.max(0, Math.min(4294967295, Math.floor(seedNum)));
-  return {
-    id: Date.now(),
-    timestamp: Date.now(),
-    scene: state.__sceneId || null,
-    sceneTitle: sceneTitle ? sceneTitle.title : null,
-    character: state.char,
-    lora: LORA_ID[state.char] || null,
-    emotion: sel.emotion.slice(),
-    shot: sel.shot,
-    lighting: sel.lighting,
-    composition: sel.composition,
-    colorMood: state.colorMood,
-    story: state.story,
-    prompt: getPlainPrompt(),
-    negative: NEGATIVE,
-    cfg: document.getElementById('cfg') ? document.getElementById('cfg').value : '',
-    steps: document.getElementById('steps') ? document.getElementById('steps').value : '',
-    sampler: document.getElementById('sampler') ? document.getElementById('sampler').value : '',
-    size: document.getElementById('size') ? document.getElementById('size').value : '',
-    seed: seedNum,
-    rating: { face:0, expression:0, composition:0, hands:0, atmosphere:0 },
-    favorite: false,
-    notes: '',
-    version: 1,
-    parent_id: null
-  };
+  const sel=state.selections,sceneTitle=(window.__scenes__||[]).find(s=>s.id===state.__sceneId);var seed=Number(window.__lastSeed__);if(!Number.isFinite(seed))seed=Math.floor(Math.random()*4294967295);seed=Math.max(0,Math.min(4294967295,Math.floor(seed)));
+  return {id:Date.now(),timestamp:Date.now(),scene:state.__sceneId||null,sceneTitle:sceneTitle?sceneTitle.title:null,character:state.char,lora:LORA_ID[state.char]||null,emotion:sel.emotion.slice(),shot:sel.shot,lighting:sel.lighting,composition:sel.composition,colorMood:state.colorMood,story:state.story,prompt:getPlainPrompt(),negative:NEGATIVE,cfg:document.getElementById('cfg')?.value||'',steps:document.getElementById('steps')?.value||'',sampler:document.getElementById('sampler')?.value||'',size:document.getElementById('size')?.value||'',seed:seed,rating:{face:0,expression:0,composition:0,hands:0,atmosphere:0},favorite:false,notes:'',image_id:'',image_url:'',version:1,parent_id:null};
 }
-// 快速保存(无评分)
-function saveHistory() {
-  const entry = baseEntry();
-  const v = nextVersion(state.history, entry.scene, entry.character);
-  entry.version = v.version; entry.parent_id = v.parent_id;
-  state.history.unshift(entry);
-  state.history = state.history.slice(0, 30);
-  localStorage.setItem(HIS_KEY, JSON.stringify(state.history));
-  renderHistory(); flash('💾 已保存');
-}
-// 带评分保存(由 Review 弹窗调用)
-function saveHistoryWithRating(rating, favorite, notes) {
-  const entry = baseEntry();
-  const v = nextVersion(state.history, entry.scene, entry.character);
-  entry.version = v.version; entry.parent_id = v.parent_id;
-  entry.rating = rating; entry.favorite = !!favorite; entry.notes = notes || '';
-  state.history.unshift(entry);
-  state.history = sliceHistory();
-  localStorage.setItem(HIS_KEY, JSON.stringify(state.history));
-  renderHistory();
-}
-function sliceHistory(){ return state.history.slice(0, 30); }
-function renderHistory() {
-  const list = document.getElementById('historyList');
-  document.getElementById('hisCount').textContent = state.history.length;
-  if (!state.history.length) { list.innerHTML = '<div class="history-empty">尚无记录。每次点击「保存」生成一条快照。</div>'; return; }
-  list.innerHTML = state.history.map(h => {
-    const avg = h.rating ? Math.round((h.rating.face+h.rating.expression+h.rating.composition+h.rating.hands+h.rating.atmosphere)/5) : 0;
-    return `<div class="history-item">
-      <div class="history-text" title="${escapeHtml(h.prompt)}">${escapeHtml(h.prompt)}</div>
-      <div class="history-meta">${h.sceneTitle||h.scene||'—'} · ${h.character} · v${h.version||1} · seed ${h.seed||'—'}</div>
-      <div class="history-meta">${'★'.repeat(avg)}${'☆'.repeat(5-avg)} ${h.favorite?'💜':''}</div>
-      <div class="history-actions">
-        <button onclick="loadHistoryId(${h.id})">载入</button>
-        <button onclick="copyHistoryId(${h.id})">复制</button>
-        <button onclick="deleteHistoryId(${h.id})">×</button>
-      </div>
-    </div>`;
-  }).join('');
-}
-function loadHistoryId(id) { const h = state.history.find(x => x.id === id); if (h) restoreFromEntry(h, false); }
-function copyHistoryId(id) { const h = state.history.find(x => x.id === id); if (!h) return; navigator.clipboard.writeText(h.prompt||'').then(() => flash('📋 已复制')); }
-function deleteHistoryId(id) { state.history = state.history.filter(x => x.id !== id); localStorage.setItem(HIS_KEY, JSON.stringify(state.history)); renderHistory(); }
+function unreferencedImageIds(entries,kept){var refs=new Set(kept.map(h=>h.image_id).filter(Boolean));return entries.map(h=>h.image_id).filter(id=>id&&!refs.has(id));}
+async function cleanupImages(entries,kept){var ids=unreferencedImageIds(entries,kept);if(ids.length)await AICGImageStore.deleteMany(ids);}
+async function commitHistoryEntry(entry){var candidate=[entry].concat(state.history),kept=candidate.slice(0,30),evicted=candidate.slice(30);localStorage.setItem(HIS_KEY,JSON.stringify(kept));state.history=kept;renderHistory();cleanupImages(evicted,kept).catch(function(e){flash('记录已保存，旧图片清理失败');});}
+async function saveHistory(){const entry=baseEntry(),v=nextVersion(state.history,entry.scene,entry.character);entry.version=v.version;entry.parent_id=v.parent_id;try{await commitHistoryEntry(entry);flash('💾 已保存');}catch(e){flash('保存失败，请检查浏览器存储空间');}}
+async function saveHistoryWithRating(rating,favorite,notes,imageUrl,imageId){const entry=baseEntry(),v=nextVersion(state.history,entry.scene,entry.character);entry.version=v.version;entry.parent_id=v.parent_id;entry.rating=rating;entry.favorite=!!favorite;entry.notes=notes||'';entry.image_id=imageId||'';entry.image_url=normalizeImageUrl(imageUrl);await commitHistoryEntry(entry);}
+function renderHistory(){const list=document.getElementById('historyList');document.getElementById('hisCount').textContent=state.history.length;if(!state.history.length){list.innerHTML='<div class="history-empty">尚无记录。每次点击「保存」生成一条快照。</div>';return;}list.innerHTML=state.history.map(h=>{const avg=h.rating?Math.round((h.rating.face+h.rating.expression+h.rating.composition+h.rating.hands+h.rating.atmosphere)/5):0;return `<div class="history-item"><div class="history-text" title="${escapeHtml(h.prompt)}">${escapeHtml(h.prompt)}</div><div class="history-meta">${h.sceneTitle||h.scene||'—'} · ${h.character} · v${h.version||1} · seed ${h.seed||'—'}</div><div class="history-meta">${'★'.repeat(avg)}${'☆'.repeat(5-avg)} ${h.favorite?'💜':''}</div><div class="history-actions"><button onclick="loadHistoryId(${h.id})">载入</button><button onclick="copyHistoryId(${h.id})">复制</button><button onclick="deleteHistoryId(${h.id})">×</button></div></div>`;}).join('');}
+function loadHistoryId(id){const h=state.history.find(x=>x.id===id);if(h)restoreFromEntry(h,false);} function copyHistoryId(id){const h=state.history.find(x=>x.id===id);if(h)navigator.clipboard.writeText(h.prompt||'').then(()=>flash('📋 已复制'));}
+async function deleteHistoryId(id){var removed=state.history.filter(h=>h.id===id),kept=state.history.filter(h=>h.id!==id);try{localStorage.setItem(HIS_KEY,JSON.stringify(kept));}catch(e){flash('删除失败，请检查浏览器存储空间');return;}state.history=kept;renderHistory();cleanupImages(removed,kept).catch(function(e){flash('记录已删除，图片清理失败');});}
 
 // ========== TRAIN ==========
 function toggleTrain() { const c = document.getElementById('trainContent'); const b = document.querySelector('.toggle-btn'); c.classList.toggle('open'); b.classList.toggle('open'); }
@@ -1412,51 +1348,25 @@ function flash(msg) {
 }
 
 // ========== REVIEW ==========
-const REVIEW_AXES = [
-  { key:'face', label:'人物一致性' },
-  { key:'expression', label:'表情' },
-  { key:'composition', label:'构图' },
-  { key:'hands', label:'手部' },
-  { key:'atmosphere', label:'氛围' }
-];
-let reviewState = { ratings:{ face:0, expression:0, composition:0, hands:0, atmosphere:0 }, favorite:false, notes:'' };
-function openReview(){
-  reviewState = { ratings:{ face:0, expression:0, composition:0, hands:0, atmosphere:0 }, favorite:false, notes:'' };
-  renderReviewAxes();
-  document.getElementById('reviewFav').className = 'review-fav-toggle';
-  document.getElementById('reviewNotes').value = '';
-  document.getElementById('reviewOverlay').classList.add('open');
-}
-function closeReview(){ document.getElementById('reviewOverlay').classList.remove('open'); }
-function renderReviewAxes(){
-  const el = document.getElementById('reviewAxes');
-  el.innerHTML = REVIEW_AXES.map(ax => `
-    <div class="review-axis">
-      <div class="review-axis-label">${ax.label}</div>
-      <div class="review-stars" data-axis="${ax.key}">
-        ${[1,2,3,4,5].map(n => `<span class="review-star" data-n="${n}" onclick="setRating('${ax.key}',${n})">★</span>`).join('')}
-      </div>
-    </div>`).join('');
-}
-function setRating(axis, n){
-  reviewState.ratings[axis] = n;
-  document.querySelectorAll('.review-stars[data-axis="'+axis+'"] .review-star').forEach(s => {
-    s.classList.toggle('on', +s.dataset.n <= n);
-  });
-}
-function toggleFav(){
-  reviewState.favorite = !reviewState.favorite;
-  const el = document.getElementById('reviewFav');
-  el.classList.toggle('on', reviewState.favorite);
-  el.textContent = reviewState.favorite ? '💜 已收藏' : '💜 收藏';
-}
-function submitReview(){
-  reviewState.notes = document.getElementById('reviewNotes').value;
-  saveHistoryWithRating(reviewState.ratings, reviewState.favorite, reviewState.notes);
-  closeReview();
-  flash('⭐ 已评价并保存');
-}
-document.getElementById('reviewOverlay').addEventListener('click', function(e){ if (e.target === this) closeReview(); });
+const REVIEW_AXES=[{key:'face',label:'人物一致性'},{key:'expression',label:'表情'},{key:'composition',label:'构图'},{key:'hands',label:'手部'},{key:'atmosphere',label:'氛围'}];
+const REVIEW_IMAGE_TYPES={'image/png':['png'],'image/jpeg':['jpg','jpeg'],'image/webp':['webp']};
+let reviewState=newReviewState();
+function newReviewState(){return{ratings:{face:0,expression:0,composition:0,hands:0,atmosphere:0},favorite:false,notes:'',image_file:null,image_url:'',preview_url:'',submitting:false};}
+function revokeReviewPreview(){if(reviewState.preview_url){URL.revokeObjectURL(reviewState.preview_url);reviewState.preview_url='';}}
+function clearReviewPreview(){var p=document.getElementById('reviewImagePreview');p.onerror=null;p.className='review-image-preview';p.removeAttribute('src');}
+function showReviewPreview(src,isLocal){var p=document.getElementById('reviewImagePreview');p.onerror=function(){if(p.getAttribute('src')!==src)return;p.className='review-image-preview';document.getElementById('reviewImageFeedback').textContent=isLocal?'图片无法解码，请重新导出后再试':'图片加载失败，仍可保存此 URL';};p.src=src;p.className='review-image-preview show';}
+function openReview(){revokeReviewPreview();reviewState=newReviewState();renderReviewAxes();document.getElementById('reviewFav').className='review-fav-toggle';document.getElementById('reviewFav').textContent='💜 收藏';document.getElementById('reviewNotes').value='';document.getElementById('reviewImageFile').value='';document.getElementById('reviewImageFileName').textContent='未选择图片';document.getElementById('reviewImageRemove').classList.remove('show');document.getElementById('reviewImageUrl').value='';document.getElementById('reviewImageFeedback').textContent='';document.getElementById('reviewSubmit').disabled=false;document.getElementById('reviewSubmit').textContent='保存评价';clearReviewPreview();document.getElementById('reviewOverlay').classList.add('open');}
+function validateImageFile(file){if(!file||!file.size)return'图片文件为空';var allowed=REVIEW_IMAGE_TYPES[file.type];if(!allowed)return'请选择 PNG、JPG 或 WebP 图片';var ext=(file.name.split('.').pop()||'').toLowerCase();return allowed.includes(ext)?'':'图片扩展名与文件类型不匹配';}
+function decodeImageFile(file){if(typeof createImageBitmap==='function')return createImageBitmap(file).then(function(b){var ok=b.width>0&&b.height>0;b.close();if(!ok)throw Error();});return new Promise(function(resolve,reject){var url=URL.createObjectURL(file),img=new Image();img.onload=function(){URL.revokeObjectURL(url);img.naturalWidth&&img.naturalHeight?resolve():reject();};img.onerror=function(){URL.revokeObjectURL(url);reject();};img.src=url;});}
+async function updateReviewImageFile(){var input=document.getElementById('reviewImageFile'),file=input.files&&input.files[0],feedback=document.getElementById('reviewImageFeedback'),error=validateImageFile(file);if(error){input.value='';feedback.textContent=error;return;}try{await decodeImageFile(file);}catch(e){input.value='';feedback.textContent='图片无法解码，请重新导出后再试';return;}revokeReviewPreview();reviewState.image_file=file;reviewState.preview_url=URL.createObjectURL(file);document.getElementById('reviewImageFileName').textContent=file.name+' · '+Math.max(1,Math.round(file.size/1024))+' KB';document.getElementById('reviewImageRemove').classList.add('show');feedback.textContent='';showReviewPreview(reviewState.preview_url,true);}
+function removeReviewImageFile(){revokeReviewPreview();reviewState.image_file=null;document.getElementById('reviewImageFile').value='';document.getElementById('reviewImageFileName').textContent='未选择图片';document.getElementById('reviewImageRemove').classList.remove('show');updateReviewImageUrl();}
+function updateReviewImageUrl(){var input=document.getElementById('reviewImageUrl'),feedback=document.getElementById('reviewImageFeedback'),url=normalizeImageUrl(input.value);reviewState.image_url=url;if(reviewState.image_file){feedback.textContent=input.value.trim()&&!url?'URL 无效；保存时仍使用本地图片':'';return;}clearReviewPreview();if(!input.value.trim()){feedback.textContent='';return;}if(!url){feedback.textContent='仅支持 http 或 https 图片 URL';return;}feedback.textContent='';showReviewPreview(url,false);}
+function closeReview(){if(reviewState.submitting)return;revokeReviewPreview();document.getElementById('reviewOverlay').classList.remove('open');}
+function renderReviewAxes(){document.getElementById('reviewAxes').innerHTML=REVIEW_AXES.map(ax=>`<div class="review-axis"><div class="review-axis-label">${ax.label}</div><div class="review-stars" data-axis="${ax.key}">${[1,2,3,4,5].map(n=>`<span class="review-star" data-n="${n}" onclick="setRating('${ax.key}',${n})">★</span>`).join('')}</div></div>`).join('');}
+function setRating(axis,n){reviewState.ratings[axis]=n;document.querySelectorAll('.review-stars[data-axis="'+axis+'"] .review-star').forEach(s=>s.classList.toggle('on',+s.dataset.n<=n));}
+function toggleFav(){reviewState.favorite=!reviewState.favorite;const el=document.getElementById('reviewFav');el.classList.toggle('on',reviewState.favorite);el.textContent=reviewState.favorite?'💜 已收藏':'💜 收藏';}
+async function submitReview(){if(reviewState.submitting)return;reviewState.notes=document.getElementById('reviewNotes').value;reviewState.submitting=true;var button=document.getElementById('reviewSubmit'),imageId='';button.disabled=true;button.textContent='保存中…';try{if(reviewState.image_file)imageId=await AICGImageStore.put(reviewState.image_file);try{await saveHistoryWithRating(reviewState.ratings,reviewState.favorite,reviewState.notes,reviewState.image_url,imageId);}catch(error){if(imageId)await AICGImageStore.delete(imageId).catch(function(err){console.warn('[B4] 回滚 image 删除失败，可能残留孤儿 blob',err);});throw error;}reviewState.submitting=false;closeReview();flash('⭐ 评价已保存');}catch(error){reviewState.submitting=false;button.disabled=false;button.textContent='保存评价';document.getElementById('reviewImageFeedback').textContent='保存失败，记录未保存，请检查浏览器存储空间';}}
+document.getElementById('reviewOverlay').addEventListener('click',function(e){if(e.target===this)closeReview();});window.addEventListener('pagehide',revokeReviewPreview);
 
 loadData();
 window.__bootProbe = { stateHistLen: (state.history||[]).length };

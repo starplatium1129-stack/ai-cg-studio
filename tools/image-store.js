@@ -1,0 +1,105 @@
+(function(global){
+  'use strict';
+
+  var DB_NAME = 'aics_image_store';
+  var DB_VERSION = 1;
+  var STORE_NAME = 'images';
+  var dbPromise;
+
+  function openDb(){
+    if(dbPromise) return dbPromise;
+    dbPromise = new Promise(function(resolve, reject){
+      if(!global.indexedDB){ reject(new Error('当前浏览器不支持 IndexedDB')); return; }
+      var settled = false;
+      var request = global.indexedDB.open(DB_NAME, DB_VERSION);
+      request.onupgradeneeded = function(){
+        if(!request.result.objectStoreNames.contains(STORE_NAME)){
+          request.result.createObjectStore(STORE_NAME, { keyPath:'id' });
+        }
+      };
+      request.onsuccess = function(){
+        var db = request.result;
+        db.onversionchange = function(){ db.close(); dbPromise = null; };
+        settled = true;
+        resolve(db);
+      };
+      request.onerror = function(){ dbPromise = null; reject(request.error || new Error('图片数据库打开失败')); };
+      request.onblocked = function(){
+        if(settled) return;
+        dbPromise = null;
+        reject(new Error('图片数据库被其他页面占用，请刷新后重试'));
+      };
+    });
+    return dbPromise;
+  }
+
+  function createId(){
+    if(global.crypto && typeof global.crypto.randomUUID === 'function') return 'img_' + global.crypto.randomUUID();
+    var bytes = new Uint32Array(4);
+    if(global.crypto && typeof global.crypto.getRandomValues === 'function') global.crypto.getRandomValues(bytes);
+    else for(var i=0;i<bytes.length;i++) bytes[i] = Math.floor(Math.random() * 0xffffffff);
+    return 'img_' + Date.now().toString(36) + '_' + Array.from(bytes).map(function(n){ return n.toString(36); }).join('');
+  }
+
+  function runTransaction(mode, action){
+    return openDb().then(function(db){
+      return new Promise(function(resolve, reject){
+        var settled = false;
+        var transaction;
+        try { transaction = db.transaction(STORE_NAME, mode); }
+        catch(error){ reject(error); return; }
+        var store = transaction.objectStore(STORE_NAME);
+        var result;
+        try { result = action(store); }
+        catch(error){ transaction.abort(); reject(error); return; }
+        transaction.oncomplete = function(){ if(!settled){ settled = true; resolve(result); } };
+        transaction.onerror = function(){ if(!settled){ settled = true; reject(transaction.error || new Error('图片数据库事务失败')); } };
+        transaction.onabort = function(){ if(!settled){ settled = true; reject(transaction.error || new Error('图片数据库事务已取消')); } };
+      });
+    });
+  }
+
+  function put(file){
+    if(!(file instanceof Blob) || !file.size) return Promise.reject(new Error('图片文件为空'));
+    var id = createId();
+    var record = {
+      id: id,
+      blob: file,
+      name: typeof file.name === 'string' ? file.name : '',
+      type: file.type || '',
+      size: file.size,
+      created_at: Date.now()
+    };
+    return runTransaction('readwrite', function(store){ store.put(record); }).then(function(){ return id; });
+  }
+
+  function get(id){
+    if(typeof id !== 'string' || !id.trim()) return Promise.resolve(null);
+    return openDb().then(function(db){
+      return new Promise(function(resolve, reject){
+        var transaction;
+        try { transaction = db.transaction(STORE_NAME, 'readonly'); }
+        catch(error){ reject(error); return; }
+        var request = transaction.objectStore(STORE_NAME).get(id.trim());
+        request.onsuccess = function(){
+          var record = request.result;
+          resolve(record && record.blob instanceof Blob ? record.blob : null);
+        };
+        request.onerror = function(){ reject(request.error || new Error('图片读取失败')); };
+      });
+    });
+  }
+
+  function deleteOne(id){
+    if(typeof id !== 'string' || !id.trim()) return Promise.resolve();
+    return deleteMany([id]);
+  }
+
+  function deleteMany(ids){
+    var unique = Array.from(new Set((Array.isArray(ids) ? ids : []).filter(function(id){ return typeof id === 'string' && id.trim(); }).map(function(id){ return id.trim(); })));
+    if(!unique.length) return Promise.resolve();
+    return runTransaction('readwrite', function(store){ unique.forEach(function(id){ store.delete(id); }); });
+  }
+
+  global.AICGImageStore = { put:put, get:get, delete:deleteOne, deleteMany:deleteMany };
+})(window);

@@ -7,7 +7,6 @@
 <link rel="stylesheet" href="../css/design-system.css?v=2">
 <link rel="stylesheet" href="../css/scene-card.css?v=2">
 <script src="nav.js?v=2"></script>
-<script src="scene-card-v2.js"></script>
 <script src="theme.js?v=2"></script>
 <style>
   .page { max-width: 1200px; margin: 0 auto; padding: var(--s-6) var(--s-5); }
@@ -28,6 +27,10 @@
   /* Gallery 卡扩展块(统一 SceneCard + 业务独特内容) */
   .gal-cover { aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; font-size: 2.4rem; position: relative; overflow: hidden; }
   .gal-cover::after { content:""; position:absolute; inset:0; background: radial-gradient(circle at 30% 30%, var(--accent-glow), transparent 60%); opacity: 0.45; }
+  .gal-cover img { width: 100%; height: 100%; object-fit: cover; position: relative; z-index: 1; }
+  .gal-cover .gal-placeholder { position: relative; z-index: 1; }
+  .detail-image { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--r-lg); border: 1px solid var(--border-soft); margin-bottom: var(--s-4); }
+  .detail-image-fallback { display: flex; align-items: center; justify-content: center; background: var(--bg-deep); color: var(--text-muted); font-size: 2rem; }
   .gal-ver { position: absolute; top: var(--s-2); left: var(--s-2); background: var(--bg-surface); border-radius: 12px; padding: 2px 8px; font-size: 0.7rem; font-weight: 600; z-index: 2; }
   .gal-fav { position: absolute; top: var(--s-2); right: var(--s-2); z-index: 2; font-size: 1rem; }
   .gal-seed { font-size: 0.72rem; color: var(--text-muted); margin-top: var(--s-1); }
@@ -91,136 +94,67 @@
 
 <footer class="footer"><p>AI CG Studio · From Story to Scene</p></footer>
 
+<script src="image-store.js?v=1"></script>
 <script>
 (function(){
-  const HIS_KEY = 'aics_pb_history';
-  let scenes = [], loras = [], history = [], filterFav = false;
-
-  function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-  function stars(n){ return '<span class="sc-stars">'+[1,2,3,4,5].map(function(i){return '<span class="'+(i<=n?'on':'')+'">★</span>';}).join('')+'</span>'; }
-  function avgRating(r){ if(!r) return 0; return Math.round((r.face+r.expression+r.composition+r.hands+r.atmosphere)/5); }
-  function sceneTitle(id){ const s = scenes.find(x=>x.id===id); return s ? s.title : (id||'—'); }
-  function charName(id){
-    const s = scenes.find(x=>x.id===id); if (s){ return s.char==='nene'?'宁宁':(s.char==='natsume'?'夏目':(s.char||'·')); }
-    return '·';
+  const HIS_KEY='aics_pb_history';
+  let scenes=[],loras=[],history=[],filterFav=false,renderGeneration=0,detailGeneration=0,detailObjectUrl='';
+  const cardObjectUrls=new Set();
+  function esc(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function escAttr(v){return esc(v).replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+  function safeImageUrl(v){if(typeof v!=='string'||!v.trim())return'';try{const u=new URL(v.trim(),location.href);return u.protocol==='http:'||u.protocol==='https:'?u.href:'';}catch(e){return'';}}
+  function stars(n){return '<span class="sc-stars">'+[1,2,3,4,5].map(i=>'<span class="'+(i<=n?'on':'')+'">★</span>').join('')+'</span>';}
+  function avgRating(r){if(!r)return 0;return Math.round(['face','expression','composition','hands','atmosphere'].reduce((n,k)=>n+(Number(r[k])||0),0)/5);}
+  function sceneTitle(id){const x=scenes.find(s=>s.id===id);return x?x.title:(id||'—');}
+  function charName(id){const x=scenes.find(s=>s.id===id);if(!x)return'·';return x.char==='nene'?'宁宁':x.char==='natsume'?'夏目':(x.char||'·');}
+  function loraName(id){if(!id)return'—';const x=loras.find(l=>l.id===id||(l.name&&id&&(l.name===id||id.startsWith(l.name))));return x?x.name:id;}
+  function fmtDate(ts){return new Date(ts).toLocaleString('zh-CN',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});}
+  function dayKey(ts){const d=new Date(ts),now=new Date(),start=new Date(now.getFullYear(),now.getMonth(),now.getDate()),diff=(start-d)/86400000;return diff<1?'今天':diff<7?'本周':'更早';}
+  function grouped(list){const order=['今天','本周','更早'],g={};list.forEach(item=>(g[dayKey(item.timestamp)]=g[dayKey(item.timestamp)]||[]).push(item));return order.filter(k=>g[k]?.length).map(k=>({key:k,items:g[k]}));}
+  function fallbackNode(tag,className){const node=document.createElement(tag);node.className=className;node.textContent='🎬';return node;}
+  function revokeCards(){cardObjectUrls.forEach(url=>URL.revokeObjectURL(url));cardObjectUrls.clear();}
+  function setImage(slot,src,alt,className,fallbackUrl,onObjectError){
+    const img=document.createElement('img');img.className=className;img.alt=alt;img.referrerpolicy='no-referrer';img.src=src;
+    img.addEventListener('error',function(){if(onObjectError)onObjectError();if(fallbackUrl&&img.src!==fallbackUrl){img.src=fallbackUrl;fallbackUrl='';return;}img.replaceWith(fallbackNode(className==='gal-image'?'span':'div',className==='gal-image'?'gal-placeholder':'detail-image detail-image-fallback'));});
+    slot.replaceChildren(img);
   }
-  function loraName(id){
-    if(!id) return '—';
-    const l = loras.find(x=> x.id===id || (x.name && id && (x.name===id || id.startsWith(x.name)) ));
-    return l ? l.name : id;
+  async function hydrateCard(h,index,generation){
+    const slot=document.querySelector('[data-image-slot="'+index+'"]');if(!slot)return;
+    const fallback=safeImageUrl(h.image_url);
+    try{
+      const blob=await AICGImageStore.get(h.image_id);if(generation!==renderGeneration||!slot.isConnected)return;
+      if(!blob){if(fallback)setImage(slot,fallback,sceneTitle(h.scene),'gal-image','');return;}
+      const url=URL.createObjectURL(blob);if(generation!==renderGeneration||!slot.isConnected){URL.revokeObjectURL(url);return;}
+      cardObjectUrls.add(url);setImage(slot,url,sceneTitle(h.scene),'gal-image',fallback,function(){URL.revokeObjectURL(url);cardObjectUrls.delete(url);});
+    }catch(e){if(generation===renderGeneration&&slot.isConnected&&fallback)setImage(slot,fallback,sceneTitle(h.scene),'gal-image','');}
   }
-  function fmtDate(ts){ return new Date(ts).toLocaleString('zh-CN', { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' }); }
-
-  function dayKey(ts){
-    const d = new Date(ts); const now = new Date();
-    const start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const diff = (start - d)/86400000;
-    if(diff < 1) return '今天';
-    if(diff < 7) return '本周';
-    return '更早';
-  }
-
-  function grouped(list){
-    const order = ['今天','本周','更早'];
-    const g = {};
-    list.forEach(h=>{ const k = dayKey(h.timestamp); (g[k]=g[k]||[]).push(h); });
-    return order.filter(k=>g[k] && g[k].length).map(k=>({key:k, items:g[k]}));
-  }
-
+  function coverMarkup(h,index){const url=safeImageUrl(h.image_url);if(h.image_id)return '<span class="gal-placeholder">🎬</span>';return url?'<img class="gal-image" src="'+escAttr(url)+'" alt="'+escAttr(sceneTitle(h.scene))+'" referrerpolicy="no-referrer">':'<span class="gal-placeholder">🎬</span>';}
+  function card(h,index){const avg=avgRating(h.rating);return `<div class="sc sc-grid" onclick="window.__openDetail(${index})"><div class="sc-band" style="height:130px;"><div class="gal-cover" data-image-slot="${index}" style="position:absolute;inset:0;">${coverMarkup(h,index)}</div><span class="gal-ver">v${esc(h.version||1)}</span>${h.favorite?'<span class="gal-fav">💜</span>':''}</div><div class="sc-body"><div class="sc-title">${esc(sceneTitle(h.scene))}</div><div class="sc-meta"><span class="sc-meta-l">${stars(avg)}</span><span class="sc-meta-r">${esc(charName(h.scene))} · ${esc(fmtDate(h.timestamp))}</span></div><div class="gal-seed">seed ${esc(h.seed||'—')}</div></div></div>`;}
+  let scenesLoaded=false;
+  function ensureData(){return scenesLoaded?Promise.all([Promise.resolve(scenes),Promise.resolve(loras)]):Promise.all([fetch('../data/scenes.json').then(r=>r.json()).then(d=>{scenes=d;}).catch(()=>{}),fetch('../data/loras.json').then(r=>r.json()).then(d=>{loras=d;}).catch(()=>{})]).then(function(){scenesLoaded=true;});}
   function render(){
-    const toolbar = document.getElementById('toolbar');
-    const total = history.length;
-    const favCount = history.filter(h=>h.favorite).length;
-    toolbar.innerHTML = `<button class="filter ${filterFav?'active':''}" onclick="window.__setFavFilter()">
-      💜 收藏 ${favCount}
-    </button><span class="count">${filterFav ? favCount+' / ' : ''}${total} 条记录</span>`;
-
-    const list = filterFav ? history.filter(h=>h.favorite) : history;
-    const gal = document.getElementById('gallery');
-    if(!list.length){
-      gal.innerHTML = filterFav ? '<div class="empty"><div class="ic">💜</div><p>还没有收藏。在导演台评价时开启「推荐收藏」。</p></div>'
-        : '<div class="empty"><div class="ic">🎞</div><p>还没有创作记录。去导演台生成第一张 CG。</p><a href="prompt-builder.html" class="btn btn-primary">🎬 开始创作</a></div>';
-      return;
-    }
-    const groups = grouped(list);
-    gal.innerHTML = groups.map(g=>{
-      return `<div class="timeline-group"><div class="timeline-head">${g.key}</div><div class="gallery-grid">${
-        g.items.map(h=>card(h)).join('')
-      }</div></div>`;
-    }).join('');
+    const generation=++renderGeneration;revokeCards();const toolbar=document.getElementById('toolbar'),total=history.length,favCount=history.filter(h=>h.favorite).length;
+    toolbar.innerHTML=`<button class="filter ${filterFav?'active':''}" onclick="window.__setFavFilter()">💜 收藏 ${favCount}</button><span class="count">${filterFav?favCount+' / ':''}${total} 条记录</span>`;
+    const source=filterFav?history.filter(h=>h.favorite):history,gal=document.getElementById('gallery');
+    if(!source.length){gal.innerHTML=filterFav?'<div class="empty"><div class="ic">💜</div><p>还没有收藏。在导演台评价时开启「推荐收藏」。</p></div>':'<div class="empty"><div class="ic">🎞</div><p>还没有创作记录。去导演台生成第一张 CG。</p><a href="prompt-builder.html" class="btn btn-primary">🎬 开始创作</a></div>';return;}
+    const byIndex=new Map();source.forEach(function(h,i){byIndex.set(h,i);});const groups=grouped(source);
+    gal.innerHTML=groups.map(g=>`<div class="timeline-group"><div class="timeline-head">${g.key}</div><div class="gallery-grid">${g.items.map(h=>card(h,byIndex.get(h))).join('')}</div></div>`).join('');
+    gal.querySelectorAll('.gal-image').forEach(img=>img.addEventListener('error',()=>img.replaceWith(fallbackNode('span','gal-placeholder'))));
+    source.forEach(function(h,i){if(h.image_id)hydrateCard(h,byIndex.get(h),generation);});
   }
-
-  function card(h){
-    const avg = avgRating(h.rating);
-    return `<div class="sc sc-grid" onclick="window.__openDetail(${h.id})">
-      <div class="sc-band" style="height:130px;">
-        <div class="gal-cover" style="position:absolute;inset:0;">🎬</div>
-        <span class="gal-ver">v${h.version||1}</span>
-        ${h.favorite?'<span class="gal-fav">💜</span>':''}
-      </div>
-      <div class="sc-body">
-        <div class="sc-title">${esc(sceneTitle(h.scene))}</div>
-        <div class="sc-meta"><span class="sc-meta-l">${stars(avg)}</span><span class="sc-meta-r">${esc(charName(h.scene))} · ${fmtDate(h.timestamp)}</span></div>
-        <div class="gal-seed">seed ${h.seed||'—'}</div>
-      </div>
-    </div>`;
+  function revokeDetail(){if(detailObjectUrl){URL.revokeObjectURL(detailObjectUrl);detailObjectUrl='';}}
+  async function hydrateDetail(h,index,generation){const slot=document.getElementById('detailImageSlot'),fallback=safeImageUrl(h.image_url);if(!slot)return;try{const blob=await AICGImageStore.get(h.image_id);if(generation!==detailGeneration||!slot.isConnected)return;if(!blob){if(fallback)setImage(slot,fallback,sceneTitle(h.scene),'detail-image','');return;}const url=URL.createObjectURL(blob);if(generation!==detailGeneration||!slot.isConnected){URL.revokeObjectURL(url);return;}detailObjectUrl=url;setImage(slot,url,sceneTitle(h.scene),'detail-image',fallback,function(){if(detailObjectUrl===url)detailObjectUrl='';URL.revokeObjectURL(url);});}catch(e){if(generation===detailGeneration&&slot.isConnected&&fallback)setImage(slot,fallback,sceneTitle(h.scene),'detail-image','');}}
+  function openDetail(index){const h=history[index];if(!h)return;const generation=++detailGeneration;revokeDetail();const axes=['face','expression','composition','hands','atmosphere'],names={face:'人物',expression:'表情',composition:'构图',hands:'手部',atmosphere:'氛围'},url=safeImageUrl(h.image_url),initial=h.image_id?'<div class="detail-image detail-image-fallback">🎬</div>':url?'<img class="detail-image" src="'+escAttr(url)+'" alt="'+escAttr(sceneTitle(h.scene))+'" referrerpolicy="no-referrer">':'<div class="detail-image detail-image-fallback">🎬</div>';
+    document.getElementById('detailCard').innerHTML=`<div class="detail-head"><div><h3>${esc(sceneTitle(h.scene))}</h3><div style="color:var(--text-muted);font-size:.85rem;">v${esc(h.version||1)} · ${esc(h.character)} · ${esc(fmtDate(h.timestamp))}</div></div><button class="detail-x" onclick="window.__closeDetail()" aria-label="关闭">✕</button></div><div id="detailImageSlot">${initial}</div><div class="detail-props"><div class="detail-prop"><div class="l">LoRA</div><div class="v">${esc(loraName(h.lora))}</div></div><div class="detail-prop"><div class="l">Seed</div><div class="v">${esc(h.seed||'—')}</div></div><div class="detail-prop"><div class="l">CFG</div><div class="v">${esc(h.cfg||'—')}</div></div><div class="detail-prop"><div class="l">Steps</div><div class="v">${esc(h.steps||'—')}</div></div><div class="detail-prop"><div class="l">Sampler</div><div class="v">${esc(h.sampler||'—')}</div></div><div class="detail-prop"><div class="l">尺寸</div><div class="v">${esc(h.size||'—')}</div></div></div><div class="detail-rating">${axes.map(k=>`<span class="axis"><span class="nm">${names[k]}</span>${'★'.repeat(Number(h.rating?.[k])||0)}${'☆'.repeat(5-(Number(h.rating?.[k])||0))}</span>`).join('')}</div><div style="font-size:.78rem;color:var(--text-muted);margin-bottom:var(--s-2);">故事</div><div style="font-style:italic;color:var(--text-secondary);margin-bottom:var(--s-4);">${esc(h.story||'(未写故事)')}</div><div style="font-size:.78rem;color:var(--text-muted);margin-bottom:var(--s-2);">Prompt</div><div class="detail-prompt">${esc(h.prompt||'')}</div>${h.notes?`<div style="font-size:.78rem;color:var(--text-muted);margin-bottom:var(--s-2);">备注</div><div style="color:var(--text-secondary);margin-bottom:var(--s-4);font-size:.88rem;">${esc(h.notes)}</div>`:''}<div class="detail-actions"><a href="prompt-builder.html?scene=${encodeURIComponent(h.scene||'')}&regen=${encodeURIComponent(h.id)}" class="btn btn-primary">🔄 重新生成</a><a href="prompt-builder.html?scene=${encodeURIComponent(h.scene||'')}&variant=${encodeURIComponent(h.id)}" class="btn btn-ghost">✨ 生成变体</a><button class="btn btn-ghost" onclick="window.__copyPrompt(${index})">📋 复制 Prompt</button></div>`;
+    document.getElementById('detailOverlay').classList.add('open');const img=document.querySelector('#detailImageSlot img');if(img)img.addEventListener('error',()=>img.replaceWith(fallbackNode('div','detail-image detail-image-fallback')));if(h.image_id)hydrateDetail(h,index,generation);
   }
-
-  function openDetail(id){
-    const h = history.find(x=>x.id===id); if(!h) return;
-    const avg = avgRating(h.rating);
-    const axes = ['face','expression','composition','hands','atmosphere'];
-    const axisNm = {face:'人物',expression:'表情',composition:'构图',hands:'手部',atmosphere:'氛围'};
-    const card = document.getElementById('detailCard');
-    card.innerHTML = `
-      <div class="detail-head">
-        <div><h3>${esc(sceneTitle(h.scene))}</h3><div style="color:var(--text-muted);font-size:0.85rem;">v${h.version||1} · ${esc(h.character)} · ${fmtDate(h.timestamp)}</div></div>
-        <button class="detail-x" onclick="window.__closeDetail()" aria-label="关闭">✕</button>
-      </div>
-      <div class="detail-props">
-        <div class="detail-prop"><div class="l">LoRA</div><div class="v">${esc(loraName(h.lora))}</div></div>
-        <div class="detail-prop"><div class="l">Seed</div><div class="v">${h.seed||'—'}</div></div>
-        <div class="detail-prop"><div class="l">CFG</div><div class="v">${h.cfg||'—'}</div></div>
-        <div class="detail-prop"><div class="l">Steps</div><div class="v">${h.steps||'—'}</div></div>
-        <div class="detail-prop"><div class="l">Sampler</div><div class="v">${esc(h.sampler)||'—'}</div></div>
-        <div class="detail-prop"><div class="l">尺寸</div><div class="v">${h.size||'—'}</div></div>
-      </div>
-      <div class="detail-rating">${axes.map(k=>`<span class="axis"><span class="nm">${axisNm[k]}</span>${'★'.repeat(h.rating&&h.rating[k]||0)}${'☆'.repeat(5-(h.rating&&h.rating[k]||0))}</span>`).join('')}</div>
-      <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:var(--s-2);">故事</div>
-      <div style="font-style:italic;color:var(--text-secondary);margin-bottom:var(--s-4);">${esc(h.story||'(未写故事)')}</div>
-      <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:var(--s-2);">Prompt</div>
-      <div class="detail-prompt">${esc(h.prompt||'')}</div>
-      ${h.notes?`<div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:var(--s-2);">备注</div><div style="color:var(--text-secondary);margin-bottom:var(--s-4);font-size:0.88rem;">${esc(h.notes)}</div>`:''}
-      <div class="detail-actions">
-        <a href="prompt-builder.html?scene=${h.scene}&regen=${h.id}" class="btn btn-primary">🔄 重新生成</a>
-        <a href="prompt-builder.html?scene=${h.scene}&variant=${h.id}" class="btn btn-ghost">✨ 生成变体</a>
-        <button class="btn btn-ghost" onclick="window.__copyPrompt(${h.id})">📋 复制 Prompt</button>
-      </div>
-    `;
-    document.getElementById('detailOverlay').classList.add('open');
-  }
-
-  function closeDetail(){ document.getElementById('detailOverlay').classList.remove('open'); }
-  function copyPrompt(id){ const h=history.find(x=>x.id===id); if(!h||!h.prompt) return; navigator.clipboard.writeText(h.prompt).then(()=>{ flashTemp('📋 已复制'); }); }
-  function flashTemp(msg){
-    let t=document.getElementById('gal-toast');
-    if(!t){ t=document.createElement('div'); t.id='gal-toast'; t.style.cssText='position:fixed;left:50%;bottom:32px;transform:translateX(-50%);z-index:99999;background:var(--bg-surface);border:1px solid var(--accent);color:var(--text-primary);padding:8px 16px;border-radius:8px;font-size:0.85rem;opacity:0;transition:opacity .2s;'; document.body.appendChild(t); }
-    t.textContent=msg; t.style.opacity='1'; clearTimeout(window.__tt); window.__tt=setTimeout(()=>t.style.opacity='0',1400);
-  }
-  function setFavFilter(){ filterFav = !filterFav; render(); }
-
-  window.__openDetail = openDetail;
-  window.__closeDetail = closeDetail;
-  window.__copyPrompt = copyPrompt;
-  window.__setFavFilter = setFavFilter;
-  document.getElementById('detailOverlay').addEventListener('click', function(e){ if(e.target===this) closeDetail(); });
-
-  // boot
-  history = (()=>{ try { return JSON.parse(localStorage.getItem(HIS_KEY))||[]; } catch { return []; } })();
-  Promise.all([
-    fetch('../data/scenes.json').then(r=>r.json()).then(d=>scenes=d).catch(()=>{}),
-    fetch('../data/loras.json').then(r=>r.json()).then(d=>loras=d).catch(()=>{})
-  ]).then(render);
+  function closeDetail(){detailGeneration++;revokeDetail();document.getElementById('detailOverlay').classList.remove('open');document.getElementById('detailCard').innerHTML='';}
+  function copyPrompt(index){const h=history[index];if(h?.prompt)navigator.clipboard.writeText(h.prompt).then(()=>flashTemp('📋 已复制'));}
+  function flashTemp(msg){let t=document.getElementById('gal-toast');if(!t){t=document.createElement('div');t.id='gal-toast';t.style.cssText='position:fixed;left:50%;bottom:32px;transform:translateX(-50%);z-index:99999;background:var(--bg-surface);border:1px solid var(--accent);color:var(--text-primary);padding:8px 16px;border-radius:8px;font-size:.85rem;opacity:0;transition:opacity .2s;';document.body.appendChild(t);}t.textContent=msg;t.style.opacity='1';clearTimeout(window.__tt);window.__tt=setTimeout(()=>t.style.opacity='0',1400);}
+  window.__openDetail=openDetail;window.__closeDetail=closeDetail;window.__copyPrompt=copyPrompt;window.__setFavFilter=function(){filterFav=!filterFav;render();};
+  document.getElementById('detailOverlay').addEventListener('click',function(e){if(e.target===this)closeDetail();});window.addEventListener('pagehide',function(){renderGeneration++;detailGeneration++;revokeCards();revokeDetail();});
+  history=(()=>{try{const raw=JSON.parse(localStorage.getItem(HIS_KEY));return Array.isArray(raw)?raw.filter(h=>h&&typeof h==='object'):[];}catch(e){return[];}})();
+  ensureData().then(render);
 })();
 </script>
 </body>

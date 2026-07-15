@@ -1,7 +1,8 @@
 {
-  "_schema": "Generation History — localStorage key: aics_pb_history. Each entry is one generated image snapshot. Array capped at 30 entries in the UI (see tools/prompt-builder.html).",
-  "_schema_version": 2,
-  "_migration": "loadHistory() runs migrateHistory() on read. Auto-fixes: missing seed→rng, out-of-range seed→clamp [0,2^32-1], rating axes 5×clamp 0..5, missing lora/negative/favorite/notes→defaults. Writes back if changed.",
+  "_schema": "Generation History — localStorage key: aics_pb_history. Metadata array capped at 30 entries; local image Blobs are stored separately in IndexedDB aics_image_store/images.",
+  "_schema_version": 4,
+  "_migration": "loadHistory() runs migrateHistory() on read. v4 adds image_id: missing/invalid values become empty strings. Existing v3 image_url values remain normalized http/https URLs and are not downloaded or converted to Blobs. Older seed, rating, lora, negative, favorite and notes fields keep existing migration rules.",
+  "_image_storage": "Local PNG/JPG/WebP files are stored as Blob records in IndexedDB aics_image_store, object store images. localStorage never stores Blob, Base64 or data URLs. Display priority: image_id Blob, then image_url, then the movie fallback. Deleting history and evicting entries beyond 30 also deletes unreferenced image_id records.",
   "_fields": {
     "id": "number — unique per-entry id (Date.now()); used for regen/variant links",
     "timestamp": "number — ms epoch; fallback to id when missing",
@@ -21,6 +22,8 @@
     "rating": { "face": "0..5", "expression": "0..5", "composition": "0..5", "hands": "0..5", "atmosphere": "0..5" },
     "favorite": "boolean",
     "notes": "string — user notes",
+    "image_id": "string — optional IndexedDB images store key for a locally imported image; empty when absent",
+    "image_url": "string — optional normalized http/https external image URL; retained as compatibility fallback",
     "cfg": "string",
     "steps": "string",
     "sampler": "string",
