@@ -19,7 +19,7 @@
     { id:'character', label:'Character',     href:'tools/character.html',      icon:'👤' },
     { id:'style',     label:'Style',         href:'tools/style.html',          icon:'🎨' },
     { id:'lora',      label:'LoRA',          href:'tools/lora.html',           icon:'🧪' },
-    { id:'docs',      label:'Docs',          href:'docs/philosophy.html',      icon:'📖' }
+    { id:'docs',      label:'Docs',          href:'docs/index.html',           icon:'📖' }
   ];
 
   function depth(){

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>知识库 · AI CG Studio</title>
+<link rel="stylesheet" href="../css/design-system.css?v=4">
+<script src="../tools/nav.js?v=4"></script>
+<script src="../tools/theme.js?v=4"></script>
+<style>
+  .page { max-width: 960px; margin: 0 auto; padding: var(--s-6) var(--s-5); }
+  .nav-back { display: inline-flex; align-items: center; gap: var(--s-2); color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4); }
+  .nav-back:hover { color: var(--accent); }
+  h1.title { font-size: 2.2rem; font-weight: 800; background: linear-gradient(135deg, #E8E8F0 50%, #F06292); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: var(--s-2); }
+  .subtitle { color: var(--text-secondary); margin-bottom: var(--s-7); font-size: 1.05rem; max-width: 640px; }
+
+  .section { margin-bottom: var(--s-7); }
+  .section-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent); background: var(--accent-soft);
+    padding: 3px 10px; border-radius: 20px;
+    margin-bottom: var(--s-3);
+  }
+  .section-tag .num { color: var(--text-muted); font-weight: 600; }
+  .section h2 { font-size: 1.3rem; margin-bottom: var(--s-1); }
+  .section .hint { color: var(--text-muted); font-size: 0.9rem; margin-bottom: var(--s-4); }
+
+  .doc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--s-3); }
+  .doc-card {
+    display: flex; flex-direction: column; gap: var(--s-2);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--r-lg);
+    padding: var(--s-5);
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: border-color var(--t-fast), transform var(--t-fast), box-shadow var(--t-fast);
+  }
+  .doc-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .doc-card .ic { font-size: 1.6rem; }
+  .doc-card .t { font-weight: 700; font-size: 1rem; }
+  .doc-card .d { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; margin: 0; flex: 1; }
+  .doc-card .go { font-size: 0.78rem; color: var(--accent); margin-top: var(--s-1); }
+
+  @media (max-width: 700px) { .page { padding: var(--s-4) var(--s-3); } .doc-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body data-nav="docs">
+
+<nav class="nav"><div class="nav-inner"><div class="nav-brand"><span class="dot"></span> AI CG Studio</div><div class="nav-links"></div></div></nav>
+
+<main class="page">
+  <a href="../index.html" class="nav-back">← 回首页</a>
+
+  <h1 class="title">📖 知识库</h1>
+  <p class="subtitle">8 篇文档,讲透 AI CG Studio 的设计哲学、创作方法与治理规范。所有功能决策在这里对齐。</p>
+
+  <!-- 理念 · 2 篇 -->
+  <section class="section">
+    <span class="section-tag"><span class="num">01</span> 💡 理念 Mindset</span>
+    <h2>为什么这样做</h2>
+    <p class="hint">原点文档。所有功能设计回到这里对齐。</p>
+    <div class="doc-grid">
+      <a href="philosophy.html" class="doc-card card-create card-level-2">
+        <span class="ic">💡</span><span class="t">创作哲学</span>
+        <p class="d">所有功能设计的原点。每个决策回到这里对齐。</p>
+        <span class="go">→ 阅读</span>
+      </a>
+      <a href="worldview.html" class="doc-card card-create card-level-2">
+        <span class="ic">🌍</span><span class="t">世界观</span>
+        <p class="d">角色与世界的关系设定,视觉一致性的根基。</p>
+        <span class="go">→ 阅读</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- 方法 · 4 篇 -->
+  <section class="section">
+    <span class="section-tag"><span class="num">02</span> ⚙️ 方法 Method</span>
+    <h2>怎么做</h2>
+    <p class="hint">创作的具体规范与流程。改动需小心,会直接影响产出。</p>
+    <div class="doc-grid">
+      <a href="art-direction.html" class="doc-card card-create card-level-2">
+        <span class="ic">🎨</span><span class="t">美术风格规范</span>
+        <p class="d">美术风格的统一规范,色调、构图、光照。</p>
+        <span class="go">→ 阅读</span>
+      </a>
+      <a href="prompt-spec.html" class="doc-card card-create card-level-2">
+        <span class="ic">📝</span><span class="t">Prompt 规范</span>
+        <p class="d">Prompt 永远按这个顺序。永远不能乱。</p>
+        <span class="go">→ 阅读</span>
+      </a>
+      <a href="scene-spec.html" class="doc-card card-create card-level-2">
+        <span class="ic">🌸</span><span class="t">Scene 规范</span>
+        <p class="d">Prompt 以后不要编号。Scene 才是编号单位。</p>
+        <span class="go">→ 阅读</span>
+      </a>
+      <a href="tag-standard.html" class="doc-card card-create card-level-2">
+        <span class="ic">🏷</span><span class="t">标签规范</span>
+        <p class="d">每条标签唯一。用户写中文,系统翻译为英文 Prompt。</p>
+        <span class="go">→ 阅读</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- 治理 · 2 篇 -->
+  <section class="section">
+    <span class="section-tag"><span class="num">03</span> ⚖️ 治理 Governance</span>
+    <h2>质量与方向</h2>
+    <p class="hint">入库标准与路线图。决定哪些内容能进、未来去哪。</p>
+    <div class="doc-grid">
+      <a href="quality-standard.html" class="doc-card card-create card-level-2">
+        <span class="ic">⭐</span><span class="t">质量评分</span>
+        <p class="d">每个官方 Scene 都要经过 6 个维度审核。⭐⭐⭐⭐⭐ 才能入库。</p>
+        <span class="go">→ 阅读</span>
+      </a>
+      <a href="roadmap.html" class="doc-card card-create card-level-2">
+        <span class="ic">🗺</span><span class="t">路线图</span>
+        <p class="d">从理念到产品。根据实际使用情况调整。</p>
+        <span class="go">→ 阅读</span>
+      </a>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <p>AI CG Studio · 知识库 · 8 篇文档</p>
+</footer>
+
+</body>
+</html>
