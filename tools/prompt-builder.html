@@ -795,7 +795,7 @@ function highlightScenesByStory(txt) {
   clearTimeout(window.__obSceneHL);
   window.__obSceneHL = setTimeout(() => document.querySelectorAll('.scene-card[data-recommended="1"]').forEach(c => c.dataset.recommended = '0'), 2500);
 }
-function setChar(c, btn) {
+function setChar(c, btn, keepScene) {
   if (state.char === c) return;
   const hadScene = !!state.__sceneId;
   state.char = c;
@@ -805,13 +805,13 @@ function setChar(c, btn) {
     b.style.background = on ? 'var(--accent-soft)' : 'var(--bg-surface)';
     b.style.borderColor = on ? 'var(--accent)' : 'var(--border-soft)';
   });
-  resetSceneAndDecisions();
+  if (!keepScene) resetSceneAndDecisions();
   renderTraits(); renderManualTags();
   markStepDone(2);
   goStep(1);
   highlightCharScenes(c);
   updateLivePreview();
-  if (hadScene) flash('已切换至 ' + (c === 'nene' ? '宁宁' : '夏目') + '，场景已重置');
+  if (!keepScene && hadScene) flash('已切换至 ' + (c === 'nene' ? '宁宁' : '夏目') + '，场景已重置');
   else flash('已切换至 ' + (c === 'nene' ? '宁宁' : '夏目') + '，推荐场景已高亮');
 }
 function highlightCharScenes(c) {
@@ -1015,7 +1015,10 @@ function loadScene(s) {
   state.__sceneId = s.id;
   document.getElementById('storyInput').value = s.story; state.story = s.story;
   const charId = (s.char === 'ayachi_nene' || s.char === 'nene') ? 'nene' : (s.char === 'shiki_natsume' || s.char === 'natsume' ? 'natsume' : (CHARACTER.find(c=>c.id===s.char) ? s.char : 'nene'));
-  setChar(charId);
+  setChar(charId, null, true);
+  state.__sceneId = s.id;
+  document.getElementById('storyInput').value = s.story;
+  state.story = s.story;
   const emoId = s.emotion ? findEmotionId(s.emotion) : null;
   state.selections.emotion = emoId ? [emoId] : [];
   document.querySelectorAll('#chip-emotion .chip-select').forEach(c => c.classList.toggle('selected', state.selections.emotion.includes(c.dataset.id)));
