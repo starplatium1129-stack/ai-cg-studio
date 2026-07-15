@@ -5,27 +5,19 @@
     "category": "校园",
     "story": "放学后，她一直在教室等你，看到你来了眼睛一亮——「すごい！你真的来了！」",
     "char": "nene",
-    "character": [
-      "nene"
-    ],
+    "character": ["nene"],
     "lora": "ayachi_nene_v11",
     "emotion": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
-    "tags": [
-      "school_uniform",
-      "looking_back",
-      "smile"
-    ],
+    "tags": ["school_uniform", "looking_back", "smile"],
     "mature": false,
     "location": "教室",
     "weather": "晴",
     "camera": "半身中景",
     "lighting": "窗光",
-    "usage": [
-      "展示图"
-    ],
+    "usage": ["展示图"],
     "prompt": "1girl,ayachi_nene,school_uniform, looking_back, smile",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
   },
@@ -35,29 +27,19 @@
     "category": "校园",
     "story": "春天，她站在樱花树下等人，远远看到你就踮起脚尖挥手，花瓣落在她猫耳发带上",
     "char": "nene",
-    "character": [
-      "nene"
-    ],
+    "character": ["nene"],
     "lora": "ayachi_nene_v11",
     "emotion": "期待",
     "season": "春",
     "time": "清晨",
     "timeOfDay": "morning",
-    "tags": [
-      "school_uniform",
-      "cherry_blossoms",
-      "looking_at_viewer",
-      "cloying_affection",
-      "eye_contact"
-    ],
+    "tags": ["school_uniform", "cherry_blossoms", "looking_at_viewer", "cloying_affection", "eye_contact"],
     "mature": false,
     "location": "公园",
     "weather": "晴",
     "camera": "半身中景",
     "lighting": "窗光",
-    "usage": [
-      "展示图"
-    ],
+    "usage": ["展示图"],
     "prompt": "1girl,ayachi_nene,school_uniform, cherry_blossoms, looking_at_viewer, cloying_affection, eye_contact",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
   },
@@ -67,68 +49,111 @@
     "category": "节日",
     "story": "被窝里打手游被你抓了个正着，她慌张地把手机塞进枕头「才、才没有在玩！」",
     "char": "nene",
-    "character": [
-      "nene"
-    ],
+    "character": ["nene"],
     "lora": "ayachi_nene_v11",
     "emotion": "害羞",
     "season": "冬",
     "time": "夜晚",
     "timeOfDay": "night",
-    "tags": [
-      "solid_color_pajamas",
-      "bedroom",
-      "night",
-      "looking_at_viewer",
-      "cloying_affection",
-      "eye_contact"
-    ],
+    "tags": ["solid_color_pajamas", "bedroom", "night", "looking_at_viewer", "cloying_affection", "eye_contact"],
     "mature": false,
     "location": "卧室",
     "weather": "晴",
     "camera": "半身中景",
     "lighting": "月光",
-    "usage": [
-      "展示图"
-    ],
+    "usage": ["展示图"],
     "prompt": "1girl,ayachi_nene,(pajamas:1.2), (solid_color:1.1), bedroom, night, looking_at_viewer, cloying_affection, eye_contact",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
   },
   {
     "id": "sc028",
     "title": "婚礼协议：余温重构",
-    "category": "恋爱",
+    "category": "Active_Sync_Scenes",
     "story": "婚礼后的深夜，三人间的契约在余温中重构。她在你耳边低语，草莓甘菊的香气与泪痣的微光重叠。",
     "char": "triad",
-    "character": [
-      "natsume",
-      "nene"
-    ],
+    "character": ["natsume", "nene"],
     "lora": "shiki_natsume_v11, ayachi_nene_v11",
     "emotion": "极致依赖",
     "season": "不限",
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
-      "wedding_dress",
-      "naki-bokuro",
-      "strawberry_chamomile_scent",
-      "expressive_ahoge",
-      "cloying_affection",
-      "interlocked_fingers",
-      "looking_at_viewer",
-      "depth_of_field"
+      "wedding_dress", "naki-bokuro", "strawberry_chamomile_scent", "expressive_ahoge",
+      "cloying_affection", "interlocked_fingers", "looking_at_viewer", "depth_of_field"
     ],
     "mature": true,
     "location": "新房",
     "weather": "静谧",
     "camera": "近景特写",
     "lighting": "暖色烛光",
-    "usage": [
-      "核心CG",
-      "R18"
-    ],
+    "usage": ["核心CG", "R18"],
     "prompt": "2girls, shiki_natsume, ayachi_nene, wedding_dress, naki-bokuro, expressive_ahoge, cloying_affection, interlocked_fingers, looking_at_viewer, extreme_detail, masterpiece, soft_lighting",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+  },
+  {
+    "id": "sc029",
+    "title": "Sensory Overload Sync",
+    "category": "Active_Sync_Scenes",
+    "story": "宁宁的呆毛正根据你的情绪波动实时颤动，这是一种超越语言的同步。",
+    "char": "nene",
+    "character": ["nene"],
+    "lora": "ayachi_nene_v11",
+    "emotion": "Joy Sync",
+    "season": "不限",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "tags": ["expressive_ahoge", "heart_rate_monitor", "sensory_sync", "looking_at_viewer"],
+    "mature": false,
+    "location": "实验室",
+    "weather": "晴",
+    "camera": "中景",
+    "lighting": "明亮蓝光",
+    "usage": ["实验CG"],
+    "prompt": "1girl, ayachi_nene, expressive_ahoge, monitoring equipment, sensory sync, heart rate monitor in background, joy, high energy, {intimacy_intensity}, {sensory_feedback}",
+    "negative": "worst quality, low quality"
+  },
+  {
+    "id": "sc030",
+    "title": "Technical Hysteresis Calibration",
+    "category": "Active_Sync_Scenes",
+    "story": "平时高冷的七绪在深度互动的压力下，维持形象的系统开始崩溃，露出罕见的脆弱与红晕。",
+    "char": "natsume",
+    "character": ["natsume"],
+    "lora": "shiki_natsume_v11",
+    "emotion": "Personality Collapse",
+    "season": "不限",
+    "time": "深夜",
+    "timeOfDay": "night",
+    "tags": ["high_cold_persona", "blushing", "vulnerable", "naki-bokuro", "eye_contact"],
+    "mature": false,
+    "location": "私人研究室",
+    "weather": "静谧",
+    "camera": "近景特写",
+    "lighting": "阴影强烈",
+    "usage": ["实验CG"],
+    "prompt": "1girl, shiki_natsume, naki-bokuro, blushing, messed up uniform, vulnerable expression, personality collapse, {intimacy_intensity}, {interaction_target}",
+    "negative": "worst quality, low quality"
+  },
+  {
+    "id": "sc031",
+    "title": "Triad Wedding Protocol: Infinite Loop",
+    "category": "Active_Sync_Scenes",
+    "story": "三人契约在无限循环中升华，心跳同步仪显示出完美的重合曲线。草莓与甘菊的混合香气中，婚礼礼服的白光刺眼。",
+    "char": "triad",
+    "character": ["natsume", "nene"],
+    "lora": "shiki_natsume_v11, ayachi_nene_v11",
+    "emotion": "Absolute Dependency",
+    "season": "不限",
+    "time": "不限",
+    "timeOfDay": "all_day",
+    "tags": ["wedding_dress", "heart_rate_sync", "infinite_loop", "cloying_affection", "triad_bond"],
+    "mature": true,
+    "location": "仪式厅",
+    "weather": "神圣",
+    "camera": "全景",
+    "lighting": "光芒万丈",
+    "usage": ["协议核心"],
+    "prompt": "2girls, shiki_natsume, ayachi_nene, wedding_dress, cloying_affection, heart rate synchronization, digital artifacts, infinite loop visual, {intimacy_intensity}, {sensory_feedback}",
+    "negative": "worst quality, low quality"
   }
 ]
