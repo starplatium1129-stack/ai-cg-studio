@@ -130,6 +130,17 @@
   .home-section-head .hint { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
   .home-section-head .link { font-size: 0.85rem; flex-shrink: 0; }
 
+  /* 5 段区块标识 */
+  .section-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent); background: var(--accent-soft);
+    padding: 3px 10px; border-radius: 20px;
+    margin-bottom: var(--s-2);
+  }
+  .section-tag .num { color: var(--text-muted); font-weight: 600; }
+
   /* ---------- Tools ---------- */
   .tools-grid { display: grid; grid-template-columns: 1fr; gap: var(--s-3); }
   @media (min-width: 768px) {
@@ -232,28 +243,85 @@
   </div>
 </section>
 
-<!-- Quick Entry -->
+<!-- 5 段导航 · 创作 / 资产 / 作品 / 知识库 -->
 <section class="container home-section">
-  <div class="home-section-head"><h2>快速入口</h2></div>
+  <div class="home-section-head">
+    <div>
+      <span class="section-tag"><span class="num">01</span> ✨ 创作 Create</span>
+      <h2>开始创作</h2>
+      <p class="hint">从角色、风格到导演台,一步步把故事变成画面。</p>
+    </div>
+  </div>
   <div class="tools-grid">
-    <a href="tools/character.html" class="tool-card">
+    <a href="tools/character.html" class="tool-card card-create card-level-2">
       <span class="ic">👤</span><span class="t">创建角色</span>
       <span class="d">设定视觉 DNA、性格、绑定 LoRA。</span>
       <span class="go">→ 打开</span>
     </a>
-    <a href="tools/scene-explorer.html" class="tool-card">
-      <span class="ic">🎬</span><span class="t">设计场景</span>
-      <span class="d">挑情绪、镜头、光照，组合你的画面。</span>
+    <a href="tools/style.html" class="tool-card card-create card-level-2">
+      <span class="ic">🎨</span><span class="t">风格指南</span>
+      <span class="d">色调、配色、情绪板的统一规范。</span>
       <span class="go">→ 打开</span>
     </a>
-    <a href="tools/prompt-builder.html" class="tool-card">
-      <span class="ic">✨</span><span class="t">生成 Prompt</span>
-      <span class="d">导演工作台，自动组装完整 Prompt。</span>
+    <a href="tools/prompt-builder.html" class="tool-card card-create card-level-2">
+      <span class="ic">✨</span><span class="t">导演工作台</span>
+      <span class="d">组合角色与场景,自动生成完整 Prompt。</span>
       <span class="go">→ 打开</span>
     </a>
-    <a href="tools/lora.html" class="tool-card">
-      <span class="ic">🧪</span><span class="t">管理 LoRA</span>
+  </div>
+</section>
+
+<section class="container home-section">
+  <div class="home-section-head">
+    <div>
+      <span class="section-tag"><span class="num">02</span> 🧪 资产 Assets</span>
+      <h2>资产库</h2>
+      <p class="hint">LoRA 模型与训练数据,视觉一致性的根基。</p>
+    </div>
+  </div>
+  <div class="tools-grid">
+    <a href="tools/lora.html" class="tool-card card-create card-level-2">
+      <span class="ic">🧪</span><span class="t">LoRA 管理</span>
       <span class="d">查看模型、权重、推荐场景。</span>
+      <span class="go">→ 打开</span>
+    </a>
+  </div>
+</section>
+
+<section class="container home-section">
+  <div class="home-section-head">
+    <div>
+      <span class="section-tag"><span class="num">03</span> 🎬 作品 Works</span>
+      <h2>作品集</h2>
+      <p class="hint">浏览场景库,看自己画过的每一张 CG。</p>
+    </div>
+  </div>
+  <div class="tools-grid">
+    <a href="tools/scene-explorer.html" class="tool-card card-create card-level-2">
+      <span class="ic">🌸</span><span class="t">场景库</span>
+      <span class="d">70+ 官方场景,情绪/镜头/光照完整 prefill。</span>
+      <span class="go">→ 打开</span>
+    </a>
+    <a href="tools/gallery.html" class="tool-card card-create card-level-2">
+      <span class="ic">🎞</span><span class="t">我的作品</span>
+      <span class="d">创作历史 + 本地图片导入。</span>
+      <span class="go">→ 打开</span>
+    </a>
+  </div>
+</section>
+
+<section class="container home-section">
+  <div class="home-section-head">
+    <div>
+      <span class="section-tag"><span class="num">04</span> 📖 知识库 Knowledge</span>
+      <h2>知识库</h2>
+      <p class="hint">设计理念、创作方法论。</p>
+    </div>
+  </div>
+  <div class="tools-grid">
+    <a href="docs/philosophy.html" class="tool-card card-create card-level-2">
+      <span class="ic">📖</span><span class="t">设计理念</span>
+      <span class="d">AI CG Studio 的设计哲学与创作流。</span>
       <span class="go">→ 打开</span>
     </a>
   </div>
