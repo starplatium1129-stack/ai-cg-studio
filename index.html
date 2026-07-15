@@ -5,9 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI CG Studio · 今天,我想讲一个什么故事?</title>
 <link rel="stylesheet" href="css/design-system.css?v=2">
-<link rel="stylesheet" href="css/scene-card.css?v=2">
 <script src="tools/nav.js?v=2"></script>
-<script src="tools/scene-card.js"></script>
+<script src="tools/image-store.js?v=1"></script>
 <script src="tools/theme.js?v=2"></script>
 <style>
   /* ============================================================
@@ -165,7 +164,22 @@
     color: var(--text-muted);
   }
 
-  /* ---------- Empty state ---------- */
+  /* ---------- Recent Works ---------- */
+  .recent-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--s-4); }
+  .recent-card {
+    background: var(--bg-surface); border: 1px solid var(--border-soft);
+    border-radius: var(--r-lg); overflow: hidden; cursor: pointer;
+    transition: border-color var(--t-fast), transform var(--t-fast);
+    text-decoration: none; color: var(--text-primary);
+  }
+  .recent-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .recent-cover { aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; background: var(--bg-deep); font-size: 2rem; position: relative; overflow: hidden; }
+  .recent-cover img { width: 100%; height: 100%; object-fit: cover; }
+  .recent-cover .placeholder { color: var(--text-muted); }
+  .recent-body { padding: var(--s-3); }
+  .recent-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 2px; }
+  .recent-meta { font-size: 0.72rem; color: var(--text-muted); }
+  @media (max-width: 600px) { .recent-grid { grid-template-columns: 1fr 1fr; } }
   .empty {
     text-align: center; padding: var(--s-7) var(--s-5);
     background: var(--bg-surface);
@@ -197,16 +211,16 @@
   <div class="home-hero">
     <div class="hero-copy">
       <span class="eyebrow">🌸 AI CG Studio</span>
-      <h1 class="hero-title">今天,<br>我想讲一个<br><span class="accent">什么故事?</span></h1>
-      <p class="hero-sub">不保存 Prompt,保存「那个瞬间」。<br>选一个 Scene,像导演一样定情绪、镜头、光照,Prompt 自动来。</p>
+      <h1 class="hero-title">AI CG Studio</h1>
+      <p class="hero-sub">从想法，到角色，到画面。</p>
       <div class="ctas">
         <a href="tools/prompt-builder.html" class="cta cta-primary"><span class="ic">✨</span> 开始创作</a>
-        <p class="cta-hint">30 秒出图 · 不写 Prompt</p>
-        <a href="tools/scene-explorer.html" class="cta cta-ghost"><span class="ic">🌸</span> 浏览 Scene</a>
-        <a href="tools/gallery.html" class="cta cta-ghost"><span class="ic">🎞</span> 查看作品</a>
+        <a href="tools/gallery.html" class="cta cta-ghost"><span class="ic">🎞</span> 浏览作品</a>
       </div>
       <div class="chain">
         <div class="chain-step"><span class="ic">📖</span> 故事 <span class="en">Story</span></div>
+        <span class="chain-arrow">→</span>
+        <div class="chain-step"><span class="ic">👤</span> 角色 <span class="en">Character</span></div>
         <span class="chain-arrow">→</span>
         <div class="chain-step"><span class="ic">🎬</span> 场景 <span class="en">Scene</span></div>
         <span class="chain-arrow">→</span>
@@ -215,55 +229,82 @@
         <div class="chain-step final"><span class="ic">🖼</span> 画面 <span class="en">Image</span></div>
       </div>
     </div>
-    <aside class="hero-strip" id="heroStrip">
-      <div class="strip-label"><span class="dot"></span> 今日精选 · 真实场景</div>
-      <div class="strip-scroll" id="stripScroll"></div>
-    </aside>
   </div>
 </section>
 
-<!-- Ready CTA -->
-<section class="container home-start">
-  <div class="start-card">
-    <h2>准备好了吗?</h2>
-    <p>不需要写 Prompt,只需要一个故事。选一个场景,当一回导演。</p>
-    <a href="tools/prompt-builder.html" class="cta cta-primary"><span class="ic">✨</span> 开始我的第一个场景</a>
+<!-- Quick Entry -->
+<section class="container home-section">
+  <div class="home-section-head"><h2>快速入口</h2></div>
+  <div class="tools-grid">
+    <a href="tools/character.html" class="tool-card">
+      <span class="ic">👤</span><span class="t">创建角色</span>
+      <span class="d">设定视觉 DNA、性格、绑定 LoRA。</span>
+      <span class="go">→ 打开</span>
+    </a>
+    <a href="tools/scene-explorer.html" class="tool-card">
+      <span class="ic">🎬</span><span class="t">设计场景</span>
+      <span class="d">挑情绪、镜头、光照，组合你的画面。</span>
+      <span class="go">→ 打开</span>
+    </a>
+    <a href="tools/prompt-builder.html" class="tool-card">
+      <span class="ic">✨</span><span class="t">生成 Prompt</span>
+      <span class="d">导演工作台，自动组装完整 Prompt。</span>
+      <span class="go">→ 打开</span>
+    </a>
+    <a href="tools/lora.html" class="tool-card">
+      <span class="ic">🧪</span><span class="t">管理 LoRA</span>
+      <span class="d">查看模型、权重、推荐场景。</span>
+      <span class="go">→ 打开</span>
+    </a>
   </div>
+</section>
+
+<!-- Recent Works -->
+<section class="container home-section">
+  <div class="home-section-head"><h2>最近创作</h2><a href="tools/gallery.html" class="link">查看全部 →</a></div>
+  <div id="recentWorks" class="recent-grid"></div>
 </section>
 
 <footer class="footer">
   <p>AI CG Studio · 像导演一样创作每一个瞬间</p>
-  <p class="muted mt-4">Prompt 描述的是图片。Scene 描述的是瞬间。</p>
 </footer>
 <script>
-/* ============================================================
-   Home — driven by data/scenes.json + localStorage aics_pb_history
-   ============================================================ */
 (function(){
-  // ---- render scene strip (Hero) ----
-  function renderStrip(scenes){
-    const el = document.getElementById('stripScroll');
-    if(!scenes || !scenes.length){ el.innerHTML = '<span class="s-title" style="color:var(--text-muted)">暂无场景</span>'; return; }
-    el.innerHTML = '';
-    scenes.slice(0, 10).forEach(s=>{
-      el.appendChild(createSceneCard(s, {
-        mode: 'strip',
-        onPick: function(){ window.location.href = 'tools/prompt-builder.html?scene=' + encodeURIComponent(s.id); }
-      }));
+  const HIS_KEY = 'aics_pb_history';
+  function esc(v){ return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function charName(id){ return id==='nene'?'宁宁':(id==='natsume'?'夏目':(id||'·')); }
+  function fmtDate(ts){ return new Date(ts).toLocaleDateString('zh-CN',{month:'short',day:'numeric'}); }
+
+  function renderRecent(){
+    const el = document.getElementById('recentWorks');
+    let history = [];
+    try{ history = JSON.parse(localStorage.getItem(HIS_KEY)) || []; }catch(e){}
+    if(!history.length){
+      el.innerHTML = '<div class="empty" style="grid-column:1/-1"><div class="ic">🎞</div><p>还没有创作记录。去导演台生成第一张 CG。</p><a href="tools/prompt-builder.html" class="btn btn-primary">🎬 开始创作</a></div>';
+      return;
+    }
+    const recent = history.slice(0, 3);
+    el.innerHTML = recent.map(h=>{
+      const seed = h.seed ? ' · seed ' + h.seed : '';
+      return `<a class="recent-card" href="tools/prompt-builder.html?regen=${encodeURIComponent(h.id)}">
+        <div class="recent-cover" data-image-id="${esc(h.image_id)}"><span class="placeholder">🎬</span></div>
+        <div class="recent-body"><div class="recent-title">${esc(h.sceneTitle||h.scene||'未命名')}</div>
+        <div class="recent-meta">${esc(charName(h.character))} · ${fmtDate(h.timestamp)}${seed}</div></div>
+      </a>`;
+    }).join('');
+    recent.forEach(h=>{
+      if(!h.image_id) return;
+      AICGImageStore.get(h.image_id).then(function(blob){
+        if(!blob) return;
+        const cover = el.querySelector('[data-image-id="'+h.image_id+'"]');
+        if(!cover) return;
+        const url = URL.createObjectURL(blob);
+        cover.innerHTML = '<img src="'+url+'" alt="">';
+      }).catch(function(){});
     });
   }
 
-  // ---- boot ----
-  fetch('data/scenes.json')
-    .then(r=>r.json())
-    .then(scenes=>{
-      window.__scenes__ = scenes;
-      renderStrip(scenes);
-    })
-    .catch(err=>{
-      console.warn('scenes load fail', err);
-      document.getElementById('stripScroll').innerHTML = '<span class="s-title" style="color:var(--text-muted)">⚠️ 场景数据加载失败,请用 localhost 访问。</span>';
-    });
+  renderRecent();
 })();
 </script>
 </body>
