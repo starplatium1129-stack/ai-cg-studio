@@ -2,111 +2,73 @@
   {
     "id": "NENE_001",
     "name": "绫地宁宁",
-    "alias": [
-      "Ayachi Nene",
-      "Nene",
-      "宁宁"
-    ],
+    "alias": ["Ayachi Nene", "Nene", "宁宁"],
     "type": "heroine",
+    "icon": "🌸",
     "visual_dna": {
-      "hair": "",
-      "hair_color": "",
-      "eyes": "",
+      "hair": "浅金长发 · 侧马尾",
+      "hair_color": "浅金",
+      "eyes": "琥珀金瞳",
+      "hairstyle": "长直发 · 侧马尾",
+      "uniform": "深色学院制服",
+      "expression": "元气笑容 · 害羞泛红",
       "style": "succubus anime girl",
-      "signature": "cat ear headband"
+      "signature": "猫耳发带"
     },
-    "personality": [
-      "energetic",
-      "catchphrase sugoi",
-      "secretly a succubus",
-      "easily embarrassed",
-      "popular at school"
-    ],
-    "likes": [
-      "cute things",
-      "human culture",
-      "otaku",
-      "collecting heart shards"
-    ],
+    "personality": ["元气", "口头禅 sugoi", "容易害羞", "校园人气", "隐瞒魅魔身份"],
+    "likes": ["可爱小物", "人类文化", "御宅话题", "收集心之碎片"],
+    "classic_cg": {
+      "title": "樱花树下的约定",
+      "description": "樱花落在猫耳发带上，她踮脚挥手，笑容亮过春日光线。"
+    },
+    "palette": ["樱花粉", "奶油白", "晴空蓝"],
+    "weather": ["春日晴", "樱花微风", "黄昏暖光"],
     "speech": "energetic, casual, says sugoi frequently, very shy about her succubus side",
     "source": "柚子社 魔女の夜宴 Succubus Feast",
     "lora": {
       "name": "ayachi_nene_v11",
       "weight": 0.8,
-      "recommended_scene": [
-        "sc001",
-        "sc002",
-        "sc003",
-        "sc007",
-        "sc008",
-        "sc010"
-      ]
+      "recommended_scene": ["sc001", "sc002", "sc003", "sc007", "sc008", "sc010"]
     },
     "traits": [
-      {
-        "tag": "hair_ribbon",
-        "label": "猫耳发带"
-      },
-      {
-        "tag": "hair_ribbon",
-        "label": "发带"
-      }
+      {"tag": "hair_ribbon", "label": "猫耳发带"},
+      {"tag": "hair_ribbon", "label": "发带"}
     ]
   },
   {
     "id": "NAT_001",
     "name": "四季夏目",
-    "alias": [
-      "Shiki Natsume",
-      "Natsume",
-      "夏目"
-    ],
+    "alias": ["Shiki Natsume", "Natsume", "夏目"],
     "type": "heroine",
+    "icon": "🍂",
     "visual_dna": {
-      "hair": "",
-      "hair_color": "",
-      "eyes": "",
+      "hair": "紫黑长发 · 齐刘海",
+      "hair_color": "紫黑",
+      "eyes": "紫罗兰瞳",
+      "hairstyle": "长直发 · 齐刘海",
+      "uniform": "咖啡馆女仆制服",
+      "expression": "冷淡侧目 · 被逗后慌乱",
       "style": "cafe waitress tsundere anime girl",
-      "signature": "mole under eye (teardrop)"
+      "signature": "左眼下泪痣"
     },
-    "personality": [
-      "tsundere",
-      "called emotionless card-rejecting girl",
-      "not good at bright smiles",
-      "sweet tooth",
-      "sickly since childhood",
-      "cafe is her life"
-    ],
-    "likes": [
-      "cafe work",
-      "sweet food",
-      "maid outfit",
-      "quiet bars",
-      "hospitalized often"
-    ],
+    "personality": ["傲娇", "嘴硬心软", "不擅长灿烂笑容", "爱甜食", "咖啡馆至上"],
+    "likes": ["咖啡馆工作", "甜食", "女仆装", "安静酒吧"],
+    "classic_cg": {
+      "title": "闭店后的咖啡馆",
+      "description": "暖灯映过吧台，她放下杯子回眸，泪痣与紫发留住安静余韵。"
+    },
+    "palette": ["紫罗兰", "焦糖棕", "暖金"],
+    "weather": ["雨夜", "阴天", "室内暖灯"],
     "speech": "cold at first, flustered easily, teasing when drunk, embarrassed after",
     "source": "柚子社 星光咖啡馆与死神之蝶 Café Stella",
     "lora": {
       "name": "shiki_natsume_v11",
       "weight": 0.8,
-      "recommended_scene": [
-        "sc005",
-        "sc011",
-        "sc013",
-        "sc016",
-        "sc018",
-        "sc029"
-      ]
+      "recommended_scene": ["sc005", "sc011", "sc013", "sc016", "sc018", "sc029"]
     },
     "traits": [
-      {
-        "tag": "mole_under_eye",
-        "label": "泪痣"
-      },
-      {
-        "tag": "elegant_face",
-        "label": "优雅面容"
-      }
+      {"tag": "mole_under_eye", "label": "泪痣"},
+      {"tag": "elegant_face", "label": "优雅面容"}
     ]
   }
 ]

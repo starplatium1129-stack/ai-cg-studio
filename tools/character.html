@@ -5,84 +5,90 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Character · AI CG Studio</title>
 <link rel="stylesheet" href="../css/design-system.css">
+<link rel="stylesheet" href="../css/scene-card.css">
 <script src="nav.js"></script>
 <script src="theme.js"></script>
 <style>
-  .page { max-width: 1000px; margin: 0 auto; padding: var(--s-6) var(--s-5); }
-  .nav-back { display: inline-flex; align-items: center; gap: var(--s-2); color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4); }
+  .page { max-width: 1120px; margin: 0 auto; padding: var(--s-6) var(--s-5); }
+  .nav-back { display: inline-flex; align-items: center; gap: var(--s-2); color: var(--text-secondary); font-size: .9rem; margin-bottom: var(--s-4); }
   .nav-back:hover { color: var(--accent); }
   h1.title { font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, #E8E8F0 50%, #F06292); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: var(--s-2); }
-  .subtitle { color: var(--text-secondary); margin-bottom: var(--s-6); }
-  .char-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: var(--s-5); }
-  .char-card { background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-xl); padding: var(--s-5); }
-  .char-top { display: flex; align-items: center; gap: var(--s-3); margin-bottom: var(--s-4); }
-  .char-avatar { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--mood-tension)); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; flex-shrink: 0; }
-  .char-name { font-size: 1.3rem; font-weight: 800; }
-  .char-en { font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent); }
-  .char-section { margin-bottom: var(--s-3); }
-  .char-section .lab { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: var(--s-1); }
-  .char-dna { display: flex; gap: var(--s-2); flex-wrap: wrap; }
-  .char-dna .chip { padding: 3px 10px; background: var(--bg-elevated); border-radius: 12px; font-size: 0.78rem; color: var(--text-secondary); }
-  .char-traits { display: flex; gap: var(--s-2); flex-wrap: wrap; }
-  .trait { display: inline-flex; align-items: center; gap: 4px; padding: 4px 12px; background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: 20px; font-size: 0.82rem; }
-  .char-personality { display: flex; gap: 6px; flex-wrap: wrap; }
-  .char-personality .p { padding: 2px 10px; background: var(--bg-deep); border-radius: 12px; font-size: 0.78rem; color: var(--text-secondary); }
-  .char-scenes { display: flex; gap: 6px; flex-wrap: wrap; }
-  .char-scenes .s { padding: 2px 10px; background: var(--bg-deep); border-radius: 12px; font-size: 0.78rem; color: var(--accent); text-decoration: none; }
-  .char-scenes .s:hover { background: var(--accent-soft); }
-  .char-lora { font-size: 0.82rem; color: var(--text-secondary); }
+  .subtitle { color: var(--text-secondary); margin-bottom: var(--s-5); }
+  .character-tabs { display: flex; gap: var(--s-2); flex-wrap: wrap; margin-bottom: var(--s-5); }
+  .character-tab { border: 1px solid var(--border-soft); background: var(--bg-surface); border-radius: 999px; color: var(--text-secondary); cursor: pointer; padding: 8px 14px; font: inherit; font-weight: 700; }
+  .character-tab:hover, .character-tab.active { color: var(--text-inverse); background: var(--accent); border-color: var(--accent); }
+  .character-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .character-hero { display: grid; grid-template-columns: minmax(220px, .75fr) minmax(0, 2fr); gap: var(--s-5); background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-xl); padding: var(--s-5); margin-bottom: var(--s-5); }
+  .portrait { min-height: 220px; border-radius: var(--r-lg); display: flex; flex-direction: column; justify-content: space-between; padding: var(--s-4); color: #fff; background: linear-gradient(145deg, #F06292, #6A1B9A); }
+  .portrait.natsume { background: linear-gradient(145deg, #6A1B9A, #5D4037); }
+  .portrait-icon { font-size: 4.5rem; line-height: 1; }
+  .portrait-source { font-size: .78rem; line-height: 1.5; opacity: .86; }
+  .character-name { font-size: 1.8rem; font-weight: 800; }
+  .character-alias { color: var(--accent); font: .8rem var(--font-mono); margin-top: var(--s-1); }
+  .character-desc { color: var(--text-secondary); line-height: 1.7; margin: var(--s-3) 0 var(--s-4); }
+  .detail-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); }
+  .detail-section { background: var(--bg-deep); border-radius: var(--r-md); padding: var(--s-3); }
+  .detail-section.wide { grid-column: 1 / -1; }
+  .lab { color: var(--text-muted); font-size: .7rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; margin-bottom: var(--s-2); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { border-radius: 999px; background: var(--bg-elevated); color: var(--text-secondary); font-size: .78rem; padding: 3px 9px; }
+  .trait { border: 1px solid var(--border-soft); background: var(--bg-surface); color: var(--text-primary); }
+  .cg-card { padding: var(--s-4); border-radius: var(--r-lg); background: linear-gradient(135deg, var(--accent-soft), var(--bg-elevated)); border: 1px solid var(--border-soft); }
+  .cg-title { font-size: 1.05rem; font-weight: 800; margin-bottom: var(--s-1); }
+  .cg-story { color: var(--text-secondary); font-size: .88rem; line-height: 1.65; }
+  .recommend-title { font-size: 1.2rem; margin: 0 0 var(--s-3); }
+  .recommend-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: var(--s-3); }
+  .char-lora { color: var(--text-secondary); font-size: .85rem; }
   .char-lora code { color: var(--accent); font-family: var(--font-mono); }
-
-  @media (max-width: 768px) {
-    .page { padding: var(--s-4) var(--s-3); }
-    .char-top { flex-direction: column; gap: var(--s-2); align-items: flex-start; }
-  }
-  @media (max-width: 480px) {
-    .char-name { font-size: 1.3rem; }
-  }
+  .empty { padding: var(--s-6); text-align: center; color: var(--text-muted); }
+  @media (max-width: 700px) { .page { padding: var(--s-4) var(--s-3); } .character-hero { grid-template-columns: 1fr; } .portrait { min-height: 150px; } .detail-grid { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
-<nav class="nav">
-  <div class="nav-inner">
-    <div class="nav-brand"><span class="dot"></span> AI CG Studio</div>
-    <div class="nav-links"></div>
-  </div>
-</nav>
-
-<article class="page">
+<nav class="nav"><div class="nav-inner"><div class="nav-brand"><span class="dot"></span> AI CG Studio</div><div class="nav-links"></div></div></nav>
+<main class="page">
   <a href="../index.html" class="nav-back">← 回首页</a>
-  <h1 class="title">👤 Character Library</h1>
-  <p class="subtitle">你的角色卡。每个角色拥有视觉 DNA、性格特质、绑定 LoRA 与推荐场景 — 在 Director 中选择即自动加载。</p>
-  <div class="char-grid" id="charGrid"></div>
-</article>
-
+  <h1 class="title">Character Studio</h1>
+  <p class="subtitle">选择角色，锁定视觉 DNA 与氛围，再从适配场景开始创作。</p>
+  <div class="character-tabs" id="characterTabs" role="tablist" aria-label="切换角色"></div>
+  <section id="characterCenter" aria-live="polite"></section>
+</main>
 <footer class="footer"><p>AI CG Studio · Character as the center of every Scene</p></footer>
-
+<script src="scene-card.js"></script>
 <script>
 (function(){
-  var grid = document.getElementById('charGrid');
-  function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-  fetch('../data/characters.json')
-    .then(function(r){ return r.json(); })
-    .then(function(chars){
-      grid.innerHTML = chars.map(function(c){
+  var tabs = document.getElementById('characterTabs');
+  var center = document.getElementById('characterCenter');
+  function esc(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function chips(items, extra){ return (items || []).map(function(item){ return '<span class="chip '+(extra || '')+'">'+esc(typeof item === 'string' ? item : item.label)+'</span>'; }).join(''); }
+  Promise.all([fetch('../data/characters.json').then(function(r){ return r.json(); }), fetch('../data/scenes.json').then(function(r){ return r.json(); })])
+    .then(function(data){
+      var characters = data[0], scenes = data[1], current = characters[0].id;
+      function render(){
+        var c = characters.filter(function(item){ return item.id === current; })[0];
         var dna = c.visual_dna || {};
-        var traits = (c.traits||[]).map(function(t){ return '<span class="trait">'+esc(t.icon||'✨')+' '+esc(t.label)+'</span>'; }).join('');
-        var pers = (c.personality||[]).map(function(p){ return '<span class="p">'+esc(p)+'</span>'; }).join('');
-        var scenes = (c.lora && c.lora.recommended_scene || []).map(function(s){ return '<a class="s" href="prompt-builder.html?scene='+esc(s)+'">'+esc(s)+'</a>'; }).join('');
-        var lora = c.lora ? '<div class="char-lora">LoRA: <code>'+esc(c.lora.name)+'</code> · 权重 '+esc(c.lora.weight)+'</div>' : '';
-        return '<div class="char-card">' +
-          '<div class="char-top"><div class="char-avatar">'+(c.id==='NENE_001'?'🌸':'🍂')+'</div><div><div class="char-name">'+esc(c.name)+'</div><div class="char-en">'+esc((c.alias||[]).join(' / '))+'</div></div></div>' +
-          '<div class="char-section"><div class="lab">Visual DNA</div><div class="char-dna"><span class="chip">'+esc(dna.hair||'')+'</span><span class="chip">'+esc(dna.eyes||'')+'</span><span class="chip">'+esc(dna.style||'')+'</span></div></div>' +
-          '<div class="char-section"><div class="lab">Traits</div><div class="char-traits">'+traits+'</div></div>' +
-          '<div class="char-section"><div class="lab">Personality</div><div class="char-personality">'+pers+'</div></div>' +
-          (lora ? '<div class="char-section"><div class="lab">LoRA</div>'+lora+'</div>':'') +
-          (scenes ? '<div class="char-section"><div class="lab">推荐 Scene</div><div class="char-scenes">'+scenes+'</div></div>':'') +
-        '</div>';
-      }).join('');
+        var recommendations = (c.lora && c.lora.recommended_scene || []).map(function(id){ return scenes.filter(function(scene){ return scene.id === id; })[0]; }).filter(Boolean);
+        tabs.innerHTML = characters.map(function(item){ return '<button class="character-tab '+(item.id === current ? 'active' : '')+'" role="tab" aria-selected="'+(item.id === current)+'" data-id="'+esc(item.id)+'">'+esc(item.icon)+' '+esc(item.name)+'</button>'; }).join('');
+        center.innerHTML = '<section class="character-hero">'+
+          '<div class="portrait '+(c.id === 'NAT_001' ? 'natsume' : '')+'"><span class="portrait-icon">'+esc(c.icon)+'</span><span class="portrait-source">'+esc(c.source)+'</span></div>'+
+          '<div><h2 class="character-name">'+esc(c.name)+'</h2><div class="character-alias">'+esc((c.alias || []).join(' / '))+'</div><p class="character-desc">'+esc(c.speech)+'</p>'+
+          '<div class="detail-grid">'+
+            '<section class="detail-section wide"><div class="lab">Visual DNA</div><div class="chips">'+chips([dna.hair, dna.eyes, dna.hairstyle, dna.uniform, dna.expression, dna.signature])+'</div></section>'+
+            '<section class="detail-section"><div class="lab">性格标签</div><div class="chips">'+chips(c.personality, 'trait')+'</div></section>'+
+            '<section class="detail-section"><div class="lab">喜欢的事物</div><div class="chips">'+chips(c.likes)+'</div></section>'+
+            '<section class="detail-section"><div class="lab">推荐色彩</div><div class="chips">'+chips(c.palette)+'</div></section>'+
+            '<section class="detail-section"><div class="lab">推荐天气</div><div class="chips">'+chips(c.weather)+'</div></section>'+
+            '<section class="detail-section wide"><div class="lab">LoRA</div><div class="char-lora"><code>'+esc(c.lora.name)+'</code> · 权重 '+esc(c.lora.weight)+'</div></section>'+
+          '</div></div></section>'+
+          '<section class="cg-card"><div class="lab">Classic CG</div><div class="cg-title">'+esc(c.classic_cg.title)+'</div><div class="cg-story">'+esc(c.classic_cg.description)+'</div></section>'+
+          '<section><h2 class="recommend-title">推荐 Scene · '+recommendations.length+' 条</h2><div class="recommend-grid" id="recommendGrid"></div></section>';
+        tabs.querySelectorAll('[data-id]').forEach(function(tab){ tab.addEventListener('click', function(){ current = tab.getAttribute('data-id'); render(); }); });
+        var grid = document.getElementById('recommendGrid');
+        recommendations.forEach(function(scene){ grid.appendChild(window.createSceneCard(scene, { actions: [{ label: '在 Director 打开', primary: true, href: 'prompt-builder.html?scene=' + encodeURIComponent(scene.id) }] })); });
+      }
+      render();
     })
-    .catch(function(e){ grid.innerHTML = '<p class="muted">⚠️ 角色数据加载失败:'+e.message+'</p>'; });
+    .catch(function(error){ center.innerHTML = '<p class="empty">角色数据加载失败：'+esc(error.message)+'</p>'; });
 })();
 </script>
 </body>
