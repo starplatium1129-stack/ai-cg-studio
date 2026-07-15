@@ -16,5 +16,11 @@
     "name": "Full Body Scene",
     "positive": "masterpiece, best quality, {character}, full_body, {scene}, {camera}, {lighting}, environmental, wide angle, anime illustration",
     "negative": "worst quality, low quality, bad anatomy, cropped, bad hands, extra fingers"
+  },
+  {
+    "id": "P004",
+    "name": "Multi-Dimensional Sensory Mapping",
+    "positive": "masterpiece, best quality, {character}, {scene}, intimacy intensity: {intimacy_intensity}, interaction target: {interaction_target}, sensory feedback: {sensory_feedback}, extreme detail, expressive facial features, immersive atmosphere, cinematic lighting, anime illustration",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
   }
 ]
