@@ -19,6 +19,7 @@
   .toolbar .filter { padding: 6px 14px; border: 1px solid var(--border-soft); background: var(--bg-surface); border-radius: 20px; font-size: 0.82rem; cursor: pointer; color: var(--text-secondary); transition: all var(--t-fast); }
   .toolbar .filter.active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
   .toolbar .count { margin-left: auto; font-size: 0.85rem; color: var(--text-muted); }
+  #galleryProjectFilter { background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-sm); color:var(--text-primary); padding:6px 8px; font-size:0.82rem; outline:none; }
 
   .timeline-group { margin-bottom: var(--s-6); }
   .timeline-head { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: var(--s-3); padding-left: var(--s-2); border-left: 2px solid var(--accent); }
@@ -98,8 +99,11 @@
 <script>
 (function(){
   const HIS_KEY='aics_pb_history';
-  let scenes=[],loras=[],history=[],filterFav=false,renderGeneration=0,detailGeneration=0,detailObjectUrl='';
+  const PRJ_KEY='aics_projects';
+  let scenes=[],loras=[],history=[],filterFav=false,filterProject='',renderGeneration=0,detailGeneration=0,detailObjectUrl='';
   const cardObjectUrls=new Set();
+  function loadProjects(){try{var raw=JSON.parse(localStorage.getItem(PRJ_KEY))||[];return Array.isArray(raw)?raw:[];}catch(e){return[];}}
+  function getProject(id){return loadProjects().find(function(p){return p.id===id;});}
   function esc(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
   function escAttr(v){return esc(v).replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
   function safeImageUrl(v){if(typeof v!=='string'||!v.trim())return'';try{const u=new URL(v.trim(),location.href);return u.protocol==='http:'||u.protocol==='https:'?u.href:'';}catch(e){return'';}}
@@ -134,8 +138,11 @@
   function ensureData(){return scenesLoaded?Promise.all([Promise.resolve(scenes),Promise.resolve(loras)]):Promise.all([fetch('../data/scenes.json').then(r=>r.json()).then(d=>{scenes=d;}).catch(()=>{}),fetch('../data/loras.json').then(r=>r.json()).then(d=>{loras=d;}).catch(()=>{})]).then(function(){scenesLoaded=true;});}
   function render(){
     const generation=++renderGeneration;revokeCards();const toolbar=document.getElementById('toolbar'),total=history.length,favCount=history.filter(h=>h.favorite).length;
-    toolbar.innerHTML=`<button class="filter ${filterFav?'active':''}" onclick="window.__setFavFilter()">💜 收藏 ${favCount}</button><span class="count">${filterFav?favCount+' / ':''}${total} 条记录</span>`;
-    const source=filterFav?history.filter(h=>h.favorite):history,gal=document.getElementById('gallery');
+    var projects=loadProjects();var projSel='<select id="galleryProjectFilter" onchange="filterProject=this.value;render();"><option value="">全部项目</option>'+projects.map(function(p){return '<option value="'+p.id+'"'+(p.id===filterProject?' selected':'')+'>'+esc(p.title)+'</option>';}).join('')+'</select>';
+    toolbar.innerHTML=`<button class="filter ${filterFav?'active':''}" onclick="window.__setFavFilter()">💜 收藏 ${favCount}</button>`+projSel+`<span class="count">${filterFav?favCount+' / ':''}${total} 条记录</span>`;
+    var source=filterFav?history.filter(h=>h.favorite):history;
+    if(filterProject){var prj=getProject(filterProject);if(prj)source=source.filter(function(h){return prj.history_ids.indexOf(h.id)>=0;});}
+    const gal=document.getElementById('gallery');
     if(!source.length){gal.innerHTML=filterFav?'<div class="empty"><div class="ic">💜</div><p>还没有收藏。在导演台评价时开启「推荐收藏」。</p></div>':'<div class="empty"><div class="ic">🎞</div><p>还没有创作记录。去导演台生成第一张 CG。</p><a href="prompt-builder.html" class="btn btn-primary">🎬 开始创作</a></div>';return;}
     const byIndex=new Map();source.forEach(function(h,i){byIndex.set(h,i);});const groups=grouped(source);
     gal.innerHTML=groups.map(g=>`<div class="timeline-group"><div class="timeline-head">${g.key}</div><div class="gallery-grid">${g.items.map(h=>card(h,byIndex.get(h))).join('')}</div></div>`).join('');

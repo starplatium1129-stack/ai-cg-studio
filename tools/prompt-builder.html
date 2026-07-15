@@ -289,6 +289,10 @@
     transition: color var(--t-fast);
   }
   .guide-bar.warn { color: var(--danger); border-left-color: var(--danger); }
+  .project-bar { display:flex; align-items:center; gap:var(--s-2); margin-bottom:var(--s-4); padding:var(--s-3); background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-md); }
+  .project-bar label { font-size:0.82rem; color:var(--text-muted); }
+  #projectSelect { flex:1; background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-sm); color:var(--text-primary); padding:6px 8px; font-size:0.85rem; outline:none; }
+  #projectSelect:focus { border-color:var(--accent); }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
     .monitor-rec .dot, .review-star { animation: none; transition: none; }
@@ -315,6 +319,15 @@
 
   <!-- ============ 引导条 ============ -->
   <div class="guide-bar" id="guideBar">写一个故事，或选一张场景卡</div>
+
+  <!-- ============ 项目选择器 ============ -->
+  <div class="project-bar">
+    <label>项目</label>
+    <select id="projectSelect" onchange="switchProject(this.value)">
+      <option value="">— 无项目 —</option>
+    </select>
+    <button class="btn btn-ghost" id="projectNewBtn" onclick="createProject()" aria-label="新建项目">+ 新建</button>
+  </div>
 
   <!-- ============ 三栏工作台 ============ -->
   <div class="director-workspace">
@@ -1398,7 +1411,52 @@ function loadHistory(){var raw=[];try{raw=JSON.parse(localStorage.getItem(HIS_KE
 function nextVersion(history,scene,character){const same=history.filter(h=>h.scene===scene&&h.character===character);if(!same.length)return{version:1,parent_id:null};const latest=same.reduce((a,b)=>(b.version||0)>(a.version||0)?b:a);return{version:(latest.version||0)+1,parent_id:latest.id};}
 function baseEntry(){
   const sel=state.selections,sceneTitle=(window.__scenes__||[]).find(s=>s.id===state.__sceneId);var seed=Number(window.__lastSeed__);if(!Number.isFinite(seed))seed=Math.floor(Math.random()*4294967295);seed=Math.max(0,Math.min(4294967295,Math.floor(seed)));
-  return {id:Date.now(),timestamp:Date.now(),scene:state.__sceneId||null,sceneTitle:sceneTitle?sceneTitle.title:null,character:state.char,lora:LORA_ID[state.char]||null,emotion:sel.emotion.slice(),shot:sel.shot,lighting:sel.lighting,composition:sel.composition,colorMood:state.colorMood,story:state.story,prompt:getPlainPrompt(),negative:NEGATIVE,cfg:document.getElementById('cfg')?.value||'',steps:document.getElementById('steps')?.value||'',sampler:document.getElementById('sampler')?.value||'',size:document.getElementById('size')?.value||'',seed:seed,rating:{face:0,expression:0,composition:0,hands:0,atmosphere:0},favorite:false,notes:'',image_id:'',image_url:'',version:1,parent_id:null};
+  return {id:Date.now(),timestamp:Date.now(),scene:state.__sceneId||null,sceneTitle:sceneTitle?sceneTitle.title:null,character:state.char,lora:LORA_ID[state.char]||null,emotion:sel.emotion.slice(),shot:sel.shot,lighting:sel.lighting,composition:sel.composition,colorMood:state.colorMood,story:state.story,prompt:getPlainPrompt(),negative:NEGATIVE,cfg:document.getElementById('cfg')?.value||'',steps:document.getElementById('steps')?.value||'',sampler:document.getElementById('sampler')?.value||'',size:document.getElementById('size')?.value||'',seed:seed,rating:{face:0,expression:0,composition:0,hands:0,atmosphere:0},favorite:false,notes:'',image_id:'',image_url:'',version:1,parent_id:null,project:state.__projectId||''};
+}
+
+const PRJ_KEY='aics_projects';
+function esc(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function loadProjects(){try{var raw=JSON.parse(localStorage.getItem(PRJ_KEY))||[];return Array.isArray(raw)?raw:[];}catch(e){return[];}}
+function saveProjects(list){localStorage.setItem(PRJ_KEY,JSON.stringify(list));}
+function getProject(id){return loadProjects().find(function(p){return p.id===id;});}
+function refreshProjectSelect(){
+  var sel=document.getElementById('projectSelect');if(!sel)return;
+  var projects=loadProjects();var cur=state.__projectId||'';
+  sel.innerHTML='<option value="">— 无项目 —</option>'+projects.map(function(p){return '<option value="'+p.id+'"'+(p.id===cur?' selected':'')+'>'+esc(p.title)+'</option>';}).join('');
+}
+function switchProject(id){
+  state.__projectId=id;
+  if(id){var prj=getProject(id);if(prj)flash('切换到项目：'+prj.title);}
+  updateGuideBar();
+}
+function createProject(){
+  var title=prompt('项目名称','');if(!title||!title.trim())return;
+  var id='prj_'+Date.now();
+  var prj={id:id,title:title.trim(),character:state.char,cover:'',createdAt:Date.now(),updatedAt:Date.now(),history_ids:[]};
+  var projects=loadProjects();projects.push(prj);saveProjects(projects);
+  state.__projectId=id;refreshProjectSelect();updateGuideBar();flash('已创建项目：'+prj.title);
+}
+function addHistoryToProject(projectId,entryId){
+  var prj=getProject(projectId);if(!prj)return;
+  if(prj.history_ids.indexOf(entryId)<0)prj.history_ids.push(entryId);
+  prj.updatedAt=Date.now();
+  var projects=loadProjects().map(function(p){return p.id===prj.id?prj:p;});
+  saveProjects(projects);
+}
+function removeHistoryFromProject(projectId,entryId){
+  var prj=getProject(projectId);if(!prj)return;
+  prj.history_ids=prj.history_ids.filter(function(x){return x!==entryId;});
+  prj.updatedAt=Date.now();
+  var projects=loadProjects().map(function(p){return p.id===prj.id?prj:p;});
+  saveProjects(projects);
+}
+function deleteProject(){
+  var id=state.__projectId;if(!id)return;
+  var prj=getProject(id);if(!prj)return;
+  if(!confirm('删除项目「'+prj.title+'」？历史条目不会被删除。'))return;
+  var projects=loadProjects().filter(function(p){return p.id!==id;});
+  saveProjects(projects);
+  state.__projectId='';refreshProjectSelect();updateGuideBar();flash('已删除项目');
 }
 function unreferencedImageIds(entries,kept){var refs=new Set(kept.map(h=>h.image_id).filter(Boolean));return entries.map(h=>h.image_id).filter(id=>id&&!refs.has(id));}
 async function cleanupImages(entries,kept){var ids=unreferencedImageIds(entries,kept);if(ids.length)await AICGImageStore.deleteMany(ids);}
@@ -1414,13 +1472,14 @@ async function commitHistoryEntry(entry){
   localStorage.setItem(HIS_KEY,JSON.stringify(kept));
   state.history=kept;
   renderHistory();
+  if(entry.project)addHistoryToProject(entry.project,entry.id);
   cleanupImages(evicted,kept).catch(function(e){flash('记录已保存，旧图片清理失败');});
 }
 async function saveHistory(){const entry=baseEntry(),v=nextVersion(state.history,entry.scene,entry.character);entry.version=v.version;entry.parent_id=v.parent_id;try{await commitHistoryEntry(entry);flash('💾 已保存');}catch(e){flash('保存失败，请检查浏览器存储空间');}}
 async function saveHistoryWithRating(rating,favorite,notes,imageUrl,imageId){const entry=baseEntry(),v=nextVersion(state.history,entry.scene,entry.character);entry.version=v.version;entry.parent_id=v.parent_id;entry.rating=rating;entry.favorite=!!favorite;entry.notes=notes||'';entry.image_id=imageId||'';entry.image_url=normalizeImageUrl(imageUrl);await commitHistoryEntry(entry);}
 function renderHistory(){const list=document.getElementById('historyList');document.getElementById('hisCount').textContent=state.history.length;if(!state.history.length){list.innerHTML='<div class="history-empty">尚无记录。每次点击「保存」生成一条快照。</div>';return;}list.innerHTML=state.history.map(h=>{const avg=h.rating?Math.round((h.rating.face+h.rating.expression+h.rating.composition+h.rating.hands+h.rating.atmosphere)/5):0;return `<div class="history-item"><div class="history-text" title="${escapeHtml(h.prompt)}">${escapeHtml(h.prompt)}</div><div class="history-meta">${h.sceneTitle||h.scene||'—'} · ${h.character} · v${h.version||1} · seed ${h.seed||'—'}</div><div class="history-meta">${'★'.repeat(avg)}${'☆'.repeat(5-avg)} ${h.favorite?'💜':''}</div><div class="history-actions"><button onclick="loadHistoryId(${h.id})">载入</button><button onclick="copyHistoryId(${h.id})">复制</button><button onclick="deleteHistoryId(${h.id})">×</button></div></div>`;}).join('');}
 function loadHistoryId(id){const h=state.history.find(x=>x.id===id);if(h)restoreFromEntry(h,false);} function copyHistoryId(id){const h=state.history.find(x=>x.id===id);if(h)navigator.clipboard.writeText(h.prompt||'').then(()=>flash('📋 已复制'));}
-async function deleteHistoryId(id){var removed=state.history.filter(h=>h.id===id),kept=state.history.filter(h=>h.id!==id);try{localStorage.setItem(HIS_KEY,JSON.stringify(kept));}catch(e){flash('删除失败，请检查浏览器存储空间');return;}state.history=kept;renderHistory();cleanupImages(removed,kept).catch(function(e){flash('记录已删除，图片清理失败');});}
+async function deleteHistoryId(id){var removed=state.history.filter(h=>h.id===id);var entry=removed[0];var prjId=entry&&entry.project;var kept=state.history.filter(h=>h.id!==id);try{localStorage.setItem(HIS_KEY,JSON.stringify(kept));}catch(e){flash('删除失败，请检查浏览器存储空间');return;}state.history=kept;renderHistory();if(prjId)removeHistoryFromProject(prjId,id);cleanupImages(removed,kept).catch(function(e){flash('记录已删除，图片清理失败');});}
 
 // ========== TRAIN ==========
 function toggleTrain() { const c = document.getElementById('trainContent'); const b = document.querySelector('.toggle-btn'); c.classList.toggle('open'); b.classList.toggle('open'); }
@@ -1457,6 +1516,7 @@ async function submitReview(){if(reviewState.submitting)return;reviewState.notes
 document.getElementById('reviewOverlay').addEventListener('click',function(e){if(e.target===this)closeReview();});window.addEventListener('pagehide',revokeReviewPreview);
 
 loadData();
+refreshProjectSelect();
 const OB_KEY = 'aics_pb_onboarded';
 const OB_STEPS = [
   { sel: '#stepScene', title: '选一张场景卡 = 一键种子', sub: '自动填故事/情绪/光照' },

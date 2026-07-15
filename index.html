@@ -271,9 +271,12 @@
 <script>
 (function(){
   const HIS_KEY = 'aics_pb_history';
+  const PRJ_KEY='aics_projects';
   function esc(v){ return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
   function charName(id){ return id==='nene'?'宁宁':(id==='natsume'?'夏目':(id||'·')); }
   function fmtDate(ts){ return new Date(ts).toLocaleDateString('zh-CN',{month:'short',day:'numeric'}); }
+  function loadProjects(){try{var raw=JSON.parse(localStorage.getItem(PRJ_KEY))||[];return Array.isArray(raw)?raw:[];}catch(e){return[];}}
+  function getProject(id){return loadProjects().find(function(p){return p.id===id;});}
 
   function renderRecent(){
     const el = document.getElementById('recentWorks');
@@ -289,7 +292,7 @@
       return `<a class="recent-card" href="tools/prompt-builder.html?regen=${encodeURIComponent(h.id)}">
         <div class="recent-cover" data-image-id="${esc(h.image_id)}"><span class="placeholder">🎬</span></div>
         <div class="recent-body"><div class="recent-title">${esc(h.sceneTitle||h.scene||'未命名')}</div>
-        <div class="recent-meta">${esc(charName(h.character))} · ${fmtDate(h.timestamp)}${seed}</div></div>
+        <div class="recent-meta">${esc(charName(h.character))} · ${fmtDate(h.timestamp)}${seed}${h.project?(function(){var p=getProject(h.project);return p?" · "+esc(p.title):"";}()):""}</div></div>
       </a>`;
     }).join('');
     recent.forEach(h=>{

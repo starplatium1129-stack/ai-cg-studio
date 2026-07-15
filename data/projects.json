@@ -1,0 +1,23 @@
+{
+  "_schema": "Project Workspace — localStorage key: aics_projects. Each project groups Character/Scene/Prompt/Gallery under a creative umbrella.",
+  "_fields": {
+    "id": "string — unique project id (prj_<timestamp>)",
+    "title": "string — project display name",
+    "character": "string — primary character key (nene/natsume)",
+    "cover": "string — optional cover image_id from IndexedDB",
+    "createdAt": "number — ms epoch",
+    "updatedAt": "number — ms epoch, updated on every save",
+    "history_ids": "number[] — ids of history entries belonging to this project"
+  },
+  "projects": [
+    {
+      "id": "prj_demo_nene",
+      "title": "魔女的夜宴-绫地宁宁",
+      "character": "nene",
+      "cover": "",
+      "createdAt": 1718000000000,
+      "updatedAt": 1719000000000,
+      "history_ids": []
+    }
+  ]
+}
