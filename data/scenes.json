@@ -585,7 +585,10 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
-      "casual_clothes"
+      "costume",
+      "backstage",
+      "nervous",
+      "holding_script"
     ],
     "mature": false,
     "location": null,
@@ -595,7 +598,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,shiki_natsume,casual_clothes",
+    "prompt": "1girl,shiki_natsume,costume, backstage, curtain, nervous, holding_script, looking_away",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
   },
   {
@@ -3753,14 +3756,12 @@
   {
     "id": "sc123",
     "title": "冷着脸说帮你补习",
-    "cat": "日常",
     "story": "她坐在对面摊开课本,面无表情讲了两道题,发现你盯着她就用书挡住脸「…听题别看脸」",
     "char": "natsume",
     "character": [
       "natsume"
     ],
     "lora": "shiki_natsume_v11",
-    "emo": "serious",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -3789,14 +3790,12 @@
   {
     "id": "sc124",
     "title": "喝醉后抱着你肩膀说喜欢",
-    "cat": "恋爱",
     "story": "平时高冷的她三杯甜酒下肚,突然把头靠在你肩「…我说了喜欢,你自己听的」",
     "char": "natsume",
     "character": [
       "natsume"
     ],
     "lora": "shiki_natsume_v11",
-    "emo": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -3825,14 +3824,12 @@
   {
     "id": "sc125",
     "title": "雨天一把伞",
-    "cat": "日常",
     "story": "放学暴雨她把唯一的伞塞给你「…只是别感冒传染我」自己淋雨跑,你追上去拽住她手腕她脸红到耳朵",
     "char": "natsume",
     "character": [
       "natsume"
     ],
     "lora": "shiki_natsume_v11",
-    "emo": "紧张",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -3843,7 +3840,8 @@
       "standing",
       "blush",
       "looking_away",
-      "wet"
+      "wet",
+      "school_uniform"
     ],
     "mature": false,
     "location": "school",
@@ -3854,21 +3852,19 @@
       "展示图"
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
-    "prompt": "1girl,shiki_natsume,school, rain, umbrella, standing, blush, looking_away, wet",
+    "prompt": "1girl,shiki_natsume,school, rain, umbrella, standing, blush, looking_away, wet, school_uniform",
     "category": "校园",
     "emotion": "羞怯"
   },
   {
     "id": "sc126",
     "title": "告白后躲在储物柜后面",
-    "cat": "恋爱",
     "story": "她告白后转身就走,发现你跟过来就躲到储物柜后面「…别过来让我一个人」",
     "char": "natsume",
     "character": [
       "natsume"
     ],
     "lora": "shiki_natsume_v11",
-    "emo": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -3896,14 +3892,12 @@
   {
     "id": "sc127",
     "title": "试体温时抓住你袖口",
-    "cat": "日常",
     "story": "感冒试体温她皱眉看着温度计,你靠近时突然抓住你袖口「…只是刚好抽筋」",
     "char": "natsume",
     "character": [
       "natsume"
     ],
     "lora": "shiki_natsume_v11",
-    "emo": "失落",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -3932,14 +3926,12 @@
   {
     "id": "sc128",
     "title": "喝醉后的次日「我没说什么」",
-    "cat": "恋爱",
     "story": "昨晚她醉后说了很多告白,第二天见面她面无表情「…我什么都不记得」耳朵却红了",
     "char": "natsume",
     "character": [
       "natsume"
     ],
     "lora": "shiki_natsume_v11",
-    "emo": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -3967,14 +3959,12 @@
   {
     "id": "sc129",
     "title": "做饭时让别偷看厨房",
-    "cat": "日常",
     "story": "厨房她穿着围裙做料理,察觉你在偷看就把门关上「…料理要保密,」十分钟后小声「好了可以进来了」",
     "char": "natsume",
     "character": [
       "natsume"
     ],
     "lora": "shiki_natsume_v11",
-    "emo": "幸福",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -4002,14 +3992,12 @@
   {
     "id": "sc130",
     "title": "被夸猫耳可爱",
-    "cat": "日常",
     "story": "她在整理书架,你随口说「你戴猫耳好可爱」,她整个人从脖子红到耳朵「可、可爱什么!这只是市售的普通发箍!」就跑了",
     "char": "nene",
     "character": [
       "nene"
     ],
     "lora": "ayachi_nene_v11",
-    "emo": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -4037,14 +4025,12 @@
   {
     "id": "sc131",
     "title": "魅魔尾巴被摸",
-    "cat": "恋爱",
     "story": "你第一次摸她藏着的尾巴尖,她整个人弹起来「那里不行…比被看到更…」脸埋进枕头说不出完整话",
     "char": "nene",
     "character": [
       "nene"
     ],
     "lora": "ayachi_nene_v11",
-    "emo": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -4072,14 +4058,12 @@
   {
     "id": "sc132",
     "title": "心跳加速",
-    "cat": "恋爱",
     "story": "图书馆她靠着你手臂翻书,魔女体质突然发作,你把脸凑近闻了闻「你是不是在发情」她整个人冒烟躲进书架后面",
     "char": "nene",
     "character": [
       "nene"
     ],
     "lora": "ayachi_nene_v11",
-    "emo": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -4107,14 +4091,12 @@
   {
     "id": "sc133",
     "title": "被叫「魅魔前辈」",
-    "cat": "日常",
     "story": "学妹叫了她一声「宁宁前辈」,她条件反射回头,猫耳发带歪了都没发觉,被看到就用书挡住脸「不要一直盯着看」",
     "char": "nene",
     "character": [
       "nene"
     ],
     "lora": "ayachi_nene_v11",
-    "emo": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -4142,14 +4124,12 @@
   {
     "id": "sc134",
     "title": "误触开关",
-    "cat": "日常",
     "story": "她手里的游戏手柄滑落砸到肚子「哎」一声,正好触发桌上的自慰器开关,发出震动声,她尖叫着把它甩飞,脸红得像煮熟的虾",
     "char": "nene",
     "character": [
       "nene"
     ],
     "lora": "ayachi_nene_v11",
-    "emo": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -4177,14 +4157,12 @@
   {
     "id": "sc135",
     "title": "害羞的告白",
-    "cat": "恋爱",
     "story": "情人节她塞给你一盒巧克力「义理义理!」说完就跑了,绕了一圈又回来小声「…本命也可以啦,你这个笨蛋」",
     "char": "nene",
     "character": [
       "nene"
     ],
     "lora": "ayachi_nene_v11",
-    "emo": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -4212,14 +4190,12 @@
   {
     "id": "sc136",
     "title": "被叫「枣子姐」",
-    "cat": "日常",
     "story": "你叫她「枣子姐」,她没回头但耳朵红了,走了一步才回头「…谁准你叫那个外号的」",
     "char": "natsume",
     "character": [
       "natsume"
     ],
     "lora": "shiki_natsume_v11",
-    "emo": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -4246,14 +4222,12 @@
   {
     "id": "sc137",
     "title": "醉酒告白次日",
-    "cat": "恋爱",
     "story": "你复述昨晚她说过的告白,她面无表情「我不记得」但耳朵红到滴血,你指了指她她就转身「…证据不足」",
     "char": "natsume",
     "character": [
       "natsume"
     ],
     "lora": "shiki_natsume_v11",
-    "emo": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -4280,14 +4254,12 @@
   {
     "id": "sc138",
     "title": "看到爱情电影",
-    "cat": "日常",
     "story": "咖啡馆放送爱情片,女主角告白时你看了她一眼,她假装喝咖啡但杯子在抖「…只是代入剧情」",
     "char": "natsume",
     "character": [
       "natsume"
     ],
     "lora": "shiki_natsume_v11",
-    "emo": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -4314,14 +4286,12 @@
   {
     "id": "sc139",
     "title": "试穿女仆装被抓",
-    "cat": "日常",
     "story": "她试穿新女仆装还没拉好拉链,推门就发现你在门口,立刻门关上「等、等三十秒!」",
     "char": "natsume",
     "character": [
       "natsume"
     ],
     "lora": "shiki_natsume_v11",
-    "emo": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -4349,14 +4319,12 @@
   {
     "id": "sc140",
     "title": "做饭被夸好吃",
-    "cat": "日常",
     "story": "你吃了她做的戚风蛋糕说「好吃」,她低头切盘子边缘「…只做了两人份,你那份不算」实际做了四人份",
     "char": "natsume",
     "character": [
       "natsume"
     ],
     "lora": "shiki_natsume_v11",
-    "emo": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -4384,14 +4352,12 @@
   {
     "id": "sc141",
     "title": "病号害羞",
-    "cat": "日常",
     "story": "住院你帮她削苹果,果皮不断,她说「…给我」手不小心碰到就缩回去,脸红到不敢看你",
     "char": "natsume",
     "character": [
       "natsume"
     ],
     "lora": "shiki_natsume_v11",
-    "emo": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -4419,14 +4385,12 @@
   {
     "id": "sc142",
     "title": "打哈欠的宁宁",
-    "cat": "日常",
     "story": "午后她趴在课桌上打哈欠,眼角挤出泪花,嘴巴张开的样子让你心脏漏一拍「…你在看什么啦」",
     "char": "nene",
     "character": [
       "nene"
     ],
     "lora": "ayachi_nene_v11",
-    "emo": "困倦",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -4454,14 +4418,12 @@
   {
     "id": "sc143",
     "title": "靠在你肩上睡着",
-    "cat": "日常",
     "story": "电车里她靠着你的肩睡着了,呼吸轻轻扫过你的脖子,你不敢动怕弄醒她",
     "char": "nene",
     "character": [
       "nene"
     ],
     "lora": "ayachi_nene_v11",
-    "emo": "幸福",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -4488,14 +4450,12 @@
   {
     "id": "sc144",
     "title": "弯腰捡东西",
-    "cat": "日常",
     "story": "她弯腰捡掉落的笔,领口微微打开,你慌忙移开视线,她抬头就抓到你在偷看「…色狼」",
     "char": "nene",
     "character": [
       "nene"
     ],
     "lora": "ayachi_nene_v11",
-    "emo": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -4522,14 +4482,12 @@
   {
     "id": "sc145",
     "title": "向你跑来的宁宁",
-    "cat": "日常",
     "story": "她远远看到你就跑过来,裙摆飞扬,笑容比阳光还耀眼,跳到你面前「想你了!」",
     "char": "nene",
     "character": [
       "nene"
     ],
     "lora": "ayachi_nene_v11",
-    "emo": "开心",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -4556,14 +4514,12 @@
   {
     "id": "sc146",
     "title": "害羞的舔唇",
-    "cat": "恋爱",
     "story": "她说话前先舔了下嘴唇,你想入非非,她察觉后用书挡住嘴「…你在乱想什么啦」",
     "char": "nene",
     "character": [
       "nene"
     ],
     "lora": "ayachi_nene_v11",
-    "emo": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -4590,14 +4546,12 @@
   {
     "id": "sc147",
     "title": "在海里湿透的身影",
-    "cat": "日常",
     "story": "海风掀起她的裙摆,她按住裙角瞪你「别看!」但你自己心脏已经快停了",
     "char": "nene",
     "character": [
       "nene"
     ],
     "lora": "ayachi_nene_v11",
-    "emo": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -4625,14 +4579,12 @@
   {
     "id": "sc148",
     "title": "夜里的呢喃",
-    "cat": "恋爱",
     "story": "黑暗里她贴着你耳朵说「…你知道吗,我每天都在收集你的碎片」,呼出的气让你全身发麻",
     "char": "nene",
     "character": [
       "nene"
     ],
     "lora": "ayachi_nene_v11",
-    "emo": "诱惑",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -4659,14 +4611,12 @@
   {
     "id": "sc149",
     "title": "湿发洗澡后",
-    "cat": "日常",
     "story": "她洗完澡头发滴水,只裹浴巾就走出来,看到你就把浴巾往上拉「!你就不能先敲门」",
     "char": "nene",
     "character": [
       "nene"
     ],
     "lora": "ayachi_nene_v11",
-    "emo": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -4693,14 +4643,12 @@
   {
     "id": "sc150",
     "title": "难得的微笑",
-    "cat": "日常",
     "story": "她低头看漫画,主角告白时嘴角不自觉弯了一下,你看到就忘了呼吸「…你看到了?」她立刻收起笑容",
     "char": "natsume",
     "character": [
       "natsume"
     ],
     "lora": "shiki_natsume_v11",
-    "emo": "幸福",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -4710,7 +4658,8 @@
       "reading",
       "smile",
       "looking_away",
-      "book"
+      "book",
+      "school_uniform"
     ],
     "mature": false,
     "location": "school",
@@ -4721,21 +4670,19 @@
       "展示图"
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
-    "prompt": "1girl,shiki_natsume,school, sitting, reading, smile, looking_away, book",
+    "prompt": "1girl,shiki_natsume,school, sitting, reading, smile, looking_away, book, school_uniform",
     "category": "校园",
     "emotion": "恋爱"
   },
   {
     "id": "sc151",
     "title": "膝枕的夏目",
-    "cat": "恋爱",
     "story": "她躺在你膝上,难得安静,你低头看她,她睫毛轻轻颤动「…不要一直盯着我看」声音比平时软很多",
     "char": "natsume",
     "character": [
       "natsume"
     ],
     "lora": "shiki_natsume_v11",
-    "emo": "幸福",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -4762,14 +4709,12 @@
   {
     "id": "sc152",
     "title": "帮你整理领带",
-    "cat": "日常",
     "story": "她踮起脚尖帮你整理领带,脸离你十公分,呼吸扫过你的下巴,完成后退后半步「…歪了不好看」",
     "char": "natsume",
     "character": [
       "natsume"
     ],
     "lora": "shiki_natsume_v11",
-    "emo": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -4797,14 +4742,12 @@
   {
     "id": "sc153",
     "title": "喝醉后软化的夏目",
-    "cat": "恋爱",
     "story": "喝醉的她少了平时的冷,搂着你的手臂说「今天特别想见你」,完全不知道这句话能让心脏停跳",
     "char": "natsume",
     "character": [
       "natsume"
     ],
     "lora": "shiki_natsume_v11",
-    "emo": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -4832,14 +4775,12 @@
   {
     "id": "sc154",
     "title": "睡衣夏目的锁骨",
-    "cat": "日常",
     "story": "她穿睡衣来应门,领口微微敞开,锁骨在灯光下像月牙,她发现你看就拉高领口「…进来吧」声音很小",
     "char": "natsume",
     "character": [
       "natsume"
     ],
     "lora": "shiki_natsume_v11",
-    "emo": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -4866,14 +4807,12 @@
   {
     "id": "sc155",
     "title": "罕见的主动牵手",
-    "cat": "日常",
     "story": "她第一次主动牵你的手,指尖微凉,手心却在出汗,一路都没说话,你心跳全程120",
     "char": "natsume",
     "character": [
       "natsume"
     ],
     "lora": "shiki_natsume_v11",
-    "emo": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -4901,14 +4840,12 @@
   {
     "id": "sc156",
     "title": "摘下眼镜的样子",
-    "cat": "日常",
     "story": "她摘下眼镜揉鼻梁,刘海散落露出完整的脸,你才发现她眼睛这么好看,她戴回眼镜瞪你「…在看什么」",
     "char": "natsume",
     "character": [
       "natsume"
     ],
     "lora": "shiki_natsume_v11",
-    "emo": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -4935,14 +4872,12 @@
   {
     "id": "sc157",
     "title": "病弱的夏目",
-    "cat": "日常",
     "story": "她躺在床上输液,脸色苍白却对你笑「…只是小感冒」,你想亲她额头却怕弄疼她",
     "char": "natsume",
     "character": [
       "natsume"
     ],
     "lora": "shiki_natsume_v11",
-    "emo": "幸福",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -4950,8 +4885,8 @@
       "hospital",
       "bed",
       "sick",
-      "looking_at_viewers",
-      "微笑"
+      "looking_at_viewer",
+      "smile"
     ],
     "mature": true,
     "location": "hospital",
@@ -4962,21 +4897,19 @@
       "展示图"
     ],
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
-    "prompt": "1girl,shiki_natsume,hospital, bed, sick, looking_at_viewers, 微笑",
+    "prompt": "1girl,shiki_natsume,hospital, bed, sick, looking_at_viewer, smile",
     "category": "R15",
     "emotion": "开心"
   },
   {
     "id": "sc158",
     "title": "魅魔装的完全体",
-    "cat": "恋爱",
     "story": "她穿上完整魔女装站在你面前,布料少得可怜,蝙蝠尾巴紧张地卷起来「…转过去!三十秒!」",
     "char": "nene",
     "character": [
       "nene"
     ],
     "lora": "ayachi_nene_v11",
-    "emo": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -5004,14 +4937,12 @@
   {
     "id": "sc159",
     "title": "泳衣的背扣",
-    "cat": "恋爱",
     "story": "泳衣背扣怎么也扣不好,她背对你求助「…帮我弄一下」露背泳衣让你大脑宕机",
     "char": "nene",
     "character": [
       "nene"
     ],
     "lora": "ayachi_nene_v11",
-    "emo": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -5038,14 +4969,12 @@
   {
     "id": "sc160",
     "title": "猫娘女仆",
-    "cat": "日常",
     "story": "她穿女仆装+猫耳发带「宁宁酱喵~」,这套组合的杀伤力让你当场红到耳朵",
     "char": "nene",
     "character": [
       "nene"
     ],
     "lora": "ayachi_nene_v11",
-    "emo": "开心",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -5073,14 +5002,12 @@
   {
     "id": "sc161",
     "title": "湿身衬衫",
-    "cat": "日常",
     "story": "突如其来的暴雨把她衬衫浇透,白色布料贴在身上什么都看到,她双手抱胸「别看!」但你自己已经说不出话",
     "char": "nene",
     "character": [
       "nene"
     ],
     "lora": "ayachi_nene_v11",
-    "emo": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -5108,14 +5035,12 @@
   {
     "id": "sc162",
     "title": "睡衣没扣的两颗扣子",
-    "cat": "恋爱",
     "story": "她穿着你的大号T恤,领口大得能看到锁骨和更深的地方,「…扣子都掉了」但她没打算扣起来",
     "char": "nene",
     "character": [
       "nene"
     ],
     "lora": "ayachi_nene_v11",
-    "emo": "诱惑",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -5142,14 +5067,12 @@
   {
     "id": "sc163",
     "title": "体操服摔倒",
-    "cat": "日常",
     "story": "体育课她摔倒在地,体操服蹭上去露出腰侧,你伸手想拉她就看到大片肌肤,两个人都红了脸",
     "char": "nene",
     "character": [
       "nene"
     ],
     "lora": "ayachi_nene_v11",
-    "emo": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -5176,14 +5099,12 @@
   {
     "id": "sc164",
     "title": "温泉浴巾滑落",
-    "cat": "恋爱",
     "story": "温泉浴巾突然松开,她来不及抓住就被看个正着,尖叫一声蹲下去「变态!」",
     "char": "nene",
     "character": [
       "nene"
     ],
     "lora": "ayachi_nene_v11",
-    "emo": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -5210,14 +5131,12 @@
   {
     "id": "sc165",
     "title": "运动bra外露",
-    "cat": "日常",
     "story": "她锻炼完直接把外套脱了只剩运动bra,发现你在看就甩外套打你「…男生都是这种眼神吗!」",
     "char": "nene",
     "character": [
       "nene"
     ],
     "lora": "ayachi_nene_v11",
-    "emo": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -5244,14 +5163,12 @@
   {
     "id": "sc166",
     "title": "迷你裙弯腰",
-    "cat": "恋爱",
     "story": "迷你裙弯腰捡东西,从你的视角度能看到绝对领域,她起身发现你僵住就瞪了一眼「在看哪里啦!」",
     "char": "nene",
     "character": [
       "nene"
     ],
     "lora": "ayachi_nene_v11",
-    "emo": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -5278,14 +5195,12 @@
   {
     "id": "sc167",
     "title": "女仆装的夏目",
-    "cat": "恋爱",
     "story": "她说「这是个人爱好」,转身穿上黑白蕾丝女仆装,蝴蝶结系带勒出腰线「…不要盯着超过三秒」",
     "char": "natsume",
     "character": [
       "natsume"
     ],
     "lora": "shiki_natsume_v11",
-    "emo": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -5313,14 +5228,12 @@
   {
     "id": "sc168",
     "title": "脱围裙那一刻",
-    "cat": "恋爱",
     "story": "咖啡馆打烊,她解下围裙的瞬间,衬衫领口松开两颗扣子,你才发觉她今天的打扮和平时不一样「…打烊了,回去吧」但声音很温柔",
     "char": "natsume",
     "character": [
       "natsume"
     ],
     "lora": "shiki_natsume_v11",
-    "emo": "诱惑",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -5348,14 +5261,12 @@
   {
     "id": "sc169",
     "title": "夏目的锁骨",
-    "cat": "恋爱",
     "story": "浴衣领口滑落到肩膀,她没发现你在看,月光下锁骨像大理石雕像,察觉后立刻拉上去「…这里冷」",
     "char": "natsume",
     "character": [
       "natsume"
     ],
     "lora": "shiki_natsume_v11",
-    "emo": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -5382,14 +5293,12 @@
   {
     "id": "sc170",
     "title": "湿透的女仆",
-    "cat": "日常",
     "story": "雨天没带伞的她落汤鸡一样跑进店里,女仆装贴在身上,你递毛巾她立刻抱住胸口「…去开暖气!」",
     "char": "natsume",
     "character": [
       "natsume"
     ],
     "lora": "shiki_natsume_v11",
-    "emo": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -5417,14 +5326,12 @@
   {
     "id": "sc171",
     "title": "夏目的绝对领域",
-    "cat": "恋爱",
     "story": "她穿高袜短裙弯腰系鞋带,这个视角能看到绝对领域和大腿,她起身发现你整个人僵住「…你的脸很红」",
     "char": "natsume",
     "character": [
       "natsume"
     ],
     "lora": "shiki_natsume_v11",
-    "emo": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -5451,14 +5358,12 @@
   {
     "id": "sc172",
     "title": "解开头发的夏目",
-    "cat": "恋爱",
     "story": "她散下平时扎好的长发,整个人的冷都融化了「…只是解开而已」但你已经看得说不出话",
     "char": "natsume",
     "character": [
       "natsume"
     ],
     "lora": "shiki_natsume_v11",
-    "emo": "诱惑",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
@@ -5485,14 +5390,12 @@
   {
     "id": "sc173",
     "title": "夏目的红色内衣",
-    "cat": "恋爱",
     "story": "她感冒发烧你照顾她,脱外套时才发现里面穿的红色内衣「…别看!这只是刚好有这件」她脸红到不正常",
     "char": "natsume",
     "character": [
       "natsume"
     ],
     "lora": "shiki_natsume_v11",
-    "emo": "害羞",
     "season": "春",
     "time": "午后",
     "timeOfDay": "afternoon",
