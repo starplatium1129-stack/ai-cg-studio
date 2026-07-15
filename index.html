@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="css/design-system.css?v=2">
 <link rel="stylesheet" href="css/scene-card.css?v=2">
 <script src="tools/nav.js?v=2"></script>
-<script src="tools/scene-card-v2.js"></script>
+<script src="tools/scene-card.js"></script>
 <script src="tools/theme.js?v=2"></script>
 <style>
   /* ============================================================
@@ -102,6 +102,16 @@
   }
   .strip-scroll::-webkit-scrollbar { height: 4px; }
   .strip-scroll::-webkit-scrollbar-thumb { background: var(--border-soft); border-radius: 2px; }
+
+  /* ---------- Ready CTA ---------- */
+  .home-start { padding: var(--s-6) 0 var(--s-8); }
+  .start-card {
+    background: var(--bg-surface); border: 1px solid var(--border-soft);
+    border-radius: var(--r-xl); padding: var(--s-7); text-align: center;
+  }
+  .start-card h2 { font-size: 1.6rem; font-weight: 800; margin-bottom: var(--s-2); }
+  .start-card p { color: var(--text-secondary); margin-bottom: var(--s-5); font-size: 1rem; }
+  .start-card .cta { font-size: 1.05rem; padding: var(--s-3) var(--s-6); }
 
   @media (max-width: 768px) {
     .chain { gap: var(--s-1); }
@@ -203,29 +213,18 @@
       </div>
     </div>
     <aside class="hero-strip" id="heroStrip">
-      <div class="strip-label"><span class="dot"></span> Scene 胶片 · 真实场景</div>
+      <div class="strip-label"><span class="dot"></span> 今日精选 · 真实场景</div>
       <div class="strip-scroll" id="stripScroll"></div>
     </aside>
   </div>
 </section>
 
-<!-- 作品展示(本地历史,空态引导创作) -->
-<section class="container home-section" id="recentSection">
-  <div class="home-section-head">
-    <div><h2>作品展示</h2><p class="hint">浏览器本地记录 · 最近 6 张 CG</p></div>
-    <a href="tools/prompt-builder.html" class="link">开始创作 →</a>
-  </div>
-  <div id="recentList" class="recent-row"></div>
-</section>
-
-<!-- 创作工作台(4 入口,三秒看懂) -->
-<section class="container home-section">
-  <div class="home-section-head"><div><h2>创作工作台</h2><p class="hint">不保存 Prompt,保存「那个瞬间」</p></div></div>
-  <div class="tools-grid">
-    <a href="tools/scene-explorer.html" class="tool-card"><span class="ic">🌸</span><span class="t">Scene Library</span><p class="d">70 个官方场景种子。每个都是「一个瞬间」,不是「一段文字」。</p><span class="go">浏览场景 →</span></a>
-    <a href="tools/prompt-builder.html" class="tool-card"><span class="ic">🎬</span><span class="t">Director</span><p class="d">Story-first:情绪、镜头、色彩、光照,Prompt 是最后一步。</p><span class="go">开始导演 →</span></a>
-    <a href="tools/character.html" class="tool-card"><span class="ic">👤</span><span class="t">Character</span><p class="d">角色卡 + 视觉 DNA + 绑定 LoRA,Director 自动插入。</p><span class="go">管理角色 →</span></a>
-    <a href="tools/scenario.html" class="tool-card"><span class="ic">🎨</span><span class="t">Color Script</span><p class="d">色彩 = 情绪 = 光照。选一个 Color Script,整个画面统一。</p><span class="go">选择色彩 →</span></a>
+<!-- Ready CTA -->
+<section class="container home-start">
+  <div class="start-card">
+    <h2>准备好了吗?</h2>
+    <p>不需要写 Prompt,只需要一个故事。选一个场景,当一回导演。</p>
+    <a href="tools/prompt-builder.html" class="cta cta-primary"><span class="ic">✨</span> 开始我的第一个场景</a>
   </div>
 </section>
 
@@ -238,23 +237,6 @@
    Home — driven by data/scenes.json + localStorage aics_pb_history
    ============================================================ */
 (function(){
-  const HIS_KEY = 'aics_pb_history';
-
-  // ---- utilities ----
-  function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-  function timeAgo(ts){
-    if(!ts) return '';
-    const d = Date.now() - ts;
-    const m = Math.floor(d/60000);
-    if(m<1) return '刚刚';
-    if(m<60) return m+' 分钟前';
-    const h = Math.floor(m/60);
-    if(h<24) return h+' 小时前';
-    const day = Math.floor(h/24);
-    if(day<30) return day+' 天前';
-    return new Date(ts).toLocaleDateString('zh-CN');
-  }
-
   // ---- render scene strip (Hero) ----
   function renderStrip(scenes){
     const el = document.getElementById('stripScroll');
@@ -268,37 +250,12 @@
     });
   }
 
-  // ---- render recent (history) ----
-  function renderRecent(history){
-    const el = document.getElementById('recentList');
-    if(!history || !history.length){
-      el.innerHTML = `<div class="sc-empty"><div class="ic">🎞</div><p>还没有创作。<br>去导演台生成第一张 CG,它会出现在这里。</p><a href="tools/prompt-builder.html" class="btn btn-primary">🎬 开始第一个</a></div>`;
-      return;
-    }
-    el.innerHTML = '';
-    history.slice(0, 6).forEach(h=>{
-      const sc = (window.__scenes__||[]).find(s=>s.id===h.scene);
-      const rating = h.rating ? (h.rating.atmosphere || h.rating.overall || 0) : 0;
-      el.appendChild(createSceneCard(sc || { id:h.scene, title:h.scene||'未命名', story:'' }, {
-        mode: 'recent',
-        clickable: false,
-        rating: rating,
-        meta: [(h.char||'·'), timeAgo(h.timestamp), h.version?('v'+h.version):''].filter(Boolean).join(' · '),
-        actions: [
-          { label:'重新生成', icon:'🔄', primary:true, href:'tools/prompt-builder.html?scene=' + encodeURIComponent(h.scene) + '&regen=' + encodeURIComponent(h.id) },
-          { label:'变体', icon:'✨', primary:false, href:'tools/prompt-builder.html?scene=' + encodeURIComponent(h.scene) + '&variant=' + encodeURIComponent(h.id) }
-        ]
-      }));
-    });
-  }
-
   // ---- boot ----
   fetch('data/scenes.json')
     .then(r=>r.json())
     .then(scenes=>{
       window.__scenes__ = scenes;
       renderStrip(scenes);
-      try { renderRecent(JSON.parse(localStorage.getItem(HIS_KEY))||[]); } catch(e){ renderRecent([]); }
     })
     .catch(err=>{
       console.warn('scenes load fail', err);
