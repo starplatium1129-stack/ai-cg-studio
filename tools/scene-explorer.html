@@ -36,16 +36,34 @@
   .ex-spec-item { background: var(--bg-deep); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); }
   .ex-spec-label { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
   .ex-spec-value { font-size: 0.8rem; font-weight: 600; color: var(--accent); margin-top: 2px; }
+  .ex-decision { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-2); margin: var(--s-2) 0 var(--s-3); padding: var(--s-2) var(--s-3); background: linear-gradient(135deg, var(--accent-soft), transparent); border: 1px solid var(--accent); border-radius: var(--r-md); }
+  .ex-decision-item { text-align: center; }
+  .ex-decision-icon { font-size: 1.1rem; line-height: 1; }
+  .ex-decision-label { font-size: 0.6rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin: 2px 0; }
+  .ex-decision-value { font-size: 0.78rem; font-weight: 700; color: var(--accent); }
   .ex-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: var(--s-2); }
   .ex-tag { padding: 2px 8px; background: var(--bg-elevated); border-radius: 20px; font-size: 0.68rem; color: var(--text-secondary); }
   .ex-tag.ex-emotion { color: var(--accent); border: 1px solid var(--accent); background: var(--accent-soft); }
   .ex-tag.ex-char { color: var(--info); }
   .ex-actions { display: flex; gap: var(--s-2); }
   .ex-actions .btn { flex: 1; padding: var(--s-2); font-size: 0.82rem; }
+  .ex-actions .btn-primary { font-weight: 700; }
+  .scene-flash { outline: 3px solid var(--accent); outline-offset: 4px; transition: outline-color .3s; }
+
+  /* Story drawer (in-page modal) */
+  .story-drawer { position: fixed; inset: 0; background: rgba(0,0,0,.55); display: none; align-items: center; justify-content: center; z-index: 100; padding: var(--s-4); }
+  .story-drawer.open { display: flex; }
+  .story-card { background: var(--bg-surface); border: 1px solid var(--accent); border-radius: var(--r-xl); max-width: 480px; width: 100%; padding: var(--s-5); box-shadow: var(--shadow-lg); }
+  .story-card h3 { font-size: 1.3rem; font-weight: 800; margin-bottom: var(--s-2); color: var(--text-primary); }
+  .story-card .story-meta { font-size: 0.78rem; color: var(--text-muted); margin-bottom: var(--s-3); }
+  .story-card .story-body { font-size: 0.95rem; line-height: 1.7; color: var(--text-secondary); margin-bottom: var(--s-4); }
+  .story-card .story-actions { display: flex; gap: var(--s-2); }
+  .story-card .story-actions .btn { flex: 1; }
 
   @media (max-width: 768px) {
     .scene-grid { grid-template-columns: 1fr; }
     .page { padding: var(--s-4) var(--s-3); }
+    .ex-decision { grid-template-columns: 1fr 1fr 1fr; }
   }
 </style>
 </head>
@@ -75,6 +93,11 @@
   <div class="scene-grid" id="sceneGrid"></div>
 </article>
 
+<!-- Story drawer -->
+<div class="story-drawer" id="storyDrawer" onclick="if(event.target===this)closeStory()">
+  <div class="story-card" id="storyCard"></div>
+</div>
+
 <footer class="footer">
   <p>AI CG Studio · From Story to Scene</p>
   <p class="muted mt-4">Scene Explorer · 70 个瞬间,等你导演</p>
@@ -103,10 +126,14 @@ function loadScenes(){
       SCENES = data;
       init();
       var qp = new URLSearchParams(window.location.search);
+      var focusId = qp.get('scene');
       var pendingScene = localStorage.getItem('aics_pending_scene');
-      if (qp.get('scene') && pendingScene){
-        try { var s = JSON.parse(pendingScene); if (s.id === qp.get('scene')) { showDetail(s.id); } } catch(e){}
+      if (focusId && pendingScene){
+        try { var s = JSON.parse(pendingScene); if (s.id === focusId) { showDetail(s.id); } } catch(e){}
         localStorage.removeItem('aics_pending_scene');
+      } else if (focusId) {
+        // 无 pending 时: 滚动到目标卡 + 高亮 2s
+        setTimeout(function(){ scrollToScene(focusId); }, 100);
       }
     })
     .catch(function(err){
@@ -139,31 +166,39 @@ function renderScenes(){
     var todMap = {morning:'清晨',afternoon:'午后',sunset:'黄昏',night:'夜晚',dawn:'黎明',evening:'夜晚'};
     var tod = s.timeOfDay ? (todMap[s.timeOfDay]||s.timeOfDay) : '';
     var charName = s.char === 'nene' ? '宁宁' : (s.char === 'natsume' ? '夏目' : s.char);
+    var decision = decisionPreview(s);
     grid.appendChild(createSceneCard(s, {
       mode: 'grid',
       clickable: false,
       suppressTags: true,
+      dataAttrs: { sceneId: s.id },
       onPick: function(){ openDirector(s.id); },
       beforeActions: function(scene){
-        var tags = scene.tags.slice(0,3).map(function(t){ return '<span class="ex-tag">'+t+'</span>'; }).join('');
+        var tags = scene.tags.slice(0,3).map(function(t){ return '<span class="ex-tag">'+escHtml(t)+'</span>'; }).join('');
         return '' +
           '<div class="ex-spec">' +
-            '<div class="ex-spec-item"><div class="ex-spec-label">情绪</div><div class="ex-spec-value">' + (scene.emotion||'') + '</div></div>' +
-            '<div class="ex-spec-item"><div class="ex-spec-label">角色</div><div class="ex-spec-value">' + charName + '</div></div>' +
-            '<div class="ex-spec-item"><div class="ex-spec-label">季节</div><div class="ex-spec-value">' + (season||'—') + '</div></div>' +
-            '<div class="ex-spec-item"><div class="ex-spec-label">时段</div><div class="ex-spec-value">' + (tod||'—') + '</div></div>' +
+            '<div class="ex-spec-item"><div class="ex-spec-label">情绪</div><div class="ex-spec-value">' + escHtml(scene.emotion||'') + '</div></div>' +
+            '<div class="ex-spec-item"><div class="ex-spec-label">角色</div><div class="ex-spec-value">' + escHtml(charName) + '</div></div>' +
+            '<div class="ex-spec-item"><div class="ex-spec-label">季节</div><div class="ex-spec-value">' + escHtml(season||'—') + '</div></div>' +
+            '<div class="ex-spec-item"><div class="ex-spec-label">时段</div><div class="ex-spec-value">' + escHtml(tod||'—') + '</div></div>' +
+          '</div>' +
+          '<div class="ex-decision" title="导演决策预览 · 跳到 prompt-builder 自动预填">' +
+            '<div class="ex-decision-item"><div class="ex-decision-icon">🎥</div><div class="ex-decision-label">镜头</div><div class="ex-decision-value">' + escHtml(decision.shot) + '</div></div>' +
+            '<div class="ex-decision-item"><div class="ex-decision-icon">💡</div><div class="ex-decision-label">光照</div><div class="ex-decision-value">' + escHtml(decision.lighting) + '</div></div>' +
+            '<div class="ex-decision-item"><div class="ex-decision-icon">🎨</div><div class="ex-decision-label">色调</div><div class="ex-decision-value">' + escHtml(decision.color) + '</div></div>' +
           '</div>' +
           '<div class="ex-tags">' +
-            '<span class="ex-tag ex-emotion">' + (scene.emotion||'') + '</span>' +
-            '<span class="ex-tag ex-char">' + (scene.char||'') + '</span>' +
+            '<span class="ex-tag ex-emotion">' + escHtml(scene.emotion||'') + '</span>' +
+            '<span class="ex-tag ex-char">' + escHtml(scene.char||'') + '</span>' +
             tags +
           '</div>' +
           '<div class="ex-actions">' +
-            '<button class="btn btn-primary" data-dir="' + scene.id + '">🎬 导演这张</button>' +
+            '<a class="btn btn-primary" href="prompt-builder.html?scene=' + encodeURIComponent(scene.id) + '&step=4">🎬 一键生成 Prompt</a>' +
             '<button class="btn btn-ghost" data-detail="' + scene.id + '">📖 故事</button>' +
           '</div>';
       }
     }));
+    grid.lastChild.setAttribute('data-scene-id', s.id);
   });
   if (!grid.children.length) { grid.innerHTML = '<div class="sc-empty"><div class="ic">🌸</div><p>没有匹配的场景。<br>试试切到其他分类或清除搜索。</p></div>'; }
 }
@@ -182,14 +217,60 @@ function openDirector(id){
   var s = SCENES.find(function(x){ return x.id === id; });
   if (!s) return;
   localStorage.setItem('aics_pending_scene', JSON.stringify(s));
-  window.location.href = 'prompt-builder.html?scene=' + id;
+  window.location.href = 'prompt-builder.html?scene=' + encodeURIComponent(id) + '&step=4';
 }
 
 function showDetail(id){
   var s = SCENES.find(function(x){ return x.id === id; });
   if (!s) return;
+  var drawer = document.getElementById('storyDrawer');
+  var card = document.getElementById('storyCard');
+  if (!drawer || !card) { alert(s.story || ''); return; }
   var charName = s.char === 'nene' ? '宁宁' : (s.char === 'natsume' ? '夏目' : s.char);
-  alert('🌸 ' + s.title + '\n\n' + s.story + '\n\n— 情绪: ' + s.emotion + ' · 角色: ' + charName + ' · ' + (s.season||'') + ' ' + (s.timeOfDay||'') + '\n\n点击 "导演这张" 进入导演工作台。');
+  var seasonMap = {'春':'🌸','夏':'☀️','秋':'🍂','冬':'❄️'};
+  var season = s.season ? (seasonMap[s.season]||'') + s.season : '';
+  card.innerHTML = '' +
+    '<h3>🌸 ' + escHtml(s.title) + '</h3>' +
+    '<div class="story-meta">' + escHtml(charName) + ' · ' + escHtml(season||'') + ' · ' + escHtml(s.timeOfDay||'') + ' · ' + escHtml(s.emotion||'') + '</div>' +
+    '<div class="story-body">' + escHtml(s.story || '') + '</div>' +
+    '<div class="story-actions">' +
+      '<a class="btn btn-primary" href="prompt-builder.html?scene=' + encodeURIComponent(s.id) + '&step=4">🎬 一键生成 Prompt</a>' +
+      '<button class="btn btn-ghost" onclick="closeStory()">关闭</button>' +
+    '</div>';
+  drawer.classList.add('open');
+}
+function closeStory(){ var d=document.getElementById('storyDrawer'); if(d) d.classList.remove('open'); }
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeStory(); });
+
+// 导演决策本地推断 (与 prompt-builder CAMERA_TO_SHOT_* + sceneColorMood 对齐,轻量版)
+function decisionPreview(scene){
+  var cameraMap = { '半身中景':'半身', '全身远景':'远景', '全身中景':'全身', '特写':'特写', '特写镜头':'特写', '面部特写':'特写', '远景':'远景', '中景':'半身', '全身':'全身', '半身':'半身' };
+  var lightMap = { '窗光':'窗光', '黄金时刻':'黄昏光', '逆光':'逆光', '月光':'月光', '夜灯':'夜灯', '霓虹':'霓虹', '烛光':'烛光', '阴天':'阴天光', '夕阳光':'黄昏光', '晨光':'晨光' };
+  var shot = (scene.camera && cameraMap[scene.camera]) || '中景';
+  var lighting = (scene.lighting && lightMap[scene.lighting]) || '自然光';
+  // 色调: 基于 tags + emotion 粗略判断
+  var tags = (scene.tags || []).join(',').toLowerCase();
+  var em = (scene.emotion||'').toLowerCase();
+  var color = '自然';
+  if (/sunset|dusk|golden|黄昏|夕阳|浪漫/.test(tags) || /love|shy|love|恋爱|害羞/.test(em)) color = '暖橙';
+  else if (/night|月|夜|星空|moon/.test(tags)) color = '冷蓝';
+  else if (/spring|cherry|flower|樱花|春/.test(tags)) color = '粉嫩';
+  else if (/autumn|red_leaves|秋/.test(tags)) color = '琥珀';
+  else if (/rain|雨|cloudy/.test(tags)) color = '灰蓝';
+  else if (/winter|snow|雪|冬/.test(tags)) color = '冷白';
+  return { shot: shot, lighting: lighting, color: color };
+}
+
+function escHtml(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function scrollToScene(id){
+  var grid = document.getElementById('sceneGrid');
+  if (!grid) return;
+  var card = grid.querySelector('[data-scene-id="' + id + '"]');
+  if (!card) return;
+  card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  card.classList.add('scene-flash');
+  setTimeout(function(){ card.classList.remove('scene-flash'); }, 2000);
 }
 
 </script>

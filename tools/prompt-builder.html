@@ -1057,6 +1057,12 @@ function loadScene(s) {
   markStepDone(1); // 场景选完 → 进入角色步骤
   flash('🎞 Scene 已加载: ' + s.title);
   updateLivePreview();
+  // URL 路由入参: ?step=N → 加载后跳到指定步骤（explorer 一键直达结果）
+  try {
+    var _stepQP = new URLSearchParams(window.location.search).get('step');
+    var _stepN = parseInt(_stepQP, 10);
+    if (_stepN && _stepN >= 1 && _stepN <= 4) goStep(_stepN);
+  } catch(e){}
 }
 function renderLightHint(hint, title) {
   const el = document.getElementById('sceneLightHint'); if (!el) return;
