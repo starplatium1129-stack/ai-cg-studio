@@ -1402,7 +1402,20 @@ function baseEntry(){
 }
 function unreferencedImageIds(entries,kept){var refs=new Set(kept.map(h=>h.image_id).filter(Boolean));return entries.map(h=>h.image_id).filter(id=>id&&!refs.has(id));}
 async function cleanupImages(entries,kept){var ids=unreferencedImageIds(entries,kept);if(ids.length)await AICGImageStore.deleteMany(ids);}
-async function commitHistoryEntry(entry){var candidate=[entry].concat(state.history),kept=candidate.slice(0,30),evicted=candidate.slice(30);localStorage.setItem(HIS_KEY,JSON.stringify(kept));state.history=kept;renderHistory();cleanupImages(evicted,kept).catch(function(e){flash('记录已保存，旧图片清理失败');});}
+async function commitHistoryEntry(entry){
+  var existing=[];
+  try{existing=JSON.parse(localStorage.getItem(HIS_KEY))||[];}catch(e){}
+  if(!Array.isArray(existing))existing=[];
+  existing=existing.filter(h=>h&&typeof h==='object');
+  var base=state.history&&state.history.length>=existing.length?state.history:existing;
+  var merged=[entry].concat(base.filter(h=>h&&h.id!==entry.id));
+  var kept=merged.slice(0,30);
+  var evicted=merged.slice(30);
+  localStorage.setItem(HIS_KEY,JSON.stringify(kept));
+  state.history=kept;
+  renderHistory();
+  cleanupImages(evicted,kept).catch(function(e){flash('记录已保存，旧图片清理失败');});
+}
 async function saveHistory(){const entry=baseEntry(),v=nextVersion(state.history,entry.scene,entry.character);entry.version=v.version;entry.parent_id=v.parent_id;try{await commitHistoryEntry(entry);flash('💾 已保存');}catch(e){flash('保存失败，请检查浏览器存储空间');}}
 async function saveHistoryWithRating(rating,favorite,notes,imageUrl,imageId){const entry=baseEntry(),v=nextVersion(state.history,entry.scene,entry.character);entry.version=v.version;entry.parent_id=v.parent_id;entry.rating=rating;entry.favorite=!!favorite;entry.notes=notes||'';entry.image_id=imageId||'';entry.image_url=normalizeImageUrl(imageUrl);await commitHistoryEntry(entry);}
 function renderHistory(){const list=document.getElementById('historyList');document.getElementById('hisCount').textContent=state.history.length;if(!state.history.length){list.innerHTML='<div class="history-empty">尚无记录。每次点击「保存」生成一条快照。</div>';return;}list.innerHTML=state.history.map(h=>{const avg=h.rating?Math.round((h.rating.face+h.rating.expression+h.rating.composition+h.rating.hands+h.rating.atmosphere)/5):0;return `<div class="history-item"><div class="history-text" title="${escapeHtml(h.prompt)}">${escapeHtml(h.prompt)}</div><div class="history-meta">${h.sceneTitle||h.scene||'—'} · ${h.character} · v${h.version||1} · seed ${h.seed||'—'}</div><div class="history-meta">${'★'.repeat(avg)}${'☆'.repeat(5-avg)} ${h.favorite?'💜':''}</div><div class="history-actions"><button onclick="loadHistoryId(${h.id})">载入</button><button onclick="copyHistoryId(${h.id})">复制</button><button onclick="deleteHistoryId(${h.id})">×</button></div></div>`;}).join('');}
