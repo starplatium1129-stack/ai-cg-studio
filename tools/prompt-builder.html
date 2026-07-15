@@ -1555,11 +1555,15 @@ function renderOnboard() {
   let cx = r.right + 16, cy = r.top;
   if (cx + 320 > window.innerWidth) {
     cx = Math.max(16, r.left - 320);
-    if (window.innerWidth < 768) {
-      cy = Math.max(16, window.innerHeight - 300);
-    }
   }
   if (cx < 16) cx = 16;
+
+  // 检查是否会超出屏幕底部，超出时显示在目标元素上方
+  const cardHeight = 200; // 预估卡片高度
+  const bottomSpace = window.innerHeight - cy;
+  if (bottomSpace < cardHeight && cy > cardHeight) {
+    cy = r.top - cardHeight - 12; // 显示在元素上方
+  }
   card.style.left = cx + 'px'; card.style.top = cy + 'px';
   document.getElementById('obStepNum').textContent = (OB_IDX + 1) + '/' + OB_STEPS.length;
   document.getElementById('obTitle').textContent = step.title;
