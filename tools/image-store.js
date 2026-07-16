@@ -115,6 +115,7 @@
   var DB_VERSION = 1;
   var STORE_NAME = 'kv';
   var dbPromise;
+  var _memCache = {}; // 内存影子数据库，防御并发覆写
 
   function openDb(){
     if(dbPromise) return dbPromise;
@@ -137,17 +138,23 @@
   }
 
   function get(key){
+    if(_memCache[key] !== undefined) return Promise.resolve(JSON.parse(JSON.stringify(_memCache[key])));
     return openDb().then(function(db){
       return new Promise(function(resolve, reject){
         var tx = db.transaction(STORE_NAME, 'readonly');
         var req = tx.objectStore(STORE_NAME).get(key);
-        req.onsuccess = function(){ resolve(req.result ? req.result.value : null); };
+        req.onsuccess = function(){
+          var val = req.result ? req.result.value : null;
+          if(val !== null) _memCache[key] = JSON.parse(JSON.stringify(val));
+          resolve(val);
+        };
         req.onerror = function(){ reject(req.error); };
       });
     });
   }
 
   function set(key, value){
+    _memCache[key] = JSON.parse(JSON.stringify(value));
     return openDb().then(function(db){
       return new Promise(function(resolve, reject){
         var tx = db.transaction(STORE_NAME, 'readwrite');
@@ -159,6 +166,7 @@
   }
 
   function remove(key){
+    delete _memCache[key];
     return openDb().then(function(db){
       return new Promise(function(resolve, reject){
         var tx = db.transaction(STORE_NAME, 'readwrite');

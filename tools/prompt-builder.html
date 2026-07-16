@@ -302,6 +302,9 @@
   .project-bar label { font-size:0.82rem; color:var(--text-muted); }
   #projectSelect { flex:1; background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-sm); color:var(--text-primary); padding:6px 8px; font-size:0.85rem; outline:none; }
   #projectSelect:focus { border-color:var(--accent); }
+  .api-status { display:flex; align-items:center; gap:var(--s-2); justify-content:flex-end; margin-bottom:var(--s-3); font-size:.82rem; color:var(--text-muted); }
+  .api-status .badge { cursor:pointer; padding:2px 8px; border-radius:var(--r-sm); background:var(--bg-deep); border:1px solid var(--border-soft); transition: all var(--t-fast); }
+  .api-status .badge:hover { border-color:var(--accent); }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
     .monitor-rec .dot, .review-star { animation: none; transition: none; }
@@ -324,6 +327,9 @@
   <div class="pb-header">
     <h1 class="pb-title">🎬 Director · 导演工作台</h1>
     <p class="pb-sub">选一个 Scene,像导演一样定情绪、镜头、光照。Prompt 自动生成。</p>
+  </div>
+  <div class="api-status">
+    后端状态：<span id="sd-status-badge" class="badge">⏳ 检测中...</span>
   </div>
 
   <!-- ============ 引导条 ============ -->
@@ -777,6 +783,10 @@ function init() {
       if (ref) restoreFromEntry(ref, !!variantId);
     }
   } catch(e) {}
+
+  // SD WebUI 连通性检测
+  checkSDStatus();
+  document.getElementById('sd-status-badge').addEventListener('click', checkSDStatus);
 }
 
 // 从 history 条目恢复导演选择(regen=保持;variant=小幅扰动)
@@ -1383,6 +1393,21 @@ var _sdLastDataUrl = '';
 function getSDConnector(){
   if(!_sdConnector) _sdConnector = new SDWebUIConnector();
   return _sdConnector;
+}
+function checkSDStatus(){
+  var badge = document.getElementById('sd-status-badge');
+  if(!badge) return;
+  badge.textContent = '⏳ 检测中...';
+  badge.style.color = '';
+  getSDConnector().checkConnection().then(function(ok){
+    if(ok){
+      badge.textContent = '🟢 已连接 ReForge';
+      badge.style.color = 'var(--success, #22c55e)';
+    } else {
+      badge.textContent = '🔴 ReForge 离线';
+      badge.style.color = 'var(--danger, #ef4444)';
+    }
+  });
 }
 function callSDGenerate(){
   var prompt = getPlainPrompt();

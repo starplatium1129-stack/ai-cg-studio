@@ -86,10 +86,12 @@ const ActiveSyncProtocol = {
   },
 
   applyProtocol(template, params) {
-    return template
+    var processed = template
       .replace(/\{intimacy_intensity\}/g, params.intimacy_intensity)
       .replace(/\{interaction_target\}/g, params.interaction_target)
       .replace(/\{sensory_feedback\}/g, params.sensory_feedback);
+    // 兜底：清除模板中未被识别的 {placeholder}，防止残留污染 Prompt
+    return processed.replace(/\{[a-zA-Z0-9_]+\}/g, '');
   }
 };
 
