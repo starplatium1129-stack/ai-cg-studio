@@ -136,6 +136,9 @@
     "timeOfDay": "night",
     "tags": [
       "yukata",
+      "night",
+      "looking_back",
+      "blush",
       "night"
     ],
     "mature": false,
@@ -195,7 +198,10 @@
     "timeOfDay": "afternoon",
     "tags": [
       "school_uniform",
-      "rain"
+      "rain",
+      "rain",
+      "shy",
+      "smile"
     ],
     "mature": false,
     "location": null,
@@ -344,7 +350,10 @@
     "timeOfDay": "morning",
     "tags": [
       "train_station",
-      "soft_lighting"
+      "soft_lighting",
+      "looking_back",
+      "sad",
+      "hair_blowing"
     ],
     "mature": false,
     "location": "车站",
@@ -464,7 +473,10 @@
     "timeOfDay": "night",
     "tags": [
       "night",
-      "hoodie"
+      "hoodie",
+      "blush",
+      "shy",
+      "night"
     ],
     "mature": false,
     "location": "露营地",
@@ -523,7 +535,10 @@
     "timeOfDay": "night",
     "tags": [
       "rain",
-      "night"
+      "night",
+      "rain",
+      "shy",
+      "smile"
     ],
     "mature": false,
     "location": "便利店",
@@ -582,7 +597,10 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
-      "casual_clothes"
+      "casual_clothes",
+      "shy",
+      "blush",
+      "night"
     ],
     "mature": false,
     "location": null,
@@ -702,7 +720,10 @@
     "timeOfDay": "morning",
     "tags": [
       "bedroom",
-      "apron"
+      "apron",
+      "shy",
+      "blush",
+      "shy"
     ],
     "mature": false,
     "location": "卧室",
@@ -1037,7 +1058,9 @@
     "timeOfDay": "afternoon",
     "tags": [
       "casual_clothes",
-      "standing"
+      "standing",
+      "shy",
+      "casual_clothes"
     ],
     "mature": false,
     "location": "超市",
@@ -1127,7 +1150,9 @@
     "timeOfDay": "afternoon",
     "tags": [
       "rain",
-      "school_uniform"
+      "school_uniform",
+      "looking_back",
+      "sad"
     ],
     "mature": false,
     "location": null,
@@ -1217,7 +1242,10 @@
     "timeOfDay": "night",
     "tags": [
       "rain",
-      "night"
+      "night",
+      "rain",
+      "blush",
+      "shy"
     ],
     "mature": true,
     "location": null,
@@ -1279,7 +1307,10 @@
     "timeOfDay": "night",
     "tags": [
       "night",
-      "soft_lighting"
+      "soft_lighting",
+      "shy",
+      "blush",
+      "night"
     ],
     "mature": true,
     "location": "温泉",
@@ -1925,7 +1956,9 @@
     "timeOfDay": "afternoon",
     "tags": [
       "looking_back",
-      "closed_eyes"
+      "closed_eyes",
+      "smile",
+      "shy"
     ],
     "mature": true,
     "location": "客厅",
@@ -2170,7 +2203,10 @@
     "timeOfDay": "afternoon",
     "tags": [
       "rain",
-      "standing"
+      "standing",
+      "rain",
+      "park",
+      "hair_blowing"
     ],
     "mature": false,
     "location": "竹林",
@@ -2420,7 +2456,10 @@
     "timeOfDay": "sunset",
     "tags": [
       "beach",
-      "sunset"
+      "sunset",
+      "smile",
+      "hair_blowing",
+      "golden_hour"
     ],
     "mature": false,
     "location": "海边",
@@ -2544,7 +2583,10 @@
     "timeOfDay": "night",
     "tags": [
       "yukata",
-      "night"
+      "night",
+      "smile",
+      "night",
+      "yukata"
     ],
     "mature": false,
     "location": "祭典会场",
@@ -2821,7 +2863,10 @@
     "timeOfDay": "night",
     "tags": [
       "rain",
-      "night"
+      "night",
+      "rain",
+      "blush",
+      "shy"
     ],
     "mature": true,
     "location": "街上",
@@ -2850,7 +2895,10 @@
     "timeOfDay": "afternoon",
     "tags": [
       "dress",
-      "cherry_blossoms"
+      "cherry_blossoms",
+      "smile",
+      "hair_blowing",
+      "golden_hour"
     ],
     "mature": false,
     "location": "婚纱店",
@@ -2939,7 +2987,10 @@
     "timeOfDay": "afternoon",
     "tags": [
       "beach",
-      "swimsuit"
+      "swimsuit",
+      "blush",
+      "angry",
+      "hair_blowing"
     ],
     "mature": true,
     "location": "海边",
@@ -3028,7 +3079,10 @@
     "timeOfDay": "morning",
     "tags": [
       "bedroom",
-      "pajamas"
+      "pajamas",
+      "blush",
+      "shy",
+      "night"
     ],
     "mature": true,
     "location": "卧室",
@@ -3177,7 +3231,10 @@
     "timeOfDay": "night",
     "tags": [
       "smile",
-      "casual_clothes"
+      "casual_clothes",
+      "blush",
+      "shy",
+      "cafe"
     ],
     "mature": true,
     "location": "酒吧",
@@ -3326,7 +3383,10 @@
     "timeOfDay": "night",
     "tags": [
       "night",
-      "casual_clothes"
+      "casual_clothes",
+      "blush",
+      "shy",
+      "night"
     ],
     "mature": true,
     "location": "阳台",
@@ -3725,19 +3785,20 @@
     "timeOfDay": "afternoon",
     "tags": [
       "ribbon",
-      "shy",
       "school_uniform",
-      "looking_back"
+      "shy",
+      "blush",
+      "golden_hour"
     ],
     "mature": false,
-    "location": "校园天台",
+    "location": "校园教室",
     "weather": "晴",
     "camera": "近景特写",
     "lighting": "午后阳光",
     "usage": [
       "实验CG"
     ],
-    "prompt": "ayachi_nene, ribbon, school_uniform, looking_back, shy, {intimacy_intensity}, {sensory_feedback}",
+    "prompt": "ayachi_nene, ribbon, school_uniform, shy, blush, looking_back, classroom, golden_hour, soft_lighting, bokeh, {intimacy_intensity}, {sensory_feedback}",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
   },
   {
@@ -3757,7 +3818,9 @@
     "tags": [
       "maid",
       "cafe",
-      "looking_back"
+      "shy",
+      "blush",
+      "lantern light, warm glow"
     ],
     "mature": false,
     "location": "星光咖啡馆",
@@ -3767,7 +3830,7 @@
     "usage": [
       "实验CG"
     ],
-    "prompt": "shiki_natsume, maid, cafe, looking_away, tsundere, {intimacy_intensity}, {interaction_target}",
+    "prompt": "shiki_natsume, maid, cafe, shy, blush, looking_back, candlelight, soft_lighting, warm, {intimacy_intensity}, {interaction_target}",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
   },
   {
@@ -3787,7 +3850,9 @@
     "tags": [
       "school_uniform",
       "shy",
-      "night"
+      "blush",
+      "night",
+      "dramatic"
     ],
     "mature": false,
     "location": "医疗室",
@@ -3797,7 +3862,7 @@
     "usage": [
       "实验CG"
     ],
-    "prompt": "ayachi_nene, school_uniform, shy, nervous, night, {intimacy_intensity}, {sensory_feedback}",
+    "prompt": "ayachi_nene, school_uniform, shy, blush, nervous, night, dramatic, soft_lighting, close-up, {intimacy_intensity}, {sensory_feedback}",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
   },
   {
@@ -3817,8 +3882,9 @@
     "tags": [
       "maid",
       "cafe",
+      "smile",
       "looking_back",
-      "night"
+      "lantern light, warm glow"
     ],
     "mature": false,
     "location": "星光咖啡馆",
@@ -3828,7 +3894,7 @@
     "usage": [
       "核心CG"
     ],
-    "prompt": "shiki_natsume, maid, cafe, looking_back, gentle, night, {interaction_target}, {sensory_feedback}",
+    "prompt": "shiki_natsume, maid, cafe, smile, looking_back, night, candlelight, soft_lighting, bokeh, {interaction_target}, {sensory_feedback}",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
   },
   {
@@ -3848,8 +3914,9 @@
     "tags": [
       "ribbon",
       "school_uniform",
+      "smile",
       "cherry_blossoms",
-      "smile"
+      "golden_hour"
     ],
     "mature": false,
     "location": "校园樱花道",
@@ -3859,7 +3926,7 @@
     "usage": [
       "核心CG"
     ],
-    "prompt": "ayachi_nene, ribbon, school_uniform, cherry_blossoms, smile, golden_hour, {intimacy_intensity}, {sensory_feedback}",
+    "prompt": "ayachi_nene, ribbon, school_uniform, smile, cherry_blossoms, petals, golden_hour, soft_lighting, wind, {intimacy_intensity}, {sensory_feedback}",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
   },
   {
@@ -3878,8 +3945,10 @@
     "timeOfDay": "night",
     "tags": [
       "cafe",
+      "blush",
+      "shy",
       "night",
-      "blush"
+      "lantern light, warm glow"
     ],
     "mature": false,
     "location": "深夜酒吧",
@@ -3889,7 +3958,7 @@
     "usage": [
       "实验CG"
     ],
-    "prompt": "shiki_natsume, cafe, blush, vulnerable, night, {intimacy_intensity}, {interaction_target}",
+    "prompt": "shiki_natsume, cafe, blush, shy, night, candlelight, soft_lighting, close-up, {intimacy_intensity}, {interaction_target}",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
   }
 ]
