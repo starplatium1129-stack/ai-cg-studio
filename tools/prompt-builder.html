@@ -428,8 +428,16 @@
         <div class="preview-actions">
           <button class="btn btn-ghost" onclick="toggleResult()">展开 Prompt</button>
           <button class="btn btn-primary" onclick="copyPrompt()">📋 复制</button>
+          <button class="btn btn-primary" onclick="callSDGenerate()" id="sdGenBtn">🖼 生成图片</button>
           <button class="btn btn-ghost" onclick="openReview()">⭐ 评价</button>
           <button class="btn btn-ghost" onclick="resetDirector()">🎬 再来一次</button>
+        </div>
+        <div id="sdResultArea" style="display:none;margin-top:var(--s-4);text-align:center;">
+          <div id="sdStatus" style="font-size:.85rem;color:var(--text-muted);margin-bottom:var(--s-2);"></div>
+          <div id="sdImageSlot"></div>
+          <div id="sdSaveActions" style="display:none;margin-top:var(--s-3);">
+            <button class="btn btn-primary" onclick="saveGeneratedImage()">💾 保存到历史</button>
+          </div>
         </div>
       </div>
     </div>
@@ -531,6 +539,7 @@
 
 <script src="image-store.js?v=5"></script>
 <script src="active-sync.js?v=4"></script>
+<script src="sd-api.js?v=1"></script>
 <script>
 
 /* ============================================================
@@ -1364,6 +1373,68 @@ function generate() {
   if(resultEl) resultEl.scrollIntoView({ behavior:'smooth', block:'start' });
   flash('✨ Prompt 已生成');
 }
+
+// ====== SD WebUI API ======
+var _sdConnector = null;
+var _sdLastDataUrl = '';
+function getSDConnector(){
+  if(!_sdConnector) _sdConnector = new SDWebUIConnector();
+  return _sdConnector;
+}
+function callSDGenerate(){
+  var prompt = getPlainPrompt();
+  if(!prompt){ flash('⚠️ 请先生成 Prompt'); return; }
+  var area = document.getElementById('sdResultArea');
+  var status = document.getElementById('sdStatus');
+  var slot = document.getElementById('sdImageSlot');
+  var saveBtn = document.getElementById('sdSaveActions');
+  var genBtn = document.getElementById('sdGenBtn');
+  area.style.display = 'block';
+  saveBtn.style.display = 'none';
+  slot.innerHTML = '';
+  status.textContent = '⏳ 正在连接 SD WebUI...';
+  genBtn.disabled = true; genBtn.textContent = '生成中...';
+
+  var neg = '';
+  try{ neg = document.getElementById('negativeInput') ? document.getElementById('negativeInput').value : ''; }catch(e){}
+  var cfg = Number(document.getElementById('cfg').value) || 7;
+  var steps = Number(document.getElementById('steps').value) || 20;
+  var sampler = document.getElementById('sampler').value || 'Euler a';
+  var size = (document.getElementById('size').value || '832x1216').split('x');
+  var width = Number(size[0]) || 512;
+  var height = Number(size[1]) || 512;
+  var seed = window.__lastSeed__ != null ? window.__lastSeed__ : -1;
+
+  getSDConnector().generateImage(prompt, neg, { cfg:cfg, steps:steps, sampler:sampler, width:width, height:height, seed:seed })
+    .then(function(dataUrl){
+      _sdLastDataUrl = dataUrl;
+      status.textContent = '✅ 生成完成';
+      slot.innerHTML = '<img src="'+dataUrl+'" style="max-width:100%;border-radius:var(--r-md);" alt="Generated CG">';
+      saveBtn.style.display = 'block';
+    })
+    .catch(function(err){
+      status.textContent = '❌ ' + err.message;
+      if(err.message.includes('Failed to fetch')){
+        status.textContent = '❌ 无法连接 SD WebUI（请确认已启动且加了 --api 参数）';
+      }
+    })
+    .finally(function(){
+      genBtn.disabled = false; genBtn.textContent = '🖼 生成图片';
+    });
+}
+function saveGeneratedImage(){
+  if(!_sdLastDataUrl) return;
+  fetch(_sdLastDataUrl).then(function(r){ return r.blob(); }).then(function(blob){
+    return AICGImageStore.put(blob);
+  }).then(function(imageId){
+    var rating = {face:0,expression:0,composition:0,hands:0,atmosphere:0};
+    return saveHistoryWithRating(rating, false, '', '', imageId);
+  }).then(function(){
+    flash('💾 图片已保存到历史');
+    document.getElementById('sdSaveActions').style.display = 'none';
+  }).catch(function(e){ flash('保存失败: ' + e.message); });
+}
+
 function togglePrompt() {
   const btn = document.getElementById('promptCollapseBtn');
   const body = document.getElementById('promptBody');
@@ -1477,7 +1548,6 @@ function baseEntry(){
   return {id:Date.now(),timestamp:Date.now(),scene:state.__sceneId||null,sceneTitle:sceneTitle?sceneTitle.title:null,character:state.char,lora:LORA_ID[state.char]||null,emotion:sel.emotion.slice(),shot:sel.shot,lighting:sel.lighting,composition:sel.composition,colorMood:state.colorMood,story:state.story,prompt:getPlainPrompt(),negative:NEGATIVE,cfg:document.getElementById('cfg')?.value||'',steps:document.getElementById('steps')?.value||'',sampler:document.getElementById('sampler')?.value||'',size:document.getElementById('size')?.value||'',seed:seed,rating:{face:0,expression:0,composition:0,hands:0,atmosphere:0},favorite:false,notes:'',image_id:'',image_url:'',version:1,parent_id:null,project:state.__projectId||''};
 }
 
-const PRJ_KEY='aics_projects';
 function esc(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function loadProjects(){return _cachedProjects;}
 function saveProjects(list){_cachedProjects=list;AICKVStore.set(PRJ_KEY,list).catch(function(e){console.warn('projects save fail',e);});}
