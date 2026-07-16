@@ -1356,8 +1356,19 @@ function updateLivePreview() {
 function getPlainPrompt() {
   // 始终返回纯英文, 保留模块间换行, 供 SD 使用
   var raw = document.getElementById('preview').dataset.raw;
-  if (raw) return raw.replace(/\[NEG\] /g,'').replace(/,\s*,/g, ',').replace(/[^\S\n]+/g,' ').trim();
-  return '';
+  if (!raw) return '';
+  // 截断 [NEG] 及其后内容，负向词不混入正向 prompt
+  var negIdx = raw.indexOf('[NEG]');
+  var pos = negIdx >= 0 ? raw.substring(0, negIdx) : raw;
+  return pos.replace(/,\s*,/g, ',').replace(/[^\S\n]+/g, ' ').trim();
+}
+function getPlainNegative() {
+  // 从 preview 的 raw 数据中提取 [NEG] 后面的内容作为负向 prompt
+  var raw = document.getElementById('preview').dataset.raw;
+  if (!raw) return '';
+  var negIdx = raw.indexOf('[NEG]');
+  if (negIdx < 0) return '';
+  return raw.substring(negIdx).replace('[NEG] ', '').replace(/,\s*,/g, ',').replace(/[^\S\n]+/g, ' ').trim();
 }
 
 // ====== GENERATE ======
@@ -1426,14 +1437,13 @@ function callSDGenerate(){
   status.textContent = '⏳ 正在连接 SD WebUI...';
   genBtn.disabled = true; genBtn.textContent = '生成中...';
 
-  var neg = '';
-  try{ neg = document.getElementById('negativeInput') ? document.getElementById('negativeInput').value : ''; }catch(e){}
-  var cfg = Number(document.getElementById('cfg').value) || 7;
-  var steps = Number(document.getElementById('steps').value) || 20;
+  var neg = getPlainNegative();
+  var cfg = Number(document.getElementById('cfg').value) || 5.5;
+  var steps = Number(document.getElementById('steps').value) || 28;
   var sampler = document.getElementById('sampler').value || 'DPM++ 2M Karras';
-  var size = (document.getElementById('size').value || '832x1216').split('x');
-  var width = Number(size[0]) || 512;
-  var height = Number(size[1]) || 512;
+  var size = (document.getElementById('size').value || '832x1216').replace('×','x').split('x');
+  var width = Number(size[0]) || 832;
+  var height = Number(size[1]) || 1216;
   var seed = window.__lastSeed__ != null ? window.__lastSeed__ : -1;
 
   // 获取当前场景的 LoRA 配置
