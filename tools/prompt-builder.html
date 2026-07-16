@@ -637,6 +637,9 @@ function buildTraits(){
     if (c.traits) TRAITS[key] = c.traits.map(t=> ({tag:t.tag, label:t.label, icon: t.icon||'✨'}));
     if (c.lora) LORA_ID[key] = c.lora.name + ':' + c.lora.weight;
   });
+  // triad 组合：合并双角色 LoRA，traits 为空
+  if (LORA_ID.nene && LORA_ID.natsume) LORA_ID.triad = LORA_ID.nene + ', ' + LORA_ID.natsume;
+  if (!TRAITS.triad) TRAITS.triad = [];
 }
 
 // ========== DATA ==========
@@ -741,7 +744,7 @@ const PROMPT_MAP = {
     calm:'calm', joyful:'in_love, blush', relaxed:'relaxed', serious:'serious',
     love:'in_love, blush', sleepy:'sleepy', spoiled:'pouting', wronged:'teary_eyes, pout'
   },
-  character: { nene:'1girl, ayachi_nene', natsume:'1girl, shiki_natsume' }
+  character: { nene:'1girl, ayachi_nene', natsume:'1girl, shiki_natsume', triad:'2girls, shiki_natsume, ayachi_nene' }
 };
 
 const BANNED_TAGS = ['neon','glowing','oversaturated','vivid_colors','vivid','rainbow','high_contrast','harsh_lighting','extremely_detailed','ultra_detailed'];
@@ -1084,7 +1087,7 @@ function sceneComposition(s) {
 function loadScene(s) {
   state.__sceneId = s.id;
   document.getElementById('storyInput').value = s.story; state.story = s.story;
-  const charId = (s.char === 'ayachi_nene' || s.char === 'nene') ? 'nene' : (s.char === 'shiki_natsume' || s.char === 'natsume' ? 'natsume' : (CHARACTER.find(c=>c.id===s.char) ? s.char : 'nene'));
+  const charId = (s.char === 'ayachi_nene' || s.char === 'nene') ? 'nene' : (s.char === 'shiki_natsume' || s.char === 'natsume' ? 'natsume' : (s.char === 'triad' ? 'triad' : 'nene'));
   if (charId !== state.char) setChar(charId);
   state.__sceneId = s.id;
   document.getElementById('storyInput').value = s.story;
