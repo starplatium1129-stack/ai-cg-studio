@@ -106,13 +106,13 @@
             '<section class="detail-section"><div class="lab">Visual DNA</div><div class="chips">'+chips([dna.hair, dna.eyes, dna.hairstyle, dna.uniform, dna.expression, dna.signature])+'</div></section>'+
             '<section class="detail-section"><div class="lab">LoRA</div><div class="char-lora"><code>'+esc(c.lora.name)+'</code> · 权重 '+esc(c.lora.weight)+'</div></section>'+
           '</div>'+
-          '<a class="btn btn-primary one-click-btn" href="tools/prompt-builder.html?char='+encodeURIComponent(c.id)+'">✨ 一键生成 Prompt</a>'+
+          '<a class="btn btn-primary one-click-btn" href="prompt-builder.html?char='+encodeURIComponent(c.id)+'">✨ 一键生成 Prompt</a>'+
           '</div></section>'+
           '<section class="cg-card card-info card-level-1"><div class="lab">Classic CG</div><div class="cg-title">'+esc(c.classic_cg.title)+'</div><div class="cg-story">'+esc(c.classic_cg.description)+'</div></section>'+
           '<section><h2 class="recommend-title">推荐 Scene · '+recommendations.length+' 条</h2><div class="recommend-grid" id="recommendGrid"></div></section>';
         tabs.querySelectorAll('[data-id]').forEach(function(tab){ tab.addEventListener('click', function(){ current = tab.getAttribute('data-id'); render(); }); });
         var grid = document.getElementById('recommendGrid');
-        recommendations.forEach(function(scene){ grid.appendChild(window.createSceneCard(scene, { actions: [{ label: '在 Director 打开', primary: true, href: 'tools/prompt-builder.html?scene=' + encodeURIComponent(scene.id) }] })); });
+        recommendations.forEach(function(scene){ grid.appendChild(window.createSceneCard(scene, { actions: [{ label: '在 Director 打开', primary: true, href: 'prompt-builder.html?scene=' + encodeURIComponent(scene.id) }] })); });
       }
       render();
     })
