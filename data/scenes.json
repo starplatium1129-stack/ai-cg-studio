@@ -909,7 +909,7 @@
       "核心CG",
       "R18"
     ],
-    "prompt": "2girls, shiki_natsume, ayachi_nene, wedding_dress, mole_under_eye, expressive_ahoge, cloying_affection, interlocked_fingers, looking_at_viewer, extreme_detail, masterpiece, soft_lighting, {intimacy_intensity}, {sensory_feedback}",
+    "prompt": "2girls, wedding_dress, looking_at_viewer, soft_lighting, (shiki_natsume on the left, mole_under_eye, cloying_affection, blush) BREAK (ayachi_nene on the right, hair_ribbon, expressive_ahoge, interlocked_fingers, blush) , {intimacy_intensity}",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
@@ -1014,7 +1014,7 @@
     "usage": [
       "协议核心"
     ],
-    "prompt": "2girls, shiki_natsume, ayachi_nene, wedding_dress, cloying_affection, heart_rate_synchronization, digital_artifacts, infinite_loop_visual, {intimacy_intensity}, {sensory_feedback}",
+    "prompt": "2girls, wedding_dress, infinite_loop_visual, digital_artifacts, (shiki_natsume on the left, mole_under_eye, cloying_affection, blush) BREAK (ayachi_nene on the right, hair_ribbon, expressive_ahoge, heart_rate_synchronization, blush) , {intimacy_intensity}",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
