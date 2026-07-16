@@ -6,7 +6,7 @@
 <title>AI CG Studio · 今天,我想讲一个什么故事?</title>
 <link rel="stylesheet" href="css/design-system.css?v=4">
 <script src="tools/nav.js?v=4"></script>
-<script src="tools/image-store.js?v=4"></script>
+<script src="tools/image-store.js?v=5"></script>
 <script src="tools/theme.js?v=4"></script>
 <style>
   /* ============================================================
@@ -338,18 +338,25 @@
 </footer>
 <script>
 (function(){
-  const HIS_KEY = 'aics_pb_history';
   const PRJ_KEY='aics_projects';
+  let _cachedProjects = [];
   function esc(v){ return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
   function charName(id){ return id==='nene'?'宁宁':(id==='natsume'?'夏目':(id||'·')); }
   function fmtDate(ts){ return new Date(ts).toLocaleDateString('zh-CN',{month:'short',day:'numeric'}); }
-  function loadProjects(){try{var raw=JSON.parse(localStorage.getItem(PRJ_KEY))||[];return Array.isArray(raw)?raw:[];}catch(e){return[];}}
-  function getProject(id){return loadProjects().find(function(p){return p.id===id;});}
+  function getProject(id){return _cachedProjects.find(function(p){return p.id===id;});}
 
-  function renderRecent(){
+  async function renderRecent(){
     const el = document.getElementById('recentWorks');
     let history = [];
-    try{ history = JSON.parse(localStorage.getItem(HIS_KEY)) || []; }catch(e){}
+    try {
+      history = await AICKVStore.get('aics_pb_history') || [];
+      _cachedProjects = await AICKVStore.get(PRJ_KEY) || [];
+      if(!history.length){
+        const old = JSON.parse(localStorage.getItem('aics_pb_history')) || [];
+        if(old.length){ history = old; await AICKVStore.set('aics_pb_history', old); localStorage.removeItem('aics_pb_history'); }
+      }
+    } catch(e){ console.warn('读取历史失败', e); }
+
     if(!history.length){
       el.innerHTML = '<div class="empty" style="grid-column:1/-1"><div class="ic">🎞</div><p>还没有创作记录。去导演台生成第一张 CG。</p><a href="tools/prompt-builder.html" class="btn btn-primary">🎬 开始创作</a></div>';
       return;
@@ -375,7 +382,7 @@
     });
   }
 
-  renderRecent();
+  AICKVStore.init().then(function(){ return renderRecent(); });
 })();
 </script>
 </body>
