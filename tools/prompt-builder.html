@@ -1064,7 +1064,7 @@ function renderScenes() {
   SCENES.forEach((s, idx) => {
     const card = document.createElement('div'); card.className = 'scene-card'; card.dataset.idx = idx; card.dataset.category = s.category || '日常';
     const season = s.season ? ({春:'🌸',夏:'☀️',秋:'🍂',冬:'❄️'}[s.season]||'') + s.season : '';
-    const tod = s.timeOfDay ? ({morning:'清晨',afternoon:'午后',sunset:'黄昏',night:'夜晚',late_night:'深夜'}[s.timeOfDay]||s.timeOfDay) : '';
+    const tod = s.timeOfDay ? ({morning:'清晨',afternoon:'午后',sunset:'黄昏',night:'夜晚',late_night:'深夜',dawn:'拂晓'}[s.timeOfDay]||s.timeOfDay) : '';
     card.innerHTML = `
       <div class="scene-name">${s.title}${s.mature ? ' <span class="mature-dot">🔞</span>' : ''}</div>
       <div class="scene-story">${s.story}</div>
