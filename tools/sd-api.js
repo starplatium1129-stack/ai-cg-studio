@@ -18,8 +18,12 @@
 
     var finalPrompt = prompt || '';
 
+    // 🛡️ 多 LoRA 权重动态稀释：双人同场时自动降权防过拟合爆色
+    var isDualCharacter = (options.char === 'triad') ||
+      (finalPrompt.includes('ayachi_nene') && finalPrompt.includes('shiki_natsume'));
+    var targetWeight = isDualCharacter ? 0.62 : (options.loraWeight || 0.85);
+
     // LoRA 智能去重注入：已存在则跳过，防止权重叠 buff
-    var loraWeight = options.loraWeight || 0.85;
     if (options.lora) {
       var loras = Array.isArray(options.lora) ? options.lora : options.lora.split(',');
       loras.forEach(function(name){
@@ -30,7 +34,7 @@
           return;
         }
         if (finalPrompt && !finalPrompt.trim().endsWith(',')) finalPrompt += ',';
-        finalPrompt += ' <lora:' + name + ':' + loraWeight + '>';
+        finalPrompt += ' <lora:' + name + ':' + targetWeight + '>';
       });
     }
 

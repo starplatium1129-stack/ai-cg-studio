@@ -4363,7 +4363,7 @@
     "camera": "近景特写",
     "lighting": "暗部强烈",
     "usage": ["核心协议", "R15"],
-    "prompt": "2girls, ayachi_nene, shiki_natsume, hair_ribbon, expressive_ahoge, mole_under_eye, messed_up_uniform, school_uniform, interlocked_fingers, cloying_affection, private_laboratory, night, digital_artifacts, strong_shadows, looking_at_viewer, {intimacy_intensity}, {sensory_feedback}",
+    "prompt": "2girls, looking_at_viewer, private_laboratory, night, strong_shadows, (ayachi_nene standing on the left, hair_ribbon, expressive_ahoge, school_uniform, blush) BREAK (shiki_natsume standing on the right, mole_under_eye, messed_up_uniform, school_uniform, cloying_affection) , {intimacy_intensity}",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, deformed, 3d render, photorealistic, realistic skin"
   },
   {
@@ -4539,7 +4539,7 @@
     "camera": "全身远景",
     "lighting": "柔和氛围灯",
     "usage": ["核心协议", "壁纸级"],
-    "prompt": "2girls, ayachi_nene, shiki_natsume, hair_ribbon, expressive_ahoge, mole_under_eye, maid_style_tactical_gear, cafe_interior, floating_tea_cup, laptop, cloying_affection, night, soft_ambiance, seductive_look, smirk, blush, {intimacy_intensity}",
+    "prompt": "2girls, cafe_interior, night, soft_ambiance, (ayachi_nene sitting on the left, hair_ribbon, expressive_ahoge, floating_tea_cup, smile, blush) BREAK (shiki_natsume leaning on the bar counter on the right, mole_under_eye, maid_style_tactical_gear, laptop, seductive_look, smirk, blush) , {intimacy_intensity}",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, deformed, 3d render, photorealistic"
   },
   {
@@ -4715,7 +4715,7 @@
     "camera": "全身远景",
     "lighting": "丁达尔晨曦逆光",
     "usage": ["核心协议", "壁纸级"],
-    "prompt": "2girls, ayachi_nene, shiki_natsume, hair_ribbon, expressive_ahoge, mole_under_eye, witch_costume, tactical_gear, battlefield_ruins, dawn, first_light, magic_circle, energy_particles, looking_at_viewer, dynamic_pose, epic_lighting, rim_light, masterpiece_composition, {intimacy_intensity}",
+    "prompt": "2girls, battlefield_ruins, dawn, first_light, looking_at_viewer, masterpiece_composition, (ayachi_nene floating in the air on the left, hair_ribbon, expressive_ahoge, witch_costume, magic_circle, energy_particles) BREAK (shiki_natsume standing on the ground on the right, mole_under_eye, tactical_gear, holding energy blade, cool_expression, rim_light) , {intimacy_intensity}",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, deformed, 3d render, photorealistic, realistic skin"
   }
 ]
