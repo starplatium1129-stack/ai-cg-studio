@@ -186,7 +186,7 @@ python -m http.server 8090
 - **导航"创作者思维"** — 一级 7 项，Director 为内部名对用户隐身
 - **Scene Card 组件** — `scene-card.js`，首页 / 场景库 / 画廊复用同一卡片
 - **LoRA 资产化** — `loras.json` 含 trigger / character / strength / compatible_models / version
-- **Gallery 真实内容** — 读 localStorage History，时间线 + 5 轴评级 + 重新生成
+- **Gallery 真实内容** — 读 IndexedDB (AICKVStore) History，时间线 + 5 轴评级 + 重新生成
 - **项目工作区** — `projects.json` + 选择器 + Gallery 按项目筛选
 - **Illustrious SDXL 对标** — 标签结构对标底模特性（5tag 训练 vs 3-5tag 场景生成）
 - **响应式 3 段** — 手机 / 平板 / 桌面全覆盖

@@ -132,17 +132,19 @@
       <div class="version-card">
         <div class="version-header">
           <div class="version-num">v1.0</div>
-          <div class="version-name">Prompt Builder v4</div>
+          <div class="version-name">Prompt Builder v4 + SD WebUI 对接</div>
           <div class="version-tag">🚧 进行中</div>
         </div>
-        <div class="version-desc">整合工具 + 数据。真正的"AI Galgame CG 创作工作台"。</div>
+        <div class="version-desc">整合工具 + 数据 + 出图。真正的"AI Galgame CG 创作工作台"。</div>
         <ul class="feature-list">
-          <li>整合 Prompt_Builder v3 + director-flow 升级为 v4 (引导 / 速填双模式 + Scene 库 + 手动标签)</li>
-          <li>Scene 库 JSON 数据 (40/500 场景, 分类检索 + 搜索 + 季节/时段)</li>
-          <li>历史记录 (localStorage, cap 30) + 一键导出 Prompt (.txt)</li>
-          <li>参数 PNG 导出 (Canvas 重绘, 含 char / cfg / steps / sampler)</li>
-          <li>实时预览图占位 (未来接 Stable Diffusion API)</li>
-          <li>收藏夹 — 未完成</li>
+          <li>Scene 库 128 场景 (9 类, 分类检索 + 搜索 + 季节/时段筛选)</li>
+          <li>SD WebUI ReForge 对接 (txt2img API + 状态 Badge + LoRA 智能注入/去重)</li>
+          <li>hires.fix 开关 (2x R-ESRGAN Anime6B, 14 steps, denoising 0.35)</li>
+          <li>Seed 锁定 + 下载 PNG + 快门曝光动效</li>
+          <li>历史记录 IndexedDB (AICKVStore) + 收藏夹 + 5 轴评级 + 一键导出 Prompt</li>
+          <li>Active Sync Protocol (10 场景, 实时解析故事文本替换占位符)</li>
+          <li>三人场景 triad 支持 + 角色 LoRA 绑定</li>
+          <li>美术禁用词黑名单源头净化 (clean-scenes.js)</li>
         </ul>
       </div>
     </div>
@@ -158,7 +160,6 @@
         <div class="version-desc">从"工具"进化为"平台"。社区可以贡献 Scene。</div>
         <ul class="feature-list">
           <li>Scene 库扩展到 500+ (多角色、多情绪、多季节)</li>
-          <li>Scene 分类检索 (情绪/场景/季节/适用)</li>
           <li>用户 Scene 提交 + 审核</li>
           <li>官方 Scene 满足 ⭐⭐⭐⭐⭐ 才能入库</li>
         </ul>
@@ -228,7 +229,7 @@
         <ul class="feature-list">
           <li>一键导出 ComfyUI workflow JSON</li>
           <li>ComfyUI 参数自动映射</li>
-          <li>Hires.fix / ControlNet / IP-Adapter 自动生成</li>
+          <li>ControlNet / IP-Adapter 自动生成</li>
         </ul>
       </div>
     </div>

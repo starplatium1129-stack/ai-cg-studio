@@ -114,7 +114,8 @@ AI-CG-Studio/
 │   ├── theme.js                   # 暗/浅主题管理器
 │   ├── scene-card.js              # Scene Card 组件（grid/strip/recent 三模式）
 │   ├── active-sync.js             # ★ Active Sync Protocol（动态情感占位符）
-│   ├── image-store.js             # IndexedDB 图片存储
+│   ├── sd-api.js                  # ★ SD WebUI ReForge API 对接（LoRA 注入/hires.fix/seed lock）
+│   ├── image-store.js             # IndexedDB 图片存储 (AICGImageStore + AICKVStore)
 │   ├── prompt-builder.html        # Create（Director）— Story-first 导演台
 │   ├── scene-explorer.html        # Scene Library — 128 场景浏览
 │   ├── character.html             # Character — 角色卡 + DNA
@@ -132,6 +133,8 @@ AI-CG-Studio/
 │   ├── presets.json               # 出图参数档
 │   ├── projects.json              # 项目工作区
 │   └── history.json               # 生成历史（seed clamp / rating 5 轴）
+├── scripts/                       # 维护脚本
+│   └── clean-scenes.js            # ★ 场景数据批量清洗（黑名单 + DNA + 占位符补全）
 └── docs/                          # 规范文档（可交互）
     ├── philosophy.html            # Scene Engineering > Prompt Engineering
     ├── worldview.html             # 项目灵魂
@@ -167,9 +170,11 @@ AI-CG-Studio/
 - **导航"创作者思维"** — 一级 7 项，Director 为内部名对用户隐身
 - **Scene Card 组件** — `scene-card.js`，首页 / 场景库 / 画廊复用同一卡片
 - **LoRA 资产化** — `loras.json` 含 trigger / character / strength / compatible_models / version
-- **Gallery 真实内容** — 读 localStorage History，时间线 + 5 轴评级 + 重新生成
+- **Gallery 真实内容** — 读 IndexedDB (AICKVStore) History，时间线 + 5 轴评级 + 重新生成
 - **项目工作区** — `projects.json` + 选择器 + Gallery 按项目筛选
 - **Illustrious SDXL 对标** — 标签结构对标底模特性（5tag 训练 vs 3-5tag 场景生成）
+- **SD WebUI ReForge 对接** — `tools/sd-api.js` 直连出图（status badge + LoRA 智能注入/去重 + hires.fix + seed lock + 下载 PNG）
+- **数据维护脚本** — `scripts/clean-scenes.js` 美术禁用词黑名单源头净化（22 个红线词）
 - **响应式 3 段** — 手机 / 平板 / 桌面全覆盖
 
 ---

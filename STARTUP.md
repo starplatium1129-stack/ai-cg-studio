@@ -67,6 +67,9 @@ AI-CG-Studio/
 ├── index.html              # 首页
 ├── tools/                  # 工具页面
 │   ├── prompt-builder.html # 导演工作台（核心）
+│   ├── sd-api.js           # SD WebUI ReForge API 对接
+│   ├── active-sync.js      # Active Sync Protocol 引擎
+│   ├── image-store.js      # IndexedDB 图片/KV 存储 (AICKVStore)
 │   ├── scene-explorer.html # 场景库
 │   ├── character.html      # 角色卡
 │   ├── gallery.html        # 作品画廊
@@ -76,6 +79,8 @@ AI-CG-Studio/
 │   ├── scenes.json         # 128 个场景
 │   ├── characters.json     # 角色信息
 │   └── tags.json           # 标签库
+├── scripts/                # 维护脚本
+│   └── clean-scenes.js     # 场景数据批量清洗
 ├── docs/                   # 文档
 └── css/                    # 样式
 ```
@@ -87,9 +92,11 @@ AI-CG-Studio/
 ### 1. 导演工作台 (`/tools/prompt-builder.html`)
 
 - 选择场景（128 个预设场景）
-- 选择角色（宁宁 / 夏目）
+- 选择角色（宁宁 / 夏目 / 三人场景 triad）
 - 定义导演决策（情绪、镜头、光照、构图、色彩）
 - 自动生成 Stable Diffusion Prompt
+- hires.fix 开关（2x R-ESRGAN Anime6B, 14 steps, denoising 0.35）
+- Seed 锁定 + SD 连接状态 Badge + 下载 PNG
 
 ### 2. Active Sync Protocol
 
@@ -106,6 +113,25 @@ AI-CG-Studio/
 - 按分类浏览（校园、日常、恋爱、亲密等）
 - 搜索和筛选
 - 一键跳转到导演台
+
+### 4. SD WebUI ReForge 对接 (`/tools/sd-api.js`)
+
+导演工作台可直接调用本地 SD WebUI 出图，无需手动复制 Prompt：
+
+- **前置条件**：启动 ReForge 时需添加 `--api` 参数，并设置 `--cors-allow-origins=*` 允许跨域
+- **默认地址**：`http://127.0.0.1:7860`（可通过 `SDWebUIConnector` 修改）
+- **默认参数**：Checkpoint `waiIllustriousSDXL_v170.safetensors`，Sampler `DPM++ 2M SDE Karras`，CFG 5.5，Steps 28
+- **LoRA 注入**：自动从场景数据读取 LoRA 名称，注入 `<lora:name:0.85>`（已去重防叠 buff）
+- **状态 Badge**：工作台右上角绿/红圆点实时显示连接状态
+
+### 5. 数据维护脚本
+
+运行 `node scripts/clean-scenes.js` 可对 `data/scenes.json` 执行批量清洗：
+
+- 标签去重 + 逗号拆分 + 角色 DNA 注入
+- 美术禁用词黑名单源头净化（neon / glowing / 8k / photorealistic 等 13 个红线词）
+- Active Sync 占位符自动补全
+- 运行前自动创建 `.bak` 备份
 
 ---
 
@@ -127,13 +153,17 @@ A: 编辑 `data/scenes.json`，按照现有格式添加场景对象。
 
 A: 编辑 `data/characters.json`，添加角色信息和 LoRA 绑定。
 
+### Q: SD WebUI 状态 Badge 显示红色？
+
+A: 确认 ReForge 已启动且加了 `--api --cors-allow-origins=*` 参数。默认端口 7860。
+
 ---
 
 ## 技术栈
 
 - **前端**: 纯 HTML + CSS + Vanilla JS（零依赖）
 - **数据**: JSON 文件（本地加载）
-- **存储**: localStorage（历史记录、项目）
+- **存储**: IndexedDB (AICKVStore，历史记录 / 项目 / 图片 Blob)
 - **兼容**: 现代浏览器（Chrome/Firefox/Edge/Safari）
 
 ---
