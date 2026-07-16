@@ -33,7 +33,7 @@
       steps: options.steps || 28,
       width: options.width || 832,
       height: options.height || 1216,
-      sampler_name: options.sampler || 'DPM++ 2M Karras',
+      sampler_name: options.sampler || 'DPM++ 2M SDE Karras',
       cfg_scale: options.cfg != null ? options.cfg : 5.5,
       seed: options.seed != null ? options.seed : -1,
       override_settings: {
