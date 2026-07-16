@@ -103,3 +103,71 @@
 
   global.AICGImageStore = { put:put, get:get, delete:deleteOne, deleteMany:deleteMany };
 })(window);
+
+/**
+ * AICKVStore — 通用 IndexedDB KV 存储（history / projects 等）
+ * 替代 localStorage，无 5-10MB 上限。
+ */
+(function(global){
+  'use strict';
+
+  var DB_NAME = 'aics_kv_store';
+  var DB_VERSION = 1;
+  var STORE_NAME = 'kv';
+  var dbPromise;
+
+  function openDb(){
+    if(dbPromise) return dbPromise;
+    dbPromise = new Promise(function(resolve, reject){
+      if(!global.indexedDB){ reject(new Error('当前浏览器不支持 IndexedDB')); return; }
+      var request = global.indexedDB.open(DB_NAME, DB_VERSION);
+      request.onupgradeneeded = function(){
+        if(!request.result.objectStoreNames.contains(STORE_NAME)){
+          request.result.createObjectStore(STORE_NAME, { keyPath:'key' });
+        }
+      };
+      request.onsuccess = function(){
+        var db = request.result;
+        db.onversionchange = function(){ db.close(); dbPromise = null; };
+        resolve(db);
+      };
+      request.onerror = function(){ dbPromise = null; reject(request.error || new Error('KV 数据库打开失败')); };
+    });
+    return dbPromise;
+  }
+
+  function get(key){
+    return openDb().then(function(db){
+      return new Promise(function(resolve, reject){
+        var tx = db.transaction(STORE_NAME, 'readonly');
+        var req = tx.objectStore(STORE_NAME).get(key);
+        req.onsuccess = function(){ resolve(req.result ? req.result.value : null); };
+        req.onerror = function(){ reject(req.error); };
+      });
+    });
+  }
+
+  function set(key, value){
+    return openDb().then(function(db){
+      return new Promise(function(resolve, reject){
+        var tx = db.transaction(STORE_NAME, 'readwrite');
+        tx.objectStore(STORE_NAME).put({ key:key, value:value });
+        tx.oncomplete = function(){ resolve(true); };
+        tx.onerror = function(){ reject(tx.error); };
+      });
+    });
+  }
+
+  function remove(key){
+    return openDb().then(function(db){
+      return new Promise(function(resolve, reject){
+        var tx = db.transaction(STORE_NAME, 'readwrite');
+        tx.objectStore(STORE_NAME).delete(key);
+        tx.oncomplete = function(){ resolve(true); };
+        tx.onerror = function(){ reject(tx.error); };
+      });
+    });
+  }
+
+  global.AICKVStore = { init:openDb, get:get, set:set, remove:remove };
+})(window);

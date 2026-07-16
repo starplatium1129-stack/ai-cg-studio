@@ -529,7 +529,7 @@
   <p class="muted mt-4">Prompt Builder · Scene-first · Story-first</p>
 </footer>
 
-<script src="image-store.js?v=4"></script>
+<script src="image-store.js?v=5"></script>
 <script src="active-sync.js?v=4"></script>
 <script>
 
@@ -544,7 +544,27 @@
 // ========== DATA LOAD (from JSON, localhost required — file:// blocked by CORS) ==========
 let DATA_READY = false;
 function loadData(){
+  function initStorage(){
+    return AICKVStore.init().then(function(){
+      return Promise.all([AICKVStore.get(HIS_KEY), AICKVStore.get(PRJ_KEY)]);
+    }).then(function(vals){
+      var histRaw = vals[0], prjRaw = vals[1];
+      // localStorage → IndexedDB 一次性迁移
+      if(!histRaw){
+        try{var ls=JSON.parse(localStorage.getItem(HIS_KEY));if(Array.isArray(ls)&&ls.length){histRaw=ls;AICKVStore.set(HIS_KEY,ls);localStorage.removeItem(HIS_KEY);}}catch(e){}
+      }
+      if(!prjRaw){
+        try{var lp=JSON.parse(localStorage.getItem(PRJ_KEY));if(Array.isArray(lp)&&lp.length){prjRaw=lp;AICKVStore.set(PRJ_KEY,lp);localStorage.removeItem(PRJ_KEY);}}catch(e){}
+      }
+      var raw = Array.isArray(histRaw) ? histRaw : [];
+      var res = migrateHistory(raw);
+      _cachedHistory = res.list;
+      _cachedProjects = Array.isArray(prjRaw) ? prjRaw : [];
+      if(res.changed) AICKVStore.set(HIS_KEY, res.list);
+    }).catch(function(e){console.warn('storage init fail, fallback to memory',e);});
+  }
   return Promise.all([
+    initStorage(),
     fetch('../data/scenes.json').then(r=>r.json()).then(d=>SCENES=d).catch(e=>{console.warn('scenes load fail',e);}),
     fetch('../data/characters.json').then(r=>r.json()).then(d=>CHARACTER=d).catch(e=>{console.warn('characters load fail',e);}),
     fetch('../data/tags.json').then(r=>r.json()).then(d=>{
@@ -1428,6 +1448,9 @@ function exportPNG() {
 
 // ========== HISTORY ==========
 const HIS_KEY = 'aics_pb_history';
+const PRJ_KEY = 'aics_projects';
+let _cachedHistory = [];
+let _cachedProjects = [];
 const HIS_SCHEMA_VERSION = 4;
 function normalizeImageUrl(value){
   if(typeof value !== 'string' || !value.trim()) return '';
@@ -1447,7 +1470,7 @@ function migrateHistory(list){
   });
   if(out.length!==list.length)changed=true; return {list:out,changed:changed};
 }
-function loadHistory(){var raw=[];try{raw=JSON.parse(localStorage.getItem(HIS_KEY))||[];}catch(e){}if(!Array.isArray(raw))raw=[];var res=migrateHistory(raw);if(res.changed){try{localStorage.setItem(HIS_KEY,JSON.stringify(res.list));}catch(e){}}return res.list;}
+function loadHistory(){return _cachedHistory;}
 function nextVersion(history,scene,character){const same=history.filter(h=>h.scene===scene&&h.character===character);if(!same.length)return{version:1,parent_id:null};const latest=same.reduce((a,b)=>(b.version||0)>(a.version||0)?b:a);return{version:(latest.version||0)+1,parent_id:latest.id};}
 function baseEntry(){
   const sel=state.selections,sceneTitle=(window.__scenes__||[]).find(s=>s.id===state.__sceneId);var seed=Number(window.__lastSeed__);if(!Number.isFinite(seed))seed=Math.floor(Math.random()*4294967295);seed=Math.max(0,Math.min(4294967295,Math.floor(seed)));
@@ -1456,8 +1479,8 @@ function baseEntry(){
 
 const PRJ_KEY='aics_projects';
 function esc(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function loadProjects(){try{var raw=JSON.parse(localStorage.getItem(PRJ_KEY))||[];return Array.isArray(raw)?raw:[];}catch(e){return[];}}
-function saveProjects(list){localStorage.setItem(PRJ_KEY,JSON.stringify(list));}
+function loadProjects(){return _cachedProjects;}
+function saveProjects(list){_cachedProjects=list;AICKVStore.set(PRJ_KEY,list).catch(function(e){console.warn('projects save fail',e);});}
 function getProject(id){return loadProjects().find(function(p){return p.id===id;});}
 function refreshProjectSelect(){
   var sel=document.getElementById('projectSelect');if(!sel)return;
@@ -1501,16 +1524,13 @@ function deleteProject(){
 function unreferencedImageIds(entries,kept){var refs=new Set(kept.map(h=>h.image_id).filter(Boolean));return entries.map(h=>h.image_id).filter(id=>id&&!refs.has(id));}
 async function cleanupImages(entries,kept){var ids=unreferencedImageIds(entries,kept);if(ids.length)await AICGImageStore.deleteMany(ids);}
 async function commitHistoryEntry(entry){
-  var existing=[];
-  try{existing=JSON.parse(localStorage.getItem(HIS_KEY))||[];}catch(e){}
-  if(!Array.isArray(existing))existing=[];
-  existing=existing.filter(h=>h&&typeof h==='object');
-  var base=state.history&&state.history.length>=existing.length?state.history:existing;
+  var base=state.history||[];
   var merged=[entry].concat(base.filter(h=>h&&h.id!==entry.id));
   var kept=merged.slice(0,30);
   var evicted=merged.slice(30);
-  localStorage.setItem(HIS_KEY,JSON.stringify(kept));
+  _cachedHistory=kept;
   state.history=kept;
+  AICKVStore.set(HIS_KEY,kept).catch(function(e){console.warn('history save fail',e);});
   renderHistory();
   if(entry.project)addHistoryToProject(entry.project,entry.id);
   cleanupImages(evicted,kept).catch(function(e){flash('记录已保存，旧图片清理失败');});
@@ -1519,7 +1539,7 @@ async function saveHistory(){const entry=baseEntry(),v=nextVersion(state.history
 async function saveHistoryWithRating(rating,favorite,notes,imageUrl,imageId){const entry=baseEntry(),v=nextVersion(state.history,entry.scene,entry.character);entry.version=v.version;entry.parent_id=v.parent_id;entry.rating=rating;entry.favorite=!!favorite;entry.notes=notes||'';entry.image_id=imageId||'';entry.image_url=normalizeImageUrl(imageUrl);await commitHistoryEntry(entry);}
 function renderHistory(){const list=document.getElementById('historyList');document.getElementById('hisCount').textContent=state.history.length;if(!state.history.length){list.innerHTML='<div class="history-empty">尚无记录。每次点击「保存」生成一条快照。</div>';return;}list.innerHTML=state.history.map(h=>{const avg=h.rating?Math.round((h.rating.face+h.rating.expression+h.rating.composition+h.rating.hands+h.rating.atmosphere)/5):0;return `<div class="history-item"><div class="history-text" title="${escapeHtml(h.prompt)}">${escapeHtml(h.prompt)}</div><div class="history-meta">${h.sceneTitle||h.scene||'—'} · ${h.character} · v${h.version||1} · seed ${h.seed||'—'}</div><div class="history-meta">${'★'.repeat(avg)}${'☆'.repeat(5-avg)} ${h.favorite?'💜':''}</div><div class="history-actions"><button onclick="loadHistoryId(${h.id})">载入</button><button onclick="copyHistoryId(${h.id})">复制</button><button onclick="deleteHistoryId(${h.id})">×</button></div></div>`;}).join('');}
 function loadHistoryId(id){const h=state.history.find(x=>x.id===id);if(h)restoreFromEntry(h,false);} function copyHistoryId(id){const h=state.history.find(x=>x.id===id);if(h)navigator.clipboard.writeText(h.prompt||'').then(()=>flash('📋 已复制'));}
-async function deleteHistoryId(id){var removed=state.history.filter(h=>h.id===id);var entry=removed[0];var prjId=entry&&entry.project;var kept=state.history.filter(h=>h.id!==id);try{localStorage.setItem(HIS_KEY,JSON.stringify(kept));}catch(e){flash('删除失败，请检查浏览器存储空间');return;}state.history=kept;renderHistory();if(prjId)removeHistoryFromProject(prjId,id);cleanupImages(removed,kept).catch(function(e){flash('记录已删除，图片清理失败');});}
+async function deleteHistoryId(id){var removed=state.history.filter(h=>h.id===id);var entry=removed[0];var prjId=entry&&entry.project;var kept=state.history.filter(h=>h.id!==id);_cachedHistory=kept;state.history=kept;AICKVStore.set(HIS_KEY,kept).catch(function(e){flash('删除失败');return;});renderHistory();if(prjId)removeHistoryFromProject(prjId,id);cleanupImages(removed,kept).catch(function(e){flash('记录已删除，图片清理失败');});}
 
 // ========== TRAIN ==========
 function toggleTrain() { const c = document.getElementById('trainContent'); const b = document.querySelector('.toggle-btn'); c.classList.toggle('open'); b.classList.toggle('open'); }
