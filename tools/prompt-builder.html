@@ -1683,7 +1683,12 @@ function loadHistoryId(id){const h=state.history.find(x=>x.id===id);if(h)restore
 async function deleteHistoryId(id){var removed=state.history.filter(h=>h.id===id);var entry=removed[0];var prjId=entry&&entry.project;var kept=state.history.filter(h=>h.id!==id);_cachedHistory=kept;state.history=kept;AICKVStore.set(HIS_KEY,kept).catch(function(e){flash('删除失败');return;});renderHistory();if(prjId)removeHistoryFromProject(prjId,id);cleanupImages(removed,kept).catch(function(e){flash('记录已删除，图片清理失败');});}
 
 // ========== TRAIN ==========
-function toggleTrain() { const c = document.getElementById('trainContent'); const b = document.querySelector('.toggle-btn'); c.classList.toggle('open'); b.classList.toggle('open'); }
+function toggleTrain() {
+  var c = document.getElementById('trainContent');
+  var b = document.querySelector('.collapsible-btn');
+  if (c) c.classList.toggle('open');
+  if (b) b.classList.toggle('open');
+}
 function toggleMonitor() { const m=document.getElementById('promptMonitor'); const t=document.getElementById('monitorToggle'); m.classList.toggle('monitor-preview-collapsed'); const collapsed=m.classList.contains('monitor-preview-collapsed'); if(t) t.textContent = collapsed ? '展开 ▶' : '收起 ▼'; }
 function toggleResult() { const f=document.getElementById('finalPrompt'); if(!f) return; const collapsed=(f.style.display==='none'||!f.style.display); f.style.display=collapsed?'block':'none'; if(event.target && event.target.tagName==='BUTTON') event.target.textContent = collapsed?'收起 Prompt':'展开 Prompt'; }
 
