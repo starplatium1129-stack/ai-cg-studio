@@ -15,17 +15,33 @@
 
   SDWebUIConnector.prototype.generateImage = function(prompt, negativePrompt, options){
     options = options || {};
+
+    // LoRA 注入：将 lora 参数转为 <lora:name:weight> 语法拼入 prompt
+    var finalPrompt = prompt || '';
+    var loraWeight = options.loraWeight || 0.85;
+    if (options.lora) {
+      var loras = Array.isArray(options.lora) ? options.lora : options.lora.split(',');
+      loras.forEach(function(name){
+        name = (name || '').trim();
+        if (name) finalPrompt += ', <lora:' + name + ':' + loraWeight + '>';
+      });
+    }
+
     var payload = {
-      prompt: prompt,
+      prompt: finalPrompt,
       negative_prompt: negativePrompt || '',
-      steps: options.steps || 20,
-      width: options.width || 512,
-      height: options.height || 512,
-      sampler_name: options.sampler || 'Euler a',
-      cfg_scale: options.cfg || 7,
-      seed: options.seed != null ? options.seed : -1
+      steps: options.steps || 28,
+      width: options.width || 832,
+      height: options.height || 1216,
+      sampler_name: options.sampler || 'DPM++ 2M Karras',
+      cfg_scale: options.cfg != null ? options.cfg : 5.5,
+      seed: options.seed != null ? options.seed : -1,
+      override_settings: {
+        sd_model_checkpoint: options.checkpoint || 'waiIllustriousSDXL_v170.safetensors'
+      }
     };
-    console.log('[SD API] 请求生成...', payload);
+
+    console.log('[SD API] 发送 Payload:', payload);
     return fetch(this.apiUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

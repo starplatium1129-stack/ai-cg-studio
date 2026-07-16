@@ -418,7 +418,7 @@
         <div class="panel-title">⚙️ 出图参数</div>
         <div class="controls-grid">
           <div class="ctrl" style="grid-column:1/-1;margin-bottom:var(--s-2)"><label>快速预设</label><select id="presetSelect"><option value="">— 自定义 —</option></select></div>
-          <div class="ctrl"><label>CFG</label><select id="cfg"><option>3</option><option>4</option><option selected>5</option><option>5.5</option><option>6</option><option>7</option><option>8</option><option>9</option></select></div>
+          <div class="ctrl"><label>CFG</label><select id="cfg"><option>3</option><option>4</option><option>5</option><option selected>5.5</option><option>6</option><option>7</option><option>8</option><option>9</option></select></div>
           <div class="ctrl"><label>Steps</label><select id="steps"><option>20</option><option selected>28</option><option>30</option><option>35</option><option>40</option><option>50</option></select></div>
           <div class="ctrl"><label>Sampler</label><select id="sampler"><option>DPM++ 2M SDE Karras</option><option>DPM++ 2M Karras</option><option>Euler a</option><option>DPM++ SDE Karras</option></select></div>
           <div class="ctrl"><label>尺寸</label><select id="size"><option>832×1216</option><option>1024×1024</option><option>1216×832</option></select></div>
@@ -1427,13 +1427,17 @@ function callSDGenerate(){
   try{ neg = document.getElementById('negativeInput') ? document.getElementById('negativeInput').value : ''; }catch(e){}
   var cfg = Number(document.getElementById('cfg').value) || 7;
   var steps = Number(document.getElementById('steps').value) || 20;
-  var sampler = document.getElementById('sampler').value || 'Euler a';
+  var sampler = document.getElementById('sampler').value || 'DPM++ 2M Karras';
   var size = (document.getElementById('size').value || '832x1216').split('x');
   var width = Number(size[0]) || 512;
   var height = Number(size[1]) || 512;
   var seed = window.__lastSeed__ != null ? window.__lastSeed__ : -1;
 
-  getSDConnector().generateImage(prompt, neg, { cfg:cfg, steps:steps, sampler:sampler, width:width, height:height, seed:seed })
+  // 获取当前场景的 LoRA 配置
+  var currentScene = SCENES.find(function(sc){ return sc.id === state.__sceneId; });
+  var loraName = currentScene && currentScene.lora ? currentScene.lora : '';
+
+  getSDConnector().generateImage(prompt, neg, { cfg:cfg, steps:steps, sampler:sampler, width:width, height:height, seed:seed, lora:loraName })
     .then(function(dataUrl){
       _sdLastDataUrl = dataUrl;
       status.textContent = '✅ 生成完成';

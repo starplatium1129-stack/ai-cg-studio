@@ -14,6 +14,7 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "hair_ribbon",
       "school_uniform",
       "looking_back",
       "smile"
@@ -26,8 +27,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,ayachi_nene,school_uniform, looking_back, smile",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, school_uniform, looking_back, smile",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc002",
@@ -44,10 +45,14 @@
     "time": "清晨",
     "timeOfDay": "morning",
     "tags": [
+      "hair_ribbon",
       "school_uniform",
       "cherry_blossoms",
       "looking_back",
-      "blush"
+      "blush",
+      "looking_at_viewer",
+      "cloying_affection",
+      "eye_contact"
     ],
     "mature": false,
     "location": "公园",
@@ -57,8 +62,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,ayachi_nene,school_uniform, cherry_blossoms, looking_at_viewer, cloying_affection, eye_contact",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, school_uniform, cherry_blossoms, looking_at_viewer, cloying_affection, eye_contact",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc003",
@@ -75,6 +80,7 @@
     "time": "黄昏",
     "timeOfDay": "sunset",
     "tags": [
+      "hair_ribbon",
       "school_uniform",
       "sunset",
       "pleated_skirt"
@@ -87,8 +93,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,ayachi_nene,school_uniform, sunset, pleated_skirt",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, school_uniform, sunset, pleated_skirt",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc004",
@@ -105,9 +111,11 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "hair_ribbon",
       "school_uniform",
       "library",
-      "sunset"
+      "sunset",
+      "autumn"
     ],
     "mature": false,
     "location": "图书馆",
@@ -117,8 +125,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,ayachi_nene,school_uniform, library, autumn",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, school_uniform, library, autumn",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc005",
@@ -135,11 +143,12 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
+      "mole_under_eye",
       "yukata",
       "night",
       "looking_back",
       "blush",
-      "night"
+      "fireworks"
     ],
     "mature": false,
     "location": null,
@@ -149,8 +158,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,shiki_natsume,yukata, fireworks, night",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, yukata, fireworks, night",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc006",
@@ -167,9 +176,11 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
+      "hair_ribbon",
       "sweater",
       "smile",
-      "snow"
+      "snow",
+      "gift"
     ],
     "mature": false,
     "location": null,
@@ -179,8 +190,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,ayachi_nene,sweater, gift, snow",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, sweater, gift, snow",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc007",
@@ -197,11 +208,12 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "hair_ribbon",
       "school_uniform",
       "rain",
-      "rain",
       "shy",
-      "smile"
+      "smile",
+      "umbrella"
     ],
     "mature": false,
     "location": null,
@@ -211,8 +223,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,ayachi_nene,school_uniform, rain, umbrella",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, school_uniform, rain, umbrella",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc008",
@@ -229,6 +241,7 @@
     "time": "清晨",
     "timeOfDay": "morning",
     "tags": [
+      "hair_ribbon",
       "kimono",
       "shrine",
       "snow"
@@ -241,8 +254,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,ayachi_nene,kimono, shrine, snow",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, kimono, shrine, snow",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc009",
@@ -259,9 +272,12 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "hair_ribbon",
       "cafe",
       "window_light",
-      "golden_hour"
+      "golden_hour",
+      "window",
+      "sunlight"
     ],
     "mature": false,
     "location": "咖啡厅",
@@ -271,8 +287,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,ayachi_nene,cafe, window, sunlight",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, cafe, window, sunlight",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc010",
@@ -289,6 +305,7 @@
     "time": "黄昏",
     "timeOfDay": "sunset",
     "tags": [
+      "hair_ribbon",
       "dress",
       "beach",
       "sunset"
@@ -301,8 +318,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,ayachi_nene,dress, beach, sunset",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, dress, beach, sunset",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc011",
@@ -319,6 +336,7 @@
     "time": "清晨",
     "timeOfDay": "morning",
     "tags": [
+      "mole_under_eye",
       "school_uniform",
       "classroom",
       "golden_hour"
@@ -331,8 +349,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,shiki_natsume,school_uniform, classroom, golden_hour",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, school_uniform, classroom, golden_hour",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc012",
@@ -349,11 +367,15 @@
     "time": "清晨",
     "timeOfDay": "morning",
     "tags": [
+      "hair_ribbon",
       "train_station",
       "soft_lighting",
       "looking_back",
       "sad",
-      "hair_blowing"
+      "hair_blowing",
+      "station",
+      "train",
+      "steam"
     ],
     "mature": false,
     "location": "车站",
@@ -363,8 +385,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,ayachi_nene,station, train, steam",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, station, train, steam",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc013",
@@ -381,6 +403,7 @@
     "time": "清晨",
     "timeOfDay": "morning",
     "tags": [
+      "mole_under_eye",
       "kimono",
       "cherry_blossoms",
       "petals"
@@ -393,8 +416,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,shiki_natsume,kimono, cherry_blossoms, petals",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, kimono, cherry_blossoms, petals",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc014",
@@ -411,6 +434,7 @@
     "time": "清晨",
     "timeOfDay": "morning",
     "tags": [
+      "hair_ribbon",
       "swimsuit",
       "beach",
       "smile"
@@ -424,8 +448,8 @@
       "展示图",
       "R15"
     ],
-    "prompt": "1girl,ayachi_nene,swimsuit, beach, smile",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, swimsuit, beach, smile",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc015",
@@ -442,9 +466,11 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "hair_ribbon",
       "school_uniform",
       "classroom",
-      "sunset"
+      "sunset",
+      "autumn"
     ],
     "mature": false,
     "location": "教室",
@@ -454,8 +480,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,ayachi_nene,school_uniform, classroom, autumn",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, school_uniform, classroom, autumn",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc016",
@@ -472,11 +498,11 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
+      "mole_under_eye",
       "night",
       "hoodie",
       "blush",
-      "shy",
-      "night"
+      "shy"
     ],
     "mature": false,
     "location": "露营地",
@@ -486,8 +512,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,shiki_natsume,night, hoodie",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, night, hoodie",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc017",
@@ -504,6 +530,7 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "hair_ribbon",
       "school_uniform",
       "classroom",
       "cherry_blossoms"
@@ -516,8 +543,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,ayachi_nene,school_uniform, classroom, cherry_blossoms",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, school_uniform, classroom, cherry_blossoms",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc018",
@@ -534,11 +561,12 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
+      "mole_under_eye",
       "rain",
       "night",
-      "rain",
       "shy",
-      "smile"
+      "smile",
+      "umbrella"
     ],
     "mature": false,
     "location": "便利店",
@@ -548,8 +576,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,shiki_natsume,rain, umbrella, night",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, rain, umbrella, night",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc019",
@@ -566,9 +594,11 @@
     "time": "清晨",
     "timeOfDay": "morning",
     "tags": [
+      "hair_ribbon",
       "snow",
       "looking_back",
-      "casual_clothes"
+      "casual_clothes",
+      "close_up"
     ],
     "mature": false,
     "location": null,
@@ -579,8 +609,8 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl,ayachi_nene,snow, close_up, casual_clothes",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, snow, close_up, casual_clothes",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc020",
@@ -597,6 +627,7 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "mole_under_eye",
       "casual_clothes",
       "shy",
       "blush",
@@ -610,8 +641,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,shiki_natsume,casual_clothes",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, casual_clothes",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc021",
@@ -628,10 +659,15 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
+      "hair_ribbon",
       "pajamas",
       "bedroom",
       "night",
-      "looking_back"
+      "looking_back",
+      "solid_color",
+      "looking_at_viewer",
+      "cloying_affection",
+      "eye_contact"
     ],
     "mature": false,
     "location": "卧室",
@@ -641,8 +677,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,ayachi_nene,(pajamas:1.2), (solid_color:1.1), bedroom, night, looking_at_viewer, cloying_affection, eye_contact",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, (pajamas:1.2), (solid_color:1.1), bedroom, night, looking_at_viewer, cloying_affection, eye_contact",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc022",
@@ -659,6 +695,7 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "mole_under_eye",
       "bedroom",
       "sunbeam",
       "cherry_blossoms"
@@ -671,8 +708,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,shiki_natsume,bedroom, sunbeam, cherry_blossoms",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, bedroom, sunbeam, cherry_blossoms",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc023",
@@ -689,9 +726,11 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
+      "hair_ribbon",
       "night",
       "sunset",
-      "casual_clothes"
+      "casual_clothes",
+      "autumn"
     ],
     "mature": false,
     "location": null,
@@ -701,8 +740,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,ayachi_nene,night, autumn, casual_clothes",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, night, autumn, casual_clothes",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc024",
@@ -719,11 +758,11 @@
     "time": "清晨",
     "timeOfDay": "morning",
     "tags": [
+      "mole_under_eye",
       "bedroom",
       "apron",
       "shy",
-      "blush",
-      "shy"
+      "blush"
     ],
     "mature": false,
     "location": "卧室",
@@ -733,8 +772,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,shiki_natsume,bedroom, apron",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, bedroom, apron",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc025",
@@ -751,9 +790,13 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "hair_ribbon",
       "night",
       "soft_lighting",
-      "looking_back"
+      "looking_back",
+      "aquarium",
+      "reflection",
+      "wide_shot"
     ],
     "mature": false,
     "location": "水族馆",
@@ -764,8 +807,8 @@
       "展示图",
       "壁纸"
     ],
-    "prompt": "1girl,ayachi_nene,aquarium, reflection, wide_shot",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, aquarium, reflection, wide_shot",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc026",
@@ -782,9 +825,11 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "mole_under_eye",
       "sunbeam",
       "looking_back",
-      "school_uniform"
+      "school_uniform",
+      "close_up"
     ],
     "mature": false,
     "location": null,
@@ -795,8 +840,8 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl,shiki_natsume,sunbeam, close_up, school_uniform",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, sunbeam, close_up, school_uniform",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc027",
@@ -813,6 +858,7 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
+      "hair_ribbon",
       "bedroom",
       "night",
       "pajamas"
@@ -825,8 +871,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,ayachi_nene,bedroom, night, pajamas",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, bedroom, night, pajamas",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc028",
@@ -844,9 +890,10 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
+      "hair_ribbon",
+      "2girls",
       "wedding_dress",
-      "naki-bokuro",
-      "strawberry_chamomile_scent",
+      "mole_under_eye",
       "expressive_ahoge",
       "cloying_affection",
       "interlocked_fingers",
@@ -862,8 +909,8 @@
       "核心CG",
       "R18"
     ],
-    "prompt": "2girls, shiki_natsume, ayachi_nene, wedding_dress, naki-bokuro, expressive_ahoge, cloying_affection, interlocked_fingers, looking_at_viewer, extreme_detail, masterpiece, soft_lighting",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "2girls, shiki_natsume, ayachi_nene, wedding_dress, mole_under_eye, expressive_ahoge, cloying_affection, interlocked_fingers, looking_at_viewer, extreme_detail, masterpiece, soft_lighting, {intimacy_intensity}, {sensory_feedback}",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc029",
@@ -880,10 +927,14 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "hair_ribbon",
       "expressive_ahoge",
       "heart_rate_monitor",
-      "sensory_sync",
-      "looking_at_viewer"
+      "looking_at_viewer",
+      "monitoring_equipment",
+      "heart_rate_monitor_in_background",
+      "joy",
+      "high_energy"
     ],
     "mature": false,
     "location": "实验室",
@@ -893,8 +944,8 @@
     "usage": [
       "实验CG"
     ],
-    "prompt": "1girl, ayachi_nene, expressive_ahoge, monitoring equipment, sensory sync, heart rate monitor in background, joy, high energy, {intimacy_intensity}, {sensory_feedback}",
-    "negative": "worst quality, low quality"
+    "prompt": "1girl, ayachi_nene, expressive_ahoge, monitoring_equipment, sensory_sync, heart_rate_monitor_in_background, joy, high_energy, {intimacy_intensity}, {sensory_feedback}",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc030",
@@ -911,11 +962,13 @@
     "time": "深夜",
     "timeOfDay": "night",
     "tags": [
-      "high_cold_persona",
       "blushing",
       "vulnerable",
-      "naki-bokuro",
-      "eye_contact"
+      "mole_under_eye",
+      "eye_contact",
+      "messed_up_uniform",
+      "vulnerable_expression",
+      "personality_collapse"
     ],
     "mature": false,
     "location": "私人研究室",
@@ -925,8 +978,8 @@
     "usage": [
       "实验CG"
     ],
-    "prompt": "1girl, shiki_natsume, naki-bokuro, blushing, messed up uniform, vulnerable expression, personality collapse, {intimacy_intensity}, {interaction_target}",
-    "negative": "worst quality, low quality"
+    "prompt": "1girl, shiki_natsume, mole_under_eye, blushing, messed_up_uniform, vulnerable_expression, personality_collapse, {intimacy_intensity}, {interaction_target}",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc031",
@@ -944,11 +997,14 @@
     "time": "不限",
     "timeOfDay": "all_day",
     "tags": [
+      "hair_ribbon",
+      "mole_under_eye",
+      "2girls",
       "wedding_dress",
-      "heart_rate_sync",
-      "infinite_loop",
       "cloying_affection",
-      "triad_bond"
+      "heart_rate_synchronization",
+      "digital_artifacts",
+      "infinite_loop_visual"
     ],
     "mature": true,
     "location": "仪式厅",
@@ -958,8 +1014,8 @@
     "usage": [
       "协议核心"
     ],
-    "prompt": "2girls, shiki_natsume, ayachi_nene, wedding_dress, cloying_affection, heart rate synchronization, digital artifacts, infinite loop visual, {intimacy_intensity}, {sensory_feedback}",
-    "negative": "worst quality, low quality"
+    "prompt": "2girls, shiki_natsume, ayachi_nene, wedding_dress, cloying_affection, heart_rate_synchronization, digital_artifacts, infinite_loop_visual, {intimacy_intensity}, {sensory_feedback}",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc032",
@@ -976,6 +1032,7 @@
     "time": "黄昏",
     "timeOfDay": "sunset",
     "tags": [
+      "hair_ribbon",
       "sport_clothes",
       "sunset",
       "sweat"
@@ -988,8 +1045,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,ayachi_nene,sport_clothes, sunset, sweat",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, sport_clothes, sunset, sweat",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc033",
@@ -1006,6 +1063,7 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
+      "mole_under_eye",
       "golden_hour",
       "night",
       "casual_clothes"
@@ -1018,8 +1076,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,shiki_natsume,golden_hour, night, casual_clothes",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, golden_hour, night, casual_clothes",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc034",
@@ -1036,6 +1094,7 @@
     "time": "清晨",
     "timeOfDay": "morning",
     "tags": [
+      "hair_ribbon",
       "golden_hour",
       "cherry_blossoms",
       "casual_clothes"
@@ -1048,8 +1107,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,ayachi_nene,golden_hour, cherry_blossoms, casual_clothes",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, golden_hour, cherry_blossoms, casual_clothes",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc035",
@@ -1066,10 +1125,10 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "mole_under_eye",
       "casual_clothes",
       "standing",
-      "shy",
-      "casual_clothes"
+      "shy"
     ],
     "mature": false,
     "location": "超市",
@@ -1079,8 +1138,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,shiki_natsume,casual_clothes, standing",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, casual_clothes, standing",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc036",
@@ -1097,9 +1156,11 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "hair_ribbon",
       "yukata",
       "looking_back",
-      "casual_clothes"
+      "casual_clothes",
+      "close_up"
     ],
     "mature": false,
     "location": null,
@@ -1110,8 +1171,8 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl,ayachi_nene,yukata, close_up, casual_clothes",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, yukata, close_up, casual_clothes",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc037",
@@ -1128,9 +1189,12 @@
     "time": "清晨",
     "timeOfDay": "morning",
     "tags": [
+      "mole_under_eye",
       "shrine",
       "kneeling",
-      "sunset"
+      "sunset",
+      "temple",
+      "autumn"
     ],
     "mature": false,
     "location": "寺庙",
@@ -1140,8 +1204,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,shiki_natsume,temple, kneeling, autumn",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, temple, kneeling, autumn",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc038",
@@ -1158,6 +1222,7 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "hair_ribbon",
       "rain",
       "school_uniform",
       "looking_back",
@@ -1171,8 +1236,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,ayachi_nene,rain, school_uniform",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, rain, school_uniform",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc039",
@@ -1189,9 +1254,11 @@
     "time": "黄昏",
     "timeOfDay": "sunset",
     "tags": [
+      "mole_under_eye",
       "beach",
       "sunset",
-      "looking_back"
+      "looking_back",
+      "close_up"
     ],
     "mature": false,
     "location": "海边",
@@ -1202,8 +1269,8 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl,shiki_natsume,beach, sunset, close_up",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, beach, sunset, close_up",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc040",
@@ -1220,9 +1287,12 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "hair_ribbon",
       "night",
       "dramatic",
-      "casual_clothes"
+      "casual_clothes",
+      "stage",
+      "spotlight"
     ],
     "mature": false,
     "location": "舞台",
@@ -1232,8 +1302,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,ayachi_nene,stage, spotlight, casual_clothes",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, stage, spotlight, casual_clothes",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc041",
@@ -1250,11 +1320,12 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
+      "hair_ribbon",
       "rain",
       "night",
-      "rain",
       "blush",
-      "shy"
+      "shy",
+      "umbrella"
     ],
     "mature": true,
     "location": null,
@@ -1266,8 +1337,8 @@
       "头像",
       "R15"
     ],
-    "prompt": "1girl,ayachi_nene,rain, night, umbrella",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, rain, night, umbrella",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc042",
@@ -1284,6 +1355,7 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
+      "mole_under_eye",
       "bedroom",
       "night",
       "pajamas"
@@ -1297,8 +1369,8 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl,shiki_natsume,bedroom, night, pajamas",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, bedroom, night, pajamas",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc043",
@@ -1315,11 +1387,13 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
+      "hair_ribbon",
       "night",
       "soft_lighting",
       "shy",
       "blush",
-      "night"
+      "onsen",
+      "steam"
     ],
     "mature": true,
     "location": "温泉",
@@ -1330,8 +1404,8 @@
       "展示图",
       "R15"
     ],
-    "prompt": "1girl,ayachi_nene,onsen, steam, night",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, onsen, steam, night",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc044",
@@ -1348,9 +1422,12 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "mole_under_eye",
       "casual_clothes",
       "sitting",
-      "looking_back"
+      "looking_back",
+      "straddling",
+      "close_up"
     ],
     "mature": true,
     "location": "客厅",
@@ -1361,8 +1438,8 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl,shiki_natsume,casual_clothes, straddling, close_up",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, casual_clothes, straddling, close_up",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc045",
@@ -1379,9 +1456,13 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
+      "hair_ribbon",
       "night",
       "soft_lighting",
-      "pajamas"
+      "pajamas",
+      "bathroom",
+      "steam",
+      "towel"
     ],
     "mature": true,
     "location": "浴室",
@@ -1391,8 +1472,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,ayachi_nene,bathroom, steam, towel",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, bathroom, steam, towel",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc046",
@@ -1409,9 +1490,12 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "mole_under_eye",
       "leaning",
       "blush",
-      "looking_back"
+      "looking_back",
+      "kissing",
+      "close_up"
     ],
     "mature": true,
     "location": "楼梯间",
@@ -1422,8 +1506,8 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl,shiki_natsume,leaning, kissing, close_up",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, leaning, kissing, close_up",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc047",
@@ -1440,9 +1524,12 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
+      "hair_ribbon",
       "night",
       "window_light",
-      "backlighting"
+      "backlighting",
+      "window",
+      "silhouette"
     ],
     "mature": true,
     "location": null,
@@ -1452,8 +1539,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,ayachi_nene,night, window, silhouette",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, night, window, silhouette",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc048",
@@ -1470,9 +1557,11 @@
     "time": "清晨",
     "timeOfDay": "morning",
     "tags": [
+      "mole_under_eye",
       "bedroom",
       "golden_hour",
-      "pajamas"
+      "pajamas",
+      "bed"
     ],
     "mature": true,
     "location": "卧室",
@@ -1483,8 +1572,8 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl,shiki_natsume,bedroom, golden_hour, bed",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, bedroom, golden_hour, bed",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc049",
@@ -1501,9 +1590,11 @@
     "time": "清晨",
     "timeOfDay": "morning",
     "tags": [
+      "hair_ribbon",
       "cherry_blossoms",
       "blush",
-      "petals"
+      "petals",
+      "kissing"
     ],
     "mature": false,
     "location": null,
@@ -1514,8 +1605,8 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl,ayachi_nene,cherry_blossoms, kissing, petals",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, cherry_blossoms, kissing, petals",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc050",
@@ -1532,9 +1623,11 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
+      "mole_under_eye",
       "blush",
       "night",
-      "casual_clothes"
+      "casual_clothes",
+      "holding_hands"
     ],
     "mature": false,
     "location": "影院",
@@ -1544,8 +1637,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,shiki_natsume,holding_hands, night, casual_clothes",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, holding_hands, night, casual_clothes",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc051",
@@ -1562,9 +1655,12 @@
     "time": "夜晚",
     "timeOfDay": "evening",
     "tags": [
+      "hair_ribbon",
       "casual_clothes",
       "apron",
-      "smile"
+      "smile",
+      "kitchen",
+      "holding"
     ],
     "mature": true,
     "location": "厨房",
@@ -1574,8 +1670,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,ayachi_nene,kitchen, apron, holding",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, kitchen, apron, holding",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc052",
@@ -1592,9 +1688,12 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
+      "hair_ribbon",
       "school_rooftop",
       "night",
-      "blush"
+      "blush",
+      "rooftop",
+      "kissing"
     ],
     "mature": false,
     "location": "屋顶",
@@ -1605,8 +1704,8 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl,ayachi_nene,rooftop, night, kissing",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, rooftop, night, kissing",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc053",
@@ -1623,9 +1722,11 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "mole_under_eye",
       "leaning",
       "looking_back",
-      "casual_clothes"
+      "casual_clothes",
+      "close_up"
     ],
     "mature": true,
     "location": "洗衣房",
@@ -1636,8 +1737,8 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl,shiki_natsume,leaning, close_up, casual_clothes",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, leaning, close_up, casual_clothes",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc054",
@@ -1654,9 +1755,12 @@
     "time": "黎明",
     "timeOfDay": "dawn",
     "tags": [
+      "hair_ribbon",
       "beach",
       "smile",
-      "looking_back"
+      "looking_back",
+      "holding",
+      "close_up"
     ],
     "mature": false,
     "location": "海边",
@@ -1667,8 +1771,8 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl,ayachi_nene,beach, holding, close_up",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, beach, holding, close_up",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc055",
@@ -1685,9 +1789,11 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
+      "mole_under_eye",
       "train_station",
       "night",
-      "leaning"
+      "leaning",
+      "train"
     ],
     "mature": true,
     "location": null,
@@ -1697,8 +1803,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,shiki_natsume,train, night, leaning",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, train, night, leaning",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc056",
@@ -1715,6 +1821,7 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "hair_ribbon",
       "beach",
       "swimsuit",
       "looking_back"
@@ -1728,8 +1835,8 @@
       "展示图",
       "R15"
     ],
-    "prompt": "1girl,ayachi_nene,beach, swimsuit, looking_back",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, beach, swimsuit, looking_back",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc057",
@@ -1746,9 +1853,11 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "mole_under_eye",
       "beach",
       "pajamas",
-      "blush"
+      "blush",
+      "towel"
     ],
     "mature": true,
     "location": "海边",
@@ -1759,8 +1868,8 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl,shiki_natsume,beach, towel, blush",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, beach, towel, blush",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc058",
@@ -1777,9 +1886,12 @@
     "time": "清晨",
     "timeOfDay": "morning",
     "tags": [
+      "hair_ribbon",
       "bedroom",
       "soft_lighting",
-      "pajamas"
+      "pajamas",
+      "mirror",
+      "lingerie"
     ],
     "mature": true,
     "location": "卧室",
@@ -1791,8 +1903,8 @@
       "头像",
       "R15"
     ],
-    "prompt": "1girl,ayachi_nene,bedroom, mirror, lingerie",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, bedroom, mirror, lingerie",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc059",
@@ -1809,6 +1921,7 @@
     "time": "清晨",
     "timeOfDay": "morning",
     "tags": [
+      "mole_under_eye",
       "bedroom",
       "pajamas",
       "golden_hour"
@@ -1821,8 +1934,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,shiki_natsume,bedroom, pajamas, golden_hour",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, bedroom, pajamas, golden_hour",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc060",
@@ -1839,9 +1952,11 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "hair_ribbon",
       "rain",
       "school_uniform",
-      "looking_back"
+      "looking_back",
+      "close_up"
     ],
     "mature": true,
     "location": null,
@@ -1853,8 +1968,8 @@
       "头像",
       "R15"
     ],
-    "prompt": "1girl,ayachi_nene,rain, school_uniform, close_up",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, rain, school_uniform, close_up",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc061",
@@ -1871,9 +1986,13 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
+      "mole_under_eye",
       "night",
       "pajamas",
-      "soft_lighting"
+      "soft_lighting",
+      "bathroom",
+      "towel",
+      "steam"
     ],
     "mature": true,
     "location": "浴室",
@@ -1884,8 +2003,8 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl,shiki_natsume,bathroom, towel, steam",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, bathroom, towel, steam",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc062",
@@ -1902,9 +2021,12 @@
     "time": "清晨",
     "timeOfDay": "morning",
     "tags": [
+      "hair_ribbon",
       "bedroom",
       "pajamas",
-      "looking_back"
+      "looking_back",
+      "bed",
+      "pov"
     ],
     "mature": true,
     "location": "卧室",
@@ -1915,8 +2037,8 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl,ayachi_nene,bedroom, bed, pov",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, bedroom, bed, pov",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc063",
@@ -1933,9 +2055,12 @@
     "time": "清晨",
     "timeOfDay": "morning",
     "tags": [
+      "mole_under_eye",
       "pajamas",
       "looking_back",
-      "pouting"
+      "pouting",
+      "bed",
+      "pov"
     ],
     "mature": true,
     "location": null,
@@ -1946,8 +2071,8 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl,shiki_natsume,bed, pov, pouting",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, bed, pov, pouting",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc064",
@@ -1964,10 +2089,13 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "hair_ribbon",
       "looking_back",
       "closed_eyes",
       "smile",
-      "shy"
+      "shy",
+      "looking_at_viewer",
+      "pov"
     ],
     "mature": true,
     "location": "客厅",
@@ -1977,8 +2105,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,ayachi_nene,looking_at_viewer, closed_eyes, pov",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, looking_at_viewer, closed_eyes, pov",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc065",
@@ -1995,9 +2123,11 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "mole_under_eye",
       "window_light",
       "blush",
-      "closed_eyes"
+      "closed_eyes",
+      "window"
     ],
     "mature": false,
     "location": null,
@@ -2007,8 +2137,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,shiki_natsume,window, blush, closed_eyes",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, window, blush, closed_eyes",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc066",
@@ -2025,6 +2155,7 @@
     "time": "黄昏",
     "timeOfDay": "sunset",
     "tags": [
+      "hair_ribbon",
       "beach",
       "swimsuit",
       "looking_back"
@@ -2039,8 +2170,8 @@
       "头像",
       "R15"
     ],
-    "prompt": "1girl,ayachi_nene,beach, swimsuit, looking_back",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, beach, swimsuit, looking_back",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc067",
@@ -2057,6 +2188,7 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "mole_under_eye",
       "smile",
       "standing",
       "cherry_blossoms"
@@ -2069,8 +2201,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,shiki_natsume,smile, standing, cherry_blossoms",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, smile, standing, cherry_blossoms",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc068",
@@ -2087,9 +2219,12 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "hair_ribbon",
       "sunset",
       "leaning",
-      "looking_back"
+      "looking_back",
+      "mountain",
+      "looking_up"
     ],
     "mature": true,
     "location": "缆车",
@@ -2099,8 +2234,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,ayachi_nene,mountain, leaning, looking_up",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, mountain, leaning, looking_up",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc069",
@@ -2117,9 +2252,11 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
+      "mole_under_eye",
       "rain",
       "night",
-      "blush"
+      "blush",
+      "holding_hands"
     ],
     "mature": true,
     "location": null,
@@ -2129,8 +2266,8 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl,shiki_natsume,rain, night, holding_hands",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, rain, night, holding_hands",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc070",
@@ -2147,9 +2284,12 @@
     "time": "黄昏",
     "timeOfDay": "sunset",
     "tags": [
+      "hair_ribbon",
       "window_light",
       "sunset",
-      "backlighting"
+      "backlighting",
+      "window",
+      "silhouette"
     ],
     "mature": true,
     "location": null,
@@ -2161,8 +2301,8 @@
       "头像",
       "R15"
     ],
-    "prompt": "1girl,ayachi_nene,window, sunset, silhouette",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, window, sunset, silhouette",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc071",
@@ -2179,9 +2319,11 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
+      "mole_under_eye",
       "sunset",
       "night",
-      "moonlight"
+      "moonlight",
+      "mountain"
     ],
     "mature": false,
     "location": "山顶",
@@ -2193,8 +2335,8 @@
       "头像",
       "CG"
     ],
-    "prompt": "1girl,shiki_natsume,mountain, night, moonlight",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, mountain, night, moonlight",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc072",
@@ -2211,11 +2353,12 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "hair_ribbon",
       "rain",
       "standing",
-      "rain",
       "park",
-      "hair_blowing"
+      "hair_blowing",
+      "umbrella"
     ],
     "mature": false,
     "location": "竹林",
@@ -2226,8 +2369,8 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl,ayachi_nene,rain, umbrella, standing",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, rain, umbrella, standing",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc073",
@@ -2244,9 +2387,11 @@
     "time": "傍晚",
     "timeOfDay": "sunset",
     "tags": [
+      "mole_under_eye",
       "yukata",
       "soft_lighting",
-      "sitting"
+      "sitting",
+      "steam"
     ],
     "mature": false,
     "location": "温泉",
@@ -2257,8 +2402,8 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl,shiki_natsume,yukata, steam, sitting",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, yukata, steam, sitting",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc074",
@@ -2275,9 +2420,11 @@
     "time": "黄昏",
     "timeOfDay": "sunset",
     "tags": [
+      "hair_ribbon",
       "sunset",
       "smile",
-      "casual_clothes"
+      "casual_clothes",
+      "holding"
     ],
     "mature": false,
     "location": "游乐园",
@@ -2289,8 +2436,8 @@
       "头像",
       "CG"
     ],
-    "prompt": "1girl,ayachi_nene,sunset, holding, casual_clothes",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, sunset, holding, casual_clothes",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc075",
@@ -2307,9 +2454,13 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "mole_under_eye",
       "night",
       "leaning",
-      "looking_back"
+      "looking_back",
+      "aquarium",
+      "leaning_against",
+      "looking_away"
     ],
     "mature": false,
     "location": "水族馆",
@@ -2321,8 +2472,8 @@
       "头像",
       "CG"
     ],
-    "prompt": "1girl,shiki_natsume,aquarium, leaning_against, looking_away",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, aquarium, leaning_against, looking_away",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc076",
@@ -2339,9 +2490,11 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "hair_ribbon",
       "looking_back",
       "dress",
-      "golden_hour"
+      "golden_hour",
+      "sunlight"
     ],
     "mature": false,
     "location": "向日葵田",
@@ -2353,8 +2506,8 @@
       "头像",
       "CG"
     ],
-    "prompt": "1girl,ayachi_nene,looking_back, dress, sunlight",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, looking_back, dress, sunlight",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc077",
@@ -2371,9 +2524,11 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "mole_under_eye",
       "kimono",
       "kneeling",
-      "smile"
+      "smile",
+      "holding"
     ],
     "mature": false,
     "location": "茶室",
@@ -2384,8 +2539,8 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl,shiki_natsume,kimono, kneeling, holding",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, kimono, kneeling, holding",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc078",
@@ -2402,6 +2557,7 @@
     "time": "清晨",
     "timeOfDay": "morning",
     "tags": [
+      "hair_ribbon",
       "shrine",
       "snow",
       "kimono"
@@ -2415,8 +2571,8 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl,ayachi_nene,shrine, snow, kimono",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, shrine, snow, kimono",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc079",
@@ -2433,9 +2589,11 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "mole_under_eye",
       "sitting",
       "window_light",
-      "sunset"
+      "sunset",
+      "autumn"
     ],
     "mature": false,
     "location": "旧书店",
@@ -2446,8 +2604,8 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl,shiki_natsume,sitting, window_light, autumn",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, sitting, window_light, autumn",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc080",
@@ -2464,11 +2622,13 @@
     "time": "黄昏",
     "timeOfDay": "sunset",
     "tags": [
+      "hair_ribbon",
       "beach",
       "sunset",
       "smile",
       "hair_blowing",
-      "golden_hour"
+      "golden_hour",
+      "ocean"
     ],
     "mature": false,
     "location": "海边",
@@ -2480,8 +2640,8 @@
       "头像",
       "CG"
     ],
-    "prompt": "1girl,ayachi_nene,beach, sunset, ocean",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, beach, sunset, ocean",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc081",
@@ -2498,6 +2658,7 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "mole_under_eye",
       "lying",
       "sunbeam",
       "casual_clothes"
@@ -2511,8 +2672,8 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl,shiki_natsume,lying, sunbeam, casual_clothes",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, lying, sunbeam, casual_clothes",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc082",
@@ -2529,6 +2690,7 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
+      "hair_ribbon",
       "moonlight",
       "night",
       "sitting"
@@ -2542,8 +2704,8 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl,ayachi_nene,moonlight, night, sitting",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, moonlight, night, sitting",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc083",
@@ -2560,9 +2722,11 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "mole_under_eye",
       "sunset",
       "walking",
-      "looking_back"
+      "looking_back",
+      "autumn"
     ],
     "mature": false,
     "location": "枫叶步道",
@@ -2573,8 +2737,8 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl,shiki_natsume,autumn, walking, looking_back",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, autumn, walking, looking_back",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc084",
@@ -2591,11 +2755,11 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
+      "hair_ribbon",
       "yukata",
       "night",
       "smile",
-      "night",
-      "yukata"
+      "fireworks"
     ],
     "mature": false,
     "location": "祭典会场",
@@ -2606,8 +2770,8 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl,ayachi_nene,yukata, fireworks, night",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, yukata, fireworks, night",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc085",
@@ -2624,6 +2788,7 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "mole_under_eye",
       "sitting",
       "sweater",
       "window_light"
@@ -2637,8 +2802,8 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl,shiki_natsume,sitting, sweater, window_light",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, sitting, sweater, window_light",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc086",
@@ -2655,9 +2820,12 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "hair_ribbon",
       "rain",
       "standing",
-      "looking_back"
+      "looking_back",
+      "umbrella",
+      "looking_up"
     ],
     "mature": false,
     "location": "路口",
@@ -2668,8 +2836,8 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl,ayachi_nene,umbrella, standing, looking_up",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, umbrella, standing, looking_up",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc087",
@@ -2686,6 +2854,7 @@
     "time": "清晨",
     "timeOfDay": "morning",
     "tags": [
+      "mole_under_eye",
       "bedroom",
       "pajamas",
       "sitting"
@@ -2699,8 +2868,8 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl,shiki_natsume,bedroom, pajamas, sitting",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, bedroom, pajamas, sitting",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc088",
@@ -2717,9 +2886,11 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "hair_ribbon",
       "standing",
       "looking_back",
-      "casual_clothes"
+      "casual_clothes",
+      "looking_away"
     ],
     "mature": false,
     "location": "画廊",
@@ -2730,8 +2901,8 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl,ayachi_nene,standing, looking_away, casual_clothes",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, standing, looking_away, casual_clothes",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc089",
@@ -2748,9 +2919,12 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "mole_under_eye",
       "beach",
       "sitting",
-      "smile"
+      "smile",
+      "lake",
+      "holding"
     ],
     "mature": false,
     "location": "湖畔",
@@ -2761,8 +2935,8 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl,shiki_natsume,lake, sitting, holding",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, shiki_natsume, lake, sitting, holding",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc090",
@@ -2779,6 +2953,7 @@
     "time": "清晨",
     "timeOfDay": "morning",
     "tags": [
+      "hair_ribbon",
       "cherry_blossoms",
       "petals",
       "standing"
@@ -2793,8 +2968,8 @@
       "头像",
       "CG"
     ],
-    "prompt": "1girl,ayachi_nene,cherry_blossoms, petals, standing",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "1girl, ayachi_nene, cherry_blossoms, petals, standing",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc091",
@@ -2811,17 +2986,21 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
+      "mole_under_eye",
       "night",
       "pajamas",
-      "looking_back"
+      "looking_back",
+      "bathroom",
+      "towel",
+      "looking_at_viewer"
     ],
     "mature": true,
     "location": "浴室",
     "weather": "晴",
     "camera": "半身中景",
     "lighting": "夜灯",
-    "prompt": "1girl,shiki_natsume,bathroom, towel, looking_at_viewer",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl, shiki_natsume, bathroom, towel, looking_at_viewer",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic",
     "usage": [
       "展示图"
     ]
@@ -2841,17 +3020,19 @@
     "time": "清晨",
     "timeOfDay": "morning",
     "tags": [
+      "hair_ribbon",
       "bedroom",
       "sitting",
-      "pajamas"
+      "pajamas",
+      "bed"
     ],
     "mature": true,
     "location": "卧室",
     "weather": "晴",
     "camera": "半身中景",
     "lighting": "晨光",
-    "prompt": "1girl,ayachi_nene,bedroom, sitting, bed",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl, ayachi_nene, bedroom, sitting, bed",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic",
     "usage": [
       "展示图"
     ]
@@ -2871,19 +3052,21 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
+      "mole_under_eye",
       "rain",
       "night",
-      "rain",
       "blush",
-      "shy"
+      "shy",
+      "umbrella",
+      "neon"
     ],
     "mature": true,
     "location": "街上",
     "weather": "雨",
     "camera": "半身中景",
     "lighting": "夜灯",
-    "prompt": "1girl,shiki_natsume,rain, umbrella, neon",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl, shiki_natsume, rain, umbrella, neon",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic",
     "usage": [
       "展示图"
     ]
@@ -2903,6 +3086,7 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "hair_ribbon",
       "dress",
       "cherry_blossoms",
       "smile",
@@ -2914,8 +3098,8 @@
     "weather": "晴",
     "camera": "全身中景",
     "lighting": "窗光",
-    "prompt": "1girl,ayachi_nene,dress, cherry_blossoms",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl, ayachi_nene, dress, cherry_blossoms",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic",
     "usage": [
       "展示图"
     ]
@@ -2935,17 +3119,20 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
+      "mole_under_eye",
       "night",
       "pajamas",
-      "looking_back"
+      "looking_back",
+      "bathroom",
+      "towel"
     ],
     "mature": true,
     "location": "浴室",
     "weather": "晴",
     "camera": "全身中景",
     "lighting": "柔光",
-    "prompt": "1girl,shiki_natsume,bathroom, towel, looking_back",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl, shiki_natsume, bathroom, towel, looking_back",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic",
     "usage": [
       "展示图"
     ]
@@ -2965,17 +3152,20 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
+      "hair_ribbon",
       "casual_clothes",
       "night",
-      "smile"
+      "smile",
+      "kitchen",
+      "holding"
     ],
     "mature": true,
     "location": "厨房",
     "weather": "晴",
     "camera": "半身中景",
     "lighting": "夜灯",
-    "prompt": "1girl,ayachi_nene,kitchen, night, holding",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl, ayachi_nene, kitchen, night, holding",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic",
     "usage": [
       "展示图"
     ]
@@ -2995,19 +3185,21 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "mole_under_eye",
       "beach",
       "swimsuit",
       "blush",
       "angry",
-      "hair_blowing"
+      "hair_blowing",
+      "bikini"
     ],
     "mature": true,
     "location": "海边",
     "weather": "晴",
     "camera": "全身中景",
     "lighting": "阳光",
-    "prompt": "1girl,shiki_natsume,beach, swimsuit, bikini",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl, shiki_natsume, beach, swimsuit, bikini",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic",
     "usage": [
       "展示图"
     ]
@@ -3027,17 +3219,20 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "hair_ribbon",
       "shy",
       "lying",
-      "looking_back"
+      "looking_back",
+      "lap_pillow",
+      "looking_up"
     ],
     "mature": true,
     "location": "客厅",
     "weather": "晴",
     "camera": "面部特写",
     "lighting": "窗光",
-    "prompt": "1girl,ayachi_nene,lap_pillow, lying, looking_up",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl, ayachi_nene, lap_pillow, lying, looking_up",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic",
     "usage": [
       "展示图"
     ]
@@ -3057,17 +3252,21 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
+      "mole_under_eye",
       "night",
       "leaning",
-      "looking_back"
+      "looking_back",
+      "elevator",
+      "against_wall",
+      "looking_at_viewer"
     ],
     "mature": true,
     "location": "电梯",
     "weather": "晴",
     "camera": "面部特写",
     "lighting": "顶光",
-    "prompt": "1girl,shiki_natsume,elevator, against_wall, looking_at_viewer",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl, shiki_natsume, elevator, against_wall, looking_at_viewer",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic",
     "usage": [
       "展示图"
     ]
@@ -3087,19 +3286,22 @@
     "time": "清晨",
     "timeOfDay": "morning",
     "tags": [
+      "hair_ribbon",
       "bedroom",
       "pajamas",
       "blush",
       "shy",
-      "night"
+      "night",
+      "lingerie",
+      "bed"
     ],
     "mature": true,
     "location": "卧室",
     "weather": "雪",
     "camera": "半身中景",
     "lighting": "晨光",
-    "prompt": "1girl,ayachi_nene,bedroom, lingerie, bed",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl, ayachi_nene, bedroom, lingerie, bed",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic",
     "usage": [
       "展示图"
     ]
@@ -3119,17 +3321,19 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
+      "mole_under_eye",
       "bedroom",
       "looking_back",
-      "sitting"
+      "sitting",
+      "looking_away"
     ],
     "mature": true,
     "location": "卧室",
     "weather": "晴",
     "camera": "全身中景",
     "lighting": "夜灯",
-    "prompt": "1girl,shiki_natsume,bedroom, looking_away, sitting",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl, shiki_natsume, bedroom, looking_away, sitting",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic",
     "usage": [
       "展示图"
     ]
@@ -3149,17 +3353,19 @@
     "time": "傍晚",
     "timeOfDay": "sunset",
     "tags": [
+      "hair_ribbon",
       "casual_clothes",
       "laughing",
-      "apron"
+      "apron",
+      "kitchen"
     ],
     "mature": true,
     "location": "厨房",
     "weather": "晴",
     "camera": "半身中景",
     "lighting": "黄金时刻",
-    "prompt": "1girl,ayachi_nene,kitchen, laughing, apron",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl, ayachi_nene, kitchen, laughing, apron",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic",
     "usage": [
       "展示图"
     ]
@@ -3179,17 +3385,19 @@
     "time": "黄昏",
     "timeOfDay": "sunset",
     "tags": [
+      "mole_under_eye",
       "beach",
       "pajamas",
-      "sitting"
+      "sitting",
+      "towel"
     ],
     "mature": true,
     "location": "海边",
     "weather": "晴",
     "camera": "全身远景",
     "lighting": "黄金时刻",
-    "prompt": "1girl,shiki_natsume,beach, towel, sitting",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl, shiki_natsume, beach, towel, sitting",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic",
     "usage": [
       "展示图"
     ]
@@ -3209,17 +3417,19 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
+      "hair_ribbon",
       "night",
       "sunset",
-      "casual_clothes"
+      "casual_clothes",
+      "autumn"
     ],
     "mature": true,
     "location": "客厅",
     "weather": "晴",
     "camera": "面部特写",
     "lighting": "屏幕光",
-    "prompt": "1girl,ayachi_nene,night, autumn, casual_clothes",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl, ayachi_nene, night, autumn, casual_clothes",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic",
     "usage": [
       "展示图"
     ]
@@ -3239,19 +3449,22 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
+      "mole_under_eye",
       "smile",
       "casual_clothes",
       "blush",
       "shy",
-      "cafe"
+      "cafe",
+      "bar",
+      "holding"
     ],
     "mature": true,
     "location": "酒吧",
     "weather": "晴",
     "camera": "面部特写",
     "lighting": "霓虹",
-    "prompt": "1girl,shiki_natsume,bar, holding, casual_clothes",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl, shiki_natsume, bar, holding, casual_clothes",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic",
     "usage": [
       "展示图"
     ]
@@ -3271,17 +3484,20 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "hair_ribbon",
       "bedroom",
       "lying",
-      "sunset"
+      "sunset",
+      "lying_stomach",
+      "autumn"
     ],
     "mature": true,
     "location": "卧室",
     "weather": "晴",
     "camera": "特写",
     "lighting": "窗光",
-    "prompt": "1girl,ayachi_nene,bedroom, lying_stomach, autumn",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl, ayachi_nene, bedroom, lying_stomach, autumn",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic",
     "usage": [
       "展示图"
     ]
@@ -3301,17 +3517,19 @@
     "time": "清晨",
     "timeOfDay": "morning",
     "tags": [
+      "mole_under_eye",
       "bedroom",
       "smile",
-      "cherry_blossoms"
+      "cherry_blossoms",
+      "holding"
     ],
     "mature": true,
     "location": "卧室",
     "weather": "晴",
     "camera": "全身中景",
     "lighting": "晨光",
-    "prompt": "1girl,shiki_natsume,bedroom, holding, cherry_blossoms",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl, shiki_natsume, bedroom, holding, cherry_blossoms",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic",
     "usage": [
       "展示图"
     ]
@@ -3331,17 +3549,20 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
+      "hair_ribbon",
       "train_station",
       "window_light",
-      "leaning"
+      "leaning",
+      "train",
+      "window"
     ],
     "mature": true,
     "location": "电车",
     "weather": "晴",
     "camera": "半身中景",
     "lighting": "窗光",
-    "prompt": "1girl,ayachi_nene,train, window, leaning",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl, ayachi_nene, train, window, leaning",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic",
     "usage": [
       "展示图"
     ]
@@ -3361,17 +3582,20 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
+      "mole_under_eye",
       "pajamas",
       "soft_lighting",
-      "night"
+      "night",
+      "lingerie",
+      "mirror"
     ],
     "mature": true,
     "location": "更衣室",
     "weather": "晴",
     "camera": "半身中景",
     "lighting": "顶光",
-    "prompt": "1girl,shiki_natsume,lingerie, mirror, night",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl, shiki_natsume, lingerie, mirror, night",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic",
     "usage": [
       "展示图"
     ]
@@ -3391,19 +3615,21 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
+      "mole_under_eye",
       "night",
       "casual_clothes",
       "blush",
       "shy",
-      "night"
+      "balcony",
+      "cigarette"
     ],
     "mature": true,
     "location": "阳台",
     "weather": "晴",
     "camera": "面部特写",
     "lighting": "月光",
-    "prompt": "1girl,shiki_natsume,balcony, night, cigarette",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
+    "prompt": "1girl, shiki_natsume, balcony, night, cigarette",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic",
     "usage": [
       "展示图"
     ]
@@ -3423,10 +3649,16 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "mole_under_eye",
       "cafe",
       "apron",
       "smile",
-      "looking_back"
+      "looking_back",
+      "bakery",
+      "flour",
+      "baking",
+      "holding",
+      "looking_away"
     ],
     "mature": false,
     "location": "bakery",
@@ -3436,8 +3668,8 @@
     "usage": [
       "展示图"
     ],
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
-    "prompt": "1girl,shiki_natsume,bakery, apron, flour, baking, smile, holding, looking_away"
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic",
+    "prompt": "1girl, shiki_natsume, bakery, apron, flour, baking, smile, holding, looking_away"
   },
   {
     "id": "sc112",
@@ -3454,10 +3686,14 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "mole_under_eye",
       "maid",
       "dress",
       "looking_back",
-      "blush"
+      "blush",
+      "turning",
+      "looking_at_viewer",
+      "bedroom"
     ],
     "mature": false,
     "location": "maid",
@@ -3467,8 +3703,8 @@
     "usage": [
       "展示图"
     ],
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
-    "prompt": "1girl,shiki_natsume,maid, dress, turning, blush, looking_at_viewer, bedroom"
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic",
+    "prompt": "1girl, shiki_natsume, maid, dress, turning, blush, looking_at_viewer, bedroom"
   },
   {
     "id": "sc113",
@@ -3485,10 +3721,15 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "mole_under_eye",
       "classroom",
       "sitting",
       "smile",
-      "looking_back"
+      "looking_back",
+      "reading",
+      "book",
+      "looking_away",
+      "school_uniform"
     ],
     "mature": false,
     "location": "classroom",
@@ -3498,8 +3739,8 @@
     "usage": [
       "展示图"
     ],
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
-    "prompt": "1girl,shiki_natsume,classroom, sitting, reading, book, looking_away, school_uniform"
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic",
+    "prompt": "1girl, shiki_natsume, classroom, sitting, reading, book, looking_away, school_uniform"
   },
   {
     "id": "sc114",
@@ -3516,10 +3757,15 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "mole_under_eye",
       "school_uniform",
       "standing",
       "smile",
-      "looking_back"
+      "looking_back",
+      "school",
+      "serious",
+      "looking_away",
+      "sunset"
     ],
     "mature": false,
     "location": "school",
@@ -3529,8 +3775,8 @@
     "usage": [
       "展示图"
     ],
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
-    "prompt": "1girl,shiki_natsume,school, standing, serious, looking_away, school_uniform, sunset"
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic",
+    "prompt": "1girl, shiki_natsume, school, standing, serious, looking_away, school_uniform, sunset"
   },
   {
     "id": "sc115",
@@ -3547,9 +3793,14 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "mole_under_eye",
       "cafe",
       "sitting",
-      "smile"
+      "smile",
+      "holding",
+      "cake",
+      "coffee",
+      "sweet"
     ],
     "mature": false,
     "location": "cafe",
@@ -3559,8 +3810,8 @@
     "usage": [
       "展示图"
     ],
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
-    "prompt": "1girl,shiki_natsume,cafe, sitting, holding, cake, coffee, smile, sweet"
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic",
+    "prompt": "1girl, shiki_natsume, cafe, sitting, holding, cake, coffee, smile, sweet"
   },
   {
     "id": "sc116",
@@ -3577,10 +3828,15 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "mole_under_eye",
       "night",
       "pajamas",
       "lying",
-      "looking_back"
+      "looking_back",
+      "hospital",
+      "bed",
+      "looking_away",
+      "tired"
     ],
     "mature": false,
     "location": "hospital",
@@ -3590,8 +3846,8 @@
     "usage": [
       "展示图"
     ],
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
-    "prompt": "1girl,shiki_natsume,hospital, bed, lying, looking_away, tired"
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic",
+    "prompt": "1girl, shiki_natsume, hospital, bed, lying, looking_away, tired"
   },
   {
     "id": "sc117",
@@ -3608,10 +3864,16 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "hair_ribbon",
       "night",
       "sitting",
       "smile",
-      "blush"
+      "blush",
+      "club",
+      "holding",
+      "tarot",
+      "card",
+      "looking_away"
     ],
     "mature": false,
     "location": "club",
@@ -3621,8 +3883,8 @@
     "usage": [
       "展示图"
     ],
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
-    "prompt": "1girl,ayachi_nene,club, sitting, holding, tarot, card, blush, looking_away"
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic",
+    "prompt": "1girl, ayachi_nene, club, sitting, holding, tarot, card, blush, looking_away"
   },
   {
     "id": "sc118",
@@ -3639,10 +3901,15 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "hair_ribbon",
       "casual_clothes",
       "standing",
       "ribbon",
-      "smile"
+      "smile",
+      "gym",
+      "aikido",
+      "jacket",
+      "action"
     ],
     "mature": false,
     "location": "gym",
@@ -3652,8 +3919,8 @@
     "usage": [
       "展示图"
     ],
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
-    "prompt": "1girl,ayachi_nene,gym, standing, aikido, jacket, hair_ribbon, smile, action"
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic",
+    "prompt": "1girl, ayachi_nene, gym, standing, aikido, jacket, hair_ribbon, smile, action"
   },
   {
     "id": "sc119",
@@ -3670,10 +3937,15 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "hair_ribbon",
       "shrine",
       "night",
       "smile",
-      "looking_back"
+      "looking_back",
+      "holding",
+      "glow",
+      "looking_at_viewer",
+      "succubus"
     ],
     "mature": false,
     "location": "shrine",
@@ -3683,8 +3955,8 @@
     "usage": [
       "展示图"
     ],
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
-    "prompt": "1girl,ayachi_nene,shrine, night, holding, glow, looking_at_viewer, succubus"
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic",
+    "prompt": "1girl, ayachi_nene, shrine, night, holding, glow, looking_at_viewer, succubus"
   },
   {
     "id": "sc120",
@@ -3701,10 +3973,14 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "hair_ribbon",
       "yukata",
       "standing",
       "smile",
-      "night"
+      "night",
+      "festival",
+      "holding",
+      "fish"
     ],
     "mature": false,
     "location": "festival",
@@ -3714,8 +3990,8 @@
     "usage": [
       "展示图"
     ],
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
-    "prompt": "1girl,ayachi_nene,festival, standing, holding, yukata, fish, smile, night"
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic",
+    "prompt": "1girl, ayachi_nene, festival, standing, holding, yukata, fish, smile, night"
   },
   {
     "id": "sc121",
@@ -3732,10 +4008,15 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "hair_ribbon",
       "shrine",
       "kimono",
       "smile",
-      "looking_back"
+      "looking_back",
+      "holding",
+      "looking_at_viewer",
+      "blush",
+      "bag"
     ],
     "mature": false,
     "location": "shrine",
@@ -3745,8 +4026,8 @@
     "usage": [
       "展示图"
     ],
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
-    "prompt": "1girl,ayachi_nene,shrine, kimono, holding, looking_at_viewer, blush, bag"
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic",
+    "prompt": "1girl, ayachi_nene, shrine, kimono, holding, looking_at_viewer, blush, bag"
   },
   {
     "id": "sc122",
@@ -3763,9 +4044,14 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "hair_ribbon",
       "library",
       "standing",
-      "smile"
+      "smile",
+      "holding",
+      "map",
+      "book",
+      "pointing"
     ],
     "mature": false,
     "location": "library",
@@ -3775,8 +4061,8 @@
     "usage": [
       "展示图"
     ],
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate",
-    "prompt": "1girl,ayachi_nene,library, standing, holding, map, book, smile, pointing"
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic",
+    "prompt": "1girl, ayachi_nene, library, standing, holding, map, book, smile, pointing"
   },
   {
     "id": "sc123",
@@ -3793,12 +4079,15 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "hair_ribbon",
       "ribbon",
       "blush",
       "shy",
       "school_uniform",
       "looking_back",
-      "bokeh"
+      "bokeh",
+      "classroom",
+      "golden_hour"
     ],
     "mature": false,
     "location": "校园教室",
@@ -3809,7 +4098,7 @@
       "实验CG"
     ],
     "prompt": "ayachi_nene, ribbon, school_uniform, shy, blush, looking_back, classroom, golden_hour, soft_lighting, bokeh, {intimacy_intensity}, {sensory_feedback}",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc124",
@@ -3826,10 +4115,15 @@
     "time": "傍晚",
     "timeOfDay": "sunset",
     "tags": [
+      "mole_under_eye",
       "looking_back",
       "maid",
       "cafe",
-      "golden_hour"
+      "golden_hour",
+      "shy",
+      "blush",
+      "candlelight",
+      "warm"
     ],
     "mature": false,
     "location": "星光咖啡馆",
@@ -3840,7 +4134,7 @@
       "实验CG"
     ],
     "prompt": "shiki_natsume, maid, cafe, shy, blush, looking_back, candlelight, soft_lighting, warm, {intimacy_intensity}, {interaction_target}",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc125",
@@ -3857,10 +4151,14 @@
     "time": "深夜",
     "timeOfDay": "night",
     "tags": [
+      "hair_ribbon",
       "blush",
       "shy",
       "school_uniform",
-      "night"
+      "night",
+      "nervous",
+      "dramatic",
+      "close_up"
     ],
     "mature": false,
     "location": "医疗室",
@@ -3870,8 +4168,8 @@
     "usage": [
       "实验CG"
     ],
-    "prompt": "ayachi_nene, school_uniform, shy, blush, nervous, night, dramatic, soft_lighting, close-up, {intimacy_intensity}, {sensory_feedback}",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "ayachi_nene, school_uniform, shy, blush, nervous, night, dramatic, soft_lighting, close_up, {intimacy_intensity}, {sensory_feedback}",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc126",
@@ -3888,10 +4186,16 @@
     "time": "深夜",
     "timeOfDay": "night",
     "tags": [
+      "mole_under_eye",
       "looking_back",
       "cafe",
-      "lantern light, warm glow",
-      "night"
+      "lantern_light",
+      "warm_glow",
+      "night",
+      "maid",
+      "smile",
+      "candlelight",
+      "bokeh"
     ],
     "mature": false,
     "location": "星光咖啡馆",
@@ -3902,7 +4206,7 @@
       "核心CG"
     ],
     "prompt": "shiki_natsume, maid, cafe, smile, looking_back, night, candlelight, soft_lighting, bokeh, {interaction_target}, {sensory_feedback}",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc127",
@@ -3919,12 +4223,14 @@
     "time": "黄昏",
     "timeOfDay": "sunset",
     "tags": [
+      "hair_ribbon",
       "ribbon",
       "cherry_blossoms",
       "smile",
       "school_uniform",
       "petals",
-      "golden_hour"
+      "golden_hour",
+      "wind"
     ],
     "mature": false,
     "location": "校园樱花道",
@@ -3935,7 +4241,7 @@
       "核心CG"
     ],
     "prompt": "ayachi_nene, ribbon, school_uniform, smile, cherry_blossoms, petals, golden_hour, soft_lighting, wind, {intimacy_intensity}, {sensory_feedback}",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc128",
@@ -3952,10 +4258,15 @@
     "time": "深夜",
     "timeOfDay": "night",
     "tags": [
+      "mole_under_eye",
       "blush",
       "cafe",
       "night",
-      "lantern light, warm glow"
+      "lantern_light",
+      "warm_glow",
+      "shy",
+      "candlelight",
+      "close_up"
     ],
     "mature": false,
     "location": "深夜酒吧",
@@ -3965,7 +4276,7 @@
     "usage": [
       "实验CG"
     ],
-    "prompt": "shiki_natsume, cafe, blush, shy, night, candlelight, soft_lighting, close-up, {intimacy_intensity}, {interaction_target}",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
+    "prompt": "shiki_natsume, cafe, blush, shy, night, candlelight, soft_lighting, close_up, {intimacy_intensity}, {interaction_target}",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   }
 ]
