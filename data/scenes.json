@@ -123,7 +123,7 @@
   {
     "id": "sc005",
     "title": "夏日祭烟花",
-    "category": "祭典",
+    "category": "祭典・节日",
     "story": "烟花绽放的瞬间，她回头看你，迅速别过脸去「才不是故意看你的」",
     "char": "natsume",
     "character": [
@@ -155,7 +155,7 @@
   {
     "id": "sc006",
     "title": "圣诞节礼物",
-    "category": "节日",
+    "category": "祭典・节日",
     "story": "平安夜，她递给你一个包装精美的盒子，脸颊微红「别太期待哦」",
     "char": "nene",
     "character": [
@@ -185,7 +185,7 @@
   {
     "id": "sc007",
     "title": "雨中告白",
-    "category": "日常",
+    "category": "恋爱",
     "story": "她没有带伞，你跑过去为她撑伞",
     "char": "nene",
     "character": [
@@ -217,7 +217,7 @@
   {
     "id": "sc008",
     "title": "新年祈福",
-    "category": "节日",
+    "category": "祭典・节日",
     "story": "神社前合掌祈祷，发觉你偷看就皱眉「别盯着…愿望会说出口的」",
     "char": "nene",
     "character": [
@@ -616,7 +616,7 @@
   {
     "id": "sc021",
     "title": "正月游戏",
-    "category": "节日",
+    "category": "祭典・节日",
     "story": "被窝里打手游被你抓了个正着，她慌张地把手机塞进枕头「才、才没有在玩！」",
     "char": "nene",
     "character": [
@@ -647,7 +647,7 @@
   {
     "id": "sc022",
     "title": "毕业相册",
-    "category": "日常",
+    "category": "校园",
     "story": "她把相册翻到有你那一页，停了很久",
     "char": "natsume",
     "character": [
@@ -1085,7 +1085,7 @@
   {
     "id": "sc036",
     "title": "夏日蝉鸣",
-    "category": "日常",
+    "category": "旅行",
     "story": "树上蝉叫得很大声，她用纸扇给你扇风，一边嘟囔「夏天最讨厌了」",
     "char": "nene",
     "character": [
@@ -2075,7 +2075,7 @@
   {
     "id": "sc068",
     "title": "缆车里的独处",
-    "category": "R15",
+    "category": "旅行",
     "story": "缆车小车厢里她主动靠过来，心砰砰跳着嘴硬「只是因为晃才扶着你的哦」",
     "char": "nene",
     "character": [
@@ -2105,7 +2105,7 @@
   {
     "id": "sc069",
     "title": "雨夜回家的路上",
-    "category": "R15",
+    "category": "恋爱",
     "story": "雨夜回家路上她挽着你胳膊整个人贴上来「…淋湿会感冒」",
     "char": "natsume",
     "character": [
@@ -2390,7 +2390,7 @@
   {
     "id": "sc078",
     "title": "神社的初雪",
-    "category": "节日",
+    "category": "祭典・节日",
     "story": "她站在鸟居下，初雪落在她的发梢",
     "char": "nene",
     "character": [
@@ -2579,7 +2579,7 @@
   {
     "id": "sc084",
     "title": "花火大会",
-    "category": "祭典",
+    "category": "祭典・节日",
     "story": "她穿浴衣抬头看烟花，木屐踩着石板",
     "char": "nene",
     "character": [
@@ -2859,7 +2859,7 @@
   {
     "id": "sc093",
     "title": "雨夜共伞",
-    "category": "R15",
+    "category": "恋爱",
     "story": "雨夜共伞她整个人贴在你身上，「只是伞太小…不要误会」",
     "char": "natsume",
     "character": [
@@ -2983,7 +2983,7 @@
   {
     "id": "sc097",
     "title": "海边的泳装",
-    "category": "R15",
+    "category": "旅行",
     "story": "沙滩上她弯腰调整泳装肩带发觉你在看就瞪你「看什么看！」",
     "char": "natsume",
     "character": [
@@ -3015,7 +3015,7 @@
   {
     "id": "sc098",
     "title": "沙发上的膝枕",
-    "category": "R15",
+    "category": "亲密",
     "story": "她躺在你腿上,抬头看着你的脸",
     "char": "nene",
     "character": [
@@ -3137,7 +3137,7 @@
   {
     "id": "sc102",
     "title": "从背后抱你",
-    "category": "R15",
+    "category": "亲密",
     "story": "你洗碗的时候她从背后环住你的腰,脸贴在你背上",
     "char": "nene",
     "character": [
@@ -3197,7 +3197,7 @@
   {
     "id": "sc104",
     "title": "深夜的沙发",
-    "category": "R15",
+    "category": "亲密",
     "story": "电影演到一半她已经在沙发上睡着了,头靠在你肩上",
     "char": "nene",
     "character": [
@@ -3289,7 +3289,7 @@
   {
     "id": "sc107",
     "title": "穿反的T恤",
-    "category": "R15",
+    "category": "日常",
     "story": "她穿你的T恤下摆长到大腿发觉你在看就拉衣摆「只是衣服太大了」",
     "char": "natsume",
     "character": [
@@ -3319,7 +3319,7 @@
   {
     "id": "sc108",
     "title": "只属于两人的电车",
-    "category": "R15",
+    "category": "恋爱",
     "story": "末班电车几乎没人她坐在你旁边靠着你的手臂",
     "char": "nene",
     "character": [
@@ -3442,7 +3442,7 @@
   {
     "id": "sc112",
     "title": "女仆装的偏好",
-    "category": "日常",
+    "category": "亲密",
     "story": "她低头整理刚收到的包裹,是你送的女仆装。红着脸穿好转了一圈「…只是试试看,才不是穿给你看」",
     "char": "natsume",
     "character": [
@@ -3565,7 +3565,7 @@
   {
     "id": "sc116",
     "title": "体弱",
-    "category": "日常",
+    "category": "亲密",
     "story": "她又因贫血倒在保健室床上,看到你来了把脸埋进枕头「…马上就可以回去上课」",
     "char": "natsume",
     "character": [
@@ -3689,7 +3689,7 @@
   {
     "id": "sc120",
     "title": "庙会游戏",
-    "category": "祭典",
+    "category": "祭典・节日",
     "story": "捞金鱼她兴奋地袖子全湿了,金鱼跑掉就跺脚「もう!すごい逃す!」",
     "char": "nene",
     "character": [
