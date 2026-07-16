@@ -56,6 +56,7 @@
   .scene-card[data-category="恋爱"]::before { background:linear-gradient(180deg,#CE93D8,#6A1B9A); }
   .scene-card[data-category="亲密"]::before { background:linear-gradient(180deg,#FF80AB,#AD1457); }
   .scene-card[data-category="R15"]::before { background:linear-gradient(180deg,#CFD8DC,#37474F); }
+  .scene-card[data-category="Active_Sync_Scenes"]::before { background:linear-gradient(180deg,#7C4DFF,#311B92); }
   .scene-name { font-weight:700; font-size:0.92rem; margin-bottom:2px; }
   .scene-story { font-size:0.78rem; color:var(--text-secondary); margin-bottom:var(--s-2); line-height:1.5; }
   .scene-meta { display:flex; flex-wrap:wrap; gap:4px; }
@@ -1063,7 +1064,7 @@ function renderScenes() {
   SCENES.forEach((s, idx) => {
     const card = document.createElement('div'); card.className = 'scene-card'; card.dataset.idx = idx; card.dataset.category = s.category || '日常';
     const season = s.season ? ({春:'🌸',夏:'☀️',秋:'🍂',冬:'❄️'}[s.season]||'') + s.season : '';
-    const tod = s.timeOfDay ? ({morning:'清晨',afternoon:'午后',sunset:'黄昏',night:'夜晚'}[s.timeOfDay]||s.timeOfDay) : '';
+    const tod = s.timeOfDay ? ({morning:'清晨',afternoon:'午后',sunset:'黄昏',night:'夜晚',late_night:'深夜'}[s.timeOfDay]||s.timeOfDay) : '';
     card.innerHTML = `
       <div class="scene-name">${s.title}${s.mature ? ' <span class="mature-dot">🔞</span>' : ''}</div>
       <div class="scene-story">${s.story}</div>
