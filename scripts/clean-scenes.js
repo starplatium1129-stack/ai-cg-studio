@@ -23,16 +23,22 @@ const TAG_MAP = {
 };
 
 const BLACKLIST = new Set([
+  // 非可视化概念
   'strawberry_chamomile_scent', 'scent', 'flavor', 'fragrance',
-  'heart_rate_sync', 'infinite_loop', 'triad_bond',  // 非可视化概念
-  'high_cold_persona', 'sensory_sync'                 // 非 Danbooru 标准
+  'heart_rate_sync', 'infinite_loop', 'triad_bond',
+  'high_cold_persona', 'sensory_sync',
+  // 美术风格红线 — 来自 art-direction.html 禁用词（源头净化）
+  'neon', 'glowing', 'oversaturated', 'vivid_colors', 'vivid', 'rainbow',
+  'high_contrast', 'harsh_lighting', 'extremely_detailed', 'ultra_detailed',
+  '8k', 'photorealistic', 'realistic_skin'
 ]);
 
 // 不应出现在 tags 中的 token（角色触发词、数量前缀、权重语法、占位符）
 const TAG_EXCLUDE = new Set([
   '1girl', '2girls', '3girls',
   'ayachi_nene', 'shiki_natsume',
-  'masterpiece', 'best_quality', 'extreme_detail',
+  'masterpiece', 'best_quality',
+  'extreme_detail', 'extremely_detailed', 'ultra_detailed',
   'soft_lighting'  // prompt 专用修饰词
 ]);
 
