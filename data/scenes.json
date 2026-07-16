@@ -46,9 +46,8 @@
     "tags": [
       "school_uniform",
       "cherry_blossoms",
-      "looking_at_viewer",
-      "cloying_affection",
-      "eye_contact"
+      "looking_back",
+      "blush"
     ],
     "mature": false,
     "location": "公园",
@@ -108,7 +107,7 @@
     "tags": [
       "school_uniform",
       "library",
-      "autumn"
+      "sunset"
     ],
     "mature": false,
     "location": "图书馆",
@@ -137,7 +136,6 @@
     "timeOfDay": "night",
     "tags": [
       "yukata",
-      "fireworks",
       "night"
     ],
     "mature": false,
@@ -167,7 +165,7 @@
     "timeOfDay": "night",
     "tags": [
       "sweater",
-      "gift",
+      "smile",
       "snow"
     ],
     "mature": false,
@@ -197,8 +195,7 @@
     "timeOfDay": "afternoon",
     "tags": [
       "school_uniform",
-      "rain",
-      "umbrella"
+      "rain"
     ],
     "mature": false,
     "location": null,
@@ -257,8 +254,8 @@
     "timeOfDay": "afternoon",
     "tags": [
       "cafe",
-      "window",
-      "sunlight"
+      "window_light",
+      "golden_hour"
     ],
     "mature": false,
     "location": "咖啡厅",
@@ -346,9 +343,8 @@
     "time": "清晨",
     "timeOfDay": "morning",
     "tags": [
-      "station",
-      "train",
-      "steam"
+      "train_station",
+      "soft_lighting"
     ],
     "mature": false,
     "location": "车站",
@@ -439,7 +435,7 @@
     "tags": [
       "school_uniform",
       "classroom",
-      "autumn"
+      "sunset"
     ],
     "mature": false,
     "location": "教室",
@@ -527,7 +523,6 @@
     "timeOfDay": "night",
     "tags": [
       "rain",
-      "umbrella",
       "night"
     ],
     "mature": false,
@@ -557,7 +552,7 @@
     "timeOfDay": "morning",
     "tags": [
       "snow",
-      "close_up",
+      "looking_back",
       "casual_clothes"
     ],
     "mature": false,
@@ -615,12 +610,10 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
-      "solid_color_pajamas",
+      "pajamas",
       "bedroom",
       "night",
-      "looking_at_viewer",
-      "cloying_affection",
-      "eye_contact"
+      "looking_back"
     ],
     "mature": false,
     "location": "卧室",
@@ -679,7 +672,7 @@
     "timeOfDay": "night",
     "tags": [
       "night",
-      "autumn",
+      "sunset",
       "casual_clothes"
     ],
     "mature": false,
@@ -737,9 +730,9 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
-      "aquarium",
-      "reflection",
-      "wide_shot"
+      "night",
+      "soft_lighting",
+      "looking_back"
     ],
     "mature": false,
     "location": "水族馆",
@@ -769,7 +762,7 @@
     "timeOfDay": "afternoon",
     "tags": [
       "sunbeam",
-      "close_up",
+      "looking_back",
       "school_uniform"
     ],
     "mature": false,
@@ -830,14 +823,10 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
-      "wedding_dress",
-      "naki-bokuro",
-      "strawberry_chamomile_scent",
-      "expressive_ahoge",
-      "cloying_affection",
-      "interlocked_fingers",
-      "looking_at_viewer",
-      "depth_of_field"
+      "dress",
+      "blush",
+      "ribbon",
+      "looking_back"
     ],
     "mature": true,
     "location": "新房",
@@ -866,10 +855,9 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
-      "expressive_ahoge",
-      "heart_rate_monitor",
-      "sensory_sync",
-      "looking_at_viewer"
+      "ribbon",
+      "night",
+      "looking_back"
     ],
     "mature": false,
     "location": "实验室",
@@ -897,11 +885,9 @@
     "time": "深夜",
     "timeOfDay": "night",
     "tags": [
-      "high_cold_persona",
-      "blushing",
-      "vulnerable",
-      "naki-bokuro",
-      "eye_contact"
+      "shy",
+      "blush",
+      "looking_back"
     ],
     "mature": false,
     "location": "私人研究室",
@@ -930,11 +916,9 @@
     "time": "不限",
     "timeOfDay": "all_day",
     "tags": [
-      "wedding_dress",
-      "heart_rate_sync",
-      "infinite_loop",
-      "cloying_affection",
-      "triad_bond"
+      "dress",
+      "night",
+      "blush"
     ],
     "mature": true,
     "location": "仪式厅",
@@ -1082,7 +1066,7 @@
     "timeOfDay": "afternoon",
     "tags": [
       "yukata",
-      "close_up",
+      "looking_back",
       "casual_clothes"
     ],
     "mature": false,
@@ -1112,9 +1096,9 @@
     "time": "清晨",
     "timeOfDay": "morning",
     "tags": [
-      "temple",
+      "shrine",
       "kneeling",
-      "autumn"
+      "sunset"
     ],
     "mature": false,
     "location": "寺庙",
@@ -1173,7 +1157,7 @@
     "tags": [
       "beach",
       "sunset",
-      "close_up"
+      "looking_back"
     ],
     "mature": false,
     "location": "海边",
@@ -1202,8 +1186,8 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
-      "stage",
-      "spotlight",
+      "night",
+      "dramatic",
       "casual_clothes"
     ],
     "mature": false,
@@ -1233,8 +1217,7 @@
     "timeOfDay": "night",
     "tags": [
       "rain",
-      "night",
-      "umbrella"
+      "night"
     ],
     "mature": true,
     "location": null,
@@ -1295,9 +1278,8 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
-      "onsen",
-      "steam",
-      "night"
+      "night",
+      "soft_lighting"
     ],
     "mature": true,
     "location": "温泉",
@@ -1327,8 +1309,8 @@
     "timeOfDay": "afternoon",
     "tags": [
       "casual_clothes",
-      "straddling",
-      "close_up"
+      "sitting",
+      "looking_back"
     ],
     "mature": true,
     "location": "客厅",
@@ -1357,9 +1339,9 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
-      "bathroom",
-      "steam",
-      "towel"
+      "night",
+      "soft_lighting",
+      "pajamas"
     ],
     "mature": true,
     "location": "浴室",
@@ -1388,8 +1370,8 @@
     "timeOfDay": "afternoon",
     "tags": [
       "leaning",
-      "kissing",
-      "close_up"
+      "blush",
+      "looking_back"
     ],
     "mature": true,
     "location": "楼梯间",
@@ -1419,8 +1401,8 @@
     "timeOfDay": "night",
     "tags": [
       "night",
-      "window",
-      "silhouette"
+      "window_light",
+      "backlighting"
     ],
     "mature": true,
     "location": null,
@@ -1450,7 +1432,7 @@
     "tags": [
       "bedroom",
       "golden_hour",
-      "bed"
+      "pajamas"
     ],
     "mature": true,
     "location": "卧室",
@@ -1480,7 +1462,7 @@
     "timeOfDay": "morning",
     "tags": [
       "cherry_blossoms",
-      "kissing",
+      "blush",
       "petals"
     ],
     "mature": false,
@@ -1510,7 +1492,7 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
-      "holding_hands",
+      "blush",
       "night",
       "casual_clothes"
     ],
@@ -1540,9 +1522,9 @@
     "time": "夜晚",
     "timeOfDay": "evening",
     "tags": [
-      "kitchen",
+      "casual_clothes",
       "apron",
-      "holding"
+      "smile"
     ],
     "mature": true,
     "location": "厨房",
@@ -1570,9 +1552,9 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
-      "rooftop",
+      "school_rooftop",
       "night",
-      "kissing"
+      "blush"
     ],
     "mature": false,
     "location": "屋顶",
@@ -1602,7 +1584,7 @@
     "timeOfDay": "afternoon",
     "tags": [
       "leaning",
-      "close_up",
+      "looking_back",
       "casual_clothes"
     ],
     "mature": true,
@@ -1633,8 +1615,8 @@
     "timeOfDay": "dawn",
     "tags": [
       "beach",
-      "holding",
-      "close_up"
+      "smile",
+      "looking_back"
     ],
     "mature": false,
     "location": "海边",
@@ -1663,7 +1645,7 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
-      "train",
+      "train_station",
       "night",
       "leaning"
     ],
@@ -1725,7 +1707,7 @@
     "timeOfDay": "afternoon",
     "tags": [
       "beach",
-      "towel",
+      "pajamas",
       "blush"
     ],
     "mature": true,
@@ -1756,8 +1738,8 @@
     "timeOfDay": "morning",
     "tags": [
       "bedroom",
-      "mirror",
-      "lingerie"
+      "soft_lighting",
+      "pajamas"
     ],
     "mature": true,
     "location": "卧室",
@@ -1819,7 +1801,7 @@
     "tags": [
       "rain",
       "school_uniform",
-      "close_up"
+      "looking_back"
     ],
     "mature": true,
     "location": null,
@@ -1849,9 +1831,9 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
-      "bathroom",
-      "towel",
-      "steam"
+      "night",
+      "pajamas",
+      "soft_lighting"
     ],
     "mature": true,
     "location": "浴室",
@@ -1881,8 +1863,8 @@
     "timeOfDay": "morning",
     "tags": [
       "bedroom",
-      "bed",
-      "pov"
+      "pajamas",
+      "looking_back"
     ],
     "mature": true,
     "location": "卧室",
@@ -1911,8 +1893,8 @@
     "time": "清晨",
     "timeOfDay": "morning",
     "tags": [
-      "bed",
-      "pov",
+      "pajamas",
+      "looking_back",
       "pouting"
     ],
     "mature": true,
@@ -1942,9 +1924,8 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
-      "looking_at_viewer",
-      "closed_eyes",
-      "pov"
+      "looking_back",
+      "closed_eyes"
     ],
     "mature": true,
     "location": "客厅",
@@ -1972,7 +1953,7 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
-      "window",
+      "window_light",
       "blush",
       "closed_eyes"
     ],
@@ -2064,9 +2045,9 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
-      "mountain",
+      "sunset",
       "leaning",
-      "looking_up"
+      "looking_back"
     ],
     "mature": true,
     "location": "缆车",
@@ -2096,7 +2077,7 @@
     "tags": [
       "rain",
       "night",
-      "holding_hands"
+      "blush"
     ],
     "mature": true,
     "location": null,
@@ -2124,9 +2105,9 @@
     "time": "黄昏",
     "timeOfDay": "sunset",
     "tags": [
-      "window",
+      "window_light",
       "sunset",
-      "silhouette"
+      "backlighting"
     ],
     "mature": true,
     "location": null,
@@ -2156,7 +2137,7 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
-      "mountain",
+      "sunset",
       "night",
       "moonlight"
     ],
@@ -2189,7 +2170,6 @@
     "timeOfDay": "afternoon",
     "tags": [
       "rain",
-      "umbrella",
       "standing"
     ],
     "mature": false,
@@ -2220,7 +2200,7 @@
     "timeOfDay": "sunset",
     "tags": [
       "yukata",
-      "steam",
+      "soft_lighting",
       "sitting"
     ],
     "mature": false,
@@ -2251,7 +2231,7 @@
     "timeOfDay": "sunset",
     "tags": [
       "sunset",
-      "holding",
+      "smile",
       "casual_clothes"
     ],
     "mature": false,
@@ -2282,9 +2262,9 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
-      "aquarium",
-      "leaning_against",
-      "looking_away"
+      "night",
+      "leaning",
+      "looking_back"
     ],
     "mature": false,
     "location": "水族馆",
@@ -2316,7 +2296,7 @@
     "tags": [
       "looking_back",
       "dress",
-      "sunlight"
+      "golden_hour"
     ],
     "mature": false,
     "location": "向日葵田",
@@ -2348,7 +2328,7 @@
     "tags": [
       "kimono",
       "kneeling",
-      "holding"
+      "smile"
     ],
     "mature": false,
     "location": "茶室",
@@ -2410,7 +2390,7 @@
     "tags": [
       "sitting",
       "window_light",
-      "autumn"
+      "sunset"
     ],
     "mature": false,
     "location": "旧书店",
@@ -2440,8 +2420,7 @@
     "timeOfDay": "sunset",
     "tags": [
       "beach",
-      "sunset",
-      "ocean"
+      "sunset"
     ],
     "mature": false,
     "location": "海边",
@@ -2533,7 +2512,7 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
-      "autumn",
+      "sunset",
       "walking",
       "looking_back"
     ],
@@ -2565,7 +2544,6 @@
     "timeOfDay": "night",
     "tags": [
       "yukata",
-      "fireworks",
       "night"
     ],
     "mature": false,
@@ -2626,9 +2604,9 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
-      "umbrella",
+      "rain",
       "standing",
-      "looking_up"
+      "looking_back"
     ],
     "mature": false,
     "location": "路口",
@@ -2689,7 +2667,7 @@
     "timeOfDay": "afternoon",
     "tags": [
       "standing",
-      "looking_away",
+      "looking_back",
       "casual_clothes"
     ],
     "mature": false,
@@ -2719,9 +2697,9 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
-      "lake",
+      "beach",
       "sitting",
-      "holding"
+      "smile"
     ],
     "mature": false,
     "location": "湖畔",
@@ -2782,9 +2760,9 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
-      "bathroom",
-      "towel",
-      "looking_at_viewer"
+      "night",
+      "pajamas",
+      "looking_back"
     ],
     "mature": true,
     "location": "浴室",
@@ -2814,7 +2792,7 @@
     "tags": [
       "bedroom",
       "sitting",
-      "bed"
+      "pajamas"
     ],
     "mature": true,
     "location": "卧室",
@@ -2843,8 +2821,7 @@
     "timeOfDay": "night",
     "tags": [
       "rain",
-      "umbrella",
-      "neon"
+      "night"
     ],
     "mature": true,
     "location": "街上",
@@ -2901,8 +2878,8 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
-      "bathroom",
-      "towel",
+      "night",
+      "pajamas",
       "looking_back"
     ],
     "mature": true,
@@ -2931,9 +2908,9 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
-      "kitchen",
+      "casual_clothes",
       "night",
-      "holding"
+      "smile"
     ],
     "mature": true,
     "location": "厨房",
@@ -2962,8 +2939,7 @@
     "timeOfDay": "afternoon",
     "tags": [
       "beach",
-      "swimsuit",
-      "bikini"
+      "swimsuit"
     ],
     "mature": true,
     "location": "海边",
@@ -2991,9 +2967,9 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
-      "lap_pillow",
+      "shy",
       "lying",
-      "looking_up"
+      "looking_back"
     ],
     "mature": true,
     "location": "客厅",
@@ -3021,9 +2997,9 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
-      "elevator",
-      "against_wall",
-      "looking_at_viewer"
+      "night",
+      "leaning",
+      "looking_back"
     ],
     "mature": true,
     "location": "电梯",
@@ -3052,8 +3028,7 @@
     "timeOfDay": "morning",
     "tags": [
       "bedroom",
-      "lingerie",
-      "bed"
+      "pajamas"
     ],
     "mature": true,
     "location": "卧室",
@@ -3082,7 +3057,7 @@
     "timeOfDay": "night",
     "tags": [
       "bedroom",
-      "looking_away",
+      "looking_back",
       "sitting"
     ],
     "mature": true,
@@ -3111,7 +3086,7 @@
     "time": "傍晚",
     "timeOfDay": "sunset",
     "tags": [
-      "kitchen",
+      "casual_clothes",
       "laughing",
       "apron"
     ],
@@ -3142,7 +3117,7 @@
     "timeOfDay": "sunset",
     "tags": [
       "beach",
-      "towel",
+      "pajamas",
       "sitting"
     ],
     "mature": true,
@@ -3172,7 +3147,7 @@
     "timeOfDay": "night",
     "tags": [
       "night",
-      "autumn",
+      "sunset",
       "casual_clothes"
     ],
     "mature": true,
@@ -3201,8 +3176,7 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
-      "bar",
-      "holding",
+      "smile",
       "casual_clothes"
     ],
     "mature": true,
@@ -3232,8 +3206,8 @@
     "timeOfDay": "afternoon",
     "tags": [
       "bedroom",
-      "lying_stomach",
-      "autumn"
+      "lying",
+      "sunset"
     ],
     "mature": true,
     "location": "卧室",
@@ -3262,7 +3236,7 @@
     "timeOfDay": "morning",
     "tags": [
       "bedroom",
-      "holding",
+      "smile",
       "cherry_blossoms"
     ],
     "mature": true,
@@ -3291,8 +3265,8 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
-      "train",
-      "window",
+      "train_station",
+      "window_light",
       "leaning"
     ],
     "mature": true,
@@ -3321,8 +3295,8 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
-      "lingerie",
-      "mirror",
+      "pajamas",
+      "soft_lighting",
       "night"
     ],
     "mature": true,
@@ -3351,9 +3325,8 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
-      "balcony",
       "night",
-      "cigarette"
+      "casual_clothes"
     ],
     "mature": true,
     "location": "阳台",
@@ -3381,14 +3354,10 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
-      "bakery",
+      "cafe",
       "apron",
-      "flour",
-      "baking",
       "smile",
-      "holding",
-      "looking_away",
-      "warm_lighting"
+      "looking_back"
     ],
     "mature": false,
     "location": "bakery",
@@ -3418,10 +3387,8 @@
     "tags": [
       "maid",
       "dress",
-      "turning",
-      "blush",
-      "looking_at_viewer",
-      "bedroom"
+      "looking_back",
+      "blush"
     ],
     "mature": false,
     "location": "maid",
@@ -3451,10 +3418,8 @@
     "tags": [
       "classroom",
       "sitting",
-      "reading",
-      "book",
-      "looking_away",
-      "school_uniform"
+      "smile",
+      "looking_back"
     ],
     "mature": false,
     "location": "classroom",
@@ -3482,12 +3447,10 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
-      "school",
-      "standing",
-      "serious",
-      "looking_away",
       "school_uniform",
-      "sunset"
+      "standing",
+      "smile",
+      "looking_back"
     ],
     "mature": false,
     "location": "school",
@@ -3517,11 +3480,7 @@
     "tags": [
       "cafe",
       "sitting",
-      "holding",
-      "cake",
-      "coffee",
-      "smile",
-      "sweet"
+      "smile"
     ],
     "mature": false,
     "location": "cafe",
@@ -3549,11 +3508,10 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
-      "hospital",
-      "bed",
+      "night",
+      "pajamas",
       "lying",
-      "looking_away",
-      "tired"
+      "looking_back"
     ],
     "mature": false,
     "location": "hospital",
@@ -3581,14 +3539,10 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
-      "club",
+      "night",
       "sitting",
-      "holding",
-      "tarot",
-      "card",
-      "blush",
-      "looking_away",
-      "mystery"
+      "smile",
+      "blush"
     ],
     "mature": false,
     "location": "club",
@@ -3616,13 +3570,10 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
-      "gym",
+      "casual_clothes",
       "standing",
-      "aikido",
-      "jacket",
-      "hair_ribbon",
-      "smile",
-      "action"
+      "ribbon",
+      "smile"
     ],
     "mature": false,
     "location": "gym",
@@ -3652,10 +3603,8 @@
     "tags": [
       "shrine",
       "night",
-      "holding",
-      "glow",
-      "looking_at_viewer",
-      "succubus"
+      "smile",
+      "looking_back"
     ],
     "mature": false,
     "location": "shrine",
@@ -3683,11 +3632,8 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
-      "festival",
-      "standing",
-      "holding",
       "yukata",
-      "fish",
+      "standing",
       "smile",
       "night"
     ],
@@ -3719,10 +3665,8 @@
     "tags": [
       "shrine",
       "kimono",
-      "holding",
-      "looking_at_viewer",
-      "blush",
-      "bag"
+      "smile",
+      "looking_back"
     ],
     "mature": false,
     "location": "shrine",
@@ -3752,11 +3696,7 @@
     "tags": [
       "library",
       "standing",
-      "holding",
-      "map",
-      "book",
-      "smile",
-      "pointing"
+      "smile"
     ],
     "mature": false,
     "location": "library",
@@ -3817,7 +3757,7 @@
     "tags": [
       "maid",
       "cafe",
-      "looking_away"
+      "looking_back"
     ],
     "mature": false,
     "location": "星光咖啡馆",
