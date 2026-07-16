@@ -41,6 +41,15 @@
       }
     };
 
+    // hires.fix
+    if (options.enableHires) {
+      payload.enable_hr = true;
+      payload.hr_scale = options.hiresScale || 2;
+      payload.hr_upscaler = options.hiresUpscaler || 'R-ESRGAN 4x+ Anime6B';
+      payload.hr_second_pass_steps = options.hiresSteps || 14;
+      payload.denoising_strength = options.denoisingStrength || 0.35;
+    }
+
     console.log('[SD API] 发送 Payload:', payload);
     return fetch(this.apiUrl, {
       method: 'POST',
@@ -51,7 +60,9 @@
       return response.json();
     }).then(function(data){
       if(!data.images || !data.images[0]) throw new Error('返回数据无图片');
-      return 'data:image/png;base64,' + data.images[0];
+      var info = {};
+      try { info = JSON.parse(data.info || '{}'); } catch(e){}
+      return { image: 'data:image/png;base64,' + data.images[0], seed: info.seed != null ? info.seed : null };
     });
   };
 

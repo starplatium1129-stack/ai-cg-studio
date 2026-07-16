@@ -431,6 +431,15 @@
       <div class="result-frame step-panel" id="stepResult">
         <div class="panel-title">📝 输出 Result</div>
         <div class="preview-output" id="finalPrompt"></div>
+        <div style="display:flex;gap:var(--s-3);align-items:center;margin-bottom:var(--s-3);flex-wrap:wrap;font-size:.82rem;color:var(--text-muted);">
+          <label style="display:flex;align-items:center;gap:4px;cursor:pointer;">
+            <input type="checkbox" id="sdHiresFix"> hires.fix 2x
+          </label>
+          <label style="display:flex;align-items:center;gap:4px;cursor:pointer;">
+            <input type="checkbox" id="sdSeedLock"> 固定种子
+          </label>
+          <span id="sdSeedDisplay" style="font-family:monospace;opacity:0.6;"></span>
+        </div>
         <div class="preview-actions">
           <button class="btn btn-ghost" onclick="toggleResult()">展开 Prompt</button>
           <button class="btn btn-primary" onclick="copyPrompt()">📋 复制</button>
@@ -1444,17 +1453,39 @@ function callSDGenerate(){
   var size = (document.getElementById('size').value || '832x1216').replace('×','x').split('x');
   var width = Number(size[0]) || 832;
   var height = Number(size[1]) || 1216;
-  var seed = window.__lastSeed__ != null ? window.__lastSeed__ : -1;
+  var seed = -1;
+  var seedLock = document.getElementById('sdSeedLock');
+  if (seedLock && seedLock.checked && window.__lastSeed__ != null) {
+    seed = window.__lastSeed__;
+  }
 
   // 获取当前场景的 LoRA 配置
   var currentScene = SCENES.find(function(sc){ return sc.id === state.__sceneId; });
   var loraName = currentScene && currentScene.lora ? currentScene.lora : '';
 
-  getSDConnector().generateImage(prompt, neg, { cfg:cfg, steps:steps, sampler:sampler, width:width, height:height, seed:seed, lora:loraName })
-    .then(function(dataUrl){
-      _sdLastDataUrl = dataUrl;
-      status.textContent = '✅ 生成完成';
-      slot.innerHTML = '<img src="'+dataUrl+'" style="max-width:100%;border-radius:var(--r-md);" alt="Generated CG">';
+  var hiresOn = document.getElementById('sdHiresFix');
+  var hiresOpts = hiresOn && hiresOn.checked ? {
+    enableHires: true,
+    hiresUpscaler: 'R-ESRGAN 4x+ Anime6B',
+    hiresSteps: 14,
+    denoisingStrength: 0.35,
+    hiresScale: 2
+  } : {};
+
+  var opts = Object.assign({ cfg:cfg, steps:steps, sampler:sampler, width:width, height:height, seed:seed, lora:loraName }, hiresOpts);
+  status.textContent = hiresOn && hiresOn.checked ? '⏳ 正在生成 (hires.fix 2x)...' : '⏳ 正在连接 SD WebUI...';
+
+  getSDConnector().generateImage(prompt, neg, opts)
+    .then(function(result){
+      _sdLastDataUrl = result.image;
+      // 更新种子显示
+      if (result.seed != null) {
+        window.__lastSeed__ = result.seed;
+        var seedDisp = document.getElementById('sdSeedDisplay');
+        if (seedDisp) seedDisp.textContent = 'seed: ' + result.seed;
+      }
+      status.textContent = '✅ 生成完成' + (hiresOn && hiresOn.checked ? ' (hires.fix 2x)' : '');
+      slot.innerHTML = '<img src="'+result.image+'" style="max-width:100%;border-radius:var(--r-md);" alt="Generated CG">';
       saveBtn.style.display = 'block';
     })
     .catch(function(err){
