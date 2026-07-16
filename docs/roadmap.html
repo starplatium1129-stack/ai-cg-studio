@@ -127,102 +127,90 @@
       </div>
     </div>
 
-    <!-- v1.0 (current) -->
-    <div class="version current">
+    <!-- v1.0 (done) -->
+    <div class="version done">
       <div class="version-card">
         <div class="version-header">
           <div class="version-num">v1.0</div>
-          <div class="version-name">Prompt Builder v4 + SD WebUI 对接</div>
-          <div class="version-tag">🚧 进行中</div>
+          <div class="version-name">场景创作核心</div>
+          <div class="version-tag">✓ 完成</div>
         </div>
-        <div class="version-desc">整合工具 + 数据 + 出图。真正的"AI Galgame CG 创作工作台"。</div>
+        <div class="version-desc">128 场景 + 导演工作台 + Active Sync + 历史收藏 + 响应式。</div>
         <ul class="feature-list">
-          <li>Scene 库 128 场景 (9 类, 分类检索 + 搜索 + 季节/时段筛选)</li>
-          <li>SD WebUI ReForge 对接 (txt2img API + 状态 Badge + LoRA 智能注入/去重)</li>
-          <li>hires.fix 开关 (2x R-ESRGAN Anime6B, 14 steps, denoising 0.35)</li>
-          <li>Seed 锁定 + 下载 PNG + 快门曝光动效</li>
-          <li>历史记录 IndexedDB (AICKVStore) + 收藏夹 + 5 轴评级 + 一键导出 Prompt</li>
+          <li>Scene 库 128 场景 (9 类, 分类检索 + 搜索 + 季节/时段/角色筛选)</li>
+          <li>导演工作台 Prompt Builder v4 (引导 / 速填双模式 + 手动标签 + 场景导入)</li>
           <li>Active Sync Protocol (10 场景, 实时解析故事文本替换占位符)</li>
           <li>三人场景 triad 支持 + 角色 LoRA 绑定</li>
-          <li>美术禁用词黑名单源头净化 (clean-scenes.js)</li>
+          <li>历史记录 IndexedDB (AICKVStore) + 收藏夹 + 5 轴评级 + 一键导出 Prompt</li>
+          <li>参数 PNG 导出 (Canvas 重绘)</li>
+          <li>响应式 3 段 (手机 / 平板 / 桌面)</li>
         </ul>
       </div>
     </div>
 
-    <!-- v2 -->
+    <!-- v1.5 (current) -->
+    <div class="version current">
+      <div class="version-card">
+        <div class="version-header">
+          <div class="version-num">v1.5</div>
+          <div class="version-name">出图闭环</div>
+          <div class="version-tag">🚧 进行中</div>
+        </div>
+        <div class="version-desc">打通 Stable Diffusion，从"生成 Prompt"到"直接出图"。</div>
+        <ul class="feature-list">
+          <li>SD WebUI ReForge 对接 (txt2img API + 状态 Badge + LoRA 智能注入/去重)</li>
+          <li>hires.fix 开关 (2x R-ESRGAN Anime6B, 14 steps, denoising 0.35)</li>
+          <li>Seed 锁定 + 下载 PNG + 快门曝光动效</li>
+          <li>美术禁用词黑名单源头净化 (clean-scenes.js, 22 个红线词)</li>
+          <li>默认 Illustrious SDXL 参数对齐 (DPM++ 2M SDE Karras, CFG 5.5, 28 steps)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- v2.0 -->
     <div class="version">
       <div class="version-card">
         <div class="version-header">
           <div class="version-num">v2.0</div>
-          <div class="version-name">Scene 库扩展</div>
+          <div class="version-name">内容扩展</div>
           <div class="version-tag">规划</div>
         </div>
         <div class="version-desc">从"工具"进化为"平台"。社区可以贡献 Scene。</div>
         <ul class="feature-list">
           <li>Scene 库扩展到 500+ (多角色、多情绪、多季节)</li>
+          <li>LoRA 库浏览 (lora.html 已有基础, 扩展至完整预览 + 推荐参数)</li>
           <li>用户 Scene 提交 + 审核</li>
           <li>官方 Scene 满足 ⭐⭐⭐⭐⭐ 才能入库</li>
         </ul>
       </div>
     </div>
 
-    <!-- v3 -->
+    <!-- v3.0 -->
     <div class="version">
       <div class="version-card">
         <div class="version-header">
           <div class="version-num">v3.0</div>
-          <div class="version-name">智能导演</div>
+          <div class="version-name">智能辅助</div>
           <div class="version-tag">规划</div>
         </div>
-        <div class="version-desc">AI 辅助创作。输入一句话, 自动生成完整导演决策。</div>
+        <div class="version-desc">AI 辅助创作 + 图片管理升级。</div>
         <ul class="feature-list">
-          <li>输入一句话 → AI 建议情绪/镜头/构图/光照</li>
+          <li>LLM 建议情绪 / 镜头 / 构图 / 光照 (🟡 已有规则引擎基础, 待接入 AI)</li>
           <li>LLM 自动写 Scene 故事描述</li>
-          <li>风格迁移 (参考图 → 色彩/光照 Prompt)</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- v4 -->
-    <div class="version">
-      <div class="version-card">
-        <div class="version-header">
-          <div class="version-num">v4.0</div>
-          <div class="version-name">图片管理</div>
-          <div class="version-tag">规划</div>
-        </div>
-        <div class="version-desc">不只是生成, 还要管理。</div>
-        <ul class="feature-list">
-          <li>出图自动保存到本地 gallery</li>
-          <li>Prompt + 参数 + 图片 一键对比</li>
+          <li>风格迁移 (参考图 → 色彩 / 光照 Prompt)</li>
+          <li>出图自动保存到 gallery (🟡 IndexedDB 存储已建好, 待自动化)</li>
+          <li>Prompt + 参数 + 图片 一键对比 (🟡 history 数据已齐全, 待建 UI)</li>
           <li>相似图检索 (根据 Prompt)</li>
         </ul>
       </div>
     </div>
 
-    <!-- v5 -->
+    <!-- v4.0 -->
     <div class="version">
       <div class="version-card">
         <div class="version-header">
-          <div class="version-num">v5.0</div>
-          <div class="version-name">LoRA 管理</div>
-          <div class="version-tag">规划</div>
-        </div>
-        <div class="version-desc">角色 LoRA 全生命周期管理。</div>
-        <ul class="feature-list">
-          <li>LoRA 库浏览 (预览图 + 推荐参数)</li>
-          <li>训练数据管理</li>
-          <li>LoRA 效果对比 (同一 Prompt, 不同 LoRA)</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- v6 -->
-    <div class="version">
-      <div class="version-card">
-        <div class="version-header">
-          <div class="version-num">v6.0</div>
-          <div class="version-name">ComfyUI 集成</div>
+          <div class="version-num">v4.0</div>
+          <div class="version-name">工作流集成</div>
           <div class="version-tag">远期</div>
         </div>
         <div class="version-desc">不只是 Prompt 工具, 而是完整 workflow 节点。</div>
@@ -234,20 +222,20 @@
       </div>
     </div>
 
-    <!-- v7 -->
+    <!-- v5.0 -->
     <div class="version">
       <div class="version-card">
         <div class="version-header">
-          <div class="version-num">v7.0</div>
-          <div class="version-name">云同步 + 社区</div>
+          <div class="version-num">v5.0</div>
+          <div class="version-name">社区平台</div>
           <div class="version-tag">远期</div>
         </div>
         <div class="version-desc">从个人工具进化为社区平台。</div>
         <ul class="feature-list">
-          <li>用户账号 + 云端收藏/历史同步</li>
+          <li>用户账号 + 云端收藏 / 历史同步</li>
           <li>Scene 官方商店 + 订阅</li>
           <li>创作者主页 + 作品集</li>
-          <li>多语言 (中/英/日)</li>
+          <li>多语言 (中 / 英 / 日)</li>
         </ul>
       </div>
     </div>
@@ -265,7 +253,7 @@
   </div>
 
   <footer class="footer">
-    <p>AI CG Studio · Roadmap v1.0</p>
+    <p>AI CG Studio · Roadmap v1.5</p>
     <p class="muted mt-4">根据实际使用情况调整。不为了版本号赶工。</p>
   </footer>
 </article>

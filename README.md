@@ -160,22 +160,22 @@ AI-CG-Studio/
 
 ---
 
-## 本版本已有
+## 已完成 (v1.0)
 
 - **128 Scene，9 类** — 校园 / 日常 / 恋爱 / 亲密 / 旅行 / 祭典 / 节日 / R15 / Active Sync
 - **Active Sync Protocol** — 动态情感占位符，Director 实时解析故事文本并替换
-- **角色系统** — Nene（宁宁）+ Natsume（夏目），视觉 DNA + LoRA 绑定
-- **统一标签** — `tags.json` 126 条官方标签，10 类（Character / Clothing / Action / Emotion / Scene / Lighting / Appearance / Camera / Style / Quality）
-- **首页 10 秒法则** — 标题 + Create 最大 CTA + Story→Scene→Prompt→Image 链
-- **导航"创作者思维"** — 一级 7 项，Director 为内部名对用户隐身
-- **Scene Card 组件** — `scene-card.js`，首页 / 场景库 / 画廊复用同一卡片
-- **LoRA 资产化** — `loras.json` 含 trigger / character / strength / compatible_models / version
-- **Gallery 真实内容** — 读 IndexedDB (AICKVStore) History，时间线 + 5 轴评级 + 重新生成
-- **项目工作区** — `projects.json` + 选择器 + Gallery 按项目筛选
+- **角色系统** — Nene（宁宁）+ Natsume（夏目）+ Triad（三人），视觉 DNA + LoRA 绑定
+- **统一标签** — `tags.json` 126 条官方标签，10 类
+- **导演工作台** — Prompt Builder v4（引导 / 速填双模式 + 手动标签 + 场景导入）
+- **历史 + 收藏** — IndexedDB (AICKVStore)，5 轴评级 + 一键导出 Prompt + 参数 PNG 导出
+- **LoRA 资产化** — `loras.json` + `lora.html` 浏览
 - **Illustrious SDXL 对标** — 标签结构对标底模特性（5tag 训练 vs 3-5tag 场景生成）
-- **SD WebUI ReForge 对接** — `tools/sd-api.js` 直连出图（status badge + LoRA 智能注入/去重 + hires.fix + seed lock + 下载 PNG）
-- **数据维护脚本** — `scripts/clean-scenes.js` 美术禁用词黑名单源头净化（22 个红线词）
 - **响应式 3 段** — 手机 / 平板 / 桌面全覆盖
+
+## 进行中 (v1.5 · 出图闭环)
+
+- **SD WebUI ReForge 对接** — `tools/sd-api.js` 直连出图（status badge + LoRA 智能注入/去重 + hires.fix + seed lock + 下载 PNG）
+- **美术禁用词源头净化** — `scripts/clean-scenes.js`（22 个红线词黑名单）
 
 ---
 
