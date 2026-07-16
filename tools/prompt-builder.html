@@ -530,6 +530,7 @@
 </footer>
 
 <script src="image-store.js?v=4"></script>
+<script src="active-sync.js?v=4"></script>
 <script>
 
 /* ============================================================
@@ -1286,6 +1287,14 @@ function colorizeParts(parts) {
 }
 function updateLivePreview() {
   const parts = buildParts();
+
+  // Active Sync Protocol: 实时替换占位符
+  const currentScene = SCENES.find(sc => sc.id === state.__sceneId);
+  if (currentScene && currentScene.category === 'Active_Sync_Scenes' && typeof ActiveSyncProtocol !== 'undefined') {
+    const syncParams = ActiveSyncProtocol.interpret(state.story || '');
+    parts.forEach(p => { p.text = ActiveSyncProtocol.applyProtocol(p.text, syncParams); });
+  }
+
   document.getElementById('preview').innerHTML = colorizeParts(parts);
   document.getElementById('preview').dataset.raw = parts.map(p => p.text).join('\n');
   // token 计数 + 进度条 (SD1.5 CLIP 窗口 ~77)
@@ -1314,7 +1323,17 @@ function generate() {
   const charName = CHARACTER.find(c => c.id === state.char)?.name || state.char;
   const resultEl = document.getElementById('stepResult');
   const parts = buildParts();
-  const fullText = parts.map(p => p.text).join(', ');
+  let fullText = parts.map(p => p.text).join(', ');
+
+  // Active Sync Protocol: 替换 Active_Sync_Scenes 中的占位符
+  const currentScene = SCENES.find(sc => sc.id === state.__sceneId);
+  if (currentScene && currentScene.category === 'Active_Sync_Scenes' && typeof ActiveSyncProtocol !== 'undefined') {
+    const syncParams = ActiveSyncProtocol.interpret(state.story || '');
+    fullText = ActiveSyncProtocol.applyProtocol(fullText, syncParams);
+    // 更新 parts 中的文本以便 colorize 正确显示
+    parts.forEach(p => { p.text = ActiveSyncProtocol.applyProtocol(p.text, syncParams); });
+  }
+
   const violations = checkArtDirection(fullText);
   const artWarn = document.getElementById('artWarn');
   artWarn.style.display = violations.length ? 'flex' : 'none';
