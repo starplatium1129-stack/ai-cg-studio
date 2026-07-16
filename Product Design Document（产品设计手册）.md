@@ -1,7 +1,7 @@
 《AI CG Studio》
 Product Design Document（产品设计手册）
 
-Version 1.0
+Version 1.5
 
 Every Great CG Begins with a Story.
 
@@ -5635,6 +5635,8 @@ xxx.safetensors
 
 最佳实践第十一阶段：ReForge Integration（Stable Diffusion 工作流集成）
 
+【✅ 已在 v1.5 实现】本阶段设计已全部落地：tools/sd-api.js 对接 SD WebUI ReForge，含 LoRA 智能注入/去重、hires.fix 开关、seed 锁定、下载 PNG、状态 Badge。
+
 AI CG Studio 不是替代 WebUI。
 
 它是 WebUI 上层的创作操作系统。
@@ -6290,399 +6292,62 @@ LoRA管理
 +
 SD工作流
 +
-作品管理
-第一阶段：V0.1 Prompt Studio（当前基础）
-目标：
+当前版本：v1.5（出图闭环）
 
-把你现在的 HTML 网站升级。
+版本路线（2026-07 更新）
 
-从：
+v0.5 ✓ 完成 — 文档与理念奠基
 
-Prompt选择器
+8 份 spec docs、导演模式原型、色彩情绪映射、统一设计系统
 
-变成：
+v1.0 ✓ 完成 — 场景创作核心
 
-Scene设计器
+128 场景（9 类）+ 导演工作台 Prompt Builder v4
+Active Sync Protocol（10 个动态场景）
+角色系统（宁宁 / 夏目 / 三人 triad）+ LoRA 绑定
+历史记录 IndexedDB + 收藏夹 + 5 轴评级 + 一键导出
+响应式 3 段
 
-功能：
-1. Scene模板
+v1.5 🚧 进行中 — 出图闭环
 
-例如：
+SD WebUI ReForge 对接（tools/sd-api.js）
+LoRA 智能注入/去重 + hires.fix + Seed 锁定 + 下载 PNG
+美术禁用词黑名单（clean-scenes.js，22 个红线词）
+多分镜监视墙 — batch_size 变体生成，一次出 4 张微扰动 CG，点选最佳入库
 
-放学后的教室
-神社初雪
-夜晚房间
-夏日祭
+v2.0 规划 — 内容扩展
 
-点击：
+Scene 库 500+、LoRA 库扩展、用户 Scene 提交审核
+训练反哺闭环 — 画廊一键导出训练集素材（图片 Blob + 同名 5-Tag .txt），直接喂 OneTrainer
 
-生成：
+v3.0 规划 — 智能辅助
 
-Scene描述
-+
-Prompt
-+
-Negative
-2. 标签系统
+LLM 建议情绪/镜头/光照 + 自动写故事 + 图片管理升级
+角色衣柜系统 — characters.json 解耦服装预设（制服/浴衣/婚纱），切换时联动 LoRA 权重微调防概念污染
 
-实现：
+v4.0 远期 — 工作流集成
 
-角色
+ComfyUI workflow + ControlNet / IP-Adapter
 
-场景
+v5.0 远期 — 社区平台
 
-服装
+云同步 + Scene 商店 + 创作者主页
 
-情绪
-
-镜头
-
-光照
-3. Prompt复制
-
-按钮：
-
-复制Prompt
-
-复制Negative
-
-复制参数
-技术：
-
-纯前端即可：
-
-HTML
-
-CSS
-
-JavaScript
-
-JSON数据
-
-这个阶段：
-
-你一个人几天到几周就能完成。
-
-V0.1 数据结构
-
-例如：
-
-scene.json
-
-{
-"id":"SC001",
-
-"name":"放学后的回眸",
-
-"type":"Daily",
-
-"character":
-"Nene",
-
-"emotion":
-"gentle",
-
-"camera":
-"half body",
-
-"prompt":
-"sunset classroom..."
-}
-
-这一步其实就是你原来的网页升级。
-
-第二阶段：V0.5 Character Studio
-
-目标：
-
-加入角色系统。
-
-增加：
-
-Character Card
-
-例如：
-
-绫地宁宁：
-
-名字
-
-头像
-
-LoRA
-
-推荐权重
-
-适合Scene
-
-Prompt关键词
-
-界面：
-
-类似游戏角色图鉴。
-
-功能：
-
-选择角色：
-
-↓
-
-自动加载：
-
-LoRA
-标签
-推荐Prompt
-
-例如：
-
-点击：
-
-绫地宁宁
-
-自动：
-
-<lora:ayachi_nene_v11:0.8>
-
-long hair
-
-blue eyes
-
-gentle expression
-第三阶段：V1.0 AI CG Studio
-
-正式产品形态。
-
-加入：
-
-Scene编辑器
-
-类似导演台。
-
-界面：
-
-故事：
-
-放学后的等待
-
-
-角色：
-
-宁宁
-
-
-情绪：
-
-温柔期待
-
-
-镜头：
-
-半身
-
-
-光：
-
-夕阳
-
-
-生成Prompt
-
-这里是核心。
-
-因为：
-
-用户不再想：
-
-“我要输入什么词？”
-
-而是：
-
-“我要创造什么画面？”
-
-第四阶段：V1.5 LoRA Lab
-
-加入模型管理。
-
-功能：
-
-LoRA库
-
-显示：
-
-宁宁 v11
-
-夏目 v1
-
-其他角色
-训练记录
-
-保存：
-
-Dataset
-
-Epoch
-
-Rank
-
-Alpha
-
-Loss
-测试记录
-
-保存：
-
-图片。
-
-评分。
-
-这一步就是你的 OneTrainer 经验进入系统。
-
-第五阶段：V2.0 AI Director
-
-这是未来高级方向。
-
-加入 AI 辅助。
-
-例如：
-
-用户输入：
-
-我想做一个宁宁在雨天车站等待的CG
-
-AI自动生成：
-
-Scene：
-
-雨天车站
-
-傍晚
-
-等待离别的人
-
-Emotion：
-
-怀念
-
-期待
-
-孤独
-
-Camera：
-
-远景
-
-雨幕
-
-逆光
-
-Prompt：
-
-自动完成。
-
-这就是：
-
-AI导演。
-
-第六阶段：V3.0 Creator Ecosystem
-
-最终形态。
-
-角色市场
-
-分享：
-
-Character Pack
-
-Scene市场
-
-分享：
-
-CG模板。
-
-LoRA生态
-
-管理：
-
-模型。
-
-版本。
-
-测试。
-
-创作者主页
-
-展示：
-
-作品。
-
-类似：
-
-Pixiv
-
-+
-Stable Diffusion工具
-
-+
-角色管理系统
 开发优先级
 
-我觉得按照你的情况：
+已完成：
 
-不要先做复杂后端。
+✅ Scene 系统（128 场景 + 分类检索）
+✅ Character 系统（角色卡 + LoRA 绑定）
+✅ Prompt 生成（导演台 + Active Sync）
+✅ LoRA 管理（loras.json + lora.html）
+✅ SD WebUI ReForge 连接（出图闭环）
 
-路线：
+下一步：
 
-第一步（现在）
-
-完成：
-
-HTML + JSON
-
-Scene系统
-Prompt系统
-第二步
-
-加入：
-
-Character系统
-第三步
-
-加入：
-
-LoRA管理
-第四步
-
-连接：
-
-ReForge
-第五步
-
-AI辅助。
-
-最小可用版本（MVP）
-
-如果只做一个真正有价值的版本：
-
-我建议：
-
-AI CG Studio v0.1
-
-包含：
-
-✅ Scene库
-✅ Character库
-✅ Prompt生成
-✅ LoRA记录
-✅ 参数Preset
-
-不要做：
-
-❌ 用户系统
-❌ 云端
-❌ 社区
-❌ AI聊天
-
-因为这些不是核心。
+⬜ Scene 库扩展到 500+
+⬜ LoRA 库完整浏览（预览图 + 推荐参数）
+⬜ LLM 辅助建议
 
 你的第一个Demo
 

@@ -163,6 +163,7 @@
           <li>Seed 锁定 + 下载 PNG + 快门曝光动效</li>
           <li>美术禁用词黑名单源头净化 (clean-scenes.js, 22 个红线词)</li>
           <li>默认 Illustrious SDXL 参数对齐 (DPM++ 2M SDE Karras, CFG 5.5, 28 steps)</li>
+          <li>多分镜监视墙 — batch_size 变体生成，一次出 4 张微扰动 CG，点选最佳入库</li>
         </ul>
       </div>
     </div>
@@ -181,6 +182,7 @@
           <li>LoRA 库浏览 (lora.html 已有基础, 扩展至完整预览 + 推荐参数)</li>
           <li>用户 Scene 提交 + 审核</li>
           <li>官方 Scene 满足 ⭐⭐⭐⭐⭐ 才能入库</li>
+          <li>训练反哺闭环 — 画廊一键导出训练集素材 (图片 Blob + 同名 5-Tag .txt)，直接喂 OneTrainer</li>
         </ul>
       </div>
     </div>
@@ -201,6 +203,7 @@
           <li>出图自动保存到 gallery (🟡 IndexedDB 存储已建好, 待自动化)</li>
           <li>Prompt + 参数 + 图片 一键对比 (🟡 history 数据已齐全, 待建 UI)</li>
           <li>相似图检索 (根据 Prompt)</li>
+          <li>角色衣柜系统 — characters.json 解耦服装预设 (制服/浴衣/婚纱)，切换时联动 LoRA 权重微调防概念污染</li>
         </ul>
       </div>
     </div>
@@ -241,8 +244,6 @@
     </div>
 
   </div>
-
-  <!-- Core principle remain -->
   <div class="callout" style="margin-top: var(--s-6);">
     <strong>🌸 无论哪个版本, 都不违反 <a href="worldview.html">The Three Rules</a>:</strong>
     <ul style="margin-top: var(--s-2); padding-left: var(--s-4); color: var(--text-secondary);">
