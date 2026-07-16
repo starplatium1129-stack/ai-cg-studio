@@ -550,8 +550,33 @@
    美术规范自检: 违规 token 红框高亮
    ============================================================ */
 
-// ========== DATA LOAD (from JSON, localhost required — file:// blocked by CORS) ==========
-let DATA_READY = false;
+// ========== GLOBAL STATE (declared before all functions to avoid TDZ) ==========
+var DATA_READY = false;
+var CHARACTER = [];
+var TRAITS = {};
+var LORA_ID = {};
+var SCENES = [];
+var SCENE_CAT = '全部';
+var TAGS = {};
+var TAG_CN = {};
+var CURRENT_STEP = 1;
+var _cachedHistory = [];
+var _cachedProjects = [];
+var toastTimer;
+var HIS_KEY = 'aics_pb_history';
+var PRJ_KEY = 'aics_projects';
+var HIS_SCHEMA_VERSION = 4;
+var NEGATIVE = 'worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate';
+var state = {
+  story: '',
+  char: 'nene',
+  selections: { emotion:[], shot:null, lighting:null, composition:null },
+  colorMood: null,
+  manualTags: new Set(),
+  concise: false,
+  history: []
+};
+
 function loadData(){
   function initStorage(){
     return AICKVStore.init().then(function(){
@@ -609,8 +634,6 @@ function buildTraits(){
 }
 
 // ========== DATA ==========
-let CHARACTER = [];
-let TRAITS = {};
 
 const EMOTION = [
   { id:'happy',   icon:'😊', name:'开心', en:'Happy' },
@@ -722,21 +745,6 @@ const RECOMMENDED_TAGS = [
   'muted_tones','harmonious_colors','warm_lighting','soft_lighting'
 ];
 
-
-let TAGS = {};
-
-const NEGATIVE = 'worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate';
-let CURRENT_STEP = 1; // 1=Scene, 2=Char, 3=Decisions, 4=Result
-
-const state = {
-  story: '',
-  char: 'nene',
-  selections: { emotion:[], shot:null, lighting:null, composition:null },
-  colorMood: null,
-  manualTags: new Set(),
-  concise: false,
-  history: loadHistory()
-};
 
 // ========== INIT ==========
 function init() {
@@ -1118,8 +1126,6 @@ function findEmotionId(name) {
   return m[name] || null;
 }
 // ========== SCENE LIBRARY (内联, file:// / http:// 通用) ==========
-let SCENES = [];
-let SCENE_CAT = '全部';
 function loadSceneLibrary(){
   buildTraits();
   renderSceneCats(); renderScenes(); renderSceneMini();
@@ -1128,7 +1134,7 @@ function loadSceneLibrary(){
 const CAT_LABELS = { clothes:'服装', pose:'姿势', expression:'表情', scene_env:'场景', lighting_tag:'光照', details:'外观', camera:'镜头', weather:'天气' };
 
 // ========== MANUAL TAGS ==========
-let currentCat = 'clothes';
+var currentCat = 'clothes';
 function renderManualTags() {
   renderTagPool('tagPoolRecommended', RECOMMENDED_TAGS, 'recommended');
   renderCatTabs();
@@ -1213,7 +1219,6 @@ function toggleTag(tag) {
   if (state.manualTags.has(tag)) state.manualTags.delete(tag); else state.manualTags.add(tag);
   renderManualTags(); renderTraits(); renderSelRow(); updateLivePreview();
 }
-let TAG_CN = {};
 function tagLabel(t){ return TAG_CN[t] || t; }
 
 function renderSelRow() {
@@ -1232,8 +1237,6 @@ function switchTab(name, el) {
   document.querySelectorAll('.pb-tab').forEach(t => t.classList.toggle('active', t === el));
   ['director','scenes','manual'].forEach(t => { const p = document.getElementById('tab-'+t); if (p) p.classList.toggle('active', t === name); });
 }
-
-let LORA_ID = {};
 
 // 空格/连字符 → 下划线 规范化 (统一处理所有标签)
 function norm(t){ return t.split(',').map(function(s){ return s.trim().replace(/[\s-]+/g,'_'); }).join(', '); }
@@ -1518,11 +1521,6 @@ function exportPNG() {
 }
 
 // ========== HISTORY ==========
-const HIS_KEY = 'aics_pb_history';
-const PRJ_KEY = 'aics_projects';
-let _cachedHistory = [];
-let _cachedProjects = [];
-const HIS_SCHEMA_VERSION = 4;
 function normalizeImageUrl(value){
   if(typeof value !== 'string' || !value.trim()) return '';
   try { var url=new URL(value.trim(),window.location.href); return url.protocol==='http:'||url.protocol==='https:'?url.href:''; } catch(e){ return ''; }
@@ -1617,7 +1615,6 @@ function toggleMonitor() { const m=document.getElementById('promptMonitor'); con
 function toggleResult() { const f=document.getElementById('finalPrompt'); if(!f) return; const collapsed=(f.style.display==='none'||!f.style.display); f.style.display=collapsed?'block':'none'; if(event.target && event.target.tagName==='BUTTON') event.target.textContent = collapsed?'收起 Prompt':'展开 Prompt'; }
 
 // ========== TOAST ==========
-let toastTimer;
 function flash(msg) {
   let t = document.getElementById('pb-toast');
   if (!t) { t = document.createElement('div'); t.id = 'pb-toast'; t.style.cssText = 'position:fixed;left:50%;bottom:32px;transform:translateX(-50%);z-index:9999;background:var(--bg-surface);border:1px solid var(--accent);color:var(--text-primary);padding:var(--s-2) var(--s-4);border-radius:var(--r-md);font-size:0.85rem;box-shadow:var(--shadow-lg);opacity:0;transition:opacity .2s;'; document.body.appendChild(t); }
@@ -1653,7 +1650,7 @@ const OB_STEPS = [
   { sel: '#stepDecisions', title: '已预填情绪/镜头/光照', sub: '可改可不改' },
   { sel: '.generate-btn', title: '点这里出 Prompt', sub: 'Prompt 实时生成' },
 ];
-let OB_IDX = 0;
+var OB_IDX = 0;
 function startOnboard() { if (localStorage.getItem(OB_KEY)) return; document.body.setAttribute('data-ob-active', '1'); OB_IDX = 0; renderOnboard(); }
 function renderOnboard() {
   const step = OB_STEPS[OB_IDX]; if (!step) { endOnboard(); return; }

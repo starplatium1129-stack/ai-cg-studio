@@ -60,11 +60,12 @@
 
     let actionsBlock = '';
     if (opt.actions && opt.actions.length) {
-      const buttons = opt.actions.map(a => {
+      const buttons = opt.actions.map((a, idx) => {
         const cls = 'sc-btn' + (a.primary ? ' sc-btn-primary' : '');
         let attrs = '';
         if (a.href) attrs += ` href="${esc(a.href)}"`;
-        if (a.onclick) attrs += ' data-onclick="1"';
+        // 把原始数组的索引 idx 绑到 DOM 上
+        if (a.onclick) attrs += ` data-onclick="1" data-index="${idx}"`;
         return `<a class="${cls}"${attrs}>${a.icon||''} ${esc(a.label)}</a>`;
       }).join('');
       actionsBlock = `<div class="sc-actions">${buttons}</div>`;
@@ -87,7 +88,7 @@
       </div>
     `;
 
-    // 事件绑定
+    // --- 事件绑定修正 ---
     function firePick(e){
       e.preventDefault();
       if (opt.onPick) opt.onPick(scene, e);
@@ -97,10 +98,14 @@
       card.addEventListener('keydown', function(e){ if (e.key==='Enter' || e.key===' ') firePick(e); });
     }
     if (opt.actions) {
-      card.querySelectorAll('.sc-btn[data-onclick]').forEach(function(btn, i){
+      card.querySelectorAll('.sc-btn[data-onclick]').forEach(function(btn){
         btn.addEventListener('click', function(e){
           e.stopPropagation();
-          if (opt.actions[i] && opt.actions[i].onclick) opt.actions[i].onclick(scene, e);
+          // 读取之前存进去的原始索引
+          const realIndex = btn.getAttribute('data-index');
+          if (realIndex != null && opt.actions[realIndex] && opt.actions[realIndex].onclick) {
+            opt.actions[realIndex].onclick(scene, e);
+          }
         });
       });
     }
