@@ -16,20 +16,31 @@
   SDWebUIConnector.prototype.generateImage = function(prompt, negativePrompt, options){
     options = options || {};
 
-    // LoRA 注入：将 lora 参数转为 <lora:name:weight> 语法拼入 prompt
     var finalPrompt = prompt || '';
+
+    // LoRA 智能去重注入：已存在则跳过，防止权重叠 buff
     var loraWeight = options.loraWeight || 0.85;
     if (options.lora) {
       var loras = Array.isArray(options.lora) ? options.lora : options.lora.split(',');
       loras.forEach(function(name){
         name = (name || '').trim();
-        if (name) finalPrompt += ', <lora:' + name + ':' + loraWeight + '>';
+        if (!name) return;
+        if (finalPrompt.includes('<lora:' + name + ':')) {
+          console.log('[SD API] LoRA ' + name + ' 已在 Prompt 中，跳过重复注入');
+          return;
+        }
+        if (finalPrompt && !finalPrompt.trim().endsWith(',')) finalPrompt += ',';
+        finalPrompt += ' <lora:' + name + ':' + loraWeight + '>';
       });
     }
 
+    // 负向提示词兜底：空值时自动填充 Illustrious SDXL 专用负面词
+    var finalNeg = (negativePrompt && negativePrompt.trim()) ? negativePrompt.trim()
+      : 'worst quality, low quality, normal quality, lowres, blurry, photorealistic, realistic skin, 3d render, bad anatomy, bad hands, cropped, duplicate';
+
     var payload = {
       prompt: finalPrompt,
-      negative_prompt: negativePrompt || '',
+      negative_prompt: finalNeg,
       steps: options.steps || 28,
       width: options.width || 832,
       height: options.height || 1216,
