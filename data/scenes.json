@@ -3785,11 +3785,9 @@
     "timeOfDay": "afternoon",
     "tags": [
       "ribbon",
-      "blush",
       "shy",
       "school_uniform",
-      "looking_back",
-      "bokeh"
+      "looking_back"
     ],
     "mature": false,
     "location": "校园天台",
@@ -3799,7 +3797,7 @@
     "usage": [
       "实验CG"
     ],
-    "prompt": "1girl, ayachi_nene, ribbon, blush, shy, school_uniform, looking_back, {intimacy_intensity}, {sensory_feedback}",
+    "prompt": "ayachi_nene, ribbon, school_uniform, looking_back, shy, {intimacy_intensity}, {sensory_feedback}",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
   },
   {
@@ -3817,10 +3815,9 @@
     "time": "傍晚",
     "timeOfDay": "sunset",
     "tags": [
-      "looking_back",
       "maid",
       "cafe",
-      "golden_hour"
+      "looking_away"
     ],
     "mature": false,
     "location": "星光咖啡馆",
@@ -3830,7 +3827,7 @@
     "usage": [
       "实验CG"
     ],
-    "prompt": "1girl, shiki_natsume, looking_away, tsundere expression, maid, cafe interior, {intimacy_intensity}, {interaction_target}",
+    "prompt": "shiki_natsume, maid, cafe, looking_away, tsundere, {intimacy_intensity}, {interaction_target}",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
   },
   {
@@ -3848,9 +3845,8 @@
     "time": "深夜",
     "timeOfDay": "night",
     "tags": [
-      "blush",
-      "shy",
       "school_uniform",
+      "shy",
       "night"
     ],
     "mature": false,
@@ -3861,7 +3857,7 @@
     "usage": [
       "实验CG"
     ],
-    "prompt": "1girl, ayachi_nene, nervous expression, blush, shy, school_uniform, night, {intimacy_intensity}, {sensory_feedback}",
+    "prompt": "ayachi_nene, school_uniform, shy, nervous, night, {intimacy_intensity}, {sensory_feedback}",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
   },
   {
@@ -3879,9 +3875,9 @@
     "time": "深夜",
     "timeOfDay": "night",
     "tags": [
-      "looking_back",
+      "maid",
       "cafe",
-      "lantern light, warm glow",
+      "looking_back",
       "night"
     ],
     "mature": false,
@@ -3892,7 +3888,7 @@
     "usage": [
       "核心CG"
     ],
-    "prompt": "1girl, shiki_natsume, looking_back, gentle expression, maid, cafe, lantern light, warm glow, {interaction_target}, {sensory_feedback}",
+    "prompt": "shiki_natsume, maid, cafe, looking_back, gentle, night, {interaction_target}, {sensory_feedback}",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
   },
   {
@@ -3911,11 +3907,9 @@
     "timeOfDay": "sunset",
     "tags": [
       "ribbon",
-      "cherry_blossoms",
-      "smile",
       "school_uniform",
-      "petals",
-      "golden_hour"
+      "cherry_blossoms",
+      "smile"
     ],
     "mature": false,
     "location": "校园樱花道",
@@ -3925,7 +3919,7 @@
     "usage": [
       "核心CG"
     ],
-    "prompt": "1girl, ayachi_nene, ribbon, bright smile, school_uniform, cherry_blossoms, petals, golden_hour, {intimacy_intensity}, {sensory_feedback}",
+    "prompt": "ayachi_nene, ribbon, school_uniform, cherry_blossoms, smile, golden_hour, {intimacy_intensity}, {sensory_feedback}",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
   },
   {
@@ -3943,10 +3937,9 @@
     "time": "深夜",
     "timeOfDay": "night",
     "tags": [
-      "blush",
       "cafe",
       "night",
-      "lantern light, warm glow"
+      "blush"
     ],
     "mature": false,
     "location": "深夜酒吧",
@@ -3956,7 +3949,7 @@
     "usage": [
       "实验CG"
     ],
-    "prompt": "1girl, shiki_natsume, blush, drunk, vulnerable expression, cafe, night, dim lighting, {intimacy_intensity}, {interaction_target}",
+    "prompt": "shiki_natsume, cafe, blush, vulnerable, night, {intimacy_intensity}, {interaction_target}",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate"
   }
 ]
