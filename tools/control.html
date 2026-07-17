@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI-CG-Studio Control Panel</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#1a1a2e; color:#e8e8f0; font-family:'Segoe UI',system-ui,sans-serif; min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:40px 20px; }
+  h1 { font-size:1.6rem; margin-bottom:8px; background:linear-gradient(135deg,#7c5cbf,#f06292); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .subtitle { color:#8888a8; font-size:0.85rem; margin-bottom:32px; }
+  .card { background:#2a2a40; border-radius:16px; padding:32px; width:100%; max-width:520px; margin-bottom:20px; }
+  .status-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
+  .badge { display:inline-flex; align-items:center; gap:8px; padding:6px 16px; border-radius:20px; font-size:0.85rem; font-weight:600; }
+  .badge.running { background:rgba(100,255,100,0.12); color:#66ff66; }
+  .badge.stopped { background:rgba(255,100,100,0.12); color:#ff6666; }
+  .badge .dot { width:8px; height:8px; border-radius:50%; }
+  .badge.running .dot { background:#66ff66; animation:pulse 1.5s infinite; }
+  .badge.stopped .dot { background:#ff6666; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .sd-badge { font-size:0.75rem; padding:4px 10px; border-radius:12px; }
+  .sd-badge.online { background:rgba(100,200,255,0.12); color:#64c8ff; }
+  .sd-badge.offline { background:rgba(255,200,100,0.12); color:#ffc864; }
+  .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:12px 32px; border:none; border-radius:12px; font-size:1rem; font-weight:600; cursor:pointer; transition:all 0.2s; width:100%; }
+  .btn:active { transform:scale(0.97); }
+  .btn-start { background:linear-gradient(135deg,#4caf50,#2e7d32); color:#fff; }
+  .btn-start:hover { background:linear-gradient(135deg,#66bb69,#388e3c); }
+  .btn-stop { background:linear-gradient(135deg,#ef5350,#c62828); color:#fff; }
+  .btn-stop:hover { background:linear-gradient(135deg,#f44336,#d32f2f); }
+  .btn:disabled { opacity:0.5; cursor:not-allowed; }
+  .share-section { margin-top:0; }
+  .share-label { font-size:0.8rem; color:#8888a8; margin-bottom:8px; }
+  .share-link-wrap { display:flex; gap:8px; align-items:stretch; }
+  .share-link { flex:1; background:#1a1a2e; border:1px solid #3a3a55; border-radius:10px; padding:12px 14px; font-size:0.85rem; color:#64b5f6; word-break:break-all; font-family:monospace; min-height:44px; display:flex; align-items:center; }
+  .share-link.empty { color:#555; font-family:'Segoe UI',system-ui,sans-serif; }
+  .btn-copy { background:#3a3a55; border:none; color:#e8e8f0; padding:0 16px; border-radius:10px; cursor:pointer; font-size:0.85rem; transition:background 0.2s; white-space:nowrap; }
+  .btn-copy:hover { background:#4a4a65; }
+  .btn-copy.copied { background:#4caf50; color:#fff; }
+  .uptime { font-size:0.75rem; color:#666; text-align:right; margin-top:8px; }
+  .log-card { background:#2a2a40; border-radius:16px; padding:24px; width:100%; max-width:520px; }
+  .log-title { font-size:0.85rem; color:#8888a8; margin-bottom:12px; display:flex; align-items:center; justify-content:space-between; }
+  .log-title button { background:none; border:none; color:#666; cursor:pointer; font-size:0.75rem; }
+  .log-title button:hover { color:#aaa; }
+  .log-box { background:#111122; border-radius:10px; padding:12px; max-height:220px; overflow-y:auto; font-family:'Cascadia Code','Fira Code',monospace; font-size:0.75rem; line-height:1.6; color:#aaa; }
+  .log-box .time { color:#555; }
+  .log-box .info { color:#64b5f6; }
+  .log-box .err { color:#f06292; }
+</style>
+</head>
+<body>
+
+<h1>AI-CG-Studio</h1>
+<p class="subtitle">Gateway Control Panel</p>
+
+<div class="card">
+  <div class="status-row">
+    <span id="badge" class="badge stopped"><span class="dot"></span> Stopped</span>
+    <span id="sd-badge" class="sd-badge offline">SD: checking...</span>
+  </div>
+
+  <button id="btn" class="btn btn-start" onclick="doStart()">Start Gateway</button>
+
+  <div class="share-section" id="share-section" style="display:none; margin-top:20px;">
+    <div class="share-label">Share this link with your friend:</div>
+    <div class="share-link-wrap">
+      <div class="share-link empty" id="share-link">Waiting for tunnel...</div>
+      <button class="btn-copy" id="btn-copy" onclick="doCopy()">Copy</button>
+    </div>
+    <div class="uptime" id="uptime"></div>
+  </div>
+</div>
+
+<div class="log-card">
+  <div class="log-title">
+    <span>Logs</span>
+    <button onclick="document.getElementById('log-box').innerHTML=''">clear</button>
+  </div>
+  <div class="log-box" id="log-box"></div>
+</div>
+
+<script>
+var pollTimer = null;
+var logIndex = 0;
+
+function fmt(s) {
+  var m = Math.floor(s/60), sec = s%60;
+  if (m > 60) { var h = Math.floor(m/60); m = m%60; return h+'h '+m+'m'; }
+  return m+'m '+sec+'s';
+}
+
+function doCopy() {
+  var link = document.getElementById('share-link').textContent;
+  if (!link || link === 'Waiting for tunnel...') return;
+  navigator.clipboard.writeText(link).then(function() {
+    var btn = document.getElementById('btn-copy');
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(function() { btn.textContent='Copy'; btn.classList.remove('copied'); }, 1500);
+  });
+}
+
+function renderStatus(d) {
+  var badge = document.getElementById('badge');
+  var btn = document.getElementById('btn');
+  var section = document.getElementById('share-section');
+  var linkEl = document.getElementById('share-link');
+  var sdBadge = document.getElementById('sd-badge');
+  var uptimeEl = document.getElementById('uptime');
+
+  if (d.running) {
+    badge.className = 'badge running';
+    badge.innerHTML = '<span class="dot"></span> Running';
+    btn.className = 'btn btn-stop';
+    btn.textContent = 'Stop Gateway';
+    btn.onclick = doStop;
+    section.style.display = 'block';
+    if (d.shareLink) {
+      linkEl.textContent = d.shareLink;
+      linkEl.className = 'share-link';
+    } else {
+      linkEl.textContent = 'Waiting for tunnel...';
+      linkEl.className = 'share-link empty';
+    }
+    uptimeEl.textContent = 'Uptime: ' + fmt(d.uptime);
+  } else {
+    badge.className = 'badge stopped';
+    badge.innerHTML = '<span class="dot"></span> Stopped';
+    btn.className = 'btn btn-start';
+    btn.textContent = 'Start Gateway';
+    btn.onclick = doStart;
+    section.style.display = 'none';
+  }
+
+  sdBadge.textContent = d.sdOnline ? 'SD: online' : 'SD: offline';
+  sdBadge.className = 'sd-badge ' + (d.sdOnline ? 'online' : 'offline');
+}
+
+function pollStatus() {
+  fetch('/api/status').then(function(r){return r.json()}).then(function(d) {
+    renderStatus(d);
+  }).catch(function(){});
+}
+
+function pollLogs() {
+  fetch('/api/logs?since=' + logIndex).then(function(r){return r.json()}).then(function(d) {
+    var box = document.getElementById('log-box');
+    d.logs.forEach(function(line) {
+      var div = document.createElement('div');
+      var cls = line.indexOf('ERROR')>=0 || line.indexOf('error')>=0 ? 'err' : (line.indexOf('domain')>=0 || line.indexOf('started')>=0 ? 'info' : '');
+      div.innerHTML = '<span class="time">' + line.substring(0,10) + '</span> ' + line.substring(11);
+      if (cls) div.className = cls;
+      box.appendChild(div);
+    });
+    logIndex += d.logs.length;
+    box.scrollTop = box.scrollHeight;
+  }).catch(function(){});
+}
+
+function doStart() {
+  var btn = document.getElementById('btn');
+  btn.disabled = true;
+  btn.textContent = 'Starting...';
+  fetch('/api/start', {method:'POST'}).then(function(r){return r.json()}).then(function(d) {
+    btn.disabled = false;
+    if (!d.ok) alert(d.msg || 'Start failed');
+    // Start polling for status and logs
+    pollStatus();
+    pollLogs();
+  }).catch(function(e) {
+    btn.disabled = false;
+    alert('Start failed: ' + e.message);
+  });
+}
+
+function doStop() {
+  var btn = document.getElementById('btn');
+  btn.disabled = true;
+  btn.textContent = 'Stopping...';
+  fetch('/api/stop', {method:'POST'}).then(function(r){return r.json()}).then(function(d) {
+    btn.disabled = false;
+    pollStatus();
+    pollLogs();
+  }).catch(function(e) {
+    btn.disabled = false;
+    alert('Stop failed: ' + e.message);
+  });
+}
+
+// Initial load
+pollStatus();
+pollLogs();
+
+// Poll every 3s
+setInterval(function() {
+  pollStatus();
+  pollLogs();
+}, 3000);
+</script>
+</body>
+</html>
