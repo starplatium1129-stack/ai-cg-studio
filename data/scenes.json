@@ -6875,7 +6875,8 @@
       "indoor",
       "morning_light",
       "soft_shadows",
-      "sensual"
+      "sensual",
+      "warm_lighting"
     ],
     "mature": true,
     "location": "新婚公寓厨房吧台",
@@ -6887,7 +6888,7 @@
       "R18"
     ],
     "prompt": "1girl, ayachi_nene, hair_ribbon, heart_shaped_ahoge, slip_dress, apron, sitting_on_counter, cleavage, bare_legs, heavy_blush, open_mouth, kitchen, indoor, morning_light, soft_shadows, sensual, warm_lighting",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate, 3d render, photorealistic, clothes"
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc189",
@@ -6931,7 +6932,7 @@
       "R18"
     ],
     "prompt": "1girl, shiki_natsume, mole_under_eye, tactical_gear, torn_clothes, unzipped, cleavage, sitting_on_chair, bound, legs_apart, black_pantyhose, heavy_blush, tears_in_eyes, tsundere, interrogation_room, night, strong_shadows, sensual",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, deformed, 3d render, photorealistic, underwear"
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc190",
@@ -6963,7 +6964,8 @@
       "night",
       "lantern_light",
       "tatami",
-      "sensual"
+      "sensual",
+      "warm_lighting"
     ],
     "mature": true,
     "location": "神社社务所客房",
@@ -6975,7 +6977,7 @@
       "R18"
     ],
     "prompt": "1girl, ayachi_nene, hair_ribbon, heart_shaped_ahoge, miko_uniform, disheveled_clothes, unbuttoned, cleavage, bare_shoulders, lying_on_bed, bare_legs, heavy_blush, tears_in_eyes, shrine, night, lantern_light, tatami, sensual, warm_lighting",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, deformed, 3d render, photorealistic, underwear"
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc191",
@@ -7020,7 +7022,7 @@
       "壁纸级"
     ],
     "prompt": "1girl, shiki_natsume, mole_under_eye, latex_bodysuit, high_leg, unzipped, cleavage, straddling_viewer, sitting_on_lap, bare_legs, heavy_blush, smirk, intense_look, rooftop, cityscape, night, neon_lights, rim_light, sensual",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, deformed, 3d render, photorealistic, normal_clothes"
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc192",
@@ -7038,7 +7040,7 @@
     "timeOfDay": "late_night",
     "tags": [
       "oversized_sweater",
-      "off-shoulder_sweater",
+      "off_shoulder_sweater",
       "no_panties",
       "lying_on_couch",
       "bare_legs",
@@ -7064,8 +7066,8 @@
       "核心协议",
       "绝对独占"
     ],
-    "prompt": "1girl, ayachi_nene, hair_ribbon, heart_shaped_ahoge, oversized_sweater, off-shoulder_sweater, no_panties, lying_on_couch, bare_legs, bare_shoulders, cleavage, heavy_blush, shy_smile, fireplace, indoor, night, warm_lighting, cozy, sensual",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, deformed, 3d render, photorealistic, pants, underwear"
+    "prompt": "1girl, ayachi_nene, hair_ribbon, heart_shaped_ahoge, oversized_sweater, off_shoulder_sweater, no_panties, lying_on_couch, bare_legs, bare_shoulders, cleavage, heavy_blush, shy_smile, fireplace, indoor, night, warm_lighting, cozy, sensual",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
     "id": "sc193",
@@ -7084,7 +7086,7 @@
     "tags": [
       "nightgown",
       "translucent_clothing",
-      "see-through_clothing",
+      "see_through_clothing",
       "bare_shoulders",
       "cleavage",
       "standing",
@@ -7107,7 +7109,7 @@
       "壁纸级",
       "R18"
     ],
-    "prompt": "1girl, shiki_natsume, mole_under_eye, nightgown, translucent_clothing, see-through_clothing, bare_shoulders, cleavage, standing, balcony, night_sky, city_lights, wind, hair_blowing, heavy_blush, seductive_look, sensual",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, deformed, 3d render, photorealistic, pants, skirt, underwear, bra, panties"
+    "prompt": "1girl, shiki_natsume, mole_under_eye, nightgown, translucent_clothing, see_through_clothing, bare_shoulders, cleavage, standing, balcony, night_sky, city_lights, wind, hair_blowing, heavy_blush, seductive_look, sensual",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   }
 ]
