@@ -73,21 +73,14 @@ echo.
 :: Auto-extract and display the share link
 echo  --- Your Share Link ---
 echo.
-setlocal enabledelayedexpansion
-set "DOMAIN="
-for /f "tokens=*" %%a in ('findstr /i "trycloudflare.com" "%~dp0tunnel.log" 2^>nul') do (
-    set "LINE=%%a"
-)
-for /f "tokens=*" %%u in ('echo !LINE! ^| findstr /i "https://.*trycloudflare.com"') do (
-    set "DOMAIN=%%u"
-)
-for /f "tokens=*" %%v in ("!DOMAIN!") do set "DOMAIN=%%v"
+for /f "delims=" %%v in ('powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0tools\extract-tunnel-url.ps1" -LogPath "%~dp0tunnel.log"') do set "DOMAIN=%%v"
 
-if "!DOMAIN!"=="" (
+if "%DOMAIN%"=="" (
+    echo   (Tunnel URL not ready yet - run show-url.bat in a moment)
+) else if "%DOMAIN%"=="URL_NOT_FOUND" (
     echo   (Tunnel URL not ready yet - run show-url.bat in a moment)
 ) else (
-    echo   !DOMAIN!?token=!TOKEN!
+    echo   %DOMAIN%?token=%TOKEN%
 )
 echo.
-endlocal
 pause
