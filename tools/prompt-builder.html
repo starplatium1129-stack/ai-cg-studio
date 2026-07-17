@@ -1479,7 +1479,7 @@ function getPlainPrompt() {
   // 截断 [NEG] 及其后内容，负向词不混入正向 prompt
   var negIdx = raw.indexOf('[NEG]');
   var pos = negIdx >= 0 ? raw.substring(0, negIdx) : raw;
-  return sanitizePrompt(pos);
+  return sanitizePrompt(pos.replace(/\n/g, ', '));
 }
 function getPlainNegative() {
   // 从 preview 的 raw 数据中提取 [NEG] 后面的内容作为负向 prompt
@@ -1487,7 +1487,7 @@ function getPlainNegative() {
   if (!raw) return '';
   var negIdx = raw.indexOf('[NEG]');
   if (negIdx < 0) return '';
-  return sanitizePrompt(raw.substring(negIdx).replace('[NEG] ', ''));
+  return sanitizePrompt(raw.substring(negIdx).replace('[NEG] ', '').replace(/\n/g, ', '));
 }
 
 // ====== GENERATE ======
