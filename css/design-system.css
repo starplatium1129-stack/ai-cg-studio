@@ -27,6 +27,8 @@
   --accent-soft:    rgba(240, 98, 146, 0.12);
   --accent-glow:    rgba(240, 98, 146, 0.25);
 
+  --nav-bg: rgba(30, 30, 46, 0.92);
+
   /* ---- Functional ---- */
   --success:        #66BB6A;
   --warning:        #FFA726;
@@ -83,6 +85,8 @@
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
   --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
   --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+
+  --nav-bg: rgba(250, 247, 242, 0.92);
 }
 
 /* ---- Reset ---- */
@@ -126,7 +130,7 @@ img { max-width: 100%; display: block; }
 /* ---- Top nav ---- */
 .nav {
   position: sticky; top: 0; z-index: 100;
-  background: rgba(30, 30, 46, 0.92);
+  background: var(--nav-bg);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border-soft);
   padding: var(--s-3) 0;
