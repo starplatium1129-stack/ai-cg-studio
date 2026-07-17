@@ -1529,7 +1529,7 @@ function callSDGenerate(){
     hiresScale: 2
   } : {};
 
-  var opts = Object.assign({ cfg:cfg, steps:steps, sampler:sampler, width:width, height:height, seed:seed, lora:loraName }, hiresOpts);
+  var opts = Object.assign({ cfg:cfg, steps:steps, sampler:sampler, width:width, height:height, seed:seed, lora:loraName, char:state.char }, hiresOpts);
   status.textContent = hiresOn && hiresOn.checked ? '⏳ 正在生成 (hires.fix 2x)...' : '⏳ 正在连接 SD WebUI...';
 
   getSDConnector().generateImage(prompt, neg, opts)
