@@ -1530,14 +1530,17 @@ function getSDConnector(){
 function checkSDStatus(){
   var badge = document.getElementById('sd-status-badge');
   if(!badge) return;
+  // 检测联机模式：通过网关端口或 token 参数访问
+  var isGateway = window.location.port === '3000' || new URLSearchParams(window.location.search).has('token');
+  if(isGateway) window.AICS_GATEWAY = true;
   badge.textContent = '⏳ 检测中...';
   badge.style.color = '';
   getSDConnector().checkConnection().then(function(ok){
     if(ok){
-      badge.textContent = '🟢 已连接 ReForge';
+      badge.textContent = isGateway ? '🟢 联机模式 · SD 就绪' : '🟢 已连接 ReForge';
       badge.style.color = 'var(--success, #22c55e)';
     } else {
-      badge.textContent = '🔴 ReForge 离线';
+      badge.textContent = isGateway ? '🔴 联机模式 · SD 离线' : '🔴 ReForge 离线';
       badge.style.color = 'var(--danger, #ef4444)';
     }
   });
@@ -1600,6 +1603,14 @@ function callSDGenerate(){
       status.textContent = '✅ 生成完成' + (hiresOn && hiresOn.checked ? ' (hires.fix 2x)' : '');
       slot.innerHTML = '<img src="'+result.image+'" style="max-width:100%;border-radius:var(--r-md);" alt="Generated CG">';
       saveBtn.style.display = 'flex';
+      // 联机备份：通过网关时自动上传一份到服务器
+      if(window.location.port === '3000' || window.AICS_GATEWAY){
+        fetch('/api/save-backup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ imageBase64: result.image, filename: 'gen_' + Date.now() + '.png' })
+        }).catch(function(){});
+      }
     })
     .catch(function(err){
       console.error("[SD API] 生成失败:", err);
@@ -1608,7 +1619,7 @@ function callSDGenerate(){
         '<small style="display:block;margin-top:4px;line-height:1.4;opacity:0.8;text-align:left;padding-left:var(--s-4);">' +
           '1. 确认已启动 ReForge / WebUI 主程序<br>' +
           '2. 确认启动快捷方式或命令行尾部加了 <b>--api</b> 参数<br>' +
-          '3. 确认本地端口为默认的 <b>http://127.0.0.1:7860</b>' +
+          '3. 确认 WebUI 端口为 <b>7860</b>（默认）' +
         '</small>';
       } else {
         status.textContent = '❌ 出图故障: ' + err.message;

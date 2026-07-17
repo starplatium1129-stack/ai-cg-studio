@@ -1,0 +1,13 @@
+{
+  "name": "ai-cg-studio",
+  "version": "1.5.0",
+  "private": true,
+  "description": "AI-CG-Studio 联机网关 — 静态托管 + SD API 反代",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "http-proxy-middleware": "^3.0.0"
+  }
+}

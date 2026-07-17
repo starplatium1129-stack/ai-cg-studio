@@ -12,5 +12,10 @@ Thumbs.db
 
 # Node (如果以后加)
 node_modules/
+package-lock.json
+
+# 联机备份
+friend_outputs/
+
 # Claude Code 本地配置
 .claude/

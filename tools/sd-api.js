@@ -6,7 +6,8 @@
 (function(global){
   'use strict';
 
-  var DEFAULT_BASE = 'http://127.0.0.1:7860';
+  // 空字符串 = 相对路径，自动适配本地 / 联机网关
+  var DEFAULT_BASE = '';
 
   function SDWebUIConnector(baseUrl){
     this.baseUrl = (baseUrl || DEFAULT_BASE).replace(/\/+$/, '');
