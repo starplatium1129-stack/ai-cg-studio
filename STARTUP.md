@@ -4,6 +4,18 @@
 
 ---
 
+## 一键启动（联机网关）
+
+双击 `start.bat` 即可，自动：
+1. 检查 SD WebUI 是否在线
+2. 启动 Node.js 网关（端口 3000）
+3. 启动 Cloudflare Tunnel 穿透
+4. 输出 token 和 tunnel 域名
+
+> 关闭时双击 `stop.bat`，或分别在两个窗口按 `Ctrl+C`。
+
+---
+
 ## 快速启动
 
 ### 方法一：Python（推荐）
