@@ -41,9 +41,8 @@ app.use(function (req, res, next) {
 // ─── 静态文件托管 ───
 app.use(express.static(path.join(__dirname)));
 
-// ─── 图片备份接口 ───
-app.use(express.json({ limit: '50mb' }));
-app.post('/api/save-backup', function (req, res) {
+// ─── 图片备份接口（express.json 只挂在这条路由上，不影响 proxy 的 body 流）───
+app.post('/api/save-backup', express.json({ limit: '50mb' }), function (req, res) {
   try {
     var imageBase64 = req.body.imageBase64;
     var filename = req.body.filename;
