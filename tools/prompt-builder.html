@@ -1556,8 +1556,15 @@ function callSDGenerate(){
   area.style.display = 'block';
   saveBtn.style.display = 'none';
   slot.innerHTML = '';
-  status.textContent = '⏳ 正在连接 SD WebUI...';
   genBtn.disabled = true; genBtn.textContent = '生成中...';
+
+  // 排队计时器：让等待变得可见
+  var _genStart = Date.now();
+  var _genTimer = setInterval(function(){
+    var elapsed = Math.floor((Date.now() - _genStart) / 1000);
+    status.textContent = '⏳ SD 排队/出图中... 已等待 ' + elapsed + 's';
+  }, 1000);
+  status.textContent = '⏳ 已提交，SD 排队/出图中...';
 
   var neg = getPlainNegative();
   var cfg = Number(document.getElementById('cfg').value) || 5.5;
@@ -1593,6 +1600,7 @@ function callSDGenerate(){
 
   getSDConnector().generateImage(prompt, neg, opts)
     .then(function(result){
+      clearInterval(_genTimer);
       _sdLastDataUrl = result.image;
       // 更新种子显示
       if (result.seed != null) {
@@ -1613,6 +1621,7 @@ function callSDGenerate(){
       }
     })
     .catch(function(err){
+      clearInterval(_genTimer);
       console.error("[SD API] 生成失败:", err);
       if(err.message.includes('Failed to fetch') || err.message.includes('NetworkError')){
         status.innerHTML = '<span style="color:var(--danger)">❌ 无法连接后端</span><br>' +
