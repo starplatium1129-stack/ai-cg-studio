@@ -184,6 +184,20 @@ app.get('/api/logs', function (req, res) {
   res.json({ logs: state.logs.slice(since) });
 });
 
+// ─── Kill old instance if port is occupied ───
+function killPortOccupant(port) {
+  try {
+    var out = cp.execSync('netstat -ano | findstr ":' + port + '.*LISTENING"', { encoding: 'utf8', stdio: 'pipe' });
+    var m = out.match(/LISTENING\s+(\d+)/);
+    if (m && m[1]) {
+      console.log('  Port ' + port + ' occupied by PID ' + m[1] + ', killing...');
+      try { cp.execSync('taskkill /pid ' + m[1] + ' /f', { stdio: 'pipe' }); } catch (e) {}
+    }
+  } catch (e) {} // port is free
+}
+
+killPortOccupant(PORT);
+
 // ─── Start control server ───
 app.listen(PORT, function () {
   console.log('');
