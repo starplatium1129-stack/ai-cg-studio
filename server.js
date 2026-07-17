@@ -9,11 +9,18 @@ var PORT = process.env.PORT || 3000;
 var SD_HOST = process.env.SD_HOST || 'http://127.0.0.1:7860';
 var TOKEN = process.env.TOKEN || crypto.randomBytes(8).toString('hex');
 
-// ─── Token 认证中间件 ───
+// ─── Token 认证中间件（cookie 持久化，解决子资源无 token 问题）───
 app.use(function (req, res, next) {
-  // 静态文件和 save-backup 都需要 token
-  var t = req.query.token || req.headers['x-token'];
-  if (t === TOKEN) return next();
+  // 从 query / header / cookie 三个位置取 token
+  var t = req.query.token || req.headers['x-token'] || (req.headers.cookie || '').match(/aics_token=([^;]+)/);
+  if (t && typeof t === 'object') t = t[1]; // regex match group
+  if (t === TOKEN) {
+    // 首次带 ?token= 来访时，种 cookie，后续子资源自动携带
+    if (req.query.token) {
+      res.setHeader('Set-Cookie', 'aics_token=' + TOKEN + '; Path=/; HttpOnly; SameSite=Lax; Max-Age=86400');
+    }
+    return next();
+  }
   // API 请求返回 401
   if (req.path.startsWith('/sdapi') || req.path.startsWith('/api/')) {
     return res.status(401).json({ error: 'Unauthorized — 缺少 token 参数' });

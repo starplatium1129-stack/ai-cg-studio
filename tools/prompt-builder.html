@@ -1615,12 +1615,31 @@ function callSDGenerate(){
     .catch(function(err){
       console.error("[SD API] 生成失败:", err);
       if(err.message.includes('Failed to fetch') || err.message.includes('NetworkError')){
-        status.innerHTML = '<span style="color:var(--danger)">❌ 无法呼叫本地后台！请执行以下检查自救：</span><br>' +
+        status.innerHTML = '<span style="color:var(--danger)">❌ 无法连接后端</span><br>' +
         '<small style="display:block;margin-top:4px;line-height:1.4;opacity:0.8;text-align:left;padding-left:var(--s-4);">' +
           '1. 确认已启动 ReForge / WebUI 主程序<br>' +
-          '2. 确认启动快捷方式或命令行尾部加了 <b>--api</b> 参数<br>' +
+          '2. 确认启动命令尾部加了 <b>--api</b> 参数<br>' +
           '3. 确认 WebUI 端口为 <b>7860</b>（默认）' +
         '</small>';
+      } else if(err.message.includes('502') || err.message.includes('reset') || err.message.includes('ECONNRESET')){
+        status.innerHTML = '⏳ <span style="color:var(--warning,#f59e0b)">SD 后端正在加载模型，请等待 10 秒后重试</span>';
+        // 自动重试一次
+        setTimeout(function(){
+          status.textContent = '🔄 自动重试中...';
+          getSDConnector().generateImage(prompt, neg, opts).then(function(r){
+            _sdLastDataUrl = r.image;
+            if(r.seed != null){ window.__lastSeed__ = r.seed; var sd = document.getElementById('sdSeedDisplay'); if(sd) sd.textContent = 'seed: '+r.seed; }
+            status.textContent = '✅ 重试成功';
+            slot.innerHTML = '<img src="'+r.image+'" style="max-width:100%;border-radius:var(--r-md);" alt="Generated CG">';
+            saveBtn.style.display = 'flex';
+          }).catch(function(e2){
+            status.textContent = '❌ 重试失败: ' + e2.message;
+          }).finally(function(){
+            genBtn.disabled = false; genBtn.textContent = '🖼 生成图片';
+          });
+          return; // skip the finally below
+        }, 10000);
+        return; // delay the finally
       } else {
         status.textContent = '❌ 出图故障: ' + err.message;
       }
