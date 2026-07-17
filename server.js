@@ -3,14 +3,20 @@ var { createProxyMiddleware } = require('http-proxy-middleware');
 var path = require('path');
 var fs = require('fs');
 var crypto = require('crypto');
+var cp = require('child_process');
 
 var app = express();
 var PORT = process.env.PORT || 3000;
 var SD_HOST = process.env.SD_HOST || 'http://127.0.0.1:7860';
 var TOKEN = process.env.TOKEN || crypto.randomBytes(8).toString('hex');
+var CF = 'C:\\Program Files (x86)\\cloudflared\\cloudflared.exe';
+var tunnelUrl = '';
 
 // ─── Token 认证中间件（cookie 持久化，解决子资源无 token 问题）───
 app.use(function (req, res, next) {
+  // /api/tunnel-status 免认证（内部控制接口）
+  if (req.path === '/api/tunnel-status') return next();
+
   // 从 query / header / cookie 三个位置取 token
   var t = req.query.token || req.headers['x-token'] || (req.headers.cookie || '').match(/aics_token=([^;]+)/);
   if (t && typeof t === 'object') t = t[1]; // regex match group
@@ -63,6 +69,11 @@ app.post('/api/save-backup', express.json({ limit: '50mb' }), function (req, res
   }
 });
 
+// ─── Tunnel 状态接口 ───
+app.get('/api/tunnel-status', function (req, res) {
+  res.json({ url: tunnelUrl, token: TOKEN });
+});
+
 // ─── SD API 反代（pathFilter 而非 app.use，避免 Express 剥前缀）───
 app.use(createProxyMiddleware({
   target: SD_HOST,
@@ -90,12 +101,45 @@ app.listen(PORT, function () {
   console.log('  📡 端口: ' + PORT);
   console.log('  🎨 SD 后端: ' + SD_HOST);
   console.log('  🔑 Token: ' + TOKEN);
-  console.log('');
-  console.log('  本地访问:');
-  console.log('    http://localhost:' + PORT + '/?token=' + TOKEN);
-  console.log('');
-  console.log('  朋友访问（穿透后替换域名）:');
-  console.log('    https://你的域名/?token=' + TOKEN);
   console.log('  ═══════════════════════════════════════════');
   console.log('');
+
+  // 自动启动 Cloudflare Tunnel
+  startTunnel();
 });
+
+// ─── Cloudflare Tunnel ───
+function startTunnel() {
+  if (!fs.existsSync(CF)) {
+    console.log('  ⚠ cloudflared not found, tunnel disabled');
+    return;
+  }
+  console.log('  🌐 Starting Cloudflare Tunnel...');
+  var logFile = path.join(__dirname, 'tunnel.log');
+  var logFd = fs.openSync(logFile, 'w');
+  var tunnel = cp.spawn(CF, ['tunnel', '--url', 'http://localhost:' + PORT], {
+    stdio: ['ignore', logFd, logFd],
+    detached: true
+  });
+  tunnel.unref();
+  fs.closeSync(logFd);
+
+  // Save tunnel PID
+  try { fs.writeFileSync(path.join(__dirname, '.tunnel_pid'), String(tunnel.pid)); } catch (e) {}
+
+  // Poll tunnel.log for domain
+  var tries = 0;
+  var poll = setInterval(function () {
+    try {
+      var log = fs.readFileSync(logFile, 'utf8');
+      var m = log.match(/https:\/\/\S+trycloudflare\.com/);
+      if (m) {
+        tunnelUrl = m[0];
+        console.log('  🌐 Tunnel: ' + tunnelUrl + '?token=' + TOKEN);
+        clearInterval(poll);
+      }
+    } catch (e) {}
+    tries++;
+    if (tries > 30) clearInterval(poll);
+  }, 1000);
+}
