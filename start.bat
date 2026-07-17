@@ -29,10 +29,10 @@ if not exist "%CF%" (
     exit /b
 )
 
-for /f "delims=" %%i in ('node -e "console.log(require('crypto').randomBytes(8).toString('hex'))"') do set TOKEN=%%i
+for /f "delims=" %%i in ('node -e "console.log(require('crypto').randomBytes(8).toString('hex'))"') do set "TOKEN=%%i"
 
-:: Save token to file for show-url.bat
-echo %TOKEN%>"%~dp0.gateway_token"
+:: Save token to file (no trailing newline)
+<nul set /p ="%TOKEN%">"%~dp0.gateway_token"
 
 echo  [1/4] Checking SD WebUI...
 curl -s -o nul -w "%%{http_code}" http://127.0.0.1:7860/sdapi/v1/sd-models >%temp%\sd_check.txt 2>&1
@@ -73,14 +73,12 @@ echo.
 :: Auto-extract and display the share link
 echo  --- Your Share Link ---
 echo.
-for /f "delims=" %%v in ('powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0tools\extract-tunnel-url.ps1" -LogPath "%~dp0tunnel.log"') do set "DOMAIN=%%v"
+for /f "delims=" %%v in ('node "%~dp0tools\get-share-link.js" 2^>nul') do set "LINK=%%v"
 
-if "%DOMAIN%"=="" (
-    echo   (Tunnel URL not ready yet - run show-url.bat in a moment)
-) else if "%DOMAIN%"=="URL_NOT_FOUND" (
+if "%LINK%"=="" (
     echo   (Tunnel URL not ready yet - run show-url.bat in a moment)
 ) else (
-    echo   %DOMAIN%?token=%TOKEN%
+    echo   %LINK%
 )
 echo.
 pause
