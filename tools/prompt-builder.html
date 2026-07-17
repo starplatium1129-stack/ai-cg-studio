@@ -417,7 +417,7 @@
         <div class="panel-title" style="display:flex;align-items:center">✨ Prompt 实时预览 <span class="monitor-toggle" id="monitorToggle" onclick="toggleMonitor()">展开 ▶</span></div>
         <div class="preview-output" id="preview">(选择左侧 Scene 或在右侧做导演决策,Prompt 在这里实时生成)</div>
         <div class="token-row"><span class="token-counter" id="liveTokCount"><span class="num">0</span> tok <span class="bar"><i></i></span> / 77</span></div>
-        <div class="art-warn" id="artWarn">⚠️ 检测到违反美术规范的标签</div>
+        <div class="art-warn" id="artWarn" style="display:none">⚠️ 检测到违反美术规范的标签</div>
         <div class="preview-actions">
           <button class="btn btn-primary" onclick="copyPrompt()">📋 复制</button>
           <button class="btn btn-ghost" onclick="exportPrompt()">⬇️ TXT</button>
@@ -1143,6 +1143,7 @@ function sceneComposition(s) {
 }
 function loadScene(s) {
   state.__sceneId = s.id;
+  var artWarn = document.getElementById('artWarn'); if(artWarn) artWarn.style.display = 'none';
   document.getElementById('storyInput').value = s.story; state.story = s.story;
   const charId = (s.char === 'ayachi_nene' || s.char === 'nene') ? 'nene' : (s.char === 'shiki_natsume' || s.char === 'natsume' ? 'natsume' : (s.char === 'triad' ? 'triad' : 'nene'));
   if (charId !== state.char) setChar(charId);
