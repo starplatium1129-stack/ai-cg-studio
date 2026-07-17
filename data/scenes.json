@@ -3312,9 +3312,134 @@
   },
   {
     "id": "sc101",
-    "title": "只扣了一半的衬衫",
-    "category": "亲密",
-    "story": "她穿你的衬衫只扣了三颗，「这是…个人爱好」",
+    "title": "课后的秘密契约留堂",
+    "category": "恋爱",
+    "story": "【宁宁 · 课后防线初次失守】空无一人的夕阳教室，反锁的后门。平时看似死板的宁宁被你反按在黑板前。她身上的校服衬衫最上方的扣子已经被你尽数扯开，半露的圆润香肩在泛红的夕阳中散发着温热。她双手无力地撑在你胸前，头顶的呆毛早已因为羞耻和窒息的爱意扭曲成完美的工口心形，亮晶晶的眼里满是水汽——「呜...柊史...说好只是留堂补习的...不准摸那里啦...笨蛋...」",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v11",
+    "emotion": "害羞",
+    "season": "秋",
+    "time": "黄昏",
+    "timeOfDay": "sunset",
+    "tags": [
+      "school_uniform",
+      "unbuttoned_shirt",
+      "shirt_lift",
+      "bare_shoulders",
+      "cleavage",
+      "trapped_by_viewer",
+      "heavy_blush",
+      "tears_in_eyes",
+      "classroom",
+      "sunset",
+      "golden_hour",
+      "shadows",
+      "hair_ribbon",
+      "heart_shaped_ahoge",
+      "sensual"
+    ],
+    "mature": true,
+    "location": "落日教室黑板前",
+    "weather": "落日熔金",
+    "camera": "近景特写",
+    "lighting": "夕阳通透逆光",
+    "prompt": "1girl, ayachi_nene, hair_ribbon, heart_shaped_ahoge, school_uniform, unbuttoned_shirt, shirt_lift, bare_shoulders, cleavage, trapped_by_viewer, heavy_blush, tears_in_eyes, classroom, sunset, golden_hour, shadows, sensual, warm_lighting, <lora:ayachi_nene_v11:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, deformed, 3d render, photorealistic",
+    "usage": [
+      "展示图"
+    ]
+  },
+  {
+    "id": "sc102",
+    "title": "安全屋的特工惩罚条例",
+    "category": "恋爱",
+    "story": "【夏目 · 椅子软缚绝对沦陷】深夜的地下安全屋，冷光台灯打在面部。由于白天的自作主张，平时不可一世的高冷特工夏目，此时被你用战术丝带半固定在靠椅上，双手被完全束缚在椅背。她那件性感的黑色紧身衣已经被你拉下拉链，露出了大片极具肉感的雪白线条和小腹。她并拢着黑丝长腿剧烈娇喘，眼角的泪痣红得快要滴血，一边死撑着瞪着你，一边发出难耐的呻吟——「哈啊...你这变态笨蛋...竟敢假公济私...等我解开约束...绝对处决你...嗯嗯...」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v11",
+    "emotion": "害羞",
+    "season": "不限",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "tags": [
+      "bound",
+      "sitting_on_chair",
+      "tactical_gear",
+      "unzipped",
+      "cleavage",
+      "bare_legs",
+      "black_pantyhose",
+      "heavy_blush",
+      "tears_in_eyes",
+      "tsundere",
+      "safehouse",
+      "night",
+      "strong_shadows",
+      "mole_under_eye",
+      "sensual"
+    ],
+    "mature": true,
+    "location": "安全屋审讯椅",
+    "weather": "炙热",
+    "camera": "近景特写",
+    "lighting": "局部聚光强对比",
+    "prompt": "1girl, shiki_natsume, mole_under_eye, bound, sitting_on_chair, tactical_gear, unzipped, cleavage, bare_legs, black_pantyhose, heavy_blush, tears_in_eyes, tsundere, safehouse, night, strong_shadows, sensual, <lora:shiki_natsume_v11:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, deformed, 3d render, photorealistic, underwear",
+    "usage": [
+      "展示图"
+    ]
+  },
+  {
+    "id": "sc103",
+    "title": "睡衣滑落的极乐失控",
+    "category": "日常",
+    "story": "【宁宁 · 居家单肩滑落真空】深夜暴雨倾盆的温馨卧室。宁宁在酒精的微醺下彻底向你敞开了心扉。她身上仅仅穿着一件极薄的粉色莫代尔睡裙，里面完全是真空状态。她跨坐在你身上，睡裙修长的吊带在一侧完全无力地滑落到了手臂以下，露出了大片圆润香肩与饱满性感的半边雪白。她手里还抓着你汗湿的衣角，满脸香汗与极致的红晕交织，头顶的呆毛软瘫成完美的心形——「柊史...不要一直盯着肩膀看啦...今晚的宁宁...已经全部是你的了哦...」",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v11",
+    "emotion": "恋爱",
+    "season": "不限",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "tags": [
+      "nightgown",
+      "off-shoulder",
+      "no_bra",
+      "straddling_viewer",
+      "sitting_on_lap",
+      "bare_legs",
+      "heavy_blush",
+      "sweat",
+      "hair_ribbon",
+      "heart_shaped_ahoge",
+      "bedroom",
+      "night",
+      "dim_lighting",
+      "sensual"
+    ],
+    "mature": true,
+    "location": "凌乱卧室床榻",
+    "weather": "窗外暴雨狂轰",
+    "camera": "近景特写",
+    "lighting": "柔和微弱床头灯",
+    "prompt": "1girl, ayachi_nene, hair_ribbon, heart_shaped_ahoge, nightgown, off-shoulder, no_bra, straddling_viewer, sitting_on_lap, bare_legs, heavy_blush, sweat, bedroom, night, dim_lighting, sensual, warm_lighting, <lora:ayachi_nene_v11:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, deformed, 3d render, photorealistic, underwear, bra, panties",
+    "usage": [
+      "展示图"
+    ]
+  },
+  {
+    "id": "sc104",
+    "title": "湿透白衬衫的职场潜规则",
+    "category": "日常",
+    "story": "【夏目 · 职场湿身绝对透光】夏日深夜突降暴雨，刚跑回公司指挥中心的夏目全身被雨水彻底淋透。她面红耳赤地坐在你宽大的办公桌边缘，身上那件轻薄的白衬衫被雨水打得半透明，死死贴紧在她饱满高耸的优美身躯上，里面黑色的性感内衣轮廓和光洁的小腹肌肤被透光勾勒得一清二楚。她细长的双腿交叠，推了推滑落的镜框，眼角的泪痣在桌上台灯的强阴影下显得欲气满满——「哈？变态长官，把我反锁在办公室，盯着淋湿的我...这就是你的特殊命令吗？」",
     "char": "natsume",
     "character": [
       "natsume"
@@ -3322,118 +3447,32 @@
     "lora": "shiki_natsume_v11",
     "emotion": "诱惑",
     "season": "夏",
-    "time": "夜晚",
-    "timeOfDay": "night",
+    "time": "深夜",
+    "timeOfDay": "late_night",
     "tags": [
-      "mole_under_eye",
-      "bedroom",
-      "looking_back",
-      "sitting",
-      "looking_away"
-    ],
-    "mature": true,
-    "location": "卧室",
-    "weather": "晴",
-    "camera": "全身中景",
-    "lighting": "夜灯",
-    "prompt": "1girl, shiki_natsume, bedroom, looking_away, sitting",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic",
-    "usage": [
-      "展示图"
-    ]
-  },
-  {
-    "id": "sc102",
-    "title": "从背后抱你",
-    "category": "亲密",
-    "story": "你洗碗的时候她从背后环住你的腰,脸贴在你背上",
-    "char": "nene",
-    "character": [
-      "nene"
-    ],
-    "lora": "ayachi_nene_v11",
-    "emotion": "温柔",
-    "season": "冬",
-    "time": "傍晚",
-    "timeOfDay": "sunset",
-    "tags": [
-      "hair_ribbon",
-      "casual_clothes",
-      "laughing",
-      "apron",
-      "kitchen"
-    ],
-    "mature": true,
-    "location": "厨房",
-    "weather": "晴",
-    "camera": "半身中景",
-    "lighting": "黄金时刻",
-    "prompt": "1girl, ayachi_nene, kitchen, laughing, apron",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic",
-    "usage": [
-      "展示图"
-    ]
-  },
-  {
-    "id": "sc103",
-    "title": "沙滩上的浴巾",
-    "category": "R15",
-    "story": "沙滩浴巾她裹着浴巾看海发觉你在看就别过脸「哼…」",
-    "char": "natsume",
-    "character": [
-      "natsume"
-    ],
-    "lora": "shiki_natsume_v11",
-    "emotion": "放松",
-    "season": "夏",
-    "time": "黄昏",
-    "timeOfDay": "sunset",
-    "tags": [
-      "mole_under_eye",
-      "beach",
-      "pajamas",
-      "sitting",
-      "towel"
-    ],
-    "mature": true,
-    "location": "海边",
-    "weather": "晴",
-    "camera": "全身远景",
-    "lighting": "黄金时刻",
-    "prompt": "1girl, shiki_natsume, beach, towel, sitting",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic",
-    "usage": [
-      "展示图"
-    ]
-  },
-  {
-    "id": "sc104",
-    "title": "深夜的沙发",
-    "category": "亲密",
-    "story": "电影演到一半她已经在沙发上睡着了,头靠在你肩上",
-    "char": "nene",
-    "character": [
-      "nene"
-    ],
-    "lora": "ayachi_nene_v11",
-    "emotion": "幸福",
-    "season": "秋",
-    "time": "夜晚",
-    "timeOfDay": "night",
-    "tags": [
-      "hair_ribbon",
+      "wet_clothes",
+      "wet_shirt",
+      "transparent_clothing",
+      "see-through_clothing",
+      "brassiere_visible",
+      "sitting_on_desk",
+      "bare_legs",
+      "heavy_blush",
+      "tsundere",
+      "glasses",
+      "office",
       "night",
-      "sunset",
-      "casual_clothes",
-      "autumn"
+      "strong_shadows",
+      "mole_under_eye",
+      "sensual"
     ],
     "mature": true,
-    "location": "客厅",
-    "weather": "晴",
-    "camera": "面部特写",
-    "lighting": "屏幕光",
-    "prompt": "1girl, ayachi_nene, night, autumn, casual_clothes",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic",
+    "location": "反锁指挥办公室",
+    "weather": "大雨瓢泼",
+    "camera": "近景特写",
+    "lighting": "单一台灯强烈侧光",
+    "prompt": "1girl, shiki_natsume, mole_under_eye, wet_clothes, wet_shirt, transparent_clothing, see-through_clothing, brassiere_visible, sitting_on_desk, bare_legs, heavy_blush, tsundere, glasses, office, night, strong_shadows, sensual, <lora:shiki_natsume_v11:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, deformed, 3d render, photorealistic",
     "usage": [
       "展示图"
     ]
