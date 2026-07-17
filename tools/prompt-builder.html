@@ -1423,7 +1423,7 @@ function getPlainPrompt() {
   // 截断 [NEG] 及其后内容，负向词不混入正向 prompt
   var negIdx = raw.indexOf('[NEG]');
   var pos = negIdx >= 0 ? raw.substring(0, negIdx) : raw;
-  return pos.replace(/,\s*,/g, ',').replace(/[^\S\n]+/g, ' ').trim();
+  return pos.replace(/,\s*,/g, ',').replace(/\s+/g, ' ').trim();
 }
 function getPlainNegative() {
   // 从 preview 的 raw 数据中提取 [NEG] 后面的内容作为负向 prompt
@@ -1516,6 +1516,9 @@ function callSDGenerate(){
   // 获取当前场景的 LoRA 配置
   var currentScene = SCENES.find(function(sc){ return sc.id === state.__sceneId; });
   var loraName = currentScene && currentScene.lora ? currentScene.lora : '';
+
+  // 剥掉 prompt 中已有的 <lora:...> 标签，由 sd-api.js 重新注入（带稀释权重）
+  prompt = prompt.replace(/<lora:[^>]+>/g, '').replace(/,\s*,/g, ',').replace(/^,\s*/, '').replace(/,\s*$/, '').trim();
 
   var hiresOn = document.getElementById('sdHiresFix');
   var hiresOpts = hiresOn && hiresOn.checked ? {
