@@ -157,6 +157,10 @@ https://打印的域名/?token=打印的Token
 - 第一次出图会慢几秒（SD 加载模型），前端会自动重试
 - 多人同时出图时 SD 会排队，前端显示等待计时
 
+**关闭服务：**
+- 方法一：两个终端窗口分别按 `Ctrl+C`
+- 方法二：开新终端跑 `taskkill /F /IM node.exe && taskkill /F /IM cloudflared.exe`
+
 ### 5. 数据维护脚本
 
 运行 `node scripts/clean-scenes.js` 可对 `data/scenes.json` 执行批量清洗：
