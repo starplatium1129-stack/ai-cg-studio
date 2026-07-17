@@ -1328,7 +1328,10 @@ function buildParts() {
       const top = Array.from(state.manualTags).slice(0, 5);
       parts.push({ cls:'t', text: norm(top.join(', ')) });
     }
-    parts.push({ cls:'l', text: '<lora:' + LORA_ID[char] + '>' });
+    // LoRA 注入：triad 时拆分为独立标签
+  var loraRaw = LORA_ID[char] || '';
+  var loraTags = loraRaw.split(',').map(function(s){ return s.trim(); }).filter(Boolean);
+  loraTags.forEach(function(l){ parts.push({ cls:'l', text: '<lora:' + l + '>' }); });
     if (neg) parts.push({ cls:'n', text: '[NEG] ' + norm(NEGATIVE) });
     const seen = new Set();
     return parts.map(p => { const toks = p.text.split(',').map(t=>t.trim()).filter(Boolean).filter(t => { const k=t.toLowerCase().replace(/[\s\/]+/g,'_'); if(seen.has(k))return false; seen.add(k); return true; }); return { cls:p.cls, text:toks.join(', ') }; }).filter(p=>p.text.length>0);
@@ -1353,7 +1356,10 @@ function buildParts() {
     });
     if (tailToks.length) parts.push({ cls:'c', text: norm(tailToks.join(', ')) });
   }
-  parts.push({ cls:'l', text: '<lora:' + LORA_ID[char] + '>' });
+  // LoRA 注入：triad 时拆分为独立标签
+  var loraRaw = LORA_ID[char] || '';
+  var loraTags = loraRaw.split(',').map(function(s){ return s.trim(); }).filter(Boolean);
+  loraTags.forEach(function(l){ parts.push({ cls:'l', text: '<lora:' + l + '>' }); });
   if (neg) parts.push({ cls:'n', text: '[NEG] ' + norm(NEGATIVE) });
 
   // 跨模块去重: normalize 后比对 token,保留首次出现位置(顺序不变)

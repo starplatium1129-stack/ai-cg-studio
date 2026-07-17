@@ -29,8 +29,9 @@
       loras.forEach(function(name){
         name = (name || '').trim();
         if (!name) return;
-        if (finalPrompt.includes('<lora:' + name + ':')) {
-          console.log('[SD API] LoRA ' + name + ' 已在 Prompt 中，跳过重复注入');
+        var loraKey = name.split(':')[0]; // strip weight suffix for matching
+        if (finalPrompt.includes('<lora:' + loraKey)) {
+          console.log('[SD API] LoRA ' + loraKey + ' 已在 Prompt 中，跳过重复注入');
           return;
         }
         if (finalPrompt && !finalPrompt.trim().endsWith(',')) finalPrompt += ',';
