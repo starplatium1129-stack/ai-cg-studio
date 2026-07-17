@@ -31,6 +31,9 @@ if not exist "%CF%" (
 
 for /f "delims=" %%i in ('node -e "console.log(require('crypto').randomBytes(8).toString('hex'))"') do set TOKEN=%%i
 
+:: Save token to file for show-url.bat
+echo %TOKEN%>"%~dp0.gateway_token"
+
 echo  [1/4] Checking SD WebUI...
 curl -s -o nul -w "%%{http_code}" http://127.0.0.1:7860/sdapi/v1/sd-models >%temp%\sd_check.txt 2>&1
 set /p SD_STATUS=<%temp%\sd_check.txt
@@ -51,7 +54,8 @@ echo         Local : http://localhost:3000/?token=%TOKEN%
 echo.
 
 echo  [3/4] Starting Cloudflare Tunnel...
-start "AI-CG-Tunnel" cmd /c ""%CF%" tunnel --url http://localhost:3000"
+:: Log tunnel output to file so show-url.bat can read the domain
+start "AI-CG-Tunnel" cmd /c ""%CF%" tunnel --url http://localhost:3000 > "%~dp0tunnel.log" 2>&1"
 echo         Waiting for tunnel domain (~10s)...
 timeout /t 12 >nul
 
@@ -62,10 +66,28 @@ echo   Two windows are now open:
 echo     AI-CG-Server   (gateway)
 echo     AI-CG-Tunnel   (tunnel)
 echo.
-echo   Find the tunnel URL in the AI-CG-Tunnel window.
-echo   Format: https://xxx.trycloudflare.com/?token=%TOKEN%
-echo.
 echo   To stop: run stop.bat  or  Ctrl+C in each window
 echo  ==============================================
 echo.
+
+:: Auto-extract and display the share link
+echo  --- Your Share Link ---
+echo.
+setlocal enabledelayedexpansion
+set "DOMAIN="
+for /f "tokens=*" %%a in ('findstr /i "trycloudflare.com" "%~dp0tunnel.log" 2^>nul') do (
+    set "LINE=%%a"
+)
+for /f "tokens=*" %%u in ('echo !LINE! ^| findstr /i "https://.*trycloudflare.com"') do (
+    set "DOMAIN=%%u"
+)
+for /f "tokens=*" %%v in ("!DOMAIN!") do set "DOMAIN=%%v"
+
+if "!DOMAIN!"=="" (
+    echo   (Tunnel URL not ready yet - run show-url.bat in a moment)
+) else (
+    echo   !DOMAIN!?token=!TOKEN!
+)
+echo.
+endlocal
 pause
