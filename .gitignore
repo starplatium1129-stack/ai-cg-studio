@@ -21,3 +21,5 @@ friend_outputs/
 .claude/
 .gateway_token
 tunnel.log
+.gateway_pid
+.tunnel_pid

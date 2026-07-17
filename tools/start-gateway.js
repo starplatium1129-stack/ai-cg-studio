@@ -7,8 +7,9 @@ var dir = path.join(__dirname, '..');
 var token = crypto.randomBytes(8).toString('hex');
 var cf = 'C:\\Program Files (x86)\\cloudflared\\cloudflared.exe';
 
-// Save token
+// Save token and server PID
 fs.writeFileSync(path.join(dir, '.gateway_token'), token);
+fs.writeFileSync(path.join(dir, '.gateway_pid'), String(server.pid));
 
 console.log('');
 console.log('==============================================');
@@ -54,6 +55,7 @@ setTimeout(function() {
     });
     tunnel.unref();
     fs.closeSync(logFd);
+    fs.writeFileSync(path.join(dir, '.tunnel_pid'), String(tunnel.pid));
 
     console.log('      Waiting for tunnel domain (~12s)...');
 
