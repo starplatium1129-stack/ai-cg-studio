@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Director · 导演工作台 · AI CG Studio</title>
-<link rel="stylesheet" href="../css/design-system.css?v=5">
+<link rel="stylesheet" href="../css/design-system.css?v=6">
 <script src="nav.js?v=4"></script>
 <script src="theme.js?v=4"></script>
 <style>
@@ -1417,6 +1417,61 @@ function updateLivePreview() {
     el.querySelector('.bar > i').style.width = pct + '%';
   });
 }
+// ---- Prompt 防错净化 (Danbooru 标签规范化) ----
+// 已知多词 Danbooru 标签：空格 → 下划线 (按长度降序排列，避免短词先匹配)
+var UNDERSCORE_TAGS = [
+  'depth of field','chromatic aberration','beautiful detailed eyes',
+  'volumetric lighting','natural lighting','studio lighting','neon lighting',
+  'dramatic lighting','back lighting','side lighting','rim lighting','soft lighting','hard lighting',
+  'extreme close up','dynamic angle','portrait shot','cowboy shot','upper body','full body',
+  'medium shot','long shot','close up','wide shot','dutch angle','pov shot',
+  'half closed eyes','crossed arms','outstretched arm','reaching towards viewer',
+  'hands on hips','hand on chest','hand on own cheek','hand between legs',
+  'arms behind back','arms up',
+  'sparkling eyes','glowing eyes','detailed eyes','narrowed eyes','wide eyes',
+  'open mouth','closed mouth','parted lips','pout lips','biting lip','licking lips','tongue out',
+  'pink tone','warm light','soft light','lantern light',
+  'loose hair','wet hair','short hair','long hair','twintails hair',
+  'black dress','white dress','school uniform','off shoulder','crop top',
+  'mini skirt','pleated skirt','micro skirt','denim shorts','thigh highs',
+  'fishnet stockings','red ribbon','hair ribbon','hair clip','hair ornament',
+  'cat ears','fox ears','bunny ears',
+  'sailor collar','standing collar','open jacket','hood up',
+  'elbow gloves','finger gloves','choker necklace','cross earrings',
+  'puffy sleeves','detached sleeves','frilled skirt','layered skirt',
+  'lace trim','ribbon trim','bow tie','neck ribbon',
+  'high slit','side slit','front slit','see through','wet clothes',
+  'sweat stain','sweaty body','blush marks','embarrassed face',
+  'bare shoulders','skin tight',
+  'looking back','looking up','looking down','squatting down','leaning forward','bent over',
+  'from behind','from below','peace sign','v sign','thumbs up','waving',
+  'holding cup','holding bag','holding flower','holding umbrella','holding phone','holding book',
+  'sun beam','light rays','god rays','lens flare',
+  'particle light','floating particles','bokeh background','blurry background',
+  'film grain','motion blur',
+  'on bed','on floor','on ground','on grass','on rooftop','on beach',
+  'in water','in rain','in snow','under tree',
+  'sitting on bed','sitting on chair','hand on cheek','lying on grass',
+  'standing split','cat ears','cherry blossoms','falling petals',
+  'autumn leaves','falling leaves','starry sky','full moon',
+  'sunset sky','sunrise sky','blue sky','cloudy sky','dramatic sky','sunset glow'
+];
+var _tagRe = new RegExp('\\b(' + UNDERSCORE_TAGS.sort(function(a,b){return b.length-a.length}).map(function(t){return t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&').replace(/ /g,'\\s')}).join('|') + ')\\b', 'gi');
+
+function sanitizePrompt(raw) {
+  return raw
+    // 已知多词标签 → 下划线死锁
+    .replace(_tagRe, function(m){ return m.replace(/\s+/g, '_'); })
+    // 统一分隔符: 分号/竖线 → 逗号
+    .replace(/\s*[;|]\s*/g, ', ')
+    // 重复逗号 / 首尾逗号
+    .replace(/,\s*,/g, ',')
+    .replace(/,\s*$/g, '')
+    .replace(/^\s*,/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 function getPlainPrompt() {
   // 始终返回纯英文, 保留模块间换行, 供 SD 使用
   var raw = document.getElementById('preview').dataset.raw;
@@ -1424,7 +1479,7 @@ function getPlainPrompt() {
   // 截断 [NEG] 及其后内容，负向词不混入正向 prompt
   var negIdx = raw.indexOf('[NEG]');
   var pos = negIdx >= 0 ? raw.substring(0, negIdx) : raw;
-  return pos.replace(/,\s*,/g, ',').replace(/\s+/g, ' ').trim();
+  return sanitizePrompt(pos);
 }
 function getPlainNegative() {
   // 从 preview 的 raw 数据中提取 [NEG] 后面的内容作为负向 prompt
@@ -1432,7 +1487,7 @@ function getPlainNegative() {
   if (!raw) return '';
   var negIdx = raw.indexOf('[NEG]');
   if (negIdx < 0) return '';
-  return raw.substring(negIdx).replace('[NEG] ', '').replace(/,\s*,/g, ',').replace(/[^\S\n]+/g, ' ').trim();
+  return sanitizePrompt(raw.substring(negIdx).replace('[NEG] ', ''));
 }
 
 // ====== GENERATE ======

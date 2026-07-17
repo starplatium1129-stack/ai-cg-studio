@@ -80,7 +80,7 @@
   --text-primary:   #2C2C3A;   /* 主文字(深灰黑) */
   --text-secondary: #5A5A6E;   /* 副文字 */
   --text-muted:     #8C8C9E;   /* 占位/说明 */
-  --text-inverse:   #FFFFFF;   /* 粉底白字反色 */
+  --text-inverse:   #FFFFFF;   /* 彩底白字反色 */
 
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
   --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
