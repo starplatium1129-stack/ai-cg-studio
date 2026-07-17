@@ -76,7 +76,7 @@ AI-CG-Studio/
 │   ├── lora.html           # LoRA 管理
 │   └── ...
 ├── data/                   # 数据文件
-│   ├── scenes.json         # 128 个场景
+│   ├── scenes.json         # 200 个场景
 │   ├── characters.json     # 角色信息
 │   └── tags.json           # 标签库
 ├── scripts/                # 维护脚本
@@ -91,7 +91,7 @@ AI-CG-Studio/
 
 ### 1. 导演工作台 (`/tools/prompt-builder.html`)
 
-- 选择场景（128 个预设场景）
+- 选择场景（200 个预设场景）
 - 选择角色（宁宁 / 夏目 / 三人场景 triad）
 - 定义导演决策（情绪、镜头、光照、构图、色彩）
 - 自动生成 Stable Diffusion Prompt
@@ -118,11 +118,44 @@ AI-CG-Studio/
 
 导演工作台可直接调用本地 SD WebUI 出图，无需手动复制 Prompt：
 
-- **前置条件**：启动 ReForge 时需添加 `--api` 参数，并设置 `--cors-allow-origins=*` 允许跨域
+- **前置条件**：启动 ReForge 时需添加 `--api` 参数
 - **默认地址**：`http://127.0.0.1:7860`（可通过 `SDWebUIConnector` 修改）
 - **默认参数**：Checkpoint `waiIllustriousSDXL_v170.safetensors`，Sampler `DPM++ 2M SDE Karras`，CFG 5.5，Steps 28
 - **LoRA 注入**：自动从场景数据读取 LoRA 名称，注入 `<lora:name:0.85>`（已去重防叠 buff）
 - **状态 Badge**：工作台右上角绿/红圆点实时显示连接状态
+
+### 5. 联机网关（让朋友远程出图）
+
+朋友不需要装 SD，浏览器打开链接即可选场景出图。
+
+**启动步骤（3步）：**
+
+```bash
+# 1. 启动 SD WebUI（确保加了 --api 参数）
+#    在你的 ReForge/WebUI 目录运行 webui-user.bat
+
+# 2. 启动网关
+cd E:\code\2\lora\AI-CG-Studio
+node server.js
+# 终端会打印 Token，记下来
+
+# 3. 启动穿透（另一个终端窗口）
+"C:\Program Files (x86)\cloudflared\cloudflared.exe" tunnel --url http://localhost:3000
+# 终端会打印域名（xxx.trycloudflare.com），记下来
+```
+
+**给朋友的链接：**
+```
+https://打印的域名/?token=打印的Token
+```
+
+**注意事项：**
+- 每次重启 `node server.js`：Token 会重新生成，需要重新发链接
+- 每次重启 `cloudflared`：域名会变化，需要重新发链接
+- 固定 Token：`set TOKEN=我的密码 && node server.js`
+- 朋友出的图自动备份到 `friend_outputs/` 目录
+- 第一次出图会慢几秒（SD 加载模型），前端会自动重试
+- 多人同时出图时 SD 会排队，前端显示等待计时
 
 ### 5. 数据维护脚本
 
@@ -155,7 +188,7 @@ A: 编辑 `data/characters.json`，添加角色信息和 LoRA 绑定。
 
 ### Q: SD WebUI 状态 Badge 显示红色？
 
-A: 确认 ReForge 已启动且加了 `--api --cors-allow-origins=*` 参数。默认端口 7860。
+A: 确认 ReForge 已启动且加了 `--api` 参数。默认端口 7860。
 
 ---
 
