@@ -64,11 +64,12 @@ app.post('/api/save-backup', function (req, res) {
   }
 });
 
-// ─── SD API 反代 ───
-app.use('/sdapi', createProxyMiddleware({
+// ─── SD API 反代（pathFilter 而非 app.use，避免 Express 剥前缀）───
+app.use(createProxyMiddleware({
   target: SD_HOST,
   changeOrigin: true,
   ws: true,
+  pathFilter: '/sdapi',
   on: {
     proxyReq: function () {
       console.log('  → SD API 请求已转发');
