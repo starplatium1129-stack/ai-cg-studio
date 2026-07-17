@@ -6,10 +6,7 @@ var crypto = require('crypto');
 var dir = path.join(__dirname, '..');
 var token = crypto.randomBytes(8).toString('hex');
 var cf = 'C:\\Program Files (x86)\\cloudflared\\cloudflared.exe';
-
-// Save token and server PID
-fs.writeFileSync(path.join(dir, '.gateway_token'), token);
-fs.writeFileSync(path.join(dir, '.gateway_pid'), String(server.pid));
+var pidDir = dir;
 
 console.log('');
 console.log('==============================================');
@@ -17,7 +14,7 @@ console.log(' AI-CG-Studio Gateway  --  One Click Start');
 console.log('==============================================');
 console.log('');
 
-// Check SD WebUI
+// 1. Check SD WebUI
 console.log('[1/4] Checking SD WebUI...');
 try {
     cp.execSync('curl -s -o nul -w "%{http_code}" http://127.0.0.1:7860/sdapi/v1/sd-models', {stdio:'pipe'});
@@ -27,39 +24,42 @@ try {
 }
 console.log('');
 
-// Start gateway
+// 2. Start gateway server
 console.log('[2/4] Starting gateway on port 3000...');
 var server = cp.spawn('node', ['server.js'], {
     cwd: dir,
     env: Object.assign({}, process.env, {TOKEN: token, PORT: '3000', SD_HOST: 'http://127.0.0.1:7860'}),
-    stdio: 'inherit',
-    detached: true,
-    windowsHide: false
+    stdio: 'ignore',
+    detached: true
 });
 server.unref();
+
+// Save token and server PID (AFTER spawn)
+fs.writeFileSync(path.join(pidDir, '.gateway_token'), token);
+fs.writeFileSync(path.join(pidDir, '.gateway_pid'), String(server.pid));
 
 console.log('      Token : ' + token);
 console.log('      Local : http://localhost:3000/?token=' + token);
 console.log('');
 
-// Wait for server to start
+// 3. Start tunnel (after 2s delay for server to bind port)
 setTimeout(function() {
-    // Start tunnel
     console.log('[3/4] Starting Cloudflare Tunnel...');
-    var tunnelLog = path.join(dir, 'tunnel.log');
+    var tunnelLog = path.join(pidDir, 'tunnel.log');
     var logFd = fs.openSync(tunnelLog, 'w');
     var tunnel = cp.spawn(cf, ['tunnel', '--url', 'http://localhost:3000'], {
         stdio: ['ignore', logFd, logFd],
-        detached: true,
-        windowsHide: false
+        detached: true
     });
     tunnel.unref();
     fs.closeSync(logFd);
-    fs.writeFileSync(path.join(dir, '.tunnel_pid'), String(tunnel.pid));
+
+    // Save tunnel PID (AFTER spawn)
+    fs.writeFileSync(path.join(pidDir, '.tunnel_pid'), String(tunnel.pid));
 
     console.log('      Waiting for tunnel domain (~12s)...');
 
-    // Wait for tunnel to produce URL
+    // 4. Wait for tunnel to produce URL, then show it
     setTimeout(function() {
         var domain = '';
         try {
@@ -83,7 +83,6 @@ setTimeout(function() {
         console.log(' To stop: run stop.bat');
         console.log('==============================================');
         console.log('');
-        console.log('This window will close in 5 seconds...');
-        setTimeout(function() { process.exit(0); }, 5000);
+        process.exit(0);
     }, 12000);
 }, 2000);
