@@ -50,8 +50,8 @@
 
 <article class="page">
   <a href="../index.html" class="nav-back">← 回首页</a>
-  <h1 class="title">🧪 LoRA Lab</h1>
-  <p class="subtitle">角色 LoRA 库。每个 LoRA 由训练集 + 参数沉淀而来 — 在 Director 中自动插入对应权重。</p>
+  <h1 class="title">🧪 LoRA 模型库</h1>
+  <p class="subtitle">集中查看角色 LoRA 的训练信息与推荐强度；进入导演台后会自动插入对应模型。</p>
   <div class="lora-grid" id="loraGrid"></div>
 </article>
 
@@ -62,7 +62,7 @@
   var grid = document.getElementById('loraGrid');
   function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
   function pct(n){ return Math.round((n||0)*100)+'%'; }
-  fetch('../data/loras.json')
+  fetch('../data/loras.json?v=6')
     .then(function(r){ return r.json(); })
     .then(function(loras){
       grid.innerHTML = loras.map(function(l){
@@ -74,7 +74,7 @@
         if(l.version) pills += '<span style="padding:2px 8px;border-radius:12px;font-size:0.68rem;color:var(--text-secondary);background:var(--bg-elevated);margin-right:4px;">v'+esc(l.version)+'</span>';
         (l.compatible_models||[]).forEach(function(m){ pills += '<span style="padding:2px 8px;border-radius:12px;font-size:0.68rem;color:var(--text-secondary);background:var(--bg-elevated);margin-right:4px;">'+esc(m)+'</span>'; });
 
-        // 推荐强度进度条(strength 单值,保留旧 recommended_weight 多场景显示为次级)
+        // 推荐强度进度条（默认 strength 为主，分镜权重作为补充信息）
         var strengthBar = '';
         if(l.strength){
           strengthBar = '<div class="lora-row"><span class="lab">推荐强度</span>'+

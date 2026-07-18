@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI CG Studio · 今天,我想讲一个什么故事?</title>
+<title>AI CG Studio · 今天，我想讲一个什么故事？</title>
 <link rel="stylesheet" href="css/design-system.css?v=6">
 <link rel="stylesheet" href="css/scene-card.css?v=4">
 <script src="tools/nav.js?v=4"></script>
@@ -255,7 +255,7 @@
     <div>
       <span class="section-tag"><span class="num">01</span> ✨ 创作 Create</span>
       <h2>开始创作</h2>
-      <p class="hint">从角色、风格到导演台,一步步把故事变成画面。</p>
+      <p class="hint">从角色、风格到导演台，一步步把故事变成画面。</p>
     </div>
   </div>
   <div class="tools-grid">
@@ -271,7 +271,7 @@
     </a>
     <a href="tools/prompt-builder.html" class="tool-card card-create card-level-2">
       <span class="ic">✨</span><span class="t">导演工作台</span>
-      <span class="d">组合角色与场景,自动生成完整 Prompt。</span>
+      <span class="d">组合角色与场景，自动生成完整提示词。</span>
       <span class="go">→ 打开</span>
     </a>
   </div>
@@ -282,7 +282,7 @@
     <div>
       <span class="section-tag"><span class="num">02</span> 🧪 资产 Assets</span>
       <h2>资产库</h2>
-      <p class="hint">LoRA 模型与训练数据,视觉一致性的根基。</p>
+      <p class="hint">LoRA 模型与训练数据，是视觉一致性的根基。</p>
     </div>
   </div>
   <div class="tools-grid">
@@ -299,7 +299,7 @@
     <div>
       <span class="section-tag"><span class="num">03</span> 🎬 作品 Works</span>
       <h2>作品集</h2>
-      <p class="hint">浏览场景库,看自己画过的每一张 CG。</p>
+      <p class="hint">浏览场景库，回看自己创作过的每一张 CG。</p>
     </div>
   </div>
   <div class="tools-grid">
@@ -352,7 +352,7 @@
   function getProject(id){return _cachedProjects.find(function(p){return p.id===id;});}
 
   function renderSceneHighlights(){
-    return fetch('data/scenes.json').then(function(r){
+    return fetch('data/scenes.json?v=6').then(function(r){
       if(!r.ok) throw new Error('HTTP '+r.status);
       return r.json();
     }).then(function(scenes){

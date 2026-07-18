@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Director · 导演工作台 · AI CG Studio</title>
+<title>导演工作台 · AI CG Studio</title>
 <link rel="stylesheet" href="../css/design-system.css?v=6">
 <script src="nav.js?v=4"></script>
 <script src="theme.js?v=4"></script>
@@ -350,8 +350,8 @@
 <article class="pb">
   <a href="../index.html" class="nav-back">← 回首页</a>
   <div class="pb-header">
-    <h1 class="pb-title">🎬 Director · 导演工作台</h1>
-    <p class="pb-sub">选一个 Scene,像导演一样定情绪、镜头、光照。Prompt 自动生成。</p>
+    <h1 class="pb-title">🎬 导演工作台</h1>
+    <p class="pb-sub">选一个场景，像导演一样决定情绪、镜头与光照，提示词会自动生成。</p>
   </div>
   <div class="api-status">
     后端状态：<span id="sd-status-badge" class="badge">⏳ 检测中...</span>
@@ -431,7 +431,7 @@
         <div class="monitor-corners"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
         <div class="monitor-rec"><span class="dot"></span> SCENE</div>
         <div class="panel-title" style="display:flex;align-items:center">✨ Prompt 实时预览 <span class="monitor-toggle" id="monitorToggle" onclick="toggleMonitor()">展开 ▶</span></div>
-        <div class="preview-output" id="preview">(选择左侧 Scene 或在右侧做导演决策,Prompt 在这里实时生成)</div>
+        <div class="preview-output" id="preview">选择左侧场景或调整右侧导演选项，提示词会在这里实时生成。</div>
         <div class="token-row"><span class="token-counter" id="liveTokCount"><span class="num">0</span> tok <span class="bar"><i></i></span> / 77</span></div>
         <div class="art-warn" id="artWarn" style="display:none">⚠️ 检测到违反美术规范的标签</div>
         <div class="preview-actions">
@@ -550,7 +550,7 @@
   <div class="review-card" id="reviewCard">
     <div class="review-head"><h3>⭐ 评价这张 CG</h3><button class="review-x" onclick="closeReview()" aria-label="关闭">✕</button></div>
     <div id="reviewAxes"></div>
-    <div class="review-fav"><span class="review-fav-label">推荐收藏</span><div class="review-fav-toggle" id="reviewFav" onclick="toggleFav()">💜 收藏</div></div>
+    <div class="review-fav"><span class="review-fav-label">加入收藏夹</span><div class="review-fav-toggle" id="reviewFav" onclick="toggleFav()">💜 收藏</div></div>
     <div class="review-image-source primary">
       <label class="review-axis-label" for="reviewImageFile">导入生成图</label>
       <div class="review-file-row">
@@ -656,8 +656,8 @@ function loadData(){
   }
   return Promise.all([
     initStorage(),
-    fetch('../data/scenes.json').then(r=>r.json()).then(d=>SCENES=d).catch(e=>{console.warn('scenes load fail',e);}),
-    fetch('../data/characters.json').then(r=>r.json()).then(d=>CHARACTER=d).catch(e=>{console.warn('characters load fail',e);}),
+    fetch('../data/scenes.json?v=6').then(r=>r.json()).then(d=>SCENES=d).catch(e=>{console.warn('scenes load fail',e);}),
+    fetch('../data/characters.json?v=6').then(r=>r.json()).then(d=>CHARACTER=d).catch(e=>{console.warn('characters load fail',e);}),
     fetch('../data/tags.json').then(r=>r.json()).then(d=>{
       TAGS = { clothes:[], pose:[], expression:[], scene_env:[], lighting_tag:[], details:[], camera:[] };
       TAG_CN = {};
@@ -671,7 +671,7 @@ function loadData(){
   ]).then(()=>{
     DATA_READY = true;
     const grid = document.getElementById('sceneGrid');
-    if (grid && SCENES.length === 0) { grid.innerHTML = '<div class="empty-state">⚠️ 数据加载失败,请通过 localhost 访问(非 file://)。</div>'; }
+    if (grid && SCENES.length === 0) { grid.innerHTML = '<div class="empty-state">⚠️ 数据加载失败，请通过 localhost 访问，不要直接打开本地文件。</div>'; }
     try { init(); } catch(e){ console.error('init error', e); }
   }).catch(e=>console.error('loadData error', e));
 }
@@ -1280,7 +1280,7 @@ function renderLightHint(hint, title) {
   if (!hint) { el.classList.remove('show'); return; }
   const lm = { sunset:'夕阳光', window_light:'窗光', backlighting:'逆光', moonlight:'月光', night_lamp:'夜灯', neon:'霓虹', candlelight:'烛光', overcast:'阴天' };
   el.classList.add('show');
-  el.innerHTML = '💡 <span>Scene 推荐光照: <b>' + (lm[hint]||hint) + '</b></span><button onclick="clearLightHint()">✕</button>';
+  el.innerHTML = '💡 <span>场景建议光照：<b>' + (lm[hint]||hint) + '</b></span><button onclick="clearLightHint()">✕</button>';
 }
 function clearLightHint() { const el=document.getElementById('sceneLightHint'); if(el) el.classList.remove('show'); }
 function findEmotionId(name) {
@@ -1363,7 +1363,7 @@ function suggestTagsFromStory() {
   if (!s.trim()) { flash('📖 请先写一句话故事'); return; }
   const matched = new Set();
   Object.keys(STORY_KEYWORD_TAGS).forEach(kw => { if (s.includes(kw)) matched.add(STORY_KEYWORD_TAGS[kw]); });
-  if (!matched.size) { flash('💡 没有匹配到关键词,试试:海边/黄昏/樱花/神社/教室/…'); return; }
+  if (!matched.size) { flash('💡 没有匹配到关键词，可以试试：海边、黄昏、樱花、神社或教室。'); return; }
   let added = 0;
   matched.forEach(tag => { if (!state.manualTags.has(tag)) { state.manualTags.add(tag); added++; } });
   state._storySuggestions = matched;

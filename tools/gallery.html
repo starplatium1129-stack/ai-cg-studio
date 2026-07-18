@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gallery · AI CG Studio</title>
+<title>作品画廊 · AI CG Studio</title>
 <link rel="stylesheet" href="../css/design-system.css?v=6">
 <link rel="stylesheet" href="../css/scene-card.css?v=4">
 <script src="nav.js?v=4"></script>
@@ -82,7 +82,7 @@
 
 <article class="page">
   <a href="../index.html" class="nav-back">← 回首页</a>
-  <h1 class="title">🎞 Gallery</h1>
+  <h1 class="title">🎞 作品画廊</h1>
   <p class="subtitle">每一次生成都是一个版本。点击卡片展开详情与再创作。</p>
   <div class="toolbar" id="toolbar"></div>
   <div id="gallery"></div>
@@ -137,7 +137,7 @@
   function coverMarkup(h,index){const url=safeImageUrl(h.image_url);if(h.image_id)return '<span class="gal-placeholder">🎬</span>';return url?'<img class="gal-image" src="'+escAttr(url)+'" alt="'+escAttr(sceneTitle(h.scene))+'" referrerpolicy="no-referrer">':'<span class="gal-placeholder">🎬</span>';}
   function card(h,index){const avg=avgRating(h.rating);return `<div class="sc sc-grid" onclick="window.__openDetail(${index})"><div class="sc-band" style="height:130px;"><div class="gal-cover" data-image-slot="${index}" style="position:absolute;inset:0;">${coverMarkup(h,index)}</div><span class="gal-ver">v${esc(h.version||1)}</span>${h.favorite?'<span class="gal-fav">💜</span>':''}</div><div class="sc-body"><div class="sc-title">${esc(sceneTitle(h.scene))}</div><div class="sc-meta"><span class="sc-meta-l">${stars(avg)}</span><span class="sc-meta-r">${esc(charName(h.scene))} · ${esc(fmtDate(h.timestamp))}</span></div><div class="gal-seed">seed ${esc(h.seed||'—')}</div></div></div>`;}
   let scenesLoaded=false;
-  function ensureData(){return scenesLoaded?Promise.all([Promise.resolve(scenes),Promise.resolve(loras)]):Promise.all([fetch('../data/scenes.json').then(r=>r.json()).then(d=>{scenes=d;}).catch(()=>{}),fetch('../data/loras.json').then(r=>r.json()).then(d=>{loras=d;}).catch(()=>{})]).then(function(){scenesLoaded=true;});}
+  function ensureData(){return scenesLoaded?Promise.all([Promise.resolve(scenes),Promise.resolve(loras)]):Promise.all([fetch('../data/scenes.json?v=6').then(r=>r.json()).then(d=>{scenes=d;}).catch(()=>{}),fetch('../data/loras.json?v=6').then(r=>r.json()).then(d=>{loras=d;}).catch(()=>{})]).then(function(){scenesLoaded=true;});}
   function render(){
     const generation=++renderGeneration;revokeCards();const toolbar=document.getElementById('toolbar'),total=history.length,favCount=history.filter(h=>h.favorite).length;
     var projects=loadProjects();var projSel='<select id="galleryProjectFilter" onchange="filterProject=this.value;render();"><option value="">全部项目</option>'+projects.map(function(p){return '<option value="'+p.id+'"'+(p.id===filterProject?' selected':'')+'>'+esc(p.title)+'</option>';}).join('')+'</select>';
@@ -145,7 +145,7 @@
     var source=filterFav?history.filter(h=>h.favorite):history;
     if(filterProject){var prj=getProject(filterProject);if(prj)source=source.filter(function(h){return prj.history_ids.indexOf(h.id)>=0;});}
     const gal=document.getElementById('gallery');
-    if(!source.length){gal.innerHTML=filterFav?'<div class="empty"><div class="ic">💜</div><p>还没有收藏。在导演台评价时开启「推荐收藏」。</p></div>':'<div class="empty"><div class="ic">🎞</div><p>还没有创作记录。去导演台生成第一张 CG。</p><a href="prompt-builder.html" class="btn btn-primary">🎬 开始创作</a></div>';return;}
+    if(!source.length){gal.innerHTML=filterFav?'<div class="empty"><div class="ic">💜</div><p>收藏夹还是空的。保存作品评价时勾选「加入收藏夹」即可。</p></div>':'<div class="empty"><div class="ic">🎞</div><p>还没有创作记录。去导演台生成第一张 CG。</p><a href="prompt-builder.html" class="btn btn-primary">🎬 开始创作</a></div>';return;}
     const byIndex=new Map();source.forEach(function(h,i){byIndex.set(h,i);});const groups=grouped(source);
     gal.innerHTML=groups.map(g=>`<div class="timeline-group"><div class="timeline-head">${g.key}</div><div class="gallery-grid">${g.items.map(h=>card(h,byIndex.get(h))).join('')}</div></div>`).join('');
     gal.querySelectorAll('.gal-image').forEach(img=>img.addEventListener('error',()=>img.replaceWith(fallbackNode('span','gal-placeholder'))));

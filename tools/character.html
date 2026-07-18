@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Character · AI CG Studio</title>
+<title>角色档案 · AI CG Studio</title>
 <link rel="stylesheet" href="../css/design-system.css?v=6">
 <link rel="stylesheet" href="../css/scene-card.css?v=4">
 <script src="nav.js?v=4"></script>
@@ -66,12 +66,12 @@
 <nav class="nav"><div class="nav-inner"><div class="nav-brand"><span class="dot"></span> AI CG Studio</div><div class="nav-links"></div></div></nav>
 <main class="page">
   <a href="../index.html" class="nav-back">← 回首页</a>
-  <h1 class="title">Character Studio</h1>
-  <p class="subtitle">选择角色，锁定视觉 DNA 与氛围，再从适配场景开始创作。</p>
+  <h1 class="title">👤 角色档案</h1>
+  <p class="subtitle">选择角色，确认视觉特征、性格与 LoRA，再从真正适合她的场景开始创作。</p>
   <div class="character-tabs" id="characterTabs" role="tablist" aria-label="切换角色"></div>
   <section id="characterCenter" aria-live="polite"></section>
 </main>
-<footer class="footer"><p>AI CG Studio · Character as the center of every Scene</p></footer>
+<footer class="footer"><p>AI CG Studio · 角色决定每个场景的情绪与细节</p></footer>
 <script src="scene-card.js?v=4"></script>
 <script>
 (function(){
@@ -79,7 +79,7 @@
   var center = document.getElementById('characterCenter');
   function esc(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
   function chips(items, extra){ return (items || []).map(function(item){ return '<span class="chip '+(extra || '')+'">'+esc(typeof item === 'string' ? item : item.label)+'</span>'; }).join(''); }
-  Promise.all([fetch('../data/characters.json').then(function(r){ return r.json(); }), fetch('../data/scenes.json').then(function(r){ return r.json(); })])
+  Promise.all([fetch('../data/characters.json?v=6').then(function(r){ return r.json(); }), fetch('../data/scenes.json?v=6').then(function(r){ return r.json(); })])
     .then(function(data){
       var characters = data[0], scenes = data[1], current = characters[0].id;
       function render(){
@@ -104,16 +104,16 @@
             '<section class="detail-section"><div class="lab">喜欢的事物</div><div class="chips">'+chips(c.likes)+'</div></section>'+
             '<section class="detail-section"><div class="lab">推荐色彩</div><div class="chips">'+chips(c.palette)+'</div></section>'+
             '<section class="detail-section"><div class="lab">推荐天气</div><div class="chips">'+chips(c.weather)+'</div></section>'+
-            '<section class="detail-section"><div class="lab">Visual DNA</div><div class="chips">'+chips([dna.hair, dna.eyes, dna.hairstyle, dna.uniform, dna.expression, dna.signature])+'</div></section>'+
-            '<section class="detail-section"><div class="lab">LoRA</div><div class="char-lora"><code>'+esc(c.lora.name)+'</code> · 权重 '+esc(c.lora.weight)+'</div></section>'+
+            '<section class="detail-section"><div class="lab">视觉特征</div><div class="chips">'+chips([dna.hair, dna.eyes, dna.hairstyle, dna.uniform, dna.expression, dna.signature])+'</div></section>'+
+            '<section class="detail-section"><div class="lab">角色 LoRA</div><div class="char-lora"><code>'+esc(c.lora.name)+'</code> · 默认强度 '+esc(c.lora.weight)+'</div></section>'+
           '</div>'+
-          '<a class="btn btn-primary one-click-btn" href="prompt-builder.html?char='+encodeURIComponent(c.id)+'">✨ 一键生成 Prompt</a>'+
+          '<a class="btn btn-primary one-click-btn" href="prompt-builder.html?char='+encodeURIComponent(c.id)+'">✨ 带此角色进入导演台</a>'+
           '</div></section>'+
-          '<section class="cg-card card-info card-level-1"><div class="lab">Classic CG</div><div class="cg-title">'+esc(c.classic_cg.title)+'</div><div class="cg-story">'+esc(c.classic_cg.description)+'</div></section>'+
-          '<section><h2 class="recommend-title">推荐 Scene · '+recommendations.length+' 条</h2><div class="recommend-grid" id="recommendGrid"></div></section>';
+          '<section class="cg-card card-info card-level-1"><div class="lab">代表场景</div><div class="cg-title">'+esc(c.classic_cg.title)+'</div><div class="cg-story">'+esc(c.classic_cg.description)+'</div></section>'+
+          '<section><h2 class="recommend-title">精选推荐场景 · '+recommendations.length+' 个</h2><div class="recommend-grid" id="recommendGrid"></div></section>';
         tabs.querySelectorAll('[data-id]').forEach(function(tab){ tab.addEventListener('click', function(){ current = tab.getAttribute('data-id'); render(); }); });
         var grid = document.getElementById('recommendGrid');
-        recommendations.forEach(function(scene){ grid.appendChild(window.createSceneCard(scene, { actions: [{ label: '在 Director 打开', primary: true, href: 'prompt-builder.html?scene=' + encodeURIComponent(scene.id) }] })); });
+        recommendations.forEach(function(scene){ grid.appendChild(window.createSceneCard(scene, { actions: [{ label: '用这个场景创作', primary: true, href: 'prompt-builder.html?scene=' + encodeURIComponent(scene.id) }] })); });
       }
       render();
     })

@@ -13,13 +13,13 @@
   // 用户可见的导航项(创作流,概念已折叠)
   // Create = 全站最大入口,Director 为内部实现名,对用户隐身
   var NAV = [
-    { id:'scene',     label:'Scene Library', href:'tools/scene-explorer.html', icon:'🌸' },
-    { id:'director',  label:'Create',        href:'tools/prompt-builder.html', icon:'✨' },
-    { id:'gallery',   label:'Gallery',       href:'tools/gallery.html',        icon:'🎞' },
-    { id:'character', label:'Character',     href:'tools/character.html',      icon:'👤' },
-    { id:'style',     label:'Style',         href:'tools/style.html',          icon:'🎨' },
+    { id:'scene',     label:'场景库',         href:'tools/scene-explorer.html', icon:'🌸' },
+    { id:'director',  label:'开始创作',       href:'tools/prompt-builder.html', icon:'✨' },
+    { id:'gallery',   label:'作品',           href:'tools/gallery.html',        icon:'🎞' },
+    { id:'character', label:'角色',           href:'tools/character.html',      icon:'👤' },
+    { id:'style',     label:'风格',           href:'tools/style.html',          icon:'🎨' },
     { id:'lora',      label:'LoRA',          href:'tools/lora.html',           icon:'🧪' },
-    { id:'docs',      label:'Docs',          href:'docs/index.html',           icon:'📖' }
+    { id:'docs',      label:'文档',           href:'docs/index.html',           icon:'📖' }
   ];
 
   function depth(){

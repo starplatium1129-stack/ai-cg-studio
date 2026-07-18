@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Scene Explorer · AI CG Studio</title>
+<title>场景库 · AI CG Studio</title>
 <link rel="stylesheet" href="../css/design-system.css?v=6">
 <link rel="stylesheet" href="../css/scene-card.css?v=4">
 <script src="nav.js?v=4"></script>
@@ -89,11 +89,11 @@
 <article class="page">
   <a href="../index.html" class="nav-back">← 回首页</a>
 
-  <h1 class="title">🌸 场景探索 (Scene Explorer)</h1>
+  <h1 class="title">🌸 场景库</h1>
   <p class="subtitle">今天画什么？浏览 <strong id="sceneTotal">场景库</strong>，每个场景都是一张完整 CG 的种子。点击任一场景，进入导演工作台。</p>
 
   <div class="info-callout">
-    <strong>🎯 设计理念</strong> &nbsp;|&nbsp; 用户不是找 Prompt,是找 <strong>"今天画什么"</strong>。
+    <strong>🎯 设计理念</strong> &nbsp;|&nbsp; 先找到<strong>“今天想画什么”</strong>，再由系统组装提示词。
     每张卡片讲一个瞬间:故事、情绪、时间、地点、角色、季节 — Prompt 永远最后才出现。
   </div>
 
@@ -124,7 +124,7 @@
 
 <footer class="footer">
   <p>AI CG Studio · From Story to Scene</p>
-  <p class="muted mt-4" id="sceneFooterCount">Scene Explorer · 场景加载中</p>
+  <p class="muted mt-4" id="sceneFooterCount">场景库 · 正在加载</p>
 </footer>
 
 <script>
@@ -163,14 +163,14 @@ function init(){
   });
   renderScenes(true);
   document.getElementById('sceneTotal').textContent = SCENES.length + ' 个精选场景';
-  document.getElementById('sceneFooterCount').textContent = 'Scene Explorer · ' + SCENES.length + ' 个瞬间，等你导演';
+  document.getElementById('sceneFooterCount').textContent = '场景库 · ' + SCENES.length + ' 个瞬间，等你导演';
   document.getElementById('matureCount').textContent = '(' + SCENES.filter(function(s){return s.mature;}).length + ')';
 }
 
 // 从共享 JSON 加载场景(file:// 因 CORS 失败,需 localhost)
 function loadScenes(){
   const grid = document.getElementById('sceneGrid');
-  fetch('../data/scenes.json')
+  fetch('../data/scenes.json?v=6')
     .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
     .then(data => {
       SCENES = data;
@@ -283,7 +283,7 @@ function renderScenes(reset){
             tags +
           '</div>' +
           '<div class="ex-actions">' +
-            '<a class="btn btn-primary" href="prompt-builder.html?scene=' + encodeURIComponent(scene.id) + '&step=4&generate=1">🎬 一键生成 Prompt</a>' +
+            '<a class="btn btn-primary" href="prompt-builder.html?scene=' + encodeURIComponent(scene.id) + '&step=4&generate=1">🎬 一键生成提示词</a>' +
             '<button class="btn btn-ghost" data-detail="' + scene.id + '">📖 故事</button>' +
           '</div>';
       }
@@ -332,7 +332,7 @@ function showDetail(id){
     '<div class="story-meta">' + escHtml(charName) + ' · ' + escHtml(season||'') + ' · ' + escHtml(s.timeOfDay||'') + ' · ' + escHtml(s.emotion||'') + '</div>' +
     '<div class="story-body">' + escHtml(s.story || '') + '</div>' +
     '<div class="story-actions">' +
-      '<a class="btn btn-primary" href="prompt-builder.html?scene=' + encodeURIComponent(s.id) + '&step=4&generate=1">🎬 一键生成 Prompt</a>' +
+      '<a class="btn btn-primary" href="prompt-builder.html?scene=' + encodeURIComponent(s.id) + '&step=4&generate=1">🎬 一键生成提示词</a>' +
       '<button class="btn btn-ghost" onclick="closeStory()">关闭</button>' +
     '</div>';
   drawer.classList.add('open');

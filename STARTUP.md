@@ -10,10 +10,10 @@
 
 1. 在 Stability Matrix 中给 WebUI 保留启动参数 `--api`，建议同时固定 `--port 7860`。
 2. 控制面板填写 Stability Matrix 日志显示的 WebUI 地址，例如 `http://127.0.0.1:7860`。
-3. 点击 **Start Gateway**；若 3000 已占用，会自动选择其他空闲端口。
+3. 点击 **启动并生成分享链接**；若 3000 已占用，会自动选择其他空闲端口。
 4. 自己点击 **打开本地网站（无需 Token）**，朋友使用控制面板生成的带 Token 分享链接。
 
-> 关闭时在控制面板点击 **Stop Gateway**。`--api` 可一直保留，不影响你打开 WebUI 自带界面。
+> 关闭时在控制面板点击 **停止分享**。`--api` 可一直保留，不影响你打开 WebUI 自带界面。
 
 ---
 
@@ -91,7 +91,7 @@ AI-CG-Studio/
 │   ├── lora.html           # LoRA 管理
 │   └── ...
 ├── data/                   # 数据文件
-│   ├── scenes.json         # 200 个场景
+│   ├── scenes.json         # 206 个场景
 │   ├── characters.json     # 角色信息
 │   └── tags.json           # 标签库
 ├── scripts/                # 维护脚本
@@ -106,7 +106,7 @@ AI-CG-Studio/
 
 ### 1. 导演工作台 (`/tools/prompt-builder.html`)
 
-- 选择场景（200 个预设场景）
+- 选择场景（206 个预设场景）
 - 选择角色（宁宁 / 夏目 / 三人场景 triad）
 - 定义导演决策（情绪、镜头、光照、构图、色彩）
 - 自动生成 Stable Diffusion Prompt

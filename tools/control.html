@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AI-CG-Studio Control Panel</title>
+<title>AI CG Studio · 连接控制台</title>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   body { background:#1a1a2e; color:#e8e8f0; font-family:'Segoe UI',system-ui,sans-serif; min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:40px 20px; }
@@ -65,12 +65,12 @@
 <body>
 
 <h1>AI-CG-Studio</h1>
-<p class="subtitle">Gateway Control Panel</p>
+<p class="subtitle">SD WebUI 与朋友分享控制台</p>
 
 <div class="card">
   <div class="status-row">
-    <span id="badge" class="badge stopped"><span class="dot"></span> Stopped</span>
-    <span id="sd-badge" class="sd-badge offline">SD: checking...</span>
+    <span id="badge" class="badge stopped"><span class="dot"></span> 网关已停止</span>
+    <span id="sd-badge" class="sd-badge offline">正在检查 SD WebUI…</span>
   </div>
 
   <div class="config-block">
@@ -82,22 +82,22 @@
     <div class="config-help">端口以 Stability Matrix 启动日志显示为准；推荐启动参数：<code>--api --port 7860</code></div>
   </div>
 
-  <button id="btn" class="btn btn-start" onclick="doStart()">Start Gateway</button>
+  <button id="btn" class="btn btn-start" onclick="doStart()">启动并生成分享链接</button>
   <a id="local-open" class="btn btn-local" href="http://127.0.0.1:3000/" target="_blank" rel="noopener" style="display:none">🏠 打开本地网站（无需 Token）</a>
 
   <div id="tunnel-panel" class="tunnel-panel">
-    <div class="tunnel-label">Tunnel Status</div>
+    <div class="tunnel-label">公网通道状态</div>
     <div style="display:flex;gap:8px;align-items:stretch">
-      <div class="tunnel-url" id="tunnel-url">Connecting...</div>
-      <button class="btn-copy" onclick="copyTunnelUrl()">Copy</button>
+      <div class="tunnel-url" id="tunnel-url">正在连接…</div>
+      <button class="btn-copy" onclick="copyTunnelUrl()">复制</button>
     </div>
   </div>
 
   <div class="share-section" id="share-section" style="display:none; margin-top:20px;">
-    <div class="share-label">Share this link with your friend:</div>
+    <div class="share-label">把这个受 Token 保护的链接发给朋友：</div>
     <div class="share-link-wrap">
-      <div class="share-link empty" id="share-link">Waiting for tunnel...</div>
-      <button class="btn-copy" id="btn-copy" onclick="doCopy()">Copy</button>
+      <div class="share-link empty" id="share-link">正在等待分享链接…</div>
+      <button class="btn-copy" id="btn-copy" onclick="doCopy()">复制</button>
     </div>
     <div class="uptime" id="uptime"></div>
   </div>
@@ -105,8 +105,8 @@
 
 <div class="log-card">
   <div class="log-title">
-    <span>Logs</span>
-    <button onclick="document.getElementById('log-box').innerHTML=''">clear</button>
+    <span>运行日志</span>
+    <button onclick="document.getElementById('log-box').innerHTML=''">清空</button>
   </div>
   <div class="log-box" id="log-box"></div>
 </div>
@@ -117,18 +117,18 @@ var logIndex = 0;
 
 function fmt(s) {
   var m = Math.floor(s/60), sec = s%60;
-  if (m > 60) { var h = Math.floor(m/60); m = m%60; return h+'h '+m+'m'; }
-  return m+'m '+sec+'s';
+  if (m > 60) { var h = Math.floor(m/60); m = m%60; return h+' 小时 '+m+' 分钟'; }
+  return m+' 分 '+sec+' 秒';
 }
 
 function doCopy() {
   var link = document.getElementById('share-link').textContent;
-  if (!link || link === 'Waiting for tunnel...') return;
+  if (!link || link === '正在等待分享链接…') return;
   navigator.clipboard.writeText(link).then(function() {
     var btn = document.getElementById('btn-copy');
-    btn.textContent = 'Copied!';
+    btn.textContent = '已复制';
     btn.classList.add('copied');
-    setTimeout(function() { btn.textContent='Copy'; btn.classList.remove('copied'); }, 1500);
+    setTimeout(function() { btn.textContent='复制'; btn.classList.remove('copied'); }, 1500);
   });
 }
 
@@ -136,7 +136,7 @@ function copyTunnelUrl() {
   var url = document.getElementById('tunnel-url').textContent;
   if (url && url.includes('trycloudflare.com')) {
     navigator.clipboard.writeText(url).then(function() {
-      alert('Link copied!');
+      alert('分享链接已复制');
     });
   }
 }
@@ -158,35 +158,35 @@ function renderStatus(d) {
 
   if (d.running) {
     badge.className = 'badge running';
-    badge.innerHTML = '<span class="dot"></span> Running';
+    badge.innerHTML = '<span class="dot"></span> 网关运行中';
     btn.className = 'btn btn-stop';
-    btn.textContent = 'Stop Gateway';
+    btn.textContent = '停止分享';
     btn.onclick = doStop;
     section.style.display = 'block';
     document.getElementById('tunnel-panel').className = 'tunnel-panel' + (d.shareLink ? ' active' : '');
-    document.getElementById('tunnel-url').textContent = d.shareLink || 'Connecting...';
+    document.getElementById('tunnel-url').textContent = d.shareLink || '正在连接…';
     if (d.shareLink) {
       linkEl.textContent = d.shareLink;
       linkEl.className = 'share-link';
     } else {
-      linkEl.textContent = 'Waiting for tunnel...';
+      linkEl.textContent = '正在等待分享链接…';
       linkEl.className = 'share-link empty';
     }
-    uptimeEl.textContent = 'Uptime: ' + fmt(d.uptime);
+    uptimeEl.textContent = '已运行：' + fmt(d.uptime);
     localOpen.href = d.localLink || 'http://127.0.0.1:3000/';
     localOpen.style.display = 'flex';
   } else {
     badge.className = 'badge stopped';
-    badge.innerHTML = '<span class="dot"></span> Stopped';
+    badge.innerHTML = '<span class="dot"></span> 网关已停止';
     btn.className = 'btn btn-start';
-    btn.textContent = 'Start Gateway';
+    btn.textContent = '启动并生成分享链接';
     btn.onclick = doStart;
     section.style.display = 'none';
     document.getElementById('tunnel-panel').className = 'tunnel-panel';
     localOpen.style.display = 'none';
   }
 
-  sdBadge.textContent = d.sdOnline ? 'SD: online' : 'SD: offline';
+  sdBadge.textContent = d.sdOnline ? 'SD WebUI 已连接' : 'SD WebUI 未连接';
   sdBadge.className = 'sd-badge ' + (d.sdOnline ? 'online' : 'offline');
 }
 
@@ -234,31 +234,31 @@ function pollLogs() {
 function doStart() {
   var btn = document.getElementById('btn');
   btn.disabled = true;
-  btn.textContent = 'Starting...';
+  btn.textContent = '正在启动…';
   saveSDConfig(false).then(function(){ return fetch('/api/start', {method:'POST'}); }).then(function(r){return r.json()}).then(function(d) {
     btn.disabled = false;
-    if (!d.ok) alert(d.msg || 'Start failed');
+    if (!d.ok) alert(d.msg || '启动失败');
     // Start polling for status and logs
     pollStatus();
     pollLogs();
   }).catch(function(e) {
     btn.disabled = false;
-    btn.textContent = 'Start Gateway';
-    alert('Start failed: ' + e.message);
+    btn.textContent = '启动并生成分享链接';
+    alert('启动失败：' + e.message);
   });
 }
 
 function doStop() {
   var btn = document.getElementById('btn');
   btn.disabled = true;
-  btn.textContent = 'Stopping...';
+  btn.textContent = '正在停止…';
   fetch('/api/stop', {method:'POST'}).then(function(r){return r.json()}).then(function(d) {
     btn.disabled = false;
     pollStatus();
     pollLogs();
   }).catch(function(e) {
     btn.disabled = false;
-    alert('Stop failed: ' + e.message);
+    alert('停止失败：' + e.message);
   });
 }
 

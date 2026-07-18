@@ -103,6 +103,23 @@ for (const [id, traits] of Object.entries(expectedCharacters)) {
   const actual = new Set((character.traits || []).map((trait) => trait.tag));
   for (const trait of traits) if (!actual.has(trait)) errors.push(id + ': missing visual trait ' + trait);
   if (!character.lora || !character.lora.name) errors.push(id + ': missing LoRA binding');
+
+  const recommendations = character.lora && character.lora.recommended_scene;
+  if (!Array.isArray(recommendations) || recommendations.length === 0) {
+    errors.push(id + ': missing recommended scenes');
+    continue;
+  }
+  for (const sceneId of recommendations) {
+    const scene = scenes.find((item) => item.id === sceneId);
+    if (!scene) {
+      errors.push(id + ': recommended scene does not exist: ' + sceneId);
+      continue;
+    }
+    const sceneCharacters = Array.isArray(scene.character) ? scene.character : [];
+    if (scene.char !== id && !sceneCharacters.includes(id)) {
+      errors.push(id + ': recommended scene belongs to another character: ' + sceneId);
+    }
+  }
 }
 
 if (errors.length) {
