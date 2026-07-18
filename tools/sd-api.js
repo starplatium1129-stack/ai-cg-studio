@@ -91,9 +91,14 @@
     }).finally(function(){ bundle.cleanup(); });
   };
 
-  function loraName(raw){
+  function parseLora(raw){
     var value = String(raw || '').trim().replace(/^<lora:/i, '').replace(/>$/, '');
-    return value.split(':')[0].trim();
+    var parts = value.split(':');
+    var parsedWeight = Number(parts[1]);
+    return {
+      name: (parts[0] || '').trim(),
+      weight: Number.isFinite(parsedWeight) ? parsedWeight : null
+    };
   }
 
   function asDataUrl(image){
@@ -105,18 +110,18 @@
     options = options || {};
     var finalPrompt = prompt || '';
     var loras = options.lora ? (Array.isArray(options.lora) ? options.lora : String(options.lora).split(',')) : [];
-    var normalizedLoras = loras.map(loraName).filter(Boolean);
+    var normalizedLoras = loras.map(parseLora).filter(function(item){ return item.name; });
     var isDualCharacter = options.char === 'triad' || normalizedLoras.length > 1 ||
       (finalPrompt.includes('ayachi_nene') && finalPrompt.includes('shiki_natsume'));
-    var targetWeight = isDualCharacter ? 0.62 : (options.loraWeight != null ? options.loraWeight : 0.85);
+    var fallbackWeight = isDualCharacter ? 0.62 : (options.loraWeight != null ? options.loraWeight : 0.8);
 
-    normalizedLoras.forEach(function(name){
-      if (finalPrompt.includes('<lora:' + name)) return;
+    normalizedLoras.forEach(function(item){
+      if (finalPrompt.includes('<lora:' + item.name)) return;
       if (finalPrompt && !finalPrompt.trim().endsWith(',')) finalPrompt += ',';
-      finalPrompt += ' <lora:' + name + ':' + targetWeight + '>';
+      finalPrompt += ' <lora:' + item.name + ':' + (item.weight == null ? fallbackWeight : item.weight) + '>';
     });
 
-    var finalNegative = typeof negativePrompt === 'string' ? negativePrompt.trim() : DEFAULT_NEGATIVE;
+    var finalNegative = typeof negativePrompt === 'string' && negativePrompt.trim() ? negativePrompt.trim() : DEFAULT_NEGATIVE;
     var payload = {
       prompt: finalPrompt,
       negative_prompt: finalNegative,

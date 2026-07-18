@@ -8,6 +8,7 @@ const path = require('path');
 const dataDir = path.join(__dirname, '..', 'data');
 const sceneSource = path.join(dataDir, 'scenes.json');
 const characterSource = path.join(dataDir, 'characters.json');
+const presetSource = path.join(dataDir, 'presets.json');
 const required = [
   'id', 'title', 'category', 'story', 'char', 'character', 'lora', 'emotion',
   'season', 'time', 'timeOfDay', 'tags', 'mature', 'location', 'weather',
@@ -33,6 +34,7 @@ function readJson(source, label, errors) {
 const errors = [];
 const scenes = readJson(sceneSource, 'scenes.json', errors);
 const characters = readJson(characterSource, 'characters.json', errors);
+const presetData = readJson(presetSource, 'presets.json', errors);
 const ids = new Set();
 
 if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
@@ -67,6 +69,12 @@ if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
   }
   if (typeof scene.prompt === 'string' && scene.prompt.length < 100) {
     errors.push(label + ': prompt is too short (' + scene.prompt.length + ' < 100)');
+  }
+  if (typeof scene.prompt === 'string' && /_BREAK_/i.test(scene.prompt)) {
+    errors.push(label + ': use standalone BREAK instead of _BREAK_');
+  }
+  if (scene.char !== 'triad' && typeof scene.prompt === 'string' && /\bclosed_eyes\b/.test(scene.prompt) && /\blooking_at_viewer\b/.test(scene.prompt)) {
+    errors.push(label + ': conflicting gaze tags closed_eyes + looking_at_viewer');
   }
   if (Array.isArray(scene.character) && typeof scene.prompt === 'string') {
     for (const character of scene.character) {
@@ -122,10 +130,38 @@ for (const [id, traits] of Object.entries(expectedCharacters)) {
   }
 }
 
+const modelProfiles = presetData && Array.isArray(presetData.model_profiles) ? presetData.model_profiles : [];
+const presets = presetData && Array.isArray(presetData.presets) ? presetData.presets : [];
+if (!modelProfiles.length) errors.push('presets.json must define model_profiles');
+if (!presets.length) errors.push('presets.json must define presets');
+const profileIds = new Set();
+for (const profile of modelProfiles) {
+  const label = profile && profile.id ? profile.id : 'model profile';
+  if (!profile || !profile.id) { errors.push('model profile missing id'); continue; }
+  if (profileIds.has(profile.id)) errors.push(label + ': duplicate model profile id');
+  profileIds.add(profile.id);
+  if (!Array.isArray(profile.match) || !profile.match.length) errors.push(label + ': missing model match patterns');
+  if (!profile.quality_prefix || !profile.negative_prefix) errors.push(label + ': missing prompt prefixes');
+  if (!profile.sampler || !Number.isFinite(Number(profile.steps)) || !Number.isFinite(Number(profile.cfg))) errors.push(label + ': invalid generation defaults');
+  if (!/^\d+×\d+$/.test(profile.size || '')) errors.push(label + ': invalid output size');
+}
+for (const requiredProfile of ['wai_illustrious_v17', 'noobai_xl_11']) {
+  if (!profileIds.has(requiredProfile)) errors.push('presets.json missing model profile ' + requiredProfile);
+}
+const presetIds = new Set();
+for (const preset of presets) {
+  const label = preset && preset.id ? preset.id : 'preset';
+  if (!preset || !preset.id || !preset.name) { errors.push('preset missing id or name'); continue; }
+  if (presetIds.has(preset.id)) errors.push(label + ': duplicate preset id');
+  presetIds.add(preset.id);
+  if (!preset.sampler || !Number.isFinite(Number(preset.steps)) || !Number.isFinite(Number(preset.cfg))) errors.push(label + ': invalid generation values');
+  if (!/^\d+×\d+$/.test(preset.size || '')) errors.push(label + ': invalid output size');
+}
+
 if (errors.length) {
   console.error('Scene validation failed (' + errors.length + ' issues)');
   for (const error of errors) console.error('  - ' + error);
   process.exit(1);
 }
 
-console.log('Scene validation passed: ' + scenes.length + ' scenes, continuous IDs, complete fields and quality rules');
+console.log('Validation passed: ' + scenes.length + ' scenes, ' + modelProfiles.length + ' model profiles, ' + presets.length + ' presets');

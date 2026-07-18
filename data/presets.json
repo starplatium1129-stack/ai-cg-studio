@@ -1,32 +1,59 @@
-[
-  {
-    "id": "PRESET_ANIME_CG",
-    "name": "Galgame CG",
-    "model": "waiIllustriousSDXL_v170",
-    "sampler": "DPM++ 2M Karras",
-    "steps": 30,
-    "cfg": 5.5,
-    "resolution": "832x1216",
-    "hires": { "enabled": true, "denoise": 0.3, "upscale": 1.5 }
-  },
-  {
-    "id": "PRESET_PORTRAIT",
-    "name": "Portrait",
-    "model": "waiIllustriousSDXL_v170",
-    "sampler": "DPM++ 2M Karras",
-    "steps": 28,
-    "cfg": 5.0,
-    "resolution": "1024x1024",
-    "hires": { "enabled": true, "denoise": 0.3, "upscale": 1.5 }
-  },
-  {
-    "id": "PRESET_FULL_BODY",
-    "name": "Full Body",
-    "model": "waiIllustriousSDXL_v170",
-    "sampler": "DPM++ 2M Karras",
-    "steps": 30,
-    "cfg": 5.5,
-    "resolution": "832x1216",
-    "hires": { "enabled": true, "denoise": 0.3, "upscale": 1.5 }
-  }
-]
+{
+  "model_profiles": [
+    {
+      "id": "wai_illustrious_v17",
+      "name": "WAI Illustrious v17",
+      "match": ["waiillustrioussdxl_v170", "wai illustrious v17"],
+      "quality_prefix": "masterpiece, best quality, amazing quality, newest, absurdres",
+      "negative_prefix": "worst quality, bad quality, low quality, lowres, sketch, censor, text, watermark, logo, signature",
+      "sampler": "Euler a",
+      "scheduler": "",
+      "steps": 30,
+      "cfg": 7,
+      "size": "832×1216"
+    },
+    {
+      "id": "noobai_xl_11",
+      "name": "NoobAI XL 1.1",
+      "match": ["noobai-xl-v1.1", "noobai xl 1.1", "noobai_xl_v1.1"],
+      "quality_prefix": "masterpiece, best quality, newest, absurdres, highres",
+      "negative_prefix": "worst quality, old, early, low quality, lowres, signature, username, logo, bad hands, mutated hands",
+      "rating_safe": "safe",
+      "rating_mature": "nsfw",
+      "sampler": "Euler a",
+      "scheduler": "",
+      "steps": 28,
+      "cfg": 5.5,
+      "size": "832×1216"
+    }
+  ],
+  "presets": [
+    {
+      "id": "PRESET_ANIME_CG",
+      "name": "剧情 CG · 平衡",
+      "sampler": "Euler a",
+      "scheduler": "",
+      "steps": 30,
+      "cfg": 6,
+      "size": "832×1216"
+    },
+    {
+      "id": "PRESET_PORTRAIT",
+      "name": "人物特写",
+      "sampler": "Euler a",
+      "scheduler": "",
+      "steps": 28,
+      "cfg": 5.5,
+      "size": "1024×1024"
+    },
+    {
+      "id": "PRESET_FULL_BODY",
+      "name": "全身构图",
+      "sampler": "Euler a",
+      "scheduler": "",
+      "steps": 30,
+      "cfg": 6,
+      "size": "832×1216"
+    }
+  ]
+}

@@ -1248,7 +1248,7 @@
       "核心CG",
       "R18"
     ],
-    "prompt": "2girls, adult_women, wedding_night, warm_bedroom, candlelight, interlocked_fingers, shared_vows, intimate_atmosphere, (ayachi_nene_on_the_left, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, wedding_dress, shy_smile, teary_eyes)_BREAK_(shiki_natsume_on_the_right, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, wedding_dress, restrained_smile, blush)",
+    "prompt": "2girls, adult_women, wedding_night, warm_bedroom, candlelight, interlocked_fingers, shared_vows, intimate_atmosphere, (ayachi_nene_on_the_left, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, wedding_dress, shy_smile, teary_eyes) BREAK (shiki_natsume_on_the_right, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, wedding_dress, restrained_smile, blush)",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, deformed, bad proportions, duplicate, 3d render, photorealistic"
   },
   {
@@ -1383,7 +1383,7 @@
     "usage": [
       "协议核心"
     ],
-    "prompt": "2girls, adult_women, ceremonial_hall, luminous_heart_rate_curves, three_hands_joined, shared_vows, halo, wide_shot, epic_soft_lighting, (ayachi_nene_on_the_left, white_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, white_dress, tears_of_joy)_BREAK_(shiki_natsume_on_the_right, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, white_dress, restrained_smile, blush)",
+    "prompt": "2girls, adult_women, ceremonial_hall, luminous_heart_rate_curves, three_hands_joined, shared_vows, halo, wide_shot, epic_soft_lighting, (ayachi_nene_on_the_left, white_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, white_dress, tears_of_joy) BREAK (shiki_natsume_on_the_right, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, white_dress, restrained_smile, blush)",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, deformed, bad proportions, duplicate, 3d render, photorealistic"
   },
   {
@@ -2840,7 +2840,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, looking_back, closed_eyes, smile, shy, looking_at_viewer, pov, casual_clothes, lap_pillow, book_on_chest, gentle_smile, living_room, autumn, afternoon, clear_sky, close_up, window_light, soft_eyes, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, looking_back, closed_eyes, smile, shy, pov, casual_clothes, lap_pillow, book_on_chest, gentle_smile, living_room, autumn, afternoon, clear_sky, close_up, window_light, soft_eyes, <lora:ayachi_nene_v11:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, deformed, bad proportions, duplicate, 3d render, photorealistic, nsfw, nude, explicit"
   },
   {
@@ -6193,7 +6193,7 @@
       "核心协议",
       "壁纸级"
     ],
-    "prompt": "2girls, cafe_interior, night, soft_ambiance, (ayachi_nene_sitting_on_the_left, hair_ribbon, expressive_ahoge, floating_tea_cup, smile, blush)_BREAK_(shiki_natsume_leaning_on_the_bar_counter_on_the_right, mole_under_eye, maid_style_tactical_gear, laptop, seductive_look, smirk, blush), {intimacy_intensity}",
+    "prompt": "2girls, cafe_interior, night, soft_ambiance, (ayachi_nene_sitting_on_the_left, hair_ribbon, expressive_ahoge, floating_tea_cup, smile, blush) BREAK (shiki_natsume_leaning_on_the_bar_counter_on_the_right, mole_under_eye, maid_style_tactical_gear, laptop, seductive_look, smirk, blush), {intimacy_intensity}",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
@@ -6544,7 +6544,7 @@
       "核心协议",
       "壁纸级"
     ],
-    "prompt": "2girls, battlefield_ruins, dawn, first_light, looking_at_viewer, masterpiece_composition, (ayachi_nene_floating_in_the_air_on_the_left, hair_ribbon, expressive_ahoge, witch_costume, magic_circle, energy_particles)_BREAK_(shiki_natsume_standing_on_the_ground_on_the_right, mole_under_eye, tactical_gear, holding_energy_blade, cool_expression, rim_light), {intimacy_intensity}",
+    "prompt": "2girls, battlefield_ruins, dawn, first_light, looking_at_viewer, masterpiece_composition, (ayachi_nene_floating_in_the_air_on_the_left, hair_ribbon, expressive_ahoge, witch_costume, magic_circle, energy_particles) BREAK (shiki_natsume_standing_on_the_ground_on_the_right, mole_under_eye, tactical_gear, holding_energy_blade, cool_expression, rim_light), {intimacy_intensity}",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
@@ -6681,7 +6681,7 @@
       "核心协议",
       "壁纸级"
     ],
-    "prompt": "2girls, cozy_bedroom, bed, blanket, morning_light, soft_shadows, looking_at_viewer, extreme_closeness, intimacy, (ayachi_nene_lying_on_the_left, hair_ribbon, heart_shaped_ahoge, oversized_sweater, holding_shirt_hem, blush, shy_smile)_BREAK_(shiki_natsume_propped_up_on_elbow_on_the_right, mole_under_eye, loose_pajamas, off_shoulder, bedroom, seductive_look, subtle_smile, blush), {intimacy_intensity}",
+    "prompt": "2girls, cozy_bedroom, bed, blanket, morning_light, soft_shadows, looking_at_viewer, extreme_closeness, intimacy, (ayachi_nene_lying_on_the_left, hair_ribbon, heart_shaped_ahoge, oversized_sweater, holding_shirt_hem, blush, shy_smile) BREAK (shiki_natsume_propped_up_on_elbow_on_the_right, mole_under_eye, loose_pajamas, off_shoulder, bedroom, seductive_look, subtle_smile, blush), {intimacy_intensity}",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
@@ -6821,7 +6821,7 @@
       "核心协议",
       "R18"
     ],
-    "prompt": "2girls, naked, bed, bedroom, night, extreme_intimacy, ecstasy, sweat, messy_hair, interlocked_fingers, cloying_affection, (ayachi_nene_straddling_viewer_on_the_left, hair_ribbon, heart_shaped_ahoge, heavy_blush, passionate_look, open_mouth)_BREAK_(shiki_natsume_embracing_from_behind_on_the_right, mole_under_eye, neck_kiss, biting, closed_eyes, heavy_blush), {intimacy_intensity}",
+    "prompt": "2girls, naked, bed, bedroom, night, extreme_intimacy, ecstasy, sweat, messy_hair, interlocked_fingers, cloying_affection, (ayachi_nene_straddling_viewer_on_the_left, hair_ribbon, heart_shaped_ahoge, heavy_blush, passionate_look, open_mouth) BREAK (shiki_natsume_embracing_from_behind_on_the_right, mole_under_eye, neck_kiss, biting, closed_eyes, heavy_blush), {intimacy_intensity}",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {
@@ -6958,7 +6958,7 @@
       "核心协议",
       "绝对独占"
     ],
-    "prompt": "2girls, bed, bedroom, night, extreme_intimacy, heavy_blush, sweat, messy_hair, interlocked_fingers, cloying_affection, looking_at_viewer, (ayachi_nene_on_the_left, hair_ribbon, heart_shaped_ahoge, unbuttoned_shirt, open_mouth, passionate_look)_BREAK_(shiki_natsume_on_the_right, mole_under_eye, off_shoulder_pajamas, neck_kiss, closed_eyes, intense_blush), {intimacy_intensity}",
+    "prompt": "2girls, bed, bedroom, night, extreme_intimacy, heavy_blush, sweat, messy_hair, interlocked_fingers, cloying_affection, looking_at_viewer, (ayachi_nene_on_the_left, hair_ribbon, heart_shaped_ahoge, unbuttoned_shirt, open_mouth, passionate_look) BREAK (shiki_natsume_on_the_right, mole_under_eye, off_shoulder_pajamas, neck_kiss, closed_eyes, intense_blush), {intimacy_intensity}",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic"
   },
   {

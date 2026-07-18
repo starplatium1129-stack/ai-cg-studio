@@ -349,8 +349,16 @@
   }
   @media (max-width: 768px) {
     .director-workspace { grid-template-columns: 1fr; }
-    .col-left, .col-center, .col-right { grid-column: 1; order: 0; }
+    .col-left, .col-center, .col-right { grid-column: 1; }
+    .col-left { order: 1; }
+    .col-right { order: 2; }
+    .col-center { order: 3; }
     .col-left { flex-direction: column; }
+    .story-chip, .char-btn, .scene-cat, .scene-filter-reset, .chip-select, .tag-chip, .option, .cat-tab { min-height: 44px; }
+    .scene-filter-field select, #projectSelect, .controls-grid select, .sd-inline-options select { min-height: 44px; }
+    .scene-card { padding-bottom: var(--s-3); }
+    .scene-card .scene-direct-btn { display: inline-flex; position: static; margin-top: var(--s-2); min-height: 40px; align-items: center; }
+    .scene-story { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
   }
   .guide-bar {
     padding: var(--s-3) var(--s-4); margin-bottom: var(--s-4);
@@ -504,7 +512,7 @@
       <div class="panel" style="margin-top:var(--s-4)">
         <div class="panel-title">⚙️ 出图参数</div>
         <div class="controls-grid">
-          <div class="ctrl" style="grid-column:1/-1;margin-bottom:var(--s-2)"><label>快速预设</label><select id="presetSelect"><option value="">— 自定义 —</option></select></div>
+          <div class="ctrl" style="grid-column:1/-1;margin-bottom:var(--s-2)"><label>快速预设</label><select id="presetSelect"><option value="">— 自定义 —</option></select><small id="modelProfileHint" style="display:block;margin-top:5px;color:var(--text-muted)">连接 SD 后会自动匹配当前模型的稳定参数</small></div>
           <div class="ctrl"><label>CFG</label><select id="cfg"><option>3</option><option>4</option><option>5</option><option selected>5.5</option><option>6</option><option>7</option><option>8</option><option>9</option></select></div>
           <div class="ctrl"><label>Steps</label><select id="steps"><option>20</option><option selected>28</option><option>30</option><option>35</option><option>40</option><option>50</option></select></div>
           <div class="ctrl" style="grid-column:1/-1"><label>SD 模型</label><select id="sdModel" title="留空时使用 WebUI 当前模型"><option value="">使用 WebUI 当前模型</option></select></div>
@@ -513,7 +521,7 @@
           <div class="ctrl"><label>尺寸</label><select id="size"><option>832×1216</option><option>1024×1024</option><option>1216×832</option></select></div>
           <div class="ctrl toggle-row"><label class="switch"><input type="checkbox" id="quality" checked><span class="slider"></span></label><label for="quality">质量前缀</label></div>
           <div class="ctrl toggle-row"><label class="switch"><input type="checkbox" id="tail" checked><span class="slider"></span></label><label for="tail">镜头收束</label></div>
-          <div class="ctrl toggle-row"><label class="switch"><input type="checkbox" id="negative"><span class="slider"></span></label><label for="negative">负面</label></div>
+          <div class="ctrl toggle-row"><label class="switch"><input type="checkbox" id="negative" checked><span class="slider"></span></label><label for="negative">负面</label></div>
         </div>
       </div>
 
@@ -667,6 +675,10 @@ var CHARACTER = [];
 var TRAITS = {};
 var LORA_ID = {};
 var SCENES = [];
+var PRESETS = [];
+var MODEL_PROFILES = [];
+var LORA_META = [];
+var ACTIVE_MODEL_PROFILE = null;
 var SCENE_THEME = 'all';
 var TAGS = {};
 var TAG_CN = {};
@@ -729,6 +741,11 @@ function loadData(){
     initStorage(),
     fetch('../data/scenes.json?v=6').then(r=>r.json()).then(d=>SCENES=d).catch(e=>{console.warn('scenes load fail',e);}),
     fetch('../data/characters.json?v=6').then(r=>r.json()).then(d=>CHARACTER=d).catch(e=>{console.warn('characters load fail',e);}),
+    fetch('../data/loras.json?v=2').then(r=>r.json()).then(d=>LORA_META=Array.isArray(d)?d:[]).catch(e=>{console.warn('loras load fail',e);}),
+    fetch('../data/presets.json?v=2').then(r=>r.json()).then(d=>{
+      PRESETS = Array.isArray(d) ? d : (Array.isArray(d.presets) ? d.presets : []);
+      MODEL_PROFILES = Array.isArray(d && d.model_profiles) ? d.model_profiles : [];
+    }).catch(e=>{console.warn('presets load fail',e);}),
     fetch('../data/tags.json').then(r=>r.json()).then(d=>{
       TAGS = { clothes:[], pose:[], expression:[], scene_env:[], lighting_tag:[], details:[], camera:[] };
       TAG_CN = {};
@@ -741,6 +758,7 @@ function loadData(){
     }).catch(e=>{console.warn('tags load fail',e);})
   ]).then(()=>{
     DATA_READY = true;
+    initPresetSelect();
     const grid = document.getElementById('sceneGrid');
     if (grid && SCENES.length === 0) { grid.innerHTML = '<div class="empty-state">⚠️ 数据加载失败，请通过 localhost 访问，不要直接打开本地文件。</div>'; }
     try { init(); } catch(e){ console.error('init error', e); }
@@ -1542,6 +1560,75 @@ function switchTab(name, el) {
 // 空格/连字符 → 下划线 规范化 (统一处理所有标签)
 function norm(t){ return t.split(',').map(function(s){ return s.trim().replace(/[\s-]+/g,'_'); }).join(', '); }
 
+function sceneTemplateText(scene) {
+  if (!scene || !scene.prompt) return '';
+  var sceneTags = new Set((scene.tags || []).map(function(tag){ return String(tag).toLowerCase().replace(/[\s-]+/g, '_'); }));
+  return String(scene.prompt)
+    .replace(/<lora:[^>]+>/gi, '')
+    .replace(/_BREAK_/gi, ' BREAK ')
+    .split(',')
+    .map(function(token){ return token.trim(); })
+    .filter(Boolean)
+    .filter(function(token){
+      var key = token.toLowerCase().replace(/[\s-]+/g, '_');
+      return !sceneTags.has(key) || state.manualTags.has(key);
+    })
+    .join(', ');
+}
+
+function loraMetaByName(name) {
+  return (LORA_META || []).find(function(item){ return item && item.name === name; }) || null;
+}
+
+function resolveLoraSpecs(character, scene) {
+  var raw = scene && scene.lora ? scene.lora : (LORA_ID[character] || '');
+  var refs = String(raw).split(',').map(function(value){
+    var clean = value.trim().replace(/^<lora:/i, '').replace(/>$/, '');
+    var parts = clean.split(':');
+    return { name:(parts[0] || '').trim(), explicit:Number(parts[1]) };
+  }).filter(function(item){ return item.name; });
+  var dual = character === 'triad' || refs.length > 1;
+  var complex = scene && (scene.category === '战斗' || scene.category === 'Active_Sync_Scenes');
+  var wide = state.selections.shot === 'wide' || state.manualTags.has('full_body') || state.manualTags.has('wide_shot');
+  var portrait = state.selections.shot === 'close' || state.selections.shot === 'detail';
+  return refs.map(function(ref){
+    var meta = loraMetaByName(ref.name);
+    var recommended = meta && meta.recommended_weight ? meta.recommended_weight : {};
+    var base = meta && meta.strength && Number(meta.strength.default);
+    if (!Number.isFinite(base)) base = Number.isFinite(ref.explicit) ? ref.explicit : 0.8;
+    var weight = dual ? 0.62 : complex ? (Number(recommended.complex_scene) || 0.7) : wide ? (Number(recommended.fullbody) || 0.75) : portrait ? (Number(recommended.portrait) || 0.85) : base;
+    return { name:ref.name, weight:Number(Number(weight).toFixed(2)) };
+  });
+}
+
+function loraSpecText(spec) { return spec.name + ':' + spec.weight; }
+
+function mergeTokenText() {
+  var seen = new Set();
+  var output = [];
+  Array.from(arguments).forEach(function(text){
+    String(text || '').split(',').map(function(token){ return token.trim(); }).filter(Boolean).forEach(function(token){
+      var key = token.toLowerCase().replace(/[\s-]+/g, '_');
+      if (!seen.has(key)) { seen.add(key); output.push(token); }
+    });
+  });
+  return output.join(', ');
+}
+
+function dedupePromptParts(parts) {
+  var seen = new Set();
+  return parts.map(function(part){
+    var scope = part.cls === 'n' ? 'neg:' : 'pos:';
+    var tokens = part.text.split(',').map(function(token){ return token.trim(); }).filter(Boolean).filter(function(token){
+      var key = scope + token.toLowerCase().replace(/[\s\/]+/g, '_');
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+    return { cls:part.cls, text:tokens.join(', ') };
+  }).filter(function(part){ return part.text.length > 0; });
+}
+
 // ========== PROMPT BUILD ==========
 function buildParts() {
   const quality = document.getElementById('quality').checked;
@@ -1551,29 +1638,23 @@ function buildParts() {
   const char = state.char;
   const parts = [];
   const activeScene = SCENES.find(sc => sc.id === state.__sceneId);
-  const sceneTemplate = activeScene && activeScene.category === 'Active_Sync_Scenes' ? activeScene.prompt : '';
-  const sceneNegative = activeScene && activeScene.negative ? activeScene.negative : NEGATIVE;
+  const sceneTemplate = sceneTemplateText(activeScene);
+  const sceneNegative = mergeTokenText(currentModelNegativePrefix(), activeScene && activeScene.negative ? activeScene.negative : NEGATIVE);
   const charLine = PROMPT_MAP.character[char];
   const traitTags = (TRAITS[char] || []).filter(t => state.manualTags.has(t.tag)).map(t => t.tag);
-  if (quality) parts.push({ cls:'q', text:'masterpiece, best_quality, very_aesthetic, absurdres' });
-  if (sceneTemplate) {
-    parts.push({ cls:'t', text: sceneTemplate });
-  } else {
-    parts.push({ cls:'c', text: norm(traitTags.length ? charLine + ', ' + traitTags.join(', ') : charLine) });
-  }
+  const loraSpecs = resolveLoraSpecs(char, activeScene);
+  if (quality) parts.push({ cls:'q', text:currentQualityPrefix(activeScene) });
+  parts.push({ cls:'c', text: norm(traitTags.length ? charLine + ', ' + traitTags.join(', ') : charLine) });
+  if (sceneTemplate && !state.concise) parts.push({ cls:'t', text: sceneTemplate });
   // 精简模式:只保留 quality + character(+traits) + top5 manualTags + LoRA + neg,砍掉中间 5 模块
   if (state.concise) {
     if (state.manualTags.size) {
       const top = Array.from(state.manualTags).slice(0, 5);
       parts.push({ cls:'t', text: norm(top.join(', ')) });
     }
-    // LoRA 注入：triad 时拆分为独立标签
-  var loraRaw = LORA_ID[char] || '';
-  var loraTags = loraRaw.split(',').map(function(s){ return s.trim(); }).filter(Boolean);
-  loraTags.forEach(function(l){ parts.push({ cls:'l', text: '<lora:' + l + '>' }); });
-    if (neg) parts.push({ cls:'n', text: '[NEG] ' + norm(sceneNegative) });
-    const seen = new Set();
-    return parts.map(p => { const toks = p.text.split(',').map(t=>t.trim()).filter(Boolean).filter(t => { const k=t.toLowerCase().replace(/[\s\/]+/g,'_'); if(seen.has(k))return false; seen.add(k); return true; }); return { cls:p.cls, text:toks.join(', ') }; }).filter(p=>p.text.length>0);
+    loraSpecs.forEach(function(spec){ parts.push({ cls:'l', text:'<lora:' + loraSpecText(spec) + '>' }); });
+    if (neg) parts.push({ cls:'n', text:'[NEG] ' + sceneNegative });
+    return dedupePromptParts(parts);
   }
   if (state.colorMood) {
     const m = COLOR_MOODS.find(x => x.id === state.colorMood);
@@ -1599,24 +1680,9 @@ function buildParts() {
     });
     if (tailToks.length) parts.push({ cls:'c', text: norm(tailToks.join(', ')) });
   }
-  // LoRA 注入：triad 时拆分为独立标签
-  var loraRaw = LORA_ID[char] || '';
-  var loraTags = loraRaw.split(',').map(function(s){ return s.trim(); }).filter(Boolean);
-  loraTags.forEach(function(l){ parts.push({ cls:'l', text: '<lora:' + l + '>' }); });
-  if (neg) parts.push({ cls:'n', text: '[NEG] ' + norm(sceneNegative) });
-
-  // 跨模块去重: normalize 后比对 token,保留首次出现位置(顺序不变)
-  const seen = new Set();
-  const deduped = parts.map(p => {
-    const tokens = p.text.split(',').map(t => t.trim()).filter(Boolean).filter(t => {
-      const k = t.toLowerCase().replace(/[\s\/]+/g,'_');
-      if (seen.has(k)) return false;
-      seen.add(k);
-      return true;
-    });
-    return { cls: p.cls, text: tokens.join(', ') };
-  }).filter(p => p.text.length > 0);
-  return deduped;
+  loraSpecs.forEach(function(spec){ parts.push({ cls:'l', text:'<lora:' + loraSpecText(spec) + '>' }); });
+  if (neg) parts.push({ cls:'n', text:'[NEG] ' + sceneNegative });
+  return dedupePromptParts(parts);
 }
 
 function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
@@ -1648,6 +1714,10 @@ function updateLivePreview() {
 
   document.getElementById('preview').innerHTML = colorizeParts(parts);
   document.getElementById('preview').dataset.raw = parts.map(p => p.text).join('\n');
+  var finalPrompt = document.getElementById('finalPrompt');
+  if (finalPrompt && document.body.classList.contains('step-4') && finalPrompt.style.display !== 'none') {
+    finalPrompt.innerHTML = colorizeParts(parts);
+  }
   // token 计数 + 进度条 (SD1.5 CLIP 窗口 ~77)
   const tokCount = parts.reduce((n,p)=> n + p.text.split(',').filter(t=>t.trim()).length, 0);
   const pct = Math.min(100, Math.round(tokCount/77*100));
@@ -1702,6 +1772,8 @@ var _tagRe = new RegExp('\\b(' + UNDERSCORE_TAGS.sort(function(a,b){return b.len
 
 function sanitizePrompt(raw) {
   return raw
+    // A1111/ReForge 分区关键字必须是独立 BREAK，不能写成 Danbooru 标签
+    .replace(/_BREAK_/gi, ' BREAK ')
     // 已知多词标签 → 下划线死锁
     .replace(_tagRe, function(m){ return m.replace(/\s+/g, '_'); })
     // 统一分隔符: 分号/竖线 → 逗号
@@ -1795,6 +1867,77 @@ function ensureSelectValue(id, value){
   select.value = wanted;
 }
 
+function normalizeModelName(value){
+  return String(value || '').toLowerCase().replace(/\.(safetensors|ckpt)\b/g, '').replace(/\s*\[[a-f0-9]+\]\s*$/i, '').replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
+function findModelProfile(modelName){
+  var normalized = normalizeModelName(modelName);
+  if (!normalized) return null;
+  return (MODEL_PROFILES || []).find(function(profile){
+    return (profile.match || []).some(function(pattern){
+      var needle = normalizeModelName(pattern);
+      return needle && normalized.indexOf(needle) !== -1;
+    });
+  }) || null;
+}
+
+function effectiveModelName(){
+  var selected = document.getElementById('sdModel');
+  return selected && selected.value ? selected.value : (_sdCapabilities && _sdCapabilities.currentModel ? _sdCapabilities.currentModel : '');
+}
+
+function currentQualityPrefix(scene){
+  var profile = ACTIVE_MODEL_PROFILE || findModelProfile(effectiveModelName());
+  var prefix = profile && profile.quality_prefix ? profile.quality_prefix : 'masterpiece, best_quality, very_aesthetic, absurdres';
+  if (profile) {
+    var rating = scene && scene.mature ? profile.rating_mature : profile.rating_safe;
+    if (rating) prefix = mergeTokenText(prefix, rating);
+  }
+  return prefix;
+}
+
+function currentModelNegativePrefix(){
+  var profile = ACTIVE_MODEL_PROFILE || findModelProfile(effectiveModelName());
+  return profile && profile.negative_prefix ? profile.negative_prefix : '';
+}
+
+function setSelectValueInsensitive(id, value){
+  var select = document.getElementById(id);
+  if (!select) return;
+  var wanted = String(value == null ? '' : value);
+  var match = Array.from(select.options).find(function(option){ return option.value.toLowerCase() === wanted.toLowerCase(); });
+  if (match) select.value = match.value;
+  else ensureSelectValue(id, wanted);
+}
+
+function applyModelProfile(modelName, force){
+  var profile = findModelProfile(modelName);
+  ACTIVE_MODEL_PROFILE = profile;
+  var hint = document.getElementById('modelProfileHint');
+  if (!profile) {
+    if (hint) hint.textContent = '未识别模型：保留你的自定义参数';
+    updateLivePreview();
+    return false;
+  }
+  if (hint) hint.textContent = '已匹配 ' + profile.name + ' · ' + profile.sampler + ' · ' + profile.steps + ' steps · CFG ' + profile.cfg;
+  var settings = readSDSettings();
+  var signature = normalizeModelName(modelName);
+  if (!force && settings.profileModel === signature) {
+    updateLivePreview();
+    return true;
+  }
+  if (profile.cfg != null) setSelectValueInsensitive('cfg', profile.cfg);
+  if (profile.steps != null) setSelectValueInsensitive('steps', profile.steps);
+  if (profile.sampler != null) setSelectValueInsensitive('sampler', profile.sampler);
+  if (profile.scheduler != null) setSelectValueInsensitive('scheduler', profile.scheduler);
+  if (profile.size) setSelectValueInsensitive('size', profile.size);
+  saveSDSettings();
+  updateLivePreview();
+  flash('🎯 已为 ' + profile.name + ' 匹配稳定参数');
+  return true;
+}
+
 function saveSDSettings(){
   var settings = {
     checkpoint: document.getElementById('sdModel') ? document.getElementById('sdModel').value : '',
@@ -1802,7 +1945,15 @@ function saveSDSettings(){
     scheduler: document.getElementById('scheduler') ? document.getElementById('scheduler').value : '',
     hiresUpscaler: document.getElementById('sdHiresUpscaler') ? document.getElementById('sdHiresUpscaler').value : '',
     hiresFix: !!(document.getElementById('sdHiresFix') && document.getElementById('sdHiresFix').checked),
-    seedLock: !!(document.getElementById('sdSeedLock') && document.getElementById('sdSeedLock').checked)
+    seedLock: !!(document.getElementById('sdSeedLock') && document.getElementById('sdSeedLock').checked),
+    cfg: document.getElementById('cfg') ? document.getElementById('cfg').value : '',
+    steps: document.getElementById('steps') ? document.getElementById('steps').value : '',
+    size: document.getElementById('size') ? document.getElementById('size').value : '',
+    quality: !!(document.getElementById('quality') && document.getElementById('quality').checked),
+    tail: !!(document.getElementById('tail') && document.getElementById('tail').checked),
+    negative: !!(document.getElementById('negative') && document.getElementById('negative').checked),
+    profileModel: normalizeModelName(effectiveModelName()),
+    profileId: ACTIVE_MODEL_PROFILE ? ACTIVE_MODEL_PROFILE.id : ''
   };
   try { localStorage.setItem(SD_SETTINGS_KEY, JSON.stringify(settings)); } catch(e) {}
 }
@@ -1813,14 +1964,23 @@ function initSDSettings(){
   if (settings.sampler) ensureSelectValue('sampler', settings.sampler);
   if (settings.scheduler != null) ensureSelectValue('scheduler', settings.scheduler);
   if (settings.hiresUpscaler) ensureSelectValue('sdHiresUpscaler', settings.hiresUpscaler);
+  if (settings.cfg) ensureSelectValue('cfg', settings.cfg);
+  if (settings.steps) ensureSelectValue('steps', settings.steps);
+  if (settings.size) ensureSelectValue('size', settings.size);
   var hires = document.getElementById('sdHiresFix');
   var seed = document.getElementById('sdSeedLock');
   if (hires && settings.hiresFix != null) hires.checked = !!settings.hiresFix;
   if (seed && settings.seedLock != null) seed.checked = !!settings.seedLock;
-  ['sdModel','sampler','scheduler','sdHiresUpscaler','sdHiresFix','sdSeedLock'].forEach(function(id){
+  ['quality','tail','negative'].forEach(function(id){
+    var input = document.getElementById(id);
+    if (input && settings[id] != null) input.checked = !!settings[id];
+  });
+  ['sdModel','sampler','scheduler','sdHiresUpscaler','sdHiresFix','sdSeedLock','cfg','steps','size','quality','tail','negative'].forEach(function(id){
     var element = document.getElementById(id);
     if (element) element.addEventListener('change', saveSDSettings);
   });
+  var model = document.getElementById('sdModel');
+  if (model) model.addEventListener('change', function(){ applyModelProfile(effectiveModelName(), true); });
 }
 
 function replaceSDSelect(id, items, preferred, placeholder){
@@ -1845,11 +2005,12 @@ function replaceSDSelect(id, items, preferred, placeholder){
     option.textContent = label;
     select.appendChild(option);
   });
-  if (values.indexOf(preferred) !== -1) select.value = preferred;
+  var preferredMatch = values.find(function(value){ return String(value).toLowerCase() === String(preferred || '').toLowerCase(); });
+  if (preferredMatch != null) select.value = preferredMatch;
   else if (id === 'sampler') {
-    select.value = values.find(function(value){ return value === 'DPM++ 2M'; }) || values[0] || '';
+    select.value = values.find(function(value){ return value.toLowerCase() === 'euler a'; }) || values[0] || '';
   } else if (id === 'scheduler') {
-    select.value = values.find(function(value){ return value === 'Karras'; }) || values[0] || '';
+    select.value = values.find(function(value){ return value.toLowerCase() === 'karras'; }) || values[0] || '';
   } else {
     select.value = '';
   }
@@ -1874,17 +2035,26 @@ function populateSDCapabilities(capabilities){
   replaceSDSelect('sampler', capabilities.samplers.map(function(item){ return item.name || item.label || ''; }), currentSampler, '');
   replaceSDSelect('scheduler', capabilities.schedulers.map(function(item){ return item.name || item.label || ''; }), currentScheduler, '自动');
   replaceSDSelect('sdHiresUpscaler', capabilities.upscalers.map(function(item){ return item.name || item.model_name || ''; }), currentUpscaler, '');
-  saveSDSettings();
+  applyModelProfile(currentModelChoice || capabilities.currentModel, false);
+}
+
+function detectGateway(){
+  return fetch('/api/health', { cache:'no-store' }).then(function(response){
+    if (!response.ok) return null;
+    return response.json();
+  }).then(function(data){
+    window.AICS_GATEWAY = !!(data && data.ok && data.gateway && data.app === 'ai-cg-studio');
+    return window.AICS_GATEWAY;
+  }).catch(function(){ window.AICS_GATEWAY = false; return false; });
 }
 
 function checkSDStatus(){
   var badge = document.getElementById('sd-status-badge');
   if (!badge) return Promise.resolve(false);
-  window.AICS_GATEWAY = window.location.port === '3000';
   badge.textContent = '⏳ 检测中…';
   badge.style.color = '';
   badge.setAttribute('aria-busy', 'true');
-  return getSDConnector().getCapabilities().then(function(capabilities){
+  return detectGateway().then(function(){ return getSDConnector().getCapabilities(); }).then(function(capabilities){
     _sdCapabilities = capabilities;
     window.__sdCapabilities = capabilities;
     populateSDCapabilities(capabilities);
@@ -1998,7 +2168,7 @@ function callSDGenerate(){
   var seed = -1;
   if (document.getElementById('sdSeedLock').checked && window.__lastSeed__ != null) seed = window.__lastSeed__;
   var currentScene = SCENES.find(function(scene){ return scene.id === state.__sceneId; });
-  var lora = currentScene && currentScene.lora ? currentScene.lora : (LORA_ID[state.char] || '');
+  var lora = resolveLoraSpecs(state.char, currentScene).map(loraSpecText).join(', ');
   prompt = prompt.replace(/<lora:[^>]+>/g, '').replace(/,\s*,/g, ',').replace(/^,\s*/, '').replace(/,\s*$/, '').trim();
   var hiresEnabled = document.getElementById('sdHiresFix').checked;
   var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
@@ -2049,7 +2219,7 @@ function callSDGenerate(){
     image.alt = 'Stable Diffusion 生成图片';
     slot.replaceChildren(image);
     saveActions.style.display = 'flex';
-    if (window.location.port === '3000' || window.AICS_GATEWAY) {
+    if (window.AICS_GATEWAY) {
       fetch('/api/save-backup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -2082,7 +2252,7 @@ function saveGeneratedImage(){
     return AICGImageStore.put(blob);
   }).then(function(imageId){
     var rating = {face:0,expression:0,composition:0,hands:0,atmosphere:0};
-    return saveHistoryWithRating(rating, false, '', '', imageId);
+    return saveHistoryWithRating(rating, false, '', '', imageId, true);
   }).then(function(){
     flash('💾 图片已保存到历史');
     if (button) button.textContent = '✓ 已保存';
@@ -2203,9 +2373,16 @@ function migrateHistory(list){
 }
 function loadHistory(){return _cachedHistory;}
 function nextVersion(history,scene,character){const same=history.filter(h=>h.scene===scene&&h.character===character);if(!same.length)return{version:1,parent_id:null};const latest=same.reduce((a,b)=>(b.version||0)>(a.version||0)?b:a);return{version:(latest.version||0)+1,parent_id:latest.id};}
-function baseEntry(){
-  const sel=state.selections,sceneTitle=(window.__scenes__||[]).find(s=>s.id===state.__sceneId);var seed=Number(window.__lastSeed__);if(!Number.isFinite(seed))seed=Math.floor(Math.random()*4294967295);seed=Math.max(0,Math.min(4294967295,Math.floor(seed)));
-  return {id:Date.now(),timestamp:Date.now(),scene:state.__sceneId||null,sceneTitle:sceneTitle?sceneTitle.title:null,character:state.char,lora:LORA_ID[state.char]||null,emotion:sel.emotion.slice(),shot:sel.shot,lighting:sel.lighting,composition:sel.composition,colorMood:state.colorMood,story:state.story,prompt:getPlainPrompt(),negative:getPlainNegative(),cfg:document.getElementById('cfg')?.value||'',steps:document.getElementById('steps')?.value||'',sampler:document.getElementById('sampler')?.value||'',scheduler:document.getElementById('scheduler')?.value||'',checkpoint:document.getElementById('sdModel')?.value||'',hires_fix:!!document.getElementById('sdHiresFix')?.checked,hires_upscaler:document.getElementById('sdHiresUpscaler')?.value||'',size:document.getElementById('size')?.value||'',seed:seed,rating:{face:0,expression:0,composition:0,hands:0,atmosphere:0},favorite:false,notes:'',image_id:'',image_url:'',version:1,parent_id:null,project:state.__projectId||''};
+function baseEntry(useActual){
+  const sel=state.selections,sceneTitle=(window.__scenes__||[]).find(s=>s.id===state.__sceneId);
+  var result=useActual&&_sdLastResult?_sdLastResult:null,payload=result&&result.payload?result.payload:null,info=result&&result.info?result.info:{};
+  var seed=Number(payload&&payload.seed>=0?payload.seed:(result&&result.seed!=null?result.seed:window.__lastSeed__));if(!Number.isFinite(seed))seed=Math.floor(Math.random()*4294967295);seed=Math.max(0,Math.min(4294967295,Math.floor(seed)));
+  var prompt=payload&&payload.prompt?payload.prompt:getPlainPrompt(),negative=payload&&typeof payload.negative_prompt==='string'?payload.negative_prompt:getPlainNegative();
+  var loras=[];String(prompt||'').replace(/<lora:([^>]+)>/gi,function(_,value){loras.push(value);return _;});
+  var width=payload&&payload.width,height=payload&&payload.height,size=width&&height?(width+'×'+height):(document.getElementById('size')?.value||'');
+  var checkpoint=payload&&payload.override_settings&&payload.override_settings.sd_model_checkpoint?payload.override_settings.sd_model_checkpoint:(info.sd_model_name||document.getElementById('sdModel')?.value||'');
+  var actual=result?{model_name:info.sd_model_name||'',model_hash:info.sd_model_hash||'',all_seeds:Array.isArray(result.seeds)?result.seeds:[],infotext:Array.isArray(result.infotexts)&&result.infotexts.length?result.infotexts[0]:'',parameters:result.parameters||{},payload:payload}:null;
+  return {id:Date.now(),timestamp:Date.now(),scene:state.__sceneId||null,sceneTitle:sceneTitle?sceneTitle.title:null,character:state.char,lora:loras.length?loras.join(', '):(resolveLoraSpecs(state.char,sceneTitle).map(loraSpecText).join(', ')||null),emotion:sel.emotion.slice(),shot:sel.shot,lighting:sel.lighting,composition:sel.composition,colorMood:state.colorMood,story:state.story,prompt:prompt,negative:negative,cfg:payload?payload.cfg_scale:(document.getElementById('cfg')?.value||''),steps:payload?payload.steps:(document.getElementById('steps')?.value||''),sampler:payload?payload.sampler_name:(document.getElementById('sampler')?.value||''),scheduler:payload?(payload.scheduler||''):(document.getElementById('scheduler')?.value||''),checkpoint:checkpoint,hires_fix:payload?!!payload.enable_hr:!!document.getElementById('sdHiresFix')?.checked,hires_upscaler:payload?(payload.hr_upscaler||''):(document.getElementById('sdHiresUpscaler')?.value||''),size:size,seed:seed,actual:actual,rating:{face:0,expression:0,composition:0,hands:0,atmosphere:0},favorite:false,notes:'',image_id:'',image_url:'',version:1,parent_id:null,project:state.__projectId||''};
 }
 
 function esc(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
@@ -2266,7 +2443,7 @@ async function commitHistoryEntry(entry){
   cleanupImages(evicted,kept).catch(function(e){flash('记录已保存，旧图片清理失败');});
 }
 async function saveHistory(){const entry=baseEntry(),v=nextVersion(state.history,entry.scene,entry.character);entry.version=v.version;entry.parent_id=v.parent_id;try{await commitHistoryEntry(entry);flash('💾 已保存');}catch(e){flash('保存失败，请检查浏览器存储空间');}}
-async function saveHistoryWithRating(rating,favorite,notes,imageUrl,imageId){const entry=baseEntry(),v=nextVersion(state.history,entry.scene,entry.character);entry.version=v.version;entry.parent_id=v.parent_id;entry.rating=rating;entry.favorite=!!favorite;entry.notes=notes||'';entry.image_id=imageId||'';entry.image_url=normalizeImageUrl(imageUrl);await commitHistoryEntry(entry);}
+async function saveHistoryWithRating(rating,favorite,notes,imageUrl,imageId,useActual){const entry=baseEntry(!!useActual),v=nextVersion(state.history,entry.scene,entry.character);entry.version=v.version;entry.parent_id=v.parent_id;entry.rating=rating;entry.favorite=!!favorite;entry.notes=notes||'';entry.image_id=imageId||'';entry.image_url=normalizeImageUrl(imageUrl);await commitHistoryEntry(entry);}
 function renderHistory(){const list=document.getElementById('historyList');document.getElementById('hisCount').textContent=state.history.length;if(!state.history.length){list.innerHTML='<div class="history-empty">尚无记录。每次点击「保存」生成一条快照。</div>';return;}list.innerHTML=state.history.map(h=>{const avg=h.rating?Math.round(((Number(h.rating.face)||0)+(Number(h.rating.expression)||0)+(Number(h.rating.composition)||0)+(Number(h.rating.hands)||0)+(Number(h.rating.atmosphere)||0))/5):0;const title=escapeHtml(h.sceneTitle||h.scene||'未命名场景');const character=escapeHtml(h.character==='natsume'?'夏目':h.character==='nene'?'宁宁':h.character==='both'?'双人':h.character||'—');const version=escapeHtml(h.version||1);const seed=escapeHtml(h.seed||'—');const id=Number(h.id);const ratingText=avg?avg+'/5':'未评分';return `<div class="history-item"><div class="history-main"><div class="history-text" title="${escapeHtml(h.prompt||'')}">${escapeHtml(h.prompt||'')}</div><div class="history-meta"><span class="primary">${title}</span><span class="sep" aria-hidden="true">·</span><span>${character}</span><span class="sep" aria-hidden="true">·</span><span>v${version}</span><span class="sep" aria-hidden="true">·</span><span>seed ${seed}</span></div></div><div class="history-side"><div class="history-rating${avg?' rated':''}" aria-label="${avg?'平均评分 '+avg+' 分':'未评分'}"><span class="star" aria-hidden="true">★</span><span>${ratingText}</span>${h.favorite?'<span class="favorite" title="已收藏" aria-label="已收藏">♥</span>':''}</div><div class="history-actions"><button type="button" class="history-action primary" onclick="loadHistoryId(${id})">载入</button><button type="button" class="history-action" onclick="copyHistoryId(${id})">复制</button><button type="button" class="history-action delete" onclick="deleteHistoryId(${id})" title="删除记录" aria-label="删除记录">×</button></div></div></div>`;}).join('');}
 function loadHistoryId(id){const h=state.history.find(x=>x.id===id);if(h)restoreFromEntry(h,false);} function copyHistoryId(id){const h=state.history.find(x=>x.id===id);if(h)navigator.clipboard.writeText(h.prompt||'').then(()=>flash('📋 已复制'));}
 async function deleteHistoryId(id){var removed=state.history.filter(h=>h.id===id);var entry=removed[0];var prjId=entry&&entry.project;var kept=state.history.filter(h=>h.id!==id);_cachedHistory=kept;state.history=kept;AICKVStore.set(HIS_KEY,kept).catch(function(e){flash('删除失败');return;});renderHistory();if(prjId)removeHistoryFromProject(prjId,id);cleanupImages(removed,kept).catch(function(e){flash('记录已删除，图片清理失败');});}
@@ -2382,15 +2559,11 @@ document.getElementById('obNext').addEventListener('click', nextOnboard);
 document.getElementById('obSkip').addEventListener('click', endOnboard);
 window.addEventListener('resize', function () { if (document.body.hasAttribute('data-ob-active')) renderOnboard(); });
 /* preset select */
-const PRESETS = [
-  { id: 'PRESET_ANIME_CG', name: 'Galgame CG', cfg: '5.5', steps: '30', sampler: 'DPM++ 2M', scheduler: 'Karras', size: '832×1216' },
-  { id: 'PRESET_PORTRAIT', name: 'Portrait', cfg: '5', steps: '28', sampler: 'DPM++ 2M', scheduler: 'Karras', size: '1024×1024' },
-  { id: 'PRESET_FULL_BODY', name: 'Full Body', cfg: '5.5', steps: '30', sampler: 'DPM++ 2M', scheduler: 'Karras', size: '832×1216' },
-];
 function initPresetSelect() {
   const sel = document.getElementById('presetSelect'); if (!sel) return;
+  sel.innerHTML = '<option value="">— 自定义 —</option>';
   PRESETS.forEach(p => { const o = document.createElement('option'); o.value = p.id; o.textContent = p.name; sel.appendChild(o); });
-  sel.addEventListener('change', function () { applyPreset(this.value); });
+  sel.onchange = function () { applyPreset(this.value); };
 }
 function applyPreset(id) {
   const p = PRESETS.find(x => x.id === id); if (!p) return;
@@ -2401,7 +2574,6 @@ function applyPreset(id) {
   document.getElementById('size').value = p.size;
   saveSDSettings(); flash('🎚 已应用预设: ' + p.name); updateLivePreview();
 }
-initPresetSelect();
 setTimeout(startOnboard, 800);
 window.__bootProbe = { stateHistLen: (state.history||[]).length };
 

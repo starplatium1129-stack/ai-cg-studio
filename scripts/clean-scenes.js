@@ -72,14 +72,16 @@ function extractPromptTokens(prompt) {
 }
 
 function normalizePromptToken(token) {
+  const breakMarker = 'AICSBREAKTOKEN';
+  token = token.replace(/_BREAK_/gi, breakMarker).replace(/\s+BREAK\s+/gi, breakMarker);
   // 将空格分隔的 multi-word token 转为 snake_case，保留权重语法
   const weightMatch = token.match(/^(\(+)?(.+?)(:[\d.]+)?(\)+)?$/);
-  if (!weightMatch) return token.replace(/\s+/g, '_');
+  if (!weightMatch) return token.replace(/\s+/g, '_').replace(new RegExp(breakMarker, 'g'), ' BREAK ');
   const [, pre, core, weight, post] = weightMatch;
   let normalized = core.replace(/[\s-]+/g, '_');
   // 应用标签映射到 prompt token
   if (TAG_MAP[normalized]) normalized = TAG_MAP[normalized];
-  return (pre || '') + normalized + (weight || '') + (post || '');
+  return ((pre || '') + normalized + (weight || '') + (post || '')).replace(new RegExp(breakMarker, 'g'), ' BREAK ');
 }
 
 // ── 主逻辑 ──
@@ -130,6 +132,7 @@ const cleaned = raw.map(scene => {
   // 5. 标准化 prompt 中的 multi-word token
   let prompt = scene.prompt || '';
   if (prompt) {
+    prompt = prompt.replace(/_BREAK_/gi, ' BREAK ');
     const tokens = prompt.split(',').map(t => t.trim()).filter(Boolean);
     const normalized = tokens.map(normalizePromptToken);
     const newPrompt = normalized.join(', ');

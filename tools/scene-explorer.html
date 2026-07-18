@@ -81,8 +81,11 @@
   @media (max-width: 768px) {
     .scene-grid { grid-template-columns: 1fr; }
     .page { padding: var(--s-4) var(--s-3); }
-    .ex-decision { grid-template-columns: 1fr 1fr 1fr; }
+    .ex-decision, .ex-tags { display: none; }
     .scene-facet-grid { grid-template-columns:1fr 1fr; }
+    .scene-cat, .scene-reset, .scene-filter select, .scene-search-clear, .ex-actions .btn, .story-actions .btn { min-height: 44px; }
+    .scene-card .scene-story { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
+    .ex-actions { margin-top: var(--s-3); }
   }
   @media (max-width: 420px) {
     .scene-facet-grid { grid-template-columns:1fr; }

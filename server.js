@@ -111,6 +111,11 @@ app.post('/api/save-backup', express.json({ limit: '22mb' }), function (req, res
   }
 });
 
+// ─── 网关能力检测（不依赖固定端口，控制面板换端口后仍可识别）───
+app.get('/api/health', function (req, res) {
+  res.json({ ok: true, app: 'ai-cg-studio', gateway: true, port: Number(PORT) });
+});
+
 // ─── Tunnel 状态接口（已受 Token 中间件保护，且不再回传 Token）───
 app.get('/api/tunnel-status', function (req, res) {
   res.json({ url: tunnelUrl });
