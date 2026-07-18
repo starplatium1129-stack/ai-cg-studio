@@ -142,7 +142,7 @@
     }
     if (options.enableHires) {
       payload.enable_hr = true;
-      payload.hr_scale = options.hiresScale != null ? options.hiresScale : 2;
+      payload.hr_scale = options.hiresScale != null ? options.hiresScale : 1.5;
       payload.hr_upscaler = options.hiresUpscaler || 'Latent';
       payload.hr_second_pass_steps = options.hiresSteps != null ? options.hiresSteps : 14;
       payload.denoising_strength = options.denoisingStrength != null ? options.denoisingStrength : 0.35;

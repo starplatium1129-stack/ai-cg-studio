@@ -9,8 +9,8 @@
       "sampler": "Euler a",
       "scheduler": "",
       "steps": 30,
-      "cfg": 7,
-      "size": "832×1216"
+      "cfg": 6,
+      "size": "1024×1344"
     },
     {
       "id": "noobai_xl_11",
