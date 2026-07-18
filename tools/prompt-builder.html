@@ -87,13 +87,25 @@
   .traits-row:empty { margin-top: 0; }
 
   /* Scene library (compact list) */
-  .scene-search { width: 100%; padding: var(--s-2) var(--s-3); background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-md); color: var(--text-primary); font-size: 0.85rem; outline: none; margin-bottom: var(--s-2); }
+  .scene-search-wrap { position: relative; margin-bottom: var(--s-2); }
+  .scene-search { width: 100%; padding: var(--s-2) 34px var(--s-2) var(--s-3); background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-md); color: var(--text-primary); font-size: 0.85rem; outline: none; }
   .scene-search:focus { border-color: var(--accent); }
   .scene-search::placeholder { color: var(--text-muted); }
+  .scene-search-clear { position:absolute; top:50%; right:7px; transform:translateY(-50%); width:25px; height:25px; border:0; border-radius:50%; background:transparent; color:var(--text-muted); cursor:pointer; font-size:.95rem; }
+  .scene-search-clear:hover { color:var(--accent); background:var(--accent-soft); }
+  .scene-filter-summary { display:flex; align-items:center; justify-content:space-between; gap:var(--s-2); margin-bottom:var(--s-2); }
+  .scene-result-count { color:var(--text-muted); font-size:.72rem; }
+  .scene-result-count strong { color:var(--accent); }
+  .scene-filter-label { color:var(--text-muted); font-size:.67rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; margin-bottom:5px; }
+  .scene-filter-reset { border:0; background:transparent; color:var(--text-muted); cursor:pointer; font:600 .7rem var(--font-sans); }
+  .scene-filter-reset:hover { color:var(--accent); }
   .scene-cats { display: flex; flex-wrap: wrap; gap: var(--s-1); margin-bottom: var(--s-2); }
-  .scene-filter-row { display:flex; align-items:center; gap:var(--s-2); margin-bottom:var(--s-2); }
-  .scene-filter-row label { font-size:0.78rem; color:var(--text-muted); }
-  #sceneCharFilter { background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-sm); color:var(--text-primary); padding:4px 8px; font-size:0.82rem; outline:none; flex:1; }
+  .scene-filter-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(105px,1fr)); gap:var(--s-2); margin-bottom:var(--s-2); }
+  .scene-filter-field { display:grid; gap:3px; color:var(--text-muted); font-size:.67rem; }
+  .scene-filter-field select { width:100%; min-width:0; background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-sm); color:var(--text-primary); padding:5px 7px; font-size:.76rem; outline:none; }
+  .scene-filter-field select:focus { border-color:var(--accent); }
+  .scene-mature-row { display:flex; align-items:center; justify-content:flex-end; margin-bottom:var(--s-2); }
+  .scene-mature-row label { display:flex; align-items:center; gap:5px; color:var(--text-muted); cursor:pointer; font-size:.72rem; }
   .scene-cat { appearance:none; padding: 3px 10px; border: 1px solid var(--border-soft); background: var(--bg-surface); color: var(--text-secondary); border-radius: 16px; cursor: pointer; font: 500 .72rem var(--font-sans); transition: all var(--t-fast); }
   .scene-cat:hover { border-color: var(--accent); color: var(--accent); }
   .scene-cat.active { background: var(--accent); color: var(--text-inverse); border-color: var(--accent); }
@@ -202,14 +214,59 @@
   /* History */
   .history-wrap { margin-top: var(--s-6); }
   .history-list { display: flex; flex-direction: column; gap: var(--s-2); margin-top: var(--s-3); }
-  .history-item { background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: var(--s-3); display: flex; align-items: center; gap: var(--s-3); }
-  .history-main { flex: 1; min-width: 0; }
-  .history-text { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .history-meta { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; }
-  .history-actions { display: flex; gap: var(--s-1); flex-shrink: 0; }
-  .history-actions .btn { padding: var(--s-1) var(--s-2); font-size: 0.75rem; }
-  .star-row { display: inline-flex; gap: 1px; font-size: 0.7rem; color: var(--text-muted); }
-  .star-row .on { color: var(--mood-joy); }
+  .history-item {
+    display: flex; align-items: center; gap: var(--s-5);
+    background: var(--bg-surface); border: 1px solid var(--border-soft);
+    border-radius: var(--r-lg); padding: var(--s-3) var(--s-4);
+    transition: border-color var(--t-fast), background var(--t-fast);
+  }
+  .history-item:hover { border-color: var(--border-strong); background: var(--bg-elevated); }
+  .history-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
+  .history-text {
+    font-family: var(--font-mono); font-size: 0.78rem; line-height: 1.65;
+    color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .history-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; font-size: 0.72rem; color: var(--text-muted); }
+  .history-meta .primary { color: var(--text-secondary); font-weight: 600; }
+  .history-meta .sep { color: var(--border-strong); }
+  .history-side { flex: 0 0 auto; display: flex; align-items: center; gap: var(--s-3); }
+  .history-rating {
+    min-width: 70px; display: inline-flex; align-items: center; justify-content: flex-end; gap: 5px;
+    color: var(--text-muted); font-size: 0.72rem; white-space: nowrap;
+  }
+  .history-rating .star { color: var(--border-strong); font-size: 0.82rem; }
+  .history-rating.rated .star { color: var(--mood-joy); }
+  .history-rating .favorite { color: var(--accent); }
+  .history-actions {
+    display: inline-flex; flex-shrink: 0; overflow: hidden;
+    border: 1px solid var(--border-soft); border-radius: var(--r-md);
+    background: var(--bg-deep);
+  }
+  .history-action {
+    min-height: 32px; padding: 0 11px; border: 0; border-right: 1px solid var(--border-soft);
+    background: transparent; color: var(--text-secondary); cursor: pointer;
+    font: 600 0.75rem var(--font-sans); transition: color var(--t-fast), background var(--t-fast);
+  }
+  .history-action:last-child { border-right: 0; }
+  .history-action:hover { color: var(--accent); background: var(--accent-soft); }
+  .history-action:focus-visible { position: relative; z-index: 1; outline: 2px solid var(--accent); outline-offset: -2px; }
+  .history-action.primary { color: var(--accent); background: var(--accent-soft); }
+  .history-action.primary:hover { color: var(--text-inverse); background: var(--accent); }
+  .history-action.delete { width: 32px; padding: 0; color: var(--text-muted); font-size: 1rem; }
+  .history-action.delete:hover { color: var(--danger); background: rgba(239,83,80,0.1); }
+
+  @media (max-width: 680px) {
+    .history-item { align-items: stretch; flex-direction: column; gap: var(--s-2); padding: var(--s-3); }
+    .history-side { width: 100%; justify-content: space-between; }
+    .history-rating { justify-content: flex-start; }
+  }
+
+  @media (max-width: 400px) {
+    .history-side { align-items: stretch; flex-direction: column; }
+    .history-actions { width: 100%; }
+    .history-action { flex: 1; }
+    .history-action.delete { flex: 0 0 34px; width: 34px; }
+  }
 
   /* Training / negative */
   .collapsible { border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: var(--s-3); margin-top: var(--s-4); }
@@ -396,19 +453,21 @@
       </div>
 
       <div class="panel step-panel" id="stepScene">
-        <div class="panel-title">🎞 Scene 库</div>
+        <div class="panel-title">🎞 Scene 库 <span id="sceneCountBadge" style="font-weight:500;color:var(--text-muted)"></span></div>
         <label class="sr-only" for="sceneSearch">搜索场景</label>
-        <input type="search" class="scene-search" placeholder="搜索 ID / 场景 / 情绪 / 标签…" id="sceneSearch" oninput="filterScenes(this.value)">
-        <div class="scene-cats" id="sceneCats"></div>
-        <div class="scene-filter-row">
-          <label for="sceneCharFilter">角色</label>
-          <select id="sceneCharFilter" onchange="filterScenes(document.getElementById('sceneSearch').value)">
-            <option value="all">全部</option>
-            <option value="nene">🌸 宁宁</option>
-            <option value="natsume">🍂 夏目</option>
-          </select>
-          <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="builderShowMature" style="accent-color:var(--accent)"> 成人内容</label>
+        <div class="scene-search-wrap">
+          <input type="search" class="scene-search" placeholder="试试：雨夜、海边、浴衣、害羞、sc122" id="sceneSearch" oninput="filterScenes(this.value)">
+          <button class="scene-search-clear" type="button" onclick="clearSceneSearch()" aria-label="清空场景搜索" title="清空搜索">×</button>
         </div>
+        <div class="scene-filter-summary"><span class="scene-result-count" id="sceneResultCount" role="status" aria-live="polite">正在整理场景…</span><button class="scene-filter-reset" type="button" onclick="resetSceneFilters()">重置筛选</button></div>
+        <div class="scene-filter-label">主题</div>
+        <div class="scene-cats" id="sceneCats"></div>
+        <div class="scene-filter-grid">
+          <label class="scene-filter-field">角色<select id="sceneCharFilter" onchange="renderScenes()"><option value="all">全部角色</option><option value="nene">🌸 宁宁</option><option value="natsume">🍂 夏目</option><option value="triad">🌸🍂 双人</option></select></label>
+          <label class="scene-filter-field">季节<select id="sceneSeasonFilter" onchange="renderScenes()"><option value="all">全部季节</option><option value="春">🌸 春</option><option value="夏">☀️ 夏</option><option value="秋">🍂 秋</option><option value="冬">❄️ 冬</option><option value="不限">不限季节</option></select></label>
+          <label class="scene-filter-field">系列<select id="sceneSeriesFilter" onchange="renderScenes()"><option value="all">全部系列</option><option value="after">After Story</option><option value="fanwork">同人</option><option value="active">Active Sync</option></select></label>
+        </div>
+        <div class="scene-mature-row"><label><input type="checkbox" id="builderShowMature" style="accent-color:var(--accent)"> 显示成人内容</label></div>
         <div class="scene-list" id="sceneGrid"></div>
       </div>
 
@@ -608,7 +667,7 @@ var CHARACTER = [];
 var TRAITS = {};
 var LORA_ID = {};
 var SCENES = [];
-var SCENE_CAT = '全部';
+var SCENE_THEME = 'all';
 var TAGS = {};
 var TAG_CN = {};
 var CURRENT_STEP = 1;
@@ -617,6 +676,17 @@ var BUILDER_SCENE_LIMIT = 30;
 var _maturePreference = localStorage.getItem('aics_show_mature');
 var _localOwner = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(window.location.hostname);
 var SHOW_MATURE_SCENES = _maturePreference == null ? _localOwner : _maturePreference === '1';
+var SCENE_THEME_DEFS = [
+  { id:'all', label:'全部', icon:'✦', categories:[] },
+  { id:'romance', label:'恋爱', icon:'♡', categories:['恋爱'] },
+  { id:'daily', label:'日常', icon:'☕', categories:['日常'] },
+  { id:'intimate', label:'亲密', icon:'🌙', categories:['亲密','R15'] },
+  { id:'school', label:'校园', icon:'🎓', categories:['校园'] },
+  { id:'travel', label:'旅行', icon:'🧳', categories:['旅行'] },
+  { id:'festival', label:'节日', icon:'🎐', categories:['祭典・节日'] },
+  { id:'story', label:'剧情', icon:'🎬', categories:['战斗','Active Sync'] },
+  { id:'fanwork', label:'同人', icon:'✧', categories:['同人'] }
+];
 var _cachedHistory = [];
 var _cachedProjects = [];
 var toastTimer;
@@ -650,6 +720,7 @@ function loadData(){
       var raw = Array.isArray(histRaw) ? histRaw : [];
       var res = migrateHistory(raw);
       _cachedHistory = res.list;
+      state.history = res.list;
       _cachedProjects = Array.isArray(prjRaw) ? prjRaw : [];
       if(res.changed) AICKVStore.set(HIS_KEY, res.list);
     }).catch(function(e){console.warn('storage init fail, fallback to memory',e);});
@@ -832,7 +903,7 @@ function init() {
       }
       SHOW_MATURE_SCENES = this.checked;
       localStorage.setItem('aics_show_mature', SHOW_MATURE_SCENES ? '1' : '0');
-      renderScenes();
+      renderSceneCats(); renderScenes();
     });
   }
   // URL params: ?mood=xxx -> step 4 select mood; ?scene=xxx -> load scene by id; ?regen=ID / ?variant=ID -> restore from history
@@ -979,7 +1050,7 @@ function setChar(c) {
     b.style.borderColor = on ? 'var(--accent)' : 'var(--border-soft)';
   });
   highlightCharScenes(c);
-  const _scf=document.getElementById('sceneCharFilter'); if(_scf){_scf.value=c==='triad'?'all':c;}
+  const _scf=document.getElementById('sceneCharFilter'); if(_scf){_scf.value=c;}
   filterScenes(document.getElementById('sceneSearch').value);
   renderTraits(); renderManualTags();
   updateLivePreview();
@@ -1112,16 +1183,54 @@ function renderSceneMini() {
       <div class="scene-mini-story">${s.story}</div>
     </div>`).join('');
 }
+function scenePrimaryCategory(scene) {
+  var category = scene.category || '其他';
+  if (category === 'Active_Sync_Scenes') return 'Active Sync';
+  return category.split('/')[0];
+}
+function sceneThemeDef(id) {
+  return SCENE_THEME_DEFS.find(function(def){ return def.id === id; }) || SCENE_THEME_DEFS[0];
+}
+function sceneMatchesTheme(scene, themeId) {
+  if (themeId === 'all') return true;
+  return sceneThemeDef(themeId).categories.indexOf(scenePrimaryCategory(scene)) >= 0;
+}
+function sceneThemeLabel(scene) {
+  var match = SCENE_THEME_DEFS.find(function(def){ return def.id !== 'all' && sceneMatchesTheme(scene, def.id); });
+  return match ? match.label : '其他';
+}
+function sceneMatchesSeries(scene, series) {
+  var category = scene.category || '';
+  if (series === 'after') return /After_Story/i.test(category);
+  if (series === 'fanwork') return /同人/.test(category);
+  if (series === 'active') return category === 'Active_Sync_Scenes';
+  return true;
+}
+function sceneCharacterLabel(scene) {
+  var value = scene.char || '';
+  if (value === 'nene' || value === 'ayachi_nene') return '宁宁';
+  if (value === 'natsume' || value === 'shiki_natsume') return '夏目';
+  if (value === 'triad') return '双人';
+  return value;
+}
+function sceneTimeLabel(value) {
+  return ({morning:'清晨',afternoon:'午后',sunset:'黄昏',night:'夜晚',late_night:'深夜',dawn:'黎明',evening:'夜晚',all_day:'全天'})[value] || value || '';
+}
+function sceneSearchText(scene) {
+  return [scene.id,scene.title,scene.story,scene.emotion,scene.char,sceneCharacterLabel(scene),scene.category,scenePrimaryCategory(scene),scene.season,scene.timeOfDay,sceneTimeLabel(scene.timeOfDay),scene.location,scene.weather,scene.camera,scene.lighting].concat(scene.tags||[]).join(' ').toLowerCase();
+}
 function renderSceneCats() {
-  const cats = ['全部'].concat(Array.from(new Set(SCENES.map(s => s.category || '其他'))));
   const el = document.getElementById('sceneCats'); el.innerHTML = '';
-  cats.forEach(c => {
+  const available = SCENES.filter(function(scene){ return SHOW_MATURE_SCENES || !scene.mature; });
+  SCENE_THEME_DEFS.forEach(function(def){
     const b = document.createElement('button');
     b.type = 'button';
-    b.className = 'scene-cat' + (c === SCENE_CAT ? ' active' : '');
-    b.textContent = c;
-    b.setAttribute('aria-pressed', c === SCENE_CAT ? 'true' : 'false');
-    b.onclick = () => { SCENE_CAT = c; renderSceneCats(); renderScenes(); };
+    b.dataset.sceneTheme = def.id;
+    b.className = 'scene-cat' + (def.id === SCENE_THEME ? ' active' : '');
+    const count = available.filter(function(scene){ return sceneMatchesTheme(scene, def.id); }).length;
+    b.textContent = def.icon + ' ' + def.label + ' ' + count;
+    b.setAttribute('aria-pressed', def.id === SCENE_THEME ? 'true' : 'false');
+    b.onclick = function(){ SCENE_THEME = def.id; renderSceneCats(); renderScenes(); };
     el.appendChild(b);
   });
   var _cb=document.getElementById('sceneCountBadge'); if(_cb) _cb.textContent = '· '+SCENES.length+' Scenes';
@@ -1131,14 +1240,22 @@ function renderScenes() {
   grid.innerHTML = '';
   const fragment = document.createDocumentFragment();
   const q = (document.getElementById('sceneSearch')?.value || '').trim().toLowerCase();
+  const terms = q.split(/\s+/).filter(Boolean);
   const charSel = (document.getElementById('sceneCharFilter') || {}).value || 'all';
+  const seasonSel = (document.getElementById('sceneSeasonFilter') || {}).value || 'all';
+  const seriesSel = (document.getElementById('sceneSeriesFilter') || {}).value || 'all';
   const matches = SCENES.map((s, idx) => ({s, idx})).filter(({s}) => {
     if (!SHOW_MATURE_SCENES && s.mature) return false;
-    const catOk = SCENE_CAT === '全部' || (s.category || '其他') === SCENE_CAT;
-    const charOk = charSel === 'all' || s.char === charSel || s.char === (charSel === 'nene' ? 'ayachi_nene' : 'shiki_natsume') || (Array.isArray(s.character) && s.character.includes(charSel));
-    const hay = [s.id,s.title,s.story,s.emotion,s.char,s.category,s.location,s.weather,s.camera,s.lighting].concat(s.tags||[]).join(' ').toLowerCase();
-    return catOk && charOk && (!q || hay.includes(q));
+    const themeOk = sceneMatchesTheme(s, SCENE_THEME);
+    const charAlias = ({nene:'ayachi_nene',natsume:'shiki_natsume',triad:'triad'})[charSel] || charSel;
+    const charOk = charSel === 'all' || s.char === charSel || s.char === charAlias || (Array.isArray(s.character) && s.character.includes(charSel));
+    const seasonOk = seasonSel === 'all' || s.season === seasonSel;
+    const seriesOk = sceneMatchesSeries(s, seriesSel);
+    const hay = sceneSearchText(s);
+    return themeOk && charOk && seasonOk && seriesOk && terms.every(function(term){ return hay.includes(term); });
   });
+  const countEl = document.getElementById('sceneResultCount');
+  if (countEl) countEl.innerHTML = '找到 <strong>' + matches.length + '</strong> 个场景';
   matches.slice(0, BUILDER_SCENE_LIMIT).forEach(({s, idx}) => {
     const card = document.createElement('div'); card.className = 'scene-card'; card.dataset.idx = idx; card.dataset.category = s.category || '日常';
     const season = s.season ? ({春:'🌸',夏:'☀️',秋:'🍂',冬:'❄️'}[s.season]||'') + s.season : '';
@@ -1148,8 +1265,8 @@ function renderScenes() {
       <div class="scene-story">${escapeHtml(s.story)}</div>
       <div class="scene-meta">
         <span class="scene-tag emotion">${escapeHtml(s.emotion)}</span>
-        <span class="scene-tag char-color">${escapeHtml(s.char)}</span>
-        ${s.category ? `<span class="scene-tag">${escapeHtml(s.category)}</span>` : ''}
+        <span class="scene-tag char-color">${escapeHtml(sceneCharacterLabel(s))}</span>
+        ${s.category ? `<span class="scene-tag">${escapeHtml(sceneThemeLabel(s))}</span>` : ''}
         ${season ? `<span class="scene-tag">${escapeHtml(season)}</span>` : ''}
         ${tod ? `<span class="scene-tag">${escapeHtml(tod)}</span>` : ''}
         ${s.tags.slice(0,3).map(t => `<span class="scene-tag">${escapeHtml(t)}</span>`).join('')}
@@ -1176,6 +1293,17 @@ function renderScenes() {
 function filterScenes(q) {
   clearTimeout(SCENE_FILTER_TIMER);
   SCENE_FILTER_TIMER = setTimeout(renderScenes, 180);
+}
+function clearSceneSearch() {
+  var input = document.getElementById('sceneSearch');
+  if (input) { input.value = ''; input.focus(); }
+  renderScenes();
+}
+function resetSceneFilters() {
+  SCENE_THEME = 'all';
+  var search = document.getElementById('sceneSearch'); if (search) search.value = '';
+  ['sceneCharFilter','sceneSeasonFilter','sceneSeriesFilter'].forEach(function(id){ var select=document.getElementById(id); if(select) select.value='all'; });
+  renderSceneCats(); renderScenes();
 }
 window._loadSceneByIdx = function(idx) { if (SCENES[idx]) loadScene(SCENES[idx]); };
 // scene tag → 推荐光照 (scene-aware)
@@ -1491,7 +1619,7 @@ function buildParts() {
   return deduped;
 }
 
-function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 function checkArtDirection(text) {
   const lower = text.toLowerCase();
   return BANNED_TAGS.filter(t => lower.includes(t.toLowerCase()) || lower.includes(t.toLowerCase().replace(/\s/g,'_')));
@@ -2139,7 +2267,7 @@ async function commitHistoryEntry(entry){
 }
 async function saveHistory(){const entry=baseEntry(),v=nextVersion(state.history,entry.scene,entry.character);entry.version=v.version;entry.parent_id=v.parent_id;try{await commitHistoryEntry(entry);flash('💾 已保存');}catch(e){flash('保存失败，请检查浏览器存储空间');}}
 async function saveHistoryWithRating(rating,favorite,notes,imageUrl,imageId){const entry=baseEntry(),v=nextVersion(state.history,entry.scene,entry.character);entry.version=v.version;entry.parent_id=v.parent_id;entry.rating=rating;entry.favorite=!!favorite;entry.notes=notes||'';entry.image_id=imageId||'';entry.image_url=normalizeImageUrl(imageUrl);await commitHistoryEntry(entry);}
-function renderHistory(){const list=document.getElementById('historyList');document.getElementById('hisCount').textContent=state.history.length;if(!state.history.length){list.innerHTML='<div class="history-empty">尚无记录。每次点击「保存」生成一条快照。</div>';return;}list.innerHTML=state.history.map(h=>{const avg=h.rating?Math.round((h.rating.face+h.rating.expression+h.rating.composition+h.rating.hands+h.rating.atmosphere)/5):0;return `<div class="history-item"><div class="history-text" title="${escapeHtml(h.prompt)}">${escapeHtml(h.prompt)}</div><div class="history-meta">${h.sceneTitle||h.scene||'—'} · ${h.character} · v${h.version||1} · seed ${h.seed||'—'}</div><div class="history-meta">${'★'.repeat(avg)}${'☆'.repeat(5-avg)} ${h.favorite?'💜':''}</div><div class="history-actions"><button onclick="loadHistoryId(${h.id})">载入</button><button onclick="copyHistoryId(${h.id})">复制</button><button onclick="deleteHistoryId(${h.id})">×</button></div></div>`;}).join('');}
+function renderHistory(){const list=document.getElementById('historyList');document.getElementById('hisCount').textContent=state.history.length;if(!state.history.length){list.innerHTML='<div class="history-empty">尚无记录。每次点击「保存」生成一条快照。</div>';return;}list.innerHTML=state.history.map(h=>{const avg=h.rating?Math.round(((Number(h.rating.face)||0)+(Number(h.rating.expression)||0)+(Number(h.rating.composition)||0)+(Number(h.rating.hands)||0)+(Number(h.rating.atmosphere)||0))/5):0;const title=escapeHtml(h.sceneTitle||h.scene||'未命名场景');const character=escapeHtml(h.character==='natsume'?'夏目':h.character==='nene'?'宁宁':h.character==='both'?'双人':h.character||'—');const version=escapeHtml(h.version||1);const seed=escapeHtml(h.seed||'—');const id=Number(h.id);const ratingText=avg?avg+'/5':'未评分';return `<div class="history-item"><div class="history-main"><div class="history-text" title="${escapeHtml(h.prompt||'')}">${escapeHtml(h.prompt||'')}</div><div class="history-meta"><span class="primary">${title}</span><span class="sep" aria-hidden="true">·</span><span>${character}</span><span class="sep" aria-hidden="true">·</span><span>v${version}</span><span class="sep" aria-hidden="true">·</span><span>seed ${seed}</span></div></div><div class="history-side"><div class="history-rating${avg?' rated':''}" aria-label="${avg?'平均评分 '+avg+' 分':'未评分'}"><span class="star" aria-hidden="true">★</span><span>${ratingText}</span>${h.favorite?'<span class="favorite" title="已收藏" aria-label="已收藏">♥</span>':''}</div><div class="history-actions"><button type="button" class="history-action primary" onclick="loadHistoryId(${id})">载入</button><button type="button" class="history-action" onclick="copyHistoryId(${id})">复制</button><button type="button" class="history-action delete" onclick="deleteHistoryId(${id})" title="删除记录" aria-label="删除记录">×</button></div></div></div>`;}).join('');}
 function loadHistoryId(id){const h=state.history.find(x=>x.id===id);if(h)restoreFromEntry(h,false);} function copyHistoryId(id){const h=state.history.find(x=>x.id===id);if(h)navigator.clipboard.writeText(h.prompt||'').then(()=>flash('📋 已复制'));}
 async function deleteHistoryId(id){var removed=state.history.filter(h=>h.id===id);var entry=removed[0];var prjId=entry&&entry.project;var kept=state.history.filter(h=>h.id!==id);_cachedHistory=kept;state.history=kept;AICKVStore.set(HIS_KEY,kept).catch(function(e){flash('删除失败');return;});renderHistory();if(prjId)removeHistoryFromProject(prjId,id);cleanupImages(removed,kept).catch(function(e){flash('记录已删除，图片清理失败');});}
 

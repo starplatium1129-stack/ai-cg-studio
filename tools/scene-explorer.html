@@ -20,20 +20,29 @@
   .info-callout strong { color: var(--accent); }
 
   /* Search + cats */
-  .scene-search { width: 100%; padding: var(--s-3) var(--s-4); background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-lg); color: var(--text-primary); font-size: 0.95rem; outline: none; margin-bottom: var(--s-4); transition: border-color var(--t-fast); }
+  .scene-search-wrap { position: relative; margin-bottom: var(--s-4); }
+  .scene-search { width: 100%; padding: var(--s-3) 42px var(--s-3) var(--s-4); background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-lg); color: var(--text-primary); font-size: 0.95rem; outline: none; transition: border-color var(--t-fast); }
   .scene-search:focus { border-color: var(--accent); }
   .scene-search::placeholder { color: var(--text-muted); }
+  .scene-search-clear { position:absolute; top:50%; right:9px; transform:translateY(-50%); width:28px; height:28px; border:0; border-radius:50%; background:transparent; color:var(--text-muted); cursor:pointer; font-size:1rem; }
+  .scene-search-clear:hover { color:var(--accent); background:var(--accent-soft); }
   .scene-toolbar { display: grid; gap: var(--s-3); margin-bottom: var(--s-5); }
   .scene-filter-label { font-size: .72rem; color: var(--text-muted); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-bottom: var(--s-2); }
   .scene-cats { display: flex; flex-wrap: wrap; gap: var(--s-2); }
   .scene-cat { appearance: none; padding: 6px 16px; border: 1px solid var(--border-soft); background: var(--bg-surface); color: var(--text-secondary); border-radius: 20px; cursor: pointer; font: 500 .85rem var(--font-sans); transition: all var(--t-fast); }
   .scene-cat:hover { border-color: var(--accent); color: var(--accent); }
   .scene-cat.active { background: var(--accent); color: var(--text-inverse); border-color: var(--accent); }
+  .scene-facet-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:var(--s-3); }
+  .scene-filter-field { display:grid; gap:5px; color:var(--text-muted); font-size:.72rem; font-weight:600; }
+  .scene-filter-field select { width:100%; min-width:0; padding:8px 10px; background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-md); color:var(--text-primary); font:500 .82rem var(--font-sans); outline:none; }
+  .scene-filter-field select:focus { border-color:var(--accent); }
   .scene-filter-meta { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); flex-wrap: wrap; padding: var(--s-3); border: 1px solid var(--border-soft); border-radius: var(--r-md); background: var(--bg-surface); }
   .mature-toggle { display: inline-flex; align-items: center; gap: var(--s-2); color: var(--text-secondary); cursor: pointer; font-size: .85rem; }
   .mature-toggle input { accent-color: var(--accent); width: 17px; height: 17px; }
   .scene-count { color: var(--text-secondary); font-size: .82rem; }
   .scene-count strong { color: var(--accent); }
+  .scene-reset { border:0; background:transparent; color:var(--text-muted); cursor:pointer; font:600 .78rem var(--font-sans); }
+  .scene-reset:hover { color:var(--accent); }
 
   /* Grid */
   .scene-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--s-4); }
@@ -73,6 +82,10 @@
     .scene-grid { grid-template-columns: 1fr; }
     .page { padding: var(--s-4) var(--s-3); }
     .ex-decision { grid-template-columns: 1fr 1fr 1fr; }
+    .scene-facet-grid { grid-template-columns:1fr 1fr; }
+  }
+  @media (max-width: 420px) {
+    .scene-facet-grid { grid-template-columns:1fr; }
   }
 </style>
 </head>
@@ -98,19 +111,25 @@
   </div>
 
   <label class="sr-only" for="sceneSearch">搜索场景</label>
-  <input type="search" class="scene-search" placeholder="🔍 搜索 ID / 场景 / 情绪 / 故事 / 标签..." id="sceneSearch" oninput="filterScenes(this.value)">
+  <div class="scene-search-wrap">
+    <input type="search" class="scene-search" placeholder="🔍 试试：夏目、雨夜、海边、浴衣、害羞、sc122" id="sceneSearch" oninput="filterScenes(this.value)">
+    <button class="scene-search-clear" type="button" onclick="clearSceneSearch()" aria-label="清空场景搜索" title="清空搜索">×</button>
+  </div>
   <div class="scene-toolbar">
     <div>
       <div class="scene-filter-label">主题</div>
       <div class="scene-cats" id="sceneCats" aria-label="按主题筛选"></div>
     </div>
-    <div>
-      <div class="scene-filter-label">系列</div>
-      <div class="scene-cats" id="sceneSeries" aria-label="按系列筛选"></div>
+    <div class="scene-facet-grid">
+      <label class="scene-filter-field">角色<select id="sceneCharacter" onchange="filterScenes()"><option value="all">全部角色</option><option value="nene">🌸 宁宁</option><option value="natsume">🍂 夏目</option><option value="triad">🌸🍂 双人</option></select></label>
+      <label class="scene-filter-field">季节<select id="sceneSeason" onchange="filterScenes()"><option value="all">全部季节</option><option value="春">🌸 春</option><option value="夏">☀️ 夏</option><option value="秋">🍂 秋</option><option value="冬">❄️ 冬</option><option value="不限">不限季节</option></select></label>
+      <label class="scene-filter-field">时段<select id="sceneTime" onchange="filterScenes()"><option value="all">全部时段</option><option value="morning">清晨</option><option value="afternoon">午后</option><option value="sunset">黄昏</option><option value="night">夜晚与深夜</option><option value="dawn">黎明</option></select></label>
+      <label class="scene-filter-field">系列<select id="sceneSeries" onchange="filterScenes()"><option value="all">全部系列</option><option value="after">After Story</option><option value="fanwork">同人</option><option value="active">Active Sync</option></select></label>
     </div>
     <div class="scene-filter-meta">
       <label class="mature-toggle"><input type="checkbox" id="showMature"> 显示成人内容 <span id="matureCount"></span></label>
       <span class="scene-count" id="sceneCount" role="status" aria-live="polite"></span>
+      <button class="scene-reset" type="button" onclick="resetSceneFilters()">重置全部筛选</button>
     </div>
   </div>
   <div class="scene-grid" id="sceneGrid"></div>
@@ -134,18 +153,27 @@
    ============================================================ */
 
 let SCENES = [];
-let SCENE_CAT = '全部';
-let SCENE_SERIES = '全部';
+let SCENE_THEME = 'all';
 let SCENE_VISIBLE = 24;
 let FILTER_TIMER = null;
 const SCENE_PAGE_SIZE = 24;
 const MATURE_KEY = 'aics_show_mature';
 const LOCAL_OWNER = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(window.location.hostname);
 let SHOW_MATURE = localStorage.getItem(MATURE_KEY) == null ? LOCAL_OWNER : localStorage.getItem(MATURE_KEY) === '1';
+const SCENE_THEME_DEFS = [
+  { id:'all', label:'全部', icon:'✦', categories:[] },
+  { id:'romance', label:'恋爱', icon:'♡', categories:['恋爱'] },
+  { id:'daily', label:'日常', icon:'☕', categories:['日常'] },
+  { id:'intimate', label:'亲密', icon:'🌙', categories:['亲密','R15'] },
+  { id:'school', label:'校园', icon:'🎓', categories:['校园'] },
+  { id:'travel', label:'旅行', icon:'🧳', categories:['旅行'] },
+  { id:'festival', label:'节日', icon:'🎐', categories:['祭典・节日'] },
+  { id:'story', label:'剧情', icon:'🎬', categories:['战斗','Active Sync'] },
+  { id:'fanwork', label:'同人', icon:'✧', categories:['同人'] }
+];
 
 function init(){
   renderSceneCats();
-  renderSceneSeries();
   var matureToggle = document.getElementById('showMature');
   matureToggle.checked = SHOW_MATURE;
   matureToggle.addEventListener('change', function(){
@@ -155,7 +183,7 @@ function init(){
     }
     SHOW_MATURE = this.checked;
     localStorage.setItem(MATURE_KEY, SHOW_MATURE ? '1' : '0');
-    renderSceneCats(); renderSceneSeries(); renderScenes(true);
+    renderSceneCats(); renderScenes(true);
   });
   document.getElementById('loadMoreScenes').addEventListener('click', function(){
     SCENE_VISIBLE += SCENE_PAGE_SIZE;
@@ -193,30 +221,17 @@ function loadScenes(){
 loadScenes();
 
 function renderSceneCats(){
-  var cats = ['全部'].concat(Array.from(new Set(SCENES.map(primaryCategory))));
   var el = document.getElementById('sceneCats'); el.innerHTML = '';
-  cats.forEach(function(c){
+  var available = SCENES.filter(function(scene){ return SHOW_MATURE || !scene.mature; });
+  SCENE_THEME_DEFS.forEach(function(def){
     var b = document.createElement('button');
     b.type = 'button';
-    b.className = 'scene-cat' + (c === SCENE_CAT ? ' active' : '');
-    var count = SCENES.filter(function(s){ return primaryCategory(s) === c || c === '全部'; }).length;
-    b.textContent = displayCategory(c) + ' ' + count;
-    b.setAttribute('aria-pressed', c === SCENE_CAT ? 'true' : 'false');
-    b.onclick = function(){ SCENE_CAT = c; renderSceneCats(); renderScenes(true); };
-    el.appendChild(b);
-  });
-}
-
-function renderSceneSeries(){
-  var series = ['全部', 'After Story', '同人', 'Active Sync'];
-  var el = document.getElementById('sceneSeries'); el.innerHTML = '';
-  series.forEach(function(value){
-    var b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'scene-cat' + (value === SCENE_SERIES ? ' active' : '');
-    b.textContent = value;
-    b.setAttribute('aria-pressed', value === SCENE_SERIES ? 'true' : 'false');
-    b.onclick = function(){ SCENE_SERIES = value; renderSceneSeries(); renderScenes(true); };
+    b.dataset.sceneTheme = def.id;
+    b.className = 'scene-cat' + (def.id === SCENE_THEME ? ' active' : '');
+    var count = available.filter(function(scene){ return matchesTheme(scene, def.id); }).length;
+    b.textContent = def.icon + ' ' + def.label + ' ' + count;
+    b.setAttribute('aria-pressed', def.id === SCENE_THEME ? 'true' : 'false');
+    b.onclick = function(){ SCENE_THEME = def.id; renderSceneCats(); renderScenes(true); };
     el.appendChild(b);
   });
 }
@@ -226,23 +241,44 @@ function primaryCategory(scene){
   if (category === 'Active_Sync_Scenes') return 'Active Sync';
   return category.split('/')[0];
 }
-function displayCategory(category){ return category.replace(/_/g, ' '); }
-function matchesSeries(scene){
+function themeDef(id){ return SCENE_THEME_DEFS.find(function(def){ return def.id === id; }) || SCENE_THEME_DEFS[0]; }
+function matchesTheme(scene, themeId){ return themeId === 'all' || themeDef(themeId).categories.indexOf(primaryCategory(scene)) >= 0; }
+function matchesSeries(scene, series){
   var category = scene.category || '';
-  if (SCENE_SERIES === '全部') return true;
-  if (SCENE_SERIES === 'After Story') return /After_Story/i.test(category);
-  if (SCENE_SERIES === '同人') return /同人/.test(category);
-  if (SCENE_SERIES === 'Active Sync') return category === 'Active_Sync_Scenes';
+  if (series === 'after') return /After_Story/i.test(category);
+  if (series === 'fanwork') return /同人/.test(category);
+  if (series === 'active') return category === 'Active_Sync_Scenes';
   return true;
 }
+function sceneCharacterName(scene){
+  if (scene.char === 'nene' || scene.char === 'ayachi_nene') return '宁宁';
+  if (scene.char === 'natsume' || scene.char === 'shiki_natsume') return '夏目';
+  if (scene.char === 'triad') return '双人';
+  return scene.char || '';
+}
+function sceneTimeName(value){ return ({morning:'清晨',afternoon:'午后',sunset:'黄昏',night:'夜晚',late_night:'深夜',dawn:'黎明',evening:'夜晚',all_day:'全天'})[value] || value || ''; }
+function matchesTime(scene, value){
+  if (value === 'all') return true;
+  if (value === 'night') return ['night','late_night','evening'].indexOf(scene.timeOfDay) >= 0;
+  return scene.timeOfDay === value;
+}
+function sceneSearchText(scene){ return [scene.id,scene.title,scene.story,scene.emotion,scene.char,sceneCharacterName(scene),scene.category,primaryCategory(scene),scene.season,scene.timeOfDay,sceneTimeName(scene.timeOfDay),scene.location,scene.weather,scene.camera,scene.lighting].concat(scene.tags||[]).join(' ').toLowerCase(); }
 function filteredScenes(){
   var q = (document.getElementById('sceneSearch').value || '').trim().toLowerCase();
+  var terms = q.split(/\s+/).filter(Boolean);
+  var character = document.getElementById('sceneCharacter').value;
+  var season = document.getElementById('sceneSeason').value;
+  var time = document.getElementById('sceneTime').value;
+  var series = document.getElementById('sceneSeries').value;
   return SCENES.filter(function(s){
     if (!SHOW_MATURE && s.mature) return false;
-    if (SCENE_CAT !== '全部' && primaryCategory(s) !== SCENE_CAT) return false;
-    if (!matchesSeries(s)) return false;
-    var hay = [s.id,s.title,s.story,s.emotion,s.char,s.category,s.season,s.timeOfDay,s.location,s.weather,s.camera,s.lighting].concat(s.tags||[]).join(' ').toLowerCase();
-    return !q || hay.includes(q);
+    if (!matchesTheme(s, SCENE_THEME)) return false;
+    if (!matchesSeries(s, series)) return false;
+    if (character !== 'all' && s.char !== character) return false;
+    if (season !== 'all' && s.season !== season) return false;
+    if (!matchesTime(s, time)) return false;
+    var hay = sceneSearchText(s);
+    return terms.every(function(term){ return hay.includes(term); });
   });
 }
 
@@ -255,7 +291,7 @@ function renderScenes(reset){
     var season = s.season ? (seasonMap[s.season]||'') + s.season : '';
     var todMap = {morning:'清晨',afternoon:'午后',sunset:'黄昏',night:'夜晚',late_night:'深夜',dawn:'黎明',evening:'夜晚',all_day:'全天'};
     var tod = s.timeOfDay ? (todMap[s.timeOfDay]||s.timeOfDay) : '';
-    var charName = s.char === 'nene' ? '宁宁' : (s.char === 'natsume' ? '夏目' : s.char);
+    var charName = sceneCharacterName(s);
     var decision = decisionPreview(s);
     grid.appendChild(createSceneCard(s, {
       mode: 'grid',
@@ -310,6 +346,17 @@ function filterScenes(){
   clearTimeout(FILTER_TIMER);
   FILTER_TIMER = setTimeout(function(){ renderScenes(true); }, 180);
 }
+function clearSceneSearch(){
+  var input = document.getElementById('sceneSearch');
+  if (input) { input.value = ''; input.focus(); }
+  renderScenes(true);
+}
+function resetSceneFilters(){
+  SCENE_THEME = 'all';
+  var search = document.getElementById('sceneSearch'); if (search) search.value = '';
+  ['sceneCharacter','sceneSeason','sceneTime','sceneSeries'].forEach(function(id){ var select=document.getElementById(id); if(select) select.value='all'; });
+  renderSceneCats(); renderScenes(true);
+}
 
 function openDirector(id){
   var s = SCENES.find(function(x){ return x.id === id; });
@@ -324,7 +371,7 @@ function showDetail(id){
   var drawer = document.getElementById('storyDrawer');
   var card = document.getElementById('storyCard');
   if (!drawer || !card) { alert(s.story || ''); return; }
-  var charName = s.char === 'nene' ? '宁宁' : (s.char === 'natsume' ? '夏目' : s.char);
+  var charName = sceneCharacterName(s);
   var seasonMap = {'春':'🌸','夏':'☀️','秋':'🍂','冬':'❄️'};
   var season = s.season ? (seasonMap[s.season]||'') + s.season : '';
   card.innerHTML = '' +
