@@ -90,12 +90,13 @@
         tabs.innerHTML = characters.map(function(item){ return '<button class="character-tab '+(item.id === current ? 'active' : '')+'" role="tab" aria-selected="'+(item.id === current)+'" data-id="'+esc(item.id)+'">'+esc(item.icon)+' '+esc(item.name)+'</button>'; }).join('');
         var moodClasses=['m0','m1','m2','m3','m4','m5'];
         var tagsHtml = (c.tags || []).map(function(t,i){ return '<span class="tag-chip '+moodClasses[i%6]+'">'+esc(t)+'</span>'; }).join('');
+        var ageText = id.age ? esc(id.age) + (/^\d+$/.test(String(id.age)) ? '岁' : '') : '';
         var identityHtml = (id.role || id.age || id.occupation || id.faction) ?
-          '<div class="identity-row">'+(id.role?'<span class="item role">'+esc(id.role)+'</span>':'')+(id.age?'<span class="item">'+esc(id.age)+'岁</span>':'')+(id.occupation?'<span class="item">'+esc(id.occupation)+'</span>':'')+(id.faction?'<span class="item">'+esc(id.faction)+'</span>':'')+'</div>' : '';
-        var voiceHtml = c.voice ? '<div class="voice-block"><span class="voice-label">口头禅</span>'+esc(c.voice)+'</div>' : '';
+          '<div class="identity-row">'+(id.role?'<span class="item role">'+esc(id.role)+'</span>':'')+(id.age?'<span class="item">'+ageText+'</span>':'')+(id.occupation?'<span class="item">'+esc(id.occupation)+'</span>':'')+(id.faction?'<span class="item">'+esc(id.faction)+'</span>':'')+'</div>' : '';
+        var voiceHtml = c.voice ? '<div class="voice-block"><span class="voice-label">语气示例</span>'+esc(c.voice)+'</div>' : '';
         var bgHtml = c.bg_story ? '<div class="bg-story" onclick="this.classList.toggle(\'expanded\')">'+esc(c.bg_story)+'</div>' : '';
         center.innerHTML = '<section class="character-hero card-direct card-level-3">'+
-          '<div class="portrait '+(c.id === 'NAT_001' ? 'natsume' : '')+'"><span class="portrait-icon">'+esc(c.icon)+'</span><span class="portrait-source">'+esc(c.source)+'</span></div>'+
+          '<div class="portrait '+(c.id === 'natsume' ? 'natsume' : '')+'"><span class="portrait-icon">'+esc(c.icon)+'</span><span class="portrait-source">'+esc(c.source)+'</span></div>'+
           '<div><h2 class="character-name">'+esc(c.name)+'</h2>'+identityHtml+'<div class="character-alias">'+esc((c.alias || []).join(' / '))+'</div>'+voiceHtml+
           '<div class="tags-grid">'+tagsHtml+'</div>'+bgHtml+
           '<div class="detail-grid">'+

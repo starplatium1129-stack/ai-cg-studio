@@ -27,18 +27,25 @@
     '祭典':'linear-gradient(135deg,#FF8A65,#D84315)','节日':'linear-gradient(135deg,#F06292,#C2185B)',
     '日常':'linear-gradient(135deg,#4FC3F7,#0288D1)','旅行':'linear-gradient(135deg,#80DEEA,#00838F)',
     '恋爱':'linear-gradient(135deg,#CE93D8,#6A1B9A)','亲密':'linear-gradient(135deg,#FF80AB,#AD1457)',
-    'R15':'linear-gradient(135deg,#CFD8DB,#37474F)','Active_Sync_Scenes':'linear-gradient(135deg,#FFD54F,#F57F17)'
+    'R15':'linear-gradient(135deg,#CFD8DB,#37474F)','Active_Sync_Scenes':'linear-gradient(135deg,#FFD54F,#F57F17)',
+    '恋爱/After_Story':'linear-gradient(135deg,#F48FB1,#8E24AA)','同人/After_Story':'linear-gradient(135deg,#B39DDB,#5E35B1)',
+    '日常/同人':'linear-gradient(135deg,#80CBC4,#00897B)','恋爱/同人':'linear-gradient(135deg,#FF80AB,#8E24AA)',
+    '战斗':'linear-gradient(135deg,#EF5350,#6D1B1B)'
   };
 
   window.createSceneCard = function (scene, opt) {
     opt = opt || {};
     const mode = opt.mode || 'grid';
-    const clickable = opt.clickable !== false && mode !== 'strip';
+    const clickable = opt.clickable === true || (opt.clickable !== false && mode !== 'strip');
 
     const card = document.createElement('div');
     card.className = `sc sc-${mode}`;
-    card.setAttribute('role', 'button');
-    card.tabIndex = 0;
+    if (clickable && opt.onPick) {
+      card.setAttribute('role', 'button');
+      card.tabIndex = 0;
+    } else {
+      card.classList.add('sc-static');
+    }
 
     const band = THEME[scene.category] || 'linear-gradient(135deg,var(--bg-deep),var(--bg-elevated))';
 

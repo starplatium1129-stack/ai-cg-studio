@@ -27,7 +27,18 @@
   .btn-start:hover { background:linear-gradient(135deg,#66bb69,#388e3c); }
   .btn-stop { background:linear-gradient(135deg,#ef5350,#c62828); color:#fff; }
   .btn-stop:hover { background:linear-gradient(135deg,#f44336,#d32f2f); }
+  .btn-local { margin-top:10px; background:linear-gradient(135deg,#7c5cbf,#5b3f99); color:#fff; text-decoration:none; }
+  .btn-local:hover { background:linear-gradient(135deg,#9070d2,#6d4cad); }
   .btn:disabled { opacity:0.5; cursor:not-allowed; }
+  .config-block { margin-bottom:18px; }
+  .config-label { display:block; color:#aaaac4; font-size:.8rem; margin-bottom:7px; }
+  .config-row { display:flex; gap:8px; }
+  .config-input { min-width:0; flex:1; background:#1a1a2e; border:1px solid #3a3a55; color:#e8e8f0; border-radius:10px; padding:10px 12px; font:0.82rem 'Cascadia Code','Fira Code',monospace; outline:none; }
+  .config-input:focus { border-color:#7c5cbf; }
+  .config-input:disabled { opacity:.65; }
+  .btn-save { width:auto; padding:8px 14px; border:0; border-radius:10px; background:#3a3a55; color:#e8e8f0; cursor:pointer; white-space:nowrap; }
+  .btn-save:disabled { opacity:.45; cursor:not-allowed; }
+  .config-help { color:#73738f; font-size:.72rem; line-height:1.5; margin-top:6px; }
   .share-section { margin-top:0; }
   .share-label { font-size:0.8rem; color:#8888a8; margin-bottom:8px; }
   .share-link-wrap { display:flex; gap:8px; align-items:stretch; }
@@ -62,7 +73,17 @@
     <span id="sd-badge" class="sd-badge offline">SD: checking...</span>
   </div>
 
+  <div class="config-block">
+    <label class="config-label" for="sd-host">Stability Matrix / SD WebUI 地址</label>
+    <div class="config-row">
+      <input class="config-input" id="sd-host" value="http://127.0.0.1:7860" spellcheck="false">
+      <button class="btn-save" id="save-config" onclick="doSaveSDConfig()">保存</button>
+    </div>
+    <div class="config-help">端口以 Stability Matrix 启动日志显示为准；推荐启动参数：<code>--api --port 7860</code></div>
+  </div>
+
   <button id="btn" class="btn btn-start" onclick="doStart()">Start Gateway</button>
+  <a id="local-open" class="btn btn-local" href="http://127.0.0.1:3000/" target="_blank" rel="noopener" style="display:none">🏠 打开本地网站（无需 Token）</a>
 
   <div id="tunnel-panel" class="tunnel-panel">
     <div class="tunnel-label">Tunnel Status</div>
@@ -127,6 +148,13 @@ function renderStatus(d) {
   var linkEl = document.getElementById('share-link');
   var sdBadge = document.getElementById('sd-badge');
   var uptimeEl = document.getElementById('uptime');
+  var localOpen = document.getElementById('local-open');
+  var sdHostInput = document.getElementById('sd-host');
+  var saveConfig = document.getElementById('save-config');
+
+  if (document.activeElement !== sdHostInput && d.sdHost) sdHostInput.value = d.sdHost;
+  sdHostInput.disabled = !!d.running;
+  saveConfig.disabled = !!d.running;
 
   if (d.running) {
     badge.className = 'badge running';
@@ -145,6 +173,8 @@ function renderStatus(d) {
       linkEl.className = 'share-link empty';
     }
     uptimeEl.textContent = 'Uptime: ' + fmt(d.uptime);
+    localOpen.href = d.localLink || 'http://127.0.0.1:3000/';
+    localOpen.style.display = 'flex';
   } else {
     badge.className = 'badge stopped';
     badge.innerHTML = '<span class="dot"></span> Stopped';
@@ -153,10 +183,31 @@ function renderStatus(d) {
     btn.onclick = doStart;
     section.style.display = 'none';
     document.getElementById('tunnel-panel').className = 'tunnel-panel';
+    localOpen.style.display = 'none';
   }
 
   sdBadge.textContent = d.sdOnline ? 'SD: online' : 'SD: offline';
   sdBadge.className = 'sd-badge ' + (d.sdOnline ? 'online' : 'offline');
+}
+
+function saveSDConfig(showMessage) {
+  var value = document.getElementById('sd-host').value.trim();
+  return fetch('/api/config', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({sdHost:value})
+  }).then(function(r){
+    return r.json().then(function(data){ if(!r.ok) throw new Error(data.error || '保存失败'); return data; });
+  }).then(function(data){
+    document.getElementById('sd-host').value = data.sdHost;
+    if (showMessage) alert('SD WebUI 地址已保存');
+    pollStatus();
+    return data;
+  });
+}
+
+function doSaveSDConfig() {
+  saveSDConfig(true).catch(function(error){ alert(error.message); });
 }
 
 function pollStatus() {
@@ -184,7 +235,7 @@ function doStart() {
   var btn = document.getElementById('btn');
   btn.disabled = true;
   btn.textContent = 'Starting...';
-  fetch('/api/start', {method:'POST'}).then(function(r){return r.json()}).then(function(d) {
+  saveSDConfig(false).then(function(){ return fetch('/api/start', {method:'POST'}); }).then(function(r){return r.json()}).then(function(d) {
     btn.disabled = false;
     if (!d.ok) alert(d.msg || 'Start failed');
     // Start polling for status and logs
@@ -192,6 +243,7 @@ function doStart() {
     pollLogs();
   }).catch(function(e) {
     btn.disabled = false;
+    btn.textContent = 'Start Gateway';
     alert('Start failed: ' + e.message);
   });
 }

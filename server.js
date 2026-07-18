@@ -6,24 +6,55 @@ var crypto = require('crypto');
 var cp = require('child_process');
 
 var app = express();
+app.disable('x-powered-by');
 var PORT = process.env.PORT || 3000;
+var HOST = process.env.HOST || '127.0.0.1';
 var SD_HOST = process.env.SD_HOST || 'http://127.0.0.1:7860';
+var SD_API_AUTH = process.env.SD_API_AUTH || '';
+var DISABLE_TUNNEL = process.env.DISABLE_TUNNEL === '1';
 var TOKEN = process.env.TOKEN || crypto.randomBytes(8).toString('hex');
 var CF = 'C:\\Program Files (x86)\\cloudflared\\cloudflared.exe';
 var tunnelUrl = '';
 
+function tokenMatches(value) {
+  if (typeof value !== 'string') return false;
+  var actual = Buffer.from(value);
+  var expected = Buffer.from(TOKEN);
+  return actual.length === expected.length && crypto.timingSafeEqual(actual, expected);
+}
+
+function isDirectLocalRequest(req) {
+  var address = (req.socket && req.socket.remoteAddress) || '';
+  var loopback = address === '127.0.0.1' || address === '::1' || address === '::ffff:127.0.0.1';
+  var forwarded = req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for'] || req.headers.forwarded;
+  return loopback && !forwarded;
+}
+
+// ─── 基础安全响应头 ───
+app.use(function (req, res, next) {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('Referrer-Policy', 'no-referrer');
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+  res.setHeader('Content-Security-Policy', "default-src 'self'; img-src 'self' data: blob: https:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self' data: blob: https:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'");
+  next();
+});
+
 // ─── Token 认证中间件（cookie 持久化，解决子资源无 token 问题）───
 app.use(function (req, res, next) {
-  // /api/tunnel-status 免认证（内部控制接口）
-  if (req.path === '/api/tunnel-status') return next();
-
+  // 本机直接访问无需 token；Cloudflare 隧道请求带转发来源头，仍必须验证 token。
+  if (isDirectLocalRequest(req)) return next();
   // 从 query / header / cookie 三个位置取 token
   var t = req.query.token || req.headers['x-token'] || (req.headers.cookie || '').match(/aics_token=([^;]+)/);
   if (t && typeof t === 'object') t = t[1]; // regex match group
-  if (t === TOKEN) {
-    // 首次带 ?token= 来访时，种 cookie，后续子资源自动携带
+  if (tokenMatches(t)) {
+    // 首次带 ?token= 来访时种 Cookie，并跳转到干净 URL，避免 Token 留在历史/Referrer 中
     if (req.query.token) {
-      res.setHeader('Set-Cookie', 'aics_token=' + TOKEN + '; Path=/; HttpOnly; SameSite=Lax; Max-Age=86400');
+      var secure = req.secure || req.headers['x-forwarded-proto'] === 'https';
+      res.setHeader('Set-Cookie', 'aics_token=' + TOKEN + '; Path=/; HttpOnly; SameSite=Lax; Max-Age=86400' + (secure ? '; Secure' : ''));
+      var cleanUrl = new URL(req.originalUrl, 'http://localhost');
+      cleanUrl.searchParams.delete('token');
+      return res.redirect(302, cleanUrl.pathname + cleanUrl.search + cleanUrl.hash);
     }
     return next();
   }
@@ -44,22 +75,33 @@ app.use(function (req, res, next) {
   );
 });
 
-// ─── 静态文件托管 ───
-app.use(express.static(path.join(__dirname)));
-
 // ─── 图片备份接口（express.json 只挂在这条路由上，不影响 proxy 的 body 流）───
-app.post('/api/save-backup', express.json({ limit: '50mb' }), function (req, res) {
+app.post('/api/save-backup', express.json({ limit: '22mb' }), function (req, res) {
   try {
     var imageBase64 = req.body.imageBase64;
     var filename = req.body.filename;
     if (!imageBase64) return res.status(400).json({ error: 'No image data' });
 
+    var match = String(imageBase64).match(/^data:image\/(png|jpeg|webp);base64,([A-Za-z0-9+/=\r\n]+)$/);
+    if (!match) return res.status(400).json({ error: '仅支持 PNG、JPEG 或 WebP 图片' });
+
+    var imageBuffer = Buffer.from(match[2].replace(/\s/g, ''), 'base64');
+    if (!imageBuffer.length || imageBuffer.length > 15 * 1024 * 1024) {
+      return res.status(413).json({ error: '图片大小必须在 15MB 以内' });
+    }
+
     var backupDir = path.join(__dirname, 'friend_outputs');
     if (!fs.existsSync(backupDir)) fs.mkdirSync(backupDir, { recursive: true });
 
-    var base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, '');
-    var name = filename || ('backup_' + Date.now() + '.png');
-    fs.writeFileSync(path.join(backupDir, name), base64Data, 'base64');
+    var ext = match[1] === 'jpeg' ? '.jpg' : '.' + match[1];
+    var requestedStem = filename ? path.parse(path.basename(String(filename))).name : 'backup';
+    var safeStem = requestedStem.replace(/[^a-zA-Z0-9_-]+/g, '_').replace(/^_+|_+$/g, '').slice(0, 60) || 'backup';
+    var name = safeStem + '_' + Date.now() + ext;
+    var target = path.resolve(backupDir, name);
+    if (!target.startsWith(path.resolve(backupDir) + path.sep)) {
+      return res.status(400).json({ error: 'Invalid filename' });
+    }
+    fs.writeFileSync(target, imageBuffer);
 
     console.log('  💾 图片已备份: ' + name);
     res.json({ status: 'ok', file: name });
@@ -69,10 +111,22 @@ app.post('/api/save-backup', express.json({ limit: '50mb' }), function (req, res
   }
 });
 
-// ─── Tunnel 状态接口 ───
+// ─── Tunnel 状态接口（已受 Token 中间件保护，且不再回传 Token）───
 app.get('/api/tunnel-status', function (req, res) {
-  res.json({ url: tunnelUrl, token: TOKEN });
+  res.json({ url: tunnelUrl });
 });
+
+// ─── 静态文件托管白名单 ───
+app.get(['/', '/index.html'], function (req, res) {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+app.use('/css', express.static(path.join(__dirname, 'css'), { dotfiles: 'deny', index: false }));
+app.use('/data', express.static(path.join(__dirname, 'data'), { dotfiles: 'deny', index: false }));
+app.use('/docs', express.static(path.join(__dirname, 'docs'), { dotfiles: 'deny' }));
+app.use('/tools', function (req, res, next) {
+  if (req.path === '/control-server.js') return res.status(404).end();
+  next();
+}, express.static(path.join(__dirname, 'tools'), { dotfiles: 'deny' }));
 
 // ─── SD API 反代（pathFilter 而非 app.use，避免 Express 剥前缀）───
 app.use(createProxyMiddleware({
@@ -80,6 +134,8 @@ app.use(createProxyMiddleware({
   changeOrigin: true,
   ws: true,
   pathFilter: '/sdapi',
+  proxyTimeout: 20 * 60 * 1000,
+  auth: SD_API_AUTH || undefined,
   on: {
     proxyReq: function () {
       console.log('  → SD API 请求已转发');
@@ -94,18 +150,19 @@ app.use(createProxyMiddleware({
 }));
 
 // ─── 启动 ───
-app.listen(PORT, function () {
+app.listen(PORT, HOST, function () {
   console.log('');
   console.log('  ═══════════════════════════════════════════');
   console.log('  🔗 AI-CG-Studio 联机网关已启动');
   console.log('  📡 端口: ' + PORT);
+  console.log('  🛡️ 监听: ' + HOST);
   console.log('  🎨 SD 后端: ' + SD_HOST);
   console.log('  🔑 Token: ' + TOKEN);
   console.log('  ═══════════════════════════════════════════');
   console.log('');
 
-  // 自动启动 Cloudflare Tunnel
-  startTunnel();
+  // 自动启动 Cloudflare Tunnel（本地测试可用 DISABLE_TUNNEL=1 关闭）
+  if (!DISABLE_TUNNEL) startTunnel();
 });
 
 // ─── Cloudflare Tunnel ───

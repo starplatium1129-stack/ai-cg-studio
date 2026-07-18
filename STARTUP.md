@@ -6,19 +6,22 @@
 
 ## 一键启动（联机网关）
 
-双击 `start.bat` 即可，自动：
-1. 检查 SD WebUI 是否在线
-2. 启动 Node.js 网关（端口 3000）
-3. 启动 Cloudflare Tunnel 穿透
-4. 输出 token 和 tunnel 域名
+双击 `control.bat` 打开控制面板：
 
-> 关闭时双击 `stop.bat`，或分别在两个窗口按 `Ctrl+C`。
+1. 在 Stability Matrix 中给 WebUI 保留启动参数 `--api`，建议同时固定 `--port 7860`。
+2. 控制面板填写 Stability Matrix 日志显示的 WebUI 地址，例如 `http://127.0.0.1:7860`。
+3. 点击 **Start Gateway**；若 3000 已占用，会自动选择其他空闲端口。
+4. 自己点击 **打开本地网站（无需 Token）**，朋友使用控制面板生成的带 Token 分享链接。
+
+> 关闭时在控制面板点击 **Stop Gateway**。`--api` 可一直保留，不影响你打开 WebUI 自带界面。
 
 ---
 
 ## 快速启动
 
-### 方法一：Python（推荐）
+以下方法只适合浏览静态页面，不提供 `/sdapi` 代理，因此不能直接调用 SD WebUI。
+
+### 方法一：Python
 
 ```bash
 # 进入项目目录
@@ -126,34 +129,32 @@ AI-CG-Studio/
 - 搜索和筛选
 - 一键跳转到导演台
 
-### 4. SD WebUI ReForge 对接 (`/tools/sd-api.js`)
+### 4. SD WebUI 对接 (`/tools/sd-api.js`)
 
 导演工作台可直接调用本地 SD WebUI 出图，无需手动复制 Prompt：
 
-- **前置条件**：启动 ReForge 时需添加 `--api` 参数
-- **默认地址**：`http://127.0.0.1:7860`（可通过 `SDWebUIConnector` 修改）
-- **默认参数**：Checkpoint `waiIllustriousSDXL_v170.safetensors`，Sampler `DPM++ 2M SDE Karras`，CFG 5.5，Steps 28
+- **兼容后端**：AUTOMATIC1111、Forge、ReForge；启动时需添加 `--api` 参数
+- **默认地址**：`http://127.0.0.1:7860`；可直接在 `control.bat` 打开的控制面板修改，也可设置环境变量 `SD_HOST`
+- **模型策略**：默认使用 WebUI 当前模型，不再硬编码 checkpoint；也可在导演台按单次生成选择模型
+- **采样参数**：从 WebUI 动态读取模型、Sampler、Scheduler 和放大器，并记住上次选择
 - **LoRA 注入**：自动从场景数据读取 LoRA 名称，注入 `<lora:name:0.85>`（已去重防叠 buff）
-- **状态 Badge**：工作台右上角绿/红圆点实时显示连接状态
+- **生成状态**：显示真实进度与预计剩余时间，支持停止生成、超时保护和后端错误详情
+- **API 认证**：WebUI 使用 `--api-auth` 时，启动网关前设置 `$env:SD_API_AUTH='user:password'`
 
 ### 5. 联机网关（让朋友远程出图）
 
 朋友不需要装 SD，浏览器打开链接即可选场景出图。
 
-**启动步骤（3步）：**
+**启动步骤（2步）：**
 
-```bash
+```powershell
 # 1. 启动 SD WebUI（确保加了 --api 参数）
-#    在你的 ReForge/WebUI 目录运行 webui-user.bat
+#    在你的 A1111 / Forge / ReForge 目录运行 webui-user.bat
 
 # 2. 启动网关
-cd E:\code\2\lora\AI-CG-Studio
+Set-Location E:\code\2\lora\AI-CG-Studio
 node server.js
-# 终端会打印 Token，记下来
-
-# 3. 启动穿透（另一个终端窗口）
-"C:\Program Files (x86)\cloudflared\cloudflared.exe" tunnel --url http://localhost:3000
-# 终端会打印域名（xxx.trycloudflare.com），记下来
+# 网关会自动启动 cloudflared，并打印 Token 与域名
 ```
 
 **给朋友的链接：**
@@ -164,10 +165,10 @@ https://打印的域名/?token=打印的Token
 **注意事项：**
 - 每次重启 `node server.js`：Token 会重新生成，需要重新发链接
 - 每次重启 `cloudflared`：域名会变化，需要重新发链接
-- 固定 Token：`set TOKEN=我的密码 && node server.js`
+- 固定 Token：先执行 `$env:TOKEN='我的密码'`，再运行 `node server.js`
 - 朋友出的图自动备份到 `friend_outputs/` 目录
-- 第一次出图会慢几秒（SD 加载模型），前端会自动重试
-- 多人同时出图时 SD 会排队，前端显示等待计时
+- 第一次出图可能较慢（SD 需要加载模型），前端会显示真实进度；失败后可按原参数手动重试
+- 多人同时出图时 SD 会排队；`停止生成` 调用的是 WebUI 全局 interrupt，会中断当前正在执行的任务，请避免朋友之间互相取消
 
 **关闭服务：**
 - 方法一：两个终端窗口分别按 `Ctrl+C`
@@ -204,7 +205,7 @@ A: 编辑 `data/characters.json`，添加角色信息和 LoRA 绑定。
 
 ### Q: SD WebUI 状态 Badge 显示红色？
 
-A: 确认 ReForge 已启动且加了 `--api` 参数。默认端口 7860。
+A: 红色表示网关无法连接 WebUI：确认 A1111 / Forge / ReForge 已启动并带 `--api`，以及 `SD_HOST`、`SD_API_AUTH` 是否正确。橙色表示当前是普通静态服务器，请改从控制面板或 `node server.js` 启动的网站进入。
 
 ---
 

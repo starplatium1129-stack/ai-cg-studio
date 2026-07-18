@@ -39,6 +39,38 @@
       var cls = (item.id === current) ? ' class="active"' : '';
       return '<a' + cls + ' href="' + d + item.href + '">' + item.icon + ' ' + item.label + '</a>';
     }).join('');
+
+    var inner = host.closest('.nav-inner');
+    if (inner && !inner.querySelector('.nav-menu-toggle')) {
+      var toggle = document.createElement('button');
+      toggle.type = 'button';
+      toggle.className = 'nav-menu-toggle';
+      toggle.setAttribute('aria-label', '打开导航菜单');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.textContent = '☰';
+      toggle.addEventListener('click', function(){
+        var open = host.classList.toggle('open');
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        toggle.setAttribute('aria-label', open ? '关闭导航菜单' : '打开导航菜单');
+        toggle.textContent = open ? '✕' : '☰';
+      });
+      inner.appendChild(toggle);
+      host.addEventListener('click', function(e){
+        if (!e.target.closest('a')) return;
+        host.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.textContent = '☰';
+      });
+      document.addEventListener('keydown', function(e){
+        if (e.key === 'Escape' && host.classList.contains('open')) {
+          host.classList.remove('open');
+          toggle.setAttribute('aria-expanded', 'false');
+          toggle.setAttribute('aria-label', '打开导航菜单');
+          toggle.textContent = '☰';
+          toggle.focus();
+        }
+      });
+    }
   }
 
   if (document.readyState === 'loading') {

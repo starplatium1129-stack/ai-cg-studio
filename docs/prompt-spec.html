@@ -112,7 +112,7 @@
     <div class="module-content">
       <h4>Character <span class="cn">角色</span></h4>
       <p>触发词 + 特征。人物永远第二位。</p>
-      <div class="example">1girl, solo, ayachi_nene, ahoge, teardrop</div>
+      <div class="example">1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon</div>
     </div>
   </div>
 
@@ -175,7 +175,7 @@
     <div class="module-content">
       <h4>LoRA <span class="cn">角色 LoRA</span></h4>
       <p>永远最后。权重 0.6–0.8。</p>
-      <div class="example">&lt;lora:ayachi_nene:0.75&gt;</div>
+      <div class="example">&lt;lora:ayachi_nene_v11:0.8&gt;</div>
     </div>
   </div>
 
@@ -209,14 +209,14 @@
 <script>
 const MODULES = [
   { id: 'q', on: true, cls: 'q', label: 'Quality',    text: 'masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed' },
-  { id: 'c', on: true, cls: 'c', label: 'Character',  text: '1girl, solo, ayachi_nene, ahoge, teardrop' },
+  { id: 'c', on: true, cls: 'c', label: 'Character',  text: '1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon' },
   { id: 's', on: true, cls: 's', label: 'Story',      text: 'after school, school gate, waiting' },
   { id: 'e', on: true, cls: 'e', label: 'Emotion',    text: 'gentle smile, soft eyes, blush, looking at viewer' },
   { id: 'a', on: true, cls: 'a', label: 'Camera',     text: 'medium shot, looking back, over shoulder' },
   { id: 'o', on: true, cls: 'o', label: 'Composition',text: 'rule of thirds, by window, depth' },
   { id: 'l', on: true, cls: 'l', label: 'Lighting',   text: 'golden hour, backlit, soft shadows, warm atmosphere' },
   { id: 'x', on: true, cls: 'x', label: 'Extra',      text: 'hair blowing, depth of field, cinematic lighting' },
-  { id: 'lo',on:true, cls: 'lo',label: 'LoRA',       text: '<lora:ayachi_nene:0.75>' }
+  { id: 'lo',on:true, cls: 'lo',label: 'LoRA',       text: '<lora:ayachi_nene_v11:0.8>' }
 ];
 
 function init() {

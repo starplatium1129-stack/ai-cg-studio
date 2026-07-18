@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI CG Studio · 今天,我想讲一个什么故事?</title>
 <link rel="stylesheet" href="css/design-system.css?v=6">
+<link rel="stylesheet" href="css/scene-card.css?v=4">
 <script src="tools/nav.js?v=4"></script>
+<script src="tools/scene-card.js?v=4"></script>
 <script src="tools/image-store.js?v=5"></script>
 <script src="tools/theme.js?v=4"></script>
 <style>
@@ -239,6 +241,10 @@
         <span class="chain-arrow">→</span>
         <div class="chain-step final"><span class="ic">🖼</span> 画面 <span class="en">Image</span></div>
       </div>
+      <div class="hero-strip" aria-labelledby="featuredScenesLabel">
+        <div class="strip-label" id="featuredScenesLabel"><span class="dot"></span> 最近新增 · <span id="sceneCountCopy">场景加载中</span></div>
+        <div class="strip-scroll" id="featuredScenes"></div>
+      </div>
     </div>
   </div>
 </section>
@@ -299,7 +305,7 @@
   <div class="tools-grid">
     <a href="tools/scene-explorer.html" class="tool-card card-create card-level-2">
       <span class="ic">🌸</span><span class="t">场景库</span>
-      <span class="d">70+ 官方场景,情绪/镜头/光照完整 prefill。</span>
+      <span class="d" id="sceneLibraryCopy">精选场景库，情绪/镜头/光照完整预填。</span>
       <span class="go">→ 打开</span>
     </a>
     <a href="tools/gallery.html" class="tool-card card-create card-level-2">
@@ -345,6 +351,25 @@
   function fmtDate(ts){ return new Date(ts).toLocaleDateString('zh-CN',{month:'short',day:'numeric'}); }
   function getProject(id){return _cachedProjects.find(function(p){return p.id===id;});}
 
+  function renderSceneHighlights(){
+    return fetch('data/scenes.json').then(function(r){
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      return r.json();
+    }).then(function(scenes){
+      document.getElementById('sceneCountCopy').textContent = scenes.length + ' 个场景';
+      document.getElementById('sceneLibraryCopy').textContent = scenes.length + ' 个精选场景，情绪/镜头/光照完整预填。';
+      var host = document.getElementById('featuredScenes');
+      scenes.filter(function(s){return !s.mature;}).slice(-6).reverse().forEach(function(scene){
+        host.appendChild(createSceneCard(scene, {
+          mode:'strip', clickable:true,
+          onPick:function(s){ window.location.href='tools/prompt-builder.html?scene='+encodeURIComponent(s.id)+'&step=4&generate=1'; }
+        }));
+      });
+    }).catch(function(){
+      document.getElementById('sceneCountCopy').textContent = '精选场景';
+    });
+  }
+
   async function renderRecent(){
     const el = document.getElementById('recentWorks');
     let history = [];
@@ -382,6 +407,7 @@
     });
   }
 
+  renderSceneHighlights();
   AICKVStore.init().then(function(){ return renderRecent(); });
 })();
 </script>

@@ -22,4 +22,6 @@ friend_outputs/
 .gateway_token
 tunnel.log
 .gateway_pid
+.gateway_port
+.gateway_config.json
 .tunnel_pid

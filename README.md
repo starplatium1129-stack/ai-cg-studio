@@ -24,7 +24,7 @@
 ```
 今天画什么？
   ↓
-选一个 Scene（128 个官方种子，每个都是一张 CG 的起点）
+选一个 Scene（206 个精选种子，每个都是一张 CG 的起点）
   ↓
 像导演一样：定情绪、镜头、光照、色彩
   ↓
@@ -41,7 +41,7 @@ Prompt 永远最后出现。用户看不到 Prompt / Preset / Workflow 这些词
 AI CG Studio
 │
 ├── Create          ← 最大入口（Director，Story → 情绪/镜头/光照 → Prompt 自动）
-├── Scene Library   ← 起点，128 个场景种子（9 类）
+├── Scene Library   ← 起点，206 个场景种子（多维分类）
 ├── Gallery         ← 创作时间线（收藏 / 评分 / 重新生成）
 ├── Character       ← 角色卡 + 视觉 DNA + 绑定 LoRA
 ├── Style           ← 色彩 = 情绪 = 光照
@@ -114,10 +114,10 @@ AI-CG-Studio/
 │   ├── theme.js                   # 暗/浅主题管理器
 │   ├── scene-card.js              # Scene Card 组件（grid/strip/recent 三模式）
 │   ├── active-sync.js             # ★ Active Sync Protocol（动态情感占位符）
-│   ├── sd-api.js                  # ★ SD WebUI ReForge API 对接（LoRA 注入/hires.fix/seed lock）
+│   ├── sd-api.js                  # ★ A1111 / Forge / ReForge API 对接（进度/停止/能力发现）
 │   ├── image-store.js             # IndexedDB 图片存储 (AICGImageStore + AICKVStore)
 │   ├── prompt-builder.html        # Create（Director）— Story-first 导演台
-│   ├── scene-explorer.html        # Scene Library — 128 场景浏览
+│   ├── scene-explorer.html        # Scene Library — 206 场景浏览
 │   ├── character.html             # Character — 角色卡 + DNA
 │   ├── style.html                 # Style — 色彩氛围
 │   ├── lora.html                  # LoRA — 角色资产（强度/触发词/兼容模型）
@@ -125,7 +125,7 @@ AI-CG-Studio/
 │   ├── scenario.html              # 剧本模式（多幕 CG）
 │   └── color-script.html          # 色彩剧本
 ├── data/                          # 核心资产（Scene 为一等公民）
-│   ├── scenes.json                # ★ Scene Library（128 条，9 类，含 Active Sync 场景）
+│   ├── scenes.json                # ★ Scene Library（206 条，多维分类，含 Active Sync 场景）
 │   ├── characters.json            # 角色库（视觉 DNA + LoRA 绑定）
 │   ├── loras.json                 # LoRA 资产（强度/触发词/兼容模型/版本）
 │   ├── tags.json                  # ★ 统一标签（126 条，10 类，snake_case）
@@ -160,9 +160,20 @@ AI-CG-Studio/
 
 ---
 
-## 已完成 (v1.0)
+## SD WebUI 连接
 
-- **128 Scene，9 类** — 校园 / 日常 / 恋爱 / 亲密 / 旅行 / 祭典 / 节日 / R15 / Active Sync
+1. 启动 AUTOMATIC1111、Forge 或 ReForge，并在启动参数中加入 `--api`。
+2. 推荐双击 `control.bat`：填写 Stability Matrix 日志中的 WebUI 地址，点击 **Start Gateway**。
+3. 自己使用控制面板的“打开本地网站（无需 Token）”，朋友使用带 Token 的分享链接；普通 Live Server 不提供 `/sdapi` 代理。
+4. 默认 WebUI 地址为 `http://127.0.0.1:7860`，也可在控制面板修改；网关端口冲突时会自动换到空闲端口。
+5. 如果 WebUI 使用了 `--api-auth user:password`，同时设置 `SD_API_AUTH=user:password`。
+6. 打开导演工作台后，顶部状态会自动读取模型、Sampler、Scheduler 和放大器；留空模型选择时始终使用 WebUI 当前模型。
+
+生成过程支持真实进度、预计剩余时间、停止生成、20 分钟超时保护、hires.fix、固定 seed，以及参数随历史记录保存。
+
+## 已完成 (v1.5)
+
+- **206 Scene，多维分类** — 校园 / 日常 / 恋爱 / 亲密 / 旅行 / 节日 / After Story / Active Sync 等
 - **Active Sync Protocol** — 动态情感占位符，Director 实时解析故事文本并替换
 - **角色系统** — Nene（宁宁）+ Natsume（夏目）+ Triad（三人），视觉 DNA + LoRA 绑定
 - **统一标签** — `tags.json` 126 条官方标签，10 类
@@ -172,9 +183,7 @@ AI-CG-Studio/
 - **Illustrious SDXL 对标** — 标签结构对标底模特性（5tag 训练 vs 3-5tag 场景生成）
 - **响应式 3 段** — 手机 / 平板 / 桌面全覆盖
 
-## 进行中 (v1.5 · 出图闭环)
-
-- **SD WebUI ReForge 对接** — `tools/sd-api.js` 直连出图（status badge + LoRA 智能注入/去重 + hires.fix + seed lock + 下载 PNG）
+- **SD WebUI 对接** — A1111 / Forge / ReForge 能力自动发现、真实进度、停止、超时、模型与采样配置记忆
 - **美术禁用词源头净化** — `scripts/clean-scenes.js`（22 个红线词黑名单）
 
 ---
