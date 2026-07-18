@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>质量评分 · AI CG Studio</title>
+<title>出图质量检查 · AI CG Studio</title>
 <link rel="stylesheet" href="../css/design-system.css?v=6">
 <script src="../tools/nav.js?v=4"></script>
 <script src="../tools/theme.js?v=4"></script>
@@ -95,35 +95,31 @@
 <article class="page">
   <a href="../index.html" class="nav-back">← 回首页</a>
 
-  <h1 class="title">⭐ 质量评分 (Quality Standard)</h1>
-  <p class="subtitle">每个官方 Scene 都要经过这 6 个维度的审核。⭐⭐⭐⭐⭐ 才能入库。</p>
+  <h1 class="title">⭐ 出图质量检查</h1>
+  <p class="subtitle">用和画廊一致的五项评分记录实际结果，帮助判断下一次应该改场景、Prompt、参数还是 LoRA。</p>
 
   <!-- Radar demo -->
   <div class="radar-demo">
-    <h3>示例：SC0001 · 放学后的等待</h3>
+    <h3>示例：一次出图记录</h3>
     <div class="quality-dim">
-      <div class="quality-label">人物稳定</div>
+      <div class="quality-label">人物</div>
       <div class="quality-bar"><div class="quality-fill q-stability" style="width:80%">★★★★☆ 4.0</div></div>
     </div>
     <div class="quality-dim">
-      <div class="quality-label">脸部稳定</div>
+      <div class="quality-label">表情</div>
       <div class="quality-bar"><div class="quality-fill q-face" style="width:100%">★★★★★ 5.0</div></div>
     </div>
     <div class="quality-dim">
-      <div class="quality-label">背景丰富</div>
+      <div class="quality-label">构图</div>
       <div class="quality-bar"><div class="quality-fill q-bg" style="width:80%">★★★★☆ 4.0</div></div>
     </div>
     <div class="quality-dim">
-      <div class="quality-label">LoRA 适配</div>
+      <div class="quality-label">手部</div>
       <div class="quality-bar"><div class="quality-fill q-lora" style="width:100%">★★★★★ 5.0</div></div>
     </div>
     <div class="quality-dim">
-      <div class="quality-label">壁纸级</div>
+      <div class="quality-label">氛围</div>
       <div class="quality-bar"><div class="quality-fill q-wallpaper" style="width:100%">★★★★★ 5.0</div></div>
-    </div>
-    <div class="quality-dim">
-      <div class="quality-label">新手推荐</div>
-      <div class="quality-bar"><div class="quality-fill q-beginner" style="width:100%">★★★★★ 5.0</div></div>
     </div>
   </div>
 
@@ -132,74 +128,65 @@
 
   <div class="score-card">
     <div class="score-header">
-      <div class="score-name">👤 人物稳定</div>
+      <div class="score-name">👤 人物</div>
       <div class="score-stars"><span class="filled">★★★★</span><span class="empty">★</span></div>
     </div>
     <div class="score-bar"><div class="score-fill" style="width:80%"></div></div>
-    <div class="score-desc">身份一致、服装稳定、比例自然。不崩坏、不畸形。</div>
+    <div class="score-desc">角色识别、发型服装和身体比例是否稳定，LoRA 是否准确表现宁宁或夏目。</div>
   </div>
 
   <div class="score-card">
     <div class="score-header">
-      <div class="score-name">😊 脸部稳定</div>
+      <div class="score-name">😊 表情</div>
       <div class="score-stars"><span class="filled">★★★★★</span></div>
     </div>
     <div class="score-bar"><div class="score-fill" style="width:100%"></div></div>
-    <div class="score-desc">眼睛清晰、表情一致、不扭曲。最重要的维度。</div>
+    <div class="score-desc">眼睛、嘴型、视线和情绪是否自然，并且与故事描述一致。</div>
   </div>
 
   <div class="score-card">
     <div class="score-header">
-      <div class="score-name">🖼 背景丰富</div>
+      <div class="score-name">🖼 构图</div>
       <div class="score-stars"><span class="filled">★★★★</span><span class="empty">★</span></div>
     </div>
     <div class="score-bar"><div class="score-fill" style="width:80%"></div></div>
-    <div class="score-desc">场景细节、空间感、与人物融合。不单调、不杂乱。</div>
+    <div class="score-desc">主体位置、镜头距离、空间层次和背景信息是否清楚，画面有没有抢主体或失衡。</div>
   </div>
 
   <div class="score-card">
     <div class="score-header">
-      <div class="score-name">🌸 LoRA 适配</div>
+      <div class="score-name">🖐 手部</div>
       <div class="score-stars"><span class="filled">★★★★★</span></div>
     </div>
     <div class="score-bar"><div class="score-fill" style="width:100%"></div></div>
-    <div class="score-desc">角色识别度高。换脸率 95%+，默认权重即可用。</div>
+    <div class="score-desc">手指数量、关节和握持关系是否自然；互动场景还要检查两个人的手是否串位。</div>
   </div>
 
   <div class="score-card">
     <div class="score-header">
-      <div class="score-name">🖥 壁纸级</div>
+      <div class="score-name">🌙 氛围</div>
       <div class="score-stars"><span class="filled">★★★★★</span></div>
     </div>
     <div class="score-bar"><div class="score-fill" style="width:100%"></div></div>
-    <div class="score-desc">直接可以作壁纸。构图+色彩+光影都到位。</div>
+    <div class="score-desc">色彩、光照、天气与环境细节是否共同表达故事需要的情绪。</div>
   </div>
 
-  <div class="score-card">
-    <div class="score-header">
-      <div class="score-name">🌱 新手推荐</div>
-      <div class="score-stars"><span class="filled">★★★★★</span></div>
-    </div>
-    <div class="score-bar"><div class="score-fill" style="width:100%"></div></div>
-    <div class="score-desc">默认设置即可出图。不需微调、不需重试、不需后期。</div>
-  </div>
-
-  <!-- Acceptance criteria -->
-  <h2 style="margin-top: var(--s-6); margin-bottom: var(--s-3);">入库标准</h2>
+  <!-- Usage -->
+  <h2 style="margin-top: var(--s-6); margin-bottom: var(--s-3);">怎么使用评分</h2>
   <div class="callout">
-    <strong>官方 Scene 必须满足 ⭐⭐⭐⭐⭐:</strong>
+    <strong>评分是排错记录，不是“必须满分”的门槛：</strong>
     <ul style="margin-top: var(--s-2); padding-left: var(--s-4); color: var(--text-secondary);">
-      <li>人物主体明确</li>
-      <li>故事完整</li>
-      <li>Prompt 结构规范</li>
-      <li>Illustrious 适配</li>
-      <li>容易出图</li>
+      <li>人物或表情偏低：先检查角色 DNA、LoRA 权重与冲突动作</li>
+      <li>构图偏低：调整镜头、人物位置、人数和背景复杂度</li>
+      <li>手部偏低：减少复杂握持，明确左右手与互动对象</li>
+      <li>氛围偏低：检查故事、时间、天气、色彩与光照是否一致</li>
+      <li>同一 Scene 多次记录后再判断问题是否稳定复现</li>
     </ul>
   </div>
 
   <footer class="footer">
-    <p>AI CG Studio · Quality Standard v1.0</p>
-    <p class="muted mt-4">质量 > 数量。每一条都经得起审核。</p>
+    <p>AI CG Studio · 五项出图检查</p>
+    <p class="muted mt-4">记录问题，是为了让下一次修改更有方向。</p>
   </footer>
 </article>
 

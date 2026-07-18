@@ -95,14 +95,14 @@
   <a href="../index.html" class="nav-back">← 回首页</a>
 
   <h1 class="title">📝 Prompt 规范 (Prompt Specification)</h1>
-  <p class="subtitle">永远按这个顺序。永远不能乱。</p>
+  <p class="subtitle">建议按稳定顺序组装；模型、LoRA 或实测结果变化时可以调整。</p>
 
   <!-- module list -->
   <div class="module">
     <div class="module-num">1</div>
     <div class="module-content">
       <h4>Quality <span class="cn">质量</span></h4>
-      <p>永远第一位。每张 CG 共享的质量基准。</p>
+      <p>通常放在开头，作为每张 CG 共用的质量基准。</p>
       <div class="example">masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed</div>
     </div>
   </div>
@@ -111,7 +111,7 @@
     <div class="module-num">2</div>
     <div class="module-content">
       <h4>Character <span class="cn">角色</span></h4>
-      <p>触发词 + 特征。人物永远第二位。</p>
+      <p>触发词 + 特征。尽量靠前，避免被后续环境标签稀释。</p>
       <div class="example">1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon</div>
     </div>
   </div>
@@ -174,7 +174,7 @@
     <div class="module-num">9</div>
     <div class="module-content">
       <h4>LoRA <span class="cn">角色 LoRA</span></h4>
-      <p>永远最后。权重 0.6–0.8。</p>
+      <p>通常放在末尾。权重可从 0.6–0.8 起步，再按实测调整。</p>
       <div class="example">&lt;lora:ayachi_nene_v11:0.8&gt;</div>
     </div>
   </div>

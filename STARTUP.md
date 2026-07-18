@@ -1,264 +1,161 @@
-# AI CG Studio 启动指南
+# AI CG Studio 启动与排错
 
-> 像导演一样创作每一个瞬间
+这份说明分为两种使用方式：连接 SD WebUI 的完整模式，以及只浏览页面的静态模式。
 
----
+## 完整模式：连接 SD WebUI
 
-## 一键启动（联机网关）
+### 准备条件
 
-双击 `control.bat` 打开控制面板：
+- Windows 与 Node.js
+- 由 Stability Matrix 启动的 AUTOMATIC1111、Forge 或 ReForge
+- WebUI 启动参数中包含 `--api`
+- 如需生成公网分享链接，本机还要安装 `cloudflared`
 
-1. 在 Stability Matrix 中给 WebUI 保留启动参数 `--api`，建议同时固定 `--port 7860`。
-2. 控制面板填写 Stability Matrix 日志显示的 WebUI 地址，例如 `http://127.0.0.1:7860`。
-3. 点击 **启动并生成分享链接**；若 3000 已占用，会自动选择其他空闲端口。
-4. 自己点击 **打开本地网站（无需 Token）**，朋友使用控制面板生成的带 Token 分享链接。
+建议在 Stability Matrix 中使用：
 
-> 关闭时在控制面板点击 **停止分享**。`--api` 可一直保留，不影响你打开 WebUI 自带界面。
-
----
-
-## 快速启动
-
-以下方法只适合浏览静态页面，不提供 `/sdapi` 代理，因此不能直接调用 SD WebUI。
-
-### 方法一：Python
-
-```bash
-# 进入项目目录
-cd E:/code/2/lora/AI-CG-Studio
-
-# 启动本地服务器
-python -m http.server 8080
-
-# 打开浏览器访问
-# http://localhost:8080
+```text
+--api --port 7860
 ```
 
-### 方法二：Node.js
+`--api` 不会关闭 WebUI 自带页面，也不会妨碍本地正常使用。它只是让 AI CG Studio 可以通过接口读取配置和提交出图任务。
 
-```bash
-# 进入项目目录
-cd E:/code/2/lora/AI-CG-Studio
+### 启动步骤
 
-# 使用 npx 启动（无需安装）
-npx serve -p 8080
+1. 先在 Stability Matrix 中启动 WebUI。
+2. 查看日志中的地址，通常是 `http://127.0.0.1:7860`。
+3. 双击项目根目录的 `control.bat`。
+4. 在控制面板填写 WebUI 地址，等待状态显示已连接。
+5. 点击 **启动并生成分享链接**。
+6. 自己点击 **打开本地网站（无需 Token）**；需要分享时，再复制带 Token 的链接给朋友。
+7. 使用结束后点击 **停止分享**。
 
-# 或使用 http-server
-npx http-server -p 8080
+首次运行时，`control.bat` 会自动执行 `npm install`。控制面板默认打开在 `http://127.0.0.1:3001/`，创作网站通常打开在 `http://127.0.0.1:3000/`；如果 3000 已占用，控制面板会显示实际使用的端口。
 
-# 打开浏览器访问
-# http://localhost:8080
+### 本地使用和朋友分享的区别
+
+- **本地网站**：只允许当前电脑访问，不需要 Token。
+- **朋友链接**：通过临时公网通道访问，必须带 Token。
+- **没有 cloudflared**：本地网站和 SD 连接照常使用，但不会出现公网域名。
+- **重新启动网关**：Token 会重新生成，临时域名也可能变化，需要重新发链接。
+
+朋友不需要安装 SD WebUI，所有生成任务仍由你的电脑执行。请只把链接发给信任的人，并在不用时停止分享。
+
+## WebUI 地址不是 7860
+
+Stability Matrix 可能自动分配其他端口。不要猜端口，直接复制日志中显示的本机地址，例如：
+
+```text
+http://127.0.0.1:7861
 ```
 
-### 方法三：VS Code Live Server
+在控制面板停止分享后修改地址，再重新启动。地址只接受当前电脑的 `http://127.0.0.1:端口` 或 `http://localhost:端口`。
 
-1. 安装 VS Code 扩展 [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)
-2. 右键点击 `index.html` → **Open with Live Server**
-3. 自动打开浏览器
+## WebUI 使用 API 认证
 
----
+如果 WebUI 的启动参数包含：
 
-## 为什么需要本地服务器？
-
-本项目使用 `fetch()` 加载 JSON 数据文件。浏览器安全策略（CORS）禁止从 `file://` 协议直接加载本地文件，必须通过 `http://` 或 `https://` 访问。
-
-**错误示例**：
-```
-❌ file:///E:/code/2/lora/AI-CG-Studio/index.html
+```text
+--api-auth user:password
 ```
 
-**正确示例**：
-```
-✅ http://localhost:8080
-✅ http://127.0.0.1:8080
-```
-
----
-
-## 项目结构
-
-```
-AI-CG-Studio/
-├── index.html              # 首页
-├── tools/                  # 工具页面
-│   ├── prompt-builder.html # 导演工作台（核心）
-│   ├── sd-api.js           # SD WebUI ReForge API 对接
-│   ├── active-sync.js      # Active Sync Protocol 引擎
-│   ├── image-store.js      # IndexedDB 图片/KV 存储 (AICKVStore)
-│   ├── scene-explorer.html # 场景库
-│   ├── character.html      # 角色卡
-│   ├── gallery.html        # 作品画廊
-│   ├── lora.html           # LoRA 管理
-│   └── ...
-├── data/                   # 数据文件
-│   ├── scenes.json         # 206 个场景
-│   ├── characters.json     # 角色信息
-│   └── tags.json           # 标签库
-├── scripts/                # 维护脚本
-│   └── clean-scenes.js     # 场景数据批量清洗
-├── docs/                   # 文档
-└── css/                    # 样式
-```
-
----
-
-## 核心功能
-
-### 1. 导演工作台 (`/tools/prompt-builder.html`)
-
-- 选择场景（206 个预设场景）
-- 选择角色（宁宁 / 夏目 / 三人场景 triad）
-- 定义导演决策（情绪、镜头、光照、构图、色彩）
-- 自动生成 Stable Diffusion Prompt
-- hires.fix 开关（2x R-ESRGAN Anime6B, 14 steps, denoising 0.35）
-- Seed 锁定 + SD 连接状态 Badge + 下载 PNG
-
-### 2. Active Sync Protocol
-
-部分场景支持动态参数替换：
-- `{intimacy_intensity}` - 亲密强度
-- `{interaction_target}` - 交互目标
-- `{sensory_feedback}` - 感官反馈
-
-在故事框输入关键词即可触发：
-- "gentle touch with warm feeling" → 低强度 + 物理接触 + 热感
-
-### 3. 场景库 (`/tools/scene-explorer.html`)
-
-- 按分类浏览（校园、日常、恋爱、亲密等）
-- 搜索和筛选
-- 一键跳转到导演台
-
-### 4. SD WebUI 对接 (`/tools/sd-api.js`)
-
-导演工作台可直接调用本地 SD WebUI 出图，无需手动复制 Prompt：
-
-- **兼容后端**：AUTOMATIC1111、Forge、ReForge；启动时需添加 `--api` 参数
-- **默认地址**：`http://127.0.0.1:7860`；可直接在 `control.bat` 打开的控制面板修改，也可设置环境变量 `SD_HOST`
-- **模型策略**：默认使用 WebUI 当前模型，不再硬编码 checkpoint；也可在导演台按单次生成选择模型
-- **采样参数**：从 WebUI 动态读取模型、Sampler、Scheduler 和放大器，并记住上次选择
-- **LoRA 注入**：自动从场景数据读取 LoRA 名称，注入 `<lora:name:0.85>`（已去重防叠 buff）
-- **生成状态**：显示真实进度与预计剩余时间，支持停止生成、超时保护和后端错误详情
-- **API 认证**：WebUI 使用 `--api-auth` 时，启动网关前设置 `$env:SD_API_AUTH='user:password'`
-
-### 5. 联机网关（让朋友远程出图）
-
-朋友不需要装 SD，浏览器打开链接即可选场景出图。
-
-**启动步骤（2步）：**
+请在启动 `control.bat` 前打开 PowerShell，并在当前窗口设置：
 
 ```powershell
-# 1. 启动 SD WebUI（确保加了 --api 参数）
-#    在你的 A1111 / Forge / ReForge 目录运行 webui-user.bat
+$env:SD_API_AUTH = 'user:password'
+./control.bat
+```
 
-# 2. 启动网关
+关闭该 PowerShell 窗口后，环境变量不会继续保留。
+
+## 只浏览页面
+
+普通静态服务器适合浏览场景、角色和文档，但不能直接调用 SD WebUI。
+
+### Python
+
+```powershell
 Set-Location E:\code\2\lora\AI-CG-Studio
-node server.js
-# 网关会自动启动 cloudflared，并打印 Token 与域名
+python -m http.server 8090
 ```
 
-**给朋友的链接：**
-```
-https://打印的域名/?token=打印的Token
-```
+然后打开 `http://127.0.0.1:8090/`。
 
-**注意事项：**
-- 每次重启 `node server.js`：Token 会重新生成，需要重新发链接
-- 每次重启 `cloudflared`：域名会变化，需要重新发链接
-- 固定 Token：先执行 `$env:TOKEN='我的密码'`，再运行 `node server.js`
-- 朋友出的图自动备份到 `friend_outputs/` 目录
-- 第一次出图可能较慢（SD 需要加载模型），前端会显示真实进度；失败后可按原参数手动重试
-- 多人同时出图时 SD 会排队；`停止生成` 调用的是 WebUI 全局 interrupt，会中断当前正在执行的任务，请避免朋友之间互相取消
+### 其他静态服务器
 
-**关闭服务：**
-- 方法一：两个终端窗口分别按 `Ctrl+C`
-- 方法二：开新终端跑 `taskkill /F /IM node.exe && taskkill /F /IM cloudflared.exe`
+VS Code Live Server、`npx serve` 或 `npx http-server` 也可以浏览页面。它们没有 `/sdapi` 代理，因此导演工作台会提示当前页面未启用 SD 网关。
 
-### 5. 数据维护脚本
-
-运行 `node scripts/clean-scenes.js` 可对 `data/scenes.json` 执行批量清洗：
-
-- 标签去重 + 逗号拆分 + 角色 DNA 注入
-- 美术禁用词黑名单源头净化（neon / glowing / 8k / photorealistic 等 13 个红线词）
-- Active Sync 占位符自动补全
-- 运行前自动创建 `.bak` 备份
-
----
+不要直接双击 `index.html`。项目通过 `fetch()` 加载 JSON，`file://` 页面会被浏览器安全策略阻止。
 
 ## 常见问题
 
-### Q: 页面空白 / 数据加载失败？
+### 控制面板显示 WebUI 未连接
 
-A: 确保使用本地服务器访问，不要直接打开 HTML 文件。
+依次检查：
 
-### Q: 标签显示乱码？
+1. WebUI 是否已经完成启动，而不是仍在加载模型。
+2. Stability Matrix 的启动参数是否包含 `--api`。
+3. 控制面板中的地址和日志地址是否完全一致。
+4. WebUI 是否使用了 `--api-auth`，以及 `SD_API_AUTH` 是否正确。
+5. 端口是否被防火墙或其他程序拦截。
 
-A: 检查浏览器编码设置，确保使用 UTF-8。
+### 本地网站能打开，但不能出图
 
-### Q: 如何添加新场景？
+确认你是从控制面板的 **打开本地网站（无需 Token）** 进入，而不是从 Python、Live Server 或其他静态服务器进入。只有项目网关会代理 `/sdapi`。
 
-A: 编辑 `data/scenes.json`，按照现有格式添加场景对象。
+### 没有生成分享链接
 
-### Q: 如何自定义角色？
+先确认本地网站可以正常出图，再检查 `cloudflared` 是否安装在：
 
-A: 编辑 `data/characters.json`，添加角色信息和 LoRA 绑定。
-
-### Q: SD WebUI 状态 Badge 显示红色？
-
-A: 红色表示网关无法连接 WebUI：确认 A1111 / Forge / ReForge 已启动并带 `--api`，以及 `SD_HOST`、`SD_API_AUTH` 是否正确。橙色表示当前是普通静态服务器，请改从控制面板或 `node server.js` 启动的网站进入。
-
----
-
-## 技术栈
-
-- **前端**: 纯 HTML + CSS + Vanilla JS（零依赖）
-- **数据**: JSON 文件（本地加载）
-- **存储**: IndexedDB (AICKVStore，历史记录 / 项目 / 图片 Blob)
-- **兼容**: 现代浏览器（Chrome/Firefox/Edge/Safari）
-
----
-
-## 开发说明
-
-### 添加新页面
-
-1. 在 `tools/` 目录创建 HTML 文件
-2. 引入共享资源：
-   ```html
-   <link rel="stylesheet" href="../css/design-system.css?v=4">
-   <script src="nav.js?v=4"></script>
-   <script src="theme.js?v=4"></script>
-   ```
-3. 在 `tools/nav.js` 中添加导航项
-
-### 修改标签库
-
-编辑 `data/tags.json`，格式：
-```json
-{
-  "en": "tag_name",
-  "cn": "中文名称",
-  "cat": "Category"
-}
+```text
+C:\Program Files (x86)\cloudflared\cloudflared.exe
 ```
 
-### 修改场景
+公网通道建立需要网络，通常会比本地网关晚几秒出现。
 
-编辑 `data/scenes.json`，必填字段：
-- `id`: 唯一标识（如 "sc129"）
-- `title`: 场景标题
-- `category`: 分类
-- `story`: 故事描述
-- `char`: 角色（nene/natsume/triad）
-- `tags`: 标签数组（3-5 个）
-- `prompt`: SD 提示词模板
+### 朋友打开链接提示缺少 Token
 
----
+请从控制面板复制完整链接，不要手动删除 `?token=...`。首次验证后，网站会把 Token 写入安全 Cookie，并跳转到不含 Token 的干净地址。
 
-## 许可证
+### 多人同时生成或停止任务
 
-本项目仅供学习和个人使用。
+SD WebUI 会按自身能力排队。“停止生成”调用的是 WebUI 全局中断，可能会停止其他人当前正在运行的任务。分享时最好约定不要同时点击停止。
 
----
+### 历史或图片不见了
 
-> AI CG Studio · 像导演一样创作每一个瞬间
+历史、收藏和图片主要保存在当前浏览器的 IndexedDB 中。更换浏览器、使用隐私模式或清理网站数据，都可能让这些内容不可见。重要图片请及时下载或另行备份。
+
+## 手动启动（排错用）
+
+通常不需要手动运行。需要查看完整日志时，可以在项目目录执行：
+
+```powershell
+npm install
+$env:SD_HOST = 'http://127.0.0.1:7860'
+node server.js
+```
+
+默认情况下会尝试建立临时公网通道。如果只想测试本地网关：
+
+```powershell
+$env:DISABLE_TUNNEL = '1'
+node server.js
+```
+
+在当前终端按 `Ctrl+C` 即可停止手动启动的进程。
+
+## 数据与维护
+
+- `data/scenes.json`：206 个场景
+- `data/characters.json`：角色设定
+- `data/tags.json`：统一标签
+- `data/loras.json`：LoRA 配置
+- `scripts/validate-scenes.js`：场景一致性校验
+- `scripts/clean-scenes.js`：批量清洗脚本，运行前会创建备份
+
+日常修改场景后建议执行：
+
+```powershell
+npm run validate
+```
+
+批量清洗会直接改写场景数据，不应作为普通启动步骤；只有明确需要整理数据时再使用。

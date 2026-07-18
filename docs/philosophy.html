@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>创作哲学 · AI CG Studio</title>
+<title>创作取向 · AI CG Studio</title>
 <link rel="stylesheet" href="../css/design-system.css?v=6">
 <script src="../tools/nav.js?v=4"></script>
 <script src="../tools/theme.js?v=4"></script>
@@ -82,15 +82,15 @@
 <article class="page">
   <a href="../index.html" class="nav-back">← 回首页</a>
 
-  <h1 class="title">💡 创作哲学 (Philosophy)</h1>
-  <p class="subtitle">所有功能设计的原点。每个决策回到这里对齐。</p>
+  <h1 class="title">💡 创作取向</h1>
+  <p class="subtitle">记录这个工具怎样把故事、画面和 Prompt 放进同一条创作流程。</p>
 
   <!-- Principle 1 -->
   <div class="principle">
     <div class="principle-num">第零原则（最高）</div>
     <h3>Prompt 描述图片。Scene 描述瞬间。</h3>
     <p style="color: var(--text-secondary)">这是整个项目的根基。一张优秀的 CG，不是因为 Prompt 很长而优秀，而是因为它捕捉到了一个值得记住的瞬间。</p>
-    <p style="font-size: 0.9rem; color: var(--accent); margin-top: var(--s-2)">用户不是在"写 Prompt"，而是在"导演一个 Scene"。Prompt 自动系统生成，用户甚至不需要知道。</p>
+    <p style="font-size: 0.9rem; color: var(--accent); margin-top: var(--s-2)">使用时先整理 Scene，再让系统组合 Prompt；需要时仍然可以查看、复制和调整 Prompt。</p>
   </div>
 
   <!-- Principle 1b -->
@@ -98,8 +98,8 @@
     <div class="principle-num">第零原则补充</div>
     <h3>Scene Engineering > Prompt Engineering</h3>
     <p style="color: var(--text-secondary)">
-      AI 圈几乎所有工具都在解决 <strong>"Prompt 怎么写？"</strong>。<br>
-      没人在解决 <strong>"画面怎么设计？"</strong>
+      很多工具擅长解决 <strong>“Prompt 怎么写？”</strong>。<br>
+      这个项目更关心 <strong>“画面怎么设计？”</strong>
     </p>
     <p style="color: var(--text-secondary); margin-top: var(--s-2)">
       这是两个完全不同的问题。训练好的 LoRA 也需要回答：<br>
@@ -107,7 +107,7 @@
       <strong>这些都超出了 Prompt 的范畴，属于 Scene。</strong>
     </p>
     <p style="font-size: 0.9rem; color: var(--accent); margin-top: var(--s-2)">
-      进化链：Prompt Engineering → Scene Engineering → Visual Story Engineering
+      工作方式：故事 → Scene → Prompt → 画面
     </p>
   </div>
 
@@ -115,7 +115,7 @@
   <div class="principle">
     <div class="principle-num">第一原则</div>
     <h3>先有画面，后有 Prompt</h3>
-    <p style="color: var(--text-secondary)">Prompt 永远是最后一步。脑海里的画面 → 故事 → 情绪 → 镜头 → 构图 → Prompt。</p>
+    <p style="color: var(--text-secondary)">先把脑海里的画面拆成故事、情绪、镜头和构图，再整理 Prompt。</p>
     <div class="wrong-right">
       <div class="wrong">
         <div class="label">❌ 错误</div>
@@ -131,7 +131,7 @@
   <!-- Principle 2 -->
   <div class="principle">
     <div class="principle-num">第二原则</div>
-    <h3>一张 CG 必须讲一个故事</h3>
+    <h3>让一张 CG 有一个故事</h3>
     <p style="color: var(--text-secondary)">没有故事的 CG 只是一个美少女站在那里。有了故事，她才是"放学后在教室等你的那个人"。</p>
     <div class="wrong-right">
       <div class="wrong">
@@ -148,7 +148,7 @@
   <!-- Principle 3 -->
   <div class="principle">
     <div class="principle-num">第三原则</div>
-    <h3>人物永远是第一主角</h3>
+    <h3>人物优先于背景和特效</h3>
     <p style="color: var(--text-secondary)">人物 ★★★★★ · 背景 ★★★☆☆ · 特效 ★★☆☆☆。任何元素都不能抢人物。</p>
     <p style="font-size: 0.9rem; color: var(--accent); margin-top: var(--s-2)">背景服务人物。不是人物服务背景。</p>
   </div>
@@ -221,23 +221,22 @@
   <div class="callout" style="margin-top: var(--s-6);">
     <strong>质量 > 数量</strong>
     <p style="margin-top: var(--s-2)">
-      别人：5000 Prompt<br>
-      我们：500 Scene<br><br>
-      每一条都有故事、情绪、镜头、构图、推荐参数。这就是质量。
+      206 个 Scene 不是为了凑数量。<br><br>
+      每一条都应有明确的故事、情绪、镜头、构图和可用参数；重复或不稳定的场景继续修改，不急着增加新编号。
     </p>
   </div>
 
-  <!-- Target users -->
-  <h2 style="margin-top: var(--s-6); margin-bottom: var(--s-3);">目标用户</h2>
+  <!-- Usage -->
+  <h2 style="margin-top: var(--s-6); margin-bottom: var(--s-3);">适合的使用方式</h2>
   <div class="card-grid">
-    <div class="card h4" style="font-size: 0.95rem;">🎨 想用 AI 生成 Galgame CG 的创作者</div>
-    <div class="card h4" style="font-size: 0.95rem;">🖼 有角色 LoRA 但不知道怎么出图的玩家</div>
-    <div class="card h4" style="font-size: 0.95rem;">✨ 想快速获得高质量二次元插画的用户</div>
+    <div class="card h4" style="font-size: 0.95rem;">🎨 从一个故事瞬间开始创作 Galgame 风格 CG</div>
+    <div class="card h4" style="font-size: 0.95rem;">🖼 用固定场景测试宁宁与夏目的角色 LoRA</div>
+    <div class="card h4" style="font-size: 0.95rem;">✨ 保存稳定组合，之后可以继续生成或比较变体</div>
   </div>
 
   <footer class="footer">
-    <p>AI CG Studio · Philosophy v1.0</p>
-    <p class="muted mt-4">所有功能设计的灵魂。</p>
+    <p>AI CG Studio · 创作取向</p>
+    <p class="muted mt-4">从故事到 Scene，再从 Scene 到画面。</p>
   </footer>
 </article>
 

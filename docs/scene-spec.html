@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Scene 规范 · AI CG Studio</title>
+<title>Scene 数据与写作规范 · AI CG Studio</title>
 <link rel="stylesheet" href="../css/design-system.css?v=6">
 <script src="../tools/nav.js?v=4"></script>
 <script src="../tools/theme.js?v=4"></script>
@@ -136,13 +136,13 @@
 <article class="page">
   <a href="../index.html" class="nav-back">← 回首页</a>
 
-  <h1 class="title">🎞 Scene 规范 (Scene Specification)</h1>
-  <p class="subtitle">Prompt 以后不要编号。Scene 才是编号单位。</p>
+  <h1 class="title">🎞 Scene 数据与写作规范</h1>
+  <p class="subtitle">Scene 是编号和维护单位，Prompt 是随场景一起保存的生成输出。</p>
 
   <!-- Template -->
   <div class="template">
-    <h3>📋 SC0001 模板 — 官方 Scene 必填字段</h3>
-    <div class="field"><div class="field-label">Scene ID</div><div class="field-value">SC' + 四位数字 (SC0001, SC0002...)</div></div>
+    <h3>📋 Scene 模板 — 常用字段</h3>
+    <div class="field"><div class="field-label">Scene ID</div><div class="field-value">使用仓库现有格式，例如 sc001、sc002；保持唯一且不要重复使用。</div></div>
     <div class="field"><div class="field-label">标题</div><div class="field-value">有画面感的中文场景名（例如：放学后的等待）</div></div>
     <div class="field"><div class="field-label">故事</div><div class="field-value">一句话故事描述。谁在什么地方、在做什么、为什么。</div></div>
     <div class="field"><div class="field-label">情绪</div><div class="field-value">核心情绪 (恋爱、期待、害羞...)</div></div>
@@ -152,14 +152,14 @@
     <div class="field"><div class="field-label">Positive</div><div class="field-value">遵循 <a href="prompt-spec.html">Prompt Spec</a> 的 9 模块顺序。<em>每 Scene 唯一变量。</em></div></div>
     <div class="field"><div class="field-label">Negative</div><div class="field-value">基础层 (通用 17 词) + 场景特定层 (3–5 词)</div></div>
     <div class="field">
-      <div class="field-label">锁定参数 <span class="lock-badge">🔒 永远不动</span></div>
-      <div class="field-value">CFG 5 · Sampler DPM++ 2M SDE · Steps 28 · Hires denoise 0.45</div>
+      <div class="field-label">建议参数 <span class="lock-badge">作为起点</span></div>
+      <div class="field-value">可记录 CFG、Sampler、Steps 与 Hires 参数；模型或 LoRA 变化后按实测调整。</div>
     </div>
     <div class="field"><div class="field-label">标签</div><div class="field-value">用于 Scene 库检索的标签</div></div>
   </div>
 
   <!-- Example 1 -->
-  <h2 style="margin-bottom: var(--s-4);">官方 Scene 示例</h2>
+  <h2 style="margin-bottom: var(--s-4);">Scene 示例</h2>
 
   <div class="example-scene">
     <div class="scene-header">
@@ -173,7 +173,7 @@
       <div class="scene-meta"><div class="label">Resolution</div><div class="value">Full CG</div></div>
       <div class="scene-meta"><div class="label">LoRA</div><div class="value">0.75</div></div>
       <div class="scene-meta">
-        <div class="label">锁定参数 <span style="font-size:0.65rem;color:var(--success)">🔒</span></div>
+        <div class="label">参考参数</div>
         <div class="value" style="font-size:0.8rem">CFG 5 · DPM++ 2M SDE · S28</div>
       </div>
     </div>
@@ -205,7 +205,7 @@ hair blowing, depth of field, cinematic lighting,
       <div class="scene-meta"><div class="label">Resolution</div><div class="value">Half-body</div></div>
       <div class="scene-meta"><div class="label">LoRA</div><div class="value">0.75</div></div>
       <div class="scene-meta">
-        <div class="label">锁定参数 <span style="font-size:0.65rem;color:var(--success)">🔒</span></div>
+        <div class="label">参考参数</div>
         <div class="value" style="font-size:0.8rem">CFG 5 · DPM++ 2M SDE · S28</div>
       </div>
     </div>
@@ -224,20 +224,20 @@ looking at viewer, beautiful detailed eyes, depth of field,
     <div class="scene-neg">lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name, sunny, bright lighting, autumn leaves, snow, summer</div>
   </div>
 
-  <!-- Locked parameters -->
-  <h2 style="margin-top: var(--s-7); margin-bottom: var(--s-3);">🔒 锁定参数 <span class="lock-badge">永远不动</span></h2>
-  <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4);">设一次, 保存, 以后再也不会改。每 Scene 唯一变的只有 <strong>Positive + Negative</strong>。</p>
+  <!-- Suggested parameters -->
+  <h2 style="margin-top: var(--s-7); margin-bottom: var(--s-3);">⚙️ 建议参数 <span class="lock-badge">先从这里试</span></h2>
+  <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4);">这些值适合作为起点，不是固定规则。模型、VAE、LoRA 版本、显存和画面类型变化后，以实际结果为准。</p>
 
   <table>
     <thead>
-      <tr><th>参数</th><th>值</th><th>唯一例外</th></tr>
+      <tr><th>参数</th><th>参考值</th><th>调整方向</th></tr>
     </thead>
     <tbody>
-      <tr><td><strong>CFG</strong></td><td>5 (永远)</td><td>暗调场景 (月夜/夜灯/暗室) → 5.5</td></tr>
-      <tr><td><strong>Sampler</strong></td><td>DPM++ 2M SDE (永远)</td><td>无</td></tr>
-      <tr><td><strong>Steps</strong></td><td>28 (永远)</td><td>无</td></tr>
-      <tr><td><strong>Hires Denoise</strong></td><td>0.45 (永远)</td><td>追求更锐利 → 0.40</td></tr>
-      <tr><td><strong>Hires Steps</strong></td><td>12–15 (永远)</td><td>无</td></tr>
+      <tr><td><strong>CFG</strong></td><td>5–5.5</td><td>画面过硬或过饱和时降低；提示词跟随不足时小幅提高</td></tr>
+      <tr><td><strong>Sampler</strong></td><td>DPM++ 2M SDE</td><td>优先沿用 WebUI 中已经稳定的采样器</td></tr>
+      <tr><td><strong>Steps</strong></td><td>24–30</td><td>先比较稳定性与耗时，不默认越高越好</td></tr>
+      <tr><td><strong>Hires Denoise</strong></td><td>0.35–0.45</td><td>角色偏离时降低；需要更多重绘细节时提高</td></tr>
+      <tr><td><strong>Hires Steps</strong></td><td>12–15</td><td>按放大器和输出尺寸实测</td></tr>
       <tr><td><strong>LoRA 权重</strong></td><td>0.75 (默认)</td><td>过拟合 → 降到 0.6; 不够明显 → 升到 0.85</td></tr>
     </tbody>
   </table>
@@ -291,7 +291,7 @@ looking at viewer, beautiful detailed eyes, depth of field,
 
   <!-- Hires.fix -->
   <h2 style="margin-top: var(--s-7); margin-bottom: var(--s-3);">🔍 Hires.fix 输出</h2>
-  <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4);">可选步骤。需要更大尺寸时启用, 参数永远如上表锁死。</p>
+  <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4);">需要更大尺寸时再启用。先确认基础图的角色、构图和手部没有明显问题，再按模型表现调整放大参数。</p>
   <table>
     <thead>
       <tr><th>用途</th><th>倍数</th><th>Output</th><th>Denoise</th><th>Steps</th></tr>
@@ -308,8 +308,8 @@ looking at viewer, beautiful detailed eyes, depth of field,
   <h2 style="margin-top: var(--s-7); margin-bottom: var(--s-3);">🛡 Negative 速查</h2>
 
   <div class="param-ref" style="margin-bottom: var(--s-4);">
-    <h4>📌 基础层 (永远带, 17 词)</h4>
-    <p class="note">任何 Scene 都不改。直接复制。</p>
+    <h4>📌 基础层（通用质量问题）</h4>
+    <p class="note">作为默认起点；如果底模已有推荐 Negative，请优先比较实测结果。</p>
     <div class="scene-prompt" style="margin:0">lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name</div>
   </div>
 
@@ -340,8 +340,8 @@ looking at viewer, beautiful detailed eyes, depth of field,
   </div>
 
   <footer class="footer">
-    <p>AI CG Studio · Scene Specification v2.0</p>
-    <p class="muted mt-4">Resolution + 锁定参数 + 负面库 — 一次设, 以后永远只变 Scene。</p>
+    <p>AI CG Studio · Scene 数据与写作规范</p>
+    <p class="muted mt-4">故事、角色和 Prompt 保持一致；参数以可复现的实测结果为准。</p>
   </footer>
 </article>
 

@@ -2,7 +2,7 @@
   "name": "ai-cg-studio",
   "version": "1.5.0",
   "private": true,
-  "description": "AI-CG-Studio 联机网关 — 静态托管 + SD API 反代",
+  "description": "个人使用的 Galgame 风格 AI CG 场景工作台与 SD WebUI 网关",
   "scripts": {
     "start": "node server.js",
     "validate": "node scripts/validate-scenes.js"

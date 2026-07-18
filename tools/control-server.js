@@ -16,6 +16,7 @@ var SD_HOST = process.env.SD_HOST || 'http://127.0.0.1:7860';
 var SD_API_AUTH = process.env.SD_API_AUTH || '';
 var dir = path.join(__dirname, '..');
 var CONFIG_FILE = path.join(dir, '.gateway_config.json');
+var CLOUDFLARED_PATH = 'C:\\Program Files (x86)\\cloudflared\\cloudflared.exe';
 
 // ─── State ───
 var state = {
@@ -24,6 +25,7 @@ var state = {
   domain: '',
   startTime: null,
   gatewayPort: GW_PORT,
+  tunnelStatus: 'idle',
   sdOnline: false,
   logs: []
 };
@@ -146,6 +148,30 @@ function killByPidFile(pidFile, expectedPort) {
   } catch (e) {}
 }
 
+function isManagedTunnelProcess(pid, port) {
+  if (!/^\d+$/.test(String(pid || '')) || !Number.isInteger(Number(port))) return false;
+  try {
+    var expectedUrl = 'http://localhost:' + Number(port);
+    var script = '$p=Get-CimInstance Win32_Process -Filter "ProcessId=' + Number(pid) + '" -ErrorAction SilentlyContinue;' +
+      'if($p -and $p.Name -eq "cloudflared.exe" -and $p.CommandLine -like "*tunnel*" -and $p.CommandLine -like "*' + expectedUrl + '*") {"managed"}';
+    var output = cp.execFileSync('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', script], { encoding:'utf8', stdio:['ignore','pipe','ignore'] });
+    return output.trim() === 'managed';
+  } catch (e) { return false; }
+}
+
+function killTunnelByPidFile(pidFile, expectedPort) {
+  try {
+    if (!fs.existsSync(pidFile)) return;
+    var pid = fs.readFileSync(pidFile, 'utf8').trim();
+    if (isManagedTunnelProcess(pid, expectedPort)) {
+      try { cp.execFileSync('taskkill', ['/pid', pid, '/f'], { stdio:'pipe' }); } catch (e) {}
+    } else if (pid) {
+      log('Ignored stale tunnel PID ' + pid + '; process identity did not match');
+    }
+    fs.unlinkSync(pidFile);
+  } catch (e) {}
+}
+
 // Check if gateway is already running on startup
 (function checkExisting() {
   try {
@@ -160,7 +186,10 @@ function killByPidFile(pidFile, expectedPort) {
         state.token = fs.readFileSync(path.join(dir, '.gateway_token'), 'utf8').trim();
         state.gatewayPort = detectedPort;
         state.startTime = Date.now();
-        fetchTunnelStatus();
+        state.tunnelStatus = process.env.DISABLE_TUNNEL === '1' ? 'disabled' : (fs.existsSync(CLOUDFLARED_PATH) ? 'connecting' : 'unavailable');
+        fetchTunnelStatus(function () {
+          if (state.domain) state.tunnelStatus = 'ready';
+        });
         log('Detected running gateway (PID ' + pid + ')');
       } catch (e) {
         fs.unlinkSync(pidFile);
@@ -199,6 +228,8 @@ app.get('/api/status', function (req, res) {
     sdHost: SD_HOST,
     gatewayPort: state.gatewayPort,
     uptime: state.startTime ? Math.floor((Date.now() - state.startTime) / 1000) : 0,
+    tunnelAvailable: fs.existsSync(CLOUDFLARED_PATH),
+    tunnelStatus: state.tunnelStatus,
     localLink: state.running ? 'http://127.0.0.1:' + state.gatewayPort + '/' : '',
     shareLink: state.domain && state.token ? state.domain + '?token=' + state.token : ''
   });
@@ -229,6 +260,7 @@ app.post('/api/start', function (req, res) {
     state.token = crypto.randomBytes(8).toString('hex');
     state.domain = '';
     state.startTime = Date.now();
+    state.tunnelStatus = process.env.DISABLE_TUNNEL === '1' ? 'disabled' : (fs.existsSync(CLOUDFLARED_PATH) ? 'connecting' : 'unavailable');
     log('Starting gateway on port ' + gatewayPort + '...');
     if (gatewayPort !== GW_PORT) log('Port ' + GW_PORT + ' is busy; using ' + gatewayPort + ' instead');
 
@@ -250,9 +282,11 @@ app.post('/api/start', function (req, res) {
       fetchTunnelStatus(function () {
         tries++;
         if (state.domain) {
+          state.tunnelStatus = 'ready';
           log('Tunnel ready: ' + state.domain);
           clearInterval(poll);
         } else if (tries > 30) {
+          if (state.tunnelStatus === 'connecting') state.tunnelStatus = 'failed';
           log('Tunnel domain not ready yet');
           clearInterval(poll);
         }
@@ -270,13 +304,15 @@ app.post('/api/stop', function (req, res) {
   }
 
   log('Stopping gateway...');
-  // Kill gateway — tunnel is its child process, dies automatically
+  // cloudflared runs detached, so stop it separately before the gateway.
+  killTunnelByPidFile(path.join(dir, '.tunnel_pid'), state.gatewayPort);
   killByPidFile(path.join(dir, '.gateway_pid'), state.gatewayPort);
 
   state.running = false;
   state.domain = '';
   state.token = '';
   state.startTime = null;
+  state.tunnelStatus = 'idle';
   state.gatewayPort = GW_PORT;
   try { fs.unlinkSync(path.join(dir, '.gateway_port')); } catch (e) {}
   log('All processes stopped');

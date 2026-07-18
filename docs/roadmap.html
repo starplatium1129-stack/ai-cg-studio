@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>路线 · AI CG Studio</title>
+<title>使用与完善路线 · AI CG Studio</title>
 <link rel="stylesheet" href="../css/design-system.css?v=6">
 <script src="../tools/nav.js?v=4"></script>
 <script src="../tools/theme.js?v=4"></script>
@@ -103,159 +103,141 @@
 <article class="page">
   <a href="../index.html" class="nav-back">← 回首页</a>
 
-  <h1 class="title">🗺 后续路线 (Roadmap)</h1>
-  <p class="subtitle">从理念到产品。根据实际使用情况调整。</p>
+  <h1 class="title">🗺 使用与完善路线</h1>
+  <p class="subtitle">只做自己和朋友真正会用的功能，不为了版本号把个人工具扩张成平台。</p>
 
   <div class="timeline">
 
-    <!-- v0.5 (done) -->
+    <!-- 创作基础 -->
     <div class="version done">
       <div class="version-card">
         <div class="version-header">
-          <div class="version-num">v0.5</div>
-          <div class="version-name">文档与理念奠基</div>
-          <div class="version-tag">✓ 完成</div>
-        </div>
-        <div class="version-desc">世界观 + 哲学 + 美术规范 + 导演模式交互原型 + 色彩情绪 + 剧本模式</div>
-        <ul class="feature-list">
-          <li>世界观 / 哲学 / 美术规范 / 标签规范 / Prompt 规范 / Scene 规范 / 质量评分 / 路线 — 8 份 spec docs</li>
-          <li>导演模式 — 完整交互已合并至 Prompt Builder v4 (引导 + 速填双模式)</li>
-          <li>色彩情绪 — 6 种情绪 → 色板 → 光照 → Prompt 自动映射</li>
-          <li>剧本模式 — 4 个官方剧本 × 多幕 CG 脚本</li>
-          <li>统一设计系统 (深灰底 + 樱花粉点缀)</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- v1.0 (done) -->
-    <div class="version done">
-      <div class="version-card">
-        <div class="version-header">
-          <div class="version-num">v1.0</div>
+          <div class="version-num">基础</div>
           <div class="version-name">场景创作核心</div>
           <div class="version-tag">✓ 完成</div>
         </div>
-        <div class="version-desc">128 场景 + 导演工作台 + Active Sync + 历史收藏 + 响应式。</div>
+        <div class="version-desc">从一个故事出发，完成选场景、调画面、生成 Prompt、保存结果的主流程。</div>
         <ul class="feature-list">
-          <li>Scene 库 128 场景 (9 类, 分类检索 + 搜索 + 季节/时段/角色筛选)</li>
-          <li>导演工作台 Prompt Builder v4 (引导 / 速填双模式 + 手动标签 + 场景导入)</li>
-          <li>Active Sync Protocol (10 场景, 实时解析故事文本替换占位符)</li>
-          <li>三人场景 triad 支持 + 角色 LoRA 绑定</li>
-          <li>历史记录 IndexedDB (AICKVStore) + 收藏夹 + 5 轴评级 + 一键导出 Prompt</li>
-          <li>参数 PNG 导出 (Canvas 重绘)</li>
-          <li>响应式 3 段 (手机 / 平板 / 桌面)</li>
+          <li>206 个以绫地宁宁、四季夏目为主的 Scene</li>
+          <li>场景搜索、分类与角色筛选</li>
+          <li>导演工作台：故事、情绪、镜头、构图、光照、色彩与 Prompt 组合</li>
+          <li>角色、LoRA、风格、剧本和色彩参考页面</li>
+          <li>本地历史、评分、收藏、备注、项目与图片存储</li>
+          <li>桌面、平板和手机端的基础适配</li>
         </ul>
       </div>
     </div>
 
-    <!-- v1.5 (current) -->
+    <!-- SD 闭环 -->
+    <div class="version done">
+      <div class="version-card">
+        <div class="version-header">
+          <div class="version-num">连接</div>
+          <div class="version-name">SD WebUI 出图闭环</div>
+          <div class="version-tag">✓ 完成</div>
+        </div>
+        <div class="version-desc">通过 Stability Matrix 启动 WebUI 后，可以在网站里直接读取配置并出图。</div>
+        <ul class="feature-list">
+          <li>兼容 AUTOMATIC1111、Forge 与 ReForge 的 WebUI API</li>
+          <li>自动读取当前模型、Sampler、Scheduler 和放大器</li>
+          <li>真实进度、预计剩余时间、停止生成与超时提示</li>
+          <li>固定 Seed、hires.fix、单次模型选择与参数记忆</li>
+          <li>本地直连无需 Token，朋友链接使用临时通道与随机 Token</li>
+          <li>控制面板可填写 Stability Matrix 日志中的实际 WebUI 地址</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 当前优先 -->
     <div class="version current">
       <div class="version-card">
         <div class="version-header">
-          <div class="version-num">v1.5</div>
-          <div class="version-name">出图闭环</div>
+          <div class="version-num">现在</div>
+          <div class="version-name">内容质量与使用稳定性</div>
           <div class="version-tag">🚧 进行中</div>
         </div>
-        <div class="version-desc">打通 Stable Diffusion，从"生成 Prompt"到"直接出图"。</div>
+        <div class="version-desc">先把每天会遇到的问题处理好，再考虑增加新功能。</div>
         <ul class="feature-list">
-          <li>SD WebUI ReForge 对接 (txt2img API + 状态 Badge + LoRA 智能注入/去重)</li>
-          <li>hires.fix 开关 (2x R-ESRGAN Anime6B, 14 steps, denoising 0.35)</li>
-          <li>Seed 锁定 + 下载 PNG + 快门曝光动效</li>
-          <li>美术禁用词黑名单源头净化 (clean-scenes.js, 22 个红线词)</li>
-          <li>默认 Illustrious SDXL 参数对齐 (DPM++ 2M SDE Karras, CFG 5.5, 28 steps)</li>
-          <li>多分镜监视墙 — batch_size 变体生成，一次出 4 张微扰动 CG，点选最佳入库</li>
+          <li>继续优化旧 Scene 的标题、故事、Prompt 和角色一致性</li>
+          <li>保持首页、角色页、推荐区与场景库显示同一份标题</li>
+          <li>减少重复标签、冲突动作和不符合角色设定的描述</li>
+          <li>改善 WebUI 未启动、端口错误、静态页面和认证失败的提示</li>
+          <li>检查非默认网关端口、断线恢复和多人共用时的边界情况</li>
+          <li>补充本地数据丢失、清理浏览器缓存和重要图片备份的提醒</li>
         </ul>
       </div>
     </div>
 
-    <!-- v2.0 -->
+    <!-- 下一步 -->
     <div class="version">
       <div class="version-card">
         <div class="version-header">
-          <div class="version-num">v2.0</div>
-          <div class="version-name">内容扩展</div>
-          <div class="version-tag">规划</div>
+          <div class="version-num">下一步</div>
+          <div class="version-name">个人创作整理</div>
+          <div class="version-tag">按需安排</div>
         </div>
-        <div class="version-desc">从"工具"进化为"平台"。社区可以贡献 Scene。</div>
+        <div class="version-desc">围绕复用、对比和备份，减少重复劳动。</div>
         <ul class="feature-list">
-          <li>Scene 库扩展到 500+ (多角色、多情绪、多季节)</li>
-          <li>LoRA 库浏览 (lora.html 已有基础, 扩展至完整预览 + 推荐参数)</li>
-          <li>用户 Scene 提交 + 审核</li>
-          <li>官方 Scene 满足 ⭐⭐⭐⭐⭐ 才能入库</li>
-          <li>训练反哺闭环 — 画廊一键导出训练集素材 (图片 Blob + 同名 5-Tag .txt)，直接喂 OneTrainer</li>
+          <li>历史、收藏、项目和图片的一键导出与恢复</li>
+          <li>同一 Scene 的不同 Seed、模型和参数并排比较</li>
+          <li>更灵活的服装、LoRA 与角色预设组合</li>
+          <li>常用模型和 WebUI 参数保存为个人预设</li>
+          <li>按失败原因记录测试结果，方便回到场景继续优化</li>
         </ul>
       </div>
     </div>
 
-    <!-- v3.0 -->
+    <!-- 可选方向 -->
     <div class="version">
       <div class="version-card">
         <div class="version-header">
-          <div class="version-num">v3.0</div>
-          <div class="version-name">智能辅助</div>
-          <div class="version-tag">规划</div>
+          <div class="version-num">可选</div>
+          <div class="version-name">以后有需要再做</div>
+          <div class="version-tag">不设期限</div>
         </div>
-        <div class="version-desc">AI 辅助创作 + 图片管理升级。</div>
+        <div class="version-desc">这些方向有价值，但只有实际工作流用得到时才投入维护。</div>
         <ul class="feature-list">
-          <li>LLM 建议情绪 / 镜头 / 构图 / 光照 (🟡 已有规则引擎基础, 待接入 AI)</li>
-          <li>LLM 自动写 Scene 故事描述</li>
-          <li>风格迁移 (参考图 → 色彩 / 光照 Prompt)</li>
-          <li>出图自动保存到 gallery (🟡 IndexedDB 存储已建好, 待自动化)</li>
-          <li>Prompt + 参数 + 图片 一键对比 (🟡 history 数据已齐全, 待建 UI)</li>
-          <li>相似图检索 (根据 Prompt)</li>
-          <li>角色衣柜系统 — characters.json 解耦服装预设 (制服/浴衣/婚纱)，切换时联动 LoRA 权重微调防概念污染</li>
+          <li>导出 ComfyUI workflow JSON 与常用参数映射</li>
+          <li>ControlNet、IP-Adapter 和参考图辅助</li>
+          <li>从参考图提取色彩、光照与构图提示</li>
+          <li>小范围的本地 AI 故事润色或画面建议</li>
+          <li>训练素材与对应标签的本地导出</li>
         </ul>
       </div>
     </div>
 
-    <!-- v4.0 -->
+    <!-- 不计划 -->
     <div class="version">
       <div class="version-card">
         <div class="version-header">
-          <div class="version-num">v4.0</div>
-          <div class="version-name">工作流集成</div>
-          <div class="version-tag">远期</div>
+          <div class="version-num">边界</div>
+          <div class="version-name">暂不计划</div>
+          <div class="version-tag">保持个人项目</div>
         </div>
-        <div class="version-desc">不只是 Prompt 工具, 而是完整 workflow 节点。</div>
+        <div class="version-desc">这些功能会明显增加运营、安全和维护成本，不符合目前的使用方式。</div>
         <ul class="feature-list">
-          <li>一键导出 ComfyUI workflow JSON</li>
-          <li>ComfyUI 参数自动映射</li>
-          <li>ControlNet / IP-Adapter 自动生成</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- v5.0 -->
-    <div class="version">
-      <div class="version-card">
-        <div class="version-header">
-          <div class="version-num">v5.0</div>
-          <div class="version-name">社区平台</div>
-          <div class="version-tag">远期</div>
-        </div>
-        <div class="version-desc">从个人工具进化为社区平台。</div>
-        <ul class="feature-list">
-          <li>用户账号 + 云端收藏 / 历史同步</li>
-          <li>Scene 官方商店 + 订阅</li>
-          <li>创作者主页 + 作品集</li>
-          <li>多语言 (中 / 英 / 日)</li>
+          <li>公开注册、用户账号和社交关系</li>
+          <li>社区投稿、公开作品流和内容审核</li>
+          <li>Scene 商店、订阅或付费服务</li>
+          <li>长期托管的云端图库和生成服务</li>
         </ul>
       </div>
     </div>
 
   </div>
   <div class="callout" style="margin-top: var(--s-6);">
-    <strong>🌸 无论哪个版本, 都不违反 <a href="worldview.html">The Three Rules</a>:</strong>
+    <strong>🌸 每次决定是否增加功能时，先检查四件事：</strong>
     <ul style="margin-top: var(--s-2); padding-left: var(--s-4); color: var(--text-secondary);">
-      <li><strong>Scene First</strong> — 先有 Scene, 后有 Prompt</li>
-      <li><strong>Character First</strong> — 人物永远是画面中心</li>
-      <li><strong>Emotion First</strong> — 用户记住的不是 Prompt, 而是画面带来的回忆</li>
+      <li><strong>有用优先</strong> — 自己或朋友是否真的会用</li>
+      <li><strong>本地优先</strong> — 数据能否留在自己的设备上</li>
+      <li><strong>安全分享</strong> — 能否限制访问并随时停止</li>
+      <li><strong>内容优先</strong> — 是否改善场景和出图，而不是只增加页面</li>
     </ul>
   </div>
 
   <footer class="footer">
-    <p>AI CG Studio · Roadmap v1.5</p>
-    <p class="muted mt-4">根据实际使用情况调整。不为了版本号赶工。</p>
+    <p>AI CG Studio · 个人维护路线</p>
+    <p class="muted mt-4">根据实际使用调整，不为了版本号赶工。</p>
   </footer>
 </article>
 
