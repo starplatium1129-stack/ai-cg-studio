@@ -60,13 +60,19 @@ function normalizeLocalHost(value, label) {
 function normalizeSDHost(value) { return normalizeLocalHost(value, 'SD WebUI'); }
 function normalizeTTSHost(value) { return normalizeLocalHost(value, 'GPT-SoVITS'); }
 
-function sanitizeVoiceProfile(value) {
+function sanitizeVoiceProfile(value, fallback) {
   value = value && typeof value === 'object' ? value : {};
+  fallback = fallback && typeof fallback === 'object' ? fallback : {};
+  function pick(key, defaultValue) {
+    return Object.prototype.hasOwnProperty.call(value, key) ? value[key] : (fallback[key] == null ? defaultValue : fallback[key]);
+  }
   return {
-    refAudioPath: String(value.refAudioPath || '').trim().slice(0, 1000),
-    promptText: String(value.promptText || '').trim().slice(0, 500),
-    promptLang: String(value.promptLang || 'ja').trim().slice(0, 12) || 'ja',
-    textLang: String(value.textLang || 'zh').trim().slice(0, 12) || 'zh'
+    refAudioPath: String(pick('refAudioPath', '') || '').trim().slice(0, 1000),
+    promptText: String(pick('promptText', '') || '').trim().slice(0, 500),
+    promptLang: String(pick('promptLang', 'ja') || 'ja').trim().slice(0, 12),
+    textLang: String(pick('textLang', 'ja') || 'ja').trim().slice(0, 12),
+    gptWeightsPath: String(pick('gptWeightsPath', '') || '').trim().slice(0, 1000),
+    sovitsWeightsPath: String(pick('sovitsWeightsPath', '') || '').trim().slice(0, 1000)
   };
 }
 
@@ -296,8 +302,8 @@ app.post('/api/config', function (req, res) {
     if (req.body && req.body.sdHost != null) SD_HOST = normalizeSDHost(req.body.sdHost);
     if (req.body && req.body.ttsHost != null) TTS_HOST = normalizeTTSHost(req.body.ttsHost);
     if (req.body && req.body.voices) {
-      VOICE_PROFILES.nene = sanitizeVoiceProfile(req.body.voices.nene);
-      VOICE_PROFILES.natsume = sanitizeVoiceProfile(req.body.voices.natsume);
+      VOICE_PROFILES.nene = sanitizeVoiceProfile(req.body.voices.nene, VOICE_PROFILES.nene);
+      VOICE_PROFILES.natsume = sanitizeVoiceProfile(req.body.voices.natsume, VOICE_PROFILES.natsume);
     }
     state.sdOnline = false;
     state.ttsOnline = false;

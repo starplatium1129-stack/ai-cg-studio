@@ -10,7 +10,7 @@ const sceneSource = path.join(dataDir, 'scenes.json');
 const characterSource = path.join(dataDir, 'characters.json');
 const presetSource = path.join(dataDir, 'presets.json');
 const required = [
-  'id', 'title', 'category', 'story', 'char', 'character', 'lora', 'emotion',
+  'id', 'title', 'category', 'story', 'storyJa', 'char', 'character', 'lora', 'emotion',
   'season', 'time', 'timeOfDay', 'tags', 'mature', 'location', 'weather',
   'camera', 'lighting', 'usage', 'prompt', 'negative'
 ];
@@ -29,6 +29,18 @@ function readJson(source, label, errors) {
     errors.push(label + ' cannot be parsed: ' + error.message);
     return [];
   }
+}
+
+function hasRepeatedNgram(value, size = 12) {
+  const compact = String(value || '').replace(/\s+/g, '');
+  const counts = new Map();
+  for (let index = 0; index <= compact.length - size; index += 1) {
+    const gram = compact.slice(index, index + size);
+    const count = (counts.get(gram) || 0) + 1;
+    if (count >= 3) return true;
+    counts.set(gram, count);
+  }
+  return false;
 }
 
 const errors = [];
@@ -66,6 +78,28 @@ if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
 
   if (typeof scene.story === 'string' && scene.story.length < 80) {
     errors.push(label + ': story is too short (' + scene.story.length + ' < 80)');
+  }
+  if (typeof scene.storyJa === 'string' && !/[ぁ-んァ-ヶ]/.test(scene.storyJa)) {
+    errors.push(label + ': storyJa must contain Japanese kana');
+  }
+  if (typeof scene.storyJa === 'string' && /[这们说没让还过进给为从吗边发经动觉样东门书车话气实间见听脸妈爱现开关窝败总紧头轻软应处]/.test(scene.storyJa)) {
+    errors.push(label + ': storyJa contains likely untranslated Simplified Chinese');
+  }
+  if (typeof scene.storyJa === 'string' && typeof scene.story === 'string') {
+    const sourceHasDialogue = scene.story.includes('「') && scene.story.includes('」');
+    const japaneseHasDialogue = scene.storyJa.includes('「') && scene.storyJa.includes('」');
+    if (sourceHasDialogue !== japaneseHasDialogue) errors.push(label + ': storyJa dialogue structure differs from story');
+  }
+  if (typeof scene.storyJa === 'string' && Array.isArray(scene.character)) {
+    const japaneseHeader = scene.storyJa.split('】', 1)[0];
+    if (scene.character.includes('nene') && !japaneseHeader.includes('寧々')) errors.push(label + ': storyJa header is missing Nene');
+    if (scene.character.includes('natsume') && !japaneseHeader.includes('夏目')) errors.push(label + ': storyJa header is missing Natsume');
+  }
+  if (typeof scene.storyJa === 'string' && typeof scene.story === 'string' && scene.storyJa.length > Math.max(300, scene.story.length * 2.4)) {
+    errors.push(label + ': storyJa is implausibly longer than story');
+  }
+  if (typeof scene.storyJa === 'string' && hasRepeatedNgram(scene.storyJa)) {
+    errors.push(label + ': storyJa repeats the same 12-character text three times');
   }
   if (typeof scene.prompt === 'string' && scene.prompt.length < 100) {
     errors.push(label + ': prompt is too short (' + scene.prompt.length + ' < 100)');

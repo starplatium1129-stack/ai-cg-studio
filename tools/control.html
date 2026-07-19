@@ -575,12 +575,16 @@ function saveSDConfig(showMessage) {
       nene: {
         refAudioPath: document.getElementById('voice-nene-ref').value.trim(),
         promptText: document.getElementById('voice-nene-prompt').value.trim(),
-        promptLang: 'ja', textLang: 'zh'
+        promptLang: 'ja', textLang: 'ja',
+        gptWeightsPath: lastStatus && lastStatus.voices && lastStatus.voices.nene ? lastStatus.voices.nene.gptWeightsPath : undefined,
+        sovitsWeightsPath: lastStatus && lastStatus.voices && lastStatus.voices.nene ? lastStatus.voices.nene.sovitsWeightsPath : undefined
       },
       natsume: {
         refAudioPath: document.getElementById('voice-natsume-ref').value.trim(),
         promptText: document.getElementById('voice-natsume-prompt').value.trim(),
-        promptLang: 'ja', textLang: 'zh'
+        promptLang: 'ja', textLang: 'ja',
+        gptWeightsPath: lastStatus && lastStatus.voices && lastStatus.voices.natsume ? lastStatus.voices.natsume.gptWeightsPath : undefined,
+        sovitsWeightsPath: lastStatus && lastStatus.voices && lastStatus.voices.natsume ? lastStatus.voices.natsume.sovitsWeightsPath : undefined
       }
     }
   };

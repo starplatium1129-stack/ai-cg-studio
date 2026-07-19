@@ -19,7 +19,7 @@ This is an unofficial, non-commercial fan project and is not affiliated with or 
 - Automatic Positive / Negative Prompt assembly and scene-aware LoRA injection
 - Direct generation through AUTOMATIC1111, Forge, or ReForge
 - Model and sampler discovery, progress display, interrupt, fixed seeds, and hires.fix
-- Scene dialogue extraction, full-story narration, system voice preview, and optional local GPT-SoVITS voices
+- Japanese-first scene dialogue and narration, optional Chinese delivery, system preview, and local GPT-SoVITS character voices
 - Local history, ratings, favorites, notes, projects, and image storage
 - Temporary token-protected links for trusted friends to use your local SD WebUI
 
@@ -27,7 +27,7 @@ This is an unofficial, non-commercial fan project and is not affiliated with or 
 
 1. In Stability Matrix, keep `--api --port 7860` in the WebUI launch arguments.
 2. Double-click `control.bat`.
-3. Confirm the WebUI address. When the sibling local voice setup is present, the launcher also starts GPT-SoVITS and loads the configured Nene/Natsume references.
+3. Confirm the WebUI address. When the sibling local voice setup is present, the launcher also starts GPT-SoVITS; the gateway switches the evaluated Nene/Natsume weights for each request.
 4. Click **启动并生成分享链接**.
 5. Use **打开本地网站（无需 Token）** for yourself, or copy the token-protected link for a friend.
 6. Click **停止分享** when finished.

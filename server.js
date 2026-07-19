@@ -18,6 +18,9 @@ var HOST = process.env.HOST || '127.0.0.1';
 var SD_HOST = process.env.SD_HOST || runtimeConfig.sdHost || 'http://127.0.0.1:7860';
 var TTS_HOST = process.env.TTS_HOST || runtimeConfig.ttsHost || 'http://127.0.0.1:9880';
 var VOICE_PROFILES = runtimeConfig.voices && typeof runtimeConfig.voices === 'object' ? runtimeConfig.voices : {};
+var activeGPTWeights = '';
+var activeSoVITSWeights = '';
+var voiceQueue = Promise.resolve();
 var SD_API_AUTH = process.env.SD_API_AUTH || '';
 var DISABLE_TUNNEL = process.env.DISABLE_TUNNEL === '1';
 var TOKEN = process.env.TOKEN || crypto.randomBytes(8).toString('hex');
@@ -153,20 +156,70 @@ app.get('/api/tts-status', function (req, res) {
   });
 });
 
+function requestVoiceAPI(pathname, options) {
+  options = options || {};
+  return new Promise(function (resolve, reject) {
+    try {
+      var target = new URL(pathname, TTS_HOST);
+      var payload = options.payload ? JSON.stringify(options.payload) : '';
+      var transport = target.protocol === 'https:' ? require('https') : require('http');
+      var request = transport.request(target, {
+        method: options.method || 'GET',
+        headers: payload ? {
+          'Content-Type':'application/json',
+          'Content-Length':Buffer.byteLength(payload)
+        } : undefined
+      }, function (response) {
+        var chunks = [];
+        var total = 0;
+        var limit = options.limit || 1024 * 1024;
+        response.on('data', function (chunk) {
+          total += chunk.length;
+          if (total > limit) return request.destroy(new Error('GPT-SoVITS response exceeded the size limit'));
+          chunks.push(chunk);
+        });
+        response.on('end', function () {
+          var body = Buffer.concat(chunks);
+          if (response.statusCode < 200 || response.statusCode >= 300) {
+            return reject(new Error('GPT-SoVITS returned ' + response.statusCode + ': ' + body.toString('utf8').slice(0, 500)));
+          }
+          resolve({ body:body, contentType:response.headers['content-type'] || 'application/octet-stream' });
+        });
+      });
+      request.setTimeout(options.timeout || 30 * 1000, function () { request.destroy(new Error('GPT-SoVITS request timed out')); });
+      request.on('error', reject);
+      request.end(payload);
+    } catch (error) { reject(error); }
+  });
+}
+
+async function activateVoiceProfile(profile) {
+  if (profile.sovitsWeightsPath && profile.sovitsWeightsPath !== activeSoVITSWeights) {
+    await requestVoiceAPI('/set_sovits_weights?weights_path=' + encodeURIComponent(profile.sovitsWeightsPath));
+    activeSoVITSWeights = profile.sovitsWeightsPath;
+  }
+  if (profile.gptWeightsPath && profile.gptWeightsPath !== activeGPTWeights) {
+    await requestVoiceAPI('/set_gpt_weights?weights_path=' + encodeURIComponent(profile.gptWeightsPath));
+    activeGPTWeights = profile.gptWeightsPath;
+  }
+}
+
 app.post('/api/tts', express.json({ limit:'32kb' }), function (req, res) {
   var voice = String(req.body && req.body.voice || '');
   var text = String(req.body && req.body.text || '').trim();
+  var language = String(req.body && req.body.language || 'ja').toLowerCase();
   var speed = Number(req.body && req.body.speed);
   var profile = VOICE_PROFILES[voice];
   if (!['nene', 'natsume'].includes(voice)) return res.status(400).json({ error:'不支持的角色声线' });
-  if (!text || text.length > 2000) return res.status(400).json({ error:'台词长度必须在 1–2000 字之间' });
+  if (!['ja', 'zh'].includes(language)) return res.status(400).json({ error:'语音语言仅支持日语或中文' });
+  if (!text || text.length > 2000) return res.status(400).json({ error:'台词长度必须在 1—2000 字之间' });
   if (!profile || !profile.refAudioPath || !profile.promptText) return res.status(409).json({ error:'该角色尚未在启动控制面板配置 GPT-SoVITS 参考音频' });
   if (!Number.isFinite(speed)) speed = 1;
   speed = Math.max(0.75, Math.min(1.35, speed));
 
-  var payload = JSON.stringify({
+  var payload = {
     text: text,
-    text_lang: profile.textLang || 'zh',
+    text_lang: language,
     ref_audio_path: profile.refAudioPath,
     prompt_lang: profile.promptLang || 'ja',
     prompt_text: profile.promptText,
@@ -175,41 +228,22 @@ app.post('/api/tts', express.json({ limit:'32kb' }), function (req, res) {
     speed_factor: speed,
     media_type: 'wav',
     streaming_mode: false
+  };
+
+  var task = voiceQueue.catch(function () {}).then(async function () {
+    await activateVoiceProfile(profile);
+    return requestVoiceAPI('/tts', { method:'POST', payload:payload, limit:32 * 1024 * 1024, timeout:5 * 60 * 1000 });
   });
-  try {
-    var target = new URL('/tts', TTS_HOST);
-    var transport = target.protocol === 'https:' ? require('https') : require('http');
-    var upstream = transport.request(target, {
-      method:'POST',
-      headers:{ 'Content-Type':'application/json', 'Content-Length':Buffer.byteLength(payload) }
-    }, function (response) {
-      var chunks = [];
-      var total = 0;
-      response.on('data', function (chunk) {
-        total += chunk.length;
-        if (total > 32 * 1024 * 1024) return upstream.destroy(new Error('语音返回超过 32MB'));
-        chunks.push(chunk);
-      });
-      response.on('end', function () {
-        var body = Buffer.concat(chunks);
-        if (response.statusCode < 200 || response.statusCode >= 300) {
-          var detail = body.toString('utf8').slice(0, 500);
-          return res.status(502).json({ error:'GPT-SoVITS 生成失败', detail:detail });
-        }
-        res.setHeader('Content-Type', response.headers['content-type'] || 'audio/wav');
-        res.setHeader('Content-Length', body.length);
-        res.setHeader('Cache-Control', 'no-store');
-        res.end(body);
-      });
-    });
-    upstream.setTimeout(5 * 60 * 1000, function () { upstream.destroy(new Error('GPT-SoVITS 请求超时')); });
-    upstream.on('error', function (error) {
-      if (!res.headersSent) res.status(502).json({ error:'无法连接 GPT-SoVITS', detail:error.message });
-    });
-    upstream.end(payload);
-  } catch (error) {
-    res.status(500).json({ error:'TTS 请求构建失败', detail:error.message });
-  }
+  voiceQueue = task;
+  task.then(function (result) {
+    if (res.headersSent) return;
+    res.setHeader('Content-Type', result.contentType || 'audio/wav');
+    res.setHeader('Content-Length', result.body.length);
+    res.setHeader('Cache-Control', 'no-store');
+    res.end(result.body);
+  }).catch(function (error) {
+    if (!res.headersSent) res.status(502).json({ error:'GPT-SoVITS 生成失败', detail:error.message });
+  });
 });
 
 // ─── Tunnel 状态接口（已受 Token 中间件保护，且不再回传 Token）───

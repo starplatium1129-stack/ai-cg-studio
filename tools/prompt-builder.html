@@ -10,9 +10,9 @@
 <style>
   /* ============================================================
      Director — 宽屏工作台 (Scene-first, Prompt-last)
-     上层=剧本 + 导演决策，下层=宽屏监看、参数与有声成品
+     左侧=剧本与素材，右侧=导演决策、监看与大画幅成品
      ============================================================ */
-  .pb { max-width: 1680px; margin: 0 auto; padding: var(--s-5) var(--s-5) var(--s-7); }
+  .pb { max-width: 1760px; margin: 0 auto; padding: var(--s-5) var(--s-5) var(--s-7); }
   .nav-back { display: inline-flex; align-items: center; gap: var(--s-2); color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4); text-decoration: none; }
   .nav-back:hover { color: var(--accent); }
   .pb-header { margin-bottom: var(--s-5); }
@@ -20,12 +20,12 @@
   .pb-sub { color: var(--text-secondary); font-size: 0.92rem; }
 
   /* ---- 宽屏工作台 ---- */
-  .director-workspace { display: grid; grid-template-columns: minmax(360px,.78fr) minmax(640px,1.5fr); grid-template-areas:"story decisions" "stage stage"; gap: var(--s-5); align-items: start; }
+  .director-workspace { display:grid; grid-template-columns:clamp(350px,24vw,420px) minmax(0,1fr); grid-template-areas:"story decisions" "story stage"; gap:var(--s-5); align-items:start; }
   .director-col { display: flex; flex-direction: column; gap: var(--s-4); min-width: 0; }
   .col-left { grid-area: story; }
   .col-right { grid-area: decisions; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--s-4); }
   .col-right > :nth-child(1), .col-right > :nth-child(2), .col-right > :nth-child(5), .col-right > .generate-btn { grid-column:1 / -1; }
-  .col-center { grid-area: stage; display:grid; grid-template-columns:minmax(0,1fr) minmax(360px,.72fr); gap:var(--s-4); position:static; }
+  .col-center { grid-area:stage; display:grid; grid-template-columns:minmax(0,1.25fr) minmax(300px,.75fr); gap:var(--s-4); position:static; }
   .col-center > .panel { margin-top:0 !important; }
   /* Prompt 监视器默认折叠 */
   .monitor-preview-collapsed .preview-output,
@@ -36,9 +36,12 @@
   /* Step workflow */
   .stepbar { display:flex; align-items:center; gap:0; padding:var(--s-3) 0 var(--s-5); }
   #stepResult { display:none; }
-  body.step-4 #stepResult { display:grid; grid-template-columns:minmax(0,1.25fr) minmax(340px,.75fr); gap:var(--s-4) var(--s-5); grid-column:1 / -1; }
+  body.step-4 #stepResult { display:grid; grid-template-columns:minmax(0,1fr); gap:var(--s-3); grid-column:1 / -1; }
   #stepResult > .panel-title { grid-column:1 / -1; margin-bottom:0; }
-  #stepResult > #finalPrompt, #stepResult > .sd-inline-options, #stepResult > .preview-actions, #stepResult > #sdResultArea { grid-column:1; }
+  #stepResult > #finalPrompt, #stepResult > .sd-inline-options, #stepResult > .preview-actions { grid-column:1 / -1; }
+  #stepResult.has-image { grid-template-columns:minmax(0,1fr) 320px; gap:var(--s-4); }
+  #stepResult.has-image > #sdResultArea { grid-column:1; grid-row:5; }
+  #stepResult.has-image > .voice-studio { grid-column:2; grid-row:5; width:320px; max-width:320px; overflow:hidden; position:sticky; top:var(--s-4); }
   .generate-btn { width:100%; padding:var(--s-3); font-size:1rem; }
   .generate-btn:disabled { opacity:0.5; cursor:not-allowed; }
   /* Scene 卡片色带(按分类着色,直观区分场景类型) */
@@ -215,14 +218,14 @@
   .generate-btn:disabled { opacity:0.5; cursor:not-allowed; }
 
   /* Voice studio */
-  .voice-studio { grid-column:2; grid-row:2 / span 4; align-self:start; min-width:0; padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:linear-gradient(145deg,var(--bg-deep),var(--bg-elevated)); }
+  .voice-studio { grid-column:1; align-self:start; min-width:0; padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:linear-gradient(145deg,var(--bg-deep),var(--bg-elevated)); }
   .voice-head { display:flex; align-items:flex-start; justify-content:space-between; gap:var(--s-3); margin-bottom:var(--s-3); }
   .voice-title { font-size:.95rem; font-weight:750; color:var(--text-primary); }
   .voice-sub { margin-top:3px; color:var(--text-muted); font-size:.72rem; line-height:1.5; }
   .voice-state { flex:0 0 auto; padding:3px 8px; border:1px solid var(--border-soft); border-radius:9999px; color:var(--text-muted); font-size:.68rem; }
   .voice-state.ready { color:var(--success); border-color:color-mix(in srgb,var(--success) 45%,var(--border-soft)); }
   .voice-state.warn { color:var(--warning); border-color:color-mix(in srgb,var(--warning) 45%,var(--border-soft)); }
-  .voice-controls { display:grid; grid-template-columns:1fr 1fr .72fr; gap:var(--s-2); margin-bottom:var(--s-3); }
+  .voice-controls { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--s-2); margin-bottom:var(--s-3); }
   .voice-field { display:grid; gap:4px; min-width:0; color:var(--text-muted); font-size:.68rem; }
   .voice-field select { width:100%; min-width:0; padding:7px 8px; border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-surface); color:var(--text-primary); outline:none; }
   .voice-field select:focus, .voice-text:focus { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-glow); }
@@ -369,13 +372,16 @@
     .pb { padding-inline:var(--s-4); }
     .director-workspace { grid-template-columns:1fr; grid-template-areas:"story" "decisions" "stage"; }
     .col-left, .col-center, .col-right { grid-column:1; }
+    #stepResult.has-image { grid-template-columns:minmax(0,1fr) 300px; }
+    #stepResult.has-image > .voice-studio { width:300px; max-width:300px; }
   }
   @media (max-width: 768px) {
     .pb { padding-inline:var(--s-3); }
     .col-right, .col-center { grid-template-columns:1fr; }
     .col-right > * { grid-column:1 !important; }
-    body.step-4 #stepResult { grid-template-columns:1fr; }
+    body.step-4 #stepResult, #stepResult.has-image { grid-template-columns:1fr; }
     #stepResult > *, .voice-studio { grid-column:1 !important; grid-row:auto !important; }
+    #stepResult.has-image > .voice-studio { width:100%; max-width:none; }
     .voice-controls { grid-template-columns:1fr; }
     .story-chip, .char-btn, .scene-cat, .scene-filter-reset, .chip-select, .tag-chip, .option, .cat-tab { min-height: 44px; }
     .scene-filter-field select, #projectSelect, .controls-grid select, .sd-inline-options select { min-height: 44px; }
@@ -405,7 +411,9 @@
   .sd-progress > span { display:block; width:0; height:100%; border-radius:inherit; background:linear-gradient(90deg,var(--accent),#8b5cf6); transition:width .35s ease; }
   .sd-progress[hidden] { display:none; }
   #sdCancelBtn[hidden] { display:none; }
-  #sdImageSlot img { max-width:100%; max-height:72vh; object-fit:contain; border-radius:var(--r-md); box-shadow:var(--shadow-md); }
+  #stepResult.has-image #sdResultArea { min-height:clamp(480px,72vh,920px); margin-top:0 !important; padding:var(--s-4); display:flex !important; flex-direction:column; justify-content:center; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:radial-gradient(circle at 50% 38%,var(--bg-elevated),var(--bg-deep) 72%); }
+  #sdImageSlot { flex:1; min-height:0; display:flex; align-items:center; justify-content:center; }
+  #sdImageSlot img { display:block; max-width:100%; max-height:82vh; object-fit:contain; border-radius:var(--r-md); box-shadow:var(--shadow-md); }
   @media (max-width: 768px) {
     .sd-inline-options { align-items:stretch; }
     .sd-inline-options label:has(select) { width:100%; justify-content:space-between; }
@@ -585,11 +593,12 @@
         </div>
         <section class="voice-studio" aria-labelledby="voiceStudioTitle">
           <div class="voice-head">
-            <div><div class="voice-title" id="voiceStudioTitle">🎙 让画面开口</div><div class="voice-sub">先用系统声音试听节奏；连接 GPT-SoVITS 后生成角色声线 WAV。</div></div>
+            <div><div class="voice-title" id="voiceStudioTitle">🎙 让画面开口</div><div class="voice-sub">默认使用角色原语言日文，也可切换为中文演绎。</div></div>
             <span class="voice-state" id="voiceState">检测中</span>
           </div>
           <div class="voice-controls">
             <label class="voice-field">角色<select id="voiceCharacter" onchange="refreshVoiceText(true)"><option value="nene">🌸 宁宁</option><option value="natsume">☕ 夏目</option></select></label>
+            <label class="voice-field">语言<select id="voiceLanguage" onchange="refreshVoiceText(true)"><option value="ja" selected>日本語 · 默认</option><option value="zh">中文</option></select></label>
             <label class="voice-field">内容<select id="voiceMode" onchange="refreshVoiceText(true)"><option value="dialogue">提取角色台词</option><option value="story">朗读完整故事</option></select></label>
             <label class="voice-field">语速<select id="voiceSpeed"><option value="0.85">舒缓</option><option value="1" selected>自然</option><option value="1.15">轻快</option></select></label>
           </div>
@@ -2270,6 +2279,7 @@ function callSDGenerate(){
     setSDProgress(100);
     var elapsed = Math.max(1, Math.round((Date.now() - generation.startedAt) / 1000));
     status.textContent = '✅ 生成完成 · ' + elapsed + ' 秒' + (hiresEnabled ? ' · hires.fix ' + hiresScale + 'x' : '');
+    document.getElementById('stepResult').classList.add('has-image');
     var image = document.createElement('img');
     image.src = result.image;
     image.alt = 'Stable Diffusion 生成图片';
@@ -2284,6 +2294,7 @@ function callSDGenerate(){
     }
   }).catch(function(error){
     console.error('[SD API] 生成失败:', error);
+    document.getElementById('stepResult').classList.remove('has-image');
     if (generation.cancelled || error.name === 'AbortError') {
       status.textContent = '已停止生成';
     } else if (error.name === 'TimeoutError') {
@@ -2341,6 +2352,9 @@ function toggleLivePrompt() {
 function resetDirector() {
   state.story = ''; state.__sceneId = null; state.selections = { emotion:[], shot:null, lighting:null, composition:null }; state.colorMood = null; state.manualTags = new Set();
   document.getElementById('storyInput').value = '';
+  document.getElementById('stepResult').classList.remove('has-image');
+  document.getElementById('sdResultArea').style.display = 'none';
+  document.getElementById('sdImageSlot').textContent = '';
   document.querySelectorAll('#chip-emotion .chip-select.selected,#opt-shot .option.selected,#opt-lighting .option.selected,#opt-composition .option.selected,#moodGrid .mood-card.selected').forEach(o => o.classList.remove('selected'));
   refreshVoiceText(true);
   updateLivePreview(); updateGuideBar(); flash('🔄 已重置');
@@ -2372,9 +2386,14 @@ function extractSceneDialogue(story) {
 function defaultVoiceText() {
   var mode = document.getElementById('voiceMode') ? document.getElementById('voiceMode').value : 'dialogue';
   var voice = document.getElementById('voiceCharacter') ? document.getElementById('voiceCharacter').value : 'nene';
-  var story = String(state.story || '').trim();
+  var language = document.getElementById('voiceLanguage') ? document.getElementById('voiceLanguage').value : 'ja';
+  var scene = SCENES.find(function(item){ return item.id === state.__sceneId; });
+  var character = voiceCharacterData(voice) || {};
+  var story = language === 'ja'
+    ? String((scene && scene.storyJa) || character.voiceJa || '').trim()
+    : String(state.story || '').trim();
   if (mode === 'story') return story.replace(/^【[^】]+】\s*/, '');
-  return extractSceneDialogue(story) || ((voiceCharacterData(voice) || {}).voice || '') || story.replace(/^【[^】]+】\s*/, '');
+  return extractSceneDialogue(story) || (language === 'ja' ? character.voiceJa : character.voice) || story.replace(/^【[^】]+】\s*/, '');
 }
 
 function refreshVoiceText(force) {
@@ -2384,7 +2403,10 @@ function refreshVoiceText(force) {
   textArea.value = defaultVoiceText();
   textArea.dataset.dirty = '0';
   var status = document.getElementById('voiceStatus');
-  if (status) status.textContent = textArea.value ? '配音文本已准备好，可以先试听节奏。' : '写下故事或选择场景后，会自动准备配音文本。';
+  var language = document.getElementById('voiceLanguage') ? document.getElementById('voiceLanguage').value : 'ja';
+  if (status) status.textContent = textArea.value
+    ? (language === 'ja' ? '日文台词已准备好，可以先试听节奏。' : '中文台词已准备好，可以先试听节奏。')
+    : '写下故事或选择场景后，会自动准备配音文本。';
   checkVoiceStatus();
 }
 
@@ -2452,12 +2474,13 @@ function previewVoice() {
   var voiceId = document.getElementById('voiceCharacter').value;
   var speed = Number(document.getElementById('voiceSpeed').value) || 1;
   var utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = 'zh-CN';
+  var language = document.getElementById('voiceLanguage').value;
+  utterance.lang = language === 'ja' ? 'ja-JP' : 'zh-CN';
   utterance.rate = speed;
   utterance.pitch = voiceId === 'nene' ? 1.08 : .95;
   var voices = window.speechSynthesis.getVoices();
-  var chinese = voices.find(function(item){ return /^zh[-_]/i.test(item.lang); });
-  if (chinese) utterance.voice = chinese;
+  var localVoice = voices.find(function(item){ return language === 'ja' ? /^ja[-_]/i.test(item.lang) : /^zh[-_]/i.test(item.lang); });
+  if (localVoice) utterance.voice = localVoice;
   utterance.onstart = function(){ document.getElementById('voiceStatus').textContent = '正在用本机系统声音试听（仅用于检查语速与文本）。'; };
   utterance.onend = function(){ document.getElementById('voiceStatus').textContent = '试听结束。满意后可生成 AI 角色声线。'; };
   utterance.onerror = function(){ document.getElementById('voiceStatus').textContent = '系统声音试听失败，请检查浏览器语音设置。'; };
@@ -2478,6 +2501,7 @@ function generateAIVoice() {
     headers:{ 'Content-Type':'application/json' },
     body:JSON.stringify({
       voice:document.getElementById('voiceCharacter').value,
+      language:document.getElementById('voiceLanguage').value,
       text:text,
       speed:Number(document.getElementById('voiceSpeed').value) || 1
     }),
@@ -2511,7 +2535,7 @@ function downloadVoice() {
   if (!_voiceAudioUrl || !_voiceBlob) return;
   var link = document.createElement('a');
   link.href = _voiceAudioUrl;
-  link.download = 'aics_voice_' + document.getElementById('voiceCharacter').value + '_' + Date.now() + '.wav';
+  link.download = 'aics_voice_' + document.getElementById('voiceCharacter').value + '_' + document.getElementById('voiceLanguage').value + '_' + Date.now() + '.wav';
   link.click();
 }
 
