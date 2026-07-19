@@ -67,7 +67,7 @@
   button, input { font:inherit; }
   button, a { -webkit-tap-highlight-color:transparent; }
 
-  .shell { width:min(680px, calc(100% - 32px)); margin:0 auto; padding:42px 0 52px; }
+  .shell { width:min(820px, calc(100% - 32px)); margin:0 auto; padding:42px 0 52px; }
   .hero { position:relative; text-align:left; margin-bottom:24px; padding:0 3px; }
   .eyebrow {
     display:inline-flex; align-items:center; gap:7px;
@@ -93,7 +93,7 @@
   }
   .theme-toggle:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
 
-  .status-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px; }
+  .status-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:14px; }
   .status-card {
     min-width:0; padding:15px 16px; border:1px solid var(--border-soft);
     border-radius:12px; background:var(--surface); box-shadow:0 1px 3px rgba(0,0,0,.05);
@@ -153,6 +153,13 @@
   .config-feedback { min-height:20px; margin:11px 0 15px; font-size:.75rem; line-height:1.5; color:var(--text-3); }
   .config-feedback.ok { color:var(--blue); }
   .config-feedback.warn { color:var(--amber); }
+  .voice-config { margin-top:14px; border:1px solid var(--border-soft); border-radius:10px; background:var(--surface-3); }
+  .voice-config summary { cursor:pointer; list-style:none; padding:12px 14px; color:var(--text-2); font-size:.78rem; font-weight:650; }
+  .voice-config summary::-webkit-details-marker { display:none; }
+  .voice-config-body { padding:0 12px 12px; display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .voice-card { padding:12px; border:1px solid var(--border-soft); border-radius:9px; background:var(--surface); }
+  .voice-card-title { margin-bottom:9px; font-size:.78rem; font-weight:700; color:var(--accent); }
+  .voice-card .config-input { width:100%; height:39px; margin-bottom:8px; font-size:.74rem; }
 
   .btn {
     width:100%; min-height:48px; display:inline-flex; align-items:center; justify-content:center; gap:8px;
@@ -239,7 +246,7 @@
   @media (max-width:560px) {
     .shell { width:min(100% - 24px,680px); padding:26px 0 34px; }
     .hero { margin-bottom:19px; }
-    .status-grid, .access-grid { grid-template-columns:1fr; }
+    .status-grid, .access-grid, .voice-config-body { grid-template-columns:1fr; }
     .panel { padding:19px; border-radius:16px; }
     .status-card { padding:13px 14px; }
     .access-desc { min-height:0; }
@@ -275,24 +282,54 @@
       <div class="status-label">SD WebUI</div>
       <div id="sd-badge" class="badge offline" role="status" aria-live="polite"><span class="dot"></span><span>正在检测…</span></div>
     </div>
+    <div class="status-card">
+      <div class="status-label">GPT-SoVITS</div>
+      <div id="tts-badge" class="badge offline" role="status" aria-live="polite"><span class="dot"></span><span>正在检测…</span></div>
+    </div>
   </section>
 
   <section class="panel">
     <div class="step-head">
       <div class="step-num">01</div>
       <div class="step-copy">
-        <div class="step-title">确认 SD WebUI 地址</div>
-        <div class="step-desc">填写 Stability Matrix 启动日志中的本机地址，保存后会自动重新检测。</div>
+        <div class="step-title">确认本机生成服务</div>
+        <div class="step-desc">SD WebUI 负责画面，GPT-SoVITS 负责角色语音。未安装语音服务时，网站仍可使用系统声音试听。</div>
       </div>
     </div>
 
     <label class="config-label" for="sd-host">Stability Matrix / SD WebUI 地址</label>
     <div class="config-row">
       <input class="config-input" id="sd-host" value="http://127.0.0.1:7860" spellcheck="false" inputmode="url" autocomplete="off">
-      <button class="btn-small" id="save-config" type="button" onclick="doSaveSDConfig()">保存并检测</button>
     </div>
     <div class="config-help">端口以启动日志为准；推荐参数：<code>--api --port 7860</code></div>
-    <div class="config-feedback" id="config-feedback" aria-live="polite">正在检查 SD WebUI 连接…</div>
+
+    <label class="config-label" for="tts-host" style="margin-top:13px">GPT-SoVITS API 地址</label>
+    <div class="config-row">
+      <input class="config-input" id="tts-host" value="http://127.0.0.1:9880" spellcheck="false" inputmode="url" autocomplete="off">
+      <button class="btn-small" id="save-config" type="button" onclick="doSaveSDConfig()">保存全部并检测</button>
+    </div>
+    <div class="config-help">本机已配置为随控制面板自动启动；默认端口为 <code>9880</code>。</div>
+
+    <details class="voice-config">
+      <summary>🎙 角色声线配置 · 参考音频必须是 GPT-SoVITS 能读取的本机路径</summary>
+      <div class="voice-config-body">
+        <div class="voice-card">
+          <div class="voice-card-title">🌸 绫地宁宁</div>
+          <label class="config-label" for="voice-nene-ref">参考音频路径</label>
+          <input class="config-input" id="voice-nene-ref" placeholder="D:\\voices\\nene.wav" autocomplete="off">
+          <label class="config-label" for="voice-nene-prompt">参考音频原文</label>
+          <input class="config-input" id="voice-nene-prompt" placeholder="填写参考音频中实际说出的日语原文" autocomplete="off">
+        </div>
+        <div class="voice-card">
+          <div class="voice-card-title">☕ 四季夏目</div>
+          <label class="config-label" for="voice-natsume-ref">参考音频路径</label>
+          <input class="config-input" id="voice-natsume-ref" placeholder="D:\\voices\\natsume.wav" autocomplete="off">
+          <label class="config-label" for="voice-natsume-prompt">参考音频原文</label>
+          <input class="config-input" id="voice-natsume-prompt" placeholder="填写参考音频中实际说出的日语原文" autocomplete="off">
+        </div>
+      </div>
+    </details>
+    <div class="config-feedback" id="config-feedback" aria-live="polite">正在检查画面与语音服务连接…</div>
 
     <button id="btn" class="btn btn-start" type="button" onclick="doStart()">启动并生成分享链接</button>
     <p class="action-note" id="action-note">启动后，本机访问不需要 Token；公网分享会使用临时 Token。</p>
@@ -417,15 +454,33 @@ function renderStatus(data) {
   lastStatus = data;
   var badge = document.getElementById('badge');
   var sdBadge = document.getElementById('sd-badge');
+  var ttsBadge = document.getElementById('tts-badge');
   var button = document.getElementById('btn');
   var runningPanel = document.getElementById('running-panel');
   var input = document.getElementById('sd-host');
+  var ttsInput = document.getElementById('tts-host');
+  var voiceInputs = {
+    neneRef: document.getElementById('voice-nene-ref'),
+    nenePrompt: document.getElementById('voice-nene-prompt'),
+    natsumeRef: document.getElementById('voice-natsume-ref'),
+    natsumePrompt: document.getElementById('voice-natsume-prompt')
+  };
   var saveButton = document.getElementById('save-config');
   var feedback = document.getElementById('config-feedback');
   var actionNote = document.getElementById('action-note');
 
   if (document.activeElement !== input && data.sdHost) input.value = data.sdHost;
-  input.disabled = !!data.running;
+  if (document.activeElement !== ttsInput && data.ttsHost) ttsInput.value = data.ttsHost;
+  var voices = data.voices || {};
+  var nene = voices.nene || {};
+  var natsume = voices.natsume || {};
+  if (document.activeElement !== voiceInputs.neneRef) voiceInputs.neneRef.value = nene.refAudioPath || '';
+  if (document.activeElement !== voiceInputs.nenePrompt) voiceInputs.nenePrompt.value = nene.promptText || '';
+  if (document.activeElement !== voiceInputs.natsumeRef) voiceInputs.natsumeRef.value = natsume.refAudioPath || '';
+  if (document.activeElement !== voiceInputs.natsumePrompt) voiceInputs.natsumePrompt.value = natsume.promptText || '';
+  [input, ttsInput, voiceInputs.neneRef, voiceInputs.nenePrompt, voiceInputs.natsumeRef, voiceInputs.natsumePrompt].forEach(function(field) {
+    field.disabled = !!data.running;
+  });
   saveButton.disabled = !!data.running;
 
   if (data.running) {
@@ -442,16 +497,24 @@ function renderStatus(data) {
     runningPanel.classList.remove('show');
   }
 
-  if (data.sdOnline) {
-    setBadge(sdBadge, 'online', '已连接');
+  setBadge(sdBadge, data.sdOnline ? 'online' : 'offline', data.sdOnline ? '已连接' : '未连接');
+  setBadge(ttsBadge, data.ttsOnline ? 'online' : 'offline', data.ttsOnline ? '已连接' : '未连接');
+  if (data.sdOnline && data.ttsOnline) {
     feedback.className = 'config-feedback ok';
-    feedback.textContent = '连接正常，可以读取模型并提交生成任务。';
-    actionNote.textContent = 'SD WebUI 已就绪。启动后即可本地出图，也可以按需分享。';
-  } else {
-    setBadge(sdBadge, 'offline', '未连接');
+    feedback.textContent = '画面与语音服务均已连接，可以生成完整的有声场景。';
+    actionNote.textContent = 'SD WebUI 与 GPT-SoVITS 已就绪，启动后即可本地使用或按需分享。';
+  } else if (data.sdOnline) {
     feedback.className = 'config-feedback warn';
-    feedback.textContent = '暂未检测到 WebUI。请确认已启动，并带有 --api 参数。';
-    actionNote.textContent = '仍可启动并浏览网站，但直接出图前需要先连接 SD WebUI。';
+    feedback.textContent = 'SD WebUI 已连接；GPT-SoVITS 暂不可用，系统声音试听仍可使用。';
+    actionNote.textContent = '现在可以正常出图；需要 AI 角色声线时，再启动并配置 GPT-SoVITS。';
+  } else if (data.ttsOnline) {
+    feedback.className = 'config-feedback warn';
+    feedback.textContent = 'GPT-SoVITS 已连接；请启动带有 --api 参数的 SD WebUI 才能直接出图。';
+    actionNote.textContent = '语音已经可用，画面生成仍需连接 SD WebUI。';
+  } else {
+    feedback.className = 'config-feedback warn';
+    feedback.textContent = '暂未检测到生成服务；网站浏览和系统声音试听仍可使用。';
+    actionNote.textContent = '可先启动网站浏览场景，出图和 AI 声线会在对应服务连接后启用。';
   }
 
   if (!data.running) return;
@@ -505,14 +568,29 @@ function renderStatus(data) {
 }
 
 function saveSDConfig(showMessage) {
-  var value = document.getElementById('sd-host').value.trim();
+  var payload = {
+    sdHost: document.getElementById('sd-host').value.trim(),
+    ttsHost: document.getElementById('tts-host').value.trim(),
+    voices: {
+      nene: {
+        refAudioPath: document.getElementById('voice-nene-ref').value.trim(),
+        promptText: document.getElementById('voice-nene-prompt').value.trim(),
+        promptLang: 'ja', textLang: 'zh'
+      },
+      natsume: {
+        refAudioPath: document.getElementById('voice-natsume-ref').value.trim(),
+        promptText: document.getElementById('voice-natsume-prompt').value.trim(),
+        promptLang: 'ja', textLang: 'zh'
+      }
+    }
+  };
   var feedback = document.getElementById('config-feedback');
   feedback.className = 'config-feedback';
   feedback.textContent = '正在保存并重新检测…';
   return fetch('/api/config', {
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({sdHost:value})
+    body:JSON.stringify(payload)
   }).then(function(response) {
     return response.json().then(function(data) {
       if (!response.ok) throw new Error(data.error || '保存失败');
@@ -520,7 +598,8 @@ function saveSDConfig(showMessage) {
     });
   }).then(function(data) {
     document.getElementById('sd-host').value = data.sdHost;
-    if (showMessage) showToast('WebUI 地址已保存');
+    document.getElementById('tts-host').value = data.ttsHost;
+    if (showMessage) showToast('生成服务配置已保存');
     pollStatus();
     return data;
   });

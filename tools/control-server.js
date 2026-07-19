@@ -6,6 +6,7 @@ var cp = require('child_process');
 var path = require('path');
 var fs = require('fs');
 var crypto = require('crypto');
+var runtimeTools = require('../scripts/runtime-paths');
 
 var app = express();
 app.disable('x-powered-by');
@@ -13,9 +14,14 @@ var PORT = 3001;
 var GW_PORT = Number(process.env.GATEWAY_PORT) || 3000;
 var HOST = '127.0.0.1';
 var SD_HOST = process.env.SD_HOST || 'http://127.0.0.1:7860';
+var TTS_HOST = process.env.TTS_HOST || 'http://127.0.0.1:9880';
+var VOICE_PROFILES = { nene:{}, natsume:{} };
 var SD_API_AUTH = process.env.SD_API_AUTH || '';
 var dir = path.join(__dirname, '..');
-var CONFIG_FILE = path.join(dir, '.gateway_config.json');
+var RUNTIME = runtimeTools.createRuntimePaths(dir);
+runtimeTools.migrateLegacyRuntime(dir, RUNTIME);
+runtimeTools.rotateLog(RUNTIME.controlLog, 2 * 1024 * 1024);
+var CONFIG_FILE = RUNTIME.config;
 var CLOUDFLARED_PATH = 'C:\\Program Files (x86)\\cloudflared\\cloudflared.exe';
 
 // ─── State ───
@@ -27,6 +33,7 @@ var state = {
   gatewayPort: GW_PORT,
   tunnelStatus: 'idle',
   sdOnline: false,
+  ttsOnline: false,
   logs: []
 };
 
@@ -35,25 +42,43 @@ function log(msg) {
   var line = '[' + new Date().toLocaleTimeString() + '] ' + msg;
   state.logs.push(line);
   if (state.logs.length > 200) state.logs.shift();
+  try { fs.appendFileSync(RUNTIME.controlLog, line + '\n', 'utf8'); } catch (error) {}
   console.log(line);
 }
 
-function normalizeSDHost(value) {
+function normalizeLocalHost(value, label) {
   var target = new URL(String(value || '').trim());
   var localHosts = ['127.0.0.1', 'localhost', '[::1]', '::1'];
   if ((target.protocol !== 'http:' && target.protocol !== 'https:') || localHosts.indexOf(target.hostname) === -1) {
-    throw new Error('SD WebUI 地址必须是本机 http(s) 地址');
+    throw new Error(label + ' 地址必须是本机 http(s) 地址');
   }
   if (target.username || target.password || (target.pathname && target.pathname !== '/') || target.search || target.hash) {
-    throw new Error('请只填写地址和端口，例如 http://127.0.0.1:7860');
+    throw new Error('请只填写' + label + '的地址和端口');
   }
   return target.origin;
 }
+function normalizeSDHost(value) { return normalizeLocalHost(value, 'SD WebUI'); }
+function normalizeTTSHost(value) { return normalizeLocalHost(value, 'GPT-SoVITS'); }
 
-if (!process.env.SD_HOST && fs.existsSync(CONFIG_FILE)) {
+function sanitizeVoiceProfile(value) {
+  value = value && typeof value === 'object' ? value : {};
+  return {
+    refAudioPath: String(value.refAudioPath || '').trim().slice(0, 1000),
+    promptText: String(value.promptText || '').trim().slice(0, 500),
+    promptLang: String(value.promptLang || 'ja').trim().slice(0, 12) || 'ja',
+    textLang: String(value.textLang || 'zh').trim().slice(0, 12) || 'zh'
+  };
+}
+
+if (fs.existsSync(CONFIG_FILE)) {
   try {
     var savedConfig = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf8'));
-    if (savedConfig.sdHost) SD_HOST = normalizeSDHost(savedConfig.sdHost);
+    if (!process.env.SD_HOST && savedConfig.sdHost) SD_HOST = normalizeSDHost(savedConfig.sdHost);
+    if (!process.env.TTS_HOST && savedConfig.ttsHost) TTS_HOST = normalizeTTSHost(savedConfig.ttsHost);
+    if (savedConfig.voices) {
+      VOICE_PROFILES.nene = sanitizeVoiceProfile(savedConfig.voices.nene);
+      VOICE_PROFILES.natsume = sanitizeVoiceProfile(savedConfig.voices.natsume);
+    }
   } catch (error) {
     console.warn('Ignoring invalid saved gateway config:', error.message);
   }
@@ -99,6 +124,31 @@ function checkSD() {
   } catch (e) {
     finish(false);
   }
+}
+
+var ttsCheckInFlight = false;
+var lastTTSCheck = 0;
+function checkTTS() {
+  if (ttsCheckInFlight || Date.now() - lastTTSCheck < 2000) return;
+  ttsCheckInFlight = true;
+  var finished = false;
+  function finish(online) {
+    if (finished) return;
+    finished = true;
+    state.ttsOnline = online;
+    lastTTSCheck = Date.now();
+    ttsCheckInFlight = false;
+  }
+  try {
+    var target = new URL('/docs', TTS_HOST);
+    var transport = target.protocol === 'https:' ? https : http;
+    var req = transport.get(target, function (res) {
+      res.resume();
+      finish(res.statusCode >= 200 && res.statusCode < 500);
+    });
+    req.setTimeout(1500, function () { req.destroy(new Error('TTS health check timeout')); });
+    req.on('error', function () { finish(false); });
+  } catch (error) { finish(false); }
 }
 
 // Query gateway's /api/tunnel-status for domain + token
@@ -175,15 +225,15 @@ function killTunnelByPidFile(pidFile, expectedPort) {
 // Check if gateway is already running on startup
 (function checkExisting() {
   try {
-    var pidFile = path.join(dir, '.gateway_pid');
+    var pidFile = RUNTIME.gatewayPid;
     if (fs.existsSync(pidFile)) {
       var pid = fs.readFileSync(pidFile, 'utf8').trim();
-      var portFile = path.join(dir, '.gateway_port');
+      var portFile = RUNTIME.gatewayPort;
       var detectedPort = fs.existsSync(portFile) ? Number(fs.readFileSync(portFile, 'utf8').trim()) || GW_PORT : GW_PORT;
       try {
         if (!isManagedGatewayProcess(pid, detectedPort)) throw new Error('stale gateway pid');
         state.running = true;
-        state.token = fs.readFileSync(path.join(dir, '.gateway_token'), 'utf8').trim();
+        state.token = fs.readFileSync(RUNTIME.gatewayToken, 'utf8').trim();
         state.gatewayPort = detectedPort;
         state.startTime = Date.now();
         state.tunnelStatus = process.env.DISABLE_TUNNEL === '1' ? 'disabled' : (fs.existsSync(CLOUDFLARED_PATH) ? 'connecting' : 'unavailable');
@@ -194,11 +244,12 @@ function killTunnelByPidFile(pidFile, expectedPort) {
       } catch (e) {
         fs.unlinkSync(pidFile);
         try { fs.unlinkSync(portFile); } catch (e2) {}
-        try { fs.unlinkSync(path.join(dir, '.tunnel_pid')); } catch (e2) {}
+        try { fs.unlinkSync(RUNTIME.tunnelPid); } catch (e2) {}
       }
     }
   } catch (e) {}
   checkSD();
+  checkTTS();
 })();
 
 // ─── API ───
@@ -220,12 +271,16 @@ app.get('/', function (req, res) {
 app.get('/api/status', function (req, res) {
   if (state.running) fetchTunnelStatus();
   checkSD();
+  checkTTS();
   res.json({
     running: state.running,
     token: state.token,
     domain: state.domain,
     sdOnline: state.sdOnline,
     sdHost: SD_HOST,
+    ttsOnline: !!state.ttsOnline,
+    ttsHost: TTS_HOST,
+    voices: VOICE_PROFILES,
     gatewayPort: state.gatewayPort,
     uptime: state.startTime ? Math.floor((Date.now() - state.startTime) / 1000) : 0,
     tunnelAvailable: fs.existsSync(CLOUDFLARED_PATH),
@@ -236,15 +291,24 @@ app.get('/api/status', function (req, res) {
 });
 
 app.post('/api/config', function (req, res) {
-  if (state.running) return res.status(409).json({ ok:false, error:'请先停止网关，再修改 SD WebUI 地址' });
+  if (state.running) return res.status(409).json({ ok:false, error:'请先停止网关，再修改生成服务配置' });
   try {
-    SD_HOST = normalizeSDHost(req.body && req.body.sdHost);
+    if (req.body && req.body.sdHost != null) SD_HOST = normalizeSDHost(req.body.sdHost);
+    if (req.body && req.body.ttsHost != null) TTS_HOST = normalizeTTSHost(req.body.ttsHost);
+    if (req.body && req.body.voices) {
+      VOICE_PROFILES.nene = sanitizeVoiceProfile(req.body.voices.nene);
+      VOICE_PROFILES.natsume = sanitizeVoiceProfile(req.body.voices.natsume);
+    }
     state.sdOnline = false;
+    state.ttsOnline = false;
     lastSDCheck = 0;
-    fs.writeFileSync(CONFIG_FILE, JSON.stringify({ sdHost:SD_HOST }, null, 2));
+    lastTTSCheck = 0;
+    fs.writeFileSync(CONFIG_FILE, JSON.stringify({ sdHost:SD_HOST, ttsHost:TTS_HOST, voices:VOICE_PROFILES }, null, 2));
     checkSD();
+    checkTTS();
     log('SD WebUI address: ' + SD_HOST);
-    res.json({ ok:true, sdHost:SD_HOST });
+    log('GPT-SoVITS address: ' + TTS_HOST);
+    res.json({ ok:true, sdHost:SD_HOST, ttsHost:TTS_HOST, voices:VOICE_PROFILES });
   } catch (error) {
     res.status(400).json({ ok:false, error:error.message });
   }
@@ -264,17 +328,20 @@ app.post('/api/start', function (req, res) {
     log('Starting gateway on port ' + gatewayPort + '...');
     if (gatewayPort !== GW_PORT) log('Port ' + GW_PORT + ' is busy; using ' + gatewayPort + ' instead');
 
+    runtimeTools.rotateLog(RUNTIME.gatewayLog, 2 * 1024 * 1024);
+    var gatewayLogFd = fs.openSync(RUNTIME.gatewayLog, 'a');
     var server = cp.spawn('node', ['server.js'], {
       cwd: dir,
-      env: Object.assign({}, process.env, { TOKEN: state.token, PORT: String(gatewayPort), SD_HOST: SD_HOST }),
-      stdio: 'ignore',
+      env: Object.assign({}, process.env, { TOKEN: state.token, PORT: String(gatewayPort), SD_HOST: SD_HOST, TTS_HOST:TTS_HOST }),
+      stdio: ['ignore', gatewayLogFd, gatewayLogFd],
       detached: true
     });
+    fs.closeSync(gatewayLogFd);
     server.unref();
 
-    fs.writeFileSync(path.join(dir, '.gateway_token'), state.token);
-    fs.writeFileSync(path.join(dir, '.gateway_pid'), String(server.pid));
-    fs.writeFileSync(path.join(dir, '.gateway_port'), String(gatewayPort));
+    fs.writeFileSync(RUNTIME.gatewayToken, state.token);
+    fs.writeFileSync(RUNTIME.gatewayPid, String(server.pid));
+    fs.writeFileSync(RUNTIME.gatewayPort, String(gatewayPort));
     log('Gateway started (PID ' + server.pid + ')');
 
     var tries = 0;
@@ -305,8 +372,8 @@ app.post('/api/stop', function (req, res) {
 
   log('Stopping gateway...');
   // cloudflared runs detached, so stop it separately before the gateway.
-  killTunnelByPidFile(path.join(dir, '.tunnel_pid'), state.gatewayPort);
-  killByPidFile(path.join(dir, '.gateway_pid'), state.gatewayPort);
+  killTunnelByPidFile(RUNTIME.tunnelPid, state.gatewayPort);
+  killByPidFile(RUNTIME.gatewayPid, state.gatewayPort);
 
   state.running = false;
   state.domain = '';
@@ -314,7 +381,7 @@ app.post('/api/stop', function (req, res) {
   state.startTime = null;
   state.tunnelStatus = 'idle';
   state.gatewayPort = GW_PORT;
-  try { fs.unlinkSync(path.join(dir, '.gateway_port')); } catch (e) {}
+  try { fs.unlinkSync(RUNTIME.gatewayPort); } catch (e) {}
   log('All processes stopped');
 
   res.json({ ok: true });
@@ -334,10 +401,12 @@ var listener = app.listen(PORT, HOST, function () {
   console.log('  ==============================================');
   console.log('');
 
-  try {
-    var start = (process.platform === 'darwin') ? 'open' : (process.platform === 'win32') ? 'start' : 'xdg-open';
-    cp.exec(start + ' http://localhost:' + PORT);
-  } catch (e) {}
+  if (process.env.NO_OPEN !== '1') {
+    try {
+      var start = (process.platform === 'darwin') ? 'open' : (process.platform === 'win32') ? 'start' : 'xdg-open';
+      cp.exec(start + ' http://localhost:' + PORT);
+    } catch (e) {}
+  }
 });
 
 listener.on('error', function (err) {

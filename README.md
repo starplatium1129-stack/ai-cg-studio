@@ -19,6 +19,7 @@ This is an unofficial, non-commercial fan project and is not affiliated with or 
 - Automatic Positive / Negative Prompt assembly and scene-aware LoRA injection
 - Direct generation through AUTOMATIC1111, Forge, or ReForge
 - Model and sampler discovery, progress display, interrupt, fixed seeds, and hires.fix
+- Scene dialogue extraction, full-story narration, system voice preview, and optional local GPT-SoVITS voices
 - Local history, ratings, favorites, notes, projects, and image storage
 - Temporary token-protected links for trusted friends to use your local SD WebUI
 
@@ -26,9 +27,10 @@ This is an unofficial, non-commercial fan project and is not affiliated with or 
 
 1. In Stability Matrix, keep `--api --port 7860` in the WebUI launch arguments.
 2. Double-click `control.bat`.
-3. Confirm the WebUI address and click **启动并生成分享链接**.
-4. Use **打开本地网站（无需 Token）** for yourself, or copy the token-protected link for a friend.
-5. Click **停止分享** when finished.
+3. Confirm the WebUI address. When the sibling local voice setup is present, the launcher also starts GPT-SoVITS and loads the configured Nene/Natsume references.
+4. Click **启动并生成分享链接**.
+5. Use **打开本地网站（无需 Token）** for yourself, or copy the token-protected link for a friend.
+6. Click **停止分享** when finished.
 
 `--api` does not prevent normal use of the WebUI interface. If Stability Matrix uses another port, enter the address shown in its log.
 
@@ -51,6 +53,7 @@ Open `http://127.0.0.1:8090/`. A plain static server does not provide the `/sdap
 - Scene and character presets are stored as JSON in the repository.
 - Personal history and images are stored mainly in the current browser through IndexedDB.
 - The project has no account system or hosted cloud database.
+- Runtime configuration, logs, process state, and friend-generated outputs stay in the git-ignored `runtime/` directory.
 - A friend link reaches your local gateway through a temporary tunnel, so share it only with people you trust.
 - Restarting the gateway creates a new token; the temporary domain may also change.
 
@@ -65,7 +68,8 @@ AI-CG-Studio/
 ├── data/                   # Scene, character, tag, and preset data
 ├── css/                    # Shared design system
 ├── docs/                   # Creative and maintenance notes
-└── scripts/                # Validation and maintenance scripts
+├── scripts/                # Validation and maintenance scripts
+└── runtime/                # Local config, logs, process state, and generated outputs
 ```
 
 Run the scene validator with:
