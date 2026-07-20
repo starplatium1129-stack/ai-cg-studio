@@ -659,6 +659,11 @@ function clearLogs(event) {
 }
 
 function doStart() {
+  if (!lastStatus) {
+    showToast('控制面板仍在读取配置，请稍候再试', true);
+    pollStatus();
+    return;
+  }
   var button = document.getElementById('btn');
   button.disabled = true;
   button.textContent = '正在启动…';

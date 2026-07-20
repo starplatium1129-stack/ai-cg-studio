@@ -24,6 +24,7 @@ runtimeTools.rotateLog(RUNTIME.controlLog, 2 * 1024 * 1024);
 var CONFIG_FILE = RUNTIME.config;
 var CLOUDFLARED_PATH = 'C:\\Program Files (x86)\\cloudflared\\cloudflared.exe';
 var VOICE_STOP_SCRIPT = path.resolve(dir, '..', 'AI', 'Voice', 'Stop-Voice.ps1');
+var VOICE_PROFILE_FILE = path.resolve(dir, '..', 'AI', 'Voice', 'config', 'profiles.json');
 var WEBUI_MANAGER_SCRIPT = path.join(dir, 'scripts', 'managed-webui.ps1');
 
 // ─── State ───
@@ -80,9 +81,13 @@ function sanitizeVoiceProfile(value, fallback) {
       if (refAudioPath && promptText) safeReferences[emotion] = { refAudioPath:refAudioPath, promptText:promptText, promptLang:'ja' };
     });
   }
+  var refAudioPath = String(pick('refAudioPath', '') || '').trim().slice(0, 1000);
+  var promptText = String(pick('promptText', '') || '').trim().slice(0, 500);
+  if (!refAudioPath) refAudioPath = String(fallback.refAudioPath || '').trim().slice(0, 1000);
+  if (!promptText) promptText = String(fallback.promptText || '').trim().slice(0, 500);
   return {
-    refAudioPath: String(pick('refAudioPath', '') || '').trim().slice(0, 1000),
-    promptText: String(pick('promptText', '') || '').trim().slice(0, 500),
+    refAudioPath: refAudioPath,
+    promptText: promptText,
     promptLang: String(pick('promptLang', 'ja') || 'ja').trim().slice(0, 12),
     textLang: String(pick('textLang', 'ja') || 'ja').trim().slice(0, 12),
     gptWeightsPath: String(pick('gptWeightsPath', '') || '').trim().slice(0, 1000),
@@ -91,14 +96,24 @@ function sanitizeVoiceProfile(value, fallback) {
   };
 }
 
+if (fs.existsSync(VOICE_PROFILE_FILE)) {
+  try {
+    var defaultProfiles = JSON.parse(fs.readFileSync(VOICE_PROFILE_FILE, 'utf8'));
+    VOICE_PROFILES.nene = sanitizeVoiceProfile(defaultProfiles.nene);
+    VOICE_PROFILES.natsume = sanitizeVoiceProfile(defaultProfiles.natsume);
+  } catch (error) {
+    console.warn('Ignoring invalid default voice profiles:', error.message);
+  }
+}
+
 if (fs.existsSync(CONFIG_FILE)) {
   try {
     var savedConfig = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf8'));
     if (!process.env.SD_HOST && savedConfig.sdHost) SD_HOST = normalizeSDHost(savedConfig.sdHost);
     if (!process.env.TTS_HOST && savedConfig.ttsHost) TTS_HOST = normalizeTTSHost(savedConfig.ttsHost);
     if (savedConfig.voices) {
-      VOICE_PROFILES.nene = sanitizeVoiceProfile(savedConfig.voices.nene);
-      VOICE_PROFILES.natsume = sanitizeVoiceProfile(savedConfig.voices.natsume);
+      VOICE_PROFILES.nene = sanitizeVoiceProfile(savedConfig.voices.nene, VOICE_PROFILES.nene);
+      VOICE_PROFILES.natsume = sanitizeVoiceProfile(savedConfig.voices.natsume, VOICE_PROFILES.natsume);
     }
   } catch (error) {
     console.warn('Ignoring invalid saved gateway config:', error.message);
