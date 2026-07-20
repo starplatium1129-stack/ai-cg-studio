@@ -52,7 +52,6 @@
   #stepResult > .preview-actions { order:2; }
   #stepResult > .sd-inline-options { order:3; }
   #stepResult > #finalPrompt { order:4; }
-  #stepResult > .voice-studio { order:5; width:100%; max-width:none; overflow:hidden; position:static; }
   #stepResult.has-image { gap:var(--s-4); }
   .generate-btn { width:100%; padding:var(--s-3); font-size:1rem; }
   .generate-btn:disabled { opacity:0.5; cursor:not-allowed; }
@@ -247,7 +246,7 @@
   .generate-btn:disabled { opacity:0.5; cursor:not-allowed; }
 
   /* Voice studio */
-  .voice-studio { grid-column:1; align-self:start; min-width:0; padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:linear-gradient(145deg,var(--bg-deep),var(--bg-elevated)); }
+  .voice-studio { width:100%; box-sizing:border-box; grid-column:1; align-self:start; min-width:0; padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:linear-gradient(145deg,var(--bg-deep),var(--bg-elevated)); }
   .voice-head { display:flex; align-items:flex-start; justify-content:space-between; gap:var(--s-3); margin-bottom:var(--s-3); }
   .voice-title { font-size:.95rem; font-weight:750; color:var(--text-primary); }
   .voice-sub { margin-top:3px; color:var(--text-muted); font-size:.72rem; line-height:1.5; }
@@ -415,7 +414,7 @@
     .pb { padding-inline:var(--s-4); }
     .director-workspace { grid-template-columns:minmax(290px,330px) minmax(0,1fr); grid-template-areas:"story stage" "story decisions"; }
     .col-right { position:static; max-height:none; overflow:visible; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); }
-    .col-right > :first-child, .col-right > :nth-child(2), .col-right > .generate-btn { grid-column:1 / -1; }
+    .col-right > :first-child, .col-right > :nth-child(2), .col-right > .generate-btn, .col-right > .voice-studio { grid-column:1 / -1; }
   }
   @media (max-width: 900px) {
     .director-workspace { grid-template-columns:1fr; grid-template-areas:"stage" "story" "decisions"; }
@@ -426,7 +425,7 @@
     .pb { padding-inline:var(--s-3); }
     .col-right, .col-center { grid-template-columns:1fr; }
     .col-right > * { grid-column:1 !important; }
-    #stepResult > *, .voice-studio { grid-column:1 !important; grid-row:auto !important; }
+    #stepResult > * { grid-column:1 !important; grid-row:auto !important; }
     .voice-controls { grid-template-columns:1fr; }
     .story-chip, .char-btn, .scene-cat, .scene-filter-reset, .chip-select, .tag-chip, .option, .cat-tab { min-height: 44px; }
     .scene-filter-field select, #projectSelect, .controls-grid select, .sd-inline-options select { min-height: 44px; }
@@ -650,40 +649,6 @@
             <button class="btn btn-ghost" onclick="downloadGeneratedImage()">⬇ 下载 PNG</button>
           </div>
         </div>
-        <section class="voice-studio" aria-labelledby="voiceStudioTitle">
-          <div class="voice-head">
-            <div><div class="voice-title" id="voiceStudioTitle">🎙 让画面开口</div><div class="voice-sub">画面文字与声音彼此独立：看中文，默认听角色说日文。</div></div>
-            <span class="voice-state" id="voiceState">检测中</span>
-          </div>
-          <div class="voice-controls">
-            <label class="voice-field">角色<select id="voiceCharacter" onchange="refreshVoiceText(true)"><option value="nene">🌸 宁宁</option><option value="natsume">☕ 夏目</option></select></label>
-            <label class="voice-field">配音语言<select id="voiceLanguage" onchange="refreshVoiceScript(true)"><option value="ja" selected>日本語 · 默认</option><option value="zh">中文</option></select></label>
-            <label class="voice-field">内容<select id="voiceMode" onchange="refreshVoiceText(true)"><option value="dialogue">提取角色台词</option><option value="story">朗读完整故事</option></select></label>
-            <label class="voice-field">语音情绪<select id="voiceEmotion" onchange="checkVoiceStatus()"><option value="auto" selected>自动 · 跟随场景</option><option value="neutral">平静</option><option value="gentle">温柔</option><option value="happy">开心</option><option value="shy">害羞 / 暧昧</option><option value="serious">认真 / 紧张</option><option value="sad">难过 / 惆怅</option></select></label>
-            <label class="voice-field">语速<select id="voiceSpeed"><option value="0.85">舒缓</option><option value="1" selected>自然</option><option value="1.15">轻快</option></select></label>
-          </div>
-          <div class="voice-copy">
-            <div class="voice-copy-head"><span class="voice-copy-title">中文字幕 / 阅读文本</span><span class="voice-copy-note">不影响声音</span></div>
-            <label class="sr-only" for="voiceCaptionText">中文字幕</label>
-            <textarea class="voice-text voice-caption-text" id="voiceCaptionText" maxlength="2000" placeholder="选择场景后会显示对应的中文内容。"></textarea>
-            <div class="voice-live-caption" id="voiceLiveCaption" aria-live="polite"><small>同步字幕</small>翻成日语后的多句台词，会在播放时于这里逐句显示对应中文。</div>
-          </div>
-          <details class="voice-script-details">
-            <summary><span id="voiceScriptLabel">日文配音稿 · 只影响声音</span></summary>
-            <label class="sr-only" for="voiceText">配音文本</label>
-            <textarea class="voice-text" id="voiceText" maxlength="2000" placeholder="选择场景后会准备当前语言的配音稿，也可以在这里单独改写。"></textarea>
-          </details>
-          <div class="voice-actions">
-            <button class="btn btn-ghost" type="button" onclick="refreshVoiceText(true)">↻ 重新提取</button>
-            <button class="btn btn-ghost" id="voiceTranslateBtn" type="button" onclick="translateVoiceCaption()">🈶 翻成日语</button>
-            <button class="btn btn-ghost" type="button" onclick="previewVoice()">🔊 本机试听</button>
-            <button class="btn btn-primary" id="voiceGenerateBtn" type="button" onclick="generateAIVoice()">✨ AI 声线生成</button>
-            <button class="btn btn-ghost" type="button" onclick="stopVoice()">■ 停止</button>
-          </div>
-          <div class="voice-status" id="voiceStatus" role="status" aria-live="polite">选择一个场景后即可开始配音。</div>
-          <audio class="voice-audio" id="voiceAudio" controls preload="none"></audio>
-          <button class="btn btn-ghost voice-download" id="voiceDownload" type="button" onclick="downloadVoice()">⬇ 下载 WAV</button>
-        </section>
       </div>
     </div>
 
@@ -709,6 +674,42 @@
         <summary class="director-card-head"><span class="director-card-name">🎨 色彩 Color</span><span class="director-card-selected" id="selColor"></span></summary>
         <div class="mood-grid" id="moodGrid"></div>
       </details>
+
+      <section class="voice-studio" aria-labelledby="voiceStudioTitle">
+        <div class="voice-head">
+          <div><div class="voice-title" id="voiceStudioTitle">🎙 让画面开口</div><div class="voice-sub">画面文字与声音彼此独立：看中文，默认听角色说日文。</div></div>
+          <span class="voice-state" id="voiceState">检测中</span>
+        </div>
+        <div class="voice-controls">
+          <label class="voice-field">角色<select id="voiceCharacter" onchange="refreshVoiceText(true)"><option value="nene">🌸 宁宁</option><option value="natsume">☕ 夏目</option></select></label>
+          <label class="voice-field">配音语言<select id="voiceLanguage" onchange="refreshVoiceScript(true)"><option value="ja" selected>日本語 · 默认</option><option value="zh">中文</option></select></label>
+          <label class="voice-field">内容<select id="voiceMode" onchange="refreshVoiceText(true)"><option value="dialogue">提取角色台词</option><option value="story">朗读完整故事</option></select></label>
+          <label class="voice-field">语音情绪<select id="voiceEmotion" onchange="checkVoiceStatus()"><option value="auto" selected>自动 · 跟随场景</option><option value="neutral">平静</option><option value="gentle">温柔</option><option value="happy">开心</option><option value="shy">害羞 / 暧昧</option><option value="serious">认真 / 紧张</option><option value="sad">难过 / 惆怅</option></select></label>
+          <label class="voice-field">语速<select id="voiceSpeed"><option value="0.85">舒缓</option><option value="1" selected>自然</option><option value="1.15">轻快</option></select></label>
+        </div>
+        <div class="voice-copy">
+          <div class="voice-copy-head"><span class="voice-copy-title">中文字幕 / 阅读文本</span><span class="voice-copy-note">不影响声音</span></div>
+          <label class="sr-only" for="voiceCaptionText">中文字幕</label>
+          <textarea class="voice-text voice-caption-text" id="voiceCaptionText" maxlength="2000" placeholder="选择场景后会显示对应的中文内容。"></textarea>
+          <div class="voice-live-caption" id="voiceLiveCaption" aria-live="polite"><small>同步字幕</small>翻成日语后的多句台词，会在播放时于这里逐句显示对应中文。</div>
+        </div>
+        <details class="voice-script-details">
+          <summary><span id="voiceScriptLabel">日文配音稿 · 只影响声音</span></summary>
+          <label class="sr-only" for="voiceText">配音文本</label>
+          <textarea class="voice-text" id="voiceText" maxlength="2000" placeholder="选择场景后会准备当前语言的配音稿，也可以在这里单独改写。"></textarea>
+        </details>
+        <div class="voice-actions">
+          <button class="btn btn-ghost" type="button" onclick="refreshVoiceText(true)">↻ 重新提取</button>
+          <button class="btn btn-ghost" id="voiceTranslateBtn" type="button" onclick="translateVoiceCaption()">🈶 翻成日语</button>
+          <button class="btn btn-ghost" type="button" onclick="previewVoice()">🔊 本机试听</button>
+          <button class="btn btn-primary" id="voiceGenerateBtn" type="button" onclick="generateAIVoice()">✨ AI 声线生成</button>
+          <button class="btn btn-ghost" type="button" onclick="stopVoice()">■ 停止</button>
+        </div>
+        <div class="voice-status" id="voiceStatus" role="status" aria-live="polite">选择一个场景后即可开始配音。</div>
+        <audio class="voice-audio" id="voiceAudio" controls preload="none"></audio>
+        <button class="btn btn-ghost voice-download" id="voiceDownload" type="button" onclick="downloadVoice()">⬇ 下载 WAV</button>
+      </section>
+
       <button class="btn btn-primary generate-btn" onclick="generate()">✨ 导演这张 CG</button>
     </div>
   </div>
