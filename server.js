@@ -29,6 +29,7 @@ var DISABLE_TUNNEL = process.env.DISABLE_TUNNEL === '1';
 var TOKEN = process.env.TOKEN || crypto.randomBytes(8).toString('hex');
 var CF = 'C:\\Program Files (x86)\\cloudflared\\cloudflared.exe';
 var tunnelUrl = '';
+var pendingTunnelUrl = '';
 
 function tokenMatches(value) {
   if (typeof value !== 'string') return false;
@@ -386,8 +387,9 @@ function startTunnel() {
     try {
       var log = fs.readFileSync(logFile, 'utf8');
       var m = log.match(/https:\/\/\S+trycloudflare\.com/);
-      if (m) {
-        tunnelUrl = m[0];
+      if (m) pendingTunnelUrl = m[0];
+      if (pendingTunnelUrl && /Registered tunnel connection/i.test(log)) {
+        tunnelUrl = pendingTunnelUrl;
         console.log('  🌐 Tunnel: ' + tunnelUrl + '?token=' + TOKEN);
         clearInterval(poll);
       }
