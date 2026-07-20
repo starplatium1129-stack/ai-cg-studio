@@ -128,7 +128,7 @@ AI-CG-Studio/
 npm run validate
 ```
 
-校验脚本会检查场景 ID、角色、分类、标签、Prompt 和 Active Sync 占位符等数据是否一致。
+校验脚本会检查场景 ID、角色、分类、标签、Prompt、未解析占位符、镜头标签和负面词是否一致。需要批量规范新增场景时运行 `npm run optimize-scenes`，随后再次执行校验。
 
 ## 技术说明
 

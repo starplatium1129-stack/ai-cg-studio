@@ -107,6 +107,17 @@ if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
   if (typeof scene.prompt === 'string' && /_BREAK_/i.test(scene.prompt)) {
     errors.push(label + ': use standalone BREAK instead of _BREAK_');
   }
+  if (typeof scene.prompt === 'string' && /\{[^}]+\}/.test(scene.prompt)) {
+    errors.push(label + ': unresolved prompt placeholder');
+  }
+  if (typeof scene.negative === 'string') {
+    for (const token of ['text', 'watermark', 'signature', 'bad hands', 'extra fingers', 'missing fingers']) {
+      if (!scene.negative.split(',').map((item) => item.trim()).includes(token)) errors.push(label + ': negative prompt missing ' + token);
+    }
+    if (!scene.mature && !scene.negative.split(',').map((item) => item.trim()).includes('nsfw')) {
+      errors.push(label + ': safe scene must exclude nsfw');
+    }
+  }
   if (scene.char !== 'triad' && typeof scene.prompt === 'string' && /\bclosed_eyes\b/.test(scene.prompt) && /\blooking_at_viewer\b/.test(scene.prompt)) {
     errors.push(label + ': conflicting gaze tags closed_eyes + looking_at_viewer');
   }

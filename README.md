@@ -79,6 +79,8 @@ Run the scene validator with:
 npm run validate
 ```
 
+Use `npm run optimize-scenes` after importing or bulk-editing Scenes to canonicalize prompt tags, camera framing, negative prompts, and unresolved placeholders.
+
 ## Scope
 
 The project stays intentionally small: useful local features, reliable SD WebUI integration, better Scene content, and safe temporary sharing come first. Accounts, subscriptions, a public Scene store, and community uploads are not planned.

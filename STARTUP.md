@@ -183,6 +183,7 @@ node server.js
 - `data/tags.json`：统一标签
 - `data/loras.json`：LoRA 配置
 - `scripts/validate-scenes.js`：场景一致性校验
+- `scripts/optimize-scenes.js`：规范标签、镜头、负面词与未解析占位符
 - `scripts/clean-scenes.js`：批量清洗脚本，运行前会创建备份
 
 日常修改场景后建议执行：
@@ -190,5 +191,7 @@ node server.js
 ```powershell
 npm run validate
 ```
+
+批量导入或修改场景后，可先运行 `npm run optimize-scenes`，再运行校验。
 
 批量清洗会直接改写场景数据，不应作为普通启动步骤；只有明确需要整理数据时再使用。
