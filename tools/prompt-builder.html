@@ -68,6 +68,10 @@
   .scene-meta { display:flex; flex-wrap:wrap; gap:4px; }
   .scene-tag { font-size:0.75rem !important; padding:3px 8px; font-weight:500; background:var(--bg-deep); border-radius:var(--r-sm); color:var(--text-muted); }
   .scene-tag.emotion { background:var(--accent-soft); color:var(--accent); }
+  .scene-tag.rating.r18 { background:#521b29; color:#ffb4c1; }
+  .scene-tag.rating.r15 { background:#4b3817; color:#ffd489; }
+  .scene-card[data-rating="R18"]::before { background:linear-gradient(180deg,#e85d75,#8d1732); }
+  .scene-card[data-rating="R15"]::before { background:linear-gradient(180deg,#d6a039,#7a5210); }
   /* 故事联想 tag 高亮 */
   .tag-chip[data-suggested="1"] { outline:1px dashed var(--accent); opacity:1; }
   .tag-chip[data-suggested="1"]::after { content:' · 📖'; font-size:0.6em; }
@@ -516,6 +520,7 @@
           <label class="scene-filter-field">角色<select id="sceneCharFilter" onchange="renderScenes()"><option value="all">全部角色</option><option value="nene">🌸 宁宁</option><option value="natsume">🍂 夏目</option><option value="triad">🌸🍂 双人</option></select></label>
           <label class="scene-filter-field">季节<select id="sceneSeasonFilter" onchange="renderScenes()"><option value="all">全部季节</option><option value="春">🌸 春</option><option value="夏">☀️ 夏</option><option value="秋">🍂 秋</option><option value="冬">❄️ 冬</option><option value="不限">不限季节</option></select></label>
           <label class="scene-filter-field">系列<select id="sceneSeriesFilter" onchange="renderScenes()"><option value="all">全部系列</option><option value="after">After Story</option><option value="fanwork">同人</option><option value="active">Active Sync</option></select></label>
+          <label class="scene-filter-field">内容分级<select id="sceneRatingFilter" onchange="renderScenes()"><option value="all">全部分级</option><option value="All">全年龄</option><option value="R15">R15 暧昧</option><option value="R18">R18 成人</option></select></label>
         </div>
         <div class="scene-mature-row"><label><input type="checkbox" id="builderShowMature" style="accent-color:var(--accent)"> 显示成人内容</label></div>
         <div class="scene-list" id="sceneGrid"></div>
@@ -1314,7 +1319,7 @@ function sceneTimeLabel(value) {
   return ({morning:'清晨',afternoon:'午后',sunset:'黄昏',night:'夜晚',late_night:'深夜',dawn:'黎明',evening:'夜晚',all_day:'全天'})[value] || value || '';
 }
 function sceneSearchText(scene) {
-  return [scene.id,scene.title,scene.story,scene.emotion,scene.char,sceneCharacterLabel(scene),scene.category,scenePrimaryCategory(scene),scene.season,scene.timeOfDay,sceneTimeLabel(scene.timeOfDay),scene.location,scene.weather,scene.camera,scene.lighting].concat(scene.tags||[]).join(' ').toLowerCase();
+  return [scene.id,scene.title,scene.story,scene.emotion,scene.char,sceneCharacterLabel(scene),scene.rating,scene.category,scenePrimaryCategory(scene),scene.season,scene.timeOfDay,sceneTimeLabel(scene.timeOfDay),scene.location,scene.weather,scene.camera,scene.lighting].concat(scene.tags||[]).join(' ').toLowerCase();
 }
 function renderSceneCats() {
   const el = document.getElementById('sceneCats'); el.innerHTML = '';
@@ -1341,6 +1346,7 @@ function renderScenes() {
   const charSel = (document.getElementById('sceneCharFilter') || {}).value || 'all';
   const seasonSel = (document.getElementById('sceneSeasonFilter') || {}).value || 'all';
   const seriesSel = (document.getElementById('sceneSeriesFilter') || {}).value || 'all';
+  const ratingSel = (document.getElementById('sceneRatingFilter') || {}).value || 'all';
   const matches = SCENES.map((s, idx) => ({s, idx})).filter(({s}) => {
     if (!SHOW_MATURE_SCENES && s.mature) return false;
     const themeOk = sceneMatchesTheme(s, SCENE_THEME);
@@ -1348,13 +1354,14 @@ function renderScenes() {
     const charOk = charSel === 'all' || s.char === charSel || s.char === charAlias || (Array.isArray(s.character) && s.character.includes(charSel));
     const seasonOk = seasonSel === 'all' || s.season === seasonSel;
     const seriesOk = sceneMatchesSeries(s, seriesSel);
+    const ratingOk = ratingSel === 'all' || (s.rating || (s.mature ? 'R18' : 'All')) === ratingSel;
     const hay = sceneSearchText(s);
-    return themeOk && charOk && seasonOk && seriesOk && terms.every(function(term){ return hay.includes(term); });
+    return themeOk && charOk && seasonOk && seriesOk && ratingOk && terms.every(function(term){ return hay.includes(term); });
   });
   const countEl = document.getElementById('sceneResultCount');
   if (countEl) countEl.innerHTML = '找到 <strong>' + matches.length + '</strong> 个场景';
   matches.slice(0, BUILDER_SCENE_LIMIT).forEach(({s, idx}) => {
-    const card = document.createElement('div'); card.className = 'scene-card'; card.dataset.idx = idx; card.dataset.category = s.category || '日常';
+    const card = document.createElement('div'); card.className = 'scene-card'; card.dataset.idx = idx; card.dataset.category = s.category || '日常'; card.dataset.rating = s.rating || (s.mature ? 'R18' : 'All');
     const season = s.season ? ({春:'🌸',夏:'☀️',秋:'🍂',冬:'❄️'}[s.season]||'') + s.season : '';
     const tod = s.timeOfDay ? ({morning:'清晨',afternoon:'午后',sunset:'黄昏',night:'夜晚',late_night:'深夜',dawn:'拂晓'}[s.timeOfDay]||s.timeOfDay) : '';
     card.innerHTML = `
@@ -1363,6 +1370,7 @@ function renderScenes() {
       <div class="scene-meta">
         <span class="scene-tag emotion">${escapeHtml(s.emotion)}</span>
         <span class="scene-tag char-color">${escapeHtml(sceneCharacterLabel(s))}</span>
+        ${(s.rating || (s.mature ? 'R18' : 'All')) !== 'All' ? `<span class="scene-tag rating ${(s.rating || (s.mature ? 'R18' : 'All')).toLowerCase()}">${escapeHtml(s.rating || (s.mature ? 'R18' : 'All'))}</span>` : ''}
         ${s.category ? `<span class="scene-tag">${escapeHtml(sceneThemeLabel(s))}</span>` : ''}
         ${season ? `<span class="scene-tag">${escapeHtml(season)}</span>` : ''}
         ${tod ? `<span class="scene-tag">${escapeHtml(tod)}</span>` : ''}
@@ -1399,7 +1407,7 @@ function clearSceneSearch() {
 function resetSceneFilters() {
   SCENE_THEME = 'all';
   var search = document.getElementById('sceneSearch'); if (search) search.value = '';
-  ['sceneCharFilter','sceneSeasonFilter','sceneSeriesFilter'].forEach(function(id){ var select=document.getElementById(id); if(select) select.value='all'; });
+  ['sceneCharFilter','sceneSeasonFilter','sceneSeriesFilter','sceneRatingFilter'].forEach(function(id){ var select=document.getElementById(id); if(select) select.value='all'; });
   renderSceneCats(); renderScenes();
 }
 window._loadSceneByIdx = function(idx) { if (SCENES[idx]) loadScene(SCENES[idx]); };

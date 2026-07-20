@@ -40,6 +40,8 @@
 
     const card = document.createElement('div');
     card.className = `sc sc-${mode}`;
+    const contentRating = scene.rating || (scene.mature ? 'R18' : 'All');
+    card.dataset.rating = contentRating;
     if (clickable && opt.onPick) {
       card.setAttribute('role', 'button');
       card.tabIndex = 0;
@@ -50,8 +52,10 @@
     const band = THEME[scene.category] || 'linear-gradient(135deg,var(--bg-deep),var(--bg-elevated))';
 
     // 子模块预计算
-    const matureBadge = scene.mature ? '<span class="sc-badge">🔞</span>' : '';
     const categoryBadge = mode === 'grid' ? `<span class="sc-cat">${esc(scene.category||'场景')}</span>` : '';
+    const ratingBadge = contentRating === 'R18'
+      ? '<span class="sc-badge sc-rating r18">R18</span>'
+      : (contentRating === 'R15' ? '<span class="sc-badge sc-rating r15">R15</span>' : '');
     const storyBlock = mode !== 'strip' ? `<div class="sc-story">${esc(scene.story||'')}</div>` : '';
 
     const limit = mode === 'strip' ? 2 : 3;
@@ -80,7 +84,7 @@
 
     card.innerHTML = `
       <div class="sc-band" style="background:${band}">
-        ${matureBadge}${categoryBadge}
+        ${ratingBadge}${categoryBadge}
       </div>
       <div class="sc-body">
         <div class="sc-title">${esc(scene.title||'未命名')}</div>

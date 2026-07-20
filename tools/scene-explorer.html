@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>场景库 · AI CG Studio</title>
 <link rel="stylesheet" href="../css/design-system.css?v=6">
-<link rel="stylesheet" href="../css/scene-card.css?v=4">
+<link rel="stylesheet" href="../css/scene-card.css?v=5">
 <script src="nav.js?v=4"></script>
-<script src="scene-card.js?v=4"></script>
+<script src="scene-card.js?v=5"></script>
 <script src="theme.js?v=4"></script>
 <style>
   .page { max-width: 1100px; margin: 0 auto; padding: var(--s-5) var(--s-4); }
@@ -128,6 +128,7 @@
       <label class="scene-filter-field">季节<select id="sceneSeason" onchange="filterScenes()"><option value="all">全部季节</option><option value="春">🌸 春</option><option value="夏">☀️ 夏</option><option value="秋">🍂 秋</option><option value="冬">❄️ 冬</option><option value="不限">不限季节</option></select></label>
       <label class="scene-filter-field">时段<select id="sceneTime" onchange="filterScenes()"><option value="all">全部时段</option><option value="morning">清晨</option><option value="afternoon">午后</option><option value="sunset">黄昏</option><option value="night">夜晚与深夜</option><option value="dawn">黎明</option></select></label>
       <label class="scene-filter-field">系列<select id="sceneSeries" onchange="filterScenes()"><option value="all">全部系列</option><option value="after">After Story</option><option value="fanwork">同人</option><option value="active">Active Sync</option></select></label>
+      <label class="scene-filter-field">内容分级<select id="sceneRating" onchange="filterScenes()"><option value="all">全部分级</option><option value="All">全年龄</option><option value="R15">R15 暧昧</option><option value="R18">R18 成人</option></select></label>
     </div>
     <div class="scene-filter-meta">
       <label class="mature-toggle"><input type="checkbox" id="showMature"> 显示成人内容 <span id="matureCount"></span></label>
@@ -265,7 +266,7 @@ function matchesTime(scene, value){
   if (value === 'night') return ['night','late_night','evening'].indexOf(scene.timeOfDay) >= 0;
   return scene.timeOfDay === value;
 }
-function sceneSearchText(scene){ return [scene.id,scene.title,scene.story,scene.emotion,scene.char,sceneCharacterName(scene),scene.category,primaryCategory(scene),scene.season,scene.timeOfDay,sceneTimeName(scene.timeOfDay),scene.location,scene.weather,scene.camera,scene.lighting].concat(scene.tags||[]).join(' ').toLowerCase(); }
+function sceneSearchText(scene){ return [scene.id,scene.title,scene.story,scene.emotion,scene.char,sceneCharacterName(scene),scene.rating,scene.category,primaryCategory(scene),scene.season,scene.timeOfDay,sceneTimeName(scene.timeOfDay),scene.location,scene.weather,scene.camera,scene.lighting].concat(scene.tags||[]).join(' ').toLowerCase(); }
 function filteredScenes(){
   var q = (document.getElementById('sceneSearch').value || '').trim().toLowerCase();
   var terms = q.split(/\s+/).filter(Boolean);
@@ -273,6 +274,7 @@ function filteredScenes(){
   var season = document.getElementById('sceneSeason').value;
   var time = document.getElementById('sceneTime').value;
   var series = document.getElementById('sceneSeries').value;
+  var rating = document.getElementById('sceneRating').value;
   return SCENES.filter(function(s){
     if (!SHOW_MATURE && s.mature) return false;
     if (!matchesTheme(s, SCENE_THEME)) return false;
@@ -280,6 +282,7 @@ function filteredScenes(){
     if (character !== 'all' && s.char !== character) return false;
     if (season !== 'all' && s.season !== season) return false;
     if (!matchesTime(s, time)) return false;
+    if (rating !== 'all' && (s.rating || (s.mature ? 'R18' : 'All')) !== rating) return false;
     var hay = sceneSearchText(s);
     return terms.every(function(term){ return hay.includes(term); });
   });
@@ -357,7 +360,7 @@ function clearSceneSearch(){
 function resetSceneFilters(){
   SCENE_THEME = 'all';
   var search = document.getElementById('sceneSearch'); if (search) search.value = '';
-  ['sceneCharacter','sceneSeason','sceneTime','sceneSeries'].forEach(function(id){ var select=document.getElementById(id); if(select) select.value='all'; });
+  ['sceneCharacter','sceneSeason','sceneTime','sceneSeries','sceneRating'].forEach(function(id){ var select=document.getElementById(id); if(select) select.value='all'; });
   renderSceneCats(); renderScenes(true);
 }
 

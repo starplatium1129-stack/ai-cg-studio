@@ -14,7 +14,7 @@ This is an unofficial, non-commercial fan project and is not affiliated with or 
 
 ## Features
 
-- 206 searchable and filterable Scenes
+- 210 searchable and filterable Scenes, classified as All, R15, or R18 by depicted content
 - A director workspace for story, character, mood, camera, composition, lighting, and color
 - Automatic Positive / Negative Prompt assembly and scene-aware LoRA injection
 - Direct generation through AUTOMATIC1111, Forge, or ReForge
@@ -31,7 +31,7 @@ This is an unofficial, non-commercial fan project and is not affiliated with or 
 3. Confirm the WebUI address. When the sibling local voice setup is present, the launcher also starts GPT-SoVITS; the gateway switches the evaluated Nene/Natsume weights for each request.
 4. Click **启动并生成分享链接**.
 5. Use **打开本地网站（无需 Token）** for yourself, or copy the token-protected link for a friend.
-6. Click **停止分享** when finished.
+6. Click **停止全部服务** when finished. This stops the local gateway, sharing tunnel, and managed GPT-SoVITS process; SD WebUI remains under your manual control.
 
 `--api` does not prevent normal use of the WebUI interface. If Stability Matrix uses another port, enter the address shown in its log.
 
@@ -80,6 +80,8 @@ npm run validate
 ```
 
 Use `npm run optimize-scenes` after importing or bulk-editing Scenes to canonicalize prompt tags, camera framing, negative prompts, and unresolved placeholders.
+
+Use `npm run classify-ratings` after adding Scenes. It keeps `rating` (`All`, `R15`, `R18`) aligned with the image tags; only `R18` scenes are behind the adult-content toggle.
 
 ## Scope
 

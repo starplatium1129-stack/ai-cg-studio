@@ -23,6 +23,7 @@ runtimeTools.migrateLegacyRuntime(dir, RUNTIME);
 runtimeTools.rotateLog(RUNTIME.controlLog, 2 * 1024 * 1024);
 var CONFIG_FILE = RUNTIME.config;
 var CLOUDFLARED_PATH = 'C:\\Program Files (x86)\\cloudflared\\cloudflared.exe';
+var VOICE_STOP_SCRIPT = path.resolve(dir, '..', 'AI', 'Voice', 'Stop-Voice.ps1');
 
 // ─── State ───
 var state = {
@@ -240,6 +241,22 @@ function killTunnelByPidFile(pidFile, expectedPort) {
   } catch (e) {}
 }
 
+function stopManagedVoiceService() {
+  if (!fs.existsSync(VOICE_STOP_SCRIPT)) return { attempted:false, message:'Voice stop script is not installed.' };
+  var result = cp.spawnSync('powershell.exe', [
+    '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', VOICE_STOP_SCRIPT
+  ], {
+    cwd: dir,
+    encoding: 'utf8',
+    timeout: 30000,
+    windowsHide: true
+  });
+  if (result.error) return { attempted:true, error:result.error.message };
+  if (result.status !== 0) return { attempted:true, error:(result.stderr || result.stdout || 'Voice stop script failed').trim() };
+  state.ttsOnline = false;
+  return { attempted:true, message:(result.stdout || 'GPT-SoVITS stopped.').trim() };
+}
+
 // Check if gateway is already running on startup
 (function checkExisting() {
   try {
@@ -384,14 +401,16 @@ app.post('/api/start', function (req, res) {
 });
 
 app.post('/api/stop', function (req, res) {
-  if (!state.running) {
-    return res.json({ ok: true, msg: 'Already stopped' });
+  if (state.running) {
+    log('Stopping gateway...');
+    // cloudflared runs detached, so stop it separately before the gateway.
+    killTunnelByPidFile(RUNTIME.tunnelPid, state.gatewayPort);
+    killByPidFile(RUNTIME.gatewayPid, state.gatewayPort);
   }
 
-  log('Stopping gateway...');
-  // cloudflared runs detached, so stop it separately before the gateway.
-  killTunnelByPidFile(RUNTIME.tunnelPid, state.gatewayPort);
-  killByPidFile(RUNTIME.gatewayPid, state.gatewayPort);
+  var voiceResult = stopManagedVoiceService();
+  if (voiceResult.error) log('Voice service stop failed: ' + voiceResult.error);
+  else if (voiceResult.attempted) log(voiceResult.message || 'GPT-SoVITS stopped.');
 
   state.running = false;
   state.domain = '';
@@ -400,9 +419,9 @@ app.post('/api/stop', function (req, res) {
   state.tunnelStatus = 'idle';
   state.gatewayPort = GW_PORT;
   try { fs.unlinkSync(RUNTIME.gatewayPort); } catch (e) {}
-  log('All processes stopped');
+  log('Gateway, tunnel, and managed voice service stopped');
 
-  res.json({ ok: true });
+  res.json({ ok: true, voiceStopped:!!voiceResult.attempted, voiceError:voiceResult.error || '' });
 });
 
 app.get('/api/logs', function (req, res) {

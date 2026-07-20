@@ -368,7 +368,7 @@
       </article>
     </div>
 
-    <div class="security-note">分享链接可以调用你电脑上的 SD WebUI。只发给信任的人；使用结束后点击“停止分享”。多人共用时，“停止生成”可能中断当前全局任务。</div>
+    <div class="security-note">分享链接可以调用你电脑上的 SD WebUI。只发给信任的人；使用结束后点击“停止全部服务”，它不会关闭你手动管理的 SD WebUI。多人共用时，“停止生成”可能中断当前全局任务。</div>
     <div class="uptime" id="uptime"></div>
   </section>
 
@@ -486,7 +486,7 @@ function renderStatus(data) {
   if (data.running) {
     setBadge(badge, 'running', '运行中');
     button.className = 'btn btn-stop';
-    button.textContent = '停止分享';
+    button.textContent = '停止全部服务';
     button.onclick = doStop;
     runningPanel.classList.add('show');
   } else {
@@ -687,7 +687,7 @@ function doStop() {
     return response.json();
   }).then(function(data) {
     if (!data.ok) throw new Error(data.msg || '停止失败');
-    showToast('分享与本地网关已停止');
+    showToast(data.voiceError ? '网关已停止；语音服务停止失败，请查看日志' : '网关、分享与语音服务已停止');
     pollStatus();
     pollLogs();
   }).catch(function(error) {

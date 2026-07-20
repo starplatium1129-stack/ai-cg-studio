@@ -11,11 +11,12 @@ const characterSource = path.join(dataDir, 'characters.json');
 const presetSource = path.join(dataDir, 'presets.json');
 const required = [
   'id', 'title', 'category', 'story', 'storyJa', 'char', 'character', 'lora', 'emotion',
-  'season', 'time', 'timeOfDay', 'tags', 'mature', 'location', 'weather',
+  'season', 'time', 'timeOfDay', 'tags', 'rating', 'mature', 'location', 'weather',
   'camera', 'lighting', 'usage', 'prompt', 'negative'
 ];
 const timeValues = new Set(['morning', 'afternoon', 'sunset', 'evening', 'night', 'late_night', 'dawn', 'all_day']);
 const charValues = new Set(['nene', 'natsume', 'triad']);
+const ratingValues = new Set(['All', 'R15', 'R18']);
 const promptTrigger = { nene: 'ayachi_nene', natsume: 'shiki_natsume' };
 const driftMarkers = [
   '\u4e03\u7eea', '\u3059\u3054\u3044', '\u9b45\u9b54', '\u732b\u8033', 'Devon', '\u758f\u53f2',
@@ -75,6 +76,10 @@ if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
   if (!Array.isArray(scene.tags)) errors.push(label + ': tags must be an array');
   if (!Array.isArray(scene.usage)) errors.push(label + ': usage must be an array');
   if (typeof scene.mature !== 'boolean') errors.push(label + ': mature must be boolean');
+  if (!ratingValues.has(scene.rating)) errors.push(label + ': rating must be All, R15, or R18');
+  if (typeof scene.rating === 'string' && scene.mature !== (scene.rating === 'R18')) {
+    errors.push(label + ': mature must match R18 rating');
+  }
 
   if (typeof scene.story === 'string' && scene.story.length < 80) {
     errors.push(label + ': story is too short (' + scene.story.length + ' < 80)');
