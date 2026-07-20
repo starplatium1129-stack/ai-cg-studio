@@ -52,6 +52,7 @@
   #stepResult > .preview-actions { order:2; }
   #stepResult > .sd-inline-options { order:3; }
   #stepResult > #finalPrompt { order:4; }
+  #stepResult > .voice-studio { order:5; width:100%; max-width:none; overflow:hidden; position:static; }
   #stepResult.has-image { gap:var(--s-4); }
   .generate-btn { width:100%; padding:var(--s-3); font-size:1rem; }
   .generate-btn:disabled { opacity:0.5; cursor:not-allowed; }
@@ -156,12 +157,7 @@
   .sel-chip { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; background: var(--accent-soft); border: 1px solid var(--accent); border-radius: 9999px; font-size: 0.72rem; color: var(--accent); }
   .sel-chip .x { cursor: pointer; opacity: 0.6; }
   .sel-chip .x:hover { opacity: 1; }
-  .manual-tags-panel { padding:0; }
-  .manual-tags-summary { display:flex; align-items:center; justify-content:space-between; gap:var(--s-2); margin:0; padding:var(--s-3); cursor:pointer; list-style:none; }
-  .manual-tags-summary::-webkit-details-marker { display:none; }
-  .manual-tags-summary span { color:var(--text-muted); font-size:.68rem; font-weight:500; letter-spacing:0; text-transform:none; }
-  .manual-tags-panel[open] { padding:0 var(--s-3) var(--s-3); }
-  .manual-tags-panel[open] > .manual-tags-summary { margin-inline:calc(var(--s-3) * -1); margin-bottom:var(--s-2); border-bottom:1px solid var(--border-soft); }
+  .manual-tags-panel .director-card-head { display:flex; align-items:center; justify-content:space-between; }
   .manual-tags-tools { display:flex; justify-content:flex-end; margin-bottom:var(--s-2); }
   .manual-tags-tools .btn { font-size:.7rem; padding:3px 9px; }
 
@@ -414,7 +410,7 @@
     .pb { padding-inline:var(--s-4); }
     .director-workspace { grid-template-columns:minmax(290px,330px) minmax(0,1fr); grid-template-areas:"story stage" "story decisions"; }
     .col-right { position:static; max-height:none; overflow:visible; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); }
-    .col-right > :first-child, .col-right > :nth-child(2), .col-right > .generate-btn, .col-right > .voice-studio { grid-column:1 / -1; }
+    .col-right > :first-child, .col-right > :nth-child(2), .col-right > .generate-btn { grid-column:1 / -1; }
   }
   @media (max-width: 900px) {
     .director-workspace { grid-template-columns:1fr; grid-template-areas:"stage" "story" "decisions"; }
@@ -561,19 +557,6 @@
         <div class="scene-mature-row"><label><input type="checkbox" id="builderShowMature" style="accent-color:var(--accent)"> 显示成人内容</label></div>
         <div class="scene-list" id="sceneGrid"></div>
       </div>
-
-      <details class="panel manual-tags-panel">
-        <summary class="panel-title manual-tags-summary">🏷 手动标签与高级控制 <span>按需展开</span></summary>
-        <div class="manual-tags-tools"><button class="btn btn-ghost" onclick="suggestTagsFromStory()">💡 按故事推荐</button></div>
-        <div class="cat-tabs" id="catTabs"></div>
-        <div class="tag-pool" id="tagPool"></div>
-        <div class="tag-section-title">推荐 · Illustrious 优化</div>
-        <div class="tag-pool" id="tagPoolRecommended"></div>
-        <div class="tag-section-title banned">美术规范禁用</div>
-        <div class="tag-pool" id="tagPoolBanned"></div>
-        <div class="panel-title" style="margin-top:var(--s-3)">已选 (<span id="selCount">0</span>)</div>
-        <div class="sel-row" id="selRow"></div>
-      </details>
     </div>
 
     <!-- ===== 中栏: Prompt 监视器 ===== -->
@@ -650,30 +633,6 @@
           </div>
         </div>
       </div>
-    </div>
-
-    <!-- ===== 右栏: 导演台 ===== -->
-    <div class="director-col col-right step-panel" id="stepDecisions">
-      <details class="director-card" open>
-        <summary class="director-card-head"><span class="director-card-name">💭 情绪 Emotion</span><span class="director-card-selected" id="selEmotion"></span></summary>
-        <div class="chip-grid" id="chip-emotion"></div>
-      </details>
-      <details class="director-card" open>
-        <summary class="director-card-head"><span class="director-card-name">🎥 镜头 Shot</span><span class="director-card-selected" id="selShot"></span></summary>
-        <div class="options" id="opt-shot"></div>
-      </details>
-      <details class="director-card">
-        <summary class="director-card-head"><span class="director-card-name">💡 光照 Lighting</span><span class="director-card-selected" id="selLighting"></span></summary>
-        <div class="options" id="opt-lighting"></div>
-      </details>
-      <details class="director-card">
-        <summary class="director-card-head"><span class="director-card-name">🖼 构图 Composition</span><span class="director-card-selected" id="selComposition"></span></summary>
-        <div class="options" id="opt-composition"></div>
-      </details>
-      <details class="director-card">
-        <summary class="director-card-head"><span class="director-card-name">🎨 色彩 Color</span><span class="director-card-selected" id="selColor"></span></summary>
-        <div class="mood-grid" id="moodGrid"></div>
-      </details>
 
       <section class="voice-studio" aria-labelledby="voiceStudioTitle">
         <div class="voice-head">
@@ -709,6 +668,42 @@
         <audio class="voice-audio" id="voiceAudio" controls preload="none"></audio>
         <button class="btn btn-ghost voice-download" id="voiceDownload" type="button" onclick="downloadVoice()">⬇ 下载 WAV</button>
       </section>
+    </div>
+
+    <!-- ===== 右栏: 导演台 ===== -->
+    <div class="director-col col-right step-panel" id="stepDecisions">
+      <details class="director-card manual-tags-panel">
+        <summary class="director-card-head"><span class="director-card-name">🏷 标签 Tags</span><span class="director-card-selected"><span id="selCount">0</span> 选中</span></summary>
+        <div class="manual-tags-tools"><button class="btn btn-ghost" onclick="suggestTagsFromStory()">💡 按故事推荐</button></div>
+        <div class="cat-tabs" id="catTabs"></div>
+        <div class="tag-pool" id="tagPool"></div>
+        <div class="tag-section-title">推荐 · Illustrious 优化</div>
+        <div class="tag-pool" id="tagPoolRecommended"></div>
+        <div class="tag-section-title banned">美术规范禁用</div>
+        <div class="tag-pool" id="tagPoolBanned"></div>
+        <div class="panel-title" style="margin-top:var(--s-3)">已选</div>
+        <div class="sel-row" id="selRow"></div>
+      </details>
+      <details class="director-card" open>
+        <summary class="director-card-head"><span class="director-card-name">💭 情绪 Emotion</span><span class="director-card-selected" id="selEmotion"></span></summary>
+        <div class="chip-grid" id="chip-emotion"></div>
+      </details>
+      <details class="director-card" open>
+        <summary class="director-card-head"><span class="director-card-name">🎥 镜头 Shot</span><span class="director-card-selected" id="selShot"></span></summary>
+        <div class="options" id="opt-shot"></div>
+      </details>
+      <details class="director-card">
+        <summary class="director-card-head"><span class="director-card-name">💡 光照 Lighting</span><span class="director-card-selected" id="selLighting"></span></summary>
+        <div class="options" id="opt-lighting"></div>
+      </details>
+      <details class="director-card">
+        <summary class="director-card-head"><span class="director-card-name">🖼 构图 Composition</span><span class="director-card-selected" id="selComposition"></span></summary>
+        <div class="options" id="opt-composition"></div>
+      </details>
+      <details class="director-card">
+        <summary class="director-card-head"><span class="director-card-name">🎨 色彩 Color</span><span class="director-card-selected" id="selColor"></span></summary>
+        <div class="mood-grid" id="moodGrid"></div>
+      </details>
 
       <button class="btn btn-primary generate-btn" onclick="generate()">✨ 导演这张 CG</button>
     </div>
@@ -2677,15 +2672,16 @@ function wavBlobFromBuffers(buffers) {
   return new Blob([output], { type:'audio/wav' });
 }
 
-function generateSegmentedVoice(segments) {
+function generateSegmentedVoice(segments, language) {
   var button = document.getElementById('voiceGenerateBtn');
   var context = new (window.AudioContext || window.webkitAudioContext)();
   var buffers = [];
   var completed = 0;
   return segments.reduce(function(chain, segment) {
     return chain.then(function() {
-      document.getElementById('voiceStatus').textContent = '正在生成第 ' + (completed + 1) + ' / ' + segments.length + ' 句日语角色语音…';
-      return requestVoiceBlob(segment.translation).then(function(blob) { return blob.arrayBuffer(); }).then(function(data) { return context.decodeAudioData(data); }).then(function(buffer) {
+      document.getElementById('voiceStatus').textContent = '正在生成第 ' + (completed + 1) + ' / ' + segments.length + ' 句角色语音…';
+      var ttsText = language === 'zh' ? segment.source : segment.translation;
+      return requestVoiceBlob(ttsText).then(function(blob) { return blob.arrayBuffer(); }).then(function(data) { return context.decodeAudioData(data); }).then(function(buffer) {
         buffers.push(buffer);
         completed += 1;
       });
@@ -2754,8 +2750,11 @@ function generateAIVoice() {
   var rawSegments = document.getElementById('voiceText').dataset.translationSegments;
   var segments = [];
   try { segments = JSON.parse(rawSegments || '[]'); } catch (error) {}
-  var shouldSyncCaptions = language === 'ja' && segments.length > 1 && segments.map(function(item){ return item.translation; }).join('\n').trim() === text;
-  var generation = shouldSyncCaptions ? generateSegmentedVoice(segments) : requestVoiceBlob(text).then(function(blob) { _voiceBlob = blob; _voicePlaybackSegments = []; });
+  var segText = language === 'ja'
+    ? segments.map(function(item){ return item.translation; }).join('\n').trim()
+    : segments.map(function(item){ return item.source; }).join('\n').trim();
+  var shouldSyncCaptions = segments.length > 0 && segText === text;
+  var generation = shouldSyncCaptions ? generateSegmentedVoice(segments, language) : requestVoiceBlob(text).then(function(blob) { _voiceBlob = blob; _voicePlaybackSegments = []; });
   generation.then(function() {
     if (_voiceAudioUrl) URL.revokeObjectURL(_voiceAudioUrl);
     _voiceAudioUrl = URL.createObjectURL(_voiceBlob);
