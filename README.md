@@ -19,7 +19,8 @@ This is an unofficial, non-commercial fan project and is not affiliated with or 
 - Automatic Positive / Negative Prompt assembly and scene-aware LoRA injection
 - Direct generation through AUTOMATIC1111, Forge, or ReForge
 - Model and sampler discovery, progress display, interrupt, fixed seeds, and hires.fix
-- Japanese-first scene dialogue and narration, optional Chinese delivery, system preview, and local GPT-SoVITS character voices
+- Independent Chinese reading text and voice scripts: keep captions Chinese while characters speak Japanese by default, with optional Chinese delivery
+- Scene-aware Japanese voice references for neutral, gentle, happy, shy, serious, and sad delivery; Chinese keeps the stable neutral reference
 - Local history, ratings, favorites, notes, projects, and image storage
 - Temporary token-protected links for trusted friends to use your local SD WebUI
 

@@ -209,20 +209,24 @@ app.post('/api/tts', express.json({ limit:'32kb' }), function (req, res) {
   var text = String(req.body && req.body.text || '').trim();
   var language = String(req.body && req.body.language || 'ja').toLowerCase();
   var speed = Number(req.body && req.body.speed);
+  var emotion = String(req.body && req.body.emotion || 'neutral').toLowerCase();
   var profile = VOICE_PROFILES[voice];
   if (!['nene', 'natsume'].includes(voice)) return res.status(400).json({ error:'不支持的角色声线' });
   if (!['ja', 'zh'].includes(language)) return res.status(400).json({ error:'语音语言仅支持日语或中文' });
+  if (!['neutral', 'gentle', 'happy', 'shy', 'serious', 'sad'].includes(emotion)) emotion = 'neutral';
   if (!text || text.length > 2000) return res.status(400).json({ error:'台词长度必须在 1—2000 字之间' });
   if (!profile || !profile.refAudioPath || !profile.promptText) return res.status(409).json({ error:'该角色尚未在启动控制面板配置 GPT-SoVITS 参考音频' });
   if (!Number.isFinite(speed)) speed = 1;
   speed = Math.max(0.75, Math.min(1.35, speed));
 
+  var emotionReference = profile.references && profile.references[emotion];
+  if (language !== 'ja') emotionReference = null;
   var payload = {
     text: text,
     text_lang: language,
-    ref_audio_path: profile.refAudioPath,
-    prompt_lang: profile.promptLang || 'ja',
-    prompt_text: profile.promptText,
+    ref_audio_path: emotionReference && emotionReference.refAudioPath || profile.refAudioPath,
+    prompt_lang: emotionReference && emotionReference.promptLang || profile.promptLang || 'ja',
+    prompt_text: emotionReference && emotionReference.promptText || profile.promptText,
     text_split_method: 'cut5',
     batch_size: 1,
     speed_factor: speed,

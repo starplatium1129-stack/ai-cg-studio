@@ -230,6 +230,17 @@
   .voice-field select { width:100%; min-width:0; padding:7px 8px; border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-surface); color:var(--text-primary); outline:none; }
   .voice-field select:focus, .voice-text:focus { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-glow); }
   .voice-text { width:100%; min-height:130px; resize:vertical; box-sizing:border-box; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); color:var(--text-primary); font: .86rem/1.7 var(--font-sans); outline:none; }
+  .voice-copy { padding:var(--s-3); border:1px solid color-mix(in srgb,var(--accent) 24%,var(--border-soft)); border-radius:var(--r-md); background:color-mix(in srgb,var(--accent) 5%,var(--bg-surface)); }
+  .voice-copy-head { display:flex; align-items:center; justify-content:space-between; gap:var(--s-2); margin-bottom:var(--s-2); }
+  .voice-copy-title { color:var(--text-primary); font-size:.76rem; font-weight:750; }
+  .voice-copy-note { color:var(--text-muted); font-size:.66rem; white-space:nowrap; }
+  .voice-caption-text { min-height:112px; background:var(--bg-deep); font-size:.9rem; line-height:1.8; }
+  .voice-script-details { margin-top:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-deep); overflow:hidden; }
+  .voice-script-details summary { display:flex; align-items:center; justify-content:space-between; gap:var(--s-2); padding:10px var(--s-3); color:var(--text-secondary); font-size:.72rem; cursor:pointer; list-style:none; user-select:none; }
+  .voice-script-details summary::-webkit-details-marker { display:none; }
+  .voice-script-details summary::after { content:'展开校对'; color:var(--text-muted); font-size:.66rem; }
+  .voice-script-details[open] summary::after { content:'收起'; }
+  .voice-script-details .voice-text { min-height:104px; margin:0 var(--s-3) var(--s-3); width:calc(100% - var(--s-3) * 2); background:var(--bg-surface); }
   .voice-actions { display:flex; flex-wrap:wrap; gap:var(--s-2); margin-top:var(--s-3); }
   .voice-actions .btn { flex:1 1 120px; }
   .voice-actions .btn:disabled { opacity:.45; cursor:not-allowed; box-shadow:none; }
@@ -593,17 +604,25 @@
         </div>
         <section class="voice-studio" aria-labelledby="voiceStudioTitle">
           <div class="voice-head">
-            <div><div class="voice-title" id="voiceStudioTitle">🎙 让画面开口</div><div class="voice-sub">默认使用角色原语言日文，也可切换为中文演绎。</div></div>
+            <div><div class="voice-title" id="voiceStudioTitle">🎙 让画面开口</div><div class="voice-sub">画面文字与声音彼此独立：看中文，默认听角色说日文。</div></div>
             <span class="voice-state" id="voiceState">检测中</span>
           </div>
           <div class="voice-controls">
             <label class="voice-field">角色<select id="voiceCharacter" onchange="refreshVoiceText(true)"><option value="nene">🌸 宁宁</option><option value="natsume">☕ 夏目</option></select></label>
-            <label class="voice-field">语言<select id="voiceLanguage" onchange="refreshVoiceText(true)"><option value="ja" selected>日本語 · 默认</option><option value="zh">中文</option></select></label>
+            <label class="voice-field">配音语言<select id="voiceLanguage" onchange="refreshVoiceScript(true)"><option value="ja" selected>日本語 · 默认</option><option value="zh">中文</option></select></label>
             <label class="voice-field">内容<select id="voiceMode" onchange="refreshVoiceText(true)"><option value="dialogue">提取角色台词</option><option value="story">朗读完整故事</option></select></label>
             <label class="voice-field">语速<select id="voiceSpeed"><option value="0.85">舒缓</option><option value="1" selected>自然</option><option value="1.15">轻快</option></select></label>
           </div>
-          <label class="sr-only" for="voiceText">配音文本</label>
-          <textarea class="voice-text" id="voiceText" maxlength="2000" placeholder="选择场景后会自动提取台词，也可以在这里改写。"></textarea>
+          <div class="voice-copy">
+            <div class="voice-copy-head"><span class="voice-copy-title">中文字幕 / 阅读文本</span><span class="voice-copy-note">不影响声音</span></div>
+            <label class="sr-only" for="voiceCaptionText">中文字幕</label>
+            <textarea class="voice-text voice-caption-text" id="voiceCaptionText" maxlength="2000" placeholder="选择场景后会显示对应的中文内容。"></textarea>
+          </div>
+          <details class="voice-script-details">
+            <summary><span id="voiceScriptLabel">日文配音稿 · 只影响声音</span></summary>
+            <label class="sr-only" for="voiceText">配音文本</label>
+            <textarea class="voice-text" id="voiceText" maxlength="2000" placeholder="选择场景后会准备当前语言的配音稿，也可以在这里单独改写。"></textarea>
+          </details>
           <div class="voice-actions">
             <button class="btn btn-ghost" type="button" onclick="refreshVoiceText(true)">↻ 重新提取</button>
             <button class="btn btn-ghost" type="button" onclick="previewVoice()">🔊 本机试听</button>
@@ -2383,31 +2402,63 @@ function extractSceneDialogue(story) {
   return lines.join('\n');
 }
 
-function defaultVoiceText() {
+function voiceTextForMode(story, fallback) {
   var mode = document.getElementById('voiceMode') ? document.getElementById('voiceMode').value : 'dialogue';
+  story = String(story || '').trim();
+  if (mode === 'story') return story.replace(/^【[^】]+】\s*/, '');
+  return extractSceneDialogue(story) || String(fallback || '').trim() || story.replace(/^【[^】]+】\s*/, '');
+}
+
+function defaultVoiceCaptionText() {
+  var voice = document.getElementById('voiceCharacter') ? document.getElementById('voiceCharacter').value : 'nene';
+  var character = voiceCharacterData(voice) || {};
+  return voiceTextForMode(state.story, character.voice);
+}
+
+function defaultVoiceText() {
   var voice = document.getElementById('voiceCharacter') ? document.getElementById('voiceCharacter').value : 'nene';
   var language = document.getElementById('voiceLanguage') ? document.getElementById('voiceLanguage').value : 'ja';
   var scene = SCENES.find(function(item){ return item.id === state.__sceneId; });
   var character = voiceCharacterData(voice) || {};
-  var story = language === 'ja'
-    ? String((scene && scene.storyJa) || character.voiceJa || '').trim()
-    : String(state.story || '').trim();
-  if (mode === 'story') return story.replace(/^【[^】]+】\s*/, '');
-  return extractSceneDialogue(story) || (language === 'ja' ? character.voiceJa : character.voice) || story.replace(/^【[^】]+】\s*/, '');
+  if (language === 'zh') return voiceTextForMode(state.story, character.voice);
+  if (scene && scene.storyJa) return voiceTextForMode(scene.storyJa, character.voiceJa);
+  if (String(state.story || '').trim()) return '';
+  return voiceTextForMode(character.voiceJa, character.voiceJa);
+}
+
+function updateVoiceScriptLabel() {
+  var label = document.getElementById('voiceScriptLabel');
+  var language = document.getElementById('voiceLanguage') ? document.getElementById('voiceLanguage').value : 'ja';
+  if (label) label.textContent = (language === 'ja' ? '日文配音稿' : '中文配音稿') + ' · 只影响声音';
+}
+
+function refreshVoiceScript(force) {
+  var textArea = document.getElementById('voiceText');
+  if (!textArea) return;
+  if (force || textArea.dataset.dirty !== '1') {
+    textArea.value = defaultVoiceText();
+    textArea.dataset.dirty = '0';
+  }
+  updateVoiceScriptLabel();
+  var status = document.getElementById('voiceStatus');
+  var language = document.getElementById('voiceLanguage') ? document.getElementById('voiceLanguage').value : 'ja';
+  if (status) {
+    if (textArea.value) status.textContent = language === 'ja'
+      ? '中文字幕保持不变；已准备对应的日文角色配音。'
+      : '中文字幕保持不变；已切换为中文角色配音。';
+    else if (language === 'ja' && String(state.story || '').trim()) status.textContent = '中文内容已保留。自定义故事请补充日文配音稿，或把配音语言切换为中文。';
+    else status.textContent = '写下故事或选择场景后，会自动准备中文内容与配音稿。';
+  }
+  checkVoiceStatus();
 }
 
 function refreshVoiceText(force) {
-  var textArea = document.getElementById('voiceText');
-  if (!textArea) return;
-  if (!force && textArea.dataset.dirty === '1') return;
-  textArea.value = defaultVoiceText();
-  textArea.dataset.dirty = '0';
-  var status = document.getElementById('voiceStatus');
-  var language = document.getElementById('voiceLanguage') ? document.getElementById('voiceLanguage').value : 'ja';
-  if (status) status.textContent = textArea.value
-    ? (language === 'ja' ? '日文台词已准备好，可以先试听节奏。' : '中文台词已准备好，可以先试听节奏。')
-    : '写下故事或选择场景后，会自动准备配音文本。';
-  checkVoiceStatus();
+  var caption = document.getElementById('voiceCaptionText');
+  if (caption && (force || caption.dataset.dirty !== '1')) {
+    caption.value = defaultVoiceCaptionText();
+    caption.dataset.dirty = '0';
+  }
+  refreshVoiceScript(force);
 }
 
 function syncVoiceCharacter(forceText) {
@@ -2433,8 +2484,11 @@ function checkVoiceStatus() {
     return response.json();
   }).then(function(data) {
     var configured = !!(data.voices && data.voices[voice.value]);
-    button.disabled = !(data.online && configured);
-    if (data.online && configured) setVoiceState('ready', 'AI 声线就绪', 'GPT-SoVITS 已连接，可以生成当前角色声线。');
+    var script = document.getElementById('voiceText');
+    var hasScript = !!(script && script.value.trim());
+    button.disabled = !(data.online && configured && hasScript);
+    if (data.online && configured && hasScript) setVoiceState('ready', 'AI 声线就绪', 'GPT-SoVITS 已连接；屏幕保持中文，声音按所选语言生成。');
+    else if (data.online && configured) setVoiceState('warn', '待补配音稿', '中文内容已保留；请展开并补充日文配音稿，或切换为中文配音。');
     else if (data.online) setVoiceState('warn', '待配参考音频', 'GPT-SoVITS 已连接，请在启动控制面板配置该角色的参考音频与原文。');
     else setVoiceState('warn', '系统试听可用', 'GPT-SoVITS 未连接；仍可用本机系统声音试听文本节奏。');
     return data;
@@ -2447,8 +2501,10 @@ function checkVoiceStatus() {
 
 function initVoiceStudio() {
   var textArea = document.getElementById('voiceText');
+  var caption = document.getElementById('voiceCaptionText');
   if (!textArea) return;
   textArea.addEventListener('input', function(){ this.dataset.dirty = '1'; });
+  if (caption) caption.addEventListener('input', function(){ this.dataset.dirty = '1'; });
   document.getElementById('voiceCharacter').addEventListener('change', checkVoiceStatus);
   syncVoiceCharacter(true);
   window.addEventListener('pagehide', function() {
@@ -2503,6 +2559,7 @@ function generateAIVoice() {
       voice:document.getElementById('voiceCharacter').value,
       language:document.getElementById('voiceLanguage').value,
       text:text,
+      emotion:voiceEmotionCategory(),
       speed:Number(document.getElementById('voiceSpeed').value) || 1
     }),
     signal:_voiceRequest.signal
@@ -2529,6 +2586,18 @@ function generateAIVoice() {
     button.textContent = '✨ AI 声线生成';
     checkVoiceStatus();
   });
+}
+
+function voiceEmotionCategory() {
+  var selected = state.selections && state.selections.emotion && state.selections.emotion[0];
+  var map = {
+    happy:'happy', joyful:'happy', expect:'happy', relaxed:'gentle', gentle:'gentle', moved:'gentle',
+    shy:'shy', love:'shy', nervous:'shy', serious:'serious', spoiled:'serious',
+    sad:'sad', miss:'sad', wronged:'sad', calm:'neutral', sleepy:'neutral'
+  };
+  if (selected && map[selected]) return map[selected];
+  var moodMap = { joy:'happy', love:'shy', warmth:'gentle', tension:'serious', sad:'sad', calm:'neutral' };
+  return moodMap[state.colorMood] || 'neutral';
 }
 
 function downloadVoice() {

@@ -66,13 +66,25 @@ function sanitizeVoiceProfile(value, fallback) {
   function pick(key, defaultValue) {
     return Object.prototype.hasOwnProperty.call(value, key) ? value[key] : (fallback[key] == null ? defaultValue : fallback[key]);
   }
+  var references = pick('references', {});
+  var safeReferences = {};
+  if (references && typeof references === 'object') {
+    ['neutral', 'gentle', 'happy', 'shy', 'serious', 'sad'].forEach(function (emotion) {
+      var reference = references[emotion];
+      if (!reference || typeof reference !== 'object') return;
+      var refAudioPath = String(reference.refAudioPath || '').trim().slice(0, 1000);
+      var promptText = String(reference.promptText || '').trim().slice(0, 500);
+      if (refAudioPath && promptText) safeReferences[emotion] = { refAudioPath:refAudioPath, promptText:promptText, promptLang:'ja' };
+    });
+  }
   return {
     refAudioPath: String(pick('refAudioPath', '') || '').trim().slice(0, 1000),
     promptText: String(pick('promptText', '') || '').trim().slice(0, 500),
     promptLang: String(pick('promptLang', 'ja') || 'ja').trim().slice(0, 12),
     textLang: String(pick('textLang', 'ja') || 'ja').trim().slice(0, 12),
     gptWeightsPath: String(pick('gptWeightsPath', '') || '').trim().slice(0, 1000),
-    sovitsWeightsPath: String(pick('sovitsWeightsPath', '') || '').trim().slice(0, 1000)
+    sovitsWeightsPath: String(pick('sovitsWeightsPath', '') || '').trim().slice(0, 1000),
+    references: safeReferences
   };
 }
 
