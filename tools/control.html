@@ -368,7 +368,7 @@
       </article>
     </div>
 
-    <div class="security-note">分享链接可以调用你电脑上的 SD WebUI。只发给信任的人；使用结束后点击“停止全部服务”，它不会关闭你手动管理的 SD WebUI。多人共用时，“停止生成”可能中断当前全局任务。</div>
+    <div class="security-note">控制面板会自动启动已配置的 reForge，并在“停止全部服务”时关闭它；若 SD WebUI 是手动启动的，控制面板会保留它不动。分享链接可以调用你电脑上的 SD WebUI，请只发给信任的人。多人共用时，“停止生成”可能中断当前全局任务。</div>
     <div class="uptime" id="uptime"></div>
   </section>
 
@@ -497,7 +497,7 @@ function renderStatus(data) {
     runningPanel.classList.remove('show');
   }
 
-  setBadge(sdBadge, data.sdOnline ? 'online' : 'offline', data.sdOnline ? '已连接' : '未连接');
+  setBadge(sdBadge, data.sdOnline ? 'online' : 'offline', data.sdOnline ? (data.webuiManaged ? '已连接 · 自动管理' : '已连接 · 手动') : '未连接');
   setBadge(ttsBadge, data.ttsOnline ? 'online' : 'offline', data.ttsOnline ? '已连接' : '未连接');
   if (data.sdOnline && data.ttsOnline) {
     feedback.className = 'config-feedback ok';
@@ -687,7 +687,7 @@ function doStop() {
     return response.json();
   }).then(function(data) {
     if (!data.ok) throw new Error(data.msg || '停止失败');
-    showToast(data.voiceError ? '网关已停止；语音服务停止失败，请查看日志' : '网关、分享与语音服务已停止');
+    showToast(data.voiceError || data.webuiError ? '部分服务停止失败，请查看日志' : (data.webuiStopped ? '网关、分享、语音与 WebUI 已停止' : '网关、分享与语音已停止；手动启动的 WebUI 保持运行'));
     pollStatus();
     pollLogs();
   }).catch(function(error) {

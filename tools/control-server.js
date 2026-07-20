@@ -24,6 +24,7 @@ runtimeTools.rotateLog(RUNTIME.controlLog, 2 * 1024 * 1024);
 var CONFIG_FILE = RUNTIME.config;
 var CLOUDFLARED_PATH = 'C:\\Program Files (x86)\\cloudflared\\cloudflared.exe';
 var VOICE_STOP_SCRIPT = path.resolve(dir, '..', 'AI', 'Voice', 'Stop-Voice.ps1');
+var WEBUI_MANAGER_SCRIPT = path.join(dir, 'scripts', 'managed-webui.ps1');
 
 // ─── State ───
 var state = {
@@ -34,6 +35,7 @@ var state = {
   gatewayPort: GW_PORT,
   tunnelStatus: 'idle',
   sdOnline: false,
+  webuiManaged: false,
   ttsOnline: false,
   logs: []
 };
@@ -257,6 +259,27 @@ function stopManagedVoiceService() {
   return { attempted:true, message:(result.stdout || 'GPT-SoVITS stopped.').trim() };
 }
 
+function runManagedWebUI(action) {
+  if (!fs.existsSync(WEBUI_MANAGER_SCRIPT)) return { ok:false, error:'Managed WebUI script is not installed.' };
+  var result = cp.spawnSync('powershell.exe', [
+    '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', WEBUI_MANAGER_SCRIPT, '-Action', action
+  ], {
+    cwd: dir,
+    encoding: 'utf8',
+    timeout: 30000,
+    windowsHide: true
+  });
+  if (result.error) return { ok:false, error:result.error.message };
+  var output = String(result.stdout || '').trim();
+  try {
+    var parsed = JSON.parse(output);
+    state.webuiManaged = !!parsed.managed;
+    return parsed;
+  } catch (error) {
+    return { ok:false, error:(result.stderr || output || 'Managed WebUI script returned invalid status').trim() };
+  }
+}
+
 // Check if gateway is already running on startup
 (function checkExisting() {
   try {
@@ -285,6 +308,8 @@ function stopManagedVoiceService() {
   } catch (e) {}
   checkSD();
   checkTTS();
+  var webuiStatus = runManagedWebUI('Status');
+  if (webuiStatus.ok) state.webuiManaged = !!webuiStatus.managed;
 })();
 
 // ─── API ───
@@ -312,6 +337,7 @@ app.get('/api/status', function (req, res) {
     token: state.token,
     domain: state.domain,
     sdOnline: state.sdOnline,
+    webuiManaged: !!state.webuiManaged,
     sdHost: SD_HOST,
     ttsOnline: !!state.ttsOnline,
     ttsHost: TTS_HOST,
@@ -353,6 +379,9 @@ app.post('/api/start', function (req, res) {
   if (state.running) {
     return res.json({ ok: true, msg: 'Already running' });
   }
+  var webuiResult = runManagedWebUI('Start');
+  if (!webuiResult.ok) log('Managed WebUI start failed: ' + webuiResult.error);
+  else log(webuiResult.message || 'Managed WebUI checked.');
   findAvailableGatewayPort(function (portError, gatewayPort) {
     if (portError) return res.status(503).json({ ok:false, msg:portError.message });
     state.gatewayPort = gatewayPort;
@@ -411,6 +440,9 @@ app.post('/api/stop', function (req, res) {
   var voiceResult = stopManagedVoiceService();
   if (voiceResult.error) log('Voice service stop failed: ' + voiceResult.error);
   else if (voiceResult.attempted) log(voiceResult.message || 'GPT-SoVITS stopped.');
+  var webuiResult = runManagedWebUI('Stop');
+  if (!webuiResult.ok) log('Managed WebUI stop failed: ' + webuiResult.error);
+  else log(webuiResult.message || 'Managed WebUI stopped.');
 
   state.running = false;
   state.domain = '';
@@ -419,9 +451,9 @@ app.post('/api/stop', function (req, res) {
   state.tunnelStatus = 'idle';
   state.gatewayPort = GW_PORT;
   try { fs.unlinkSync(RUNTIME.gatewayPort); } catch (e) {}
-  log('Gateway, tunnel, and managed voice service stopped');
+  log('Gateway, tunnel, managed voice service, and managed WebUI stopped');
 
-  res.json({ ok: true, voiceStopped:!!voiceResult.attempted, voiceError:voiceResult.error || '' });
+  res.json({ ok: true, voiceStopped:!!voiceResult.attempted, voiceError:voiceResult.error || '', webuiStopped:!!webuiResult.managed, webuiError:webuiResult.error || '' });
 });
 
 app.get('/api/logs', function (req, res) {

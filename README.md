@@ -26,12 +26,12 @@ This is an unofficial, non-commercial fan project and is not affiliated with or 
 
 ## Recommended setup
 
-1. In Stability Matrix, keep `--api --port 7860` in the WebUI launch arguments.
+1. In Stability Matrix, keep `--api --port 7860` in the WebUI launch arguments. The current reForge package is started automatically by the control panel.
 2. Double-click `control.bat`.
 3. Confirm the WebUI address. When the sibling local voice setup is present, the launcher also starts GPT-SoVITS; the gateway switches the evaluated Nene/Natsume weights for each request.
 4. Click **启动并生成分享链接**.
 5. Use **打开本地网站（无需 Token）** for yourself, or copy the token-protected link for a friend.
-6. Click **停止全部服务** when finished. This stops the local gateway, sharing tunnel, and managed GPT-SoVITS process; SD WebUI remains under your manual control.
+6. Click **停止全部服务** when finished. This stops the local gateway, sharing tunnel, GPT-SoVITS, and the reForge process started by the control panel. A separately manual WebUI is left untouched.
 
 `--api` does not prevent normal use of the WebUI interface. If Stability Matrix uses another port, enter the address shown in its log.
 

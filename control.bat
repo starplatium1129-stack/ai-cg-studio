@@ -17,6 +17,15 @@ if not exist "node_modules" (
     echo.
 )
 
+:: Start the managed Stability Matrix reForge instance with its saved API arguments
+set "WEBUI_SCRIPT=%~dp0scripts\managed-webui.ps1"
+if exist "%WEBUI_SCRIPT%" (
+    echo  Checking managed SD WebUI...
+    powershell -NoProfile -ExecutionPolicy Bypass -File "%WEBUI_SCRIPT%" -Action Start
+    if errorlevel 1 echo  [WARN] Managed SD WebUI failed to start. Check runtime\logs\webui.stderr.log.
+    echo.
+)
+
 :: Start the optional local GPT-SoVITS service when it is installed beside this project
 set "VOICE_SCRIPT=%~dp0..\AI\Voice\Start-Voice.ps1"
 if exist "%VOICE_SCRIPT%" (
