@@ -592,7 +592,6 @@
         <div class="panel-title">⚙️ 出图参数</div>
         <div class="controls-grid">
           <div class="ctrl" style="grid-column:1/-1;margin-bottom:var(--s-2)"><label>快速预设</label><select id="presetSelect"><option value="">— 自定义 —</option></select><small id="modelProfileHint" style="display:block;margin-top:5px;color:var(--text-muted)">连接 SD 后会自动匹配当前模型的稳定参数</small></div>
-          <div class="ctrl"><label>尺寸</label><select id="size"><option value="832×1216">832×1216 · 竖图</option><option value="1024×1344">1024×1344 · 竖图 原生</option><option value="768×1344">768×1344 · 竖图 细长</option><option value="1024×1024">1024×1024 · 方图</option><option value="896×896">896×896 · 方图</option><option value="1216×832">1216×832 · 横图</option><option value="1344×1024">1344×1024 · 横图 原生</option><option value="1344×768">1344×768 · 横图 宽幅</option></select></div>
           <div class="ctrl"><label>CFG</label><select id="cfg"><option>3</option><option>4</option><option>5</option><option selected>5.5</option><option>6</option><option>7</option><option>8</option><option>9</option></select></div>
           <div class="ctrl"><label>Steps</label><select id="steps"><option>20</option><option selected>28</option><option>30</option><option>35</option><option>40</option><option>50</option></select></div>
           <div class="ctrl" style="grid-column:1/-1"><label>SD 模型</label><select id="sdModel" title="留空时使用 WebUI 当前模型"><option value="">使用 WebUI 当前模型</option></select></div>
@@ -611,6 +610,34 @@
           <div class="preview-output" id="finalPrompt"></div>
         </details>
         <div class="sd-inline-options">
+          <label>尺寸
+            <select id="size">
+              <optgroup label="竖图 Portrait">
+                <option value="768×1344">768×1344 · 细长</option>
+                <option value="832×1216" selected>832×1216 · 标准</option>
+                <option value="896×1344">896×1344 · 竖图</option>
+                <option value="1024×1344">1024×1344 · 原生</option>
+                <option value="1024×1536">1024×1536 · 高竖</option>
+                <option value="1152×1536">1152×1536 · 大竖</option>
+                <option value="1216×1792">1216×1792 · 高清竖</option>
+              </optgroup>
+              <optgroup label="方图 Square">
+                <option value="896×896">896×896</option>
+                <option value="1024×1024">1024×1024</option>
+                <option value="1216×1216">1216×1216</option>
+                <option value="1344×1344">1344×1344</option>
+              </optgroup>
+              <optgroup label="横图 Landscape">
+                <option value="1216×832">1216×832 · 标准</option>
+                <option value="1344×896">1344×896 · 横图</option>
+                <option value="1344×1024">1344×1024 · 原生</option>
+                <option value="1536×1024">1536×1024 · 高横</option>
+                <option value="1536×1152">1536×1152 · 大横</option>
+                <option value="1792×1216">1792×1216 · 高清横</option>
+                <option value="1344×768">1344×768 · 宽幅</option>
+              </optgroup>
+            </select>
+          </label>
           <label style="display:flex;align-items:center;gap:4px;cursor:pointer;">
             <input type="checkbox" id="sdHiresFix"> hires.fix
           </label>
