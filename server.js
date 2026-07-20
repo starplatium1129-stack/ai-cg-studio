@@ -18,9 +18,12 @@ var HOST = process.env.HOST || '127.0.0.1';
 var SD_HOST = process.env.SD_HOST || runtimeConfig.sdHost || 'http://127.0.0.1:7860';
 var TTS_HOST = process.env.TTS_HOST || runtimeConfig.ttsHost || 'http://127.0.0.1:9880';
 var VOICE_PROFILES = runtimeConfig.voices && typeof runtimeConfig.voices === 'object' ? runtimeConfig.voices : {};
+var TRANSLATION_PYTHON = process.env.TRANSLATION_PYTHON || path.resolve(__dirname, '..', 'AI', 'GPT-SoVITS-env', 'python.exe');
+var TRANSLATION_SCRIPT = path.join(__dirname, 'tools', 'translate-zh-ja.py');
 var activeGPTWeights = '';
 var activeSoVITSWeights = '';
 var voiceQueue = Promise.resolve();
+var translationQueue = Promise.resolve();
 var SD_API_AUTH = process.env.SD_API_AUTH || '';
 var DISABLE_TUNNEL = process.env.DISABLE_TUNNEL === '1';
 var TOKEN = process.env.TOKEN || crypto.randomBytes(8).toString('hex');
@@ -153,6 +156,58 @@ app.get('/api/tts-status', function (req, res) {
   requestTTSStatus(function (online) {
     res.setHeader('Cache-Control', 'no-store');
     res.json({ online: online, engine: 'GPT-SoVITS', voices: configuredVoiceMap() });
+  });
+});
+
+function translateChineseToJapanese(text) {
+  return new Promise(function(resolve, reject) {
+    if (!fs.existsSync(TRANSLATION_PYTHON) || !fs.existsSync(TRANSLATION_SCRIPT)) {
+      reject(new Error('本地日语翻译组件尚未安装。'));
+      return;
+    }
+    var output = '';
+    var errorOutput = '';
+    var finished = false;
+    var child = cp.spawn(TRANSLATION_PYTHON, [TRANSLATION_SCRIPT], {
+      windowsHide: true,
+      env: Object.assign({}, process.env, { PYTHONUTF8: '1' }),
+      stdio: ['pipe', 'pipe', 'pipe']
+    });
+    var timer = setTimeout(function() {
+      if (!finished) child.kill();
+    }, 180000);
+    child.stdout.on('data', function(chunk) { output += chunk.toString('utf8'); });
+    child.stderr.on('data', function(chunk) { errorOutput += chunk.toString('utf8'); });
+    child.on('error', function(error) {
+      clearTimeout(timer);
+      finished = true;
+      reject(error);
+    });
+    child.on('close', function(code) {
+      clearTimeout(timer);
+      if (finished) return;
+      finished = true;
+      try {
+        var result = JSON.parse(output.trim());
+        if (code === 0 && result && result.translation) return resolve(result);
+        throw new Error(result && result.error || errorOutput.trim() || '本地日语翻译失败。');
+      } catch (error) {
+        reject(error);
+      }
+    });
+    child.stdin.end(JSON.stringify({ text: text }));
+  });
+}
+
+app.post('/api/translate', express.json({ limit:'32kb' }), function(req, res) {
+  var text = String(req.body && req.body.text || '').trim();
+  if (!text || text.length > 2000) return res.status(400).json({ error:'待翻译中文需在 1—2000 字之间。' });
+  var task = translationQueue.catch(function() {}).then(function() { return translateChineseToJapanese(text); });
+  translationQueue = task;
+  task.then(function(result) {
+    res.json({ sourceLanguage:'zh', targetLanguage:'ja', translation:result.translation, segments:result.segments || [] });
+  }).catch(function(error) {
+    res.status(503).json({ error:error.message || '本地日语翻译暂不可用。' });
   });
 });
 

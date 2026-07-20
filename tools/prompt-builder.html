@@ -234,6 +234,9 @@
   .voice-field select { width:100%; min-width:0; padding:7px 8px; border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-surface); color:var(--text-primary); outline:none; }
   .voice-field select:focus, .voice-text:focus { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-glow); }
   .voice-text { width:100%; min-height:130px; resize:vertical; box-sizing:border-box; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); color:var(--text-primary); font: .86rem/1.7 var(--font-sans); outline:none; }
+  .voice-live-caption { display:none; margin-top:var(--s-2); padding:var(--s-3); border:1px solid color-mix(in srgb,var(--accent) 42%,var(--border-soft)); border-radius:var(--r-md); background:color-mix(in srgb,var(--accent) 9%,var(--bg-surface)); color:var(--text-primary); font-size:.88rem; line-height:1.75; box-shadow:inset 3px 0 0 var(--accent); }
+  .voice-live-caption.show { display:block; }
+  .voice-live-caption small { display:block; margin-bottom:3px; color:var(--text-muted); font-size:.67rem; letter-spacing:.04em; }
   .voice-copy { padding:var(--s-3); border:1px solid color-mix(in srgb,var(--accent) 24%,var(--border-soft)); border-radius:var(--r-md); background:color-mix(in srgb,var(--accent) 5%,var(--bg-surface)); }
   .voice-copy-head { display:flex; align-items:center; justify-content:space-between; gap:var(--s-2); margin-bottom:var(--s-2); }
   .voice-copy-title { color:var(--text-primary); font-size:.76rem; font-weight:750; }
@@ -616,12 +619,14 @@
             <label class="voice-field">角色<select id="voiceCharacter" onchange="refreshVoiceText(true)"><option value="nene">🌸 宁宁</option><option value="natsume">☕ 夏目</option></select></label>
             <label class="voice-field">配音语言<select id="voiceLanguage" onchange="refreshVoiceScript(true)"><option value="ja" selected>日本語 · 默认</option><option value="zh">中文</option></select></label>
             <label class="voice-field">内容<select id="voiceMode" onchange="refreshVoiceText(true)"><option value="dialogue">提取角色台词</option><option value="story">朗读完整故事</option></select></label>
+            <label class="voice-field">语音情绪<select id="voiceEmotion" onchange="checkVoiceStatus()"><option value="auto" selected>自动 · 跟随场景</option><option value="neutral">平静</option><option value="gentle">温柔</option><option value="happy">开心</option><option value="shy">害羞 / 暧昧</option><option value="serious">认真 / 紧张</option><option value="sad">难过 / 惆怅</option></select></label>
             <label class="voice-field">语速<select id="voiceSpeed"><option value="0.85">舒缓</option><option value="1" selected>自然</option><option value="1.15">轻快</option></select></label>
           </div>
           <div class="voice-copy">
             <div class="voice-copy-head"><span class="voice-copy-title">中文字幕 / 阅读文本</span><span class="voice-copy-note">不影响声音</span></div>
             <label class="sr-only" for="voiceCaptionText">中文字幕</label>
             <textarea class="voice-text voice-caption-text" id="voiceCaptionText" maxlength="2000" placeholder="选择场景后会显示对应的中文内容。"></textarea>
+            <div class="voice-live-caption" id="voiceLiveCaption" aria-live="polite"></div>
           </div>
           <details class="voice-script-details">
             <summary><span id="voiceScriptLabel">日文配音稿 · 只影响声音</span></summary>
@@ -630,6 +635,7 @@
           </details>
           <div class="voice-actions">
             <button class="btn btn-ghost" type="button" onclick="refreshVoiceText(true)">↻ 重新提取</button>
+            <button class="btn btn-ghost" id="voiceTranslateBtn" type="button" onclick="translateVoiceCaption()">🈶 翻成日语</button>
             <button class="btn btn-ghost" type="button" onclick="previewVoice()">🔊 本机试听</button>
             <button class="btn btn-primary" id="voiceGenerateBtn" type="button" onclick="generateAIVoice()">✨ AI 声线生成</button>
             <button class="btn btn-ghost" type="button" onclick="stopVoice()">■ 停止</button>
@@ -2391,6 +2397,7 @@ function resetDirector() {
 var _voiceRequest = null;
 var _voiceAudioUrl = '';
 var _voiceBlob = null;
+var _voicePlaybackSegments = [];
 
 function voiceCharacterData(id) {
   return (CHARACTER || []).find(function(character){ return character.id === id; }) || null;
@@ -2486,6 +2493,7 @@ function setVoiceState(kind, label, detail) {
 function checkVoiceStatus() {
   var voice = document.getElementById('voiceCharacter');
   var button = document.getElementById('voiceGenerateBtn');
+  var translateButton = document.getElementById('voiceTranslateBtn');
   if (!voice || !button) return Promise.resolve(null);
   return fetch('../api/tts-status', { cache:'no-store' }).then(function(response) {
     if (!response.ok) throw new Error('status unavailable');
@@ -2493,9 +2501,14 @@ function checkVoiceStatus() {
   }).then(function(data) {
     var configured = !!(data.voices && data.voices[voice.value]);
     var script = document.getElementById('voiceText');
+    var caption = document.getElementById('voiceCaptionText');
+    var language = document.getElementById('voiceLanguage').value;
     var hasScript = !!(script && script.value.trim());
-    button.disabled = !(data.online && configured && hasScript);
+    var canTranslate = language === 'ja' && !!(caption && caption.value.trim());
+    if (translateButton) translateButton.disabled = !canTranslate;
+    button.disabled = !(data.online && configured && (hasScript || canTranslate));
     if (data.online && configured && hasScript) setVoiceState('ready', 'AI 声线就绪', 'GPT-SoVITS 已连接；屏幕保持中文，声音按所选语言生成。');
+    else if (data.online && configured && canTranslate) setVoiceState('ready', '可自动翻译', '只写中文即可；生成时会先在本机翻成日语，再由角色声线朗读。');
     else if (data.online && configured) setVoiceState('warn', '待补配音稿', '中文内容已保留；请展开并补充日文配音稿，或切换为中文配音。');
     else if (data.online) setVoiceState('warn', '待配参考音频', 'GPT-SoVITS 已连接，请在启动控制面板配置该角色的参考音频与原文。');
     else setVoiceState('warn', '系统试听可用', 'GPT-SoVITS 未连接；仍可用本机系统声音试听文本节奏。');
@@ -2511,8 +2524,8 @@ function initVoiceStudio() {
   var textArea = document.getElementById('voiceText');
   var caption = document.getElementById('voiceCaptionText');
   if (!textArea) return;
-  textArea.addEventListener('input', function(){ this.dataset.dirty = '1'; });
-  if (caption) caption.addEventListener('input', function(){ this.dataset.dirty = '1'; });
+  textArea.addEventListener('input', function(){ this.dataset.dirty = '1'; delete this.dataset.translationSegments; });
+  if (caption) caption.addEventListener('input', function(){ this.dataset.dirty = '1'; delete textArea.dataset.translationSegments; checkVoiceStatus(); });
   document.getElementById('voiceCharacter').addEventListener('change', checkVoiceStatus);
   syncVoiceCharacter(true);
   window.addEventListener('pagehide', function() {
@@ -2521,11 +2534,142 @@ function initVoiceStudio() {
   }, { once:true });
 }
 
+function translateVoiceCaption() {
+  var caption = document.getElementById('voiceCaptionText');
+  var script = document.getElementById('voiceText');
+  var language = document.getElementById('voiceLanguage').value;
+  var button = document.getElementById('voiceTranslateBtn');
+  if (language !== 'ja') {
+    flash('切换到日语配音后才需要翻译。');
+    return Promise.resolve('');
+  }
+  var text = caption && caption.value.trim();
+  if (!text) { flash('请先写下中文台词或故事。'); return Promise.resolve(''); }
+  if (button) { button.disabled = true; button.textContent = '翻译中…'; }
+  document.getElementById('voiceStatus').textContent = '正在本机翻成日语，中文正文不会被改动…';
+  return fetch('../api/translate', {
+    method:'POST', headers:{ 'Content-Type':'application/json' }, body:JSON.stringify({ text:text })
+  }).then(function(response) {
+    if (response.ok) return response.json();
+    return response.json().catch(function(){ return {}; }).then(function(data){ throw new Error(data.error || '日语翻译失败'); });
+  }).then(function(data) {
+    var translation = String(data.translation || '').trim();
+    if (!translation) throw new Error('没有得到可用的日语译文。');
+    script.value = translation;
+    script.dataset.dirty = '1';
+    script.dataset.translationSegments = JSON.stringify(Array.isArray(data.segments) ? data.segments : []);
+    document.querySelector('.voice-script-details').open = true;
+    document.getElementById('voiceStatus').textContent = '已生成日语配音稿；可直接生成角色语音，也可以先手动微调。';
+    checkVoiceStatus();
+    return translation;
+  }).catch(function(error) {
+    document.getElementById('voiceStatus').textContent = error.message;
+    flash('日语翻译失败: ' + error.message);
+    return '';
+  }).finally(function() {
+    if (button) { button.textContent = '🈶 翻成日语'; checkVoiceStatus(); }
+  });
+}
+
+function showVoiceCaption(text, index, total) {
+  var box = document.getElementById('voiceLiveCaption');
+  if (!box) return;
+  if (!text) { box.classList.remove('show'); box.textContent = ''; return; }
+  box.innerHTML = '<small>正在朗读 · 第 ' + (index + 1) + ' / ' + total + ' 句</small>' + escapeHtml(text).replace(/\n/g, '<br>');
+  box.classList.add('show');
+}
+
+function clearVoiceCaption() {
+  showVoiceCaption('', 0, 0);
+  _voicePlaybackSegments = [];
+}
+
+function syncVoiceCaptionToAudio(audio) {
+  if (!_voicePlaybackSegments.length) return;
+  var time = audio.currentTime;
+  var index = _voicePlaybackSegments.findIndex(function(segment){ return time < segment.end; });
+  if (index < 0) index = _voicePlaybackSegments.length - 1;
+  var current = _voicePlaybackSegments[index];
+  if (current) showVoiceCaption(current.source, index, _voicePlaybackSegments.length);
+}
+
+function voicePayload(text) {
+  return {
+    voice:document.getElementById('voiceCharacter').value,
+    language:document.getElementById('voiceLanguage').value,
+    text:text,
+    emotion:voiceEmotionCategory(),
+    speed:Number(document.getElementById('voiceSpeed').value) || 1
+  };
+}
+
+function requestVoiceBlob(text) {
+  return fetch('../api/tts', {
+    method:'POST', headers:{ 'Content-Type':'application/json' }, body:JSON.stringify(voicePayload(text)), signal:_voiceRequest.signal
+  }).then(function(response) {
+    if (response.ok) return response.blob();
+    return response.json().catch(function(){ return {}; }).then(function(data){ throw new Error(data.error || '语音生成失败'); });
+  });
+}
+
+function wavBlobFromBuffers(buffers) {
+  var sampleRate = buffers[0].sampleRate;
+  var channels = Math.max.apply(null, buffers.map(function(buffer){ return buffer.numberOfChannels; }));
+  var length = buffers.reduce(function(sum, buffer){ return sum + buffer.length; }, 0);
+  var output = new ArrayBuffer(44 + length * channels * 2);
+  var view = new DataView(output);
+  function write(offset, value) { for (var i = 0; i < value.length; i++) view.setUint8(offset + i, value.charCodeAt(i)); }
+  write(0, 'RIFF'); view.setUint32(4, 36 + length * channels * 2, true); write(8, 'WAVE'); write(12, 'fmt ');
+  view.setUint32(16, 16, true); view.setUint16(20, 1, true); view.setUint16(22, channels, true); view.setUint32(24, sampleRate, true);
+  view.setUint32(28, sampleRate * channels * 2, true); view.setUint16(32, channels * 2, true); view.setUint16(34, 16, true); write(36, 'data'); view.setUint32(40, length * channels * 2, true);
+  var position = 44;
+  buffers.forEach(function(buffer) {
+    for (var frame = 0; frame < buffer.length; frame++) {
+      for (var channel = 0; channel < channels; channel++) {
+        var source = buffer.getChannelData(Math.min(channel, buffer.numberOfChannels - 1));
+        var sample = Math.max(-1, Math.min(1, source[frame] || 0));
+        view.setInt16(position, sample < 0 ? sample * 0x8000 : sample * 0x7fff, true);
+        position += 2;
+      }
+    }
+  });
+  return new Blob([output], { type:'audio/wav' });
+}
+
+function generateSegmentedVoice(segments) {
+  var button = document.getElementById('voiceGenerateBtn');
+  var context = new (window.AudioContext || window.webkitAudioContext)();
+  var buffers = [];
+  var completed = 0;
+  return segments.reduce(function(chain, segment) {
+    return chain.then(function() {
+      document.getElementById('voiceStatus').textContent = '正在生成第 ' + (completed + 1) + ' / ' + segments.length + ' 句日语角色语音…';
+      return requestVoiceBlob(segment.translation).then(function(blob) { return blob.arrayBuffer(); }).then(function(data) { return context.decodeAudioData(data); }).then(function(buffer) {
+        buffers.push(buffer);
+        completed += 1;
+      });
+    });
+  }, Promise.resolve()).then(function() {
+    var cursor = 0;
+    _voicePlaybackSegments = segments.map(function(segment, index) {
+      var duration = buffers[index].duration;
+      var value = { source:segment.source, start:cursor, end:cursor + duration };
+      cursor += duration;
+      return value;
+    });
+    _voiceBlob = wavBlobFromBuffers(buffers);
+    return context.close().catch(function(){});
+  }).finally(function() {
+    if (context.state !== 'closed') context.close().catch(function(){});
+  });
+}
+
 function stopVoice() {
   if ('speechSynthesis' in window) window.speechSynthesis.cancel();
   if (_voiceRequest) { _voiceRequest.abort(); _voiceRequest = null; }
   var audio = document.getElementById('voiceAudio');
   if (audio) { audio.pause(); audio.currentTime = 0; }
+  clearVoiceCaption();
   var status = document.getElementById('voiceStatus');
   if (status) status.textContent = '已停止播放或生成。';
 }
@@ -2553,6 +2697,12 @@ function previewVoice() {
 
 function generateAIVoice() {
   var text = document.getElementById('voiceText').value.trim();
+  var language = document.getElementById('voiceLanguage').value;
+  var caption = document.getElementById('voiceCaptionText').value.trim();
+  if (!text && language === 'ja' && caption) {
+    translateVoiceCaption().then(function(translation) { if (translation) generateAIVoice(); });
+    return;
+  }
   if (!text) { flash('请先准备配音文本'); return; }
   stopVoice();
   _voiceRequest = new AbortController();
@@ -2560,26 +2710,19 @@ function generateAIVoice() {
   button.disabled = true;
   button.textContent = '生成中…';
   document.getElementById('voiceStatus').textContent = '正在生成角色声线，较长故事需要多等一会儿…';
-  fetch('../api/tts', {
-    method:'POST',
-    headers:{ 'Content-Type':'application/json' },
-    body:JSON.stringify({
-      voice:document.getElementById('voiceCharacter').value,
-      language:document.getElementById('voiceLanguage').value,
-      text:text,
-      emotion:voiceEmotionCategory(),
-      speed:Number(document.getElementById('voiceSpeed').value) || 1
-    }),
-    signal:_voiceRequest.signal
-  }).then(function(response) {
-    if (response.ok) return response.blob();
-    return response.json().catch(function(){ return {}; }).then(function(data){ throw new Error(data.error || '语音生成失败'); });
-  }).then(function(blob) {
+  var rawSegments = document.getElementById('voiceText').dataset.translationSegments;
+  var segments = [];
+  try { segments = JSON.parse(rawSegments || '[]'); } catch (error) {}
+  var shouldSyncCaptions = language === 'ja' && segments.length > 1 && segments.map(function(item){ return item.translation; }).join('\n').trim() === text;
+  var generation = shouldSyncCaptions ? generateSegmentedVoice(segments) : requestVoiceBlob(text).then(function(blob) { _voiceBlob = blob; _voicePlaybackSegments = []; });
+  generation.then(function() {
     if (_voiceAudioUrl) URL.revokeObjectURL(_voiceAudioUrl);
-    _voiceBlob = blob;
-    _voiceAudioUrl = URL.createObjectURL(blob);
+    _voiceAudioUrl = URL.createObjectURL(_voiceBlob);
     var audio = document.getElementById('voiceAudio');
     audio.src = _voiceAudioUrl;
+    audio.ontimeupdate = function(){ syncVoiceCaptionToAudio(audio); };
+    audio.onplay = function(){ syncVoiceCaptionToAudio(audio); };
+    audio.onended = function(){ clearVoiceCaption(); };
     audio.classList.add('show');
     document.getElementById('voiceDownload').classList.add('show');
     document.getElementById('voiceStatus').textContent = 'AI 声线已生成，可以播放或下载 WAV。';
@@ -2597,10 +2740,12 @@ function generateAIVoice() {
 }
 
 function voiceEmotionCategory() {
+  var override = document.getElementById('voiceEmotion');
+  if (override && override.value && override.value !== 'auto') return override.value;
   var selected = state.selections && state.selections.emotion && state.selections.emotion[0];
   var map = {
     happy:'happy', joyful:'happy', expect:'happy', relaxed:'gentle', gentle:'gentle', moved:'gentle',
-    shy:'shy', love:'shy', nervous:'shy', serious:'serious', spoiled:'serious',
+    shy:'shy', love:'shy', nervous:'shy', serious:'serious', spoiled:'shy',
     sad:'sad', miss:'sad', wronged:'sad', calm:'neutral', sleepy:'neutral'
   };
   if (selected && map[selected]) return map[selected];
