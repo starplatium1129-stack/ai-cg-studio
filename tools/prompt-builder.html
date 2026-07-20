@@ -48,11 +48,18 @@
   #stepResult { display:none; }
   body.step-4 #stepResult { display:flex; flex-direction:column; gap:var(--s-3); min-height:clamp(500px,68vh,860px); }
   #stepResult > .panel-title { order:0; margin-bottom:0; }
-  #stepResult > #sdResultArea { order:1; }
-  #stepResult > .preview-actions { order:2; }
-  #stepResult > .sd-inline-options { order:3; }
-  #stepResult > #finalPrompt { order:4; }
-  #stepResult > .voice-studio { order:5; width:100%; max-width:none; overflow:hidden; position:static; }
+  #stepResult > .preview-actions { order:1; }
+  #stepResult > .sd-inline-options { order:2; }
+  #stepResult > #sdResultArea { order:3; }
+  #stepResult > .voice-studio { order:4; width:100%; max-width:none; overflow:hidden; position:static; }
+  #stepResult > .prompt-details { order:5; }
+  .prompt-details { background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-md); }
+  .prompt-summary { padding:var(--s-3); cursor:pointer; font-size:.84rem; font-weight:650; color:var(--text-secondary); list-style:none; }
+  .prompt-summary::-webkit-details-marker { display:none; }
+  .prompt-summary::before { content:'▶'; display:inline-block; margin-right:var(--s-2); font-size:.7rem; transition:transform .2s; }
+  .prompt-details[open] .prompt-summary::before { transform:rotate(90deg); }
+  .prompt-summary-hint { font-size:.68rem; font-weight:400; color:var(--text-muted); }
+  .prompt-details[open] .prompt-summary-hint { display:none; }
   #stepResult.has-image { gap:var(--s-4); }
   .generate-btn { width:100%; padding:var(--s-3); font-size:1rem; }
   .generate-btn:disabled { opacity:0.5; cursor:not-allowed; }
@@ -599,7 +606,10 @@
 
       <div class="result-frame step-panel" id="stepResult">
         <div class="panel-title">📝 输出 Result</div>
-        <div class="preview-output" id="finalPrompt"></div>
+        <details class="prompt-details" id="promptDetails">
+          <summary class="prompt-summary">📝 Prompt 提示词 <span class="prompt-summary-hint">已折叠 · 点击展开</span></summary>
+          <div class="preview-output" id="finalPrompt"></div>
+        </details>
         <div class="sd-inline-options">
           <label style="display:flex;align-items:center;gap:4px;cursor:pointer;">
             <input type="checkbox" id="sdHiresFix"> hires.fix
@@ -632,9 +642,8 @@
             <button class="btn btn-ghost" onclick="downloadGeneratedImage()">⬇ 下载 PNG</button>
           </div>
         </div>
-      </div>
 
-      <section class="voice-studio" aria-labelledby="voiceStudioTitle">
+        <section class="voice-studio" aria-labelledby="voiceStudioTitle">
         <div class="voice-head">
           <div><div class="voice-title" id="voiceStudioTitle">🎙 让画面开口</div><div class="voice-sub">画面文字与声音彼此独立：看中文，默认听角色说日文。</div></div>
           <span class="voice-state" id="voiceState">检测中</span>
@@ -2968,7 +2977,7 @@ function toggleTrain() {
   if (b) b.classList.toggle('open');
 }
 function toggleMonitor() { const m=document.getElementById('promptMonitor'); const t=document.getElementById('monitorToggle'); m.classList.toggle('monitor-preview-collapsed'); const collapsed=m.classList.contains('monitor-preview-collapsed'); if(t) t.textContent = collapsed ? '展开 ▶' : '收起 ▼'; }
-function toggleResult() { const f=document.getElementById('finalPrompt'); if(!f) return; const collapsed=(f.style.display==='none'||!f.style.display); f.style.display=collapsed?'block':'none'; if(event.target && event.target.tagName==='BUTTON') event.target.textContent = collapsed?'收起 Prompt':'展开 Prompt'; }
+function toggleResult() { const d=document.getElementById('promptDetails'); if(!d) return; d.open=!d.open; if(event.target && event.target.tagName==='BUTTON') event.target.textContent = d.open?'收起 Prompt':'展开 Prompt'; }
 
 // ========== TOAST ==========
 function flash(msg) {
