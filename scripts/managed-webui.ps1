@@ -85,7 +85,7 @@ if (-not (Test-Path -LiteralPath $pythonPath -PathType Leaf) -or -not (Test-Path
 }
 
 $arguments = @(
-    '-u', $launchPath,
+    '-u', ('"{0}"' -f $launchPath),
     '--pin-shared-memory', '--cuda-malloc', '--cuda-stream', '--skip-install',
     '--api', '--port', '7860', '--gradio-allowed-path', $imagesPath
 )
