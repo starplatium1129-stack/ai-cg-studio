@@ -31,7 +31,7 @@
   .col-center > .stage-placeholder { order:1; }
   .col-center > .monitor { order:2; }
   .col-center > .generation-settings { order:3; }
-  .stage-placeholder { min-height:clamp(500px,68vh,860px); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; overflow:hidden; position:relative; border:1px solid var(--border-soft); border-radius:var(--r-xl); background:radial-gradient(circle at 50% 38%,rgba(240,98,146,.09),transparent 34%),linear-gradient(145deg,var(--bg-elevated),var(--bg-deep)); }
+  .stage-placeholder { min-height:clamp(180px,28vh,320px); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; overflow:hidden; position:relative; border:1px solid var(--border-soft); border-radius:var(--r-xl); background:radial-gradient(circle at 50% 38%,rgba(240,98,146,.09),transparent 34%),linear-gradient(145deg,var(--bg-elevated),var(--bg-deep)); }
   .stage-placeholder::before { content:''; position:absolute; inset:18px; border:1px dashed color-mix(in srgb,var(--border-soft) 78%,transparent); border-radius:var(--r-lg); pointer-events:none; }
   .stage-placeholder-icon { width:72px; height:72px; display:grid; place-items:center; margin-bottom:var(--s-4); border-radius:24px; background:var(--accent-soft); color:var(--accent); font-size:2rem; box-shadow:0 18px 60px var(--accent-glow); }
   .stage-placeholder-title { color:var(--text-primary); font-size:1.08rem; font-weight:750; }
@@ -48,9 +48,9 @@
   #stepResult { display:none; }
   body.step-4 #stepResult { display:flex; flex-direction:column; gap:var(--s-3); min-height:clamp(500px,68vh,860px); }
   #stepResult > .panel-title { order:0; margin-bottom:0; }
-  #stepResult > .preview-actions { order:1; }
-  #stepResult > .sd-inline-options { order:2; }
-  #stepResult > #sdResultArea { order:3; }
+  #stepResult > #sdResultArea { order:1; }
+  #stepResult > .preview-actions { order:2; }
+  #stepResult > .sd-inline-options { order:3; }
   #stepResult > .voice-studio { order:4; width:100%; max-width:none; overflow:hidden; position:static; }
   #stepResult > .prompt-details { order:5; }
   .prompt-details { background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-md); }
@@ -588,8 +588,8 @@
         </div>
       </div>
 
-      <div class="panel generation-settings">
-        <div class="panel-title">⚙️ 出图参数</div>
+      <details class="panel generation-settings">
+        <summary class="panel-title" style="cursor:pointer;list-style:none;padding:var(--s-3) var(--s-4)"><span style="font-size:.7rem;margin-right:var(--s-1)">▶</span> ⚙️ 出图参数 <span style="font-size:.68rem;font-weight:400;color:var(--text-muted)">CFG/Steps/模型等高级参数</span></summary>
         <div class="controls-grid">
           <div class="ctrl" style="grid-column:1/-1;margin-bottom:var(--s-2)"><label>快速预设</label><select id="presetSelect"><option value="">— 自定义 —</option></select><small id="modelProfileHint" style="display:block;margin-top:5px;color:var(--text-muted)">连接 SD 后会自动匹配当前模型的稳定参数</small></div>
           <div class="ctrl"><label>CFG</label><select id="cfg"><option>3</option><option>4</option><option>5</option><option selected>5.5</option><option>6</option><option>7</option><option>8</option><option>9</option></select></div>
@@ -601,7 +601,7 @@
           <div class="ctrl toggle-row"><label class="switch"><input type="checkbox" id="tail" checked><span class="slider"></span></label><label for="tail">镜头收束</label></div>
           <div class="ctrl toggle-row"><label class="switch"><input type="checkbox" id="negative" checked><span class="slider"></span></label><label for="negative">负面</label></div>
         </div>
-      </div>
+      </details>
 
       <div class="result-frame step-panel" id="stepResult">
         <div class="panel-title">📝 输出 Result</div>
@@ -698,6 +698,7 @@
         <audio class="voice-audio" id="voiceAudio" controls preload="none"></audio>
         <button class="btn btn-ghost voice-download" id="voiceDownload" type="button" onclick="downloadVoice()">⬇ 下载 WAV</button>
       </section>
+    </div>
     </div>
 
     <!-- ===== 右栏: 导演台 ===== -->
