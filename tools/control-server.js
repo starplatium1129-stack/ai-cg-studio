@@ -394,6 +394,7 @@ app.post('/api/start', function (req, res) {
   if (state.running) {
     return res.json({ ok: true, msg: 'Already running' });
   }
+  var enableTunnel = req.body && typeof req.body.enableTunnel === 'boolean' ? req.body.enableTunnel : true;
   var webuiResult = runManagedWebUI('Start');
   if (!webuiResult.ok) log('Managed WebUI start failed: ' + webuiResult.error);
   else log(webuiResult.message || 'Managed WebUI checked.');
@@ -403,7 +404,7 @@ app.post('/api/start', function (req, res) {
     state.token = crypto.randomBytes(8).toString('hex');
     state.domain = '';
     state.startTime = Date.now();
-    state.tunnelStatus = process.env.DISABLE_TUNNEL === '1' ? 'disabled' : (fs.existsSync(CLOUDFLARED_PATH) ? 'connecting' : 'unavailable');
+    state.tunnelStatus = enableTunnel ? (fs.existsSync(CLOUDFLARED_PATH) ? 'connecting' : 'unavailable') : 'disabled';
     log('Starting gateway on port ' + gatewayPort + '...');
     if (gatewayPort !== GW_PORT) log('Port ' + GW_PORT + ' is busy; using ' + gatewayPort + ' instead');
 
@@ -411,7 +412,7 @@ app.post('/api/start', function (req, res) {
     var gatewayLogFd = fs.openSync(RUNTIME.gatewayLog, 'a');
     var server = cp.spawn('node', ['server.js'], {
       cwd: dir,
-      env: Object.assign({}, process.env, { TOKEN: state.token, PORT: String(gatewayPort), SD_HOST: SD_HOST, TTS_HOST:TTS_HOST }),
+      env: Object.assign({}, process.env, { TOKEN: state.token, PORT: String(gatewayPort), SD_HOST: SD_HOST, TTS_HOST:TTS_HOST, DISABLE_TUNNEL: enableTunnel ? '' : '1' }),
       stdio: ['ignore', gatewayLogFd, gatewayLogFd],
       detached: true
     });

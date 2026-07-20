@@ -193,6 +193,26 @@
   .inline-actions { display:flex; gap:8px; }
   .inline-actions .btn { min-height:38px; font-size:.78rem; border-radius:9px; }
   .btn-muted { background:var(--surface-2); color:var(--text-2); border-color:var(--border); }
+  .tunnel-toggle-row {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:12px 14px; margin-bottom:14px;
+    background:var(--surface-3); border:1px solid var(--border-soft); border-radius:10px;
+  }
+  .tunnel-toggle-label { display:flex; align-items:center; gap:8px; }
+  .tunnel-toggle-icon { font-size:1.1rem; }
+  .tunnel-toggle-text { font-size:.84rem; font-weight:650; color:var(--text); }
+  .tunnel-toggle-hint { font-size:.7rem; color:var(--text-3); margin-left:4px; }
+  .tunnel-switch {
+    position:relative; width:44px; height:24px; border:1px solid var(--border); border-radius:12px;
+    background:var(--border-strong); cursor:pointer; padding:0;
+    transition:background .2s,border-color .2s;
+  }
+  .tunnel-switch[aria-checked="true"] { background:var(--green); border-color:var(--green); }
+  .tunnel-switch-knob {
+    position:absolute; top:2px; left:2px; width:18px; height:18px; border-radius:50%;
+    background:#fff; box-shadow:0 1px 3px rgba(0,0,0,.2); transition:left .2s;
+  }
+  .tunnel-switch[aria-checked="true"] .tunnel-switch-knob { left:22px; }
   .share-state {
     display:inline-flex; align-items:center; gap:6px; margin-top:4px;
     padding:4px 8px; border-radius:999px; font-size:.68rem; font-weight:650;
@@ -331,6 +351,16 @@
     </details>
     <div class="config-feedback" id="config-feedback" aria-live="polite">正在检查画面与语音服务连接…</div>
 
+    <div class="tunnel-toggle-row">
+      <label class="tunnel-toggle-label">
+        <span class="tunnel-toggle-icon">☁️</span>
+        <span class="tunnel-toggle-text">公网分享隧道</span>
+        <span class="tunnel-toggle-hint" id="tunnel-hint">关闭后仅本机可访问</span>
+      </label>
+      <button class="tunnel-switch" id="tunnel-switch" type="button" role="switch" aria-checked="true" onclick="toggleTunnel()">
+        <span class="tunnel-switch-knob"></span>
+      </button>
+    </div>
     <button id="btn" class="btn btn-start" type="button" onclick="doStart()">启动并生成分享链接</button>
     <p class="action-note" id="action-note">启动后，本机访问不需要 Token；公网分享会使用临时 Token。</p>
   </section>
@@ -389,6 +419,27 @@
 var logIndex = 0;
 var toastTimer = null;
 var lastStatus = null;
+var tunnelEnabled = true;
+try { tunnelEnabled = localStorage.getItem('aics_tunnel_off') !== '1'; } catch (e) {}
+
+function updateTunnelUI() {
+  var btn = document.getElementById('tunnel-switch');
+  var hint = document.getElementById('tunnel-hint');
+  var startBtn = document.getElementById('btn');
+  btn.setAttribute('aria-checked', String(tunnelEnabled));
+  hint.textContent = tunnelEnabled ? '朋友可通过临时链接访问' : '关闭后仅本机可访问';
+  if (!lastStatus || !lastStatus.running) {
+    startBtn.textContent = tunnelEnabled ? '启动并生成分享链接' : '启动（仅本地）';
+  }
+}
+
+function toggleTunnel() {
+  tunnelEnabled = !tunnelEnabled;
+  try { localStorage.setItem('aics_tunnel_off', tunnelEnabled ? '' : '1'); } catch (e) {}
+  updateTunnelUI();
+}
+
+updateTunnelUI();
 
 function applyTheme(theme) {
   var value = theme === 'dark' ? 'dark' : 'light';
@@ -492,7 +543,7 @@ function renderStatus(data) {
   } else {
     setBadge(badge, 'stopped', '未启动');
     button.className = 'btn btn-start';
-    button.textContent = '启动并生成分享链接';
+    button.textContent = tunnelEnabled ? '启动并生成分享链接' : '启动（仅本地）';
     button.onclick = doStart;
     runningPanel.classList.remove('show');
   }
@@ -668,7 +719,7 @@ function doStart() {
   button.disabled = true;
   button.textContent = '正在启动…';
   saveSDConfig(false).then(function() {
-    return fetch('/api/start', {method:'POST'});
+    return fetch('/api/start', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({enableTunnel: tunnelEnabled})});
   }).then(function(response) {
     return response.json();
   }).then(function(data) {

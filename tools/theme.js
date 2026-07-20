@@ -15,7 +15,7 @@
   'use strict';
 
   var STORAGE_KEY = 'aics_theme';
-  var DEFAULT_THEME = 'dark';
+  var DEFAULT_THEME = 'light';
 
   function getTheme() {
     try { return localStorage.getItem(STORAGE_KEY) || DEFAULT_THEME; } catch (e) { return DEFAULT_THEME; }
