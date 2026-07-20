@@ -592,12 +592,12 @@
         <div class="panel-title">⚙️ 出图参数</div>
         <div class="controls-grid">
           <div class="ctrl" style="grid-column:1/-1;margin-bottom:var(--s-2)"><label>快速预设</label><select id="presetSelect"><option value="">— 自定义 —</option></select><small id="modelProfileHint" style="display:block;margin-top:5px;color:var(--text-muted)">连接 SD 后会自动匹配当前模型的稳定参数</small></div>
+          <div class="ctrl"><label>尺寸</label><select id="size"><option value="832×1216">832×1216 · 竖图</option><option value="1024×1344">1024×1344 · 竖图 原生</option><option value="768×1344">768×1344 · 竖图 细长</option><option value="1024×1024">1024×1024 · 方图</option><option value="896×896">896×896 · 方图</option><option value="1216×832">1216×832 · 横图</option><option value="1344×1024">1344×1024 · 横图 原生</option><option value="1344×768">1344×768 · 横图 宽幅</option></select></div>
           <div class="ctrl"><label>CFG</label><select id="cfg"><option>3</option><option>4</option><option>5</option><option selected>5.5</option><option>6</option><option>7</option><option>8</option><option>9</option></select></div>
           <div class="ctrl"><label>Steps</label><select id="steps"><option>20</option><option selected>28</option><option>30</option><option>35</option><option>40</option><option>50</option></select></div>
           <div class="ctrl" style="grid-column:1/-1"><label>SD 模型</label><select id="sdModel" title="留空时使用 WebUI 当前模型"><option value="">使用 WebUI 当前模型</option></select></div>
           <div class="ctrl"><label>Sampler</label><select id="sampler"><option>DPM++ 2M</option><option>DPM++ 2M SDE</option><option>Euler a</option><option>Euler</option></select></div>
           <div class="ctrl"><label>Scheduler</label><select id="scheduler"><option value="">自动</option><option selected>Karras</option><option>Exponential</option><option>SGM Uniform</option><option>Simple</option></select></div>
-          <div class="ctrl"><label>尺寸</label><select id="size"><option value="832×1216">832×1216 · 竖图</option><option value="1024×1344">1024×1344 · 竖图 原生</option><option value="768×1344">768×1344 · 竖图 细长</option><option value="1024×1024">1024×1024 · 方图</option><option value="896×896">896×896 · 方图</option><option value="1216×832">1216×832 · 横图</option><option value="1344×1024">1344×1024 · 横图 原生</option><option value="1344×768">1344×768 · 横图 宽幅</option></select></div>
           <div class="ctrl toggle-row"><label class="switch"><input type="checkbox" id="quality" checked><span class="slider"></span></label><label for="quality">质量前缀</label></div>
           <div class="ctrl toggle-row"><label class="switch"><input type="checkbox" id="tail" checked><span class="slider"></span></label><label for="tail">镜头收束</label></div>
           <div class="ctrl toggle-row"><label class="switch"><input type="checkbox" id="negative" checked><span class="slider"></span></label><label for="negative">负面</label></div>
@@ -622,6 +622,9 @@
           </label>
           <label style="display:flex;align-items:center;gap:4px;cursor:pointer;">
             <input type="checkbox" id="sdSeedLock"> 固定种子
+          </label>
+          <label class="seed-input-wrap" style="display:flex;align-items:center;gap:4px;">种子
+            <input type="text" id="sdSeedInput" placeholder="留空=随机" style="width:110px;font-family:monospace;font-size:.78rem;padding:2px 6px;border:1px solid var(--border-soft);border-radius:var(--r-sm);background:var(--bg-deep);color:var(--text-primary);">
           </label>
           <span id="sdSeedDisplay" style="font-family:monospace;opacity:0.6;"></span>
         </div>
@@ -1129,7 +1132,7 @@ function restoreFromEntry(h, isVariant){
   if (h.hires_upscaler!=null) ensureSelectValue('sdHiresUpscaler', h.hires_upscaler);
   if (h.hires_fix!=null){ var _hr=document.getElementById('sdHiresFix'); if(_hr) _hr.checked=!!h.hires_fix; }
   if (h.size!=null){ var _sz=document.getElementById('size'); if(_sz) _sz.value=h.size; }
-  if (h.seed!=null && isFinite(Number(h.seed))){ window.__lastSeed__=Number(h.seed); }
+  if (h.seed!=null && isFinite(Number(h.seed))){ window.__lastSeed__=Number(h.seed); var _si=document.getElementById('sdSeedInput'); if(_si) _si.value=String(h.seed); }
   var _neg=document.getElementById('negative'); if(_neg){ _neg.checked = h.negative ? true : false; }
   saveSDSettings();
   renderManualTags(); renderTraits(); renderSelRow();
@@ -2087,6 +2090,7 @@ function saveSDSettings(){
     hiresScale: document.getElementById('sdHiresScale') ? document.getElementById('sdHiresScale').value : '1.5',
     hiresFix: !!(document.getElementById('sdHiresFix') && document.getElementById('sdHiresFix').checked),
     seedLock: !!(document.getElementById('sdSeedLock') && document.getElementById('sdSeedLock').checked),
+    seedInput: document.getElementById('sdSeedInput') ? document.getElementById('sdSeedInput').value : '',
     cfg: document.getElementById('cfg') ? document.getElementById('cfg').value : '',
     steps: document.getElementById('steps') ? document.getElementById('steps').value : '',
     size: document.getElementById('size') ? document.getElementById('size').value : '',
@@ -2113,11 +2117,13 @@ function initSDSettings(){
   var seed = document.getElementById('sdSeedLock');
   if (hires && settings.hiresFix != null) hires.checked = !!settings.hiresFix;
   if (seed && settings.seedLock != null) seed.checked = !!settings.seedLock;
+  var seedInput = document.getElementById('sdSeedInput');
+  if (seedInput && settings.seedInput != null) seedInput.value = settings.seedInput;
   ['quality','tail','negative'].forEach(function(id){
     var input = document.getElementById(id);
     if (input && settings[id] != null) input.checked = !!settings[id];
   });
-  ['sdModel','sampler','scheduler','sdHiresUpscaler','sdHiresScale','sdHiresFix','sdSeedLock','cfg','steps','size','quality','tail','negative'].forEach(function(id){
+  ['sdModel','sampler','scheduler','sdHiresUpscaler','sdHiresScale','sdHiresFix','sdSeedLock','sdSeedInput','cfg','steps','size','quality','tail','negative'].forEach(function(id){
     var element = document.getElementById(id);
     if (element) element.addEventListener('change', saveSDSettings);
   });
@@ -2308,7 +2314,9 @@ function callSDGenerate(){
   }
   var size = (document.getElementById('size').value || '832x1216').replace('×','x').split('x');
   var seed = -1;
-  if (document.getElementById('sdSeedLock').checked && window.__lastSeed__ != null) seed = window.__lastSeed__;
+  var manualSeed = document.getElementById('sdSeedInput') ? document.getElementById('sdSeedInput').value.trim() : '';
+  if (manualSeed !== '' && isFinite(Number(manualSeed))) seed = Number(manualSeed);
+  else if (document.getElementById('sdSeedLock').checked && window.__lastSeed__ != null) seed = window.__lastSeed__;
   var currentScene = SCENES.find(function(scene){ return scene.id === state.__sceneId; });
   var lora = resolveLoraSpecs(state.char, currentScene).map(loraSpecText).join(', ');
   prompt = prompt.replace(/<lora:[^>]+>/g, '').replace(/,\s*,/g, ',').replace(/^,\s*/, '').replace(/,\s*$/, '').trim();
@@ -2353,6 +2361,8 @@ function callSDGenerate(){
     if (result.seed != null) {
       window.__lastSeed__ = result.seed;
       document.getElementById('sdSeedDisplay').textContent = 'seed: ' + result.seed;
+      var _si = document.getElementById('sdSeedInput');
+      if (_si && !_si.value.trim()) _si.placeholder = String(result.seed);
     }
     setSDProgress(100);
     var elapsed = Math.max(1, Math.round((Date.now() - generation.startedAt) / 1000));
