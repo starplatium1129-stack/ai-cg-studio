@@ -234,8 +234,8 @@
   .voice-field select { width:100%; min-width:0; padding:7px 8px; border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-surface); color:var(--text-primary); outline:none; }
   .voice-field select:focus, .voice-text:focus { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-glow); }
   .voice-text { width:100%; min-height:130px; resize:vertical; box-sizing:border-box; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); color:var(--text-primary); font: .86rem/1.7 var(--font-sans); outline:none; }
-  .voice-live-caption { display:none; margin-top:var(--s-2); padding:var(--s-3); border:1px solid color-mix(in srgb,var(--accent) 42%,var(--border-soft)); border-radius:var(--r-md); background:color-mix(in srgb,var(--accent) 9%,var(--bg-surface)); color:var(--text-primary); font-size:.88rem; line-height:1.75; box-shadow:inset 3px 0 0 var(--accent); }
-  .voice-live-caption.show { display:block; }
+  .voice-live-caption { display:block; margin-top:var(--s-2); padding:var(--s-3); border:1px dashed var(--border-soft); border-radius:var(--r-md); background:var(--bg-deep); color:var(--text-muted); font-size:.78rem; line-height:1.65; }
+  .voice-live-caption.show { border-style:solid; border-color:color-mix(in srgb,var(--accent) 42%,var(--border-soft)); background:color-mix(in srgb,var(--accent) 9%,var(--bg-surface)); color:var(--text-primary); font-size:.88rem; line-height:1.75; box-shadow:inset 3px 0 0 var(--accent); }
   .voice-live-caption small { display:block; margin-bottom:3px; color:var(--text-muted); font-size:.67rem; letter-spacing:.04em; }
   .voice-copy { padding:var(--s-3); border:1px solid color-mix(in srgb,var(--accent) 24%,var(--border-soft)); border-radius:var(--r-md); background:color-mix(in srgb,var(--accent) 5%,var(--bg-surface)); }
   .voice-copy-head { display:flex; align-items:center; justify-content:space-between; gap:var(--s-2); margin-bottom:var(--s-2); }
@@ -626,7 +626,7 @@
             <div class="voice-copy-head"><span class="voice-copy-title">中文字幕 / 阅读文本</span><span class="voice-copy-note">不影响声音</span></div>
             <label class="sr-only" for="voiceCaptionText">中文字幕</label>
             <textarea class="voice-text voice-caption-text" id="voiceCaptionText" maxlength="2000" placeholder="选择场景后会显示对应的中文内容。"></textarea>
-            <div class="voice-live-caption" id="voiceLiveCaption" aria-live="polite"></div>
+            <div class="voice-live-caption" id="voiceLiveCaption" aria-live="polite"><small>同步字幕</small>翻成日语后的多句台词，会在播放时于这里逐句显示对应中文。</div>
           </div>
           <details class="voice-script-details">
             <summary><span id="voiceScriptLabel">日文配音稿 · 只影响声音</span></summary>
@@ -2574,7 +2574,7 @@ function translateVoiceCaption() {
 function showVoiceCaption(text, index, total) {
   var box = document.getElementById('voiceLiveCaption');
   if (!box) return;
-  if (!text) { box.classList.remove('show'); box.textContent = ''; return; }
+  if (!text) { box.classList.remove('show'); box.innerHTML = '<small>同步字幕</small>翻成日语后的多句台词，会在播放时于这里逐句显示对应中文。'; return; }
   box.innerHTML = '<small>正在朗读 · 第 ' + (index + 1) + ' / ' + total + ' 句</small>' + escapeHtml(text).replace(/\n/g, '<br>');
   box.classList.add('show');
 }
