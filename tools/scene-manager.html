@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>场景管理器 · AI CG Studio</title>
+<link rel="stylesheet" href="../css/design-system.css?v=6">
+<script src="nav.js?v=4"></script>
+<script src="theme.js?v=4"></script>
+<style>
+  .page { max-width: 1400px; margin: 0 auto; padding: var(--s-5) var(--s-4); }
+  h1.title { font-size: 1.8rem; font-weight: 800; margin-bottom: var(--s-2); }
+  .subtitle { color: var(--text-secondary); margin-bottom: var(--s-4); }
+
+  /* Toolbar */
+  .toolbar { display: flex; gap: var(--s-3); flex-wrap: wrap; align-items: center; margin-bottom: var(--s-4); }
+  .search-input { flex: 1; min-width: 200px; padding: 8px 12px; background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-md); color: var(--text-primary); font-size: .9rem; }
+  .search-input:focus { border-color: var(--accent); outline: none; }
+  .filter-select { padding: 8px 12px; background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-md); color: var(--text-primary); font-size: .85rem; }
+  .btn { padding: 8px 16px; border: none; border-radius: var(--r-md); cursor: pointer; font-size: .85rem; font-weight: 600; transition: all var(--t-fast); }
+  .btn-primary { background: var(--accent); color: white; }
+  .btn-primary:hover { opacity: .9; }
+  .btn-danger { background: #e53935; color: white; }
+  .btn-danger:hover { opacity: .9; }
+  .btn-ghost { background: transparent; color: var(--text-secondary); border: 1px solid var(--border-soft); }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-sm { padding: 4px 10px; font-size: .78rem; }
+
+  /* Stats */
+  .stats { display: flex; gap: var(--s-4); margin-bottom: var(--s-4); flex-wrap: wrap; }
+  .stat-card { background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: var(--s-3) var(--s-4); min-width: 120px; }
+  .stat-value { font-size: 1.4rem; font-weight: 800; color: var(--accent); }
+  .stat-label { font-size: .75rem; color: var(--text-muted); }
+
+  /* Table */
+  .table-wrap { overflow-x: auto; background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-lg); }
+  table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+  th { background: var(--bg-deep); padding: 10px 12px; text-align: left; font-weight: 700; color: var(--text-secondary); font-size: .78rem; text-transform: uppercase; letter-spacing: .05em; position: sticky; top: 0; z-index: 1; }
+  td { padding: 8px 12px; border-top: 1px solid var(--border-soft); vertical-align: top; }
+  tr:hover td { background: var(--bg-elevated); }
+  .tag-chip { display: inline-block; padding: 2px 8px; background: var(--accent-soft); color: var(--accent); border-radius: 10px; font-size: .72rem; margin: 1px 2px; }
+  .rating-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: .72rem; font-weight: 700; }
+  .rating-All { background: #E8F5E9; color: #2E7D32; }
+  .rating-R15 { background: #FFF3E0; color: #E65100; }
+  .rating-R18 { background: #FFEBEE; color: #C62828; }
+  .story-preview { max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-secondary); font-size: .8rem; }
+  .action-btns { display: flex; gap: 4px; }
+
+  /* Modal */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 1000; align-items: center; justify-content: center; }
+  .modal-overlay.show { display: flex; }
+  .modal { background: var(--bg-surface); border-radius: var(--r-xl); padding: var(--s-5); max-width: 800px; width: 90%; max-height: 85vh; overflow-y: auto; }
+  .modal h2 { font-size: 1.3rem; margin-bottom: var(--s-4); }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-3); }
+  .form-group { display: flex; flex-direction: column; gap: 4px; }
+  .form-group.full { grid-column: 1 / -1; }
+  .form-label { font-size: .78rem; font-weight: 700; color: var(--text-secondary); }
+  .form-input { padding: 8px 10px; background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-sm); color: var(--text-primary); font-size: .85rem; }
+  .form-input:focus { border-color: var(--accent); outline: none; }
+  textarea.form-input { min-height: 80px; resize: vertical; font-family: inherit; }
+  .form-actions { display: flex; gap: var(--s-3); justify-content: flex-end; margin-top: var(--s-4); }
+
+  /* Duplicate detection */
+  .dup-group { background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: var(--s-3); margin-bottom: var(--s-3); }
+  .dup-group h4 { margin-bottom: var(--s-2); font-size: .9rem; }
+  .dup-item { padding: 6px 0; border-bottom: 1px solid var(--border-soft); display: flex; justify-content: space-between; align-items: center; }
+  .dup-item:last-child { border-bottom: none; }
+
+  /* Pagination */
+  .pagination { display: flex; gap: var(--s-2); justify-content: center; margin-top: var(--s-4); align-items: center; }
+  .page-btn { padding: 6px 12px; border: 1px solid var(--border-soft); background: var(--bg-surface); border-radius: var(--r-sm); cursor: pointer; font-size: .85rem; }
+  .page-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+  .page-btn:hover:not(.active) { border-color: var(--accent); }
+
+  .tab-bar { display: flex; gap: var(--s-2); margin-bottom: var(--s-4); }
+  .tab { padding: 8px 16px; border: 1px solid var(--border-soft); background: transparent; border-radius: var(--r-md); cursor: pointer; font-size: .85rem; color: var(--text-secondary); }
+  .tab.active { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+</style>
+</head>
+<body>
+<div id="nav-container"></div>
+
+<article class="page">
+  <h1 class="title">🎬 场景管理器</h1>
+  <p class="subtitle">管理场景库的增删改查、去重检测、Tag 管理。修改后导出 JSON 覆盖 data/scenes.json。</p>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="tab-bar">
+    <button class="tab active" onclick="switchTab('scenes')">📋 场景列表</button>
+    <button class="tab" onclick="switchTab('duplicates')">🔍 去重检测</button>
+    <button class="tab" onclick="switchTab('tags')">🏷 Tag 管理</button>
+  </div>
+
+  <!-- Scenes Tab -->
+  <div id="tab-scenes">
+    <div class="toolbar">
+      <input type="text" class="search-input" id="searchInput" placeholder="搜索标题、故事、tag…" oninput="renderScenes()">
+      <select class="filter-select" id="filterCategory" onchange="renderScenes()">
+        <option value="">全部分类</option>
+      </select>
+      <select class="filter-select" id="filterChar" onchange="renderScenes()">
+        <option value="">全部角色</option>
+        <option value="nene">宁宁</option>
+        <option value="natsume">夏目</option>
+      </select>
+      <select class="filter-select" id="filterRating" onchange="renderScenes()">
+        <option value="">全部评级</option>
+        <option value="All">All</option>
+        <option value="R15">R15</option>
+        <option value="R18">R18</option>
+      </select>
+      <select class="filter-select" id="sortBy" onchange="renderScenes()">
+        <option value="id">按 ID</option>
+        <option value="title">按标题</option>
+        <option value="category">按分类</option>
+        <option value="char">按角色</option>
+      </select>
+      <button class="btn btn-primary" onclick="openAddModal()">+ 新增场景</button>
+      <button class="btn btn-ghost" onclick="exportJSON()">📥 导出 JSON</button>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:60px">ID</th>
+            <th style="width:180px">标题</th>
+            <th style="width:80px">分类</th>
+            <th style="width:50px">角色</th>
+            <th style="width:50px">评级</th>
+            <th>故事</th>
+            <th style="width:120px">操作</th>
+          </tr>
+        </thead>
+        <tbody id="sceneTable"></tbody>
+      </table>
+    </div>
+
+    <div class="pagination" id="pagination"></div>
+  </div>
+
+  <!-- Duplicates Tab -->
+  <div id="tab-duplicates" style="display:none">
+    <div class="toolbar">
+      <button class="btn btn-primary" onclick="detectDuplicates()">🔍 扫描重复</button>
+      <span id="dupResult" style="color:var(--text-muted);font-size:.85rem"></span>
+    </div>
+    <div id="dupList"></div>
+  </div>
+
+  <!-- Tags Tab -->
+  <div id="tab-tags" style="display:none">
+    <div class="toolbar">
+      <input type="text" class="search-input" id="tagSearch" placeholder="搜索 tag…" oninput="renderTags()">
+      <button class="btn btn-primary" onclick="openAddTagModal()">+ 新增 Tag</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:60px">ID</th>
+            <th style="width:80px">分类</th>
+            <th style="width:120px">英文</th>
+            <th style="width:100px">中文</th>
+            <th style="width:60px">权重</th>
+            <th style="width:80px">使用次数</th>
+          </tr>
+        </thead>
+        <tbody id="tagTable"></tbody>
+      </table>
+    </div>
+  </div>
+</article>
+
+<!-- Edit Modal -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <h2 id="modalTitle">编辑场景</h2>
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label">ID</label>
+        <input type="text" class="form-input" id="formId" readonly>
+      </div>
+      <div class="form-group">
+        <label class="form-label">标题</label>
+        <input type="text" class="form-input" id="formTitle">
+      </div>
+      <div class="form-group">
+        <label class="form-label">分类</label>
+        <input type="text" class="form-input" id="formCategory">
+      </div>
+      <div class="form-group">
+        <label class="form-label">角色</label>
+        <select class="form-input" id="formChar">
+          <option value="nene">nene</option>
+          <option value="natsume">natsume</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">LoRA</label>
+        <input type="text" class="form-input" id="formLora">
+      </div>
+      <div class="form-group">
+        <label class="form-label">情感</label>
+        <input type="text" class="form-input" id="formEmotion">
+      </div>
+      <div class="form-group">
+        <label class="form-label">季节</label>
+        <select class="form-input" id="formSeason">
+          <option>春</option><option>夏</option><option>秋</option><option>冬</option><option>不限</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">时间</label>
+        <input type="text" class="form-input" id="formTime">
+      </div>
+      <div class="form-group">
+        <label class="form-label">timeOfDay</label>
+        <select class="form-input" id="formTimeOfDay">
+          <option>morning</option><option>afternoon</option><option>sunset</option><option>evening</option><option>night</option><option>late_night</option><option>dawn</option><option>daytime</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">评级</label>
+        <select class="form-input" id="formRating">
+          <option>All</option><option>R15</option><option>R18</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Mature</label>
+        <select class="form-input" id="formMature">
+          <option value="false">false</option><option value="true">true</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">地点</label>
+        <input type="text" class="form-input" id="formLocation">
+      </div>
+      <div class="form-group">
+        <label class="form-label">天气</label>
+        <input type="text" class="form-input" id="formWeather">
+      </div>
+      <div class="form-group">
+        <label class="form-label">镜头</label>
+        <input type="text" class="form-input" id="formCamera">
+      </div>
+      <div class="form-group full">
+        <label class="form-label">灯光</label>
+        <input type="text" class="form-input" id="formLighting">
+      </div>
+      <div class="form-group full">
+        <label class="form-label">Tags（逗号分隔）</label>
+        <input type="text" class="form-input" id="formTags">
+      </div>
+      <div class="form-group full">
+        <label class="form-label">Usage（逗号分隔）</label>
+        <input type="text" class="form-input" id="formUsage">
+      </div>
+      <div class="form-group full">
+        <label class="form-label">故事</label>
+        <textarea class="form-input" id="formStory"></textarea>
+      </div>
+      <div class="form-group full">
+        <label class="form-label">日文故事</label>
+        <textarea class="form-input" id="formStoryJa"></textarea>
+      </div>
+      <div class="form-group full">
+        <label class="form-label">Prompt</label>
+        <textarea class="form-input" id="formPrompt" style="min-height:60px"></textarea>
+      </div>
+      <div class="form-group full">
+        <label class="form-label">Negative</label>
+        <textarea class="form-input" id="formNegative" style="min-height:60px"></textarea>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">取消</button>
+      <button class="btn btn-primary" onclick="saveScene()">保存</button>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <p>AI CG Studio · Scene Manager</p>
+</footer>
+
+<script>
+let SCENES = [];
+let TAGS = [];
+let currentPage = 1;
+const PAGE_SIZE = 30;
+let editingId = null;
+let sceneUsageCount = {};
+
+async function init() {
+  const [scenesRes, tagsRes] = await Promise.all([
+    fetch('../data/scenes.json?v=' + Date.now()),
+    fetch('../data/tags.json?v=' + Date.now())
+  ]);
+  SCENES = await scenesRes.json();
+  TAGS = await tagsRes.json();
+
+  // Count tag usage
+  SCENES.forEach(s => {
+    (s.tags || []).forEach(t => {
+      sceneUsageCount[t] = (sceneUsageCount[t] || 0) + 1;
+    });
+  });
+
+  // Populate category filter
+  const cats = [...new Set(SCENES.map(s => s.category))].sort();
+  const sel = document.getElementById('filterCategory');
+  cats.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c; opt.textContent = c;
+    sel.appendChild(opt);
+  });
+
+  renderStats();
+  renderScenes();
+}
+
+function renderStats() {
+  const total = SCENES.length;
+  const nene = SCENES.filter(s => s.char === 'nene').length;
+  const natsume = SCENES.filter(s => s.char === 'natsume').length;
+  const mature = SCENES.filter(s => s.mature).length;
+  const allR = SCENES.filter(s => s.rating === 'All').length;
+  const r15 = SCENES.filter(s => s.rating === 'R15').length;
+  const r18 = SCENES.filter(s => s.rating === 'R18').length;
+
+  document.getElementById('stats').innerHTML = `
+    <div class="stat-card"><div class="stat-value">${total}</div><div class="stat-label">总场景</div></div>
+    <div class="stat-card"><div class="stat-value">${nene}</div><div class="stat-label">宁宁</div></div>
+    <div class="stat-card"><div class="stat-value">${natsume}</div><div class="stat-label">夏目</div></div>
+    <div class="stat-card"><div class="stat-value">${allR}</div><div class="stat-label">All</div></div>
+    <div class="stat-card"><div class="stat-value">${r15}</div><div class="stat-label">R15</div></div>
+    <div class="stat-card"><div class="stat-value">${r18}</div><div class="stat-label">R18</div></div>
+    <div class="stat-card"><div class="stat-value">${TAGS.length}</div><div class="stat-label">Tags</div></div>
+  `;
+}
+
+function renderScenes() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  const cat = document.getElementById('filterCategory').value;
+  const char = document.getElementById('filterChar').value;
+  const rating = document.getElementById('filterRating').value;
+  const sortBy = document.getElementById('sortBy').value;
+
+  let filtered = SCENES.filter(s => {
+    if (cat && s.category !== cat) return false;
+    if (char && s.char !== char) return false;
+    if (rating && s.rating !== rating) return false;
+    if (search) {
+      const haystack = [s.title, s.story, s.category, s.char, ...(s.tags || [])].join(' ').toLowerCase();
+      if (!haystack.includes(search)) return false;
+    }
+    return true;
+  });
+
+  filtered.sort((a, b) => {
+    if (sortBy === 'id') return a.id.localeCompare(b.id);
+    if (sortBy === 'title') return a.title.localeCompare(b.title);
+    if (sortBy === 'category') return a.category.localeCompare(b.category);
+    if (sortBy === 'char') return a.char.localeCompare(b.char);
+    return 0;
+  });
+
+  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+  if (currentPage > totalPages) currentPage = totalPages || 1;
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const page = filtered.slice(start, start + PAGE_SIZE);
+
+  const tbody = document.getElementById('sceneTable');
+  tbody.innerHTML = page.map(s => `
+    <tr>
+      <td><strong>${s.id}</strong></td>
+      <td>${esc(s.title)}</td>
+      <td>${esc(s.category)}</td>
+      <td>${s.char === 'nene' ? '🌸' : '🍂'}</td>
+      <td><span class="rating-badge rating-${s.rating}">${s.rating}</span></td>
+      <td><div class="story-preview">${esc(s.story)}</div></td>
+      <td>
+        <div class="action-btns">
+          <button class="btn btn-ghost btn-sm" onclick="openEditModal('${s.id}')">编辑</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteScene('${s.id}')">删除</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+
+  // Pagination
+  const pag = document.getElementById('pagination');
+  if (totalPages <= 1) { pag.innerHTML = ''; return; }
+  let html = `<span style="color:var(--text-muted);font-size:.8rem">${filtered.length} 条 · 第 ${currentPage}/${totalPages} 页</span>`;
+  for (let i = 1; i <= totalPages; i++) {
+    if (totalPages > 10 && Math.abs(i - currentPage) > 2 && i !== 1 && i !== totalPages) {
+      if (i === currentPage - 3 || i === currentPage + 3) html += '<span style="color:var(--text-muted)">…</span>';
+      continue;
+    }
+    html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goPage(${i})">${i}</button>`;
+  }
+  pag.innerHTML = html;
+}
+
+function goPage(p) { currentPage = p; renderScenes(); }
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('tab-scenes').style.display = tab === 'scenes' ? '' : 'none';
+  document.getElementById('tab-duplicates').style.display = tab === 'duplicates' ? '' : 'none';
+  document.getElementById('tab-tags').style.display = tab === 'tags' ? '' : 'none';
+}
+
+// Edit/Add
+function openEditModal(id) {
+  editingId = id;
+  const s = SCENES.find(x => x.id === id);
+  if (!s) return;
+  document.getElementById('modalTitle').textContent = '编辑 ' + id;
+  document.getElementById('formId').value = s.id;
+  document.getElementById('formTitle').value = s.title || '';
+  document.getElementById('formCategory').value = s.category || '';
+  document.getElementById('formChar').value = s.char || 'nene';
+  document.getElementById('formLora').value = s.lora || '';
+  document.getElementById('formEmotion').value = s.emotion || '';
+  document.getElementById('formSeason').value = s.season || '不限';
+  document.getElementById('formTime').value = s.time || '';
+  document.getElementById('formTimeOfDay').value = s.timeOfDay || 'daytime';
+  document.getElementById('formRating').value = s.rating || 'All';
+  document.getElementById('formMature').value = String(s.mature || false);
+  document.getElementById('formLocation').value = s.location || '';
+  document.getElementById('formWeather').value = s.weather || '';
+  document.getElementById('formCamera').value = s.camera || '';
+  document.getElementById('formLighting').value = s.lighting || '';
+  document.getElementById('formTags').value = (s.tags || []).join(', ');
+  document.getElementById('formUsage').value = (s.usage || []).join(', ');
+  document.getElementById('formStory').value = s.story || '';
+  document.getElementById('formStoryJa').value = s.storyJa || '';
+  document.getElementById('formPrompt').value = s.prompt || '';
+  document.getElementById('formNegative').value = s.negative || '';
+  document.getElementById('editModal').classList.add('show');
+}
+
+function openAddModal() {
+  editingId = null;
+  const maxId = SCENES.reduce((m, s) => Math.max(m, parseInt(s.id.replace('sc', ''))), 0);
+  document.getElementById('modalTitle').textContent = '新增场景';
+  document.getElementById('formId').value = 'sc' + String(maxId + 1).padStart(3, '0');
+  document.getElementById('formTitle').value = '';
+  document.getElementById('formCategory').value = '恋爱';
+  document.getElementById('formChar').value = 'nene';
+  document.getElementById('formLora').value = 'ayachi_nene_v11';
+  document.getElementById('formEmotion').value = '恋爱';
+  document.getElementById('formSeason').value = '不限';
+  document.getElementById('formTime').value = '深夜';
+  document.getElementById('formTimeOfDay').value = 'late_night';
+  document.getElementById('formRating').value = 'All';
+  document.getElementById('formMature').value = 'false';
+  document.getElementById('formLocation').value = '';
+  document.getElementById('formWeather').value = '';
+  document.getElementById('formCamera').value = '';
+  document.getElementById('formLighting').value = '';
+  document.getElementById('formTags').value = '';
+  document.getElementById('formUsage').value = '';
+  document.getElementById('formStory').value = '';
+  document.getElementById('formStoryJa').value = '';
+  document.getElementById('formPrompt').value = '';
+  document.getElementById('formNegative').value = '';
+  document.getElementById('editModal').classList.add('show');
+}
+
+function closeModal() {
+  document.getElementById('editModal').classList.remove('show');
+}
+
+function saveScene() {
+  const scene = {
+    id: document.getElementById('formId').value,
+    title: document.getElementById('formTitle').value,
+    category: document.getElementById('formCategory').value,
+    char: document.getElementById('formChar').value,
+    character: [document.getElementById('formChar').value],
+    lora: document.getElementById('formLora').value,
+    emotion: document.getElementById('formEmotion').value,
+    season: document.getElementById('formSeason').value,
+    time: document.getElementById('formTime').value,
+    timeOfDay: document.getElementById('formTimeOfDay').value,
+    rating: document.getElementById('formRating').value,
+    mature: document.getElementById('formMature').value === 'true',
+    location: document.getElementById('formLocation').value,
+    weather: document.getElementById('formWeather').value,
+    camera: document.getElementById('formCamera').value,
+    lighting: document.getElementById('formLighting').value,
+    tags: document.getElementById('formTags').value.split(',').map(t => t.trim()).filter(Boolean),
+    usage: document.getElementById('formUsage').value.split(',').map(t => t.trim()).filter(Boolean),
+    story: document.getElementById('formStory').value,
+    storyJa: document.getElementById('formStoryJa').value,
+    prompt: document.getElementById('formPrompt').value,
+    negative: document.getElementById('formNegative').value
+  };
+
+  if (editingId) {
+    const idx = SCENES.findIndex(s => s.id === editingId);
+    if (idx >= 0) SCENES[idx] = scene;
+  } else {
+    SCENES.push(scene);
+  }
+
+  closeModal();
+  renderScenes();
+  renderStats();
+}
+
+function deleteScene(id) {
+  if (!confirm('确认删除 ' + id + '？')) return;
+  SCENES = SCENES.filter(s => s.id !== id);
+  renderScenes();
+  renderStats();
+}
+
+// Duplicates
+function detectDuplicates() {
+  const groups = {};
+  const keywords = ['吊带','丝绸','围裙','泳衣','温泉','旗袍','毛衣','衬衫','图书馆','天台','烟花','神社','巫女','咖啡','卧室','寝室','影音室','休息室','后厨','厨房','吧台','晚礼服','魔女','洛丽塔','浴衣','和服','赛车','冰箱','冷藏','露台','阳台','温泉','泳池','书房','试衣'];
+
+  keywords.forEach(kw => {
+    const matches = SCENES.filter(s => s.title.includes(kw) || s.story.includes(kw));
+    if (matches.length >= 3) {
+      groups[kw] = matches;
+    }
+  });
+
+  const dupList = document.getElementById('dupList');
+  let html = '';
+  let totalDups = 0;
+  for (const [kw, scenes] of Object.entries(groups)) {
+    html += `<div class="dup-group"><h4>「${kw}」— ${scenes.length} 个场景</h4>`;
+    scenes.forEach(s => {
+      html += `<div class="dup-item">
+        <span><strong>${s.id}</strong> ${esc(s.title)} <span class="rating-badge rating-${s.rating}">${s.rating}</span></span>
+        <div class="action-btns">
+          <button class="btn btn-ghost btn-sm" onclick="openEditModal('${s.id}')">编辑</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteScene('${s.id}');detectDuplicates()">删除</button>
+        </div>
+      </div>`;
+      totalDups++;
+    });
+    html += '</div>';
+  }
+
+  document.getElementById('dupResult').textContent = `发现 ${Object.keys(groups).length} 组，共 ${totalDups} 个疑似重复`;
+  dupList.innerHTML = html || '<p style="color:var(--text-muted)">未发现重复</p>';
+}
+
+// Tags
+function renderTags() {
+  const search = document.getElementById('tagSearch').value.toLowerCase();
+  const filtered = TAGS.filter(t => {
+    if (!search) return true;
+    return (t.en + t.cn + t.cat).toLowerCase().includes(search);
+  }).sort((a, b) => (sceneUsageCount[b.en] || 0) - (sceneUsageCount[a.en] || 0));
+
+  document.getElementById('tagTable').innerHTML = filtered.map(t => `
+    <tr>
+      <td>${t.id}</td>
+      <td>${esc(t.cat)}</td>
+      <td>${esc(t.en)}</td>
+      <td>${esc(t.cn)}</td>
+      <td>${t.weight}</td>
+      <td>${sceneUsageCount[t.en] || 0}</td>
+    </tr>
+  `).join('');
+}
+
+function openAddTagModal() {
+  const name = prompt('Tag 英文名：');
+  if (!name) return;
+  const cn = prompt('Tag 中文名：');
+  if (!cn) return;
+  const cat = prompt('分类（Clothing/Action/Emotion/Scene/Lighting/Body/Appearance）：', 'Scene');
+  if (!cat) return;
+
+  const maxId = TAGS.reduce((m, t) => Math.max(m, parseInt(t.id.replace('tag_', ''))), 0);
+  TAGS.push({ id: 'tag_' + (maxId + 1), cat, en: name, cn, weight: 0.8, related: [] });
+  renderTags();
+  renderStats();
+}
+
+// Export
+function exportJSON() {
+  const blob = new Blob([JSON.stringify(SCENES, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'scenes.json'; a.click();
+  URL.revokeObjectURL(url);
+}
+
+function esc(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+init();
+</script>
+</body>
+</html>
