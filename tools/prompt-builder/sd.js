@@ -373,7 +373,7 @@ function finishSDGeneration(generation){
   var generateButton = document.getElementById('sdGenBtn');
   var quickButton = document.getElementById('quickCreateBtn');
   var cancelButton = document.getElementById('sdCancelBtn');
-  if (generateButton) { generateButton.disabled = false; generateButton.textContent = '🖼 生成图片'; }
+  if (generateButton) { generateButton.disabled = false; generateButton.textContent = '生成图片'; }
   if (quickButton) quickButton.disabled = false;
   if (cancelButton) cancelButton.hidden = true;
 }
@@ -478,7 +478,7 @@ function callSDGenerate(requestOptions){
   clearSDRecovery();
   saveActions.style.display = 'none';
   var historySaveButton = document.getElementById('sdHistorySaveBtn');
-  if (historySaveButton) { historySaveButton.disabled = false; historySaveButton.textContent = '💾 保存到历史'; }
+  if (historySaveButton) { historySaveButton.disabled = false; historySaveButton.textContent = '保存到历史'; }
   slot.textContent = '';
   _sdLastDataUrl = '';
   _sdLastResult = null;
@@ -631,7 +631,7 @@ function saveGeneratedImage(){
     flash('💾 图片已保存到历史');
     if (button) button.textContent = '✓ 已保存';
   }).catch(function(e){
-    if (button) { button.disabled = false; button.textContent = '💾 保存到历史'; }
+    if (button) { button.disabled = false; button.textContent = '保存到历史'; }
     flash('保存失败: ' + e.message);
   });
 }
@@ -663,7 +663,14 @@ function resetDirector() {
   document.getElementById('sdResultArea').style.display = 'none';
   document.getElementById('sdImageSlot').textContent = '';
   document.querySelectorAll('#chip-emotion .chip-select.selected,#opt-shot .option.selected,#opt-lighting .option.selected,#opt-composition .option.selected,#moodGrid .mood-card.selected').forEach(o => o.classList.remove('selected'));
+  goStep(1);
+  renderDirectorModeSummary();
+  dismissFirstSuccessTip();
+  document.body.setAttribute('data-first-creation', 'idle');
+  renderRecentSceneShortcuts();
   refreshVoiceText(true);
-  updateLivePreview(); updateGuideBar(); flash('🔄 已重置');
+  updateLivePreview(); updateGuideBar();
+  var stage=document.querySelector('.stage-placeholder');if(stage)stage.scrollIntoView({behavior:'smooth',block:'center'});
+  flash('已重置，可以开始下一张');
 }
 

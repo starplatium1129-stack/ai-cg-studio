@@ -383,6 +383,7 @@ function generate() {
   document.getElementById('finalPrompt').innerHTML = colorizeParts(parts);
   document.getElementById('finalPrompt').style.display = 'block';
   goStep(4);
+  if (typeof finishFirstCreation === 'function') finishFirstCreation();
   refreshVoiceText(false);
   if(resultEl) resultEl.scrollIntoView({ behavior:'smooth', block:'start' });
   flash('✨ Prompt 已生成');

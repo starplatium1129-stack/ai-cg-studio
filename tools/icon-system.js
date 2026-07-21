@@ -26,7 +26,19 @@
     history: [['path',{d:'M3 12a9 9 0 1 0 3-6.7L3 8'}],['path',{d:'M3 3v5h5'}],['path',{d:'M12 7v5l3 2'}]],
     settings: [['path',{d:'M4 7h10'}],['path',{d:'M18 7h2'}],['circle',{cx:16,cy:7,r:2}],['path',{d:'M4 17h2'}],['path',{d:'M10 17h10'}],['circle',{cx:8,cy:17,r:2}]],
     prompt: [['path',{d:'m8 9-3 3 3 3'}],['path',{d:'m16 9 3 3-3 3'}],['path',{d:'m14 5-4 14'}]],
-    recommend: [['path',{d:'M9 18h6'}],['path',{d:'M10 22h4'}],['path',{d:'M8.5 14.5A6 6 0 1 1 15.5 14.5c-.9.7-1.5 1.8-1.5 2.5h-4c0-.7-.6-1.8-1.5-2.5Z'}]]
+    recommend: [['path',{d:'M9 18h6'}],['path',{d:'M10 22h4'}],['path',{d:'M8.5 14.5A6 6 0 1 1 15.5 14.5c-.9.7-1.5 1.8-1.5 2.5h-4c0-.7-.6-1.8-1.5-2.5Z'}]],
+    copy: [['rect',{x:8,y:8,width:12,height:12,rx:2}],['path',{d:'M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2'}]],
+    save: [['path',{d:'M5 3h12l2 2v16H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z'}],['path',{d:'M8 3v6h8V3'}],['rect',{x:8,y:14,width:8,height:7,rx:1}]],
+    download: [['path',{d:'M12 3v12'}],['path',{d:'m7 10 5 5 5-5'}],['path',{d:'M5 21h14'}]],
+    image: [['rect',{x:3,y:4,width:18,height:16,rx:3}],['circle',{cx:8.5,cy:9,r:1.5}],['path',{d:'m5 17 4-4 3 3 2-2 5 4'}]],
+    queue: [['path',{d:'M8 6h13'}],['path',{d:'M8 12h13'}],['path',{d:'M8 18h13'}],['path',{d:'M3 6h.01'}],['path',{d:'M3 12h.01'}],['path',{d:'M3 18h.01'}]],
+    refresh: [['path',{d:'M20 6v5h-5'}],['path',{d:'M4 18v-5h5'}],['path',{d:'M6.1 9a7 7 0 0 1 11.8-2.6L20 11'}],['path',{d:'m4 13 2.1 4.6A7 7 0 0 0 17.9 15'}]],
+    microphone: [['rect',{x:9,y:3,width:6,height:12,rx:3}],['path',{d:'M5 11a7 7 0 0 0 14 0'}],['path',{d:'M12 18v3'}],['path',{d:'M9 21h6'}]],
+    volume: [['path',{d:'M11 5 6 9H3v6h3l5 4Z'}],['path',{d:'M15.5 8.5a5 5 0 0 1 0 7'}],['path',{d:'M18 6a8 8 0 0 1 0 12'}]],
+    translate: [['path',{d:'M4 5h9'}],['path',{d:'M8 3v2'}],['path',{d:'M6 5c.5 3 2.2 5.3 5 7'}],['path',{d:'M11 5c-.5 3-2.2 5.3-5 7'}],['path',{d:'m13 21 4-10 4 10'}],['path',{d:'M14.5 17h5'}]],
+    star: [['path',{d:'m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9Z'}]],
+    seed: [['circle',{cx:12,cy:12,r:3}],['path',{d:'M12 2v3'}],['path',{d:'M12 19v3'}],['path',{d:'M2 12h3'}],['path',{d:'M19 12h3'}],['path',{d:'m4.9 4.9 2.2 2.2'}],['path',{d:'m16.9 16.9 2.2 2.2'}]],
+    redo: [['path',{d:'M20 7v5h-5'}],['path',{d:'M20 12a8 8 0 1 0-2.3 5.7'}]]
   };
 
   function create(name) {

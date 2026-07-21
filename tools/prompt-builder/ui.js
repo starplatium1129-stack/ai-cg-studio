@@ -40,7 +40,7 @@ function clearAll() {
   state.selections = { emotion:[], shot:null, lighting:null, composition:null }; state.colorMood = null; state.story = '';
   state.manualTags.clear(); document.getElementById('storyInput').value = '';
   document.querySelectorAll('#chip-emotion .chip-select,#opt-shot .option,#opt-lighting .option,#opt-composition .option,#moodGrid .mood-card').forEach(o => o.classList.remove('selected'));
-  renderManualTags(); renderTraits(); renderSelRow(); refreshVoiceText(true); goStep(1); updateLivePreview();
+  renderManualTags(); renderTraits(); renderSelRow(); renderDirectorModeSummary(); refreshVoiceText(true); goStep(1); updateLivePreview();
 }
 function exportPrompt() {
   const text = getPlainPrompt(); if (!text) return;

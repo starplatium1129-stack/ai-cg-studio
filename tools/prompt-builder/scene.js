@@ -8,13 +8,85 @@ function updateGuideBar() {
   const charLabel = state.char === 'nene' ? '宁宁' : '夏目';
   const filled = ['emotion','shot','lighting','composition'].filter(k => state.selections[k] && (k === 'emotion' ? state.selections[k].length > 0 : true)).length + (state.colorMood ? 1 : 0);
   let txt = '写一个故事，或选一张场景卡';
-  if (state.__sceneId && filled === 0) txt = `已选「${charLabel}」场景，再定情绪/镜头或点导演`;
+  if (document.body.getAttribute('data-first-creation') === 'ready') txt = '精选场景和稳定参数已准备好，直接点「导演这张 CG」';
+  else if (state.__sceneId && filled === 0) txt = `已选「${charLabel}」场景，再定情绪/镜头或点导演`;
   else if (filled > 0) txt = `已填 ${filled} 项决策，点「导演这张 CG」出 Prompt`;
   else if (state.story.trim()) txt = '已写故事，可直接做导演决策，也可再选场景卡补充细节';
   guide.textContent = txt;
 }
 function markStepDone(n) { updateGuideBar(); }
-function goStep(n) { CURRENT_STEP = Math.max(1, Math.min(4, n)); document.body.classList.toggle('step-4', CURRENT_STEP >= 4); updateGuideBar(); }
+function goStep(n) {
+  var nextStep = Math.max(1, Math.min(4, n));
+  var changed = nextStep !== CURRENT_STEP;
+  CURRENT_STEP = nextStep;
+  document.body.classList.toggle('step-4', CURRENT_STEP >= 4);
+  if (changed && (!window.matchMedia || !window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+    document.body.classList.remove('workspace-enter-result', 'workspace-enter-studio');
+    void document.body.offsetWidth;
+    document.body.classList.add(CURRENT_STEP >= 4 ? 'workspace-enter-result' : 'workspace-enter-studio');
+    clearTimeout(window.__workspaceTransitionTimer);
+    window.__workspaceTransitionTimer = setTimeout(function () {
+      document.body.classList.remove('workspace-enter-result', 'workspace-enter-studio');
+    }, 520);
+  }
+  updateGuideBar();
+}
+
+const DIRECTOR_MODE_KEY = 'aics_director_mode';
+function initDirectorMode() { setDirectorMode(localStorage.getItem(DIRECTOR_MODE_KEY) === 'pro' ? 'pro' : 'basic', false); }
+function setDirectorMode(mode, persist) {
+  mode = mode === 'pro' ? 'pro' : 'basic';
+  document.body.setAttribute('data-director-mode', mode);
+  var basic = document.getElementById('directorModeBasic'), pro = document.getElementById('directorModePro');
+  if (basic) { basic.classList.toggle('active', mode === 'basic'); basic.setAttribute('aria-pressed', mode === 'basic' ? 'true' : 'false'); }
+  if (pro) { pro.classList.toggle('active', mode === 'pro'); pro.setAttribute('aria-pressed', mode === 'pro' ? 'true' : 'false'); }
+  if (persist !== false) localStorage.setItem(DIRECTOR_MODE_KEY, mode);
+  renderDirectorModeSummary();
+}
+function directorChoiceName(list, id) { var item=(list||[]).find(function(value){return value.id===id;}); return item ? item.name.replace(/\s+(Golden Hour|Window Light|Backlight|Moonlight|Lantern|Overcast)$/,'') : ''; }
+function renderDirectorModeSummary() {
+  var summary = document.getElementById('directorAutoSummary'); if (!summary) return;
+  var mood = COLOR_MOODS.find(function(item){ return item.id === state.colorMood; });
+  var parts = [];
+  var light = directorChoiceName(LIGHTING, state.selections.lighting); if (light) parts.push('光照 ' + light);
+  var composition = directorChoiceName(COMPOSITION, state.selections.composition); if (composition) parts.push('构图 ' + composition);
+  if (mood) parts.push('色彩 ' + mood.name);
+  summary.textContent = parts.length ? '场景已自动准备：' + parts.join(' · ') : '场景会自动准备光照、构图和色彩';
+}
+
+function signatureScenePool() {
+  var ids = Array.isArray(CURATION_DATA.signatureSceneIds) && CURATION_DATA.signatureSceneIds.length ? CURATION_DATA.signatureSceneIds : (CURATION_DATA.curatedSceneIds || []);
+  return ids.map(function(id){ return SCENES.find(function(scene){ return scene.id === id; }); }).filter(function(scene){ return scene && !scene.mature; });
+}
+function sceneCharacterKey(scene) {
+  if (!scene) return '';
+  if (scene.char === 'nene' || scene.char === 'ayachi_nene') return 'nene';
+  if (scene.char === 'natsume' || scene.char === 'shiki_natsume') return 'natsume';
+  return scene.char === 'triad' ? 'triad' : '';
+}
+function pickSignatureScene(preferredChar) {
+  var pool = signatureScenePool();
+  var matching = pool.filter(function(scene){ return sceneCharacterKey(scene) === preferredChar; });
+  return (matching.length ? matching : pool)[0] || null;
+}
+function loadRandomSignatureScene() {
+  var pool = signatureScenePool();
+  if (!pool.length) { flash('精选场景暂时不可用'); return; }
+  var recentIds = AICSceneUX.readRecent(localStorage).map(function(item){ return item.id; });
+  var fresh = pool.filter(function(scene){ return scene.id !== state.__sceneId && recentIds.indexOf(scene.id) < 0; });
+  var choices = fresh.length ? fresh : pool.filter(function(scene){ return scene.id !== state.__sceneId; });
+  var scene = (choices.length ? choices : pool)[Math.floor(Math.random() * (choices.length || pool.length))];
+  loadScene(scene);
+  flash('已换成精选场景「' + scene.title + '」');
+}
+function renderRecentSceneShortcuts() {
+  var host = document.getElementById('recentSceneShortcuts'); if (!host) return;
+  var recent = AICSceneUX.readRecent(localStorage).map(function(item){ return SCENES.find(function(scene){ return scene.id === item.id; }); }).filter(Boolean).slice(0,3);
+  host.innerHTML = recent.map(function(scene){ var icon=sceneCharacterKey(scene)==='natsume'?'leaf':sceneCharacterKey(scene)==='triad'?'both':'flower'; return '<button class="recent-scene-chip" type="button" onclick="loadRecentScene(\'' + escapeHtml(scene.id) + '\')"><span data-icon="' + icon + '"></span>' + escapeHtml(scene.title) + '</button>'; }).join('');
+  if (window.AICIcons) AICIcons.hydrate(host);
+}
+function loadRecentScene(id) { var scene=SCENES.find(function(item){return item.id===id;}); if(scene) loadScene(scene); }
+function focusSceneSearch() { var input=document.getElementById('sceneSearch'); if(input){ input.scrollIntoView({behavior:'smooth',block:'center'}); setTimeout(function(){input.focus();},220); } }
 
 function setStory(el) {
   const txt = el.textContent;
@@ -39,7 +111,12 @@ function highlightScenesByStory(txt) {
 function setChar(c) {
   if (state.char === c) return;
   state.char = c;
+  document.body.classList.remove('character-shifting');
+  void document.body.offsetWidth;
+  document.body.classList.add('character-shifting');
   document.body.setAttribute('data-character', c);
+  clearTimeout(window.__characterThemeTimer);
+  window.__characterThemeTimer = setTimeout(function () { document.body.classList.remove('character-shifting'); }, 760);
   document.querySelectorAll('.char-btn').forEach(b => {
     const on = b.dataset.char === c;
     b.classList.toggle('active', on);
@@ -76,6 +153,7 @@ function resetSceneAndDecisions() {
   state.colorMood = null; state.manualTags = new Set();
   document.querySelectorAll('#chip-emotion .chip-select.selected,#opt-shot .option.selected,#opt-lighting .option.selected,#opt-composition .option.selected,#moodGrid .mood-card.selected').forEach(o => o.classList.remove('selected'));
   try { localStorage.removeItem(DRAFT_KEY); } catch(e) {}
+  renderDirectorModeSummary();
   updateLivePreview();
 }
 
@@ -85,7 +163,7 @@ function renderEmotion() {
   EMOTION.forEach(em => {
     const d = document.createElement('div');
     d.className = 'chip-select'; d.dataset.id = em.id;
-    d.innerHTML = `${em.icon} ${em.name}`;
+    d.textContent = em.name;
     d.title = EMOTION_REASON[em.id] || '';
     d.onclick = () => toggleEmotion(em.id);
     el.appendChild(d);
@@ -95,7 +173,7 @@ function renderShot() {
   const el = document.getElementById('opt-shot'); el.innerHTML = '';
   SHOT.forEach(s => {
     const d = document.createElement('div'); d.className = 'option'; d.dataset.id = s.id;
-    d.innerHTML = `<div class="option-icon">${s.icon}</div><div class="option-name">${s.name}</div><div class="option-en">${s.en}</div><div class="option-reason">${SHOT_REASON[s.id]||''}</div>`;
+    d.innerHTML = `<div class="option-name">${s.name}</div><div class="option-en">${s.en}</div><div class="option-reason">${SHOT_REASON[s.id]||''}</div>`;
     d.onclick = () => selectShot(s.id); el.appendChild(d);
   });
 }
@@ -103,7 +181,7 @@ function renderLighting() {
   const el = document.getElementById('opt-lighting'); el.innerHTML = '';
   LIGHTING.forEach(l => {
     const d = document.createElement('div'); d.className = 'option'; d.dataset.id = l.id;
-    d.innerHTML = `<div class="option-icon">${l.icon}</div><div class="option-name">${l.name}</div><div class="option-reason">${LIGHTING_REASON[l.id]||''}</div>`;
+    d.innerHTML = `<div class="option-name">${l.name}</div><div class="option-reason">${LIGHTING_REASON[l.id]||''}</div>`;
     d.onclick = () => selectLighting(l.id); el.appendChild(d);
   });
 }
@@ -111,7 +189,7 @@ function renderComposition() {
   const el = document.getElementById('opt-composition'); el.innerHTML = '';
   COMPOSITION.forEach(c => {
     const d = document.createElement('div'); d.className = 'option'; d.dataset.id = c.id;
-    d.innerHTML = `<div class="option-icon">${c.icon}</div><div class="option-name">${c.name}</div><div class="option-en">${c.en}</div>`;
+    d.innerHTML = `<div class="option-name">${c.name}</div><div class="option-en">${c.en}</div>`;
     d.onclick = () => selectComposition(c.id); el.appendChild(d);
   });
 }
@@ -129,11 +207,11 @@ function selectShot(id) {
 }
 function selectLighting(id) {
   document.querySelectorAll('#opt-lighting .option').forEach(o => o.classList.toggle('selected', o.dataset.id === id));
-  state.selections.lighting = id; updateLivePreview();
+  state.selections.lighting = id; renderDirectorModeSummary(); updateLivePreview();
 }
 function selectComposition(id) {
   document.querySelectorAll('#opt-composition .option').forEach(o => o.classList.toggle('selected', o.dataset.id === id));
-  state.selections.composition = id; updateLivePreview();
+  state.selections.composition = id; renderDirectorModeSummary(); updateLivePreview();
 }
 
 // ===== Color moods =====
@@ -142,13 +220,14 @@ function renderColorMoods() {
   COLOR_MOODS.forEach(m => {
     const d = document.createElement('div'); d.className = 'mood-card'; d.dataset.id = m.id;
     d.innerHTML = `<div class="mood-strip">${m.colors.map(c=>`<div class="mood-swatch" style="background:${c}"></div>`).join('')}</div>
-      <div class="mood-body"><div class="mood-name">${m.icon} ${m.name}</div><div class="mood-desc">${m.desc}</div></div>`;
+      <div class="mood-body"><div class="mood-name">${m.name}</div><div class="mood-desc">${m.desc}</div></div>`;
     d.onclick = () => selectMood(m.id); el.appendChild(d);
   });
 }
 function selectMood(id) {
   document.querySelectorAll('#moodGrid .mood-card').forEach(c => c.classList.toggle('selected', c.dataset.id === id));
   state.colorMood = id;
+  renderDirectorModeSummary();
   const suggested = MOOD_EMOTION_MAP[id] || [];
   if (suggested.length) {
     document.querySelectorAll('#chip-emotion .chip-select').forEach(c => {
@@ -235,7 +314,7 @@ function renderSceneCats() {
     b.dataset.sceneTheme = def.id;
     b.className = 'scene-cat' + (def.id === SCENE_THEME ? ' active' : '');
     const count = available.filter(function(scene){ return sceneMatchesTheme(scene, def.id); }).length;
-    b.textContent = def.icon + ' ' + def.label + ' ' + count;
+    b.textContent = def.label + ' ' + count;
     b.setAttribute('aria-pressed', def.id === SCENE_THEME ? 'true' : 'false');
     b.onclick = function(){ SCENE_THEME = def.id; renderSceneCats(); renderScenes(); };
     el.appendChild(b);
@@ -303,10 +382,10 @@ function renderScenes() {
         ${s.category ? `<span class="scene-tag">${escapeHtml(sceneThemeLabel(s))}</span>` : ''}
         ${season ? `<span class="scene-tag">${escapeHtml(season)}</span>` : ''}
         ${tod ? `<span class="scene-tag">${escapeHtml(tod)}</span>` : ''}
-        ${s.tags.slice(0,3).map(t => `<span class="scene-tag">${escapeHtml(t)}</span>`).join('')}
+        ${s.tags.slice(0,3).map(t => `<span class="scene-tag raw">${escapeHtml(t)}</span>`).join('')}
       </div>`;
     card.onclick = () => loadScene(s);
-    const directBtn = document.createElement('button'); directBtn.className = 'scene-direct-btn'; directBtn.textContent = '⚡ 快速出图'; directBtn.type = 'button';
+    const directBtn = document.createElement('button'); directBtn.className = 'scene-direct-btn'; directBtn.textContent = '快速出图'; directBtn.type = 'button';
     directBtn.addEventListener('click', (e) => { e.stopPropagation(); loadScene(s); quickCreateCurrent(); });
     card.appendChild(directBtn);
     fragment.appendChild(card);
@@ -393,6 +472,7 @@ function sceneComposition(s) {
 }
 function rememberRecentScene(scene) {
   AICSceneUX.rememberRecent(scene, localStorage);
+  renderRecentSceneShortcuts();
 }
 function scheduleDraftSave() {
   clearTimeout(DRAFT_SAVE_TIMER);
@@ -442,7 +522,7 @@ function restoreLastDraft() {
   document.querySelectorAll('#opt-lighting .option').forEach(function(item){ item.classList.toggle('selected', item.dataset.id === state.selections.lighting); });
   document.querySelectorAll('#opt-composition .option').forEach(function(item){ item.classList.toggle('selected', item.dataset.id === state.selections.composition); });
   document.querySelectorAll('#moodGrid .mood-card').forEach(function(item){ item.classList.toggle('selected', item.dataset.id === state.colorMood); });
-  renderManualTags(); renderTraits(); renderSelRow(); updateGuideBar();
+  renderManualTags(); renderTraits(); renderSelRow(); renderDirectorModeSummary(); updateGuideBar();
   goStep(Number(draft.step) || 3);
   DRAFT_RESTORING = false;
   updateLivePreview();
@@ -478,9 +558,15 @@ function loadScene(s) {
   const comp = sceneComposition(s);
   if (comp) { state.selections.composition = comp; selectComposition(comp); }
   renderLightHint(hintLight, s.title);
+  renderDirectorModeSummary();
+  if (document.body.getAttribute('data-first-creation') === 'welcome') {
+    document.body.setAttribute('data-first-creation', 'ready');
+    localStorage.setItem('aics_first_creation_v2', 'started');
+    setDirectorMode('basic', false);
+  }
   switchTab('director', document.querySelectorAll('.pb-tab')[0]);
   markStepDone(1); // 场景选完 → 进入角色步骤
-  flash('🎞 Scene 已加载: ' + s.title);
+  flash('Scene 已加载: ' + s.title);
   updateLivePreview();
   syncVoiceCharacter(true);
   // URL 路由入参: ?step=N → 加载后跳到指定步骤（explorer 一键直达结果）
@@ -501,7 +587,7 @@ function renderLightHint(hint, title) {
   if (!hint) { el.classList.remove('show'); return; }
   const lm = { sunset:'夕阳光', window_light:'窗光', backlighting:'逆光', moonlight:'月光', night_lamp:'夜灯', neon:'霓虹', candlelight:'烛光', overcast:'阴天' };
   el.classList.add('show');
-  el.innerHTML = '💡 <span>场景建议光照：<b>' + (lm[hint]||hint) + '</b></span><button onclick="clearLightHint()">✕</button>';
+  el.innerHTML = '<span>场景建议光照：<b>' + (lm[hint]||hint) + '</b></span><button onclick="clearLightHint()" aria-label="关闭光照建议">×</button>';
 }
 function clearLightHint() { const el=document.getElementById('sceneLightHint'); if(el) el.classList.remove('show'); }
 function findEmotionId(name) {

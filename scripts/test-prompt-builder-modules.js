@@ -4,6 +4,7 @@ const path = require('path');
 const root = path.resolve(__dirname, '..');
 const htmlPath = path.join(root, 'tools', 'prompt-builder.html');
 const iconPath = path.join(root, 'tools', 'icon-system.js');
+const designPath = path.join(root, 'css', 'design-system.css');
 const modules = [
   ['state.js', 'function loadData'],
   ['scene.js', 'function renderScenes'],
@@ -29,6 +30,14 @@ if (/<script(?![^>]*\bsrc=)[^>]*>/i.test(html)) {
 if (!html.includes('icon-system.js?v=1')) fail('missing icon-system script reference');
 if (!html.includes('id="focusModeBtn"')) fail('missing focus mode control');
 if (!html.includes('body.focus-mode .col-left')) fail('missing focus mode layout rules');
+if (!html.includes('id="firstRunExperienceBtn"')) fail('missing actionable first creation entry');
+if (!html.includes('id="directorModeBasic"') || !html.includes('id="directorModePro"')) fail('missing director mode controls');
+if (!html.includes('id="recentSceneShortcuts"')) fail('missing recent scene shortcuts');
+if (!html.includes('@property --character-accent') || !html.includes('characterGlassSweep')) fail('missing animated character theme treatment');
+if (!html.includes('workspace-enter-result') || !html.includes('directorViewIn')) fail('missing director view transition');
+if (html.includes('id="obOverlay"') || html.includes('data-ob-active')) fail('legacy blocking onboarding must be removed');
+const designSource = fs.readFileSync(designPath, 'utf8');
+if (!designSource.includes('@view-transition') || !designSource.includes('--glass-fill-strong')) fail('missing global page transition or liquid glass tokens');
 if (!fs.existsSync(iconPath)) fail('missing icon-system.js');
 const iconSource = fs.readFileSync(iconPath, 'utf8');
 if (!iconSource.includes('window.AICIcons')) fail('icon system is missing its public API');

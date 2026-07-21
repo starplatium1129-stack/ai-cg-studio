@@ -26,7 +26,7 @@ function nextVersion(history,scene,character){const same=history.filter(h=>h.sce
 function baseEntry(useActual){
   var result=useActual&&_sdLastResult?_sdLastResult:null,queueJob=result&&result.queueJob?result.queueJob:null;
   const sel=queueJob&&queueJob.selections?queueJob.selections:state.selections,sceneId=queueJob?queueJob.sceneId:state.__sceneId;
-  const sceneTitle=(window.__scenes__||[]).find(s=>s.id===sceneId);
+  const sceneTitle=(SCENES||[]).find(s=>s.id===sceneId);
   var payload=result&&result.payload?result.payload:null,info=result&&result.info?result.info:{};
   var seed=Number(payload&&payload.seed>=0?payload.seed:(result&&result.seed!=null?result.seed:window.__lastSeed__));if(!Number.isFinite(seed))seed=Math.floor(Math.random()*4294967295);seed=Math.max(0,Math.min(4294967295,Math.floor(seed)));
   var prompt=payload&&payload.prompt?payload.prompt:getPlainPrompt(),negative=payload&&typeof payload.negative_prompt==='string'?payload.negative_prompt:getPlainNegative();
@@ -98,6 +98,35 @@ async function commitHistoryEntry(entry){
 }
 async function saveHistory(){const entry=baseEntry(),v=nextVersion(state.history,entry.scene,entry.character);entry.version=v.version;entry.parent_id=v.parent_id;try{await commitHistoryEntry(entry);flash('💾 已保存');}catch(e){flash('保存失败，请检查浏览器存储空间');}}
 async function saveHistoryWithRating(rating,favorite,notes,imageUrl,imageId,useActual){const entry=baseEntry(!!useActual),v=nextVersion(state.history,entry.scene,entry.character);entry.version=v.version;entry.parent_id=v.parent_id;entry.rating=rating;entry.favorite=!!favorite;entry.notes=notes||'';entry.image_id=imageId||'';entry.image_url=normalizeImageUrl(imageUrl);await commitHistoryEntry(entry);}
-function renderHistory(){const list=document.getElementById('historyList');document.getElementById('hisCount').textContent=state.history.length;if(!state.history.length){list.innerHTML='<div class="history-empty">尚无记录。每次点击「保存」生成一条快照。</div>';return;}list.innerHTML=state.history.map(h=>{const avg=h.rating?Math.round(((Number(h.rating.face)||0)+(Number(h.rating.expression)||0)+(Number(h.rating.composition)||0)+(Number(h.rating.hands)||0)+(Number(h.rating.atmosphere)||0))/5):0;const title=escapeHtml(h.sceneTitle||h.scene||'未命名场景');const character=escapeHtml(h.character==='natsume'?'夏目':h.character==='nene'?'宁宁':h.character==='both'?'双人':h.character||'—');const version=escapeHtml(h.version||1);const seed=escapeHtml(h.seed||'—');const id=Number(h.id);const ratingText=avg?avg+'/5':'未评分';return `<div class="history-item"><div class="history-main"><div class="history-text" title="${escapeHtml(h.prompt||'')}">${escapeHtml(h.prompt||'')}</div><div class="history-meta"><span class="primary">${title}</span><span class="sep" aria-hidden="true">·</span><span>${character}</span><span class="sep" aria-hidden="true">·</span><span>v${version}</span><span class="sep" aria-hidden="true">·</span><span>seed ${seed}</span></div></div><div class="history-side"><div class="history-rating${avg?' rated':''}" aria-label="${avg?'平均评分 '+avg+' 分':'未评分'}"><span class="star" aria-hidden="true">★</span><span>${ratingText}</span>${h.favorite?'<span class="favorite" title="已收藏" aria-label="已收藏">♥</span>':''}</div><div class="history-actions"><button type="button" class="history-action primary" onclick="loadHistoryId(${id})">载入</button><button type="button" class="history-action" onclick="copyHistoryId(${id})">复制</button><button type="button" class="history-action delete" onclick="deleteHistoryId(${id})" title="删除记录" aria-label="删除记录">×</button></div></div></div>`;}).join('');}
-function loadHistoryId(id){const h=state.history.find(x=>x.id===id);if(h)restoreFromEntry(h,false);} function copyHistoryId(id){const h=state.history.find(x=>x.id===id);if(h)navigator.clipboard.writeText(h.prompt||'').then(()=>flash('📋 已复制'));}
+var HISTORY_THUMB_URLS=[];
+function revokeHistoryThumbUrls(){HISTORY_THUMB_URLS.forEach(function(url){URL.revokeObjectURL(url);});HISTORY_THUMB_URLS=[];}
+function historyCharacterLabel(value){return value==='natsume'?'夏目':value==='nene'?'宁宁':value==='triad'||value==='both'?'双人':value||'—';}
+function historyFallbackImage(value){return value==='natsume'?'../assets/characters/natsume-official.webp':'../assets/characters/nene-official.webp';}
+function useHistoryFallback(image){if(!image)return;image.onerror=null;image.src=image.dataset.fallback||'../assets/characters/nene-official.webp';image.classList.add('history-placeholder');var badge=image.parentElement&&image.parentElement.querySelector('.history-thumb-badge');if(badge)badge.textContent='Prompt 快照';}
+function hydrateHistoryImages(list){
+  list.querySelectorAll('img[data-image-id]').forEach(function(image){
+    var imageId=image.dataset.imageId;if(!imageId)return;
+    AICGImageStore.get(imageId).then(function(blob){
+      if(!blob||!image.isConnected)return;
+      var url=URL.createObjectURL(blob);HISTORY_THUMB_URLS.push(url);image.src=url;image.classList.remove('history-placeholder');
+      var badge=image.parentElement&&image.parentElement.querySelector('.history-thumb-badge');if(badge)badge.textContent='生成图';
+    }).catch(function(){});
+  });
+}
+function renderHistory(){
+  const list=document.getElementById('historyList');document.getElementById('hisCount').textContent=state.history.length;revokeHistoryThumbUrls();
+  if(!state.history.length){list.innerHTML='<div class="history-empty">尚无记录。生成后保存，作品会在这里变成可继续编辑的卡片。</div>';return;}
+  list.innerHTML=state.history.map(function(h){
+    const avg=h.rating?Math.round(((Number(h.rating.face)||0)+(Number(h.rating.expression)||0)+(Number(h.rating.composition)||0)+(Number(h.rating.hands)||0)+(Number(h.rating.atmosphere)||0))/5):0;
+    const sourceScene=(SCENES||[]).find(function(scene){return scene.id===h.scene;});
+    const title=escapeHtml(h.sceneTitle||(sourceScene&&sourceScene.title)||h.scene||'未命名场景'),character=escapeHtml(historyCharacterLabel(h.character)),version=escapeHtml(h.version||1),seed=escapeHtml(h.seed||'—'),id=Number(h.id),ratingText=avg?avg+'/5':'未评分';
+    const fallback=historyFallbackImage(h.character),hasImage=!!(h.image_id||h.image_url),src=h.image_url||fallback,imageAttrs=h.image_id?' data-image-id="'+escapeHtml(h.image_id)+'"':'';
+    return '<article class="history-item"><div class="history-thumb"><img class="'+(h.image_url?'':'history-placeholder')+'" src="'+escapeHtml(src)+'" data-fallback="'+fallback+'"'+imageAttrs+' alt="'+title+' 缩略图" loading="lazy" onerror="useHistoryFallback(this)"><span class="history-thumb-badge">'+(hasImage?'生成图':'Prompt 快照')+'</span></div><div class="history-main"><div class="history-card-title">'+title+'</div><div class="history-text" title="'+escapeHtml(h.prompt||'')+'">'+escapeHtml(h.story||h.prompt||'')+'</div><div class="history-meta"><span class="primary">'+character+'</span><span class="sep" aria-hidden="true">·</span><span>v'+version+'</span><span class="sep" aria-hidden="true">·</span><span>seed '+seed+'</span></div><div class="history-side"><div class="history-rating'+(avg?' rated':'')+'" aria-label="'+(avg?'平均评分 '+avg+' 分':'未评分')+'"><span class="star" aria-hidden="true">★</span><span>'+ratingText+'</span>'+(h.favorite?'<span class="favorite" title="已收藏" aria-label="已收藏">♥</span>':'')+'</div><div class="history-actions"><button type="button" class="history-action primary" onclick="continueHistoryId('+id+')">继续编辑</button><button type="button" class="history-action" onclick="copyHistoryId('+id+')" aria-label="复制提示词">复制</button><button type="button" class="history-action delete" onclick="deleteHistoryId('+id+')" title="删除记录" aria-label="删除记录">×</button></div></div></div></article>';
+  }).join('');
+  hydrateHistoryImages(list);
+}
+function continueHistoryId(id){const h=state.history.find(x=>x.id===id);if(!h)return;restoreFromEntry(h,false);goStep(1);var workspace=document.querySelector('.director-workspace');if(workspace)workspace.scrollIntoView({behavior:'smooth',block:'start'});flash('已继续编辑「'+(h.sceneTitle||'历史快照')+'」');}
+function loadHistoryId(id){continueHistoryId(id);}
+function copyHistoryId(id){const h=state.history.find(x=>x.id===id);if(h)navigator.clipboard.writeText(h.prompt||'').then(()=>flash('已复制提示词'));}
 async function deleteHistoryId(id){var removed=state.history.filter(h=>h.id===id);var entry=removed[0];var prjId=entry&&entry.project;var kept=state.history.filter(h=>h.id!==id);_cachedHistory=kept;state.history=kept;PERSONAL_PROFILE=AICSceneUX.buildPreferenceProfile(kept);AICKVStore.set(HIS_KEY,kept).catch(function(e){flash('删除失败');return;});renderHistory();renderScenes();if(prjId)removeHistoryFromProject(prjId,id);cleanupImages(removed,kept).catch(function(e){flash('记录已删除，图片清理失败');});}
+window.addEventListener('pagehide',revokeHistoryThumbUrls);

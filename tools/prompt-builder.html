@@ -11,6 +11,47 @@
 <script src="sd-error.js?v=1"></script>
 <script src="theme.js?v=5"></script>
 <style>
+  @property --character-accent { syntax:'<color>'; inherits:true; initial-value:#f4a6d7; }
+  @property --character-accent-hover { syntax:'<color>'; inherits:true; initial-value:#ffc1e8; }
+  @property --character-soft { syntax:'<color>'; inherits:true; initial-value:rgba(244,166,215,.15); }
+  @property --character-glow { syntax:'<color>'; inherits:true; initial-value:rgba(223,168,255,.34); }
+  @property --character-aura { syntax:'<color>'; inherits:true; initial-value:rgba(184,149,255,.28); }
+  @property --character-aura-secondary { syntax:'<color>'; inherits:true; initial-value:rgba(244,166,215,.16); }
+  body {
+    --character-accent:#f4a6d7; --character-accent-hover:#ffc1e8;
+    --character-soft:rgba(244,166,215,.15); --character-glow:rgba(223,168,255,.34);
+    --character-aura:rgba(184,149,255,.28); --character-aura-secondary:rgba(244,166,215,.16);
+    --accent:var(--character-accent); --accent-hover:var(--character-accent-hover);
+    --accent-soft:var(--character-soft); --accent-glow:var(--character-glow);
+    transition:--character-accent .58s cubic-bezier(.2,.75,.2,1),--character-accent-hover .58s cubic-bezier(.2,.75,.2,1),--character-soft .58s cubic-bezier(.2,.75,.2,1),--character-glow .58s cubic-bezier(.2,.75,.2,1),--character-aura .7s ease,--character-aura-secondary .7s ease;
+  }
+  body[data-character="natsume"] {
+    --character-accent:#f2bb68; --character-accent-hover:#ffd08b;
+    --character-soft:rgba(242,187,104,.16); --character-glow:rgba(242,187,104,.28);
+    --character-aura:rgba(242,187,104,.26); --character-aura-secondary:rgba(139,98,88,.18);
+  }
+  body[data-character="triad"] {
+    --character-accent:#d9a4ef; --character-accent-hover:#efc5ff;
+    --character-soft:rgba(217,164,239,.15); --character-glow:rgba(194,143,255,.3);
+    --character-aura:rgba(184,149,255,.24); --character-aura-secondary:rgba(242,187,104,.18);
+  }
+  [data-theme="light"] body {
+    --character-accent:#bd5793; --character-accent-hover:#9e3f7b;
+    --character-soft:rgba(189,87,147,.11); --character-glow:rgba(161,108,255,.22);
+    --character-aura:rgba(161,108,255,.2); --character-aura-secondary:rgba(231,122,179,.13);
+  }
+  [data-theme="light"] body[data-character="natsume"] {
+    --character-accent:#9b621f; --character-accent-hover:#7d4b12;
+    --character-soft:rgba(191,126,48,.12); --character-glow:rgba(217,155,76,.2);
+    --character-aura:rgba(232,166,77,.2); --character-aura-secondary:rgba(139,98,88,.12);
+  }
+  [data-theme="light"] body[data-character="triad"] {
+    --character-accent:#8159b5; --character-accent-hover:#68439c;
+    --character-soft:rgba(129,89,181,.11); --character-glow:rgba(154,101,211,.2);
+    --character-aura:rgba(153,107,220,.18); --character-aura-secondary:rgba(224,157,76,.14);
+  }
+  body::before { background:radial-gradient(circle,var(--character-aura) 0,transparent 68%); }
+  body::after { background:radial-gradient(circle,var(--character-aura-secondary) 0,transparent 70%); }
   /* ============================================================
      Director — 宽屏工作台 (Scene-first, Prompt-last)
      左侧=剧本与素材，右侧=导演决策、监看与大画幅成品
@@ -37,6 +78,7 @@
   .utility-label { margin:2px 4px 8px; color:var(--text-muted); font:700 .65rem var(--font-mono); letter-spacing:.1em; text-transform:uppercase; }
   .utility-actions { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
   .utility-actions .btn { min-height:38px; justify-content:center; font-size:.75rem; }
+  .utility-actions .wide { grid-column:1 / -1; }
   .utility-divider { height:1px; margin:var(--s-3) 0; background:var(--border-soft); }
   .shortcut-hint { color:var(--text-muted); font:.68rem var(--font-mono); white-space:nowrap; }
   .shortcut-hint kbd { padding:2px 5px; border:1px solid var(--border-soft); border-bottom-color:var(--border-strong); border-radius:5px; background:var(--bg-deep); color:var(--text-secondary); box-shadow:0 1px 0 var(--border-soft); }
@@ -55,21 +97,36 @@
   .col-center > .stage-placeholder { order:1; }
   .col-center > .monitor { order:2; }
   .col-center > .generation-settings { order:3; }
-  .stage-placeholder { min-height:clamp(390px,52vh,680px); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; overflow:hidden; position:relative; isolation:isolate; border:1px solid color-mix(in srgb,var(--border-soft) 82%,transparent); border-radius:30px; background:linear-gradient(145deg,color-mix(in srgb,var(--bg-elevated) 86%,transparent),var(--bg-deep)); box-shadow:inset 0 1px 0 var(--glass-highlight),0 28px 80px rgba(20,12,40,.12); }
+  .stage-placeholder { min-height:clamp(390px,52vh,680px); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; overflow:hidden; position:relative; isolation:isolate; border:1px solid color-mix(in srgb,var(--border-soft) 82%,transparent); border-radius:30px; background:linear-gradient(145deg,color-mix(in srgb,var(--bg-elevated) 86%,transparent),var(--bg-deep)); box-shadow:inset 0 1px 0 var(--glass-highlight),0 28px 80px rgba(20,12,40,.12); transition:background .5s ease,border-color .35s ease,box-shadow .35s ease; }
   .stage-placeholder::before { content:''; position:absolute; inset:0; z-index:0; background:radial-gradient(circle at 50% 42%,color-mix(in srgb,var(--accent) 14%,transparent),transparent 32%),radial-gradient(circle at 14% 88%,rgba(242,187,104,.08),transparent 26%); pointer-events:none; }
   .stage-chrome { position:absolute; z-index:2; top:18px; left:20px; right:20px; display:flex; align-items:center; justify-content:space-between; color:var(--text-muted); font:700 .64rem var(--font-mono); letter-spacing:.12em; }
   .stage-ready { display:flex; align-items:center; gap:6px; }
   .stage-ready::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--success); box-shadow:0 0 10px color-mix(in srgb,var(--success) 50%,transparent); }
-  .stage-muse { position:absolute; z-index:1; right:-12%; bottom:-3%; width:52%; height:92%; object-fit:contain; object-position:center bottom; opacity:0; filter:saturate(.72) contrast(.94); pointer-events:none; transition:opacity .35s ease; -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 28%,#000 100%); mask-image:linear-gradient(180deg,transparent 0%,#000 28%,#000 100%); }
+  .stage-muse { position:absolute; z-index:1; right:-12%; bottom:-3%; width:52%; height:92%; object-fit:contain; object-position:center bottom; opacity:0; filter:saturate(.72) contrast(.94); pointer-events:none; transition:opacity .5s ease,filter .5s ease,transform .5s cubic-bezier(.2,.75,.2,1); -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 28%,#000 100%); mask-image:linear-gradient(180deg,transparent 0%,#000 28%,#000 100%); }
   body[data-character="nene"] .stage-muse.nene, body[data-character="natsume"] .stage-muse.natsume { opacity:.22; }
+  body[data-character="natsume"] .stage-placeholder { background:linear-gradient(145deg,color-mix(in srgb,var(--natsume-amber) 7%,var(--bg-elevated)),var(--bg-deep)); }
+  body[data-character="natsume"] .stage-muse.natsume { filter:saturate(.78) contrast(.96) sepia(.04); }
   body[data-character="triad"] .stage-muse { opacity:.16; }
   body[data-character="triad"] .stage-muse.nene { right:auto; left:-12%; }
   body[data-character="triad"] .stage-muse.natsume { right:-12%; }
-  .stage-message { position:relative; z-index:2; width:min(50%,320px); transform:translateX(-28%); }
+  .stage-message { position:relative; z-index:2; width:min(58%,430px); transform:translateX(-24%); }
   body[data-character="triad"] .stage-message { transform:none; }
   .stage-placeholder-icon { width:68px; height:68px; display:grid; place-items:center; margin:0 auto var(--s-4); border:1px solid color-mix(in srgb,var(--accent) 30%,var(--border-soft)); border-radius:22px; background:color-mix(in srgb,var(--accent-soft) 68%,transparent); color:var(--accent); font:700 1.7rem serif; box-shadow:0 22px 64px var(--accent-glow); }
   .stage-placeholder-title { color:var(--text-primary); font-size:1.12rem; font-weight:720; letter-spacing:-.01em; }
   .stage-placeholder-copy { max-width:330px; margin-top:var(--s-2); color:var(--text-muted); font-size:.8rem; line-height:1.65; }
+  .stage-welcome { display:none; }
+  body[data-first-creation="welcome"] .stage-welcome { display:block; animation:pbWorkspaceIn .38s cubic-bezier(.2,.75,.2,1) both; }
+  body[data-first-creation="welcome"] .stage-idle { display:none; }
+  .first-creation-actions, .stage-quick-actions { display:flex; justify-content:center; flex-wrap:wrap; gap:8px; margin-top:var(--s-4); }
+  .first-creation-actions .btn, .stage-quick-actions .btn { min-height:40px; }
+  .first-creation-note { display:flex; justify-content:center; gap:6px; margin-top:10px; color:var(--text-muted); font-size:.68rem; }
+  .recent-scene-shortcuts { display:flex; justify-content:center; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .recent-scene-shortcuts:empty { display:none; }
+  .recent-scene-chip { max-width:180px; display:inline-flex; align-items:center; gap:5px; padding:5px 9px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; border:1px solid var(--border-soft); border-radius:999px; background:color-mix(in srgb,var(--bg-surface) 76%,transparent); color:var(--text-secondary); cursor:pointer; font:600 .68rem var(--font-sans); transition:border-color var(--t-fast),color var(--t-fast),transform var(--t-fast); }
+  .recent-scene-chip:hover { border-color:var(--accent); color:var(--accent); transform:translateY(-1px); }
+  body[data-first-creation="ready"] .generate-btn { animation:firstCreationPulse 1.8s ease-in-out infinite; }
+  body[data-first-creation="ready"] .guide-bar { border-color:color-mix(in srgb,var(--accent) 55%,var(--border-soft)); color:var(--text-primary); }
+  @keyframes firstCreationPulse { 0%,100%{box-shadow:0 12px 32px rgba(26,16,45,.18);} 50%{box-shadow:0 0 0 5px var(--accent-glow),0 16px 38px rgba(26,16,45,.24);} }
   body.step-4 .stage-placeholder { display:none; }
   body.focus-mode .nav, body.focus-mode .nav-back, body.focus-mode .pb-header, body.focus-mode .setup-strip,
   body.focus-mode .col-left, body.focus-mode .col-right, body.focus-mode .history-wrap, body.focus-mode .collapsible,
@@ -92,12 +149,19 @@
   #stepResult { display:none; }
   body.step-4 #stepResult { display:flex; flex-direction:column; gap:var(--s-3); min-height:clamp(500px,68vh,860px); }
   #stepResult > .panel-title { order:0; margin-bottom:0; }
+  #stepResult > .first-success-coach { order:1; }
   #stepResult > #sdResultArea { order:1; }
   #stepResult > .preview-actions { order:2; }
   #stepResult > .sd-inline-options { order:3; }
   #stepResult > .voice-studio { order:4; width:100%; max-width:none; overflow:hidden; position:static; }
   #stepResult > .prompt-details { order:5; }
   .prompt-details { background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-md); }
+  .first-success-coach { display:none; padding:var(--s-3); border:1px solid color-mix(in srgb,var(--accent) 36%,var(--border-soft)); border-radius:var(--r-md); background:linear-gradient(115deg,color-mix(in srgb,var(--accent-soft) 72%,transparent),transparent); }
+  body[data-first-success="1"] .first-success-coach { display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); animation:pbWorkspaceIn .3s ease both; }
+  .first-success-copy { min-width:0; color:var(--text-secondary); font-size:.75rem; line-height:1.5; }
+  .first-success-copy strong { display:block; color:var(--text-primary); font-size:.8rem; }
+  .first-success-actions { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:6px; }
+  .first-success-actions .btn { min-height:34px; padding-inline:10px; font-size:.68rem; }
   .prompt-summary { padding:var(--s-3); cursor:pointer; font-size:.84rem; font-weight:650; color:var(--text-secondary); list-style:none; }
   .prompt-summary::-webkit-details-marker { display:none; }
   .prompt-summary::before { content:'▶'; display:inline-block; margin-right:var(--s-2); font-size:.7rem; transition:transform .2s; }
@@ -274,6 +338,17 @@
 
   /* ---- 右栏: 导演台 ---- */
   .director-card { background:color-mix(in srgb,var(--bg-surface) 96%,var(--bg-base)); border:1px solid var(--border-soft); border-radius:var(--r-lg); padding:var(--s-3); box-shadow:none; }
+  .director-card, .panel { transition:border-color var(--t-fast),background var(--t-fast),transform var(--t-fast); }
+  .director-card:hover { border-color:color-mix(in srgb,var(--accent) 24%,var(--border-soft)); }
+  .director-mode-bar { display:grid; gap:8px; padding:10px; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:color-mix(in srgb,var(--bg-surface) 90%,transparent); }
+  .director-mode-head { display:flex; align-items:center; justify-content:space-between; gap:var(--s-2); }
+  .director-mode-title { color:var(--text-primary); font-size:.76rem; font-weight:720; }
+  .director-mode-switch { display:inline-flex; padding:2px; border:1px solid var(--border-soft); border-radius:999px; background:var(--bg-deep); }
+  .director-mode-option { min-height:28px; padding:0 10px; border:0; border-radius:999px; background:transparent; color:var(--text-muted); cursor:pointer; font:650 .68rem var(--font-sans); }
+  .director-mode-option.active { background:var(--bg-surface); color:var(--accent); box-shadow:0 2px 8px rgba(20,12,40,.08); }
+  .director-auto-summary { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--text-muted); font-size:.67rem; }
+  body[data-director-mode="basic"] .advanced-decision { display:none; }
+  body[data-director-mode="basic"] .scene-tag.raw { display:none; }
   .director-card[open] { border-color:color-mix(in srgb,var(--accent) 32%,var(--border-soft)); }
   .director-card-head { display: flex; align-items: center; justify-content: space-between; gap:var(--s-2); margin:0; cursor:pointer; list-style:none; }
   .director-card-head::-webkit-details-marker { display:none; }
@@ -344,23 +419,21 @@
 
   /* History */
   .history-wrap { margin-top: var(--s-6); }
-  .history-list { display: flex; flex-direction: column; gap: var(--s-2); margin-top: var(--s-3); }
-  .history-item {
-    display: flex; align-items: center; gap: var(--s-5);
-    background: var(--bg-surface); border: 1px solid var(--border-soft);
-    border-radius: var(--r-lg); padding: var(--s-3) var(--s-4);
-    transition: border-color var(--t-fast), background var(--t-fast);
-  }
-  .history-item:hover { border-color: var(--border-strong); background: var(--bg-elevated); }
-  .history-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
-  .history-text {
-    font-family: var(--font-mono); font-size: 0.78rem; line-height: 1.65;
-    color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  }
+  .history-list { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:var(--s-3); margin-top:var(--s-3); }
+  .history-item { min-width:0; overflow:hidden; display:flex; flex-direction:column; background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-lg); transition:border-color var(--t-fast),background var(--t-fast),transform var(--t-fast),box-shadow var(--t-fast); }
+  .history-item:hover { border-color:color-mix(in srgb,var(--accent) 34%,var(--border-soft)); background:var(--bg-elevated); transform:translateY(-2px); box-shadow:0 16px 36px rgba(20,12,40,.08); }
+  .history-thumb { position:relative; aspect-ratio:16/10; overflow:hidden; background:radial-gradient(circle at 30% 25%,var(--accent-soft),transparent 42%),var(--bg-deep); }
+  .history-thumb img { width:100%; height:100%; display:block; object-fit:cover; object-position:center 20%; transition:transform .5s cubic-bezier(.2,.75,.2,1),filter .35s ease; }
+  .history-item:hover .history-thumb img { transform:scale(1.025); }
+  .history-thumb img.history-placeholder { object-fit:contain; object-position:right bottom; opacity:.38; filter:saturate(.72); }
+  .history-thumb-badge { position:absolute; left:10px; bottom:10px; padding:4px 8px; border:1px solid rgba(255,255,255,.2); border-radius:999px; background:rgba(18,13,29,.56); color:#fff; font:650 .63rem var(--font-sans); backdrop-filter:blur(12px); }
+  .history-main { min-width:0; display:flex; flex:1; flex-direction:column; gap:8px; padding:var(--s-3); }
+  .history-card-title { color:var(--text-primary); font-size:.88rem; font-weight:720; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .history-text { min-height:2.8em; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; color:var(--text-secondary); font-size:.72rem; line-height:1.45; }
   .history-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; font-size: 0.72rem; color: var(--text-muted); }
   .history-meta .primary { color: var(--text-secondary); font-weight: 600; }
   .history-meta .sep { color: var(--border-strong); }
-  .history-side { flex: 0 0 auto; display: flex; align-items: center; gap: var(--s-3); }
+  .history-side { display:flex; align-items:center; justify-content:space-between; gap:var(--s-2); margin-top:auto; padding-top:2px; }
   .history-rating {
     min-width: 70px; display: inline-flex; align-items: center; justify-content: flex-end; gap: 5px;
     color: var(--text-muted); font-size: 0.72rem; white-space: nowrap;
@@ -386,18 +459,8 @@
   .history-action.delete { width: 32px; padding: 0; color: var(--text-muted); font-size: 1rem; }
   .history-action.delete:hover { color: var(--danger); background: rgba(239,83,80,0.1); }
 
-  @media (max-width: 680px) {
-    .history-item { align-items: stretch; flex-direction: column; gap: var(--s-2); padding: var(--s-3); }
-    .history-side { width: 100%; justify-content: space-between; }
-    .history-rating { justify-content: flex-start; }
-  }
-
-  @media (max-width: 400px) {
-    .history-side { align-items: stretch; flex-direction: column; }
-    .history-actions { width: 100%; }
-    .history-action { flex: 1; }
-    .history-action.delete { flex: 0 0 34px; width: 34px; }
-  }
+  @media (max-width: 680px) { .history-list { grid-template-columns:1fr; } .history-rating { justify-content:flex-start; } }
+  @media (max-width: 400px) { .history-actions { flex:1; } .history-action { flex:1; } .history-action.delete { flex:0 0 34px; width:34px; } }
 
   /* Training / negative */
   .collapsible { border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: var(--s-3); margin-top: var(--s-4); }
@@ -436,24 +499,6 @@
   .review-notes:focus { border-color: var(--accent); }
   .review-image-source { border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: var(--s-3); margin-bottom: var(--s-3); background: var(--bg-deep); }
   .review-image-source.primary { border-color: color-mix(in srgb, var(--accent) 55%, var(--border-soft)); }
-  /* Onboarding modal */
-  .ob-overlay { position:fixed; inset:0; z-index:9980; background:rgba(20,20,26,0.72); backdrop-filter:blur(2px); display:none; }
-  body[data-ob-active="1"] .ob-overlay { display:block; }
-  .ob-spot { position:absolute; border:2px solid var(--accent); border-radius:var(--r-lg); box-shadow:0 0 0 9999px rgba(20,20,26,0.72), 0 0 24px var(--accent-glow); transition:all var(--t-base); pointer-events:none; }
-  .ob-card { position:absolute; width:300px; background:var(--bg-surface); border:1px solid var(--accent); border-radius:var(--r-lg); padding:var(--s-4); box-shadow:var(--shadow-lg); z-index:9981; }
-  .ob-step { font-size:0.7rem; color:var(--text-muted); margin-bottom:var(--s-1); }
-  .ob-title { font-size:0.95rem; font-weight:600; color:var(--text-primary); margin-bottom:var(--s-3); }
-  .ob-actions { display:flex; justify-content:flex-end; gap:var(--s-2); }
-  @media (max-width: 768px){
-    .ob-card {
-      left:50% !important;
-      transform:translateX(-50%);
-      bottom:var(--s-6);
-      top:auto !important;
-      width:calc(100% - var(--s-6));
-      max-width: 400px;
-    }
-  }
   /* Quick preset select */
   #presetSelect { width:100%; background:var(--bg-deep); border:1px solid var(--accent); border-radius:var(--r-sm); color:var(--text-primary); padding:6px 8px; font-size:0.85rem; outline:none; }
   #presetSelect:focus { box-shadow: 0 0 0 2px var(--accent-glow); }
@@ -569,6 +614,9 @@
     .sd-inline-options label:has(select) { width:100%; justify-content:space-between; }
     .sd-inline-options select { flex:1; min-width:0; }
     .preview-actions .btn { flex:1 1 calc(50% - var(--s-2)); min-height:44px; }
+    body[data-first-success="1"] .first-success-coach { align-items:stretch; flex-direction:column; }
+    .first-success-actions { justify-content:stretch; }
+    .first-success-actions .btn { flex:1 1 calc(50% - 6px); min-height:40px; }
     .backup-actions .btn { flex:1 1 100%; min-height:44px; }
     .col-right .generate-btn { position:sticky; bottom:12px; z-index:12; min-height:50px; box-shadow:0 12px 32px rgba(26,16,45,.28),0 0 0 4px color-mix(in srgb,var(--bg-base) 82%,transparent); }
     body.focus-mode .pb { padding:var(--s-2); }
@@ -578,6 +626,80 @@
     body.focus-mode .stage-placeholder, body.focus-mode #stepResult { min-height:calc(100vh - 64px); }
   }
   /* 出图快门曝光动效 */
+  /* Liquid glass is reserved for floating controls and navigation surfaces. */
+  .focus-mode-btn, .utility-trigger, .api-status .badge, .stage-chrome {
+    background:
+      linear-gradient(135deg,var(--glass-specular),transparent 34%,transparent 68%,color-mix(in srgb,var(--accent) 10%,transparent)),
+      var(--glass-fill);
+    border-color:var(--glass-edge);
+    -webkit-backdrop-filter:blur(22px) saturate(165%) contrast(1.04);
+    backdrop-filter:blur(22px) saturate(165%) contrast(1.04);
+    box-shadow:inset 0 1px 0 var(--glass-highlight),inset 0 -1px 0 color-mix(in srgb,var(--accent) 8%,transparent),0 10px 28px rgba(18,10,38,.1);
+  }
+  .utility-popover, .guide-bar, .project-bar, .director-mode-bar, .first-success-coach, .backup-card {
+    background:
+      linear-gradient(125deg,var(--glass-specular),transparent 28%,transparent 72%,color-mix(in srgb,var(--accent) 9%,transparent)),
+      var(--glass-fill-strong);
+    border-color:var(--glass-edge);
+    -webkit-backdrop-filter:blur(28px) saturate(165%) contrast(1.035);
+    backdrop-filter:blur(28px) saturate(165%) contrast(1.035);
+    box-shadow:inset 0 1px 0 var(--glass-highlight),inset 0 -1px 0 color-mix(in srgb,var(--accent) 9%,transparent),var(--glass-shadow);
+  }
+  .stage-chrome { left:16px; right:16px; top:14px; padding:6px 10px; border:1px solid var(--glass-edge); border-radius:999px; }
+  .stage-placeholder {
+    background:
+      radial-gradient(circle at 28% 18%,color-mix(in srgb,var(--accent) 15%,transparent),transparent 35%),
+      linear-gradient(145deg,color-mix(in srgb,var(--bg-elevated) 86%,transparent),var(--bg-deep));
+    box-shadow:inset 0 1px 0 var(--glass-highlight),inset 0 -1px 0 color-mix(in srgb,var(--accent) 8%,transparent),0 28px 80px rgba(20,12,40,.12);
+    transition:background .7s ease,border-color .58s ease,box-shadow .58s ease;
+  }
+  body[data-character="natsume"] .stage-placeholder {
+    background:
+      radial-gradient(circle at 68% 22%,color-mix(in srgb,var(--accent) 18%,transparent),transparent 38%),
+      linear-gradient(145deg,color-mix(in srgb,var(--accent) 7%,var(--bg-elevated)),var(--bg-deep));
+  }
+  body[data-character="triad"] .stage-placeholder {
+    background:
+      radial-gradient(circle at 22% 20%,color-mix(in srgb,var(--nene-violet) 13%,transparent),transparent 34%),
+      radial-gradient(circle at 78% 26%,color-mix(in srgb,var(--natsume-amber) 13%,transparent),transparent 34%),
+      linear-gradient(145deg,color-mix(in srgb,var(--bg-elevated) 88%,transparent),var(--bg-deep));
+  }
+  .stage-placeholder::after {
+    content:''; position:absolute; z-index:1; inset:-35% -55%; pointer-events:none;
+    background:linear-gradient(108deg,transparent 38%,var(--glass-specular) 49%,transparent 60%);
+    opacity:0; transform:translateX(-22%) rotate(-4deg);
+  }
+  body.character-shifting .stage-placeholder::after { animation:characterGlassSweep .72s cubic-bezier(.2,.75,.2,1) both; }
+  body.character-shifting .stage-muse { transform:translateY(-4px) scale(1.015); }
+  .director-mode-option { transition:background .28s ease,color .28s ease,box-shadow .28s ease,transform .28s cubic-bezier(.2,.75,.2,1); }
+  .director-mode-option.active { background:linear-gradient(135deg,var(--glass-specular),var(--glass-fill-strong)); border:1px solid var(--glass-edge); box-shadow:inset 0 1px 0 var(--glass-highlight),0 4px 12px rgba(20,12,40,.1); }
+  .generate-btn {
+    isolation:isolate; overflow:hidden; border:1px solid color-mix(in srgb,var(--glass-edge) 80%,var(--accent));
+    background:linear-gradient(120deg,color-mix(in srgb,var(--accent) 92%,white 8%),var(--accent),color-mix(in srgb,var(--accent) 82%,var(--accent-violet)));
+    -webkit-backdrop-filter:blur(22px) saturate(160%); backdrop-filter:blur(22px) saturate(160%);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.55),inset 0 -1px 0 rgba(65,30,82,.16),0 14px 34px var(--accent-glow),0 0 0 5px color-mix(in srgb,var(--bg-base) 78%,transparent);
+    transition:background .58s ease,box-shadow .35s ease,transform .24s cubic-bezier(.2,.75,.2,1),border-color .58s ease;
+  }
+  .generate-btn::before {
+    content:''; position:absolute; z-index:-1; inset:-80% -35%; pointer-events:none;
+    background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.42) 49%,transparent 58%);
+    transform:translateX(-58%) rotate(6deg); transition:transform .7s cubic-bezier(.2,.75,.2,1);
+  }
+  .generate-btn:hover::before { transform:translateX(58%) rotate(6deg); }
+  .generate-btn:hover { transform:translateY(-1px) scale(1.005); box-shadow:inset 0 1px 0 rgba(255,255,255,.65),0 18px 42px var(--accent-glow),0 0 0 5px color-mix(in srgb,var(--bg-base) 76%,transparent); }
+  #pb-toast { background:var(--glass-fill-strong) !important; border-color:var(--glass-edge) !important; -webkit-backdrop-filter:blur(24px) saturate(160%); backdrop-filter:blur(24px) saturate(160%); box-shadow:inset 0 1px 0 var(--glass-highlight),var(--glass-shadow) !important; }
+  body.workspace-enter-result #stepResult { animation:directorViewIn .46s cubic-bezier(.2,.75,.2,1) both; }
+  body.workspace-enter-studio .stage-placeholder { animation:directorViewIn .42s cubic-bezier(.2,.75,.2,1) both; }
+  @keyframes directorViewIn { from { opacity:0; filter:blur(7px); transform:translateY(9px) scale(.992); } 55% { filter:blur(1px); } to { opacity:1; filter:none; transform:none; } }
+  @keyframes characterGlassSweep { 0% { opacity:0; transform:translateX(-22%) rotate(-4deg); } 42% { opacity:.26; } 100% { opacity:0; transform:translateX(22%) rotate(-4deg); } }
+  @media (max-width:768px) {
+    .focus-mode-btn, .utility-trigger, .api-status .badge, .stage-chrome { -webkit-backdrop-filter:blur(16px) saturate(145%); backdrop-filter:blur(16px) saturate(145%); }
+    .utility-popover, .guide-bar, .project-bar, .director-mode-bar, .first-success-coach, .backup-card { -webkit-backdrop-filter:blur(20px) saturate(145%); backdrop-filter:blur(20px) saturate(145%); }
+    .stage-chrome { left:12px; right:12px; top:12px; }
+  }
+  @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
+    .focus-mode-btn, .utility-trigger, .api-status .badge, .stage-chrome, .utility-popover, .guide-bar, .project-bar, .director-mode-bar, .first-success-coach, .backup-card { background:var(--bg-surface); }
+  }
   #sdImageSlot img { opacity: 0; transform: scale(0.98); animation: aicsShutterReveal 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards; box-shadow: var(--shadow-lg); border: 1px solid var(--border-soft); }
   @keyframes aicsShutterReveal {
     0% { opacity: 0; filter: brightness(1.7) blur(8px); transform: scale(0.96); }
@@ -591,7 +713,7 @@
 
 </style>
 </head>
-<body data-nav="director" data-character="nene">
+<body data-nav="director" data-character="nene" data-director-mode="basic">
 
 <!-- Nav (populated by tools/nav.js) -->
 <nav class="nav">
@@ -619,6 +741,7 @@
           <div class="utility-actions">
             <button class="btn btn-ghost" id="backupExportBtn" type="button" onclick="closeUtilityMenu();exportLocalData()"><span class="icon-label"><span data-icon="export"></span>导出备份</span></button>
             <button class="btn btn-ghost" type="button" onclick="closeUtilityMenu();openBackupPicker()"><span class="icon-label"><span data-icon="restore"></span>恢复备份</span></button>
+            <button class="btn btn-ghost wide" type="button" onclick="closeUtilityMenu();replayFirstCreation()"><span class="icon-label"><span data-icon="sparkle"></span>重新体验快速引导</span></button>
           </div>
           <input class="sr-only" id="backupFileInput" type="file" accept="application/json,.json" onchange="previewBackupFile()">
           <div class="utility-divider shortcut-only"></div>
@@ -703,8 +826,24 @@
         <img class="stage-muse natsume" src="../assets/characters/natsume-official.webp" alt="" aria-hidden="true" decoding="async">
         <div class="stage-message">
           <div class="stage-placeholder-icon">綾</div>
-          <div class="stage-placeholder-title">成片将在这里出现</div>
-          <div class="stage-placeholder-copy">选择场景并调整画面，生成结果会始终留在这里。</div>
+          <div class="stage-welcome">
+            <div class="stage-placeholder-title">先拍第一张，再慢慢认识工作台</div>
+            <div class="stage-placeholder-copy">我会替你选一张招牌场景并准备好导演参数，你只需要按一次生成。</div>
+            <div class="first-creation-actions">
+              <button class="btn btn-primary" id="firstRunExperienceBtn" type="button" onclick="startFirstCreation()"><span class="icon-label"><span data-icon="sparkle"></span>用精选场景体验一次</span></button>
+              <button class="btn btn-ghost" type="button" onclick="dismissFirstCreation()">我自己开始</button>
+            </div>
+            <div class="first-creation-note"><span data-icon="scene"></span>不会自动连接或调用 SD</div>
+          </div>
+          <div class="stage-idle">
+            <div class="stage-placeholder-title">成片将在这里出现</div>
+            <div class="stage-placeholder-copy">从招牌场景开始，或者继续最近一次灵感。</div>
+            <div class="stage-quick-actions">
+              <button class="btn btn-primary" type="button" onclick="loadRandomSignatureScene()"><span class="icon-label"><span data-icon="recommend"></span>随机精选</span></button>
+              <button class="btn btn-ghost" type="button" onclick="focusSceneSearch()"><span class="icon-label"><span data-icon="scene"></span>自己找场景</span></button>
+            </div>
+            <div class="recent-scene-shortcuts" id="recentSceneShortcuts" aria-label="最近使用场景"></div>
+          </div>
         </div>
       </section>
       <div class="monitor monitor-preview-collapsed" id="promptMonitor">
@@ -715,10 +854,10 @@
         <div class="token-row"><span class="token-counter" id="liveTokCount"><span class="num">0</span> tok <span class="bar"><i></i></span> / 77</span></div>
         <div class="art-warn" id="artWarn" style="display:none">⚠️ 检测到违反美术规范的标签</div>
         <div class="preview-actions">
-          <button class="btn btn-primary" onclick="copyPrompt()">📋 复制</button>
-          <button class="btn btn-ghost" onclick="exportPrompt()">⬇️ TXT</button>
-          <button class="btn btn-ghost" onclick="exportPNG()">📷 PNG</button>
-          <button class="btn btn-ghost" onclick="saveHistory()">💾 保存</button>
+          <button class="btn btn-primary" onclick="copyPrompt()"><span class="icon-label"><span data-icon="copy"></span>复制</span></button>
+          <button class="btn btn-ghost" onclick="exportPrompt()"><span class="icon-label"><span data-icon="download"></span>TXT</span></button>
+          <button class="btn btn-ghost" onclick="exportPNG()"><span class="icon-label"><span data-icon="image"></span>PNG</span></button>
+          <button class="btn btn-ghost" onclick="saveHistory()"><span class="icon-label"><span data-icon="save"></span>保存</span></button>
         </div>
       </div>
 
@@ -739,9 +878,18 @@
 
       <div class="result-frame step-panel" id="stepResult">
         <div class="panel-title"><span data-icon="scene"></span>输出 Result</div>
-        <div class="quick-create-banner" id="quickCreateBanner" hidden><strong>⚡ 快速创作</strong><span id="quickCreateCopy">正在准备稳定参数…</span></div>
+        <div class="first-success-coach" id="firstSuccessCoach">
+          <div class="first-success-copy"><strong>第一张已经准备好了</strong>接下来最实用的是保持 Seed 微调、排队生成和保存快照。</div>
+          <div class="first-success-actions">
+            <button class="btn btn-ghost" type="button" onclick="useLastSeedForTweak()">同 Seed 微调</button>
+            <button class="btn btn-ghost" type="button" onclick="enqueueSDGenerate()">加入队列</button>
+            <button class="btn btn-primary" type="button" onclick="saveHistory();dismissFirstSuccessTip()">保存快照</button>
+            <button class="btn btn-ghost" type="button" aria-label="关闭首次成功提示" onclick="dismissFirstSuccessTip()">×</button>
+          </div>
+        </div>
+        <div class="quick-create-banner" id="quickCreateBanner" hidden><strong>快速创作</strong><span id="quickCreateCopy">正在准备稳定参数…</span></div>
         <details class="prompt-details" id="promptDetails">
-          <summary class="prompt-summary">📝 Prompt 提示词 <span class="prompt-summary-hint">已折叠 · 点击展开</span></summary>
+          <summary class="prompt-summary"><span class="icon-label"><span data-icon="prompt"></span>Prompt 提示词</span> <span class="prompt-summary-hint">已折叠 · 点击展开</span></summary>
           <div class="preview-output" id="finalPrompt"></div>
         </details>
         <div class="sd-inline-options">
@@ -783,13 +931,13 @@
         </div>
         <div class="preview-actions">
           <button class="btn btn-ghost" onclick="toggleResult()">展开 Prompt</button>
-          <button class="btn btn-primary" onclick="copyPrompt()">📋 复制</button>
-          <button class="btn btn-primary" onclick="callSDGenerate()" id="sdGenBtn">🖼 生成图片</button>
-          <button class="btn btn-ghost" onclick="enqueueSDGenerate()" id="sdQueueBtn">＋ 加入队列</button>
-          <button class="btn btn-ghost" onclick="quickCreateCurrent()" id="quickCreateBtn">⚡ 快速重画</button>
+          <button class="btn btn-primary" onclick="copyPrompt()"><span class="icon-label"><span data-icon="copy"></span>复制</span></button>
+          <button class="btn btn-primary" onclick="callSDGenerate()" id="sdGenBtn"><span class="icon-label"><span data-icon="image"></span>生成图片</span></button>
+          <button class="btn btn-ghost" onclick="enqueueSDGenerate()" id="sdQueueBtn"><span class="icon-label"><span data-icon="queue"></span>加入队列</span></button>
+          <button class="btn btn-ghost" onclick="quickCreateCurrent()" id="quickCreateBtn"><span class="icon-label"><span data-icon="refresh"></span>快速重画</span></button>
           <button class="btn btn-ghost" onclick="cancelSDGenerate()" id="sdCancelBtn" title="多人共用同一 WebUI 时，会中断当前正在执行的任务" hidden>停止生成</button>
-          <button class="btn btn-ghost" onclick="openReview()">⭐ 评价</button>
-          <button class="btn btn-ghost" onclick="resetDirector()">🎬 再来一次</button>
+          <button class="btn btn-ghost" onclick="openReview()"><span class="icon-label"><span data-icon="star"></span>评价</span></button>
+          <button class="btn btn-ghost" onclick="resetDirector()"><span class="icon-label"><span data-icon="redo"></span>再来一次</span></button>
         </div>
         <div class="sd-queue" id="sdQueue" hidden>
           <div class="sd-queue-head"><span>生成队列 · 自动存入历史</span><span><button class="btn btn-ghost" id="sdQueueResumeBtn" type="button" onclick="resumeSDQueue()" hidden>继续</button> <span id="sdQueueCount">0 项</span></span></div>
@@ -801,19 +949,19 @@
           <div id="sdRecovery" class="sd-recovery" hidden><div class="sd-recovery-title" id="sdRecoveryTitle"></div><div class="sd-recovery-copy" id="sdRecoveryCopy"></div><div class="sd-recovery-actions"><button type="button" class="btn btn-primary" id="sdRecoveryAction" hidden></button></div><details id="sdRecoveryDetails"><summary>技术详情</summary><pre id="sdRecoveryDetail"></pre></details></div>
           <div id="sdImageSlot"></div>
           <div id="sdSaveActions" style="display:none;margin-top:var(--s-3);gap:var(--s-2);flex-wrap:wrap;justify-content:center;">
-            <button class="btn btn-primary" id="sdHistorySaveBtn" onclick="saveGeneratedImage()">💾 保存到历史</button>
-            <button class="btn btn-ghost" onclick="useLastSeedForTweak()">🎛 同 Seed 微调</button>
-            <button class="btn btn-ghost" onclick="downloadGeneratedImage()">⬇ 下载 PNG</button>
+            <button class="btn btn-primary" id="sdHistorySaveBtn" onclick="saveGeneratedImage()"><span class="icon-label"><span data-icon="save"></span>保存到历史</span></button>
+            <button class="btn btn-ghost" onclick="useLastSeedForTweak()"><span class="icon-label"><span data-icon="seed"></span>同 Seed 微调</span></button>
+            <button class="btn btn-ghost" onclick="downloadGeneratedImage()"><span class="icon-label"><span data-icon="download"></span>下载 PNG</span></button>
           </div>
         </div>
 
         <section class="voice-studio" aria-labelledby="voiceStudioTitle">
         <div class="voice-head">
-          <div><div class="voice-title" id="voiceStudioTitle">🎙 让画面开口</div><div class="voice-sub">画面文字与声音彼此独立：看中文，默认听角色说日文。</div></div>
+          <div><div class="voice-title icon-label" id="voiceStudioTitle"><span data-icon="microphone"></span>让画面开口</div><div class="voice-sub">画面文字与声音彼此独立：看中文，默认听角色说日文。</div></div>
           <span class="voice-state" id="voiceState">检测中</span>
         </div>
         <div class="voice-controls">
-          <label class="voice-field">角色<select id="voiceCharacter" onchange="refreshVoiceText(true)"><option value="nene">🌸 宁宁</option><option value="natsume">☕ 夏目</option></select></label>
+          <label class="voice-field">角色<select id="voiceCharacter" onchange="refreshVoiceText(true)"><option value="nene">宁宁</option><option value="natsume">夏目</option></select></label>
           <label class="voice-field">配音语言<select id="voiceLanguage" onchange="refreshVoiceScript(true)"><option value="ja" selected>日本語 · 默认</option><option value="zh">中文</option></select></label>
           <label class="voice-field">内容<select id="voiceMode" onchange="refreshVoiceText(true)"><option value="dialogue">提取角色台词</option><option value="story">朗读完整故事</option></select></label>
           <label class="voice-field">语音情绪<select id="voiceEmotion" onchange="checkVoiceStatus()"><option value="auto" selected>自动 · 跟随场景</option><option value="neutral">平静</option><option value="gentle">温柔</option><option value="happy">开心</option><option value="shy">害羞 / 暧昧</option><option value="serious">认真 / 紧张</option><option value="sad">难过 / 惆怅</option></select></label>
@@ -831,22 +979,26 @@
           <textarea class="voice-text" id="voiceText" maxlength="2000" placeholder="选择场景后会准备当前语言的配音稿，也可以在这里单独改写。"></textarea>
         </details>
         <div class="voice-actions">
-          <button class="btn btn-ghost" type="button" onclick="refreshVoiceText(true)">↻ 重新提取</button>
-          <button class="btn btn-ghost" id="voiceTranslateBtn" type="button" onclick="translateVoiceCaption()">🈶 翻成日语</button>
-          <button class="btn btn-ghost" type="button" onclick="previewVoice()">🔊 本机试听</button>
-          <button class="btn btn-primary" id="voiceGenerateBtn" type="button" onclick="generateAIVoice()">✨ AI 声线生成</button>
+          <button class="btn btn-ghost" type="button" onclick="refreshVoiceText(true)"><span class="icon-label"><span data-icon="refresh"></span>重新提取</span></button>
+          <button class="btn btn-ghost" id="voiceTranslateBtn" type="button" onclick="translateVoiceCaption()"><span class="icon-label"><span data-icon="translate"></span>翻成日语</span></button>
+          <button class="btn btn-ghost" type="button" onclick="previewVoice()"><span class="icon-label"><span data-icon="volume"></span>本机试听</span></button>
+          <button class="btn btn-primary" id="voiceGenerateBtn" type="button" onclick="generateAIVoice()"><span class="icon-label"><span data-icon="microphone"></span>AI 声线生成</span></button>
           <button class="btn btn-ghost" type="button" onclick="stopVoice()">■ 停止</button>
         </div>
         <div class="voice-status" id="voiceStatus" role="status" aria-live="polite">选择一个场景后即可开始配音。</div>
         <audio class="voice-audio" id="voiceAudio" controls preload="none"></audio>
-        <button class="btn btn-ghost voice-download" id="voiceDownload" type="button" onclick="downloadVoice()">⬇ 下载 WAV</button>
+        <button class="btn btn-ghost voice-download" id="voiceDownload" type="button" onclick="downloadVoice()"><span class="icon-label"><span data-icon="download"></span>下载 WAV</span></button>
       </section>
     </div>
     </div>
 
     <!-- ===== 右栏: 导演台 ===== -->
     <div class="director-col col-right step-panel" id="stepDecisions">
-      <details class="director-card manual-tags-panel">
+      <div class="director-mode-bar">
+        <div class="director-mode-head"><span class="director-mode-title">导演调整</span><div class="director-mode-switch" aria-label="导演参数模式"><button class="director-mode-option active" id="directorModeBasic" type="button" aria-pressed="true" onclick="setDirectorMode('basic')">基础</button><button class="director-mode-option" id="directorModePro" type="button" aria-pressed="false" onclick="setDirectorMode('pro')">专业</button></div></div>
+        <div class="director-auto-summary" id="directorAutoSummary">场景会自动准备光照、构图和色彩</div>
+      </div>
+      <details class="director-card manual-tags-panel advanced-decision">
         <summary class="director-card-head"><span class="director-card-name"><span data-icon="tag"></span>标签 · Tags</span><span class="director-card-selected"><span id="selCount">0</span> 选中</span></summary>
         <div class="manual-tags-tools"><button class="btn btn-ghost" onclick="suggestTagsFromStory()"><span class="icon-label"><span data-icon="recommend"></span>按故事推荐</span></button></div>
         <div class="cat-tabs" id="catTabs"></div>
@@ -866,15 +1018,15 @@
         <summary class="director-card-head"><span class="director-card-name"><span data-icon="camera"></span>镜头 · Shot</span><span class="director-card-selected" id="selShot"></span></summary>
         <div class="options" id="opt-shot"></div>
       </details>
-      <details class="director-card">
+      <details class="director-card advanced-decision">
         <summary class="director-card-head"><span class="director-card-name"><span data-icon="light"></span>光照 · Lighting</span><span class="director-card-selected" id="selLighting"></span></summary>
         <div class="options" id="opt-lighting"></div>
       </details>
-      <details class="director-card">
+      <details class="director-card advanced-decision">
         <summary class="director-card-head"><span class="director-card-name"><span data-icon="composition"></span>构图 · Composition</span><span class="director-card-selected" id="selComposition"></span></summary>
         <div class="options" id="opt-composition"></div>
       </details>
-      <details class="director-card">
+      <details class="director-card advanced-decision">
         <summary class="director-card-head"><span class="director-card-name"><span data-icon="color"></span>色彩 · Color</span><span class="director-card-selected" id="selColor"></span></summary>
         <div class="mood-grid" id="moodGrid"></div>
       </details>
@@ -934,19 +1086,6 @@
   </div>
 </div>
 </article>
-
-<!-- Onboarding -->
-<div class="ob-overlay" id="obOverlay">
-  <div class="ob-spot" id="obSpot"></div>
-  <div class="ob-card" id="obCard">
-    <div class="ob-step" id="obStepNum">1/3</div>
-    <div class="ob-title" id="obTitle"></div>
-    <div class="ob-actions">
-      <button class="btn btn-ghost" id="obSkip" type="button">跳过</button>
-      <button class="btn btn-primary" id="obNext" type="button">下一步</button>
-    </div>
-  </div>
-</div>
 
 <div class="backup-overlay" id="backupOverlay" role="dialog" aria-modal="true" aria-labelledby="backupTitle">
   <div class="backup-card">

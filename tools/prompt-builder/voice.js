@@ -176,7 +176,7 @@ function translateVoiceCaption() {
     flash('日语翻译失败: ' + error.message);
     return '';
   }).finally(function() {
-    if (button) { button.textContent = '🈶 翻成日语'; checkVoiceStatus(); }
+    if (button) { button.textContent = '翻成日语'; checkVoiceStatus(); }
   });
 }
 
@@ -347,7 +347,7 @@ function generateAIVoice() {
     }
   }).finally(function() {
     _voiceRequest = null;
-    button.textContent = '✨ AI 声线生成';
+    button.textContent = 'AI 声线生成';
     checkVoiceStatus();
   });
 }
