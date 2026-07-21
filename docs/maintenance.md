@@ -9,7 +9,7 @@
 | `data/scenes/*.json` | 场景的唯一数据源，按角色与系列分片 | 是 |
 | `data/scenes/manifest.json` | 声明分片与顺序 | 新增分片时编辑 |
 | `data/scenes.json` | 供静态网页读取的构建产物 | 否 |
-| `data/curation.json` | 首页精选顺序与情绪入口 | 是 |
+| `data/curation.json` | 精品层级、推荐理由、语义搜索和情绪入口 | 是 |
 | `scripts/scene-store.js` | 所有维护脚本共用的读写层 | 结构变化时编辑 |
 
 ## 日常新增或修改场景
@@ -17,7 +17,7 @@
 1. 在对应的 `data/scenes/*.json` 分片中编辑场景。
 2. 运行 `npm run scenes:normalize`，统一评级、标签和负面提示词。
 3. 运行 `npm run validate`，确认构建产物、编号、角色 DNA 与字段规则全部通过。
-4. 若要将新场景加入精选，编辑 `data/curation.json`。
+4. 若要将新场景加入精选、招牌入口或语义搜索，编辑 `data/curation.json`。
 
 `scenes:normalize` 会同时更新分片和 `data/scenes.json`。只改了普通文案、不需要规范化时，也可以运行 `npm run scenes:build` 重新生成聚合文件。
 
@@ -51,5 +51,7 @@ npm run validate
 
 - 不直接编辑 `data/scenes.json`；它是生成文件。
 - 不在 HTML 中硬编码精选场景 ID 或情绪入口，统一写入 `data/curation.json`。
+- 招牌场景必须同时存在于 `curatedSceneIds`，并在 `recommendationReasons` 中说明推荐理由。
+- 新增自然语言搜索词时，在 `searchAliases` 中提供至少一组能够命中现有场景的同义词。
 - 新增角色时，同时增加角色资料、对应分片、Manifest 条目和校验规则。
 - 批量脚本必须通过 `scene-store.js` 写回，避免只改聚合文件。

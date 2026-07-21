@@ -4,12 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>绫季绘境 · 把心动的一瞬，画成一张 CG</title>
-<link rel="stylesheet" href="css/design-system.css?v=6">
-<link rel="stylesheet" href="css/scene-card.css?v=5">
-<script src="tools/nav.js?v=4"></script>
+<link rel="stylesheet" href="css/design-system.css?v=7">
+<link rel="stylesheet" href="css/scene-card.css?v=6">
+<script src="tools/nav.js?v=5"></script>
 <script src="tools/scene-card.js?v=5"></script>
+<script src="tools/scene-ux.js?v=1"></script>
 <script src="tools/image-store.js?v=5"></script>
-<script src="tools/theme.js?v=4"></script>
+<script src="tools/theme.js?v=5"></script>
 <style>
   /* ============================================================
      Home — 导演场记板美学
@@ -204,6 +205,10 @@
   .recent-body { padding: var(--s-3); }
   .recent-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 2px; }
   .recent-meta { font-size: 0.72rem; color: var(--text-muted); }
+  .continue-hint { min-height:20px; margin-top:var(--s-2); color:var(--text-muted); font-size:.78rem; }
+  .continue-hint strong { color:var(--accent); }
+  .recent-scenes-row { display:flex; gap:var(--s-3); overflow-x:auto; padding:4px 2px var(--s-3); scroll-snap-type:x proximity; }
+  .recent-scenes-row > * { flex:0 0 min(300px,82vw); scroll-snap-align:start; }
   @media (max-width: 600px) { .recent-grid { grid-template-columns: 1fr 1fr; } }
   .empty {
     text-align: center; padding: var(--s-7) var(--s-5);
@@ -235,13 +240,14 @@
 <section class="container">
   <div class="home-hero">
     <div class="hero-copy">
-      <span class="eyebrow">✦ TSUKIHA VISUAL ATELIER</span>
-      <h1 class="hero-title">月栖映像<span class="jp">把心动的一瞬，画成一张 CG</span></h1>
+      <span class="eyebrow">✦ NENE &amp; NATSUME ATELIER</span>
+      <h1 class="hero-title">绫季绘境<span class="jp">把心动的一瞬，画成一张 CG</span></h1>
       <p class="hero-sub">从一个想画的瞬间开始，把角色、情绪与光线，编织成只属于你的二次元 CG。</p>
       <div class="ctas">
-        <a href="tools/prompt-builder.html" class="cta cta-primary"><span class="ic">✨</span> 开始创作</a>
+        <a href="tools/prompt-builder.html" class="cta cta-primary" id="continueCta"><span class="ic">✨</span> 开始创作</a>
         <a href="tools/gallery.html" class="cta cta-ghost"><span class="ic">🎞</span> 浏览作品</a>
       </div>
+      <div class="continue-hint" id="continueHint"></div>
       <div class="chain">
         <div class="chain-step"><span class="ic">📖</span> 故事 <span class="en">Story</span></div>
         <span class="chain-arrow">→</span>
@@ -254,11 +260,11 @@
         <div class="chain-step final"><span class="ic">🖼</span> 画面 <span class="en">Image</span></div>
       </div>
       <div class="hero-strip" aria-labelledby="featuredScenesLabel">
-        <div class="strip-label" id="featuredScenesLabel"><span class="dot"></span> 最近新增 · <span id="sceneCountCopy">场景加载中</span></div>
+        <div class="strip-label" id="featuredScenesLabel"><span class="dot"></span> 主理人精选 · <span id="sceneCountCopy">场景加载中</span></div>
         <div class="strip-scroll" id="featuredScenes"></div>
       </div>
     </div>
-    <aside class="hero-orbit" aria-label="月栖映像品牌视觉"><div class="orbit-label"><strong>SCENE TO MEMORY</strong><span>故事不是素材库，是值得被珍藏的一瞬。</span></div></aside>
+    <aside class="hero-orbit" aria-label="绫季绘境品牌视觉"><div class="orbit-label"><strong>SCENE TO MEMORY</strong><span>故事不是素材库，是值得被珍藏的一瞬。</span></div></aside>
   </div>
 </section>
 
@@ -347,37 +353,75 @@
 </section>
 
 <!-- Recent Works -->
+<section class="container home-section" id="recentScenesSection" hidden>
+  <div class="home-section-head"><h2>最近用过的场景</h2><a href="tools/scene-explorer.html" class="link">继续找灵感 →</a></div>
+  <div id="recentScenes" class="recent-scenes-row"></div>
+</section>
+
 <section class="container home-section">
   <div class="home-section-head"><h2>最近创作</h2><a href="tools/gallery.html" class="link">查看全部 →</a></div>
   <div id="recentWorks" class="recent-grid"></div>
 </section>
 
 <footer class="footer">
-  <p>AI CG Studio · 像导演一样创作每一个瞬间</p>
+  <p>绫季绘境 · 像导演一样创作每一个瞬间</p>
 </footer>
 <script>
 (function(){
   const PRJ_KEY='aics_projects';
+  const DRAFT_KEY='aics_pb_last_draft';
   let _cachedProjects = [];
   function esc(v){ return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
   function charName(id){ return id==='nene'?'宁宁':(id==='natsume'?'夏目':(id||'·')); }
   function fmtDate(ts){ return new Date(ts).toLocaleDateString('zh-CN',{month:'short',day:'numeric'}); }
   function getProject(id){return _cachedProjects.find(function(p){return p.id===id;});}
 
+  function setContinueLink(href, label, hint){
+    const cta=document.getElementById('continueCta'),copy=document.getElementById('continueHint');
+    if(!cta)return;
+    cta.href=href;cta.innerHTML='<span class="ic">↩</span> '+esc(label);
+    if(copy)copy.innerHTML=hint?'<strong>'+esc(hint)+'</strong>':' ';
+  }
+
+  function initContinueDraft(){
+    try{
+      const draft=JSON.parse(localStorage.getItem(DRAFT_KEY)||'null');
+      if(!draft||!draft.updatedAt||(!draft.sceneId&&!draft.story))return false;
+      const title=draft.sceneTitle||draft.story||'未完成创作';
+      setContinueLink('tools/prompt-builder.html?resume=1','继续上次创作','上次停在「'+String(title).slice(0,24)+'」');
+      return true;
+    }catch(e){return false;}
+  }
+
+  function renderRecentScenes(scenes){
+    const section=document.getElementById('recentScenesSection'),host=document.getElementById('recentScenes');
+    let recent=AICSceneUX.readRecent(localStorage);
+    if(!Array.isArray(recent)||!recent.length||!section||!host)return;
+    const picks=recent.map(function(item){return scenes.find(function(scene){return scene.id===item.id;});}).filter(Boolean).slice(0,6);
+    if(!picks.length)return;
+    section.hidden=false;host.innerHTML='';
+    picks.forEach(function(scene){host.appendChild(createSceneCard(scene,{mode:'strip',clickable:true,onPick:function(s){window.location.href='tools/prompt-builder.html?scene='+encodeURIComponent(s.id)+'&step=4&generate=1';}}));});
+  }
+
   function renderSceneHighlights(){
-    return fetch('data/scenes.json?v=6').then(function(r){
-      if(!r.ok) throw new Error('HTTP '+r.status);
-      return r.json();
-    }).then(function(scenes){
-      document.getElementById('sceneCountCopy').textContent = scenes.length + ' 个场景';
-      document.getElementById('sceneLibraryCopy').textContent = scenes.length + ' 个精选场景，情绪/镜头/光照完整预填。';
+    return Promise.all([
+      fetch('data/scenes.json?v=9').then(function(r){if(!r.ok)throw new Error('Scenes HTTP '+r.status);return r.json();}),
+      fetch('data/curation.json?v=2').then(function(r){if(!r.ok)throw new Error('Curation HTTP '+r.status);return r.json();})
+    ]).then(function(result){
+      var scenes=result[0],curation=result[1]||{};
+      var signatures=Array.isArray(curation.signatureSceneIds)?curation.signatureSceneIds:[];
+      var curated=Array.isArray(curation.curatedSceneIds)?curation.curatedSceneIds:[];
+      var ids=signatures.concat(curated.filter(function(id){return signatures.indexOf(id)<0;}));
+      document.getElementById('sceneCountCopy').textContent = ids.length + ' 个优先场景';
+      document.getElementById('sceneLibraryCopy').textContent = ids.length + ' 个招牌与精选场景，完整库共 ' + scenes.length + ' 个。';
       var host = document.getElementById('featuredScenes');
-      scenes.filter(function(s){return !s.mature;}).slice(-6).reverse().forEach(function(scene){
+      ids.map(function(id){return scenes.find(function(scene){return scene.id===id;});}).filter(function(scene){return scene&&!scene.mature;}).slice(0,6).forEach(function(scene){
         host.appendChild(createSceneCard(scene, {
           mode:'strip', clickable:true,
           onPick:function(s){ window.location.href='tools/prompt-builder.html?scene='+encodeURIComponent(s.id)+'&step=4&generate=1'; }
         }));
       });
+      renderRecentScenes(scenes);
     }).catch(function(){
       document.getElementById('sceneCountCopy').textContent = '精选场景';
     });
@@ -400,6 +444,7 @@
       return;
     }
     const recent = history.slice(0, 3);
+    if(!initContinueDraft()&&recent[0])setContinueLink('tools/prompt-builder.html?regen='+encodeURIComponent(recent[0].id),'继续最近作品','最近保存「'+(recent[0].sceneTitle||recent[0].scene||'未命名')+'」');
     el.innerHTML = recent.map(h=>{
       const seed = h.seed ? ' · seed ' + h.seed : '';
       return `<a class="recent-card" href="tools/prompt-builder.html?regen=${encodeURIComponent(h.id)}">
@@ -420,6 +465,7 @@
     });
   }
 
+  initContinueDraft();
   renderSceneHighlights();
   AICKVStore.init().then(function(){ return renderRecent(); });
 })();

@@ -156,14 +156,43 @@ for (let number = 1; number <= scenes.length; number += 1) {
 }
 
 const curatedSceneIds = curationData && Array.isArray(curationData.curatedSceneIds) ? curationData.curatedSceneIds : [];
+const signatureSceneIds = curationData && Array.isArray(curationData.signatureSceneIds) ? curationData.signatureSceneIds : [];
+const reviewSceneIds = curationData && Array.isArray(curationData.reviewSceneIds) ? curationData.reviewSceneIds : [];
+const recommendationReasons = curationData && curationData.recommendationReasons && typeof curationData.recommendationReasons === 'object' ? curationData.recommendationReasons : {};
+const searchAliases = curationData && curationData.searchAliases && typeof curationData.searchAliases === 'object' ? curationData.searchAliases : {};
 const moodRails = curationData && Array.isArray(curationData.moodRails) ? curationData.moodRails : [];
 if (!curatedSceneIds.length) errors.push('curation.json must define curatedSceneIds');
+if (!signatureSceneIds.length) errors.push('curation.json must define signatureSceneIds');
 if (!moodRails.length) errors.push('curation.json must define moodRails');
 const curatedSeen = new Set();
 for (const sceneId of curatedSceneIds) {
   if (curatedSeen.has(sceneId)) errors.push('curation.json duplicate curated scene: ' + sceneId);
   curatedSeen.add(sceneId);
   if (!ids.has(sceneId)) errors.push('curation.json references missing scene: ' + sceneId);
+}
+for (const sceneId of signatureSceneIds) {
+  if (!ids.has(sceneId)) errors.push('curation.json signature references missing scene: ' + sceneId);
+  if (!curatedSeen.has(sceneId)) errors.push('curation.json signature must also be curated: ' + sceneId);
+  if (!String(recommendationReasons[sceneId] || '').trim()) errors.push('curation.json signature needs a recommendation reason: ' + sceneId);
+}
+for (const sceneId of reviewSceneIds) {
+  if (!ids.has(sceneId)) errors.push('curation.json review references missing scene: ' + sceneId);
+  if (curatedSeen.has(sceneId)) errors.push('curation.json scene cannot be both curated and review: ' + sceneId);
+}
+for (const sceneId of Object.keys(recommendationReasons)) {
+  if (!ids.has(sceneId)) errors.push('curation.json recommendation reason references missing scene: ' + sceneId);
+}
+const curationText = (scene) => [scene.id, scene.title, scene.story, scene.emotion, scene.char, scene.category, scene.season,
+  scene.timeOfDay, scene.location, scene.weather, scene.camera, scene.lighting].concat(scene.tags || []).join(' ').toLowerCase();
+for (const [intent, aliases] of Object.entries(searchAliases)) {
+  if (!Array.isArray(aliases) || !aliases.length) {
+    errors.push('curation.json search alias must be a non-empty array: ' + intent);
+    continue;
+  }
+  const candidates = [intent].concat(aliases).map((item) => String(item).toLowerCase());
+  if (!scenes.some((scene) => candidates.some((candidate) => curationText(scene).includes(candidate)))) {
+    errors.push('curation.json search alias returns no scenes: ' + intent);
+  }
 }
 for (const rail of moodRails) {
   const label = rail && rail.id ? rail.id : 'mood rail';
@@ -173,8 +202,7 @@ for (const rail of moodRails) {
   }
   const terms = String(rail.query).toLowerCase().split(/\s+/).filter(Boolean);
   const hasMatch = scenes.some((scene) => {
-    const text = [scene.id, scene.title, scene.story, scene.emotion, scene.char, scene.category, scene.season,
-      scene.timeOfDay, scene.location, scene.weather, scene.camera, scene.lighting].concat(scene.tags || []).join(' ').toLowerCase();
+    const text = curationText(scene);
     return terms.every((term) => text.includes(term));
   });
   if (!hasMatch) errors.push(label + ': curation query returns no scenes: ' + rail.query);

@@ -5,10 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>灵感场景 · 绫季绘境</title>
 <link rel="stylesheet" href="../css/design-system.css?v=7">
-<link rel="stylesheet" href="../css/scene-card.css?v=5">
+<link rel="stylesheet" href="../css/scene-card.css?v=6">
 <script src="nav.js?v=5"></script>
 <script src="scene-card.js?v=5"></script>
-<script src="theme.js?v=4"></script>
+<script src="scene-ux.js?v=1"></script>
+<script src="theme.js?v=5"></script>
 <style>
   .page { max-width: 1100px; margin: 0 auto; padding: var(--s-5) var(--s-4); }
   .nav-back { display: inline-flex; align-items: center; gap: var(--s-2); color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4); }
@@ -43,6 +44,8 @@
   .scene-search::placeholder { color: var(--text-muted); }
   .scene-search-clear { position:absolute; top:50%; right:9px; transform:translateY(-50%); width:28px; height:28px; border:0; border-radius:50%; background:transparent; color:var(--text-muted); cursor:pointer; font-size:1rem; }
   .scene-search-clear:hover { color:var(--accent); background:var(--accent-soft); }
+  .search-intent { min-height:22px; margin:-10px 4px var(--s-3); color:var(--text-muted); font-size:.76rem; }
+  .search-intent strong { color:var(--accent); }
   .scene-toolbar { display: grid; gap: var(--s-3); margin-bottom: var(--s-5); }
   .scene-filter-label { font-size: .72rem; color: var(--text-muted); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-bottom: var(--s-2); }
   .scene-cats { display: flex; flex-wrap: wrap; gap: var(--s-2); }
@@ -80,6 +83,9 @@
   .ex-tag { padding: 2px 8px; background: var(--bg-elevated); border-radius: 20px; font-size: 0.68rem; color: var(--text-secondary); }
   .ex-tag.ex-emotion { color: var(--accent); border: 1px solid var(--accent); background: var(--accent-soft); }
   .ex-tag.ex-char { color: var(--info); }
+  .ex-curation { display:flex; align-items:flex-start; gap:8px; margin:0 0 var(--s-3); padding:8px 10px; border-radius:var(--r-md); background:linear-gradient(120deg,var(--accent-soft),transparent); color:var(--text-secondary); font-size:.74rem; line-height:1.55; }
+  .ex-tier { flex:0 0 auto; padding:1px 7px; border:1px solid var(--accent); border-radius:999px; color:var(--accent); font-size:.65rem; font-weight:800; }
+  .ex-tier.signature { color:var(--natsume-amber); border-color:var(--natsume-amber); }
   .ex-actions { display: flex; gap: var(--s-2); }
   .ex-actions .btn { flex: 1; padding: var(--s-2); font-size: 0.82rem; }
   .ex-actions .btn-primary { font-weight: 700; }
@@ -125,7 +131,7 @@
   <a href="../index.html" class="nav-back">← 回首页</a>
 
   <h1 class="title">🌸 场景库</h1>
-  <p class="subtitle">宁宁的月光秘密，夏目的夜灯关心。绫季为你收录 <strong id="sceneTotal">正在整理的场景</strong>，只保留值得被画成 CG 的瞬间。</p>
+  <p class="subtitle">宁宁的月光秘密，夏目的夜灯关心。绫季为你整理 <strong id="sceneTotal">正在整理的场景</strong>，优先呈现真正值得开画的瞬间。</p>
 
   <section class="curation-panel" aria-label="场景灵感精选">
     <div class="curation-intro"><span class="curation-kicker">Nene × Natsume</span><h2>从角色的心情，走进场景</h2><p>宁宁的柔软慌乱、夏目的克制关心，才是场景库真正的索引。</p></div>
@@ -139,9 +145,10 @@
 
   <label class="sr-only" for="sceneSearch">搜索场景</label>
   <div class="scene-search-wrap">
-    <input type="search" class="scene-search" placeholder="🔍 试试：夏目、雨夜、海边、浴衣、害羞、sc122" id="sceneSearch" oninput="filterScenes(this.value)">
+    <input type="search" class="scene-search" placeholder="🔍 试试：心动、安静、宁宁经典感、夏目经典感" id="sceneSearch" oninput="filterScenes(this.value)">
     <button class="scene-search-clear" type="button" onclick="clearSceneSearch()" aria-label="清空场景搜索" title="清空搜索">×</button>
   </div>
+  <div class="search-intent" id="sceneSearchIntent" aria-live="polite"></div>
   <div class="scene-toolbar">
     <div>
       <div class="scene-filter-label">主题</div>
@@ -153,6 +160,7 @@
       <label class="scene-filter-field">时段<select id="sceneTime" onchange="filterScenes()"><option value="all">全部时段</option><option value="morning">清晨</option><option value="afternoon">午后</option><option value="sunset">黄昏</option><option value="night">夜晚与深夜</option><option value="dawn">黎明</option></select></label>
       <label class="scene-filter-field">系列<select id="sceneSeries" onchange="filterScenes()"><option value="all">全部系列</option><option value="after">After Story</option><option value="fanwork">同人</option><option value="active">Active Sync</option></select></label>
       <label class="scene-filter-field">内容分级<select id="sceneRating" onchange="filterScenes()"><option value="all">全部分级</option><option value="All">全年龄</option><option value="R15">R15 暧昧</option><option value="R18">R18 成人</option></select></label>
+      <label class="scene-filter-field">精品层级<select id="sceneTier" onchange="filterScenes()"><option value="featured">招牌与精选</option><option value="signature">只看招牌</option><option value="curated">只看精选</option><option value="all">完整场景库</option><option value="review">待返工</option></select></label>
       <label class="scene-filter-field">排序<select id="sceneSort" onchange="filterScenes()"><option value="curated">主理人精选</option><option value="favorite">我的收藏</option><option value="newest">最新加入</option><option value="title">名称 A-Z</option></select></label>
     </div>
     <div class="scene-filter-meta">
@@ -171,7 +179,7 @@
 </div>
 
 <footer class="footer">
-  <p>AI CG Studio · From Story to Scene</p>
+  <p>绫季绘境 · From Story to Scene</p>
   <p class="muted mt-4" id="sceneFooterCount">场景库 · 正在加载</p>
 </footer>
 
@@ -208,6 +216,8 @@ const SCENE_THEME_DEFS = [
 function init(){
   renderMoodRails();
   renderSceneCats();
+  var reviewOption = document.querySelector('#sceneTier option[value="review"]');
+  if (reviewOption && reviewIds().length === 0) reviewOption.remove();
   var matureToggle = document.getElementById('showMature');
   matureToggle.checked = SHOW_MATURE;
   matureToggle.addEventListener('change', function(){
@@ -233,8 +243,8 @@ function init(){
 function loadScenes(){
   const grid = document.getElementById('sceneGrid');
   Promise.all([
-    fetch('../data/scenes.json?v=8').then(r => { if (!r.ok) throw new Error('Scenes HTTP ' + r.status); return r.json(); }),
-    fetch('../data/curation.json?v=1').then(r => { if (!r.ok) throw new Error('Curation HTTP ' + r.status); return r.json(); }).catch(function(){ return { curatedSceneIds:[], moodRails:[] }; })
+    fetch('../data/scenes.json?v=9').then(r => { if (!r.ok) throw new Error('Scenes HTTP ' + r.status); return r.json(); }),
+    fetch('../data/curation.json?v=2').then(r => { if (!r.ok) throw new Error('Curation HTTP ' + r.status); return r.json(); }).catch(function(){ return { curatedSceneIds:[], moodRails:[] }; })
   ])
     .then(function(result){
       SCENES = result[0];
@@ -319,21 +329,35 @@ function matchesTime(scene, value){
   if (value === 'night') return ['night','late_night','evening'].indexOf(scene.timeOfDay) >= 0;
   return scene.timeOfDay === value;
 }
-function sceneSearchText(scene){ return [scene.id,scene.title,scene.story,scene.emotion,scene.char,sceneCharacterName(scene),scene.rating,scene.category,primaryCategory(scene),scene.season,scene.timeOfDay,sceneTimeName(scene.timeOfDay),scene.location,scene.weather,scene.camera,scene.lighting].concat(scene.tags||[]).join(' ').toLowerCase(); }
+function signatureIds(){ return Array.isArray(CURATION_DATA.signatureSceneIds) ? CURATION_DATA.signatureSceneIds : []; }
+function reviewIds(){ return Array.isArray(CURATION_DATA.reviewSceneIds) ? CURATION_DATA.reviewSceneIds : []; }
+function sceneTier(scene){ return AICSceneUX.tier(scene, CURATION_DATA); }
+function tierLabel(tier){ return ({signature:'招牌',curated:'精选',standard:'普通',review:'待返工'})[tier] || '普通'; }
+function matchesSemanticQuery(scene, query){
+  return AICSceneUX.matchesSearch(scene, query, CURATION_DATA, [primaryCategory(scene), sceneTimeName(scene.timeOfDay)]);
+}
+function renderSearchIntent(query){
+  var host = document.getElementById('sceneSearchIntent'); if (!host) return;
+  var aliases = (CURATION_DATA.searchAliases || {})[query];
+  var tier = document.getElementById('sceneTier');
+  var expanded = query && tier && tier.value === 'featured' ? '已自动扩展至完整场景库。' : '';
+  host.innerHTML = aliases && aliases.length ? expanded + '已理解为：<strong>' + aliases.slice(0,6).map(escHtml).join(' · ') + '</strong>' : (query ? expanded + '正在搜索标题、故事、情绪、地点和视觉标签。' : '自然描述也可以搜索，不需要记英文标签。');
+}
 function curationScore(scene){
   var fixed = CURATED_IDS.indexOf(scene.id);
+  if (signatureIds().indexOf(scene.id) >= 0) return 20000 - signatureIds().indexOf(scene.id);
   if (fixed >= 0) return 10000 - fixed;
   var complete = [scene.story,scene.emotion,scene.camera,scene.lighting,scene.location].filter(Boolean).length;
   return complete * 100 + Math.min((scene.story || '').length, 500) + (scene.rating === 'All' ? 20 : 0);
 }
 function filteredScenes(){
   var q = (document.getElementById('sceneSearch').value || '').trim().toLowerCase();
-  var terms = q.split(/\s+/).filter(Boolean);
   var character = document.getElementById('sceneCharacter').value;
   var season = document.getElementById('sceneSeason').value;
   var time = document.getElementById('sceneTime').value;
   var series = document.getElementById('sceneSeries').value;
   var rating = document.getElementById('sceneRating').value;
+  var tier = document.getElementById('sceneTier').value;
   var sort = document.getElementById('sceneSort').value;
   var results = SCENES.filter(function(s){
     if (!SHOW_MATURE && s.mature) return false;
@@ -343,9 +367,11 @@ function filteredScenes(){
     if (season !== 'all' && s.season !== season) return false;
     if (!matchesTime(s, time)) return false;
     if (rating !== 'all' && (s.rating || (s.mature ? 'R18' : 'All')) !== rating) return false;
+    var currentTier = sceneTier(s);
+    if (!q && tier === 'featured' && currentTier !== 'signature' && currentTier !== 'curated') return false;
+    if (tier !== 'all' && tier !== 'featured' && currentTier !== tier) return false;
     if (sort === 'favorite' && !SCENE_FAVORITES.has(s.id)) return false;
-    var hay = sceneSearchText(s);
-    return terms.every(function(term){ return hay.includes(term); });
+    return matchesSemanticQuery(s, q);
   });
   return results.sort(function(a,b){
     if (sort === 'newest') return String(b.id).localeCompare(String(a.id), undefined, {numeric:true});
@@ -371,6 +397,8 @@ function renderScenes(reset){
   if (reset) SCENE_VISIBLE = SCENE_PAGE_SIZE;
   var grid = document.getElementById('sceneGrid'); grid.innerHTML = '';
   var matches = filteredScenes();
+  var query = (document.getElementById('sceneSearch').value || '').trim().toLowerCase();
+  renderSearchIntent(query);
   matches.slice(0, SCENE_VISIBLE).forEach(function(s){
     var seasonMap = {'春':'🌸','夏':'☀️','秋':'🍂','冬':'❄️'};
     var season = s.season ? (seasonMap[s.season]||'') + s.season : '';
@@ -386,6 +414,8 @@ function renderScenes(reset){
       onPick: function(){ openDirector(s.id); },
       beforeActions: function(scene){
         var tags = scene.tags.slice(0,3).map(function(t){ return '<span class="ex-tag">'+escHtml(t)+'</span>'; }).join('');
+        var tier = sceneTier(scene);
+        var reason = (CURATION_DATA.recommendationReasons || {})[scene.id] || (tier === 'curated' ? '构图、角色气质与叙事完整度较高。' : '完整场景，可按需要继续筛选。');
         return '' +
           '<div class="ex-spec">' +
             '<div class="ex-spec-item"><div class="ex-spec-label">情绪</div><div class="ex-spec-value">' + escHtml(scene.emotion||'') + '</div></div>' +
@@ -403,6 +433,7 @@ function renderScenes(reset){
             '<span class="ex-tag ex-char">' + escHtml(scene.char||'') + '</span>' +
             tags +
           '</div>' +
+          '<div class="ex-curation"><span class="ex-tier ' + tier + '">' + tierLabel(tier) + '</span><span>' + escHtml(reason) + '</span></div>' +
           '<div class="ex-actions">' +
             '<a class="btn btn-primary" href="prompt-builder.html?scene=' + encodeURIComponent(scene.id) + '&step=4&generate=1">🎬 一键生成提示词</a>' +
             '<button class="btn btn-ghost" data-detail="' + scene.id + '">📖 故事</button>' +
@@ -422,6 +453,14 @@ function renderScenes(reset){
 
 // 事件委托(explorer 卡由 createSceneCard 生成,按钮用 data 属性)
 document.addEventListener('click', function(e){
+  var direct = e.target.closest('a[href*="prompt-builder.html?scene="]');
+  if (direct) {
+    try {
+      var directId = new URL(direct.href, window.location.href).searchParams.get('scene');
+      var directScene = SCENES.find(function(scene){ return scene.id === directId; });
+      if (directScene) rememberRecentScene(directScene);
+    } catch(err) {}
+  }
   var dir = e.target.closest('[data-dir]');
   if (dir){ openDirector(dir.getAttribute('data-dir')); return; }
   var det = e.target.closest('[data-detail]');
@@ -441,6 +480,7 @@ function resetSceneFilters(){
   SCENE_THEME = 'all';
   var search = document.getElementById('sceneSearch'); if (search) search.value = '';
   ['sceneCharacter','sceneSeason','sceneTime','sceneSeries','sceneRating'].forEach(function(id){ var select=document.getElementById(id); if(select) select.value='all'; });
+  var tier = document.getElementById('sceneTier'); if (tier) tier.value = 'featured';
   var sort = document.getElementById('sceneSort'); if (sort) sort.value = 'curated';
   renderSceneCats(); renderScenes(true);
 }
@@ -448,8 +488,13 @@ function resetSceneFilters(){
 function openDirector(id){
   var s = SCENES.find(function(x){ return x.id === id; });
   if (!s) return;
+  rememberRecentScene(s);
   localStorage.setItem('aics_pending_scene', JSON.stringify(s));
   window.location.href = 'prompt-builder.html?scene=' + encodeURIComponent(id) + '&step=4&generate=1';
+}
+
+function rememberRecentScene(scene){
+  AICSceneUX.rememberRecent(scene, localStorage);
 }
 
 function showDetail(id){

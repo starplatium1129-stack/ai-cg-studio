@@ -4,9 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>绘制工作台 · 绫季绘境</title>
-<link rel="stylesheet" href="../css/design-system.css?v=6">
-<script src="nav.js?v=4"></script>
-<script src="theme.js?v=4"></script>
+<link rel="stylesheet" href="../css/design-system.css?v=7">
+<script src="nav.js?v=5"></script>
+<script src="scene-ux.js?v=1"></script>
+<script src="theme.js?v=5"></script>
 <style>
   /* ============================================================
      Director — 宽屏工作台 (Scene-first, Prompt-last)
@@ -842,6 +843,10 @@ var BUILDER_SCENE_LIMIT = 30;
 var _maturePreference = localStorage.getItem('aics_show_mature');
 var _localOwner = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(window.location.hostname);
 var SHOW_MATURE_SCENES = _maturePreference == null ? _localOwner : _maturePreference === '1';
+var CURATION_DATA = { curatedSceneIds:[], signatureSceneIds:[], reviewSceneIds:[], recommendationReasons:{}, searchAliases:{} };
+var DRAFT_KEY = 'aics_pb_last_draft';
+var DRAFT_SAVE_TIMER = null;
+var DRAFT_RESTORING = false;
 var SCENE_THEME_DEFS = [
   { id:'all', label:'全部', icon:'✦', categories:[] },
   { id:'romance', label:'恋爱', icon:'♡', categories:['恋爱'] },
@@ -893,7 +898,8 @@ function loadData(){
   }
   return Promise.all([
     initStorage(),
-    fetch('../data/scenes.json?v=6').then(r=>r.json()).then(d=>SCENES=d).catch(e=>{console.warn('scenes load fail',e);}),
+    fetch('../data/scenes.json?v=9').then(r=>r.json()).then(d=>SCENES=d).catch(e=>{console.warn('scenes load fail',e);}),
+    fetch('../data/curation.json?v=2').then(r=>r.json()).then(d=>CURATION_DATA=d||CURATION_DATA).catch(e=>{console.warn('curation load fail',e);}),
     fetch('../data/characters.json?v=6').then(r=>r.json()).then(d=>CHARACTER=d).catch(e=>{console.warn('characters load fail',e);}),
     fetch('../data/loras.json?v=2').then(r=>r.json()).then(d=>LORA_META=Array.isArray(d)?d:[]).catch(e=>{console.warn('loras load fail',e);}),
     fetch('../data/presets.json?v=2').then(r=>r.json()).then(d=>{
@@ -1084,6 +1090,7 @@ function init() {
     var qp = new URLSearchParams(window.location.search);
     var mood = qp.get('mood');
     var sceneId = qp.get('scene');
+    var resumeDraft = qp.get('resume') === '1';
     var charId = qp.get('char');
     if (charId) {
       var key = (charId === 'NENE_001' || charId === 'nene' || charId === 'ayachi_nene') ? 'nene' : (charId === 'NAT_001' || charId === 'natsume' || charId === 'shiki_natsume' ? 'natsume' : '');
@@ -1112,6 +1119,7 @@ function init() {
       var ref = state.history.find(function(x){ return String(x.id) === String(refId); });
       if (ref) restoreFromEntry(ref, !!variantId);
     }
+    if (resumeDraft && !sceneId && !refId) restoreLastDraft();
   } catch(e) {}
 
   // SD WebUI 连通性检测
@@ -1154,7 +1162,7 @@ function restoreFromEntry(h, isVariant){
   if (h.seed!=null && isFinite(Number(h.seed))){ window.__lastSeed__=Number(h.seed); var _si=document.getElementById('sdSeedInput'); if(_si) _si.value=String(h.seed); }
   var _neg=document.getElementById('negative'); if(_neg){ _neg.checked = h.negative ? true : false; }
   saveSDSettings();
-  renderManualTags(); renderTraits(); renderSelRow();
+  renderManualTags(); renderTraits(); renderSelRow(); updateLivePreview();
   flash('↩️ 已载入' + (isVariant ? '变体' : '重新生成') + ': v' + (h.version||1));
 }
 
@@ -1164,7 +1172,7 @@ function bindControls() {
     tab.onclick = () => switchTab(tab.dataset.tab, tab);
   });
   document.getElementById('sceneSearch').oninput = e => filterScenes(e.target.value);
-  document.getElementById('storyInput').oninput = e => { state.story = e.target.value; clearStorySuggestions(); refreshVoiceText(false); };
+  document.getElementById('storyInput').oninput = e => { state.story = e.target.value; clearStorySuggestions(); refreshVoiceText(false); updateLivePreview(); };
   document.querySelector('.story-chips').addEventListener('click', e => { if (e.target.classList.contains('story-chip')) setTimeout(clearStorySuggestions, 0); });
   document.getElementById('sceneGrid').addEventListener('dblclick', function(e) {
     var card = e.target.closest('.scene-card');
@@ -1202,6 +1210,7 @@ function setStory(el) {
   if (typeof suggestTagsFromStory === 'function') suggestTagsFromStory();
   highlightScenesByStory(txt);
   refreshVoiceText(true);
+  updateLivePreview();
 }
 const SCENE_KW = ['海边','神社','祭典','烟花','浴衣','咖啡馆','樱花','教室','日落','夜晚','雪','雨','回眸','微笑','脸红','闭眼','和服','泳装','卧室','天台','车站','公园','图书馆','月亮','烛光','厨房','商场','海边','神社','烟花','夕阳','清晨'];
 function highlightScenesByStory(txt) {
@@ -1252,6 +1261,8 @@ function resetSceneAndDecisions() {
   state.selections.emotion = []; state.selections.shot = null; state.selections.lighting = null; state.selections.composition = null;
   state.colorMood = null; state.manualTags = new Set();
   document.querySelectorAll('#chip-emotion .chip-select.selected,#opt-shot .option.selected,#opt-lighting .option.selected,#opt-composition .option.selected,#moodGrid .mood-card.selected').forEach(o => o.classList.remove('selected'));
+  try { localStorage.removeItem(DRAFT_KEY); } catch(e) {}
+  updateLivePreview();
 }
 
 // ===== Render options =====
@@ -1351,9 +1362,10 @@ function renderTraits() {
 // ========== SCENE LIBRARY ==========
 function renderSceneMini() {
   const grid = document.getElementById('sceneMiniGrid'); if (!grid) return;
-  const picks = SCENES.slice(0, 6);
-  grid.innerHTML = picks.map((s, i) => `
-    <div class="scene-mini-card" onclick="window._loadSceneByIdx(${i})">
+  const ids = Array.isArray(CURATION_DATA.signatureSceneIds) && CURATION_DATA.signatureSceneIds.length ? CURATION_DATA.signatureSceneIds : (CURATION_DATA.curatedSceneIds || []);
+  const picks = ids.map(function(id){ return SCENES.find(function(scene){ return scene.id === id; }); }).filter(Boolean).slice(0, 6);
+  grid.innerHTML = picks.map((s) => `
+    <div class="scene-mini-card" onclick="window._loadSceneByIdx(${SCENES.indexOf(s)})">
       <div class="scene-mini-name">${s.title}</div>
       <div class="scene-mini-story">${s.story}</div>
     </div>`).join('');
@@ -1391,8 +1403,14 @@ function sceneCharacterLabel(scene) {
 function sceneTimeLabel(value) {
   return ({morning:'清晨',afternoon:'午后',sunset:'黄昏',night:'夜晚',late_night:'深夜',dawn:'黎明',evening:'夜晚',all_day:'全天'})[value] || value || '';
 }
-function sceneSearchText(scene) {
-  return [scene.id,scene.title,scene.story,scene.emotion,scene.char,sceneCharacterLabel(scene),scene.rating,scene.category,scenePrimaryCategory(scene),scene.season,scene.timeOfDay,sceneTimeLabel(scene.timeOfDay),scene.location,scene.weather,scene.camera,scene.lighting].concat(scene.tags||[]).join(' ').toLowerCase();
+function sceneTier(scene) {
+  return AICSceneUX.tier(scene, CURATION_DATA);
+}
+function scenePriority(scene) {
+  return AICSceneUX.priority(scene, CURATION_DATA);
+}
+function semanticSceneMatch(scene, query) {
+  return AICSceneUX.matchesSearch(scene, query, CURATION_DATA, [scenePrimaryCategory(scene), sceneTimeLabel(scene.timeOfDay)]);
 }
 function renderSceneCats() {
   const el = document.getElementById('sceneCats'); el.innerHTML = '';
@@ -1415,7 +1433,6 @@ function renderScenes() {
   grid.innerHTML = '';
   const fragment = document.createDocumentFragment();
   const q = (document.getElementById('sceneSearch')?.value || '').trim().toLowerCase();
-  const terms = q.split(/\s+/).filter(Boolean);
   const charSel = (document.getElementById('sceneCharFilter') || {}).value || 'all';
   const seasonSel = (document.getElementById('sceneSeasonFilter') || {}).value || 'all';
   const seriesSel = (document.getElementById('sceneSeriesFilter') || {}).value || 'all';
@@ -1428,9 +1445,8 @@ function renderScenes() {
     const seasonOk = seasonSel === 'all' || s.season === seasonSel;
     const seriesOk = sceneMatchesSeries(s, seriesSel);
     const ratingOk = ratingSel === 'all' || (s.rating || (s.mature ? 'R18' : 'All')) === ratingSel;
-    const hay = sceneSearchText(s);
-    return themeOk && charOk && seasonOk && seriesOk && ratingOk && terms.every(function(term){ return hay.includes(term); });
-  });
+    return themeOk && charOk && seasonOk && seriesOk && ratingOk && semanticSceneMatch(s, q);
+  }).sort(function(a,b){ return scenePriority(b.s) - scenePriority(a.s); });
   const countEl = document.getElementById('sceneResultCount');
   if (countEl) countEl.innerHTML = '找到 <strong>' + matches.length + '</strong> 个场景';
   matches.slice(0, BUILDER_SCENE_LIMIT).forEach(({s, idx}) => {
@@ -1441,6 +1457,7 @@ function renderScenes() {
       <div class="scene-name">${escapeHtml(s.title)}${s.mature ? ' <span class="mature-dot">🔞</span>' : ''}</div>
       <div class="scene-story">${escapeHtml(s.story)}</div>
       <div class="scene-meta">
+        ${sceneTier(s) === 'signature' ? '<span class="scene-tag emotion">招牌</span>' : sceneTier(s) === 'curated' ? '<span class="scene-tag">精选</span>' : ''}
         <span class="scene-tag emotion">${escapeHtml(s.emotion)}</span>
         <span class="scene-tag char-color">${escapeHtml(sceneCharacterLabel(s))}</span>
         ${(s.rating || (s.mature ? 'R18' : 'All')) !== 'All' ? `<span class="scene-tag rating ${(s.rating || (s.mature ? 'R18' : 'All')).toLowerCase()}">${escapeHtml(s.rating || (s.mature ? 'R18' : 'All'))}</span>` : ''}
@@ -1535,8 +1552,66 @@ function sceneComposition(s) {
   for (const t of s.tags) { if (tagComp[t]) return tagComp[t]; }
   return null;
 }
+function rememberRecentScene(scene) {
+  AICSceneUX.rememberRecent(scene, localStorage);
+}
+function scheduleDraftSave() {
+  clearTimeout(DRAFT_SAVE_TIMER);
+  if (!DATA_READY || DRAFT_RESTORING || (!state.__sceneId && !String(state.story || '').trim())) return;
+  DRAFT_SAVE_TIMER = setTimeout(function(){
+    var scene = SCENES.find(function(item){ return item.id === state.__sceneId; });
+    var draft = {
+      version:1,
+      updatedAt:Date.now(),
+      sceneId:state.__sceneId || '',
+      sceneTitle:scene ? scene.title : '',
+      char:state.char,
+      story:state.story || '',
+      selections:{
+        emotion:(state.selections.emotion || []).slice(),
+        shot:state.selections.shot || null,
+        lighting:state.selections.lighting || null,
+        composition:state.selections.composition || null
+      },
+      colorMood:state.colorMood || null,
+      manualTags:Array.from(state.manualTags || []).slice(0,120),
+      step:CURRENT_STEP
+    };
+    try { localStorage.setItem(DRAFT_KEY, JSON.stringify(draft)); } catch(e) {}
+  }, 180);
+}
+function restoreLastDraft() {
+  var draft;
+  try { draft = JSON.parse(localStorage.getItem(DRAFT_KEY) || 'null'); } catch(e) { draft = null; }
+  if (!draft || (!draft.sceneId && !draft.story)) { flash('没有可继续的创作'); return; }
+  DRAFT_RESTORING = true;
+  var source = SCENES.find(function(scene){ return scene.id === draft.sceneId; });
+  if (source) loadScene(source);
+  if (draft.char && draft.char !== state.char) setChar(draft.char);
+  state.__sceneId = draft.sceneId || state.__sceneId || null;
+  state.story = draft.story || state.story || '';
+  var storyInput = document.getElementById('storyInput'); if (storyInput) storyInput.value = state.story;
+  var selections = draft.selections || {};
+  state.selections.emotion = Array.isArray(selections.emotion) ? selections.emotion.slice() : [];
+  state.selections.shot = selections.shot || null;
+  state.selections.lighting = selections.lighting || null;
+  state.selections.composition = selections.composition || null;
+  state.colorMood = draft.colorMood || null;
+  state.manualTags = new Set(Array.isArray(draft.manualTags) ? draft.manualTags : []);
+  document.querySelectorAll('#chip-emotion .chip-select').forEach(function(item){ item.classList.toggle('selected', state.selections.emotion.indexOf(item.dataset.id) >= 0); });
+  document.querySelectorAll('#opt-shot .option').forEach(function(item){ item.classList.toggle('selected', item.dataset.id === state.selections.shot); });
+  document.querySelectorAll('#opt-lighting .option').forEach(function(item){ item.classList.toggle('selected', item.dataset.id === state.selections.lighting); });
+  document.querySelectorAll('#opt-composition .option').forEach(function(item){ item.classList.toggle('selected', item.dataset.id === state.selections.composition); });
+  document.querySelectorAll('#moodGrid .mood-card').forEach(function(item){ item.classList.toggle('selected', item.dataset.id === state.colorMood); });
+  renderManualTags(); renderTraits(); renderSelRow(); updateGuideBar();
+  goStep(Number(draft.step) || 3);
+  DRAFT_RESTORING = false;
+  updateLivePreview();
+  flash('↩️ 已继续「' + (draft.sceneTitle || '上次创作') + '」');
+}
 function loadScene(s) {
   state.__sceneId = s.id;
+  rememberRecentScene(s);
   var artWarn = document.getElementById('artWarn'); if(artWarn) artWarn.style.display = 'none';
   document.getElementById('storyInput').value = s.story; state.story = s.story;
   const charId = (s.char === 'ayachi_nene' || s.char === 'nene') ? 'nene' : (s.char === 'shiki_natsume' || s.char === 'natsume' ? 'natsume' : (s.char === 'triad' ? 'triad' : 'nene'));
@@ -1889,6 +1964,7 @@ function updateLivePreview() {
     el.querySelector('.num').textContent = tokCount;
     el.querySelector('.bar > i').style.width = pct + '%';
   });
+  scheduleDraftSave();
 }
 // ---- Prompt 防错净化 (Danbooru 标签规范化) ----
 // 已知多词 Danbooru 标签：空格 → 下划线 (按长度降序排列，避免短词先匹配)
