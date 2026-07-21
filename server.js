@@ -316,6 +316,7 @@ app.get(['/', '/index.html'], function (req, res) {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 app.use('/css', express.static(path.join(__dirname, 'css'), { dotfiles: 'deny', index: false }));
+app.use('/assets', express.static(path.join(__dirname, 'assets'), { dotfiles: 'deny', index: false }));
 app.use('/data', express.static(path.join(__dirname, 'data'), { dotfiles: 'deny', index: false }));
 app.use('/docs', express.static(path.join(__dirname, 'docs'), { dotfiles: 'deny' }));
 app.use('/tools', function (req, res, next) {

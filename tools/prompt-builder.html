@@ -8,6 +8,7 @@
 <script src="nav.js?v=5"></script>
 <script src="scene-ux.js?v=2"></script>
 <script src="quick-create.js?v=1"></script>
+<script src="sd-error.js?v=1"></script>
 <script src="theme.js?v=5"></script>
 <style>
   /* ============================================================
@@ -465,6 +466,14 @@
   .sd-progress { height:8px; overflow:hidden; border-radius:999px; background:var(--bg-deep); border:1px solid var(--border-soft); margin:0 auto var(--s-2); max-width:520px; }
   .sd-progress > span { display:block; width:0; height:100%; border-radius:inherit; background:linear-gradient(90deg,var(--accent),#8b5cf6); transition:width .35s ease; }
   .sd-progress[hidden] { display:none; }
+  .sd-recovery { max-width:620px; margin:var(--s-3) auto 0; padding:var(--s-3); text-align:left; border:1px solid color-mix(in srgb,var(--warning) 45%,var(--border-soft)); border-radius:var(--r-md); background:rgba(255,167,38,.08); color:var(--text-secondary); }
+  .sd-recovery[hidden] { display:none; }
+  .sd-recovery-title { color:var(--warning); font-size:.84rem; font-weight:800; }
+  .sd-recovery-copy { margin-top:4px; font-size:.76rem; line-height:1.6; }
+  .sd-recovery-actions { display:flex; flex-wrap:wrap; gap:var(--s-2); margin-top:var(--s-2); }
+  .sd-recovery details { margin-top:var(--s-2); color:var(--text-muted); font-size:.7rem; }
+  .sd-recovery summary { cursor:pointer; }
+  .sd-recovery pre { margin:6px 0 0; max-height:90px; overflow:auto; white-space:pre-wrap; word-break:break-word; color:var(--text-secondary); font:inherit; }
   #sdCancelBtn[hidden] { display:none; }
   #stepResult.has-image #sdResultArea { min-height:clamp(480px,72vh,920px); margin-top:0 !important; padding:var(--s-4); display:flex !important; flex-direction:column; justify-content:center; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:radial-gradient(circle at 50% 38%,var(--bg-elevated),var(--bg-deep) 72%); }
   #sdImageSlot { flex:1; min-height:0; display:flex; align-items:center; justify-content:center; }
@@ -663,9 +672,10 @@
           <button class="btn btn-ghost" onclick="openReview()">⭐ 评价</button>
           <button class="btn btn-ghost" onclick="resetDirector()">🎬 再来一次</button>
         </div>
-        <div id="sdResultArea" style="display:none;margin-top:var(--s-4);text-align:center;">
+          <div id="sdResultArea" style="display:none;margin-top:var(--s-4);text-align:center;">
           <div id="sdStatus" role="status" aria-live="polite" style="font-size:.85rem;color:var(--text-muted);margin-bottom:var(--s-2);"></div>
           <div id="sdProgress" class="sd-progress" hidden><span id="sdProgressBar"></span></div>
+          <div id="sdRecovery" class="sd-recovery" hidden><div class="sd-recovery-title" id="sdRecoveryTitle"></div><div class="sd-recovery-copy" id="sdRecoveryCopy"></div><div class="sd-recovery-actions"><button type="button" class="btn btn-primary" id="sdRecoveryAction" hidden></button></div><details id="sdRecoveryDetails"><summary>技术详情</summary><pre id="sdRecoveryDetail"></pre></details></div>
           <div id="sdImageSlot"></div>
           <div id="sdSaveActions" style="display:none;margin-top:var(--s-3);gap:var(--s-2);flex-wrap:wrap;justify-content:center;">
             <button class="btn btn-primary" id="sdHistorySaveBtn" onclick="saveGeneratedImage()">💾 保存到历史</button>
@@ -2487,7 +2497,80 @@ function cancelSDGenerate(){
   if (generation.controller) generation.controller.abort();
 }
 
-function callSDGenerate(){
+function clearSDRecovery(){
+  var panel = document.getElementById('sdRecovery');
+  var action = document.getElementById('sdRecoveryAction');
+  if (panel) panel.hidden = true;
+  if (action) { action.hidden = true; action.dataset.action = ''; action.onclick = null; }
+}
+
+function runSDRecovery(action){
+  clearSDRecovery();
+  if (action === 'retry_light') {
+    ensureSelectValue('size', '768×1344');
+    var hires = document.getElementById('sdHiresFix'); if (hires) hires.checked = false;
+    saveSDSettings(); updateLivePreview(); flash('已降低尺寸并关闭 hires.fix，正在重试');
+    callSDGenerate();
+    return;
+  }
+  if (action === 'retry_without_lora') {
+    flash('本次将临时跳过角色 LoRA');
+    callSDGenerate({ disableLora:true });
+    return;
+  }
+  if (action === 'retry_current_model') {
+    ensureSelectValue('sdModel', '');
+    saveSDSettings(); updateLivePreview(); flash('已改用 WebUI 当前模型，正在重试');
+    callSDGenerate();
+    return;
+  }
+  if (action === 'retry_safe_sampler') {
+    setSelectValueInsensitive('sampler', 'DPM++ 2M');
+    ensureSelectValue('scheduler', '');
+    saveSDSettings(); updateLivePreview(); flash('已切换到通用采样设置，正在重试');
+    callSDGenerate();
+    return;
+  }
+  if (action === 'recheck_connection') {
+    checkSDStatus().then(function(connected){ flash(connected ? 'SD WebUI 已恢复连接，可再次生成' : 'SD WebUI 仍未连接'); });
+    return;
+  }
+  if (action === 'open_settings') {
+    var settings = document.querySelector('.generation-settings');
+    if (settings) { settings.open = true; settings.scrollIntoView({ behavior:'smooth', block:'center' }); }
+  }
+}
+
+function renderSDRecovery(error){
+  var recovery = AICSDError.classify(error);
+  var panel = document.getElementById('sdRecovery');
+  var title = document.getElementById('sdRecoveryTitle');
+  var copy = document.getElementById('sdRecoveryCopy');
+  var detail = document.getElementById('sdRecoveryDetail');
+  var details = document.getElementById('sdRecoveryDetails');
+  var action = document.getElementById('sdRecoveryAction');
+  if (!panel || !title || !copy || !detail || !details || !action) return recovery;
+  if (recovery.kind === 'cancelled') { clearSDRecovery(); return recovery; }
+  panel.hidden = false;
+  title.textContent = recovery.title;
+  copy.textContent = recovery.message;
+  detail.textContent = recovery.details || '没有可用的后端细节。';
+  details.open = false;
+  if (recovery.action) {
+    action.hidden = false;
+    action.textContent = recovery.action.label;
+    action.dataset.action = recovery.action.id;
+    action.onclick = function(){ runSDRecovery(this.dataset.action); };
+  } else {
+    action.hidden = true;
+    action.dataset.action = '';
+    action.onclick = null;
+  }
+  return recovery;
+}
+
+function callSDGenerate(requestOptions){
+  requestOptions = requestOptions || {};
   if (_sdGeneration) return;
   var prompt = getPlainPrompt();
   if (!prompt) { flash('⚠️ 请先生成 Prompt'); return; }
@@ -2500,6 +2583,7 @@ function callSDGenerate(){
   var cancelButton = document.getElementById('sdCancelBtn');
   var progress = document.getElementById('sdProgress');
   area.style.display = 'block';
+  clearSDRecovery();
   saveActions.style.display = 'none';
   var historySaveButton = document.getElementById('sdHistorySaveBtn');
   if (historySaveButton) { historySaveButton.disabled = false; historySaveButton.textContent = '💾 保存到历史'; }
@@ -2530,7 +2614,7 @@ function callSDGenerate(){
   if (manualSeed !== '' && isFinite(Number(manualSeed))) seed = Number(manualSeed);
   else if (document.getElementById('sdSeedLock').checked && window.__lastSeed__ != null) seed = window.__lastSeed__;
   var currentScene = SCENES.find(function(scene){ return scene.id === state.__sceneId; });
-  var lora = resolveLoraSpecs(state.char, currentScene).map(loraSpecText).join(', ');
+  var lora = requestOptions.disableLora ? '' : resolveLoraSpecs(state.char, currentScene).map(loraSpecText).join(', ');
   prompt = prompt.replace(/<lora:[^>]+>/g, '').replace(/,\s*,/g, ',').replace(/^,\s*/, '').replace(/,\s*$/, '').trim();
   var hiresEnabled = document.getElementById('sdHiresFix').checked;
   var hiresScale = Number(document.getElementById('sdHiresScale').value) || 1.5;
@@ -2542,7 +2626,7 @@ function callSDGenerate(){
     progressTimer: null
   };
   _sdGeneration = generation;
-  status.textContent = '⏳ 已提交，等待 SD WebUI…';
+  status.textContent = requestOptions.disableLora ? '⏳ 已提交（临时跳过 LoRA），等待 SD WebUI…' : '⏳ 已提交，等待 SD WebUI…';
   saveSDSettings();
   startSDProgressPolling(generation);
 
@@ -2597,6 +2681,7 @@ function callSDGenerate(){
     image.alt = 'Stable Diffusion 生成图片';
     slot.replaceChildren(image);
     saveActions.style.display = 'flex';
+    clearSDRecovery();
     if (!successfulSettings.checkpoint && result.info && result.info.sd_model_name) successfulSettings.checkpoint = result.info.sd_model_name;
     var savedSettings = AICQuickCreate.write(successfulSettings, localStorage);
     var quickBanner = document.getElementById('quickCreateBanner');
@@ -2612,22 +2697,9 @@ function callSDGenerate(){
     console.error('[SD API] 生成失败:', error);
     document.getElementById('stepResult').classList.remove('has-image');
     var quickBanner = document.getElementById('quickCreateBanner');
-    if (generation.cancelled || error.name === 'AbortError') {
-      status.textContent = '已停止生成';
-      if (quickBanner && !quickBanner.hidden) showQuickCreateStatus('已停止生成；最近成功参数没有被覆盖。', true);
-    } else if (error.name === 'TimeoutError') {
-      status.textContent = '❌ 生成超时。WebUI 可能卡在模型加载或显存不足，请查看 WebUI 控制台。';
-      if (quickBanner && !quickBanner.hidden) showQuickCreateStatus('生成超时；已保留 Prompt 和最近成功参数。', true);
-    } else if (error.name === 'NetworkError') {
-      status.textContent = '❌ ' + error.message + '。请确认 WebUI 已使用 --api 启动，且网关 SD_HOST 配置正确。';
-      if (quickBanner && !quickBanner.hidden) showQuickCreateStatus('连接中断；已保留 Prompt 和最近成功参数。', true);
-    } else if (error.status === 404) {
-      status.textContent = '❌ 当前静态服务器没有 SD API 代理。请从 AI-CG-Studio 控制面板启动并打开网站后再生成。';
-      if (quickBanner && !quickBanner.hidden) showQuickCreateStatus('当前页面没有 SD 网关，已保留 Prompt。', true);
-    } else {
-      status.textContent = '❌ ' + (error.message || '生成失败');
-      if (quickBanner && !quickBanner.hidden) showQuickCreateStatus('生成失败；已保留 Prompt 和最近成功参数。', true);
-    }
+    var recovery = renderSDRecovery(error);
+    status.textContent = recovery.kind === 'cancelled' ? '已停止生成' : '❌ ' + recovery.title + '：' + recovery.message;
+    if (quickBanner && !quickBanner.hidden) showQuickCreateStatus(recovery.kind === 'cancelled' ? '已停止生成；最近成功参数没有被覆盖。' : recovery.title + '；已保留 Prompt 和最近成功参数。', true);
     if (progress) progress.hidden = true;
   }).finally(function(){ finishSDGeneration(generation); });
 }

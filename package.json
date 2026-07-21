@@ -5,9 +5,10 @@
   "description": "个人使用的 Galgame 风格 AI CG 场景工作台与 SD WebUI 网关",
   "scripts": {
     "start": "node server.js",
-    "validate": "node scripts/build-scenes.js --check && node scripts/optimize-scenes.js --check && node scripts/classify-scene-ratings.js --check && node scripts/validate-scenes.js && node scripts/test-scene-ux.js && node scripts/test-quick-create.js",
+    "validate": "node scripts/build-scenes.js --check && node scripts/optimize-scenes.js --check && node scripts/classify-scene-ratings.js --check && node scripts/validate-scenes.js && node scripts/test-scene-ux.js && node scripts/test-quick-create.js && node scripts/test-sd-error.js",
     "test:ux": "node scripts/test-scene-ux.js",
     "test:quick": "node scripts/test-quick-create.js",
+    "test:sd-errors": "node scripts/test-sd-error.js",
     "scenes:build": "node scripts/build-scenes.js",
     "scenes:import": "node scripts/split-scenes.js --write && node scripts/build-scenes.js",
     "scenes:normalize": "node scripts/classify-scene-ratings.js --write && node scripts/optimize-scenes.js --write && node scripts/validate-scenes.js",

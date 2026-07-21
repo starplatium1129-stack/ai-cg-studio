@@ -5,6 +5,10 @@
     "alias": ["Ayachi Nene", "綾地寧々", "宁宁"],
     "type": "heroine",
     "icon": "🔮",
+    "portrait": {
+      "image": "../assets/characters/nene-official.webp",
+      "alt": "绫地宁宁官方校服立绘"
+    },
     "visual_dna": {
       "hair": "银白色长发 · 低双马尾",
       "hair_color": "银白",
@@ -55,6 +59,10 @@
     "alias": ["Shiki Natsume", "四季ナツメ", "夏目"],
     "type": "heroine",
     "icon": "☕",
+    "portrait": {
+      "image": "../assets/characters/natsume-official.webp",
+      "alt": "四季夏目官方咖啡馆制服立绘"
+    },
     "visual_dna": {
       "hair": "乌黑长发 · 侧发夹",
       "hair_color": "黑色",
