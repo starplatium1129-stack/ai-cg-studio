@@ -9,6 +9,7 @@
 <script src="nav.js?v=5"></script>
 <script src="scene-card.js?v=5"></script>
 <script src="scene-ux.js?v=2"></script>
+<script src="quick-create.js?v=1"></script>
 <script src="image-store.js?v=5"></script>
 <script src="theme.js?v=5"></script>
 <style>
@@ -458,8 +459,9 @@ function renderScenes(reset){
           '</div>' +
           '<div class="ex-curation"><span class="ex-tier ' + tier + '">' + tierLabel(tier) + '</span><span>' + escHtml(reason) + '</span></div>' +
           '<div class="ex-actions">' +
-            '<a class="btn btn-primary" href="prompt-builder.html?scene=' + encodeURIComponent(scene.id) + '&step=4&generate=1">🎬 一键生成提示词</a>' +
-            '<button class="btn btn-ghost" data-detail="' + scene.id + '">📖 故事</button>' +
+            '<a class="btn btn-primary" href="' + AICQuickCreate.url(scene.id) + '">⚡ 快速出图</a>' +
+            '<a class="btn btn-ghost" href="prompt-builder.html?scene=' + encodeURIComponent(scene.id) + '&step=4&generate=1">🎬 调整</a>' +
+            '<button class="btn btn-ghost" data-detail="' + scene.id + '" aria-label="查看故事" title="查看故事">📖</button>' +
           '</div>' +
           '<button type="button" class="btn scene-fav' + (SCENE_FAVORITES.has(scene.id) ? ' saved' : '') + '" onclick="toggleSceneFavorite(\'' + scene.id + '\', event)">' + (SCENE_FAVORITES.has(scene.id) ? '♥ 已收入灵感簿' : '♡ 收入灵感簿') + '</button>';
       }
@@ -534,7 +536,8 @@ function showDetail(id){
     '<div class="story-meta">' + escHtml(charName) + ' · ' + escHtml(season||'') + ' · ' + escHtml(s.timeOfDay||'') + ' · ' + escHtml(s.emotion||'') + '</div>' +
     '<div class="story-body">' + escHtml(s.story || '') + '</div>' +
     '<div class="story-actions">' +
-      '<a class="btn btn-primary" href="prompt-builder.html?scene=' + encodeURIComponent(s.id) + '&step=4&generate=1">🎬 一键生成提示词</a>' +
+      '<a class="btn btn-primary" href="' + AICQuickCreate.url(s.id) + '">⚡ 快速出图</a>' +
+      '<a class="btn btn-ghost" href="prompt-builder.html?scene=' + encodeURIComponent(s.id) + '&step=4&generate=1">🎬 调整后生成</a>' +
       '<button class="btn btn-ghost" onclick="closeStory()">关闭</button>' +
     '</div>';
   drawer.classList.add('open');

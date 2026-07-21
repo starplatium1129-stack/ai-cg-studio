@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="../css/design-system.css?v=7">
 <script src="nav.js?v=5"></script>
 <script src="scene-ux.js?v=2"></script>
+<script src="quick-create.js?v=1"></script>
 <script src="theme.js?v=5"></script>
 <style>
   /* ============================================================
@@ -199,6 +200,11 @@
   .preview-actions { display: flex; gap: var(--s-2); flex-wrap: wrap; margin-top: var(--s-3); }
   .preview-actions .btn { font-size: 0.8rem; padding: var(--s-1) var(--s-3); }
   .result-frame { margin-top: 0; border: 1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); padding: var(--s-4); }
+  .quick-create-banner { display:flex; align-items:center; gap:var(--s-2); margin:0 0 var(--s-3); padding:9px 11px; border:1px solid color-mix(in srgb,var(--accent) 42%,var(--border-soft)); border-radius:var(--r-md); background:linear-gradient(120deg,var(--accent-soft),transparent); color:var(--text-secondary); font-size:.76rem; line-height:1.5; }
+  .quick-create-banner[hidden] { display:none; }
+  .quick-create-banner strong { flex:0 0 auto; color:var(--accent); }
+  .quick-create-banner.error { border-color:color-mix(in srgb,var(--warning) 55%,var(--border-soft)); background:rgba(255,167,38,.08); }
+  .quick-create-banner.error strong { color:var(--warning); }
 
   /* Params */
   .controls-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: var(--s-3); }
@@ -606,6 +612,7 @@
 
       <div class="result-frame step-panel" id="stepResult">
         <div class="panel-title">📝 输出 Result</div>
+        <div class="quick-create-banner" id="quickCreateBanner" hidden><strong>⚡ 快速创作</strong><span id="quickCreateCopy">正在准备稳定参数…</span></div>
         <details class="prompt-details" id="promptDetails">
           <summary class="prompt-summary">📝 Prompt 提示词 <span class="prompt-summary-hint">已折叠 · 点击展开</span></summary>
           <div class="preview-output" id="finalPrompt"></div>
@@ -651,6 +658,7 @@
           <button class="btn btn-ghost" onclick="toggleResult()">展开 Prompt</button>
           <button class="btn btn-primary" onclick="copyPrompt()">📋 复制</button>
           <button class="btn btn-primary" onclick="callSDGenerate()" id="sdGenBtn">🖼 生成图片</button>
+          <button class="btn btn-ghost" onclick="quickCreateCurrent()" id="quickCreateBtn">⚡ 快速重画</button>
           <button class="btn btn-ghost" onclick="cancelSDGenerate()" id="sdCancelBtn" title="多人共用同一 WebUI 时，会中断当前正在执行的任务" hidden>停止生成</button>
           <button class="btn btn-ghost" onclick="openReview()">⭐ 评价</button>
           <button class="btn btn-ghost" onclick="resetDirector()">🎬 再来一次</button>
@@ -848,6 +856,7 @@ var PERSONAL_PROFILE = AICSceneUX.buildPreferenceProfile([]);
 var DRAFT_KEY = 'aics_pb_last_draft';
 var DRAFT_SAVE_TIMER = null;
 var DRAFT_RESTORING = false;
+var QUICK_CREATE_BUSY = false;
 var SCENE_THEME_DEFS = [
   { id:'all', label:'全部', icon:'✦', categories:[] },
   { id:'romance', label:'恋爱', icon:'♡', categories:['恋爱'] },
@@ -1088,11 +1097,13 @@ function init() {
     });
   }
   // URL params: ?mood=xxx -> step 4 select mood; ?scene=xxx -> load scene by id; ?regen=ID / ?variant=ID -> restore from history
+  var quickRequested = false;
   try {
     var qp = new URLSearchParams(window.location.search);
     var mood = qp.get('mood');
     var sceneId = qp.get('scene');
     var resumeDraft = qp.get('resume') === '1';
+    quickRequested = qp.get('quick') === '1';
     var charId = qp.get('char');
     if (charId) {
       var key = (charId === 'NENE_001' || charId === 'nene' || charId === 'ayachi_nene') ? 'nene' : (charId === 'NAT_001' || charId === 'natsume' || charId === 'shiki_natsume' ? 'natsume' : '');
@@ -1122,10 +1133,16 @@ function init() {
       if (ref) restoreFromEntry(ref, !!variantId);
     }
     if (resumeDraft && !sceneId && !refId) restoreLastDraft();
+    if (quickRequested) {
+      var quickUrl = new URL(window.location.href);
+      quickUrl.searchParams.delete('quick');
+      history.replaceState(null, '', quickUrl.pathname + quickUrl.search);
+    }
   } catch(e) {}
 
   // SD WebUI 连通性检测
-  checkSDStatus();
+  if (quickRequested) showQuickCreateStatus('正在检查 SD，并准备最近成功参数…', false);
+  checkSDStatus().then(function(connected){ if (quickRequested) quickCreateCurrent(connected); });
   document.getElementById('sd-status-badge').addEventListener('click', checkSDStatus);
 }
 
@@ -1479,8 +1496,8 @@ function renderScenes() {
         ${s.tags.slice(0,3).map(t => `<span class="scene-tag">${escapeHtml(t)}</span>`).join('')}
       </div>`;
     card.onclick = () => loadScene(s);
-    const directBtn = document.createElement('button'); directBtn.className = 'scene-direct-btn'; directBtn.textContent = '🎬 导演这张'; directBtn.type = 'button';
-    directBtn.addEventListener('click', (e) => { e.stopPropagation(); loadScene(s); goStep(3); document.getElementById('stepDecisions').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+    const directBtn = document.createElement('button'); directBtn.className = 'scene-direct-btn'; directBtn.textContent = '⚡ 快速出图'; directBtn.type = 'button';
+    directBtn.addEventListener('click', (e) => { e.stopPropagation(); loadScene(s); quickCreateCurrent(); });
     card.appendChild(directBtn);
     fragment.appendChild(card);
   });
@@ -2238,6 +2255,87 @@ function initSDSettings(){
   if (model) model.addEventListener('change', function(){ applyModelProfile(effectiveModelName(), true); });
 }
 
+function showQuickCreateStatus(message, isError){
+  var banner = document.getElementById('quickCreateBanner');
+  var copy = document.getElementById('quickCreateCopy');
+  if (!banner || !copy) return;
+  banner.hidden = false;
+  banner.classList.toggle('error', !!isError);
+  copy.textContent = message;
+}
+
+function applyLastSuccessfulSettings(){
+  var settings = AICQuickCreate.read(localStorage);
+  if (!settings) return null;
+  var fallbacks = [];
+  function hasCapability(items, wanted, fields, normalize){
+    if (!items || !items.length || !wanted) return true;
+    var target = normalize ? normalizeModelName(wanted) : String(wanted).toLowerCase();
+    return items.some(function(item){
+      return fields.some(function(field){
+        var value = typeof item === 'string' ? item : item[field];
+        value = normalize ? normalizeModelName(value) : String(value || '').toLowerCase();
+        return value && value === target;
+      });
+    });
+  }
+  if (settings.checkpoint && hasCapability(_sdCapabilities && _sdCapabilities.models, settings.checkpoint, ['title','model_name','filename'], true)) ensureSelectValue('sdModel', settings.checkpoint);
+  else if (settings.checkpoint) fallbacks.push('模型');
+  if (settings.sampler && hasCapability(_sdCapabilities && _sdCapabilities.samplers, settings.sampler, ['name','label'], false)) ensureSelectValue('sampler', settings.sampler);
+  else if (settings.sampler) fallbacks.push('采样器');
+  if (settings.scheduler != null && hasCapability(_sdCapabilities && _sdCapabilities.schedulers, settings.scheduler, ['name','label'], false)) ensureSelectValue('scheduler', settings.scheduler);
+  else if (settings.scheduler) fallbacks.push('调度器');
+  if (settings.cfg) ensureSelectValue('cfg', settings.cfg);
+  if (settings.steps) ensureSelectValue('steps', settings.steps);
+  if (settings.size) ensureSelectValue('size', settings.size);
+  if (settings.hiresUpscaler && hasCapability(_sdCapabilities && _sdCapabilities.upscalers, settings.hiresUpscaler, ['name','model_name'], false)) ensureSelectValue('sdHiresUpscaler', settings.hiresUpscaler);
+  else if (settings.hiresUpscaler) fallbacks.push('放大器');
+  var hires = document.getElementById('sdHiresFix'); if (hires) hires.checked = !!settings.hiresFix;
+  if (settings.hiresScale) ensureSelectValue('sdHiresScale', settings.hiresScale);
+  saveSDSettings();
+  updateLivePreview();
+  return { settings:settings, fallbacks:fallbacks };
+}
+
+function quickCreateCurrent(knownConnection){
+  if (_sdGeneration) { flash('当前图片仍在生成中'); return Promise.resolve(false); }
+  if (QUICK_CREATE_BUSY) { flash('快速创作正在准备中'); return Promise.resolve(false); }
+  if (!state.__sceneId && !String(state.story || '').trim()) {
+    flash('⚠️ 请先选择场景');
+    var input = document.getElementById('sceneSearch'); if (input) input.focus();
+    return Promise.resolve(false);
+  }
+  QUICK_CREATE_BUSY = true;
+  var quickButton = document.getElementById('quickCreateBtn'); if (quickButton) quickButton.disabled = true;
+  showQuickCreateStatus('正在检查 SD，并准备最近成功参数…', false);
+  var readiness = typeof knownConnection === 'boolean' ? Promise.resolve(knownConnection) : checkSDStatus();
+  return readiness.then(function(connected){
+    var reused = connected ? applyLastSuccessfulSettings() : null;
+    generate();
+    if (!connected) {
+      showQuickCreateStatus('SD 当前不可用，Prompt 已准备好；连接恢复后点击“生成图片”即可。', true);
+      var area = document.getElementById('sdResultArea'); if (area) area.style.display = 'block';
+      var status = document.getElementById('sdStatus'); if (status) status.textContent = '未提交生成：SD WebUI 尚未连接。';
+      return false;
+    }
+    var fallbackText = reused && reused.fallbacks.length ? '；' + reused.fallbacks.join('、') + '已失效，改用当前可用值' : '';
+    showQuickCreateStatus(reused ? '已复用最近成功参数：' + AICQuickCreate.summary(reused.settings) + fallbackText : '暂无成功记录，正在使用当前稳定参数生成。', false);
+    var seedLock = document.getElementById('sdSeedLock');
+    var seedInput = document.getElementById('sdSeedInput');
+    if (seedInput && (!seedLock || !seedLock.checked)) seedInput.value = '';
+    callSDGenerate();
+    return true;
+  }).catch(function(error){
+    generate();
+    showQuickCreateStatus('快速出图准备失败，Prompt 已保留，可改用手动生成。', true);
+    console.warn('quick create failed', error);
+    return false;
+  }).finally(function(){
+    QUICK_CREATE_BUSY = false;
+    if (quickButton && !_sdGeneration) quickButton.disabled = false;
+  });
+}
+
 function replaceSDSelect(id, items, preferred, placeholder){
   var select = document.getElementById(id);
   if (!select || !items.length) return;
@@ -2372,8 +2470,10 @@ function finishSDGeneration(generation){
   if (generation.progressTimer) clearInterval(generation.progressTimer);
   if (_sdGeneration === generation) _sdGeneration = null;
   var generateButton = document.getElementById('sdGenBtn');
+  var quickButton = document.getElementById('quickCreateBtn');
   var cancelButton = document.getElementById('sdCancelBtn');
   if (generateButton) { generateButton.disabled = false; generateButton.textContent = '🖼 生成图片'; }
+  if (quickButton) quickButton.disabled = false;
   if (cancelButton) cancelButton.hidden = true;
 }
 
@@ -2396,6 +2496,7 @@ function callSDGenerate(){
   var slot = document.getElementById('sdImageSlot');
   var saveActions = document.getElementById('sdSaveActions');
   var generateButton = document.getElementById('sdGenBtn');
+  var quickButton = document.getElementById('quickCreateBtn');
   var cancelButton = document.getElementById('sdCancelBtn');
   var progress = document.getElementById('sdProgress');
   area.style.display = 'block';
@@ -2409,17 +2510,21 @@ function callSDGenerate(){
   setSDProgress(0);
   generateButton.disabled = true;
   generateButton.textContent = '生成中…';
+  if (quickButton) quickButton.disabled = true;
   cancelButton.hidden = false;
 
   var cfg = Number(document.getElementById('cfg').value) || 5.5;
   var steps = Number(document.getElementById('steps').value) || 28;
   var sampler = document.getElementById('sampler').value || 'DPM++ 2M';
   var scheduler = document.getElementById('scheduler').value || '';
+  var selectedSampler = sampler;
+  var selectedScheduler = scheduler;
   if (_sdCapabilities && !_sdCapabilities.schedulers.length && scheduler && sampler.toLowerCase().indexOf(scheduler.toLowerCase()) === -1) {
     sampler += ' ' + scheduler;
     scheduler = '';
   }
-  var size = (document.getElementById('size').value || '832x1216').replace('×','x').split('x');
+  var selectedSize = document.getElementById('size').value || '832×1216';
+  var size = selectedSize.replace('×','x').split('x');
   var seed = -1;
   var manualSeed = document.getElementById('sdSeedInput') ? document.getElementById('sdSeedInput').value.trim() : '';
   if (manualSeed !== '' && isFinite(Number(manualSeed))) seed = Number(manualSeed);
@@ -2460,7 +2565,19 @@ function callSDGenerate(){
     signal: controller ? controller.signal : undefined
   };
 
-  getSDConnector().generateImage(prompt, getPlainNegative(), options).then(function(result){
+  var successfulSettings = {
+    checkpoint: effectiveModelName(),
+    sampler: selectedSampler,
+    scheduler: selectedScheduler,
+    cfg: cfg,
+    steps: steps,
+    size: selectedSize,
+    hiresFix: hiresEnabled,
+    hiresUpscaler: document.getElementById('sdHiresUpscaler').value || 'Latent',
+    hiresScale: hiresScale
+  };
+
+  return getSDConnector().generateImage(prompt, getPlainNegative(), options).then(function(result){
     if (_sdGeneration !== generation || generation.cancelled) return;
     _sdLastResult = result;
     _sdLastDataUrl = result.image;
@@ -2480,6 +2597,10 @@ function callSDGenerate(){
     image.alt = 'Stable Diffusion 生成图片';
     slot.replaceChildren(image);
     saveActions.style.display = 'flex';
+    if (!successfulSettings.checkpoint && result.info && result.info.sd_model_name) successfulSettings.checkpoint = result.info.sd_model_name;
+    var savedSettings = AICQuickCreate.write(successfulSettings, localStorage);
+    var quickBanner = document.getElementById('quickCreateBanner');
+    if (quickBanner && !quickBanner.hidden) showQuickCreateStatus('生成完成，已记住成功参数：' + AICQuickCreate.summary(savedSettings), false);
     if (window.AICS_GATEWAY) {
       fetch('/api/save-backup', {
         method: 'POST',
@@ -2490,16 +2611,22 @@ function callSDGenerate(){
   }).catch(function(error){
     console.error('[SD API] 生成失败:', error);
     document.getElementById('stepResult').classList.remove('has-image');
+    var quickBanner = document.getElementById('quickCreateBanner');
     if (generation.cancelled || error.name === 'AbortError') {
       status.textContent = '已停止生成';
+      if (quickBanner && !quickBanner.hidden) showQuickCreateStatus('已停止生成；最近成功参数没有被覆盖。', true);
     } else if (error.name === 'TimeoutError') {
       status.textContent = '❌ 生成超时。WebUI 可能卡在模型加载或显存不足，请查看 WebUI 控制台。';
+      if (quickBanner && !quickBanner.hidden) showQuickCreateStatus('生成超时；已保留 Prompt 和最近成功参数。', true);
     } else if (error.name === 'NetworkError') {
       status.textContent = '❌ ' + error.message + '。请确认 WebUI 已使用 --api 启动，且网关 SD_HOST 配置正确。';
+      if (quickBanner && !quickBanner.hidden) showQuickCreateStatus('连接中断；已保留 Prompt 和最近成功参数。', true);
     } else if (error.status === 404) {
       status.textContent = '❌ 当前静态服务器没有 SD API 代理。请从 AI-CG-Studio 控制面板启动并打开网站后再生成。';
+      if (quickBanner && !quickBanner.hidden) showQuickCreateStatus('当前页面没有 SD 网关，已保留 Prompt。', true);
     } else {
       status.textContent = '❌ ' + (error.message || '生成失败');
+      if (quickBanner && !quickBanner.hidden) showQuickCreateStatus('生成失败；已保留 Prompt 和最近成功参数。', true);
     }
     if (progress) progress.hidden = true;
   }).finally(function(){ finishSDGeneration(generation); });
