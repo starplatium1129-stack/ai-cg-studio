@@ -25,6 +25,36 @@ assert(neneMatches.every((scene) => scene.char === 'nene' || scene.char === 'tri
 const natsumeMatches = scenes.filter((scene) => sceneUx.matchesSearch(scene, '夏目经典感', curation));
 assert(natsumeMatches.every((scene) => scene.char === 'natsume' || scene.char === 'triad'), 'Natsume intent must not return Nene-only scenes');
 
+const sentence = '我想画一个安静的夏目雨夜';
+const sentenceAnalysis = sceneUx.analyzeQuery(sentence, curation);
+assert.deepStrictEqual(sentenceAnalysis.residualTerms, [], 'natural-language filler must not become a required search term');
+assert(sentenceAnalysis.intents.includes('安静') && sentenceAnalysis.intents.includes('夏目经典感') && sentenceAnalysis.intents.includes('雨天'),
+  'natural-language search must recognize mood, character, and weather intents');
+const sentenceMatches = scenes.filter((scene) => sceneUx.matchesSearch(scene, sentence, curation));
+assert(sentenceMatches.length > 0, 'natural-language sentence must return scenes');
+assert(sentenceMatches.every((scene) => scene.char === 'natsume' || scene.char === 'triad'), 'natural-language character intent must be respected');
+assert(!sceneUx.analyzeQuery('夏目', curation).intents.includes('夏日'), 'single-character aliases must not match inside longer names');
+
+const rankConfig = { searchAliases:{ '雨夜':['雨夜','rainy_night'] } };
+const titleMatch = { id:'title', title:'雨夜告白', story:'两个人终于说出心意', char:'natsume', tags:[] };
+const storyMatch = { id:'story', title:'迟来的约定', story:'故事发生在雨夜', char:'natsume', tags:[] };
+assert(sceneUx.searchScore(titleMatch, '雨夜', rankConfig) > sceneUx.searchScore(storyMatch, '雨夜', rankConfig),
+  'title matches must rank above story-only matches');
+
+const preferenceNow = Date.UTC(2026, 6, 22);
+const highRating = { face:5, expression:5, composition:5, hands:5, atmosphere:5 };
+const lowRating = { face:1, expression:1, composition:1, hands:1, atmosphere:1 };
+const profile = sceneUx.buildPreferenceProfile([
+  { scene:'sc002', character:'nene', timestamp:preferenceNow - 1000, favorite:true, rating:highRating },
+  { scene:'sc002', character:'nene', timestamp:preferenceNow - 2000, favorite:false, rating:highRating },
+  { scene:'sc046', character:'natsume', timestamp:preferenceNow - 3000, favorite:false, rating:lowRating }
+], preferenceNow);
+const preferredScene = scenes.find((scene) => scene.id === 'sc002');
+const weakScene = scenes.find((scene) => scene.id === 'sc046');
+assert(sceneUx.personalScore(preferredScene, profile) > sceneUx.personalScore(weakScene, profile), 'high-rated favorites must receive a stronger personal score');
+assert(sceneUx.isPersonalFavorite(preferredScene, profile), 'history favorites must be available to scene filters');
+assert(sceneUx.personalReason(preferredScene, profile).includes('收藏'), 'personal recommendation must explain why a scene is promoted');
+
 const memory = new Map();
 const storage = { getItem:(key) => memory.has(key) ? memory.get(key) : null, setItem:(key, value) => memory.set(key, value) };
 sceneUx.rememberRecent(scenes[0], storage);
@@ -34,4 +64,4 @@ const recent = sceneUx.readRecent(storage);
 assert.strictEqual(recent.length, 2, 'recent scenes must be deduplicated');
 assert.strictEqual(recent[0].id, scenes[0].id, 'most recent scene must be first');
 
-console.log('Scene UX tests passed: tiers, semantic search, and recent scenes');
+console.log('Scene UX tests passed: tiers, sentence search, relevance, preferences, and recent scenes');

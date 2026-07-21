@@ -6,7 +6,7 @@
 <title>绘制工作台 · 绫季绘境</title>
 <link rel="stylesheet" href="../css/design-system.css?v=7">
 <script src="nav.js?v=5"></script>
-<script src="scene-ux.js?v=1"></script>
+<script src="scene-ux.js?v=2"></script>
 <script src="theme.js?v=5"></script>
 <style>
   /* ============================================================
@@ -550,7 +550,7 @@
         <div class="panel-title">🎞 Scene 库 <span id="sceneCountBadge" style="font-weight:500;color:var(--text-muted)"></span></div>
         <label class="sr-only" for="sceneSearch">搜索场景</label>
         <div class="scene-search-wrap">
-          <input type="search" class="scene-search" placeholder="试试：雨夜、海边、浴衣、害羞、sc122" id="sceneSearch" oninput="filterScenes(this.value)">
+          <input type="search" class="scene-search" placeholder="试试：我想画一个安静的夏目雨夜" id="sceneSearch" oninput="filterScenes(this.value)">
           <button class="scene-search-clear" type="button" onclick="clearSceneSearch()" aria-label="清空场景搜索" title="清空搜索">×</button>
         </div>
         <div class="scene-filter-summary"><span class="scene-result-count" id="sceneResultCount" role="status" aria-live="polite">正在整理场景…</span><button class="scene-filter-reset" type="button" onclick="resetSceneFilters()">重置筛选</button></div>
@@ -844,6 +844,7 @@ var _maturePreference = localStorage.getItem('aics_show_mature');
 var _localOwner = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(window.location.hostname);
 var SHOW_MATURE_SCENES = _maturePreference == null ? _localOwner : _maturePreference === '1';
 var CURATION_DATA = { curatedSceneIds:[], signatureSceneIds:[], reviewSceneIds:[], recommendationReasons:{}, searchAliases:{} };
+var PERSONAL_PROFILE = AICSceneUX.buildPreferenceProfile([]);
 var DRAFT_KEY = 'aics_pb_last_draft';
 var DRAFT_SAVE_TIMER = null;
 var DRAFT_RESTORING = false;
@@ -892,6 +893,7 @@ function loadData(){
       var res = migrateHistory(raw);
       _cachedHistory = res.list;
       state.history = res.list;
+      PERSONAL_PROFILE = AICSceneUX.buildPreferenceProfile(res.list);
       _cachedProjects = Array.isArray(prjRaw) ? prjRaw : [];
       if(res.changed) AICKVStore.set(HIS_KEY, res.list);
     }).catch(function(e){console.warn('storage init fail, fallback to memory',e);});
@@ -899,7 +901,7 @@ function loadData(){
   return Promise.all([
     initStorage(),
     fetch('../data/scenes.json?v=9').then(r=>r.json()).then(d=>SCENES=d).catch(e=>{console.warn('scenes load fail',e);}),
-    fetch('../data/curation.json?v=2').then(r=>r.json()).then(d=>CURATION_DATA=d||CURATION_DATA).catch(e=>{console.warn('curation load fail',e);}),
+    fetch('../data/curation.json?v=3').then(r=>r.json()).then(d=>CURATION_DATA=d||CURATION_DATA).catch(e=>{console.warn('curation load fail',e);}),
     fetch('../data/characters.json?v=6').then(r=>r.json()).then(d=>CHARACTER=d).catch(e=>{console.warn('characters load fail',e);}),
     fetch('../data/loras.json?v=2').then(r=>r.json()).then(d=>LORA_META=Array.isArray(d)?d:[]).catch(e=>{console.warn('loras load fail',e);}),
     fetch('../data/presets.json?v=2').then(r=>r.json()).then(d=>{
@@ -1446,17 +1448,27 @@ function renderScenes() {
     const seriesOk = sceneMatchesSeries(s, seriesSel);
     const ratingOk = ratingSel === 'all' || (s.rating || (s.mature ? 'R18' : 'All')) === ratingSel;
     return themeOk && charOk && seasonOk && seriesOk && ratingOk && semanticSceneMatch(s, q);
-  }).sort(function(a,b){ return scenePriority(b.s) - scenePriority(a.s); });
+  }).sort(function(a,b){
+    if (q) {
+      var relevance = AICSceneUX.searchScore(b.s, q, CURATION_DATA, [scenePrimaryCategory(b.s), sceneTimeLabel(b.s.timeOfDay)]) - AICSceneUX.searchScore(a.s, q, CURATION_DATA, [scenePrimaryCategory(a.s), sceneTimeLabel(a.s.timeOfDay)]);
+      if (relevance) return relevance;
+    }
+    var preference = AICSceneUX.personalScore(b.s, PERSONAL_PROFILE) - AICSceneUX.personalScore(a.s, PERSONAL_PROFILE);
+    return preference || scenePriority(b.s) - scenePriority(a.s);
+  });
   const countEl = document.getElementById('sceneResultCount');
-  if (countEl) countEl.innerHTML = '找到 <strong>' + matches.length + '</strong> 个场景';
+  const analysis = AICSceneUX.analyzeQuery(q, CURATION_DATA);
+  if (countEl) countEl.innerHTML = '找到 <strong>' + matches.length + '</strong> 个场景' + (analysis.intents.length ? ' · 已理解：' + analysis.intents.map(escapeHtml).join('、') : '') + (PERSONAL_PROFILE.entries ? ' · 已结合 ' + PERSONAL_PROFILE.entries + ' 条本机记录' : '');
   matches.slice(0, BUILDER_SCENE_LIMIT).forEach(({s, idx}) => {
     const card = document.createElement('div'); card.className = 'scene-card'; card.dataset.idx = idx; card.dataset.category = s.category || '日常'; card.dataset.rating = s.rating || (s.mature ? 'R18' : 'All');
     const season = s.season ? ({春:'🌸',夏:'☀️',秋:'🍂',冬:'❄️'}[s.season]||'') + s.season : '';
     const tod = s.timeOfDay ? ({morning:'清晨',afternoon:'午后',sunset:'黄昏',night:'夜晚',late_night:'深夜',dawn:'拂晓'}[s.timeOfDay]||s.timeOfDay) : '';
+    const personalNote = AICSceneUX.personalReason(s, PERSONAL_PROFILE);
     card.innerHTML = `
       <div class="scene-name">${escapeHtml(s.title)}${s.mature ? ' <span class="mature-dot">🔞</span>' : ''}</div>
       <div class="scene-story">${escapeHtml(s.story)}</div>
       <div class="scene-meta">
+        ${personalNote ? `<span class="scene-tag emotion" title="${escapeHtml(personalNote)}">为你推荐</span>` : ''}
         ${sceneTier(s) === 'signature' ? '<span class="scene-tag emotion">招牌</span>' : sceneTier(s) === 'curated' ? '<span class="scene-tag">精选</span>' : ''}
         <span class="scene-tag emotion">${escapeHtml(s.emotion)}</span>
         <span class="scene-tag char-color">${escapeHtml(sceneCharacterLabel(s))}</span>
@@ -3063,8 +3075,10 @@ async function commitHistoryEntry(entry){
   var evicted=merged.slice(30);
   _cachedHistory=kept;
   state.history=kept;
+  PERSONAL_PROFILE=AICSceneUX.buildPreferenceProfile(kept);
   AICKVStore.set(HIS_KEY,kept).catch(function(e){console.warn('history save fail',e);});
   renderHistory();
+  renderScenes();
   if(entry.project)addHistoryToProject(entry.project,entry.id);
   cleanupImages(evicted,kept).catch(function(e){flash('记录已保存，旧图片清理失败');});
 }
@@ -3072,7 +3086,7 @@ async function saveHistory(){const entry=baseEntry(),v=nextVersion(state.history
 async function saveHistoryWithRating(rating,favorite,notes,imageUrl,imageId,useActual){const entry=baseEntry(!!useActual),v=nextVersion(state.history,entry.scene,entry.character);entry.version=v.version;entry.parent_id=v.parent_id;entry.rating=rating;entry.favorite=!!favorite;entry.notes=notes||'';entry.image_id=imageId||'';entry.image_url=normalizeImageUrl(imageUrl);await commitHistoryEntry(entry);}
 function renderHistory(){const list=document.getElementById('historyList');document.getElementById('hisCount').textContent=state.history.length;if(!state.history.length){list.innerHTML='<div class="history-empty">尚无记录。每次点击「保存」生成一条快照。</div>';return;}list.innerHTML=state.history.map(h=>{const avg=h.rating?Math.round(((Number(h.rating.face)||0)+(Number(h.rating.expression)||0)+(Number(h.rating.composition)||0)+(Number(h.rating.hands)||0)+(Number(h.rating.atmosphere)||0))/5):0;const title=escapeHtml(h.sceneTitle||h.scene||'未命名场景');const character=escapeHtml(h.character==='natsume'?'夏目':h.character==='nene'?'宁宁':h.character==='both'?'双人':h.character||'—');const version=escapeHtml(h.version||1);const seed=escapeHtml(h.seed||'—');const id=Number(h.id);const ratingText=avg?avg+'/5':'未评分';return `<div class="history-item"><div class="history-main"><div class="history-text" title="${escapeHtml(h.prompt||'')}">${escapeHtml(h.prompt||'')}</div><div class="history-meta"><span class="primary">${title}</span><span class="sep" aria-hidden="true">·</span><span>${character}</span><span class="sep" aria-hidden="true">·</span><span>v${version}</span><span class="sep" aria-hidden="true">·</span><span>seed ${seed}</span></div></div><div class="history-side"><div class="history-rating${avg?' rated':''}" aria-label="${avg?'平均评分 '+avg+' 分':'未评分'}"><span class="star" aria-hidden="true">★</span><span>${ratingText}</span>${h.favorite?'<span class="favorite" title="已收藏" aria-label="已收藏">♥</span>':''}</div><div class="history-actions"><button type="button" class="history-action primary" onclick="loadHistoryId(${id})">载入</button><button type="button" class="history-action" onclick="copyHistoryId(${id})">复制</button><button type="button" class="history-action delete" onclick="deleteHistoryId(${id})" title="删除记录" aria-label="删除记录">×</button></div></div></div>`;}).join('');}
 function loadHistoryId(id){const h=state.history.find(x=>x.id===id);if(h)restoreFromEntry(h,false);} function copyHistoryId(id){const h=state.history.find(x=>x.id===id);if(h)navigator.clipboard.writeText(h.prompt||'').then(()=>flash('📋 已复制'));}
-async function deleteHistoryId(id){var removed=state.history.filter(h=>h.id===id);var entry=removed[0];var prjId=entry&&entry.project;var kept=state.history.filter(h=>h.id!==id);_cachedHistory=kept;state.history=kept;AICKVStore.set(HIS_KEY,kept).catch(function(e){flash('删除失败');return;});renderHistory();if(prjId)removeHistoryFromProject(prjId,id);cleanupImages(removed,kept).catch(function(e){flash('记录已删除，图片清理失败');});}
+async function deleteHistoryId(id){var removed=state.history.filter(h=>h.id===id);var entry=removed[0];var prjId=entry&&entry.project;var kept=state.history.filter(h=>h.id!==id);_cachedHistory=kept;state.history=kept;PERSONAL_PROFILE=AICSceneUX.buildPreferenceProfile(kept);AICKVStore.set(HIS_KEY,kept).catch(function(e){flash('删除失败');return;});renderHistory();renderScenes();if(prjId)removeHistoryFromProject(prjId,id);cleanupImages(removed,kept).catch(function(e){flash('记录已删除，图片清理失败');});}
 
 // ========== TRAIN ==========
 function toggleTrain() {

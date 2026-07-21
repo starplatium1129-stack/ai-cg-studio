@@ -8,7 +8,8 @@
 <link rel="stylesheet" href="../css/scene-card.css?v=6">
 <script src="nav.js?v=5"></script>
 <script src="scene-card.js?v=5"></script>
-<script src="scene-ux.js?v=1"></script>
+<script src="scene-ux.js?v=2"></script>
+<script src="image-store.js?v=5"></script>
 <script src="theme.js?v=5"></script>
 <style>
   .page { max-width: 1100px; margin: 0 auto; padding: var(--s-5) var(--s-4); }
@@ -161,7 +162,7 @@
       <label class="scene-filter-field">系列<select id="sceneSeries" onchange="filterScenes()"><option value="all">全部系列</option><option value="after">After Story</option><option value="fanwork">同人</option><option value="active">Active Sync</option></select></label>
       <label class="scene-filter-field">内容分级<select id="sceneRating" onchange="filterScenes()"><option value="all">全部分级</option><option value="All">全年龄</option><option value="R15">R15 暧昧</option><option value="R18">R18 成人</option></select></label>
       <label class="scene-filter-field">精品层级<select id="sceneTier" onchange="filterScenes()"><option value="featured">招牌与精选</option><option value="signature">只看招牌</option><option value="curated">只看精选</option><option value="all">完整场景库</option><option value="review">待返工</option></select></label>
-      <label class="scene-filter-field">排序<select id="sceneSort" onchange="filterScenes()"><option value="curated">主理人精选</option><option value="favorite">我的收藏</option><option value="newest">最新加入</option><option value="title">名称 A-Z</option></select></label>
+      <label class="scene-filter-field">排序<select id="sceneSort" onchange="filterScenes()"><option value="smart">✨ 智能推荐</option><option value="curated">主理人精选</option><option value="favorite">我的收藏</option><option value="newest">最新加入</option><option value="title">名称 A-Z</option></select></label>
     </div>
     <div class="scene-filter-meta">
       <label class="mature-toggle"><input type="checkbox" id="showMature"> 显示成人内容 <span id="matureCount"></span></label>
@@ -196,8 +197,10 @@ let FILTER_TIMER = null;
 const SCENE_PAGE_SIZE = 24;
 const MATURE_KEY = 'aics_show_mature';
 const FAVORITE_KEY = 'aics_scene_favorites';
+const HISTORY_KEY = 'aics_pb_history';
 let CURATION_DATA = { curatedSceneIds:[], moodRails:[] };
 let CURATED_IDS = [];
+let PERSONAL_PROFILE = AICSceneUX.buildPreferenceProfile([]);
 let SCENE_FAVORITES = new Set(JSON.parse(localStorage.getItem(FAVORITE_KEY) || '[]'));
 const LOCAL_OWNER = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(window.location.hostname);
 let SHOW_MATURE = localStorage.getItem(MATURE_KEY) == null ? LOCAL_OWNER : localStorage.getItem(MATURE_KEY) === '1';
@@ -244,11 +247,13 @@ function loadScenes(){
   const grid = document.getElementById('sceneGrid');
   Promise.all([
     fetch('../data/scenes.json?v=9').then(r => { if (!r.ok) throw new Error('Scenes HTTP ' + r.status); return r.json(); }),
-    fetch('../data/curation.json?v=2').then(r => { if (!r.ok) throw new Error('Curation HTTP ' + r.status); return r.json(); }).catch(function(){ return { curatedSceneIds:[], moodRails:[] }; })
+    fetch('../data/curation.json?v=3').then(r => { if (!r.ok) throw new Error('Curation HTTP ' + r.status); return r.json(); }).catch(function(){ return { curatedSceneIds:[], moodRails:[] }; }),
+    loadPreferenceProfile()
   ])
     .then(function(result){
       SCENES = result[0];
       CURATION_DATA = result[1] || CURATION_DATA;
+      PERSONAL_PROFILE = result[2] || PERSONAL_PROFILE;
       CURATED_IDS = Array.isArray(CURATION_DATA.curatedSceneIds) ? CURATION_DATA.curatedSceneIds : [];
       init();
       var qp = new URLSearchParams(window.location.search);
@@ -265,6 +270,17 @@ function loadScenes(){
     .catch(function(err){
       if (grid) grid.innerHTML = '<div class="sc-empty"><div class="ic">⚠️</div><p>场景数据加载失败。<br>请通过 <code>localhost</code> 访问(不要用 file:// 直接打开)。<br><small>' + err.message + '</small></p></div>';
     });
+}
+
+function loadPreferenceProfile(){
+  function fallback(){
+    try { return AICSceneUX.buildPreferenceProfile(JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]')); }
+    catch(e) { return AICSceneUX.buildPreferenceProfile([]); }
+  }
+  if (!window.AICKVStore) return Promise.resolve(fallback());
+  return AICKVStore.init().then(function(){ return AICKVStore.get(HISTORY_KEY); })
+    .then(function(history){ return Array.isArray(history) ? AICSceneUX.buildPreferenceProfile(history) : fallback(); })
+    .catch(function(){ return fallback(); });
 }
 loadScenes();
 
@@ -338,10 +354,12 @@ function matchesSemanticQuery(scene, query){
 }
 function renderSearchIntent(query){
   var host = document.getElementById('sceneSearchIntent'); if (!host) return;
-  var aliases = (CURATION_DATA.searchAliases || {})[query];
+  var analysis = AICSceneUX.analyzeQuery(query, CURATION_DATA);
   var tier = document.getElementById('sceneTier');
   var expanded = query && tier && tier.value === 'featured' ? '已自动扩展至完整场景库。' : '';
-  host.innerHTML = aliases && aliases.length ? expanded + '已理解为：<strong>' + aliases.slice(0,6).map(escHtml).join(' · ') + '</strong>' : (query ? expanded + '正在搜索标题、故事、情绪、地点和视觉标签。' : '自然描述也可以搜索，不需要记英文标签。');
+  var understood = analysis.intents.length ? '已理解为：<strong>' + analysis.intents.map(escHtml).join(' · ') + '</strong>。' : (query ? '正在搜索标题、故事、情绪、地点和视觉标签。' : '可以直接描述想画的完整句子。');
+  var personal = PERSONAL_PROFILE.entries ? ' 已结合本机 ' + PERSONAL_PROFILE.entries + ' 条创作记录排序。' : ' 完成作品评分后，推荐会逐渐贴近你的偏好。';
+  host.innerHTML = expanded + understood + personal;
 }
 function curationScore(scene){
   var fixed = CURATED_IDS.indexOf(scene.id);
@@ -370,13 +388,18 @@ function filteredScenes(){
     var currentTier = sceneTier(s);
     if (!q && tier === 'featured' && currentTier !== 'signature' && currentTier !== 'curated') return false;
     if (tier !== 'all' && tier !== 'featured' && currentTier !== tier) return false;
-    if (sort === 'favorite' && !SCENE_FAVORITES.has(s.id)) return false;
+    if (sort === 'favorite' && !SCENE_FAVORITES.has(s.id) && !AICSceneUX.isPersonalFavorite(s, PERSONAL_PROFILE)) return false;
     return matchesSemanticQuery(s, q);
   });
   return results.sort(function(a,b){
+    if (q) {
+      var relevance = AICSceneUX.searchScore(b, q, CURATION_DATA, [primaryCategory(b), sceneTimeName(b.timeOfDay)]) - AICSceneUX.searchScore(a, q, CURATION_DATA, [primaryCategory(a), sceneTimeName(a.timeOfDay)]);
+      if (relevance) return relevance;
+    }
     if (sort === 'newest') return String(b.id).localeCompare(String(a.id), undefined, {numeric:true});
     if (sort === 'title') return String(a.title).localeCompare(String(b.title), 'zh-CN');
-    if (sort === 'favorite') return String(a.title).localeCompare(String(b.title), 'zh-CN');
+    if (sort === 'favorite') return AICSceneUX.personalScore(b, PERSONAL_PROFILE) - AICSceneUX.personalScore(a, PERSONAL_PROFILE) || String(a.title).localeCompare(String(b.title), 'zh-CN');
+    if (sort === 'smart') return (AICSceneUX.personalScore(b, PERSONAL_PROFILE) * 500 + curationScore(b)) - (AICSceneUX.personalScore(a, PERSONAL_PROFILE) * 500 + curationScore(a));
     return curationScore(b) - curationScore(a);
   });
 }
@@ -415,7 +438,7 @@ function renderScenes(reset){
       beforeActions: function(scene){
         var tags = scene.tags.slice(0,3).map(function(t){ return '<span class="ex-tag">'+escHtml(t)+'</span>'; }).join('');
         var tier = sceneTier(scene);
-        var reason = (CURATION_DATA.recommendationReasons || {})[scene.id] || (tier === 'curated' ? '构图、角色气质与叙事完整度较高。' : '完整场景，可按需要继续筛选。');
+        var reason = AICSceneUX.personalReason(scene, PERSONAL_PROFILE) || (CURATION_DATA.recommendationReasons || {})[scene.id] || (tier === 'curated' ? '构图、角色气质与叙事完整度较高。' : '完整场景，可按需要继续筛选。');
         return '' +
           '<div class="ex-spec">' +
             '<div class="ex-spec-item"><div class="ex-spec-label">情绪</div><div class="ex-spec-value">' + escHtml(scene.emotion||'') + '</div></div>' +
@@ -481,7 +504,7 @@ function resetSceneFilters(){
   var search = document.getElementById('sceneSearch'); if (search) search.value = '';
   ['sceneCharacter','sceneSeason','sceneTime','sceneSeries','sceneRating'].forEach(function(id){ var select=document.getElementById(id); if(select) select.value='all'; });
   var tier = document.getElementById('sceneTier'); if (tier) tier.value = 'featured';
-  var sort = document.getElementById('sceneSort'); if (sort) sort.value = 'curated';
+  var sort = document.getElementById('sceneSort'); if (sort) sort.value = 'smart';
   renderSceneCats(); renderScenes(true);
 }
 
