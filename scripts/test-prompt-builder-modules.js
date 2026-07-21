@@ -3,6 +3,7 @@ const path = require('path');
 
 const root = path.resolve(__dirname, '..');
 const htmlPath = path.join(root, 'tools', 'prompt-builder.html');
+const iconPath = path.join(root, 'tools', 'icon-system.js');
 const modules = [
   ['state.js', 'function loadData'],
   ['scene.js', 'function renderScenes'],
@@ -12,7 +13,7 @@ const modules = [
   ['voice.js', 'function generateAIVoice'],
   ['history.js', 'function commitHistoryEntry'],
   ['backup.js', 'function exportLocalData'],
-  ['ui.js', 'function flash'],
+  ['ui.js', 'function toggleFocusMode'],
   ['app.js', 'function init']
 ];
 
@@ -23,6 +24,18 @@ function fail(message) {
 const html = fs.readFileSync(htmlPath, 'utf8');
 if (/<script(?![^>]*\bsrc=)[^>]*>/i.test(html)) {
   fail('prompt-builder.html must not contain an inline script block');
+}
+
+if (!html.includes('icon-system.js?v=1')) fail('missing icon-system script reference');
+if (!html.includes('id="focusModeBtn"')) fail('missing focus mode control');
+if (!html.includes('body.focus-mode .col-left')) fail('missing focus mode layout rules');
+if (!fs.existsSync(iconPath)) fail('missing icon-system.js');
+const iconSource = fs.readFileSync(iconPath, 'utf8');
+if (!iconSource.includes('window.AICIcons')) fail('icon system is missing its public API');
+try {
+  new Function(iconSource);
+} catch (error) {
+  fail('icon-system.js has a syntax error: ' + error.message);
 }
 
 let previousOffset = -1;

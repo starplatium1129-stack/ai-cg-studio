@@ -242,6 +242,16 @@ function renderSceneCats() {
   });
   var _cb=document.getElementById('sceneCountBadge'); if(_cb) _cb.textContent = '· '+SCENES.length+' Scenes';
 }
+function toggleSceneFilters(){
+  var container = document.getElementById('sceneFilterMore');
+  var body = document.getElementById('sceneFilterMoreBody');
+  var trigger = document.getElementById('sceneFilterMoreToggle');
+  if (!container || !body || !trigger) return;
+  var open = !container.classList.contains('open');
+  container.classList.toggle('open', open);
+  body.hidden = !open;
+  trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
 function renderScenes() {
   const grid = document.getElementById('sceneGrid'); if (!grid) return;
   grid.innerHTML = '';
@@ -251,6 +261,11 @@ function renderScenes() {
   const seasonSel = (document.getElementById('sceneSeasonFilter') || {}).value || 'all';
   const seriesSel = (document.getElementById('sceneSeriesFilter') || {}).value || 'all';
   const ratingSel = (document.getElementById('sceneRatingFilter') || {}).value || 'all';
+  const activeFilterCount = [charSel, seasonSel, seriesSel, ratingSel].filter(function(value){ return value !== 'all'; }).length;
+  const filterMore = document.getElementById('sceneFilterMore');
+  const filterMoreState = document.getElementById('sceneFilterMoreState');
+  if (filterMore) filterMore.classList.toggle('has-active', activeFilterCount > 0);
+  if (filterMoreState) filterMoreState.textContent = activeFilterCount ? activeFilterCount + ' 项已启用' : '角色 / 季节 / 系列 / 分级';
   const matches = SCENES.map((s, idx) => ({s, idx})).filter(({s}) => {
     if (!SHOW_MATURE_SCENES && s.mature) return false;
     const themeOk = sceneMatchesTheme(s, SCENE_THEME);

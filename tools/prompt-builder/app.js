@@ -164,8 +164,16 @@ function initKeyboardShortcuts(){
       if (search) search.focus();
       return;
     }
+    if (event.key.toLowerCase() === 'f' && !editing && !event.ctrlKey && !event.metaKey && !event.altKey) {
+      event.preventDefault();
+      toggleFocusMode();
+      return;
+    }
     if (event.key === 'Escape') {
       if (_sdGeneration) { cancelSDGenerate(); return; }
+      if (document.body.classList.contains('focus-mode')) { toggleFocusMode(false); return; }
+      var utility = document.getElementById('utilityMenu');
+      if (utility && utility.classList.contains('open')) { closeUtilityMenu(); return; }
       var backup = document.getElementById('backupOverlay');
       if (backup && backup.classList.contains('open')) { closeBackupRestore(); return; }
       var review = document.getElementById('reviewOverlay');

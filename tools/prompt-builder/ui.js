@@ -3,6 +3,25 @@
  */
 
 // ========== ACTIONS ==========
+function toggleFocusMode(force) {
+  var body = document.body;
+  var button = document.getElementById('focusModeBtn');
+  var label = button && button.querySelector('.focus-mode-label');
+  var active = typeof force === 'boolean' ? force : !body.classList.contains('focus-mode');
+  body.classList.toggle('focus-mode', active);
+  if (button) {
+    button.setAttribute('aria-pressed', active ? 'true' : 'false');
+    button.setAttribute('aria-label', active ? '退出专注成片模式' : '进入专注成片模式');
+    button.title = active ? '退出专注（Esc 或 F）' : '专注成片（F）';
+  }
+  if (label) label.textContent = active ? '退出专注' : '专注成片';
+  if (active) {
+    if (typeof closeUtilityMenu === 'function') closeUtilityMenu();
+    requestAnimationFrame(function () { window.scrollTo({ top:0, behavior:'smooth' }); });
+  }
+  return active;
+}
+
 function toggleConcise(on) {
   state.concise = !!on;
   // 精简模式下隐藏次要模块参数 (保留 quality/tail/negative, 其他 UI 不动但 buildParts 忽略)
@@ -73,7 +92,7 @@ function toggleTrain() {
   if (c) c.classList.toggle('open');
   if (b) b.classList.toggle('open');
 }
-function toggleMonitor() { const m=document.getElementById('promptMonitor'); const t=document.getElementById('monitorToggle'); m.classList.toggle('monitor-preview-collapsed'); const collapsed=m.classList.contains('monitor-preview-collapsed'); if(t) t.textContent = collapsed ? '展开 ▶' : '收起 ▼'; }
+function toggleMonitor() { const m=document.getElementById('promptMonitor'); const t=document.getElementById('monitorToggle'); m.classList.toggle('monitor-preview-collapsed'); const collapsed=m.classList.contains('monitor-preview-collapsed'); if(t) t.textContent = collapsed ? '展开' : '收起'; }
 function toggleResult() { const d=document.getElementById('promptDetails'); if(!d) return; d.open=!d.open; if(event.target && event.target.tagName==='BUTTON') event.target.textContent = d.open?'收起 Prompt':'展开 Prompt'; }
 
 // ========== TOAST ==========

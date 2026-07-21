@@ -63,6 +63,7 @@ function downloadBackup(backup){
 async function exportLocalData(){
   var button = document.getElementById('backupExportBtn');
   if (button && button.disabled) return;
+  var buttonLabel = button ? button.textContent : '';
   if (button) { button.disabled = true; button.textContent = '整理中…'; }
   try {
     var values = await Promise.all([
@@ -82,8 +83,29 @@ async function exportLocalData(){
     console.error('backup export failed', error);
     flash('备份失败：' + (error.message || '请检查浏览器存储'));
   } finally {
-    if (button) { button.disabled = false; button.textContent = '备份'; }
+    if (button) { button.disabled = false; button.textContent = buttonLabel || '导出备份'; }
   }
+}
+
+function closeUtilityMenu(){
+  var menu = document.getElementById('utilityMenu');
+  var popover = document.getElementById('utilityPopover');
+  var trigger = document.getElementById('utilityTrigger');
+  if (menu) menu.classList.remove('open');
+  if (popover) popover.hidden = true;
+  if (trigger) trigger.setAttribute('aria-expanded', 'false');
+}
+
+function toggleUtilityMenu(event){
+  if (event) event.stopPropagation();
+  var menu = document.getElementById('utilityMenu');
+  var popover = document.getElementById('utilityPopover');
+  var trigger = document.getElementById('utilityTrigger');
+  if (!menu || !popover || !trigger) return;
+  var open = !menu.classList.contains('open');
+  menu.classList.toggle('open', open);
+  popover.hidden = !open;
+  trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
 }
 
 function openBackupPicker(){
@@ -169,4 +191,8 @@ async function restoreLocalData(mode){
 function initBackupUI(){
   var overlay = document.getElementById('backupOverlay');
   if (overlay) overlay.addEventListener('click', function(event){ if (event.target === overlay) closeBackupRestore(); });
+  document.addEventListener('click', function(event){
+    var menu = document.getElementById('utilityMenu');
+    if (menu && menu.classList.contains('open') && !menu.contains(event.target)) closeUtilityMenu();
+  });
 }
