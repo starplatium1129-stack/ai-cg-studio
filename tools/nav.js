@@ -43,6 +43,10 @@
       brand.onkeydown = function(e){ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.location.href = brandLink(); } };
     }
     var current = document.body.getAttribute('data-nav');
+    document.title = document.title.replace(/AI[ -]CG Studio/gi, '绫季绘境');
+    document.querySelectorAll('.footer p').forEach(function(paragraph){
+      if (/AI[ -]CG Studio/i.test(paragraph.textContent)) paragraph.textContent = paragraph.textContent.replace(/AI[ -]CG Studio/gi, '绫季绘境');
+    });
     host.innerHTML = NAV.map(function (item) {
       var cls = (item.id === current) ? ' class="active"' : '';
       return '<a' + cls + ' href="' + d + item.href + '">' + item.icon + ' ' + item.label + '</a>';

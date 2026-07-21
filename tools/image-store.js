@@ -73,6 +73,20 @@
     return runTransaction('readwrite', function(store){ store.put(record); }).then(function(){ return id; });
   }
 
+  function putRecord(record){
+    if(!record || typeof record.id !== 'string' || !record.id.trim()) return Promise.reject(new Error('图片记录缺少 ID'));
+    if(!(record.blob instanceof Blob) || !record.blob.size) return Promise.reject(new Error('图片记录为空'));
+    var normalized = {
+      id: record.id.trim(),
+      blob: record.blob,
+      name: typeof record.name === 'string' ? record.name : '',
+      type: record.type || record.blob.type || '',
+      size: record.blob.size,
+      created_at: Number(record.created_at) || Date.now()
+    };
+    return runTransaction('readwrite', function(store){ store.put(normalized); }).then(function(){ return normalized.id; });
+  }
+
   function get(id){
     if(typeof id !== 'string' || !id.trim()) return Promise.resolve(null);
     return openDb().then(function(db){
@@ -101,7 +115,39 @@
     return runTransaction('readwrite', function(store){ unique.forEach(function(id){ store.delete(id); }); });
   }
 
-  global.AICGImageStore = { put:put, get:get, delete:deleteOne, deleteMany:deleteMany };
+  function listRecords(){
+    return openDb().then(function(db){
+      return new Promise(function(resolve, reject){
+        var transaction;
+        try { transaction = db.transaction(STORE_NAME, 'readonly'); }
+        catch(error){ reject(error); return; }
+        var request = transaction.objectStore(STORE_NAME).getAll();
+        request.onsuccess = function(){ resolve(Array.isArray(request.result) ? request.result : []); };
+        request.onerror = function(){ reject(request.error || new Error('图片列表读取失败')); };
+      });
+    });
+  }
+
+  function replaceAll(records){
+    var valid = (Array.isArray(records) ? records : []).filter(function(record){
+      return record && typeof record.id === 'string' && record.id.trim() && record.blob instanceof Blob && record.blob.size;
+    });
+    return runTransaction('readwrite', function(store){
+      store.clear();
+      valid.forEach(function(record){
+        store.put({
+          id:record.id.trim(), blob:record.blob, name:record.name || '',
+          type:record.type || record.blob.type || '', size:record.blob.size,
+          created_at:Number(record.created_at) || Date.now()
+        });
+      });
+    }).then(function(){ return valid.length; });
+  }
+
+  global.AICGImageStore = {
+    put:put, putRecord:putRecord, get:get, listRecords:listRecords,
+    replaceAll:replaceAll, delete:deleteOne, deleteMany:deleteMany
+  };
 })(window);
 
 /**

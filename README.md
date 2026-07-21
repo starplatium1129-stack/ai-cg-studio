@@ -1,4 +1,4 @@
-# AI CG Studio
+# Lingji Atelier · AI CG Studio
 
 > A small, local workspace for turning story moments into Galgame-style AI CGs.
 
@@ -18,10 +18,10 @@ This is an unofficial, non-commercial fan project and is not affiliated with or 
 - A director workspace for story, character, mood, camera, composition, lighting, and color
 - Automatic Positive / Negative Prompt assembly and scene-aware LoRA injection
 - Direct generation through AUTOMATIC1111, Forge, or ReForge
-- Model and sampler discovery, progress display, interrupt, fixed seeds, and hires.fix
+- Model and sampler discovery, progress display, interrupt, fixed seeds, hires.fix, and a sequential generation queue
 - Independent Chinese reading text and voice scripts: keep captions Chinese while characters speak Japanese by default, with optional Chinese delivery
 - Scene-aware Japanese voice references for neutral, gentle, happy, shy, serious, and sad delivery; Chinese keeps the stable neutral reference
-- Local history, ratings, favorites, notes, projects, and image storage
+- Local history, ratings, favorites, notes, projects, and image storage, with a versioned JSON backup and restore flow
 - Temporary token-protected links for trusted friends to use your local SD WebUI
 
 ## Recommended setup
