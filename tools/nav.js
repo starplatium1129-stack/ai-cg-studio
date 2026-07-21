@@ -13,13 +13,13 @@
   // 用户可见的导航项(创作流,概念已折叠)
   // Create = 全站最大入口,Director 为内部实现名,对用户隐身
   var NAV = [
-    { id:'scene',     label:'场景库',         href:'tools/scene-explorer.html', icon:'🌸' },
-    { id:'director',  label:'开始创作',       href:'tools/prompt-builder.html', icon:'✨' },
-    { id:'gallery',   label:'作品',           href:'tools/gallery.html',        icon:'🎞' },
+    { id:'scene',     label:'灵感场景',       href:'tools/scene-explorer.html', icon:'🌸' },
+    { id:'director',  label:'开始绘制',       href:'tools/prompt-builder.html', icon:'✦' },
+    { id:'gallery',   label:'作品册',         href:'tools/gallery.html',        icon:'🎞' },
     { id:'character', label:'角色',           href:'tools/character.html',      icon:'👤' },
-    { id:'style',     label:'风格',           href:'tools/style.html',          icon:'🎨' },
-    { id:'lora',      label:'LoRA',          href:'tools/lora.html',           icon:'🧪' },
-    { id:'docs',      label:'文档',           href:'docs/index.html',           icon:'📖' }
+    { id:'style',     label:'画风',           href:'tools/style.html',          icon:'🎨' },
+    { id:'lora',      label:'模型',           href:'tools/lora.html',           icon:'🧪' },
+    { id:'docs',      label:'手册',           href:'docs/index.html',           icon:'📖' }
   ];
 
   function depth(){
@@ -34,6 +34,14 @@
     var host = document.querySelector('.nav-links');
     if (!host) return;
     var d = depth();
+    var brand = document.querySelector('.nav-brand');
+    if (brand) {
+      brand.setAttribute('role', 'link');
+      brand.tabIndex = 0;
+      brand.innerHTML = '<span class="dot" aria-hidden="true"></span><span>绫季绘境 <small>Nene &amp; Natsume Atelier</small></span>';
+      brand.onclick = function(){ window.location.href = brandLink(); };
+      brand.onkeydown = function(e){ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.location.href = brandLink(); } };
+    }
     var current = document.body.getAttribute('data-nav');
     host.innerHTML = NAV.map(function (item) {
       var cls = (item.id === current) ? ' class="active"' : '';

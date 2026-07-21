@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI CG Studio · 今天，我想讲一个什么故事？</title>
+<title>绫季绘境 · 把心动的一瞬，画成一张 CG</title>
 <link rel="stylesheet" href="css/design-system.css?v=6">
 <link rel="stylesheet" href="css/scene-card.css?v=5">
 <script src="tools/nav.js?v=4"></script>
@@ -32,7 +32,7 @@
   .chain-arrow { color: var(--text-muted); font-size: 0.9rem; }
 
   /* ---------- Hero (10s rule) ---------- */
-  .home-hero { padding: var(--s-8) 0 var(--s-7); }
+  .home-hero { padding: var(--s-8) 0 var(--s-7); display:grid; grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr); gap:var(--s-7); align-items:center; }
   .hero-copy .eyebrow { margin-bottom: var(--s-3); }
   .hero-title {
     font-size: clamp(2.4rem, 4.5vw, 3.8rem);
@@ -46,6 +46,7 @@
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     background-clip: text;
   }
+  .hero-title .jp { display:block; margin-top:var(--s-2); font-size:.25em; letter-spacing:.32em; text-transform:uppercase; color:var(--accent-violet); -webkit-text-fill-color:var(--accent-violet); }
   .hero-sub {
     font-size: 1.15rem; color: var(--text-secondary);
     margin-bottom: var(--s-5); max-width: 520px; line-height: 1.7;
@@ -73,12 +74,19 @@
   /* Scene strip — horizontal scroll of real scenes */
   .hero-strip {
     position: relative;
-    background: var(--bg-surface);
+    background: linear-gradient(135deg,var(--accent-soft),transparent 65%),var(--bg-surface);
     border: 1px solid var(--border-soft);
     border-radius: var(--r-xl);
     padding: var(--s-4);
     overflow: hidden;
   }
+  .hero-orbit { min-height:440px; position:relative; border:1px solid var(--border-soft); border-radius:28px; overflow:hidden; background:radial-gradient(circle at 64% 24%,rgba(210,175,255,.42),transparent 26%),radial-gradient(circle at 18% 78%,rgba(255,145,204,.22),transparent 32%),linear-gradient(145deg,rgba(44,35,77,.88),rgba(21,17,40,.74)); box-shadow:var(--shadow-lg); }
+  .hero-orbit::before { content:""; position:absolute; width:290px; height:290px; border:1px solid rgba(255,255,255,.25); border-radius:50%; top:58px; left:50%; transform:translateX(-50%); box-shadow:0 0 0 42px rgba(255,255,255,.035),0 0 0 84px rgba(255,255,255,.025); animation:orbit-breathe 5s ease-in-out infinite; }
+  .hero-orbit::after { content:"✦"; position:absolute; top:115px; left:calc(50% - 26px); font-size:4rem; color:#fff0fb; text-shadow:0 0 36px rgba(255,205,237,.95); }
+  .orbit-label { position:absolute; left:24px; right:24px; bottom:24px; padding:14px 16px; border:1px solid rgba(255,255,255,.16); border-radius:16px; background:rgba(23,18,42,.45); backdrop-filter:blur(16px); }
+  .orbit-label strong { display:block; font-size:.86rem; letter-spacing:.08em; color:#fff; }
+  .orbit-label span { display:block; margin-top:3px; color:rgba(255,255,255,.68); font-size:.75rem; }
+  @keyframes orbit-breathe { 50% { transform:translateX(-50%) scale(1.05); opacity:.7; } }
   .hero-strip::before {
     content: "";
     position: absolute; inset: 0;
@@ -115,6 +123,10 @@
   .start-card .cta { font-size: 1.05rem; padding: var(--s-3) var(--s-6); }
 
   @media (max-width: 768px) {
+    .home-hero { grid-template-columns:1fr; gap:var(--s-5); }
+    .hero-orbit { min-height:180px; }
+    .hero-orbit::before { width:140px; height:140px; top:16px; box-shadow:0 0 0 22px rgba(255,255,255,.035),0 0 0 44px rgba(255,255,255,.025); }
+    .hero-orbit::after { top:52px; font-size:2.4rem; left:calc(50% - 15px); }
     .chain { gap: var(--s-1); }
     .chain-arrow { display: none; }
     .chain-step { font-size: 0.78rem; padding: 5px 10px; }
@@ -223,9 +235,9 @@
 <section class="container">
   <div class="home-hero">
     <div class="hero-copy">
-      <span class="eyebrow">🌸 AI CG Studio</span>
-      <h1 class="hero-title">AI CG Studio</h1>
-      <p class="hero-sub">从想法，到角色，到画面。</p>
+      <span class="eyebrow">✦ TSUKIHA VISUAL ATELIER</span>
+      <h1 class="hero-title">月栖映像<span class="jp">把心动的一瞬，画成一张 CG</span></h1>
+      <p class="hero-sub">从一个想画的瞬间开始，把角色、情绪与光线，编织成只属于你的二次元 CG。</p>
       <div class="ctas">
         <a href="tools/prompt-builder.html" class="cta cta-primary"><span class="ic">✨</span> 开始创作</a>
         <a href="tools/gallery.html" class="cta cta-ghost"><span class="ic">🎞</span> 浏览作品</a>
@@ -246,6 +258,7 @@
         <div class="strip-scroll" id="featuredScenes"></div>
       </div>
     </div>
+    <aside class="hero-orbit" aria-label="月栖映像品牌视觉"><div class="orbit-label"><strong>SCENE TO MEMORY</strong><span>故事不是素材库，是值得被珍藏的一瞬。</span></div></aside>
   </div>
 </section>
 

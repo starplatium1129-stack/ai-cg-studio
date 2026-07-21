@@ -4,11 +4,12 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { loadSceneShards } = require('./scene-store');
 
 const dataDir = path.join(__dirname, '..', 'data');
-const sceneSource = path.join(dataDir, 'scenes.json');
 const characterSource = path.join(dataDir, 'characters.json');
 const presetSource = path.join(dataDir, 'presets.json');
+const curationSource = path.join(dataDir, 'curation.json');
 const required = [
   'id', 'title', 'category', 'story', 'storyJa', 'char', 'character', 'lora', 'emotion',
   'season', 'time', 'timeOfDay', 'tags', 'rating', 'mature', 'location', 'weather',
@@ -45,9 +46,15 @@ function hasRepeatedNgram(value, size = 12) {
 }
 
 const errors = [];
-const scenes = readJson(sceneSource, 'scenes.json', errors);
+let scenes = [];
+try {
+  scenes = loadSceneShards().scenes;
+} catch (error) {
+  errors.push('scene shards cannot be loaded: ' + error.message);
+}
 const characters = readJson(characterSource, 'characters.json', errors);
 const presetData = readJson(presetSource, 'presets.json', errors);
+const curationData = readJson(curationSource, 'curation.json', errors);
 const ids = new Set();
 
 if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
@@ -146,6 +153,31 @@ if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
 for (let number = 1; number <= scenes.length; number += 1) {
   const expected = 'sc' + String(number).padStart(3, '0');
   if (!ids.has(expected)) errors.push('missing continuous id ' + expected);
+}
+
+const curatedSceneIds = curationData && Array.isArray(curationData.curatedSceneIds) ? curationData.curatedSceneIds : [];
+const moodRails = curationData && Array.isArray(curationData.moodRails) ? curationData.moodRails : [];
+if (!curatedSceneIds.length) errors.push('curation.json must define curatedSceneIds');
+if (!moodRails.length) errors.push('curation.json must define moodRails');
+const curatedSeen = new Set();
+for (const sceneId of curatedSceneIds) {
+  if (curatedSeen.has(sceneId)) errors.push('curation.json duplicate curated scene: ' + sceneId);
+  curatedSeen.add(sceneId);
+  if (!ids.has(sceneId)) errors.push('curation.json references missing scene: ' + sceneId);
+}
+for (const rail of moodRails) {
+  const label = rail && rail.id ? rail.id : 'mood rail';
+  if (!rail || !rail.id || !rail.title || !rail.query) {
+    errors.push(label + ': curation mood rail is missing id, title, or query');
+    continue;
+  }
+  const terms = String(rail.query).toLowerCase().split(/\s+/).filter(Boolean);
+  const hasMatch = scenes.some((scene) => {
+    const text = [scene.id, scene.title, scene.story, scene.emotion, scene.char, scene.category, scene.season,
+      scene.timeOfDay, scene.location, scene.weather, scene.camera, scene.lighting].concat(scene.tags || []).join(' ').toLowerCase();
+    return terms.every((term) => text.includes(term));
+  });
+  if (!hasMatch) errors.push(label + ': curation query returns no scenes: ' + rail.query);
 }
 
 const expectedCharacters = {

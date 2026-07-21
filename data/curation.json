@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "curatedSceneIds": [
+    "sc002",
+    "sc004",
+    "sc006",
+    "sc014",
+    "sc019",
+    "sc033",
+    "sc046",
+    "sc061",
+    "sc078",
+    "sc096",
+    "sc111",
+    "sc132",
+    "sc157",
+    "sc182",
+    "sc206",
+    "sc215",
+    "sc252",
+    "sc254",
+    "sc256",
+    "sc257",
+    "sc258"
+  ],
+  "moodRails": [
+    {
+      "id": "nene-library",
+      "character": "nene",
+      "icon": "🌙",
+      "title": "宁宁的月光秘密",
+      "subtitle": "图书馆 · 樱色 · 魔女",
+      "query": "nene library"
+    },
+    {
+      "id": "natsume-cafe",
+      "character": "natsume",
+      "icon": "☕",
+      "title": "夏目的夜灯关心",
+      "subtitle": "咖啡馆 · 雨夜 · 琥珀",
+      "query": "natsume cafe"
+    },
+    {
+      "id": "summer-journey",
+      "character": "shared",
+      "icon": "🌅",
+      "title": "夏日远行",
+      "subtitle": "海风 · 黄昏 · 纪念",
+      "query": "beach sunset"
+    }
+  ]
+}

@@ -1,8 +1,4 @@
-const fs = require('fs');
-const path = require('path');
-
-const root = path.resolve(__dirname, '..');
-const scenesPath = path.join(root, 'data', 'scenes.json');
+const { loadSceneShards, writeSceneSet } = require('./scene-store');
 const write = process.argv.includes('--write');
 const check = process.argv.includes('--check');
 
@@ -105,7 +101,7 @@ function optimize(scene) {
   return { ...scene, tags, prompt, negative };
 }
 
-const scenes = JSON.parse(fs.readFileSync(scenesPath, 'utf8'));
+const scenes = loadSceneShards().scenes;
 const optimized = scenes.map(optimize);
 const issues = [];
 const ids = new Set();
@@ -122,5 +118,5 @@ for (const scene of optimized) {
 const changed = optimized.reduce((count, scene, index) => count + (JSON.stringify(scene) !== JSON.stringify(scenes[index]) ? 1 : 0), 0);
 console.log(`scenes=${optimized.length} changed=${changed} issues=${issues.length}`);
 issues.forEach((issue) => console.error(issue));
-if (write) fs.writeFileSync(scenesPath, JSON.stringify(optimized, null, 2) + '\n', 'utf8');
+if (write) writeSceneSet(optimized);
 if (issues.length || (check && changed)) process.exitCode = 1;

@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>场景库 · AI CG Studio</title>
-<link rel="stylesheet" href="../css/design-system.css?v=6">
+<title>灵感场景 · 绫季绘境</title>
+<link rel="stylesheet" href="../css/design-system.css?v=7">
 <link rel="stylesheet" href="../css/scene-card.css?v=5">
-<script src="nav.js?v=4"></script>
+<script src="nav.js?v=5"></script>
 <script src="scene-card.js?v=5"></script>
 <script src="theme.js?v=4"></script>
 <style>
@@ -15,6 +15,23 @@
   .nav-back:hover { color: var(--accent); }
   h1.title { font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, var(--text-primary) 50%, #F06292); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: var(--s-2); }
   .subtitle { color: var(--text-secondary); margin-bottom: var(--s-6); font-size: 1.05rem; }
+
+  .curation-panel { display:grid; grid-template-columns:minmax(220px,.9fr) 2fr; gap:var(--s-4); margin:-10px 0 var(--s-5); padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-xl); background:linear-gradient(120deg,var(--accent-soft),transparent 62%),var(--bg-surface); box-shadow:var(--shadow-sm); backdrop-filter:blur(20px) saturate(130%); }
+  .curation-intro { display:flex; flex-direction:column; justify-content:center; }
+  .curation-kicker { color:var(--accent); font-size:.7rem; font-weight:800; letter-spacing:.14em; text-transform:uppercase; }
+  .curation-intro h2 { margin:4px 0 2px; font-size:1.15rem; }
+  .curation-intro p { margin:0; color:var(--text-muted); font-size:.8rem; line-height:1.6; }
+  .mood-rails { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--s-2); }
+  .mood-rail { position:relative; overflow:hidden; min-height:96px; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); color:var(--text-primary); text-align:left; background:var(--bg-elevated); cursor:pointer; transition:transform var(--t-fast),border-color var(--t-fast),box-shadow var(--t-fast); }
+  .mood-rail::after { content:''; position:absolute; inset:auto -22px -42px auto; width:100px; height:100px; border-radius:50%; opacity:.5; filter:blur(3px); background:var(--accent-glow); }
+  .mood-rail.nene { background:linear-gradient(135deg,rgba(184,149,255,.20),rgba(255,181,219,.08)),var(--bg-elevated); }
+  .mood-rail.natsume { background:linear-gradient(135deg,rgba(242,187,104,.20),rgba(91,56,59,.12)),var(--bg-elevated); }
+  .mood-rail:hover { transform:translateY(-3px); border-color:var(--accent); box-shadow:var(--shadow-sm); }
+  .mood-rail .mood-icon { display:block; font-size:1.25rem; margin-bottom:4px; }
+  .mood-rail strong { display:block; font-size:.85rem; }
+  .mood-rail small { color:var(--text-muted); font-size:.7rem; }
+  .scene-fav { width:100%; justify-content:center; margin-top:var(--s-2); border-color:var(--border-soft); background:transparent; color:var(--text-muted); }
+  .scene-fav.saved { color:var(--accent); border-color:var(--accent); background:var(--accent-soft); }
 
   .info-callout { background: var(--accent-soft); border: 1px solid var(--accent); border-radius: var(--r-md); padding: var(--s-3) var(--s-4); margin-bottom: var(--s-5); font-size: 0.92rem; color: var(--text-primary); }
   .info-callout strong { color: var(--accent); }
@@ -83,12 +100,14 @@
     .page { padding: var(--s-4) var(--s-3); }
     .ex-decision, .ex-tags { display: none; }
     .scene-facet-grid { grid-template-columns:1fr 1fr; }
+    .curation-panel { grid-template-columns:1fr; }
     .scene-cat, .scene-reset, .scene-filter select, .scene-search-clear, .ex-actions .btn, .story-actions .btn { min-height: 44px; }
     .scene-card .scene-story { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
     .ex-actions { margin-top: var(--s-3); }
   }
   @media (max-width: 420px) {
     .scene-facet-grid { grid-template-columns:1fr; }
+    .mood-rails { grid-template-columns:1fr; }
   }
 </style>
 </head>
@@ -106,7 +125,12 @@
   <a href="../index.html" class="nav-back">← 回首页</a>
 
   <h1 class="title">🌸 场景库</h1>
-  <p class="subtitle">今天画什么？浏览 <strong id="sceneTotal">场景库</strong>，每个场景都是一张完整 CG 的种子。点击任一场景，进入导演工作台。</p>
+  <p class="subtitle">宁宁的月光秘密，夏目的夜灯关心。绫季为你收录 <strong id="sceneTotal">正在整理的场景</strong>，只保留值得被画成 CG 的瞬间。</p>
+
+  <section class="curation-panel" aria-label="场景灵感精选">
+    <div class="curation-intro"><span class="curation-kicker">Nene × Natsume</span><h2>从角色的心情，走进场景</h2><p>宁宁的柔软慌乱、夏目的克制关心，才是场景库真正的索引。</p></div>
+    <div class="mood-rails" id="moodRails" aria-live="polite"></div>
+  </section>
 
   <div class="info-callout">
     <strong>🎯 设计理念</strong> &nbsp;|&nbsp; 先找到<strong>“今天想画什么”</strong>，再由系统组装提示词。
@@ -129,6 +153,7 @@
       <label class="scene-filter-field">时段<select id="sceneTime" onchange="filterScenes()"><option value="all">全部时段</option><option value="morning">清晨</option><option value="afternoon">午后</option><option value="sunset">黄昏</option><option value="night">夜晚与深夜</option><option value="dawn">黎明</option></select></label>
       <label class="scene-filter-field">系列<select id="sceneSeries" onchange="filterScenes()"><option value="all">全部系列</option><option value="after">After Story</option><option value="fanwork">同人</option><option value="active">Active Sync</option></select></label>
       <label class="scene-filter-field">内容分级<select id="sceneRating" onchange="filterScenes()"><option value="all">全部分级</option><option value="All">全年龄</option><option value="R15">R15 暧昧</option><option value="R18">R18 成人</option></select></label>
+      <label class="scene-filter-field">排序<select id="sceneSort" onchange="filterScenes()"><option value="curated">主理人精选</option><option value="favorite">我的收藏</option><option value="newest">最新加入</option><option value="title">名称 A-Z</option></select></label>
     </div>
     <div class="scene-filter-meta">
       <label class="mature-toggle"><input type="checkbox" id="showMature"> 显示成人内容 <span id="matureCount"></span></label>
@@ -162,6 +187,10 @@ let SCENE_VISIBLE = 24;
 let FILTER_TIMER = null;
 const SCENE_PAGE_SIZE = 24;
 const MATURE_KEY = 'aics_show_mature';
+const FAVORITE_KEY = 'aics_scene_favorites';
+let CURATION_DATA = { curatedSceneIds:[], moodRails:[] };
+let CURATED_IDS = [];
+let SCENE_FAVORITES = new Set(JSON.parse(localStorage.getItem(FAVORITE_KEY) || '[]'));
 const LOCAL_OWNER = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(window.location.hostname);
 let SHOW_MATURE = localStorage.getItem(MATURE_KEY) == null ? LOCAL_OWNER : localStorage.getItem(MATURE_KEY) === '1';
 const SCENE_THEME_DEFS = [
@@ -177,6 +206,7 @@ const SCENE_THEME_DEFS = [
 ];
 
 function init(){
+  renderMoodRails();
   renderSceneCats();
   var matureToggle = document.getElementById('showMature');
   matureToggle.checked = SHOW_MATURE;
@@ -202,10 +232,14 @@ function init(){
 // 从共享 JSON 加载场景(file:// 因 CORS 失败,需 localhost)
 function loadScenes(){
   const grid = document.getElementById('sceneGrid');
-  fetch('../data/scenes.json?v=6')
-    .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-    .then(data => {
-      SCENES = data;
+  Promise.all([
+    fetch('../data/scenes.json?v=8').then(r => { if (!r.ok) throw new Error('Scenes HTTP ' + r.status); return r.json(); }),
+    fetch('../data/curation.json?v=1').then(r => { if (!r.ok) throw new Error('Curation HTTP ' + r.status); return r.json(); }).catch(function(){ return { curatedSceneIds:[], moodRails:[] }; })
+  ])
+    .then(function(result){
+      SCENES = result[0];
+      CURATION_DATA = result[1] || CURATION_DATA;
+      CURATED_IDS = Array.isArray(CURATION_DATA.curatedSceneIds) ? CURATION_DATA.curatedSceneIds : [];
       init();
       var qp = new URLSearchParams(window.location.search);
       var focusId = qp.get('scene');
@@ -223,6 +257,25 @@ function loadScenes(){
     });
 }
 loadScenes();
+
+function renderMoodRails(){
+  var host = document.getElementById('moodRails');
+  if (!host) return;
+  host.innerHTML = '';
+  var rails = Array.isArray(CURATION_DATA.moodRails) ? CURATION_DATA.moodRails : [];
+  rails.forEach(function(rail){
+    var button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'mood-rail' + (rail.character === 'nene' || rail.character === 'natsume' ? ' ' + rail.character : '');
+    var icon = document.createElement('span');
+    icon.className = 'mood-icon'; icon.textContent = rail.icon || '✦';
+    var title = document.createElement('strong'); title.textContent = rail.title || '未命名灵感';
+    var subtitle = document.createElement('small'); subtitle.textContent = rail.subtitle || '';
+    button.append(icon, title, subtitle);
+    button.addEventListener('click', function(){ applyMoodRail(rail.query || ''); });
+    host.appendChild(button);
+  });
+}
 
 function renderSceneCats(){
   var el = document.getElementById('sceneCats'); el.innerHTML = '';
@@ -267,6 +320,12 @@ function matchesTime(scene, value){
   return scene.timeOfDay === value;
 }
 function sceneSearchText(scene){ return [scene.id,scene.title,scene.story,scene.emotion,scene.char,sceneCharacterName(scene),scene.rating,scene.category,primaryCategory(scene),scene.season,scene.timeOfDay,sceneTimeName(scene.timeOfDay),scene.location,scene.weather,scene.camera,scene.lighting].concat(scene.tags||[]).join(' ').toLowerCase(); }
+function curationScore(scene){
+  var fixed = CURATED_IDS.indexOf(scene.id);
+  if (fixed >= 0) return 10000 - fixed;
+  var complete = [scene.story,scene.emotion,scene.camera,scene.lighting,scene.location].filter(Boolean).length;
+  return complete * 100 + Math.min((scene.story || '').length, 500) + (scene.rating === 'All' ? 20 : 0);
+}
 function filteredScenes(){
   var q = (document.getElementById('sceneSearch').value || '').trim().toLowerCase();
   var terms = q.split(/\s+/).filter(Boolean);
@@ -275,7 +334,8 @@ function filteredScenes(){
   var time = document.getElementById('sceneTime').value;
   var series = document.getElementById('sceneSeries').value;
   var rating = document.getElementById('sceneRating').value;
-  return SCENES.filter(function(s){
+  var sort = document.getElementById('sceneSort').value;
+  var results = SCENES.filter(function(s){
     if (!SHOW_MATURE && s.mature) return false;
     if (!matchesTheme(s, SCENE_THEME)) return false;
     if (!matchesSeries(s, series)) return false;
@@ -283,9 +343,28 @@ function filteredScenes(){
     if (season !== 'all' && s.season !== season) return false;
     if (!matchesTime(s, time)) return false;
     if (rating !== 'all' && (s.rating || (s.mature ? 'R18' : 'All')) !== rating) return false;
+    if (sort === 'favorite' && !SCENE_FAVORITES.has(s.id)) return false;
     var hay = sceneSearchText(s);
     return terms.every(function(term){ return hay.includes(term); });
   });
+  return results.sort(function(a,b){
+    if (sort === 'newest') return String(b.id).localeCompare(String(a.id), undefined, {numeric:true});
+    if (sort === 'title') return String(a.title).localeCompare(String(b.title), 'zh-CN');
+    if (sort === 'favorite') return String(a.title).localeCompare(String(b.title), 'zh-CN');
+    return curationScore(b) - curationScore(a);
+  });
+}
+
+function toggleSceneFavorite(id, event){
+  if (event) { event.preventDefault(); event.stopPropagation(); }
+  if (SCENE_FAVORITES.has(id)) SCENE_FAVORITES.delete(id); else SCENE_FAVORITES.add(id);
+  localStorage.setItem(FAVORITE_KEY, JSON.stringify(Array.from(SCENE_FAVORITES)));
+  renderScenes(false);
+}
+function applyMoodRail(query){
+  var input = document.getElementById('sceneSearch');
+  input.value = query; SCENE_THEME = 'all'; renderSceneCats(); renderScenes(true);
+  input.scrollIntoView({behavior:'smooth', block:'center'}); input.focus();
 }
 
 function renderScenes(reset){
@@ -327,7 +406,8 @@ function renderScenes(reset){
           '<div class="ex-actions">' +
             '<a class="btn btn-primary" href="prompt-builder.html?scene=' + encodeURIComponent(scene.id) + '&step=4&generate=1">🎬 一键生成提示词</a>' +
             '<button class="btn btn-ghost" data-detail="' + scene.id + '">📖 故事</button>' +
-          '</div>';
+          '</div>' +
+          '<button type="button" class="btn scene-fav' + (SCENE_FAVORITES.has(scene.id) ? ' saved' : '') + '" onclick="toggleSceneFavorite(\'' + scene.id + '\', event)">' + (SCENE_FAVORITES.has(scene.id) ? '♥ 已收入灵感簿' : '♡ 收入灵感簿') + '</button>';
       }
     }));
     grid.lastChild.setAttribute('data-scene-id', s.id);
@@ -361,6 +441,7 @@ function resetSceneFilters(){
   SCENE_THEME = 'all';
   var search = document.getElementById('sceneSearch'); if (search) search.value = '';
   ['sceneCharacter','sceneSeason','sceneTime','sceneSeries','sceneRating'].forEach(function(id){ var select=document.getElementById(id); if(select) select.value='all'; });
+  var sort = document.getElementById('sceneSort'); if (sort) sort.value = 'curated';
   renderSceneCats(); renderScenes(true);
 }
 

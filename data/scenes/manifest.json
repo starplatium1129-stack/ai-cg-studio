@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "description": "场景源文件清单。data/scenes.json 是由这些分片生成的浏览器读取产物。",
+  "files": [
+    {
+      "file": "nene-core.json",
+      "label": "宁宁 · 本篇与日常",
+      "character": "nene",
+      "series": "core"
+    },
+    {
+      "file": "nene-after-story.json",
+      "label": "宁宁 · After Story",
+      "character": "nene",
+      "series": "after_story"
+    },
+    {
+      "file": "natsume-core.json",
+      "label": "夏目 · 本篇与日常",
+      "character": "natsume",
+      "series": "core"
+    },
+    {
+      "file": "natsume-after-story.json",
+      "label": "夏目 · After Story",
+      "character": "natsume",
+      "series": "after_story"
+    },
+    {
+      "file": "shared.json",
+      "label": "双人场景",
+      "character": "triad",
+      "series": "shared"
+    }
+  ]
+}

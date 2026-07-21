@@ -3,10 +3,7 @@
  * All = romance/daily life; R15 = suggestive but non-explicit; R18 = adult nudity or explicit sexual framing.
  * Run with: node scripts/classify-scene-ratings.js --write
  */
-const fs = require('fs');
-const path = require('path');
-
-const source = path.join(__dirname, '..', 'data', 'scenes.json');
+const { loadSceneShards, writeSceneSet } = require('./scene-store');
 const write = process.argv.includes('--write');
 const R18 = /\bnaked\b|\bnude\b|naked_apron|no_panties|straddling_viewer|extreme_intimacy|\becstasy\b|bound_to_bed|bikini_malfunction|untied_swimsuit/;
 const R15 = /lingerie|cleavage|no_bra|bath_towel|straddling|neck_kiss|\bbound\b|micro_bikini|string_bikini|brassiere_visible|bridal_lingerie|virgin_killer_sweater|backless|nipples_visible_through_clothing|see_through_clothing/;
@@ -76,7 +73,7 @@ function normalizeUsage(scene, rating) {
   return usage;
 }
 
-const scenes = JSON.parse(fs.readFileSync(source, 'utf8'));
+const scenes = loadSceneShards().scenes;
 const ids = new Set(scenes.map((scene) => scene.id));
 for (const addition of additions) if (!ids.has(addition.id)) scenes.push(addition);
 
@@ -90,6 +87,6 @@ for (const scene of scenes) {
   totals[rating] += 1;
 }
 
-if (write) fs.writeFileSync(source, JSON.stringify(scenes, null, 2) + '\n');
+if (write) writeSceneSet(scenes);
 console.log('ratings: All=' + totals.All + ' R15=' + totals.R15 + ' R18=' + totals.R18 + ' changed=' + changed + (write ? ' written' : ''));
 if (!write && changed) process.exitCode = 1;

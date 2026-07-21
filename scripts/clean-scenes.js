@@ -1,13 +1,10 @@
 /**
  * AI CG Studio — 场景数据批量清洗脚本
  * 修复：标签重复、格式错误、角色 DNA 缺失、tags-prompt 断层、Active Sync 占位符缺失
- * 用法：node scripts/clean-scenes.js
+ * 用法：node scripts/clean-scenes.js --write
  */
-const fs = require('fs');
-const path = require('path');
-
-const srcPath = path.join(__dirname, '..', 'data', 'scenes.json');
-const bakPath = srcPath + '.bak';
+const { loadSceneShards, writeSceneSet } = require('./scene-store');
+const write = process.argv.includes('--write');
 
 // ── 配置 ──
 const CHARACTER_DNA = {
@@ -42,7 +39,7 @@ const TAG_EXCLUDE = new Set([
   'soft_lighting'  // prompt 专用修饰词
 ]);
 
-const PLACEHOLDERS = ['{intimacy_intensity}', '{interaction_target}', '{sensory_feedback}'];
+const PLACEHOLDER_PATTERN = /\{(?:intimacy_intensity|interaction_target|sensory_feedback)\}/g;
 
 // ── 辅助函数 ──
 function normalize(t) {
@@ -85,9 +82,7 @@ function normalizePromptToken(token) {
 }
 
 // ── 主逻辑 ──
-const raw = JSON.parse(fs.readFileSync(srcPath, 'utf8'));
-fs.copyFileSync(srcPath, bakPath);
-console.log('备份已创建:', bakPath);
+const raw = loadSceneShards().scenes;
 
 let stats = { dedup: 0, dna: 0, mapped: 0, blacklisted: 0, commaSplit: 0, tagSync: 0, promptNorm: 0, placeholders: 0 };
 
@@ -147,22 +142,20 @@ const cleaned = raw.map(scene => {
     });
   }
 
-  // 7. Active Sync 占位符补全
-  if (scene.category === 'Active_Sync_Scenes') {
-    const hasAny = PLACEHOLDERS.some(p => prompt.includes(p));
-    if (!hasAny) {
-      prompt += ', {intimacy_intensity}, {sensory_feedback}';
-      stats.placeholders++;
-    }
+  // 7. 移除历史动态占位符；运行时状态不应污染可发布 Prompt
+  if (PLACEHOLDER_PATTERN.test(prompt)) {
+    prompt = prompt.replace(PLACEHOLDER_PATTERN, '').replace(/,\s*,/g, ',').replace(/,\s*$/, '').trim();
+    stats.placeholders++;
   }
 
   // 8. 统一负向提示词
-  const negative = 'worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, bad anatomy, bad hands, extra fingers, missing fingers, deformed, 3d render, photorealistic';
+  let negative = 'worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic';
+  if (!scene.mature) negative += ', nsfw, nude, explicit';
 
   return { ...scene, tags, prompt, negative };
 });
 
-fs.writeFileSync(srcPath, JSON.stringify(cleaned, null, 2), 'utf8');
+if (write) writeSceneSet(cleaned);
 
 console.log('\n=== 清洗完成 ===');
 console.log('标签去重:      ', stats.dedup, '处');
@@ -172,5 +165,5 @@ console.log('黑名单清除:    ', stats.blacklisted, '处');
 console.log('角色 DNA 注入: ', stats.dna, '处');
 console.log('tags-prompt 同步:', stats.tagSync, '处');
 console.log('prompt 标准化: ', stats.promptNorm, '处');
-console.log('占位符补全:    ', stats.placeholders, '处');
-console.log('\n修改已写入:', srcPath);
+console.log('占位符移除:    ', stats.placeholders, '处');
+console.log(write ? '\n场景分片与聚合文件已更新。' : '\n当前仅预览；添加 --write 后才会更新场景数据。');

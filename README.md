@@ -14,7 +14,7 @@ This is an unofficial, non-commercial fan project and is not affiliated with or 
 
 ## Features
 
-- 210 searchable and filterable Scenes, classified as All, R15, or R18 by depicted content
+- 259 searchable and filterable Scenes, classified as All, R15, or R18 by depicted content
 - A director workspace for story, character, mood, camera, composition, lighting, and color
 - Automatic Positive / Negative Prompt assembly and scene-aware LoRA injection
 - Direct generation through AUTOMATIC1111, Forge, or ReForge
