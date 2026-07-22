@@ -86,7 +86,10 @@ if (-not (Test-Path -LiteralPath $pythonPath -PathType Leaf) -or -not (Test-Path
 
 $arguments = @(
     '-u', ('"{0}"' -f $launchPath),
-    '--pin-shared-memory', '--cuda-malloc', '--cuda-stream', '--skip-install',
+    # A 16 GB GPU can keep this SDXL workflow in VRAM.  ReForge's pinned
+    # shared-memory mode retained roughly 18-28 GB of system RAM during long
+    # LoRA comparison runs, leaving a 32 GB machine close to exhaustion.
+    '--cuda-malloc', '--cuda-stream', '--skip-install',
     '--api', '--port', '7860', '--gradio-allowed-path', $imagesPath
 )
 $process = Start-Process -FilePath $pythonPath -ArgumentList $arguments -WorkingDirectory $packageRoot -WindowStyle Hidden `

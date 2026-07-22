@@ -150,6 +150,12 @@ function optimizeNegative(scene) {
 }
 
 function optimize(scene) {
+  // Direct-vision revisions deliberately use weighted natural-language groups
+  // (for example, fixed prop counts and left/right character assignments).
+  // The legacy comma-token normalizer would split those groups and silently
+  // undo prompts that already passed image review, so audited scenes are
+  // treated as the canonical source and are only checked by validate-scenes.
+  if (String(scene.auditRevision || '').trim()) return scene;
   let tags = dedupe((scene.tags || []).map(canonical).filter(Boolean));
   tags = cameraTags(scene, tags);
   if (scene.rating === 'R18' && !tags.includes('adult')) tags.unshift('adult');

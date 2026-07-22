@@ -343,7 +343,7 @@ function renderPrompt(char){
     }).join('\n');
   };
 }
-const LORA_ID = { nene:'ayachi_nene_v11:0.8', natsume:'shiki_natsume_v11:0.8' };
+const LORA_ID = { nene:'ayachi_nene_v14:0.8', natsume:'shiki_natsume_v14:0.9' };
 // 空格/连字符 → 下划线 规范化
 function norm(t){ return t.split(',').map(function(s){ return s.trim().replace(/[\s-]+/g,'_'); }).join(', '); }
 function substitutePrompt(tpl, char){

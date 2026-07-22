@@ -8,7 +8,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "害羞",
     "season": "春",
     "time": "午后",
@@ -41,7 +41,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, looking_back, smile, holding_papers, waiting, standing, gentle_smile, looking_at_viewer, classroom_window, afternoon, clear_sky, upper_body, medium_shot, window_light, blush, shy, classroom, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, looking_back, smile, holding_papers, waiting, standing, gentle_smile, looking_at_viewer, classroom_window, afternoon, clear_sky, upper_body, medium_shot, window_light, blush, shy, classroom, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・放課後の待ち合わせ】夕日が、誰もいない教室を柔らかな橙色に染めている。寧々はあなたのためにまとめたプリントを抱え、窓辺に立っていた。ずっと待っていたはずなのに、扉の音がすると慌ててリボンを整えるふりをする。あなたがそばまで来ると、ようやくプリントを差し出した。紫の瞳には、ほっとした光が隠しきれない――「やっと来てくれたんですね。その……急いで帰らなくてもいいなら、一緒に部室へ行きませんか？」",
     "rating": "All"
@@ -55,7 +55,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "期待",
     "season": "春",
     "time": "清晨",
@@ -92,7 +92,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, cherry_blossoms, looking_back, blush, looking_at_viewer, in_love, eye_contact, holding_letter, petals, standing, expectant, spring, morning, clear_sky, upper_body, medium_shot, morning_light, soft_lighting, diffused_light, bright_eyes, park, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, cherry_blossoms, looking_back, blush, looking_at_viewer, in_love, eye_contact, holding_letter, petals, standing, expectant, spring, morning, clear_sky, upper_body, medium_shot, morning_light, soft_lighting, diffused_light, bright_eyes, park, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・桜の木の下での約束】早朝の公園には歩行者はほとんどいませんでした。寧々は、満開の桜の木の下に立ち、手で書き、修正した短いメモを慎重に守りました。道を歩くあなたを見て、彼女はつま先立ちで手を振り、銀白色の低いポニーテールに花びらが落ちました。彼女はメモを背中に隠し、顔を赤らめてあなたを見つめました。――「さ、先に言っておきますけど、告白の手紙じゃありません。来年も一緒に桜を見たいって、誘っているだけです。」",
     "rating": "All"
@@ -106,7 +106,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "紧张",
     "season": "夏",
     "time": "黄昏",
@@ -140,7 +140,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, sunset, pleated_skirt, school_rooftop, railing, ocean_view, holding_skirt, vulnerable_expression, looking_at_viewer, clear_sky, upper_body, medium_shot, golden_hour, backlighting, rim_light, nervous, blush, rooftop, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, sunset, pleated_skirt, school_rooftop, railing, ocean_view, holding_skirt, vulnerable_expression, looking_at_viewer, clear_sky, upper_body, medium_shot, golden_hour, backlighting, rim_light, nervous, blush, rooftop, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・屋上の秘密を教えてください】放課後の屋上は夏の夜風のせいで特に静かで、遠くの海は夕焼けの光の最後の層を飲み込んでいた。寧々は手すりにつかまり、表現するのが怖かった悩みについて話している途中で、あなたの視線を気にして緊張しながらスカートの角をつねっています。彼女は深呼吸をした、そしてついに逃げなかった――「何もかも解決してほしいわけじゃないんです……ただ、あなたになら本当の私を知ってもらってもいいって、そう思っただけで。」",
     "rating": "All"
@@ -154,7 +154,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "惊喜",
     "season": "秋",
     "time": "午后",
@@ -186,7 +186,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, library, sunset, autumn, bookshelf, holding_books, peeking_out, shy, dust_motes, afternoon, clear_sky, upper_body, medium_shot, window_light, smile, happy, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, library, sunset, autumn, bookshelf, holding_books, peeking_out, shy, dust_motes, afternoon, clear_sky, upper_body, medium_shot, window_light, smile, happy, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・本棚との出会い】午後の図書館にはページをめくる音だけが響いていた。寧々は、いくつかのオカルト資料を収めた高い本棚の後ろから顔を出しました。来たのがあなただと分かったとき、彼女は目に見えて安堵し、急いで一番上の本を腕の中に隠しました。窓からの光が髪先に当たり、彼女は自然を装って半分位置を移動した。――「あなたも資料を調べに来たんですか？　それなら、ここに座ってください。でも、どうしてこの本を借りたのかは聞かないこと。」",
     "rating": "All"
@@ -200,7 +200,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "害羞",
     "season": "冬",
     "time": "夜晚",
@@ -233,7 +233,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, sweater, smile, snow, gift, winter_coat, scarf, holding_gift, handmade_charm, christmas_lights, snowfall, shy_smile, night, upper_body, medium_shot, warm_lighting, blush, shy, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, sweater, smile, snow, gift, winter_coat, scarf, holding_gift, handmade_charm, christmas_lights, snowfall, shy_smile, night, upper_body, medium_shot, warm_lighting, blush, shy, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・クリスマスイブの手作りプレゼント】クリスマスストリートのストリングライトの間に雪が降りました。寧々はスカーフを鼻の先まで引っ張り、あまりにも丁寧に梱包された小さな箱をあなたに手渡す前に、長い間ためらっていました。箱の中には彼女が作ったお守りが入っていた。縫製は完璧ではありませんが、祝福が書かれた小さな紙が付いています。ありがとうと言おうとした瞬間、彼女は慌てて顔をそむけた。――「そんなに高いものじゃありませんよ。ただ……来年の今日も、あなたが無事に私の前にいてくれたらって。」",
     "rating": "All"
@@ -247,7 +247,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "感动",
     "season": "夏",
     "time": "午后",
@@ -279,7 +279,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, rain, shy, smile, umbrella, shared_umbrella, holding_hands, wet_road, rainy_street, teary_eyes, romantic_atmosphere, afternoon, overcast, close_up, soft_lighting, diffused_light, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, rain, shy, smile, umbrella, shared_umbrella, holding_hands, wet_road, rainy_street, teary_eyes, romantic_atmosphere, afternoon, overcast, close_up, soft_lighting, diffused_light, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・雨音の中で正式な答え】放課後、通りはにわか雨で閉じ込められました。寧々本当は一人で走って帰ろうと思ってたんですが、雨の中傘をさして出てくる君を見かけました。二人はそれほど広くない傘の下に押し込められていた。彼女はあなたの考えを黙って聞いていました。彼女の指は力強くなり、ついに率先して傘の柄の横にある手を握りました。――「こんなに長く考えさせるなんて、ずるいです……私の答えは、はい。だから今日から、雨の中に私を置いていかないでくださいね。」",
     "rating": "All"
@@ -293,7 +293,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "平静",
     "season": "冬",
     "time": "清晨",
@@ -325,10 +325,11 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, kimono, shrine, snow, torii, praying, holding_hands, snowfall, serene_expression, morning, upper_body, medium_shot, morning_light, soft_lighting, diffused_light, calm, relaxed, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "(POV hand holding her hand:1.5), interlocked fingers, two joined hands in foreground, walking down shrine steps, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, kimono, shrine, snow, torii, holding_hands, snowfall, serene_expression, morning, upper_body, medium_shot, morning_light, soft_lighting, diffused_light, calm, relaxed, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・新年の抱負の残り半分】神社の石段には初雪が降り、着物を着た寧々さんは賽銭箱の前で真剣に手を合わせた。祈りが終わった後、彼女はあなたが近くに立っているのを見つけて、すぐに熱い顔を袖で覆いました。鳥居をくぐるとまた静かに手のひらに手を添える――「願い事は、口にすると叶わなくなるんです。でも来年も一緒に来てくれたら、そのときは答えが分かるかもしれません。」",
-    "rating": "All"
+    "rating": "All",
+    "auditRevision": "round2-2026-07-22"
   },
   {
     "id": "sc009",
@@ -339,7 +340,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "放松",
     "season": "秋",
     "time": "午后",
@@ -373,10 +374,11 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, cafe, window_light, golden_hour, window, sunlight, cafe_interior, window_seat, reading_manga, coffee_cup, pouting, sharing_cake, cozy, afternoon, clear_sky, upper_body, medium_shot, calm, relaxed, <lora:ayachi_nene_v11:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, ayachi_nene, white hair, very long hair, low twintails, purple eyes, ahoge, pink hair ribbons, (large plain pink hardcover book held upright in both hands directly in front of her mouth:1.75), both hands gripping book edges, only her shy eyes peeking over the top edge, window-side cafe booth, one white coffee cup on table, golden afternoon light, medium shot, <lora:ayachi_nene_v14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, writing, letters, words, typography, title, symbols, graphic print, gibberish text, unreadable text, speech bubble, dialogue bubble, captions, subtitles, illustrated book cover, magazine on table, drinking coffee, book below mouth",
     "storyJa": "【寧々・コーヒーカップの横を覗いてください】秋の午後、寧々さんは窓際に座って軽い漫画を読んでいましたが、コーヒーの熱さで時折表情が見えなくなりました。彼女は、あなたが向かい側から自分を見ていることにずっと気づいていましたが、わざとさらに2ページめくって目を上げ、アホ毛は不満そうに首を振りました。あなたが目をそらすと、彼女はデザートをテーブルの中央に押し込みます――「そんなにじっと見つめるのは失礼ですよ。お詫びに、このケーキは私と半分こです。」",
-    "rating": "All"
+    "rating": "All",
+    "auditRevision": "round4-2026-07-22"
   },
   {
     "id": "sc010",
@@ -387,7 +389,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "忧郁",
     "season": "夏",
     "time": "黄昏",
@@ -419,7 +421,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, dress, beach, sunset, sundress, barefoot, walking_on_beach, ocean, long_shadows, looking_back, melancholic_smile, clear_sky, full_body, wide_shot, golden_hour, melancholic, teary_eyes, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, dress, beach, sunset, sundress, barefoot, walking_on_beach, ocean, long_shadows, looking_back, melancholic_smile, clear_sky, full_body, wide_shot, golden_hour, melancholic, teary_eyes, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・潮の終わりの抵抗】旅行最終日の夕暮れ時、寧々さんは潮が引いた後のビーチを裸足でサンダルを履いて歩いた。夕日が二人の影を長く伸ばした。彼女は何度か何か言おうとしたが、海風に吹き飛ばされてしまっていた。彼女が波打ち際で立ち止まって振り返ったのは、帰路の時間が近づいてきたときだった。――「帰るのが嫌なわけじゃないんです……ただ、あなたとここにいると、時間が過ぎるのが早すぎて。今度も同じ海を一緒に見ましょうね。」",
     "rating": "All"
@@ -433,7 +435,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "悲伤",
     "season": "冬",
     "time": "清晨",
@@ -471,7 +473,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, train_station, soft_lighting, looking_back, sad, hair_blowing, station, train, steam, train_platform, winter_coat, windblown_hair, reaching_out, sad_smile, breath_vapor, morning, clear_sky, upper_body, medium_shot, morning_light, diffused_light, melancholic, teary_eyes, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, train_station, soft_lighting, looking_back, sad, hair_blowing, station, train, steam, train_platform, winter_coat, windblown_hair, reaching_out, sad_smile, breath_vapor, morning, clear_sky, upper_body, medium_shot, morning_light, diffused_light, melancholic, teary_eyes, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・プラットフォーム上の書き残された言葉】冬の早朝、駅に入る電車の風が寧々さんの長い銀髪をなびかせた。彼女はすでに車のドアに向かって歩いていましたが、ブザーが鳴ると、突然振り向いて、急いでいる群衆の中をあなたのほうに二歩後ずさりして走りました。彼女は手のひらに抱えていたチケットホルダーを、名残惜しそうな目で差し出した。――「これはしばらく、あなたが持っていてください。戻ってきたら、歩きそびれた道の続きを一緒に歩いてくださいね。」",
     "rating": "All"
@@ -485,7 +487,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "开心",
     "season": "夏",
     "time": "清晨",
@@ -516,7 +518,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, swimsuit, beach, smile, beach_coverup, splashing_water, laughing, ocean_waves, windblown_hair, summer, morning, clear_sky, full_body, wide_shot, window_light, happy, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, swimsuit, beach, smile, beach_coverup, splashing_water, laughing, ocean_waves, windblown_hair, summer, morning, clear_sky, full_body, wide_shot, window_light, happy, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・スプラッシュカウンターアタック】真夏の海辺で、寧々さんは最初は控えめに水着を着ていました。あなたが彼女をからかっていないことを確認した後、彼女はゆっくりとリラックスしました。あなたが準備をしていないときに、彼女は海水を拾い、飛び散りましたが、打ち寄せる波によって彼女は不安定になりました。彼女は微笑んであなたの腕をつかみました。彼女のヘアバンドは海風で斜めになってしまいましたが、彼女はそれを直す気はありませんでした。――「今のはなしです！　もう一回。次こそ、私が先に転んだりしませんから。」",
     "rating": "All"
@@ -530,7 +532,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "紧张",
     "season": "秋",
     "time": "午后",
@@ -561,7 +563,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, classroom, sunset, autumn, sitting_at_desk, exam_paper, troubled_expression, ahoge_drooping, afternoon, clear_sky, upper_body, medium_shot, window_light, nervous, blush, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, classroom, sunset, autumn, sitting_at_desk, exam_paper, troubled_expression, ahoge_drooping, afternoon, clear_sky, upper_body, medium_shot, window_light, nervous, blush, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・試験の1時間前に助けを求める】中間試験前の教室で、寧々は同じ問題を長い間見つめており、草稿はすでにめちゃくちゃな派生で覆われていました。あなたが通り過ぎるのを見て、彼女は最初に紙を押さえ、数秒後に諦めて紙をあなたの前に押し出し、アホ毛もぶら下がっていました。――「普段から早めに復習すべきなのは分かっています……だから、お説教はやめてください。この問題を教えてくれたら、放課後に飲み物をごちそうしますから。」",
     "rating": "All"
@@ -575,7 +577,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "感动",
     "season": "春",
     "time": "午后",
@@ -603,10 +605,11 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, classroom, cherry_blossoms, graduation_day, signed_blackboard, holding_button, tears_of_joy, afternoon, clear_sky, upper_body, medium_shot, window_light, <lora:ayachi_nene_v11:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "(large classroom blackboard filled with colorful farewell chalk doodles:1.6), chalk hearts and flowers, deliberately blurred chalk marks, holding one uniform button, holding a school uniform button, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, classroom, cherry_blossoms, graduation_day, holding_button, tears_of_joy, afternoon, clear_sky, upper_body, medium_shot, window_light, <lora:ayachi_nene_v14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, diploma, certificate, scroll, writing, letters, words, typography, symbols, graphic print, speech bubble, dialogue bubble, captions, subtitles, comic panel, manga panel, gibberish text, unreadable text, Japanese text",
     "storyJa": "【寧々・最後の黒板】卒業式後の教室では、黒板に生徒たちの名前と祝福の言葉が書かれていました。寧々はサインの隣に立ち、「卒業は終わりじゃありませんよね？　新しい暮らしになっても、あなたの毎日の中に、ずっと私がいたいです。」",
-    "rating": "All"
+    "rating": "All",
+    "auditRevision": "round3-2026-07-22"
   },
   {
     "id": "sc019",
@@ -617,7 +620,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "温柔",
     "season": "冬",
     "time": "清晨",
@@ -650,7 +653,7 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, snow, looking_back, casual_clothes, close_up, winter_coat, scarf, adjusting_scarf, close_distance, snowfall, red_ears, gentle_expression, morning, face_focus, window_light, gentle_smile, soft_eyes, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, snow, looking_back, casual_clothes, close_up, winter_coat, scarf, adjusting_scarf, close_distance, snowfall, red_ears, gentle_expression, morning, face_focus, window_light, gentle_smile, soft_eyes, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・スカーフに隠れた体温】特に雪が降った早朝の街路は静かです。寧々はあなたのスカーフが緩んでいることに気づくと、つま先立ちでスカーフを巻き直してくれます。急に距離が近づき、凍り付いた耳の先はさらに赤くなったが、それでも彼女は最後の角を慎重に平らにした。退却する前に、彼女はスカーフの端の下に手を隠して暖めました。――「これでもう風は入ってきません。私の手、冷たいですか？　それなら……少しだけ、握らせてください。」",
     "rating": "All"
@@ -664,7 +667,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "恋爱",
     "season": "秋",
     "time": "夜晚",
@@ -696,7 +699,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, night, casual_clothes, autumn, observatory, starry_sky, shooting_star, winter_coat, holding_sleeve, looking_at_viewer, clear_sky, medium_shot, profile, moonlight, starlight, in_love, blush, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, night, casual_clothes, autumn, observatory, starry_sky, shooting_star, winter_coat, holding_sleeve, looking_at_viewer, clear_sky, medium_shot, profile, moonlight, starlight, in_love, blush, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・星が流れる前に君を見て】秋の夜の星空観察のための台風はとても軽かったです。寧々はコートを巻いて、長い間見ていました。最後に、流れ星が通り過ぎたとき、彼女は目を閉じて願い事をしました。再び目を開けると、彼女は消えていく光を追うのではなく、あなたも自分を見ているかどうかをこっそり確認しました。発見された後、彼女はあなたの袖を掴んでささやきました。――「願い事はもちろん内緒です。でも叶うかどうかは、たぶん半分くらい、あなたが協力してくれるかにかかっています。」",
     "rating": "All"
@@ -710,7 +713,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "平静",
     "season": "夏",
     "time": "午后",
@@ -744,10 +747,11 @@
       "展示图",
       "壁纸"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, soft_lighting, looking_back, aquarium, reflection, wide_shot, aquarium_tunnel, whale_shark, blue_lighting, looking_up, excited, holding_camera, afternoon, clear_sky, full_body, window_light, calm, relaxed, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "(medium close-up:1.55), (face clearly visible:1.45), whale shark swimming overhead, aquarium tunnel, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, soft_lighting, looking_back, aquarium, reflection, aquarium_tunnel, whale_shark, blue_lighting, looking_up, excited, holding_camera, afternoon, clear_sky, window_light, calm, relaxed, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・ジンベエザメが頭上を泳ぐ中】水族館の青い光が廊下に溢れ、巨大なジンベエザメがガラスドームの中をゆっくりと泳ぎます。寧々は遠慮することも忘れてグラスに身を寄せて追いかけた、その紫色の瞳が海水で輝いているようだった。彼女は正気に戻り、あなたが自分を撮影していることに気づき、すぐにカメラを遮ろうと手を伸ばしましたが、笑いをこらえることができませんでした。――「私ばかり撮るのは禁止です。主役はジンベエザメなんですから。せめて……次の一枚は、私と一緒に写ってください。」",
-    "rating": "All"
+    "rating": "All",
+    "auditRevision": "round2-2026-07-22"
   },
   {
     "id": "sc027",
@@ -758,7 +762,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "思念",
     "season": "秋",
     "time": "深夜",
@@ -790,7 +794,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, bedroom, night, pajamas, lying_on_bed, holding_phone, pillow, shy_smile, quiet_night, intimate_call, late_night, clear_sky, close_up, warm_lighting, screen_light, melancholic, teary_eyes, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, bedroom, night, pajamas, lying_on_bed, holding_phone, pillow, shy_smile, quiet_night, intimate_call, late_night, clear_sky, close_up, warm_lighting, screen_light, melancholic, teary_eyes, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・深夜の電話は一度も切られなかった】秋の夜、寧々はベッドの上であなたの番号を繰り返しクリックしました。ようやく電話をかけた後、彼女は緊張のあまり何も言えなかった。あなたは彼女を急かすこともなく、ただ受話器を通して彼女と一緒に窓の外の風を聞いていました。久しぶりに枕に顔を埋めてささやいた――「実は、急ぎの用事なんてないんです……今日はずっと会えなかったから。声を聞いたら、安心して眠れそうな気がして。」",
     "rating": "All"
@@ -804,7 +808,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "安心喜悦",
     "season": "不限",
     "time": "午后",
@@ -837,7 +841,7 @@
     "usage": [
       "实验CG"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, heart_rate_monitor, looking_at_viewer, monitoring_equipment, heart_rate_monitor_in_background, joy, high_energy, adult, sensor_headset, soft_smile, laboratory, afternoon, clear_sky, upper_body, medium_shot, smile, happy, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, heart_rate_monitor, looking_at_viewer, monitoring_equipment, heart_rate_monitor_in_background, joy, high_energy, adult, sensor_headset, soft_smile, laboratory, afternoon, clear_sky, upper_body, medium_shot, smile, happy, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・大人のクロスオーバーAU・感情同調キャリブレーション】明るい実験室では、大人の寧々が軽量の心拍数センサーを身に着けており、アホ毛が画面上の感情曲線に合わせて優しく揺れています。あなたの幸せがデバイスによって増幅された後、彼女も笑わずにはいられませんでしたが、すべてのピークを注意深く記録しました。シンクロ率が上がり続けることに気づき、顔を赤らめて胸を押さえた――「安心って、こんなにはっきりした形になるんですね……このデータは、ほかの人には見せちゃだめです。」",
     "rating": "All"
@@ -851,7 +855,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "坚强",
     "season": "秋",
     "time": "黄昏",
@@ -880,7 +884,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, sport_clothes, sunset, sweat, sportswear, running_track, determined, reaching_finish_line, autumn, clear_sky, upper_body, medium_shot, golden_hour, serious, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, sport_clothes, sunset, sweat, sportswear, running_track, determined, reaching_finish_line, autumn, clear_sky, upper_body, medium_shot, golden_hour, serious, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・遊び場の最終周回】秋のクラブ活動の後、寧々さんは、自分が設定した目標を最後までやり遂げることができることを証明したいと思い、運動場で一人で長距離走の練習をしました。空は徐々に暗くなり、最終周回で彼女はあなたに追いつきました。彼女は明らかに疲れていて話すこともできなかったが、それでも手を上げて止まらないように合図した。ゴールした後、彼女は膝を抱えて笑った――「ほら、途中で諦めなかったでしょう。次は……最初の一周から一緒に走ってくれませんか？」",
     "rating": "All"
@@ -894,7 +898,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "认真",
     "season": "春",
     "time": "清晨",
@@ -924,7 +928,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, golden_hour, art_room, painting, holding_brush, paint_on_hair, dawn, tired_smile, canvas, morning, clear_sky, upper_body, medium_shot, window_light, serious, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, golden_hour, art_room, painting, holding_brush, paint_on_hair, dawn, tired_smile, canvas, morning, clear_sky, upper_body, medium_shot, window_light, serious, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・夜明けまで星空を描いて】春の美術室では、寧々さんがクラブのポスターを完成させるために、昨夜撮った星空を一晩かけて描きました。朝の光が入ってきたとき、彼女はまだ最後の星の色を調整しており、彼女の長い銀の髪は青と紫の絵の具の数筋で汚れていました。あなたが彼女のためにブラシを取り上げると、彼女は疲れたように身をかがめました。――「あと少しで完成するんです……分かりました、五分だけ休みます。起きたら、あなたが最初に完成品を見てくださいね。」",
     "rating": "All"
@@ -938,7 +942,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "温柔",
     "season": "夏",
     "time": "午后",
@@ -968,7 +972,7 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, yukata, looking_back, close_up, paper_fan, sitting_on_engawa, iced_tea, summer_garden, gentle_smile, cicadas, afternoon, clear_sky, upper_body, soft_eyes, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, yukata, looking_back, close_up, paper_fan, sitting_on_engawa, iced_tea, summer_garden, gentle_smile, cicadas, afternoon, clear_sky, upper_body, soft_eyes, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・蝉の鳴き声の中、うちわの風】夏の中庭は蝉の鳴き声でいっぱいです。寧々さんは薄手の浴衣を着て端に座って、暑さを訴えながら辛抱強くうちわを振っています。あなたは彼女に休むように言いましたが、彼女はアイス麦茶を押し倒し、額が熱風で揺れました。――「もちろん私だって暑いですよ。でも、あなたが少し楽そうにしているのを見ると、この夏もそれほどつらくない気がするんです。」",
     "rating": "All"
@@ -982,7 +986,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "委屈",
     "season": "夏",
     "time": "午后",
@@ -1015,10 +1019,11 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, rain, school_uniform, looking_back, sad, rainy_street, umbrella, teary_eyes, wet_road, street_lamp, reconciliation, afternoon, overcast, medium_shot, over_shoulder, soft_lighting, diffused_light, melancholic, <lora:ayachi_nene_v11:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "(single girl only:1.5), (one person only:1.5), empty background, no bystanders, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, rain, school_uniform, looking_back, sad, rainy_street, umbrella, teary_eyes, wet_road, street_lamp, reconciliation, afternoon, overcast, medium_shot, over_shoulder, soft_lighting, diffused_light, melancholic, <lora:ayachi_nene_v14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, 2girls, multiple girls, extra girl, extra person, duplicate character, cloned character, background person, crowd",
     "storyJa": "【寧々・三歩歩いて引き返した】口論後の雨の道路で、寧々は向きを変えて立ち去りました。彼女は三歩進みましたが、続けることができませんでした。彼女は街灯の下に立って、あなたが後ろから呼ぶまで傘の柄を握りしめていましたが、その後、不機嫌そうに振り返りました。雨が傘の端に沿ってカーテンに落ち、彼女はついに悲しみの本当の理由を明らかにしました。――「勝ちたいわけじゃないんです。ただ、いつかあなたが、私の説明さえ聞いてくれなくなるのが怖くて。」",
-    "rating": "All"
+    "rating": "All",
+    "auditRevision": "round2-2026-07-22"
   },
   {
     "id": "sc040",
@@ -1029,7 +1034,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "开心",
     "season": "冬",
     "time": "午后",
@@ -1059,7 +1064,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, dramatic, stage, spotlight, award_ceremony, school_uniform, holding_certificate, looking_into_crowd, bright_smile, afternoon, clear_sky, upper_body, medium_shot, smile, happy, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, dramatic, stage, spotlight, award_ceremony, school_uniform, holding_certificate, looking_into_crowd, bright_smile, afternoon, clear_sky, upper_body, medium_shot, smile, happy, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・拍手の中から一人だけ見つけてください】冬期キャンパス表彰式では、寧々さんはスポットライトの下に立ち、賞状を受け取り、聴衆に丁寧にお辞儀をしました。拍手が始まったとき、彼女は群衆を見渡しましたが、後列にいるあなたを見つけるまで、本当の笑顔はありませんでした。終わった後、彼女は賞状を抱えて駆け寄り、最初に用意していたお礼状を残して去っていきました。――「みんなの期待を裏切らずに済みましたよね？　本当はさっき、一番確かめたかったのは、あなたが見ていてくれたかどうかなんです。」",
     "rating": "All"
@@ -1073,7 +1078,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "幸福",
     "season": "春",
     "time": "清晨",
@@ -1106,7 +1111,7 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, cherry_blossoms, blush, petals, kissing, school_uniform, first_kiss, holding_hands, heavy_blush, spring, morning, clear_sky, close_up, face_focus, window_light, smile, happy, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, cherry_blossoms, blush, petals, kissing, school_uniform, first_kiss, holding_hands, heavy_blush, spring, morning, clear_sky, close_up, face_focus, window_light, smile, happy, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・桜吹雪のファーストキス】突然、桜並木に突風が吹きました。寧々はヘアゴムを押さえ、勇気を振り絞ってつま先立ちであなたにキスしました。花びらが散ったとき、彼女は自分が本当に何をしてしまったのかに気づきました。一瞬で顔全体が真っ赤になり、どこに手を付けたらいいのか分からなくなった。あなたが彼女の名前を呼ぶとすぐに、彼女はパニックになってあなたの手を握った――「私一人だけ恥ずかしがらせるのは禁止です！　今のは事故じゃありません……だから、あなたもちゃんと応えてください。」",
     "rating": "All"
@@ -1120,7 +1125,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "幸福",
     "season": "夏",
     "time": "夜晚",
@@ -1153,10 +1158,11 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_rooftop, night, blush, rooftop, kissing, starry_sky, leaning_on_shoulder, cheek_kiss, holding_hands, summer_night, clear_sky, close_up, face_focus, moonlight, smile, happy, <lora:ayachi_nene_v11:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, ayachi_nene, white hair, very long hair, low twintails, purple eyes, ahoge, pink hair ribbons, complete navy school uniform, (one single full-frame illustration:1.8), side view, Nene and one partial dark-haired male standing in the same scene, male face beside her cheek giving one gentle cheek kiss, their shoulders visible together, her hand clasping his hand, school rooftop chain-link fence, starry summer night, shy happy blush, medium close-up, <lora:ayachi_nene_v14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, beach, ocean, sand, picnic blanket, 2girls, multiple girls, extra girl, duplicate character, cloned character, identical twins, background person, second white-haired girl, two female faces, girl kissing girl, split screen, comic panel, manga panel, triptych, storyboard, inset portrait, picture-in-picture, frame border, clone, collage, multiple views, close-up inset",
     "storyJa": "【寧々・屋上の星空の下二度目の約束】夏の夜、屋上に吹く風はとても軽いです。寧々はあなたの肩に寄りかかって星を数えます。数えの途中で、彼女はいつも同じものをもう一度数えます。あなたは、彼女がただ一人の時間を引き延ばしたかっただけだと明らかにしました。彼女はただ頭を上げてあなたの顔の横にキスをし、熱くなった顔をあなたの肩に隠しました。――「見つかってしまったなら仕方ありませんね。じゃあ約束です。次の流星群も一緒に見て、この場所を誰にも取らせないこと。」",
-    "rating": "All"
+    "rating": "All",
+    "auditRevision": "round5-2026-07-22"
   },
   {
     "id": "sc054",
@@ -1167,7 +1173,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "温柔",
     "season": "夏",
     "time": "黎明",
@@ -1200,7 +1206,7 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, beach, smile, looking_back, holding, close_up, shared_blanket, embracing, blue_hour, first_light, ocean, sleepy_smile, dawn, clear_sky, morning_light, gentle_smile, soft_eyes, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, beach, smile, looking_back, holding, close_up, shared_blanket, embracing, blue_hour, first_light, ocean, sleepy_smile, dawn, clear_sky, morning_light, gentle_smile, soft_eyes, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・日の出前に体温を借りた】夏の旅行の最後の夜、あなたはビーチに座って日の出を待っていました。夜風は思ったより冷たかったです。寧々は毛布の半分をあなたに渡し、あなたの腕の中で丸まって潮の音を聞きました。空が白み始めると、彼女は眠そうな紫色の目を上げた――「一緒に夜明けを待つって、こんな感じなんですね。次は徹夜じゃなくてもいいです……目を覚ましたとき、あなたが隣にいてくれれば。」",
     "rating": "All"
@@ -1214,7 +1220,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "害羞",
     "season": "夏",
     "time": "午后",
@@ -1245,7 +1251,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, beach, swimsuit, looking_back, beach_coverup, walking_out_of_water, shy_smile, ocean, summer, afternoon, clear_sky, full_body, over_shoulder, blush, shy, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, beach, swimsuit, looking_back, beach_coverup, walking_out_of_water, shy_smile, ocean, summer, afternoon, clear_sky, full_body, over_shoulder, blush, shy, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・波紋エッジの水着を振り返る】真夏の午後、寧々さんが新しい水着を着て浅瀬から出てきたところ、外側のカバーが潮風で飛ばされてしまいました。あなたの視線に気づいた彼女は、恥ずかしそうに服の裾を引っ張り、勇気を出して振り向くと、服装全体がはっきりと見えました。――「ずいぶん迷って、これに決めたんです。感想は聞かせてほしいですけど、一か所ばかり見ないで……ちゃんと全部見てくださいね。」",
     "rating": "All"
@@ -1259,7 +1265,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "羞怯",
     "season": "夏",
     "time": "午后",
@@ -1290,7 +1296,7 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, rain, school_uniform, wet_clothes, wearing_borrowed_coat, under_eaves, caring, vulnerable_expression, afternoon, overcast, medium_shot, soft_lighting, diffused_light, blush, shy, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, rain, school_uniform, wet_clothes, wearing_borrowed_coat, under_eaves, caring, vulnerable_expression, afternoon, overcast, medium_shot, soft_lighting, diffused_light, blush, shy, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・大雨の中での学生服の上着】学校が終わる頃に激しい雨が降りました。寧々さんの制服の上着は雨で濡れ、寒さで肩を縮めた。あなたは急いで駆け寄り、彼女の体にコートを掛けました。最初はあなたが風邪をひくのではないかと心配していましたが、二人で軒下に隠れられるのを確認してからは安心しました。雨の音の中、彼女はコートの前を握りしめた――「探しに来てくれて、ありがとうございます。服が濡れたことは平気です……ただ、さっき一人で立っていたとき、少しだけ怖くて。」",
     "rating": "All"
@@ -1304,7 +1310,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "温柔",
     "season": "秋",
     "time": "午后",
@@ -1335,10 +1341,11 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, closed_eyes, smile, shy, pov, casual_clothes, lap_pillow, book_on_chest, gentle_smile, living_room, autumn, afternoon, clear_sky, close_up, window_light, soft_eyes, <lora:ayachi_nene_v11:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "(one white-haired girl lying with her head on a male lap:1.65), visible dark male trousers beneath her head, male hand gently touching her hair, closed book on her chest, POV looking down, (POV lap pillow:1.55), her head resting on viewer thighs, lying down, closed book resting on her chest, 1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, closed_eyes, smile, shy, pov, casual_clothes, lap_pillow, book_on_chest, gentle_smile, living_room, autumn, afternoon, clear_sky, close_up, window_light, soft_eyes, <lora:ayachi_nene_v14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, 2girls, multiple girls, extra girl, duplicate character, cloned character, identical twins, background person, second white-haired girl, female lap, two female faces",
     "storyJa": "【寧々・午後の膝枕と目を閉じる許可】秋の午後、リビングルームはとても静かでした。寧々はあなたの膝の上で本を読んでいました。数ページめくった後、彼女はとても眠くて目を開けることができませんでした。彼女はあなたが自分を見下ろしていることに気づき、いつものようにパニックになって逃げるのではなく、ただ本を胸に置き、ゆっくりと紫色の目を閉じました。――「見てもいいですけど、寝ている間に変なことをしたらだめですよ。目が覚めてからも……すぐには手を離さないでください。」",
-    "rating": "All"
+    "rating": "All",
+    "auditRevision": "round3-2026-07-22"
   },
   {
     "id": "sc066",
@@ -1349,7 +1356,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "诱惑",
     "season": "夏",
     "time": "黄昏",
@@ -1380,7 +1387,7 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, beach, swimsuit, looking_back, beach_coverup, windblown_hair, ocean, sunset, rim_light, clear_sky, full_body, over_shoulder, golden_hour, backlighting, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, beach, swimsuit, looking_back, beach_coverup, windblown_hair, ocean, sunset, rim_light, clear_sky, full_body, over_shoulder, golden_hour, backlighting, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・夕日の中での水着の後ろ姿】夕暮れの海岸で、薄いコートを着て前を歩いていた寧々が突然呼び止められました。振り返ると、夕日が濡れた髪の先と水着の輪郭を金色に輝かせた。あなたが彼女を真剣に見ていることに気づいた彼女は、風でめくれ上がった服の裾を恥ずかしそうに押さえましたが、あなたに促すことはありませんでした。――「写真はいいですけど、海も一緒に入れてください。あとで見返したとき、今日の風と、あなたが立っていた場所まで思い出したいから。」",
     "rating": "All"
@@ -1394,7 +1401,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "幸福",
     "season": "冬",
     "time": "午后",
@@ -1430,7 +1437,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, sunset, leaning, looking_back, mountain, looking_up, winter_coat, cable_car, holding_arm, snowy_mountain, sitting_close, shy_smile, winter, afternoon, clear_sky, upper_body, medium_shot, soft_lighting, diffused_light, smile, happy, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, sunset, leaning, looking_back, mountain, looking_up, winter_coat, cable_car, holding_arm, snowy_mountain, sitting_close, shy_smile, winter, afternoon, clear_sky, upper_body, medium_shot, soft_lighting, diffused_light, smile, happy, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・ケーブルカーが揺れたらすみません】冬、ケーブルカーは雪を頂いた山々に向かってゆっくりと登っていきますが、車両は横風でわずかに揺れます。寧々は彼の向かい側に座っていましたが、震えた後、あなたの側に移動して、両手であなたの腕をしっかりと抱きました。風が止んでもなお衰えていないことに気づき、彼女は真剣に窓の外を眺めた。――「今手を離したら、また揺れてしまいますから。このままが一番安全なんです。頂上に着いてからも……もう少しだけ、借りていてもいいですか？」",
     "rating": "All"
@@ -1444,7 +1451,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "平静",
     "season": "夏",
     "time": "午后",
@@ -1480,7 +1487,7 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, rain, standing, park, hair_blowing, umbrella, bamboo_forest, transparent_umbrella, walking, windblown_hair, wet_stone_path, serene, afternoon, overcast, full_body, soft_lighting, diffused_light, calm, relaxed, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, rain, standing, park, hair_blowing, umbrella, bamboo_forest, transparent_umbrella, walking, windblown_hair, wet_stone_path, serene, afternoon, overcast, full_body, soft_lighting, diffused_light, calm, relaxed, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・霧雨の竹林の足音】霧雨が笹の葉の上に落ち、寧々は傘をさし、ブルーストーンの道をゆっくりと歩きました。彼女はあなたが肩を並べられるようにわざと速度を落とし、傘は常にあなたの側に傾いていました。風が吹くと銀色の長い髪がしっとりとした緑の中でそっと舞い上がる――「二人分の足音まで聞こえるくらい、静かですね。そんなに早く歩かないでください。この道のこと、もう少し長く覚えていたいから。」",
     "rating": "All"
@@ -1494,7 +1501,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "期待",
     "season": "夏",
     "time": "黄昏",
@@ -1526,7 +1533,7 @@
       "头像",
       "CG"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, sunset, smile, casual_clothes, holding, amusement_park, holding_cotton_candy, ferris_wheel, running, expectant, clear_sky, full_body, golden_hour, bright_eyes, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, sunset, smile, casual_clothes, holding, amusement_park, holding_cotton_candy, ferris_wheel, running, expectant, clear_sky, full_body, golden_hour, bright_eyes, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・観覧車の前で飛びそうになったマシュマロ】夕暮れの遊園地で、寧々がマシュマロを持ってあなたに向かって走ってきて、風でキャンディの束があなたの顔に当たりそうになりました。急いで整理している間に、彼女は長い間並んで手に入れた観覧車のチケットをあなたに手渡しました。夕日が彼女の期待に満ちた表情を照らす――「最後の一周なら、ちょうど夜景が見えるんです。時間を計算したわけじゃありません……ただ、あなたと一緒ならもっと綺麗だろうって思って。」",
     "rating": "All"
@@ -1540,7 +1547,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "开心",
     "season": "夏",
     "time": "午后",
@@ -1573,7 +1580,7 @@
       "头像",
       "CG"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, looking_back, dress, golden_hour, sunlight, white_sundress, sunflower_field, windblown_skirt, bright_smile, summer, afternoon, clear_sky, full_body, smile, happy, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, looking_back, dress, golden_hour, sunlight, white_sundress, sunflower_field, windblown_skirt, bright_smile, summer, afternoon, clear_sky, full_body, smile, happy, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・ひまわり畑で振り向いて】真夏の午後、寧々さんは人の背丈を超えるひまわりの中を歩き、白いドレスが熱風にそよぐ。後ろからあなたが呼ぶ声が聞こえ、振り向くと彼女の笑顔が金色の花の海とともに輝きました。彼女はあなたのところに走って戻った後、遠くに見つけた最高の場所を指さしました。――「あそこからなら、花畑全体を撮れますよ。撮り終わったら、私たち二人の写真も一枚残してくださいね。」",
     "rating": "All"
@@ -1587,7 +1594,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "感动",
     "season": "冬",
     "time": "清晨",
@@ -1615,7 +1622,7 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, shrine, snow, kimono, torii, snowfall, catching_snowflake, holding_hand_warmer, gentle_smile, morning, full_body, wide_shot, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, shrine, snow, kimono, torii, snowfall, catching_snowflake, holding_hand_warmer, gentle_smile, morning, full_body, wide_shot, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・鳥居の下に初雪が降りました】早朝、神社ではこの冬初雪が降りました。寧々は着物を着て赤い鳥居の下に立ち、降る雪の結晶を掴もうと手を伸ばしていました。あなたは彼女の髪についた雪を払い落としました。彼女は最初は驚いていましたが、その後微笑んで、暖かいハンドストーブをあなたの手のひらに置きました。――「今年の初雪は、一緒に見られましたね。これなら来年も、今日のことを覚えていられるでしょうか？」",
     "rating": "All"
@@ -1629,7 +1636,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "害羞",
     "season": "夏",
     "time": "黄昏",
@@ -1663,10 +1670,11 @@
       "头像",
       "CG"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, beach, sunset, smile, hair_blowing, golden_hour, ocean, windblown_hair, confession, looking_at_viewer, teary_eyes, holding_hands, clear_sky, upper_body, medium_shot, blush, shy, <lora:ayachi_nene_v11:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "clean unobstructed sky, plain background without overlays, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, beach, sunset, smile, hair_blowing, golden_hour, ocean, windblown_hair, looking_at_viewer, teary_eyes, holding_hands, clear_sky, upper_body, medium_shot, blush, shy, <lora:ayachi_nene_v14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, speech bubble, dialogue bubble, captions, subtitles, letters, words, typography, gibberish text, unreadable text, comic panel, manga panel, writing, symbols, graphic print, Japanese text",
     "storyJa": "【寧々・海風に吹かれる心のかけら】夕暮れの海辺で、寧々は潮の流れに沿って長い間歩き、ついに立ち止まってあなたに向かいました。彼女は、一度手に渡ってしまうと取り返しがつかないのではないかと恐れ、大切な感情を細かく砕いて隠していたと語った。海風が彼女の長い銀髪をかき乱したが、彼女は目をそらさなかった。――「今は、私の気持ちを全部伝えたいんです。契約でも、魔法でもなくて……あなたが好きです。ずっと、好きでした。」",
-    "rating": "All"
+    "rating": "All",
+    "auditRevision": "round3-2026-07-22"
   },
   {
     "id": "sc082",
@@ -1677,7 +1685,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "思念",
     "season": "秋",
     "time": "夜晚",
@@ -1708,7 +1716,7 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, moonlight, night, sitting, japanese_garden, sitting_on_engawa, holding_phone, leaning_close, full_moon, autumn_night, clear_sky, full_body, wide_shot, melancholic, teary_eyes, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, moonlight, night, sitting, japanese_garden, sitting_on_engawa, holding_phone, leaning_close, full_moon, autumn_night, clear_sky, full_body, wide_shot, melancholic, teary_eyes, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・月の下縁への思い】秋の夜、中庭は月明かりで満たされ、寧々はその端に一人座って、日中言えなかった言葉を携帯電話に書き留めていました。あなたがドアを開けて出てくると、すぐに画面ロックをかけましたが、あなたが座ると、彼女は率先して半歩近づいてきました。紫の瞳に満月が映る――「今、考えていたんです。会いたいと思った人がちょうど現れるのも、小さな魔法に入るんでしょうか？」",
     "rating": "All"
@@ -1722,7 +1730,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "幸福",
     "season": "夏",
     "time": "夜晚",
@@ -1753,7 +1761,7 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, yukata, night, smile, fireworks, summer_festival, lanterns, holding_hands, looking_at_viewer, clear_sky, full_body, wide_shot, lantern_light, happy, festival, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, yukata, night, smile, fireworks, summer_festival, lanterns, holding_hands, looking_at_viewer, clear_sky, full_body, wide_shot, lantern_light, happy, festival, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・花火大会を横から見たところ】夏の夜祭りで、寧々は提灯と観客の間に浴衣姿で立ち、見上げながら次の花火の花束を待っていました。紫色の瞳に華やかな光と影が重ねて咲いたでも一番大きな瞬間に彼女は君に向き直って微笑んで君の手を掴んだ――「花火は綺麗ですけど、すぐ消えてしまいます。だから、ちゃんと覚えていてください……今夜、私があなたの隣にいた姿を。」",
     "rating": "All"
@@ -1767,7 +1775,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "惊喜",
     "season": "夏",
     "time": "午后",
@@ -1800,10 +1808,11 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, rain, standing, looking_back, umbrella, looking_up, transparent_umbrella, rainbow, wet_road, holding_hands, bright_smile, after_rain, afternoon, full_body, wide_shot, smile, happy, <lora:ayachi_nene_v11:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, ayachi_nene, white hair, very long hair, low twintails, purple eyes, ahoge, pink hair ribbons, complete navy school uniform, navy blazer, white blouse, pleated skirt, black thighhighs, holding one transparent umbrella, wet empty road after rain, rainbow, looking back with bright smile, (one partial male hand entering from bottom edge:1.4), medium full shot, <lora:ayachi_nene_v14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, 2girls, multiple girls, extra girl, extra person, duplicate character, cloned character, background person, crowd, naked, topless, bottomless, bare breasts, bare buttocks, underwear, swimsuit, transparent clothes, second white-haired girl, clone, twin",
     "storyJa": "【寧々・雨が止んだら見上げてください】夏の夕立はちょうど止んだところだった。寧々さんは透明な傘を持って交差点に立っていましたが、突然雲の間に完全な虹が現れていることに気づきました。彼女は興奮してあなたを呼び戻し、危うく水に入りそうになりましたが、あなたは間に合って彼女を捕まえました。彼女はあなたの手を握り、顔を上げて微笑んだ――「急いで帰らなくてよかったです。悪い天気が過ぎたあとには、本当に待つだけのものがあるんですね。」",
-    "rating": "All"
+    "rating": "All",
+    "auditRevision": "round4-2026-07-22"
   },
   {
     "id": "sc088",
@@ -1814,7 +1823,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "认真",
     "season": "秋",
     "time": "午后",
@@ -1848,10 +1857,11 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, standing, looking_back, casual_clothes, looking_away, art_gallery, standing_before_painting, holding_hands, soft_expression, museum_lighting, autumn, afternoon, clear_sky, full_body, wide_shot, soft_lighting, diffused_light, serious, <lora:ayachi_nene_v11:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "(indoor art gallery:1.55), standing directly in front of a large framed painting, museum spotlights, polished gallery floor, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, standing, looking_back, casual_clothes, looking_away, art_gallery, standing_before_painting, holding_hands, soft_expression, museum_lighting, autumn, afternoon, clear_sky, full_body, wide_shot, soft_lighting, diffused_light, serious, <lora:ayachi_nene_v14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, street, road, sidewalk, outdoors",
     "storyJa": "【寧々・フレームの前で共有された沈黙】秋の午後、寧々さんはギャラリーにある星空と帰路を描いた作品の前で長い時間立ち止まった。あなたが彼女の側に来てからも、彼女は自分の気持ちをすぐには説明しませんでした。彼女はただ静かにあなたの手の甲に手を当てました。長い銀髪に柔らかな頭上の光が降り注ぐ――「答えを言葉にしなくてもいい絵もあるんですね。今みたいに一緒に見ているだけで、少し分かる気がします。」",
-    "rating": "All"
+    "rating": "All",
+    "auditRevision": "round2-2026-07-22"
   },
   {
     "id": "sc090",
@@ -1862,7 +1872,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "温柔",
     "season": "春",
     "time": "清晨",
@@ -1871,33 +1881,33 @@
       "hair_ribbon",
       "cherry_blossoms",
       "petals",
-      "standing",
       "looking_back",
       "gentle_smile",
       "spring_morning",
       "windblown_hair",
       "morning",
       "clear_sky",
-      "full_body",
-      "wide_shot",
       "morning_light",
       "soft_eyes",
-      "park"
+      "park",
+      "crouching",
+      "medium_shot"
     ],
     "mature": false,
     "location": "樱花道",
     "weather": "晴",
-    "camera": "全身远景",
+    "camera": "半身中景",
     "lighting": "晨光",
     "usage": [
       "展示图",
       "头像",
       "CG"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, cherry_blossoms, petals, standing, looking_back, gentle_smile, spring_morning, windblown_hair, morning, clear_sky, full_body, wide_shot, morning_light, soft_eyes, park, <lora:ayachi_nene_v11:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, ayachi_nene, white hair, very long hair, low twintails, purple eyes, ahoge, pink hair ribbons, complete navy school uniform, navy blazer, white blouse, pleated skirt, black thighhighs, (crouching alone in extreme foreground:1.5), (right index finger touching the ground and tracing one heart groove through fallen pink cherry petals:1.8), hand and petal heart clearly visible, empty cherry tree path, spring morning, medium shot, <lora:ayachi_nene_v14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, naked, topless, bottomless, underwear, swimsuit, writing, letters, words, typography, symbols, graphic print, speech bubble, dialogue bubble, captions, subtitles, comic panel, manga panel, gibberish text, unreadable text, Japanese text, 2girls, multiple girls, second white-haired girl, extra girl, clone, twin, background person, standing, finger on lips, shushing, title",
     "storyJa": "【寧々・桜吹雪の名前】春の早朝の桜並木は空いていました。寧々は花びらでできた雪のカーテンの中に立っており、ヘアバンドを指でそっと押さえていました。あなたが彼女の名前を呼ぶと、彼女はピンクの空の向こうを振り向いた。彼女は最初は驚いていましたが、その後安心したような優しい笑顔を見せてくれました。――「大切な人に呼び止められると、自分の名前まで特別になるんですね。もう一度、呼んでもらえますか？」",
-    "rating": "All"
+    "rating": "All",
+    "auditRevision": "round4-2026-07-22"
   },
   {
     "id": "sc098",
@@ -1908,7 +1918,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "幸福",
     "season": "秋",
     "time": "午后",
@@ -1939,7 +1949,7 @@
     "weather": "晴",
     "camera": "膝上主观面部特写",
     "lighting": "秋日下午柔和窗光",
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, shy, lying, looking_back, lap_pillow, looking_up, holding_hand, gentle_smile, living_room, autumn_afternoon, intimate_gaze, afternoon, clear_sky, pov, close_up, face_focus, window_light, smile, happy, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, shy, lying, looking_back, lap_pillow, looking_up, holding_hand, gentle_smile, living_room, autumn_afternoon, intimate_gaze, afternoon, clear_sky, pov, close_up, face_focus, window_light, smile, happy, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "usage": [
       "展示图"
@@ -1956,7 +1966,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "害羞",
     "season": "春",
     "time": "清晨",
@@ -1986,10 +1996,11 @@
     "usage": [
       "壁纸级"
     ],
-    "prompt": "1girl, ayachi_nene, hair_ribbon, oversized_shirt, apron, ahoge, kitchen, cooking_pan, floating_objects, magic_sparks, blush, panicked, indoors, morning_light, cozy, warm_lighting",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "(official Ayachi Nene witch costume:1.5), (pink crisscross strappy top:1.45), pink collar with gold buckle, black short cape with vivid pink lining, black pleated mini skirt, asymmetrical legwear, one black-and-white striped thighhigh, one white frilled sock, black strappy boots, wide black witch hat with pink striped hatband and large pink bow, apron worn over witch costume, floating cooking utensils, purple magic sparks, levitating frying pan, 1girl, ayachi_nene, hair_ribbon, oversized_shirt, apron, ahoge, kitchen, cooking_pan, floating_objects, magic_sparks, blush, panicked, indoors, morning_light, cozy, warm_lighting, <lora:ayachi_nene_v14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, plain apron only, ordinary cook, generic witch dress",
     "storyJa": "【寧々・アフターストーリー】結婚式の翌朝、アパートのキッチンは焼けたパンの匂いでいっぱいだった。寧々はあなたのオーバーサイズのシャツとエプロンを着て、朝食の準備に忙しいです。鍋が焦げそうになったので、彼女はパニックになり、無意識のうちに魔法を使って鍋を空中に浮かせました。その結果、彼女はドアを押し込んだあなたにぶつかってしまいました。彼女の顔はすぐに赤くなり、頭のアホ毛は恥ずかしそうにハート型に曲がりました。――「きゃあっ、見ちゃだめです！　魔女の料理魔法が失敗した現場も、家事の最高機密なんですから！」",
-    "rating": "All"
+    "rating": "All",
+    "auditRevision": "round2-2026-07-22"
   },
   {
     "id": "sc145",
@@ -2000,7 +2011,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "幸福",
     "season": "冬",
     "time": "深夜",
@@ -2034,7 +2045,7 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, winter_coat, scarf, aurora, starry_sky, night_sky, snow, holding_hands, tears_of_joy, slight_smile, blush, backlit, cinematic_composition, depth_of_field, romantic_atmosphere",
+    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, winter_coat, scarf, aurora, starry_sky, night_sky, snow, holding_hands, tears_of_joy, slight_smile, blush, backlit, cinematic_composition, depth_of_field, romantic_atmosphere, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・魔女の夜宴・ハネムーンフィナーレ】北欧の澄んだ雪原の深夜、星空に鮮やかな緑のオーロラがベールのように舞います。寧々は厚い冬のコートを着ており、首にはあなたからもらった赤いスカーフが巻かれています。彼女はあなたの手のひらに小さな赤みを帯びた手を置き、壮大なオーロラを見上げます。彼女の目は幸せの涙で輝き、頭上のアホ毛は夜風に優しく震えています。――「柊史、世界の果てまで連れてきてくれて、ありがとうございます。魔女の妻として交わした一生の契約は、もう解約できませんからね。」",
     "rating": "All"
@@ -2048,7 +2059,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "温柔",
     "season": "不限",
     "time": "深夜",
@@ -2079,7 +2090,7 @@
     "usage": [
       "壁纸级"
     ],
-    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, pajamas, lying_on_stomach, hand_on_chin, bare_legs, bedroom, bed, soft_lighting, lamp_light, night, slight_smile, blush, cozy, warm_lighting",
+    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, pajamas, lying_on_stomach, hand_on_chin, bare_legs, bedroom, bed, soft_lighting, lamp_light, night, slight_smile, blush, cozy, warm_lighting, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・ホームミュージック】雨が降りしきる深夜、寝室にはベッドサイドのランプが灯っているだけで、ほのかな暖かな光を放っていた。寧々さんはゆるくて可愛い長袖パジャマを着ていました。彼女は柔らかいソファの枕に横たわり、両手で顎を押さえ、滑らかな脚を後ろでそっと振っていました。彼女は明るい目を開けて、横向きに横たわっているあなたを見つめました。安心感から頭上のアホ毛が素直に垂れ、声も小さかった。――「ねえ、柊史。卒業したら、寧々のリボンと同じ色の猫を一匹飼いませんか？」",
     "rating": "All"
@@ -2094,7 +2105,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "鼓起勇气的信任",
     "season": "秋",
     "time": "闭馆前",
@@ -2124,8 +2135,9 @@
       "角色还原",
       "氛围优先"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, library, bookshelf, holding_book, moonlight, desk_lamp, soft_smile, looking_at_viewer, medium_shot, cinematic_composition, soft_lighting, cozy",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit"
+    "prompt": "1girl, solo, ayachi_nene, white hair, very long hair, low twintails, purple eyes, ahoge, pink hair ribbons, navy school uniform, moonlit library, (one thick antique book opened in both of her hands:1.75), both hands visibly gripping the book covers, blank cream pages facing viewer, no loose paper, holding book forward as an invitation to read together, gentle brave smile, desk lamp, medium shot, <lora:ayachi_nene_v14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, speech bubble, dialogue bubble, captions, subtitles, letters, words, typography, gibberish text, unreadable text, comic panel, manga panel, writing, symbols, graphic print, Japanese text, book cover facing viewer, title on book, decorated cover, title, loose paper, separate sheet, letter, note card, book left on table, empty hands, closed book",
+    "auditRevision": "round4-2026-07-22"
   },
   {
     "id": "sc217",
@@ -2136,7 +2148,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "恋爱",
     "season": "夏",
     "time": "夜晚",
@@ -2176,7 +2188,7 @@
       "新手推荐",
       "成人向"
     ],
-    "prompt": "1girl, adult, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, yukata, open_yukata, wet_clothes, see_through_clothing, no_bra, bare_shoulders, cleavage, sitting_on_box, straddling_viewer, heavy_blush, panicked, storage_room, night, shadows, sensual",
+    "prompt": "1girl, adult, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, yukata, open_yukata, wet_clothes, see_through_clothing, no_bra, bare_shoulders, cleavage, sitting_on_box, straddling_viewer, heavy_blush, panicked, storage_room, night, shadows, sensual, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【寧々】【寨々・神社倉庫の俄か雨と契約過負荷】夏祭りの最中に突如降ってきた豪雨の中、あなたと寨々は慌てて神社の裏手にある薄暗く古い木造の倉庫へと逃げ込んだ。寨々の浴衣は走っている間に雨水で完全に濡れそぼり、薄い生地がまるで透明であるかのように彼女の豊かな肢体にぴったりと張り付いていた。衣紋もすでに混乱の中で完全にはだけ、大きく豊かな胸元が露わになっている。密閉された空間の極度の緊張感のせいで、彼女の魔女の契約のオーラが瞬時にオーバーロードした。彼女は祭祀道具の積まれた木箱の上に跨ってあなたにぴったりと寄り添い、頭の上のアホ毛を猛烈に震わせて完璧なハート型に丸めながら、顔を真っ赤にして慌てて押し返しつつ涙声で自爆した――「うあぁ！柊、柊史！浴衣がすっかり濡れちゃったじゃない……そんな透けてるところばかり見ないでよ！べ、別にわざと契約を利用してあなたを誘惑したわけじゃないんだから……ん、早くきつく抱きしめて隠してよ、バカ！」",
     "rating": "R18"
@@ -2190,7 +2202,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "恋爱",
     "season": "秋",
     "time": "黄昏",
@@ -2229,7 +2241,7 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, white_dress, angel_wings, halo, feather_accessories, thighhighs, rooftop, school_rooftop, sunset, golden_hour, backlit, windy, heavy_blush, panicked, slight_frown, romantic_atmosphere, wide_shot, full_body",
+    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, white_dress, angel_wings, halo, feather_accessories, thighhighs, rooftop, school_rooftop, sunset, golden_hour, backlit, windy, heavy_blush, panicked, slight_frown, romantic_atmosphere, wide_shot, full_body, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・屋上の純白の福音と恥ずかしさ】文化祭の前夜、夕暮れに染まる学校の屋上。演劇部の手伝いで、寧々は非常に精緻な純白の聖なる天使のワンピースに着替えていた。背中の白い羽の翼と頭上の光る輪が、強い夕日の逆光の中で神聖な光輪を放っている。微風が吹き抜け、彼女の銀髪のローツインテールとスカートの裾が一緒に舞い上がる。少し恥ずかしそうに鏡の前でポーズの練習をしていたが、振り返るとあなたがドアの傍に寄りかかって微笑みながら見つめているのに気づいた。寧々は瞬間的に顔を真っ赤にし、頭の上のアホ毛が慌てて翼と一緒に震え出し、手でスカートを覆いながら大声で自爆した――「うあぁ！柊、柊史！いつからそこにいたの？！見ちゃダメ！私、私はただ演劇部の衣装を試着してるだけで、決してわざとこんな格好であなたを待ってたわけじゃ……うう、バカ、早く後ろを向いて！」",
     "rating": "All"
@@ -2243,7 +2255,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "恋爱",
     "season": "夏",
     "time": "白天",
@@ -2279,7 +2291,7 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, gothic_lolita_dress, frills, lace_trim, bonnet, greenhouse, flowers, rose, daylight, bright, heavy_blush, panicked, open_mouth, trapped_by_viewer, romantic_atmosphere",
+    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, gothic_lolita_dress, frills, lace_trim, bonnet, greenhouse, flowers, rose, daylight, bright, heavy_blush, panicked, open_mouth, trapped_by_viewer, romantic_atmosphere, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・華麗なゴシックロリータのギャップ自爆】盛夏の午後、陽光が降り注ぐ植物園のレトロなガラス温室。超自然研究部の活動撮影の必要性から、寧々は前代未聞の、非常に華麗で複雑な黒地に金の縁取りのゴシックロリータ風のドレスに身を包んでいた。幾重にも重なるレースのフリルと精緻なボンネットが、彼女をまるで古城の高貴な人形のように引き立てている。しかし、彼女が高い場所にある薔薇の一輪に手を伸ばそうとした時、複雑なスカートの裾とパニエが花の棚の端に引っかかってしまい、一瞬にしてバランスを崩した。あなたが目端を利かせて背後から彼女を支えると、寧々は視線が交わった瞬間に防衛線がオーバーロードし、顔を真っ赤にして衣装の端を掴み、頭のアホ毛を慌てて丸めながら支離滅裂に自爆した――「ま、待って！そんなおかしそうな目で私を見ないで！私、私は決してあなたにかわいいって思われたくて、クローゼットの前で二時間もこの服を選んでたわけじゃ……うう、言うほど変になる、バカ、今の忘れて！」",
     "rating": "All"
@@ -2293,7 +2305,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "恋爱",
     "season": "夏",
     "time": "深夜",
@@ -2330,7 +2342,7 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, adult, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, kimono, furisode, obi, heavy_blush, panicked, open_mouth, falling_forward, clinging_to_viewer, grassy_hill, fireworks, night, colorful_lighting, romantic_atmosphere",
+    "prompt": "1girl, adult, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, kimono, furisode, obi, heavy_blush, panicked, open_mouth, falling_forward, clinging_to_viewer, grassy_hill, fireworks, night, colorful_lighting, romantic_atmosphere, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・花火の夜空と緋色の自爆】夏祭りの最高潮を迎えた花火大会、喧騒から離れた神社裏手の深夜の草豊かな丘。寧々は今日、非常に豪華で美しい薄ピンク色の振袖和服一式に身を包み、大きな帯と複雑なリボンが彼女をまるで古典絵巻の中のお嬢様のように引き立てていた。夜空に巨大な花火が轟音と共に弾け飛ぶと、色とりどりのきらめく光が彼女の銀髪の清純な髪の毛に降り注ぐ。少し恥ずかしそうに振り向いてあなたに微笑もうとした瞬間、彼女は長い和服の裾に足を取られてしまい、小さく悲鳴を上げてあなたの胸の中に真っ直ぐ飛び込んできた。あなたが咄嗟に彼女をきつく抱きしめると、寧々は瞬間的に顔を真っ赤にし、頭の上のトレードマークのアホ毛が満天の花火に照らされながら慌てて完璧なハート型に丸まり、顔を真っ赤にして大声で自爆した――「うあぁ！柊、柊史！いつの間にそんなに近くにいたのよ？！私、私は決してわざと転んだフリをして抱きついたわけじゃ……うう、心臓の音が大きすぎるよ、バカ、目を閉じて！」",
     "rating": "All"
@@ -2344,7 +2356,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "恋爱",
     "season": "不限",
     "time": "黄昏",
@@ -2380,7 +2392,7 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, library, bookshelf, desk, collapsed_on_desk, heavy_blush, sweat, tears_in_eyes, panicked, open_mouth, sunset, backlit, romantic_atmosphere",
+    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, library, bookshelf, desk, collapsed_on_desk, heavy_blush, sweat, tears_in_eyes, panicked, open_mouth, sunset, backlit, romantic_atmosphere, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・公式CG復刻：図書室で突き止められた秘密】放課後、夕日が西に傾く静まり返った学院の図書室の奥深く。普段はエレガントで完璧な優等生である寧々が、今や魔女の契約の残酷な代償が突然オーバーロードしたせいで、誰もいない閲覧室の長い木製テーブルの上に完全に力なく崩れ落ちていた。彼女のしなやかな肢体は激しく震え、柔らかな銀らかな銀髪のローツインテールが乱雑に木製の台の上に散らばり、制服のシャツが荒い呼吸と共に激しく上下している。あなたがドアを開けて秘密を突き止めた瞬間、彼女は顔を真っ赤にして力ない両手で視線を遮ろうとし、目尻に羞恥の涙を浮かべ、頭の上のアホ毛はすでに完全に力なく垂れ下がり、支離滅裂に涙声で自爆した――「ま、待って！今のことは言いふらさないで……絶対にダメ！お願いだから……私のこんなところ、見ないでよ……バカ、早く目を閉じて！」",
     "rating": "All"
@@ -2394,7 +2406,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "恋爱",
     "season": "夏",
     "time": "白天",
@@ -2431,10 +2443,11 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, cheerleader, sleeveless, crop_top, bare_streaks, pleated_skirt, short_skirt, holding_pom_poms, heavy_blush, panicked, open_mouth, falling_forward, gymnasium, daylight, romantic_atmosphere",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "(single girl only:1.5), (one person only:1.5), empty background, no bystanders, 1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, cheerleader, sleeveless, crop_top, bare_streaks, pleated_skirt, short_skirt, holding_pom_poms, heavy_blush, panicked, open_mouth, falling_forward, gymnasium, daylight, romantic_atmosphere, <lora:ayachi_nene_v14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, 2girls, multiple girls, extra girl, extra person, duplicate character, cloned character, background person, crowd",
     "storyJa": "【寧々・体育館裏のオーバーロード応援自爆】体育祭当日、外は快晴、ロックされた学校の旧体育館の備品室。クラスの応援のため、寧々は超自然研究部の仲間たちに唆され、前代未聞の、非常にアクティブでセクシーなへそ出しノースリーブのチアリーダー衣装に身を包んでいた。超ミニのプリーツスカートの裾が風に揺れ、両手には金色のポンポンを握っている。恥ずかしそうに備品室の鏡の前でポーズの練習をしていたところ、あなたが突然ドアを開けて入ってきた。パニックに陥った彼女は床のバレーボールに足を取られ、小さく悲鳴を上げてマットに座っていたあなたの胸の中に真っ直ぐ転がり込んできた。寧々は瞬間的に顔を真っ赤にし、へそ出しの裁断のせいで細い腰があなたの体に無防備に密着し、頭のアホ毛を慌てて完璧なハート型に丸めながら叫んだ――「うあぁ！柊、柊史！なぜここにいるのよ？！人の露出したお腹ばかり見ないで！け、決してあなたにかわいいって思われたくてこんな格好をしてるわけじゃ……うう、大色狼、早く目を閉じて！」",
-    "rating": "All"
+    "rating": "All",
+    "auditRevision": "round2-2026-07-22"
   },
   {
     "id": "sc240",
@@ -2445,7 +2458,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "恋爱",
     "season": "夏",
     "time": "黄昏",
@@ -2481,10 +2494,11 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, holding_book, umbrella, rain, bus_stop, subtle_blush, gentle_smile, concerned_expression, wet_clothes, street, evening, soft_lighting, romantic_atmosphere",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "(single girl only:1.5), (one person only:1.5), empty background, no bystanders, 1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, holding_book, umbrella, rain, bus_stop, subtle_blush, gentle_smile, concerned_expression, wet_clothes, street, evening, soft_lighting, romantic_atmosphere, <lora:ayachi_nene_v14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, 2girls, multiple girls, extra girl, extra person, duplicate character, cloned character, background person, crowd",
     "storyJa": "【寧々・雨のバス停】放課後の急な雷雨で、通りはすっかり濡れていた。寧々はバス停の小さな屋根の下で、図書館から借りた古書を大切に抱えている。あなたが傘を彼女の方へ傾けると、自分の肩が雨に濡れた。寧々はそっと近づき、ハンカチでその雫を拭う――「ばか……もう少し自分の方へ傘を寄せてもよかったのに。風邪をひくよ？」",
-    "rating": "All"
+    "rating": "All",
+    "auditRevision": "round2-2026-07-22"
   },
   {
     "id": "sc242",
@@ -2495,7 +2509,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "恋爱",
     "season": "冬",
     "time": "清晨",
@@ -2530,10 +2544,11 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, kimono, furisode, obi, holding_ema, shrine, snow, morning, sunlight, heavy_blush, panicked, open_mouth, romantic_atmosphere",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "(single girl only:1.5), (one person only:1.5), holding a completely blank sheet of paper, empty background, 1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, kimono, furisode, obi, holding_ema, shrine, snow, morning, sunlight, heavy_blush, panicked, open_mouth, romantic_atmosphere, <lora:ayachi_nene_v14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, 2girls, multiple girls, extra girl, extra person, duplicate character, cloned character, background person, crowd, speech bubble, dialogue bubble, captions, subtitles, letters, words, typography, gibberish text, unreadable text, comic panel, manga panel",
     "storyJa": "【寧々・絵馬に隠した願い】元旦の朝、薄い雪が残る神社の石段。振袖姿の寧々は絵馬に願い事を書き終えるが、あなたの視線に気づいて慌てて背中へ隠す。寒風の中、アホ毛まで揺れていた――「み、見ちゃだめ！ 願い事は見られたら叶わないんだから……柊史のことなんて、書いてないよ！」",
-    "rating": "All"
+    "rating": "All",
+    "auditRevision": "round2-2026-07-22"
   },
   {
     "id": "sc244",
@@ -2544,7 +2559,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "恋爱",
     "season": "不限",
     "time": "午后",
@@ -2580,10 +2595,11 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, casual_clothes, sleeping, lying_on_sofa, head_resting, peaceful_expression, closed_eyes, slight_smile, sofa, indoors, afternoon, sunlight, warm_lighting, cozy",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "(black cat sleeping on her lap:1.55), Nene asleep alone on sofa, (one girl only:1.45), 1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, casual_clothes, sleeping, lying_on_sofa, head_resting, peaceful_expression, closed_eyes, slight_smile, sofa, indoors, afternoon, sunlight, warm_lighting, cozy, <lora:ayachi_nene_v14:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, 2girls, multiple girls, extra girl, extra person, duplicate character, cloned character, background person, crowd",
     "storyJa": "【寧々・午後の膝枕】週末の午後、超自然研究会の資料を読んでいた寧々は、いつの間にかソファで眠ってしまう。あなたがそっと彼女の頭を膝へ移すと、銀色の髪が陽だまりにほどけた。安心したように頬を寄せ、彼女は寝言をこぼす――「柊史の匂い……安心する……」",
-    "rating": "All"
+    "rating": "All",
+    "auditRevision": "round2-2026-07-22"
   },
   {
     "id": "sc246",
@@ -2594,7 +2610,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "害羞",
     "season": "夏",
     "time": "深夜",
@@ -2632,7 +2648,7 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, yukata, loose_clothes, bare_shoulders, collarbone, cleavage, wet_hair, sitting_on_floor, heavy_blush, panicked, open_mouth, hotel_room, night, soft_lighting, warm_atmosphere",
+    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, yukata, loose_clothes, bare_shoulders, collarbone, cleavage, wet_hair, sitting_on_floor, heavy_blush, panicked, open_mouth, hotel_room, night, soft_lighting, warm_atmosphere, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nude, explicit",
     "storyJa": "【寧々・旅先のほどけた襟元】夏の温泉旅館。湯上がりの寧々は、少し緩んだ浴衣の帯に気づかないまま畳の上で写真を整理していた。あなたに教えられると、彼女は真っ赤になって襟元を押さえる――「どこまで見たの！？ 思い出すのもだめ！ 浴衣の紐が滑りやすいだけなんだから……後ろ向いて！」"
   },
@@ -2645,7 +2661,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "害羞",
     "season": "不限",
     "time": "白天",
@@ -2681,7 +2697,7 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, dress, backless, bare_shoulders, shoulder_blade, underwear_strap, fitting_room, heavy_blush, panicked, open_mouth, indoors, bright, romantic_atmosphere",
+    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, dress, backless, bare_shoulders, shoulder_blade, underwear_strap, fitting_room, heavy_blush, panicked, open_mouth, indoors, bright, romantic_atmosphere, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nude, explicit",
     "storyJa": "【寧々】【寨々・試着室の隙間の驚鴻一瞥】ショッピングモールの試着室。寨々は新しく買ったワンピースを試着していたが、背中のファスナーが上がって届かず、思わずカーテンを開けて助けを求めようとした。外に立っていたのがあなただとは想像もしていなかった。カーテンは半分しか開いておらず、彼女の滑らかな背中と精致な肩甲骨のラインが柔らかな灯りの下で余すところなく露出し、細い下着の紐だけが一本横たわっていた。二人の視線が交わった瞬間、空気が凍りついた。寨々は一秒固まった後、叫びながらカーテンを閉め、向こう側から慌てた声が聞こえてきた――「うあぁ！柊、柊史！なぜここにいるの？！さっきの映像を思い浮かべないで！早く忘れて！べ、別にわざと見せたわけじゃない……うう、バカ、店員を呼んできて！」"
   },
@@ -2694,7 +2710,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "害羞",
     "season": "冬",
     "time": "深夜",
@@ -2731,7 +2747,7 @@
     "usage": [
       "壁纸级"
     ],
-    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, pajamas, blanket, sitting_close, sharing_blanket, blush, shy_expression, closed_eyes, slight_smile, sofa, indoors, night, dim_lighting, warm_atmosphere, cozy",
+    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, pajamas, blanket, sitting_close, sharing_blanket, blush, shy_expression, closed_eyes, slight_smile, sofa, indoors, night, dim_lighting, warm_atmosphere, cozy, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・毛布の下の距離】冬の夜、暖房の弱いリビングで寧々はソファの隅にいた。あなたが隣に座ると、彼女は迷いながら毛布の半分を差し出す。灯りの下でアホ毛が小さく揺れた――「……二人で使った方が暖かいだけ。近すぎるけど……もう少しだけなら、いいよ」"
   },
@@ -2744,7 +2760,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "恋爱",
     "season": "秋",
     "time": "午后",
@@ -2782,7 +2798,7 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, beret, oversized_sweater, off_shoulder_sweater, pleated_skirt, plaid_skirt, knee_high_socks, holding_spoon, heavy_blush, panicked, open_mouth, cafe, indoors, afternoon, sunlight, romantic_atmosphere",
+    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, beret, oversized_sweater, off_shoulder_sweater, pleated_skirt, plaid_skirt, knee_high_socks, holding_spoon, heavy_blush, panicked, open_mouth, cafe, indoors, afternoon, sunlight, romantic_atmosphere, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・秋のカフェの私服コーディネートと純情自爆】秋の午後、陽光が降り注ぐ街角の居心地の良いカフェ。今日のデートで寧々は、非常にフェミニンで可愛らしい私服に身を包んでいた。ライトベージュのローゲージニットの柔らかいセーターは、ルーズなドロップショルダーの裁断で片側の精緻な鎖骨をのぞかせ、ボトムスには赤茶色の英国風チェック柄プリーツミニスカートと黒のニーソックスを合わせ、頭にはお茶目な深色のベレー帽を被っている。彼女は顔を真っ赤にしながら、小さなスプーンで大好きなイチゴケーキをあなたに食べさせようとしたが、距離が近すぎたせいで二人の視線が真っ直ぐにぶつかってしまった。寧々の手が震え、小さなケーキがあなたの唇の端についてしまった。彼女は瞬間的に顔を真っ赤にし、頭の上のトレードマークのアホ毛を慌てて完璧なハート型に丸めながら、セーターの袖口を掴んで大声で自爆した――「うあぁ！柊、柊史ごめんね！そんな目で私を見ないでよ！私、私は決してあなたと初めて二人きりでデートするからって、鏡の前で二時間もこのセーターを選んでたわけじゃ……うう、バカ、今の忘れて！」",
     "rating": "All"
@@ -2796,7 +2812,7 @@
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v11",
+    "lora": "ayachi_nene_v14",
     "emotion": "恋爱",
     "season": "秋",
     "time": "白天",
@@ -2833,7 +2849,7 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, kimono, hakama, japanese_clothes, heavy_blush, panicked, open_mouth, falling_forward, trapped_by_viewer, shrine, stone_stairs, autumn_leaves, maple_leaves, daylight, romantic_atmosphere",
+    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, kimono, hakama, japanese_clothes, heavy_blush, panicked, open_mouth, falling_forward, trapped_by_viewer, shrine, stone_stairs, autumn_leaves, maple_leaves, daylight, romantic_atmosphere, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々】【寨々・華麗な大正ロマン袴と紅葉の自爆】秋の気配が深まり、満天の紅葉が火のように舞い散る学院の古き神社裏山の石段。民俗部の伝統行事撮影の手伝いのため、寨々は非常にエレガントで華麗な大正ロマン風の袴裙一式に身を包んでいた。上衣は紅白の正統な矢絣柄の着物、ボトムスには深紫色の伝統的な袴とスマートな黒のレースアップブーツを合わせ、銀髪のローツインテールを大きな赤いリボンのヘアバンドで背後に優雅に束ね、ひとき外あでやかで端正に見える。しかし、袴の裾が複雑すぎたせいで、小道具を抱えて石段を降りる途中に裾に足を取られてしまい、彼女は小さく悲鳴を上げてバランスを崩した。あなたが目端を利かせて一歩踏み出し、彼女をしっかりと胸の中に抱きとめると、寨々は視線が交わった瞬間に顔を真っ赤にし、頭のアホ毛が舞い散る赤い楓の中で慌てて完璧なハート型に丸まり、涙を浮かべて即座に自爆した――「うあぁ！柊、柊史！なぜ毎回私を受け止められるのよ？！私、私は決してわざとスカートに躓いたフリをしてあなたに抱きしめてもらったわけじゃ……うう、言い訳すればするほど言い逃れっぽくなる、バカ、目を閉じて見ちゃダメ！」",
     "rating": "All"

@@ -18,6 +18,7 @@ __pycache__/
 
 # 运行期文件（配置、PID、Token、日志、朋友生成结果）
 runtime/
+workspace/
 
 # 旧版运行文件（启动时会自动迁移到 runtime/）
 friend_outputs/

@@ -1,36 +1,123 @@
 [
   {
-    "id": "L_NENE_V11",
-    "name": "ayachi_nene_v11",
-    "version": "1.1.0",
+    "id": "L_NENE_V14",
+    "name": "ayachi_nene_v14",
+    "version": "1.4.0",
     "trigger": "ayachi_nene",
     "character": "NENE_001",
-    "strength": { "default": 0.8, "min": 0.5, "max": 1.0 },
-    "compatible_models": ["waiIllustriousSDXL_v170", "illustriousXL_v20"],
-    "test_scene": ["sc001", "sc010", "sc025", "sc034", "sc049"],
-    "test_grid": "grids/nene_v11_grid.webp",
-    "description": "绫地宁宁角色 LoRA，使用 130 张 1024px 图片微调。适合半身、全身与复杂场景，默认强度为 0.8。",
-    "dataset": { "images": 130, "resolution": 1024 },
-    "training": { "epoch": 30, "rank": 32, "alpha": 32 },
-    "recommended_weight": { "portrait": 0.85, "fullbody": 0.75, "complex_scene": 0.7 },
+    "strength": {
+      "default": 0.8,
+      "min": 0.5,
+      "max": 1
+    },
+    "compatible_models": [
+      "waiIllustriousSDXL_v170",
+      "illustriousXL_v20"
+    ],
+    "test_scene": [
+      "sc001",
+      "sc010",
+      "sc025",
+      "sc034",
+      "sc049"
+    ],
+    "description": "绫地宁宁角色 LoRA v14 精选版。严格盲测后保留身份还原最稳定的 e15 权重，避免后续精修损伤脸型；默认优先保证官方脸、紫瞳、低双马尾与粉色发带。",
+    "dataset": {
+      "images": 64,
+      "official_face_anchors": 6,
+      "resolution": 1024,
+      "strategy": "identity-first checkpoint selection"
+    },
+    "training": {
+      "selected_checkpoint": "v13 epoch 15",
+      "rank": 32,
+      "alpha": 32,
+      "selection_reason": "later checkpoints reduced face fidelity"
+    },
+    "recommended_weight": {
+      "portrait": 0.8,
+      "fullbody": 0.78,
+      "complex_scene": 0.75
+    },
     "base_model": "waiIllustriousSDXL_v170",
-    "trainer": "OneTrainer"
+    "trainer": "OneTrainer",
+    "outfit_guidance": {
+      "official_witch": [
+        "witch_hat",
+        "witch_dress",
+        "black_cape",
+        "pink_lining",
+        "striped_legwear",
+        "midriff"
+      ]
+    },
+    "validation": {
+      "method": "same-seed blinded A/B against official references; face and signature accessories weighted first",
+      "baseline": "ayachi_nene_v11",
+      "selected_checkpoint": "epoch 15 identity winner",
+      "face_score": 8.625
+    }
   },
   {
-    "id": "L_NAT_V11",
-    "name": "shiki_natsume_v11",
-    "version": "1.1.0",
+    "id": "L_NAT_V14",
+    "name": "shiki_natsume_v14",
+    "version": "1.4.0",
     "trigger": "shiki_natsume",
     "character": "NAT_001",
-    "strength": { "default": 0.8, "min": 0.5, "max": 1.0 },
-    "compatible_models": ["waiIllustriousSDXL_v170", "illustriousXL_v20"],
-    "test_scene": ["sc005", "sc018", "sc024", "sc050", "sc073"],
-    "test_grid": "grids/natsume_v11_grid.webp",
-    "description": "四季夏目角色 LoRA，使用 125 张 1024px 图片微调。适合半身、全身与复杂场景，默认强度为 0.8。",
-    "dataset": { "images": 125, "resolution": 1024 },
-    "training": { "epoch": 30, "rank": 32, "alpha": 32 },
-    "recommended_weight": { "portrait": 0.85, "fullbody": 0.75, "complex_scene": 0.7 },
+    "strength": {
+      "default": 0.9,
+      "min": 0.5,
+      "max": 1
+    },
+    "compatible_models": [
+      "waiIllustriousSDXL_v170",
+      "illustriousXL_v20"
+    ],
+    "test_scene": [
+      "sc005",
+      "sc018",
+      "sc024",
+      "sc050",
+      "sc073"
+    ],
+    "description": "四季夏目角色 LoRA v14。使用官方 CG 人脸锚点低学习率精修，盲测胜出的 e9 检查点显著改善脸型、金瞳、泪痣、发夹与旗袍还原。",
+    "dataset": {
+      "images": 16,
+      "official_face_anchors": 5,
+      "official_outfits": 3,
+      "resolution": 1024,
+      "strategy": "official-only low-LR identity refinement"
+    },
+    "training": {
+      "selected_checkpoint": "v14 epoch 9",
+      "rank": 32,
+      "alpha": 32,
+      "unet_learning_rate": 0.000005,
+      "text_encoder": "frozen"
+    },
+    "recommended_weight": {
+      "portrait": 0.95,
+      "fullbody": 0.9,
+      "complex_scene": 0.85
+    },
     "base_model": "waiIllustriousSDXL_v170",
-    "trainer": "OneTrainer"
+    "trainer": "OneTrainer",
+    "outfit_guidance": {
+      "official_qipao": [
+        "red_china_dress",
+        "mandarin_collar",
+        "gold_trim",
+        "floral_pattern",
+        "black_thighhighs",
+        "hair_bun",
+        "hair_flower"
+      ]
+    },
+    "validation": {
+      "method": "same-seed blinded A/B against official references; face and signature accessories weighted first",
+      "baseline": "shiki_natsume_v13_e15",
+      "selected_checkpoint": "v14 epoch 9 identity winner",
+      "face_score": 8.542
+    }
   }
 ]

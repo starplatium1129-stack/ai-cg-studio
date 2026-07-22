@@ -2,7 +2,11 @@
   {
     "id": "nene",
     "name": "绫地宁宁",
-    "alias": ["Ayachi Nene", "綾地寧々", "宁宁"],
+    "alias": [
+      "Ayachi Nene",
+      "綾地寧々",
+      "宁宁"
+    ],
     "type": "heroine",
     "icon": "🔮",
     "portrait": {
@@ -19,8 +23,20 @@
       "style": "gentle school witch heroine",
       "signature": "银白低双马尾、紫瞳与呆毛"
     },
-    "personality": ["温柔体贴", "认真负责", "在校人缘很好", "容易害羞慌乱", "紧张时会不慎自曝", "关键时刻坚定"],
-    "likes": ["家人平安", "安稳的校园生活", "与信任的人分享秘密", "超自然研究会的伙伴"],
+    "personality": [
+      "温柔体贴",
+      "认真负责",
+      "在校人缘很好",
+      "容易害羞慌乱",
+      "紧张时会不慎自曝",
+      "关键时刻坚定"
+    ],
+    "likes": [
+      "家人平安",
+      "安稳的校园生活",
+      "与信任的人分享秘密",
+      "超自然研究会的伙伴"
+    ],
     "classic_cg": {
       "title": "图书馆里被撞破的秘密",
       "description": "平日从容温柔的宁宁，因为无法说明的契约代价陷入慌乱；秘密被看见后，她的羞耻、脆弱与信任也由此展开。"
@@ -33,30 +49,90 @@
     },
     "voice": "等、等等！刚才的事情不准说出去……绝对不准！",
     "voiceJa": "気にしないで下さい。自分の分を毎日作ってますから",
-    "tags": ["银白长发", "低双马尾", "紫瞳", "呆毛", "发带", "魔女服"],
+    "tags": [
+      "银白长发",
+      "低双马尾",
+      "紫瞳",
+      "呆毛",
+      "发带",
+      "魔女服"
+    ],
     "bg_story": "绫地宁宁是《魔女的夜宴》的女主角之一。她在学校里温柔、认真又受欢迎，却一直独自隐瞒成为魔女后必须承担的契约代价。被柊史察觉秘密后，她会因为羞耻和焦虑变得语无伦次，甚至不小心越解释越暴露；但真正面对家人、契约与重要之人的选择时，她又有非常坚定的一面。After Story 场景应突出她获得安全感后的依恋、生活感与仍然容易害羞的反差，而不是把她写成契约设定之外的诱惑型角色或无条件顺从的人偶。",
-    "palette": ["月光银", "魔女紫", "柔和粉"],
-    "weather": ["春日晴空", "图书馆午后", "雨夜暖灯"],
+    "palette": [
+      "月光银",
+      "魔女紫",
+      "柔和粉"
+    ],
+    "weather": [
+      "春日晴空",
+      "图书馆午后",
+      "雨夜暖灯"
+    ],
     "speech": "gentle and considerate; flusters easily; may reveal too much while panicking; becomes resolute when protecting loved ones",
     "source": "YUZUSOFT《サノバウィッチ / 魔女的夜宴》",
     "lora": {
-      "name": "ayachi_nene_v11",
+      "name": "ayachi_nene_v14",
       "weight": 0.8,
-      "recommended_scene": ["sc001", "sc002", "sc007", "sc025", "sc049", "sc080"]
+      "recommended_scene": [
+        "sc001",
+        "sc002",
+        "sc007",
+        "sc025",
+        "sc049",
+        "sc080"
+      ],
+      "special_outfits": {
+        "official_witch": [
+          "witch_hat",
+          "witch_dress",
+          "black_cape",
+          "pink_lining",
+          "striped_legwear",
+          "midriff"
+        ]
+      }
     },
     "traits": [
-      {"tag": "white_hair", "label": "银白发", "icon": "◇"},
-      {"tag": "very_long_hair", "label": "长发", "icon": "〰"},
-      {"tag": "low_twintails", "label": "低双马尾", "icon": "⑅"},
-      {"tag": "purple_eyes", "label": "紫瞳", "icon": "◉"},
-      {"tag": "ahoge", "label": "呆毛", "icon": "⌁"},
-      {"tag": "hair_ribbon", "label": "发带", "icon": "🎀"}
+      {
+        "tag": "white_hair",
+        "label": "银白发",
+        "icon": "◇"
+      },
+      {
+        "tag": "very_long_hair",
+        "label": "长发",
+        "icon": "〰"
+      },
+      {
+        "tag": "low_twintails",
+        "label": "低双马尾",
+        "icon": "⑅"
+      },
+      {
+        "tag": "purple_eyes",
+        "label": "紫瞳",
+        "icon": "◉"
+      },
+      {
+        "tag": "ahoge",
+        "label": "呆毛",
+        "icon": "⌁"
+      },
+      {
+        "tag": "hair_ribbon",
+        "label": "发带",
+        "icon": "🎀"
+      }
     ]
   },
   {
     "id": "natsume",
     "name": "四季夏目",
-    "alias": ["Shiki Natsume", "四季ナツメ", "夏目"],
+    "alias": [
+      "Shiki Natsume",
+      "四季ナツメ",
+      "夏目"
+    ],
     "type": "heroine",
     "icon": "☕",
     "portrait": {
@@ -73,8 +149,20 @@
       "style": "reserved university cafe heroine",
       "signature": "黑色长发、金瞳与眼下泪痣"
     },
-    "personality": ["不擅长表达感情", "外冷内柔", "相当纯情", "做事认真", "讨厌轻浮喧闹", "熟悉后会露出小脾气"],
-    "likes": ["安静的相处", "认真完成咖啡馆工作", "含蓄地照顾重要的人", "不被打扰的个人时间"],
+    "personality": [
+      "不擅长表达感情",
+      "外冷内柔",
+      "相当纯情",
+      "做事认真",
+      "讨厌轻浮喧闹",
+      "熟悉后会露出小脾气"
+    ],
+    "likes": [
+      "安静的相处",
+      "认真完成咖啡馆工作",
+      "含蓄地照顾重要的人",
+      "不被打扰的个人时间"
+    ],
     "classic_cg": {
       "title": "闭店后的无声关心",
       "description": "她把最后一杯热饮推到你面前，嘴上说只是顺手，视线却一直确认你有没有好好喝下去。"
@@ -87,23 +175,75 @@
     },
     "voice": "……别误会。我只是觉得这样比较有效率。",
     "voiceJa": "それ、単純に相手の誘いに気付いてなかっただけでしょ",
-    "tags": ["黑色长发", "金瞳", "眼下泪痣", "侧发夹", "咖啡馆制服"],
+    "tags": [
+      "黑色长发",
+      "金瞳",
+      "眼下泪痣",
+      "侧发夹",
+      "咖啡馆制服"
+    ],
     "bg_story": "四季夏目是《星光咖啡馆与死神之蝶》的女主角之一，与主人公就读同一所大学。旁人常把她当成冷静疏离的类型，其实她只是不擅长把感情写在脸上；她相当纯情，碰到暧昧或成人话题会迅速脸红，也很厌烦轻浮吵闹的饮酒圈子。场景应让她通过动作表达关心，再用简短的否认掩饰动摇。特工、长官和战术服可以作为同人 AU 使用，但分类与故事必须明确，不应冒充本篇身份。",
-    "palette": ["夜色黑", "琥珀金", "咖啡棕"],
-    "weather": ["雨夜", "阴天窗光", "闭店暖灯"],
+    "palette": [
+      "夜色黑",
+      "琥珀金",
+      "咖啡棕"
+    ],
+    "weather": [
+      "雨夜",
+      "阴天窗光",
+      "闭店暖灯"
+    ],
     "speech": "reserved and concise; care shown through actions; blushes at intimate topics; sharper wording when flustered",
     "source": "YUZUSOFT《喫茶ステラと死神の蝶 / 星光咖啡馆与死神之蝶》",
     "lora": {
-      "name": "shiki_natsume_v11",
-      "weight": 0.8,
-      "recommended_scene": ["sc005", "sc018", "sc024", "sc050", "sc073", "sc085"]
+      "name": "shiki_natsume_v14",
+      "weight": 0.9,
+      "recommended_scene": [
+        "sc005",
+        "sc018",
+        "sc024",
+        "sc050",
+        "sc073",
+        "sc085"
+      ],
+      "special_outfits": {
+        "official_qipao": [
+          "red_china_dress",
+          "mandarin_collar",
+          "gold_trim",
+          "floral_pattern",
+          "black_thighhighs",
+          "hair_bun",
+          "hair_flower"
+        ]
+      }
     },
     "traits": [
-      {"tag": "black_hair", "label": "黑发", "icon": "◆"},
-      {"tag": "long_hair", "label": "长发", "icon": "〰"},
-      {"tag": "yellow_eyes", "label": "金瞳", "icon": "◉"},
-      {"tag": "mole_under_eye", "label": "眼下泪痣", "icon": "·"},
-      {"tag": "hairclip", "label": "侧发夹", "icon": "✦"}
+      {
+        "tag": "black_hair",
+        "label": "黑发",
+        "icon": "◆"
+      },
+      {
+        "tag": "long_hair",
+        "label": "长发",
+        "icon": "〰"
+      },
+      {
+        "tag": "yellow_eyes",
+        "label": "金瞳",
+        "icon": "◉"
+      },
+      {
+        "tag": "mole_under_eye",
+        "label": "眼下泪痣",
+        "icon": "·"
+      },
+      {
+        "tag": "hairclip",
+        "label": "侧发夹",
+        "icon": "✦"
+      }
     ]
   }
 ]
