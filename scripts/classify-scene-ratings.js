@@ -4,9 +4,8 @@
  * Run with: node scripts/classify-scene-ratings.js --write
  */
 const { loadSceneShards, writeSceneSet } = require('./scene-store');
+const { ratingFor } = require('./prompt-policy');
 const write = process.argv.includes('--write');
-const R18 = /\bnaked\b|\bnude\b|naked_apron|no_panties|straddling_viewer|extreme_intimacy|\becstasy\b|bound_to_bed|bikini_malfunction|untied_swimsuit/;
-const R15 = /lingerie|cleavage|no_bra|bath_towel|straddling|neck_kiss|\bbound\b|micro_bikini|string_bikini|brassiere_visible|bridal_lingerie|virgin_killer_sweater|backless|nipples_visible_through_clothing|see_through_clothing/;
 const STANDARD_NEGATIVE = 'worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic';
 
 const additions = [
@@ -17,7 +16,7 @@ const additions = [
     tags: ['nude', 'bath_towel', 'wet_hair', 'bare_shoulders', 'collarbone', 'standing', 'bathroom', 'steam', 'morning_light', 'soft_shadows', 'heavy_blush', 'ahoge', 'hair_ribbon', 'close_up', 'sensual'],
     rating: 'R18', mature: true, location: '公寓主卧浴室', weather: '室内温暖水汽', camera: '平视上半身近景', lighting: '窗边晨光与柔和反射光', usage: ['成人向', '角色还原'],
     prompt: '1girl, solo, ayachi_nene, white_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, adult, nude, bath_towel, wet_hair, bare_shoulders, collarbone, standing, bathroom, steam, morning_light, soft_shadows, heavy_blush, close_up, sensual, <lora:ayachi_nene_v11:0.78>',
-    negative: STANDARD_NEGATIVE + ', school_uniform, child, loli, poorly drawn face, harsh_lighting',
+    negative: STANDARD_NEGATIVE + ', school_uniform, gym_uniform, child, loli, underage, poorly drawn face, harsh_lighting',
     storyJa: '【大人のAfter Story・寧々・浴室の湯気に包まれた朝】週末の朝、浴室の鏡にはまだ薄い湯気が残っていた。湯上がりの寧々は柔らかな白いタオルだけをまとい、濡れた白髪を肩に落としている。リボンを整えながら見つめられると、耳まで赤くなった。窓から差す朝の光が水蒸気を通り、彼女の輪郭をやさしく照らす。寧々は平静を装って顔をそむけ、小さな声で言った。――「大人になった寧々だって、恥ずかしいんだから……少しだけなら、見てもいいよ。」'
   },
   {
@@ -27,7 +26,7 @@ const additions = [
     tags: ['nude', 'bathrobe', 'bare_shoulders', 'bare_legs', 'sitting_on_bed', 'bedroom', 'bedside_lamp', 'long_hair', 'mole_under_eye', 'looking_at_viewer', 'slight_blush', 'night', 'warm_lighting', 'medium_shot', 'sensual'],
     rating: 'R18', mature: true, location: '夏目成年后的私人公寓卧室', weather: '室内恒温', camera: '平视中近景', lighting: '单一床头暖灯与深色阴影', usage: ['成人向', '氛围优先'],
     prompt: '1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, adult, nude, bathrobe, bare_shoulders, bare_legs, sitting_on_bed, bedroom, bedside_lamp, looking_at_viewer, slight_blush, night, warm_lighting, medium_shot, sensual, <lora:shiki_natsume_v11:0.78>',
-    negative: STANDARD_NEGATIVE + ', school_uniform, child, loli, overly bright background, harsh_lighting',
+    negative: STANDARD_NEGATIVE + ', school_uniform, gym_uniform, child, loli, underage, overly bright background, harsh_lighting',
     storyJa: '【大人のAfter Story・夏目・夜灯の下の静かな誘い】深夜の寝室にはベッドサイドの暖かな灯りだけがついていた。一日の仕事を終えた夏目は濃い色のガウンを羽織り、ベッドの端に座っている。黒い長髪は肩から背中へ落ち、疲れた表情は珍しくやわらかい。彼女はカップを脇へ置き、近くへ来るように目で合図した。――「勘違いしないで。ただ、少し静かにしていたいだけ。鍵はかけたから、今夜は仕事を言い訳に逃げるのはなしよ。」'
   },
   {
@@ -37,7 +36,7 @@ const additions = [
     tags: ['nude', 'bedsheet', 'bare_shoulders', 'messy_hair', 'sitting_on_bed', 'bedroom', 'dawn', 'blue_hour', 'soft_light', 'heavy_blush', 'looking_at_viewer', 'ahoge', 'hair_ribbon', 'close_up', 'sensual'],
     rating: 'R18', mature: true, location: '共同生活后的主卧', weather: '安静清晨', camera: '平视近景', lighting: '破晓蓝光与柔和漫反射', usage: ['成人向', '壁纸级'],
     prompt: '1girl, solo, ayachi_nene, white_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, adult, nude, bedsheet, bare_shoulders, messy_hair, sitting_on_bed, bedroom, dawn, blue_hour, soft_light, heavy_blush, looking_at_viewer, close_up, sensual, <lora:ayachi_nene_v11:0.78>',
-    negative: STANDARD_NEGATIVE + ', school_uniform, child, loli, daylight, harsh_lighting, extra limbs',
+    negative: STANDARD_NEGATIVE + ', school_uniform, gym_uniform, child, loli, underage, daylight, harsh_lighting, extra limbs',
     storyJa: '【大人のAfter Story・寧々・夜明け前の二度寝】空はまだ完全には明るくならず、寝室にはカーテンの隙間から淡い青い光だけが漏れていた。寧々は白いシーツにくるまりながら起き上がる。寝癖のついたツインテールと跳ねたアホ毛が、いつもより無防備に見えた。あなたが起きていると気づくと、慌ててシーツを引き上げながらも、そっとこちらを見ている。やがて隣の場所を半分だけ空けて、小さく言った。――「あと五分だけ寝よう……寧々の髪を笑ったり、先に逃げたりしたらだめだからね。」'
   },
   {
@@ -47,17 +46,10 @@ const additions = [
     tags: ['nude', 'outdoor_bath', 'wet_hair', 'bare_shoulders', 'upper_body', 'steam', 'moonlight', 'night', 'mountain_view', 'mole_under_eye', 'side_view', 'calm_expression', 'soft_shadows', 'medium_shot', 'sensual'],
     rating: 'R18', mature: true, location: '山间旅馆私人露天风吕', weather: '秋夜微凉', camera: '侧面中近景', lighting: '月光、灯笼与水面反射光', usage: ['成人向', '旅行氛围'],
     prompt: '1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, adult, nude, outdoor_bath, wet_hair, bare_shoulders, upper_body, steam, moonlight, night, mountain_view, side_view, calm_expression, soft_shadows, medium_shot, sensual, <lora:shiki_natsume_v11:0.78>',
-    negative: STANDARD_NEGATIVE + ', school_uniform, child, loli, crowd, daylight, harsh_lighting',
+    negative: STANDARD_NEGATIVE + ', school_uniform, gym_uniform, child, loli, underage, crowd, daylight, harsh_lighting',
     storyJa: '【大人のAfter Story・夏目・月下の露天風呂での小休戦】旅の最終夜、露天風呂の外には虫の声と遠い山風だけが残っていた。夏目は濡れた黒髪を背中へ払って湯の縁にもたれ、月を見上げている。普段は鋭い眼差しも、湯気の中では少しずつほどけていった。あなたの足音に気づいても振り返らず、隣の場所だけを空けて言う。――「今回の休暇は、あなたの勝ちでいい。ここに座りなさい。でも、この静けさを騒がしくするのは許さないから。」'
   }
 ];
-
-function ratingFor(scene) {
-  const corpus = [scene.title, scene.story, scene.prompt].concat(scene.tags || []).join(' ').toLowerCase();
-  if (R18.test(corpus)) return 'R18';
-  if (R15.test(corpus)) return 'R15';
-  return 'All';
-}
 
 function categoryFor(scene, rating) {
   const category = scene.category || '日常';

@@ -5,6 +5,16 @@
 const fs = require('fs');
 const path = require('path');
 const { loadSceneShards } = require('./scene-store');
+const {
+  adultSafetyIssues,
+  auMetadataIssues,
+  framingConflicts,
+  gazeConflicts,
+  poseConflicts,
+  ratingFor,
+  scenePositiveKeys,
+  tokenKey
+} = require('./prompt-policy');
 
 const dataDir = path.join(__dirname, '..', 'data');
 const characterSource = path.join(dataDir, 'characters.json');
@@ -87,6 +97,8 @@ if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
   if (typeof scene.rating === 'string' && scene.mature !== (scene.rating === 'R18')) {
     errors.push(label + ': mature must match R18 rating');
   }
+  const expectedRating = ratingFor(scene);
+  if (scene.rating !== expectedRating) errors.push(label + ': rating should be ' + expectedRating + ', found ' + scene.rating);
 
   if (typeof scene.story === 'string' && scene.story.length < 80) {
     errors.push(label + ': story is too short (' + scene.story.length + ' < 80)');
@@ -123,16 +135,34 @@ if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
     errors.push(label + ': unresolved prompt placeholder');
   }
   if (typeof scene.negative === 'string') {
-    for (const token of ['text', 'watermark', 'signature', 'bad hands', 'extra fingers', 'missing fingers']) {
-      if (!scene.negative.split(',').map((item) => item.trim()).includes(token)) errors.push(label + ': negative prompt missing ' + token);
+    const negativeTokens = scene.negative.split(',').map(tokenKey).filter(Boolean);
+    for (const token of ['text', 'watermark', 'signature', 'bad_hands', 'extra_fingers', 'missing_fingers']) {
+      if (!negativeTokens.includes(token)) errors.push(label + ': negative prompt missing ' + token.replace(/_/g, ' '));
     }
-    if (!scene.mature && !scene.negative.split(',').map((item) => item.trim()).includes('nsfw')) {
-      errors.push(label + ': safe scene must exclude nsfw');
+    if (scene.rating === 'All' && !negativeTokens.includes('nsfw')) {
+      errors.push(label + ': All scene must exclude nsfw');
+    }
+    if (scene.rating === 'R15') {
+      if (negativeTokens.includes('nsfw')) errors.push(label + ': R15 negative must not block nsfw wholesale');
+      for (const token of ['nude', 'explicit']) {
+        if (!negativeTokens.includes(token)) errors.push(label + ': R15 negative prompt missing ' + token);
+      }
+    }
+    if (scene.rating === 'R18') {
+      for (const token of ['nsfw', 'nude', 'explicit']) {
+        if (negativeTokens.includes(token)) errors.push(label + ': R18 negative conflicts with positive intent: ' + token);
+      }
+    }
+    const overlap = [...scenePositiveKeys(scene)].filter((token) => negativeTokens.includes(token));
+    if (overlap.length) {
+      errors.push(label + ': positive/negative token overlap: ' + [...new Set(overlap)].join(', '));
     }
   }
-  if (scene.char !== 'triad' && typeof scene.prompt === 'string' && /\bclosed_eyes\b/.test(scene.prompt) && /\blooking_at_viewer\b/.test(scene.prompt)) {
-    errors.push(label + ': conflicting gaze tags closed_eyes + looking_at_viewer');
-  }
+  adultSafetyIssues(scene).forEach((issue) => errors.push(label + ': ' + issue));
+  framingConflicts(scene).forEach((issue) => errors.push(label + ': conflicting framing ' + issue));
+  poseConflicts(scene).forEach((issue) => errors.push(label + ': conflicting pose ' + issue));
+  gazeConflicts(scene).forEach((issue) => errors.push(label + ': conflicting gaze ' + issue));
+  auMetadataIssues(scene).forEach((issue) => errors.push(label + ': ' + issue));
   if (Array.isArray(scene.character) && typeof scene.prompt === 'string') {
     for (const character of scene.character) {
       const trigger = promptTrigger[character];

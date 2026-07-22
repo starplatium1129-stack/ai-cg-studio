@@ -94,9 +94,9 @@
   --text-muted:     #6F6F80;   /* 占位/说明，满足浅色背景可读性 */
   --text-inverse:   #FFFFFF;   /* 彩底白字反色 */
 
-  --accent:         #bd5793;
+  --accent:         #ad467f;
   --accent-hover:   #9e3f7b;
-  --accent-soft:    rgba(189, 87, 147, 0.11);
+  --accent-soft:    rgba(173, 70, 127, 0.11);
   --accent-glow:    rgba(161, 108, 255, 0.22);
   --accent-violet:  #7656c9;
   --accent-cyan:    #3f93c1;
@@ -461,6 +461,11 @@ tr:hover td { background: var(--bg-hover); }
   ::view-transition-old(root), ::view-transition-new(root) { animation:none !important; }
 }
 
+@media (prefers-reduced-transparency: reduce) {
+  :root { --glass-fill:var(--bg-surface); --glass-fill-strong:var(--bg-elevated); }
+  .nav, .card, .card-info, .card-create { -webkit-backdrop-filter:none !important; backdrop-filter:none !important; }
+}
+
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .nav, .card, .card-info, .card-create { background:var(--bg-base); }
 }
@@ -498,4 +503,5 @@ tr:hover td { background: var(--bg-hover); }
   .nav-links a { padding: var(--s-2) var(--s-3); border-radius: var(--r-md); background: var(--bg-deep); }
   .page-header h1 { font-size: 1.7rem; }
   .container { padding: 0 var(--s-4); }
+  .card-info, .card-create { -webkit-backdrop-filter:none; backdrop-filter:none; }
 }

@@ -20,6 +20,12 @@ function captureSDJob(){
   var scene = SCENES.find(function(item){ return item.id === state.__sceneId; });
   var story = String(state.story || '').trim();
   var selections = state.selections || {};
+  var checkpoint = effectiveModelName();
+  var sampling = resolveSDSamplingSelection(
+    document.getElementById('sampler').value || 'DPM++ 2M',
+    document.getElementById('scheduler').value || ''
+  );
+  var hiresProfile = currentHiresProfileSettings(checkpoint);
   return {
     id:'queue_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7),
     title:scene ? scene.title : (story ? story.slice(0, 28) : (state.char === 'natsume' ? '夏目构图' : '宁宁构图')),
@@ -29,6 +35,7 @@ function captureSDJob(){
     sceneTitle:scene ? scene.title : '',
     char:state.char,
     story:story,
+    manualTags:Array.from(state.manualTags || []),
     selections:{
       emotion:Array.isArray(selections.emotion) ? selections.emotion.slice() : [],
       shot:selections.shot || '',
@@ -38,16 +45,20 @@ function captureSDJob(){
     colorMood:state.colorMood || '',
     projectId:state.__projectId || '',
     lora:resolveLoraSpecs(state.char, scene).map(loraSpecText).join(', '),
-    checkpoint:document.getElementById('sdModel').value || '',
-    sampler:document.getElementById('sampler').value || 'DPM++ 2M',
-    scheduler:document.getElementById('scheduler').value || '',
+    // Resolve the placeholder to the WebUI's actual current checkpoint now;
+    // queued work must not silently switch models before it runs.
+    checkpoint:checkpoint,
+    sampler:sampling.sampler || 'DPM++ 2M',
+    scheduler:sampling.scheduler || '',
     cfg:Number(document.getElementById('cfg').value) || 5.5,
     steps:Number(document.getElementById('steps').value) || 28,
     size:document.getElementById('size').value || '832×1216',
     seed:readQueueSeed(),
     hiresFix:document.getElementById('sdHiresFix').checked,
     hiresUpscaler:document.getElementById('sdHiresUpscaler').value || 'Latent',
-    hiresScale:Number(document.getElementById('sdHiresScale').value) || 1.5
+    hiresScale:Number(document.getElementById('sdHiresScale').value) || hiresProfile.scale || 1.5,
+    hiresSteps:hiresProfile.steps != null ? hiresProfile.steps : 14,
+    denoisingStrength:hiresProfile.denoisingStrength != null ? hiresProfile.denoisingStrength : 0.35
   };
 }
 
@@ -90,17 +101,41 @@ function removeSDQueueJob(id){
 function processSDQueue(){
   if (_sdQueuePaused || _sdGeneration || _sdActiveQueueJob || !_sdQueue.length) return;
   _sdActiveQueueJob = _sdQueue.shift();
+  var activeJob = _sdActiveQueueJob;
+  var retained = false;
+  function retainActiveJob(message){
+    if (retained) return;
+    retained = true;
+    _sdQueue.unshift(activeJob);
+    _sdQueuePaused = true;
+    if (message) flash(message);
+  }
   renderSDQueue();
-  var task = callSDGenerate({ job:_sdActiveQueueJob });
-  if (!task || typeof task.finally !== 'function') {
+  var task;
+  try {
+    task = callSDGenerate({ job:activeJob });
+  } catch (error) {
+    task = Promise.reject(error);
+  }
+  if (!task || typeof task.then !== 'function') {
+    retainActiveJob('队列已暂停，当前任务未能启动并已保留');
     _sdActiveQueueJob = null;
     renderSDQueue();
     return;
   }
-  task.finally(function(){
+  task.then(function(outcome){
+    if (!outcome || outcome.status !== 'success') {
+      retainActiveJob(outcome && outcome.status === 'cancelled'
+        ? '队列已停止并暂停，当前任务已保留'
+        : '队列已暂停，失败任务已保留在队首');
+    }
+  }).catch(function(error){
+    console.error('queue task failed unexpectedly', error);
+    retainActiveJob('队列已暂停，失败任务已保留在队首');
+  }).finally(function(){
     _sdActiveQueueJob = null;
     renderSDQueue();
-    processSDQueue();
+    if (!_sdQueuePaused) processSDQueue();
   });
 }
 

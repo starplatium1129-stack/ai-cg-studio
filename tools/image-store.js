@@ -200,25 +200,32 @@
   }
 
   function set(key, value){
-    _memCache[key] = JSON.parse(JSON.stringify(value));
+    var snapshot = JSON.parse(JSON.stringify(value));
     return openDb().then(function(db){
       return new Promise(function(resolve, reject){
         var tx = db.transaction(STORE_NAME, 'readwrite');
-        tx.objectStore(STORE_NAME).put({ key:key, value:value });
-        tx.oncomplete = function(){ resolve(true); };
+        tx.objectStore(STORE_NAME).put({ key:key, value:snapshot });
+        tx.oncomplete = function(){
+          _memCache[key] = JSON.parse(JSON.stringify(snapshot));
+          resolve(true);
+        };
         tx.onerror = function(){ reject(tx.error); };
+        tx.onabort = function(){ reject(tx.error || new Error('KV 鏁版嵁搴撲簨鍔″凡鍙栨秷')); };
       });
     });
   }
 
   function remove(key){
-    delete _memCache[key];
     return openDb().then(function(db){
       return new Promise(function(resolve, reject){
         var tx = db.transaction(STORE_NAME, 'readwrite');
         tx.objectStore(STORE_NAME).delete(key);
-        tx.oncomplete = function(){ resolve(true); };
+        tx.oncomplete = function(){
+          delete _memCache[key];
+          resolve(true);
+        };
         tx.onerror = function(){ reject(tx.error); };
+        tx.onabort = function(){ reject(tx.error || new Error('KV 鏁版嵁搴撲簨鍔″凡鍙栨秷')); };
       });
     });
   }

@@ -24,7 +24,7 @@
     "character": "NAT_001",
     "strength": { "default": 0.8, "min": 0.5, "max": 1.0 },
     "compatible_models": ["waiIllustriousSDXL_v170", "illustriousXL_v20"],
-    "test_scene": ["sc005", "sc011", "sc029", "sc037", "sc043"],
+    "test_scene": ["sc005", "sc018", "sc024", "sc050", "sc073"],
     "test_grid": "grids/natsume_v11_grid.webp",
     "description": "四季夏目角色 LoRA，使用 125 张 1024px 图片微调。适合半身、全身与复杂场景，默认强度为 0.8。",
     "dataset": { "images": 125, "resolution": 1024 },

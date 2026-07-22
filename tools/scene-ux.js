@@ -232,6 +232,40 @@
     return !!(stats && stats.favorites);
   }
 
+  function isSceneBoundStory(scene, story, baseStory){
+    if (!scene) return false;
+    var current = String(story || '').replace(/\s+/g, ' ').trim();
+    var original = String(baseStory || scene.story || '').replace(/\s+/g, ' ').trim();
+    return !!current && !!original && current === original;
+  }
+
+  function tagKey(value){
+    return String(value || '').trim().toLowerCase().replace(/[\s-]+/g, '_');
+  }
+
+  function restoreHistoryManualTags(entry, scene, sceneCompatible){
+    var hasSnapshot = !!(entry && Array.isArray(entry.manual_tags));
+    var source = hasSnapshot
+      ? entry.manual_tags
+      : (scene && sceneCompatible && Array.isArray(scene.tags) ? scene.tags : []);
+    var staleSceneTags = scene && !sceneCompatible
+      ? new Set((scene.tags || []).map(tagKey))
+      : null;
+    var seen = new Set();
+    return source.filter(function(tag){
+      if (typeof tag !== 'string' || !tag.trim()) return false;
+      var key = tagKey(tag);
+      if (!key || (staleSceneTags && staleSceneTags.has(key)) || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    }).slice();
+  }
+
+  function restoreHistoryStory(entry, scene, sceneCompatible){
+    var story = entry && typeof entry.story === 'string' ? entry.story : '';
+    return scene && !sceneCompatible && isSceneBoundStory(scene, story, scene.story) ? '' : story;
+  }
+
   function readRecent(storage){
     try {
       var items = JSON.parse((storage || localStorage).getItem(RECENT_SCENE_KEY) || '[]');
@@ -254,6 +288,7 @@
     buildPreferenceProfile: buildPreferenceProfile,
     characterLabel: characterLabel,
     isPersonalFavorite: isPersonalFavorite,
+    isSceneBoundStory: isSceneBoundStory,
     matchesSearch: matchesSearch,
     personalReason: personalReason,
     personalScore: personalScore,
@@ -262,6 +297,8 @@
     ratingAverage: ratingAverage,
     readRecent: readRecent,
     rememberRecent: rememberRecent,
+    restoreHistoryManualTags: restoreHistoryManualTags,
+    restoreHistoryStory: restoreHistoryStory,
     searchScore: searchScore,
     searchText: searchText,
     tier: tier

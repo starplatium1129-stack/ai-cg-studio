@@ -83,27 +83,48 @@ function init() {
 
 // 从 history 条目恢复导演选择(regen=保持;variant=小幅扰动)
 function restoreFromEntry(h, isVariant){
-  state.__sceneId = h.scene || state.__sceneId;
-  setChar(h.character);
-  state.story = h.story || '';
+  var historyChar = ({ayachi_nene:'nene',shiki_natsume:'natsume',both:'triad'})[h.character] || h.character;
+  if (['nene','natsume','triad'].indexOf(historyChar) < 0) historyChar = state.char;
+  setChar(historyChar);
+  var historyScene = SCENES.find(function(scene){ return scene.id === h.scene; });
+  var sceneCompatible = historyScene && (typeof AICPromptPolicy === 'undefined' || AICPromptPolicy.sceneSupportsCharacter(historyScene, historyChar));
+  var dropIncompatibleSceneStory = historyScene && !sceneCompatible && (
+    typeof AICSceneUX !== 'undefined' && typeof AICSceneUX.isSceneBoundStory === 'function'
+      ? AICSceneUX.isSceneBoundStory(historyScene, h.story, historyScene.story)
+      : !!String(h.story || '').trim() && String(h.story || '').replace(/\s+/g,' ').trim() === String(historyScene.story || '').replace(/\s+/g,' ').trim()
+  );
+  state.__sceneId = sceneCompatible ? historyScene.id : null;
+  state.__sceneBaseStory = sceneCompatible ? historyScene.story || '' : '';
+  state.story = typeof AICSceneUX !== 'undefined' && typeof AICSceneUX.restoreHistoryStory === 'function'
+    ? AICSceneUX.restoreHistoryStory(h, historyScene, !!sceneCompatible)
+    : (dropIncompatibleSceneStory ? '' : (typeof h.story === 'string' ? h.story : ''));
   var si = document.getElementById('storyInput'); if(si) si.value = state.story;
   state.selections.emotion = Array.isArray(h.emotion) ? h.emotion.slice() : [];
   state.selections.shot = h.shot || null;
   state.selections.lighting = h.lighting || null;
   state.selections.composition = h.composition || null;
   state.colorMood = h.colorMood || null;
-  state.manualTags = new Set();
+  var restoredManualTags;
+  if (typeof AICSceneUX !== 'undefined' && typeof AICSceneUX.restoreHistoryManualTags === 'function') {
+    restoredManualTags = AICSceneUX.restoreHistoryManualTags(h, historyScene, !!sceneCompatible);
+  } else {
+    restoredManualTags = Array.isArray(h.manual_tags) ? h.manual_tags.slice() : (sceneCompatible && historyScene ? (historyScene.tags || []).slice() : []);
+    if (historyScene && !sceneCompatible) {
+      var staleSceneTags = new Set((historyScene.tags || []).map(function(tag){ return String(tag).trim().toLowerCase().replace(/[\s-]+/g,'_'); }));
+      restoredManualTags = restoredManualTags.filter(function(tag){ return !staleSceneTags.has(String(tag).trim().toLowerCase().replace(/[\s-]+/g,'_')); });
+    }
+  }
+  state.manualTags = new Set(restoredManualTags);
   // variant: 小幅扰动 — 随机加一条推荐标签
   if (isVariant && RECOMMENDED_TAGS && RECOMMENDED_TAGS.length) {
     var add = RECOMMENDED_TAGS[Math.floor(Math.random()*RECOMMENDED_TAGS.length)];
     if (add) state.manualTags.add(add);
   }
   // 同步 UI
-  document.querySelectorAll('#chip-emotion .chip-select').forEach(function(c){ c.classList.toggle('selected', state.selections.emotion.includes(c.dataset.id)); });
-  document.querySelectorAll('#opt-shot .option').forEach(function(o){ o.classList.toggle('selected', o.dataset.id === state.selections.shot); });
-  document.querySelectorAll('#opt-lighting .option').forEach(function(o){ o.classList.toggle('selected', o.dataset.id === state.selections.lighting); });
-  document.querySelectorAll('#opt-composition .option').forEach(function(o){ o.classList.toggle('selected', o.dataset.id === state.selections.composition); });
-  document.querySelectorAll('#moodGrid .mood-card').forEach(function(m){ m.classList.toggle('selected', m.dataset.id === state.colorMood); });
+  syncDecisionSelectionUI();
+  syncSceneCardSelection();
+  renderSceneContext();
+  if (typeof updateStoryIntent === 'function') updateStoryIntent(false);
   // 恢复出图参数:cfg / steps / sampler / size / seed / negative
   if (h.cfg!=null){ var _cfg=document.getElementById('cfg'); if(_cfg) _cfg.value=h.cfg; }
   if (h.steps!=null){ var _st=document.getElementById('steps'); if(_st) _st.value=h.steps; }
@@ -126,9 +147,21 @@ function bindControls() {
     tab.onclick = () => switchTab(tab.dataset.tab, tab);
   });
   document.getElementById('sceneSearch').oninput = e => filterScenes(e.target.value);
-  document.getElementById('storyInput').oninput = e => { state.story = e.target.value; clearStorySuggestions(); refreshVoiceText(false); updateLivePreview(); };
+  document.getElementById('storyInput').oninput = e => {
+    state.story = e.target.value;
+    if (state.__sceneId && typeof clearSceneContext === 'function') {
+      clearSceneContext({ keepStory:true, silent:true });
+      flash('故事已编辑：已脱离原场景，避免旧词条和 LoRA 污染新画面');
+    }
+    if (typeof updateStoryIntent === 'function') updateStoryIntent(false);
+    refreshVoiceText(false);
+    updateLivePreview();
+  };
   document.querySelector('.story-chips').addEventListener('click', e => { if (e.target.classList.contains('story-chip')) setTimeout(clearStorySuggestions, 0); });
   document.getElementById('sceneGrid').addEventListener('dblclick', function(e) {
+    if (e.target.closest('.scene-direct-btn')) return;
+    var mainControl = e.target.closest('.scene-card-main');
+    if (!mainControl) return;
     var card = e.target.closest('.scene-card');
     if (card) {
       var idx = parseInt(card.dataset.idx, 10);
@@ -149,7 +182,7 @@ function initKeyboardShortcuts(){
     var editing = target && /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName);
     if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
       event.preventDefault();
-      generate();
+      if (!generate()) return;
       if (event.shiftKey) enqueueSDGenerate();
       else callSDGenerate();
       return;

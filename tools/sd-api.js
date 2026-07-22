@@ -121,7 +121,9 @@
       finalPrompt += ' <lora:' + item.name + ':' + (item.weight == null ? fallbackWeight : item.weight) + '>';
     });
 
-    var finalNegative = typeof negativePrompt === 'string' && negativePrompt.trim() ? negativePrompt.trim() : DEFAULT_NEGATIVE;
+    // An explicit empty string means the caller intentionally disabled the
+    // negative prompt. Only an omitted/non-string value should use defaults.
+    var finalNegative = typeof negativePrompt === 'string' ? negativePrompt.trim() : DEFAULT_NEGATIVE;
     var payload = {
       prompt: finalPrompt,
       negative_prompt: finalNegative,
@@ -198,6 +200,7 @@
         connector.request('/sdapi/v1/samplers', { method: 'GET' }, 6000).catch(function(){ return []; }),
         connector.request('/sdapi/v1/schedulers', { method: 'GET' }, 6000).catch(function(){ return []; }),
         connector.request('/sdapi/v1/upscalers', { method: 'GET' }, 6000).catch(function(){ return []; }),
+        connector.request('/sdapi/v1/loras', { method: 'GET' }, 6000).catch(function(){ return []; }),
         connector.request('/sdapi/v1/options', { method: 'GET' }, 6000).catch(function(){ return {}; })
       ]);
     }).then(function(parts){
@@ -206,8 +209,9 @@
         samplers: Array.isArray(parts[1]) ? parts[1] : [],
         schedulers: Array.isArray(parts[2]) ? parts[2] : [],
         upscalers: Array.isArray(parts[3]) ? parts[3] : [],
-        options: parts[4] || {},
-        currentModel: (parts[4] && parts[4].sd_model_checkpoint) || ''
+        loras: Array.isArray(parts[4]) ? parts[4] : [],
+        options: parts[5] || {},
+        currentModel: (parts[5] && parts[5].sd_model_checkpoint) || ''
       };
     });
   };

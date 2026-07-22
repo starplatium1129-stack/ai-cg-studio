@@ -172,11 +172,13 @@
   .generate-btn { width:100%; padding:var(--s-3); font-size:1rem; }
   .generate-btn:disabled { opacity:0.5; cursor:not-allowed; }
   /* Scene 卡片色带(按分类着色,直观区分场景类型) */
-  .scene-card { position:relative; padding:var(--s-3); background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-md); cursor:pointer; transition:border-color var(--t-fast), transform var(--t-base) cubic-bezier(0.25, 1, 0.5, 1), box-shadow var(--t-base); overflow:hidden; flex-shrink:0; min-height:0; }
-  .scene-card:hover { border-color:var(--accent); transform:translateY(-2px); }
+  .scene-card { position:relative; padding:0; background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-md); transition:border-color var(--t-fast), transform var(--t-base) cubic-bezier(0.25, 1, 0.5, 1), box-shadow var(--t-base); overflow:hidden; flex-shrink:0; min-height:0; }
+  .scene-card:hover, .scene-card:focus-within { border-color:var(--accent); transform:translateY(-2px); }
   .scene-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:4px; border-radius:var(--r-md) 0 0 var(--r-md); }
+  .scene-card-main { display:block; width:100%; min-height:100%; padding:var(--s-3) var(--s-3) calc(var(--s-3) + 28px); border:0; background:transparent; color:inherit; text-align:left; font:inherit; cursor:pointer; }
+  .scene-card-main:focus-visible { outline:2px solid var(--accent); outline-offset:-3px; }
   .scene-card .scene-direct-btn { position:absolute; right:var(--s-2); bottom:var(--s-2); display:none; z-index:3; padding:4px 12px; font-size:0.75rem; font-weight:600; background:var(--accent); color:var(--text-inverse); border-radius:9999px; box-shadow:var(--shadow-md); cursor:pointer; border:none; transition:transform var(--t-fast); }
-  .scene-card:hover .scene-direct-btn { display:inline-flex; }
+  .scene-card:hover .scene-direct-btn, .scene-card:focus-within .scene-direct-btn { display:inline-flex; }
   .scene-card .scene-direct-btn:hover { transform:scale(1.06); }
   .scene-card[data-recommended="1"], .scene-card[data-char-match="1"] { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-glow),var(--shadow-md); animation:obScenePulse .9s ease 1; }
   .scene-card[data-char-match="0"] { opacity:0.45; }
@@ -190,8 +192,8 @@
   .scene-card[data-category="R15"]::before { background:linear-gradient(180deg,#CFD8DC,#37474F); }
   .scene-card[data-category="Active_Sync_Scenes"]::before { background:linear-gradient(180deg,#7C4DFF,#311B92); }
   .scene-card[data-category="战斗"]::before { background:linear-gradient(180deg,#EF5350,#B71C1C); }
-  .scene-name { font-weight:700; font-size:0.92rem; margin-bottom:2px; }
-  .scene-story { font-size:0.78rem; color:var(--text-secondary); margin-bottom:var(--s-2); line-height:1.5; }
+  .scene-name { display:block; font-weight:700; font-size:0.92rem; margin-bottom:2px; }
+  .scene-story { display:block; font-size:0.78rem; color:var(--text-secondary); margin-bottom:var(--s-2); line-height:1.5; }
   .scene-meta { display:flex; flex-wrap:wrap; gap:4px; }
   .scene-tag { font-size:0.75rem !important; padding:3px 8px; font-weight:500; background:var(--bg-deep); border-radius:var(--r-sm); color:var(--text-muted); }
   .scene-tag.emotion { background:var(--accent-soft); color:var(--accent); }
@@ -199,6 +201,7 @@
   .scene-tag.rating.r15 { background:#4b3817; color:#ffd489; }
   .scene-card[data-rating="R18"]::before { background:linear-gradient(180deg,#e85d75,#8d1732); }
   .scene-card[data-rating="R15"]::before { background:linear-gradient(180deg,#d6a039,#7a5210); }
+  .scene-card.is-current { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-soft); }
   /* 故事联想 tag 高亮 */
   .tag-chip[data-suggested="1"] { outline:1px dashed var(--accent); opacity:1; }
   .tag-chip[data-suggested="1"]::after { content:' · 📖'; font-size:0.6em; }
@@ -210,8 +213,12 @@
   .story-input { width:100%; min-height:70px; padding:var(--s-3); background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-lg); color:var(--text-primary); font-size:.95rem; line-height:1.7; outline:none; transition:border-color var(--t-fast),box-shadow var(--t-fast); resize:vertical; font-family:var(--font-sans); box-sizing:border-box; }
   .story-input:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
   .story-input::placeholder { color: var(--text-muted); }
+  .scene-context, .story-prompt-hint { display:flex; align-items:center; gap:7px; margin-top:7px; padding:7px 9px; border:1px solid var(--border-soft); border-radius:var(--r-sm); background:color-mix(in srgb,var(--accent-soft) 48%,transparent); color:var(--text-muted); font-size:.68rem; line-height:1.45; }
+  .scene-context[hidden], .story-prompt-hint[hidden] { display:none; }
+  .scene-context strong, .story-prompt-hint strong { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--text-secondary); }
+  .scene-context button { margin-left:auto; flex:0 0 auto; border:0; background:transparent; color:var(--accent); cursor:pointer; font:650 .67rem var(--font-sans); }
   .story-chips { display: flex; flex-wrap: wrap; gap: var(--s-1); margin-top: var(--s-2); }
-  .story-chip { padding: 4px 12px; background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: 9999px; cursor: pointer; font-size: 0.78rem; color: var(--text-secondary); transition: all var(--t-fast); }
+  .story-chip { padding: 4px 12px; background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: 9999px; cursor: pointer; font:inherit; font-size: 0.78rem; color: var(--text-secondary); transition: all var(--t-fast); }
   .story-chip:hover { border-color: var(--accent); color: var(--accent); }
 
   /* Character */
@@ -221,7 +228,7 @@
   .char-btn:hover { border-color: var(--accent); }
   .char-btn.active { border-color: var(--accent); background: var(--accent-soft); color: var(--text-primary); box-shadow: 0 0 14px var(--accent-glow); }
   .traits-row { display: flex; gap: var(--s-2); flex-wrap: wrap; margin-top: var(--s-3); }
-  .trait-chip { padding: 3px 10px; background: var(--bg-elevated); border-radius: 12px; font-size: 0.75rem; color: var(--text-secondary); }
+  .trait-chip { padding: 3px 10px; background: var(--bg-elevated); border:0; border-radius: 12px; font:inherit; font-size: 0.75rem; color: var(--text-secondary); cursor:pointer; }
   .traits-row:empty { margin-top: 0; }
 
   /* Scene library (compact list) */
@@ -232,6 +239,7 @@
   .scene-search-clear { position:absolute; top:50%; right:7px; transform:translateY(-50%); width:25px; height:25px; border:0; border-radius:50%; background:transparent; color:var(--text-muted); cursor:pointer; font-size:.95rem; }
   .scene-search-clear:hover { color:var(--accent); background:var(--accent-soft); }
   .scene-filter-summary { display:flex; align-items:center; justify-content:space-between; gap:var(--s-2); margin-bottom:var(--s-2); }
+  .scene-filter-actions { display:inline-flex; align-items:center; gap:8px; }
   .scene-result-count { color:var(--text-muted); font-size:.72rem; }
   .scene-result-count strong { color:var(--accent); }
   .scene-filter-label { color:var(--text-muted); font-size:.67rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; margin-bottom:5px; }
@@ -267,6 +275,7 @@
 
   /* Tags */
   .cat-tabs { display: flex; gap: var(--s-1); flex-wrap: wrap; margin-bottom: var(--s-3); padding-bottom: var(--s-2); border-bottom: 1px solid var(--border-soft); }
+  .cat-tab, .tag-chip { font-family:var(--font-sans); }
   .cat-tab { padding: 4px 14px; border: 1px solid var(--border-soft); background: var(--bg-deep); color: var(--text-secondary); border-radius: 16px; cursor: pointer; font-size: 0.72rem; font-weight: 600; transition: all var(--t-fast); }
   .cat-tab:hover { border-color: var(--accent); transform: translateY(-1px); }
   .cat-tab.active { background: var(--accent); border-color: var(--accent); color: var(--bg-deep); }
@@ -279,7 +288,7 @@
   .tag-section-title.banned { color: rgba(239,83,80,0.7); }
   .sel-row { display: flex; flex-wrap: wrap; gap: 4px; min-height: 22px; }
   .sel-chip { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; background: var(--accent-soft); border: 1px solid var(--accent); border-radius: 9999px; font-size: 0.72rem; color: var(--accent); }
-  .sel-chip .x { cursor: pointer; opacity: 0.6; }
+  .sel-chip .x { padding:0; border:0; background:transparent; color:inherit; font:inherit; cursor: pointer; opacity: 0.6; }
   .sel-chip .x:hover { opacity: 1; }
   .manual-tags-panel .director-card-head { display:flex; align-items:center; justify-content:space-between; }
   .manual-tags-tools { display:flex; justify-content:flex-end; margin-bottom:var(--s-2); }
@@ -311,6 +320,9 @@
   .token-counter .bar i { display: block; height: 100%; background: var(--success); }
   .token-counter.warn .bar i { background: var(--warning); }
   .token-counter.over .bar i { background: var(--danger); }
+  .prompt-health { color:var(--text-muted); }
+  .token-counter.warn .prompt-health { color:var(--warning); }
+  .token-counter.over .prompt-health { color:var(--danger); }
   .art-warn { display: none; align-items: center; gap: var(--s-2); background: rgba(255,167,38,0.12); border: 1px solid var(--warning); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); margin-top: var(--s-3); color: var(--warning); font-size: 0.82rem; font-weight: 500; }
   .preview-actions { display: flex; gap: var(--s-2); flex-wrap: wrap; margin-top: var(--s-3); }
   .preview-actions .btn { font-size: 0.8rem; padding: var(--s-1) var(--s-3); }
@@ -358,7 +370,7 @@
   .director-card-name { font-size: 0.82rem; font-weight: 700; color: var(--text-primary); }
   .director-card-selected { font-size: 0.7rem; color: var(--accent); font-family: var(--font-mono); text-align: right; max-width: 55%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .options { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: var(--s-2); }
-  .option { background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: var(--s-2); text-align: center; cursor: pointer; transition: border-color var(--t-fast), transform var(--t-base) cubic-bezier(0.25, 1, 0.5, 1), box-shadow var(--t-base); }
+  .option { width:100%; background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: var(--s-2); text-align: center; color:inherit; font:inherit; cursor: pointer; transition: border-color var(--t-fast), transform var(--t-base) cubic-bezier(0.25, 1, 0.5, 1), box-shadow var(--t-base); }
   .option:hover { border-color: var(--accent); background: var(--accent-soft); transform: translateY(-1px); }
   .option.selected { border-color: var(--accent); background: var(--accent-soft); box-shadow: 0 0 10px var(--accent-glow); }
   .option-icon { font-size: 1.1rem; }
@@ -371,7 +383,7 @@
   .chip-select:hover { border-color: var(--accent); color: var(--accent); }
   .chip-select.selected { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
   .mood-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)); gap: var(--s-2); }
-  .mood-card { border: 2px solid var(--border-soft); border-radius: var(--r-md); overflow: hidden; cursor: pointer; transition: border-color var(--t-fast), transform var(--t-base) cubic-bezier(0.25, 1, 0.5, 1), box-shadow var(--t-base); }
+  .mood-card { width:100%; padding:0; background:var(--bg-deep); color:inherit; font:inherit; text-align:left; border: 2px solid var(--border-soft); border-radius: var(--r-md); overflow: hidden; cursor: pointer; transition: border-color var(--t-fast), transform var(--t-base) cubic-bezier(0.25, 1, 0.5, 1), box-shadow var(--t-base); }
   .mood-card:hover { border-color: var(--accent); transform: translateY(-1px); }
   .mood-card.selected { border-color: var(--accent); box-shadow: 0 0 12px var(--accent-glow); }
   .mood-strip { display: flex; height: 20px; }
@@ -479,8 +491,9 @@
 
   /* Review modal */
   .review-overlay { position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; padding: var(--s-4); }
+  body.modal-open { overflow:hidden; }
   .review-overlay.open { display: flex; }
-  .review-card { width: 100%; max-width: 460px; max-height: 90vh; overflow-y: auto; background: var(--bg-surface); border: 1px solid var(--accent); border-radius: var(--r-xl); padding: var(--s-6); box-shadow: var(--shadow-lg); }
+  .review-card { width: 100%; max-width: 460px; max-height: 90dvh; overflow-y: auto; background: var(--bg-surface); border: 1px solid var(--accent); border-radius: var(--r-xl); padding: var(--s-6); box-shadow: var(--shadow-lg); }
   .review-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--s-4); }
   .review-head h3 { margin: 0; font-size: 1.2rem; }
   .review-x { background: none; border: none; color: var(--text-muted); font-size: 1.3rem; cursor: pointer; }
@@ -488,12 +501,12 @@
   .review-axis { margin-bottom: var(--s-4); }
   .review-axis-label { font-size: 0.88rem; font-weight: 600; margin-bottom: var(--s-1); color: var(--text-primary); }
   .review-stars { display: flex; gap: 4px; }
-  .review-star { font-size: 1.5rem; cursor: pointer; color: var(--border-strong); transition: color var(--t-fast), transform var(--t-fast); user-select: none; }
+  .review-star { padding:0 2px; border:0; background:transparent; font:inherit; font-size: 1.5rem; cursor: pointer; color: var(--border-strong); transition: color var(--t-fast), transform var(--t-fast); user-select: none; }
   .review-star.on { color: var(--mood-joy); }
   .review-star:hover { transform: scale(1.15); }
   .review-fav { display: flex; align-items: center; gap: var(--s-3); margin-bottom: var(--s-4); }
   .review-fav-label { font-size: 0.88rem; font-weight: 600; }
-  .review-fav-toggle { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 9999px; border: 1px solid var(--border-soft); cursor: pointer; font-size: 0.85rem; transition: all var(--t-fast); }
+  .review-fav-toggle { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 9999px; border: 1px solid var(--border-soft); background:var(--bg-deep); color:var(--text-secondary); cursor: pointer; font:inherit; font-size: 0.85rem; transition: all var(--t-fast); }
   .review-fav-toggle.on { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
   .review-notes { width: 100%; min-height: 60px; resize: vertical; background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); color: var(--text-primary); font-family: var(--font-sans); font-size: 0.88rem; outline: none; margin-bottom: var(--s-4); }
   .review-notes:focus { border-color: var(--accent); }
@@ -553,8 +566,9 @@
     .voice-controls { grid-template-columns:1fr; }
     .story-chip, .char-btn, .scene-cat, .scene-filter-reset, .chip-select, .tag-chip, .option, .cat-tab { min-height: 44px; }
     .scene-filter-field select, #projectSelect, .controls-grid select, .sd-inline-options select { min-height: 44px; }
-    .scene-card { padding-bottom: var(--s-3); }
-    .scene-card .scene-direct-btn { display: inline-flex; position: static; margin-top: var(--s-2); min-height: 40px; align-items: center; }
+    .story-input, .scene-search, #projectSelect, .controls-grid select, .sd-inline-options select, .seed-input-wrap input, .voice-text, .review-notes, .review-image-url { font-size:16px !important; }
+    .scene-card-main { padding-bottom:var(--s-3); }
+    .scene-card .scene-direct-btn { display:inline-flex; position:static; margin:0 var(--s-3) var(--s-3); min-height:40px; align-items:center; }
     .scene-story { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
   }
   .guide-bar {
@@ -576,6 +590,9 @@
   .sd-inline-options { display:flex; gap:var(--s-3); align-items:center; margin-bottom:var(--s-3); flex-wrap:wrap; font-size:.82rem; color:var(--text-muted); }
   .sd-inline-options label { display:flex; align-items:center; gap:5px; cursor:pointer; }
   .sd-inline-options select { max-width:220px; min-width:140px; padding:4px 7px; font-size:.78rem; }
+  .sd-budget-hint { width:100%; margin-top:-5px; color:var(--text-muted); font-size:.7rem; }
+  .sd-budget-hint.warn { color:var(--warning); }
+  .sd-budget-hint.danger { color:var(--danger); font-weight:650; }
   .sd-progress { height:8px; overflow:hidden; border-radius:999px; background:var(--bg-deep); border:1px solid var(--border-soft); margin:0 auto var(--s-2); max-width:520px; }
   .sd-progress > span { display:block; width:0; height:100%; border-radius:inherit; background:linear-gradient(90deg,var(--accent),#8b5cf6); transition:width .35s ease; }
   .sd-progress[hidden] { display:none; }
@@ -623,7 +640,7 @@
     body.focus-mode .pb-top-actions { justify-content:flex-end; }
     body.focus-mode .focus-mode-label { display:inline; }
     body.focus-mode .focus-mode-btn { width:auto; padding:0 13px; }
-    body.focus-mode .stage-placeholder, body.focus-mode #stepResult { min-height:calc(100vh - 64px); }
+    body.focus-mode .stage-placeholder, body.focus-mode #stepResult { min-height:calc(100dvh - 64px); }
   }
   /* 出图快门曝光动效 */
   /* Liquid glass is reserved for floating controls and navigation surfaces. */
@@ -700,6 +717,9 @@
   @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
     .focus-mode-btn, .utility-trigger, .api-status .badge, .stage-chrome, .utility-popover, .guide-bar, .project-bar, .director-mode-bar, .first-success-coach, .backup-card { background:var(--bg-surface); }
   }
+  @media (prefers-reduced-transparency: reduce) {
+    .focus-mode-btn, .utility-trigger, .api-status .badge, .stage-chrome, .utility-popover, .guide-bar, .project-bar, .director-mode-bar, .first-success-coach, .backup-card, .generate-btn { -webkit-backdrop-filter:none !important; backdrop-filter:none !important; background:var(--bg-surface); }
+  }
   #sdImageSlot img { opacity: 0; transform: scale(0.98); animation: aicsShutterReveal 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards; box-shadow: var(--shadow-lg); border: 1px solid var(--border-soft); }
   @keyframes aicsShutterReveal {
     0% { opacity: 0; filter: brightness(1.7) blur(8px); transform: scale(0.96); }
@@ -774,20 +794,22 @@
       <div class="panel step-panel" id="stepStory">
         <div class="panel-title"><span data-icon="story"></span>故事 · Story</div>
         <textarea class="story-input" id="storyInput" placeholder="一句话描述脑海里的画面…"></textarea>
+        <div class="scene-context" id="sceneContext" hidden></div>
+        <div class="story-prompt-hint" id="storyPromptHint" hidden></div>
         <div class="story-chips">
-          <span class="story-chip" onclick="setStory(this)">放学后在樱花树下等人的宁宁</span>
-          <span class="story-chip" onclick="setStory(this)">第一次在海边看日出的夏目</span>
-          <span class="story-chip" onclick="setStory(this)">夏夜祭典穿浴衣看烟花</span>
-          <span class="story-chip" onclick="setStory(this)">雪天围围巾的温柔一幕</span>
+          <button type="button" class="story-chip" onclick="setStory(this)">放学后在樱花树下等人的宁宁</button>
+          <button type="button" class="story-chip" onclick="setStory(this)">第一次在海边看日出的夏目</button>
+          <button type="button" class="story-chip" onclick="setStory(this)">夏夜祭典穿浴衣看烟花</button>
+          <button type="button" class="story-chip" onclick="setStory(this)">雪天围围巾的温柔一幕</button>
         </div>
       </div>
 
       <div class="panel step-panel" id="stepChar">
         <div class="panel-title"><span data-icon="character"></span>角色 · Character</div>
         <div class="char-row">
-          <button class="char-btn active" data-char="nene" onclick="setChar('nene')"><span data-icon="flower"></span>宁宁</button>
-          <button class="char-btn" data-char="natsume" onclick="setChar('natsume')"><span data-icon="leaf"></span>夏目</button>
-          <button class="char-btn" data-char="triad" onclick="setChar('triad')"><span data-icon="both"></span>双人</button>
+          <button class="char-btn active" type="button" data-char="nene" aria-pressed="true" onclick="setChar('nene')"><span data-icon="flower"></span>宁宁</button>
+          <button class="char-btn" type="button" data-char="natsume" aria-pressed="false" onclick="setChar('natsume')"><span data-icon="leaf"></span>夏目</button>
+          <button class="char-btn" type="button" data-char="triad" aria-pressed="false" onclick="setChar('triad')"><span data-icon="both"></span>双人</button>
         </div>
         <div class="traits-row" id="traitsRow"></div>
       </div>
@@ -799,7 +821,7 @@
           <input type="search" class="scene-search" placeholder="试试：我想画一个安静的夏目雨夜" id="sceneSearch" oninput="filterScenes(this.value)">
           <button class="scene-search-clear" type="button" onclick="clearSceneSearch()" aria-label="清空场景搜索" title="清空搜索">×</button>
         </div>
-        <div class="scene-filter-summary"><span class="scene-result-count" id="sceneResultCount" role="status" aria-live="polite">正在整理场景…</span><button class="scene-filter-reset" type="button" onclick="resetSceneFilters()">重置筛选</button></div>
+        <div class="scene-filter-summary"><span class="scene-result-count" id="sceneResultCount" role="status" aria-live="polite">正在整理场景…</span><span class="scene-filter-actions"><button class="scene-filter-reset" id="sceneLibraryModeBtn" type="button" onclick="toggleSceneLibraryMode()">探索全部</button><button class="scene-filter-reset" type="button" onclick="resetSceneFilters()">重置筛选</button></span></div>
         <div class="scene-filter-label">主题</div>
         <div class="scene-cats" id="sceneCats"></div>
         <div class="scene-filter-more" id="sceneFilterMore">
@@ -833,7 +855,7 @@
               <button class="btn btn-primary" id="firstRunExperienceBtn" type="button" onclick="startFirstCreation()"><span class="icon-label"><span data-icon="sparkle"></span>用精选场景体验一次</span></button>
               <button class="btn btn-ghost" type="button" onclick="dismissFirstCreation()">我自己开始</button>
             </div>
-            <div class="first-creation-note"><span data-icon="scene"></span>不会自动连接或调用 SD</div>
+            <div class="first-creation-note"><span data-icon="scene"></span>只检测连接状态；体验按钮不会直接调用 SD</div>
           </div>
           <div class="stage-idle">
             <div class="stage-placeholder-title">成片将在这里出现</div>
@@ -851,7 +873,7 @@
         <div class="monitor-rec"><span class="dot"></span> SCENE</div>
         <div class="panel-title"><span data-icon="prompt"></span>Prompt 实时预览 <span class="monitor-toggle" id="monitorToggle" onclick="toggleMonitor()">展开</span></div>
         <div class="preview-output" id="preview">选择左侧场景或调整右侧导演选项，提示词会在这里实时生成。</div>
-        <div class="token-row"><span class="token-counter" id="liveTokCount"><span class="num">0</span> tok <span class="bar"><i></i></span> / 77</span></div>
+        <div class="token-row"><span class="token-counter" id="liveTokCount"><span class="num">0</span> 正向 · <span class="neg-num">0</span> 负向 <span class="bar"><i></i></span><span class="prompt-health">结构均衡</span></span></div>
         <div class="art-warn" id="artWarn" style="display:none">⚠️ 检测到违反美术规范的标签</div>
         <div class="preview-actions">
           <button class="btn btn-primary" onclick="copyPrompt()"><span class="icon-label"><span data-icon="copy"></span>复制</span></button>
@@ -879,7 +901,7 @@
       <div class="result-frame step-panel" id="stepResult">
         <div class="panel-title"><span data-icon="scene"></span>输出 Result</div>
         <div class="first-success-coach" id="firstSuccessCoach">
-          <div class="first-success-copy"><strong>第一张已经准备好了</strong>接下来最实用的是保持 Seed 微调、排队生成和保存快照。</div>
+          <div class="first-success-copy"><strong>第一张图片生成成功</strong>现在可以保持真实 Seed 微调、排队生成或保存快照。</div>
           <div class="first-success-actions">
             <button class="btn btn-ghost" type="button" onclick="useLastSeedForTweak()">同 Seed 微调</button>
             <button class="btn btn-ghost" type="button" onclick="enqueueSDGenerate()">加入队列</button>
@@ -928,6 +950,7 @@
             <input type="text" id="sdSeedInput" placeholder="留空=随机" style="width:110px;font-family:monospace;font-size:.78rem;padding:2px 6px;border:1px solid var(--border-soft);border-radius:var(--r-sm);background:var(--bg-deep);color:var(--text-primary);">
           </label>
           <span id="sdSeedDisplay" style="font-family:monospace;opacity:0.6;"></span>
+          <div class="sd-budget-hint" id="sdBudgetHint" role="status" aria-live="polite">最终尺寸会在这里显示</div>
         </div>
         <div class="preview-actions">
           <button class="btn btn-ghost" onclick="toggleResult()">展开 Prompt</button>
@@ -1062,11 +1085,11 @@
   </div>
 
 <!-- Review Modal (moved out of flow, appended via script) -->
-<div class="review-overlay" id="reviewOverlay">
-  <div class="review-card" id="reviewCard">
-    <div class="review-head"><h3>⭐ 评价这张 CG</h3><button class="review-x" onclick="closeReview()" aria-label="关闭">✕</button></div>
+<div class="review-overlay" id="reviewOverlay" role="dialog" aria-modal="true" aria-labelledby="reviewTitle">
+  <div class="review-card" id="reviewCard" tabindex="-1">
+    <div class="review-head"><h3 id="reviewTitle">⭐ 评价这张 CG</h3><button class="review-x" onclick="closeReview()" aria-label="关闭">✕</button></div>
     <div id="reviewAxes"></div>
-    <div class="review-fav"><span class="review-fav-label">加入收藏夹</span><div class="review-fav-toggle" id="reviewFav" onclick="toggleFav()">💜 收藏</div></div>
+    <div class="review-fav"><span class="review-fav-label">加入收藏夹</span><button type="button" class="review-fav-toggle" id="reviewFav" onclick="toggleFav()" aria-pressed="false">💜 收藏</button></div>
     <div class="review-image-source primary">
       <label class="review-axis-label" for="reviewImageFile">导入生成图</label>
       <div class="review-file-row">
@@ -1088,7 +1111,7 @@
 </article>
 
 <div class="backup-overlay" id="backupOverlay" role="dialog" aria-modal="true" aria-labelledby="backupTitle">
-  <div class="backup-card">
+  <div class="backup-card" tabindex="-1">
     <h3 id="backupTitle">恢复本地创作资料</h3>
     <p>合并会保留当前内容并补入备份；覆盖会用备份替换当前项目、历史和图片。</p>
     <div class="backup-summary" id="backupSummary"></div>
@@ -1105,9 +1128,9 @@
   <p class="muted mt-4">Nene &amp; Natsume Private Atelier</p>
 </footer>
 
+<script src="prompt-policy.js?v=1"></script>
 <script src="image-store.js?v=5"></script>
 <script src="data-backup.js?v=1"></script>
-<script src="active-sync.js?v=4"></script>
 <script src="sd-api.js?v=2"></script>
 <script src="icon-system.js?v=1"></script>
 

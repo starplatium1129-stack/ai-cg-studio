@@ -43,7 +43,7 @@
     "usage": [
       "核心CG"
     ],
-    "prompt": "2girls, adult, wedding_night, warm_bedroom, candlelight, interlocked_fingers, intimate_atmosphere, (ayachi_nene_on_the_left, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, wedding_dress, shy_smile, teary_eyes) BREAK  (shiki_natsume_on_the_right, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, wedding_dress, restrained_smile, blush)",
+    "prompt": "2girls, adult, wedding_night, warm_bedroom, candlelight, interlocked_fingers, intimate_atmosphere, (ayachi_nene_on_the_left, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, wedding_dress, shy_smile, teary_eyes) BREAK (shiki_natsume_on_the_right, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, wedding_dress, restrained_smile, blush)",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【夏目＆寧々・大人のAU・結婚式後の契約書】式典の後、新しい家には温かいろうそくの灯りだけが残りました。大人になった寧々と夏目は重いベールを脱ぎ、左右に一人ずつ隣に座り、三人で書いた将来の約束を手のひらに置いた。寧々さんは緊張しながらも率直にあなたと手を握り、一方で夏目さんは彼女の傾いたヘアアクセサリーを直すのを手伝いましたが、それでも彼女が感動したことを認めませんでした。――「今夜から、どんなことがあっても、誰か一人で無理をするのは禁止です。」",
     "rating": "All"
@@ -80,7 +80,8 @@
       "luminous_curves",
       "halo",
       "tears_of_joy",
-      "wide_shot"
+      "wide_shot",
+      "full_body"
     ],
     "mature": false,
     "location": "仪式厅",
@@ -90,7 +91,7 @@
     "usage": [
       "协议核心"
     ],
-    "prompt": "2girls, adult, ceremonial_hall, luminous_heart_rate_curves, holding_hands, halo, wide_shot, epic_soft_lighting, (ayachi_nene_on_the_left, white_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, white_dress, tears_of_joy) BREAK  (shiki_natsume_on_the_right, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, white_dress, restrained_smile, blush)",
+    "prompt": "2girls, adult, ceremonial_hall, luminous_heart_rate_curves, holding_hands, halo, wide_shot, epic_soft_lighting, (ayachi_nene_on_the_left, white_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, white_dress, tears_of_joy) BREAK (shiki_natsume_on_the_right, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, white_dress, restrained_smile, blush)",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【夏目＆寧々・大人のAU・3人契約の無限ループ】式典ホールのライトカーテンは、3つの心拍数曲線をドームに投影します。寧々と夏目はそれぞれ左手と右手を持ちます。同期値がしきい値を超えた後も、制御を失うことはありませんでした。代わりに、ゆっくりと回転する後光となって安定しました。寧々が最初に笑い、泣き、夏目がしっかりと手を握り、短い言葉で3人の宣誓を終えました。――「誰かが誰かに寄りかかるんじゃない。私たちはみんな、ここに残ることを選んで、何度でも選び直すんです。」",
     "rating": "All"
@@ -141,7 +142,7 @@
       "核心协议",
       "壁纸级"
     ],
-    "prompt": "2girls, cafe_interior, night, soft_lighting, (ayachi_nene_sitting_on_the_left, hair_ribbon, ahoge, floating_cup, smile, blush) BREAK  (shiki_natsume_leaning_on_the_bar_counter_on_the_right, mole_under_eye, maid_style_tactical_gear, laptop, seductive_look, smirk, blush)",
+    "prompt": "2girls, cafe_interior, night, soft_lighting, (ayachi_nene_sitting_on_the_left, hair_ribbon, ahoge, floating_cup, smile, blush) BREAK (shiki_natsume_leaning_on_the_bar_counter_on_the_right, mole_under_eye, maid_style_tactical_gear, laptop, seductive_look, smirk, blush)",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々＆夏目・大人のAfter Story・魔法と異能のカフェ】あなたと寧々、夏目の三人は、魔法と異能が交差する小さなカフェを開いた。閉店後の店内には、暖かな間接照明だけが残っている。寧々は魔法でティーカップに紅茶を注ぎ、エージェント風のメイド服に着替えた夏目は、カウンターにもたれて秘密の帳簿を確認していた。やがて彼女はパソコンから顔を上げ、からかうような視線をあなたへ向ける――「ねえ、店長。今夜の二人分の残業代……自分で払うつもり？」",
     "rating": "All"
@@ -195,7 +196,7 @@
       "核心协议",
       "壁纸级"
     ],
-    "prompt": "2girls, battlefield_ruins, dawn, first_light, looking_at_viewer, cinematic_composition, (ayachi_nene_floating_in_the_air_on_the_left, hair_ribbon, ahoge, witch_costume, magic_circle, glowing_particles) BREAK  (shiki_natsume_standing_on_the_ground_on_the_right, mole_under_eye, tactical_gear, holding_energy_blade, serious, rim_light)",
+    "prompt": "2girls, battlefield_ruins, dawn, first_light, looking_at_viewer, cinematic_composition, (ayachi_nene_floating_in_the_air_on_the_left, hair_ribbon, ahoge, witch_costume, magic_circle, glowing_particles) BREAK (shiki_natsume_standing_on_the_ground_on_the_right, mole_under_eye, tactical_gear, holding_energy_blade, serious, rim_light)",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々＆夏目・大人のアフターストーリー・究極のファンタジー超大作・壮大な二人のヒロイン】魔法と異能の境界を越え、二つの世界の防衛線がここに重なる。遺跡の上で、夜明けの最初の光線（夜明け）が長い夜を突き抜けます。寧々は壊れた、しかし豪華な魔女のマントを着て、空中に浮かび、明るい星空の配列を注ぎ出します。一方、夏目は、黒くぴったりとフィットしたエージェントの鎧を着て、超強力な冷たい光の刃を持って彼の前に立っていました。彼らは同時にあなたを最後の指揮官として振り返り、その美しい顔に頬を赤らめ、決意を込めた。――「私たちの魂の盟約は、今ここで終焉を断ち切る！」",
     "rating": "All"
@@ -249,7 +250,7 @@
       "核心协议",
       "壁纸级"
     ],
-    "prompt": "2girls, cozy_bedroom, bed, blanket, morning_light, soft_shadows, looking_at_viewer, extreme_closeness, intimacy, (ayachi_nene_lying_on_the_left, hair_ribbon, ahoge, oversized_sweater, holding_shirt_hem, blush, shy_smile) BREAK  (shiki_natsume_propped_up_on_elbow_on_the_right, mole_under_eye, loose_pajamas, off_shoulder, bedroom, seductive_look, slight_smile, blush)",
+    "prompt": "2girls, cozy_bedroom, bed, blanket, morning_light, soft_shadows, looking_at_viewer, extreme_closeness, intimacy, (ayachi_nene_lying_on_the_left, hair_ribbon, ahoge, oversized_sweater, holding_shirt_hem, blush, shy_smile) BREAK (shiki_natsume_propped_up_on_elbow_on_the_right, mole_under_eye, loose_pajamas, off_shoulder, bedroom, seductive_look, slight_smile, blush)",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々＆夏目・大人のアフターストーリー・究極に甘い修羅場】どこまでも怠惰な朝。あなたは暖かいベッドから目覚め、最も幸せな「おはよう、このお寝坊さん。今朝の約束、二度寝は禁止だからね。」",
     "rating": "All"
@@ -270,6 +271,7 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
+      "adult",
       "hair_ribbon",
       "mole_under_eye",
       "2girls",
@@ -304,8 +306,8 @@
       "核心协议",
       "成人向"
     ],
-    "prompt": "2girls, naked, bed, bedroom, night, extreme_intimacy, ecstasy, sweat, messy_hair, interlocked_fingers, in_love, (ayachi_nene_straddling_viewer_on_the_left, hair_ribbon, ahoge, heavy_blush, passionate_look, open_mouth) BREAK  (shiki_natsume_embracing_from_behind_on_the_right, mole_under_eye, neck_kiss, biting, closed_eyes, heavy_blush)",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic",
+    "prompt": "2girls, adult, naked, bed, bedroom, night, extreme_intimacy, ecstasy, sweat, messy_hair, interlocked_fingers, in_love, (ayachi_nene_straddling_viewer_on_the_left, hair_ribbon, ahoge, heavy_blush, passionate_look, open_mouth) BREAK (shiki_natsume_embracing_from_behind_on_the_right, mole_under_eye, neck_kiss, biting, closed_eyes, heavy_blush)",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【寧々＆夏目・大人のアフターストーリー・二人のヒロインによる至福の修羅フィールド】薬物と感情の同調率が200％を超えるという極限の制約の中、二人の少女は普段の拘束を完全に放棄した。ベッドの上の服は全部なくなり、シーツもぐちゃぐちゃになっていました。寧々はあなたにまたがり、顔は汗と赤面で覆われ、両手はあなたの手でしっかりと握り締められ、必死にあなたの温もりを求めています。夏目が後ろからしがみつき、首筋に熱い唇を噛みつきます。ここは病的な愛と汗と肉体が詰まった至福のブラックホール――「柊史、店長……私たちの心の防壁は、とっくに消えてる。だから今夜は、ずっとそばにいて。」",
     "rating": "R18"
   },
@@ -325,6 +327,7 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
+      "adult",
       "hair_ribbon",
       "mole_under_eye",
       "2girls",
@@ -360,8 +363,8 @@
       "绝对独占",
       "成人向"
     ],
-    "prompt": "2girls, bed, bedroom, night, extreme_intimacy, heavy_blush, sweat, messy_hair, interlocked_fingers, in_love, looking_at_viewer, (ayachi_nene_on_the_left, hair_ribbon, ahoge, unbuttoned_shirt, open_mouth, passionate_look) BREAK  (shiki_natsume_on_the_right, mole_under_eye, off_shoulder_pajamas, neck_kiss, closed_eyes, intense_blush)",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic",
+    "prompt": "2girls, adult, bed, bedroom, night, extreme_intimacy, heavy_blush, sweat, messy_hair, interlocked_fingers, in_love, looking_at_viewer, (ayachi_nene_on_the_left, hair_ribbon, ahoge, unbuttoned_shirt, open_mouth, passionate_look) BREAK (shiki_natsume_on_the_right, mole_under_eye, off_shoulder_pajamas, neck_kiss, closed_eyes, intense_blush)",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【寧々＆夏目・大人のAfter Story・心がほどける夜】誰にも邪魔されない部屋で、三人は長い一日の終わりを迎えていた。寧々はあなたの左手を握り、安心したように肩を寄せている。夏目も反対側からそっと寄りかかり、いつもの強がりを忘れた穏やかな表情を見せた。魔法と異能、二つの世界を隔てていた壁はもうない。窓の外で夜が静かに更けていくなか、三人の呼吸だけが同じ速さへ重なっていった。",
     "rating": "R18"
   }

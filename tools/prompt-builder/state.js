@@ -13,6 +13,7 @@ var MODEL_PROFILES = [];
 var LORA_META = [];
 var ACTIVE_MODEL_PROFILE = null;
 var SCENE_THEME = 'all';
+var SCENE_LIBRARY_MODE = localStorage.getItem('aics_scene_library_mode') === 'all' ? 'all' : 'curated';
 var TAGS = {};
 var TAG_CN = {};
 var CURRENT_STEP = 1;
@@ -51,6 +52,7 @@ var state = {
   selections: { emotion:[], shot:null, lighting:null, composition:null },
   colorMood: null,
   manualTags: new Set(),
+  storyIntent: { tags:[], matched:[] },
   concise: false,
   history: []
 };
@@ -228,7 +230,8 @@ const PROMPT_MAP = {
   character: {
     nene:'1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon',
     natsume:'1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip',
-    triad:'2girls, ayachi_nene, white_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip'
+    // 双人 DNA 由 Prompt Policy 写入各自 BREAK 分区，避免发色/瞳色串到另一人。
+    triad:'2girls'
   }
 };
 

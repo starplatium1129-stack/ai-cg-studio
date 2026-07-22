@@ -55,28 +55,99 @@ function effectiveModelName(){
   return selected && selected.value ? selected.value : (_sdCapabilities && _sdCapabilities.currentModel ? _sdCapabilities.currentModel : '');
 }
 
+function sceneRatingKey(scene){
+  var rating = String(scene && scene.rating || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+  if (rating === 'R18' || (scene && scene.mature)) return 'r18';
+  if (rating === 'R15') return 'r15';
+  return 'all';
+}
+
+function profileRatingTag(profile, scene){
+  if (!profile) return '';
+  var rating = sceneRatingKey(scene);
+  if (rating === 'r18') return profile.rating_r18 != null ? profile.rating_r18 : (profile.rating_mature || '');
+  // R15 is deliberately not treated as `safe`: that tag can fight the
+  // suggestive-but-non-explicit direction of these scenes.
+  if (rating === 'r15') return profile.rating_r15 || '';
+  return profile.rating_all != null ? profile.rating_all : (profile.rating_safe || '');
+}
+
+function resolveCurrentModelProfile(modelName){
+  var candidate = modelName == null ? effectiveModelName() : String(modelName || '');
+  var matched = findModelProfile(candidate);
+  if (matched) return matched;
+  // 离线且没有任何模型信息时，使用本站角色 LoRA 的默认训练底模。
+  // 一旦 WebUI 明确返回了未知模型，则尊重“保留自定义参数”的提示，
+  // 不再把旧的 ACTIVE_MODEL_PROFILE 或首个 profile 偷渡进生成参数。
+  if (!normalizeModelName(candidate)) return ACTIVE_MODEL_PROFILE || (MODEL_PROFILES && MODEL_PROFILES[0]) || null;
+  return null;
+}
+
 function currentQualityPrefix(scene){
-  var profile = ACTIVE_MODEL_PROFILE || findModelProfile(effectiveModelName());
+  // 本站角色 LoRA 以 WAI/Illustrious 训练；离线或尚未识别模型时使用首个
+  // profile，而不是退回一组与项目无关的通用 SDXL 词。
+  var profile = resolveCurrentModelProfile();
   var prefix = profile && profile.quality_prefix ? profile.quality_prefix : 'masterpiece, best_quality, very_aesthetic, absurdres';
-  if (profile) {
-    var rating = scene && scene.mature ? profile.rating_mature : profile.rating_safe;
-    if (rating) prefix = mergeTokenText(prefix, rating);
-  }
+  var rating = profileRatingTag(profile, scene);
+  if (rating) prefix = mergeTokenText(prefix, rating);
   return prefix;
 }
 
-function currentModelNegativePrefix(){
-  var profile = ACTIVE_MODEL_PROFILE || findModelProfile(effectiveModelName());
-  return profile && profile.negative_prefix ? profile.negative_prefix : '';
+// With only `scene`, this remains backwards-compatible and returns the model
+// prefix. Passing a base negative prompt also applies the profile's merge mode,
+// which lets prompt.js opt into `negative_mode: "replace"` without duplicating
+// profile logic.
+function currentModelNegativePrefix(scene, baseNegative){
+  var profile = resolveCurrentModelProfile();
+  var prefix = profile && profile.negative_prefix ? profile.negative_prefix : '';
+  if (arguments.length < 2) return prefix;
+  if (profile && typeof AICPromptPolicy !== 'undefined' && AICPromptPolicy.mergeNegativePrompt) {
+    return AICPromptPolicy.mergeNegativePrompt(
+      prefix,
+      baseNegative || '',
+      profile.negative_mode,
+      profile.negative_replace_scope
+    );
+  }
+  // The policy module normally owns selective replacement. If it is missing,
+  // retain the base prompt instead of risking loss of scene safety/semantics.
+  return mergeTokenText(prefix, baseNegative || '');
+}
+
+function currentHiresProfileSettings(modelName){
+  var profile = resolveCurrentModelProfile(modelName);
+  var hires = profile && profile.hires && typeof profile.hires === 'object' ? profile.hires : {};
+  function firstValue(primary, nested){ return primary != null ? primary : nested; }
+  function finiteNumber(value){
+    var parsed = Number(value);
+    return value !== '' && value != null && Number.isFinite(parsed) ? parsed : null;
+  }
+  if (!profile) return { steps:null, denoisingStrength:null, scale:null, upscaler:'' };
+  return {
+    steps:finiteNumber(firstValue(profile.hires_steps, hires.steps)),
+    denoisingStrength:finiteNumber(firstValue(
+      profile.hires_denoising_strength != null ? profile.hires_denoising_strength : profile.denoising_strength,
+      hires.denoising_strength != null ? hires.denoising_strength : hires.denoise
+    )),
+    scale:finiteNumber(firstValue(profile.hires_scale, hires.scale)),
+    upscaler:String(firstValue(profile.hires_upscaler, hires.upscaler) || '')
+  };
 }
 
 function setSelectValueInsensitive(id, value){
   var select = document.getElementById(id);
-  if (!select) return;
+  if (!select) return false;
   var wanted = String(value == null ? '' : value);
   var match = Array.from(select.options).find(function(option){ return option.value.toLowerCase() === wanted.toLowerCase(); });
-  if (match) select.value = match.value;
-  else ensureSelectValue(id, wanted);
+  if (match) {
+    select.value = match.value;
+    return true;
+  }
+  // Once capabilities are known, never append an option that the backend did
+  // not advertise. Before connection, saved/local values remain supported.
+  if (_sdCapabilities && ['sdModel','sampler','scheduler','sdHiresUpscaler'].indexOf(id) !== -1) return false;
+  ensureSelectValue(id, wanted);
+  return true;
 }
 
 function applyModelProfile(modelName, force){
@@ -88,7 +159,14 @@ function applyModelProfile(modelName, force){
     updateLivePreview();
     return false;
   }
-  if (hint) hint.textContent = '已匹配 ' + profile.name + ' · ' + profile.sampler + ' · ' + profile.steps + ' steps · CFG ' + profile.cfg;
+  if (hint) {
+    var incompatibleLora = (LORA_META || []).some(function(meta){
+      if (!meta || !(meta.compatible_models || []).length) return false;
+      return !(meta.compatible_models || []).some(function(candidate){ return normalizeModelName(modelName).indexOf(normalizeModelName(candidate)) !== -1; });
+    });
+    hint.textContent = '已匹配 ' + profile.name + ' · ' + profile.sampler + ' · ' + profile.steps + ' steps · CFG ' + profile.cfg +
+      (incompatibleLora ? ' · 当前角色 LoRA 未标注兼容此底模' : '');
+  }
   var settings = readSDSettings();
   var signature = normalizeModelName(modelName);
   if (!force && settings.profileModel === signature) {
@@ -100,6 +178,9 @@ function applyModelProfile(modelName, force){
   if (profile.sampler != null) setSelectValueInsensitive('sampler', profile.sampler);
   if (profile.scheduler != null) setSelectValueInsensitive('scheduler', profile.scheduler);
   if (profile.size) setSelectValueInsensitive('size', profile.size);
+  var hiresProfile = currentHiresProfileSettings(modelName);
+  if (hiresProfile.scale != null) setSelectValueInsensitive('sdHiresScale', hiresProfile.scale);
+  if (hiresProfile.upscaler) setSelectValueInsensitive('sdHiresUpscaler', hiresProfile.upscaler);
   saveSDSettings();
   updateLivePreview();
   flash('🎯 已为 ' + profile.name + ' 匹配稳定参数');
@@ -126,10 +207,40 @@ function saveSDSettings(){
     profileId: ACTIVE_MODEL_PROFILE ? ACTIVE_MODEL_PROFILE.id : ''
   };
   try { localStorage.setItem(SD_SETTINGS_KEY, JSON.stringify(settings)); } catch(e) {}
+  updateSDBudgetHint();
+}
+
+function currentSDBudget(){
+  var sizeValue = document.getElementById('size') ? document.getElementById('size').value : '832×1216';
+  var size = String(sizeValue).replace('×','x').split('x').map(Number);
+  var hires = !!(document.getElementById('sdHiresFix') && document.getElementById('sdHiresFix').checked);
+  var scale = hires && document.getElementById('sdHiresScale') ? (Number(document.getElementById('sdHiresScale').value) || 1.5) : 1;
+  var width = Math.round((size[0] || 832) * scale);
+  var height = Math.round((size[1] || 1216) * scale);
+  var megapixels = width * height / 1000000;
+  return { width:width, height:height, megapixels:megapixels, hires:hires, scale:scale };
+}
+
+function updateSDBudgetHint(){
+  var hint = document.getElementById('sdBudgetHint');
+  if (!hint) return;
+  var budget = currentSDBudget();
+  var level = budget.megapixels > 6 ? 'danger' : (budget.megapixels > 3.2 ? 'warn' : 'ok');
+  var aspect = typeof AICPromptPolicy !== 'undefined'
+    ? AICPromptPolicy.recommendAspect(Array.from(state.manualTags || []), state.char)
+    : '';
+  var sizeValue = document.getElementById('size') ? document.getElementById('size').value : '';
+  var portrait = /^\d+×\d+$/.test(sizeValue) && Number(sizeValue.split('×')[0]) < Number(sizeValue.split('×')[1]);
+  var aspectTip = aspect === 'landscape' && portrait ? ' · 当前是远景/双人，横图通常更稳' : '';
+  hint.className = 'sd-budget-hint' + (level === 'ok' ? '' : ' ' + level);
+  hint.textContent = '最终 ' + budget.width + '×' + budget.height + ' · ' + budget.megapixels.toFixed(1) + ' MP' +
+    (level === 'danger' ? ' · 显存风险高，建议降尺寸或关闭 hires.fix' : (level === 'warn' ? ' · 需要较多显存' : ' · 显存负担适中')) + aspectTip;
+  return budget;
 }
 
 function initSDSettings(){
   var settings = readSDSettings();
+  var hasSavedSettings = Object.keys(settings).length > 0;
   if (settings.checkpoint) ensureSelectValue('sdModel', settings.checkpoint);
   if (settings.sampler) ensureSelectValue('sampler', settings.sampler);
   if (settings.scheduler != null) ensureSelectValue('scheduler', settings.scheduler);
@@ -154,6 +265,11 @@ function initSDSettings(){
   });
   var model = document.getElementById('sdModel');
   if (model) model.addEventListener('change', function(){ applyModelProfile(effectiveModelName(), true); });
+  if (!hasSavedSettings && MODEL_PROFILES && MODEL_PROFILES[0]) {
+    var defaultProfileName = (MODEL_PROFILES[0].match || [MODEL_PROFILES[0].name])[0];
+    applyModelProfile(defaultProfileName, true);
+  }
+  updateSDBudgetHint();
 }
 
 function showQuickCreateStatus(message, isError){
@@ -170,7 +286,9 @@ function applyLastSuccessfulSettings(){
   if (!settings) return null;
   var fallbacks = [];
   function hasCapability(items, wanted, fields, normalize){
-    if (!items || !items.length || !wanted) return true;
+    if (!wanted) return true;
+    if (!items) return true;
+    if (!items.length) return false;
     var target = normalize ? normalizeModelName(wanted) : String(wanted).toLowerCase();
     return items.some(function(item){
       return fields.some(function(field){
@@ -239,7 +357,11 @@ function quickCreateCurrent(knownConnection){
 
 function replaceSDSelect(id, items, preferred, placeholder){
   var select = document.getElementById(id);
-  if (!select || !items.length) return;
+  if (!select) return;
+  // Keep a local fallback only when the backend could not provide this
+  // capability at all. Selects with an explicit placeholder (notably the
+  // scheduler) are reset so stale, unsupported options cannot leak through.
+  if (!items.length && !placeholder) return;
   var values = [];
   select.textContent = '';
   if (placeholder) {
@@ -289,7 +411,53 @@ function populateSDCapabilities(capabilities){
   replaceSDSelect('sampler', capabilities.samplers.map(function(item){ return item.name || item.label || ''; }), currentSampler, '');
   replaceSDSelect('scheduler', capabilities.schedulers.map(function(item){ return item.name || item.label || ''; }), currentScheduler, '自动');
   replaceSDSelect('sdHiresUpscaler', capabilities.upscalers.map(function(item){ return item.name || item.model_name || ''; }), currentUpscaler, '');
-  applyModelProfile(currentModelChoice || capabilities.currentModel, false);
+  // `currentModelChoice` may have been a saved checkpoint that disappeared.
+  // Profile the value that survived capability replacement, or the WebUI's
+  // actual current model when the placeholder is selected.
+  var selectedModel = modelSelect && modelSelect.value ? modelSelect.value : capabilities.currentModel;
+  applyModelProfile(selectedModel, false);
+}
+
+function capabilityNames(items, fields){
+  return (Array.isArray(items) ? items : []).map(function(item){
+    if (typeof item === 'string') return item;
+    for (var index = 0; index < fields.length; index += 1) {
+      if (item && item[fields[index]]) return String(item[fields[index]]);
+    }
+    return '';
+  }).filter(Boolean);
+}
+
+function availableName(names, wanted){
+  var target = String(wanted || '').toLowerCase();
+  if (!target) return '';
+  return names.find(function(name){ return String(name).toLowerCase() === target; }) || '';
+}
+
+function resolveSDSamplingSelection(sampler, scheduler){
+  var desiredSampler = String(sampler || '');
+  var desiredScheduler = String(scheduler || '');
+  if (!_sdCapabilities) return { sampler:desiredSampler, scheduler:desiredScheduler };
+  var samplers = capabilityNames(_sdCapabilities.samplers, ['name','label']);
+  var schedulers = capabilityNames(_sdCapabilities.schedulers, ['name','label']);
+
+  // Older WebUI variants expose scheduler-specific samplers instead of a
+  // scheduler endpoint. Use that form only when the combined name was
+  // explicitly advertised; never manufacture an unsupported sampler name.
+  if (!schedulers.length && desiredScheduler && samplers.length) {
+    var combined = availableName(samplers, desiredSampler + ' ' + desiredScheduler);
+    if (combined) return { sampler:combined, scheduler:'' };
+  }
+
+  var resolvedSampler = availableName(samplers, desiredSampler);
+  if (!resolvedSampler && samplers.length) {
+    resolvedSampler = availableName(samplers, 'Euler a') || samplers[0];
+  }
+  if (!resolvedSampler) resolvedSampler = desiredSampler;
+  return {
+    sampler:resolvedSampler,
+    scheduler:schedulers.length ? availableName(schedulers, desiredScheduler) : ''
+  };
 }
 
 function detectGateway(){
@@ -398,9 +566,11 @@ function clearSDRecovery(){
 function runSDRecovery(action){
   clearSDRecovery();
   if (action === 'retry_light') {
-    ensureSelectValue('size', '768×1344');
+    // 768×1344 is slightly *more* pixels than the common 832×1216 preset.
+    // Use a genuinely low-memory canvas for OOM recovery.
+    ensureSelectValue('size', '640×960');
     var hires = document.getElementById('sdHiresFix'); if (hires) hires.checked = false;
-    saveSDSettings(); updateLivePreview(); flash('已降低尺寸并关闭 hires.fix，正在重试');
+    saveSDSettings(); updateLivePreview(); flash('已切换到 640×960 并关闭 hires.fix，正在重试');
     callSDGenerate();
     return;
   }
@@ -462,10 +632,13 @@ function renderSDRecovery(error){
 
 function callSDGenerate(requestOptions){
   requestOptions = requestOptions || {};
-  if (_sdGeneration) return;
+  if (_sdGeneration) return Promise.resolve({ status:'failure', reason:'busy' });
   var queuedJob = requestOptions.job || null;
   var prompt = queuedJob ? queuedJob.prompt : getPlainPrompt();
-  if (!prompt) { flash('⚠️ 请先生成 Prompt'); return; }
+  if (!prompt) {
+    flash('⚠️ 请先生成 Prompt');
+    return Promise.resolve({ status:'failure', reason:'empty_prompt' });
+  }
   var area = document.getElementById('sdResultArea');
   var status = document.getElementById('sdStatus');
   var slot = document.getElementById('sdImageSlot');
@@ -491,14 +664,13 @@ function callSDGenerate(requestOptions){
 
   var cfg = queuedJob ? queuedJob.cfg : (Number(document.getElementById('cfg').value) || 5.5);
   var steps = queuedJob ? queuedJob.steps : (Number(document.getElementById('steps').value) || 28);
-  var sampler = queuedJob ? queuedJob.sampler : (document.getElementById('sampler').value || 'DPM++ 2M');
-  var scheduler = queuedJob ? queuedJob.scheduler : (document.getElementById('scheduler').value || '');
+  var samplerChoice = queuedJob ? queuedJob.sampler : (document.getElementById('sampler').value || 'DPM++ 2M');
+  var schedulerChoice = queuedJob ? queuedJob.scheduler : (document.getElementById('scheduler').value || '');
+  var sampling = resolveSDSamplingSelection(samplerChoice, schedulerChoice);
+  var sampler = sampling.sampler || samplerChoice || 'DPM++ 2M';
+  var scheduler = sampling.scheduler;
   var selectedSampler = sampler;
   var selectedScheduler = scheduler;
-  if (_sdCapabilities && !_sdCapabilities.schedulers.length && scheduler && sampler.toLowerCase().indexOf(scheduler.toLowerCase()) === -1) {
-    sampler += ' ' + scheduler;
-    scheduler = '';
-  }
   var selectedSize = queuedJob ? queuedJob.size : (document.getElementById('size').value || '832×1216');
   var size = selectedSize.replace('×','x').split('x');
   var seed = -1;
@@ -509,9 +681,30 @@ function callSDGenerate(requestOptions){
   var currentCharacter = queuedJob ? queuedJob.char : state.char;
   var currentScene = SCENES.find(function(scene){ return scene.id === currentSceneId; });
   var lora = requestOptions.disableLora ? '' : (queuedJob ? queuedJob.lora : resolveLoraSpecs(currentCharacter, currentScene).map(loraSpecText).join(', '));
+  if (lora && _sdCapabilities && Array.isArray(_sdCapabilities.loras) && _sdCapabilities.loras.length) {
+    var installedLoras = _sdCapabilities.loras.map(function(item){ return normalizeModelName(item && (item.name || item.alias || item.path)); }).filter(Boolean);
+    var missingLoras = String(lora).split(',').map(function(spec){ return spec.trim().replace(/^<lora:/i,'').replace(/>$/,'').split(':')[0]; }).filter(function(name){
+      var wanted = normalizeModelName(name);
+      return wanted && !installedLoras.some(function(installed){ return installed === wanted || installed.indexOf(wanted) !== -1; });
+    });
+    if (missingLoras.length) flash('⚠️ SD WebUI 未检测到 LoRA：' + missingLoras.join('、') + '；仍会尝试生成');
+  }
   prompt = prompt.replace(/<lora:[^>]+>/g, '').replace(/,\s*,/g, ',').replace(/^,\s*/, '').replace(/,\s*$/, '').trim();
   var hiresEnabled = queuedJob ? !!queuedJob.hiresFix : document.getElementById('sdHiresFix').checked;
-  var hiresScale = queuedJob ? queuedJob.hiresScale : (Number(document.getElementById('sdHiresScale').value) || 1.5);
+  var generationModel = queuedJob ? queuedJob.checkpoint : effectiveModelName();
+  var hiresProfile = currentHiresProfileSettings(generationModel);
+  var hiresScale = queuedJob
+    ? (Number(queuedJob.hiresScale) || 1.5)
+    : (Number(document.getElementById('sdHiresScale').value) || hiresProfile.scale || 1.5);
+  var hiresUpscaler = queuedJob
+    ? (queuedJob.hiresUpscaler || hiresProfile.upscaler || 'Latent')
+    : (document.getElementById('sdHiresUpscaler').value || hiresProfile.upscaler || 'Latent');
+  var hiresSteps = queuedJob && queuedJob.hiresSteps != null
+    ? Number(queuedJob.hiresSteps)
+    : (hiresProfile.steps != null ? hiresProfile.steps : 14);
+  var denoisingStrength = queuedJob && queuedJob.denoisingStrength != null
+    ? Number(queuedJob.denoisingStrength)
+    : (hiresProfile.denoisingStrength != null ? hiresProfile.denoisingStrength : 0.35);
   var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
   var generation = {
     controller: controller,
@@ -536,9 +729,9 @@ function callSDGenerate(requestOptions){
     char: currentCharacter,
     checkpoint: queuedJob ? queuedJob.checkpoint : (document.getElementById('sdModel').value || ''),
     enableHires: hiresEnabled,
-    hiresUpscaler: queuedJob ? queuedJob.hiresUpscaler : (document.getElementById('sdHiresUpscaler').value || 'Latent'),
-    hiresSteps: 14,
-    denoisingStrength: 0.35,
+    hiresUpscaler: hiresUpscaler,
+    hiresSteps: Number.isFinite(hiresSteps) ? hiresSteps : 14,
+    denoisingStrength: Number.isFinite(denoisingStrength) ? denoisingStrength : 0.35,
     hiresScale: hiresScale,
     signal: controller ? controller.signal : undefined
   };
@@ -551,12 +744,17 @@ function callSDGenerate(requestOptions){
     steps: steps,
     size: selectedSize,
     hiresFix: hiresEnabled,
-    hiresUpscaler: queuedJob ? queuedJob.hiresUpscaler : (document.getElementById('sdHiresUpscaler').value || 'Latent'),
+    hiresUpscaler: hiresUpscaler,
     hiresScale: hiresScale
   };
 
   return getSDConnector().generateImage(prompt, queuedJob ? queuedJob.negative : getPlainNegative(), options).then(function(result){
-    if (_sdGeneration !== generation || generation.cancelled) return;
+    if (_sdGeneration !== generation || generation.cancelled) {
+      status.textContent = '已停止生成';
+      if (progress) progress.hidden = true;
+      clearSDRecovery();
+      return { status:'cancelled' };
+    }
     _sdLastResult = result;
     if (queuedJob) _sdLastResult.queueJob = queuedJob;
     _sdLastDataUrl = result.image;
@@ -576,6 +774,10 @@ function callSDGenerate(requestOptions){
     image.alt = 'Stable Diffusion 生成图片';
     slot.replaceChildren(image);
     saveActions.style.display = 'flex';
+    if (typeof finishFirstCreation === 'function') {
+      try { finishFirstCreation(); }
+      catch (firstCreationError) { console.warn('first creation state update failed', firstCreationError); }
+    }
     clearSDRecovery();
     if (!successfulSettings.checkpoint && result.info && result.info.sd_model_name) successfulSettings.checkpoint = result.info.sd_model_name;
     var savedSettings = AICQuickCreate.write(successfulSettings, localStorage);
@@ -598,14 +800,17 @@ function callSDGenerate(requestOptions){
       }).then(function(){
         status.textContent = '✅ 队列作品已自动保存到历史 · ' + elapsed + ' 秒';
         if (historySaveButton) historySaveButton.textContent = '✓ 队列已保存';
+        return { status:'success', result:result };
       }).catch(function(saveError){
         console.error('queue result save failed', saveError);
         pauseSDQueue();
         status.textContent = '⚠️ 图片已生成，但自动保存失败；当前图已保留，请手动保存后继续队列。';
         if (historySaveButton) { historySaveButton.disabled = false; historySaveButton.textContent = '💾 保存到历史'; }
         flash('队列已暂停：' + (saveError.message || '本地存储失败'));
+        return { status:'failure', reason:'save_failed', error:saveError, result:result };
       });
     }
+    return { status:'success', result:result };
   }).catch(function(error){
     console.error('[SD API] 生成失败:', error);
     document.getElementById('stepResult').classList.remove('has-image');
@@ -614,6 +819,7 @@ function callSDGenerate(requestOptions){
     status.textContent = recovery.kind === 'cancelled' ? '已停止生成' : '❌ ' + recovery.title + '：' + recovery.message;
     if (quickBanner && !quickBanner.hidden) showQuickCreateStatus(recovery.kind === 'cancelled' ? '已停止生成；最近成功参数没有被覆盖。' : recovery.title + '；已保留 Prompt 和最近成功参数。', true);
     if (progress) progress.hidden = true;
+    return { status:recovery.kind === 'cancelled' || generation.cancelled ? 'cancelled' : 'failure', error:error, recovery:recovery };
   }).finally(function(){ finishSDGeneration(generation); });
 }
 
@@ -657,12 +863,15 @@ function toggleLivePrompt() {
   if (arrow) arrow.style.transform = body.classList.contains('open') ? 'rotate(90deg)' : '';
 }
 function resetDirector() {
-  state.story = ''; state.__sceneId = null; state.selections = { emotion:[], shot:null, lighting:null, composition:null }; state.colorMood = null; state.manualTags = new Set();
-  document.getElementById('storyInput').value = '';
+  if (typeof clearSceneContext === 'function') clearSceneContext({ keepStory:false, silent:true });
+  else {
+    state.story = ''; state.__sceneId = null; state.__sceneBaseStory = ''; state.selections = { emotion:[], shot:null, lighting:null, composition:null }; state.colorMood = null; state.manualTags = new Set();
+    document.getElementById('storyInput').value = '';
+  }
+  try { if (typeof DRAFT_KEY !== 'undefined') localStorage.removeItem(DRAFT_KEY); } catch(e) {}
   document.getElementById('stepResult').classList.remove('has-image');
   document.getElementById('sdResultArea').style.display = 'none';
   document.getElementById('sdImageSlot').textContent = '';
-  document.querySelectorAll('#chip-emotion .chip-select.selected,#opt-shot .option.selected,#opt-lighting .option.selected,#opt-composition .option.selected,#moodGrid .mood-card.selected').forEach(o => o.classList.remove('selected'));
   goStep(1);
   renderDirectorModeSummary();
   dismissFirstSuccessTip();

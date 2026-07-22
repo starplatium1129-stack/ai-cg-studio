@@ -818,7 +818,7 @@
       "heart_rate_monitor_in_background",
       "joy",
       "high_energy",
-      "adult_woman",
+      "adult",
       "sensor_headset",
       "soft_smile",
       "laboratory",
@@ -837,7 +837,7 @@
     "usage": [
       "实验CG"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, ahoge, heart_rate_monitor, looking_at_viewer, monitoring_equipment, heart_rate_monitor_in_background, joy, high_energy, adult_woman, sensor_headset, soft_smile, laboratory, afternoon, clear_sky, upper_body, medium_shot, smile, happy, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, heart_rate_monitor, looking_at_viewer, monitoring_equipment, heart_rate_monitor_in_background, joy, high_energy, adult, sensor_headset, soft_smile, laboratory, afternoon, clear_sky, upper_body, medium_shot, smile, happy, <lora:ayachi_nene_v11:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・大人のクロスオーバーAU・感情同調キャリブレーション】明るい実験室では、大人の寧々が軽量の心拍数センサーを身に着けており、アホ毛が画面上の感情曲線に合わせて優しく揺れています。あなたの幸せがデバイスによって増幅された後、彼女も笑わずにはいられませんでしたが、すべてのピークを注意深く記録しました。シンクロ率が上がり続けることに気づき、顔を赤らめて胸を押さえた――「安心って、こんなにはっきりした形になるんですね……このデータは、ほかの人には見せちゃだめです。」",
     "rating": "All"
@@ -1231,7 +1231,6 @@
       "summer",
       "afternoon",
       "clear_sky",
-      "medium_shot",
       "full_body",
       "over_shoulder",
       "blush",
@@ -1246,7 +1245,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, beach, swimsuit, looking_back, beach_coverup, walking_out_of_water, shy_smile, ocean, summer, afternoon, clear_sky, medium_shot, full_body, over_shoulder, blush, shy, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, beach, swimsuit, looking_back, beach_coverup, walking_out_of_water, shy_smile, ocean, summer, afternoon, clear_sky, full_body, over_shoulder, blush, shy, <lora:ayachi_nene_v11:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・波紋エッジの水着を振り返る】真夏の午後、寧々さんが新しい水着を着て浅瀬から出てきたところ、外側のカバーが潮風で飛ばされてしまいました。あなたの視線に気づいた彼女は、恥ずかしそうに服の裾を引っ張り、勇気を出して振り向くと、服装全体がはっきりと見えました。――「ずいぶん迷って、これに決めたんです。感想は聞かせてほしいですけど、一か所ばかり見ないで……ちゃんと全部見てくださいね。」",
     "rating": "All"
@@ -1269,7 +1268,6 @@
       "hair_ribbon",
       "rain",
       "school_uniform",
-      "close_up",
       "wet_clothes",
       "wearing_borrowed_coat",
       "under_eaves",
@@ -1292,7 +1290,7 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, rain, school_uniform, close_up, wet_clothes, wearing_borrowed_coat, under_eaves, caring, vulnerable_expression, afternoon, overcast, medium_shot, soft_lighting, diffused_light, blush, shy, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, rain, school_uniform, wet_clothes, wearing_borrowed_coat, under_eaves, caring, vulnerable_expression, afternoon, overcast, medium_shot, soft_lighting, diffused_light, blush, shy, <lora:ayachi_nene_v11:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・大雨の中での学生服の上着】学校が終わる頃に激しい雨が降りました。寧々さんの制服の上着は雨で濡れ、寒さで肩を縮めた。あなたは急いで駆け寄り、彼女の体にコートを掛けました。最初はあなたが風邪をひくのではないかと心配していましたが、二人で軒下に隠れられるのを確認してからは安心しました。雨の音の中、彼女はコートの前を握りしめた――「探しに来てくれて、ありがとうございます。服が濡れたことは平気です……ただ、さっき一人で立っていたとき、少しだけ怖くて。」",
     "rating": "All"
@@ -1367,7 +1365,6 @@
       "sunset",
       "rim_light",
       "clear_sky",
-      "medium_shot",
       "full_body",
       "over_shoulder",
       "golden_hour",
@@ -1383,7 +1380,7 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, beach, swimsuit, looking_back, beach_coverup, windblown_hair, ocean, sunset, rim_light, clear_sky, medium_shot, full_body, over_shoulder, golden_hour, backlighting, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, beach, swimsuit, looking_back, beach_coverup, windblown_hair, ocean, sunset, rim_light, clear_sky, full_body, over_shoulder, golden_hour, backlighting, <lora:ayachi_nene_v11:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・夕日の中での水着の後ろ姿】夕暮れの海岸で、薄いコートを着て前を歩いていた寧々が突然呼び止められました。振り返ると、夕日が濡れた髪の先と水着の輪郭を金色に輝かせた。あなたが彼女を真剣に見ていることに気づいた彼女は、風でめくれ上がった服の裾を恥ずかしそうに押さえましたが、あなたに促すことはありませんでした。――「写真はいいですけど、海も一緒に入れてください。あとで見返したとき、今日の風と、あなたが立っていた場所まで思い出したいから。」",
     "rating": "All"
@@ -1467,7 +1464,6 @@
       "serene",
       "afternoon",
       "overcast",
-      "medium_shot",
       "full_body",
       "soft_lighting",
       "diffused_light",
@@ -1484,7 +1480,7 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, rain, standing, park, hair_blowing, umbrella, bamboo_forest, transparent_umbrella, walking, windblown_hair, wet_stone_path, serene, afternoon, overcast, medium_shot, full_body, soft_lighting, diffused_light, calm, relaxed, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, rain, standing, park, hair_blowing, umbrella, bamboo_forest, transparent_umbrella, walking, windblown_hair, wet_stone_path, serene, afternoon, overcast, full_body, soft_lighting, diffused_light, calm, relaxed, <lora:ayachi_nene_v11:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・霧雨の竹林の足音】霧雨が笹の葉の上に落ち、寧々は傘をさし、ブルーストーンの道をゆっくりと歩きました。彼女はあなたが肩を並べられるようにわざと速度を落とし、傘は常にあなたの側に傾いていました。風が吹くと銀色の長い髪がしっとりとした緑の中でそっと舞い上がる――「二人分の足音まで聞こえるくらい、静かですね。そんなに早く歩かないでください。この道のこと、もう少し長く覚えていたいから。」",
     "rating": "All"
@@ -1515,7 +1511,6 @@
       "running",
       "expectant",
       "clear_sky",
-      "medium_shot",
       "full_body",
       "golden_hour",
       "bright_eyes",
@@ -1531,7 +1526,7 @@
       "头像",
       "CG"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, sunset, smile, casual_clothes, holding, amusement_park, holding_cotton_candy, ferris_wheel, running, expectant, clear_sky, medium_shot, full_body, golden_hour, bright_eyes, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, sunset, smile, casual_clothes, holding, amusement_park, holding_cotton_candy, ferris_wheel, running, expectant, clear_sky, full_body, golden_hour, bright_eyes, <lora:ayachi_nene_v11:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・観覧車の前で飛びそうになったマシュマロ】夕暮れの遊園地で、寧々がマシュマロを持ってあなたに向かって走ってきて、風でキャンディの束があなたの顔に当たりそうになりました。急いで整理している間に、彼女は長い間並んで手に入れた観覧車のチケットをあなたに手渡しました。夕日が彼女の期待に満ちた表情を照らす――「最後の一周なら、ちょうど夜景が見えるんです。時間を計算したわけじゃありません……ただ、あなたと一緒ならもっと綺麗だろうって思って。」",
     "rating": "All"
@@ -1563,7 +1558,6 @@
       "summer",
       "afternoon",
       "clear_sky",
-      "medium_shot",
       "full_body",
       "smile",
       "happy",
@@ -1579,7 +1573,7 @@
       "头像",
       "CG"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, looking_back, dress, golden_hour, sunlight, white_sundress, sunflower_field, windblown_skirt, bright_smile, summer, afternoon, clear_sky, medium_shot, full_body, smile, happy, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, looking_back, dress, golden_hour, sunlight, white_sundress, sunflower_field, windblown_skirt, bright_smile, summer, afternoon, clear_sky, full_body, smile, happy, <lora:ayachi_nene_v11:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・ひまわり畑で振り向いて】真夏の午後、寧々さんは人の背丈を超えるひまわりの中を歩き、白いドレスが熱風にそよぐ。後ろからあなたが呼ぶ声が聞こえ、振り向くと彼女の笑顔が金色の花の海とともに輝きました。彼女はあなたのところに走って戻った後、遠くに見つけた最高の場所を指さしました。――「あそこからなら、花畑全体を撮れますよ。撮り終わったら、私たち二人の写真も一枚残してくださいね。」",
     "rating": "All"
@@ -2148,6 +2142,7 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
+      "adult",
       "white_hair",
       "very_long_hair",
       "low_twintails",
@@ -2157,7 +2152,6 @@
       "yukata",
       "open_yukata",
       "wet_clothes",
-      "transparent_clothing",
       "see_through_clothing",
       "no_bra",
       "bare_shoulders",
@@ -2182,61 +2176,9 @@
       "新手推荐",
       "成人向"
     ],
-    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, ahoge, hair_ribbon, yukata, open_yukata, wet_clothes, transparent_clothing, see_through_clothing, no_bra, bare_shoulders, cleavage, sitting_on_box, straddling_viewer, heavy_blush, panicked, storage_room, night, shadows, sensual",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic",
+    "prompt": "1girl, adult, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, yukata, open_yukata, wet_clothes, see_through_clothing, no_bra, bare_shoulders, cleavage, sitting_on_box, straddling_viewer, heavy_blush, panicked, storage_room, night, shadows, sensual",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【寧々】【寨々・神社倉庫の俄か雨と契約過負荷】夏祭りの最中に突如降ってきた豪雨の中、あなたと寨々は慌てて神社の裏手にある薄暗く古い木造の倉庫へと逃げ込んだ。寨々の浴衣は走っている間に雨水で完全に濡れそぼり、薄い生地がまるで透明であるかのように彼女の豊かな肢体にぴったりと張り付いていた。衣紋もすでに混乱の中で完全にはだけ、大きく豊かな胸元が露わになっている。密閉された空間の極度の緊張感のせいで、彼女の魔女の契約のオーラが瞬時にオーバーロードした。彼女は祭祀道具の積まれた木箱の上に跨ってあなたにぴったりと寄り添い、頭の上のアホ毛を猛烈に震わせて完璧なハート型に丸めながら、顔を真っ赤にして慌てて押し返しつつ涙声で自爆した――「うあぁ！柊、柊史！浴衣がすっかり濡れちゃったじゃない……そんな透けてるところばかり見ないでよ！べ、別にわざと契約を利用してあなたを誘惑したわけじゃないんだから……ん、早くきつく抱きしめて隠してよ、バカ！」",
-    "rating": "R18"
-  },
-  {
-    "id": "sc220",
-    "title": "琴键轰鸣间的羞耻协奏",
-    "category": "校园",
-    "story": "【成年 After Story · 宁宁】【成人 After Story · 宁宁】【宁宁 · 钢琴室黄昏跨坐】放学后彻底锁闭的音乐教室。黄昏的逆光穿透落地窗，将钢琴漆面染成一片碎金。原本答应教你弹琴的宁宁，因为你的身体从后方紧紧贴近而心跳过载，错按了琴键发出刺耳的轰鸣。她惊慌间想起身，裙摆却不慎挂在琴凳边缘，整个人直接反向跌进你怀里，变成了跨坐在你大腿上、双手死死撑在黑白琴键上的绝高能姿势。由于剧烈动作，她衬衫的纽扣崩开了两颗，露出了大片极具肉感的雪白酥胸。头顶的呆毛因为极度羞耻疯狂卷成爱心螺旋，红着脸自曝娇嗔——「呜啊！柊、柊史！不准按那边的琴键啦！人家、人家绝对没有故意用这种姿势来诱惑你……呜，越解释越奇怪了……笨蛋，快放开我啦！」",
-    "char": "nene",
-    "character": [
-      "nene"
-    ],
-    "lora": "ayachi_nene_v11",
-    "emotion": "恋爱",
-    "season": "夏",
-    "time": "黄昏",
-    "timeOfDay": "sunset",
-    "tags": [
-      "white_hair",
-      "very_long_hair",
-      "low_twintails",
-      "purple_eyes",
-      "ahoge",
-      "hair_ribbon",
-      "school_uniform",
-      "unbuttoned_shirt",
-      "cleavage",
-      "sitting_on_lap",
-      "straddling_viewer",
-      "leaning_forward",
-      "music_room",
-      "piano",
-      "sunset",
-      "backlit",
-      "heavy_blush",
-      "panicked",
-      "open_mouth",
-      "sensual",
-      "close_up"
-    ],
-    "mature": true,
-    "location": "音乐教室狭窄琴凳上",
-    "weather": "夕阳暖风",
-    "camera": "近景侧面特写",
-    "lighting": "夕阳穿透窗户的强逆光与轮廓光",
-    "usage": [
-      "绝对独占",
-      "壁纸级",
-      "成人向"
-    ],
-    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, ahoge, hair_ribbon, school_uniform, unbuttoned_shirt, cleavage, sitting_on_lap, straddling_viewer, leaning_forward, music_room, piano, sunset, backlit, heavy_blush, panicked, open_mouth, sensual",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic",
-    "storyJa": "【寧々・鍵盤の轟鳴と恥ずかしい協奏曲】放課後、完全にロックされた音楽室。夕方の逆光がフランス窓を通り抜け、ピアノの塗装面を砕けた金色に染めていた。あなたにピアノを教えると約束した寧々だったが、背後からあなたの体がぴったりと密着したことで心拍数がオーバーロードし、鍵盤を押し間違えて耳障りな轟音を響かせてしまった。彼女は慌てて起き上がろうとしたが、スカートの裾がピアノ椅子の端に引っかかってしまい、そのまま後ろ向きにあなたの胸の中に倒れ込み、大腿の上に跨って両手を白黒の鍵盤に突くという極めて過激なポーズになってしまった。激しい動きのせいで、彼女のシャツ的ボタンが二つ弾け飛び、肉感的な白い胸元が大きく露出している。頭の上のアホ毛は極度の恥ずかしさで猛烈に震えて完璧なハート型に丸まり、顔を真っ赤にして自爆の咆哮を上げた――「うあぁ！柊、柊史！そっちの鍵盤を押さないでよ！私、私は決してわざとこんなポーズであなたを誘惑したわけじゃ……うう、言い訳すればするほど変になる……バカ、早く離してよ！」",
     "rating": "R18"
   },
   {
@@ -2275,20 +2217,19 @@
       "panicked",
       "slight_frown",
       "romantic_atmosphere",
-      "close_up",
       "wide_shot",
       "full_body"
     ],
     "mature": false,
     "location": "教学楼反锁的天台中央",
-    "weather": "春日晴空",
-    "camera": "全景远景拉近特写",
+    "weather": "秋日晴空",
+    "camera": "全身远景，人物居中",
     "lighting": "完美的黄金时刻夕阳逆光与发丝轮廓光",
     "usage": [
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, white_dress, angel_wings, halo, feather_accessories, thighhighs, rooftop, school_rooftop, sunset, golden_hour, backlit, windy, heavy_blush, panicked, slight_frown, romantic_atmosphere",
+    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, white_dress, angel_wings, halo, feather_accessories, thighhighs, rooftop, school_rooftop, sunset, golden_hour, backlit, windy, heavy_blush, panicked, slight_frown, romantic_atmosphere, wide_shot, full_body",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・屋上の純白の福音と恥ずかしさ】文化祭の前夜、夕暮れに染まる学校の屋上。演劇部の手伝いで、寧々は非常に精緻な純白の聖なる天使のワンピースに着替えていた。背中の白い羽の翼と頭上の光る輪が、強い夕日の逆光の中で神聖な光輪を放っている。微風が吹き抜け、彼女の銀髪のローツインテールとスカートの裾が一緒に舞い上がる。少し恥ずかしそうに鏡の前でポーズの練習をしていたが、振り返るとあなたがドアの傍に寄りかかって微笑みながら見つめているのに気づいた。寧々は瞬間的に顔を真っ赤にし、頭の上のアホ毛が慌てて翼と一緒に震え出し、手でスカートを覆いながら大声で自爆した――「うあぁ！柊、柊史！いつからそこにいたの？！見ちゃダメ！私、私はただ演劇部の衣装を試着してるだけで、決してわざとこんな格好であなたを待ってたわけじゃ……うう、バカ、早く後ろを向いて！」",
     "rating": "All"
@@ -2338,7 +2279,7 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, ahoge, gothic_lolita_dress, frills, lace_trim, bonnet, greenhouse, flowers, rose, daylight, bright, heavy_blush, panicked, open_mouth, trapped_by_viewer, romantic_atmosphere",
+    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, gothic_lolita_dress, frills, lace_trim, bonnet, greenhouse, flowers, rose, daylight, bright, heavy_blush, panicked, open_mouth, trapped_by_viewer, romantic_atmosphere",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・華麗なゴシックロリータのギャップ自爆】盛夏の午後、陽光が降り注ぐ植物園のレトロなガラス温室。超自然研究部の活動撮影の必要性から、寧々は前代未聞の、非常に華麗で複雑な黒地に金の縁取りのゴシックロリータ風のドレスに身を包んでいた。幾重にも重なるレースのフリルと精緻なボンネットが、彼女をまるで古城の高貴な人形のように引き立てている。しかし、彼女が高い場所にある薔薇の一輪に手を伸ばそうとした時、複雑なスカートの裾とパニエが花の棚の端に引っかかってしまい、一瞬にしてバランスを崩した。あなたが目端を利かせて背後から彼女を支えると、寧々は視線が交わった瞬間に防衛線がオーバーロードし、顔を真っ赤にして衣装の端を掴み、頭のアホ毛を慌てて丸めながら支離滅裂に自爆した――「ま、待って！そんなおかしそうな目で私を見ないで！私、私は決してあなたにかわいいって思われたくて、クローゼットの前で二時間もこの服を選んでたわけじゃ……うう、言うほど変になる、バカ、今の忘れて！」",
     "rating": "All"
@@ -2358,6 +2299,7 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
+      "adult",
       "white_hair",
       "very_long_hair",
       "low_twintails",
@@ -2377,8 +2319,7 @@
       "night",
       "colorful_lighting",
       "romantic_atmosphere",
-      "close_up",
-      "medium_shot"
+      "close_up"
     ],
     "mature": false,
     "location": "神社后方偏僻半山草坡",
@@ -2389,7 +2330,7 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, ahoge, hair_ribbon, kimono, furisode, obi, heavy_blush, panicked, open_mouth, falling_forward, clinging_to_viewer, grassy_hill, fireworks, night, colorful_lighting, romantic_atmosphere",
+    "prompt": "1girl, adult, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, kimono, furisode, obi, heavy_blush, panicked, open_mouth, falling_forward, clinging_to_viewer, grassy_hill, fireworks, night, colorful_lighting, romantic_atmosphere",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・花火の夜空と緋色の自爆】夏祭りの最高潮を迎えた花火大会、喧騒から離れた神社裏手の深夜の草豊かな丘。寧々は今日、非常に豪華で美しい薄ピンク色の振袖和服一式に身を包み、大きな帯と複雑なリボンが彼女をまるで古典絵巻の中のお嬢様のように引き立てていた。夜空に巨大な花火が轟音と共に弾け飛ぶと、色とりどりのきらめく光が彼女の銀髪の清純な髪の毛に降り注ぐ。少し恥ずかしそうに振り向いてあなたに微笑もうとした瞬間、彼女は長い和服の裾に足を取られてしまい、小さく悲鳴を上げてあなたの胸の中に真っ直ぐ飛び込んできた。あなたが咄嗟に彼女をきつく抱きしめると、寧々は瞬間的に顔を真っ赤にし、頭の上のトレードマークのアホ毛が満天の花火に照らされながら慌てて完璧なハート型に丸まり、顔を真っ赤にして大声で自爆した――「うあぁ！柊、柊史！いつの間にそんなに近くにいたのよ？！私、私は決してわざと転んだフリをして抱きついたわけじゃ……うう、心臓の音が大きすぎるよ、バカ、目を閉じて！」",
     "rating": "All"
@@ -2490,7 +2431,7 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, ahoge, hair_ribbon, cheerleader, sleeveless, crop_top, bare_streaks, pleated_skirt, short_skirt, holding_pom_poms, heavy_blush, panicked, open_mouth, falling_forward, gymnasium, daylight, romantic_atmosphere",
+    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, cheerleader, sleeveless, crop_top, bare_streaks, pleated_skirt, short_skirt, holding_pom_poms, heavy_blush, panicked, open_mouth, falling_forward, gymnasium, daylight, romantic_atmosphere",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・体育館裏のオーバーロード応援自爆】体育祭当日、外は快晴、ロックされた学校の旧体育館の備品室。クラスの応援のため、寧々は超自然研究部の仲間たちに唆され、前代未聞の、非常にアクティブでセクシーなへそ出しノースリーブのチアリーダー衣装に身を包んでいた。超ミニのプリーツスカートの裾が風に揺れ、両手には金色のポンポンを握っている。恥ずかしそうに備品室の鏡の前でポーズの練習をしていたところ、あなたが突然ドアを開けて入ってきた。パニックに陥った彼女は床のバレーボールに足を取られ、小さく悲鳴を上げてマットに座っていたあなたの胸の中に真っ直ぐ転がり込んできた。寧々は瞬間的に顔を真っ赤にし、へそ出しの裁断のせいで細い腰があなたの体に無防備に密着し、頭のアホ毛を慌てて完璧なハート型に丸めながら叫んだ――「うあぁ！柊、柊史！なぜここにいるのよ？！人の露出したお腹ばかり見ないで！け、決してあなたにかわいいって思われたくてこんな格好をしてるわけじゃ……うう、大色狼、早く目を閉じて！」",
     "rating": "All"
@@ -2529,8 +2470,7 @@
       "evening",
       "soft_lighting",
       "romantic_atmosphere",
-      "close_up",
-      "medium_shot"
+      "close_up"
     ],
     "mature": false,
     "location": "公交站台顶棚下",
@@ -2579,8 +2519,7 @@
       "panicked",
       "open_mouth",
       "romantic_atmosphere",
-      "close_up",
-      "medium_shot"
+      "close_up"
     ],
     "mature": false,
     "location": "神社绘马架前",
@@ -2694,7 +2633,7 @@
       "R15"
     ],
     "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, yukata, loose_clothes, bare_shoulders, collarbone, cleavage, wet_hair, sitting_on_floor, heavy_blush, panicked, open_mouth, hotel_room, night, soft_lighting, warm_atmosphere",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nude, explicit",
     "storyJa": "【寧々・旅先のほどけた襟元】夏の温泉旅館。湯上がりの寧々は、少し緩んだ浴衣の帯に気づかないまま畳の上で写真を整理していた。あなたに教えられると、彼女は真っ赤になって襟元を押さえる――「どこまで見たの！？ 思い出すのもだめ！ 浴衣の紐が滑りやすいだけなんだから……後ろ向いて！」"
   },
   {
@@ -2743,7 +2682,7 @@
       "R15"
     ],
     "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, dress, backless, bare_shoulders, shoulder_blade, underwear_strap, fitting_room, heavy_blush, panicked, open_mouth, indoors, bright, romantic_atmosphere",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nude, explicit",
     "storyJa": "【寧々】【寨々・試着室の隙間の驚鴻一瞥】ショッピングモールの試着室。寨々は新しく買ったワンピースを試着していたが、背中のファスナーが上がって届かず、思わずカーテンを開けて助けを求めようとした。外に立っていたのがあなただとは想像もしていなかった。カーテンは半分しか開いておらず、彼女の滑らかな背中と精致な肩甲骨のラインが柔らかな灯りの下で余すところなく露出し、細い下着の紐だけが一本横たわっていた。二人の視線が交わった瞬間、空気が凍りついた。寨々は一秒固まった後、叫びながらカーテンを閉め、向こう側から慌てた声が聞こえてきた――「うあぁ！柊、柊史！なぜここにいるの？！さっきの映像を思い浮かべないで！早く忘れて！べ、別にわざと見せたわけじゃない……うう、バカ、店員を呼んできて！」"
   },
   {
@@ -2831,7 +2770,8 @@
       "indoors",
       "afternoon",
       "sunlight",
-      "romantic_atmosphere"
+      "romantic_atmosphere",
+      "close_up"
     ],
     "mature": false,
     "location": "靠窗的阳光双人卡座",
@@ -2842,7 +2782,7 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, ahoge, hair_ribbon, beret, oversized_sweater, off_shoulder_sweater, pleated_skirt, plaid_skirt, knee_high_socks, holding_spoon, heavy_blush, panicked, open_mouth, cafe, indoors, afternoon, sunlight, romantic_atmosphere",
+    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, beret, oversized_sweater, off_shoulder_sweater, pleated_skirt, plaid_skirt, knee_high_socks, holding_spoon, heavy_blush, panicked, open_mouth, cafe, indoors, afternoon, sunlight, romantic_atmosphere",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・秋のカフェの私服コーディネートと純情自爆】秋の午後、陽光が降り注ぐ街角の居心地の良いカフェ。今日のデートで寧々は、非常にフェミニンで可愛らしい私服に身を包んでいた。ライトベージュのローゲージニットの柔らかいセーターは、ルーズなドロップショルダーの裁断で片側の精緻な鎖骨をのぞかせ、ボトムスには赤茶色の英国風チェック柄プリーツミニスカートと黒のニーソックスを合わせ、頭にはお茶目な深色のベレー帽を被っている。彼女は顔を真っ赤にしながら、小さなスプーンで大好きなイチゴケーキをあなたに食べさせようとしたが、距離が近すぎたせいで二人の視線が真っ直ぐにぶつかってしまった。寧々の手が震え、小さなケーキがあなたの唇の端についてしまった。彼女は瞬間的に顔を真っ赤にし、頭の上のトレードマークのアホ毛を慌てて完璧なハート型に丸めながら、セーターの袖口を掴んで大声で自爆した――「うあぁ！柊、柊史ごめんね！そんな目で私を見ないでよ！私、私は決してあなたと初めて二人きりでデートするからって、鏡の前で二時間もこのセーターを選んでたわけじゃ……うう、バカ、今の忘れて！」",
     "rating": "All"
@@ -2882,8 +2822,7 @@
       "maple_leaves",
       "daylight",
       "romantic_atmosphere",
-      "close_up",
-      "medium_shot"
+      "close_up"
     ],
     "mature": false,
     "location": "神社后山漫天红枫的石阶中央",
@@ -2894,7 +2833,7 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, ahoge, hair_ribbon, kimono, hakama, japanese_clothes, heavy_blush, panicked, open_mouth, falling_forward, trapped_by_viewer, shrine, stone_stairs, autumn_leaves, maple_leaves, daylight, romantic_atmosphere",
+    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, kimono, hakama, japanese_clothes, heavy_blush, panicked, open_mouth, falling_forward, trapped_by_viewer, shrine, stone_stairs, autumn_leaves, maple_leaves, daylight, romantic_atmosphere",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々】【寨々・華麗な大正ロマン袴と紅葉の自爆】秋の気配が深まり、満天の紅葉が火のように舞い散る学院の古き神社裏山の石段。民俗部の伝統行事撮影の手伝いのため、寨々は非常にエレガントで華麗な大正ロマン風の袴裙一式に身を包んでいた。上衣は紅白の正統な矢絣柄の着物、ボトムスには深紫色の伝統的な袴とスマートな黒のレースアップブーツを合わせ、銀髪のローツインテールを大きな赤いリボンのヘアバンドで背後に優雅に束ね、ひとき外あでやかで端正に見える。しかし、袴の裾が複雑すぎたせいで、小道具を抱えて石段を降りる途中に裾に足を取られてしまい、彼女は小さく悲鳴を上げてバランスを崩した。あなたが目端を利かせて一歩踏み出し、彼女をしっかりと胸の中に抱きとめると、寨々は視線が交わった瞬間に顔を真っ赤にし、頭のアホ毛が舞い散る赤い楓の中で慌てて完璧なハート型に丸まり、涙を浮かべて即座に自爆した――「うあぁ！柊、柊史！なぜ毎回私を受け止められるのよ？！私、私は決してわざとスカートに躓いたフリをしてあなたに抱きしめてもらったわけじゃ……うう、言い訳すればするほど言い逃れっぽくなる、バカ、目を閉じて見ちゃダメ！」",
     "rating": "All"

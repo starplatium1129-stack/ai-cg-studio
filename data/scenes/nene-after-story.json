@@ -23,7 +23,7 @@
       "looking_at_viewer",
       "in_love",
       "eye_contact",
-      "adult_woman",
+      "adult",
       "cohabitation",
       "kotatsu",
       "game_controller",
@@ -47,7 +47,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, pajamas, bedroom, night, looking_back, solid_color, looking_at_viewer, in_love, eye_contact, adult_woman, cohabitation, kotatsu, game_controller, pouting, cozy_living_room, new_year, clear_sky, upper_body, medium_shot, warm_lighting, screen_light, blush, shy, living_room, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, pajamas, bedroom, night, looking_back, solid_color, looking_at_viewer, in_love, eye_contact, adult, cohabitation, kotatsu, game_controller, pouting, cozy_living_room, new_year, clear_sky, upper_body, medium_shot, warm_lighting, screen_light, blush, shy, living_room, <lora:ayachi_nene_v11:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・お正月、こたつでの敗北】大人になって一緒に暮らし始めてから迎えた大晦日。寧々はこたつであなたと協力ゲームを遊んでいた。一回だけと言っていたのに、連敗するとこっそり難易度を下げてしまう。あなたに見つかると、慌ててコントローラーをクッションの後ろへ隠し、アホ毛まで気まずそうにぴんと立った――「これはずるじゃありません。お正月の運勢を合理的に調整しただけです！　もう一回。負けたほうが、明日の朝のお雑煮を作るんですからね。」",
     "rating": "All"
@@ -73,7 +73,7 @@
       "blush",
       "shy",
       "umbrella",
-      "adult_woman",
+      "adult",
       "shared_umbrella",
       "holding_hands",
       "rainy_night",
@@ -93,7 +93,7 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, rain, night, blush, shy, umbrella, adult_woman, shared_umbrella, holding_hands, rainy_night, wet_road, warm_smile, cohabitation, overcast, close_up, in_love, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, rain, night, blush, shy, umbrella, adult, shared_umbrella, holding_hands, rainy_night, wet_road, warm_smile, cohabitation, overcast, close_up, in_love, <lora:ayachi_nene_v11:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー・雨の夜の答え】成人後の夏の夜、二人は同じ傘の下で再び告白し合った交差点を歩いた。寧々は、その日の答えをまだ覚えているかどうかを意図的に尋ねました。あなたが話し終わる前に、彼女はあなたの手をしっかりと握り、肩を近づけました。雨の光が彼女の瞳の笑顔を照らした――「今度は、雨音に隠してもらう必要はありません。柊史、私の答えは今も同じです。それに、あの頃よりずっと確かです。」",
     "rating": "All"
@@ -120,7 +120,7 @@
       "blush",
       "onsen",
       "steam",
-      "adult_woman",
+      "adult",
       "snowfall",
       "bare_shoulders",
       "looking_at_viewer",
@@ -138,7 +138,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, night, soft_lighting, shy, blush, onsen, steam, adult_woman, snowfall, bare_shoulders, looking_at_viewer, moonlight, close_up, warm_lighting, bathroom, snow, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, night, soft_lighting, shy, blush, onsen, steam, adult, snowfall, bare_shoulders, looking_at_viewer, moonlight, close_up, warm_lighting, bathroom, snow, <lora:ayachi_nene_v11:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー・雪の夜温泉の視線の約束】旅先の露天風呂は雪の夜に包まれていた。大人の寧々は、赤い顔だけを露出させて、湯気と岩の陰に隠れていました。あなたが率先して目をそらしてみると、彼女はゆっくりとリラックスして、水の音を聞きながら遠くないところへ動きました。月光が彼女の長い銀髪に降り注ぎ、彼女はルールをささやいた――「話し相手になってくれるのは嬉しいですけど、急に振り向くのは禁止です。準備ができたら……私から、あなたに見えるところへ行きますから。」",
     "rating": "All"
@@ -164,7 +164,7 @@
       "bathroom",
       "steam",
       "towel",
-      "adult_woman",
+      "adult",
       "bath_towel",
       "bathroom_door",
       "reaching_hand",
@@ -185,8 +185,8 @@
       "展示图",
       "R15"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, night, soft_lighting, bathroom, steam, towel, adult_woman, bath_towel, bathroom_door, reaching_hand, heavy_blush, cohabitation, clear_sky, close_up, face_focus, warm_lighting, diffused_light, <lora:ayachi_nene_v11:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, night, soft_lighting, bathroom, steam, towel, adult, bath_towel, bathroom_door, reaching_hand, heavy_blush, cohabitation, clear_sky, close_up, face_focus, warm_lighting, diffused_light, <lora:ayachi_nene_v11:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー・トイレのドアの向こうで助けを求める】冬の夜でもバスルームの湿気はまだ残っていた。大人の寧々さんは、着替えを外に置き忘れたことに気づき、ドアを押して小さな隙間を開けなければなりませんでした。バスタオルをしっかりと巻いているが、伸ばした手は恥ずかしさのあまり震えていた。服を手渡すと、彼女はそっと指先を引っ掛けた――「ありがとうございます……それから、この隙間から勝手な想像をしないでください。着替え終わったら、お礼にもう一度だけ抱きしめますから。」",
     "rating": "R15"
   },
@@ -211,7 +211,7 @@
       "backlighting",
       "window",
       "silhouette",
-      "adult_woman",
+      "adult",
       "sleepwear",
       "robe",
       "back_hug",
@@ -232,7 +232,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, night, window_light, backlighting, window, silhouette, adult_woman, sleepwear, robe, back_hug, curtain, city_lights, window_silhouette, cohabitation, clear_sky, upper_body, from_behind, rim_light, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, night, window_light, backlighting, window, silhouette, adult, sleepwear, robe, back_hug, curtain, city_lights, window_silhouette, cohabitation, clear_sky, upper_body, from_behind, rim_light, <lora:ayachi_nene_v11:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー・幕が閉まる前に】高層マンションの夜景が床から天井までの窓を覆っていた。大人の寧々は柔らかいネグリジェを着てガラスの前に立ち、カーテンを閉める準備をしていた。後ろから近づくと、うっかり肩紐が少しずれてしまい、顔を赤らめながらすぐに肩紐を押さえたが、ハグは避けなかった。街の明かりが互いのシルエットを映す――「外からは見えませんよね？　それなら、もう少しだけ……でも先に、カーテンをきちんと閉めてください。」",
     "rating": "All"
@@ -258,7 +258,7 @@
       "smile",
       "kitchen",
       "holding",
-      "adult_woman",
+      "adult",
       "cohabitation",
       "back_hug",
       "sauce_on_cheek",
@@ -280,7 +280,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, casual_clothes, apron, smile, kitchen, holding, adult_woman, cohabitation, back_hug, sauce_on_cheek, warm_smile, evening, clear_sky, close_up, upper_body, from_behind, warm_lighting, gentle_smile, soft_eyes, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, casual_clothes, apron, smile, kitchen, holding, adult, cohabitation, back_hug, sauce_on_cheek, warm_smile, evening, clear_sky, close_up, upper_body, from_behind, warm_lighting, gentle_smile, soft_eyes, <lora:ayachi_nene_v11:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー・エプロンをしたままハグ】同棲を終えた秋の夜、大人になった寧々は料理教室で新しい料理の練習を終え、手順を復習するためにエプロン姿のまま帰宅した。あなたは彼女の顔にソースがついたことを横から彼女に思い出させました。彼女は長い時間丁寧に拭いて、最後には後ろから抱きついて肩に顎を乗せた。――「今日はずっと、最初にあなたに味見してもらおうって思ってたんです。まだ振り向かないで、少しだけ充電させてください……それから、おいしいか教えてくださいね。」",
     "rating": "All"
@@ -305,7 +305,7 @@
       "soft_lighting",
       "mirror",
       "lingerie",
-      "adult_woman",
+      "adult",
       "robe",
       "holding_phone",
       "heavy_blush",
@@ -328,8 +328,8 @@
       "头像",
       "R15"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, bedroom, soft_lighting, mirror, lingerie, adult_woman, robe, holding_phone, heavy_blush, cohabitation, morning, clear_sky, close_up, morning_light, diffused_light, blush, shy, <lora:ayachi_nene_v11:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, bedroom, soft_lighting, mirror, lingerie, adult, robe, holding_phone, heavy_blush, cohabitation, morning, clear_sky, close_up, morning_light, diffused_light, blush, shy, <lora:ayachi_nene_v11:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー・鏡の前の未送信写真】同棲を終えた春の朝、大人の寧々は寝室の鏡の前で新しく買った下着を試着した。彼女はこっそりとマッチング効果の写真を撮りたかったのですが、起きたばかりのあなたが鏡に映っていました。彼女は慌てて携帯電話を背中に隠し、顔を赤らめてナイトガウンで肩を覆い、ようやくゆっくりと携帯電話を下ろした。――「ちゃんと準備してから見せようと思っていたのに……もう起きてしまったなら、似合うかどうか、あなたが責任を持って教えてください。」",
     "rating": "R15"
   },
@@ -354,7 +354,7 @@
       "looking_back",
       "bed",
       "pov",
-      "adult_woman",
+      "adult",
       "cohabitation",
       "sleeping",
       "under_blanket",
@@ -374,7 +374,7 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, bedroom, pajamas, looking_back, bed, pov, adult_woman, cohabitation, sleeping, under_blanket, holding_wrist, white_hair_spread, morning_light, morning, clear_sky, close_up, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, bedroom, pajamas, looking_back, bed, pov, adult, cohabitation, sleeping, under_blanket, holding_wrist, white_hair_spread, morning_light, morning, clear_sky, close_up, <lora:ayachi_nene_v11:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー・目覚まし時計が鳴る5分前】大人になって一緒に引っ越してきた春の朝、寧々さんはまだベッドに身を寄せ合ってぐっすり眠っていました。掛け布団は腰だけを覆い、長い銀髪が枕を覆っていた。あなたは初めて彼女のために目覚まし時計を止めました。彼女は呆然とあなたの手首を掴み、顔の横に押し付けました。――「あと五分だけで起きます……本当です。先に行っちゃだめですよ。目を開けたとき、最初にあなたが見えるようにしてください。」",
     "rating": "All"
@@ -400,7 +400,7 @@
       "backlighting",
       "window",
       "silhouette",
-      "adult_woman",
+      "adult",
       "cohabitation",
       "sleep_dress",
       "watering_flowers",
@@ -420,7 +420,7 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, window_light, sunset, backlighting, window, silhouette, adult_woman, cohabitation, sleep_dress, watering_flowers, sheer_curtain, window_silhouette, clear_sky, upper_body, golden_hour, rim_light, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, window_light, sunset, backlighting, window, silhouette, adult, cohabitation, sleep_dress, watering_flowers, sheer_curtain, window_silhouette, clear_sky, upper_body, golden_hour, rim_light, <lora:ayachi_nene_v11:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー・夕方の窓辺のシルエット】大人になった夏の夜、寧々さんは薄手のナイトガウンを着てアパートの窓辺に立って花に水をあげていました。逆光で彼の姿が紗のカーテンに映った。あなたが帰ってきたと聞いたとき、彼女は夕日の下で生地が透けすぎていることに気づき、急いでカーテンを閉めました。あなたが後ろから助けると、彼女は顔を赤らめてあなたの腕に寄りかかる――「わざと光の後ろに立って見ないでください……先にカーテンを閉めて、それからもう一度、抱きしめさせてください。」",
     "rating": "All"
@@ -445,7 +445,7 @@
       "sitting",
       "pajamas",
       "bed",
-      "adult_woman",
+      "adult",
       "cohabitation",
       "oversized_shirt",
       "off_shoulder",
@@ -465,7 +465,7 @@
     "weather": "晴",
     "camera": "床边主观半身近景",
     "lighting": "春日清晨窗光",
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, bedroom, sitting, pajamas, bed, adult_woman, cohabitation, oversized_shirt, off_shoulder, sitting_on_bed, forehead_touch, morning_light, morning, clear_sky, pov, close_up, upper_body, window_light, sleepy, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, bedroom, sitting, pajamas, bed, adult, cohabitation, oversized_shirt, off_shoulder, sitting_on_bed, forehead_touch, morning_light, morning, clear_sky, pov, close_up, upper_body, window_light, sleepy, <lora:ayachi_nene_v11:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "usage": [
       "展示图"
@@ -494,7 +494,7 @@
       "smile",
       "hair_blowing",
       "golden_hour",
-      "adult_woman",
+      "adult",
       "wedding_dress",
       "veil",
       "fitting_room",
@@ -504,7 +504,6 @@
       "spring",
       "afternoon",
       "clear_sky",
-      "medium_shot",
       "full_body",
       "window_light",
       "happy",
@@ -515,7 +514,7 @@
     "weather": "晴",
     "camera": "全身中景",
     "lighting": "试衣区柔和窗光",
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, dress, cherry_blossoms, smile, hair_blowing, golden_hour, adult_woman, wedding_dress, veil, fitting_room, twirling, tears_of_joy, holding_hands, spring, afternoon, clear_sky, medium_shot, full_body, window_light, happy, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, dress, cherry_blossoms, smile, hair_blowing, golden_hour, adult, wedding_dress, veil, fitting_room, twirling, tears_of_joy, holding_hands, spring, afternoon, clear_sky, full_body, window_light, happy, <lora:ayachi_nene_v11:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "usage": [
       "展示图"
@@ -542,7 +541,7 @@
       "night",
       "smile",
       "kitchen",
-      "adult_woman",
+      "adult",
       "cohabitation",
       "oversized_tshirt",
       "eating_ice_cream",
@@ -560,7 +559,7 @@
     "weather": "晴",
     "camera": "吧台双人半身中景",
     "lighting": "冰箱光与厨房夜灯",
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, night, smile, kitchen, adult_woman, cohabitation, oversized_tshirt, eating_ice_cream, kitchen_counter, refrigerator_light, clear_sky, upper_body, medium_shot, warm_lighting, blush, shy, <lora:ayachi_nene_v11:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, night, smile, kitchen, adult, cohabitation, oversized_tshirt, eating_ice_cream, kitchen_counter, refrigerator_light, clear_sky, upper_body, medium_shot, warm_lighting, blush, shy, <lora:ayachi_nene_v11:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "usage": [
       "展示图"
@@ -589,7 +588,7 @@
       "shy",
       "lingerie",
       "bed",
-      "adult_woman",
+      "adult",
       "cohabitation",
       "christmas_lingerie",
       "wrapped_in_sheet",
@@ -610,8 +609,8 @@
     "weather": "雪",
     "camera": "床边主观半身近景",
     "lighting": "雪日圣诞晨光",
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, bedroom, blush, shy, lingerie, bed, adult_woman, cohabitation, christmas_lingerie, wrapped_in_sheet, sitting_on_bed, holding_gift, heavy_blush, snowy_morning, morning, snow, snowfall, pov, close_up, upper_body, morning_light, <lora:ayachi_nene_v11:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, bedroom, blush, shy, lingerie, bed, adult, cohabitation, christmas_lingerie, wrapped_in_sheet, sitting_on_bed, holding_gift, heavy_blush, snowy_morning, morning, snow, snowfall, pov, close_up, upper_body, morning_light, <lora:ayachi_nene_v11:0.8>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nude, explicit",
     "usage": [
       "展示图",
       "R15"
@@ -657,7 +656,7 @@
     "camera": "近景特写",
     "lighting": "夕阳通透逆光",
     "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, school_uniform, unbuttoned_shirt, shirt_lift, bare_shoulders, cleavage, trapped_by_viewer, heavy_blush, tears_in_eyes, classroom, sunset, golden_hour, shadows, sensual, warm_lighting, <lora:ayachi_nene_v11:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nude, explicit",
     "usage": [
       "展示图",
       "R15"
@@ -680,6 +679,7 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
+      "adult",
       "nightgown",
       "off_shoulder",
       "no_bra",
@@ -701,8 +701,8 @@
     "weather": "窗外暴雨狂轰",
     "camera": "近景特写",
     "lighting": "柔和微弱床头灯",
-    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, nightgown, off_shoulder, no_bra, straddling_viewer, sitting_on_lap, bare_legs, heavy_blush, sweat, bedroom, night, dim_lighting, sensual, warm_lighting, <lora:ayachi_nene_v11:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, underwear, bra, panties",
+    "prompt": "1girl, adult, ayachi_nene, hair_ribbon, ahoge, nightgown, off_shoulder, no_bra, straddling_viewer, sitting_on_lap, bare_legs, heavy_blush, sweat, bedroom, night, dim_lighting, sensual, warm_lighting, <lora:ayachi_nene_v11:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, underwear, bra, panties, child, loli, underage, school_uniform, gym_uniform",
     "usage": [
       "展示图",
       "成人向"
@@ -725,6 +725,7 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
+      "adult",
       "witch_costume",
       "undressing",
       "shirt_lift",
@@ -741,7 +742,8 @@
       "ahoge",
       "hair_ribbon",
       "sensual",
-      "pov"
+      "pov",
+      "close_up"
     ],
     "mature": true,
     "location": "反锁社办沙发",
@@ -752,8 +754,8 @@
       "核心协议",
       "成人向"
     ],
-    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, witch_costume, undressing, shirt_lift, bare_shoulders, cleavage, sitting_on_lap, straddling_viewer, heavy_blush, tears_in_eyes, heavy_breathing, clubroom, night, dim_lighting, sensual, warm_lighting, <lora:ayachi_nene_v11:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic",
+    "prompt": "1girl, adult, ayachi_nene, hair_ribbon, ahoge, witch_costume, undressing, shirt_lift, bare_shoulders, cleavage, sitting_on_lap, straddling_viewer, heavy_blush, tears_in_eyes, heavy_breathing, clubroom, night, dim_lighting, sensual, warm_lighting, <lora:ayachi_nene_v11:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【寧々・大人のアフターストーリー・・密室の魔女衣装が大迫力】深夜、施錠された超常現象協会の事務所の奥深く、空気はオカルト本のページと少し熱いホルモンで満たされています。寧々は、あなたによって半分解体された豪華な魔女の制服を着ました。彼女の肩は半分露出しており、黒い生地が雪のように白い肌と非常に緊張したコントラストを形成していました。彼女はあなたの膝の上にそっと座り、ヘアバンドは片側に乱雑に散らばっており、頭のアホ毛は極度の感情のためにすでに完璧なハート型の螺旋になっています。彼女はあなたの胸を弱く押し当て、速く喘ぎました――「もう、柊史……明かりを消してください。今夜は魔女の私を……あなたにだけ見ていてほしいんです。」",
     "rating": "R18"
   },
@@ -803,7 +805,7 @@
       "R15"
     ],
     "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, unbuttoned_shirt, lace_lingerie, lying_on_table, bare_shoulders, cleavage, bare_legs, heavy_blush, tears_in_eyes, open_mouth, sweat, messy_hair, darkroom, night, red_light, sensual, <lora:ayachi_nene_v11:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー・・ホームシャツ半額ハイエナジー】社務所の暗室の奥では、写真の現像に使われるほのかな赤い光が反射していた。息苦しい環境だったため、寧々さんはシャツのほとんどのボタンを外し、その下にある絶妙な黒いレースの下着を露出させました。彼女は大きな作業台に仰向けに横たわり、黒いヘアバンドは脇に落ち、頭の上のアホ毛は狂ったように丸まって完璧な愛のスパイラルを描いていました。彼女は両手であなたの肩を抱き、顔は涙と汗で覆われ、口をわずかに開き、魅力的なあえぎ声を上げました。――「柊史……もう魔法なんて役に立ちません。こんなに胸が熱いのは、全部あなたのせいです。」",
     "rating": "R15"
   },
@@ -834,7 +836,8 @@
       "cafe_interior",
       "night",
       "soft_lighting",
-      "sensual"
+      "sensual",
+      "close_up"
     ],
     "mature": false,
     "location": "咖啡馆休息室沙发",
@@ -846,7 +849,7 @@
       "R15"
     ],
     "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, nightgown, translucent_clothing, see_through_clothing, bare_legs, lying_on_couch, heavy_blush, shy_smile, cafe_interior, night, soft_lighting, sensual, warm_lighting, <lora:ayachi_nene_v11:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, pants, underwear, nsfw, nude, explicit",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, pants, underwear, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー・・シルクナイトガウンは絶対に特別なもの】スターライトカフェの深夜完全閉店後のラウンジ。寧々は今夜、完全に警戒を解いて、非常に薄い半透明のピンクのシルクのナイトガウンだけを着て、ソファの中央にそっと横たわっていました。薄い絹が彼女の完璧なボディラインに張り付き、彼女の胸の魅惑的な痕跡が曖昧な薄明かりの下でほぼ完全に透けて見えた。彼女の顔は紅潮し、白くてまっすぐな脚が何の防御もなく露出した。頭頂部のアホ毛は、執着のあまりに素直に完全なハート型の螺旋を描きます。――「もう、どこを見てるんですか……そんなところにいないで、早くこっちへ来て抱きしめてください。」",
     "rating": "R15"
   },
@@ -889,12 +892,13 @@
     "camera": "主观后侧方特写",
     "lighting": "柔和下午窗光",
     "usage": [
-      "新手推荐"
+      "新手推荐",
+      "R15"
     ],
     "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, apron, camisole, sideboob, sitting_on_counter, looking_back, heavy_blush, messy_hair, kitchen, indoors, afternoon, window_light, soft_lighting, sensual, warm_lighting, <lora:ayachi_nene_v11:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, clothes, nsfw, nude, explicit",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, clothes, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー · ·ホームエプロンの鼓動】斜めに日が差し込む午後のアパートのキッチン。寧々は初めて、ややだぶだぶのホームエプロンを着て、その下には薄手のホームベストだけを着ました。彼女はイチゴを切ることに集中していたので、後ろからそっと近づいてくるあなたに気づきませんでした。細い腰をそっと抱きしめると指を切りそうになるほどパニックになり、頭の上のアホ毛はたちまち恥ずかしがりながら狂ったように丸まり、完璧なエロゲのハート型になった。――「きゃっ！　いつからいたんですか？　後ろから急に抱きついたらだめです。小麦粉がついちゃいますよ……。」",
-    "rating": "All"
+    "rating": "R15"
   },
   {
     "id": "sc113",
@@ -942,7 +946,7 @@
       "R15"
     ],
     "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, loose_towel, towel_slip, wet_hair, sitting_on_counter, bare_shoulders, cleavage, bare_legs, heavy_blush, embarrassed, panicked, bathroom, steam, indoors, night, soft_lighting, sensual, warm_lighting, <lora:ayachi_nene_v11:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, clothes, underwear, nsfw, nude, explicit",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, clothes, underwear, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー・・・お風呂上りにうっかりタオルがずれてしまった】深夜、湯気の立つ浴室内。シャワーを浴びた後、寧々は、ゆったりとした大きな純白のバスタオルだけを着て洗面台に座っていました。濡れた白銀の長い髪は散り、ヘアゴムを結ぶ暇もなかった。立ち上がるあまりの動きのせいで、バスタオルの角が静かに滑り、白くて華奢な肩と、うっすらと誇らしげなふくよかな肉付きが広範囲に露出した。彼女はパニックになってあなたに向かって突進し、顔は耳の付け根まで赤くなり、頭の上のアホ毛は極度の恥ずかしさで狂ったように震えていました。――「もう、どこを見てるんですか！　だめです、早くあっちを向いてください……。」",
     "rating": "R15"
   },
@@ -961,6 +965,7 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
+      "adult",
       "oversized_shirt",
       "open_shirt",
       "unbuttoned_shirt",
@@ -976,7 +981,8 @@
       "sensual",
       "hair_ribbon",
       "ahoge",
-      "pov"
+      "pov",
+      "close_up"
     ],
     "mature": true,
     "location": "温馨卧室大床",
@@ -987,8 +993,8 @@
       "核心协议",
       "成人向"
     ],
-    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, oversized_shirt, open_shirt, unbuttoned_shirt, straddling_viewer, lying_on_bed, heavy_blush, tears_in_eyes, open_mouth, heavy_breathing, bedroom, night, dim_lighting, sensual, warm_lighting, <lora:ayachi_nene_v11:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, underwear, pants, panties",
+    "prompt": "1girl, adult, ayachi_nene, hair_ribbon, ahoge, oversized_shirt, open_shirt, unbuttoned_shirt, straddling_viewer, lying_on_bed, heavy_blush, tears_in_eyes, open_mouth, heavy_breathing, bedroom, night, dim_lighting, sensual, warm_lighting, <lora:ayachi_nene_v11:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, underwear, pants, panties, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【寧々・大人のアフターストーリー・・バキューム白シャツにまたがり】少し暑い深夜のウエディングルーム。寧々は完全にあなたに降伏しました。彼女はあなたのゆるい白いシャツを着ているだけで、中は完全に真空でした。彼女はきれいな顔とぼやけた目であなたの腰にまたがります。彼女の緩んだヘアバンドがベッドシーツに落ちます。頭のアホ毛は既にぐったりとしていて、熱い執着でハート型の螺旋を描いている。彼女の細い手があなたの襟をしっかりと掴んで引き寄せ、彼女の温かい息が頬に当たりました。――「魔法をかけたのに、もう胸のどきどきが止まりません……今夜は、ずっと寧々のそばにいてください。」",
     "rating": "R18"
   },
@@ -1007,6 +1013,7 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
+      "adult",
       "slip_dress",
       "backless_dress",
       "silk_fabric",
@@ -1035,8 +1042,8 @@
       "核心协议",
       "成人向"
     ],
-    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, slip_dress, backless_dress, silk_fabric, straddling_viewer, sitting_on_lap, bare_shoulders, bare_back, cleavage, heavy_blush, tears_in_eyes, study, night, soft_lighting, sensual, warm_lighting, <lora:ayachi_nene_v11:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, underwear",
+    "prompt": "1girl, adult, ayachi_nene, hair_ribbon, ahoge, slip_dress, backless_dress, silk_fabric, straddling_viewer, sitting_on_lap, bare_shoulders, bare_back, cleavage, heavy_blush, tears_in_eyes, study, night, soft_lighting, sensual, warm_lighting, <lora:ayachi_nene_v11:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, underwear, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【寧々・大人のアフターストーリー・・サテンスカートがとってもエモい】深夜の静かな個人勉強。あなたの強引なリクエストに応じて、寧々は非常にセクシーで魅惑的なダークピンクのサテンのバックレスサスペンダースカートを着ました。この瞬間、彼女はあなたの足の上にそっと座っており、滑らかで繊細なサテン生地が彼女の完璧なボディの曲線にぴったりと張り付いています。両手であなたの肩をしっかりと抱き、頭の上のアホ毛は愛のあまりに完全にエロティックなハート型に崩れ落ちています。彼女は涙ぐんだ目であなたを見下ろし、彼女の温かい息があなたの首にかかりました。――「柊史……こうしていると、すごく暖かいです。魔女の心も、今夜は全部あなたのものですよ。」",
     "rating": "R18"
   },
@@ -1055,6 +1062,7 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
+      "adult",
       "open_coat",
       "lingerie",
       "lace_lingerie",
@@ -1073,19 +1081,19 @@
       "sensual",
       "close_up"
     ],
-    "mature": false,
+    "mature": true,
     "location": "卧室落地窗前",
     "weather": "窗外雪花飞舞",
     "camera": "侧面近景特写",
     "lighting": "室内温馨纸灯弱光",
     "usage": [
       "核心协议",
-      "R15"
+      "成人向"
     ],
-    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, open_coat, lingerie, lace_lingerie, no_bra, bare_shoulders, cleavage, bare_legs, heavy_blush, panicked, bedroom, night, snowing, soft_lighting, sensual, warm_lighting, <lora:ayachi_nene_v11:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, adult, ayachi_nene, hair_ribbon, ahoge, open_coat, lingerie, lace_lingerie, no_bra, bare_shoulders, cleavage, bare_legs, heavy_blush, panicked, bedroom, night, snowing, soft_lighting, sensual, warm_lighting, <lora:ayachi_nene_v11:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【寧々・大人のアフターストーリー・・室内コートバキューム極限羞恥】寒い深夜、窓の外、寝室の床から天井まで届く窓の前に大雪が降っていました。昼間の賭けであなたに負けたので、寧々は非常に精巧で恥ずかしい黒いレースの下着を着させられ、あなたの純黒のウールのコートだけがそれを覆っていました。この時、彼女は床から天井まで届く窓にもたれかかっており、コートの前が横暴に両側に完全に開かれ、何もない極限の風景と腹部の白い肌が無防備にさらけ出されていた。彼女はコートの端を両手で掴んで覆い隠した。頭の上のアホ毛はとても恥ずかしがって狂ったように震え、完璧な愛のスパイラルへと丸まった。――「もう、柊史のばか！　わざと窓際まで追い込んで……コートの中が寒いです。早く抱きしめてください。」",
-    "rating": "R15"
+    "rating": "R18"
   },
   {
     "id": "sc121",
@@ -1104,7 +1112,6 @@
     "tags": [
       "sundress",
       "wet_clothes",
-      "transparent_clothing",
       "see_through_clothing",
       "no_bra",
       "bare_shoulders",
@@ -1131,8 +1138,8 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, sundress, wet_clothes, transparent_clothing, see_through_clothing, no_bra, bare_shoulders, cleavage, heavy_blush, open_mouth, beach_house, dawn, first_light, rim_light, sensual, warm_lighting, <lora:ayachi_nene_v11:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, pants, skirt, underwear, bra, panties, nsfw, nude, explicit",
+    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, sundress, wet_clothes, see_through_clothing, no_bra, bare_shoulders, cleavage, heavy_blush, open_mouth, beach_house, dawn, first_light, rim_light, sensual, warm_lighting, <lora:ayachi_nene_v11:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, pants, skirt, underwear, bra, panties, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー・・びしょ濡れドレス完全バキューム】海辺のリゾートのキャビンの端で夜が明ける。穏やかな海風がゆっくりと吹く朝、寧々さんは極薄のピンク色の夏用ノースリーブワンピースだけを着て露天風呂の横に立っていた。朝の水辺遊びのせいで、スカートの生地は清らかな泉にすっかり浸透し、完璧なボディラインに透け感がぴったりと張り付いている。内側にある自慢の跡と豊満な谷間が朝日の逆光でほぼ透け透け！彼女は顔を赤らめて両手で胸を覆い、頭の上のアホ毛が恥ずかしすぎて震えて狂ったように丸まった。――「きゃあっ、スカートが透けてる！　見ちゃだめです！　これ以上見たら、魔法でタコに変えちゃいますから！」",
     "rating": "R15"
   },
@@ -1179,7 +1186,7 @@
       "R15"
     ],
     "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, oversized_sweater, off_shoulder_sweater, no_bra, sitting_on_counter, cleavage, bare_legs, heavy_blush, open_mouth, kitchen, indoors, morning_light, soft_shadows, sensual, warm_lighting, <lora:ayachi_nene_v11:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, clothes, nsfw, nude, explicit",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, clothes, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー・・ホームセーターバキュームハイエナジー】午後の気だるい日差しが降り注ぐアパートのキッチンでは、温かく甘いパンの香りが空気に満ちています。あなたの処罰要求に基づいて、寧々はあなたが彼女に与えた大きな太い糸のニットセーターを着ただけで、それは完全に空で結ばれていませんでした。彼女は顔を赤らめながら、あなたによって大理石の作業台に運ばれ、緩んだ襟が完全に片側にずれて、柔らかく丸い肩の広い範囲と横乳のかすかな輪郭が現れました。彼女は恥ずかしそうに小麦粉がついた手をあなたの胸に押し付けました。彼女の頭上のアホ毛は、感情的な過負荷により、すでに完全な愛のスパイラルに崩壊していました。――「柊史……朝から台所で急に抱きつかないでください。小麦粉が服についちゃいます……でも、もう少しだけ。」",
     "rating": "R15"
   },
@@ -1200,7 +1207,7 @@
     "tags": [
       "miko_uniform",
       "disheveled_clothes",
-      "unbuttoned",
+      "unbuttoned_shirt",
       "cleavage",
       "bare_shoulders",
       "lying_on_bed",
@@ -1213,7 +1220,8 @@
       "night",
       "lantern_light",
       "tatami",
-      "sensual"
+      "sensual",
+      "close_up"
     ],
     "mature": false,
     "location": "神社社务所客房",
@@ -1224,8 +1232,8 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, miko_uniform, disheveled_clothes, unbuttoned, cleavage, bare_shoulders, lying_on_bed, bare_legs, heavy_blush, tears_in_eyes, shrine, night, lantern_light, tatami, sensual, warm_lighting, <lora:ayachi_nene_v11:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, underwear, nsfw, nude, explicit",
+    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, miko_uniform, disheveled_clothes, unbuttoned_shirt, cleavage, bare_shoulders, lying_on_bed, bare_legs, heavy_blush, tears_in_eyes, shrine, night, lantern_light, tatami, sensual, warm_lighting, <lora:ayachi_nene_v11:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, underwear, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー・・巫女コスチュームが究極のエロティカを解き放つ】夏祭りが終わると、神社裏の山棟には畳の香りが漂います。寧々は、神聖で優雅な日本の魔女の衣装を着ることを強制されました。この瞬間、彼女はあなたによって柔らかいベッドの真ん中でそっと押し倒されました。純白の巫女のトップスのボタンを外して両腕に半分縛り、赤みを帯びた雪のように白く繊細な体と極上の絹の下着が広範囲に露わになった。赤い緋色のズボンも腰まで上げられていた。彼女は純白の広い袖口を引っ張り、恥ずかしさで溶けそうになった頬を覆った。頭の上のアホ毛はすでに快感で麻痺しており、口の中でハート型の螺旋を描いていた。――「もう、柊史……社務所で巫女服を引っ張るなんて、罰が当たりますよ。だから……早く、ちゃんと抱きしめてください。」",
     "rating": "R15"
   },
@@ -1244,6 +1252,7 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
+      "adult",
       "micro_bikini",
       "string_bikini",
       "bikini_malfunction",
@@ -1274,16 +1283,16 @@
       "核心协议",
       "成人向"
     ],
-    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, micro_bikini, string_bikini, bikini_malfunction, untied_swimsuit, wet_skin, water_droplets, sitting_on_lap, bare_shoulders, cleavage, bare_legs, heavy_blush, open_mouth, swimming_pool, night, moonlight, sensual, warm_lighting, <lora:ayachi_nene_v11:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, clothes",
+    "prompt": "1girl, adult, ayachi_nene, hair_ribbon, ahoge, micro_bikini, string_bikini, bikini_malfunction, untied_swimsuit, wet_skin, water_droplets, sitting_on_lap, bare_shoulders, cleavage, bare_legs, heavy_blush, open_mouth, swimming_pool, night, moonlight, sensual, warm_lighting, <lora:ayachi_nene_v11:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, clothes, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【寧々・大人のアフターストーリー・・極エロマイクロビキニ】夏の夜、プライベートヴィラの屋外プールは静かです。波打つ青い水が空の星を映していました。今夜の寧々はあなたの挑発のおかげで、極小の黒紐マイクロビキニに初めて着替えました。生地は非常にまばらで、彼女のふくよかで誇らしいラインを隠すことができませんでした。彼女の全身は透き通った水滴で覆われ、雪のように白く繊細な肌の広い範囲が冷たい月光にさらされていました。彼女は恥知らずにも手で胸を守り、プールサイドであなたの膝にまたがって座ります。彼女の頭の上のアホ毛は、感情的な過負荷のためにすでに狂ったようにカールしてハート型の螺旋を描いています。――「帯がほどけそうです……見ちゃだめですよ！　今夜の魔女は……あなたにだけ、少しわがままを聞いてほしいんです。」",
     "rating": "R18"
   },
   {
     "id": "sc129",
-    "title": "夕暮社办的禁忌刻印",
-    "category": "恋爱/同人/After_Story",
-    "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 课后社办绝对沦陷】落日熔金的神秘学研究会，反锁的木门。宁宁有些脱力地被你抱在怀里，跨坐在你的双腿上。她身上那件校服衬衫最上方的扣子已经被你尽数扯开，大片暴露的白皙胸口与光洁细腻的绝对领域在落日逆光中散发着微热。她双手无力地揪紧你的衣领，头顶的呆毛早已因为过于强烈的动情和羞耻软瘫成完美的工口心形——「呜...柊史...说好只是留堂补习的...不准摸那里啦...笨蛋...」",
+    "title": "夕暮工作室的私密刻印",
+    "category": "恋爱/成年_AU/After_Story",
+    "story": "【成年 AU · 宁宁 · 夕暮私人工作室】成年后的秋日周末，落日铺满两人共同布置的神秘学私人工作室。宁宁先确认门锁与彼此的约定，才主动跨坐到你腿上，一起校对刚完成的契约笔记。动作间，她的丝质衬衫领口微微敞开，高腰长裙在暖光里铺成柔软褶皱；她攥住你的衣领，心形呆毛随着加快的呼吸轻轻发颤——「今天的练习只属于成年的我们……如果还想继续，就先认真抱住宁宁。不许拿以前的社团活动当借口哦。」",
     "char": "nene",
     "character": [
       "nene"
@@ -1294,16 +1303,17 @@
     "time": "黄昏",
     "timeOfDay": "sunset",
     "tags": [
-      "school_uniform",
+      "adult",
+      "silk_blouse",
+      "high_waist_skirt",
       "unbuttoned_shirt",
-      "skirt_lift",
       "bare_legs",
       "sitting_on_lap",
       "straddling_viewer",
       "heavy_blush",
       "tears_in_eyes",
       "open_mouth",
-      "clubroom",
+      "private_studio",
       "sunset",
       "golden_hour",
       "shadows",
@@ -1314,7 +1324,7 @@
       "pov"
     ],
     "mature": true,
-    "location": "落日社办沙发",
+    "location": "共同生活后的私人神秘学工作室",
     "weather": "落日熔金",
     "camera": "主观近景特写",
     "lighting": "夕阳通透逆光",
@@ -1322,9 +1332,9 @@
       "核心协议",
       "成人向"
     ],
-    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, school_uniform, unbuttoned_shirt, skirt_lift, bare_legs, sitting_on_lap, straddling_viewer, heavy_blush, tears_in_eyes, open_mouth, clubroom, sunset, golden_hour, shadows, sensual, warm_lighting, <lora:ayachi_nene_v11:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic",
-    "storyJa": "【寧々・大人のアフターストーリー · ·放課後の社交組織は絶対に廃墟です】夕日に金が溶けるオカルト研究会には鍵のかかった木の扉があった。寧々は少し力なく腕に抱かれ、足にまたがって座りました。彼女が着ている学生服のシャツの一番上のボタンをすべて開けると、彼女の白い胸が大きく露出し、夕日にわずかに熱を発する滑らかで繊細な絶対領域が露出した。彼女の手はあなたの首輪を力なく掴み、彼女の頭の上のアホ毛は、あまりにも強い感情と恥ずかしさのためにすでに完全なハート型に崩れていました。――「もう、柊史ったら……居残りで勉強を教えてくれるだけって言ったのに。くすぐらないでください、ばか。」",
+    "prompt": "1girl, adult, ayachi_nene, hair_ribbon, ahoge, silk_blouse, high_waist_skirt, unbuttoned_shirt, bare_legs, sitting_on_lap, straddling_viewer, heavy_blush, tears_in_eyes, open_mouth, private_studio, sunset, golden_hour, shadows, sensual, warm_lighting, <lora:ayachi_nene_v11:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
+    "storyJa": "【成年 AU・寧々・夕暮れのプライベートアトリエ】大人になった秋の週末、夕日が二人で整えたオカルト研究用の私設アトリエを満たしていた。寧々は鍵と二人の約束を確かめてから、自分からあなたの膝に跨り、完成した契約ノートを一緒に確認する。動くたびに絹のブラウスの襟元が少し開き、ハイウエストのロングスカートが暖かな光の中で柔らかなひだを作った。彼女はあなたの襟を掴み、ハート形のアホ毛を震わせながら囁いた――「今日の練習は、大人になった私たちだけのものです……続けたいなら、まず寧々をちゃんと抱きしめて。昔の部活動を言い訳にするのは禁止です。」",
     "rating": "R18"
   },
   {
@@ -1358,7 +1368,8 @@
       "soft_lighting",
       "hair_ribbon",
       "ahoge",
-      "sensual"
+      "sensual",
+      "close_up"
     ],
     "mature": false,
     "location": "温馨卧室大床上",
@@ -1370,7 +1381,7 @@
       "R15"
     ],
     "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, nightgown, slip_dress, translucent_clothing, see_through_clothing, no_bra, off_shoulder, bare_shoulders, cleavage, lying_on_bed, heavy_blush, shy_smile, bedroom, night, soft_lighting, sensual, warm_lighting, <lora:ayachi_nene_v11:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, underwear, bra, panties, nsfw, nude, explicit",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, underwear, bra, panties, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー · ·シルクのネグリジェが肩からずり落ちます】深夜の雷雨の中、居心地の良い寝室の大きなベッド。今夜、あなたの優しいいじめを受けて、寧々はあなたに完全に心を開きました。彼女は非常に薄い半透明のピンクのシルクのナイトガウンを着ているだけで、それは全裸でした。彼女は白いベッドシーツの上に横向きに横たわり、ナイトガウンの細いサスペンダーが片方の腕に完全に力なく滑り落ち、丸い肩とふっくらとしたセクシーな白い胸の半分が露出した。彼女の頭のアホ毛は、究極の快適さと安心感により、完璧なハート型の螺旋を描くように素直に垂れ下がりました。――「もう、どこを見てるんですか……布団の中、暑いですね。そんなところにいないで、早く抱きしめてください。」",
     "rating": "R15"
   },
@@ -1389,6 +1400,7 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
+      "adult",
       "naked_apron",
       "apron_only",
       "bare_back",
@@ -1415,8 +1427,8 @@
       "核心协议",
       "成人向"
     ],
-    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, naked_apron, apron_only, bare_back, sideboob, cleavage, sitting_on_counter, heavy_blush, panicked, kitchen, indoors, warm_lighting, sensual, <lora:ayachi_nene_v11:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, clothes, underwear",
+    "prompt": "1girl, adult, ayachi_nene, hair_ribbon, ahoge, naked_apron, apron_only, bare_back, sideboob, cleavage, sitting_on_counter, heavy_blush, panicked, kitchen, indoors, warm_lighting, sensual, <lora:ayachi_nene_v11:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, clothes, underwear, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【寧々・大人のアフターストーリー・・裸エプロン極限羞恥】深夜閉店後の静かなカフェキッチン。あなたの高圧的な罰の下で、寧々はカフェエプロンのみというタブーな服装を強制されました。彼女は顔を赤らめ、あなたによって大理石のバーテーブルに運ばれました。細いエプロンのストラップでは、露出した色白の大きな横乳を両側から覆うことができませんでした。彼女の滑らかな白い背中と完全にバキュームの脚は無防備でした。彼女の顔の熱い赤面は耳の根元まで達し、頭のてっぺんのアホ毛はとても恥ずかしがり屋で狂ったように震えて、完璧な愛のスパイラルに曲がりました。――「もう、柊史のばか！　わざと台所の鍵をかけて……今夜は本当に、寧々を独り占めするつもりですか？」",
     "rating": "R18"
   },
@@ -1451,7 +1463,8 @@
       "night",
       "dim_lighting",
       "sensual",
-      "pov"
+      "pov",
+      "close_up"
     ],
     "mature": false,
     "location": "社办皮革沙发",
@@ -1463,7 +1476,7 @@
       "R15"
     ],
     "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, corset, gothic_lolita, lace_trim, cleavage, fishnets, bound_hands, kneeling, heavy_blush, tears_in_eyes, heavy_breathing, clubroom, night, dim_lighting, sensual, warm_lighting, <lora:ayachi_nene_v11:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, clothes, nsfw, nude, explicit",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, clothes, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー・・ゴスコルセット極恥】深夜完全に施錠されたオカルト活動室の大きなソファの上。あなたの強い要望により、寧々はタブーなゴシックスタイルに満ちた黒いレースの厚みのあるコルセットと黒いメッシュストッキングのセットを着用することになりました。細い腰をコルセットが極度に大袈裟に締め付け、ただでさえ素晴らしい胸の膨らみが爆発寸前の衝撃的な深淵に現れた。彼女はあなたの後ろで手を縛られ、革張りのソファの真ん中にひざまずいていました。頭上のアホ毛は極度の恥辱に耐えられず、すでに哀れな愛のスパイラルに崩壊しており、目には涙を浮かべ息を切らしている。――「柊史……この服、やっぱり変じゃないですか？　少し恥ずかしいですけど……今夜は寧々のことを、ずっと見ていてください。」",
     "rating": "R15"
   },
@@ -1496,7 +1509,8 @@
       "dim_lighting",
       "hair_ribbon",
       "ahoge",
-      "sensual"
+      "sensual",
+      "close_up"
     ],
     "mature": false,
     "location": "公寓大床中央",
@@ -1508,7 +1522,7 @@
       "R15"
     ],
     "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, evening_gown, dress_unzipped, bare_back, sideboob, cleavage, lying_on_bed, heavy_blush, tears_in_eyes, bedroom, night, dim_lighting, sensual, warm_lighting, <lora:ayachi_nene_v11:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, underwear, nsfw, nude, explicit",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, underwear, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー・・・イブニングドレスを解くと究極のエロゲ】高級カクテルパーティー後の豪華なアパートのマスターベッドルーム。寧々はあなたの優しさでベルベットのベッドの真ん中に押し倒されました。彼女の神聖でエレガントな背中の開いたピンクのシルクのイブニングドレスの後ろにある細いジッパーがあなたによって完全に開かれ、ガウン全体が両側に緩くスライドし、丸い肩の広い領域と豊満でセクシーな真っ白な胸の半分が明らかになりました。彼女は頭を覆おうとして両手でシーツを握りしめた。彼女の頭上のアホ毛は、感情的な過負荷により、すでに非常に震えるハート型の螺旋に崩壊していました。――「柊史……恥ずかしいです。帰ってすぐスカートを引っ張るなんて……もう、早く寧々を抱きしめてください。」",
     "rating": "R15"
   },
@@ -1558,7 +1572,7 @@
       "R15"
     ],
     "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, sundress, no_bra, nipples_visible_through_clothing, see_through_clothing, bare_shoulders, sitting_on_bed, heavy_blush, sweat, heavy_breathing, passionate_look, messy_hair, beach_house, dawn, first_light, rim_light, sensual, warm_lighting, <lora:ayachi_nene_v11:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, pants, underwear, bra, panties, nsfw, nude, explicit",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, pants, underwear, bra, panties, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー・・ロングドレス真空バックライト】海辺の別荘で夜明けになると、床から天井まで届く窓の外に黄金色の太陽が昇り、打ち寄せる波が見えます。寧々は、非常に薄い白い夏用のノースリーブのワンピースを着ているだけで、その下は全裸でした。薄い生地が夜明けの逆光に全面的に照らされ、魅力的で誇らしげな胸の輪郭と際立ったフルマークが魅惑的に刻まれました。彼女は大量の汗をかきながらベッドの端に座り、海風に銀色の長い髪をなびかせ、頭の上のアホ毛がおとなしく愛情を込めて完璧な愛の形に曲がりました。彼女は率先して手を伸ばしてあなたの首を掴み、ディープキスへと導きました。――「もう、見とれちゃったんですか？　朝になったなら……昨日の続きの約束を、今から一緒に叶えましょう。」",
     "rating": "R15"
   },
@@ -1590,7 +1604,6 @@
       "embarrassed",
       "ahoge",
       "bare_shoulders",
-      "skin_exposure",
       "cozy",
       "warm_lighting"
     ],
@@ -1601,12 +1614,13 @@
     "lighting": "床头灯柔和暖光",
     "usage": [
       "新手推荐",
-      "壁纸级"
+      "壁纸级",
+      "R15"
     ],
-    "prompt": "1girl, ayachi_nene, loose_towel, wet_hair, sitting_on_bed, hand_on_cheek, close_up, bedroom, night, soft_lighting, blush, embarrassed, ahoge, bare_shoulders, skin_exposure, cozy, warm_lighting",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, ayachi_nene, loose_towel, wet_hair, sitting_on_bed, hand_on_cheek, close_up, bedroom, night, soft_lighting, blush, embarrassed, ahoge, bare_shoulders, cozy, warm_lighting",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー · ·深夜の入浴後の鼓動】深夜の入浴後、マンション内はレモンの香りで満たされます。寧々は、通常のヘアゴムも付けずに、濡れた長い白銀の髪を散らしながら、大きなゆったりとしたバスタオルだけを巻き、あなたのベッドの横に座っています。温かい指でそっと頬を押さえた彼女の顔は水が滴るほど赤く、頭の髪は恥ずかしそうに垂れていた。――「もう、どこを見てるんですか。動かないで、先に髪を乾かすのを手伝ってください……。」",
-    "rating": "All"
+    "rating": "R15"
   },
   {
     "id": "sc152",
@@ -1652,7 +1666,7 @@
       "R15"
     ],
     "prompt": "1girl, ayachi_nene, hair_ribbon, witch_costume, undressing, shirt_lift, bare_shoulders, cleavage, lying_on_bed, straddling, ahoge, heavy_blush, intense_look, heavy_breathing, bedroom, night, dim_lighting, sweat, warm_lighting",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー・・ウェディングナイト限定名シーン】鍵のかかった結婚式場の空気は熱かった。寧々は乱雑なベッドに半分横たわっています。ゴージャスな魔女の制服を半分ほどいて肩を半分露出させたボディは、黒い生地と白い肌のコントラストがインパクト大。彼女は恥ずかしさでとろけそうな目で隣に座るあなたを見つめた。頭のてっぺんが完全に崩れて、極めてエロティックなハート型になっていた。彼女の白い手はあなたの胸に力なく押し当てられ、彼女は速く喘いでいました。――「柊史……こ、これも魔女の契約に必要な儀式なんですか？　もう……早く明かりを消してください。」",
     "rating": "R15"
   },
@@ -1695,12 +1709,13 @@
     "lighting": "电视荧幕弱光",
     "usage": [
       "壁纸级",
-      "核心协议"
+      "核心协议",
+      "R15"
     ],
     "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, casual_clothes, disheveled_clothes, intoxicated, lying_on_lap, heavy_blush, tears_in_eyes, holding_clothing, in_love, indoors, night, dim_lighting, warm_atmosphere, warm_lighting",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー · ·おうちで元気いっぱい】夜遅くに空のワイングラスがリビングルームのカーペットの上に散乱した。普段は内気な寧々は、今夜はアルコールの触媒作用ですべての防御を完全に外した。彼女は襟が緩いホームドレスを着て、ヘアバンドは少しゆるめで、全身が膝の上にぐったりと落ちていました。顔を赤らめ、潤んだ瞳でこちらを見つめ、酔ったせいで頭のてっぺんがとてもかわいらしい波形に曲がり、手はしっかりと服を掴んでいます。――「柊史……離さないでください。今夜は魔女の魔法も全部お休みです……今はただ、あなたに抱きしめてほしいんです。」",
-    "rating": "All"
+    "rating": "R15"
   },
   {
     "id": "sc158",
@@ -1746,7 +1761,7 @@
       "R15"
     ],
     "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, lingerie, camisole, lying_on_bed, lying_on_stomach, bare_shoulders, heavy_blush, tears_in_eyes, heavy_breathing, bedroom, indoors, window_light, soft_lighting, cozy, warm_lighting",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー · ·午後のベッドの究極の追求】白いガーゼのカーテンが午後の日差しを遮り、寝室はほんのりと暖かかった。寧々は煩わしい上着を完全に脱いで、ほぼ透明なレースのサスペンダー私服だけを着て、ベッドにそっと横たわっていた。真っ赤に染まった可憐な顔を枕に深く埋め込み、頭頂部のアホ毛は完全にぐったりとして、極度の感情のせいで極めてエロティックなハート型になった。彼女の細い指があなたの服の裾をつかみ、彼女は半開きの涙ぐんだ目であなたを見つめ、声は温かく息づいていました。――「柊史……見ているだけじゃなくて、もっと近くへ来てください。今夜の寧々は……あなたに抱きしめてもらいたいんです。」",
     "rating": "R15"
   },
@@ -1765,6 +1780,7 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
+      "adult",
       "naked_apron",
       "apron_only",
       "hair_ribbon",
@@ -1790,8 +1806,8 @@
       "核心协议",
       "成人向"
     ],
-    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, naked_apron, apron_only, bare_back, cleavage, side_view, looking_back, heavy_blush, panicked, kitchen, indoors, warm_lighting, sensual",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic",
+    "prompt": "1girl, adult, ayachi_nene, hair_ribbon, ahoge, naked_apron, apron_only, bare_back, cleavage, side_view, looking_back, heavy_blush, panicked, kitchen, indoors, warm_lighting, sensual",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【寧々・大人のアフターストーリー · ·キッチン絶対服従ミーム】閉店後の静かなキッチンは、あなただけの素敵なプライベート領域になります。あなたの罰により、寧々はカフェエプロンだけの恥ずかしい服装をさせられました。彼女はあなたに背を向けて果物を切っていて、あなたの足音を聞いて慌てて振り向いた。エプロンの両側にある白く大きな乳房と、丸見えになった滑らかな背中が暖かい光に照らされて眩しかった。彼女の顔の熱い赤面は耳の付け根まで達し、頭のてっぺんのアホ毛は恥ずかしくて狂ったように震えていました。――「もう、柊史のばか！　わざと台所の鍵をかけて……今夜は本当に、寧々を独り占めするつもりですか？」",
     "rating": "R18"
   },
@@ -1810,6 +1826,7 @@
     "time": "清晨",
     "timeOfDay": "morning",
     "tags": [
+      "adult",
       "oversized_shirt",
       "open_shirt",
       "unbuttoned_shirt",
@@ -1837,8 +1854,8 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, oversized_shirt, open_shirt, unbuttoned_shirt, lying_on_bed, straddling_viewer, heavy_blush, passionate_look, heavy_breathing, bedroom, indoors, morning_light, soft_shadows, sensual, warm_lighting",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic",
+    "prompt": "1girl, adult, ayachi_nene, hair_ribbon, ahoge, oversized_shirt, open_shirt, unbuttoned_shirt, lying_on_bed, straddling_viewer, heavy_blush, passionate_look, heavy_breathing, bedroom, indoors, morning_light, soft_shadows, sensual, warm_lighting",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【寧々・大人のアフターストーリー・・・結婚式の朝に絶対堕ちる】白いガーゼ越しに、散らかったベッドに朝の日差しが柔らかく差し込む。寧々はだぶだぶの白いシャツを着ているだけで、ボタンは全開で、半分露出した肩と繊細な鎖骨が致命的な誘惑をにじみ出させています。彼女は熱い顔であなたにまたがり、ヘアバンドは片側に乱雑に散らばっており、頭のアホ毛はすでに柔らかくなり、極度の感情のために完璧な愛の形に結ばれていました。彼女はとろけそうなぼやけた目であなたを見下ろし、呼吸が速くなりました。――「もう、朝からからかわないでください……魔女のおはようのキス、まだ足りないんですから。」",
     "rating": "R18"
   },
@@ -1884,7 +1901,7 @@
       "R15"
     ],
     "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, messed_up_uniform, school_uniform, unbuttoned_shirt, lace_lingerie, sitting_on_desk, trapped_by_viewer, heavy_blush, tears_in_eyes, open_mouth, clubroom, night, shadows, dynamic_lighting, sensual",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー・・・机上の禁忌犯編】深夜のオカルト研究部は閑散としており、窓の外では大雨が降り続いていた。鍵のかかった木の扉が外界を遮断し、寧々はあなたによってそっと大きな机の上に押し倒されました。普段はきちんとしている制服の紐を完全に解き、その下にある絶妙で恥ずかしい黒いレースの下着が露わになります。黒い布地が、白い肌に血の凍るような弧を描きます。彼女は両手でテーブルの角を握り、涙を浮かべながら自分を包み込む君を見上げた。彼女の頭の上のアホ毛はとても恥ずかしがり屋で、非常にエロティックなハート型の螺旋に狂ったように丸まり、彼女の小さな口がわずかに開き、彼女は息を呑みました。――「柊史……ここ、部室ですよ。こんなにどきどきさせられたら、寧々はもう平静でいられません……。」",
     "rating": "R15"
   },
@@ -1928,12 +1945,13 @@
     "camera": "近景特写",
     "lighting": "微弱侧向暖光",
     "usage": [
-      "壁纸级"
+      "壁纸级",
+      "R15"
     ],
     "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, undressing, shirt_slid_down, bare_shoulders, bare_back, hands_on_mirror, mirror_reflection, reflection, heavy_blush, tears_in_eyes, heavy_breathing, bedroom, night, dim_lighting, sensual, warm_lighting",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー・・化粧鏡の前での過激なエロ】深夜の閉ざされた寝室、クルミ材の巨大な鏡の前で。寧々は後ろからあなたにすっぽりと包まれ、パジャマは腰まで引き下げられ、彼女の手は冷たい鏡の上で力なく支えられています。鏡には、丸見えになった彼女の肩と、激しくうねる真っ白な肌の魅惑的な姿が鮮明に映っていた。彼女は自分自身とあなたを鏡で見ることを強制されました。彼女の頭の上のアホ毛は、極度の感情のためにすでに非常に震えるハート型に崩壊していました。彼女の目には涙があふれ、顔は真っ赤になり、下唇を噛んでいました。彼女の温かい息遣いが鏡の上で霧に変わった。――「柊史……恥ずかしいです。鏡を見たまま、そんなに褒めないでください……。」",
-    "rating": "All"
+    "rating": "R15"
   },
   {
     "id": "sc168",
@@ -1950,6 +1968,7 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
+      "adult",
       "naked_apron",
       "apron_only",
       "towel_slip",
@@ -1978,8 +1997,8 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, naked_apron, apron_only, towel_slip, lying_on_table, legs_apart, heavy_blush, tears_in_eyes, open_mouth, sweat, messy_hair, cafe_interior, night, soft_lighting, sensual, warm_lighting",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic",
+    "prompt": "1girl, adult, ayachi_nene, hair_ribbon, ahoge, naked_apron, apron_only, towel_slip, lying_on_table, legs_apart, heavy_blush, tears_in_eyes, open_mouth, sweat, messy_hair, cafe_interior, night, soft_lighting, sensual, warm_lighting",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【寧々・大人のアフターストーリー・・・エプロンがずれて堤防が決壊】閉店後のスターライトカフェのバーでは、冷たい石の天板と熱い肉のコントラストが印象的だった。あなたはすでに寧々の腰にぶら下がっているカフェエプロンのストラップを引きちぎり、彼女の魅力的なふくよかさと滑らかなお腹を無防備に空中に露出させています。彼女は力なくバーの上に仰向けに横たわり、黒いヘアバンドは脇に落ち、頭のアホ毛は狂ったように丸まって完璧な愛のスパイラルを形成していました。彼女は両手であなたの肩を抱き、足であなたの腰をしっかりと抱きしめました。彼女の顔は涙と汗で覆われ、小さな口がわずかに開き、魅力的なあえぎ声を上げました。――「柊史……もう魔法なんて役に立ちません。寧々の心まで、あなたに溶かされてしまいそうです。」",
     "rating": "R18"
   },
@@ -2003,7 +2022,6 @@
       "sitting_on_desk",
       "bare_legs",
       "cleavage",
-      "skin_exposure",
       "hair_ribbon",
       "ahoge",
       "heavy_blush",
@@ -2026,8 +2044,8 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, unbuttoned_shirt, skirt_lift, sitting_on_desk, bare_legs, cleavage, skin_exposure, heavy_blush, tears_in_eyes, open_mouth, library, bookshelf, night, shadows, sensual, warm_lighting",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, unbuttoned_shirt, skirt_lift, sitting_on_desk, bare_legs, cleavage, heavy_blush, tears_in_eyes, open_mouth, library, bookshelf, night, shadows, sensual, warm_lighting",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー · ·図書館の秘密評価済み】深夜完全閉館後の大学図書館の奥深く。両側にはクルミ材の本棚がそびえ立ち、古いページと温かいホルモンの匂いが空気に満ちています。寧々はあなたによって大きな木製の読書テーブルにそっと運ばれました。彼女の制服のシャツのボタンはあなたに完全に外され、白い足はたたまれて力なく垂れ下がっていました。彼女はテーブルの端を両手で握り、頭上のアホ毛は極度の感情で激しく震えるハート型の螺旋を描き完全に崩壊した。彼女の顔は涙と赤面で覆われ、口はわずかに開いて温かいあえぎ声を上げていました。――「柊史……ここ、図書館ですよ。警備員さんが来たら、寧々は恥ずかしくて顔を上げられません……。」",
     "rating": "R15"
   },
@@ -2046,13 +2064,13 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
+      "adult",
       "lingerie",
       "lace_lingerie",
       "bound_hands",
       "bound_to_bed",
       "hair_ribbon",
       "bare_shoulders",
-      "skin_exposure",
       "heavy_blush",
       "tears_in_eyes",
       "heavy_breathing",
@@ -2074,8 +2092,8 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "1girl, ayachi_nene, lingerie, lace_lingerie, bound_hands, bound_to_bed, hair_ribbon, bare_shoulders, skin_exposure, heavy_blush, tears_in_eyes, heavy_breathing, bedroom, bed, night, dim_lighting, ahoge, sensual, warm_lighting",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic",
+    "prompt": "1girl, adult, ayachi_nene, lingerie, lace_lingerie, bound_hands, bound_to_bed, hair_ribbon, bare_shoulders, heavy_blush, tears_in_eyes, heavy_breathing, bedroom, bed, night, dim_lighting, ahoge, sensual, warm_lighting",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【寧々・大人のアフターストーリー · ·カチューシャソフトバウンドWedding Night】深夜の居心地の良いベッドルームのベッド。日中の厳しい言葉で寧々を罰するために、あなたは彼女のお気に入りの2つのピンクのヘアバンドを使って、彼女の細くて白い手首をベッドサイドの手すりにそっと結びました。この時、彼女はほぼ透ける純白のレースの下着を身に着けているだけで、その真っ白な肌の広い範囲は、恥ずかしさと興奮で非常に魅惑的に紅潮していた。頭頂部のアホ毛が完全に崩れて侵食されたハート型になり、輝く瞳は潤いの膜で覆われ、下唇を噛んで激しく喘ぎながらこちらを見つめる。――「柊史……リボンでいたずらするなんて、ずるいです。今夜は寧々のわがままを、全部聞いてくださいね。」",
     "rating": "R18"
   },
@@ -2094,12 +2112,12 @@
     "time": "午后",
     "timeOfDay": "afternoon",
     "tags": [
+      "adult",
       "swimsuit",
       "bikini_malfunction",
       "untied_swimsuit",
       "bare_shoulders",
       "cleavage",
-      "skin_exposure",
       "standing",
       "swimming_pool",
       "wet_skin",
@@ -2120,8 +2138,8 @@
       "新手推荐",
       "成人向"
     ],
-    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, swimsuit, bikini_malfunction, untied_swimsuit, bare_shoulders, cleavage, skin_exposure, standing, swimming_pool, wet_skin, water_droplets, heavy_blush, panicked, sensual",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic",
+    "prompt": "1girl, adult, ayachi_nene, hair_ribbon, ahoge, swimsuit, bikini_malfunction, untied_swimsuit, bare_shoulders, cleavage, standing, swimming_pool, wet_skin, water_droplets, heavy_blush, panicked, sensual",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【寧々・大人のアフターストーリー・・・水着が脱げたら絶対エロゲ】夏の午後のプライベートヴィラの屋内スイミングプール。色白で華奢な体に青く澄んだ水の波が波打った。水中での激しい戦いのせいで、寧々のセクシーな死水水着の紐が完全に外れ、ドレス全体が胸までずり落ちた。豊満で色っぽい胸と滑らかな下腹部が透き通った水に完全に露出していた。彼女は腰までの深さの水の中にパニックに陥り、必死に手で体を隠そうとしていました。彼女の体はクリスタルの水滴で覆われ、頭の上のアホ毛は恥ずかしさで狂ったように震えていました。――「きゃあっ、こんなときに帯が切れるなんて！　見ちゃだめです！　目を開けたら、魔法でカエルに変えちゃいますから！」",
     "rating": "R18"
   },
@@ -2140,6 +2158,7 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
+      "adult",
       "oversized_sweater",
       "unbuttoned_sweater",
       "straddling_viewer",
@@ -2166,8 +2185,8 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, oversized_sweater, unbuttoned_sweater, straddling_viewer, lying_on_bed, heavy_blush, tears_in_eyes, cleavage, bare_legs, bedroom, night, dim_lighting, sensual, warm_lighting",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic",
+    "prompt": "1girl, adult, ayachi_nene, hair_ribbon, ahoge, oversized_sweater, unbuttoned_sweater, straddling_viewer, lying_on_bed, heavy_blush, tears_in_eyes, cleavage, bare_legs, bedroom, night, dim_lighting, sensual, warm_lighting",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【寧々・大人のアフターストーリー · ·ニットセーターバキューム極高エネルギー】深夜、鍵のかかった寝室は息が詰まるほど熱い空気が漂っていた。寧々は、昼間のツンデレのせいで、あなたによって「柊史……このニット、やっぱり変じゃないですか？　そんなに見つめないで……早く寧々を抱きしめてください。」",
     "rating": "R18"
   },
@@ -2186,6 +2205,7 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
+      "adult",
       "naked_apron",
       "apron_only",
       "maid_style",
@@ -2212,8 +2232,8 @@
       "新手推荐",
       "成人向"
     ],
-    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, naked_apron, apron_only, maid_style, bare_back, cleavage, sitting_on_counter, heavy_blush, panicked, cafe_interior, night, soft_lighting, sensual, warm_lighting",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic",
+    "prompt": "1girl, adult, ayachi_nene, hair_ribbon, ahoge, naked_apron, apron_only, maid_style, bare_back, cleavage, sitting_on_counter, heavy_blush, panicked, cafe_interior, night, soft_lighting, sensual, warm_lighting",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【寧々・大人のアフターストーリー・・裸エプロン極限羞恥】深夜完全閉店後のスターライトカフェ。静かで薄暗い雰囲気の中、寧々はカフェエプロンだけというタブーな衣装を着た。彼女は顔を赤らめながら、少し涼しいバーテーブルに座っていた。エプロンの紐が彼女の豊満で魅力的な横乳の輪郭をゆるやかに描いている。滑らかな白い背中と完全にバキュームになった美脚が無防備にさらけ出された。あなたがドアを押す足音が聞こえたので、彼女は頭を覆おうとして必死に足を締めました。彼女の頭の上のアホ毛はとても恥ずかしがり屋で狂ったように震え、完璧な愛のスパイラルへと丸まっていった。――「もう、柊史のばか！　わざと台所の鍵をかけて……今夜は本当に、寧々を独り占めするつもりですか？」",
     "rating": "R18"
   },
@@ -2232,6 +2252,7 @@
     "time": "清晨",
     "timeOfDay": "morning",
     "tags": [
+      "adult",
       "naked",
       "in_bed",
       "under_blanket",
@@ -2256,8 +2277,8 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, naked, in_bed, under_blanket, extreme_intimacy, heavy_blush, shy_smile, bedroom, morning_light, soft_shadows, sensual, warm_lighting",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic",
+    "prompt": "1girl, adult, ayachi_nene, hair_ribbon, ahoge, naked, in_bed, under_blanket, extreme_intimacy, heavy_blush, shy_smile, bedroom, morning_light, soft_shadows, sensual, warm_lighting",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【寧々・大人のアフターストーリー · ·朝の完全真空と究極の優しさ】怠惰な休日の朝、暖かい壊れた光がカーテンを通って飛び散りました。あなたは暖かいベッドから目覚めると、寧々がベッドで裸で、翡翠のように白い繊細な体がタコのように体を包み込んでいるのを見つけてショックを受けました。あなたが目覚めたおかげで、彼女はキルトの下に身を寄せて、かなり赤い顔だけを見せました、そして、彼女の極度の心の安らぎと恥ずかしがり屋のせいで、頭の上のアホ毛はおとなしく完璧なハート型の螺旋を描きました。彼女は布団の角をしっかりと握り締め、輝く瞳は潤いの層で覆われ、声は柔らかくコケティッシュだった。――「おはようございます……もう、布団の中でいたずらしないでください。起きる前に、もう一度だけ抱きしめて。」",
     "rating": "R18"
   },
@@ -2305,15 +2326,15 @@
       "R15"
     ],
     "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, bridal_lingerie, lace_lingerie, garter_belt, white_stockings, veil, lying_on_bed, lying_on_stomach, bare_shoulders, heavy_blush, tears_in_eyes, bedroom, night, dim_lighting, sensual, warm_lighting",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー・・・新婚のランジェリーはとびきりロマンチック】結婚式の初夜、豪華なベッドルームにバラの花びらが散りばめられます。寧々さんは、ご要望に応じて顔を赤らめてタブーのような純白のブライダルレースの下着とガーターを身に着け、頭には半透明の白いベールをかぶせました。彼女は大きな白いベルベットのベッドの真ん中にある柔らかいソファに横たわり、極度の緊張のせいで色白で繊細な体がわずかに震えていました。彼女は熱い頬を隠そうとベールを引っ張った。彼女の頭のアホ毛は、愛の過多によりすでに完全なハート型の螺旋に崩壊していました。彼女の涙ぐんだ目は混乱してあなたを見つめていました。――「柊史……この服、ちょっと反則です。今日から寧々は、本当にあなたのお嫁さんなんですね。」",
     "rating": "R15"
   },
   {
     "id": "sc184",
-    "title": "放学后的禁闭室：紧身体操服的绝对支配",
+    "title": "雨夜训练室：运动装下的心跳失衡",
     "category": "恋爱/After_Story",
-    "story": "【成年 After Story · 宁宁 · 紧身体操服汗水高能】暴雨如注的黄昏，学校废弃的体育器材室。反锁的铁门隔绝了一切声音，空气中弥漫着橡胶垫与微热的汗水气息。宁宁在你的惩罚下，被迫换上了极其贴身、勾勒出所有惊人弧度的紧身体操服与深蓝色灯笼裤。她双手被你轻轻按在垫子上，整个人无力地跪趴着。她浑身挂满晶莹的香汗，头顶的呆毛早已因为羞耻和兴奋疯狂卷曲成完美的爱心螺旋，小嘴微张剧烈喘息——「呜...柊史...体操服好紧...在器材室做这种事...宁宁的理智快要彻底死掉了啦...」",
+    "story": "【成年 After Story · 宁宁 · 雨夜训练室】成年同居后的周末，窗外暴雨敲打着公寓私人训练室的玻璃。为了记录新训练计划，宁宁主动换上贴身运动背心与骑行短裤，在拉伸垫上双膝跪坐、双手撑地调整姿势。运动后的薄汗让她的银白发丝贴在脸侧，发现你的镜头停留太久，她立刻红着脸抬头抗议——「这只是姿势记录，不准擅自放大看……要拍就快一点。拍完以后，记得陪宁宁做放松拉伸。」",
     "char": "nene",
     "character": [
       "nene"
@@ -2324,19 +2345,20 @@
     "time": "傍晚",
     "timeOfDay": "sunset",
     "tags": [
-      "gym_uniform",
-      "bloomers",
+      "sportswear",
+      "tank_top",
+      "bike_shorts",
       "tight_clothing",
       "kneeling",
-      "lying_on_couch",
+      "hands_on_floor",
       "heavy_blush",
       "sweat",
       "water_droplets",
-      "tears_in_eyes",
       "open_mouth",
       "hair_ribbon",
       "ahoge",
-      "storage_room",
+      "gym",
+      "indoors",
       "sunset",
       "shadows",
       "sensual",
@@ -2344,17 +2366,18 @@
       "close_up"
     ],
     "mature": false,
-    "location": "体育器材室",
+    "location": "公寓私人训练室",
     "weather": "窗外雷阵雨",
     "camera": "近景特写",
     "lighting": "百叶窗透进的黄昏斜照",
     "usage": [
-      "新手推荐"
+      "新手推荐",
+      "R15"
     ],
-    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, gym_uniform, bloomers, tight_clothing, kneeling, lying_on_couch, heavy_blush, sweat, water_droplets, tears_in_eyes, open_mouth, storage_room, sunset, shadows, sensual, warm_lighting",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
-    "storyJa": "【寧々・大人のアフターストーリー・・・ピチピチの体操服、汗だくでハイテンション】大雨が降る夕暮れ時、廃校となった学校の体育用具室。鍵のかかった鉄扉はあらゆる音を遮断し、空気はゴムマットと汗の生暖かい匂いで満たされていた。あなたの罰の下で、寧々は、驚くほどの曲線を描く非常にぴったりした体操服とダークブルーのブルマを着用することを強制されました。あなたが彼女の手をマットにそっと押すと、彼女は力なくひざまずきました。全身は透き通った香り高い汗で覆われ、頭のアホ毛はすでに恥辱と興奮で狂ったように狂い、完璧な愛のスパイラルを巻き起こしていた。彼女の小さな口はわずかに開き、激しく喘いでいました。――「柊史……体操服、少しきついです。それにここは器材室ですよ。そんなに見つめられたら、寧々は困ります……。」",
-    "rating": "All"
+    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, sportswear, tank_top, bike_shorts, tight_clothing, kneeling, hands_on_floor, heavy_blush, sweat, water_droplets, open_mouth, gym, indoors, sunset, shadows, sensual, warm_lighting",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nude, explicit",
+    "storyJa": "【寧々・大人のアフターストーリー・雨夜のトレーニングルーム】同居後の週末、窓の外では激しい雨が降り、マンションのプライベートジムのガラスを叩いていた。新しいトレーニング記録のため、寧々は自分でフィットしたスポーツトップとサイクルショーツに着替え、マットの上で両膝をつき、両手を床について姿勢を整えた。運動後の汗で銀白の髪が頬に張り付き、カメラが長く止まっていることに気づくと、真っ赤になって顔を上げた――「これは姿勢の記録です。勝手に拡大しないでください……撮るなら早くして。終わったら、一緒にストレッチしてくださいね。」",
+    "rating": "R15"
   },
   {
     "id": "sc186",
@@ -2371,6 +2394,7 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
+      "adult",
       "bunny_suit",
       "bunny_ears",
       "high_leg_bunny_suit",
@@ -2399,8 +2423,8 @@
       "绝对独占",
       "成人向"
     ],
-    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, bunny_suit, bunny_ears, high_leg_bunny_suit, black_pantyhose, sitting_on_lap, straddling_viewer, cleavage, heavy_blush, embarrassed, bedroom, night, dim_lighting, sensual, warm_lighting",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic",
+    "prompt": "1girl, adult, ayachi_nene, hair_ribbon, ahoge, bunny_suit, bunny_ears, high_leg_bunny_suit, black_pantyhose, sitting_on_lap, straddling_viewer, cleavage, heavy_blush, embarrassed, bedroom, night, dim_lighting, sensual, warm_lighting",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【寧々・大人のアフターストーリー · ·漆黒のバニーガールコスチューム極度の恥辱】アパートの寝室は深夜に施錠されます。あなたへの特別な誕生日プレゼントとして、寧々は、極限の心理的葛藤の末、ついに極めてセクシーな漆黒のハイカットバニーガールボディスーツと黒のストッキングを履きました。可愛いうさ耳を付けた彼女は顔を赤らめ腕にまたがり、タイツが魅力的な横乳と絶対領域を広大な面積で輪郭を描きます。彼女は熱い頬を両手で覆い、あなたを見ようとはしませんでした。頭のアホ毛がウサミミの隙間から出てきて、恥ずかしそうにエロティックなハート型に歪んでいる。――「た、誕生日おめでとうございます……もう、変な笑い方をしないで！　この服は寧々からの特別なプレゼントです。だから、早く抱きしめてください。」",
     "rating": "R18"
   },
@@ -2446,7 +2470,7 @@
       "R15"
     ],
     "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, slip_dress, apron, sitting_on_counter, cleavage, bare_legs, heavy_blush, open_mouth, kitchen, indoors, morning_light, soft_shadows, sensual, warm_lighting",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー・・・シルクサスペンダースカートとエプロンは超高機能】結婚式の翌朝、暖かいキッチンでは、パンを焼く温かく甘い香りが空気に満ちています。あなたのリクエストに応じて、寧々は非常にローカットのピンクのシルクのサスペンダーナイトガウンと小さなキッチンエプロンを外で着ているだけでした。あなたが彼女を大理石のバーテーブルに乗せたとき、彼女は顔を赤らめていました。細いエプロンの紐では露出した両側の白い胸を覆うことができませんでした。彼女は恥ずかしそうに小麦粉に汚れた手をあなたの胸に押し付けました。彼女の頭上のアホ毛はすでに恥ずかしそうに愛の完璧なスパイラルに崩壊しており、彼女は速く喘いでいました。――「柊史……朝から台所で急に抱きつかないでください。小麦粉が服についちゃいます……でも、もう少しだけ。」",
     "rating": "R15"
   },
@@ -2467,7 +2491,7 @@
     "tags": [
       "miko_uniform",
       "disheveled_clothes",
-      "unbuttoned",
+      "unbuttoned_shirt",
       "cleavage",
       "bare_shoulders",
       "lying_on_bed",
@@ -2493,8 +2517,8 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, miko_uniform, disheveled_clothes, unbuttoned, cleavage, bare_shoulders, lying_on_bed, bare_legs, heavy_blush, tears_in_eyes, shrine, night, lantern_light, tatami, sensual, warm_lighting",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, miko_uniform, disheveled_clothes, unbuttoned_shirt, cleavage, bare_shoulders, lying_on_bed, bare_legs, heavy_blush, tears_in_eyes, shrine, night, lantern_light, tatami, sensual, warm_lighting",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー · ·伝統的な魔女の衣装が究極のエロゲを明らかにします】夏祭りが終わった深夜、古びた神社の奥座敷。畳の香りと暖かい夜風が空気に満ちています。寧々は、神聖で優雅な日本の魔女の衣装を着ることを強制されました。この瞬間、彼女はあなたによって柔らかいベッドの真ん中でそっと押し倒されました。白い巫女の上着はあなたによってボタンが完全に外され、肩の両側まで落ち、内側の繊細で赤みを帯びた雪のように白い体が広範囲に露出しました。赤い緋の袴も腰まで引き上げられ、滑らかな絶対領域が無防備になった。彼女は純白の広い袖口を引っ張り、恥ずかしさで溶けそうになった頬を覆った。彼女の頭のアホ毛は長い間、興奮により麻痺してハート型の螺旋を描いていた。――「もう、柊史……神聖な社務所で巫女服を引っ張るなんて、罰が当たりますよ。だから……早く、ちゃんと抱きしめてください。」",
     "rating": "R15"
   },
@@ -2513,6 +2537,7 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
+      "adult",
       "oversized_sweater",
       "off_shoulder_sweater",
       "no_panties",
@@ -2542,8 +2567,8 @@
       "绝对独占",
       "成人向"
     ],
-    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, oversized_sweater, off_shoulder_sweater, no_panties, lying_on_couch, bare_legs, bare_shoulders, cleavage, heavy_blush, shy_smile, fireplace, indoors, night, warm_lighting, cozy, sensual",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic",
+    "prompt": "1girl, adult, ayachi_nene, hair_ribbon, ahoge, oversized_sweater, off_shoulder_sweater, no_panties, lying_on_couch, bare_legs, bare_shoulders, cleavage, heavy_blush, shy_smile, fireplace, indoors, night, warm_lighting, cozy, sensual",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【寧々・大人のアフターストーリー・・ホリデーキャビンセーターワンショルダーずり落ちバキューム】雪の降る冬の夜遅く、貸切の別荘で、暖炉の薪がパチパチと音を立て、オレンジがかった赤の暖かい火の光が飛び散っていた。寧々は今夜は守備を完全に下げた。彼女は大きな厚手のニットセーターを着ているだけで、何も着ていませんでした。彼女は毛の長い分厚いカーペットの上に仰向けになってのんびりと横たわっていた。彼女のセーターの広いネックラインは片方の腕に完全に滑り込み、丸い肩とふっくらとしたセクシーな白い胸の半分が露出しました。彼女の細くて柔らかい脚は、火の光の下で魅惑的な暖かい光沢を放ち、頭のアホ毛は究極の快適さと安心感のために完璧なハートの形に素直に垂れ下がりました。――「もう、肩ばかり見てどうしたんですか？　暖炉も暖かいですけど……あなたに抱きしめてもらうほうが、もっと暖かいです。」",
     "rating": "R18"
   },
@@ -2562,6 +2587,7 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
+      "adult",
       "nurse_cap",
       "nurse_costume",
       "cleavage",
@@ -2590,8 +2616,8 @@
       "核心协议",
       "成人向"
     ],
-    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, nurse_cap, nurse_costume, cleavage, skirt_lift, white_stockings, garter_belt, sitting_on_lap, straddling_viewer, heavy_blush, tears_in_eyes, bedroom, night, dim_lighting, sensual, warm_lighting",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic",
+    "prompt": "1girl, adult, ayachi_nene, hair_ribbon, ahoge, nurse_cap, nurse_costume, cleavage, skirt_lift, white_stockings, garter_belt, sitting_on_lap, straddling_viewer, heavy_blush, tears_in_eyes, bedroom, night, dim_lighting, sensual, warm_lighting",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【寧々・大人のアフターストーリー・・ナース服でのセクシープレイが最高にエモい】深夜の閉ざされたアパートの寝室。何日も残業したあなたを慰めるために、寧々は顔を赤らめ、非常に汚いピンクと白のセクシーなナース服と白いストッキングを履きました。彼女はベッドの端であなたの足にまたがり、小柄な看護師の帽子は片側に傾き、ローカットのネックラインがあなたによってそっと開かれ、雪のように白い波状の大きな官能的な部分が現れました。彼女は慌てて両手であなたの肩をつかみました。頭上のアホ毛は、過剰な感情と恥ずかしさでハート型の螺旋に完全に崩壊していた。彼女の目は水蒸気の層で覆われ、彼女は急速にあえいでいました。――「柊史……『特別健康診断』なんて言って、からかいすぎです。もう十分ですから、早く抱きしめてください。」",
     "rating": "R18"
   },
@@ -2638,7 +2664,7 @@
       "R15"
     ],
     "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, micro_bikini, string_bikini, wet_skin, water_droplets, sitting_on_lap, bare_shoulders, cleavage, bare_legs, heavy_blush, open_mouth, swimming_pool, night, moonlight, sensual",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー・・・究極の官能を叶えるマイクロストリングビキニ】夏の夜、プライベートヴィラの屋外プールは静かです。波打つ青い水が空の星を映していました。今夜の寧々はあなたの挑発のおかげで、極小の黒紐マイクロビキニに初めて着替えました。生地は非常にまばらで、彼女のふくよかで誇らしいラインを隠すことができませんでした。彼女の全身は透き通った水滴で覆われ、雪のように白く繊細な肌の広い範囲が冷たい月光にさらされていました。彼女は恥知らずにも手で胸を守り、プールサイドであなたの膝にまたがって座ります。彼女の頭の上のアホ毛は、感情的な過負荷のためにすでに狂ったようにカールしてハート型の螺旋を描いています。――「帯がほどけそうです……見ちゃだめですよ！　今夜の魔女は……あなたにだけ、少しわがままを聞いてほしいんです。」",
     "rating": "R15"
   },
@@ -2687,7 +2713,7 @@
       "R15"
     ],
     "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, corset, gothic_lolita, lace_trim, cleavage, fishnets, bound_hands, kneeling, heavy_blush, tears_in_eyes, heavy_breathing, clubroom, night, dim_lighting, sensual, warm_lighting",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー・・ゴスコルセット極恥】深夜の暗くて静かなオカルト活動室の大きなソファの上。あなたの強力な命令の下、寧々はタブーなゴシックスタイルに満ちた黒いレースの厚みのあるコルセットと黒い網タイツのセットを着用することを強制されました。細い腰をコルセットが極度に大袈裟に締め付け、ただでさえ素晴らしい胸の膨らみが爆発寸前の衝撃的な深淵に現れた。彼女は後ろ手に縛られ、顔を真っ赤にして革張りのソファの真ん中にひざまずいていた。頭の上のアホ毛は極度の恥辱に耐えられず、すでに哀れな愛のスパイラルに崩壊しており、目に涙を浮かべ息を切らした。――「柊史……この服、やっぱり変じゃないですか？　少し恥ずかしいですけど……今夜は寧々のことを、ずっと見ていてください。」",
     "rating": "R15"
   },
@@ -2706,6 +2732,7 @@
     "time": "拂晓",
     "timeOfDay": "dawn",
     "tags": [
+      "adult",
       "naked",
       "wrapped_in_sheet",
       "lying_on_bed",
@@ -2736,8 +2763,8 @@
       "终章大结局",
       "成人向"
     ],
-    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, naked, wrapped_in_sheet, lying_on_bed, looking_at_viewer, tears_of_joy, slight_smile, heavy_blush, bedroom, indoors, dawn, first_light, soft_shadows, cinematic_composition, sensual, warm_lighting",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic",
+    "prompt": "1girl, adult, ayachi_nene, hair_ribbon, ahoge, naked, wrapped_in_sheet, lying_on_bed, looking_at_viewer, tears_of_joy, slight_smile, heavy_blush, bedroom, indoors, dawn, first_light, soft_shadows, cinematic_composition, sensual, warm_lighting",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【寧々・大人のAfter Story・旅の終わりと新しい朝】幾つもの困難を越えた先、二人だけの寝室に朝の光が差し込んでいた。寧々は真っ白な毛布にくるまり、銀色の髪を枕へ広げている。紫の瞳には幸せそうな涙が浮かび、アホ毛は小さなハートを描くように揺れていた。彼女はあなたへ両腕を伸ばし、決して解けない誓いを静かに口にする――「柊史……魔女の長い旅は、これでおしまいです。これから先の寧々の心も、人生も……ずっと、あなただけのものですよ。」",
     "rating": "R18"
   },
@@ -2772,7 +2799,8 @@
       "dim_lighting",
       "sensual",
       "warm_lighting",
-      "pov"
+      "pov",
+      "close_up"
     ],
     "mature": false,
     "location": "温馨卧室大床",
@@ -2780,12 +2808,13 @@
     "camera": "主观仰视近景",
     "lighting": "微弱床头灯暖光",
     "usage": [
-      "核心协议"
+      "核心协议",
+      "R15"
     ],
     "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, oversized_shirt, open_shirt, unbuttoned_shirt, lying_on_bed, holding_clothes, heavy_blush, tears_in_eyes, open_mouth, bedroom, bed, night, dim_lighting, warm_lighting, point_of_view, from_below, sensual, <lora:ayachi_nene_v11:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, underwear, nsfw, nude, explicit",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, underwear, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー · ·ゆるいシャツの下に究極の愛着を】窓の外は雷雨で、深夜の寝室には薄暗いベッドサイドランプだけが灯っていました。寧々は腕の中で丸まって、ゆったりとした白いシャツだけを着ています。緩んだフロントと半分露出した肩のラインが、暖かい光によって柔らかく輪郭を描かれます。彼女はあなたの服の裾を両手でしっかりと握り、目には涙と赤みが重なって、頭のアホ毛がパニックになってハート型に丸まりました。彼女は顔を上げ、その声は雨の音にほとんどかき消されそうなほど小さかった。――「もう……抱きしめて話すだけって約束したのに。これ以上からかわれたら、寧々は本当に落ち着けません……。」",
-    "rating": "All"
+    "rating": "R15"
   },
   {
     "id": "sc203",
@@ -2818,7 +2847,8 @@
       "hair_ribbon",
       "ahoge",
       "sensual",
-      "warm_lighting"
+      "warm_lighting",
+      "close_up"
     ],
     "mature": false,
     "location": "旅馆传统榻榻米",
@@ -2830,7 +2860,7 @@
       "R15"
     ],
     "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, yukata, kimono, clothes_pull, bare_shoulders, cleavage, bare_legs, lying_on_bed, heavy_blush, embarrassed, tatami, indoors, night, lantern_light, warm_lighting, from_above, sensual, <lora:ayachi_nene_v11:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, underwear, nsfw, nude, explicit",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, underwear, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー・・・花火のあとの浴衣の余韻】夏祭りが終わり、古風な旅館もようやく静かになった。畳の上では寧々の浴衣の帯が緩み、幅広のスカートが肩まで滑り落ち、夜風で少し赤くなった肩と首が露わになっていた。慌てて袖を掴んで顔を覆ったが、頭のアホ毛はすでに恥ずかしそうにハート型に丸まっていた。花火の最後のくぐもった音が遠くから聞こえ、彼女は静かに文句を言い、あなたに近づきました。――「もう、道中ずっとふざけるから……笑ってないで、早く寧々の服を整えるのを手伝ってください。」",
     "rating": "R15"
   },
@@ -2867,7 +2897,8 @@
       "ahoge",
       "sensual",
       "warm_lighting",
-      "pov"
+      "pov",
+      "close_up"
     ],
     "mature": false,
     "location": "海滨度假木屋露台",
@@ -2879,7 +2910,7 @@
       "R15"
     ],
     "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, sundress, no_bra, nipples_visible_through_clothing, see_through_clothing, bare_shoulders, standing, balcony, heavy_blush, wind, passionate_look, beach_house, dawn, first_light, backlighting, rim_light, point_of_view, sensual, warm_lighting, <lora:ayachi_nene_v11:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, pants, underwear, bra, nsfw, nude, explicit",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, pants, underwear, bra, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー・・・夏の軽やかなスカートと夜明けの逆光】夜明けに目覚めると、海辺の木造住宅のテラスでは、手すりを伝って湿った海風が吹き抜けていた。寧々は、薄い白いノースリーブのドレスを着て、朝の光の中に立っていた。柔らかい布地が風によって彼女の体に押し付けられ、彼女のぼんやりとした輪郭が朝日に照らされました。彼女は顔を赤らめて振り返り、その目には恥じらいと抑えがたい幸福感が表れていた。彼女の頭のてっぺんは小さなハートの形に素直に曲がっていました――「もう見飽きた？　風が少し冷たいんです……早く後ろから、寧々を抱きしめてください。」",
     "rating": "R15"
   },
@@ -2898,6 +2929,7 @@
     "time": "清晨",
     "timeOfDay": "morning",
     "tags": [
+      "adult",
       "nude",
       "bath_towel",
       "wet_hair",
@@ -2925,7 +2957,7 @@
       "成人向"
     ],
     "prompt": "1girl, solo, ayachi_nene, white_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, adult, nude, bath_towel, wet_hair, bare_shoulders, collarbone, standing, bathroom, steam, morning_light, soft_shadows, heavy_blush, close_up, sensual, <lora:ayachi_nene_v11:0.78>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, school_uniform, child, loli, poorly drawn face, harsh_lighting",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, poorly drawn face, harsh_lighting, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【大人のAfter Story・寧々・浴室の湯気に包まれた朝】週末の朝、浴室の鏡にはまだ薄い湯気が残っていた。湯上がりの寧々は柔らかな白いタオルだけをまとい、濡れた白髪を肩に落としている。リボンを整えながら見つめられると、耳まで赤くなった。窓から差す朝の光が水蒸気を通り、彼女の輪郭をやさしく照らす。寧々は平静を装って顔をそむけ、小さな声で言った。――「大人になった寧々だって、恥ずかしいんだから……少しだけなら、見てもいいよ。」"
   },
   {
@@ -2943,6 +2975,7 @@
     "time": "破晓",
     "timeOfDay": "dawn",
     "tags": [
+      "adult",
       "nude",
       "bedsheet",
       "bare_shoulders",
@@ -2970,7 +3003,7 @@
       "成人向"
     ],
     "prompt": "1girl, solo, ayachi_nene, white_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, adult, nude, bedsheet, bare_shoulders, messy_hair, sitting_on_bed, bedroom, dawn, blue_hour, soft_light, heavy_blush, looking_at_viewer, close_up, sensual, <lora:ayachi_nene_v11:0.78>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, school_uniform, child, loli, daylight, harsh_lighting, extra limbs",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, daylight, harsh_lighting, extra limbs, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【大人のAfter Story・寧々・夜明け前の二度寝】空はまだ完全には明るくならず、寝室にはカーテンの隙間から淡い青い光だけが漏れていた。寧々は白いシーツにくるまりながら起き上がる。寝癖のついたツインテールと跳ねたアホ毛が、いつもより無防備に見えた。あなたが起きていると気づくと、慌ててシーツを引き上げながらも、そっとこちらを見ている。やがて隣の場所を半分だけ空けて、小さく言った。――「あと五分だけ寝よう……寧々の髪を笑ったり、先に逃げたりしたらだめだからね。」"
   },
   {
@@ -2988,6 +3021,7 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
+      "adult",
       "white_hair",
       "very_long_hair",
       "low_twintails",
@@ -3023,8 +3057,8 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, ahoge, hair_ribbon, nightgown, slip_dress, translucent_clothing, see_through_clothing, no_bra, off_shoulder, bare_shoulders, cleavage, sitting_on_lap, straddling_viewer, heavy_blush, panicked, open_mouth, bedroom, night, soft_lighting, sensual",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic",
+    "prompt": "1girl, adult, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, nightgown, slip_dress, translucent_clothing, see_through_clothing, no_bra, off_shoulder, bare_shoulders, cleavage, sitting_on_lap, straddling_viewer, heavy_blush, panicked, open_mouth, bedroom, night, soft_lighting, sensual",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【寧々・シルクスリップの魔女引力】激しい吹雪が吹き荒れる深夜のプライベートな寝室。寧々は今夜、あなたのストレートな攻勢に防衛線が完全に崩壊し、中には何も身に着けていない真空状態の極薄で半透明なミントグリーンのレースのシルクスリップ一枚だけを纏っていた。ベッドの上で激しくじゃれ合ったせいで、片方の細い肩紐がすでに力なく腕の下まで滑り落ち、極めて豊満でセクシーな白い胸元と透き通るような秘密の輪郭が露出している。彼女はあなたの大腿の上に跨り、頭の上のアホ毛は極度の恥ずかしさと従順さで震えて完璧なハート型に丸まり、顔を真っ赤にして慌てて押し返しながら涙声で自爆した――「うあぁ！大、大色狼！キャミソールの紐が外れちゃったじゃない……そんなところばかり見ないで！べ、別にわざとこんな格好をしてあなたを誘惑したわけじゃないんだから……ん、早くきつく抱きしめてよ、バカ！」",
     "rating": "R18"
   },
@@ -3043,6 +3077,7 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
+      "adult",
       "white_hair",
       "very_long_hair",
       "low_twintails",
@@ -3075,8 +3110,8 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, ahoge, hair_ribbon, oversized_hoodie, no_panties, bare_legs, cleavage, sitting_on_lap, straddling_viewer, clinging_to_viewer, heavy_blush, tears_in_eyes, panicked, home_theater, night, dim_lighting, sensual",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic",
+    "prompt": "1girl, adult, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, oversized_hoodie, no_panties, bare_legs, cleavage, sitting_on_lap, straddling_viewer, clinging_to_viewer, heavy_blush, tears_in_eyes, panicked, home_theater, night, dim_lighting, sensual",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【寧々・ホームシアターの過負荷自爆】深夜、完全に遮音されたホームシアタールーム、巨大スクリーンの光だけが薄暗く揺れていた。強がって一緒にホラーゲームをクリアすると言っていた寧々は、今や画面上のショックシーンに防衛線が完全に崩壊していた。彼女は中には何も着ていない真空状態の、大きくてルーズなグレーのハイレグパーカー一枚だけを身に着けており、白く豊満な両脚が恐怖で激しく震えている。突然の恐怖に彼女は悲鳴を上げてコントローラーを放り出し、我を忘れてあなたの胸に飛び込み、大腿の上に跨ってきつくしがみついた。パーカーの襟元が大きくはだけ、豊かな胸元が荒い呼吸と共に激しく上下し、頭の上のアホ毛は極度の恥ずかしさと恐怖でハート型に丸まっていた――「うあぁ！柊、柊史！今の怪物、もう通り過ぎた？！うう……嘘つき、わざとこのゲームを選んだんでしょ……わ、私、別にどさくさに紛れて抱きついたわけじゃないんだからね！早くきつく抱きしめてよ、バカ！」",
     "rating": "R18"
   },
@@ -3095,6 +3130,7 @@
     "time": "白天",
     "timeOfDay": "all_day",
     "tags": [
+      "adult",
       "white_hair",
       "very_long_hair",
       "low_twintails",
@@ -3129,9 +3165,63 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, ahoge, hair_ribbon, apron, apron_only, naked_apron, cleavage, sideboob, bare_shoulders, bare_legs, sitting_on_counter, heavy_blush, panicked, tears_in_eyes, kitchen, indoors, day, bright, sensual",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic",
+    "prompt": "1girl, adult, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, apron, apron_only, naked_apron, cleavage, sideboob, bare_shoulders, bare_legs, sitting_on_counter, heavy_blush, panicked, tears_in_eyes, kitchen, indoors, day, bright, sensual",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【寧々】【寨々・休日の台所と真空エプロン】二人きりだけの休日のマンションのキッチン。寨々はあなたの強い懇願に負け、前代未聞のギャップに満ちたピンクのフリル付きエプロンに着替えたものの、その中身は完全に何も身に着けていない真空状態だった。彼女がバタバタと夕食の準備をしている最中、あなたは突然背後から彼女の細い腰を抱き上げ、大理石の調理台の上に座らせた。極端に狭いエプロンの裁断では、両側に大きく露出した白い側乳と丸みを帯びた白い太ももの輪郭を隠すことなど到底できなかった。彼女はパニックに陥りながらあなたの両腕を強く掴み、頭の上のアホ毛は極度の羞恥の過負荷で猛烈に震えてハート型に丸まり、涙を浮かべて即座に涙声で自爆した――「うあぁ！柊、柊史のこの大色狼！わざとエプロンの紐をこんなに緩く結ぶなんて……今夜、今夜は本当に寨々を頭からつま先まで全部食べちゃうつもりなの……うう、そっちを見ないでよ、バカ！」",
+    "rating": "R18"
+  },
+  {
+    "id": "sc220",
+    "title": "琴键余韵间的私密协奏",
+    "category": "恋爱/成年_AU/After_Story",
+    "story": "【成年 AU · 宁宁 · 私人音乐工作室的黄昏】共同生活后的休息日，成年宁宁在预约的私人音乐工作室里教你弹一首双人曲。夕阳穿过落地窗，把钢琴漆面染成碎金。她先笑着问你是否准备好，才转身跨坐到你腿上，握住你的手引向琴键；丝质衬衫的领口随动作微微松开，她却没有躲开，只红着脸把额头贴近你——「这一小节要两个人一起弹才完整……不准故意按错音。还有，继续之前要先问宁宁，可以吗？」",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v11",
+    "emotion": "恋爱",
+    "season": "夏",
+    "time": "黄昏",
+    "timeOfDay": "sunset",
+    "tags": [
+      "white_hair",
+      "very_long_hair",
+      "low_twintails",
+      "purple_eyes",
+      "ahoge",
+      "hair_ribbon",
+      "adult",
+      "silk_blouse",
+      "long_skirt",
+      "unbuttoned_shirt",
+      "cleavage",
+      "sitting_on_lap",
+      "straddling_viewer",
+      "leaning_forward",
+      "music_studio",
+      "piano",
+      "sunset",
+      "backlit",
+      "heavy_blush",
+      "panicked",
+      "open_mouth",
+      "sensual",
+      "close_up"
+    ],
+    "mature": true,
+    "location": "预约制私人音乐工作室的三角钢琴前",
+    "weather": "夕阳暖风",
+    "camera": "近景侧面特写",
+    "lighting": "夕阳穿透窗户的强逆光与轮廓光",
+    "usage": [
+      "绝对独占",
+      "壁纸级",
+      "成人向"
+    ],
+    "prompt": "1girl, adult, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, silk_blouse, long_skirt, unbuttoned_shirt, cleavage, sitting_on_lap, straddling_viewer, leaning_forward, music_studio, piano, sunset, backlit, heavy_blush, panicked, open_mouth, sensual",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
+    "storyJa": "【成年 AU・寧々・プライベート音楽スタジオの夕暮れ】同居後の休日、大人になった寧々は予約した私設音楽スタジオで、あなたに連弾曲を教えていた。夕日が大きな窓を通り、ピアノの艶を砕けた金色に染める。彼女は準備ができたか笑顔で確かめてから、あなたの膝に向かい合って座り、その手を取って鍵盤へ導いた。絹のブラウスの襟元が動きに合わせて少し緩んでも、彼女は逃げず、赤くなった額をそっと寄せた――「この小節は二人で弾いてこそ完成するんです……わざと音を外すのは禁止。それから、続ける前には寧々に聞いてくださいね？」",
     "rating": "R18"
   },
   {
@@ -3149,6 +3239,7 @@
     "time": "白天",
     "timeOfDay": "all_day",
     "tags": [
+      "adult",
       "white_hair",
       "very_long_hair",
       "low_twintails",
@@ -3157,7 +3248,6 @@
       "hair_ribbon",
       "dress",
       "wet_clothes",
-      "transparent_clothing",
       "see_through_clothing",
       "no_bra",
       "cleavage",
@@ -3184,8 +3274,8 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, ahoge, hair_ribbon, dress, wet_clothes, transparent_clothing, see_through_clothing, no_bra, cleavage, bare_legs, sitting_on_bench, straddling_viewer, clinging_to_viewer, heavy_blush, panicked, greenhouse, rain, daylight, shadows, sensual",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic",
+    "prompt": "1girl, adult, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, dress, wet_clothes, see_through_clothing, no_bra, cleavage, bare_legs, sitting_on_bench, straddling_viewer, clinging_to_viewer, heavy_blush, panicked, greenhouse, rain, daylight, shadows, sensual",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【寧々】【寨々・ガラス温室の俄か雨と誘導過負荷】休日の午後、突然の雷雨に見舞われた姫松学院裏庭のガラス温室。巨大な雨粒が頭上のガラス天窓を激しく叩きつけ、さらに内部の破損した自動スプリンクラーが突如暴走、寨々の身に纏う薄い真っ白なサマードレスを完全に濡らし尽くした。半透明になった生地が無防備に彼女の瑞々しい肢体にぴったりと張り付き、中の真空状態は一目瞭然、豊かな双丘と羞恥の赤みがはっきりと晒されてしまっている。水溜まりを避けるため、彼女は温室中央の狭い長椅子に跨ることを余儀なくされ、体ごとあなたの胸にきつくしがみついた。頭の上のアホ毛は極度の情動で猛烈に震えて完璧なハート型に丸まり、熱気の中で息を荒げながら、涙声で力なく自爆した――「うあぁ！ド、ドレスがすっかり透明になっちゃったじゃない……そんなにずっと見つめないでよ！べ、別に植物の手入れにかこつけて、わざとこんな格好であなたを誘惑したわけじゃ……ん、早くあなたの体で隠してよ、バカ！」",
     "rating": "R18"
   },
@@ -3204,6 +3294,7 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
+      "adult",
       "white_hair",
       "very_long_hair",
       "low_twintails",
@@ -3239,8 +3330,8 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, ahoge, hair_ribbon, race_queen, bodysuit, zipper_leotard, open_clothes, cleavage, sideboob, bare_legs, sitting_on_lap, straddling_viewer, heavy_blush, panicked, tears_in_eyes, garage, night, dim_lighting, sensual",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic",
+    "prompt": "1girl, adult, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, race_queen, bodysuit, zipper_leotard, open_clothes, cleavage, sideboob, bare_legs, sitting_on_lap, straddling_viewer, heavy_blush, panicked, tears_in_eyes, garage, night, dim_lighting, sensual",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【寧々・整備室のファスナー詰まりと過負荷の轟鳴】深夜、完全に営業が終了し閉鎖されたサーキットの地下整備室。超自然研究部のスポンサー衣装をテストするため、寧々は極めてタイトでハイレグなバックレスのパテントレザー製レースクイーンスーツに着替えたが、その中身は完全に何も身に着けていない真空状態だった。衣装の裁断がキツすぎるせいで、胸元の長い金属ファスナーが途中で完全にロックされてしまい、豊満でセクシーな白い胸元と見え隠れする致命的なラインが完全に露出してしまっている。彼女は慌てて後退した際に工具箱をパニックで踏みつけてしまい、バランスを崩してあなたの太ももの上に逆向きに跨る形で転がり込んできた。強い衝撃でロックされていたファスナーがさらに数センチずり下がり、彼女の頭のアホ毛は猛烈に震えてハート型に丸まり、顔を真っ赤にして涙目で自爆した――「うあぁ！大、大色狼！ファスナーが裂けてるところばかり見ないでよ！私、私はただファスナーが壊れて動けないだけで……決してわざとこんな恥ずかしいポーズであなたを誘惑したわけじゃ……うう、早く引き上げてよ、バカ！」",
     "rating": "R18"
   },
@@ -3259,6 +3350,7 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
+      "adult",
       "white_hair",
       "very_long_hair",
       "low_twintails",
@@ -3296,8 +3388,8 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, ahoge, witch_hat, witch_dress, black_dress, no_bra, cleavage, sideboob, thighhighs, bare_legs, sitting_on_lap, straddling_viewer, clinging_to_viewer, heavy_blush, panicked, open_mouth, bedroom, night, moonlight, backlit, sensual",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic",
+    "prompt": "1girl, adult, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, witch_hat, witch_dress, black_dress, no_bra, cleavage, sideboob, thighhighs, bare_legs, sitting_on_lap, straddling_viewer, clinging_to_viewer, heavy_blush, panicked, open_mouth, bedroom, night, moonlight, backlit, sensual",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【寧々・公式CG復刻：月夜の寝室の魔女の絶対契約】午後の雷雨が去り、深夜の清らかな月光が差し込むプライベートな寝室。寧々は今夜、あなたの強い願いを受け入れ、ついに絶対的な契約の象徴であるあの正統な漆黒の魔女服を再び身に纏い、頭には巨大な広縁の黒い魔法使いの帽子を被っていたが、その中身は何も着ていない完全な真空状態だった。彼女は銀歯を噛み締め、顔を真っ赤にしてあなたの大腿の上に跨り、長い純黒のニーソックスが豊満で肉感的な太ももをきつく包み込んでいる。タイトな魔女服の極めて狭い裁断のせいで、胸元のくり抜かれたデザインから豊満で白い胸元と両脇のセクシーな側乳が完全に押し出されて晒されていた。彼女の頭の上のアホ毛は極度の情動と従順さで完璧な螺旋状に垂れ下がり、顔を真っ赤にしてあなたの襟元を強く掴みながら、涙声で自爆した――「うあぁ！柊、リストの大色狼！なぜ私にこんな格好をさせるのよ……こ、この服の魔力の流れがすごくおかしいんだから……そんなにずっと見つめないで！今夜……本当に寧々と最終契約を交わすつもりなの……バカ！」",
     "rating": "R18"
   },
@@ -3316,6 +3408,7 @@
     "time": "深夜",
     "timeOfDay": "late_night",
     "tags": [
+      "adult",
       "white_hair",
       "very_long_hair",
       "low_twintails",
@@ -3340,8 +3433,7 @@
       "night",
       "soft_lighting",
       "sensual",
-      "close_up",
-      "medium_shot"
+      "close_up"
     ],
     "mature": true,
     "location": "公寓主卧温热双人床榻中央",
@@ -3353,8 +3445,8 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, ahoge, hair_ribbon, dudou, undergarment, translucent_clothing, see_through_clothing, no_bra, backless, cleavage, sideboob, bare_legs, sitting_on_lap, straddling_viewer, heavy_blush, panicked, open_mouth, bedroom, night, soft_lighting, sensual",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic",
+    "prompt": "1girl, adult, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, dudou, undergarment, translucent_clothing, see_through_clothing, no_bra, backless, cleavage, sideboob, bare_legs, sitting_on_lap, straddling_viewer, heavy_blush, panicked, open_mouth, bedroom, night, soft_lighting, sensual",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【寧々・シルク軽紗の中の中華風魔女代償】大雪が舞い散る深夜のプライベートなマンション。寧々は超自然研究部の仲間のイタズラのせいで、極薄で半透明な緋色のシルク製紐付き肚兜（ドゥドゥ）風パジャマを普通のパジャマと勘違いして着替えてしまい、その中身は完全に何も身に着けていない真空状態だった。ベッドの中央で振り向いた瞬間にドアを開けて入ってきたあなたを見て、彼女の防衛線は視線が交わった瞬間に完全に崩壊した。この衣装は、前身頃の極めて狭いシルクの軽紗一枚を除いて、滑らかでキメ細かな背中全体と両側の豊かな側乳がほとんど完全に露出しており、彼女の慌てた呼吸と共に激しく上下している。彼女は顔を真っ赤にしてあなたの大腿の上に跨り、両手で必死に胸元を覆い、頭のアホ毛は極度の情動の過負荷で震えてハート型に丸まり、涙声で自爆した――「うあぁ！柊、柊史のこの大変態！なぜ今夜に限ってこのタイミングで入ってくるのよ？！人の透けてる紐ばかり見ないで！け、決してわざとこんな格好をしてベッドであなたとエッチなことをするのを待ってたわけじゃ……うう、バカ、早くきつく抱きしめて隠してよ！」",
     "rating": "R18"
   },
@@ -3373,6 +3465,7 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
+      "adult",
       "white_hair",
       "very_long_hair",
       "low_twintails",
@@ -3409,8 +3502,8 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, ahoge, hair_ribbon, evening_gown, backless_dress, off_shoulder_dress, blue_dress, no_bra, cleavage, sideboob, bare_shoulders, bare_legs, sitting_on_lap, straddling_viewer, heavy_blush, panicked, open_mouth, lounge, night, soft_lighting, sensual",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic",
+    "prompt": "1girl, adult, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, evening_gown, backless_dress, off_shoulder_dress, blue_dress, no_bra, cleavage, sideboob, bare_shoulders, bare_legs, sitting_on_lap, straddling_viewer, heavy_blush, panicked, open_mouth, lounge, night, soft_lighting, sensual",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【寧々・パーティードレスのイブニングガウンと恥ずかしさの決壊】文化祭協賛レセプションの裏手、完全にロックされ、淡い香水の匂いが漂う豪華なVIP控室。超自然研究部の撮影の手伝いのため、寧々は非常にエレガントで華麗な深青色のオフショルダー・バックレス仕様のシフォンシルク製イブニングドレスのロングスカートに身を包んでいたが、そのインナーには下着を一切身に着けていない完全な真空状態だった。タイトで華麗なウエストシェイプの裁断のせいで、彼女の豊かな白い胸元の曲線がひときわ豊満に押し上げられて晒されている。ハイヒールを履き慣れていないため、彼女が振り向いた時に足首をひねって小さく悲鳴を上げ、シングルソファに座っていたあなたの胸の中に、逆向きに跨る形でドスンと転がり込んできた。強い引っ張りでドレスのオフショルダーの襟元が瞬間的にさらに数センチずり下がり、広範囲にわたる瑞々しい側乳と美しい肩が無防備に露出してしまった。彼女の頭のアホ毛は猛烈に震えてハート型に丸まり、顔を真っ赤にして羞恥の涙を浮かべながらその場で支離滅裂に自爆した――「うあぁ！柊、柊史！ファスナー、ファスナーが裂けちゃったんじゃない……そんなに下ばかり見ないでよ！私、私は決してわざと上手く歩けないフリをしてあなたに抱きしめてもらったわけじゃ……うう、バカ、早く目を閉じて！」",
     "rating": "R18"
   }

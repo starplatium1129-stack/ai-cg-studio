@@ -3,7 +3,8 @@
 var BACKUP_SETTINGS_KEYS = [
   'aics_theme', 'aics_show_mature', 'aics_scene_favorites',
   'aics_sd_last_success_v1', 'aics_sd_settings_v1', 'aics_pb_last_draft',
-  'aics_pb_onboarded', 'aics_tunnel_off'
+  'aics_first_creation_v2', 'aics_first_success_v1', 'aics_director_mode',
+  'aics_recent_scenes', 'aics_scene_library_mode', 'aics_tunnel_off'
 ];
 var _pendingBackup = null;
 
@@ -123,7 +124,10 @@ async function previewBackupFile(){
     var info = AICDataBackup.summary(_pendingBackup);
     document.getElementById('backupSummary').innerHTML =
       '<strong>' + esc(file.name) + '</strong><span>' + info.history + ' 条历史 · ' + info.projects + ' 个项目 · ' + info.images + ' 张图片 · 数据版本 v' + _pendingBackup.schemaVersion + '</span>';
+    window.__backupReturnFocus = document.activeElement;
     document.getElementById('backupOverlay').classList.add('open');
+    document.body.classList.add('modal-open');
+    requestAnimationFrame(function(){ var card=document.querySelector('#backupOverlay .backup-card'); if(card)card.focus(); });
   } catch(error) {
     _pendingBackup = null;
     flash('无法读取备份：' + (error.message || '文件已损坏'));
@@ -133,6 +137,9 @@ async function previewBackupFile(){
 function closeBackupRestore(){
   if (document.getElementById('backupRestoreBtn').disabled) return;
   document.getElementById('backupOverlay').classList.remove('open');
+  document.body.classList.remove('modal-open');
+  if (window.__backupReturnFocus && typeof window.__backupReturnFocus.focus === 'function') window.__backupReturnFocus.focus();
+  window.__backupReturnFocus = null;
   _pendingBackup = null;
 }
 
@@ -176,6 +183,7 @@ async function restoreLocalData(mode){
     PERSONAL_PROFILE = AICSceneUX.buildPreferenceProfile(_cachedHistory);
     refreshProjectSelect(); renderHistory(); renderScenes();
     document.getElementById('backupOverlay').classList.remove('open');
+    document.body.classList.remove('modal-open');
     _pendingBackup = null;
     flash((replace ? '覆盖' : '合并') + '恢复完成，即将刷新页面…');
     window.setTimeout(function(){ window.location.reload(); }, 700);
@@ -191,6 +199,14 @@ async function restoreLocalData(mode){
 function initBackupUI(){
   var overlay = document.getElementById('backupOverlay');
   if (overlay) overlay.addEventListener('click', function(event){ if (event.target === overlay) closeBackupRestore(); });
+  if (overlay) overlay.addEventListener('keydown', function(event){
+    if (event.key !== 'Tab') return;
+    var focusable = Array.from(overlay.querySelectorAll('button:not([disabled]),input:not([disabled]),[tabindex]:not([tabindex="-1"])')).filter(function(item){ return item.offsetParent !== null; });
+    if (!focusable.length) return;
+    var first=focusable[0], last=focusable[focusable.length-1];
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+  });
   document.addEventListener('click', function(event){
     var menu = document.getElementById('utilityMenu');
     if (menu && menu.classList.contains('open') && !menu.contains(event.target)) closeUtilityMenu();
