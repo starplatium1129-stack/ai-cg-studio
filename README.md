@@ -15,6 +15,7 @@ This is an unofficial, non-commercial fan project and is not affiliated with or 
 ## Features
 
 - 259 searchable and filterable Scenes, classified as All, R15, or R18 by depicted content
+- A reviewed result gallery with one approved image per Scene, featured/character/rating filters, and direct links back into the director
 - A director workspace for story, character, mood, camera, composition, lighting, and color
 - Automatic Positive / Negative Prompt assembly and scene-aware LoRA injection
 - Direct generation through AUTOMATIC1111, Forge, or ReForge
@@ -47,7 +48,7 @@ To browse the site without SD generation:
 python -m http.server 8090
 ```
 
-Open `http://127.0.0.1:8090/`. A plain static server does not provide the `/sdapi` proxy.
+Open `http://127.0.0.1:8090/`. A plain static server does not provide the `/sdapi` proxy or mount the separate approved showcase; use `control.bat` when you need the result gallery.
 
 ## Data and privacy
 
@@ -55,6 +56,7 @@ Open `http://127.0.0.1:8090/`. A plain static server does not provide the `/sdap
 - Personal history and images are stored mainly in the current browser through IndexedDB.
 - The project has no account system or hosted cloud database.
 - Runtime configuration, logs, process state, and friend-generated outputs stay in the git-ignored `runtime/` directory.
+- Reviewed samples stay in the sibling `AI/SceneShowcase/` directory. The gateway exposes only its manifest, thumbnails, contact sheets, and approved full images; `SCENE_SHOWCASE_DIR` can override the location.
 - A friend link reaches your local gateway through a temporary tunnel, so share it only with people you trust.
 - Restarting the gateway creates a new token; the temporary domain may also change.
 
@@ -65,7 +67,7 @@ AI-CG-Studio/
 ├── index.html              # Home page
 ├── control.bat             # Windows control panel launcher
 ├── server.js               # Site server, SD proxy, and temporary sharing
-├── tools/                  # Creator, scene, character, gallery, and LoRA pages
+├── tools/                  # Creator, scene, showcase, character, gallery, and LoRA pages
 ├── data/                   # Scene, character, tag, and preset data
 ├── css/                    # Shared design system
 ├── docs/                   # Creative and maintenance notes

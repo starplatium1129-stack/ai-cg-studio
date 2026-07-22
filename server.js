@@ -31,6 +31,34 @@ var CF = 'C:\\Program Files (x86)\\cloudflared\\cloudflared.exe';
 var tunnelUrl = '';
 var pendingTunnelUrl = '';
 
+function resolveSceneShowcaseDir() {
+  var configured = process.env.SCENE_SHOWCASE_DIR;
+  if (configured) {
+    var configuredPath = path.resolve(configured);
+    return fs.existsSync(path.join(configuredPath, 'manifest.json')) ? configuredPath : '';
+  }
+  var root = path.resolve(__dirname, '..', 'AI', 'SceneShowcase');
+  if (fs.existsSync(path.join(root, 'manifest.json'))) return root;
+  if (!fs.existsSync(root)) return '';
+  try {
+    return fs.readdirSync(root, { withFileTypes:true })
+      .filter(function (entry) { return entry.isDirectory() && fs.existsSync(path.join(root, entry.name, 'manifest.json')); })
+      .map(function (entry) { return path.join(root, entry.name); })
+      .sort(function (a, b) { return path.basename(b).localeCompare(path.basename(a), 'zh-CN'); })[0] || '';
+  } catch (error) { return ''; }
+}
+
+var SCENE_SHOWCASE_DIR = resolveSceneShowcaseDir();
+
+function readSceneShowcaseManifest() {
+  if (!SCENE_SHOWCASE_DIR) return null;
+  try {
+    var manifest = JSON.parse(fs.readFileSync(path.join(SCENE_SHOWCASE_DIR, 'manifest.json'), 'utf8'));
+    if (!manifest || !Array.isArray(manifest.entries)) return null;
+    return manifest;
+  } catch (error) { return null; }
+}
+
 function tokenMatches(value) {
   if (typeof value !== 'string') return false;
   var actual = Buffer.from(value);
@@ -129,6 +157,18 @@ app.post('/api/save-backup', express.json({ limit: '22mb' }), function (req, res
 // ─── 网关能力检测（不依赖固定端口，控制面板换端口后仍可识别）───
 app.get('/api/health', function (req, res) {
   res.json({ ok: true, app: 'ai-cg-studio', gateway: true, port: Number(PORT), tts: true });
+});
+
+app.get('/api/showcase-status', function (req, res) {
+  var manifest = readSceneShowcaseManifest();
+  res.setHeader('Cache-Control', 'no-store');
+  if (!manifest) return res.json({ available:false, sceneCount:0 });
+  res.json({
+    available:true,
+    sceneCount:Number(manifest.sceneCount) || manifest.entries.length,
+    counts:manifest.counts || {},
+    sourceAudit:manifest.sourceAudit || ''
+  });
 });
 
 function configuredVoiceMap() {
@@ -318,6 +358,16 @@ app.get(['/', '/index.html'], function (req, res) {
 app.use('/css', express.static(path.join(__dirname, 'css'), { dotfiles: 'deny', index: false }));
 app.use('/assets', express.static(path.join(__dirname, 'assets'), { dotfiles: 'deny', index: false }));
 app.use('/data', express.static(path.join(__dirname, 'data'), { dotfiles: 'deny', index: false }));
+app.use('/scene-showcase', function (req, res, next) {
+  if (!SCENE_SHOWCASE_DIR) return res.status(404).end();
+  var relative = req.path.replace(/\\/g, '/');
+  var allowed = /^\/(?:manifest\.json|00-cover\.jpg|README\.txt|images\/sc\d{3}\.jpg|thumbs\/sc\d{3}\.jpg|sheets\/[a-z0-9_-]+\/[a-z0-9_.-]+\.jpg)$/i;
+  if (!allowed.test(relative)) return res.status(404).end();
+  res.setHeader('Cache-Control', relative === '/manifest.json' ? 'no-cache' : 'public, max-age=604800');
+  next();
+}, SCENE_SHOWCASE_DIR
+  ? express.static(SCENE_SHOWCASE_DIR, { dotfiles:'deny', index:false, fallthrough:false })
+  : function (req, res) { res.status(404).end(); });
 app.use('/docs', express.static(path.join(__dirname, 'docs'), { dotfiles: 'deny' }));
 app.use('/tools', function (req, res, next) {
   if (req.path === '/control-server.js') return res.status(404).end();
@@ -354,6 +404,7 @@ app.listen(PORT, HOST, function () {
   console.log('  🛡️ 监听: ' + HOST);
   console.log('  🎨 SD 后端: ' + SD_HOST);
   console.log('  🔊 TTS 后端: ' + TTS_HOST);
+  console.log('  🖼️  场景样张: ' + (SCENE_SHOWCASE_DIR || '未配置'));
   console.log('  🔑 Token: ' + TOKEN);
   console.log('  ═══════════════════════════════════════════');
   console.log('');

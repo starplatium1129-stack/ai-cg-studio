@@ -4,7 +4,7 @@
    用户只看到创作流:Scene → Character → Style → LoRA
 
    用法:导航位放空壳 <nav class="nav"><div class="nav-inner"><div class="nav-brand">…</div><div class="nav-links"></div></div></nav>
-   每个页面 <body> 加 data-nav="当前项"(scene / director / character / style / lora / gallery / docs)
+   每个页面 <body> 加 data-nav="当前项"(scene / director / showcase / gallery / character / style / lora / docs)
    路径层级自动推断(根目录 / tools/ / docs/ 自动回退 ../)
    ============================================================ */
 (function () {
@@ -15,6 +15,7 @@
   var NAV = [
     { id:'scene',     label:'灵感场景',       href:'tools/scene-explorer.html', icon:'🌸' },
     { id:'director',  label:'开始绘制',       href:'tools/prompt-builder.html', icon:'✦' },
+    { id:'showcase',  label:'效果样张',       href:'tools/showcase.html',       icon:'🖼' },
     { id:'gallery',   label:'作品册',         href:'tools/gallery.html',        icon:'🎞' },
     { id:'character', label:'角色',           href:'tools/character.html',      icon:'👤' },
     { id:'style',     label:'画风',           href:'tools/style.html',          icon:'🎨' },
