@@ -23,6 +23,7 @@ runtimeTools.migrateLegacyRuntime(dir, RUNTIME);
 runtimeTools.rotateLog(RUNTIME.controlLog, 2 * 1024 * 1024);
 var CONFIG_FILE = RUNTIME.config;
 var CLOUDFLARED_PATH = 'C:\\Program Files (x86)\\cloudflared\\cloudflared.exe';
+var VOICE_START_SCRIPT = path.resolve(dir, '..', 'AI', 'Voice', 'Start-Voice.ps1');
 var VOICE_STOP_SCRIPT = path.resolve(dir, '..', 'AI', 'Voice', 'Stop-Voice.ps1');
 var VOICE_PROFILE_FILE = path.resolve(dir, '..', 'AI', 'Voice', 'config', 'profiles.json');
 var WEBUI_MANAGER_SCRIPT = path.join(dir, 'scripts', 'managed-webui.ps1');
@@ -274,6 +275,21 @@ function stopManagedVoiceService() {
   return { attempted:true, message:(result.stdout || 'GPT-SoVITS stopped.').trim() };
 }
 
+function startManagedVoiceService() {
+  if (!fs.existsSync(VOICE_START_SCRIPT)) return { attempted:false, message:'Voice start script is not installed.' };
+  var result = cp.spawnSync('powershell.exe', [
+    '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', VOICE_START_SCRIPT, '-WaitSeconds', '60'
+  ], {
+    cwd: dir,
+    encoding: 'utf8',
+    timeout: 90000,
+    windowsHide: true
+  });
+  if (result.error) return { attempted:true, error:result.error.message };
+  if (result.status !== 0) return { attempted:true, error:(result.stderr || result.stdout || 'Voice start script failed').trim() };
+  return { attempted:true, message:(result.stdout || 'GPT-SoVITS started.').trim() };
+}
+
 function runManagedWebUI(action) {
   if (!fs.existsSync(WEBUI_MANAGER_SCRIPT)) return { ok:false, error:'Managed WebUI script is not installed.' };
   var result = cp.spawnSync('powershell.exe', [
@@ -485,6 +501,24 @@ var listener = app.listen(PORT, HOST, function () {
   console.log('  http://' + HOST + ':' + PORT);
   console.log('  ==============================================');
   console.log('');
+
+  // Auto-start GPT-SoVITS if not already running
+  if (process.env.NO_VOICE !== '1') {
+    setTimeout(function() {
+      checkTTS();
+      if (!state.ttsOnline) {
+        log('Auto-starting GPT-SoVITS...');
+        var voiceResult = startManagedVoiceService();
+        if (voiceResult.error) {
+          log('Auto-start voice service failed: ' + voiceResult.error);
+        } else if (voiceResult.attempted) {
+          log(voiceResult.message || 'GPT-SoVITS auto-started.');
+        }
+        // Re-check after startup
+        setTimeout(function() { checkTTS(); }, 3000);
+      }
+    }, 2000);
+  }
 
   if (process.env.NO_OPEN !== '1') {
     try {
