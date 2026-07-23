@@ -36,6 +36,8 @@
   .gal-ver { position: absolute; top: var(--s-2); left: var(--s-2); background: var(--bg-surface); border-radius: 12px; padding: 2px 8px; font-size: 0.7rem; font-weight: 600; z-index: 2; }
   .gal-fav { position: absolute; top: var(--s-2); right: var(--s-2); z-index: 2; font-size: 1rem; }
   .gal-seed { font-size: 0.72rem; color: var(--text-muted); margin-top: var(--s-1); }
+  .gallery-card-button { display:block; width:100%; padding:0; border:0; text-align:left; color:inherit; background:transparent; cursor:pointer; font:inherit; }
+  .gallery-card-button:focus-visible { outline:2px solid var(--accent); outline-offset:-2px; border-radius:var(--r-lg); }
   .gal-rating { display: inline-flex; gap: 1px; font-size: 0.78rem; color: var(--text-muted); }
   .gal-rating .on { color: var(--mood-joy); }
 
@@ -136,7 +138,7 @@
     }catch(e){if(generation===renderGeneration&&slot.isConnected&&fallback)setImage(slot,fallback,sceneTitle(h.scene),'gal-image','');}
   }
   function coverMarkup(h,index){const url=safeImageUrl(h.image_url);if(h.image_id)return '<span class="gal-placeholder">🎬</span>';return url?'<img class="gal-image" src="'+escAttr(url)+'" alt="'+escAttr(sceneTitle(h.scene))+'" referrerpolicy="no-referrer">':'<span class="gal-placeholder">🎬</span>';}
-  function card(h,index){const avg=avgRating(h.rating);return `<div class="sc sc-grid" onclick="window.__openDetail(${index})"><div class="sc-band" style="height:130px;"><div class="gal-cover" data-image-slot="${index}" style="position:absolute;inset:0;">${coverMarkup(h,index)}</div><span class="gal-ver">v${esc(h.version||1)}</span>${h.favorite?'<span class="gal-fav">💜</span>':''}</div><div class="sc-body"><div class="sc-title">${esc(sceneTitle(h.scene))}</div><div class="sc-meta"><span class="sc-meta-l">${stars(avg)}</span><span class="sc-meta-r">${esc(charName(h.scene))} · ${esc(fmtDate(h.timestamp))}</span></div><div class="gal-seed">seed ${esc(h.seed||'—')}</div></div></div>`;}
+  function card(h,index){const avg=avgRating(h.rating),who=historyCharacterLabel(h.character)||charName(h.scene);return `<article class="sc sc-grid"><button class="gallery-card-button" type="button" onclick="window.__openDetail(${index})" aria-label="查看作品：${escAttr(sceneTitle(h.scene))}"><div class="sc-band" style="height:130px;"><div class="gal-cover" data-image-slot="${index}" style="position:absolute;inset:0;">${coverMarkup(h,index)}</div><span class="gal-ver">v${esc(h.version||1)}</span>${h.favorite?'<span class="gal-fav" aria-label="已收藏">💜</span>':''}</div><div class="sc-body"><div class="sc-title">${esc(sceneTitle(h.scene))}</div><div class="sc-meta"><span class="sc-meta-l">${stars(avg)}</span><span class="sc-meta-r">${esc(who)} · ${esc(fmtDate(h.timestamp))}</span></div><div class="gal-seed">seed ${esc(h.seed||'—')}</div></div></button></article>`;}
   let scenesLoaded=false;
   function ensureData(){return scenesLoaded?Promise.all([Promise.resolve(scenes),Promise.resolve(loras)]):Promise.all([fetch('../data/scenes.json?v=6').then(r=>r.json()).then(d=>{scenes=d;}).catch(()=>{}),fetch('../data/loras.json?v=6').then(r=>r.json()).then(d=>{loras=d;}).catch(()=>{})]).then(function(){scenesLoaded=true;});}
   function render(){
@@ -162,7 +164,7 @@
   function copyPrompt(index){const h=history[index];if(h?.prompt)navigator.clipboard.writeText(h.prompt).then(()=>flashTemp('📋 已复制'));}
   function flashTemp(msg){let t=document.getElementById('gal-toast');if(!t){t=document.createElement('div');t.id='gal-toast';t.style.cssText='position:fixed;left:50%;bottom:32px;transform:translateX(-50%);z-index:99999;background:var(--bg-surface);border:1px solid var(--accent);color:var(--text-primary);padding:8px 16px;border-radius:8px;font-size:.85rem;opacity:0;transition:opacity .2s;';document.body.appendChild(t);}t.textContent=msg;t.style.opacity='1';clearTimeout(window.__tt);window.__tt=setTimeout(()=>t.style.opacity='0',1400);}
   window.__openDetail=openDetail;window.__closeDetail=closeDetail;window.__copyPrompt=copyPrompt;window.__setFavFilter=function(){filterFav=!filterFav;render();};
-  document.getElementById('detailOverlay').addEventListener('click',function(e){if(e.target===this)closeDetail();});window.addEventListener('pagehide',function(){renderGeneration++;detailGeneration++;revokeCards();revokeDetail();});
+  document.getElementById('detailOverlay').addEventListener('click',function(e){if(e.target===this)closeDetail();});window.addEventListener('keydown',function(e){if(e.key==='Escape'&&document.getElementById('detailOverlay').classList.contains('open'))closeDetail();});window.addEventListener('pagehide',function(){renderGeneration++;detailGeneration++;revokeCards();revokeDetail();});
   AICKVStore.init().then(function(){
     return Promise.all([AICKVStore.get(HIS_KEY), AICKVStore.get(PRJ_KEY)]);
   }).then(function(vals){

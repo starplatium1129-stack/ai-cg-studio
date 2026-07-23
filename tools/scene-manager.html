@@ -26,6 +26,7 @@
   .btn-ghost { background: transparent; color: var(--text-secondary); border: 1px solid var(--border-soft); }
   .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
   .btn-sm { padding: 4px 10px; font-size: .78rem; }
+  .btn:disabled { opacity:.42; cursor:not-allowed; }
 
   /* Stats */
   .stats { display: flex; gap: var(--s-4); margin-bottom: var(--s-4); flex-wrap: wrap; }
@@ -45,7 +46,7 @@
   .rating-R15 { background: #FFF3E0; color: #E65100; }
   .rating-R18 { background: #FFEBEE; color: #C62828; }
   .story-preview { max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-secondary); font-size: .8rem; }
-  .action-btns { display: flex; gap: 4px; }
+  .action-btns { display: flex; gap: 4px; white-space:nowrap; }
 
   /* Modal */
   .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 1000; align-items: center; justify-content: center; }
@@ -80,7 +81,11 @@
   .maintenance-state strong { display:block; font-size:.88rem; }
   .maintenance-state small { color:var(--text-muted); }
   .maintenance-state.dirty { border-color:var(--accent); background:var(--accent-soft); }
+  .maintenance-meta { display:flex; gap:var(--s-3); flex-wrap:wrap; margin-top:4px; color:var(--text-muted); font-size:.74rem; }
+  .maintenance-meta strong { display:inline; color:var(--accent); font-size:inherit; }
   .image-upload { display:flex; justify-content:center; gap:var(--s-2); flex-wrap:wrap; margin-top:var(--s-3); }
+  .form-help { color:var(--text-muted); font-size:.72rem; line-height:1.45; }
+  .form-input.invalid { border-color:var(--danger); box-shadow:0 0 0 3px color-mix(in srgb,var(--danger) 12%,transparent); }
 </style>
 </head>
 <body>
@@ -97,7 +102,7 @@
 
   <div class="stats" id="stats"></div>
   <div class="maintenance-state" id="maintenanceState">
-    <div><strong id="maintenanceTitle">场景库已同步</strong><small id="maintenanceHint">新增、编辑或下架后，点击“保存到项目”。</small></div>
+    <div><strong id="maintenanceTitle">场景库已同步</strong><small id="maintenanceHint">新增、编辑或下架后，点击“保存到项目”。</small><div class="maintenance-meta"><span><strong id="pendingCount">0</strong> 项待保存</span><span>保存前会自动创建备份</span></div></div>
     <button class="btn btn-primary" id="saveProjectBtn" type="button" onclick="saveToProject()" disabled>保存到项目</button>
   </div>
 
@@ -148,7 +153,7 @@
             <th style="width:50px">角色</th>
             <th style="width:50px">评级</th>
             <th>故事</th>
-            <th style="width:120px">操作</th>
+            <th style="width:170px">操作</th>
           </tr>
         </thead>
         <tbody id="sceneTable"></tbody>
@@ -296,8 +301,9 @@
         <input type="text" class="form-input" id="formId" readonly>
       </div>
       <div class="form-group">
-        <label class="form-label">标题</label>
-        <input type="text" class="form-input" id="formTitle">
+        <label class="form-label" for="formTitle">标题 *</label>
+        <input type="text" class="form-input" id="formTitle" maxlength="80" required>
+        <span class="form-help">用一句能快速看懂画面的标题，后续在场景库里更容易找到。</span>
       </div>
       <div class="form-group">
         <label class="form-label">分类</label>
@@ -372,8 +378,9 @@
         <input type="text" class="form-input" id="formUsage">
       </div>
       <div class="form-group full">
-        <label class="form-label">故事</label>
+        <label class="form-label" for="formStory">故事 *</label>
         <textarea class="form-input" id="formStory"></textarea>
+        <span class="form-help">建议写清角色、地点、动作和情绪；提示词会以这里为故事底稿。</span>
       </div>
       <div class="form-group full">
         <label class="form-label">日文故事</label>
@@ -407,6 +414,7 @@ const PAGE_SIZE = 30;
 let editingId = null;
 let sceneUsageCount = {};
 let hasUnsavedChanges = false;
+let pendingChangeCount = 0;
 let selectedImageSceneId = '';
 
 const SHOWCASE_DIR = '../scene-showcase';
@@ -458,6 +466,7 @@ function renderStats() {
   const total = SCENES.length;
   const nene = SCENES.filter(s => s.char === 'nene').length;
   const natsume = SCENES.filter(s => s.char === 'natsume').length;
+  const dual = SCENES.filter(s => s.char === 'triad' || s.char === 'both').length;
   const mature = SCENES.filter(s => s.mature).length;
   const allR = SCENES.filter(s => s.rating === 'All').length;
   const r15 = SCENES.filter(s => s.rating === 'R15').length;
@@ -467,11 +476,17 @@ function renderStats() {
     <div class="stat-card"><div class="stat-value">${total}</div><div class="stat-label">总场景</div></div>
     <div class="stat-card"><div class="stat-value">${nene}</div><div class="stat-label">宁宁</div></div>
     <div class="stat-card"><div class="stat-value">${natsume}</div><div class="stat-label">夏目</div></div>
+    <div class="stat-card"><div class="stat-value">${dual}</div><div class="stat-label">双人</div></div>
     <div class="stat-card"><div class="stat-value">${allR}</div><div class="stat-label">All</div></div>
     <div class="stat-card"><div class="stat-value">${r15}</div><div class="stat-label">R15</div></div>
     <div class="stat-card"><div class="stat-value">${r18}</div><div class="stat-label">R18</div></div>
     <div class="stat-card"><div class="stat-value">${TAGS.length}</div><div class="stat-label">Tags</div></div>
   `;
+}
+
+function updatePendingState() {
+  const count = document.getElementById('pendingCount');
+  if (count) count.textContent = pendingChangeCount;
 }
 
 function renderScenes() {
@@ -511,7 +526,7 @@ function renderScenes() {
       <td><strong>${s.id}</strong></td>
       <td>${esc(s.title)}</td>
       <td>${esc(s.category)}</td>
-      <td>${s.char === 'nene' ? '🌸' : '🍂'}</td>
+      <td title="${s.char === 'nene' ? '宁宁' : s.char === 'natsume' ? '夏目' : '双人'}">${s.char === 'nene' ? '🌸' : s.char === 'natsume' ? '🍂' : '◇'}</td>
       <td><span class="rating-badge rating-${s.rating}">${s.rating}</span></td>
       <td><div class="story-preview">${esc(s.story)}</div></td>
       <td>
@@ -718,6 +733,13 @@ function closeModal() {
 }
 
 function saveScene() {
+  const titleInput = document.getElementById('formTitle');
+  const storyInput = document.getElementById('formStory');
+  [titleInput, storyInput].forEach(function(input){ input.classList.toggle('invalid', !input.value.trim()); });
+  if (!titleInput.value.trim() || !storyInput.value.trim()) {
+    document.getElementById('maintenanceHint').textContent = '请先补齐标题和故事，再保存场景。';
+    return;
+  }
   const scene = {
     id: document.getElementById('formId').value,
     title: document.getElementById('formTitle').value,
@@ -780,6 +802,8 @@ function duplicateScene(id) {
 
 function markDirty(message) {
   hasUnsavedChanges = true;
+  pendingChangeCount += 1;
+  updatePendingState();
   const state = document.getElementById('maintenanceState');
   state.classList.add('dirty');
   document.getElementById('maintenanceTitle').textContent = '有尚未保存的修改';
@@ -799,6 +823,8 @@ function saveToProject() {
     return response.json().then(function(data) { if (!response.ok) throw new Error(data.error || '保存失败'); return data; });
   }).then(function(data) {
     hasUnsavedChanges = false;
+    pendingChangeCount = 0;
+    updatePendingState();
     document.getElementById('maintenanceState').classList.remove('dirty');
     document.getElementById('maintenanceTitle').textContent = '已保存并通过检查';
     document.getElementById('maintenanceHint').textContent = data.count + ' 个场景已同步到项目，自动备份也已创建。';
@@ -810,6 +836,12 @@ function saveToProject() {
     button.textContent = '重新保存';
   });
 }
+
+window.addEventListener('beforeunload', function(event) {
+  if (!hasUnsavedChanges) return;
+  event.preventDefault();
+  event.returnValue = '';
+});
 
 // Duplicates
 function detectDuplicates() {
