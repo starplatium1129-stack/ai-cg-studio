@@ -210,7 +210,7 @@
           resolve(true);
         };
         tx.onerror = function(){ reject(tx.error); };
-        tx.onabort = function(){ reject(tx.error || new Error('KV 鏁版嵁搴撲簨鍔″凡鍙栨秷')); };
+        tx.onabort = function(){ reject(tx.error || new Error('KV 数据库事务已取消')); };
       });
     });
   }
@@ -225,7 +225,7 @@
           resolve(true);
         };
         tx.onerror = function(){ reject(tx.error); };
-        tx.onabort = function(){ reject(tx.error || new Error('KV 鏁版嵁搴撲簨鍔″凡鍙栨秷')); };
+        tx.onabort = function(){ reject(tx.error || new Error('KV 数据库事务已取消')); };
       });
     });
   }
