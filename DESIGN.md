@@ -140,7 +140,7 @@ components:
 
 ## Overview
 
-AI CG Studio is a personal Galgame creation desk, not a generic dashboard and not
+绫季绘境 is a personal Galgame creation desk, not a generic dashboard and not
 a public AI platform. Its visual character is quiet, intimate, precise, and
 slightly romantic. It should feel like opening a private visual-novel art book
 inside a capable creative tool.

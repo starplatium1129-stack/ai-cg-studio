@@ -1,5 +1,5 @@
 /**
- * AI CG Studio — 场景数据批量清洗脚本
+ * 绫季绘境 — 场景数据批量清洗脚本
  * 修复：标签重复、格式错误、角色 DNA 缺失、tags-prompt 断层、Active Sync 占位符缺失
  * 用法：node scripts/clean-scenes.js --write
  */

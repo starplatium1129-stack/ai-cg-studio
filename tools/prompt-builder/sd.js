@@ -586,7 +586,7 @@ function checkSDStatus(){
     window.__sdCapabilities = null;
     if (error.status === 404) {
       badge.textContent = '🟠 当前页面未启用 SD 网关';
-      badge.title = '静态服务器不提供 /sdapi 代理；请通过 AI-CG-Studio 控制面板或 node server.js 打开网站';
+      badge.title = '静态服务器不提供 /sdapi 代理；请通过 绫季绘境控制面板或 node server.js 打开网站';
       badge.style.color = 'var(--warning, #f59e0b)';
     } else {
       badge.textContent = '🔴 SD WebUI 离线 · 点击重试';

@@ -107,11 +107,11 @@ app.use(function (req, res, next) {
   }
   // 静态页面没有 token 时显示引导页
   return res.status(403).send(
-    '<!DOCTYPE html><html><head><meta charset="utf-8"><title>AI-CG-Studio</title>' +
+    '<!DOCTYPE html><html><head><meta charset="utf-8"><title>绫季绘境</title>' +
     '<style>body{background:#1a1a2e;color:#e8e8f0;font-family:system-ui;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0}' +
     '.card{background:#2a2a40;border-radius:16px;padding:40px;max-width:480px;text-align:center}h1{margin-top:0;color:#f06292}' +
     'a{color:#64b5f6}</style></head><body><div class="card">' +
-    '<h1>🔗 AI-CG-Studio</h1><p>请使用包含 token 的链接访问，格式：</p>' +
+    '<h1>🔗 绫季绘境</h1><p>请使用包含 token 的链接访问，格式：</p>' +
     '<code>http://地址:端口/?token=你的token</code>' +
     '<p style="margin-top:24px;color:#a8a8c0">如果你是朋友分享的链接，链接里应该已经带了 token。</p>' +
     '</div></body></html>'
@@ -403,7 +403,7 @@ app.use(createProxyMiddleware({
 app.listen(PORT, HOST, function () {
   console.log('');
   console.log('  ═══════════════════════════════════════════');
-  console.log('  🔗 AI-CG-Studio 联机网关已启动');
+  console.log('  🔗 绫季绘境 联机网关已启动');
   console.log('  📡 端口: ' + PORT);
   console.log('  🛡️ 监听: ' + HOST);
   console.log('  🎨 SD 后端: ' + SD_HOST);

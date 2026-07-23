@@ -497,7 +497,7 @@ app.get('/api/logs', function (req, res) {
 var listener = app.listen(PORT, HOST, function () {
   console.log('');
   console.log('  ==============================================');
-  console.log('  AI-CG-Studio Control Panel');
+  console.log('  绫季绘境 Control Panel');
   console.log('  http://' + HOST + ':' + PORT);
   console.log('  ==============================================');
   console.log('');

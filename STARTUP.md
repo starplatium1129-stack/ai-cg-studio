@@ -1,4 +1,4 @@
-# AI CG Studio 启动与排错
+# 绫季绘境 启动与排错
 
 这份说明分为两种使用方式：连接 SD WebUI 的完整模式，以及只浏览页面的静态模式。角色语音是可选能力，不安装也不影响场景浏览、Prompt 或出图。
 
@@ -17,7 +17,7 @@
 --api --port 7860
 ```
 
-`--api` 不会关闭 WebUI 自带页面，也不会妨碍本地正常使用。它只是让 AI CG Studio 可以通过接口读取配置和提交出图任务。
+`--api` 不会关闭 WebUI 自带页面，也不会妨碍本地正常使用。它只是让 绫季绘境 可以通过接口读取配置和提交出图任务。
 
 ### 启动步骤
 
@@ -118,7 +118,7 @@ $env:SD_API_AUTH = 'user:password'
 ### Python
 
 ```powershell
-Set-Location E:\code\2\lora\AI-CG-Studio
+Set-Location E:\code\2\lora\绫季绘境
 python -m http.server 8090
 ```
 

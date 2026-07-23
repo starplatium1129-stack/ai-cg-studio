@@ -1,4 +1,4 @@
-# Lingji Atelier · AI CG Studio
+# Lingji Atelier · 绫季绘境
 
 > A small, local workspace for turning story moments into Galgame-style AI CGs.
 
@@ -6,7 +6,7 @@
 
 ## About
 
-AI CG Studio is a personal hobby project built for local use and occasional sharing with trusted friends. It is not a hosted service, public community, or commercial platform.
+绫季绘境 is a personal hobby project built for local use and occasional sharing with trusted friends. It is not a hosted service, public community, or commercial platform.
 
 The current scene and character presets focus on **Ayachi Nene** and **Shiki Natsume**. A Scene keeps the story, character, mood, camera, composition, lighting, prompt, LoRA, and generation settings together, so creation starts with an image idea instead of an empty prompt box.
 
@@ -66,7 +66,7 @@ Open `http://127.0.0.1:8090/`. A plain static server does not provide the `/sdap
 ## Project layout
 
 ```text
-AI-CG-Studio/
+绫季绘境/
 ├── DESIGN.md               # Canonical website and control-panel design contract
 ├── index.html              # Home page
 ├── control.bat             # Windows control panel launcher

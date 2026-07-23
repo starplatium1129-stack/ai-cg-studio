@@ -1,4 +1,4 @@
-/* AI CG Studio icon system
+/* 绫季绘境 icon system
  * Rounded, lightweight line icons for the director workspace.
  */
 (function () {

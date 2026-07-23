@@ -1,5 +1,5 @@
 /**
- * AI CG Studio scene and character data quality gate.
+ * 绫季绘境 scene and character data quality gate.
  * Run with: npm run validate
  */
 const fs = require('fs');

@@ -1,5 +1,5 @@
 /* ============================================================
-   AI CG Studio — 统一导航(Scene-first)
+   绫季绘境 — 统一导航(Scene-first)
    理念:隐藏 Prompt/Preset/Director-flow 等内部概念,
    用户只看到创作流:Scene → Character → Style → LoRA
 
