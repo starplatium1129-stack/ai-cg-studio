@@ -40,7 +40,7 @@
     if (brand) {
       brand.setAttribute('role', 'link');
       brand.tabIndex = 0;
-      brand.innerHTML = '<span class="dot" aria-hidden="true"></span><span>绫季绘境 <small>Nene &amp; Natsume Atelier</small></span>';
+      brand.innerHTML = '<img src="' + d + 'assets/logo.svg" alt="绫季绘境" style="height:32px;width:auto" aria-hidden="true"><span class="sr-only">绫季绘境</span>';
       brand.onclick = function(){ window.location.href = brandLink(); };
       brand.onkeydown = function(e){ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.location.href = brandLink(); } };
     }

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 48">
+  <defs>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f4a6d7"/>
+      <stop offset="100%" stop-color="#bba7ff"/>
+    </linearGradient>
+    <linearGradient id="nene" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e7e4ff"/>
+      <stop offset="100%" stop-color="#b895ff"/>
+    </linearGradient>
+    <linearGradient id="natsume" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f2bb68"/>
+      <stop offset="100%" stop-color="#8b6258"/>
+    </linearGradient>
+  </defs>
+  <!-- Film strip (left) -->
+  <rect x="4" y="8" width="36" height="32" rx="4" fill="url(#accent)" opacity="0.9"/>
+  <rect x="8" y="12" width="8" height="8" rx="2" fill="#171329"/>
+  <rect x="20" y="12" width="8" height="8" rx="2" fill="#171329"/>
+  <rect x="32" y="12" width="4" height="8" rx="1" fill="#171329"/>
+  <!-- Two dots (characters) -->
+  <circle cx="52" cy="24" r="8" fill="url(#nene)" opacity="0.8"/>
+  <circle cx="72" cy="24" r="8" fill="url(#natsume)" opacity="0.8"/>
+  <!-- Brand text -->
+  <text x="90" y="32" font-family="'Noto Sans SC', sans-serif" font-size="20" font-weight="800" fill="url(#accent)">绫季绘境</text>
+</svg>
