@@ -385,52 +385,6 @@
 <footer class="footer">
   <p>绫季绘境 · 像导演一样创作每一个瞬间</p>
 </footer>
-
-<!-- First-time guide popup -->
-<div id="guideOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;align-items:center;justify-content:center">
-  <div style="background:var(--bg-surface);border-radius:var(--r-xl);padding:var(--s-6);max-width:520px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.3)">
-    <h2 style="font-size:1.4rem;margin-bottom:var(--s-3)">👋 欢迎来到绫季绘境</h2>
-    <p style="color:var(--text-secondary);margin-bottom:var(--s-4);line-height:1.6;font-size:.9rem">
-      这是一个把心动故事变成 CG 的创作工具。三个步骤开始：
-    </p>
-    <div style="display:flex;flex-direction:column;gap:var(--s-3);margin-bottom:var(--s-5)">
-      <div style="display:flex;gap:var(--s-3);align-items:start">
-        <span style="font-size:1.5rem">1️⃣</span>
-        <div>
-          <strong>选场景</strong>
-          <p style="font-size:.82rem;color:var(--text-secondary);margin-top:2px">点击「灵感场景」浏览 284 个精心设计的故事场景</p>
-        </div>
-      </div>
-      <div style="display:flex;gap:var(--s-3);align-items:start">
-        <span style="font-size:1.5rem">2️⃣</span>
-        <div>
-          <strong>调参数</strong>
-          <p style="font-size:.82rem;color:var(--text-secondary);margin-top:2px">在导演工作台选择角色、调整构图和灯光</p>
-        </div>
-      </div>
-      <div style="display:flex;gap:var(--s-3);align-items:start">
-        <span style="font-size:1.5rem">3️⃣</span>
-        <div>
-          <strong>生成</strong>
-          <p style="font-size:.82rem;color:var(--text-secondary);margin-top:2px">一键生成 CG，不满意可以换种子重试</p>
-        </div>
-      </div>
-    </div>
-    <div style="display:flex;gap:var(--s-3);justify-content:flex-end">
-      <button onclick="closeGuide(true)" style="padding:8px 16px;border:1px solid var(--border-soft);background:transparent;border-radius:var(--r-md);cursor:pointer;font-size:.85rem">不再显示</button>
-      <button onclick="closeGuide(false)" style="padding:8px 20px;border:none;background:var(--accent);color:white;border-radius:var(--r-md);cursor:pointer;font-size:.85rem;font-weight:600">开始创作 →</button>
-    </div>
-  </div>
-</div>
-<script>
-function closeGuide(dontShow){
-  document.getElementById('guideOverlay').style.display='none';
-  if(dontShow) localStorage.setItem('aics_guide_dismissed','1');
-}
-if(!localStorage.getItem('aics_guide_dismissed')){
-  document.getElementById('guideOverlay').style.display='flex';
-}
-</script>
 <script>
 (function(){
   const PRJ_KEY='aics_projects';
