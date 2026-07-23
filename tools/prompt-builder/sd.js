@@ -8,6 +8,8 @@ var _sdLastDataUrl = '';
 var _sdLastResult = null;
 var _sdCapabilities = null;
 var _sdGeneration = null;
+var _sdUserPreferredSize = '832×1216';
+var _sdApplyingScenePreset = false;
 var SD_SETTINGS_KEY = 'aics_sd_settings_v1';
 function getSDConnector(){
   if(!_sdConnector) _sdConnector = new SDWebUIConnector();
@@ -33,6 +35,34 @@ function ensureSelectValue(id, value){
     select.appendChild(option);
   }
   select.value = wanted;
+}
+
+function sceneRecommendedSize(scene){
+  var value = scene && scene.recommendedSize ? String(scene.recommendedSize).trim() : '';
+  return /^\d{3,4}×\d{3,4}$/.test(value) ? value : '';
+}
+
+function applySceneGenerationPreset(scene){
+  var select = document.getElementById('size');
+  var hint = document.getElementById('sceneSizeHint');
+  if (!select) return '';
+  var recommended = sceneRecommendedSize(scene);
+  _sdApplyingScenePreset = true;
+  if (recommended) {
+    ensureSelectValue('size', recommended);
+    select.dataset.scenePreset = '1';
+    if (hint) {
+      hint.hidden = false;
+      hint.textContent = '场景推荐 · ' + recommended + ' 横版';
+    }
+  } else {
+    if (select.dataset.scenePreset === '1') ensureSelectValue('size', _sdUserPreferredSize || '832×1216');
+    delete select.dataset.scenePreset;
+    if (hint) { hint.hidden = true; hint.textContent = ''; }
+  }
+  _sdApplyingScenePreset = false;
+  updateSDBudgetHint();
+  return recommended;
 }
 
 function normalizeModelName(value){
@@ -177,7 +207,11 @@ function applyModelProfile(modelName, force){
   if (profile.steps != null) setSelectValueInsensitive('steps', profile.steps);
   if (profile.sampler != null) setSelectValueInsensitive('sampler', profile.sampler);
   if (profile.scheduler != null) setSelectValueInsensitive('scheduler', profile.scheduler);
-  if (profile.size) setSelectValueInsensitive('size', profile.size);
+  if (profile.size) {
+    setSelectValueInsensitive('size', profile.size);
+    var profiledSize = document.getElementById('size');
+    if (profiledSize && profiledSize.value) _sdUserPreferredSize = profiledSize.value;
+  }
   var hiresProfile = currentHiresProfileSettings(modelName);
   if (hiresProfile.scale != null) setSelectValueInsensitive('sdHiresScale', hiresProfile.scale);
   if (hiresProfile.upscaler) setSelectValueInsensitive('sdHiresUpscaler', hiresProfile.upscaler);
@@ -199,7 +233,9 @@ function saveSDSettings(){
     seedInput: document.getElementById('sdSeedInput') ? document.getElementById('sdSeedInput').value : '',
     cfg: document.getElementById('cfg') ? document.getElementById('cfg').value : '',
     steps: document.getElementById('steps') ? document.getElementById('steps').value : '',
-    size: document.getElementById('size') ? document.getElementById('size').value : '',
+    // A scene may temporarily switch the canvas to 16:9. Keep the user's
+    // normal default separate so the next ordinary scene does not inherit it.
+    size: _sdUserPreferredSize || (document.getElementById('size') ? document.getElementById('size').value : ''),
     quality: !!(document.getElementById('quality') && document.getElementById('quality').checked),
     tail: !!(document.getElementById('tail') && document.getElementById('tail').checked),
     negative: !!(document.getElementById('negative') && document.getElementById('negative').checked),
@@ -249,6 +285,8 @@ function initSDSettings(){
   if (settings.cfg) ensureSelectValue('cfg', settings.cfg);
   if (settings.steps) ensureSelectValue('steps', settings.steps);
   if (settings.size) ensureSelectValue('size', settings.size);
+  var sizeSelect = document.getElementById('size');
+  _sdUserPreferredSize = sizeSelect && sizeSelect.value ? sizeSelect.value : '832×1216';
   var hires = document.getElementById('sdHiresFix');
   var seed = document.getElementById('sdSeedLock');
   if (hires && settings.hiresFix != null) hires.checked = !!settings.hiresFix;
@@ -261,7 +299,15 @@ function initSDSettings(){
   });
   ['sdModel','sampler','scheduler','sdHiresUpscaler','sdHiresScale','sdHiresFix','sdSeedLock','sdSeedInput','cfg','steps','size','quality','tail','negative'].forEach(function(id){
     var element = document.getElementById(id);
-    if (element) element.addEventListener('change', saveSDSettings);
+    if (element) element.addEventListener('change', function(){
+      if (id === 'size' && !_sdApplyingScenePreset) {
+        _sdUserPreferredSize = element.value || '832×1216';
+        delete element.dataset.scenePreset;
+        var hint = document.getElementById('sceneSizeHint');
+        if (hint) { hint.hidden = true; hint.textContent = ''; }
+      }
+      saveSDSettings();
+    });
   });
   var model = document.getElementById('sdModel');
   if (model) model.addEventListener('change', function(){ applyModelProfile(effectiveModelName(), true); });
@@ -330,6 +376,8 @@ function quickCreateCurrent(knownConnection){
   var readiness = typeof knownConnection === 'boolean' ? Promise.resolve(knownConnection) : checkSDStatus();
   return readiness.then(function(connected){
     var reused = connected ? applyLastSuccessfulSettings() : null;
+    var activeScene = SCENES.find(function(item){ return item.id === state.__sceneId; });
+    if (activeScene) applySceneGenerationPreset(activeScene);
     generate();
     if (!connected) {
       showQuickCreateStatus('SD 当前不可用，Prompt 已准备好；连接恢复后点击“生成图片”即可。', true);

@@ -76,6 +76,7 @@ const sceneSource = fs.readFileSync(path.join(root, 'tools', 'prompt-builder', '
 const appSource = fs.readFileSync(path.join(root, 'tools', 'prompt-builder', 'app.js'), 'utf8');
 const historySource = fs.readFileSync(path.join(root, 'tools', 'prompt-builder', 'history.js'), 'utf8');
 const queueSource = fs.readFileSync(path.join(root, 'tools', 'prompt-builder', 'queue.js'), 'utf8');
+const sdSource = fs.readFileSync(path.join(root, 'tools', 'prompt-builder', 'sd.js'), 'utf8');
 if (!sceneSource.includes("document.createElement('article')") || !sceneSource.includes("selectBtn.className = 'scene-card-main'")) {
   fail('scene cards must expose separate native controls for loading and quick generation');
 }
@@ -100,6 +101,15 @@ if (!historySource.includes('manual_tags:manualTags.slice()') || !historySource.
 }
 if (!queueSource.includes('manualTags:Array.from(state.manualTags || [])')) {
   fail('queued generation must freeze manual tags with the rest of the job state');
+}
+if (!html.includes('1344×768 · 高清') || !html.includes('1536×864 · 16G 显存') || !html.includes('id="sceneSizeHint"')) {
+  fail('director must expose true 16:9 CG sizes and the scene-size explanation');
+}
+if (!sdSource.includes('function applySceneGenerationPreset(scene)') || !sdSource.includes('applySceneGenerationPreset(activeScene)')) {
+  fail('scene size presets must survive quick-create parameter reuse');
+}
+if (!sceneSource.includes('applySceneGenerationPreset(s)')) {
+  fail('loading a scene must apply its generation-size preset');
 }
 if (!appSource.includes('restoreHistoryManualTags(h, historyScene, !!sceneCompatible)') ||
     !appSource.includes('restoreHistoryStory(h, historyScene, !!sceneCompatible)') ||

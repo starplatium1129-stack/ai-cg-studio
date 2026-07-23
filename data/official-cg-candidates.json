@@ -1,0 +1,324 @@
+[
+  {
+    "id": "ocn01",
+    "character": "nene",
+    "title": "教室里靠在你怀中的宁宁",
+    "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\v12_cg_01.png",
+    "size": "1344×768",
+    "rating": "All",
+    "prompt": "masterpiece, best quality, amazing quality, visual novel event CG, cinematic 16:9 composition, intimate diagonal close-up, 1girl, 1boy, ayachi_nene, white hair, very long hair, low twintails, purple eyes, ahoge, pink hair ribbons, navy school uniform blazer, gold bow, gray plaid skirt, lying sideways against a faceless boy's chest and arm, boy partially visible at left, classroom desks, warm afternoon sunlight, soft blush, vulnerable eye contact, long silver hair spread across the frame, <lora:ayachi_nene_v14:0.9>"
+  },
+  {
+    "id": "ocn02",
+    "character": "nene",
+    "title": "窗边交握双手的请求",
+    "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\v12_cg_02.png",
+    "size": "1344×768",
+    "rating": "All",
+    "prompt": "masterpiece, best quality, amazing quality, visual novel event CG, cinematic 16:9 composition, ((tight upper-body close-up:1.45)), 1girl, solo, ayachi_nene, white hair, very long hair, low twintails, purple eyes, ahoge, pink hair ribbons, navy school uniform blazer, gray sailor collar, gold bow, ((both hands clasped tightly directly below her chin:1.35)), front view, pleading gentle expression, subtle blush, bright blue sky and green trees through one large classroom window, a few empty desks softly blurred behind her, character fills most of frame, cropped below chest, <lora:ayachi_nene_v14:0.9>",
+    "negative": "full body, long shot, distant character, standing, tiny person"
+  },
+  {
+    "id": "ocn03",
+    "character": "nene",
+    "title": "夜色中被稳稳抱住",
+    "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\v12_cg_03.png",
+    "size": "1344×768",
+    "rating": "R15",
+    "prompt": "masterpiece, best quality, amazing quality, visual novel event CG, cinematic 16:9 composition, ((extreme low-angle diagonal close shot:1.45)), 1girl, 1boy, ayachi_nene, white hair, very long hair, low twintails, purple eyes, ahoge, pink hair ribbons, navy school uniform blazer, gold bow, gray plaid skirt, black thighhighs, girl lifted from behind in a faceless boy's strong arms, boy mostly cropped out behind her, one male arm firmly across her upper chest and one supporting her waist, girl's tilted body and thighs dominating the foreground, startled embarrassed expression, windblown silver hair streaming across the right side, moonlit school courtyard at night, blue dramatic rim light, <lora:ayachi_nene_v14:0.9>",
+    "negative": "distant couple, standing hug, full male body, tiny characters, centered upright pose"
+  },
+  {
+    "id": "ocn04",
+    "character": "nene",
+    "title": "粉色卧室里的蓝色睡衣",
+    "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\v12_cg_05.png",
+    "size": "1344×768",
+    "rating": "All",
+    "prompt": "masterpiece, best quality, amazing quality, visual novel event CG, cinematic 16:9 composition, diagonal medium close-up from above, 1girl, solo, ayachi_nene, white hair, very long hair, purple eyes, ahoge, ((sky-blue patterned button-up pajama shirt:1.55)), small navy animal pattern, contrasting pink collar, sitting upright in a pink bedroom bed, pale pink blanket pulled to her waist, very long silver hair spread across pink pillows and sheets, quiet direct eye contact, faint blush, soft morning window light, intimate wholesome atmosphere, <lora:ayachi_nene_v14:0.9>",
+    "negative": "pink pajamas, purple pajamas, crop top, exposed midriff, camera, photography equipment, dark blue bedding, lying on side"
+  },
+  {
+    "id": "ocn05",
+    "character": "nene",
+    "title": "楼梯转角的膝枕",
+    "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\v12_cg_06.png",
+    "size": "1344×768",
+    "rating": "R15",
+    "prompt": "masterpiece, best quality, amazing quality, visual novel event CG, cinematic 16:9 composition, high-angle diagonal shot, 1girl, 1boy, ayachi_nene, white hair, very long hair, low twintails, purple eyes, ahoge, pink hair ribbons, navy school uniform blazer, gold bow, gray plaid skirt, black thighhighs, sitting on an indoor wooden staircase, faceless boy lying with his head on her lap, both hands gently supporting his head, surprised open mouth and blush, warm sunset light from stairwell window, intimate lap pillow scene, <lora:ayachi_nene_v14:0.9>"
+  },
+  {
+    "id": "ocn06",
+    "character": "nene",
+    "title": "走廊地面上的意外相拥",
+    "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\v12_cg_07.png",
+    "size": "1344×768",
+    "rating": "R15",
+    "prompt": "masterpiece, best quality, amazing quality, visual novel event CG, cinematic 16:9 composition, overhead diagonal camera, 1girl, 1boy, ayachi_nene, white hair, very long hair, low twintails, purple eyes, ahoge, pink hair ribbons, magenta school cardigan, white blouse, gold bow, black pleated skirt, black thighhighs, lying closely across a faceless boy on a tiled school corridor floor, one hand on his chest, embarrassed eye contact, long silver hair flowing across the floor, bright indoor daylight, romantic accident scene, <lora:ayachi_nene_v14:0.9>"
+  },
+  {
+    "id": "ocn07",
+    "character": "nene",
+    "title": "灯火舞台前的礼物",
+    "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\v12_cg_10.png",
+    "size": "1344×768",
+    "rating": "All",
+    "prompt": "masterpiece, best quality, amazing quality, visual novel event CG, portrait composition matching an official event illustration, low-angle full-body shot, 1girl, solo, ayachi_nene, white hair, very long hair, low twintails, purple eyes, ahoge, pink hair ribbons, navy school uniform blazer with gold buttons, gold bow, gray plaid skirt, black thighhighs, standing beneath warm golden stage lights and large star decorations, ((holding a rectangular black gift box filled with a bouquet of pink and white flowers against her chest with both arms:1.55)), shy gentle smile, long silver hair flowing behind her, <lora:ayachi_nene_v14:0.9>",
+    "negative": "single rose, one flower, empty hands, shop, store shelves, fluorescent light"
+  },
+  {
+    "id": "ocn08",
+    "character": "nene",
+    "title": "星海中的魔女枪口",
+    "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\v12_cg_11.png",
+    "size": "1344×768",
+    "rating": "R15",
+    "prompt": "masterpiece, best quality, amazing quality, visual novel event CG, cinematic 16:9 action composition, extreme foreshortening, 1girl, solo, ayachi_nene, white hair, very long hair, purple eyes, ahoge, official witch outfit, wide black witch hat with pink striped hatband and large pink bow, short black cape with vivid pink lining, pink crisscross strappy top, bare midriff, black wrist cuffs with pink stripes, aiming an oversized silver revolver directly toward the right foreground, gun dominating foreground in sharp perspective, determined face on left side, swirling purple starfield and blue magic particles, dramatic rim light, <lora:ayachi_nene_v14:0.95>"
+  },
+  {
+    "id": "ocs01",
+    "character": "natsume",
+    "title": "更衣室里的紫色内衣",
+    "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\v12_cg_01.png",
+    "size": "1344×768",
+    "rating": "R15",
+    "prompt": "masterpiece, best quality, amazing quality, visual novel event CG, cinematic 16:9 composition, high-angle diagonal shot, 1girl, solo, adult shiki_natsume, black hair, very long hair, yellow eyes, two red hairclips, mole under eye, lavender lace bra and panties, black thighhigh stockings, sitting on a locker-room bench, one knee raised toward the foreground while adjusting a stocking, embarrassed direct eye contact, white lockers and shower room behind her, soft indoor light, <lora:shiki_natsume_v14:0.95>"
+  },
+  {
+    "id": "ocs02",
+    "character": "natsume",
+    "title": "粉色针织衫下的小声提醒",
+    "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\v12_cg_02.png",
+    "size": "1344×768",
+    "rating": "All",
+    "prompt": "masterpiece, best quality, amazing quality, visual novel event CG, cinematic 16:9 composition, tilted medium close-up, 1girl, solo, shiki_natsume, black hair, very long hair tied in a low side ponytail with purple ribbon, yellow eyes, two red hairclips, mole under eye, pink gingham off-shoulder knit sweater, one index finger resting near her lips, shy thoughtful expression, subtle blush, apartment utility room and open blue case in background, soft neutral indoor light, <lora:shiki_natsume_v14:0.9>"
+  },
+  {
+    "id": "ocs03",
+    "character": "natsume",
+    "title": "吧台边递来的红色饮料",
+    "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\v12_cg_03.png",
+    "size": "1344×768",
+    "rating": "All",
+    "prompt": "masterpiece, best quality, amazing quality, visual novel event CG, cinematic 16:9 composition, strong tilted top-down camera, 1girl, solo, shiki_natsume, black hair, very long hair, yellow eyes, two red hairclips, mole under eye, white cafe blouse, dark brown crossed harness apron and short skirt, seated sideways in a carved wooden cafe chair, holding a red drink in a stemmed glass with one hand, calm direct eye contact, faceless male customer partially visible at lower right, warm amber wooden cafe interior, polished counter and chairs, <lora:shiki_natsume_v14:0.9>"
+  },
+  {
+    "id": "ocs04",
+    "character": "natsume",
+    "title": "红金旗袍的门前回眸",
+    "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\v12_cg_04.png",
+    "size": "1344×768",
+    "rating": "R15",
+    "prompt": "masterpiece, best quality, amazing quality, visual novel event CG, ((bright red qipao:1.65)), ((crimson china dress:1.55)), cinematic 16:9 composition, tilted full-body standing portrait, 1girl, solo, shiki_natsume, black hair arranged in elegant twin braided buns, yellow eyes, two red hairclips, mole under eye, red flower hair ornament, vivid scarlet silk fabric, elaborate metallic gold floral embroidery and gold trim, high side slit, black thighhigh stockings with visible garter straps, ((standing upright:1.5)), back against a plain wooden apartment door, ((both hands clasped between her thighs:1.45)), hands at skirt hem, arms hanging down, blushing direct eye contact, warm indoor light, <lora:shiki_natsume_v14:0.95>",
+    "negative": "navy qipao, navy dress, blue qipao, blue dress, green qipao, green dress, black qipao, dark dress, hands at chest, clasped hands at chest, lying, reclining, sitting, floor pose, cabinet, red vines"
+  },
+  {
+    "id": "ocs05",
+    "character": "natsume",
+    "title": "冬夜楼梯上的并肩停留",
+    "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\v12_cg_05.png",
+    "size": "1344×768",
+    "rating": "All",
+    "prompt": "masterpiece, best quality, amazing quality, visual novel event CG, cinematic 16:9 composition, ((steep high-angle diagonal two-person close shot through metal stair railings:1.45)), 1girl, 1boy, ((shiki_natsume in vivid magenta red winter coat:1.5)) in immediate foreground, black hair, very long hair, yellow eyes, two red hairclips, mole under eye, white shirt visible beneath coat, thick gray scarf, ((brown-haired boy directly behind her right shoulder:1.5)), boy in beige winter jacket and cream scarf, their shoulders touching, boy's face beside and slightly above her face, both upper bodies fill frame and look upward toward camera, quiet serious expressions, outdoor fire-escape staircase, cold blue night, diagonal metal railings crossing foreground, subtle snow-like light particles, <lora:shiki_natsume_v14:0.9>",
+    "negative": "solo, 1girl only, no boy, boy in foreground below girl, separated couple, distant character, full body long shot, white coat on girl, beige coat on girl, front eye-level camera"
+  },
+  {
+    "id": "ocs06",
+    "character": "natsume",
+    "title": "围巾旁的冬夜初吻",
+    "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\v12_cg_06.png",
+    "size": "1344×768",
+    "rating": "R15",
+    "prompt": "masterpiece, best quality, amazing quality, visual novel event CG, cinematic 16:9 close-up, 1girl, 1boy, shiki_natsume, black hair, yellow eyes closed, two red hairclips, mole under eye, purple ribbon and white rose hair ornament, winter coat with fluffy fur collar, kissing a faceless boy, side profile, cheeks flushed, boy embracing her shoulders, cold blue night background, intimate soft rim lighting, cropped close composition, <lora:shiki_natsume_v14:0.9>"
+  },
+  {
+    "id": "ocs07",
+    "character": "natsume",
+    "title": "咖啡馆储物间的女仆之吻",
+    "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\v12_cg_07.png",
+    "size": "1344×768",
+    "rating": "R15",
+    "prompt": "masterpiece, best quality, amazing quality, visual novel event CG, cinematic 16:9 close-up, 1girl, 1boy, shiki_natsume, black hair, yellow eyes closed, two red hairclips, mole under eye, dark cafe maid uniform, white frilled maid headband, small pastel hair ornaments, kissing a faceless male coworker in a cafe storage room, side profile, cheeks flushed, wooden shelves and supply boxes behind them, warm indoor light, intimate tightly cropped composition, <lora:shiki_natsume_v14:0.9>"
+  },
+  {
+    "id": "ocs08",
+    "character": "natsume",
+    "title": "枕边醒来的安静目光",
+    "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\v12_cg_08.png",
+    "size": "1344×768",
+    "rating": "All",
+    "prompt": "masterpiece, best quality, amazing quality, visual novel event CG, cinematic 16:9 composition, intimate diagonal close-up, 1girl, solo, shiki_natsume, black hair spread over white pillows, yellow eyes, two red hairclips, mole under eye, pale blue pajamas with red piping, lying on her side in bed under a white blanket, quiet direct eye contact, subtle blush, soft warm morning light, face and eyes in sharp focus, <lora:shiki_natsume_v14:0.9>"
+  },
+  {
+    "id": "ocs09",
+    "character": "natsume",
+    "title": "木架前捧住的微光",
+    "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\v12_cg_10.png",
+    "size": "1344×768",
+    "rating": "All",
+    "prompt": "masterpiece, best quality, amazing quality, visual novel event CG, cinematic 16:9 composition, tilted medium shot, 1girl, solo, shiki_natsume, black hair, yellow eyes, two red hairclips, mole under eye, dark gray cafe maid dress, white frilled apron and collar, gold bow, white cuffs, holding a small glowing blue magical object carefully in both cupped hands at chest level, surprised gentle expression, warm wooden cafe storage shelves filled with jars behind her, cyan light illuminating her face and fingers, <lora:shiki_natsume_v14:0.9>"
+  },
+  {
+    "id": "ocs10",
+    "character": "natsume",
+    "title": "暖灯卧室里的羞怯防线",
+    "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\v12_cg_11.png",
+    "size": "1344×768",
+    "rating": "R18",
+    "prompt": "masterpiece, best quality, amazing quality, visual novel event CG, cinematic 16:9 composition, intimate diagonal close-up, 1girl, solo, adult shiki_natsume, black hair flowing across the bed, yellow eyes, two red hairclips, mole under eye, lying topless on her side in a warm bedroom, one arm covering part of her chest, bare shoulders and cleavage, eyes closed, deeply blushing embarrassed expression, dark wooden wall and amber bedside light, tasteful adult visual novel CG, <lora:shiki_natsume_v14:0.9>"
+  },
+  {
+    "id": "ocn09",
+    "character": "nene",
+    "title": "夕照图书室里的失控一刻",
+    "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\ScreenShot_2026-07-12_230616_069.png",
+    "size": "1344×768",
+    "rating": "R18",
+    "prompt": "masterpiece, best quality, amazing quality, visual novel event CG, adult after story, cinematic 16:9 composition, dramatic clockwise dutch angle, low close camera across a wooden library desk, 1girl, solo, adult ayachi_nene, white silver hair, very long twin tails tied with pink ribbons, purple eyes, ahoge, black school-uniform costume jacket with orange piping and gold bow, gray plaid pleated skirt lifted high with both hands, pink lace panties visible, black thighhigh stockings, kneeling and leaning back against the desk, embarrassed open mouth, heavy blush, direct eye contact, tall bookshelves packed with Japanese books, warm sunset flooding through a window at right, official visual novel CG framing, <lora:ayachi_nene_v14:0.95>"
+  },
+  {
+    "id": "ocn10",
+    "character": "nene",
+    "title": "深蓝卧室里的侧卧私语",
+    "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\ScreenShot_2026-07-12_231154_952.png",
+    "size": "1344×768",
+    "rating": "R18",
+    "prompt": "masterpiece, best quality, amazing quality, visual novel event CG, adult after story, cinematic 16:9 intimate composition, diagonal overhead view, 1girl, solo, adult ayachi_nene, silver gray hair in two thick long braids, purple eyes, nude, topless, nipples, bottomless, anatomically correct torso, exactly two breasts, lying on her right side, blue short-sleeved polka-dot pajama top lifted above chest, bare hips and thighs filling the left foreground, one knee bent, one hand at inner thigh, vulnerable direct eye contact, flushed cheeks, parted lips, dark navy pillows and sheets, cool moonlit bedroom, official visual novel CG framing, <lora:ayachi_nene_v14:0.95>",
+    "negative": "extra breast, third breast, fused breasts, malformed torso, blanket, covered body, dress, nightgown, fully clothed, sitting, standing"
+  },
+  {
+    "id": "ocn11",
+    "character": "nene",
+    "title": "金色软枕上的晨光告白",
+    "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\ScreenShot_2026-07-12_231408_046.png",
+    "size": "1344×768",
+    "rating": "R18",
+    "prompt": "masterpiece, best quality, amazing quality, visual novel event CG, adult after story, cinematic 16:9 extreme intimate close-up, ((strong diagonal composition:1.45)), overhead camera from lower body toward face, 1girl, solo, adult ayachi_nene, silver white long hair spread over bedding, purple eyes, topless, nipples, anatomically correct torso, exactly two breasts, bra lift, pale powder-blue bra pushed above breasts, open white shirt slipping from shoulders, lying on back on huge golden-yellow pillows, nude abdomen and lower torso enormously foreshortened across the right foreground, ((face placed at upper left:1.35)), shy direct eye contact, open mouth, deep blush, warm morning sunlight from upper right, official visual novel CG framing, <lora:ayachi_nene_v14:0.95>",
+    "negative": "extra breast, third breast, fused breasts, malformed torso, portrait crop, headshot, symmetrical front view, face centered, covered torso, fully clothed, blanket, sitting, standing"
+  },
+  {
+    "id": "ocn12",
+    "character": "nene",
+    "title": "魔女衣装的回眸",
+    "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\ScreenShot_2026-07-12_231613_575.png",
+    "size": "1344×768",
+    "rating": "R18",
+    "prompt": "masterpiece, best quality, amazing quality, visual novel event CG, adult after story, cinematic 16:9 extreme low-angle composition, 1girl, solo, adult ayachi_nene, silver white very long twin tails with orange ribbon wraps, purple eyes, witch hat, witch costume, huge black witch hat, ((bare back:1.4)), vivid pink crisscross straps directly over bare torso, black wrist cuffs with pink bands, short black ruffled skirt lifted, no panties, from behind, lying prone on a warm wooden floor, hips and lower body filling the right foreground, looking back over shoulder toward viewer, embarrassed open mouth and blush, scattered burgundy clothes at left, dramatic foreshortening, official visual novel CG framing, <lora:ayachi_nene_v14:0.95>",
+    "negative": "black jacket, black robe, black cape covering body, long sleeves covering torso, fully clothed, standing, sitting"
+  },
+  {
+    "id": "ocs11",
+    "character": "natsume",
+    "title": "更衣室椅上的紫色心事",
+    "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\ScreenShot_2026-07-12_085911_103.png",
+    "size": "1344×768",
+    "rating": "R18",
+    "prompt": "masterpiece, best quality, amazing quality, visual novel event CG, adult after story, cinematic 16:9 composition, strong clockwise dutch angle, low close camera, 1girl, solo, adult shiki_natsume, very long black hair, golden yellow eyes, two red hairclips, mole under eye, lavender lace bra and matching panties, black thighhigh stockings, sitting backward on a black metal folding chair, one stockinged leg raised high across the foreground and the other leg spread to the side, hands gently clasped near abdomen, shy direct eye contact, soft blush, white lockers and dressing-room spotlights, official visual novel CG framing, <lora:shiki_natsume_v14:0.95>"
+  },
+  {
+    "id": "ocs12",
+    "character": "natsume",
+    "title": "夜蓝床单上的黑蕾丝",
+    "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\ScreenShot_2026-07-12_090942_797.png",
+    "size": "1344×768",
+    "rating": "R18",
+    "prompt": "masterpiece, best quality, amazing quality, visual novel event CG, adult after story, cinematic 16:9 composition, diagonal overhead view, 1girl, solo, adult shiki_natsume, very long black hair fanned across the bed, golden yellow eyes, two red hairclips, mole under eye, detailed black lace bra, matching black lace panties, black garter belt and garter straps, black thighhigh stockings, lying on her back on dark desaturated blue bedding, hands clasped modestly over upper chest, knees slightly apart, shy direct eye contact, subtle blush, cool dim bedroom light, official visual novel CG framing, <lora:shiki_natsume_v14:0.95>"
+  },
+  {
+    "id": "ocn13",
+    "character": "nene",
+    "title": "薄荷睡衣下的清晨目光",
+    "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\ScreenShot_2026-07-12_230938_392.png",
+    "size": "1344×768",
+    "rating": "R18",
+    "prompt": "masterpiece, best quality, amazing quality, visual novel event CG, adult after story, cinematic 16:9 intimate diagonal close-up, 1girl, solo, adult ayachi_nene, silver white hair in two thick long braids, purple eyes, lying on her back in white bedding, mint-green polka-dot pajama shirt pulled upward and held against her chest with both hands, bare abdomen, pink lace panties peeking above white blanket, direct shy eye contact, dark navy pillow at left, soft morning light, official visual novel CG framing, <lora:ayachi_nene_v14:0.95>",
+    "negative": "blue pajamas, closed shirt, fully clothed, sitting, standing, full body long shot"
+  },
+  {
+    "id": "ocn14",
+    "character": "nene",
+    "title": "黄枕边张开的距离",
+    "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\ScreenShot_2026-07-12_231453_739.png",
+    "size": "1344×768",
+    "rating": "R18",
+    "prompt": "masterpiece, best quality, amazing quality, visual novel event CG, adult after story, cinematic 16:9 extreme foreshortened close-up, low camera between raised knees, 1girl, solo, adult ayachi_nene, silver white long hair across golden-yellow pillows, purple eyes, topless, nipples, pale blue lace panties, black thighhigh stockings, lying on back with knees raised and legs spread around the camera, black-stockinged thighs framing foreground, gold school bow still around neck, shy open mouth and direct eye contact, warm bedroom light, official visual novel CG framing, <lora:ayachi_nene_v14:0.95>",
+    "negative": "extra legs, fused legs, closed legs, skirt, bra, shirt, standing, sitting, distant camera"
+  },
+  {
+    "id": "ocn15",
+    "character": "nene",
+    "title": "深色枕边的秘密玩具",
+    "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\ScreenShot_2026-07-12_231816_560.png",
+    "size": "1344×768",
+    "rating": "R18",
+    "prompt": "masterpiece, best quality, amazing quality, visual novel event CG, adult after story, cinematic 16:9 extreme POV from between raised legs, 1girl, solo, adult ayachi_nene, white silver hair, purple eyes, lying on back on a dark navy pillow, open burgundy cardigan and white shirt, pink lace panties, white frilled socks, both bare legs raised vertically and dominating foreground, holding a small pink vibrator near her lips with both hands, embarrassed direct gaze, heavy blush, white bedding, official visual novel CG framing, <lora:ayachi_nene_v14:0.95>",
+    "negative": "extra legs, fused legs, closed legs, standing, sitting, full body distant shot, blue clothing"
+  },
+  {
+    "id": "ocs13",
+    "character": "natsume",
+    "title": "木地板上压低的提醒",
+    "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\ScreenShot_2026-07-12_090719_815.png",
+    "size": "1344×768",
+    "rating": "R15",
+    "prompt": "masterpiece, best quality, amazing quality, visual novel event CG, cinematic 16:9 extreme overhead face close-up, 1girl, solo, adult shiki_natsume, long black hair braided at both sides, golden yellow eyes, mole under eye, paired white rose ornaments with purple ribbons, white shirt, lying on warm wooden floor beside an orange cushion, one index finger pressed softly to parted lips, other hand near ear, intense shy direct gaze, flushed cheeks, face fills frame, <lora:shiki_natsume_v14:0.95>"
+  },
+  {
+    "id": "ocs14",
+    "character": "natsume",
+    "title": "杯架前递来的点心",
+    "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\ScreenShot_2026-07-12_090755_311.png",
+    "size": "1344×768",
+    "rating": "All",
+    "prompt": "masterpiece, best quality, amazing quality, visual novel event CG, cinematic 16:9 clockwise dutch angle, waist-up close shot, 1girl, solo, shiki_natsume, black hair in short maid updo, golden yellow eyes, mole under eye, tiny pastel hairclips, dark gray cafe maid dress, white ruffled apron and collar, gold bow, holding a tiny wrapped sweet carefully in both cupped hands toward viewer, gentle smile, warm wooden cafe, wall racks filled with white cups, <lora:shiki_natsume_v14:0.95>"
+  },
+  {
+    "id": "ocs15",
+    "character": "natsume",
+    "title": "暖光床沿的侧卧凝视",
+    "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\ScreenShot_2026-07-12_090922_485.png",
+    "size": "1344×768",
+    "rating": "R18",
+    "prompt": "masterpiece, best quality, amazing quality, visual novel event CG, adult after story, cinematic 16:9 intimate close-up, 1girl, solo, adult shiki_natsume, very long black hair, golden yellow eyes, mole under eye, nude, topless, nipples, lying on stomach across a warm bed, upper body propped on elbows, one hand near lips, hips at left edge, face and chest dominate frame, direct vulnerable gaze, amber bedside light from upper right, dark wooden bedroom, <lora:shiki_natsume_v14:0.95>",
+    "negative": "lingerie, bra, shirt, standing, sitting, lying on back, cold blue light"
+  },
+  {
+    "id": "ocs16",
+    "character": "natsume",
+    "title": "黑蕾丝滑落后的静默",
+    "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\ScreenShot_2026-07-12_091017_055.png",
+    "size": "1344×768",
+    "rating": "R18",
+    "prompt": "masterpiece, best quality, amazing quality, visual novel event CG, adult after story, cinematic 16:9 diagonal overhead composition, 1girl, solo, adult shiki_natsume, very long black hair spread on dark blue bedding, golden yellow eyes, mole under eye, topless, nipples, black lace panties, black garter belt and garter straps, black thighhigh stockings, lying on back, hands clasped over upper chest, shy direct gaze, cool dim bedroom light, <lora:shiki_natsume_v14:0.95>",
+    "negative": "bra, covered breasts, standing, sitting, warm orange bedding"
+  },
+  {
+    "id": "ocs17",
+    "character": "natsume",
+    "title": "夜蓝床铺上的坦白姿势",
+    "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\ScreenShot_2026-07-12_091155_526.png",
+    "size": "1344×768",
+    "rating": "R18",
+    "prompt": "masterpiece, best quality, amazing quality, visual novel event CG, adult after story, cinematic 16:9 diagonal overhead composition, 1girl, solo, adult shiki_natsume, very long black hair spread across dark blue bed, golden yellow eyes, mole under eye, topless, nipples, bottomless, black garter belt and black thighhigh stockings, lying on back with knees spread toward foreground, hands clasped over chest, shy direct gaze, cool dim bedroom, official visual novel CG framing, <lora:shiki_natsume_v14:0.95>",
+    "negative": "bra, panties, closed legs, extra legs, standing, sitting"
+  },
+  {
+    "id": "ocs18",
+    "character": "natsume",
+    "title": "沙发边松开的吊带裙",
+    "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\ScreenShot_2026-07-12_091245_649.png",
+    "size": "1344×768",
+    "rating": "R18",
+    "prompt": "masterpiece, best quality, amazing quality, visual novel event CG, adult after story, cinematic 16:9 diagonal close composition, 1girl, solo, adult shiki_natsume, long black hair in braided side ponytail with white rose and purple ribbon, golden yellow eyes, mole under eye, kneeling and leaning forward on a reddish sofa, white school shirt opened to reveal lavender lace bra, dark brown suspender skirt, black thighhigh stockings, hips raised in background, direct shy eye contact, one hand on cushion, warm indoor light, <lora:shiki_natsume_v14:0.95>"
+  },
+  {
+    "id": "ocs19",
+    "character": "natsume",
+    "title": "储物架间掀起的裙摆",
+    "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\ScreenShot_2026-07-12_091309_703.png",
+    "size": "1344×768",
+    "rating": "R18",
+    "prompt": "masterpiece, best quality, amazing quality, visual novel event CG, adult after story, cinematic 16:9 extreme low-angle POV, 1girl, solo, adult shiki_natsume, black hair in maid updo, golden yellow eyes, mole under eye, dark gray cafe maid dress, white ruffled apron and maid headband, skirt lifted high with one hand, beige panties visible, white kneehigh socks, one thigh dominating foreground, teasing direct smile, metal storage racks and cardboard boxes, bright storeroom light, <lora:shiki_natsume_v14:0.95>",
+    "negative": "long shot, eye-level camera, skirt down, black panties, standing far away"
+  }
+]

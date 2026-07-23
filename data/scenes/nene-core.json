@@ -2349,9 +2349,10 @@
   },
   {
     "id": "sc232",
+    "recommendedSize": "1344×768",
     "title": "图书馆里被撞破的魔女契约",
     "category": "校园",
-    "story": "【宁宁 · 灵感复刻图书馆CG】放学后阳光西斜的静谧学院图书馆深处。平日里优雅完美的优等生宁宁，此时因为魔女契约的残酷代价突然超载，整个人彻底瘫软在无人的阅览室长桌上。她娇躯剧烈颤抖，柔顺的银白发丝凌乱地散落在木质台面上，校服衬衫因为急促的喘息而剧烈起伏。被你推门撞破秘密的瞬间，她面红耳赤地试图用无力的双手遮挡视线，眼角挂着羞耻的泪水，头顶那根心形呆毛早已完全软瘫下来，语无伦次地大声哭腔自曝——「等、等等！刚才的事情不准说出去……绝对不准！求求你……不要看人家现在这个样子啦……笨蛋，快把眼睛闭上！」",
+    "story": "【宁宁 · 图书馆里的契约失控】放学后阳光西斜的静谧学院图书馆深处。平日里优雅完美的优等生宁宁，此时因为魔女契约的残酷代价突然超载，整个人彻底瘫软在无人的阅览室长桌上。她娇躯剧烈颤抖，柔顺的银白发丝凌乱地散落在木质台面上，校服衬衫因为急促的喘息而剧烈起伏。被你推门撞破秘密的瞬间，她面红耳赤地试图用无力的双手遮挡视线，眼角挂着羞耻的泪水，头顶那根心形呆毛早已完全软瘫下来，语无伦次地大声哭腔自曝——「等、等等！刚才的事情不准说出去……绝对不准！求求你……不要看人家现在这个样子啦……笨蛋，快把眼睛闭上！」",
     "char": "nene",
     "character": [
       "nene"
@@ -2394,7 +2395,7 @@
     ],
     "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, library, bookshelf, desk, collapsed_on_desk, heavy_blush, sweat, tears_in_eyes, panicked, open_mouth, sunset, backlit, romantic_atmosphere, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
-    "storyJa": "【寧々・公式CG復刻：図書室で突き止められた秘密】放課後、夕日が西に傾く静まり返った学院の図書室の奥深く。普段はエレガントで完璧な優等生である寧々が、今や魔女の契約の残酷な代償が突然オーバーロードしたせいで、誰もいない閲覧室の長い木製テーブルの上に完全に力なく崩れ落ちていた。彼女のしなやかな肢体は激しく震え、柔らかな銀らかな銀髪のローツインテールが乱雑に木製の台の上に散らばり、制服のシャツが荒い呼吸と共に激しく上下している。あなたがドアを開けて秘密を突き止めた瞬間、彼女は顔を真っ赤にして力ない両手で視線を遮ろうとし、目尻に羞恥の涙を浮かべ、頭の上のアホ毛はすでに完全に力なく垂れ下がり、支離滅裂に涙声で自爆した――「ま、待って！今のことは言いふらさないで……絶対にダメ！お願いだから……私のこんなところ、見ないでよ……バカ、早く目を閉じて！」",
+    "storyJa": "【寧々・図書室で突き止められた秘密】放課後、夕日が西に傾く静まり返った学院の図書室の奥深く。普段はエレガントで完璧な優等生である寧々が、今や魔女の契約の残酷な代償が突然オーバーロードしたせいで、誰もいない閲覧室の長い木製テーブルの上に完全に力なく崩れ落ちていた。彼女のしなやかな肢体は激しく震え、柔らかな銀らかな銀髪のローツインテールが乱雑に木製の台の上に散らばり、制服のシャツが荒い呼吸と共に激しく上下している。あなたがドアを開けて秘密を突き止めた瞬間、彼女は顔を真っ赤にして力ない両手で視線を遮ろうとし、目尻に羞恥の涙を浮かべ、頭の上のアホ毛はすでに完全に力なく垂れ下がり、支離滅裂に涙声で自爆した――「ま、待って！今のことは言いふらさないで……絶対にダメ！お願いだから……私のこんなところ、見ないでよ……バカ、早く目を閉じて！」",
     "rating": "All"
   },
   {
@@ -2853,5 +2854,189 @@
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々】【寨々・華麗な大正ロマン袴と紅葉の自爆】秋の気配が深まり、満天の紅葉が火のように舞い散る学院の古き神社裏山の石段。民俗部の伝統行事撮影の手伝いのため、寨々は非常にエレガントで華麗な大正ロマン風の袴裙一式に身を包んでいた。上衣は紅白の正統な矢絣柄の着物、ボトムスには深紫色の伝統的な袴とスマートな黒のレースアップブーツを合わせ、銀髪のローツインテールを大きな赤いリボンのヘアバンドで背後に優雅に束ね、ひとき外あでやかで端正に見える。しかし、袴の裾が複雑すぎたせいで、小道具を抱えて石段を降りる途中に裾に足を取られてしまい、彼女は小さく悲鳴を上げてバランスを崩した。あなたが目端を利かせて一歩踏み出し、彼女をしっかりと胸の中に抱きとめると、寨々は視線が交わった瞬間に顔を真っ赤にし、頭のアホ毛が舞い散る赤い楓の中で慌てて完璧なハート型に丸まり、涙を浮かべて即座に自爆した――「うあぁ！柊、柊史！なぜ毎回私を受け止められるのよ？！私、私は決してわざとスカートに躓いたフリをしてあなたに抱きしめてもらったわけじゃ……うう、言い訳すればするほど言い逃れっぽくなる、バカ、目を閉じて見ちゃダメ！」",
     "rating": "All"
+  },
+  {
+    "id": "sc260",
+    "recommendedSize": "1344×768",
+    "title": "窗边交握双手的请求",
+    "category": "官方CG灵感",
+    "story": "【官方 CG 灵感】午后的教室只剩风吹窗帘的声音。宁宁把交握的手举到胸前，犹豫很久才望向你：「今天……能再陪我一会儿吗？」窗边的光沿着她的银白长发缓缓移动，粉色发带与紫色眼眸让这一刻安静得像被珍藏起来。",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v14",
+    "emotion": "心动",
+    "season": "不限",
+    "time": "白天",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "nene",
+      "solo"
+    ],
+    "mature": false,
+    "location": "室内场景",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "柔和自然光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, (tight_upper_body_close_up), 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, navy_school_uniform_blazer, gray_sailor_collar, gold_bow, (both_hands_clasped_tightly_directly_below_her_chin), front_view, pleading_gentle_expression, subtle_blush, bright_blue_sky_and_green_trees_through_one_large_classroom_window, a_few_empty_desks_softly_blurred_behind_her, character_fills_most_of_frame, cropped_below_chest, <lora:ayachi_nene_v14:0.9>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, full body, long shot, distant character, standing, tiny person, nsfw, nude, explicit",
+    "storyJa": "【公式CGインスピレーション・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
+    "rating": "All",
+    "officialCgCandidate": "ocn02",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 2,
+      "seedKey": "official-cg:ocn02:2",
+      "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\v12_cg_02.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn02-a2.png",
+      "result": "pass"
+    }
+  },
+  {
+    "id": "sc261",
+    "recommendedSize": "1344×768",
+    "title": "粉色卧室里的蓝色睡衣",
+    "category": "官方CG灵感",
+    "story": "【官方 CG 灵感】清晨的粉色卧室里，宁宁穿着蓝色睡衣从被子里坐起。她揉揉眼睛，小声提醒你：「早安，不过先说好，不准笑我的睡相。」窗边的光沿着她的银白长发缓缓移动，粉色发带与紫色眼眸让这一刻安静得像被珍藏起来。",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v14",
+    "emotion": "心动",
+    "season": "不限",
+    "time": "白天",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "nene",
+      "solo"
+    ],
+    "mature": false,
+    "location": "卧室",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "柔和自然光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, diagonal_medium_close_up_from_above, 1girl, solo, ayachi_nene, white_hair, very_long_hair, purple_eyes, ahoge, (sky_blue_patterned_button_up_pajama_shirt), small_navy_animal_pattern, contrasting_pink_collar, sitting_upright_in_a_pink_bedroom_bed, pale_pink_blanket_pulled_to_her_waist, very_long_silver_hair_spread_across_pink_pillows_and_sheets, quiet_direct_eye_contact, faint_blush, soft_morning_window_light, intimate_wholesome_atmosphere, <lora:ayachi_nene_v14:0.9>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, pink pajamas, purple pajamas, crop top, exposed midriff, camera, photography equipment, dark blue bedding, lying on side, nsfw, nude, explicit",
+    "storyJa": "【公式CGインスピレーション・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
+    "rating": "All",
+    "officialCgCandidate": "ocn04",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 2,
+      "seedKey": "official-cg:ocn04:2",
+      "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\v12_cg_05.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn04-a2.png",
+      "result": "pass"
+    }
+  },
+  {
+    "id": "sc262",
+    "recommendedSize": "1344×768",
+    "title": "灯火舞台前的礼物",
+    "category": "官方CG灵感",
+    "story": "【官方 CG 灵感】舞台灯火落在宁宁的银发上，她把装满花朵的礼盒抱在怀里。走到你面前时，她终于露出安心的笑：「这个，只想亲手交给你。」窗边的光沿着她的银白长发缓缓移动，粉色发带与紫色眼眸让这一刻安静得像被珍藏起来。",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v14",
+    "emotion": "心动",
+    "season": "不限",
+    "time": "白天",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "nene",
+      "solo"
+    ],
+    "mature": false,
+    "location": "室内场景",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "柔和自然光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "prompt": "visual_novel_event_cg, portrait_composition_matching_an_official_event_illustration, low_angle_full_body_shot, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, navy_school_uniform_blazer_with_gold_buttons, gold_bow, gray_plaid_skirt, black_thighhighs, standing_beneath_warm_golden_stage_lights_and_large_star_decorations, (holding_a_rectangular_black_gift_box_filled_with_a_bouquet_of_pink_and_white_flowers_against_her_chest_with_both_arms), shy_gentle_smile, long_silver_hair_flowing_behind_her, <lora:ayachi_nene_v14:0.9>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, single rose, one flower, empty hands, shop, store shelves, fluorescent light, nsfw, nude, explicit",
+    "storyJa": "【公式CGインスピレーション・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
+    "rating": "All",
+    "officialCgCandidate": "ocn07",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 3,
+      "seedKey": "official-cg:ocn07:3",
+      "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\v12_cg_10.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn07-a3.png",
+      "result": "pass"
+    }
+  },
+  {
+    "id": "sc263",
+    "recommendedSize": "1344×768",
+    "title": "星海中的魔女枪口",
+    "category": "官方CG灵感",
+    "story": "【官方 CG 灵感】紫色星海在魔法阵外翻涌，宁宁压低帽檐，将银色枪口稳稳指向异变中心。「躲在我身后——这一次，轮到我保护你。」窗边的光沿着她的银白长发缓缓移动，粉色发带与紫色眼眸让这一刻安静得像被珍藏起来。",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v14",
+    "emotion": "心动",
+    "season": "不限",
+    "time": "白天",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "nene",
+      "solo"
+    ],
+    "mature": false,
+    "location": "室内场景",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "柔和自然光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "prompt": "visual_novel_event_cg, cinematic_16:9_action_composition, extreme_foreshortening, 1girl, solo, ayachi_nene, white_hair, very_long_hair, purple_eyes, ahoge, official_witch_outfit, wide_black_witch_hat_with_pink_striped_hatband_and_large_pink_bow, short_black_cape_with_vivid_pink_lining, pink_crisscross_strappy_top, bare_midriff, black_wrist_cuffs_with_pink_stripes, aiming_an_oversized_silver_revolver_directly_toward_the_right_foreground, gun_dominating_foreground_in_sharp_perspective, determined_face_on_left_side, swirling_purple_starfield_and_blue_magic_particles, dramatic_rim_light, <lora:ayachi_nene_v14:0.95>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
+    "storyJa": "【公式CGインスピレーション・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
+    "rating": "All",
+    "officialCgCandidate": "ocn08",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 1,
+      "seedKey": "official-cg:ocn08:1",
+      "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\v12_cg_11.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn08-a1.png",
+      "result": "pass"
+    }
   }
 ]

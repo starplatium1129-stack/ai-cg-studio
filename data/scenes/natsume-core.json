@@ -3830,9 +3830,10 @@
   },
   {
     "id": "sc233",
+    "recommendedSize": "1344×768",
     "title": "闭店后的无声咖啡关心",
     "category": "日常",
-    "story": "【夏目 · 官方复刻吧台CG】深夜彻底打烊后的Café Stella。空无一人的店内只亮着吧台上方一盏微弱的闭店暖灯。夏目有些慵懒地单手托腮靠在大理石台面边，清冷的金瞳毫无干劲地斜睨着你。当你正为工作疲惫不堪时，她顺手将一杯你自己刚才喝过一半、还冒着余温的玛奇朵重重地推回你面前。她微微侧过头避开你的对视，虽然精致的面颊上依旧是那一副冷静疏离的死鱼眼，但那双彻底泛红的耳根在昏暗的灯光下完全暴露了她用冷淡否认掩饰的无声关心——「……别误会。我只是觉得把多余的温热残余倒掉是一种效率上的浪费。重新倒一杯需要重新启动机器，这才是最合理的循环利用。大笨蛋……快点喝完回家。」",
+    "story": "【夏目 · 闭店后的无声关心】深夜彻底打烊后的Café Stella。空无一人的店内只亮着吧台上方一盏微弱的闭店暖灯。夏目有些慵懒地单手托腮靠在大理石台面边，清冷的金瞳毫无干劲地斜睨着你。当你正为工作疲惫不堪时，她顺手将一杯你自己刚才喝过一半、还冒着余温的玛奇朵重重地推回你面前。她微微侧过头避开你的对视，虽然精致的面颊上依旧是那一副冷静疏离的死鱼眼，但那双彻底泛红的耳根在昏暗的灯光下完全暴露了她用冷淡否认掩饰的无声关心——「……别误会。我只是觉得把多余的温热残余倒掉是一种效率上的浪费。重新倒一杯需要重新启动机器，这才是最合理的循环利用。大笨蛋……快点喝完回家。」",
     "char": "natsume",
     "character": [
       "natsume"
@@ -3874,7 +3875,7 @@
     ],
     "prompt": "1girl, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, cafe_uniform, leaning_against_counter, propped_up_on_elbow, holding_cup, red_ears, subtle_blush, expressionless, cafe_interior, night, dim_lighting, warm_lighting, shadows, calm_atmosphere, <lora:shiki_natsume_v14:0.9>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
-    "storyJa": "【夏目】【ナツメ・公式CG復刻：閉店後の無声のコーヒーの思いやり】深夜、完全に営業が終了した後のカフェ・ステラ。誰もいない店内には、カウンターの上の微かな暖色灯だけが灯っていた。ナツメは少し物憂げに片手で頬杖をつきながら大理石のカウンターに寄りかかり、冷淡な金の瞳でやる気なさそうにあなたを斜めに見つめていた。あなたが仕事で疲れ果てていると、彼女は先ほどあなたが半分ほど飲んだ、まだ余熱の残るマキアートをあなたの前に強く押し戻した。彼女はわずかに顔を巡らせてあなたの視線を避け、精緻な顔立ちには相変わらずあの冷静で疎遠なジト目のままだが、完全に真っ赤になった耳の裏が、冷淡な否定で隠された彼女の無声の思いやりを薄暗い光の中で完全に暴露していた――「……勘違いしないで。私はただ、余った温かい残液を捨てるのは効率の面で無駄だと思っただけ。新しく一杯淹れるにはマシンを再起動する必要があるし、これが最も合理的な循環利用。大変態……早く飲み干して帰るわよ」",
+    "storyJa": "【夏目】【ナツメ・閉店後の無声のコーヒーの思いやり】深夜、完全に営業が終了した後のカフェ・ステラ。誰もいない店内には、カウンターの上の微かな暖色灯だけが灯っていた。ナツメは少し物憂げに片手で頬杖をつきながら大理石のカウンターに寄りかかり、冷淡な金の瞳でやる気なさそうにあなたを斜めに見つめていた。あなたが仕事で疲れ果てていると、彼女は先ほどあなたが半分ほど飲んだ、まだ余熱の残るマキアートをあなたの前に強く押し戻した。彼女はわずかに顔を巡らせてあなたの視線を避け、精緻な顔立ちには相変わらずあの冷静で疎遠なジト目のままだが、完全に真っ赤になった耳の裏が、冷淡な否定で隠された彼女の無声の思いやりを薄暗い光の中で完全に暴露していた――「……勘違いしないで。私はただ、余った温かい残液を捨てるのは効率の面で無駄だと思っただけ。新しく一杯淹れるにはマシンを再起動する必要があるし、これが最も合理的な循環利用。大変態……早く飲み干して帰るわよ」",
     "rating": "All"
   },
   {
@@ -4323,5 +4324,327 @@
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【夏目】【ナツメ・夏日シフォンの私服と無声の間接溶融】盛夏の午後、猛暑が続く中、エアコンの効いたスタイリッシュなアイスクリーム専門店。今日の外出でナツメは、非常にクリーンで爽やかな私服を身に纏っていた。真っ白な軽やかシフォンのオフショルダーブラウスは、精緻できれいな肩と鎖骨のラインを余すところなくのぞかせ、ボトムスにはハイウエストのウォッシュドブルーデニムのショートパンツを合わせ、すらりと伸びた美しい白脚を引き立てている。彼女は少しやる気なさそうにスプーンで手元のツートンアイスクリームを掬っていたが、あなたがじっと見つめているのに気づくと、ごく自然に自分が一口食べたアイスのスプーンをあなたの口元に差し出した。間接キスの曖昧なムードが一瞬にして立ち込め、彼女は美しい金の瞳を少し伏せた。表情は相変わらずあのやる気のないジト目のままだが、完全に真っ赤になった耳の裏が明快な夏光の下で心の中の慌てようを完全に暴露しており、短い口調で弁明していた――「……勘違いしないで。私はただ、アイスがこの高温で完全に溶けてしまう前にあなたに分担させるのが最も効率的な処理方式だと思っただけ。その場でいちいち大騒ぎするのは進食速度を低下させるわ。大バカ者……早く食べなさい」",
     "rating": "All"
+  },
+  {
+    "id": "sc271",
+    "recommendedSize": "1344×768",
+    "title": "更衣室里的紫色内衣",
+    "category": "官方CG灵感",
+    "story": "【官方 CG 灵感】更衣室安静下来后，夏目坐在折叠椅上整理黑色长袜。察觉你的视线，她故作平静：「看够了吗？看够了就过来帮我系好。」柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v14",
+    "emotion": "心动",
+    "season": "不限",
+    "time": "白天",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "natsume",
+      "solo"
+    ],
+    "mature": false,
+    "location": "室内场景",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "柔和自然光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, high_angle_diagonal_shot, 1girl, solo, adult_shiki_natsume, black_hair, very_long_hair, yellow_eyes, two_red_hairclips, mole_under_eye, lavender_lace_bra_and_panties, black_thighhigh_stockings, sitting_on_a_locker_room_bench, one_knee_raised_toward_the_foreground_while_adjusting_a_stocking, embarrassed_direct_eye_contact, white_lockers_and_shower_room_behind_her, soft_indoor_light, <lora:shiki_natsume_v14:0.95>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
+    "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
+    "rating": "All",
+    "officialCgCandidate": "ocs01",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 1,
+      "seedKey": "official-cg:ocs01:1",
+      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\v12_cg_01.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs01-a1.png",
+      "result": "pass"
+    }
+  },
+  {
+    "id": "sc272",
+    "recommendedSize": "1344×768",
+    "title": "粉色针织衫下的小声提醒",
+    "category": "官方CG灵感",
+    "story": "【官方 CG 灵感】粉色针织衫衬得夏目的神情格外柔和。她把手指抵在唇边，低声提醒：「这件事只告诉你，所以不要转身就忘了。」柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v14",
+    "emotion": "心动",
+    "season": "不限",
+    "time": "白天",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "natsume",
+      "solo"
+    ],
+    "mature": false,
+    "location": "室内场景",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "柔和自然光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, tilted_medium_close_up, 1girl, solo, shiki_natsume, black_hair, very_long_hair_tied_in_a_low_side_ponytail_with_purple_ribbon, yellow_eyes, two_red_hairclips, mole_under_eye, pink_gingham_off_shoulder_knit_sweater, one_index_finger_resting_near_her_lips, shy_thoughtful_expression, subtle_blush, apartment_utility_room_and_open_blue_case_in_background, soft_neutral_indoor_light, <lora:shiki_natsume_v14:0.9>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
+    "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
+    "rating": "All",
+    "officialCgCandidate": "ocs02",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 1,
+      "seedKey": "official-cg:ocs02:1",
+      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\v12_cg_02.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs02-a1.png",
+      "result": "pass"
+    }
+  },
+  {
+    "id": "sc273",
+    "recommendedSize": "1344×768",
+    "title": "红金旗袍的门前回眸",
+    "category": "官方CG灵感",
+    "story": "【官方 CG 灵感】红金旗袍贴着夏目的身形，她站在门前，双手紧张地交叠。迎上你的目光后，她偏过脸：「只准说适合，不接受其他答案。」柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v14",
+    "emotion": "心动",
+    "season": "不限",
+    "time": "白天",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "natsume",
+      "solo"
+    ],
+    "mature": false,
+    "location": "室内场景",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "柔和自然光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "prompt": "visual_novel_event_cg, (bright_red_qipao), (crimson_china_dress), cinematic_16:9_composition, tilted_full_body_standing_portrait, 1girl, solo, shiki_natsume, black_hair_arranged_in_elegant_twin_braided_buns, yellow_eyes, two_red_hairclips, mole_under_eye, red_flower_hair_ornament, vivid_scarlet_silk_fabric, elaborate_metallic_gold_floral_embroidery_and_gold_trim, high_side_slit, black_thighhigh_stockings_with_visible_garter_straps, (standing_upright), back_against_a_plain_wooden_apartment_door, (both_hands_clasped_between_her_thighs), hands_at_skirt_hem, arms_hanging_down, blushing_direct_eye_contact, warm_indoor_light, <lora:shiki_natsume_v14:0.95>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, navy qipao, navy dress, blue qipao, blue dress, green qipao, green dress, black qipao, dark dress, hands at chest, clasped hands at chest, lying, reclining, sitting, floor pose, cabinet, red vines, nsfw, nude, explicit",
+    "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
+    "rating": "All",
+    "officialCgCandidate": "ocs04",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 1,
+      "seedKey": "official-cg:ocs04:1",
+      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\v12_cg_04.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs04-a1.png",
+      "result": "pass"
+    }
+  },
+  {
+    "id": "sc274",
+    "recommendedSize": "1344×768",
+    "title": "枕边醒来的安静目光",
+    "category": "官方CG灵感",
+    "story": "【官方 CG 灵感】清晨的被窝还带着余温，夏目从白色枕边睁开眼。她没有立刻起身，只看着你说：「早安。再躺一分钟，也不算赖床。」柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v14",
+    "emotion": "心动",
+    "season": "不限",
+    "time": "白天",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "natsume",
+      "solo"
+    ],
+    "mature": false,
+    "location": "卧室",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "柔和自然光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, intimate_diagonal_close_up, 1girl, solo, shiki_natsume, black_hair_spread_over_white_pillows, yellow_eyes, two_red_hairclips, mole_under_eye, pale_blue_pajamas_with_red_piping, lying_on_her_side_in_bed_under_a_white_blanket, quiet_direct_eye_contact, subtle_blush, soft_warm_morning_light, face_and_eyes_in_sharp_focus, <lora:shiki_natsume_v14:0.9>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
+    "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
+    "rating": "All",
+    "officialCgCandidate": "ocs08",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 1,
+      "seedKey": "official-cg:ocs08:1",
+      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\v12_cg_08.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs08-a1.png",
+      "result": "pass"
+    }
+  },
+  {
+    "id": "sc275",
+    "recommendedSize": "1344×768",
+    "title": "木架前捧住的微光",
+    "category": "官方CG灵感",
+    "story": "【官方 CG 灵感】木架前的蓝色微光落进夏目的琥珀瞳。她把那枚小小的光点捧到你面前：「别碰得太急，它好像会回应人的心情。」柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v14",
+    "emotion": "心动",
+    "season": "不限",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "natsume",
+      "solo"
+    ],
+    "mature": false,
+    "location": "咖啡馆",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "夜色氛围光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, tilted_medium_shot, 1girl, solo, shiki_natsume, black_hair, yellow_eyes, two_red_hairclips, mole_under_eye, dark_gray_cafe_maid_dress, white_frilled_apron_and_collar, gold_bow, white_cuffs, holding_a_small_glowing_blue_magical_object_carefully_in_both_cupped_hands_at_chest_level, surprised_gentle_expression, warm_wooden_cafe_storage_shelves_filled_with_jars_behind_her, cyan_light_illuminating_her_face_and_fingers, <lora:shiki_natsume_v14:0.9>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
+    "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
+    "rating": "All",
+    "officialCgCandidate": "ocs09",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 1,
+      "seedKey": "official-cg:ocs09:1",
+      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\v12_cg_10.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs09-a1.png",
+      "result": "pass"
+    }
+  },
+  {
+    "id": "sc279",
+    "recommendedSize": "1344×768",
+    "title": "木地板上压低的提醒",
+    "category": "官方CG灵感",
+    "story": "【官方 CG 灵感】木地板的暖色映在夏目脸侧，她把手指轻轻抵住唇。「先别说话，」她看着你，“让我确认现在不是梦。”柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v14",
+    "emotion": "心动",
+    "season": "不限",
+    "time": "白天",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "natsume",
+      "solo"
+    ],
+    "mature": false,
+    "location": "室内场景",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "柔和自然光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "prompt": "visual_novel_event_cg, cinematic_16:9_extreme_overhead_face_close_up, 1girl, solo, adult_shiki_natsume, long_black_hair_braided_at_both_sides, golden_yellow_eyes, mole_under_eye, paired_white_rose_ornaments_with_purple_ribbons, white_shirt, lying_on_warm_wooden_floor_beside_an_orange_cushion, one_index_finger_pressed_softly_to_parted_lips, other_hand_near_ear, intense_shy_direct_gaze, flushed_cheeks, face_fills_frame, <lora:shiki_natsume_v14:0.95>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
+    "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
+    "rating": "All",
+    "officialCgCandidate": "ocs13",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 1,
+      "seedKey": "official-cg:ocs13:1",
+      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\ScreenShot_2026-07-12_090719_815.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs13-a1.png",
+      "result": "pass"
+    }
+  },
+  {
+    "id": "sc280",
+    "recommendedSize": "1344×768",
+    "title": "杯架前递来的点心",
+    "category": "官方CG灵感",
+    "story": "【官方 CG 灵感】杯架前，夏目把小点心仔细捧在掌心递来。「试吃品只有一份，」她微笑着补充，“所以你的评价要认真一点。”柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v14",
+    "emotion": "心动",
+    "season": "不限",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "natsume",
+      "solo"
+    ],
+    "mature": false,
+    "location": "咖啡馆",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "夜色氛围光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "prompt": "visual_novel_event_cg, cinematic_16:9_clockwise_dutch_angle, waist_up_close_shot, 1girl, solo, shiki_natsume, black_hair_in_short_maid_updo, golden_yellow_eyes, mole_under_eye, tiny_pastel_hairclips, dark_gray_cafe_maid_dress, white_ruffled_apron_and_collar, gold_bow, holding_a_tiny_wrapped_sweet_carefully_in_both_cupped_hands_toward_viewer, gentle_smile, warm_wooden_cafe, wall_racks_filled_with_white_cups, <lora:shiki_natsume_v14:0.95>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
+    "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
+    "rating": "All",
+    "officialCgCandidate": "ocs14",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 1,
+      "seedKey": "official-cg:ocs14:1",
+      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\ScreenShot_2026-07-12_090755_311.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs14-a1.png",
+      "result": "pass"
+    }
   }
 ]

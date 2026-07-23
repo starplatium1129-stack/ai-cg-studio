@@ -684,6 +684,7 @@ function loadScene(s) {
   // scene-aware composition
   const comp = sceneComposition(s);
   if (comp) { state.selections.composition = comp; selectComposition(comp); }
+  const recommendedSize = typeof applySceneGenerationPreset === 'function' ? applySceneGenerationPreset(s) : '';
   renderLightHint(hintLight, s.title);
   renderSceneContext();
   syncSceneCardSelection();
@@ -695,7 +696,7 @@ function loadScene(s) {
   }
   switchTab('director', document.querySelectorAll('.pb-tab')[0]);
   markStepDone(1); // 场景选完 → 进入角色步骤
-  flash('Scene 已加载: ' + s.title);
+  flash('Scene 已加载: ' + s.title + (recommendedSize ? ' · 已切换横版 ' + recommendedSize : ''));
   updateLivePreview();
   syncVoiceCharacter(true);
   // URL 路由入参: ?step=N → 加载后跳到指定步骤（explorer 一键直达结果）

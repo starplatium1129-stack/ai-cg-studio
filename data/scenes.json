@@ -11130,9 +11130,10 @@
   },
   {
     "id": "sc232",
+    "recommendedSize": "1344×768",
     "title": "图书馆里被撞破的魔女契约",
     "category": "校园",
-    "story": "【宁宁 · 灵感复刻图书馆CG】放学后阳光西斜的静谧学院图书馆深处。平日里优雅完美的优等生宁宁，此时因为魔女契约的残酷代价突然超载，整个人彻底瘫软在无人的阅览室长桌上。她娇躯剧烈颤抖，柔顺的银白发丝凌乱地散落在木质台面上，校服衬衫因为急促的喘息而剧烈起伏。被你推门撞破秘密的瞬间，她面红耳赤地试图用无力的双手遮挡视线，眼角挂着羞耻的泪水，头顶那根心形呆毛早已完全软瘫下来，语无伦次地大声哭腔自曝——「等、等等！刚才的事情不准说出去……绝对不准！求求你……不要看人家现在这个样子啦……笨蛋，快把眼睛闭上！」",
+    "story": "【宁宁 · 图书馆里的契约失控】放学后阳光西斜的静谧学院图书馆深处。平日里优雅完美的优等生宁宁，此时因为魔女契约的残酷代价突然超载，整个人彻底瘫软在无人的阅览室长桌上。她娇躯剧烈颤抖，柔顺的银白发丝凌乱地散落在木质台面上，校服衬衫因为急促的喘息而剧烈起伏。被你推门撞破秘密的瞬间，她面红耳赤地试图用无力的双手遮挡视线，眼角挂着羞耻的泪水，头顶那根心形呆毛早已完全软瘫下来，语无伦次地大声哭腔自曝——「等、等等！刚才的事情不准说出去……绝对不准！求求你……不要看人家现在这个样子啦……笨蛋，快把眼睛闭上！」",
     "char": "nene",
     "character": [
       "nene"
@@ -11175,14 +11176,15 @@
     ],
     "prompt": "1girl, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, library, bookshelf, desk, collapsed_on_desk, heavy_blush, sweat, tears_in_eyes, panicked, open_mouth, sunset, backlit, romantic_atmosphere, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
-    "storyJa": "【寧々・公式CG復刻：図書室で突き止められた秘密】放課後、夕日が西に傾く静まり返った学院の図書室の奥深く。普段はエレガントで完璧な優等生である寧々が、今や魔女の契約の残酷な代償が突然オーバーロードしたせいで、誰もいない閲覧室の長い木製テーブルの上に完全に力なく崩れ落ちていた。彼女のしなやかな肢体は激しく震え、柔らかな銀らかな銀髪のローツインテールが乱雑に木製の台の上に散らばり、制服のシャツが荒い呼吸と共に激しく上下している。あなたがドアを開けて秘密を突き止めた瞬間、彼女は顔を真っ赤にして力ない両手で視線を遮ろうとし、目尻に羞恥の涙を浮かべ、頭の上のアホ毛はすでに完全に力なく垂れ下がり、支離滅裂に涙声で自爆した――「ま、待って！今のことは言いふらさないで……絶対にダメ！お願いだから……私のこんなところ、見ないでよ……バカ、早く目を閉じて！」",
+    "storyJa": "【寧々・図書室で突き止められた秘密】放課後、夕日が西に傾く静まり返った学院の図書室の奥深く。普段はエレガントで完璧な優等生である寧々が、今や魔女の契約の残酷な代償が突然オーバーロードしたせいで、誰もいない閲覧室の長い木製テーブルの上に完全に力なく崩れ落ちていた。彼女のしなやかな肢体は激しく震え、柔らかな銀らかな銀髪のローツインテールが乱雑に木製の台の上に散らばり、制服のシャツが荒い呼吸と共に激しく上下している。あなたがドアを開けて秘密を突き止めた瞬間、彼女は顔を真っ赤にして力ない両手で視線を遮ろうとし、目尻に羞恥の涙を浮かべ、頭の上のアホ毛はすでに完全に力なく垂れ下がり、支離滅裂に涙声で自爆した――「ま、待って！今のことは言いふらさないで……絶対にダメ！お願いだから……私のこんなところ、見ないでよ……バカ、早く目を閉じて！」",
     "rating": "All"
   },
   {
     "id": "sc233",
+    "recommendedSize": "1344×768",
     "title": "闭店后的无声咖啡关心",
     "category": "日常",
-    "story": "【夏目 · 官方复刻吧台CG】深夜彻底打烊后的Café Stella。空无一人的店内只亮着吧台上方一盏微弱的闭店暖灯。夏目有些慵懒地单手托腮靠在大理石台面边，清冷的金瞳毫无干劲地斜睨着你。当你正为工作疲惫不堪时，她顺手将一杯你自己刚才喝过一半、还冒着余温的玛奇朵重重地推回你面前。她微微侧过头避开你的对视，虽然精致的面颊上依旧是那一副冷静疏离的死鱼眼，但那双彻底泛红的耳根在昏暗的灯光下完全暴露了她用冷淡否认掩饰的无声关心——「……别误会。我只是觉得把多余的温热残余倒掉是一种效率上的浪费。重新倒一杯需要重新启动机器，这才是最合理的循环利用。大笨蛋……快点喝完回家。」",
+    "story": "【夏目 · 闭店后的无声关心】深夜彻底打烊后的Café Stella。空无一人的店内只亮着吧台上方一盏微弱的闭店暖灯。夏目有些慵懒地单手托腮靠在大理石台面边，清冷的金瞳毫无干劲地斜睨着你。当你正为工作疲惫不堪时，她顺手将一杯你自己刚才喝过一半、还冒着余温的玛奇朵重重地推回你面前。她微微侧过头避开你的对视，虽然精致的面颊上依旧是那一副冷静疏离的死鱼眼，但那双彻底泛红的耳根在昏暗的灯光下完全暴露了她用冷淡否认掩饰的无声关心——「……别误会。我只是觉得把多余的温热残余倒掉是一种效率上的浪费。重新倒一杯需要重新启动机器，这才是最合理的循环利用。大笨蛋……快点喝完回家。」",
     "char": "natsume",
     "character": [
       "natsume"
@@ -11224,14 +11226,15 @@
     ],
     "prompt": "1girl, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, cafe_uniform, leaning_against_counter, propped_up_on_elbow, holding_cup, red_ears, subtle_blush, expressionless, cafe_interior, night, dim_lighting, warm_lighting, shadows, calm_atmosphere, <lora:shiki_natsume_v14:0.9>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
-    "storyJa": "【夏目】【ナツメ・公式CG復刻：閉店後の無声のコーヒーの思いやり】深夜、完全に営業が終了した後のカフェ・ステラ。誰もいない店内には、カウンターの上の微かな暖色灯だけが灯っていた。ナツメは少し物憂げに片手で頬杖をつきながら大理石のカウンターに寄りかかり、冷淡な金の瞳でやる気なさそうにあなたを斜めに見つめていた。あなたが仕事で疲れ果てていると、彼女は先ほどあなたが半分ほど飲んだ、まだ余熱の残るマキアートをあなたの前に強く押し戻した。彼女はわずかに顔を巡らせてあなたの視線を避け、精緻な顔立ちには相変わらずあの冷静で疎遠なジト目のままだが、完全に真っ赤になった耳の裏が、冷淡な否定で隠された彼女の無声の思いやりを薄暗い光の中で完全に暴露していた――「……勘違いしないで。私はただ、余った温かい残液を捨てるのは効率の面で無駄だと思っただけ。新しく一杯淹れるにはマシンを再起動する必要があるし、これが最も合理的な循環利用。大変態……早く飲み干して帰るわよ」",
+    "storyJa": "【夏目】【ナツメ・閉店後の無声のコーヒーの思いやり】深夜、完全に営業が終了した後のカフェ・ステラ。誰もいない店内には、カウンターの上の微かな暖色灯だけが灯っていた。ナツメは少し物憂げに片手で頬杖をつきながら大理石のカウンターに寄りかかり、冷淡な金の瞳でやる気なさそうにあなたを斜めに見つめていた。あなたが仕事で疲れ果てていると、彼女は先ほどあなたが半分ほど飲んだ、まだ余熱の残るマキアートをあなたの前に強く押し戻した。彼女はわずかに顔を巡らせてあなたの視線を避け、精緻な顔立ちには相変わらずあの冷静で疎遠なジト目のままだが、完全に真っ赤になった耳の裏が、冷淡な否定で隠された彼女の無声の思いやりを薄暗い光の中で完全に暴露していた――「……勘違いしないで。私はただ、余った温かい残液を捨てるのは効率の面で無駄だと思っただけ。新しく一杯淹れるにはマシンを再起動する必要があるし、これが最も合理的な循環利用。大変態……早く飲み干して帰るわよ」",
     "rating": "All"
   },
   {
     "id": "sc234",
+    "recommendedSize": "1344×768",
     "title": "月夜主卧的魔女绝对契约",
     "category": "亲密/After_Story",
-    "story": "【成年 After Story · 宁宁】【成人 After Story · 宁宁】【宁宁 · 官方复刻魔女服CG】午后雷雨交加、深夜清冷月光洒入的私密主卧。宁宁今晚在你的强烈请求下，终于重新换上了那一身带有绝对契约象征的正统漆黑魔女服，头戴巨大的宽檐黑色巫师帽，里面完全真空未着寸缕。她咬紧银牙，满脸通红地跨坐在你大腿上，长长的纯黑丝袜紧紧包裹着丰满肉感的大腿。由于修身魔女服的极窄剪裁，胸前的镂空设计将饱满雪白的酥胸与两翼性感的侧乳彻底挤压呈现。她头顶那根心形呆毛早就因为极度的动情顺从瘫软成完美的螺旋，红着脸死死揪住你的衣领，哭腔自曝——「呜啊！柊、柊史你这个大色狼！为什么一定要人家穿成这样啦……这、这件衣服的魔力流向很奇怪啦……不准一直盯着看！今晚……真的要和宁宁完成最终契约吗……笨蛋！」",
+    "story": "【成年 After Story · 宁宁】【成人 After Story · 宁宁】【宁宁 · 魔女服契约 After Story】午后雷雨交加、深夜清冷月光洒入的私密主卧。宁宁今晚在你的强烈请求下，终于重新换上了那一身带有绝对契约象征的正统漆黑魔女服，头戴巨大的宽檐黑色巫师帽，里面完全真空未着寸缕。她咬紧银牙，满脸通红地跨坐在你大腿上，长长的纯黑丝袜紧紧包裹着丰满肉感的大腿。由于修身魔女服的极窄剪裁，胸前的镂空设计将饱满雪白的酥胸与两翼性感的侧乳彻底挤压呈现。她头顶那根心形呆毛早就因为极度的动情顺从瘫软成完美的螺旋，红着脸死死揪住你的衣领，哭腔自曝——「呜啊！柊、柊史你这个大色狼！为什么一定要人家穿成这样啦……这、这件衣服的魔力流向很奇怪啦……不准一直盯着看！今晚……真的要和宁宁完成最终契约吗……笨蛋！」",
     "char": "nene",
     "character": [
       "nene"
@@ -11285,15 +11288,16 @@
     ],
     "prompt": "(official Ayachi Nene witch costume:1.5), (pink crisscross strappy top:1.45), pink collar with gold buckle, black short cape with vivid pink lining, black pleated mini skirt, asymmetrical legwear, one black-and-white striped thighhigh, one white frilled sock, black strappy boots, wide black witch hat with pink striped hatband and large pink bow, ceremonial ribbon restraint, moonlit bedroom, 1girl, adult, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, witch_hat, witch_dress, black_dress, no_bra, cleavage, sideboob, sitting_on_lap, straddling_viewer, clinging_to_viewer, heavy_blush, panicked, open_mouth, bedroom, night, moonlight, backlit, sensual, hair_ribbon, black_cape, pink_lining, striped_legwear, midriff, <lora:ayachi_nene_v14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform, generic witch dress, plain black dress, full-length gown, simple witch costume",
-    "storyJa": "【寧々・公式CG復刻：月夜の寝室の魔女の絶対契約】午後の雷雨が去り、深夜の清らかな月光が差し込むプライベートな寝室。寧々は今夜、あなたの強い願いを受け入れ、ついに絶対的な契約の象徴であるあの正統な漆黒の魔女服を再び身に纏い、頭には巨大な広縁の黒い魔法使いの帽子を被っていたが、その中身は何も着ていない完全な真空状態だった。彼女は銀歯を噛み締め、顔を真っ赤にしてあなたの大腿の上に跨り、長い純黒のニーソックスが豊満で肉感的な太ももをきつく包み込んでいる。タイトな魔女服の極めて狭い裁断のせいで、胸元のくり抜かれたデザインから豊満で白い胸元と両脇のセクシーな側乳が完全に押し出されて晒されていた。彼女の頭の上のアホ毛は極度の情動と従順さで完璧な螺旋状に垂れ下がり、顔を真っ赤にしてあなたの襟元を強く掴みながら、涙声で自爆した――「うあぁ！柊、リストの大色狼！なぜ私にこんな格好をさせるのよ……こ、この服の魔力の流れがすごくおかしいんだから……そんなにずっと見つめないで！今夜……本当に寧々と最終契約を交わすつもりなの……バカ！」",
+    "storyJa": "【寧々・月夜の寝室の魔女の絶対契約】午後の雷雨が去り、深夜の清らかな月光が差し込むプライベートな寝室。寧々は今夜、あなたの強い願いを受け入れ、ついに絶対的な契約の象徴であるあの正統な漆黒の魔女服を再び身に纏い、頭には巨大な広縁の黒い魔法使いの帽子を被っていたが、その中身は何も着ていない完全な真空状態だった。彼女は銀歯を噛み締め、顔を真っ赤にしてあなたの大腿の上に跨り、長い純黒のニーソックスが豊満で肉感的な太ももをきつく包み込んでいる。タイトな魔女服の極めて狭い裁断のせいで、胸元のくり抜かれたデザインから豊満で白い胸元と両脇のセクシーな側乳が完全に押し出されて晒されていた。彼女の頭の上のアホ毛は極度の情動と従順さで完璧な螺旋状に垂れ下がり、顔を真っ赤にしてあなたの襟元を強く掴みながら、涙声で自爆した――「うあぁ！柊、リストの大色狼！なぜ私にこんな格好をさせるのよ……こ、この服の魔力の流れがすごくおかしいんだから……そんなにずっと見つめないで！今夜……本当に寧々と最終契約を交わすつもりなの……バカ！」",
     "rating": "R18",
     "auditRevision": "round2-2026-07-22"
   },
   {
     "id": "sc235",
+    "recommendedSize": "1344×768",
     "title": "私密卧室里的纯情防线决堤",
     "category": "亲密/After_Story",
-    "story": "【夏目 · 官方本篇私密卧室复刻】深夜唯余电脑屏幕微光的女生公寓卧室。平时在咖啡店冷静疏离的夏目，此时在只有你们两人的极度私密空间里，终于褪去了所有的抗拒。她身上仅穿着一件略显松垮的居家黑色小背心与单薄短裤，里面真空未着寸缕，整个人顺从地跨坐在你大腿上。因为你毫无保留的直球亲昵，她平时万年不变的冷淡死鱼眼此时蒙上了一层羞耻的水汽，原本白皙的面颊与耳根早已彻底红透。她双手慌乱地抓着你的衣襟阻止你进一步的欺负，用极力保持平静却颤抖不已的酷娇呢喃着——「……别误会。我只是觉得，既然事情已经发展到了这一步，多余的逃避只会降低效率。大变态，不准一直盯着人家的胸口看……还有，等一下……轻一点……听到了没有。」",
+    "story": "【夏目 · 私密卧室 After Story】深夜唯余电脑屏幕微光的女生公寓卧室。平时在咖啡店冷静疏离的夏目，此时在只有你们两人的极度私密空间里，终于褪去了所有的抗拒。她身上仅穿着一件略显松垮的居家黑色小背心与单薄短裤，里面真空未着寸缕，整个人顺从地跨坐在你大腿上。因为你毫无保留的直球亲昵，她平时万年不变的冷淡死鱼眼此时蒙上了一层羞耻的水汽，原本白皙的面颊与耳根早已彻底红透。她双手慌乱地抓着你的衣襟阻止你进一步的欺负，用极力保持平静却颤抖不已的酷娇呢喃着——「……别误会。我只是觉得，既然事情已经发展到了这一步，多余的逃避只会降低效率。大变态，不准一直盯着人家的胸口看……还有，等一下……轻一点……听到了没有。」",
     "char": "natsume",
     "character": [
       "natsume"
@@ -11342,7 +11346,7 @@
     ],
     "prompt": "1girl, adult, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, tank_top, shorts, no_bra, cleavage, bare_legs, sitting_on_lap, straddling_viewer, clinging_to_viewer, red_ears, heavy_blush, tears_in_eyes, shy_look, bedroom, night, dim_lighting, shadows, sensual, <lora:shiki_natsume_v14:0.9>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
-    "storyJa": "【夏目】【ナツメ・公式本編復刻：プライベート寝室の純情防衛線決壊】深夜、PC画面の微光だけが残る女子マンションの寝室。普段カフェでは冷静で疎遠なナツメが、今は二人きりしかいない極めてプライベートな空間で、ついにすべての拒絶を脱ぎ捨てていた。彼女は身に纏うルーズな部屋着の黒いキャミソールと薄手のショートパンツ一枚だけで、中には何も身に着けていない完全な真空状態だった。彼女は大人しくあなたの大腿の上に跨っていた。あなたの容赦ないストレートな親密さのせいで、普段のジト目は今や羞恥の涙で潤んでおり、白い頬と耳の裏はとうに完全に真っ赤に染まっていた。彼女はそれ以上の意地悪を阻もうと、両手で慌ててあなたの襟元を掴み、極力冷静さを保とうとしながらも震える声でクールドジな呟きを漏らしていた――「……勘違いしないで。私はただ、事態がここまで進展した以上、無駄な逃避は効率を低下させるだけだと思っただけ。大変態、人の胸元をずっと見つめないで……それに、待って……優しくして……聞こえた？」",
+    "storyJa": "【夏目】【ナツメ・プライベート寝室の純情防衛線決壊】深夜、PC画面の微光だけが残る女子マンションの寝室。普段カフェでは冷静で疎遠なナツメが、今は二人きりしかいない極めてプライベートな空間で、ついにすべての拒絶を脱ぎ捨てていた。彼女は身に纏うルーズな部屋着の黒いキャミソールと薄手のショートパンツ一枚だけで、中には何も身に着けていない完全な真空状態だった。彼女は大人しくあなたの大腿の上に跨っていた。あなたの容赦ないストレートな親密さのせいで、普段のジト目は今や羞恥の涙で潤んでおり、白い頬と耳の裏はとうに完全に真っ赤に染まっていた。彼女はそれ以上の意地悪を阻もうと、両手で慌ててあなたの襟元を掴み、極力冷静さを保とうとしながらも震える声でクールドジな呟きを漏らしていた――「……勘違いしないで。私はただ、事態がここまで進展した以上、無駄な逃避は効率を低下させるだけだと思っただけ。大変態、人の胸元をずっと見つめないで……それに、待って……優しくして……聞こえた？」",
     "rating": "R18"
   },
   {
@@ -12586,5 +12590,1204 @@
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【夏目】【ナツメ・別荘バルコニーの夜雨と白いワンピース溶断】深夜、突如激しい雨に見舞われ、清冷な海景色を見下ろすリゾートヴィラの木製テラス。プライベート旅行の深夜、ナツメは非常に清楚で可愛らしい薄白色の細肩紐コットン製サマードレスに身を包んでいたが、その中身は下着を一切身に着けていない完全な真空状態だった。風で傘が吹き飛ばされてしまったため、降り注ぐ雨水が一瞬にして彼女の薄手の白ドレスを完全に濡らし尽くした。半透明になった生地がまるで透明であるかのように彼女の豊満な肢体にぴったりと張り付き、豊かな胸元の曲線が余すところなく露出してしまっている。強風を避けるため、彼女は銀歯を噛み締め、極めて大胆かつ能動的にデッキチェアに座っていたあなたの胸の中に直接跨る形でしがみつき、両手を力なくあなたの肩に置いた。熱く瑞々しい肢体が、あなたと何の隔たりもなくきつ密着している。ジト目は羞恥の動揺で満たされ、真っ赤になった耳の裏が完全に暴露されているものの、相変わらず冷淡な声で強がっていた――「……勘違いしないで。これは生存のために行う最も合理的な体温の熱対流。物理的な熱伝導原理によれば、今の空間的密着が最も早く熱量を共有し、効率を維持できるの。大変態、変なところを掴まないで……じゃないと秘密処刑にするわよ」",
     "rating": "R18"
+  },
+  {
+    "id": "sc260",
+    "recommendedSize": "1344×768",
+    "title": "窗边交握双手的请求",
+    "category": "官方CG灵感",
+    "story": "【官方 CG 灵感】午后的教室只剩风吹窗帘的声音。宁宁把交握的手举到胸前，犹豫很久才望向你：「今天……能再陪我一会儿吗？」窗边的光沿着她的银白长发缓缓移动，粉色发带与紫色眼眸让这一刻安静得像被珍藏起来。",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v14",
+    "emotion": "心动",
+    "season": "不限",
+    "time": "白天",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "nene",
+      "solo"
+    ],
+    "mature": false,
+    "location": "室内场景",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "柔和自然光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, (tight_upper_body_close_up), 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, navy_school_uniform_blazer, gray_sailor_collar, gold_bow, (both_hands_clasped_tightly_directly_below_her_chin), front_view, pleading_gentle_expression, subtle_blush, bright_blue_sky_and_green_trees_through_one_large_classroom_window, a_few_empty_desks_softly_blurred_behind_her, character_fills_most_of_frame, cropped_below_chest, <lora:ayachi_nene_v14:0.9>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, full body, long shot, distant character, standing, tiny person, nsfw, nude, explicit",
+    "storyJa": "【公式CGインスピレーション・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
+    "rating": "All",
+    "officialCgCandidate": "ocn02",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 2,
+      "seedKey": "official-cg:ocn02:2",
+      "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\v12_cg_02.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn02-a2.png",
+      "result": "pass"
+    }
+  },
+  {
+    "id": "sc261",
+    "recommendedSize": "1344×768",
+    "title": "粉色卧室里的蓝色睡衣",
+    "category": "官方CG灵感",
+    "story": "【官方 CG 灵感】清晨的粉色卧室里，宁宁穿着蓝色睡衣从被子里坐起。她揉揉眼睛，小声提醒你：「早安，不过先说好，不准笑我的睡相。」窗边的光沿着她的银白长发缓缓移动，粉色发带与紫色眼眸让这一刻安静得像被珍藏起来。",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v14",
+    "emotion": "心动",
+    "season": "不限",
+    "time": "白天",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "nene",
+      "solo"
+    ],
+    "mature": false,
+    "location": "卧室",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "柔和自然光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, diagonal_medium_close_up_from_above, 1girl, solo, ayachi_nene, white_hair, very_long_hair, purple_eyes, ahoge, (sky_blue_patterned_button_up_pajama_shirt), small_navy_animal_pattern, contrasting_pink_collar, sitting_upright_in_a_pink_bedroom_bed, pale_pink_blanket_pulled_to_her_waist, very_long_silver_hair_spread_across_pink_pillows_and_sheets, quiet_direct_eye_contact, faint_blush, soft_morning_window_light, intimate_wholesome_atmosphere, <lora:ayachi_nene_v14:0.9>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, pink pajamas, purple pajamas, crop top, exposed midriff, camera, photography equipment, dark blue bedding, lying on side, nsfw, nude, explicit",
+    "storyJa": "【公式CGインスピレーション・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
+    "rating": "All",
+    "officialCgCandidate": "ocn04",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 2,
+      "seedKey": "official-cg:ocn04:2",
+      "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\v12_cg_05.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn04-a2.png",
+      "result": "pass"
+    }
+  },
+  {
+    "id": "sc262",
+    "recommendedSize": "1344×768",
+    "title": "灯火舞台前的礼物",
+    "category": "官方CG灵感",
+    "story": "【官方 CG 灵感】舞台灯火落在宁宁的银发上，她把装满花朵的礼盒抱在怀里。走到你面前时，她终于露出安心的笑：「这个，只想亲手交给你。」窗边的光沿着她的银白长发缓缓移动，粉色发带与紫色眼眸让这一刻安静得像被珍藏起来。",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v14",
+    "emotion": "心动",
+    "season": "不限",
+    "time": "白天",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "nene",
+      "solo"
+    ],
+    "mature": false,
+    "location": "室内场景",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "柔和自然光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "prompt": "visual_novel_event_cg, portrait_composition_matching_an_official_event_illustration, low_angle_full_body_shot, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, navy_school_uniform_blazer_with_gold_buttons, gold_bow, gray_plaid_skirt, black_thighhighs, standing_beneath_warm_golden_stage_lights_and_large_star_decorations, (holding_a_rectangular_black_gift_box_filled_with_a_bouquet_of_pink_and_white_flowers_against_her_chest_with_both_arms), shy_gentle_smile, long_silver_hair_flowing_behind_her, <lora:ayachi_nene_v14:0.9>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, single rose, one flower, empty hands, shop, store shelves, fluorescent light, nsfw, nude, explicit",
+    "storyJa": "【公式CGインスピレーション・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
+    "rating": "All",
+    "officialCgCandidate": "ocn07",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 3,
+      "seedKey": "official-cg:ocn07:3",
+      "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\v12_cg_10.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn07-a3.png",
+      "result": "pass"
+    }
+  },
+  {
+    "id": "sc263",
+    "recommendedSize": "1344×768",
+    "title": "星海中的魔女枪口",
+    "category": "官方CG灵感",
+    "story": "【官方 CG 灵感】紫色星海在魔法阵外翻涌，宁宁压低帽檐，将银色枪口稳稳指向异变中心。「躲在我身后——这一次，轮到我保护你。」窗边的光沿着她的银白长发缓缓移动，粉色发带与紫色眼眸让这一刻安静得像被珍藏起来。",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v14",
+    "emotion": "心动",
+    "season": "不限",
+    "time": "白天",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "nene",
+      "solo"
+    ],
+    "mature": false,
+    "location": "室内场景",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "柔和自然光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "prompt": "visual_novel_event_cg, cinematic_16:9_action_composition, extreme_foreshortening, 1girl, solo, ayachi_nene, white_hair, very_long_hair, purple_eyes, ahoge, official_witch_outfit, wide_black_witch_hat_with_pink_striped_hatband_and_large_pink_bow, short_black_cape_with_vivid_pink_lining, pink_crisscross_strappy_top, bare_midriff, black_wrist_cuffs_with_pink_stripes, aiming_an_oversized_silver_revolver_directly_toward_the_right_foreground, gun_dominating_foreground_in_sharp_perspective, determined_face_on_left_side, swirling_purple_starfield_and_blue_magic_particles, dramatic_rim_light, <lora:ayachi_nene_v14:0.95>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
+    "storyJa": "【公式CGインスピレーション・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
+    "rating": "All",
+    "officialCgCandidate": "ocn08",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 1,
+      "seedKey": "official-cg:ocn08:1",
+      "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\v12_cg_11.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn08-a1.png",
+      "result": "pass"
+    }
+  },
+  {
+    "id": "sc264",
+    "recommendedSize": "1344×768",
+    "title": "夕照图书室里的失控一刻",
+    "category": "恋爱/After_Story",
+    "story": "【成年 After Story】成年后的某个黄昏，图书室的安静被宁宁慌乱的呼吸打破。她攥住裙摆又羞恼地瞪来：「既然看见了，就不许丢下我一个人。」窗边的光沿着她的银白长发缓缓移动，粉色发带与紫色眼眸让这一刻安静得像被珍藏起来。",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v14",
+    "emotion": "亲密",
+    "season": "不限",
+    "time": "白天",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "nene",
+      "adult"
+    ],
+    "mature": false,
+    "location": "图书室",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "柔和自然光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "prompt": "adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_composition, dramatic_clockwise_dutch_angle, low_close_camera_across_a_wooden_library_desk, 1girl, solo, adult_ayachi_nene, white_silver_hair, very_long_twin_tails_tied_with_pink_ribbons, purple_eyes, ahoge, black_school_uniform_costume_jacket_with_orange_piping_and_gold_bow, gray_plaid_pleated_skirt_lifted_high_with_both_hands, pink_lace_panties_visible, black_thighhigh_stockings, kneeling_and_leaning_back_against_the_desk, embarrassed_open_mouth, heavy_blush, direct_eye_contact, tall_bookshelves_packed_with_japanese_books, warm_sunset_flooding_through_a_window_at_right, official_visual_novel_cg_framing, <lora:ayachi_nene_v14:0.95>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
+    "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
+    "rating": "All",
+    "officialCgCandidate": "ocn09",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 1,
+      "seedKey": "official-cg:ocn09:1",
+      "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\ScreenShot_2026-07-12_230616_069.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn09-a1.png",
+      "result": "pass"
+    }
+  },
+  {
+    "id": "sc265",
+    "recommendedSize": "1344×768",
+    "title": "深蓝卧室里的侧卧私语",
+    "category": "亲密/After_Story",
+    "story": "【成年 After Story】同居后的深夜，宁宁侧卧在深蓝床铺上，银色双辫散在枕边。她没有移开目光，只轻声问：「今晚……可以再靠近一点吗？」窗边的光沿着她的银白长发缓缓移动，粉色发带与紫色眼眸让这一刻安静得像被珍藏起来。",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v14",
+    "emotion": "亲密",
+    "season": "不限",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "nene",
+      "adult"
+    ],
+    "mature": true,
+    "location": "卧室",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "夜色氛围光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图",
+      "成人向"
+    ],
+    "prompt": "adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_intimate_composition, diagonal_overhead_view, 1girl, solo, adult_ayachi_nene, silver_gray_hair_in_two_thick_long_braids, purple_eyes, nude, topless, nipples, bottomless, anatomically_correct_torso, exactly_two_breasts, lying_on_her_right_side, blue_short_sleeved_polka_dot_pajama_top_lifted_above_chest, bare_hips_and_thighs_filling_the_left_foreground, one_knee_bent, one_hand_at_inner_thigh, vulnerable_direct_eye_contact, flushed_cheeks, parted_lips, dark_navy_pillows_and_sheets, cool_moonlit_bedroom, official_visual_novel_cg_framing, <lora:ayachi_nene_v14:0.95>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, extra breast, third breast, fused breasts, malformed torso, blanket, covered body, dress, nightgown, fully clothed, sitting, standing, child, loli, underage, school_uniform, gym_uniform",
+    "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
+    "rating": "R18",
+    "officialCgCandidate": "ocn10",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 1,
+      "seedKey": "official-cg:ocn10:1",
+      "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\ScreenShot_2026-07-12_231154_952.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn10-a1.png",
+      "result": "pass"
+    }
+  },
+  {
+    "id": "sc266",
+    "recommendedSize": "1344×768",
+    "title": "金色软枕上的晨光告白",
+    "category": "恋爱/After_Story",
+    "story": "【成年 After Story】晨光越过金色软枕，宁宁红着脸拉住滑开的衣襟。她明明紧张得指尖发抖，仍认真地说：「不要躲开，我想让你看见真正的我。」窗边的光沿着她的银白长发缓缓移动，粉色发带与紫色眼眸让这一刻安静得像被珍藏起来。",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v14",
+    "emotion": "亲密",
+    "season": "不限",
+    "time": "白天",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "nene",
+      "adult"
+    ],
+    "mature": false,
+    "location": "卧室",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "柔和自然光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "prompt": "adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_extreme_intimate_close_up, (strong_diagonal_composition), overhead_camera_from_lower_body_toward_face, 1girl, solo, adult_ayachi_nene, silver_white_long_hair_spread_over_bedding, purple_eyes, topless, nipples, anatomically_correct_torso, exactly_two_breasts, bra_lift, pale_powder_blue_bra_pushed_above_breasts, open_white_shirt_slipping_from_shoulders, lying_on_back_on_huge_golden_yellow_pillows, nude_abdomen_and_lower_torso_enormously_foreshortened_across_the_right_foreground, (face_placed_at_upper_left), shy_direct_eye_contact, open_mouth, deep_blush, warm_morning_sunlight_from_upper_right, official_visual_novel_cg_framing, <lora:ayachi_nene_v14:0.95>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, extra breast, third breast, fused breasts, malformed torso, portrait crop, headshot, symmetrical front view, face centered, covered torso, fully clothed, blanket, sitting, standing, nsfw, nude, explicit",
+    "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
+    "rating": "All",
+    "officialCgCandidate": "ocn11",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 2,
+      "seedKey": "official-cg:ocn11:2",
+      "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\ScreenShot_2026-07-12_231408_046.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn11-a2.png",
+      "result": "pass"
+    }
+  },
+  {
+    "id": "sc267",
+    "recommendedSize": "1344×768",
+    "title": "魔女衣装的回眸",
+    "category": "亲密/After_Story",
+    "story": "【成年 After Story】魔女帽落下阴影，宁宁伏在木地板上回头确认你的视线。她咬住唇，小声抱怨：「这套衣服的契约效果……绝对和你想的不一样。」窗边的光沿着她的银白长发缓缓移动，粉色发带与紫色眼眸让这一刻安静得像被珍藏起来。",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v14",
+    "emotion": "亲密",
+    "season": "不限",
+    "time": "白天",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "nene",
+      "adult"
+    ],
+    "mature": true,
+    "location": "室内场景",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "柔和自然光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图",
+      "成人向"
+    ],
+    "prompt": "adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_extreme_low_angle_composition, 1girl, solo, adult_ayachi_nene, silver_white_very_long_twin_tails_with_orange_ribbon_wraps, purple_eyes, witch_hat, witch_costume, huge_black_witch_hat, (bare_back), vivid_pink_crisscross_straps_directly_over_bare_torso, black_wrist_cuffs_with_pink_bands, short_black_ruffled_skirt_lifted, no_panties, from_behind, lying_prone_on_a_warm_wooden_floor, hips_and_lower_body_filling_the_right_foreground, looking_back_over_shoulder_toward_viewer, embarrassed_open_mouth_and_blush, scattered_burgundy_clothes_at_left, dramatic_foreshortening, official_visual_novel_cg_framing, <lora:ayachi_nene_v14:0.95>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, black jacket, black robe, black cape covering body, long sleeves covering torso, fully clothed, standing, sitting, child, loli, underage, school_uniform, gym_uniform",
+    "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
+    "rating": "R18",
+    "officialCgCandidate": "ocn12",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 2,
+      "seedKey": "official-cg:ocn12:2",
+      "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\ScreenShot_2026-07-12_231613_575.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn12-a2.png",
+      "result": "pass"
+    }
+  },
+  {
+    "id": "sc268",
+    "recommendedSize": "1344×768",
+    "title": "薄荷睡衣下的清晨目光",
+    "category": "恋爱/After_Story",
+    "story": "【成年 After Story】薄荷色睡衣被晨风轻轻吹动，宁宁把衣摆攥在胸前。她从被窝里望来：「再五分钟就好……让我记住你醒来时的样子。」窗边的光沿着她的银白长发缓缓移动，粉色发带与紫色眼眸让这一刻安静得像被珍藏起来。",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v14",
+    "emotion": "亲密",
+    "season": "不限",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "nene",
+      "adult"
+    ],
+    "mature": false,
+    "location": "卧室",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "夜色氛围光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "prompt": "adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_intimate_diagonal_close_up, 1girl, solo, adult_ayachi_nene, silver_white_hair_in_two_thick_long_braids, purple_eyes, lying_on_her_back_in_white_bedding, mint_green_polka_dot_pajama_shirt_pulled_upward_and_held_against_her_chest_with_both_hands, bare_abdomen, pink_lace_panties_peeking_above_white_blanket, direct_shy_eye_contact, dark_navy_pillow_at_left, soft_morning_light, official_visual_novel_cg_framing, <lora:ayachi_nene_v14:0.95>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, blue pajamas, closed shirt, fully clothed, sitting, standing, full body long shot, nsfw, nude, explicit",
+    "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
+    "rating": "All",
+    "officialCgCandidate": "ocn13",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 1,
+      "seedKey": "official-cg:ocn13:1",
+      "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\ScreenShot_2026-07-12_230938_392.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn13-a1.png",
+      "result": "pass"
+    }
+  },
+  {
+    "id": "sc269",
+    "recommendedSize": "1344×768",
+    "title": "黄枕边张开的距离",
+    "category": "恋爱/After_Story",
+    "story": "【成年 After Story】金色软枕间，宁宁的长发与粉色发带散成一圈。她在近得无法逃开的距离里低声说：「今天不准装作没听见我的心跳。」窗边的光沿着她的银白长发缓缓移动，粉色发带与紫色眼眸让这一刻安静得像被珍藏起来。",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v14",
+    "emotion": "亲密",
+    "season": "不限",
+    "time": "白天",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "nene",
+      "adult"
+    ],
+    "mature": false,
+    "location": "卧室",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "柔和自然光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "prompt": "adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_extreme_foreshortened_close_up, low_camera_between_raised_knees, 1girl, solo, adult_ayachi_nene, silver_white_long_hair_across_golden_yellow_pillows, purple_eyes, topless, nipples, pale_blue_lace_panties, black_thighhigh_stockings, lying_on_back_with_knees_raised_and_legs_spread_around_the_camera, black_stockinged_thighs_framing_foreground, gold_school_bow_still_around_neck, shy_open_mouth_and_direct_eye_contact, warm_bedroom_light, official_visual_novel_cg_framing, <lora:ayachi_nene_v14:0.95>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, fused legs, closed legs, skirt, bra, shirt, standing, sitting, distant camera, nsfw, nude, explicit",
+    "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
+    "rating": "All",
+    "officialCgCandidate": "ocn14",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 1,
+      "seedKey": "official-cg:ocn14:1",
+      "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\ScreenShot_2026-07-12_231453_739.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn14-a1.png",
+      "result": "pass"
+    }
+  },
+  {
+    "id": "sc270",
+    "recommendedSize": "1344×768",
+    "title": "深色枕边的秘密玩具",
+    "category": "恋爱/After_Story",
+    "story": "【成年 After Story】深色枕边，宁宁把藏了许久的小玩具举到唇边，脸红得几乎说不出话。「只、只是想和你商量……以后不要让我一个人忍着。」窗边的光沿着她的银白长发缓缓移动，粉色发带与紫色眼眸让这一刻安静得像被珍藏起来。",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v14",
+    "emotion": "亲密",
+    "season": "不限",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "nene",
+      "adult"
+    ],
+    "mature": false,
+    "location": "卧室",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "夜色氛围光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "prompt": "adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_extreme_pov_from_between_raised_legs, 1girl, solo, adult_ayachi_nene, white_silver_hair, purple_eyes, lying_on_back_on_a_dark_navy_pillow, open_burgundy_cardigan_and_white_shirt, pink_lace_panties, white_frilled_socks, both_bare_legs_raised_vertically_and_dominating_foreground, holding_a_small_pink_vibrator_near_her_lips_with_both_hands, embarrassed_direct_gaze, heavy_blush, white_bedding, official_visual_novel_cg_framing, <lora:ayachi_nene_v14:0.95>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, fused legs, closed legs, standing, sitting, full body distant shot, blue clothing, nsfw, nude, explicit",
+    "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
+    "rating": "All",
+    "officialCgCandidate": "ocn15",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 1,
+      "seedKey": "official-cg:ocn15:1",
+      "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\ScreenShot_2026-07-12_231816_560.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn15-a1.png",
+      "result": "pass"
+    }
+  },
+  {
+    "id": "sc271",
+    "recommendedSize": "1344×768",
+    "title": "更衣室里的紫色内衣",
+    "category": "官方CG灵感",
+    "story": "【官方 CG 灵感】更衣室安静下来后，夏目坐在折叠椅上整理黑色长袜。察觉你的视线，她故作平静：「看够了吗？看够了就过来帮我系好。」柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v14",
+    "emotion": "心动",
+    "season": "不限",
+    "time": "白天",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "natsume",
+      "solo"
+    ],
+    "mature": false,
+    "location": "室内场景",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "柔和自然光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, high_angle_diagonal_shot, 1girl, solo, adult_shiki_natsume, black_hair, very_long_hair, yellow_eyes, two_red_hairclips, mole_under_eye, lavender_lace_bra_and_panties, black_thighhigh_stockings, sitting_on_a_locker_room_bench, one_knee_raised_toward_the_foreground_while_adjusting_a_stocking, embarrassed_direct_eye_contact, white_lockers_and_shower_room_behind_her, soft_indoor_light, <lora:shiki_natsume_v14:0.95>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
+    "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
+    "rating": "All",
+    "officialCgCandidate": "ocs01",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 1,
+      "seedKey": "official-cg:ocs01:1",
+      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\v12_cg_01.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs01-a1.png",
+      "result": "pass"
+    }
+  },
+  {
+    "id": "sc272",
+    "recommendedSize": "1344×768",
+    "title": "粉色针织衫下的小声提醒",
+    "category": "官方CG灵感",
+    "story": "【官方 CG 灵感】粉色针织衫衬得夏目的神情格外柔和。她把手指抵在唇边，低声提醒：「这件事只告诉你，所以不要转身就忘了。」柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v14",
+    "emotion": "心动",
+    "season": "不限",
+    "time": "白天",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "natsume",
+      "solo"
+    ],
+    "mature": false,
+    "location": "室内场景",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "柔和自然光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, tilted_medium_close_up, 1girl, solo, shiki_natsume, black_hair, very_long_hair_tied_in_a_low_side_ponytail_with_purple_ribbon, yellow_eyes, two_red_hairclips, mole_under_eye, pink_gingham_off_shoulder_knit_sweater, one_index_finger_resting_near_her_lips, shy_thoughtful_expression, subtle_blush, apartment_utility_room_and_open_blue_case_in_background, soft_neutral_indoor_light, <lora:shiki_natsume_v14:0.9>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
+    "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
+    "rating": "All",
+    "officialCgCandidate": "ocs02",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 1,
+      "seedKey": "official-cg:ocs02:1",
+      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\v12_cg_02.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs02-a1.png",
+      "result": "pass"
+    }
+  },
+  {
+    "id": "sc273",
+    "recommendedSize": "1344×768",
+    "title": "红金旗袍的门前回眸",
+    "category": "官方CG灵感",
+    "story": "【官方 CG 灵感】红金旗袍贴着夏目的身形，她站在门前，双手紧张地交叠。迎上你的目光后，她偏过脸：「只准说适合，不接受其他答案。」柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v14",
+    "emotion": "心动",
+    "season": "不限",
+    "time": "白天",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "natsume",
+      "solo"
+    ],
+    "mature": false,
+    "location": "室内场景",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "柔和自然光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "prompt": "visual_novel_event_cg, (bright_red_qipao), (crimson_china_dress), cinematic_16:9_composition, tilted_full_body_standing_portrait, 1girl, solo, shiki_natsume, black_hair_arranged_in_elegant_twin_braided_buns, yellow_eyes, two_red_hairclips, mole_under_eye, red_flower_hair_ornament, vivid_scarlet_silk_fabric, elaborate_metallic_gold_floral_embroidery_and_gold_trim, high_side_slit, black_thighhigh_stockings_with_visible_garter_straps, (standing_upright), back_against_a_plain_wooden_apartment_door, (both_hands_clasped_between_her_thighs), hands_at_skirt_hem, arms_hanging_down, blushing_direct_eye_contact, warm_indoor_light, <lora:shiki_natsume_v14:0.95>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, navy qipao, navy dress, blue qipao, blue dress, green qipao, green dress, black qipao, dark dress, hands at chest, clasped hands at chest, lying, reclining, sitting, floor pose, cabinet, red vines, nsfw, nude, explicit",
+    "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
+    "rating": "All",
+    "officialCgCandidate": "ocs04",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 1,
+      "seedKey": "official-cg:ocs04:1",
+      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\v12_cg_04.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs04-a1.png",
+      "result": "pass"
+    }
+  },
+  {
+    "id": "sc274",
+    "recommendedSize": "1344×768",
+    "title": "枕边醒来的安静目光",
+    "category": "官方CG灵感",
+    "story": "【官方 CG 灵感】清晨的被窝还带着余温，夏目从白色枕边睁开眼。她没有立刻起身，只看着你说：「早安。再躺一分钟，也不算赖床。」柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v14",
+    "emotion": "心动",
+    "season": "不限",
+    "time": "白天",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "natsume",
+      "solo"
+    ],
+    "mature": false,
+    "location": "卧室",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "柔和自然光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, intimate_diagonal_close_up, 1girl, solo, shiki_natsume, black_hair_spread_over_white_pillows, yellow_eyes, two_red_hairclips, mole_under_eye, pale_blue_pajamas_with_red_piping, lying_on_her_side_in_bed_under_a_white_blanket, quiet_direct_eye_contact, subtle_blush, soft_warm_morning_light, face_and_eyes_in_sharp_focus, <lora:shiki_natsume_v14:0.9>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
+    "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
+    "rating": "All",
+    "officialCgCandidate": "ocs08",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 1,
+      "seedKey": "official-cg:ocs08:1",
+      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\v12_cg_08.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs08-a1.png",
+      "result": "pass"
+    }
+  },
+  {
+    "id": "sc275",
+    "recommendedSize": "1344×768",
+    "title": "木架前捧住的微光",
+    "category": "官方CG灵感",
+    "story": "【官方 CG 灵感】木架前的蓝色微光落进夏目的琥珀瞳。她把那枚小小的光点捧到你面前：「别碰得太急，它好像会回应人的心情。」柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v14",
+    "emotion": "心动",
+    "season": "不限",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "natsume",
+      "solo"
+    ],
+    "mature": false,
+    "location": "咖啡馆",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "夜色氛围光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, tilted_medium_shot, 1girl, solo, shiki_natsume, black_hair, yellow_eyes, two_red_hairclips, mole_under_eye, dark_gray_cafe_maid_dress, white_frilled_apron_and_collar, gold_bow, white_cuffs, holding_a_small_glowing_blue_magical_object_carefully_in_both_cupped_hands_at_chest_level, surprised_gentle_expression, warm_wooden_cafe_storage_shelves_filled_with_jars_behind_her, cyan_light_illuminating_her_face_and_fingers, <lora:shiki_natsume_v14:0.9>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
+    "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
+    "rating": "All",
+    "officialCgCandidate": "ocs09",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 1,
+      "seedKey": "official-cg:ocs09:1",
+      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\v12_cg_10.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs09-a1.png",
+      "result": "pass"
+    }
+  },
+  {
+    "id": "sc276",
+    "recommendedSize": "1344×768",
+    "title": "暖灯卧室里的羞怯防线",
+    "category": "恋爱/After_Story",
+    "story": "【成年 After Story】暖灯照着卧室，夏目侧过身，用手臂遮住发烫的脸。「我没有后悔……只是需要一点时间，习惯被你这样珍惜。」柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v14",
+    "emotion": "亲密",
+    "season": "不限",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "natsume",
+      "adult"
+    ],
+    "mature": false,
+    "location": "卧室",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "夜色氛围光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "prompt": "adult, visual_novel_event_cg, cinematic_16:9_composition, intimate_diagonal_close_up, 1girl, solo, adult_shiki_natsume, black_hair_flowing_across_the_bed, yellow_eyes, two_red_hairclips, mole_under_eye, lying_topless_on_her_side_in_a_warm_bedroom, one_arm_covering_part_of_her_chest, bare_shoulders_and_cleavage, eyes_closed, deeply_blushing_embarrassed_expression, dark_wooden_wall_and_amber_bedside_light, tasteful_adult_visual_novel_cg, <lora:shiki_natsume_v14:0.9>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
+    "storyJa": "【成人After Story・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
+    "rating": "All",
+    "officialCgCandidate": "ocs10",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 1,
+      "seedKey": "official-cg:ocs10:1",
+      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\v12_cg_11.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs10-a1.png",
+      "result": "pass"
+    }
+  },
+  {
+    "id": "sc277",
+    "recommendedSize": "1344×768",
+    "title": "更衣室椅上的紫色心事",
+    "category": "恋爱/After_Story",
+    "story": "【成年 After Story】成年后的更衣室里，夏目坐上椅背，把一条长腿抬到你面前。她强装镇定地问：「既然是你选的，就负责看到最后。」柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v14",
+    "emotion": "亲密",
+    "season": "不限",
+    "time": "白天",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "natsume",
+      "adult"
+    ],
+    "mature": false,
+    "location": "室内场景",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "柔和自然光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "prompt": "adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_composition, strong_clockwise_dutch_angle, low_close_camera, 1girl, solo, adult_shiki_natsume, very_long_black_hair, golden_yellow_eyes, two_red_hairclips, mole_under_eye, lavender_lace_bra_and_matching_panties, black_thighhigh_stockings, sitting_backward_on_a_black_metal_folding_chair, one_stockinged_leg_raised_high_across_the_foreground_and_the_other_leg_spread_to_the_side, hands_gently_clasped_near_abdomen, shy_direct_eye_contact, soft_blush, white_lockers_and_dressing_room_spotlights, official_visual_novel_cg_framing, <lora:shiki_natsume_v14:0.95>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
+    "storyJa": "【成人After Story・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
+    "rating": "All",
+    "officialCgCandidate": "ocs11",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 1,
+      "seedKey": "official-cg:ocs11:1",
+      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\ScreenShot_2026-07-12_085911_103.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs11-a1.png",
+      "result": "pass"
+    }
+  },
+  {
+    "id": "sc278",
+    "recommendedSize": "1344×768",
+    "title": "夜蓝床单上的黑蕾丝",
+    "category": "恋爱/After_Story",
+    "story": "【成年 After Story】夜蓝床铺映着黑色蕾丝，夏目把双手交握在胸前。她注视着你，声音比平时更轻：「灯不用关，我想看清你的表情。」柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v14",
+    "emotion": "亲密",
+    "season": "不限",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "natsume",
+      "adult"
+    ],
+    "mature": false,
+    "location": "卧室",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "夜色氛围光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "prompt": "adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_composition, diagonal_overhead_view, 1girl, solo, adult_shiki_natsume, very_long_black_hair_fanned_across_the_bed, golden_yellow_eyes, two_red_hairclips, mole_under_eye, detailed_black_lace_bra, matching_black_lace_panties, black_garter_belt_and_garter_straps, black_thighhigh_stockings, lying_on_her_back_on_dark_desaturated_blue_bedding, hands_clasped_modestly_over_upper_chest, knees_slightly_apart, shy_direct_eye_contact, subtle_blush, cool_dim_bedroom_light, official_visual_novel_cg_framing, <lora:shiki_natsume_v14:0.95>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
+    "storyJa": "【成人After Story・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
+    "rating": "All",
+    "officialCgCandidate": "ocs12",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 1,
+      "seedKey": "official-cg:ocs12:1",
+      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\ScreenShot_2026-07-12_090942_797.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs12-a1.png",
+      "result": "pass"
+    }
+  },
+  {
+    "id": "sc279",
+    "recommendedSize": "1344×768",
+    "title": "木地板上压低的提醒",
+    "category": "官方CG灵感",
+    "story": "【官方 CG 灵感】木地板的暖色映在夏目脸侧，她把手指轻轻抵住唇。「先别说话，」她看着你，“让我确认现在不是梦。”柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v14",
+    "emotion": "心动",
+    "season": "不限",
+    "time": "白天",
+    "timeOfDay": "afternoon",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "natsume",
+      "solo"
+    ],
+    "mature": false,
+    "location": "室内场景",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "柔和自然光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "prompt": "visual_novel_event_cg, cinematic_16:9_extreme_overhead_face_close_up, 1girl, solo, adult_shiki_natsume, long_black_hair_braided_at_both_sides, golden_yellow_eyes, mole_under_eye, paired_white_rose_ornaments_with_purple_ribbons, white_shirt, lying_on_warm_wooden_floor_beside_an_orange_cushion, one_index_finger_pressed_softly_to_parted_lips, other_hand_near_ear, intense_shy_direct_gaze, flushed_cheeks, face_fills_frame, <lora:shiki_natsume_v14:0.95>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
+    "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
+    "rating": "All",
+    "officialCgCandidate": "ocs13",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 1,
+      "seedKey": "official-cg:ocs13:1",
+      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\ScreenShot_2026-07-12_090719_815.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs13-a1.png",
+      "result": "pass"
+    }
+  },
+  {
+    "id": "sc280",
+    "recommendedSize": "1344×768",
+    "title": "杯架前递来的点心",
+    "category": "官方CG灵感",
+    "story": "【官方 CG 灵感】杯架前，夏目把小点心仔细捧在掌心递来。「试吃品只有一份，」她微笑着补充，“所以你的评价要认真一点。”柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v14",
+    "emotion": "心动",
+    "season": "不限",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "natsume",
+      "solo"
+    ],
+    "mature": false,
+    "location": "咖啡馆",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "夜色氛围光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "prompt": "visual_novel_event_cg, cinematic_16:9_clockwise_dutch_angle, waist_up_close_shot, 1girl, solo, shiki_natsume, black_hair_in_short_maid_updo, golden_yellow_eyes, mole_under_eye, tiny_pastel_hairclips, dark_gray_cafe_maid_dress, white_ruffled_apron_and_collar, gold_bow, holding_a_tiny_wrapped_sweet_carefully_in_both_cupped_hands_toward_viewer, gentle_smile, warm_wooden_cafe, wall_racks_filled_with_white_cups, <lora:shiki_natsume_v14:0.95>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
+    "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
+    "rating": "All",
+    "officialCgCandidate": "ocs14",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 1,
+      "seedKey": "official-cg:ocs14:1",
+      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\ScreenShot_2026-07-12_090755_311.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs14-a1.png",
+      "result": "pass"
+    }
+  },
+  {
+    "id": "sc281",
+    "recommendedSize": "1344×768",
+    "title": "暖光床沿的侧卧凝视",
+    "category": "亲密/After_Story",
+    "story": "【成年 After Story】暖黄床灯下，夏目侧卧着望向你，长发沿肩头铺开。她没有催促，只伸出手：「过来吧，今晚不需要任何借口。」柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v14",
+    "emotion": "亲密",
+    "season": "不限",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "natsume",
+      "adult"
+    ],
+    "mature": true,
+    "location": "卧室",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "夜色氛围光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图",
+      "成人向"
+    ],
+    "prompt": "adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_intimate_close_up, 1girl, solo, adult_shiki_natsume, very_long_black_hair, golden_yellow_eyes, mole_under_eye, nude, topless, nipples, lying_on_stomach_across_a_warm_bed, upper_body_propped_on_elbows, one_hand_near_lips, hips_at_left_edge, face_and_chest_dominate_frame, direct_vulnerable_gaze, amber_bedside_light_from_upper_right, dark_wooden_bedroom, <lora:shiki_natsume_v14:0.95>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, lingerie, bra, shirt, standing, sitting, lying on back, cold blue light, child, loli, underage, school_uniform, gym_uniform",
+    "storyJa": "【成人After Story・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
+    "rating": "R18",
+    "officialCgCandidate": "ocs15",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 1,
+      "seedKey": "official-cg:ocs15:1",
+      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\ScreenShot_2026-07-12_090922_485.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs15-a1.png",
+      "result": "pass"
+    }
+  },
+  {
+    "id": "sc282",
+    "recommendedSize": "1344×768",
+    "title": "黑蕾丝滑落后的静默",
+    "category": "恋爱/After_Story",
+    "story": "【成年 After Story】黑色蕾丝滑落后，夏目仍把双手交叠在胸前。她努力维持平静：「不要移开视线……是我自己决定留在这里的。」柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v14",
+    "emotion": "亲密",
+    "season": "不限",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "natsume",
+      "adult"
+    ],
+    "mature": false,
+    "location": "卧室",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "夜色氛围光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "prompt": "adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_diagonal_overhead_composition, 1girl, solo, adult_shiki_natsume, very_long_black_hair_spread_on_dark_blue_bedding, golden_yellow_eyes, mole_under_eye, topless, nipples, black_lace_panties, black_garter_belt_and_garter_straps, black_thighhigh_stockings, lying_on_back, hands_clasped_over_upper_chest, shy_direct_gaze, cool_dim_bedroom_light, <lora:shiki_natsume_v14:0.95>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, bra, covered breasts, standing, sitting, warm orange bedding, nsfw, nude, explicit",
+    "storyJa": "【成人After Story・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
+    "rating": "All",
+    "officialCgCandidate": "ocs16",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 1,
+      "seedKey": "official-cg:ocs16:1",
+      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\ScreenShot_2026-07-12_091017_055.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs16-a1.png",
+      "result": "pass"
+    }
+  },
+  {
+    "id": "sc283",
+    "recommendedSize": "1344×768",
+    "title": "夜蓝床铺上的坦白姿势",
+    "category": "恋爱/After_Story",
+    "story": "【成年 After Story】夜蓝床单微微褶皱，夏目在坦白的姿势里直视着你。「已经到这一步了，」她呼吸一顿，“就别再让我重复邀请。”柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v14",
+    "emotion": "亲密",
+    "season": "不限",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "natsume",
+      "adult"
+    ],
+    "mature": false,
+    "location": "卧室",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "夜色氛围光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "prompt": "adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_diagonal_overhead_composition, 1girl, solo, adult_shiki_natsume, very_long_black_hair_spread_across_dark_blue_bed, golden_yellow_eyes, mole_under_eye, topless, nipples, bottomless, black_garter_belt_and_black_thighhigh_stockings, lying_on_back_with_knees_spread_toward_foreground, hands_clasped_over_chest, shy_direct_gaze, cool_dim_bedroom, official_visual_novel_cg_framing, <lora:shiki_natsume_v14:0.95>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, bra, panties, closed legs, standing, sitting, nsfw, nude, explicit",
+    "storyJa": "【成人After Story・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
+    "rating": "All",
+    "officialCgCandidate": "ocs17",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 1,
+      "seedKey": "official-cg:ocs17:1",
+      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\ScreenShot_2026-07-12_091155_526.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs17-a1.png",
+      "result": "pass"
+    }
+  },
+  {
+    "id": "sc284",
+    "recommendedSize": "1344×768",
+    "title": "沙发边松开的吊带裙",
+    "category": "恋爱/After_Story",
+    "story": "【成年 After Story】沙发边，夏目松开吊带裙与衬衫，回头确认你仍在身旁。「帮我整理好，」她轻声说，“但不许假装什么都没看见。”柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v14",
+    "emotion": "亲密",
+    "season": "不限",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "natsume",
+      "adult"
+    ],
+    "mature": false,
+    "location": "室内场景",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "夜色氛围光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "prompt": "adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_diagonal_close_composition, 1girl, solo, adult_shiki_natsume, long_black_hair_in_braided_side_ponytail_with_white_rose_and_purple_ribbon, golden_yellow_eyes, mole_under_eye, kneeling_and_leaning_forward_on_a_reddish_sofa, white_school_shirt_opened_to_reveal_lavender_lace_bra, dark_brown_suspender_skirt, black_thighhigh_stockings, hips_raised_in_background, direct_shy_eye_contact, one_hand_on_cushion, warm_indoor_light, <lora:shiki_natsume_v14:0.95>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
+    "storyJa": "【成人After Story・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
+    "rating": "All",
+    "officialCgCandidate": "ocs18",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 1,
+      "seedKey": "official-cg:ocs18:1",
+      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\ScreenShot_2026-07-12_091245_649.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs18-a1.png",
+      "result": "pass"
+    }
+  },
+  {
+    "id": "sc285",
+    "recommendedSize": "1344×768",
+    "title": "储物架间掀起的裙摆",
+    "category": "恋爱/After_Story",
+    "story": "【成年 After Story】储物架间没有别人，夏目抬起女仆裙摆，俯视着你的反应。「这是闭店后的特别服务，」她笑了笑，“仅此一次。”柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v14",
+    "emotion": "亲密",
+    "season": "不限",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "tags": [
+      "official_cg",
+      "visual_audited",
+      "landscape",
+      "natsume",
+      "adult"
+    ],
+    "mature": false,
+    "location": "咖啡馆",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "夜色氛围光",
+    "usage": [
+      "官方CG灵感",
+      "实机审核通过",
+      "展示图"
+    ],
+    "prompt": "adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_extreme_low_angle_pov, 1girl, solo, adult_shiki_natsume, black_hair_in_maid_updo, golden_yellow_eyes, mole_under_eye, dark_gray_cafe_maid_dress, white_ruffled_apron_and_maid_headband, skirt_lifted_high_with_one_hand, beige_panties_visible, white_kneehigh_socks, one_thigh_dominating_foreground, teasing_direct_smile, metal_storage_racks_and_cardboard_boxes, bright_storeroom_light, <lora:shiki_natsume_v14:0.95>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, long shot, eye-level camera, skirt down, black panties, standing far away, nsfw, nude, explicit",
+    "storyJa": "【成人After Story・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
+    "rating": "All",
+    "officialCgCandidate": "ocs19",
+    "audit": {
+      "reviewer": "direct-vision",
+      "attempt": 1,
+      "seedKey": "official-cg:ocs19:1",
+      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\ScreenShot_2026-07-12_091309_703.png",
+      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs19-a1.png",
+      "result": "pass"
+    }
   }
 ]

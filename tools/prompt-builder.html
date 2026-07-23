@@ -591,6 +591,7 @@
   .sd-inline-options label { display:flex; align-items:center; gap:5px; cursor:pointer; }
   .sd-inline-options select { max-width:220px; min-width:140px; padding:4px 7px; font-size:.78rem; }
   .sd-budget-hint { width:100%; margin-top:-5px; color:var(--text-muted); font-size:.7rem; }
+  .scene-size-hint { display:inline-flex; align-items:center; min-height:24px; padding:3px 9px; border:1px solid color-mix(in srgb,var(--accent) 38%,var(--border-soft)); border-radius:999px; background:var(--accent-soft); color:var(--accent); font-size:.68rem; font-weight:700; }
   .sd-budget-hint.warn { color:var(--warning); }
   .sd-budget-hint.danger { color:var(--danger); font-weight:650; }
   .sd-progress { height:8px; overflow:hidden; border-radius:999px; background:var(--bg-deep); border:1px solid var(--border-soft); margin:0 auto var(--s-2); max-width:520px; }
@@ -932,8 +933,14 @@
                 <option value="1344×896">1344×896</option>
                 <option value="1792×1216">1792×1216</option>
               </optgroup>
+              <optgroup label="横图 16:9 · 官方 CG 构图">
+                <option value="1280×720">1280×720 · 稳定</option>
+                <option value="1344×768">1344×768 · 高清</option>
+                <option value="1536×864">1536×864 · 16G 显存</option>
+              </optgroup>
             </select>
           </label>
+          <span class="scene-size-hint" id="sceneSizeHint" hidden></span>
           <label style="display:flex;align-items:center;gap:4px;cursor:pointer;">
             <input type="checkbox" id="sdHiresFix"> hires.fix
           </label>

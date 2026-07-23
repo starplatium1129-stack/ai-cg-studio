@@ -94,6 +94,14 @@ if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
   if (!Array.isArray(scene.tags)) errors.push(label + ': tags must be an array');
   if (!Array.isArray(scene.usage)) errors.push(label + ': usage must be an array');
   if (typeof scene.mature !== 'boolean') errors.push(label + ': mature must be boolean');
+  if (scene.recommendedSize != null) {
+    if (!/^\d{3,4}×\d{3,4}$/.test(String(scene.recommendedSize))) {
+      errors.push(label + ': recommendedSize must use WIDTH×HEIGHT');
+    } else {
+      const [width, height] = String(scene.recommendedSize).split('×').map(Number);
+      if (width <= height) errors.push(label + ': recommendedSize must be landscape');
+    }
+  }
   if (!ratingValues.has(scene.rating)) errors.push(label + ': rating must be All, R15, or R18');
   if (typeof scene.rating === 'string' && scene.mature !== (scene.rating === 'R18')) {
     errors.push(label + ': mature must match R18 rating');
