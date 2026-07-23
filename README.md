@@ -14,7 +14,7 @@ This is an unofficial, non-commercial fan project and is not affiliated with or 
 
 ## Features
 
-- 259 searchable and filterable Scenes, classified as All, R15, or R18 by depicted content
+- 285 searchable and filterable Scenes, classified as All, R15, or R18 by depicted content
 - A reviewed result gallery with one approved image per Scene, featured/character/rating filters, and direct links back into the director
 - A director workspace for story, character, mood, camera, composition, lighting, and color
 - Automatic Positive / Negative Prompt assembly and scene-aware LoRA injection
@@ -64,6 +64,7 @@ Open `http://127.0.0.1:8090/`. A plain static server does not provide the `/sdap
 
 ```text
 AI-CG-Studio/
+├── DESIGN.md               # Canonical website and control-panel design contract
 ├── index.html              # Home page
 ├── control.bat             # Windows control panel launcher
 ├── server.js               # Site server, SD proxy, and temporary sharing
@@ -80,6 +81,11 @@ Run the scene validator with:
 ```powershell
 npm run validate
 ```
+
+Website and control-panel changes follow [DESIGN.md](DESIGN.md). It is the
+canonical UI contract; `css/design-system.css` implements its tokens at runtime.
+The separate CG art-direction note describes generated images rather than the
+interface.
 
 Use `npm run optimize-scenes` after importing or bulk-editing Scenes to canonicalize prompt tags, camera framing, negative prompts, and unresolved placeholders.
 
