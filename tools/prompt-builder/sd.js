@@ -87,7 +87,13 @@ function ensureSelectValue(id, value){
 
 function sceneRecommendedSize(scene){
   var value = scene && scene.recommendedSize ? String(scene.recommendedSize).trim() : '';
-  return /^\d{3,4}×\d{3,4}$/.test(value) ? value : '';
+  if (/^\d{3,4}×\d{3,4}$/.test(value)) return value;
+  var prompt = String(scene && scene.prompt || '').toLowerCase();
+  var tags = Array.isArray(scene && scene.tags) ? scene.tags.join(' ').toLowerCase() : '';
+  var source = prompt + ' ' + tags;
+  if (/\b(full_body|wide_shot|standing_apart|side_by_side|landscape|wide_angle)\b/.test(source)) return '1344×896';
+  if (/\b(close_up|face_focus|portrait|upper_body|medium_close_up|lying_on_bed|sitting_on_bed)\b/.test(source)) return '896×1152';
+  return '';
 }
 
 function applySceneGenerationPreset(scene){
@@ -991,4 +997,3 @@ function resetDirector() {
   var stage=document.querySelector('.stage-placeholder');if(stage)stage.scrollIntoView({behavior:'smooth',block:'center'});
   flash('已重置，可以开始下一张');
 }
-

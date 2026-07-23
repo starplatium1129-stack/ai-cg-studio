@@ -101,7 +101,7 @@ if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
       errors.push(label + ': recommendedSize must use WIDTH×HEIGHT');
     } else {
       const [width, height] = String(scene.recommendedSize).split('×').map(Number);
-      if (width <= height) errors.push(label + ': recommendedSize must be landscape');
+      if (width < 512 || height < 512) errors.push(label + ': recommendedSize must be at least 512x512');
     }
   }
   if (!ratingValues.has(scene.rating)) errors.push(label + ': rating must be All, R15, or R18');

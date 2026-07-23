@@ -17,6 +17,7 @@
 
   var DEFAULT_BASE = '';
   var DEFAULT_NEGATIVE = 'worst quality, low quality, normal quality, lowres, blurry, photorealistic, realistic skin, 3d render, bad anatomy, bad hands, cropped, duplicate';
+  var DUAL_SAFETY_NEGATIVE = 'extra person, 3girls, 1boy, male, duplicate person, cloned face, identical twins, merged bodies, fused limbs, swapped hair, swapped eye color, wrong character clothing';
 
   /**
    * @param {string} baseUrl - SD WebUI 地址，如 'http://localhost:7860'
@@ -300,6 +301,9 @@
     // An explicit empty string means the caller intentionally disabled the
     // negative prompt. Only an omitted/non-string value should use defaults.
     var finalNegative = typeof negativePrompt === 'string' ? negativePrompt.trim() : DEFAULT_NEGATIVE;
+    if (isDualCharacter && finalNegative.indexOf('merged bodies') === -1) {
+      finalNegative = [finalNegative, DUAL_SAFETY_NEGATIVE].filter(Boolean).join(', ');
+    }
     var payload = {
       prompt: finalPrompt,
       negative_prompt: finalNegative,
