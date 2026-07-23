@@ -42,6 +42,57 @@ async function testExplicitEmptyNegative() {
   assert(payload.negative_prompt.includes('worst quality'), 'omitted negative prompt should use defaults');
 }
 
+async function testDualEnhancementPayload() {
+  let payload;
+  const context = { console, setTimeout, clearTimeout, AbortController, Promise };
+  context.window = context;
+  vm.runInNewContext(source('tools/sd-api.js'), context);
+  const connector = new context.SDWebUIConnector('');
+  connector.request = (_path, init) => {
+    payload = JSON.parse(init.body);
+    return Promise.resolve({ images: ['abc'], info: '{}' });
+  };
+
+  const result = await connector.generateImage(
+    'masterpiece, 2girls, candlelit bedroom, (ayachi_nene, white_hair, purple_eyes) BREAK (shiki_natsume, black_hair, yellow_eyes)',
+    'bad anatomy',
+    {
+      char:'triad',
+      lora:'ayachi_nene_v14:0.55, shiki_natsume_v14:0.55',
+      dualEnhancement:{
+        regional:true,
+        generationMode:'Attention',
+        controlModel:'xinsir_openpose_sdxl_1.0 [d0333a45]',
+        controlImage:'data:image/png;base64,cG9zZQ==',
+        adetailer:true,
+        adModel:'face_yolov8s.pt'
+      }
+    }
+  );
+
+  assert(payload.prompt.split(/\bBREAK\b/).length === 3, 'dual regional prompt must contain base, left, and right scopes');
+  assert(payload.prompt.indexOf('<lora:ayachi_nene_v14:0.55>') < payload.prompt.indexOf('BREAK'), 'dual LoRAs must live in the shared base scope in Attention mode');
+  assert(payload.alwayson_scripts['Regional Prompter'], 'Regional Prompter payload must be enabled');
+  assert.strictEqual(payload.alwayson_scripts['Regional Prompter'].args[11], 'Attention');
+  assert(payload.alwayson_scripts.ControlNet, 'ControlNet payload must be enabled when a pose exists');
+  assert.strictEqual(payload.alwayson_scripts.ControlNet.args[0].resize_mode, 'Resize and Fill');
+  assert.strictEqual(payload.alwayson_scripts.ControlNet.args[0].image, 'cG9zZQ==');
+  assert(payload.alwayson_scripts.ADetailer, 'ADetailer payload must be enabled for distant dual faces');
+  assert.deepStrictEqual(
+    JSON.parse(JSON.stringify(result.enhancements)),
+    { regional:true, controlNet:true, adetailer:true }
+  );
+
+  payload = null;
+  const single = await connector.generateImage('1girl, ayachi_nene, close_up', '', {
+    char:'nene',
+    lora:'ayachi_nene_v14:0.85',
+    dualEnhancement:{ regional:true, controlImage:'data:image/png;base64,cG9zZQ==' }
+  });
+  assert(!payload.alwayson_scripts, 'single-character generation must remain extension-free');
+  assert.strictEqual(single.enhancements.regional, false);
+}
+
 function testProfilesAndCapabilities() {
   const elements = {
     sdModel: select(['staleModel']),
@@ -158,6 +209,7 @@ async function testFailedQueueJobIsRetained() {
 
 (async () => {
   await testExplicitEmptyNegative();
+  await testDualEnhancementPayload();
   testProfilesAndCapabilities();
   await testFailedQueueJobIsRetained();
   console.log('SD runtime tests passed: negative toggle, profile refresh, capabilities, and queue retention');

@@ -11,6 +11,7 @@ $packageRoot = Join-Path $aiRoot 'AI\Data\Packages\Stable Diffusion WebUI reForg
 $pythonPath = Join-Path $packageRoot 'venv\Scripts\python.exe'
 $launchPath = Join-Path $packageRoot 'launch.py'
 $imagesPath = Join-Path $aiRoot 'AI\Data\Images'
+$controlNetPath = Join-Path $aiRoot 'AI\Data\Models\ControlNet'
 $stateDir = Join-Path $projectRoot 'runtime\state'
 $logDir = Join-Path $projectRoot 'runtime\logs'
 $pidFile = Join-Path $stateDir 'managed-webui.pid'
@@ -90,7 +91,9 @@ $arguments = @(
     # shared-memory mode retained roughly 18-28 GB of system RAM during long
     # LoRA comparison runs, leaving a 32 GB machine close to exhaustion.
     '--cuda-malloc', '--cuda-stream', '--skip-install',
-    '--api', '--port', '7860', '--gradio-allowed-path', $imagesPath
+    '--api', '--port', '7860',
+    '--controlnet-dir', $controlNetPath,
+    '--gradio-allowed-path', $imagesPath
 )
 $process = Start-Process -FilePath $pythonPath -ArgumentList $arguments -WorkingDirectory $packageRoot -WindowStyle Hidden `
     -RedirectStandardOutput $stdoutLog -RedirectStandardError $stderrLog -PassThru

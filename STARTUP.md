@@ -60,6 +60,30 @@
 
 参考音频及其原文使用日语 `ja`。导演台默认读取场景的日文 `storyJa` 并提取 `「角色台词」`，也可切换中文或朗读完整故事；目标语言会随每次生成请求传给 GPT-SoVITS，不再固定为中文。请只使用你有权使用的声音模型和参考音频。
 
+## 双人构图增强
+
+当前电脑的 reForge 已配置 Regional Prompter、内置 ControlNet 与 ADetailer。导演台选择“宁宁 × 夏目”的双人场景时会自动按当前能力启用：
+
+- **角色分区**：把共同环境、左侧宁宁和右侧夏目的提示词分开，减少脸、发色、瞳色与服装互相污染。
+- **姿势约束**：读取 `assets/dual-poses/场景ID.png`，使用 Xinsir SDXL OpenPose 模型稳定两人的位置、朝向与互动关系。
+- **双脸精修**：只对 `wide_shot` 或 `full_body` 双人场景启用低重绘幅度 ADetailer，避免近景中已经稳定的官方脸被二次改坏。
+
+这些能力只对双人角色生效。宁宁或夏目的单人生成仍使用已逐场景审核的原模型、Prompt、LoRA 权重和采样参数，不会附带 Regional Prompter、ControlNet 或 ADetailer。
+
+控制面板启动 reForge 时会自动添加共享模型目录：
+
+```text
+--controlnet-dir E:\code\2\lora\AI\Data\Models\ControlNet
+```
+
+当前姿势模型为 `xinsir_openpose_sdxl_1.0.safetensors`。逐场景姿势图如需重建，请先启动 WebUI，再执行：
+
+```powershell
+python scripts/generate-dual-pose-assets.py
+```
+
+若扩展或模型暂时不可用，网站会按实际检测到的能力自动降级，普通出图仍可继续。
+
 ## WebUI 地址不是 7860
 
 Stability Matrix 可能自动分配其他端口。不要猜端口，直接复制日志中显示的本机地址，例如：
@@ -178,7 +202,7 @@ node server.js
 
 旧版根目录中的 `.gateway_*`、`tunnel.log` 和 `friend_outputs/` 会在首次启动时自动迁移。`runtime/` 已被 Git 忽略，不应提交。
 
-- `data/scenes.json`：206 个场景
+- `data/scenes.json`：284 个场景
 - `data/characters.json`：角色设定
 - `data/tags.json`：统一标签
 - `data/loras.json`：LoRA 配置

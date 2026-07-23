@@ -90,7 +90,7 @@ def build_cover(entries: list[dict], curated_ids: list[str], target: Path) -> No
     canvas = Image.new("RGB", (width, height), "#f7f3ee")
     draw = ImageDraw.Draw(canvas)
     draw.text((72, 68), "AI CG Studio · 场景效果总览", fill="#241f29", font=load_font(52, bold=True))
-    draw.text((74, 137), "259 个场景 · 259 张最终合格样张 · 宁宁 / 夏目 v14", fill="#766d7a", font=load_font(27))
+    draw.text((74, 137), f"{len(entries)} 个场景 · {len(entries)} 张最终合格样张 · 宁宁 / 夏目 v14", fill="#766d7a", font=load_font(27))
     card_w, card_h = 420, 500
     start_y = 220
     for index, entry in enumerate(selected):
@@ -107,6 +107,7 @@ def build_cover(entries: list[dict], curated_ids: list[str], target: Path) -> No
 
 
 def build_html(entries: list[dict], output: Path) -> None:
+    total = len(entries)
     data = []
     for entry in entries:
         item = {key: entry[key] for key in ["id", "title", "category", "story", "char", "rating", "attempt"]}
@@ -118,7 +119,7 @@ def build_html(entries: list[dict], output: Path) -> None:
     encoded = json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
     page = f"""<!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AI CG Studio · 259 场景效果展示</title>
+<title>AI CG Studio · {total} 场景效果展示</title>
 <style>
 :root{{--bg:#f4f0eb;--panel:rgba(255,255,255,.76);--ink:#27222d;--muted:#766d7a;--line:rgba(71,55,77,.12);--accent:#b8758b;--shadow:0 18px 50px rgba(52,37,58,.12)}}
 *{{box-sizing:border-box}} body{{margin:0;background:radial-gradient(circle at 15% 0,#fff9f5,transparent 38%),var(--bg);color:var(--ink);font-family:"Microsoft YaHei UI","PingFang SC",sans-serif}}
@@ -132,13 +133,13 @@ main{{padding:28px clamp(16px,4vw,64px) 70px}} .count{{margin:0 0 18px;color:var
 .empty{{padding:80px;text-align:center;color:var(--muted)}} footer{{padding:30px;text-align:center;color:var(--muted)}}
 dialog{{border:0;border-radius:26px;padding:0;max-width:min(94vw,1100px);background:#17131a;color:#fff;box-shadow:0 30px 100px #0008}} dialog::backdrop{{background:#17131ad9;backdrop-filter:blur(8px)}} dialog img{{display:block;max-width:90vw;max-height:82vh}} .close{{position:absolute;right:14px;top:14px;background:#0009;color:#fff;border-color:#ffffff33}}
 </style></head><body>
-<header><div class="top"><div><h1>259 场景效果展示</h1><div class="sub">所有图片均来自对应场景的最终合格生成结果</div></div><div class="sub">宁宁 / 夏目 · v14 · 2026-07-22</div></div>
+<header><div class="top"><div><h1>{total} 场景效果展示</h1><div class="sub">所有图片均来自对应场景的最终合格生成结果</div></div><div class="sub">宁宁 / 夏目 · v14 · 2026-07-23</div></div>
 <div class="controls"><input id="q" placeholder="搜索标题、故事、分类或角色"><button data-char="all" class="active">全部角色</button><button data-char="nene">绫地宁宁</button><button data-char="natsume">四季夏目</button><button data-char="triad">双角色</button><button id="adult" class="adult">显示 R18</button></div></header>
 <main><div class="count" id="count"></div><div class="grid" id="grid"></div></main><footer>AI CG Studio · 本地个人创作展示</footer>
 <dialog id="viewer"><button id="closeViewer" class="close">关闭</button><img id="full" alt=""></dialog>
 <script>const scenes={encoded};let character='all',adult=false;const grid=document.querySelector('#grid'),count=document.querySelector('#count'),q=document.querySelector('#q'),viewer=document.querySelector('#viewer'),full=document.querySelector('#full');
 function esc(s){{return String(s).replace(/[&<>\"']/g,c=>({{'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}}[c]))}}
-function render(){{const term=q.value.trim().toLowerCase();const list=scenes.filter(s=>(character==='all'||s.char===character)&&(adult||s.rating!=='R18')&&(!term||[s.id,s.title,s.story,s.category,s.characterLabel].join(' ').toLowerCase().includes(term)));count.textContent=`显示 ${{list.length}} / 259 个场景${{adult?' · 已显示 R18':' · R18 默认隐藏'}}`;grid.innerHTML=list.map(s=>`<article class="card"><a class="art" href="${{s.image}}" data-full="${{s.image}}"><img loading="lazy" src="${{s.thumb}}" alt="${{esc(s.title)}}"></a><div class="body"><div class="meta"><span class="tag">${{esc(s.id)}}</span><span class="tag">${{esc(s.characterLabel)}}</span><span class="tag">${{esc(s.ratingLabel)}}</span><span class="tag">第 ${{s.attempt}} 次通过</span></div><h2>${{esc(s.title)}}</h2><p>${{esc(s.story)}}</p></div></article>`).join('')||'<div class="empty">没有找到匹配场景</div>';document.querySelectorAll('[data-full]').forEach(a=>a.onclick=e=>{{e.preventDefault();full.src=a.dataset.full;viewer.showModal()}})}}
+function render(){{const term=q.value.trim().toLowerCase();const list=scenes.filter(s=>(character==='all'||s.char===character)&&(adult||s.rating!=='R18')&&(!term||[s.id,s.title,s.story,s.category,s.characterLabel].join(' ').toLowerCase().includes(term)));count.textContent=`显示 ${{list.length}} / {total} 个场景${{adult?' · 已显示 R18':' · R18 默认隐藏'}}`;grid.innerHTML=list.map(s=>`<article class="card"><a class="art" href="${{s.image}}" data-full="${{s.image}}"><img loading="lazy" src="${{s.thumb}}" alt="${{esc(s.title)}}"></a><div class="body"><div class="meta"><span class="tag">${{esc(s.id)}}</span><span class="tag">${{esc(s.characterLabel)}}</span><span class="tag">${{esc(s.ratingLabel)}}</span><span class="tag">第 ${{s.attempt}} 次通过</span></div><h2>${{esc(s.title)}}</h2><p>${{esc(s.story)}}</p></div></article>`).join('')||'<div class="empty">没有找到匹配场景</div>';document.querySelectorAll('[data-full]').forEach(a=>a.onclick=e=>{{e.preventDefault();full.src=a.dataset.full;viewer.showModal()}})}}
 q.oninput=render;document.querySelectorAll('[data-char]').forEach(b=>b.onclick=()=>{{document.querySelectorAll('[data-char]').forEach(x=>x.classList.remove('active'));b.classList.add('active');character=b.dataset.char;render()}});document.querySelector('#adult').onclick=e=>{{adult=!adult;e.currentTarget.classList.toggle('active',adult);e.currentTarget.textContent=adult?'隐藏 R18':'显示 R18';render()}};document.querySelector('#closeViewer').onclick=()=>viewer.close();render();</script></body></html>"""
     (output / "index.html").write_text(page, encoding="utf-8")
 
@@ -217,7 +218,7 @@ def main() -> None:
     (args.output / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
     (args.output / "README.txt").write_text(
         "AI CG Studio 场景效果展示\n\n"
-        "1. 双击 index.html：搜索、筛选并查看 259 个最终合格场景。\n"
+        f"1. 双击 index.html：搜索、筛选并查看 {len(entries)} 个最终合格场景。\n"
         "2. 00-cover.jpg：适合快速介绍。\n"
         "3. sheets：按全年龄、R15、R18 分开的分页对比图。\n"
         "4. images：最终合格大图；thumbs：网页缩略图。\n\n"

@@ -14,11 +14,12 @@ This is an unofficial, non-commercial fan project and is not affiliated with or 
 
 ## Features
 
-- 285 searchable and filterable Scenes, classified as All, R15, or R18 by depicted content
+- 284 searchable and filterable Scenes, classified as All, R15, or R18 by depicted content
 - A reviewed result gallery with one approved image per Scene, featured/character/rating filters, and direct links back into the director
 - A director workspace for story, character, mood, camera, composition, lighting, and color
 - Automatic Positive / Negative Prompt assembly and scene-aware LoRA injection
 - Direct generation through AUTOMATIC1111, Forge, or ReForge
+- Automatic dual-character composition enhancement on the configured reForge setup: Regional Prompter separates Nene and Natsume, scene-specific OpenPose maps stabilize placement, and conservative ADetailer repair is limited to distant dual faces. Single-character generation keeps the audited baseline unchanged.
 - Model and sampler discovery, progress display, interrupt, fixed seeds, hires.fix, and a sequential generation queue
 - Independent Chinese reading text and voice scripts: keep captions Chinese while characters speak Japanese by default, with optional Chinese delivery
 - Scene-aware Japanese voice references for neutral, gentle, happy, shy, serious, and sad delivery; Chinese keeps the stable neutral reference
@@ -35,6 +36,8 @@ This is an unofficial, non-commercial fan project and is not affiliated with or 
 6. Click **停止全部服务** when finished. This stops the local gateway, sharing tunnel, GPT-SoVITS, and the reForge process started by the control panel. A separately manual WebUI is left untouched.
 
 `--api` does not prevent normal use of the WebUI interface. If Stability Matrix uses another port, enter the address shown in its log.
+
+On the configured machine, the control panel also supplies the shared ControlNet model directory. Regional Prompter, ControlNet, and ADetailer are discovered through their APIs; if one is unavailable, the director falls back gracefully instead of changing the single-character pipeline.
 
 Public sharing requires `cloudflared` at its standard Windows install path. Without it, the local site and SD connection still work.
 

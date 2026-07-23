@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "module": "manual_openpose",
+  "resolution": [
+    1344,
+    896
+  ],
+  "source": "scene story blueprints",
+  "poses": {
+    "sc028": "sc028.png",
+    "sc031": "sc031.png",
+    "sc144": "sc144.png",
+    "sc151": "sc151.png",
+    "sc154": "sc154.png",
+    "sc157": "sc157.png"
+  }
+}

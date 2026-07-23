@@ -12,7 +12,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 DEFAULT_IDS = (
     "sc002,sc004,sc006,sc007,sc014,sc019,sc025,sc028,sc033,sc044,sc046,"
-    "sc061,sc078,sc085,sc096,sc105,sc138,sc142,sc148,sc164,sc215,sc234,sc256"
+    "sc061,sc078,sc085,sc096,sc105,sc138,sc142,sc164,sc215,sc234,sc256"
 )
 
 

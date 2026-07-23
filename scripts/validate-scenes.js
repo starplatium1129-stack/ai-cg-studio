@@ -20,6 +20,7 @@ const dataDir = path.join(__dirname, '..', 'data');
 const characterSource = path.join(dataDir, 'characters.json');
 const presetSource = path.join(dataDir, 'presets.json');
 const curationSource = path.join(dataDir, 'curation.json');
+const retiredSource = path.join(dataDir, 'retired-scenes.json');
 const required = [
   'id', 'title', 'category', 'story', 'storyJa', 'char', 'character', 'lora', 'emotion',
   'season', 'time', 'timeOfDay', 'tags', 'rating', 'mature', 'location', 'weather',
@@ -66,6 +67,7 @@ try {
 const characters = readJson(characterSource, 'characters.json', errors);
 const presetData = readJson(presetSource, 'presets.json', errors);
 const curationData = readJson(curationSource, 'curation.json', errors);
+const retiredData = readJson(retiredSource, 'retired-scenes.json', errors);
 const ids = new Set();
 
 if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
@@ -191,9 +193,22 @@ if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
   if (scene.mature && includesNene && !adultMarked) errors.push(label + ': mature Nene scene must be explicitly adult');
 });
 
-for (let number = 1; number <= scenes.length; number += 1) {
+const retiredRecords = retiredData && Array.isArray(retiredData.records) ? retiredData.records : [];
+const retiredIds = new Set();
+for (const record of retiredRecords) {
+  if (!record || !/^sc\d{3}$/.test(record.id || '')) {
+    errors.push('retired-scenes.json contains an invalid id');
+    continue;
+  }
+  if (retiredIds.has(record.id)) errors.push('retired-scenes.json duplicate id ' + record.id);
+  if (ids.has(record.id)) errors.push('retired scene is still active: ' + record.id);
+  if (!record.reason) errors.push('retired scene lacks reason: ' + record.id);
+  retiredIds.add(record.id);
+}
+const highestSceneNumber = Math.max(0, ...[...ids, ...retiredIds].map((id) => Number(id.slice(2))));
+for (let number = 1; number <= highestSceneNumber; number += 1) {
   const expected = 'sc' + String(number).padStart(3, '0');
-  if (!ids.has(expected)) errors.push('missing continuous id ' + expected);
+  if (!ids.has(expected) && !retiredIds.has(expected)) errors.push('missing undeclared id ' + expected);
 }
 
 const curatedSceneIds = curationData && Array.isArray(curationData.curatedSceneIds) ? curationData.curatedSceneIds : [];

@@ -102,7 +102,7 @@ app.use(function (req, res, next) {
     return next();
   }
   // API 请求返回 401
-  if (req.path.startsWith('/sdapi') || req.path.startsWith('/api/')) {
+  if (req.path.startsWith('/sdapi') || req.path.startsWith('/controlnet') || req.path.startsWith('/adetailer') || req.path.startsWith('/api/')) {
     return res.status(401).json({ error: 'Unauthorized — 缺少 token 参数' });
   }
   // 静态页面没有 token 时显示引导页
@@ -374,12 +374,16 @@ app.use('/tools', function (req, res, next) {
   next();
 }, express.static(path.join(__dirname, 'tools'), { dotfiles: 'deny' }));
 
-// ─── SD API 反代（pathFilter 而非 app.use，避免 Express 剥前缀）───
+// ─── SD API 与生成扩展反代（pathFilter 避免 Express 剥前缀）───
 app.use(createProxyMiddleware({
   target: SD_HOST,
   changeOrigin: true,
   ws: true,
-  pathFilter: '/sdapi',
+  pathFilter: function (pathname) {
+    return pathname.startsWith('/sdapi') ||
+      pathname.startsWith('/controlnet') ||
+      pathname.startsWith('/adetailer');
+  },
   proxyTimeout: 20 * 60 * 1000,
   auth: SD_API_AUTH || undefined,
   on: {

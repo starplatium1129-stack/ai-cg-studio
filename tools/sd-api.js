@@ -106,6 +106,162 @@
     return 'data:image/png;base64,' + image;
   }
 
+  function splitRegionalSections(prompt){
+    return String(prompt || '')
+      .replace(/\s*,?\s*\bBREAK\b\s*,?\s*/gi, '\u001e')
+      .split('\u001e')
+      .map(function(section){ return section.trim().replace(/^,\s*|,\s*$/g, ''); })
+      .filter(Boolean);
+  }
+
+  function buildRegionalPrompt(prompt){
+    var sections = splitRegionalSections(prompt);
+    if (sections.length < 2) return { prompt:prompt, enabled:false };
+    var first = sections.shift();
+    var leftStart = first.lastIndexOf('(');
+    if (leftStart < 0) return { prompt:prompt, enabled:false };
+    var base = first.slice(0, leftStart).replace(/,\s*$/, '').trim();
+    var left = first.slice(leftStart).trim();
+    var right = sections.join(', ').trim();
+    if (!base || !left || !right) return { prompt:prompt, enabled:false };
+    return {
+      prompt:[base, left, right].join(' BREAK '),
+      enabled:true
+    };
+  }
+
+  function appendLoraToBase(prompt, loraTags){
+    if (!loraTags.length) return prompt;
+    var sections = splitRegionalSections(prompt);
+    if (sections.length < 2) {
+      return [prompt].concat(loraTags).filter(Boolean).join(', ');
+    }
+    sections[0] = [sections[0]].concat(loraTags).filter(Boolean).join(', ');
+    return sections.join(' BREAK ');
+  }
+
+  function appendLorasToRegions(prompt, loraTags){
+    if (!loraTags.length) return prompt;
+    var sections = splitRegionalSections(prompt);
+    if (sections.length < 3) return appendLoraToBase(prompt, loraTags);
+    var unresolved = [];
+    loraTags.forEach(function(tag){
+      var target = -1;
+      if (/ayachi[_ -]?nene/i.test(tag)) {
+        target = sections.findIndex(function(section, index){ return index > 0 && /ayachi[_ -]?nene/i.test(section); });
+      } else if (/shiki[_ -]?natsume/i.test(tag)) {
+        target = sections.findIndex(function(section, index){ return index > 0 && /shiki[_ -]?natsume/i.test(section); });
+      }
+      if (target > 0) sections[target] = [sections[target], tag].join(', ');
+      else unresolved.push(tag);
+    });
+    if (unresolved.length) sections[0] = [sections[0]].concat(unresolved).join(', ');
+    return sections.join(' BREAK ');
+  }
+
+  function regionalPrompterArgs(options){
+    options = options || {};
+    return [
+      true, false, 'Matrix', 'Columns', 'Mask', 'Prompt',
+      options.ratios || '1,1',
+      options.baseRatio || '0.2',
+      true, false, false, options.generationMode || 'Attention', [],
+      '0', '0', '0.4', null, '0', '0', false
+    ];
+  }
+
+  function stripImagePrefix(image){
+    return String(image || '').replace(/^data:image\/[a-z0-9.+-]+;base64,/i, '');
+  }
+
+  function loadImageDataUrl(url){
+    if (!url || typeof fetch !== 'function' || typeof FileReader === 'undefined') return Promise.resolve('');
+    return fetch(url, { credentials:'same-origin' }).then(function(response){
+      if (!response.ok) throw new Error('pose asset HTTP ' + response.status);
+      return response.blob();
+    }).then(function(blob){
+      return new Promise(function(resolve, reject){
+        var reader = new FileReader();
+        reader.onload = function(){ resolve(String(reader.result || '')); };
+        reader.onerror = function(){ reject(new Error('pose asset read failed')); };
+        reader.readAsDataURL(blob);
+      });
+    });
+  }
+
+  function makeControlNetUnit(enhancement, image){
+    return {
+      input_mode:'simple',
+      enabled:true,
+      module:'None',
+      model:enhancement.controlModel,
+      weight:enhancement.controlWeight != null ? enhancement.controlWeight : 0.78,
+      image:stripImagePrefix(image),
+      resize_mode:enhancement.resizeMode || 'Resize and Fill',
+      processor_res:1024,
+      threshold_a:-1,
+      threshold_b:-1,
+      guidance_start:0,
+      guidance_end:enhancement.controlEnd != null ? enhancement.controlEnd : 0.82,
+      pixel_perfect:false,
+      control_mode:'Balanced',
+      hr_option:'Both',
+      save_detected_map:false
+    };
+  }
+
+  function makeADetailerArgs(enhancement){
+    return [
+      true,
+      false,
+      {
+        ad_model:enhancement.adModel || 'face_yolov8s.pt',
+        ad_model_classes:'',
+        ad_tab_enable:true,
+        ad_prompt:'detailed eyes, clean face, character-accurate facial features',
+        ad_negative_prompt:'deformed face, asymmetrical eyes, cross-eyed',
+        ad_confidence:0.35,
+        ad_mask_filter_method:'Area',
+        ad_mask_k:2,
+        ad_mask_min_ratio:0,
+        ad_mask_max_ratio:0.18,
+        ad_dilate_erode:4,
+        ad_x_offset:0,
+        ad_y_offset:0,
+        ad_mask_merge_invert:'None',
+        ad_mask_blur:4,
+        ad_denoising_strength:0.22,
+        ad_inpaint_only_masked:true,
+        ad_inpaint_only_masked_padding:32,
+        ad_use_inpaint_width_height:true,
+        ad_inpaint_width:768,
+        ad_inpaint_height:768,
+        ad_use_steps:false,
+        ad_steps:20,
+        ad_use_cfg_scale:false,
+        ad_cfg_scale:5.5,
+        ad_use_checkpoint:false,
+        ad_checkpoint:'Use same checkpoint',
+        ad_use_vae:false,
+        ad_vae:'Use same VAE',
+        ad_use_sampler:false,
+        ad_sampler:'DPM++ 2M',
+        ad_scheduler:'Use same scheduler',
+        ad_use_noise_multiplier:false,
+        ad_noise_multiplier:1,
+        ad_use_clip_skip:false,
+        ad_clip_skip:1,
+        ad_restore_face:false,
+        ad_controlnet_model:'None',
+        ad_controlnet_module:'None',
+        ad_controlnet_weight:1,
+        ad_controlnet_guidance_start:0,
+        ad_controlnet_guidance_end:1,
+        is_api:true
+      }
+    ];
+  }
+
   SDWebUIConnector.prototype.generateImage = function(prompt, negativePrompt, options){
     options = options || {};
     var finalPrompt = prompt || '';
@@ -114,12 +270,16 @@
     var isDualCharacter = options.char === 'triad' || normalizedLoras.length > 1 ||
       (finalPrompt.includes('ayachi_nene') && finalPrompt.includes('shiki_natsume'));
     var fallbackWeight = isDualCharacter ? 0.62 : (options.loraWeight != null ? options.loraWeight : 0.8);
-
-    normalizedLoras.forEach(function(item){
-      if (finalPrompt.includes('<lora:' + item.name)) return;
-      if (finalPrompt && !finalPrompt.trim().endsWith(',')) finalPrompt += ',';
-      finalPrompt += ' <lora:' + item.name + ':' + (item.weight == null ? fallbackWeight : item.weight) + '>';
+    var loraTags = normalizedLoras.filter(function(item){
+      return !finalPrompt.includes('<lora:' + item.name);
+    }).map(function(item){
+      return '<lora:' + item.name + ':' + (item.weight == null ? fallbackWeight : item.weight) + '>';
     });
+    var enhancement = isDualCharacter && options.dualEnhancement ? options.dualEnhancement : {};
+    var regionalResult = enhancement.regional ? buildRegionalPrompt(finalPrompt) : { prompt:finalPrompt, enabled:false };
+    finalPrompt = regionalResult.enabled && enhancement.generationMode === 'Latent'
+      ? appendLorasToRegions(regionalResult.prompt, loraTags)
+      : appendLoraToBase(regionalResult.prompt, loraTags);
 
     // An explicit empty string means the caller intentionally disabled the
     // negative prompt. Only an omitted/non-string value should use defaults.
@@ -137,6 +297,17 @@
       n_iter: 1
     };
 
+    if (regionalResult.enabled) {
+      payload.alwayson_scripts = payload.alwayson_scripts || {};
+      payload.alwayson_scripts['Regional Prompter'] = {
+        args:regionalPrompterArgs(enhancement)
+      };
+    }
+    if (enhancement.adetailer) {
+      payload.alwayson_scripts = payload.alwayson_scripts || {};
+      payload.alwayson_scripts.ADetailer = { args:makeADetailerArgs(enhancement) };
+    }
+
     if (options.scheduler) payload.scheduler = options.scheduler;
     if (options.checkpoint) {
       payload.override_settings = { sd_model_checkpoint: options.checkpoint };
@@ -150,12 +321,25 @@
       payload.denoising_strength = options.denoisingStrength != null ? options.denoisingStrength : 0.35;
     }
 
-    return this.request('/sdapi/v1/txt2img', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-      signal: options.signal
-    }, options.timeoutMs == null ? 20 * 60 * 1000 : options.timeoutMs).then(function(data){
+    var controlImage = enhancement.controlImage || '';
+    var imagePromise = controlImage
+      ? Promise.resolve(controlImage)
+      : loadImageDataUrl(enhancement.controlImageUrl).catch(function(){ return ''; });
+    var connector = this;
+    return imagePromise.then(function(image){
+      if (image && enhancement.controlModel) {
+        payload.alwayson_scripts = payload.alwayson_scripts || {};
+        payload.alwayson_scripts.ControlNet = {
+          args:[makeControlNetUnit(enhancement, image)]
+        };
+      }
+      return connector.request('/sdapi/v1/txt2img', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+        signal: options.signal
+      }, options.timeoutMs == null ? 20 * 60 * 1000 : options.timeoutMs);
+    }).then(function(data){
       if (!data.images || !data.images.length) throw new Error('SD WebUI 返回数据中没有图片');
       var info = {};
       if (typeof data.info === 'string') {
@@ -175,7 +359,12 @@
         infotexts: Array.isArray(info.infotexts) ? info.infotexts : [],
         info: info,
         parameters: data.parameters || {},
-        payload: payload
+        payload: payload,
+        enhancements: {
+          regional:regionalResult.enabled,
+          controlNet:!!(payload.alwayson_scripts && payload.alwayson_scripts.ControlNet),
+          adetailer:!!(payload.alwayson_scripts && payload.alwayson_scripts.ADetailer)
+        }
       };
     });
   };
@@ -201,9 +390,19 @@
         connector.request('/sdapi/v1/schedulers', { method: 'GET' }, 6000).catch(function(){ return []; }),
         connector.request('/sdapi/v1/upscalers', { method: 'GET' }, 6000).catch(function(){ return []; }),
         connector.request('/sdapi/v1/loras', { method: 'GET' }, 6000).catch(function(){ return []; }),
-        connector.request('/sdapi/v1/options', { method: 'GET' }, 6000).catch(function(){ return {}; })
+        connector.request('/sdapi/v1/options', { method: 'GET' }, 6000).catch(function(){ return {}; }),
+        connector.request('/sdapi/v1/scripts', { method: 'GET' }, 6000).catch(function(){ return {}; }),
+        connector.request('/controlnet/model_list', { method: 'GET' }, 6000).catch(function(){ return {}; }),
+        connector.request('/controlnet/module_list', { method: 'GET' }, 6000).catch(function(){ return {}; }),
+        connector.request('/adetailer/v1/ad_model', { method: 'GET' }, 6000).catch(function(){ return {}; })
       ]);
     }).then(function(parts){
+      var scripts = []
+        .concat(parts[6] && parts[6].txt2img || [])
+        .map(function(name){ return String(name || '').toLowerCase(); });
+      var controlModels = parts[7] && Array.isArray(parts[7].model_list) ? parts[7].model_list : [];
+      var controlModules = parts[8] && Array.isArray(parts[8].module_list) ? parts[8].module_list : [];
+      var adModels = parts[9] && Array.isArray(parts[9].ad_model) ? parts[9].ad_model : [];
       return {
         models: Array.isArray(parts[0]) ? parts[0] : [],
         samplers: Array.isArray(parts[1]) ? parts[1] : [],
@@ -211,7 +410,15 @@
         upscalers: Array.isArray(parts[3]) ? parts[3] : [],
         loras: Array.isArray(parts[4]) ? parts[4] : [],
         options: parts[5] || {},
-        currentModel: (parts[5] && parts[5].sd_model_checkpoint) || ''
+        currentModel: (parts[5] && parts[5].sd_model_checkpoint) || '',
+        extensions: {
+          regionalPrompter:scripts.indexOf('regional prompter') !== -1,
+          adetailer:scripts.indexOf('adetailer') !== -1,
+          controlNet:scripts.indexOf('controlnet') !== -1,
+          controlModels:controlModels,
+          controlModules:controlModules,
+          adModels:adModels
+        }
       };
     });
   };

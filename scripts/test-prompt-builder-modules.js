@@ -55,7 +55,8 @@ try {
 
 let previousOffset = -1;
 for (const [name, marker] of modules) {
-  const src = 'prompt-builder/' + name + '?v=1';
+  const version = name === 'sd.js' ? '2' : '1';
+  const src = 'prompt-builder/' + name + '?v=' + version;
   const offset = html.indexOf(src);
   if (offset < 0) fail('missing script reference for ' + name);
   if (offset <= previousOffset) fail('module load order is invalid near ' + name);
@@ -107,6 +108,9 @@ if (!html.includes('1344×768 · 高清') || !html.includes('1536×864 · 16G �
 }
 if (!sdSource.includes('function applySceneGenerationPreset(scene)') || !sdSource.includes('applySceneGenerationPreset(activeScene)')) {
   fail('scene size presets must survive quick-create parameter reuse');
+}
+if (!sdSource.includes('function resolveDualEnhancement(character, scene)') || !sdSource.includes('dualEnhancement: resolveDualEnhancement(currentCharacter, currentScene)')) {
+  fail('dual scenes must route through capability-aware generation enhancement');
 }
 if (!sceneSource.includes('applySceneGenerationPreset(s)')) {
   fail('loading a scene must apply its generation-size preset');

@@ -15,6 +15,40 @@ function getSDConnector(){
   if(!_sdConnector) _sdConnector = new SDWebUIConnector();
   return _sdConnector;
 }
+
+function resolveDualEnhancement(character, scene){
+  if (character !== 'triad') return null;
+  var extensions = _sdCapabilities && _sdCapabilities.extensions || {};
+  var controlModels = Array.isArray(extensions.controlModels) ? extensions.controlModels : [];
+  var adModels = Array.isArray(extensions.adModels) ? extensions.adModels : [];
+  var controlModel = controlModels.find(function(name){
+    return /xinsir.*openpose.*sdxl/i.test(String(name || ''));
+  }) || controlModels.find(function(name){
+    return /openpose.*sdxl/i.test(String(name || ''));
+  }) || '';
+  var tags = scene && Array.isArray(scene.tags) ? scene.tags.map(function(tag){ return String(tag).toLowerCase(); }) : [];
+  var distantFaces = tags.indexOf('wide_shot') !== -1 || tags.indexOf('full_body') !== -1;
+  var hasVerifiedPose = tags.indexOf('dual_pose_verified') !== -1;
+  return {
+    regional:!!extensions.regionalPrompter,
+    ratios:'1,1',
+    baseRatio:'0.3',
+    // Latent mode can isolate LoRAs more strongly, but the current reForge
+    // build becomes unstable when it is combined with ControlNet/ADetailer.
+    // Attention mode is the verified production path on this machine.
+    generationMode:'Attention',
+    controlModel:extensions.controlNet ? controlModel : '',
+    controlImageUrl:hasVerifiedPose && scene && scene.id ? '/assets/dual-poses/' + scene.id + '.png' : '',
+    controlWeight:0.65,
+    controlEnd:0.72,
+    resizeMode:'Resize and Fill',
+    // Close-up faces from the character LoRAs are already strong. Restrict
+    // low-denoise ADetailer to distant two-person compositions.
+    adetailer:!!extensions.adetailer && distantFaces && adModels.indexOf('face_yolov8s.pt') !== -1,
+    adModel:'face_yolov8s.pt'
+  };
+}
+
 function readSDSettings(){
   try {
     var parsed = JSON.parse(localStorage.getItem(SD_SETTINGS_KEY) || '{}');
@@ -775,6 +809,7 @@ function callSDGenerate(requestOptions){
     seed: seed,
     lora: lora,
     char: currentCharacter,
+    dualEnhancement: resolveDualEnhancement(currentCharacter, currentScene),
     checkpoint: queuedJob ? queuedJob.checkpoint : (document.getElementById('sdModel').value || ''),
     enableHires: hiresEnabled,
     hiresUpscaler: hiresUpscaler,
@@ -795,6 +830,13 @@ function callSDGenerate(requestOptions){
     hiresUpscaler: hiresUpscaler,
     hiresScale: hiresScale
   };
+  var dualLabels = [];
+  if (options.dualEnhancement) {
+    if (options.dualEnhancement.regional) dualLabels.push('角色分区');
+    if (options.dualEnhancement.controlModel && options.dualEnhancement.controlImageUrl) dualLabels.push('姿势约束');
+    if (options.dualEnhancement.adetailer) dualLabels.push('双脸精修');
+  }
+  if (dualLabels.length) status.textContent = '⏳ 双人构图增强（' + dualLabels.join('＋') + '）已提交…';
 
   return getSDConnector().generateImage(prompt, queuedJob ? queuedJob.negative : getPlainNegative(), options).then(function(result){
     if (_sdGeneration !== generation || generation.cancelled) {
@@ -815,7 +857,12 @@ function callSDGenerate(requestOptions){
     }
     setSDProgress(100);
     var elapsed = Math.max(1, Math.round((Date.now() - generation.startedAt) / 1000));
-    status.textContent = '✅ 生成完成 · ' + elapsed + ' 秒' + (hiresEnabled ? ' · hires.fix ' + hiresScale + 'x' : '');
+    var enhancementLabels = result.enhancements
+      ? [result.enhancements.regional ? '角色分区' : '', result.enhancements.controlNet ? '姿势约束' : '', result.enhancements.adetailer ? '双脸精修' : ''].filter(Boolean)
+      : [];
+    status.textContent = '✅ 生成完成 · ' + elapsed + ' 秒' +
+      (enhancementLabels.length ? ' · ' + enhancementLabels.join('＋') : '') +
+      (hiresEnabled ? ' · hires.fix ' + hiresScale + 'x' : '');
     document.getElementById('stepResult').classList.add('has-image');
     var image = document.createElement('img');
     image.src = result.image;

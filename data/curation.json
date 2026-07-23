@@ -3,7 +3,7 @@
   "qualityGate": {
     "audit": "2026-07-23_v14_official_cg",
     "reviewer": "direct-vision",
-    "passed": 278,
+    "passed": 277,
     "failed": 0
   },
   "curatedSceneIds": [
@@ -34,7 +34,6 @@
     "sc078",
     "sc096",
     "sc142",
-    "sc148",
     "sc215"
   ],
   "signatureSceneIds": [
