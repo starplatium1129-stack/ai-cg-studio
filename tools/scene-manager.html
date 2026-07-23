@@ -88,6 +88,8 @@
 
   <div class="tab-bar">
     <button class="tab active" onclick="switchTab('scenes')">📋 场景列表</button>
+    <button class="tab" onclick="switchTab('images')">🖼 样张管理</button>
+    <button class="tab" onclick="switchTab('import')">📥 批量导入</button>
     <button class="tab" onclick="switchTab('duplicates')">🔍 去重检测</button>
     <button class="tab" onclick="switchTab('tags')">🏷 Tag 管理</button>
     <button class="tab" onclick="switchTab('guide')">📖 使用指南</button>
@@ -139,6 +141,46 @@
     </div>
 
     <div class="pagination" id="pagination"></div>
+  </div>
+
+  <!-- Images Tab -->
+  <div id="tab-images" style="display:none">
+    <div class="toolbar">
+      <input type="text" class="search-input" id="imageSearch" placeholder="搜索场景 ID 或标题…" oninput="renderImages()">
+      <span style="color:var(--text-muted);font-size:.85rem">点击场景卡片可预览当前样张</span>
+    </div>
+    <div id="imageGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--s-3)"></div>
+    <div id="imagePreview" style="display:none;margin-top:var(--s-4);text-align:center">
+      <h3 id="previewTitle" style="margin-bottom:var(--s-2)"></h3>
+      <img id="previewImg" style="max-width:100%;border-radius:var(--r-lg);border:1px solid var(--border-soft)">
+      <p style="color:var(--text-muted);font-size:.8rem;margin-top:var(--s-2)">
+        替换样张：将新图片保存到 <code>E:\code\2\lora\AI\SceneShowcase\2026-07-22_v14\images\[场景ID].jpg</code>
+      </p>
+    </div>
+  </div>
+
+  <!-- Import Tab -->
+  <div id="tab-import" style="display:none">
+    <div style="max-width:800px">
+      <h2 style="font-size:1.2rem;margin-bottom:var(--s-4)">📥 批量导入场景</h2>
+      <p style="font-size:.85rem;color:var(--text-secondary);margin-bottom:var(--s-4)">
+        粘贴 JSON 数据（单个场景对象或场景数组），系统会自动验证并添加。支持的字段会自动映射，缺失的字段会用默认值填充。
+      </p>
+      <textarea id="importInput" class="form-input" style="width:100%;min-height:300px;font-family:monospace;font-size:.85rem" placeholder='粘贴场景 JSON，例如：
+{
+  "id": "sc260",
+  "title": "新场景标题",
+  "category": "恋爱",
+  "char": "nene",
+  "story": "故事内容...",
+  "rating": "All"
+}'></textarea>
+      <div style="display:flex;gap:var(--s-3);margin-top:var(--s-3)">
+        <button class="btn btn-primary" onclick="importScenes()">🔍 验证并导入</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('importInput').value=''">清空</button>
+      </div>
+      <div id="importResult" style="margin-top:var(--s-4)"></div>
+    </div>
   </div>
 
   <!-- Duplicates Tab -->
@@ -469,9 +511,80 @@ function switchTab(tab) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   event.target.classList.add('active');
   document.getElementById('tab-scenes').style.display = tab === 'scenes' ? '' : 'none';
+  document.getElementById('tab-images').style.display = tab === 'images' ? '' : 'none';
+  document.getElementById('tab-import').style.display = tab === 'import' ? '' : 'none';
   document.getElementById('tab-duplicates').style.display = tab === 'duplicates' ? '' : 'none';
   document.getElementById('tab-tags').style.display = tab === 'tags' ? '' : 'none';
   document.getElementById('tab-guide').style.display = tab === 'guide' ? '' : 'none';
+  if (tab === 'images') renderImages();
+}
+
+// Image management
+function renderImages() {
+  const search = (document.getElementById('imageSearch')?.value || '').toLowerCase();
+  const filtered = SCENES.filter(s => {
+    if (!search) return true;
+    return (s.id + s.title).toLowerCase().includes(search);
+  });
+
+  document.getElementById('imageGrid').innerHTML = filtered.map(s => `
+    <div style="background:var(--bg-surface);border:1px solid var(--border-soft);border-radius:var(--r-md);padding:var(--s-3);cursor:pointer;transition:all var(--t-fast)" onclick="previewImage('${s.id}','${esc(s.title)}')" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border-soft)'">
+      <div style="font-weight:700;font-size:.85rem;margin-bottom:2px">${s.id}</div>
+      <div style="font-size:.8rem;color:var(--text-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(s.title)}</div>
+      <div style="font-size:.72rem;color:var(--text-muted);margin-top:4px">${s.char === 'nene' ? '🌸' : '🍂'} ${s.rating}</div>
+    </div>
+  `).join('');
+}
+
+function previewImage(id, title) {
+  document.getElementById('previewTitle').textContent = id + ' · ' + title;
+  const img = document.getElementById('previewImg');
+  img.src = '../../AI/SceneShowcase/2026-07-22_v14/images/' + id + '.jpg';
+  img.onerror = function() { this.src = 'about:blank'; this.alt = '样张未找到'; };
+  document.getElementById('imagePreview').style.display = 'block';
+}
+
+// Import
+function importScenes() {
+  const input = document.getElementById('importInput').value.trim();
+  if (!input) { document.getElementById('importResult').innerHTML = '<p style="color:#e53935">请粘贴 JSON</p>'; return; }
+
+  let data;
+  try { data = JSON.parse(input); } catch(e) {
+    document.getElementById('importResult').innerHTML = '<p style="color:#e53935">JSON 错误：' + e.message + '</p>';
+    return;
+  }
+  if (!Array.isArray(data)) data = [data];
+
+  const existingIds = new Set(SCENES.map(s => s.id));
+  const results = { success: [], skipped: [], errors: [] };
+
+  data.forEach((item, idx) => {
+    if (!item.id) { results.errors.push({idx, reason:'缺少 id'}); return; }
+    if (existingIds.has(item.id)) { results.skipped.push({idx, id:item.id}); return; }
+
+    const scene = {
+      id: item.id, title: item.title || '未命名', category: item.category || '恋爱',
+      story: item.story || '', char: item.char || 'nene', character: [item.char || 'nene'],
+      lora: item.lora || (item.char === 'natsume' ? 'shiki_natsume_v11' : 'ayachi_nene_v11'),
+      emotion: item.emotion || '恋爱', season: item.season || '不限', time: item.time || '深夜',
+      timeOfDay: item.timeOfDay || 'late_night', tags: item.tags || [], mature: item.mature || false,
+      rating: item.rating || (item.mature ? 'R18' : 'All'), location: item.location || '',
+      weather: item.weather || '', camera: item.camera || '', lighting: item.lighting || '',
+      usage: item.usage || ['壁纸级'], prompt: item.prompt || '',
+      negative: item.negative || 'worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands',
+      storyJa: item.storyJa || ''
+    };
+    SCENES.push(scene); existingIds.add(scene.id); results.success.push(scene.id);
+  });
+
+  let html = '<div style="background:var(--bg-surface);border:1px solid var(--border-soft);border-radius:var(--r-md);padding:var(--s-4)">';
+  if (results.success.length) html += '<p style="color:#2E7D32">✅ 导入 ' + results.success.length + ' 个：' + results.success.join(', ') + '</p>';
+  if (results.skipped.length) html += '<p style="color:#E65100">⚠️ 跳过 ' + results.skipped.length + ' 个（ID 已存在）</p>';
+  if (results.errors.length) html += '<p style="color:#C62828">❌ 错误：' + results.errors.map(e => '#' + e.idx + ' ' + e.reason).join('; ') + '</p>';
+  html += '</div><p style="color:var(--text-muted);font-size:.8rem;margin-top:var(--s-2)">记得点「导出 JSON」保存。</p>';
+  document.getElementById('importResult').innerHTML = html;
+  renderScenes(); renderStats();
 }
 
 // Edit/Add
