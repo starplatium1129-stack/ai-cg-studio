@@ -86,16 +86,22 @@
     overflow: hidden;
   }
   .hero-orbit { grid-column:2; grid-row:1 / span 2; min-height:440px; position:relative; isolation:isolate; border:1px solid var(--border-soft); border-radius:28px; overflow:hidden; background:linear-gradient(135deg,rgba(244,166,215,.18),transparent 42%),linear-gradient(155deg,#4d3d67 0%,#2a233d 48%,#171422 100%); box-shadow:inset 0 1px 0 rgba(255,255,255,.18),var(--shadow-lg); }
+  [data-theme="light"] .hero-orbit { background:linear-gradient(135deg,rgba(255,255,255,.32),transparent 38%),linear-gradient(155deg,#e9ddf4 0%,#c8b9df 48%,#8c789f 100%); box-shadow:inset 0 1px 0 rgba(255,255,255,.68),0 24px 60px rgba(88,64,118,.18); }
   .hero-orbit::before { content:"綾　季"; position:absolute; z-index:0; top:18px; left:22px; color:rgba(255,255,255,.07); font:700 clamp(4rem,8vw,7rem)/1 serif; letter-spacing:.08em; writing-mode:vertical-rl; }
   .hero-orbit::after { content:""; position:absolute; z-index:2; inset:auto 0 0; height:45%; background:linear-gradient(180deg,transparent,rgba(18,14,29,.74) 74%); pointer-events:none; }
   .hero-character { position:absolute; z-index:1; bottom:0; width:72%; height:94%; object-fit:contain; object-position:center bottom; filter:drop-shadow(0 24px 28px rgba(8,5,18,.36)); transition:transform .6s cubic-bezier(.2,.8,.2,1),filter .6s ease; }
-  .hero-character.nene { left:-12%; transform:translateX(-2%); }
-  .hero-character.natsume { right:-13%; transform:translateX(2%); }
+  .hero-character.nene { left:0; width:54%; height:100%; object-fit:cover; object-position:50% 38%; filter:saturate(.84) contrast(.96); transform:translateX(-1%); }
+  .hero-character.natsume { right:0; width:54%; height:100%; object-fit:cover; object-position:50% 35%; filter:saturate(.84) contrast(.96); transform:translateX(1%); }
+  .hero-character.nene { clip-path:polygon(0 0,100% 0,86% 100%,0 100%); }
+  .hero-character.natsume { clip-path:polygon(14% 0,100% 0,100% 100%,0 100%); }
   .hero-orbit:hover .hero-character.nene { transform:translateX(1%); }
   .hero-orbit:hover .hero-character.natsume { transform:translateX(-1%); }
   .orbit-label { position:absolute; z-index:3; left:24px; right:24px; bottom:24px; padding:14px 16px; border:1px solid rgba(255,255,255,.16); border-radius:16px; background:rgba(23,18,42,.45); backdrop-filter:blur(16px); }
+  [data-theme="light"] .orbit-label { border-color:rgba(77,55,101,.2); background:rgba(255,252,255,.72); box-shadow:0 12px 28px rgba(69,48,88,.12); }
   .orbit-label strong { display:block; font-size:.86rem; letter-spacing:.08em; color:#fff; }
   .orbit-label span { display:block; margin-top:3px; color:rgba(255,255,255,.68); font-size:.75rem; }
+  [data-theme="light"] .orbit-label strong { color:#342640; }
+  [data-theme="light"] .orbit-label span { color:#6d5a79; }
   .hero-strip::before {
     content: "";
     position: absolute; inset: 0;
@@ -272,8 +278,8 @@
       </div>
     </div>
     <aside class="hero-orbit" aria-label="宁宁与夏目的角色视觉">
-      <img class="hero-character nene" src="assets/characters/nene-official.webp" alt="绫地宁宁" decoding="async">
-      <img class="hero-character natsume" src="assets/characters/natsume-official.webp" alt="四季夏目" decoding="async">
+      <img class="hero-character nene" src="assets/characters/nene-home-cg.jpg" alt="绫地宁宁" decoding="async">
+      <img class="hero-character natsume" src="assets/characters/natsume-home-cg.jpg" alt="四季夏目" decoding="async">
       <div class="orbit-label"><strong>NENE × NATSUME</strong><span>把今天的心动，收进画面。</span></div>
     </aside>
     <div class="hero-strip" aria-labelledby="featuredScenesLabel">
