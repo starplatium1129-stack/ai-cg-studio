@@ -20,6 +20,7 @@
     { id:'character', label:'角色',           href:'tools/character.html',      icon:'👤' },
     { id:'style',     label:'画风',           href:'tools/style.html',          icon:'🎨' },
     { id:'lora',      label:'模型',           href:'tools/lora.html',           icon:'🧪' },
+    { id:'manager',   label:'场景管理',       href:'tools/scene-manager.html',  icon:'🎬' },
     { id:'docs',      label:'手册',           href:'docs/index.html',           icon:'📖' }
   ];
 
