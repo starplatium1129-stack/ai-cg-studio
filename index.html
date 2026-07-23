@@ -469,17 +469,20 @@ if(!localStorage.getItem('aics_guide_dismissed')){
   }
 
   function renderSceneHighlights(){
+    var host = document.getElementById('featuredScenes');
+    if (host) host.innerHTML = '<div style="text-align:center;padding:var(--s-6);color:var(--text-muted)">⏳ 正在加载场景…</div>';
     return Promise.all([
       fetch('data/scenes.json?v=9').then(function(r){if(!r.ok)throw new Error('Scenes HTTP '+r.status);return r.json();}),
       fetch('data/curation.json?v=3').then(function(r){if(!r.ok)throw new Error('Curation HTTP '+r.status);return r.json();})
     ]).then(function(result){
       var scenes=result[0],curation=result[1]||{};
+      if (!Array.isArray(scenes) || !scenes.length) throw new Error('场景数据为空');
       var signatures=Array.isArray(curation.signatureSceneIds)?curation.signatureSceneIds:[];
       var curated=Array.isArray(curation.curatedSceneIds)?curation.curatedSceneIds:[];
       var ids=signatures.concat(curated.filter(function(id){return signatures.indexOf(id)<0;}));
       document.getElementById('sceneCountCopy').textContent = ids.length + ' 个优先场景';
       document.getElementById('sceneLibraryCopy').textContent = ids.length + ' 个招牌与精选场景，完整库共 ' + scenes.length + ' 个。';
-      var host = document.getElementById('featuredScenes');
+      if (host) host.innerHTML = '';
       ids.map(function(id){return scenes.find(function(scene){return scene.id===id;});}).filter(function(scene){return scene&&!scene.mature;}).slice(0,6).forEach(function(scene){
         host.appendChild(createSceneCard(scene, {
           mode:'strip', clickable:true,
@@ -487,7 +490,8 @@ if(!localStorage.getItem('aics_guide_dismissed')){
         }));
       });
       renderRecentScenes(scenes);
-    }).catch(function(){
+    }).catch(function(err){
+      if (host) host.innerHTML = '<div style="text-align:center;padding:var(--s-6);color:#e53935">⚠️ 场景加载失败：' + esc(err.message) + '</div>';
       document.getElementById('sceneCountCopy').textContent = '精选场景';
     });
   }

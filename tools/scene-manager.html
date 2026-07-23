@@ -397,12 +397,27 @@ let sceneUsageCount = {};
 const SHOWCASE_DIR = '../../AI/SceneShowcase/2026-07-22_v14';
 
 async function init() {
-  const [scenesRes, tagsRes] = await Promise.all([
-    fetch('../data/scenes.json?v=' + Date.now()),
-    fetch('../data/tags.json?v=' + Date.now())
-  ]);
-  SCENES = await scenesRes.json();
-  TAGS = await tagsRes.json();
+  const table = document.getElementById('sceneTable');
+  if (table) table.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:var(--s-6);color:var(--text-muted)">⏳ 正在加载数据…</td></tr>';
+
+  try {
+    const [scenesRes, tagsRes] = await Promise.all([
+      fetch('../data/scenes.json?v=' + Date.now()),
+      fetch('../data/tags.json?v=' + Date.now())
+    ]);
+
+    if (!scenesRes.ok) throw new Error('scenes.json 加载失败 (HTTP ' + scenesRes.status + ')');
+    if (!tagsRes.ok) throw new Error('tags.json 加载失败 (HTTP ' + tagsRes.status + ')');
+
+    SCENES = await scenesRes.json();
+    TAGS = await tagsRes.json();
+
+    if (!Array.isArray(SCENES)) throw new Error('scenes.json 格式错误：不是数组');
+    if (!Array.isArray(TAGS)) throw new Error('tags.json 格式错误：不是数组');
+  } catch (err) {
+    if (table) table.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:var(--s-6);color:#e53935">⚠️ ' + esc(err.message) + '<br><small>请确认通过 localhost 访问且文件存在</small></td></tr>';
+    return;
+  }
 
   // Count tag usage
   SCENES.forEach(s => {

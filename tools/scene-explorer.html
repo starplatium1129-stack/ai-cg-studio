@@ -246,6 +246,8 @@ function init(){
 // 从共享 JSON 加载场景(file:// 因 CORS 失败,需 localhost)
 function loadScenes(){
   const grid = document.getElementById('sceneGrid');
+  // Loading 状态
+  if (grid) grid.innerHTML = '<div class="sc-empty"><div class="ic" style="animation:pulse 1.5s infinite">⏳</div><p>正在加载场景库…</p></div>';
   Promise.all([
     fetch('../data/scenes.json?v=9').then(r => { if (!r.ok) throw new Error('Scenes HTTP ' + r.status); return r.json(); }),
     fetch('../data/curation.json?v=3').then(r => { if (!r.ok) throw new Error('Curation HTTP ' + r.status); return r.json(); }).catch(function(){ return { curatedSceneIds:[], moodRails:[] }; }),
@@ -253,6 +255,7 @@ function loadScenes(){
   ])
     .then(function(result){
       SCENES = result[0];
+      if (!Array.isArray(SCENES) || SCENES.length === 0) throw new Error('场景数据为空');
       CURATION_DATA = result[1] || CURATION_DATA;
       PERSONAL_PROFILE = result[2] || PERSONAL_PROFILE;
       CURATED_IDS = Array.isArray(CURATION_DATA.curatedSceneIds) ? CURATION_DATA.curatedSceneIds : [];
@@ -269,7 +272,7 @@ function loadScenes(){
       }
     })
     .catch(function(err){
-      if (grid) grid.innerHTML = '<div class="sc-empty"><div class="ic">⚠️</div><p>场景数据加载失败。<br>请通过 <code>localhost</code> 访问(不要用 file:// 直接打开)。<br><small>' + err.message + '</small></p></div>';
+      if (grid) grid.innerHTML = '<div class="sc-empty"><div class="ic">⚠️</div><p>场景数据加载失败。<br>请通过 <code>localhost</code> 访问(不要用 file:// 直接打开)。<br><small>' + esc(err.message) + '</small></p></div>';
     });
 }
 
