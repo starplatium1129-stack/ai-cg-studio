@@ -90,6 +90,7 @@
     <button class="tab active" onclick="switchTab('scenes')">📋 场景列表</button>
     <button class="tab" onclick="switchTab('duplicates')">🔍 去重检测</button>
     <button class="tab" onclick="switchTab('tags')">🏷 Tag 管理</button>
+    <button class="tab" onclick="switchTab('guide')">📖 使用指南</button>
   </div>
 
   <!-- Scenes Tab -->
@@ -169,6 +170,64 @@
         </thead>
         <tbody id="tagTable"></tbody>
       </table>
+    </div>
+  </div>
+
+  <!-- Guide Tab -->
+  <div id="tab-guide" style="display:none">
+    <div style="max-width:800px">
+      <h2 style="font-size:1.2rem;margin-bottom:var(--s-4)">📖 快速操作指南</h2>
+
+      <div style="background:var(--bg-surface);border:1px solid var(--border-soft);border-radius:var(--r-lg);padding:var(--s-4);margin-bottom:var(--s-4)">
+        <h3 style="font-size:1rem;margin-bottom:var(--s-3)">🖼 替换场景样张</h3>
+        <p style="font-size:.85rem;color:var(--text-secondary);line-height:1.6">
+          当你在导演工作台生成了比默认样张更好的图时：<br>
+          1. 把新图片保存到 <code>E:\code\2\lora\AI\SceneShowcase\2026-07-22_v14\images\</code><br>
+          2. 文件名必须是 <code>场景ID.jpg</code>（如 <code>sc001.jpg</code>）<br>
+          3. 运行 <code>python scripts/build-scene-showcase.py</code> 更新缩略图<br>
+          4. 刷新场景库页面即可看到新样张
+        </p>
+      </div>
+
+      <div style="background:var(--bg-surface);border:1px solid var(--border-soft);border-radius:var(--r-lg);padding:var(--s-4);margin-bottom:var(--s-4)">
+        <h3 style="font-size:1rem;margin-bottom:var(--s-3)">➕ 添加新场景</h3>
+        <p style="font-size:.85rem;color:var(--text-secondary);line-height:1.6">
+          方法一（推荐）：点击上方「+ 新增场景」按钮，填写表单后保存，然后点「导出 JSON」下载文件覆盖 <code>data/scenes.json</code><br><br>
+          方法二：直接编辑 <code>data/scenes.json</code>，复制任意现有场景，修改字段即可。必填字段：<br>
+          <code>id, title, category, story, char, character, lora, emotion, season, time, timeOfDay, tags, mature, rating, prompt, negative, storyJa</code>
+        </p>
+      </div>
+
+      <div style="background:var(--bg-surface);border:1px solid var(--border-soft);border-radius:var(--r-lg);padding:var(--s-4);margin-bottom:var(--s-4)">
+        <h3 style="font-size:1rem;margin-bottom:var(--s-3)">🏷 添加新 Tag</h3>
+        <p style="font-size:.85rem;color:var(--text-secondary);line-height:1.6">
+          1. 在「Tag 管理」标签页点击「+ 新增 Tag」<br>
+          2. 输入英文名（用于 prompt）、中文名（用于显示）、分类<br>
+          3. 系统会自动分配 ID<br>
+          4. 导出 JSON 覆盖 <code>data/tags.json</code>
+        </p>
+      </div>
+
+      <div style="background:var(--bg-surface);border:1px solid var(--border-soft);border-radius:var(--r-lg);padding:var(--s-4);margin-bottom:var(--s-4)">
+        <h3 style="font-size:1rem;margin-bottom:var(--s-3)">🔄 导出与保存</h3>
+        <p style="font-size:.85rem;color:var(--text-secondary);line-height:1.6">
+          所有修改都保存在浏览器内存中，不会自动写入文件。<br>
+          修改完成后，点击「📥 导出 JSON」下载文件，然后手动覆盖项目目录中的对应文件：<br>
+          • 场景 → <code>data/scenes.json</code><br>
+          • Tags → <code>data/tags.json</code>
+        </p>
+      </div>
+
+      <div style="background:var(--bg-surface);border:1px solid var(--border-soft);border-radius:var(--r-lg);padding:var(--s-4)">
+        <h3 style="font-size:1rem;margin-bottom:var(--s-3)">⚠️ 注意事项</h3>
+        <p style="font-size:.85rem;color:var(--text-secondary);line-height:1.6">
+          • 场景 ID 必须唯一，格式为 <code>sc001</code>、<code>sc002</code>…<br>
+          • Tag 英文名必须唯一，用于 prompt 生成<br>
+          • <code>char</code> 字段决定角色 LoRA：nene → ayachi_nene_v11，natsume → shiki_natsume_v11<br>
+          • <code>dual_pose_verified</code> 标签表示该双人场景有 OpenPose 骨架图<br>
+          • 删除场景前建议先备份 <code>scenes.json</code>
+        </p>
+      </div>
     </div>
   </div>
 </article>
@@ -412,6 +471,7 @@ function switchTab(tab) {
   document.getElementById('tab-scenes').style.display = tab === 'scenes' ? '' : 'none';
   document.getElementById('tab-duplicates').style.display = tab === 'duplicates' ? '' : 'none';
   document.getElementById('tab-tags').style.display = tab === 'tags' ? '' : 'none';
+  document.getElementById('tab-guide').style.display = tab === 'guide' ? '' : 'none';
 }
 
 // Edit/Add
