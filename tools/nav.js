@@ -12,11 +12,13 @@
 
   // 用户可见的导航项(创作流,概念已折叠)
   // Create = 全站最大入口,Director 为内部实现名,对用户隐身
-  var NAV = [
+  var PRIMARY_NAV = [
     { id:'scene',     label:'灵感场景',       href:'tools/scene-explorer.html', icon:'🌸' },
     { id:'director',  label:'开始绘制',       href:'tools/prompt-builder.html', icon:'✦' },
     { id:'showcase',  label:'效果样张',       href:'tools/showcase.html',       icon:'🖼' },
-    { id:'gallery',   label:'作品册',         href:'tools/gallery.html',        icon:'🎞' },
+    { id:'gallery',   label:'作品册',         href:'tools/gallery.html',        icon:'🎞' }
+  ];
+  var SECONDARY_NAV = [
     { id:'character', label:'角色',           href:'tools/character.html',      icon:'👤' },
     { id:'style',     label:'画风',           href:'tools/style.html',          icon:'🎨' },
     { id:'lora',      label:'模型',           href:'tools/lora.html',           icon:'🧪' },
@@ -49,10 +51,20 @@
     document.querySelectorAll('.footer p').forEach(function(paragraph){
       if (/AI[ -]CG Studio/i.test(paragraph.textContent)) paragraph.textContent = paragraph.textContent.replace(/AI[ -]CG Studio/gi, '绫季绘境');
     });
-    host.innerHTML = NAV.map(function (item) {
+    var primary = PRIMARY_NAV.map(function (item) {
       var cls = (item.id === current) ? ' class="active"' : '';
       return '<a' + cls + ' href="' + d + item.href + '">' + item.icon + ' ' + item.label + '</a>';
     }).join('');
+    var secondaryActive = SECONDARY_NAV.some(function(item){ return item.id === current; });
+    var secondary = SECONDARY_NAV.map(function(item) {
+      var cls = (item.id === current) ? ' class="active"' : '';
+      return '<a' + cls + ' href="' + d + item.href + '">' + item.icon + '<span>' + item.label + '</span></a>';
+    }).join('');
+    host.innerHTML = primary +
+      '<details class="nav-more"' + (secondaryActive ? ' data-active="true"' : '') + '>' +
+        '<summary aria-label="打开更多页面">更多<span class="nav-more-chevron">⌄</span></summary>' +
+        '<div class="nav-more-menu">' + secondary + '</div>' +
+      '</details>';
 
     var inner = host.closest('.nav-inner');
     if (inner && !inner.querySelector('.nav-menu-toggle')) {
@@ -74,6 +86,10 @@
         host.classList.remove('open');
         toggle.setAttribute('aria-expanded', 'false');
         toggle.textContent = '☰';
+      });
+      document.addEventListener('click', function(e){
+        var more = host.querySelector('.nav-more');
+        if (more && more.open && !more.contains(e.target)) more.open = false;
       });
       document.addEventListener('keydown', function(e){
         if (e.key === 'Escape' && host.classList.contains('open')) {

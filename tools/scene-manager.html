@@ -76,16 +76,30 @@
   .tab-bar { display: flex; gap: var(--s-2); margin-bottom: var(--s-4); }
   .tab { padding: 8px 16px; border: 1px solid var(--border-soft); background: transparent; border-radius: var(--r-md); cursor: pointer; font-size: .85rem; color: var(--text-secondary); }
   .tab.active { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+  .maintenance-state { display:flex; align-items:center; justify-content:space-between; gap:var(--s-4); padding:var(--s-3) var(--s-4); margin-bottom:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); }
+  .maintenance-state strong { display:block; font-size:.88rem; }
+  .maintenance-state small { color:var(--text-muted); }
+  .maintenance-state.dirty { border-color:var(--accent); background:var(--accent-soft); }
+  .image-upload { display:flex; justify-content:center; gap:var(--s-2); flex-wrap:wrap; margin-top:var(--s-3); }
 </style>
 </head>
 <body>
-<div id="nav-container"></div>
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand"><span class="dot"></span> 绫季绘境</div>
+    <div class="nav-links"></div>
+  </div>
+</nav>
 
 <article class="page">
-  <h1 class="title">🎬 场景管理器</h1>
-  <p class="subtitle">管理场景库的增删改查、去重检测、Tag 管理。导出后运行 npm run scenes:import，将完整 JSON 安全拆回场景分片。</p>
+  <h1 class="title">场景维护</h1>
+  <p class="subtitle">像整理相册一样维护场景。修改先保留在当前页面，确认后再一次写入项目并自动检查。</p>
 
   <div class="stats" id="stats"></div>
+  <div class="maintenance-state" id="maintenanceState">
+    <div><strong id="maintenanceTitle">场景库已同步</strong><small id="maintenanceHint">新增、编辑或下架后，点击“保存到项目”。</small></div>
+    <button class="btn btn-primary" id="saveProjectBtn" type="button" onclick="saveToProject()" disabled>保存到项目</button>
+  </div>
 
   <div class="tab-bar">
     <button class="tab active" onclick="switchTab('scenes')">📋 场景列表</button>
@@ -121,7 +135,7 @@
         <option value="char">按角色</option>
       </select>
       <button class="btn btn-primary" onclick="openAddModal()">+ 新增场景</button>
-      <button class="btn btn-ghost" onclick="exportJSON()">📥 导出 JSON</button>
+      <button class="btn btn-ghost" onclick="exportJSON()">导出备份</button>
     </div>
 
     <div class="table-wrap">
@@ -154,9 +168,11 @@
     <div id="imagePreview" style="display:none;margin-top:var(--s-4);text-align:center">
       <h3 id="previewTitle" style="margin-bottom:var(--s-2)"></h3>
       <img id="previewImg" style="max-width:100%;border-radius:var(--r-lg);border:1px solid var(--border-soft)">
-      <p style="color:var(--text-muted);font-size:.8rem;margin-top:var(--s-2)">
-        替换样张：将新图片保存到 <code>AI\SceneShowcase\...\images\[场景ID].jpg</code>
-      </p>
+      <div class="image-upload">
+        <input id="showcaseFile" type="file" accept="image/png,image/jpeg,image/webp" hidden onchange="uploadShowcaseImage(this)">
+        <button class="btn btn-primary" type="button" onclick="document.getElementById('showcaseFile').click()">选择新样张</button>
+      </div>
+      <p id="showcaseFeedback" style="color:var(--text-muted);font-size:.8rem;margin-top:var(--s-2)">支持 PNG、JPEG、WebP，最大 15MB；仅本机可以替换。</p>
     </div>
   </div>
 
@@ -224,20 +240,16 @@
       <div style="background:var(--bg-surface);border:1px solid var(--border-soft);border-radius:var(--r-lg);padding:var(--s-4);margin-bottom:var(--s-4)">
         <h3 style="font-size:1rem;margin-bottom:var(--s-3)">🖼 替换场景样张</h3>
         <p style="font-size:.85rem;color:var(--text-secondary);line-height:1.6">
-          当你在导演工作台生成了比默认样张更好的图时：<br>
-          1. 把新图片保存到 <code>AI\SceneShowcase\...\images\</code> 目录<br>
-          2. 文件名必须是 <code>场景ID.jpg</code>（如 <code>sc001.jpg</code>）<br>
-          3. 运行 <code>python scripts/build-scene-showcase.py</code> 更新缩略图<br>
-          4. 刷新场景库页面即可看到新样张
+          打开“样张管理”，搜索并点选场景，然后点击“选择新样张”。<br>
+          系统会统一转换为高质量 JPEG，并按场景 ID 保存。整个操作只能从本机完成。
         </p>
       </div>
 
       <div style="background:var(--bg-surface);border:1px solid var(--border-soft);border-radius:var(--r-lg);padding:var(--s-4);margin-bottom:var(--s-4)">
         <h3 style="font-size:1rem;margin-bottom:var(--s-3)">➕ 添加新场景</h3>
         <p style="font-size:.85rem;color:var(--text-secondary);line-height:1.6">
-          方法一（推荐）：点击上方「+ 新增场景」按钮，填写表单后保存，然后点「导出 JSON」下载文件覆盖 <code>data/scenes.json</code><br><br>
-          方法二：直接编辑 <code>data/scenes.json</code>，复制任意现有场景，修改字段即可。必填字段：<br>
-          <code>id, title, category, story, char, character, lora, emotion, season, time, timeOfDay, tags, mature, rating, prompt, negative, storyJa</code>
+          点击“新增场景”从空白开始，或者在相似场景旁点击“复制”再修改。<br>
+          表单保存后，顶部会提示存在未保存修改；点击“保存到项目”即可自动分片、规范化和检查。
         </p>
       </div>
 
@@ -252,12 +264,10 @@
       </div>
 
       <div style="background:var(--bg-surface);border:1px solid var(--border-soft);border-radius:var(--r-lg);padding:var(--s-4);margin-bottom:var(--s-4)">
-        <h3 style="font-size:1rem;margin-bottom:var(--s-3)">🔄 导出与保存</h3>
+        <h3 style="font-size:1rem;margin-bottom:var(--s-3)">🔄 保存与自动备份</h3>
         <p style="font-size:.85rem;color:var(--text-secondary);line-height:1.6">
-          所有修改都保存在浏览器内存中，不会自动写入文件。<br>
-          修改完成后，点击「📥 导出 JSON」下载文件，然后手动覆盖项目目录中的对应文件：<br>
-          • 场景 → <code>data/scenes.json</code><br>
-          • Tags → <code>data/tags.json</code>
+          “保存到项目”会先在 <code>runtime/maintenance-backups</code> 创建备份，再写入场景源文件并自动检查。<br>
+          如果检查失败，旧文件会自动恢复。你也可以随时点击“导出备份”额外保存一份 JSON。
         </p>
       </div>
 
@@ -268,7 +278,8 @@
           • Tag 英文名必须唯一，用于 prompt 生成<br>
           • <code>char</code> 字段决定角色 LoRA：nene → ayachi_nene_v11，natsume → shiki_natsume_v11<br>
           • <code>dual_pose_verified</code> 标签表示该双人场景有 OpenPose 骨架图<br>
-          • 删除场景前建议先备份 <code>scenes.json</code>
+          • “下架”不会立即写入文件，只有点击“保存到项目”后才生效<br>
+          • 直接保存和替换样张仅允许在本机入口执行，朋友分享链接不能修改项目
         </p>
       </div>
     </div>
@@ -295,16 +306,17 @@
       <div class="form-group">
         <label class="form-label">角色</label>
         <select class="form-input" id="formChar">
-          <option value="nene">nene</option>
-          <option value="natsume">natsume</option>
+          <option value="nene">绫地宁宁</option>
+          <option value="natsume">四季夏目</option>
+          <option value="triad">宁宁 × 夏目</option>
         </select>
       </div>
       <div class="form-group">
-        <label class="form-label">LoRA</label>
+        <label class="form-label">角色模型（一般不用改）</label>
         <input type="text" class="form-input" id="formLora">
       </div>
       <div class="form-group">
-        <label class="form-label">情感</label>
+        <label class="form-label">主要情绪</label>
         <input type="text" class="form-input" id="formEmotion">
       </div>
       <div class="form-group">
@@ -318,9 +330,9 @@
         <input type="text" class="form-input" id="formTime">
       </div>
       <div class="form-group">
-        <label class="form-label">timeOfDay</label>
+        <label class="form-label">时段标识</label>
         <select class="form-input" id="formTimeOfDay">
-          <option>morning</option><option>afternoon</option><option>sunset</option><option>evening</option><option>night</option><option>late_night</option><option>dawn</option><option>daytime</option>
+          <option value="morning">清晨</option><option value="afternoon">午后</option><option value="sunset">黄昏</option><option value="evening">傍晚</option><option value="night">夜晚</option><option value="late_night">深夜</option><option value="dawn">黎明</option><option value="daytime">白天</option>
         </select>
       </div>
       <div class="form-group">
@@ -330,9 +342,9 @@
         </select>
       </div>
       <div class="form-group">
-        <label class="form-label">Mature</label>
+        <label class="form-label">成人内容</label>
         <select class="form-input" id="formMature">
-          <option value="false">false</option><option value="true">true</option>
+          <option value="false">否</option><option value="true">是</option>
         </select>
       </div>
       <div class="form-group">
@@ -352,11 +364,11 @@
         <input type="text" class="form-input" id="formLighting">
       </div>
       <div class="form-group full">
-        <label class="form-label">Tags（逗号分隔）</label>
+        <label class="form-label">画面标签（用逗号分隔）</label>
         <input type="text" class="form-input" id="formTags">
       </div>
       <div class="form-group full">
-        <label class="form-label">Usage（逗号分隔）</label>
+        <label class="form-label">推荐用途（用逗号分隔）</label>
         <input type="text" class="form-input" id="formUsage">
       </div>
       <div class="form-group full">
@@ -368,11 +380,11 @@
         <textarea class="form-input" id="formStoryJa"></textarea>
       </div>
       <div class="form-group full">
-        <label class="form-label">Prompt</label>
+        <label class="form-label">出图提示词</label>
         <textarea class="form-input" id="formPrompt" style="min-height:60px"></textarea>
       </div>
       <div class="form-group full">
-        <label class="form-label">Negative</label>
+        <label class="form-label">排除内容</label>
         <textarea class="form-input" id="formNegative" style="min-height:60px"></textarea>
       </div>
     </div>
@@ -394,8 +406,10 @@ let currentPage = 1;
 const PAGE_SIZE = 30;
 let editingId = null;
 let sceneUsageCount = {};
+let hasUnsavedChanges = false;
+let selectedImageSceneId = '';
 
-const SHOWCASE_DIR = '../../AI/SceneShowcase/2026-07-22_v14';
+const SHOWCASE_DIR = '../scene-showcase';
 
 async function init() {
   const table = document.getElementById('sceneTable');
@@ -503,7 +517,8 @@ function renderScenes() {
       <td>
         <div class="action-btns">
           <button class="btn btn-ghost btn-sm" onclick="openEditModal('${s.id}')">编辑</button>
-          <button class="btn btn-danger btn-sm" onclick="deleteScene('${s.id}')">删除</button>
+          <button class="btn btn-ghost btn-sm" onclick="duplicateScene('${s.id}')">复制</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteScene('${s.id}')">下架</button>
         </div>
       </td>
     </tr>
@@ -555,11 +570,45 @@ function renderImages() {
 }
 
 function previewImage(id, title) {
+  selectedImageSceneId = id;
   document.getElementById('previewTitle').textContent = id + ' · ' + title;
   const img = document.getElementById('previewImg');
   img.src = SHOWCASE_DIR + '/images/' + id + '.jpg';
   img.onerror = function() { this.src = 'about:blank'; this.alt = '样张未找到'; };
   document.getElementById('imagePreview').style.display = 'block';
+  document.getElementById('showcaseFeedback').textContent = '支持 PNG、JPEG、WebP，最大 15MB；仅本机可以替换。';
+}
+
+function uploadShowcaseImage(input) {
+  const file = input.files && input.files[0];
+  const feedback = document.getElementById('showcaseFeedback');
+  if (!file || !selectedImageSceneId) return;
+  if (file.size > 15 * 1024 * 1024) { feedback.textContent = '图片超过 15MB，请先压缩。'; input.value = ''; return; }
+  feedback.textContent = '正在保存样张…';
+  const reader = new FileReader();
+  reader.onload = function() {
+    const image = new Image();
+    image.onload = function() {
+      const canvas = document.createElement('canvas');
+      canvas.width = image.naturalWidth; canvas.height = image.naturalHeight;
+      canvas.getContext('2d').drawImage(image, 0, 0);
+      const normalized = canvas.toDataURL('image/jpeg', .94);
+      fetch('../api/maintenance/showcase', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({ id:selectedImageSceneId, image:normalized })
+      }).then(function(response) {
+        return response.json().then(function(data) { if (!response.ok) throw new Error(data.error || '保存失败'); return data; });
+      }).then(function(data) {
+        feedback.textContent = data.message;
+        document.getElementById('previewImg').src = '../scene-showcase/' + data.file + '?v=' + Date.now();
+      }).catch(function(error) {
+        feedback.textContent = '未能直接保存：' + error.message + '。请确认通过本机控制面板打开网站。';
+      }).finally(function() { input.value = ''; });
+    };
+    image.onerror = function() { feedback.textContent = '无法读取这张图片，请换一张再试。'; input.value = ''; };
+    image.src = reader.result;
+  };
+  reader.readAsDataURL(file);
 }
 
 // Import
@@ -602,6 +651,7 @@ function importScenes() {
   if (results.errors.length) html += '<p style="color:#C62828">❌ 错误：' + results.errors.map(e => '#' + e.idx + ' ' + e.reason).join('; ') + '</p>';
   html += '</div><p style="color:var(--text-muted);font-size:.8rem;margin-top:var(--s-2)">记得点「导出 JSON」保存。</p>';
   document.getElementById('importResult').innerHTML = html;
+  if (results.success.length) markDirty('批量导入已通过基础检查，等待保存到项目');
   renderScenes(); renderStats();
 }
 
@@ -701,15 +751,64 @@ function saveScene() {
   }
 
   closeModal();
+  markDirty('场景内容有修改');
   renderScenes();
   renderStats();
 }
 
 function deleteScene(id) {
-  if (!confirm('确认删除 ' + id + '？')) return;
+  if (!confirm('确认下架 ' + id + '？保存到项目后，它将不再出现在场景库中。')) return;
   SCENES = SCENES.filter(s => s.id !== id);
+  markDirty('有场景等待下架');
   renderScenes();
   renderStats();
+}
+
+function duplicateScene(id) {
+  const source = SCENES.find(s => s.id === id);
+  if (!source) return;
+  const maxId = SCENES.reduce((m, s) => Math.max(m, parseInt(String(s.id).replace('sc', '')) || 0), 0);
+  const copy = JSON.parse(JSON.stringify(source));
+  copy.id = 'sc' + String(maxId + 1).padStart(3, '0');
+  copy.title = source.title + ' · 副本';
+  SCENES.push(copy);
+  markDirty('已复制场景，请编辑副本内容');
+  renderScenes();
+  renderStats();
+  openEditModal(copy.id);
+}
+
+function markDirty(message) {
+  hasUnsavedChanges = true;
+  const state = document.getElementById('maintenanceState');
+  state.classList.add('dirty');
+  document.getElementById('maintenanceTitle').textContent = '有尚未保存的修改';
+  document.getElementById('maintenanceHint').textContent = message || '确认无误后保存到项目。';
+  document.getElementById('saveProjectBtn').disabled = false;
+}
+
+function saveToProject() {
+  if (!hasUnsavedChanges) return;
+  const button = document.getElementById('saveProjectBtn');
+  button.disabled = true;
+  button.textContent = '正在保存并检查…';
+  fetch('../api/maintenance/scenes', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({ scenes:SCENES })
+  }).then(function(response) {
+    return response.json().then(function(data) { if (!response.ok) throw new Error(data.error || '保存失败'); return data; });
+  }).then(function(data) {
+    hasUnsavedChanges = false;
+    document.getElementById('maintenanceState').classList.remove('dirty');
+    document.getElementById('maintenanceTitle').textContent = '已保存并通过检查';
+    document.getElementById('maintenanceHint').textContent = data.count + ' 个场景已同步到项目，自动备份也已创建。';
+    button.textContent = '保存到项目';
+  }).catch(function(error) {
+    document.getElementById('maintenanceTitle').textContent = '保存未完成';
+    document.getElementById('maintenanceHint').textContent = error.message;
+    button.disabled = false;
+    button.textContent = '重新保存';
+  });
 }
 
 // Duplicates

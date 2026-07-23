@@ -37,9 +37,6 @@
   .scene-fav { width:100%; justify-content:center; margin-top:var(--s-2); border-color:var(--border-soft); background:transparent; color:var(--text-muted); }
   .scene-fav.saved { color:var(--accent); border-color:var(--accent); background:var(--accent-soft); }
 
-  .info-callout { background: var(--accent-soft); border: 1px solid var(--accent); border-radius: var(--r-md); padding: var(--s-3) var(--s-4); margin-bottom: var(--s-5); font-size: 0.92rem; color: var(--text-primary); }
-  .info-callout strong { color: var(--accent); }
-
   /* Search + cats */
   .scene-search-wrap { position: relative; margin-bottom: var(--s-4); }
   .scene-search { width: 100%; padding: var(--s-3) 42px var(--s-3) var(--s-4); background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-lg); color: var(--text-primary); font-size: 0.95rem; outline: none; transition: border-color var(--t-fast); }
@@ -55,10 +52,17 @@
   .scene-cat { appearance: none; padding: 6px 16px; border: 1px solid var(--border-soft); background: var(--bg-surface); color: var(--text-secondary); border-radius: 20px; cursor: pointer; font: 500 .85rem var(--font-sans); transition: all var(--t-fast); }
   .scene-cat:hover { border-color: var(--accent); color: var(--accent); }
   .scene-cat.active { background: var(--accent); color: var(--text-inverse); border-color: var(--accent); }
-  .scene-facet-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:var(--s-3); }
+  .scene-facet-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--s-3); }
   .scene-filter-field { display:grid; gap:5px; color:var(--text-muted); font-size:.72rem; font-weight:600; }
   .scene-filter-field select { width:100%; min-width:0; padding:8px 10px; background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-md); color:var(--text-primary); font:500 .82rem var(--font-sans); outline:none; }
   .scene-filter-field select:focus { border-color:var(--accent); }
+  .scene-more-filters { border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); overflow:hidden; }
+  .scene-more-filters summary { list-style:none; display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); padding:10px 12px; color:var(--text-secondary); cursor:pointer; font-size:.8rem; font-weight:650; }
+  .scene-more-filters summary::-webkit-details-marker { display:none; }
+  .scene-more-filters summary:hover { color:var(--text-primary); background:var(--accent-soft); }
+  .scene-more-filters summary::after { content:'＋'; color:var(--text-muted); }
+  .scene-more-filters[open] summary::after { content:'−'; }
+  .scene-more-filters .scene-facet-grid { padding:0 12px 12px; grid-template-columns:repeat(4,minmax(0,1fr)); }
   .scene-filter-meta { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); flex-wrap: wrap; padding: var(--s-3); border: 1px solid var(--border-soft); border-radius: var(--r-md); background: var(--bg-surface); }
   .mature-toggle { display: inline-flex; align-items: center; gap: var(--s-2); color: var(--text-secondary); cursor: pointer; font-size: .85rem; }
   .mature-toggle input { accent-color: var(--accent); width: 17px; height: 17px; }
@@ -109,6 +113,7 @@
     .page { padding: var(--s-4) var(--s-3); }
     .ex-decision, .ex-tags { display: none; }
     .scene-facet-grid { grid-template-columns:1fr 1fr; }
+    .scene-more-filters .scene-facet-grid { grid-template-columns:1fr 1fr; }
     .curation-panel { grid-template-columns:1fr; }
     .scene-cat, .scene-reset, .scene-filter select, .scene-search-clear, .ex-actions .btn, .story-actions .btn { min-height: 44px; }
     .scene-card .scene-story { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
@@ -141,11 +146,6 @@
     <div class="mood-rails" id="moodRails" aria-live="polite"></div>
   </section>
 
-  <div class="info-callout">
-    <strong>🎯 设计理念</strong> &nbsp;|&nbsp; 先找到<strong>“今天想画什么”</strong>，再由系统组装提示词。
-    每张卡片讲一个瞬间:故事、情绪、时间、地点、角色、季节 — Prompt 永远最后才出现。
-  </div>
-
   <label class="sr-only" for="sceneSearch">搜索场景</label>
   <div class="scene-search-wrap">
     <input type="search" class="scene-search" placeholder="🔍 试试：心动、安静、宁宁经典感、夏目经典感" id="sceneSearch" oninput="filterScenes(this.value)">
@@ -161,11 +161,16 @@
       <label class="scene-filter-field">角色<select id="sceneCharacter" onchange="filterScenes()"><option value="all">全部角色</option><option value="nene">🌸 宁宁</option><option value="natsume">🍂 夏目</option><option value="triad">🌸🍂 双人</option></select></label>
       <label class="scene-filter-field">季节<select id="sceneSeason" onchange="filterScenes()"><option value="all">全部季节</option><option value="春">🌸 春</option><option value="夏">☀️ 夏</option><option value="秋">🍂 秋</option><option value="冬">❄️ 冬</option><option value="不限">不限季节</option></select></label>
       <label class="scene-filter-field">时段<select id="sceneTime" onchange="filterScenes()"><option value="all">全部时段</option><option value="morning">清晨</option><option value="afternoon">午后</option><option value="sunset">黄昏</option><option value="night">夜晚与深夜</option><option value="dawn">黎明</option></select></label>
-      <label class="scene-filter-field">系列<select id="sceneSeries" onchange="filterScenes()"><option value="all">全部系列</option><option value="after">After Story</option><option value="fanwork">同人</option><option value="active">Active Sync</option></select></label>
-      <label class="scene-filter-field">内容分级<select id="sceneRating" onchange="filterScenes()"><option value="all">全部分级</option><option value="All">全年龄</option><option value="R15">R15 暧昧</option><option value="R18">R18 成人</option></select></label>
-      <label class="scene-filter-field">精品层级<select id="sceneTier" onchange="filterScenes()"><option value="featured">招牌与精选</option><option value="signature">只看招牌</option><option value="curated">只看精选</option><option value="all">完整场景库</option><option value="review">待返工</option></select></label>
-      <label class="scene-filter-field">排序<select id="sceneSort" onchange="filterScenes()"><option value="smart">✨ 智能推荐</option><option value="curated">主理人精选</option><option value="favorite">我的收藏</option><option value="newest">最新加入</option><option value="title">名称 A-Z</option></select></label>
     </div>
+    <details class="scene-more-filters">
+      <summary>更多筛选与排序</summary>
+      <div class="scene-facet-grid">
+        <label class="scene-filter-field">系列<select id="sceneSeries" onchange="filterScenes()"><option value="all">全部系列</option><option value="after">After Story</option><option value="fanwork">同人</option><option value="active">Active Sync</option></select></label>
+        <label class="scene-filter-field">内容分级<select id="sceneRating" onchange="filterScenes()"><option value="all">全部分级</option><option value="All">全年龄</option><option value="R15">R15 暧昧</option><option value="R18">R18 成人</option></select></label>
+        <label class="scene-filter-field">精品层级<select id="sceneTier" onchange="filterScenes()"><option value="featured">招牌与精选</option><option value="signature">只看招牌</option><option value="curated">只看精选</option><option value="all">完整场景库</option><option value="review">待返工</option></select></label>
+        <label class="scene-filter-field">排序<select id="sceneSort" onchange="filterScenes()"><option value="smart">✨ 智能推荐</option><option value="curated">主理人精选</option><option value="favorite">我的收藏</option><option value="newest">最新加入</option><option value="title">名称 A-Z</option></select></label>
+      </div>
+    </details>
     <div class="scene-filter-meta">
       <label class="mature-toggle"><input type="checkbox" id="showMature"> 显示成人内容 <span id="matureCount"></span></label>
       <span class="scene-count" id="sceneCount" role="status" aria-live="polite"></span>

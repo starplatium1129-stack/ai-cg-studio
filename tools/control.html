@@ -99,6 +99,7 @@
     min-width:0; padding:15px 16px; border:1px solid var(--border-soft);
     border-radius:12px; background:var(--surface); box-shadow:0 1px 3px rgba(0,0,0,.05);
   }
+  .status-card.primary { border-color:color-mix(in srgb,var(--accent) 24%,var(--border-soft)); }
   .status-label { color:var(--text-3); font-size:.72rem; margin-bottom:8px; }
   .badge {
     display:inline-flex; align-items:center; gap:8px;
@@ -307,6 +308,18 @@
       <div class="status-label">GPT-SoVITS</div>
       <div id="tts-badge" class="badge offline" role="status" aria-live="polite"><span class="dot"></span><span>正在检测…</span></div>
     </div>
+    <div class="status-card">
+      <div class="status-label">角色声线</div>
+      <div id="voice-badge" class="badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>正在检查…</span></div>
+    </div>
+    <div class="status-card">
+      <div class="status-label">分享组件</div>
+      <div id="share-badge" class="badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>正在检查…</span></div>
+    </div>
+    <div class="status-card primary">
+      <div class="status-label">创作状态</div>
+      <div id="ready-badge" class="badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>正在汇总…</span></div>
+    </div>
   </section>
 
   <section class="panel">
@@ -507,6 +520,9 @@ function renderStatus(data) {
   var badge = document.getElementById('badge');
   var sdBadge = document.getElementById('sd-badge');
   var ttsBadge = document.getElementById('tts-badge');
+  var voiceBadge = document.getElementById('voice-badge');
+  var shareBadge = document.getElementById('share-badge');
+  var readyBadge = document.getElementById('ready-badge');
   var button = document.getElementById('btn');
   var runningPanel = document.getElementById('running-panel');
   var input = document.getElementById('sd-host');
@@ -551,6 +567,15 @@ function renderStatus(data) {
 
   setBadge(sdBadge, data.sdOnline ? 'online' : 'offline', data.sdOnline ? (data.webuiManaged ? '已连接 · 自动管理' : '已连接 · 手动') : '未连接');
   setBadge(ttsBadge, data.ttsOnline ? 'online' : 'offline', data.ttsOnline ? '已连接' : '未连接');
+  var configuredVoices = [nene, natsume].filter(function(profile) {
+    return !!(profile.refAudioPath && profile.promptText);
+  }).length;
+  setBadge(voiceBadge, configuredVoices === 2 ? 'online' : (configuredVoices ? 'offline' : 'stopped'),
+    configuredVoices === 2 ? '宁宁与夏目已配置' : (configuredVoices ? configuredVoices + ' / 2 已配置' : '尚未配置'));
+  setBadge(shareBadge, data.tunnelAvailable ? 'online' : 'stopped',
+    data.tunnelAvailable ? (tunnelEnabled ? '可按需启用' : '已安装 · 当前关闭') : '未安装 · 仅本地');
+  setBadge(readyBadge, data.sdOnline ? 'running' : 'offline',
+    data.sdOnline ? (data.ttsOnline ? '画面与语音就绪' : '画面创作就绪') : '浏览可用 · 等待 SD');
   if (data.sdOnline && data.ttsOnline) {
     feedback.className = 'config-feedback ok';
     feedback.textContent = '画面与语音服务均已连接，可以生成完整的有声场景。';

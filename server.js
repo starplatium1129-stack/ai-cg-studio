@@ -5,6 +5,7 @@ var fs = require('fs');
 var crypto = require('crypto');
 var cp = require('child_process');
 var runtimeTools = require('./scripts/runtime-paths');
+var sceneStore = require('./scripts/scene-store');
 
 var RUNTIME = runtimeTools.createRuntimePaths(__dirname);
 runtimeTools.migrateLegacyRuntime(__dirname, RUNTIME);
@@ -49,6 +50,91 @@ function resolveSceneShowcaseDir() {
 }
 
 var SCENE_SHOWCASE_DIR = resolveSceneShowcaseDir();
+var MAINTENANCE_BACKUP_DIR = path.join(RUNTIME.root, 'maintenance-backups');
+
+function maintenanceLocalOnly(req, res, next) {
+  if (!isDirectLocalRequest(req)) return res.status(403).json({ error: '维护操作仅允许在本机执行' });
+  next();
+}
+
+function maintenanceSnapshot() {
+  var files = [sceneStore.aggregatePath, path.join(__dirname, 'data', 'retired-scenes.json')];
+  var shardInfo = sceneStore.loadSceneShards();
+  shardInfo.sources.forEach(function (item) { files.push(item.source); });
+  return files.filter(function (file) { return fs.existsSync(file); }).map(function (file) {
+    return { file:file, content:fs.readFileSync(file) };
+  });
+}
+
+function restoreMaintenanceSnapshot(snapshot) {
+  snapshot.forEach(function (item) { fs.writeFileSync(item.file, item.content); });
+}
+
+function runMaintenanceChecks() {
+  var commands = [
+    ['scripts/classify-scene-ratings.js', ['--write']],
+    ['scripts/optimize-scenes.js', ['--write']],
+    ['scripts/validate-scenes.js', []]
+  ];
+  for (var i = 0; i < commands.length; i += 1) {
+    var result = cp.spawnSync(process.execPath, [commands[i][0]].concat(commands[i][1]), {
+      cwd:__dirname, encoding:'utf8', timeout:120000, windowsHide:true
+    });
+    if (result.error || result.status !== 0) {
+      throw new Error((result.stderr || result.stdout || result.error && result.error.message || '维护校验失败').trim().slice(-1200));
+    }
+  }
+}
+
+app.post('/api/maintenance/scenes', maintenanceLocalOnly, express.json({ limit:'12mb' }), function (req, res) {
+  var scenes = req.body && req.body.scenes;
+  if (!Array.isArray(scenes) || scenes.length > 1000) return res.status(400).json({ error:'场景数据格式错误或数量超出限制' });
+  var ids = new Set();
+  for (var i = 0; i < scenes.length; i += 1) {
+    var id = String(scenes[i] && scenes[i].id || '');
+    if (!/^sc\d{3,}$/.test(id) || ids.has(id)) return res.status(400).json({ error:'场景 ID 必须唯一且符合 sc001 格式：' + id });
+    ids.add(id);
+  }
+  var snapshot;
+  try {
+    snapshot = maintenanceSnapshot();
+    if (!fs.existsSync(MAINTENANCE_BACKUP_DIR)) fs.mkdirSync(MAINTENANCE_BACKUP_DIR, { recursive:true });
+    var stamp = new Date().toISOString().replace(/[:.]/g, '-');
+    fs.writeFileSync(path.join(MAINTENANCE_BACKUP_DIR, 'scenes-' + stamp + '.json'), sceneStore.jsonText(sceneStore.loadSceneShards().scenes));
+    sceneStore.writeSceneSet(scenes);
+    runMaintenanceChecks();
+    res.json({ ok:true, count:scenes.length, message:'场景已保存并通过校验' });
+  } catch (error) {
+    if (snapshot) {
+      try { restoreMaintenanceSnapshot(snapshot); } catch (restoreError) {}
+    }
+    res.status(400).json({ ok:false, error:error.message });
+  }
+});
+
+app.post('/api/maintenance/showcase', maintenanceLocalOnly, express.json({ limit:'18mb' }), function (req, res) {
+  try {
+    if (!SCENE_SHOWCASE_DIR) return res.status(503).json({ error:'尚未找到 SceneShowcase 目录' });
+    var id = String(req.body && req.body.id || '');
+    var image = String(req.body && req.body.image || '');
+    var match = image.match(/^data:image\/(png|jpeg|webp);base64,([A-Za-z0-9+/=\r\n]+)$/);
+    if (!/^sc\d{3,}$/.test(id) || !match) return res.status(400).json({ error:'需要合法场景 ID 和 PNG/JPEG/WebP 图片' });
+    var buffer = Buffer.from(match[2].replace(/\s/g, ''), 'base64');
+    if (!buffer.length || buffer.length > 15 * 1024 * 1024) return res.status(413).json({ error:'图片必须在 15MB 以内' });
+    var ext = match[1] === 'jpeg' ? '.jpg' : '.' + match[1];
+    var imageDir = path.join(SCENE_SHOWCASE_DIR, 'images');
+    var thumbDir = path.join(SCENE_SHOWCASE_DIR, 'thumbs');
+    fs.mkdirSync(imageDir, { recursive:true });
+    fs.mkdirSync(thumbDir, { recursive:true });
+    fs.writeFileSync(path.join(imageDir, id + ext), buffer);
+    // Keep the gallery immediately consistent. A later showcase build can replace
+    // this full-size thumbnail with a smaller optimized derivative.
+    fs.writeFileSync(path.join(thumbDir, id + ext), buffer);
+    res.json({ ok:true, file:'images/' + id + ext, message:'样张与缩略图已保存，刷新页面即可看到新版本' });
+  } catch (error) {
+    res.status(400).json({ ok:false, error:error.message });
+  }
+});
 
 function readSceneShowcaseManifest() {
   if (!SCENE_SHOWCASE_DIR) return null;
