@@ -15,6 +15,7 @@
   var PRIMARY_NAV = [
     { id:'scene',     label:'灵感场景',       href:'tools/scene-explorer.html', icon:'🌸' },
     { id:'director',  label:'开始绘制',       href:'tools/prompt-builder.html', icon:'✦' },
+    { id:'chat',      label:'角色对话',       href:'tools/chat.html',            icon:'☕' },
     { id:'showcase',  label:'效果样张',       href:'tools/showcase.html',       icon:'🖼' },
     { id:'gallery',   label:'作品册',         href:'tools/gallery.html',        icon:'🎞' }
   ];

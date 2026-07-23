@@ -18,6 +18,8 @@ var PORT = process.env.PORT || 3000;
 var HOST = process.env.HOST || '127.0.0.1';
 var SD_HOST = process.env.SD_HOST || runtimeConfig.sdHost || 'http://127.0.0.1:7860';
 var TTS_HOST = process.env.TTS_HOST || runtimeConfig.ttsHost || 'http://127.0.0.1:9880';
+var OLLAMA_HOST = process.env.OLLAMA_HOST || runtimeConfig.ollamaHost || 'http://127.0.0.1:11434';
+var OLLAMA_MODEL = process.env.OLLAMA_MODEL || runtimeConfig.ollamaModel || '';
 var VOICE_PROFILES = runtimeConfig.voices && typeof runtimeConfig.voices === 'object' ? runtimeConfig.voices : {};
 var TRANSLATION_PYTHON = process.env.TRANSLATION_PYTHON || path.resolve(__dirname, '..', 'AI', 'GPT-SoVITS-env', 'python.exe');
 var TRANSLATION_SCRIPT = path.join(__dirname, 'tools', 'translate-zh-ja.py');
@@ -242,7 +244,7 @@ app.post('/api/save-backup', express.json({ limit: '22mb' }), function (req, res
 
 // ─── 网关能力检测（不依赖固定端口，控制面板换端口后仍可识别）───
 app.get('/api/health', function (req, res) {
-  res.json({ ok: true, app: 'ai-cg-studio', gateway: true, port: Number(PORT), tts: true });
+  res.json({ ok: true, app: 'ai-cg-studio', gateway: true, port: Number(PORT), tts: true, chat: true });
 });
 
 app.get('/api/showcase-status', function (req, res) {
@@ -283,6 +285,183 @@ app.get('/api/tts-status', function (req, res) {
   requestTTSStatus(function (online) {
     res.setHeader('Cache-Control', 'no-store');
     res.json({ online: online, engine: 'GPT-SoVITS', voices: configuredVoiceMap() });
+  });
+});
+
+function requestOllama(pathname, options) {
+  options = options || {};
+  return new Promise(function(resolve, reject) {
+    try {
+      var target = new URL(pathname, OLLAMA_HOST);
+      var payload = options.payload ? JSON.stringify(options.payload) : '';
+      var transport = target.protocol === 'https:' ? require('https') : require('http');
+      var request = transport.request(target, {
+        method:options.method || 'GET',
+        headers:payload ? {'Content-Type':'application/json','Content-Length':Buffer.byteLength(payload)} : undefined
+      }, function(response) {
+        resolve({ response:response, request:request });
+      });
+      request.setTimeout(options.timeout || 15000, function() { request.destroy(new Error('Ollama request timed out')); });
+      request.on('error', reject);
+      request.end(payload);
+    } catch (error) { reject(error); }
+  });
+}
+
+function readOllamaJSON(pathname, timeout) {
+  return requestOllama(pathname, { timeout:timeout || 4000 }).then(function(result) {
+    return new Promise(function(resolve, reject) {
+      var chunks = [], total = 0;
+      result.response.on('data', function(chunk) {
+        total += chunk.length;
+        if (total > 2 * 1024 * 1024) return result.request.destroy(new Error('Ollama response exceeded the size limit'));
+        chunks.push(chunk);
+      });
+      result.response.on('end', function() {
+        if (result.response.statusCode < 200 || result.response.statusCode >= 300) {
+          return reject(new Error('Ollama returned ' + result.response.statusCode));
+        }
+        try { resolve(JSON.parse(Buffer.concat(chunks).toString('utf8'))); }
+        catch (error) { reject(new Error('Ollama returned invalid JSON')); }
+      });
+      result.response.on('error', reject);
+    });
+  });
+}
+
+function preferredOllamaModel(models) {
+  if (OLLAMA_MODEL && models.some(function(item){ return item.name === OLLAMA_MODEL || item.model === OLLAMA_MODEL; })) return OLLAMA_MODEL;
+  var available = models.filter(function(item) {
+    var capabilities = Array.isArray(item.capabilities) ? item.capabilities : [];
+    return !capabilities.length || capabilities.includes('completion');
+  });
+  return available.length ? String(available[0].name || available[0].model || '') : '';
+}
+
+app.get('/api/chat-status', function(req, res) {
+  readOllamaJSON('/api/tags', 3000).then(function(data) {
+    var models = Array.isArray(data.models) ? data.models : [];
+    res.setHeader('Cache-Control', 'no-store');
+    res.json({
+      online:true,
+      model:preferredOllamaModel(models),
+      models:models.map(function(item) {
+        return {
+          name:String(item.name || item.model || ''),
+          size:Number(item.size) || 0,
+          parameters:item.details && item.details.parameter_size || '',
+          quantization:item.details && item.details.quantization_level || ''
+        };
+      }).filter(function(item){ return item.name; })
+    });
+  }).catch(function(error) {
+    res.setHeader('Cache-Control', 'no-store');
+    res.json({ online:false, model:'', models:[], error:error.message });
+  });
+});
+
+function chatCharacterPrompt(character) {
+  if (character === 'natsume') {
+    return [
+      '你正在扮演四季夏目，与用户进行轻松的私人文字聊天。',
+      '性格：外冷内柔，不擅长直接表达感情，相当纯情；关心通常通过行动和简短提醒表达，动摇时会否认或转开话题。',
+      '语气：克制、简短、自然，熟悉后偶尔有一点小脾气；不要把她写成刻薄、轻浮、特工或万能助手。',
+      '背景：大学生，也是 Café Stella 店员。',
+      '只输出夏目实际说出口的中文台词，不写旁白、动作括号、角色名、引号或解释。',
+      '每次回复一到三句，通常不超过 100 个汉字。可以主动追问，但不要连续盘问。',
+      '这是虚构角色扮演，不声称自己是真人。涉及危险、违法或未成年人性内容时，保持安全并自然转移话题。'
+    ].join('\n');
+  }
+  return [
+    '你正在扮演绫地宁宁，与用户进行轻松的私人文字聊天。',
+    '性格：温柔体贴、认真负责，容易害羞慌乱，紧张时可能越解释越暴露，但保护重要的人时很坚定。',
+    '语气：礼貌温柔、自然亲近；害羞时可以短暂结巴，但不要每句话都结巴，也不要写成无条件顺从的人偶。',
+    '背景：姬松学院学生、与契约代价抗争的魔女、超自然研究会成员。',
+    '只输出宁宁实际说出口的中文台词，不写旁白、动作括号、角色名、引号或解释。',
+    '每次回复一到三句，通常不超过 100 个汉字。可以主动追问，但不要连续盘问。',
+    '这是虚构角色扮演，不声称自己是真人。涉及危险、违法或未成年人性内容时，保持安全并自然转移话题。'
+  ].join('\n');
+}
+
+app.post('/api/chat', express.json({ limit:'64kb' }), function(req, res) {
+  var character = String(req.body && req.body.character || 'nene');
+  var requestedModel = String(req.body && req.body.model || '');
+  var rawMessages = req.body && req.body.messages;
+  if (!['nene','natsume'].includes(character)) return res.status(400).json({ error:'不支持的聊天角色' });
+  if (!Array.isArray(rawMessages) || !rawMessages.length || rawMessages.length > 24) return res.status(400).json({ error:'对话记录必须包含 1—24 条消息' });
+  var messages = [], totalLength = 0;
+  for (var i = 0; i < rawMessages.length; i += 1) {
+    var role = String(rawMessages[i] && rawMessages[i].role || '');
+    var content = String(rawMessages[i] && rawMessages[i].content || '').trim();
+    if (!['user','assistant'].includes(role) || !content || content.length > 1200) return res.status(400).json({ error:'对话消息格式错误或内容过长' });
+    totalLength += content.length;
+    messages.push({ role:role, content:content });
+  }
+  if (totalLength > 12000) return res.status(400).json({ error:'当前对话过长，请清空或开启新对话' });
+
+  readOllamaJSON('/api/tags', 3000).then(function(data) {
+    var models = Array.isArray(data.models) ? data.models : [];
+    var allowed = models.map(function(item){ return String(item.name || item.model || ''); });
+    var model = allowed.includes(requestedModel) ? requestedModel : preferredOllamaModel(models);
+    if (!model) throw new Error('Ollama 中没有可用的对话模型');
+    return requestOllama('/api/chat', {
+      method:'POST',
+      timeout:3 * 60 * 1000,
+      payload:{
+        model:model,
+        messages:[{ role:'system', content:chatCharacterPrompt(character) }].concat(messages),
+        stream:true,
+        think:false,
+        options:{ temperature:0.82, top_p:0.9, repeat_penalty:1.08, num_predict:180 }
+      }
+    }).then(function(result){ return { result:result, model:model }; });
+  }).then(function(context) {
+    var response = context.result.response;
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      var errorChunks = [];
+      response.on('data', function(chunk){ errorChunks.push(chunk); });
+      response.on('end', function(){ if (!res.headersSent) res.status(502).json({ error:'Ollama 对话失败', detail:Buffer.concat(errorChunks).toString('utf8').slice(0,500) }); });
+      return;
+    }
+    res.status(200);
+    res.setHeader('Content-Type', 'application/x-ndjson; charset=utf-8');
+    res.setHeader('Cache-Control', 'no-store');
+    res.setHeader('X-Accel-Buffering', 'no');
+    res.write(JSON.stringify({ type:'meta', model:context.model }) + '\n');
+    var buffer = '';
+    response.on('data', function(chunk) {
+      buffer += chunk.toString('utf8');
+      var lines = buffer.split('\n');
+      buffer = lines.pop();
+      lines.forEach(function(line) {
+        if (!line.trim()) return;
+        try {
+          var item = JSON.parse(line);
+          var content = item.message && item.message.content || '';
+          if (content) res.write(JSON.stringify({ type:'token', content:content }) + '\n');
+          if (item.done) res.write(JSON.stringify({ type:'done' }) + '\n');
+        } catch (error) {}
+      });
+    });
+    response.on('end', function() {
+      if (buffer.trim()) {
+        try {
+          var item = JSON.parse(buffer);
+          var content = item.message && item.message.content || '';
+          if (content) res.write(JSON.stringify({ type:'token', content:content }) + '\n');
+        } catch (error) {}
+      }
+      res.end();
+    });
+    response.on('error', function(error) {
+      if (!res.writableEnded) {
+        res.write(JSON.stringify({ type:'error', error:error.message }) + '\n');
+        res.end();
+      }
+    });
+    req.on('aborted', function(){ if (!response.destroyed) response.destroy(); });
+  }).catch(function(error) {
+    if (!res.headersSent) res.status(503).json({ error:error.message || 'Ollama 暂不可用' });
   });
 });
 
@@ -494,6 +673,7 @@ app.listen(PORT, HOST, function () {
   console.log('  🛡️ 监听: ' + HOST);
   console.log('  🎨 SD 后端: ' + SD_HOST);
   console.log('  🔊 TTS 后端: ' + TTS_HOST);
+  console.log('  💬 Ollama 后端: ' + OLLAMA_HOST);
   console.log('  🖼️  场景样张: ' + (SCENE_SHOWCASE_DIR || '未配置'));
   console.log('  🔑 Token: ' + TOKEN);
   console.log('  ═══════════════════════════════════════════');

@@ -20,6 +20,7 @@ This is an unofficial, non-commercial fan project and is not affiliated with or 
 - Automatic Positive / Negative Prompt assembly and scene-aware LoRA injection
 - Direct generation through AUTOMATIC1111, Forge, or ReForge
 - Automatic dual-character composition enhancement on the configured reForge setup: Regional Prompter separates Nene and Natsume, scene-specific OpenPose maps stabilize placement, and conservative ADetailer repair is limited to distant dual faces. Single-character generation keeps the audited baseline unchanged.
+- An optional local character room backed by Ollama: stream a conversation with Nene or Natsume, reuse the existing GPT-SoVITS voice gateway, and show lightweight breathing, blinking, and speaking feedback.
 - Model and sampler discovery, progress display, interrupt, fixed seeds, hires.fix, and a sequential generation queue
 - Independent Chinese reading text and voice scripts: keep captions Chinese while characters speak Japanese by default, with optional Chinese delivery
 - Scene-aware Japanese voice references for neutral, gentle, happy, shy, serious, and sad delivery; Chinese keeps the stable neutral reference

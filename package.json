@@ -5,7 +5,7 @@
   "description": "个人使用的 Galgame 风格 AI CG 场景工作台与 SD WebUI 网关",
   "scripts": {
     "start": "node server.js",
-    "validate": "npm run design:lint && node scripts/build-scenes.js --check && node scripts/optimize-scenes.js --check && node scripts/classify-scene-ratings.js --check && node scripts/validate-scenes.js && node scripts/test-scene-ux.js && node scripts/test-quick-create.js && node scripts/test-sd-error.js && node scripts/test-data-backup.js && node scripts/test-storage-reliability.js && node scripts/test-prompt-policy.js && node scripts/test-sd-runtime.js && node scripts/test-prompt-builder-modules.js && node scripts/test-showcase.js",
+    "validate": "npm run design:lint && node scripts/build-scenes.js --check && node scripts/optimize-scenes.js --check && node scripts/classify-scene-ratings.js --check && node scripts/validate-scenes.js && node scripts/test-scene-ux.js && node scripts/test-quick-create.js && node scripts/test-sd-error.js && node scripts/test-data-backup.js && node scripts/test-storage-reliability.js && node scripts/test-prompt-policy.js && node scripts/test-sd-runtime.js && node scripts/test-prompt-builder-modules.js && node scripts/test-showcase.js && node scripts/test-chat.js",
     "design:lint": "designmd lint DESIGN.md",
     "test:ux": "node scripts/test-scene-ux.js",
     "test:quick": "node scripts/test-quick-create.js",
@@ -14,6 +14,7 @@
     "test:prompt-builder": "node scripts/test-prompt-builder-modules.js",
     "test:prompt-policy": "node scripts/test-prompt-policy.js",
     "test:showcase": "node scripts/test-showcase.js",
+    "test:chat": "node scripts/test-chat.js",
     "audit:prompts": "node scripts/audit-prompts.js",
     "scenes:build": "node scripts/build-scenes.js",
     "scenes:import": "node scripts/split-scenes.js --write && node scripts/build-scenes.js",
