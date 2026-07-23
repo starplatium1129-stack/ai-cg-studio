@@ -9,6 +9,7 @@ const promptPolicyPath = path.join(root, 'tools', 'prompt-policy.js');
 const modules = [
   ['state.js', 'function loadData'],
   ['composition.js', 'function applySceneGenerationPreset'],
+  ['scene-inference.js', 'function sceneLighting'],
   ['scene.js', 'function renderScenes'],
   ['prompt.js', 'function buildParts'],
   ['sd.js', 'function callSDGenerate'],
