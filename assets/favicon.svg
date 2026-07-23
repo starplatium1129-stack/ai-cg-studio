@@ -1,51 +1,36 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">绫季绘境</title>
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#251f3d"/>
-      <stop offset="100%" stop-color="#171329"/>
+    <linearGradient id="bg" x1="8" y1="6" x2="57" y2="60" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2B2347"/>
+      <stop offset="1" stop-color="#171329"/>
     </linearGradient>
-    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#f4a6d7"/>
-      <stop offset="100%" stop-color="#bba7ff"/>
+    <linearGradient id="ribbon" x1="13" y1="11" x2="52" y2="52" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F4A6D7"/>
+      <stop offset=".5" stop-color="#D99DEB"/>
+      <stop offset="1" stop-color="#BBA7FF"/>
     </linearGradient>
-    <linearGradient id="nene" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#e7e4ff"/>
-      <stop offset="100%" stop-color="#b895ff"/>
+    <linearGradient id="pink" x1="21" y1="35" x2="31" y2="52" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8B6DC"/>
+      <stop offset="1" stop-color="#E783BE"/>
     </linearGradient>
-    <linearGradient id="natsume" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#f2bb68"/>
-      <stop offset="100%" stop-color="#8b6258"/>
+    <linearGradient id="violet" x1="43" y1="34" x2="32" y2="52" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D7CBFF"/>
+      <stop offset="1" stop-color="#A989F1"/>
     </linearGradient>
   </defs>
-  <!-- Background circle -->
-  <circle cx="256" cy="256" r="240" fill="url(#bg)" stroke="url(#accent)" stroke-width="8"/>
-  <!-- Film strip frame (top) -->
-  <rect x="120" y="80" width="272" height="40" rx="8" fill="url(#accent)" opacity="0.9"/>
-  <rect x="136" y="88" width="24" height="24" rx="4" fill="url(#bg)"/>
-  <rect x="176" y="88" width="24" height="24" rx="4" fill="url(#bg)"/>
-  <rect x="216" y="88" width="24" height="24" rx="4" fill="url(#bg)"/>
-  <rect x="256" y="88" width="24" height="24" rx="4" fill="url(#bg)"/>
-  <rect x="296" y="88" width="24" height="24" rx="4" fill="url(#bg)"/>
-  <rect x="336" y="88" width="24" height="24" rx="4" fill="url(#bg)"/>
-  <rect x="376" y="88" width="24" height="24" rx="4" fill="url(#bg)"/>
-  <!-- Camera lens (center) -->
-  <circle cx="256" cy="240" r="80" fill="none" stroke="url(#accent)" stroke-width="6"/>
-  <circle cx="256" cy="240" r="60" fill="none" stroke="url(#accent)" stroke-width="4"/>
-  <circle cx="256" cy="240" r="40" fill="url(#accent)" opacity="0.15"/>
-  <circle cx="256" cy="240" r="20" fill="url(#accent)" opacity="0.3"/>
-  <!-- Two character silhouettes (Nene left, Natsume right) -->
-  <!-- Nene (silver-purple, left) -->
-  <ellipse cx="210" cy="260" rx="28" ry="35" fill="url(#nene)" opacity="0.7"/>
-  <circle cx="210" cy="220" r="18" fill="url(#nene)" opacity="0.8"/>
-  <!-- Natsume (amber, right) -->
-  <ellipse cx="302" cy="260" rx="28" ry="35" fill="url(#natsume)" opacity="0.7"/>
-  <circle cx="302" cy="220" r="18" fill="url(#natsume)" opacity="0.8"/>
-  <!-- Director clapperboard -->
-  <rect x="160" y="340" width="192" height="60" rx="8" fill="url(#bg)" stroke="url(#accent)" stroke-width="4"/>
-  <polygon points="160,340 200,340 200,360 160,360" fill="url(#accent)" opacity="0.6"/>
-  <line x1="160" y1="360" x2="352" y2="360" stroke="url(#accent)" stroke-width="2"/>
-  <!-- Text placeholder (simplified 绘) -->
-  <text x="256" y="390" text-anchor="middle" font-family="serif" font-size="36" fill="url(#accent)" font-weight="bold">绘</text>
-  <!-- Bottom accent line -->
-  <line x1="180" y1="430" x2="332" y2="430" stroke="url(#accent)" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="32" cy="32" r="29" fill="url(#bg)"/>
+  <circle cx="32" cy="32" r="28.3" fill="none" stroke="#F4A6D7" stroke-opacity=".28" stroke-width="1.4"/>
+
+  <!-- Simplified ribbon aperture, tuned for 16–32 px -->
+  <path d="M31.8 8.5c12.3 0 22.3 10 22.3 22.3 0 2.2-.3 4.3-.9 6.3l-8.1-5.2v-1.1c0-7.2-5.9-13.1-13.1-13.1-1.4 0-2.7.2-3.9.6l3.7-9.8Z" fill="url(#ribbon)"/>
+  <path d="M53.2 37.1C50.4 48.7 38.6 55.8 27 53c-2.1-.5-4.1-1.3-5.9-2.4l7.2-6.2c.6.2 1.2.4 1.8.6 7 1.7 14.1-2.6 15.8-9.6.3-1.3.4-2.6.3-3.9l7 5.6Z" fill="url(#ribbon)" opacity=".9"/>
+  <path d="M21.1 50.6C11 44.3 8 31 14.3 20.9c1.2-1.9 2.6-3.5 4.2-4.9l2.1 9.2c-.4.5-.8 1-1.1 1.5-3.8 6.1-2 14.2 4.2 18.1 1.1.7 2.3 1.2 3.5 1.5l-6.1 4.3Z" fill="url(#ribbon)" opacity=".74"/>
+  <path d="M18.5 16c8.9-7.6 22.3-6.5 29.9 2.4 1.4 1.7 2.6 3.5 3.4 5.5l-9.2-2.8c-.3-.5-.7-1-1.1-1.5-4.7-5.5-13-6.2-18.5-1.5-1 .8-1.8 1.8-2.5 2.8l-2-4.9Z" fill="url(#ribbon)" opacity=".55"/>
+
+  <path d="M24.6 39v-8.3a7.4 7.4 0 0 1 14.8 0V39" fill="none" stroke="#F2BB68" stroke-width="1.8" stroke-linecap="round"/>
+  <circle cx="32" cy="27.4" r="1.5" fill="#F2BB68"/>
+  <path d="M32 53c-9.8-2.8-14-8.8-12.3-18 8.5.8 12.6 5.8 12.3 15.4V53Z" fill="url(#pink)"/>
+  <path d="M32 53c9.8-2.8 14-8.8 12.3-18-8.5.8-12.6 5.8-12.3 15.4V53Z" fill="url(#violet)"/>
+  <path d="M32 52.6V39.8" stroke="#FFF4FC" stroke-width="1.2" stroke-linecap="round" opacity=".75"/>
 </svg>
