@@ -11,7 +11,7 @@ SOURCE = ROOT / "OneTrainer" / "training_configs" / "ayachi_nene_v14_identity.js
 TARGET = ROOT / "OneTrainer" / "training_configs" / "ayachi_nene_v14_face.json"
 BASE_LORA = ROOT / "OneTrainer" / "workspace" / "run" / "save" / "2026-07-22_12-33-45-save-210-15-0.safetensors"
 OUTPUT = ROOT / "OneTrainer" / "output" / "ayachi_nene_v14_face.safetensors"
-FACE_DATASET = ROOT / "RefinementDatasets" / "ayachi_nene_v14_identity" / "face_anchors"
+FACE_DATASET = ROOT / "Datasets" / "Refinement" / "ayachi_nene_v14_identity" / "face_anchors"
 
 
 def main() -> None:

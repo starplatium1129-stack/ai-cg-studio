@@ -12632,8 +12632,8 @@
       "reviewer": "direct-vision",
       "attempt": 2,
       "seedKey": "official-cg:ocn02:2",
-      "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\v12_cg_02.png",
-      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn02-a2.png",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Ayachi_Nene\\V12_Curated\\v12_cg_02.png",
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn02-a2.png",
       "result": "pass"
     }
   },
@@ -12678,8 +12678,8 @@
       "reviewer": "direct-vision",
       "attempt": 2,
       "seedKey": "official-cg:ocn04:2",
-      "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\v12_cg_05.png",
-      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn04-a2.png",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Ayachi_Nene\\V12_Curated\\v12_cg_05.png",
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn04-a2.png",
       "result": "pass"
     }
   },
@@ -12724,8 +12724,8 @@
       "reviewer": "direct-vision",
       "attempt": 3,
       "seedKey": "official-cg:ocn07:3",
-      "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\v12_cg_10.png",
-      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn07-a3.png",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Ayachi_Nene\\V12_Curated\\v12_cg_10.png",
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn07-a3.png",
       "result": "pass"
     }
   },
@@ -12770,8 +12770,8 @@
       "reviewer": "direct-vision",
       "attempt": 1,
       "seedKey": "official-cg:ocn08:1",
-      "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\v12_cg_11.png",
-      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn08-a1.png",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Ayachi_Nene\\V12_Curated\\v12_cg_11.png",
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn08-a1.png",
       "result": "pass"
     }
   },
@@ -12816,8 +12816,8 @@
       "reviewer": "direct-vision",
       "attempt": 1,
       "seedKey": "official-cg:ocn09:1",
-      "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\ScreenShot_2026-07-12_230616_069.png",
-      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn09-a1.png",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Ayachi_Nene\\V12_Curated\\ScreenShot_2026-07-12_230616_069.png",
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn09-a1.png",
       "result": "pass"
     }
   },
@@ -12863,8 +12863,8 @@
       "reviewer": "direct-vision",
       "attempt": 1,
       "seedKey": "official-cg:ocn10:1",
-      "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\ScreenShot_2026-07-12_231154_952.png",
-      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn10-a1.png",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Ayachi_Nene\\V12_Curated\\ScreenShot_2026-07-12_231154_952.png",
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn10-a1.png",
       "result": "pass"
     }
   },
@@ -12909,8 +12909,8 @@
       "reviewer": "direct-vision",
       "attempt": 2,
       "seedKey": "official-cg:ocn11:2",
-      "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\ScreenShot_2026-07-12_231408_046.png",
-      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn11-a2.png",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Ayachi_Nene\\V12_Curated\\ScreenShot_2026-07-12_231408_046.png",
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn11-a2.png",
       "result": "pass"
     }
   },
@@ -12956,8 +12956,8 @@
       "reviewer": "direct-vision",
       "attempt": 2,
       "seedKey": "official-cg:ocn12:2",
-      "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\ScreenShot_2026-07-12_231613_575.png",
-      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn12-a2.png",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Ayachi_Nene\\V12_Curated\\ScreenShot_2026-07-12_231613_575.png",
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn12-a2.png",
       "result": "pass"
     }
   },
@@ -13002,8 +13002,8 @@
       "reviewer": "direct-vision",
       "attempt": 1,
       "seedKey": "official-cg:ocn13:1",
-      "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\ScreenShot_2026-07-12_230938_392.png",
-      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn13-a1.png",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Ayachi_Nene\\V12_Curated\\ScreenShot_2026-07-12_230938_392.png",
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn13-a1.png",
       "result": "pass"
     }
   },
@@ -13048,8 +13048,8 @@
       "reviewer": "direct-vision",
       "attempt": 1,
       "seedKey": "official-cg:ocn14:1",
-      "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\ScreenShot_2026-07-12_231453_739.png",
-      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn14-a1.png",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Ayachi_Nene\\V12_Curated\\ScreenShot_2026-07-12_231453_739.png",
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn14-a1.png",
       "result": "pass"
     }
   },
@@ -13094,8 +13094,8 @@
       "reviewer": "direct-vision",
       "attempt": 1,
       "seedKey": "official-cg:ocn15:1",
-      "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\ScreenShot_2026-07-12_231816_560.png",
-      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn15-a1.png",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Ayachi_Nene\\V12_Curated\\ScreenShot_2026-07-12_231816_560.png",
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn15-a1.png",
       "result": "pass"
     }
   },
@@ -13140,8 +13140,8 @@
       "reviewer": "direct-vision",
       "attempt": 1,
       "seedKey": "official-cg:ocs01:1",
-      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\v12_cg_01.png",
-      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs01-a1.png",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Shiki_Natsume\\V12_Curated\\v12_cg_01.png",
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs01-a1.png",
       "result": "pass"
     }
   },
@@ -13186,8 +13186,8 @@
       "reviewer": "direct-vision",
       "attempt": 1,
       "seedKey": "official-cg:ocs02:1",
-      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\v12_cg_02.png",
-      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs02-a1.png",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Shiki_Natsume\\V12_Curated\\v12_cg_02.png",
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs02-a1.png",
       "result": "pass"
     }
   },
@@ -13232,8 +13232,8 @@
       "reviewer": "direct-vision",
       "attempt": 1,
       "seedKey": "official-cg:ocs04:1",
-      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\v12_cg_04.png",
-      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs04-a1.png",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Shiki_Natsume\\V12_Curated\\v12_cg_04.png",
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs04-a1.png",
       "result": "pass"
     }
   },
@@ -13278,8 +13278,8 @@
       "reviewer": "direct-vision",
       "attempt": 1,
       "seedKey": "official-cg:ocs08:1",
-      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\v12_cg_08.png",
-      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs08-a1.png",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Shiki_Natsume\\V12_Curated\\v12_cg_08.png",
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs08-a1.png",
       "result": "pass"
     }
   },
@@ -13324,8 +13324,8 @@
       "reviewer": "direct-vision",
       "attempt": 1,
       "seedKey": "official-cg:ocs09:1",
-      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\v12_cg_10.png",
-      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs09-a1.png",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Shiki_Natsume\\V12_Curated\\v12_cg_10.png",
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs09-a1.png",
       "result": "pass"
     }
   },
@@ -13370,8 +13370,8 @@
       "reviewer": "direct-vision",
       "attempt": 1,
       "seedKey": "official-cg:ocs10:1",
-      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\v12_cg_11.png",
-      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs10-a1.png",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Shiki_Natsume\\V12_Curated\\v12_cg_11.png",
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs10-a1.png",
       "result": "pass"
     }
   },
@@ -13416,8 +13416,8 @@
       "reviewer": "direct-vision",
       "attempt": 1,
       "seedKey": "official-cg:ocs11:1",
-      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\ScreenShot_2026-07-12_085911_103.png",
-      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs11-a1.png",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Shiki_Natsume\\V12_Curated\\ScreenShot_2026-07-12_085911_103.png",
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs11-a1.png",
       "result": "pass"
     }
   },
@@ -13462,8 +13462,8 @@
       "reviewer": "direct-vision",
       "attempt": 1,
       "seedKey": "official-cg:ocs12:1",
-      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\ScreenShot_2026-07-12_090942_797.png",
-      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs12-a1.png",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Shiki_Natsume\\V12_Curated\\ScreenShot_2026-07-12_090942_797.png",
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs12-a1.png",
       "result": "pass"
     }
   },
@@ -13508,8 +13508,8 @@
       "reviewer": "direct-vision",
       "attempt": 1,
       "seedKey": "official-cg:ocs13:1",
-      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\ScreenShot_2026-07-12_090719_815.png",
-      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs13-a1.png",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Shiki_Natsume\\V12_Curated\\ScreenShot_2026-07-12_090719_815.png",
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs13-a1.png",
       "result": "pass"
     }
   },
@@ -13554,8 +13554,8 @@
       "reviewer": "direct-vision",
       "attempt": 1,
       "seedKey": "official-cg:ocs14:1",
-      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\ScreenShot_2026-07-12_090755_311.png",
-      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs14-a1.png",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Shiki_Natsume\\V12_Curated\\ScreenShot_2026-07-12_090755_311.png",
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs14-a1.png",
       "result": "pass"
     }
   },
@@ -13601,8 +13601,8 @@
       "reviewer": "direct-vision",
       "attempt": 1,
       "seedKey": "official-cg:ocs15:1",
-      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\ScreenShot_2026-07-12_090922_485.png",
-      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs15-a1.png",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Shiki_Natsume\\V12_Curated\\ScreenShot_2026-07-12_090922_485.png",
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs15-a1.png",
       "result": "pass"
     }
   },
@@ -13647,8 +13647,8 @@
       "reviewer": "direct-vision",
       "attempt": 1,
       "seedKey": "official-cg:ocs16:1",
-      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\ScreenShot_2026-07-12_091017_055.png",
-      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs16-a1.png",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Shiki_Natsume\\V12_Curated\\ScreenShot_2026-07-12_091017_055.png",
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs16-a1.png",
       "result": "pass"
     }
   },
@@ -13693,8 +13693,8 @@
       "reviewer": "direct-vision",
       "attempt": 1,
       "seedKey": "official-cg:ocs17:1",
-      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\ScreenShot_2026-07-12_091155_526.png",
-      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs17-a1.png",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Shiki_Natsume\\V12_Curated\\ScreenShot_2026-07-12_091155_526.png",
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs17-a1.png",
       "result": "pass"
     }
   },
@@ -13739,8 +13739,8 @@
       "reviewer": "direct-vision",
       "attempt": 1,
       "seedKey": "official-cg:ocs18:1",
-      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\ScreenShot_2026-07-12_091245_649.png",
-      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs18-a1.png",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Shiki_Natsume\\V12_Curated\\ScreenShot_2026-07-12_091245_649.png",
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs18-a1.png",
       "result": "pass"
     }
   },
@@ -13785,8 +13785,8 @@
       "reviewer": "direct-vision",
       "attempt": 1,
       "seedKey": "official-cg:ocs19:1",
-      "reference": "E:\\code\\2\\lora\\AI\\Shiki_Natsume_Train_v12_curated\\ScreenShot_2026-07-12_091309_703.png",
-      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs19-a1.png",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Shiki_Natsume\\V12_Curated\\ScreenShot_2026-07-12_091309_703.png",
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs19-a1.png",
       "result": "pass"
     }
   }

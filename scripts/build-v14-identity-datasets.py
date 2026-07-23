@@ -16,13 +16,13 @@ from PIL import Image
 
 
 ROOT = Path(r"E:\code\2\lora\AI")
-DESTINATION = ROOT / "RefinementDatasets"
+DESTINATION = ROOT / "Datasets" / "Refinement"
 IMAGE_SUFFIXES = {".png", ".jpg", ".jpeg", ".webp"}
 
 CHARACTERS = {
     "nene": {
         "trigger": "ayachi_nene",
-        "source": ROOT / "Ayachi_nene_Train_v12_curated",
+        "source": ROOT / "Datasets" / "Characters" / "Ayachi_Nene" / "V12_Curated",
         "dataset": DESTINATION / "ayachi_nene_v14_identity",
         "general": [
             "v12_cg_01", "v12_cg_02", "v12_cg_03", "v12_cg_04", "v12_cg_05",
@@ -45,7 +45,7 @@ CHARACTERS = {
     },
     "natsume": {
         "trigger": "shiki_natsume",
-        "source": ROOT / "Shiki_Natsume_Train_v12_curated",
+        "source": ROOT / "Datasets" / "Characters" / "Shiki_Natsume" / "V12_Curated",
         "dataset": DESTINATION / "shiki_natsume_v14_identity",
         "general": [
             "v12_cg_01", "v12_cg_02", "v12_cg_03", "v12_cg_04",

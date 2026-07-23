@@ -17,12 +17,12 @@ from PIL import Image
 
 
 ROOT = Path(r"E:\code\2\lora\AI")
-DESTINATION_ROOT = ROOT / "RefinementDatasets"
+DESTINATION_ROOT = ROOT / "Datasets" / "Refinement"
 
 CHARACTERS = {
     "nene": {
-        "base": ROOT / "Ayachi_nene_Train",
-        "official": ROOT / "Ayachi_nene_Train_v12",
+        "base": ROOT / "Datasets" / "Characters" / "Ayachi_Nene" / "Legacy",
+        "official": ROOT / "Datasets" / "Characters" / "Ayachi_Nene" / "V12",
         "destination": DESTINATION_ROOT / "ayachi_nene_v13_refine",
         # Exclude vertical CGs, staged standing art, and couple/ambiguous frames.
         "official_images": [
@@ -40,8 +40,8 @@ CHARACTERS = {
         },
     },
     "natsume": {
-        "base": ROOT / "Shiki_Natsume_Train",
-        "official": ROOT / "Shiki_Natsume_Train_v12",
+        "base": ROOT / "Datasets" / "Characters" / "Shiki_Natsume" / "Legacy",
+        "official": ROOT / "Datasets" / "Characters" / "Shiki_Natsume" / "V12",
         "destination": DESTINATION_ROOT / "shiki_natsume_v13_refine",
         # Solo, landscape CGs only.  Couple frames and staged standing art are excluded.
         "official_images": [

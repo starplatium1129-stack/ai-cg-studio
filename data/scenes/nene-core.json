@@ -2896,8 +2896,8 @@
       "reviewer": "direct-vision",
       "attempt": 2,
       "seedKey": "official-cg:ocn02:2",
-      "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\v12_cg_02.png",
-      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn02-a2.png",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Ayachi_Nene\\V12_Curated\\v12_cg_02.png",
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn02-a2.png",
       "result": "pass"
     }
   },
@@ -2942,8 +2942,8 @@
       "reviewer": "direct-vision",
       "attempt": 2,
       "seedKey": "official-cg:ocn04:2",
-      "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\v12_cg_05.png",
-      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn04-a2.png",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Ayachi_Nene\\V12_Curated\\v12_cg_05.png",
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn04-a2.png",
       "result": "pass"
     }
   },
@@ -2988,8 +2988,8 @@
       "reviewer": "direct-vision",
       "attempt": 3,
       "seedKey": "official-cg:ocn07:3",
-      "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\v12_cg_10.png",
-      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn07-a3.png",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Ayachi_Nene\\V12_Curated\\v12_cg_10.png",
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn07-a3.png",
       "result": "pass"
     }
   },
@@ -3034,8 +3034,8 @@
       "reviewer": "direct-vision",
       "attempt": 1,
       "seedKey": "official-cg:ocn08:1",
-      "reference": "E:\\code\\2\\lora\\AI\\Ayachi_nene_Train_v12_curated\\v12_cg_11.png",
-      "image": "E:\\code\\2\\lora\\AI\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn08-a1.png",
+      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Ayachi_Nene\\V12_Curated\\v12_cg_11.png",
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn08-a1.png",
       "result": "pass"
     }
   }

@@ -10,7 +10,7 @@ from pathlib import Path
 ROOT = Path(r"E:\code\2\lora\AI")
 CONFIGS = ROOT / "OneTrainer" / "training_configs"
 OUTPUT = ROOT / "OneTrainer" / "output"
-DATASETS = ROOT / "RefinementDatasets"
+DATASETS = ROOT / "Datasets" / "Refinement"
 
 JOBS = {
     "ayachi_nene_v14_identity": {

@@ -10,7 +10,7 @@ from pathlib import Path
 
 ROOT = Path(r"E:\code\2\lora\AI-CG-Studio")
 API = "http://127.0.0.1:7860"
-OUTPUT = Path(r"E:\code\2\lora\AI\Evaluations\v13_runtime_smoke_2026-07-22")
+OUTPUT = Path(r"E:\code\2\lora\AI\Reviews\ModelEvaluations\v13_runtime_smoke_2026-07-22")
 SCENE_IDS = ["sc128", "sc234"]
 NEGATIVE = (
     "lowres, worst_quality, low_quality, normal_quality, bad_anatomy, bad_hands, "

@@ -18,8 +18,8 @@ from PIL import Image, ImageDraw, ImageFont
 
 API = "http://127.0.0.1:7860"
 ROOT = Path(r"E:\code\2\lora\AI-CG-Studio")
-OUTPUT = Path(r"E:\code\2\lora\AI\Evaluations\identity_gate_2026-07-22")
-REFERENCES = Path(r"E:\code\2\lora\AI\VisualAssets\official_refs")
+OUTPUT = Path(r"E:\code\2\lora\AI\Reviews\ModelEvaluations\identity_gate_2026-07-22")
+REFERENCES = Path(r"E:\code\2\lora\AI\Assets\VisualPipeline\official_refs")
 SEEDS = [1038976852, 2784519, 864202607]
 WIDTH = 832
 HEIGHT = 1216

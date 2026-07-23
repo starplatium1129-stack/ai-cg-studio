@@ -15,7 +15,7 @@ audit = importlib.util.module_from_spec(SPEC)
 sys.modules[SPEC.name] = audit
 SPEC.loader.exec_module(audit)
 
-audit.OUTPUT = Path(r"E:\code\2\lora\AI\Evaluations\nene_v14_face_gate_2026-07-22")
+audit.OUTPUT = Path(r"E:\code\2\lora\AI\Reviews\ModelEvaluations\nene_v14_face_gate_2026-07-22")
 nene = audit.CHARACTERS["nene"]
 nene["weight"] = 0.80
 nene["candidates"] = {

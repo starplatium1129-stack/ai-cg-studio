@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 ROOT = Path(r"E:\code\2\lora\AI-CG-Studio")
-OUTPUT = Path(r"E:\code\2\lora\AI\OfficialCGAudits\2026-07-23_v14")
+OUTPUT = Path(r"E:\code\2\lora\AI\Reviews\OfficialCGAudits\2026-07-23_v14")
 API = "http://127.0.0.1:7860"
 NEGATIVE = (
     "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, "

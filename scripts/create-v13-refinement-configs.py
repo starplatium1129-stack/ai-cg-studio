@@ -9,7 +9,7 @@ from pathlib import Path
 
 ROOT = Path(r"E:\code\2\lora\AI")
 CONFIG_DIR = ROOT / "OneTrainer" / "training_configs"
-DATASET_ROOT = ROOT / "RefinementDatasets"
+DATASET_ROOT = ROOT / "Datasets" / "Refinement"
 MODEL_ROOT = ROOT / "Data" / "Models" / "Lora"
 OUTPUT_ROOT = ROOT / "OneTrainer" / "output"
 

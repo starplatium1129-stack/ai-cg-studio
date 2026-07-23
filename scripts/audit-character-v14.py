@@ -15,7 +15,7 @@ audit = importlib.util.module_from_spec(SPEC)
 sys.modules[SPEC.name] = audit
 SPEC.loader.exec_module(audit)
 
-audit.OUTPUT = Path(r"E:\code\2\lora\AI\Evaluations\identity_v14_gate_2026-07-22")
+audit.OUTPUT = Path(r"E:\code\2\lora\AI\Reviews\ModelEvaluations\identity_v14_gate_2026-07-22")
 audit.CHARACTERS["nene"]["weight"] = 0.80
 audit.CHARACTERS["nene"]["candidates"] = {
     "v13-e15": "ayachi_nene_v13_e15_audit",

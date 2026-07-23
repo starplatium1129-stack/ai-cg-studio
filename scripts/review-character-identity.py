@@ -11,7 +11,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 
-OUTPUT = Path(r"E:\code\2\lora\AI\Evaluations\identity_gate_2026-07-22")
+OUTPUT = Path(r"E:\code\2\lora\AI\Reviews\ModelEvaluations\identity_gate_2026-07-22")
 VISION = Path(r"C:\Users\Administrator\vision.js")
 CODES = ["A", "B", "C", "D", "E"]
 OUTFIT_TESTS = {"school-uniform", "witch-outfit", "cafe-uniform", "qipao-outfit"}

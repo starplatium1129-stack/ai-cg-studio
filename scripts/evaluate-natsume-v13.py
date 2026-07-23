@@ -12,7 +12,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 
 API = "http://127.0.0.1:7860"
-OUTPUT = Path(r"E:\code\2\lora\AI\Evaluations\natsume_v13_2026-07-22")
+OUTPUT = Path(r"E:\code\2\lora\AI\Reviews\ModelEvaluations\natsume_v13_2026-07-22")
 CANDIDATES = [
     ("v11", "shiki_natsume_v11"),
     ("v13-e15", "shiki_natsume_v13_e15_test"),

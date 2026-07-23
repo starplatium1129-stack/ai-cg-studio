@@ -9,7 +9,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageOps
 
 
 AI_ROOT = Path(r"E:\code\2\lora\AI")
-LIBRARY = AI_ROOT / "OfficialCG"
+LIBRARY = AI_ROOT / "Assets" / "OfficialCG"
 MANIFEST = LIBRARY / "manifest.json"
 OUTPUT = LIBRARY / "ReferenceSheets"
 CHARACTERS = {"nene": "绫地宁宁", "natsume": "四季夏目"}

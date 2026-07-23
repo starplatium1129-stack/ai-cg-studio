@@ -10,7 +10,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 
 ROOT = Path(r"E:\code\2\lora\AI-CG-Studio")
-AUDIT = Path(r"E:\code\2\lora\AI\OfficialCGAudits\2026-07-23_v14")
+AUDIT = Path(r"E:\code\2\lora\AI\Reviews\OfficialCGAudits\2026-07-23_v14")
 
 
 def fit_image(path: Path, width: int, height: int) -> Image.Image:

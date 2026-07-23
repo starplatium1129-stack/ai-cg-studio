@@ -14,7 +14,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageOps
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 AI_ROOT = PROJECT_ROOT.parent / "AI"
-DEFAULT_AUDIT = AI_ROOT / "SceneAudits" / "2026-07-22_v14_final"
+DEFAULT_AUDIT = AI_ROOT / "Reviews" / "SceneAudits" / "2026-07-22_v14_final"
 DEFAULT_OUTPUT = AI_ROOT / "SceneShowcase" / "2026-07-22_v14"
 RATING_ORDER = ["All", "R15", "R18"]
 RATING_LABELS = {"All": "全年龄", "R15": "R15", "R18": "R18"}

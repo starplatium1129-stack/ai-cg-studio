@@ -7,9 +7,9 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
 
-EVALUATION = Path(r"E:\code\2\lora\AI\Evaluations\natsume_v13_2026-07-22")
+EVALUATION = Path(r"E:\code\2\lora\AI\Reviews\ModelEvaluations\natsume_v13_2026-07-22")
 REFERENCE = Path(
-    r"E:\code\2\lora\AI\RefinementDatasets\shiki_natsume_v13_balanced\official_qipao\official_v12_stand_03.png"
+    r"E:\code\2\lora\AI\Datasets\Refinement\shiki_natsume_v13_balanced\official_qipao\official_v12_stand_03.png"
 )
 SEEDS = [1038976852, 2784519]
 CELL_WIDTH = 380

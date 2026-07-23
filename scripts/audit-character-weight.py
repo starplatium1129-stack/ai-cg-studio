@@ -20,8 +20,8 @@ SOURCE = importlib.util.module_from_spec(SPEC)
 sys.modules[SPEC.name] = SOURCE
 SPEC.loader.exec_module(SOURCE)
 
-OUTPUT = Path(r"E:\code\2\lora\AI\Evaluations\identity_weight_gate_2026-07-22")
-BASELINE = Path(r"E:\code\2\lora\AI\Evaluations\identity_gate_2026-07-22")
+OUTPUT = Path(r"E:\code\2\lora\AI\Reviews\ModelEvaluations\identity_weight_gate_2026-07-22")
+BASELINE = Path(r"E:\code\2\lora\AI\Reviews\ModelEvaluations\identity_gate_2026-07-22")
 SEEDS = SOURCE.SEEDS
 WEIGHTS = [0.75, 0.80, 0.85, 0.95]
 VERSIONS = ["v11-0.80"] + [f"e15-{weight:.2f}" for weight in WEIGHTS]

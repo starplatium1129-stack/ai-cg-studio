@@ -1,5 +1,5 @@
 param(
-    [string]$Output = 'E:\code\2\lora\AI\SceneAudits\2026-07-22_v14_final',
+    [string]$Output = 'E:\code\2\lora\AI\Reviews\SceneAudits\2026-07-22_v14_final',
     [int]$BatchSize = 25,
     [int]$Attempt = 1,
     [switch]$Review

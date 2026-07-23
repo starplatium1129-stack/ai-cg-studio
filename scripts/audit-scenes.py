@@ -25,8 +25,8 @@ from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(r"E:\code\2\lora\AI-CG-Studio")
 AI_ROOT = Path(r"E:\code\2\lora\AI")
-DEFAULT_OUTPUT = AI_ROOT / "SceneAudits" / "2026-07-22_final"
-REFERENCES = AI_ROOT / "VisualAssets" / "official_refs"
+DEFAULT_OUTPUT = AI_ROOT / "Reviews" / "SceneAudits" / "2026-07-22_final"
+REFERENCES = AI_ROOT / "Assets" / "VisualPipeline" / "official_refs"
 VISION = Path(r"C:\Users\Administrator\vision.js")
 API = "http://127.0.0.1:7860"
 QUALITY_PREFIX = "masterpiece, best quality, amazing quality"
