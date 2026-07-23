@@ -1,21 +1,35 @@
-/* Prompt Builder module: SD WebUI settings, generation, and recovery.
- * This file intentionally uses classic script globals for inline HTML handlers.
- */
+/* ============================================================
+   Prompt Builder: SD WebUI 模块
+   功能：与 Stable Diffusion WebUI API 通信，处理图片生成
+   依赖：SDWebUIConnector (sd-api.js)
+   ============================================================ */
 
-// ====== SD WebUI API ======
-var _sdConnector = null;
-var _sdLastDataUrl = '';
-var _sdLastResult = null;
-var _sdCapabilities = null;
-var _sdGeneration = null;
-var _sdUserPreferredSize = '832×1216';
-var _sdApplyingScenePreset = false;
-var SD_SETTINGS_KEY = 'aics_sd_settings_v1';
+// ====== SD WebUI API 连接 ======
+var _sdConnector = null;        // API 连接器实例
+var _sdLastDataUrl = '';        // 最后生成的图片 base64
+var _sdLastResult = null;       // 最后一次生成的完整结果
+var _sdCapabilities = null;     // SD WebUI 能力（扩展、模型等）
+var _sdGeneration = null;       // 当前生成任务
+var _sdUserPreferredSize = '832×1216';  // 用户偏好的分辨率
+var _sdApplyingScenePreset = false;     // 是否正在应用场景预设
+var SD_SETTINGS_KEY = 'aics_sd_settings_v1';  // localStorage key
+
 function getSDConnector(){
   if(!_sdConnector) _sdConnector = new SDWebUIConnector();
   return _sdConnector;
 }
 
+/**
+ * 双人场景增强配置
+ * 当 character === 'triad' 时启用：
+ * - Regional Prompter（注意力模式，1:1 比例）
+ * - ControlNet OpenPose 骨架图
+ * - ADetailer 面部修复（仅全身/远景）
+ *
+ * @param {string} character - 角色类型，'triad' 时启用双人模式
+ * @param {object} scene - 场景数据，需要 dual_pose_verified 标签
+ * @returns {object|null} 双人增强配置，或 null（非双人场景）
+ */
 function resolveDualEnhancement(character, scene){
   if (character !== 'triad') return null;
   var extensions = _sdCapabilities && _sdCapabilities.extensions || {};

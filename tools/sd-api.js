@@ -1,6 +1,16 @@
 /**
- * Stable Diffusion WebUI API connector.
- * Supports AUTOMATIC1111-compatible WebUI variants, including Forge/ReForge.
+ * SD WebUI API 连接器
+ * 功能：与 Stable Diffusion WebUI 通信，发送生成请求
+ * 兼容：AUTOMATIC1111、Forge、ReForge 等变体
+ *
+ * 使用方式：
+ *   const connector = new SDWebUIConnector('http://localhost:7860');
+ *   const result = await connector.generate({ prompt: '...', steps: 28 });
+ *
+ * 主要方法：
+ *   - generate(options) — 文生图
+ *   - getCapabilities() — 获取扩展和模型列表
+ *   - interrupt() — 中断当前生成
  */
 (function(global){
   'use strict';
@@ -8,11 +18,17 @@
   var DEFAULT_BASE = '';
   var DEFAULT_NEGATIVE = 'worst quality, low quality, normal quality, lowres, blurry, photorealistic, realistic skin, 3d render, bad anatomy, bad hands, cropped, duplicate';
 
+  /**
+   * @param {string} baseUrl - SD WebUI 地址，如 'http://localhost:7860'
+   */
   function SDWebUIConnector(baseUrl){
     this.baseUrl = (baseUrl || DEFAULT_BASE).replace(/\/+$/, '');
     this.apiUrl = this.baseUrl + '/sdapi/v1/txt2img';
   }
 
+  /**
+   * 构造 API 错误对象
+   */
   function apiError(response, body){
     var detail = body && (body.detail || body.error || body.message || body.errors);
     if (Array.isArray(detail)) detail = detail.map(function(item){ return item.msg || item.message || String(item); }).join('; ');
