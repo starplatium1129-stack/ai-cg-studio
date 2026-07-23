@@ -31,3 +31,6 @@ tunnel.log
 .gateway_port
 .gateway_config.json
 .tunnel_pid
+
+# Dual-pose skeleton images (generated)
+assets/dual-poses/*.png
