@@ -18,7 +18,7 @@ colors:
   warning: "#FFA726"
   danger: "#EF5350"
   info: "#42A5F5"
-  light-background: "#F8F5FF"
+  light-background: "#F7F6F8"
   light-surface: "#FFFFFF"
   light-primary: "#AD467F"
   light-text-primary: "#2C2C3A"
@@ -160,7 +160,8 @@ UI.
 
 The dark theme uses violet-black backgrounds instead of flat black. Surfaces are
 slightly lighter and may use restrained translucency where it improves hierarchy.
-The light theme uses warm lavender-white instead of clinical white.
+The light theme uses a neutral studio white with only a faint warm-violet cast,
+instead of clinical white or a visibly purple page wash.
 
 - Use `primary` only for the current selection, the main call to action, focus,
   or a small piece of emphasis. A page must not look uniformly pink.
@@ -176,7 +177,7 @@ The light theme uses warm lavender-white instead of clinical white.
 
 Dark runtime surfaces may use the alpha values already defined in
 `css/design-system.css`; the opaque colors in the front matter are their
-validation fallbacks. The canonical light values are background `#F8F5FF`,
+validation fallbacks. The canonical light values are background `#F7F6F8`,
 surface `#FFFFFF`, primary `#AD467F`, primary text `#2C2C3A`, and secondary text
 `#5A5A6E`.
 
@@ -215,9 +216,10 @@ show every control without scrolling. Empty space must either frame the artwork,
 clarify grouping, or improve touch/click accuracy. Large blank zones with no
 communicative purpose are a layout defect.
 
-Responsive order is stage first, then story/scene, then detailed decisions. On
-small screens, controls become a single column, primary actions stay reachable,
-and tap targets should be at least `40px` high.
+Desktop is the primary creation environment. Responsive order is stage first,
+then story/scene, then detailed decisions. On small screens, controls become a
+single column, primary actions stay reachable, and tap targets should be at least
+`40px` high; mobile compatibility must not shrink or weaken the desktop stage.
 
 Scene discovery must expose search and the most useful filters near the results.
 Do not require a friend who has never used the site to understand the taxonomy
@@ -278,6 +280,12 @@ Inputs show a persistent label when their meaning is not obvious. Search remains
 recognizable as search. Selected filters are visually distinct and removable.
 Advanced parameters are collapsed by default for first-time users and retain
 their previous state for experienced users.
+
+Maintenance pages use plain language and staged saving. A person who does not
+write code must be able to add, duplicate, edit, retire, and validate a Scene or
+replace its reviewed sample without opening JSON or a terminal. Destructive
+changes remain pending until an explicit project save creates a backup and
+passes validation.
 
 ### Director stage
 

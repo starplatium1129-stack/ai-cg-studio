@@ -4,7 +4,7 @@
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>使用与完善路线 · 绫季绘境</title>
+<title>项目状态与边界 · 绫季绘境</title>
 <link rel="stylesheet" href="../css/design-system.css?v=7">
 <script src="../tools/nav.js?v=6"></script>
 <script src="../tools/theme.js?v=5"></script>
@@ -104,8 +104,8 @@
 <article class="page">
   <a href="../index.html" class="nav-back">← 回首页</a>
 
-  <h1 class="title">🗺 使用与完善路线</h1>
-  <p class="subtitle">只做自己和朋友真正会用的功能，不为了版本号把个人工具扩张成平台。</p>
+  <h1 class="title">🗺 项目状态与边界</h1>
+  <p class="subtitle">核心功能已经完成。以后以内容维护和实际使用反馈为准，不为了版本号扩张个人工具。</p>
 
   <div class="timeline">
 
@@ -149,41 +149,40 @@
       </div>
     </div>
 
-    <!-- 当前优先 -->
-    <div class="version current">
+    <!-- 完成状态 -->
+    <div class="version done">
       <div class="version-card">
         <div class="version-header">
-          <div class="version-num">现在</div>
-          <div class="version-name">内容质量与使用稳定性</div>
-          <div class="version-tag">🚧 进行中</div>
+          <div class="version-num">完善</div>
+          <div class="version-name">创作、维护与作品整理</div>
+          <div class="version-tag">✓ 完成</div>
         </div>
-        <div class="version-desc">先把每天会遇到的问题处理好，再考虑增加新功能。</div>
+        <div class="version-desc">从出图到维护已经形成完整本地闭环，后续主要更新内容而不是扩张功能。</div>
         <ul class="feature-list">
-          <li>继续优化旧 Scene 的标题、故事、Prompt 和角色一致性</li>
-          <li>保持首页、角色页、推荐区与场景库显示同一份标题</li>
-          <li>减少重复标签、冲突动作和不符合角色设定的描述</li>
-          <li>改善 WebUI 未启动、端口错误、静态页面和认证失败的提示</li>
-          <li>检查非默认网关端口、断线恢复和多人共用时的边界情况</li>
-          <li>补充本地数据丢失、清理浏览器缓存和重要图片备份的提醒</li>
+          <li>场景管理器可新增、复制、编辑、下架和校验场景，并自动备份</li>
+          <li>样张可以在维护页面直接替换，不需要改文件名或手写路径</li>
+          <li>作品册、历史、收藏、项目、本地图片和版本化备份已经打通</li>
+          <li>快速出图、生成队列、同 Seed 微调与针对性错误恢复已经完成</li>
+          <li>单人与双人生成采用实际对比后保留的稳定基线，不以重训模型为默认方案</li>
+          <li>桌面端作为主要创作环境，移动端保留基础可用性</li>
         </ul>
       </div>
     </div>
 
-    <!-- 下一步 -->
+    <!-- 日常维护 -->
     <div class="version">
       <div class="version-card">
         <div class="version-header">
-          <div class="version-num">下一步</div>
-          <div class="version-name">个人创作整理</div>
-          <div class="version-tag">按需安排</div>
+          <div class="version-num">以后</div>
+          <div class="version-name">按实际使用维护</div>
+          <div class="version-tag">无固定版本</div>
         </div>
-        <div class="version-desc">围绕复用、对比和备份，减少重复劳动。</div>
+        <div class="version-desc">只有真实使用暴露问题时才调整，优先维护画面质量、场景内容和可靠性。</div>
         <ul class="feature-list">
-          <li>历史、收藏、项目和图片的一键导出与恢复</li>
-          <li>同一 Scene 的不同 Seed、模型和参数并排比较</li>
-          <li>更灵活的服装、LoRA 与角色预设组合</li>
-          <li>常用模型和 WebUI 参数保存为个人预设</li>
-          <li>按失败原因记录测试结果，方便回到场景继续优化</li>
+          <li>根据实际成图修正个别 Scene，而不是统一重写全部 Prompt</li>
+          <li>积累足够多真实作品后，再判断作品册卡片密度是否需要调整</li>
+          <li>模型、WebUI 或浏览器升级后，优先验证现有流程是否仍然稳定</li>
+          <li>只有明确重复劳动出现时，才考虑增加新的自动化</li>
         </ul>
       </div>
     </div>
@@ -199,7 +198,7 @@
         <div class="version-desc">这些方向有价值，但只有实际工作流用得到时才投入维护。</div>
         <ul class="feature-list">
           <li>导出 ComfyUI workflow JSON 与常用参数映射</li>
-          <li>ControlNet、IP-Adapter 和参考图辅助</li>
+          <li>在现有双人 OpenPose 之外，按具体场景尝试 IP-Adapter 或参考图辅助</li>
           <li>从参考图提取色彩、光照与构图提示</li>
           <li>小范围的本地 AI 故事润色或画面建议</li>
           <li>训练素材与对应标签的本地导出</li>

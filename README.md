@@ -74,7 +74,7 @@ Open `http://127.0.0.1:8090/`. A plain static server does not provide the `/sdap
 ├── tools/                  # Creator, scene, showcase, character, gallery, and LoRA pages
 ├── data/                   # Scene, character, tag, and preset data
 ├── css/                    # Shared design system
-├── docs/                   # Creative and maintenance notes
+├── docs/                   # Creative standards, quality checks, and maintenance notes
 ├── scripts/                # Validation and maintenance scripts
 └── runtime/                # Local config, logs, process state, and generated outputs
 ```
@@ -94,8 +94,18 @@ Use `npm run optimize-scenes` after importing or bulk-editing Scenes to canonica
 
 Use `npm run classify-ratings` after adding Scenes. It keeps `rating` (`All`, `R15`, `R18`) aligned with the image tags; only `R18` scenes are behind the adult-content toggle.
 
+For normal maintenance, use **More → Scene Manager** in the local site. It can add,
+edit, duplicate, retire, and validate Scenes, replace reviewed samples, create a
+backup, and write the correct source shards without requiring manual JSON edits.
+Direct edits to `data/scenes/*.json` are reserved for bulk or structural work;
+`data/scenes.json` remains generated output.
+
 ## Scope
 
-The project stays intentionally small: useful local features, reliable SD WebUI integration, better Scene content, and safe temporary sharing come first. Accounts, subscriptions, a public Scene store, and community uploads are not planned.
+The project stays intentionally small: reliable local creation, high-quality Scene
+content, straightforward maintenance, and safe temporary sharing come first.
+Desktop is the primary workspace; mobile remains usable but is not allowed to
+reduce the desktop canvas. Accounts, subscriptions, a public Scene store, and
+community uploads are not planned.
 
 > Prompts describe images. Scenes describe moments.

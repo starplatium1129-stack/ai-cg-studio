@@ -210,12 +210,14 @@ node server.js
 - `scripts/optimize-scenes.js`：规范标签、镜头、负面词与未解析占位符
 - `scripts/clean-scenes.js`：批量清洗脚本，运行前会创建备份
 
-日常修改场景后建议执行：
+日常增删场景或替换样张，请进入网站的“更多 → 场景管理”。点击“保存到项目”时会自动创建备份并执行完整检查，不需要手动运行命令。
+
+只有直接批量编辑场景源文件时，才需要手动执行：
 
 ```powershell
 npm run validate
 ```
 
-批量导入或修改场景后，可先运行 `npm run optimize-scenes`，再运行校验。
+批量导入或修改 `data/scenes/*.json` 后，可先运行 `npm run optimize-scenes`，再运行校验。不要直接编辑自动生成的 `data/scenes.json`。
 
 批量清洗会直接改写场景数据，不应作为普通启动步骤；只有明确需要整理数据时再使用。
