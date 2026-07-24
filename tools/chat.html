@@ -297,14 +297,17 @@
   // 从流式文本中切出完整句子（标点边界），可选 flush 收尾
   function drainSentences(flush,mid){
     var session=voiceSession;
-    var parts=[],m,last=0;
-    var re=/[。！？!?；;\n]/g;
-    while((m=re.exec(voiceBuffer))!==null){
-      var cut=voiceBuffer.slice(0,m.index+1).trim();
-      if(cut)parts.push(cut);
-      last=m.index+1;
+    var parts=[];
+    var buf=voiceBuffer;
+    var pos=0;
+    for(var i=0;i<buf.length;i+=1){
+      if(/[。！？!?；;\n]/.test(buf[i])){
+        var cut=buf.slice(pos,i+1).trim();
+        if(cut)parts.push(cut);
+        pos=i+1;
+      }
     }
-    voiceBuffer=voiceBuffer.slice(last);
+    voiceBuffer=buf.slice(pos);
     if(flush&&voiceBuffer.trim()){parts.push(voiceBuffer.trim());voiceBuffer='';}
     // 过短的句子并入下一句，避免 TTS 产出大量碎片
     var merged=[];
