@@ -1,5 +1,4 @@
 import { SentenceBuffer, fixWavHeader, inferEmotion, isAbortError, responseError } from './utils.mjs';
-import { ProgressivePlayer, isStreamingSupported, concatBufs } from './progressive-player.mjs';
 
 function removeAudioSource(audio) {
   try {
@@ -36,8 +35,6 @@ export class VoiceController {
     this.prepareKey = '';
     this.preparing = null;
     this._lastEmotion = 'neutral';
-    this._lipActive = false;
-    this._currentPlayer = null;
   }
 
   async refreshAvailability() {
@@ -213,40 +210,10 @@ export class VoiceController {
       signal
     });
     if (!response.ok) throw await responseError(response, '语音服务暂不可用');
-
-    var chunks = [];
-    var progressivePlayer = null;
-
-    if (typeof response.body !== 'undefined' && typeof response.body.getReader === 'function') {
-      try {
-        var reader = response.body.getReader();
-        progressivePlayer = new ProgressivePlayer(this.audioContext, this.analyser);
-        while (true) {
-          var rr = await reader.read();
-          if (rr.done) break;
-          chunks.push(rr.value);
-          progressivePlayer.ingest(rr.value);
-        }
-        progressivePlayer.finish();
-      } catch (e) {
-        // Streaming failed - fall back to Blob path
-        progressivePlayer.stop();
-        progressivePlayer = null;
-      }
-    }
-
-    if (!progressivePlayer && !chunks.length) {
-      var ab = await response.arrayBuffer();
-      chunks = [ab];
-    } else if (!progressivePlayer && chunks.length) {
-      // Partial streaming without progressive player - use chunks directly
-      // (This shouldn't happen but handle it)
-    }
-
-    var fullBuffer = concatBufs(chunks);
-    fullBuffer = fixWavHeader(fullBuffer);
-    var url = URL.createObjectURL(new Blob([fullBuffer], { type:'audio/wav' }));
-    return { url, emotion, _player: progressivePlayer };
+    let buffer = await response.arrayBuffer();
+    buffer = fixWavHeader(buffer);
+    const url = URL.createObjectURL(new Blob([buffer], { type:'audio/wav' }));
+    return { url, emotion };
   }
 
   attachAnalyser(audio) {
@@ -263,7 +230,7 @@ export class VoiceController {
     const tick = () => {
       const audio = this.currentAudio || this.replayAudio;
       let target = 0;
-      if (this._lipActive || (audio && !audio.paused && !audio.ended)) {
+      if (audio && !audio.paused && !audio.ended) {
         this.analyser.getByteTimeDomainData(samples);
         let sum = 0;
         for (const sample of samples) {
@@ -275,7 +242,7 @@ export class VoiceController {
       this.lipSmooth += (target - this.lipSmooth) * 0.35;
       if (this.lipSmooth < 0.015) this.lipSmooth = 0;
       this.onMouth(this.lipSmooth);
-      if (this._lipActive || (audio && !audio.ended) || this.lipSmooth > 0.01) {
+      if (audio && !audio.ended || this.lipSmooth > 0.01) {
         this.lipFrame = requestAnimationFrame(tick);
       } else {
         this.stopLipSync();
@@ -302,33 +269,6 @@ export class VoiceController {
     if (this.playing || !this.queue.length || session !== this.session) return;
     this.playing = true;
     const item = this.queue.shift();
-
-    // Progressive playback: player already streaming via AudioContext
-    if (item._player) {
-      this.currentAudio = null;
-      this._lipActive = true;
-      this._currentPlayer = item._player;
-      this.onExpression(item.emotion);
-      this.onSpeaking(true, item.mid);
-      this.onStatus('播放中…');
-      this.startLipSync();
-
-      const self = this;
-      const itemSession = item.session;
-      item._player.onDone = function () {
-        if (itemSession !== self.session) return;
-        self._lipActive = false;
-        self.playing = false;
-        self.onSpeaking(false, item.mid);
-        self.onExpression('neutral');
-        self.onStatus(self.pending > 0 ? '语音合成中…' : '');
-        self.stopLipSync();
-        self.pump(itemSession);
-      };
-      return;
-    }
-
-    // Legacy: Audio element playback
     const audio = new Audio(item.url);
     this.currentAudio = audio;
     this.attachAnalyser(audio);
@@ -443,12 +383,7 @@ export class VoiceController {
     }
     this.currentAudio = null;
     this.replayAudio = null;
-    if (this._currentPlayer) {
-      try { this._currentPlayer.stop(); } catch (e) {}
-      this._currentPlayer = null;
-    }
     this.playing = false;
-    this._lipActive = false;
     this.stopLipSync();
     this._lastEmotion = 'neutral';
     this.onSpeaking(false);
