@@ -446,7 +446,7 @@ app.post('/api/chat', express.json({ limit:'64kb' }), function(req, res) {
         stream:true,
         think:false,
         keep_alive:OLLAMA_KEEP_ALIVE,
-        options:{ temperature:0.82, top_p:0.9, repeat_penalty:1.08, num_predict:180 }
+        options:{ temperature:0.82, top_p:0.9, repeat_penalty:1.08, num_predict:180, num_ctx:Number(process.env.OLLAMA_NUM_CTX)||4096 }
       }
     }).then(function(result){ return { result:result, model:model }; });
   }).then(function(context) {
