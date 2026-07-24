@@ -595,7 +595,9 @@ function previewImage(id, title) {
   const img = document.getElementById('previewImg');
   img.src = SHOWCASE_DIR + '/images/' + id + '.jpg?v=' + Date.now();
   img.onerror = function() { this.src = 'about:blank'; this.alt = '样张未找到'; };
-  document.getElementById('imagePreview').style.display = 'block';
+  var panel = document.getElementById('imagePreview');
+  panel.style.display = 'block';
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   document.getElementById('showcaseFeedback').textContent = '支持 PNG、JPEG、WebP，最大 15MB；仅本机可以替换。';
 }
 
@@ -925,7 +927,7 @@ function exportJSON() {
   URL.revokeObjectURL(url);
 }
 
-function esc(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,'&#39;').replace(/"/g,'&quot;'); }
 
 init();
 </script>
