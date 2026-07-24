@@ -152,7 +152,7 @@
       if(!library||!library.wlLive2d){host.dataset.state='runtime-missing';host.dataset.error=(window.__live2dBootstrapErrors||[]).join(' | ')||'wl-live2d global missing';return;}
       host.innerHTML='';host.dataset.state='loading';
       live2dUrl=data.modelUrl;
-      live2dApp=library.wlLive2d({selector:'#live2dHost',fixed:false,drag:false,sayHello:false,menus:[],transitionTime:250,models:[{path:live2dUrl,width:280,height:510,position:{x:140,y:520},motionPreload:'IDLE'}]});
+      live2dApp=library.wlLive2d({selector:'#live2dHost',fixed:false,drag:false,sayHello:false,menus:[],transitionTime:250,models:[{path:live2dUrl,width:420,height:610,position:{x:0,y:0},motionPreload:'IDLE'}]});
       live2dApp.onModelLoaded(function(model){
         live2dModel=model;live2dReady=true;host.dataset.state='ready';setLive2dVisible(true);
       });
@@ -260,58 +260,26 @@
     $('chatError').textContent='';var list=current();list.push({role:'user',content:text});if(list.length>20)list.splice(0,list.length-20);histories[active]=list;save();renderMessages();$('chatInput').value='';setBusy(true);
     var assistant={role:'assistant',content:''};list.push(assistant);renderMessages();var bubble=$('chatList').lastElementChild.querySelector('.message-bubble');$('chatList').lastElementChild.classList.add('streaming');
 
-    // 分段配音：流式过程中检测句子边界并启动 TTS
-    var lastSpokenIndex=0;
-    var speakQueue=[];
-    var isSpeaking=false;
-
-    function processQueue(){
-      if(isSpeaking||!speakQueue.length)return;
-      isSpeaking=true;
-      var sentence=speakQueue.shift();
-      speak(sentence).then(function(){isSpeaking=false;processQueue();}).catch(function(){isSpeaking=false;processQueue();});
-    }
-
-    function checkAndSpeak(){
-      if(!$('autoVoice').checked)return;
-      var content=assistant.content;
-      // 检测句子边界：。！？!?
-      var sentenceEndRegex=/[。！？!?]/g;
-      var match;
-      while((match=sentenceEndRegex.exec(content))!==null){
-        var endIndex=match.index+1;
-        if(endIndex>lastSpokenIndex){
-          var sentence=content.substring(lastSpokenIndex,endIndex).trim();
-          if(sentence.length>=2){//至少2个字才配音
-            speakQueue.push(sentence);
-            processQueue();
-          }
-          lastSpokenIndex=endIndex;
-        }
-      }
-    }
+    // 预先翻译用户输入（并行）
+    var userTranslatePromise=$('autoVoice').checked?fetch('../api/translate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:text})}).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;}):Promise.resolve(null);
 
     fetch('../api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({character:active,model:model,messages:list.slice(0,-1)})}).then(function(response){return parseStream(response,function(token){
       assistant.content+=token;
       bubble.textContent=assistant.content;
       $('chatList').scrollTop=$('chatList').scrollHeight;
-      checkAndSpeak();
     });}).then(function(){
       assistant.content=assistant.content.trim()||'……';
       $('chatList').lastElementChild.classList.remove('streaming');
       save();setBusy(false);
 
-      // 处理剩余未配音的部分
-      if(assistant.content.length>lastSpokenIndex){
-        var remaining=assistant.content.substring(lastSpokenIndex).trim();
-        if(remaining.length>=2){
-          speakQueue.push(remaining);
-          processQueue();
-        }
-      }
-
-      // 保存最后一段用于重复播放
-      window._lastVoiceText=assistant.content;
+      // 立即启动配音（翻译已并行完成）
+      if(!$('autoVoice').checked)return;
+      return userTranslatePromise.then(function(data){
+        var voiceText=assistant.content;
+        // 如果有翻译结果，用于TTS
+        if(data&&data.translation)voiceText=data.translation;
+        return speak(voiceText);
+      });
     }).catch(function(error){list.pop();save();renderMessages();setBusy(false);$('chatError').textContent=error.message||'聊天暂不可用，请检查 Ollama 是否已启动。';});
   }
   function switchCharacter(id){if(busy)return;active=id==='natsume'?'natsume':'nene';save();renderCharacter();renderMessages();$('chatError').textContent='';}
