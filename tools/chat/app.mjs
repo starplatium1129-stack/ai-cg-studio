@@ -1,7 +1,7 @@
 import { CHARACTERS, createMessageId } from './config.mjs';
 import { Live2DController } from './live2d.mjs';
 import { ChatStorage } from './storage.mjs';
-import { VoiceController } from './voice.mjs?v=2';
+import { VoiceController } from './voice.mjs?v=3';
 import { escapeHtml, isAbortError, parseNdjsonResponse } from './utils.mjs';
 
 const byId = (id) => document.getElementById(id);
@@ -23,6 +23,7 @@ const elements = {
   sendButton: byId('sendBtn'),
   stopButton: byId('stopBtn'),
   autoVoice: byId('autoVoice'),
+  volumeRange: byId('volumeRange'),
   voiceStatus: byId('voiceStatus'),
   voiceCapability: byId('voiceCapability'),
   voiceRecovery: byId('voiceRecovery'),
@@ -409,6 +410,11 @@ elements.autoVoice.addEventListener('change', () => {
     updateVoiceCapability();
   }
 });
+elements.volumeRange.addEventListener('input', () => {
+  const v = parseInt(elements.volumeRange.value, 10) / 100;
+  voice.setVolume(v);
+  storage.setVolume(elements.volumeRange.value);
+});
 elements.replayButton.addEventListener('click', async () => {
   const latest = [...currentMessages()].reverse()
     .find((item) => item.role === 'assistant' && item.mid && voice.hasAudio(item.mid));
@@ -451,6 +457,8 @@ window.addEventListener('beforeunload', () => {
 });
 
 elements.autoVoice.checked = state.settings.autoVoice;
+elements.volumeRange.value = state.settings.volume != null ? state.settings.volume : 80;
+voice.setVolume(parseInt(elements.volumeRange.value, 10) / 100);
 renderCharacter();
 renderMessages(true);
 live2d.init(state.active);

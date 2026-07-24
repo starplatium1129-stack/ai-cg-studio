@@ -27,7 +27,7 @@ export class ChatStorage {
       version: STORAGE_VERSION,
       active: 'nene',
       histories: { nene:[], natsume:[] },
-      settings: { model:'', autoVoice:true, drafts:{ nene:'', natsume:'' } }
+      settings: { model:'', autoVoice:true, volume:80, drafts:{ nene:'', natsume:'' } }
     };
   }
 
@@ -41,6 +41,7 @@ export class ChatStorage {
       const savedModel = raw.settings && raw.settings.model || localStorage.getItem('aics_chat_model') || '';
       this.state.settings.model = String(savedModel);
       this.state.settings.autoVoice = raw.settings ? raw.settings.autoVoice !== false : true;
+      this.state.settings.volume = raw.settings && typeof raw.settings.volume === 'number' ? raw.settings.volume : 80;
       Object.keys(CHARACTERS).forEach((character) => {
         const draft = raw.settings && raw.settings.drafts && raw.settings.drafts[character];
         this.state.settings.drafts[character] = String(draft || '').slice(0, 1200);
@@ -78,6 +79,11 @@ export class ChatStorage {
 
   setAutoVoice(value) {
     this.state.settings.autoVoice = Boolean(value);
+    this.save();
+  }
+
+  setVolume(value) {
+    this.state.settings.volume = Math.max(0, Math.min(100, Math.round(Number(value) || 80)));
     this.save();
   }
 

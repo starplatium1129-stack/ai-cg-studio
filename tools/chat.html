@@ -86,6 +86,10 @@
               <span class="voice-capability" id="voiceCapability" data-state="offline"><span class="voice-capability-dot"></span>检查语音…</span>
               <span class="voice-status" id="voiceStatus" aria-live="polite"></span>
               <a class="voice-recovery" id="voiceRecovery" href="http://127.0.0.1:3001/" target="_blank" rel="noreferrer" hidden>启动语音 ↗</a>
+              <label class="volume-slider" title="音量">
+                <span class="volume-icon">🔊</span>
+                <input type="range" id="volumeRange" min="0" max="100" value="80">
+              </label>
               <button class="replay-btn" id="replayBtn" type="button" title="重新播放上一条语音" disabled><span aria-hidden="true">↻</span> 重播上一句</button>
             </div>
             <span class="keyboard-hint">Enter 发送 · Shift+Enter 换行</span>
