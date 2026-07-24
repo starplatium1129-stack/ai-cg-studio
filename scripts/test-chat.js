@@ -105,6 +105,7 @@ async function run() {
   var voiceModule = fs.readFileSync(path.join(root, 'tools', 'chat', 'voice.mjs'), 'utf8');
   var live2dModule = fs.readFileSync(path.join(root, 'tools', 'chat', 'live2d.mjs'), 'utf8');
   var chatCss = fs.readFileSync(path.join(root, 'css', 'chat.css'), 'utf8');
+  var voiceRoute = fs.readFileSync(path.join(root, 'routes', 'tts.js'), 'utf8');
   var serverSource = fs.readFileSync(path.join(root, 'server.js'), 'utf8');
 
   assert(html.includes('data-nav="chat"'), 'chat page must expose the navigation state');
@@ -118,6 +119,7 @@ async function run() {
   assert(appModule.includes("mid && mid === streamingMessageId"), 'only the active assistant message may keep the streaming cursor');
   assert(voiceModule.includes('SentenceBuffer') && voiceModule.includes('response.arrayBuffer()'), 'voice must synthesize complete sentence WAV files');
   assert(voiceModule.includes('AbortController') && voiceModule.includes('messageAudio'), 'voice sessions must support cancellation and replay');
+  assert(voiceModule.includes("fetch('/api/voice/prepare'") && voiceRoute.includes("router.post('/api/voice/prepare'"), 'voice models and translation must prewarm before the first line');
   assert(voiceModule.includes('getByteTimeDomainData') && voiceModule.includes('onMouth'), 'lip sync must use real audio amplitude');
   assert(live2dModule.includes('ResizeObserver') && live2dModule.includes('webglcontextlost'), 'Live2D must recover layout and WebGL failures');
   assert(live2dModule.includes('setExpression') && live2dModule.includes('ParamMouthOpenY'), 'Live2D must support expression and mouth control');
@@ -145,6 +147,8 @@ async function run() {
     messages:[{ role:'user', content:'你好' }]
   }).value, 'valid chat body must pass');
   assert(chatRoute.validateChatBody({ character:'unknown', messages:[] }).error, 'invalid character must be rejected');
+  assert(chatRoute.chatCharacterPrompt('nene').includes('不要每句话都结巴'), 'Nene prompt must constrain repetitive roleplay mannerisms');
+  assert(chatRoute.chatCharacterPrompt('natsume').includes('关心藏进提醒'), 'Natsume prompt must preserve restrained care');
 
   var live2dService = require('../services/live2d-service').createLive2dService({
     rootDir:path.join(root, 'assets', 'live2d'),
@@ -203,6 +207,8 @@ async function run() {
         natsume:{ refAudioPath:'natsume.wav', promptText:'ref', sovitsWeightsPath:'natsume.pth', gptWeightsPath:'natsume.ckpt' }
       }
     });
+    await tts.prepare('nene');
+    assert((await tts.status()).activeVoice === 'nene', 'voice preparation must activate the requested character before synthesis');
     await Promise.all([
       consumeVoice(tts, { voice:'nene', text:'a', language:'ja', emotion:'neutral', speed:1 }),
       consumeVoice(tts, { voice:'natsume', text:'b', language:'ja', emotion:'neutral', speed:1 })

@@ -7,12 +7,14 @@ export function escapeHtml(value) {
     .replace(/'/g, '&#39;');
 }
 
-export function inferEmotion(text) {
+export function inferEmotion(text, character = '') {
   if (/害羞|脸红|不好意思|才不是|笨蛋/.test(text)) return 'shy';
-  if (/开心|高兴|太好了|哈哈|笑/.test(text)) return 'happy';
-  if (/难过|寂寞|想念|对不起/.test(text)) return 'sad';
-  if (/认真|必须|小心|危险/.test(text)) return 'serious';
-  if (/温柔|谢谢|陪着|安心/.test(text)) return 'gentle';
+  if (/开心|高兴|太好了|哈哈|笑|期待|终于/.test(text)) return 'happy';
+  if (/难过|寂寞|想念|对不起|抱歉|失落/.test(text)) return 'sad';
+  if (/认真|必须|小心|危险|不许|别逞强|注意/.test(text)) return 'serious';
+  if (/温柔|谢谢|陪着|安心|辛苦|休息|没关系/.test(text)) return 'gentle';
+  if (character === 'nene' && /那个|其实|愿意|可以吗/.test(text)) return 'shy';
+  if (character === 'natsume' && /真是的|算了|我在|放心/.test(text)) return 'gentle';
   return 'neutral';
 }
 

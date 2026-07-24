@@ -1,7 +1,7 @@
 import { CHARACTERS, createMessageId } from './config.mjs';
 import { Live2DController } from './live2d.mjs';
 import { ChatStorage } from './storage.mjs';
-import { VoiceController } from './voice.mjs';
+import { VoiceController } from './voice.mjs?v=2';
 import { escapeHtml, isAbortError, parseNdjsonResponse } from './utils.mjs';
 
 const byId = (id) => document.getElementById(id);
@@ -115,6 +115,8 @@ function updateVoiceCapability() {
 async function refreshVoiceStatus() {
   await voice.refreshAvailability();
   updateVoiceCapability();
+  const voiceId = CHARACTERS[state.active].voice;
+  if (voice.readyFor(voiceId)) voice.prepare(voiceId, true);
 }
 
 function renderCharacter() {
@@ -133,6 +135,7 @@ function renderCharacter() {
   });
   live2d.setCharacter(state.active);
   updateVoiceCapability();
+  if (voice.readyFor(character.voice)) voice.prepare(character.voice, true);
 }
 
 function nearBottom() {

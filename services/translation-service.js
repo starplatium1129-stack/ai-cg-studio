@@ -196,6 +196,10 @@ function createTranslationService(options) {
     });
   }
 
+  function prepare(signal) {
+    return ensureServer(signal);
+  }
+
   function close() {
     if (child) {
       try { child.kill(); } catch (error) {}
@@ -206,6 +210,7 @@ function createTranslationService(options) {
 
   return {
     translate:translate,
+    prepare:prepare,
     ping:ping,
     close:close,
     status:function () {

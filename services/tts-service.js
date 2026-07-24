@@ -52,6 +52,7 @@ function createTtsService(options) {
   var queue = new SerialQueue('gpt-sovits');
   var activeGptWeights = '';
   var activeSoVitsWeights = '';
+  var activeVoice = '';
 
   function voiceMap() {
     var result = {};
@@ -84,7 +85,7 @@ function createTtsService(options) {
     });
   }
 
-  async function activate(profile, signal) {
+  async function activate(voice, profile, signal) {
     if (profile.sovitsWeightsPath && profile.sovitsWeightsPath !== activeSoVitsWeights) {
       await setWeights('/set_sovits_weights?weights_path=' + encodeURIComponent(profile.sovitsWeightsPath), signal);
       activeSoVitsWeights = profile.sovitsWeightsPath;
@@ -93,6 +94,22 @@ function createTtsService(options) {
       await setWeights('/set_gpt_weights?weights_path=' + encodeURIComponent(profile.gptWeightsPath), signal);
       activeGptWeights = profile.gptWeightsPath;
     }
+    activeVoice = voice;
+  }
+
+  function prepare(voice, signal) {
+    voice = String(voice || '');
+    var profile = profiles[voice];
+    if (!VOICES.includes(voice) || !profile || !profile.refAudioPath || !profile.promptText) {
+      var error = new Error('该角色尚未配置可用声线');
+      error.status = 409;
+      return Promise.reject(error);
+    }
+    return queue.run(async function (queueMeta) {
+      if (signal && signal.aborted) throw httpClient.abortError();
+      await activate(voice, profile, signal);
+      return { voice:voice, queueWaitMs:queueMeta.waitMs };
+    });
   }
 
   function stream(input, optionsForStream) {
@@ -106,7 +123,7 @@ function createTtsService(options) {
 
     return queue.run(async function (queueMeta) {
       if (optionsForStream.signal && optionsForStream.signal.aborted) throw httpClient.abortError();
-      await activate(validation.value.profile, optionsForStream.signal);
+      await activate(validation.value.voice, validation.value.profile, optionsForStream.signal);
       var upstream = await httpClient.request(host, '/tts', {
         method:'POST',
         json:validation.value.payload,
@@ -146,12 +163,14 @@ function createTtsService(options) {
       online:await isOnline(signal),
       engine:'GPT-SoVITS',
       voices:voiceMap(),
+      activeVoice:activeVoice,
       queue:queue.status()
     };
   }
 
   return {
     status:status,
+    prepare:prepare,
     stream:stream,
     validate:function (input) { return validateInput(input, profiles); },
     queueStatus:function () { return queue.status(); }

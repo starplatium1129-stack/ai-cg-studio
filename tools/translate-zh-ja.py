@@ -26,6 +26,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_MODEL = REPO_ROOT.parent / "AI" / "Voice" / "models" / "translation" / "m2m100_418m"
 MODEL_PATH = Path(os.environ.get("AICS_TRANSLATION_MODEL", DEFAULT_MODEL))
 MAX_INPUT_CHARS = 2000
+TRANSLATION_BEAMS = max(1, min(4, int(os.environ.get("AICS_TRANSLATION_BEAMS", "1"))))
 
 # Resident model state (serve mode)
 _TOKENIZER = None
@@ -80,16 +81,26 @@ def load_model():
 
 def translate_segments(text: str) -> list[dict[str, str]]:
     tokenizer, model = load_model()
-    output: list[dict[str, str]] = []
+    parts = segments(text)
     with torch.inference_mode():
-        for part in segments(text):
-            encoded = tokenizer(part, return_tensors="pt", truncation=True, max_length=384)
-            options = {"max_new_tokens": 384, "num_beams": 4, "early_stopping": True}
-            if hasattr(tokenizer, "get_lang_id"):
-                options["forced_bos_token_id"] = tokenizer.get_lang_id("ja")
-            generated = model.generate(**encoded, **options)
-            output.append({"source": part, "translation": normalize_japanese(tokenizer.decode(generated[0], skip_special_tokens=True))})
-    return output
+        encoded = tokenizer(
+            parts,
+            return_tensors="pt",
+            padding=True,
+            truncation=True,
+            max_length=384,
+        )
+        options = {"max_new_tokens": 384, "num_beams": TRANSLATION_BEAMS}
+        if TRANSLATION_BEAMS > 1:
+            options["early_stopping"] = True
+        if hasattr(tokenizer, "get_lang_id"):
+            options["forced_bos_token_id"] = tokenizer.get_lang_id("ja")
+        generated = model.generate(**encoded, **options)
+        translations = tokenizer.batch_decode(generated, skip_special_tokens=True)
+    return [
+        {"source": part, "translation": normalize_japanese(translation)}
+        for part, translation in zip(parts, translations)
+    ]
 
 
 def translate_payload(text: str) -> dict:
@@ -136,7 +147,12 @@ class TranslateHandler(BaseHTTPRequestHandler):
 
     def do_GET(self) -> None:  # noqa: N802 - stdlib signature
         if self.path == "/health":
-            self._send_json(200, {"ok": True, "engine": "m2m100", "model": MODEL_PATH.name})
+            self._send_json(200, {
+                "ok": True,
+                "engine": "m2m100",
+                "model": MODEL_PATH.name,
+                "beams": TRANSLATION_BEAMS,
+            })
         else:
             self._send_json(404, {"error": "not found"})
 

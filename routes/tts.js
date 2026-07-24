@@ -81,6 +81,39 @@ function createVoiceRouter(config, dependencies) {
     });
   });
 
+  router.post('/api/voice/prepare', express.json({ limit:'4kb' }), function (req, res) {
+    var voice = String(req.body && req.body.voice || '');
+    var needsTranslation = req.body && req.body.translation === true;
+    if (!['nene', 'natsume'].includes(voice)) {
+      return res.status(400).json({ error:'不支持的角色声线' });
+    }
+
+    var controller = new AbortController();
+    req.once('aborted', function () { controller.abort(); });
+    res.once('close', function () { if (!res.writableEnded) controller.abort(); });
+    var started = Date.now();
+    var tasks = [tts.prepare(voice, controller.signal)];
+    if (needsTranslation) tasks.push(translation.prepare(controller.signal));
+
+    Promise.all(tasks).then(function () {
+      if (controller.signal.aborted || res.writableEnded) return;
+      res.setHeader('Cache-Control', 'no-store');
+      res.json({
+        ok:true,
+        voice:voice,
+        translation:needsTranslation,
+        prepareMs:Date.now() - started
+      });
+    }).catch(function (error) {
+      if (httpClient.isAbortError(error) || controller.signal.aborted) return;
+      if (!res.headersSent) {
+        res.status(error.status >= 400 && error.status < 500 ? error.status : 503).json({
+          error:error.message || '声线预热失败'
+        });
+      }
+    });
+  });
+
   router.post('/api/tts', express.json({ limit:'32kb' }), function (req, res) {
     var validation = tts.validate(req.body);
     if (validation.error) return res.status(validation.status).json({ error:validation.error });

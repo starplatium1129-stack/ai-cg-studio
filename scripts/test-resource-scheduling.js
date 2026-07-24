@@ -20,12 +20,14 @@ assert(ollamaService.includes('num_ctx:numContext'), 'gateway must cap Ollama co
 assert(ollamaService.includes('async function unload') && ollamaService.includes('activeModel'), 'gateway must unload old model before loading a different one to avoid double VRAM consumption');
 assert(translationService.includes('ensureServer') && translationService.includes("'--serve'"), 'gateway must manage a persistent translation server');
 assert(translationService.includes('runLegacy'), 'gateway must keep the spawn-per-call translation as fallback');
+assert(translationService.includes('prepare:prepare'), 'voice clients must be able to prewarm the translation model');
 assert(gatewayConfig.includes('TRANSLATE_PORT') && translationService.includes("'/health'"), 'gateway must health-check the translation server');
 
 // ─── 翻译脚本：常驻服务模式 ───
 assert(translatePy.includes('ThreadingHTTPServer') && translatePy.includes('/translate'), 'translate script must serve HTTP in --serve mode');
 assert(translatePy.includes('load_model()'), 'translate script must load the model once');
 assert(translatePy.includes('_MODEL_LOCK'), 'translate script must serialize concurrent translations');
+assert(translatePy.includes('batch_decode') && translatePy.includes('TRANSLATION_BEAMS'), 'translation must batch sentences and default to low-latency decoding');
 
 // ─── 控制面板后端：服务调度 ───
 assert(control.includes("app.post('/api/service/voice'"), 'control server must expose voice start/stop endpoint');

@@ -7,6 +7,13 @@ var _voiceRequest = null;
 var _voiceAudioUrl = '';
 var _voiceBlob = null;
 var _voicePlaybackSegments = [];
+var _voicePrepareKey = '';
+var _voicePreparePromise = null;
+var _voicePreviewContext = null;
+var _voicePreviewSources = [];
+var _voicePreviewTimers = [];
+var _voicePreviewCursor = 0;
+var _voiceGenerationActive = false;
 
 function voiceCharacterData(id) {
   return (CHARACTER || []).find(function(character){ return character.id === id; }) || null;
@@ -99,6 +106,29 @@ function setVoiceState(kind, label, detail) {
   if (status && detail) status.textContent = detail;
 }
 
+function prepareVoiceStudio(voice, needsTranslation) {
+  var key = voice + ':' + (needsTranslation ? 'translate' : 'voice');
+  if (_voicePreparePromise && _voicePrepareKey === key) return _voicePreparePromise;
+  _voicePrepareKey = key;
+  _voicePreparePromise = fetch('../api/voice/prepare', {
+    method:'POST',
+    headers:{ 'Content-Type':'application/json' },
+    body:JSON.stringify({ voice:voice, translation:needsTranslation })
+  }).then(function(response) {
+    if (response.ok) return response.json();
+    return response.json().catch(function(){ return {}; }).then(function(data) {
+      throw new Error(data.error || '声线预热失败');
+    });
+  }).then(function(data) {
+    return data;
+  }).catch(function() {
+    return null;
+  }).finally(function() {
+    if (_voicePrepareKey === key) _voicePreparePromise = null;
+  });
+  return _voicePreparePromise;
+}
+
 function checkVoiceStatus() {
   var voice = document.getElementById('voiceCharacter');
   var button = document.getElementById('voiceGenerateBtn');
@@ -116,8 +146,14 @@ function checkVoiceStatus() {
     var canTranslate = language === 'ja' && !!(caption && caption.value.trim());
     if (translateButton) translateButton.disabled = !canTranslate;
     button.disabled = !(data.online && configured && (hasScript || canTranslate));
-    if (data.online && configured && hasScript) setVoiceState('ready', 'AI 声线就绪', 'GPT-SoVITS 已连接；屏幕保持中文，声音按所选语言生成。');
-    else if (data.online && configured && canTranslate) setVoiceState('ready', '可自动翻译', '只写中文即可；生成时会先在本机翻成日语，再由角色声线朗读。');
+    if (data.online && configured && hasScript) {
+      setVoiceState('ready', 'AI 声线就绪', 'GPT-SoVITS 已连接；正在后台预热当前角色，屏幕保持中文。');
+      prepareVoiceStudio(voice.value, language === 'ja');
+    }
+    else if (data.online && configured && canTranslate) {
+      setVoiceState('ready', '可自动翻译', '正在后台预热翻译与角色声线；生成时无需再等冷启动。');
+      prepareVoiceStudio(voice.value, true);
+    }
     else if (data.online && configured) setVoiceState('warn', '待补配音稿', '中文内容已保留；请展开并补充日文配音稿，或切换为中文配音。');
     else if (data.online) setVoiceState('warn', '待配参考音频', 'GPT-SoVITS 已连接，请在启动控制面板配置该角色的参考音频与原文。');
     else setVoiceState('warn', '系统试听可用', 'GPT-SoVITS 未连接；仍可用本机系统声音试听文本节奏。');
@@ -212,11 +248,38 @@ function voicePayload(text) {
   };
 }
 
+function fixVoiceWavBuffer(buffer) {
+  try {
+    var view = new DataView(buffer);
+    if (buffer.byteLength < 44 ||
+        view.getUint32(0, false) !== 0x52494646 ||
+        view.getUint32(8, false) !== 0x57415645) return buffer;
+    view.setUint32(4, buffer.byteLength - 8, true);
+    var position = 12;
+    while (position + 8 <= buffer.byteLength) {
+      var tag = view.getUint32(position, false);
+      var size = view.getUint32(position + 4, true);
+      if (tag === 0x64617461) {
+        view.setUint32(position + 4, buffer.byteLength - position - 8, true);
+        break;
+      }
+      if (size > buffer.byteLength || position + 8 + size > buffer.byteLength + 1) break;
+      position += 8 + size + (size % 2);
+    }
+  } catch (error) {}
+  return buffer;
+}
+
 function requestVoiceBlob(text) {
   return fetch('../api/tts', {
     method:'POST', headers:{ 'Content-Type':'application/json' }, body:JSON.stringify(voicePayload(text)), signal:_voiceRequest.signal
   }).then(function(response) {
-    if (response.ok) return response.blob();
+    if (response.ok) {
+      var contentType = response.headers.get('Content-Type') || 'audio/wav';
+      return response.arrayBuffer().then(function(buffer) {
+        return new Blob([fixVoiceWavBuffer(buffer)], { type:contentType });
+      });
+    }
     return response.json().catch(function(){ return {}; }).then(function(data){ throw new Error(data.error || '语音生成失败'); });
   });
 }
@@ -245,17 +308,98 @@ function wavBlobFromBuffers(buffers) {
   return new Blob([output], { type:'audio/wav' });
 }
 
+function splitVoiceScript(text) {
+  var source = String(text || '').replace(/\r/g, '').trim();
+  var parts = source.match(/[^。！？!?；;\n]+[。！？!?；;]?/g) || [];
+  var result = [];
+  parts.forEach(function(part) {
+    part = part.trim();
+    while (part.length > 100) {
+      var marks = ['，', '、', ',', ' '];
+      var splitAt = -1;
+      marks.forEach(function(mark) { splitAt = Math.max(splitAt, part.lastIndexOf(mark, 100)); });
+      if (splitAt < 24) splitAt = 100;
+      result.push(part.slice(0, splitAt + 1).trim());
+      part = part.slice(splitAt + 1).trim();
+    }
+    if (part) result.push(part);
+  });
+  return result.length ? result : (source ? [source] : []);
+}
+
+function stopVoicePreview() {
+  _voicePreviewTimers.forEach(function(timer){ clearTimeout(timer); });
+  _voicePreviewTimers = [];
+  _voicePreviewSources.forEach(function(source) {
+    source.onended = null;
+    try { source.stop(); } catch (error) {}
+    try { source.disconnect(); } catch (error) {}
+  });
+  _voicePreviewSources = [];
+  if (_voicePreviewContext) _voicePreviewContext.close().catch(function(){});
+  _voicePreviewContext = null;
+  _voicePreviewCursor = 0;
+}
+
+function ensureVoicePreviewContext() {
+  if (_voicePreviewContext && _voicePreviewContext.state !== 'closed') return _voicePreviewContext;
+  var AudioContext = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContext) throw new Error('当前浏览器不支持低延迟音频播放。');
+  _voicePreviewContext = new AudioContext();
+  _voicePreviewContext.resume().catch(function(){});
+  _voicePreviewCursor = _voicePreviewContext.currentTime + .04;
+  return _voicePreviewContext;
+}
+
+function finishVoicePreviewIfIdle() {
+  if (_voiceGenerationActive || _voicePreviewSources.length) return;
+  clearVoiceCaption();
+  var status = document.getElementById('voiceStatus');
+  if (status && _voiceBlob) status.textContent = 'AI 声线已生成，可以播放或下载 WAV。';
+  if (_voicePreviewContext) _voicePreviewContext.close().catch(function(){});
+  _voicePreviewContext = null;
+  _voicePreviewCursor = 0;
+}
+
+function scheduleVoicePreview(buffer, caption, index, total) {
+  var context = ensureVoicePreviewContext();
+  var source = context.createBufferSource();
+  source.buffer = buffer;
+  source.connect(context.destination);
+  var startAt = Math.max(context.currentTime + .04, _voicePreviewCursor);
+  _voicePreviewCursor = startAt + buffer.duration;
+  _voicePreviewSources.push(source);
+  var delay = Math.max(0, (startAt - context.currentTime) * 1000);
+  var timer = setTimeout(function() {
+    if (caption) showVoiceCaption(caption, index, total);
+    var status = document.getElementById('voiceStatus');
+    if (status) {
+      status.textContent = index + 1 < total
+        ? '正在播放第 ' + (index + 1) + ' / ' + total + ' 句；后续语音在后台继续生成…'
+        : '正在播放最后一句；完整语音已可重播和下载。';
+    }
+  }, delay);
+  _voicePreviewTimers.push(timer);
+  source.onended = function() {
+    var sourceIndex = _voicePreviewSources.indexOf(source);
+    if (sourceIndex >= 0) _voicePreviewSources.splice(sourceIndex, 1);
+    try { source.disconnect(); } catch (error) {}
+    finishVoicePreviewIfIdle();
+  };
+  source.start(startAt);
+}
+
 function generateSegmentedVoice(segments, language) {
-  var button = document.getElementById('voiceGenerateBtn');
-  var context = new (window.AudioContext || window.webkitAudioContext)();
+  var context = ensureVoicePreviewContext();
   var buffers = [];
   var completed = 0;
   return segments.reduce(function(chain, segment) {
     return chain.then(function() {
       document.getElementById('voiceStatus').textContent = '正在生成第 ' + (completed + 1) + ' / ' + segments.length + ' 句角色语音…';
-      var ttsText = language === 'zh' ? segment.source : segment.translation;
+      var ttsText = segment.ttsText || (language === 'zh' ? segment.source : segment.translation);
       return requestVoiceBlob(ttsText).then(function(blob) { return blob.arrayBuffer(); }).then(function(data) { return context.decodeAudioData(data); }).then(function(buffer) {
         buffers.push(buffer);
+        scheduleVoicePreview(buffer, segment.caption || segment.source || '', completed, segments.length);
         completed += 1;
       });
     });
@@ -268,15 +412,14 @@ function generateSegmentedVoice(segments, language) {
       return value;
     });
     _voiceBlob = wavBlobFromBuffers(buffers);
-    return context.close().catch(function(){});
-  }).finally(function() {
-    if (context.state !== 'closed') context.close().catch(function(){});
   });
 }
 
 function stopVoice() {
   if ('speechSynthesis' in window) window.speechSynthesis.cancel();
   if (_voiceRequest) { _voiceRequest.abort(); _voiceRequest = null; }
+  _voiceGenerationActive = false;
+  stopVoicePreview();
   var audio = document.getElementById('voiceAudio');
   if (audio) { audio.pause(); audio.currentTime = 0; }
   clearVoiceCaption();
@@ -319,36 +462,66 @@ function generateAIVoice() {
   var button = document.getElementById('voiceGenerateBtn');
   button.disabled = true;
   button.textContent = '生成中…';
-  document.getElementById('voiceStatus').textContent = '正在生成角色声线，较长故事需要多等一会儿…';
+  document.getElementById('voiceStatus').textContent = '正在生成首句；首句完成后会立即播放，后续在后台衔接…';
   var rawSegments = document.getElementById('voiceText').dataset.translationSegments;
-  var segments = [];
-  try { segments = JSON.parse(rawSegments || '[]'); } catch (error) {}
+  var translatedSegments = [];
+  try { translatedSegments = JSON.parse(rawSegments || '[]'); } catch (error) {}
   var segText = language === 'ja'
-    ? segments.map(function(item){ return item.translation; }).join('\n').trim()
-    : segments.map(function(item){ return item.source; }).join('\n').trim();
-  var shouldSyncCaptions = segments.length > 0 && segText === text;
-  var generation = shouldSyncCaptions ? generateSegmentedVoice(segments, language) : requestVoiceBlob(text).then(function(blob) { _voiceBlob = blob; _voicePlaybackSegments = []; });
+    ? translatedSegments.map(function(item){ return item.translation; }).join('\n').trim()
+    : translatedSegments.map(function(item){ return item.source; }).join('\n').trim();
+  var segments;
+  if (translatedSegments.length > 0 && segText === text) {
+    segments = translatedSegments.map(function(item) {
+      return {
+        source:String(item.source || ''),
+        translation:String(item.translation || ''),
+        ttsText:language === 'zh' ? String(item.source || '') : String(item.translation || ''),
+        caption:String(item.source || '')
+      };
+    });
+  } else {
+    var textParts = splitVoiceScript(text);
+    var captionParts = splitVoiceScript(caption);
+    segments = textParts.map(function(part, index) {
+      var matchingCaption = captionParts.length === textParts.length ? captionParts[index] : '';
+      return {
+        source:language === 'zh' ? part : matchingCaption,
+        translation:language === 'ja' ? part : '',
+        ttsText:part,
+        caption:language === 'zh' ? part : matchingCaption
+      };
+    });
+  }
+  _voiceGenerationActive = true;
+  var generation = generateSegmentedVoice(segments, language);
   generation.then(function() {
     if (_voiceAudioUrl) URL.revokeObjectURL(_voiceAudioUrl);
     _voiceAudioUrl = URL.createObjectURL(_voiceBlob);
     var audio = document.getElementById('voiceAudio');
     audio.src = _voiceAudioUrl;
     audio.ontimeupdate = function(){ syncVoiceCaptionToAudio(audio); };
-    audio.onplay = function(){ syncVoiceCaptionToAudio(audio); };
+    audio.onplay = function(){
+      stopVoicePreview();
+      syncVoiceCaptionToAudio(audio);
+    };
     audio.onended = function(){ clearVoiceCaption(); };
     audio.classList.add('show');
     document.getElementById('voiceDownload').classList.add('show');
-    document.getElementById('voiceStatus').textContent = 'AI 声线已生成，可以播放或下载 WAV。';
-    return audio.play().catch(function(){});
+    document.getElementById('voiceStatus').textContent = _voicePreviewSources.length
+      ? '完整语音已生成；正在连续播放，也可以稍后重播或下载。'
+      : 'AI 声线已生成，可以播放或下载 WAV。';
   }).catch(function(error) {
     if (error.name !== 'AbortError') {
+      stopVoicePreview();
       document.getElementById('voiceStatus').textContent = error.message;
       flash('语音生成失败: ' + error.message);
     }
   }).finally(function() {
+    _voiceGenerationActive = false;
+    finishVoicePreviewIfIdle();
     _voiceRequest = null;
     button.textContent = 'AI 声线生成';
-    checkVoiceStatus();
+    button.disabled = false;
   });
 }
 

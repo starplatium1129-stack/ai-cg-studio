@@ -57,7 +57,7 @@ try {
 
 let previousOffset = -1;
 for (const [name, marker] of modules) {
-  const version = name === 'sd.js' ? '2' : '1';
+  const version = name === 'voice.js' ? '5' : (name === 'sd.js' ? '2' : '1');
   const src = 'prompt-builder/' + name + '?v=' + version;
   const offset = html.indexOf(src);
   if (offset < 0) fail('missing script reference for ' + name);
@@ -81,6 +81,7 @@ const historySource = fs.readFileSync(path.join(root, 'tools', 'prompt-builder',
 const queueSource = fs.readFileSync(path.join(root, 'tools', 'prompt-builder', 'queue.js'), 'utf8');
 const sdSource = fs.readFileSync(path.join(root, 'tools', 'prompt-builder', 'sd.js'), 'utf8');
 const compositionSource = fs.readFileSync(path.join(root, 'tools', 'prompt-builder', 'composition.js'), 'utf8');
+const voiceSource = fs.readFileSync(path.join(root, 'tools', 'prompt-builder', 'voice.js'), 'utf8');
 if (!sceneSource.includes("document.createElement('article')") || !sceneSource.includes("selectBtn.className = 'scene-card-main'")) {
   fail('scene cards must expose separate native controls for loading and quick generation');
 }
@@ -117,6 +118,12 @@ if (!sdSource.includes('function resolveDualEnhancement(character, scene)') || !
 }
 if (!sceneSource.includes('applySceneGenerationPreset(s)')) {
   fail('loading a scene must apply its generation-size preset');
+}
+if (!voiceSource.includes("fetch('../api/voice/prepare'") ||
+    !voiceSource.includes('scheduleVoicePreview(buffer') ||
+    !voiceSource.includes('splitVoiceScript(text)') ||
+    !voiceSource.includes('fixVoiceWavBuffer(buffer)')) {
+  fail('scene voice must prewarm models and progressively play sentence segments');
 }
 if (!appSource.includes('restoreHistoryManualTags(h, historyScene, !!sceneCompatible)') ||
     !appSource.includes('restoreHistoryStory(h, historyScene, !!sceneCompatible)') ||

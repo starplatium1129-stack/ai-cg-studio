@@ -31,6 +31,8 @@ export class VoiceController {
     this.analyser = null;
     this.lipFrame = 0;
     this.lipSmooth = 0;
+    this.prepareKey = '';
+    this.preparing = null;
   }
 
   async refreshAvailability() {
@@ -46,6 +48,45 @@ export class VoiceController {
 
   readyFor(voice) {
     return Boolean(this.availability.online && this.availability.voices && this.availability.voices[voice]);
+  }
+
+  prepare(voice, needsTranslation = true) {
+    if (!this.readyFor(voice)) return Promise.resolve(false);
+    const translationReady = !needsTranslation ||
+      Boolean(this.availability.translation && this.availability.translation.ready);
+    if (this.availability.activeVoice === voice && translationReady) {
+      this.prepareKey = voice + ':' + needsTranslation;
+      return Promise.resolve(true);
+    }
+    const key = voice + ':' + needsTranslation;
+    if (this.preparing && this.prepareKey === key) return this.preparing;
+    this.prepareKey = key;
+    this.onStatus(needsTranslation ? '正在预热声线与翻译…' : '正在预热角色声线…');
+    this.preparing = fetch('/api/voice/prepare', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json' },
+      body:JSON.stringify({ voice, translation:needsTranslation })
+    }).then(async (response) => {
+      if (!response.ok) throw await responseError(response, '声线预热失败');
+      if (this.prepareKey !== key) return false;
+      this.availability.activeVoice = voice;
+      if (needsTranslation) {
+        this.availability.translation = {
+          ...(this.availability.translation || {}),
+          ready:true
+        };
+      }
+      this.onStatus('');
+      return true;
+    }).catch((error) => {
+      if (this.prepareKey === key && !isAbortError(error)) {
+        this.onStatus('声线会在首次播放时加载');
+      }
+      return false;
+    }).finally(() => {
+      if (this.prepareKey === key) this.preparing = null;
+    });
+    return this.preparing;
   }
 
   ensureAudioContext() {
@@ -77,6 +118,7 @@ export class VoiceController {
     this.chain = Promise.resolve();
     this.pending = 0;
     this.turn = { ...meta, session:this.session };
+    this.prepare(meta.voice, true);
     if (this.enabled() && !this.readyFor(meta.voice)) {
       this.onStatus(this.availability.online ? '当前角色声线未配置' : '语音服务未启动');
     }
@@ -130,7 +172,7 @@ export class VoiceController {
   async synthesize(sourceText, meta, signal) {
     const cleaned = String(sourceText || '').replace(/[「」『』“”"'()（）*＊]/g, '').trim();
     if (!cleaned) return null;
-    const emotion = inferEmotion(cleaned);
+    const emotion = inferEmotion(cleaned, meta.character);
     let translated = '';
 
     try {

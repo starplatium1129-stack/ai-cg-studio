@@ -16,6 +16,7 @@
     "test:showcase": "node scripts/test-showcase.js",
     "test:chat": "node scripts/test-chat.js",
     "test:resource": "node scripts/test-resource-scheduling.js",
+    "benchmark:voice": "node scripts/benchmark-voice.js",
     "audit:prompts": "node scripts/audit-prompts.js",
     "scenes:build": "node scripts/build-scenes.js",
     "scenes:import": "node scripts/split-scenes.js --write && node scripts/build-scenes.js",

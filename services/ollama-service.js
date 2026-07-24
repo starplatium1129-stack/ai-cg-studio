@@ -158,9 +158,9 @@ function createOllamaService(options) {
           think:false,
           keep_alive:keepAlive,
           options:{
-            temperature:0.82,
-            top_p:0.9,
-            repeat_penalty:1.08,
+            temperature:0.72,
+            top_p:0.88,
+            repeat_penalty:1.1,
             num_predict:numPredict,
             num_ctx:numContext
           }
