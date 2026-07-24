@@ -156,6 +156,28 @@ update the CSS to follow this document. `docs/art-direction.html` is intentional
 separate: it specifies the visual direction of generated CG artwork, not website
 UI.
 
+## Product character
+
+The product has two coordinated voices:
+
+- Narrative surfaces borrow the intimacy and route-specific atmosphere of a
+  polished Galgame: character art, short personal copy, quiet transitions, and
+  scene-first choices.
+- Operational surfaces borrow the clarity of a serious field terminal: service
+  state, queue state, current model, recovery action, and generation decisions
+  are explicit and compact.
+
+Do not copy the visual skin, iconography, naming, or lore of another game.
+Arknights and Endfield are references for information discipline; Yuzusoft is a
+reference for character intimacy. 绫季绘境 must still look and sound like one
+original personal atelier.
+
+Ayachi Nene and Shiki Natsume are the primary routes rather than interchangeable
+skins. Empty states, conversation starters, scene discovery, and character
+accents may reflect their different temperaments. Static character art must stay
+completely still; animation belongs to a validated Live2D model, page transition,
+or voice feedback—not to periodic transforms on a still portrait.
+
 ## Colors
 
 The dark theme uses violet-black backgrounds instead of flat black. Surfaces are

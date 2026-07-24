@@ -10,6 +10,8 @@ const elements = {
   portraitMain: byId('portraitMain'),
   portraitName: byId('portraitName'),
   portraitCaption: byId('portraitCaption'),
+  roomCode: byId('roomCode'),
+  roomMood: byId('roomMood'),
   characterDescription: byId('characterDescription'),
   conversationTitle: byId('conversationTitle'),
   chatList: byId('chatList'),
@@ -23,6 +25,7 @@ const elements = {
   autoVoice: byId('autoVoice'),
   voiceStatus: byId('voiceStatus'),
   voiceCapability: byId('voiceCapability'),
+  voiceRecovery: byId('voiceRecovery'),
   replayButton: byId('replayBtn'),
   avatarStatus: byId('avatarStatus'),
   live2dHost: byId('live2dHost')
@@ -35,6 +38,7 @@ let busy = false;
 let ollamaOnline = false;
 let currentModel = '';
 let streamingMessageId = '';
+let draftTimer = 0;
 
 function setError(message, kind = 'error', timeout = 7000) {
   clearTimeout(errorTimer);
@@ -103,12 +107,15 @@ function updateVoiceCapability() {
   if (voice.readyFor(voiceId)) {
     elements.voiceCapability.textContent = 'AI 声线就绪';
     elements.voiceCapability.dataset.state = 'ready';
+    elements.voiceRecovery.hidden = true;
   } else if (voice.availability.online) {
     elements.voiceCapability.textContent = '声线未配置';
     elements.voiceCapability.dataset.state = 'warning';
+    elements.voiceRecovery.hidden = false;
   } else {
     elements.voiceCapability.textContent = '语音未启动';
     elements.voiceCapability.dataset.state = 'offline';
+    elements.voiceRecovery.hidden = false;
   }
 }
 
@@ -122,10 +129,13 @@ async function refreshVoiceStatus() {
 function renderCharacter() {
   const character = CHARACTERS[state.active];
   document.documentElement.style.setProperty('--character-accent', character.accent);
+  elements.portraitStage.dataset.character = state.active;
   elements.portraitMain.src = character.image;
   elements.portraitMain.alt = character.name;
   elements.portraitName.textContent = character.name;
   elements.portraitCaption.textContent = character.caption;
+  elements.roomCode.textContent = character.roomCode;
+  elements.roomMood.textContent = character.roomMood;
   elements.characterDescription.textContent = character.description;
   elements.conversationTitle.textContent = '和' + character.name + '的房间';
   document.querySelectorAll('.character-tab').forEach((button) => {
@@ -133,6 +143,7 @@ function renderCharacter() {
     button.classList.toggle('active', selected);
     button.setAttribute('aria-selected', selected ? 'true' : 'false');
   });
+  elements.chatInput.value = storage.draft(state.active);
   live2d.setCharacter(state.active);
   updateVoiceCapability();
   if (voice.readyFor(character.voice)) voice.prepare(character.voice, true);
@@ -168,7 +179,14 @@ function renderMessages(forceBottom = false) {
   const messages = currentMessages();
   if (!messages.length) {
     const character = CHARACTERS[state.active];
-    elements.chatList.innerHTML = `<div class="chat-empty"><div class="icon">${character.icon}</div><div>${escapeHtml(character.greeting)}<br>输入一句话，开始和角色聊天。</div></div>`;
+    elements.chatList.innerHTML = `<div class="chat-empty">
+      <span class="chat-empty-kicker">${escapeHtml(character.roomCode)}</span>
+      <div class="icon">${character.icon}</div>
+      <div>${escapeHtml(character.greeting)}</div>
+      <div class="chat-starters" aria-label="对话开场建议">${character.starters.map((starter) =>
+        `<button type="button" data-starter="${escapeHtml(starter)}">${escapeHtml(starter)}</button>`
+      ).join('')}</div>
+    </div>`;
     updateGlobalReplayButton();
     return;
   }
@@ -275,6 +293,7 @@ async function sendMessage() {
   messages.push(assistant);
   storage.save();
   elements.chatInput.value = '';
+  storage.setDraft(requestCharacter, '');
   streamingMessageId = assistant.mid;
   renderMessages(true);
   setBusy(true);
@@ -337,6 +356,7 @@ async function sendMessage() {
 function switchCharacter(character) {
   if (!CHARACTERS[character] || character === state.active) return;
   if (busy) abortCurrentRequest(true);
+  storage.setDraft(state.active, elements.chatInput.value);
   voice.stop({ preserveMessageAudio:true, silent:true });
   storage.setActive(character);
   setError('');
@@ -373,6 +393,12 @@ elements.chatInput.addEventListener('keydown', (event) => {
     sendMessage();
   }
 });
+elements.chatInput.addEventListener('input', () => {
+  window.clearTimeout(draftTimer);
+  const character = state.active;
+  const value = elements.chatInput.value;
+  draftTimer = window.setTimeout(() => storage.setDraft(character, value), 240);
+});
 elements.modelSelect.addEventListener('change', (event) => setModel(event.target.value));
 elements.autoVoice.addEventListener('change', () => {
   storage.setAutoVoice(elements.autoVoice.checked);
@@ -393,6 +419,14 @@ elements.replayButton.addEventListener('click', async () => {
   await voice.playMessage(latest.mid);
 });
 elements.chatList.addEventListener('click', (event) => {
+  const starter = event.target.closest && event.target.closest('[data-starter]');
+  if (starter) {
+    elements.chatInput.value = starter.dataset.starter || starter.textContent || '';
+    storage.setDraft(state.active, elements.chatInput.value);
+    elements.chatInput.focus();
+    elements.chatInput.setSelectionRange(elements.chatInput.value.length, elements.chatInput.value.length);
+    return;
+  }
   const button = event.target.closest && event.target.closest('.msg-voice-btn');
   if (button && button.dataset.mid) voice.playMessage(button.dataset.mid);
 });

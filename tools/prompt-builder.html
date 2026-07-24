@@ -549,6 +549,10 @@
     .col-right { position:static; max-height:none; overflow:visible; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); }
     .col-right > :first-child, .col-right > :nth-child(2), .col-right > .generate-btn { grid-column:1 / -1; }
   }
+  @media (min-width:1121px) and (max-height:780px) {
+    .col-left, .col-right { position:static; max-height:none; overflow:visible; }
+    .stage-placeholder { min-height:430px; }
+  }
   @media (max-width: 900px) {
     .director-workspace { grid-template-columns:1fr; grid-template-areas:"stage" "story" "decisions"; }
     .col-left, .col-center, .col-right { grid-column:1; position:static; max-height:none; overflow:visible; }

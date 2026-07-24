@@ -65,12 +65,22 @@
   .detail-actions { display: flex; gap: var(--s-3); flex-wrap: wrap; }
   .detail-actions .btn { flex: 1; min-width: 140px; }
 
-  .empty { text-align: center; padding: var(--s-8); color: var(--text-muted); }
+  .empty { text-align:center; padding:clamp(42px,7vw,76px) var(--s-5); color:var(--text-muted); border:1px dashed var(--border-soft); border-radius:var(--r-xl); background:linear-gradient(135deg,var(--accent-soft),transparent 46%),var(--bg-surface); }
   .empty .ic { font-size: 2.4rem; margin-bottom: var(--s-3); }
+  .empty h2 { margin:0 0 8px; color:var(--text-primary); font-size:1.35rem; }
+  .empty > p { max-width:560px; margin:0 auto var(--s-4); line-height:1.7; }
+  .empty-journeys { display:grid; grid-template-columns:1fr 1fr; gap:10px; max-width:680px; margin:var(--s-5) auto; text-align:left; }
+  .empty-journey { display:block; padding:15px; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:color-mix(in srgb,var(--bg-surface) 82%,transparent); color:var(--text-secondary); transition:border-color var(--t-fast),transform var(--t-fast); }
+  .empty-journey:hover { border-color:var(--accent); transform:translateY(-2px); }
+  .empty-journey small, .empty-journey strong, .empty-journey span { display:block; }
+  .empty-journey small { color:var(--accent); font:750 .58rem var(--font-mono); letter-spacing:.1em; }
+  .empty-journey strong { margin:5px 0 3px; color:var(--text-primary); font-size:.88rem; }
+  .empty-journey span { font-size:.72rem; line-height:1.5; }
 
   @media (max-width: 600px) {
     .gallery-grid { grid-template-columns: 1fr 1fr; }
     .detail-props { grid-template-columns: repeat(2, 1fr); }
+    .empty-journeys { grid-template-columns:1fr; }
   }
 </style>
 </head>
@@ -148,7 +158,7 @@
     var source=filterFav?history.filter(h=>h.favorite):history;
     if(filterProject){var prj=getProject(filterProject);if(prj)source=source.filter(function(h){return prj.history_ids.indexOf(h.id)>=0;});}
     const gal=document.getElementById('gallery');
-    if(!source.length){gal.innerHTML=filterFav?'<div class="empty"><div class="ic">💜</div><p>收藏夹还是空的。保存作品评价时勾选「加入收藏夹」即可。</p></div>':'<div class="empty"><div class="ic">🎞</div><p>还没有创作记录。去导演台生成第一张 CG。</p><a href="prompt-builder.html" class="btn btn-primary">🎬 开始创作</a></div>';return;}
+    if(!source.length){gal.innerHTML=filterFav?'<div class="empty"><div class="ic">💜</div><h2>灵感簿还空着</h2><p>完成作品评价时勾选「加入收藏夹」，想留下的画面就会收进这里。</p><a href="showcase.html" class="btn btn-ghost">去样张馆找灵感</a></div>':'<div class="empty empty-gallery"><div class="ic">🎞</div><h2>第一张 CG，从一个想留住的瞬间开始</h2><p>作品只保存在这台电脑上。生成完成后，参数、版本和你的评分会一起回到这里。</p><div class="empty-journeys"><a class="empty-journey" href="scene-explorer.html?character=nene"><small>NENE ROUTE</small><strong>宁宁的月光秘密</strong><span>从柔软、慌乱又坚定的瞬间开始。</span></a><a class="empty-journey" href="scene-explorer.html?character=natsume"><small>NATSUME ROUTE</small><strong>夏目的闭店时分</strong><span>从克制的关心与暖灯开始。</span></a></div><a href="prompt-builder.html" class="btn btn-primary">✦ 打开导演台</a></div>';return;}
     const byIndex=new Map();source.forEach(function(h,i){byIndex.set(h,i);});const groups=grouped(source);
     gal.innerHTML=groups.map(g=>`<div class="timeline-group"><div class="timeline-head">${g.key}</div><div class="gallery-grid">${g.items.map(h=>card(h,byIndex.get(h))).join('')}</div></div>`).join('');
     gal.querySelectorAll('.gal-image').forEach(img=>img.addEventListener('error',()=>img.replaceWith(fallbackNode('span','gal-placeholder'))));

@@ -117,8 +117,54 @@ body {
   opacity: .9;
 }
 
+.portrait-stage::after {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background:
+    linear-gradient(90deg, transparent 0 11%, color-mix(in srgb, var(--character-accent) 10%, transparent) 11% 11.3%, transparent 11.3% 88%, color-mix(in srgb, var(--character-accent) 10%, transparent) 88% 88.3%, transparent 88.3%),
+    linear-gradient(180deg, transparent 0 23%, color-mix(in srgb, var(--character-accent) 8%, transparent) 23% 23.2%, transparent 23.2%);
+  content: "";
+  opacity: .7;
+  pointer-events: none;
+}
+
+.portrait-stage[data-character="natsume"] {
+  background:
+    radial-gradient(circle at 50% 23%, rgba(242, 187, 104, .15), transparent 52%),
+    linear-gradient(145deg, color-mix(in srgb, var(--bg-elevated) 90%, #3d291f), var(--bg-deep));
+}
+
+.room-signal {
+  position: absolute;
+  z-index: 5;
+  top: var(--s-4);
+  left: var(--s-4);
+  max-width: 62%;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.room-signal span,
+.room-signal small {
+  display: block;
+}
+
+.room-signal span {
+  color: var(--character-accent);
+  font: 800 .58rem var(--font-mono);
+  letter-spacing: .12em;
+}
+
+.room-signal small {
+  margin-top: 4px;
+  font-size: .64rem;
+  line-height: 1.45;
+}
+
 .portrait-main {
   position: absolute;
+  z-index: 1;
   bottom: -2%;
   left: 50%;
   width: min(88%, 420px);
@@ -127,13 +173,7 @@ body {
   object-position: center bottom;
   filter: drop-shadow(0 22px 26px rgba(20, 12, 40, .16));
   transform: translateX(-50%);
-  transform-origin: 50% 88%;
   transition: filter .3s ease, opacity .25s ease;
-  will-change: transform;
-}
-
-.portrait-main {
-  animation: portrait-breathe 7.5s ease-in-out infinite;
 }
 
 .live2d-host {
@@ -333,6 +373,39 @@ body {
 .chat-empty .icon {
   margin-bottom: var(--s-2);
   font-size: 2rem;
+}
+
+.chat-empty-kicker {
+  display: block;
+  margin-bottom: var(--s-2);
+  color: var(--character-accent);
+  font: 750 .6rem var(--font-mono);
+  letter-spacing: .12em;
+}
+
+.chat-starters {
+  display: grid;
+  gap: 7px;
+  margin-top: var(--s-4);
+}
+
+.chat-starters button {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font: 600 .72rem var(--font-sans);
+  text-align: left;
+  transition: border-color var(--t-fast), color var(--t-fast), transform var(--t-fast);
+}
+
+.chat-starters button:hover {
+  border-color: var(--character-accent);
+  color: var(--text-primary);
+  transform: translateX(2px);
 }
 
 .message {
@@ -621,6 +694,21 @@ body {
   display: none;
 }
 
+.voice-recovery {
+  flex: none;
+  padding: 4px 8px;
+  border: 1px solid color-mix(in srgb, var(--warning) 38%, var(--border-soft));
+  border-radius: 9px;
+  color: var(--warning);
+  font: 650 .63rem var(--font-sans);
+  white-space: nowrap;
+}
+
+.voice-recovery:hover {
+  background: color-mix(in srgb, var(--warning) 10%, transparent);
+  color: var(--warning);
+}
+
 .replay-btn {
   display: inline-flex;
   align-items: center;
@@ -665,11 +753,6 @@ body {
 
 .chat-error[data-kind="info"] {
   color: var(--text-secondary);
-}
-
-@keyframes portrait-breathe {
-  0%, 100% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(-1.5px); }
 }
 
 @keyframes voice-pulse {

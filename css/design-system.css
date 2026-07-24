@@ -258,6 +258,43 @@ img { max-width: 100%; display: block; }
   padding:9px 10px; font-size:.8rem; white-space:nowrap;
 }
 
+/* ---- Local atelier status ---- */
+.local-status { position:relative; }
+.local-status-trigger {
+  display:inline-flex; align-items:center; gap:7px; min-height:32px; padding:5px 10px;
+  border:1px solid var(--border-soft); border-radius:999px; background:var(--bg-elevated);
+  color:var(--text-secondary); cursor:pointer; font:650 .72rem var(--font-sans);
+  transition:border-color var(--t-fast),color var(--t-fast),background var(--t-fast);
+}
+.local-status-trigger:hover, .local-status-trigger[aria-expanded="true"] { border-color:var(--accent); color:var(--text-primary); background:var(--accent-soft); }
+.local-status-led { width:7px; height:7px; border-radius:50%; background:var(--text-muted); box-shadow:0 0 0 3px color-mix(in srgb,var(--text-muted) 12%,transparent); }
+.local-status-trigger[data-state="online"] .local-status-led { background:var(--success); box-shadow:0 0 0 3px color-mix(in srgb,var(--success) 14%,transparent),0 0 10px color-mix(in srgb,var(--success) 45%,transparent); }
+.local-status-trigger[data-state="idle"] .local-status-led { background:var(--warning); box-shadow:0 0 0 3px color-mix(in srgb,var(--warning) 14%,transparent); }
+.local-status-trigger[data-state="offline"] .local-status-led { background:var(--danger); box-shadow:0 0 0 3px color-mix(in srgb,var(--danger) 12%,transparent); }
+.local-status.checking .local-status-led { animation:statusSoftPulse 1s ease-in-out infinite; }
+.local-status-panel {
+  position:absolute; top:calc(100% + 12px); right:0; width:min(330px,calc(100vw - 32px)); padding:14px;
+  border:1px solid var(--glass-edge); border-radius:20px; background:var(--glass-fill-strong);
+  box-shadow:var(--shadow-lg); -webkit-backdrop-filter:blur(26px) saturate(145%); backdrop-filter:blur(26px) saturate(145%);
+}
+.local-status-panel[hidden] { display:none; }
+.local-status-head { display:flex; align-items:center; justify-content:space-between; color:var(--accent); font:800 .62rem var(--font-mono); letter-spacing:.14em; }
+.local-status-refresh { width:28px; height:28px; border:0; border-radius:50%; background:transparent; color:var(--text-muted); cursor:pointer; font-size:1rem; }
+.local-status-refresh:hover { background:var(--accent-soft); color:var(--accent); }
+.local-status-summary { margin:5px 0 12px; color:var(--text-muted); font-size:.7rem; line-height:1.55; }
+.local-status-services { display:grid; gap:6px; }
+.local-service { display:grid; grid-template-columns:28px 1fr auto; align-items:center; gap:8px; padding:9px; border:1px solid var(--border-soft); border-radius:12px; background:color-mix(in srgb,var(--bg-deep) 72%,transparent); }
+.local-service-icon { display:grid; width:28px; height:28px; place-items:center; border-radius:9px; background:var(--bg-surface); color:var(--text-muted); }
+.local-service strong, .local-service small { display:block; }
+.local-service strong { color:var(--text-primary); font-size:.75rem; }
+.local-service small { color:var(--text-muted); font-size:.58rem; }
+.local-service em { color:var(--text-muted); font:650 .64rem var(--font-sans); font-style:normal; }
+.local-service[data-state="online"] .local-service-icon, .local-service[data-state="online"] em { color:var(--success); }
+.local-status-actions { display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-top:10px; }
+.local-status-actions a { display:flex; justify-content:center; padding:8px 9px; border:1px solid var(--border-soft); border-radius:10px; background:var(--bg-surface); color:var(--text-secondary); font-size:.68rem; }
+.local-status-actions a:hover { border-color:var(--accent); color:var(--accent); }
+@keyframes statusSoftPulse { 50% { opacity:.35; transform:scale(.82); } }
+
 /* ---- Theme toggle ---- */
 .theme-toggle {
   display: inline-flex; align-items: center; justify-content: center;
@@ -532,6 +569,9 @@ tr:hover td { background: var(--bg-hover); }
     position:static; width:auto; margin-top:var(--s-2); padding:0; border:0; box-shadow:none;
     background:transparent; -webkit-backdrop-filter:none; backdrop-filter:none;
   }
+  .local-status { grid-column:1 / -1; }
+  .local-status-trigger { width:100%; justify-content:flex-start; min-height:42px; border-radius:var(--r-md); background:var(--bg-deep); }
+  .local-status-panel { position:static; width:auto; margin-top:var(--s-2); }
   .page-header h1 { font-size: 1.7rem; }
   .container { padding: 0 var(--s-4); }
   .card-info, .card-create { -webkit-backdrop-filter:none; backdrop-filter:none; }

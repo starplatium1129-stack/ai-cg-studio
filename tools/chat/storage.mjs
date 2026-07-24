@@ -27,7 +27,7 @@ export class ChatStorage {
       version: STORAGE_VERSION,
       active: 'nene',
       histories: { nene:[], natsume:[] },
-      settings: { model:'', autoVoice:true }
+      settings: { model:'', autoVoice:true, drafts:{ nene:'', natsume:'' } }
     };
   }
 
@@ -41,6 +41,10 @@ export class ChatStorage {
       const savedModel = raw.settings && raw.settings.model || localStorage.getItem('aics_chat_model') || '';
       this.state.settings.model = String(savedModel);
       this.state.settings.autoVoice = raw.settings ? raw.settings.autoVoice !== false : true;
+      Object.keys(CHARACTERS).forEach((character) => {
+        const draft = raw.settings && raw.settings.drafts && raw.settings.drafts[character];
+        this.state.settings.drafts[character] = String(draft || '').slice(0, 1200);
+      });
     } catch (error) {
       this.onError('本地聊天记录损坏，已使用空白会话。');
     }
@@ -74,6 +78,16 @@ export class ChatStorage {
 
   setAutoVoice(value) {
     this.state.settings.autoVoice = Boolean(value);
+    this.save();
+  }
+
+  draft(character = this.state.active) {
+    return this.state.settings.drafts[character] || '';
+  }
+
+  setDraft(character, value) {
+    if (!CHARACTERS[character]) return;
+    this.state.settings.drafts[character] = String(value || '').slice(0, 1200);
     this.save();
   }
 

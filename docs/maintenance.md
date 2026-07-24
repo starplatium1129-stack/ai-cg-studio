@@ -12,6 +12,7 @@
 | `data/curation.json` | 精品层级、推荐理由、语义搜索和情绪入口 | 是 |
 | `scripts/scene-store.js` | 所有维护脚本共用的读写层 | 结构变化时编辑 |
 | `tools/scene-ux.js` | 搜索意图、相关度和本机偏好排序的共享逻辑 | 搜索规则变化时编辑 |
+| `tools/nav.js`、`tools/local-status.js` | 全站导航与本机绘图/对话/语音状态汇总 | 页面入口或服务状态契约变化时编辑 |
 | `tools/quick-create.js` | 最近成功参数的规范化、存取、摘要和快速路由 | 快速创作规则变化时编辑 |
 | `tools/sd-error.js` | SD 错误分类、用户提示与恢复动作建议 | 出图异常或恢复策略变化时编辑 |
 | `tools/data-backup.js` | 本地备份格式、版本迁移、校验与合并规则 | 备份结构变化时编辑 |
@@ -32,6 +33,11 @@
 3. `live2d.mjs` 负责模型目录状态、加载超时、尺寸观察、WebGL 丢失恢复和静态立绘回退；模型完整性由 `services/live2d-service.js` 在服务端检查。
 4. `routes/` 只处理 HTTP 契约。上游请求、模型切换和 GPU 队列统一留在 `services/`，方便使用模拟上游做测试。
 5. Ollama 和 GPT-SoVITS 都必须在完整响应结束后才释放串行队列。客户端点击停止、切角色或关闭页面时，应通过 `AbortController` 一直取消到上游请求，避免后台继续占用显存。
+
+`tools/local-status.js` 是所有内容页共享的轻量状态入口，只探测现有
+`/api/health`、`/api/chat-status`、`/api/tts-status` 和 SD 代理，不管理进程。
+启动、停止和显存模式切换仍由 `tools/control-server.js` 与控制台负责，避免
+每个页面各自实现一套调度逻辑。
 
 聊天页与导演台会在角色确定后调用 `POST /api/voice/prepare`，并行预热翻译模型和当前角色的 GPT-SoVITS 权重。导演台按句生成并立即播放已经完成的片段，后续片段在后台继续合成；完整 WAV 仍会在全部片段完成后提供重播与下载。不要在页面层重新实现预热、权重切换或整段等待逻辑。
 

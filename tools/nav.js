@@ -35,6 +35,15 @@
 
   function brandLink(){ var d=depth(); return d + 'index.html'; }
 
+  function loadLocalStatus(depthPrefix) {
+    if (document.querySelector('script[data-local-status]')) return;
+    var script = document.createElement('script');
+    script.src = depthPrefix + 'tools/local-status.js?v=1';
+    script.defer = true;
+    script.dataset.localStatus = 'true';
+    document.head.appendChild(script);
+  }
+
   function render(){
     var host = document.querySelector('.nav-links');
     if (!host) return;
@@ -66,6 +75,7 @@
         '<summary aria-label="打开更多页面">更多<span class="nav-more-chevron">⌄</span></summary>' +
         '<div class="nav-more-menu">' + secondary + '</div>' +
       '</details>';
+    loadLocalStatus(d);
 
     var inner = host.closest('.nav-inner');
     if (inner && !inner.querySelector('.nav-menu-toggle')) {

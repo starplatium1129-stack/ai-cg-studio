@@ -76,20 +76,14 @@
   .scene-load { display: flex; justify-content: center; margin-top: var(--s-5); }
   .scene-load[hidden] { display: none; }
 
-  /* Explorer 卡内扩展块(统一SceneCard + 业务独特内容) */
-  .ex-spec { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-2); margin-bottom: var(--s-2); }
-  .ex-spec-item { background: var(--bg-deep); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); }
-  .ex-spec-label { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
-  .ex-spec-value { font-size: 0.8rem; font-weight: 600; color: var(--accent); margin-top: 2px; }
-  .ex-decision { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-2); margin: var(--s-2) 0 var(--s-3); padding: var(--s-2) var(--s-3); background: linear-gradient(135deg, var(--accent-soft), transparent); border: 1px solid var(--accent); border-radius: var(--r-md); }
-  .ex-decision-item { text-align: center; }
-  .ex-decision-icon { font-size: 1.1rem; line-height: 1; }
-  .ex-decision-label { font-size: 0.6rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin: 2px 0; }
-  .ex-decision-value { font-size: 0.78rem; font-weight: 700; color: var(--accent); }
-  .ex-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: var(--s-2); }
-  .ex-tag { padding: 2px 8px; background: var(--bg-elevated); border-radius: 20px; font-size: 0.68rem; color: var(--text-secondary); }
-  .ex-tag.ex-emotion { color: var(--accent); border: 1px solid var(--accent); background: var(--accent-soft); }
-  .ex-tag.ex-char { color: var(--info); }
+  /* Explorer 卡只保留创作判断，技术标签交给导演台。 */
+  .ex-scene-line { display:flex; align-items:center; flex-wrap:wrap; gap:5px; margin:0 0 var(--s-2); color:var(--text-muted); font-size:.69rem; }
+  .ex-scene-line strong { color:var(--accent); font-weight:750; }
+  .ex-scene-line span + span::before { content:'·'; margin-right:5px; color:var(--border-strong); }
+  .ex-decision { display:flex; align-items:center; flex-wrap:wrap; gap:7px; margin:0 0 var(--s-3); padding:8px 10px; border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-deep); color:var(--text-secondary); font-size:.7rem; }
+  .ex-decision::before { content:'DIRECTOR'; color:var(--text-muted); font:750 .56rem var(--font-mono); letter-spacing:.1em; }
+  .ex-decision span + span::before { content:'／'; margin-right:7px; color:var(--border-strong); }
+  .ex-decision strong { color:var(--text-primary); font-weight:650; }
   .ex-curation { display:flex; align-items:flex-start; gap:8px; margin:0 0 var(--s-3); padding:8px 10px; border-radius:var(--r-md); background:linear-gradient(120deg,var(--accent-soft),transparent); color:var(--text-secondary); font-size:.74rem; line-height:1.55; }
   .ex-tier { flex:0 0 auto; padding:1px 7px; border:1px solid var(--accent); border-radius:999px; color:var(--accent); font-size:.65rem; font-weight:800; }
   .ex-tier.signature { color:var(--natsume-amber); border-color:var(--natsume-amber); }
@@ -111,17 +105,21 @@
   @media (max-width: 768px) {
     .scene-grid { grid-template-columns: 1fr; }
     .page { padding: var(--s-4) var(--s-3); }
-    .ex-decision, .ex-tags { display: none; }
+    .ex-decision { display: none; }
     .scene-facet-grid { grid-template-columns:1fr 1fr; }
     .scene-more-filters .scene-facet-grid { grid-template-columns:1fr 1fr; }
     .curation-panel { grid-template-columns:1fr; }
+    .mood-rails { display:flex; overflow-x:auto; padding-bottom:3px; scroll-snap-type:x proximity; }
+    .mood-rail { flex:0 0 min(230px,82vw); scroll-snap-align:start; }
+    .scene-cats { flex-wrap:nowrap; overflow-x:auto; padding-bottom:4px; }
+    .scene-cat { flex:none; }
     .scene-cat, .scene-reset, .scene-filter select, .scene-search-clear, .ex-actions .btn, .story-actions .btn { min-height: 44px; }
     .scene-card .scene-story { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
     .ex-actions { margin-top: var(--s-3); }
   }
   @media (max-width: 420px) {
     .scene-facet-grid { grid-template-columns:1fr; }
-    .mood-rails { grid-template-columns:1fr; }
+    .mood-rails { grid-template-columns:none; }
   }
 </style>
 </head>
@@ -206,6 +204,11 @@ const MATURE_KEY = 'aics_show_mature';
 const FAVORITE_KEY = 'aics_scene_favorites';
 const HISTORY_KEY = 'aics_pb_history';
 let CURATION_DATA = { curatedSceneIds:[], moodRails:[] };
+const DEFAULT_MOOD_RAILS = [
+  { character:'nene', icon:'🌙', title:'宁宁的月光秘密', subtitle:'图书馆 · 樱色 · 魔女', query:'nene library' },
+  { character:'natsume', icon:'☕', title:'夏目的夜灯关心', subtitle:'咖啡馆 · 雨夜 · 琥珀', query:'natsume cafe' },
+  { character:'shared', icon:'🌅', title:'夏日远行', subtitle:'海风 · 黄昏 · 纪念', query:'beach sunset' }
+];
 let CURATED_IDS = [];
 let PERSONAL_PROFILE = AICSceneUX.buildPreferenceProfile([]);
 let SCENE_FAVORITES = new Set(JSON.parse(localStorage.getItem(FAVORITE_KEY) || '[]'));
@@ -226,6 +229,11 @@ const SCENE_THEME_DEFS = [
 function init(){
   renderMoodRails();
   renderSceneCats();
+  var initialParams = new URLSearchParams(window.location.search);
+  var initialCharacter = initialParams.get('character');
+  if (['nene','natsume','triad'].indexOf(initialCharacter) >= 0) {
+    document.getElementById('sceneCharacter').value = initialCharacter;
+  }
   var reviewOption = document.querySelector('#sceneTier option[value="review"]');
   if (reviewOption && reviewIds().length === 0) reviewOption.remove();
   var matureToggle = document.getElementById('showMature');
@@ -252,6 +260,7 @@ function init(){
 // 从共享 JSON 加载场景(file:// 因 CORS 失败,需 localhost)
 function loadScenes(){
   const grid = document.getElementById('sceneGrid');
+  renderMoodRails();
   // Loading 状态
   if (grid) grid.innerHTML = '<div class="sc-empty"><div class="ic" style="animation:pulse 1.5s infinite">⏳</div><p>正在加载场景库…</p></div>';
   Promise.all([
@@ -298,7 +307,9 @@ function renderMoodRails(){
   var host = document.getElementById('moodRails');
   if (!host) return;
   host.innerHTML = '';
-  var rails = Array.isArray(CURATION_DATA.moodRails) ? CURATION_DATA.moodRails : [];
+  var rails = Array.isArray(CURATION_DATA.moodRails) && CURATION_DATA.moodRails.length
+    ? CURATION_DATA.moodRails
+    : DEFAULT_MOOD_RAILS;
   rails.forEach(function(rail){
     var button = document.createElement('button');
     button.type = 'button';
@@ -446,30 +457,23 @@ function renderScenes(reset){
       dataAttrs: { sceneId: s.id },
       onPick: function(){ openDirector(s.id); },
       beforeActions: function(scene){
-        var tags = scene.tags.slice(0,3).map(function(t){ return '<span class="ex-tag">'+escHtml(t)+'</span>'; }).join('');
         var tier = sceneTier(scene);
         var reason = AICSceneUX.personalReason(scene, PERSONAL_PROFILE) || (CURATION_DATA.recommendationReasons || {})[scene.id] || (tier === 'curated' ? '构图、角色气质与叙事完整度较高。' : '完整场景，可按需要继续筛选。');
         return '' +
-          '<div class="ex-spec">' +
-            '<div class="ex-spec-item"><div class="ex-spec-label">情绪</div><div class="ex-spec-value">' + escHtml(scene.emotion||'') + '</div></div>' +
-            '<div class="ex-spec-item"><div class="ex-spec-label">角色</div><div class="ex-spec-value">' + escHtml(charName) + '</div></div>' +
-            '<div class="ex-spec-item"><div class="ex-spec-label">季节</div><div class="ex-spec-value">' + escHtml(season||'—') + '</div></div>' +
-            '<div class="ex-spec-item"><div class="ex-spec-label">时段</div><div class="ex-spec-value">' + escHtml(tod||'—') + '</div></div>' +
+          '<div class="ex-scene-line">' +
+            '<span><strong>' + escHtml(charName) + '</strong></span>' +
+            '<span>' + escHtml(scene.emotion||'情绪待定') + '</span>' +
+            '<span>' + escHtml([season,tod].filter(Boolean).join(' · ')||'时间不限') + '</span>' +
           '</div>' +
-          '<div class="ex-decision" title="导演决策预览 · 跳到 prompt-builder 自动预填">' +
-            '<div class="ex-decision-item"><div class="ex-decision-icon">🎥</div><div class="ex-decision-label">镜头</div><div class="ex-decision-value">' + escHtml(decision.shot) + '</div></div>' +
-            '<div class="ex-decision-item"><div class="ex-decision-icon">💡</div><div class="ex-decision-label">光照</div><div class="ex-decision-value">' + escHtml(decision.lighting) + '</div></div>' +
-            '<div class="ex-decision-item"><div class="ex-decision-icon">🎨</div><div class="ex-decision-label">色调</div><div class="ex-decision-value">' + escHtml(decision.color) + '</div></div>' +
-          '</div>' +
-          '<div class="ex-tags">' +
-            '<span class="ex-tag ex-emotion">' + escHtml(scene.emotion||'') + '</span>' +
-            '<span class="ex-tag ex-char">' + escHtml(scene.char||'') + '</span>' +
-            tags +
+          '<div class="ex-decision" title="带入导演台后仍可继续调整">' +
+            '<span>镜头 <strong>' + escHtml(decision.shot) + '</strong></span>' +
+            '<span>光线 <strong>' + escHtml(decision.lighting) + '</strong></span>' +
+            '<span>色调 <strong>' + escHtml(decision.color) + '</strong></span>' +
           '</div>' +
           '<div class="ex-curation"><span class="ex-tier ' + tier + '">' + tierLabel(tier) + '</span><span>' + escHtml(reason) + '</span></div>' +
           '<div class="ex-actions">' +
-            '<a class="btn btn-primary" href="' + AICQuickCreate.url(scene.id) + '">⚡ 快速出图</a>' +
-            '<a class="btn btn-ghost" href="prompt-builder.html?scene=' + encodeURIComponent(scene.id) + '&step=4&generate=1">🎬 调整</a>' +
+            '<a class="btn btn-primary" href="prompt-builder.html?scene=' + encodeURIComponent(scene.id) + '">✦ 进入导演台</a>' +
+            '<a class="btn btn-ghost" href="' + AICQuickCreate.url(scene.id) + '">⚡ 直接出图</a>' +
             '<button class="btn btn-ghost" data-detail="' + scene.id + '" aria-label="查看故事" title="查看故事">📖</button>' +
           '</div>' +
           '<button type="button" class="btn scene-fav' + (SCENE_FAVORITES.has(scene.id) ? ' saved' : '') + '" onclick="toggleSceneFavorite(\'' + scene.id + '\', event)">' + (SCENE_FAVORITES.has(scene.id) ? '♥ 已收入灵感簿' : '♡ 收入灵感簿') + '</button>';

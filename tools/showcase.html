@@ -19,6 +19,8 @@
   .eyebrow::before { content:""; width:22px; height:2px; background:currentColor; border-radius:99px; }
   h1 { max-width:720px; margin:10px 0 var(--s-3); font-size:clamp(2rem,4.2vw,3.6rem); line-height:1.08; letter-spacing:-.04em; text-wrap:balance; }
   .hero-copy p { max-width:650px; margin:0; color:var(--text-secondary); font-size:clamp(.94rem,1.5vw,1.08rem); line-height:1.85; }
+  .hero-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:var(--s-4); }
+  .hero-actions .btn { min-height:38px; }
   .hero-stats { display:flex; gap:var(--s-3); flex-wrap:wrap; margin-top:var(--s-5); }
   .hero-stat { min-width:112px; padding:var(--s-3) var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:rgba(255,255,255,.46); backdrop-filter:blur(16px); }
   [data-theme="dark"] .hero-stat { background:rgba(24,18,39,.52); }
@@ -90,6 +92,15 @@
   @media (max-width:1000px) { .showcase-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } .viewer-layout { grid-template-columns:1fr 340px; } }
   @media (max-width:760px) { .page { padding:var(--s-4); } .showcase-hero { grid-template-columns:1fr; min-height:0; } .hero-preview { display:none; } .toolbar-shell { position:relative; top:auto; } .search-row { grid-template-columns:1fr; } .search-row .filter { justify-self:start; } .filter-group + .filter-group { padding-left:0; border-left:0; } .showcase-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--s-3); } .viewer { overflow:auto; } .viewer-layout { display:block; } .viewer-art { min-height:45vh; } .viewer-art img { max-height:58vh; } }
   @media (max-width:460px) { .sample-body { padding:12px; } .sample-story { display:none; } .sample-actions { display:block; } .sample-actions .btn-ghost { display:none; } .sample-title { font-size:.84rem; } .hero-stats { gap:8px; } .hero-stat { min-width:94px; padding:10px 12px; } }
+  @media (min-width:761px) and (max-height:820px) {
+    .showcase-hero { min-height:238px; padding:28px 38px; gap:var(--s-5); }
+    .showcase-hero h1 { font-size:clamp(2rem,3.4vw,2.75rem); }
+    .hero-copy p { font-size:.9rem; line-height:1.65; }
+    .hero-stats { margin-top:var(--s-3); }
+    .hero-stat { padding:9px 12px; }
+    .hero-preview { width:min(100%,210px); }
+    .hero-note { right:-10px; bottom:18px; }
+  }
 </style>
 </head>
 <body data-nav="showcase">
@@ -102,6 +113,7 @@
       <span class="eyebrow">Approved Scene Gallery</span>
       <h1>场景，实际能画成什么样</h1>
       <p>这里不是概念示意图，而是每个场景使用当前角色模型实际生成、逐张审核后留下的最终样张。先看成图，再决定从哪个故事开始。</p>
+      <div class="hero-actions"><button class="btn btn-ghost" type="button" id="randomSample" disabled>✦ 随机翻一张</button><a class="btn btn-ghost" href="scene-explorer.html">只看故事场景</a></div>
       <div class="hero-stats">
         <div class="hero-stat"><strong id="totalStat">—</strong><span>最终合格场景</span></div>
         <div class="hero-stat"><strong id="safeStat">—</strong><span>全年龄</span></div>
@@ -147,6 +159,7 @@
   const LABELS={nene:'绫地宁宁',natsume:'四季夏目',triad:'宁宁 × 夏目',All:'全年龄',R15:'R15',R18:'R18'};
   const state={entries:[],filtered:[],featured:new Set(),scope:'all',character:'all',rating:'all',adult:false,visible:PAGE_SIZE,currentId:''};
   const grid=document.getElementById('showcaseGrid'),count=document.getElementById('resultCount'),search=document.getElementById('search'),loadMore=document.getElementById('loadMore'),viewer=document.getElementById('viewer');
+  const randomSample=document.getElementById('randomSample');
 
   function esc(value){return String(value==null?'':value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
   function normalize(value){return String(value||'').trim().toLocaleLowerCase('zh-CN');}
@@ -187,6 +200,7 @@
   function currentIndex(){return state.filtered.findIndex(function(entry){return entry.id===state.currentId;});}
   function openViewer(id){const entry=state.entries.find(function(item){return item.id===id;});if(!entry)return;state.currentId=id;    document.getElementById('viewerImage').src=imagePath(entry,'images')+'&t='+Date.now();document.getElementById('viewerImage').alt=entry.title;document.getElementById('viewerTitle').textContent=entry.title;document.getElementById('viewerStory').textContent=entry.story;document.getElementById('viewerMeta').innerHTML='<span>'+esc(entry.id)+'</span><span>'+esc(characterLabel(entry.char))+'</span><span>'+esc(ratingLabel(entry.rating))+'</span><span>'+esc(entry.category)+'</span><span>第 '+esc(entry.attempt)+' 次通过</span>';document.getElementById('viewerCreate').href=createUrl(entry);if(!viewer.open)viewer.showModal();}
   function moveViewer(step){const index=currentIndex();if(index<0||!state.filtered.length)return;const next=(index+step+state.filtered.length)%state.filtered.length;openViewer(state.filtered[next].id);}
+  function openRandom(){const source=(state.filtered.length?state.filtered:state.entries.filter(function(entry){return entry.rating!=='R18';}));if(!source.length)return;const next=source[Math.floor(Math.random()*source.length)];openViewer(next.id);}
   function showUnavailable(){document.getElementById('totalStat').textContent='0';document.getElementById('safeStat').textContent='0';document.getElementById('r15Stat').textContent='0';count.textContent='最终样张目录暂未连接';grid.innerHTML='<div class="empty"><span class="icon">🖼</span><h2>展示素材暂未连接</h2><p>网站功能仍可正常使用；重新启动控制面板后，它会自动连接 AI/SceneShowcase 中最新的审核展示集。</p><a class="btn btn-primary" href="scene-explorer.html">先浏览场景库</a></div>';}
 
   document.addEventListener('click',function(event){const preview=event.target.closest('[data-preview]');if(preview)openViewer(preview.getAttribute('data-preview'));});
@@ -197,6 +211,7 @@
   document.getElementById('clearSearch').onclick=function(){search.value='';search.focus();render(true);};
   search.oninput=function(){render(true);};
   loadMore.onclick=function(){state.visible+=PAGE_SIZE;render(false);};
+  randomSample.onclick=openRandom;
   document.getElementById('viewerClose').onclick=function(){viewer.close();};
   document.getElementById('viewerPrevious').onclick=function(){moveViewer(-1);};
   document.getElementById('viewerNext').onclick=function(){moveViewer(1);};
@@ -214,6 +229,7 @@
     document.getElementById('totalStat').textContent=manifest.sceneCount||state.entries.length;
     document.getElementById('safeStat').textContent=(manifest.counts&&manifest.counts.All)||state.entries.filter(function(x){return x.rating==='All';}).length;
     document.getElementById('r15Stat').textContent=(manifest.counts&&manifest.counts.R15)||state.entries.filter(function(x){return x.rating==='R15';}).length;
+    randomSample.disabled=false;
     render(true);
   }).catch(function(error){console.warn('Showcase unavailable:',error);showUnavailable();});
 })();

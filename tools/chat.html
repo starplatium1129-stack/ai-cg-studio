@@ -36,7 +36,8 @@
           <button class="character-tab active" type="button" data-character="nene" role="tab" aria-selected="true">🔮 宁宁</button>
           <button class="character-tab" type="button" data-character="natsume" role="tab" aria-selected="false">☕ 夏目</button>
         </div>
-        <div class="portrait-stage" id="portraitStage">
+        <div class="portrait-stage" id="portraitStage" data-character="nene">
+          <div class="room-signal"><span id="roomCode">ROOM 01 · MOONLIT LIBRARY</span><small id="roomMood">月光、书页，还有只说给彼此听的秘密。</small></div>
           <img class="portrait-main" id="portraitMain" src="../assets/characters/nene-official.webp" alt="绫地宁宁">
           <div class="live2d-host" id="live2dHost" aria-hidden="true"></div>
           <div class="voice-halo" aria-hidden="true"></div>
@@ -84,6 +85,7 @@
               <span class="voice-divider" aria-hidden="true"></span>
               <span class="voice-capability" id="voiceCapability" data-state="offline"><span class="voice-capability-dot"></span>检查语音…</span>
               <span class="voice-status" id="voiceStatus" aria-live="polite"></span>
+              <a class="voice-recovery" id="voiceRecovery" href="http://127.0.0.1:3001/" target="_blank" rel="noreferrer" hidden>启动语音 ↗</a>
               <button class="replay-btn" id="replayBtn" type="button" title="重新播放上一条语音" disabled><span aria-hidden="true">↻</span> 重播上一句</button>
             </div>
             <span class="keyboard-hint">Enter 发送 · Shift+Enter 换行</span>
@@ -99,6 +101,6 @@
   <script src="chat/live2d-bootstrap.js?v=1"></script>
   <script src="../assets/vendor/wl-live2d/live2dcubism2core.min.js"></script>
   <script src="../assets/vendor/wl-live2d/cubism4.js"></script>
-  <script type="module" src="chat/app.mjs?v=4"></script>
+  <script type="module" src="chat/app.mjs?v=5"></script>
 </body>
 </html>
