@@ -4,7 +4,9 @@ const path = require('path');
 const root = path.resolve(__dirname, '..');
 const control = fs.readFileSync(path.join(root, 'tools', 'control-server.js'), 'utf8');
 const controlHtml = fs.readFileSync(path.join(root, 'tools', 'control.html'), 'utf8');
-const server = fs.readFileSync(path.join(root, 'server.js'), 'utf8');
+const gatewayConfig = fs.readFileSync(path.join(root, 'server', 'config.js'), 'utf8');
+const ollamaService = fs.readFileSync(path.join(root, 'services', 'ollama-service.js'), 'utf8');
+const translationService = fs.readFileSync(path.join(root, 'services', 'translation-service.js'), 'utf8');
 const translatePy = fs.readFileSync(path.join(root, 'tools', 'translate-zh-ja.py'), 'utf8');
 
 function assert(condition, message) {
@@ -12,13 +14,13 @@ function assert(condition, message) {
 }
 
 // ─── 网关：Ollama 显存自动释放 + 常驻翻译服务 ───
-assert(server.includes('keep_alive:OLLAMA_KEEP_ALIVE'), 'gateway must pass keep_alive so Ollama unloads idle models from VRAM');
-assert(server.includes("OLLAMA_KEEP_ALIVE || '10m'"), 'gateway must default Ollama keep_alive to 10 minutes');
-assert(server.includes('num_ctx:'), 'gateway must cap Ollama context window to limit VRAM usage');
-assert(server.includes('unloadOllamaModel') && server.includes('activeChatModel'), 'gateway must unload old model before loading a different one to avoid double VRAM consumption');
-assert(server.includes('ensureTranslateServer') && server.includes('--serve'), 'gateway must manage a persistent translation server');
-assert(server.includes('legacyTranslateChineseToJapanese'), 'gateway must keep the spawn-per-call translation as fallback');
-assert(server.includes("TRANSLATE_PORT") && server.includes('/health'), 'gateway must health-check the translation server');
+assert(ollamaService.includes('keep_alive:keepAlive'), 'gateway must pass keep_alive so Ollama unloads idle models from VRAM');
+assert(gatewayConfig.includes("OLLAMA_KEEP_ALIVE:env.OLLAMA_KEEP_ALIVE || '10m'"), 'gateway must default Ollama keep_alive to 10 minutes');
+assert(ollamaService.includes('num_ctx:numContext'), 'gateway must cap Ollama context window to limit VRAM usage');
+assert(ollamaService.includes('async function unload') && ollamaService.includes('activeModel'), 'gateway must unload old model before loading a different one to avoid double VRAM consumption');
+assert(translationService.includes('ensureServer') && translationService.includes("'--serve'"), 'gateway must manage a persistent translation server');
+assert(translationService.includes('runLegacy'), 'gateway must keep the spawn-per-call translation as fallback');
+assert(gatewayConfig.includes('TRANSLATE_PORT') && translationService.includes("'/health'"), 'gateway must health-check the translation server');
 
 // ─── 翻译脚本：常驻服务模式 ───
 assert(translatePy.includes('ThreadingHTTPServer') && translatePy.includes('/translate'), 'translate script must serve HTTP in --serve mode');

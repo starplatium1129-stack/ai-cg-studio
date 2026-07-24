@@ -1,0 +1,83 @@
+'use strict';
+
+var fs = require('fs');
+var path = require('path');
+var crypto = require('crypto');
+var runtimeTools = require('../scripts/runtime-paths');
+
+function readJson(file) {
+  try {
+    return JSON.parse(fs.readFileSync(file, 'utf8'));
+  } catch (error) {
+    return {};
+  }
+}
+
+function boundedInteger(value, fallback, min, max) {
+  var number = Number(value);
+  if (!Number.isFinite(number)) return fallback;
+  return Math.max(min, Math.min(max, Math.round(number)));
+}
+
+function resolveSceneShowcaseDir(rootDir, configured) {
+  if (configured) {
+    var configuredPath = path.resolve(configured);
+    if (fs.existsSync(path.join(configuredPath, 'manifest.json'))) return configuredPath;
+  }
+  var root = path.resolve(rootDir, '..', 'AI', 'SceneShowcase');
+  if (fs.existsSync(path.join(root, 'manifest.json'))) return root;
+  if (!fs.existsSync(root)) return '';
+  try {
+    return fs.readdirSync(root, { withFileTypes:true })
+      .filter(function (entry) {
+        return entry.isDirectory() && fs.existsSync(path.join(root, entry.name, 'manifest.json'));
+      })
+      .map(function (entry) { return path.join(root, entry.name); })
+      .sort(function (a, b) {
+        return path.basename(b).localeCompare(path.basename(a), 'zh-CN');
+      })[0] || '';
+  } catch (error) {
+    return '';
+  }
+}
+
+function loadGatewayConfig(rootDir, env) {
+  env = env || process.env;
+  var runtime = runtimeTools.createRuntimePaths(rootDir);
+  runtimeTools.migrateLegacyRuntime(rootDir, runtime);
+  var saved = readJson(runtime.config);
+  var translatePort = boundedInteger(env.TRANSLATE_PORT, 5310, 1024, 65535);
+
+  return {
+    ROOT_DIR:rootDir,
+    RUNTIME:runtime,
+    RUNTIME_ROOT:runtime.root,
+    PORT:boundedInteger(env.PORT, 3000, 1, 65535),
+    HOST:env.HOST || '127.0.0.1',
+    TOKEN:env.TOKEN || crypto.randomBytes(8).toString('hex'),
+    SD_HOST:env.SD_HOST || saved.sdHost || 'http://127.0.0.1:7860',
+    SD_API_AUTH:env.SD_API_AUTH || '',
+    TTS_HOST:env.TTS_HOST || saved.ttsHost || 'http://127.0.0.1:9880',
+    VOICE_PROFILES:saved.voices && typeof saved.voices === 'object' ? saved.voices : {},
+    OLLAMA_HOST:env.OLLAMA_HOST || saved.ollamaHost || 'http://127.0.0.1:11434',
+    OLLAMA_MODEL:env.OLLAMA_MODEL || saved.ollamaModel || '',
+    OLLAMA_KEEP_ALIVE:env.OLLAMA_KEEP_ALIVE || '10m',
+    OLLAMA_NUM_PREDICT:boundedInteger(env.OLLAMA_NUM_PREDICT, 300, 32, 2048),
+    OLLAMA_NUM_CTX:boundedInteger(env.OLLAMA_NUM_CTX, 4096, 1024, 32768),
+    TRANSLATION_PYTHON:env.TRANSLATION_PYTHON || path.resolve(rootDir, '..', 'AI', 'GPT-SoVITS-env', 'python.exe'),
+    TRANSLATION_SCRIPT:path.join(rootDir, 'tools', 'translate-zh-ja.py'),
+    TRANSLATE_PORT:translatePort,
+    TRANSLATE_URL:'http://127.0.0.1:' + translatePort,
+    TRANSLATION_LOG:path.join(runtime.logs, 'translate.log'),
+    LIVE2D_ROOT:path.join(rootDir, 'assets', 'live2d'),
+    SCENE_SHOWCASE_DIR:resolveSceneShowcaseDir(rootDir, env.SCENE_SHOWCASE_DIR),
+    DISABLE_TUNNEL:env.DISABLE_TUNNEL === '1',
+    CLOUDFLARED_PATH:env.CLOUDFLARED_PATH || 'C:\\Program Files (x86)\\cloudflared\\cloudflared.exe'
+  };
+}
+
+module.exports = {
+  loadGatewayConfig:loadGatewayConfig,
+  resolveSceneShowcaseDir:resolveSceneShowcaseDir,
+  boundedInteger:boundedInteger
+};

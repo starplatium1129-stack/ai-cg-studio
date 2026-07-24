@@ -16,6 +16,33 @@
 | `tools/sd-error.js` | SD 错误分类、用户提示与恢复动作建议 | 出图异常或恢复策略变化时编辑 |
 | `tools/data-backup.js` | 本地备份格式、版本迁移、校验与合并规则 | 备份结构变化时编辑 |
 | `tools/prompt-builder/*.js` | 导演台按状态、场景、Prompt、SD、语音、历史和交互拆分的模块 | 修改对应职责时编辑 |
+| `server.js` | 只负责组装网关、中间件、静态资源、SD 代理和进程启动 | 新增顶层能力时编辑 |
+| `server/config.js`、`server/security.js` | 运行时配置、目录发现、Token 与安全响应头 | 配置项或访问策略变化时编辑 |
+| `routes/*.js` | HTTP 输入校验、响应格式与客户端断开处理 | API 契约变化时编辑 |
+| `services/*.js` | Ollama、翻译、GPT-SoVITS、Live2D 检查及串行资源调度 | 上游协议或调度策略变化时编辑 |
+| `tools/chat/*.mjs` | 角色房间的状态、存储、流解析、实时配音和 Live2D 生命周期 | 修改对应职责时编辑 |
+| `css/chat.css` | 角色房间独立布局、动效和响应式样式 | 只修改视觉时编辑 |
+
+## 角色聊天、实时语音与 Live2D
+
+角色房间按“页面状态 → 浏览器能力控制器 → 网关路由 → 上游服务”分层：
+
+1. `tools/chat/app.mjs` 只编排会话、界面和用户操作；聊天记录由 `storage.mjs` 统一迁移、裁剪和保存。
+2. `voice.mjs` 负责句子切分、翻译/TTS 取消、顺序播放、重播与真实音频振幅口型；不要把这些状态重新写回 `app.mjs`。
+3. `live2d.mjs` 负责模型目录状态、加载超时、尺寸观察、WebGL 丢失恢复和静态立绘回退；模型完整性由 `services/live2d-service.js` 在服务端检查。
+4. `routes/` 只处理 HTTP 契约。上游请求、模型切换和 GPU 队列统一留在 `services/`，方便使用模拟上游做测试。
+5. Ollama 和 GPT-SoVITS 都必须在完整响应结束后才释放串行队列。客户端点击停止、切角色或关闭页面时，应通过 `AbortController` 一直取消到上游请求，避免后台继续占用显存。
+
+新增角色时，静态立绘可以先工作。若要启用 Live2D，在 `assets/live2d/<角色 ID>/` 放置 `<角色 ID>.model3.json` 及它引用的全部 Moc、纹理、动作、表情和物理文件；状态接口只有在引用完整时才声明可用。没有模型的角色会明确显示“静态立绘”，不会阻断聊天或语音。
+
+修改这些链路后至少运行：
+
+```powershell
+npm run test:chat
+npm run test:resource
+```
+
+`test:chat` 会使用模拟 Ollama 与 GPT-SoVITS 检查 NDJSON 分片恢复、模型切换卸载、完整音频结束前不换权重、Live2D 文件完整性，以及网关实际启动和安全响应头。
 
 ## 日常新增、修改或下架场景
 
