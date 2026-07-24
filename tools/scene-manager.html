@@ -565,6 +565,7 @@ function switchTab(tab) {
   document.getElementById('tab-duplicates').style.display = tab === 'duplicates' ? '' : 'none';
   document.getElementById('tab-tags').style.display = tab === 'tags' ? '' : 'none';
   document.getElementById('tab-guide').style.display = tab === 'guide' ? '' : 'none';
+  if (tab === 'scenes') { renderScenes(); renderStats(); }
   if (tab === 'images') renderImages();
   if (tab === 'tags') renderTags();
 }
