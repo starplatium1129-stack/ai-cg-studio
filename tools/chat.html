@@ -150,7 +150,7 @@
       if(!library||!library.wlLive2d){host.dataset.state='runtime-missing';host.dataset.error=(window.__live2dBootstrapErrors||[]).join(' | ')||'wl-live2d global missing';return;}
       host.innerHTML='';host.dataset.state='loading';
       live2dUrl=data.modelUrl;
-      live2dApp=library.wlLive2d({selector:'#live2dHost',fixed:false,drag:false,sayHello:false,menus:[],transitionTime:250,models:[{path:live2dUrl,width:420,height:610,position:{x:0,y:0},motionPreload:'IDLE'}]});
+      live2dApp=library.wlLive2d({selector:'#live2dHost',fixed:false,drag:false,sayHello:false,menus:[],transitionTime:250,models:[{path:live2dUrl,width:280,height:510,position:{x:140,y:520},motionPreload:'IDLE'}]});
       live2dApp.onModelLoaded(function(model){
         live2dModel=model;live2dReady=true;host.dataset.state='ready';setLive2dVisible(true);
       });
@@ -180,7 +180,26 @@
   function speak(text){
     if(!$('autoVoice').checked)return Promise.resolve();
     var voiceText=text;
-    return fetch('../api/translate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:text})}).then(function(response){return response.ok?response.json():null;}).then(function(data){if(data&&data.translation)voiceText=data.translation;return fetch('../api/tts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({voice:CHARACTERS[active].voice,text:voiceText,language:data&&data.translation?'ja':'zh',emotion:inferEmotion(text),speed:1})});}).then(function(response){if(!response.ok)throw new Error('语音服务暂不可用');return response.blob();}).then(function(blob){if(audioUrl)URL.revokeObjectURL(audioUrl);audioUrl=URL.createObjectURL(blob);if(audio){audio.pause();audio.src='';}audio=new Audio(audioUrl);audio.addEventListener('play',function(){setSpeaking(true);});audio.addEventListener('ended',function(){setSpeaking(false);});audio.addEventListener('error',function(){setSpeaking(false);});return audio.play();}).catch(function(error){$('chatError').textContent='文字已回复，但配音暂不可用：'+error.message;});
+
+    // 优化：并行执行翻译和准备音频，减少等待时间
+    var translatePromise=fetch('../api/translate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:text})}).then(function(response){return response.ok?response.json():null;}).catch(function(){return null;});
+
+    return translatePromise.then(function(data){
+      if(data&&data.translation)voiceText=data.translation;
+      return fetch('../api/tts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({voice:CHARACTERS[active].voice,text:voiceText,language:data&&data.translation?'ja':'zh',emotion:inferEmotion(text),speed:1.1})});
+    }).then(function(response){
+      if(!response.ok)throw new Error('语音服务暂不可用');
+      return response.blob();
+    }).then(function(blob){
+      if(audioUrl)URL.revokeObjectURL(audioUrl);
+      audioUrl=URL.createObjectURL(blob);
+      if(audio){audio.pause();audio.src='';}
+      audio=new Audio(audioUrl);
+      audio.addEventListener('play',function(){setSpeaking(true);});
+      audio.addEventListener('ended',function(){setSpeaking(false);});
+      audio.addEventListener('error',function(){setSpeaking(false);});
+      return audio.play();
+    }).catch(function(error){$('chatError').textContent='文字已回复，但配音暂不可用：'+error.message;});
   }
   function setSpeaking(value){$('portraitStage').classList.toggle('speaking',value);if(value&&live2dReady)updateLive2dLipSync();}
   function scheduleBlink(){clearTimeout(blinkTimer);blinkTimer=setTimeout(function(){$('portraitStage').classList.add('blink');setTimeout(function(){$('portraitStage').classList.remove('blink');scheduleBlink();},170);},4200+Math.random()*4200);}
@@ -188,7 +207,35 @@
     var text=$('chatInput').value.trim();if(!text||busy)return;
     $('chatError').textContent='';var list=current();list.push({role:'user',content:text});if(list.length>20)list.splice(0,list.length-20);histories[active]=list;save();renderMessages();$('chatInput').value='';setBusy(true);
     var assistant={role:'assistant',content:''};list.push(assistant);renderMessages();var bubble=$('chatList').lastElementChild.querySelector('.message-bubble');$('chatList').lastElementChild.classList.add('streaming');
-    fetch('../api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({character:active,model:model,messages:list.slice(0,-1)})}).then(function(response){return parseStream(response,function(token){assistant.content+=token;bubble.textContent=assistant.content;$('chatList').scrollTop=$('chatList').scrollHeight;});}).then(function(){assistant.content=assistant.content.trim()||'……';$('chatList').lastElementChild.classList.remove('streaming');save();setBusy(false);return speak(assistant.content);}).catch(function(error){list.pop();save();renderMessages();setBusy(false);$('chatError').textContent=error.message||'聊天暂不可用，请检查 Ollama 是否已启动。';});
+
+    // 配音优化：在流式回复过程中就开始准备翻译，不等回复完成
+    var voiceReady=$('autoVoice').checked?fetch('../api/translate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:text})}).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;}):Promise.resolve(null);
+
+    fetch('../api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({character:active,model:model,messages:list.slice(0,-1)})}).then(function(response){return parseStream(response,function(token){assistant.content+=token;bubble.textContent=assistant.content;$('chatList').scrollTop=$('chatList').scrollHeight;});}).then(function(){
+      assistant.content=assistant.content.trim()||'……';
+      $('chatList').lastElementChild.classList.remove('streaming');
+      save();setBusy(false);
+
+      // 配音：翻译已并行完成，立即开始TTS
+      if(!$('autoVoice').checked)return;
+      return voiceReady.then(function(data){
+        var voiceText=assistant.content;
+        if(data&&data.translation)voiceText=data.translation;
+        return fetch('../api/tts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({voice:CHARACTERS[active].voice,text:voiceText,language:data&&data.translation?'ja':'zh',emotion:inferEmotion(assistant.content),speed:1.1})});
+      }).then(function(response){
+        if(!response.ok)throw new Error('语音服务暂不可用');
+        return response.blob();
+      }).then(function(blob){
+        if(audioUrl)URL.revokeObjectURL(audioUrl);
+        audioUrl=URL.createObjectURL(blob);
+        if(audio){audio.pause();audio.src='';}
+        audio=new Audio(audioUrl);
+        audio.addEventListener('play',function(){setSpeaking(true);});
+        audio.addEventListener('ended',function(){setSpeaking(false);});
+        audio.addEventListener('error',function(){setSpeaking(false);});
+        return audio.play();
+      });
+    }).catch(function(error){list.pop();save();renderMessages();setBusy(false);$('chatError').textContent=error.message||'聊天暂不可用，请检查 Ollama 是否已启动。';});
   }
   function switchCharacter(id){if(busy)return;active=id==='natsume'?'natsume':'nene';save();renderCharacter();renderMessages();$('chatError').textContent='';}
   $('sendBtn').addEventListener('click',send);$('chatInput').addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}});
