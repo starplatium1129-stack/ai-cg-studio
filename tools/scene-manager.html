@@ -588,7 +588,7 @@ function previewImage(id, title) {
   selectedImageSceneId = id;
   document.getElementById('previewTitle').textContent = id + ' · ' + title;
   const img = document.getElementById('previewImg');
-  img.src = SHOWCASE_DIR + '/images/' + id + '.jpg';
+  img.src = SHOWCASE_DIR + '/images/' + id + '.jpg?v=' + Date.now();
   img.onerror = function() { this.src = 'about:blank'; this.alt = '样张未找到'; };
   document.getElementById('imagePreview').style.display = 'block';
   document.getElementById('showcaseFeedback').textContent = '支持 PNG、JPEG、WebP，最大 15MB；仅本机可以替换。';

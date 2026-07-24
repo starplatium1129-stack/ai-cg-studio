@@ -109,7 +109,7 @@
       </div>
     </div>
     <div class="hero-preview" aria-hidden="true">
-      <div class="hero-frame"><img src="/scene-showcase/thumbs/sc002.jpg" alt="" decoding="async"><span class="hero-note">最终审核通过<br>可直接进入导演台复现</span></div>
+      <div class="hero-frame"><img src="/scene-showcase/thumbs/sc002.jpg?cv=" alt="" decoding="async"><span class="hero-note">最终审核通过<br>可直接进入导演台复现</span></div>
     </div>
   </section>
 
@@ -150,7 +150,8 @@
 
   function esc(value){return String(value==null?'':value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
   function normalize(value){return String(value||'').trim().toLocaleLowerCase('zh-CN');}
-  function imagePath(entry,size){return '/scene-showcase/'+size+'/'+encodeURIComponent(entry.id)+'.jpg';}
+  var showcaseVersion = Date.now();
+  function imagePath(entry,size){return '/scene-showcase/'+size+'/'+encodeURIComponent(entry.id)+'.jpg?cv='+showcaseVersion;}
   function createUrl(entry){return 'prompt-builder.html?scene='+encodeURIComponent(entry.id)+'&step=4&generate=1';}
   function ratingLabel(value){return LABELS[value]||value||'未分级';}
   function characterLabel(value){return LABELS[value]||value||'角色';}
@@ -184,7 +185,7 @@
   function setExclusive(selector,attribute,value){document.querySelectorAll(selector).forEach(function(button){button.classList.toggle('active',button.getAttribute(attribute)===value);});}
   function resetFilters(){state.scope='all';state.character='all';state.rating='all';search.value='';setExclusive('[data-scope]','data-scope','all');setExclusive('[data-character]','data-character','all');setExclusive('[data-rating]','data-rating','all');render(true);}
   function currentIndex(){return state.filtered.findIndex(function(entry){return entry.id===state.currentId;});}
-  function openViewer(id){const entry=state.entries.find(function(item){return item.id===id;});if(!entry)return;state.currentId=id;document.getElementById('viewerImage').src=imagePath(entry,'images');document.getElementById('viewerImage').alt=entry.title;document.getElementById('viewerTitle').textContent=entry.title;document.getElementById('viewerStory').textContent=entry.story;document.getElementById('viewerMeta').innerHTML='<span>'+esc(entry.id)+'</span><span>'+esc(characterLabel(entry.char))+'</span><span>'+esc(ratingLabel(entry.rating))+'</span><span>'+esc(entry.category)+'</span><span>第 '+esc(entry.attempt)+' 次通过</span>';document.getElementById('viewerCreate').href=createUrl(entry);if(!viewer.open)viewer.showModal();}
+  function openViewer(id){const entry=state.entries.find(function(item){return item.id===id;});if(!entry)return;state.currentId=id;    document.getElementById('viewerImage').src=imagePath(entry,'images')+'&t='+Date.now();document.getElementById('viewerImage').alt=entry.title;document.getElementById('viewerTitle').textContent=entry.title;document.getElementById('viewerStory').textContent=entry.story;document.getElementById('viewerMeta').innerHTML='<span>'+esc(entry.id)+'</span><span>'+esc(characterLabel(entry.char))+'</span><span>'+esc(ratingLabel(entry.rating))+'</span><span>'+esc(entry.category)+'</span><span>第 '+esc(entry.attempt)+' 次通过</span>';document.getElementById('viewerCreate').href=createUrl(entry);if(!viewer.open)viewer.showModal();}
   function moveViewer(step){const index=currentIndex();if(index<0||!state.filtered.length)return;const next=(index+step+state.filtered.length)%state.filtered.length;openViewer(state.filtered[next].id);}
   function showUnavailable(){document.getElementById('totalStat').textContent='0';document.getElementById('safeStat').textContent='0';document.getElementById('r15Stat').textContent='0';count.textContent='最终样张目录暂未连接';grid.innerHTML='<div class="empty"><span class="icon">🖼</span><h2>展示素材暂未连接</h2><p>网站功能仍可正常使用；重新启动控制面板后，它会自动连接 AI/SceneShowcase 中最新的审核展示集。</p><a class="btn btn-primary" href="scene-explorer.html">先浏览场景库</a></div>';}
 
