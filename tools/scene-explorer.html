@@ -5,10 +5,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>灵感场景 · 绫季绘境</title>
-<link rel="stylesheet" href="../css/design-system.css?v=7">
-<link rel="stylesheet" href="../css/scene-card.css?v=6">
+<link rel="stylesheet" href="../css/design-system.css?v=8">
+<link rel="stylesheet" href="../css/scene-card.css?v=7">
 <script src="nav.js?v=6"></script>
-<script src="scene-card.js?v=5"></script>
+<script src="scene-card.js?v=7"></script>
 <script src="scene-ux.js?v=2"></script>
 <script src="quick-create.js?v=1"></script>
 <script src="image-store.js?v=5"></script>
@@ -456,9 +456,16 @@ function renderScenes(reset){
       suppressTags: true,
       dataAttrs: { sceneId: s.id },
       onPick: function(){ openDirector(s.id); },
-      beforeActions: function(scene){
+      bandExtra: function(scene){
         var tier = sceneTier(scene);
-        var reason = AICSceneUX.personalReason(scene, PERSONAL_PROFILE) || (CURATION_DATA.recommendationReasons || {})[scene.id] || (tier === 'curated' ? '构图、角色气质与叙事完整度较高。' : '完整场景，可按需要继续筛选。');
+        return (tier === 'signature' || tier === 'curated')
+          ? '<span class="sc-tier ' + tier + '">' + tierLabel(tier) + '</span>'
+          : '';
+      },
+      beforeActions: function(scene){
+        var reason = AICSceneUX.personalReason(scene, PERSONAL_PROFILE) || (CURATION_DATA.recommendationReasons || {})[scene.id] || '';
+        // 审核流程说明不是场景亮点,不占用卡片篇幅
+        if (/实机生成与直接视觉复核/.test(reason)) reason = '';
         return '' +
           '<div class="ex-scene-line">' +
             '<span><strong>' + escHtml(charName) + '</strong></span>' +
@@ -470,7 +477,7 @@ function renderScenes(reset){
             '<span>光线 <strong>' + escHtml(decision.lighting) + '</strong></span>' +
             '<span>色调 <strong>' + escHtml(decision.color) + '</strong></span>' +
           '</div>' +
-          '<div class="ex-curation"><span class="ex-tier ' + tier + '">' + tierLabel(tier) + '</span><span>' + escHtml(reason) + '</span></div>' +
+          (reason ? '<div class="ex-curation"><span>' + escHtml(reason) + '</span></div>' : '') +
           '<div class="ex-actions">' +
             '<a class="btn btn-primary" href="prompt-builder.html?scene=' + encodeURIComponent(scene.id) + '">✦ 进入导演台</a>' +
             '<a class="btn btn-ghost" href="' + AICQuickCreate.url(scene.id) + '">⚡ 直接出图</a>' +

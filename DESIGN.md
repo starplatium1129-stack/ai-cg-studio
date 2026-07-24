@@ -247,6 +247,11 @@ Scene discovery must expose search and the most useful filters near the results.
 Do not require a friend who has never used the site to understand the taxonomy
 before they can find a scene.
 
+The footer is a quiet colophon, not a floating island: pages keep it pinned to
+the bottom of the viewport on short content (`body` is a column flex container
+and the footer uses `margin-top: auto`), so no page shows a stranded footer with
+empty space beneath it.
+
 ## Elevation & Depth
 
 Depth is restrained and functional:
@@ -295,6 +300,15 @@ Cards express grouping or selection, not decoration. Avoid a card inside a card
 inside another card unless each boundary represents a real interaction layer.
 Selectable scene cards prioritize title, character, story cue, and preview;
 technical tags are supporting metadata.
+
+Scene cards lead with the real reviewed sample, not a decorative gradient: the
+card band loads `/scene-showcase/thumbs/<scene-id>.jpg` and silently falls back
+to the gradient band when the thumbnail is missing, so the page still works on a
+plain static server. Adult-rated thumbnails stay blurred until hover or keyboard
+focus. A small mono archive code (`SC-XXX`) sits on the artwork as provenance,
+and signature or curated marks appear as one quiet corner badge at most.
+Internal audit labels such as `official_cg` or `visual_audited` never render as
+visible tags.
 
 ### Inputs and filters
 

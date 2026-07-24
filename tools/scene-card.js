@@ -9,6 +9,9 @@
      opt.rating    0..5
      opt.meta      覆盖底部 meta(默认 scene.category + weather)
      opt.beforeActions(scene)  钩子:返回 html 字符串注入 .sc-body
+     opt.bandExtra   注入图区角标 html(如 tier 徽标)
+   预览图:网关提供 /scene-showcase/thumbs/{id}.jpg(逐场景审核样张),
+   加载失败时自动回退分类渐变;R18 预览默认模糊,悬停/聚焦后清晰。
    ============================================================ */
 (function () {
   'use strict';
@@ -51,6 +54,14 @@
 
     const band = THEME[scene.category] || 'linear-gradient(135deg,var(--bg-deep),var(--bg-elevated))';
 
+    // 逐场景审核样张预览(纯静态服务器无此目录时 onerror 回退渐变)
+    const thumbId = String(scene.id || '').toLowerCase().replace(/[^a-z0-9_-]/g, '');
+    const thumbHtml = thumbId
+      ? `<img class="sc-thumb${contentRating === 'R18' ? ' sc-thumb-r18' : ''}" src="/scene-showcase/thumbs/${thumbId}.jpg" alt="" loading="lazy" decoding="async" onerror="this.classList.add('sc-thumb-missing')">`
+      : '';
+    const idBadge = thumbId ? `<span class="sc-id">${esc(thumbId.toUpperCase())}</span>` : '';
+    const bandExtra = typeof opt.bandExtra === 'function' ? opt.bandExtra(scene) : (opt.bandExtra || '');
+
     // 子模块预计算
     const categoryBadge = mode === 'grid' ? `<span class="sc-cat">${esc(scene.category||'场景')}</span>` : '';
     const ratingBadge = contentRating === 'R18'
@@ -59,7 +70,9 @@
     const storyBlock = mode !== 'strip' ? `<div class="sc-story">${esc(scene.story||'')}</div>` : '';
 
     const limit = mode === 'strip' ? 2 : 3;
-    const tags = (scene.tags || []).slice(0, limit);
+    // 内部审核标记不参与展示
+    const TAG_BLOCKLIST = ['official_cg', 'visual_audited'];
+    const tags = (scene.tags || []).filter(function (t) { return TAG_BLOCKLIST.indexOf(t) < 0; }).slice(0, limit);
     if (scene.emotion && tags.length < limit) tags.push(scene.emotion);
     const tagsBlock = !opt.suppressTags
       ? `<div class="sc-tags">${tags.map(t => `<span class="sc-tag">${esc(t)}</span>`).join('')}</div>`
@@ -84,7 +97,7 @@
 
     card.innerHTML = `
       <div class="sc-band" style="background:${band}">
-        ${ratingBadge}${categoryBadge}
+        ${thumbHtml}${idBadge}${ratingBadge}${categoryBadge}${bandExtra}
       </div>
       <div class="sc-body">
         <div class="sc-title">${esc(scene.title||'未命名')}</div>

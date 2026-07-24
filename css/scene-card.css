@@ -22,22 +22,50 @@
 .sc:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .sc-static { cursor: default; }
 
-/* ---- 视觉预览色带 ---- */
+/* ---- 视觉预览图区(审核样张优先,渐变兜底) ---- */
 .sc-band {
-  height: 72px; position: relative; flex-shrink: 0;
+  aspect-ratio: 16/10; position: relative; flex-shrink: 0;
   display: flex; align-items: flex-end; padding: var(--s-2);
+  overflow: hidden;
 }
-.sc-band::after { content:""; position:absolute; inset:0; background:linear-gradient(110deg,rgba(255,255,255,.22),transparent 42%); pointer-events:none; }
+.sc-band::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(10,7,20,.16),transparent 32%,transparent 62%,rgba(10,7,20,.34)); pointer-events:none; z-index:1; }
+.sc-thumb {
+  position: absolute; inset: 0; z-index: 0;
+  width: 100%; height: 100%; object-fit: cover; object-position: center 22%;
+  transition: transform var(--t-base), filter var(--t-base);
+}
+.sc-thumb-missing { display: none; }
+.sc:hover .sc-thumb { transform: scale(1.03); }
+/* R18 预览默认模糊,悬停/聚焦揭示(与样张页的主动确认保持一致) */
+.sc-thumb-r18 { filter: blur(16px) saturate(.85); transform: scale(1.08); }
+.sc:hover .sc-thumb-r18, .sc:focus-within .sc-thumb-r18 { filter: blur(0) saturate(1); transform: scale(1.03); }
 .sc-cat {
+  position: relative; z-index: 2;
   margin-left: auto; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em;
   background: rgba(0,0,0,0.45); color: #fff; padding: 2px 8px; border-radius: 10px;
+  backdrop-filter: blur(6px);
+}
+.sc-id {
+  position: absolute; z-index: 2; left: 8px; bottom: 8px;
+  font: 700 0.6rem var(--font-mono); letter-spacing: 0.12em;
+  color: rgba(255,255,255,.82); background: rgba(10,7,20,.42);
+  padding: 2px 6px; border-radius: 4px; backdrop-filter: blur(6px);
 }
 .sc-badge {
-  position: absolute; top: 6px; right: 6px; font-size: 0.7rem;
+  position: absolute; z-index: 2; top: 6px; right: 6px; font-size: 0.7rem;
   background: var(--accent); color: var(--text-inverse); padding: 1px 6px; border-radius: 8px;
 }
 .sc-rating.r18 { background: #b4233c; }
 .sc-rating.r15 { background: #8a5a10; }
+/* 精品层级徽标(图区左上) */
+.sc-tier {
+  position: absolute; z-index: 2; top: 6px; left: 6px;
+  font-size: 0.65rem; font-weight: 800; letter-spacing: 0.04em;
+  color: #ffd7ef; background: rgba(173,70,127,.72);
+  border: 1px solid rgba(255,255,255,.28);
+  padding: 2px 8px; border-radius: 999px; backdrop-filter: blur(8px);
+}
+.sc-tier.signature { color: #ffe3b0; background: rgba(122,74,18,.72); }
 
 /* ---- 主体 ---- */
 .sc-body { padding: var(--s-3); display: flex; flex-direction: column; gap: var(--s-1); min-width: 0; }
@@ -67,12 +95,10 @@
 
 /* ---- strip 修饰 ---- */
 .sc-strip { width: 200px; flex: 0 0 200px; scroll-snap-align: start; }
-.sc-strip .sc-band { height: 36px; }
 .sc-strip .sc-story { -webkit-line-clamp: 3; }
 .sc-strip .sc-cat, .sc-strip .sc-rating { display: none; }
 
 /* ---- recent 修饰 ---- */
-.sc-recent .sc-band { height: 96px; }
 .sc-recent .sc-story { -webkit-line-clamp: 2; }
 
 /* ---- 空态 ---- */

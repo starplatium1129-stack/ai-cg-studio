@@ -475,7 +475,11 @@ function renderScenes() {
     const season = s.season ? ({春:'🌸',夏:'☀️',秋:'🍂',冬:'❄️'}[s.season]||'') + s.season : '';
     const tod = s.timeOfDay ? ({morning:'清晨',afternoon:'午后',sunset:'黄昏',night:'夜晚',late_night:'深夜',dawn:'拂晓'}[s.timeOfDay]||s.timeOfDay) : '';
     const personalNote = AICSceneUX.personalReason(s, PERSONAL_PROFILE);
+    const thumbId = String(s.id || '').toLowerCase().replace(/[^a-z0-9_-]/g, '');
+    const contentRating = s.rating || (s.mature ? 'R18' : 'All');
     selectBtn.innerHTML = `
+      ${thumbId ? `<img class="scene-thumb${contentRating === 'R18' ? ' r18' : ''}" src="/scene-showcase/thumbs/${thumbId}.jpg" alt="" loading="lazy" decoding="async" onerror="this.remove()">` : ''}
+      <span class="scene-text">
       <span class="scene-name">${escapeHtml(s.title)}${s.mature ? ' <span class="mature-dot">🔞</span>' : ''}</span>
       <span class="scene-story">${escapeHtml(s.story)}</span>
       <span class="scene-meta">
@@ -488,6 +492,7 @@ function renderScenes() {
         ${season ? `<span class="scene-tag">${escapeHtml(season)}</span>` : ''}
         ${tod ? `<span class="scene-tag">${escapeHtml(tod)}</span>` : ''}
         ${s.tags.slice(0,3).map(t => `<span class="scene-tag raw">${escapeHtml(t)}</span>`).join('')}
+      </span>
       </span>`;
     selectBtn.addEventListener('click', () => loadScene(s));
     const directBtn = document.createElement('button'); directBtn.className = 'scene-direct-btn'; directBtn.textContent = '快速出图'; directBtn.type = 'button';

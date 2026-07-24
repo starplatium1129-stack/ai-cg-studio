@@ -186,6 +186,11 @@ img { max-width: 100%; display: block; }
 
 .container-narrow { max-width: 800px; }
 
+/* ---- Sticky footer:body 改列向弹性布局,页脚推至视口底部 ---- */
+body { display: flex; flex-direction: column; }
+body > *:has(+ .footer),
+.pb, .page, .chat-page { margin-bottom: var(--s-8); }
+
 /* ---- Top nav ---- */
 .nav {
   position: sticky; top: 0; z-index: 100;
@@ -511,7 +516,7 @@ tr:hover td { background: var(--bg-hover); }
 
 /* ---- Footer ---- */
 .footer {
-  margin-top: var(--s-8);
+  margin-top: auto; /* sticky footer:短内容页页脚贴底(原 margin-top 由主体容器 margin-bottom 提供间距) */
   padding: var(--s-6) 0;
   border-top: 1px solid var(--border-soft);
   text-align: center;
