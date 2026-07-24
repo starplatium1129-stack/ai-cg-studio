@@ -150,9 +150,9 @@ export class VoiceController {
           URL.revokeObjectURL(item.url);
           return;
         }
-        const urls = this.messageAudio.get(meta.mid) || [];
-        urls.push(item.url);
-        this.messageAudio.set(meta.mid, urls);
+        const clips = this.messageAudio.get(meta.mid) || [];
+        clips.push({ url:item.url, emotion:item.emotion || 'neutral' });
+        this.messageAudio.set(meta.mid, clips);
         this.queue.push({ ...item, mid:meta.mid, session });
         this.onAudioReady(meta.mid);
         this.pump(session);
@@ -288,19 +288,20 @@ export class VoiceController {
   }
 
   async playMessage(mid) {
-    const urls = (this.messageAudio.get(mid) || []).slice();
-    if (!urls.length) return false;
+    const clips = (this.messageAudio.get(mid) || []).slice();
+    if (!clips.length) return false;
     this.stop({ preserveMessageAudio:true, silent:true });
     this.ensureAudioContext();
     const replaySession = this.session;
     this.onSpeaking(true, mid);
     this.onStatus('重播中…');
 
-    for (const url of urls) {
+    for (const clip of clips) {
       if (replaySession !== this.session) return false;
-      const audio = new Audio(url);
+      const audio = new Audio(clip.url);
       this.replayAudio = audio;
       this.attachAnalyser(audio);
+      this.onExpression(clip.emotion || 'neutral');
       await new Promise((resolve) => {
         const done = () => {
           audio.removeEventListener('ended', done);
@@ -324,14 +325,14 @@ export class VoiceController {
   }
 
   hasAudio(mid) {
-    const urls = this.messageAudio.get(mid);
-    return Boolean(urls && urls.length);
+    const clips = this.messageAudio.get(mid);
+    return Boolean(clips && clips.length);
   }
 
   clearMessages(mids) {
     mids.forEach((mid) => {
-      const urls = this.messageAudio.get(mid) || [];
-      urls.forEach((url) => URL.revokeObjectURL(url));
+      const clips = this.messageAudio.get(mid) || [];
+      clips.forEach((clip) => URL.revokeObjectURL(clip.url));
       this.messageAudio.delete(mid);
     });
   }
@@ -350,7 +351,9 @@ export class VoiceController {
     this.pending = 0;
 
     this.queue.forEach((item) => {
-      const referenced = [...this.messageAudio.values()].some((urls) => urls.includes(item.url));
+      const referenced = [...this.messageAudio.values()].some((clips) =>
+        clips.some((clip) => clip.url === item.url)
+      );
       if (!referenced) URL.revokeObjectURL(item.url);
     });
     this.queue = [];

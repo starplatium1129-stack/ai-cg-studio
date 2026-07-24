@@ -17,7 +17,6 @@
     "Motions": {
       "Idle": [
         { "File": "motions/idle_01.motion3.json", "FadeInTime": 0.6, "FadeOutTime": 0.6 },
-        { "File": "motions/idle_02.motion3.json", "FadeInTime": 0.6, "FadeOutTime": 0.6 },
         { "File": "motions/idle_03.motion3.json", "FadeInTime": 0.6, "FadeOutTime": 0.6 }
       ]
     }

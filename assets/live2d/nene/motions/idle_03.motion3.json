@@ -2,7 +2,7 @@
 	"Version": 3,
 	"Meta": {
 		"Duration": 9.967,
-		"Fps": 30.0,
+		"Fps": 30,
 		"Loop": true,
 		"AreBeziersRestricted": false,
 		"CurveCount": 4,

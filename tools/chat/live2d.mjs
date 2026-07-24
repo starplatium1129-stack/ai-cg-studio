@@ -19,6 +19,9 @@ export class Live2DController {
     this.loadTimer = 0;
     this.resizeObserver = null;
     this.destroyed = false;
+    this.mouthValue = 0;
+    this.mouthHooked = false;
+    this.visibilityHandler = null;
   }
 
   setState(state, text, detail = '', retryable = false) {
@@ -36,6 +39,7 @@ export class Live2DController {
       if (!response.ok) throw new Error('Live2D 状态接口不可用');
       this.catalog = await response.json();
       this.observeSize();
+      this.bindVisibility();
       await this.setCharacter(this.character);
     } catch (error) {
       this.fallback('Live2D 未就绪', errorText(error));
@@ -57,6 +61,7 @@ export class Live2DController {
     if (this.ready && this.loadedCharacter === character) {
       this.setVisible(true);
       this.setState('ready', 'Live2D 已连接');
+      this.setPaused(document.hidden);
       this.layout();
       return;
     }
@@ -131,10 +136,13 @@ export class Live2DController {
           this.model = model;
           this.loadedCharacter = character;
           this.ready = true;
+          this.mouthValue = 0;
+          this.bindMouthOverride();
           this.bindContextEvents();
           this.fit();
           this.layout();
           this.setVisible(true);
+          this.setPaused(document.hidden);
           this.setState('ready', 'Live2D 已连接');
           finish(true);
         });
@@ -157,6 +165,26 @@ export class Live2DController {
     } else {
       window.addEventListener('resize', this.onResize = () => this.layout());
     }
+  }
+
+  bindVisibility() {
+    if (this.visibilityHandler) return;
+    this.visibilityHandler = () => this.setPaused(document.hidden);
+    document.addEventListener('visibilitychange', this.visibilityHandler);
+  }
+
+  bindMouthOverride() {
+    if (!this.model || !this.model.internalModel || this.mouthHooked) return;
+    this.mouthHooked = true;
+    this.model.internalModel.on('beforeModelUpdate', () => {
+      if (!this.model || !this.model.visible) return;
+      try {
+        this.model.internalModel.coreModel.setParameterValueById(
+          'ParamMouthOpenY',
+          this.mouthValue
+        );
+      } catch (error) {}
+    });
   }
 
   bindContextEvents() {
@@ -193,18 +221,28 @@ export class Live2DController {
   }
 
   layout() {
-    if (!this.ready) return;
+    if (!this.ready || document.hidden) return;
     try {
       const wrapper = this.host.firstElementChild;
       if (!wrapper) return;
       const widthScale = this.host.clientWidth / 420;
       const heightScale = this.host.clientHeight / 610;
-      // The model texture includes generous transparent margins. A restrained
-      // cover-style scale keeps the character readable without cropping the face.
-      const scale = Math.max(widthScale, heightScale) * 1.15;
-      wrapper.style.transform = `translateX(-50%) scale(${Math.min(1.1, scale > 0 ? scale : 1)})`;
+      // Cover-fit the fixed stage canvas into the portrait host without overscaling.
+      const scale = Math.min(1.08, Math.max(widthScale, heightScale) * 1.08);
+      wrapper.style.transform = `translateX(-50%) scale(${scale > 0 ? scale : 1})`;
       this.fit();
     } catch (error) {}
+  }
+
+  setPaused(paused) {
+    const ticker = this.app && this.app.app && this.app.app.ticker;
+    if (!ticker) return;
+    if (paused) {
+      if (ticker.started) ticker.stop();
+    } else if (!ticker.started) {
+      ticker.start();
+      this.layout();
+    }
   }
 
   setVisible(value) {
@@ -222,17 +260,12 @@ export class Live2DController {
   }
 
   setMouth(value) {
-    if (!this.ready || !this.model || !this.model.visible) return;
-    try {
-      this.model.internalModel.coreModel.setParameterValueById(
-        'ParamMouthOpenY',
-        Math.max(0, Math.min(1, Number(value) || 0))
-      );
-    } catch (error) {}
+    this.mouthValue = Math.max(0, Math.min(1, Number(value) || 0));
   }
 
   fallback(text, detail) {
     this.ready = false;
+    this.mouthValue = 0;
     this.setVisible(false);
     this.setState('fallback', text || '静态立绘', detail || '', true);
   }
@@ -241,6 +274,8 @@ export class Live2DController {
     clearTimeout(this.loadTimer);
     this.loadTimer = 0;
     this.ready = false;
+    this.mouthValue = 0;
+    this.mouthHooked = false;
     this.model = null;
     this.loadedCharacter = '';
     this.stage.classList.remove('live2d-ready');
@@ -256,5 +291,9 @@ export class Live2DController {
     this.destroyRuntime();
     if (this.resizeObserver) this.resizeObserver.disconnect();
     if (this.onResize) window.removeEventListener('resize', this.onResize);
+    if (this.visibilityHandler) {
+      document.removeEventListener('visibilitychange', this.visibilityHandler);
+      this.visibilityHandler = null;
+    }
   }
 }
