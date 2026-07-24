@@ -28,7 +28,7 @@ var CLOUDFLARED_PATH = 'C:\\Program Files (x86)\\cloudflared\\cloudflared.exe';
 var VOICE_START_SCRIPT = path.resolve(dir, '..', 'AI', 'Voice', 'Start-Voice.ps1');
 var VOICE_STOP_SCRIPT = path.resolve(dir, '..', 'AI', 'Voice', 'Stop-Voice.ps1');
 var VOICE_PROFILE_FILE = path.resolve(dir, '..', 'AI', 'Voice', 'config', 'profiles.json');
-var WEBUI_MANAGER_SCRIPT = path.join(dir, 'scripts', 'managed-webui.ps1');
+var WEBUI_MANAGER_SCRIPT = path.join(dir, 'scripts', 'runtime', 'managed-webui.ps1');
 
 // ─── State ───
 var state = {
