@@ -10,12 +10,18 @@
      opt.meta      覆盖底部 meta(默认 scene.category + weather)
      opt.beforeActions(scene)  钩子:返回 html 字符串注入 .sc-body
      opt.bandExtra   注入图区角标 html(如 tier 徽标)
-   预览图:网关提供 /scene-showcase/thumbs/{id}.jpg(逐场景审核样张),
-   加载失败时自动回退分类渐变;R18 预览默认模糊,悬停/聚焦后清晰。
+     opt.imgVersion  缩略图缓存版本(优先级高于全局 AICS_THUMB_VERSION)
+    预览图:网关提供 /scene-showcase/thumbs/{id}.jpg(逐场景审核样张),
+    加载失败时自动回退分类渐变;R18 预览默认模糊,悬停/聚焦后清晰。
+    换样张后见 AICS_THUMB_VERSION 注释。
    ============================================================ */
 (function () {
   'use strict';
   if (window.createSceneCard) return;
+
+  // 样张替换后请 +1 此版本号,确保浏览器取新图而非缓存。
+  // 也可在 scene-card.js 加载前设置 window.AICS_THUMB_VERSION 覆盖。
+  window.AICS_THUMB_VERSION = window.AICS_THUMB_VERSION || '1';
 
   function esc(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
@@ -56,8 +62,10 @@
 
     // 逐场景审核样张预览(纯静态服务器无此目录时 onerror 回退渐变)
     const thumbId = String(scene.id || '').toLowerCase().replace(/[^a-z0-9_-]/g, '');
+    const imgV = (opt.imgVersion || window.AICS_THUMB_VERSION || '');
+    const cacheStr = imgV ? '?v=' + encodeURIComponent(String(imgV)) : '';
     const thumbHtml = thumbId
-      ? `<img class="sc-thumb${contentRating === 'R18' ? ' sc-thumb-r18' : ''}" src="/scene-showcase/thumbs/${thumbId}.jpg" alt="" loading="lazy" decoding="async" onerror="this.classList.add('sc-thumb-missing')">`
+      ? `<img class="sc-thumb${contentRating === 'R18' ? ' sc-thumb-r18' : ''}" src="/scene-showcase/thumbs/${thumbId}.jpg${cacheStr}" alt="" loading="lazy" decoding="async" onerror="this.classList.add('sc-thumb-missing')">`
       : '';
     const idBadge = thumbId ? `<span class="sc-id">${esc(thumbId.toUpperCase())}</span>` : '';
     const bandExtra = typeof opt.bandExtra === 'function' ? opt.bandExtra(scene) : (opt.bandExtra || '');

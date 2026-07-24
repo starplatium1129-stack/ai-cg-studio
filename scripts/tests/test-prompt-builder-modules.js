@@ -57,7 +57,7 @@ try {
 
 let previousOffset = -1;
 for (const [name, marker] of modules) {
-  const version = name === 'voice.js' ? '5' : ((name === 'sd.js' || name === 'scene.js') ? '2' : '1');
+  const version = name === 'voice.js' ? '5' : (name === 'sd.js' ? '2' : (name === 'scene.js' ? '3' : '1'));
   const src = 'prompt-builder/' + name + '?v=' + version;
   const offset = html.indexOf(src);
   if (offset < 0) fail('missing script reference for ' + name);

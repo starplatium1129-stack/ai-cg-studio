@@ -477,8 +477,9 @@ function renderScenes() {
     const personalNote = AICSceneUX.personalReason(s, PERSONAL_PROFILE);
     const thumbId = String(s.id || '').toLowerCase().replace(/[^a-z0-9_-]/g, '');
     const contentRating = s.rating || (s.mature ? 'R18' : 'All');
+    const cacheStr = (window.AICS_THUMB_VERSION || '') ? '?v=' + encodeURIComponent(String(window.AICS_THUMB_VERSION)) : '';
     selectBtn.innerHTML = `
-      ${thumbId ? `<img class="scene-thumb${contentRating === 'R18' ? ' r18' : ''}" src="/scene-showcase/thumbs/${thumbId}.jpg" alt="" loading="lazy" decoding="async" onerror="this.remove()">` : ''}
+      ${thumbId ? `<img class="scene-thumb${contentRating === 'R18' ? ' r18' : ''}" src="/scene-showcase/thumbs/${thumbId}.jpg${cacheStr}" alt="" loading="lazy" decoding="async" onerror="this.remove()">` : ''}
       <span class="scene-text">
       <span class="scene-name">${escapeHtml(s.title)}${s.mature ? ' <span class="mature-dot">🔞</span>' : ''}</span>
       <span class="scene-story">${escapeHtml(s.story)}</span>
