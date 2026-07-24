@@ -28,6 +28,7 @@ var TRANSLATE_URL = 'http://127.0.0.1:' + TRANSLATE_PORT;
 var OLLAMA_KEEP_ALIVE = process.env.OLLAMA_KEEP_ALIVE || '10m';
 var activeGPTWeights = '';
 var activeSoVITSWeights = '';
+var activeChatModel = '';
 var voiceQueue = Promise.resolve();
 var translationQueue = Promise.resolve();
 var translateChild = null;
@@ -360,6 +361,28 @@ function preferredOllamaModel(models) {
   return available.length ? String(available[0].name || available[0].model || '') : '';
 }
 
+// 卸载指定 Ollama 模型，在切换模型时避免新旧同时占 VRAM
+function unloadOllamaModel(modelName) {
+  if (!modelName) return Promise.resolve();
+  return new Promise(function(resolve) {
+    try {
+      var payload = JSON.stringify({ model:modelName, keep_alive:0, stream:false });
+      var target = new URL('/api/generate', OLLAMA_HOST);
+      var transport = target.protocol === 'https:' ? require('https') : require('http');
+      var request = transport.request(target, {
+        method:'POST',
+        headers:{'Content-Type':'application/json','Content-Length':Buffer.byteLength(payload)}
+      }, function(response) {
+        response.resume();
+        resolve();
+      });
+      request.setTimeout(5000, function() { request.destroy(); resolve(); });
+      request.on('error', function() { resolve(); });
+      request.end(payload);
+    } catch(error) { resolve(); }
+  });
+}
+
 app.get('/api/chat-status', function(req, res) {
   readOllamaJSON('/api/tags', 3000).then(function(data) {
     var models = Array.isArray(data.models) ? data.models : [];
@@ -437,17 +460,28 @@ app.post('/api/chat', express.json({ limit:'64kb' }), function(req, res) {
     var allowed = models.map(function(item){ return String(item.name || item.model || ''); });
     var model = allowed.includes(requestedModel) ? requestedModel : preferredOllamaModel(models);
     if (!model) throw new Error('Ollama 中没有可用的对话模型');
-    return requestOllama('/api/chat', {
-      method:'POST',
-      timeout:3 * 60 * 1000,
-      payload:{
-        model:model,
-        messages:[{ role:'system', content:chatCharacterPrompt(character) }].concat(messages),
-        stream:true,
-        think:false,
-        keep_alive:OLLAMA_KEEP_ALIVE,
-        options:{ temperature:0.82, top_p:0.9, repeat_penalty:1.08, num_predict:Number(process.env.OLLAMA_NUM_PREDICT)||300, num_ctx:Number(process.env.OLLAMA_NUM_CTX)||4096 }
-      }
+    // 切换模型时先卸载旧的，避免新旧同时占显存
+    var unload = Promise.resolve();
+    if (activeChatModel && activeChatModel !== model) {
+      var oldModel = activeChatModel;
+      unload = unloadOllamaModel(oldModel).then(function() {
+        console.log('  🔄 已卸载旧模型: ' + oldModel + ' → 加载: ' + model);
+      });
+    }
+    activeChatModel = model;
+    return unload.then(function() {
+      return requestOllama('/api/chat', {
+        method:'POST',
+        timeout:3 * 60 * 1000,
+        payload:{
+          model:model,
+          messages:[{ role:'system', content:chatCharacterPrompt(character) }].concat(messages),
+          stream:true,
+          think:false,
+          keep_alive:OLLAMA_KEEP_ALIVE,
+          options:{ temperature:0.82, top_p:0.9, repeat_penalty:1.08, num_predict:Number(process.env.OLLAMA_NUM_PREDICT)||300, num_ctx:Number(process.env.OLLAMA_NUM_CTX)||4096 }
+        }
+      });
     }).then(function(result){ return { result:result, model:model }; });
   }).then(function(context) {
     var response = context.result.response;

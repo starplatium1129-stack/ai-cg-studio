@@ -15,6 +15,7 @@ function assert(condition, message) {
 assert(server.includes('keep_alive:OLLAMA_KEEP_ALIVE'), 'gateway must pass keep_alive so Ollama unloads idle models from VRAM');
 assert(server.includes("OLLAMA_KEEP_ALIVE || '10m'"), 'gateway must default Ollama keep_alive to 10 minutes');
 assert(server.includes('num_ctx:'), 'gateway must cap Ollama context window to limit VRAM usage');
+assert(server.includes('unloadOllamaModel') && server.includes('activeChatModel'), 'gateway must unload old model before loading a different one to avoid double VRAM consumption');
 assert(server.includes('ensureTranslateServer') && server.includes('--serve'), 'gateway must manage a persistent translation server');
 assert(server.includes('legacyTranslateChineseToJapanese'), 'gateway must keep the spawn-per-call translation as fallback');
 assert(server.includes("TRANSLATE_PORT") && server.includes('/health'), 'gateway must health-check the translation server');
