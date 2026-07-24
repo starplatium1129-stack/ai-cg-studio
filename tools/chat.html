@@ -191,17 +191,60 @@
       return fetch('../api/tts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({voice:CHARACTERS[active].voice,text:voiceText,language:data&&data.translation?'ja':'zh',emotion:inferEmotion(text),speed:1})});
     }).then(function(response){
       if(!response.ok)throw new Error('语音服务暂不可用');
-      return response.blob();
-    }).then(function(blob){
+
+      // 流式接收音频数据
+      var reader = response.body.getReader();
+      var chunks = [];
+      var totalLength = 0;
+      var MIN_BUFFER_SIZE = 16384; // 16KB 最小缓冲
+
+      function readChunk(){
+        return reader.read().then(function(result){
+          if(result.done){
+            // 流结束，播放剩余数据
+            if(chunks.length>0){
+              return playAudioChunks(chunks, totalLength);
+            }
+            return;
+          }
+
+          chunks.push(result.value);
+          totalLength += result.value.length;
+
+          // 缓冲足够时立即播放
+          if(totalLength>=MIN_BUFFER_SIZE){
+            var blob = new Blob(chunks, {type:'audio/wav'});
+            chunks = [];
+            totalLength = 0;
+            return playAudioBlob(blob).then(readChunk);
+          }
+
+          return readChunk();
+        });
+      }
+
+      return readChunk();
+    }).catch(function(error){$('chatError').textContent='文字已回复，但配音暂不可用：'+error.message;});
+  }
+
+  // 播放音频 Blob
+  function playAudioBlob(blob){
+    return new Promise(function(resolve){
       if(audioUrl)URL.revokeObjectURL(audioUrl);
       audioUrl=URL.createObjectURL(blob);
       if(audio){audio.pause();audio.src='';}
       audio=new Audio(audioUrl);
       audio.addEventListener('play',function(){setSpeaking(true);});
-      audio.addEventListener('ended',function(){setSpeaking(false);});
-      audio.addEventListener('error',function(){setSpeaking(false);});
-      return audio.play();
-    }).catch(function(error){$('chatError').textContent='文字已回复，但配音暂不可用：'+error.message;});
+      audio.addEventListener('ended',function(){setSpeaking(false);resolve();});
+      audio.addEventListener('error',function(){setSpeaking(false);resolve();});
+      audio.play().catch(function(){resolve();});
+    });
+  }
+
+  // 播放多个 chunks
+  function playAudioChunks(chunks, length){
+    var blob = new Blob(chunks, {type:'audio/wav'});
+    return playAudioBlob(blob);
   }
 
   // 新增：重新播放当前配音

@@ -581,6 +581,38 @@ function requestVoiceAPI(pathname, options) {
   });
 }
 
+// 流式 TTS 请求函数
+function requestVoiceAPIStream(pathname, options) {
+  options = options || {};
+  return new Promise(function (resolve, reject) {
+    try {
+      var target = new URL(pathname, TTS_HOST);
+      var payload = options.payload ? JSON.stringify(options.payload) : '';
+      var transport = target.protocol === 'https:' ? require('https') : require('http');
+      var request = transport.request(target, {
+        method: options.method || 'GET',
+        headers: payload ? {
+          'Content-Type':'application/json',
+          'Content-Length':Buffer.byteLength(payload)
+        } : undefined
+      }, function (response) {
+        if (response.statusCode < 200 || response.statusCode >= 300) {
+          var chunks = [];
+          response.on('data', function(chunk) { chunks.push(chunk); });
+          response.on('end', function() {
+            reject(new Error('GPT-SoVITS returned ' + response.statusCode + ': ' + Buffer.concat(chunks).toString('utf8').slice(0, 500)));
+          });
+          return;
+        }
+        resolve({ stream: response, contentType: response.headers['content-type'] || 'audio/wav' });
+      });
+      request.setTimeout(options.timeout || 5 * 60 * 1000, function () { request.destroy(new Error('GPT-SoVITS request timed out')); });
+      request.on('error', reject);
+      request.end(payload);
+    } catch (error) { reject(error); }
+  });
+}
+
 async function activateVoiceProfile(profile) {
   if (profile.sovitsWeightsPath && profile.sovitsWeightsPath !== activeSoVITSWeights) {
     await requestVoiceAPI('/set_sovits_weights?weights_path=' + encodeURIComponent(profile.sovitsWeightsPath));
@@ -619,20 +651,21 @@ app.post('/api/tts', express.json({ limit:'32kb' }), function (req, res) {
     batch_size: 1,
     speed_factor: speed,
     media_type: 'wav',
-    streaming_mode: false
+    streaming_mode: true  // 启用流式模式
   };
 
   var task = voiceQueue.catch(function () {}).then(async function () {
     await activateVoiceProfile(profile);
-    return requestVoiceAPI('/tts', { method:'POST', payload:payload, limit:32 * 1024 * 1024, timeout:5 * 60 * 1000 });
+    return requestVoiceAPIStream('/tts', { method:'POST', payload:payload, timeout:5 * 60 * 1000 });
   });
   voiceQueue = task;
   task.then(function (result) {
     if (res.headersSent) return;
     res.setHeader('Content-Type', result.contentType || 'audio/wav');
-    res.setHeader('Content-Length', result.body.length);
     res.setHeader('Cache-Control', 'no-store');
-    res.end(result.body);
+    res.setHeader('Transfer-Encoding', 'chunked');
+    // 流式传输音频数据
+    result.stream.pipe(res);
   }).catch(function (error) {
     if (!res.headersSent) res.status(502).json({ error:'GPT-SoVITS 生成失败', detail:error.message });
   });
