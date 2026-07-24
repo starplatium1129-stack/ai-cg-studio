@@ -116,7 +116,7 @@
       </div>
     </aside>
     <section class="conversation-card">
-      <div class="conversation-head"><strong id="conversationTitle">和宁宁的房间</strong><span class="conversation-meta"><select id="modelSelect" aria-label="选择聊天模型" style="background:transparent;border:1px solid var(--border-soft);border-radius:var(--r-sm);color:var(--text-muted);font:inherit;font-size:.7rem;padding:2px 6px;cursor:pointer;max-width:200px" onchange="setModel(this.value)"></select></span></div>
+      <div class="conversation-head"><strong id="conversationTitle">和宁宁的房间</strong><span class="conversation-meta"><select id="modelSelect" aria-label="选择聊天模型" style="background:transparent;border:1px solid var(--border-soft);border-radius:var(--r-sm);color:var(--text-muted);font:inherit;font-size:.7rem;padding:2px 6px;cursor:pointer;max-width:200px"></select></span></div>
       <div class="chat-list" id="chatList"><div class="chat-empty"><div class="icon">☕</div><div>输入一句话，开始和角色聊天。<br>第一次回复前，Ollama 可能需要一点加载时间。</div></div></div>
       <div class="chat-composer">
         <div class="composer-row"><textarea class="chat-input" id="chatInput" rows="2" maxlength="1200" placeholder="对她说点什么…" aria-label="聊天输入"></textarea><button class="btn btn-primary send-btn" id="sendBtn" type="button">发送</button></div>
@@ -560,6 +560,7 @@
     next();
   }
   document.querySelectorAll('.character-tab').forEach(function(button){button.addEventListener('click',function(){switchCharacter(button.dataset.character);});});
+  $('modelSelect').addEventListener('change',function(){setModel(this.value);});
   $('newChatBtn').addEventListener('click',function(){if(busy)return;if(!current().length)return;resetVoice();clearMsgAudios();histories[active]=[];save();renderMessages();});
   $('clearChatBtn').addEventListener('click',function(){if(busy)return;if(!current().length)return;if(confirm('清除和'+CHARACTERS[active].name+'的本地对话记忆？')){resetVoice();clearMsgAudios();histories[active]=[];save();renderMessages();}});
   load();renderCharacter();renderMessages();scheduleBlink();initLive2d();
