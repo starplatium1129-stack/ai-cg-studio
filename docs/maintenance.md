@@ -10,7 +10,7 @@
 | `data/scenes/manifest.json` | 声明分片与顺序 | 新增分片时编辑 |
 | `data/scenes.json` | 供静态网页读取的构建产物 | 否 |
 | `data/curation.json` | 精品层级、推荐理由、语义搜索和情绪入口 | 是 |
-| `scripts/scene-store.js` | 所有维护脚本共用的读写层 | 结构变化时编辑 |
+| `scripts/runtime/scene-store.js` | 所有维护脚本共用的读写层 | 结构变化时编辑 |
 | `tools/scene-ux.js` | 搜索意图、相关度和本机偏好排序的共享逻辑 | 搜索规则变化时编辑 |
 | `tools/nav.js`、`tools/local-status.js` | 全站导航与本机绘图/对话/语音状态汇总 | 页面入口或服务状态契约变化时编辑 |
 | `tools/quick-create.js` | 最近成功参数的规范化、存取、摘要和快速路由 | 快速创作规则变化时编辑 |
@@ -47,7 +47,7 @@
 npm run benchmark:voice
 ```
 
-报告会分别显示翻译冷/热耗时、角色权重预热、首个音频字节与完整语音耗时。若要同时比较 GPT-SoVITS 的底层流式模式，可额外传入网关和语音服务地址：`node scripts/benchmark-voice.js http://127.0.0.1:3000 http://127.0.0.1:9880`。
+报告会分别显示翻译冷/热耗时、角色权重预热、首个音频字节与完整语音耗时。若要同时比较 GPT-SoVITS 的底层流式模式，可额外传入网关和语音服务地址：`node scripts/maintenance/benchmark-voice.js http://127.0.0.1:3000 http://127.0.0.1:9880`。
 
 新增角色时，静态立绘可以先工作。若要启用 Live2D，在 `assets/live2d/<角色 ID>/` 放置 `<角色 ID>.model3.json` 及它引用的全部 Moc、纹理、动作、表情和物理文件；状态接口只有在引用完整时才声明可用。没有模型的角色会明确显示“静态立绘”，不会阻断聊天或语音。
 
@@ -144,11 +144,11 @@ npm run validate
 - 不在 HTML 中硬编码精选场景 ID 或情绪入口，统一写入 `data/curation.json`。
 - 招牌场景必须同时存在于 `curatedSceneIds`，并在 `recommendationReasons` 中说明推荐理由。
 - 新增自然语言搜索词时，在 `searchAliases` 中提供至少一组能够命中现有场景的同义词。
-- 修改搜索或推荐权重时，同步扩展 `scripts/test-scene-ux.js`，覆盖整句拆解、相关度和偏好排序。
-- 修改快速参数格式或路由时，同步扩展 `scripts/test-quick-create.js`。
-- 修改 SD 错误识别或恢复动作时，同步扩展 `scripts/test-sd-error.js`。
-- 修改备份字段、迁移或合并规则时，同步扩展 `scripts/test-data-backup.js`。
-- 不把导演台的新逻辑重新塞回 `prompt-builder.html`；按职责编辑 `tools/prompt-builder/` 中的模块，并同步扩展 `scripts/test-prompt-builder-modules.js`。
+- 修改搜索或推荐权重时，同步扩展 `scripts/tests/test-scene-ux.js`，覆盖整句拆解、相关度和偏好排序。
+- 修改快速参数格式或路由时，同步扩展 `scripts/tests/test-quick-create.js`。
+- 修改 SD 错误识别或恢复动作时，同步扩展 `scripts/tests/test-sd-error.js`。
+- 修改备份字段、迁移或合并规则时，同步扩展 `scripts/tests/test-data-backup.js`。
+- 不把导演台的新逻辑重新塞回 `prompt-builder.html`；按职责编辑 `tools/prompt-builder/` 中的模块，并同步扩展 `scripts/tests/test-prompt-builder-modules.js`。
 - 场景色调、镜头、光照与构图推断集中维护在 `tools/prompt-builder/scene-inference.js`，不要复制回场景渲染代码。
 - 新增角色时，同时增加角色资料、对应分片、Manifest 条目和校验规则。
 - 批量脚本必须通过 `scene-store.js` 写回，避免只改聚合文件。

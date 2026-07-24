@@ -4,7 +4,7 @@ var cp = require('child_process');
 var express = require('express');
 
 module.exports = function (app, cfg) {
-  var sceneStore = require('../scripts/scene-store');
+  var sceneStore = require('../scripts/runtime/scene-store');
 
   var SCENE_SHOWCASE_DIR = cfg.SCENE_SHOWCASE_DIR;
   var MAINTENANCE_BACKUP_DIR = path.join(cfg.RUNTIME_ROOT, 'maintenance-backups');
@@ -36,9 +36,9 @@ module.exports = function (app, cfg) {
 
   function runMaintenanceChecks() {
     var commands = [
-      ['scripts/classify-scene-ratings.js', ['--write']],
-      ['scripts/optimize-scenes.js', ['--write']],
-      ['scripts/validate-scenes.js', []]
+      ['scripts/maintenance/classify-scene-ratings.js', ['--write']],
+      ['scripts/maintenance/optimize-scenes.js', ['--write']],
+      ['scripts/maintenance/validate-scenes.js', []]
     ];
     for (var i = 0; i < commands.length; i += 1) {
       var result = cp.spawnSync(process.execPath, [commands[i][0]].concat(commands[i][1]), {

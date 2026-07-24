@@ -3,7 +3,7 @@
 var fs = require('fs');
 var path = require('path');
 var crypto = require('crypto');
-var runtimeTools = require('../scripts/runtime-paths');
+var runtimeTools = require('../scripts/runtime/runtime-paths');
 
 function readJson(file) {
   try {

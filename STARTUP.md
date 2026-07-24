@@ -91,7 +91,7 @@ node server.js
 当前姿势模型为 `xinsir_openpose_sdxl_1.0.safetensors`。逐场景姿势图如需重建，请先启动 WebUI，再执行：
 
 ```powershell
-python scripts/generate-dual-pose-assets.py
+python scripts/maintenance/generate-dual-pose-assets.py
 ```
 
 若扩展或模型暂时不可用，网站会按实际检测到的能力自动降级，普通出图仍可继续。
@@ -218,9 +218,9 @@ node server.js
 - `data/characters.json`：角色设定
 - `data/tags.json`：统一标签
 - `data/loras.json`：LoRA 配置
-- `scripts/validate-scenes.js`：场景一致性校验
-- `scripts/optimize-scenes.js`：规范标签、镜头、负面词与未解析占位符
-- `scripts/clean-scenes.js`：批量清洗脚本，运行前会创建备份
+- `scripts/maintenance/validate-scenes.js`：场景一致性校验
+- `scripts/maintenance/optimize-scenes.js`：规范标签、镜头、负面词与未解析占位符
+- `scripts/maintenance/clean-scenes.js`：批量清洗脚本，运行前会创建备份
 
 日常增删场景或替换样张，请进入网站的“更多 → 场景管理”。点击“保存到项目”时会自动创建备份并执行完整检查，不需要手动运行命令。
 

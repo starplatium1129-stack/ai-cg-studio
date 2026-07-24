@@ -18,7 +18,7 @@ if not exist "node_modules" (
 )
 
 :: Start the managed Stability Matrix reForge instance with its saved API arguments
-set "WEBUI_SCRIPT=%~dp0scripts\managed-webui.ps1"
+set "WEBUI_SCRIPT=%~dp0scripts\runtime\managed-webui.ps1"
 if exist "%WEBUI_SCRIPT%" (
     echo  Checking managed SD WebUI...
     powershell -NoProfile -ExecutionPolicy Bypass -File "%WEBUI_SCRIPT%" -Action Start

@@ -6,7 +6,7 @@ var cp = require('child_process');
 var path = require('path');
 var fs = require('fs');
 var crypto = require('crypto');
-var runtimeTools = require('../scripts/runtime-paths');
+var runtimeTools = require('../scripts/runtime/runtime-paths');
 
 var app = express();
 app.disable('x-powered-by');

@@ -77,7 +77,7 @@ Open `http://127.0.0.1:8090/`. A plain static server does not provide the `/sdap
 ├── data/                   # Scene, character, tag, and preset data
 ├── css/                    # Shared design system
 ├── docs/                   # Creative standards, quality checks, and maintenance notes
-├── scripts/                # Validation and maintenance scripts
+├── scripts/                # Runtime helpers, maintenance, tests, and archived workflows
 └── runtime/                # Local config, logs, process state, and generated outputs
 ```
 

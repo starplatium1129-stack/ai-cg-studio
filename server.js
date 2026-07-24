@@ -115,7 +115,7 @@ function createGateway(options) {
       return;
     }
     console.log('  🌪 Starting Cloudflare Tunnel...');
-    var runtimeTools = require('./scripts/runtime-paths');
+    var runtimeTools = require('./scripts/runtime/runtime-paths');
     runtimeTools.rotateLog(config.RUNTIME.tunnelLog, 2 * 1024 * 1024);
     var logFd = fs.openSync(config.RUNTIME.tunnelLog, 'w');
     tunnelProcess = cp.spawn(config.CLOUDFLARED_PATH, [
