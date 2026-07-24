@@ -566,6 +566,7 @@ function switchTab(tab) {
   document.getElementById('tab-tags').style.display = tab === 'tags' ? '' : 'none';
   document.getElementById('tab-guide').style.display = tab === 'guide' ? '' : 'none';
   if (tab === 'images') renderImages();
+  if (tab === 'tags') renderTags();
 }
 
 // Image management
