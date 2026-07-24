@@ -23,10 +23,16 @@ var OLLAMA_MODEL = process.env.OLLAMA_MODEL || runtimeConfig.ollamaModel || '';
 var VOICE_PROFILES = runtimeConfig.voices && typeof runtimeConfig.voices === 'object' ? runtimeConfig.voices : {};
 var TRANSLATION_PYTHON = process.env.TRANSLATION_PYTHON || path.resolve(__dirname, '..', 'AI', 'GPT-SoVITS-env', 'python.exe');
 var TRANSLATION_SCRIPT = path.join(__dirname, 'tools', 'translate-zh-ja.py');
+var TRANSLATE_PORT = Number(process.env.TRANSLATE_PORT) || 5310;
+var TRANSLATE_URL = 'http://127.0.0.1:' + TRANSLATE_PORT;
+var OLLAMA_KEEP_ALIVE = process.env.OLLAMA_KEEP_ALIVE || '10m';
 var activeGPTWeights = '';
 var activeSoVITSWeights = '';
 var voiceQueue = Promise.resolve();
 var translationQueue = Promise.resolve();
+var translateChild = null;
+var translateStarting = null;
+var translateServerReady = false;
 var SD_API_AUTH = process.env.SD_API_AUTH || '';
 var DISABLE_TUNNEL = process.env.DISABLE_TUNNEL === '1';
 var TOKEN = process.env.TOKEN || crypto.randomBytes(8).toString('hex');
@@ -439,6 +445,7 @@ app.post('/api/chat', express.json({ limit:'64kb' }), function(req, res) {
         messages:[{ role:'system', content:chatCharacterPrompt(character) }].concat(messages),
         stream:true,
         think:false,
+        keep_alive:OLLAMA_KEEP_ALIVE,
         options:{ temperature:0.82, top_p:0.9, repeat_penalty:1.08, num_predict:180 }
       }
     }).then(function(result){ return { result:result, model:model }; });
@@ -492,7 +499,126 @@ app.post('/api/chat', express.json({ limit:'64kb' }), function(req, res) {
   });
 });
 
-function translateChineseToJapanese(text) {
+// ─── 常驻翻译服务管理 ───
+// 旧实现每句翻译都 spawn 一个 Python 进程重新加载 m2m100 模型（CPU 上 5-30 秒），
+// 现在改为按需拉起常驻 HTTP 服务，模型只加载一次，后续翻译毫秒级返回。
+// 常驻服务启动失败时回退到旧的单次 spawn 模式，保证功能不缺失。
+
+function pingTranslateServer(timeout) {
+  return new Promise(function(resolve) {
+    try {
+      var request = require('http').get(TRANSLATE_URL + '/health', function(response) {
+        response.resume();
+        resolve(response.statusCode === 200);
+      });
+      request.setTimeout(timeout || 800, function() { request.destroy(); resolve(false); });
+      request.on('error', function() { resolve(false); });
+    } catch (error) { resolve(false); }
+  });
+}
+
+function requestTranslateHttp(text, timeout) {
+  return new Promise(function(resolve, reject) {
+    try {
+      var payload = JSON.stringify({ text: text });
+      var target = new URL(TRANSLATE_URL + '/translate');
+      var request = require('http').request(target, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) }
+      }, function(response) {
+        var chunks = [];
+        response.on('data', function(chunk) { chunks.push(chunk); });
+        response.on('end', function() {
+          var body = Buffer.concat(chunks).toString('utf8');
+          try {
+            var data = JSON.parse(body);
+            if (response.statusCode === 200 && data && data.translation) return resolve(data);
+            reject(new Error(data && data.error || '翻译服务返回 ' + response.statusCode));
+          } catch (error) { reject(new Error('翻译服务返回了无效数据')); }
+        });
+        response.on('error', reject);
+      });
+      request.setTimeout(timeout || 120000, function() { request.destroy(new Error('翻译请求超时')); });
+      request.on('error', reject);
+      request.end(payload);
+    } catch (error) { reject(error); }
+  });
+}
+
+function startTranslateServer() {
+  return new Promise(function(resolve, reject) {
+    if (!fs.existsSync(TRANSLATION_PYTHON) || !fs.existsSync(TRANSLATION_SCRIPT)) {
+      reject(new Error('本地日语翻译组件尚未安装。'));
+      return;
+    }
+    var logFd;
+    try {
+      runtimeTools.rotateLog(path.join(RUNTIME.logs, 'translate.log'), 2 * 1024 * 1024);
+      logFd = fs.openSync(path.join(RUNTIME.logs, 'translate.log'), 'a');
+    } catch (error) { logFd = 'ignore'; }
+    var child;
+    try {
+      child = cp.spawn(TRANSLATION_PYTHON, [TRANSLATION_SCRIPT, '--serve', '--port', String(TRANSLATE_PORT)], {
+        windowsHide: true,
+        env: Object.assign({}, process.env, { PYTHONUTF8: '1', AICS_TRANSLATE_PORT: String(TRANSLATE_PORT) }),
+        stdio: ['ignore', logFd, logFd]
+      });
+    } catch (error) {
+      if (logFd !== 'ignore') fs.closeSync(logFd);
+      reject(error);
+      return;
+    }
+    if (logFd !== 'ignore') fs.closeSync(logFd);
+    translateChild = child;
+    child.on('exit', function() {
+      translateServerReady = false;
+      translateChild = null;
+      translateStarting = null;
+    });
+    child.on('error', function() {
+      translateServerReady = false;
+    });
+    // 模型首次加载需要数十秒，轮询健康检查直到就绪
+    var tries = 0;
+    var poll = setInterval(function() {
+      tries += 1;
+      pingTranslateServer(1000).then(function(up) {
+        if (up) {
+          clearInterval(poll);
+          translateServerReady = true;
+          console.log('  🌐 中日翻译常驻服务已就绪 (port ' + TRANSLATE_PORT + ')');
+          resolve(true);
+        } else if (tries > 120 || !translateChild) {
+          clearInterval(poll);
+          reject(new Error('翻译常驻服务启动超时'));
+        }
+      });
+    }, 1000);
+  });
+}
+
+function ensureTranslateServer() {
+  if (translateServerReady && translateChild) return Promise.resolve(true);
+  if (translateStarting) return translateStarting;
+  translateStarting = pingTranslateServer(800).then(function(up) {
+    if (up) {
+      translateServerReady = true;
+      translateStarting = null;
+      return true;
+    }
+    return startTranslateServer().then(function() {
+      translateStarting = null;
+      return true;
+    });
+  }).catch(function(error) {
+    translateStarting = null;
+    throw error;
+  });
+  return translateStarting;
+}
+
+// 旧的单次 spawn 模式：仅在常驻服务不可用时兜底
+function legacyTranslateChineseToJapanese(text) {
   return new Promise(function(resolve, reject) {
     if (!fs.existsSync(TRANSLATION_PYTHON) || !fs.existsSync(TRANSLATION_SCRIPT)) {
       reject(new Error('本地日语翻译组件尚未安装。'));
@@ -531,6 +657,22 @@ function translateChineseToJapanese(text) {
     child.stdin.end(JSON.stringify({ text: text }));
   });
 }
+
+function translateChineseToJapanese(text) {
+  return ensureTranslateServer().then(function() {
+    return requestTranslateHttp(text, 120000);
+  }).catch(function(serverError) {
+    // 常驻服务失败时回退到单次 spawn，保证翻译能力不中断
+    translateServerReady = false;
+    return legacyTranslateChineseToJapanese(text).catch(function() {
+      throw serverError;
+    });
+  });
+}
+
+process.on('exit', function() {
+  if (translateChild) { try { translateChild.kill(); } catch (error) {} }
+});
 
 app.post('/api/translate', express.json({ limit:'32kb' }), function(req, res) {
   var text = String(req.body && req.body.text || '').trim();
