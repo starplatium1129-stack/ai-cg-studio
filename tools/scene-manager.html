@@ -460,6 +460,7 @@ async function init() {
 
   renderStats();
   renderScenes();
+  renderImages();
 }
 
 function renderStats() {
@@ -569,6 +570,10 @@ function switchTab(tab) {
 
 // Image management
 function renderImages() {
+  if (!SCENES || !SCENES.length) {
+    document.getElementById('imageGrid').innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:var(--s-7);color:var(--text-muted)">⏳ 正在加载场景数据…</div>';
+    return;
+  }
   const search = (document.getElementById('imageSearch')?.value || '').toLowerCase();
   const filtered = SCENES.filter(s => {
     if (!search) return true;
