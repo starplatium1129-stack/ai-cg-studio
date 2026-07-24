@@ -167,7 +167,23 @@ app.use(function (req, res, next) {
   res.setHeader('X-Frame-Options', 'DENY');
   res.setHeader('Referrer-Policy', 'no-referrer');
   res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
-  res.setHeader('Content-Security-Policy', "default-src 'self'; img-src 'self' data: blob: https:; media-src 'self' data: blob:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self' data: blob: https:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'");
+
+  // Live2D (PixiJS) requires unsafe-eval for shader compilation
+  // Only relax CSP for chat page to minimize security impact
+  if (req.path === '/tools/chat.html' || req.path === '/tools/chat') {
+    res.setHeader('Content-Security-Policy',
+      "default-src 'self'; img-src 'self' data: blob: https:; media-src 'self' data: blob:; " +
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; " +
+      "connect-src 'self' data: blob: https:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"
+    );
+  } else {
+    res.setHeader('Content-Security-Policy',
+      "default-src 'self'; img-src 'self' data: blob: https:; media-src 'self' data: blob:; " +
+      "script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; " +
+      "connect-src 'self' data: blob: https:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"
+    );
+  }
+
   next();
 });
 
@@ -357,6 +373,17 @@ app.get('/api/chat-status', function(req, res) {
   }).catch(function(error) {
     res.setHeader('Cache-Control', 'no-store');
     res.json({ online:false, model:'', models:[], error:error.message });
+  });
+});
+
+app.get('/api/live2d-status', function(req, res) {
+  var modelPath = path.join(__dirname, 'assets', 'live2d', 'nene', 'nene.model3.json');
+  var available = fs.existsSync(modelPath);
+  res.setHeader('Cache-Control', 'no-store');
+  res.json({
+    available: available,
+    modelUrl: available ? '/assets/live2d/nene/nene.model3.json' : '',
+    source: available ? 'project-local' : 'missing'
   });
 });
 
@@ -636,6 +663,17 @@ app.use('/scene-showcase', function (req, res, next) {
 app.use('/docs', express.static(path.join(__dirname, 'docs'), { dotfiles: 'deny' }));
 app.use('/tools', function (req, res, next) {
   if (req.path === '/control-server.js') return res.status(404).end();
+
+  // Live2D (PixiJS) requires unsafe-eval for shader compilation
+  // Only relax CSP for chat page to minimize security impact
+  if (req.path === '/chat.html' || req.path === '/chat') {
+    res.setHeader('Content-Security-Policy',
+      "default-src 'self'; img-src 'self' data: blob: https:; media-src 'self' data: blob:; " +
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; " +
+      "connect-src 'self' data: blob: https:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"
+    );
+  }
+
   next();
 }, express.static(path.join(__dirname, 'tools'), { dotfiles: 'deny' }));
 

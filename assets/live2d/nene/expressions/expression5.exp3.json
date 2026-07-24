@@ -1,0 +1,140 @@
+{
+	"Type": "Live2D Expression",
+	"Parameters": [
+		{
+			"Id": "ParamCheek45",
+			"Value": -1,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamCheek46",
+			"Value": -1,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamCheek34",
+			"Value": -1,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamCheek57",
+			"Value": -1,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamCheek33",
+			"Value": 0,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamCheek29",
+			"Value": 0,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamCheek39",
+			"Value": 0,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamCheek38",
+			"Value": 0,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamCheek30",
+			"Value": 0,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamCheek31",
+			"Value": 0,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamCheek48",
+			"Value": 0,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamCheek52",
+			"Value": 0,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamCheek54",
+			"Value": 0,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamCheek36",
+			"Value": 0,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamCheek51",
+			"Value": 0,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamCheek59",
+			"Value": 0,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamCheek56",
+			"Value": 0,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamCheek61",
+			"Value": 0,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamCheek50",
+			"Value": 1,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamCheek62",
+			"Value": 0,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamCheek60",
+			"Value": 1,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamCheek53",
+			"Value": 1,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamCheek55",
+			"Value": 1,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamCheek58",
+			"Value": 1,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamCheek25",
+			"Value": 1,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamCheek49",
+			"Value": 0,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamCheek32",
+			"Value": 0,
+			"Blend": "Add"
+		}
+	]
+}
