@@ -10,18 +10,17 @@
      opt.meta      覆盖底部 meta(默认 scene.category + weather)
      opt.beforeActions(scene)  钩子:返回 html 字符串注入 .sc-body
      opt.bandExtra   注入图区角标 html(如 tier 徽标)
-     opt.imgVersion  缩略图缓存版本(优先级高于全局 AICS_THUMB_VERSION)
+     opt.imgVersion  缩略图缓存版本(优先级高于自动版本)
     预览图:网关提供 /scene-showcase/thumbs/{id}.jpg(逐场景审核样张),
     加载失败时自动回退分类渐变;R18 预览默认模糊,悬停/聚焦后清晰。
-    换样张后见 AICS_THUMB_VERSION 注释。
+    缓存版本由页面加载时间自动生成,替换样张后刷新页面即取新图。
    ============================================================ */
 (function () {
   'use strict';
   if (window.createSceneCard) return;
 
-  // 样张替换后请 +1 此版本号,确保浏览器取新图而非缓存。
-  // 也可在 scene-card.js 加载前设置 window.AICS_THUMB_VERSION 覆盖。
-  window.AICS_THUMB_VERSION = window.AICS_THUMB_VERSION || '1';
+  // 自动缓存版本:样张替换后刷新页面即取新图,无需手动改号
+  window.AICS_THUMB_VERSION = Date.now();
 
   function esc(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 

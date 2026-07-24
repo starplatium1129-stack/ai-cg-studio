@@ -467,6 +467,7 @@ function renderScenes() {
   const countEl = document.getElementById('sceneResultCount');
   const analysis = AICSceneUX.analyzeQuery(q, CURATION_DATA);
   if (countEl) countEl.innerHTML = (curatedOnly ? '精选 <strong>' : '找到 <strong>') + matches.length + '</strong> 个场景' + (q && SCENE_LIBRARY_MODE === 'curated' ? ' · 搜索已覆盖全库' : '') + (analysis.intents.length ? ' · 已理解：' + analysis.intents.map(escapeHtml).join('、') : '') + (PERSONAL_PROFILE.entries ? ' · 已结合 ' + PERSONAL_PROFILE.entries + ' 条本机记录' : '');
+  var _thumbCacheV = window.AICS_THUMB_VERSION || Date.now();
   matches.slice(0, BUILDER_SCENE_LIMIT).forEach(({s, idx}) => {
     const card = document.createElement('article'); card.className = 'scene-card'; card.dataset.idx = idx; card.dataset.category = s.category || '日常'; card.dataset.rating = s.rating || (s.mature ? 'R18' : 'All');
     const selectBtn = document.createElement('button'); selectBtn.className = 'scene-card-main'; selectBtn.type = 'button';
@@ -477,7 +478,7 @@ function renderScenes() {
     const personalNote = AICSceneUX.personalReason(s, PERSONAL_PROFILE);
     const thumbId = String(s.id || '').toLowerCase().replace(/[^a-z0-9_-]/g, '');
     const contentRating = s.rating || (s.mature ? 'R18' : 'All');
-    const cacheStr = (window.AICS_THUMB_VERSION || '') ? '?v=' + encodeURIComponent(String(window.AICS_THUMB_VERSION)) : '';
+    const cacheStr = '?v=' + _thumbCacheV;
     selectBtn.innerHTML = `
       ${thumbId ? `<img class="scene-thumb${contentRating === 'R18' ? ' r18' : ''}" src="/scene-showcase/thumbs/${thumbId}.jpg${cacheStr}" alt="" loading="lazy" decoding="async" onerror="this.remove()">` : ''}
       <span class="scene-text">
