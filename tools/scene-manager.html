@@ -502,7 +502,7 @@ function renderScenes() {
     if (char && s.char !== char) return false;
     if (rating && s.rating !== rating) return false;
     if (search) {
-      const haystack = [s.title, s.story, s.category, s.char, ...(s.tags || [])].join(' ').toLowerCase();
+      const haystack = [s.id, s.title, s.story, s.category, s.char, ...(s.tags || [])].join(' ').toLowerCase();
       if (!haystack.includes(search)) return false;
     }
     return true;

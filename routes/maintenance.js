@@ -98,6 +98,21 @@ module.exports = function (app, cfg) {
       fs.mkdirSync(imageDir, { recursive:true }); fs.mkdirSync(thumbDir, { recursive:true });
       fs.writeFileSync(path.join(imageDir, id + ext), buffer);
       fs.writeFileSync(path.join(thumbDir, id + ext), buffer);
+      try {
+        var manifestPath = path.join(SCENE_SHOWCASE_DIR, 'manifest.json');
+        if (fs.existsSync(manifestPath)) {
+          var manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+          var scenes = sceneStore.loadSceneShards().scenes;
+          var scene = scenes.find(function(s) { return s.id === id; });
+          if (scene) {
+            var idx = manifest.entries ? manifest.entries.findIndex(function(e) { return e.id === id; }) : -1;
+            var entry = { id:scene.id, title:scene.title, category:scene.category, story:scene.story, char:scene.char, rating:scene.rating, attempt:1, image:'images/' + id + ext, thumb:'thumbs/' + id + ext };
+            if (idx >= 0) { manifest.entries[idx] = entry; }
+            else { if (!manifest.entries) manifest.entries = []; manifest.entries.push(entry); manifest.sceneCount = manifest.entries.length; }
+            fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + '\n', 'utf8');
+          }
+        }
+      } catch (manifestError) { console.error('manifest update failed:', manifestError.message); }
       res.json({ ok:true, file:'images/' + id + ext, message:'样张与缩略图已保存，刷新页面即可看到新版本' });
     } catch (error) { res.status(400).json({ ok:false, error:error.message }); }
   });
