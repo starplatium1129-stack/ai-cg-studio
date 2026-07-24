@@ -602,8 +602,7 @@
   .sd-inline-options .select-wrap { position:relative; display:inline-flex; }
   .sd-inline-options .select-wrap::after { content:'▾'; position:absolute; right:8px; top:50%; transform:translateY(-50%); color:var(--text-muted); font-size:.6rem; pointer-events:none; }
   .sd-inline-options select { max-width:220px; min-width:140px; padding:8px 26px 8px 12px; border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-deep); color:var(--text-primary); font-size:.85rem; cursor:pointer; outline:none; -webkit-appearance:none; appearance:none; }
-  .sd-inline-options .hires-label { display:flex; align-items:center; gap:6px; cursor:pointer; color:var(--text-secondary); font-size:.82rem; }
-  .sd-inline-options .hires-label input { accent-color:var(--accent); width:15px; height:15px; cursor:pointer; }
+  .sd-inline-options .hires-label { display:flex; align-items:center; gap:6px; cursor:pointer; color:var(--text-secondary); font-size:.82rem; white-space:nowrap; }
   .sd-inline-options select:focus { border-color:var(--accent); }
   .sd-advanced-options { position:relative; }
   .sd-advanced-options > summary { display:inline-flex; align-items:center; gap:6px; min-height:32px; padding:4px 10px; border:1px solid var(--border-soft); border-radius:999px; background:color-mix(in srgb,var(--bg-surface) 82%,transparent); color:var(--text-secondary); cursor:pointer; font-size:.76rem; font-weight:650; list-style:none; transition:border-color var(--t-fast),color var(--t-fast),background var(--t-fast); }
@@ -970,9 +969,7 @@
             </select></span>
           </label>
           <span class="scene-size-hint" id="sceneSizeHint" hidden></span>
-          <label class="hires-label">
-            <input type="checkbox" id="sdHiresFix"> hires.fix
-          </label>
+          <label class="hires-label"><span class="switch"><input type="checkbox" id="sdHiresFix"><span class="slider"></span></span> hires.fix</label>
           <details class="sd-advanced-options">
             <summary>高级设置</summary>
             <div class="sd-advanced-grid">
