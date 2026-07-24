@@ -48,7 +48,8 @@
   .conversation-card { display:flex; flex-direction:column; overflow:hidden; }
   .conversation-head { display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); padding:var(--s-3) var(--s-4); border-bottom:1px solid var(--border-soft); }
   .conversation-head strong { font-size:.88rem; }
-  .conversation-meta { color:var(--text-muted); font-size:.7rem; }
+  .conversation-meta { color:var(--text-muted); font-size:.7rem; display:flex; align-items:center; gap:6px; }
+  .conversation-meta select { max-width:180px; }
   .chat-list { flex:1; min-height:0; overflow:auto; padding:var(--s-4); display:flex; flex-direction:column; gap:var(--s-3); background:linear-gradient(180deg,color-mix(in srgb,var(--bg-deep) 28%,transparent),transparent 32%); }
   .chat-empty { margin:auto; max-width:360px; text-align:center; color:var(--text-muted); font-size:.82rem; line-height:1.7; }
   .chat-empty .icon { font-size:2rem; margin-bottom:var(--s-2); }
@@ -115,7 +116,7 @@
       </div>
     </aside>
     <section class="conversation-card">
-      <div class="conversation-head"><strong id="conversationTitle">和宁宁的房间</strong><span class="conversation-meta" id="modelLabel">Ollama 检测中</span></div>
+      <div class="conversation-head"><strong id="conversationTitle">和宁宁的房间</strong><span class="conversation-meta"><select id="modelSelect" aria-label="选择聊天模型" style="background:transparent;border:1px solid var(--border-soft);border-radius:var(--r-sm);color:var(--text-muted);font:inherit;font-size:.7rem;padding:2px 6px;cursor:pointer;max-width:200px" onchange="setModel(this.value)"></select></span></div>
       <div class="chat-list" id="chatList"><div class="chat-empty"><div class="icon">☕</div><div>输入一句话，开始和角色聊天。<br>第一次回复前，Ollama 可能需要一点加载时间。</div></div></div>
       <div class="chat-composer">
         <div class="composer-row"><textarea class="chat-input" id="chatInput" rows="2" maxlength="1200" placeholder="对她说点什么…" aria-label="聊天输入"></textarea><button class="btn btn-primary send-btn" id="sendBtn" type="button">发送</button></div>
@@ -139,7 +140,7 @@
   };
   // Live2D 表情映射（可按模型实际表情调整：expression1-5 对应 model3.json 中的顺序）
   var LIVE2D_EXPRESSIONS = { neutral:'expression1', gentle:'expression1', happy:'expression2', shy:'expression3', sad:'expression4', serious:'expression5' };
-  var STORAGE_KEY='aics_chat_v1', active='nene', histories={}, model='', busy=false, ollamaOnline=false, blinkTimer=0, msgSeq=0;
+  var STORAGE_KEY='aics_chat_v1', active='nene', histories={}, model='', modelsList=[], busy=false, ollamaOnline=false, blinkTimer=0, msgSeq=0;
   var live2dApp=null, live2dModel=null, live2dReady=false, live2dUrl='';
   // ─── 语音流水线状态 ───
   var voiceSession=0;        // 会话令牌：换轮/换角色/清空时作废旧流水线
@@ -159,6 +160,34 @@
   function current(){return Array.isArray(histories[active])?histories[active]:[];}
   function setStatus(text,kind){$('chatStatus').textContent=text;$('statusDot').className='status-dot'+(kind?' '+kind:'');}
   function setVoiceStatus(text){$('voiceStatus').textContent=text||'';}
+  function setModel(name){
+    model=name;
+    try{localStorage.setItem('aics_chat_model',name);}catch(e){}
+    var sel=$('modelSelect');
+    if(sel)sel.value=name||'';
+  }
+  function populateModelSelect(data){
+    var sel=$('modelSelect');
+    if(!sel)return;
+    var saved='';try{saved=localStorage.getItem('aics_chat_model')||'';}catch(e){}
+    sel.innerHTML='';
+    if(!data.online||!Array.isArray(data.models)||!data.models.length){
+      sel.innerHTML='<option value="">Ollama 未连接</option>';
+      return;
+    }
+    data.models.forEach(function(m){
+      var opt=document.createElement('option');
+      opt.value=m.name;opt.textContent=m.name;
+      sel.appendChild(opt);
+    });
+    // 优先用上次选的，其次用 preferredOllamaModel 推荐，最后用第一个
+    var preferred=saved||data.model||(data.models[0]&&data.models[0].name)||'';
+    if(preferred&&data.models.some(function(m){return m.name===preferred;})){
+      setModel(preferred);
+    }else if(data.models.length){
+      setModel(data.models[0].name);
+    }
+  }
 
   // ─── Live2D ───
   function setLive2dVisible(value){$('portraitStage').classList.toggle('live2d-ready',Boolean(value&&live2dReady&&active==='nene'));}
@@ -454,7 +483,7 @@
   function parseStream(response,onToken){
     if(!response.ok)return response.text().then(function(text){var error;try{error=JSON.parse(text).error;}catch(e){}throw new Error(error||'聊天请求失败');});
     var reader=response.body.getReader(),decoder=new TextDecoder(),buffer='';
-    function read(){return reader.read().then(function(result){buffer+=decoder.decode(result.value||new Uint8Array(),{stream:!result.done});var lines=buffer.split('\n');buffer=lines.pop();lines.forEach(function(line){if(!line.trim())return;try{var item=JSON.parse(line);if(item.type==='meta'){model=item.model;$('modelLabel').textContent=item.model||'Ollama';}if(item.type==='token')onToken(item.content||'');if(item.type==='error')throw new Error(item.error);}catch(error){if(error&&error.message)throw error;}});return result.done?buffer:read();});}
+    function read(){return reader.read().then(function(result){buffer+=decoder.decode(result.value||new Uint8Array(),{stream:!result.done});var lines=buffer.split('\n');buffer=lines.pop();lines.forEach(function(line){if(!line.trim())return;try{var item=JSON.parse(line);if(item.type==='meta'){setModel(item.model||'');}if(item.type==='token')onToken(item.content||'');if(item.type==='error')throw new Error(item.error);}catch(error){if(error&&error.message)throw error;}});return result.done?buffer:read();});}
     return read();
   }
   function inferEmotion(text){if(/害羞|脸红|不好意思|才不是|笨蛋/.test(text))return'shy';if(/开心|高兴|太好了|哈哈|笑/.test(text))return'happy';if(/难过|寂寞|想念|对不起/.test(text))return'sad';if(/认真|必须|小心|危险/.test(text))return'serious';if(/温柔|谢谢|陪着|安心/.test(text))return'gentle';return'neutral';}
@@ -534,7 +563,11 @@
   $('newChatBtn').addEventListener('click',function(){if(busy)return;if(!current().length)return;resetVoice();clearMsgAudios();histories[active]=[];save();renderMessages();});
   $('clearChatBtn').addEventListener('click',function(){if(busy)return;if(!current().length)return;if(confirm('清除和'+CHARACTERS[active].name+'的本地对话记忆？')){resetVoice();clearMsgAudios();histories[active]=[];save();renderMessages();}});
   load();renderCharacter();renderMessages();scheduleBlink();initLive2d();
-  fetch('../api/chat-status').then(function(r){return r.json();}).then(function(data){if(data.online&&data.model){ollamaOnline=true;model=data.model;$('modelLabel').textContent=data.model;setStatus('本地聊天模型已连接','online');}else{ollamaOnline=false;setStatus('Ollama 未启动','');$('modelLabel').textContent='等待 Ollama';}}).catch(function(){ollamaOnline=false;setStatus('Ollama 未启动','');});
+  fetch('../api/chat-status').then(function(r){return r.json();}).then(function(data){
+    ollamaOnline=!!(data.online&&data.models&&data.models.length);
+    populateModelSelect(data);
+    setStatus(ollamaOnline?'本地聊天模型已连接':'Ollama 未启动',ollamaOnline?'online':'');
+  }).catch(function(){ollamaOnline=false;populateModelSelect({online:false});setStatus('Ollama 未启动','');});
 })();
 </script>
 </body>
