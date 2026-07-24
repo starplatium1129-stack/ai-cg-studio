@@ -1862,5 +1862,53 @@
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs19-a1.png",
       "result": "pass"
     }
+  },
+  {
+    "id": "sc286",
+    "title": "雨夜归途的温存余烬",
+    "category": "恋爱/After_Story",
+    "story": "【夏目 · 成年 After Story · 雨夜玄关的湿发温存】深夜的暴雨将两人淋得湿透才赶回公寓。夏目的白衬衫湿漉漉地贴在身上，扣子在进门时被焦急的手扯开了几颗，露出内里深色蕾丝的边缘。她甩了甩湿发，水珠溅到你脸上，却根本没有在意——她拽着你的领带将你抵在玄关墙壁上，琥珀色的瞳孔在昏暗灯光下灼热得发烫：「…你以为我会让你先擦干身体？进来就别想走了。」她踮起脚咬住你的下唇，冰冷的手指却滚烫地探进你湿透的衣摆。窗外雷声轰鸣，她的声音在吻的间隙沙哑而决绝——「淋雨着凉了…你得负起责任，今晚不许逃。」",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "lora": "shiki_natsume_v14",
+    "emotion": "热情",
+    "season": "不限",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "tags": [
+      "nude",
+      "adult",
+      "wet_shirt",
+      "see_through",
+      "wet_hair",
+      "drenched",
+      "lace_lingerie",
+      "pinned_against_wall",
+      "pulling_tie",
+      "intense_gaze",
+      "dark_lighting",
+      "entrance_hall",
+      "rain",
+      "night",
+      "passionate",
+      "mole_under_eye",
+      "heavy_blush",
+      "close_up"
+    ],
+    "mature": true,
+    "rating": "R18",
+    "location": "公寓玄关",
+    "weather": "暴雨",
+    "camera": "近景特写",
+    "lighting": "玄关昏暗顶灯与窗外闪电",
+    "usage": [
+      "展示图",
+      "成人向"
+    ],
+    "prompt": "1girl, adult, nude, shiki_natsume, mole_under_eye, wet_shirt, see_through, wet_hair, drenched, lace_lingerie, pinned_against_wall, pulling_tie, intense_gaze, dark_lighting, entrance_hall, rain, night, passionate, heavy_blush, <lora:shiki_natsume_v14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, brassiere, panties, child, loli, underage, school_uniform, gym_uniform",
+    "storyJa": "【夏目・雨の夜の帰り道の温もりの余韻】深夜の大雨で二人はずぶ濡れになってアパートに帰り着いた。夏目の白いブラウスは濡れて体に張り付き、入り口で焦った手でボタンを何個か外され、中には濃い色のレースの縁が見えていた。彼女は濡れた髪を振り払い、水滴があなたの顔にかかったが、まったく気にしなかった。彼女はあなたのネクタイを掴み、玄関の壁に押し付けた。琥珀色の瞳が薄暗い灯りの中で熱く燃えていた。「…まさか先に体を拭かせてくれると思った？入ったらもう帰さないからね。」彼女はつま先立ちであなたの下唇を噛み、冷たい指が濡れた服の裾から熱く差し込まれた。窓の外で雷が轟き、彼女の声はキスの合間に掠れていて、有無を言わせなかった。「雨に濡れて風邪引いたんだから…責任取ってよ。今夜は逃がさないから。」"
   }
 ]
