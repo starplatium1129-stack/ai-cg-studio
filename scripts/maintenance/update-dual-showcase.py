@@ -127,7 +127,7 @@ def main() -> None:
         "2. 00-cover.jpg：适合快速介绍。\n"
         "3. sheets：按全年龄、R15、R18 分开的分页对比图。\n"
         "4. images：最终合格大图；thumbs：网页缩略图。\n\n"
-        "R18 内容在网页中默认隐藏，需要主动点击“显示 R18”。\n",
+        "R18 内容默认模糊显示，可悬停预览或使用 R18 筛选。\n",
         encoding="utf-8",
     )
     print(json.dumps({"showcase": str(showcase), "scenes": len(entries), "dualSelections": SELECTIONS}, ensure_ascii=False, indent=2))

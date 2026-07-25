@@ -11,6 +11,7 @@ const controller = read('tools/showcase.js');
 const nav = read('tools/nav.js');
 const home = read('index.html');
 const server = read('server.js');
+const showcaseBuilder = read('scripts/maintenance/build-scene-showcase.py');
 
 assert(page.includes('data-nav="showcase"'), 'showcase page must activate its navigation item');
 assert(controller.includes("state={entries:[],filtered:[],featured:new Set(),scope:'all',character:'all',rating:'all',visible:"), 'showcase state must keep filters independent from adult-content visibility');
@@ -22,6 +23,8 @@ assert(page.includes('.showcase-grid { columns:') && page.includes('.sample-imag
 assert(page.includes('.sample-r18 .sample-image { filter:blur('), 'R18 thumbnails must be blurred by default');
 assert(controller.includes('sample-r18') && controller.includes('sample-sensitive'), 'R18 cards must render the blur treatment and content label');
 assert(!controller.includes('window.confirm'), 'R18 browsing must not require a confirmation dialog');
+assert(showcaseBuilder.includes('data-rating="R18"') && showcaseBuilder.includes('R18 默认模糊'), 'generated showcase exports must keep the direct blurred R18 experience');
+assert(!showcaseBuilder.includes('R18 默认隐藏') && !showcaseBuilder.includes('显示 R18'), 'generated showcase exports must not restore the old R18 reveal copy');
 assert(nav.includes("id:'showcase'") && nav.includes("href:'tools/showcase.html'"), 'global navigation must expose the showcase');
 assert(home.includes('href="tools/showcase.html"'), 'home page must expose the showcase');
 assert(server.includes("app.use('/scene-showcase'"), 'server must mount showcase assets');

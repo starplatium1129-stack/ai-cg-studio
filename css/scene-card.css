@@ -36,7 +36,7 @@
 }
 .sc-thumb-missing { display: none; }
 .sc:hover .sc-thumb { transform: scale(1.03); }
-/* R18 预览默认模糊,悬停/聚焦揭示(与样张页的主动确认保持一致) */
+/* R18 预览默认模糊，悬停/聚焦即可揭示，与样张页保持一致。 */
 .sc-thumb-r18 { filter: blur(16px) saturate(.85); transform: scale(1.08); }
 .sc:hover .sc-thumb-r18, .sc:focus-within .sc-thumb-r18 { filter: blur(0) saturate(1); transform: scale(1.03); }
 .sc-cat {
