@@ -6,270 +6,143 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>绫季绘境 · 启动控制面板</title>
 <link rel="stylesheet" href="../css/design-system.css?v=8">
+<script src="nav.js?v=6"></script>
+<script src="theme.js?v=5"></script>
 <style>
-  * { box-sizing:border-box; }
-  html { min-width:320px; }
-  body {
-    margin:0;
-    min-height:100vh;
-    color:var(--text-primary);
-    font-family:"Segoe UI","Microsoft YaHei",system-ui,sans-serif;
-    background:var(--bg-base);
-  }
+  .page { max-width:860px; margin:0 auto; padding:var(--s-5) var(--s-4); }
 
-  button, input { font:inherit; }
-  button, a { -webkit-tap-highlight-color:transparent; }
+  h1 { margin:0; }
+  .page-header { border-bottom:none; padding-top:var(--s-4); margin-bottom:var(--s-4); }
 
-  .shell { width:min(820px, calc(100% - 32px)); margin:0 auto; padding:42px 0 52px; }
-  .hero { position:relative; text-align:left; margin-bottom:24px; padding:0 3px; }
-  .eyebrow {
-    display:inline-flex; align-items:center; gap:7px;
-    color:var(--text-muted); font-size:.72rem; letter-spacing:.08em;
-    text-transform:uppercase; margin-bottom:9px;
-  }
-  .eyebrow-dot {
-    width:7px; height:7px; border-radius:50%;
-    background:var(--accent);
-    box-shadow:0 0 0 4px var(--accent-soft);
-  }
-  h1 {
-    margin:0; font-size:clamp(1.65rem,5vw,2.15rem); line-height:1.2;
-    background:linear-gradient(135deg,var(--text-primary) 45%,var(--accent));
-    -webkit-background-clip:text; background-clip:text; color:transparent;
-  }
-  .subtitle { margin:10px 0 0; color:var(--text-secondary); font-size:.9rem; line-height:1.6; }
-  .theme-toggle {
-    position:absolute; top:0; right:0; width:36px; height:36px; display:grid; place-items:center;
-    border:1px solid var(--border-strong); border-radius:10px; background:var(--bg-surface);
-    color:var(--text-secondary); cursor:pointer; box-shadow:0 1px 3px rgba(0,0,0,.06);
-    transition:border-color .18s,color .18s,background .18s;
-  }
-  .theme-toggle:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
-
-  .status-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin-bottom:14px; }
-  .status-card {
-    min-width:0; padding:15px 16px; border:1px solid var(--border-soft);
-    border-radius:12px; background:var(--bg-surface); box-shadow:0 1px 3px rgba(0,0,0,.05);
-  }
+  /* Status badges */
+  .status-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:var(--s-3); margin-bottom:var(--s-4); }
+  .status-card { background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-lg); padding:var(--s-3) var(--s-4); }
   .status-card.primary { border-color:color-mix(in srgb,var(--accent) 24%,var(--border-soft)); }
-  .status-label { color:var(--text-muted); font-size:.72rem; margin-bottom:8px; }
-  .badge {
-    display:inline-flex; align-items:center; gap:8px;
-    font-size:.84rem; font-weight:650; line-height:1.2;
-  }
-  .badge .dot { width:8px; height:8px; border-radius:50%; flex:0 0 auto; }
+  .status-label { color:var(--text-muted); font-size:.72rem; margin-bottom:6px; }
+  .badge { display:inline-flex; align-items:center; gap:8px; font-size:.84rem; font-weight:650; line-height:1.2; }
+  .badge .dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
   .badge.running { color:var(--success); }
-  .badge.running .dot { background:var(--success); box-shadow:0 0 0 5px color-mix(in srgb, var(--success) 10%, transparent); animation:pulse 1.8s infinite; }
+  .badge.running .dot { background:var(--success); box-shadow:0 0 0 5px color-mix(in srgb,var(--success) 12%,transparent); animation:pulse 1.8s infinite; }
   .badge.stopped { color:var(--text-secondary); }
   .badge.stopped .dot { background:var(--text-muted); }
   .badge.online { color:var(--info); }
-  .badge.online .dot { background:var(--info); box-shadow:0 0 0 5px color-mix(in srgb, var(--info) 9%, transparent); }
+  .badge.online .dot { background:var(--info); box-shadow:0 0 0 5px color-mix(in srgb,var(--info) 10%,transparent); }
   .badge.offline { color:var(--warning); }
   .badge.offline .dot { background:var(--warning); }
   @keyframes pulse { 50% { opacity:.48; } }
 
-  .panel {
-    background:var(--bg-surface); border:1px solid var(--border-strong);
-    border-radius:16px; padding:24px; margin-bottom:14px; box-shadow:var(--shadow-md);
-  }
-  .panel.secondary { box-shadow:none; }
-  .step-head { display:flex; gap:12px; align-items:flex-start; margin-bottom:19px; }
-  .step-num {
-    flex:0 0 auto; width:30px; height:30px; display:grid; place-items:center;
-    border-radius:8px; color:var(--accent); background:var(--accent-soft);
-    border:1px solid color-mix(in srgb, var(--accent) 25%, transparent); font-size:.75rem; font-weight:700;
-  }
-  .step-copy { min-width:0; }
-  .step-title { font-size:1rem; font-weight:700; margin:1px 0 4px; }
-  .step-desc { color:var(--text-muted); font-size:.78rem; line-height:1.55; }
+  /* Mode cards */
+  .mode-grid { display:grid; grid-template-columns:1fr 1fr; gap:var(--s-2); margin-bottom:var(--s-3); }
+  .mode-card { text-align:left; cursor:pointer; padding:var(--s-3); border:2px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-deep); color:var(--text-primary); transition:all var(--t-fast); }
+  .mode-card:hover { border-color:var(--accent); background:var(--accent-soft); }
+  .mode-card:active { transform:scale(.98); }
+  .mode-card:disabled { opacity:.5; cursor:not-allowed; transform:none; }
+  .mode-card-title { display:flex; align-items:center; gap:7px; font-size:.88rem; font-weight:700; margin-bottom:4px; }
+  .mode-card-desc { color:var(--text-muted); font-size:.7rem; line-height:1.5; }
 
-  .config-label { display:block; color:var(--text-secondary); font-size:.78rem; margin-bottom:7px; }
-  .config-row { display:flex; gap:9px; }
-  .config-input {
-    min-width:0; flex:1; height:43px; padding:0 13px;
-    color:var(--text-primary); background:var(--bg-deep);
-    border:1px solid var(--border-strong); border-radius:8px;
-    font:.83rem "Cascadia Code","Fira Code",monospace; outline:none;
-    transition:border-color .18s, box-shadow .18s;
-  }
+  /* Service rows */
+  .service-rows { display:flex; flex-direction:column; gap:var(--s-2); margin-bottom:var(--s-3); }
+  .service-row { display:flex; align-items:center; justify-content:space-between; gap:var(--s-2); padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-deep); }
+  .service-row-name { display:flex; align-items:center; gap:8px; font-size:.78rem; font-weight:650; }
+  .service-row-name .dot { width:7px; height:7px; border-radius:50%; background:var(--text-muted); flex-shrink:0; }
+  .service-row-name .dot.on { background:var(--success); box-shadow:0 0 0 3px color-mix(in srgb,var(--success) 12%,transparent); }
+  .service-row-meta { color:var(--text-muted); font-size:.68rem; }
+  .service-row-actions { display:flex; gap:6px; flex-shrink:0; }
+  .btn-tiny { min-height:30px; padding:0 11px; border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-elevated); color:var(--text-secondary); font-size:.7rem; cursor:pointer; transition:all var(--t-fast);font-family:var(--font-sans); }
+  .btn-tiny:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
+  .btn-tiny:disabled { opacity:.45; cursor:not-allowed; }
+  .btn-tiny.danger:hover { border-color:var(--danger); color:var(--danger); background:color-mix(in srgb,var(--danger) 12%,transparent); }
+
+  .autostart-row { display:flex; align-items:center; gap:8px; padding:var(--s-2) var(--s-3); border:1px dashed var(--border-soft); border-radius:var(--r-md); color:var(--text-muted); font-size:.72rem; cursor:pointer; line-height:1.5; }
+  .autostart-row input { accent-color:var(--accent); }
+  .mode-note { margin-top:var(--s-2); color:var(--text-muted); font-size:.68rem; line-height:1.6; }
+
+  /* Config */
+  .config-label { display:block; color:var(--text-secondary); font-size:.78rem; font-weight:600; margin-bottom:6px; margin-top:var(--s-3); }
+  .config-row { display:flex; gap:var(--s-2); }
+  .config-input { flex:1; min-width:0; height:40px; padding:0 12px; color:var(--text-primary); background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-sm); font:.82rem var(--font-mono); outline:none; transition:border-color var(--t-fast),box-shadow var(--t-fast); }
   .config-input:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
   .config-input:disabled { opacity:.66; cursor:not-allowed; }
-  .btn-small {
-    height:43px; padding:0 15px; border:1px solid var(--border-strong); border-radius:8px;
-    background:var(--bg-elevated); color:var(--text-primary); cursor:pointer; white-space:nowrap;
-    transition:background .18s,border-color .18s,transform .18s;
-  }
-  .btn-small:hover { background:var(--accent-soft); border-color:var(--accent); color:var(--accent); }
-  .btn-small:active { transform:scale(.97); }
-  .btn-small:disabled { opacity:.46; cursor:not-allowed; }
-  .config-help { color:var(--text-muted); font-size:.72rem; line-height:1.6; margin-top:7px; }
+  .config-help { color:var(--text-muted); font-size:.72rem; line-height:1.6; margin-top:5px; }
   .config-help code { color:var(--accent); }
-  .config-feedback { min-height:20px; margin:11px 0 15px; font-size:.75rem; line-height:1.5; color:var(--text-muted); }
+  .config-feedback { min-height:20px; margin:var(--s-3) 0; font-size:.75rem; line-height:1.5; color:var(--text-muted); }
   .config-feedback.ok { color:var(--info); }
   .config-feedback.warn { color:var(--warning); }
-  .voice-config { margin-top:14px; border:1px solid var(--border-soft); border-radius:10px; background:var(--bg-deep); }
-  .voice-config summary { cursor:pointer; list-style:none; padding:12px 14px; color:var(--text-secondary); font-size:.78rem; font-weight:650; }
+
+  /* Voice config */
+  .voice-config { margin-top:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-deep); }
+  .voice-config summary { cursor:pointer; list-style:none; padding:var(--s-2) var(--s-3); color:var(--text-secondary); font-size:.78rem; font-weight:650; }
   .voice-config summary::-webkit-details-marker { display:none; }
-  .voice-config-body { padding:0 12px 12px; display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-  .voice-card { padding:12px; border:1px solid var(--border-soft); border-radius:9px; background:var(--bg-surface); }
-  .voice-card-title { margin-bottom:9px; font-size:.78rem; font-weight:700; color:var(--accent); }
-  .voice-card .config-input { width:100%; height:39px; margin-bottom:8px; font-size:.74rem; }
+  .voice-config-body { padding:0 12px 12px; display:grid; grid-template-columns:1fr 1fr; gap:var(--s-2); }
+  .voice-card { padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-surface); }
+  .voice-card-title { margin-bottom:6px; font-size:.78rem; font-weight:700; color:var(--accent); }
+  .voice-card .config-input { width:100%; height:36px; margin-bottom:6px; font-size:.72rem; }
 
-  .btn {
-    width:100%; min-height:48px; display:inline-flex; align-items:center; justify-content:center; gap:8px;
-    border:1px solid transparent; border-radius:8px; color:var(--text-inverse); font-size:.94rem; font-weight:700;
-    text-decoration:none; cursor:pointer; transition:transform .18s,filter .18s,opacity .18s;
-  }
-  .btn:hover { filter:brightness(1.08); }
-  .btn:active { transform:scale(.985); }
-  .btn:disabled { opacity:.55; cursor:not-allowed; filter:none; }
-  .btn-start { background:var(--accent); box-shadow:0 6px 18px color-mix(in srgb, var(--accent) 20%, transparent); }
-  .btn-stop { background:var(--danger); }
-  .btn-local { background:var(--accent); }
-  .action-note { margin:10px 2px 0; color:var(--text-muted); font-size:.72rem; line-height:1.55; text-align:center; }
-
-  .running-panel { display:none; }
-  .running-panel.show { display:block; }
-  .access-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-  .access-card {
-    min-width:0; background:var(--bg-deep); border:1px solid var(--border-soft);
-    border-radius:12px; padding:16px;
-  }
-  .access-kicker { color:var(--text-muted); font-size:.7rem; margin-bottom:5px; }
-  .access-title { font-size:.9rem; font-weight:700; margin-bottom:7px; }
-  .access-desc { color:var(--text-muted); font-size:.72rem; line-height:1.55; min-height:34px; }
-  .link-value {
-    margin:12px 0 9px; min-height:42px; padding:10px 11px; display:flex; align-items:center;
-    color:var(--info); background:var(--bg-surface); border:1px solid var(--border-strong); border-radius:8px;
-    font:.72rem "Cascadia Code","Fira Code",monospace; word-break:break-all;
-  }
-  .link-value.waiting { color:var(--text-muted); font-family:inherit; }
-  .inline-actions { display:flex; gap:8px; }
-  .inline-actions .btn { min-height:38px; font-size:.78rem; border-radius:9px; }
-  .btn-muted { background:var(--bg-elevated); color:var(--text-secondary); border-color:var(--border-strong); }
-  .tunnel-toggle-row {
-    display:flex; align-items:center; justify-content:space-between;
-    padding:12px 14px; margin-bottom:14px;
-    background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:10px;
-  }
+  /* Tunnel */
+  .tunnel-toggle-row { display:flex; align-items:center; justify-content:space-between; padding:var(--s-2) var(--s-3); margin-bottom:var(--s-3); background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-md); }
   .tunnel-toggle-label { display:flex; align-items:center; gap:8px; }
-  .tunnel-toggle-icon { font-size:1.1rem; }
   .tunnel-toggle-text { font-size:.84rem; font-weight:650; color:var(--text-primary); }
-  .tunnel-toggle-hint { font-size:.7rem; color:var(--text-muted); margin-left:4px; }
-  .tunnel-switch {
-    position:relative; width:44px; height:24px; border:1px solid var(--border-strong); border-radius:12px;
-    background:var(--border-strong); cursor:pointer; padding:0;
-    transition:background .2s,border-color .2s;
-  }
+  .tunnel-toggle-hint { font-size:.7rem; color:var(--text-muted); }
+  .tunnel-switch { position:relative; width:44px; height:24px; border:1px solid var(--border-strong); border-radius:var(--r-pill); background:var(--border-strong); cursor:pointer; padding:0; transition:background .2s,border-color .2s; }
   .tunnel-switch[aria-checked="true"] { background:var(--success); border-color:var(--success); }
-  .tunnel-switch-knob {
-    position:absolute; top:2px; left:2px; width:18px; height:18px; border-radius:50%;
-    background:#fff; box-shadow:0 1px 3px rgba(0,0,0,.2); transition:left .2s;
-  }
+  .tunnel-switch-knob { position:absolute; top:2px; left:2px; width:18px; height:18px; border-radius:50%; background:#fff; box-shadow:0 1px 3px rgba(0,0,0,.2); transition:left .2s; }
   .tunnel-switch[aria-checked="true"] .tunnel-switch-knob { left:22px; }
-  .share-state {
-    display:inline-flex; align-items:center; gap:6px; margin-top:4px;
-    padding:4px 8px; border-radius:999px; font-size:.68rem; font-weight:650;
-  }
-  .share-state.ready { color:var(--success); background:color-mix(in srgb, var(--success) 12%, transparent); }
-  .share-state.waiting { color:var(--warning); background:color-mix(in srgb, var(--warning) 12%, transparent); }
-  .share-state.unavailable { color:var(--danger); background:color-mix(in srgb, var(--danger) 12%, transparent); }
-  .share-state.local-only { color:var(--info); background:color-mix(in srgb, var(--info) 12%, transparent); }
-  .security-note {
-    margin-top:13px; padding:11px 12px; border-radius:10px;
-    color:var(--text-secondary); background:color-mix(in srgb, var(--warning) 12%, transparent);
-    border:1px solid color-mix(in srgb, var(--warning) 16%, transparent); font-size:.72rem; line-height:1.55;
-  }
-  .uptime { margin-top:12px; color:var(--text-muted); font-size:.7rem; text-align:right; }
 
-  details.log-panel {
-    background:var(--bg-surface); border:1px solid var(--border-strong);
-    border-radius:12px; overflow:hidden;
-  }
-  details.log-panel summary {
-    list-style:none; display:flex; align-items:center; justify-content:space-between;
-    padding:15px 17px; cursor:pointer; color:var(--text-secondary); font-size:.8rem; user-select:none;
-  }
+  /* Access cards */
+  .access-grid { display:grid; grid-template-columns:1fr 1fr; gap:var(--s-3); }
+  .access-card { background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-lg); padding:var(--s-4); }
+  .access-kicker { color:var(--text-muted); font-size:.7rem; margin-bottom:4px; }
+  .access-title { font-size:.9rem; font-weight:700; margin-bottom:4px; }
+  .access-desc { color:var(--text-muted); font-size:.72rem; line-height:1.55; min-height:36px; }
+  .link-value { margin:var(--s-3) 0 var(--s-2); min-height:42px; padding:10px 11px; display:flex; align-items:center; color:var(--info); background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-sm); font:.68rem var(--font-mono); word-break:break-all; }
+  .link-value.waiting { color:var(--text-muted); font-family:var(--font-sans); }
+  .inline-actions { display:flex; gap:var(--s-2); }
+  .inline-actions .btn { min-height:38px; font-size:.78rem; border-radius:var(--r-sm); }
+
+  .share-state { display:inline-flex; align-items:center; gap:6px; margin-top:4px; padding:4px 10px; border-radius:var(--r-pill); font-size:.68rem; font-weight:650; }
+  .share-state.ready { color:var(--success); background:color-mix(in srgb,var(--success) 12%,transparent); }
+  .share-state.waiting { color:var(--warning); background:color-mix(in srgb,var(--warning) 12%,transparent); }
+  .share-state.unavailable { color:var(--danger); background:color-mix(in srgb,var(--danger) 12%,transparent); }
+  .share-state.local-only { color:var(--info); background:color-mix(in srgb,var(--info) 12%,transparent); }
+
+  .security-note { margin-top:var(--s-3); padding:var(--s-2) var(--s-3); border-radius:var(--r-md); color:var(--text-secondary); background:color-mix(in srgb,var(--warning) 8%,transparent); border:1px solid color-mix(in srgb,var(--warning) 16%,transparent); font-size:.72rem; line-height:1.55; }
+  .uptime { margin-top:var(--s-2); color:var(--text-muted); font-size:.7rem; text-align:right; }
+  .action-note { margin:var(--s-2) 0 0; color:var(--text-muted); font-size:.72rem; line-height:1.55; text-align:center; }
+
+  /* Log */
+  details.log-panel { background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-lg); overflow:hidden; }
+  details.log-panel summary { list-style:none; display:flex; align-items:center; justify-content:space-between; padding:var(--s-3) var(--s-4); cursor:pointer; color:var(--text-secondary); font-size:.8rem; user-select:none; }
   details.log-panel summary::-webkit-details-marker { display:none; }
-  .summary-side { display:flex; align-items:center; gap:9px; }
-  .chevron { color:var(--text-muted); transition:transform .18s; }
+  .summary-side { display:flex; align-items:center; gap:var(--s-2); }
+  .chevron { color:var(--text-muted); transition:transform var(--t-fast); }
   details[open] .chevron { transform:rotate(90deg); }
-  .btn-clear { border:0; background:none; color:var(--text-muted); font-size:.72rem; cursor:pointer; padding:3px; }
+  .btn-clear { border:0; background:none; color:var(--text-muted); font-size:.72rem; cursor:pointer; }
   .btn-clear:hover { color:var(--text-secondary); }
   .log-wrap { padding:0 12px 12px; }
-  .log-box {
-    min-height:58px; max-height:210px; overflow:auto; padding:12px;
-    border-radius:8px; background:var(--bg-deep);
-    font:.7rem/1.65 "Cascadia Code","Fira Code",monospace; color:var(--text-secondary);
-  }
+  .log-box { min-height:58px; max-height:210px; overflow:auto; padding:var(--s-3); border-radius:var(--r-sm); background:var(--bg-deep); font:.68rem/1.65 var(--font-mono); color:var(--text-secondary); }
   .log-box .time { color:var(--text-muted); }
   .log-box .info { color:var(--info); }
   .log-box .err { color:var(--danger); }
-  .log-empty { color:var(--text-muted); font-family:"Segoe UI","Microsoft YaHei",system-ui,sans-serif; }
+  .log-empty { color:var(--text-muted); font-family:var(--font-sans); }
 
-  .toast {
-    position:fixed; left:50%; bottom:26px; z-index:10; transform:translate(-50%,18px);
-    max-width:min(420px,calc(100% - 32px)); padding:11px 15px;
-    color:var(--text-primary); background:var(--bg-surface); border:1px solid var(--border-strong); border-radius:8px;
-    box-shadow:var(--shadow-md); font-size:.78rem; line-height:1.45;
-    opacity:0; pointer-events:none; transition:opacity .18s,transform .18s;
-  }
+  .toast { position:fixed; left:50%; bottom:26px; z-index:10; transform:translate(-50%,18px); max-width:min(420px,calc(100% - 32px)); padding:11px 15px; color:var(--text-primary); background:var(--bg-surface); border:1px solid var(--border-strong); border-radius:var(--r-md); box-shadow:var(--shadow-md); font-size:.78rem; line-height:1.45; opacity:0; pointer-events:none; transition:opacity var(--t-fast),transform var(--t-fast); }
   .toast.show { opacity:1; transform:translate(-50%,0); }
   .toast.error { border-color:var(--danger); color:var(--danger); }
 
-  /* ─── 显存调度面板 ─── */
-  .mode-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px; }
-  .mode-card {
-    min-width:0; padding:14px 15px; text-align:left; cursor:pointer;
-    border:1px solid var(--border-strong); border-radius:12px; background:var(--bg-deep);
-    color:var(--text-primary); transition:border-color .18s,background .18s,transform .18s;
-  }
-  .mode-card:hover { border-color:var(--accent); background:var(--accent-soft); }
-  .mode-card:active { transform:scale(.98); }
-  .mode-card:disabled { opacity:.5; cursor:not-allowed; }
-  .mode-card-title { display:flex; align-items:center; gap:7px; font-size:.88rem; font-weight:700; margin-bottom:5px; }
-  .mode-card-desc { color:var(--text-muted); font-size:.7rem; line-height:1.55; }
-  .service-rows { display:flex; flex-direction:column; gap:8px; margin-bottom:12px; }
-  .service-row {
-    display:flex; align-items:center; justify-content:space-between; gap:10px;
-    padding:9px 12px; border:1px solid var(--border-soft); border-radius:10px; background:var(--bg-deep);
-  }
-  .service-row-name { display:flex; align-items:center; gap:8px; min-width:0; font-size:.78rem; font-weight:650; }
-  .service-row-name .dot { width:7px; height:7px; border-radius:50%; background:var(--text-muted); flex:0 0 auto; }
-  .service-row-name .dot.on { background:var(--success); box-shadow:0 0 0 3px color-mix(in srgb, var(--success) 12%, transparent); }
-  .service-row-meta { color:var(--text-muted); font-size:.66rem; font-weight:400; }
-  .service-row-actions { display:flex; gap:6px; flex:0 0 auto; }
-  .btn-tiny {
-    min-height:30px; padding:0 11px; border:1px solid var(--border-strong); border-radius:7px;
-    background:var(--bg-elevated); color:var(--text-secondary); font-size:.7rem; cursor:pointer;
-    transition:background .18s,border-color .18s,color .18s;
-  }
-  .btn-tiny:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
-  .btn-tiny:disabled { opacity:.45; cursor:not-allowed; }
-  .btn-tiny.danger:hover { border-color:var(--danger); color:var(--danger); background:color-mix(in srgb, var(--danger) 12%, transparent); }
-  .autostart-row {
-    display:flex; align-items:center; gap:8px; padding:10px 12px;
-    border:1px dashed var(--border-strong); border-radius:10px;
-    color:var(--text-muted); font-size:.72rem; cursor:pointer; line-height:1.5;
-  }
-  .autostart-row input { accent-color:var(--accent); }
-  .mode-note { margin-top:10px; color:var(--text-muted); font-size:.68rem; line-height:1.6; }
+  .panel-section { margin-bottom:var(--s-4); }
 
   @media (max-width:560px) {
-    .shell { width:min(100% - 24px,680px); padding:26px 0 34px; }
-    .hero { margin-bottom:19px; }
-    .status-grid, .access-grid, .voice-config-body { grid-template-columns:1fr; }
-    .panel { padding:19px; border-radius:16px; }
-    .status-card { padding:13px 14px; }
+    .page { padding:var(--s-4) var(--s-3); }
+    .status-grid { grid-template-columns:repeat(2,1fr); }
+    .access-grid,.voice-config-body { grid-template-columns:1fr; }
     .access-desc { min-height:0; }
   }
-
   @media (max-width:380px) {
+    .status-grid { grid-template-columns:1fr; }
     .config-row { flex-direction:column; }
-    .btn-small { width:100%; }
+    .mode-grid { grid-template-columns:1fr; }
     .inline-actions { flex-direction:column; }
   }
-
   @media (prefers-reduced-motion:reduce) {
     *,*::before,*::after { animation:none!important; transition:none!important; }
   }
@@ -277,190 +150,158 @@
 </head>
 <body>
 
-<main class="shell">
-  <header class="hero">
-    <div class="eyebrow"><span class="eyebrow-dot"></span> Local creator gateway</div>
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand"><span class="sr-only">绫季绘境</span></div>
+    <div class="nav-links"></div>
+  </div>
+</nav>
+
+<article class="page">
+  <div class="page-header">
     <h1>绫季绘境</h1>
     <p class="subtitle">连接本机 SD WebUI，需要时再生成临时分享链接。</p>
-    <button class="theme-toggle" type="button" onclick="toggleTheme()" aria-label="切换主题" title="切换明暗主题"><span id="theme-icon">☀️</span></button>
-  </header>
-
-  <section class="status-grid" aria-label="连接状态">
-    <div class="status-card">
-      <div class="status-label">本地网关</div>
-      <div id="badge" class="badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未启动</span></div>
-    </div>
-    <div class="status-card">
-      <div class="status-label">SD WebUI</div>
-      <div id="sd-badge" class="badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未检测</span></div>
-    </div>
-    <div class="status-card">
-      <div class="status-label">GPT-SoVITS</div>
-      <div id="tts-badge" class="badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未检测</span></div>
-    </div>
-    <div class="status-card">
-      <div class="status-label">Ollama 聊天</div>
-      <div id="ollama-badge" class="badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未检测</span></div>
-    </div>
-    <div class="status-card">
-      <div class="status-label">角色声线</div>
-      <div id="voice-badge" class="badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未检测</span></div>
-    </div>
-    <div class="status-card">
-      <div class="status-label">分享组件</div>
-      <div id="share-badge" class="badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未检测</span></div>
-    </div>
-    <div class="status-card primary">
-      <div class="status-label">创作状态</div>
-      <div id="ready-badge" class="badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未检测</span></div>
-    </div>
-  </section>
-
-  <div style="display:flex;gap:8px;margin-bottom:14px">
-    <button class="btn-small" id="check-services" type="button" onclick="pollStatus();pollLogs();" style="flex:1">🔍 检测所有服务</button>
   </div>
 
-  <section class="panel">
-    <div class="step-head">
-      <div class="step-num">⚡</div>
-      <div class="step-copy">
-        <div class="step-title">显存资源调度</div>
-        <div class="step-desc">绘图（WebUI）、语音（GPT-SoVITS）和聊天模型（Ollama）同时加载容易占满显存。按需切换：先释放、再加载。</div>
-      </div>
-    </div>
-
-    <div class="mode-grid">
-      <button class="mode-card" id="mode-draw" type="button" onclick="switchMode('draw')">
-        <div class="mode-card-title">🎨 绘图优先</div>
-        <div class="mode-card-desc">停止语音、卸载 Ollama 模型，把显存让给 WebUI 出图。</div>
-      </button>
-      <button class="mode-card" id="mode-chat" type="button" onclick="switchMode('chat')">
-        <div class="mode-card-title">💬 聊天优先</div>
-        <div class="mode-card-desc">停止受管 WebUI，启动语音服务，专注角色对话。</div>
-      </button>
-    </div>
-
-    <div class="service-rows">
-      <div class="service-row">
-        <span class="service-row-name"><span class="dot" id="svc-webui-dot"></span>SD WebUI 绘图 <span class="service-row-meta" id="svc-webui-meta"></span></span>
-        <span class="service-row-actions">
-          <button class="btn-tiny" type="button" onclick="serviceAction('webui','start')">启动</button>
-          <button class="btn-tiny danger" type="button" onclick="serviceAction('webui','stop')">停止</button>
-        </span>
-      </div>
-      <div class="service-row">
-        <span class="service-row-name"><span class="dot" id="svc-voice-dot"></span>GPT-SoVITS 语音 <span class="service-row-meta" id="svc-voice-meta"></span></span>
-        <span class="service-row-actions">
-          <button class="btn-tiny" type="button" onclick="serviceAction('voice','start')">启动</button>
-          <button class="btn-tiny danger" type="button" onclick="serviceAction('voice','stop')">停止</button>
-        </span>
-      </div>
-      <div class="service-row">
-        <span class="service-row-name"><span class="dot" id="svc-ollama-dot"></span>Ollama 聊天模型 <span class="service-row-meta" id="svc-ollama-meta"></span></span>
-        <span class="service-row-actions">
-          <button class="btn-tiny danger" type="button" onclick="serviceAction('ollama','unload')">卸载模型释放显存</button>
-        </span>
-      </div>
-    </div>
-
-    <label class="autostart-row"><input type="checkbox" id="auto-start-voice" onchange="saveAutoStartVoice()"> 打开控制面板时自动启动语音服务（显存紧张时不建议开启）</label>
-    <div class="mode-note">提示：Ollama 聊天模型闲置约 10 分钟会自动卸载；语音服务按需启动即可，系统声音试听不受影响。</div>
+  <!-- Status -->
+  <section class="status-grid" aria-label="连接状态">
+    <div class="status-card"><div class="status-label">本地网关</div><div id="badge" class="badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未启动</span></div></div>
+    <div class="status-card"><div class="status-label">SD WebUI</div><div id="sd-badge" class="badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未检测</span></div></div>
+    <div class="status-card"><div class="status-label">GPT-SoVITS</div><div id="tts-badge" class="badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未检测</span></div></div>
+    <div class="status-card"><div class="status-label">Ollama 聊天</div><div id="ollama-badge" class="badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未检测</span></div></div>
+    <div class="status-card"><div class="status-label">角色声线</div><div id="voice-badge" class="badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未检测</span></div></div>
+    <div class="status-card"><div class="status-label">分享组件</div><div id="share-badge" class="badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未检测</span></div></div>
+    <div class="status-card primary"><div class="status-label">创作状态</div><div id="ready-badge" class="badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未检测</span></div></div>
   </section>
 
-  <section class="panel">
-    <div class="step-head">
-      <div class="step-num">01</div>
-      <div class="step-copy">
-        <div class="step-title">确认本机生成服务</div>
-        <div class="step-desc">SD WebUI 负责画面，GPT-SoVITS 负责角色语音。未安装语音服务时，网站仍可使用系统声音试听。</div>
+  <div style="margin-bottom:var(--s-4)">
+    <button class="btn btn-ghost" id="check-services" type="button" onclick="pollStatus();pollLogs();" style="width:100%">🔍 检测所有服务</button>
+  </div>
+
+  <!-- VRAM -->
+  <div class="panel-section">
+    <div class="card-info" style="padding:var(--s-4)">
+      <h3 style="font-size:1rem;margin-bottom:var(--s-2)">⚡ 显存资源调度</h3>
+      <p style="color:var(--text-muted);font-size:.8rem;line-height:1.55;margin-bottom:var(--s-3)">绘图（WebUI）、语音（GPT-SoVITS）和聊天模型（Ollama）同时加载容易占满显存。按需切换：先释放、再加载。</p>
+      <div class="mode-grid">
+        <button class="mode-card" id="mode-draw" type="button" onclick="switchMode('draw')">
+          <div class="mode-card-title">🎨 绘图优先</div>
+          <div class="mode-card-desc">停止语音、卸载 Ollama 模型，把显存让给 WebUI 出图。</div>
+        </button>
+        <button class="mode-card" id="mode-chat" type="button" onclick="switchMode('chat')">
+          <div class="mode-card-title">💬 聊天优先</div>
+          <div class="mode-card-desc">停止受管 WebUI，启动语音服务，专注角色对话。</div>
+        </button>
       </div>
-    </div>
-
-    <label class="config-label" for="sd-host">Stability Matrix / SD WebUI 地址</label>
-    <div class="config-row">
-      <input class="config-input" id="sd-host" value="http://127.0.0.1:7860" spellcheck="false" inputmode="url" autocomplete="off">
-    </div>
-    <div class="config-help">端口以启动日志为准；推荐参数：<code>--api --port 7860</code></div>
-
-    <label class="config-label" for="tts-host" style="margin-top:13px">GPT-SoVITS API 地址</label>
-    <div class="config-row">
-      <input class="config-input" id="tts-host" value="http://127.0.0.1:9880" spellcheck="false" inputmode="url" autocomplete="off">
-      <button class="btn-small" id="save-config" type="button" onclick="doSaveSDConfig()">保存全部并检测</button>
-    </div>
-    <div class="config-help">默认按需启动（见上方“显存资源调度”）；默认端口为 <code>9880</code>。</div>
-
-    <details class="voice-config">
-      <summary>🎙 角色声线配置 · 参考音频必须是 GPT-SoVITS 能读取的本机路径</summary>
-      <div class="voice-config-body">
-        <div class="voice-card">
-          <div class="voice-card-title">🌸 绫地宁宁</div>
-          <label class="config-label" for="voice-nene-ref">参考音频路径</label>
-          <input class="config-input" id="voice-nene-ref" placeholder="D:\\voices\\nene.wav" autocomplete="off">
-          <label class="config-label" for="voice-nene-prompt">参考音频原文</label>
-          <input class="config-input" id="voice-nene-prompt" placeholder="填写参考音频中实际说出的日语原文" autocomplete="off">
+      <div class="service-rows">
+        <div class="service-row">
+          <span class="service-row-name"><span class="dot" id="svc-webui-dot"></span>SD WebUI 绘图 <span class="service-row-meta" id="svc-webui-meta"></span></span>
+          <span class="service-row-actions"><button class="btn-tiny" type="button" onclick="serviceAction('webui','start')">启动</button><button class="btn-tiny danger" type="button" onclick="serviceAction('webui','stop')">停止</button></span>
         </div>
-        <div class="voice-card">
-          <div class="voice-card-title">☕ 四季夏目</div>
-          <label class="config-label" for="voice-natsume-ref">参考音频路径</label>
-          <input class="config-input" id="voice-natsume-ref" placeholder="D:\\voices\\natsume.wav" autocomplete="off">
-          <label class="config-label" for="voice-natsume-prompt">参考音频原文</label>
-          <input class="config-input" id="voice-natsume-prompt" placeholder="填写参考音频中实际说出的日语原文" autocomplete="off">
+        <div class="service-row">
+          <span class="service-row-name"><span class="dot" id="svc-voice-dot"></span>GPT-SoVITS 语音 <span class="service-row-meta" id="svc-voice-meta"></span></span>
+          <span class="service-row-actions"><button class="btn-tiny" type="button" onclick="serviceAction('voice','start')">启动</button><button class="btn-tiny danger" type="button" onclick="serviceAction('voice','stop')">停止</button></span>
+        </div>
+        <div class="service-row">
+          <span class="service-row-name"><span class="dot" id="svc-ollama-dot"></span>Ollama 聊天模型 <span class="service-row-meta" id="svc-ollama-meta"></span></span>
+          <span class="service-row-actions"><button class="btn-tiny danger" type="button" onclick="serviceAction('ollama','unload')">卸载模型释放显存</button></span>
         </div>
       </div>
-    </details>
-    <div class="config-feedback" id="config-feedback" aria-live="polite">点击"检测所有服务"查看当前状态，或直接启动。</div>
-
-    <div class="tunnel-toggle-row">
-      <label class="tunnel-toggle-label">
-        <span class="tunnel-toggle-icon">☁️</span>
-        <span class="tunnel-toggle-text">公网分享隧道</span>
-        <span class="tunnel-toggle-hint" id="tunnel-hint">关闭后仅本机可访问</span>
-      </label>
-      <button class="tunnel-switch" id="tunnel-switch" type="button" role="switch" aria-checked="true" onclick="toggleTunnel()">
-        <span class="tunnel-switch-knob"></span>
-      </button>
+      <label class="autostart-row"><input type="checkbox" id="auto-start-voice" onchange="saveAutoStartVoice()"> 打开控制面板时自动启动语音服务（显存紧张时不建议开启）</label>
+      <div class="mode-note">提示：Ollama 聊天模型闲置约 10 分钟会自动卸载；语音服务按需启动即可，系统声音试听不受影响。</div>
     </div>
-    <button id="btn" class="btn btn-start" type="button" onclick="doStart()">启动并生成分享链接</button>
-    <p class="action-note" id="action-note">启动后，本机访问不需要 Token；公网分享会使用临时 Token。</p>
-  </section>
+  </div>
 
-  <section class="panel secondary running-panel" id="running-panel">
-    <div class="step-head">
-      <div class="step-num">02</div>
-      <div class="step-copy">
-        <div class="step-title">选择使用方式</div>
-        <div class="step-desc">自己使用本地入口；只有需要时，才把受保护的临时链接发给朋友。</div>
+  <!-- Config -->
+  <div class="panel-section">
+    <div class="card-info" style="padding:var(--s-4)">
+      <h3 style="font-size:1rem;margin-bottom:var(--s-2)">01 确认本机生成服务</h3>
+      <p style="color:var(--text-muted);font-size:.8rem;line-height:1.55;margin-bottom:var(--s-3)">SD WebUI 负责画面，GPT-SoVITS 负责角色语音。未安装语音服务时，网站仍可使用系统声音试听。</p>
+
+      <label class="config-label" for="sd-host">Stability Matrix / SD WebUI 地址</label>
+      <div class="config-row">
+        <input class="config-input" id="sd-host" value="http://127.0.0.1:7860" spellcheck="false" inputmode="url" autocomplete="off">
       </div>
-    </div>
+      <div class="config-help">端口以启动日志为准；推荐参数：<code>--api --port 7860</code></div>
 
-    <div class="access-grid">
-      <article class="access-card">
-        <div class="access-kicker">自己使用</div>
-        <div class="access-title">本地创作网站</div>
-        <div class="access-desc">只在当前电脑访问，不需要 Token，也不经过公网通道。</div>
-        <div class="link-value" id="local-link">等待网关启动…</div>
-        <div class="inline-actions">
-          <a id="local-open" class="btn btn-local" href="http://127.0.0.1:3000/" target="_blank" rel="noopener">打开网站</a>
-          <button class="btn btn-muted" id="copy-local" type="button" onclick="copyLocalLink()">复制地址</button>
+      <label class="config-label" for="tts-host">GPT-SoVITS API 地址</label>
+      <div class="config-row">
+        <input class="config-input" id="tts-host" value="http://127.0.0.1:9880" spellcheck="false" inputmode="url" autocomplete="off">
+        <button class="btn btn-ghost" id="save-config" style="height:40px;padding:0 16px;font-size:.78rem" type="button" onclick="doSaveSDConfig()">保存全部并检测</button>
+      </div>
+      <div class="config-help">默认按需启动（见上方"显存资源调度"）；默认端口为 <code>9880</code>。</div>
+
+      <details class="voice-config">
+        <summary>🎙 角色声线配置 · 参考音频必须是 GPT-SoVITS 能读取的本机路径</summary>
+        <div class="voice-config-body">
+          <div class="voice-card">
+            <div class="voice-card-title">🌸 绫地宁宁</div>
+            <label class="config-label" for="voice-nene-ref" style="margin-top:0">参考音频路径</label>
+            <input class="config-input" id="voice-nene-ref" placeholder="D:\voices\nene.wav" autocomplete="off">
+            <label class="config-label" for="voice-nene-prompt">参考音频原文</label>
+            <input class="config-input" id="voice-nene-prompt" placeholder="填写参考音频中实际说出的日语原文" autocomplete="off">
+          </div>
+          <div class="voice-card">
+            <div class="voice-card-title">☕ 四季夏目</div>
+            <label class="config-label" for="voice-natsume-ref" style="margin-top:0">参考音频路径</label>
+            <input class="config-input" id="voice-natsume-ref" placeholder="D:\voices\natsume.wav" autocomplete="off">
+            <label class="config-label" for="voice-natsume-prompt">参考音频原文</label>
+            <input class="config-input" id="voice-natsume-prompt" placeholder="填写参考音频中实际说出的日语原文" autocomplete="off">
+          </div>
         </div>
-      </article>
+      </details>
+      <div class="config-feedback" id="config-feedback" aria-live="polite">点击"检测所有服务"查看当前状态，或直接启动。</div>
 
-      <article class="access-card">
-        <div class="access-kicker">分享朋友</div>
-        <div class="access-title">临时公网链接</div>
-        <div class="access-desc" id="share-message">正在检查公网通道…</div>
-        <div id="share-state" class="share-state waiting">正在连接</div>
-        <div class="link-value waiting" id="share-link">等待分享链接…</div>
-        <div class="inline-actions">
-          <button class="btn btn-muted" id="btn-copy" type="button" onclick="copyShareLink()" disabled>复制分享链接</button>
-        </div>
-      </article>
+      <div class="tunnel-toggle-row">
+        <label class="tunnel-toggle-label">
+          <span class="tunnel-toggle-icon">☁️</span>
+          <span class="tunnel-toggle-text">公网分享隧道</span>
+          <span class="tunnel-toggle-hint" id="tunnel-hint">关闭后仅本机可访问</span>
+        </label>
+        <button class="tunnel-switch" id="tunnel-switch" type="button" role="switch" aria-checked="true" onclick="toggleTunnel()">
+          <span class="tunnel-switch-knob"></span>
+        </button>
+      </div>
+      <button id="btn" class="btn btn-primary" style="width:100%;min-height:48px;font-size:.95rem" type="button" onclick="doStart()">启动并生成分享链接</button>
+      <p class="action-note" id="action-note">启动后，本机访问不需要 Token；公网分享会使用临时 Token。</p>
     </div>
+  </div>
 
-    <div class="security-note">控制面板会自动启动已配置的 reForge，并在“停止全部服务”时关闭它；若 SD WebUI 是手动启动的，控制面板会保留它不动。分享链接可以调用你电脑上的 SD WebUI，请只发给信任的人。多人共用时，“停止生成”可能中断当前全局任务。</div>
-    <div class="uptime" id="uptime"></div>
-  </section>
+  <!-- Running -->
+  <div class="panel-section running-panel" id="running-panel" style="display:none">
+    <div class="card-info" style="padding:var(--s-4)">
+      <h3 style="font-size:1rem;margin-bottom:var(--s-2)">02 选择使用方式</h3>
+      <p style="color:var(--text-muted);font-size:.8rem;line-height:1.55;margin-bottom:var(--s-3)">自己使用本地入口；只有需要时，才把受保护的临时链接发给朋友。</p>
 
+      <div class="access-grid">
+        <article class="access-card">
+          <div class="access-kicker">自己使用</div>
+          <div class="access-title">本地创作网站</div>
+          <div class="access-desc">只在当前电脑访问，不需要 Token，也不经过公网通道。</div>
+          <div class="link-value" id="local-link">等待网关启动…</div>
+          <div class="inline-actions">
+            <a id="local-open" class="btn btn-primary" href="http://127.0.0.1:3000/" target="_blank" rel="noopener" style="flex:1;min-height:38px;font-size:.8rem">打开网站</a>
+            <button class="btn btn-ghost" id="copy-local" type="button" onclick="copyLocalLink()" style="min-height:38px;font-size:.78rem">复制地址</button>
+          </div>
+        </article>
+        <article class="access-card">
+          <div class="access-kicker">分享朋友</div>
+          <div class="access-title">临时公网链接</div>
+          <div class="access-desc" id="share-message">正在检查公网通道…</div>
+          <div id="share-state" class="share-state waiting">正在连接</div>
+          <div class="link-value waiting" id="share-link">等待分享链接…</div>
+          <div class="inline-actions">
+            <button class="btn btn-ghost" id="btn-copy" type="button" onclick="copyShareLink()" disabled style="flex:1;min-height:38px;font-size:.78rem">复制分享链接</button>
+          </div>
+        </article>
+      </div>
+
+      <div class="security-note">分享链接可以调用你电脑上的 SD WebUI，请只发给信任的人。多人共用时，"停止生成"可能中断当前全局任务。</div>
+      <div class="uptime" id="uptime"></div>
+    </div>
+  </div>
+
+  <!-- Log -->
   <details class="log-panel">
     <summary>
       <span class="summary-side"><span class="chevron">›</span><span>运行日志</span></span>
@@ -470,7 +311,11 @@
       <div class="log-box" id="log-box"><div class="log-empty">启动与连接记录会显示在这里。</div></div>
     </div>
   </details>
-</main>
+
+  <footer class="footer">
+    <p>绫季绘境 · 启动控制面板</p>
+  </footer>
+</article>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -489,6 +334,8 @@ function updateTunnelUI() {
   hint.textContent = tunnelEnabled ? '朋友可通过临时链接访问' : '关闭后仅本机可访问';
   if (!lastStatus || !lastStatus.running) {
     startBtn.textContent = tunnelEnabled ? '启动并生成分享链接' : '启动（仅本地）';
+    startBtn.style.background = '';
+    startBtn.style.color = '';
   }
 }
 
@@ -500,19 +347,6 @@ function toggleTunnel() {
 
 updateTunnelUI();
 
-function applyTheme(theme) {
-  var value = theme === 'dark' ? 'dark' : 'light';
-  document.documentElement.setAttribute('data-theme', value);
-  document.getElementById('theme-icon').textContent = value === 'dark' ? '🌙' : '☀️';
-  try { localStorage.setItem('aics_theme', value); } catch (e) {}
-}
-
-function toggleTheme() {
-  applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-}
-
-try { applyTheme(localStorage.getItem('aics_theme') || 'dark'); } catch (e) { applyTheme('dark'); }
-
 function fmt(seconds) {
   var value = Math.max(0, Number(seconds) || 0);
   if (value < 60) return value + ' 秒';
@@ -522,11 +356,11 @@ function fmt(seconds) {
 }
 
 function showToast(message, isError) {
-  var toast = document.getElementById('toast');
-  toast.textContent = message;
-  toast.className = 'toast show' + (isError ? ' error' : '');
+  var toastEl = document.getElementById('toast');
+  toastEl.textContent = message;
+  toastEl.className = 'toast show' + (isError ? ' error' : '');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(function() { toast.className = 'toast'; }, 2200);
+  toastTimer = setTimeout(function() { toastEl.className = 'toast'; }, 2200);
 }
 
 function setButtonCopied(button, copiedText, normalText) {
@@ -575,9 +409,7 @@ function setServiceDot(id, on, meta) {
 
 function serviceAction(service, action) {
   fetch('/api/service/' + service, {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({action:action})
+    method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({action:action})
   }).then(function(response) {
     return response.json();
   }).then(function(data) {
@@ -585,67 +417,42 @@ function serviceAction(service, action) {
     showToast(data.message || '指令已发送');
     setTimeout(pollStatus, 2500);
     setTimeout(pollLogs, 800);
-  }).catch(function(error) {
-    showToast(error.message, true);
-  });
+  }).catch(function(error) { showToast(error.message, true); });
 }
 
 function switchMode(mode) {
   var drawBtn = document.getElementById('mode-draw');
   var chatBtn = document.getElementById('mode-chat');
-  drawBtn.disabled = true;
-  chatBtn.disabled = true;
+  drawBtn.disabled = true; chatBtn.disabled = true;
   fetch('/api/mode', {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({mode:mode})
-  }).then(function(response) {
-    return response.json();
-  }).then(function(data) {
+    method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({mode:mode})
+  }).then(function(response) { return response.json(); })
+  .then(function(data) {
     if (!data.ok) throw new Error(data.error || '切换失败');
     showToast(data.message || '已开始切换模式');
-    pollLogs();
-    setTimeout(pollStatus, 3000);
-  }).catch(function(error) {
-    showToast(error.message, true);
-  }).finally(function() {
-    setTimeout(function() { pollStatus(); }, 1000);
-  });
+    pollLogs(); setTimeout(pollStatus, 3000);
+  }).catch(function(error) { showToast(error.message, true); })
+  .finally(function() { setTimeout(function() { pollStatus(); }, 1000); });
 }
 
 function saveAutoStartVoice() {
   var checked = document.getElementById('auto-start-voice').checked;
   fetch('/api/preference', {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({autoStartVoice:checked})
-  }).then(function(response) {
-    return response.json();
-  }).then(function(data) {
-    showToast(checked ? '已开启：下次打开控制面板时自动启动语音' : '已关闭：语音服务改为按需启动');
-  }).catch(function() {
-    showToast('保存失败', true);
-  });
+    method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({autoStartVoice:checked})
+  }).then(function(response) { return response.json(); })
+  .then(function(data) { showToast(checked ? '已开启：下次打开控制面板时自动启动语音' : '已关闭：语音服务改为按需启动'); })
+  .catch(function() { showToast('保存失败', true); });
 }
 
 function renderStatus(data) {
   lastStatus = data;
-  var badge = document.getElementById('badge');
-  var sdBadge = document.getElementById('sd-badge');
-  var ttsBadge = document.getElementById('tts-badge');
-  var ollamaBadge = document.getElementById('ollama-badge');
-  var voiceBadge = document.getElementById('voice-badge');
-  var shareBadge = document.getElementById('share-badge');
-  var readyBadge = document.getElementById('ready-badge');
   var button = document.getElementById('btn');
   var runningPanel = document.getElementById('running-panel');
   var input = document.getElementById('sd-host');
   var ttsInput = document.getElementById('tts-host');
   var voiceInputs = {
-    neneRef: document.getElementById('voice-nene-ref'),
-    nenePrompt: document.getElementById('voice-nene-prompt'),
-    natsumeRef: document.getElementById('voice-natsume-ref'),
-    natsumePrompt: document.getElementById('voice-natsume-prompt')
+    neneRef: document.getElementById('voice-nene-ref'), nenePrompt: document.getElementById('voice-nene-prompt'),
+    natsumeRef: document.getElementById('voice-natsume-ref'), natsumePrompt: document.getElementById('voice-natsume-prompt')
   };
   var saveButton = document.getElementById('save-config');
   var feedback = document.getElementById('config-feedback');
@@ -660,62 +467,56 @@ function renderStatus(data) {
   if (document.activeElement !== voiceInputs.nenePrompt) voiceInputs.nenePrompt.value = nene.promptText || '';
   if (document.activeElement !== voiceInputs.natsumeRef) voiceInputs.natsumeRef.value = natsume.refAudioPath || '';
   if (document.activeElement !== voiceInputs.natsumePrompt) voiceInputs.natsumePrompt.value = natsume.promptText || '';
-  [input, ttsInput, voiceInputs.neneRef, voiceInputs.nenePrompt, voiceInputs.natsumeRef, voiceInputs.natsumePrompt].forEach(function(field) {
-    field.disabled = !!data.running;
-  });
+  [input, ttsInput, voiceInputs.neneRef, voiceInputs.nenePrompt, voiceInputs.natsumeRef, voiceInputs.natsumePrompt].forEach(function(field) { field.disabled = !!data.running; });
   saveButton.disabled = !!data.running;
 
   if (data.running) {
-    setBadge(badge, 'running', '运行中');
-    button.className = 'btn btn-stop';
+    setBadge(document.getElementById('badge'), 'running', '运行中');
+    button.className = 'btn btn-primary';
+    button.style.background = 'var(--danger)';
+    button.style.color = 'var(--text-inverse)';
     button.textContent = '停止全部服务';
     button.onclick = doStop;
-    runningPanel.classList.add('show');
+    runningPanel.style.display = 'block';
   } else {
-    setBadge(badge, 'stopped', '未启动');
-    button.className = 'btn btn-start';
+    setBadge(document.getElementById('badge'), 'stopped', '未启动');
+    button.className = 'btn btn-primary';
+    button.style.background = ''; button.style.color = '';
+    button.style.background = 'var(--accent)';
+    button.style.color = 'var(--text-inverse)';
     button.textContent = tunnelEnabled ? '启动并生成分享链接' : '启动（仅本地）';
     button.onclick = doStart;
-    runningPanel.classList.remove('show');
+    runningPanel.style.display = 'none';
   }
 
-  setBadge(sdBadge, data.sdOnline ? 'online' : 'offline', data.sdOnline ? (data.webuiManaged ? '已连接 · 自动管理' : '已连接 · 手动') : '未连接');
-  setBadge(ttsBadge, data.ttsOnline ? 'online' : 'offline', data.ttsOnline ? '已连接' : '未连接');
+  setBadge(document.getElementById('sd-badge'), data.sdOnline ? 'online' : 'offline', data.sdOnline ? (data.webuiManaged ? '已连接 · 自动管理' : '已连接 · 手动') : '未连接');
+  setBadge(document.getElementById('tts-badge'), data.ttsOnline ? 'online' : 'offline', data.ttsOnline ? '已连接' : '未连接');
   var ollamaLoaded = (data.ollamaModels || []).length;
-  var ollamaVramText = fmtVram(data.ollamaVram);
-  setBadge(ollamaBadge, data.ollamaOnline ? 'online' : 'offline',
-    !data.ollamaOnline ? '未连接' : (ollamaLoaded ? '已加载 ' + ollamaLoaded + ' 个模型' + (ollamaVramText ? ' · ' + ollamaVramText : '') : '在线 · 模型未加载'));
+  setBadge(document.getElementById('ollama-badge'), data.ollamaOnline ? 'online' : 'offline',
+    !data.ollamaOnline ? '未连接' : (ollamaLoaded ? '已加载 ' + ollamaLoaded + ' 个模型' + (fmtVram(data.ollamaVram) ? ' · ' + fmtVram(data.ollamaVram) : '') : '在线 · 模型未加载'));
   setServiceDot('svc-webui', !!data.sdOnline, data.sdOnline ? (data.webuiManaged ? '受控' : '手动') : '');
   setServiceDot('svc-voice', !!data.ttsOnline, '');
-  setServiceDot('svc-ollama', !!data.ollamaOnline, ollamaLoaded && ollamaVramText ? '占用 ' + ollamaVramText : '');
+  setServiceDot('svc-ollama', !!data.ollamaOnline, ollamaLoaded && fmtVram(data.ollamaVram) ? '占用 ' + fmtVram(data.ollamaVram) : '');
   var autoStartBox = document.getElementById('auto-start-voice');
   if (document.activeElement !== autoStartBox) autoStartBox.checked = !!data.autoStartVoice;
   document.getElementById('mode-draw').disabled = !!data.modeBusy;
   document.getElementById('mode-chat').disabled = !!data.modeBusy;
-  var configuredVoices = [nene, natsume].filter(function(profile) {
-    return !!(profile.refAudioPath && profile.promptText);
-  }).length;
-  setBadge(voiceBadge, configuredVoices === 2 ? 'online' : (configuredVoices ? 'offline' : 'stopped'),
-    configuredVoices === 2 ? '宁宁与夏目已配置' : (configuredVoices ? configuredVoices + ' / 2 已配置' : '尚未配置'));
-  setBadge(shareBadge, data.tunnelAvailable ? 'online' : 'stopped',
-    data.tunnelAvailable ? (tunnelEnabled ? '可按需启用' : '已安装 · 当前关闭') : '未安装 · 仅本地');
-  setBadge(readyBadge, data.sdOnline ? 'running' : 'offline',
-    data.sdOnline ? (data.ttsOnline ? '画面与语音就绪' : '画面创作就绪') : '浏览可用 · 等待 SD');
+  var configuredVoices = [nene, natsume].filter(function(p) { return !!(p.refAudioPath && p.promptText); }).length;
+  setBadge(document.getElementById('voice-badge'), configuredVoices === 2 ? 'online' : (configuredVoices ? 'offline' : 'stopped'), configuredVoices === 2 ? '宁宁与夏目已配置' : (configuredVoices ? configuredVoices + ' / 2 已配置' : '尚未配置'));
+  setBadge(document.getElementById('share-badge'), data.tunnelAvailable ? 'online' : 'stopped', data.tunnelAvailable ? (tunnelEnabled ? '可按需启用' : '已安装 · 当前关闭') : '未安装 · 仅本地');
+  setBadge(document.getElementById('ready-badge'), data.sdOnline ? 'running' : 'offline', data.sdOnline ? (data.ttsOnline ? '画面与语音就绪' : '画面创作就绪') : '浏览可用 · 等待 SD');
+
   if (data.sdOnline && data.ttsOnline) {
-    feedback.className = 'config-feedback ok';
-    feedback.textContent = '画面与语音服务均已连接，可以生成完整的有声场景。';
+    feedback.className = 'config-feedback ok'; feedback.textContent = '画面与语音服务均已连接，可以生成完整的有声场景。';
     actionNote.textContent = 'SD WebUI 与 GPT-SoVITS 已就绪，启动后即可本地使用或按需分享。';
   } else if (data.sdOnline) {
-    feedback.className = 'config-feedback warn';
-    feedback.textContent = 'SD WebUI 已连接；GPT-SoVITS 暂不可用，系统声音试听仍可使用。';
+    feedback.className = 'config-feedback warn'; feedback.textContent = 'SD WebUI 已连接；GPT-SoVITS 暂不可用，系统声音试听仍可使用。';
     actionNote.textContent = '现在可以正常出图；需要 AI 角色声线时，再启动并配置 GPT-SoVITS。';
   } else if (data.ttsOnline) {
-    feedback.className = 'config-feedback warn';
-    feedback.textContent = 'GPT-SoVITS 已连接；请启动带有 --api 参数的 SD WebUI 才能直接出图。';
+    feedback.className = 'config-feedback warn'; feedback.textContent = 'GPT-SoVITS 已连接；请启动带有 --api 参数的 SD WebUI 才能直接出图。';
     actionNote.textContent = '语音已经可用，画面生成仍需连接 SD WebUI。';
   } else {
-    feedback.className = 'config-feedback warn';
-    feedback.textContent = '暂未检测到生成服务；网站浏览和系统声音试听仍可使用。';
+    feedback.className = 'config-feedback warn'; feedback.textContent = '暂未检测到生成服务；网站浏览和系统声音试听仍可使用。';
     actionNote.textContent = '可先启动网站浏览场景，出图和 AI 声线会在对应服务连接后启用。';
   }
 
@@ -726,45 +527,35 @@ function renderStatus(data) {
   document.getElementById('local-open').href = localLink;
   document.getElementById('uptime').textContent = '网关已运行 ' + fmt(data.uptime);
 
+  var shareLink = document.getElementById('share-link');
   var shareState = document.getElementById('share-state');
   var shareMessage = document.getElementById('share-message');
-  var shareLink = document.getElementById('share-link');
   var copyButton = document.getElementById('btn-copy');
 
   if (data.shareLink) {
-    shareState.className = 'share-state ready';
-    shareState.textContent = '可以分享';
+    shareState.className = 'share-state ready'; shareState.textContent = '可以分享';
     shareMessage.textContent = '临时公网通道已建立，链接带有随机 Token。';
-    shareLink.className = 'link-value';
-    shareLink.textContent = data.shareLink;
+    shareLink.className = 'link-value'; shareLink.textContent = data.shareLink;
     copyButton.disabled = false;
   } else if (data.tunnelStatus === 'disabled') {
-    shareState.className = 'share-state local-only';
-    shareState.textContent = '仅本地模式';
+    shareState.className = 'share-state local-only'; shareState.textContent = '仅本地模式';
     shareMessage.textContent = '当前已关闭公网通道，本地网站仍可正常使用。';
-    shareLink.className = 'link-value waiting';
-    shareLink.textContent = '未生成公网链接';
+    shareLink.className = 'link-value waiting'; shareLink.textContent = '未生成公网链接';
     copyButton.disabled = true;
   } else if (data.tunnelStatus === 'failed') {
-    shareState.className = 'share-state unavailable';
-    shareState.textContent = '连接失败';
+    shareState.className = 'share-state unavailable'; shareState.textContent = '连接失败';
     shareMessage.textContent = '未能建立公网通道，请展开运行日志查看原因。';
-    shareLink.className = 'link-value waiting';
-    shareLink.textContent = '未生成公网链接';
+    shareLink.className = 'link-value waiting'; shareLink.textContent = '未生成公网链接';
     copyButton.disabled = true;
   } else if (data.tunnelStatus === 'unavailable' || data.tunnelAvailable === false) {
-    shareState.className = 'share-state unavailable';
-    shareState.textContent = '不可用';
+    shareState.className = 'share-state unavailable'; shareState.textContent = '不可用';
     shareMessage.textContent = '未检测到 cloudflared。本地网站仍可正常使用。';
-    shareLink.className = 'link-value waiting';
-    shareLink.textContent = '未生成公网链接';
+    shareLink.className = 'link-value waiting'; shareLink.textContent = '未生成公网链接';
     copyButton.disabled = true;
   } else {
-    shareState.className = 'share-state waiting';
-    shareState.textContent = '正在连接';
+    shareState.className = 'share-state waiting'; shareState.textContent = '正在连接';
     shareMessage.textContent = '网关已经启动，正在等待临时公网通道。';
-    shareLink.className = 'link-value waiting';
-    shareLink.textContent = '等待分享链接…';
+    shareLink.className = 'link-value waiting'; shareLink.textContent = '等待分享链接…';
     copyButton.disabled = true;
   }
 }
@@ -793,45 +584,28 @@ function saveSDConfig(showMessage) {
     }
   };
   var feedback = document.getElementById('config-feedback');
-  feedback.className = 'config-feedback';
-  feedback.textContent = '正在保存并重新检测…';
+  feedback.className = 'config-feedback'; feedback.textContent = '正在保存并重新检测…';
   return fetch('/api/config', {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify(payload)
+    method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)
   }).then(function(response) {
-    return response.json().then(function(data) {
-      if (!response.ok) throw new Error(data.error || '保存失败');
-      return data;
-    });
+    return response.json().then(function(data) { if (!response.ok) throw new Error(data.error || '保存失败'); return data; });
   }).then(function(data) {
-    document.getElementById('sd-host').value = data.sdHost;
-    document.getElementById('tts-host').value = data.ttsHost;
+    document.getElementById('sd-host').value = data.sdHost; document.getElementById('tts-host').value = data.ttsHost;
     if (showMessage) showToast('生成服务配置已保存');
-    pollStatus();
-    return data;
+    pollStatus(); return data;
   });
 }
 
-function doSaveSDConfig() {
-  saveSDConfig(true).catch(function(error) {
-    showToast(error.message, true);
-    pollStatus();
-  });
-}
+function doSaveSDConfig() { saveSDConfig(true).catch(function(error) { showToast(error.message, true); pollStatus(); }); }
 
 function pollStatus() {
-  fetch('/api/status').then(function(response) {
-    return response.json();
-  }).then(renderStatus).catch(function() {
-    setBadge(document.getElementById('badge'), 'stopped', '控制面板无响应');
-  });
+  fetch('/api/status').then(function(response) { return response.json(); })
+    .then(renderStatus).catch(function() { setBadge(document.getElementById('badge'), 'stopped', '控制面板无响应'); });
 }
 
 function pollLogs() {
-  fetch('/api/logs?since=' + logIndex).then(function(response) {
-    return response.json();
-  }).then(function(data) {
+  fetch('/api/logs?since=' + logIndex).then(function(response) { return response.json(); })
+  .then(function(data) {
     var box = document.getElementById('log-box');
     if (data.logs.length && box.querySelector('.log-empty')) box.replaceChildren();
     data.logs.forEach(function(line) {
@@ -839,11 +613,9 @@ function pollLogs() {
       var lower = line.toLowerCase();
       if (lower.indexOf('error') >= 0 || lower.indexOf('failed') >= 0 || lower.indexOf('not found') >= 0) row.className = 'err';
       else if (lower.indexOf('started') >= 0 || lower.indexOf('ready') >= 0 || lower.indexOf('tunnel') >= 0) row.className = 'info';
-      var time = document.createElement('span');
-      time.className = 'time';
+      var time = document.createElement('span'); time.className = 'time';
       time.textContent = line.substring(0, 10);
-      row.appendChild(time);
-      row.appendChild(document.createTextNode(' ' + line.substring(11)));
+      row.appendChild(time); row.appendChild(document.createTextNode(' ' + line.substring(11)));
       box.appendChild(row);
     });
     logIndex += data.logs.length;
@@ -852,50 +624,34 @@ function pollLogs() {
 }
 
 function clearLogs(event) {
-  event.preventDefault();
-  event.stopPropagation();
-  var empty = document.createElement('div');
-  empty.className = 'log-empty';
+  event.preventDefault(); event.stopPropagation();
+  var empty = document.createElement('div'); empty.className = 'log-empty';
   empty.textContent = '已清空当前显示，新日志仍会继续出现。';
   document.getElementById('log-box').replaceChildren(empty);
 }
 
 function doStart() {
-  if (!lastStatus) {
-    showToast('控制面板仍在读取配置，请稍候再试', true);
-    pollStatus();
-    return;
-  }
+  if (!lastStatus) { showToast('控制面板仍在读取配置，请稍候再试', true); pollStatus(); return; }
   var button = document.getElementById('btn');
-  button.disabled = true;
-  button.textContent = '正在启动…';
+  button.disabled = true; button.textContent = '正在启动…';
   saveSDConfig(false).then(function() {
     return fetch('/api/start', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({enableTunnel: tunnelEnabled})});
-  }).then(function(response) {
-    return response.json();
-  }).then(function(data) {
+  }).then(function(response) { return response.json(); })
+  .then(function(data) {
     if (!data.ok) throw new Error(data.msg || '启动失败');
-    showToast('本地网关已启动');
-    startPolling();
-  }).catch(function(error) {
-    showToast('启动失败：' + error.message, true);
-  }).finally(function() {
-    button.disabled = false;
-    pollStatus();
-  });
+    showToast('本地网关已启动'); startPolling();
+  }).catch(function(error) { showToast('启动失败：' + error.message, true); })
+  .finally(function() { button.disabled = false; pollStatus(); });
 }
 
 function doStop() {
   var button = document.getElementById('btn');
-  button.disabled = true;
-  button.textContent = '正在停止…';
-  fetch('/api/stop', {method:'POST'}).then(function(response) {
-    return response.json();
-  }).then(function(data) {
+  button.disabled = true; button.textContent = '正在停止…';
+  fetch('/api/stop', {method:'POST'}).then(function(response) { return response.json(); })
+  .then(function(data) {
     if (!data.ok) throw new Error(data.msg || '停止失败');
     showToast(data.voiceError || data.webuiError ? '部分服务停止失败，请查看日志' : (data.webuiStopped ? '网关、分享、语音与 WebUI 已停止' : '网关、分享与语音已停止；手动启动的 WebUI 保持运行'));
-    stopPolling();
-    lastStatus = null;
+    stopPolling(); lastStatus = null;
     setBadge(document.getElementById('badge'), 'stopped', '未启动');
     setBadge(document.getElementById('sd-badge'), 'stopped', '未检测');
     setBadge(document.getElementById('tts-badge'), 'stopped', '未检测');
@@ -903,27 +659,13 @@ function doStop() {
     setBadge(document.getElementById('voice-badge'), 'stopped', '未检测');
     setBadge(document.getElementById('share-badge'), 'stopped', '未检测');
     setBadge(document.getElementById('ready-badge'), 'stopped', '未检测');
-  }).catch(function(error) {
-    showToast('停止失败：' + error.message, true);
-  }).finally(function() {
-    button.disabled = false;
-  });
+  }).catch(function(error) { showToast('停止失败：' + error.message, true); })
+  .finally(function() { button.disabled = false; });
 }
 
 var pollInterval = null;
-function startPolling() {
-  if (pollInterval) return;
-  pollStatus();
-  pollLogs();
-  pollInterval = setInterval(function() {
-    pollStatus();
-    pollLogs();
-  }, 3000);
-}
-function stopPolling() {
-  if (pollInterval) clearInterval(pollInterval);
-  pollInterval = null;
-}
+function startPolling() { if (!pollInterval) { pollStatus(); pollLogs(); pollInterval = setInterval(function() { pollStatus(); pollLogs(); }, 3000); } }
+function stopPolling() { if (pollInterval) clearInterval(pollInterval); pollInterval = null; }
 </script>
 </body>
 </html>
