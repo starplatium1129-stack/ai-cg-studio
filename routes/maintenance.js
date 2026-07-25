@@ -117,7 +117,7 @@ module.exports = function (app, cfg) {
     } catch (error) { res.status(400).json({ ok:false, error:error.message }); }
   });
 
-  app.post('/api/save-backup', express.json({ limit:'22mb' }), function (req, res) {
+  app.post('/api/backup', express.json({ limit:'22mb' }), function (req, res) {
     try {
       var imageBase64 = req.body.imageBase64, filename = req.body.filename;
       if (!imageBase64) return res.status(400).json({ error:'No image data' });

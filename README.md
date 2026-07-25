@@ -14,7 +14,7 @@ This is an unofficial, non-commercial fan project and is not affiliated with or 
 
 ## Features
 
-- 284 searchable and filterable Scenes, classified as All, R15, or R18 by depicted content
+- 298 searchable and filterable Scenes, classified as All, R15, or R18 by depicted content
 - A reviewed result gallery with one approved image per Scene, featured/character/rating filters, and direct links back into the director
 - A director workspace for story, character, mood, camera, composition, lighting, and color
 - Automatic Positive / Negative Prompt assembly and scene-aware LoRA injection

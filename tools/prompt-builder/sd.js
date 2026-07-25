@@ -865,7 +865,7 @@ function callSDGenerate(requestOptions){
     var quickBanner = document.getElementById('quickCreateBanner');
     if (quickBanner && !quickBanner.hidden) showQuickCreateStatus('生成完成，已记住成功参数：' + AICQuickCreate.summary(savedSettings), false);
     if (window.AICS_GATEWAY) {
-      fetch('/api/save-backup', {
+      fetch('/api/backup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ imageBase64:result.image, filename:'gen_' + Date.now() + '.png' })

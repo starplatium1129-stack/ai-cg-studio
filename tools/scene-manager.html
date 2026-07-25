@@ -19,9 +19,9 @@
   .search-input:focus { border-color: var(--accent); outline: none; }
   .filter-select { padding: 8px 12px; background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-md); color: var(--text-primary); font-size: .85rem; }
   .btn { padding: 8px 16px; border: none; border-radius: var(--r-md); cursor: pointer; font-size: .85rem; font-weight: 600; transition: all var(--t-fast); }
-  .btn-primary { background: var(--accent); color: white; }
+  .btn-primary { background: var(--accent); color: var(--text-inverse); }
   .btn-primary:hover { opacity: .9; }
-  .btn-danger { background: #e53935; color: white; }
+  .btn-danger { background: var(--danger); color: var(--text-inverse); }
   .btn-danger:hover { opacity: .9; }
   .btn-ghost { background: transparent; color: var(--text-secondary); border: 1px solid var(--border-soft); }
   .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
@@ -42,9 +42,9 @@
   tr:hover td { background: var(--bg-elevated); }
   .tag-chip { display: inline-block; padding: 2px 8px; background: var(--accent-soft); color: var(--accent); border-radius: 10px; font-size: .72rem; margin: 1px 2px; }
   .rating-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: .72rem; font-weight: 700; }
-  .rating-All { background: #E8F5E9; color: #2E7D32; }
-  .rating-R15 { background: #FFF3E0; color: #E65100; }
-  .rating-R18 { background: #FFEBEE; color: #C62828; }
+  .rating-All { background: color-mix(in srgb, var(--success) 22%, transparent); color: var(--success); }
+  .rating-R15 { background: color-mix(in srgb, var(--warning) 22%, transparent); color: var(--warning); }
+  .rating-R18 { background: color-mix(in srgb, var(--danger) 22%, transparent); color: var(--danger); }
   .story-preview { max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-secondary); font-size: .8rem; }
   .action-btns { display: flex; gap: 4px; white-space:nowrap; }
 
@@ -71,7 +71,7 @@
   /* Pagination */
   .pagination { display: flex; gap: var(--s-2); justify-content: center; margin-top: var(--s-4); align-items: center; }
   .page-btn { padding: 6px 12px; border: 1px solid var(--border-soft); background: var(--bg-surface); border-radius: var(--r-sm); cursor: pointer; font-size: .85rem; }
-  .page-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+  .page-btn.active { background: var(--accent); color: var(--text-inverse); border-color: var(--accent); }
   .page-btn:hover:not(.active) { border-color: var(--accent); }
 
   .tab-bar { display: flex; gap: var(--s-2); margin-bottom: var(--s-4); }
@@ -438,7 +438,7 @@ async function init() {
     if (!Array.isArray(SCENES)) throw new Error('scenes.json 格式错误：不是数组');
     if (!Array.isArray(TAGS)) throw new Error('tags.json 格式错误：不是数组');
   } catch (err) {
-    if (table) table.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:var(--s-6);color:#e53935">⚠️ ' + esc(err.message) + '<br><small>请确认通过 localhost 访问且文件存在</small></td></tr>';
+    if (table) table.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:var(--s-6);color:var(--danger)">⚠️ ' + esc(err.message) + '<br><small>请确认通过 localhost 访问且文件存在</small></td></tr>';
     return;
   }
 
@@ -638,11 +638,11 @@ function uploadShowcaseImage(input) {
 // Import
 function importScenes() {
   const input = document.getElementById('importInput').value.trim();
-  if (!input) { document.getElementById('importResult').innerHTML = '<p style="color:#e53935">请粘贴 JSON</p>'; return; }
+  if (!input) { document.getElementById('importResult').innerHTML = '<p style="color:var(--danger)">请粘贴 JSON</p>'; return; }
 
   let data;
   try { data = JSON.parse(input); } catch(e) {
-    document.getElementById('importResult').innerHTML = '<p style="color:#e53935">JSON 错误：' + e.message + '</p>';
+    document.getElementById('importResult').innerHTML = '<p style="color:var(--danger)">JSON 错误：' + e.message + '</p>';
     return;
   }
   if (!Array.isArray(data)) data = [data];
@@ -670,9 +670,9 @@ function importScenes() {
   });
 
   let html = '<div style="background:var(--bg-surface);border:1px solid var(--border-soft);border-radius:var(--r-md);padding:var(--s-4)">';
-  if (results.success.length) html += '<p style="color:#2E7D32">✅ 导入 ' + results.success.length + ' 个：' + results.success.join(', ') + '</p>';
-  if (results.skipped.length) html += '<p style="color:#E65100">⚠️ 跳过 ' + results.skipped.length + ' 个（ID 已存在）</p>';
-  if (results.errors.length) html += '<p style="color:#C62828">❌ 错误：' + results.errors.map(e => '#' + e.idx + ' ' + e.reason).join('; ') + '</p>';
+  if (results.success.length) html += '<p style="color:var(--success)">✅ 导入 ' + results.success.length + ' 个：' + results.success.join(', ') + '</p>';
+  if (results.skipped.length) html += '<p style="color:var(--warning)">⚠️ 跳过 ' + results.skipped.length + ' 个（ID 已存在）</p>';
+  if (results.errors.length) html += '<p style="color:var(--danger)">❌ 错误：' + results.errors.map(e => '#' + e.idx + ' ' + e.reason).join('; ') + '</p>';
   html += '</div><p style="color:var(--text-muted);font-size:.8rem;margin-top:var(--s-2)">记得点「导出 JSON」保存。</p>';
   document.getElementById('importResult').innerHTML = html;
   if (results.success.length) markDirty('批量导入已通过基础检查，等待保存到项目');

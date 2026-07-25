@@ -8,7 +8,7 @@ var createProxyMiddleware = require('http-proxy-middleware').createProxyMiddlewa
 var loadGatewayConfig = require('./server/config').loadGatewayConfig;
 var security = require('./server/security');
 var createChatRouter = require('./routes/chat').createChatRouter;
-var createVoiceRouter = require('./routes/tts').createVoiceRouter;
+var createVoiceRouter = require('./routes/voice').createVoiceRouter;
 var createLive2dRouter = require('./routes/live2d').createLive2dRouter;
 
 function createGateway(options) {
