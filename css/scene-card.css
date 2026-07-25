@@ -55,8 +55,8 @@
   position: absolute; z-index: 2; top: 6px; right: 6px; font-size: 0.7rem;
   background: var(--accent); color: var(--text-inverse); padding: 1px 6px; border-radius: 8px;
 }
-.sc-rating.r18 { background: #b4233c; }
-.sc-rating.r15 { background: #8a5a10; }
+.sc-rating.r18 { background: color-mix(in srgb, var(--danger) 75%, var(--bg-deep)); }
+.sc-rating.r15 { background: color-mix(in srgb, var(--warning) 55%, var(--bg-deep)); }
 /* 精品层级徽标(图区左上) */
 .sc-tier {
   position: absolute; z-index: 2; top: 6px; left: 6px;

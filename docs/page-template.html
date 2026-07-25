@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light" data-nav="PUT-YOUR-NAV-KEY-HERE">
+<!--
+  ============================================================
+  绫季绘境 · 新页面模板
+  复制本文件重命名，按注释替换标记即可。
+
+  公约 (按优先级排序):
+  1. 所有颜色用 var(--xxx) 设计 token，不要写 #XXXXXX
+  2. header 里固定引入: design-system.css / nav.js / theme.js
+  3. <body> 上 data-nav 决定导航高亮项 (scene/director/showcase/…/docs)
+  4. 新功能放 tools/，新文档放 docs/
+  ============================================================
+-->
+<head>
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>页面标题 · 绫季绘境</title>
+<!-- ↓ 这 3 行不能省 ↓ -->
+<link rel="stylesheet" href="../css/design-system.css?v=8">
+<script src="../tools/nav.js?v=6"></script>
+<script src="../tools/theme.js?v=5"></script>
+<style>
+  /* ---- 页面容器 ---- */
+  .page {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: var(--s-6) var(--s-5);
+  }
+  /* ---- 返回链接 ---- */
+  .nav-back {
+    display: inline-flex; align-items: center; gap: var(--s-2);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: var(--s-4);
+  }
+  .nav-back:hover { color: var(--accent); }
+  /* ---- 页面标题 ---- */
+  h1.title {
+    font-size: 2rem; font-weight: 800;
+    background: linear-gradient(135deg, var(--text-primary) 50%, var(--accent));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: var(--s-2);
+  }
+  .subtitle {
+    color: var(--text-secondary);
+    margin-bottom: var(--s-5);
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  /* ---- 你的自定义样式从这往下写 ---- */
+  /*  颜色用 var(--xxx), 间距用 var(--s-1) 到 var(--s-8) */
+  /*  圆角用 var(--r-sm) / --r-md / --r-lg / --r-xl / --r-pill */
+  /*  常用 class: .btn .btn-primary .btn-ghost .card .chip .callout */
+
+</style>
+</head>
+<body>
+
+<!-- ========== 导航 (不要改, nav.js 自动渲染) ========== -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand"><span class="sr-only">绫季绘境</span></div>
+    <div class="nav-links"><!-- 自动填充 --></div>
+  </div>
+</nav>
+
+<!-- ========== 页面正文 ========== -->
+<article class="page">
+
+  <!-- 返回链接 — 改成你要回退到的页面 -->
+  <a href="index.html" class="nav-back">← 返回</a>
+
+  <!-- 页面标题 -->
+  <h1 class="title">📄 页面标题</h1>
+  <p class="subtitle">这里是副标题，一句话解释这个页面是做什么的。</p>
+
+  <!-- ===== 你的内容从这开始 ===== -->
+
+  <!-- 卡片示例 -->
+  <div class="card" style="padding:var(--s-5);margin-bottom:var(--s-4)">
+    <h2 style="margin-bottom:var(--s-2)">Lorem Ipsum</h2>
+    <p>这是一段示例文本，展示了默认的 <strong>文字层级</strong> 和间距。</p>
+  </div>
+
+  <!-- 按钮示例 -->
+  <div style="display:flex;gap:var(--s-2);flex-wrap:wrap;margin-bottom:var(--s-4)">
+    <button class="btn btn-primary">主要按钮</button>
+    <button class="btn btn-ghost">次要按钮</button>
+  </div>
+
+  <!-- 徽章 / Tag 示例 -->
+  <div style="display:flex;gap:var(--s-1);flex-wrap:wrap;margin-bottom:var(--s-4)">
+    <span class="chip">普通 Tag</span>
+    <span class="chip active">选中状态</span>
+  </div>
+
+  <!-- ===== 内容结束 ===== -->
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <p>绫季绘境 · 你的页面</p>
+  </footer>
+
+</article>
+
+</body>
+</html>

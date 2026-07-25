@@ -22,7 +22,8 @@
     "scenes:import": "node scripts/maintenance/split-scenes.js --write && node scripts/maintenance/build-scenes.js",
     "scenes:normalize": "node scripts/maintenance/classify-scene-ratings.js --write && node scripts/maintenance/optimize-scenes.js --write && node scripts/maintenance/validate-scenes.js",
     "optimize-scenes": "node scripts/maintenance/optimize-scenes.js --write",
-    "classify-ratings": "node scripts/maintenance/classify-scene-ratings.js --write"
+    "classify-ratings": "node scripts/maintenance/classify-scene-ratings.js --write",
+    "lint:colors": "node scripts/maintenance/lint-colors.js"
   },
   "dependencies": {
     "express": "^4.21.0",
