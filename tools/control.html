@@ -1,13 +1,11 @@
 ﻿<!DOCTYPE html>
 <html lang="zh-CN" data-theme="dark">
 <head>
-<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>绫季绘境 · 启动控制面板</title>
-<link rel="stylesheet" href="../css/design-system.css?v=8">
-<script src="nav.js?v=6"></script>
-<script src="theme.js?v=5"></script>
+<link rel="stylesheet" href="/css/design-system.css?v=8">
 <style>
   .page { max-width:860px; margin:0 auto; padding:var(--s-5) var(--s-4); }
 
@@ -152,8 +150,10 @@
 
 <nav class="nav">
   <div class="nav-inner">
-    <div class="nav-brand"><span class="sr-only">绫季绘境</span></div>
-    <div class="nav-links"></div>
+    <div class="nav-brand"><img src="/assets/logo.svg" alt="绫季绘境" style="height:32px;width:auto" aria-hidden="true"><span class="sr-only">绫季绘境</span></div>
+    <div class="nav-links">
+      <button class="theme-toggle" type="button" onclick="toggleTheme()" aria-label="切换主题" title="切换明暗主题"><span id="theme-icon">🌙</span></button>
+    </div>
   </div>
 </nav>
 
@@ -320,6 +320,16 @@
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  document.getElementById('theme-icon').textContent = theme === 'dark' ? '🌙' : '☀️';
+  try { localStorage.setItem('aics_theme', theme); } catch (e) {}
+}
+function toggleTheme() {
+  applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+}
+try { applyTheme(localStorage.getItem('aics_theme') || 'dark'); } catch (e) { applyTheme('dark'); }
+
 var logIndex = 0;
 var toastTimer = null;
 var lastStatus = null;

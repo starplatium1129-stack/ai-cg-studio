@@ -496,6 +496,10 @@ app.use(function (req, res, next) {
   next();
 });
 
+app.use('/css', express.static(path.join(dir, 'css'), { dotfiles:'deny', index:false }));
+app.use('/tools', express.static(path.join(dir, 'tools'), { dotfiles:'deny', index:false }));
+app.use('/assets', express.static(path.join(dir, 'assets'), { dotfiles:'deny', index:false }));
+
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'control.html'));
 });
