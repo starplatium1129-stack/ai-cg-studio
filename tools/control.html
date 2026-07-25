@@ -7,7 +7,41 @@
 <title>绫季绘境 · 启动控制面板</title>
   <link rel="stylesheet" href="../css/design-system.css?v=8">
 <style>
+  :root {
+    color-scheme:light;
+    --bg-base: #faf7f2;
+    --bg-surface: #ffffff;
+    --bg-elevated: #f5f2ed;
+    --bg-deep: #f0ece6;
+    --border-strong: #e0dce6;
+    --border-soft: #ebe7ee;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,.06);
+    --shadow-md: 0 8px 24px rgba(44,44,58,.08);
+    --accent-soft: rgba(244,166,215,.1);
+  }
 
+  [data-theme="light"] {
+    color-scheme:light;
+    --bg-base: #faf7f2;
+    --bg-surface: #ffffff;
+    --bg-elevated: #f5f2ed;
+    --bg-deep: #f0ece6;
+    --border-strong: #e0dce6;
+    --border-soft: #ebe7ee;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,.06);
+    --shadow-md: 0 8px 24px rgba(44,44,58,.08);
+    --accent-soft: rgba(244,166,215,.1);
+  }
+
+  [data-theme="dark"] {
+    color-scheme:dark;
+    --bg-surface: #23232a;
+    --bg-elevated: #2a2a33;
+    --bg-deep: #14141a;
+    --border-strong: #3a3a46;
+    --border-soft: #303039;
+    --shadow-md: 0 8px 24px rgba(0,0,0,.35);
+  }
 
   * { box-sizing:border-box; }
   html { min-width:320px; }
