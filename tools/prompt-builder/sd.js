@@ -878,6 +878,9 @@ function callSDGenerate(requestOptions){
         return AICGImageStore.put(blob);
       }).then(function(imageId){
         return saveHistoryWithRating({face:0,expression:0,composition:0,hands:0,atmosphere:0}, false, '', '', imageId, true, result.image);
+      }).catch(function(saveError){
+        // IndexedDB 保存失败时，仍用 base64 image_data 保存历史
+        return saveHistoryWithRating({face:0,expression:0,composition:0,hands:0,atmosphere:0}, false, '', '', '', true, result.image);
       }).then(function(){
         status.textContent = '✅ 队列作品已自动保存到历史 · ' + elapsed + ' 秒';
         if (historySaveButton) historySaveButton.textContent = '✓ 队列已保存';
@@ -914,6 +917,10 @@ function saveGeneratedImage(){
   }).then(function(imageId){
     var rating = {face:0,expression:0,composition:0,hands:0,atmosphere:0};
     return saveHistoryWithRating(rating, false, '', '', imageId, true, _sdLastDataUrl);
+  }).catch(function(e){
+    // IndexedDB 保存失败时，仍用 base64 image_data 保存历史记录
+    var rating = {face:0,expression:0,composition:0,hands:0,atmosphere:0};
+    return saveHistoryWithRating(rating, false, '', '', '', true, _sdLastDataUrl);
   }).then(function(){
     flash('💾 图片已保存到历史');
     if (button) button.textContent = '✓ 已保存';
