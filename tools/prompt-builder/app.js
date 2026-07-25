@@ -142,7 +142,123 @@ function restoreFromEntry(h, isVariant){
 }
 
 
+function dispatchDirectorAction(el, event) {
+  var action = el.getAttribute('data-action');
+  if (!action) return;
+  switch (action) {
+    case 'toggle-focus-mode': return toggleFocusMode();
+    case 'toggle-utility-menu': return toggleUtilityMenu(event);
+    case 'export-local-data': closeUtilityMenu(); return exportLocalData();
+    case 'open-backup-picker': closeUtilityMenu(); return openBackupPicker();
+    case 'run-storage-health': closeUtilityMenu(); return runStorageHealthCheck();
+    case 'discard-quarantined': closeUtilityMenu(); return discardQuarantinedHistory();
+    case 'replay-first-creation': closeUtilityMenu(); return replayFirstCreation();
+    case 'preview-backup-file': return previewBackupFile();
+    case 'switch-project': return switchProject(el.value);
+    case 'create-project': return createProject();
+    case 'set-story': return setStory(el);
+    case 'set-char': return setChar(el.getAttribute('data-char'));
+    case 'filter-scenes': return filterScenes(el.value);
+    case 'clear-scene-search': return clearSceneSearch();
+    case 'toggle-scene-library-mode': return toggleSceneLibraryMode();
+    case 'reset-scene-filters': return resetSceneFilters();
+    case 'toggle-scene-filters': return toggleSceneFilters();
+    case 'render-scenes': return renderScenes();
+    case 'start-first-creation': return startFirstCreation();
+    case 'dismiss-first-creation': return dismissFirstCreation();
+    case 'load-random-signature-scene': return loadRandomSignatureScene();
+    case 'focus-scene-search': return focusSceneSearch();
+    case 'toggle-monitor': return toggleMonitor();
+    case 'copy-prompt': return copyPrompt();
+    case 'export-prompt': return exportPrompt();
+    case 'export-png': return exportPNG();
+    case 'save-history': return saveHistory();
+    case 'use-last-seed': return useLastSeedForTweak();
+    case 'enqueue-sd-generate': return enqueueSDGenerate();
+    case 'save-history-and-dismiss-success': saveHistory(); return dismissFirstSuccessTip();
+    case 'dismiss-first-success': return dismissFirstSuccessTip();
+    case 'toggle-result': return toggleResult();
+    case 'call-sd-generate': return callSDGenerate();
+    case 'quick-create-current': return quickCreateCurrent();
+    case 'cancel-sd-generate': return cancelSDGenerate();
+    case 'open-review': return openReview();
+    case 'reset-director': return resetDirector();
+    case 'resume-sd-queue': return resumeSDQueue();
+    case 'save-generated-image': return saveGeneratedImage();
+    case 'download-generated-image': return downloadGeneratedImage();
+    case 'refresh-voice-text': return refreshVoiceText(true);
+    case 'refresh-voice-script': return refreshVoiceScript(true);
+    case 'check-voice-status': return checkVoiceStatus();
+    case 'translate-voice-caption': return translateVoiceCaption();
+    case 'preview-voice': return previewVoice();
+    case 'generate-ai-voice': return generateAIVoice();
+    case 'stop-voice': return stopVoice();
+    case 'download-voice': return downloadVoice();
+    case 'set-director-mode': return setDirectorMode(el.getAttribute('data-mode'));
+    case 'suggest-tags-from-story': return suggestTagsFromStory();
+    case 'generate': return generate();
+    case 'toggle-train': return toggleTrain();
+    case 'close-review': return closeReview();
+    case 'toggle-fav': return toggleFav();
+    case 'update-review-image-file': return updateReviewImageFile();
+    case 'remove-review-image-file': return removeReviewImageFile();
+    case 'update-review-image-url': return updateReviewImageUrl();
+    case 'submit-review': return submitReview();
+    case 'close-backup-restore': return closeBackupRestore();
+    case 'restore-local-data': return restoreLocalData(el.getAttribute('data-mode') || 'replace');
+    case 'set-rating': return setRating(el.getAttribute('data-axis'), +el.getAttribute('data-n'));
+    case 'load-recent-scene': return loadRecentScene(el.getAttribute('data-scene-id'));
+    case 'detach-scene-context': return detachSceneContext();
+    case 'load-scene-idx': {
+      var idx = parseInt(el.getAttribute('data-idx'), 10);
+      if (SCENES[idx]) loadScene(SCENES[idx]);
+      return;
+    }
+    case 'clear-light-hint': return clearLightHint();
+    case 'remove-sd-queue-job': return removeSDQueueJob(el.getAttribute('data-job-id'));
+    case 'show-more-history': return showMoreHistory();
+    case 'continue-history': return continueHistoryId(el.getAttribute('data-id'));
+    case 'copy-history': return copyHistoryId(el.getAttribute('data-id'));
+    case 'delete-history': return deleteHistoryId(el.getAttribute('data-id'));
+    case 'history-fallback': return useHistoryFallback(el);
+    case 'remove-self': el.remove(); return;
+    default: return;
+  }
+}
+
+function initActionDelegation() {
+  document.addEventListener('click', function (event) {
+    var el = event.target.closest('[data-action]');
+    if (!el) return;
+    var tag = el.tagName;
+    if (tag === 'SELECT' || tag === 'TEXTAREA') return;
+    if (tag === 'INPUT' && el.type !== 'button' && el.type !== 'submit' && el.type !== 'checkbox' && el.type !== 'radio') return;
+    dispatchDirectorAction(el, event);
+  });
+  document.addEventListener('change', function (event) {
+    var el = event.target.closest('[data-action]');
+    if (!el) return;
+    if (el.tagName !== 'SELECT' && el.tagName !== 'INPUT') return;
+    dispatchDirectorAction(el, event);
+  });
+  document.addEventListener('input', function (event) {
+    var el = event.target.closest('[data-action]');
+    if (!el) return;
+    if (el.tagName !== 'INPUT' && el.tagName !== 'TEXTAREA') return;
+    if (el.tagName === 'INPUT' && (el.type === 'checkbox' || el.type === 'radio' || el.type === 'file' || el.type === 'button')) return;
+    dispatchDirectorAction(el, event);
+  });
+  document.addEventListener('error', function (event) {
+    var el = event.target;
+    if (!el || !el.getAttribute) return;
+    var action = el.getAttribute('data-action');
+    if (action === 'history-fallback') useHistoryFallback(el);
+    else if (action === 'remove-self') el.remove();
+  }, true);
+}
+
 function bindControls() {
+  initActionDelegation();
   document.querySelectorAll('.pb-tab').forEach(tab => {
     tab.onclick = () => switchTab(tab.dataset.tab, tab);
   });
@@ -157,7 +273,10 @@ function bindControls() {
     refreshVoiceText(false);
     updateLivePreview();
   };
-  document.querySelector('.story-chips').addEventListener('click', e => { if (e.target.classList.contains('story-chip')) setTimeout(clearStorySuggestions, 0); });
+  document.querySelector('.story-chips').addEventListener('click', e => {
+    var chip = e.target.closest('.story-chip');
+    if (chip) setTimeout(clearStorySuggestions, 0);
+  });
   document.getElementById('sceneGrid').addEventListener('dblclick', function(e) {
     if (e.target.closest('.scene-direct-btn')) return;
     var mainControl = e.target.closest('.scene-card-main');

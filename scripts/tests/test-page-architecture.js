@@ -21,11 +21,11 @@ const pages = [
 ];
 
 // Pages that must have zero HTML event attributes (CSP-ready).
-// prompt-builder remains on a temporary unsafe-inline exception.
 const noInlineHandlerPages = pages.map(function (entry) { return entry[0]; });
 
-const inlineHandlerRe = /\son(?:click|change|input|submit|keydown|keyup|focus|blur)\s*=/i;
-const jsInlineHandlerRe = /\son(?:click|change|input|submit|keydown|keyup|focus|blur)\s*=/;
+const inlineHandlerRe = /\son(?:click|change|input|submit|keydown|keyup|focus|blur|error)\s*=/i;
+// Leading whitespace or quote so property assigns like el.onclick= are not matched.
+const jsInlineHandlerRe = /(?:^|[\s"'`])on(?:click|change|input|submit|keydown|keyup|focus|blur|error)\s*=/;
 
 for (const [htmlRelative, jsRelative] of pages) {
   const htmlPath = path.join(root, htmlRelative);
@@ -47,4 +47,16 @@ for (const [htmlRelative, jsRelative] of pages) {
   }
 }
 
-console.log(`Page architecture tests passed: ${pages.length} controllers are external, CSP-ready, and syntactically valid`);
+// prompt-builder is multi-module; scan HTML + modules that emit dynamic markup.
+const builderHtmlRel = 'tools/prompt-builder.html';
+const builderHtml = fs.readFileSync(path.join(root, builderHtmlRel), 'utf8');
+assert(!inlineHandlerRe.test(builderHtml), `${builderHtmlRel} must not use HTML event attributes`);
+const builderModules = ['scene.js', 'queue.js', 'history.js', 'ui.js', 'app.js', 'prompt.js', 'sd.js'];
+for (const name of builderModules) {
+  const rel = 'tools/prompt-builder/' + name;
+  const source = fs.readFileSync(path.join(root, rel), 'utf8');
+  assert(!jsInlineHandlerRe.test(source), `${rel} must not emit inline event attributes`);
+  new vm.Script(source, { filename:rel });
+}
+
+console.log(`Page architecture tests passed: ${pages.length} controllers + prompt-builder modules are external, CSP-ready, and syntactically valid`);

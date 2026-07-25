@@ -77,7 +77,7 @@ function renderSDQueue(){
     '<div class="sd-queue-item"><span class="sd-queue-index">生成中</span><div class="sd-queue-copy"><div class="sd-queue-title">' + escapeHtml(_sdActiveQueueJob.title) + '</div><div class="sd-queue-meta">' + escapeHtml(_sdActiveQueueJob.size) + ' · seed ' + escapeHtml(_sdActiveQueueJob.seed < 0 ? '随机' : _sdActiveQueueJob.seed) + '</div></div><span></span></div>'
   );
   _sdQueue.forEach(function(job, index){
-    rows.push('<div class="sd-queue-item"><span class="sd-queue-index">' + (index + 1) + '</span><div class="sd-queue-copy"><div class="sd-queue-title">' + escapeHtml(job.title) + '</div><div class="sd-queue-meta">' + escapeHtml(job.size) + ' · seed ' + escapeHtml(job.seed < 0 ? '随机' : job.seed) + '</div></div><button class="sd-queue-remove" type="button" onclick="removeSDQueueJob(\'' + job.id + '\')" aria-label="移出队列">×</button></div>');
+    rows.push('<div class="sd-queue-item"><span class="sd-queue-index">' + (index + 1) + '</span><div class="sd-queue-copy"><div class="sd-queue-title">' + escapeHtml(job.title) + '</div><div class="sd-queue-meta">' + escapeHtml(job.size) + ' · seed ' + escapeHtml(job.seed < 0 ? '随机' : job.seed) + '</div></div><button class="sd-queue-remove" type="button" data-action="remove-sd-queue-job" data-job-id="' + escapeHtml(job.id) + '" aria-label="移出队列">×</button></div>');
   });
   list.innerHTML = rows.join('');
 }

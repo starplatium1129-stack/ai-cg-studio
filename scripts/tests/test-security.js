@@ -117,7 +117,8 @@ async function main() {
   assert.ok(!chatScript.includes("'unsafe-inline'"), 'chat should not need script unsafe-inline');
 
   var builderScript = scriptSrcDirective(security.buildContentSecurityPolicy('/tools/prompt-builder.html'));
-  assert.ok(builderScript.includes("'unsafe-inline'"), 'prompt-builder temporary exception until handlers migrate');
+  assert.ok(builderScript.includes("'self'"), 'prompt-builder must use script-src self');
+  assert.ok(!builderScript.includes("'unsafe-inline'"), 'prompt-builder handlers migrated — no script unsafe-inline');
   assert.ok(!builderScript.includes("'unsafe-eval'"), 'prompt-builder must not get eval');
 
   var headers = await runMiddleware(security.responseHeaders, mockReq({ path:'/tools/control.html' }));

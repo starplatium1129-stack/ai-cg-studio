@@ -27,10 +27,8 @@ function normalizeRequestPath(pathValue) {
 function buildContentSecurityPolicy(pathValue) {
   var path = normalizeRequestPath(pathValue);
   var chatPage = path === '/tools/chat.html' || path === '/tools/chat';
-  var promptBuilderPage = path === '/tools/prompt-builder.html' || path === '/tools/prompt-builder';
   var scriptSrc = "'self'";
   if (chatPage) scriptSrc += " 'unsafe-eval'";
-  else if (promptBuilderPage) scriptSrc += " 'unsafe-inline'";
   return "default-src 'self'; img-src 'self' data: blob: https:; media-src 'self' data: blob:; " +
     'script-src ' + scriptSrc + '; ' +
     "style-src 'self' 'unsafe-inline'; connect-src 'self' data: blob: https:; " +

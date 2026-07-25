@@ -59,7 +59,11 @@ try {
 
 const moduleVersions = {
   'state.js':'2',
-  'scene.js':'3',
+  'scene.js':'4',
+  'queue.js':'2',
+  'history.js':'2',
+  'ui.js':'2',
+  'app.js':'2',
   'sd.js':'2',
   'voice.js':'5',
   'backup.js':'2'

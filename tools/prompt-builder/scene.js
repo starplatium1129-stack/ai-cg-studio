@@ -82,7 +82,7 @@ function loadRandomSignatureScene() {
 function renderRecentSceneShortcuts() {
   var host = document.getElementById('recentSceneShortcuts'); if (!host) return;
   var recent = AICSceneUX.readRecent(localStorage).map(function(item){ return SCENES.find(function(scene){ return scene.id === item.id; }); }).filter(Boolean).slice(0,3);
-  host.innerHTML = recent.map(function(scene){ var icon=sceneCharacterKey(scene)==='natsume'?'leaf':sceneCharacterKey(scene)==='triad'?'both':'flower'; return '<button class="recent-scene-chip" type="button" onclick="loadRecentScene(\'' + escapeHtml(scene.id) + '\')"><span data-icon="' + icon + '"></span>' + escapeHtml(scene.title) + '</button>'; }).join('');
+  host.innerHTML = recent.map(function(scene){ var icon=sceneCharacterKey(scene)==='natsume'?'leaf':sceneCharacterKey(scene)==='triad'?'both':'flower'; return '<button class="recent-scene-chip" type="button" data-action="load-recent-scene" data-scene-id="' + escapeHtml(scene.id) + '"><span data-icon="' + icon + '"></span>' + escapeHtml(scene.title) + '</button>'; }).join('');
   if (window.AICIcons) AICIcons.hydrate(host);
 }
 function loadRecentScene(id) { var scene=SCENES.find(function(item){return item.id===id;}); if(scene) loadScene(scene); }
@@ -109,7 +109,7 @@ function renderSceneContext() {
     return;
   }
   host.hidden = false;
-  host.innerHTML = '<span>基于精选场景</span><strong>' + escapeHtml(scene.title) + '</strong><button type="button" onclick="detachSceneContext()">转为自由创作</button>';
+  host.innerHTML = '<span>基于精选场景</span><strong>' + escapeHtml(scene.title) + '</strong><button type="button" data-action="detach-scene-context">转为自由创作</button>';
 }
 
 function setSelectionControlState(control, selected) {
@@ -345,7 +345,7 @@ function renderSceneMini() {
   const ids = Array.isArray(CURATION_DATA.signatureSceneIds) && CURATION_DATA.signatureSceneIds.length ? CURATION_DATA.signatureSceneIds : (CURATION_DATA.curatedSceneIds || []);
   const picks = ids.map(function(id){ return SCENES.find(function(scene){ return scene.id === id; }); }).filter(Boolean).slice(0, 6);
   grid.innerHTML = picks.map((s) => `
-    <div class="scene-mini-card" onclick="window._loadSceneByIdx(${SCENES.indexOf(s)})">
+    <div class="scene-mini-card" data-action="load-scene-idx" data-idx="${SCENES.indexOf(s)}">
       <div class="scene-mini-name">${s.title}</div>
       <div class="scene-mini-story">${s.story}</div>
     </div>`).join('');
@@ -480,7 +480,7 @@ function renderScenes() {
     const contentRating = s.rating || (s.mature ? 'R18' : 'All');
     const cacheStr = '?v=' + _thumbCacheV;
     selectBtn.innerHTML = `
-      ${thumbId ? `<img class="scene-thumb${contentRating === 'R18' ? ' r18' : ''}" src="/scene-showcase/thumbs/${thumbId}.jpg${cacheStr}" alt="" loading="lazy" decoding="async" onerror="this.remove()">` : ''}
+      ${thumbId ? `<img class="scene-thumb${contentRating === 'R18' ? ' r18' : ''}" src="/scene-showcase/thumbs/${thumbId}.jpg${cacheStr}" alt="" loading="lazy" decoding="async" data-action="remove-self">` : ''}
       <span class="scene-text">
       <span class="scene-name">${escapeHtml(s.title)}${s.mature ? ' <span class="mature-dot">🔞</span>' : ''}</span>
       <span class="scene-story">${escapeHtml(s.story)}</span>
@@ -670,7 +670,7 @@ function renderLightHint(hint, title) {
   if (!hint) { el.classList.remove('show'); return; }
   const lm = { sunset:'夕阳光', window_light:'窗光', backlighting:'逆光', moonlight:'月光', night_lamp:'夜灯', neon:'霓虹', candlelight:'烛光', overcast:'阴天' };
   el.classList.add('show');
-  el.innerHTML = '<span>场景建议光照：<b>' + (lm[hint]||hint) + '</b></span><button onclick="clearLightHint()" aria-label="关闭光照建议">×</button>';
+  el.innerHTML = '<span>场景建议光照：<b>' + (lm[hint]||hint) + '</b></span><button type="button" data-action="clear-light-hint" aria-label="关闭光照建议">×</button>';
 }
 function clearLightHint() { const el=document.getElementById('sceneLightHint'); if(el) el.classList.remove('show'); }
 function findEmotionId(name) {
