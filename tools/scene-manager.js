@@ -680,7 +680,7 @@ function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt
 
 var TOOLS = [
   { id:'lint-colors', icon:'🎨', label:'检查硬编码颜色', desc:'扫描 HTML/CSS 中未用设计 token 的 #XXXXXX 颜色' },
-  { id:'validate',    icon:'✅', label:'完整场景校验', desc:'检查场景 ID 唯一性、字段完整性、评级一致性' },
+  { id:'validate-scenes', icon:'✅', label:'完整场景校验', desc:'检查场景 ID 唯一性、字段完整性、评级一致性' },
   { id:'classify',    icon:'🏷', label:'更新场景评级', desc:'根据标签内容重新计算 All/R15/R18 评级' },
   { id:'optimize',    icon:'⚙️', label:'规范化提示词', desc:'统一标签命名、补全标准负面词、修复占位符' }
 ];
