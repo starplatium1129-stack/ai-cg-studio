@@ -1074,55 +1074,6 @@
     "rating": "All"
   },
   {
-    "id": "sc024",
-    "title": "探病袋里多出来的东西",
-    "category": "日常",
-    "story": "【夏目 · 探病袋里多出来的东西】冬日清晨，夏目戴着口罩来探病，纸袋里除了橘子、药和体温计，还有一份字迹工整的注意事项。她一边责备你不懂照顾自己，一边把水温调好放到床边。你道谢时，她把视线转向窗外——「我只是受不了计划被打乱。快点好起来……这样我明天就不用再跑一趟。」",
-    "char": "natsume",
-    "character": [
-      "natsume"
-    ],
-    "lora": "shiki_natsume_v14",
-    "emotion": "温柔",
-    "season": "冬",
-    "time": "清晨",
-    "timeOfDay": "morning",
-    "tags": [
-      "mole_under_eye",
-      "bedroom",
-      "apron",
-      "shy",
-      "blush",
-      "face_mask",
-      "carrying_groceries",
-      "orange_fruit",
-      "bedside",
-      "caring",
-      "reserved_expression",
-      "morning",
-      "clear_sky",
-      "upper_body",
-      "medium_shot",
-      "window_light",
-      "morning_light",
-      "gentle_smile",
-      "soft_eyes"
-    ],
-    "mature": false,
-    "location": "卧室",
-    "weather": "晴",
-    "camera": "床边半身中景",
-    "lighting": "冬日清晨窗光",
-    "usage": [
-      "展示图"
-    ],
-    "prompt": "(bedroom bedside visit:1.5), hospital visit bag, medicine boxes, fruit in grocery bag, face mask, worried caring expression, 1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, bedroom, shy, blush, face_mask, carrying_groceries, orange_fruit, bedside, caring, reserved_expression, morning, clear_sky, upper_body, medium_shot, window_light, morning_light, gentle_smile, soft_eyes, <lora:shiki_natsume_v14:0.9>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, maid, maid headdress, restaurant",
-    "storyJa": "【夏目・お見舞いカバンの中に余分なものが入っている】冬の朝、夏目さんがマスクをして診察にやって来ました。紙袋の中にはみかん、薬、体温計のほかに、きちんと書かれたメモも入っていた。自分の世話の仕方がわからないと叱りながら、彼女はお湯の温度を調整し、ベッドの横に置きました。あなたが彼女に感謝すると、彼女は窓に視線を向けた――「予定を狂わされるのが嫌なだけ。早く元気になって……そうすれば明日、また来なくて済むでしょ。」",
-    "rating": "All",
-    "auditRevision": "round2-2026-07-22"
-  },
-  {
     "id": "sc025",
     "title": "鲸鲨游过头顶的时候",
     "category": "恋爱",
