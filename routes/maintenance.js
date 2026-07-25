@@ -109,6 +109,26 @@ function createMaintenanceRouter(cfg) {
     if (changed) writeJson(lorasPath, loras);
   }
 
+  function autoRetireDeletedScenes(incomingScenes, previousScenes) {
+    var incomingIds = new Set(incomingScenes.map(function (s) { return s.id; }));
+    var retiredPath = path.join(__dirname, '..', 'data', 'retired-scenes.json');
+    var retired = readJson(retiredPath);
+    var retiredIds = new Set(retired.map(function (r) { return r.id; }));
+    var added = [];
+
+    previousScenes.forEach(function (scene) {
+      if (!incomingIds.has(scene.id) && !retiredIds.has(scene.id)) {
+        retired.push({ id: scene.id, title: scene.title, reason: '在场景管理中下架', date: new Date().toISOString().split('T')[0] });
+        added.push(scene.id);
+      }
+    });
+
+    if (added.length) {
+      writeJson(retiredPath, retired);
+      console.log('  🗑 已登记 ' + added.length + ' 个下架场景: ' + added.join(', '));
+    }
+  }
+
   router.post('/api/maintenance/scenes', maintenanceLocalOnly, express.json({ limit:'12mb' }), function (req, res) {
     var scenes = req.body && req.body.scenes;
     if (!Array.isArray(scenes) || scenes.length > 1000) return res.status(400).json({ error:'场景数据格式错误或数量超出限制' });
@@ -124,7 +144,9 @@ function createMaintenanceRouter(cfg) {
       if (!fs.existsSync(MAINTENANCE_BACKUP_DIR)) fs.mkdirSync(MAINTENANCE_BACKUP_DIR, { recursive:true });
       var stamp = new Date().toISOString().replace(/[:.]/g, '-');
       fs.writeFileSync(path.join(MAINTENANCE_BACKUP_DIR, 'scenes-' + stamp + '.json'), sceneStore.jsonText(sceneStore.loadSceneShards().scenes));
+      var prevScenes = sceneStore.loadSceneShards().scenes;
       sceneStore.writeSceneSet(scenes);
+      autoRetireDeletedScenes(scenes, prevScenes);
       cleanOrphanedSceneRefs();
       runMaintenanceChecks();
       res.json({ ok:true, count:scenes.length, message:'场景已保存并通过校验' });
