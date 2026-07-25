@@ -496,6 +496,10 @@ app.use(function (req, res, next) {
   next();
 });
 
+app.use('/css', express.static(path.join(dir, 'css'), { dotfiles:'deny', index:false }));
+app.use('/tools', express.static(path.join(dir, 'tools'), { dotfiles:'deny', index:false }));
+app.use('/assets', express.static(path.join(dir, 'assets'), { dotfiles:'deny', index:false }));
+
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'control.html'));
 });
@@ -673,9 +677,7 @@ app.post('/api/start', function (req, res) {
     return res.json({ ok: true, msg: 'Already running' });
   }
   var enableTunnel = req.body && typeof req.body.enableTunnel === 'boolean' ? req.body.enableTunnel : true;
-  var webuiResult = runManagedWebUI('Start');
-  if (!webuiResult.ok) log('Managed WebUI start failed: ' + webuiResult.error);
-  else log(webuiResult.message || 'Managed WebUI checked.');
+
   findAvailableGatewayPort(function (portError, gatewayPort) {
     if (portError) return res.status(503).json({ ok:false, msg:portError.message });
     state.gatewayPort = gatewayPort;
