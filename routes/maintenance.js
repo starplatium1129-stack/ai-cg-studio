@@ -129,6 +129,31 @@ function createMaintenanceRouter(cfg) {
       writeJson(retiredPath, data);
       console.log('  🗑 已登记 ' + added.length + ' 个下架场景: ' + added.join(', '));
     }
+
+    // Also remove showcase sample images for retired scenes
+    if (added.length && SCENE_SHOWCASE_DIR) {
+      added.forEach(function (sceneId) {
+        var exts = ['jpg', 'png', 'webp'];
+        exts.forEach(function (ext) {
+          var imgPath = path.join(SCENE_SHOWCASE_DIR, 'images', sceneId + '.' + ext);
+          var thumbPath = path.join(SCENE_SHOWCASE_DIR, 'thumbs', sceneId + '.' + ext);
+          try { if (fs.existsSync(imgPath)) { fs.unlinkSync(imgPath); console.log('  🖼 已删除样张: images/' + sceneId + '.' + ext); } } catch (e) {}
+          try { if (fs.existsSync(thumbPath)) { fs.unlinkSync(thumbPath); console.log('  🖼 已删除缩略图: thumbs/' + sceneId + '.' + ext); } } catch (e) {}
+        });
+        // Remove from manifest if it exists
+        var manifestPath = path.join(SCENE_SHOWCASE_DIR, 'manifest.json');
+        if (fs.existsSync(manifestPath)) {
+          try {
+            var m = readJson(manifestPath);
+            if (m && Array.isArray(m.entries)) {
+              m.entries = m.entries.filter(function (e) { return e.id !== sceneId; });
+              m.sceneCount = m.entries.length;
+              writeJson(manifestPath, m);
+            }
+          } catch (e) {}
+        }
+      });
+    }
   }
 
   router.post('/api/maintenance/scenes', maintenanceLocalOnly, express.json({ limit:'12mb' }), function (req, res) {
