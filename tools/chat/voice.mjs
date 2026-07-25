@@ -35,6 +35,7 @@ export class VoiceController {
     this.prepareKey = '';
     this.preparing = null;
     this._lastEmotion = 'neutral';
+    this._neutralStreak = 0;
   }
 
   async refreshAvailability() {
@@ -178,7 +179,14 @@ export class VoiceController {
     const cleaned = String(sourceText || '').replace(/[「」『』“”"'()（）*＊]/g, '').trim();
     if (!cleaned) return null;
     const rawEmotion = inferEmotion(cleaned, meta.character);
-    const emotion = rawEmotion === 'neutral' ? this._lastEmotion : rawEmotion;
+    let emotion;
+    if (rawEmotion === 'neutral') {
+      this._neutralStreak += 1;
+      emotion = this._neutralStreak >= 3 ? 'neutral' : this._lastEmotion;
+    } else {
+      this._neutralStreak = 0;
+      emotion = rawEmotion;
+    }
     this._lastEmotion = emotion;
     let translated = '';
 
@@ -197,23 +205,38 @@ export class VoiceController {
       if (isAbortError(error)) throw error;
     }
 
-    const response = await fetch('/api/tts', {
-      method: 'POST',
-      headers: { 'Content-Type':'application/json' },
-      body: JSON.stringify({
-        voice: meta.voice,
-        text: translated || cleaned,
-        language: translated ? 'ja' : 'zh',
-        emotion,
-        speed: 1
-      }),
-      signal
-    });
-    if (!response.ok) throw await responseError(response, '语音服务暂不可用');
-    let buffer = await response.arrayBuffer();
-    buffer = fixWavHeader(buffer);
-    const url = URL.createObjectURL(new Blob([buffer], { type:'audio/wav' }));
-    return { url, emotion };
+    let ttsError;
+    for (let attempt = 0; attempt <= 1; attempt++) {
+      try {
+        const response = await fetch('/api/tts', {
+          method: 'POST',
+          headers: { 'Content-Type':'application/json' },
+          body: JSON.stringify({
+            voice: meta.voice,
+            text: translated || cleaned,
+            language: translated ? 'ja' : 'zh',
+            emotion,
+            speed: 1
+          }),
+          signal
+        });
+        if (!response.ok) throw await responseError(response, '语音服务暂不可用');
+        let buffer = await response.arrayBuffer();
+        buffer = fixWavHeader(buffer);
+        const url = URL.createObjectURL(new Blob([buffer], { type:'audio/wav' }));
+        return { url, emotion };
+      } catch (error) {
+        if (isAbortError(error) || (signal && signal.aborted)) throw error;
+        if (attempt === 0 && error.name === 'TypeError') {
+          await new Promise(function(resolve) { setTimeout(resolve, 300); });
+          if (signal && signal.aborted) throw error;
+          ttsError = error;
+          continue;
+        }
+        throw error;
+      }
+    }
+    throw ttsError;
   }
 
   attachAnalyser(audio) {
@@ -386,6 +409,7 @@ export class VoiceController {
     this.playing = false;
     this.stopLipSync();
     this._lastEmotion = 'neutral';
+    this._neutralStreak = 0;
     this.onSpeaking(false);
     this.onExpression('neutral');
     if (!options.silent) this.onStatus('');

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light" data-nav="guide">
+<head>
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新手教程 · 绫季绘境</title>
+<link rel="stylesheet" href="../css/design-system.css?v=8">
+<script src="../tools/nav.js?v=6"></script>
+<script src="../tools/theme.js?v=5"></script>
+<style>
+  .page { max-width: 860px; margin: 0 auto; padding: var(--s-6) var(--s-5); }
+  .nav-back { display: inline-flex; align-items: center; gap: var(--s-2); color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4); }
+  .nav-back:hover { color: var(--accent); }
+  h1.title { font-size: 2.2rem; font-weight: 800; background: linear-gradient(135deg, var(--text-primary) 50%, var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: var(--s-2); }
+  .subtitle { color: var(--text-secondary); margin-bottom: var(--s-7); font-size: 1.05rem; max-width: 640px; line-height: 1.7; }
+
+  .step { display: grid; grid-template-columns: 56px 1fr; gap: var(--s-4); margin-bottom: var(--s-7); align-items: start; }
+  .step-num {
+    width: 56px; height: 56px; display: flex; align-items: center; justify-content: center;
+    border-radius: 50%; background: var(--accent-soft); border: 2px solid var(--accent);
+    color: var(--accent); font-size: 1.4rem; font-weight: 800; flex-shrink: 0;
+  }
+  .step-body h2 { font-size: 1.25rem; margin-bottom: var(--s-2); }
+  .step-body p { color: var(--text-secondary); line-height: 1.75; margin-bottom: var(--s-2); }
+  .step-body .cta { display: inline-flex; align-items: center; gap: var(--s-2); margin-top: var(--s-2); padding: var(--s-2) var(--s-4); border: 1px solid var(--accent); border-radius: var(--r-md); background: var(--accent-soft); color: var(--accent); text-decoration: none; font-weight: 700; font-size: 0.92rem; transition: all var(--t-fast); }
+  .step-body .cta:hover { background: var(--accent); color: var(--text-inverse); }
+
+  .prereq { background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-lg); padding: var(--s-4); margin-bottom: var(--s-7); }
+  .prereq h3 { font-size: 1rem; color: var(--accent); margin-bottom: var(--s-2); }
+  .prereq ul { list-style: none; padding: 0; }
+  .prereq li { position: relative; padding-left: var(--s-5); margin-bottom: var(--s-2); color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; }
+  .prereq li::before { content: "✓"; position: absolute; left: 0; top: 0; color: var(--success); font-weight: 700; }
+
+  .tip { background: color-mix(in srgb, var(--accent) 8%, var(--bg-surface)); border: 1px solid var(--accent); border-radius: var(--r-md); padding: var(--s-3) var(--s-4); margin: var(--s-3) 0; font-size: 0.9rem; color: var(--text-primary); line-height: 1.6; }
+  .tip strong { color: var(--accent); }
+
+  @media (max-width: 600px) {
+    .step { grid-template-columns: 44px 1fr; gap: var(--s-3); }
+    .step-num { width: 44px; height: 44px; font-size: 1.1rem; }
+    .page { padding: var(--s-4) var(--s-3); }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand"><span class="sr-only">绫季绘境</span></div>
+    <div class="nav-links"></div>
+  </div>
+</nav>
+
+<article class="page">
+  <a href="index.html" class="nav-back">← 手册</a>
+
+  <h1 class="title">🧭 5 分钟上手</h1>
+  <p class="subtitle">从打开网站到看到你人生第一张 AI 生成的 Galgame CG 图，只需要记住三个步骤。</p>
+
+  <div class="prereq">
+    <h3>🗄 前提：你电脑上已经有 SD WebUI</h3>
+    <ul>
+      <li>安装了 Stability Matrix 并在里面装好了 AUTOMATIC1111 / Forge / ReForge</li>
+      <li>WebUI 启动参数里加了 <code>--api --port 7860</code></li>
+      <li>用 <strong>control.bat</strong> 打开这个网站（而不是双击 index.html）</li>
+    </ul>
+    <p style="color:var(--text-muted);font-size:0.85rem;margin-top:var(--s-2)">如果没有装好，先看 <a href="../STARTUP.md" target="_blank">STARTUP.md</a> 一步一步来。</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body">
+      <h2>浏览灵感场景</h2>
+      <p>打开顶栏的"灵感场景"，你会看到几百个精心整理的故事卡片。每个卡片都是一个可以立刻变成图的"想法"——故事、角色、季节、动作、表情全都写好了。</p>
+      <div class="tip">💡 如果你只是想先看看这个项目能出什么样子的图，先点"效果样张"浏览已经生成好的成品。</div>
+      <a class="cta" href="../tools/scene-explorer.html">🌸 打开灵感场景 →</a>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body">
+      <h2>选一个你喜欢的场景</h2>
+      <p>在搜索框里输入你想画的题材（比如"教室""夏日""咖啡"），或者直接浏览。找到心仪的场景后，卡片右下角会有一个<strong>"开始绘制"</strong>按钮。</p>
+      <p>这个按钮会带你进入导演工作台，自动填好这个场景的提示词、LoRA 模型和出图参数。</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-body">
+      <h2>在导演台里出图</h2>
+      <p>点了"开始绘制"后会进入导演台。右边是故事和画面选项（不用改，都给你调好了），左边是实时生成的提示词预览。</p>
+      <p>直接点底部那个大大的 <strong>"生成图片"</strong> 按钮。第一次生成大概需要几十秒到一分钟。等一会儿，图就出来了。</p>
+      <div class="tip">💡 如果你的 SD WebUI 还没启动，右下角会有提示。打开控制面板点一下启动就行。</div>
+      <a class="cta" href="../tools/prompt-builder.html">🎬 打开导演工作台 →</a>
+    </div>
+  </div>
+
+  <div class="tip" style="border-color:var(--success);background:color-mix(in srgb, var(--success) 8%, var(--bg-surface));margin-top:var(--s-7)">
+    <strong>🎉 第一批图出来后——</strong><br>
+    你可以把喜欢的图存到作品册、给它打评分、加备注。下次想画类似图的时候，点一下"快速出图"就能用上次成功的参数再来一张。慢慢来，不着急。
+  </div>
+
+  <footer class="footer">
+    <p>绫季绘境 · 从故事到画面</p>
+    <p class="muted mt-4">还有疑问？去 <a href="index.html">知识库</a> 看详细的创作标准。</p>
+  </footer>
+</article>
+
+</body>
+</html>

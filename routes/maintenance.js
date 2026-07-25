@@ -1,9 +1,12 @@
-var path = require('path');
+'use strict';
+
 var fs = require('fs');
+var path = require('path');
 var cp = require('child_process');
 var express = require('express');
 
-module.exports = function (app, cfg) {
+function createMaintenanceRouter(cfg) {
+  var router = express.Router();
   var sceneStore = require('../scripts/runtime/scene-store');
 
   var SCENE_SHOWCASE_DIR = cfg.SCENE_SHOWCASE_DIR;
@@ -59,7 +62,7 @@ module.exports = function (app, cfg) {
     } catch (e) { return null; }
   }
 
-  app.post('/api/maintenance/scenes', maintenanceLocalOnly, express.json({ limit:'12mb' }), function (req, res) {
+  router.post('/api/maintenance/scenes', maintenanceLocalOnly, express.json({ limit:'12mb' }), function (req, res) {
     var scenes = req.body && req.body.scenes;
     if (!Array.isArray(scenes) || scenes.length > 1000) return res.status(400).json({ error:'场景数据格式错误或数量超出限制' });
     var ids = new Set();
@@ -83,7 +86,7 @@ module.exports = function (app, cfg) {
     }
   });
 
-  app.post('/api/maintenance/showcase', maintenanceLocalOnly, express.json({ limit:'18mb' }), function (req, res) {
+  router.post('/api/maintenance/showcase', maintenanceLocalOnly, express.json({ limit:'18mb' }), function (req, res) {
     try {
       if (!SCENE_SHOWCASE_DIR) return res.status(503).json({ error:'尚未找到 SceneShowcase 目录' });
       var id = String(req.body && req.body.id || '');
@@ -117,7 +120,7 @@ module.exports = function (app, cfg) {
     } catch (error) { res.status(400).json({ ok:false, error:error.message }); }
   });
 
-  app.post('/api/backup', express.json({ limit:'22mb' }), function (req, res) {
+  router.post('/api/backup', express.json({ limit:'22mb' }), function (req, res) {
     try {
       var imageBase64 = req.body.imageBase64, filename = req.body.filename;
       if (!imageBase64) return res.status(400).json({ error:'No image data' });
@@ -139,10 +142,14 @@ module.exports = function (app, cfg) {
     } catch (err) { res.status(500).json({ error:err.message }); }
   });
 
-  app.get('/api/showcase-status', function (req, res) {
+  router.get('/api/showcase-status', function (req, res) {
     var manifest = readSceneShowcaseManifest();
     res.setHeader('Cache-Control', 'no-store');
     if (!manifest) return res.json({ available:false, sceneCount:0 });
     res.json({ available:true, sceneCount:Number(manifest.sceneCount) || manifest.entries.length, counts:manifest.counts || {}, sourceAudit:manifest.sourceAudit || '' });
   });
-};
+
+  return { router:router, sceneStore:sceneStore };
+}
+
+module.exports = { createMaintenanceRouter:createMaintenanceRouter };

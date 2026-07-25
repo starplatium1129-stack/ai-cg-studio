@@ -43,7 +43,7 @@ export function fixWavHeader(buffer) {
 
 export class SentenceBuffer {
   constructor(options = {}) {
-    this.minimumLength = options.minimumLength || 6;
+    this.minimumLength = options.minimumLength || 4;
     this.maximumLength = options.maximumLength || 100;
     this.buffer = '';
     this.short = '';

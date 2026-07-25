@@ -20,6 +20,7 @@
     { id:'gallery',   label:'作品册',         href:'tools/gallery.html',        icon:'🎞' }
   ];
   var SECONDARY_NAV = [
+    { id:'guide',      label:'新手教程',       href:'docs/getting-started.html',  icon:'🧭' },
     { id:'character', label:'角色',           href:'tools/character.html',      icon:'👤' },
     { id:'style',     label:'画风',           href:'tools/style.html',          icon:'🎨' },
     { id:'lora',      label:'模型',           href:'tools/lora.html',           icon:'🧪' },

@@ -12,7 +12,7 @@
   .page { max-width: 960px; margin: 0 auto; padding: var(--s-5) var(--s-4); }
   .nav-back { display: inline-flex; align-items: center; gap: var(--s-2); color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4); }
   .nav-back:hover { color: var(--accent); }
-  h1.title { font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, var(--text-primary) 50%, #F06292); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: var(--s-2); }
+  h1.title { font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, var(--text-primary) 50%, var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: var(--s-2); }
   .subtitle { color: var(--text-secondary); margin-bottom: var(--s-6); }
 
   /* Mood selector */
@@ -46,22 +46,22 @@
   .prompt-output .c { color: var(--accent); }
   .prompt-output .t { color: var(--info); }
   .prompt-output .l { color: var(--success); }
-  .prompt-output .violate { background: rgba(239,83,80,0.2); color: var(--danger); padding: 0 4px; border-radius: 3px; text-decoration: underline; }
+  .prompt-output .violate { background: color-mix(in srgb, var(--danger) 20%, transparent); color: var(--danger); padding: 0 4px; border-radius: 3px; text-decoration: underline; }
 
-  .art-warn { display: none; align-items: center; gap: var(--s-2); background: rgba(255,167,38,0.12); border: 1px solid var(--warning); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); margin-bottom: var(--s-3); color: var(--warning); font-size: 0.82rem; font-weight: 500; }
+  .art-warn { display: none; align-items: center; gap: var(--s-2); background: color-mix(in srgb, var(--warning) 12%, transparent); border: 1px solid var(--warning); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); margin-bottom: var(--s-3); color: var(--warning); font-size: 0.82rem; font-weight: 500; }
   .art-warn.show { display: flex; }
 
   /* Art-direction reference */
   .art-ref { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-3); margin-bottom: var(--s-5); }
   .art-ref-card { border-radius: var(--r-lg); padding: var(--s-4); border: 1px solid var(--border-soft); }
-  .art-ref-card.good { background: rgba(102,187,106,0.06); border-color: rgba(102,187,106,0.3); }
-  .art-ref-card.bad { background: rgba(239,83,80,0.06); border-color: rgba(239,83,80,0.3); }
+  .art-ref-card.good { background: color-mix(in srgb, var(--success) 6%, transparent); border-color: color-mix(in srgb, var(--success) 30%, transparent); }
+  .art-ref-card.bad { background: color-mix(in srgb, var(--danger) 6%, transparent); border-color: color-mix(in srgb, var(--danger) 30%, transparent); }
   .art-ref-title { font-size: 0.95rem; font-weight: 700; margin-bottom: var(--s-2); }
   .art-ref-card.good .art-ref-title { color: var(--success); }
   .art-ref-card.bad .art-ref-title { color: var(--danger); }
   .art-tag { display: inline-block; font-size: 0.78rem; padding: 3px 10px; border-radius: 20px; margin: 2px 3px; font-weight: 600; }
-  .art-tag.ok { background: rgba(102,187,106,0.12); color: var(--success); }
-  .art-tag.no { background: rgba(239,83,80,0.12); color: var(--danger); }
+  .art-tag.ok { background: color-mix(in srgb, var(--success) 12%, transparent); color: var(--success); }
+  .art-tag.no { background: color-mix(in srgb, var(--danger) 12%, transparent); color: var(--danger); }
 
   .lighting-ref { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: var(--s-2); margin-bottom: var(--s-5); }
   .lighting-mini { background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: var(--s-3); text-align: center; }

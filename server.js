@@ -10,6 +10,7 @@ var security = require('./server/security');
 var createChatRouter = require('./routes/chat').createChatRouter;
 var createVoiceRouter = require('./routes/voice').createVoiceRouter;
 var createLive2dRouter = require('./routes/live2d').createLive2dRouter;
+var createMaintenanceRouter = require('./routes/maintenance').createMaintenanceRouter;
 
 function createGateway(options) {
   options = options || {};
@@ -26,10 +27,11 @@ function createGateway(options) {
   var chat = createChatRouter(config, options.services);
   var voice = createVoiceRouter(config, options.services);
   var live2d = createLive2dRouter(config, options.services);
+  var maintenance = createMaintenanceRouter(config);
   app.use(chat.router);
   app.use(voice.router);
   app.use(live2d.router);
-  require('./routes/maintenance')(app, config);
+  app.use(maintenance.router);
 
   app.get('/api/health', function (req, res) {
     var live2dStatus = live2d.service.status();

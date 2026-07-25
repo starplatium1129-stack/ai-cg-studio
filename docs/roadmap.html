@@ -17,7 +17,7 @@
   .nav-back:hover { color: var(--accent); }
   h1.title {
     font-size: 2rem; font-weight: 800;
-    background: linear-gradient(135deg, var(--text-primary) 50%, #F06292);
+    background: linear-gradient(135deg, var(--text-primary) 50%, var(--accent));
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     background-clip: text; margin-bottom: var(--s-2);
   }
@@ -46,7 +46,7 @@
   }
   @keyframes pulse {
     0%, 100% { box-shadow: 0 0 0 4px var(--accent-glow); }
-    50% { box-shadow: 0 0 0 8px rgba(240,98,146,0.4); }
+    50% { box-shadow: 0 0 0 8px color-mix(in srgb, var(--accent) 40%, transparent); }
   }
 
   .version-card {
@@ -55,7 +55,7 @@
     transition: border-color var(--t-fast);
   }
   .version-card:hover { border-color: var(--accent); }
-  .version.done .version-card { border-color: rgba(102,187,106,0.3); }
+  .version.done .version-card { border-color: color-mix(in srgb, var(--success) 30%, transparent); }
   .version.current .version-card { border-color: var(--accent); box-shadow: 0 0 20px var(--accent-glow); }
 
   .version-header {
@@ -66,7 +66,7 @@
     color: var(--accent); background: var(--accent-soft);
     padding: 3px 10px; border-radius: 12px;
   }
-  .version.done .version-num { background: rgba(102,187,106,0.12); color: var(--success); }
+  .version.done .version-num { background: color-mix(in srgb, var(--success) 12%, transparent); color: var(--success); }
   .version.current .version-num { background: var(--accent); color: var(--text-inverse); }
 
   .version-name { font-size: 1.15rem; font-weight: 700; }
@@ -75,8 +75,8 @@
     background: var(--bg-elevated); color: var(--text-muted);
     margin-left: auto; font-weight: 500;
   }
-  .version.done .version-tag { background: rgba(102,187,106,0.12); color: var(--success); }
-  .version.current .version-tag { background: rgba(255,167,38,0.15); color: var(--warning); }
+  .version.done .version-tag { background: color-mix(in srgb, var(--success) 12%, transparent); color: var(--success); }
+  .version.current .version-tag { background: color-mix(in srgb, var(--warning) 15%, transparent); color: var(--warning); }
 
   .version-desc { font-size: 0.88rem; color: var(--text-secondary); margin-bottom: var(--s-3); }
 
@@ -119,7 +119,7 @@
         </div>
         <div class="version-desc">从一个故事出发，完成选场景、调画面、生成 Prompt、保存结果的主流程。</div>
         <ul class="feature-list">
-          <li>284 个以绫地宁宁、四季夏目为主的 Scene</li>
+          <li>298 个以绫地宁宁、四季夏目为主的 Scene</li>
           <li>场景搜索、分类与角色筛选</li>
           <li>导演工作台：故事、情绪、镜头、构图、光照、色彩与 Prompt 组合</li>
           <li>角色、LoRA、风格、剧本和色彩参考页面</li>
