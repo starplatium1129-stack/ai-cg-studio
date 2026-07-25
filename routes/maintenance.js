@@ -112,19 +112,21 @@ function createMaintenanceRouter(cfg) {
   function autoRetireDeletedScenes(incomingScenes, previousScenes) {
     var incomingIds = new Set(incomingScenes.map(function (s) { return s.id; }));
     var retiredPath = path.join(__dirname, '..', 'data', 'retired-scenes.json');
-    var retired = readJson(retiredPath);
-    var retiredIds = new Set(retired.map(function (r) { return r.id; }));
+    var data = readJson(retiredPath);
+    var retiredRecords = data.records || [];
+    var retiredIds = new Set(retiredRecords.map(function (r) { return r.id; }));
     var added = [];
 
     previousScenes.forEach(function (scene) {
       if (!incomingIds.has(scene.id) && !retiredIds.has(scene.id)) {
-        retired.push({ id: scene.id, title: scene.title, reason: '在场景管理中下架', date: new Date().toISOString().split('T')[0] });
+        retiredRecords.push({ id: scene.id, retiredAt: new Date().toISOString().split('T')[0], reason: '在场景管理中下架' });
         added.push(scene.id);
       }
     });
 
     if (added.length) {
-      writeJson(retiredPath, retired);
+      data.records = retiredRecords;
+      writeJson(retiredPath, data);
       console.log('  🗑 已登记 ' + added.length + ' 个下架场景: ' + added.join(', '));
     }
   }
