@@ -113,6 +113,7 @@
     <button class="tab" onclick="switchTab('duplicates')">🔍 去重检测</button>
     <button class="tab" onclick="switchTab('tags')">🏷 Tag 管理</button>
     <button class="tab" onclick="switchTab('guide')">📖 使用指南</button>
+    <button class="tab" onclick="switchTab('tools')">🛠 维护工具</button>
   </div>
 
   <!-- Scenes Tab -->
@@ -286,6 +287,26 @@
           • “下架”不会立即写入文件，只有点击“保存到项目”后才生效<br>
           • 直接保存和替换样张仅允许在本机入口执行，朋友分享链接不能修改项目
         </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Maintenance Tools Tab -->
+  <div id="tab-tools" style="display:none">
+    <div style="max-width:900px">
+      <h2 style="font-size:1.2rem;margin-bottom:var(--s-2)">🛠 维护工具</h2>
+      <p style="font-size:.85rem;color:var(--text-secondary);margin-bottom:var(--s-4)">
+        一键运行常用维护脚本。所有操作仅允许本机执行，朋友分享链接无法使用。
+      </p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:var(--s-3);margin-bottom:var(--s-4)" id="toolCards"></div>
+
+      <div id="toolResult" style="display:none">
+        <div style="display:flex;align-items:center;gap:var(--s-2);margin-bottom:var(--s-2)">
+          <h3 style="margin:0;font-size:1rem" id="toolResultTitle"></h3>
+          <span style="display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:10px;font-size:.72rem;font-weight:700" id="toolResultBadge"></span>
+        </div>
+        <pre id="toolResultOutput" style="background:var(--bg-deep);border:1px solid var(--border-soft);border-radius:var(--r-md);padding:var(--s-4);font-family:var(--font-mono);font-size:.8rem;line-height:1.65;color:var(--text-primary);white-space:pre-wrap;word-break:break-all;max-height:500px;overflow:auto"></pre>
       </div>
     </div>
   </div>
@@ -565,9 +586,11 @@ function switchTab(tab) {
   document.getElementById('tab-duplicates').style.display = tab === 'duplicates' ? '' : 'none';
   document.getElementById('tab-tags').style.display = tab === 'tags' ? '' : 'none';
   document.getElementById('tab-guide').style.display = tab === 'guide' ? '' : 'none';
+  document.getElementById('tab-tools').style.display = tab === 'tools' ? '' : 'none';
   if (tab === 'scenes') { renderScenes(); renderStats(); }
   if (tab === 'images') renderImages();
   if (tab === 'tags') renderTags();
+  if (tab === 'tools') renderTools();
 }
 
 // Image management
@@ -930,6 +953,71 @@ function exportJSON() {
 }
 
 function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,'&#39;').replace(/"/g,'&quot;'); }
+
+var TOOLS = [
+  { id:'lint-colors', icon:'🎨', label:'检查硬编码颜色', desc:'扫描 HTML/CSS 中未用设计 token 的 #XXXXXX 颜色' },
+  { id:'validate',    icon:'✅', label:'完整场景校验', desc:'检查场景 ID 唯一性、字段完整性、评级一致性' },
+  { id:'classify',    icon:'🏷', label:'更新场景评级', desc:'根据标签内容重新计算 All/R15/R18 评级' },
+  { id:'optimize',    icon:'⚙️', label:'规范化提示词', desc:'统一标签命名、补全标准负面词、修复占位符' }
+];
+
+function renderTools() {
+  var cards = document.getElementById('toolCards');
+  cards.innerHTML = TOOLS.map(function(t) {
+    return '<div style="background:var(--bg-surface);border:1px solid var(--border-soft);border-radius:var(--r-lg);padding:var(--s-4);cursor:pointer;transition:all var(--t-fast)" onmouseover="this.style.borderColor=\"var(--accent)\"" onmouseout="this.style.borderColor=\"var(--border-soft)\"" onclick="runTool(\'' + t.id + '\')">' +
+      '<div style="font-size:1.5rem;margin-bottom:var(--s-2)">' + t.icon + '</div>' +
+      '<div style="font-weight:700;font-size:.92rem;margin-bottom:4px">' + esc(t.label) + '</div>' +
+      '<div style="font-size:.75rem;color:var(--text-muted);line-height:1.5">' + esc(t.desc) + '</div>' +
+      '</div>';
+  }).join('');
+}
+
+var toolRunning = false;
+
+function runTool(taskId) {
+  if (toolRunning) return;
+  var tool = TOOLS.find(function(t) { return t.id === taskId; });
+  if (!tool) return;
+  toolRunning = true;
+
+  var cards = document.getElementById('toolCards');
+  var panel = document.getElementById('toolResult');
+  var title = document.getElementById('toolResultTitle');
+  var badge = document.getElementById('toolResultBadge');
+  var out = document.getElementById('toolResultOutput');
+
+  cards.style.opacity = '0.5';
+  cards.style.pointerEvents = 'none';
+  title.textContent = tool.icon + ' ' + tool.label;
+  badge.textContent = '⏳ 运行中…';
+  badge.style.cssText = 'background:color-mix(in srgb, var(--warning) 12%, transparent);color:var(--warning)';
+  out.textContent = '...';
+  panel.style.display = 'block';
+  panel.scrollIntoView({ behavior:'smooth', block:'nearest' });
+
+  fetch('../api/maintenance/run', {
+    method:'POST',
+    headers:{ 'Content-Type':'application/json' },
+    body:JSON.stringify({ task:taskId })
+  }).then(function(response) {
+    return response.json();
+  }).then(function(data) {
+    badge.textContent = data.ok ? '✅ 通过' : '⚠️ 有问题';
+    badge.style.cssText = data.ok
+      ? 'background:color-mix(in srgb, var(--success) 12%, transparent);color:var(--success)'
+      : 'background:color-mix(in srgb, var(--danger) 12%, transparent);color:var(--danger)';
+    out.textContent = data.output || '(no output)';
+    out.scrollTop = 0;
+  }).catch(function(error) {
+    badge.textContent = '❌ 失败';
+    badge.style.cssText = 'background:color-mix(in srgb, var(--danger) 12%, transparent);color:var(--danger)';
+    out.textContent = '网络请求失败：' + error.message;
+  }).finally(function() {
+    toolRunning = false;
+    cards.style.opacity = '';
+    cards.style.pointerEvents = '';
+  });
+}
 
 init();
 </script>

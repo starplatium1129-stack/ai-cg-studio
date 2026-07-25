@@ -149,6 +149,39 @@ function createMaintenanceRouter(cfg) {
     res.json({ available:true, sceneCount:Number(manifest.sceneCount) || manifest.entries.length, counts:manifest.counts || {}, sourceAudit:manifest.sourceAudit || '' });
   });
 
+  // ---- 维护脚本一键执行 ----
+  var MAINTENANCE_TASKS = {
+    'lint-colors': { args:[], label:'检查硬编码颜色', desc:'扫描所有 HTML/CSS 中的 #XXXXXX 颜色，确保已替换为设计 token' },
+    'validate':    { args:[], label:'完整场景校验', desc:'按模块检查场景数据：ID 唯一性、字段完整性、评级一致性' },
+    'classify':    { args:['--write'], label:'更新场景评级', desc:'根据标签内容重新计算 All/R15/R18 评级' },
+    'optimize':    { args:['--write'], label:'规范化提示词', desc:'统一标签命名、补全标准负面词、修复占位符' }
+  };
+
+  router.post('/api/maintenance/run', maintenanceLocalOnly, express.json({ limit:'2kb' }), function (req, res) {
+    var task = String(req.body && req.body.task || '').trim();
+    if (!MAINTENANCE_TASKS[task]) {
+      return res.status(400).json({ ok:false, error:'不支持的任务：' + task });
+    }
+
+    var script = 'scripts/maintenance/' + task + '.js';
+    var args = MAINTENANCE_TASKS[task].args;
+    var result = cp.spawnSync(process.execPath, [script].concat(args), {
+      cwd:path.join(__dirname, '..'), encoding:'utf8', timeout:120000, windowsHide:true
+    });
+
+    var output = (result.stdout || '') + (result.stderr || '');
+    if (output.length > 8000) output = output.slice(0, 8000) + '\n...(truncated)';
+    output = output.trim();
+    if (!output) output = (result.error ? '执行出错：' + result.error.message : '任务完成，无输出');
+    res.json({
+      ok: result.status === 0 && !result.error,
+      task: task,
+      label: MAINTENANCE_TASKS[task].label,
+      output: output,
+      exitCode: result.error ? 1 : result.status
+    });
+  });
+
   return { router:router, sceneStore:sceneStore };
 }
 
