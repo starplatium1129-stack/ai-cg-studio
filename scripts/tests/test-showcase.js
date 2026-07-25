@@ -13,17 +13,21 @@ const home = read('index.html');
 const server = read('server.js');
 
 assert(page.includes('data-nav="showcase"'), 'showcase page must activate its navigation item');
-assert(controller.includes("state={entries:[],filtered:[],featured:new Set(),scope:'all',character:'all',rating:'all',adult:false"), 'R18 must be hidden by default');
+assert(controller.includes("state={entries:[],filtered:[],featured:new Set(),scope:'all',character:'all',rating:'all',visible:"), 'showcase state must keep filters independent from adult-content visibility');
 assert(controller.includes("fetch('/scene-showcase/manifest.json'"), 'showcase page must load the approved manifest');
 assert(controller.includes("prompt-builder.html?scene="), 'approved samples must link back to the director');
 assert(controller.includes('loading="lazy"'), 'sample thumbnails must lazy-load');
-assert(page.includes('id="r18Filter"') && controller.includes('window.confirm'), 'R18 requires an explicit reveal action');
+assert(page.includes('id="r18Filter"') && !page.includes('id="adultToggle"'), 'R18 must be directly filterable without a reveal toggle');
+assert(page.includes('.showcase-grid { columns:') && page.includes('.sample-image { width:100%; height:auto;'), 'sample wall must preserve each image aspect ratio');
+assert(page.includes('.sample-r18 .sample-image { filter:blur('), 'R18 thumbnails must be blurred by default');
+assert(controller.includes('sample-r18') && controller.includes('sample-sensitive'), 'R18 cards must render the blur treatment and content label');
+assert(!controller.includes('window.confirm'), 'R18 browsing must not require a confirmation dialog');
 assert(nav.includes("id:'showcase'") && nav.includes("href:'tools/showcase.html'"), 'global navigation must expose the showcase');
 assert(home.includes('href="tools/showcase.html"'), 'home page must expose the showcase');
 assert(server.includes("app.use('/scene-showcase'"), 'server must mount showcase assets');
 assert(server.includes('SCENE_SHOWCASE_DIR') && server.includes('manifest\\.json'), 'server must resolve and restrict the showcase directory');
 
-assert(page.includes('<script src="showcase.js?v=1"></script>'), 'showcase controller must stay external');
+assert(page.includes('<script src="showcase.js?v=2"></script>'), 'showcase controller must stay external and cache-versioned');
 new Function(controller);
 
 const showcaseRoot = path.resolve(root, '..', 'AI', 'SceneShowcase');
@@ -43,4 +47,4 @@ if (fs.existsSync(showcaseRoot)) {
   }
 }
 
-console.log('Showcase tests passed: navigation, safe filtering, director links, scripts, and approved assets');
+console.log('Showcase tests passed: navigation, ratio-safe art wall, blurred R18 browsing, director links, scripts, and approved assets');
