@@ -1681,10 +1681,8 @@
   },
   {
     "id": "sc282",
-    "recommendedSize": "1344×768",
     "title": "黑蕾丝滑落后的静默",
     "category": "恋爱/After_Story",
-    "story": "【成年 After Story】黑色蕾丝滑落后，夏目仍把双手交叠在胸前。她努力维持平静：「不要移开视线……是我自己决定留在这里的。」柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
     "char": "natsume",
     "character": [
       "natsume"
@@ -1694,6 +1692,12 @@
     "season": "不限",
     "time": "夜晚",
     "timeOfDay": "night",
+    "rating": "R18",
+    "mature": true,
+    "location": "卧室",
+    "weather": "晴",
+    "camera": "官方CG横幅构图",
+    "lighting": "夜色氛围光",
     "tags": [
       "official_cg",
       "visual_audited",
@@ -1701,29 +1705,16 @@
       "natsume",
       "adult"
     ],
-    "mature": false,
-    "location": "卧室",
-    "weather": "晴",
-    "camera": "官方CG横幅构图",
-    "lighting": "夜色氛围光",
     "usage": [
       "官方CG灵感",
       "实机审核通过",
-      "展示图"
+      "展示图",
+      "成人向"
     ],
-    "prompt": "adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_diagonal_overhead_composition, 1girl, solo, adult_shiki_natsume, very_long_black_hair_spread_on_dark_blue_bedding, golden_yellow_eyes, mole_under_eye, topless, nipples, black_lace_panties, black_garter_belt_and_garter_straps, black_thighhigh_stockings, lying_on_back, hands_clasped_over_upper_chest, shy_direct_gaze, cool_dim_bedroom_light, <lora:shiki_natsume_v14:0.95>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, bra, covered breasts, standing, sitting, warm orange bedding, nsfw, nude, explicit",
+    "story": "【成年 After Story】黑色蕾丝滑落后，夏目仍把双手交叠在胸前。她努力维持平静：「不要移开视线……是我自己决定留在这里的。」柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
     "storyJa": "【成人After Story・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
-    "rating": "All",
-    "officialCgCandidate": "ocs16",
-    "audit": {
-      "reviewer": "direct-vision",
-      "attempt": 1,
-      "seedKey": "official-cg:ocs16:1",
-      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Shiki_Natsume\\V12_Curated\\ScreenShot_2026-07-12_091017_055.png",
-      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs16-a1.png",
-      "result": "pass"
-    }
+    "prompt": "adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_diagonal_overhead_composition, 1girl, solo, adult_shiki_natsume, very_long_black_hair_spread_on_dark_blue_bedding, golden_yellow_eyes, mole_under_eye, topless, nipples, black_lace_panties, black_garter_belt_and_garter_straps, black_thighhigh_stockings, lying_on_back, hands_clasped_over_upper_chest, shy_direct_gaze, cool_dim_bedroom_light, <lora:shiki_natsume_v14:0.95>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, bra, covered breasts, standing, sitting, warm orange bedding, child, loli, underage, school_uniform, gym_uniform"
   },
   {
     "id": "sc283",
