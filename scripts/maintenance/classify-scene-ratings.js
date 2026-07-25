@@ -72,7 +72,10 @@ for (const addition of additions) if (!ids.has(addition.id)) scenes.push(additio
 let changed = 0;
 const totals = { All: 0, R15: 0, R18: 0 };
 for (const scene of scenes) {
-  const rating = ratingFor(scene);
+  // 信任场景已有的成熟标记：凡 mature:true / rating:R18 的保留不动
+  // 只有被自动归为 All/R15 的才按 tag 重新计算，防止手动设定被覆盖
+  const force = scene.mature === true || scene.rating === 'R18';
+  const rating = force ? 'R18' : ratingFor(scene);
   const next = { rating, mature: rating === 'R18', category: categoryFor(scene, rating), usage: normalizeUsage(scene, rating) };
   if (scene.rating !== next.rating || scene.mature !== next.mature || scene.category !== next.category || JSON.stringify(scene.usage) !== JSON.stringify(next.usage)) changed += 1;
   Object.assign(scene, next);
