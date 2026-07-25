@@ -162,7 +162,7 @@ function createMaintenanceRouter(cfg) {
     var ids = new Set();
     for (var i = 0; i < scenes.length; i += 1) {
       var id = String(scenes[i] && scenes[i].id || '');
-      if (!/^sc\d{3,}$/.test(id) || ids.has(id)) return res.status(400).json({ error:'场景 ID 必须唯一且符合 sc001 格式：' + id });
+      if (!/^sc\d{3}$/.test(id) || ids.has(id)) return res.status(400).json({ error:'场景 ID 必须唯一且符合 sc001 格式：' + id });
       ids.add(id);
     }
     var snapshot;
@@ -189,7 +189,7 @@ function createMaintenanceRouter(cfg) {
       var id = String(req.body && req.body.id || '');
       var image = String(req.body && req.body.image || '');
       var match = image.match(/^data:image\/(png|jpeg|webp);base64,([A-Za-z0-9+/=\r\n]+)$/);
-      if (!/^sc\d{3,}$/.test(id) || !match) return res.status(400).json({ error:'需要合法场景 ID 和 PNG/JPEG/WebP 图片' });
+      if (!/^sc\d{3}$/.test(id) || !match) return res.status(400).json({ error:'需要合法场景 ID 和 PNG/JPEG/WebP 图片' });
       var buffer = Buffer.from(match[2].replace(/\s/g, ''), 'base64');
       if (!buffer.length || buffer.length > 15 * 1024 * 1024) return res.status(413).json({ error:'图片必须在 15MB 以内' });
       var ext = match[1] === 'jpeg' ? '.jpg' : '.' + match[1];

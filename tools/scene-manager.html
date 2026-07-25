@@ -897,7 +897,7 @@ function detectDuplicates() {
         <span><strong>${s.id}</strong> ${esc(s.title)} <span class="rating-badge rating-${s.rating}">${s.rating}</span></span>
         <div class="action-btns">
           <button class="btn btn-ghost btn-sm" onclick="openEditModal('${s.id}')">编辑</button>
-          <button class="btn btn-danger btn-sm" onclick="deleteScene('${s.id}');detectDuplicates()">删除</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteScene('${s.id}');detectDuplicates()">下架</button>
         </div>
       </div>`;
       totalDups++;
