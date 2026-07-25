@@ -1,4 +1,4 @@
-﻿﻿var express = require('express');
+var express = require('express');
 var http = require('http');
 var https = require('https');
 var net = require('net');
@@ -30,7 +30,7 @@ var VOICE_STOP_SCRIPT = path.resolve(dir, '..', 'AI', 'Voice', 'Stop-Voice.ps1')
 var VOICE_PROFILE_FILE = path.resolve(dir, '..', 'AI', 'Voice', 'config', 'profiles.json');
 var WEBUI_MANAGER_SCRIPT = path.join(dir, 'scripts', 'runtime', 'managed-webui.ps1');
 
-// 鈹€鈹€鈹€ State 鈹€鈹€鈹€
+// ─── State ───
 var state = {
   running: false,
   token: '',
@@ -48,7 +48,7 @@ var state = {
   logs: []
 };
 
-// 鈹€鈹€鈹€ Helpers 鈹€鈹€鈹€
+// ─── Helpers ───
 function log(msg) {
   var line = '[' + new Date().toLocaleTimeString() + '] ' + msg;
   state.logs.push(line);
@@ -61,7 +61,7 @@ function normalizeLocalHost(value, label) {
   var target = new URL(String(value || '').trim());
   var localHosts = ['127.0.0.1', 'localhost', '[::1]', '::1'];
   if ((target.protocol !== 'http:' && target.protocol !== 'https:') || localHosts.indexOf(target.hostname) === -1) {
-    throw new Error(label + ' 鍦板潃蹇呴』鏄湰鏈?http(s) 鍦板潃');
+    throw new Error(label + ' 地址必须是本机 http(s) 地址');
   }
   if (target.username || target.password || (target.pathname && target.pathname !== '/') || target.search || target.hash) {
     throw new Error('请只填写' + label + '的地址和端口');
@@ -133,7 +133,7 @@ function findAvailableGatewayPort(callback) {
   var port = GW_PORT;
   var lastPort = GW_PORT + 20;
   function probe() {
-    if (port > lastPort) return callback(new Error('绔彛 ' + GW_PORT + '-' + lastPort + ' 鍧囪鍗犵敤'));
+    if (port > lastPort) return callback(new Error('端口 ' + GW_PORT + '-' + lastPort + ' 均被占用'));
     var tester = net.createServer();
     tester.unref();
     tester.once('error', function () { port++; probe(); });
@@ -196,7 +196,7 @@ function checkTTS() {
   } catch (error) { finish(false); }
 }
 
-// Ollama 妫€娴嬶細/api/ps 鍚屾椂杩斿洖宸插姞杞芥ā鍨嬩笌鏄惧瓨鍗犵敤
+// Ollama 检测：/api/ps 同时返回已加载模型与显存占用
 var ollamaCheckInFlight = false;
 var lastOllamaCheck = 0;
 function checkOllama() {
@@ -236,7 +236,8 @@ function checkOllama() {
   } catch (error) { finish(false, [], 0); }
 }
 
-// 閫氱敤鏈満 JSON 璇锋眰锛堢敤浜?Ollama 绠＄悊鎺ュ彛锛?function requestLocalJson(baseUrl, pathname, payload, timeout) {
+// 通用本机 JSON 请求（用于 Ollama 管理接口）
+function requestLocalJson(baseUrl, pathname, payload, timeout) {
   return new Promise(function (resolve, reject) {
     try {
       var target = new URL(pathname, baseUrl);
@@ -253,18 +254,19 @@ function checkOllama() {
           catch (error) { resolve({ status: res.statusCode, data: {} }); }
         });
       });
-      req.setTimeout(timeout || 15000, function () { req.destroy(new Error('璇锋眰瓒呮椂')); });
+      req.setTimeout(timeout || 15000, function () { req.destroy(new Error('请求超时')); });
       req.on('error', reject);
       req.end(body);
     } catch (error) { reject(error); }
   });
 }
 
-// 鍗歌浇 Ollama 宸插姞杞芥ā鍨嬶紝閲婃斁鏄惧瓨锛坘eep_alive=0 鏄畼鏂规敮鎸佺殑鍗歌浇鏂瑰紡锛?async function unloadOllamaModels() {
+// 卸载 Ollama 已加载模型，释放显存（keep_alive=0 是官方支持的卸载方式）
+async function unloadOllamaModels() {
   var listed = await requestLocalJson(OLLAMA_HOST, '/api/ps', null, 4000).catch(function () { return null; });
-  if (!listed || listed.status >= 300) return { ok:false, error:'Ollama 鏈搷搴? };
+  if (!listed || listed.status >= 300) return { ok:false, error:'Ollama 未响应' };
   var models = Array.isArray(listed.data.models) ? listed.data.models : [];
-  if (!models.length) return { ok:true, message:'Ollama 娌℃湁宸插姞杞界殑妯″瀷' };
+  if (!models.length) return { ok:true, message:'Ollama 没有已加载的模型' };
   var unloaded = 0;
   for (var i = 0; i < models.length; i += 1) {
     var name = String(models[i].name || models[i].model || '');
@@ -274,7 +276,7 @@ function checkOllama() {
   }
   lastOllamaCheck = 0;
   checkOllama();
-  return { ok: unloaded > 0, message: '宸插嵏杞?' + unloaded + ' 涓?Ollama 妯″瀷锛屾樉瀛樺凡閲婃斁' };
+  return { ok: unloaded > 0, message: '已卸载 ' + unloaded + ' 个 Ollama 模型，显存已释放' };
 }
 
 // Query gateway's /api/tunnel-status for domain + token
@@ -400,10 +402,11 @@ function runManagedWebUI(action) {
   }
 }
 
-// 寮傛鎵ц PowerShell 鑴氭湰锛氭湇鍔″惎鍋滃彲鑳借€楁椂 30-90 绉掞紝鍚屾璋冪敤浼氬喕缁撴暣涓帶鍒堕潰鏉?function runScriptAsync(scriptPath, args, timeoutMs) {
+// 异步执行 PowerShell 脚本：服务启停可能耗时 30-90 秒，同步调用会冻结整个控制面板
+function runScriptAsync(scriptPath, args, timeoutMs) {
   return new Promise(function (resolve) {
     if (!fs.existsSync(scriptPath)) {
-      resolve({ ok:false, error:'鑴氭湰鏈畨瑁咃細' + path.basename(scriptPath) });
+      resolve({ ok:false, error:'脚本未安装：' + path.basename(scriptPath) });
       return;
     }
     var child;
@@ -427,14 +430,14 @@ function runManagedWebUI(action) {
     }
     var timer = setTimeout(function () {
       try { child.kill(); } catch (error) {}
-      done({ ok:false, error:'鎿嶄綔瓒呮椂锛? + Math.round(timeoutMs / 1000) + ' 绉掞級' });
+      done({ ok:false, error:'操作超时（' + Math.round(timeoutMs / 1000) + ' 秒）' });
     }, timeoutMs || 60000);
     child.stdout.on('data', function (chunk) { stdout += chunk.toString('utf8'); });
     child.stderr.on('data', function (chunk) { stderr += chunk.toString('utf8'); });
     child.on('error', function (error) { done({ ok:false, error:error.message }); });
     child.on('close', function (code) {
       if (code === 0) done({ ok:true, message:stdout.trim() });
-      else done({ ok:false, error:(stderr || stdout || '鑴氭湰閫€鍑虹爜 ' + code).trim() });
+      else done({ ok:false, error:(stderr || stdout || '脚本退出码 ' + code).trim() });
     });
   });
 }
@@ -481,7 +484,7 @@ function refreshServiceStates() {
   if (webuiStatus.ok) state.webuiManaged = !!webuiStatus.managed;
 })();
 
-// 鈹€鈹€鈹€ API 鈹€鈹€鈹€
+// ─── API ───
 app.use(express.json());
 app.use(function (req, res, next) {
   var origin = req.headers.origin;
@@ -492,10 +495,6 @@ app.use(function (req, res, next) {
   res.setHeader('Referrer-Policy', 'no-referrer');
   next();
 });
-
-app.use('/css', express.static(path.join(dir, 'css'), { dotfiles:'deny', index:false }));
-app.use('/tools', express.static(path.join(dir, 'tools'), { dotfiles:'deny', index:false }));
-app.use('/assets', express.static(path.join(dir, 'assets'), { dotfiles:'deny', index:false }));
 
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'control.html'));
@@ -532,7 +531,7 @@ app.get('/api/status', function (req, res) {
 });
 
 app.post('/api/config', function (req, res) {
-  if (state.running) return res.status(409).json({ ok:false, error:'璇峰厛鍋滄缃戝叧锛屽啀淇敼鐢熸垚鏈嶅姟閰嶇疆' });
+  if (state.running) return res.status(409).json({ ok:false, error:'请先停止网关，再修改生成服务配置' });
   try {
     if (req.body && req.body.sdHost != null) SD_HOST = normalizeSDHost(req.body.sdHost);
     if (req.body && req.body.ttsHost != null) TTS_HOST = normalizeTTSHost(req.body.ttsHost);
@@ -560,12 +559,13 @@ app.post('/api/config', function (req, res) {
   }
 });
 
-// 杞婚噺鍋忓ソ璁剧疆锛氶殢鏃跺彲鏀癸紝涓嶅奖鍝嶈繍琛屼腑鐨勬湇鍔?app.post('/api/preference', function (req, res) {
+// 轻量偏好设置：随时可改，不影响运行中的服务
+app.post('/api/preference', function (req, res) {
   try {
     if (req.body && typeof req.body.autoStartVoice === 'boolean') {
       AUTO_START_VOICE = req.body.autoStartVoice;
       fs.writeFileSync(CONFIG_FILE, JSON.stringify({ sdHost:SD_HOST, ttsHost:TTS_HOST, ollamaHost:OLLAMA_HOST, autoStartVoice:AUTO_START_VOICE, voices:VOICE_PROFILES }, null, 2));
-      log('璇煶鏈嶅姟鑷姩鍚姩宸? + (AUTO_START_VOICE ? '寮€鍚? : '鍏抽棴'));
+      log('语音服务自动启动已' + (AUTO_START_VOICE ? '开启' : '关闭'));
     }
     res.json({ ok:true, autoStartVoice:AUTO_START_VOICE });
   } catch (error) {
@@ -573,25 +573,27 @@ app.post('/api/config', function (req, res) {
   }
 });
 
-// 鈹€鈹€鈹€ 鏄惧瓨璧勬簮璋冨害锛氬崟鏈嶅姟鍚仠 + 涓€閿ā寮忓垏鎹?鈹€鈹€鈹€
-// 缁樺浘锛圵ebUI锛夈€佽闊筹紙GPT-SoVITS锛夈€佽亰澶╂ā鍨嬶紙Ollama锛変换浣曚袱涓悓鏃跺姞杞介兘鍙兘鎵撴弧鏄惧瓨锛?// 杩欓噷鎻愪緵鎸夐渶鍚仠锛屾ā寮忓垏鎹㈡寜鈥滃厛閲婃斁銆佸啀鍔犺浇鈥濈殑椤哄簭鎵ц銆?
+// ─── 显存资源调度：单服务启停 + 一键模式切换 ───
+// 绘图（WebUI）、语音（GPT-SoVITS）、聊天模型（Ollama）任何两个同时加载都可能打满显存，
+// 这里提供按需启停，模式切换按“先释放、再加载”的顺序执行。
+
 app.post('/api/service/voice', function (req, res) {
   var action = req.body && req.body.action;
-  if (!['start', 'stop'].includes(action)) return res.status(400).json({ ok:false, error:'action 蹇呴』鏄?start 鎴?stop' });
+  if (!['start', 'stop'].includes(action)) return res.status(400).json({ ok:false, error:'action 必须是 start 或 stop' });
   var task = action === 'start'
     ? runScriptAsync(VOICE_START_SCRIPT, ['-WaitSeconds', '60'], 90000)
     : runScriptAsync(VOICE_STOP_SCRIPT, [], 30000);
   task.then(function (result) {
     refreshServiceStates();
-    if (result.ok) log('GPT-SoVITS ' + (action === 'start' ? '宸插惎鍔? : '宸插仠姝?));
-    else log('GPT-SoVITS ' + action + ' 澶辫触: ' + result.error);
+    if (result.ok) log('GPT-SoVITS ' + (action === 'start' ? '已启动' : '已停止'));
+    else log('GPT-SoVITS ' + action + ' 失败: ' + result.error);
   });
-  res.json({ ok:true, pending:true, message:'璇煶鏈嶅姟姝ｅ湪' + (action === 'start' ? '鍚姩锛堢害闇€ 30鈥?0 绉掞級' : '鍋滄') + '锛岃鐣欐剰鐘舵€佺伅' });
+  res.json({ ok:true, pending:true, message:'语音服务正在' + (action === 'start' ? '启动（约需 30—60 秒）' : '停止') + '，请留意状态灯' });
 });
 
 app.post('/api/service/webui', function (req, res) {
   var action = req.body && req.body.action;
-  if (!['start', 'stop'].includes(action)) return res.status(400).json({ ok:false, error:'action 蹇呴』鏄?start 鎴?stop' });
+  if (!['start', 'stop'].includes(action)) return res.status(400).json({ ok:false, error:'action 必须是 start 或 stop' });
   runScriptAsync(WEBUI_MANAGER_SCRIPT, ['-Action', action === 'start' ? 'Start' : 'Stop'], 90000).then(function (result) {
     if (result.ok && result.message) {
       try {
@@ -601,66 +603,66 @@ app.post('/api/service/webui', function (req, res) {
       } catch (error) {}
     }
     refreshServiceStates();
-    if (result.ok) log('WebUI ' + (action === 'start' ? '宸插惎鍔? : '宸插仠姝?));
-    else log('WebUI ' + action + ' 澶辫触: ' + result.error);
+    if (result.ok) log('WebUI ' + (action === 'start' ? '已启动' : '已停止'));
+    else log('WebUI ' + action + ' 失败: ' + result.error);
   });
-  res.json({ ok:true, pending:true, message:'WebUI 姝ｅ湪' + (action === 'start' ? '鍚姩' : '鍋滄') + '锛岃鐣欐剰鐘舵€佺伅' });
+  res.json({ ok:true, pending:true, message:'WebUI 正在' + (action === 'start' ? '启动' : '停止') + '，请留意状态灯' });
 });
 
 app.post('/api/service/ollama', function (req, res) {
   var action = req.body && req.body.action;
-  if (action !== 'unload') return res.status(400).json({ ok:false, error:'action 鐩墠鍙敮鎸?unload' });
+  if (action !== 'unload') return res.status(400).json({ ok:false, error:'action 目前只支持 unload' });
   unloadOllamaModels().then(function (result) {
-    if (result.ok) log(result.message || 'Ollama 妯″瀷宸插嵏杞?);
-    else log('Ollama 鍗歌浇澶辫触: ' + (result.error || '鏈煡閿欒'));
+    if (result.ok) log(result.message || 'Ollama 模型已卸载');
+    else log('Ollama 卸载失败: ' + (result.error || '未知错误'));
   });
-  res.json({ ok:true, pending:true, message:'姝ｅ湪鍗歌浇 Ollama 宸插姞杞芥ā鍨嬧€? });
+  res.json({ ok:true, pending:true, message:'正在卸载 Ollama 已加载模型…' });
 });
 
 app.post('/api/mode', function (req, res) {
   var mode = req.body && req.body.mode;
-  if (!['draw', 'chat'].includes(mode)) return res.status(400).json({ ok:false, error:'mode 蹇呴』鏄?draw 鎴?chat' });
-  if (state.modeBusy) return res.status(409).json({ ok:false, error:'姝ｅ湪鍒囨崲妯″紡涓紝璇风◢鍊? });
+  if (!['draw', 'chat'].includes(mode)) return res.status(400).json({ ok:false, error:'mode 必须是 draw 或 chat' });
+  if (state.modeBusy) return res.status(409).json({ ok:false, error:'正在切换模式中，请稍候' });
   state.modeBusy = true;
-  res.json({ ok:true, pending:true, message: mode === 'draw' ? '姝ｅ湪鍒囨崲鍒扮粯鍥句紭鍏堬細鍏堥噴鏀捐闊充笌鑱婂ぉ妯″瀷鏄惧瓨锛屽啀鍚姩 WebUI' : '姝ｅ湪鍒囨崲鍒拌亰澶╀紭鍏堬細閲婃斁鍙楃 WebUI锛屽惎鍔ㄨ闊虫湇鍔? });
+  res.json({ ok:true, pending:true, message: mode === 'draw' ? '正在切换到绘图优先：先释放语音与聊天模型显存，再启动 WebUI' : '正在切换到聊天优先：释放受管 WebUI，启动语音服务' });
 
   (async function () {
     if (mode === 'draw') {
-      log('妯″紡鍒囨崲锛氱粯鍥句紭鍏?鈥斺€?鍋滄璇煶鏈嶅姟鈥?);
+      log('模式切换：绘图优先 —— 停止语音服务…');
       var stopVoice = await runScriptAsync(VOICE_STOP_SCRIPT, [], 30000);
-      if (!stopVoice.ok) log('鍋滄璇煶鏈嶅姟鏃跺嚭鐜版彁绀? ' + stopVoice.error);
-      log('妯″紡鍒囨崲锛氱粯鍥句紭鍏?鈥斺€?鍗歌浇 Ollama 妯″瀷鈥?);
+      if (!stopVoice.ok) log('停止语音服务时出现提示: ' + stopVoice.error);
+      log('模式切换：绘图优先 —— 卸载 Ollama 模型…');
       var unload = await unloadOllamaModels();
-      if (!unload.ok) log('Ollama 鍗歌浇鎻愮ず: ' + (unload.error || unload.message || ''));
-      log('妯″紡鍒囨崲锛氱粯鍥句紭鍏?鈥斺€?鍚姩 WebUI鈥?);
+      if (!unload.ok) log('Ollama 卸载提示: ' + (unload.error || unload.message || ''));
+      log('模式切换：绘图优先 —— 启动 WebUI…');
       var startWebui = await runScriptAsync(WEBUI_MANAGER_SCRIPT, ['-Action', 'Start'], 90000);
       if (startWebui.ok) {
         try { state.webuiManaged = !!JSON.parse(startWebui.message || '{}').managed; } catch (error) {}
-        log('缁樺浘浼樺厛妯″紡灏辩华锛氭樉瀛樺凡浼樺厛璁╃粰 WebUI');
+        log('绘图优先模式就绪：显存已优先让给 WebUI');
       } else {
-        log('WebUI 鍚姩澶辫触: ' + startWebui.error);
+        log('WebUI 启动失败: ' + startWebui.error);
       }
     } else {
       if (state.webuiManaged) {
-        log('妯″紡鍒囨崲锛氳亰澶╀紭鍏?鈥斺€?鍋滄鍙楃 WebUI 閲婃斁鏄惧瓨鈥?);
+        log('模式切换：聊天优先 —— 停止受管 WebUI 释放显存…');
         var stopWebui = await runScriptAsync(WEBUI_MANAGER_SCRIPT, ['-Action', 'Stop'], 60000);
         if (stopWebui.ok) {
           try { state.webuiManaged = !!JSON.parse(stopWebui.message || '{}').managed; } catch (error) {}
         } else {
-          log('鍋滄 WebUI 鏃跺嚭鐜版彁绀? ' + stopWebui.error);
+          log('停止 WebUI 时出现提示: ' + stopWebui.error);
         }
       } else {
-        log('妯″紡鍒囨崲锛氳亰澶╀紭鍏?鈥斺€?WebUI 涓烘墜鍔ㄥ惎鍔ㄦ垨闈炲彈绠★紝淇濇寔涓嶅姩');
+        log('模式切换：聊天优先 —— WebUI 为手动启动或非受管，保持不动');
       }
-      log('妯″紡鍒囨崲锛氳亰澶╀紭鍏?鈥斺€?鍚姩璇煶鏈嶅姟鈥?);
+      log('模式切换：聊天优先 —— 启动语音服务…');
       var startVoice = await runScriptAsync(VOICE_START_SCRIPT, ['-WaitSeconds', '60'], 90000);
-      if (startVoice.ok) log('鑱婂ぉ浼樺厛妯″紡灏辩华锛氳闊虫湇鍔″凡鍚姩');
-      else log('璇煶鏈嶅姟鍚姩澶辫触: ' + startVoice.error);
+      if (startVoice.ok) log('聊天优先模式就绪：语音服务已启动');
+      else log('语音服务启动失败: ' + startVoice.error);
     }
     refreshServiceStates();
     state.modeBusy = false;
   })().catch(function (error) {
-    log('妯″紡鍒囨崲澶辫触: ' + error.message);
+    log('模式切换失败: ' + error.message);
     refreshServiceStates();
     state.modeBusy = false;
   });
@@ -671,6 +673,9 @@ app.post('/api/start', function (req, res) {
     return res.json({ ok: true, msg: 'Already running' });
   }
   var enableTunnel = req.body && typeof req.body.enableTunnel === 'boolean' ? req.body.enableTunnel : true;
+  var webuiResult = runManagedWebUI('Start');
+  if (!webuiResult.ok) log('Managed WebUI start failed: ' + webuiResult.error);
+  else log(webuiResult.message || 'Managed WebUI checked.');
   findAvailableGatewayPort(function (portError, gatewayPort) {
     if (portError) return res.status(503).json({ ok:false, msg:portError.message });
     state.gatewayPort = gatewayPort;
@@ -750,17 +755,18 @@ app.get('/api/logs', function (req, res) {
   res.json({ logs: state.logs.slice(since) });
 });
 
-// 鈹€鈹€鈹€ Start control server 鈹€鈹€鈹€
+// ─── Start control server ───
 var listener = app.listen(PORT, HOST, function () {
   console.log('');
   console.log('  ==============================================');
-  console.log('  缁缁樺 Control Panel');
+  console.log('  绫季绘境 Control Panel');
   console.log('  http://' + HOST + ':' + PORT);
   console.log('  ==============================================');
   console.log('');
 
-  // 鍙湁鐢ㄦ埛鏄惧紡寮€鍚悗鎵嶈嚜鍔ㄥ惎鍔?GPT-SoVITS 鈥斺€?璇煶鏈嶅姟甯搁┗鍗犳樉瀛橈紝
-  // 涓?WebUI / Ollama 鍚屾椂鎷夎捣瀹规槗鎶婃樉瀛樻墦婊★紝榛樿鏀逛负鎸夐渶鎵嬪姩/妯″紡鍒囨崲鍚姩銆?  if (process.env.NO_VOICE !== '1' && AUTO_START_VOICE) {
+  // 只有用户显式开启后才自动启动 GPT-SoVITS —— 语音服务常驻占显存，
+  // 与 WebUI / Ollama 同时拉起容易把显存打满，默认改为按需手动/模式切换启动。
+  if (process.env.NO_VOICE !== '1' && AUTO_START_VOICE) {
     setTimeout(function() {
       checkTTS();
       if (!state.ttsOnline) {
@@ -776,7 +782,7 @@ var listener = app.listen(PORT, HOST, function () {
       }
     }, 2000);
   } else if (!AUTO_START_VOICE) {
-    log('璇煶鏈嶅姟榛樿涓嶈嚜鍔ㄥ惎鍔紙鍙湪鈥滄樉瀛樿皟搴︹€濋潰鏉挎寜闇€寮€鍚級');
+    log('语音服务默认不自动启动（可在“显存调度”面板按需开启）');
   }
 
   if (process.env.NO_OPEN !== '1') {
@@ -789,9 +795,9 @@ var listener = app.listen(PORT, HOST, function () {
 
 listener.on('error', function (err) {
   if (err && err.code === 'EADDRINUSE') {
-    console.error('鎺у埗闈㈡澘绔彛 ' + PORT + ' 宸茶鍗犵敤锛岃鍏堝叧闂棫瀹炰緥銆?);
+    console.error('控制面板端口 ' + PORT + ' 已被占用，请先关闭旧实例。');
   } else {
-    console.error('鎺у埗闈㈡澘鍚姩澶辫触:', err && err.message ? err.message : err);
+    console.error('控制面板启动失败:', err && err.message ? err.message : err);
   }
   process.exitCode = 1;
 });
