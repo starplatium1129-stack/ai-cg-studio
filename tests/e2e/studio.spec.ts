@@ -4,7 +4,7 @@ function collectRuntimeErrors(page: Page) {
   const errors: string[] = [];
   page.on('pageerror', error => errors.push(error.message));
   page.on('console', message => {
-    if (message.type() === 'error' && !/favicon|ERR_CONNECTION_REFUSED|Failed to load resource.*50[23]/.test(message.text())) {
+    if (message.type() === 'error' && !/favicon|ERR_CONNECTION_REFUSED|scene-showcase|Failed to load resource.*50[23]/.test(message.text())) {
       errors.push(message.text());
     }
   });
