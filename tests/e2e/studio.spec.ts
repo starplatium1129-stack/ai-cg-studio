@@ -86,6 +86,18 @@ test('home page stays inside the performance budget', async ({ page }) => {
   expect(budget.domNodes).toBeLessThanOrEqual(1_500);
 });
 
+test('roadmap exposes prioritized phases and product boundaries', async ({ page }) => {
+  const errors = collectRuntimeErrors(page);
+  await page.goto('/docs/roadmap.html');
+  await expect(page.getByRole('heading', { name:'产品路线图', level:1 })).toBeVisible();
+  await expect(page.locator('.phase')).toHaveCount(5);
+  await expect(page.getByRole('heading', { name:'可靠性精修' })).toBeVisible();
+  await expect(page.getByRole('heading', { name:'创作体验增强' })).toBeVisible();
+  await expect(page.getByRole('heading', { name:'产品边界' })).toBeVisible();
+  await expect(page.getByText('暂不计划', { exact:true })).toBeVisible();
+  expect(errors).toEqual([]);
+});
+
 declare global {
   interface Window {
     AICKVStore: { set(key: string, value: unknown): Promise<boolean> };

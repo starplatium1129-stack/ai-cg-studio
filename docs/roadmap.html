@@ -4,241 +4,260 @@
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>项目状态与边界 · 绫季绘境</title>
+<meta name="description" content="绫季绘境后续改进、新功能方向、完成标准与产品边界。">
+<title>产品路线图 · 绫季绘境</title>
 <link rel="stylesheet" href="../css/design-system.css?v=8">
 <script src="../tools/nav.js?v=6"></script>
 <script src="../tools/theme.js?v=5"></script>
 <style>
-  .page { max-width: 900px; margin: 0 auto; padding: var(--s-5) var(--s-4); }
-  .nav-back {
-    display: inline-flex; align-items: center; gap: var(--s-2);
-    color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4);
-  }
-  .nav-back:hover { color: var(--accent); }
-  h1.title {
-    font-size: 2rem; font-weight: 800;
-    background: linear-gradient(135deg, var(--text-primary) 50%, var(--accent));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text; margin-bottom: var(--s-2);
-  }
-  .subtitle { color: var(--text-secondary); margin-bottom: var(--s-5); }
+  .page { max-width: 1040px; margin: 0 auto; padding: var(--s-5) var(--s-4); }
+  .nav-back { display:inline-flex; align-items:center; gap:var(--s-2); color:var(--text-secondary); font-size:.9rem; margin-bottom:var(--s-4); }
+  .nav-back:hover { color:var(--accent); }
+  .hero { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:var(--s-5); align-items:end; margin-bottom:var(--s-6); }
+  h1.title { margin:0 0 var(--s-2); font-size:2.15rem; font-weight:800; letter-spacing:-.03em; }
+  .subtitle { max-width:720px; margin:0; color:var(--text-secondary); line-height:1.75; }
+  .updated { color:var(--text-muted); font-family:var(--font-mono); font-size:.78rem; white-space:nowrap; }
 
-  /* Timeline */
-  .timeline { position: relative; padding-left: var(--s-7); }
-  .timeline::before {
-    content: ''; position: absolute; left: 18px; top: 0; bottom: 0;
-    width: 2px; background: var(--border-soft);
-  }
+  .status-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:var(--s-3); margin-bottom:var(--s-6); }
+  .status-card { padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); }
+  .status-card strong { display:block; font-size:1.35rem; color:var(--accent); margin-bottom:4px; }
+  .status-card span { color:var(--text-muted); font-size:.78rem; line-height:1.5; }
 
-  .version {
-    position: relative; margin-bottom: var(--s-6);
-  }
-  .version::before {
-    content: ''; position: absolute; left: -30px; top: var(--s-3);
-    width: 14px; height: 14px; border-radius: 50%;
-    background: var(--accent); border: 3px solid var(--bg-base);
-    box-shadow: 0 0 0 2px var(--accent);
-  }
-  .version.done::before { background: var(--success); box-shadow: 0 0 0 2px var(--success); }
-  .version.current::before {
-    background: var(--accent); box-shadow: 0 0 0 4px var(--accent-glow);
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { box-shadow: 0 0 0 4px var(--accent-glow); }
-    50% { box-shadow: 0 0 0 8px color-mix(in srgb, var(--accent) 40%, transparent); }
-  }
+  .principle { margin-bottom:var(--s-6); padding:var(--s-4); border:1px solid var(--border-soft); border-left:4px solid var(--accent); border-radius:var(--r-lg); background:var(--bg-surface); }
+  .principle strong { display:block; margin-bottom:var(--s-2); }
+  .principle p { margin:0; color:var(--text-secondary); line-height:1.75; }
 
-  .version-card {
-    background: var(--bg-surface); border: 1px solid var(--border-soft);
-    border-radius: var(--r-lg); padding: var(--s-4);
-    transition: border-color var(--t-fast);
-  }
-  .version-card:hover { border-color: var(--accent); }
-  .version.done .version-card { border-color: color-mix(in srgb, var(--success) 30%, transparent); }
-  .version.current .version-card { border-color: var(--accent); box-shadow: 0 0 20px var(--accent-glow); }
+  .roadmap { position:relative; padding-left:34px; }
+  .roadmap::before { content:''; position:absolute; left:9px; top:12px; bottom:12px; width:2px; background:var(--border-soft); }
+  .phase { position:relative; margin-bottom:var(--s-5); }
+  .phase::before { content:''; position:absolute; left:-31px; top:25px; width:14px; height:14px; border-radius:50%; border:3px solid var(--bg-base); background:var(--text-muted); box-shadow:0 0 0 2px var(--border-strong); }
+  .phase.done::before { background:var(--success); box-shadow:0 0 0 2px var(--success); }
+  .phase.now::before { background:var(--accent); box-shadow:0 0 0 5px var(--accent-glow); }
+  .phase-card { border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); overflow:hidden; }
+  .phase.now .phase-card { border-color:var(--accent); box-shadow:0 0 24px var(--accent-glow); }
+  .phase-head { display:flex; align-items:flex-start; gap:var(--s-3); padding:var(--s-4); border-bottom:1px solid var(--border-soft); }
+  .phase-index { flex:0 0 auto; padding:4px 10px; border-radius:999px; background:var(--accent-soft); color:var(--accent); font:700 .76rem var(--font-mono); }
+  .phase.done .phase-index { color:var(--success); background:color-mix(in srgb,var(--success) 12%,transparent); }
+  .phase-title { flex:1; min-width:0; }
+  .phase-title h2 { margin:0 0 4px; font-size:1.18rem; }
+  .phase-title p { margin:0; color:var(--text-secondary); font-size:.85rem; line-height:1.6; }
+  .phase-state { flex:0 0 auto; padding:3px 9px; border-radius:999px; background:var(--bg-elevated); color:var(--text-muted); font-size:.72rem; font-weight:700; }
+  .phase.now .phase-state { background:var(--accent); color:var(--text-inverse); }
+  .phase.done .phase-state { color:var(--success); background:color-mix(in srgb,var(--success) 12%,transparent); }
+  .phase-body { padding:var(--s-4); }
+  .work-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--s-3); }
+  .work-item { padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-elevated); }
+  .work-item h3 { margin:0 0 var(--s-2); font-size:.92rem; }
+  .work-item p { margin:0; color:var(--text-secondary); font-size:.82rem; line-height:1.65; }
+  .work-item .priority { display:inline-block; margin-bottom:var(--s-2); color:var(--accent); font:700 .68rem var(--font-mono); text-transform:uppercase; letter-spacing:.08em; }
+  .done-list { list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--s-2) var(--s-4); }
+  .done-list li { color:var(--text-secondary); font-size:.84rem; line-height:1.6; }
+  .done-list li::before { content:'✓'; margin-right:8px; color:var(--success); font-weight:800; }
+  .gate { margin-top:var(--s-3); padding:var(--s-3); border-radius:var(--r-md); background:var(--accent-soft); color:var(--text-secondary); font-size:.8rem; line-height:1.65; }
+  .gate strong { color:var(--text-primary); }
 
-  .version-header {
-    display: flex; align-items: baseline; gap: var(--s-3); margin-bottom: var(--s-2);
-  }
-  .version-num {
-    font-family: var(--font-mono); font-size: 0.85rem; font-weight: 700;
-    color: var(--accent); background: var(--accent-soft);
-    padding: 3px 10px; border-radius: 12px;
-  }
-  .version.done .version-num { background: color-mix(in srgb, var(--success) 12%, transparent); color: var(--success); }
-  .version.current .version-num { background: var(--accent); color: var(--text-inverse); }
+  .section { margin-top:var(--s-6); }
+  .section h2 { margin:0 0 var(--s-3); font-size:1.25rem; }
+  .metric-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--s-3); }
+  .metric { padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); }
+  .metric h3 { margin:0 0 var(--s-2); font-size:.9rem; }
+  .metric p { margin:0; color:var(--text-secondary); font-size:.8rem; line-height:1.65; }
+  .boundary { display:grid; grid-template-columns:1fr 1fr; gap:var(--s-3); }
+  .boundary-card { padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); }
+  .boundary-card h3 { margin:0 0 var(--s-3); font-size:1rem; }
+  .boundary-card ul { margin:0; padding-left:1.2rem; color:var(--text-secondary); }
+  .boundary-card li { margin-bottom:var(--s-2); font-size:.83rem; line-height:1.6; }
+  .boundary-card.no { border-color:color-mix(in srgb,var(--danger) 30%,var(--border-soft)); }
 
-  .version-name { font-size: 1.15rem; font-weight: 700; }
-  .version-tag {
-    font-size: 0.75rem; padding: 2px 8px; border-radius: 10px;
-    background: var(--bg-elevated); color: var(--text-muted);
-    margin-left: auto; font-weight: 500;
+  @media (max-width:800px) {
+    .hero { grid-template-columns:1fr; gap:var(--s-2); }
+    .status-grid,.metric-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .work-grid,.done-list,.boundary { grid-template-columns:1fr; }
   }
-  .version.done .version-tag { background: color-mix(in srgb, var(--success) 12%, transparent); color: var(--success); }
-  .version.current .version-tag { background: color-mix(in srgb, var(--warning) 15%, transparent); color: var(--warning); }
-
-  .version-desc { font-size: 0.88rem; color: var(--text-secondary); margin-bottom: var(--s-3); }
-
-  .feature-list { list-style: none; display: flex; flex-direction: column; gap: var(--s-2); }
-  .feature-list li {
-    font-size: 0.88rem; color: var(--text-secondary);
-    display: flex; align-items: flex-start; gap: var(--s-2);
+  @media (max-width:520px) {
+    .page { padding-inline:var(--s-3); }
+    .status-grid { grid-template-columns:1fr 1fr; }
+    .roadmap { padding-left:26px; }
+    .roadmap::before { left:6px; }
+    .phase::before { left:-26px; }
+    .phase-head { flex-wrap:wrap; }
+    .phase-state { margin-left:auto; }
   }
-  .feature-list li::before {
-    content: '→'; color: var(--accent); font-weight: 700; flex-shrink: 0;
-  }
-  .version.done .feature-list li::before { content: '✓'; color: var(--success); }
 </style>
 </head>
 <body data-nav="docs">
 
-<nav class="nav">
-  <div class="nav-inner">
-    <div class="nav-brand"><span class="dot"></span> 绫季绘境</div>
-    <div class="nav-links">
-    </div>
-  </div>
-</nav>
+<nav class="nav"><div class="nav-inner"><div class="nav-brand"><span class="dot"></span> 绫季绘境</div><div class="nav-links"></div></div></nav>
 
 <article class="page">
   <a href="../index.html" class="nav-back">← 回首页</a>
 
-  <h1 class="title">🗺 项目状态与边界</h1>
-  <p class="subtitle">核心功能已经完成。以后以内容维护和实际使用反馈为准，不为了版本号扩张个人工具。</p>
-
-  <div class="timeline">
-
-    <!-- 创作基础 -->
-    <div class="version done">
-      <div class="version-card">
-        <div class="version-header">
-          <div class="version-num">基础</div>
-          <div class="version-name">场景创作核心</div>
-          <div class="version-tag">✓ 完成</div>
-        </div>
-        <div class="version-desc">从一个故事出发，完成选场景、调画面、生成 Prompt、保存结果的主流程。</div>
-        <ul class="feature-list">
-          <li>298 个以绫地宁宁、四季夏目为主的 Scene</li>
-          <li>场景搜索、分类与角色筛选</li>
-          <li>导演工作台：故事、情绪、镜头、构图、光照、色彩与 Prompt 组合</li>
-          <li>角色、LoRA、风格、剧本和色彩参考页面</li>
-          <li>本地历史、评分、收藏、备注、项目与图片存储</li>
-          <li>桌面、平板和手机端的基础适配</li>
-        </ul>
-      </div>
+  <header class="hero">
+    <div>
+      <h1 class="title">产品路线图</h1>
+      <p class="subtitle">先守住作品、角色和故事，再增加真正能缩短创作路径的新能力。路线图按价值和依赖排序，不承诺固定日期；只有前一阶段达到完成标准，才进入下一阶段。</p>
     </div>
+    <div class="updated">UPDATED · 2026-07-25</div>
+  </header>
 
-    <!-- SD 闭环 -->
-    <div class="version done">
-      <div class="version-card">
-        <div class="version-header">
-          <div class="version-num">连接</div>
-          <div class="version-name">SD WebUI 出图闭环</div>
-          <div class="version-tag">✓ 完成</div>
+  <section class="status-grid" aria-label="当前项目状态">
+    <div class="status-card"><strong>297</strong><span>已校验场景<br>网页直接维护</span></div>
+    <div class="status-card"><strong>2</strong><span>角色创作路线<br>宁宁与夏目</span></div>
+    <div class="status-card"><strong>4/4</strong><span>关键浏览器流程<br>自动回归通过</span></div>
+    <div class="status-card"><strong>0</strong><span>已知依赖漏洞<br>质量门禁启用</span></div>
+  </section>
+
+  <section class="principle">
+    <strong>路线图原则：稳定底座已经完成，后续以真实创作收益驱动。</strong>
+    <p>新增功能必须至少改善一种结果：更容易找到场景、更快得到满意画面、更稳定地保存作品、更一致地呈现角色，或更容易诊断服务。只增加页面、依赖和设置项而不改善这些结果的功能不进入开发。</p>
+  </section>
+
+  <div class="roadmap">
+    <section class="phase done">
+      <div class="phase-card">
+        <header class="phase-head">
+          <span class="phase-index">BASE</span>
+          <div class="phase-title"><h2>稳定创作底座</h2><p>从场景维护、导演出图到作品欣赏、语音和服务控制，已经形成完整本地闭环。</p></div>
+          <span class="phase-state">已完成</span>
+        </header>
+        <div class="phase-body">
+          <ul class="done-list">
+            <li>场景、标签、精选层级和样张无代码维护</li>
+            <li>事务备份、原子写入、校验失败自动回滚</li>
+            <li>横竖图原比例展墙和沉浸式作品观赏</li>
+            <li>控制面板健康检查、进度状态和 GPU 操作互斥</li>
+            <li>固定声线参考、确定性采样和逐句完整语音</li>
+            <li>TypeScript 契约、单元测试、浏览器回归和 CI</li>
+          </ul>
         </div>
-        <div class="version-desc">通过 Stability Matrix 启动 WebUI 后，可以在网站里直接读取配置并出图。</div>
-        <ul class="feature-list">
-          <li>兼容 AUTOMATIC1111、Forge 与 ReForge 的 WebUI API</li>
-          <li>自动读取当前模型、Sampler、Scheduler 和放大器</li>
-          <li>真实进度、预计剩余时间、停止生成与超时提示</li>
-          <li>固定 Seed、hires.fix、单次模型选择与参数记忆</li>
-          <li>本地直连无需 Token，朋友链接使用临时通道与随机 Token</li>
-          <li>控制面板可填写 Stability Matrix 日志中的实际 WebUI 地址</li>
-        </ul>
       </div>
-    </div>
+    </section>
 
-    <!-- 完成状态 -->
-    <div class="version done">
-      <div class="version-card">
-        <div class="version-header">
-          <div class="version-num">完善</div>
-          <div class="version-name">创作、维护与作品整理</div>
-          <div class="version-tag">✓ 完成</div>
+    <section class="phase now">
+      <div class="phase-card">
+        <header class="phase-head">
+          <span class="phase-index">PHASE 1</span>
+          <div class="phase-title"><h2>可靠性精修</h2><p>不扩张产品边界，优先消除剩余数据丢失、浏览器兼容、诊断和安全隐患。</p></div>
+          <span class="phase-state">下一阶段</span>
+        </header>
+        <div class="phase-body">
+          <div class="work-grid">
+            <article class="work-item"><span class="priority">P0 · 存储</span><h3>作品库存储体检</h3><p>增加 IndexedDB 容量预警、版本迁移、损坏记录隔离，以及包含原图和元数据的完整作品包导入导出。</p></article>
+            <article class="work-item"><span class="priority">P0 · 诊断</span><h3>一键导出诊断包</h3><p>由控制面板汇总服务版本、端口、健康状态、最近错误和脱敏配置，减少排查 WebUI、Ollama 与语音问题的时间。</p></article>
+            <article class="work-item"><span class="priority">P1 · 安全</span><h3>移除 HTML 事件属性</h3><p>把 onclick、onchange 等迁移到统一事件监听，随后从非聊天页面 CSP 中移除 unsafe-inline。</p></article>
+            <article class="work-item"><span class="priority">P1 · 类型</span><h3>渐进迁移高风险模块</h3><p>优先迁移维护接口、控制状态、存储格式和语音配置；每个模块由现有测试保护，不进行一次性重写。</p></article>
+            <article class="work-item"><span class="priority">P1 · 语音</span><h3>真实声线基线</h3><p>为宁宁和夏目建立固定台词与参考结果，检查响度、静音、削波、延迟和人工听感，防止调参后音色漂移。</p></article>
+            <article class="work-item"><span class="priority">P2 · 兼容</span><h3>无障碍与设备矩阵</h3><p>补齐键盘焦点、读屏标签、降低动态效果，并覆盖窄桌面、平板和常见手机视口。</p></article>
+          </div>
+          <div class="gate"><strong>进入下一阶段的标准：</strong>连续使用中没有数据丢失；完整备份可恢复；控制面板问题可通过诊断包定位；浏览器回归、性能预算和 CI 持续通过。</div>
         </div>
-        <div class="version-desc">从出图到维护已经形成完整本地闭环，后续主要更新内容而不是扩张功能。</div>
-        <ul class="feature-list">
-          <li>场景管理器可新增、复制、编辑、下架和校验场景，并自动备份</li>
-          <li>样张可以在维护页面直接替换，不需要改文件名或手写路径</li>
-          <li>作品册、历史、收藏、项目、本地图片和版本化备份已经打通</li>
-          <li>快速出图、生成队列、同 Seed 微调与针对性错误恢复已经完成</li>
-          <li>单人与双人生成采用实际对比后保留的稳定基线，不以重训模型为默认方案</li>
-          <li>桌面端作为主要创作环境，移动端保留基础可用性</li>
-        </ul>
       </div>
-    </div>
+    </section>
 
-    <!-- 日常维护 -->
-    <div class="version">
-      <div class="version-card">
-        <div class="version-header">
-          <div class="version-num">以后</div>
-          <div class="version-name">按实际使用维护</div>
-          <div class="version-tag">无固定版本</div>
+    <section class="phase">
+      <div class="phase-card">
+        <header class="phase-head">
+          <span class="phase-index">PHASE 2</span>
+          <div class="phase-title"><h2>创作体验增强</h2><p>在不遮挡画面的前提下，让比较、整理和继续创作更自然。</p></div>
+          <span class="phase-state">可靠性完成后</span>
+        </header>
+        <div class="phase-body">
+          <div class="work-grid">
+            <article class="work-item"><span class="priority">作品册</span><h3>私人展览与画册</h3><p>按项目、角色、季节或自定义主题组成展览，提供安静的全屏播放；默认仍先看作品，不把参数铺在画面上。</p></article>
+            <article class="work-item"><span class="priority">比较</span><h3>同 Seed 版本对照</h3><p>并排或滑杆比较两张作品，显示真正变化的 Prompt 与参数，帮助判断 LoRA、构图和光照调整是否有效。</p></article>
+            <article class="work-item"><span class="priority">分支</span><h3>作品变体树</h3><p>从满意作品继续微调，记录父作品、Seed 和变化原因，避免历史记录变成无法理解的平铺列表。</p></article>
+            <article class="work-item"><span class="priority">项目</span><h3>可移植创作包</h3><p>导出一个项目的故事、场景、Prompt、参数、语音和作品原图；导入时预览冲突并允许合并。</p></article>
+            <article class="work-item"><span class="priority">发现</span><h3>本地偏好推荐解释</h3><p>继续使用本机收藏和评分改善场景排序，同时说明“为什么推荐”，并提供一键关闭或重置。</p></article>
+            <article class="work-item"><span class="priority">语音</span><h3>台词与音频工作流</h3><p>让场景台词、角色、字幕和生成音频保持对应，支持单句重做与整段导出，不引入复杂时间轴编辑器。</p></article>
+          </div>
+          <div class="gate"><strong>完成标准：</strong>新能力必须减少重复操作或提高作品选择质量；作品展示仍保持原比例、低干扰和键盘可用；旧项目无迁移损失。</div>
         </div>
-        <div class="version-desc">只有真实使用暴露问题时才调整，优先维护画面质量、场景内容和可靠性。</div>
-        <ul class="feature-list">
-          <li>根据实际成图修正个别 Scene，而不是统一重写全部 Prompt</li>
-          <li>积累足够多真实作品后，再判断作品册卡片密度是否需要调整</li>
-          <li>模型、WebUI 或浏览器升级后，优先验证现有流程是否仍然稳定</li>
-          <li>只有明确重复劳动出现时，才考虑增加新的自动化</li>
-        </ul>
       </div>
-    </div>
+    </section>
 
-    <!-- 可选方向 -->
-    <div class="version">
-      <div class="version-card">
-        <div class="version-header">
-          <div class="version-num">可选</div>
-          <div class="version-name">以后有需要再做</div>
-          <div class="version-tag">不设期限</div>
+    <section class="phase">
+      <div class="phase-card">
+        <header class="phase-head">
+          <span class="phase-index">PHASE 3</span>
+          <div class="phase-title"><h2>内容与工作流扩展</h2><p>只有实际需要第三个角色、新工作流或批量迁移时才启动，避免提前泛化。</p></div>
+          <span class="phase-state">按真实需求</span>
+        </header>
+        <div class="phase-body">
+          <div class="work-grid">
+            <article class="work-item"><span class="priority">角色</span><h3>配置驱动的新角色接入</h3><p>通过角色资料、LoRA、语音、立绘和校验清单注册角色，自动生成筛选项；角色独有提示词仍需人工审核。</p></article>
+            <article class="work-item"><span class="priority">场景</span><h3>场景包导入导出</h3><p>把场景数据、标签、精选信息和审核样张打成可验证的内容包，支持预览、冲突检测与回滚。</p></article>
+            <article class="work-item"><span class="priority">工作流</span><h3>ComfyUI 工作流导出</h3><p>将当前导演参数映射为版本化 workflow JSON；先支持常用单人路径，再评估双人区域控制。</p></article>
+            <article class="work-item"><span class="priority">参考图</span><h3>色彩、光照和构图辅助</h3><p>从用户主动选择的参考图提取画面方向，只生成可检查的建议，不自动覆盖角色 DNA 或故事内容。</p></article>
+            <article class="work-item"><span class="priority">训练</span><h3>素材与标签导出</h3><p>按角色、服装和身份锚点导出本地训练清单，保留来源与审核状态，不在网站内承担完整训练平台。</p></article>
+            <article class="work-item"><span class="priority">控制</span><h3>可选参考图管线</h3><p>针对明确场景评估 IP-Adapter、ControlNet 或区域提示，能力不可用时必须无损回退到现有出图链路。</p></article>
+          </div>
+          <div class="gate"><strong>启动条件：</strong>至少存在一个真实内容包、第三角色或 ComfyUI 工作流需求；先制作最小试点，通过身份、构图和维护成本评审后再进入主流程。</div>
         </div>
-        <div class="version-desc">这些方向有价值，但只有实际工作流用得到时才投入维护。</div>
-        <ul class="feature-list">
-          <li>导出 ComfyUI workflow JSON 与常用参数映射</li>
-          <li>在现有双人 OpenPose 之外，按具体场景尝试 IP-Adapter 或参考图辅助</li>
-          <li>从参考图提取色彩、光照与构图提示</li>
-          <li>小范围的本地 AI 故事润色或画面建议</li>
-          <li>训练素材与对应标签的本地导出</li>
-        </ul>
       </div>
-    </div>
+    </section>
 
-    <!-- 不计划 -->
-    <div class="version">
-      <div class="version-card">
-        <div class="version-header">
-          <div class="version-num">边界</div>
-          <div class="version-name">暂不计划</div>
-          <div class="version-tag">保持个人项目</div>
+    <section class="phase">
+      <div class="phase-card">
+        <header class="phase-head">
+          <span class="phase-index">RESEARCH</span>
+          <div class="phase-title"><h2>长期研究方向</h2><p>可以做原型，但不承诺进入正式产品；必须证明比现有简单流程更好。</p></div>
+          <span class="phase-state">不设期限</span>
+        </header>
+        <div class="phase-body">
+          <div class="work-grid">
+            <article class="work-item"><span class="priority">故事</span><h3>本地故事润色助手</h3><p>只在用户请求时提供角色一致性、动作可画性和镜头建议，保留原文并能逐项接受或拒绝。</p></article>
+            <article class="work-item"><span class="priority">分镜</span><h3>多画面故事板</h3><p>把一段故事拆成少量连续 CG，并锁定角色身份、服装和时间线；先解决一致性，再考虑批量生成。</p></article>
+            <article class="work-item"><span class="priority">质量</span><h3>可解释的候选图比较</h3><p>结合固定 Seed、人工评分和身份锚点生成对照报告，辅助挑图，不让自动分数替代逐张观察。</p></article>
+            <article class="work-item"><span class="priority">性能</span><h3>闲时预热与资源预测</h3><p>根据设备和当前模式建议加载顺序；不得未经允许常驻占用显存，也不得后台自动开始生成。</p></article>
+          </div>
         </div>
-        <div class="version-desc">这些功能会明显增加运营、安全和维护成本，不符合目前的使用方式。</div>
-        <ul class="feature-list">
-          <li>公开注册、用户账号和社交关系</li>
-          <li>社区投稿、公开作品流和内容审核</li>
-          <li>Scene 商店、订阅或付费服务</li>
-          <li>长期托管的云端图库和生成服务</li>
-        </ul>
       </div>
-    </div>
-
-  </div>
-  <div class="callout" style="margin-top: var(--s-6);">
-    <strong>🌸 每次决定是否增加功能时，先检查四件事：</strong>
-    <ul style="margin-top: var(--s-2); padding-left: var(--s-4); color: var(--text-secondary);">
-      <li><strong>有用优先</strong> — 自己或朋友是否真的会用</li>
-      <li><strong>本地优先</strong> — 数据能否留在自己的设备上</li>
-      <li><strong>安全分享</strong> — 能否限制访问并随时停止</li>
-      <li><strong>内容优先</strong> — 是否改善场景和出图，而不是只增加页面</li>
-    </ul>
+    </section>
   </div>
 
-  <footer class="footer">
-    <p>绫季绘境 · 个人维护路线</p>
-    <p class="muted mt-4">根据实际使用调整，不为了版本号赶工。</p>
-  </footer>
+  <section class="section">
+    <h2>衡量是否真的变好</h2>
+    <div class="metric-grid">
+      <article class="metric"><h3>可靠性</h3><p>保存失败不丢数据；备份可恢复；损坏记录不拖垮整个作品库；所有写入都有明确结果。</p></article>
+      <article class="metric"><h3>创作效率</h3><p>从故事到首次出图的操作减少；重新找到满意配置更快；重复输入和手工文件操作继续下降。</p></article>
+      <article class="metric"><h3>画面体验</h3><p>横图、竖图和方图始终完整呈现；画面优先于参数；新增功能不让导演台和作品册变成仪表盘。</p></article>
+      <article class="metric"><h3>角色一致性</h3><p>脸、发型、瞳色、装饰、服装、双人特征和声音身份有稳定基线，变化能够被发现和解释。</p></article>
+      <article class="metric"><h3>性能</h3><p>关键页面继续满足请求数、脚本体积和传输预算；离开页面后释放 Blob URL、音频和服务资源。</p></article>
+      <article class="metric"><h3>维护成本</h3><p>普通内容更新不改代码；结构变更有契约、迁移和测试；不为一个功能复制第二套状态与存储逻辑。</p></article>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>产品边界</h2>
+    <div class="boundary">
+      <article class="boundary-card">
+        <h3>可以考虑</h3>
+        <ul>
+          <li>本地优先、可导出、可恢复的个人创作能力</li>
+          <li>能提高角色身份、构图和故事表现的辅助工具</li>
+          <li>按真实需求增加角色、场景包和生成工作流</li>
+          <li>让朋友安全查看或临时体验的轻量分享</li>
+        </ul>
+      </article>
+      <article class="boundary-card no">
+        <h3>暂不计划</h3>
+        <ul>
+          <li>公开注册、社交关系、社区投稿和公开作品流</li>
+          <li>Scene 商店、订阅、支付或商业化运营后台</li>
+          <li>长期托管的云端图库、云端生成和用户数据平台</li>
+          <li>为了技术潮流重写为大型前端框架或拆成微服务</li>
+          <li>无人审核的自动发布、自动训练和自动替换模型</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="principle section">
+    <strong>执行节奏</strong>
+    <p>一次只推进一个主要能力：先写清用户问题和完成标准，再做最小版本，补数据迁移与测试，真实使用一段时间后决定继续、调整或删除。路线图不是功能承诺清单，任何项目都可以因为收益不足而取消。</p>
+  </section>
+
+  <footer class="footer"><p>绫季绘境 · 从真实创作出发持续精修</p><p class="muted mt-4">稳定优先，画面优先，角色优先，本地优先。</p></footer>
 </article>
 
 </body>

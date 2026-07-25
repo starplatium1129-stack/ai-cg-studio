@@ -137,7 +137,7 @@ Scene 是创作的起点，Prompt 是它面向 Stable Diffusion 的输出。这�
 - [Scene 规范](docs/scene-spec.html)：场景数据与推荐参数
 - [Prompt 规范](docs/prompt-spec.html)：Prompt 组装顺序
 - [质量检查](docs/quality-standard.html)：出图后的五项自检
-- [项目状态与边界](docs/roadmap.html)：已完成功能、日常维护方向和明确不计划的内容
+- [产品路线图与边界](docs/roadmap.html)：后续加固、新功能阶段、完成标准和明确不计划的内容
 - [网站设计规范](DESIGN.md)：网站与控制面板的唯一 UI 设计依据
 
 ## 维护与校验
