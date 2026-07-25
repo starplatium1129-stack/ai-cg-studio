@@ -105,7 +105,7 @@ async function run() {
   var voiceModule = fs.readFileSync(path.join(root, 'tools', 'chat', 'voice.mjs'), 'utf8');
   var live2dModule = fs.readFileSync(path.join(root, 'tools', 'chat', 'live2d.mjs'), 'utf8');
   var chatCss = fs.readFileSync(path.join(root, 'css', 'chat.css'), 'utf8');
-  var voiceRoute = fs.readFileSync(path.join(root, 'routes', 'tts.js'), 'utf8');
+  var voiceRoute = fs.readFileSync(path.join(root, 'routes', 'voice.js'), 'utf8');
   var serverSource = fs.readFileSync(path.join(root, 'server.js'), 'utf8');
 
   assert(html.includes('data-nav="chat"'), 'chat page must expose the navigation state');
