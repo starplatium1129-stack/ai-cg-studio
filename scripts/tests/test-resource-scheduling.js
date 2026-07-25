@@ -45,13 +45,15 @@ assert(control.includes('stopManagedServices === true'), 'stopping the website m
 
 // ─── 控制面板界面：调度面板 ───
 assert(controlHtml.includes('显存资源调度'), 'control panel must show the VRAM scheduling panel');
-assert(controlHtml.includes("switchMode('draw')") && controlHtml.includes("switchMode('chat')"), 'control panel must offer draw/chat mode buttons');
-assert(controlHtml.includes("serviceAction('voice','start')") && controlHtml.includes("serviceAction('ollama','unload')"), 'control panel must expose per-service controls');
+assert(controlHtml.includes('data-action="switch-mode"') && controlHtml.includes('data-mode="draw"') && controlHtml.includes('data-mode="chat"'), 'control panel must offer draw/chat mode buttons');
+assert(controlHtml.includes('data-action="service"') && controlHtml.includes('data-service="voice"') && controlHtml.includes('data-service="ollama"'), 'control panel must expose per-service controls');
 assert(controlHtml.includes('auto-start-voice') && controlUi.includes('/api/preference'), 'control panel must make voice auto-start an explicit preference');
 assert(controlHtml.includes('ollama-badge'), 'control panel must show Ollama online and VRAM status');
 assert(controlHtml.includes('operation-panel') && controlUi.includes('renderOperation'), 'control panel must render operation progress and final failures');
 assert((controlHtml + controlUi).includes('停止网站网关'), 'the primary stop action must describe its limited scope');
-assert(controlHtml.includes('<script src="control.js?v=1"></script>'), 'control panel controller must stay external');
+assert(controlHtml.includes('<script src="control.js?v=2"></script>'), 'control panel controller must stay external');
 assert(controlUi.includes('startPolling();'), 'control panel must begin health polling as soon as it opens');
+assert(!/on(click|change|input)=/.test(controlHtml), 'control panel must not use inline HTML event attributes');
+assert(controlUi.includes("getAttribute('data-action')"), 'control panel must bind actions via data-action delegation');
 
 console.log('Resource scheduling tests passed: VRAM modes, service controls, persistent translation, Ollama keep_alive');

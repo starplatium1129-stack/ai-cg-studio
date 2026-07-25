@@ -126,13 +126,13 @@
         <div class="viewer-en" id="viewerEn"></div>
       </div>
       <div class="char-toggle">
-        <button class="char-btn active" data-char="nene" onclick="switchChar('nene')">🌸 宁宁</button>
-        <button class="char-btn" data-char="natsume" onclick="switchChar('natsume')">🍂 夏目</button>
+        <button class="char-btn active" data-char="nene" data-action="switch-char" data-char="nene">🌸 宁宁</button>
+        <button class="char-btn" data-char="natsume" data-action="switch-char" data-char="natsume">🍂 夏目</button>
       </div>
     </div>
     <p style="color:var(--text-secondary);font-size:0.92rem;margin-bottom:var(--s-4);font-style:italic;" id="viewerDesc"></p>
     <div class="acts" id="acts"></div>
-    <button class="back-btn" onclick="backToList()">← 返回剧本列表</button>
+    <button class="back-btn" data-action="back-to-list">← 返回剧本列表</button>
   </div>
 </article>
 
@@ -141,6 +141,6 @@
   <p class="muted mt-4">剧本模式 · 每一幕都是一个 SC0001 Scene 规范</p>
 </footer>
 
-<script src="scenario.js?v=1"></script>
+<script src="scenario.js?v=2"></script>
 </body>
 </html>

@@ -18,7 +18,7 @@
         var identityHtml = (id.role || id.age || id.occupation || id.faction) ?
           '<div class="identity-row">'+(id.role?'<span class="item role">'+esc(id.role)+'</span>':'')+(id.age?'<span class="item">'+ageText+'</span>':'')+(id.occupation?'<span class="item">'+esc(id.occupation)+'</span>':'')+(id.faction?'<span class="item">'+esc(id.faction)+'</span>':'')+'</div>' : '';
         var voiceHtml = c.voice ? '<div class="voice-block"><span class="voice-label">语气示例</span>'+esc(c.voice)+'</div>' : '';
-        var bgHtml = c.bg_story ? '<div class="bg-story" onclick="this.classList.toggle(\'expanded\')">'+esc(c.bg_story)+'</div>' : '';
+        var bgHtml = c.bg_story ? '<div class="bg-story" data-action="toggle-bg">'+esc(c.bg_story)+'</div>' : '';
         var portrait = c.portrait || {};
         var portraitHtml = portrait.image ? '<img class="portrait-image" src="'+esc(portrait.image)+'" alt="'+esc(portrait.alt || c.name)+'" loading="eager" decoding="async">' : '';
         center.innerHTML = '<section class="character-hero card-direct card-level-3">'+
@@ -40,6 +40,8 @@
         tabs.querySelectorAll('[data-id]').forEach(function(tab){ tab.addEventListener('click', function(){ current = tab.getAttribute('data-id'); render(); }); });
         var grid = document.getElementById('recommendGrid');
         recommendations.forEach(function(scene){ grid.appendChild(window.createSceneCard(scene, { actions: [{ label: '用这个场景创作', primary: true, href: 'prompt-builder.html?scene=' + encodeURIComponent(scene.id) }] })); });
+        var bg = center.querySelector('[data-action="toggle-bg"]');
+        if (bg) bg.addEventListener('click', function(){ bg.classList.toggle('expanded'); });
       }
       render();
     })

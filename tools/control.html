@@ -164,7 +164,7 @@
   <div class="nav-inner">
     <div class="nav-brand"><img src="/assets/logo.svg" alt="绫季绘境" style="height:32px;width:auto" aria-hidden="true"><span class="sr-only">绫季绘境</span></div>
     <div class="nav-links">
-      <button class="theme-toggle" type="button" onclick="toggleTheme()" aria-label="切换主题" title="切换明暗主题"><span id="theme-icon">🌙</span></button>
+      <button class="theme-toggle" type="button" data-action="toggle-theme" aria-label="切换主题" title="切换明暗主题"><span id="theme-icon">🌙</span></button>
     </div>
   </div>
 </nav>
@@ -187,7 +187,7 @@
   </section>
 
   <div style="margin-bottom:var(--s-4)">
-    <button class="btn btn-ghost" id="check-services" type="button" onclick="pollStatus(true);pollLogs();" style="width:100%">🔍 检测所有服务</button>
+    <button class="btn btn-ghost" id="check-services" type="button" data-action="check-services" style="width:100%">🔍 检测所有服务</button>
   </div>
 
   <!-- VRAM -->
@@ -196,11 +196,11 @@
       <h3 style="font-size:1rem;margin-bottom:var(--s-2)">⚡ 显存资源调度</h3>
       <p style="color:var(--text-muted);font-size:.8rem;line-height:1.55;margin-bottom:var(--s-3)">绘图（WebUI）、语音（GPT-SoVITS）和聊天模型（Ollama）同时加载容易占满显存。按需切换：先释放、再加载。</p>
       <div class="mode-grid">
-        <button class="mode-card" id="mode-draw" type="button" onclick="switchMode('draw')">
+        <button class="mode-card" id="mode-draw" type="button" data-action="switch-mode" data-mode="draw">
           <div class="mode-card-title">🎨 绘图优先</div>
           <div class="mode-card-desc">停止语音、卸载 Ollama 模型，把显存让给 WebUI 出图。</div>
         </button>
-        <button class="mode-card" id="mode-chat" type="button" onclick="switchMode('chat')">
+        <button class="mode-card" id="mode-chat" type="button" data-action="switch-mode" data-mode="chat">
           <div class="mode-card-title">💬 聊天优先</div>
           <div class="mode-card-desc">停止受管 WebUI，启动语音服务，专注角色对话。</div>
         </button>
@@ -213,18 +213,18 @@
       <div class="service-rows">
         <div class="service-row">
           <span class="service-row-name"><span class="dot" id="svc-webui-dot"></span>SD WebUI 绘图 <span class="service-row-meta" id="svc-webui-meta"></span></span>
-          <span class="service-row-actions"><button class="btn-tiny" type="button" onclick="serviceAction('webui','start')">启动</button><button class="btn-tiny danger" type="button" onclick="serviceAction('webui','stop')">停止</button></span>
+          <span class="service-row-actions"><button class="btn-tiny" type="button" data-action="service" data-service="webui" data-op="start">启动</button><button class="btn-tiny danger" type="button" data-action="service" data-service="webui" data-op="stop">停止</button></span>
         </div>
         <div class="service-row">
           <span class="service-row-name"><span class="dot" id="svc-voice-dot"></span>GPT-SoVITS 语音 <span class="service-row-meta" id="svc-voice-meta"></span></span>
-          <span class="service-row-actions"><button class="btn-tiny" type="button" onclick="serviceAction('voice','start')">启动</button><button class="btn-tiny danger" type="button" onclick="serviceAction('voice','stop')">停止</button></span>
+          <span class="service-row-actions"><button class="btn-tiny" type="button" data-action="service" data-service="voice" data-op="start">启动</button><button class="btn-tiny danger" type="button" data-action="service" data-service="voice" data-op="stop">停止</button></span>
         </div>
         <div class="service-row">
           <span class="service-row-name"><span class="dot" id="svc-ollama-dot"></span>Ollama 聊天模型 <span class="service-row-meta" id="svc-ollama-meta"></span></span>
-          <span class="service-row-actions"><button class="btn-tiny danger" type="button" onclick="serviceAction('ollama','unload')">卸载模型释放显存</button></span>
+          <span class="service-row-actions"><button class="btn-tiny danger" type="button" data-action="service" data-service="ollama" data-op="unload">卸载模型释放显存</button></span>
         </div>
       </div>
-      <label class="autostart-row"><input type="checkbox" id="auto-start-voice" onchange="saveAutoStartVoice()"> 打开控制面板时自动启动语音服务（显存紧张时不建议开启）</label>
+      <label class="autostart-row"><input type="checkbox" id="auto-start-voice"> 打开控制面板时自动启动语音服务（显存紧张时不建议开启）</label>
       <div class="mode-note">提示：Ollama 聊天模型闲置约 10 分钟会自动卸载；语音服务按需启动即可，系统声音试听不受影响。</div>
     </div>
   </div>
@@ -244,7 +244,7 @@
       <label class="config-label" for="tts-host">GPT-SoVITS API 地址</label>
       <div class="config-row">
         <input class="config-input" id="tts-host" value="http://127.0.0.1:9880" spellcheck="false" inputmode="url" autocomplete="off">
-        <button class="btn btn-ghost" id="save-config" style="height:40px;padding:0 16px;font-size:.78rem" type="button" onclick="doSaveSDConfig()">保存全部并检测</button>
+        <button class="btn btn-ghost" id="save-config" style="height:40px;padding:0 16px;font-size:.78rem" type="button" data-action="save-config">保存全部并检测</button>
       </div>
       <div class="config-help">默认按需启动（见上方"显存资源调度"）；默认端口为 <code>9880</code>。</div>
 
@@ -275,11 +275,11 @@
           <span class="tunnel-toggle-text">公网分享隧道</span>
           <span class="tunnel-toggle-hint" id="tunnel-hint">关闭后仅本机可访问</span>
         </label>
-        <button class="tunnel-switch" id="tunnel-switch" type="button" role="switch" aria-checked="true" onclick="toggleTunnel()">
+        <button class="tunnel-switch" id="tunnel-switch" type="button" role="switch" aria-checked="true" data-action="toggle-tunnel">
           <span class="tunnel-switch-knob"></span>
         </button>
       </div>
-      <button id="btn" class="btn btn-primary" style="width:100%;min-height:48px;font-size:.95rem" type="button" onclick="doStart()">启动并生成分享链接</button>
+      <button id="btn" class="btn btn-primary" style="width:100%;min-height:48px;font-size:.95rem" type="button" data-action="start-gateway">启动并生成分享链接</button>
       <p class="action-note" id="action-note">启动后，本机访问不需要 Token；公网分享会使用临时 Token。</p>
     </div>
   </div>
@@ -298,7 +298,7 @@
           <div class="link-value" id="local-link">等待网关启动…</div>
           <div class="inline-actions">
             <a id="local-open" class="btn btn-primary" href="http://127.0.0.1:3000/" target="_blank" rel="noopener" style="flex:1;min-height:38px;font-size:.8rem">打开网站</a>
-            <button class="btn btn-ghost" id="copy-local" type="button" onclick="copyLocalLink()" style="min-height:38px;font-size:.78rem">复制地址</button>
+            <button class="btn btn-ghost" id="copy-local" type="button" data-action="copy-local" style="min-height:38px;font-size:.78rem">复制地址</button>
           </div>
         </article>
         <article class="access-card">
@@ -308,7 +308,7 @@
           <div id="share-state" class="share-state waiting">正在连接</div>
           <div class="link-value waiting" id="share-link">等待分享链接…</div>
           <div class="inline-actions">
-            <button class="btn btn-ghost" id="btn-copy" type="button" onclick="copyShareLink()" disabled style="flex:1;min-height:38px;font-size:.78rem">复制分享链接</button>
+            <button class="btn btn-ghost" id="btn-copy" type="button" data-action="copy-share" disabled style="flex:1;min-height:38px;font-size:.78rem">复制分享链接</button>
           </div>
         </article>
       </div>
@@ -323,8 +323,8 @@
     <summary>
       <span class="summary-side"><span class="chevron">›</span><span>运行日志</span></span>
       <span class="summary-side" style="gap:8px">
-        <button class="btn-clear" type="button" onclick="exportDiagnostics(event)">导出诊断包</button>
-        <button class="btn-clear" type="button" onclick="clearLogs(event)">清空显示</button>
+        <button class="btn-clear" type="button" data-action="export-diagnostics">导出诊断包</button>
+        <button class="btn-clear" type="button" data-action="clear-logs">清空显示</button>
       </span>
     </summary>
     <div class="log-wrap">
@@ -339,6 +339,6 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="control.js?v=1"></script>
+<script src="control.js?v=2"></script>
 </body>
 </html>

@@ -16,18 +16,33 @@ function isDirectLocalRequest(req) {
   return loopback && !forwarded;
 }
 
+function normalizeRequestPath(pathValue) {
+  var value = String(pathValue || '/');
+  var q = value.indexOf('?');
+  if (q >= 0) value = value.slice(0, q);
+  if (value.length > 1 && value.charAt(value.length - 1) === '/') value = value.slice(0, -1);
+  return value || '/';
+}
+
+function buildContentSecurityPolicy(pathValue) {
+  var path = normalizeRequestPath(pathValue);
+  var chatPage = path === '/tools/chat.html' || path === '/tools/chat';
+  var promptBuilderPage = path === '/tools/prompt-builder.html' || path === '/tools/prompt-builder';
+  var scriptSrc = "'self'";
+  if (chatPage) scriptSrc += " 'unsafe-eval'";
+  else if (promptBuilderPage) scriptSrc += " 'unsafe-inline'";
+  return "default-src 'self'; img-src 'self' data: blob: https:; media-src 'self' data: blob:; " +
+    'script-src ' + scriptSrc + '; ' +
+    "style-src 'self' 'unsafe-inline'; connect-src 'self' data: blob: https:; " +
+    "object-src 'none'; base-uri 'self'; frame-ancestors 'none'";
+}
+
 function responseHeaders(req, res, next) {
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-Frame-Options', 'DENY');
   res.setHeader('Referrer-Policy', 'no-referrer');
   res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
-
-  var chatPage = req.path === '/tools/chat.html' || req.path === '/tools/chat';
-  res.setHeader('Content-Security-Policy',
-    "default-src 'self'; img-src 'self' data: blob: https:; media-src 'self' data: blob:; " +
-    "script-src 'self'" + (chatPage ? " 'unsafe-eval'" : " 'unsafe-inline'") + "; " +
-    "style-src 'self' 'unsafe-inline'; connect-src 'self' data: blob: https:; " +
-    "object-src 'none'; base-uri 'self'; frame-ancestors 'none'");
+  res.setHeader('Content-Security-Policy', buildContentSecurityPolicy(req.path));
   next();
 }
 
@@ -66,6 +81,8 @@ function tokenAuth(token) {
 module.exports = {
   tokenMatches:tokenMatches,
   isDirectLocalRequest:isDirectLocalRequest,
+  normalizeRequestPath:normalizeRequestPath,
+  buildContentSecurityPolicy:buildContentSecurityPolicy,
   responseHeaders:responseHeaders,
   tokenAuth:tokenAuth
 };

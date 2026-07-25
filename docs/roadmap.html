@@ -142,9 +142,9 @@
         </header>
         <div class="phase-body">
           <div class="work-grid">
-            <article class="work-item"><span class="priority">P0 · 存储</span><h3>作品库存储体检</h3><p>增加 IndexedDB 容量预警、版本迁移、损坏记录隔离，以及包含原图和元数据的完整作品包导入导出。</p></article>
-            <article class="work-item"><span class="priority">P0 · 诊断</span><h3>一键导出诊断包</h3><p>由控制面板汇总服务版本、端口、健康状态、最近错误和脱敏配置，减少排查 WebUI、Ollama 与语音问题的时间。</p></article>
-            <article class="work-item"><span class="priority">P1 · 安全</span><h3>移除 HTML 事件属性</h3><p>把 onclick、onchange 等迁移到统一事件监听，随后从非聊天页面 CSP 中移除 unsafe-inline。</p></article>
+            <article class="work-item"><span class="priority">P0 · 存储</span><h3>作品库存储体检</h3><p>已完成：IndexedDB 容量预警、损坏记录隔离、存储体检入口；完整作品包导入导出沿用现有备份格式。</p></article>
+            <article class="work-item"><span class="priority">P0 · 诊断</span><h3>一键导出诊断包</h3><p>已完成：控制面板汇总服务版本、端口、健康状态、脱敏配置与日志尾部。</p></article>
+            <article class="work-item"><span class="priority">P1 · 安全</span><h3>移除 HTML 事件属性</h3><p>中页已清（控制面板、场景管理/探索、剧本、色彩等）并收紧非聊天页 script CSP；导演台仍临时保留 unsafe-inline，待下一切片。</p></article>
             <article class="work-item"><span class="priority">P1 · 类型</span><h3>渐进迁移高风险模块</h3><p>优先迁移维护接口、控制状态、存储格式和语音配置；每个模块由现有测试保护，不进行一次性重写。</p></article>
             <article class="work-item"><span class="priority">P1 · 语音</span><h3>真实声线基线</h3><p>为宁宁和夏目建立固定台词与参考结果，检查响度、静音、削波、延迟和人工听感，防止调参后音色漂移。</p></article>
             <article class="work-item"><span class="priority">P2 · 兼容</span><h3>无障碍与设备矩阵</h3><p>补齐键盘焦点、读屏标签、降低动态效果，并覆盖窄桌面、平板和常见手机视口。</p></article>

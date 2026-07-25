@@ -101,7 +101,32 @@ async function main() {
     suffix:'…cdef'
   });
 
-  console.log('Security tests passed: token match, local auth, backup local-only, log redaction');
+  function scriptSrcDirective(csp) {
+    var match = String(csp || '').match(/script-src([^;]+)/);
+    return match ? match[1] : '';
+  }
+
+  var defaultCsp = security.buildContentSecurityPolicy('/tools/gallery.html');
+  var defaultScript = scriptSrcDirective(defaultCsp);
+  assert.ok(defaultScript.includes("'self'"), 'migrated pages must use script-src self');
+  assert.ok(!defaultScript.includes("'unsafe-inline'"), 'migrated pages must not allow script unsafe-inline');
+  assert.ok(!defaultScript.includes("'unsafe-eval'"), 'non-chat pages must not allow unsafe-eval');
+
+  var chatScript = scriptSrcDirective(security.buildContentSecurityPolicy('/tools/chat.html'));
+  assert.ok(chatScript.includes("'unsafe-eval'"), 'chat CSP must allow Live2D runtime');
+  assert.ok(!chatScript.includes("'unsafe-inline'"), 'chat should not need script unsafe-inline');
+
+  var builderScript = scriptSrcDirective(security.buildContentSecurityPolicy('/tools/prompt-builder.html'));
+  assert.ok(builderScript.includes("'unsafe-inline'"), 'prompt-builder temporary exception until handlers migrate');
+  assert.ok(!builderScript.includes("'unsafe-eval'"), 'prompt-builder must not get eval');
+
+  var headers = await runMiddleware(security.responseHeaders, mockReq({ path:'/tools/control.html' }));
+  assert.strictEqual(headers.nextCalled, true);
+  var headerScript = scriptSrcDirective(headers.res.headers['Content-Security-Policy']);
+  assert.ok(headerScript.includes("'self'"));
+  assert.ok(!headerScript.includes("'unsafe-inline'"));
+
+  console.log('Security tests passed: token match, local auth, backup local-only, log redaction, path CSP');
 }
 
 main().catch(function (error) {

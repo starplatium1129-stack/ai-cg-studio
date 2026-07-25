@@ -230,7 +230,7 @@ function copyText(text){
 function init(){
   var list = document.getElementById('scenarioList');
   list.innerHTML = SCENARIOS.map(function(s){
-    return '<div class="scenario-card card-create card-level-2" data-id="' + s.id + '" onclick="openScenario(\'' + s.id + '\')"><div class="scenario-icon">' + s.icon + '</div><div class="scenario-name">' + s.name + '</div><div class="scenario-en">' + s.en + '</div><div class="scenario-desc">' + s.desc + '</div><div class="scenario-count">' + s.acts.length + ' 幕 · 点击查看</div></div>';
+    return '<div class="scenario-card card-create card-level-2" data-action="open-scenario" data-id="' + s.id + '"><div class="scenario-icon">' + s.icon + '</div><div class="scenario-name">' + s.name + '</div><div class="scenario-en">' + s.en + '</div><div class="scenario-desc">' + s.desc + '</div><div class="scenario-count">' + s.acts.length + ' 幕 · 点击查看</div></div>';
   }).join('');
 }
 
@@ -278,7 +278,7 @@ function renderViewer(s){
       (violations.length ? '<div class="art-warn show">⚠️ 本幕含 ' + violations.length + ' 个违反美术规范的词: ' + violations.join(', ') + '</div>' : '') +
       '<div class="prompt-label">Positive (10 模块)</div><div class="prompt-output">' + renderMod(modules) + '</div>' +
       '<div class="neg-section"><div class="prompt-label" style="color:var(--danger)">Negative</div><div class="neg-layer"><div class="neg-layer-label">基础层 (永远带)</div><div class="neg-output">' + BASE_NEG + '</div></div><div class="neg-layer"><div class="neg-layer-label">场景特定层</div><div class="neg-output">' + a.neg + '</div></div></div>' +
-      '<div class="act-actions"><button class="btn btn-primary" data-fullprompt="' + escapeHtml(fullPrompt).replace(/"/g, '&quot;') + '" onclick="copyActPrompt(this)">📋 复制本幕 Prompt</button><a href="../tools/prompt-builder.html" class="btn btn-ghost">🎬 在导演工作台打开 →</a></div></div>';
+      '<div class="act-actions"><button class="btn btn-primary" type="button" data-action="copy-act-prompt" data-fullprompt="' + escapeHtml(fullPrompt).replace(/"/g, '&quot;') + '">📋 复制本幕 Prompt</button><a href="../tools/prompt-builder.html" class="btn btn-ghost">🎬 在导演工作台打开 →</a></div></div>';
   }).join('');
 }
 
@@ -295,6 +295,16 @@ function backToList(){
   currentScenario = null;
   window.scrollTo({ top:0, behavior:'smooth' });
 }
+
+document.addEventListener('click', function(event){
+  var el = event.target.closest('[data-action]');
+  if (!el) return;
+  var action = el.getAttribute('data-action');
+  if (action === 'switch-char') return switchChar(el.getAttribute('data-char'));
+  if (action === 'back-to-list') return backToList();
+  if (action === 'open-scenario') return openScenario(el.getAttribute('data-id'));
+  if (action === 'copy-act-prompt') return copyActPrompt(el);
+});
 
 // 动态加载场景库数量
 fetch('../data/scenes.json')

@@ -127,9 +127,9 @@ function renderScenes() {
       <td><div class="story-preview">${esc(s.story)}</div></td>
       <td>
         <div class="action-btns">
-          <button class="btn btn-ghost btn-sm" onclick="openEditModal('${s.id}')">编辑</button>
-          <button class="btn btn-ghost btn-sm" onclick="duplicateScene('${s.id}')">复制</button>
-          <button class="btn btn-danger btn-sm" onclick="deleteScene('${s.id}')">下架</button>
+          <button class="btn btn-ghost btn-sm" type="button" data-action="edit-scene" data-id="${s.id}">编辑</button>
+          <button class="btn btn-ghost btn-sm" type="button" data-action="duplicate-scene" data-id="${s.id}">复制</button>
+          <button class="btn btn-danger btn-sm" type="button" data-action="delete-scene" data-id="${s.id}">下架</button>
         </div>
       </td>
     </tr>
@@ -144,7 +144,7 @@ function renderScenes() {
       if (i === currentPage - 3 || i === currentPage + 3) html += '<span style="color:var(--text-muted)">…</span>';
       continue;
     }
-    html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goPage(${i})">${i}</button>`;
+    html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" type="button" data-action="go-page" data-page="${i}">${i}</button>`;
   }
   pag.innerHTML = html;
 }
@@ -184,7 +184,7 @@ function renderImages(resetPage) {
   const visible = filtered.slice((imagePage - 1) * IMAGE_PAGE_SIZE, imagePage * IMAGE_PAGE_SIZE);
 
   document.getElementById('imageGrid').innerHTML = visible.map(s => `
-    <div style="background:var(--bg-surface);border:1px solid var(--border-soft);border-radius:var(--r-md);padding:var(--s-3);cursor:pointer;transition:all var(--t-fast)" onclick="previewImage('${s.id}','${esc(s.title)}')" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border-soft)'">
+    <div class="sm-image-card" data-action="preview-image" data-id="${s.id}" data-title="${esc(s.title)}">
       <div style="font-weight:700;font-size:.85rem;margin-bottom:2px">${s.id}</div>
       <div style="font-size:.8rem;color:var(--text-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(s.title)}</div>
       <div style="font-size:.72rem;color:var(--text-muted);margin-top:4px">${s.char === 'nene' ? '🌸' : '🍂'} ${s.rating}</div>
@@ -192,8 +192,8 @@ function renderImages(resetPage) {
   `).join('');
   document.getElementById('imagePagination').innerHTML = totalPages <= 1 ? '' :
     `<span style="color:var(--text-muted);font-size:.8rem">${filtered.length} 个场景 · 第 ${imagePage}/${totalPages} 页</span>` +
-    `<button class="page-btn" ${imagePage === 1 ? 'disabled' : ''} onclick="goImagePage(${imagePage - 1})">上一页</button>` +
-    `<button class="page-btn" ${imagePage === totalPages ? 'disabled' : ''} onclick="goImagePage(${imagePage + 1})">下一页</button>`;
+    `<button class="page-btn" type="button" ${imagePage === 1 ? 'disabled' : ''} data-action="go-image-page" data-page="${imagePage - 1}">上一页</button>` +
+    `<button class="page-btn" type="button" ${imagePage === totalPages ? 'disabled' : ''} data-action="go-image-page" data-page="${imagePage + 1}">下一页</button>`;
 }
 
 function goImagePage(page) {
@@ -552,8 +552,8 @@ function detectDuplicates() {
       html += `<div class="dup-item">
         <span><strong>${s.id}</strong> ${esc(s.title)} <span class="rating-badge rating-${s.rating}">${s.rating}</span></span>
         <div class="action-btns">
-          <button class="btn btn-ghost btn-sm" onclick="openEditModal('${s.id}')">编辑</button>
-          <button class="btn btn-danger btn-sm" onclick="deleteScene('${s.id}');detectDuplicates()">下架</button>
+          <button class="btn btn-ghost btn-sm" type="button" data-action="edit-scene" data-id="${s.id}">编辑</button>
+          <button class="btn btn-danger btn-sm" type="button" data-action="delete-scene-dup" data-id="${s.id}">下架</button>
         </div>
       </div>`;
       totalDups++;
@@ -585,13 +585,13 @@ function renderTags(resetPage) {
       <td>${esc(t.cn)}</td>
       <td>${t.weight}</td>
       <td>${sceneUsageCount[t.en] || 0}</td>
-      <td><div class="action-btns"><button class="btn btn-ghost btn-sm" onclick="editTag('${t.id}')">编辑</button><button class="btn btn-danger btn-sm" onclick="deleteTag('${t.id}')">删除</button></div></td>
+      <td><div class="action-btns"><button class="btn btn-ghost btn-sm" type="button" data-action="edit-tag" data-id="${t.id}">编辑</button><button class="btn btn-danger btn-sm" type="button" data-action="delete-tag" data-id="${t.id}">删除</button></div></td>
     </tr>
   `).join('');
   document.getElementById('tagPagination').innerHTML = totalPages <= 1 ? '' :
     `<span style="color:var(--text-muted);font-size:.8rem">${filtered.length} 个 Tag · 第 ${tagPage}/${totalPages} 页</span>` +
-    `<button class="page-btn" ${tagPage === 1 ? 'disabled' : ''} onclick="goTagPage(${tagPage - 1})">上一页</button>` +
-    `<button class="page-btn" ${tagPage === totalPages ? 'disabled' : ''} onclick="goTagPage(${tagPage + 1})">下一页</button>`;
+    `<button class="page-btn" type="button" ${tagPage === 1 ? 'disabled' : ''} data-action="go-tag-page" data-page="${tagPage - 1}">上一页</button>` +
+    `<button class="page-btn" type="button" ${tagPage === totalPages ? 'disabled' : ''} data-action="go-tag-page" data-page="${tagPage + 1}">下一页</button>`;
 }
 
 function goTagPage(page) {
@@ -688,7 +688,7 @@ var TOOLS = [
 function renderTools() {
   var cards = document.getElementById('toolCards');
   cards.innerHTML = TOOLS.map(function(t) {
-    return '<div style="background:var(--bg-surface);border:1px solid var(--border-soft);border-radius:var(--r-lg);padding:var(--s-4);cursor:pointer;transition:all var(--t-fast)" onmouseover="this.style.borderColor=\"var(--accent)\"" onmouseout="this.style.borderColor=\"var(--border-soft)\"" onclick="runTool(\'' + t.id + '\')">' +
+    return '<div class="sm-tool-card" data-action="run-tool" data-id="' + t.id + '">' +
       '<div style="font-size:1.5rem;margin-bottom:var(--s-2)">' + t.icon + '</div>' +
       '<div style="font-weight:700;font-size:.92rem;margin-bottom:4px">' + esc(t.label) + '</div>' +
       '<div style="font-size:.75rem;color:var(--text-muted);line-height:1.5">' + esc(t.desc) + '</div>' +
@@ -742,5 +742,70 @@ function runTool(taskId) {
     cards.style.pointerEvents = '';
   });
 }
+
+/* event delegation for CSP */
+document.addEventListener('click', function (event) {
+  var el = event.target.closest('[data-action]');
+  if (!el) return;
+  var action = el.getAttribute('data-action');
+  var id = el.getAttribute('data-id');
+  if (action === 'save-project') return saveToProject();
+  if (action === 'switch-tab') return switchTab(el.getAttribute('data-tab'));
+  if (action === 'open-add-modal') return openAddModal();
+  if (action === 'export-json') return exportJSON();
+  if (action === 'pick-showcase') {
+    var file = document.getElementById('showcaseFile');
+    if (file) file.click();
+    return;
+  }
+  if (action === 'import-scenes') return importScenes();
+  if (action === 'clear-import') {
+    var input = document.getElementById('importInput');
+    if (input) input.value = '';
+    return;
+  }
+  if (action === 'detect-duplicates') return detectDuplicates();
+  if (action === 'open-add-tag') return openAddTagModal();
+  if (action === 'close-modal') return closeModal();
+  if (action === 'save-scene') return saveScene();
+  if (action === 'edit-scene') return openEditModal(id);
+  if (action === 'duplicate-scene') return duplicateScene(id);
+  if (action === 'delete-scene') return deleteScene(id);
+  if (action === 'delete-scene-dup') {
+    deleteScene(id);
+    detectDuplicates();
+    return;
+  }
+  if (action === 'go-page') return goPage(Number(el.getAttribute('data-page')));
+  if (action === 'preview-image') return previewImage(id, el.getAttribute('data-title') || '');
+  if (action === 'go-image-page') return goImagePage(Number(el.getAttribute('data-page')));
+  if (action === 'edit-tag') return editTag(id);
+  if (action === 'delete-tag') return deleteTag(id);
+  if (action === 'go-tag-page') return goTagPage(Number(el.getAttribute('data-page')));
+  if (action === 'run-tool') return runTool(id);
+});
+document.addEventListener('change', function (event) {
+  var target = event.target;
+  if (!target) return;
+  if (target.getAttribute('data-filter') === 'scenes' || target.id === 'filterCategory' || target.id === 'filterChar' || target.id === 'filterRating' || target.id === 'sortBy') {
+    return renderScenes();
+  }
+  if (target.getAttribute('data-action') === 'upload-showcase' || target.id === 'showcaseFile') {
+    return uploadShowcaseImage(target);
+  }
+  if (target.getAttribute('data-action') === 'char-defaults' || target.id === 'formChar') {
+    return updateCharacterDefaults();
+  }
+  if (target.getAttribute('data-action') === 'curation-reason' || target.id === 'formCurationTier') {
+    return updateCurationReasonState();
+  }
+});
+document.addEventListener('input', function (event) {
+  var target = event.target;
+  if (!target) return;
+  if (target.getAttribute('data-filter') === 'scenes' || target.id === 'searchInput') return renderScenes();
+  if (target.getAttribute('data-filter') === 'images' || target.id === 'imageSearch') return renderImages(true);
+  if (target.getAttribute('data-filter') === 'tags' || target.id === 'tagSearch') return renderTags(true);
+});
 
 init();

@@ -41,7 +41,7 @@ var selectedMood = null;
 function init(){
   var grid=document.getElementById('moodGrid');
   grid.innerHTML=MOODS.map(function(m){
-    return '<div class="mood-card" data-id="'+m.id+'" style="color:'+m.color+'" onclick="selectMood(\''+m.id+'\')"><div class="mood-strip">'+m.palette.map(function(c){return '<div class="mood-swatch" style="background:'+c+'"></div>';}).join('')+'</div><div class="mood-body"><div class="mood-name">'+m.icon+' '+m.name+'</div><div class="mood-en">'+m.en+'</div></div></div>';
+    return '<div class="mood-card" data-action="select-mood" data-id="'+m.id+'" style="color:'+m.color+'"><div class="mood-strip">'+m.palette.map(function(c){return '<div class="mood-swatch" style="background:'+c+'"></div>';}).join('')+'</div><div class="mood-body"><div class="mood-name">'+m.icon+' '+m.name+'</div><div class="mood-en">'+m.en+'</div></div></div>';
   }).join('');
 }
 
@@ -74,21 +74,34 @@ function reset(){
   window.scrollTo({ top:0, behavior:'smooth' });
 }
 
-// bind copy + export
+// bind copy + export + mood cards
+document.addEventListener('click', function(event){
+  var el = event.target.closest('[data-action]');
+  if (!el) return;
+  var action = el.getAttribute('data-action');
+  if (action === 'select-mood') return selectMood(el.getAttribute('data-id'));
+  if (action === 'reset') return reset();
+  if (action === 'copy-mood') {
+    if (!selectedMood) return;
+    return copyText(selectedMood.prompt);
+  }
+  if (action === 'export-mood') {
+    if (!selectedMood) return;
+    var body = selectedMood.prompt + '\n\n# mood: ' + selectedMood.id + '\n# usage: 复制到 Prompt Builder v5 Step 4 色彩氛围';
+    var blob = new Blob([body], { type:'text/plain' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'color-' + selectedMood.id + '.txt';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    showToast('⬇️ 已导出');
+  }
+});
 document.addEventListener('DOMContentLoaded', function(){
-  var cBtn=document.getElementById('csCopyBtn');
-  var eBtn=document.getElementById('csExportBtn');
-  if(cBtn) cBtn.onclick=function(){
-    if(!selectedMood) return;
-    copyText(selectedMood.prompt);
-  };
-  if(eBtn) eBtn.onclick=function(){
-    if(!selectedMood) return;
-    var body=selectedMood.prompt+'\n\n# mood: '+selectedMood.id+'\n# usage: 复制到 Prompt Builder v5 Step 4 色彩氛围';
-    var blob=new Blob([body],{type:'text/plain'});
-    var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='color-'+selectedMood.id+'.txt';
-    a.click(); URL.revokeObjectURL(a.href); showToast('⬇️ 已导出');
-  };
+  var cBtn = document.getElementById('csCopyBtn');
+  var eBtn = document.getElementById('csExportBtn');
+  if (cBtn) cBtn.setAttribute('data-action', 'copy-mood');
+  if (eBtn) eBtn.setAttribute('data-action', 'export-mood');
 });
 
 init();

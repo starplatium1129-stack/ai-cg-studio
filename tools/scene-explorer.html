@@ -148,8 +148,8 @@
 
   <label class="sr-only" for="sceneSearch">搜索场景</label>
   <div class="scene-search-wrap">
-    <input type="search" class="scene-search" placeholder="🔍 试试：心动、安静、宁宁经典感、夏目经典感" id="sceneSearch" oninput="filterScenes(this.value)">
-    <button class="scene-search-clear" type="button" onclick="clearSceneSearch()" aria-label="清空场景搜索" title="清空搜索">×</button>
+    <input type="search" class="scene-search" placeholder="🔍 试试：心动、安静、宁宁经典感、夏目经典感" id="sceneSearch" data-filter="scenes">
+    <button class="scene-search-clear" type="button" data-action="clear-search" aria-label="清空场景搜索" title="清空搜索">×</button>
   </div>
   <div class="search-intent" id="sceneSearchIntent" aria-live="polite"></div>
   <div class="scene-toolbar">
@@ -158,23 +158,23 @@
       <div class="scene-cats" id="sceneCats" aria-label="按主题筛选"></div>
     </div>
     <div class="scene-facet-grid">
-      <label class="scene-filter-field">角色<select id="sceneCharacter" onchange="filterScenes()"><option value="all">全部角色</option><option value="nene">🌸 宁宁</option><option value="natsume">🍂 夏目</option><option value="triad">🌸🍂 双人</option></select></label>
-      <label class="scene-filter-field">季节<select id="sceneSeason" onchange="filterScenes()"><option value="all">全部季节</option><option value="春">🌸 春</option><option value="夏">☀️ 夏</option><option value="秋">🍂 秋</option><option value="冬">❄️ 冬</option><option value="不限">不限季节</option></select></label>
-      <label class="scene-filter-field">时段<select id="sceneTime" onchange="filterScenes()"><option value="all">全部时段</option><option value="morning">清晨</option><option value="afternoon">午后</option><option value="sunset">黄昏</option><option value="night">夜晚与深夜</option><option value="dawn">黎明</option></select></label>
+      <label class="scene-filter-field">角色<select id="sceneCharacter" data-filter="scenes"><option value="all">全部角色</option><option value="nene">🌸 宁宁</option><option value="natsume">🍂 夏目</option><option value="triad">🌸🍂 双人</option></select></label>
+      <label class="scene-filter-field">季节<select id="sceneSeason" data-filter="scenes"><option value="all">全部季节</option><option value="春">🌸 春</option><option value="夏">☀️ 夏</option><option value="秋">🍂 秋</option><option value="冬">❄️ 冬</option><option value="不限">不限季节</option></select></label>
+      <label class="scene-filter-field">时段<select id="sceneTime" data-filter="scenes"><option value="all">全部时段</option><option value="morning">清晨</option><option value="afternoon">午后</option><option value="sunset">黄昏</option><option value="night">夜晚与深夜</option><option value="dawn">黎明</option></select></label>
     </div>
     <details class="scene-more-filters">
       <summary>更多筛选与排序</summary>
       <div class="scene-facet-grid">
-        <label class="scene-filter-field">系列<select id="sceneSeries" onchange="filterScenes()"><option value="all">全部系列</option><option value="after">After Story</option><option value="fanwork">同人</option><option value="active">Active Sync</option></select></label>
-        <label class="scene-filter-field">内容分级<select id="sceneRating" onchange="filterScenes()"><option value="all">全部分级</option><option value="All">全年龄</option><option value="R15">R15 暧昧</option><option value="R18">R18 成人</option></select></label>
-        <label class="scene-filter-field">精品层级<select id="sceneTier" onchange="filterScenes()"><option value="featured">招牌与精选</option><option value="signature">只看招牌</option><option value="curated">只看精选</option><option value="all">完整场景库</option><option value="review">待返工</option></select></label>
-        <label class="scene-filter-field">排序<select id="sceneSort" onchange="filterScenes()"><option value="smart">✨ 智能推荐</option><option value="curated">主理人精选</option><option value="favorite">我的收藏</option><option value="newest">最新加入</option><option value="title">名称 A-Z</option></select></label>
+        <label class="scene-filter-field">系列<select id="sceneSeries" data-filter="scenes"><option value="all">全部系列</option><option value="after">After Story</option><option value="fanwork">同人</option><option value="active">Active Sync</option></select></label>
+        <label class="scene-filter-field">内容分级<select id="sceneRating" data-filter="scenes"><option value="all">全部分级</option><option value="All">全年龄</option><option value="R15">R15 暧昧</option><option value="R18">R18 成人</option></select></label>
+        <label class="scene-filter-field">精品层级<select id="sceneTier" data-filter="scenes"><option value="featured">招牌与精选</option><option value="signature">只看招牌</option><option value="curated">只看精选</option><option value="all">完整场景库</option><option value="review">待返工</option></select></label>
+        <label class="scene-filter-field">排序<select id="sceneSort" data-filter="scenes"><option value="smart">✨ 智能推荐</option><option value="curated">主理人精选</option><option value="favorite">我的收藏</option><option value="newest">最新加入</option><option value="title">名称 A-Z</option></select></label>
       </div>
     </details>
     <div class="scene-filter-meta">
       <label class="mature-toggle"><input type="checkbox" id="showMature"> 显示成人内容 <span id="matureCount"></span></label>
       <span class="scene-count" id="sceneCount" role="status" aria-live="polite"></span>
-      <button class="scene-reset" type="button" onclick="resetSceneFilters()">重置全部筛选</button>
+      <button class="scene-reset" type="button" data-action="reset-filters">重置全部筛选</button>
     </div>
   </div>
   <div class="scene-grid" id="sceneGrid"></div>
@@ -182,7 +182,7 @@
 </article>
 
 <!-- Story drawer -->
-<div class="story-drawer" id="storyDrawer" onclick="if(event.target===this)closeStory()">
+<div class="story-drawer" id="storyDrawer" data-action="drawer-backdrop">
   <div class="story-card" id="storyCard"></div>
 </div>
 
@@ -191,6 +191,6 @@
   <p class="muted mt-4" id="sceneFooterCount">场景库 · 正在加载</p>
 </footer>
 
-<script src="scene-explorer.js?v=1"></script>
+<script src="scene-explorer.js?v=2"></script>
 </body>
 </html>

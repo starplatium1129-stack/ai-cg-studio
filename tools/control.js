@@ -402,4 +402,25 @@ function doStop() {
 var pollInterval = null;
 function startPolling() { if (!pollInterval) { pollStatus(); pollLogs(); pollInterval = setInterval(function() { pollStatus(); pollLogs(); }, 3000); } }
 function stopPolling() { if (pollInterval) clearInterval(pollInterval); pollInterval = null; }
+
+document.addEventListener('click', function (event) {
+  var el = event.target.closest('[data-action]');
+  if (!el) return;
+  var action = el.getAttribute('data-action');
+  if (action === 'toggle-theme') return toggleTheme();
+  if (action === 'check-services') { pollStatus(true); pollLogs(); return; }
+  if (action === 'switch-mode') return switchMode(el.getAttribute('data-mode'));
+  if (action === 'service') return serviceAction(el.getAttribute('data-service'), el.getAttribute('data-op'));
+  if (action === 'save-config') return doSaveSDConfig();
+  if (action === 'toggle-tunnel') return toggleTunnel();
+  if (action === 'start-gateway') return doStart();
+  if (action === 'copy-local') return copyLocalLink();
+  if (action === 'copy-share') return copyShareLink();
+  if (action === 'export-diagnostics') return exportDiagnostics(event);
+  if (action === 'clear-logs') return clearLogs(event);
+});
+document.addEventListener('change', function (event) {
+  if (event.target && event.target.id === 'auto-start-voice') saveAutoStartVoice();
+});
+
 startPolling();

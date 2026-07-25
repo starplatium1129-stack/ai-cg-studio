@@ -86,6 +86,16 @@
   .image-upload { display:flex; justify-content:center; gap:var(--s-2); flex-wrap:wrap; margin-top:var(--s-3); }
   .form-help { color:var(--text-muted); font-size:.72rem; line-height:1.45; }
   .form-input.invalid { border-color:var(--danger); box-shadow:0 0 0 3px color-mix(in srgb,var(--danger) 12%,transparent); }
+  .sm-image-card, .sm-tool-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--r-md);
+    padding: var(--s-3);
+    cursor: pointer;
+    transition: border-color var(--t-fast);
+  }
+  .sm-tool-card { border-radius: var(--r-lg); padding: var(--s-4); }
+  .sm-image-card:hover, .sm-tool-card:hover { border-color: var(--accent); }
 </style>
 </head>
 <body>
@@ -103,45 +113,45 @@
   <div class="stats" id="stats"></div>
   <div class="maintenance-state" id="maintenanceState">
     <div><strong id="maintenanceTitle">场景库已同步</strong><small id="maintenanceHint">新增、编辑或下架后，点击“保存到项目”。</small><div class="maintenance-meta"><span><strong id="pendingCount">0</strong> 项待保存</span><span>保存前会自动创建备份</span></div></div>
-    <button class="btn btn-primary" id="saveProjectBtn" type="button" onclick="saveToProject()" disabled>保存到项目</button>
+    <button class="btn btn-primary" id="saveProjectBtn" type="button" data-action="save-project" disabled>保存到项目</button>
   </div>
 
   <div class="tab-bar">
-    <button class="tab active" onclick="switchTab('scenes')">📋 场景列表</button>
-    <button class="tab" onclick="switchTab('images')">🖼 样张管理</button>
-    <button class="tab" onclick="switchTab('import')">📥 批量导入</button>
-    <button class="tab" onclick="switchTab('duplicates')">🔍 去重检测</button>
-    <button class="tab" onclick="switchTab('tags')">🏷 Tag 管理</button>
-    <button class="tab" onclick="switchTab('guide')">📖 使用指南</button>
-    <button class="tab" onclick="switchTab('tools')">🛠 维护工具</button>
+    <button class="tab active" data-action="switch-tab" data-tab="scenes">📋 场景列表</button>
+    <button class="tab" data-action="switch-tab" data-tab="images">🖼 样张管理</button>
+    <button class="tab" data-action="switch-tab" data-tab="import">📥 批量导入</button>
+    <button class="tab" data-action="switch-tab" data-tab="duplicates">🔍 去重检测</button>
+    <button class="tab" data-action="switch-tab" data-tab="tags">🏷 Tag 管理</button>
+    <button class="tab" data-action="switch-tab" data-tab="guide">📖 使用指南</button>
+    <button class="tab" data-action="switch-tab" data-tab="tools">🛠 维护工具</button>
   </div>
 
   <!-- Scenes Tab -->
   <div id="tab-scenes">
     <div class="toolbar">
-      <input type="text" class="search-input" id="searchInput" placeholder="搜索标题、故事、tag…" oninput="renderScenes()">
-      <select class="filter-select" id="filterCategory" onchange="renderScenes()">
+      <input type="text" class="search-input" id="searchInput" placeholder="搜索标题、故事、tag…" data-filter="scenes">
+      <select class="filter-select" id="filterCategory" data-filter="scenes">
         <option value="">全部分类</option>
       </select>
-      <select class="filter-select" id="filterChar" onchange="renderScenes()">
+      <select class="filter-select" id="filterChar" data-filter="scenes">
         <option value="">全部角色</option>
         <option value="nene">宁宁</option>
         <option value="natsume">夏目</option>
       </select>
-      <select class="filter-select" id="filterRating" onchange="renderScenes()">
+      <select class="filter-select" id="filterRating" data-filter="scenes">
         <option value="">全部评级</option>
         <option value="All">All</option>
         <option value="R15">R15</option>
         <option value="R18">R18</option>
       </select>
-      <select class="filter-select" id="sortBy" onchange="renderScenes()">
+      <select class="filter-select" id="sortBy" data-filter="scenes">
         <option value="id">按 ID</option>
         <option value="title">按标题</option>
         <option value="category">按分类</option>
         <option value="char">按角色</option>
       </select>
-      <button class="btn btn-primary" onclick="openAddModal()">+ 新增场景</button>
-      <button class="btn btn-ghost" onclick="exportJSON()">导出备份</button>
+      <button class="btn btn-primary" data-action="open-add-modal">+ 新增场景</button>
+      <button class="btn btn-ghost" data-action="export-json">导出备份</button>
     </div>
 
     <div class="table-wrap">
@@ -167,7 +177,7 @@
   <!-- Images Tab -->
   <div id="tab-images" style="display:none">
     <div class="toolbar">
-      <input type="text" class="search-input" id="imageSearch" placeholder="搜索场景 ID 或标题…" oninput="renderImages(true)">
+      <input type="text" class="search-input" id="imageSearch" placeholder="搜索场景 ID 或标题…" data-filter="images">
       <span style="color:var(--text-muted);font-size:.85rem">点击场景卡片可预览当前样张</span>
     </div>
     <div id="imageGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--s-3)"></div>
@@ -176,8 +186,8 @@
       <h3 id="previewTitle" style="margin-bottom:var(--s-2)"></h3>
       <img id="previewImg" style="max-width:100%;border-radius:var(--r-lg);border:1px solid var(--border-soft)">
       <div class="image-upload">
-        <input id="showcaseFile" type="file" accept="image/png,image/jpeg,image/webp" hidden onchange="uploadShowcaseImage(this)">
-        <button class="btn btn-primary" type="button" onclick="document.getElementById('showcaseFile').click()">选择新样张</button>
+        <input id="showcaseFile" type="file" accept="image/png,image/jpeg,image/webp" hidden data-action="upload-showcase">
+        <button class="btn btn-primary" type="button" data-action="pick-showcase">选择新样张</button>
       </div>
       <p id="showcaseFeedback" style="color:var(--text-muted);font-size:.8rem;margin-top:var(--s-2)">支持 PNG、JPEG、WebP，最大 15MB；仅本机可以替换。</p>
     </div>
@@ -200,8 +210,8 @@
   "rating": "All"
 }'></textarea>
       <div style="display:flex;gap:var(--s-3);margin-top:var(--s-3)">
-        <button class="btn btn-primary" onclick="importScenes()">🔍 验证并导入</button>
-        <button class="btn btn-ghost" onclick="document.getElementById('importInput').value=''">清空</button>
+        <button class="btn btn-primary" data-action="import-scenes">🔍 验证并导入</button>
+        <button class="btn btn-ghost" data-action="clear-import">清空</button>
       </div>
       <div id="importResult" style="margin-top:var(--s-4)"></div>
     </div>
@@ -210,7 +220,7 @@
   <!-- Duplicates Tab -->
   <div id="tab-duplicates" style="display:none">
     <div class="toolbar">
-      <button class="btn btn-primary" onclick="detectDuplicates()">🔍 扫描重复</button>
+      <button class="btn btn-primary" data-action="detect-duplicates">🔍 扫描重复</button>
       <span id="dupResult" style="color:var(--text-muted);font-size:.85rem"></span>
     </div>
     <div id="dupList"></div>
@@ -219,8 +229,8 @@
   <!-- Tags Tab -->
   <div id="tab-tags" style="display:none">
     <div class="toolbar">
-      <input type="text" class="search-input" id="tagSearch" placeholder="搜索 tag…" oninput="renderTags(true)">
-      <button class="btn btn-primary" onclick="openAddTagModal()">+ 新增 Tag</button>
+      <input type="text" class="search-input" id="tagSearch" placeholder="搜索 tag…" data-filter="tags">
+      <button class="btn btn-primary" data-action="open-add-tag">+ 新增 Tag</button>
     </div>
     <div class="table-wrap">
       <table>
@@ -335,7 +345,7 @@
       </div>
       <div class="form-group">
         <label class="form-label">角色</label>
-        <select class="form-input" id="formChar" onchange="updateCharacterDefaults()">
+        <select class="form-input" id="formChar" data-action="char-defaults">
           <option value="nene">绫地宁宁</option>
           <option value="natsume">四季夏目</option>
           <option value="triad">宁宁 × 夏目</option>
@@ -379,7 +389,7 @@
       </div>
       <div class="form-group">
         <label class="form-label">推荐层级</label>
-        <select class="form-input" id="formCurationTier" onchange="updateCurationReasonState()">
+        <select class="form-input" id="formCurationTier" data-action="curation-reason">
           <option value="normal">普通场景</option>
           <option value="curated">主理人精选</option>
           <option value="signature">招牌场景</option>
@@ -434,8 +444,8 @@
       </div>
     </div>
     <div class="form-actions">
-      <button class="btn btn-ghost" onclick="closeModal()">取消</button>
-      <button class="btn btn-primary" onclick="saveScene()">保存</button>
+      <button class="btn btn-ghost" data-action="close-modal">取消</button>
+      <button class="btn btn-primary" data-action="save-scene">保存</button>
     </div>
   </div>
 </div>
@@ -444,6 +454,6 @@
   <p>绫季绘境 · Scene Manager</p>
 </footer>
 
-<script src="scene-manager.js?v=1"></script>
+<script src="scene-manager.js?v=2"></script>
 </body>
 </html>

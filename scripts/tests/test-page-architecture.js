@@ -20,6 +20,13 @@ const pages = [
   ['tools/gallery.html', 'tools/gallery.js']
 ];
 
+// Pages that must have zero HTML event attributes (CSP-ready).
+// prompt-builder remains on a temporary unsafe-inline exception.
+const noInlineHandlerPages = pages.map(function (entry) { return entry[0]; });
+
+const inlineHandlerRe = /\son(?:click|change|input|submit|keydown|keyup|focus|blur)\s*=/i;
+const jsInlineHandlerRe = /\son(?:click|change|input|submit|keydown|keyup|focus|blur)\s*=/;
+
 for (const [htmlRelative, jsRelative] of pages) {
   const htmlPath = path.join(root, htmlRelative);
   const jsPath = path.join(root, jsRelative);
@@ -32,7 +39,12 @@ for (const [htmlRelative, jsRelative] of pages) {
   const escapedSrc = expectedSrc.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   assert(scriptTags.some((match) => new RegExp(`\\bsrc=["']${escapedSrc}\\?v=\\d+["']`).test(match[1])),
     `${htmlRelative} must load ${expectedSrc} with a cache-busting version`);
-  new vm.Script(fs.readFileSync(jsPath, 'utf8'), { filename:jsRelative });
+  const source = fs.readFileSync(jsPath, 'utf8');
+  new vm.Script(source, { filename:jsRelative });
+  if (noInlineHandlerPages.includes(htmlRelative)) {
+    assert(!inlineHandlerRe.test(html), `${htmlRelative} must not use HTML event attributes`);
+    assert(!jsInlineHandlerRe.test(source), `${jsRelative} must not emit inline event attributes`);
+  }
 }
 
-console.log(`Page architecture tests passed: ${pages.length} controllers are external and syntactically valid`);
+console.log(`Page architecture tests passed: ${pages.length} controllers are external, CSP-ready, and syntactically valid`);

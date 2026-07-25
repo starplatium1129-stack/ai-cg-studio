@@ -10,9 +10,9 @@
   ];
   var grid = document.getElementById('moodGrid');
   grid.innerHTML = MOODS.map(function(m){
-    return '<div class="mood-card" onclick="window.location.href=\'prompt-builder.html?mood='+m.id+'\'">' +
+    return '<a class="mood-card" href="prompt-builder.html?mood='+encodeURIComponent(m.id)+'">' +
       '<div class="mood-strip" style="background:'+m.color+'"></div>' +
       '<div class="mood-body"><div class="mood-name">'+m.name+'</div><div class="mood-desc">'+m.desc+'</div></div>' +
-    '</div>';
+    '</a>';
   }).join('');
 })();

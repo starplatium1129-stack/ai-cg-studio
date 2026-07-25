@@ -291,7 +291,7 @@ function renderScenes(reset){
             '<a class="btn btn-ghost" href="' + AICQuickCreate.url(scene.id) + '">⚡ 直接出图</a>' +
             '<button class="btn btn-ghost" data-detail="' + scene.id + '" aria-label="查看故事" title="查看故事">📖</button>' +
           '</div>' +
-          '<button type="button" class="btn scene-fav' + (SCENE_FAVORITES.has(scene.id) ? ' saved' : '') + '" onclick="toggleSceneFavorite(\'' + scene.id + '\', event)">' + (SCENE_FAVORITES.has(scene.id) ? '♥ 已收入灵感簿' : '♡ 收入灵感簿') + '</button>';
+          '<button type="button" class="btn scene-fav' + (SCENE_FAVORITES.has(scene.id) ? ' saved' : '') + '" data-action="toggle-favorite" data-id="' + scene.id + '">' + (SCENE_FAVORITES.has(scene.id) ? '♥ 已收入灵感簿' : '♡ 收入灵感簿') + '</button>';
       }
     }));
     grid.lastChild.setAttribute('data-scene-id', s.id);
@@ -306,6 +306,21 @@ function renderScenes(reset){
 
 // 事件委托(explorer 卡由 createSceneCard 生成,按钮用 data 属性)
 document.addEventListener('click', function(e){
+  var drawerBackdrop = e.target.closest('[data-action="drawer-backdrop"]');
+  if (drawerBackdrop && e.target === drawerBackdrop) { closeStory(); return; }
+  var actionEl = e.target.closest('[data-action]');
+  if (actionEl) {
+    var action = actionEl.getAttribute('data-action');
+    if (action === 'clear-search') { clearSceneSearch(); return; }
+    if (action === 'reset-filters') { resetSceneFilters(); return; }
+    if (action === 'close-story') { closeStory(); return; }
+    if (action === 'toggle-favorite') {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleSceneFavorite(actionEl.getAttribute('data-id'), e);
+      return;
+    }
+  }
   var direct = e.target.closest('a[href*="prompt-builder.html?scene="]');
   if (direct) {
     try {
@@ -318,6 +333,16 @@ document.addEventListener('click', function(e){
   if (dir){ openDirector(dir.getAttribute('data-dir')); return; }
   var det = e.target.closest('[data-detail]');
   if (det){ showDetail(det.getAttribute('data-detail')); }
+});
+document.addEventListener('change', function(e){
+  if (e.target && (e.target.getAttribute('data-filter') === 'scenes' || /^(sceneCharacter|sceneSeason|sceneTime|sceneSeries|sceneRating|sceneTier|sceneSort)$/.test(e.target.id))) {
+    filterScenes();
+  }
+});
+document.addEventListener('input', function(e){
+  if (e.target && (e.target.getAttribute('data-filter') === 'scenes' || e.target.id === 'sceneSearch')) {
+    filterScenes();
+  }
 });
 
 function filterScenes(){
@@ -366,7 +391,7 @@ function showDetail(id){
     '<div class="story-actions">' +
       '<a class="btn btn-primary" href="' + AICQuickCreate.url(s.id) + '">⚡ 快速出图</a>' +
       '<a class="btn btn-ghost" href="prompt-builder.html?scene=' + encodeURIComponent(s.id) + '&step=4&generate=1">🎬 调整后生成</a>' +
-      '<button class="btn btn-ghost" onclick="closeStory()">关闭</button>' +
+      '<button class="btn btn-ghost" type="button" data-action="close-story">关闭</button>' +
     '</div>';
   drawer.classList.add('open');
 }
