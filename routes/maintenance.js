@@ -62,6 +62,53 @@ function createMaintenanceRouter(cfg) {
     } catch (e) { return null; }
   }
 
+  function readJson(source) {
+    return JSON.parse(fs.readFileSync(source, 'utf8'));
+  }
+
+  function writeJson(source, data) {
+    fs.writeFileSync(source, JSON.stringify(data, null, 2) + '\n', 'utf8');
+  }
+
+  function cleanOrphanedSceneRefs() {
+    // 保存场景后自动清理 characters.json 和 loras.json 中引用已删除场景的条目
+    var activeIds = new Set(sceneStore.loadSceneShards().scenes.map(function (s) { return s.id; }));
+    var dataDir = path.join(__dirname, '..', 'data');
+    var changed = false;
+
+    // Clean characters.json
+    var charactersPath = path.join(dataDir, 'characters.json');
+    var characters = readJson(charactersPath);
+    characters.forEach(function (ch) {
+      var recs = ch.lora && ch.lora.recommended_scene;
+      if (Array.isArray(recs)) {
+        var filtered = recs.filter(function (id) { return activeIds.has(id); });
+        if (filtered.length !== recs.length) {
+          ch.lora.recommended_scene = filtered;
+          changed = true;
+        }
+      }
+    });
+    if (changed) writeJson(charactersPath, characters);
+
+    // Clean loras.json
+    var lorasPath = path.join(dataDir, 'loras.json');
+    var loras = readJson(lorasPath);
+    changed = false;
+    loras.forEach(function (lora) {
+      var scenes = lora.related_scenes || lora.scenes;
+      if (Array.isArray(scenes)) {
+        var filtered = scenes.filter(function (id) { return activeIds.has(id); });
+        if (filtered.length !== scenes.length) {
+          if (lora.related_scenes) lora.related_scenes = filtered;
+          if (lora.scenes) lora.scenes = filtered;
+          changed = true;
+        }
+      }
+    });
+    if (changed) writeJson(lorasPath, loras);
+  }
+
   router.post('/api/maintenance/scenes', maintenanceLocalOnly, express.json({ limit:'12mb' }), function (req, res) {
     var scenes = req.body && req.body.scenes;
     if (!Array.isArray(scenes) || scenes.length > 1000) return res.status(400).json({ error:'场景数据格式错误或数量超出限制' });
@@ -78,6 +125,7 @@ function createMaintenanceRouter(cfg) {
       var stamp = new Date().toISOString().replace(/[:.]/g, '-');
       fs.writeFileSync(path.join(MAINTENANCE_BACKUP_DIR, 'scenes-' + stamp + '.json'), sceneStore.jsonText(sceneStore.loadSceneShards().scenes));
       sceneStore.writeSceneSet(scenes);
+      cleanOrphanedSceneRefs();
       runMaintenanceChecks();
       res.json({ ok:true, count:scenes.length, message:'场景已保存并通过校验' });
     } catch (error) {
