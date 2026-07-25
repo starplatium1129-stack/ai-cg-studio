@@ -384,11 +384,17 @@ function createMaintenanceRouter(cfg) {
   });
 
   // ---- 维护脚本一键执行 ----
+  var SCRIPT_NAMES = {
+    'lint-colors': 'lint-colors.js',
+    'validate': 'validate-scenes.js',
+    'classify': 'classify-scene-ratings.js',
+    'optimize': 'optimize-scenes.js'
+  };
   var MAINTENANCE_TASKS = {
     'lint-colors': { args:[], label:'检查硬编码颜色', desc:'扫描所有 HTML/CSS 中的 #XXXXXX 颜色，确保已替换为设计 token' },
-    'validate-scenes':    { args:[], label:'完整场景校验', desc:'按模块检查场景数据：ID 唯一性、字段完整性、评级一致性' },
-    'classify-scene-ratings': { args:['--write'], label:'更新场景评级', desc:'根据标签内容重新计算 All/R15/R18 评级' },
-    'optimize-scenes':        { args:['--write'], label:'规范化提示词', desc:'统一标签命名、补全标准负面词、修复占位符' }
+    'validate':    { args:[], label:'完整场景校验', desc:'按模块检查场景数据：ID 唯一性、字段完整性、评级一致性' },
+    'classify':    { args:['--write'], label:'更新场景评级', desc:'根据标签内容重新计算 All/R15/R18 评级' },
+    'optimize':    { args:['--write'], label:'规范化提示词', desc:'统一标签命名、补全标准负面词、修复占位符' }
   };
 
   router.post('/api/maintenance/run', maintenanceLocalOnly, express.json({ limit:'2kb' }), function (req, res) {
@@ -397,7 +403,7 @@ function createMaintenanceRouter(cfg) {
       return res.status(400).json({ ok:false, error:'不支持的任务：' + task });
     }
 
-    var script = 'scripts/maintenance/' + task + '.js';
+    var script = 'scripts/maintenance/' + (SCRIPT_NAMES[task] || task + '.js');
     var args = MAINTENANCE_TASKS[task].args;
     var result = cp.spawnSync(process.execPath, [script].concat(args), {
       cwd:path.join(__dirname, '..'), encoding:'utf8', timeout:120000, windowsHide:true
