@@ -47,6 +47,17 @@ export interface SceneRecord {
   [key: string]: unknown;
 }
 
+export type VoiceId = 'nene' | 'natsume';
+export type VoiceLanguage = 'ja' | 'zh';
+export type VoiceEmotion = 'neutral' | 'gentle' | 'happy' | 'shy' | 'serious' | 'sad';
+export type VoiceConsistency = 'locked' | 'adaptive';
+
+export interface VoiceEmotionReference {
+  refAudioPath: string;
+  promptText: string;
+  promptLang?: string;
+}
+
 export interface VoiceProfile {
   refAudioPath: string;
   promptText: string;
@@ -58,5 +69,15 @@ export interface VoiceProfile {
   topK: number;
   topP: number;
   temperature: number;
-  references?: Record<string, { refAudioPath: string; promptText: string; promptLang?: string }>;
+  references?: Partial<Record<VoiceEmotion, VoiceEmotionReference>>;
+}
+
+export interface VoiceTtsInput {
+  voice: VoiceId | string;
+  text: string;
+  language?: VoiceLanguage | string;
+  emotion?: VoiceEmotion | string;
+  referenceEmotion?: VoiceEmotion | string;
+  consistency?: VoiceConsistency | string;
+  speed?: number;
 }

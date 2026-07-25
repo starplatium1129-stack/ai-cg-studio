@@ -41,6 +41,26 @@ function parsePcmWav(input) {
   return Object.assign(format, { samples:samples, frames:Math.floor(sampleCount / format.channels) });
 }
 
+function edgeSilenceMs(samples, channels, sampleRate, fromStart) {
+  var silenceThreshold = 32768 * 0.01;
+  var frames = Math.floor(samples.length / Math.max(1, channels));
+  var silentFrames = 0;
+  for (var frame = 0; frame < frames; frame += 1) {
+    var index = fromStart ? frame : (frames - 1 - frame);
+    var loud = false;
+    for (var ch = 0; ch < channels; ch += 1) {
+      var sample = samples[index * channels + ch];
+      if (Math.abs(sample) > silenceThreshold) {
+        loud = true;
+        break;
+      }
+    }
+    if (loud) break;
+    silentFrames += 1;
+  }
+  return Math.round(silentFrames / sampleRate * 10000) / 10;
+}
+
 function analyzeWav(input) {
   var wav = parsePcmWav(input);
   var sum = 0;
@@ -72,17 +92,57 @@ function analyzeWav(input) {
     dcOffset:Math.round(sum / count / 32768 * 100000) / 100000,
     silenceRatio:Math.round(silent / count * 10000) / 10000,
     clippingRatio:Math.round(clipped / count * 100000) / 100000,
-    zeroCrossingRate:Math.round(crossings / count * 10000) / 10000
+    zeroCrossingRate:Math.round(crossings / count * 10000) / 10000,
+    leadingSilenceMs:edgeSilenceMs(wav.samples, wav.channels, wav.sampleRate, true),
+    trailingSilenceMs:edgeSilenceMs(wav.samples, wav.channels, wav.sampleRate, false)
   };
 }
 
-function assertVoiceQuality(metrics) {
+function assertVoiceQuality(metrics, options) {
+  options = options || {};
+  var minDurationMs = options.minDurationMs != null ? options.minDurationMs : 180;
+  var minRms = options.minRms != null ? options.minRms : 0.005;
+  var maxClippingRatio = options.maxClippingRatio != null ? options.maxClippingRatio : 0.005;
+  var maxAbsDcOffset = options.maxAbsDcOffset != null ? options.maxAbsDcOffset : 0.05;
+  var maxLeadingSilenceMs = options.maxLeadingSilenceMs;
+  var maxTrailingSilenceMs = options.maxTrailingSilenceMs;
   var issues = [];
-  if (!(metrics.durationMs >= 180)) issues.push('audio is too short');
-  if (!(metrics.rms >= 0.005)) issues.push('audio is effectively silent');
-  if (metrics.clippingRatio > 0.005) issues.push('audio contains excessive clipping');
-  if (Math.abs(metrics.dcOffset) > 0.05) issues.push('audio has excessive DC offset');
+  if (!(metrics.durationMs >= minDurationMs)) issues.push('audio is too short');
+  if (!(metrics.rms >= minRms)) issues.push('audio is effectively silent');
+  if (metrics.clippingRatio > maxClippingRatio) issues.push('audio contains excessive clipping');
+  if (Math.abs(metrics.dcOffset) > maxAbsDcOffset) issues.push('audio has excessive DC offset');
+  if (maxLeadingSilenceMs != null && metrics.leadingSilenceMs > maxLeadingSilenceMs) {
+    issues.push('audio has excessive leading silence');
+  }
+  if (maxTrailingSilenceMs != null && metrics.trailingSilenceMs > maxTrailingSilenceMs) {
+    issues.push('audio has excessive trailing silence');
+  }
   return issues;
 }
 
-module.exports = { parsePcmWav:parsePcmWav, analyzeWav:analyzeWav, assertVoiceQuality:assertVoiceQuality };
+function compareToBaseline(metrics, baseline, options) {
+  options = options || {};
+  var issues = [];
+  if (!baseline || typeof baseline !== 'object') return ['missing baseline metrics'];
+  var rmsTolerance = options.rmsToleranceRatio != null ? options.rmsToleranceRatio : 0.45;
+  var durationTolerance = options.durationToleranceRatio != null ? options.durationToleranceRatio : 0.5;
+  if (baseline.rms > 0) {
+    var rmsDelta = Math.abs(metrics.rms - baseline.rms) / baseline.rms;
+    if (rmsDelta > rmsTolerance) issues.push('rms drifted from baseline');
+  }
+  if (baseline.durationMs > 0) {
+    var durationDelta = Math.abs(metrics.durationMs - baseline.durationMs) / baseline.durationMs;
+    if (durationDelta > durationTolerance) issues.push('duration drifted from baseline');
+  }
+  if (baseline.clippingRatio != null && metrics.clippingRatio > Math.max(0.005, baseline.clippingRatio * 2 + 0.001)) {
+    issues.push('clipping worse than baseline');
+  }
+  return issues;
+}
+
+module.exports = {
+  parsePcmWav:parsePcmWav,
+  analyzeWav:analyzeWav,
+  assertVoiceQuality:assertVoiceQuality,
+  compareToBaseline:compareToBaseline
+};

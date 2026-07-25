@@ -15,7 +15,9 @@ assert(/gallery\.js\?v=\d+/.test(page), 'gallery behavior must live in a maintai
 assert(page.includes('storage-health.js'), 'gallery must load storage health helpers for history validation');
 assert(controller.includes('function artworkRatio') && controller.includes('image.naturalWidth'), 'gallery must honor stored and decoded image dimensions');
 assert(controller.includes("event.key === 'ArrowLeft'") && controller.includes("event.key === 'ArrowRight'"), 'immersive viewer must support keyboard navigation');
+assert(controller.includes('viewerReturnFocus') && controller.includes("event.key === 'Tab'"), 'immersive viewer must trap focus and restore it on close');
 assert(controller.includes('AICGImageStore.get') && controller.includes('revokeCardUrls') && controller.includes('revokeViewerUrl'), 'gallery must load local originals lazily and release object URLs');
+assert(page.includes('id="main"') && page.includes('skip-link'), 'gallery must expose skip link and main landmark');
 assert(controller.includes("loading = className === 'artwork-image' ? 'lazy' : 'eager'"), 'wall images must lazy-load while the selected artwork loads eagerly');
 
 new Function(controller);

@@ -9,6 +9,13 @@ const localChromiumCandidates = process.platform === 'win32' ? [
 const executablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH ||
   localChromiumCandidates.find(candidate => existsSync(candidate));
 
+const browserUse = {
+  baseURL: 'http://127.0.0.1:3000',
+  trace: 'retain-on-failure' as const,
+  screenshot: 'only-on-failure' as const,
+  launchOptions: executablePath ? { executablePath } : {}
+};
+
 export default defineConfig({
   testDir: './tests/e2e',
   fullyParallel: false,
@@ -17,12 +24,30 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? [['github'], ['line']] : 'line',
   use: {
-    baseURL: 'http://127.0.0.1:3000',
-    viewport: { width: 1440, height: 960 },
-    trace: 'retain-on-failure',
-    screenshot: 'only-on-failure',
-    launchOptions: executablePath ? { executablePath } : {}
+    ...browserUse,
+    viewport: { width: 1440, height: 960 }
   },
+  projects: [
+    {
+      name: 'desktop',
+      use: { ...browserUse, viewport: { width: 1440, height: 960 } }
+    },
+    {
+      name: 'desktop-narrow',
+      testMatch: /a11y-device\.spec\.ts/,
+      use: { ...browserUse, viewport: { width: 1280, height: 800 } }
+    },
+    {
+      name: 'tablet',
+      testMatch: /a11y-device\.spec\.ts/,
+      use: { ...browserUse, viewport: { width: 768, height: 1024 } }
+    },
+    {
+      name: 'phone',
+      testMatch: /a11y-device\.spec\.ts/,
+      use: { ...browserUse, viewport: { width: 390, height: 844 } }
+    }
+  ],
   webServer: {
     command: 'node server.js',
     url: 'http://127.0.0.1:3000/api/health',

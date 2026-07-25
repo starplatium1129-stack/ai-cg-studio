@@ -534,6 +534,28 @@ tr:hover td { background: var(--bg-hover); }
 }
 
 /* ---- Utility ---- */
+.skip-link {
+  position: absolute;
+  left: var(--s-3);
+  top: var(--s-3);
+  z-index: 10000;
+  padding: 8px 14px;
+  border-radius: var(--r-md);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  border: 1px solid var(--accent);
+  box-shadow: var(--shadow-md);
+  font-size: 0.9rem;
+  font-weight: 700;
+  transform: translateY(-140%);
+  transition: transform var(--t-fast);
+}
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
 .muted   { color: var(--text-muted); }
 .sr-only {
   position: absolute !important; width: 1px !important; height: 1px !important;

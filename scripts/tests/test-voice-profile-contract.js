@@ -1,0 +1,92 @@
+'use strict';
+
+const assert = require('assert');
+const fs = require('fs');
+const path = require('path');
+const tts = require('../../services/tts-service');
+
+const root = path.resolve(__dirname, '..', '..');
+const contentTypes = fs.readFileSync(path.join(root, 'types', 'content.ts'), 'utf8');
+
+const requiredVoiceFields = [
+  'refAudioPath',
+  'promptText',
+  'promptLang',
+  'textLang',
+  'gptWeightsPath',
+  'sovitsWeightsPath',
+  'seed',
+  'topK',
+  'topP',
+  'temperature'
+];
+
+for (const field of requiredVoiceFields) {
+  assert(
+    contentTypes.includes(field + ':'),
+    'VoiceProfile contract must declare ' + field
+  );
+}
+
+assert(contentTypes.includes("export type VoiceId = 'nene' | 'natsume'"), 'VoiceId must cover nene/natsume');
+assert(contentTypes.includes("export type VoiceEmotion"), 'VoiceEmotion must be declared');
+assert(contentTypes.includes('export interface VoiceTtsInput'), 'VoiceTtsInput must be declared');
+
+const profiles = {
+  nene: {
+    refAudioPath: 'E:/voice/nene.wav',
+    promptText: '気にしないで下さい。',
+    promptLang: 'ja',
+    textLang: 'ja',
+    gptWeightsPath: 'E:/weights/nene.ckpt',
+    sovitsWeightsPath: 'E:/weights/nene.pth',
+    seed: 1234,
+    topK: 15,
+    topP: 1,
+    temperature: 1,
+    references: {
+      happy: {
+        refAudioPath: 'E:/voice/nene-happy.wav',
+        promptText: '嬉しいです',
+        promptLang: 'ja'
+      }
+    }
+  }
+};
+
+const valid = tts.validateInput({
+  voice: 'nene',
+  language: 'ja',
+  text: '気にしないで下さい。自分の分を毎日作ってますから',
+  emotion: 'happy',
+  consistency: 'locked',
+  referenceEmotion: 'happy',
+  speed: 1
+}, profiles);
+assert(!valid.error, 'valid TTS input must pass');
+assert.strictEqual(valid.value.payload.seed, 1234);
+assert.strictEqual(valid.value.payload.top_k, 15);
+assert.strictEqual(valid.value.payload.ref_audio_path, profiles.nene.references.happy.refAudioPath);
+
+const badVoice = tts.validateInput({ voice: 'unknown', text: 'hi', language: 'ja' }, profiles);
+assert.strictEqual(badVoice.status, 400);
+assert(String(badVoice.error).includes('声线'));
+
+const emptyText = tts.validateInput({ voice: 'nene', text: '   ', language: 'ja' }, profiles);
+assert.strictEqual(emptyText.status, 400);
+
+const missingProfile = tts.validateInput({ voice: 'natsume', text: '测试', language: 'zh' }, profiles);
+assert.strictEqual(missingProfile.status, 409);
+
+const zhLocked = tts.validateInput({
+  voice: 'nene',
+  language: 'zh',
+  text: '等、等等！刚才的事情不准说出去……绝对不准！',
+  emotion: 'happy',
+  consistency: 'locked',
+  referenceEmotion: 'happy'
+}, profiles);
+assert(!zhLocked.error, 'Chinese input must still validate');
+assert.strictEqual(zhLocked.value.payload.ref_audio_path, profiles.nene.refAudioPath, 'Chinese path must use neutral main ref');
+
+console.log('Voice profile contract tests passed: VoiceProfile fields, validateInput, locked emotion refs');

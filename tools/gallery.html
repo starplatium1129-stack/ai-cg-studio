@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>作品册 · 绫季绘境</title>
-<link rel="stylesheet" href="../css/design-system.css?v=8">
+<link rel="stylesheet" href="../css/design-system.css?v=9">
 <script src="nav.js?v=6"></script>
 <script src="theme.js?v=5"></script>
 <style>
@@ -46,8 +46,8 @@
   .gallery-empty h2 { margin:18px 0 8px; color:var(--text-primary); font-size:clamp(1.3rem,3vw,2rem); }
   .gallery-empty p { max-width:600px; margin:0 auto 24px; color:var(--text-secondary); line-height:1.8; }
 
-  .art-viewer { position:fixed; inset:0; z-index:10000; display:grid; grid-template-columns:minmax(0,1fr) minmax(290px,360px); background:rgba(6,5,8,.97); color:#fff; opacity:0; visibility:hidden; transition:opacity 180ms ease,visibility 180ms ease; }
-  .art-viewer.open { opacity:1; visibility:visible; }
+  .art-viewer { position:fixed; inset:0; z-index:10000; display:none; grid-template-columns:minmax(0,1fr) minmax(290px,360px); background:rgba(6,5,8,.97); color:#fff; }
+  .art-viewer.open { display:grid; }
   .viewer-stage { position:relative; min-width:0; display:grid; place-items:center; padding:clamp(46px,5vw,76px) clamp(48px,6vw,92px); overflow:hidden; }
   .viewer-image { display:block; max-width:100%; max-height:calc(100vh - 92px); width:auto; height:auto; object-fit:contain; filter:drop-shadow(0 24px 56px rgba(0,0,0,.42)); }
   .viewer-fallback { color:#87818d; font-size:3rem; }
@@ -109,9 +109,10 @@
 </style>
 </head>
 <body data-nav="gallery">
+<a class="skip-link" href="#main">跳到主要内容</a>
 <nav class="nav"><div class="nav-inner"><div class="nav-brand"><span class="dot"></span> 绫季绘境</div><div class="nav-links"></div></div></nav>
 
-<main class="gallery-shell">
+<main id="main" class="gallery-shell">
   <header class="gallery-intro">
     <div>
       <div class="gallery-kicker">Private collection</div>
@@ -139,6 +140,6 @@
 <footer class="footer"><p>绫季绘境 · From Story to Scene</p></footer>
 <script src="image-store.js?v=5"></script>
 <script src="storage-health.js?v=1"></script>
-<script src="gallery.js?v=2"></script>
+<script src="gallery.js?v=4"></script>
 </body>
 </html>

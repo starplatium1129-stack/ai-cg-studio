@@ -14,6 +14,7 @@
   var cardObjectUrls = new Set();
   var viewerObjectUrl = '';
   var viewerIndex = -1;
+  var viewerReturnFocus = null;
 
   function escapeHtml(value) {
     return String(value == null ? '' : value)
@@ -231,6 +232,9 @@
   function openViewer(index) {
     if (!visibleHistory[index]) return;
     viewerIndex = index;
+    if (!document.getElementById('artViewer').classList.contains('open')) {
+      viewerReturnFocus = document.activeElement;
+    }
     revokeViewerUrl();
     var item = visibleHistory[index];
     var viewer = document.getElementById('artViewer');
@@ -244,7 +248,17 @@
     document.querySelector('.viewer-next').disabled = index >= visibleHistory.length - 1;
     renderViewerInfo(item);
     hydrateViewer(item, index);
-    document.querySelector('.viewer-close').focus({ preventScroll:true });
+    function focusViewerChrome() {
+      if (!document.getElementById('artViewer').classList.contains('open')) return;
+      var closeBtn = document.querySelector('.viewer-close');
+      if (closeBtn && typeof closeBtn.focus === 'function') {
+        try { closeBtn.focus({ preventScroll:true }); } catch (error) { closeBtn.focus(); }
+      }
+    }
+    requestAnimationFrame(function () {
+      focusViewerChrome();
+      setTimeout(focusViewerChrome, 200);
+    });
   }
 
   function closeViewer() {
@@ -254,6 +268,10 @@
     document.body.classList.remove('viewer-open');
     revokeViewerUrl();
     viewerIndex = -1;
+    if (viewerReturnFocus && typeof viewerReturnFocus.focus === 'function') {
+      try { viewerReturnFocus.focus({ preventScroll:true }); } catch (error) { viewerReturnFocus.focus(); }
+    }
+    viewerReturnFocus = null;
   }
 
   function viewerAction(action) {
@@ -279,9 +297,37 @@
     if (event.target.id === 'galleryProjectFilter') { projectFilter = event.target.value; render(); }
   });
   document.addEventListener('keydown', function (event) {
-    if (!document.getElementById('artViewer').classList.contains('open')) return;
-    if (event.key === 'Escape') closeViewer();
-    else if (event.key === 'ArrowLeft') viewerAction('prev');
+    var viewer = document.getElementById('artViewer');
+    if (!viewer.classList.contains('open')) return;
+    if (event.key === 'Escape') {
+      closeViewer();
+      return;
+    }
+    if (event.key === 'Tab') {
+      var focusable = Array.from(viewer.querySelectorAll(
+        'button:not([disabled]),a[href],input:not([disabled]),textarea:not([disabled]),select:not([disabled]),[tabindex]:not([tabindex="-1"])'
+      )).filter(function (el) {
+        return el.offsetParent !== null || el === document.activeElement;
+      });
+      if (!focusable.length) {
+        event.preventDefault();
+        return;
+      }
+      var first = focusable[0];
+      var last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      } else if (!viewer.contains(document.activeElement)) {
+        event.preventDefault();
+        first.focus();
+      }
+      return;
+    }
+    if (event.key === 'ArrowLeft') viewerAction('prev');
     else if (event.key === 'ArrowRight') viewerAction('next');
     else if (event.key.toLowerCase() === 'i') viewerAction('info');
   });

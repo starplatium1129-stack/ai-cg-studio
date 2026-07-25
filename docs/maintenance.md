@@ -98,11 +98,29 @@ npm run test:voice-quality
 
 `npm run test:e2e` 使用独立 Chromium 实际打开首页、导演台、场景管理和作品册，覆盖外部控制器加载、场景数据出现、新增场景表单、横竖作品比例、沉浸观画和首页性能预算。CI 会自动安装 Chromium 后运行；本机第一次运行可执行 `npx playwright install chromium`。测试产物位于 `test-results/`，仅失败诊断使用，不提交到项目。
 
-TypeScript 采用渐进迁移。`types/content.ts` 先定义角色、LoRA、场景和语音档案契约，`npm run typecheck` 检查新写的 TypeScript 与浏览器测试；不要为了迁移而一次重写稳定的旧控制器。每次把一个模块迁入 TypeScript，都必须先由现有行为测试保护。
+TypeScript 采用渐进迁移。`types/content.ts`、`types/control.ts`、`types/storage.ts` 先定义角色、LoRA、场景、语音、控制状态和作品库契约；`npm run typecheck` 检查契约与浏览器测试，`npm run build:runtime` 编译已迁移的运行时模块（当前为 `services/control-operation.ts`）。不要为了迁移而一次重写稳定的旧控制器。每次把一个模块迁入 TypeScript，都必须先由现有行为测试保护。
 
 `scripts/maintenance/validate-content-contracts.js` 检查角色 ID、身份锚点、肖像文件、LoRA 强度、测试场景和场景角色引用。它已进入 `npm run validate`，修改 `characters.json` 或 `loras.json` 时不再依赖人工发现引用断裂。
 
-控制面板的操作状态机位于 `services/control-operation.js`。它统一负责耗时操作互斥、阶段进度、完成/失败状态和过期回调保护；`tools/control-server.js` 只编排具体服务。新增 GPU 操作时必须复用这个状态机，不要再创建另一套 busy 标志。
+控制面板的操作状态机源文件是 `services/control-operation.ts`（emit 为同目录 `.js`）。它统一负责耗时操作互斥、阶段进度、完成/失败状态和过期回调保护；`tools/control-server.js` 只编排具体服务。新增 GPU 操作时必须复用这个状态机，不要再创建另一套 busy 标志。修改该模块后运行 `npm run build:runtime` 与 `npm run test:control-operation`。
+
+## 真实声线基线
+
+固定台词在 `scripts/fixtures/voice-baseline.json`（宁宁/夏目 × 日/中，默认中性），golden 指标在 `scripts/fixtures/voice-baseline-metrics.json`。离线结构与质量门：
+
+```bash
+npm run test:voice-quality
+npm run test:voice-baseline
+```
+
+本机 GPT-SoVITS 与网关在线时，可捕获或对比真实生成：
+
+```bash
+VOICE_BASELINE_LIVE=1 npm run benchmark:voice-baseline
+VOICE_BASELINE_LIVE=1 VOICE_BASELINE_WRITE=1 npm run benchmark:voice-baseline
+```
+
+人工听感清单（调参后勾选，不进 CI）：音色像角色？情绪对？日语可懂？无破音？无异常静音？通过后再把 metrics 的 `status` 从 `provisional` 改为 `captured`。
 
 日常添加场景、编辑标签、调整精选层级和替换样张已经完全由场景管理页处理，不需要改代码或执行命令。新增一种角色、生成模型或新的页面布局仍属于结构变更，因为它会改变校验规则、提示词契约或服务能力，不能当成普通数据录入静默处理。
 
