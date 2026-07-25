@@ -17,24 +17,9 @@ if not exist "node_modules" (
     echo.
 )
 
-:: Start the managed Stability Matrix reForge instance with its saved API arguments
-set "WEBUI_SCRIPT=%~dp0scripts\runtime\managed-webui.ps1"
-if exist "%WEBUI_SCRIPT%" (
-    echo  Checking managed SD WebUI...
-    powershell -NoProfile -ExecutionPolicy Bypass -File "%WEBUI_SCRIPT%" -Action Start
-    if errorlevel 1 echo  [WARN] Managed SD WebUI failed to start. Check runtime\logs\webui.stderr.log.
-    echo.
-)
-
-:: Start the optional local GPT-SoVITS service when it is installed beside this project
-set "VOICE_SCRIPT=%~dp0..\AI\Voice\Start-Voice.ps1"
-if exist "%VOICE_SCRIPT%" (
-    echo  Checking local voice service...
-    powershell -NoProfile -ExecutionPolicy Bypass -File "%VOICE_SCRIPT%"
-    if errorlevel 1 echo  [WARN] Voice service failed to start. You can still use the website without AI voice.
-    echo.
-)
-
-:: Start control server
+:: Start control server (open http://127.0.0.1:3001 to manage services)
+echo  Starting control panel...
+echo  Open http://127.0.0.1:3001 to manage SD WebUI, GPT-SoVITS and sharing.
+echo.
 node tools\control-server.js
 pause

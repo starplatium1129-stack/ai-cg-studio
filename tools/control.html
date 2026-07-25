@@ -341,29 +341,33 @@
     </div>
     <div class="status-card">
       <div class="status-label">SD WebUI</div>
-      <div id="sd-badge" class="badge offline" role="status" aria-live="polite"><span class="dot"></span><span>正在检测…</span></div>
+      <div id="sd-badge" class="badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未检测</span></div>
     </div>
     <div class="status-card">
       <div class="status-label">GPT-SoVITS</div>
-      <div id="tts-badge" class="badge offline" role="status" aria-live="polite"><span class="dot"></span><span>正在检测…</span></div>
+      <div id="tts-badge" class="badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未检测</span></div>
     </div>
     <div class="status-card">
       <div class="status-label">Ollama 聊天</div>
-      <div id="ollama-badge" class="badge offline" role="status" aria-live="polite"><span class="dot"></span><span>正在检测…</span></div>
+      <div id="ollama-badge" class="badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未检测</span></div>
     </div>
     <div class="status-card">
       <div class="status-label">角色声线</div>
-      <div id="voice-badge" class="badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>正在检查…</span></div>
+      <div id="voice-badge" class="badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未检测</span></div>
     </div>
     <div class="status-card">
       <div class="status-label">分享组件</div>
-      <div id="share-badge" class="badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>正在检查…</span></div>
+      <div id="share-badge" class="badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未检测</span></div>
     </div>
     <div class="status-card primary">
       <div class="status-label">创作状态</div>
-      <div id="ready-badge" class="badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>正在汇总…</span></div>
+      <div id="ready-badge" class="badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未检测</span></div>
     </div>
   </section>
+
+  <div style="display:flex;gap:8px;margin-bottom:14px">
+    <button class="btn-small" id="check-services" type="button" onclick="pollStatus();pollLogs();" style="flex:1">🔍 检测所有服务</button>
+  </div>
 
   <section class="panel">
     <div class="step-head">
@@ -453,7 +457,7 @@
         </div>
       </div>
     </details>
-    <div class="config-feedback" id="config-feedback" aria-live="polite">正在检查画面与语音服务连接…</div>
+    <div class="config-feedback" id="config-feedback" aria-live="polite">点击"检测所有服务"查看当前状态，或直接启动。</div>
 
     <div class="tunnel-toggle-row">
       <label class="tunnel-toggle-label">
@@ -921,8 +925,7 @@ function doStart() {
   }).then(function(data) {
     if (!data.ok) throw new Error(data.msg || '启动失败');
     showToast('本地网关已启动');
-    pollStatus();
-    pollLogs();
+    startPolling();
   }).catch(function(error) {
     showToast('启动失败：' + error.message, true);
   }).finally(function() {
@@ -940,8 +943,15 @@ function doStop() {
   }).then(function(data) {
     if (!data.ok) throw new Error(data.msg || '停止失败');
     showToast(data.voiceError || data.webuiError ? '部分服务停止失败，请查看日志' : (data.webuiStopped ? '网关、分享、语音与 WebUI 已停止' : '网关、分享与语音已停止；手动启动的 WebUI 保持运行'));
-    pollStatus();
-    pollLogs();
+    stopPolling();
+    lastStatus = null;
+    setBadge(document.getElementById('badge'), 'stopped', '未启动');
+    setBadge(document.getElementById('sd-badge'), 'stopped', '未检测');
+    setBadge(document.getElementById('tts-badge'), 'stopped', '未检测');
+    setBadge(document.getElementById('ollama-badge'), 'stopped', '未检测');
+    setBadge(document.getElementById('voice-badge'), 'stopped', '未检测');
+    setBadge(document.getElementById('share-badge'), 'stopped', '未检测');
+    setBadge(document.getElementById('ready-badge'), 'stopped', '未检测');
   }).catch(function(error) {
     showToast('停止失败：' + error.message, true);
   }).finally(function() {
@@ -949,12 +959,20 @@ function doStop() {
   });
 }
 
-pollStatus();
-pollLogs();
-setInterval(function() {
+var pollInterval = null;
+function startPolling() {
+  if (pollInterval) return;
   pollStatus();
   pollLogs();
-}, 3000);
+  pollInterval = setInterval(function() {
+    pollStatus();
+    pollLogs();
+  }, 3000);
+}
+function stopPolling() {
+  if (pollInterval) clearInterval(pollInterval);
+  pollInterval = null;
+}
 </script>
 </body>
 </html>
