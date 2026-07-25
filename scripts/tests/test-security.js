@@ -1,0 +1,110 @@
+'use strict';
+
+var assert = require('assert');
+var security = require('../../server/security');
+var diagnostics = require('../../server/diagnostics');
+var maintenance = require('../../routes/maintenance');
+
+function mockReq(overrides) {
+  return Object.assign({
+    socket:{ remoteAddress:'127.0.0.1' },
+    headers:{},
+    query:{},
+    path:'/',
+    originalUrl:'/',
+    secure:false
+  }, overrides || {});
+}
+
+function mockRes() {
+  var res = {
+    statusCode:200,
+    headers:{},
+    body:null,
+    redirected:null,
+    status:function (code) { this.statusCode = code; return this; },
+    json:function (body) { this.body = body; return this; },
+    send:function (body) { this.body = body; return this; },
+    setHeader:function (key, value) { this.headers[key] = value; },
+    redirect:function (code, url) { this.statusCode = code; this.redirected = url; }
+  };
+  return res;
+}
+
+function runMiddleware(mw, req) {
+  return new Promise(function (resolve) {
+    var res = mockRes();
+    var nextCalled = false;
+    mw(req, res, function () { nextCalled = true; resolve({ res:res, nextCalled:nextCalled }); });
+    // If middleware ends the response without next, settle shortly.
+    setTimeout(function () {
+      if (!nextCalled) resolve({ res:res, nextCalled:nextCalled });
+    }, 0);
+  });
+}
+
+async function main() {
+  assert.strictEqual(security.tokenMatches('abc12345', 'abc12345'), true);
+  assert.strictEqual(security.tokenMatches('abc12345', 'abc1234x'), false);
+  assert.strictEqual(security.tokenMatches('abc12345', 'short'), false);
+  assert.strictEqual(security.tokenMatches('abc12345', null), false);
+
+  assert.strictEqual(security.isDirectLocalRequest(mockReq()), true);
+  assert.strictEqual(security.isDirectLocalRequest(mockReq({
+    socket:{ remoteAddress:'::1' }
+  })), true);
+  assert.strictEqual(security.isDirectLocalRequest(mockReq({
+    headers:{ 'x-forwarded-for':'1.2.3.4' }
+  })), false);
+  assert.strictEqual(security.isDirectLocalRequest(mockReq({
+    socket:{ remoteAddress:'8.8.8.8' }
+  })), false);
+
+  var auth = security.tokenAuth('secret-token-value-32chars-aaaaaa');
+  var local = await runMiddleware(auth, mockReq({ path:'/api/health' }));
+  assert.strictEqual(local.nextCalled, true, 'local loopback must bypass token');
+
+  var denied = await runMiddleware(auth, mockReq({
+    socket:{ remoteAddress:'8.8.8.8' },
+    path:'/api/health',
+    originalUrl:'/api/health'
+  }));
+  assert.strictEqual(denied.nextCalled, false);
+  assert.strictEqual(denied.res.statusCode, 401);
+
+  var allowed = await runMiddleware(auth, mockReq({
+    socket:{ remoteAddress:'8.8.8.8' },
+    path:'/api/health',
+    headers:{ 'x-token':'secret-token-value-32chars-aaaaaa' }
+  }));
+  assert.strictEqual(allowed.nextCalled, true);
+
+  // maintenanceLocalOnly: remote must 403
+  var localOnly = maintenance._test.maintenanceLocalOnly;
+  var remoteBackup = await runMiddleware(localOnly, mockReq({
+    socket:{ remoteAddress:'8.8.8.8' },
+    path:'/api/backup'
+  }));
+  assert.strictEqual(remoteBackup.nextCalled, false);
+  assert.strictEqual(remoteBackup.res.statusCode, 403);
+
+  var localBackup = await runMiddleware(localOnly, mockReq({ path:'/api/backup' }));
+  assert.strictEqual(localBackup.nextCalled, true);
+
+  var redacted = diagnostics.redactText('Tunnel https://x.trycloudflare.com?token=abcdef0123456789 and token=deadbeefcafebabe');
+  assert.ok(!/abcdef0123456789/.test(redacted), 'URL tokens must be redacted');
+  assert.ok(!/deadbeefcafebabe/.test(redacted), 'kv tokens must be redacted');
+  assert.ok(diagnostics.maskSecret('abcdefghijklmnop').endsWith('mnop'));
+  assert.deepStrictEqual(diagnostics.summarizeToken('1234567890abcdef'), {
+    present:true,
+    length:16,
+    suffix:'…cdef'
+  });
+
+  console.log('Security tests passed: token match, local auth, backup local-only, log redaction');
+}
+
+main().catch(function (error) {
+  console.error(error);
+  process.exit(1);
+});

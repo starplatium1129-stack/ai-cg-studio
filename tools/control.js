@@ -343,6 +343,29 @@ function clearLogs(event) {
   document.getElementById('log-box').replaceChildren(empty);
 }
 
+function exportDiagnostics(event) {
+  if (event) { event.preventDefault(); event.stopPropagation(); }
+  showToast('正在整理诊断包…');
+  fetch('/api/diagnostics').then(function(response) {
+    return response.json().then(function(data) {
+      if (!response.ok) throw new Error((data && data.error) || '诊断包导出失败');
+      return data;
+    });
+  }).then(function(data) {
+    var stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 16);
+    var blob = new Blob([JSON.stringify(data, null, 2)], { type:'application/json;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement('a');
+    link.href = url;
+    link.download = 'lingji-diagnostics-' + stamp + '.json';
+    link.click();
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+    showToast('诊断包已导出');
+  }).catch(function(error) {
+    showToast(error.message || '诊断包导出失败', true);
+  });
+}
+
 function doStart() {
   if (!lastStatus) { showToast('控制面板仍在读取配置，请稍候再试', true); pollStatus(); return; }
   var button = document.getElementById('btn');

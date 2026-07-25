@@ -44,6 +44,7 @@ var _cachedProjects = [];
 var toastTimer;
 var HIS_KEY = 'aics_pb_history';
 var PRJ_KEY = 'aics_projects';
+var HIS_QUARANTINE_KEY = (typeof AICStorageHealth !== 'undefined' && AICStorageHealth.QUARANTINE_KEY) || 'aics_pb_history_quarantine';
 var HIS_SCHEMA_VERSION = 4;
 var NEGATIVE = 'worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate';
 var state = {
@@ -60,9 +61,9 @@ var state = {
 function loadData(){
   function initStorage(){
     return AICKVStore.init().then(function(){
-      return Promise.all([AICKVStore.get(HIS_KEY), AICKVStore.get(PRJ_KEY)]);
+      return Promise.all([AICKVStore.get(HIS_KEY), AICKVStore.get(PRJ_KEY), AICKVStore.get(HIS_QUARANTINE_KEY)]);
     }).then(function(vals){
-      var histRaw = vals[0], prjRaw = vals[1];
+      var histRaw = vals[0], prjRaw = vals[1], quarantineRaw = vals[2];
       // localStorage → IndexedDB 一次性迁移
       if(!histRaw){
         try{var ls=JSON.parse(localStorage.getItem(HIS_KEY));if(Array.isArray(ls)&&ls.length){histRaw=ls;AICKVStore.set(HIS_KEY,ls);localStorage.removeItem(HIS_KEY);}}catch(e){}
@@ -72,11 +73,21 @@ function loadData(){
       }
       var raw = Array.isArray(histRaw) ? histRaw : [];
       var res = migrateHistory(raw);
-      _cachedHistory = res.list;
-      state.history = res.list;
-      PERSONAL_PROFILE = AICSceneUX.buildPreferenceProfile(res.list);
+      var partition = (typeof AICStorageHealth !== 'undefined')
+        ? AICStorageHealth.quarantinePartition(res.list)
+        : { good:res.list, bad:[] };
+      var existingQuarantine = Array.isArray(quarantineRaw) ? quarantineRaw : [];
+      var nextQuarantine = existingQuarantine.concat(partition.bad || []);
+      _cachedHistory = partition.good;
+      state.history = partition.good;
+      PERSONAL_PROFILE = AICSceneUX.buildPreferenceProfile(partition.good);
       _cachedProjects = Array.isArray(prjRaw) ? prjRaw : [];
-      if(res.changed) AICKVStore.set(HIS_KEY, res.list);
+      var historyChanged = res.changed || partition.bad.length > 0;
+      if(historyChanged) AICKVStore.set(HIS_KEY, partition.good);
+      if(partition.bad.length) AICKVStore.set(HIS_QUARANTINE_KEY, nextQuarantine);
+      if(partition.bad.length) {
+        console.warn('[storage-health] quarantined ' + partition.bad.length + ' history records');
+      }
     }).catch(function(e){console.warn('storage init fail, fallback to memory',e);});
   }
   return Promise.all([

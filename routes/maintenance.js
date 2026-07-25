@@ -111,24 +111,24 @@ function decodeJpegDataUrl(value, label) {
   return buffer;
 }
 
+function isDirectLocalRequest(req) {
+  var address = (req.socket && req.socket.remoteAddress) || '';
+  var loopback = address === '127.0.0.1' || address === '::1' || address === '::ffff:127.0.0.1';
+  var forwarded = req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for'] || req.headers.forwarded;
+  return loopback && !forwarded;
+}
+
+function maintenanceLocalOnly(req, res, next) {
+  if (!isDirectLocalRequest(req)) return res.status(403).json({ error: '维护操作仅允许在本机执行' });
+  next();
+}
+
 function createMaintenanceRouter(cfg) {
   var router = express.Router();
   var sceneStore = require('../scripts/runtime/scene-store');
 
   var SCENE_SHOWCASE_DIR = cfg.SCENE_SHOWCASE_DIR;
   var MAINTENANCE_BACKUP_DIR = path.join(cfg.RUNTIME_ROOT, 'maintenance-backups');
-
-  function isDirectLocalRequest(req) {
-    var address = (req.socket && req.socket.remoteAddress) || '';
-    var loopback = address === '127.0.0.1' || address === '::1' || address === '::ffff:127.0.0.1';
-    var forwarded = req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for'] || req.headers.forwarded;
-    return loopback && !forwarded;
-  }
-
-  function maintenanceLocalOnly(req, res, next) {
-    if (!isDirectLocalRequest(req)) return res.status(403).json({ error: '维护操作仅允许在本机执行' });
-    next();
-  }
 
   function maintenanceSnapshot(deletedIds) {
     var dataDir = path.join(__dirname, '..', 'data');
@@ -354,7 +354,7 @@ function createMaintenanceRouter(cfg) {
     }
   });
 
-  router.post('/api/backup', express.json({ limit:'22mb' }), function (req, res) {
+  router.post('/api/backup', maintenanceLocalOnly, express.json({ limit:'22mb' }), function (req, res) {
     try {
       var imageBase64 = req.body.imageBase64, filename = req.body.filename;
       if (!imageBase64) return res.status(400).json({ error:'No image data' });
@@ -429,6 +429,8 @@ module.exports = {
   createMaintenanceRouter:createMaintenanceRouter,
   _test:{
     decodeJpegDataUrl:decodeJpegDataUrl,
+    isDirectLocalRequest:isDirectLocalRequest,
+    maintenanceLocalOnly:maintenanceLocalOnly,
     restoreSnapshot:restoreSnapshot,
     sanitizeCuration:sanitizeCuration,
     saveSnapshotBackup:saveSnapshotBackup,

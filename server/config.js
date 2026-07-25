@@ -54,7 +54,7 @@ function loadGatewayConfig(rootDir, env) {
     RUNTIME_ROOT:runtime.root,
     PORT:boundedInteger(env.PORT, 3000, 1, 65535),
     HOST:env.HOST || '127.0.0.1',
-    TOKEN:env.TOKEN || crypto.randomBytes(8).toString('hex'),
+    TOKEN:env.TOKEN || crypto.randomBytes(32).toString('hex'),
     SD_HOST:env.SD_HOST || saved.sdHost || 'http://127.0.0.1:7860',
     SD_API_AUTH:env.SD_API_AUTH || '',
     TTS_HOST:env.TTS_HOST || saved.ttsHost || 'http://127.0.0.1:9880',

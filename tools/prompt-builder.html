@@ -790,6 +790,8 @@
           <div class="utility-actions">
             <button class="btn btn-ghost" id="backupExportBtn" type="button" onclick="closeUtilityMenu();exportLocalData()"><span class="icon-label"><span data-icon="export"></span>导出备份</span></button>
             <button class="btn btn-ghost" type="button" onclick="closeUtilityMenu();openBackupPicker()"><span class="icon-label"><span data-icon="restore"></span>恢复备份</span></button>
+            <button class="btn btn-ghost wide" type="button" onclick="closeUtilityMenu();runStorageHealthCheck()"><span class="icon-label"><span data-icon="sparkle"></span>存储体检</span></button>
+            <button class="btn btn-ghost wide" type="button" onclick="closeUtilityMenu();discardQuarantinedHistory()"><span class="icon-label"><span data-icon="more"></span>丢弃隔离记录</span></button>
             <button class="btn btn-ghost wide" type="button" onclick="closeUtilityMenu();replayFirstCreation()"><span class="icon-label"><span data-icon="sparkle"></span>重新体验快速引导</span></button>
           </div>
           <input class="sr-only" id="backupFileInput" type="file" accept="application/json,.json" onchange="previewBackupFile()">
@@ -1169,10 +1171,11 @@
 <script src="prompt-policy.js?v=1"></script>
 <script src="image-store.js?v=5"></script>
 <script src="data-backup.js?v=1"></script>
+<script src="storage-health.js?v=1"></script>
 <script src="sd-api.js?v=3"></script>
 <script src="icon-system.js?v=1"></script>
 
-<script src="prompt-builder/state.js?v=1"></script>
+<script src="prompt-builder/state.js?v=2"></script>
 <script src="prompt-builder/composition.js?v=1"></script>
 <script src="prompt-builder/scene-inference.js?v=1"></script>
 <script src="prompt-builder/scene.js?v=3"></script>
@@ -1181,7 +1184,7 @@
 <script src="prompt-builder/queue.js?v=1"></script>
 <script src="prompt-builder/voice.js?v=5"></script>
 <script src="prompt-builder/history.js?v=1"></script>
-<script src="prompt-builder/backup.js?v=1"></script>
+<script src="prompt-builder/backup.js?v=2"></script>
 <script src="prompt-builder/ui.js?v=1"></script>
 <script src="prompt-builder/app.js?v=1"></script>
 

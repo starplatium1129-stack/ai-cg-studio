@@ -208,9 +208,10 @@ node server.js
 运行时文件会自动集中到 `runtime/`，避免挤在项目根目录：
 
 - `runtime/config.json`：SD、TTS 与角色声线配置
-- `runtime/state/`：网关与隧道的 PID、端口和临时 Token
-- `runtime/logs/`：控制面板、网关和隧道日志
-- `runtime/outputs/`：朋友通过网关生成并备份的图片
+- `runtime/state/`：网关与隧道的 PID、端口和临时 Token（重启网关会换新 Token；长度 64 hex）
+- `runtime/logs/`：控制面板、网关和隧道日志（日志中不打印完整 Token）
+- `runtime/outputs/`：本机生成图备份（`/api/backup` 仅本机可写）
+- 控制面板「导出诊断包」：汇总服务状态、网关健康与脱敏日志，便于排错
 
 旧版根目录中的 `.gateway_*`、`tunnel.log` 和 `friend_outputs/` 会在首次启动时自动迁移。`runtime/` 已被 Git 忽略，不应提交。
 

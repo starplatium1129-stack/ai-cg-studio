@@ -158,7 +158,7 @@ function createGateway(options) {
         if (match) pendingTunnelUrl = match[0];
         if (pendingTunnelUrl && /Registered tunnel connection/i.test(log)) {
           tunnelUrl = pendingTunnelUrl;
-          console.log('  🌪 Tunnel: ' + tunnelUrl + '?token=' + config.TOKEN);
+          console.log('  🌪 Tunnel ready (token redacted; open control panel for share link)');
           clearInterval(poll);
         }
       } catch (error) {}
@@ -197,7 +197,7 @@ function startGateway(options) {
     console.log('  🔊 TTS 后端: ' + config.TTS_HOST);
     console.log('  💬 Ollama 后端: ' + config.OLLAMA_HOST);
     console.log('  🖼️ 场景样张: ' + (config.SCENE_SHOWCASE_DIR || '未配置'));
-    console.log('  🔐 Token: ' + config.TOKEN);
+    console.log('  🔐 Token: stored in runtime/state (length ' + String(config.TOKEN || '').length + ')');
     console.log('  ══════════════════════════════════════════');
     console.log('');
     gateway.startTunnel();

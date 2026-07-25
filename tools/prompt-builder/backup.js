@@ -212,3 +212,49 @@ function initBackupUI(){
     if (menu && menu.classList.contains('open') && !menu.contains(event.target)) closeUtilityMenu();
   });
 }
+
+async function readStorageQuota(){
+  try {
+    if (!navigator.storage || typeof navigator.storage.estimate !== 'function') return null;
+    return AICStorageHealth.estimateQuota(await navigator.storage.estimate());
+  } catch (error) {
+    return null;
+  }
+}
+
+async function runStorageHealthCheck(){
+  try {
+    var values = await Promise.all([
+      AICKVStore.get(HIS_KEY),
+      AICKVStore.get(HIS_QUARANTINE_KEY),
+      AICGImageStore.listRecords(),
+      readStorageQuota()
+    ]);
+    var history = Array.isArray(values[0]) ? values[0] : [];
+    var quarantine = Array.isArray(values[1]) ? values[1] : [];
+    var images = values[2] || [];
+    var report = AICStorageHealth.inspect(history, images, { quota:values[3] });
+    report.quarantineCount = Math.max(report.quarantineCount, quarantine.length);
+    var message = '存储体检：' + AICStorageHealth.summarize(report);
+    if (quarantine.length) message += '（隔离区 ' + quarantine.length + ' 条，可先导出备份再丢弃）';
+    else if (report.ok) message += ' · 正常';
+    flash(message);
+  } catch (error) {
+    console.error('storage health failed', error);
+    flash('存储体检失败：' + (error.message || '请检查浏览器存储'));
+  }
+}
+
+async function discardQuarantinedHistory(){
+  try {
+    var quarantine = await AICKVStore.get(HIS_QUARANTINE_KEY);
+    var count = Array.isArray(quarantine) ? quarantine.length : 0;
+    if (!count) { flash('隔离区为空'); return; }
+    if (!window.confirm('将永久丢弃隔离区中的 ' + count + ' 条损坏历史记录。建议先导出备份。确定继续吗？')) return;
+    await AICKVStore.set(HIS_QUARANTINE_KEY, []);
+    flash('已丢弃 ' + count + ' 条隔离记录');
+  } catch (error) {
+    console.error('discard quarantine failed', error);
+    flash('丢弃隔离记录失败：' + (error.message || '请重试'));
+  }
+}

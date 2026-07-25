@@ -8,6 +8,7 @@ var fs = require('fs');
 var crypto = require('crypto');
 var runtimeTools = require('../scripts/runtime/runtime-paths');
 var createOperationManager = require('../services/control-operation').createOperationManager;
+var diagnostics = require('../server/diagnostics');
 
 var app = express();
 app.disable('x-powered-by');
@@ -768,7 +769,7 @@ app.post('/api/start', function (req, res) {
   findAvailableGatewayPort(function (portError, gatewayPort) {
     if (portError) return res.status(503).json({ ok:false, msg:portError.message });
     state.gatewayPort = gatewayPort;
-    state.token = crypto.randomBytes(8).toString('hex');
+    state.token = crypto.randomBytes(32).toString('hex');
     state.domain = '';
     state.startTime = Date.now();
     state.tunnelStatus = enableTunnel ? (fs.existsSync(CLOUDFLARED_PATH) ? 'connecting' : 'unavailable') : 'disabled';
@@ -847,6 +848,85 @@ app.post('/api/stop', function (req, res) {
 app.get('/api/logs', function (req, res) {
   var since = parseInt(req.query.since) || 0;
   res.json({ logs: state.logs.slice(since) });
+});
+
+app.get('/api/diagnostics', function (req, res) {
+  var port = state.gatewayPort || GW_PORT;
+  var gatewayBase = 'http://127.0.0.1:' + port;
+  var packageVersion = '';
+  try {
+    packageVersion = JSON.parse(fs.readFileSync(path.join(dir, 'package.json'), 'utf8')).version || '';
+  } catch (error) {}
+  var savedConfig = {};
+  try {
+    if (fs.existsSync(CONFIG_FILE)) savedConfig = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf8'));
+  } catch (error) {
+    savedConfig = { parseError:String(error && error.message || error) };
+  }
+
+  Promise.all([
+    checkSD(true),
+    checkTTS(true),
+    checkOllama(true),
+    requestLocalJson(gatewayBase, '/api/health', null, 2500).then(function (result) {
+      return result && result.status < 300 ? (result.data || {}) : { ok:false, status:result && result.status, error:'gateway health failed' };
+    }).catch(function (error) {
+      return { ok:false, error:String(error && error.message || error) };
+    }),
+    requestLocalJson(gatewayBase, '/api/tunnel-status', null, 2500).then(function (result) {
+      return result && result.status < 300 ? (result.data || {}) : { error:'tunnel status failed', status:result && result.status };
+    }).catch(function (error) {
+      return { error:String(error && error.message || error) };
+    }),
+    requestLocalJson(gatewayBase, '/api/showcase-status', null, 2500).then(function (result) {
+      return result && result.status < 300 ? (result.data || {}) : { available:false, error:'showcase status failed', status:result && result.status };
+    }).catch(function (error) {
+      return { available:false, error:String(error && error.message || error) };
+    })
+  ]).then(function (results) {
+    var health = results[3];
+    var tunnel = results[4];
+    var showcase = results[5];
+    var payload = diagnostics.buildDiagnosticsPayload({
+      appVersion:packageVersion,
+      token:state.token,
+      config:Object.assign({}, savedConfig, {
+        sdHost:SD_HOST,
+        ttsHost:TTS_HOST,
+        ollamaHost:OLLAMA_HOST,
+        autoStartVoice:AUTO_START_VOICE
+      }),
+      control:{
+        running:!!state.running,
+        gatewayPort:port,
+        sdOnline:!!state.sdOnline,
+        ttsOnline:!!state.ttsOnline,
+        ollamaOnline:!!state.ollamaOnline,
+        ollamaModels:state.ollamaModels || [],
+        ollamaVram:state.ollamaVram || 0,
+        modeBusy:!!state.modeBusy,
+        operation:state.operation || null,
+        tunnelStatus:state.tunnelStatus || '',
+        uptime:state.startTime ? Math.floor((Date.now() - state.startTime) / 1000) : 0,
+        tunnelAvailable:fs.existsSync(CLOUDFLARED_PATH),
+        localLink:state.running ? ('http://127.0.0.1:' + port + '/') : '',
+        shareLinkPresent:!!(state.domain && state.token),
+        domainPresent:!!state.domain
+      },
+      gateway:health,
+      tunnel:tunnel,
+      showcase:showcase,
+      logs:{
+        control:diagnostics.readLogTail(RUNTIME.controlLog, 64 * 1024),
+        gateway:diagnostics.readLogTail(RUNTIME.gatewayLog, 64 * 1024),
+        tunnel:diagnostics.readLogTail(RUNTIME.tunnelLog, 64 * 1024)
+      }
+    });
+    res.setHeader('Cache-Control', 'no-store');
+    res.json(payload);
+  }).catch(function (error) {
+    res.status(500).json({ error:error.message || '诊断包生成失败' });
+  });
 });
 
 // ─── Start control server ───

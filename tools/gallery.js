@@ -303,7 +303,11 @@
       try { projectRaw = JSON.parse(localStorage.getItem(PROJECT_KEY)); } catch (error) {}
       if (Array.isArray(projectRaw) && projectRaw.length) { AICKVStore.set(PROJECT_KEY, projectRaw); localStorage.removeItem(PROJECT_KEY); }
     }
-    history = Array.isArray(historyRaw) ? historyRaw.filter(function (item) { return item && typeof item === 'object'; }) : [];
+    history = Array.isArray(historyRaw) ? historyRaw.filter(function (item) {
+      if (!(item && typeof item === 'object')) return false;
+      if (typeof AICStorageHealth !== 'undefined') return AICStorageHealth.validateHistoryEntry(item).ok;
+      return true;
+    }) : [];
     projects = Array.isArray(projectRaw) ? projectRaw : [];
   }).catch(function (error) {
     console.warn('gallery storage init failed', error);

@@ -32,7 +32,9 @@ if (/<script(?![^>]*\bsrc=)[^>]*>/i.test(html)) {
 
 if (!html.includes('icon-system.js?v=1')) fail('missing icon-system script reference');
 if (!html.includes('prompt-policy.js?v=1')) fail('missing prompt policy script reference');
-if (html.indexOf('prompt-policy.js?v=1') > html.indexOf('prompt-builder/state.js?v=1')) fail('prompt policy must load before builder modules');
+if (!html.includes('storage-health.js?v=1')) fail('missing storage health script reference');
+if (html.indexOf('prompt-policy.js?v=1') > html.indexOf('prompt-builder/state.js')) fail('prompt policy must load before builder modules');
+if (html.indexOf('storage-health.js?v=1') > html.indexOf('prompt-builder/state.js')) fail('storage health must load before builder modules');
 if (!html.includes('id="focusModeBtn"')) fail('missing focus mode control');
 if (!html.includes('body.focus-mode .col-left')) fail('missing focus mode layout rules');
 if (!html.includes('id="firstRunExperienceBtn"')) fail('missing actionable first creation entry');
@@ -55,9 +57,16 @@ try {
   fail('icon-system.js has a syntax error: ' + error.message);
 }
 
+const moduleVersions = {
+  'state.js':'2',
+  'scene.js':'3',
+  'sd.js':'2',
+  'voice.js':'5',
+  'backup.js':'2'
+};
 let previousOffset = -1;
 for (const [name, marker] of modules) {
-  const version = name === 'voice.js' ? '5' : (name === 'sd.js' ? '2' : (name === 'scene.js' ? '3' : '1'));
+  const version = moduleVersions[name] || '1';
   const src = 'prompt-builder/' + name + '?v=' + version;
   const offset = html.indexOf(src);
   if (offset < 0) fail('missing script reference for ' + name);
