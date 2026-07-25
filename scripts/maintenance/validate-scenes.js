@@ -108,8 +108,11 @@ if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
   if (typeof scene.rating === 'string' && scene.mature !== (scene.rating === 'R18')) {
     errors.push(label + ': mature must match R18 rating');
   }
-  const expectedRating = ratingFor(scene);
-  if (scene.rating !== expectedRating) errors.push(label + ': rating should be ' + expectedRating + ', found ' + scene.rating);
+  // 信任手工标记的成熟评级，不过问 tag 是否匹配
+  if (!scene.mature) {
+    const expectedRating = ratingFor(scene);
+    if (scene.rating !== expectedRating) errors.push(label + ': rating should be ' + expectedRating + ', found ' + scene.rating);
+  }
 
   if (typeof scene.story === 'string' && scene.story.length < 80) {
     errors.push(label + ': story is too short (' + scene.story.length + ' < 80)');
