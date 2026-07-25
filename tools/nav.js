@@ -15,13 +15,13 @@
   var PRIMARY_NAV = [
     { id:'scene',     label:'灵感场景',       href:'tools/scene-explorer.html', icon:'🌸' },
     { id:'director',  label:'开始绘制',       href:'tools/prompt-builder.html', icon:'✦' },
-    { id:'chat',      label:'角色对话',       href:'tools/chat.html',            icon:'☕' },
+    { id:'chat',      label:'角色房间',       href:'tools/chat.html',            icon:'☕' },
     { id:'showcase',  label:'效果样张',       href:'tools/showcase.html',       icon:'🖼' },
     { id:'gallery',   label:'作品册',         href:'tools/gallery.html',        icon:'🎞' }
   ];
   var SECONDARY_NAV = [
     { id:'guide',      label:'新手教程',       href:'docs/getting-started.html',  icon:'🧭' },
-    { id:'character', label:'角色',           href:'tools/character.html',      icon:'👤' },
+    { id:'character', label:'角色档案',       href:'tools/character.html',      icon:'👤' },
     { id:'style',     label:'画风',           href:'tools/style.html',          icon:'🎨' },
     { id:'lora',      label:'模型',           href:'tools/lora.html',           icon:'🧪' },
     { id:'manager',   label:'场景管理',       href:'tools/scene-manager.html',  icon:'🎬' },
@@ -39,7 +39,7 @@
   function loadLocalStatus(depthPrefix) {
     if (document.querySelector('script[data-local-status]')) return;
     var script = document.createElement('script');
-    script.src = depthPrefix + 'tools/local-status.js?v=1';
+    script.src = depthPrefix + 'tools/local-status.js?v=2';
     script.defer = true;
     script.dataset.localStatus = 'true';
     document.head.appendChild(script);

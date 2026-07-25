@@ -67,7 +67,7 @@ function exportPNG() {
   const x = cv.getContext('2d');
   x.fillStyle = PNG_BG; x.fillRect(0, 0, W, H);
   x.fillStyle = PNG_ACCENT; x.font = 'bold 26px system-ui, sans-serif';
-  x.fillText('🌸 Prompt Builder · 导演工作台', pad, 44);
+  x.fillText('🌸 绫季绘境 · 开始绘制', pad, 44);
   x.fillStyle = PNG_DIM; x.font = '14px monospace';
   x.fillText('Story: ' + (state.story || '—'), pad, 72);
   x.strokeStyle = PNG_ACCENT; x.lineWidth = 2; x.beginPath(); x.moveTo(pad, headH); x.lineTo(W - pad, headH); x.stroke();

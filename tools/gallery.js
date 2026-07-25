@@ -152,9 +152,9 @@
   }
 
   function emptyMarkup() {
-    return '<div class="gallery-empty"><div class="gallery-empty-icon">✦</div><h2>展墙正在等待第一幅作品</h2>' +
-      '<p>完成绘制后，原图会按照自己的横竖比例进入这里。作品保存在这台电脑上，参数不会遮挡画面。</p>' +
-      '<a class="btn btn-primary" href="prompt-builder.html">打开导演台</a></div>';
+    return '<div class="gallery-empty"><div class="gallery-empty-icon">✦</div><h2>展墙还在等第一幅作品</h2>' +
+      '<p>完成绘制后，原图会按自己的横竖比例进这里。作品只存在这台电脑，参数不挡画面。</p>' +
+      '<a class="btn btn-primary" href="prompt-builder.html">开始绘制</a></div>';
   }
 
   function renderToolbar() {
@@ -165,7 +165,7 @@
     document.getElementById('galleryToolbar').innerHTML =
       '<button class="gallery-filter' + (favoriteOnly ? ' active' : '') + '" type="button" data-gallery-action="favorites">♥ 收藏 ' + favoriteCount + '</button>' +
       '<select class="gallery-project" id="galleryProjectFilter" aria-label="按项目筛选"><option value="">全部项目</option>' + projectOptions + '</select>' +
-      '<span class="gallery-toolbar-note">点击作品进入沉浸观画</span>';
+      '<span class="gallery-toolbar-note">点作品进入沉浸观画</span>';
   }
 
   function render() {

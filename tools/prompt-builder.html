@@ -4,9 +4,9 @@
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>绘制工作台 · 绫季绘境</title>
+<title>开始绘制 · 绫季绘境</title>
 <link rel="stylesheet" href="../css/design-system.css?v=9">
-<script src="nav.js?v=6"></script>
+<script src="nav.js?v=7"></script>
 <script src="scene-ux.js?v=2"></script>
 <script src="quick-create.js?v=1"></script>
 <script src="sd-error.js?v=1"></script>
@@ -779,8 +779,8 @@
   <div class="pb-topline">
     <div class="pb-header">
       <div class="pb-kicker">Nene &amp; Natsume Private Atelier</div>
-      <h1 class="pb-title">导演工作台</h1>
-      <p class="pb-sub">选一个场景，像导演一样决定情绪、镜头与光照，提示词会自动生成。</p>
+      <h1 class="pb-title">开始绘制</h1>
+      <p class="pb-sub">选一个场景，定下情绪、镜头与光照；参数会自动备好，你只管出图。</p>
     </div>
     <div class="pb-top-actions">
       <button class="focus-mode-btn" id="focusModeBtn" type="button" aria-label="进入专注成片模式" aria-pressed="false" title="专注成片（F）" data-action="toggle-focus-mode"><span data-icon="focus"></span><span class="focus-mode-label">专注成片</span></button>
@@ -883,7 +883,7 @@
           <div class="stage-placeholder-icon">綾</div>
           <div class="stage-welcome">
             <div class="stage-placeholder-title">先拍第一张，再慢慢认识工作台</div>
-            <div class="stage-placeholder-copy">我会替你选一张招牌场景并准备好导演参数，你只需要按一次生成。</div>
+            <div class="stage-placeholder-copy">我会替你选一张招牌场景并准备好画面参数，你只需要按一次生成。</div>
             <div class="first-creation-actions">
               <button class="btn btn-primary" id="firstRunExperienceBtn" type="button" data-action="start-first-creation"><span class="icon-label"><span data-icon="sparkle"></span>用精选场景体验一次</span></button>
               <button class="btn btn-ghost" type="button" data-action="dismiss-first-creation">我自己开始</button>
@@ -905,7 +905,7 @@
         <div class="monitor-corners"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
         <div class="monitor-rec"><span class="dot"></span> SCENE</div>
         <div class="panel-title"><span data-icon="prompt"></span>Prompt 实时预览 <span class="monitor-toggle" id="monitorToggle" data-action="toggle-monitor">展开</span></div>
-        <div class="preview-output" id="preview">选择左侧场景或调整右侧导演选项，提示词会在这里实时生成。</div>
+        <div class="preview-output" id="preview">选择左侧场景或调整右侧画面选项，提示词会在这里实时生成。</div>
         <div class="token-row"><span class="token-counter" id="liveTokCount"><span class="num">0</span> 正向 · <span class="neg-num">0</span> 负向 <span class="bar"><i></i></span><span class="prompt-health">结构均衡</span></span></div>
         <div class="art-warn" id="artWarn" style="display:none">⚠️ 检测到违反美术规范的标签</div>
         <div class="preview-actions">
@@ -1060,7 +1060,7 @@
     <!-- ===== 右栏: 导演台 ===== -->
     <div class="director-col col-right step-panel" id="stepDecisions">
       <div class="director-mode-bar">
-        <div class="director-mode-head"><span class="director-mode-title">导演调整</span><div class="director-mode-switch" aria-label="导演参数模式"><button class="director-mode-option active" id="directorModeBasic" type="button" aria-pressed="true" data-action="set-director-mode" data-mode="basic">基础</button><button class="director-mode-option" id="directorModePro" type="button" aria-pressed="false" data-action="set-director-mode" data-mode="pro">专业</button></div></div>
+        <div class="director-mode-head"><span class="director-mode-title">画面调整</span><div class="director-mode-switch" aria-label="绘制参数模式"><button class="director-mode-option active" id="directorModeBasic" type="button" aria-pressed="true" data-action="set-director-mode" data-mode="basic">基础</button><button class="director-mode-option" id="directorModePro" type="button" aria-pressed="false" data-action="set-director-mode" data-mode="pro">专业</button></div></div>
         <div class="director-auto-summary" id="directorAutoSummary">场景会自动准备光照、构图和色彩</div>
       </div>
       <details class="director-card manual-tags-panel advanced-decision">
@@ -1096,7 +1096,7 @@
         <div class="mood-grid" id="moodGrid"></div>
       </details>
 
-      <button class="btn btn-primary generate-btn" data-action="generate"><span class="icon-label"><span data-icon="sparkle"></span>导演这张 CG</span></button>
+      <button class="btn btn-primary generate-btn" data-action="generate"><span class="icon-label"><span data-icon="sparkle"></span>绘制这张 CG</span></button>
     </div>
   </div>
 

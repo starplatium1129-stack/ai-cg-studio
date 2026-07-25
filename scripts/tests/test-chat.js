@@ -252,8 +252,8 @@ async function run() {
 
     var homeResponse = await fetch(gatewayBase + '/');
     var homeHtml = await homeResponse.text();
-    assert(homeResponse.ok && homeHtml.includes('tools/home.js?v=1'), 'home page must load its public external controller');
-    var homeControllerResponse = await fetch(gatewayBase + '/tools/home.js?v=1');
+    assert(homeResponse.ok && homeHtml.includes('tools/home.js?v=2'), 'home page must load its public external controller');
+    var homeControllerResponse = await fetch(gatewayBase + '/tools/home.js?v=2');
     assert(homeControllerResponse.ok && (await homeControllerResponse.text()).includes('initContinueDraft'), 'home controller must be reachable through the static tools route');
 
     var cssResponse = await fetch(gatewayBase + '/css/design-system.css', {

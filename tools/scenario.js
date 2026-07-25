@@ -278,7 +278,7 @@ function renderViewer(s){
       (violations.length ? '<div class="art-warn show">⚠️ 本幕含 ' + violations.length + ' 个违反美术规范的词: ' + violations.join(', ') + '</div>' : '') +
       '<div class="prompt-label">Positive (10 模块)</div><div class="prompt-output">' + renderMod(modules) + '</div>' +
       '<div class="neg-section"><div class="prompt-label" style="color:var(--danger)">Negative</div><div class="neg-layer"><div class="neg-layer-label">基础层 (永远带)</div><div class="neg-output">' + BASE_NEG + '</div></div><div class="neg-layer"><div class="neg-layer-label">场景特定层</div><div class="neg-output">' + a.neg + '</div></div></div>' +
-      '<div class="act-actions"><button class="btn btn-primary" type="button" data-action="copy-act-prompt" data-fullprompt="' + escapeHtml(fullPrompt).replace(/"/g, '&quot;') + '">📋 复制本幕 Prompt</button><a href="../tools/prompt-builder.html" class="btn btn-ghost">🎬 在导演工作台打开 →</a></div></div>';
+      '<div class="act-actions"><button class="btn btn-primary" type="button" data-action="copy-act-prompt" data-fullprompt="' + escapeHtml(fullPrompt).replace(/"/g, '&quot;') + '">📋 复制本幕 Prompt</button><a href="../tools/prompt-builder.html" class="btn btn-ghost">✦ 去开始绘制 →</a></div></div>';
   }).join('');
 }
 

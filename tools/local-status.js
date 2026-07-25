@@ -116,7 +116,7 @@
         '<p class="local-status-summary">正在确认本机创作服务…</p>' +
         '<div class="local-status-services">' + statusMarkup() + '</div>' +
         '<div class="local-status-actions">' +
-          '<a href="' + d + 'tools/prompt-builder.html">进入导演台</a>' +
+          '<a href="' + d + 'tools/prompt-builder.html">开始绘制</a>' +
           '<a href="http://127.0.0.1:3001/" target="_blank" rel="noreferrer">打开控制台 ↗</a>' +
         '</div>' +
       '</section>';

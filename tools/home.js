@@ -46,8 +46,8 @@
       var signatures=Array.isArray(curation.signatureSceneIds)?curation.signatureSceneIds:[];
       var curated=Array.isArray(curation.curatedSceneIds)?curation.curatedSceneIds:[];
       var ids=signatures.concat(curated.filter(function(id){return signatures.indexOf(id)<0;}));
-      document.getElementById('sceneCountCopy').textContent = ids.length + ' 个优先场景';
-      document.getElementById('sceneLibraryCopy').textContent = ids.length + ' 个招牌与精选场景，完整库共 ' + scenes.length + ' 个。';
+      document.getElementById('sceneCountCopy').textContent = ids.length + ' 个精选场景';
+      document.getElementById('sceneLibraryCopy').textContent = ids.length + ' 个招牌与精选，完整库共 ' + scenes.length + ' 个。';
       if (host) host.innerHTML = '';
       ids.map(function(id){return scenes.find(function(scene){return scene.id===id;});}).filter(function(scene){return scene&&!scene.mature;}).slice(0,6).forEach(function(scene){
         host.appendChild(createSceneCard(scene, {
@@ -75,7 +75,7 @@
     } catch(e){ console.warn('读取历史失败', e); }
 
     if(!history.length){
-      el.innerHTML = '<div class="empty" style="grid-column:1/-1"><div class="ic">🎞</div><p>还没有创作记录。去导演台生成第一张 CG。</p><a href="tools/prompt-builder.html" class="btn btn-primary">🎬 开始创作</a></div>';
+      el.innerHTML = '<div class="empty" style="grid-column:1/-1"><div class="ic">🎞</div><p>作品册还是空的。去开始绘制，留下第一张 CG。</p><a href="tools/prompt-builder.html" class="btn btn-primary">✦ 开始绘制</a></div>';
       return;
     }
     const recent = history.slice(0, 3);

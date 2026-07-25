@@ -61,7 +61,7 @@ function init(){
   });
   renderScenes(true);
   document.getElementById('sceneTotal').textContent = SCENES.length + ' 个精选场景';
-  document.getElementById('sceneFooterCount').textContent = '场景库 · ' + SCENES.length + ' 个瞬间，等你导演';
+  document.getElementById('sceneFooterCount').textContent = '灵感场景 · ' + SCENES.length + ' 个瞬间';
   document.getElementById('matureCount').textContent = '(' + SCENES.filter(function(s){return s.mature;}).length + ')';
 }
 
@@ -70,7 +70,7 @@ function loadScenes(){
   const grid = document.getElementById('sceneGrid');
   renderMoodRails();
   // Loading 状态
-  if (grid) grid.innerHTML = '<div class="sc-empty"><div class="ic" style="animation:pulse 1.5s infinite">⏳</div><p>正在加载场景库…</p></div>';
+  if (grid) grid.innerHTML = '<div class="sc-empty"><div class="ic" style="animation:pulse 1.5s infinite">⏳</div><p>正在加载灵感场景…</p></div>';
   Promise.all([
     fetch('../data/scenes.json?v=9').then(r => { if (!r.ok) throw new Error('Scenes HTTP ' + r.status); return r.json(); }),
     fetch('../data/curation.json?v=3').then(r => { if (!r.ok) throw new Error('Curation HTTP ' + r.status); return r.json(); }).catch(function(){ return { curatedSceneIds:[], moodRails:[] }; }),
@@ -280,14 +280,14 @@ function renderScenes(reset){
             '<span>' + escHtml(scene.emotion||'情绪待定') + '</span>' +
             '<span>' + escHtml([season,tod].filter(Boolean).join(' · ')||'时间不限') + '</span>' +
           '</div>' +
-          '<div class="ex-decision" title="带入导演台后仍可继续调整">' +
+          '<div class="ex-decision" title="开始绘制后仍可继续调整">' +
             '<span>镜头 <strong>' + escHtml(decision.shot) + '</strong></span>' +
             '<span>光线 <strong>' + escHtml(decision.lighting) + '</strong></span>' +
             '<span>色调 <strong>' + escHtml(decision.color) + '</strong></span>' +
           '</div>' +
           (reason ? '<div class="ex-curation"><span>' + escHtml(reason) + '</span></div>' : '') +
           '<div class="ex-actions">' +
-            '<a class="btn btn-primary" href="prompt-builder.html?scene=' + encodeURIComponent(scene.id) + '">✦ 进入导演台</a>' +
+            '<a class="btn btn-primary" href="prompt-builder.html?scene=' + encodeURIComponent(scene.id) + '">✦ 开始绘制</a>' +
             '<a class="btn btn-ghost" href="' + AICQuickCreate.url(scene.id) + '">⚡ 直接出图</a>' +
             '<button class="btn btn-ghost" data-detail="' + scene.id + '" aria-label="查看故事" title="查看故事">📖</button>' +
           '</div>' +

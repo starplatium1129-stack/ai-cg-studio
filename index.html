@@ -7,7 +7,7 @@
 <title>绫季绘境 · 把心动的一瞬，画成一张 CG</title>
 <link rel="stylesheet" href="css/design-system.css?v=9">
 <link rel="stylesheet" href="css/scene-card.css?v=7">
-<script src="tools/nav.js?v=6"></script>
+<script src="tools/nav.js?v=7"></script>
 <script src="tools/scene-card.js?v=8"></script>
 <script src="tools/scene-ux.js?v=2"></script>
 <script src="tools/image-store.js?v=5"></script>
@@ -265,11 +265,11 @@
     <div class="hero-copy">
       <span class="eyebrow">✦ NENE &amp; NATSUME ATELIER</span>
       <h1 class="hero-title">绫季绘境<span class="jp">把心动的一瞬，画成一张 CG</span></h1>
-      <p class="hero-sub">从一个想画的瞬间开始，把角色、情绪与光线，编织成只属于你的二次元 CG。</p>
+      <p class="hero-sub">从一个想画的瞬间开始：角色、情绪与光线，收成只属于你的一张 CG。</p>
       <p class="hero-jp">「 ときめきの一瞬を、一枚の CG に 」</p>
       <div class="ctas">
-        <a href="tools/prompt-builder.html" class="cta cta-primary" id="continueCta"><span class="ic">✨</span> 开始创作</a>
-        <a href="tools/gallery.html" class="cta cta-ghost"><span class="ic">🎞</span> 浏览作品</a>
+        <a href="tools/prompt-builder.html" class="cta cta-primary" id="continueCta"><span class="ic">✨</span> 开始绘制</a>
+        <a href="tools/gallery.html" class="cta cta-ghost"><span class="ic">🎞</span> 浏览作品册</a>
       </div>
       <div class="continue-hint" id="continueHint"></div>
       <div class="chain">
@@ -279,7 +279,7 @@
         <span class="chain-arrow">→</span>
         <div class="chain-step"><span class="ic">🎬</span> 场景 <span class="en">Scene</span></div>
         <span class="chain-arrow">→</span>
-        <div class="chain-step"><span class="ic">⚙️</span> 组装 <span class="en">Prompt</span></div>
+        <div class="chain-step"><span class="ic">✦</span> 绘制 <span class="en">Draw</span></div>
         <span class="chain-arrow">→</span>
         <div class="chain-step final"><span class="ic">🖼</span> 画面 <span class="en">Image</span></div>
       </div>
@@ -296,34 +296,33 @@
   </div>
 </section>
 
-<!-- 5 段导航 · 创作 / 资产 / 作品 / 知识库 -->
 <section class="container home-section">
   <div class="home-section-head">
     <div>
-      <span class="section-tag"><span class="num">01</span> ✨ 创作 Create</span>
-      <h2>开始创作</h2>
-      <p class="hint">从角色、风格到导演台，一步步把故事变成画面。</p>
+      <span class="section-tag"><span class="num">01</span> ✨ 创作</span>
+      <h2>从这里开画</h2>
+      <p class="hint">先选角色与画风，再进绘制台；想聊天时去角色房间。</p>
     </div>
   </div>
   <div class="tools-grid">
     <a href="tools/character.html" class="tool-card card-create card-level-2">
-      <span class="ic">👤</span><span class="t">创建角色</span>
-      <span class="d">设定视觉 DNA、性格、绑定 LoRA。</span>
+      <span class="ic">👤</span><span class="t">角色档案</span>
+      <span class="d">确认视觉特征、性格与绑定模型。</span>
       <span class="go">→ 打开</span>
     </a>
     <a href="tools/style.html" class="tool-card card-create card-level-2">
-      <span class="ic">🎨</span><span class="t">风格指南</span>
-      <span class="d">色调、配色、情绪板的统一规范。</span>
+      <span class="ic">🎨</span><span class="t">画风</span>
+      <span class="d">统一色调、配色与画面情绪。</span>
       <span class="go">→ 打开</span>
     </a>
     <a href="tools/prompt-builder.html" class="tool-card card-create card-level-2">
-      <span class="ic">✨</span><span class="t">导演工作台</span>
-      <span class="d">组合角色与场景，自动生成完整提示词。</span>
+      <span class="ic">✦</span><span class="t">开始绘制</span>
+      <span class="d">选场景、调情绪与镜头，一键出图。</span>
       <span class="go">→ 打开</span>
     </a>
     <a href="tools/chat.html" class="tool-card card-create card-level-2">
       <span class="ic">☕</span><span class="t">角色房间</span>
-      <span class="d">和宁宁或夏目聊天，让回复实时接上角色声线。</span>
+      <span class="d">和宁宁或夏目聊天，声音也在本机。</span>
       <span class="go">→ 进入房间</span>
     </a>
   </div>
@@ -332,15 +331,15 @@
 <section class="container home-section">
   <div class="home-section-head">
     <div>
-      <span class="section-tag"><span class="num">02</span> 🧪 资产 Assets</span>
-      <h2>资产库</h2>
-      <p class="hint">LoRA 模型与训练数据，是视觉一致性的根基。</p>
+      <span class="section-tag"><span class="num">02</span> 🧪 素材</span>
+      <h2>角色模型</h2>
+      <p class="hint">LoRA 决定脸与气质是否稳定；出图时会自动带上。</p>
     </div>
   </div>
   <div class="tools-grid">
     <a href="tools/lora.html" class="tool-card card-create card-level-2">
-      <span class="ic">🧪</span><span class="t">LoRA 管理</span>
-      <span class="d">查看模型、权重、推荐场景。</span>
+      <span class="ic">🧪</span><span class="t">模型</span>
+      <span class="d">查看训练信息、推荐强度与适用场景。</span>
       <span class="go">→ 打开</span>
     </a>
   </div>
@@ -349,25 +348,25 @@
 <section class="container home-section">
   <div class="home-section-head">
     <div>
-      <span class="section-tag"><span class="num">03</span> 🎬 作品 Works</span>
-      <h2>作品集</h2>
-      <p class="hint">浏览场景库，回看自己创作过的每一张 CG。</p>
+      <span class="section-tag"><span class="num">03</span> 🎬 作品</span>
+      <h2>灵感与成片</h2>
+      <p class="hint">先逛灵感与样张，再回看自己的作品册。</p>
     </div>
   </div>
   <div class="tools-grid">
     <a href="tools/scene-explorer.html" class="tool-card card-create card-level-2">
-      <span class="ic">🌸</span><span class="t">场景库</span>
-      <span class="d" id="sceneLibraryCopy">精选场景库，情绪/镜头/光照完整预填。</span>
+      <span class="ic">🌸</span><span class="t">灵感场景</span>
+      <span class="d" id="sceneLibraryCopy">招牌与精选瞬间，情绪与镜头已预填。</span>
       <span class="go">→ 打开</span>
     </a>
     <a href="tools/gallery.html" class="tool-card card-create card-level-2">
-      <span class="ic">🎞</span><span class="t">我的作品</span>
-      <span class="d">创作历史 + 本地图片导入。</span>
+      <span class="ic">🎞</span><span class="t">作品册</span>
+      <span class="d">本机创作历史，原比例安静欣赏。</span>
       <span class="go">→ 打开</span>
     </a>
     <a href="tools/showcase.html" class="tool-card card-create card-level-2">
       <span class="ic">🖼</span><span class="t">效果样张</span>
-      <span class="d">查看 284 个场景经过审核的实际成图。</span>
+      <span class="d">逐张审核后的真实成图，不是示意图。</span>
       <span class="go">→ 浏览</span>
     </a>
   </div>
@@ -376,35 +375,39 @@
 <section class="container home-section">
   <div class="home-section-head">
     <div>
-      <span class="section-tag"><span class="num">04</span> 📖 知识库 Knowledge</span>
-      <h2>知识库</h2>
-      <p class="hint">设计理念、创作方法论。</p>
+      <span class="section-tag"><span class="num">04</span> 📖 手册</span>
+      <h2>创作手册</h2>
+      <p class="hint">取向、规范与上手路径，写给真正会用的人。</p>
     </div>
   </div>
   <div class="tools-grid">
     <a href="docs/philosophy.html" class="tool-card card-create card-level-2">
-      <span class="ic">📖</span><span class="t">设计理念</span>
-      <span class="d">绫季绘境的设计哲学与创作流。</span>
+      <span class="ic">📖</span><span class="t">创作取向</span>
+      <span class="d">为什么先故事与画面，再整理参数。</span>
+      <span class="go">→ 打开</span>
+    </a>
+    <a href="docs/getting-started.html" class="tool-card card-create card-level-2">
+      <span class="ic">🧭</span><span class="t">新手教程</span>
+      <span class="d">几分钟走完从浏览到出图的路径。</span>
       <span class="go">→ 打开</span>
     </a>
   </div>
 </section>
 
-<!-- Recent Works -->
 <section class="container home-section" id="recentScenesSection" hidden>
   <div class="home-section-head"><h2>最近用过的场景</h2><a href="tools/scene-explorer.html" class="link">继续找灵感 →</a></div>
   <div id="recentScenes" class="recent-scenes-row"></div>
 </section>
 
 <section class="container home-section">
-  <div class="home-section-head"><h2>最近创作</h2><a href="tools/gallery.html" class="link">查看全部 →</a></div>
+  <div class="home-section-head"><h2>最近创作</h2><a href="tools/gallery.html" class="link">打开作品册 →</a></div>
   <div id="recentWorks" class="recent-grid"></div>
 </section>
 
 <footer class="footer">
-  <p>绫季绘境 · 像导演一样创作每一个瞬间</p>
+  <p>绫季绘境 · 从故事到画面</p>
 </footer>
 </main>
-<script src="tools/home.js?v=1"></script>
+<script src="tools/home.js?v=2"></script>
 </body>
 </html>
