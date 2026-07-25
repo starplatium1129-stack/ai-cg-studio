@@ -167,10 +167,11 @@
   <!-- Images Tab -->
   <div id="tab-images" style="display:none">
     <div class="toolbar">
-      <input type="text" class="search-input" id="imageSearch" placeholder="搜索场景 ID 或标题…" oninput="renderImages()">
+      <input type="text" class="search-input" id="imageSearch" placeholder="搜索场景 ID 或标题…" oninput="renderImages(true)">
       <span style="color:var(--text-muted);font-size:.85rem">点击场景卡片可预览当前样张</span>
     </div>
     <div id="imageGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--s-3)"></div>
+    <div class="pagination" id="imagePagination"></div>
     <div id="imagePreview" style="display:none;margin-top:var(--s-4);text-align:center">
       <h3 id="previewTitle" style="margin-bottom:var(--s-2)"></h3>
       <img id="previewImg" style="max-width:100%;border-radius:var(--r-lg);border:1px solid var(--border-soft)">
@@ -218,7 +219,7 @@
   <!-- Tags Tab -->
   <div id="tab-tags" style="display:none">
     <div class="toolbar">
-      <input type="text" class="search-input" id="tagSearch" placeholder="搜索 tag…" oninput="renderTags()">
+      <input type="text" class="search-input" id="tagSearch" placeholder="搜索 tag…" oninput="renderTags(true)">
       <button class="btn btn-primary" onclick="openAddTagModal()">+ 新增 Tag</button>
     </div>
     <div class="table-wrap">
@@ -231,11 +232,13 @@
             <th style="width:100px">中文</th>
             <th style="width:60px">权重</th>
             <th style="width:80px">使用次数</th>
+            <th style="width:130px">操作</th>
           </tr>
         </thead>
         <tbody id="tagTable"></tbody>
       </table>
     </div>
+    <div class="pagination" id="tagPagination"></div>
   </div>
 
   <!-- Guide Tab -->
@@ -265,7 +268,7 @@
           1. 在「Tag 管理」标签页点击「+ 新增 Tag」<br>
           2. 输入英文名（用于 prompt）、中文名（用于显示）、分类<br>
           3. 系统会自动分配 ID<br>
-          4. 导出 JSON 覆盖 <code>data/tags.json</code>
+          4. 点击页面顶部“保存到项目”，系统会与场景一起备份、校验并写入
         </p>
       </div>
 
@@ -282,7 +285,7 @@
         <p style="font-size:.85rem;color:var(--text-secondary);line-height:1.6">
           • 场景 ID 必须唯一，格式为 <code>sc001</code>、<code>sc002</code>…<br>
           • Tag 英文名必须唯一，用于 prompt 生成<br>
-          • <code>char</code> 字段决定角色 LoRA：nene → ayachi_nene_v11，natsume → shiki_natsume_v11<br>
+          • <code>char</code> 字段决定角色 LoRA：nene → ayachi_nene_v14，natsume → shiki_natsume_v14<br>
           • <code>dual_pose_verified</code> 标签表示该双人场景有 OpenPose 骨架图<br>
           • “下架”不会立即写入文件，只有点击“保存到项目”后才生效<br>
           • 直接保存和替换样张仅允许在本机入口执行，朋友分享链接不能修改项目
@@ -332,7 +335,7 @@
       </div>
       <div class="form-group">
         <label class="form-label">角色</label>
-        <select class="form-input" id="formChar">
+        <select class="form-input" id="formChar" onchange="updateCharacterDefaults()">
           <option value="nene">绫地宁宁</option>
           <option value="natsume">四季夏目</option>
           <option value="triad">宁宁 × 夏目</option>
@@ -373,6 +376,20 @@
         <select class="form-input" id="formMature">
           <option value="false">否</option><option value="true">是</option>
         </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">推荐层级</label>
+        <select class="form-input" id="formCurationTier" onchange="updateCurationReasonState()">
+          <option value="normal">普通场景</option>
+          <option value="curated">主理人精选</option>
+          <option value="signature">招牌场景</option>
+          <option value="review">待返工</option>
+        </select>
+      </div>
+      <div class="form-group full">
+        <label class="form-label">推荐理由</label>
+        <input type="text" class="form-input" id="formRecommendationReason" maxlength="180" placeholder="招牌场景必填；精选场景建议填写">
+        <span class="form-help">保存后会同步到首页、场景库与推荐排序，不需要再编辑 curation.json。</span>
       </div>
       <div class="form-group">
         <label class="form-label">地点</label>
@@ -427,599 +444,6 @@
   <p>绫季绘境 · Scene Manager</p>
 </footer>
 
-<script>
-let SCENES = [];
-let TAGS = [];
-let currentPage = 1;
-const PAGE_SIZE = 30;
-let editingId = null;
-let sceneUsageCount = {};
-let hasUnsavedChanges = false;
-let pendingChangeCount = 0;
-let selectedImageSceneId = '';
-
-const SHOWCASE_DIR = '../scene-showcase';
-
-async function init() {
-  const table = document.getElementById('sceneTable');
-  if (table) table.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:var(--s-6);color:var(--text-muted)">⏳ 正在加载数据…</td></tr>';
-
-  try {
-    const [scenesRes, tagsRes] = await Promise.all([
-      fetch('../data/scenes.json?v=' + Date.now()),
-      fetch('../data/tags.json?v=' + Date.now())
-    ]);
-
-    if (!scenesRes.ok) throw new Error('scenes.json 加载失败 (HTTP ' + scenesRes.status + ')');
-    if (!tagsRes.ok) throw new Error('tags.json 加载失败 (HTTP ' + tagsRes.status + ')');
-
-    SCENES = await scenesRes.json();
-    TAGS = await tagsRes.json();
-
-    if (!Array.isArray(SCENES)) throw new Error('scenes.json 格式错误：不是数组');
-    if (!Array.isArray(TAGS)) throw new Error('tags.json 格式错误：不是数组');
-  } catch (err) {
-    if (table) table.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:var(--s-6);color:var(--danger)">⚠️ ' + esc(err.message) + '<br><small>请确认通过 localhost 访问且文件存在</small></td></tr>';
-    return;
-  }
-
-  // Count tag usage
-  SCENES.forEach(s => {
-    (s.tags || []).forEach(t => {
-      sceneUsageCount[t] = (sceneUsageCount[t] || 0) + 1;
-    });
-  });
-
-  // Populate category filter
-  const cats = [...new Set(SCENES.map(s => s.category))].sort();
-  const sel = document.getElementById('filterCategory');
-  cats.forEach(c => {
-    const opt = document.createElement('option');
-    opt.value = c; opt.textContent = c;
-    sel.appendChild(opt);
-  });
-
-  renderStats();
-  renderScenes();
-  renderImages();
-}
-
-function renderStats() {
-  const total = SCENES.length;
-  const nene = SCENES.filter(s => s.char === 'nene').length;
-  const natsume = SCENES.filter(s => s.char === 'natsume').length;
-  const dual = SCENES.filter(s => s.char === 'triad' || s.char === 'both').length;
-  const mature = SCENES.filter(s => s.mature).length;
-  const allR = SCENES.filter(s => s.rating === 'All').length;
-  const r15 = SCENES.filter(s => s.rating === 'R15').length;
-  const r18 = SCENES.filter(s => s.rating === 'R18').length;
-
-  document.getElementById('stats').innerHTML = `
-    <div class="stat-card"><div class="stat-value">${total}</div><div class="stat-label">总场景</div></div>
-    <div class="stat-card"><div class="stat-value">${nene}</div><div class="stat-label">宁宁</div></div>
-    <div class="stat-card"><div class="stat-value">${natsume}</div><div class="stat-label">夏目</div></div>
-    <div class="stat-card"><div class="stat-value">${dual}</div><div class="stat-label">双人</div></div>
-    <div class="stat-card"><div class="stat-value">${allR}</div><div class="stat-label">All</div></div>
-    <div class="stat-card"><div class="stat-value">${r15}</div><div class="stat-label">R15</div></div>
-    <div class="stat-card"><div class="stat-value">${r18}</div><div class="stat-label">R18</div></div>
-    <div class="stat-card"><div class="stat-value">${TAGS.length}</div><div class="stat-label">Tags</div></div>
-  `;
-}
-
-function updatePendingState() {
-  const count = document.getElementById('pendingCount');
-  if (count) count.textContent = pendingChangeCount;
-}
-
-function renderScenes() {
-  const search = document.getElementById('searchInput').value.toLowerCase();
-  const cat = document.getElementById('filterCategory').value;
-  const char = document.getElementById('filterChar').value;
-  const rating = document.getElementById('filterRating').value;
-  const sortBy = document.getElementById('sortBy').value;
-
-  let filtered = SCENES.filter(s => {
-    if (cat && s.category !== cat) return false;
-    if (char && s.char !== char) return false;
-    if (rating && s.rating !== rating) return false;
-    if (search) {
-      const haystack = [s.id, s.title, s.story, s.category, s.char, ...(s.tags || [])].join(' ').toLowerCase();
-      if (!haystack.includes(search)) return false;
-    }
-    return true;
-  });
-
-  filtered.sort((a, b) => {
-    if (sortBy === 'id') return a.id.localeCompare(b.id);
-    if (sortBy === 'title') return a.title.localeCompare(b.title);
-    if (sortBy === 'category') return a.category.localeCompare(b.category);
-    if (sortBy === 'char') return a.char.localeCompare(b.char);
-    return 0;
-  });
-
-  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
-  if (currentPage > totalPages) currentPage = totalPages || 1;
-  const start = (currentPage - 1) * PAGE_SIZE;
-  const page = filtered.slice(start, start + PAGE_SIZE);
-
-  const tbody = document.getElementById('sceneTable');
-  tbody.innerHTML = page.map(s => `
-    <tr>
-      <td><strong>${s.id}</strong></td>
-      <td>${esc(s.title)}</td>
-      <td>${esc(s.category)}</td>
-      <td title="${s.char === 'nene' ? '宁宁' : s.char === 'natsume' ? '夏目' : '双人'}">${s.char === 'nene' ? '🌸' : s.char === 'natsume' ? '🍂' : '◇'}</td>
-      <td><span class="rating-badge rating-${s.rating}">${s.rating}</span></td>
-      <td><div class="story-preview">${esc(s.story)}</div></td>
-      <td>
-        <div class="action-btns">
-          <button class="btn btn-ghost btn-sm" onclick="openEditModal('${s.id}')">编辑</button>
-          <button class="btn btn-ghost btn-sm" onclick="duplicateScene('${s.id}')">复制</button>
-          <button class="btn btn-danger btn-sm" onclick="deleteScene('${s.id}')">下架</button>
-        </div>
-      </td>
-    </tr>
-  `).join('');
-
-  // Pagination
-  const pag = document.getElementById('pagination');
-  if (totalPages <= 1) { pag.innerHTML = ''; return; }
-  let html = `<span style="color:var(--text-muted);font-size:.8rem">${filtered.length} 条 · 第 ${currentPage}/${totalPages} 页</span>`;
-  for (let i = 1; i <= totalPages; i++) {
-    if (totalPages > 10 && Math.abs(i - currentPage) > 2 && i !== 1 && i !== totalPages) {
-      if (i === currentPage - 3 || i === currentPage + 3) html += '<span style="color:var(--text-muted)">…</span>';
-      continue;
-    }
-    html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goPage(${i})">${i}</button>`;
-  }
-  pag.innerHTML = html;
-}
-
-function goPage(p) { currentPage = p; renderScenes(); }
-
-function switchTab(tab) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  event.target.classList.add('active');
-  document.getElementById('tab-scenes').style.display = tab === 'scenes' ? '' : 'none';
-  document.getElementById('tab-images').style.display = tab === 'images' ? '' : 'none';
-  document.getElementById('tab-import').style.display = tab === 'import' ? '' : 'none';
-  document.getElementById('tab-duplicates').style.display = tab === 'duplicates' ? '' : 'none';
-  document.getElementById('tab-tags').style.display = tab === 'tags' ? '' : 'none';
-  document.getElementById('tab-guide').style.display = tab === 'guide' ? '' : 'none';
-  document.getElementById('tab-tools').style.display = tab === 'tools' ? '' : 'none';
-  if (tab === 'scenes') { renderScenes(); renderStats(); }
-  if (tab === 'images') renderImages();
-  if (tab === 'tags') renderTags();
-  if (tab === 'tools') renderTools();
-}
-
-// Image management
-function renderImages() {
-  if (!SCENES || !SCENES.length) {
-    document.getElementById('imageGrid').innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:var(--s-7);color:var(--text-muted)">⏳ 正在加载场景数据…</div>';
-    return;
-  }
-  const search = (document.getElementById('imageSearch')?.value || '').toLowerCase();
-  const filtered = SCENES.filter(s => {
-    if (!search) return true;
-    return (s.id + s.title).toLowerCase().includes(search);
-  });
-
-  document.getElementById('imageGrid').innerHTML = filtered.map(s => `
-    <div style="background:var(--bg-surface);border:1px solid var(--border-soft);border-radius:var(--r-md);padding:var(--s-3);cursor:pointer;transition:all var(--t-fast)" onclick="previewImage('${s.id}','${esc(s.title)}')" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border-soft)'">
-      <div style="font-weight:700;font-size:.85rem;margin-bottom:2px">${s.id}</div>
-      <div style="font-size:.8rem;color:var(--text-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(s.title)}</div>
-      <div style="font-size:.72rem;color:var(--text-muted);margin-top:4px">${s.char === 'nene' ? '🌸' : '🍂'} ${s.rating}</div>
-    </div>
-  `).join('');
-}
-
-function previewImage(id, title) {
-  selectedImageSceneId = id;
-  document.getElementById('previewTitle').textContent = id + ' · ' + title;
-  const img = document.getElementById('previewImg');
-  img.src = SHOWCASE_DIR + '/images/' + id + '.jpg?v=' + Date.now();
-  img.onerror = function() { this.src = 'about:blank'; this.alt = '样张未找到'; };
-  var panel = document.getElementById('imagePreview');
-  panel.style.display = 'block';
-  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  document.getElementById('showcaseFeedback').textContent = '支持 PNG、JPEG、WebP，最大 15MB；仅本机可以替换。';
-}
-
-function uploadShowcaseImage(input) {
-  const file = input.files && input.files[0];
-  const feedback = document.getElementById('showcaseFeedback');
-  if (!file || !selectedImageSceneId) return;
-  if (file.size > 15 * 1024 * 1024) { feedback.textContent = '图片超过 15MB，请先压缩。'; input.value = ''; return; }
-  feedback.textContent = '正在保存样张…';
-  const reader = new FileReader();
-  reader.onload = function() {
-    const image = new Image();
-    image.onload = function() {
-      const canvas = document.createElement('canvas');
-      canvas.width = image.naturalWidth; canvas.height = image.naturalHeight;
-      canvas.getContext('2d').drawImage(image, 0, 0);
-      const normalized = canvas.toDataURL('image/jpeg', .94);
-      fetch('../api/maintenance/showcase', {
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({ id:selectedImageSceneId, image:normalized })
-      }).then(function(response) {
-        return response.json().then(function(data) { if (!response.ok) throw new Error(data.error || '保存失败'); return data; });
-      }).then(function(data) {
-        feedback.textContent = data.message;
-        document.getElementById('previewImg').src = '../scene-showcase/' + data.file + '?v=' + Date.now();
-      }).catch(function(error) {
-        feedback.textContent = '未能直接保存：' + error.message + '。请确认通过本机控制面板打开网站。';
-      }).finally(function() { input.value = ''; });
-    };
-    image.onerror = function() { feedback.textContent = '无法读取这张图片，请换一张再试。'; input.value = ''; };
-    image.src = reader.result;
-  };
-  reader.readAsDataURL(file);
-}
-
-// Import
-function importScenes() {
-  const input = document.getElementById('importInput').value.trim();
-  if (!input) { document.getElementById('importResult').innerHTML = '<p style="color:var(--danger)">请粘贴 JSON</p>'; return; }
-
-  let data;
-  try { data = JSON.parse(input); } catch(e) {
-    document.getElementById('importResult').innerHTML = '<p style="color:var(--danger)">JSON 错误：' + e.message + '</p>';
-    return;
-  }
-  if (!Array.isArray(data)) data = [data];
-
-  const existingIds = new Set(SCENES.map(s => s.id));
-  const results = { success: [], skipped: [], errors: [] };
-
-  data.forEach((item, idx) => {
-    if (!item.id) { results.errors.push({idx, reason:'缺少 id'}); return; }
-    if (existingIds.has(item.id)) { results.skipped.push({idx, id:item.id}); return; }
-
-    const scene = {
-      id: item.id, title: item.title || '未命名', category: item.category || '恋爱',
-      story: item.story || '', char: item.char || 'nene', character: [item.char || 'nene'],
-      lora: item.lora || (item.char === 'natsume' ? 'shiki_natsume_v11' : 'ayachi_nene_v11'),
-      emotion: item.emotion || '恋爱', season: item.season || '不限', time: item.time || '深夜',
-      timeOfDay: item.timeOfDay || 'late_night', tags: item.tags || [], mature: item.mature || false,
-      rating: item.rating || (item.mature ? 'R18' : 'All'), location: item.location || '',
-      weather: item.weather || '', camera: item.camera || '', lighting: item.lighting || '',
-      usage: item.usage || ['壁纸级'], prompt: item.prompt || '',
-      negative: item.negative || 'worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands',
-      storyJa: item.storyJa || ''
-    };
-    SCENES.push(scene); existingIds.add(scene.id); results.success.push(scene.id);
-  });
-
-  let html = '<div style="background:var(--bg-surface);border:1px solid var(--border-soft);border-radius:var(--r-md);padding:var(--s-4)">';
-  if (results.success.length) html += '<p style="color:var(--success)">✅ 导入 ' + results.success.length + ' 个：' + results.success.join(', ') + '</p>';
-  if (results.skipped.length) html += '<p style="color:var(--warning)">⚠️ 跳过 ' + results.skipped.length + ' 个（ID 已存在）</p>';
-  if (results.errors.length) html += '<p style="color:var(--danger)">❌ 错误：' + results.errors.map(e => '#' + e.idx + ' ' + e.reason).join('; ') + '</p>';
-  html += '</div><p style="color:var(--text-muted);font-size:.8rem;margin-top:var(--s-2)">记得点「导出 JSON」保存。</p>';
-  document.getElementById('importResult').innerHTML = html;
-  if (results.success.length) markDirty('批量导入已通过基础检查，等待保存到项目');
-  renderScenes(); renderStats();
-}
-
-// Edit/Add
-function openEditModal(id) {
-  editingId = id;
-  const s = SCENES.find(x => x.id === id);
-  if (!s) return;
-  document.getElementById('modalTitle').textContent = '编辑 ' + id;
-  document.getElementById('formId').value = s.id;
-  document.getElementById('formTitle').value = s.title || '';
-  document.getElementById('formCategory').value = s.category || '';
-  document.getElementById('formChar').value = s.char || 'nene';
-  document.getElementById('formLora').value = s.lora || '';
-  document.getElementById('formEmotion').value = s.emotion || '';
-  document.getElementById('formSeason').value = s.season || '不限';
-  document.getElementById('formTime').value = s.time || '';
-  document.getElementById('formTimeOfDay').value = s.timeOfDay || 'daytime';
-  document.getElementById('formRating').value = s.rating || 'All';
-  document.getElementById('formMature').value = String(s.mature || false);
-  document.getElementById('formLocation').value = s.location || '';
-  document.getElementById('formWeather').value = s.weather || '';
-  document.getElementById('formCamera').value = s.camera || '';
-  document.getElementById('formLighting').value = s.lighting || '';
-  document.getElementById('formTags').value = (s.tags || []).join(', ');
-  document.getElementById('formUsage').value = (s.usage || []).join(', ');
-  document.getElementById('formStory').value = s.story || '';
-  document.getElementById('formStoryJa').value = s.storyJa || '';
-  document.getElementById('formPrompt').value = s.prompt || '';
-  document.getElementById('formNegative').value = s.negative || '';
-  document.getElementById('editModal').classList.add('show');
-}
-
-function openAddModal() {
-  editingId = null;
-  const maxId = SCENES.reduce((m, s) => Math.max(m, parseInt(s.id.replace('sc', ''))), 0);
-  document.getElementById('modalTitle').textContent = '新增场景';
-  document.getElementById('formId').value = 'sc' + String(maxId + 1).padStart(3, '0');
-  document.getElementById('formTitle').value = '';
-  document.getElementById('formCategory').value = '恋爱';
-  document.getElementById('formChar').value = 'nene';
-  document.getElementById('formLora').value = 'ayachi_nene_v14';
-  document.getElementById('formEmotion').value = '恋爱';
-  document.getElementById('formSeason').value = '不限';
-  document.getElementById('formTime').value = '深夜';
-  document.getElementById('formTimeOfDay').value = 'late_night';
-  document.getElementById('formRating').value = 'All';
-  document.getElementById('formMature').value = 'false';
-  document.getElementById('formLocation').value = '';
-  document.getElementById('formWeather').value = '';
-  document.getElementById('formCamera').value = '';
-  document.getElementById('formLighting').value = '';
-  document.getElementById('formTags').value = '';
-  document.getElementById('formUsage').value = '';
-  document.getElementById('formStory').value = '';
-  document.getElementById('formStoryJa').value = '';
-  document.getElementById('formPrompt').value = '';
-  document.getElementById('formNegative').value = '';
-  document.getElementById('editModal').classList.add('show');
-}
-
-function closeModal() {
-  document.getElementById('editModal').classList.remove('show');
-}
-
-function saveScene() {
-  const titleInput = document.getElementById('formTitle');
-  const storyInput = document.getElementById('formStory');
-  [titleInput, storyInput].forEach(function(input){ input.classList.toggle('invalid', !input.value.trim()); });
-  if (!titleInput.value.trim() || !storyInput.value.trim()) {
-    document.getElementById('maintenanceHint').textContent = '请先补齐标题和故事，再保存场景。';
-    return;
-  }
-  const scene = {
-    id: document.getElementById('formId').value,
-    title: document.getElementById('formTitle').value,
-    category: document.getElementById('formCategory').value,
-    char: document.getElementById('formChar').value,
-    character: [document.getElementById('formChar').value],
-    lora: document.getElementById('formLora').value,
-    emotion: document.getElementById('formEmotion').value,
-    season: document.getElementById('formSeason').value,
-    time: document.getElementById('formTime').value,
-    timeOfDay: document.getElementById('formTimeOfDay').value,
-    rating: document.getElementById('formRating').value,
-    mature: document.getElementById('formMature').value === 'true',
-    location: document.getElementById('formLocation').value,
-    weather: document.getElementById('formWeather').value,
-    camera: document.getElementById('formCamera').value,
-    lighting: document.getElementById('formLighting').value,
-    tags: document.getElementById('formTags').value.split(',').map(t => t.trim()).filter(Boolean),
-    usage: document.getElementById('formUsage').value.split(',').map(t => t.trim()).filter(Boolean),
-    story: document.getElementById('formStory').value,
-    storyJa: document.getElementById('formStoryJa').value,
-    prompt: document.getElementById('formPrompt').value,
-    negative: document.getElementById('formNegative').value
-  };
-
-  if (editingId) {
-    const idx = SCENES.findIndex(s => s.id === editingId);
-    if (idx >= 0) SCENES[idx] = scene;
-  } else {
-    SCENES.push(scene);
-  }
-
-  closeModal();
-  markDirty('场景内容有修改');
-  renderScenes();
-  renderStats();
-}
-
-function deleteScene(id) {
-  if (!confirm('确认下架 ' + id + '？保存到项目后，它将不再出现在场景库中。')) return;
-  SCENES = SCENES.filter(s => s.id !== id);
-  markDirty('有场景等待下架');
-  renderScenes();
-  renderStats();
-}
-
-function duplicateScene(id) {
-  const source = SCENES.find(s => s.id === id);
-  if (!source) return;
-  const maxId = SCENES.reduce((m, s) => Math.max(m, parseInt(String(s.id).replace('sc', '')) || 0), 0);
-  const copy = JSON.parse(JSON.stringify(source));
-  copy.id = 'sc' + String(maxId + 1).padStart(3, '0');
-  copy.title = source.title + ' · 副本';
-  SCENES.push(copy);
-  markDirty('已复制场景，请编辑副本内容');
-  renderScenes();
-  renderStats();
-  openEditModal(copy.id);
-}
-
-function markDirty(message) {
-  hasUnsavedChanges = true;
-  pendingChangeCount += 1;
-  updatePendingState();
-  const state = document.getElementById('maintenanceState');
-  state.classList.add('dirty');
-  document.getElementById('maintenanceTitle').textContent = '有尚未保存的修改';
-  document.getElementById('maintenanceHint').textContent = message || '确认无误后保存到项目。';
-  document.getElementById('saveProjectBtn').disabled = false;
-}
-
-function saveToProject() {
-  if (!hasUnsavedChanges) return;
-  const button = document.getElementById('saveProjectBtn');
-  button.disabled = true;
-  button.textContent = '正在保存并检查…';
-  fetch('../api/maintenance/scenes', {
-    method:'POST', headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({ scenes:SCENES })
-  }).then(function(response) {
-    return response.json().then(function(data) { if (!response.ok) throw new Error(data.error || '保存失败'); return data; });
-  }).then(function(data) {
-    hasUnsavedChanges = false;
-    pendingChangeCount = 0;
-    updatePendingState();
-    document.getElementById('maintenanceState').classList.remove('dirty');
-    document.getElementById('maintenanceTitle').textContent = '已保存并通过检查';
-    document.getElementById('maintenanceHint').textContent = data.count + ' 个场景已同步到项目，自动备份也已创建。';
-    button.textContent = '保存到项目';
-  }).catch(function(error) {
-    document.getElementById('maintenanceTitle').textContent = '保存未完成';
-    document.getElementById('maintenanceHint').textContent = error.message;
-    button.disabled = false;
-    button.textContent = '重新保存';
-  });
-}
-
-window.addEventListener('beforeunload', function(event) {
-  if (!hasUnsavedChanges) return;
-  event.preventDefault();
-  event.returnValue = '';
-});
-
-// Duplicates
-function detectDuplicates() {
-  const groups = {};
-  const keywords = ['吊带','丝绸','围裙','泳衣','温泉','旗袍','毛衣','衬衫','图书馆','天台','烟花','神社','巫女','咖啡','卧室','寝室','影音室','休息室','后厨','厨房','吧台','晚礼服','魔女','洛丽塔','浴衣','和服','赛车','冰箱','冷藏','露台','阳台','温泉','泳池','书房','试衣'];
-
-  keywords.forEach(kw => {
-    const matches = SCENES.filter(s => s.title.includes(kw) || s.story.includes(kw));
-    if (matches.length >= 3) {
-      groups[kw] = matches;
-    }
-  });
-
-  const dupList = document.getElementById('dupList');
-  let html = '';
-  let totalDups = 0;
-  for (const [kw, scenes] of Object.entries(groups)) {
-    html += `<div class="dup-group"><h4>「${kw}」— ${scenes.length} 个场景</h4>`;
-    scenes.forEach(s => {
-      html += `<div class="dup-item">
-        <span><strong>${s.id}</strong> ${esc(s.title)} <span class="rating-badge rating-${s.rating}">${s.rating}</span></span>
-        <div class="action-btns">
-          <button class="btn btn-ghost btn-sm" onclick="openEditModal('${s.id}')">编辑</button>
-          <button class="btn btn-danger btn-sm" onclick="deleteScene('${s.id}');detectDuplicates()">下架</button>
-        </div>
-      </div>`;
-      totalDups++;
-    });
-    html += '</div>';
-  }
-
-  document.getElementById('dupResult').textContent = `发现 ${Object.keys(groups).length} 组，共 ${totalDups} 个疑似重复`;
-  dupList.innerHTML = html || '<p style="color:var(--text-muted)">未发现重复</p>';
-}
-
-// Tags
-function renderTags() {
-  const search = document.getElementById('tagSearch').value.toLowerCase();
-  const filtered = TAGS.filter(t => {
-    if (!search) return true;
-    return (t.en + t.cn + t.cat).toLowerCase().includes(search);
-  }).sort((a, b) => (sceneUsageCount[b.en] || 0) - (sceneUsageCount[a.en] || 0));
-
-  document.getElementById('tagTable').innerHTML = filtered.map(t => `
-    <tr>
-      <td>${t.id}</td>
-      <td>${esc(t.cat)}</td>
-      <td>${esc(t.en)}</td>
-      <td>${esc(t.cn)}</td>
-      <td>${t.weight}</td>
-      <td>${sceneUsageCount[t.en] || 0}</td>
-    </tr>
-  `).join('');
-}
-
-function openAddTagModal() {
-  const name = prompt('Tag 英文名：');
-  if (!name) return;
-  const cn = prompt('Tag 中文名：');
-  if (!cn) return;
-  const cat = prompt('分类（Clothing/Action/Emotion/Scene/Lighting/Body/Appearance）：', 'Scene');
-  if (!cat) return;
-
-  const maxId = TAGS.reduce((m, t) => Math.max(m, parseInt(t.id.replace('tag_', ''))), 0);
-  TAGS.push({ id: 'tag_' + (maxId + 1), cat, en: name, cn, weight: 0.8, related: [] });
-  renderTags();
-  renderStats();
-}
-
-// Export
-function exportJSON() {
-  const blob = new Blob([JSON.stringify(SCENES, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'scenes.json'; a.click();
-  URL.revokeObjectURL(url);
-}
-
-function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,'&#39;').replace(/"/g,'&quot;'); }
-
-var TOOLS = [
-  { id:'lint-colors', icon:'🎨', label:'检查硬编码颜色', desc:'扫描 HTML/CSS 中未用设计 token 的 #XXXXXX 颜色' },
-  { id:'validate',    icon:'✅', label:'完整场景校验', desc:'检查场景 ID 唯一性、字段完整性、评级一致性' },
-  { id:'classify',    icon:'🏷', label:'更新场景评级', desc:'根据标签内容重新计算 All/R15/R18 评级' },
-  { id:'optimize',    icon:'⚙️', label:'规范化提示词', desc:'统一标签命名、补全标准负面词、修复占位符' }
-];
-
-function renderTools() {
-  var cards = document.getElementById('toolCards');
-  cards.innerHTML = TOOLS.map(function(t) {
-    return '<div style="background:var(--bg-surface);border:1px solid var(--border-soft);border-radius:var(--r-lg);padding:var(--s-4);cursor:pointer;transition:all var(--t-fast)" onmouseover="this.style.borderColor=\"var(--accent)\"" onmouseout="this.style.borderColor=\"var(--border-soft)\"" onclick="runTool(\'' + t.id + '\')">' +
-      '<div style="font-size:1.5rem;margin-bottom:var(--s-2)">' + t.icon + '</div>' +
-      '<div style="font-weight:700;font-size:.92rem;margin-bottom:4px">' + esc(t.label) + '</div>' +
-      '<div style="font-size:.75rem;color:var(--text-muted);line-height:1.5">' + esc(t.desc) + '</div>' +
-      '</div>';
-  }).join('');
-}
-
-var toolRunning = false;
-
-function runTool(taskId) {
-  if (toolRunning) return;
-  var tool = TOOLS.find(function(t) { return t.id === taskId; });
-  if (!tool) return;
-  toolRunning = true;
-
-  var cards = document.getElementById('toolCards');
-  var panel = document.getElementById('toolResult');
-  var title = document.getElementById('toolResultTitle');
-  var badge = document.getElementById('toolResultBadge');
-  var out = document.getElementById('toolResultOutput');
-
-  cards.style.opacity = '0.5';
-  cards.style.pointerEvents = 'none';
-  title.textContent = tool.icon + ' ' + tool.label;
-  badge.textContent = '⏳ 运行中…';
-  badge.style.cssText = 'background:color-mix(in srgb, var(--warning) 12%, transparent);color:var(--warning)';
-  out.textContent = '...';
-  panel.style.display = 'block';
-  panel.scrollIntoView({ behavior:'smooth', block:'nearest' });
-
-  fetch('../api/maintenance/run', {
-    method:'POST',
-    headers:{ 'Content-Type':'application/json' },
-    body:JSON.stringify({ task:taskId })
-  }).then(function(response) {
-    return response.json();
-  }).then(function(data) {
-    badge.textContent = data.ok ? '✅ 通过' : '⚠️ 有问题';
-    badge.style.cssText = data.ok
-      ? 'background:color-mix(in srgb, var(--success) 12%, transparent);color:var(--success)'
-      : 'background:color-mix(in srgb, var(--danger) 12%, transparent);color:var(--danger)';
-    out.textContent = data.output || '(no output)';
-    out.scrollTop = 0;
-  }).catch(function(error) {
-    badge.textContent = '❌ 失败';
-    badge.style.cssText = 'background:color-mix(in srgb, var(--danger) 12%, transparent);color:var(--danger)';
-    out.textContent = '网络请求失败：' + error.message;
-  }).finally(function() {
-    toolRunning = false;
-    cards.style.opacity = '';
-    cards.style.pointerEvents = '';
-  });
-}
-
-init();
-</script>
+<script src="scene-manager.js?v=1"></script>
 </body>
 </html>

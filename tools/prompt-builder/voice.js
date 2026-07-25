@@ -239,11 +239,14 @@ function syncVoiceCaptionToAudio(audio) {
 }
 
 function voicePayload(text) {
+  var emotion = voiceEmotionCategory();
   return {
     voice:document.getElementById('voiceCharacter').value,
     language:document.getElementById('voiceLanguage').value,
     text:text,
-    emotion:voiceEmotionCategory(),
+    emotion:emotion,
+    referenceEmotion:emotion,
+    consistency:'locked',
     speed:Number(document.getElementById('voiceSpeed').value) || 1
   };
 }

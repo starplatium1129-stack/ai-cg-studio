@@ -6,201 +6,138 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>作品册 · 绫季绘境</title>
 <link rel="stylesheet" href="../css/design-system.css?v=8">
-<link rel="stylesheet" href="../css/scene-card.css?v=7">
 <script src="nav.js?v=6"></script>
 <script src="theme.js?v=5"></script>
 <style>
-  .page { max-width: 1400px; margin: 0 auto; padding: var(--s-6) var(--s-5); }
-  .nav-back { display: inline-flex; align-items: center; gap: var(--s-2); color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4); }
-  .nav-back:hover { color: var(--accent); }
-  h1.title { font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, var(--text-primary) 50%, var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: var(--s-2); }
-  .subtitle { color: var(--text-secondary); margin-bottom: var(--s-5); }
+  body { background:linear-gradient(180deg,color-mix(in srgb,var(--bg-page) 94%,var(--accent-soft)),var(--bg-page) 34rem); }
+  .gallery-shell { width:min(1880px,100%); margin:0 auto; padding:clamp(24px,4vw,64px) clamp(14px,3vw,48px) 80px; }
+  .gallery-intro { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:end; gap:var(--s-5); margin:0 auto clamp(24px,4vw,48px); max-width:1500px; }
+  .gallery-kicker { margin-bottom:8px; color:var(--accent); font:750 .67rem var(--font-mono); letter-spacing:.16em; text-transform:uppercase; }
+  .gallery-title { margin:0; color:var(--text-primary); font-size:clamp(2rem,4vw,4.4rem); font-weight:760; letter-spacing:-.045em; line-height:.98; }
+  .gallery-subtitle { max-width:660px; margin:14px 0 0; color:var(--text-secondary); font-size:clamp(.86rem,1.2vw,1rem); line-height:1.8; }
+  .gallery-count { color:var(--text-muted); font:650 .72rem var(--font-mono); letter-spacing:.08em; white-space:nowrap; }
 
-  .toolbar { display: flex; gap: var(--s-3); flex-wrap: wrap; align-items: center; margin-bottom: var(--s-5); }
-  .toolbar .filter { padding: 6px 14px; border: 1px solid var(--border-soft); background: var(--bg-surface); border-radius: 20px; font-size: 0.82rem; cursor: pointer; color: var(--text-secondary); transition: all var(--t-fast); }
-  .toolbar .filter.active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
-  .toolbar .count { margin-left: auto; font-size: 0.85rem; color: var(--text-muted); }
-  #galleryProjectFilter { background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-sm); color:var(--text-primary); padding:6px 8px; font-size:0.82rem; outline:none; }
+  .gallery-toolbar { position:sticky; top:58px; z-index:20; display:flex; align-items:center; gap:10px; max-width:1500px; margin:0 auto clamp(24px,3vw,38px); padding:10px; border:1px solid color-mix(in srgb,var(--border-soft) 76%,transparent); border-radius:999px; background:color-mix(in srgb,var(--bg-surface) 84%,transparent); box-shadow:0 12px 38px color-mix(in srgb,var(--text-primary) 7%,transparent); backdrop-filter:blur(18px); }
+  .gallery-filter,.gallery-project { height:36px; border:1px solid transparent; border-radius:999px; background:transparent; color:var(--text-secondary); font:650 .76rem var(--font-sans); cursor:pointer; }
+  .gallery-filter { padding:0 15px; }
+  .gallery-filter:hover,.gallery-filter.active { border-color:color-mix(in srgb,var(--accent) 34%,var(--border-soft)); background:var(--accent-soft); color:var(--accent); }
+  .gallery-project { min-width:140px; padding:0 34px 0 13px; outline:none; }
+  .gallery-project:focus { border-color:var(--accent); }
+  .gallery-toolbar-note { margin-left:auto; padding-right:12px; color:var(--text-muted); font-size:.7rem; white-space:nowrap; }
 
-  .timeline-group { margin-bottom: var(--s-6); }
-  .timeline-head { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: var(--s-3); padding-left: var(--s-2); border-left: 2px solid var(--accent); }
-  .gallery-grid { display: grid; gap: var(--s-4); }
-  @media (min-width:1200px) { .gallery-grid { grid-template-columns: repeat(4, 1fr); } }
-  @media (min-width:900px) and (max-width:1199px) { .gallery-grid { grid-template-columns: repeat(3, 1fr); } }
-  @media (min-width:600px) and (max-width:899px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width:599px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: var(--s-3); } }
-  .gallery-grid .sc { border-radius: var(--r-xl); overflow: hidden; transition: transform var(--t-fast), border-color var(--t-fast), box-shadow var(--t-fast); }
-  .gallery-grid .sc:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--accent) 42%, var(--border-soft)); box-shadow: var(--shadow-md); }
-  .gallery-grid .sc-band { aspect-ratio: 3/4; }
-  .gallery-grid .sc-band img { object-position: 50% 32%; }
-  .gallery-grid .sc-body { padding: var(--s-4); }
-  .gallery-grid .sc-title { margin: 0 0 8px; font-size: .98rem; }
-  .gallery-grid .sc-meta { font-size: .68rem; color: var(--text-muted); }
+  .gallery-wall { max-width:1500px; margin:0 auto; columns:4 260px; column-gap:clamp(12px,1.6vw,24px); }
+  .artwork { position:relative; break-inside:avoid; margin:0 0 clamp(12px,1.6vw,24px); overflow:hidden; border:1px solid color-mix(in srgb,var(--border-soft) 78%,transparent); border-radius:clamp(10px,1.2vw,18px); background:#111015; box-shadow:0 5px 18px color-mix(in srgb,#000 11%,transparent); transition:transform 220ms ease,box-shadow 220ms ease,border-color 220ms ease; }
+  .artwork:hover { transform:translateY(-3px); border-color:color-mix(in srgb,var(--accent) 38%,var(--border-soft)); box-shadow:0 18px 44px color-mix(in srgb,#000 20%,transparent); }
+  .artwork-button { display:block; width:100%; padding:0; border:0; background:transparent; color:inherit; cursor:zoom-in; }
+  .artwork-button:focus-visible { outline:3px solid var(--accent); outline-offset:-3px; }
+  .artwork-media { position:relative; width:100%; aspect-ratio:var(--art-ratio,3/4); overflow:hidden; background:linear-gradient(135deg,#17141c,#0c0b0f); }
+  .artwork-image { display:block; width:100%; height:100%; object-fit:contain; background:#0d0c10; }
+  .artwork-placeholder { position:absolute; inset:0; display:grid; place-items:center; color:#77717f; font-size:2rem; }
+  .artwork-caption { position:absolute; inset:auto 0 0; display:flex; align-items:flex-end; justify-content:space-between; gap:12px; padding:40px 14px 13px; color:#fff; background:linear-gradient(transparent,rgba(4,3,6,.78)); opacity:0; transform:translateY(8px); transition:opacity 180ms ease,transform 180ms ease; text-align:left; pointer-events:none; }
+  .artwork:hover .artwork-caption,.artwork-button:focus-visible .artwork-caption { opacity:1; transform:none; }
+  .artwork-name { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:.78rem; font-weight:700; }
+  .artwork-date { display:block; margin-top:2px; color:rgba(255,255,255,.7); font-size:.62rem; }
+  .artwork-mark { flex:0 0 auto; font-size:.78rem; }
 
-  /* Gallery 卡扩展块(统一 SceneCard + 业务独特内容) */
-  .gal-cover { display: flex; align-items: center; justify-content: center; font-size: 2.4rem; position: relative; overflow: hidden; }
-  .gal-cover::after { content:""; position:absolute; inset:0; background: radial-gradient(circle at 30% 30%, var(--accent-glow), transparent 60%); opacity: 0.45; }
-  .gal-cover img { width: 100%; height: 100%; object-fit: cover; position: relative; z-index: 1; }
-  .gal-cover .gal-placeholder { position: relative; z-index: 1; }
-  .detail-image { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--r-lg); border: 1px solid var(--border-soft); margin-bottom: var(--s-4); }
-  .detail-image-fallback { display: flex; align-items: center; justify-content: center; background: var(--bg-deep); color: var(--text-muted); font-size: 2rem; }
-  .gal-ver { position: absolute; top: var(--s-2); left: var(--s-2); background: var(--bg-surface); border-radius: 12px; padding: 2px 8px; font-size: 0.7rem; font-weight: 600; z-index: 2; }
-  .gal-fav { position: absolute; top: var(--s-2); right: var(--s-2); z-index: 2; font-size: 1rem; }
-  .gallery-card-button { display:block; width:100%; padding:0; border:0; text-align:left; color:inherit; background:transparent; cursor:pointer; font:inherit; }
-  .gallery-card-button:focus-visible { outline:2px solid var(--accent); outline-offset:-2px; border-radius:var(--r-lg); }
-  .gal-rating { display: inline-flex; gap: 1px; font-size: 0.78rem; color: var(--text-muted); }
-  .gal-rating .on { color: var(--mood-joy); }
+  .gallery-section { column-span:all; display:flex; align-items:center; gap:14px; margin:12px 0 18px; color:var(--text-muted); font:700 .64rem var(--font-mono); letter-spacing:.13em; text-transform:uppercase; }
+  .gallery-section::after { content:""; height:1px; flex:1; background:var(--border-soft); }
+  .gallery-empty { max-width:980px; margin:10vh auto 0; padding:clamp(42px,8vw,92px) 24px; border:1px solid var(--border-soft); border-radius:24px; background:color-mix(in srgb,var(--bg-surface) 80%,transparent); text-align:center; }
+  .gallery-empty-icon { font-size:2.4rem; }
+  .gallery-empty h2 { margin:18px 0 8px; color:var(--text-primary); font-size:clamp(1.3rem,3vw,2rem); }
+  .gallery-empty p { max-width:600px; margin:0 auto 24px; color:var(--text-secondary); line-height:1.8; }
 
-  @media (max-width: 600px) {
-    .detail-props { grid-template-columns: repeat(2, 1fr); }
+  .art-viewer { position:fixed; inset:0; z-index:10000; display:grid; grid-template-columns:minmax(0,1fr) minmax(290px,360px); background:rgba(6,5,8,.97); color:#fff; opacity:0; visibility:hidden; transition:opacity 180ms ease,visibility 180ms ease; }
+  .art-viewer.open { opacity:1; visibility:visible; }
+  .viewer-stage { position:relative; min-width:0; display:grid; place-items:center; padding:clamp(46px,5vw,76px) clamp(48px,6vw,92px); overflow:hidden; }
+  .viewer-image { display:block; max-width:100%; max-height:calc(100vh - 92px); width:auto; height:auto; object-fit:contain; filter:drop-shadow(0 24px 56px rgba(0,0,0,.42)); }
+  .viewer-fallback { color:#87818d; font-size:3rem; }
+  .viewer-close,.viewer-nav,.viewer-info-toggle { position:absolute; z-index:3; display:grid; place-items:center; border:1px solid rgba(255,255,255,.16); background:rgba(18,16,22,.72); color:#fff; cursor:pointer; backdrop-filter:blur(12px); transition:background 160ms ease,transform 160ms ease; }
+  .viewer-close,.viewer-info-toggle { top:18px; width:40px; height:40px; border-radius:50%; }
+  .viewer-close { left:18px; font-size:1.2rem; }
+  .viewer-info-toggle { right:18px; display:none; }
+  .viewer-nav { top:50%; width:44px; height:64px; border-radius:999px; transform:translateY(-50%); font-size:1.5rem; }
+  .viewer-nav:hover,.viewer-close:hover,.viewer-info-toggle:hover { background:rgba(181,58,112,.72); }
+  .viewer-prev { left:16px; }
+  .viewer-next { right:16px; }
+  .viewer-nav:disabled { opacity:.24; cursor:default; }
+  .viewer-position { position:absolute; left:50%; bottom:18px; transform:translateX(-50%); color:rgba(255,255,255,.62); font:650 .65rem var(--font-mono); letter-spacing:.12em; }
+  .viewer-info { min-width:0; overflow-y:auto; padding:56px 28px 32px; border-left:1px solid rgba(255,255,255,.1); background:rgba(16,14,19,.9); }
+  .viewer-kicker { color:#d885aa; font:700 .62rem var(--font-mono); letter-spacing:.13em; text-transform:uppercase; }
+  .viewer-title { margin:10px 0 6px; color:#fff; font-size:1.5rem; line-height:1.25; }
+  .viewer-meta { color:rgba(255,255,255,.55); font-size:.72rem; line-height:1.6; }
+  .viewer-story { margin:26px 0; color:rgba(255,255,255,.8); font-size:.88rem; font-style:italic; line-height:1.8; }
+  .viewer-facts { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:24px; }
+  .viewer-fact { min-width:0; padding:10px; border:1px solid rgba(255,255,255,.1); border-radius:10px; background:rgba(255,255,255,.035); }
+  .viewer-fact small,.viewer-fact strong { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .viewer-fact small { color:rgba(255,255,255,.4); font-size:.58rem; text-transform:uppercase; letter-spacing:.08em; }
+  .viewer-fact strong { margin-top:4px; color:rgba(255,255,255,.84); font-size:.72rem; }
+  .viewer-details { margin:0 0 22px; border-top:1px solid rgba(255,255,255,.1); }
+  .viewer-details summary { padding:14px 0; color:rgba(255,255,255,.7); font-size:.72rem; cursor:pointer; }
+  .viewer-prompt { max-height:220px; overflow:auto; padding:12px; border-radius:10px; background:#0b0a0d; color:rgba(255,255,255,.66); font:400 .68rem/1.65 var(--font-mono); white-space:pre-wrap; word-break:break-word; }
+  .viewer-actions { display:grid; gap:8px; }
+  .viewer-actions .btn { justify-content:center; }
+  body.viewer-open { overflow:hidden; }
+
+  @media (max-width:900px) {
+    .gallery-intro { grid-template-columns:1fr; }
+    .gallery-count { display:none; }
+    .art-viewer { grid-template-columns:1fr; }
+    .viewer-stage { padding:60px 42px 78px; }
+    .viewer-info { position:absolute; inset:0 0 0 auto; width:min(86vw,360px); transform:translateX(100%); border-left:1px solid rgba(255,255,255,.1); transition:transform 190ms ease; z-index:4; }
+    .art-viewer.info-open .viewer-info { transform:none; }
+    .viewer-info-toggle { display:grid; }
   }
-
-  /* detail overlay */
-  .detail-overlay { position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.65); display: none; align-items: center; justify-content: center; padding: var(--s-4); }
-  .detail-overlay.open { display: flex; }
-  .detail-card { width: 100%; max-width: 760px; max-height: 90vh; overflow-y: auto; background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-xl); padding: var(--s-6); }
-  .detail-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s-3); margin-bottom: var(--s-4); }
-  .detail-head h3 { margin: 0; font-size: 1.3rem; }
-  .detail-x { background: none; border: none; color: var(--text-muted); font-size: 1.3rem; cursor: pointer; }
-  .detail-x:hover { color: var(--accent); }
-  .detail-props { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: var(--s-2); margin-bottom: var(--s-4); }
-  .detail-prop { background: var(--bg-deep); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); }
-  .detail-prop .l { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
-  .detail-prop .v { font-size: 0.82rem; font-weight: 600; color: var(--accent); }
-  .detail-rating { display: flex; gap: var(--s-3); flex-wrap: wrap; margin-bottom: var(--s-4); }
-  .detail-rating .axis { background: var(--bg-deep); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); font-size: 0.78rem; }
-  .detail-rating .axis .nm { color: var(--text-muted); margin-right: 4px; }
-  .detail-prompt { background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: var(--s-3); font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.6; white-space: pre-wrap; word-break: break-word; color: var(--text-primary); margin-bottom: var(--s-4); max-height: 240px; overflow-y: auto; }
-  .detail-actions { display: flex; gap: var(--s-3); flex-wrap: wrap; }
-  .detail-actions .btn { flex: 1; min-width: 140px; }
-
-  .empty { text-align:center; padding:clamp(42px,7vw,76px) var(--s-5); color:var(--text-muted); border:1px dashed var(--border-soft); border-radius:var(--r-xl); background:linear-gradient(135deg,var(--accent-soft),transparent 46%),var(--bg-surface); }
-  .empty .ic { font-size: 2.4rem; margin-bottom: var(--s-3); }
-  .empty h2 { margin:0 0 8px; color:var(--text-primary); font-size:1.35rem; }
-  .empty > p { max-width:560px; margin:0 auto var(--s-4); line-height:1.7; }
-  .empty-journeys { display:grid; grid-template-columns:1fr 1fr; gap:10px; max-width:680px; margin:var(--s-5) auto; text-align:left; }
-  .empty-journey { display:block; padding:15px; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:color-mix(in srgb,var(--bg-surface) 82%,transparent); color:var(--text-secondary); transition:border-color var(--t-fast),transform var(--t-fast); }
-  .empty-journey:hover { border-color:var(--accent); transform:translateY(-2px); }
-  .empty-journey small, .empty-journey strong, .empty-journey span { display:block; }
-  .empty-journey small { color:var(--accent); font:750 .58rem var(--font-mono); letter-spacing:.1em; }
-  .empty-journey strong { margin:5px 0 3px; color:var(--text-primary); font-size:.88rem; }
-  .empty-journey span { font-size:.72rem; line-height:1.5; }
-
-  @media (max-width: 600px) {
-    .gallery-grid { grid-template-columns: 1fr 1fr; }
-    .detail-props { grid-template-columns: repeat(2, 1fr); }
-    .empty-journeys { grid-template-columns:1fr; }
+  @media (max-width:600px) {
+    .gallery-shell { padding:22px 10px 64px; }
+    .gallery-intro { padding:0 6px; }
+    .gallery-toolbar { top:52px; border-radius:16px; flex-wrap:wrap; }
+    .gallery-toolbar-note { display:none; }
+    .gallery-project { flex:1; min-width:110px; }
+    .gallery-wall { columns:2 135px; column-gap:10px; }
+    .artwork { margin-bottom:10px; border-radius:9px; }
+    .artwork-caption { opacity:1; transform:none; padding:34px 9px 8px; }
+    .artwork-name { font-size:.67rem; }
+    .artwork-date { display:none; }
+    .viewer-stage { padding:58px 38px 76px; }
+    .viewer-nav { width:36px; height:56px; }
+    .viewer-prev { left:8px; }
+    .viewer-next { right:8px; }
+  }
+  @media (prefers-reduced-motion:reduce) {
+    .artwork,.artwork-caption,.art-viewer,.viewer-info { transition:none !important; }
   }
 </style>
 </head>
 <body data-nav="gallery">
-<nav class="nav">
-  <div class="nav-inner">
-    <div class="nav-brand"><span class="dot"></span> 绫季绘境</div>
-    <div class="nav-links">
+<nav class="nav"><div class="nav-inner"><div class="nav-brand"><span class="dot"></span> 绫季绘境</div><div class="nav-links"></div></div></nav>
+
+<main class="gallery-shell">
+  <header class="gallery-intro">
+    <div>
+      <div class="gallery-kicker">Private collection</div>
+      <h1 class="gallery-title">作品册</h1>
+      <p class="gallery-subtitle">让画面保持它原本的方向与比例。这里先看作品，创作参数只在需要时出现。</p>
     </div>
-  </div>
-</nav>
+    <div class="gallery-count" id="galleryCount">正在整理展墙…</div>
+  </header>
+  <div class="gallery-toolbar" id="galleryToolbar" aria-label="作品筛选"></div>
+  <section id="gallery" aria-live="polite"></section>
+</main>
 
-<article class="page">
-  <a href="../index.html" class="nav-back">← 回首页</a>
-  <h1 class="title">🎞 作品画廊</h1>
-  <p class="subtitle">每一次生成都是一个版本。点击卡片展开详情与再创作。</p>
-  <div class="toolbar" id="toolbar"></div>
-  <div id="gallery"></div>
-</article>
-
-<!-- detail overlay -->
-<div class="detail-overlay" id="detailOverlay">
-  <div class="detail-card" id="detailCard"></div>
+<div class="art-viewer" id="artViewer" role="dialog" aria-modal="true" aria-hidden="true" aria-label="作品观赏模式">
+  <section class="viewer-stage" id="viewerStage">
+    <button class="viewer-close" type="button" data-viewer-action="close" aria-label="关闭">×</button>
+    <button class="viewer-nav viewer-prev" type="button" data-viewer-action="prev" aria-label="上一幅">‹</button>
+    <div id="viewerImageSlot" class="viewer-fallback">✦</div>
+    <button class="viewer-nav viewer-next" type="button" data-viewer-action="next" aria-label="下一幅">›</button>
+    <button class="viewer-info-toggle" type="button" data-viewer-action="info" aria-label="作品信息">i</button>
+    <div class="viewer-position" id="viewerPosition"></div>
+  </section>
+  <aside class="viewer-info" id="viewerInfo"></aside>
 </div>
 
 <footer class="footer"><p>绫季绘境 · From Story to Scene</p></footer>
-
 <script src="image-store.js?v=5"></script>
-<script>
-(function(){
-  const HIS_KEY='aics_pb_history';
-  const PRJ_KEY='aics_projects';
-  let scenes=[],loras=[],history=[],filterFav=false,filterProject='',renderGeneration=0,detailGeneration=0,detailObjectUrl='';
-  const cardObjectUrls=new Set();
-  let _cachedProjects=[];
-  function loadProjects(){return _cachedProjects;}
-  function getProject(id){return _cachedProjects.find(function(p){return p.id===id;});}
-  function esc(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-  function escAttr(v){return esc(v).replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
-  function safeImageUrl(v){if(typeof v!=='string'||!v.trim())return'';try{const u=new URL(v.trim(),location.href);return u.protocol==='http:'||u.protocol==='https:'?u.href:'';}catch(e){return'';}}
-  function stars(n){return '<span class="sc-stars">'+[1,2,3,4,5].map(i=>'<span class="'+(i<=n?'on':'')+'">★</span>').join('')+'</span>';}
-  function avgRating(r){if(!r)return 0;return Math.round(['face','expression','composition','hands','atmosphere'].reduce((n,k)=>n+(Number(r[k])||0),0)/5);}
-  function sceneTitle(id){const x=scenes.find(s=>s.id===id);return x?x.title:(id||'—');}
-  function historyCharacterLabel(value){return value==='natsume'?'夏目':value==='nene'?'宁宁':value==='triad'||value==='both'?'双人':value||'—';}
-  function charName(id){const x=scenes.find(s=>s.id===id);if(!x)return'·';return x.char==='nene'?'宁宁':x.char==='natsume'?'夏目':(x.char||'·');}
-  function loraName(id){if(!id)return'—';const x=loras.find(l=>l.id===id||(l.name&&id&&(l.name===id||id.startsWith(l.name))));return x?x.name:id;}
-  function modelName(value){if(!value)return'WebUI 当前模型';const name=String(value).split(/[\\/]/).pop().replace(/\s*\[[a-f0-9]+\]\s*$/i,'');return name.length>42?name.slice(0,39)+'…':name;}
-  function fmtDate(ts){return new Date(ts).toLocaleString('zh-CN',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});}
-  function dayKey(ts){const d=new Date(ts),now=new Date(),start=new Date(now.getFullYear(),now.getMonth(),now.getDate()),diff=(start-d)/86400000;return diff<1?'今天':diff<7?'本周':'更早';}
-  function grouped(list){const order=['今天','本周','更早'],g={};list.forEach(item=>(g[dayKey(item.timestamp)]=g[dayKey(item.timestamp)]||[]).push(item));return order.filter(k=>g[k]?.length).map(k=>({key:k,items:g[k]}));}
-  function fallbackNode(tag,className){const node=document.createElement(tag);node.className=className;node.textContent='🎬';return node;}
-  function revokeCards(){cardObjectUrls.forEach(url=>URL.revokeObjectURL(url));cardObjectUrls.clear();}
-  function setImage(slot,src,alt,className,fallbackUrl,onObjectError){
-    const img=document.createElement('img');img.className=className;img.alt=alt;img.referrerpolicy='no-referrer';img.src=src;
-    img.addEventListener('error',function(){if(onObjectError)onObjectError();if(fallbackUrl&&img.src!==fallbackUrl){img.src=fallbackUrl;fallbackUrl='';return;}img.replaceWith(fallbackNode(className==='gal-image'?'span':'div',className==='gal-image'?'gal-placeholder':'detail-image detail-image-fallback'));});
-    slot.replaceChildren(img);
-  }
-  async function hydrateCard(h,index,generation){
-    const slot=document.querySelector('[data-image-slot="'+index+'"]');if(!slot)return;
-    const fallback=safeImageUrl(h.image_url);
-    try{
-      const blob=await AICGImageStore.get(h.image_id);if(generation!==renderGeneration||!slot.isConnected)return;
-      if(!blob){
-        if(fallback){setImage(slot,fallback,sceneTitle(h.scene),'gal-image','');return;}
-        if(h.image_data&&h.image_data.startsWith('data:image/')){setImage(slot,h.image_data,sceneTitle(h.scene),'gal-image','');return;}
-        return;
-      }
-      const url=URL.createObjectURL(blob);if(generation!==renderGeneration||!slot.isConnected){URL.revokeObjectURL(url);return;}
-      cardObjectUrls.add(url);setImage(slot,url,sceneTitle(h.scene),'gal-image',fallback,function(){URL.revokeObjectURL(url);cardObjectUrls.delete(url);});
-    }catch(e){if(generation===renderGeneration&&slot.isConnected){if(fallback)setImage(slot,fallback,sceneTitle(h.scene),'gal-image','');else if(h.image_data&&h.image_data.startsWith('data:image/'))setImage(slot,h.image_data,sceneTitle(h.scene),'gal-image','');}}
-  }
-  function coverMarkup(h,index){const url=safeImageUrl(h.image_url);if(h.image_id)return '<span class="gal-placeholder">🎬</span>';return url?'<img class="gal-image" src="'+escAttr(url)+'" alt="'+escAttr(sceneTitle(h.scene))+'" referrerpolicy="no-referrer">':'<span class="gal-placeholder">🎬</span>';}
-  function card(h,index){const avg=avgRating(h.rating),who=historyCharacterLabel(h.character)||charName(h.scene);return `<article class="sc"><button class="gallery-card-button" type="button" onclick="window.__openDetail(${index})" aria-label="查看作品：${escAttr(sceneTitle(h.scene))}"><div class="sc-band"><div class="gal-cover" data-image-slot="${index}" style="position:absolute;inset:0;">${coverMarkup(h,index)}</div><span class="gal-ver">v${esc(h.version||1)}</span>${h.favorite?'<span class="gal-fav" aria-label="已收藏">💜</span>':''}</div><div class="sc-body"><div class="sc-title">${esc(sceneTitle(h.scene))}</div><div class="sc-meta"><span class="sc-meta-l">${stars(avg)}</span><span class="sc-meta-r">${esc(fmtDate(h.timestamp))}</span></div></div></button></article>`;}
-  let scenesLoaded=false;
-  function ensureData(){return scenesLoaded?Promise.all([Promise.resolve(scenes),Promise.resolve(loras)]):Promise.all([fetch('../data/scenes.json?v=6').then(r=>r.json()).then(d=>{scenes=d;}).catch(()=>{}),fetch('../data/loras.json?v=6').then(r=>r.json()).then(d=>{loras=d;}).catch(()=>{})]).then(function(){scenesLoaded=true;});}
-  function render(){
-    const generation=++renderGeneration;revokeCards();const toolbar=document.getElementById('toolbar'),total=history.length,favCount=history.filter(h=>h.favorite).length;
-    var projects=loadProjects();var projSel='<select id="galleryProjectFilter" onchange="filterProject=this.value;render();"><option value="">全部项目</option>'+projects.map(function(p){return '<option value="'+p.id+'"'+(p.id===filterProject?' selected':'')+'>'+esc(p.title)+'</option>';}).join('')+'</select>';
-    toolbar.innerHTML=`<button class="filter ${filterFav?'active':''}" onclick="window.__setFavFilter()">💜 收藏 ${favCount}</button>`+projSel+`<span class="count">${filterFav?favCount+' / ':''}${total} 条记录</span>`;
-    var source=filterFav?history.filter(h=>h.favorite):history;
-    if(filterProject){var prj=getProject(filterProject);if(prj)source=source.filter(function(h){return prj.history_ids.indexOf(h.id)>=0;});}
-    const gal=document.getElementById('gallery');
-    if(!source.length){gal.innerHTML=filterFav?'<div class="empty"><div class="ic">💜</div><h2>灵感簿还空着</h2><p>完成作品评价时勾选「加入收藏夹」，想留下的画面就会收进这里。</p><a href="showcase.html" class="btn btn-ghost">去样张馆找灵感</a></div>':'<div class="empty empty-gallery"><div class="ic">🎞</div><h2>第一张 CG，从一个想留住的瞬间开始</h2><p>作品只保存在这台电脑上。生成完成后，参数、版本和你的评分会一起回到这里。</p><div class="empty-journeys"><a class="empty-journey" href="scene-explorer.html?character=nene"><small>NENE ROUTE</small><strong>宁宁的月光秘密</strong><span>从柔软、慌乱又坚定的瞬间开始。</span></a><a class="empty-journey" href="scene-explorer.html?character=natsume"><small>NATSUME ROUTE</small><strong>夏目的闭店时分</strong><span>从克制的关心与暖灯开始。</span></a></div><a href="prompt-builder.html" class="btn btn-primary">✦ 打开导演台</a></div>';return;}
-    const byIndex=new Map();source.forEach(function(h,i){byIndex.set(h,i);});const groups=grouped(source);
-    gal.innerHTML=groups.map(g=>`<div class="timeline-group"><div class="timeline-head">${g.key}</div><div class="gallery-grid">${g.items.map(h=>card(h,byIndex.get(h))).join('')}</div></div>`).join('');
-    gal.querySelectorAll('.gal-image').forEach(img=>img.addEventListener('error',()=>img.replaceWith(fallbackNode('span','gal-placeholder'))));
-    source.forEach(function(h,i){if(h.image_id||h.image_data)hydrateCard(h,byIndex.get(h),generation);});
-  }
-  function revokeDetail(){if(detailObjectUrl){URL.revokeObjectURL(detailObjectUrl);detailObjectUrl='';}}
-  async function hydrateDetail(h,index,generation){const slot=document.getElementById('detailImageSlot'),fallback=safeImageUrl(h.image_url);if(!slot)return;try{const blob=await AICGImageStore.get(h.image_id);if(generation!==detailGeneration||!slot.isConnected)return;if(!blob){if(fallback){setImage(slot,fallback,sceneTitle(h.scene),'detail-image','');return;}if(h.image_data&&h.image_data.startsWith('data:image/')){setImage(slot,h.image_data,sceneTitle(h.scene),'detail-image','');return;}return;}const url=URL.createObjectURL(blob);if(generation!==detailGeneration||!slot.isConnected){URL.revokeObjectURL(url);return;}detailObjectUrl=url;setImage(slot,url,sceneTitle(h.scene),'detail-image',fallback,function(){if(detailObjectUrl===url)detailObjectUrl='';URL.revokeObjectURL(url);});}catch(e){if(generation===detailGeneration&&slot.isConnected){if(fallback)setImage(slot,fallback,sceneTitle(h.scene),'detail-image','');else if(h.image_data&&h.image_data.startsWith('data:image/'))setImage(slot,h.image_data,sceneTitle(h.scene),'detail-image','');}}}
-  function openDetail(index){const h=history[index];if(!h)return;const generation=++detailGeneration;revokeDetail();const axes=['face','expression','composition','hands','atmosphere'],names={face:'人物',expression:'表情',composition:'构图',hands:'手部',atmosphere:'氛围'},url=safeImageUrl(h.image_url),initial=h.image_id?(h.image_data&&h.image_data.startsWith('data:image/')?'<img class="detail-image" src="'+escAttr(h.image_data)+'" alt="'+escAttr(sceneTitle(h.scene))+'" referrerpolicy="no-referrer">':'<div class="detail-image detail-image-fallback">🎬</div>'):url?'<img class="detail-image" src="'+escAttr(url)+'" alt="'+escAttr(sceneTitle(h.scene))+'" referrerpolicy="no-referrer">':'<div class="detail-image detail-image-fallback">🎬</div>';
-    document.getElementById('detailCard').innerHTML=`<div class="detail-head"><div><h3>${esc(sceneTitle(h.scene))}</h3><div style="color:var(--text-muted);font-size:.85rem;">v${esc(h.version||1)} · ${esc(h.character)} · ${esc(fmtDate(h.timestamp))}</div></div><button class="detail-x" onclick="window.__closeDetail()" aria-label="关闭">✕</button></div><div id="detailImageSlot">${initial}</div><div class="detail-props"><div class="detail-prop"><div class="l">LoRA</div><div class="v">${esc(loraName(h.lora))}</div></div><div class="detail-prop"><div class="l">Seed</div><div class="v">${esc(h.seed||'—')}</div></div><div class="detail-prop"><div class="l">CFG</div><div class="v">${esc(h.cfg||'—')}</div></div><div class="detail-prop"><div class="l">Steps</div><div class="v">${esc(h.steps||'—')}</div></div><div class="detail-prop"><div class="l">Sampler</div><div class="v">${esc(h.sampler||'—')}</div></div><div class="detail-prop"><div class="l">Scheduler</div><div class="v">${esc(h.scheduler||'自动')}</div></div><div class="detail-prop"><div class="l">模型</div><div class="v">${esc(modelName(h.checkpoint))}</div></div><div class="detail-prop"><div class="l">尺寸</div><div class="v">${esc(h.size||'—')}</div></div></div><div class="detail-rating">${axes.map(k=>`<span class="axis"><span class="nm">${names[k]}</span>${'★'.repeat(Number(h.rating?.[k])||0)}${'☆'.repeat(5-(Number(h.rating?.[k])||0))}</span>`).join('')}</div><div style="font-size:.78rem;color:var(--text-muted);margin-bottom:var(--s-2);">故事</div><div style="font-style:italic;color:var(--text-secondary);margin-bottom:var(--s-4);">${esc(h.story||'(未写故事)')}</div><div style="font-size:.78rem;color:var(--text-muted);margin-bottom:var(--s-2);">Prompt</div><div class="detail-prompt">${esc(h.prompt||'')}</div>${h.notes?`<div style="font-size:.78rem;color:var(--text-muted);margin-bottom:var(--s-2);">备注</div><div style="color:var(--text-secondary);margin-bottom:var(--s-4);font-size:.88rem;">${esc(h.notes)}</div>`:''}<div class="detail-actions"><a href="prompt-builder.html?scene=${encodeURIComponent(h.scene||'')}&regen=${encodeURIComponent(h.id)}" class="btn btn-primary">🔄 重新生成</a><a href="prompt-builder.html?scene=${encodeURIComponent(h.scene||'')}&variant=${encodeURIComponent(h.id)}" class="btn btn-ghost">✨ 生成变体</a><button class="btn btn-ghost" onclick="window.__copyPrompt(${index})">📋 复制 Prompt</button></div>`;
-    document.getElementById('detailOverlay').classList.add('open');const img=document.querySelector('#detailImageSlot img');if(img)img.addEventListener('error',()=>img.replaceWith(fallbackNode('div','detail-image detail-image-fallback')));if(h.image_id)hydrateDetail(h,index,generation);
-  }
-  function closeDetail(){detailGeneration++;revokeDetail();document.getElementById('detailOverlay').classList.remove('open');document.getElementById('detailCard').innerHTML='';}
-  function copyPrompt(index){const h=history[index];if(h?.prompt)navigator.clipboard.writeText(h.prompt).then(()=>flashTemp('📋 已复制'));}
-  function flashTemp(msg){let t=document.getElementById('gal-toast');if(!t){t=document.createElement('div');t.id='gal-toast';t.style.cssText='position:fixed;left:50%;bottom:32px;transform:translateX(-50%);z-index:99999;background:var(--bg-surface);border:1px solid var(--accent);color:var(--text-primary);padding:8px 16px;border-radius:8px;font-size:.85rem;opacity:0;transition:opacity .2s;';document.body.appendChild(t);}t.textContent=msg;t.style.opacity='1';clearTimeout(window.__tt);window.__tt=setTimeout(()=>t.style.opacity='0',1400);}
-  window.__openDetail=openDetail;window.__closeDetail=closeDetail;window.__copyPrompt=copyPrompt;window.__setFavFilter=function(){filterFav=!filterFav;render();};
-  document.getElementById('detailOverlay').addEventListener('click',function(e){if(e.target===this)closeDetail();});window.addEventListener('keydown',function(e){if(e.key==='Escape'&&document.getElementById('detailOverlay').classList.contains('open'))closeDetail();});window.addEventListener('pagehide',function(){renderGeneration++;detailGeneration++;revokeCards();revokeDetail();});
-  AICKVStore.init().then(function(){
-    return Promise.all([AICKVStore.get(HIS_KEY), AICKVStore.get(PRJ_KEY)]);
-  }).then(function(vals){
-    var histRaw=vals[0], prjRaw=vals[1];
-    if(!histRaw){try{var ls=JSON.parse(localStorage.getItem(HIS_KEY));if(Array.isArray(ls)&&ls.length){histRaw=ls;AICKVStore.set(HIS_KEY,ls);localStorage.removeItem(HIS_KEY);}}catch(e){}}
-    if(!prjRaw){try{var lp=JSON.parse(localStorage.getItem(PRJ_KEY));if(Array.isArray(lp)&&lp.length){prjRaw=lp;AICKVStore.set(PRJ_KEY,lp);localStorage.removeItem(PRJ_KEY);}}catch(e){}}
-    history=Array.isArray(histRaw)?histRaw.filter(function(h){return h&&typeof h==='object'}):[];
-    _cachedProjects=Array.isArray(prjRaw)?prjRaw:[];
-  }).catch(function(e){console.warn('gallery storage init fail',e);}).then(function(){
-    return ensureData();
-  }).then(render);
-})();
-</script>
+<script src="gallery.js?v=1"></script>
 </body>
 </html>

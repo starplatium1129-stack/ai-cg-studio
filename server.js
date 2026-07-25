@@ -1,6 +1,7 @@
 'use strict';
 
 var express = require('express');
+var compression = require('compression');
 var path = require('path');
 var fs = require('fs');
 var cp = require('child_process');
@@ -11,6 +12,22 @@ var createChatRouter = require('./routes/chat').createChatRouter;
 var createVoiceRouter = require('./routes/voice').createVoiceRouter;
 var createLive2dRouter = require('./routes/live2d').createLive2dRouter;
 var createMaintenanceRouter = require('./routes/maintenance').createMaintenanceRouter;
+
+var ONE_DAY = 24 * 60 * 60 * 1000;
+var ONE_WEEK = 7 * ONE_DAY;
+
+function staticOptions(maxAge) {
+  return {
+    dotfiles:'deny',
+    index:false,
+    maxAge:maxAge,
+    setHeaders:function (res, filePath) {
+      if (/\.(?:html|json)$/i.test(filePath)) {
+        res.setHeader('Cache-Control', 'no-cache');
+      }
+    }
+  };
+}
 
 function createGateway(options) {
   options = options || {};
@@ -23,6 +40,7 @@ function createGateway(options) {
   app.disable('x-powered-by');
   app.use(security.responseHeaders);
   app.use(security.tokenAuth(config.TOKEN));
+  app.use(compression({ threshold:1024 }));
 
   var chat = createChatRouter(config, options.services);
   var voice = createVoiceRouter(config, options.services);
@@ -60,11 +78,12 @@ function createGateway(options) {
   });
 
   app.get(['/', '/index.html'], function (req, res) {
+    res.setHeader('Cache-Control', 'no-cache');
     res.sendFile(path.join(config.ROOT_DIR, 'index.html'));
   });
-  app.use('/css', express.static(path.join(config.ROOT_DIR, 'css'), { dotfiles:'deny', index:false }));
-  app.use('/assets', express.static(path.join(config.ROOT_DIR, 'assets'), { dotfiles:'deny', index:false }));
-  app.use('/data', express.static(path.join(config.ROOT_DIR, 'data'), { dotfiles:'deny', index:false }));
+  app.use('/css', express.static(path.join(config.ROOT_DIR, 'css'), staticOptions(ONE_DAY)));
+  app.use('/assets', express.static(path.join(config.ROOT_DIR, 'assets'), staticOptions(ONE_WEEK)));
+  app.use('/data', express.static(path.join(config.ROOT_DIR, 'data'), staticOptions(0)));
   app.use('/scene-showcase', function (req, res, next) {
     if (!config.SCENE_SHOWCASE_DIR) return res.status(404).end();
     var relative = req.path.replace(/\\/g, '/');
@@ -75,11 +94,11 @@ function createGateway(options) {
   }, config.SCENE_SHOWCASE_DIR
     ? express.static(config.SCENE_SHOWCASE_DIR, { dotfiles:'deny', index:false, fallthrough:false })
     : function (req, res) { res.status(404).end(); });
-  app.use('/docs', express.static(path.join(config.ROOT_DIR, 'docs'), { dotfiles:'deny' }));
+  app.use('/docs', express.static(path.join(config.ROOT_DIR, 'docs'), Object.assign(staticOptions(ONE_DAY), { index:'index.html' })));
   app.use('/tools', function (req, res, next) {
     if (req.path === '/control-server.js') return res.status(404).end();
     next();
-  }, express.static(path.join(config.ROOT_DIR, 'tools'), { dotfiles:'deny' }));
+  }, express.static(path.join(config.ROOT_DIR, 'tools'), staticOptions(ONE_DAY)));
 
   app.use(createProxyMiddleware({
     target:config.SD_HOST,

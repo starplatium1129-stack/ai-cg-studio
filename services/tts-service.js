@@ -7,40 +7,78 @@ var VOICES = ['nene', 'natsume'];
 var LANGUAGES = ['ja', 'zh'];
 var EMOTIONS = ['neutral', 'gentle', 'happy', 'shy', 'serious', 'sad'];
 
+function normalizeSpeechText(value, language) {
+  var text = String(value || '').normalize('NFKC')
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F\u200B-\u200D\uFEFF]/g, '')
+    .replace(/[ \t]+/g, ' ')
+    .replace(/\s*\n\s*/g, '。')
+    .replace(/。{2,}/g, '。')
+    .trim();
+  if (language === 'ja') {
+    text = text
+      .replace(/绫地宁宁|綾地寧々|綾地寧寧/g, 'あやち ねね')
+      .replace(/四季夏目|四季ナツメ/g, 'しき なつめ')
+      .replace(/\.\.\.|…{2,}/g, '……');
+  }
+  return text;
+}
+
 function validateInput(input, profiles) {
   var voice = String(input && input.voice || '');
-  var text = String(input && input.text || '').trim();
+  var rawText = String(input && input.text || '').trim();
   var language = String(input && input.language || 'ja').toLowerCase();
   var emotion = String(input && input.emotion || 'neutral').toLowerCase();
+  var consistency = String(input && input.consistency || 'adaptive').toLowerCase();
+  var referenceEmotion = String(input && input.referenceEmotion || emotion).toLowerCase();
   var speed = Number(input && input.speed);
   var profile = profiles[voice];
 
   if (!VOICES.includes(voice)) return { error:'不支持的角色声线', status:400 };
   if (!LANGUAGES.includes(language)) return { error:'语音语言仅支持日语或中文', status:400 };
-  if (!text || text.length > 2000) return { error:'台词长度必须在 1—2000 字之间', status:400 };
+  if (!rawText || rawText.length > 2000) return { error:'台词长度必须在 1—2000 字之间', status:400 };
   if (!profile || !profile.refAudioPath || !profile.promptText) {
     return { error:'该角色尚未在启动控制面板配置 GPT-SoVITS 参考音频', status:409 };
   }
   if (!EMOTIONS.includes(emotion)) emotion = 'neutral';
+  if (!EMOTIONS.includes(referenceEmotion)) referenceEmotion = emotion;
+  if (consistency !== 'locked') consistency = 'adaptive';
   if (!Number.isFinite(speed)) speed = 1;
   speed = Math.max(0.75, Math.min(1.35, speed));
 
-  var emotionReference = language === 'ja' && profile.references && profile.references[emotion];
+  var text = normalizeSpeechText(rawText, language);
+  if (!text) return { error:'台词规范化后为空', status:400 };
+  var referenceKey = consistency === 'locked' ? referenceEmotion : emotion;
+  var emotionReference = language === 'ja' && profile.references && profile.references[referenceKey];
+  var seed = Number.isFinite(Number(profile.seed)) ? Math.max(0, Math.min(2147483647, Math.round(Number(profile.seed)))) : 1234;
+  var topK = Number.isFinite(Number(profile.topK)) ? Math.max(1, Math.min(100, Math.round(Number(profile.topK)))) : 15;
+  var topP = Number.isFinite(Number(profile.topP)) ? Math.max(0.1, Math.min(1, Number(profile.topP))) : 1;
+  var temperature = Number.isFinite(Number(profile.temperature)) ? Math.max(0.1, Math.min(2, Number(profile.temperature))) : 1;
   return {
     value:{
       voice:voice,
       profile:profile,
+      consistency:consistency,
+      referenceEmotion:referenceKey,
       payload:{
         text:text,
         text_lang:language,
         ref_audio_path:emotionReference && emotionReference.refAudioPath || profile.refAudioPath,
         prompt_lang:emotionReference && emotionReference.promptLang || profile.promptLang || 'ja',
         prompt_text:emotionReference && emotionReference.promptText || profile.promptText,
-        text_split_method:'cut5',
+        // 前端已经按完整句切分；再次按长度切分会制造句中音高和停顿跳变。
+        text_split_method:'cut0',
         batch_size:1,
+        split_bucket:false,
         speed_factor:speed,
+        seed:seed,
+        top_k:topK,
+        top_p:topP,
+        temperature:temperature,
+        parallel_infer:false,
         media_type:'wav',
-        streaming_mode:true
+        // 浏览器会等待完整短句 WAV 后播放；流式音频并不能降低实际
+        // 开口延迟，反而会增加片段边界不一致的风险。
+        streaming_mode:false
       }
     }
   };
@@ -180,6 +218,7 @@ function createTtsService(options) {
 module.exports = {
   createTtsService:createTtsService,
   validateInput:validateInput,
+  normalizeSpeechText:normalizeSpeechText,
   VOICES:VOICES,
   LANGUAGES:LANGUAGES,
   EMOTIONS:EMOTIONS

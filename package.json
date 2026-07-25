@@ -5,8 +5,9 @@
   "description": "个人使用的 Galgame 风格 AI CG 场景工作台与 SD WebUI 网关",
   "scripts": {
     "start": "node server.js",
-    "validate": "npm run design:lint && node scripts/maintenance/build-scenes.js --check && node scripts/maintenance/optimize-scenes.js --check && node scripts/maintenance/classify-scene-ratings.js --check && node scripts/maintenance/validate-scenes.js && node scripts/tests/test-scene-ux.js && node scripts/tests/test-quick-create.js && node scripts/tests/test-sd-error.js && node scripts/tests/test-data-backup.js && node scripts/tests/test-storage-reliability.js && node scripts/tests/test-prompt-policy.js && node scripts/tests/test-sd-runtime.js && node scripts/tests/test-prompt-builder-modules.js && node scripts/tests/test-showcase.js && node scripts/tests/test-chat.js && node scripts/tests/test-resource-scheduling.js",
+    "validate": "npm run design:lint && npm run typecheck && node scripts/maintenance/build-scenes.js --check && node scripts/maintenance/optimize-scenes.js --check && node scripts/maintenance/classify-scene-ratings.js --check && node scripts/maintenance/validate-scenes.js && node scripts/maintenance/validate-content-contracts.js && node scripts/tests/test-page-architecture.js && node scripts/tests/test-control-operation.js && node scripts/tests/test-wav-quality.js && node scripts/tests/test-scene-ux.js && node scripts/tests/test-quick-create.js && node scripts/tests/test-sd-error.js && node scripts/tests/test-data-backup.js && node scripts/tests/test-storage-reliability.js && node scripts/tests/test-prompt-policy.js && node scripts/tests/test-sd-runtime.js && node scripts/tests/test-prompt-builder-modules.js && node scripts/tests/test-showcase.js && node scripts/tests/test-gallery.js && node scripts/tests/test-maintenance.js && node scripts/tests/test-chat.js && node scripts/tests/test-resource-scheduling.js",
     "design:lint": "designmd lint DESIGN.md",
+    "typecheck": "tsc -p tsconfig.json",
     "test:ux": "node scripts/tests/test-scene-ux.js",
     "test:quick": "node scripts/tests/test-quick-create.js",
     "test:sd-errors": "node scripts/tests/test-sd-error.js",
@@ -14,6 +15,13 @@
     "test:prompt-builder": "node scripts/tests/test-prompt-builder-modules.js",
     "test:prompt-policy": "node scripts/tests/test-prompt-policy.js",
     "test:showcase": "node scripts/tests/test-showcase.js",
+    "test:gallery": "node scripts/tests/test-gallery.js",
+    "test:architecture": "node scripts/tests/test-page-architecture.js",
+    "test:control-operation": "node scripts/tests/test-control-operation.js",
+    "test:content": "node scripts/maintenance/validate-content-contracts.js",
+    "test:voice-quality": "node scripts/tests/test-wav-quality.js",
+    "test:e2e": "playwright test",
+    "test:maintenance": "node scripts/tests/test-maintenance.js",
     "test:chat": "node scripts/tests/test-chat.js",
     "test:resource": "node scripts/tests/test-resource-scheduling.js",
     "benchmark:voice": "node scripts/maintenance/benchmark-voice.js",
@@ -26,11 +34,18 @@
     "lint:colors": "node scripts/maintenance/lint-colors.js"
   },
   "dependencies": {
+    "compression": "^1.8.1",
     "express": "^4.21.0",
     "http-proxy-middleware": "^3.0.0",
     "wl-live2d": "^1.0.8"
   },
   "devDependencies": {
-    "@google/design.md": "^0.3.0"
+    "@google/design.md": "^0.3.0",
+    "@playwright/test": "^1.62.0",
+    "@types/node": "^26.1.1",
+    "typescript": "^7.0.2"
+  },
+  "overrides": {
+    "gh-pages": "6.3.0"
   }
 }

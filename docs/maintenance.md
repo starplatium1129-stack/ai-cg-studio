@@ -15,7 +15,8 @@
 | 修改设计 token 后检查遗漏 | 改完 `css/design-system.css` 后运行 `npm run lint:colors` |
 | 新建一个页面 | 复制 `docs/page-template.html` → 重命名 → 按注释替换 → 在 `tools/nav.js` 加导航条目 |
 | 导航栏里加/删/改链接 | 编辑 `tools/nav.js` 中的 PRIMARY_NAV 或 SECONDARY_NAV 数组 |
-| 添加一个新的 tag 标签 | 打开场景管理 → Tag 管理 → 新增 Tag → 导出 JSON 覆盖 `data/tags.json` |
+| 添加一个新的 tag 标签 | 打开场景管理 → Tag 管理 → 新增 Tag → 保存到项目 |
+| 把场景设为精选或招牌 | 编辑场景 → 选择推荐层级 → 填写推荐理由 → 保存到项目 |
 | 运行所有检查确保没问题 | 命令行执行 `npm run validate`，全部通过即可提交 |
 | 检查 CSS 是否有硬编码颜色 | 命令行执行 `npm run lint:colors`，输出 0 条就干净 |
 
@@ -26,10 +27,10 @@
 
 | 文件 | 职责 | 是否手动编辑 |
 | --- | --- | --- |
-| `data/scenes/*.json` | 场景的唯一数据源，按角色与系列分片 | 是 |
+| `data/scenes/*.json` | 场景的唯一数据源，按角色与系列分片 | 否，网页维护 |
 | `data/scenes/manifest.json` | 声明分片与顺序 | 新增分片时编辑 |
 | `data/scenes.json` | 供静态网页读取的构建产物 | 否 |
-| `data/curation.json` | 精品层级、推荐理由、语义搜索和情绪入口 | 是 |
+| `data/curation.json` | 精品层级、推荐理由、语义搜索和情绪入口 | 场景推荐由网页维护；搜索规则变化时编辑 |
 | `scripts/runtime/scene-store.js` | 所有维护脚本共用的读写层 | 结构变化时编辑 |
 | `tools/scene-ux.js` | 搜索意图、相关度和本机偏好排序的共享逻辑 | 搜索规则变化时编辑 |
 | `tools/nav.js`、`tools/local-status.js` | 全站导航与本机绘图/对话/语音状态汇总 | 页面入口或服务状态契约变化时编辑 |
@@ -59,7 +60,9 @@
 启动、停止和显存模式切换仍由 `tools/control-server.js` 与控制台负责，避免
 每个页面各自实现一套调度逻辑。
 
-聊天页与导演台会在角色确定后调用 `POST /api/voice/prepare`，并行预热翻译模型和当前角色的 GPT-SoVITS 权重。导演台按句生成并立即播放已经完成的片段，后续片段在后台继续合成；完整 WAV 仍会在全部片段完成后提供重播与下载。不要在页面层重新实现预热、权重切换或整段等待逻辑。
+聊天页与导演台会在角色确定后调用 `POST /api/voice/prepare`，并行预热翻译模型和当前角色的 GPT-SoVITS 权重。一次聊天回复必须锁定同一个 `referenceEmotion` 与 `consistency: locked`，句子情绪只能驱动表情，不能逐句更换身份参考音。TTS 使用固定 seed 与完整短句非流式 WAV；客户端在当前句播放时继续生成下一句。导演台按句生成并立即播放已经完成的片段，完整 WAV 仍会在全部片段完成后提供重播与下载。
+
+控制面板的健康检查必须等待 SD、GPT-SoVITS 与 Ollama 的实际探测结束后再返回；耗时操作通过统一 `operation` 状态公开阶段、完成或失败。任一 GPU 操作进行时拒绝重复启动另一个操作。“停止网站网关”只关闭网关与分享隧道，不能隐式关闭绘图、语音或聊天服务。
 
 中日翻译默认使用单束搜索并批量处理句子。需要用质量换速度时可通过 `AICS_TRANSLATION_BEAMS` 调整为 `1` 至 `4`，本机实时链路建议保持 `1`。改动模型、显卡驱动或 TTS 参数后，可在网关和语音服务已启动时运行：
 
@@ -67,7 +70,7 @@
 npm run benchmark:voice
 ```
 
-报告会分别显示翻译冷/热耗时、角色权重预热、首个音频字节与完整语音耗时。若要同时比较 GPT-SoVITS 的底层流式模式，可额外传入网关和语音服务地址：`node scripts/maintenance/benchmark-voice.js http://127.0.0.1:3000 http://127.0.0.1:9880`。
+报告会分别显示翻译冷/热耗时、角色权重预热、首个音频字节、完整语音耗时，以及 WAV 时长、RMS、峰值、静音比例和质量问题。若要同时比较 GPT-SoVITS 的底层流式模式，可额外传入网关和语音服务地址：`node scripts/maintenance/benchmark-voice.js http://127.0.0.1:3000 http://127.0.0.1:9880`。延迟更低但出现静音、严重削波或异常直流偏移时不能视为优化成功。
 
 新增角色时，静态立绘可以先工作。若要启用 Live2D，在 `assets/live2d/<角色 ID>/` 放置 `<角色 ID>.model3.json` 及它引用的全部 Moc、纹理、动作、表情和物理文件；状态接口只有在引用完整时才声明可用。没有模型的角色会明确显示“静态立绘”，不会阻断聊天或语音。
 
@@ -76,9 +79,32 @@ npm run benchmark:voice
 ```powershell
 npm run test:chat
 npm run test:resource
+npm run test:voice-quality
 ```
 
-`test:chat` 会使用模拟 Ollama 与 GPT-SoVITS 检查 NDJSON 分片恢复、模型切换卸载、完整音频结束前不换权重、Live2D 文件完整性，以及网关实际启动和安全响应头。
+`test:chat` 会使用模拟 Ollama 与 GPT-SoVITS 检查 NDJSON 分片恢复、模型切换卸载、完整音频结束前不换权重、Live2D 文件完整性，以及网关实际启动和安全响应头。`test:voice-quality` 使用合成 PCM 样本检查 WAV 解析、时长、响度、静音、削波和直流偏移。
+
+## 作品册
+
+作品册由 `tools/gallery.html` 提供展览布局，`tools/gallery.js` 负责 IndexedDB 作品读取、筛选、原图生命周期与沉浸观画状态。展墙按作品记录尺寸和图片解码后的真实尺寸保留比例，禁止为统一卡片高度使用 `object-fit: cover`。列表只延迟读取缩略展示，进入观画模式后再加载选中作品；离开页面或切换筛选时必须释放 Blob Object URL。
+
+修改作品册后至少运行 `npm run test:gallery`，并分别检查横图、竖图、方图、空作品册、键盘方向键、侧栏和移动端两列布局。
+
+## 页面与控制逻辑边界
+
+应用页面的 HTML 只保留语义结构、表单和样式引用；控制逻辑必须放在同名的外部 JavaScript 文件中，例如 `tools/control.html` 对应 `tools/control.js`，`tools/scene-manager.html` 对应 `tools/scene-manager.js`。不要把大段 `<script>` 重新写回 HTML。这样修改布局时不必同时穿过业务逻辑，也能让浏览器缓存脚本并为后续逐文件迁移 TypeScript 保留清晰边界。
+
+`npm run test:architecture` 会检查主要页面没有内联控制器、对应脚本存在且能够被 JavaScript 解析。新建应用页面时应把它加入 `scripts/tests/test-page-architecture.js`。HTML 上现有的事件属性属于后续渐进迁移范围；在全部改为事件监听器之前，非聊天页面的 CSP 仍需要兼容这些事件属性。
+
+`npm run test:e2e` 使用独立 Chromium 实际打开首页、导演台、场景管理和作品册，覆盖外部控制器加载、场景数据出现、新增场景表单、横竖作品比例、沉浸观画和首页性能预算。CI 会自动安装 Chromium 后运行；本机第一次运行可执行 `npx playwright install chromium`。测试产物位于 `test-results/`，仅失败诊断使用，不提交到项目。
+
+TypeScript 采用渐进迁移。`types/content.ts` 先定义角色、LoRA、场景和语音档案契约，`npm run typecheck` 检查新写的 TypeScript 与浏览器测试；不要为了迁移而一次重写稳定的旧控制器。每次把一个模块迁入 TypeScript，都必须先由现有行为测试保护。
+
+`scripts/maintenance/validate-content-contracts.js` 检查角色 ID、身份锚点、肖像文件、LoRA 强度、测试场景和场景角色引用。它已进入 `npm run validate`，修改 `characters.json` 或 `loras.json` 时不再依赖人工发现引用断裂。
+
+控制面板的操作状态机位于 `services/control-operation.js`。它统一负责耗时操作互斥、阶段进度、完成/失败状态和过期回调保护；`tools/control-server.js` 只编排具体服务。新增 GPU 操作时必须复用这个状态机，不要再创建另一套 busy 标志。
+
+日常添加场景、编辑标签、调整精选层级和替换样张已经完全由场景管理页处理，不需要改代码或执行命令。新增一种角色、生成模型或新的页面布局仍属于结构变更，因为它会改变校验规则、提示词契约或服务能力，不能当成普通数据录入静默处理。
 
 ## 日常新增、修改或下架场景
 
@@ -88,18 +114,18 @@ npm run test:resource
 2. 点击“新增场景”，或复制一个相近场景后修改。
 3. 表单内保存只是暂存，可以继续检查其他场景。
 4. 点击页面顶部“保存到项目”。
-5. 系统会自动创建备份、写入正确分片、统一评级与提示词，并运行场景校验。
+5. 系统会自动创建完整事务备份、写入正确分片、同步 Tag 与推荐层级、统一评级与提示词，并运行场景校验。
 
-页面顶部会显示待保存修改数量。标题和故事是必填项；如果带着未保存修改离开，浏览器会先提醒。检查失败时旧文件会自动恢复，错误原因会直接显示在维护页面。下架场景也只有在点击“保存到项目”后才会真正生效。
+页面顶部会显示待保存修改数量。标题和故事是必填项，招牌场景还必须填写推荐理由；如果带着未保存修改离开，浏览器会先提醒。检查失败时，场景分片、聚合文件、Tag、推荐配置、角色/LoRA 引用、Manifest 和受影响样张会作为一个事务恢复。下架场景也只有在点击“保存到项目”并通过校验后才会真正生效。
 
 ## 替换场景样张
 
 1. 在场景维护页打开“样张管理”。
 2. 搜索并点选要替换的场景。
 3. 点击“选择新样张”，选择 PNG、JPEG 或 WebP。
-4. 系统会转换为高质量 JPEG，并按场景 ID 写入当前样张目录。
+4. 系统会转换为高质量 JPEG，同时生成 560px 轻量缩略图，并按场景 ID 写入当前样张目录。
 
-写入型维护接口只允许本机访问；朋友分享链接不能修改场景或样张。
+每次替换都会先备份旧原图、缩略图和 Manifest；任何一步失败都会恢复旧版本。写入型维护接口只允许本机访问；朋友分享链接不能修改场景或样张。
 
 批量处理或修改数据结构时，仍可使用脚本流程：编辑 `data/scenes/*.json`，运行 `npm run scenes:normalize` 和 `npm run validate`。这不是日常维护的默认入口。
 

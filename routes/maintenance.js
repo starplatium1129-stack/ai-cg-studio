@@ -5,6 +5,112 @@ var path = require('path');
 var cp = require('child_process');
 var express = require('express');
 
+function readJson(source) {
+  return JSON.parse(fs.readFileSync(source, 'utf8'));
+}
+
+function writeFileAtomic(source, content) {
+  var dir = path.dirname(source);
+  fs.mkdirSync(dir, { recursive:true });
+  var temporary = path.join(dir, '.' + path.basename(source) + '.' + process.pid + '.' + Date.now() + '.tmp');
+  try {
+    fs.writeFileSync(temporary, content);
+    fs.renameSync(temporary, source);
+  } catch (error) {
+    try { if (fs.existsSync(temporary)) fs.unlinkSync(temporary); } catch (cleanupError) {}
+    throw error;
+  }
+}
+
+function writeJson(source, data) {
+  writeFileAtomic(source, JSON.stringify(data, null, 2) + '\n');
+}
+
+function snapshotFiles(files) {
+  return Array.from(new Set(files)).map(function (file) {
+    var exists = fs.existsSync(file);
+    return { file:file, exists:exists, content:exists ? fs.readFileSync(file) : null };
+  });
+}
+
+function restoreSnapshot(snapshot) {
+  snapshot.forEach(function (item) {
+    if (item.exists) writeFileAtomic(item.file, item.content);
+    else if (fs.existsSync(item.file)) fs.unlinkSync(item.file);
+  });
+}
+
+function saveSnapshotBackup(snapshot, backupRoot, label) {
+  fs.mkdirSync(backupRoot, { recursive:true });
+  var stamp = new Date().toISOString().replace(/[:.]/g, '-');
+  var target = path.join(backupRoot, stamp + '-' + label);
+  var filesDir = path.join(target, 'files');
+  fs.mkdirSync(filesDir, { recursive:true });
+  var manifest = snapshot.map(function (item, index) {
+    var backupName = item.exists ? String(index).padStart(3, '0') + '-' + path.basename(item.file) : '';
+    if (item.exists) fs.writeFileSync(path.join(filesDir, backupName), item.content);
+    return { source:item.file, existed:item.exists, backup:backupName };
+  });
+  writeJson(path.join(target, 'manifest.json'), { createdAt:new Date().toISOString(), label:label, files:manifest });
+  return target;
+}
+
+function uniqueActiveIds(values, activeIds) {
+  var seen = new Set();
+  return (Array.isArray(values) ? values : []).filter(function (id) {
+    if (!activeIds.has(id) || seen.has(id)) return false;
+    seen.add(id);
+    return true;
+  });
+}
+
+function sanitizeCuration(value, activeIds) {
+  var curation = value && typeof value === 'object' ? JSON.parse(JSON.stringify(value)) : {};
+  curation.curatedSceneIds = uniqueActiveIds(curation.curatedSceneIds, activeIds);
+  curation.signatureSceneIds = uniqueActiveIds(curation.signatureSceneIds, activeIds);
+  curation.signatureSceneIds.forEach(function (id) {
+    if (curation.curatedSceneIds.indexOf(id) < 0) curation.curatedSceneIds.push(id);
+  });
+  var curated = new Set(curation.curatedSceneIds);
+  curation.reviewSceneIds = uniqueActiveIds(curation.reviewSceneIds, activeIds).filter(function (id) { return !curated.has(id); });
+  var reasons = curation.recommendationReasons && typeof curation.recommendationReasons === 'object' ? curation.recommendationReasons : {};
+  curation.recommendationReasons = {};
+  Object.keys(reasons).forEach(function (id) {
+    if (activeIds.has(id) && String(reasons[id] || '').trim()) curation.recommendationReasons[id] = String(reasons[id]).trim();
+  });
+  curation.signatureSceneIds.forEach(function (id) {
+    if (!curation.recommendationReasons[id]) throw new Error(id + ' 标记为招牌场景时必须填写推荐理由');
+  });
+  return curation;
+}
+
+function validateTags(tags) {
+  if (!Array.isArray(tags) || tags.length > 2000) throw new Error('Tag 数据格式错误或数量超出限制');
+  var ids = new Set();
+  var names = new Set();
+  tags.forEach(function (tag) {
+    var id = String(tag && tag.id || '').trim();
+    var name = String(tag && tag.en || '').trim();
+    var category = String(tag && tag.cat || '').trim();
+    var chinese = String(tag && tag.cn || '').trim();
+    var weight = Number(tag && tag.weight);
+    if (!/^tag_\d+$/.test(id) || ids.has(id)) throw new Error('Tag ID 必须唯一且符合 tag_001 格式：' + id);
+    if (!/^[^\r\n<>]{1,120}$/.test(name) || names.has(name.toLowerCase())) throw new Error('Tag 英文名必须唯一且可用于 Prompt：' + name);
+    if (!category || !chinese) throw new Error(id + ' 必须填写分类和中文名');
+    if (!Number.isFinite(weight) || weight <= 0 || weight > 2) throw new Error(id + ' 的权重必须在 0 到 2 之间');
+    ids.add(id);
+    names.add(name.toLowerCase());
+  });
+}
+
+function decodeJpegDataUrl(value, label) {
+  var match = String(value || '').match(/^data:image\/jpeg;base64,([A-Za-z0-9+/=\r\n]+)$/);
+  if (!match) throw new Error(label + '必须是 JPEG 图片');
+  var buffer = Buffer.from(match[1].replace(/\s/g, ''), 'base64');
+  if (buffer.length < 4 || buffer[0] !== 0xff || buffer[1] !== 0xd8 || buffer[2] !== 0xff) throw new Error(label + '不是有效的 JPEG 文件');
+  return buffer;
+}
+
 function createMaintenanceRouter(cfg) {
   var router = express.Router();
   var sceneStore = require('../scripts/runtime/scene-store');
@@ -24,17 +130,28 @@ function createMaintenanceRouter(cfg) {
     next();
   }
 
-  function maintenanceSnapshot() {
-    var files = [sceneStore.aggregatePath, path.join(__dirname, '..', 'data', 'retired-scenes.json')];
+  function maintenanceSnapshot(deletedIds) {
+    var dataDir = path.join(__dirname, '..', 'data');
+    var files = [
+      sceneStore.aggregatePath,
+      path.join(dataDir, 'retired-scenes.json'),
+      path.join(dataDir, 'characters.json'),
+      path.join(dataDir, 'loras.json'),
+      path.join(dataDir, 'curation.json'),
+      path.join(dataDir, 'tags.json')
+    ];
     var shardInfo = sceneStore.loadSceneShards();
     shardInfo.sources.forEach(function (item) { files.push(item.source); });
-    return files.filter(function (file) { return fs.existsSync(file); }).map(function (file) {
-      return { file:file, content:fs.readFileSync(file) };
-    });
-  }
-
-  function restoreMaintenanceSnapshot(snapshot) {
-    snapshot.forEach(function (item) { fs.writeFileSync(item.file, item.content); });
+    if (SCENE_SHOWCASE_DIR) {
+      files.push(path.join(SCENE_SHOWCASE_DIR, 'manifest.json'));
+      (deletedIds || []).forEach(function (id) {
+        ['jpg', 'png', 'webp'].forEach(function (ext) {
+          files.push(path.join(SCENE_SHOWCASE_DIR, 'images', id + '.' + ext));
+          files.push(path.join(SCENE_SHOWCASE_DIR, 'thumbs', id + '.' + ext));
+        });
+      });
+    }
+    return snapshotFiles(files);
   }
 
   function runMaintenanceChecks() {
@@ -60,14 +177,6 @@ function createMaintenanceRouter(cfg) {
       if (!manifest || !Array.isArray(manifest.entries)) return null;
       return manifest;
     } catch (e) { return null; }
-  }
-
-  function readJson(source) {
-    return JSON.parse(fs.readFileSync(source, 'utf8'));
-  }
-
-  function writeJson(source, data) {
-    fs.writeFileSync(source, JSON.stringify(data, null, 2) + '\n', 'utf8');
   }
 
   function cleanOrphanedSceneRefs() {
@@ -107,6 +216,11 @@ function createMaintenanceRouter(cfg) {
       }
     });
     if (changed) writeJson(lorasPath, loras);
+
+    // Clean curation.json while preserving its other recommendation/search settings.
+    var curationPath = path.join(dataDir, 'curation.json');
+    var curation = sanitizeCuration(readJson(curationPath), activeIds);
+    writeJson(curationPath, curation);
   }
 
   function autoRetireDeletedScenes(incomingScenes, previousScenes) {
@@ -137,20 +251,18 @@ function createMaintenanceRouter(cfg) {
         exts.forEach(function (ext) {
           var imgPath = path.join(SCENE_SHOWCASE_DIR, 'images', sceneId + '.' + ext);
           var thumbPath = path.join(SCENE_SHOWCASE_DIR, 'thumbs', sceneId + '.' + ext);
-          try { if (fs.existsSync(imgPath)) { fs.unlinkSync(imgPath); console.log('  🖼 已删除样张: images/' + sceneId + '.' + ext); } } catch (e) {}
-          try { if (fs.existsSync(thumbPath)) { fs.unlinkSync(thumbPath); console.log('  🖼 已删除缩略图: thumbs/' + sceneId + '.' + ext); } } catch (e) {}
+          if (fs.existsSync(imgPath)) { fs.unlinkSync(imgPath); console.log('  🖼 已删除样张: images/' + sceneId + '.' + ext); }
+          if (fs.existsSync(thumbPath)) { fs.unlinkSync(thumbPath); console.log('  🖼 已删除缩略图: thumbs/' + sceneId + '.' + ext); }
         });
         // Remove from manifest if it exists
         var manifestPath = path.join(SCENE_SHOWCASE_DIR, 'manifest.json');
         if (fs.existsSync(manifestPath)) {
-          try {
-            var m = readJson(manifestPath);
-            if (m && Array.isArray(m.entries)) {
-              m.entries = m.entries.filter(function (e) { return e.id !== sceneId; });
-              m.sceneCount = m.entries.length;
-              writeJson(manifestPath, m);
-            }
-          } catch (e) {}
+          var m = readJson(manifestPath);
+          if (m && Array.isArray(m.entries)) {
+            m.entries = m.entries.filter(function (e) { return e.id !== sceneId; });
+            m.sceneCount = m.entries.length;
+            writeJson(manifestPath, m);
+          }
         }
       });
     }
@@ -158,7 +270,9 @@ function createMaintenanceRouter(cfg) {
 
   router.post('/api/maintenance/scenes', maintenanceLocalOnly, express.json({ limit:'12mb' }), function (req, res) {
     var scenes = req.body && req.body.scenes;
-    if (!Array.isArray(scenes) || scenes.length > 1000) return res.status(400).json({ error:'场景数据格式错误或数量超出限制' });
+    var tags = req.body && req.body.tags;
+    var curation = req.body && req.body.curation;
+    if (!Array.isArray(scenes) || !scenes.length || scenes.length > 1000) return res.status(400).json({ error:'场景数据格式错误、为空或数量超出限制' });
     var ids = new Set();
     for (var i = 0; i < scenes.length; i += 1) {
       var id = String(scenes[i] && scenes[i].id || '');
@@ -167,54 +281,77 @@ function createMaintenanceRouter(cfg) {
     }
     var snapshot;
     try {
-      snapshot = maintenanceSnapshot();
-      if (!fs.existsSync(MAINTENANCE_BACKUP_DIR)) fs.mkdirSync(MAINTENANCE_BACKUP_DIR, { recursive:true });
-      var stamp = new Date().toISOString().replace(/[:.]/g, '-');
-      fs.writeFileSync(path.join(MAINTENANCE_BACKUP_DIR, 'scenes-' + stamp + '.json'), sceneStore.jsonText(sceneStore.loadSceneShards().scenes));
       var prevScenes = sceneStore.loadSceneShards().scenes;
+      var incomingIds = new Set(scenes.map(function (scene) { return scene.id; }));
+      var deletedIds = prevScenes.filter(function (scene) { return !incomingIds.has(scene.id); }).map(function (scene) { return scene.id; });
+      if (tags !== undefined) validateTags(tags);
+      var cleanCuration = curation !== undefined ? sanitizeCuration(curation, incomingIds) : null;
+      snapshot = maintenanceSnapshot(deletedIds);
+      var backupDir = saveSnapshotBackup(snapshot, MAINTENANCE_BACKUP_DIR, 'content');
       sceneStore.writeSceneSet(scenes);
+      if (tags !== undefined) {
+        writeJson(path.join(__dirname, '..', 'data', 'tags.json'), tags);
+      }
+      if (curation !== undefined) {
+        writeJson(path.join(__dirname, '..', 'data', 'curation.json'), cleanCuration);
+      }
       autoRetireDeletedScenes(scenes, prevScenes);
       cleanOrphanedSceneRefs();
       runMaintenanceChecks();
-      res.json({ ok:true, count:scenes.length, message:'场景已保存并通过校验' });
+      res.json({ ok:true, count:scenes.length, tagCount:Array.isArray(tags) ? tags.length : undefined, backup:path.basename(backupDir), message:'内容已保存并通过校验' });
     } catch (error) {
-      if (snapshot) { try { restoreMaintenanceSnapshot(snapshot); } catch (re) {} }
+      if (snapshot) { try { restoreSnapshot(snapshot); } catch (re) {} }
       res.status(400).json({ ok:false, error:error.message });
     }
   });
 
-  router.post('/api/maintenance/showcase', maintenanceLocalOnly, express.json({ limit:'18mb' }), function (req, res) {
+  router.post('/api/maintenance/showcase', maintenanceLocalOnly, express.json({ limit:'26mb' }), function (req, res) {
+    var snapshot;
     try {
       if (!SCENE_SHOWCASE_DIR) return res.status(503).json({ error:'尚未找到 SceneShowcase 目录' });
       var id = String(req.body && req.body.id || '');
-      var image = String(req.body && req.body.image || '');
-      var match = image.match(/^data:image\/(png|jpeg|webp);base64,([A-Za-z0-9+/=\r\n]+)$/);
-      if (!/^sc\d{3}$/.test(id) || !match) return res.status(400).json({ error:'需要合法场景 ID 和 PNG/JPEG/WebP 图片' });
-      var buffer = Buffer.from(match[2].replace(/\s/g, ''), 'base64');
-      if (!buffer.length || buffer.length > 15 * 1024 * 1024) return res.status(413).json({ error:'图片必须在 15MB 以内' });
-      var ext = match[1] === 'jpeg' ? '.jpg' : '.' + match[1];
+      if (!/^sc\d{3}$/.test(id)) return res.status(400).json({ error:'需要合法场景 ID' });
+      var scenes = sceneStore.loadSceneShards().scenes;
+      var scene = scenes.find(function (item) { return item.id === id; });
+      if (!scene) return res.status(404).json({ error:'场景不存在，不能保存孤立样张：' + id });
+      var buffer = decodeJpegDataUrl(req.body && req.body.image, '原图');
+      var thumbBuffer = req.body && req.body.thumbnail ? decodeJpegDataUrl(req.body.thumbnail, '缩略图') : buffer;
+      if (buffer.length > 15 * 1024 * 1024 || thumbBuffer.length > 3 * 1024 * 1024) return res.status(413).json({ error:'原图必须在 15MB 以内，缩略图必须在 3MB 以内' });
       var imageDir = path.join(SCENE_SHOWCASE_DIR, 'images');
       var thumbDir = path.join(SCENE_SHOWCASE_DIR, 'thumbs');
       fs.mkdirSync(imageDir, { recursive:true }); fs.mkdirSync(thumbDir, { recursive:true });
-      fs.writeFileSync(path.join(imageDir, id + ext), buffer);
-      fs.writeFileSync(path.join(thumbDir, id + ext), buffer);
-      try {
-        var manifestPath = path.join(SCENE_SHOWCASE_DIR, 'manifest.json');
-        if (fs.existsSync(manifestPath)) {
-          var manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-          var scenes = sceneStore.loadSceneShards().scenes;
-          var scene = scenes.find(function(s) { return s.id === id; });
-          if (scene) {
-            var idx = manifest.entries ? manifest.entries.findIndex(function(e) { return e.id === id; }) : -1;
-            var entry = { id:scene.id, title:scene.title, category:scene.category, story:scene.story, char:scene.char, rating:scene.rating, attempt:1, image:'images/' + id + ext, thumb:'thumbs/' + id + ext };
-            if (idx >= 0) { manifest.entries[idx] = entry; }
-            else { if (!manifest.entries) manifest.entries = []; manifest.entries.push(entry); manifest.sceneCount = manifest.entries.length; }
-            fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + '\n', 'utf8');
-          }
-        }
-      } catch (manifestError) { console.error('manifest update failed:', manifestError.message); }
-      res.json({ ok:true, file:'images/' + id + ext, message:'样张与缩略图已保存，刷新页面即可看到新版本' });
-    } catch (error) { res.status(400).json({ ok:false, error:error.message }); }
+      var manifestPath = path.join(SCENE_SHOWCASE_DIR, 'manifest.json');
+      var affected = [manifestPath];
+      ['jpg', 'png', 'webp'].forEach(function (ext) {
+        affected.push(path.join(imageDir, id + '.' + ext));
+        affected.push(path.join(thumbDir, id + '.' + ext));
+      });
+      snapshot = snapshotFiles(affected);
+      var backupDir = saveSnapshotBackup(snapshot, MAINTENANCE_BACKUP_DIR, 'showcase-' + id);
+      writeFileAtomic(path.join(imageDir, id + '.jpg'), buffer);
+      writeFileAtomic(path.join(thumbDir, id + '.jpg'), thumbBuffer);
+      ['png', 'webp'].forEach(function (ext) {
+        var oldImage = path.join(imageDir, id + '.' + ext);
+        var oldThumb = path.join(thumbDir, id + '.' + ext);
+        if (fs.existsSync(oldImage)) fs.unlinkSync(oldImage);
+        if (fs.existsSync(oldThumb)) fs.unlinkSync(oldThumb);
+      });
+      var manifest = fs.existsSync(manifestPath) ? readJson(manifestPath) : { version:2, entries:[] };
+      if (!Array.isArray(manifest.entries)) manifest.entries = [];
+      var idx = manifest.entries.findIndex(function (entry) { return entry.id === id; });
+      var entry = { id:scene.id, title:scene.title, category:scene.category, story:scene.story, char:scene.char, rating:scene.rating, attempt:1, image:'images/' + id + '.jpg', thumb:'thumbs/' + id + '.jpg' };
+      if (idx >= 0) manifest.entries[idx] = entry;
+      else manifest.entries.push(entry);
+      manifest.sceneCount = manifest.entries.length;
+      manifest.counts = manifest.entries.reduce(function (counts, item) {
+        var rating = item.rating || 'All'; counts[rating] = (counts[rating] || 0) + 1; return counts;
+      }, {});
+      writeJson(manifestPath, manifest);
+      res.json({ ok:true, file:entry.image, thumb:entry.thumb, backup:path.basename(backupDir), message:'样张与轻量缩略图已安全保存，旧版本已备份' });
+    } catch (error) {
+      if (snapshot) { try { restoreSnapshot(snapshot); } catch (restoreError) {} }
+      res.status(400).json({ ok:false, error:error.message });
+    }
   });
 
   router.post('/api/backup', express.json({ limit:'22mb' }), function (req, res) {
@@ -282,4 +419,15 @@ function createMaintenanceRouter(cfg) {
   return { router:router, sceneStore:sceneStore };
 }
 
-module.exports = { createMaintenanceRouter:createMaintenanceRouter };
+module.exports = {
+  createMaintenanceRouter:createMaintenanceRouter,
+  _test:{
+    decodeJpegDataUrl:decodeJpegDataUrl,
+    restoreSnapshot:restoreSnapshot,
+    sanitizeCuration:sanitizeCuration,
+    saveSnapshotBackup:saveSnapshotBackup,
+    snapshotFiles:snapshotFiles,
+    validateTags:validateTags,
+    writeFileAtomic:writeFileAtomic
+  }
+};

@@ -32,6 +32,7 @@ function createMockAiServer() {
     maxActiveChat:0,
     activeVoice:0,
     maxActiveVoice:0,
+    voicePayloads:[],
     unloaded:[]
   };
   var server = http.createServer(function (req, res) {
@@ -74,6 +75,7 @@ function createMockAiServer() {
         return;
       }
       if (req.url === '/tts') {
+        state.voicePayloads.push(body);
         state.activeVoice += 1;
         state.maxActiveVoice = Math.max(state.maxActiveVoice, state.activeVoice);
         res.setHeader('Content-Type', 'audio/wav');
@@ -118,6 +120,7 @@ async function run() {
   assert(appModule.includes('AbortController') && html.includes('id="stopBtn"'), 'chat requests must be cancellable');
   assert(appModule.includes("mid && mid === streamingMessageId"), 'only the active assistant message may keep the streaming cursor');
   assert(voiceModule.includes('SentenceBuffer') && voiceModule.includes('response.arrayBuffer()'), 'voice must synthesize complete sentence WAV files');
+  assert(voiceModule.includes("consistency:'locked'") && voiceModule.includes('referenceEmotion:meta.referenceEmotion'), 'one reply must lock a single identity reference across all sentences');
   assert(voiceModule.includes('AbortController') && voiceModule.includes('messageAudio'), 'voice sessions must support cancellation and replay');
   assert(voiceModule.includes("fetch('/api/voice/prepare'") && voiceRoute.includes("router.post('/api/voice/prepare'"), 'voice models and translation must prewarm before the first line');
   assert(voiceModule.includes('getByteTimeDomainData') && voiceModule.includes('onMouth'), 'lip sync must use real audio amplitude');
@@ -208,7 +211,10 @@ async function run() {
     var tts = require('../../services/tts-service').createTtsService({
       host:mockBase,
       profiles:{
-        nene:{ refAudioPath:'nene.wav', promptText:'ref', sovitsWeightsPath:'nene.pth', gptWeightsPath:'nene.ckpt' },
+        nene:{
+          refAudioPath:'nene.wav', promptText:'ref', sovitsWeightsPath:'nene.pth', gptWeightsPath:'nene.ckpt',
+          references:{ gentle:{ refAudioPath:'nene-gentle.wav', promptText:'gentle ref' }, shy:{ refAudioPath:'nene-shy.wav', promptText:'shy ref' } }
+        },
         natsume:{ refAudioPath:'natsume.wav', promptText:'ref', sovitsWeightsPath:'natsume.pth', gptWeightsPath:'natsume.ckpt' }
       }
     });
@@ -219,6 +225,13 @@ async function run() {
       consumeVoice(tts, { voice:'natsume', text:'b', language:'ja', emotion:'neutral', speed:1 })
     ]);
     assert(mock.state.maxActiveVoice === 1, 'GPT-SoVITS streams must remain serialized until audio ends');
+    await consumeVoice(tts, { voice:'nene', text:'綾地寧々です。', language:'ja', emotion:'shy', referenceEmotion:'gentle', consistency:'locked', speed:1 });
+    var lockedPayload = mock.state.voicePayloads[mock.state.voicePayloads.length - 1];
+    assert(lockedPayload.ref_audio_path === 'nene-gentle.wav', 'locked voice must keep the turn reference even when the sentence emotion changes');
+    assert(lockedPayload.text.includes('あやち ねね') && lockedPayload.text_split_method === 'cut0', 'Japanese speech must normalize character names and preserve the complete sentence');
+    assert(lockedPayload.seed === 1234 && lockedPayload.top_k === 15 && lockedPayload.streaming_mode === false, 'short sentence synthesis must use deterministic identity settings instead of ineffective audio streaming');
+    var ttsModule = require('../../services/tts-service');
+    assert(ttsModule.normalizeSpeechText('  四季夏目\nありがとう。 ', 'ja') === 'しき なつめ。ありがとう。', 'speech normalization must keep every sentence and stabilize character-name pronunciation');
   } finally {
     await close(mock.server);
   }
@@ -235,6 +248,25 @@ async function run() {
     var pageResponse = await fetch(gatewayBase + '/tools/chat.html');
     assert(pageResponse.ok, 'modular chat page must be served');
     assert((pageResponse.headers.get('content-security-policy') || '').includes("'unsafe-eval'"), 'chat CSP must allow the Live2D runtime');
+    assert((pageResponse.headers.get('cache-control') || '').includes('no-cache'), 'HTML pages must revalidate instead of serving stale markup');
+
+    var homeResponse = await fetch(gatewayBase + '/');
+    var homeHtml = await homeResponse.text();
+    assert(homeResponse.ok && homeHtml.includes('tools/home.js?v=1'), 'home page must load its public external controller');
+    var homeControllerResponse = await fetch(gatewayBase + '/tools/home.js?v=1');
+    assert(homeControllerResponse.ok && (await homeControllerResponse.text()).includes('initContinueDraft'), 'home controller must be reachable through the static tools route');
+
+    var cssResponse = await fetch(gatewayBase + '/css/design-system.css', {
+      headers:{ 'Accept-Encoding':'gzip' }
+    });
+    assert((cssResponse.headers.get('cache-control') || '').includes('max-age=86400'), 'versioned CSS and JS should use a one-day browser cache');
+    assert(cssResponse.headers.get('content-encoding') === 'gzip', 'text assets larger than 1 KB should be compressed');
+
+    var dataResponse = await fetch(gatewayBase + '/data/scenes.json');
+    assert((dataResponse.headers.get('cache-control') || '').includes('no-cache'), 'editable project data must revalidate on every visit');
+
+    var assetResponse = await fetch(gatewayBase + '/assets/logo.svg');
+    assert((assetResponse.headers.get('cache-control') || '').includes('max-age=604800'), 'stable image assets should use a one-week browser cache');
 
     var badChat = await fetch(gatewayBase + '/api/chat', {
       method:'POST',
@@ -247,7 +279,7 @@ async function run() {
     await close(gatewayServer);
   }
 
-  console.log('Chat tests passed: modular gateway, serialized AI queues, cancellable streaming voice, Live2D recovery and fallback');
+  console.log('Chat tests passed: modular gateway, static delivery, serialized AI queues, cancellable streaming voice, Live2D recovery and fallback');
 }
 
 run().catch(function (error) {

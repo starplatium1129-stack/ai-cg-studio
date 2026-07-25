@@ -4,6 +4,7 @@ var http = require('http');
 var https = require('https');
 var path = require('path');
 var performance = require('perf_hooks').performance;
+var wavQuality = require('../runtime/wav-quality');
 
 var baseUrl = process.argv[2] || 'http://127.0.0.1:3000';
 var directVoiceUrl = process.argv[3] || '';
@@ -68,13 +69,22 @@ async function jsonRequest(method, pathname, payload) {
 }
 
 function metric(label, result) {
-  return {
+  var output = {
     label:label,
     headers_ms:result.headersMs,
     first_audio_ms:result.firstByteMs,
     total_ms:result.totalMs,
     kib:round(result.bytes / 1024)
   };
+  try {
+    var audio = wavQuality.analyzeWav(result.body);
+    output.duration_ms = audio.durationMs;
+    output.rms = audio.rms;
+    output.peak = audio.peak;
+    output.silence = audio.silenceRatio;
+    output.quality_issues = wavQuality.assertVoiceQuality(audio).join(', ');
+  } catch (error) {}
+  return output;
 }
 
 function voicePayload(voice, text, emotion) {

@@ -7,6 +7,7 @@ var path = require('path');
 var fs = require('fs');
 var crypto = require('crypto');
 var runtimeTools = require('../scripts/runtime/runtime-paths');
+var createOperationManager = require('../services/control-operation').createOperationManager;
 
 var app = express();
 app.disable('x-powered-by');
@@ -45,8 +46,15 @@ var state = {
   ollamaModels: [],
   ollamaVram: 0,
   modeBusy: false,
+  operation: null,
   logs: []
 };
+
+var operationManager = createOperationManager(state);
+var beginOperation = operationManager.begin;
+var updateOperation = operationManager.update;
+var finishOperation = operationManager.finish;
+var operationConflict = operationManager.rejectConflict;
 
 // ─── Helpers ───
 function log(msg) {
@@ -99,6 +107,10 @@ function sanitizeVoiceProfile(value, fallback) {
     textLang: String(pick('textLang', 'ja') || 'ja').trim().slice(0, 12),
     gptWeightsPath: String(pick('gptWeightsPath', '') || '').trim().slice(0, 1000),
     sovitsWeightsPath: String(pick('sovitsWeightsPath', '') || '').trim().slice(0, 1000),
+    seed: Math.max(0, Math.min(2147483647, Math.round(Number(pick('seed', 1234)) || 1234))),
+    topK: Math.max(1, Math.min(100, Math.round(Number(pick('topK', 15)) || 15))),
+    topP: Math.max(0.1, Math.min(1, Number(pick('topP', 1)) || 1)),
+    temperature: Math.max(0.1, Math.min(2, Number(pick('temperature', 1)) || 1)),
     references: safeReferences
   };
 }
@@ -145,95 +157,114 @@ function findAvailableGatewayPort(callback) {
 
 var sdCheckInFlight = false;
 var lastSDCheck = 0;
-function checkSD() {
-  if (sdCheckInFlight || Date.now() - lastSDCheck < 2000) return;
+var sdCheckPromise = null;
+function checkSD(force) {
+  if (sdCheckInFlight && sdCheckPromise) return sdCheckPromise;
+  if (!force && Date.now() - lastSDCheck < 2000) return Promise.resolve(state.sdOnline);
   sdCheckInFlight = true;
-  var finished = false;
-  function finish(online) {
-    if (finished) return;
-    finished = true;
-    state.sdOnline = online;
-    lastSDCheck = Date.now();
-    sdCheckInFlight = false;
-  }
-  try {
-    var target = new URL('/sdapi/v1/sd-models', SD_HOST);
-    var transport = target.protocol === 'https:' ? https : http;
-    var requestOptions = SD_API_AUTH ? { headers:{ Authorization:'Basic ' + Buffer.from(SD_API_AUTH).toString('base64') } } : {};
-    var req = transport.get(target, requestOptions, function (res) {
-      res.resume();
-      finish(res.statusCode >= 200 && res.statusCode < 300);
-    });
-    req.setTimeout(1500, function () { req.destroy(new Error('SD health check timeout')); });
-    req.on('error', function () { finish(false); });
-  } catch (e) {
-    finish(false);
-  }
+  sdCheckPromise = new Promise(function (resolve) {
+    var finished = false;
+    function finish(online) {
+      if (finished) return;
+      finished = true;
+      state.sdOnline = online;
+      lastSDCheck = Date.now();
+      sdCheckInFlight = false;
+      sdCheckPromise = null;
+      resolve(online);
+    }
+    try {
+      var target = new URL('/sdapi/v1/sd-models', SD_HOST);
+      var transport = target.protocol === 'https:' ? https : http;
+      var requestOptions = SD_API_AUTH ? { headers:{ Authorization:'Basic ' + Buffer.from(SD_API_AUTH).toString('base64') } } : {};
+      var req = transport.get(target, requestOptions, function (res) {
+        res.resume();
+        finish(res.statusCode >= 200 && res.statusCode < 300);
+      });
+      req.setTimeout(1500, function () { req.destroy(new Error('SD health check timeout')); });
+      req.on('error', function () { finish(false); });
+    } catch (e) { finish(false); }
+  });
+  return sdCheckPromise;
 }
 
 var ttsCheckInFlight = false;
 var lastTTSCheck = 0;
-function checkTTS() {
-  if (ttsCheckInFlight || Date.now() - lastTTSCheck < 2000) return;
+var ttsCheckPromise = null;
+function checkTTS(force) {
+  if (ttsCheckInFlight && ttsCheckPromise) return ttsCheckPromise;
+  if (!force && Date.now() - lastTTSCheck < 2000) return Promise.resolve(state.ttsOnline);
   ttsCheckInFlight = true;
-  var finished = false;
-  function finish(online) {
-    if (finished) return;
-    finished = true;
-    state.ttsOnline = online;
-    lastTTSCheck = Date.now();
-    ttsCheckInFlight = false;
-  }
-  try {
-    var target = new URL('/docs', TTS_HOST);
-    var transport = target.protocol === 'https:' ? https : http;
-    var req = transport.get(target, function (res) {
-      res.resume();
-      finish(res.statusCode >= 200 && res.statusCode < 500);
-    });
-    req.setTimeout(1500, function () { req.destroy(new Error('TTS health check timeout')); });
-    req.on('error', function () { finish(false); });
-  } catch (error) { finish(false); }
+  ttsCheckPromise = new Promise(function (resolve) {
+    var finished = false;
+    function finish(online) {
+      if (finished) return;
+      finished = true;
+      state.ttsOnline = online;
+      lastTTSCheck = Date.now();
+      ttsCheckInFlight = false;
+      ttsCheckPromise = null;
+      resolve(online);
+    }
+    try {
+      var target = new URL('/docs', TTS_HOST);
+      var transport = target.protocol === 'https:' ? https : http;
+      var req = transport.get(target, function (res) {
+        res.resume();
+        finish(res.statusCode >= 200 && res.statusCode < 500);
+      });
+      req.setTimeout(1500, function () { req.destroy(new Error('TTS health check timeout')); });
+      req.on('error', function () { finish(false); });
+    } catch (error) { finish(false); }
+  });
+  return ttsCheckPromise;
 }
 
 // Ollama 检测：/api/ps 同时返回已加载模型与显存占用
 var ollamaCheckInFlight = false;
 var lastOllamaCheck = 0;
-function checkOllama() {
-  if (ollamaCheckInFlight || Date.now() - lastOllamaCheck < 3000) return;
+var ollamaCheckPromise = null;
+function checkOllama(force) {
+  if (ollamaCheckInFlight && ollamaCheckPromise) return ollamaCheckPromise;
+  if (!force && Date.now() - lastOllamaCheck < 3000) return Promise.resolve(state.ollamaOnline);
   ollamaCheckInFlight = true;
-  var finished = false;
-  function finish(online, models, vram) {
-    if (finished) return;
-    finished = true;
-    state.ollamaOnline = online;
-    state.ollamaModels = models || [];
-    state.ollamaVram = vram || 0;
-    lastOllamaCheck = Date.now();
-    ollamaCheckInFlight = false;
-  }
-  try {
-    var target = new URL('/api/ps', OLLAMA_HOST);
-    var transport = target.protocol === 'https:' ? https : http;
-    var req = transport.get(target, function (res) {
-      var chunks = [];
-      res.on('data', function (chunk) { chunks.push(chunk); });
-      res.on('end', function () {
-        try {
-          var data = JSON.parse(Buffer.concat(chunks).toString('utf8'));
-          var models = Array.isArray(data.models) ? data.models : [];
-          var vram = 0;
-          var names = models.map(function (item) {
-            vram += Number(item.size_vram) || 0;
-            return String(item.name || item.model || '');
-          }).filter(Boolean);
-          finish(res.statusCode >= 200 && res.statusCode < 300, names, vram);
-        } catch (error) { finish(false, [], 0); }
+  ollamaCheckPromise = new Promise(function (resolve) {
+    var finished = false;
+    function finish(online, models, vram) {
+      if (finished) return;
+      finished = true;
+      state.ollamaOnline = online;
+      state.ollamaModels = models || [];
+      state.ollamaVram = vram || 0;
+      lastOllamaCheck = Date.now();
+      ollamaCheckInFlight = false;
+      ollamaCheckPromise = null;
+      resolve(online);
+    }
+    try {
+      var target = new URL('/api/ps', OLLAMA_HOST);
+      var transport = target.protocol === 'https:' ? https : http;
+      var req = transport.get(target, function (res) {
+        var chunks = [];
+        res.on('data', function (chunk) { chunks.push(chunk); });
+        res.on('end', function () {
+          try {
+            var data = JSON.parse(Buffer.concat(chunks).toString('utf8'));
+            var models = Array.isArray(data.models) ? data.models : [];
+            var vram = 0;
+            var names = models.map(function (item) {
+              vram += Number(item.size_vram) || 0;
+              return String(item.name || item.model || '');
+            }).filter(Boolean);
+            finish(res.statusCode >= 200 && res.statusCode < 300, names, vram);
+          } catch (error) { finish(false, [], 0); }
+        });
       });
-    });
-    req.setTimeout(2000, function () { req.destroy(new Error('Ollama health check timeout')); });
-    req.on('error', function () { finish(false, [], 0); });
-  } catch (error) { finish(false, [], 0); }
+      req.setTimeout(2000, function () { req.destroy(new Error('Ollama health check timeout')); });
+      req.on('error', function () { finish(false, [], 0); });
+    } catch (error) { finish(false, [], 0); }
+  });
+  return ollamaCheckPromise;
 }
 
 // 通用本机 JSON 请求（用于 Ollama 管理接口）
@@ -446,9 +477,7 @@ function refreshServiceStates() {
   lastSDCheck = 0;
   lastTTSCheck = 0;
   lastOllamaCheck = 0;
-  checkSD();
-  checkTTS();
-  checkOllama();
+  return Promise.all([checkSD(true), checkTTS(true), checkOllama(true)]);
 }
 
 // Check if gateway is already running on startup
@@ -506,10 +535,9 @@ app.get('/', function (req, res) {
 
 app.get('/api/status', function (req, res) {
   if (state.running) fetchTunnelStatus();
-  checkSD();
-  checkTTS();
-  checkOllama();
-  res.json({
+  var force = req.query.fresh === '1';
+  Promise.all([checkSD(force), checkTTS(force), checkOllama(force)]).then(function () {
+    res.json({
     running: state.running,
     token: state.token,
     domain: state.domain,
@@ -524,6 +552,7 @@ app.get('/api/status', function (req, res) {
     ollamaVram: state.ollamaVram,
     autoStartVoice: AUTO_START_VOICE,
     modeBusy: !!state.modeBusy,
+    operation: state.operation,
     voices: VOICE_PROFILES,
     gatewayPort: state.gatewayPort,
     uptime: state.startTime ? Math.floor((Date.now() - state.startTime) / 1000) : 0,
@@ -531,6 +560,9 @@ app.get('/api/status', function (req, res) {
     tunnelStatus: state.tunnelStatus,
     localLink: state.running ? 'http://127.0.0.1:' + state.gatewayPort + '/' : '',
     shareLink: state.domain && state.token ? state.domain + '?token=' + state.token : ''
+    });
+  }).catch(function (error) {
+    res.status(500).json({ error:error.message || '服务状态检测失败' });
   });
 });
 
@@ -584,21 +616,40 @@ app.post('/api/preference', function (req, res) {
 app.post('/api/service/voice', function (req, res) {
   var action = req.body && req.body.action;
   if (!['start', 'stop'].includes(action)) return res.status(400).json({ ok:false, error:'action 必须是 start 或 stop' });
+  if (operationConflict(res)) return;
+  var operation = beginOperation('voice-' + action, action === 'start' ? '启动语音服务' : '停止语音服务', [
+    action === 'start' ? '正在启动 GPT-SoVITS' : '正在停止 GPT-SoVITS', '正在验证语音服务状态'
+  ]);
   var task = action === 'start'
     ? runScriptAsync(VOICE_START_SCRIPT, ['-WaitSeconds', '60'], 90000)
     : runScriptAsync(VOICE_STOP_SCRIPT, [], 30000);
-  task.then(function (result) {
-    refreshServiceStates();
-    if (result.ok) log('GPT-SoVITS ' + (action === 'start' ? '已启动' : '已停止'));
-    else log('GPT-SoVITS ' + action + ' 失败: ' + result.error);
+  task.then(async function (result) {
+    updateOperation(operation, 1);
+    await refreshServiceStates();
+    var expected = action === 'start';
+    if (!result.ok && !!state.ttsOnline === expected) {
+      log('GPT-SoVITS 脚本返回提示，但目标状态已经达到: ' + (result.error || '未知提示'));
+    } else if (!result.ok) {
+      throw new Error(result.error || '语音服务操作失败');
+    }
+    if (!!state.ttsOnline !== expected) throw new Error(action === 'start' ? '启动脚本已结束，但语音接口尚未通过健康检查' : '停止脚本已结束，但语音接口仍可访问');
+    log('GPT-SoVITS ' + (action === 'start' ? '已启动' : '已停止'));
+    finishOperation(operation, '', action === 'start' ? '语音服务已就绪' : '语音服务已停止');
+  }).catch(function (error) {
+    log('GPT-SoVITS ' + action + ' 失败: ' + error.message);
+    finishOperation(operation, error.message);
   });
-  res.json({ ok:true, pending:true, message:'语音服务正在' + (action === 'start' ? '启动（约需 30—60 秒）' : '停止') + '，请留意状态灯' });
+  res.json({ ok:true, pending:true, operation:operation, message:'语音服务正在' + (action === 'start' ? '启动（约需 30—60 秒）' : '停止') });
 });
 
 app.post('/api/service/webui', function (req, res) {
   var action = req.body && req.body.action;
   if (!['start', 'stop'].includes(action)) return res.status(400).json({ ok:false, error:'action 必须是 start 或 stop' });
-  runScriptAsync(WEBUI_MANAGER_SCRIPT, ['-Action', action === 'start' ? 'Start' : 'Stop'], 90000).then(function (result) {
+  if (operationConflict(res)) return;
+  var operation = beginOperation('webui-' + action, action === 'start' ? '启动绘图服务' : '停止绘图服务', [
+    action === 'start' ? '正在启动 SD WebUI' : '正在停止 SD WebUI', '正在验证绘图服务状态'
+  ]);
+  runScriptAsync(WEBUI_MANAGER_SCRIPT, ['-Action', action === 'start' ? 'Start' : 'Stop'], 90000).then(async function (result) {
     if (result.ok && result.message) {
       try {
         var parsed = JSON.parse(result.message);
@@ -606,46 +657,74 @@ app.post('/api/service/webui', function (req, res) {
         if (parsed.message) result.message = parsed.message;
       } catch (error) {}
     }
-    refreshServiceStates();
-    if (result.ok) log('WebUI ' + (action === 'start' ? '已启动' : '已停止'));
-    else log('WebUI ' + action + ' 失败: ' + result.error);
+    updateOperation(operation, 1);
+    await refreshServiceStates();
+    var expected = action === 'start';
+    if (!result.ok && !!state.sdOnline === expected) {
+      log('WebUI 脚本返回提示，但目标状态已经达到: ' + (result.error || '未知提示'));
+    } else if (!result.ok) {
+      throw new Error(result.error || 'WebUI 操作失败');
+    }
+    if (!!state.sdOnline !== expected) throw new Error(action === 'start' ? '启动脚本已结束，但 WebUI API 尚未通过健康检查' : '停止脚本已结束，但 WebUI API 仍可访问');
+    log('WebUI ' + (action === 'start' ? '已启动' : '已停止'));
+    finishOperation(operation, '', action === 'start' ? '绘图服务已就绪' : '绘图服务已停止');
+  }).catch(function (error) {
+    log('WebUI ' + action + ' 失败: ' + error.message);
+    finishOperation(operation, error.message);
   });
-  res.json({ ok:true, pending:true, message:'WebUI 正在' + (action === 'start' ? '启动' : '停止') + '，请留意状态灯' });
+  res.json({ ok:true, pending:true, operation:operation, message:'WebUI 正在' + (action === 'start' ? '启动' : '停止') });
 });
 
 app.post('/api/service/ollama', function (req, res) {
   var action = req.body && req.body.action;
   if (action !== 'unload') return res.status(400).json({ ok:false, error:'action 目前只支持 unload' });
+  if (operationConflict(res)) return;
+  var operation = beginOperation('ollama-unload', '释放聊天模型显存', ['正在卸载 Ollama 模型', '正在验证显存释放结果']);
   unloadOllamaModels().then(function (result) {
-    if (result.ok) log(result.message || 'Ollama 模型已卸载');
-    else log('Ollama 卸载失败: ' + (result.error || '未知错误'));
+    if (!result.ok) throw new Error(result.error || 'Ollama 卸载失败');
+    updateOperation(operation, 1);
+    return refreshServiceStates().then(function () {
+      if (state.ollamaModels.length) throw new Error('仍有 ' + state.ollamaModels.length + ' 个模型占用显存');
+      log(result.message || 'Ollama 模型已卸载');
+      finishOperation(operation, '', '聊天模型显存已释放');
+    });
+  }).catch(function (error) {
+    log('Ollama 卸载失败: ' + error.message);
+    finishOperation(operation, error.message);
   });
-  res.json({ ok:true, pending:true, message:'正在卸载 Ollama 已加载模型…' });
+  res.json({ ok:true, pending:true, operation:operation, message:'正在卸载 Ollama 已加载模型…' });
 });
 
 app.post('/api/mode', function (req, res) {
   var mode = req.body && req.body.mode;
   if (!['draw', 'chat'].includes(mode)) return res.status(400).json({ ok:false, error:'mode 必须是 draw 或 chat' });
-  if (state.modeBusy) return res.status(409).json({ ok:false, error:'正在切换模式中，请稍候' });
+  if (operationConflict(res)) return;
+  var stages = mode === 'draw'
+    ? ['正在停止语音服务', '正在卸载聊天模型', '正在启动 SD WebUI', '正在验证绘图环境']
+    : ['正在释放受管 WebUI', '正在启动语音服务', '正在验证聊天环境'];
+  var operation = beginOperation('mode-' + mode, mode === 'draw' ? '切换到绘图优先' : '切换到聊天优先', stages);
   state.modeBusy = true;
-  res.json({ ok:true, pending:true, message: mode === 'draw' ? '正在切换到绘图优先：先释放语音与聊天模型显存，再启动 WebUI' : '正在切换到聊天优先：释放受管 WebUI，启动语音服务' });
+  res.json({ ok:true, pending:true, operation:operation, message: mode === 'draw' ? '正在切换到绘图优先：先释放语音与聊天模型显存，再启动 WebUI' : '正在切换到聊天优先：释放受管 WebUI，启动语音服务' });
 
   (async function () {
     if (mode === 'draw') {
       log('模式切换：绘图优先 —— 停止语音服务…');
       var stopVoice = await runScriptAsync(VOICE_STOP_SCRIPT, [], 30000);
       if (!stopVoice.ok) log('停止语音服务时出现提示: ' + stopVoice.error);
+      updateOperation(operation, 1);
       log('模式切换：绘图优先 —— 卸载 Ollama 模型…');
       var unload = await unloadOllamaModels();
       if (!unload.ok) log('Ollama 卸载提示: ' + (unload.error || unload.message || ''));
+      updateOperation(operation, 2);
       log('模式切换：绘图优先 —— 启动 WebUI…');
       var startWebui = await runScriptAsync(WEBUI_MANAGER_SCRIPT, ['-Action', 'Start'], 90000);
       if (startWebui.ok) {
         try { state.webuiManaged = !!JSON.parse(startWebui.message || '{}').managed; } catch (error) {}
         log('绘图优先模式就绪：显存已优先让给 WebUI');
       } else {
-        log('WebUI 启动失败: ' + startWebui.error);
+        throw new Error('WebUI 启动失败: ' + startWebui.error);
       }
+      updateOperation(operation, 3);
     } else {
       if (state.webuiManaged) {
         log('模式切换：聊天优先 —— 停止受管 WebUI 释放显存…');
@@ -658,17 +737,23 @@ app.post('/api/mode', function (req, res) {
       } else {
         log('模式切换：聊天优先 —— WebUI 为手动启动或非受管，保持不动');
       }
+      updateOperation(operation, 1);
       log('模式切换：聊天优先 —— 启动语音服务…');
       var startVoice = await runScriptAsync(VOICE_START_SCRIPT, ['-WaitSeconds', '60'], 90000);
       if (startVoice.ok) log('聊天优先模式就绪：语音服务已启动');
-      else log('语音服务启动失败: ' + startVoice.error);
+      else throw new Error('语音服务启动失败: ' + startVoice.error);
+      updateOperation(operation, 2);
     }
-    refreshServiceStates();
+    await refreshServiceStates();
+    if (mode === 'draw' && !state.sdOnline) throw new Error('WebUI 未通过最终健康检查');
+    if (mode === 'chat' && !state.ttsOnline) throw new Error('语音服务未通过最终健康检查');
     state.modeBusy = false;
+    finishOperation(operation, '', mode === 'draw' ? '绘图环境已就绪' : '聊天环境已就绪');
   })().catch(function (error) {
     log('模式切换失败: ' + error.message);
     refreshServiceStates();
     state.modeBusy = false;
+    finishOperation(operation, error.message);
   });
 });
 
@@ -726,6 +811,7 @@ app.post('/api/start', function (req, res) {
 });
 
 app.post('/api/stop', function (req, res) {
+  var stopManagedServices = !!(req.body && req.body.stopManagedServices === true);
   if (state.running) {
     log('Stopping gateway...');
     // cloudflared runs detached, so stop it separately before the gateway.
@@ -733,12 +819,16 @@ app.post('/api/stop', function (req, res) {
     killByPidFile(RUNTIME.gatewayPid, state.gatewayPort);
   }
 
-  var voiceResult = stopManagedVoiceService();
-  if (voiceResult.error) log('Voice service stop failed: ' + voiceResult.error);
-  else if (voiceResult.attempted) log(voiceResult.message || 'GPT-SoVITS stopped.');
-  var webuiResult = runManagedWebUI('Stop');
-  if (!webuiResult.ok) log('Managed WebUI stop failed: ' + webuiResult.error);
-  else log(webuiResult.message || 'Managed WebUI stopped.');
+  var voiceResult = { attempted:false, error:'' };
+  var webuiResult = { ok:true, managed:state.webuiManaged, error:'' };
+  if (stopManagedServices) {
+    voiceResult = stopManagedVoiceService();
+    if (voiceResult.error) log('Voice service stop failed: ' + voiceResult.error);
+    else if (voiceResult.attempted) log(voiceResult.message || 'GPT-SoVITS stopped.');
+    webuiResult = runManagedWebUI('Stop');
+    if (!webuiResult.ok) log('Managed WebUI stop failed: ' + webuiResult.error);
+    else log(webuiResult.message || 'Managed WebUI stopped.');
+  }
 
   state.running = false;
   state.domain = '';
@@ -747,9 +837,9 @@ app.post('/api/stop', function (req, res) {
   state.tunnelStatus = 'idle';
   state.gatewayPort = GW_PORT;
   try { fs.unlinkSync(RUNTIME.gatewayPort); } catch (e) {}
-  log('Gateway, tunnel, managed voice service, and managed WebUI stopped');
+  log(stopManagedServices ? 'Gateway, tunnel, managed voice service, and managed WebUI stopped' : 'Gateway and tunnel stopped; generation services left unchanged');
 
-  res.json({ ok: true, voiceStopped:!!voiceResult.attempted, voiceError:voiceResult.error || '', webuiStopped:!!webuiResult.managed, webuiError:webuiResult.error || '' });
+  res.json({ ok:true, gatewayStopped:true, servicesPreserved:!stopManagedServices, voiceStopped:!!voiceResult.attempted, voiceError:voiceResult.error || '', webuiStopped:stopManagedServices && !!webuiResult.managed, webuiError:webuiResult.error || '' });
 });
 
 app.get('/api/logs', function (req, res) {

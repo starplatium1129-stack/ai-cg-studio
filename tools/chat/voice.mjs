@@ -124,6 +124,9 @@ export class VoiceController {
     this.chain = Promise.resolve();
     this.pending = 0;
     this.turn = { ...meta, session:this.session };
+    this.turn.referenceEmotion = '';
+    this._lastEmotion = 'neutral';
+    this._neutralStreak = 0;
     this.prepare(meta.voice, true);
     if (this.enabled() && !this.readyFor(meta.voice)) {
       this.onStatus(this.availability.online ? '当前角色声线未配置' : '语音服务未启动');
@@ -188,6 +191,11 @@ export class VoiceController {
       emotion = rawEmotion;
     }
     this._lastEmotion = emotion;
+    // 一次回复只使用一组身份参考音。情绪仍可驱动表情，但不会逐句
+    // 更换录音样本，避免同一角色在连续对白中突然改变音色和音高。
+    if (!meta.referenceEmotion) {
+      meta.referenceEmotion = rawEmotion === 'neutral' ? 'gentle' : rawEmotion;
+    }
     let translated = '';
 
     try {
@@ -216,19 +224,25 @@ export class VoiceController {
             text: translated || cleaned,
             language: translated ? 'ja' : 'zh',
             emotion,
+            referenceEmotion:meta.referenceEmotion,
+            consistency:'locked',
             speed: 1
           }),
           signal
         });
-        if (!response.ok) throw await responseError(response, '语音服务暂不可用');
+        if (!response.ok) {
+          const responseFailure = await responseError(response, '语音服务暂不可用');
+          responseFailure.status = response.status;
+          throw responseFailure;
+        }
         let buffer = await response.arrayBuffer();
         buffer = fixWavHeader(buffer);
         const url = URL.createObjectURL(new Blob([buffer], { type:'audio/wav' }));
         return { url, emotion };
       } catch (error) {
         if (isAbortError(error) || (signal && signal.aborted)) throw error;
-        if (attempt === 0 && error.name === 'TypeError') {
-          await new Promise(function(resolve) { setTimeout(resolve, 300); });
+        if (attempt === 0 && (error.name === 'TypeError' || Number(error.status) >= 500)) {
+          await new Promise(function(resolve) { setTimeout(resolve, 220); });
           if (signal && signal.aborted) throw error;
           ttsError = error;
           continue;

@@ -7,24 +7,24 @@ const path = require('path');
 const root = path.resolve(__dirname, '..', '..');
 const read = (relative) => fs.readFileSync(path.join(root, relative), 'utf8');
 const page = read('tools/showcase.html');
+const controller = read('tools/showcase.js');
 const nav = read('tools/nav.js');
 const home = read('index.html');
 const server = read('server.js');
 
 assert(page.includes('data-nav="showcase"'), 'showcase page must activate its navigation item');
-assert(page.includes("state={entries:[],filtered:[],featured:new Set(),scope:'all',character:'all',rating:'all',adult:false"), 'R18 must be hidden by default');
-assert(page.includes("fetch('/scene-showcase/manifest.json'"), 'showcase page must load the approved manifest');
-assert(page.includes("prompt-builder.html?scene="), 'approved samples must link back to the director');
-assert(page.includes('loading="lazy"'), 'sample thumbnails must lazy-load');
-assert(page.includes('id="r18Filter"') && page.includes('window.confirm'), 'R18 requires an explicit reveal action');
+assert(controller.includes("state={entries:[],filtered:[],featured:new Set(),scope:'all',character:'all',rating:'all',adult:false"), 'R18 must be hidden by default');
+assert(controller.includes("fetch('/scene-showcase/manifest.json'"), 'showcase page must load the approved manifest');
+assert(controller.includes("prompt-builder.html?scene="), 'approved samples must link back to the director');
+assert(controller.includes('loading="lazy"'), 'sample thumbnails must lazy-load');
+assert(page.includes('id="r18Filter"') && controller.includes('window.confirm'), 'R18 requires an explicit reveal action');
 assert(nav.includes("id:'showcase'") && nav.includes("href:'tools/showcase.html'"), 'global navigation must expose the showcase');
 assert(home.includes('href="tools/showcase.html"'), 'home page must expose the showcase');
 assert(server.includes("app.use('/scene-showcase'"), 'server must mount showcase assets');
 assert(server.includes('SCENE_SHOWCASE_DIR') && server.includes('manifest\\.json'), 'server must resolve and restrict the showcase directory');
 
-const inlineScripts = [...page.matchAll(/<script>([\s\S]*?)<\/script>/g)].map((match) => match[1]);
-assert(inlineScripts.length === 1, 'showcase page should have one inline controller');
-new Function(inlineScripts[0]);
+assert(page.includes('<script src="showcase.js?v=1"></script>'), 'showcase controller must stay external');
+new Function(controller);
 
 const showcaseRoot = path.resolve(root, '..', 'AI', 'SceneShowcase');
 if (fs.existsSync(showcaseRoot)) {

@@ -15,6 +15,17 @@ function jsonText(value) {
   return JSON.stringify(value, null, 2) + '\n';
 }
 
+function writeTextAtomic(source, content) {
+  const temporary = path.join(path.dirname(source), `.${path.basename(source)}.${process.pid}.${Date.now()}.tmp`);
+  try {
+    fs.writeFileSync(temporary, content, 'utf8');
+    fs.renameSync(temporary, source);
+  } catch (error) {
+    try { if (fs.existsSync(temporary)) fs.unlinkSync(temporary); } catch (cleanupError) {}
+    throw error;
+  }
+}
+
 function sceneNumber(scene) {
   const match = String(scene && scene.id || '').match(/^sc(\d+)$/);
   return match ? Number(match[1]) : Number.MAX_SAFE_INTEGER;
@@ -59,12 +70,12 @@ function writeSceneShards(scenes) {
     groups.get(file).push(scene);
   }
   for (const [file, items] of groups) {
-    fs.writeFileSync(path.join(shardsDir, file), jsonText(items), 'utf8');
+    writeTextAtomic(path.join(shardsDir, file), jsonText(items));
   }
 }
 
 function writeAggregate(scenes) {
-  fs.writeFileSync(aggregatePath, jsonText(sortScenes(scenes)), 'utf8');
+  writeTextAtomic(aggregatePath, jsonText(sortScenes(scenes)));
 }
 
 function writeSceneSet(scenes) {
