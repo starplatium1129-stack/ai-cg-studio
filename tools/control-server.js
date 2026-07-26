@@ -318,18 +318,25 @@ function fetchTunnelStatus(cb) {
       hostname: '127.0.0.1',
       port: state.gatewayPort,
       path: '/api/tunnel-status',
-      headers: state.token ? { 'X-Token': state.token } : {}
+      headers: state.token ? { 'X-Token': state.token } : {},
+      timeout: 2500
     }, function (res) {
       var body = '';
       res.on('data', function (c) { body += c; });
       res.on('end', function () {
         try {
           var d = JSON.parse(body);
-          if (d.url) state.domain = d.url;
+          if (d.url) {
+            state.domain = d.url;
+            if (state.tunnelStatus === 'connecting' || state.tunnelStatus === 'idle') {
+              state.tunnelStatus = 'ready';
+            }
+          }
         } catch (e) {}
         if (cb) cb();
       });
     });
+    req.on('timeout', function () { req.destroy(); });
     req.on('error', function () { if (cb) cb(); });
   } catch (e) { if (cb) cb(); }
 }
@@ -544,36 +551,43 @@ app.get('/', function (req, res) {
 });
 
 app.get('/api/status', function (req, res) {
-  if (state.running) fetchTunnelStatus();
   var force = req.query.fresh === '1';
-  Promise.all([checkSD(force), checkTTS(force), checkOllama(force)]).then(function () {
-    res.json({
-    running: state.running,
-    token: state.token,
-    domain: state.domain,
-    sdOnline: state.sdOnline,
-    webuiManaged: !!state.webuiManaged,
-    sdHost: SD_HOST,
-    ttsOnline: !!state.ttsOnline,
-    ttsHost: TTS_HOST,
-    ollamaOnline: !!state.ollamaOnline,
-    ollamaHost: OLLAMA_HOST,
-    ollamaModels: state.ollamaModels,
-    ollamaVram: state.ollamaVram,
-    autoStartVoice: AUTO_START_VOICE,
-    modeBusy: !!state.modeBusy,
-    operation: state.operation,
-    voices: VOICE_PROFILES,
-    gatewayPort: state.gatewayPort,
-    uptime: state.startTime ? Math.floor((Date.now() - state.startTime) / 1000) : 0,
-    tunnelAvailable: fs.existsSync(CLOUDFLARED_PATH),
-    tunnelStatus: state.tunnelStatus,
-    localLink: state.running ? 'http://127.0.0.1:' + state.gatewayPort + '/' : '',
-    shareLink: state.domain && state.token ? state.domain + '?token=' + state.token : ''
+  function respond() {
+    Promise.all([checkSD(force), checkTTS(force), checkOllama(force)]).then(function () {
+      res.json({
+        running: state.running,
+        token: state.token,
+        domain: state.domain,
+        sdOnline: state.sdOnline,
+        webuiManaged: !!state.webuiManaged,
+        sdHost: SD_HOST,
+        ttsOnline: !!state.ttsOnline,
+        ttsHost: TTS_HOST,
+        ollamaOnline: !!state.ollamaOnline,
+        ollamaHost: OLLAMA_HOST,
+        ollamaModels: state.ollamaModels,
+        ollamaVram: state.ollamaVram,
+        autoStartVoice: AUTO_START_VOICE,
+        modeBusy: !!state.modeBusy,
+        operation: state.operation,
+        voices: VOICE_PROFILES,
+        gatewayPort: state.gatewayPort,
+        uptime: state.startTime ? Math.floor((Date.now() - state.startTime) / 1000) : 0,
+        tunnelAvailable: fs.existsSync(CLOUDFLARED_PATH),
+        tunnelStatus: state.tunnelStatus,
+        localLink: state.running ? 'http://127.0.0.1:' + state.gatewayPort + '/' : '',
+        shareLink: state.domain && state.token ? state.domain + '?token=' + state.token : ''
+      });
+    }).catch(function (error) {
+      res.status(500).json({ error:error.message || '服务状态检测失败' });
     });
-  }).catch(function (error) {
-    res.status(500).json({ error:error.message || '服务状态检测失败' });
-  });
+  }
+  // Wait for tunnel URL when still connecting so the panel can show the share link promptly.
+  if (state.running && !state.domain && (state.tunnelStatus === 'connecting' || state.tunnelStatus === 'ready')) {
+    return fetchTunnelStatus(respond);
+  }
+  if (state.running) fetchTunnelStatus();
+  respond();
 });
 
 app.post('/api/config', function (req, res) {

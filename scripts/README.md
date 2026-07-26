@@ -14,3 +14,5 @@ npm run validate
 npm run scenes:normalize
 npm run benchmark:voice
 ```
+
+一次性训练/实验脚本不入仓；需要时从 git 历史 `scripts/archive/model-training/`（commit `7a54f00` 之前）取回。

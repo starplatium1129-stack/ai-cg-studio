@@ -185,14 +185,14 @@ function renderStatus(data) {
     setBadge(document.getElementById('badge'), 'running', '运行中');
     button.className = 'btn btn-primary cta-btn cta-btn-danger';
     button.textContent = '停止网站网关';
-    button.onclick = doStop;
-    runningPanel.hidden = true;
+    button.setAttribute('data-action', 'stop-gateway');
+    runningPanel.hidden = false;
   } else {
     setBadge(document.getElementById('badge'), 'stopped', '未启动');
     button.className = 'btn btn-primary cta-btn';
     button.textContent = tunnelEnabled ? '启动并生成分享链接' : '启动（仅本地）';
-    button.onclick = doStart;
-    runningPanel.hidden = false;
+    button.setAttribute('data-action', 'start-gateway');
+    runningPanel.hidden = true;
   }
 
   setBadge(document.getElementById('sd-badge'), data.sdOnline ? 'online' : 'offline', data.sdOnline ? (data.webuiManaged ? '已连接 · 自动管理' : '已连接 · 手动') : '未连接');
@@ -211,7 +211,10 @@ function renderStatus(data) {
   button.disabled = operationBusy;
   var configuredVoices = [nene, natsume].filter(function(p) { return !!(p.refAudioPath && p.promptText); }).length;
   setBadge(document.getElementById('voice-badge'), configuredVoices === 2 ? 'online' : (configuredVoices ? 'offline' : 'stopped'), configuredVoices === 2 ? '宁宁与夏目已配置' : (configuredVoices ? configuredVoices + ' / 2 已配置' : '尚未配置'));
-  setBadge(document.getElementById('share-badge'), data.tunnelAvailable ? 'online' : 'stopped', data.tunnelAvailable ? (tunnelEnabled ? '可按需启用' : '已安装 · 当前关闭') : '未安装 · 仅本地');
+  var shareBadgeText = !data.tunnelAvailable
+    ? '未安装 · 仅本地'
+    : (data.shareLink ? '链接已就绪' : (data.tunnelStatus === 'disabled' || !tunnelEnabled ? '已安装 · 当前关闭' : (data.tunnelStatus === 'failed' ? '连接失败' : (data.running ? '正在连接' : '可按需启用'))));
+  setBadge(document.getElementById('share-badge'), data.shareLink ? 'online' : (data.tunnelAvailable ? (data.tunnelStatus === 'failed' ? 'offline' : 'online') : 'stopped'), shareBadgeText);
   setBadge(document.getElementById('ready-badge'), data.sdOnline ? 'running' : 'offline', data.sdOnline ? (data.ttsOnline ? '画面与语音就绪' : '画面创作就绪') : '浏览可用 · 等待 SD');
 
   if (data.sdOnline && data.ttsOnline) {
@@ -409,6 +412,7 @@ document.addEventListener('click', function (event) {
   if (action === 'save-config') return doSaveSDConfig();
   if (action === 'toggle-tunnel') return toggleTunnel();
   if (action === 'start-gateway') return doStart();
+  if (action === 'stop-gateway') return doStop();
   if (action === 'copy-local') return copyLocalLink();
   if (action === 'copy-share') return copyShareLink();
   if (action === 'export-diagnostics') return exportDiagnostics(event);
