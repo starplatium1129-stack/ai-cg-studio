@@ -5,15 +5,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>作品册 · 绫季绘境</title>
-<link rel="stylesheet" href="../css/design-system.css?v=9">
+<link rel="stylesheet" href="../css/design-system.css?v=10">
 <script src="nav.js?v=7"></script>
 <script src="theme.js?v=5"></script>
 <style>
-  body { background:linear-gradient(180deg,color-mix(in srgb,var(--bg-page) 94%,var(--accent-soft)),var(--bg-page) 34rem); }
+  body { background:linear-gradient(180deg,color-mix(in srgb,var(--bg-base) 94%,var(--accent-soft)),var(--bg-base) 34rem); }
   .gallery-shell { width:min(1880px,100%); margin:0 auto; padding:clamp(24px,4vw,64px) clamp(14px,3vw,48px) 80px; }
   .gallery-intro { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:end; gap:var(--s-5); margin:0 auto clamp(24px,4vw,48px); max-width:1500px; }
-  .gallery-kicker { margin-bottom:8px; color:var(--accent); font:750 .67rem var(--font-mono); letter-spacing:.16em; text-transform:uppercase; }
-  .gallery-title { margin:0; color:var(--text-primary); font-size:clamp(2rem,4vw,4.4rem); font-weight:760; letter-spacing:-.045em; line-height:.98; }
+  .gallery-title { margin:0; color:var(--text-primary); font-family:var(--font-display); font-size:clamp(2rem,4vw,4.4rem); font-weight:760; letter-spacing:-.045em; line-height:.98; }
   .gallery-subtitle { max-width:660px; margin:14px 0 0; color:var(--text-secondary); font-size:clamp(.86rem,1.2vw,1rem); line-height:1.8; }
   .gallery-count { color:var(--text-muted); font:650 .72rem var(--font-mono); letter-spacing:.08em; white-space:nowrap; }
 
@@ -26,8 +25,8 @@
   .gallery-toolbar-note { margin-left:auto; padding-right:12px; color:var(--text-muted); font-size:.7rem; white-space:nowrap; }
 
   .gallery-wall { max-width:1500px; margin:0 auto; columns:4 260px; column-gap:clamp(12px,1.6vw,24px); }
-  .artwork { position:relative; break-inside:avoid; margin:0 0 clamp(12px,1.6vw,24px); overflow:hidden; border:1px solid color-mix(in srgb,var(--border-soft) 78%,transparent); border-radius:clamp(10px,1.2vw,18px); background:#111015; box-shadow:0 5px 18px color-mix(in srgb,#000 11%,transparent); transition:transform 220ms ease,box-shadow 220ms ease,border-color 220ms ease; }
-  .artwork:hover { transform:translateY(-3px); border-color:color-mix(in srgb,var(--accent) 38%,var(--border-soft)); box-shadow:0 18px 44px color-mix(in srgb,#000 20%,transparent); }
+  .artwork { position:relative; break-inside:avoid; margin:0 0 clamp(12px,1.6vw,24px); overflow:hidden; border:1px solid color-mix(in srgb,var(--border-soft) 78%,transparent); border-radius:clamp(10px,1.2vw,18px); background:var(--bg-deep); box-shadow:var(--shadow-sm); transition:transform var(--t-base),box-shadow var(--t-base),border-color var(--t-base); }
+  .artwork:hover { transform:translateY(-3px); border-color:color-mix(in srgb,var(--accent) 38%,var(--border-soft)); box-shadow:var(--shadow-md); }
   .artwork-button { display:block; width:100%; padding:0; border:0; background:transparent; color:inherit; cursor:zoom-in; }
   .artwork-button:focus-visible { outline:3px solid var(--accent); outline-offset:-3px; }
   .artwork-media { position:relative; width:100%; aspect-ratio:var(--art-ratio,3/4); overflow:hidden; background:linear-gradient(135deg,#17141c,#0c0b0f); }
@@ -41,12 +40,12 @@
 
   .gallery-section { column-span:all; display:flex; align-items:center; gap:14px; margin:12px 0 18px; color:var(--text-muted); font:700 .64rem var(--font-mono); letter-spacing:.13em; text-transform:uppercase; }
   .gallery-section::after { content:""; height:1px; flex:1; background:var(--border-soft); }
-  .gallery-empty { max-width:980px; margin:10vh auto 0; padding:clamp(42px,8vw,92px) 24px; border:1px solid var(--border-soft); border-radius:24px; background:color-mix(in srgb,var(--bg-surface) 80%,transparent); text-align:center; }
-  .gallery-empty-icon { font-size:2.4rem; }
-  .gallery-empty h2 { margin:18px 0 8px; color:var(--text-primary); font-size:clamp(1.3rem,3vw,2rem); }
-  .gallery-empty p { max-width:600px; margin:0 auto 24px; color:var(--text-secondary); line-height:1.8; }
+  .gallery-empty { max-width:720px; margin:8vh auto 0; padding:clamp(36px,6vw,72px) var(--s-5); border:1px solid var(--border-soft); border-radius:24px; background:color-mix(in srgb,var(--bg-surface) 82%,transparent); box-shadow:inset 0 1px 0 var(--glass-highlight),var(--shadow-sm); text-align:center; }
+  .gallery-empty-icon { display:grid; place-items:center; width:56px; height:56px; margin:0 auto 14px; border-radius:18px; background:var(--accent-soft); color:var(--accent); font-size:1.5rem; }
+  .gallery-empty h2 { margin:0 0 8px; color:var(--text-primary); font-size:clamp(1.2rem,2.4vw,1.7rem); }
+  .gallery-empty p { max-width:520px; margin:0 auto var(--s-5); color:var(--text-secondary); line-height:1.75; }
 
-  .art-viewer { position:fixed; inset:0; z-index:10000; display:none; grid-template-columns:minmax(0,1fr) minmax(290px,360px); background:rgba(6,5,8,.97); color:#fff; }
+  .art-viewer { position:fixed; inset:0; z-index:10000; display:none; grid-template-columns:minmax(0,1fr) minmax(290px,360px); background:color-mix(in srgb,var(--bg-deep) 97%,#000); color:var(--text-primary); }
   .art-viewer.open { display:grid; }
   .viewer-stage { position:relative; min-width:0; display:grid; place-items:center; padding:clamp(46px,5vw,76px) clamp(48px,6vw,92px); overflow:hidden; }
   .viewer-image { display:block; max-width:100%; max-height:calc(100vh - 92px); width:auto; height:auto; object-fit:contain; filter:drop-shadow(0 24px 56px rgba(0,0,0,.42)); }
@@ -62,8 +61,8 @@
   .viewer-nav:disabled { opacity:.24; cursor:default; }
   .viewer-position { position:absolute; left:50%; bottom:18px; transform:translateX(-50%); color:rgba(255,255,255,.62); font:650 .65rem var(--font-mono); letter-spacing:.12em; }
   .viewer-info { min-width:0; overflow-y:auto; padding:56px 28px 32px; border-left:1px solid rgba(255,255,255,.1); background:rgba(16,14,19,.9); }
-  .viewer-kicker { color:#d885aa; font:700 .62rem var(--font-mono); letter-spacing:.13em; text-transform:uppercase; }
-  .viewer-title { margin:10px 0 6px; color:#fff; font-size:1.5rem; line-height:1.25; }
+  .viewer-kicker { color:var(--accent); font:700 .62rem var(--font-mono); letter-spacing:.13em; text-transform:uppercase; }
+  .viewer-title { margin:10px 0 6px; color:var(--text-primary); font-size:1.5rem; line-height:1.25; }
   .viewer-meta { color:rgba(255,255,255,.55); font-size:.72rem; line-height:1.6; }
   .viewer-story { margin:26px 0; color:rgba(255,255,255,.8); font-size:.88rem; font-style:italic; line-height:1.8; }
   .viewer-facts { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:24px; }

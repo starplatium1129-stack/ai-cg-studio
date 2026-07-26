@@ -526,7 +526,9 @@ app.use(function (req, res, next) {
   res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
   res.setHeader('Content-Security-Policy',
     "default-src 'self'; img-src 'self' data: blob: https:; media-src 'self' data: blob:; " +
-    "script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' data: blob: https:; " +
+    "script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+    "font-src 'self' https://fonts.gstatic.com data:; " +
+    "connect-src 'self' data: blob: https:; " +
     "object-src 'none'; base-uri 'self'; frame-ancestors 'none'");
   next();
 });

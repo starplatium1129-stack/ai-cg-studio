@@ -5,6 +5,7 @@ const root = path.resolve(__dirname, '..', '..');
 const htmlPath = path.join(root, 'tools', 'prompt-builder.html');
 const iconPath = path.join(root, 'tools', 'icon-system.js');
 const designPath = path.join(root, 'css', 'design-system.css');
+const directorCssPath = path.join(root, 'css', 'director.css');
 const promptPolicyPath = path.join(root, 'tools', 'prompt-policy.js');
 const modules = [
   ['state.js', 'function loadData'],
@@ -36,15 +37,20 @@ if (!html.includes('storage-health.js?v=1')) fail('missing storage health script
 if (html.indexOf('prompt-policy.js?v=1') > html.indexOf('prompt-builder/state.js')) fail('prompt policy must load before builder modules');
 if (html.indexOf('storage-health.js?v=1') > html.indexOf('prompt-builder/state.js')) fail('storage health must load before builder modules');
 if (!html.includes('id="focusModeBtn"')) fail('missing focus mode control');
-if (!html.includes('body.focus-mode .col-left')) fail('missing focus mode layout rules');
+if (!html.includes('director.css?v=')) fail('missing director stylesheet reference');
 if (!html.includes('id="firstRunExperienceBtn"')) fail('missing actionable first creation entry');
 if (!html.includes('id="directorModeBasic"') || !html.includes('id="directorModePro"')) fail('missing director mode controls');
 if (!html.includes('id="recentSceneShortcuts"')) fail('missing recent scene shortcuts');
-if (!html.includes('@property --character-accent') || !html.includes('characterGlassSweep')) fail('missing animated character theme treatment');
-if (!html.includes('workspace-enter-result') || !html.includes('directorViewIn')) fail('missing director view transition');
 if (html.includes('id="obOverlay"') || html.includes('data-ob-active')) fail('legacy blocking onboarding must be removed');
+if (!fs.existsSync(directorCssPath)) fail('missing css/director.css');
+const directorSource = fs.readFileSync(directorCssPath, 'utf8');
+if (!directorSource.includes('body.focus-mode .col-left')) fail('missing focus mode layout rules');
+if (!directorSource.includes('@property --character-accent') || !directorSource.includes('characterGlassSweep')) fail('missing animated character theme treatment');
+if (!directorSource.includes('workspace-enter-result') || !directorSource.includes('directorViewIn')) fail('missing director view transition');
 const designSource = fs.readFileSync(designPath, 'utf8');
 if (!designSource.includes('@view-transition') || !designSource.includes('--glass-fill-strong')) fail('missing global page transition or liquid glass tokens');
+if (!designSource.includes('.nav-back') || !designSource.includes('.page-kicker') || !designSource.includes('.empty-state')) fail('missing shared atelier chrome components');
+if (!designSource.includes('Noto+Sans+SC') && !designSource.includes('fonts.googleapis.com')) fail('missing web font loading for Noto Sans SC');
 if (!fs.existsSync(iconPath)) fail('missing icon-system.js');
 if (!fs.existsSync(promptPolicyPath)) fail('missing prompt-policy.js');
 const promptPolicySource = fs.readFileSync(promptPolicyPath, 'utf8');
@@ -101,7 +107,9 @@ if (!sceneSource.includes("document.createElement('article')") || !sceneSource.i
 if (sceneSource.includes("card.setAttribute('role','button')") || sceneSource.includes('card.tabIndex = 0')) {
   fail('scene card containers must not impersonate a button around nested actions');
 }
-if (!html.includes('.scene-card:focus-within .scene-direct-btn')) fail('keyboard focus must reveal the scene quick action');
+if (!directorSource.includes('.scene-card:focus-within .scene-direct-btn') && !html.includes('.scene-card:focus-within .scene-direct-btn')) {
+  fail('keyboard focus must reveal the scene quick action');
+}
 if (!sceneSource.includes('isSceneBoundStory(activeScene, state.story, state.__sceneBaseStory)') || !sceneSource.includes('keepStory:!sceneBoundStory')) {
   fail('character switching must drop only story text still bound to an incompatible scene');
 }

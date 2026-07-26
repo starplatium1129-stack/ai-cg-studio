@@ -5,6 +5,8 @@
    Theme: dark(紫黑) / light(暖薰衣草白) 双主题切换
    ============================================================ */
 
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Noto+Sans+SC:wght@400;500;600;700;800&display=swap");
+
 :root {
   /* ---- Core palette (dark default, overridden in [data-theme="light"]) ---- */
   --bg-deep:       #100d1b;     /* 最深背景 */
@@ -54,8 +56,15 @@
   --mood-warmth:    #FFB74D;
 
   /* ---- Typography ---- */
-  --font-sans:      "Noto Sans SC", "HarmonyOS Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-sans:      "Noto Sans SC", "HarmonyOS Sans SC", "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
   --font-mono:      "JetBrains Mono", "Fira Code", "Consolas", monospace;
+  --font-display:   "Noto Sans SC", "HarmonyOS Sans SC", "PingFang SC", "Microsoft YaHei UI", sans-serif;
+
+  /* ---- Character accents (route-aware; director may animate) ---- */
+  --character-accent: var(--accent);
+  --character-accent-hover: var(--accent-hover);
+  --character-soft: var(--accent-soft);
+  --character-glow: var(--accent-glow);
 
   /* ---- Spacing scale (8px base) ---- */
   --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px;
@@ -324,6 +333,7 @@ body > *:has(+ .footer),
   margin-bottom: var(--s-6);
 }
 .page-header h1 {
+  font-family: var(--font-display);
   font-size: 2.2rem; font-weight: 700;
   margin-bottom: var(--s-3);
   background: linear-gradient(135deg, var(--text-primary) 60%, var(--accent));
@@ -333,6 +343,148 @@ body > *:has(+ .footer),
 .page-header .subtitle {
   color: var(--text-secondary); font-size: 1.05rem;
   max-width: 600px; margin: 0 auto;
+}
+
+/* ============================================================
+   Shared atelier chrome (kickers, back link, toolbars, empty)
+   ============================================================ */
+.nav-back {
+  display: inline-flex; align-items: center; gap: var(--s-2);
+  margin-bottom: var(--s-4);
+  color: var(--text-secondary); font-size: 0.9rem;
+  text-decoration: none;
+  transition: color var(--t-fast);
+}
+.nav-back:hover { color: var(--accent); }
+
+.page-kicker,
+.pb-kicker,
+.gallery-kicker {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 6px;
+  color: var(--text-muted);
+  font: 650 0.66rem var(--font-mono);
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+.page-kicker::before,
+.pb-kicker::before {
+  content: "";
+  width: 22px; height: 1px;
+  background: linear-gradient(90deg, var(--accent), var(--natsume-amber));
+}
+.gallery-kicker {
+  color: var(--accent);
+  font-weight: 750;
+  letter-spacing: 0.16em;
+}
+
+.page-title {
+  margin: 0;
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-size: clamp(1.55rem, 2.4vw, 2.4rem);
+  font-weight: 760;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+}
+.page-subtitle {
+  margin: 10px 0 0;
+  max-width: 640px;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+.page-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: var(--s-5);
+  margin-bottom: clamp(20px, 3vw, 40px);
+}
+.atelier-shell {
+  width: min(1880px, 100%);
+  margin: 0 auto;
+  padding: clamp(20px, 3.5vw, 48px) clamp(14px, 3vw, 40px) var(--s-8);
+}
+
+.sticky-toolbar {
+  position: sticky; top: 58px; z-index: 20;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  margin-bottom: clamp(18px, 2.5vw, 32px);
+  padding: 10px;
+  border: 1px solid color-mix(in srgb, var(--border-soft) 76%, transparent);
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--bg-surface) 84%, transparent);
+  box-shadow: 0 12px 38px color-mix(in srgb, var(--text-primary) 7%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(130%);
+  backdrop-filter: blur(18px) saturate(130%);
+}
+.filter-pill {
+  min-height: 36px;
+  padding: 0 15px;
+  border: 1px solid transparent;
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--text-secondary);
+  font: 650 0.76rem var(--font-sans);
+  cursor: pointer;
+  transition: border-color var(--t-fast), background var(--t-fast), color var(--t-fast);
+}
+.filter-pill:hover,
+.filter-pill.active {
+  border-color: color-mix(in srgb, var(--accent) 34%, var(--border-soft));
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.empty-state {
+  max-width: 720px;
+  margin: 8vh auto 0;
+  padding: clamp(36px, 6vw, 72px) var(--s-5);
+  border: 1px solid var(--border-soft);
+  border-radius: 24px;
+  background: color-mix(in srgb, var(--bg-surface) 82%, transparent);
+  box-shadow: inset 0 1px 0 var(--glass-highlight), var(--shadow-sm);
+  text-align: center;
+}
+.empty-state-icon {
+  display: grid; place-items: center;
+  width: 56px; height: 56px; margin: 0 auto 14px;
+  border-radius: 18px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 1.5rem;
+}
+.empty-state h2 {
+  margin: 0 0 8px;
+  color: var(--text-primary);
+  font-size: clamp(1.2rem, 2.4vw, 1.7rem);
+}
+.empty-state p {
+  max-width: 520px;
+  margin: 0 auto var(--s-5);
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+.empty-state .btn { justify-content: center; }
+
+.loading-pulse {
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 0 var(--accent-glow);
+  animation: atelierPulse 1.2s ease-out infinite;
+}
+@keyframes atelierPulse {
+  70% { box-shadow: 0 0 0 10px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+@media (max-width: 600px) {
+  .page-intro { grid-template-columns: 1fr; }
+  .sticky-toolbar { top: 52px; border-radius: 16px; }
 }
 
 /* ============================================================

@@ -5,16 +5,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>场景管理器 · 绫季绘境</title>
-<link rel="stylesheet" href="../css/design-system.css?v=8">
+<link rel="stylesheet" href="../css/design-system.css?v=10">
 <script src="nav.js?v=7"></script>
 <script src="theme.js?v=5"></script>
 <style>
   .page { max-width: 1400px; margin: 0 auto; padding: var(--s-5) var(--s-4); }
-  h1.title { font-size: 1.8rem; font-weight: 800; margin-bottom: var(--s-2); }
-  .subtitle { color: var(--text-secondary); margin-bottom: var(--s-4); }
+  h1.title { font-family:var(--font-display); font-size:clamp(1.55rem,2.2vw,1.9rem); font-weight:760; letter-spacing:-.02em; margin-bottom: var(--s-2); }
+  .subtitle { color: var(--text-secondary); margin-bottom: var(--s-4); line-height:1.7; max-width:720px; }
 
   /* Toolbar */
-  .toolbar { display: flex; gap: var(--s-3); flex-wrap: wrap; align-items: center; margin-bottom: var(--s-4); }
+  .toolbar { display: flex; gap: var(--s-3); flex-wrap: wrap; align-items: center; margin-bottom: var(--s-4); padding:10px; border:1px solid color-mix(in srgb,var(--border-soft) 80%,transparent); border-radius:16px; background:color-mix(in srgb,var(--bg-surface) 78%,transparent); }
   .search-input { flex: 1; min-width: 200px; padding: 8px 12px; background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-md); color: var(--text-primary); font-size: .9rem; }
   .search-input:focus { border-color: var(--accent); outline: none; }
   .filter-select { padding: 8px 12px; background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-md); color: var(--text-primary); font-size: .85rem; }
@@ -107,6 +107,7 @@
 </nav>
 
 <article class="page">
+  <div class="page-kicker">Scene maintenance</div>
   <h1 class="title">场景维护</h1>
   <p class="subtitle">像整理相册一样维护场景。修改先保留在当前页面，确认后再一次写入项目并自动检查。</p>
 

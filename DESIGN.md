@@ -287,6 +287,12 @@ Keep the primary navigation short and stable. The current page is visible, but
 navigation does not compete with the artwork. Mobile navigation opens as a clear
 menu with text labels.
 
+Shared atelier chrome lives in `css/design-system.css`: `.nav-back`,
+`.page-kicker` (aliases `.pb-kicker` / `.gallery-kicker`), `.page-title`,
+`.page-subtitle`, `.page-intro`, `.atelier-shell`, `.sticky-toolbar`,
+`.filter-pill`, and `.empty-state`. Prefer these over page-local copies.
+Director-only layout lives in `css/director.css`.
+
 ### Buttons
 
 Each region has at most one visually dominant action. Primary means “continue or

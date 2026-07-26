@@ -5,15 +5,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>模型 · 绫季绘境</title>
-<link rel="stylesheet" href="../css/design-system.css?v=8">
+<link rel="stylesheet" href="../css/design-system.css?v=10">
 <script src="nav.js?v=7"></script>
 <script src="theme.js?v=5"></script>
 <style>
   .page { max-width: 1000px; margin: 0 auto; padding: var(--s-6) var(--s-5); }
-  .nav-back { display: inline-flex; align-items: center; gap: var(--s-2); color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4); }
-  .nav-back:hover { color: var(--accent); }
-  h1.title { font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, var(--text-primary) 50%, var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: var(--s-2); }
-  .subtitle { color: var(--text-secondary); margin-bottom: var(--s-5); }
+  h1.title { font-family:var(--font-display); font-size:clamp(1.7rem,2.6vw,2.2rem); font-weight:760; letter-spacing:-.02em; color:var(--text-primary); margin-bottom: var(--s-2); }
+  .subtitle { color: var(--text-secondary); margin-bottom: var(--s-5); line-height:1.7; max-width:640px; }
   .lora-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: var(--s-4); }
   .lora-card { padding: var(--s-5); }
   .lora-name { font-size: 1.2rem; font-weight: 800; font-family: var(--font-mono); color: var(--accent); margin-bottom: var(--s-1); }
@@ -51,7 +49,8 @@
 
 <article class="page">
   <a href="../index.html" class="nav-back">← 回首页</a>
-  <h1 class="title">🧪 模型</h1>
+  <div class="page-kicker">Model shelf</div>
+  <h1 class="title">模型</h1>
   <p class="subtitle">查看角色模型的训练信息与推荐强度；进入绘制后会自动带上对应模型。</p>
   <div class="lora-grid" id="loraGrid"></div>
 </article>

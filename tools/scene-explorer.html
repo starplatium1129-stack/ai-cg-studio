@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>灵感场景 · 绫季绘境</title>
-<link rel="stylesheet" href="../css/design-system.css?v=8">
+<link rel="stylesheet" href="../css/design-system.css?v=10">
 <link rel="stylesheet" href="../css/scene-card.css?v=7">
 <script src="nav.js?v=7"></script>
 <script src="scene-card.js?v=8"></script>
@@ -15,14 +15,13 @@
 <script src="theme.js?v=5"></script>
 <style>
   .page { width:100%; min-width:0; max-width:1100px; margin:0 auto; padding:var(--s-5) var(--s-4); }
-  .nav-back { display: inline-flex; align-items: center; gap: var(--s-2); color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4); }
-  .nav-back:hover { color: var(--accent); }
-  h1.title { font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, var(--text-primary) 50%, var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: var(--s-2); }
-  .subtitle { color: var(--text-secondary); margin-bottom: var(--s-6); font-size: 1.05rem; }
+  h1.title { font-family:var(--font-display); font-size:clamp(1.7rem,2.6vw,2.2rem); font-weight:760; letter-spacing:-.02em; color:var(--text-primary); margin-bottom: var(--s-2); }
+  .subtitle { color: var(--text-secondary); margin-bottom: var(--s-6); font-size: 1.05rem; line-height:1.7; }
 
   .curation-panel { display:grid; grid-template-columns:minmax(220px,.9fr) 2fr; gap:var(--s-4); margin:-10px 0 var(--s-5); padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-xl); background:linear-gradient(120deg,var(--accent-soft),transparent 62%),var(--bg-surface); box-shadow:var(--shadow-sm); backdrop-filter:blur(20px) saturate(130%); }
   .curation-intro { display:flex; flex-direction:column; justify-content:center; }
-  .curation-kicker { color:var(--accent); font-size:.7rem; font-weight:800; letter-spacing:.14em; text-transform:uppercase; }
+  .curation-kicker { display:flex; align-items:center; gap:8px; color:var(--text-muted); font:650 .66rem var(--font-mono); letter-spacing:.13em; text-transform:uppercase; }
+  .curation-kicker::before { content:""; width:22px; height:1px; background:linear-gradient(90deg,var(--accent),var(--natsume-amber)); }
   .curation-intro h2 { margin:4px 0 2px; font-size:1.15rem; }
   .curation-intro p { margin:0; color:var(--text-muted); font-size:.8rem; line-height:1.6; }
   .mood-rails { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--s-2); }
@@ -138,7 +137,8 @@
 <article class="page">
   <a href="../index.html" class="nav-back">← 回首页</a>
 
-  <h1 class="title">🌸 灵感场景</h1>
+  <div class="page-kicker">Scene discovery</div>
+  <h1 class="title">灵感场景</h1>
   <p class="subtitle">宁宁的月光秘密，夏目的夜灯关心。这里整理了 <strong id="sceneTotal">正在整理的场景</strong>，优先给你真正值得开画的瞬间。</p>
 
   <section class="curation-panel" aria-label="场景灵感精选">
