@@ -75,17 +75,25 @@ for (const name of chatModules) {
   if (name.endsWith('.js')) new vm.Script(source, { filename:rel });
 }
 
-// Hot pages share atelier chrome: back link + kicker/empty primitives.
+// Hot pages share atelier chrome: back link + kicker primitives.
 const chromePages = [
   'tools/control.html',
   'tools/gallery.html',
   'tools/scene-manager.html',
   'tools/chat.html',
-  'tools/prompt-builder.html'
+  'tools/prompt-builder.html',
+  'tools/showcase.html',
+  'tools/scenario.html',
+  'tools/color-script.html',
+  'tools/lora.html'
 ];
 for (const rel of chromePages) {
   const html = fs.readFileSync(path.join(root, rel), 'utf8');
   assert(/class=["'][^"']*\bnav-back\b/.test(html), `${rel} must expose nav-back chrome`);
+  assert(
+    /class=["'][^"']*\b(page-kicker|pb-kicker|gallery-kicker)\b/.test(html),
+    `${rel} must expose page/pb/gallery kicker chrome`
+  );
 }
 
 console.log(`Page architecture tests passed: ${pages.length} controllers + prompt-builder + chat modules are external, CSP-ready, and syntactically valid`);
