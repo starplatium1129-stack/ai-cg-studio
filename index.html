@@ -5,10 +5,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>绫季绘境 · 把心动的一瞬，画成一张 CG</title>
-<link rel="stylesheet" href="css/design-system.css?v=11">
-<link rel="stylesheet" href="css/scene-card.css?v=7">
+<link rel="stylesheet" href="css/design-system.css?v=12">
+<link rel="stylesheet" href="css/scene-card.css?v=8">
 <script src="tools/nav.js?v=8"></script>
-<script src="tools/scene-card.js?v=8"></script>
+<script src="tools/scene-card.js?v=9"></script>
 <script src="tools/scene-ux.js?v=2"></script>
 <script src="tools/image-store.js?v=5"></script>
 <script src="tools/theme.js?v=5"></script>
@@ -20,7 +20,7 @@
      ============================================================ */
 
   /* ---------- Story → Scene → Prompt → Image chain ---------- */
-  .chain { display: flex; align-items: center; gap: var(--s-2); margin: var(--s-5) 0; flex-wrap: wrap; }
+  .chain { display: flex; align-items: center; gap: var(--s-2); margin: var(--s-5) 0; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 2px; }
   .chain-step {
     display: flex; align-items: center; gap: var(--s-2);
     background: var(--bg-surface); border: 1px solid var(--border-soft);
@@ -36,8 +36,16 @@
   .chain-arrow { color: var(--text-muted); font-size: var(--fs-body-sm); }
 
   /* ---------- Hero (10s rule) ---------- */
-  .home-hero { padding: var(--s-8) 0 var(--s-7); display:grid; grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr); gap:var(--s-7); align-items:center; }
-  .hero-copy { grid-column:1; align-self:end; }
+  /* 首屏:文案 | 立绘 上下并列;精选场景横跨整行,不再挤在左下角死白区 */
+  .home-hero {
+    padding: var(--s-8) 0 var(--s-6);
+    display:grid;
+    grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr);
+    grid-template-rows:auto auto;
+    gap:var(--s-5) var(--s-6);
+    align-items:end;
+  }
+  .hero-copy { grid-column:1; grid-row:1; align-self:end; }
   /* Hero 展示级字号刻意高于 --fs-display(2.2rem):首页是唯一的门面标题,
      不进 --fs-* 阶梯,以免把整条标题阶梯抬高。 */
   .hero-title {
@@ -65,20 +73,20 @@
   .ctas { display: flex; gap: var(--s-3); flex-wrap: wrap; margin-bottom: var(--s-4); align-items: center; }
   .ctas .btn .ic { font-size: var(--fs-title-xs); }
 
-  /* Scene strip — horizontal scroll of real scenes */
+  /* Scene strip — 横跨整行的精选胶片,是首屏第二主角 */
   .hero-strip {
-    grid-column: 1;
-    align-self: start;
+    grid-column: 1 / -1;
+    grid-row: 2;
     position: relative;
     background: linear-gradient(135deg,var(--accent-soft),transparent 65%),var(--bg-surface);
     border: 1px solid var(--border-soft);
     border-radius: var(--r-xl);
-    padding: var(--s-4);
+    padding: var(--s-4) var(--s-5);
     overflow: hidden;
   }
   /* hero-orbit 是画面容器(两张官方立绘),其上的文字与遮罩走 --on-art-* / --art-scrim,
      故意不随主题翻转:立绘底部永远是深色渐隐,白字才可读。 */
-  .hero-orbit { grid-column:2; grid-row:1 / span 2; min-height:440px; position:relative; isolation:isolate; border:1px solid var(--border-soft); border-radius:var(--r-stage); overflow:hidden; background:linear-gradient(135deg,rgba(244,166,215,.18),transparent 42%),linear-gradient(155deg,#4d3d67 0%,#2a233d 48%,#171422 100%); box-shadow:inset 0 1px 0 var(--on-art-line),var(--shadow-lg); }
+  .hero-orbit { grid-column:2; grid-row:1; min-height:380px; position:relative; isolation:isolate; border:1px solid var(--border-soft); border-radius:var(--r-stage); overflow:hidden; background:linear-gradient(135deg,rgba(244,166,215,.18),transparent 42%),linear-gradient(155deg,#4d3d67 0%,#2a233d 48%,#171422 100%); box-shadow:inset 0 1px 0 var(--on-art-line),var(--shadow-lg); }
   [data-theme="light"] .hero-orbit { background:linear-gradient(135deg,var(--on-art-sheen),transparent 38%),linear-gradient(155deg,#e9ddf4 0%,#c8b9df 48%,#8c789f 100%); box-shadow:inset 0 1px 0 var(--glass-specular),var(--shadow-lg); }
   .hero-orbit::before { content:"綾　季"; position:absolute; z-index:var(--z-base); top:18px; left:22px; color:var(--on-art-wash); font:700 clamp(4rem,8vw,7rem)/1 var(--font-serif); letter-spacing:.08em; writing-mode:vertical-rl; }
   .hero-orbit::after { content:""; position:absolute; z-index:var(--z-raised); inset:auto 0 0; height:45%; background:linear-gradient(180deg,transparent,var(--art-scrim) 74%); pointer-events:none; }
@@ -137,12 +145,16 @@
 
   /* ---------- Section ---------- */
   .home-section { padding: var(--s-6) 0; border-top: 1px solid var(--border-soft); }
-  .home-section-head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: var(--s-5); gap: var(--s-4); }
+  /* 次级区块:间距收紧,不与主入口抢节奏 */
+  .home-section-quiet { padding: var(--s-5) 0; }
+  .home-section-head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: var(--s-4); gap: var(--s-4); }
+  .home-section-quiet .home-section-head { margin-bottom: var(--s-3); }
   .home-section-head h2 { font-size: var(--fs-title-sm); margin-bottom: var(--s-1); }
+  .home-section-quiet .home-section-head h2 { font-size: var(--fs-body-lg); font-weight: 700; }
   .home-section-head .hint { font-size: var(--fs-body-sm); color: var(--text-muted); margin: 0; }
   .home-section-head .link { font-size: var(--fs-body-sm); flex-shrink: 0; }
 
-  /* 5 段区块标识:几何走全局 .eyebrow,此处只留 01/02/03 序号槽(与 css/docs.css 一致) */
+  /* 区块标识:几何走全局 .eyebrow,此处只留序号槽 */
   .eyebrow .num { color: var(--text-muted); font-weight: 600; }
 
   /* ---------- Tools ---------- */
@@ -152,6 +164,11 @@
   }
   @media (min-width: 1200px) {
     .tools-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+  /* 手册两卡:不占满四列,避免空旷 */
+  .tools-grid-sparse { max-width: 640px; }
+  @media (min-width: 768px) {
+    .tools-grid-sparse { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
   .tool-card {
     display: flex; flex-direction: column; gap: var(--s-2);
@@ -219,11 +236,11 @@
     <div class="hero-copy">
       <span class="eyebrow">✦ NENE &amp; NATSUME ATELIER</span>
       <h1 class="hero-title">绫季绘境<span class="jp">把心动的一瞬，画成一张 CG</span></h1>
-      <p class="hero-sub">从一个想画的瞬间开始：角色、情绪与光线，收成只属于你的一张 CG。</p>
+      <p class="hero-sub">选一个想画的瞬间。角色、情绪与光线会替你备好，你只管按下出图。</p>
       <p class="hero-jp">「 ときめきの一瞬を、一枚の CG に 」</p>
       <div class="ctas">
         <a href="tools/prompt-builder.html" class="btn btn-lg btn-primary" id="continueCta"><span class="ic">✨</span> 开始绘制</a>
-        <a href="tools/gallery.html" class="btn btn-lg btn-ghost"><span class="ic">🎞</span> 浏览作品册</a>
+        <a href="tools/showcase.html" class="btn btn-lg btn-ghost"><span class="ic">🖼</span> 先看成片</a>
       </div>
       <div class="continue-hint" id="continueHint"></div>
       <div class="chain">
@@ -244,7 +261,7 @@
       <div class="orbit-label"><strong>NENE × NATSUME</strong><span>把今天的心动，收进画面。</span></div>
     </aside>
     <div class="hero-strip" aria-labelledby="featuredScenesLabel">
-      <div class="strip-label" id="featuredScenesLabel"><span class="dot"></span> 主理人精选 · <span id="sceneCountCopy">场景加载中</span></div>
+      <div class="strip-label" id="featuredScenesLabel"><span class="dot"></span> 今天可以从这里开始 · <span id="sceneCountCopy">场景加载中</span></div>
       <div class="strip-scroll" id="featuredScenes"></div>
     </div>
   </div>
@@ -253,70 +270,26 @@
 <section class="container home-section">
   <div class="home-section-head">
     <div>
-      <span class="eyebrow"><span class="num">01</span> ✨ 创作</span>
+      <span class="eyebrow"><span class="num">01</span> 创作入口</span>
       <h2>从这里开画</h2>
-      <p class="hint">先选角色与画风，再进绘制台；想聊天时去角色房间。</p>
+      <p class="hint">想出图就进绘制台；想先找感觉，去灵感或角色房间。</p>
     </div>
   </div>
   <div class="tools-grid">
-    <a href="tools/character.html" class="tool-card card-create card-level-2">
-      <span class="ic">👤</span><span class="t">角色档案</span>
-      <span class="d">确认视觉特征、性格与绑定模型。</span>
-      <span class="go">→ 打开</span>
-    </a>
-    <a href="tools/style.html" class="tool-card card-create card-level-2">
-      <span class="ic">🎨</span><span class="t">画风</span>
-      <span class="d">统一色调、配色与画面情绪。</span>
-      <span class="go">→ 打开</span>
-    </a>
     <a href="tools/prompt-builder.html" class="tool-card card-create card-level-2">
       <span class="ic">✦</span><span class="t">开始绘制</span>
       <span class="d">选场景、调情绪与镜头，一键出图。</span>
       <span class="go">→ 打开</span>
     </a>
-    <a href="tools/chat.html" class="tool-card card-create card-level-2">
-      <span class="ic">☕</span><span class="t">角色房间</span>
-      <span class="d">和宁宁或夏目聊天，声音也在本机。</span>
-      <span class="go">→ 进入房间</span>
-    </a>
-  </div>
-</section>
-
-<section class="container home-section">
-  <div class="home-section-head">
-    <div>
-      <span class="eyebrow"><span class="num">02</span> 🧪 素材</span>
-      <h2>角色模型</h2>
-      <p class="hint">LoRA 决定脸与气质是否稳定；出图时会自动带上。</p>
-    </div>
-  </div>
-  <div class="tools-grid">
-    <a href="tools/lora.html" class="tool-card card-create card-level-2">
-      <span class="ic">🧪</span><span class="t">模型</span>
-      <span class="d">查看训练信息、推荐强度与适用场景。</span>
-      <span class="go">→ 打开</span>
-    </a>
-  </div>
-</section>
-
-<section class="container home-section">
-  <div class="home-section-head">
-    <div>
-      <span class="eyebrow"><span class="num">03</span> 🎬 作品</span>
-      <h2>灵感与成片</h2>
-      <p class="hint">先逛灵感与样张，再回看自己的作品册。</p>
-    </div>
-  </div>
-  <div class="tools-grid">
     <a href="tools/scene-explorer.html" class="tool-card card-create card-level-2">
       <span class="ic">🌸</span><span class="t">灵感场景</span>
-      <span class="d" id="sceneLibraryCopy">招牌与精选瞬间，情绪与镜头已预填。</span>
+      <span class="d" id="sceneLibraryCopy">招牌瞬间已备好情绪与镜头。</span>
       <span class="go">→ 打开</span>
     </a>
-    <a href="tools/gallery.html" class="tool-card card-create card-level-2">
-      <span class="ic">🎞</span><span class="t">作品册</span>
-      <span class="d">本机创作历史，原比例安静欣赏。</span>
-      <span class="go">→ 打开</span>
+    <a href="tools/chat.html" class="tool-card card-create card-level-2">
+      <span class="ic">☕</span><span class="t">角色房间</span>
+      <span class="d">和宁宁或夏目聊一会儿，声音也在本机。</span>
+      <span class="go">→ 进入房间</span>
     </a>
     <a href="tools/showcase.html" class="tool-card card-create card-level-2">
       <span class="ic">🖼</span><span class="t">效果样张</span>
@@ -326,23 +299,55 @@
   </div>
 </section>
 
-<section class="container home-section">
+<section class="container home-section home-section-quiet">
   <div class="home-section-head">
     <div>
-      <span class="eyebrow"><span class="num">04</span> 📖 手册</span>
-      <h2>创作手册</h2>
-      <p class="hint">取向、规范与上手路径，写给真正会用的人。</p>
+      <span class="eyebrow">资料与回顾</span>
+      <h2>慢慢看的部分</h2>
+      <p class="hint">角色、画风、模型与作品册——需要时再打开。</p>
     </div>
   </div>
   <div class="tools-grid">
-    <a href="docs/philosophy.html" class="tool-card card-create card-level-2">
-      <span class="ic">📖</span><span class="t">创作取向</span>
-      <span class="d">为什么先故事与画面，再整理参数。</span>
+    <a href="tools/character.html" class="tool-card card-create">
+      <span class="ic">👤</span><span class="t">角色档案</span>
+      <span class="d">视觉特征、性格与绑定模型。</span>
       <span class="go">→ 打开</span>
     </a>
-    <a href="docs/getting-started.html" class="tool-card card-create card-level-2">
+    <a href="tools/style.html" class="tool-card card-create">
+      <span class="ic">🎨</span><span class="t">画风</span>
+      <span class="d">色调、配色与画面情绪。</span>
+      <span class="go">→ 打开</span>
+    </a>
+    <a href="tools/lora.html" class="tool-card card-create">
+      <span class="ic">🧪</span><span class="t">模型</span>
+      <span class="d">训练信息与推荐强度。</span>
+      <span class="go">→ 打开</span>
+    </a>
+    <a href="tools/gallery.html" class="tool-card card-create">
+      <span class="ic">🎞</span><span class="t">作品册</span>
+      <span class="d">本机创作，原比例安静欣赏。</span>
+      <span class="go">→ 打开</span>
+    </a>
+  </div>
+</section>
+
+<section class="container home-section home-section-quiet">
+  <div class="home-section-head">
+    <div>
+      <span class="eyebrow">写给会用的人</span>
+      <h2>创作手册</h2>
+      <p class="hint">取向与上手路径，几分钟就够。</p>
+    </div>
+  </div>
+  <div class="tools-grid tools-grid-sparse">
+    <a href="docs/getting-started.html" class="tool-card card-create">
       <span class="ic">🧭</span><span class="t">新手教程</span>
-      <span class="d">几分钟走完从浏览到出图的路径。</span>
+      <span class="d">从浏览到出图的最短路径。</span>
+      <span class="go">→ 打开</span>
+    </a>
+    <a href="docs/philosophy.html" class="tool-card card-create">
+      <span class="ic">📖</span><span class="t">创作取向</span>
+      <span class="d">为什么先故事与画面，再整理参数。</span>
       <span class="go">→ 打开</span>
     </a>
   </div>

@@ -99,10 +99,10 @@
 .sc-btn-primary { background: var(--accent); color: var(--text-inverse); border-color: var(--accent); }
 .sc-btn-primary:hover { background: var(--accent); color: var(--text-inverse); opacity: 0.92; }
 
-/* ---- strip 修饰 ---- */
-.sc-strip { width: 200px; flex: 0 0 200px; scroll-snap-align: start; }
+/* ---- strip 修饰(首页精选胶片:比网格卡更宽,故事多露一行) ---- */
+.sc-strip { width: 240px; flex: 0 0 240px; scroll-snap-align: start; }
 .sc-strip .sc-story { -webkit-line-clamp: 3; }
-.sc-strip .sc-cat, .sc-strip .sc-rating { display: none; }
+.sc-strip .sc-cat, .sc-strip .sc-rating, .sc-strip .sc-meta, .sc-strip .sc-tags, .sc-strip .sc-actions { display: none; }
 
 /* ---- recent 修饰 ---- */
 .sc-recent .sc-story { -webkit-line-clamp: 2; }

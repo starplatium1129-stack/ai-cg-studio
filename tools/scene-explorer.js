@@ -274,24 +274,30 @@ function renderScenes(reset){
         var reason = AICSceneUX.personalReason(scene, PERSONAL_PROFILE) || (CURATION_DATA.recommendationReasons || {})[scene.id] || '';
         // 审核流程说明不是场景亮点,不占用卡片篇幅
         if (/实机生成与直接视觉复核/.test(reason)) reason = '';
+        // 默认只露:角色·情绪·时间 + 一句亮点 + 主按钮。
+        // 镜头/光线/色调 与次要操作收到 .ex-more,悬停/聚焦时展开 —— 五层压三层。
         return '' +
           '<div class="ex-scene-line">' +
             '<span><strong>' + escHtml(charName) + '</strong></span>' +
             '<span>' + escHtml(scene.emotion||'情绪待定') + '</span>' +
             '<span>' + escHtml([season,tod].filter(Boolean).join(' · ')||'时间不限') + '</span>' +
           '</div>' +
-          '<div class="ex-decision" title="开始绘制后仍可继续调整">' +
-            '<span>镜头 <strong>' + escHtml(decision.shot) + '</strong></span>' +
-            '<span>光线 <strong>' + escHtml(decision.lighting) + '</strong></span>' +
-            '<span>色调 <strong>' + escHtml(decision.color) + '</strong></span>' +
-          '</div>' +
           (reason ? '<div class="ex-curation"><span>' + escHtml(reason) + '</span></div>' : '') +
           '<div class="ex-actions">' +
             '<a class="btn btn-primary" href="prompt-builder.html?scene=' + encodeURIComponent(scene.id) + '">✦ 开始绘制</a>' +
-            '<a class="btn btn-ghost" href="' + AICQuickCreate.url(scene.id) + '">⚡ 直接出图</a>' +
-            '<button class="btn btn-ghost" data-detail="' + scene.id + '" aria-label="查看故事" title="查看故事">📖</button>' +
           '</div>' +
-          '<button type="button" class="btn scene-fav' + (SCENE_FAVORITES.has(scene.id) ? ' saved' : '') + '" data-action="toggle-favorite" data-id="' + scene.id + '">' + (SCENE_FAVORITES.has(scene.id) ? '♥ 已收入灵感簿' : '♡ 收入灵感簿') + '</button>';
+          '<div class="ex-more">' +
+            '<div class="ex-decision" title="开始绘制后仍可继续调整">' +
+              '<span>镜头 <strong>' + escHtml(decision.shot) + '</strong></span>' +
+              '<span>光线 <strong>' + escHtml(decision.lighting) + '</strong></span>' +
+              '<span>色调 <strong>' + escHtml(decision.color) + '</strong></span>' +
+            '</div>' +
+            '<div class="ex-secondary">' +
+              '<a class="btn btn-ghost btn-sm" href="' + AICQuickCreate.url(scene.id) + '">⚡ 直接出图</a>' +
+              '<button class="btn btn-ghost btn-sm" data-detail="' + scene.id + '" type="button" aria-label="查看故事">📖 故事</button>' +
+              '<button type="button" class="btn btn-ghost btn-sm scene-fav' + (SCENE_FAVORITES.has(scene.id) ? ' saved' : '') + '" data-action="toggle-favorite" data-id="' + scene.id + '">' + (SCENE_FAVORITES.has(scene.id) ? '♥ 已收' : '♡ 收藏') + '</button>' +
+            '</div>' +
+          '</div>';
       }
     }));
     grid.lastChild.setAttribute('data-scene-id', s.id);

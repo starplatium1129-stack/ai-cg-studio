@@ -13,6 +13,8 @@ Thumbs.db
 node_modules/
 test-results/
 playwright-report/
+# 美术审阅截图产物(tests/e2e/capture.spec.ts 生成,仅本地用于逐张观察)
+.review-shots/
 __pycache__/
 *.py[cod]
 

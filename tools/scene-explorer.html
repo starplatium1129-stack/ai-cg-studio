@@ -5,10 +5,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>灵感场景 · 绫季绘境</title>
-<link rel="stylesheet" href="../css/design-system.css?v=11">
-<link rel="stylesheet" href="../css/scene-card.css?v=7">
+<link rel="stylesheet" href="../css/design-system.css?v=12">
+<link rel="stylesheet" href="../css/scene-card.css?v=8">
 <script src="nav.js?v=8"></script>
-<script src="scene-card.js?v=8"></script>
+<script src="scene-card.js?v=9"></script>
 <script src="scene-ux.js?v=2"></script>
 <script src="quick-create.js?v=1"></script>
 <script src="image-store.js?v=5"></script>
@@ -33,7 +33,6 @@
   .mood-rail .mood-icon { display:block; font-size:var(--fs-title-sm); margin-bottom:var(--s-1); }
   .mood-rail strong { display:block; font-size:var(--fs-body-sm); }
   .mood-rail small { color:var(--text-muted); font-size:var(--fs-mono-sm); }
-  .scene-fav { width:100%; justify-content:center; margin-top:var(--s-2); border-color:var(--border-soft); background:transparent; color:var(--text-muted); }
   .scene-fav.saved { color:var(--accent); border-color:var(--accent); background:var(--accent-soft); }
 
   /* Search + cats */
@@ -79,16 +78,32 @@
   .ex-scene-line { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-1); margin:0 0 var(--s-2); color:var(--text-muted); font-size:var(--fs-mono-sm); }
   .ex-scene-line strong { color:var(--accent); font-weight:750; }
   .ex-scene-line span + span::before { content:'·'; margin-right:var(--s-1); color:var(--border-strong); }
-  .ex-decision { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-2); margin:0 0 var(--s-3); padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-deep); color:var(--text-secondary); font-size:var(--fs-mono-sm); }
-  .ex-decision::before { content:'DIRECTOR'; color:var(--text-muted); font:750 var(--fs-mono-xs) var(--font-mono); letter-spacing:.1em; }
-  .ex-decision span + span::before { content:'／'; margin-right:var(--s-2); color:var(--border-strong); }
-  .ex-decision strong { color:var(--text-primary); font-weight:650; }
-  .ex-curation { display:flex; align-items:flex-start; gap:var(--s-2); margin:0 0 var(--s-3); padding:var(--s-2) var(--s-3); border-radius:var(--r-md); background:linear-gradient(120deg,var(--accent-soft),transparent); color:var(--text-secondary); font-size:var(--fs-label-sm); line-height:1.55; }
+  /* 默认三层:画面 / 标题·故事·角色情绪 / 主按钮。
+     镜头参数与次要操作收到 .ex-more,悬停/聚焦才展开。 */
+  .ex-curation { margin:0 0 var(--s-2); color:var(--text-secondary); font-size:var(--fs-label-sm); line-height:1.55; }
   .ex-tier { flex:0 0 auto; padding:1px var(--s-2); border:1px solid var(--accent); border-radius:var(--r-pill); color:var(--accent); font-size:var(--fs-mono-sm); font-weight:800; }
   .ex-tier.signature { color:var(--natsume-amber); border-color:var(--natsume-amber); }
-  .ex-actions { display: flex; gap: var(--s-2); }
-  .ex-actions .btn { flex: 1; padding: var(--s-2); font-size: var(--fs-label); }
-  .ex-actions .btn-primary { font-weight: 700; }
+  .ex-actions { display: flex; gap: var(--s-2); margin-top: var(--s-1); }
+  .ex-actions .btn { flex: 1; justify-content:center; font-weight:700; }
+  .ex-more {
+    display:grid; gap:var(--s-2); margin-top:var(--s-2);
+    max-height:0; opacity:0; overflow:hidden;
+    transition:max-height var(--t-base) var(--ease-out), opacity var(--t-fast), margin var(--t-fast);
+  }
+  .sc:hover .ex-more, .sc:focus-within .ex-more {
+    max-height:160px; opacity:1; margin-top:var(--s-2);
+  }
+  .ex-decision {
+    display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-2);
+    padding:var(--s-2) var(--s-3);
+    border:1px solid var(--border-soft); border-radius:var(--r-md);
+    background:var(--bg-deep); color:var(--text-secondary); font-size:var(--fs-mono-sm);
+  }
+  .ex-decision::before { content:'镜头'; color:var(--text-muted); font:750 var(--fs-mono-xs) var(--font-mono); letter-spacing:.08em; }
+  .ex-decision span + span::before { content:'·'; margin-right:var(--s-1); color:var(--border-strong); }
+  .ex-decision strong { color:var(--text-primary); font-weight:650; }
+  .ex-secondary { display:flex; gap:var(--s-1); flex-wrap:wrap; }
+  .ex-secondary .btn { flex:1; justify-content:center; min-width:0; }
   .scene-flash { outline: 3px solid var(--accent); outline-offset: var(--s-1); transition: outline-color var(--t-base); }
 
   /* Story drawer (in-page modal) */
@@ -107,6 +122,8 @@
     .scene-grid { min-width:0; grid-template-columns:minmax(0,1fr); }
     .scene-grid > .sc { content-visibility:auto; contain-intrinsic-size:auto 420px; }
     .page { padding: var(--s-4) var(--s-3); }
+    /* 触屏无 hover:次要操作始终展开 */
+    .ex-more { max-height:none; opacity:1; overflow:visible; }
     .ex-decision { display: none; }
     .scene-facet-grid { grid-template-columns:1fr 1fr; }
     .scene-more-filters .scene-facet-grid { grid-template-columns:1fr 1fr; }
@@ -193,6 +210,6 @@
   <p class="muted mt-4" id="sceneFooterCount">灵感场景 · 正在加载</p>
 </footer>
 
-<script src="scene-explorer.js?v=2"></script>
+<script src="scene-explorer.js?v=3"></script>
 </body>
 </html>

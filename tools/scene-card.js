@@ -30,16 +30,9 @@
     return `<span class="sc-stars">${starItems}</span>`;
   }
 
-  const THEME = {
-    '校园':'linear-gradient(135deg,#81C784,#388E3C)','祭典・节日':'linear-gradient(135deg,#FF8A65,#D84315)',
-    '祭典':'linear-gradient(135deg,#FF8A65,#D84315)','节日':'linear-gradient(135deg,#F06292,#C2185B)',
-    '日常':'linear-gradient(135deg,#4FC3F7,#0288D1)','旅行':'linear-gradient(135deg,#80DEEA,#00838F)',
-    '恋爱':'linear-gradient(135deg,#CE93D8,#6A1B9A)','亲密':'linear-gradient(135deg,#FF80AB,#AD1457)',
-    'R15':'linear-gradient(135deg,#CFD8DB,#37474F)','Active_Sync_Scenes':'linear-gradient(135deg,#FFD54F,#F57F17)',
-    '恋爱/After_Story':'linear-gradient(135deg,#F48FB1,#8E24AA)','同人/After_Story':'linear-gradient(135deg,#B39DDB,#5E35B1)',
-    '日常/同人':'linear-gradient(135deg,#80CBC4,#00897B)','恋爱/同人':'linear-gradient(135deg,#FF80AB,#8E24AA)',
-    '战斗':'linear-gradient(135deg,#EF5350,#6D1B1B)'
-  };
+  /* 缺缩略图时的兜底:统一中性纸色,不再按分类喷高饱和渐变。
+     原先紫/橙/蓝空块混在真实样张之间,看起来像加载失败。 */
+  const BAND_FALLBACK = 'linear-gradient(145deg, color-mix(in srgb, var(--bg-deep) 72%, var(--bg-elevated)), var(--bg-elevated))';
 
   window.createSceneCard = function (scene, opt) {
     opt = opt || {};
@@ -57,7 +50,7 @@
       card.classList.add('sc-static');
     }
 
-    const band = THEME[scene.category] || 'linear-gradient(135deg,var(--bg-deep),var(--bg-elevated))';
+    const band = BAND_FALLBACK;
 
     // 逐场景审核样张预览(纯静态服务器无此目录时 onerror 回退渐变)
     const thumbId = String(scene.id || '').toLowerCase().replace(/[^a-z0-9_-]/g, '');

@@ -264,10 +264,11 @@
 
   /* Character */
   .char-row { display: flex; gap: var(--s-3); }
-  .char-btn { flex: 1; display:inline-flex; align-items:center; justify-content:center; gap:var(--s-2); padding: var(--s-2); border-radius: var(--r-md); border: 2px solid var(--border-soft); background: var(--bg-surface); color: var(--text-secondary); cursor: pointer; font-size: var(--fs-body); font-weight: 600; transition: all var(--t-fast); }
-  .char-btn .aic-icon { font-size:var(--fs-body-lg); }
-  .char-btn:hover { border-color: var(--accent); }
-  .char-btn.active { border-color: var(--accent); background: var(--accent-soft); color: var(--text-primary); box-shadow: 0 0 14px var(--accent-glow); }
+  /* 窄栏里禁止竖排:字号与内距收紧,强制单行 */
+  .char-btn { flex: 1; min-width:0; display:inline-flex; align-items:center; justify-content:center; gap:var(--s-1); padding: var(--s-2) var(--s-1); border-radius: var(--r-md); border: 1px solid var(--border-soft); background: var(--bg-surface); color: var(--text-secondary); cursor: pointer; font-size: var(--fs-label-sm); font-weight: 650; white-space: nowrap; transition: border-color var(--t-fast), background var(--t-fast), color var(--t-fast); }
+  .char-btn .aic-icon { font-size:var(--fs-body); flex-shrink:0; }
+  .char-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .char-btn.active { border-color: var(--accent); background: var(--accent-soft); color: var(--text-primary); box-shadow: var(--glow-sm); }
   .traits-row { display: flex; gap: var(--s-2); flex-wrap: wrap; margin-top: var(--s-3); }
   .trait-chip { padding: 3px var(--s-3); background: var(--bg-elevated); border:0; border-radius: var(--r-pill); font:inherit; font-size: var(--fs-label-sm); color: var(--text-secondary); cursor:pointer; }
   .traits-row:empty { margin-top: 0; }
@@ -437,8 +438,8 @@
   .option-en { font-size: var(--fs-label-xs) !important; color: var(--text-muted); font-family: var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; opacity: 0.55; }
   .option-reason { display: none; }
   .option:hover .option-reason, .option.selected .option-reason { display: block; font-size: var(--fs-label-xs) !important; color: var(--accent); font-style: italic; margin-top: 2px; line-height: 1.4; letter-spacing: 0.01em; }
-  .chip-grid { display: flex; flex-wrap: wrap; gap: 4px; }
-  .chip-select { display: inline-flex; align-items: center; gap: var(--s-1); padding: var(--s-1) var(--s-3); border-radius: var(--r-pill); font-size: var(--fs-label-sm); font-weight: 500; background: var(--bg-deep); border: 1px solid var(--border-soft); color: var(--text-secondary); cursor: pointer; transition: all var(--t-fast); }
+  .chip-grid { display: flex; flex-wrap: wrap; gap: var(--s-1); max-height: 9.5rem; overflow: auto; padding-right: 2px; }
+  .chip-select { display: inline-flex; align-items: center; gap: var(--s-1); min-height: 32px; padding: 4px 10px; border-radius: var(--r-pill); font-size: var(--fs-label-xs); font-weight: 550; background: var(--bg-deep); border: 1px solid var(--border-soft); color: var(--text-secondary); cursor: pointer; transition: border-color var(--t-fast), color var(--t-fast), background var(--t-fast); }
   .chip-select:hover { border-color: var(--accent); color: var(--accent); }
   .chip-select.selected { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
   /* .mood-* 已收敛到 css/mood.css(基准 + .mood-grid-sm 修饰);此处不再重复定义 */
@@ -496,7 +497,23 @@
   .voice-download.show { display:inline-flex; justify-content:center; }
 
   /* History */
-  .history-wrap { margin-top: var(--s-6); }
+  /* 历史区原先裸在页面上,与全站卡片语言不一致 */
+  .history-wrap {
+    margin-top: var(--s-5);
+    padding: var(--s-4);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--r-lg);
+    background: var(--bg-surface);
+    box-shadow: var(--shadow-glass-sm);
+  }
+  /* 空态文案由 history.js 输出为 .history-empty,此处只给版式 */
+  .history-empty {
+    grid-column: 1 / -1;
+    padding: var(--s-3) 0 var(--s-1);
+    color: var(--text-muted);
+    font-size: var(--fs-body-sm);
+    line-height: 1.7;
+  }
   .history-list { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:var(--s-3); margin-top:var(--s-3); }
   .history-item { min-width:0; overflow:hidden; display:flex; flex-direction:column; background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-lg); transition:border-color var(--t-fast),background var(--t-fast),transform var(--t-fast),box-shadow var(--t-fast); }
   .history-item:hover { border-color:color-mix(in srgb,var(--accent) 34%,var(--border-soft)); background:var(--bg-elevated); transform:translateY(-2px); box-shadow:var(--shadow-md); }

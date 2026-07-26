@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>开始绘制 · 绫季绘境</title>
-<link rel="stylesheet" href="../css/design-system.css?v=11">
+<link rel="stylesheet" href="../css/design-system.css?v=12">
 <script src="nav.js?v=8"></script>
 <script src="scene-ux.js?v=2"></script>
 <script src="quick-create.js?v=1"></script>
@@ -327,7 +327,8 @@
         <div class="panel-title panel-title-spaced">已选</div>
         <div class="sel-row" id="selRow"></div>
       </details>
-      <details class="director-card" open>
+      <!-- 情绪默认收起:场景已预填时摘要栏会显示当前值,展开再改。镜头保持展开(视觉选择更依赖平铺)。 -->
+      <details class="director-card">
         <summary class="director-card-head"><span class="director-card-name"><span data-icon="emotion"></span>情绪 · Emotion</span><span class="director-card-selected" id="selEmotion"></span></summary>
         <div class="chip-grid" id="chip-emotion"></div>
       </details>

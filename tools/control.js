@@ -387,12 +387,12 @@ function doStop() {
     showToast('网站网关与分享已停止；绘图、语音和聊天服务保持当前状态');
     stopPolling(); lastStatus = null;
     setBadge(document.getElementById('badge'), 'stopped', '未启动');
-    setBadge(document.getElementById('sd-badge'), 'stopped', '未检测');
-    setBadge(document.getElementById('tts-badge'), 'stopped', '未检测');
-    setBadge(document.getElementById('ollama-badge'), 'stopped', '未检测');
-    setBadge(document.getElementById('voice-badge'), 'stopped', '未检测');
-    setBadge(document.getElementById('share-badge'), 'stopped', '未检测');
-    setBadge(document.getElementById('ready-badge'), 'stopped', '未检测');
+    setBadge(document.getElementById('sd-badge'), 'stopped', '待检测');
+    setBadge(document.getElementById('tts-badge'), 'stopped', '待检测');
+    setBadge(document.getElementById('ollama-badge'), 'stopped', '待检测');
+    setBadge(document.getElementById('voice-badge'), 'stopped', '待检测');
+    setBadge(document.getElementById('share-badge'), 'stopped', '待检测');
+    setBadge(document.getElementById('ready-badge'), 'stopped', '待检测');
   }).catch(function(error) { showToast('停止失败：' + error.message, true); })
   .finally(function() { button.disabled = false; });
 }

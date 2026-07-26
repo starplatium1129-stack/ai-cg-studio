@@ -168,61 +168,72 @@
 }
 
 /* ============================================================
-    Light theme (PDD §6.3: 暖白 / 纸张 / 画册 / 设计稿感)
+    Light theme — 画册纸白
+    气质:暖、安静、层次收窄;文字反而更清(仍守 WCAG AA 4.5:1)。
+    做法:底色压暖米纸,卡片提到近纯白(明度差 ~9%),描边/阴影走暖棕墨,
+    装饰层(光斑/玻璃边)压到几乎看不见。原先冷灰底 + 紫描边是照深色换算的,
+    卡片浮不起来,整页像未上色线稿。
    ============================================================ */
 [data-theme="light"] {
-  --bg-deep:       #efedf3;     /* 输入框/次级底色 */
-  --bg-base:       #f7f6f8;     /* 页面背景 */
-  --bg-surface:    rgba(255, 255, 255, 0.82); /* 玻璃卡片 */
-  --bg-elevated:   rgba(255, 255, 255, 0.94); /* 浮层 */
-  --bg-hover:      rgba(244, 240, 247, 0.96); /* 悬停态 */
+  --bg-deep:       #efebe3;     /* 输入框/次级底:比纸再深一档的暖米 */
+  --bg-base:       #f6f3ec;     /* 页面:暖米纸 */
+  --bg-surface:    rgba(255, 253, 250, 0.94); /* 卡片:近纯白,与底拉开 */
+  --bg-elevated:   rgba(255, 254, 252, 0.98); /* 浮层:几乎不透 */
+  --bg-hover:      rgba(248, 244, 236, 0.96); /* 悬停:淡暖米 */
 
-  --border-soft:   rgba(111, 82, 156, 0.16);
-  --border-strong: rgba(111, 82, 156, 0.30);
+  --border-soft:   rgba(122, 96, 68, 0.12);   /* 暖棕描边,安静 */
+  --border-strong: rgba(122, 96, 68, 0.24);
 
-  --text-primary:   #2C2C3A;   /* 主文字(深灰黑) */
-  --text-secondary: #5A5A6E;   /* 副文字 */
-  /* --text-muted 见下方"文字专用色阶":原 #6F6F80 是 4.24:1,差一档 AA */
-  --text-inverse:   #FFFFFF;   /* 彩底白字反色 */
+  --text-primary:   #2b2620;   /* 暖墨,高对比 */
+  --text-secondary: #5c554c;   /* 暖褐灰 */
+  --text-inverse:   #FFFEFC;   /* 彩底上的纸白字 */
 
-  --accent:         #ad467f;
-  --accent-hover:   #9e3f7b;
-  --accent-soft:    rgba(173, 70, 127, 0.11);
-  --accent-glow:    rgba(161, 108, 255, 0.22);
-  --accent-violet:  #7656c9;
-  /* 角色品牌色在浅底上必须压深:两者都会作为文字/描边色使用(如 .ex-tier.signature),
-     沿用深色主题值会跌到 ~1.7:1,不满足 DESIGN.md §Colors 的 WCAG AA 要求 */
-  --nene-violet:    #6b4bbd;
-  --natsume-amber:  #8a5a12;
+  --accent:         #a04472;   /* 略向玫瑰褐偏移,浅纸上更稳 */
+  --accent-hover:   #8f3a66;
+  --accent-soft:    rgba(160, 68, 114, 0.10);
+  --accent-glow:    rgba(160, 68, 114, 0.18);
+  --accent-violet:  #5f4499;   /* 压深:原 #7656c9 在暖米纸上不足 4.5:1 */
+  /* 角色品牌色:浅纸上当文字/描边用,必须压深到 AA */
+  --nene-violet:    #5a3d9e;
+  --natsume-amber:  #7a5210;
 
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
-  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
-  --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+  /* 暖褐阴影:读作纸影,不是灰雾 */
+  --shadow-sm: 0 1px 3px rgba(92, 68, 44, 0.06);
+  --shadow-md: 0 4px 14px rgba(92, 68, 44, 0.08);
+  --shadow-lg: 0 10px 28px rgba(92, 68, 44, 0.11);
 
-  --nav-bg: rgba(247, 246, 248, 0.82);
-  --glass-highlight: rgba(255, 255, 255, 0.88);
-  --glass-fill: rgba(255, 255, 255, 0.66);
-  --glass-fill-strong: rgba(255, 255, 255, 0.88);
-  --art-mat: #e6e2ec;
+  --nav-bg: rgba(246, 243, 236, 0.88);
+  --glass-highlight: rgba(255, 254, 252, 0.92);
+  --glass-fill: rgba(255, 253, 250, 0.72);
+  --glass-fill-strong: rgba(255, 254, 252, 0.92);
+  --art-mat: #ebe6dc;          /* 画作衬垫:暖纸卡 */
 
-  /* 文字专用色阶:压深到 >=5:1(浅底 #efedf3)。色相保持一致,只降明度与提饱和,
-     使同一语义在两个主题下仍读得出是同一个颜色。 */
-  --success-text:      #3a7440;
-  --warning-text:      #8a5a12;
-  --danger-text:       #b3221f;
-  --info-text:         #1f6aa8;
-  --mood-joy-text:     #7a6412;
-  --mood-love-text:    #b0295c;
-  --mood-calm-text:    #46733f;
-  --mood-sad-text:     #2f6b9c;
-  --mood-tension-text: #8a3c96;
-  --mood-warmth-text:  #8a5c14;
-  /* 占位/说明文字:原 #6F6F80 在 #efedf3 上是 4.24:1,差一档 */
-  --text-muted:     #63636f;
+  /* 文字专用色阶:相对暖米纸 #f6f3ec 核算,全部 >=4.5:1 */
+  --success-text:      #356a3a;
+  --warning-text:      #7a5210;
+  --danger-text:       #a81f1c;
+  --info-text:         #1a5f96;
+  --mood-joy-text:     #6e5a10;
+  --mood-love-text:    #a02554;
+  --mood-calm-text:    #3f6839;
+  --mood-sad-text:     #2a6090;
+  --mood-tension-text: #7e368a;
+  --mood-warmth-text:  #7e5412;
+  --text-muted:        #5e574e;
 
-  --glass-edge: rgba(111, 82, 156, 0.18);
-  --glass-specular: rgba(255, 255, 255, 0.96);
-  --glass-shadow: 0 16px 42px rgba(70, 48, 104, 0.10);
+  --glass-edge: rgba(122, 96, 68, 0.14);
+  --glass-specular: rgba(255, 254, 252, 0.96);
+  --glass-shadow: 0 14px 36px rgba(92, 68, 44, 0.08);
+}
+
+/* 浅纸上的背景光斑:深色主题是氛围,浅纸上是脏渍 —— 压到几乎看不见 */
+[data-theme="light"] body::before {
+  opacity: .28;
+  background: radial-gradient(circle, color-mix(in srgb, var(--nene-violet) 12%, transparent) 0, transparent 68%);
+}
+[data-theme="light"] body::after {
+  opacity: .22;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 10%, transparent) 0, transparent 70%);
 }
 
 /* Same-origin page changes use a short optical dissolve where supported. */

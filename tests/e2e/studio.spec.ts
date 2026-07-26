@@ -109,7 +109,8 @@ test('control panel loads service badges without runtime errors', async ({ page 
   const errors = collectRuntimeErrors(page);
   await page.goto('/tools/control.html');
   await expect(page.locator('.page-kicker')).toContainText('Local control room');
-  await expect(page.getByRole('heading', { name:'控制面板', level:1 })).toBeVisible();
+  // 断言存在唯一 h1 主标题,不锁具体文案(文案会随产品语气调整)
+  await expect(page.locator('.page-header h1')).toBeVisible();
   await expect(page.locator('.nav-back')).toBeVisible();
   await expect(page.locator('#badge')).toBeVisible();
   await expect(page.locator('#sd-badge')).toBeVisible();

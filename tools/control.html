@@ -5,16 +5,41 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>控制面板 · 绫季绘境</title>
-<link rel="stylesheet" href="/css/design-system.css?v=11">
+<link rel="stylesheet" href="/css/design-system.css?v=12">
 <style>
   /* 控制面板只保留"本机运维"专属组件。
      按钮 = design-system 的 .btn 家族(primary / ghost / danger / -sm / -lg / -block),
      输入 = .input.input-mono,进度 = .meter/.meter-fill,页面骨架 = .page + --page-max。 */
   .page { --page-max:860px; padding:var(--s-5) var(--s-4); }
 
-  /* 控制面板不加载 tools/nav.js(它的顶栏是本机专用的固定壳),
-     所以这里自带一份与 nav.js 注入的同名规则,取值必须一致。 */
+  /* 控制面板不加载 tools/nav.js —— 本机运维页刻意不接站点导航。
+      顶栏必须自己说清身份,否则只剩 logo + 主题钮,看起来像渲染失败。 */
   .nav-logo { height:32px; width:auto; }
+  .nav-local {
+    display:flex; align-items:center; justify-content:space-between;
+    width:min(860px,100%); margin:0 auto; padding:0 var(--s-4);
+  }
+  .nav-local-brand {
+    display:flex; align-items:center; gap:var(--s-3);
+    color:var(--text-primary); text-decoration:none;
+  }
+  .nav-local-brand strong {
+    display:block; font:700 var(--fs-body-sm) var(--font-sans); letter-spacing:.02em;
+  }
+  .nav-local-brand small {
+    display:block; margin-top:1px; color:var(--text-muted);
+    font:650 var(--fs-mono-xs) var(--font-mono); letter-spacing:.1em; text-transform:uppercase;
+  }
+  .nav-local-actions { display:flex; align-items:center; gap:var(--s-2); }
+  .nav-local-home {
+    display:inline-flex; align-items:center; gap:var(--s-1);
+    min-height:32px; padding:0 var(--s-3);
+    border:1px solid var(--border-soft); border-radius:var(--r-pill);
+    background:var(--bg-elevated); color:var(--text-secondary);
+    font:650 var(--fs-label-xs) var(--font-sans); text-decoration:none;
+    transition:border-color var(--t-fast), color var(--t-fast), background var(--t-fast);
+  }
+  .nav-local-home:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
 
   .page-header { border-bottom:none; padding-top:var(--s-4); margin-bottom:var(--s-4); text-align:left; }
   .page-header .page-kicker { justify-content:flex-start; }
@@ -172,10 +197,14 @@
 <body>
 <a class="skip-link" href="#main">跳到主要内容</a>
 
-<nav class="nav">
-  <div class="nav-inner">
-    <div class="nav-brand"><img class="nav-logo" src="/assets/logo.svg" alt="绫季绘境" aria-hidden="true"><span class="sr-only">绫季绘境</span></div>
-    <div class="nav-links">
+<nav class="nav" aria-label="本机控制室">
+  <div class="nav-local">
+    <a class="nav-local-brand" href="../index.html">
+      <img class="nav-logo" src="/assets/logo.svg" alt="" aria-hidden="true">
+      <span><strong>本机控制室</strong><small>Local control room</small></span>
+    </a>
+    <div class="nav-local-actions">
+      <a class="nav-local-home" href="../index.html">← 回绘境</a>
       <button class="theme-toggle" type="button" data-action="toggle-theme" aria-label="切换主题" title="切换明暗主题"><span id="theme-icon">🌙</span></button>
     </div>
   </div>
@@ -183,26 +212,26 @@
 
 <main id="main">
 <article class="page">
-  <a href="../index.html" class="nav-back">← 回首页</a>
+  <a href="../index.html" class="nav-back">← 回绘境</a>
   <div class="page-header">
     <div class="page-kicker">Local control room</div>
-    <h1>控制面板</h1>
-    <p class="subtitle">连接本机绘图、语音与聊天服务；需要时再开临时分享链接。</p>
+    <h1>把本机服务接上</h1>
+    <p class="subtitle">绘图、语音与聊天都在这台电脑里。先看状态，再决定启动哪一项。</p>
   </div>
 
   <!-- Status -->
   <section class="status-grid" aria-label="连接状态">
     <div class="status-card"><div class="status-label">本地网关</div><div id="badge" class="status-badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未启动</span></div></div>
-    <div class="status-card"><div class="status-label">SD WebUI</div><div id="sd-badge" class="status-badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未检测</span></div></div>
-    <div class="status-card"><div class="status-label">GPT-SoVITS</div><div id="tts-badge" class="status-badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未检测</span></div></div>
-    <div class="status-card"><div class="status-label">Ollama 聊天</div><div id="ollama-badge" class="status-badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未检测</span></div></div>
-    <div class="status-card"><div class="status-label">角色声线</div><div id="voice-badge" class="status-badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未检测</span></div></div>
-    <div class="status-card"><div class="status-label">分享组件</div><div id="share-badge" class="status-badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未检测</span></div></div>
-    <div class="status-card primary"><div class="status-label">创作状态</div><div id="ready-badge" class="status-badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未检测</span></div></div>
+    <div class="status-card"><div class="status-label">SD WebUI</div><div id="sd-badge" class="status-badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>待检测</span></div></div>
+    <div class="status-card"><div class="status-label">GPT-SoVITS</div><div id="tts-badge" class="status-badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>待检测</span></div></div>
+    <div class="status-card"><div class="status-label">Ollama 聊天</div><div id="ollama-badge" class="status-badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>待检测</span></div></div>
+    <div class="status-card"><div class="status-label">角色声线</div><div id="voice-badge" class="status-badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>待检测</span></div></div>
+    <div class="status-card"><div class="status-label">分享组件</div><div id="share-badge" class="status-badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>待检测</span></div></div>
+    <div class="status-card primary"><div class="status-label">创作状态</div><div id="ready-badge" class="status-badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>待检测</span></div></div>
   </section>
 
   <div class="panel-section">
-    <button class="btn btn-ghost btn-block" id="check-services" type="button" data-action="check-services">🔍 检测所有服务</button>
+    <button class="btn btn-primary btn-block" id="check-services" type="button" data-action="check-services">🔍 检测所有服务</button>
   </div>
 
   <!-- VRAM -->
@@ -355,6 +384,6 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="control.js?v=4"></script>
+<script src="control.js?v=5"></script>
 </body>
 </html>
