@@ -1,8 +1,8 @@
 import { CHARACTERS, createMessageId } from './config.mjs';
 import { Live2DController } from './live2d.mjs';
 import { ChatStorage } from './storage.mjs';
-import { VoiceController } from './voice.mjs?v=3';
-import { escapeHtml, isAbortError, parseNdjsonResponse } from './utils.mjs';
+import { VoiceController } from './voice.mjs?v=4';
+import { escapeHtml, isAbortError, parseNdjsonResponse } from './utils.mjs?v=2';
 
 const byId = (id) => document.getElementById(id);
 const elements = {
@@ -37,6 +37,7 @@ let statusTimer = 0;
 let activeRequest = null;
 let busy = false;
 let ollamaOnline = false;
+let voiceActive = false;
 let currentModel = '';
 let streamingMessageId = '';
 let draftTimer = 0;
@@ -100,6 +101,11 @@ const voice = new VoiceController({
   onAudioReady: (mid) => {
     updateReplayButton(mid);
     updateGlobalReplayButton();
+  },
+  onActivity: (active) => {
+    if (voiceActive === active) return;
+    voiceActive = active;
+    updateControls();
   }
 });
 
@@ -255,7 +261,9 @@ async function refreshChatStatus() {
 
 function updateControls() {
   elements.sendButton.disabled = busy || !ollamaOnline;
-  elements.stopButton.hidden = !busy;
+  // 语音通常晚于文字流结束，只按 busy 隐藏停止按钮会让播放期间无法打断。
+  elements.stopButton.hidden = !busy && !voiceActive;
+  elements.stopButton.title = busy ? '停止生成回复' : '停止语音播放';
   elements.modelSelect.disabled = busy || !ollamaOnline;
   elements.sendButton.title = ollamaOnline ? '' : '请先启动 Ollama';
 }
@@ -273,6 +281,16 @@ function abortCurrentRequest(silent = false) {
   activeRequest = null;
   voice.stop({ preserveMessageAudio:true, silent:true });
   if (!silent) setError('已停止本次回复。', 'info', 2500);
+}
+
+function stopEverything() {
+  const wasBusy = Boolean(activeRequest);
+  const wasSpeaking = voice.isActive();
+  if (!wasBusy && !wasSpeaking) return;
+  abortCurrentRequest(true);
+  voice.stop({ preserveMessageAudio:true, silent:true });
+  setVoiceStatus('');
+  setError(wasBusy ? '已停止本次回复。' : '已停止语音播放。', 'info', 2500);
 }
 
 async function sendMessage() {
@@ -387,7 +405,7 @@ function clearAllMemory() {
 }
 
 elements.sendButton.addEventListener('click', sendMessage);
-elements.stopButton.addEventListener('click', () => abortCurrentRequest());
+elements.stopButton.addEventListener('click', stopEverything);
 elements.chatInput.addEventListener('keydown', (event) => {
   if (event.key === 'Enter' && !event.shiftKey) {
     event.preventDefault();

@@ -16,11 +16,15 @@ export class VoiceController {
     this.onExpression = options.onExpression || (() => {});
     this.onMouth = options.onMouth || (() => {});
     this.onAudioReady = options.onAudioReady || (() => {});
+    this.onActivity = options.onActivity || (() => {});
     this.availability = { online:false, voices:{} };
-    this.sentenceBuffer = new SentenceBuffer();
+    this.sentenceBuffer = new SentenceBuffer({ immediateFirst:true });
     this.session = 0;
     this.controller = null;
-    this.chain = Promise.resolve();
+    // 两级流水线：翻译走 CPU、合成走 GPU，各自串行但彼此重叠，
+    // 于是第 N+1 句的翻译可以和第 N 句的合成同时进行。
+    this.translateChain = Promise.resolve();
+    this.synthChain = Promise.resolve();
     this.pending = 0;
     this.queue = [];
     this.playing = false;
@@ -115,13 +119,22 @@ export class VoiceController {
     }
   }
 
+  isActive() {
+    return Boolean(this.pending > 0 || this.playing || this.queue.length || this.replayAudio);
+  }
+
+  notifyActivity() {
+    this.onActivity(this.isActive());
+  }
+
   startTurn(meta) {
     this.stop({ preserveMessageAudio:true, silent:true });
     this.ensureAudioContext();
     this.session += 1;
     this.controller = new AbortController();
     this.sentenceBuffer.reset();
-    this.chain = Promise.resolve();
+    this.translateChain = Promise.resolve();
+    this.synthChain = Promise.resolve();
     this.pending = 0;
     this.turn = { ...meta, session:this.session };
     this.turn.referenceEmotion = '';
@@ -146,12 +159,28 @@ export class VoiceController {
   enqueue(sentence, meta) {
     const session = meta.session;
     if (session !== this.session || !this.controller) return;
+    const signal = this.controller.signal;
     this.pending += 1;
     this.onStatus('语音合成中…');
-    this.chain = this.chain
+    this.notifyActivity();
+
+    const prepared = this.translateChain = this.translateChain
       .then(() => {
-        if (session !== this.session || this.controller.signal.aborted) return null;
-        return this.synthesize(sentence, meta, this.controller.signal);
+        if (session !== this.session || signal.aborted) return null;
+        return this.prepareSentence(sentence, meta, signal);
+      })
+      .catch((error) => {
+        if (!isAbortError(error) && session === this.session) {
+          this.onError('一句配音失败（不影响聊天）：' + error.message);
+        }
+        return null;
+      });
+
+    this.synthChain = this.synthChain
+      .then(async () => {
+        const request = await prepared;
+        if (!request || session !== this.session || signal.aborted) return null;
+        return this.synthesize(request, meta, signal);
       })
       .then((item) => {
         if (!item) return;
@@ -175,10 +204,11 @@ export class VoiceController {
         if (session !== this.session) return;
         this.pending = Math.max(0, this.pending - 1);
         if (this.pending === 0) this.onStatus(this.playing || this.queue.length ? '播放中…' : '');
+        this.notifyActivity();
       });
   }
 
-  async synthesize(sourceText, meta, signal) {
+  async prepareSentence(sourceText, meta, signal) {
     const cleaned = String(sourceText || '').replace(/[「」『』“”"'()（）*＊]/g, '').trim();
     if (!cleaned) return null;
     const rawEmotion = inferEmotion(cleaned, meta.character);
@@ -197,6 +227,7 @@ export class VoiceController {
       meta.referenceEmotion = rawEmotion === 'neutral' ? 'gentle' : rawEmotion;
     }
     let translated = '';
+    let translationFailed = false;
 
     try {
       const translationResponse = await fetch('/api/translate', {
@@ -208,11 +239,25 @@ export class VoiceController {
       if (translationResponse.ok) {
         const data = await translationResponse.json();
         translated = String(data.translation || '').replace(/\n+/g, '。').trim();
+      } else {
+        translationFailed = true;
       }
     } catch (error) {
       if (isAbortError(error)) throw error;
+      translationFailed = true;
     }
 
+    if (translationFailed && !this._warnedTranslation) {
+      // 翻译挂掉时台词会退化成中文发音，静默降级会让人以为是模型音色变差。
+      this._warnedTranslation = true;
+      this.onError('日文翻译不可用，本次改用中文发音。');
+    }
+
+    return { text:translated || cleaned, language:translated ? 'ja' : 'zh', emotion };
+  }
+
+  async synthesize(request, meta, signal) {
+    const emotion = request.emotion;
     let ttsError;
     for (let attempt = 0; attempt <= 1; attempt++) {
       try {
@@ -221,8 +266,8 @@ export class VoiceController {
           headers: { 'Content-Type':'application/json' },
           body: JSON.stringify({
             voice: meta.voice,
-            text: translated || cleaned,
-            language: translated ? 'ja' : 'zh',
+            text: request.text,
+            language: request.language,
             emotion,
             referenceEmotion:meta.referenceEmotion,
             consistency:'locked',
@@ -258,7 +303,14 @@ export class VoiceController {
     try {
       audio.__sourceNode = this.audioContext.createMediaElementSource(audio);
       audio.__sourceNode.connect(this.analyser);
-    } catch (error) {}
+    } catch (error) {
+      // 没有分析节点时口型只会输出 0，立绘看起来“不张嘴”。
+      // 静默失败会让人误以为是 Live2D 坏了，所以提示一次。
+      if (!this._warnedAnalyser) {
+        this._warnedAnalyser = true;
+        this.onError('浏览器阻止了音频分析，口型同步本次不可用。');
+      }
+    }
   }
 
   startLipSync() {
@@ -312,6 +364,7 @@ export class VoiceController {
     this.onExpression(item.emotion);
     this.onSpeaking(true, item.mid);
     this.onStatus('播放中…');
+    this.notifyActivity();
 
     let finished = false;
     const done = () => {
@@ -328,6 +381,7 @@ export class VoiceController {
         this.onStatus(this.pending > 0 ? '语音合成中…' : '');
       }
       this.pump(session);
+      this.notifyActivity();
     };
 
     audio.addEventListener('ended', done);
@@ -346,6 +400,7 @@ export class VoiceController {
     const replaySession = this.session;
     this.onSpeaking(true, mid);
     this.onStatus('重播中…');
+    this.notifyActivity();
 
     for (const clip of clips) {
       if (replaySession !== this.session) return false;
@@ -371,6 +426,7 @@ export class VoiceController {
       this.onExpression('neutral');
       this.onStatus('');
       this.stopLipSync();
+      this.notifyActivity();
     }
     return true;
   }
@@ -398,14 +454,16 @@ export class VoiceController {
     this.controller = null;
     this.turn = null;
     this.sentenceBuffer.reset();
-    this.chain = Promise.resolve();
+    this.translateChain = Promise.resolve();
+    this.synthChain = Promise.resolve();
     this.pending = 0;
 
+    const referencedUrls = new Set();
+    this.messageAudio.forEach((clips) => {
+      clips.forEach((clip) => referencedUrls.add(clip.url));
+    });
     this.queue.forEach((item) => {
-      const referenced = [...this.messageAudio.values()].some((clips) =>
-        clips.some((clip) => clip.url === item.url)
-      );
-      if (!referenced) URL.revokeObjectURL(item.url);
+      if (!referencedUrls.has(item.url)) URL.revokeObjectURL(item.url);
     });
     this.queue = [];
     if (this.currentAudio) {
@@ -428,6 +486,7 @@ export class VoiceController {
     this.onExpression('neutral');
     if (!options.silent) this.onStatus('');
     if (!options.preserveMessageAudio) this.clearAllMessages();
+    this.notifyActivity();
   }
 
   destroy() {

@@ -389,8 +389,11 @@
     });
   };
 
-  SDWebUIConnector.prototype.getProgress = function(){
-    return this.request('/sdapi/v1/progress?skip_current_image=true', { method: 'GET' }, 4000);
+  SDWebUIConnector.prototype.getProgress = function(options){
+    // skip_current_image=true 时 WebUI 不返回 current_image，前端就只能盯着进度条。
+    // 需要中间预览时显式关掉这个跳过。
+    var skip = !(options && options.withImage);
+    return this.request('/sdapi/v1/progress?skip_current_image=' + (skip ? 'true' : 'false'), { method: 'GET' }, skip ? 4000 : 8000);
   };
 
   SDWebUIConnector.prototype.interrupt = function(){

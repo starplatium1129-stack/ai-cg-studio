@@ -12,6 +12,7 @@ var _sdCapabilities = null;     // SD WebUI 能力（扩展、模型等）
 var _sdGeneration = null;       // 当前生成任务
 var _sdUserPreferredSize = '832×1216';  // 用户偏好的分辨率
 var _sdApplyingScenePreset = false;     // 是否正在应用场景预设
+var _sdBackupWarned = false;            // 服务器自动备份失败是否已提示过
 var SD_SETTINGS_KEY = 'aics_sd_settings_v1';  // localStorage key
 
 function getSDConnector(){
@@ -577,17 +578,40 @@ function setSDProgress(percent){
   bar.style.width = Math.max(0, Math.min(100, percent || 0)) + '%';
 }
 
+function showSDPreview(generation, dataUrl){
+  if (_sdGeneration !== generation || !dataUrl) return;
+  var slot = document.getElementById('sdImageSlot');
+  if (!slot) return;
+  var image = slot.querySelector('img[data-preview="1"]');
+  if (!image) {
+    slot.replaceChildren();
+    image = document.createElement('img');
+    image.dataset.preview = '1';
+    image.alt = '生成中的实时预览';
+    image.className = 'sd-preview-image';
+    slot.appendChild(image);
+  }
+  image.src = dataUrl.indexOf('data:') === 0 ? dataUrl : 'data:image/png;base64,' + dataUrl;
+}
+
 function startSDProgressPolling(generation){
   generation.progressBusy = false;
+  generation.previewTick = 0;
+  generation.progressFailures = 0;
   generation.progressTimer = setInterval(function(){
     if (_sdGeneration !== generation || generation.progressBusy) return;
     generation.progressBusy = true;
-    getSDConnector().getProgress().then(function(data){
+    // 中间预览体积大，每第 3 次轮询才取一次，兼顾观感和带宽。
+    generation.previewTick += 1;
+    var withImage = generation.previewTick % 3 === 0;
+    getSDConnector().getProgress({ withImage:withImage }).then(function(data){
       if (_sdGeneration !== generation) return;
+      generation.progressFailures = 0;
       var progress = Math.max(0, Math.min(1, Number(data.progress) || 0));
       var elapsed = Math.floor((Date.now() - generation.startedAt) / 1000);
       var eta = Math.max(0, Math.round(Number(data.eta_relative) || 0));
       setSDProgress(progress * 100);
+      if (withImage && data.current_image) showSDPreview(generation, data.current_image);
       var status = document.getElementById('sdStatus');
       if (status) {
         status.textContent = progress > 0
@@ -597,7 +621,12 @@ function startSDProgressPolling(generation){
     }).catch(function(){
       var status = document.getElementById('sdStatus');
       if (status && _sdGeneration === generation) {
-        status.textContent = '⏳ 正在生成 · 已等待 ' + Math.floor((Date.now() - generation.startedAt) / 1000) + ' 秒';
+        generation.progressFailures += 1;
+        var waited = Math.floor((Date.now() - generation.startedAt) / 1000);
+        // 轮询本身失败时进度条会冻结在旧值，明说一下比让用户猜更好。
+        status.textContent = generation.progressFailures >= 3
+          ? '⏳ 正在生成 · 已等待 ' + waited + ' 秒（进度读取失败，生成仍在继续）'
+          : '⏳ 正在生成 · 已等待 ' + waited + ' 秒';
       }
     }).finally(function(){ generation.progressBusy = false; });
   }, 1100);
@@ -620,7 +649,12 @@ function cancelSDGenerate(){
   generation.cancelled = true;
   var status = document.getElementById('sdStatus');
   if (status) status.textContent = '正在停止生成…';
-  getSDConnector().interrupt().catch(function(error){ console.warn('[SD API] interrupt failed', error); });
+  getSDConnector().interrupt().catch(function(error){
+    console.warn('[SD API] interrupt failed', error);
+    // 只断本地 fetch 的话，WebUI 那边还在烧显卡。必须让用户知道。
+    flash('⚠️ 已断开本地请求，但未能通知 SD WebUI 停止；显卡可能仍在计算');
+    if (status) status.textContent = '已断开本地请求 · SD WebUI 可能仍在生成';
+  });
   if (generation.controller) generation.controller.abort();
 }
 
@@ -700,7 +734,11 @@ function renderSDRecovery(error){
 
 function callSDGenerate(requestOptions){
   requestOptions = requestOptions || {};
-  if (_sdGeneration) return Promise.resolve({ status:'failure', reason:'busy' });
+  if (_sdGeneration) {
+    // Ctrl+Enter 不受按钮 disabled 约束，忙时静默返回会让人以为快捷键坏了。
+    flash('当前图片仍在生成中，请等待或先停止');
+    return Promise.resolve({ status:'failure', reason:'busy' });
+  }
   var queuedJob = requestOptions.job || null;
   var prompt = queuedJob ? queuedJob.prompt : getPlainPrompt();
   if (!prompt) {
@@ -842,6 +880,8 @@ function callSDGenerate(requestOptions){
       if (_si && !_si.value.trim()) _si.placeholder = String(result.seed);
     }
     setSDProgress(100);
+    // 成功后满格进度条会一直压在结果图上方，直到下一次生成。
+    if (progress) window.setTimeout(function(){ if (_sdGeneration !== generation) progress.hidden = true; }, 900);
     var elapsed = Math.max(1, Math.round((Date.now() - generation.startedAt) / 1000));
     var enhancementLabels = result.enhancements
       ? [result.enhancements.regional ? '角色分区' : '', result.enhancements.controlNet ? '姿势约束' : '', result.enhancements.adetailer ? '双脸精修' : ''].filter(Boolean)
@@ -869,7 +909,19 @@ function callSDGenerate(requestOptions){
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ imageBase64:result.image, filename:'gen_' + Date.now() + '.png' })
-      }).catch(function(){});
+      }).then(function(response){
+        // /api/backup 限本机访问，隧道远程访问时必然 403。
+        // 静默失败会让远程用户以为图片已经落盘。
+        if (response.ok || _sdBackupWarned) return;
+        _sdBackupWarned = true;
+        flash(response.status === 403
+          ? '提示：远程访问时图片不会自动存到服务器，请用「保存到历史」或「下载」'
+          : '提示：图片自动备份到服务器失败，请手动保存');
+      }).catch(function(){
+        if (_sdBackupWarned) return;
+        _sdBackupWarned = true;
+        flash('提示：图片自动备份到服务器失败，请手动保存');
+      });
     }
     if (queuedJob) {
       status.textContent = '✅ 生成完成 · 正在自动保存队列作品…';

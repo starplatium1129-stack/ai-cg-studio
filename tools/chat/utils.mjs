@@ -45,13 +45,18 @@ export class SentenceBuffer {
   constructor(options = {}) {
     this.minimumLength = options.minimumLength || 4;
     this.maximumLength = options.maximumLength || 100;
+    // 首句延迟直接决定“角色多久才开口”。开启后第一句不参与短句合并，
+    // 即使只是“嗯。”也立刻下发，避免开场语气词把首句推迟一整句。
+    this.immediateFirst = Boolean(options.immediateFirst);
     this.buffer = '';
     this.short = '';
+    this.emitted = 0;
   }
 
   reset() {
     this.buffer = '';
     this.short = '';
+    this.emitted = 0;
   }
 
   push(fragment, flush = false) {
@@ -82,14 +87,17 @@ export class SentenceBuffer {
       let value = this.short + sentence;
       this.short = '';
       const isLast = index === complete.length - 1;
-      if (!flush && isLast && value.length < this.minimumLength) {
+      const allowShort = this.immediateFirst && this.emitted === 0;
+      if (!flush && isLast && !allowShort && value.length < this.minimumLength) {
         this.short = value;
       } else {
         output.push(value);
+        this.emitted += 1;
       }
     });
     if (flush && this.short) {
       output.push(this.short);
+      this.emitted += 1;
       this.short = '';
     }
     return output.filter(Boolean);
