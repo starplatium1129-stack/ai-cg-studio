@@ -52,12 +52,13 @@
 
     const band = BAND_FALLBACK;
 
-    // 逐场景审核样张预览(纯静态服务器无此目录时 onerror 回退渐变)
+    // 逐场景审核样张预览(纯静态服务器无此目录时回退渐变;
+    // 失败回退用 addEventListener 绑定,HTML 内联事件属性会被 CSP 拦掉)
     const thumbId = String(scene.id || '').toLowerCase().replace(/[^a-z0-9_-]/g, '');
     const imgV = (opt.imgVersion || window.AICS_THUMB_VERSION || '');
     const cacheStr = imgV ? '?v=' + encodeURIComponent(String(imgV)) : '';
     const thumbHtml = thumbId
-      ? `<img class="sc-thumb${contentRating === 'R18' ? ' sc-thumb-r18' : ''}" src="/scene-showcase/thumbs/${thumbId}.jpg${cacheStr}" alt="" loading="lazy" decoding="async" onerror="this.classList.add('sc-thumb-missing')">`
+      ? `<img class="sc-thumb${contentRating === 'R18' ? ' sc-thumb-r18' : ''}" src="/scene-showcase/thumbs/${thumbId}.jpg${cacheStr}" alt="" loading="lazy" decoding="async">`
       : '';
     const idBadge = thumbId ? `<span class="sc-id">${esc(thumbId.toUpperCase())}</span>` : '';
     const bandExtra = typeof opt.bandExtra === 'function' ? opt.bandExtra(scene) : (opt.bandExtra || '');
@@ -111,6 +112,15 @@
         ${actionsBlock}
       </div>
     `;
+
+    // 缩略图缺失 → 隐藏 img,露出 .sc-band 渐变兜底
+    const thumbEl = card.querySelector('.sc-thumb');
+    if (thumbEl) {
+      const markMissing = function(){ thumbEl.classList.add('sc-thumb-missing'); };
+      thumbEl.addEventListener('error', markMissing);
+      // innerHTML 之后 img 可能已经解码失败,补一次同步检查
+      if (thumbEl.complete && thumbEl.naturalWidth === 0) markMissing();
+    }
 
     // --- 事件绑定修正 ---
     function firePick(e){

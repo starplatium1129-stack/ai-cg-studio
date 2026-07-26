@@ -59,6 +59,16 @@ for (const name of builderModules) {
   new vm.Script(source, { filename:rel });
 }
 
+// Shared components render markup for several pages, so they need the same CSP gate.
+// scene-card.js used to ship an inline onerror on the thumbnail and slipped past the
+// per-page scan because it is not any single page's controller.
+const sharedComponents = ['tools/scene-card.js'];
+for (const rel of sharedComponents) {
+  const source = fs.readFileSync(path.join(root, rel), 'utf8');
+  assert(!jsInlineHandlerRe.test(source), `${rel} must not emit inline event attributes`);
+  new vm.Script(source, { filename:rel });
+}
+
 // chat is multi-module (ESM); scan HTML + local modules for CSP readiness.
 const chatHtmlRel = 'tools/chat.html';
 const chatHtml = fs.readFileSync(path.join(root, chatHtmlRel), 'utf8');
@@ -96,4 +106,4 @@ for (const rel of chromePages) {
   );
 }
 
-console.log(`Page architecture tests passed: ${pages.length} controllers + prompt-builder + chat modules are external, CSP-ready, and syntactically valid`);
+console.log(`Page architecture tests passed: ${pages.length} controllers + prompt-builder + chat + ${sharedComponents.length} shared components are external, CSP-ready, and syntactically valid`);
