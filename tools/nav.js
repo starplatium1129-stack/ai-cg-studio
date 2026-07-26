@@ -45,15 +45,26 @@
     document.head.appendChild(script);
   }
 
+  // .nav-logo 的唯一定义。品牌位由本文件注入(control.html 是唯一写死 <img> 的页面,
+  // 用同一个 class),规则跟着注入方走,才不会出现"页面各写一份内联尺寸"。
+  function ensureLogoStyle() {
+    if (document.querySelector('style[data-nav-style]')) return;
+    var style = document.createElement('style');
+    style.dataset.navStyle = 'true';
+    style.textContent = '.nav-logo{height:32px;width:auto}';
+    document.head.appendChild(style);
+  }
+
   function render(){
     var host = document.querySelector('.nav-links');
     if (!host) return;
+    ensureLogoStyle();
     var d = depth();
     var brand = document.querySelector('.nav-brand');
     if (brand) {
       brand.setAttribute('role', 'link');
       brand.tabIndex = 0;
-      brand.innerHTML = '<img src="' + d + 'assets/logo.svg" alt="绫季绘境" style="height:32px;width:auto" aria-hidden="true"><span class="sr-only">绫季绘境</span>';
+      brand.innerHTML = '<img class="nav-logo" src="' + d + 'assets/logo.svg" alt="绫季绘境" aria-hidden="true"><span class="sr-only">绫季绘境</span>';
       brand.onclick = function(){ window.location.href = brandLink(); };
       brand.onkeydown = function(e){ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.location.href = brandLink(); } };
     }

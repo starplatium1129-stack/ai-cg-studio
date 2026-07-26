@@ -5,45 +5,31 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>创作手册 · 绫季绘境</title>
-<link rel="stylesheet" href="../css/design-system.css?v=10">
-<script src="../tools/nav.js?v=7"></script>
+<link rel="stylesheet" href="../css/design-system.css?v=11">
+<link rel="stylesheet" href="../css/docs.css?v=1">
+<script src="../tools/nav.js?v=8"></script>
 <script src="../tools/theme.js?v=5"></script>
 <style>
-  .page { max-width: 960px; margin: 0 auto; padding: var(--s-6) var(--s-5); }
-  h1.title { font-size: 2.2rem; font-weight: 800; background: linear-gradient(135deg, var(--text-primary) 50%, var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: var(--s-2); }
-  .subtitle { color: var(--text-secondary); margin-bottom: var(--s-7); font-size: 1.05rem; max-width: 640px; }
+  .page { --page-max: 960px; }
+  .subtitle { margin-bottom: var(--s-7); font-size: var(--fs-title-xs); }
 
-  .section { margin-bottom: var(--s-7); }
-  .section-tag {
-    display: inline-flex; align-items: center; gap: 6px;
-    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--accent); background: var(--accent-soft);
-    padding: 3px 10px; border-radius: 20px;
-    margin-bottom: var(--s-3);
-  }
-  .section-tag .num { color: var(--text-muted); font-weight: 600; }
-  .section h2 { font-size: 1.3rem; margin-bottom: var(--s-1); }
-  .section .hint { color: var(--text-muted); font-size: 0.9rem; margin-bottom: var(--s-4); }
+  .section h2 { font-size: var(--fs-title-sm); margin-bottom: var(--s-1); }
+  .section .hint { color: var(--text-muted); font-size: var(--fs-body); margin-bottom: var(--s-4); }
 
   .doc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--s-3); }
   .doc-card {
     display: flex; flex-direction: column; gap: var(--s-2);
-    background: var(--bg-surface);
-    border: 1px solid var(--border-soft);
-    border-radius: var(--r-lg);
     padding: var(--s-5);
     text-decoration: none;
     color: var(--text-primary);
-    transition: border-color var(--t-fast), transform var(--t-fast), box-shadow var(--t-fast);
   }
   .doc-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: var(--shadow-md); }
-  .doc-card .ic { font-size: 1.6rem; }
-  .doc-card .t { font-weight: 700; font-size: 1rem; }
-  .doc-card .d { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; margin: 0; flex: 1; }
-  .doc-card .go { font-size: 0.78rem; color: var(--accent); margin-top: var(--s-1); }
+  .doc-card .ic { font-size: var(--fs-title); }
+  .doc-card .t { font-weight: 700; font-size: var(--fs-body-lg); }
+  .doc-card .d { font-size: var(--fs-body-sm); color: var(--text-muted); line-height: 1.6; margin: 0; flex: 1; }
+  .doc-card .go { font-size: var(--fs-label-sm); color: var(--accent); margin-top: var(--s-1); }
 
-  @media (max-width: 700px) { .page { padding: var(--s-4) var(--s-3); } .doc-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 700px) { .doc-grid { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body data-nav="docs">
@@ -53,12 +39,12 @@
 <main class="page">
   <a href="../index.html" class="nav-back">← 回首页</a>
 
-  <h1 class="title">📖 创作手册</h1>
+  <h1 class="title title-gradient">📖 创作手册</h1>
   <p class="subtitle">创作与维护笔记：为什么这样设计、场景怎样整理，以及接下来真正值得完善的部分。</p>
 
   <!-- 新手入口 -->
   <section class="section">
-    <span class="section-tag"><span class="num">🚀</span> 新手入门</span>
+    <span class="eyebrow"><span class="num">🚀</span> 新手入门</span>
     <h2>第一次来这里？</h2>
     <p class="hint">5 分钟学会从浏览到出图的完整流程。</p>
     <div class="doc-grid">
@@ -72,7 +58,7 @@
 
   <!-- 理念 · 2 篇 -->
   <section class="section">
-    <span class="section-tag"><span class="num">01</span> 💡 定位与理念</span>
+    <span class="eyebrow"><span class="num">01</span> 💡 定位与理念</span>
     <h2>为什么这样做</h2>
     <p class="hint">先说明项目边界，再记录从故事和 Scene 开始的创作取向。</p>
     <div class="doc-grid">
@@ -91,7 +77,7 @@
 
   <!-- 方法 · 4 篇 -->
   <section class="section">
-    <span class="section-tag"><span class="num">02</span> ⚙️ 创作方法</span>
+    <span class="eyebrow"><span class="num">02</span> ⚙️ 创作方法</span>
     <h2>怎么做</h2>
     <p class="hint">整理画面、Prompt、Scene 和标签时使用的共同参考。</p>
     <div class="doc-grid">
@@ -120,7 +106,7 @@
 
   <!-- 维护 · 2 篇 -->
   <section class="section">
-    <span class="section-tag"><span class="num">03</span> 🧭 日常维护</span>
+    <span class="eyebrow"><span class="num">03</span> 🧭 日常维护</span>
     <h2>怎么保持好用</h2>
     <p class="hint">用实际出图检查内容，并按自己和朋友的真实需求安排后续。</p>
     <div class="doc-grid">

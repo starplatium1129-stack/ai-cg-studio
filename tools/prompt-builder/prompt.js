@@ -387,7 +387,7 @@ function generate() {
 
   const violations = checkArtDirection(fullText);
   const artWarn = document.getElementById('artWarn');
-  artWarn.style.display = violations.length ? 'flex' : 'none';
+  artWarn.hidden = !violations.length;
   artWarn.textContent = violations.length ? '⚠️ 检测到 '+violations.length+' 个标签违反美术规范: '+violations.join(', ') : '';
   document.getElementById('finalPrompt').innerHTML = colorizeParts(parts);
   document.getElementById('finalPrompt').style.display = 'block';

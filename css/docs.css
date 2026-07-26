@@ -1,0 +1,87 @@
+/* ============================================================
+   绫季绘境 · docs/ 创作手册共享层
+   Source contract: ../DESIGN.md
+   Depends on: css/design-system.css (必须先引入)
+
+   只收录"多个 docs 页真的共用"的东西:
+   - 渐变裁切标题(原先 10 份重复)
+   - 演示框 .demo-frame(原先 art-direction / prompt-spec 两套)
+   - 对错对照面板(原先 philosophy .wrong/.good 与 art-direction .bad/.good 两套)
+   单页专属组件仍写在该页 <style> 里,不要往这里堆。
+   ============================================================ */
+
+/* ---- docs 区默认阅读宽度 ----
+   用 :where() 归零特异性,这样 design-system 的 .page-narrow / .page-wide
+   以及各页 <style> 里的 .page { --page-max: … } 都仍然能覆盖它。
+   个别页只覆写 --page-max,不要重声明 .page 的布局。 */
+:where(.page) { --page-max: 900px; }
+
+/* ---- 渐变裁切标题 · docs 区身份 ----
+   与 design-system 的 .page-header h1 同一手法,此处是 .title 的修饰类。
+   不支持 background-clip:text 时整条规则不生效,标题回落到 .title 的纯色。 */
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .title-gradient {
+    background: linear-gradient(135deg, var(--text-primary) 50%, var(--accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+/* ---- .eyebrow 的序号槽(docs/index 的 01/02/03) ---- */
+.eyebrow .num { color: var(--text-muted); font-weight: 600; }
+
+/* ---- 演示框 ----
+   base  静态示例(art-direction)
+   -live 可交互示例,accent 描边 + 光晕(prompt-spec) */
+.demo-frame {
+  margin: var(--s-5) 0;
+  padding: var(--s-5);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-xl);
+  background: var(--bg-deep);
+}
+.demo-frame > h3 {
+  display: flex; align-items: center; gap: var(--s-2);
+  margin-bottom: var(--s-3);
+  font-size: var(--fs-title-sm);
+}
+.demo-frame-live { border: 2px solid var(--accent); box-shadow: var(--glow-md); }
+/* 框内 prompt 块要跟 bg-deep 的框底拉开一层 */
+.demo-frame .prompt-code { margin-top: var(--s-3); background: var(--bg-elevated); padding: var(--s-4); }
+
+/* ---- 对错对照面板 ---- */
+.compare-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-3);
+  margin: var(--s-3) 0 0;
+}
+.compare-card { padding: var(--s-3); border-radius: var(--r-md); }
+.compare-card.bad {
+  border: 1px solid color-mix(in srgb, var(--danger) 26%, transparent);
+  background: color-mix(in srgb, var(--danger) 6%, transparent);
+}
+.compare-card.good {
+  border: 1px solid color-mix(in srgb, var(--success) 26%, transparent);
+  background: color-mix(in srgb, var(--success) 6%, transparent);
+}
+.compare-label {
+  margin: 0 0 var(--s-1);
+  font-size: var(--fs-body-sm); font-weight: 600;
+}
+.compare-card.bad .compare-label { color: var(--danger-text); }
+.compare-card.good .compare-label { color: var(--success-text); }
+.compare-card p { margin: 0; color: var(--text-secondary); font-size: var(--fs-body-sm); }
+.compare-card ul { margin: var(--s-2) 0 0; padding-left: var(--s-4); }
+.compare-card li { color: var(--text-muted); font-size: var(--fs-body-sm); margin-bottom: var(--s-1); }
+
+/* ---- 宽表格在窄屏可横向滚动 ----
+   docs 的参数表有 5 列固定内容,窄屏下让表格自己滚动,
+   而不是把整页推出视口(DESIGN.md §Layout: 至少 16px 外呼吸)。 */
+@media (max-width: 700px) {
+  .page table { display: block; overflow-x: auto; }
+  .page table th, .page table td { white-space: nowrap; }
+}
+
+@media (max-width: 768px) {
+  .compare-grid { grid-template-columns: 1fr; }
+}

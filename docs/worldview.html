@@ -5,52 +5,38 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>项目定位 · 绫季绘境</title>
-<link rel="stylesheet" href="../css/design-system.css?v=10">
-<script src="../tools/nav.js?v=7"></script>
+<link rel="stylesheet" href="../css/design-system.css?v=11">
+<link rel="stylesheet" href="../css/docs.css?v=1">
+<script src="../tools/nav.js?v=8"></script>
 <script src="../tools/theme.js?v=5"></script>
 <style>
-  .worldview {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: var(--s-6) var(--s-4);
-  }
-  .worldview h1 {
-    font-size: 2.4rem; font-weight: 800;
-    margin-bottom: var(--s-3);
-    background: linear-gradient(135deg, var(--text-primary) 50%, var(--accent));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .worldview .lede {
-    font-size: 1.15rem; color: var(--text-secondary);
-    margin-bottom: var(--s-6);
-    line-height: 1.8;
-  }
-  .worldview h2 {
-    font-size: 1.3rem;
+  .page { --page-max: 720px; }
+  .page > .lede { margin-bottom: var(--s-6); font-size: var(--fs-title-xs); line-height: 1.8; }
+  .page > h2 {
     margin-top: var(--s-7);
     margin-bottom: var(--s-4);
     color: var(--accent);
+    font-size: var(--fs-title-sm);
     font-weight: 700;
   }
-  .worldview p {
-    font-size: 1.02rem;
-    line-height: 1.9;
+  .page > p {
     margin-bottom: var(--s-4);
     color: var(--text-secondary);
+    font-size: var(--fs-body-lg);
+    line-height: 1.9;
   }
-  .worldview p strong { color: var(--text-primary); font-weight: 600; }
+  .page > p strong { color: var(--text-primary); font-weight: 600; }
 
   .manifesto {
-    background: linear-gradient(135deg, var(--accent-soft), rgba(240,98,146,0.04));
+    background: linear-gradient(135deg, var(--accent-soft), color-mix(in srgb, var(--mood-love) 4%, transparent));
     border: 1px solid var(--accent);
     border-radius: var(--r-xl);
     padding: var(--s-6);
     margin: var(--s-6) 0;
-    box-shadow: 0 0 40px var(--accent-glow);
+    box-shadow: var(--glow-md);
   }
   .manifesto p {
-    font-size: 1.15rem;
+    font-size: var(--fs-title-xs);
     color: var(--text-primary);
     line-height: 1.9;
     margin-bottom: var(--s-3);
@@ -60,12 +46,12 @@
     text-align: center;
     font-family: var(--font-mono);
     color: var(--accent);
-    font-size: 0.9rem;
+    font-size: var(--fs-body);
     margin-top: var(--s-4);
   }
 
   .quote-wide {
-    font-size: 1.2rem;
+    font-size: var(--fs-title-sm);
     text-align: center;
     padding: var(--s-6);
     color: var(--text-primary);
@@ -74,6 +60,20 @@
     border-bottom: 1px solid var(--border-soft);
     margin: var(--s-6) 0;
   }
+  .quote-wide .quote-en { color: var(--text-muted); font: 400 var(--fs-body) var(--font-mono); }
+
+  /* 三条创作取向 */
+  .three-rules { display: grid; gap: var(--s-3); margin: var(--s-5) 0; }
+  .rule-card {
+    padding: var(--s-4);
+    border: 1px solid var(--border-soft);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--r-lg);
+    background: var(--bg-surface);
+  }
+  .rule-num { color: var(--accent); font: 700 var(--fs-mono-sm) var(--font-mono); letter-spacing: .1em; }
+  .rule-name { margin-top: 2px; color: var(--text-primary); font-size: var(--fs-title-xs); font-weight: 700; }
+  .rule-desc { margin: var(--s-1) 0 0; color: var(--text-secondary); font-size: var(--fs-body); }
 </style>
 </head>
 <body data-nav="docs">
@@ -86,10 +86,10 @@
   </div>
 </nav>
 
-<article class="worldview">
+<article class="page">
   <a href="../index.html" class="nav-back">← 回首页</a>
 
-  <h1>🌍 项目定位</h1>
+  <h1 class="title title-gradient">🌍 项目定位</h1>
   <p class="lede">
     这份文档不讲实现细节。<br>
     只说明一件事：<strong>这个个人工具想解决什么，又明确不做什么。</strong>
@@ -222,7 +222,7 @@
     后续增加功能时，优先保持这三条：
   </p>
 
-  <div class="three-rules" style="margin: var(--s-5) 0;">
+  <div class="three-rules">
     <div class="rule-card">
       <div class="rule-num">RULE 01</div>
       <div class="rule-name">Scene First</div>
@@ -242,7 +242,7 @@
 
   <div class="quote-wide">
     "从故事，到画面。"<br>
-    <span style="font-size: 0.95rem; color: var(--text-muted); font-family: var(--font-mono);">From Story to Scene.</span>
+    <span class="quote-en">From Story to Scene.</span>
   </div>
 
   <h2>八、维护边界</h2>

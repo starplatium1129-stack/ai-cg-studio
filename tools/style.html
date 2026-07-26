@@ -5,30 +5,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>画风 · 绫季绘境</title>
-<link rel="stylesheet" href="../css/design-system.css?v=10">
-<script src="nav.js?v=7"></script>
+<link rel="stylesheet" href="../css/design-system.css?v=11">
+<link rel="stylesheet" href="../css/mood.css?v=1">
+<script src="nav.js?v=8"></script>
 <script src="theme.js?v=5"></script>
 <style>
-  .page { max-width: 1000px; margin: 0 auto; padding: var(--s-6) var(--s-5); }
-  h1.title { font-family:var(--font-display); font-size:clamp(1.7rem,2.6vw,2.2rem); font-weight:760; letter-spacing:-.02em; color:var(--text-primary); margin-bottom: var(--s-2); }
-  .subtitle { color: var(--text-secondary); margin-bottom: var(--s-5); line-height:1.7; max-width:640px; }
-  .mood-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: var(--s-3); }
-  .mood-card { background: var(--bg-surface); border: 2px solid var(--border-soft); border-radius: var(--r-lg); overflow: hidden; cursor: pointer; transition: all var(--t-fast); }
-  .mood-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-  .mood-strip { display: flex; height: 40px; }
-  .mood-swatch { flex: 1; }
-  .mood-body { padding: var(--s-2) var(--s-3); }
-  .mood-name { font-weight: 700; font-size: 0.9rem; }
-  .mood-desc { font-size: 0.72rem; color: var(--text-muted); line-height: 1.4; }
-  .section-title { font-size: 1.15rem; font-weight: 700; margin: var(--s-6) 0 var(--s-3); }
+  /* 页面骨架与标题走全局 .page/.title/.subtitle;.mood-* 走 css/mood.css */
+  .page { --page-max: 1000px; }
+  .section-title { font-size: var(--fs-title-sm); font-weight: 700; }
   .add-btn { margin-top: var(--s-4); }
 
   @media (max-width: 768px) {
     .page { padding: var(--s-4) var(--s-3); }
-    .mood-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
-  }
-  @media (max-width: 480px) {
-    .mood-grid { grid-template-columns: repeat(2, 1fr); }
   }
 </style>
 </head>
@@ -48,13 +36,13 @@
   <p class="subtitle">色彩、情绪与光照彼此关联。选定后，绘制台会用它统一整张画面的氛围。</p>
 
   <div class="section-title">色彩氛围 (Color Moods)</div>
-  <div class="mood-grid" id="moodGrid"></div>
+  <div class="mood-grid mood-grid-lg" id="moodGrid"></div>
 
   <a href="color-script.html" class="btn btn-ghost add-btn">📖 查看完整色彩剧本(Color Script) →</a>
 </article>
 
 <footer class="footer"><p>绫季绘境 · 色彩承载情绪</p></footer>
 
-<script src="style.js?v=2"></script>
+<script src="style.js?v=3"></script>
 </body>
 </html>

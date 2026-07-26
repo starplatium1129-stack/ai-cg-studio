@@ -5,36 +5,39 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>模型 · 绫季绘境</title>
-<link rel="stylesheet" href="../css/design-system.css?v=10">
-<script src="nav.js?v=7"></script>
+<link rel="stylesheet" href="../css/design-system.css?v=11">
+<script src="nav.js?v=8"></script>
 <script src="theme.js?v=5"></script>
 <style>
-  .page { max-width: 1000px; margin: 0 auto; padding: var(--s-6) var(--s-5); }
-  h1.title { font-family:var(--font-display); font-size:clamp(1.7rem,2.6vw,2.2rem); font-weight:760; letter-spacing:-.02em; color:var(--text-primary); margin-bottom: var(--s-2); }
-  .subtitle { color: var(--text-secondary); margin-bottom: var(--s-5); line-height:1.7; max-width:640px; }
+  /* 骨架/标题/副标题走全局,此处只覆写本页限宽 */
+  .page { --page-max: 1000px; }
   .lora-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: var(--s-4); }
   .lora-card { padding: var(--s-5); }
-  .lora-name { font-size: 1.2rem; font-weight: 800; font-family: var(--font-mono); color: var(--accent); margin-bottom: var(--s-1); }
-  .lora-desc { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: var(--s-3); line-height: 1.55; }
-  .lora-pill-row { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: var(--s-3); }
-  .lora-pill { padding: 2px 8px; background: var(--bg-elevated); border-radius: 12px; font-size: 0.68rem; color: var(--text-secondary); }
-  .lora-pill.trigger { color: var(--accent); border: 1px solid var(--accent); background: var(--accent-soft); }
-  .lora-pill.char { color: var(--info); }
-  .lora-trainer { font-size: 0.78rem; color: var(--text-muted); margin-bottom: var(--s-3); }
+  .lora-name { margin-bottom: var(--s-1); color: var(--accent); font: 800 var(--fs-title-sm) var(--font-mono); }
+  .lora-desc { margin-bottom: var(--s-3); color: var(--text-secondary); font-size: var(--fs-body-sm); line-height: 1.55; }
+  .lora-pill-row { display: flex; flex-wrap: wrap; gap: var(--s-1); margin-bottom: var(--s-3); }
+  .lora-pill { padding: 2px var(--s-2); border: 1px solid transparent; border-radius: var(--r-lg); background: var(--bg-elevated); color: var(--text-secondary); font-size: var(--fs-mono-sm); }
+  .lora-pill.trigger { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+  .lora-pill.char { color: var(--info-text); }
+  .lora-trainer { margin-bottom: var(--s-3); color: var(--text-muted); font-size: var(--fs-label-sm); }
   .lora-row { display: flex; gap: var(--s-2); margin-bottom: var(--s-2); }
-  .lora-row .lab { font-size: 0.72rem; color: var(--text-muted); width: 80px; flex-shrink: 0; padding-top: 2px; }
-  .lora-row .val { font-size: 0.85rem; color: var(--text-secondary); }
-  .weight-bar { display: flex; align-items: center; gap: 8px; flex: 1; }
-  .weight-track { flex: 1; height: 6px; background: var(--bg-deep); border-radius: 3px; overflow: hidden; }
-  .weight-fill { height: 100%; background: var(--accent); }
-  .weight-num { font-family: var(--font-mono); font-size: 0.78rem; color: var(--accent); width: 36px; }
+  .lora-row .lab { flex-shrink: 0; width: 80px; padding-top: 2px; color: var(--text-muted); font-size: var(--fs-label-xs); }
+  .lora-row .val { color: var(--text-secondary); font-size: var(--fs-body-sm); }
+  .lora-row .weight-range { margin-left: var(--s-2); color: var(--text-muted); font-size: var(--fs-mono-sm); }
+  .lora-subweights { margin-top: var(--s-2); }
+  .lora-subweights.is-divided { padding-top: var(--s-2); border-top: 1px solid var(--border-soft); }
+  /* 权重条:几何与全局 .meter 一致,值由 lora.js 写进 --fill */
+  .weight-bar { display: flex; align-items: center; gap: var(--s-2); flex: 1; }
+  .weight-track { flex: 1; height: 6px; overflow: hidden; border-radius: var(--r-pill); background: var(--bg-deep); }
+  .weight-fill { width: var(--fill, 0%); height: 100%; border-radius: inherit; background: var(--accent); }
+  .weight-num { width: 36px; color: var(--accent); font-family: var(--font-mono); font-size: var(--fs-label-sm); }
   @media (max-width: 768px) {
     .lora-grid { grid-template-columns: 1fr; }
     .page { padding: var(--s-4) var(--s-3); }
   }
   @media (max-width: 480px) {
     .lora-card { padding: var(--s-4); }
-    .lora-name { font-size: 1rem; }
+    .lora-name { font-size: var(--fs-body-lg); }
   }
 </style>
 </head>
@@ -57,6 +60,6 @@
 
 <footer class="footer"><p>绫季绘境 · Trained once, reused forever</p></footer>
 
-<script src="lora.js?v=1"></script>
+<script src="lora.js?v=2"></script>
 </body>
 </html>

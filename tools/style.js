@@ -11,7 +11,7 @@
   var grid = document.getElementById('moodGrid');
   grid.innerHTML = MOODS.map(function(m){
     return '<a class="mood-card" href="prompt-builder.html?mood='+encodeURIComponent(m.id)+'">' +
-      '<div class="mood-strip" style="background:'+m.color+'"></div>' +
+      '<div class="mood-strip"><div class="mood-swatch" style="--swatch:'+m.color+'"></div></div>' +
       '<div class="mood-body"><div class="mood-name">'+m.name+'</div><div class="mood-desc">'+m.desc+'</div></div>' +
     '</a>';
   }).join('');

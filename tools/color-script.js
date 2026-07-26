@@ -32,8 +32,8 @@ function copyText(text){
 }
 function showToast(msg){
   var t=document.getElementById('cs-toast');
-  if(!t){ t=document.createElement('div'); t.id='cs-toast'; t.style.cssText='position:fixed;left:50%;bottom:32px;transform:translateX(-50%);z-index:9999;background:var(--bg-surface);border:1px solid var(--accent);color:var(--text-primary);padding:10px 20px;border-radius:8px;font-size:0.85rem;box-shadow:0 4px 16px rgba(0,0,0,0.4);opacity:0;transition:opacity .2s;'; document.body.appendChild(t); }
-  t.textContent=msg; t.style.opacity='1'; clearTimeout(toast._tid); toast._tid=setTimeout(function(){ t.style.opacity='0'; },1600);
+  if(!t){ t=document.createElement('div'); t.id='cs-toast'; t.className='cs-toast'; t.setAttribute('role','status'); document.body.appendChild(t); }
+  t.textContent=msg; t.classList.add('show'); clearTimeout(showToast._tid); showToast._tid=setTimeout(function(){ t.classList.remove('show'); },1600);
 }
 
 var selectedMood = null;
@@ -41,7 +41,7 @@ var selectedMood = null;
 function init(){
   var grid=document.getElementById('moodGrid');
   grid.innerHTML=MOODS.map(function(m){
-    return '<div class="mood-card" data-action="select-mood" data-id="'+m.id+'" style="color:'+m.color+'"><div class="mood-strip">'+m.palette.map(function(c){return '<div class="mood-swatch" style="background:'+c+'"></div>';}).join('')+'</div><div class="mood-body"><div class="mood-name">'+m.icon+' '+m.name+'</div><div class="mood-en">'+m.en+'</div></div></div>';
+    return '<button type="button" class="mood-card" data-action="select-mood" data-id="'+m.id+'" style="--mood-color:'+m.color+'"><div class="mood-strip">'+m.palette.map(function(c){return '<div class="mood-swatch" style="--swatch:'+c+'"></div>';}).join('')+'</div><div class="mood-body"><div class="mood-name">'+m.icon+' '+m.name+'</div><div class="mood-en">'+m.en+'</div></div></button>';
   }).join('');
 }
 
@@ -52,8 +52,8 @@ function selectMood(id){
   selectedMood = mood;
   var panel=document.getElementById('resultPanel');
   panel.classList.add('show');
-  document.getElementById('resultTitle').innerHTML='<span style="color:'+mood.color+'">'+mood.icon+'</span> '+mood.name+' → 色彩 → 光照';
-  document.getElementById('paletteStrip').innerHTML=mood.palette.map(function(c){ return '<div class="palette-swatch" style="background:'+c+'">'+c+'</div>'; }).join('');
+  document.getElementById('resultTitle').innerHTML='<span class="mood-icon" style="--mood-color:'+mood.color+'">'+mood.icon+'</span> '+mood.name+' → 色彩 → 光照';
+  document.getElementById('paletteStrip').innerHTML=mood.palette.map(function(c){ return '<div class="palette-swatch" style="--swatch:'+c+'">'+c+'</div>'; }).join('');
   var mapEl=document.getElementById('mappingGrid');
   mapEl.innerHTML=Object.entries(mood.mapping).map(function(e){ return '<div class="mapping-item"><div class="mapping-label">'+e[0]+'</div><div class="mapping-value">'+e[1]+'</div></div>'; }).join('');
   var violations=checkViolation(mood.prompt);

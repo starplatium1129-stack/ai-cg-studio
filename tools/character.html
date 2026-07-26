@@ -5,62 +5,84 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>角色档案 · 绫季绘境</title>
-<link rel="stylesheet" href="../css/design-system.css?v=10">
+<link rel="stylesheet" href="../css/design-system.css?v=11">
 <link rel="stylesheet" href="../css/scene-card.css?v=7">
-<script src="nav.js?v=7"></script>
+<script src="nav.js?v=8"></script>
 <script src="theme.js?v=5"></script>
 <style>
-  .page { max-width: 1120px; margin: 0 auto; padding: var(--s-6) var(--s-5); }
-  h1.title { font-family:var(--font-display); font-size:clamp(1.7rem,2.6vw,2.2rem); font-weight:760; letter-spacing:-.02em; color:var(--text-primary); margin-bottom: var(--s-2); }
-  .subtitle { color: var(--text-secondary); margin-bottom: var(--s-5); line-height:1.7; max-width:640px; }
+  /* ============================================================
+     角色档案 — 立绘 + 视觉特征 + 推荐场景
+     立绘容器内部(角标、出处条、光斑)压在官方立绘之上,一律走 --on-art-*,
+     这几个 token 不随主题翻转:立绘底永远是深色渐变。
+     ============================================================ */
+  .page { --page-max: 1120px; }
+
+  /* 角色切换:与全局 .filter-pill 同一几何,选中态用实心 accent 强调当前路线 */
   .character-tabs { display: flex; gap: var(--s-2); flex-wrap: wrap; margin-bottom: var(--s-5); }
-  .character-tab { border: 1px solid var(--border-soft); background: var(--bg-surface); border-radius: 999px; color: var(--text-secondary); cursor: pointer; padding: 8px 14px; font: inherit; font-weight: 700; }
+  .character-tab { min-height: 40px; padding: var(--s-2) var(--s-4); border: 1px solid var(--border-soft); border-radius: var(--r-pill); background: var(--bg-surface); color: var(--text-secondary); cursor: pointer; font: 700 var(--fs-label-sm) var(--font-sans); transition: background var(--t-fast), border-color var(--t-fast), color var(--t-fast); }
   .character-tab:hover, .character-tab.active { color: var(--text-inverse); background: var(--accent); border-color: var(--accent); }
+  .character-tab:active { transform: scale(.985); }
   .character-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
   .character-hero { display: grid; grid-template-columns: minmax(280px, .88fr) minmax(0, 2fr); gap: var(--s-5); margin-bottom: var(--s-5); }
-  .portrait { position: relative; min-height: 520px; border: 1px solid rgba(255,255,255,.18); border-radius: var(--r-lg); overflow: hidden; isolation: isolate; color: var(--text-inverse); background: radial-gradient(circle at 50% 25%, rgba(255,255,255,.22), transparent 38%), linear-gradient(155deg, #cf75ab, #7456a8 68%, #372c5c); }
-  .portrait.natsume { background: radial-gradient(circle at 50% 25%, rgba(255,241,211,.2), transparent 38%), linear-gradient(155deg, #b97983, #72505c 58%, #33283c); }
-  .portrait::after { content: ''; position: absolute; z-index: -1; inset: 30% -20% -30%; border-radius: 50%; background: rgba(255,255,255,.1); filter: blur(2px); }
-  .portrait-image { position: absolute; z-index: 1; inset: 20px 10px 58px; width: calc(100% - 20px); height: calc(100% - 78px); object-fit: contain; object-position: center bottom; filter: drop-shadow(0 18px 24px rgba(15,9,28,.32)); }
-  .portrait-badge { position: absolute; z-index: 2; top: var(--s-3); left: var(--s-3); display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border: 1px solid rgba(255,255,255,.28); border-radius: 999px; background: rgba(21,16,37,.42); backdrop-filter: blur(12px); font-size: .72rem; font-weight: 700; letter-spacing: .04em; }
-  .portrait-source { position: absolute; z-index: 2; left: var(--s-3); right: var(--s-3); bottom: var(--s-3); padding-top: var(--s-2); border-top: 1px solid rgba(255,255,255,.22); font-size: .72rem; line-height: 1.45; opacity: .88; text-shadow: 0 1px 3px rgba(0,0,0,.4); }
-  .character-name { font-size: 1.8rem; font-weight: 800; }
-  .character-alias { color: var(--accent); font: .8rem var(--font-mono); margin-top: var(--s-1); }
-  .character-desc { color: var(--text-secondary); line-height: 1.7; margin: var(--s-3) 0 var(--s-4); }
-  .identity-row { display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; font-size: .85rem; color: var(--text-muted); margin-bottom: var(--s-2); }
-  .identity-row .item { background: var(--bg-deep); border-radius: 999px; padding: 2px 10px; }
+  .portrait { position: relative; min-height: 520px; overflow: hidden; isolation: isolate; border: 1px solid var(--on-art-line); border-radius: var(--r-lg); color: var(--on-art-primary); background: radial-gradient(circle at 50% 25%, var(--on-art-fill), transparent 38%), linear-gradient(155deg, #cf75ab, #7456a8 68%, #372c5c); }
+  .portrait.natsume { background: radial-gradient(circle at 50% 25%, var(--on-art-fill), transparent 38%), linear-gradient(155deg, #b97983, #72505c 58%, #33283c); }
+  .portrait::after { content: ''; position: absolute; z-index: var(--z-below); inset: 30% -20% -30%; border-radius: 50%; background: var(--on-art-fill); filter: blur(2px); }
+  .portrait-image { position: absolute; z-index: var(--z-base); inset: var(--s-5) var(--s-3) 58px; width: calc(100% - 20px); height: calc(100% - 78px); object-fit: contain; object-position: center bottom; filter: drop-shadow(0 18px 24px var(--art-scrim-soft)); }
+  .portrait-badge { position: absolute; z-index: var(--z-raised); top: var(--s-3); left: var(--s-3); display: inline-flex; align-items: center; gap: var(--s-2); padding: var(--s-1) var(--s-3); border: 1px solid var(--on-art-line); border-radius: var(--r-pill); background: var(--art-scrim-soft); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); font-size: var(--fs-label-xs); font-weight: 700; letter-spacing: .04em; }
+  .portrait-source { position: absolute; z-index: var(--z-raised); left: var(--s-3); right: var(--s-3); bottom: var(--s-3); padding-top: var(--s-2); border-top: 1px solid var(--on-art-line); color: var(--on-art-secondary); font-size: var(--fs-label-xs); line-height: 1.45; }
+
+  .character-name { font-size: var(--fs-display); font-weight: 800; }
+  .character-alias { margin-top: var(--s-1); color: var(--accent); font: var(--fs-label) var(--font-mono); }
+  .character-desc { margin: var(--s-3) 0 var(--s-4); color: var(--text-secondary); line-height: 1.7; }
+  .identity-row { display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; margin-bottom: var(--s-2); color: var(--text-muted); font-size: var(--fs-body-sm); }
+  .identity-row .item { padding: 2px var(--s-3); border-radius: var(--r-pill); background: var(--bg-deep); }
   .identity-row .role { color: var(--accent); font-weight: 600; background: var(--accent-soft); }
-  .voice-block { border-left: 3px solid var(--accent); padding: var(--s-2) var(--s-3); margin: var(--s-3) 0; background: var(--accent-soft); border-radius: 0 var(--r-sm) var(--r-sm) 0; font-style: italic; color: var(--text-secondary); font-size: .9rem; }
-  .voice-label { display: block; font-size: .65rem; text-transform: uppercase; letter-spacing: .08em; color: var(--accent); margin-bottom: 2px; font-style: normal; }
-  .tags-grid { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: var(--s-3); }
-  .tag-chip { border-radius: 999px; font-size: .78rem; padding: 3px 10px; color: var(--text-inverse); text-shadow: 0 1px 2px rgba(0,0,0,0.25); }
+
+  .voice-block { margin: var(--s-3) 0; padding: var(--s-2) var(--s-3); border-left: 3px solid var(--accent); border-radius: 0 var(--r-sm) var(--r-sm) 0; background: var(--accent-soft); color: var(--text-secondary); font-size: var(--fs-body); font-style: italic; }
+  .voice-label { display: block; margin-bottom: 2px; color: var(--accent); font-size: var(--fs-mono-xs); font-style: normal; letter-spacing: .08em; text-transform: uppercase; }
+
+  /* 情绪标签:几何与全局 .chip 一致,只把底色换成 mood token。
+     文字用 --on-mood-text(深墨):6 种 mood 底都是高亮度色,
+     白字在 joy/warmth 上只有 1.4:1,两个主题都不合格。 */
+  .tags-grid { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-bottom: var(--s-3); }
+  .tag-chip { padding: var(--s-1) var(--s-3); border-radius: var(--r-pill); color: var(--on-mood-text); font-size: var(--fs-label-sm); }
   .tag-chip.m0 { background: var(--mood-joy); }
   .tag-chip.m1 { background: var(--mood-love); }
   .tag-chip.m2 { background: var(--mood-calm); }
   .tag-chip.m3 { background: var(--mood-sad); }
   .tag-chip.m4 { background: var(--mood-tension); }
   .tag-chip.m5 { background: var(--mood-warmth); }
-  .bg-story { font-size: .85rem; color: var(--text-secondary); line-height: 1.7; margin-top: var(--s-3); max-height: 80px; overflow: hidden; position: relative; cursor: pointer; transition: max-height .3s; }
+
+  .bg-story { position: relative; max-height: 80px; margin-top: var(--s-3); overflow: hidden; color: var(--text-secondary); font-size: var(--fs-body-sm); line-height: 1.7; cursor: pointer; transition: max-height var(--t-base); }
   .bg-story.expanded { max-height: 500px; }
-  .bg-story::after { content: '… 展开'; position: absolute; bottom: 0; right: 0; background: linear-gradient(90deg, transparent, var(--bg-surface)); padding-left: 40px; color: var(--accent); font-size: .75rem; }
+  .bg-story::after { content: '… 展开'; position: absolute; right: 0; bottom: 0; padding-left: var(--s-6); background: linear-gradient(90deg, transparent, var(--bg-surface)); color: var(--accent); font-size: var(--fs-label-xs); }
   .bg-story.expanded::after { content: none; }
-  .one-click-btn { width: 100%; margin-top: var(--s-4); padding: var(--s-3); font-size: 1rem; }
+
   .detail-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); }
-  .detail-section { background: var(--bg-deep); border-radius: var(--r-md); padding: var(--s-3); }
+  .detail-section { padding: var(--s-3); border-radius: var(--r-md); background: var(--bg-deep); }
   .detail-section.wide { grid-column: 1 / -1; }
-  .lab { color: var(--text-muted); font-size: .7rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; margin-bottom: var(--s-2); }
-  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
-  .chip { border-radius: 999px; background: var(--bg-elevated); color: var(--text-secondary); font-size: .78rem; padding: 3px 9px; }
-  .trait { border: 1px solid var(--border-soft); background: var(--bg-surface); color: var(--text-primary); }
+  .lab { margin-bottom: var(--s-2); color: var(--text-muted); font-size: var(--fs-mono-sm); font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+  .chips { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+  /* 局部 .chip 只覆写密度(档案里成排出现),表面与 hover 沿用全局 */
+  .chips .chip { padding: var(--s-1) var(--s-3); font-size: var(--fs-label-sm); cursor: default; }
+  .chips .chip.trait { border-color: var(--border-soft); background: var(--bg-surface); color: var(--text-primary); }
+
   .cg-card { padding: var(--s-4); }
-  .cg-title { font-size: 1.05rem; font-weight: 800; margin-bottom: var(--s-1); }
-  .cg-story { color: var(--text-secondary); font-size: .88rem; line-height: 1.65; }
-  .recommend-title { font-size: 1.2rem; margin: 0 0 var(--s-3); }
+  .cg-title { margin-bottom: var(--s-1); font-size: var(--fs-title-xs); font-weight: 800; }
+  .cg-story { color: var(--text-secondary); font-size: var(--fs-body-sm); line-height: 1.65; }
+  .recommend-title { margin: 0 0 var(--s-3); font-size: var(--fs-title-sm); }
   .recommend-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: var(--s-3); }
-  .char-lora { color: var(--text-secondary); font-size: .85rem; }
+  .char-lora { color: var(--text-secondary); font-size: var(--fs-body-sm); }
   .char-lora code { color: var(--accent); font-family: var(--font-mono); }
-  .empty { max-width:560px; margin:4vh auto 0; padding:clamp(28px,5vw,48px) var(--s-5); border:1px solid var(--border-soft); border-radius:24px; background:color-mix(in srgb,var(--bg-surface) 82%,transparent); box-shadow:inset 0 1px 0 var(--glass-highlight),var(--shadow-sm); text-align:center; color:var(--text-muted); }
-  @media (max-width: 700px) { .page { padding: var(--s-4) var(--s-3); } .character-hero { grid-template-columns: 1fr; } .portrait { min-height: 430px; } .portrait-image { top: 14px; } .detail-grid { grid-template-columns: 1fr; } }
+
+  @media (max-width: 700px) {
+    .page { padding: var(--s-4) var(--s-3); }
+    .character-hero { grid-template-columns: 1fr; }
+    .portrait { min-height: 430px; }
+    .portrait-image { top: var(--s-3); }
+    .detail-grid { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
@@ -75,6 +97,6 @@
 </main>
 <footer class="footer"><p>绫季绘境 · 角色决定每个场景的情绪与细节</p></footer>
 <script src="scene-card.js?v=8"></script>
-<script src="character.js?v=3"></script>
+<script src="character.js?v=4"></script>
 </body>
 </html>

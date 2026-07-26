@@ -22,8 +22,7 @@ function updateTunnelUI() {
   hint.textContent = tunnelEnabled ? '朋友可通过临时链接访问' : '关闭后仅本机可访问';
   if (!lastStatus || !lastStatus.running) {
     startBtn.textContent = tunnelEnabled ? '启动并生成分享链接' : '启动（仅本地）';
-    startBtn.style.background = '';
-    startBtn.style.color = '';
+    startBtn.className = 'btn btn-lg btn-primary btn-block';
   }
 }
 
@@ -77,7 +76,7 @@ function copyLocalLink() {
 }
 
 function setBadge(element, kind, text) {
-  element.className = 'badge ' + kind;
+  element.className = 'status-badge ' + kind;
   element.innerHTML = '<span class="dot"></span><span></span>';
   element.lastChild.textContent = text;
 }
@@ -146,7 +145,8 @@ function renderOperation(operation) {
   panel.className = 'operation-panel show ' + (operation.status || 'running');
   document.getElementById('operation-title').textContent = operation.label || '服务操作';
   document.getElementById('operation-state').textContent = active ? '进行中' : operation.status === 'completed' ? '已完成' : '失败';
-  document.getElementById('operation-progress').style.width = progress + '%';
+  // 值走 --fill(全局 .meter-fill 用 width:var(--fill)),不再直接写 style.width
+  document.getElementById('operation-progress').style.setProperty('--fill', progress + '%');
   document.getElementById('operation-message').textContent = operation.error || operation.message || '';
   if (operationPollTimer) { clearTimeout(operationPollTimer); operationPollTimer = null; }
   if (active) operationPollTimer = setTimeout(function() { pollStatus(true); pollLogs(); }, 1200);
@@ -183,13 +183,13 @@ function renderStatus(data) {
 
   if (data.running) {
     setBadge(document.getElementById('badge'), 'running', '运行中');
-    button.className = 'btn btn-primary cta-btn cta-btn-danger';
+    button.className = 'btn btn-lg btn-danger btn-block';
     button.textContent = '停止网站网关';
     button.setAttribute('data-action', 'stop-gateway');
     runningPanel.hidden = false;
   } else {
     setBadge(document.getElementById('badge'), 'stopped', '未启动');
-    button.className = 'btn btn-primary cta-btn';
+    button.className = 'btn btn-lg btn-primary btn-block';
     button.textContent = tunnelEnabled ? '启动并生成分享链接' : '启动（仅本地）';
     button.setAttribute('data-action', 'start-gateway');
     runningPanel.hidden = true;

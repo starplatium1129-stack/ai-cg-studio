@@ -401,7 +401,7 @@ function quickCreateCurrent(knownConnection){
     generate();
     if (!connected) {
       showQuickCreateStatus('SD 当前不可用，Prompt 已准备好；连接恢复后点击“生成图片”即可。', true);
-      var area = document.getElementById('sdResultArea'); if (area) area.style.display = 'block';
+      var area = document.getElementById('sdResultArea'); if (area) area.hidden = false;
       var status = document.getElementById('sdStatus'); if (status) status.textContent = '未提交生成：SD WebUI 尚未连接。';
       return false;
     }
@@ -715,9 +715,9 @@ function callSDGenerate(requestOptions){
   var quickButton = document.getElementById('quickCreateBtn');
   var cancelButton = document.getElementById('sdCancelBtn');
   var progress = document.getElementById('sdProgress');
-  area.style.display = 'block';
+  area.hidden = false;
   clearSDRecovery();
-  saveActions.style.display = 'none';
+  saveActions.hidden = true;
   var historySaveButton = document.getElementById('sdHistorySaveBtn');
   if (historySaveButton) { historySaveButton.disabled = false; historySaveButton.textContent = '保存到历史'; }
   slot.textContent = '';
@@ -854,7 +854,7 @@ function callSDGenerate(requestOptions){
     image.src = result.image;
     image.alt = 'Stable Diffusion 生成图片';
     slot.replaceChildren(image);
-    saveActions.style.display = 'flex';
+    saveActions.hidden = false;
     if (typeof finishFirstCreation === 'function') {
       try { finishFirstCreation(); }
       catch (firstCreationError) { console.warn('first creation state update failed', firstCreationError); }
@@ -958,7 +958,7 @@ function resetDirector() {
   }
   try { if (typeof DRAFT_KEY !== 'undefined') localStorage.removeItem(DRAFT_KEY); } catch(e) {}
   document.getElementById('stepResult').classList.remove('has-image');
-  document.getElementById('sdResultArea').style.display = 'none';
+  document.getElementById('sdResultArea').hidden = true;
   document.getElementById('sdImageSlot').textContent = '';
   goStep(1);
   renderDirectorModeSummary();

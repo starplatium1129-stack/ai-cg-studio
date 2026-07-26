@@ -5,19 +5,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Prompt 规范 · 绫季绘境</title>
-<link rel="stylesheet" href="../css/design-system.css?v=10">
-<script src="../tools/nav.js?v=7"></script>
+<link rel="stylesheet" href="../css/design-system.css?v=11">
+<link rel="stylesheet" href="../css/docs.css?v=1">
+<script src="../tools/nav.js?v=8"></script>
 <script src="../tools/theme.js?v=5"></script>
 <style>
-  .page { max-width: 900px; margin: 0 auto; padding: var(--s-5) var(--s-4); }
-  h1.title {
-    font-size: 2rem; font-weight: 800;
-    background: linear-gradient(135deg, var(--text-primary) 50%, var(--accent));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text; margin-bottom: var(--s-2);
-  }
-  .subtitle { color: var(--text-secondary); margin-bottom: var(--s-5); }
-
   /* Module list */
   .module {
     display: flex; align-items: flex-start; gap: var(--s-4);
@@ -31,50 +23,39 @@
     background: var(--accent-soft); border: 1px solid var(--accent);
     display: flex; align-items: center; justify-content: center;
     font-family: var(--font-mono); font-weight: 700; color: var(--accent);
-    font-size: 0.85rem;
+    font-size: var(--fs-body-sm);
   }
-  .module-content h4 { font-size: 1rem; font-weight: 600; margin-bottom: 4px; }
-  .module-content h4 .cn { color: var(--text-muted); font-weight: 400; font-size: 0.85rem; margin-left: var(--s-2); }
-  .module-content p { font-size: 0.88rem; color: var(--text-secondary); margin-bottom: var(--s-2); }
-  .example { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted); background: var(--bg-deep); padding: var(--s-2); border-radius: var(--r-sm); }
+  .module-content h4 { font-size: var(--fs-body-lg); font-weight: 600; margin-bottom: 4px; }
+  .module-content h4 .cn { color: var(--text-muted); font-weight: 400; font-size: var(--fs-body-sm); margin-left: var(--s-2); }
+  .module-content p { font-size: var(--fs-body-sm); color: var(--text-secondary); margin-bottom: var(--s-2); }
+  .example { font-family: var(--font-mono); font-size: var(--fs-label-sm); color: var(--text-muted); background: var(--bg-deep); padding: var(--s-2); border-radius: var(--r-sm); }
 
-  /* Live demo */
-  .demo-frame {
-    background: var(--bg-deep); border: 2px solid var(--accent);
-    border-radius: var(--r-xl); padding: var(--s-5); margin: var(--s-5) 0;
-    box-shadow: 0 0 32px var(--accent-glow);
-  }
-  .demo-frame h3 { margin-bottom: var(--s-4); }
+  /* Live demo — 框体走 docs.css 的 .demo-frame.demo-frame-live */
+  .demo-frame > h3 { margin-bottom: var(--s-4); }
+  .demo-frame > p { margin-bottom: var(--s-3); }
+  .demo-frame > p.note-sm { margin-bottom: var(--s-2); }
 
   .module-toggle {
     display: flex; flex-wrap: wrap; gap: var(--s-2); margin-bottom: var(--s-4);
   }
   .toggle {
     display: inline-flex; align-items: center; gap: var(--s-2);
-    padding: 6px 14px; border-radius: 20px;
+    padding: 6px 14px; border-radius: var(--r-pill);
     background: var(--bg-elevated); border: 1px solid var(--border-soft);
-    font-size: 0.82rem; font-weight: 500; color: var(--text-secondary);
-    cursor: pointer; transition: all var(--t-fast);
+    font: 500 var(--fs-label) var(--font-sans); color: var(--text-secondary);
+    cursor: pointer; transition: background var(--t-fast), border-color var(--t-fast), color var(--t-fast);
     user-select: none;
   }
   .toggle:hover { border-color: var(--accent); }
   .toggle.on { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
-  .toggle .swatch { width: 10px; height: 10px; border-radius: 50%; }
 
-  .output-prompt {
-    background: var(--bg-base); border-radius: var(--r-md);
-    padding: var(--s-4); font-family: var(--font-mono); font-size: 0.82rem;
-    line-height: 1.9; color: var(--text-secondary); word-break: break-all;
-    white-space: pre-wrap; min-height: 80px;
+  /* 输出块用全局 .prompt-code 的配色映射,只覆写演示需要的底色与高度 */
+  #output.prompt-code {
+    background: var(--bg-base);
+    padding: var(--s-4);
+    min-height: 80px;
+    line-height: 1.9;
   }
-
-  .output-prompt .q { color: var(--info); }
-  .output-prompt .c { color: var(--accent); }
-  .output-prompt .e { color: var(--mood-joy); }
-  .output-prompt .s { color: var(--mood-calm); }
-  .output-prompt .l { color: var(--mood-warmth); }
-  .output-prompt .x { color: var(--mood-love); }
-  .output-prompt .lo { color: var(--mood-tension); }
 </style>
 </head>
 <body data-nav="docs">
@@ -90,7 +71,7 @@
 <article class="page">
   <a href="../index.html" class="nav-back">← 回首页</a>
 
-  <h1 class="title">📝 Prompt 规范 (Prompt Specification)</h1>
+  <h1 class="title title-gradient">📝 Prompt 规范 (Prompt Specification)</h1>
   <p class="subtitle">建议按稳定顺序组装；模型、LoRA 或实测结果变化时可以调整。</p>
 
   <!-- module list -->
@@ -176,17 +157,17 @@
   </div>
 
   <!-- Live demo -->
-  <div class="demo-frame">
+  <div class="demo-frame demo-frame-live">
     <h3>🔬 实时拼接演示</h3>
-    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-3);">点击开关，查看 Prompt 如何变化：</p>
+    <p class="note">点击开关，查看 Prompt 如何变化：</p>
     <div class="module-toggle" id="toggles"></div>
-    <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: var(--s-2);">生成的 Prompt（按顺序拼接）：</p>
-    <div class="output-prompt" id="output"></div>
-    <button class="btn btn-ghost mt-4" onclick="resetModules()">🔄 重置</button>
+    <p class="note-sm">生成的 Prompt（按顺序拼接）：</p>
+    <div class="prompt-code" id="output"></div>
+    <button type="button" class="btn btn-ghost mt-4" data-action="reset-modules">🔄 重置</button>
   </div>
 
   <!-- LoRA weight guide -->
-  <h2 style="margin-top: var(--s-6); margin-bottom: var(--s-3);">LoRA 权重指南</h2>
+  <h2 class="section-title">LoRA 权重指南</h2>
   <table>
     <thead><tr><th>权重</th><th>效果</th><th>适用场景</th></tr></thead>
     <tbody>
@@ -202,50 +183,7 @@
   </footer>
 </article>
 
-<script>
-const MODULES = [
-  { id: 'q', on: true, cls: 'q', label: 'Quality',    text: 'masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed' },
-  { id: 'c', on: true, cls: 'c', label: 'Character',  text: '1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon' },
-  { id: 's', on: true, cls: 's', label: 'Story',      text: 'after school, school gate, waiting' },
-  { id: 'e', on: true, cls: 'e', label: 'Emotion',    text: 'gentle smile, soft eyes, blush, looking at viewer' },
-  { id: 'a', on: true, cls: 'a', label: 'Camera',     text: 'medium shot, looking back, over shoulder' },
-  { id: 'o', on: true, cls: 'o', label: 'Composition',text: 'rule of thirds, by window, depth' },
-  { id: 'l', on: true, cls: 'l', label: 'Lighting',   text: 'golden hour, backlit, soft shadows, warm atmosphere' },
-  { id: 'x', on: true, cls: 'x', label: 'Extra',      text: 'hair blowing, depth of field, cinematic lighting' },
-  { id: 'lo',on:true, cls: 'lo',label: 'LoRA',       text: '<lora:ayachi_nene_v14:0.8>' }
-];
-
-function init() {
-  const el = document.getElementById('toggles');
-  el.innerHTML = MODULES.map(m => `
-    <div class="toggle on" data-id="${m.id}" onclick="toggleModule('${m.id}')">
-      ${m.label}
-    </div>
-  `).join('');
-  render();
-}
-
-function toggleModule(id) {
-  const m = MODULES.find(x => x.id === id);
-  m.on = !m.on;
-  const el = document.querySelector(`.toggle[data-id="${id}"]`);
-  el.classList.toggle('on', m.on);
-  render();
-}
-
-function render() {
-  const parts = MODULES.filter(m => m.on).map(m => `<span class="${m.cls}">${m.text}</span>`);
-  document.getElementById('output').innerHTML = parts.join(',\n');
-}
-
-function resetModules() {
-  MODULES.forEach(m => m.on = true);
-  document.querySelectorAll('.toggle').forEach(t => t.classList.add('on'));
-  render();
-}
-
-init();
-</script>
+<script src="prompt-spec.js?v=1"></script>
 
 </body>
 </html>

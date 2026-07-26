@@ -5,156 +5,150 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>控制面板 · 绫季绘境</title>
-<link rel="stylesheet" href="/css/design-system.css?v=10">
+<link rel="stylesheet" href="/css/design-system.css?v=11">
 <style>
-  .page { max-width:860px; margin:0 auto; padding:var(--s-5) var(--s-4); }
+  /* 控制面板只保留"本机运维"专属组件。
+     按钮 = design-system 的 .btn 家族(primary / ghost / danger / -sm / -lg / -block),
+     输入 = .input.input-mono,进度 = .meter/.meter-fill,页面骨架 = .page + --page-max。 */
+  .page { --page-max:860px; padding:var(--s-5) var(--s-4); }
 
-  h1 { margin:0; font-family:var(--font-display); }
+  /* 控制面板不加载 tools/nav.js(它的顶栏是本机专用的固定壳),
+     所以这里自带一份与 nav.js 注入的同名规则,取值必须一致。 */
+  .nav-logo { height:32px; width:auto; }
+
   .page-header { border-bottom:none; padding-top:var(--s-4); margin-bottom:var(--s-4); text-align:left; }
   .page-header .page-kicker { justify-content:flex-start; }
   .page-header .subtitle { margin:0; max-width:none; }
 
   /* Section shell (tighter than the default .card-info padding) */
   .panel-card { padding:var(--s-4); }
-  .section-heading { display:flex; align-items:center; gap:9px; font-size:1rem; margin-bottom:var(--s-2); color:var(--text-primary); }
-  .step-num { display:inline-flex; align-items:center; justify-content:center; min-width:22px; height:22px; padding:0 4px; border-radius:var(--r-sm); background:var(--accent-soft); color:var(--accent); font:750 .68rem var(--font-mono); }
-  .section-desc { color:var(--text-muted); font-size:.8rem; line-height:1.55; margin-bottom:var(--s-3); }
-  .full-btn { width:100%; }
-  .cta-btn { width:100%; min-height:48px; font-size:.95rem; }
-  .cta-btn-danger { background:var(--danger); color:var(--text-inverse); }
-  .cta-btn-danger:hover { background:color-mix(in srgb,var(--danger) 88%,#000); }
-  .inline-btn { height:40px; padding:0 16px; font-size:.78rem; flex-shrink:0; }
-  .flex-btn { flex:1; min-height:38px; font-size:.8rem; }
-  .flex-btn-sm { flex:1; min-height:38px; font-size:.78rem; }
+  .section-heading { display:flex; align-items:center; gap:var(--s-2); font-size:var(--fs-body-lg); margin-bottom:var(--s-2); color:var(--text-primary); }
+  .step-num { display:inline-flex; align-items:center; justify-content:center; min-width:22px; height:22px; padding:0 var(--s-1); border-radius:var(--r-sm); background:var(--accent-soft); color:var(--accent); font:750 var(--fs-mono-sm) var(--font-mono); }
+  .section-desc { color:var(--text-muted); font-size:var(--fs-label); line-height:1.55; margin-bottom:var(--s-3); }
+  /* 同组按钮共享高度/圆角/字号:只声明"占多宽",尺寸交给 .btn / .btn-sm / .btn-lg */
+  .config-row .btn { flex-shrink:0; }
+  .inline-actions .btn { flex:1; }
 
-  /* Status badges */
+  /* Status badges — 本页是"服务连接态"语义,与全局 .badge(机读状态标签)不同:
+     这里没有胶囊底色,只有一颗会呼吸的圆点 + 文字,故独立命名避免与全局重叠。 */
   .status-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:var(--s-3); margin-bottom:var(--s-4); }
   .status-card { background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-lg); padding:var(--s-3) var(--s-4); }
   .status-card.primary { grid-column:1 / -1; border-color:color-mix(in srgb,var(--accent) 30%,var(--border-soft)); background:linear-gradient(135deg,var(--accent-soft),var(--bg-surface)); }
-  .status-label { color:var(--text-muted); font-size:.72rem; margin-bottom:6px; }
-  .badge { display:inline-flex; align-items:center; gap:8px; font-size:.84rem; font-weight:650; line-height:1.2; }
-  .badge .dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
-  .badge.running { color:var(--success); }
-  .badge.running .dot { background:var(--success); box-shadow:0 0 0 5px color-mix(in srgb,var(--success) 12%,transparent); animation:pulse 1.8s infinite; }
-  .badge.stopped { color:var(--text-secondary); }
-  .badge.stopped .dot { background:var(--text-muted); }
-  .badge.online { color:var(--info); }
-  .badge.online .dot { background:var(--info); box-shadow:0 0 0 5px color-mix(in srgb,var(--info) 10%,transparent); }
-  .badge.offline { color:var(--warning); }
-  .badge.offline .dot { background:var(--warning); }
+  .status-label { color:var(--text-muted); font-size:var(--fs-label-xs); margin-bottom:var(--s-1); }
+  .status-badge { display:inline-flex; align-items:center; gap:var(--s-2); font-size:var(--fs-label); font-weight:650; line-height:1.2; }
+  .status-badge .dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+  .status-badge.running { color:var(--success-text); }
+  .status-badge.running .dot { background:var(--success); box-shadow:0 0 0 5px color-mix(in srgb,var(--success) 12%,transparent); animation:pulse 1.8s infinite; }
+  .status-badge.stopped { color:var(--text-secondary); }
+  .status-badge.stopped .dot { background:var(--text-muted); }
+  .status-badge.online { color:var(--info-text); }
+  .status-badge.online .dot { background:var(--info); box-shadow:0 0 0 5px color-mix(in srgb,var(--info) 10%,transparent); }
+  .status-badge.offline { color:var(--warning-text); }
+  .status-badge.offline .dot { background:var(--warning); }
   @keyframes pulse { 50% { opacity:.48; } }
 
   /* Mode cards */
   .mode-grid { display:grid; grid-template-columns:1fr 1fr; gap:var(--s-2); margin-bottom:var(--s-3); }
-  .mode-card { text-align:left; cursor:pointer; padding:var(--s-3); border:2px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-deep); color:var(--text-primary); transition:all var(--t-fast); }
+  .mode-card { text-align:left; cursor:pointer; padding:var(--s-3); border:2px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-deep); color:var(--text-primary); transition:border-color var(--t-fast),background var(--t-fast),transform var(--t-fast); }
   .mode-card:hover { border-color:var(--accent); background:var(--accent-soft); }
   .mode-card:active { transform:scale(.98); }
   .mode-card:disabled { opacity:.5; cursor:not-allowed; transform:none; }
-  .mode-card-title { display:flex; align-items:center; gap:7px; font-size:.88rem; font-weight:700; margin-bottom:4px; }
-  .mode-card-desc { color:var(--text-muted); font-size:.7rem; line-height:1.5; }
+  .mode-card-title { display:flex; align-items:center; gap:var(--s-2); font-size:var(--fs-body-sm); font-weight:700; margin-bottom:var(--s-1); }
+  .mode-card-desc { color:var(--text-muted); font-size:var(--fs-mono-sm); line-height:1.5; }
 
   /* Service rows */
   .service-rows { display:flex; flex-direction:column; gap:var(--s-2); margin-bottom:var(--s-3); }
   .service-row { display:flex; align-items:center; justify-content:space-between; gap:var(--s-2); padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-deep); }
-  .service-row-name { display:flex; align-items:center; gap:8px; font-size:.78rem; font-weight:650; }
+  .service-row-name { display:flex; align-items:center; gap:var(--s-2); font-size:var(--fs-label-sm); font-weight:650; }
   .service-row-name .dot { width:7px; height:7px; border-radius:50%; background:var(--text-muted); flex-shrink:0; }
   .service-row-name .dot.on { background:var(--success); box-shadow:0 0 0 3px color-mix(in srgb,var(--success) 12%,transparent); }
-  .service-row-meta { color:var(--text-muted); font-size:.68rem; }
-  .service-row-actions { display:flex; gap:6px; flex-shrink:0; }
-  .btn-tiny { min-height:30px; padding:0 11px; border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-elevated); color:var(--text-secondary); font-size:.7rem; cursor:pointer; transition:all var(--t-fast);font-family:var(--font-sans); }
-  .btn-tiny:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
-  .btn-tiny:disabled { opacity:.45; cursor:not-allowed; }
-  .btn-tiny.danger:hover { border-color:var(--danger); color:var(--danger); background:color-mix(in srgb,var(--danger) 12%,transparent); }
+  .service-row-meta { color:var(--text-muted); font-size:var(--fs-mono-sm); }
+  .service-row-actions { display:flex; gap:var(--s-2); flex-shrink:0; }
 
-  .autostart-row { display:flex; align-items:center; gap:8px; padding:var(--s-2) var(--s-3); border:1px dashed var(--border-soft); border-radius:var(--r-md); color:var(--text-muted); font-size:.72rem; cursor:pointer; line-height:1.5; }
+  .autostart-row { display:flex; align-items:center; gap:var(--s-2); padding:var(--s-2) var(--s-3); border:1px dashed var(--border-soft); border-radius:var(--r-md); color:var(--text-muted); font-size:var(--fs-label-xs); cursor:pointer; line-height:1.5; }
   .autostart-row input { accent-color:var(--accent); }
-  .mode-note { margin-top:var(--s-2); color:var(--text-muted); font-size:.68rem; line-height:1.6; }
-  .operation-panel { display:none; margin:var(--s-3) 0; padding:12px; border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-deep); }
+  .mode-note { margin-top:var(--s-2); color:var(--text-muted); font-size:var(--fs-mono-sm); line-height:1.6; }
+  .operation-panel { display:none; margin:var(--s-3) 0; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-deep); }
   .operation-panel.show { display:block; }
   .operation-panel.failed { border-color:color-mix(in srgb,var(--danger) 48%,var(--border-soft)); }
   .operation-panel.completed { border-color:color-mix(in srgb,var(--success) 42%,var(--border-soft)); }
-  .operation-head { display:flex; align-items:center; justify-content:space-between; gap:var(--s-2); margin-bottom:8px; }
-  .operation-title { color:var(--text-primary); font-size:.78rem; font-weight:750; }
-  .operation-state { color:var(--text-muted); font:650 .62rem var(--font-mono); letter-spacing:.06em; text-transform:uppercase; }
-  .operation-track { height:5px; overflow:hidden; border-radius:999px; background:var(--border-soft); }
-  .operation-progress { width:0; height:100%; border-radius:inherit; background:var(--accent); transition:width 260ms ease; }
-  .operation-panel.failed .operation-progress { background:var(--danger); }
-  .operation-panel.completed .operation-progress { background:var(--success); }
-  .operation-message { margin-top:8px; color:var(--text-secondary); font-size:.7rem; line-height:1.45; }
+  .operation-head { display:flex; align-items:center; justify-content:space-between; gap:var(--s-2); margin-bottom:var(--s-2); }
+  .operation-title { color:var(--text-primary); font-size:var(--fs-label-sm); font-weight:750; }
+  .operation-state { color:var(--text-muted); font:650 var(--fs-mono-xs) var(--font-mono); letter-spacing:.06em; text-transform:uppercase; }
+  /* 进度条走全局 .meter/.meter-fill(值由 --fill 承载),只改状态色 */
+  .operation-panel.failed .meter-fill { background:var(--danger); }
+  .operation-panel.completed .meter-fill { background:var(--success); }
+  .operation-message { margin-top:var(--s-2); color:var(--text-secondary); font-size:var(--fs-mono-sm); line-height:1.45; }
 
   /* Config */
-  .config-label { display:block; color:var(--text-secondary); font-size:.78rem; font-weight:600; margin-bottom:6px; margin-top:var(--s-3); }
+  .config-label { display:block; color:var(--text-secondary); font-size:var(--fs-label-sm); font-weight:600; margin-bottom:var(--s-1); margin-top:var(--s-3); }
   .config-row { display:flex; gap:var(--s-2); }
-  .config-input { flex:1; min-width:0; height:40px; padding:0 12px; color:var(--text-primary); background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-sm); font:.82rem var(--font-mono); outline:none; transition:border-color var(--t-fast),box-shadow var(--t-fast); }
-  .config-input:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
-  .config-input:disabled { opacity:.66; cursor:not-allowed; }
-  .config-help { color:var(--text-muted); font-size:.72rem; line-height:1.6; margin-top:5px; }
+  .config-row .input { flex:1; min-width:0; }
+  .config-help { color:var(--text-muted); font-size:var(--fs-label-xs); line-height:1.6; margin-top:var(--s-1); }
   .config-help code { color:var(--accent); }
   .config-label-first { margin-top:0; }
-  .config-feedback { min-height:20px; margin:var(--s-3) 0; font-size:.75rem; line-height:1.5; color:var(--text-muted); }
-  .config-feedback.ok { color:var(--info); }
-  .config-feedback.warn { color:var(--warning); }
+  .config-feedback { min-height:20px; margin:var(--s-3) 0; font-size:var(--fs-label-sm); line-height:1.5; color:var(--text-muted); }
+  .config-feedback.ok { color:var(--info-text); }
+  .config-feedback.warn { color:var(--warning-text); }
 
   /* Voice config */
   .voice-config { margin-top:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-deep); }
-  .voice-config summary { cursor:pointer; list-style:none; padding:var(--s-2) var(--s-3); color:var(--text-secondary); font-size:.78rem; font-weight:650; }
+  .voice-config summary { cursor:pointer; list-style:none; padding:var(--s-2) var(--s-3); color:var(--text-secondary); font-size:var(--fs-label-sm); font-weight:650; }
   .voice-config summary::-webkit-details-marker { display:none; }
-  .voice-config-body { padding:0 12px 12px; display:grid; grid-template-columns:1fr 1fr; gap:var(--s-2); }
+  .voice-config-body { padding:0 var(--s-3) var(--s-3); display:grid; grid-template-columns:1fr 1fr; gap:var(--s-2); }
   .voice-card { padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-surface); }
-  .voice-card-title { margin-bottom:6px; font-size:.78rem; font-weight:700; color:var(--accent); }
-  .voice-card .config-input { width:100%; height:36px; margin-bottom:6px; font-size:.72rem; }
+  .voice-card-title { margin-bottom:var(--s-1); font-size:var(--fs-label-sm); font-weight:700; color:var(--accent); }
+  /* 声线卡是双列窄槽:36px 高、更小字号,避免两列输入把面板撑破 */
+  .voice-card .input { min-height:36px; margin-bottom:var(--s-1); font-size:var(--fs-label-xs); }
 
   /* Tunnel */
   .tunnel-toggle-row { display:flex; align-items:center; justify-content:space-between; padding:var(--s-2) var(--s-3); margin-bottom:var(--s-3); background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-md); }
-  .tunnel-toggle-label { display:flex; align-items:center; gap:8px; }
-  .tunnel-toggle-text { font-size:.84rem; font-weight:650; color:var(--text-primary); }
-  .tunnel-toggle-hint { font-size:.7rem; color:var(--text-muted); }
-  .tunnel-switch { position:relative; width:44px; height:24px; border:1px solid var(--border-strong); border-radius:var(--r-pill); background:var(--border-strong); cursor:pointer; padding:0; transition:background .2s,border-color .2s; }
-  .tunnel-switch[aria-checked="true"] { background:var(--success); border-color:var(--success); }
-  .tunnel-switch-knob { position:absolute; top:2px; left:2px; width:18px; height:18px; border-radius:50%; background:#fff; box-shadow:0 1px 3px rgba(0,0,0,.2); transition:left .2s; }
+  .tunnel-toggle-label { display:flex; align-items:center; gap:var(--s-2); }
+  .tunnel-toggle-text { font-size:var(--fs-label); font-weight:650; color:var(--text-primary); }
+  .tunnel-toggle-hint { font-size:var(--fs-mono-sm); color:var(--text-muted); }
+  .tunnel-switch { position:relative; width:44px; height:24px; border:1px solid var(--border-strong); border-radius:var(--r-pill); background:var(--border-strong); cursor:pointer; padding:0; transition:background var(--t-fast),border-color var(--t-fast); }
+  .tunnel-switch[aria-checked="true"] { background:var(--success); border-color:var(--success-text); }
+  /* 2px/22px:18px 旋钮在 24px 轨道内的几何位置,不是间距刻度 */
+  .tunnel-switch-knob { position:absolute; top:2px; left:2px; width:18px; height:18px; border-radius:50%; background:var(--on-art-primary); box-shadow:0 1px 3px var(--art-scrim-soft); transition:left var(--t-fast); }
   .tunnel-switch[aria-checked="true"] .tunnel-switch-knob { left:22px; }
 
   /* Access cards */
   .access-grid { display:grid; grid-template-columns:1fr 1fr; gap:var(--s-3); }
   .access-card { background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-lg); padding:var(--s-4); }
-  .access-kicker { color:var(--text-muted); font-size:.7rem; margin-bottom:4px; }
-  .access-title { font-size:.9rem; font-weight:700; margin-bottom:4px; }
-  .access-desc { color:var(--text-muted); font-size:.72rem; line-height:1.55; min-height:36px; }
-  .link-value { margin:var(--s-3) 0 var(--s-2); min-height:42px; padding:10px 11px; display:flex; align-items:center; color:var(--info); background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-sm); font:.68rem var(--font-mono); word-break:break-all; }
+  .access-kicker { color:var(--text-muted); font-size:var(--fs-mono-sm); margin-bottom:var(--s-1); }
+  .access-title { font-size:var(--fs-body-sm); font-weight:700; margin-bottom:var(--s-1); }
+  .access-desc { color:var(--text-muted); font-size:var(--fs-label-xs); line-height:1.55; min-height:36px; }
+  .link-value { margin:var(--s-3) 0 var(--s-2); min-height:42px; padding:var(--s-2) var(--s-3); display:flex; align-items:center; color:var(--info-text); background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-sm); font:var(--fs-mono-sm) var(--font-mono); word-break:break-all; }
   .link-value.waiting { color:var(--text-muted); font-family:var(--font-sans); }
   .inline-actions { display:flex; gap:var(--s-2); }
-  .inline-actions .btn { min-height:38px; font-size:.78rem; border-radius:var(--r-sm); }
 
-  .share-state { display:inline-flex; align-items:center; gap:6px; margin-top:4px; padding:4px 10px; border-radius:var(--r-pill); font-size:.68rem; font-weight:650; }
-  .share-state.ready { color:var(--success); background:color-mix(in srgb,var(--success) 12%,transparent); }
-  .share-state.waiting { color:var(--warning); background:color-mix(in srgb,var(--warning) 12%,transparent); }
-  .share-state.unavailable { color:var(--danger); background:color-mix(in srgb,var(--danger) 12%,transparent); }
-  .share-state.local-only { color:var(--info); background:color-mix(in srgb,var(--info) 12%,transparent); }
+  .share-state { display:inline-flex; align-items:center; gap:var(--s-2); margin-top:var(--s-1); padding:var(--s-1) var(--s-3); border-radius:var(--r-pill); font-size:var(--fs-mono-sm); font-weight:650; }
+  .share-state.ready { color:var(--success-text); background:color-mix(in srgb,var(--success) 12%,transparent); }
+  .share-state.waiting { color:var(--warning-text); background:color-mix(in srgb,var(--warning) 12%,transparent); }
+  .share-state.unavailable { color:var(--danger-text); background:color-mix(in srgb,var(--danger) 12%,transparent); }
+  .share-state.local-only { color:var(--info-text); background:color-mix(in srgb,var(--info) 12%,transparent); }
 
-  .security-note { margin-top:var(--s-3); padding:var(--s-2) var(--s-3); border-radius:var(--r-md); color:var(--text-secondary); background:color-mix(in srgb,var(--warning) 8%,transparent); border:1px solid color-mix(in srgb,var(--warning) 16%,transparent); font-size:.72rem; line-height:1.55; }
-  .uptime { margin-top:var(--s-2); color:var(--text-muted); font-size:.7rem; text-align:right; }
-  .action-note { margin:var(--s-2) 0 0; color:var(--text-muted); font-size:.72rem; line-height:1.55; text-align:center; }
+  .security-note { margin-top:var(--s-3); padding:var(--s-2) var(--s-3); border-radius:var(--r-md); color:var(--text-secondary); background:color-mix(in srgb,var(--warning) 8%,transparent); border:1px solid color-mix(in srgb,var(--warning) 16%,transparent); font-size:var(--fs-label-xs); line-height:1.55; }
+  .uptime { margin-top:var(--s-2); color:var(--text-muted); font-size:var(--fs-mono-sm); text-align:right; }
+  .action-note { margin:var(--s-2) 0 0; color:var(--text-muted); font-size:var(--fs-label-xs); line-height:1.55; text-align:center; }
 
   /* Log */
   details.log-panel { background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-lg); overflow:hidden; }
-  details.log-panel summary { list-style:none; display:flex; align-items:center; justify-content:space-between; padding:var(--s-3) var(--s-4); cursor:pointer; color:var(--text-secondary); font-size:.8rem; user-select:none; }
+  details.log-panel summary { list-style:none; display:flex; align-items:center; justify-content:space-between; padding:var(--s-3) var(--s-4); cursor:pointer; color:var(--text-secondary); font-size:var(--fs-label); user-select:none; }
   details.log-panel summary::-webkit-details-marker { display:none; }
   .summary-side { display:flex; align-items:center; gap:var(--s-2); }
-  .summary-actions { gap:8px; }
   .chevron { color:var(--text-muted); transition:transform var(--t-fast); }
   details[open] .chevron { transform:rotate(90deg); }
-  .btn-clear { border:0; background:none; color:var(--text-muted); font-size:.72rem; cursor:pointer; }
-  .btn-clear:hover { color:var(--text-secondary); }
-  .log-wrap { padding:0 12px 12px; }
-  .log-box { min-height:58px; max-height:210px; overflow:auto; padding:var(--s-3); border-radius:var(--r-sm); background:var(--bg-deep); font:.68rem/1.65 var(--font-mono); color:var(--text-secondary); }
+  .log-wrap { padding:0 var(--s-3) var(--s-3); }
+  .log-box { min-height:58px; max-height:210px; overflow:auto; padding:var(--s-3); border-radius:var(--r-sm); background:var(--bg-deep); font:var(--fs-mono-sm)/1.65 var(--font-mono); color:var(--text-secondary); }
   .log-box .time { color:var(--text-muted); }
-  .log-box .info { color:var(--info); }
-  .log-box .err { color:var(--danger); }
+  .log-box .info { color:var(--info-text); }
+  .log-box .err { color:var(--danger-text); }
   .log-empty { color:var(--text-muted); font-family:var(--font-sans); }
 
-  .toast { position:fixed; left:50%; bottom:26px; z-index:10; transform:translate(-50%,18px); max-width:min(420px,calc(100% - 32px)); padding:11px 15px; color:var(--text-primary); background:var(--bg-surface); border:1px solid var(--border-strong); border-radius:var(--r-md); box-shadow:var(--shadow-md); font-size:.78rem; line-height:1.45; opacity:0; pointer-events:none; transition:opacity var(--t-fast),transform var(--t-fast); }
+  .toast { position:fixed; left:50%; bottom:var(--s-5); z-index:var(--z-toast); transform:translate(-50%,18px); max-width:min(420px,calc(100% - 32px)); padding:var(--s-3) var(--s-4); color:var(--text-primary); background:var(--bg-surface); border:1px solid var(--border-strong); border-radius:var(--r-md); box-shadow:var(--shadow-md); font-size:var(--fs-label-sm); line-height:1.45; opacity:0; pointer-events:none; transition:opacity var(--t-fast),transform var(--t-fast); }
   .toast.show { opacity:1; transform:translate(-50%,0); }
-  .toast.error { border-color:var(--danger); color:var(--danger); }
+  .toast.error { border-color:var(--danger-text); color:var(--danger-text); }
 
   .panel-section { margin-bottom:var(--s-4); }
 
@@ -180,7 +174,7 @@
 
 <nav class="nav">
   <div class="nav-inner">
-    <div class="nav-brand"><img src="/assets/logo.svg" alt="绫季绘境" style="height:32px;width:auto" aria-hidden="true"><span class="sr-only">绫季绘境</span></div>
+    <div class="nav-brand"><img class="nav-logo" src="/assets/logo.svg" alt="绫季绘境" aria-hidden="true"><span class="sr-only">绫季绘境</span></div>
     <div class="nav-links">
       <button class="theme-toggle" type="button" data-action="toggle-theme" aria-label="切换主题" title="切换明暗主题"><span id="theme-icon">🌙</span></button>
     </div>
@@ -198,17 +192,17 @@
 
   <!-- Status -->
   <section class="status-grid" aria-label="连接状态">
-    <div class="status-card"><div class="status-label">本地网关</div><div id="badge" class="badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未启动</span></div></div>
-    <div class="status-card"><div class="status-label">SD WebUI</div><div id="sd-badge" class="badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未检测</span></div></div>
-    <div class="status-card"><div class="status-label">GPT-SoVITS</div><div id="tts-badge" class="badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未检测</span></div></div>
-    <div class="status-card"><div class="status-label">Ollama 聊天</div><div id="ollama-badge" class="badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未检测</span></div></div>
-    <div class="status-card"><div class="status-label">角色声线</div><div id="voice-badge" class="badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未检测</span></div></div>
-    <div class="status-card"><div class="status-label">分享组件</div><div id="share-badge" class="badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未检测</span></div></div>
-    <div class="status-card primary"><div class="status-label">创作状态</div><div id="ready-badge" class="badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未检测</span></div></div>
+    <div class="status-card"><div class="status-label">本地网关</div><div id="badge" class="status-badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未启动</span></div></div>
+    <div class="status-card"><div class="status-label">SD WebUI</div><div id="sd-badge" class="status-badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未检测</span></div></div>
+    <div class="status-card"><div class="status-label">GPT-SoVITS</div><div id="tts-badge" class="status-badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未检测</span></div></div>
+    <div class="status-card"><div class="status-label">Ollama 聊天</div><div id="ollama-badge" class="status-badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未检测</span></div></div>
+    <div class="status-card"><div class="status-label">角色声线</div><div id="voice-badge" class="status-badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未检测</span></div></div>
+    <div class="status-card"><div class="status-label">分享组件</div><div id="share-badge" class="status-badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未检测</span></div></div>
+    <div class="status-card primary"><div class="status-label">创作状态</div><div id="ready-badge" class="status-badge stopped" role="status" aria-live="polite"><span class="dot"></span><span>未检测</span></div></div>
   </section>
 
   <div class="panel-section">
-    <button class="btn btn-ghost full-btn" id="check-services" type="button" data-action="check-services">🔍 检测所有服务</button>
+    <button class="btn btn-ghost btn-block" id="check-services" type="button" data-action="check-services">🔍 检测所有服务</button>
   </div>
 
   <!-- VRAM -->
@@ -228,21 +222,21 @@
       </div>
       <div class="operation-panel" id="operation-panel" role="status" aria-live="polite">
         <div class="operation-head"><span class="operation-title" id="operation-title">正在处理</span><span class="operation-state" id="operation-state">RUNNING</span></div>
-        <div class="operation-track"><div class="operation-progress" id="operation-progress"></div></div>
+        <div class="meter"><span class="meter-fill" id="operation-progress"></span></div>
         <div class="operation-message" id="operation-message"></div>
       </div>
       <div class="service-rows">
         <div class="service-row">
           <span class="service-row-name"><span class="dot" id="svc-webui-dot"></span>SD WebUI 绘图 <span class="service-row-meta" id="svc-webui-meta"></span></span>
-          <span class="service-row-actions"><button class="btn-tiny" type="button" data-action="service" data-service="webui" data-op="start">启动</button><button class="btn-tiny danger" type="button" data-action="service" data-service="webui" data-op="stop">停止</button></span>
+          <span class="service-row-actions"><button class="btn btn-ghost btn-sm" type="button" data-action="service" data-service="webui" data-op="start">启动</button><button class="btn btn-danger btn-sm" type="button" data-action="service" data-service="webui" data-op="stop">停止</button></span>
         </div>
         <div class="service-row">
           <span class="service-row-name"><span class="dot" id="svc-voice-dot"></span>GPT-SoVITS 语音 <span class="service-row-meta" id="svc-voice-meta"></span></span>
-          <span class="service-row-actions"><button class="btn-tiny" type="button" data-action="service" data-service="voice" data-op="start">启动</button><button class="btn-tiny danger" type="button" data-action="service" data-service="voice" data-op="stop">停止</button></span>
+          <span class="service-row-actions"><button class="btn btn-ghost btn-sm" type="button" data-action="service" data-service="voice" data-op="start">启动</button><button class="btn btn-danger btn-sm" type="button" data-action="service" data-service="voice" data-op="stop">停止</button></span>
         </div>
         <div class="service-row">
           <span class="service-row-name"><span class="dot" id="svc-ollama-dot"></span>Ollama 聊天模型 <span class="service-row-meta" id="svc-ollama-meta"></span></span>
-          <span class="service-row-actions"><button class="btn-tiny danger" type="button" data-action="service" data-service="ollama" data-op="unload">卸载模型释放显存</button></span>
+          <span class="service-row-actions"><button class="btn btn-danger btn-sm" type="button" data-action="service" data-service="ollama" data-op="unload">卸载模型释放显存</button></span>
         </div>
       </div>
       <label class="autostart-row"><input type="checkbox" id="auto-start-voice"> 打开控制面板时自动启动语音服务（显存紧张时不建议开启）</label>
@@ -258,14 +252,14 @@
 
       <label class="config-label" for="sd-host">Stability Matrix / SD WebUI 地址</label>
       <div class="config-row">
-        <input class="config-input" id="sd-host" value="http://127.0.0.1:7860" spellcheck="false" inputmode="url" autocomplete="off">
+        <input class="input input-mono" id="sd-host" value="http://127.0.0.1:7860" spellcheck="false" inputmode="url" autocomplete="off">
       </div>
       <div class="config-help">端口以启动日志为准；推荐参数：<code>--api --port 7860</code></div>
 
       <label class="config-label" for="tts-host">GPT-SoVITS API 地址</label>
       <div class="config-row">
-        <input class="config-input" id="tts-host" value="http://127.0.0.1:9880" spellcheck="false" inputmode="url" autocomplete="off">
-        <button class="btn btn-ghost inline-btn" id="save-config" type="button" data-action="save-config">保存全部并检测</button>
+        <input class="input input-mono" id="tts-host" value="http://127.0.0.1:9880" spellcheck="false" inputmode="url" autocomplete="off">
+        <button class="btn btn-ghost" id="save-config" type="button" data-action="save-config">保存全部并检测</button>
       </div>
       <div class="config-help">默认按需启动（见上方"显存资源调度"）；默认端口为 <code>9880</code>。</div>
 
@@ -275,16 +269,16 @@
           <div class="voice-card">
             <div class="voice-card-title">🌸 绫地宁宁</div>
             <label class="config-label config-label-first" for="voice-nene-ref">参考音频路径</label>
-            <input class="config-input" id="voice-nene-ref" placeholder="D:\voices\nene.wav" autocomplete="off">
+            <input class="input input-mono" id="voice-nene-ref" placeholder="D:\voices\nene.wav" autocomplete="off">
             <label class="config-label" for="voice-nene-prompt">参考音频原文</label>
-            <input class="config-input" id="voice-nene-prompt" placeholder="填写参考音频中实际说出的日语原文" autocomplete="off">
+            <input class="input input-mono" id="voice-nene-prompt" placeholder="填写参考音频中实际说出的日语原文" autocomplete="off">
           </div>
           <div class="voice-card">
             <div class="voice-card-title">☕ 四季夏目</div>
             <label class="config-label config-label-first" for="voice-natsume-ref">参考音频路径</label>
-            <input class="config-input" id="voice-natsume-ref" placeholder="D:\voices\natsume.wav" autocomplete="off">
+            <input class="input input-mono" id="voice-natsume-ref" placeholder="D:\voices\natsume.wav" autocomplete="off">
             <label class="config-label" for="voice-natsume-prompt">参考音频原文</label>
-            <input class="config-input" id="voice-natsume-prompt" placeholder="填写参考音频中实际说出的日语原文" autocomplete="off">
+            <input class="input input-mono" id="voice-natsume-prompt" placeholder="填写参考音频中实际说出的日语原文" autocomplete="off">
           </div>
         </div>
       </details>
@@ -300,7 +294,7 @@
           <span class="tunnel-switch-knob"></span>
         </button>
       </div>
-      <button id="btn" class="btn btn-primary cta-btn" type="button" data-action="start-gateway">启动并生成分享链接</button>
+      <button id="btn" class="btn btn-lg btn-primary btn-block" type="button" data-action="start-gateway">启动并生成分享链接</button>
       <p class="action-note" id="action-note">启动后，本机访问不需要 Token；公网分享会使用临时 Token。</p>
     </div>
   </div>
@@ -318,7 +312,7 @@
           <div class="access-desc">只在当前电脑访问，不需要 Token，也不经过公网通道。</div>
           <div class="link-value" id="local-link">等待网关启动…</div>
           <div class="inline-actions">
-            <a id="local-open" class="btn btn-primary flex-btn" href="http://127.0.0.1:3000/" target="_blank" rel="noopener">打开网站</a>
+            <a id="local-open" class="btn btn-primary" href="http://127.0.0.1:3000/" target="_blank" rel="noopener">打开网站</a>
             <button class="btn btn-ghost" id="copy-local" type="button" data-action="copy-local">复制地址</button>
           </div>
         </article>
@@ -329,7 +323,7 @@
           <div id="share-state" class="share-state waiting">正在连接</div>
           <div class="link-value waiting" id="share-link">等待分享链接…</div>
           <div class="inline-actions">
-            <button class="btn btn-ghost flex-btn-sm" id="btn-copy" type="button" data-action="copy-share" disabled>复制分享链接</button>
+            <button class="btn btn-ghost" id="btn-copy" type="button" data-action="copy-share" disabled>复制分享链接</button>
           </div>
         </article>
       </div>
@@ -343,9 +337,9 @@
   <details class="log-panel">
     <summary>
       <span class="summary-side"><span class="chevron">›</span><span>运行日志</span></span>
-      <span class="summary-side summary-actions">
-        <button class="btn-clear" type="button" data-action="export-diagnostics">导出诊断包</button>
-        <button class="btn-clear" type="button" data-action="clear-logs">清空显示</button>
+      <span class="summary-side">
+        <button class="btn btn-ghost btn-sm" type="button" data-action="export-diagnostics">导出诊断包</button>
+        <button class="btn btn-ghost btn-sm" type="button" data-action="clear-logs">清空显示</button>
       </span>
     </summary>
     <div class="log-wrap">
@@ -361,6 +355,6 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="control.js?v=3"></script>
+<script src="control.js?v=4"></script>
 </body>
 </html>

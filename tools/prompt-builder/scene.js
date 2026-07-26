@@ -304,7 +304,7 @@ function renderColorMoods() {
   const el = document.getElementById('moodGrid'); el.innerHTML = '';
   COLOR_MOODS.forEach(m => {
     const d = document.createElement('button'); d.type = 'button'; d.className = 'mood-card'; d.dataset.id = m.id; d.setAttribute('aria-pressed','false');
-    d.innerHTML = `<div class="mood-strip">${m.colors.map(c=>`<div class="mood-swatch" style="background:${c}"></div>`).join('')}</div>
+    d.innerHTML = `<div class="mood-strip">${m.colors.map(c=>`<div class="mood-swatch" style="--swatch:${c}"></div>`).join('')}</div>
       <div class="mood-body"><div class="mood-name">${m.name}</div><div class="mood-desc">${m.desc}</div></div>`;
     d.onclick = () => selectMood(m.id); el.appendChild(d);
   });
@@ -610,7 +610,7 @@ function loadScene(s) {
   state.__sceneId = s.id;
   state.__sceneBaseStory = s.story || '';
   rememberRecentScene(s);
-  var artWarn = document.getElementById('artWarn'); if(artWarn) artWarn.style.display = 'none';
+  var artWarn = document.getElementById('artWarn'); if(artWarn) artWarn.hidden = true;
   document.getElementById('storyInput').value = s.story; state.story = s.story;
   const charId = (s.char === 'ayachi_nene' || s.char === 'nene') ? 'nene' : (s.char === 'shiki_natsume' || s.char === 'natsume' ? 'natsume' : (s.char === 'triad' ? 'triad' : 'nene'));
   if (charId !== state.char) setChar(charId);

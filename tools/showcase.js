@@ -39,7 +39,7 @@
     state.filtered=state.entries.filter(matches);
     const visible=state.filtered.slice(0,state.visible);
     count.innerHTML='显示 <strong>'+visible.length+'</strong> / '+state.filtered.length+' 个匹配样张 · R18 默认模糊';
-    if(!visible.length){grid.innerHTML='<div class="empty"><span class="icon">⌕</span><h2>没有找到匹配样张</h2><p>试试更短的关键词，或者切回“全部角色 / 全部分级”。</p><button class="btn btn-ghost" type="button" id="resetFilters">重置筛选</button></div>';document.getElementById('resetFilters').onclick=resetFilters;}
+    if(!visible.length){grid.innerHTML='<div class="empty-state"><span class="empty-state-icon">⌕</span><h2>没有找到匹配样张</h2><p>试试更短的关键词，或者切回“全部角色 / 全部分级”。</p><button class="btn btn-ghost" type="button" id="resetFilters">重置筛选</button></div>';document.getElementById('resetFilters').onclick=resetFilters;}
     else grid.innerHTML=visible.map(card).join('');
     loadMore.hidden=visible.length>=state.filtered.length;
   }

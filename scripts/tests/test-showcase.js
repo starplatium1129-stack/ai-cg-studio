@@ -30,7 +30,8 @@ assert(home.includes('href="tools/showcase.html"'), 'home page must expose the s
 assert(server.includes("app.use('/scene-showcase'"), 'server must mount showcase assets');
 assert(server.includes('SCENE_SHOWCASE_DIR') && server.includes('manifest\\.json'), 'server must resolve and restrict the showcase directory');
 
-assert(page.includes('<script src="showcase.js?v=2"></script>'), 'showcase controller must stay external and cache-versioned');
+// 断言"外置 + 带缓存版本号",而不是断言具体数字(写死会让每次改控制器都得同步改测试)
+assert(/<script src="showcase\.js\?v=\d+"><\/script>/.test(page), 'showcase controller must stay external and cache-versioned');
 new Function(controller);
 
 const showcaseRoot = path.resolve(root, '..', 'AI', 'SceneShowcase');

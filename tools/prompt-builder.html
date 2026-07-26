@@ -5,13 +5,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>开始绘制 · 绫季绘境</title>
-<link rel="stylesheet" href="../css/design-system.css?v=10">
-<script src="nav.js?v=7"></script>
+<link rel="stylesheet" href="../css/design-system.css?v=11">
+<script src="nav.js?v=8"></script>
 <script src="scene-ux.js?v=2"></script>
 <script src="quick-create.js?v=1"></script>
 <script src="sd-error.js?v=1"></script>
 <script src="theme.js?v=5"></script>
-<link rel="stylesheet" href="../css/director.css?v=1">
+<link rel="stylesheet" href="../css/mood.css?v=1">
+<link rel="stylesheet" href="../css/director.css?v=2">
 </head>
 <body data-nav="director" data-character="nene" data-director-mode="basic">
 <a class="skip-link" href="#main">跳到主要内容</a>
@@ -99,7 +100,7 @@
       </div>
 
       <div class="panel step-panel" id="stepScene">
-        <div class="panel-title"><span data-icon="scene"></span>Scene 库 <span id="sceneCountBadge" style="font-weight:500;color:var(--text-muted)"></span></div>
+        <div class="panel-title"><span data-icon="scene"></span>Scene 库 <span class="scene-count-badge" id="sceneCountBadge"></span></div>
         <label class="sr-only" for="sceneSearch">搜索场景</label>
         <div class="scene-search-wrap">
           <input type="search" class="scene-search" placeholder="试试：我想画一个安静的夏目雨夜" id="sceneSearch">
@@ -117,7 +118,7 @@
               <label class="scene-filter-field">系列<select id="sceneSeriesFilter" data-action="render-scenes"><option value="all">全部系列</option><option value="after">After Story</option><option value="fanwork">同人</option><option value="active">Active Sync</option></select></label>
               <label class="scene-filter-field">内容分级<select id="sceneRatingFilter" data-action="render-scenes"><option value="all">全部分级</option><option value="All">全年龄</option><option value="R15">R15 暧昧</option><option value="R18">R18 成人</option></select></label>
             </div>
-            <div class="scene-mature-row"><label><input type="checkbox" id="builderShowMature" style="accent-color:var(--accent)"> 显示成人内容</label></div>
+            <div class="scene-mature-row"><label><input type="checkbox" id="builderShowMature"> 显示成人内容</label></div>
           </div>
         </div>
         <div class="scene-list" id="sceneGrid"></div>
@@ -158,7 +159,7 @@
         <div class="panel-title"><span data-icon="prompt"></span>Prompt 实时预览 <span class="monitor-toggle" id="monitorToggle" data-action="toggle-monitor">展开</span></div>
         <div class="preview-output" id="preview">选择左侧场景或调整右侧画面选项，提示词会在这里实时生成。</div>
         <div class="token-row"><span class="token-counter" id="liveTokCount"><span class="num">0</span> 正向 · <span class="neg-num">0</span> 负向 <span class="bar"><i></i></span><span class="prompt-health">结构均衡</span></span></div>
-        <div class="art-warn" id="artWarn" style="display:none">⚠️ 检测到违反美术规范的标签</div>
+        <div class="art-warn" id="artWarn" hidden>⚠️ 检测到违反美术规范的标签</div>
         <div class="preview-actions">
           <button class="btn btn-primary" data-action="copy-prompt"><span class="icon-label"><span data-icon="copy"></span>复制</span></button>
           <button class="btn btn-ghost" data-action="export-prompt"><span class="icon-label"><span data-icon="download"></span>TXT</span></button>
@@ -168,12 +169,12 @@
       </div>
 
       <details class="panel generation-settings">
-        <summary class="panel-title" style="cursor:pointer;list-style:none;padding:var(--s-3) var(--s-4)"><span style="font-size:.7rem;margin-right:var(--s-1)">▶</span><span data-icon="settings"></span>出图参数 <span style="font-size:.68rem;font-weight:400;color:var(--text-muted)">CFG/Steps/模型等高级参数</span></summary>
+        <summary class="panel-title settings-summary"><span class="settings-caret">▶</span><span data-icon="settings"></span>出图参数 <span class="settings-hint">CFG/Steps/模型等高级参数</span></summary>
         <div class="controls-grid">
-          <div class="ctrl" style="grid-column:1/-1;margin-bottom:var(--s-2)"><label>快速预设</label><select id="presetSelect"><option value="">— 自定义 —</option></select><small id="modelProfileHint" style="display:block;margin-top:5px;color:var(--text-muted)">连接 SD 后会自动匹配当前模型的稳定参数</small></div>
+          <div class="ctrl ctrl-full mb-2"><label>快速预设</label><select id="presetSelect"><option value="">— 自定义 —</option></select><small class="ctrl-hint" id="modelProfileHint">连接 SD 后会自动匹配当前模型的稳定参数</small></div>
           <div class="ctrl"><label>CFG</label><select id="cfg"><option>3</option><option>4</option><option>5</option><option selected>5.5</option><option>6</option><option>7</option><option>8</option><option>9</option></select></div>
           <div class="ctrl"><label>Steps</label><select id="steps"><option>20</option><option selected>28</option><option>30</option><option>35</option><option>40</option><option>50</option></select></div>
-          <div class="ctrl" style="grid-column:1/-1"><label>SD 模型</label><select id="sdModel" title="留空时使用 WebUI 当前模型"><option value="">使用 WebUI 当前模型</option></select></div>
+          <div class="ctrl ctrl-full"><label>SD 模型</label><select id="sdModel" title="留空时使用 WebUI 当前模型"><option value="">使用 WebUI 当前模型</option></select></div>
           <div class="ctrl"><label>Sampler</label><select id="sampler"><option>DPM++ 2M</option><option>DPM++ 2M SDE</option><option>Euler a</option><option>Euler</option></select></div>
           <div class="ctrl"><label>Scheduler</label><select id="scheduler"><option value="">自动</option><option selected>Karras</option><option>Exponential</option><option>SGM Uniform</option><option>Simple</option></select></div>
           <div class="ctrl toggle-row"><label class="switch"><input type="checkbox" id="quality" checked><span class="slider"></span></label><label for="quality">质量前缀</label></div>
@@ -234,13 +235,13 @@
           <label>放大器
             <select id="sdHiresUpscaler"><option>Latent</option><option>R-ESRGAN 4x+ Anime6B</option></select>
           </label>
-          <label style="display:flex;align-items:center;gap:4px;cursor:pointer;">
+          <label class="seed-lock-label">
             <input type="checkbox" id="sdSeedLock"> 固定种子
           </label>
-          <label class="seed-input-wrap" style="display:flex;align-items:center;gap:4px;">种子
-            <input type="text" id="sdSeedInput" placeholder="留空=随机" style="width:110px;font-family:monospace;font-size:.78rem;padding:2px 6px;border:1px solid var(--border-soft);border-radius:var(--r-sm);background:var(--bg-deep);color:var(--text-primary);">
+          <label class="seed-input-wrap">种子
+            <input type="text" id="sdSeedInput" placeholder="留空=随机">
           </label>
-          <span id="sdSeedDisplay" style="font-family:monospace;opacity:0.6;"></span>
+          <span id="sdSeedDisplay"></span>
             </div>
           </details>
           <div class="sd-budget-hint" id="sdBudgetHint" role="status" aria-live="polite">最终尺寸会在这里显示</div>
@@ -259,12 +260,12 @@
           <div class="sd-queue-head"><span>生成队列 · 自动存入历史</span><span><button class="btn btn-ghost" id="sdQueueResumeBtn" type="button" data-action="resume-sd-queue" hidden>继续</button> <span id="sdQueueCount">0 项</span></span></div>
           <div class="sd-queue-list" id="sdQueueList"></div>
         </div>
-          <div id="sdResultArea" style="display:none;margin-top:var(--s-4);text-align:center;">
-          <div id="sdStatus" role="status" aria-live="polite" style="font-size:.85rem;color:var(--text-muted);margin-bottom:var(--s-2);"></div>
+          <div class="sd-result-area" id="sdResultArea" hidden>
+          <div class="sd-status" id="sdStatus" role="status" aria-live="polite"></div>
           <div id="sdProgress" class="sd-progress" hidden><span id="sdProgressBar"></span></div>
           <div id="sdRecovery" class="sd-recovery" hidden><div class="sd-recovery-title" id="sdRecoveryTitle"></div><div class="sd-recovery-copy" id="sdRecoveryCopy"></div><div class="sd-recovery-actions"><button type="button" class="btn btn-primary" id="sdRecoveryAction" hidden></button></div><details id="sdRecoveryDetails"><summary>技术详情</summary><pre id="sdRecoveryDetail"></pre></details></div>
           <div id="sdImageSlot"></div>
-          <div id="sdSaveActions" style="display:none;margin-top:var(--s-3);gap:var(--s-2);flex-wrap:wrap;justify-content:center;">
+          <div class="sd-save-actions" id="sdSaveActions" hidden>
             <button class="btn btn-primary" id="sdHistorySaveBtn" data-action="save-generated-image"><span class="icon-label"><span data-icon="save"></span>保存到历史</span></button>
             <button class="btn btn-ghost" data-action="use-last-seed"><span class="icon-label"><span data-icon="seed"></span>同 Seed 微调</span></button>
             <button class="btn btn-ghost" data-action="download-generated-image"><span class="icon-label"><span data-icon="download"></span>下载 PNG</span></button>
@@ -323,7 +324,7 @@
         <div class="tag-pool" id="tagPoolRecommended"></div>
         <div class="tag-section-title banned">美术规范禁用</div>
         <div class="tag-pool" id="tagPoolBanned"></div>
-        <div class="panel-title" style="margin-top:var(--s-3)">已选</div>
+        <div class="panel-title panel-title-spaced">已选</div>
         <div class="sel-row" id="selRow"></div>
       </details>
       <details class="director-card" open>
@@ -344,7 +345,7 @@
       </details>
       <details class="director-card advanced-decision">
         <summary class="director-card-head"><span class="director-card-name"><span data-icon="color"></span>色彩 · Color</span><span class="director-card-selected" id="selColor"></span></summary>
-        <div class="mood-grid" id="moodGrid"></div>
+        <div class="mood-grid mood-grid-sm" id="moodGrid"></div>
       </details>
 
       <button class="btn btn-primary generate-btn" data-action="generate"><span class="icon-label"><span data-icon="sparkle"></span>绘制这张 CG</span></button>
@@ -372,7 +373,7 @@
         <div class="info-item"><div class="label">Optimizer</div><div class="val">AdamW8bit</div></div>
         <div class="info-item"><div class="label">Rank/Alpha</div><div class="val">32/32</div></div>
       </div>
-      <div class="neg-output" style="margin-top:var(--s-3)">worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate</div>
+      <div class="neg-output neg-output-spaced">worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate</div>
       <div class="callout callout-warn">Scene 先行 · Character 先行 · Emotion 先行 · Prompt 永远最后一步。</div>
     </div>
   </div>
@@ -432,9 +433,9 @@
 <script src="prompt-builder/state.js?v=2"></script>
 <script src="prompt-builder/composition.js?v=1"></script>
 <script src="prompt-builder/scene-inference.js?v=1"></script>
-<script src="prompt-builder/scene.js?v=4"></script>
-<script src="prompt-builder/prompt.js?v=1"></script>
-<script src="prompt-builder/sd.js?v=2"></script>
+<script src="prompt-builder/scene.js?v=5"></script>
+<script src="prompt-builder/prompt.js?v=2"></script>
+<script src="prompt-builder/sd.js?v=3"></script>
 <script src="prompt-builder/queue.js?v=2"></script>
 <script src="prompt-builder/voice.js?v=5"></script>
 <script src="prompt-builder/history.js?v=2"></script>

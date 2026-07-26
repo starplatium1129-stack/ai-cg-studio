@@ -63,23 +63,14 @@ try {
   fail('icon-system.js has a syntax error: ' + error.message);
 }
 
-const moduleVersions = {
-  'state.js':'2',
-  'scene.js':'4',
-  'queue.js':'2',
-  'history.js':'2',
-  'ui.js':'2',
-  'app.js':'2',
-  'sd.js':'2',
-  'voice.js':'5',
-  'backup.js':'2'
-};
+// 断言"存在缓存版本号 + 加载顺序正确",而不是断言具体版本数字:
+// 具体数字每次改模块都要同步改测试,是维护陷阱而非质量门禁。
 let previousOffset = -1;
 for (const [name, marker] of modules) {
-  const version = moduleVersions[name] || '1';
-  const src = 'prompt-builder/' + name + '?v=' + version;
-  const offset = html.indexOf(src);
-  if (offset < 0) fail('missing script reference for ' + name);
+  const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const match = new RegExp('prompt-builder/' + escaped + '\\?v=(\\d+)').exec(html);
+  if (!match) fail('missing cache-busted script reference for ' + name);
+  const offset = match.index;
   if (offset <= previousOffset) fail('module load order is invalid near ' + name);
   previousOffset = offset;
 

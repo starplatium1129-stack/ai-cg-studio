@@ -34,10 +34,12 @@ test('scene manager loads project data without editing source files', async ({ p
   await expect(page.locator('#saveProjectBtn')).toBeDisabled();
 
   await page.getByRole('button', { name:'+ 新增场景' }).click();
-  await expect(page.locator('#editModal')).toHaveClass(/show/);
+  // 断言可见性而非某个 class:弹层已收敛到全局 .overlay + hidden 属性,
+  // 测行为不测实现,换弹层实现时这条断言仍然有效。
+  await expect(page.locator('#editModal')).toBeVisible();
   await expect(page.locator('#formId')).toHaveValue(/sc\d+/);
   await page.getByRole('button', { name:'取消' }).click();
-  await expect(page.locator('#editModal')).not.toHaveClass(/show/);
+  await expect(page.locator('#editModal')).toBeHidden();
   expect(errors).toEqual([]);
 });
 

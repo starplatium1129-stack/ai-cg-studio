@@ -17,7 +17,7 @@ const SHOWCASE_DIR = '../scene-showcase';
 
 async function init() {
   const table = document.getElementById('sceneTable');
-  if (table) table.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:var(--s-6);color:var(--text-muted)">⏳ 正在加载数据…</td></tr>';
+  if (table) table.innerHTML = '<tr><td colspan="7" class="table-msg">⏳ 正在加载数据…</td></tr>';
 
   try {
     const [scenesRes, tagsRes, curationRes] = await Promise.all([
@@ -38,7 +38,7 @@ async function init() {
     if (!Array.isArray(TAGS)) throw new Error('tags.json 格式错误：不是数组');
     if (!CURATION || typeof CURATION !== 'object') throw new Error('curation.json 格式错误：不是对象');
   } catch (err) {
-    if (table) table.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:var(--s-6);color:var(--danger)">⚠️ ' + esc(err.message) + '<br><small>请确认通过 localhost 访问且文件存在</small></td></tr>';
+    if (table) table.innerHTML = '<tr><td colspan="7" class="table-msg table-msg-error">⚠️ ' + esc(err.message) + '<br><small>请确认通过 localhost 访问且文件存在</small></td></tr>';
     return;
   }
 
@@ -138,10 +138,10 @@ function renderScenes() {
   // Pagination
   const pag = document.getElementById('pagination');
   if (totalPages <= 1) { pag.innerHTML = ''; return; }
-  let html = `<span style="color:var(--text-muted);font-size:.8rem">${filtered.length} 条 · 第 ${currentPage}/${totalPages} 页</span>`;
+  let html = `<span class="list-meta">${filtered.length} 条 · 第 ${currentPage}/${totalPages} 页</span>`;
   for (let i = 1; i <= totalPages; i++) {
     if (totalPages > 10 && Math.abs(i - currentPage) > 2 && i !== 1 && i !== totalPages) {
-      if (i === currentPage - 3 || i === currentPage + 3) html += '<span style="color:var(--text-muted)">…</span>';
+      if (i === currentPage - 3 || i === currentPage + 3) html += '<span class="muted">…</span>';
       continue;
     }
     html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" type="button" data-action="go-page" data-page="${i}">${i}</button>`;
@@ -151,16 +151,15 @@ function renderScenes() {
 
 function goPage(p) { currentPage = p; renderScenes(); }
 
-function switchTab(tab) {
+const TAB_IDS = ['scenes', 'images', 'import', 'duplicates', 'tags', 'guide', 'tools'];
+
+function switchTab(tab, trigger) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  event.target.classList.add('active');
-  document.getElementById('tab-scenes').style.display = tab === 'scenes' ? '' : 'none';
-  document.getElementById('tab-images').style.display = tab === 'images' ? '' : 'none';
-  document.getElementById('tab-import').style.display = tab === 'import' ? '' : 'none';
-  document.getElementById('tab-duplicates').style.display = tab === 'duplicates' ? '' : 'none';
-  document.getElementById('tab-tags').style.display = tab === 'tags' ? '' : 'none';
-  document.getElementById('tab-guide').style.display = tab === 'guide' ? '' : 'none';
-  document.getElementById('tab-tools').style.display = tab === 'tools' ? '' : 'none';
+  if (trigger) trigger.classList.add('active');
+  TAB_IDS.forEach(function (name) {
+    const pane = document.getElementById('tab-' + name);
+    if (pane) pane.hidden = name !== tab;
+  });
   if (tab === 'scenes') { renderScenes(); renderStats(); }
   if (tab === 'images') renderImages();
   if (tab === 'tags') renderTags();
@@ -170,7 +169,7 @@ function switchTab(tab) {
 // Image management
 function renderImages(resetPage) {
   if (!SCENES || !SCENES.length) {
-    document.getElementById('imageGrid').innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:var(--s-7);color:var(--text-muted)">⏳ 正在加载场景数据…</div>';
+    document.getElementById('imageGrid').innerHTML = '<div class="sm-grid-msg">⏳ 正在加载场景数据…</div>';
     return;
   }
   const search = (document.getElementById('imageSearch')?.value || '').toLowerCase();
@@ -185,13 +184,13 @@ function renderImages(resetPage) {
 
   document.getElementById('imageGrid').innerHTML = visible.map(s => `
     <div class="sm-image-card" data-action="preview-image" data-id="${s.id}" data-title="${esc(s.title)}">
-      <div style="font-weight:700;font-size:.85rem;margin-bottom:2px">${s.id}</div>
-      <div style="font-size:.8rem;color:var(--text-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(s.title)}</div>
-      <div style="font-size:.72rem;color:var(--text-muted);margin-top:4px">${s.char === 'nene' ? '🌸' : '🍂'} ${s.rating}</div>
+      <div class="sm-card-id">${s.id}</div>
+      <div class="sm-card-title">${esc(s.title)}</div>
+      <div class="sm-card-meta">${s.char === 'nene' ? '🌸' : '🍂'} ${s.rating}</div>
     </div>
   `).join('');
   document.getElementById('imagePagination').innerHTML = totalPages <= 1 ? '' :
-    `<span style="color:var(--text-muted);font-size:.8rem">${filtered.length} 个场景 · 第 ${imagePage}/${totalPages} 页</span>` +
+    `<span class="list-meta">${filtered.length} 个场景 · 第 ${imagePage}/${totalPages} 页</span>` +
     `<button class="page-btn" type="button" ${imagePage === 1 ? 'disabled' : ''} data-action="go-image-page" data-page="${imagePage - 1}">上一页</button>` +
     `<button class="page-btn" type="button" ${imagePage === totalPages ? 'disabled' : ''} data-action="go-image-page" data-page="${imagePage + 1}">下一页</button>`;
 }
@@ -199,7 +198,7 @@ function renderImages(resetPage) {
 function goImagePage(page) {
   imagePage = page;
   selectedImageSceneId = '';
-  document.getElementById('imagePreview').style.display = 'none';
+  document.getElementById('imagePreview').hidden = true;
   renderImages();
   document.getElementById('imageGrid').scrollIntoView({ behavior:'smooth', block:'start' });
 }
@@ -211,7 +210,7 @@ function previewImage(id, title) {
   img.src = SHOWCASE_DIR + '/images/' + id + '.jpg?v=' + Date.now();
   img.onerror = function() { this.src = 'about:blank'; this.alt = '样张未找到'; };
   var panel = document.getElementById('imagePreview');
-  panel.style.display = 'block';
+  panel.hidden = false;
   panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   document.getElementById('showcaseFeedback').textContent = '支持 PNG、JPEG、WebP，最大 15MB；仅本机可以替换。';
 }
@@ -265,11 +264,11 @@ function uploadShowcaseImage(input) {
 // Import
 function importScenes() {
   const input = document.getElementById('importInput').value.trim();
-  if (!input) { document.getElementById('importResult').innerHTML = '<p style="color:var(--danger)">请粘贴 JSON</p>'; return; }
+  if (!input) { document.getElementById('importResult').innerHTML = '<p class="msg-danger">请粘贴 JSON</p>'; return; }
 
   let data;
   try { data = JSON.parse(input); } catch(e) {
-    document.getElementById('importResult').innerHTML = '<p style="color:var(--danger)">JSON 错误：' + e.message + '</p>';
+    document.getElementById('importResult').innerHTML = '<p class="msg-danger">JSON 错误：' + esc(e.message) + '</p>';
     return;
   }
   if (!Array.isArray(data)) data = [data];
@@ -296,11 +295,11 @@ function importScenes() {
     SCENES.push(scene); existingIds.add(scene.id); results.success.push(scene.id);
   });
 
-  let html = '<div style="background:var(--bg-surface);border:1px solid var(--border-soft);border-radius:var(--r-md);padding:var(--s-4)">';
-  if (results.success.length) html += '<p style="color:var(--success)">✅ 导入 ' + results.success.length + ' 个：' + results.success.join(', ') + '</p>';
-  if (results.skipped.length) html += '<p style="color:var(--warning)">⚠️ 跳过 ' + results.skipped.length + ' 个（ID 已存在）</p>';
-  if (results.errors.length) html += '<p style="color:var(--danger)">❌ 错误：' + results.errors.map(e => '#' + e.idx + ' ' + e.reason).join('; ') + '</p>';
-  html += '</div><p style="color:var(--text-muted);font-size:.8rem;margin-top:var(--s-2)">记得点「导出 JSON」保存。</p>';
+  let html = '<div class="import-result-box">';
+  if (results.success.length) html += '<p class="msg-ok">✅ 导入 ' + results.success.length + ' 个：' + esc(results.success.join(', ')) + '</p>';
+  if (results.skipped.length) html += '<p class="msg-warn">⚠️ 跳过 ' + results.skipped.length + ' 个（ID 已存在）</p>';
+  if (results.errors.length) html += '<p class="msg-danger">❌ 错误：' + esc(results.errors.map(e => '#' + e.idx + ' ' + e.reason).join('; ')) + '</p>';
+  html += '</div><p class="note-sm mt-2">记得点「导出 JSON」保存。</p>';
   document.getElementById('importResult').innerHTML = html;
   if (results.success.length) markDirty('批量导入已通过基础检查，等待保存到项目');
   renderScenes(); renderStats();
@@ -372,7 +371,7 @@ function openEditModal(id) {
   document.getElementById('formStoryJa').value = s.storyJa || '';
   document.getElementById('formPrompt').value = s.prompt || '';
   document.getElementById('formNegative').value = s.negative || '';
-  document.getElementById('editModal').classList.add('show');
+  document.getElementById('editModal').hidden = false;
 }
 
 function openAddModal() {
@@ -403,11 +402,11 @@ function openAddModal() {
   document.getElementById('formStoryJa').value = '';
   document.getElementById('formPrompt').value = '';
   document.getElementById('formNegative').value = '';
-  document.getElementById('editModal').classList.add('show');
+  document.getElementById('editModal').hidden = false;
 }
 
 function closeModal() {
-  document.getElementById('editModal').classList.remove('show');
+  document.getElementById('editModal').hidden = true;
 }
 
 function saveScene() {
@@ -562,7 +561,7 @@ function detectDuplicates() {
   }
 
   document.getElementById('dupResult').textContent = `发现 ${Object.keys(groups).length} 组，共 ${totalDups} 个疑似重复`;
-  dupList.innerHTML = html || '<p style="color:var(--text-muted)">未发现重复</p>';
+  dupList.innerHTML = html || '<p class="muted">未发现重复</p>';
 }
 
 // Tags
@@ -589,7 +588,7 @@ function renderTags(resetPage) {
     </tr>
   `).join('');
   document.getElementById('tagPagination').innerHTML = totalPages <= 1 ? '' :
-    `<span style="color:var(--text-muted);font-size:.8rem">${filtered.length} 个 Tag · 第 ${tagPage}/${totalPages} 页</span>` +
+    `<span class="list-meta">${filtered.length} 个 Tag · 第 ${tagPage}/${totalPages} 页</span>` +
     `<button class="page-btn" type="button" ${tagPage === 1 ? 'disabled' : ''} data-action="go-tag-page" data-page="${tagPage - 1}">上一页</button>` +
     `<button class="page-btn" type="button" ${tagPage === totalPages ? 'disabled' : ''} data-action="go-tag-page" data-page="${tagPage + 1}">下一页</button>`;
 }
@@ -689,14 +688,19 @@ function renderTools() {
   var cards = document.getElementById('toolCards');
   cards.innerHTML = TOOLS.map(function(t) {
     return '<div class="sm-tool-card" data-action="run-tool" data-id="' + t.id + '">' +
-      '<div style="font-size:1.5rem;margin-bottom:var(--s-2)">' + t.icon + '</div>' +
-      '<div style="font-weight:700;font-size:.92rem;margin-bottom:4px">' + esc(t.label) + '</div>' +
-      '<div style="font-size:.75rem;color:var(--text-muted);line-height:1.5">' + esc(t.desc) + '</div>' +
+      '<div class="sm-tool-icon">' + t.icon + '</div>' +
+      '<div class="sm-tool-label">' + esc(t.label) + '</div>' +
+      '<div class="sm-tool-desc">' + esc(t.desc) + '</div>' +
       '</div>';
   }).join('');
 }
 
 var toolRunning = false;
+
+/* 状态色走全局 .badge 变体,不再用 style.cssText 覆盖整条内联样式 */
+function setToolBadge(badge, state) {
+  badge.className = 'badge badge-' + state;
+}
 
 function runTool(taskId) {
   if (toolRunning) return;
@@ -710,13 +714,12 @@ function runTool(taskId) {
   var badge = document.getElementById('toolResultBadge');
   var out = document.getElementById('toolResultOutput');
 
-  cards.style.opacity = '0.5';
-  cards.style.pointerEvents = 'none';
+  cards.classList.add('is-busy');
   title.textContent = tool.icon + ' ' + tool.label;
   badge.textContent = '⏳ 运行中…';
-  badge.style.cssText = 'background:color-mix(in srgb, var(--warning) 12%, transparent);color:var(--warning)';
+  setToolBadge(badge, 'warning');
   out.textContent = '...';
-  panel.style.display = 'block';
+  panel.hidden = false;
   panel.scrollIntoView({ behavior:'smooth', block:'nearest' });
 
   fetch('../api/maintenance/run', {
@@ -727,19 +730,16 @@ function runTool(taskId) {
     return response.json();
   }).then(function(data) {
     badge.textContent = data.ok ? '✅ 通过' : '⚠️ 有问题';
-    badge.style.cssText = data.ok
-      ? 'background:color-mix(in srgb, var(--success) 12%, transparent);color:var(--success)'
-      : 'background:color-mix(in srgb, var(--danger) 12%, transparent);color:var(--danger)';
+    setToolBadge(badge, data.ok ? 'success' : 'danger');
     out.textContent = data.output || '(no output)';
     out.scrollTop = 0;
   }).catch(function(error) {
     badge.textContent = '❌ 失败';
-    badge.style.cssText = 'background:color-mix(in srgb, var(--danger) 12%, transparent);color:var(--danger)';
+    setToolBadge(badge, 'danger');
     out.textContent = '网络请求失败：' + error.message;
   }).finally(function() {
     toolRunning = false;
-    cards.style.opacity = '';
-    cards.style.pointerEvents = '';
+    cards.classList.remove('is-busy');
   });
 }
 
@@ -750,7 +750,7 @@ document.addEventListener('click', function (event) {
   var action = el.getAttribute('data-action');
   var id = el.getAttribute('data-id');
   if (action === 'save-project') return saveToProject();
-  if (action === 'switch-tab') return switchTab(el.getAttribute('data-tab'));
+  if (action === 'switch-tab') return switchTab(el.getAttribute('data-tab'), el);
   if (action === 'open-add-modal') return openAddModal();
   if (action === 'export-json') return exportJSON();
   if (action === 'pick-showcase') {

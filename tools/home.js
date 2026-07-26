@@ -36,7 +36,7 @@
 
   function renderSceneHighlights(){
     var host = document.getElementById('featuredScenes');
-    if (host) host.innerHTML = '<div style="text-align:center;padding:var(--s-6);color:var(--text-muted)">⏳ 正在加载场景…</div>';
+    if (host) host.innerHTML = '<div class="strip-state">⏳ 正在加载场景…</div>';
     return Promise.all([
       fetch('data/scenes.json?v=9').then(function(r){if(!r.ok)throw new Error('Scenes HTTP '+r.status);return r.json();}),
       fetch('data/curation.json?v=3').then(function(r){if(!r.ok)throw new Error('Curation HTTP '+r.status);return r.json();})
@@ -57,7 +57,7 @@
       });
       renderRecentScenes(scenes);
     }).catch(function(err){
-      if (host) host.innerHTML = '<div style="text-align:center;padding:var(--s-6);color:var(--danger)">⚠️ 场景加载失败：' + esc(err.message) + '</div>';
+      if (host) host.innerHTML = '<div class="strip-state strip-state-error">⚠️ 场景加载失败：' + esc(err.message) + '</div>';
       document.getElementById('sceneCountCopy').textContent = '精选场景';
     });
   }
@@ -75,7 +75,9 @@
     } catch(e){ console.warn('读取历史失败', e); }
 
     if(!history.length){
-      el.innerHTML = '<div class="empty" style="grid-column:1/-1"><div class="ic">🎞</div><p>作品册还是空的。去开始绘制，留下第一张 CG。</p><a href="tools/prompt-builder.html" class="btn btn-primary">✦ 开始绘制</a></div>';
+      el.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🎞</div>' +
+        '<p>作品册还是空的。去开始绘制，留下第一张 CG。</p>' +
+        '<a href="tools/prompt-builder.html" class="btn btn-primary">✦ 开始绘制</a></div>';
       return;
     }
     const recent = history.slice(0, 3);

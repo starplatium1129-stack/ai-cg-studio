@@ -5,20 +5,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>创作取向 · 绫季绘境</title>
-<link rel="stylesheet" href="../css/design-system.css?v=10">
-<script src="../tools/nav.js?v=7"></script>
+<link rel="stylesheet" href="../css/design-system.css?v=11">
+<link rel="stylesheet" href="../css/docs.css?v=1">
+<script src="../tools/nav.js?v=8"></script>
 <script src="../tools/theme.js?v=5"></script>
 <style>
-  .page { max-width: 800px; margin: 0 auto; padding: var(--s-5) var(--s-4); }
-  h1.title {
-    font-size: 2rem; font-weight: 800;
-    background: linear-gradient(135deg, var(--text-primary) 50%, var(--accent));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: var(--s-2);
-  }
-  .subtitle { color: var(--text-secondary); margin-bottom: var(--s-6); }
+  .page { --page-max: 800px; }
 
+  /* ---- 原则卡:段落语气写在组件上,不给每个 <p> 挂 class ---- */
   .principle {
     background: var(--bg-surface); border: 1px solid var(--border-soft);
     border-radius: var(--r-lg); padding: var(--s-5); margin-bottom: var(--s-4);
@@ -26,23 +20,16 @@
   }
   .principle:hover { border-color: var(--accent); }
   .principle-num {
-    font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700;
+    font-family: var(--font-mono); font-size: var(--fs-label-sm); font-weight: 700;
     color: var(--accent); text-transform: uppercase; letter-spacing: 0.06em;
     margin-bottom: var(--s-2);
   }
-  .principle h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: var(--s-3); }
-
-  .wrong-right {
-    display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-3); margin-top: var(--s-3);
-  }
-  .wrong, .good {
-    border-radius: var(--r-md); padding: var(--s-3); font-size: 0.88rem;
-  }
-  .wrong { background: rgba(239,83,80,0.06); border: 1px solid rgba(239,83,80,0.25); }
-  .good  { background: rgba(102,187,106,0.06); border: 1px solid rgba(102,187,106,0.25); }
-  .wrong .label { color: var(--danger); font-weight: 600; margin-bottom: var(--s-1); }
-  .good .label { color: var(--success); font-weight: 600; margin-bottom: var(--s-1); }
-  .wrong p, .good p { font-size: 0.85rem; color: var(--text-secondary); margin: 0; }
+  .principle h3 { font-size: var(--fs-title-sm); font-weight: 700; margin-bottom: var(--s-3); }
+  .principle p { color: var(--text-secondary); }
+  .principle p + p { margin-top: var(--s-2); }
+  /* 每条原则的落地做法:accent 收尾 */
+  .principle .takeaway { color: var(--accent); font-size: var(--fs-body); }
+  .principle .aside { color: var(--text-muted); font-size: var(--fs-body); }
 
   .flow-compose {
     display: flex; align-items: center; gap: var(--s-2); flex-wrap: wrap;
@@ -52,12 +39,21 @@
   .flow-block {
     background: var(--bg-surface); border: 1px solid var(--border-soft);
     border-radius: var(--r-md); padding: var(--s-2) var(--s-3);
-    font-size: 0.85rem; font-weight: 500;
+    font-size: var(--fs-body-sm); font-weight: 500;
   }
   .flow-arrow { color: var(--accent); font-weight: 700; }
 
+  /* ---- 场景 > 标签 的成对卡片 ---- */
+  .scene-compare .card p { margin: 0; }
+  .scene-compare .card p:first-child { color: var(--text-muted); font-size: var(--fs-body-sm); }
+  .scene-compare .card p:last-child { color: var(--accent); font-weight: 600; }
+
+  /* ---- 适合的使用方式 ---- */
+  .usage-grid .card { font-size: var(--fs-body); }
+
+  .callout p { margin: var(--s-2) 0 0; }
+
   @media (max-width: 768px) {
-    .wrong-right { grid-template-columns: 1fr; }
     .flow-compose { flex-direction: column; }
     .flow-arrow { transform: rotate(90deg); }
   }
@@ -76,31 +72,31 @@
 <article class="page">
   <a href="../index.html" class="nav-back">← 回首页</a>
 
-  <h1 class="title">💡 创作取向</h1>
+  <h1 class="title title-gradient">💡 创作取向</h1>
   <p class="subtitle">记录这个工具怎样把故事、画面和 Prompt 放进同一条创作流程。</p>
 
   <!-- Principle 1 -->
   <div class="principle">
     <div class="principle-num">第零原则（最高）</div>
     <h3>Prompt 描述图片。Scene 描述瞬间。</h3>
-    <p style="color: var(--text-secondary)">这是整个项目的根基。一张优秀的 CG，不是因为 Prompt 很长而优秀，而是因为它捕捉到了一个值得记住的瞬间。</p>
-    <p style="font-size: 0.9rem; color: var(--accent); margin-top: var(--s-2)">使用时先整理 Scene，再让系统组合 Prompt；需要时仍然可以查看、复制和调整 Prompt。</p>
+    <p>这是整个项目的根基。一张优秀的 CG，不是因为 Prompt 很长而优秀，而是因为它捕捉到了一个值得记住的瞬间。</p>
+    <p class="takeaway">使用时先整理 Scene，再让系统组合 Prompt；需要时仍然可以查看、复制和调整 Prompt。</p>
   </div>
 
   <!-- Principle 1b -->
   <div class="principle">
     <div class="principle-num">第零原则补充</div>
     <h3>Scene Engineering > Prompt Engineering</h3>
-    <p style="color: var(--text-secondary)">
+    <p>
       很多工具擅长解决 <strong>“Prompt 怎么写？”</strong>。<br>
       这个项目更关心 <strong>“画面怎么设计？”</strong>
     </p>
-    <p style="color: var(--text-secondary); margin-top: var(--s-2)">
+    <p>
       这是两个完全不同的问题。训练好的 LoRA 也需要回答：<br>
       用什么场景测试？ 用什么镜头测试？ 用什么光照测试？ 怎样判断 LoRA 是否稳定？<br>
       <strong>这些都超出了 Prompt 的范畴，属于 Scene。</strong>
     </p>
-    <p style="font-size: 0.9rem; color: var(--accent); margin-top: var(--s-2)">
+    <p class="takeaway">
       工作方式：故事 → Scene → Prompt → 画面
     </p>
   </div>
@@ -109,14 +105,14 @@
   <div class="principle">
     <div class="principle-num">第一原则</div>
     <h3>先有画面，后有 Prompt</h3>
-    <p style="color: var(--text-secondary)">先把脑海里的画面拆成故事、情绪、镜头和构图，再整理 Prompt。</p>
-    <div class="wrong-right">
-      <div class="wrong">
-        <div class="label">❌ 错误</div>
+    <p>先把脑海里的画面拆成故事、情绪、镜头和构图，再整理 Prompt。</p>
+    <div class="compare-grid">
+      <div class="compare-card bad">
+        <p class="compare-label">❌ 错误</p>
         <p>Prompt → 生成 → 希望好看</p>
       </div>
-      <div class="good">
-        <div class="label">✅ 正确</div>
+      <div class="compare-card good">
+        <p class="compare-label">✅ 正确</p>
         <p>脑海画面 → 故事 → 情绪 → 镜头 → 构图 → Prompt</p>
       </div>
     </div>
@@ -126,14 +122,14 @@
   <div class="principle">
     <div class="principle-num">第二原则</div>
     <h3>让一张 CG 有一个故事</h3>
-    <p style="color: var(--text-secondary)">没有故事的 CG 只是一个美少女站在那里。有了故事，她才是"放学后在教室等你的那个人"。</p>
-    <div class="wrong-right">
-      <div class="wrong">
-        <div class="label">❌ 空洞</div>
+    <p>没有故事的 CG 只是一个美少女站在那里。有了故事，她才是"放学后在教室等你的那个人"。</p>
+    <div class="compare-grid">
+      <div class="compare-card bad">
+        <p class="compare-label">❌ 空洞</p>
         <p>女孩站着。女孩笑着。</p>
       </div>
-      <div class="good">
-        <div class="label">✅ 有故事</div>
+      <div class="compare-card good">
+        <p class="compare-label">✅ 有故事</p>
         <p>放学以后，她一直在教室等你。她看见你以后，终于露出了笑容。</p>
       </div>
     </div>
@@ -143,21 +139,21 @@
   <div class="principle">
     <div class="principle-num">第三原则</div>
     <h3>人物优先于背景和特效</h3>
-    <p style="color: var(--text-secondary)">人物 ★★★★★ · 背景 ★★★☆☆ · 特效 ★★☆☆☆。任何元素都不能抢人物。</p>
-    <p style="font-size: 0.9rem; color: var(--accent); margin-top: var(--s-2)">背景服务人物。不是人物服务背景。</p>
+    <p>人物 ★★★★★ · 背景 ★★★☆☆ · 特效 ★★☆☆☆。任何元素都不能抢人物。</p>
+    <p class="takeaway">背景服务人物。不是人物服务背景。</p>
   </div>
 
   <!-- Principle 4 -->
   <div class="principle">
     <div class="principle-num">第四原则</div>
     <h3>每个元素都要有理由</h3>
-    <p style="color: var(--text-secondary)">为什么是夕阳？故事发生在放学。为什么是樱花？这是春天。为什么回头？她在等你。</p>
-    <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: var(--s-2)">Prompt 不应该出现无意义标签。</p>
+    <p>为什么是夕阳？故事发生在放学。为什么是樱花？这是春天。为什么回头？她在等你。</p>
+    <p class="aside">Prompt 不应该出现无意义标签。</p>
   </div>
 
   <!-- Flow -->
-  <h2 style="margin-top: var(--s-6); margin-bottom: var(--s-3);">导演模式创作流程</h2>
-  <p style="color: var(--text-secondary); margin-bottom: var(--s-3);">9 步完成一张 CG，像导演一样思考。</p>
+  <h2 class="section-title">导演模式创作流程</h2>
+  <p class="mb-3">9 步完成一张 CG，像导演一样思考。</p>
   <div class="flow-compose">
     <div class="flow-block">📖 故事</div>
     <span class="flow-arrow">→</span>
@@ -179,53 +175,53 @@
   </div>
 
   <!-- Scene vs Tag -->
-  <h2 style="margin-top: var(--s-6); margin-bottom: var(--s-3);">Scene ≠ Prompt ≠ 标签</h2>
-  <div class="wrong-right">
-    <div class="wrong">
-      <div class="label">❌ 不要这样想</div>
+  <h2 class="section-title">Scene ≠ Prompt ≠ 标签</h2>
+  <div class="compare-grid">
+    <div class="compare-card bad">
+      <p class="compare-label">❌ 不要这样想</p>
       <p>站着、笑、学校、校服、夕阳</p>
     </div>
-    <div class="good">
-      <div class="label">✅ 应该这样想</div>
+    <div class="compare-card good">
+      <p class="compare-label">✅ 应该这样想</p>
       <p>放学以后，她站在校门口一直等你，风吹起头发，夕阳照在她脸上</p>
     </div>
   </div>
 
-  <h3 style="margin-top: var(--s-5); margin-bottom: var(--s-3);">场景 > 标签</h3>
-  <div class="card-grid">
+  <h3 class="mt-5 mb-3">场景 > 标签</h3>
+  <div class="card-grid scene-compare">
     <div class="card">
-      <p style="color: var(--text-muted); font-size: 0.85rem;">不是"教室"</p>
-      <p style="color: var(--accent); font-weight: 600;">是"放学后的教室"</p>
+      <p>不是"教室"</p>
+      <p>是"放学后的教室"</p>
     </div>
     <div class="card">
-      <p style="color: var(--text-muted); font-size: 0.85rem;">不是"卧室"</p>
-      <p style="color: var(--accent); font-weight: 600;">是"睡前的一句晚安"</p>
+      <p>不是"卧室"</p>
+      <p>是"睡前的一句晚安"</p>
     </div>
     <div class="card">
-      <p style="color: var(--text-muted); font-size: 0.85rem;">不是"神社"</p>
-      <p style="color: var(--accent); font-weight: 600;">是"新年的第一次祈福"</p>
+      <p>不是"神社"</p>
+      <p>是"新年的第一次祈福"</p>
     </div>
     <div class="card">
-      <p style="color: var(--text-muted); font-size: 0.85rem;">不是"海边"</p>
-      <p style="color: var(--accent); font-weight: 600;">是"第一次一起看海"</p>
+      <p>不是"海边"</p>
+      <p>是"第一次一起看海"</p>
     </div>
   </div>
 
   <!-- Quality > Quantity -->
-  <div class="callout" style="margin-top: var(--s-6);">
+  <div class="callout mt-6">
     <strong>质量 > 数量</strong>
-    <p style="margin-top: var(--s-2)">
+    <p>
       284 个 Scene 不是为了凑数量。<br><br>
       每一条都应有明确的故事、情绪、镜头、构图和可用参数；重复或不稳定的场景继续修改，不急着增加新编号。
     </p>
   </div>
 
   <!-- Usage -->
-  <h2 style="margin-top: var(--s-6); margin-bottom: var(--s-3);">适合的使用方式</h2>
-  <div class="card-grid">
-    <div class="card h4" style="font-size: 0.95rem;">🎨 从一个故事瞬间开始创作 Galgame 风格 CG</div>
-    <div class="card h4" style="font-size: 0.95rem;">🖼 用固定场景测试宁宁与夏目的角色 LoRA</div>
-    <div class="card h4" style="font-size: 0.95rem;">✨ 保存稳定组合，之后可以继续生成或比较变体</div>
+  <h2 class="section-title">适合的使用方式</h2>
+  <div class="card-grid usage-grid">
+    <div class="card">🎨 从一个故事瞬间开始创作 Galgame 风格 CG</div>
+    <div class="card">🖼 用固定场景测试宁宁与夏目的角色 LoRA</div>
+    <div class="card">✨ 保存稳定组合，之后可以继续生成或比较变体</div>
   </div>
 
   <footer class="footer">

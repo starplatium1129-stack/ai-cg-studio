@@ -6,24 +6,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="绫季绘境后续改进、新功能方向、完成标准与产品边界。">
 <title>产品路线图 · 绫季绘境</title>
-<link rel="stylesheet" href="../css/design-system.css?v=10">
-<script src="../tools/nav.js?v=7"></script>
+<link rel="stylesheet" href="../css/design-system.css?v=11">
+<link rel="stylesheet" href="../css/docs.css?v=1">
+<script src="../tools/nav.js?v=8"></script>
 <script src="../tools/theme.js?v=5"></script>
 <style>
-  .page { max-width: 1040px; margin: 0 auto; padding: var(--s-5) var(--s-4); }
+  .page { --page-max: 1040px; }
   .hero { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:var(--s-5); align-items:end; margin-bottom:var(--s-6); }
-  h1.title { margin:0 0 var(--s-2); font-size:2.15rem; font-weight:800; letter-spacing:-.03em; }
-  .subtitle { max-width:720px; margin:0; color:var(--text-secondary); line-height:1.75; }
-  .updated { color:var(--text-muted); font-family:var(--font-mono); font-size:.78rem; white-space:nowrap; }
+  /* 路线图标题保持纯色(无 .title-gradient):这一页是执行清单,不做区首页的装饰标题 */
+  .subtitle { max-width:720px; margin:0; }
+  .updated { color:var(--text-muted); font-family:var(--font-mono); font-size:var(--fs-label-sm); white-space:nowrap; }
 
+  /* 项目状态数字卡 — 原名 .status-card 与 tools/control.html 的服务状态卡重名,
+     语义不同(这里是统计数字,那里是服务徽章),故加前缀 */
   .status-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:var(--s-3); margin-bottom:var(--s-6); }
-  .status-card { padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); }
-  .status-card strong { display:block; font-size:1.35rem; color:var(--accent); margin-bottom:4px; }
-  .status-card span { color:var(--text-muted); font-size:.78rem; line-height:1.5; }
+  .roadmap-stat { padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); }
+  .roadmap-stat strong { display:block; font-size:var(--fs-title); color:var(--accent); margin-bottom:4px; }
+  .roadmap-stat span { color:var(--text-muted); font-size:var(--fs-label-sm); line-height:1.5; }
 
-  .principle { margin-bottom:var(--s-6); padding:var(--s-4); border:1px solid var(--border-soft); border-left:4px solid var(--accent); border-radius:var(--r-lg); background:var(--bg-surface); }
-  .principle strong { display:block; margin-bottom:var(--s-2); }
-  .principle p { margin:0; color:var(--text-secondary); line-height:1.75; }
+  /* 原名 .principle 与 docs/philosophy.html 的原则卡重名且取值不同,故加前缀 */
+  .roadmap-principle { margin-bottom:var(--s-6); padding:var(--s-4); border:1px solid var(--border-soft); border-left:4px solid var(--accent); border-radius:var(--r-lg); background:var(--bg-surface); }
+  .roadmap-principle strong { display:block; margin-bottom:var(--s-2); }
+  .roadmap-principle p { margin:0; color:var(--text-secondary); line-height:1.75; }
 
   .roadmap { position:relative; padding-left:34px; }
   .roadmap::before { content:''; position:absolute; left:9px; top:12px; bottom:12px; width:2px; background:var(--border-soft); }
@@ -34,37 +38,37 @@
   .phase-card { border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); overflow:hidden; }
   .phase.now .phase-card { border-color:var(--accent); box-shadow:0 0 24px var(--accent-glow); }
   .phase-head { display:flex; align-items:flex-start; gap:var(--s-3); padding:var(--s-4); border-bottom:1px solid var(--border-soft); }
-  .phase-index { flex:0 0 auto; padding:4px 10px; border-radius:999px; background:var(--accent-soft); color:var(--accent); font:700 .76rem var(--font-mono); }
-  .phase.done .phase-index { color:var(--success); background:color-mix(in srgb,var(--success) 12%,transparent); }
+  .phase-index { flex:0 0 auto; padding:var(--s-1) var(--s-3); border-radius:var(--r-pill); background:var(--accent-soft); color:var(--accent); font:700 var(--fs-label-sm) var(--font-mono); }
+  .phase.done .phase-index { color:var(--success-text); background:color-mix(in srgb,var(--success) 12%,transparent); }
   .phase-title { flex:1; min-width:0; }
-  .phase-title h2 { margin:0 0 4px; font-size:1.18rem; }
-  .phase-title p { margin:0; color:var(--text-secondary); font-size:.85rem; line-height:1.6; }
-  .phase-state { flex:0 0 auto; padding:3px 9px; border-radius:999px; background:var(--bg-elevated); color:var(--text-muted); font-size:.72rem; font-weight:700; }
+  .phase-title h2 { margin:0 0 var(--s-1); font-size:var(--fs-title-xs); }
+  .phase-title p { margin:0; color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:1.6; }
+  .phase-state { flex:0 0 auto; padding:3px var(--s-2); border-radius:var(--r-pill); background:var(--bg-elevated); color:var(--text-muted); font-size:var(--fs-label-xs); font-weight:700; }
   .phase.now .phase-state { background:var(--accent); color:var(--text-inverse); }
-  .phase.done .phase-state { color:var(--success); background:color-mix(in srgb,var(--success) 12%,transparent); }
+  .phase.done .phase-state { color:var(--success-text); background:color-mix(in srgb,var(--success) 12%,transparent); }
   .phase-body { padding:var(--s-4); }
   .work-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--s-3); }
   .work-item { padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-elevated); }
-  .work-item h3 { margin:0 0 var(--s-2); font-size:.92rem; }
-  .work-item p { margin:0; color:var(--text-secondary); font-size:.82rem; line-height:1.65; }
-  .work-item .priority { display:inline-block; margin-bottom:var(--s-2); color:var(--accent); font:700 .68rem var(--font-mono); text-transform:uppercase; letter-spacing:.08em; }
+  .work-item h3 { margin:0 0 var(--s-2); font-size:var(--fs-body); }
+  .work-item p { margin:0; color:var(--text-secondary); font-size:var(--fs-label); line-height:1.65; }
+  .work-item .priority { display:inline-block; margin-bottom:var(--s-2); color:var(--accent); font:700 var(--fs-mono-sm) var(--font-mono); text-transform:uppercase; letter-spacing:.08em; }
   .done-list { list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--s-2) var(--s-4); }
-  .done-list li { color:var(--text-secondary); font-size:.84rem; line-height:1.6; }
-  .done-list li::before { content:'✓'; margin-right:8px; color:var(--success); font-weight:800; }
-  .gate { margin-top:var(--s-3); padding:var(--s-3); border-radius:var(--r-md); background:var(--accent-soft); color:var(--text-secondary); font-size:.8rem; line-height:1.65; }
+  .done-list li { color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:1.6; }
+  .done-list li::before { content:'✓'; margin-right:8px; color:var(--success-text); font-weight:800; }
+  .gate { margin-top:var(--s-3); padding:var(--s-3); border-radius:var(--r-md); background:var(--accent-soft); color:var(--text-secondary); font-size:var(--fs-label); line-height:1.65; }
   .gate strong { color:var(--text-primary); }
 
   .section { margin-top:var(--s-6); }
-  .section h2 { margin:0 0 var(--s-3); font-size:1.25rem; }
+  .section h2 { margin:0 0 var(--s-3); font-size:var(--fs-title-sm); }
   .metric-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--s-3); }
   .metric { padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); }
-  .metric h3 { margin:0 0 var(--s-2); font-size:.9rem; }
-  .metric p { margin:0; color:var(--text-secondary); font-size:.8rem; line-height:1.65; }
+  .metric h3 { margin:0 0 var(--s-2); font-size:var(--fs-body); }
+  .metric p { margin:0; color:var(--text-secondary); font-size:var(--fs-label); line-height:1.65; }
   .boundary { display:grid; grid-template-columns:1fr 1fr; gap:var(--s-3); }
   .boundary-card { padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); }
-  .boundary-card h3 { margin:0 0 var(--s-3); font-size:1rem; }
+  .boundary-card h3 { margin:0 0 var(--s-3); font-size:var(--fs-body-lg); }
   .boundary-card ul { margin:0; padding-left:1.2rem; color:var(--text-secondary); }
-  .boundary-card li { margin-bottom:var(--s-2); font-size:.83rem; line-height:1.6; }
+  .boundary-card li { margin-bottom:var(--s-2); font-size:var(--fs-body-sm); line-height:1.6; }
   .boundary-card.no { border-color:color-mix(in srgb,var(--danger) 30%,var(--border-soft)); }
 
   @media (max-width:800px) {
@@ -99,13 +103,13 @@
   </header>
 
   <section class="status-grid" aria-label="当前项目状态">
-    <div class="status-card"><strong>297</strong><span>已校验场景<br>网页直接维护</span></div>
-    <div class="status-card"><strong>2</strong><span>角色创作路线<br>宁宁与夏目</span></div>
-    <div class="status-card"><strong>4/4</strong><span>关键浏览器流程<br>自动回归通过</span></div>
-    <div class="status-card"><strong>0</strong><span>已知依赖漏洞<br>质量门禁启用</span></div>
+    <div class="roadmap-stat"><strong>297</strong><span>已校验场景<br>网页直接维护</span></div>
+    <div class="roadmap-stat"><strong>2</strong><span>角色创作路线<br>宁宁与夏目</span></div>
+    <div class="roadmap-stat"><strong>4/4</strong><span>关键浏览器流程<br>自动回归通过</span></div>
+    <div class="roadmap-stat"><strong>0</strong><span>已知依赖漏洞<br>质量门禁启用</span></div>
   </section>
 
-  <section class="principle">
+  <section class="roadmap-principle">
     <strong>路线图原则：稳定底座已经完成，后续以真实创作收益驱动。</strong>
     <p>新增功能必须至少改善一种结果：更容易找到场景、更快得到满意画面、更稳定地保存作品、更一致地呈现角色，或更容易诊断服务。只增加页面、依赖和设置项而不改善这些结果的功能不进入开发。</p>
   </section>
@@ -250,7 +254,7 @@
     </div>
   </section>
 
-  <section class="principle section">
+  <section class="roadmap-principle section">
     <strong>执行节奏</strong>
     <p>一次只推进一个主要能力：先写清用户问题和完成标准，再做最小版本，补数据迁移与测试，真实使用一段时间后决定继续、调整或删除。路线图不是功能承诺清单，任何项目都可以因为收益不足而取消。</p>
   </section>

@@ -33,7 +33,7 @@
             '<section class="detail-section"><div class="lab">视觉特征</div><div class="chips">'+chips([dna.hair, dna.eyes, dna.hairstyle, dna.uniform, dna.expression, dna.signature])+'</div></section>'+
             '<section class="detail-section"><div class="lab">角色 LoRA</div><div class="char-lora"><code>'+esc(c.lora.name)+'</code> · 默认强度 '+esc(c.lora.weight)+'</div></section>'+
           '</div>'+
-          '<a class="btn btn-primary one-click-btn" href="prompt-builder.html?char='+encodeURIComponent(c.id)+'">✦ 带此角色开始绘制</a>'+
+          '<a class="btn btn-lg btn-primary btn-block mt-4" href="prompt-builder.html?char='+encodeURIComponent(c.id)+'">✦ 带此角色开始绘制</a>'+
           '</div></section>'+
           '<section class="cg-card card-info card-level-1"><div class="lab">代表场景</div><div class="cg-title">'+esc(c.classic_cg.title)+'</div><div class="cg-story">'+esc(c.classic_cg.description)+'</div></section>'+
           '<section><h2 class="recommend-title">精选推荐场景 · '+recommendations.length+' 个</h2><div class="recommend-grid" id="recommendGrid"></div></section>';
@@ -45,5 +45,5 @@
       }
       render();
     })
-    .catch(function(error){ center.innerHTML = '<p class="empty">角色数据加载失败：'+esc(error.message)+'</p>'; });
+    .catch(function(error){ center.innerHTML = '<p class="empty-state">角色数据加载失败：'+esc(error.message)+'</p>'; });
 })();

@@ -5,33 +5,26 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Scene 数据与写作规范 · 绫季绘境</title>
-<link rel="stylesheet" href="../css/design-system.css?v=10">
-<script src="../tools/nav.js?v=7"></script>
+<link rel="stylesheet" href="../css/design-system.css?v=11">
+<link rel="stylesheet" href="../css/docs.css?v=1">
+<script src="../tools/nav.js?v=8"></script>
 <script src="../tools/theme.js?v=5"></script>
 <style>
-  .page { max-width: 900px; margin: 0 auto; padding: var(--s-5) var(--s-4); }
-  h1.title {
-    font-size: 2rem; font-weight: 800;
-    background: linear-gradient(135deg, var(--text-primary) 50%, var(--accent));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text; margin-bottom: var(--s-2);
-  }
-  .subtitle { color: var(--text-secondary); margin-bottom: var(--s-5); }
-
-  /* SC template */
+  /* ---- Scene 模板 ----
+     字段行叫 .spec-field 而不是 .field:全局 .field 是表单控件组,
+     这里是文档字段说明,语义不同必须换名。 */
   .template {
     background: var(--bg-deep); border: 1px solid var(--border-soft);
     border-radius: var(--r-lg); padding: var(--s-5); margin-bottom: var(--s-5);
   }
-  .template h3 { margin-bottom: var(--s-4); font-size: 1.1rem; }
+  .template h3 { margin-bottom: var(--s-4); font-size: var(--fs-title-xs); }
 
-  .field { margin-bottom: var(--s-4); }
-  .field-label {
-    font-size: 0.78rem; font-weight: 600; color: var(--accent);
+  .spec-field { margin-bottom: var(--s-4); }
+  .spec-field-label {
+    font-size: var(--fs-label-sm); font-weight: 600; color: var(--accent);
     text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--s-1);
   }
-  .field-value { font-size: 0.95rem; color: var(--text-primary); line-height: 1.7; }
-  .field-value.muted { color: var(--text-muted); font-style: italic; }
+  .spec-field-value { font-size: var(--fs-body); color: var(--text-primary); line-height: 1.7; }
 
   /* Example scene */
   .example-scene {
@@ -40,19 +33,21 @@
     transition: border-color var(--t-fast);
   }
   .example-scene:hover { border-color: var(--accent); }
+  /* 示例卡里的字段标签只作为 prompt 块的抬头,不需要 s-4 底距 */
+  .example-scene .spec-field-label { margin-bottom: var(--s-2); }
 
   .scene-header {
     display: flex; align-items: baseline; gap: var(--s-3); margin-bottom: var(--s-3);
   }
   .scene-id {
-    font-family: var(--font-mono); font-size: 0.85rem; font-weight: 700;
+    font-family: var(--font-mono); font-size: var(--fs-body-sm); font-weight: 700;
     color: var(--accent); background: var(--accent-soft);
-    padding: 3px 10px; border-radius: 12px;
+    padding: 3px 10px; border-radius: var(--r-pill);
   }
-  .scene-title { font-size: 1.2rem; font-weight: 700; }
+  .scene-title { font-size: var(--fs-title-sm); font-weight: 700; }
 
   .scene-story {
-    font-size: 1rem; color: var(--text-primary); margin-bottom: var(--s-3);
+    font-size: var(--fs-body-lg); color: var(--text-primary); margin-bottom: var(--s-3);
     font-style: italic;
   }
   .scene-grid {
@@ -63,36 +58,35 @@
     background: var(--bg-elevated); border-radius: var(--r-md);
     padding: var(--s-2) var(--s-3); text-align: center;
   }
-  .scene-meta .label { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; }
-  .scene-meta .value { font-size: 0.9rem; font-weight: 600; color: var(--accent); margin-top: 2px; }
+  .scene-meta .label { font-size: var(--fs-label-xs); color: var(--text-muted); text-transform: uppercase; }
+  .scene-meta .value { font-size: var(--fs-body); font-weight: 600; color: var(--accent); margin-top: 2px; }
+  /* 参考参数这一格是机读串,比其它格更长,单独降一档 */
+  .scene-meta .value-mono { font: 600 var(--fs-label-sm) var(--font-mono); }
 
-  .scene-prompt {
-    background: var(--bg-deep); border-radius: var(--r-md);
-    padding: var(--s-3); font-family: var(--font-mono); font-size: 0.78rem;
-    line-height: 1.8; color: var(--text-secondary); margin-bottom: var(--s-3);
-    white-space: pre-wrap; word-break: break-all;
-  }
-  .scene-neg {
-    background: rgba(239,83,80,0.05); border: 1px solid rgba(239,83,80,0.2);
-    border-radius: var(--r-md); padding: var(--s-3);
-    font-family: var(--font-mono); font-size: 0.78rem;
-    color: var(--danger); line-height: 1.8; white-space: pre-wrap;
+  /* prompt 块走全局 .prompt-code,本页只补间距与 negative 的危险色 */
+  .example-scene .prompt-code { margin-bottom: var(--s-3); font-size: var(--fs-label-sm); }
+  .example-scene .prompt-code-neg { margin-bottom: 0; }
+  .prompt-code-neg {
+    border-color: color-mix(in srgb, var(--danger) 20%, transparent);
+    background: color-mix(in srgb, var(--danger) 5%, transparent);
+    color: var(--danger-text);
   }
 
   /* Locked parameter badge */
   .lock-badge {
     display: inline-flex; align-items: center; gap: 4px;
-    font-size: 0.72rem; font-weight: 600;
-    color: var(--success); background: rgba(102,187,106,0.1);
-    padding: 2px 8px; border-radius: 10px;
+    font-size: var(--fs-label-xs); font-weight: 600;
+    color: var(--success-text); background: color-mix(in srgb, var(--success) 10%, transparent);
+    padding: 2px 8px; border-radius: var(--r-pill);
     margin-left: var(--s-2);
   }
   .param-ref {
     background: var(--bg-surface); border: 1px solid var(--border-soft);
     border-radius: var(--r-lg); padding: var(--s-5); margin-bottom: var(--s-4);
   }
-  .param-ref h4 { font-size: 1.05rem; margin-bottom: var(--s-3); }
-  .param-ref .note { font-size: 0.83rem; color: var(--text-muted); margin-bottom: var(--s-3); }
+  .param-ref h4 { font-size: var(--fs-title-xs); margin-bottom: var(--s-3); }
+  .param-ref .note { margin-bottom: var(--s-3); }
+  .param-ref .prompt-code { margin: 0; }
 
   /* Resolution grid */
   .res-grid {
@@ -109,14 +103,17 @@
     display: flex; align-items: baseline; justify-content: space-between;
     margin-bottom: var(--s-2);
   }
-  .res-name { font-weight: 700; font-size: 0.9rem; }
+  .res-name { font-weight: 700; font-size: var(--fs-body); }
   .res-vram {
-    font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700;
-    color: var(--warning); background: rgba(255,167,38,0.1);
-    padding: 2px 7px; border-radius: 8px;
+    font-family: var(--font-mono); font-size: var(--fs-mono-sm); font-weight: 700;
+    color: var(--warning-text); background: color-mix(in srgb, var(--warning) 10%, transparent);
+    padding: 2px 7px; border-radius: var(--r-md);
   }
-  .res-res { font-family: var(--font-mono); font-size: 0.83rem; color: var(--accent); margin-bottom: 2px; }
-  .res-use { font-size: 0.78rem; color: var(--text-muted); }
+  .res-res { font-family: var(--font-mono); font-size: var(--fs-label); color: var(--accent); margin-bottom: 2px; }
+  .res-use { font-size: var(--fs-label-sm); color: var(--text-muted); }
+
+  /* 各节的引导句 */
+  .section-lead { margin-bottom: var(--s-4); }
 </style>
 </head>
 <body data-nav="docs">
@@ -132,30 +129,30 @@
 <article class="page">
   <a href="../index.html" class="nav-back">← 回首页</a>
 
-  <h1 class="title">🎞 Scene 数据与写作规范</h1>
+  <h1 class="title title-gradient">🎞 Scene 数据与写作规范</h1>
   <p class="subtitle">Scene 是编号和维护单位，Prompt 是随场景一起保存的生成输出。</p>
 
   <!-- Template -->
   <div class="template">
     <h3>📋 Scene 模板 — 常用字段</h3>
-    <div class="field"><div class="field-label">Scene ID</div><div class="field-value">使用仓库现有格式，例如 sc001、sc002；保持唯一且不要重复使用。</div></div>
-    <div class="field"><div class="field-label">标题</div><div class="field-value">有画面感的中文场景名（例如：放学后的等待）</div></div>
-    <div class="field"><div class="field-label">故事</div><div class="field-value">一句话故事描述。谁在什么地方、在做什么、为什么。</div></div>
-    <div class="field"><div class="field-label">情绪</div><div class="field-value">核心情绪 (恋爱、期待、害羞...)</div></div>
-    <div class="field"><div class="field-label">推荐角色</div><div class="field-value">ayachi_nene / shiki_natsume / 通用</div></div>
-    <div class="field"><div class="field-label">Resolution</div><div class="field-value">8 档, 带 VRAM 要求 (详见下方速查)</div></div>
-    <div class="field"><div class="field-label">推荐 LoRA 权重</div><div class="field-value">0.75 (默认) / 范围 0.6–0.8</div></div>
-    <div class="field"><div class="field-label">Positive</div><div class="field-value">遵循 <a href="prompt-spec.html">Prompt Spec</a> 的 9 模块顺序。<em>每 Scene 唯一变量。</em></div></div>
-    <div class="field"><div class="field-label">Negative</div><div class="field-value">基础层 (通用 17 词) + 场景特定层 (3–5 词)</div></div>
-    <div class="field">
-      <div class="field-label">建议参数 <span class="lock-badge">作为起点</span></div>
-      <div class="field-value">可记录 CFG、Sampler、Steps 与 Hires 参数；模型或 LoRA 变化后按实测调整。</div>
+    <div class="spec-field"><div class="spec-field-label">Scene ID</div><div class="spec-field-value">使用仓库现有格式，例如 sc001、sc002；保持唯一且不要重复使用。</div></div>
+    <div class="spec-field"><div class="spec-field-label">标题</div><div class="spec-field-value">有画面感的中文场景名（例如：放学后的等待）</div></div>
+    <div class="spec-field"><div class="spec-field-label">故事</div><div class="spec-field-value">一句话故事描述。谁在什么地方、在做什么、为什么。</div></div>
+    <div class="spec-field"><div class="spec-field-label">情绪</div><div class="spec-field-value">核心情绪 (恋爱、期待、害羞...)</div></div>
+    <div class="spec-field"><div class="spec-field-label">推荐角色</div><div class="spec-field-value">ayachi_nene / shiki_natsume / 通用</div></div>
+    <div class="spec-field"><div class="spec-field-label">Resolution</div><div class="spec-field-value">8 档, 带 VRAM 要求 (详见下方速查)</div></div>
+    <div class="spec-field"><div class="spec-field-label">推荐 LoRA 权重</div><div class="spec-field-value">0.75 (默认) / 范围 0.6–0.8</div></div>
+    <div class="spec-field"><div class="spec-field-label">Positive</div><div class="spec-field-value">遵循 <a href="prompt-spec.html">Prompt Spec</a> 的 9 模块顺序。<em>每 Scene 唯一变量。</em></div></div>
+    <div class="spec-field"><div class="spec-field-label">Negative</div><div class="spec-field-value">基础层 (通用 17 词) + 场景特定层 (3–5 词)</div></div>
+    <div class="spec-field">
+      <div class="spec-field-label">建议参数 <span class="lock-badge">作为起点</span></div>
+      <div class="spec-field-value">可记录 CFG、Sampler、Steps 与 Hires 参数；模型或 LoRA 变化后按实测调整。</div>
     </div>
-    <div class="field"><div class="field-label">标签</div><div class="field-value">用于 Scene 库检索的标签</div></div>
+    <div class="spec-field"><div class="spec-field-label">标签</div><div class="spec-field-value">用于 Scene 库检索的标签</div></div>
   </div>
 
   <!-- Example 1 -->
-  <h2 style="margin-bottom: var(--s-4);">Scene 示例</h2>
+  <h2 class="mb-4">Scene 示例</h2>
 
   <div class="example-scene">
     <div class="scene-header">
@@ -170,11 +167,11 @@
       <div class="scene-meta"><div class="label">LoRA</div><div class="value">0.75</div></div>
       <div class="scene-meta">
         <div class="label">参考参数</div>
-        <div class="value" style="font-size:0.8rem">CFG 5 · DPM++ 2M SDE · S28</div>
+        <div class="value value-mono">CFG 5 · DPM++ 2M SDE · S28</div>
       </div>
     </div>
-    <div class="field-label" style="margin-bottom: var(--s-2);">Positive</div>
-    <div class="scene-prompt">masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed,
+    <div class="spec-field-label">Positive</div>
+    <div class="prompt-code">masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed,
 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon,
 school uniform, pleated skirt,
 school gate, cherry blossoms in bloom, petals floating,
@@ -184,8 +181,8 @@ rule of thirds, by school gate, depth,
 golden hour, backlit, soft shadows, warm atmosphere,
 hair blowing, depth of field, cinematic lighting,
 &lt;lora:ayachi_nene_v14:0.8&gt;</div>
-    <div class="field-label" style="margin-bottom: var(--s-2);">Negative (基础 + 场景特定)</div>
-    <div class="scene-neg">lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name, night, darkness, snow, autumn leaves</div>
+    <div class="spec-field-label">Negative (基础 + 场景特定)</div>
+    <div class="prompt-code prompt-code-neg">lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name, night, darkness, snow, autumn leaves</div>
   </div>
 
   <!-- Example 2 -->
@@ -202,11 +199,11 @@ hair blowing, depth of field, cinematic lighting,
       <div class="scene-meta"><div class="label">LoRA</div><div class="value">0.75</div></div>
       <div class="scene-meta">
         <div class="label">参考参数</div>
-        <div class="value" style="font-size:0.8rem">CFG 5 · DPM++ 2M SDE · S28</div>
+        <div class="value value-mono">CFG 5 · DPM++ 2M SDE · S28</div>
       </div>
     </div>
-    <div class="field-label" style="margin-bottom: var(--s-2);">Positive</div>
-    <div class="scene-prompt">masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed,
+    <div class="spec-field-label">Positive</div>
+    <div class="prompt-code">masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed,
 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon,
 school uniform, wet clothes, wet hair,
 rainy street, wet road, puddles, reflections,
@@ -216,13 +213,13 @@ centered composition, foreground umbrella edge,
 overcast, cool tones, soft diffused light, rainy atmosphere,
 looking at viewer, beautiful detailed eyes, depth of field,
 &lt;lora:ayachi_nene_v14:0.8&gt;</div>
-    <div class="field-label" style="margin-bottom: var(--s-2);">Negative (基础 + 场景特定)</div>
-    <div class="scene-neg">lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name, sunny, bright lighting, autumn leaves, snow, summer</div>
+    <div class="spec-field-label">Negative (基础 + 场景特定)</div>
+    <div class="prompt-code prompt-code-neg">lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name, sunny, bright lighting, autumn leaves, snow, summer</div>
   </div>
 
   <!-- Suggested parameters -->
-  <h2 style="margin-top: var(--s-7); margin-bottom: var(--s-3);">⚙️ 建议参数 <span class="lock-badge">先从这里试</span></h2>
-  <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4);">这些值适合作为起点，不是固定规则。模型、VAE、LoRA 版本、显存和画面类型变化后，以实际结果为准。</p>
+  <h2 class="section-title">⚙️ 建议参数 <span class="lock-badge">先从这里试</span></h2>
+  <p class="note section-lead">这些值适合作为起点，不是固定规则。模型、VAE、LoRA 版本、显存和画面类型变化后，以实际结果为准。</p>
 
   <table>
     <thead>
@@ -239,8 +236,8 @@ looking at viewer, beautiful detailed eyes, depth of field,
   </table>
 
   <!-- Resolution -->
-  <h2 style="margin-top: var(--s-7); margin-bottom: var(--s-3);">📐 Resolution 速查</h2>
-  <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4);">按用途选一档。<strong>VRAM 是单卡峰值。</strong></p>
+  <h2 class="section-title">📐 Resolution 速查</h2>
+  <p class="note section-lead">按用途选一档。<strong>VRAM 是单卡峰值。</strong></p>
 
   <div class="res-grid">
     <div class="res-card">
@@ -286,8 +283,8 @@ looking at viewer, beautiful detailed eyes, depth of field,
   </div>
 
   <!-- Hires.fix -->
-  <h2 style="margin-top: var(--s-7); margin-bottom: var(--s-3);">🔍 Hires.fix 输出</h2>
-  <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: var(--s-4);">需要更大尺寸时再启用。先确认基础图的角色、构图和手部没有明显问题，再按模型表现调整放大参数。</p>
+  <h2 class="section-title">🔍 Hires.fix 输出</h2>
+  <p class="note section-lead">需要更大尺寸时再启用。先确认基础图的角色、构图和手部没有明显问题，再按模型表现调整放大参数。</p>
   <table>
     <thead>
       <tr><th>用途</th><th>倍数</th><th>Output</th><th>Denoise</th><th>Steps</th></tr>
@@ -301,12 +298,12 @@ looking at viewer, beautiful detailed eyes, depth of field,
   </table>
 
   <!-- Negative reference -->
-  <h2 style="margin-top: var(--s-7); margin-bottom: var(--s-3);">🛡 Negative 速查</h2>
+  <h2 class="section-title">🛡 Negative 速查</h2>
 
-  <div class="param-ref" style="margin-bottom: var(--s-4);">
+  <div class="param-ref">
     <h4>📌 基础层（通用质量问题）</h4>
     <p class="note">作为默认起点；如果底模已有推荐 Negative，请优先比较实测结果。</p>
-    <div class="scene-prompt" style="margin:0">lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name</div>
+    <div class="prompt-code">lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name</div>
   </div>
 
   <div class="param-ref">

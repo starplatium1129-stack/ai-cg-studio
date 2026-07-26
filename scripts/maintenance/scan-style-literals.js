@@ -1,0 +1,72 @@
+'use strict';
+// 一次性巡检:统计页内 <style> 块里尚未收敛到 token 的字面量。
+// 用法: node scripts/maintenance/scan-style-literals.js [file...]
+const fs = require('fs');
+const path = require('path');
+const root = path.resolve(__dirname, '..', '..');
+
+function listHtml(dir) {
+  const abs = path.join(root, dir);
+  if (!fs.existsSync(abs)) return [];
+  return fs.readdirSync(abs).filter((n) => n.endsWith('.html')).map((n) => (dir ? dir + '/' + n : n));
+}
+
+const args = process.argv.slice(2).filter((a) => !a.startsWith('--'));
+const targets = args.length
+  ? args
+  : ['index.html', ...listHtml('tools'), ...listHtml('docs'),
+     ...fs.readdirSync(path.join(root, 'css')).filter((n) => n.endsWith('.css')).map((n) => 'css/' + n)];
+
+// 已在源文件里写注释说明理由的合理例外(根字号基准、品牌图形圆角、
+// iOS 16px 约束、装饰性字形槽、卡内堆叠底层)。总量作为回归预算使用。
+const BUDGET = 11;
+
+const CHECKS = [
+  ['fontsize', /font-size:\s*\.?\d[\d.]*(?:rem|px)/g],
+  ['font-shorthand', /font:\s*[^;{}]*?\s\.?\d[\d.]*(?:rem|px)/g],
+  ['radius', /border-radius:\s*[\d.]+px/g],
+  ['zindex', /z-index:\s*-?\d+/g],
+  ['white', /rgba\(\s*255,\s*255,\s*255/g],
+  ['black', /rgba\(\s*0,\s*0,\s*0/g],
+  ['pill', /\b9{2,4}px\b/g],
+  ['bezier', /cubic-bezier\(/g]
+];
+
+let grand = 0;
+const rows = [];
+for (const rel of targets) {
+  const abs = path.join(root, rel);
+  if (!fs.existsSync(abs)) { console.log('  (missing) ' + rel); continue; }
+  const raw = fs.readFileSync(abs, 'utf8');
+  let css = '';
+  if (rel.endsWith('.css')) css = raw;
+  else for (const m of raw.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/gi)) css += m[1] + '\n';
+  css = css.replace(/\/\*[\s\S]*?\*\//g, ' ');
+  // token 定义行本身就是字面量的合法归宿(--accent-soft: rgba(...)),不算漂移。
+  // 只统计"使用点"的字面量。
+  css = css.split('\n').filter((line) => !/^\s*--[\w-]+\s*:/.test(line)).join('\n');
+  const counts = {};
+  let total = 0;
+  for (const [name, re] of CHECKS) {
+    const n = (css.match(re) || []).length;
+    if (n) { counts[name] = n; total += n; }
+  }
+  if (total) rows.push([rel, total, counts]);
+  grand += total;
+}
+
+rows.sort((a, b) => b[1] - a[1]);
+for (const [rel, total, counts] of rows) {
+  const detail = Object.entries(counts).map(([k, v]) => k + '=' + v).join(' ');
+  console.log('  ' + String(total).padStart(4) + '  ' + rel.padEnd(30) + detail);
+}
+console.log('TOTAL literal occurrences: ' + grand + ' (budget ' + BUDGET + ')');
+
+if (process.argv.includes('--check')) {
+  if (grand > BUDGET) {
+    console.error('样式字面量超出预算:新增了 ' + (grand - BUDGET) + ' 处未走 token 的字面量。');
+    console.error('请改用 --fs-* / --r-* / --z-* / --s-* token;确有必要的例外请写注释并调整 BUDGET。');
+    process.exit(1);
+  }
+  console.log('字面量预算检查通过。');
+}
