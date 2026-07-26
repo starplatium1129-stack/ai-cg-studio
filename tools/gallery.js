@@ -152,7 +152,7 @@
   }
 
   function emptyMarkup() {
-    return '<div class="gallery-empty"><div class="gallery-empty-icon">✦</div><h2>展墙还在等第一幅作品</h2>' +
+    return '<div class="empty-state"><div class="empty-state-icon">✦</div><h2>展墙还在等第一幅作品</h2>' +
       '<p>完成绘制后，原图会按自己的横竖比例进这里。作品只存在这台电脑，参数不挡画面。</p>' +
       '<a class="btn btn-primary" href="prompt-builder.html">开始绘制</a></div>';
   }

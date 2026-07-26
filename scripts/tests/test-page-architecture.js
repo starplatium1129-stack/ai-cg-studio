@@ -59,4 +59,33 @@ for (const name of builderModules) {
   new vm.Script(source, { filename:rel });
 }
 
-console.log(`Page architecture tests passed: ${pages.length} controllers + prompt-builder modules are external, CSP-ready, and syntactically valid`);
+// chat is multi-module (ESM); scan HTML + local modules for CSP readiness.
+const chatHtmlRel = 'tools/chat.html';
+const chatHtml = fs.readFileSync(path.join(root, chatHtmlRel), 'utf8');
+assert(!inlineHandlerRe.test(chatHtml), `${chatHtmlRel} must not use HTML event attributes`);
+assert(/type=["']module["']/.test(chatHtml) && /chat\/app\.mjs\?v=\d+/.test(chatHtml),
+  `${chatHtmlRel} must load chat/app.mjs as a versioned module`);
+const chatModules = [
+  'app.mjs', 'config.mjs', 'live2d.mjs', 'storage.mjs', 'utils.mjs', 'voice.mjs', 'live2d-bootstrap.js'
+];
+for (const name of chatModules) {
+  const rel = 'tools/chat/' + name;
+  const source = fs.readFileSync(path.join(root, rel), 'utf8');
+  assert(!jsInlineHandlerRe.test(source), `${rel} must not emit inline event attributes`);
+  if (name.endsWith('.js')) new vm.Script(source, { filename:rel });
+}
+
+// Hot pages share atelier chrome: back link + kicker/empty primitives.
+const chromePages = [
+  'tools/control.html',
+  'tools/gallery.html',
+  'tools/scene-manager.html',
+  'tools/chat.html',
+  'tools/prompt-builder.html'
+];
+for (const rel of chromePages) {
+  const html = fs.readFileSync(path.join(root, rel), 'utf8');
+  assert(/class=["'][^"']*\bnav-back\b/.test(html), `${rel} must expose nav-back chrome`);
+}
+
+console.log(`Page architecture tests passed: ${pages.length} controllers + prompt-builder + chat modules are external, CSP-ready, and syntactically valid`);

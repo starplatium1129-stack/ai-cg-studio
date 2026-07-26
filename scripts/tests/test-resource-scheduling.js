@@ -51,7 +51,7 @@ assert(controlHtml.includes('auto-start-voice') && controlUi.includes('/api/pref
 assert(controlHtml.includes('ollama-badge'), 'control panel must show Ollama online and VRAM status');
 assert(controlHtml.includes('operation-panel') && controlUi.includes('renderOperation'), 'control panel must render operation progress and final failures');
 assert((controlHtml + controlUi).includes('停止网站网关'), 'the primary stop action must describe its limited scope');
-assert(controlHtml.includes('<script src="control.js?v=2"></script>'), 'control panel controller must stay external');
+assert(controlHtml.match(/<script src="control\.js\?v=\d+"><\/script>/), 'control panel controller must stay external');
 assert(controlUi.includes('startPolling();'), 'control panel must begin health polling as soon as it opens');
 assert(!/on(click|change|input)=/.test(controlHtml), 'control panel must not use inline HTML event attributes');
 assert(controlUi.includes("getAttribute('data-action')"), 'control panel must bind actions via data-action delegation');

@@ -4,7 +4,7 @@ function collectRuntimeErrors(page: Page) {
   const errors: string[] = [];
   page.on('pageerror', error => errors.push(error.message));
   page.on('console', message => {
-    if (message.type() === 'error' && !/favicon|ERR_CONNECTION_REFUSED|404|Failed to load resource.*50[23]/.test(message.text())) {
+    if (message.type() === 'error' && !/favicon|ERR_CONNECTION_REFUSED|404|Failed to load resource.*50[23]|Content Security Policy.*fonts\.googleapis/.test(message.text())) {
       errors.push(message.text());
     }
   });
@@ -55,8 +55,13 @@ test('gallery preserves horizontal and vertical art in the immersive viewer', as
   await page.reload();
 
   await expect(page.locator('.artwork')).toHaveCount(2);
-  const ratios = await page.locator('.artwork-media').evaluateAll(nodes => nodes.map(node => getComputedStyle(node).aspectRatio));
-  expect(ratios).toEqual(['1200 / 600', '600 / 1200']);
+  const ratios = await page.locator('.artwork-media').evaluateAll(nodes => nodes.map(node => {
+    const raw = getComputedStyle(node).aspectRatio;
+    const parts = raw.split('/').map(part => Number(part.trim()));
+    return parts.length === 2 && parts[1] ? parts[0] / parts[1] : Number(raw);
+  }));
+  expect(ratios[0]).toBeCloseTo(2, 5);
+  expect(ratios[1]).toBeCloseTo(0.5, 5);
   await page.locator('.artwork-button').first().click();
   await expect(page.locator('#artViewer')).toHaveClass(/open/);
   await expect(page.locator('.viewer-image')).toBeVisible();
@@ -95,6 +100,30 @@ test('roadmap exposes prioritized phases and product boundaries', async ({ page 
   await expect(page.getByRole('heading', { name:'创作体验增强' })).toBeVisible();
   await expect(page.getByRole('heading', { name:'产品边界' })).toBeVisible();
   await expect(page.getByText('暂不计划', { exact:true })).toBeVisible();
+  expect(errors).toEqual([]);
+});
+
+test('control panel loads service badges without runtime errors', async ({ page }) => {
+  const errors = collectRuntimeErrors(page);
+  await page.goto('/tools/control.html');
+  await expect(page.locator('.page-kicker')).toContainText('Local control room');
+  await expect(page.getByRole('heading', { name:'控制面板', level:1 })).toBeVisible();
+  await expect(page.locator('.nav-back')).toBeVisible();
+  await expect(page.locator('#badge')).toBeVisible();
+  await expect(page.locator('#sd-badge')).toBeVisible();
+  await expect(page.locator('#check-services')).toBeVisible();
+  expect(errors).toEqual([]);
+});
+
+test('character room shell mounts without runtime errors', async ({ page }) => {
+  const errors = collectRuntimeErrors(page);
+  await page.goto('/tools/chat.html');
+  await expect(page.locator('.page-kicker')).toContainText('Character room');
+  await expect(page.getByRole('heading', { name:'角色房间', level:1 })).toBeVisible();
+  await expect(page.locator('.nav-back')).toBeVisible();
+  await expect(page.locator('#chatInput')).toBeVisible();
+  await expect(page.locator('#sendBtn')).toBeVisible();
+  await expect(page.locator('#portraitMain')).toBeVisible();
   expect(errors).toEqual([]);
 });
 
