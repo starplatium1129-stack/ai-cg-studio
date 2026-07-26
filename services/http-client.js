@@ -1,143 +1,180 @@
 'use strict';
-
-var http = require('http');
-var https = require('https');
-
-function UpstreamError(message, options) {
-  Error.call(this, message);
-  this.name = 'UpstreamError';
-  this.message = message;
-  this.code = options && options.code || 'UPSTREAM_ERROR';
-  this.status = options && options.status || 0;
-  this.detail = options && options.detail || '';
-  if (Error.captureStackTrace) Error.captureStackTrace(this, UpstreamError);
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+const http = __importStar(require("http"));
+const https = __importStar(require("https"));
+class UpstreamError extends Error {
+    code;
+    status;
+    detail;
+    constructor(message, options) {
+        super(message);
+        this.name = 'UpstreamError';
+        this.message = message;
+        this.code = (options && options.code) || 'UPSTREAM_ERROR';
+        this.status = (options && options.status) || 0;
+        this.detail = (options && options.detail) || '';
+        if (Error.captureStackTrace)
+            Error.captureStackTrace(this, UpstreamError);
+    }
 }
-UpstreamError.prototype = Object.create(Error.prototype);
-UpstreamError.prototype.constructor = UpstreamError;
-
 function abortError(message) {
-  var error = new Error(message || 'Request aborted');
-  error.name = 'AbortError';
-  error.code = 'ABORT_ERR';
-  return error;
+    const error = new Error(message || 'Request aborted');
+    error.name = 'AbortError';
+    error.code = 'ABORT_ERR';
+    return error;
 }
-
 function isAbortError(error) {
-  return !!error && (error.name === 'AbortError' || error.code === 'ABORT_ERR');
+    if (!error || typeof error !== 'object')
+        return false;
+    const value = error;
+    return value.name === 'AbortError' || value.code === 'ABORT_ERR';
 }
-
 function request(baseUrl, pathname, options) {
-  options = options || {};
-  return new Promise(function (resolve, reject) {
-    var target;
-    try {
-      target = new URL(pathname, baseUrl);
-    } catch (error) {
-      reject(new UpstreamError('Invalid upstream URL', { code:'INVALID_URL', detail:error.message }));
-      return;
-    }
-
-    if (options.signal && options.signal.aborted) {
-      reject(abortError());
-      return;
-    }
-
-    var payload = options.json === undefined ? null : JSON.stringify(options.json);
-    var headers = Object.assign({}, options.headers || {});
-    if (payload !== null) {
-      headers['Content-Type'] = headers['Content-Type'] || 'application/json';
-      headers['Content-Length'] = Buffer.byteLength(payload);
-    }
-
-    var transport = target.protocol === 'https:' ? https : http;
-    var settled = false;
-    var responseRef = null;
-    var req = transport.request(target, {
-      method:options.method || (payload === null ? 'GET' : 'POST'),
-      headers:headers
-    }, function (response) {
-      settled = true;
-      responseRef = response;
-      response.once('close', cleanupAbort);
-      resolve({ request:req, response:response, url:target.toString() });
+    const opts = options || {};
+    return new Promise(function (resolve, reject) {
+        let target;
+        try {
+            target = new URL(pathname, baseUrl);
+        }
+        catch (error) {
+            const detail = error instanceof Error ? error.message : String(error);
+            reject(new UpstreamError('Invalid upstream URL', { code: 'INVALID_URL', detail: detail }));
+            return;
+        }
+        if (opts.signal && opts.signal.aborted) {
+            reject(abortError());
+            return;
+        }
+        const payload = opts.json === undefined ? null : JSON.stringify(opts.json);
+        const headers = Object.assign({}, opts.headers || {});
+        if (payload !== null) {
+            headers['Content-Type'] = headers['Content-Type'] || 'application/json';
+            headers['Content-Length'] = Buffer.byteLength(payload);
+        }
+        const transport = target.protocol === 'https:' ? https : http;
+        let settled = false;
+        let responseRef = null;
+        const req = transport.request(target, {
+            method: opts.method || (payload === null ? 'GET' : 'POST'),
+            headers: headers
+        }, function (response) {
+            settled = true;
+            responseRef = response;
+            response.once('close', cleanupAbort);
+            resolve({ request: req, response: response, url: target.toString() });
+        });
+        function onAbort() {
+            if (responseRef && !responseRef.destroyed)
+                responseRef.destroy(abortError());
+            req.destroy(abortError());
+        }
+        function cleanupAbort() {
+            if (opts.signal)
+                opts.signal.removeEventListener('abort', onAbort);
+        }
+        if (opts.signal)
+            opts.signal.addEventListener('abort', onAbort, { once: true });
+        req.setTimeout(opts.timeoutMs || 15000, function () {
+            req.destroy(new UpstreamError(opts.timeoutMessage || 'Upstream request timed out', { code: 'UPSTREAM_TIMEOUT' }));
+        });
+        req.on('error', function (error) {
+            cleanupAbort();
+            if (!settled)
+                reject(error);
+        });
+        req.end(payload === null ? undefined : payload);
     });
-
-    function onAbort() {
-      if (responseRef && !responseRef.destroyed) responseRef.destroy(abortError());
-      req.destroy(abortError());
-    }
-    function cleanupAbort() {
-      if (options.signal) options.signal.removeEventListener('abort', onAbort);
-    }
-
-    if (options.signal) options.signal.addEventListener('abort', onAbort, { once:true });
-    req.setTimeout(options.timeoutMs || 15000, function () {
-      req.destroy(new UpstreamError(options.timeoutMessage || 'Upstream request timed out', { code:'UPSTREAM_TIMEOUT' }));
-    });
-    req.on('error', function (error) {
-      cleanupAbort();
-      if (!settled) reject(error);
-    });
-    req.end(payload === null ? undefined : payload);
-  });
 }
-
 async function readBody(response, limit) {
-  var chunks = [];
-  var total = 0;
-  var max = limit || 2 * 1024 * 1024;
-  for await (var chunk of response) {
-    total += chunk.length;
-    if (total > max) {
-      response.destroy();
-      throw new UpstreamError('Upstream response exceeded the size limit', { code:'RESPONSE_TOO_LARGE' });
+    const chunks = [];
+    let total = 0;
+    const max = limit || 2 * 1024 * 1024;
+    for await (const chunk of response) {
+        const buf = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
+        total += buf.length;
+        if (total > max) {
+            response.destroy();
+            throw new UpstreamError('Upstream response exceeded the size limit', { code: 'RESPONSE_TOO_LARGE' });
+        }
+        chunks.push(buf);
     }
-    chunks.push(chunk);
-  }
-  return Buffer.concat(chunks);
+    return Buffer.concat(chunks);
 }
-
 async function readJson(baseUrl, pathname, options) {
-  options = options || {};
-  var result = await request(baseUrl, pathname, options);
-  var body = await readBody(result.response, options.limit);
-  if (result.response.statusCode < 200 || result.response.statusCode >= 300) {
-    throw new UpstreamError('Upstream returned ' + result.response.statusCode, {
-      code:'UPSTREAM_STATUS',
-      status:result.response.statusCode,
-      detail:body.toString('utf8').slice(0, 500)
-    });
-  }
-  try {
-    return JSON.parse(body.toString('utf8'));
-  } catch (error) {
-    throw new UpstreamError('Upstream returned invalid JSON', { code:'INVALID_JSON', detail:error.message });
-  }
+    const opts = options || {};
+    const result = await request(baseUrl, pathname, opts);
+    const body = await readBody(result.response, opts.limit);
+    const statusCode = result.response.statusCode || 0;
+    if (statusCode < 200 || statusCode >= 300) {
+        throw new UpstreamError('Upstream returned ' + statusCode, {
+            code: 'UPSTREAM_STATUS',
+            status: statusCode,
+            detail: body.toString('utf8').slice(0, 500)
+        });
+    }
+    try {
+        return JSON.parse(body.toString('utf8'));
+    }
+    catch (error) {
+        const detail = error instanceof Error ? error.message : String(error);
+        throw new UpstreamError('Upstream returned invalid JSON', { code: 'INVALID_JSON', detail: detail });
+    }
 }
-
 async function expectSuccess(baseUrl, pathname, options) {
-  options = options || {};
-  var result = await request(baseUrl, pathname, options);
-  var body = await readBody(result.response, options.limit || 1024 * 1024);
-  if (result.response.statusCode < 200 || result.response.statusCode >= 300) {
-    throw new UpstreamError('Upstream returned ' + result.response.statusCode, {
-      code:'UPSTREAM_STATUS',
-      status:result.response.statusCode,
-      detail:body.toString('utf8').slice(0, 500)
-    });
-  }
-  return {
-    body:body,
-    contentType:result.response.headers['content-type'] || 'application/octet-stream'
-  };
+    const opts = options || {};
+    const result = await request(baseUrl, pathname, opts);
+    const body = await readBody(result.response, opts.limit || 1024 * 1024);
+    const statusCode = result.response.statusCode || 0;
+    if (statusCode < 200 || statusCode >= 300) {
+        throw new UpstreamError('Upstream returned ' + statusCode, {
+            code: 'UPSTREAM_STATUS',
+            status: statusCode,
+            detail: body.toString('utf8').slice(0, 500)
+        });
+    }
+    return {
+        body: body,
+        contentType: result.response.headers['content-type'] || 'application/octet-stream'
+    };
 }
-
 module.exports = {
-  UpstreamError:UpstreamError,
-  abortError:abortError,
-  isAbortError:isAbortError,
-  request:request,
-  readBody:readBody,
-  readJson:readJson,
-  expectSuccess:expectSuccess
+    UpstreamError: UpstreamError,
+    abortError: abortError,
+    isAbortError: isAbortError,
+    request: request,
+    readBody: readBody,
+    readJson: readJson,
+    expectSuccess: expectSuccess
 };

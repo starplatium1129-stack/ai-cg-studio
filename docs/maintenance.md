@@ -98,13 +98,17 @@ npm run test:voice-quality
 
 `npm run test:e2e` 使用本机 Chrome/Edge 或 Playwright Chromium 打开首页、导演台、场景管理、作品册、控制面板与角色房间，覆盖外部控制器加载、场景数据、作品比例、沉浸观画、首页性能预算和热页 chrome。本机可设 `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` 或依赖配置中的本机浏览器探测。测试产物位于 `test-results/`，仅失败诊断使用，不提交到项目。
 
-TypeScript 采用渐进迁移。`types/content.ts`、`types/control.ts`、`types/storage.ts` 先定义角色、LoRA、场景、语音、控制状态和作品库契约；`npm run typecheck` 检查契约与浏览器测试，`npm run build:runtime` 编译已迁移的运行时模块（当前为 `services/control-operation.ts`、`services/serial-queue.ts`）。不要为了迁移而一次重写稳定的旧控制器。每次把一个模块迁入 TypeScript，都必须先由现有行为测试保护。
+TypeScript 采用渐进迁移。`types/content.ts`、`types/control.ts`、`types/storage.ts` 先定义角色、LoRA、场景、语音、控制状态和作品库契约；`npm run typecheck` 检查契约与浏览器测试，`npm run build:runtime` 编译已迁移的运行时模块（当前为 `control-operation`、`serial-queue`、`http-client`）。不要为了迁移而一次重写稳定的旧控制器。每次把一个模块迁入 TypeScript，都必须先由现有行为测试保护。
+
+CI 在 `.github/workflows/quality.yml`：push 与 PR 执行 `npm ci` → `npm run validate` → Playwright Chromium e2e。
 
 `scripts/maintenance/validate-content-contracts.js` 检查角色 ID、身份锚点、肖像文件、LoRA 强度、测试场景和场景角色引用。它已进入 `npm run validate`，修改 `characters.json` 或 `loras.json` 时不再依赖人工发现引用断裂。
 
 控制面板的操作状态机源文件是 `services/control-operation.ts`（emit 为同目录 `.js`）。它统一负责耗时操作互斥、阶段进度、完成/失败状态和过期回调保护；`tools/control-server.js` 只编排具体服务。新增 GPU 操作时必须复用这个状态机，不要再创建另一套 busy 标志。修改该模块后运行 `npm run build:runtime` 与 `npm run test:control-operation`。
 
 GPU 串行队列源文件是 `services/serial-queue.ts`（emit 为同目录 `.js`）。语音、翻译与聊天等单通道任务通过它排队，失败任务不得阻断后续任务。修改后运行 `npm run build:runtime` 与 `npm run test:serial-queue`。
+
+上游 HTTP 客户端源文件是 `services/http-client.ts`（emit 为同目录 `.js`）。Ollama、TTS、翻译与路由共用它处理超时、中止、JSON/二进制读取与 `UpstreamError`。修改后运行 `npm run build:runtime` 与 `npm run test:http-client`。
 
 ## 真实声线基线
 

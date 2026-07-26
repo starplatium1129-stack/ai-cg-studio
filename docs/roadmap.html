@@ -143,7 +143,7 @@
             <article class="work-item"><span class="priority">P0 · 存储</span><h3>作品库存储体检</h3><p>已完成：IndexedDB 容量预警、损坏记录隔离、存储体检入口；完整作品包导入导出沿用现有备份格式。</p></article>
             <article class="work-item"><span class="priority">P0 · 诊断</span><h3>一键导出诊断包</h3><p>已完成：控制面板汇总服务版本、端口、健康状态、脱敏配置与日志尾部。</p></article>
             <article class="work-item"><span class="priority">P1 · 安全</span><h3>移除 HTML 事件属性</h3><p>已完成：中页与导演台均改为 data-action 委托；script CSP 默认 self，仅聊天页保留 unsafe-eval（Live2D）。</p></article>
-            <article class="work-item"><span class="priority">P1 · 类型</span><h3>渐进迁移高风险模块</h3><p>已完成首迁：`control-operation` TypeScript + emit；补齐 control/storage/VoiceProfile 契约与语音输入单测。后续仍按模块渐进，不整库重写。</p></article>
+            <article class="work-item"><span class="priority">P1 · 类型</span><h3>渐进迁移高风险模块</h3><p>已迁：`control-operation`、`serial-queue`、`http-client`（TS + emit + 单测）。契约与 VoiceProfile 单测已齐。后续仍按模块渐进，不整库重写。</p></article>
             <article class="work-item"><span class="priority">P1 · 语音</span><h3>真实声线基线</h3><p>已完成：宁宁/夏目固定台词矩阵、golden metrics、leading/trailing silence 与基线对比；离线进 validate，live 捕获 opt-in。</p></article>
             <article class="work-item"><span class="priority">P2 · 兼容</span><h3>无障碍与设备矩阵</h3><p>已完成：首页/导演台/作品册/控制台 skip+main；作品册观画 focus trap 与焦点回归；Playwright 覆盖窄桌面、平板、手机视口 smoke。</p></article>
           </div>

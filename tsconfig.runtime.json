@@ -12,6 +12,7 @@
   },
   "files": [
     "services/control-operation.ts",
-    "services/serial-queue.ts"
+    "services/serial-queue.ts",
+    "services/http-client.ts"
   ]
 }
