@@ -98,7 +98,7 @@ npm run test:voice-quality
 
 `npm run test:e2e` 使用本机 Chrome/Edge 或 Playwright Chromium 打开首页、导演台、场景管理、作品册、控制面板与角色房间，覆盖外部控制器加载、场景数据、作品比例、沉浸观画、首页性能预算和热页 chrome。本机可设 `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` 或依赖配置中的本机浏览器探测。测试产物位于 `test-results/`，仅失败诊断使用，不提交到项目。
 
-TypeScript 采用渐进迁移。`types/content.ts`、`types/control.ts`、`types/storage.ts` 先定义角色、LoRA、场景、语音、控制状态和作品库契约；`npm run typecheck` 检查契约与浏览器测试，`npm run build:runtime` 编译已迁移的运行时模块（当前为 `control-operation`、`serial-queue`、`http-client`、`tts-service`）。不要为了迁移而一次重写稳定的旧控制器。每次把一个模块迁入 TypeScript，都必须先由现有行为测试保护。
+TypeScript 采用渐进迁移。`types/content.ts`、`types/control.ts`、`types/storage.ts` 先定义角色、LoRA、场景、语音、控制状态和作品库契约；`npm run typecheck` 检查契约与浏览器测试，`npm run build:runtime` 编译已迁移的运行时模块（当前为 `control-operation`、`serial-queue`、`http-client`、`tts-service`、`ollama-service`）。不要为了迁移而一次重写稳定的旧控制器。每次把一个模块迁入 TypeScript，都必须先由现有行为测试保护。
 
 CI 在 `.github/workflows/quality.yml`：push 与 PR 执行 `npm ci` → `npm run validate` → Playwright Chromium e2e。
 
@@ -111,6 +111,8 @@ GPU 串行队列源文件是 `services/serial-queue.ts`（emit 为同目录 `.js
 上游 HTTP 客户端源文件是 `services/http-client.ts`（emit 为同目录 `.js`）。Ollama、TTS、翻译与路由共用它处理超时、中止、JSON/二进制读取与 `UpstreamError`。修改后运行 `npm run build:runtime` 与 `npm run test:http-client`。
 
 TTS 服务源文件是 `services/tts-service.ts`（emit 为同目录 `.js`）。负责声线校验、参考音频/权重切换与 GPT-SoVITS 串行合成。修改后运行 `npm run build:runtime`、`npm run test:voice-profile-contract` 与 `npm run test:chat`。
+
+Ollama 服务源文件是 `services/ollama-service.ts`（emit 为同目录 `.js`）。负责模型列表、keep_alive 切换与 NDJSON 流式对话。修改后运行 `npm run build:runtime`、`npm run test:chat` 与 `npm run test:resource-scheduling`。
 
 ## 真实声线基线
 

@@ -15,10 +15,10 @@ function assert(condition, message) {
 }
 
 // ─── 网关：Ollama 显存自动释放 + 常驻翻译服务 ───
-assert(ollamaService.includes('keep_alive:keepAlive'), 'gateway must pass keep_alive so Ollama unloads idle models from VRAM');
+assert(/keep_alive\s*:\s*keepAlive/.test(ollamaService), 'gateway must pass keep_alive so Ollama unloads idle models from VRAM');
 assert(gatewayConfig.includes("OLLAMA_KEEP_ALIVE:env.OLLAMA_KEEP_ALIVE || '10m'"), 'gateway must default Ollama keep_alive to 10 minutes');
-assert(ollamaService.includes('num_ctx:numContext'), 'gateway must cap Ollama context window to limit VRAM usage');
-assert(ollamaService.includes('async function unload') && ollamaService.includes('activeModel'), 'gateway must unload old model before loading a different one to avoid double VRAM consumption');
+assert(/num_ctx\s*:\s*numContext/.test(ollamaService), 'gateway must cap Ollama context window to limit VRAM usage');
+assert(/async function unload/.test(ollamaService) && ollamaService.includes('activeModel'), 'gateway must unload old model before loading a different one to avoid double VRAM consumption');
 assert(translationService.includes('ensureServer') && translationService.includes("'--serve'"), 'gateway must manage a persistent translation server');
 assert(translationService.includes('runLegacy'), 'gateway must keep the spawn-per-call translation as fallback');
 assert(translationService.includes('prepare:prepare'), 'voice clients must be able to prewarm the translation model');

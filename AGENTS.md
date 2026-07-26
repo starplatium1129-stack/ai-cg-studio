@@ -18,14 +18,14 @@
 ### 已有基础（勿当空白重做）
 
 - **校验入口** — `npm run validate` 串联 design lint、`build:runtime`、`typecheck`、场景/内容契约与大量 `scripts/tests/*`
-- **契约类型** — `types/*` + 渐进运行时：`control-operation` / `serial-queue` / `http-client` / `tts-service`
+- **契约类型** — `types/*` + 渐进运行时：`control-operation` / `serial-queue` / `http-client` / `tts-service` / `ollama-service`
 - **E2E** — Playwright：`tests/e2e/`，`npm run test:e2e`
 - **页面架构门禁** — `scripts/tests/test-page-architecture.js`（外置控制器、禁 inline handler、CSP 就绪）
 - **CI** — `.github/workflows/quality.yml`：push/PR 跑 `npm run validate` + Playwright e2e
 
 ### 仍待推进
 
-- **TypeScript 渐进迁移** — 优先高风险服务与核心流水线（ollama/translation/live2d 等；tts 已迁）；`tools/` 仍以 JS/MJS 为主，勿整库重写
+- **TypeScript 渐进迁移** — 优先高风险服务与核心流水线（translation/live2d 等；tts/ollama 已迁）；`tools/` 仍以 JS/MJS 为主，勿整库重写
 - **测试加深** — 在现有脚本测试上补 scene CRUD / voice pipeline / gallery 关键路径；保持本地 `validate` + 关键 e2e 绿
 - **CI 硬化** — 缓存 Playwright 浏览器、失败产物上传；e2e 可拆夜间若 push 过慢
 - **UI 一致性** — 次级页对齐 `nav-back` / `page-kicker` / `empty-state` 与 design-system atelier chrome
