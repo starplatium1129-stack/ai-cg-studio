@@ -183,21 +183,16 @@ function renderStatus(data) {
 
   if (data.running) {
     setBadge(document.getElementById('badge'), 'running', '运行中');
-    button.className = 'btn btn-primary';
-    button.style.background = 'var(--danger)';
-    button.style.color = 'var(--text-inverse)';
+    button.className = 'btn btn-primary cta-btn cta-btn-danger';
     button.textContent = '停止网站网关';
     button.onclick = doStop;
-    runningPanel.style.display = 'block';
+    runningPanel.hidden = true;
   } else {
     setBadge(document.getElementById('badge'), 'stopped', '未启动');
-    button.className = 'btn btn-primary';
-    button.style.background = ''; button.style.color = '';
-    button.style.background = 'var(--accent)';
-    button.style.color = 'var(--text-inverse)';
+    button.className = 'btn btn-primary cta-btn';
     button.textContent = tunnelEnabled ? '启动并生成分享链接' : '启动（仅本地）';
     button.onclick = doStart;
-    runningPanel.style.display = 'none';
+    runningPanel.hidden = false;
   }
 
   setBadge(document.getElementById('sd-badge'), data.sdOnline ? 'online' : 'offline', data.sdOnline ? (data.webuiManaged ? '已连接 · 自动管理' : '已连接 · 手动') : '未连接');
