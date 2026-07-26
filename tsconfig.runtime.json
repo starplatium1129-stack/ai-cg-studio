@@ -15,6 +15,7 @@
     "services/serial-queue.ts",
     "services/http-client.ts",
     "services/tts-service.ts",
-    "services/ollama-service.ts"
+    "services/ollama-service.ts",
+    "services/translation-service.ts"
   ]
 }
