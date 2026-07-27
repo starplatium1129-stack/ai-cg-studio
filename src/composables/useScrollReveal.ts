@@ -6,9 +6,24 @@ import { onMounted, onUnmounted } from 'vue'
  */
 export function useScrollReveal(selector = '[data-reveal]', options?: IntersectionObserverInit) {
   let observer: IntersectionObserver | null = null
+  const seen = new WeakSet<Element>()
+
+  function observeAll() {
+    if (!observer) return
+    document.querySelectorAll(selector).forEach(el => {
+      if (seen.has(el)) return
+      seen.add(el)
+      observer!.observe(el)
+    })
+  }
 
   onMounted(() => {
-    if (typeof IntersectionObserver === 'undefined') return
+    // 无 IO 或用户要求减少动效时，直接全部显形，不留隐藏元素
+    const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches
+    if (typeof IntersectionObserver === 'undefined' || reduced) {
+      document.querySelectorAll(selector).forEach(el => el.classList.add('revealed'))
+      return
+    }
 
     observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -19,8 +34,12 @@ export function useScrollReveal(selector = '[data-reveal]', options?: Intersecti
       })
     }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px', ...options })
 
-    document.querySelectorAll(selector).forEach(el => observer?.observe(el))
+    observeAll()
+    // 场景/作品是异步载入的，首帧观察不到；补几次重扫
+    ;[120, 400, 1200].forEach(delay => setTimeout(observeAll, delay))
   })
 
-  onUnmounted(() => { observer?.disconnect() })
+  onUnmounted(() => { observer?.disconnect(); observer = null })
+
+  return { observeAll }
 }

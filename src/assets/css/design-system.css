@@ -265,19 +265,26 @@ body {
 
 body::before, body::after {
   content: ""; position: fixed; z-index: var(--z-below); pointer-events: none; border-radius: 50%;
-  filter: blur(1px); opacity: .9;
+  filter: blur(2px); opacity: .55;
 }
 body::before {
-  width: 46rem; height: 46rem; top: -22rem; right: -14rem;
-  background: radial-gradient(circle, color-mix(in srgb, var(--nene-violet) 28%, transparent) 0, transparent 68%);
-  animation: float-orb 15s ease-in-out infinite alternate;
+  width: 42rem; height: 42rem; top: -24rem; right: -16rem;
+  background: radial-gradient(circle, color-mix(in srgb, var(--nene-violet) 18%, transparent) 0, transparent 70%);
 }
 body::after {
-  width: 38rem; height: 38rem; bottom: -20rem; left: -12rem;
-  background: radial-gradient(circle, color-mix(in srgb, var(--natsume-amber) 18%, transparent) 0, transparent 70%);
-  animation: float-orb 18s ease-in-out infinite alternate-reverse;
+  width: 34rem; height: 34rem; bottom: -22rem; left: -14rem;
+  background: radial-gradient(circle, color-mix(in srgb, var(--natsume-amber) 12%, transparent) 0, transparent 72%);
 }
-@keyframes float-orb { to { transform: translate3d(4rem, 2rem, 0) scale(1.08); } }
+/* 氛围光斑只在艺术向页面缓慢浮动；工作台保持静止，避免抢画面 */
+body:has(.home-page, .chat-page, .gallery-page, .showcase-page)::before {
+  opacity: .72;
+  animation: float-orb 18s ease-in-out infinite alternate;
+}
+body:has(.home-page, .chat-page, .gallery-page, .showcase-page)::after {
+  opacity: .62;
+  animation: float-orb 22s ease-in-out infinite alternate-reverse;
+}
+@keyframes float-orb { to { transform: translate3d(3rem, 1.5rem, 0) scale(1.05); } }
 
 a { color: var(--accent); text-decoration: none; transition: color var(--t-fast); }
 a:hover { color: var(--accent-hover); }
@@ -557,23 +564,40 @@ body > *:has(+ .footer),
   color: var(--accent);
 }
 
+/* 空态是首次使用最常看到的画面：给它画框感与一点氛围，
+   而不是一个孤零零的小图标 */
 .empty-state {
+  position: relative;
   max-width: 720px;
   margin: 8vh auto 0;
   padding: clamp(36px, 6vw, 72px) var(--s-5);
   border: 1px solid var(--border-soft);
   border-radius: var(--r-3xl);
-  background: color-mix(in srgb, var(--bg-surface) 82%, transparent);
+  background:
+    radial-gradient(circle at 50% 0%, var(--accent-soft), transparent 62%),
+    color-mix(in srgb, var(--bg-surface) 82%, transparent);
   box-shadow: var(--shadow-glass-sm);
   text-align: center;
+  overflow: hidden;
 }
+/* 内衬虚线画框：暗示"这里将来会挂画" */
+.empty-state::before {
+  content: "";
+  position: absolute; inset: 14px;
+  border: 1px dashed color-mix(in srgb, var(--border-strong) 46%, transparent);
+  border-radius: calc(var(--r-3xl) - 8px);
+  pointer-events: none;
+}
+.empty-state > * { position: relative; z-index: var(--z-base); }
 .empty-state-icon {
   display: grid; place-items: center;
-  width: 56px; height: 56px; margin: 0 auto 14px;
-  border-radius: var(--r-xl);
+  width: 64px; height: 64px; margin: 0 auto 16px;
+  border-radius: var(--r-2xl);
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
   background: var(--accent-soft);
   color: var(--accent);
   font-size: var(--fs-title);
+  box-shadow: 0 12px 32px var(--accent-glow);
 }
 .empty-state h2 {
   margin: 0 0 8px;
@@ -1146,15 +1170,21 @@ tr:hover td { background: var(--bg-hover); }
 }
 .flash-value { animation: flash-accent .9s var(--ease-out) both; }
 
-/* ── 平滑主题切换 ── */
-*,
-*::before,
-*::after {
+/* ── 平滑主题切换 ──
+   过去这里用 `*` 给全站每个节点挂颜色过渡：首页实测 193 个元素命中，
+   主题切换与滚动都要对近 200 个节点做颜色插值，导演台标签密集时会掉帧。
+   现在只覆盖真正会换底色的表面元素，其余保持瞬时响应。 */
+:where(
+  body, .nav, .card, .card-info, .card-create, .card-direct,
+  .panel, .btn, .chip, .filter-pill, .badge, .sc, .mood-card,
+  .input, .select, .textarea, .option, .tag-chip, .scene-card,
+  .status-tile, .service-row, .mode-card, .panel-card,
+  .artwork, .sample, .history-item, .tool-card, .stat-card
+) {
   transition:
     background-color .22s ease,
     border-color     .22s ease,
-    color            .12s ease,
-    fill             .12s ease;
+    color            .12s ease;
 }
 /* 禁止为动画元素叠加颜色过渡（避免闪烁） */
 [data-no-theme-transition],

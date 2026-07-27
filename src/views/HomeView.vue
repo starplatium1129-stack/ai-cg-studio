@@ -1,6 +1,5 @@
 <template>
-  <a class="skip-link" href="#main">跳到主要内容</a>
-  <main id="main">
+  <article class="home-page">
     <!-- Hero -->
     <section class="container">
       <div class="home-hero">
@@ -40,24 +39,21 @@
             <span class="dot"></span> 今天可以从这里开始 · <span>{{ sceneCountCopy }}</span>
           </div>
           <div class="strip-scroll">
-          <a v-for="s in featuredScenes" :key="s.id" class="sc sc-strip"
-            :href="`/prompt-builder?scene=${encodeURIComponent(s.id)}&step=4&generate=1`">
-            <div class="sc-band"></div>
-            <div class="sc-body">
-              <div class="sc-title">{{ s.title }}</div>
-              <div v-if="s.story" class="sc-story">{{ s.story }}</div>
-              <div class="sc-tags">
-                <span v-for="t in (s.tags || []).slice(0,2)" :key="t" class="sc-tag">{{ t }}</span>
-              </div>
-            </div>
-          </a>
-        </div>
+            <RouterLink
+              v-for="s in featuredScenes"
+              :key="s.id"
+              class="sc-link"
+              :to="`/prompt-builder?scene=${encodeURIComponent(s.id)}&step=4&generate=1`"
+            >
+              <SceneCard :scene="s" mode="strip" :clickable="false" />
+            </RouterLink>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- 创作入口 -->
-    <section class="container home-section">
+    <section class="container home-section" data-reveal>
       <div class="home-section-head">
         <div>
           <span class="eyebrow"><span class="num">01</span> 创作入口</span>
@@ -90,7 +86,7 @@
     </section>
 
     <!-- 资料区 -->
-    <section class="container home-section home-section-quiet">
+    <section class="container home-section home-section-quiet" data-reveal>
       <div class="home-section-head">
         <div>
           <span class="eyebrow">资料与回顾</span>
@@ -123,25 +119,25 @@
     </section>
 
     <!-- 最近用过的场景 -->
-    <section class="container home-section" v-if="recentScenes.length">
+    <section class="container home-section" v-if="recentScenes.length" data-reveal>
       <div class="home-section-head">
         <h2>最近用过的场景</h2>
         <RouterLink to="/scene-explorer" class="link">继续找灵感 →</RouterLink>
       </div>
       <div class="recent-scenes-row">
-        <a v-for="s in recentScenes" :key="s.id" class="sc sc-strip"
-          :href="`/prompt-builder?scene=${encodeURIComponent(s.id)}&step=4&generate=1`">
-          <div class="sc-band"></div>
-          <div class="sc-body">
-            <div class="sc-title">{{ s.title }}</div>
-            <div v-if="s.story" class="sc-story">{{ s.story }}</div>
-          </div>
-        </a>
+        <RouterLink
+          v-for="s in recentScenes"
+          :key="s.id"
+          class="sc-link"
+          :to="`/prompt-builder?scene=${encodeURIComponent(s.id)}&step=4&generate=1`"
+        >
+          <SceneCard :scene="s" mode="strip" :clickable="false" />
+        </RouterLink>
       </div>
     </section>
 
     <!-- 最近创作 -->
-    <section class="container home-section">
+    <section class="container home-section" data-reveal>
       <div class="home-section-head">
         <h2>最近创作</h2>
         <RouterLink to="/gallery" class="link">打开作品册 →</RouterLink>
@@ -171,14 +167,18 @@
         </template>
       </div>
     </section>
-  </main>
+  </article>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, reactive } from 'vue'
+import SceneCard from '@/components/SceneCard.vue'
 import { kvInit, kvGet, kvSet } from '@/composables/useKVStore'
 import { imgGet } from '@/composables/useImageStore'
 import { readRecent } from '@/utils/sceneUX'
+import { useScrollReveal } from '@/composables/useScrollReveal'
+
+useScrollReveal()
 
 const DRAFT_KEY = 'aics_pb_last_draft'
 
@@ -298,10 +298,17 @@ onMounted(async () => {
 .hero-orbit { grid-column:2; grid-row:1; min-height:380px; position:relative; isolation:isolate; border:1px solid var(--border-soft); border-radius:var(--r-stage); overflow:hidden; background:linear-gradient(135deg,rgba(244,166,215,.18),transparent 42%),linear-gradient(155deg,#4d3d67 0%,#2a233d 48%,#171422 100%); box-shadow:inset 0 1px 0 var(--on-art-line),var(--shadow-lg); }
 [data-theme="light"] .hero-orbit { background:linear-gradient(135deg,var(--on-art-sheen),transparent 38%),linear-gradient(155deg,#e9ddf4 0%,#c8b9df 48%,#8c789f 100%); }
 .hero-character { position:absolute; z-index:var(--z-base); bottom:0; width:72%; height:94%; object-fit:contain; object-position:center bottom; filter:drop-shadow(0 24px 28px rgba(8,5,18,.36)); transition:transform .6s var(--ease-out),filter .6s ease; }
-.hero-character.nene { left:0; width:54%; height:100%; object-fit:cover; object-position:50% 38%; filter:saturate(.84) contrast(.96); transform:translateX(-1%); clip-path:polygon(0 0,100% 0,86% 100%,0 100%); }
-.hero-character.natsume { right:0; width:54%; height:100%; object-fit:cover; object-position:50% 35%; filter:saturate(.84) contrast(.96); transform:translateX(1%); clip-path:polygon(14% 0,100% 0,100% 100%,0 100%); }
-.hero-orbit:hover .hero-character.nene { transform:translateX(1%); }
-.hero-orbit:hover .hero-character.natsume { transform:translateX(-1%); }
+/* 双人分割：原来两张各占 54% + 斜切，宽屏下右侧人物会被容器边缘切掉。
+   改成各占 52% 并把 object-position 收回中心，接缝仍在中线附近。 */
+.hero-character.nene { left:0; width:52%; height:100%; object-fit:cover; object-position:46% 32%; filter:saturate(.86) contrast(.97); clip-path:polygon(0 0,100% 0,88% 100%,0 100%); }
+.hero-character.natsume { right:0; width:52%; height:100%; object-fit:cover; object-position:54% 30%; filter:saturate(.86) contrast(.97); clip-path:polygon(12% 0,100% 0,100% 100%,0 100%); }
+/* 悬停时两人向中间靠一点，做出"同框"的呼应 */
+.hero-orbit:hover .hero-character.nene { transform:translateX(1.5%) scale(1.015); }
+.hero-orbit:hover .hero-character.natsume { transform:translateX(-1.5%) scale(1.015); }
+@media (prefers-reduced-motion:reduce) {
+  .hero-orbit:hover .hero-character.nene,
+  .hero-orbit:hover .hero-character.natsume { transform:none; }
+}
 .orbit-label { position:absolute; z-index:var(--z-raised); left:var(--s-5); right:var(--s-5); bottom:var(--s-5); padding:var(--s-3) var(--s-4); border:1px solid var(--on-art-line); border-radius:var(--r-xl); background:var(--art-scrim-soft); backdrop-filter:blur(16px); }
 .orbit-label strong { display:block; font-size:var(--fs-body-sm); letter-spacing:.08em; color:var(--on-art-primary); }
 .orbit-label span { display:block; margin-top:3px; color:var(--on-art-secondary); font-size:var(--fs-label-sm); }
@@ -346,6 +353,8 @@ onMounted(async () => {
 .recent-meta { font-size:var(--fs-label-xs); color:var(--text-muted); }
 .recent-scenes-row { display:flex; gap:var(--s-3); overflow-x:auto; padding:4px 2px var(--s-3); scroll-snap-type:x proximity; }
 .recent-scenes-row > * { flex:0 0 min(300px,82vw); scroll-snap-align:start; }
+.sc-link { display:block; color:inherit; text-decoration:none; }
+.strip-scroll .sc-link { flex:0 0 auto; }
 @media (max-width:600px) { .recent-grid { grid-template-columns:1fr 1fr; } }
 .recent-grid .empty-state { grid-column:1 / -1; margin-top:0; }
 

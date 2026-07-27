@@ -1,5 +1,5 @@
 ﻿<template>
-  <main class="page">
+  <article class="page showcase-page">
     <a @click.prevent="$router.push('/')" href="/" class="nav-back">← 回首页</a>
     <section class="showcase-hero">
       <div class="showcase-copy">
@@ -18,9 +18,9 @@
       </div>
     </section>
 
-    <div class="sticky-toolbar toolbar-shell">
+    <div class="toolbar-shell" aria-label="样张筛选">
       <div class="search-row">
-        <div style="position:relative;flex:1">
+        <div class="search-field">
           <input v-model="searchQuery" type="search" class="scene-search" id="showcaseSearch" placeholder="🔍 搜索场景名、情绪、角色…" />
           <button class="scene-search-clear" type="button" aria-label="清空" @click="searchQuery=''">×</button>
         </div>
@@ -87,7 +87,7 @@
 
     <!-- 查看器 dialog -->
     <Teleport to="body">
-      <dialog ref="dialogEl" class="viewer" :open="!!currentEntry" aria-label="样张查看器" @click.self="closeViewer">
+      <dialog ref="dialogEl" class="showcase-viewer" :open="!!currentEntry" aria-label="样张查看器" @click.self="closeViewer">
         <div v-if="currentEntry" class="viewer-layout">
           <div class="viewer-art">
             <img :src="imgSrc(currentEntry)" :alt="currentEntry.title" />
@@ -113,7 +113,7 @@
         </div>
       </dialog>
     </Teleport>
-  </main>
+  </article>
 </template>
 
 <script setup lang="ts">
@@ -216,8 +216,19 @@ onUnmounted(() => document.removeEventListener('keydown', onKey))
 .hero-stat strong { display:block; font-size:var(--fs-title-xs); font-weight:800; color:var(--accent); }
 .hero-stat span { font-size:var(--fs-label-xs); color:var(--text-muted); }
 
-.toolbar-shell { margin-bottom:var(--s-5); }
-.search-row { display:flex; align-items:center; gap:var(--s-2); flex-wrap:wrap; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); }
+/* 唯一一层磨砂容器：不要再和内部 .search-row 各套一个圆角面 */
+.toolbar-shell {
+  position:sticky; top:70px; z-index:var(--z-sticky);
+  margin-bottom:var(--s-5); padding:var(--s-3);
+  border:1px solid color-mix(in srgb,var(--border-soft) 80%,transparent);
+  border-radius:var(--r-2xl);
+  background:color-mix(in srgb,var(--bg-surface) 88%,transparent);
+  box-shadow:var(--shadow-sm);
+  -webkit-backdrop-filter:blur(22px) saturate(135%);
+  backdrop-filter:blur(22px) saturate(135%);
+}
+.search-row { display:flex; align-items:center; gap:var(--s-2); flex-wrap:wrap; }
+.search-field { position:relative; flex:1 1 240px; min-width:0; }
 .scene-search { width:100%; padding:var(--s-2) 36px var(--s-2) var(--s-3); background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-md); color:var(--text-primary); font-size:var(--fs-body-sm); outline:none; }
 .scene-search:focus { border-color:var(--accent); }
 .scene-search-clear { position:absolute; top:50%; right:8px; transform:translateY(-50%); width:24px; height:24px; border:0; background:transparent; color:var(--text-muted); cursor:pointer; font-size:var(--fs-body-lg); }
@@ -254,22 +265,87 @@ onUnmounted(() => document.removeEventListener('keydown', onKey))
 .load-wrap { display:flex; justify-content:center; margin:var(--s-6) 0; }
 .load-more { min-width:190px; }
 
-/* viewer dialog */
-.viewer { width:min(1160px,94vw); max-width:none; max-height:92vh; padding:0; overflow:hidden; border:1px solid var(--glass-edge); border-radius:var(--r-stage); background:var(--bg-elevated); color:var(--text-primary); box-shadow:var(--shadow-lg); }
-.viewer::backdrop { background:var(--art-backdrop); backdrop-filter:blur(10px); }
-.viewer-layout { display:grid; grid-template-columns:minmax(0,1.35fr) minmax(310px,.65fr); min-height:min(760px,88vh); }
-.viewer-art { display:flex; align-items:center; justify-content:center; padding:var(--s-4); background:var(--art-mat); }
-.viewer-art img { display:block; max-width:100%; max-height:calc(88vh - 36px); object-fit:contain; border-radius:var(--r-lg); }
-.viewer-copy { overflow:auto; padding:clamp(24px,4vw,42px); }
-.viewer-copy .viewer-close { float:right; margin:-8px -8px var(--s-3) var(--s-3); }
-.viewer-copy h2 { margin:var(--s-3) 0 var(--s-2); font-size:clamp(1.35rem,3vw,2.1rem); }
-.viewer-meta { display:flex; gap:var(--s-2); flex-wrap:wrap; margin-bottom:var(--s-4); }
-.viewer-meta span { padding:var(--s-1) var(--s-2); border-radius:var(--r-pill); background:var(--accent-soft); color:var(--accent); font-size:var(--fs-mono-sm); font-weight:700; }
-.viewer-story { color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:1.7; margin-bottom:var(--s-4); }
-.viewer-actions { display:grid; gap:var(--s-2); }
-.viewer-actions .btn { justify-content:center; }
-
-@media(max-width:1000px) { .showcase-grid { columns:3 230px; } .viewer-layout { grid-template-columns:1fr 340px; } }
-@media(max-width:760px) { .search-row { flex-direction:column; align-items:stretch; } .showcase-grid { columns:2 150px; column-gap:var(--s-3); } .viewer { overflow:auto; } .viewer-layout { display:block; } .viewer-art { min-height:45vh; } }
+@media(max-width:1000px) { .showcase-grid { columns:3 230px; } }
+@media(max-width:760px) {
+  .search-row { flex-direction:column; align-items:stretch; }
+  .toolbar-shell { position:relative; top:auto; }
+  .showcase-grid { columns:2 150px; column-gap:var(--s-3); }
+  .sample { margin-bottom:var(--s-3); border-radius:var(--r-xl); }
+}
 @media(prefers-reduced-motion:reduce) { .sample,.sample-image,.sample-sensitive { transition:none; } }
+</style>
+
+<style>
+/* 非 scoped：查看器 Teleport 到 body，scoped 属性选择器命不中，
+   之前就是因此丢样式导致文字压在图上。与作品册同一处理方式。 */
+.showcase-viewer {
+  position: fixed; inset: 0; z-index: var(--z-overlay);
+  width: 100vw; height: 100vh; max-width: none; max-height: none;
+  margin: 0; padding: clamp(12px, 2vw, 28px); border: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--art-backdrop);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+}
+.showcase-viewer:not([open]) { display: none; }
+.showcase-viewer .viewer-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(300px, .65fr);
+  width: min(1160px, 96vw);
+  max-height: min(92vh, 900px);
+  overflow: hidden;
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--r-stage);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-lg);
+}
+.showcase-viewer .viewer-art {
+  min-width: 0; min-height: 0;
+  display: flex; align-items: center; justify-content: center;
+  padding: var(--s-4);
+  background: var(--art-mat);
+}
+.showcase-viewer .viewer-art img {
+  display: block; max-width: 100%; max-height: min(88vh, 860px);
+  width: auto; height: auto; object-fit: contain; border-radius: var(--r-lg);
+}
+.showcase-viewer .viewer-copy {
+  min-width: 0; overflow-y: auto;
+  padding: clamp(20px, 3vw, 36px);
+  border-left: 1px solid var(--border-soft);
+  background: var(--bg-elevated);
+}
+.showcase-viewer .viewer-copy .viewer-close { float: right; margin: -6px -6px var(--s-3) var(--s-3); }
+.showcase-viewer .viewer-copy h2 {
+  margin: var(--s-3) 0 var(--s-2);
+  font-size: clamp(1.25rem, 2.4vw, 1.9rem); line-height: 1.25;
+}
+.showcase-viewer .viewer-meta { display: flex; gap: var(--s-2); flex-wrap: wrap; margin-bottom: var(--s-4); }
+.showcase-viewer .viewer-meta span {
+  padding: var(--s-1) var(--s-2); border-radius: var(--r-pill);
+  background: var(--accent-soft); color: var(--accent);
+  font: 700 var(--fs-mono-sm) var(--font-mono);
+}
+.showcase-viewer .viewer-story {
+  color: var(--text-secondary); font-size: var(--fs-body-sm);
+  line-height: 1.8; margin-bottom: var(--s-5);
+}
+.showcase-viewer .viewer-actions { display: grid; gap: var(--s-2); }
+.showcase-viewer .viewer-actions .btn { justify-content: center; }
+body:has(.showcase-viewer[open]) { overflow: hidden; }
+
+@media (max-width: 1000px) {
+  .showcase-viewer .viewer-layout { grid-template-columns: minmax(0, 1fr) 320px; }
+}
+@media (max-width: 760px) {
+  .showcase-viewer { padding: 0; }
+  .showcase-viewer .viewer-layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(0, 1fr);
+    width: 100vw; max-height: 100vh; border-radius: 0; border: 0;
+  }
+  .showcase-viewer .viewer-art { padding: var(--s-3); }
+  .showcase-viewer .viewer-art img { max-height: 46vh; }
+  .showcase-viewer .viewer-copy { border-left: 0; border-top: 1px solid var(--border-soft); }
+}
 </style>

@@ -20,42 +20,53 @@
       </div>
     </section>
 
-    <label class="sr-only" for="sceneSearch">搜索场景</label>
-    <div class="scene-search-wrap">
-      <input v-model="searchQuery" type="search" class="scene-search" id="sceneSearch"
-        placeholder="🔍 试试：心动、安静、宁宁经典感、夏目经典感" />
-      <button class="scene-search-clear" type="button" aria-label="清空" @click="searchQuery = ''">×</button>
-    </div>
-    <div class="search-intent" aria-live="polite" v-html="intentHtml"></div>
-
-    <div class="scene-toolbar">
-      <div>
-        <div class="scene-filter-label">主题</div>
-        <div class="scene-cats">
-          <button v-for="d in THEME_DEFS" :key="d.id" type="button" class="scene-cat"
-            :class="{ active: activeTheme === d.id }"
-            :aria-pressed="activeTheme === d.id ? 'true' : 'false'"
-            @click="activeTheme = d.id">{{ d.icon }} {{ d.label }} {{ themeCount(d.id) }}</button>
+    <!-- 单层 sticky 工具条：搜索 + 主题 + 折叠精细筛选，
+         原来搜索/主题/facet/成人开关是四条横栏，要跨 4 个条才看到场景卡 -->
+    <div class="scene-toolbar sticky-toolbar">
+      <div class="toolbar-primary">
+        <label class="sr-only" for="sceneSearch">搜索场景</label>
+        <div class="scene-search-wrap">
+          <input v-model="searchQuery" type="search" class="scene-search" id="sceneSearch"
+            placeholder="🔍 试试：心动、安静、宁宁经典感、夏目经典感" />
+          <button v-if="searchQuery" class="scene-search-clear" type="button" aria-label="清空" @click="searchQuery = ''">×</button>
         </div>
+        <span class="scene-count" role="status" aria-live="polite">
+          <strong>{{ Math.min(visible, filtered.length) }}</strong> / {{ filtered.length }}
+        </span>
+        <button
+          class="filter-toggle" type="button"
+          :class="{ active: filtersOpen || activeFacetCount > 0 }"
+          :aria-expanded="filtersOpen ? 'true' : 'false'"
+          @click="filtersOpen = !filtersOpen"
+        >
+          筛选<span v-if="activeFacetCount" class="facet-badge">{{ activeFacetCount }}</span>
+        </button>
       </div>
-      <div class="scene-facet-grid">
-        <label class="scene-filter-field">角色<select v-model="fChar"><option value="all">全部角色</option><option value="nene">🌸 宁宁</option><option value="natsume">🍂 夏目</option><option value="triad">🌸🍂 双人</option></select></label>
-        <label class="scene-filter-field">季节<select v-model="fSeason"><option value="all">全部季节</option><option value="春">🌸 春</option><option value="夏">☀️ 夏</option><option value="秋">🍂 秋</option><option value="冬">❄️ 冬</option></select></label>
-        <label class="scene-filter-field">时段<select v-model="fTime"><option value="all">全部时段</option><option value="morning">清晨</option><option value="afternoon">午后</option><option value="sunset">黄昏</option><option value="night">夜晚与深夜</option><option value="dawn">黎明</option></select></label>
+
+      <div class="scene-cats">
+        <button v-for="d in THEME_DEFS" :key="d.id" type="button" class="scene-cat"
+          :class="{ active: activeTheme === d.id }"
+          :aria-pressed="activeTheme === d.id ? 'true' : 'false'"
+          @click="activeTheme = d.id">{{ d.icon }} {{ d.label }} {{ themeCount(d.id) }}</button>
       </div>
-      <details class="scene-more-filters">
-        <summary>更多筛选与排序</summary>
+
+      <div v-if="intentHtml" class="search-intent" aria-live="polite" v-html="intentHtml"></div>
+
+      <!-- 精细筛选默认收起 -->
+      <div v-show="filtersOpen" class="scene-facet-panel">
         <div class="scene-facet-grid">
+          <label class="scene-filter-field">角色<select v-model="fChar"><option value="all">全部角色</option><option value="nene">🌸 宁宁</option><option value="natsume">🍂 夏目</option><option value="triad">🌸🍂 双人</option></select></label>
+          <label class="scene-filter-field">季节<select v-model="fSeason"><option value="all">全部季节</option><option value="春">🌸 春</option><option value="夏">☀️ 夏</option><option value="秋">🍂 秋</option><option value="冬">❄️ 冬</option></select></label>
+          <label class="scene-filter-field">时段<select v-model="fTime"><option value="all">全部时段</option><option value="morning">清晨</option><option value="afternoon">午后</option><option value="sunset">黄昏</option><option value="night">夜晚与深夜</option><option value="dawn">黎明</option></select></label>
           <label class="scene-filter-field">系列<select v-model="fSeries"><option value="all">全部系列</option><option value="after">After Story</option><option value="fanwork">同人</option><option value="active">Active Sync</option></select></label>
           <label class="scene-filter-field">分级<select v-model="fRating"><option value="all">全部分级</option><option value="All">全年龄</option><option value="R15">R15</option><option value="R18">R18</option></select></label>
           <label class="scene-filter-field">层级<select v-model="fTier"><option value="featured">招牌与精选</option><option value="signature">只看招牌</option><option value="curated">只看精选</option><option value="all">完整库</option></select></label>
           <label class="scene-filter-field">排序<select v-model="sortBy"><option value="smart">✨ 智能推荐</option><option value="curated">主理人精选</option><option value="favorite">我的收藏</option><option value="newest">最新加入</option><option value="title">名称A-Z</option></select></label>
         </div>
-      </details>
-      <div class="scene-filter-meta">
-        <label class="mature-toggle"><input type="checkbox" v-model="showMature" @change="onMatureChange" /> 显示成人内容 <span>({{ matureCount }})</span></label>
-        <span class="scene-count" role="status" aria-live="polite">显示 <strong>{{ Math.min(visible, filtered.length) }}</strong> / {{ filtered.length }} 个场景</span>
-        <button class="scene-reset" type="button" @click="resetFilters">重置全部筛选</button>
+        <div class="scene-filter-meta">
+          <label class="mature-toggle"><input type="checkbox" v-model="showMature" @change="onMatureChange" /> 显示成人内容 <span>({{ matureCount }})</span></label>
+          <button class="scene-reset" type="button" @click="resetFilters">重置全部筛选</button>
+        </div>
       </div>
     </div>
 
@@ -169,6 +180,21 @@ const fChar = ref('all'); const fSeason = ref('all'); const fTime = ref('all')
 const fSeries = ref('all'); const fRating = ref('all'); const fTier = ref('featured')
 const sortBy = ref('smart')
 const visible = ref(PAGE_SIZE)
+const filtersOpen = ref(false)
+
+/** 已生效的精细筛选数量，收起时也能看出「有筛选在起作用」 */
+const activeFacetCount = computed(() => {
+  let n = 0
+  if (fChar.value !== 'all') n++
+  if (fSeason.value !== 'all') n++
+  if (fTime.value !== 'all') n++
+  if (fSeries.value !== 'all') n++
+  if (fRating.value !== 'all') n++
+  if (fTier.value !== 'featured') n++
+  if (sortBy.value !== 'smart') n++
+  if (showMature.value) n++
+  return n
+})
 
 // --- derived ---
 const moodRails = computed(() => curation.value.moodRails?.length ? curation.value.moodRails : DEFAULT_RAILS)
@@ -356,13 +382,50 @@ onUnmounted(() => document.removeEventListener('keydown', onKey))
 .search-intent { min-height:22px; margin:-10px var(--s-1) var(--s-3); color:var(--text-muted); font-size:var(--fs-label-sm); }
 :deep(.search-intent strong) { color:var(--accent); }
 
-.scene-toolbar { display:grid; gap:var(--s-3); margin-bottom:var(--s-5); }
+.scene-toolbar {
+  display:grid; gap:var(--s-3); margin-bottom:var(--s-5);
+  padding:var(--s-3);
+  border:1px solid color-mix(in srgb,var(--border-soft) 80%,transparent);
+  border-radius:var(--r-2xl);
+  background:color-mix(in srgb,var(--bg-surface) 88%,transparent);
+  box-shadow:var(--shadow-sm);
+  -webkit-backdrop-filter:blur(20px) saturate(130%);
+  backdrop-filter:blur(20px) saturate(130%);
+}
+.toolbar-primary { display:flex; align-items:center; gap:var(--s-2); flex-wrap:wrap; }
+.toolbar-primary .scene-search-wrap { flex:1 1 260px; min-width:0; margin:0; }
+.toolbar-primary .scene-count { color:var(--text-muted); font:600 var(--fs-mono-sm) var(--font-mono); white-space:nowrap; }
+.toolbar-primary .scene-count strong { color:var(--accent); }
+.filter-toggle {
+  display:inline-flex; align-items:center; gap:6px; min-height:36px; padding:0 14px;
+  border:1px solid var(--border-soft); border-radius:var(--r-pill);
+  background:transparent; color:var(--text-secondary);
+  font:650 var(--fs-label-sm) var(--font-sans); cursor:pointer;
+  transition:border-color var(--t-fast),background var(--t-fast),color var(--t-fast);
+}
+.filter-toggle:hover, .filter-toggle.active {
+  border-color:color-mix(in srgb,var(--accent) 40%,var(--border-soft));
+  background:var(--accent-soft); color:var(--accent);
+}
+.facet-badge {
+  display:inline-grid; place-items:center; min-width:18px; height:18px; padding:0 5px;
+  border-radius:var(--r-pill); background:var(--accent); color:var(--text-inverse);
+  font:700 var(--fs-mono-xs) var(--font-mono);
+}
+.scene-facet-panel {
+  display:grid; gap:var(--s-3); padding-top:var(--s-3);
+  border-top:1px solid var(--border-soft);
+  animation:facetIn .22s var(--ease-out) both;
+}
+@keyframes facetIn { from { opacity:0; transform:translateY(-4px); } to { opacity:1; transform:none; } }
+@media (prefers-reduced-motion:reduce) { .scene-facet-panel { animation:none; } }
 .scene-filter-label { font-size:var(--fs-label-xs); color:var(--text-muted); font-weight:700; letter-spacing:.08em; text-transform:uppercase; margin-bottom:var(--s-2); }
 .scene-cats { display:flex; flex-wrap:wrap; gap:var(--s-2); }
 .scene-cat { appearance:none; padding:6px 16px; border:1px solid var(--border-soft); background:var(--bg-surface); color:var(--text-secondary); border-radius:var(--r-pill); cursor:pointer; font:500 var(--fs-body-sm) var(--font-sans); transition:border-color var(--t-fast),background var(--t-fast),color var(--t-fast); }
 .scene-cat:hover { border-color:var(--accent); color:var(--accent); }
 .scene-cat.active { background:var(--accent); color:var(--text-inverse); border-color:var(--accent); }
-.scene-facet-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--s-3); }
+/* 合并后一个面板里有 7 个字段，4 列更紧凑 */
+.scene-facet-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:var(--s-3); }
 .scene-filter-field { display:grid; gap:var(--s-1); color:var(--text-muted); font-size:var(--fs-label-xs); font-weight:600; }
 .scene-filter-field select { width:100%; padding:8px 10px; background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-md); color:var(--text-primary); font:500 var(--fs-label) var(--font-sans); outline:none; }
 .scene-filter-field select:focus { border-color:var(--accent); }

@@ -1,33 +1,112 @@
 ﻿<template>
-  <article class="page" style="--page-max:1000px">
+  <article class="page style-page" style="--page-max:1000px">
+    <a class="nav-back" href="/" @click.prevent="$router.push('/')">← 回首页</a>
     <div class="page-kicker">Art direction</div>
     <h1 class="title">画风</h1>
     <p class="subtitle">先定下今天的调子。选好之后，绘制台会让整张画面都听这个调子。</p>
+
     <div class="section-title">色彩氛围 (Color Moods)</div>
+    <p class="note mb-3">点一张色板，会带着对应情绪色调进入开始绘制。</p>
+
     <div class="mood-grid mood-grid-lg">
       <RouterLink
-        v-for="m in MOODS" :key="m.id"
-        :to="'/prompt-builder?mood=' + m.id"
-        class="mood-card"
+        v-for="m in MOODS"
+        :key="m.id"
+        :to="'/prompt-builder?mood=' + encodeURIComponent(m.id)"
+        class="mood-card style-mood-card"
+        :style="{ '--mood-color': m.colors[1] || m.colors[0] }"
       >
-        <div class="mood-strip"><div class="mood-swatch" :style="{ '--swatch': m.color }"></div></div>
-        <div class="mood-body">
-          <div class="mood-name">{{ m.name }}</div>
-          <div class="mood-desc">{{ m.desc }}</div>
+        <div class="mood-strip">
+          <div
+            v-for="(c, i) in m.colors"
+            :key="c + i"
+            class="mood-swatch"
+            :style="{ '--swatch': c }"
+          />
         </div>
+        <div class="mood-body">
+          <div class="mood-name">{{ m.icon }} {{ m.name }} <span class="mood-en">{{ m.en }}</span></div>
+          <div class="mood-desc">{{ m.desc }}</div>
+          <div class="mood-prompt-hint">{{ m.prompt }}</div>
+        </div>
+        <span class="mood-go">用这个调子绘制 →</span>
       </RouterLink>
     </div>
-    <RouterLink to="/color-script" class="btn btn-ghost" style="margin-top:var(--s-4)">📖 查看完整色彩剧本 →</RouterLink>
+
+    <div class="style-actions">
+      <RouterLink to="/color-script" class="btn btn-ghost">📖 查看完整色彩剧本 (Color Script)</RouterLink>
+      <RouterLink to="/prompt-builder" class="btn btn-primary">✦ 直接开始绘制</RouterLink>
+    </div>
+
+    <section class="style-tips card-info">
+      <h2 class="section-title m-0">使用提示</h2>
+      <ul class="tip-list">
+        <li>色板会写入导演台的「色彩情调」，并进入 Prompt。</li>
+        <li>需要完整色相 / 光照映射时，打开色彩剧本页。</li>
+        <li>同一情绪可与场景卡、镜头、光照叠加；冲突时以场景故事为准。</li>
+      </ul>
+    </section>
   </article>
 </template>
 
 <script setup lang="ts">
-const MOODS = [
-  { id:'joy',     color:'#FFD54F', name:'Joy 喜悦',     desc:'明亮、温暖、希望' },
-  { id:'love',    color:'#F06292', name:'Love 恋爱',    desc:'樱粉、羞涩、心动' },
-  { id:'calm',    color:'#81C784', name:'Calm 平静',    desc:'柔和、治愈、安宁' },
-  { id:'sad',     color:'#64B5F6', name:'Sad 忧郁',     desc:'冷蓝、雨夜、思念' },
-  { id:'tension', color:'#BA68C8', name:'Tension 紧张', desc:'紫红、戏剧、冲突' },
-  { id:'warmth',  color:'#FFB74D', name:'Warmth 温馨',  desc:'橙金、炉火、归属' },
-]
+import { COLOR_MOODS } from '@/config/promptConstants'
+
+const MOODS = COLOR_MOODS
 </script>
+
+<style scoped>
+.style-page { padding-bottom: var(--s-8); }
+.mood-en {
+  margin-left: 6px;
+  color: var(--text-muted);
+  font: 500 var(--fs-mono-sm) var(--font-mono);
+}
+.mood-prompt-hint {
+  margin-top: 6px;
+  color: var(--text-muted);
+  font: 400 var(--fs-mono-xs) / 1.5 var(--font-mono);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.style-mood-card {
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.style-mood-card .mood-go {
+  margin: 0 var(--s-3) var(--s-3);
+  color: var(--accent);
+  font: 650 var(--fs-label-xs) var(--font-sans);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity var(--t-fast), transform var(--t-fast);
+}
+.style-mood-card:hover .mood-go,
+.style-mood-card:focus-visible .mood-go {
+  opacity: 1;
+  transform: none;
+}
+.style-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  margin-top: var(--s-5);
+}
+.style-tips {
+  margin-top: var(--s-6);
+  padding: var(--s-5);
+}
+.tip-list {
+  margin: var(--s-3) 0 0;
+  padding-left: 1.2em;
+  color: var(--text-secondary);
+  font-size: var(--fs-body-sm);
+  line-height: 1.75;
+}
+.tip-list li + li { margin-top: 4px; }
+.m-0 { margin: 0; }
+</style>

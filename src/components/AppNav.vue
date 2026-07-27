@@ -9,8 +9,7 @@
         @keydown.enter.prevent="goHome"
         @keydown.space.prevent="goHome"
       >
-        <img class="nav-logo" src="/assets/logo.svg" alt="绫季绘境" aria-hidden="true" />
-        <span class="sr-only">绫季绘境</span>
+        <img class="nav-logo" src="/assets/logo.svg" alt="绫季绘境" />
       </div>
 
       <div ref="linksEl" class="nav-links" :class="{ open: menuOpen }">
@@ -116,3 +115,18 @@ onUnmounted(() => {
   document.removeEventListener('keydown', onDocKey)
 })
 </script>
+
+<style scoped>
+/* logo.svg 是 236×48 的完整字标（图形 + 绫季绘境），
+   只能按高度缩放，不能塞进方框裁切，也不要再叠一份文字。 */
+.nav-logo {
+  display: block;
+  height: 32px;
+  width: auto;
+  max-width: 190px;
+}
+.nav-brand { gap: var(--s-2); }
+@media (max-width: 480px) {
+  .nav-logo { height: 28px; max-width: 150px; }
+}
+</style>

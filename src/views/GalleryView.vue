@@ -1,5 +1,5 @@
 <template>
-  <main id="main" class="gallery-shell">
+  <article class="gallery-shell gallery-page">
     <header class="gallery-intro">
       <div>
         <div class="gallery-kicker">Private collection</div>
@@ -66,7 +66,7 @@
         </template>
       </div>
     </section>
-  </main>
+  </article>
 
   <!-- 沉浸查看器 -->
   <Teleport to="body">

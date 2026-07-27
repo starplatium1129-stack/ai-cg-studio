@@ -1,13 +1,14 @@
 <template>
   <div class="page-root">
+    <a class="skip-link" href="#main">跳到主要内容</a>
     <AppNav />
-    <main>
+    <div id="main" class="page-main" tabindex="-1">
       <RouterView v-slot="{ Component, route }">
         <Transition :name="route.meta.transition as string || 'page'" mode="out-in">
           <component :is="Component" :key="route.path" />
         </Transition>
       </RouterView>
-    </main>
+    </div>
     <footer class="site-footer">
       <p>© 2025 绫季绘境 · 个人创作工作台</p>
     </footer>
@@ -24,8 +25,10 @@ import AppNav from './AppNav.vue'
   display: flex;
   flex-direction: column;
 }
-main {
+.page-main {
   flex: 1;
+  min-width: 0;
+  outline: none;
 }
 .site-footer {
   padding: var(--s-4) var(--s-6);
@@ -33,5 +36,6 @@ main {
   font-size: var(--fs-body-sm);
   color: var(--text-muted);
   border-top: 1px solid var(--border-soft);
+  background: color-mix(in srgb, var(--bg-deep) 55%, transparent);
 }
 </style>
