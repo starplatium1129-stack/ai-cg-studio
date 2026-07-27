@@ -2,30 +2,35 @@ import { test } from '@playwright/test';
 import fs from 'node:fs';
 import path from 'node:path';
 
-// 产品层美术/体验审阅用:批量截全页图,供人工逐张观察。
-// 不做断言 —— 这是取证工具,不是门禁。
-// 用法: npx playwright test tests/e2e/capture.spec.ts --project=desktop
+/**
+ * 产品层美术/体验审阅：批量截全页图，供人工逐张观察。
+ * 不做断言 —— 这是取证工具，不是门禁。
+ *
+ * 用法: npx playwright test tests/e2e/capture.spec.ts --project=desktop
+ */
 
 const OUT = path.resolve('.review-shots');
 
+// Vue Router 路径（重构前是 /tools/*.html）
 const PAGES: [string, string][] = [
-  ['home', '/index.html'],
-  ['director', '/tools/prompt-builder.html'],
-  ['scene-explorer', '/tools/scene-explorer.html'],
-  ['showcase', '/tools/showcase.html'],
-  ['gallery', '/tools/gallery.html'],
-  ['character', '/tools/character.html'],
-  ['chat', '/tools/chat.html'],
-  ['lora', '/tools/lora.html'],
-  ['style', '/tools/style.html'],
-  ['color-script', '/tools/color-script.html'],
-  ['scenario', '/tools/scenario.html'],
-  ['control', '/tools/control.html'],
-  ['scene-manager', '/tools/scene-manager.html'],
+  ['home', '/'],
+  ['director', '/prompt-builder'],
+  ['director-scene', '/prompt-builder?scene=sc001'],
+  ['scene-explorer', '/scene-explorer'],
+  ['showcase', '/showcase'],
+  ['gallery', '/gallery'],
+  ['character', '/character'],
+  ['chat', '/chat'],
+  ['lora', '/lora'],
+  ['style', '/style'],
+  ['color-script', '/color-script'],
+  ['scenario', '/scenario'],
+  ['control', '/control'],
+  ['scene-manager', '/scene-manager'],
   ['docs-index', '/docs/index.html'],
   ['docs-getting-started', '/docs/getting-started.html'],
   ['docs-philosophy', '/docs/philosophy.html'],
-  ['docs-roadmap', '/docs/roadmap.html']
+  ['docs-roadmap', '/docs/roadmap.html'],
 ];
 
 const THEMES = ['light', 'dark'];
@@ -35,16 +40,23 @@ test.beforeAll(() => { fs.mkdirSync(OUT, { recursive: true }); });
 for (const theme of THEMES) {
   for (const [name, url] of PAGES) {
     test(`capture ${theme} ${name}`, async ({ page }) => {
-      await page.goto(url);
-      await page.evaluate((value) => {
-        document.documentElement.setAttribute('data-theme', value);
-        try { localStorage.setItem('aics_theme', value); } catch { /* ignore */ }
+      // 先落主题再导航，避免首帧闪一次默认配色
+      await page.addInitScript(value => {
+        try { localStorage.setItem('aics_theme', value as string); } catch { /* ignore */ }
       }, theme);
-      // 等字体与首屏图片
-      await page.waitForTimeout(1200);
+      await page.goto(url);
+      await page.evaluate(value => {
+        document.documentElement.setAttribute('data-theme', value as string);
+      }, theme);
+      // 等字体、场景数据与首屏图片。
+      // 控制面板持续轮询服务状态，networkidle 到不了，只能定时等待。
+      if (url !== '/control') {
+        await page.waitForLoadState('networkidle').catch(() => {});
+      }
+      await page.waitForTimeout(1500);
       await page.screenshot({
         path: path.join(OUT, `${theme}-${name}.png`),
-        fullPage: true
+        fullPage: true,
       });
     });
   }

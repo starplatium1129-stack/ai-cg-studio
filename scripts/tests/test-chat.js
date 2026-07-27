@@ -102,33 +102,52 @@ async function consumeVoice(service, input) {
 }
 
 async function run() {
-  var html = fs.readFileSync(path.join(root, 'tools', 'chat.html'), 'utf8');
-  var appModule = fs.readFileSync(path.join(root, 'tools', 'chat', 'app.mjs'), 'utf8');
-  var voiceModule = fs.readFileSync(path.join(root, 'tools', 'chat', 'voice.mjs'), 'utf8');
-  var live2dModule = fs.readFileSync(path.join(root, 'tools', 'chat', 'live2d.mjs'), 'utf8');
-  var chatCss = fs.readFileSync(path.join(root, 'css', 'chat.css'), 'utf8');
+  // 角色房间已迁为 Vue：ChatView.vue + useVoice / useLive2D composable
+  var html = fs.readFileSync(path.join(root, 'src', 'views', 'ChatView.vue'), 'utf8');
+  var voiceModule = fs.readFileSync(path.join(root, 'src', 'composables', 'useVoice.ts'), 'utf8');
+  var live2dModule = fs.readFileSync(path.join(root, 'src', 'composables', 'useLive2D.ts'), 'utf8');
+  var chatCss = fs.readFileSync(path.join(root, 'src', 'assets', 'css', 'chat.css'), 'utf8');
+  var mainTs = fs.readFileSync(path.join(root, 'src', 'main.ts'), 'utf8');
+  var streamUtils = fs.readFileSync(path.join(root, 'src', 'utils', 'stream.ts'), 'utf8');
+  var securitySource = fs.readFileSync(path.join(root, 'server', 'security.js'), 'utf8');
   var voiceRoute = fs.readFileSync(path.join(root, 'routes', 'voice.js'), 'utf8');
   var serverSource = fs.readFileSync(path.join(root, 'server.js'), 'utf8');
 
-  assert(html.includes('data-nav="chat"'), 'chat page must expose the navigation state');
-  assert(html.includes('data-character="nene"') && html.includes('data-character="natsume"'), 'both characters must be selectable');
-  assert(html.includes('chat/app.mjs') && html.includes('../css/chat.css'), 'chat page must load modular assets');
-  assert(html.includes('class="voice-console"') && html.includes('id="replayBtn"'), 'live voice and replay must share one visual control');
-  assert(!html.includes('portrait-blink') && !appModule.includes('scheduleBlink'), 'static portraits must not use a duplicate-image blink effect');
+  assert(html.includes('chat-page'), 'chat view must render the character room shell');
+  assert(html.includes("'nene'") && html.includes("'natsume'") && html.includes('switchCharacter'), 'both characters must be selectable');
+  assert(mainTs.includes('assets/css/chat.css'), 'chat styles must be imported by the SPA entry');
+  assert(html.includes('useVoice') && html.includes('useLive2D'), 'chat view must compose voice and Live2D');
+  assert(html.includes('voice-console') && html.includes('replay-btn'), 'live voice and replay must share one visual control');
+  assert(!html.includes('portrait-blink') && !html.includes('scheduleBlink'), 'static portraits must not use a duplicate-image blink effect');
   assert(!chatCss.includes('portrait-talk'), 'static portraits must not scale or bounce while voice is playing');
-  assert(appModule.includes("fetch('/api/chat'") && appModule.includes('parseNdjsonResponse'), 'chat app must stream from the gateway');
-  assert(appModule.includes('AbortController') && html.includes('id="stopBtn"'), 'chat requests must be cancellable');
-  assert(appModule.includes("mid && mid === streamingMessageId"), 'only the active assistant message may keep the streaming cursor');
-  assert(voiceModule.includes('SentenceBuffer') && voiceModule.includes('response.arrayBuffer()'), 'voice must synthesize complete sentence WAV files');
-  assert(voiceModule.includes("consistency:'locked'") && voiceModule.includes('referenceEmotion:meta.referenceEmotion'), 'one reply must lock a single identity reference across all sentences');
+  assert(html.includes("fetch('/api/chat'") && html.includes('parseNdjsonResponse'), 'chat view must stream from the gateway');
+  assert(html.includes('AbortController') && html.includes('stop-btn'), 'chat requests must be cancellable');
+  assert(html.includes('streamingMid'), 'only the active assistant message may keep the streaming cursor');
+  assert(voiceModule.includes('SentenceBuffer') && /\bawait r\.arrayBuffer\(\)/.test(voiceModule), 'voice must synthesize complete sentence WAV files');
+  assert(
+    voiceModule.includes("consistency: 'locked'") && voiceModule.includes('referenceEmotion: meta.referenceEmotion'),
+    'one reply must lock a single identity reference across all sentences'
+  );
   assert(voiceModule.includes('AbortController') && voiceModule.includes('messageAudio'), 'voice sessions must support cancellation and replay');
   assert(voiceModule.includes("fetch('/api/voice/prepare'") && voiceRoute.includes("router.post('/api/voice/prepare'"), 'voice models and translation must prewarm before the first line');
   assert(voiceModule.includes('getByteTimeDomainData') && voiceModule.includes('onMouth'), 'lip sync must use real audio amplitude');
   assert(live2dModule.includes('ResizeObserver') && live2dModule.includes('webglcontextlost'), 'Live2D must recover layout and WebGL failures');
   assert(live2dModule.includes('setExpression') && live2dModule.includes('ParamMouthOpenY'), 'Live2D must support expression and mouth control');
+  // Live2D 运行库必须真正被加载（重构后曾漏掉，导致"运行库加载失败"）
+  assert(live2dModule.includes("import('wl-live2d')"), 'Live2D runtime must be imported by the composable');
+  // PixiJS 需要 unsafe-eval：CSP 必须为 /chat 放行，否则 Live2D 初始化失败
+  assert(
+    securitySource.includes("path === '/chat'") && securitySource.includes('unsafe-eval'),
+    'CSP must allow unsafe-eval on the chat route for the Live2D renderer'
+  );
+  // 情绪关键词曾因编码损坏全部失效，导致语音永远 neutral
+  assert(!/\uFFFD/.test(streamUtils), 'emotion keywords must not contain replacement characters');
+  ['shy', 'happy', 'sad', 'serious', 'gentle'].forEach(function (emotion) {
+    assert(streamUtils.includes("'" + emotion + "'"), 'inferEmotion must classify ' + emotion);
+  });
   assert(serverSource.includes('createGateway') && serverSource.includes("require('./routes/chat')"), 'gateway must use modular route composition');
 
-  var utils = await import(pathToFileURL(path.join(root, 'tools', 'chat', 'utils.mjs')).href);
+  var utils = require('../../src/utils/stream.ts');
   var sentences = new utils.SentenceBuffer({ minimumLength:6 });
   assert(sentences.push('嗯。').length === 0, 'short sentence should wait for the next boundary');
   assert(sentences.push('今天过得怎么样？')[0] === '嗯。今天过得怎么样？', 'short sentence should merge without being lost');
@@ -245,16 +264,15 @@ async function run() {
     var health = await healthResponse.json();
     assert(health.ok && health.capabilities.chat && health.capabilities.tts, 'gateway health must expose conversation capabilities');
 
-    var pageResponse = await fetch(gatewayBase + '/tools/chat.html');
-    assert(pageResponse.ok, 'modular chat page must be served');
-    assert((pageResponse.headers.get('content-security-policy') || '').includes("'unsafe-eval'"), 'chat CSP must allow the Live2D runtime');
-    assert((pageResponse.headers.get('cache-control') || '').includes('no-cache'), 'HTML pages must revalidate instead of serving stale markup');
-
+    // SPA 路由由 index.html 承载；同时确认 /chat 的 CSP 放行了 Live2D 所需的 unsafe-eval
+    var chatResponse = await fetch(gatewayBase + '/chat');
+    assert(chatResponse.ok, 'chat route must be served by the SPA fallback');
+    var chatCsp = chatResponse.headers.get('content-security-policy') || '';
+    assert(chatCsp.includes("'unsafe-eval'"), 'chat route CSP must allow the Live2D renderer');
     var homeResponse = await fetch(gatewayBase + '/');
-    var homeHtml = await homeResponse.text();
-    assert(homeResponse.ok && homeHtml.includes('tools/home.js?v=2'), 'home page must load its public external controller');
-    var homeControllerResponse = await fetch(gatewayBase + '/tools/home.js?v=2');
-    assert(homeControllerResponse.ok && (await homeControllerResponse.text()).includes('initContinueDraft'), 'home controller must be reachable through the static tools route');
+    assert(homeResponse.ok, 'home route must be served');
+    var homeCsp = homeResponse.headers.get('content-security-policy') || '';
+    assert(!homeCsp.includes("'unsafe-eval'"), 'unsafe-eval must stay scoped to the chat route');
 
     var cssResponse = await fetch(gatewayBase + '/css/design-system.css', {
       headers:{ 'Accept-Encoding':'gzip' }

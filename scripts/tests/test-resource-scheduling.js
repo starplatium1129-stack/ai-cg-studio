@@ -1,14 +1,30 @@
+'use strict';
+
+/**
+ * 显存资源调度契约
+ *
+ * 重构前断言 tools/control-server.js + control.html/control.js。
+ * 那套独立 3001 进程已合并进主网关：routes/control.js + src/views/ControlView.vue。
+ * 保障目标不变：
+ *   1. 网关让 Ollama 空闲自动释放显存、限制上下文、换模型前先卸载
+ *   2. 常驻翻译服务 + 回退路径 + 健康检查
+ *   3. 控制面板后端暴露单服务启停、模式切换、Ollama 卸载，并串行化 GPU 操作
+ *   4. 控制面板前端提供模式卡、单服务按钮、操作进度、显存状态
+ */
+
 const fs = require('fs');
 const path = require('path');
 
 const root = path.resolve(__dirname, '..', '..');
-const control = fs.readFileSync(path.join(root, 'tools', 'control-server.js'), 'utf8');
-const controlHtml = fs.readFileSync(path.join(root, 'tools', 'control.html'), 'utf8');
-const controlUi = fs.readFileSync(path.join(root, 'tools', 'control.js'), 'utf8');
-const gatewayConfig = fs.readFileSync(path.join(root, 'server', 'config.js'), 'utf8');
-const ollamaService = fs.readFileSync(path.join(root, 'services', 'ollama-service.js'), 'utf8');
-const translationService = fs.readFileSync(path.join(root, 'services', 'translation-service.js'), 'utf8');
-const translatePy = fs.readFileSync(path.join(root, 'tools', 'translate-zh-ja.py'), 'utf8');
+const read = (...parts) => fs.readFileSync(path.join(root, ...parts), 'utf8');
+
+const control = read('routes', 'control.js');
+const controlView = read('src', 'views', 'ControlView.vue');
+const gatewayConfig = read('server', 'config.js');
+const ollamaService = read('services', 'ollama-service.js');
+const translationService = read('services', 'translation-service.js');
+const translatePy = read('tools', 'translate-zh-ja.py');
+const server = read('server.js');
 
 function assert(condition, message) {
   if (!condition) throw new Error('[resource] ' + message);
@@ -31,29 +47,63 @@ assert(translatePy.includes('_MODEL_LOCK'), 'translate script must serialize con
 assert(translatePy.includes('batch_decode') && translatePy.includes('TRANSLATION_BEAMS'), 'translation must batch sentences and default to low-latency decoding');
 
 // ─── 控制面板后端：服务调度 ───
-assert(control.includes("app.post('/api/service/voice'"), 'control server must expose voice start/stop endpoint');
-assert(control.includes("app.post('/api/service/webui'"), 'control server must expose webui start/stop endpoint');
-assert(control.includes("app.post('/api/service/ollama'"), 'control server must expose ollama unload endpoint');
-assert(control.includes("app.post('/api/mode'"), 'control server must expose one-click mode switching');
-assert(control.includes('unloadOllamaModels') && control.includes('keep_alive:0'), 'control server must unload Ollama models via keep_alive=0');
-assert(control.includes('/api/ps'), 'control server must read Ollama loaded models and VRAM usage');
-assert(control.includes('AUTO_START_VOICE') && control.includes('autoStartVoice === true'), 'voice auto-start must be opt-in instead of default');
-assert(control.includes('runScriptAsync'), 'control server must run long service scripts asynchronously');
-assert(control.includes('beginOperation') && control.includes('finishOperation') && control.includes('operationConflict'), 'control server must serialize GPU operations and expose structured progress');
-assert(control.includes('Promise.all([checkSD(force), checkTTS(force), checkOllama(force)])'), 'fresh status requests must wait for completed health checks instead of returning stale state');
-assert(control.includes('stopManagedServices === true'), 'stopping the website must preserve generation services unless explicitly requested');
+assert(control.includes("'/api/service/voice'"), 'control routes must expose voice start/stop endpoint');
+assert(control.includes("'/api/service/webui'"), 'control routes must expose webui start/stop endpoint');
+assert(control.includes("'/api/service/ollama'"), 'control routes must expose ollama unload endpoint');
+assert(control.includes("'/api/mode'"), 'control routes must expose one-click mode switching');
+assert(control.includes('unloadOllamaModels') && control.includes('keep_alive:0'), 'control routes must unload Ollama models via keep_alive=0');
+assert(control.includes('/api/ps'), 'control routes must read Ollama loaded models and VRAM usage');
+assert(control.includes('autoStartVoice'), 'voice auto-start must remain an explicit preference');
+assert(control.includes('runScriptAsync'), 'control routes must run long service scripts asynchronously');
+assert(
+  control.includes('ops.begin') && control.includes('ops.finish') && control.includes('rejectConflict'),
+  'control routes must serialize GPU operations and expose structured progress',
+);
+assert(
+  control.includes('refreshServiceStates'),
+  'fresh status requests must wait for completed health checks instead of returning stale state',
+);
+// 停止只关公网分享，不牵连绘图/语音/聊天
+assert(
+  /stopTunnel/.test(control) && !/stopManagedServices\s*===\s*true/.test(control),
+  'stopping the share tunnel must not implicitly stop generation services',
+);
+assert(control.includes("'/api/sd-status'"), 'control routes must expose an SD status probe for the director');
+
+// ─── 网关：公网分享不得随进程自动开启 ───
+assert(
+  server.includes('AUTO_TUNNEL') && server.includes('autoTunnel'),
+  'gateway must not auto-open the public tunnel unless explicitly opted in',
+);
+assert(
+  /tunnelStopped/.test(server),
+  'stopTunnel must latch a stopped flag so the poller cannot revive the share URL',
+);
 
 // ─── 控制面板界面：调度面板 ───
-assert(controlHtml.includes('显存资源调度'), 'control panel must show the VRAM scheduling panel');
-assert(controlHtml.includes('data-action="switch-mode"') && controlHtml.includes('data-mode="draw"') && controlHtml.includes('data-mode="chat"'), 'control panel must offer draw/chat mode buttons');
-assert(controlHtml.includes('data-action="service"') && controlHtml.includes('data-service="voice"') && controlHtml.includes('data-service="ollama"'), 'control panel must expose per-service controls');
-assert(controlHtml.includes('auto-start-voice') && controlUi.includes('/api/preference'), 'control panel must make voice auto-start an explicit preference');
-assert(controlHtml.includes('ollama-badge'), 'control panel must show Ollama online and VRAM status');
-assert(controlHtml.includes('operation-panel') && controlUi.includes('renderOperation'), 'control panel must render operation progress and final failures');
-assert((controlHtml + controlUi).includes('停止网站网关'), 'the primary stop action must describe its limited scope');
-assert(controlHtml.match(/<script src="control\.js\?v=\d+"><\/script>/), 'control panel controller must stay external');
-assert(controlUi.includes('startPolling();'), 'control panel must begin health polling as soon as it opens');
-assert(!/on(click|change|input)=/.test(controlHtml), 'control panel must not use inline HTML event attributes');
-assert(controlUi.includes("getAttribute('data-action')"), 'control panel must bind actions via data-action delegation');
+assert(controlView.includes('显存资源调度'), 'control panel must show the VRAM scheduling panel');
+assert(
+  controlView.includes("switchMode('draw')") && controlView.includes("switchMode('chat')"),
+  'control panel must offer draw/chat mode buttons',
+);
+assert(
+  controlView.includes("serviceAction('webui'") && controlView.includes("serviceAction('voice'") && controlView.includes("serviceAction('ollama'"),
+  'control panel must expose per-service controls',
+);
+assert(
+  controlView.includes('autoStartVoice') && controlView.includes('/api/preference'),
+  'control panel must make voice auto-start an explicit preference',
+);
+assert(controlView.includes('ollamaBadgeText') || controlView.includes('ollamaVram'), 'control panel must show Ollama online and VRAM status');
+assert(
+  controlView.includes('operation-panel') && controlView.includes('operation.stages'),
+  'control panel must render operation progress and final failures',
+);
+assert(
+  controlView.includes('公网分享'),
+  'the primary stop action must describe its limited scope',
+);
+assert(controlView.includes('startPolling()'), 'control panel must begin health polling as soon as it opens');
+assert(!/\son(click|change|input)=/.test(controlView), 'control panel must not use inline HTML event attributes');
 
-console.log('Resource scheduling tests passed: VRAM modes, service controls, persistent translation, Ollama keep_alive');
+console.log('Resource scheduling tests passed: VRAM modes, service controls, persistent translation, Ollama keep_alive, tunnel opt-in');

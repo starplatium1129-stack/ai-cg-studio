@@ -7,20 +7,21 @@ import { test, expect, type Page } from '@playwright/test';
 //   3. 文字/背景对比度不足(浅色主题下白字压白底的那类缺陷)
 // 前两类是硬失败;对比度做保守判定,只抓"几乎不可读"的极端值。
 
+// Vue Router 路径（重构前是 /tools/*.html）
 const PAGES = [
-  '/index.html',
-  '/tools/scene-explorer.html',
-  '/tools/showcase.html',
-  '/tools/gallery.html',
-  '/tools/character.html',
-  '/tools/lora.html',
-  '/tools/control.html',
-  '/tools/scenario.html',
-  '/tools/color-script.html',
-  '/tools/style.html',
-  '/tools/scene-manager.html',
-  '/tools/prompt-builder.html',
-  '/tools/chat.html',
+  '/',
+  '/scene-explorer',
+  '/showcase',
+  '/gallery',
+  '/character',
+  '/lora',
+  '/control',
+  '/scenario',
+  '/color-script',
+  '/style',
+  '/scene-manager',
+  '/prompt-builder',
+  '/chat',
   '/docs/index.html',
   '/docs/philosophy.html',
   '/docs/roadmap.html',
@@ -62,7 +63,13 @@ for (const theme of THEMES) {
       const errors = collectErrors(page);
       await page.goto(target);
       await applyTheme(page, theme);
-      await page.waitForTimeout(350);
+      // SPA 路由要等异步场景数据与图片落位，否则会在半渲染状态上做判定。
+      // 控制面板每 3 秒轮询 /api/status（内部还要探测 SD/TTS/Ollama），
+      // networkidle 永远不会到达，这里只能定时等待。
+      if (target !== '/control') {
+        await page.waitForLoadState('networkidle').catch(() => {});
+      }
+      await page.waitForTimeout(900);
 
       // ---- 1. 运行时错误 ----
       expect(errors, `${target} @ ${theme} 有运行时错误`).toEqual([]);

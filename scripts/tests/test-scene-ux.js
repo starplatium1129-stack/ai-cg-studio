@@ -1,7 +1,9 @@
 const assert = require('assert');
 const path = require('path');
 const { readJson } = require('../runtime/scene-store');
-const sceneUx = require('../../tools/scene-ux');
+// scene-ux 已迁到 src/utils/sceneUX.ts。
+// Node 22+ 支持直接 require TS（自动剥离类型），无需为测试维护 CJS 副本。
+const sceneUx = require('../../src/utils/sceneUX.ts');
 
 const root = path.resolve(__dirname, '..', '..');
 const scenes = readJson(path.join(root, 'data', 'scenes.json'));

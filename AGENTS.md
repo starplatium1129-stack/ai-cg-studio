@@ -86,7 +86,49 @@ src/
 ### 仍待推进
 
 - **测试加深** — E2E 测试用例需更新以覆盖新 Vue SPA 路由与交互（旧版 DOM id 已变化）
-- **PromptBuilderView 功能完善** — 当前版本完成了核心出图流程；历史面板、备份恢复 UI、评分弹窗等二级功能尚待补全
 - **场景库测试** — `scripts/tests/test-page-architecture.js` 基于旧 HTML 结构，需更新为针对 Vue 组件的检查逻辑
 - **CI 硬化** — e2e 可拆夜间若 push 过慢
 - **tools/ 剩余工具迁移** — `prompt-policy.js`、`sd-api.js`、`icon-system.js`、`data-backup.js` 仍以原生 JS 全局形式存在，PromptBuilderView 按需动态加载；可按需逐步迁入 `src/`
+
+### Vue 重构后仍缺失的功能（按优先级）
+
+> 来源：对比重构前 `81d21ff^:tools/` 与当前 `src/`。已完成项见下方"已恢复"。
+
+#### P0 — 阻断主流程
+
+- **导演台：出图队列 + 错误恢复** — 当前 `useSDGenerate.generate()` 串行阻塞，无队列；catch 仅显示一句错误。需新建 `src/composables/useSDQueue.ts`（≤8 任务、暂停/恢复、按 seed 复用、失败保留、自动 `commitHistoryEntry`），并把 `useSDGenerate.ts` catch 改为分类恢复按钮（retry_light/retry_without_lora/retry_safe_sampler/recheck_connection/降尺寸）。参考 `81d21ff^:tools/prompt-builder/queue.js`（154 行）与 `sd.js:644-690`。
+
+#### P1 — 数据资产 / 收尾回路
+
+- **导演台：备份/恢复 UI** — 序列化 history/projects/settings/images 为 JSON、下载、读取、replace/merge。需新建 `src/composables/useBackup.ts` + `src/components/BackupOverlay.vue`，接入侧边工具菜单。后端 `/api/backup` 已在。参考 `81d21ff^:tools/prompt-builder/backup.js`（241 行）。
+- ~~导演台：评分弹窗~~ — 用户确认鸡肋，不做。
+
+#### P2 — 高频交互细节
+
+- **导演台：Prompt policy 深化** — `src/utils/promptPolicy.ts` 已有基础 `sanitize/merge/adapt`；可继续迁 `inferStory`、`analyzeParts`（token 健康条）、`dedupeParts`、`applyFraming`、`sceneSupportsCharacter`、`enrichDualPrompt`、`recommendAspect`，并加违规高亮。
+- **导演台：First-creation coach** — welcome→ready→complete 三阶段 + 首次成功横幅 + 入场签名场景按钮。参考 `81d21ff^:tools/prompt-builder/app.js:337-388`。
+
+#### P3 — 场景管理二级功能
+
+- **场景管理：标签库 CRUD** — 当前 Vue 版只能看不能改。需新增/编辑/删除标签、改名级联、权重、分页。参考 `81d21ff^:tools/scene-manager.js:363-428`。
+- **场景管理：样张管理 tab** — 样张预览/上传/替换（JPEG 归一化、15MB/60MP 上限），POST `/api/maintenance/showcase`。参考 `81d21ff^:tools/scene-manager.js:124-184`。
+- **场景管理：重复检测 tab** — 按关键词分组检测疑似重复场景。参考 `81d21ff^:tools/scene-manager.js:332-356`。
+- **场景管理：维护工具结果细化** — 当前已接 `/api/maintenance/run`，但输出展示较粗，可补 lint/validate/classify/optimize 各自的结构化报告。
+
+#### 已恢复（2026-07-27 本轮）
+
+- 场景管理：持久化保存（POST /api/maintenance/scenes）、完整编辑表单（22 字段+策展层级+推荐理由+LoRA 自动绑定）、增删复制、脏态、beforeunload、导出、导入、维护工具
+- 导演台：草稿持久化 saveDraft/restoreDraft、深链恢复（?scene/?regen/?variant/?mood/?char/?resume/?quick）、场景智能推断（自动预填光照/镜头/构图/情调/推荐尺寸）、作品历史 IndexedDB 落盘（commitHistoryEntry + saveHistory 改为抓 blob 入库）
+- 美化：聊天样式恢复（chat.css 重新接入）、导演台 body→.pb 选择器对齐、Vue 类名兼容、布局语义修正（重复 main→article、skip-link、nav-logo）、首页场景卡改用 SceneCard、全局背景光斑收敛
+- Bug：样张查看器改为 fixed 居中
+- **控制面板：恢复旧 control-server 的服务启停能力**（接进 Vue SPA，不是独立 3001 进程）
+  - 后端 `routes/control.js`：`/api/service/webui|voice|ollama`、`/api/mode`（绘图优先/聊天优先）、operation 进度、Ollama 显存卸载、脚本探测
+  - 前端 `ControlView.vue`：SD/语音 启停按钮、Ollama 卸载、模式切换卡、操作进度条、公网通道与网关职责分离
+  - 依赖脚本（仍在）：`scripts/runtime/managed-webui.ps1`、`../AI/Voice/Start-Voice.ps1`、`Stop-Voice.ps1`
+- **连接修复：补 `/api/sd-status`** — 导演台原先请求不存在接口导致永远“未连接”；现已实现，并回退探测 `/sdapi`
+- **导演台：配音工作室** — 中栏 voice-studio（字幕/翻译/系统试听/AI 生成/WAV 下载），接 `/api/tts-status|translate|tts|voice/prepare`
+- **导演台：历史面板 UI** — `HistoryPanel.vue`（缩略图/seed/继续/复制/删除）
+- **导演台：Seed lock + 负面词编辑** — 出图参数区可锁 seed、复用上次 seed、自定义负面文本；`promptPolicy` 基础接入
+- **出图参数对齐旧 sd-api** — 默认 CFG 5.5、负面默认开启、hires denoise 0.35 / Latent、scheduler 可选、`hr_second_pass_steps`
+- **控制面板 UI 对齐作品册气质** — 宽壳大标题、状态墙卡片、克制分区、sticky 工具条、旧版 status-grid / service-row / access-card 信息架构
+- **画风页** — 多色条 mood 卡、完整 COLOR_MOODS、进入绘制 CTA 与使用提示

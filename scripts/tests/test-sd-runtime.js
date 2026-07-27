@@ -93,118 +93,104 @@ async function testDualEnhancementPayload() {
   assert.strictEqual(single.enhancements.regional, false);
 }
 
+// ── 模型 profile 与能力协商（迁移到 src/utils/promptPolicy.ts） ──────────
 function testProfilesAndCapabilities() {
-  const elements = {
-    sdModel: select(['staleModel']),
-    sampler: select(['Euler a']),
-    scheduler: select(['', 'Karras']),
-    sdHiresUpscaler: select(['Latent'])
-  };
-  elements.sdModel.value = 'staleModel';
-  const context = {
-    console,
-    Promise,
-    Number,
-    Array,
-    String,
-    Date,
-    MODEL_PROFILES: [
-      {
-        id: 'actual',
-        name: 'Actual',
-        match: ['actualModel'],
-        quality_prefix: 'quality',
-        negative_prefix: 'model-neg',
-        negative_mode: 'replace',
-        rating_safe: 'safe',
-        rating_mature: 'nsfw',
-        hires: { steps: 12, scale: 1.5, upscaler: 'Latent' }
-      },
-      { id: 'stale', name: 'Stale', match: ['staleModel'], quality_prefix: 'stale-quality' }
-    ],
-    ACTIVE_MODEL_PROFILE: null,
-    AICPromptPolicy: require('../../tools/prompt-policy'),
-    document: {
-      getElementById: id => elements[id] || null,
-      createElement: () => ({ value: '', textContent: '' })
+  const policy = require('../../src/utils/promptPolicy.ts');
+  const profiles = [
+    {
+      id: 'actual', name: 'Actual', match: ['actualModel'],
+      quality_prefix: 'quality',
+      negative_prefix: 'model-neg',
+      negative_mode: 'replace',
+      negative_replace_scope: 'boilerplate',
+      rating_all: 'safe', rating_r18: 'nsfw',
+      hires_steps: 12, hires_scale: 1.5, hires_upscaler: 'Latent'
     },
-    localStorage: { getItem: () => '{}', setItem() {} },
-    mergeTokenText: (a, b) => [a, b].filter(Boolean).join(', '),
-    updateLivePreview() {},
-    flash() {}
-  };
-  vm.createContext(context);
-  vm.runInContext(source('tools/prompt-builder/sd.js'), context);
-  context._sdCapabilities = {
-    currentModel: 'actualModel',
-    models: [{ title: 'actualModel' }],
-    samplers: [{ name: 'Euler a' }, { name: 'Euler a Karras' }],
-    schedulers: [],
-    upscalers: [{ name: 'Latent' }]
-  };
-  context.populateSDCapabilities(context._sdCapabilities);
+    { id: 'stale', name: 'Stale', match: ['staleModel'], quality_prefix: 'stale-quality' }
+  ];
 
-  assert.strictEqual(context.ACTIVE_MODEL_PROFILE.id, 'actual', 'stale model must not retain its profile');
-  assert.strictEqual(context.currentQualityPrefix({ rating: 'All' }), 'quality, safe');
-  assert.strictEqual(context.currentQualityPrefix({ rating: 'R15' }), 'quality', 'R15 must not inherit safe');
-  assert.strictEqual(context.currentQualityPrefix({ rating: 'R18' }), 'quality, nsfw');
+  const actual = policy.resolveModelProfile(profiles, 'actualModel');
+  assert.strictEqual(actual.id, 'actual', 'checkpoint must resolve to its own profile');
+
+  assert.strictEqual(policy.qualityPrefix(actual, { rating: 'All' }), 'quality, safe');
+  assert.strictEqual(policy.qualityPrefix(actual, { rating: 'R15' }), 'quality', 'R15 must not inherit safe');
+  assert.strictEqual(policy.qualityPrefix(actual, { rating: 'R18' }), 'quality, nsfw');
+
   assert.strictEqual(
-    context.currentModelNegativePrefix({ rating: 'All' }, 'bad anatomy, crowd, daylight'),
+    policy.modelNegativePrompt(actual, 'bad anatomy, crowd, daylight'),
     'model-neg, crowd, daylight',
     'replace mode must only replace boilerplate and preserve scene semantics'
   );
-  elements.sdModel.value = 'mysteryModel';
+
+  // 站内 LoRA 基于 WAI/Illustrious 训练：未识别的 checkpoint 回退首个 profile，
+  // 而不是退回与项目无关的通用 SDXL 词组。
+  const unknown = policy.resolveModelProfile(profiles, 'mysteryModel');
+  assert.strictEqual(unknown.id, 'actual', 'unknown checkpoints must fall back to the primary profile');
   assert.strictEqual(
-    context.currentQualityPrefix({ rating: 'All' }),
+    policy.qualityPrefix(null, { rating: 'All' }),
     'masterpiece, best_quality, very_aesthetic, absurdres',
-    'an explicitly unknown model must not inherit the stale active profile'
+    'with no profile at all the generic anime prefix is used'
   );
   assert.strictEqual(
-    context.currentModelNegativePrefix({ rating: 'All' }, 'scene-neg'),
+    policy.modelNegativePrompt(null, 'scene-neg'),
     'scene-neg',
-    'an explicitly unknown model must preserve the custom negative prompt'
+    'with no profile the custom negative prompt must be preserved'
   );
-  assert.deepStrictEqual(
-    JSON.parse(JSON.stringify(context.currentHiresProfileSettings('mysteryModel'))),
-    { steps: null, denoisingStrength: null, scale: null, upscaler: '' },
-    'an explicitly unknown model must not inherit profile-specific hires settings'
+
+  // framing 决定 LoRA 权重
+  const loraMeta = [{
+    name: 'ayachi_nene_v15',
+    strength: { default: 0.8 },
+    recommended_weight: { portrait: 0.85, fullbody: 0.75, complex_scene: 0.7 }
+  }];
+  const closeUp = policy.resolveLoraSpecs('nene', null, loraMeta, { nene: 'ayachi_nene_v15' }, { shot: 'close' });
+  const wide = policy.resolveLoraSpecs('nene', null, loraMeta, { nene: 'ayachi_nene_v15' }, { shot: 'wide' });
+  assert.strictEqual(closeUp[0].weight, 0.85, 'close-up must use the portrait weight');
+  assert.strictEqual(wide[0].weight, 0.75, 'wide shot must use the fullbody weight');
+  const dual = policy.resolveLoraSpecs(
+    'triad', null, loraMeta, { triad: 'ayachi_nene_v15, shiki_natsume_v15' }, {}
   );
-  elements.sdModel.value = 'actualModel';
-  assert.deepStrictEqual(
-    JSON.parse(JSON.stringify(context.resolveSDSamplingSelection('Euler a', 'Karras'))),
-    { sampler: 'Euler a Karras', scheduler: '' }
+  assert(dual.every(spec => spec.weight === 0.62), 'dual scenes must lower both LoRA weights');
+
+  // framing 冲突消解
+  assert(
+    !policy.filterFraming('close_up, full_body, smile', 'close').includes('full_body'),
+    'close-up framing must drop conflicting wide tokens'
   );
-  assert.deepStrictEqual(
-    JSON.parse(JSON.stringify(context.resolveSDSamplingSelection('Euler a', 'Unknown'))),
-    { sampler: 'Euler a', scheduler: '' },
-    'unsupported schedulers must not be manufactured into sampler names'
-  );
+
+  // Danbooru 规范化
+  assert.strictEqual(policy.norm('golden hour, window light'), 'golden_hour, window_light');
 }
 
+// ── 队列失败保留（迁移到 src/composables/useSDQueue.ts） ─────────────────
 async function testFailedQueueJobIsRetained() {
   const flashes = [];
-  const context = {
-    console,
-    Promise,
-    Math,
-    Date,
-    document: { getElementById: () => null },
-    escapeHtml: String,
-    flash: message => flashes.push(message),
-    callSDGenerate: () => Promise.resolve({ status: 'failure' }),
-    _sdGeneration: null
-  };
-  vm.createContext(context);
-  vm.runInContext(source('tools/prompt-builder/queue.js'), context);
-  context._sdQueue = [{ id: 'one', title: 'one' }];
-  context.processSDQueue();
-  await new Promise(resolve => setTimeout(resolve, 0));
+  const { useSDQueue } = require('../../src/composables/useSDQueue.ts');
+  const queue = useSDQueue({
+    run: () => Promise.resolve({ status: 'failure' }),
+    onFlash: message => flashes.push(message),
+    isBusy: () => false
+  });
 
-  assert.strictEqual(context._sdQueuePaused, true);
-  assert.strictEqual(context._sdQueue.length, 1);
-  assert.strictEqual(context._sdQueue[0].id, 'one');
-  assert.strictEqual(context._sdActiveQueueJob, null);
-  assert(flashes.some(message => message.includes('已保留')));
+  queue.enqueue({ title: 'one', prompt: 'p', negative: '', size: '832x1216', seed: -1 });
+  await new Promise(resolve => setTimeout(resolve, 10));
+
+  assert.strictEqual(queue.paused.value, true, 'a failed job must pause the queue');
+  assert.strictEqual(queue.queue.value.length, 1, 'the failed job must be retained');
+  assert.strictEqual(queue.queue.value[0].title, 'one');
+  assert.strictEqual(queue.activeJob.value, null);
+  assert(flashes.some(message => message.includes('已保留')), 'user must be told the job was kept');
+
+  // 上限保护：忙碌时连续入队不得超过上限
+  const full = useSDQueue({
+    run: () => new Promise(() => {}),
+    onFlash: message => flashes.push(message),
+    isBusy: () => true
+  });
+  for (let i = 0; i < 10; i += 1) {
+    full.enqueue({ title: 'j' + i, prompt: 'p', negative: '', size: '832x1216', seed: -1 });
+  }
+  assert(full.total.value <= 8, 'queue must not exceed its limit');
 }
 
 (async () => {
@@ -212,7 +198,7 @@ async function testFailedQueueJobIsRetained() {
   await testDualEnhancementPayload();
   testProfilesAndCapabilities();
   await testFailedQueueJobIsRetained();
-  console.log('SD runtime tests passed: negative toggle, profile refresh, capabilities, and queue retention');
+  console.log('SD runtime tests passed: negative toggle, dual enhancement payload, profile resolution, LoRA framing weights, and queue retention');
 })().catch(error => {
   console.error(error);
   process.exit(1);
