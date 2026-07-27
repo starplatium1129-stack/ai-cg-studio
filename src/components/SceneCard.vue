@@ -9,7 +9,7 @@
     @keydown.enter.prevent="clickable && emit('pick', scene)"
     @keydown.space.prevent="clickable && emit('pick', scene)"
   >
-    <div class="sc-band" :style="{ background: BAND_FALLBACK }">
+    <div class="sc-band">
       <img
         v-if="thumbId"
         class="sc-thumb"
@@ -66,7 +66,6 @@ const props = withDefaults(defineProps<{
 
 const emit = defineEmits<{ pick: [scene: any] }>()
 
-const BAND_FALLBACK = 'linear-gradient(145deg, color-mix(in srgb, var(--bg-deep) 72%, var(--bg-elevated)), var(--bg-elevated))'
 const TAG_BLOCKLIST = ['official_cg', 'visual_audited']
 
 const thumbFailed = ref(false)

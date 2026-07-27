@@ -47,7 +47,7 @@
         </div>
       </section>
 
-      <section v-if="recommendations.length" style="margin-top:var(--s-7)">
+      <section v-if="recommendations.length" class="recommend-section">
         <h2 class="recommend-title">推荐场景</h2>
         <div class="recommend-grid">
           <RouterLink v-for="s in recommendations" :key="s.id" class="card-direct"
@@ -108,17 +108,17 @@ onMounted(async () => {
   border:1px solid var(--on-art-line);
   background:
     radial-gradient(circle at 50% 22%, color-mix(in srgb,var(--nene-violet) 22%,transparent), transparent 58%),
-    linear-gradient(155deg,#4d3d67,#171422);
+    var(--stage-violet);
   box-shadow:inset 0 1px 0 var(--on-art-line), var(--shadow-lg);
 }
 .portrait.natsume {
   background:
     radial-gradient(circle at 50% 22%, color-mix(in srgb,var(--natsume-amber) 20%,transparent), transparent 58%),
-    linear-gradient(155deg,#3a3a2a,#1a1a10);
+    var(--stage-amber);
 }
 /* 脚下地台光：让人物"站"在画面里而不是漂着 */
 .portrait::before {
-  content:''; position:absolute; z-index:0; inset:auto 14% 0; height:34%;
+  content:''; position:absolute; z-index:var(--z-below); inset:auto 14% 0; height:34%;
   border-radius:50% 50% 0 0; filter:blur(18px);
   background:radial-gradient(ellipse at center bottom, color-mix(in srgb,var(--accent) 26%,transparent), transparent 68%);
 }
@@ -176,6 +176,7 @@ onMounted(async () => {
 .chips .chip.trait { border-color:var(--border-soft); background:var(--bg-surface); color:var(--text-primary); }
 .char-lora { color:var(--text-secondary); font-size:var(--fs-body-sm); }
 .char-lora code { color:var(--accent); font-family:var(--font-mono); }
+.recommend-section { margin-top:var(--s-7); }
 .recommend-title { margin:0 0 var(--s-3); font-size:var(--fs-title-sm); }
 .recommend-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:var(--s-3); }
 .cg-title { margin-bottom:var(--s-1); font-size:var(--fs-title-xs); font-weight:800; }

@@ -2,7 +2,7 @@
 
 // 统一静态资源缓存版本号。
 // 用法: node scripts/maintenance/bump-asset-version.js <资源路径> <新版本>
-//   例: node scripts/maintenance/bump-asset-version.js css/design-system.css 11
+//   例: node scripts/maintenance/bump-asset-version.js css/docs.css 2
 // 会更新 index.html / tools/*.html / docs/*.html 里所有对该资源的 ?v= 引用。
 
 const fs = require('fs');

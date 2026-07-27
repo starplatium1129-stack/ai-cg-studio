@@ -3,23 +3,21 @@
 // 用法: node scripts/maintenance/scan-style-literals.js [file...]
 const fs = require('fs');
 const path = require('path');
-const root = path.resolve(__dirname, '..', '..');
-
-function listHtml(dir) {
-  const abs = path.join(root, dir);
-  if (!fs.existsSync(abs)) return [];
-  return fs.readdirSync(abs).filter((n) => n.endsWith('.html')).map((n) => (dir ? dir + '/' + n : n));
-}
+const sources = require('./style-sources');
+const root = sources.ROOT;
 
 const args = process.argv.slice(2).filter((a) => !a.startsWith('--'));
+// 必须覆盖应用真正加载的样式:src/assets/css/*.css + 各 SFC 的 <style> 块。
+// 曾经这里只扫 css/ + tools/ + docs/,而 SPA 一个字节都不加载 css/。
 const targets = args.length
   ? args
-  : ['index.html', ...listHtml('tools'), ...listHtml('docs'),
-     ...fs.readdirSync(path.join(root, 'css')).filter((n) => n.endsWith('.css')).map((n) => 'css/' + n)];
+  : [...sources.appCssFiles(), ...sources.sfcFiles(),
+     ...sources.staticHtmlFiles(), ...sources.legacyDocsCssFiles()];
 
 // 已在源文件里写注释说明理由的合理例外(根字号基准、品牌图形圆角、
 // iOS 16px 约束、装饰性字形槽、卡内堆叠底层)。总量作为回归预算使用。
-const BUDGET = 11;
+// 2026-07-27:门槛改为扫真实样式树后按实测重设。
+const BUDGET = 26;
 
 const CHECKS = [
   ['fontsize', /font-size:\s*\.?\d[\d.]*(?:rem|px)/g],
@@ -40,7 +38,7 @@ for (const rel of targets) {
   const raw = fs.readFileSync(abs, 'utf8');
   let css = '';
   if (rel.endsWith('.css')) css = raw;
-  else for (const m of raw.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/gi)) css += m[1] + '\n';
+  else css = sources.sfcStyleBlocks(raw); // .vue 与 .html 的 <style> 块同一形态
   css = css.replace(/\/\*[\s\S]*?\*\//g, ' ');
   // token 定义行本身就是字面量的合法归宿(--accent-soft: rgba(...)),不算漂移。
   // 只统计"使用点"的字面量。

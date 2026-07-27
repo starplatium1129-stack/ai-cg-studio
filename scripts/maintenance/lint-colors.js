@@ -44,11 +44,25 @@ var ALLOWED = new Set([
   '#3F8F55', '#A96C12', '#D94B52', '#327CA8',
 ]);
 
-var scanDirs = ['tools', 'docs', 'css'];
+// 必须扫应用真正加载的样式:src/assets/css + SFC 的 <style> 块。
+// 曾经只扫 tools/docs/css,而 SPA 一个字节都不加载它们 —— 于是 ALLOWED 越长越大,
+// 把 HomeView/CharacterView 的硬编码渐变当"允许"收了进来。
+var scanDirs = ['src', 'docs', 'css'];
+
+// 注释里的 hex 是文档示例（常常正是在解释为什么某个值不合格），不是漂移。
+// 逐行把注释内容抹成空格，保留行号与行数。
+function stripComments(content) {
+  var out = content.replace(/\/\*[\s\S]*?\*\//g, function (block) {
+    return block.replace(/[^\n]/g, ' ');
+  });
+  return out.split('\n').map(function (line) {
+    return line.replace(/\/\/.*$/, function (rest) { return rest.replace(/[^\n]/g, ' '); });
+  }).join('\n');
+}
 
 function scanFile(filepath) {
   try {
-    var content = fs.readFileSync(filepath, 'utf8');
+    var content = stripComments(fs.readFileSync(filepath, 'utf8'));
   } catch (e) { return []; }
 
   var warnings = [];
@@ -69,8 +83,8 @@ function scanFile(filepath) {
         warnings.push({ file: filepath, line: lineno, hex: m, text: line.trim().slice(0, 120) });
       });
     });
-  } else if (filepath.endsWith('.html')) {
-    // Extract <style> blocks
+  } else if (filepath.endsWith('.html') || filepath.endsWith('.vue')) {
+    // Extract <style> blocks（.vue 与 .html 同一形态）
     var inStyle = false;
     var styleBase = 0;
     lines.forEach(function (line, i) {
@@ -111,7 +125,7 @@ function main() {
       var full = path.join(dirPath, entry.name);
       if (entry.isDirectory()) {
         if (entry.name !== 'vendor' && entry.name !== 'archive') walkDir(full);
-      } else if (entry.name.endsWith('.html') || entry.name.endsWith('.css')) {
+      } else if (entry.name.endsWith('.html') || entry.name.endsWith('.css') || entry.name.endsWith('.vue')) {
         allWarnings = allWarnings.concat(scanFile(full));
       }
     });
@@ -142,6 +156,9 @@ function main() {
 
   console.log('  💡 Run "npm run lint:colors" after making CSS changes.');
   console.log('     See docs/maintenance.md for token reference.');
+
+  // 之前无论发现多少漂移都以 0 退出 —— 等于只是打印,进不了门槛。
+  if (process.argv.includes('--check')) process.exitCode = 1;
 }
 
 main();

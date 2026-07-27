@@ -178,7 +178,7 @@
             <div v-if="sd.generating.value" class="stage-generating-copy">
               <div class="stage-generating-title">正在绘制这一张</div>
               <div class="stage-generating-sub">{{ sd.statusText.value || '模型正在推理…' }} {{ sd.progress.value }}%</div>
-              <div class="stage-progress-ring"><i :style="{ width: sd.progress.value + '%' }"></i></div>
+              <div class="stage-progress-ring"><i :style="{ '--progress': sd.progress.value + '%' }"></i></div>
             </div>
             <div v-else class="stage-idle">
               <div class="stage-placeholder-title">成片将在这里出现</div>
@@ -211,7 +211,7 @@
 
           <div class="token-row">
             <span class="token-counter" :class="promptReport.level" :title="promptReport.warnings.join(' · ')">
-              <span class="bar"><i :style="{ width: Math.min(100, Math.round(promptReport.positiveCount / 72 * 100)) + '%' }"></i></span>
+              <span class="bar"><i :style="{ '--progress': Math.min(100, Math.round(promptReport.positiveCount / 72 * 100)) + '%' }"></i></span>
               <span class="num">{{ promptReport.positiveCount }}</span>
               <span class="muted">正向 /</span>
               <span class="neg-num">{{ promptReport.negativeCount }}</span>
@@ -362,9 +362,9 @@
           </div>
 
           <!-- Progress -->
-          <div v-if="sd.generating.value" class="sd-result-area" style="display:block">
+          <div v-if="sd.generating.value" class="sd-result-area is-progress">
             <div class="sd-status">{{ sd.statusText.value }}</div>
-            <div class="sd-progress"><span class="sd-progress-bar" :style="{ width: sd.progress.value + '%' }"></span></div>
+            <div class="sd-progress"><span class="sd-progress-bar" :style="{ '--progress': sd.progress.value + '%' }"></span></div>
           </div>
 
           <!-- Error + 分类恢复 -->

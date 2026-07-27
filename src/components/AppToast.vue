@@ -38,7 +38,8 @@ const icons: Record<string, string> = {
   bottom: var(--s-6);
   left: 50%;
   transform: translateX(-50%);
-  z-index: 9999;
+  /* 走 z 阶梯。9999 会盖住 --z-skip(500) 的跳转链接 */
+  z-index: var(--z-toast);
   display: flex;
   flex-direction: column-reverse;
   align-items: center;
@@ -55,7 +56,8 @@ const icons: Record<string, string> = {
   border: 1px solid var(--border-soft);
   background: var(--bg-elevated);
   backdrop-filter: blur(16px);
-  box-shadow: 0 8px 32px rgba(0,0,0,.28), 0 1px 0 rgba(255,255,255,.06) inset;
+  /* 走 token:硬编码 rgba 在浅色主题下是脏灰,而 --glass-shadow 已按主题调过 */
+  box-shadow: var(--glass-shadow), 0 1px 0 var(--glass-highlight) inset;
   font-size: var(--fs-body-sm);
   font-weight: 600;
   color: var(--text-primary);
@@ -72,12 +74,14 @@ const icons: Record<string, string> = {
 .toast-msg  { flex: 1; }
 .toast-close { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 0 0 0 var(--s-1); font-size: 1.1em; line-height: 1; }
 
+/* 图标是这四种提示唯一的颜色信号,按设计系统契约必须走 --*-text
+   (原 token 是给色块/描边调的,浅色主题下当图标只有 1.9–2.6:1) */
 .toast-success { border-color: color-mix(in srgb, var(--success) 40%, var(--border-soft)); }
-.toast-success .toast-icon { color: var(--success); }
+.toast-success .toast-icon { color: var(--success-text); }
 .toast-error   { border-color: color-mix(in srgb, var(--danger)  40%, var(--border-soft)); }
-.toast-error   .toast-icon { color: var(--danger); }
+.toast-error   .toast-icon { color: var(--danger-text); }
 .toast-warning { border-color: color-mix(in srgb, var(--warning) 40%, var(--border-soft)); }
-.toast-warning .toast-icon { color: var(--warning); }
+.toast-warning .toast-icon { color: var(--warning-text); }
 .toast-info    .toast-icon { color: var(--accent); }
 
 /* TransitionGroup */

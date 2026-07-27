@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <article class="page" style="--page-max:1000px">
     <div class="page-kicker">Color script</div>
     <h1 class="title">🎨 色彩情绪 (Color Script)</h1>
@@ -34,7 +34,7 @@
           <span class="mood-icon" :style="{ '--mood-color': selected.color }">{{ selected.icon }}</span>
           {{ selected.name }} → 色彩 → 光照
         </h3>
-        <div class="palette" style="display:flex;gap:var(--s-1);margin-bottom:var(--s-4)">
+        <div class="palette">
           <div v-for="c in selected.palette" :key="c" class="palette-swatch" :style="{ '--swatch': c }">{{ c }}</div>
         </div>
         <div class="mapping-grid">
@@ -57,7 +57,7 @@
       </div>
     </Transition>
 
-    <h2 class="section-title" style="margin-top:var(--s-8)">📖 美术规范 · 色彩对照</h2>
+    <h2 class="section-title spaced-lg">📖 美术规范 · 色彩对照</h2>
     <p class="note mb-3">写每一条提示词前，先问自己："这符合我们的美术规范吗？"</p>
     <div class="art-ref">
       <div class="art-ref-card good">
@@ -74,7 +74,7 @@
       </div>
     </div>
 
-    <h2 class="section-title" style="margin-top:var(--s-6)">💡 光照规范 · 每个光源都有理由</h2>
+    <h2 class="section-title spaced">💡 光照规范 · 每个光源都有理由</h2>
     <p class="note mb-3">光源不能只为好看而堆叠，它必须服务于故事与时间。</p>
     <div class="lighting-ref">
       <div v-for="l in LIGHTINGS" :key="l.name" class="lighting-mini">
@@ -163,10 +163,15 @@ function showToast(msg: string) {
 .mb-3 { margin-bottom:var(--s-3); }
 .note { color:var(--text-muted); font-size:var(--fs-body-sm); }
 .section-title { font-size:var(--fs-title-sm); font-weight:700; margin-bottom:var(--s-2); }
+/* 章节间距:替代原先三处内联 style="margin-top:..." */
+.section-title.spaced-lg { margin-top:var(--s-8); }
+.section-title.spaced { margin-top:var(--s-6); }
+.palette { display:flex; gap:var(--s-1); margin-bottom:var(--s-4); }
 
 .result-panel { padding:var(--s-5); border:1px solid var(--accent); border-radius:var(--r-xl); background:var(--bg-surface); margin-top:var(--s-5); }
 .result-panel h3 { margin-bottom:var(--s-3); font-size:var(--fs-title-sm); }
-.palette-swatch { width:48px; height:48px; border-radius:var(--r-md); background:var(--swatch); display:grid; place-items:end center; padding-bottom:4px; font-size:9px; color:rgba(0,0,0,.6); }
+/* 色块上的 hex 标签:底色是任意 mood 色,故用固定深墨(--on-mood-text 同理) */
+.palette-swatch { width:48px; height:48px; border-radius:var(--r-md); background:var(--swatch); display:grid; place-items:end center; padding-bottom:4px; font-size:var(--fs-mono-xs); color:var(--on-mood-text); }
 .mapping-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:var(--s-3); margin-bottom:var(--s-4); }
 .mapping-item { background:var(--bg-elevated); border:1px solid var(--border-soft); border-radius:var(--r-md); padding:var(--s-3); }
 .mapping-label { font-size:var(--fs-label-sm); color:var(--text-muted); text-transform:uppercase; letter-spacing:.05em; margin-bottom:var(--s-1); }

@@ -21,7 +21,9 @@
   /* ---- Text ---- */
   --text-primary:   #E8E8F0;   /* 主文字 */
   --text-secondary: #A8A8C0;   /* 副文字 */
-  --text-muted:     #8C8CA3;   /* 占位/说明，满足深色背景可读性 */
+  /* 占位/说明。#8C8CA3 在 --bg-deep 上够(5.84),但合成到 --bg-elevated
+     (#32294d) 上只有 4.10 —— 而 .sc-tag、.local-status-refresh 等确实用在那层。 */
+  --text-muted:     #9494A9;
   --text-inverse:   #17171C;   /* 粉底深色字反色 */
 
   /* ---- Accent (樱花粉 — 仅高亮/CTAs) ---- */
@@ -60,16 +62,18 @@
      一旦拿来当文字色(.prompt-code .q、.mood-name、.voice-state.warn 等),
      在浅色主题下只有 1.2–3.0:1,不满足 DESIGN.md §Colors 的 WCAG AA 要求。
      故拆成两组:原 token 继续做背景与描边,--*-text 专供文字。
-     深色主题两者同值(深底上原色本就 5:1 以上),仅浅色主题压深。 */
+     浅色主题统一压深;深色主题过去直接别名到原色,但只核算了 --bg-deep 一种底 ——
+     合成到 --bg-elevated 上其中四个只有 3.8-4.4:1,而弹层/卡片正是它们的常驻表面,
+     故按需提亮到 4.5:1 以上(deep 底上仍在 6.4:1 以上)。 */
   --success-text:       var(--success);
   --warning-text:       var(--warning);
-  --danger-text:        var(--danger);
+  --danger-text:        #f16b69;   /* 原 var(--danger),elevated 上仅 3.86:1 */
   --info-text:          var(--info);
   --mood-joy-text:      var(--mood-joy);
-  --mood-love-text:     var(--mood-love);
+  --mood-love-text:     #f06795;   /* 原 var(--mood-love),elevated 上仅 4.40:1 */
   --mood-calm-text:     var(--mood-calm);
   --mood-sad-text:      var(--mood-sad);
-  --mood-tension-text:  var(--mood-tension);
+  --mood-tension-text:  #c37ccf;   /* 原 var(--mood-tension),elevated 上仅 3.78:1 */
   --mood-warmth-text:   var(--mood-warmth);
   /* mood 色块之上的文字:6 种 mood 底全部是高亮度色,白字最差 1.4:1,
      故统一用深墨。此值不随主题翻转 —— 底色是 mood 而不是页面底。 */
@@ -165,6 +169,13 @@
   /* 画作衬垫(画廊卡片与 letterbox 留边):这一项**随主题翻转**,
      因为它是画框而不是画面本身 —— 浅色主题下是画册纸白,深色下是暗房底。 */
   --art-mat: #17141c;
+
+  /* ---- 立绘舞台底(首页 hero、角色页画框) ----
+     这些是"人物身后的空间",随主题翻转:深色是暗房,浅色是画册纸。
+     过去直接硬编码在 HomeView / CharacterView 的 <style> 里,
+     其中角色页压根没有浅色值 —— 浅色主题下画框仍是近黑。 */
+  --stage-violet: linear-gradient(155deg, #4d3d67 0%, #2a233d 48%, #171422 100%);
+  --stage-amber:  linear-gradient(155deg, #3a3a2a 0%, #24241a 48%, #1a1a10 100%);
 }
 
 /* ============================================================
@@ -208,6 +219,14 @@
   --glass-fill-strong: rgba(255, 254, 252, 0.92);
   --art-mat: #ebe6dc;          /* 画作衬垫:暖纸卡 */
 
+  /* 功能色原 token:浅纸上做描边/图标(非文字图形,SC 1.4.11 阈值 3:1)。
+     原值 #66BB6A / #FFA726 / #42A5F5 在 --bg-elevated 上只有 1.9–2.6:1,
+     而状态点、callout 左边框、toast 图标只靠颜色区分,故压深到 3:1 以上。
+     深色主题保持原值(深底上本就足够)。 */
+  --success:           #559d58;
+  --warning:           #c9841e;
+  --info:              #3d99e4;
+
   /* 文字专用色阶:相对暖米纸 #f6f3ec 核算,全部 >=4.5:1 */
   --success-text:      #356a3a;
   --warning-text:      #7a5210;
@@ -224,6 +243,10 @@
   --glass-edge: rgba(122, 96, 68, 0.14);
   --glass-specular: rgba(255, 254, 252, 0.96);
   --glass-shadow: 0 14px 36px rgba(92, 68, 44, 0.08);
+
+  /* 立绘舞台底的浅色版:画册纸上的淡紫/淡琥珀,而不是暗房 */
+  --stage-violet: linear-gradient(155deg, #e9ddf4 0%, #c8b9df 48%, #8c789f 100%);
+  --stage-amber:  linear-gradient(155deg, #f0e7d2 0%, #dccda6 48%, #a58f63 100%);
 }
 
 /* 浅纸上的背景光斑:深色主题是氛围,浅纸上是脏渍 —— 压到几乎看不见 */
@@ -983,7 +1006,9 @@ tr:hover td { background: var(--bg-hover); }
   border-radius: var(--r-md);
   padding: var(--s-4);
   margin: var(--s-4) 0;
-  border-left: 3px solid var(--info);
+  /* 3px 边框属于非文字图形(3:1);兄弟 .callout-warn/-danger/-success 已用 --*-text,
+     这条漏了,统一过来 */
+  border-left: 3px solid var(--info-text);
   background: color-mix(in srgb, var(--info) 8%, transparent);
 }
 .callout-warn { border-left-color: var(--warning-text); background: color-mix(in srgb, var(--warning) 8%, transparent); }

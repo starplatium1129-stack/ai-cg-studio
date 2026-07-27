@@ -39,8 +39,8 @@
       </div>
     </div>
 
-    <div v-if="unavailable" class="empty" style="padding:var(--s-8) 0;text-align:center">
-      <span style="font-size:var(--fs-glyph)">🖼</span>
+    <div v-if="unavailable" class="empty empty-block">
+      <span class="empty-glyph" aria-hidden="true">🖼</span>
       <h2>展示素材暂未连接</h2>
       <p>重新启动控制面板后会自动连接 AI/SceneShowcase 中最新的审核展示集。</p>
       <RouterLink class="btn btn-primary" to="/scene-explorer">先逛灵感场景</RouterLink>
@@ -207,6 +207,9 @@ onUnmounted(() => document.removeEventListener('keydown', onKey))
 </script>
 
 <style scoped>
+/* 空状态:替代原先的内联 padding/text-align/font-size */
+.empty-block { padding:var(--s-8) 0; text-align:center; }
+.empty-glyph { font-size:var(--fs-glyph); }
 .showcase-hero { padding:var(--s-8) var(--s-6) var(--s-5); border-radius:var(--r-xl); background:linear-gradient(135deg,var(--accent-soft),transparent 62%),var(--bg-surface); border:1px solid var(--border-soft); margin-bottom:var(--s-5); }
 .showcase-copy h1 { font-size:clamp(1.6rem,3vw,2.8rem); font-weight:800; margin-bottom:var(--s-3); }
 .showcase-copy p { color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:1.7; margin-bottom:var(--s-4); }

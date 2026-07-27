@@ -104,6 +104,12 @@ function createGateway(options) {
     res.sendFile(fs.existsSync(spaEntry) ? spaEntry : path.join(config.ROOT_DIR, 'index.html'));
   });
   app.use('/css', express.static(path.join(config.ROOT_DIR, 'css'), staticOptions(ONE_DAY)));
+  // docs/*.html 引用设计系统的唯一一份实现（src/assets/css）。
+  // 之前 css/ 下有一份分叉副本，token 已经开始漂移；只暴露这一个文件而不是整个 src/。
+  app.use('/src/assets/css', function (req, res, next) {
+    if (req.path !== '/design-system.css') return res.status(404).end();
+    next();
+  }, express.static(path.join(config.ROOT_DIR, 'src', 'assets', 'css'), staticOptions(ONE_DAY)));
   app.use('/assets', express.static(path.join(config.ROOT_DIR, 'assets'), staticOptions(ONE_WEEK)));
   app.use('/data', express.static(path.join(config.ROOT_DIR, 'data'), staticOptions(0)));
   app.use('/scene-showcase', function (req, res, next) {

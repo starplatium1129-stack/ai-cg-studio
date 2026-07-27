@@ -11,24 +11,32 @@
 const fs = require('fs');
 const path = require('path');
 
-const root = path.resolve(__dirname, '..', '..');
+const sources = require('../maintenance/style-sources');
+
+const root = sources.ROOT;
 const failures = [];
 
 function fail(message) { failures.push(message); }
 
-function listHtml(dir) {
-  const abs = path.join(root, dir);
-  if (!fs.existsSync(abs)) return [];
-  return fs.readdirSync(abs)
-    .filter((name) => name.endsWith('.html'))
-    .map((name) => (dir ? dir + '/' + name : name));
-}
-
-const htmlFiles = ['index.html', ...listHtml('tools'), ...listHtml('docs')];
+const htmlFiles = sources.staticHtmlFiles();
+const sfcFiles = sources.sfcFiles();
 
 // ---- 1. 内联 style 预算 ----------------------------------------------------
 // 允许的唯一形态:自定义属性载体。值属于数据(评分/比例/进度),样式规则仍在 CSS 里。
 const CUSTOM_PROP_ONLY = /^\s*(--[\w-]+\s*:\s*[^;]+;?\s*)+$/;
+// 动态绑定 :style 里的对象字面量也只允许承载自定义属性
+const DYNAMIC_CUSTOM_PROP_ONLY = /^\s*\{\s*(?:'--[\w-]+'|"--[\w-]+"|\[[^\]]+\])\s*:[^}]*\}\s*$/;
+// :style="someRef" 的形态:去 <script> 里查该标识符的定义,确认它只产出自定义属性
+const IDENTIFIER_ONLY = /^\s*[A-Za-z_$][\w$]*\s*$/;
+
+function bindsOnlyCustomProps(source, identifier) {
+  const decl = new RegExp('(?:const|let|var)\\s+' + identifier + '\\s*=\\s*computed\\(\\s*\\(\\)\\s*=>\\s*\\(([\\s\\S]*?)\\)\\s*\\)');
+  const match = source.match(decl);
+  if (!match) return false;
+  const keys = [...match[1].matchAll(/(?:^|[\s,{])\s*(?:'([^']+)'|"([^"]+)"|([\w-]+))\s*:/g)]
+    .map((m) => m[1] || m[2] || m[3]);
+  return keys.length > 0 && keys.every((k) => k.startsWith('--'));
+}
 
 for (const rel of htmlFiles) {
   const source = fs.readFileSync(path.join(root, rel), 'utf8');
@@ -37,6 +45,23 @@ for (const rel of htmlFiles) {
     if (CUSTOM_PROP_ONLY.test(match[1])) continue;
     const line = source.slice(0, match.index).split('\n').length;
     fail(`${rel}:${line} 内联 style 必须换成全局 class 或自定义属性载体 → style="${match[1]}"`);
+  }
+}
+
+// SFC 模板同样受约束 —— 这是过去完全没被覆盖的地方(实测 19 处违规)
+for (const rel of sfcFiles) {
+  const source = fs.readFileSync(path.join(root, rel), 'utf8');
+  const template = sources.sfcTemplate(source);
+  if (!template) continue;
+  // 模板在 SFC 里的起始行,用于把模板内行号换算成文件行号
+  const templateStartLine = source.slice(0, source.indexOf(template)).split('\n').length - 1;
+  for (const attr of sources.inlineStyleAttrs(template)) {
+    if (attr.dynamic) {
+      if (DYNAMIC_CUSTOM_PROP_ONLY.test(attr.value)) continue;
+      if (IDENTIFIER_ONLY.test(attr.value) && bindsOnlyCustomProps(source, attr.value.trim())) continue;
+    } else if (CUSTOM_PROP_ONLY.test(attr.value)) continue;
+    const prefix = attr.dynamic ? ':style' : 'style';
+    fail(`${rel}:${templateStartLine + attr.line} 内联 ${prefix} 必须换成 scoped class 或自定义属性载体 → ${prefix}="${attr.value}"`);
   }
 }
 
@@ -73,31 +98,28 @@ if (fs.existsSync(docsDir)) {
 
 // ---- 3. 设计 token 完整性 --------------------------------------------------
 // 被 var() 引用但从未定义 = 静默失效(浏览器不报错,元素直接掉样式)。
-const cssFiles = fs.readdirSync(path.join(root, 'css'))
-  .filter((name) => name.endsWith('.css'))
-  .map((name) => 'css/' + name);
+// 必须覆盖应用真正加载的 src/assets/css + 所有 SFC。
+const cssFiles = [...sources.appCssFiles(), ...sources.legacyDocsCssFiles()];
 
 let allCss = '';
 for (const rel of cssFiles) allCss += fs.readFileSync(path.join(root, rel), 'utf8') + '\n';
 let allInlineCss = '';
-for (const rel of htmlFiles) {
+for (const rel of [...htmlFiles, ...sfcFiles]) {
   const source = fs.readFileSync(path.join(root, rel), 'utf8');
   for (const match of source.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/gi)) allInlineCss += match[1] + '\n';
   // 自定义属性载体里赋的值也算定义点
-  for (const match of source.matchAll(/\sstyle="([^"]*)"/g)) allInlineCss += match[1] + ';\n';
+  for (const match of source.matchAll(/\s:?style="([^"]*)"/g)) allInlineCss += match[1] + ';\n';
 }
 
 const defined = new Set();
 for (const match of (allCss + allInlineCss).matchAll(/(--[\w-]+)\s*:/g)) defined.add(match[1]);
-// JS 运行时通过 setProperty 注入的也算定义点
-for (const dir of ['tools', 'tools/prompt-builder', 'tools/chat']) {
-  const abs = path.join(root, dir);
+// 运行时通过 setProperty / 绑定对象注入的也算定义点
+for (const rel of [...sfcFiles, 'src/main.ts']) {
+  const abs = path.join(root, rel);
   if (!fs.existsSync(abs)) continue;
-  for (const name of fs.readdirSync(abs).filter((n) => /\.(js|mjs)$/.test(n))) {
-    const source = fs.readFileSync(path.join(abs, name), 'utf8');
-    for (const match of source.matchAll(/setProperty\(\s*['"`](--[\w-]+)/g)) defined.add(match[1]);
-    for (const match of source.matchAll(/(--[\w-]+)\s*:/g)) defined.add(match[1]);
-  }
+  const source = fs.readFileSync(abs, 'utf8');
+  for (const match of source.matchAll(/setProperty\(\s*['"`](--[\w-]+)/g)) defined.add(match[1]);
+  for (const match of source.matchAll(/['"`](--[\w-]+)['"`]\s*:/g)) defined.add(match[1]);
 }
 
 const referenced = new Map();
@@ -112,6 +134,7 @@ function collectRefs(rawText, label) {
 }
 for (const rel of cssFiles) collectRefs(fs.readFileSync(path.join(root, rel), 'utf8'), rel);
 for (const rel of htmlFiles) collectRefs(fs.readFileSync(path.join(root, rel), 'utf8'), rel);
+for (const rel of sfcFiles) collectRefs(fs.readFileSync(path.join(root, rel), 'utf8'), rel);
 
 for (const [name, where] of referenced) {
   if (!defined.has(name)) fail(`${where} 引用了未定义的设计 token ${name}(会静默掉样式)`);
@@ -124,8 +147,9 @@ if (failures.length) {
   process.exit(1);
 }
 
-const carriers = htmlFiles.reduce((total, rel) => {
+const carriers = [...htmlFiles, ...sfcFiles].reduce((total, rel) => {
   const source = fs.readFileSync(path.join(root, rel), 'utf8');
-  return total + (source.match(/\sstyle="/g) || []).length;
+  return total + (source.match(/\s:?style="/g) || []).length;
 }, 0);
-console.log(`Style debt tests passed: ${htmlFiles.length} pages CSP-ready, ${carriers} custom-property carriers, ${defined.size} design tokens resolved`);
+console.log(`Style debt tests passed: ${htmlFiles.length} pages + ${sfcFiles.length} SFCs CSP-ready, ` +
+  `${carriers} custom-property carriers, ${defined.size} design tokens resolved`);

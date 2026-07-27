@@ -1,5 +1,13 @@
 <template>
-  <div class="skeleton" :class="[shape, { animated }]" :style="style" role="presentation" aria-hidden="true">
+  <div
+    v-for="i in Math.max(1, lines)"
+    :key="i"
+    class="skeleton"
+    :class="[shape, { animated }]"
+    :style="sizeVars"
+    role="presentation"
+    aria-hidden="true"
+  >
     <slot />
   </div>
 </template>
@@ -15,9 +23,10 @@ const props = withDefaults(defineProps<{
   lines?: number
 }>(), { shape: 'rect', animated: true, lines: 1 })
 
-const style = computed(() => ({
-  width:  props.width  || undefined,
-  height: props.height || undefined,
+// 只承载自定义属性:尺寸属于数据,样式规则留在下面的 CSS 里
+const sizeVars = computed(() => ({
+  '--skeleton-w': props.width  || '100%',
+  '--skeleton-h': props.height || 'auto',
 }))
 </script>
 
@@ -31,6 +40,8 @@ const style = computed(() => ({
   background-size: 200% 100%;
   border-radius: var(--r-md);
   display: block;
+  width: var(--skeleton-w, 100%);
+  height: var(--skeleton-h, auto);
 }
 .skeleton.animated { animation: shimmer 1.6s ease-in-out infinite; }
 .skeleton.circle   { border-radius: 50%; }

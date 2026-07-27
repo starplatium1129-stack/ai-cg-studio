@@ -274,7 +274,8 @@ async function run() {
     var homeCsp = homeResponse.headers.get('content-security-policy') || '';
     assert(!homeCsp.includes("'unsafe-eval'"), 'unsafe-eval must stay scoped to the chat route');
 
-    var cssResponse = await fetch(gatewayBase + '/css/design-system.css', {
+    // 设计系统只剩 src/assets/css 一份（css/ 下的分叉副本已删除）
+    var cssResponse = await fetch(gatewayBase + '/src/assets/css/design-system.css', {
       headers:{ 'Accept-Encoding':'gzip' }
     });
     assert((cssResponse.headers.get('cache-control') || '').includes('max-age=86400'), 'versioned CSS and JS should use a one-day browser cache');

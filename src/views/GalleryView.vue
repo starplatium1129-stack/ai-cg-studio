@@ -55,7 +55,7 @@
               :aria-label="`欣赏作品：${sceneTitle(item.scene)}`"
               @click="openViewer(indexOf(item))"
             >
-              <div class="artwork-media" :style="{ aspectRatio: String(ratioOf(item)) }">
+              <div class="artwork-media" :style="{ '--art-ratio': String(ratioOf(item)) }">
                 <img
                   v-if="cardUrls[item.id]"
                   class="artwork-image"

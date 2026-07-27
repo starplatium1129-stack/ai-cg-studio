@@ -9,8 +9,12 @@
 const fs = require('fs');
 const path = require('path');
 
-const root = path.resolve(__dirname, '..', '..');
-const css = fs.readFileSync(path.join(root, 'css', 'design-system.css'), 'utf8');
+const sources = require('./style-sources');
+
+const root = sources.ROOT;
+// 必须读应用真正加载的那一份。曾经这里读 css/design-system.css，
+// 而 SPA 加载的是 src/assets/css/design-system.css —— 门槛在审计一棵死树。
+const css = sources.read(sources.DESIGN_SYSTEM);
 
 function hexToRgb(hex) {
   const value = hex.replace('#', '');
@@ -66,22 +70,87 @@ function resolve(tokens, name, depth) {
   return alias ? resolve(tokens, alias[1], (depth || 0) + 1) : raw;
 }
 
+// 文字实际会落在的表面。只测 --bg-deep 是不够的:
+// --text-muted 合成到 --bg-elevated 上只有 4.03,而它确实用在那个表面。
+const SURFACES = ['--bg-deep', '--bg-base', '--bg-surface', '--bg-elevated'];
+
+// rgba()/color-mix() 表面要先合成到不透明父层才能算对比度
+function compositeSurface(tokens, name, parentRgb, depth) {
+  const raw = resolve(tokens, name);
+  if (!raw) return null;
+  if (/^#/.test(raw)) return hexToRgb(raw);
+
+  const rgba = raw.match(/^rgba?\(\s*(\d+)[,\s]+(\d+)[,\s]+(\d+)\s*(?:[,/]\s*([\d.]+))?\s*\)$/);
+  if (rgba) {
+    const fg = [Number(rgba[1]), Number(rgba[2]), Number(rgba[3])];
+    const alpha = rgba[4] === undefined ? 1 : Number(rgba[4]);
+    if (!parentRgb) return alpha >= 1 ? fg : null;
+    return fg.map((c, i) => Math.round(c * alpha + parentRgb[i] * (1 - alpha)));
+  }
+
+  // color-mix(in srgb, A pct%, B) —— 只解析设计系统里实际用到的形态
+  const mix = raw.match(/^color-mix\(\s*in\s+srgb\s*,\s*([^,]+?)\s+([\d.]+)%\s*,\s*([^)]+?)\s*\)$/);
+  if (mix && (depth || 0) < 6) {
+    const pct = Number(mix[2]) / 100;
+    const a = resolveColor(tokens, mix[1].trim(), parentRgb, (depth || 0) + 1);
+    const bRaw = mix[3].trim();
+    const b = bRaw === 'transparent' ? parentRgb : resolveColor(tokens, bRaw, parentRgb, (depth || 0) + 1);
+    if (!a || !b) return null;
+    return a.map((c, i) => Math.round(c * pct + b[i] * (1 - pct)));
+  }
+  return null;
+}
+
+function resolveColor(tokens, expr, parentRgb, depth) {
+  const varRef = expr.match(/^var\(\s*(--[\w-]+)\s*\)$/);
+  if (varRef) return compositeSurface(tokens, varRef[1], parentRgb, depth);
+  if (/^#/.test(expr)) return hexToRgb(expr);
+  if (expr === 'transparent') return parentRgb;
+  const inline = { tmp: expr };
+  return compositeSurface({ ...tokens, ...inline }, 'tmp', parentRgb, depth);
+}
+
 let failures = 0;
 
-for (const [themeName, tokens, bgToken] of [['dark', dark, '--bg-deep'], ['light', { ...dark, ...light }, '--bg-deep']]) {
-  const bgRaw = tokens[bgToken];
-  if (!/^#/.test(bgRaw || '')) { console.log(themeName + ': 背景不是 hex,跳过'); continue; }
-  const bg = hexToRgb(bgRaw);
-  console.log('\n=== ' + themeName + ' theme (底色 ' + bgRaw + ') ===');
-  for (const name of TEXT_TOKENS) {
+for (const [themeName, tokens] of [['dark', dark], ['light', { ...dark, ...light }]]) {
+  const deepRaw = tokens['--bg-deep'];
+  if (!/^#/.test(deepRaw || '')) { console.log(themeName + ': 背景不是 hex,跳过'); continue; }
+  const deep = hexToRgb(deepRaw);
+
+  for (const surfaceToken of SURFACES) {
+    const bg = compositeSurface(tokens, surfaceToken, deep);
+    if (!bg) { console.log('\n=== ' + themeName + ' / ' + surfaceToken + ' (无法解析,跳过) ==='); continue; }
+    const hex = '#' + bg.map((c) => c.toString(16).padStart(2, '0')).join('');
+    console.log('\n=== ' + themeName + ' theme / ' + surfaceToken + ' (合成后 ' + hex + ') ===');
+    for (const name of TEXT_TOKENS) {
+      const raw = resolve(tokens, name);
+      if (!raw || !/^#/.test(raw)) { console.log('  ' + name.padEnd(22) + ' (非 hex,跳过: ' + raw + ')'); continue; }
+      const value = ratio(hexToRgb(raw), bg);
+      const ok = value >= 4.5;
+      if (!ok) failures += 1;
+      console.log('  ' + (ok ? 'OK  ' : 'FAIL') + ' ' + name.padEnd(22) + raw.padEnd(10) + value.toFixed(2) + ':1');
+    }
+  }
+}
+
+// SC 1.4.11:非文字图形（图标、状态点、分隔边框）阈值 3:1。
+// AppToast 的四种类型只靠图标颜色区分,浅色主题下曾低到 1.90。
+const NON_TEXT_TOKENS = ['--success', '--warning', '--danger', '--info'];
+let nonTextFailures = 0;
+for (const [themeName, tokens] of [['dark', dark], ['light', { ...dark, ...light }]]) {
+  const deep = hexToRgb(tokens['--bg-deep']);
+  const bg = compositeSurface(tokens, '--bg-elevated', deep) || deep;
+  console.log('\n=== ' + themeName + ' theme / 非文字图形 3:1 (--bg-elevated) ===');
+  for (const name of NON_TEXT_TOKENS) {
     const raw = resolve(tokens, name);
-    if (!raw || !/^#/.test(raw)) { console.log('  ' + name.padEnd(22) + ' (非 hex,跳过: ' + raw + ')'); continue; }
+    if (!raw || !/^#/.test(raw)) continue;
     const value = ratio(hexToRgb(raw), bg);
-    const ok = value >= 4.5;
-    if (!ok) failures += 1;
+    const ok = value >= 3;
+    if (!ok) nonTextFailures += 1;
     console.log('  ' + (ok ? 'OK  ' : 'FAIL') + ' ' + name.padEnd(22) + raw.padEnd(10) + value.toFixed(2) + ':1');
   }
 }
 
 console.log('\n未达 AA(4.5:1) 的文字 token: ' + failures + ' 项');
-if (process.argv.includes('--check') && failures > 0) process.exit(1);
+console.log('未达 3:1 的非文字图形 token: ' + nonTextFailures + ' 项');
+if (process.argv.includes('--check') && (failures > 0 || nonTextFailures > 0)) process.exit(1);

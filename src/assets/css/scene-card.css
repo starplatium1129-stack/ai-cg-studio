@@ -27,6 +27,8 @@
   aspect-ratio: 16/10; position: relative; flex-shrink: 0;
   display: flex; align-items: flex-end; padding: var(--s-2);
   overflow: hidden;
+  /* 无样张时的渐变兜底。曾由 SceneCard.vue 的 BAND_FALLBACK 常量内联注入 */
+  background: linear-gradient(145deg, color-mix(in srgb, var(--bg-deep) 72%, var(--bg-elevated)), var(--bg-elevated));
 }
 .sc-band::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg,var(--art-scrim-soft),transparent 32%,transparent 62%,var(--art-scrim)); pointer-events:none; z-index:var(--z-base); }
 .sc-thumb {

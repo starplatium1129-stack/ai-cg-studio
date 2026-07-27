@@ -312,11 +312,10 @@ onUnmounted(() => {
 .hero-title { font-size:clamp(2.4rem,4.5vw,3.8rem); font-weight:800; line-height:1.12; margin-bottom:var(--s-4); letter-spacing:-0.02em; }
 .hero-title :deep(.accent) { background:linear-gradient(135deg,var(--accent) 60%,var(--mood-love)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
 .jp { display:block; margin-top:var(--s-2); font-size:.25em; letter-spacing:.32em; text-transform:uppercase; color:var(--accent-violet); -webkit-text-fill-color:var(--accent-violet); }
-.hero-sub { font-size:1.15rem; color:var(--text-secondary); margin-bottom:var(--s-3); max-width:520px; line-height:1.7; }
+.hero-sub { font-size:var(--fs-body-lg); color:var(--text-secondary); margin-bottom:var(--s-3); max-width:520px; line-height:1.7; }
 .hero-jp { color:var(--accent-violet); font-size:var(--fs-label); letter-spacing:0.3em; margin:0 0 var(--s-5); opacity:.9; }
 .ctas { display:flex; gap:var(--s-3); flex-wrap:wrap; margin-bottom:var(--s-4); align-items:center; }
-.hero-orbit { grid-column:2; grid-row:1; min-height:380px; position:relative; isolation:isolate; border:1px solid var(--border-soft); border-radius:var(--r-stage); overflow:hidden; background:linear-gradient(135deg,rgba(244,166,215,.18),transparent 42%),linear-gradient(155deg,#4d3d67 0%,#2a233d 48%,#171422 100%); box-shadow:inset 0 1px 0 var(--on-art-line),var(--shadow-lg); }
-[data-theme="light"] .hero-orbit { background:linear-gradient(135deg,var(--on-art-sheen),transparent 38%),linear-gradient(155deg,#e9ddf4 0%,#c8b9df 48%,#8c789f 100%); }
+.hero-orbit { grid-column:2; grid-row:1; min-height:380px; position:relative; isolation:isolate; border:1px solid var(--border-soft); border-radius:var(--r-stage); overflow:hidden; background:linear-gradient(135deg,var(--accent-glow),transparent 42%),var(--stage-violet); box-shadow:inset 0 1px 0 var(--on-art-line),var(--shadow-lg); }
 .hero-character { position:absolute; z-index:var(--z-base); bottom:0; width:72%; height:94%; object-fit:contain; object-position:center bottom; filter:drop-shadow(0 24px 28px rgba(8,5,18,.36)); transition:transform .6s var(--ease-out),filter .6s ease; }
 /* 双人分割：原来两张各占 54% + 斜切，宽屏下右侧人物会被容器边缘切掉。
    改成各占 52% 并把 object-position 收回中心，接缝仍在中线附近。 */

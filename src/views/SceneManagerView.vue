@@ -20,7 +20,7 @@
     <div v-if="loadError" class="empty-state">
       <div class="empty-state-icon">⚠️</div>
       <p>{{ loadError }}</p>
-      <p style="color:var(--text-muted);font-size:var(--fs-label-sm)">请确认通过 localhost 访问且文件存在</p>
+      <p class="hint-sm">请确认通过 localhost 访问且文件存在</p>
     </div>
 
     <template v-else>
@@ -78,7 +78,7 @@
               <tr v-else-if="!filtered.length"><td colspan="8" class="table-msg">暂无匹配场景</td></tr>
               <template v-else>
                 <tr v-for="s in paged" :key="s.id">
-                  <td><code style="font-size:var(--fs-mono-xs)">{{ s.id }}</code></td>
+                  <td><code class="id-code">{{ s.id }}</code></td>
                   <td>{{ s.title }}</td>
                   <td>{{ s.category }}</td>
                   <td>{{ charIcon(s.char) }}</td>
@@ -99,7 +99,7 @@
         </div>
         <div v-if="totalPages > 1" class="pagination">
           <button class="btn btn-ghost btn-sm" :disabled="page <= 1" @click="page--">← 上一页</button>
-          <span style="color:var(--text-muted);font-size:var(--fs-label-sm)">{{ page }} / {{ totalPages }}</span>
+          <span class="hint-sm">{{ page }} / {{ totalPages }}</span>
           <button class="btn btn-ghost btn-sm" :disabled="page >= totalPages" @click="page++">下一页 →</button>
         </div>
       </template>
@@ -121,7 +121,7 @@
             <tbody>
               <tr v-if="!filteredTags.length"><td colspan="7" class="table-msg">暂无匹配标签</td></tr>
               <tr v-for="t in pagedTags" :key="t.id">
-                <td><code style="font-size:var(--fs-mono-xs)">{{ t.id }}</code></td>
+                <td><code class="id-code">{{ t.id }}</code></td>
                 <td>{{ t.cat }}</td>
                 <td><span class="tag-chip">{{ t.en }}</span></td>
                 <td>{{ t.cn }}</td>
@@ -139,7 +139,7 @@
         </div>
         <div v-if="tagTotalPages > 1" class="pagination">
           <button class="btn btn-ghost btn-sm" :disabled="tagPage <= 1" @click="tagPage--">← 上一页</button>
-          <span style="color:var(--text-muted);font-size:var(--fs-label-sm)">{{ tagPage }} / {{ tagTotalPages }}</span>
+          <span class="hint-sm">{{ tagPage }} / {{ tagTotalPages }}</span>
           <button class="btn btn-ghost btn-sm" :disabled="tagPage >= tagTotalPages" @click="tagPage++">下一页 →</button>
         </div>
       </template>
@@ -165,7 +165,7 @@
         </div>
         <div v-if="imageTotalPages > 1" class="pagination">
           <button class="btn btn-ghost btn-sm" :disabled="imagePage <= 1" @click="imagePage--">← 上一页</button>
-          <span style="color:var(--text-muted);font-size:var(--fs-label-sm)">{{ imagePage }} / {{ imageTotalPages }}</span>
+          <span class="hint-sm">{{ imagePage }} / {{ imageTotalPages }}</span>
           <button class="btn btn-ghost btn-sm" :disabled="imagePage >= imageTotalPages" @click="imagePage++">下一页 →</button>
         </div>
 
@@ -847,6 +847,9 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+/* 替代原先散落的 6 处内联 style */
+.hint-sm { color:var(--text-muted); font-size:var(--fs-label-sm); }
+.id-code { font-size:var(--fs-mono-xs); }
 .sm-head { display:flex; align-items:flex-start; justify-content:space-between; gap:var(--s-4); margin-bottom:var(--s-5); flex-wrap:wrap; }
 .sm-head-actions { display:flex; gap:var(--s-2); flex-shrink:0; }
 .maintenance-state { display:inline-flex; align-items:center; gap:var(--s-2); margin-top:var(--s-2); padding:4px 12px; border-radius:var(--r-pill); background:color-mix(in srgb,var(--success) 10%,transparent); color:var(--success-text); font-size:var(--fs-label-sm); }

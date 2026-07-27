@@ -382,7 +382,7 @@
   .token-row { display: flex; align-items: center; gap: var(--s-2); margin-top: var(--s-2); }
   .token-counter { font-family: var(--font-mono); font-size: var(--fs-label-sm); color: var(--text-secondary); display: inline-flex; align-items: center; gap: var(--s-2); }
   .token-counter .bar { width: 60px; height: 4px; background: var(--bg-deep); border-radius: var(--r-pill); overflow: hidden; }
-  .token-counter .bar i { display: block; height: 100%; background: var(--success); }
+  .token-counter .bar i { display: block; height: 100%; width: var(--progress, 0%); background: var(--success); }
   .token-counter.warn .bar i { background: var(--warning); }
   .token-counter.over .bar i { background: var(--danger); }
   .prompt-health { color:var(--text-muted); }
@@ -760,6 +760,8 @@
   /* 结果区:可见性由 hidden 驱动,展开时为块级并居中 */
   .sd-result-area { display:block; margin-top:var(--s-4); text-align:center; }
   .sd-result-area[hidden] { display:none; }
+  /* 进度态:替代原先模板里的 style="display:block" */
+  .sd-result-area.is-progress { display:block; }
   .sd-status { margin-bottom:var(--s-2); color:var(--text-muted); font-size:var(--fs-body-sm); }
   .sd-save-actions { display:flex; justify-content:center; flex-wrap:wrap; gap:var(--s-2); margin-top:var(--s-3); }
   .sd-save-actions[hidden] { display:none; }
@@ -919,6 +921,7 @@
   .sd-progress-bar {
     display:block; height:100%; border-radius:inherit;
     background:linear-gradient(90deg,var(--accent),var(--accent-violet));
+    width:var(--progress, 0%);
     transition:width .35s ease;
   }
   .sd-status.error { color:var(--danger-text); }
@@ -1029,6 +1032,8 @@
   .stage-progress-ring > i {
     display:block; height:100%; border-radius:inherit;
     background:linear-gradient(90deg,var(--accent),var(--accent-violet));
+    /* 宽度由模板的 --progress 载体提供(内联 style 只放数据) */
+    width:var(--progress, 0%);
     transition:width .4s var(--ease-out);
   }
   @media (prefers-reduced-motion: reduce) {
