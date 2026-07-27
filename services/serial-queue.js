@@ -35,15 +35,22 @@ class SerialQueue {
             ? maxPending : DEFAULT_MAX_PENDING;
         this.tail = Promise.resolve();
     }
-    run(task) {
+    run(task, options) {
         const queue = this;
         const queuedAt = Date.now();
         if (queue.pending >= queue.maxPending) {
             return Promise.reject(new QueueFullError(queue.name, queue.maxPending));
         }
         queue.pending += 1;
+        const signal = options && options.signal;
         function execute() {
             queue.pending -= 1;
+            // 排队期间客户端就走了：跳过执行，别占着 GPU 也别拖慢下一个
+            if (signal && signal.aborted) {
+                const error = new Error('The operation was aborted');
+                error.name = 'AbortError';
+                return Promise.reject(error);
+            }
             queue.active += 1;
             return Promise.resolve()
                 .then(function () {

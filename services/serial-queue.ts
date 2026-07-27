@@ -7,6 +7,14 @@ interface QueueContext {
 
 type QueueTask<T> = (context: QueueContext) => T | Promise<T>;
 
+interface QueueRunOptions {
+  /**
+   * 客户端断开时用的 signal。传了它，任务在排队期间被 abort 就会被直接丢弃 ——
+   * 原先要等排到队首才检查，被放弃的请求照样拖慢后面的真实请求。
+   */
+  signal?: { aborted: boolean; addEventListener?: Function; removeEventListener?: Function };
+}
+
 interface QueueStatus {
   name: string;
   active: number;
@@ -54,16 +62,23 @@ class SerialQueue {
     this.tail = Promise.resolve();
   }
 
-  run<T>(task: QueueTask<T>): Promise<T> {
+  run<T>(task: QueueTask<T>, options?: QueueRunOptions): Promise<T> {
     const queue = this;
     const queuedAt = Date.now();
     if (queue.pending >= queue.maxPending) {
       return Promise.reject(new QueueFullError(queue.name, queue.maxPending));
     }
     queue.pending += 1;
+    const signal = options && options.signal;
 
     function execute(): Promise<T> {
       queue.pending -= 1;
+      // 排队期间客户端就走了：跳过执行，别占着 GPU 也别拖慢下一个
+      if (signal && signal.aborted) {
+        const error = new Error('The operation was aborted') as Error & { name: string };
+        error.name = 'AbortError';
+        return Promise.reject(error);
+      }
       queue.active += 1;
       return Promise.resolve()
         .then(function () {

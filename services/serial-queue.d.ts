@@ -3,6 +3,17 @@ interface QueueContext {
     waitMs: number;
 }
 type QueueTask<T> = (context: QueueContext) => T | Promise<T>;
+interface QueueRunOptions {
+    /**
+     * 客户端断开时用的 signal。传了它，任务在排队期间被 abort 就会被直接丢弃 ——
+     * 原先要等排到队首才检查，被放弃的请求照样拖慢后面的真实请求。
+     */
+    signal?: {
+        aborted: boolean;
+        addEventListener?: Function;
+        removeEventListener?: Function;
+    };
+}
 interface QueueStatus {
     name: string;
     active: number;
@@ -31,7 +42,7 @@ declare class SerialQueue {
     maxPending: number;
     tail: Promise<unknown>;
     constructor(name?: string, maxPending?: number);
-    run<T>(task: QueueTask<T>): Promise<T>;
+    run<T>(task: QueueTask<T>, options?: QueueRunOptions): Promise<T>;
     status(): QueueStatus;
 }
 declare namespace SerialQueue {

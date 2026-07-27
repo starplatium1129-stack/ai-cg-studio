@@ -177,7 +177,7 @@ src/
 
 ### B — 后端正确性（P1）
 
-- ⬜ **B-1 `spawnSync` 在请求路径上，最坏冻结网关 6 分钟**。`routes/maintenance.js:164`（及 `:408`）在 POST handler 内同步 spawn 三个子进程，各 `timeout:120000`。期间整个事件循环停摆 —— SD 代理、进行中的 `/api/chat` NDJSON 流全部卡死。当前实测约 105ms，属潜伏而非常态，但超时值就是契约。
+- ✅ **B-1 `spawnSync` 在请求路径上，最坏冻结网关 6 分钟**。已改 `spawn` + await（新增 `runNodeScript`，含 64KB 输出上限与超时），保存路由改 async。原文：`routes/maintenance.js:164`（及 `:408`）在 POST handler 内同步 spawn 三个子进程，各 `timeout:120000`。期间整个事件循环停摆 —— SD 代理、进行中的 `/api/chat` NDJSON 流全部卡死。当前实测约 105ms，属潜伏而非常态，但超时值就是契约。
   改法：改 `spawn` + await，进度走已有的 `control-operation` 机制。
 - ✅ **B-2 `/api/status` 每次都 spawn 一个 2.2 秒的 PowerShell，而前端 3 秒轮询一次**。已加 15s TTL 缓存 + in-flight 去重，并真正实现 `fresh=1`（这个参数以前解析了却从未被使用）。服务启停 / 模式切换处传 `force=true` 主动作废缓存。
   实测：冷启 547ms → 温轮询 **2–3ms**；三个并发 `fresh=1` 合并为一次 spawn（总 3422ms 而非 ×3）。
@@ -185,13 +185,13 @@ src/
 - ✅ **B-4 SPA catch-all 把未知 API 路由吞成 `200 text/html`**。`server.js:143-147` 匹配 `*`，而 `/api/does-not-exist` 没有扩展名 → 实测返回 SPA 外壳且状态 200。改法：`if (req.path.startsWith('/api/')) return next()`。
 - ✅ **B-5 运行时改 host 到不了 SD 代理**。`control.js:352` 改的是 `config.SD_HOST`，但 `server.js:123` 在构造时就把 `target` 定住了 → 面板报成功，`/sdapi/*` 仍打旧 host 直到重启。改法：用代理的 `router` 选项按请求解析。
 - ⬜ **B-6 其余**：
-  - 被 abort 的任务仍占 FIFO 位（`routes/chat.js:110`）——放弃的请求照样拖慢真实请求。
-  - `services/translation-service.ts:121` 的 `setInterval` 在 `close()` 后仍活；`:111` 的 exit handler 可导致重复 spawn python。
-  - `runScriptAsync` 用 `child.kill()`（`control.js:167`），只杀 powershell 本体，孤立掉它启动的 SD/语音进程 —— `server.js:222` 已经知道要用 `taskkill /T /F`。
-  - 隧道子进程无 `exit` 监听（`server.js:173`）：cloudflared 挂掉后 `tunnelProcess` 恒非空，后续每次启动都是静默 no-op 却仍回 `{ok:true}`。
-  - 全项目无 `unhandledRejection` / `uncaughtException` 兜底。
-  - **23 个空 catch**。要紧的两个：`maintenance.js:303` 与 `:352` 吞掉回滚失败 —— 保存失败 + 回滚也失败时，场景分片处于半写状态而客户端毫不知情。
-  - `/api/logs` 每 3 秒把每个日志文件整份读入（`control.js:559`）；`gateway.log` 已 321KB 且从不轮转（`rotateLog` 只用在 tunnel log）。
+  - ✅ 被 abort 的任务仍占 FIFO 位：`SerialQueue.run` 加了 `signal` 选项，排队期间断开即出队；chat 与 tts 两条路径都已接上（含回归用例）。
+  - ✅ 翻译服务：就绪轮询 handle 提为 `readyPoll` 并在 `close()` 里清掉；exit handler 不再提前置空 `starting`（那会让并发 `ensureServer` 再 spawn 一个 python）。
+  - ✅ `runScriptAsync` 超时改走新的 `killProcessTree`（Windows 上 `taskkill /T /F`），不再孤立 SD/语音进程；stdout/stderr 加 64KB 上限。
+  - ✅ 隧道子进程补 `exit`/`error` 监听：cloudflared 挂掉即清空 `tunnelProcess` 与 URL，后续启动不再是静默 no-op。
+  - ✅ 已在 `startGateway` 补 `unhandledRejection` / `uncaughtException` 兜底。
+  - ✅ 两处回滚 catch 改走 `attemptRollback`：回滚失败时返回 500 + `dataIntegrity:"INCONSISTENT"` + 恢复指引，不再假装只是"保存失败"。其余空 catch 仍在。
+  - ✅ `/api/logs` 改走 `readLogTail`（只 seek 尾部 64KB）。`gateway.log` 轮转仍待做。
   - API 有 4 种错误信封；`/api/status` 探测失败回 500，而三个同族 `*-status` 回 200 + `online:false`。
 
 ### C — 前端正确性（P2，静默数据丢失）

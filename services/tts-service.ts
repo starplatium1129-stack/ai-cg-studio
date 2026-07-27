@@ -298,7 +298,7 @@ function createTtsService(options: TtsServiceOptions) {
       if (signal && signal.aborted) throw httpClient.abortError();
       await activate(voiceId, profile, signal);
       return { voice: voiceId, queueWaitMs: queueMeta.waitMs };
-    });
+    }, { signal: signal });
   }
 
   function stream(input: VoiceTtsInput, optionsForStream?: StreamOptions): Promise<QueueWaitResult> {
@@ -341,7 +341,7 @@ function createTtsService(options: TtsServiceOptions) {
         for await (const chunk of upstream.response) void chunk;
       }
       return { queueWaitMs: queueMeta.waitMs };
-    });
+    }, { signal: streamOpts.signal });
   }
 
   async function status(signal?: AbortSignal): Promise<TtsStatus> {

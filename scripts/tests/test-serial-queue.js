@@ -50,7 +50,7 @@ Promise.allSettled([first, second, failed, third]).then(function (results) {
   assert.deepStrictEqual(queue.status(), { name: 'test-queue', active: 0, pending: 0, maxPending: 16 });
   return checkAdmissionControl();
 }).then(function () {
-  console.log('Serial queue tests passed: FIFO order, wait context, failure isolation, and admission control');
+  console.log('Serial queue tests passed: FIFO order, wait context, failure isolation, admission control, and abort dequeue');
 }).catch(function (error) {
   console.error(error);
   process.exitCode = 1;
@@ -79,5 +79,31 @@ function checkAdmissionControl() {
     return bounded.run(function () { return 'ok'; });
   }).then(function (value) {
     assert.strictEqual(value, 'ok', 'queue must accept work again after draining');
+    return checkAbortDequeue();
+  });
+}
+
+// 排队期间客户端断开：任务必须直接出队，而不是等排到队首才发现
+// （否则被放弃的请求照样拖慢后面的真实请求）
+function checkAbortDequeue() {
+  const q = new SerialQueue('abort-test');
+  const ran = [];
+
+  const head = q.run(function () {
+    return new Promise(function (resolve) { setTimeout(resolve, 25); });
+  });
+
+  const signal = { aborted: false };
+  const abandoned = q.run(function () { ran.push('abandoned'); return 'nope'; }, { signal: signal });
+  const real = q.run(function () { ran.push('real'); return 'yes'; });
+
+  signal.aborted = true;  // 还在排队时客户端就走了
+
+  return Promise.allSettled([head, abandoned, real]).then(function (results) {
+    assert.strictEqual(results[1].status, 'rejected', 'aborted job must not run');
+    assert.strictEqual(results[1].reason.name, 'AbortError');
+    assert.strictEqual(results[2].status, 'fulfilled', 'the real job must still complete');
+    assert.deepStrictEqual(ran, ['real'], 'abandoned work must never reach the GPU');
+    assert.strictEqual(q.status().pending, 0, 'aborted job must leave the queue');
   });
 }

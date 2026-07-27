@@ -226,6 +226,7 @@ function createOllamaService(options: OllamaServiceOptions) {
 
   function streamChat(input: StreamChatInput, callbacks?: StreamCallbacks): Promise<StreamChatResult> {
     const streamCallbacks = callbacks || {};
+    // 传 signal：排队期间客户端断开就直接出队，不再占着 FIFO 位
     return queue.run(async function (queueMeta) {
       if (input.signal && input.signal.aborted) throw httpClient.abortError();
       const models = await listModels(input.signal);
@@ -276,7 +277,7 @@ function createOllamaService(options: OllamaServiceOptions) {
       }
       await consumeNdjson(upstream.response, streamCallbacks);
       return { model: selected, queueWaitMs: queueMeta.waitMs };
-    });
+    }, { signal: input.signal });
   }
 
   return {

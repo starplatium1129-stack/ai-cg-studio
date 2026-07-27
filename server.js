@@ -261,6 +261,22 @@ function createGateway(options) {
     fs.closeSync(logFd);
     try { fs.writeFileSync(config.RUNTIME.tunnelPid, String(tunnelProcess.pid)); } catch (error) {}
 
+    // cloudflared 自己挂掉时必须清空 tunnelProcess。
+    // 否则 startTunnel 顶部的 `if (tunnelProcess) return` 会让后续每一次启动
+    // 都变成静默 no-op，而控制面板照样收到 {ok:true}。
+    var thisProcess = tunnelProcess;
+    function handleTunnelExit(reason) {
+      if (tunnelProcess !== thisProcess) return;  // 已经被 stopTunnel 换掉了
+      console.log('  🌪 Tunnel process ended (' + reason + ')');
+      tunnelProcess = null;
+      tunnelUrl = '';
+      pendingTunnelUrl = '';
+      gatewayState.tunnelUrl = '';
+      if (tunnelPoll) { clearInterval(tunnelPoll); tunnelPoll = null; }
+    }
+    tunnelProcess.on('exit', function (code) { handleTunnelExit('exit ' + code); });
+    tunnelProcess.on('error', function (error) { handleTunnelExit(error.message); });
+
     if (tunnelPoll) { clearInterval(tunnelPoll); tunnelPoll = null; }
     var attempts = 0;
     tunnelPoll = setInterval(function () {

@@ -39,6 +39,8 @@ function createTranslationService(options: TranslationServiceOptions) {
   let child: ChildProcess | null = null;
   let starting: Promise<boolean> | null = null;
   let ready = false;
+  /** 启动探测轮询的 handle —— close() 必须清掉它，否则关服后计时器还活着 */
+  let readyPoll: ReturnType<typeof setInterval> | null = null;
   const cache = new Map<string, TranslationResult>();
 
   function remember(text: string, result: TranslationResult): TranslationResult {
@@ -108,32 +110,37 @@ function createTranslationService(options: TranslationServiceOptions) {
       }
       if (logFd !== 'ignore') fs.closeSync(logFd);
 
-      child.once('exit', function () {
-        ready = false;
-        child = null;
-        starting = null;
-      });
-      child.once('error', function () {
-        ready = false;
-      });
+    child.once('exit', function () {
+      ready = false;
+      child = null;
+      // 不在这里清 starting：startServer 的 promise 可能还没结算，
+      // 提前置空会让并发的 ensureServer 看到 starting === null 而再 spawn
+      // 一个 python.exe。清理交给 ensureServer 的 finally。
+      stopReadyPoll();
+    });
+    child.once('error', function () {
+      ready = false;
+      stopReadyPoll();
+    });
 
-      let attempts = 0;
-      const timer = setInterval(function () {
-        attempts += 1;
-        ping(null, 1000)
-          .then(function (online) {
-            if (online) {
-              clearInterval(timer);
-              ready = true;
-              console.log('  🌐 中日翻译常驻服务已就绪 (port ' + options.port + ')');
-              resolve(true);
-            } else if (attempts >= 120 || !child) {
-              clearInterval(timer);
-              reject(new Error('翻译常驻服务启动超时'));
-            }
-          })
-          .catch(function () {});
-      }, 1000);
+    let attempts = 0;
+    if (readyPoll) clearInterval(readyPoll);
+    readyPoll = setInterval(function () {
+      attempts += 1;
+      ping(null, 1000)
+        .then(function (online) {
+          if (online) {
+            stopReadyPoll();
+            ready = true;
+            console.log('  🌐 中日翻译常驻服务已就绪 (port ' + options.port + ')');
+            resolve(true);
+          } else if (attempts >= 120 || !child) {
+            stopReadyPoll();
+            reject(new Error('翻译常驻服务启动超时'));
+          }
+        })
+        .catch(function () {});
+    }, 1000);
     });
   }
 
@@ -245,7 +252,16 @@ function createTranslationService(options: TranslationServiceOptions) {
     return ensureServer(signal);
   }
 
+  function stopReadyPoll(): void {
+    if (!readyPoll) return;
+    clearInterval(readyPoll);
+    readyPoll = null;
+  }
+
   function close(): void {
+    // 先停轮询：原先 close() 只 kill 子进程，那个 1 秒一次、最多 120 次的
+    // setInterval 会继续跑，把事件循环拖着不让进程退出。
+    stopReadyPoll();
     if (child) {
       try {
         child.kill();

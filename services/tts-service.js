@@ -164,7 +164,7 @@ function createTtsService(options) {
                 throw httpClient.abortError();
             await activate(voiceId, profile, signal);
             return { voice: voiceId, queueWaitMs: queueMeta.waitMs };
-        });
+        }, { signal: signal });
     }
     function stream(input, optionsForStream) {
         const streamOpts = optionsForStream || {};
@@ -206,7 +206,7 @@ function createTtsService(options) {
                     void chunk;
             }
             return { queueWaitMs: queueMeta.waitMs };
-        });
+        }, { signal: streamOpts.signal });
     }
     async function status(signal) {
         return {

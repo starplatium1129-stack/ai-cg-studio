@@ -40,6 +40,24 @@ function restoreSnapshot(snapshot) {
   });
 }
 
+/**
+ * 尝试回滚，并把结果如实返回。
+ *
+ * 保存失败 + 回滚也失败 = 数据处于半写状态。原先两处 catch 都是空的，
+ * 客户端只看到"保存失败"，完全不知道盘上已经被改了一半。
+ */
+function attemptRollback(snapshot, label) {
+  if (!snapshot) return { ok:true };
+  try {
+    restoreSnapshot(snapshot);
+    return { ok:true };
+  } catch (error) {
+    var detail = String(error && error.message || error);
+    console.error('  ❌ 回滚失败（' + label + '），数据可能不一致:', detail);
+    return { ok:false, error:detail };
+  }
+}
+
 function saveSnapshotBackup(snapshot, backupRoot, label) {
   fs.mkdirSync(backupRoot, { recursive:true });
   var stamp = new Date().toISOString().replace(/[:.]/g, '-');
@@ -150,21 +168,64 @@ function createMaintenanceRouter(cfg) {
     return snapshotFiles(files);
   }
 
-  function runMaintenanceChecks() {
-    var commands = [
-      ['scripts/maintenance/classify-scene-ratings.js', ['--write']],
-      ['scripts/maintenance/optimize-scenes.js', ['--write']],
-      ['scripts/maintenance/validate-scenes.js', []]
-    ];
-    for (var i = 0; i < commands.length; i += 1) {
-      var result = cp.spawnSync(process.execPath, [commands[i][0]].concat(commands[i][1]), {
-        cwd:path.join(__dirname, '..'), encoding:'utf8', timeout:120000, windowsHide:true
-      });
-      if (result.error || result.status !== 0) {
-        throw new Error((result.stderr || result.stdout || result.error && result.error.message || '维护校验失败').trim().slice(-1200));
-      }
+/**
+ * 异步 spawn 一个 node 脚本。
+ *
+ * 必须异步：原先用 spawnSync，三个子进程各 timeout:120000，全在 POST handler
+ * 里同步跑 —— 期间整个事件循环停摆，SD 代理与进行中的 /api/chat NDJSON 流
+ * 一起卡死，最坏 6 分钟。
+ */
+function runNodeScript(script, args, timeoutMs) {
+  return new Promise(function (resolve, reject) {
+    var child = cp.spawn(process.execPath, [script].concat(args || []), {
+      cwd:path.join(__dirname, '..'), windowsHide:true
+    });
+    var stdout = '';
+    var stderr = '';
+    var LOG_CAP = 64 * 1024;  // 别让多话的脚本把字符串撑爆
+    var settled = false;
+
+    var timer = setTimeout(function () {
+      if (settled) return;
+      settled = true;
+      try { child.kill(); } catch (error) {}
+      reject(new Error(path.basename(script) + ' 执行超时（' + Math.round((timeoutMs || 120000) / 1000) + ' 秒）'));
+    }, timeoutMs || 120000);
+
+    child.stdout.on('data', function (chunk) {
+      if (stdout.length < LOG_CAP) stdout += String(chunk);
+    });
+    child.stderr.on('data', function (chunk) {
+      if (stderr.length < LOG_CAP) stderr += String(chunk);
+    });
+    child.on('error', function (error) {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      reject(error);
+    });
+    child.on('close', function (code) {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      resolve({ status:code, stdout:stdout, stderr:stderr });
+    });
+  });
+}
+
+async function runMaintenanceChecks() {
+  var commands = [
+    ['scripts/maintenance/classify-scene-ratings.js', ['--write']],
+    ['scripts/maintenance/optimize-scenes.js', ['--write']],
+    ['scripts/maintenance/validate-scenes.js', []]
+  ];
+  for (var i = 0; i < commands.length; i += 1) {
+    var result = await runNodeScript(commands[i][0], commands[i][1], 120000);
+    if (result.status !== 0) {
+      throw new Error((result.stderr || result.stdout || '维护校验失败').trim().slice(-1200));
     }
   }
+}
 
   function readSceneShowcaseManifest() {
     if (!SCENE_SHOWCASE_DIR) return null;
@@ -264,7 +325,7 @@ function createMaintenanceRouter(cfg) {
     }
   }
 
-  router.post('/api/maintenance/scenes', maintenanceLocalOnly, express.json({ limit:'12mb' }), function (req, res) {
+  router.post('/api/maintenance/scenes', maintenanceLocalOnly, express.json({ limit:'12mb' }), async function (req, res) {
     var scenes = req.body && req.body.scenes;
     var tags = req.body && req.body.tags;
     var curation = req.body && req.body.curation;
@@ -293,11 +354,21 @@ function createMaintenanceRouter(cfg) {
       }
       autoRetireDeletedScenes(scenes, prevScenes);
       cleanOrphanedSceneRefs();
-      runMaintenanceChecks();
+      await runMaintenanceChecks();
       res.json({ ok:true, count:scenes.length, tagCount:Array.isArray(tags) ? tags.length : undefined, backup:path.basename(backupDir), message:'内容已保存并通过校验' });
     } catch (error) {
-      if (snapshot) { try { restoreSnapshot(snapshot); } catch (re) {} }
-      res.status(400).json({ ok:false, error:error.message });
+      // 回滚失败必须告诉客户端：此时场景分片处于半写状态，
+      // 之前这里是空 catch，用户只会看到"保存失败"而以为数据没动。
+      var rollback = attemptRollback(snapshot, 'scenes');
+      res.status(rollback.ok ? 400 : 500).json({
+        ok:false,
+        error:error.message,
+        rolledBack:rollback.ok,
+        dataIntegrity:rollback.ok ? 'restored' : 'INCONSISTENT',
+        recovery:rollback.ok ? undefined
+          : '自动回滚也失败了（' + rollback.error + '）。数据可能处于半写状态，'
+            + '请用 runtime 备份目录里最近一份 content-* 手动恢复。'
+      });
     }
   });
 
@@ -345,8 +416,16 @@ function createMaintenanceRouter(cfg) {
       writeJson(manifestPath, manifest);
       res.json({ ok:true, file:entry.image, thumb:entry.thumb, backup:path.basename(backupDir), message:'样张与轻量缩略图已安全保存，旧版本已备份' });
     } catch (error) {
-      if (snapshot) { try { restoreSnapshot(snapshot); } catch (restoreError) {} }
-      res.status(400).json({ ok:false, error:error.message });
+      var rollback = attemptRollback(snapshot, 'showcase');
+      res.status(rollback.ok ? 400 : 500).json({
+        ok:false,
+        error:error.message,
+        rolledBack:rollback.ok,
+        dataIntegrity:rollback.ok ? 'restored' : 'INCONSISTENT',
+        recovery:rollback.ok ? undefined
+          : '自动回滚也失败了（' + rollback.error + '）。样张目录可能只写了一半，'
+            + '请用 runtime 备份目录里最近一份 showcase-* 手动恢复。'
+      });
     }
   });
 

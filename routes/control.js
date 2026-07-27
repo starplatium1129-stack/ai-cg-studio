@@ -139,6 +139,23 @@ function createControlRouter(config, gatewayRef) {
   // 曾经这里有一份只比对 req.ip 的副本，而 cloudflared 是从 127.0.0.1 连进来的，
   // 于是隧道一开，所有公网请求都被判成「本机」，控制面板的启停/改 host 全部敞开。
 
+  /**
+   * 连子孙一起终止。
+   * Windows 上 child.kill() 只杀 powershell.exe 本体，它启动的
+   * SD WebUI / GPT-SoVITS 会变成孤儿继续占着显存 —— server.js 里
+   * 停隧道时早就知道要用 taskkill /T /F，这条路径漏了。
+   */
+  function killProcessTree(child) {
+    if (!child || !child.pid) return;
+    if (process.platform === 'win32') {
+      try {
+        cp.execFileSync('taskkill', ['/pid', String(child.pid), '/T', '/F'], { stdio:'ignore' });
+        return;
+      } catch (error) { /* 进程可能已退出，回退到 kill */ }
+    }
+    try { child.kill(); } catch (error) {}
+  }
+
   function runScriptAsync(scriptPath, args, timeoutMs) {
     return new Promise(function (resolve) {
       if (!fs.existsSync(scriptPath)) {
@@ -164,12 +181,20 @@ function createControlRouter(config, gatewayRef) {
         clearTimeout(timer);
         resolve(result);
       }
-      var timer = setTimeout(function () {
-        try { child.kill(); } catch {}
-        done({ ok:false, error:'操作超时（' + Math.round((timeoutMs || 60000) / 1000) + ' 秒）' });
-      }, timeoutMs || 60000);
-      child.stdout.on('data', function (chunk) { stdout += chunk.toString('utf8'); });
-      child.stderr.on('data', function (chunk) { stderr += chunk.toString('utf8'); });
+    var timer = setTimeout(function () {
+      // child.kill() 在 Windows 上只终止 powershell.exe 本体，
+      // 会把它启动的 SD WebUI / GPT-SoVITS 孤立掉。整棵树一起收。
+      killProcessTree(child);
+      done({ ok:false, error:'操作超时（' + Math.round((timeoutMs || 60000) / 1000) + ' 秒）' });
+    }, timeoutMs || 60000);
+    // 输出加上限：脚本多话时不要把字符串撑到无穷大
+    var OUTPUT_CAP = 64 * 1024;
+    child.stdout.on('data', function (chunk) {
+      if (stdout.length < OUTPUT_CAP) stdout += chunk.toString('utf8');
+    });
+    child.stderr.on('data', function (chunk) {
+      if (stderr.length < OUTPUT_CAP) stderr += chunk.toString('utf8');
+    });
       child.on('error', function (error) { done({ ok:false, error:error.message }); });
       child.on('close', function (code) {
         var output = String(stdout || '').trim();
