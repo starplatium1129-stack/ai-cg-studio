@@ -153,6 +153,8 @@
 </template>
 
 <script setup lang="ts">
+// 聊天页专属样式（18.6KB）随本路由块加载，不再进全局包
+import '@/assets/css/chat.css'
 import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { CHARACTERS, createMessageId } from '@/config/characters'

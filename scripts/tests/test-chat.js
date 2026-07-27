@@ -115,7 +115,10 @@ async function run() {
 
   assert(html.includes('chat-page'), 'chat view must render the character room shell');
   assert(html.includes("'nene'") && html.includes("'natsume'") && html.includes('switchCharacter'), 'both characters must be selectable');
-  assert(mainTs.includes('assets/css/chat.css'), 'chat styles must be imported by the SPA entry');
+  // chat.css 是路由专属样式：由 ChatView 自己 import，随 /chat 的懒加载块下发，
+  // 不再进全局包（它曾占 139KB 全局 CSS 的 13%，而只有一个路由用得到）。
+  assert(html.includes('assets/css/chat.css'), 'chat styles must be imported by the chat view');
+  assert(!mainTs.includes('assets/css/chat.css'), 'chat styles must not ship in the global entry bundle');
   assert(html.includes('useVoice') && html.includes('useLive2D'), 'chat view must compose voice and Live2D');
   assert(html.includes('voice-console') && html.includes('replay-btn'), 'live voice and replay must share one visual control');
   assert(!html.includes('portrait-blink') && !html.includes('scheduleBlink'), 'static portraits must not use a duplicate-image blink effect');

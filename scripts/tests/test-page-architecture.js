@@ -141,14 +141,40 @@ for (const rel of requiredModules) {
   assert(exists(rel), `${rel} must exist`);
 }
 
-// ── 6. 设计系统样式必须被入口引入 ────────────────────────────────────────
+// ── 6. 样式加载分层：跨路由的进全局，路由专属的进各自视图 ────────────────
+// director.css(91.6KB) + chat.css(18.6KB) 曾占 139KB 全局包的 79%，
+// 却只服务 /prompt-builder 与 /chat。移入视图后由 cssCodeSplit 切成路由块。
 const mainTs = read('src/main.ts');
-for (const css of ['design-system.css', 'scene-card.css', 'director.css', 'chat.css', 'mood.css', 'viewer.css']) {
+for (const css of ['design-system.css', 'scene-card.css', 'mood.css', 'viewer.css']) {
   assert(
     new RegExp(`assets/css/${css.replace('.', '\\.')}`).test(mainTs),
-    `src/main.ts must import ${css}`,
+    `src/main.ts must import shared stylesheet ${css}`,
   );
 }
+for (const css of ['director.css', 'chat.css']) {
+  assert(
+    !new RegExp(`assets/css/${css.replace('.', '\\.')}`).test(mainTs),
+    `${css} is route-scoped — it must not be imported globally in src/main.ts`,
+  );
+}
+assert(
+  /assets\/css\/director\.css/.test(read('src/views/PromptBuilderView.vue')),
+  'PromptBuilderView must import director.css so it ships in the route chunk',
+);
+assert(
+  /assets\/css\/chat\.css/.test(read('src/views/ChatView.vue')),
+  'ChatView must import chat.css so it ships in the route chunk',
+);
+
+// 字体不得在打包 CSS 里 @import：那会造成 HTML→CSS→CSS→字体 三段串行 RTT
+assert(
+  !/@import\s+url\(["']?https:\/\/fonts\./.test(read('src/assets/css/design-system.css')),
+  'fonts must be preconnected/linked from index.html, not @import-ed inside bundled CSS',
+);
+assert(
+  /rel="preconnect"[^>]*fonts\.gstatic\.com/.test(read('index.html')),
+  'index.html must preconnect to fonts.gstatic.com',
+);
 
 // ── 7. 情绪推断不得退化为空实现（曾因编码损坏永远返回 neutral） ──────────
 const streamSource = read('src/utils/stream.ts');

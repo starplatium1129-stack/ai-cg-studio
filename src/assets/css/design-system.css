@@ -5,7 +5,9 @@
    Theme: dark(紫黑) / light(暖薰衣草白) 双主题切换
    ============================================================ */
 
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Noto+Sans+SC:wght@400;500;600;700;800&display=swap");
+/* 字体不在这里 @import —— CSS @import 只有等本表解析完才会被发现，
+   造成 HTML → CSS → Google CSS → 字体文件 三段串行 RTT。
+   改为 index.html 里的 preconnect + link（见 index.html <head>）。 */
 
 :root {
   /* ---- Core palette (dark default, overridden in [data-theme="light"]) ---- */
@@ -269,8 +271,11 @@
 /* ---- Reset ---- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* 根字号:rem 体系的基准,不能走 --fs-*(那是它的下游) */
-html { font-size: 15px; scroll-behavior: smooth; }
+/* 根字号:rem 体系的基准,不能走 --fs-*(那是它的下游)。
+   必须用相对单位:写死 15px 会把整套 rem 锚在 px 上,
+   用户在浏览器里设的默认字号完全失效(SC 1.4.4)。
+   93.75% ≈ 15px @ 16px 默认,视觉保持原样但跟随用户设置缩放。 */
+html { font-size: 93.75%; scroll-behavior: smooth; }
 
 body {
   font-family: var(--font-sans);
@@ -1045,7 +1050,14 @@ tr:hover td { background: var(--bg-hover); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+  /* transition 也必须关:只关 animation 的话页面切换、主题切换、
+     [data-reveal] 的 0.52s 位移都还在动 */
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
   ::view-transition-old(root), ::view-transition-new(root) { animation:none !important; }
 }
 
@@ -1218,7 +1230,7 @@ tr:hover td { background: var(--bg-hover); }
 }
 
 @media (max-width: 768px) {
-  html { font-size: 14px; }
+  html { font-size: 87.5%; }  /* ≈14px @ 16px 默认，同样跟随用户字号 */
   .nav-inner { position: relative; }
   .nav-menu-toggle { display: inline-flex; }
   .nav-links {

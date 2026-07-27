@@ -295,6 +295,9 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
+import { useSceneStore } from '@/stores/sceneStore'
+
+const sceneStore = useSceneStore()
 
 const TABS = [
   { id:'scenes',     label:'场景库' },
@@ -789,6 +792,8 @@ async function saveToProject() {
     if (!r.ok) throw new Error(data.error || '保存失败')
     dirty.value = false
     maintenanceHint.value = data.count + ' 个场景已同步；备份编号 ' + data.backup
+    // 作废共享缓存：其他页面正拿着写回前的旧副本
+    sceneStore.loaded = false
   } catch (e:any) {
     maintenanceHint.value = '保存未完成：' + e.message
   } finally {
@@ -826,22 +831,27 @@ function onBeforeUnload(e: BeforeUnloadEvent) {
 onMounted(() => { window.addEventListener('beforeunload', onBeforeUnload) })
 onBeforeUnmount(() => { window.removeEventListener('beforeunload', onBeforeUnload) })
 
-onMounted(async () => {
+/**
+ * 场景管理会写回 data/，所以用 reload() 强制绕过缓存拿落盘结果。
+ * 以前用 `?v=' + Date.now()`，等于每次进页面都全量重传 230KB 且永不复用。
+ */
+async function loadFromStore(force = false) {
   try {
-    const v = Date.now()
-    const [sRes, tRes, cRes] = await Promise.all([
-      fetch('/data/scenes.json?v=' + v),
-      fetch('/data/tags.json?v=' + v),
-      fetch('/data/curation.json?v=' + v),
-    ])
-    if (!sRes.ok) throw new Error('scenes.json 加载失败 (HTTP ' + sRes.status + ')')
-    scenes.value = await sRes.json()
-    tags.value = await tRes.json().catch(() => [])
-    curation.value = await cRes.json().catch(() => ({}))
-    if (!Array.isArray(scenes.value)) throw new Error('scenes.json 格式错误')
+    await (force ? sceneStore.reload() : sceneStore.load())
+    if (sceneStore.error) throw new Error(sceneStore.error)
+    if (!Array.isArray(sceneStore.scenes)) throw new Error('scenes.json 格式错误')
+    scenes.value = JSON.parse(JSON.stringify(sceneStore.scenes))
+    tags.value = JSON.parse(JSON.stringify(sceneStore.tags))
+    curation.value = JSON.parse(JSON.stringify(sceneStore.curation))
+    loadError.value = ''
   } catch (err:any) {
     loadError.value = err.message
   }
+}
+
+onMounted(async () => {
+  // 首次进入拉最新落盘状态：编辑器要基于真实文件而不是别的页面留下的内存副本
+  await loadFromStore(true)
   loading.value = false
 })
 </script>

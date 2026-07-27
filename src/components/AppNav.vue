@@ -1,24 +1,20 @@
 <template>
   <nav class="nav">
     <div class="nav-inner">
-      <div
-        class="nav-brand"
-        role="link"
-        tabindex="0"
-        @click="goHome"
-        @keydown.enter.prevent="goHome"
-        @keydown.space.prevent="goHome"
-      >
+      <!-- 用真 RouterLink:role="link" 的 div 没有 href,没有右键菜单、
+           中键新标签页,而 Space 激活链接也不是标准行为 -->
+      <RouterLink to="/" class="nav-brand">
         <img class="nav-logo" src="/assets/logo.svg" alt="绫季绘境" />
-      </div>
+      </RouterLink>
 
       <div ref="linksEl" class="nav-links" :class="{ open: menuOpen }">
-        <!-- 主导航 -->
+        <!-- 主导航。aria-current 让读屏也能知道当前页,不只靠 class 上色 -->
         <RouterLink
           v-for="item in primaryNav"
           :key="item.id"
           :to="item.to"
           :class="{ active: activeId === item.id }"
+          :aria-current="activeId === item.id ? 'page' : undefined"
           @click="closeMenu"
         >
           {{ item.icon }} {{ item.label }}
@@ -26,13 +22,15 @@
 
         <!-- 更多 -->
         <details class="nav-more" :data-active="secondaryActive || undefined" ref="moreEl">
-          <summary aria-label="打开更多页面">更多<span class="nav-more-chevron">⌄</span></summary>
+          <!-- 不加 aria-label:它会盖掉可见文字"更多",违反 SC 2.5.3 Label in Name -->
+          <summary>更多<span class="nav-more-chevron" aria-hidden="true">⌄</span></summary>
           <div class="nav-more-menu">
             <RouterLink
               v-for="item in secondaryNav"
               :key="item.id"
               :to="item.to"
               :class="{ active: activeId === item.id }"
+              :aria-current="activeId === item.id ? 'page' : undefined"
               @click="closeMenu"
             >
               {{ item.icon }}<span>{{ item.label }}</span>
@@ -58,10 +56,9 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { useRoute } from 'vue-router'
 import AppThemeToggle from './AppThemeToggle.vue'
 
-const router = useRouter()
 const route = useRoute()
 const menuOpen = ref(false)
 const linksEl = ref<HTMLElement | null>(null)
@@ -91,7 +88,6 @@ const activeId = computed(() => {
 
 const secondaryActive = computed(() => secondaryNav.some(n => n.id === activeId.value))
 
-function goHome() { router.push('/') }
 function closeMenu() { menuOpen.value = false }
 function toggleMenu() { menuOpen.value = !menuOpen.value }
 

@@ -597,6 +597,8 @@
 </template>
 
 <script setup lang="ts">
+// 导演台专属样式（91.6KB）随本路由块加载，不再进全局包
+import '@/assets/css/director.css'
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'

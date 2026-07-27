@@ -204,11 +204,20 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     } catch {}
   }
 
+  /**
+   * 用户要求减少动态效果时不跑待机动作。
+   * CSS 的 prefers-reduced-motion 关不掉 WebGL ticker，只能在这里判。
+   */
+  function prefersReducedMotion(): boolean {
+    try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches } catch { return false }
+  }
+
   function setPaused(paused: boolean) {
     const ticker = app?.app?.ticker
     if (!ticker) return
-    if (paused) { if (ticker.started) ticker.stop() }
-    else if (!ticker.started) { ticker.start(); layout() }
+    // 减少动态效果：渲染一帧把立绘摆正，然后停住，不做待机循环
+    if (paused || prefersReducedMotion()) { if (ticker.started) ticker.stop(); return }
+    if (!ticker.started) { ticker.start(); layout() }
   }
 
   function setVisible(value: boolean) {

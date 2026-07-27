@@ -88,6 +88,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { useToast } from '@/composables/useToast'
 
 const BANNED_TAGS = ['neon','glowing','oversaturated','vivid colors','vivid','rainbow','high contrast','harsh lighting','extremely detailed','ultra detailed']
 const GOOD_TAGS = ['soft colors','pastel tones','warm atmosphere','gentle palette','muted tones','harmonious colors','warm soft lighting','backlit glow']
@@ -148,12 +149,9 @@ function exportTxt() {
   URL.revokeObjectURL(a.href)
 }
 
-function showToast(msg: string) {
-  let t = document.getElementById('cs-toast')
-  if (!t) { t = document.createElement('div'); t.id = 'cs-toast'; t.className = 'cs-toast'; t.setAttribute('role','status'); document.body.appendChild(t) }
-  t.textContent = msg; t.classList.add('show')
-  setTimeout(() => t!.classList.remove('show'), 1600)
-}
+// 走全局 AppToast。原先手搓 DOM 并挂 class="cs-toast" —— 而 .cs-toast
+// 在任何样式表里都没有定义，那个提示一直是页面底部的无样式裸文本。
+const { show: showToast } = useToast()
 </script>
 
 <style scoped>

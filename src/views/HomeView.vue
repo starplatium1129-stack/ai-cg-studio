@@ -177,6 +177,7 @@ import { kvInit, kvGet, kvSet } from '@/composables/useKVStore'
 import { imgGet } from '@/composables/useImageStore'
 import { readRecent } from '@/utils/sceneUX'
 import { useScrollReveal } from '@/composables/useScrollReveal'
+import { useSceneStore } from '@/stores/sceneStore'
 
 useScrollReveal()
 
@@ -189,6 +190,7 @@ const continueHint = ref('')
 const recentWorks = ref<any[]>([])
 const recentScenes = ref<any[]>([])
 const featuredScenes = ref<any[]>([])
+const sceneStore = useSceneStore()
 const coverUrls = reactive<Record<string, string>>({})
 /** 卸载标记：异步 imgGet 回来时组件可能已经没了 */
 let unmounted = false
@@ -213,10 +215,9 @@ function initContinueDraft() {
 
 async function loadSceneHighlights() {
   try {
-    const [scenes, curation] = await Promise.all([
-      fetch('/data/scenes.json?v=9').then(r => { if (!r.ok) throw new Error('Scenes HTTP ' + r.status); return r.json() }),
-      fetch('/data/curation.json?v=3').then(r => { if (!r.ok) throw new Error('Curation HTTP ' + r.status); return r.json() })
-    ])
+    await sceneStore.load()
+    const scenes = sceneStore.scenes as any[]
+    const curation = sceneStore.curation as any
     const signatures: string[] = Array.isArray(curation.signatureSceneIds) ? curation.signatureSceneIds : []
     const curated: string[] = Array.isArray(curation.curatedSceneIds) ? curation.curatedSceneIds : []
     const ids = [...signatures, ...curated.filter((id: string) => !signatures.includes(id))]

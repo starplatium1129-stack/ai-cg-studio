@@ -4,6 +4,7 @@ import { sceneLighting, sceneShot, sceneColorMood, sceneComposition, sceneRecomm
 import { resolveModelProfile } from '@/utils/promptPolicy'
 import { imgPut } from '@/composables/useImageStore'
 import { kvGet, kvSet } from '@/composables/useKVStore'
+import { useSceneStore } from '@/stores/sceneStore'
 
 // 与 useBackup.ts / GalleryView.vue 共用同一组键。改这里必须同步那两处。
 const HISTORY_STORAGE_KEY = 'aics_pb_history'
@@ -248,25 +249,25 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   }
 
   // ── Data loading ─────────────────────────────────────────────────────────
+  /**
+   * 共享数据统一走 sceneStore（单例 + 一个版本号）。
+   * 以前这里自己 fetch 六个文件，与其他 6 处视图重复请求 scenes.json。
+   */
   async function loadData() {
-    const [sc, cu, ch, lm, pr, tg] = await Promise.allSettled([
-      fetch('/data/scenes.json?v=9').then(r => r.json()),
-      fetch('/data/curation.json?v=3').then(r => r.json()),
-      fetch('/data/characters.json?v=6').then(r => r.json()),
-      fetch('/data/loras.json?v=2').then(r => r.json()),
-      fetch('/data/presets.json?v=2').then(r => r.json()),
-      fetch('/data/tags.json').then(r => r.json()),
-    ])
-    if (sc.status === 'fulfilled') scenes.value = Array.isArray(sc.value) ? sc.value : []
-    if (cu.status === 'fulfilled') curation.value = cu.value ?? {}
-    if (ch.status === 'fulfilled') characters.value = Array.isArray(ch.value) ? ch.value : []
-    if (lm.status === 'fulfilled') loraMeta.value = Array.isArray(lm.value) ? lm.value : []
-    if (pr.status === 'fulfilled') {
-      const v = pr.value
-      presets.value = Array.isArray(v) ? v : (Array.isArray(v?.presets) ? v.presets : [])
-      modelProfiles.value = Array.isArray(v?.model_profiles) ? v.model_profiles : []
-    }
-    if (tg.status === 'fulfilled') tags.value = Array.isArray(tg.value) ? tg.value : []
+    const store = useSceneStore()
+    await store.load()
+
+    scenes.value = store.scenes as typeof scenes.value
+    curation.value = store.curation
+    characters.value = store.characters as typeof characters.value
+    loraMeta.value = store.loras as typeof loraMeta.value
+    tags.value = store.tags as typeof tags.value
+
+    const pr = store.presets as { presets?: unknown[]; model_profiles?: unknown[] } | unknown[]
+    presets.value = (Array.isArray(pr) ? pr : (Array.isArray(pr?.presets) ? pr.presets : [])) as typeof presets.value
+    modelProfiles.value = (!Array.isArray(pr) && Array.isArray(pr?.model_profiles)
+      ? pr.model_profiles : []) as typeof modelProfiles.value
+
     // presets.json 载入后立刻按底模填充推荐参数
     applyModelProfile()
     dataReady.value = true

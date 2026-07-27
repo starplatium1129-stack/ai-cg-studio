@@ -10,6 +10,7 @@
 
 var assert = require('assert');
 var http = require('http');
+var fs = require('fs');
 var path = require('path');
 var startGateway = require(path.join(__dirname, '..', '..', 'server.js')).startGateway;
 
@@ -157,8 +158,57 @@ async function main() {
     assert.ok(spaRoute.status === 200 || spaRoute.status === 404,
       'SPA route should resolve (200 with dist/, 404 without)');
 
+    // ---- S-5: /sdapi 只放行前端真正调用的端点 ----
+    // 之前整段透传 /sdapi + /controlnet + /adetailer，SD API 能换模型、
+    // 装了扩展还能碰文件系统。
+    var sdBlocked = ['/sdapi/v1/options-anything', '/controlnet/model_list', '/adetailer/v1/version'];
+    for (var b = 0; b < sdBlocked.length; b++) {
+      var denied = await request({ path:sdBlocked[b], headers:LOCAL });
+      assert.strictEqual(denied.status, 404, sdBlocked[b] + ' must not be proxied, got ' + denied.status);
+      assert.ok(String(denied.headers['content-type'] || '').indexOf('json') !== -1,
+        sdBlocked[b] + ' must return JSON 404, not the SPA shell');
+    }
+
+    // ---- P-10: data/ 只暴露 SPA 真正读取的文件 ----
+    var privateData = [
+      'scenes/nene-core.json',   // build-scenes.js 的输入，客户端从不读
+      'history.json', 'projects.json', 'prompts.json',
+      'official-cg-candidates.json', 'retired-scenes.json'
+    ];
+    for (var d = 0; d < privateData.length; d++) {
+      var hidden = await request({ path:'/data/' + privateData[d], headers:LOCAL });
+      assert.strictEqual(hidden.status, 404, '/data/' + privateData[d] + ' must not be public');
+    }
+    var publicData = ['scenes.json', 'curation.json', 'characters.json', 'loras.json', 'tags.json', 'presets.json'];
+    for (var pd = 0; pd < publicData.length; pd++) {
+      var served = await request({ path:'/data/' + publicData[pd], headers:LOCAL });
+      assert.strictEqual(served.status, 200, '/data/' + publicData[pd] + ' must stay served');
+    }
+
+    // ---- P-3: 带 hash 的产物永久缓存，SPA 外壳不缓存 ----
+    var distApp = path.join(__dirname, '..', '..', 'dist', '_app');
+    if (fs.existsSync(distApp)) {
+      var hashed = fs.readdirSync(distApp).filter(function (f) { return /-[\w-]{8,}\.js$/.test(f); })[0];
+      if (hashed) {
+        var assetRes = await request({ path:'/_app/' + hashed, headers:LOCAL });
+        var cc = String(assetRes.headers['cache-control'] || '');
+        assert.ok(cc.indexOf('immutable') !== -1 && cc.indexOf('max-age=31536000') !== -1,
+          'content-hashed assets must be immutable, got ' + cc);
+      }
+      var shellRes = await request({ path:'/', headers:LOCAL });
+      assert.ok(String(shellRes.headers['cache-control'] || '').indexOf('no-cache') !== -1,
+        'SPA shell must stay no-cache');
+    }
+
+    // ---- D-2: docs 能取到唯一那份设计系统，但 src/ 其余部分不外泄 ----
+    var designSystem = await request({ path:'/src/assets/css/design-system.css', headers:LOCAL });
+    assert.strictEqual(designSystem.status, 200, 'docs pages need the canonical design system');
+    var srcLeak = await request({ path:'/src/main.ts', headers:LOCAL });
+    assert.strictEqual(srcLeak.status, 404, 'only design-system.css may be exposed from src/');
+
     console.log('Gateway contract tests passed: tunnel localOnly, host validation, ' +
-      'rebinding guard, WS upgrade auth, error envelopes, api 404');
+      'rebinding guard, WS upgrade auth, error envelopes, api 404, sdapi allowlist, ' +
+      'data allowlist, immutable assets');
   } finally {
     handle.shutdown();
   }

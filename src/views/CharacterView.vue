@@ -35,7 +35,16 @@
           <div class="tags-grid">
             <span v-for="(t,i) in current.tags" :key="t" class="tag-chip" :class="'m'+i%6">{{ t }}</span>
           </div>
-          <div v-if="current.bg_story" class="bg-story" :class="{ expanded: bgExpanded }" @click="bgExpanded=!bgExpanded">{{ current.bg_story }}</div>
+          <!-- 简介被 CSS 截断（max-height），展开是真的在露出内容，
+           所以必须是可聚焦控件并汇报 aria-expanded；原先只有 @click -->
+      <button
+        v-if="current.bg_story"
+        type="button"
+        class="bg-story"
+        :class="{ expanded: bgExpanded }"
+        :aria-expanded="bgExpanded"
+        @click="bgExpanded=!bgExpanded"
+      >{{ current.bg_story }}</button>
           <div class="detail-grid">
             <section class="detail-section"><div class="lab">性格标签</div><div class="chips"><span v-for="p in current.personality" :key="p" class="chip trait">{{ p }}</span></div></section>
             <section class="detail-section"><div class="lab">喜欢的事</div><div class="chips"><span v-for="l in current.likes" :key="l" class="chip">{{ l }}</span></div></section>
@@ -63,7 +72,9 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
+import { useSceneStore } from '@/stores/sceneStore'
 
+const sceneStore = useSceneStore()
 const characters = ref<any[]>([])
 const scenes = ref<any[]>([])
 const loading = ref(true)
@@ -83,14 +94,11 @@ const recommendations = computed(() => {
 
 onMounted(async () => {
   try {
-    const [c, s] = await Promise.all([
-      fetch('/data/characters.json?v=6').then(r => r.json()),
-      fetch('/data/scenes.json?v=6').then(r => r.json()),
-    ])
-    characters.value = Array.isArray(c) ? c : []
-    scenes.value = Array.isArray(s) ? s : []
+    await sceneStore.load()
+    characters.value = sceneStore.characters as any[]
+    scenes.value = sceneStore.scenes as any[]
     current.value = characters.value[0] || null
-  } catch {}
+  } catch (e) { console.warn('character data load failed', e) }
   loading.value = false
 })
 </script>
@@ -163,7 +171,8 @@ onMounted(async () => {
 .tag-chip.m3 { --chip-tone:var(--mood-sad-text); }
 .tag-chip.m4 { --chip-tone:var(--mood-tension-text); }
 .tag-chip.m5 { --chip-tone:var(--mood-warmth-text); }
-.bg-story { position:relative; max-height:80px; overflow:hidden; color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:1.7; cursor:pointer; transition:max-height var(--t-base); }
+/* 现在是 <button>：重置默认样式，保留原来的截断+展开观感 */
+.bg-story { display:block; width:100%; text-align:left; border:none; background:none; font-family:inherit; position:relative; max-height:80px; overflow:hidden; color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:1.7; cursor:pointer; transition:max-height var(--t-base); }
 .bg-story.expanded { max-height:500px; }
 .bg-story::after { content:'展开'; position:absolute; right:0; bottom:0; padding-left:var(--s-6); background:linear-gradient(90deg,transparent,var(--bg-surface)); color:var(--accent); font-size:var(--fs-label-xs); }
 .bg-story.expanded::after { content:none; }

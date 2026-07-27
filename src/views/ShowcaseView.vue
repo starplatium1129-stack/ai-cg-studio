@@ -118,6 +118,9 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
+import { useSceneStore } from '@/stores/sceneStore'
+
+const sceneStore = useSceneStore()
 
 const PAGE_SIZE = 24
 const SCOPE_OPTS = [{ v:'all', l:'全部' }, { v:'featured', l:'精选' }]
@@ -186,10 +189,12 @@ function onKey(e: KeyboardEvent) {
 onMounted(async () => {
   document.addEventListener('keydown', onKey)
   try {
-    const [manifest, curation] = await Promise.all([
+    // manifest 是样张目录（非 data/），仍单独取；curation 走共享 store
+    const [manifest] = await Promise.all([
       fetch('/scene-showcase/manifest.json', { cache: 'no-cache' }).then(r => { if (!r.ok) throw new Error('showcase ' + r.status); return r.json() }),
-      fetch('/data/curation.json?v=2').then(r => r.ok ? r.json() : {}).catch(() => ({}))
+      sceneStore.load().catch(() => {})
     ])
+    const curation = sceneStore.curation as any
     if (!manifest || !Array.isArray(manifest.entries)) throw new Error('invalid manifest')
     entries.value = manifest.entries.slice().sort((a: any, b: any) => Number(a.id.slice(2)) - Number(b.id.slice(2)))
     featured.value = new Set([...(curation.signatureSceneIds || []), ...(curation.curatedSceneIds || [])])

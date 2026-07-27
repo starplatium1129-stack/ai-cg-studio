@@ -1,5 +1,7 @@
 <template>
   <Teleport to="body">
+    <!-- 只在容器上声明一次 live region。子项再挂 role="status" 会造成
+         嵌套 live region，读屏可能重复播报或整条丢掉。 -->
     <div class="toast-stack" aria-live="polite" aria-atomic="false">
       <TransitionGroup name="toast">
         <div
@@ -7,12 +9,17 @@
           :key="t.id"
           class="toast-item"
           :class="`toast-${t.type}`"
-          role="status"
-          @click="dismiss(t.id)"
         >
-          <span class="toast-icon">{{ icons[t.type] }}</span>
+          <span class="toast-icon" aria-hidden="true">{{ icons[t.type] }}</span>
           <span class="toast-msg">{{ t.msg }}</span>
-          <button class="toast-close" type="button" :aria-label="`关闭提示：${t.msg}`">×</button>
+          <!-- 关闭动作挂在按钮本身，而不是外层 div：
+               原先 div 才是 @click 的宿主，但它不可聚焦 -->
+          <button
+            class="toast-close"
+            type="button"
+            :aria-label="`关闭提示：${t.msg}`"
+            @click="dismiss(t.id)"
+          >×</button>
         </div>
       </TransitionGroup>
     </div>

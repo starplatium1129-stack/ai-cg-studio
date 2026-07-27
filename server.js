@@ -16,6 +16,21 @@ var createControlRouter = require('./routes/control').createControlRouter;
 
 var ONE_DAY = 24 * 60 * 60 * 1000;
 var ONE_WEEK = 7 * ONE_DAY;
+var ONE_YEAR = 365 * ONE_DAY;
+
+// SD WebUI 只放行前端真正调用的端点。
+// 之前整段透传 /sdapi、/controlnet、/adetailer —— SD 的 API 能换模型，
+// 装了扩展还能碰文件系统，等于把这些能力一并交给任何 token 持有者。
+var SD_PROXY_ALLOWLIST = [
+  '/sdapi/v1/sd-models',
+  '/sdapi/v1/samplers',
+  '/sdapi/v1/schedulers',
+  '/sdapi/v1/upscalers',
+  '/sdapi/v1/options',
+  '/sdapi/v1/progress',
+  '/sdapi/v1/txt2img',
+  '/sdapi/v1/interrupt'
+];
 
 function staticOptions(maxAge) {
   return {
@@ -94,7 +109,15 @@ function createGateway(options) {
   var DIST_DIR = path.join(config.ROOT_DIR, 'dist');
   var distReady = fs.existsSync(path.join(DIST_DIR, 'index.html'));
   if (distReady) {
-    // Vite 构建产物（_app/ 里的 JS/CSS）
+    // dist/_app 里的文件名带内容 hash，改动必然换名 → 可以永久缓存。
+    // 之前统一 max-age=86400 且无 immutable，34 个 JS/CSS 每天都要回验一次。
+    app.use('/_app', express.static(path.join(DIST_DIR, '_app'), {
+      dotfiles:'deny',
+      index:false,
+      immutable:true,
+      maxAge:ONE_YEAR
+    }));
+    // 其余产物（favicon 等无 hash 文件）保持一天
     app.use(express.static(DIST_DIR, staticOptions(ONE_DAY)));
   }
 
@@ -111,7 +134,19 @@ function createGateway(options) {
     next();
   }, express.static(path.join(config.ROOT_DIR, 'src', 'assets', 'css'), staticOptions(ONE_DAY)));
   app.use('/assets', express.static(path.join(config.ROOT_DIR, 'assets'), staticOptions(ONE_WEEK)));
-  app.use('/data', express.static(path.join(config.ROOT_DIR, 'data'), staticOptions(0)));
+  // 只放行 SPA 真正读取的数据文件。
+  // 之前整个 data/ 目录对外可读，包括 history.json / projects.json / prompts.json
+  // 这类个人内容，以及 data/scenes/*.json（build-scenes.js 的输入，共 893KB，
+  // 客户端从不读取）。
+  var PUBLIC_DATA_FILES = [
+    'scenes.json', 'curation.json', 'characters.json',
+    'loras.json', 'tags.json', 'presets.json'
+  ];
+  app.use('/data', function (req, res, next) {
+    var name = req.path.replace(/^\//, '');
+    if (PUBLIC_DATA_FILES.indexOf(name) === -1) return res.status(404).end();
+    next();
+  }, express.static(path.join(config.ROOT_DIR, 'data'), staticOptions(0)));
   app.use('/scene-showcase', function (req, res, next) {
     if (!config.SCENE_SHOWCASE_DIR) return res.status(404).end();
     var relative = req.path.replace(/\\/g, '/');
@@ -138,7 +173,7 @@ function createGateway(options) {
     // 完全绕过 Express 中间件栈，于是 tokenAuth 失效。升级请求改由 startGateway 手动鉴权后转交。
     ws:false,
     pathFilter:function (pathname) {
-      return pathname.startsWith('/sdapi') || pathname.startsWith('/controlnet') || pathname.startsWith('/adetailer');
+      return SD_PROXY_ALLOWLIST.indexOf(pathname) !== -1;
     },
     proxyTimeout:20 * 60 * 1000,
     auth:config.SD_API_AUTH || undefined,
@@ -162,6 +197,11 @@ function createGateway(options) {
     }
   });
   app.use(sdProxy);
+
+  // 白名单外的 SD 路径必须是 JSON 404，不能被 SPA catch-all 吞成 200 text/html
+  app.use(['/sdapi', '/controlnet', '/adetailer'], function (req, res) {
+    res.status(404).json({ error:'该 SD 接口未开放：' + req.baseUrl + req.path });
+  });
 
   // SPA fallback — Vue Router 的前端路由在刷新时返回 index.html
   app.get('*', function (req, res, next) {
@@ -284,9 +324,7 @@ function createGateway(options) {
   // upgrade 请求不经过 Express 中间件，所以在这里复刻 tokenAuth 的判定。
   function handleUpgrade(req, socket, head) {
     var pathname = String(req.url || '/').split('?')[0];
-    var proxied = pathname.startsWith('/sdapi') || pathname.startsWith('/controlnet') ||
-      pathname.startsWith('/adetailer');
-    if (!proxied) { socket.destroy(); return; }
+    if (SD_PROXY_ALLOWLIST.indexOf(pathname) === -1) { socket.destroy(); return; }
 
     var authorized = security.isDirectLocalRequest(req);
     if (!authorized) {

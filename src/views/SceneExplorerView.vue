@@ -140,6 +140,7 @@ import { tier as uxTier, matchesSearch as uxMatchesSearch, searchScore as uxSear
   personalReason as uxPersonalReason, analyzeQuery as uxAnalyze,
   buildPreferenceProfile } from '@/utils/sceneUX'
 import { kvInit, kvGet } from '@/composables/useKVStore'
+import { useSceneStore } from '@/stores/sceneStore'
 
 const PAGE_SIZE = 24
 const MATURE_KEY = 'aics_show_mature'
@@ -165,6 +166,7 @@ const DEFAULT_RAILS = [
 ]
 
 const route = useRoute()
+const sceneStore = useSceneStore()
 const scenes = ref<any[]>([])
 const curation = ref<any>({ curatedSceneIds:[], moodRails:[], signatureSceneIds:[], reviewSceneIds:[] })
 const profile = ref<any>({ entries: 0 })
@@ -175,6 +177,18 @@ const favs = ref<Set<string>>(new Set(JSON.parse(localStorage.getItem(FAV_KEY) |
 const showMature = ref(localStorage.getItem(MATURE_KEY) == null ? LOCAL_OWNER : localStorage.getItem(MATURE_KEY) === '1')
 
 const searchQuery = ref('')
+/**
+ * 输入框绑 searchQuery（打字要立刻回显），过滤/排序读 debouncedQuery。
+ * 全 src/ 之前没有任何 debounce，297 条的过滤+排序每次击键都全量重跑。
+ */
+const debouncedQuery = ref('')
+let searchTimer: ReturnType<typeof setTimeout> | null = null
+watch(searchQuery, (value) => {
+  if (searchTimer) clearTimeout(searchTimer)
+  // 清空要立刻生效，否则删完还要等 150ms 才回到全部结果
+  if (!value.trim()) { debouncedQuery.value = value; return }
+  searchTimer = setTimeout(() => { debouncedQuery.value = value }, 150)
+})
 const activeTheme = ref('all')
 const fChar = ref('all'); const fSeason = ref('all'); const fTime = ref('all')
 const fSeries = ref('all'); const fRating = ref('all'); const fTier = ref('featured')
@@ -258,7 +272,8 @@ function dv(s: any) {
 }
 
 const filtered = computed(() => {
-  const q = searchQuery.value.trim().toLowerCase()
+  // 用 debounce 后的值：直接读 searchQuery 会让下面的过滤+排序在每次击键时重跑
+  const q = debouncedQuery.value.trim().toLowerCase()
   let r = scenes.value.filter(s => {
     if (!showMature.value && s.mature) return false
     if (!matchesTheme(s, activeTheme.value)) return false
@@ -273,9 +288,17 @@ const filtered = computed(() => {
     if (sortBy.value === 'favorite' && !favs.value.has(s.id) && !uxIsFav(s, profile.value)) return false
     return !q || uxMatchesSearch(s, q, curation.value, [primaryCat(s), timeLabel(s.timeOfDay)])
   })
+  // 相关度先算一遍存 Map:原先在比较器里每次比较都调 uxSearchScore 两次,
+  // 297 条 ≈ 每次重算 4900 次评分,每次还带字符串归一化
+  const relevance = new Map<string, number>()
+  if (q) {
+    for (const s of r) {
+      relevance.set(s.id, uxSearchScore(s, q, curation.value, [primaryCat(s), timeLabel(s.timeOfDay)]))
+    }
+  }
   return r.sort((a,b) => {
     if (q) {
-      const rel = uxSearchScore(b,q,curation.value,[primaryCat(b),timeLabel(b.timeOfDay)])-uxSearchScore(a,q,curation.value,[primaryCat(a),timeLabel(a.timeOfDay)])
+      const rel = (relevance.get(b.id) ?? 0) - (relevance.get(a.id) ?? 0)
       if (rel) return rel
     }
     if (sortBy.value==='newest') return String(b.id).localeCompare(String(a.id),undefined,{numeric:true})
@@ -288,7 +311,7 @@ const filtered = computed(() => {
 const paged = computed(() => filtered.value.slice(0, visible.value))
 
 const intentHtml = computed(() => {
-  const q = searchQuery.value.trim()
+  const q = debouncedQuery.value.trim()
   const a = uxAnalyze(q, curation.value)
   const exp = q && fTier.value==='featured' ? '已自动扩展至完整场景库。' : ''
   const understood = a.intents?.length ? `已理解为：<strong>${a.intents.join(' · ')}</strong>。` : (q?'正在搜索标题、故事、情绪、地点和视觉标签。':'可以直接描述想画的完整句子。')
@@ -296,7 +319,7 @@ const intentHtml = computed(() => {
   return exp + understood + personal
 })
 
-watch([searchQuery, activeTheme, fChar, fSeason, fTime, fSeries, fRating, fTier, sortBy], () => { visible.value = PAGE_SIZE })
+watch([debouncedQuery, activeTheme, fChar, fSeason, fTime, fSeries, fRating, fTier, sortBy], () => { visible.value = PAGE_SIZE })
 
 function toggleFav(id: string) {
   if (favs.value.has(id)) favs.value.delete(id); else favs.value.add(id)
@@ -316,12 +339,10 @@ function onKey(e: KeyboardEvent) { if (e.key==='Escape') drawerScene.value=null 
 
 async function init() {
   try {
-    const [s, c] = await Promise.all([
-      fetch('/data/scenes.json?v=9').then(r=>r.json()),
-      fetch('/data/curation.json?v=3').then(r=>r.json()).catch(()=>({}))
-    ])
-    scenes.value = Array.isArray(s) ? s : []
-    curation.value = c || curation.value
+    // 共享数据走 sceneStore 单例，不再各页独立 fetch
+    await sceneStore.load()
+    scenes.value = sceneStore.scenes as any[]
+    curation.value = sceneStore.curation || curation.value
   } catch(e) { console.warn('scene load failed', e) }
 
   try {
@@ -352,7 +373,10 @@ async function init() {
 }
 
 onMounted(() => { document.addEventListener('keydown', onKey); init() })
-onUnmounted(() => document.removeEventListener('keydown', onKey))
+onUnmounted(() => {
+  document.removeEventListener('keydown', onKey)
+  if (searchTimer) clearTimeout(searchTimer)
+})
 </script>
 
 <style scoped>

@@ -138,8 +138,11 @@ function createVoiceRouter(config, dependencies) {
     }).catch(function (error) {
       if (httpClient.isAbortError(error) || controller.signal.aborted) return;
       if (!res.headersSent) {
-        res.status(error.status >= 400 && error.status < 500 ? error.status : 502).json({
-          error:'GPT-SoVITS 生成失败',
+        // 队列已满是 503（客户端可重试），不是 502（上游坏了）
+        var status = error.code === 'QUEUE_FULL' ? 503
+          : (error.status >= 400 && error.status < 500 ? error.status : 502);
+        res.status(status).json({
+          error:error.code === 'QUEUE_FULL' ? '语音队列繁忙' : 'GPT-SoVITS 生成失败',
           detail:error.detail || error.message
         });
       } else if (!res.writableEnded) {

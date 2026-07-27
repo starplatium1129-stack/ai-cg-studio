@@ -4,7 +4,21 @@
     <meta charset="UTF-8" />
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 告诉浏览器两套主题都支持：表单控件/滚动条会跟着走，且首屏不会闪白 -->
+    <meta name="color-scheme" content="dark light" />
+    <meta name="description" content="绫季绘境 · 个人 Galgame 风格 AI CG 场景工作台：从故事到场景到 prompt 到成片。" />
     <title>绫季绘境 · 把心动的一瞬，画成一张 CG</title>
+
+    <!-- 字体：preconnect + link 取代 design-system.css 里的 @import，
+         省掉 HTML→CSS→CSS→字体 的两段串行 RTT。
+         五个字重都保留：src/ 里 500 用了 16 次、700 用了 49 次，
+         砍掉会让浏览器合成假粗体（CJK 上尤其糊）。 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Noto+Sans+SC:wght@400;500;600;700;800&display=swap"
+    />
   </head>
   <body>
     <div id="app"></div>

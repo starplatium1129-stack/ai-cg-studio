@@ -11,17 +11,20 @@
 
     <!-- 剧本列表 -->
     <div v-if="!activeScenario" class="scenario-list">
-      <div
+      <!-- 必须是 button:这是进入剧本查看器的唯一入口,
+           原先是 <div @click>,没有 role/tabindex/keydown → 键盘完全进不去 -->
+      <button
         v-for="s in SCENARIOS" :key="s.id"
+        type="button"
         class="scenario-card card-create card-level-2"
         @click="openScenario(s)"
       >
-        <div class="scenario-icon">{{ s.icon }}</div>
-        <div class="scenario-name">{{ s.name }}</div>
-        <div class="scenario-en">{{ s.en }}</div>
-        <div class="scenario-desc">{{ s.desc }}</div>
-        <div class="scenario-count">{{ s.acts.length }} 幕 · 点击查看</div>
-      </div>
+        <span class="scenario-icon" aria-hidden="true">{{ s.icon }}</span>
+        <span class="scenario-name">{{ s.name }}</span>
+        <span class="scenario-en">{{ s.en }}</span>
+        <span class="scenario-desc">{{ s.desc }}</span>
+        <span class="scenario-count">{{ s.acts.length }} 幕 · 点击查看</span>
+      </button>
     </div>
 
     <!-- 分幕查看器 -->
@@ -90,6 +93,10 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { useSceneStore } from '@/stores/sceneStore'
+import { useToast } from '@/composables/useToast'
+
+const sceneStore = useSceneStore()
 
 const BANNED_TAGS = ['neon','glowing','oversaturated','vivid colors','vivid','rainbow','high contrast','harsh lighting','extremely detailed','ultra detailed']
 const LOCK_PARAMS = 'CFG 5 · DPM++ 2M SDE · Steps 28 · Hires 0.45'
@@ -191,23 +198,15 @@ function copyPrompt(a: any) {
 
 function openScenario(s: any) { activeScenario.value = s }
 
-function showToast(msg: string) {
-  let t = document.getElementById('sv-toast')
-  if (!t) {
-    t = document.createElement('div'); t.id = 'sv-toast'
-    t.style.cssText = 'position:fixed;left:50%;bottom:32px;transform:translateX(-50%);z-index:9999;background:var(--bg-surface);border:1px solid var(--accent);color:var(--text-primary);padding:10px 20px;border-radius:8px;font-size:.85rem;box-shadow:0 4px 16px rgba(0,0,0,.4);opacity:0;transition:opacity .2s;'
-    document.body.appendChild(t)
-  }
-  t.textContent = msg; t.style.opacity = '1'
-  setTimeout(() => { (t as HTMLElement).style.opacity = '0' }, 1600)
-}
+// 走全局 AppToast。原先手搓 DOM + 内联 cssText，硬编码了 z-index:9999
+// （会盖住 --z-skip 的跳转链接）、border-radius、font-size 与 rgba 阴影。
+const { show: showToast } = useToast()
 
 onMounted(async () => {
   try {
-    const r = await fetch('/data/scenes.json')
-    const d = await r.json()
-    sceneCount.value = String(Array.isArray(d) ? d.length : '--')
-  } catch {}
+    await sceneStore.load()
+    sceneCount.value = String(sceneStore.count || '--')
+  } catch (e) { console.warn('scene count load failed', e) }
 })
 </script>
 
@@ -215,12 +214,13 @@ onMounted(async () => {
 .info-callout { margin-bottom:var(--s-5); padding:var(--s-3) var(--s-4); border:1px solid var(--accent); border-radius:var(--r-md); background:var(--accent-soft); font-size:var(--fs-body-sm); }
 .info-callout strong { color:var(--accent); }
 .scenario-list { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:var(--s-4); }
-.scenario-card { padding:var(--s-5); cursor:pointer; }
-.scenario-icon { font-size:var(--fs-glyph); margin-bottom:var(--s-2); }
-.scenario-name { font-size:var(--fs-title-xs); font-weight:800; margin-bottom:2px; }
-.scenario-en { color:var(--text-muted); font-size:var(--fs-mono-sm); margin-bottom:var(--s-2); }
-.scenario-desc { color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:1.65; margin-bottom:var(--s-2); }
-.scenario-count { color:var(--accent); font-size:var(--fs-label-sm); font-weight:700; }
+/* 卡片现在是 <button>：重置浏览器默认样式，并保持原本的块级排版 */
+.scenario-card { padding:var(--s-5); cursor:pointer; display:block; width:100%; text-align:left; font:inherit; color:inherit; }
+.scenario-icon { display:block; font-size:var(--fs-glyph); margin-bottom:var(--s-2); }
+.scenario-name { display:block; font-size:var(--fs-title-xs); font-weight:800; margin-bottom:2px; }
+.scenario-en { display:block; color:var(--text-muted); font-size:var(--fs-mono-sm); margin-bottom:var(--s-2); }
+.scenario-desc { display:block; color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:1.65; margin-bottom:var(--s-2); }
+.scenario-count { display:block; color:var(--accent); font-size:var(--fs-label-sm); font-weight:700; }
 
 .viewer { margin-top:var(--s-4); }
 .viewer-header-row { display:flex; align-items:flex-start; justify-content:space-between; gap:var(--s-4); margin-bottom:var(--s-3); }

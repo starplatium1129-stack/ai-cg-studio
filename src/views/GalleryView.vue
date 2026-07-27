@@ -143,6 +143,9 @@
 import { ref, computed, reactive, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { kvInit, kvGet, kvSet } from '@/composables/useKVStore'
 import { imgGet, imgDelete } from '@/composables/useImageStore'
+import { useSceneStore } from '@/stores/sceneStore'
+
+const sceneStore = useSceneStore()
 
 const HISTORY_KEY = 'aics_pb_history'
 // 必须与 useBackup.ts 的 PROJECT_KEY 一致。曾经这里写 'aics_projects'，
@@ -463,10 +466,11 @@ onMounted(async () => {
     projects.value = Array.isArray(projectRaw) ? projectRaw : []
   } catch (e) { console.warn('gallery storage init failed', e) }
 
-  await Promise.all([
-    fetch('/data/scenes.json?v=9').then(r => r.json()).then(d => { scenes.value = d }).catch(() => {}),
-    fetch('/data/loras.json?v=6').then(r => r.json()).then(d => { loras.value = d }).catch(() => {}),
-  ])
+  try {
+    await sceneStore.load()
+    scenes.value = sceneStore.scenes as any[]
+    loras.value = sceneStore.loras as any[]
+  } catch (e) { console.warn('gallery data load failed', e) }
   await hydrateCards()
 })
 

@@ -28,7 +28,9 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { useSceneStore } from '@/stores/sceneStore'
 
+const sceneStore = useSceneStore()
 const loras = ref<any[]>([])
 const loading = ref(true)
 
@@ -40,9 +42,9 @@ function rw(l: any) {
 
 onMounted(async () => {
   try {
-    const r = await fetch('/data/loras.json?v=6')
-    loras.value = await r.json()
-  } catch {}
+    await sceneStore.load()
+    loras.value = sceneStore.loras as any[]
+  } catch (e) { console.warn('lora load failed', e) }
   loading.value = false
 })
 </script>
