@@ -23,6 +23,8 @@ export interface HistoryEntry {
   manual_tags: string[]; lora: string | null
   cfg: number | string; steps: number | string; sampler: string
   scheduler: string; checkpoint: string; size: string
+  /** 成片真实像素；size 只是保存时下拉框的值，作品册排版以这两个为准 */
+  width: number | null; height: number | null
   rating: Record<string, number>; favorite: boolean; notes: string
   image_id: string; image_url: string; version: number
   parent_id: number | null; project: string; [k: string]: unknown
@@ -353,12 +355,40 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     } catch { return false }
   }
 
+  /**
+   * 量出成片真实像素。
+   * size 字段记的是保存那一刻下拉框的值，跟成片可能已经不一致
+   * （中途换过场景 / 尺寸、或走了 hires.fix 放大），作品册按它排版就会
+   * 给竖图套上横构图的框。所以入册时直接解码一次拿真尺寸。
+   */
+  async function measureBlob(blob: Blob): Promise<{ width: number | null; height: number | null }> {
+    try {
+      if (typeof createImageBitmap === 'function') {
+        const bitmap = await createImageBitmap(blob)
+        const size = { width: bitmap.width, height: bitmap.height }
+        bitmap.close?.()
+        return size
+      }
+    } catch { /* 落到 <img> 兜底 */ }
+    return await new Promise(resolve => {
+      const url = URL.createObjectURL(blob)
+      const img = new Image()
+      img.onload = () => {
+        resolve({ width: img.naturalWidth || null, height: img.naturalHeight || null })
+        URL.revokeObjectURL(url)
+      }
+      img.onerror = () => { resolve({ width: null, height: null }); URL.revokeObjectURL(url) }
+      img.src = url
+    })
+  }
+
   // ── History entry commit (IndexedDB image save) ──────────────────────────
   async function commitHistoryEntry(entry: Partial<HistoryEntry> & {
     blob: Blob; seed?: number; size?: string; negative?: string; prompt: string
   }): Promise<HistoryEntry | null> {
     try {
       const imageId = await imgPut(entry.blob)
+      const measured = await measureBlob(entry.blob)
       const now = Date.now()
       const id = now
       const historyEntry: HistoryEntry = {
@@ -378,6 +408,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
         lora: loraLine.value || null,
         cfg: sdParams.cfg, steps: sdParams.steps, sampler: sdParams.sampler,
         scheduler: sdParams.scheduler, checkpoint: sdModelName.value, size: entry.size ?? lastRecommendedSize.value,
+        width: measured.width, height: measured.height,
         rating: {}, favorite: false, notes: '',
         image_id: imageId, image_url: '',
         version: 1, parent_id: null, project: projectId.value,

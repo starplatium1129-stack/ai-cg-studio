@@ -248,7 +248,12 @@ async function loadRecentWorks() {
       const old = JSON.parse(localStorage.getItem('aics_pb_history') || '[]')
       if (old.length) { history = old; await kvSet('aics_pb_history', old); localStorage.removeItem('aics_pb_history') }
     }
-    recentWorks.value = history.slice(0, 3)
+    // 历史按生成顺序 append，直接 slice 拿到的是最旧的三幅
+    const stamp = (h: any) => {
+      const t = new Date(h?.timestamp).getTime()
+      return Number.isFinite(t) ? t : (Number(h?.id) || 0)
+    }
+    recentWorks.value = history.slice().sort((a, b) => stamp(b) - stamp(a)).slice(0, 3)
 
     if (!initContinueDraft() && recentWorks.value[0]) {
       const h = recentWorks.value[0]

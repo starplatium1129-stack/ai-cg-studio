@@ -51,12 +51,13 @@
                   loading="lazy"
                   decoding="async"
                   referrerpolicy="no-referrer"
+                  @load="measure(item.id, $event)"
                 />
                 <div v-else class="artwork-placeholder">✦</div>
                 <div class="artwork-caption">
                   <span>
                     <span class="artwork-name">{{ sceneTitle(item.scene) }}</span>
-                    <span class="artwork-date">{{ formatDate(item.timestamp) }}</span>
+                    <span class="artwork-date">{{ formatDate(stamp(item)) }}</span>
                   </span>
                   <span class="artwork-mark">{{ item.favorite ? '♥' : '＋' }}</span>
                 </div>
@@ -94,7 +95,7 @@
         <div class="viewer-kicker">Artwork {{ viewerIndex + 1 }}</div>
         <h2 class="viewer-title">{{ sceneTitle(current.scene) }}</h2>
         <div class="viewer-meta">
-          {{ characterName(current.character) }} · {{ formatDate(current.timestamp) }} · v{{ current.version || 1 }}
+          {{ characterName(current.character) }} · {{ formatDate(stamp(current)) }} · v{{ current.version || 1 }}
         </div>
         <div class="viewer-story viewer-story-on-art">{{ current.story || '这幅作品还没有附加文字。' }}</div>
         <div class="viewer-facts">
@@ -135,6 +136,8 @@ const viewerIndex = ref(-1)
 const infoOpen = ref(false)
 const viewerUrl = ref('')
 const cardUrls = reactive<Record<string, string>>({})
+/** 图片实际比例，键为历史条目 id；元数据不可信时以此为准 */
+const measuredRatios = reactive<Record<string, number>>({})
 const closeBtn = ref<HTMLElement | null>(null)
 const viewerEl = ref<HTMLElement | null>(null)
 let returnFocus: HTMLElement | null = null
@@ -147,7 +150,9 @@ const visible = computed(() => {
     const p = projects.value.find(x => x.id === projectFilter.value)
     if (p) source = source.filter(i => Array.isArray(p.history_ids) && p.history_ids.includes(i.id))
   }
-  return source
+  // 历史是按生成顺序 append 的，展墙必须自己排：最新在前。
+  // 之前直接用了存储顺序，所以作品册永远是最旧的排在最上面。
+  return source.sort((a, b) => stamp(b) - stamp(a))
 })
 const favoriteCount = computed(() => history.value.filter(i => i.favorite).length)
 const countLabel = computed(() => `${visible.value.length} 幅作品`)
@@ -157,7 +162,7 @@ const groups = computed(() => {
   const order = ['今天', '本周', '更早']
   const buckets: Record<string, any[]> = {}
   visible.value.forEach(item => {
-    const key = dayGroup(item.timestamp)
+    const key = dayGroup(stamp(item))
     ;(buckets[key] = buckets[key] || []).push(item)
   })
   return order.filter(k => buckets[k]?.length).map(k => ({ key: k, items: buckets[k] }))
@@ -199,6 +204,13 @@ function characterName(v: string) {
   return v === 'nene' ? '绫地宁宁' : v === 'natsume' ? '四季夏目'
     : v === 'triad' || v === 'both' ? '宁宁与夏目' : v || '—'
 }
+/** 时间戳兜底：老记录可能把 timestamp 存成字符串，或干脆没有 */
+function stamp(item: any): number {
+  const t = new Date(item?.timestamp).getTime()
+  if (Number.isFinite(t)) return t
+  const fromId = Number(item?.id)
+  return Number.isFinite(fromId) ? fromId : 0
+}
 function formatDate(ts: number) {
   const d = new Date(ts)
   return Number.isFinite(d.getTime())
@@ -212,15 +224,34 @@ function dayGroup(ts: number) {
   const diff = (start.getTime() - date.getTime()) / 86400000
   return diff < 1 ? '今天' : diff < 7 ? '本周' : '更早'
 }
+function clampRatio(r: number) { return Math.max(0.36, Math.min(2.8, r)) }
+
+/**
+ * 画框比例。
+ *
+ * `size` 记的是保存快照那一刻下拉框里的值，不是这张图真实的像素尺寸——
+ * 中途切场景把尺寸改成横图再保存，竖图就会套上横构图的框，画面被压在
+ * 中间、两侧留黑。所以真实尺寸（naturalWidth/Height，见 measure()）优先，
+ * 只有还没解码出来时才退回元数据。
+ */
 function ratioOf(item: any) {
+  const measured = measuredRatios[item.id]
+  if (measured) return clampRatio(measured)
   let w = Number(item.width || item.image_width || item.actual?.width)
   let h = Number(item.height || item.image_height || item.actual?.height)
   if (!(w > 0 && h > 0)) {
     const m = String(item.size || '').match(/(\d{2,5})\s*[x×]\s*(\d{2,5})/i)
     if (m) { w = Number(m[1]); h = Number(m[2]) }
   }
-  const r = w > 0 && h > 0 ? w / h : 3 / 4
-  return Math.max(0.36, Math.min(2.8, r))
+  return clampRatio(w > 0 && h > 0 ? w / h : 3 / 4)
+}
+
+/** 图片解码完成后用真实像素纠正画框 */
+function measure(id: string | number, e: Event) {
+  const img = e.target as HTMLImageElement
+  if (!img.naturalWidth || !img.naturalHeight) return
+  const r = img.naturalWidth / img.naturalHeight
+  if (Math.abs((measuredRatios[id] ?? 0) - r) > 0.001) measuredRatios[id] = r
 }
 function indexOf(item: any) { return visible.value.indexOf(item) }
 function safeImageUrl(v: string) {

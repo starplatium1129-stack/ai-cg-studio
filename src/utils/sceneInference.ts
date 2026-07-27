@@ -68,10 +68,20 @@ export function sceneComposition(_scene: any): string | null {
   return 'rule3'
 }
 
+/**
+ * 画幅标签只认整个标签，不做子串匹配。
+ * 原来用 includes('wide') 判横图，把镜头标签 wide_shot（广角/远景，说的是
+ * 取景范围，不是画幅）也算成横图 —— 全库 50 个场景带 wide_shot，选中它们
+ * 就会被悄悄改成 1344×768。真正表示横幅的标签是 landscape（26 个官方 CG 横幅）。
+ */
+const PORTRAIT_TAGS = new Set(['vertical', 'portrait', '竖图', '手机壁纸', '手机'])
+const LANDSCAPE_TAGS = new Set(['landscape', 'wide', 'widescreen', 'panorama', '横图', '横幅'])
+const SQUARE_TAGS = new Set(['square', '方图'])
+
 export function sceneRecommendedSize(scene: { tags?: string[] }): string {
-  const tags = (scene.tags || []).map(t => String(t).toLowerCase())
-  if (tags.some(t => ['vertical', 'portrait', '手机', '竖图'].some(k => t.includes(k)))) return '768x1344'
-  if (tags.some(t => ['wide', 'landscape', '横图', 'panorama'].some(k => t.includes(k)))) return '1344x768'
-  if (tags.some(t => t.includes('square') || t.includes('方图'))) return '896x896'
+  const tags = (scene.tags || []).map(t => String(t).trim().toLowerCase())
+  if (tags.some(t => PORTRAIT_TAGS.has(t))) return '768x1344'
+  if (tags.some(t => LANDSCAPE_TAGS.has(t))) return '1344x768'
+  if (tags.some(t => SQUARE_TAGS.has(t))) return '896x896'
   return '832x1216'
 }
