@@ -944,7 +944,9 @@
     animation:pbWorkspaceIn .28s var(--ease-out) both;
   }
   .mood-card .mood-icon { display:block; padding:8px 8px 0; font-size:var(--fs-body); }
-  .mood-card .mood-name { display:block; padding:4px 8px 0; font-size:var(--fs-label-sm); font-weight:700; color:var(--text-primary); }
+    /* 文字色不在这里定：mood.css 的 .mood-name 已经统一给 --text-primary。
+     这条以前是全局泄漏出去、替 mood.css 兜底的那一条。 */
+  .mood-card .mood-name { display:block; padding:4px 8px 0; font-size:var(--fs-label-sm); font-weight:700; }
   .mood-card .mood-desc { display:block; padding:2px 8px 8px; font-size:var(--fs-mono-xs); color:var(--text-muted); line-height:1.4; }
   .col-center { flex-direction:column; }
   /* 出图快门曝光动效 */

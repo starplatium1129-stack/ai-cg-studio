@@ -19,20 +19,27 @@
   border: 2px solid var(--border-soft);
   border-radius: var(--r-lg);
   background: var(--bg-surface);
-  color: var(--mood-color, inherit);
+  /* --mood-color 只用来喂 currentColor(选中态描边),不要让它继承成文字色 ——
+     六种 mood 都是高亮度色,当文字最差只有 1.38:1。文字色见 .mood-name。
+     曾经这里是 color: var(--mood-color),只因 director.css 全局泄漏出一条
+     未作用域限定的 .mood-card .mood-name 覆盖才看起来正常;那条泄漏一旦
+     收敛(director.css 移入路由块),标题就会当场掉到 1.38:1。 */
   font: inherit;
   text-align: left;
   cursor: pointer;
   transition: border-color var(--t-fast), transform var(--t-base) var(--ease-out), box-shadow var(--t-base);
 }
 .mood-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-/* 选中态用自身情绪色描边,故走 currentColor(由 --mood-color 提供) */
-.mood-card.active { border-color: currentColor; box-shadow: var(--glow-md); }
+/* 选中态用自身情绪色描边。border-color 属于非文字图形(3:1),
+   直接用 --mood-color 没问题;文字则一律走 --text-primary。 */
+.mood-card.active { border-color: var(--mood-color, var(--accent)); box-shadow: var(--glow-md); }
 .mood-card.selected { border-color: var(--accent); box-shadow: var(--glow-sm); }
 .mood-strip { display: flex; height: var(--mood-strip-h, 36px); }
 .mood-swatch { flex: 1; background: var(--swatch, transparent); }
 .mood-body { padding: var(--s-2) var(--s-3); }
-.mood-name { font-size: var(--fs-body); font-weight: 600; }
+/* 标题必须是常规文字色。design-system.css 提供了 --mood-*-text 压深版,
+   但卡片标题本身不需要染色 —— 色彩信号已经由上方的 .mood-strip 色条给足了。 */
+.mood-name { color: var(--text-primary); font-size: var(--fs-body); font-weight: 600; }
 .mood-en { color: var(--text-muted); font: 400 var(--fs-label-xs) var(--font-mono); }
 .mood-desc { color: var(--text-muted); font-size: var(--fs-label-xs); line-height: 1.4; }
 
