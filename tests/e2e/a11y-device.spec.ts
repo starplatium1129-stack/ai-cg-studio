@@ -64,8 +64,11 @@ for (const entry of layoutRoutes) {
     await page.goto(entry.path);
     await expect(page.locator('a.skip-link[href="#main"]')).toHaveCount(1);
     await expect(page.locator('#main')).toHaveCount(1);
-    // 不得出现嵌套/重复的 main landmark
-    await expect(page.locator('main')).toHaveCount(0);
+    // 必须是真的 <main>，且全页恰好一个。
+    // 这条断言原先写的是 toHaveCount(0) —— 那是在锁定"没有 main 地标"这个 bug：
+    // AppLayout 当时输出 <div id="main">，skip-link 落在一个普通容器上。
+    await expect(page.locator('main')).toHaveCount(1);
+    await expect(page.locator('main#main')).toHaveCount(1);
     expect(errors).toEqual([]);
   });
 }
