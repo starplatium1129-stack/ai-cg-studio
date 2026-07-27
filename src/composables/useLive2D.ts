@@ -28,6 +28,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   let mouthHooked = false
   let hostEl: HTMLElement | null = null
   let stageEl: HTMLElement | null = null
+  let hostSelector = '#live2dHost'
 
   function setState(state: string, text: string, detail = '', retryable = false) {
     if (hostEl) { hostEl.dataset.state = state; hostEl.dataset.error = detail; hostEl.dataset.retryable = retryable ? 'true' : 'false' }
@@ -36,6 +37,9 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
 
   async function init(char: string, host: HTMLElement, stage: HTMLElement) {
     hostEl = host; stageEl = stage
+    // wl-live2d 只接受 CSS selector，这里保证宿主节点有稳定 id 可选中
+    if (!hostEl.id) hostEl.id = 'live2dHost'
+    hostSelector = '#' + hostEl.id
     character.value = char || character.value
     setState('checking', '检查 Live2D…')
     try {
@@ -75,15 +79,41 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     await setCharacter(character.value)
   }
 
+  /**
+   * 载入 wl-live2d 运行库。
+   * 重构前靠 index.html 的全局 <script> 注入；Vue SPA 没有那段脚本，
+   * 所以这里改成动态 import npm 包，并兼容 default / 命名导出 / 全局三种形态。
+   */
+  async function loadLibrary(): Promise<any> {
+    const existing = (window as any)['wl-live2d']
+    if (existing && typeof existing.wlLive2d === 'function') return existing
+    try {
+      const mod: any = await import('wl-live2d')
+      const wlLive2d = mod?.wlLive2d ?? mod?.default?.wlLive2d ?? mod?.default
+      if (typeof wlLive2d === 'function') {
+        const lib = { wlLive2d }
+        ;(window as any)['wl-live2d'] = lib
+        return lib
+      }
+      throw new Error('wl-live2d 导出中没有 wlLive2d')
+    } catch (e) {
+      throw new Error('wl-live2d 运行库导入失败：' + String((e as any)?.message ?? e))
+    }
+  }
+
   function load(char: string, info: any): Promise<boolean> {
     if (loading) return loading
     loading = new Promise((resolve) => {
-      const library = (window as any)['wl-live2d']
-      if (!library || typeof library.wlLive2d !== 'function') {
-        const bErr = ((window as any).__live2dBootstrapErrors || []).join(' | ')
-        fallback('Live2D 运行库加载失败', bErr || 'wl-live2d global missing')
+      void (async () => {
+      let library: any
+      try {
+        library = await loadLibrary()
+      } catch (e) {
+        fallback('Live2D 运行库加载失败', String((e as any)?.message ?? e))
+        loading = null
         resolve(false); return
       }
+      if (destroyed.value || char !== character.value) { loading = null; resolve(false); return }
       destroyRuntime()
       if (hostEl) hostEl.innerHTML = ''
       setState('loading', 'Live2D 加载中…')
@@ -96,7 +126,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
       loadTimer = window.setTimeout(() => { fallback('Live2D 加载超时', '模型在 20 秒内没有完成初始化'); finish(false) }, 20000)
       try {
         app = library.wlLive2d({
-          selector: '#live2dHost', fixed: false, drag: false, sayHello: false, hitFrame: false,
+          selector: hostSelector, fixed: false, drag: false, sayHello: false, hitFrame: false,
           menus: [], tips: { talk: false, drag: false, motionMessage: false, message: [], talkApis: [] },
           transitionTime: 250,
           models: [{ path: info.modelUrl, width: canvas.width, height: canvas.height, position: { x: 0, y: 0 }, motionPreload: 'IDLE' }],
@@ -110,6 +140,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
         })
         app.onModelError((e: any) => { fallback('Live2D 模型加载失败', String(e?.message ?? e)); finish(false) })
       } catch (e) { fallback('Live2D 初始化失败', String((e as any)?.message ?? e)); finish(false) }
+      })()
     })
     return loading
   }

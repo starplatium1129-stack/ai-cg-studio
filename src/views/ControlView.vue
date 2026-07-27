@@ -1,255 +1,466 @@
 ﻿<template>
   <div class="control-page">
-    <!-- 顶栏 -->
     <nav class="nav">
       <div class="nav-inner nav-local">
         <RouterLink to="/" class="nav-local-brand">
-          <img class="nav-logo" src="/assets/logo.svg" alt="绫季绘境" />
-          <div><strong>绫季绘境</strong><small>Control Panel</small></div>
+          <img class="nav-logo" src="/assets/logo.svg" alt="" aria-hidden="true" />
+          <span><strong>本机控制室</strong><small>Local control room</small></span>
         </RouterLink>
         <div class="nav-local-actions">
+          <RouterLink class="nav-local-home" to="/">← 回绘境</RouterLink>
           <AppThemeToggle />
         </div>
       </div>
     </nav>
 
-    <div class="page" style="--page-max:860px">
-      <!-- 主状态 -->
-      <div class="status-hero">
-        <div class="badge-row">
-          <span class="status-badge" :class="running ? 'running' : 'stopped'">
-            <span class="dot"></span>
-            <span>{{ running ? '运行中' : '未启动' }}</span>
-          </span>
-          <span class="status-badge" :class="sdOnline ? 'online' : 'offline'">
-            <span class="dot"></span><span>SD {{ sdOnline ? '已连接' : '未连接' }}</span>
-          </span>
-          <span class="status-badge" :class="ttsOnline ? 'online' : 'offline'">
-            <span class="dot"></span><span>TTS {{ ttsOnline ? '已连接' : '未连接' }}</span>
-          </span>
-          <span class="status-badge" :class="ollamaOnline ? 'online' : 'offline'">
-            <span class="dot"></span><span>Ollama {{ ollamaOnline ? '已连接' : '未连接' }}</span>
-          </span>
+    <div class="control-shell">
+      <header class="control-intro">
+        <div>
+          <div class="gallery-kicker">Local control room</div>
+          <h1 class="control-title">把本机服务接上</h1>
+          <p class="control-subtitle">绘图、语音与聊天都在这台电脑里。先看状态，再决定启动哪一项。</p>
         </div>
-        <div class="config-feedback" :class="feedbackClass">{{ feedbackText }}</div>
-        <p class="action-note">{{ actionNote }}</p>
+        <div class="control-count">{{ readyLabel }}</div>
+      </header>
+
+      <!-- 状态墙：像作品册的安静卡片，而不是一排噪声徽章 -->
+      <section class="status-wall" aria-label="连接状态">
+        <article class="status-tile" :data-state="gatewayState">
+          <small>本地网关</small>
+          <strong>{{ gatewayLabel }}</strong>
+        </article>
+        <article class="status-tile" :data-state="sdOnline ? 'on' : 'off'">
+          <small>SD WebUI</small>
+          <strong>{{ sdOnline ? (webuiManaged ? '已连接 · 受控' : '已连接 · 手动') : '未连接' }}</strong>
+        </article>
+        <article class="status-tile" :data-state="ttsOnline ? 'on' : 'off'">
+          <small>GPT-SoVITS</small>
+          <strong>{{ ttsOnline ? '已连接' : '未连接' }}</strong>
+        </article>
+        <article class="status-tile" :data-state="ollamaOnline ? 'on' : 'off'">
+          <small>Ollama 聊天</small>
+          <strong>{{ ollamaBadgeText }}</strong>
+        </article>
+        <article class="status-tile" :data-state="voiceConfiguredCount === 2 ? 'on' : (voiceConfiguredCount ? 'warn' : 'off')">
+          <small>角色声线</small>
+          <strong>{{ voiceConfiguredCount === 2 ? '宁宁与夏目已配置' : (voiceConfiguredCount ? voiceConfiguredCount + ' / 2 已配置' : '尚未配置') }}</strong>
+        </article>
+        <article class="status-tile" :data-state="shareState">
+          <small>公网分享</small>
+          <strong>{{ shareLabel }}</strong>
+        </article>
+        <article class="status-tile primary" :data-state="readyState">
+          <small>创作状态</small>
+          <strong>{{ feedbackText }}</strong>
+          <p class="status-note">{{ actionNote }}</p>
+        </article>
+      </section>
+
+      <div class="control-toolbar sticky-toolbar">
+        <button class="gallery-filter" type="button" :disabled="serviceChecking || opBusy" @click="pollStatus(true)">
+          <span :class="{ spin: serviceChecking }">🔍</span> 检测所有服务
+        </button>
+        <span class="toolbar-note">操作只影响本机进程；网站网关始终在运行</span>
       </div>
 
-      <!-- 主操作按钮 -->
-      <button
-        class="btn btn-lg btn-block"
-        :class="running ? 'btn-danger' : 'btn-primary'"
-        type="button"
-        :disabled="actionBusy"
-        @click="running ? doStop() : doStart()"
-      >{{ mainBtnLabel }}</button>
+      <!-- 操作进度 -->
+      <div v-if="operation" class="panel-card operation-panel" :class="operation.status">
+        <div class="operation-head">
+          <div>
+            <div class="panel-kicker">In progress</div>
+            <strong class="panel-heading">{{ operation.label }}</strong>
+          </div>
+          <span class="op-state">{{ opStatusLabel }}</span>
+        </div>
+        <div class="meter"><span class="meter-fill" :style="{ '--fill': opProgress + '%' }"></span></div>
+        <p class="operation-msg">{{ operation.message }}</p>
+        <div v-if="operation.stages?.length" class="operation-stages">
+          <span
+            v-for="(stage, i) in operation.stages" :key="stage"
+            class="op-stage"
+            :class="{ done: i < operation.stageIndex, current: i === operation.stageIndex && operation.status === 'running' }"
+          >{{ stage }}</span>
+        </div>
+      </div>
 
-      <!-- Tunnel 开关 -->
-      <div class="tunnel-row">
-        <label class="switch-label">
-          <button
-            class="switch-toggle" type="button" role="switch"
-            :aria-checked="tunnelEnabled ? 'true' : 'false'"
-            @click="toggleTunnel"
-          ><span class="switch-thumb"></span></button>
-          开启公网分享通道
+      <!-- 显存调度 -->
+      <section class="panel-card">
+        <div class="panel-kicker">Resource</div>
+        <h2 class="panel-heading">显存资源调度</h2>
+        <p class="panel-desc">绘图、语音、聊天同时加载容易占满显存。按需切换：先释放，再加载。</p>
+        <div class="mode-grid">
+          <button class="mode-card" type="button" :disabled="opBusy || modeBusy" @click="switchMode('draw')">
+            <span class="mode-title">🎨 绘图优先</span>
+            <span class="mode-desc">停止语音、卸载 Ollama，把显存让给 WebUI 出图。</span>
+          </button>
+          <button class="mode-card" type="button" :disabled="opBusy || modeBusy" @click="switchMode('chat')">
+            <span class="mode-title">☕ 聊天优先</span>
+            <span class="mode-desc">停止受管 WebUI，启动语音，专注角色房间。</span>
+          </button>
+        </div>
+
+        <div class="service-rows">
+          <div class="service-row">
+            <span class="service-row-name">
+              <span class="dot" :class="{ on: sdOnline }"></span>
+              SD WebUI 绘图
+              <span class="service-row-meta">{{ sdOnline ? (webuiManaged ? '受控' : '手动') : '未运行' }}</span>
+            </span>
+            <span class="service-row-actions">
+              <button class="btn btn-ghost btn-sm" type="button" :disabled="opBusy" @click="serviceAction('webui','start')">启动</button>
+              <button class="btn btn-danger btn-sm" type="button" :disabled="opBusy" @click="serviceAction('webui','stop')">停止</button>
+            </span>
+          </div>
+          <div class="service-row">
+            <span class="service-row-name">
+              <span class="dot" :class="{ on: ttsOnline }"></span>
+              GPT-SoVITS 语音
+              <span class="service-row-meta">{{ ttsOnline ? '在线' : '未运行' }}</span>
+            </span>
+            <span class="service-row-actions">
+              <button class="btn btn-ghost btn-sm" type="button" :disabled="opBusy" @click="serviceAction('voice','start')">启动</button>
+              <button class="btn btn-danger btn-sm" type="button" :disabled="opBusy" @click="serviceAction('voice','stop')">停止</button>
+            </span>
+          </div>
+          <div class="service-row">
+            <span class="service-row-name">
+              <span class="dot" :class="{ on: ollamaOnline }"></span>
+              Ollama 聊天模型
+              <span class="service-row-meta">{{ ollamaMeta }}</span>
+            </span>
+            <span class="service-row-actions">
+              <button class="btn btn-danger btn-sm" type="button" :disabled="opBusy || !ollamaModels.length" @click="serviceAction('ollama','unload')">卸载模型释放显存</button>
+            </span>
+          </div>
+        </div>
+
+        <label class="autostart-row">
+          <input type="checkbox" v-model="autoStartVoice" @change="saveAutoStartVoice" />
+          打开控制面板时自动启动语音（显存紧张时不建议开启）
         </label>
-        <span class="tunnel-hint">{{ tunnelEnabled ? '朋友可通过临时链接访问' : '关闭后仅本机可访问' }}</span>
-      </div>
+        <p class="panel-foot">Ollama 闲置约 10 分钟会自动卸载；系统声音试听不依赖 GPT-SoVITS。</p>
+        <p v-if="!scripts.webui || !scripts.voiceStart" class="script-hint">
+          部分脚本未找到：
+          <span v-if="!scripts.webui">managed-webui.ps1 </span>
+          <span v-if="!scripts.voiceStart">Start-Voice.ps1 </span>
+          <span v-if="!scripts.voiceStop">Stop-Voice.ps1 </span>
+        </p>
+      </section>
 
-      <!-- 运行中面板 -->
-      <div v-if="running" class="running-panel">
-        <div class="link-row">
-          <span class="link-label">本地地址</span>
-          <a class="link-value" :href="localLink" target="_blank">{{ localLink }}</a>
-          <button class="btn btn-ghost btn-sm" type="button" @click="copy(localLink)">复制地址</button>
-          <a class="btn btn-ghost btn-sm" :href="localLink" target="_blank">打开</a>
-        </div>
-        <div class="link-row">
-          <span class="link-label">分享链接</span>
-          <span class="link-value" :class="shareLink ? '' : 'waiting'">{{ shareLink || (tunnelStatus === 'disabled' ? '未生成公网链接' : '等待分享链接…') }}</span>
-          <button class="btn btn-ghost btn-sm" :disabled="!shareLink" type="button" @click="copy(shareLink)">复制链接</button>
-        </div>
-        <div class="uptime-row">{{ uptime }}</div>
-      </div>
+      <!-- 本机生成服务配置 -->
+      <section class="panel-card">
+        <div class="panel-kicker">01 · Services</div>
+        <h2 class="panel-heading">确认本机生成服务</h2>
+        <p class="panel-desc">SD WebUI 负责画面，GPT-SoVITS 负责角色语音。未装语音时，网站仍可用系统声音试听。</p>
 
-      <!-- 配置表单 -->
-      <details class="config-section" open>
-        <summary class="section-title">⚙️ 服务配置</summary>
-        <div class="config-grid">
-          <label class="config-field">
-            SD WebUI 地址
-            <input v-model="sdHost" class="input" type="text" placeholder="http://127.0.0.1:7860" :disabled="running" />
-          </label>
-          <label class="config-field">
-            GPT-SoVITS 地址
-            <input v-model="ttsHost" class="input" type="text" placeholder="http://127.0.0.1:9880" :disabled="running" />
-          </label>
+        <label class="field-label" for="sd-host">Stability Matrix / SD WebUI 地址</label>
+        <input id="sd-host" v-model="sdHost" class="input input-mono" type="text" placeholder="http://127.0.0.1:7860" spellcheck="false" />
+        <p class="field-help">端口以启动日志为准；推荐参数：<code>--api --port 7860</code></p>
+
+        <label class="field-label" for="tts-host">GPT-SoVITS API 地址</label>
+        <div class="field-row">
+          <input id="tts-host" v-model="ttsHost" class="input input-mono" type="text" placeholder="http://127.0.0.1:9880" spellcheck="false" />
+          <button class="btn btn-ghost" type="button" @click="saveConfig">保存全部并检测</button>
         </div>
-        <details class="voice-section">
-          <summary>🎙 语音配置</summary>
+        <p class="field-help">默认按需启动；默认端口为 <code>9880</code>。</p>
+
+        <details class="voice-config">
+          <summary>🎙 角色声线配置 · 参考音频必须是 GPT-SoVITS 能读取的本机路径</summary>
           <div class="voice-grid">
-            <label class="config-field">宁宁参考音频路径<input v-model="voiceNeneRef" class="input" :disabled="running" /></label>
-            <label class="config-field">宁宁提示文本<input v-model="voiceNenePrompt" class="input" :disabled="running" /></label>
-            <label class="config-field">夏目参考音频路径<input v-model="voiceNatsumeRef" class="input" :disabled="running" /></label>
-            <label class="config-field">夏目提示文本<input v-model="voiceNatsumePrompt" class="input" :disabled="running" /></label>
+            <div class="voice-card">
+              <div class="voice-card-title">宁宁</div>
+              <input id="v-nene-ref" v-model="voiceNeneRef" class="input" placeholder="参考音频路径" />
+              <input id="v-nene-prompt" v-model="voiceNenePrompt" class="input" placeholder="提示文本（日文）" />
+            </div>
+            <div class="voice-card">
+              <div class="voice-card-title">夏目</div>
+              <input id="v-nat-ref" v-model="voiceNatsumeRef" class="input" placeholder="参考音频路径" />
+              <input id="v-nat-prompt" v-model="voiceNatsumePrompt" class="input" placeholder="提示文本（日文）" />
+            </div>
           </div>
         </details>
-        <div class="config-actions">
-          <label class="switch-label">
-            <input type="checkbox" v-model="autoStartVoice" @change="saveAutoStartVoice" :disabled="running" />
-            下次启动自动开始语音服务
-          </label>
-          <button class="btn btn-ghost" type="button" :disabled="running" @click="saveConfig">💾 保存配置</button>
+      </section>
+
+      <!-- 公网分享 -->
+      <section class="panel-card">
+        <div class="panel-kicker">02 · Share</div>
+        <h2 class="panel-heading">公网分享通道</h2>
+        <p class="panel-desc">本机访问不需要 Token；公网分享会使用临时 Token。</p>
+
+        <div class="tunnel-toggle-row">
+          <div class="tunnel-toggle-label">
+            <span class="tunnel-toggle-text">开启公网分享通道</span>
+            <span class="tunnel-toggle-hint">{{ tunnelEnabled ? '朋友可通过临时链接访问' : '关闭后仅本机可访问' }}</span>
+          </div>
+          <button
+            class="tunnel-switch" type="button" role="switch"
+            :aria-checked="tunnelEnabled ? 'true' : 'false'"
+            @click="toggleTunnel"
+          ><span class="tunnel-switch-knob"></span></button>
         </div>
-      </details>
+
+        <button
+          class="btn btn-lg btn-primary btn-block"
+          type="button"
+          :disabled="actionBusy || opBusy"
+          @click="tunnelActive ? doStop() : doStart()"
+        >{{ mainBtnLabel }}</button>
+        <p class="action-note">{{ tunnelActive ? '分享通道运行中；停止只关公网，不影响本机绘图与聊天。' : '启动后生成本地与分享入口。' }}</p>
+
+        <div class="access-grid">
+          <div class="access-card">
+            <div class="access-kicker">Local</div>
+            <div class="access-title">本机地址</div>
+            <div class="link-value">{{ localLink }}</div>
+            <div class="inline-actions">
+              <button class="btn btn-ghost btn-sm" type="button" @click="copy(localLink)">复制</button>
+              <a class="btn btn-ghost btn-sm" :href="localLink" target="_blank" rel="noreferrer">打开</a>
+            </div>
+          </div>
+          <div class="access-card">
+            <div class="access-kicker">Share</div>
+            <div class="access-title">分享链接</div>
+            <div class="link-value" :class="{ waiting: !shareLink }">{{ shareLink || (tunnelStatus === 'disabled' ? '未生成公网链接' : '等待分享链接…') }}</div>
+            <div class="inline-actions">
+              <button class="btn btn-ghost btn-sm" type="button" :disabled="!shareLink" @click="copy(shareLink)">复制</button>
+            </div>
+          </div>
+        </div>
+        <div class="uptime">{{ uptime }}</div>
+        <p class="security-note">分享链接可以调用你电脑上的 SD WebUI，请只发给信任的人。</p>
+      </section>
 
       <!-- 日志 -->
-      <details class="log-section">
-        <summary class="section-title">📋 运行日志 <button class="btn btn-ghost btn-sm" type="button" @click.stop="clearLogs">清空</button></summary>
-        <div class="log-box" ref="logBoxEl">
-          <div v-if="!logs.length" class="log-empty">暂无日志。</div>
-          <div v-for="(line, i) in logs" :key="i" :class="lineClass(line)">
-            <span class="time">{{ line.slice(0,10) }}</span> {{ line.slice(11) }}
+      <details class="log-panel">
+        <summary>
+          <span>📋 运行日志</span>
+          <span class="summary-side">
+            <button class="btn btn-ghost btn-sm" type="button" @click.stop="exportDiag">导出诊断包</button>
+            <button class="btn btn-ghost btn-sm" type="button" @click.stop="clearLogs">清空显示</button>
+            <span class="chevron">›</span>
+          </span>
+        </summary>
+        <div class="log-wrap">
+          <div class="log-box" ref="logBoxEl">
+            <div v-if="!logs.length" class="log-empty">暂无日志。</div>
+            <div v-for="(line, i) in logs" :key="i" :class="lineClass(line)">
+              <span class="time">{{ line.slice(0, 10) }}</span> {{ line.slice(11) }}
+            </div>
           </div>
         </div>
       </details>
-
-      <!-- 诊断 -->
-      <div class="diag-row">
-        <button class="btn btn-ghost btn-sm" type="button" @click="pollStatus(true)">🔄 刷新状态</button>
-        <button class="btn btn-ghost btn-sm" type="button" @click="exportDiag">⬇️ 导出诊断包</button>
-      </div>
-
-      <!-- Toast -->
-      <div class="toast" :class="{ show: toast.visible, error: toast.error }">{{ toast.msg }}</div>
     </div>
+
+    <div class="toast" :class="{ show: toast.visible, error: toast.error }">{{ toast.msg }}</div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import AppThemeToggle from '@/components/AppThemeToggle.vue'
 
-const running     = ref(false)
-const sdOnline    = ref(false)
-const ttsOnline   = ref(false)
-const ollamaOnline= ref(false)
-const sdHost      = ref('http://127.0.0.1:7860')
-const ttsHost     = ref('http://127.0.0.1:9880')
-const voiceNeneRef     = ref('')
-const voiceNenePrompt  = ref('')
-const voiceNatsumeRef  = ref('')
+const tunnelActive = ref(false)
+const sdOnline = ref(false)
+const ttsOnline = ref(false)
+const ollamaOnline = ref(false)
+const webuiManaged = ref(false)
+const ollamaModels = ref<string[]>([])
+const ollamaVram = ref(0)
+const modeBusy = ref(false)
+const operation = ref<any>(null)
+const serviceChecking = ref(false)
+const scripts = ref({ voiceStart: true, voiceStop: true, webui: true })
+
+const sdHost = ref('http://127.0.0.1:7860')
+const ttsHost = ref('http://127.0.0.1:9880')
+const voiceNeneRef = ref('')
+const voiceNenePrompt = ref('')
+const voiceNatsumeRef = ref('')
 const voiceNatsumePrompt = ref('')
-const autoStartVoice   = ref(false)
-const tunnelEnabled    = ref((() => { try { return localStorage.getItem('aics_tunnel_off') !== '1' } catch { return true } })())
-const tunnelStatus     = ref('')
-const shareLink        = ref('')
-const localLink        = ref('http://127.0.0.1:3000/')
-const uptime           = ref('')
-const actionBusy       = ref(false)
-const mainBtnLabel     = ref('启动并生成分享链接')
-const feedbackClass    = ref('config-feedback warn')
-const feedbackText     = ref('正在检测服务…')
-const actionNote       = ref('')
-const logs             = ref<string[]>([])
-const logBoxEl         = ref<HTMLElement | null>(null)
-const logIndex         = ref(0)
-const toast            = ref({ visible: false, msg: '', error: false })
+const autoStartVoice = ref(false)
+const tunnelEnabled = ref((() => { try { return localStorage.getItem('aics_tunnel_off') !== '1' } catch { return true } })())
+const tunnelStatus = ref('')
+const shareLink = ref('')
+const localLink = ref('http://127.0.0.1:3000/')
+const uptime = ref('')
+const actionBusy = ref(false)
+const mainBtnLabel = ref('启动并生成分享链接')
+const feedbackClass = ref('config-feedback warn')
+const feedbackText = ref('正在检测本地服务…')
+const actionNote = ref('')
+const logs = ref<string[]>([])
+const logBoxEl = ref<HTMLElement | null>(null)
+const logIndex = ref(0)
+const toast = ref({ visible: false, msg: '', error: false })
 let toastTimer: ReturnType<typeof setTimeout> | null = null
 let pollTimer: ReturnType<typeof setInterval> | null = null
 let lastStatus: any = null
 
+const opBusy = computed(() => !!(operation.value && operation.value.status === 'running') || modeBusy.value)
+const opStatusLabel = computed(() => {
+  const s = operation.value?.status
+  return s === 'running' ? '进行中' : s === 'completed' ? '完成' : s === 'failed' ? '失败' : ''
+})
+const opProgress = computed(() => {
+  const op = operation.value
+  if (!op?.stages?.length) return op?.status === 'completed' ? 100 : op?.status === 'running' ? 35 : 0
+  if (op.status === 'completed') return 100
+  if (op.status === 'failed') return Math.min(100, ((op.stageIndex + 1) / op.stages.length) * 100)
+  return Math.min(95, ((op.stageIndex + 0.35) / op.stages.length) * 100)
+})
+const ollamaBadgeText = computed(() => {
+  if (!ollamaOnline.value) return '未连接'
+  if (!ollamaModels.value.length) return '在线 · 模型未加载'
+  const v = fmtVram(ollamaVram.value)
+  return '已加载 ' + ollamaModels.value.length + ' 个' + (v ? ' · ' + v : '')
+})
+const ollamaMeta = computed(() => {
+  if (!ollamaOnline.value) return '未连接'
+  if (!ollamaModels.value.length) return '在线 · 无加载模型'
+  const v = fmtVram(ollamaVram.value)
+  return '占用 ' + (v || (ollamaModels.value.length + ' 模型'))
+})
+const voiceConfiguredCount = computed(() => {
+  let n = 0
+  if (voiceNeneRef.value.trim() && voiceNenePrompt.value.trim()) n += 1
+  if (voiceNatsumeRef.value.trim() && voiceNatsumePrompt.value.trim()) n += 1
+  return n
+})
+const gatewayState = computed(() => 'on')
+const gatewayLabel = computed(() => '运行中')
+const shareState = computed(() => tunnelActive.value ? 'on' : (tunnelStatus.value === 'disabled' ? 'off' : 'warn'))
+const shareLabel = computed(() => tunnelActive.value ? '通道已开' : (tunnelStatus.value === 'disabled' ? '仅本机' : '待启用'))
+const readyState = computed(() => {
+  if (sdOnline.value && ttsOnline.value) return 'on'
+  if (sdOnline.value || ttsOnline.value) return 'warn'
+  return 'off'
+})
+const readyLabel = computed(() => {
+  const n = [sdOnline.value, ttsOnline.value, ollamaOnline.value].filter(Boolean).length
+  return n + ' / 3 服务在线'
+})
+
 function showToast(msg: string, isError = false) {
   toast.value = { visible: true, msg, error: isError }
   if (toastTimer) clearTimeout(toastTimer)
-  toastTimer = setTimeout(() => { toast.value.visible = false }, 2200)
+  toastTimer = setTimeout(() => { toast.value.visible = false }, 2800)
 }
-
 function copy(text: string) {
   if (!text) return
   navigator.clipboard.writeText(text).then(() => showToast('已复制到剪贴板')).catch(() => showToast('复制失败', true))
 }
-
 function fmt(seconds: number) {
   const v = Math.max(0, Number(seconds) || 0)
   if (v < 60) return v + ' 秒'
   const m = Math.floor(v / 60)
-  return m < 60 ? m + ' 分钟' : Math.floor(m/60) + ' 小时 ' + (m%60) + ' 分钟'
+  return m < 60 ? m + ' 分钟' : Math.floor(m / 60) + ' 小时 ' + (m % 60) + ' 分钟'
 }
-
+function fmtVram(bytes: number) {
+  const n = Number(bytes) || 0
+  if (n <= 0) return ''
+  if (n < 1024 ** 3) return (n / 1024 ** 2).toFixed(0) + ' MB'
+  return (n / 1024 ** 3).toFixed(1) + ' GB'
+}
 function lineClass(line: string) {
   const low = line.toLowerCase()
-  if (low.includes('error') || low.includes('failed') || low.includes('not found')) return 'err'
-  if (low.includes('started') || low.includes('ready') || low.includes('tunnel')) return 'info'
+  if (low.includes('error') || low.includes('failed') || low.includes('失败')) return 'err'
+  if (low.includes('started') || low.includes('ready') || low.includes('已启') || low.includes('就绪')) return 'info'
   return ''
 }
-
 function toggleTunnel() {
   tunnelEnabled.value = !tunnelEnabled.value
   try { localStorage.setItem('aics_tunnel_off', tunnelEnabled.value ? '' : '1') } catch {}
-  mainBtnLabel.value = tunnelEnabled.value ? '启动并生成分享链接' : '启动（仅本地）'
+  mainBtnLabel.value = tunnelActive.value ? '停止公网分享' : '启动并生成分享链接'
 }
 
 function renderStatus(data: any) {
   lastStatus = data
-  running.value = !!data.running
+  tunnelActive.value = !!(data.tunnelStatus === 'active' || data.shareLink)
   sdOnline.value = !!data.sdOnline
   ttsOnline.value = !!data.ttsOnline
   ollamaOnline.value = !!data.ollamaOnline
+  webuiManaged.value = !!data.webuiManaged
+  ollamaModels.value = Array.isArray(data.ollamaModels) ? data.ollamaModels : []
+  ollamaVram.value = Number(data.ollamaVram) || 0
+  modeBusy.value = !!data.modeBusy
+  operation.value = data.operation || (operation.value?.status === 'running' ? operation.value : null)
   tunnelStatus.value = data.tunnelStatus || ''
   shareLink.value = data.shareLink || ''
   if (data.localLink) localLink.value = data.localLink
-  if (data.uptime != null) uptime.value = '网关已运行 ' + fmt(data.uptime)
-  if (document.activeElement?.id !== 'sd-host' && data.sdHost) sdHost.value = data.sdHost
-  if (document.activeElement?.id !== 'tts-host' && data.ttsHost) ttsHost.value = data.ttsHost
-  const voices = data.voices || {}
-  const nene = voices.nene || {}; const natsume = voices.natsume || {}
-  if (document.activeElement?.id !== 'v-nene-ref') voiceNeneRef.value = nene.refAudioPath || ''
-  if (document.activeElement?.id !== 'v-nene-prompt') voiceNenePrompt.value = nene.promptText || ''
-  if (document.activeElement?.id !== 'v-nat-ref') voiceNatsumeRef.value = natsume.refAudioPath || ''
-  if (document.activeElement?.id !== 'v-nat-prompt') voiceNatsumePrompt.value = natsume.promptText || ''
-  autoStartVoice.value = !!data.autoStartVoice
-  actionBusy.value = !!(data.operation && data.operation.status === 'running')
-  mainBtnLabel.value = running.value ? '停止网站网关' : (tunnelEnabled.value ? '启动并生成分享链接' : '启动（仅本地）')
+  if (data.uptime != null) uptime.value = '网站已运行 ' + fmt(data.uptime)
+  if (data.scripts) scripts.value = { ...scripts.value, ...data.scripts }
 
-  if (data.sdOnline && data.ttsOnline) {
-    feedbackClass.value = 'config-feedback ok'; feedbackText.value = '画面与语音服务均已连接，可以生成完整的有声场景。'
-    actionNote.value = 'SD WebUI 与 GPT-SoVITS 已就绪，启动后即可本地使用或按需分享。'
-  } else if (data.sdOnline) {
-    feedbackClass.value = 'config-feedback warn'; feedbackText.value = 'SD WebUI 已连接；GPT-SoVITS 暂不可用，系统声音试听仍可使用。'
-    actionNote.value = '现在可以正常出图；需要 AI 角色声线时，再启动并配置 GPT-SoVITS。'
-  } else if (data.ttsOnline) {
-    feedbackClass.value = 'config-feedback warn'; feedbackText.value = 'GPT-SoVITS 已连接；请启动带有 --api 参数的 SD WebUI 才能直接出图。'
-    actionNote.value = '语音已经可用，画面生成仍需连接 SD WebUI。'
-  } else {
-    feedbackClass.value = 'config-feedback warn'; feedbackText.value = '暂未检测到生成服务；网站浏览和系统声音试听仍可使用。'
-    actionNote.value = '可先启动网站浏览场景，出图和 AI 声线会在对应服务连接后启用。'
+  const ae = document.activeElement as HTMLElement | null
+  const aeId = ae?.id || ''
+  if (aeId !== 'sd-host' && data.sdHost) sdHost.value = data.sdHost
+  if (aeId !== 'tts-host' && data.ttsHost) ttsHost.value = data.ttsHost
+  const voices = data.voices || {}
+  const nene = voices.nene || {}
+  const natsume = voices.natsume || {}
+  if (aeId !== 'v-nene-ref') voiceNeneRef.value = nene.refAudioPath || voiceNeneRef.value
+  if (aeId !== 'v-nene-prompt') voiceNenePrompt.value = nene.promptText || voiceNenePrompt.value
+  if (aeId !== 'v-nat-ref') voiceNatsumeRef.value = natsume.refAudioPath || voiceNatsumeRef.value
+  if (aeId !== 'v-nat-prompt') voiceNatsumePrompt.value = natsume.promptText || voiceNatsumePrompt.value
+  if (ae?.tagName !== 'INPUT' || (ae as HTMLInputElement).type !== 'checkbox') {
+    autoStartVoice.value = !!data.autoStartVoice
   }
+
+  actionBusy.value = !!(data.operation && data.operation.status === 'running')
+  mainBtnLabel.value = tunnelActive.value ? '停止公网分享' : '启动并生成分享链接'
+
+  if (data.sdOnline && data.ttsOnline && data.ollamaOnline) {
+    feedbackClass.value = 'config-feedback ok'
+    feedbackText.value = '画面、语音与聊天均已就绪'
+    actionNote.value = '可以完整使用绘制台、角色房间与配音。'
+  } else if (data.sdOnline && data.ttsOnline) {
+    feedbackClass.value = 'config-feedback ok'
+    feedbackText.value = '画面与语音就绪'
+    actionNote.value = '出图与 AI 声线可用；需要聊天时启动 Ollama。'
+  } else if (data.sdOnline) {
+    feedbackClass.value = 'config-feedback warn'
+    feedbackText.value = '画面创作就绪'
+    actionNote.value = '可正常出图。需要声线时启动 GPT-SoVITS。'
+  } else if (data.ttsOnline) {
+    feedbackClass.value = 'config-feedback warn'
+    feedbackText.value = '语音已连接 · 等待 SD'
+    actionNote.value = '点「启动」SD WebUI，或切换到绘图优先。'
+  } else {
+    feedbackClass.value = 'config-feedback warn'
+    feedbackText.value = '浏览可用 · 等待生成服务'
+    actionNote.value = '网站本身正常。用下方服务行启动 SD / 语音，或本机开好后再检测。'
+  }
+  serviceChecking.value = false
 }
 
 async function pollStatus(force = false) {
+  if (force) serviceChecking.value = true
   try {
     const r = await fetch('/api/status' + (force ? '?fresh=1' : ''))
     renderStatus(await r.json())
-  } catch {}
+  } catch { serviceChecking.value = false }
 }
 
 async function pollLogs() {
   try {
     const r = await fetch('/api/logs?since=' + logIndex.value)
     const data = await r.json()
+    if (data.operation) operation.value = data.operation
     if (data.logs?.length) {
-      logs.value.push(...data.logs)
-      logIndex.value += data.logs.length
-      await nextTick()
-      if (logBoxEl.value) logBoxEl.value.scrollTop = logBoxEl.value.scrollHeight
+      const fresh = data.logs.filter((l: string) => !logs.value.includes(l))
+      if (fresh.length) {
+        logs.value.push(...fresh)
+        if (logs.value.length > 300) logs.value = logs.value.slice(-200)
+        logIndex.value += data.logs.length
+        await nextTick()
+        if (logBoxEl.value) logBoxEl.value.scrollTop = logBoxEl.value.scrollHeight
+      } else {
+        logIndex.value += data.logs.length
+      }
     }
   } catch {}
 }
 
-function clearLogs() { logs.value = [] }
-
+function clearLogs() { logs.value = []; logIndex.value = 0 }
 function startPolling() {
   if (pollTimer) return
   pollStatus(); pollLogs()
@@ -258,53 +469,107 @@ function startPolling() {
 function stopPolling() { if (pollTimer) clearInterval(pollTimer); pollTimer = null }
 
 function buildConfigPayload() {
+  const neneBase = lastStatus?.voices?.nene || {}
+  const natBase = lastStatus?.voices?.natsume || {}
   return {
-    sdHost: sdHost.value.trim(), ttsHost: ttsHost.value.trim(),
+    sdHost: sdHost.value.trim(),
+    ttsHost: ttsHost.value.trim(),
     voices: {
-      nene: { refAudioPath: voiceNeneRef.value.trim(), promptText: voiceNenePrompt.value.trim(), promptLang:'ja', textLang:'ja', ...(lastStatus?.voices?.nene || {}) },
-      natsume: { refAudioPath: voiceNatsumeRef.value.trim(), promptText: voiceNatsumePrompt.value.trim(), promptLang:'ja', textLang:'ja', ...(lastStatus?.voices?.natsume || {}) }
-    }
+      nene: { ...neneBase, refAudioPath: voiceNeneRef.value.trim(), promptText: voiceNenePrompt.value.trim(), promptLang: 'ja', textLang: 'ja' },
+      natsume: { ...natBase, refAudioPath: voiceNatsumeRef.value.trim(), promptText: voiceNatsumePrompt.value.trim(), promptLang: 'ja', textLang: 'ja' },
+    },
   }
 }
 
 async function saveConfig() {
-  feedbackText.value = '正在保存并重新检测…'; feedbackClass.value = 'config-feedback'
+  feedbackText.value = '正在保存并重新检测…'
   try {
-    const r = await fetch('/api/config', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(buildConfigPayload()) })
+    const r = await fetch('/api/config', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(buildConfigPayload()),
+    })
     const data = await r.json()
     if (!r.ok) throw new Error(data.error || '保存失败')
-    showToast('生成服务配置已保存'); pollStatus()
+    showToast('生成服务配置已保存')
+    pollStatus(true)
   } catch (e: any) { showToast(e.message, true); pollStatus() }
 }
 
 async function saveAutoStartVoice() {
   try {
-    await fetch('/api/preference', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ autoStartVoice: autoStartVoice.value }) })
-    showToast(autoStartVoice.value ? '已开启：下次打开控制面板时自动启动语音' : '已关闭：语音服务改为按需启动')
+    await fetch('/api/preference', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ autoStartVoice: autoStartVoice.value }),
+    })
+    showToast(autoStartVoice.value ? '已开启：下次自动启动语音' : '已关闭：语音改为按需启动')
   } catch { showToast('保存失败', true) }
+}
+
+async function serviceAction(service: string, action: string) {
+  if (opBusy.value) { showToast('有操作正在进行，请稍候', true); return }
+  showToast((action === 'start' ? '正在启动' : action === 'stop' ? '正在停止' : '正在处理') + '…')
+  try {
+    const r = await fetch('/api/service/' + service, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action }),
+    })
+    const data = await r.json()
+    if (!r.ok || data.ok === false) throw new Error(data.error || data.msg || '操作失败')
+    if (data.operation) operation.value = data.operation
+    showToast(data.message || '已提交')
+    pollStatus(true); pollLogs()
+  } catch (e: any) { showToast(e.message, true); pollStatus(true) }
+}
+
+async function switchMode(mode: 'draw' | 'chat') {
+  if (opBusy.value) { showToast('有操作正在进行，请稍候', true); return }
+  showToast(mode === 'draw' ? '切换到绘图优先…' : '切换到聊天优先…')
+  try {
+    const r = await fetch('/api/mode', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mode }),
+    })
+    const data = await r.json()
+    if (!r.ok || data.ok === false) throw new Error(data.error || data.msg || '模式切换失败')
+    if (data.operation) operation.value = data.operation
+    modeBusy.value = true
+    showToast(data.message || '模式切换已开始')
+    pollStatus(true); pollLogs()
+  } catch (e: any) { showToast(e.message, true); pollStatus(true) }
 }
 
 async function doStart() {
   if (!lastStatus) { showToast('控制面板仍在读取配置，请稍候再试', true); pollStatus(); return }
-  actionBusy.value = true; mainBtnLabel.value = '正在启动…'
+  actionBusy.value = true
+  mainBtnLabel.value = '正在启用公网分享…'
   try {
     await saveConfig()
-    const r = await fetch('/api/start', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ enableTunnel: tunnelEnabled.value }) })
+    const r = await fetch('/api/start', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ enableTunnel: tunnelEnabled.value }),
+    })
     const data = await r.json()
     if (!data.ok) throw new Error(data.msg || '启动失败')
-    showToast('本地网关已启动'); startPolling()
+    showToast('公网分享已启用')
+    startPolling()
   } catch (e: any) { showToast('启动失败：' + e.message, true) }
   finally { actionBusy.value = false; pollStatus() }
 }
 
 async function doStop() {
-  actionBusy.value = true; mainBtnLabel.value = '正在停止…'
+  actionBusy.value = true
+  mainBtnLabel.value = '正在停止公网分享…'
   try {
-    const r = await fetch('/api/stop', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ stopManagedServices: false }) })
+    const r = await fetch('/api/stop', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ stopManagedServices: false }),
+    })
     const data = await r.json()
     if (!data.ok) throw new Error(data.msg || '停止失败')
-    showToast('网站网关与分享已停止；绘图、语音和聊天服务保持当前状态')
-    stopPolling(); running.value = false; shareLink.value = ''; uptime.value = ''
+    showToast('公网分享已停止；网站与各生成服务不受影响')
+    shareLink.value = ''
+    tunnelStatus.value = 'disabled'
+    tunnelActive.value = false
   } catch (e: any) { showToast('停止失败：' + e.message, true) }
   finally { actionBusy.value = false; pollStatus() }
 }
@@ -315,11 +580,12 @@ async function exportDiag() {
     const r = await fetch('/api/diagnostics')
     const data = await r.json()
     if (!r.ok) throw new Error(data?.error || '诊断包导出失败')
-    const stamp = new Date().toISOString().replace(/[:.]/g,'-').slice(0,16)
+    const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 16)
     const a = document.createElement('a')
-    a.href = URL.createObjectURL(new Blob([JSON.stringify(data,null,2)], { type:'application/json;charset=utf-8' }))
+    a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json;charset=utf-8' }))
     a.download = 'lingji-diagnostics-' + stamp + '.json'
-    a.click(); URL.revokeObjectURL(a.href)
+    a.click()
+    URL.revokeObjectURL(a.href)
     showToast('诊断包已导出')
   } catch (e: any) { showToast(e.message || '诊断包导出失败', true) }
 }
@@ -329,64 +595,330 @@ onUnmounted(() => { stopPolling() })
 </script>
 
 <style scoped>
-.control-page { min-height:100vh; }
-.nav-local { display:flex; align-items:center; justify-content:space-between; width:min(860px,100%); margin:0 auto; padding:0 var(--s-4); }
-.nav-local-brand { display:flex; align-items:center; gap:var(--s-3); color:var(--text-primary); text-decoration:none; }
-.nav-local-brand strong { display:block; font:700 var(--fs-body-sm) var(--font-sans); letter-spacing:.02em; }
-.nav-local-brand small { display:block; margin-top:1px; color:var(--text-muted); font:650 var(--fs-mono-xs) var(--font-mono); letter-spacing:.1em; text-transform:uppercase; }
-.nav-local-actions { display:flex; align-items:center; gap:var(--s-2); }
+/* 版式对齐作品册：宽壳、大标题、安静卡片、克制工具条 */
+.control-page { min-height: 100vh; }
+.nav-local {
+  display: flex; align-items: center; justify-content: space-between;
+  width: min(1100px, 100%); margin: 0 auto; padding: 0 var(--s-5);
+}
+.nav-local-brand {
+  display: flex; align-items: center; gap: var(--s-3);
+  color: var(--text-primary); text-decoration: none;
+}
+.nav-local-brand strong { display: block; font: 700 var(--fs-body-sm) var(--font-sans); letter-spacing: .02em; }
+.nav-local-brand small {
+  display: block; margin-top: 1px; color: var(--text-muted);
+  font: 650 var(--fs-mono-xs) var(--font-mono); letter-spacing: .1em; text-transform: uppercase;
+}
+/* 字标只能按高度缩放，不能裁成方块 */
+.nav-logo { height: 30px; width: auto; max-width: 180px; display: block; }
+.nav-local-actions { display: flex; align-items: center; gap: var(--s-3); }
+.nav-local-home {
+  color: var(--text-secondary); font: 650 var(--fs-label-sm) var(--font-sans);
+  text-decoration: none; padding: 6px 10px; border-radius: var(--r-pill);
+}
+.nav-local-home:hover { color: var(--accent); background: var(--accent-soft); }
 
-.status-hero { margin-bottom:var(--s-4); }
-.badge-row { display:flex; gap:var(--s-2); flex-wrap:wrap; margin-bottom:var(--s-3); }
-.status-badge { display:inline-flex; align-items:center; gap:var(--s-1); padding:4px var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-pill); font:600 var(--fs-label-sm) var(--font-sans); }
-.status-badge .dot { width:8px; height:8px; border-radius:50%; background:var(--text-muted); }
-.status-badge.running .dot { background:var(--success); box-shadow:0 0 6px var(--success); }
-.status-badge.online .dot { background:var(--success); }
-.status-badge.offline .dot { background:var(--danger); }
-.status-badge.stopped .dot { background:var(--text-muted); }
-.config-feedback { padding:var(--s-2) var(--s-3); border-radius:var(--r-md); font-size:var(--fs-body-sm); margin-bottom:var(--s-2); }
-.config-feedback.ok { background:color-mix(in srgb,var(--success) 10%,transparent); color:var(--success-text); }
-.config-feedback.warn { background:color-mix(in srgb,var(--warning) 10%,transparent); color:var(--warning-text); }
-.action-note { color:var(--text-muted); font-size:var(--fs-label-sm); margin:0 0 var(--s-4); }
+.control-shell {
+  width: min(1100px, 100%);
+  margin: 0 auto;
+  padding: clamp(24px, 4vw, 56px) clamp(16px, 3vw, 40px) var(--s-8);
+}
+.control-intro {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end;
+  gap: var(--s-5); margin-bottom: clamp(22px, 3vw, 36px);
+}
+.control-title {
+  margin: 0; color: var(--text-primary); font-family: var(--font-display);
+  font-size: clamp(1.85rem, 3.2vw, 3rem); font-weight: 760; letter-spacing: -.03em; line-height: 1.1;
+}
+.control-subtitle {
+  max-width: 640px; margin: var(--s-3) 0 0; color: var(--text-secondary);
+  font-size: var(--fs-body); line-height: 1.75;
+}
+.control-count {
+  color: var(--text-muted); font: 650 var(--fs-label-xs) var(--font-mono);
+  letter-spacing: .08em; white-space: nowrap;
+}
 
-.tunnel-row { display:flex; align-items:center; gap:var(--s-3); margin:var(--s-3) 0; }
-.tunnel-hint { color:var(--text-muted); font-size:var(--fs-label-sm); }
-.switch-label { display:flex; align-items:center; gap:var(--s-2); cursor:pointer; font-size:var(--fs-body-sm); }
-.switch-toggle { width:40px; height:22px; border-radius:var(--r-pill); background:var(--bg-elevated); border:1px solid var(--border-soft); cursor:pointer; position:relative; transition:background var(--t-fast); }
-.switch-toggle[aria-checked="true"] { background:var(--accent); border-color:var(--accent); }
-.switch-thumb { position:absolute; top:2px; left:2px; width:16px; height:16px; border-radius:50%; background:#fff; transition:transform var(--t-fast); }
-.switch-toggle[aria-checked="true"] .switch-thumb { transform:translateX(18px); }
+.status-wall {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--s-3);
+  margin-bottom: var(--s-4);
+}
+.status-tile {
+  min-width: 0; padding: var(--s-4);
+  border: 1px solid color-mix(in srgb, var(--border-soft) 88%, transparent);
+  border-radius: var(--r-xl);
+  background: color-mix(in srgb, var(--bg-surface) 92%, transparent);
+  box-shadow: var(--shadow-sm);
+}
+.status-tile.primary { grid-column: 1 / -1; }
+.status-tile small {
+  display: block; color: var(--text-muted);
+  font: 650 var(--fs-mono-xs) var(--font-mono); letter-spacing: .1em; text-transform: uppercase;
+}
+.status-tile strong {
+  display: block; margin-top: 8px; color: var(--text-primary);
+  font-size: var(--fs-body-sm); font-weight: 700; line-height: 1.45;
+}
+.status-tile[data-state="on"] strong { color: var(--success-text); }
+.status-tile[data-state="warn"] strong { color: var(--warning-text); }
+.status-tile[data-state="off"] strong { color: var(--text-muted); }
+.status-note {
+  margin: 8px 0 0; color: var(--text-secondary);
+  font-size: var(--fs-label-sm); line-height: 1.65; font-weight: 400;
+}
 
-.running-panel { padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); margin:var(--s-3) 0; }
-.link-row { display:flex; align-items:center; gap:var(--s-2); flex-wrap:wrap; margin-bottom:var(--s-2); }
-.link-label { color:var(--text-muted); font-size:var(--fs-label-sm); font-weight:700; min-width:80px; }
-.link-value { font:400 var(--fs-mono-sm) var(--font-mono); color:var(--accent); }
-.link-value.waiting { color:var(--text-muted); }
-.uptime-row { color:var(--text-muted); font-size:var(--fs-label-xs); margin-top:var(--s-2); }
+.control-toolbar { margin-bottom: var(--s-5); }
+.gallery-filter {
+  min-height: 36px; padding: 0 15px; border: 1px solid transparent; border-radius: var(--r-pill);
+  background: transparent; color: var(--text-secondary);
+  font: 650 var(--fs-label-sm) var(--font-sans); cursor: pointer;
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: border-color var(--t-fast), background var(--t-fast), color var(--t-fast);
+}
+.gallery-filter:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--accent) 34%, var(--border-soft));
+  background: var(--accent-soft); color: var(--accent);
+}
+.gallery-filter:disabled { opacity: .5; cursor: not-allowed; }
+.toolbar-note { margin-left: auto; color: var(--text-muted); font-size: var(--fs-mono-sm); white-space: nowrap; }
+.spin { display: inline-block; animation: spin .7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
 
-.config-section { margin-top:var(--s-5); }
-.section-title { font-size:var(--fs-title-xs); font-weight:700; padding:var(--s-3) 0; cursor:pointer; display:flex; align-items:center; gap:var(--s-2); }
-.config-grid { display:grid; grid-template-columns:1fr 1fr; gap:var(--s-3); margin-top:var(--s-3); }
-.config-field { display:grid; gap:var(--s-1); font-size:var(--fs-label-sm); color:var(--text-muted); font-weight:600; }
-.voice-section { margin-top:var(--s-3); }
-.voice-section summary { font-size:var(--fs-label); color:var(--text-secondary); cursor:pointer; padding:var(--s-2) 0; }
-.voice-grid { display:grid; grid-template-columns:1fr 1fr; gap:var(--s-3); margin-top:var(--s-2); }
-.config-actions { display:flex; align-items:center; gap:var(--s-3); margin-top:var(--s-4); flex-wrap:wrap; }
-.input { padding:var(--s-2) var(--s-3); background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-md); color:var(--text-primary); font:var(--fs-body)/1.5 var(--font-mono); outline:none; width:100%; }
-.input:focus { border-color:var(--accent); }
-.input:disabled { opacity:.5; cursor:not-allowed; }
+.panel-card {
+  margin-bottom: var(--s-4); padding: clamp(18px, 2.5vw, 28px);
+  border: 1px solid color-mix(in srgb, var(--border-soft) 86%, transparent);
+  border-radius: var(--r-2xl);
+  background: color-mix(in srgb, var(--bg-surface) 94%, transparent);
+  box-shadow: var(--shadow-sm);
+}
+.panel-kicker {
+  margin-bottom: 6px; color: var(--text-muted);
+  font: 650 var(--fs-mono-xs) var(--font-mono); letter-spacing: .12em; text-transform: uppercase;
+}
+.panel-heading {
+  margin: 0 0 8px; color: var(--text-primary);
+  font-size: var(--fs-title-xs); font-weight: 750; letter-spacing: -.01em;
+}
+.panel-desc, .panel-foot {
+  margin: 0 0 var(--s-4); color: var(--text-secondary);
+  font-size: var(--fs-label-sm); line-height: 1.7;
+}
+.panel-foot { margin: var(--s-3) 0 0; color: var(--text-muted); font-size: var(--fs-mono-sm); }
 
-.log-section { margin-top:var(--s-5); }
-.log-box { max-height:320px; overflow-y:auto; padding:var(--s-3); background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-md); font:400 var(--fs-mono-xs)/1.7 var(--font-mono); color:var(--text-muted); }
-.log-box .time { color:var(--border-strong); }
-.log-box .err { color:var(--danger-text); }
-.log-box .info { color:var(--success-text); }
-.log-empty { color:var(--text-muted); text-align:center; padding:var(--s-4); }
+.mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-3); margin-bottom: var(--s-4); }
+.mode-card {
+  display: grid; gap: 8px; text-align: left; padding: var(--s-4);
+  border: 1px solid var(--border-soft); border-radius: var(--r-xl);
+  background: var(--bg-deep); color: var(--text-primary); cursor: pointer;
+  transition: border-color var(--t-fast), background var(--t-fast), transform var(--t-fast);
+}
+.mode-card:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--accent) 42%, var(--border-soft));
+  background: color-mix(in srgb, var(--accent-soft) 55%, var(--bg-deep));
+  transform: translateY(-2px);
+}
+.mode-card:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+.mode-title { font-size: var(--fs-body-sm); font-weight: 750; }
+.mode-desc { color: var(--text-muted); font-size: var(--fs-label-xs); line-height: 1.6; }
 
-.diag-row { display:flex; gap:var(--s-2); margin-top:var(--s-4); }
-.toast { position:fixed; left:50%; bottom:32px; transform:translateX(-50%); z-index:9999; padding:10px 20px; background:var(--bg-surface); border:1px solid var(--accent); color:var(--text-primary); border-radius:var(--r-lg); font-size:var(--fs-label); box-shadow:var(--shadow-md); opacity:0; pointer-events:none; transition:opacity .2s; white-space:nowrap; }
-.toast.show { opacity:1; }
-.toast.error { border-color:var(--danger); color:var(--danger-text); }
+.service-rows { display: grid; gap: var(--s-2); }
+.service-row {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--s-3);
+  padding: 12px 14px; border: 1px solid var(--border-soft); border-radius: var(--r-lg);
+  background: var(--bg-deep); flex-wrap: wrap;
+}
+.service-row-name {
+  display: inline-flex; align-items: center; gap: 8px;
+  font: 650 var(--fs-label-sm) var(--font-sans); color: var(--text-primary);
+}
+.service-row-name .dot {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--text-muted); flex-shrink: 0;
+}
+.service-row-name .dot.on {
+  background: var(--success);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--success) 14%, transparent);
+}
+.service-row-meta { color: var(--text-muted); font: 500 var(--fs-mono-xs) var(--font-mono); }
+.service-row-actions { display: flex; gap: var(--s-2); flex-wrap: wrap; }
 
-@media(max-width:640px) { .config-grid,.voice-grid { grid-template-columns:1fr; } }
+.autostart-row {
+  display: flex; align-items: flex-start; gap: var(--s-2);
+  margin-top: var(--s-3); padding: var(--s-3);
+  border: 1px dashed var(--border-soft); border-radius: var(--r-lg);
+  color: var(--text-muted); font-size: var(--fs-label-xs); line-height: 1.55; cursor: pointer;
+}
+.autostart-row input { accent-color: var(--accent); margin-top: 2px; }
+.script-hint { margin-top: var(--s-2); color: var(--warning-text); font-size: var(--fs-label-xs); line-height: 1.5; }
+
+.field-label {
+  display: block; margin: var(--s-4) 0 var(--s-1);
+  color: var(--text-secondary); font: 650 var(--fs-label-sm) var(--font-sans);
+}
+.field-label:first-of-type { margin-top: 0; }
+.field-help {
+  margin: 6px 0 0; color: var(--text-muted);
+  font-size: var(--fs-label-xs); line-height: 1.55;
+}
+.field-help code { color: var(--accent); font-family: var(--font-mono); }
+.field-row { display: flex; gap: var(--s-2); flex-wrap: wrap; }
+.field-row .input { flex: 1; min-width: 180px; }
+.input {
+  width: 100%; min-height: 42px; padding: var(--s-2) var(--s-3);
+  border: 1px solid var(--border-soft); border-radius: var(--r-md);
+  background: var(--bg-deep); color: var(--text-primary);
+  font: 400 var(--fs-body) / 1.5 var(--font-sans); outline: none;
+}
+.input-mono { font-family: var(--font-mono); font-size: var(--fs-label); }
+.input:focus { border-color: var(--accent); box-shadow: var(--ring); }
+
+.voice-config {
+  margin-top: var(--s-4); border: 1px solid var(--border-soft);
+  border-radius: var(--r-lg); background: var(--bg-deep); overflow: hidden;
+}
+.voice-config summary {
+  cursor: pointer; list-style: none; padding: var(--s-3) var(--s-4);
+  color: var(--text-secondary); font: 650 var(--fs-label-sm) var(--font-sans);
+}
+.voice-config summary::-webkit-details-marker { display: none; }
+.voice-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-3);
+  padding: 0 var(--s-4) var(--s-4);
+}
+.voice-card {
+  padding: var(--s-3); border: 1px solid var(--border-soft);
+  border-radius: var(--r-md); background: var(--bg-surface);
+  display: grid; gap: var(--s-2);
+}
+.voice-card-title { color: var(--accent); font: 700 var(--fs-label-sm) var(--font-sans); }
+.voice-card .input { min-height: 36px; font-size: var(--fs-label-xs); }
+
+.tunnel-toggle-row {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--s-3);
+  margin-bottom: var(--s-4); padding: var(--s-3) var(--s-4);
+  border: 1px solid var(--border-soft); border-radius: var(--r-lg); background: var(--bg-deep);
+}
+.tunnel-toggle-text { display: block; font: 650 var(--fs-label) var(--font-sans); color: var(--text-primary); }
+.tunnel-toggle-hint { display: block; margin-top: 3px; color: var(--text-muted); font-size: var(--fs-mono-sm); }
+.tunnel-switch {
+  position: relative; width: 44px; height: 24px; flex-shrink: 0;
+  border: 1px solid var(--border-strong); border-radius: var(--r-pill);
+  background: var(--border-strong); cursor: pointer; padding: 0;
+  transition: background var(--t-fast), border-color var(--t-fast);
+}
+.tunnel-switch[aria-checked="true"] { background: var(--success); border-color: var(--success-text); }
+.tunnel-switch-knob {
+  position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 50%;
+  background: var(--on-art-primary); box-shadow: 0 1px 3px var(--art-scrim-soft);
+  transition: left var(--t-fast);
+}
+.tunnel-switch[aria-checked="true"] .tunnel-switch-knob { left: 22px; }
+.btn-block { width: 100%; justify-content: center; }
+.action-note {
+  margin: var(--s-2) 0 var(--s-4); color: var(--text-muted);
+  font-size: var(--fs-label-xs); line-height: 1.55; text-align: center;
+}
+
+.access-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-3); }
+.access-card {
+  padding: var(--s-4); border: 1px solid var(--border-soft);
+  border-radius: var(--r-lg); background: var(--bg-deep);
+}
+.access-kicker {
+  color: var(--text-muted); font: 650 var(--fs-mono-xs) var(--font-mono);
+  letter-spacing: .1em; text-transform: uppercase;
+}
+.access-title { margin-top: 4px; font: 700 var(--fs-body-sm) var(--font-sans); color: var(--text-primary); }
+.link-value {
+  margin: var(--s-3) 0 var(--s-2); min-height: 42px; padding: var(--s-2) var(--s-3);
+  display: flex; align-items: center;
+  color: var(--info-text); background: var(--bg-surface);
+  border: 1px solid var(--border-soft); border-radius: var(--r-sm);
+  font: var(--fs-mono-sm) var(--font-mono); word-break: break-all;
+}
+.link-value.waiting { color: var(--text-muted); font-family: var(--font-sans); }
+.inline-actions { display: flex; gap: var(--s-2); flex-wrap: wrap; }
+.uptime { margin-top: var(--s-3); color: var(--text-muted); font-size: var(--fs-mono-sm); text-align: right; }
+.security-note {
+  margin-top: var(--s-3); padding: var(--s-3);
+  border-radius: var(--r-md); color: var(--text-secondary);
+  background: color-mix(in srgb, var(--warning) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--warning) 16%, transparent);
+  font-size: var(--fs-label-xs); line-height: 1.55;
+}
+
+.operation-panel.running { border-color: color-mix(in srgb, var(--warning) 42%, var(--border-soft)); }
+.operation-panel.completed { border-color: color-mix(in srgb, var(--success) 42%, var(--border-soft)); }
+.operation-panel.failed { border-color: color-mix(in srgb, var(--danger) 42%, var(--border-soft)); }
+.operation-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s-3); margin-bottom: var(--s-3); }
+.op-state {
+  color: var(--text-muted); font: 650 var(--fs-mono-xs) var(--font-mono);
+  letter-spacing: .08em; text-transform: uppercase; white-space: nowrap;
+}
+.operation-msg { margin: var(--s-2) 0 0; color: var(--text-secondary); font-size: var(--fs-label-sm); line-height: 1.55; }
+.operation-stages { display: flex; flex-wrap: wrap; gap: 6px; margin-top: var(--s-3); }
+.op-stage {
+  padding: 3px 9px; border-radius: var(--r-pill); background: var(--bg-deep);
+  color: var(--text-muted); font-size: var(--fs-mono-xs);
+}
+.op-stage.done { color: var(--success-text); background: color-mix(in srgb, var(--success) 12%, transparent); }
+.op-stage.current { color: var(--warning-text); background: color-mix(in srgb, var(--warning) 14%, transparent); font-weight: 700; }
+.operation-panel.failed .meter-fill { background: var(--danger); }
+.operation-panel.completed .meter-fill { background: var(--success); }
+
+.log-panel {
+  margin-top: var(--s-2); border: 1px solid var(--border-soft);
+  border-radius: var(--r-2xl); background: color-mix(in srgb, var(--bg-surface) 94%, transparent);
+  overflow: hidden; box-shadow: var(--shadow-sm);
+}
+.log-panel summary {
+  list-style: none; display: flex; align-items: center; justify-content: space-between;
+  gap: var(--s-3); padding: var(--s-4); cursor: pointer;
+  color: var(--text-secondary); font: 650 var(--fs-label) var(--font-sans); user-select: none;
+}
+.log-panel summary::-webkit-details-marker { display: none; }
+.summary-side { display: flex; align-items: center; gap: var(--s-2); flex-wrap: wrap; }
+.chevron { color: var(--text-muted); transition: transform var(--t-fast); }
+details[open] .chevron { transform: rotate(90deg); }
+.log-wrap { padding: 0 var(--s-4) var(--s-4); }
+.log-box {
+  min-height: 58px; max-height: 240px; overflow: auto; padding: var(--s-3);
+  border-radius: var(--r-md); background: var(--bg-deep);
+  font: var(--fs-mono-sm) / 1.65 var(--font-mono); color: var(--text-secondary);
+}
+.log-box .time { color: var(--text-muted); }
+.log-box .info { color: var(--info-text); }
+.log-box .err { color: var(--danger-text); }
+.log-empty { color: var(--text-muted); font-family: var(--font-sans); text-align: center; padding: var(--s-4); }
+
+.toast {
+  position: fixed; left: 50%; bottom: var(--s-5); z-index: var(--z-toast);
+  transform: translate(-50%, 18px); max-width: min(420px, calc(100% - 32px));
+  padding: var(--s-3) var(--s-4); color: var(--text-primary);
+  background: var(--bg-surface); border: 1px solid var(--border-strong);
+  border-radius: var(--r-md); box-shadow: var(--shadow-md);
+  font-size: var(--fs-label-sm); line-height: 1.45; text-align: center;
+  opacity: 0; pointer-events: none; transition: opacity var(--t-fast), transform var(--t-fast);
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+.toast.error { border-color: var(--danger-text); color: var(--danger-text); }
+
+@media (max-width: 900px) {
+  .control-intro { grid-template-columns: 1fr; }
+  .control-count { display: none; }
+  .status-wall { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  .nav-local { padding: 0 var(--s-3); }
+  .control-shell { padding: var(--s-5) var(--s-3) var(--s-8); }
+  .status-wall, .mode-grid, .access-grid, .voice-grid { grid-template-columns: 1fr; }
+  .status-tile.primary { grid-column: auto; }
+  .field-row, .service-row, .tunnel-toggle-row { flex-direction: column; align-items: stretch; }
+  .service-row-actions .btn { flex: 1; }
+  .toolbar-note { display: none; }
+  .control-toolbar { border-radius: var(--r-xl); }
+}
 </style>

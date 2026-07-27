@@ -37,6 +37,8 @@ function createGateway(options) {
   var tunnelUrl = '';
   var pendingTunnelUrl = '';
   var tunnelProcess = null;
+  var tunnelPoll = null;
+  var tunnelStopped = false;
 
   app.disable('x-powered-by');
   app.use(security.responseHeaders);
@@ -162,6 +164,8 @@ function createGateway(options) {
       console.log('  ⚠ cloudflared not found, tunnel disabled');
       return;
     }
+    if (tunnelProcess) return; // 已在运行，避免重复 spawn
+    tunnelStopped = false;
     console.log('  🌪 Starting Cloudflare Tunnel...');
     var runtimeTools = require('./scripts/runtime/runtime-paths');
     runtimeTools.rotateLog(config.RUNTIME.tunnelLog, 2 * 1024 * 1024);
@@ -177,8 +181,11 @@ function createGateway(options) {
     fs.closeSync(logFd);
     try { fs.writeFileSync(config.RUNTIME.tunnelPid, String(tunnelProcess.pid)); } catch (error) {}
 
+    if (tunnelPoll) { clearInterval(tunnelPoll); tunnelPoll = null; }
     var attempts = 0;
-    var poll = setInterval(function () {
+    tunnelPoll = setInterval(function () {
+      // 已经点过停止就不要再把 URL 写回来
+      if (tunnelStopped) { clearInterval(tunnelPoll); tunnelPoll = null; return; }
       try {
         var log = fs.readFileSync(config.RUNTIME.tunnelLog, 'utf8');
         var match = log.match(/https:\/\/\S+trycloudflare\.com/);
@@ -187,20 +194,42 @@ function createGateway(options) {
           tunnelUrl = pendingTunnelUrl;
           gatewayState.tunnelUrl = tunnelUrl;
           console.log('  🌪 Tunnel ready (token redacted; open control panel for share link)');
-          clearInterval(poll);
+          clearInterval(tunnelPoll); tunnelPoll = null;
         }
       } catch (error) {}
       attempts += 1;
-      if (attempts > 30) clearInterval(poll);
+      if (attempts > 30) { clearInterval(tunnelPoll); tunnelPoll = null; }
     }, 1000);
   }
 
   function stopTunnel() {
-    tunnelUrl = ''; gatewayState.tunnelUrl = '';
-    if (tunnelProcess && tunnelProcess.pid) {
-      try { process.kill(tunnelProcess.pid); } catch (error) {}
-    }
+    tunnelStopped = true;
+    tunnelUrl = ''; pendingTunnelUrl = ''; gatewayState.tunnelUrl = '';
+    if (tunnelPoll) { clearInterval(tunnelPoll); tunnelPoll = null; }
+
+    var pids = [];
+    if (tunnelProcess && tunnelProcess.pid) pids.push(tunnelProcess.pid);
+    // detached 进程用 taskkill /T 收掉整棵树，process.kill 杀不干净
+    try {
+      var saved = fs.existsSync(config.RUNTIME.tunnelPid)
+        ? String(fs.readFileSync(config.RUNTIME.tunnelPid, 'utf8')).trim()
+        : '';
+      if (/^\d+$/.test(saved) && pids.indexOf(Number(saved)) === -1) pids.push(Number(saved));
+    } catch (error) {}
+
+    pids.forEach(function (pid) {
+      if (process.platform === 'win32') {
+        try { cp.execFileSync('taskkill', ['/pid', String(pid), '/T', '/F'], { stdio:'ignore' }); }
+        catch (error) { try { process.kill(pid); } catch (e) {} }
+      } else {
+        try { process.kill(pid); } catch (error) {}
+      }
+    });
+    try { if (fs.existsSync(config.RUNTIME.tunnelPid)) fs.unlinkSync(config.RUNTIME.tunnelPid); } catch (error) {}
+    // 清掉日志，避免下次轮询读到上一次的旧 URL
+    try { fs.writeFileSync(config.RUNTIME.tunnelLog, ''); } catch (error) {}
     tunnelProcess = null;
+    console.log('  🌪 Tunnel stopped');
   }
 
   function close() {
@@ -237,7 +266,13 @@ function startGateway(options) {
     console.log('  🔐 Token: stored in runtime/state (length ' + String(config.TOKEN || '').length + ')');
     console.log('  ══════════════════════════════════════════');
     console.log('');
-    gateway.startTunnel();
+    // 公网分享不再随网关自动开启：默认仅本机，由控制面板显式启动。
+    // 需要开机即分享时设 AUTO_TUNNEL=1。
+    var saved = {};
+    try { saved = JSON.parse(fs.readFileSync(config.RUNTIME.config, 'utf8')); } catch (error) {}
+    var autoTunnel = process.env.AUTO_TUNNEL === '1' || saved.autoTunnel === true;
+    if (autoTunnel) gateway.startTunnel();
+    else console.log('  🔒 仅本机访问（公网分享可在控制面板启动）');
   });
 
   var closing = false;

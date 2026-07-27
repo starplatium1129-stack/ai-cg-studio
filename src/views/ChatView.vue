@@ -1,5 +1,5 @@
 ﻿<template>
-  <main class="chat-page">
+  <article class="chat-page">
     <a @click.prevent="$router.push('/')" href="/" class="nav-back">← 回首页</a>
     <header class="chat-head">
       <div>
@@ -149,7 +149,7 @@
         </div>
       </section>
     </section>
-  </main>
+  </article>
 </template>
 
 <script setup lang="ts">

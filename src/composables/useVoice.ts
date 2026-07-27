@@ -167,19 +167,40 @@ export function useVoice(options: {
 
   async function synthesize(request: any, meta: any, signal: AbortSignal) {
     let ttsError: Error | undefined
-    for (let attempt = 0; attempt <= 1; attempt++) {
+    // GPT-SoVITS 偶发瞬时失败（模型换权重 / 队列抖动 / 空音频）。
+    // 之前只重试 1 次且不管空 body，所以会出现“某句突然没声”。
+    const MAX_ATTEMPTS = 3
+    for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
       try {
         const r = await fetch('/api/tts', {
           method: 'POST', headers: { 'Content-Type': 'application/json' }, signal,
-          body: JSON.stringify({ voice: meta.voice, text: request.text, language: request.language, emotion: request.emotion, referenceEmotion: meta.referenceEmotion, consistency: 'locked', speed: 1 }),
+          body: JSON.stringify({
+            voice: meta.voice, text: request.text, language: request.language,
+            emotion: request.emotion, referenceEmotion: meta.referenceEmotion,
+            consistency: 'locked', speed: 1,
+          }),
         })
         if (!r.ok) { const e = await responseError(r, '语音服务暂不可用'); (e as any).status = r.status; throw e }
-        let buffer = await r.arrayBuffer(); buffer = fixWavHeader(buffer)
+        let buffer = await r.arrayBuffer()
+        // 空音频（44 字节以下连 WAV 头都不完整）视为瞬时失败，值得重试
+        if (!buffer || buffer.byteLength < 64) {
+          const empty = new Error('语音服务返回空音频') as any
+          empty.status = 502
+          throw empty
+        }
+        buffer = fixWavHeader(buffer)
         return { url: URL.createObjectURL(new Blob([buffer], { type: 'audio/wav' })), emotion: request.emotion }
       } catch (e) {
         if (isAbortError(e) || signal.aborted) throw e
-        if (attempt === 0 && ((e as any).name === 'TypeError' || Number((e as any).status) >= 500)) {
-          await new Promise(res => setTimeout(res, 220)); if (signal.aborted) throw e; ttsError = e as Error; continue
+        const status = Number((e as any).status)
+        const transient = (e as any).name === 'TypeError' || status >= 500 || status === 429
+        if (transient && attempt < MAX_ATTEMPTS - 1) {
+          // 退避：220ms → 500ms，给 GPT-SoVITS 留出恢复时间
+          const backoff = 220 * Math.pow(2, attempt)
+          await new Promise(res => setTimeout(res, backoff))
+          if (signal.aborted) throw e
+          ttsError = e as Error
+          continue
         }
         throw e
       }

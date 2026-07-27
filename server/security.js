@@ -26,7 +26,10 @@ function normalizeRequestPath(pathValue) {
 
 function buildContentSecurityPolicy(pathValue) {
   var path = normalizeRequestPath(pathValue);
-  var chatPage = path === '/tools/chat.html' || path === '/tools/chat';
+  // Live2D（PixiJS）需要 unsafe-eval 才能编译着色器。
+  // 只对角色房间放行；Vue SPA 的路由是 /chat，重构后漏掉了这一条，
+  // 导致 Live2D 报 "Current environment does not allow unsafe-eval"。
+  var chatPage = path === '/chat' || path === '/tools/chat.html' || path === '/tools/chat';
   var scriptSrc = "'self'";
   if (chatPage) scriptSrc += " 'unsafe-eval'";
   return "default-src 'self'; img-src 'self' data: blob: https:; media-src 'self' data: blob:; " +
