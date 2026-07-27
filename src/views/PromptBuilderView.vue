@@ -267,18 +267,24 @@ const route = useRoute()
 const character = ref('nene')
 
 // 动态注入 prompt-builder 子模块（保持原有初始化顺序）
+// 顺序严格对齐 prompt-builder.html 原始加载顺序
+// index.html 已全局加载：image-store, scene-ux, quick-create, sd-error, storage-health
 const PB_SCRIPTS = [
+  '/tools/prompt-policy.js',
+  '/tools/data-backup.js',
+  '/tools/sd-api.js',
+  '/tools/icon-system.js',
   '/tools/prompt-builder/state.js',
+  '/tools/prompt-builder/composition.js',
+  '/tools/prompt-builder/scene-inference.js',
   '/tools/prompt-builder/scene.js',
   '/tools/prompt-builder/prompt.js',
-  '/tools/prompt-builder/composition.js',
-  '/tools/prompt-builder/ui.js',
   '/tools/prompt-builder/sd.js',
   '/tools/prompt-builder/queue.js',
   '/tools/prompt-builder/voice.js',
   '/tools/prompt-builder/history.js',
   '/tools/prompt-builder/backup.js',
-  '/tools/prompt-builder/scene-inference.js',
+  '/tools/prompt-builder/ui.js',
   '/tools/prompt-builder/app.js',
 ]
 
