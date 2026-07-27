@@ -42,6 +42,9 @@ function createGateway(options) {
 
   app.disable('x-powered-by');
   app.use(security.responseHeaders);
+  // Host 白名单必须在 tokenAuth 之前：tokenAuth 对 loopback socket 无条件放行，
+  // 不校验 Host 时任意网页都能把域名 rebind 到 127.0.0.1 并以「本机」身份调控制接口。
+  app.use(security.hostGuard(config, function () { return tunnelUrl; }));
   app.use(security.tokenAuth(config.TOKEN));
   app.use(compression({ threshold:1024 }));
 
@@ -119,10 +122,15 @@ function createGateway(options) {
     next();
   }, express.static(path.join(config.ROOT_DIR, 'tools'), staticOptions(ONE_DAY)));
 
-  app.use(createProxyMiddleware({
+  var sdProxy = createProxyMiddleware({
+    // router 按请求解析 target：控制面板改 SD_HOST 后立即生效。
+    // 之前 target 在构造时就被定住，面板报成功而 /sdapi 仍打旧 host 直到重启。
     target:config.SD_HOST,
+    router:function () { return config.SD_HOST; },
     changeOrigin:true,
-    ws:true,
+    // ws:false —— http-proxy-middleware 的 ws:true 会直接订阅 server 的 'upgrade' 事件，
+    // 完全绕过 Express 中间件栈，于是 tokenAuth 失效。升级请求改由 startGateway 手动鉴权后转交。
+    ws:false,
     pathFilter:function (pathname) {
       return pathname.startsWith('/sdapi') || pathname.startsWith('/controlnet') || pathname.startsWith('/adetailer');
     },
@@ -132,15 +140,28 @@ function createGateway(options) {
       proxyReq:function () { console.log('  → SD API 请求已转发'); },
       error:function (error, req, res) {
         console.error('  ❌ SD 代理错误:', error.message);
-        if (!res.headersSent) {
-          res.status(502).json({ error:'SD WebUI 未响应，请确认已经启动 (' + config.SD_HOST + ')' });
+        // upgrade 失败时第三个参数是裸 net.Socket，不是 Express response。
+        // 直接调 res.status() 会抛 TypeError 并带走整个进程。
+        if (res && typeof res.status === 'function') {
+          if (!res.headersSent) {
+            res.status(502).json({ error:'SD WebUI 未响应，请确认已经启动 (' + config.SD_HOST + ')' });
+          }
+          return;
+        }
+        if (res && typeof res.destroy === 'function') {
+          try { res.write('HTTP/1.1 502 Bad Gateway\r\nConnection: close\r\n\r\n'); } catch (writeError) {}
+          try { res.destroy(); } catch (destroyError) {}
         }
       }
     }
-  }));
+  });
+  app.use(sdProxy);
 
   // SPA fallback — Vue Router 的前端路由在刷新时返回 index.html
   app.get('*', function (req, res, next) {
+    // 未命中的 API 路由必须是 JSON 404，不能被吞成 200 text/html。
+    // /api/xxx 没有扩展名，之前会直接拿到 SPA 外壳且状态 200。
+    if (req.path.startsWith('/api/')) return next();
     var spaEntry = path.join(config.ROOT_DIR, 'dist', 'index.html');
     if (!fs.existsSync(spaEntry)) return next();
     var ext = path.extname(req.path);
@@ -149,13 +170,26 @@ function createGateway(options) {
     res.sendFile(spaEntry);
   });
 
+  app.use('/api', function (req, res) {
+    res.status(404).json({ error:'接口不存在: ' + req.method + ' ' + req.baseUrl + req.path });
+  });
+
   app.use(function (error, req, res, next) {
     if (res.headersSent) return next(error);
-    var invalidJson = error && error.type === 'entity.parse.failed';
-    res.status(invalidJson ? 400 : 500).json({
-      error:invalidJson ? '请求 JSON 格式错误' : '网关内部错误',
-      detail:invalidJson ? '' : error.message
-    });
+    // 尊重 err.status/err.statusCode：否则 express.static 的 404、body-parser 的 413
+    // 都会变成 500，而 detail 还会把主机绝对路径回给客户端。
+    var status = Number(error && (error.status || error.statusCode));
+    if (!Number.isInteger(status) || status < 400 || status > 599) status = 500;
+    if (error && error.type === 'entity.parse.failed') status = 400;
+    if (error && error.code === 'ENOENT') status = 404;
+
+    var messages = {
+      400:'请求 JSON 格式错误',
+      404:'资源不存在',
+      413:'请求体过大'
+    };
+    if (status >= 500) console.error('  ❌ 网关内部错误:', error && error.stack || error);
+    res.status(status).json({ error:messages[status] || (status >= 500 ? '网关内部错误' : '请求无法处理') });
   });
 
   function startTunnel() {
@@ -241,11 +275,39 @@ function createGateway(options) {
   gatewayState.startTunnel = startTunnel;
   gatewayState.stopTunnel  = stopTunnel;
 
+  // upgrade 请求不经过 Express 中间件，所以在这里复刻 tokenAuth 的判定。
+  function handleUpgrade(req, socket, head) {
+    var pathname = String(req.url || '/').split('?')[0];
+    var proxied = pathname.startsWith('/sdapi') || pathname.startsWith('/controlnet') ||
+      pathname.startsWith('/adetailer');
+    if (!proxied) { socket.destroy(); return; }
+
+    var authorized = security.isDirectLocalRequest(req);
+    if (!authorized) {
+      var query = '';
+      var q = String(req.url || '').indexOf('?');
+      if (q >= 0) query = String(req.url).slice(q + 1);
+      var suppliedToken = new URLSearchParams(query).get('token') || req.headers['x-token'] || '';
+      if (!suppliedToken) {
+        var cookieMatch = (req.headers.cookie || '').match(/(?:^|;\s*)aics_token=([^;]+)/);
+        if (cookieMatch) suppliedToken = cookieMatch[1];
+      }
+      authorized = security.tokenMatches(config.TOKEN, suppliedToken);
+    }
+    if (!authorized) {
+      try { socket.write('HTTP/1.1 401 Unauthorized\r\nConnection: close\r\n\r\n'); } catch (error) {}
+      socket.destroy();
+      return;
+    }
+    sdProxy.upgrade(req, socket, head);
+  }
+
   return {
     app:app,
     config:config,
     services:{ chat:chat.service, tts:voice.tts, translation:voice.translation, live2d:live2d.service },
     startTunnel:startTunnel,
+    handleUpgrade:handleUpgrade,
     close:close
   };
 }
@@ -253,6 +315,15 @@ function createGateway(options) {
 function startGateway(options) {
   var gateway = createGateway(options);
   var config = gateway.config;
+
+  // 兜底：未捕获异常不应该带走整个网关。
+  process.on('unhandledRejection', function (reason) {
+    console.error('  ❌ 未处理的 Promise 拒绝:', reason && reason.stack || reason);
+  });
+  process.on('uncaughtException', function (error) {
+    console.error('  ❌ 未捕获异常:', error && error.stack || error);
+  });
+
   var server = gateway.app.listen(config.PORT, config.HOST, function () {
     console.log('');
     console.log('  ══════════════════════════════════════════');
@@ -274,6 +345,8 @@ function startGateway(options) {
     if (autoTunnel) gateway.startTunnel();
     else console.log('  🔒 仅本机访问（公网分享可在控制面板启动）');
   });
+
+  server.on('upgrade', gateway.handleUpgrade);
 
   var closing = false;
   function shutdown() {

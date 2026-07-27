@@ -34,8 +34,21 @@
             v-for="item in group.items"
             :key="item.id"
             class="artwork"
+            :class="{ 'artwork-pending': pendingDeleteId === item.id }"
             :style="{ '--art-ratio': ratioOf(item) }"
           >
+            <!-- 删除按钮必须是 .artwork-button 的兄弟节点：button 不能嵌 button -->
+            <div class="artwork-tools">
+              <template v-if="pendingDeleteId === item.id">
+                <button class="artwork-tool danger" type="button" :disabled="deleting"
+                  @click="confirmDelete(item)">{{ deleting ? '删除中…' : '确认删除' }}</button>
+                <button class="artwork-tool" type="button" :disabled="deleting"
+                  @click="pendingDeleteId = null">取消</button>
+              </template>
+              <button v-else class="artwork-tool" type="button"
+                :aria-label="`删除作品：${sceneTitle(item.scene)}`"
+                @click="pendingDeleteId = item.id">删除</button>
+            </div>
             <button
               class="artwork-button"
               type="button"
@@ -112,6 +125,14 @@
           <RouterLink class="btn btn-primary" :to="`/prompt-builder?scene=${encodeURIComponent(current.scene || '')}&regen=${encodeURIComponent(current.id || '')}`">重新生成</RouterLink>
           <RouterLink class="btn btn-ghost" :to="`/prompt-builder?scene=${encodeURIComponent(current.scene || '')}&variant=${encodeURIComponent(current.id || '')}`">生成变体</RouterLink>
           <button class="btn btn-ghost" type="button" @click="copyPrompt">复制 Prompt</button>
+          <button v-if="pendingDeleteId !== current.id" class="btn btn-ghost btn-danger" type="button"
+            @click="pendingDeleteId = current.id">删除这幅</button>
+          <template v-else>
+            <button class="btn btn-danger" type="button" :disabled="deleting"
+              @click="confirmDelete(current)">{{ deleting ? '删除中…' : '确认删除（不可撤销）' }}</button>
+            <button class="btn btn-ghost" type="button" :disabled="deleting"
+              @click="pendingDeleteId = null">取消</button>
+          </template>
         </div>
       </aside>
     </div>
@@ -121,10 +142,14 @@
 <script setup lang="ts">
 import { ref, computed, reactive, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { kvInit, kvGet, kvSet } from '@/composables/useKVStore'
-import { imgGet } from '@/composables/useImageStore'
+import { imgGet, imgDelete } from '@/composables/useImageStore'
 
 const HISTORY_KEY = 'aics_pb_history'
-const PROJECT_KEY = 'aics_projects'
+// 必须与 useBackup.ts 的 PROJECT_KEY 一致。曾经这里写 'aics_projects'，
+// 而备份/恢复读写 'aics_pb_projects' → 两边各操作一套数据且会永久分叉。
+const PROJECT_KEY = 'aics_pb_projects'
+/** 旧键，仅用于一次性迁移 */
+const LEGACY_PROJECT_KEY = 'aics_projects'
 
 const history = ref<any[]>([])
 const projects = ref<any[]>([])
@@ -138,10 +163,15 @@ const viewerUrl = ref('')
 const cardUrls = reactive<Record<string, string>>({})
 /** 图片实际比例，键为历史条目 id；元数据不可信时以此为准 */
 const measuredRatios = reactive<Record<string, number>>({})
+/** 待确认删除的条目 id：删除不可撤销，所以要点两次 */
+const pendingDeleteId = ref<string | number | null>(null)
+const deleting = ref(false)
 const closeBtn = ref<HTMLElement | null>(null)
 const viewerEl = ref<HTMLElement | null>(null)
 let returnFocus: HTMLElement | null = null
 const objectUrls = new Set<string>()
+/** 查看器当前显示的 blob URL，翻页时要主动释放 */
+let viewerObjectUrl = ''
 
 /* ---------- 派生数据 ---------- */
 const visible = computed(() => {
@@ -284,15 +314,34 @@ async function hydrateCards() {
 }
 
 async function hydrateViewer(item: any, seq: number) {
+  // 上一张查看器大图用完就释放：卡片缩略图有 cardUrls 去重，
+  // 而查看器每翻一张都新建一个 blob URL，不放就攒到卸载才清。
+  releaseViewerUrl()
   viewerUrl.value = ''
   const fallback = safeImageUrl(item.image_url)
   try {
     const blob = item.image_id ? await imgGet(item.image_id) : null
     if (seq !== viewerIndex.value) return
-    if (blob) viewerUrl.value = trackUrl(URL.createObjectURL(blob))
+    if (blob) {
+      viewerObjectUrl = URL.createObjectURL(blob)
+      objectUrls.add(viewerObjectUrl)
+      viewerUrl.value = viewerObjectUrl
+    }
     else if (fallback) viewerUrl.value = fallback
     else if (item.image_data && String(item.image_data).startsWith('data:image/')) viewerUrl.value = item.image_data
   } catch { viewerUrl.value = '' }
+}
+
+/** 查看器当前大图的 blob URL；卡片缩略图不走这里 */
+function releaseViewerUrl() {
+  if (!viewerObjectUrl) return
+  // 缩略图可能复用同一个 URL，只释放没被 cardUrls 引用的
+  const stillUsed = Object.values(cardUrls).includes(viewerObjectUrl)
+  if (!stillUsed) {
+    URL.revokeObjectURL(viewerObjectUrl)
+    objectUrls.delete(viewerObjectUrl)
+  }
+  viewerObjectUrl = ''
 }
 
 /* ---------- Viewer 控制 ---------- */
@@ -308,6 +357,7 @@ function openViewer(index: number) {
 function closeViewer() {
   viewerIndex.value = -1
   infoOpen.value = false
+  releaseViewerUrl()
   viewerUrl.value = ''
   document.body.classList.remove('viewer-open')
   returnFocus?.focus?.({ preventScroll: true })
@@ -317,6 +367,41 @@ function step(delta: number) {
   const next = viewerIndex.value + delta
   if (next >= 0 && next < visible.value.length) openViewer(next)
 }
+/* ---------- 删除 ---------- */
+/**
+ * 从作品册移除一幅：历史条目 + IndexedDB 里的原图一起删，
+ * 否则图片会变成没人引用的孤儿，继续占着配额。
+ */
+async function confirmDelete(item: any) {
+  if (deleting.value) return
+  deleting.value = true
+  try {
+    const wasOpen = viewerIndex.value >= 0
+    const removedIndex = visible.value.indexOf(item)
+
+    history.value = history.value.filter(h => h.id !== item.id)
+    await kvSet(HISTORY_KEY, history.value)
+    if (item.image_id) await imgDelete(item.image_id).catch(() => {})
+
+    // 释放这张卡自己的 object URL，并清掉派生缓存
+    const url = cardUrls[item.id]
+    if (url && url.startsWith('blob:')) { URL.revokeObjectURL(url); objectUrls.delete(url) }
+    delete cardUrls[item.id]
+    delete measuredRatios[item.id]
+    pendingDeleteId.value = null
+
+    // 查看器开着就顺移到下一幅，删到空则关闭
+    if (wasOpen) {
+      if (!visible.value.length) closeViewer()
+      else openViewer(Math.min(Math.max(removedIndex, 0), visible.value.length - 1))
+    }
+  } catch (e) {
+    console.warn('delete artwork failed', e)
+  } finally {
+    deleting.value = false
+  }
+}
+
 function copyPrompt() {
   if (current.value?.prompt) navigator.clipboard.writeText(current.value.prompt)
 }
@@ -360,6 +445,18 @@ onMounted(async () => {
       try { projectRaw = JSON.parse(localStorage.getItem(PROJECT_KEY) || 'null') } catch {}
       if (Array.isArray(projectRaw) && projectRaw.length) {
         await kvSet(PROJECT_KEY, projectRaw); localStorage.removeItem(PROJECT_KEY)
+      }
+    }
+    // 一次性迁移：把旧键 'aics_projects' 下的项目搬到统一键，避免用户之前建的项目凭空消失
+    if (!projectRaw) {
+      let legacy: any = await kvGet(LEGACY_PROJECT_KEY).catch(() => null)
+      if (!legacy) {
+        try { legacy = JSON.parse(localStorage.getItem(LEGACY_PROJECT_KEY) || 'null') } catch {}
+      }
+      if (Array.isArray(legacy) && legacy.length) {
+        projectRaw = legacy
+        await kvSet(PROJECT_KEY, legacy)
+        localStorage.removeItem(LEGACY_PROJECT_KEY)
       }
     }
     history.value = Array.isArray(historyRaw) ? historyRaw.filter((item: any) => item && typeof item === 'object') : []

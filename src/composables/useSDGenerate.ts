@@ -1,4 +1,4 @@
-import { ref, readonly } from 'vue'
+import { ref, readonly, onUnmounted, getCurrentInstance } from 'vue'
 
 export interface SDGenerateParams {
   prompt: string
@@ -177,6 +177,8 @@ export function useSDGenerate() {
       const view = new Uint8Array(ab)
       for (let i = 0; i < byteStr.length; i++) view[i] = byteStr.charCodeAt(i)
       const url = URL.createObjectURL(new Blob([ab], { type: 'image/png' }))
+      // 覆盖前先释放上一张，否则每出一张图泄漏一个 blob URL
+      if (resultUrl.value && resultUrl.value !== url) URL.revokeObjectURL(resultUrl.value)
       resultUrl.value  = url
       resultSeed.value = data.info ? JSON.parse(data.info)?.seed ?? null : null
       statusText.value = '生成完成'
@@ -205,6 +207,20 @@ export function useSDGenerate() {
     resultSeed.value = null; errorMsg.value = ''; statusText.value = ''; progress.value = 0
   }
 
+  /**
+   * 组件卸载时收尾。缺这一段的后果：出图途中离开页面，1.2 秒一次的进度轮询
+   * 会一直跑到标签页关闭，in-flight 的 txt2img 也不会被取消。
+   */
+  function dispose() {
+    stopPolling()
+    abortCtrl?.abort()
+    abortCtrl = null
+    if (resultUrl.value) { URL.revokeObjectURL(resultUrl.value); resultUrl.value = '' }
+  }
+
+  // 在组件上下文里自动挂载；被普通函数调用时（如测试）跳过
+  if (getCurrentInstance()) onUnmounted(dispose)
+
   return {
     online: readonly(online), checkpoint: readonly(checkpoint),
     generating: readonly(generating),
@@ -213,7 +229,7 @@ export function useSDGenerate() {
     errorMsg: readonly(errorMsg), samplers: readonly(samplers),
     schedulers: readonly(schedulers), upscalers: readonly(upscalers),
     models: readonly(models),
-    checkStatus, generate, cancel, clearResult,
+    checkStatus, generate, cancel, clearResult, dispose,
   }
 }
 

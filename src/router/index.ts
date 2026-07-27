@@ -44,11 +44,19 @@ const router = createRouter({
         { path: 'scene-manager',  name: 'manager',       component: () => import('@/views/SceneManagerView.vue') },
         { path: 'color-script',   name: 'color-script',  component: () => import('@/views/ColorScriptView.vue') },
         { path: 'scenario',       name: 'scenario',      component: () => import('@/views/ScenarioView.vue') },
+        // 兜底路由：没有它，任何拼错的地址都只渲染一个空白外壳
+        { path: ':pathMatch(.*)*', name: 'not-found',    component: () => import('@/views/NotFoundView.vue') },
       ]
     },
     // control 有自己的完整导航栏，不套 AppLayout（避免双 nav）
     { path: '/control', name: 'control', component: () => import('@/views/ControlView.vue'), meta: { transition: 'fade' } }
-  ]
+  ],
+  // 路由切换回到顶部；带 hash 时定位到锚点，浏览器前进/后退时还原原位置
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) return savedPosition
+    if (to.hash) return { el: to.hash, behavior: 'smooth' }
+    return { top: 0 }
+  }
 })
 
 router.beforeEach((to, from) => {

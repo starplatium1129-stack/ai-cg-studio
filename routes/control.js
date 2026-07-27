@@ -13,6 +13,9 @@ var path    = require('path');
 var http    = require('http');
 var https   = require('https');
 var cp      = require('child_process');
+var security = require('../server/security');
+var diagnostics = require('../server/diagnostics');
+var localOnly = security.localOnly;
 var createOperationManager = require('../services/control-operation').createOperationManager;
 
 function readJson(file) {
@@ -132,12 +135,9 @@ function createControlRouter(config, gatewayRef) {
     console.log(line);
   }
 
-  function localOnly(req, res, next) {
-    var ip = req.ip || '';
-    var local = ['127.0.0.1', '::1', '::ffff:127.0.0.1'].includes(ip);
-    if (!local) return res.status(403).json({ error:'该操作仅限本机使用' });
-    next();
-  }
+  // localOnly 由 server/security.js 统一提供。
+  // 曾经这里有一份只比对 req.ip 的副本，而 cloudflared 是从 127.0.0.1 连进来的，
+  // 于是隧道一开，所有公网请求都被判成「本机」，控制面板的启停/改 host 全部敞开。
 
   function runScriptAsync(scriptPath, args, timeoutMs) {
     return new Promise(function (resolve) {
@@ -179,26 +179,54 @@ function createControlRouter(config, gatewayRef) {
     });
   }
 
-  async function refreshServiceStates() {
+  // managed-webui.ps1 -Action Status 单次实测 ~2.2 秒，而控制面板 3 秒轮询一次 →
+  // 不缓存的话面板一开就永久重叠 spawn PowerShell。缓存 + in-flight 去重 + fresh=1 强制刷新。
+  var WEBUI_STATUS_TTL = 15000;
+  var webuiStatusCache = { at:0, managed:false };
+  var webuiStatusInflight = null;
+
+  function readWebuiManaged(force) {
+    if (!fs.existsSync(WEBUI_MANAGER_SCRIPT)) return Promise.resolve(state.webuiManaged);
+    var cacheFresh = Date.now() - webuiStatusCache.at < WEBUI_STATUS_TTL;
+    if (!force && cacheFresh) return Promise.resolve(webuiStatusCache.managed);
+    // 已有探测在飞就复用，避免并发轮询叠加 spawn
+    if (webuiStatusInflight) return webuiStatusInflight;
+
+    webuiStatusInflight = runScriptAsync(WEBUI_MANAGER_SCRIPT, ['-Action', 'Status'], 15000)
+      .then(function (status) {
+        webuiStatusCache.at = Date.now();
+        if (status.ok && status.message) {
+          try {
+            webuiStatusCache.managed = !!JSON.parse(status.message).managed;
+          } catch (error) {
+            // 输出不是合法 JSON：留个痕，别静默把旧值当新值
+            controlLog('WebUI 状态脚本输出无法解析，沿用上一次结果');
+          }
+        }
+        return webuiStatusCache.managed;
+      })
+      .catch(function (error) {
+        controlLog('WebUI 状态探测失败: ' + error.message);
+        return webuiStatusCache.managed;
+      })
+      .finally(function () { webuiStatusInflight = null; });
+
+    return webuiStatusInflight;
+  }
+
+  async function refreshServiceStates(force) {
     var results = await Promise.all([
       pingSd(config.SD_HOST, 2500),
       pingTts(config.TTS_HOST, 2500),
-      pingOllamaDetail(config.OLLAMA_HOST, 3000)
+      pingOllamaDetail(config.OLLAMA_HOST, 3000),
+      readWebuiManaged(!!force)
     ]);
     state.sdOnline = results[0];
     state.ttsOnline = results[1];
     state.ollamaOnline = results[2].online;
     state.ollamaModels = results[2].models;
     state.ollamaVram = results[2].vram;
-    if (fs.existsSync(WEBUI_MANAGER_SCRIPT)) {
-      var status = await runScriptAsync(WEBUI_MANAGER_SCRIPT, ['-Action', 'Status'], 15000);
-      if (status.ok && status.message) {
-        try {
-          var parsed = JSON.parse(status.message);
-          state.webuiManaged = !!parsed.managed;
-        } catch {}
-      }
-    }
+    state.webuiManaged = results[3];
     return {
       sdOnline: state.sdOnline,
       ttsOnline: state.ttsOnline,
@@ -268,9 +296,10 @@ function createControlRouter(config, gatewayRef) {
   });
 
   // GET /api/status
-  router.get('/api/status', function(req, res) {
-    var force = req.query.fresh === '1';
-    refreshServiceStates().then(function(services) {
+  router.get('/api/status', localOnly, function(req, res) {
+    // fresh=1 绕过 WebUI 状态缓存（面板的「重新检测」按钮）。
+    // 这个参数以前解析了却从未被使用。
+    refreshServiceStates(req.query.fresh === '1').then(function(services) {
       var gw = gatewayRef ? gatewayRef() : null;
       var tunnelUrl = gw ? gw.tunnelUrl : '';
       var tunnelStatus = tunnelUrl ? 'active' : (config.DISABLE_TUNNEL ? 'disabled' : 'waiting');
@@ -291,7 +320,8 @@ function createControlRouter(config, gatewayRef) {
         ttsHost: config.TTS_HOST,
         ollamaHost: config.OLLAMA_HOST,
         localLink: 'http://127.0.0.1:' + config.PORT + '/',
-        shareLink: tunnelUrl ? (tunnelUrl + '/?token=' + encodeURIComponent(config.TOKEN)) : '',
+        // 原始 token 不再随状态返回 —— 见 GET /api/share-link。
+        shareLinkAvailable: !!tunnelUrl,
         tunnelStatus: tunnelStatus,
         tunnelAvailable: !config.DISABLE_TUNNEL && !!config.CLOUDFLARED_PATH,
         uptime: Math.floor((Date.now() - startTime) / 1000),
@@ -305,6 +335,19 @@ function createControlRouter(config, gatewayRef) {
       });
     }).catch(function(e) {
       res.status(500).json({ error: e.message });
+    });
+  });
+
+  // GET /api/share-link — 含 token 的分享链接，仅本机可读。
+  // 从 /api/status 拆出来：状态接口会被前端 3 秒轮询一次，
+  // 把原始 token 放在里面等于任何拿到链接的人都能反过来提取 token。
+  router.get('/api/share-link', localOnly, function(req, res) {
+    var gw = gatewayRef ? gatewayRef() : null;
+    var tunnelUrl = gw ? gw.tunnelUrl : '';
+    res.setHeader('Cache-Control', 'no-store');
+    res.json({
+      ok: true,
+      shareLink: tunnelUrl ? (tunnelUrl + '/?token=' + encodeURIComponent(config.TOKEN)) : ''
     });
   });
 
@@ -349,9 +392,26 @@ function createControlRouter(config, gatewayRef) {
     try {
       var body = req.body || {};
       var saved = readJson(config.RUNTIME.config);
-      if (body.sdHost)  { saved.sdHost  = String(body.sdHost).trim();  config.SD_HOST  = saved.sdHost;  }
-      if (body.ttsHost) { saved.ttsHost = String(body.ttsHost).trim(); config.TTS_HOST = saved.ttsHost; }
-      if (body.ollamaHost) { saved.ollamaHost = String(body.ollamaHost).trim(); config.OLLAMA_HOST = saved.ollamaHost; }
+      // 三个上游 host 必须落在本机 http。不校验的话这里是 SSRF，
+      // 而且值会落盘 → 重启后 /sdapi 代理会指向攻击者选定的地址。
+      var hostFields = [
+        { key:'sdHost',     configKey:'SD_HOST',     label:'SD' },
+        { key:'ttsHost',    configKey:'TTS_HOST',    label:'语音' },
+        { key:'ollamaHost', configKey:'OLLAMA_HOST', label:'Ollama' }
+      ];
+      for (var i = 0; i < hostFields.length; i += 1) {
+        var field = hostFields[i];
+        if (!body[field.key]) continue;
+        var safe = security.safeLocalUrl(body[field.key]);
+        if (!safe) {
+          return res.status(400).json({
+            ok:false,
+            error:field.label + ' 地址只接受本机 http，例如 http://127.0.0.1:7860'
+          });
+        }
+        saved[field.key] = safe;
+        config[field.configKey] = safe;
+      }
       if (body.voices && typeof body.voices === 'object') {
         saved.voices = body.voices;
         config.VOICE_PROFILES = body.voices;
@@ -392,7 +452,7 @@ function createControlRouter(config, gatewayRef) {
       : runScriptAsync(VOICE_STOP_SCRIPT, [], 30000);
     task.then(async function (result) {
       ops.update(operation, 1);
-      await refreshServiceStates();
+      await refreshServiceStates(true); // 启停后缓存必然过期
       var expected = action === 'start';
       if (!result.ok && !!state.ttsOnline === expected) {
         controlLog('GPT-SoVITS 脚本返回提示，但目标状态已达成: ' + (result.error || '未知提示'));
@@ -434,7 +494,7 @@ function createControlRouter(config, gatewayRef) {
         } catch {}
       }
       ops.update(operation, 1);
-      await refreshServiceStates();
+      await refreshServiceStates(true); // 启停后缓存必然过期
       var expected = action === 'start';
       if (!result.ok && !!state.sdOnline === expected) {
         controlLog('WebUI 脚本返回提示，但目标状态已达成: ' + (result.error || '未知提示'));
@@ -534,7 +594,7 @@ function createControlRouter(config, gatewayRef) {
         else throw new Error('语音服务启动失败: ' + startVoice.error);
         ops.update(operation, 2);
       }
-      await refreshServiceStates();
+      await refreshServiceStates(true); // 模式切换刚动过服务，必须重新探测
       if (mode === 'draw' && !state.sdOnline) throw new Error('WebUI 未通过最终健康检查');
       if (mode === 'chat' && !state.ttsOnline) throw new Error('语音服务未通过最终健康检查');
       state.modeBusy = false;
@@ -547,17 +607,20 @@ function createControlRouter(config, gatewayRef) {
     });
   });
 
-  // GET /api/logs
-  router.get('/api/logs', function(req, res) {
+  // GET /api/logs — 仅本机；日志过 redactText，避免把隧道 URL / token 原样回出去
+  router.get('/api/logs', localOnly, function(req, res) {
     var since  = parseInt(req.query.since, 10) || 0;
-    var lines  = state.controlLogs.slice(since);
+    var lines  = state.controlLogs.slice(since).map(diagnostics.redactText);
     var logFiles = [
       config.RUNTIME && config.RUNTIME.gatewayLog,
       config.RUNTIME && config.RUNTIME.tunnelLog,
       config.RUNTIME && config.RUNTIME.controlLog,
     ].filter(Boolean);
     logFiles.forEach(function(f) {
-      lines = lines.concat(tailLog(f, 0).slice(-30));
+      // readLogTail 只 seek 尾部 64KB；旧的 tailLog(f, 0) 会把整份日志读进内存再丢掉 99%
+      var tail = diagnostics.readLogTail(f, 64 * 1024);
+      if (!tail.available || !tail.text) return;
+      lines = lines.concat(tail.text.split(/\r?\n/).filter(Boolean).slice(-30));
     });
     if (!lines.length && since === 0) {
       lines = ['[' + new Date().toISOString().slice(0,19) + '] 网关已就绪，端口 ' + config.PORT];
@@ -578,7 +641,8 @@ function createControlRouter(config, gatewayRef) {
       ollamaHost: config.OLLAMA_HOST,
       sceneShowcaseDir: config.SCENE_SHOWCASE_DIR || '',
       disableTunnel: !!config.DISABLE_TUNNEL,
-      runtimeConfig: saved,
+      runtimeConfig: diagnostics.redactConfig(saved),
+      token: diagnostics.summarizeToken(config.TOKEN),
       scripts: {
         voiceStart: VOICE_START_SCRIPT,
         voiceStop: VOICE_STOP_SCRIPT,
@@ -599,4 +663,8 @@ function createControlRouter(config, gatewayRef) {
   return router;
 }
 
-module.exports = { createControlRouter };
+module.exports = {
+  createControlRouter,
+  // 暴露给测试：断言这里用的是 server/security 的共享实现，而不是又一份本地副本
+  _test:{ localOnly }
+};

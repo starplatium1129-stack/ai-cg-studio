@@ -597,7 +597,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { useSDGenerate } from '@/composables/useSDGenerate'
@@ -1320,6 +1320,11 @@ onMounted(async () => {
   if (!handledDeepLink) pb.restoreDraft()
   // 推荐尺寸同步到出图选择
   if (pb.lastRecommendedSize) sdSize.value = pb.lastRecommendedSize
+})
+
+onUnmounted(() => {
+  // 配音生成的 WAV 是 blob URL，只在 clearVoiceAudio 里释放，而它不会在卸载时被调用
+  clearVoiceAudio()
 })
 
 // Autosave draft

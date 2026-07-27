@@ -111,12 +111,8 @@ function decodeJpegDataUrl(value, label) {
   return buffer;
 }
 
-function isDirectLocalRequest(req) {
-  var address = (req.socket && req.socket.remoteAddress) || '';
-  var loopback = address === '127.0.0.1' || address === '::1' || address === '::ffff:127.0.0.1';
-  var forwarded = req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for'] || req.headers.forwarded;
-  return loopback && !forwarded;
-}
+// 判定「直连本机」的逻辑只保留 server/security.js 一份，避免副本再次漂移。
+var isDirectLocalRequest = require('../server/security').isDirectLocalRequest;
 
 function maintenanceLocalOnly(req, res, next) {
   if (!isDirectLocalRequest(req)) return res.status(403).json({ error: '维护操作仅允许在本机执行' });

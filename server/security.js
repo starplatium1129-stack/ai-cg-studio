@@ -16,6 +16,59 @@ function isDirectLocalRequest(req) {
   return loopback && !forwarded;
 }
 
+// 唯一的 localOnly 中间件。routes/control.js 与 routes/maintenance.js 都必须用这一份 ——
+// 曾经各自复制过一份，其中 control.js 的版本只比对 req.ip，隧道一开就全部失效。
+function localOnly(req, res, next) {
+  if (!isDirectLocalRequest(req)) return res.status(403).json({ error:'该操作仅限本机使用' });
+  next();
+}
+
+var LOOPBACK_HOSTNAMES = ['127.0.0.1', 'localhost', '::1', '[::1]'];
+
+// 上游 host（SD / TTS / Ollama）只允许指向本机 http。
+// 未校验时这里是 SSRF；又因为值会落盘、而代理构造时读它，重启后会变成通用开放代理。
+function safeLocalUrl(value) {
+  var raw = String(value == null ? '' : value).trim();
+  if (!raw) return '';
+  var url;
+  try { url = new URL(raw); } catch (error) { return ''; }
+  if (url.protocol !== 'http:') return '';
+  if (LOOPBACK_HOSTNAMES.indexOf(url.hostname.toLowerCase()) === -1) return '';
+  if (url.username || url.password) return '';
+  if (url.port && !(Number(url.port) >= 1 && Number(url.port) <= 65535)) return '';
+  return url.origin;
+}
+
+// Host 白名单：阻断 DNS rebinding。
+// isDirectLocalRequest 对任何 loopback socket 无条件放行，所以若不校验 Host，
+// 用户访问的任意网页都能把域名 rebind 到 127.0.0.1，进而以「本机」身份调用控制接口。
+// 只校验 hostname，不校验端口：rebinding 攻击靠的是把域名解析到 127.0.0.1，
+// 端口本来就是攻击者已知的；而比对端口会误杀挂在其他 listener 上的合法访问（含测试）。
+function hostAllowed(hostHeader, port, tunnelHost) {
+  var host = String(hostHeader || '').trim().toLowerCase();
+  if (!host) return false;
+  var withoutPort = host.replace(/:\d+$/, '');
+  if (withoutPort === '127.0.0.1' || withoutPort === 'localhost' ||
+      withoutPort === '[::1]' || withoutPort === '::1') return true;
+  if (tunnelHost) {
+    var allowedTunnel = String(tunnelHost).toLowerCase().replace(/:\d+$/, '');
+    if (withoutPort === allowedTunnel) return true;
+  }
+  return false;
+}
+
+function hostGuard(config, getTunnelUrl) {
+  return function (req, res, next) {
+    var tunnelHost = '';
+    try {
+      var tunnelUrl = getTunnelUrl && getTunnelUrl();
+      if (tunnelUrl) tunnelHost = new URL(tunnelUrl).host;
+    } catch (error) { tunnelHost = ''; }
+    if (hostAllowed(req.headers.host, config.PORT, tunnelHost)) return next();
+    return res.status(421).json({ error:'Misdirected Request — Host 不在允许列表内' });
+  };
+}
+
 function normalizeRequestPath(pathValue) {
   var value = String(pathValue || '/');
   var q = value.indexOf('?');
@@ -84,6 +137,10 @@ function tokenAuth(token) {
 module.exports = {
   tokenMatches:tokenMatches,
   isDirectLocalRequest:isDirectLocalRequest,
+  localOnly:localOnly,
+  safeLocalUrl:safeLocalUrl,
+  hostAllowed:hostAllowed,
+  hostGuard:hostGuard,
   normalizeRequestPath:normalizeRequestPath,
   buildContentSecurityPolicy:buildContentSecurityPolicy,
   responseHeaders:responseHeaders,

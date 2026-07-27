@@ -4,6 +4,20 @@ var fs = require('fs');
 var path = require('path');
 var crypto = require('crypto');
 var runtimeTools = require('../scripts/runtime/runtime-paths');
+var safeLocalUrl = require('./security').safeLocalUrl;
+
+// 上游 host 在读取时也要过一遍校验：落盘的 runtime/config.json 可能被改坏，
+// 只在写入端校验会让重启成为绕过手段。
+function resolveUpstreamHost(envValue, savedValue, fallback) {
+  var candidates = [envValue, savedValue, fallback];
+  for (var i = 0; i < candidates.length; i++) {
+    if (!candidates[i]) continue;
+    var safe = safeLocalUrl(candidates[i]);
+    if (safe) return safe;
+    console.warn('  ⚠ 忽略非本机上游地址:', candidates[i]);
+  }
+  return fallback;
+}
 
 function readJson(file) {
   try {
@@ -55,11 +69,11 @@ function loadGatewayConfig(rootDir, env) {
     PORT:boundedInteger(env.PORT, 3000, 1, 65535),
     HOST:env.HOST || '127.0.0.1',
     TOKEN:env.TOKEN || crypto.randomBytes(32).toString('hex'),
-    SD_HOST:env.SD_HOST || saved.sdHost || 'http://127.0.0.1:7860',
+    SD_HOST:resolveUpstreamHost(env.SD_HOST, saved.sdHost, 'http://127.0.0.1:7860'),
     SD_API_AUTH:env.SD_API_AUTH || '',
-    TTS_HOST:env.TTS_HOST || saved.ttsHost || 'http://127.0.0.1:9880',
+    TTS_HOST:resolveUpstreamHost(env.TTS_HOST, saved.ttsHost, 'http://127.0.0.1:9880'),
     VOICE_PROFILES:saved.voices && typeof saved.voices === 'object' ? saved.voices : {},
-    OLLAMA_HOST:env.OLLAMA_HOST || saved.ollamaHost || 'http://127.0.0.1:11434',
+    OLLAMA_HOST:resolveUpstreamHost(env.OLLAMA_HOST, saved.ollamaHost, 'http://127.0.0.1:11434'),
     OLLAMA_MODEL:env.OLLAMA_MODEL || saved.ollamaModel || '',
     OLLAMA_KEEP_ALIVE:env.OLLAMA_KEEP_ALIVE || '10m',
     OLLAMA_NUM_PREDICT:boundedInteger(env.OLLAMA_NUM_PREDICT, 300, 32, 2048),

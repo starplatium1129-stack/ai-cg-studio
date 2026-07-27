@@ -171,7 +171,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, reactive } from 'vue'
+import { ref, onMounted, onUnmounted, reactive } from 'vue'
 import SceneCard from '@/components/SceneCard.vue'
 import { kvInit, kvGet, kvSet } from '@/composables/useKVStore'
 import { imgGet } from '@/composables/useImageStore'
@@ -190,6 +190,8 @@ const recentWorks = ref<any[]>([])
 const recentScenes = ref<any[]>([])
 const featuredScenes = ref<any[]>([])
 const coverUrls = reactive<Record<string, string>>({})
+/** 卸载标记：异步 imgGet 回来时组件可能已经没了 */
+let unmounted = false
 
 function charName(id: string) {
   return id === 'nene' ? '宁宁' : id === 'natsume' ? '夏目' : id || '·'
@@ -265,7 +267,11 @@ async function loadRecentWorks() {
       if (!h.image_id) return
       try {
         const blob = await imgGet(h.image_id)
-        if (blob) coverUrls[h.image_id] = URL.createObjectURL(blob)
+        if (!blob) return
+        // 组件可能在 await 期间就卸载了，这时候不该再建 URL
+        if (unmounted) return
+        if (coverUrls[h.image_id]) URL.revokeObjectURL(coverUrls[h.image_id])
+        coverUrls[h.image_id] = URL.createObjectURL(blob)
       } catch {}
     })
   } catch (e) { console.warn('读取历史失败', e) }
@@ -278,6 +284,15 @@ onMounted(async () => {
     await kvInit()
     await loadRecentWorks()
   } catch (e) { console.warn('KV store unavailable', e) }
+})
+
+onUnmounted(() => {
+  unmounted = true
+  // 首页封面是 IndexedDB blob，不释放就会一直挂在内存里
+  Object.keys(coverUrls).forEach((key) => {
+    if (coverUrls[key]) URL.revokeObjectURL(coverUrls[key])
+    delete coverUrls[key]
+  })
 })
 
 </script>

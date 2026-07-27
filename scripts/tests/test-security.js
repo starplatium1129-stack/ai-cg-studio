@@ -91,6 +91,69 @@ async function main() {
   var localBackup = await runMiddleware(localOnly, mockReq({ path:'/api/backup' }));
   assert.strictEqual(localBackup.nextCalled, true);
 
+  // safeLocalUrl: 上游 host 只允许本机 http
+  assert.strictEqual(security.safeLocalUrl('http://127.0.0.1:7860'), 'http://127.0.0.1:7860');
+  assert.strictEqual(security.safeLocalUrl('http://localhost:9880/'), 'http://localhost:9880');
+  assert.strictEqual(security.safeLocalUrl('http://169.254.169.254'), '', 'metadata host must be rejected');
+  assert.strictEqual(security.safeLocalUrl('http://evil.example.com'), '', 'remote host must be rejected');
+  assert.strictEqual(security.safeLocalUrl('https://127.0.0.1:7860'), '', 'non-http must be rejected');
+  assert.strictEqual(security.safeLocalUrl('http://u:p@127.0.0.1:7860'), '', 'credentials must be rejected');
+  assert.strictEqual(security.safeLocalUrl(''), '');
+  assert.strictEqual(security.safeLocalUrl('not a url'), '');
+
+  // hostAllowed: 阻断 DNS rebinding
+  assert.strictEqual(security.hostAllowed('127.0.0.1:3000', 3000, ''), true);
+  assert.strictEqual(security.hostAllowed('localhost:3000', 3000, ''), true);
+  assert.strictEqual(security.hostAllowed('127.0.0.1', 3000, ''), true, 'default port is allowed');
+  assert.strictEqual(security.hostAllowed('127.0.0.1:54321', 3000, ''), true,
+    'ephemeral listeners on loopback are still loopback');
+  assert.strictEqual(security.hostAllowed('evil.example.com', 3000, ''), false, 'foreign Host must be rejected');
+  assert.strictEqual(security.hostAllowed('evil.example.com:3000', 3000, ''), false);
+  assert.strictEqual(security.hostAllowed('', 3000, ''), false);
+  assert.strictEqual(
+    security.hostAllowed('abc.trycloudflare.com', 3000, 'abc.trycloudflare.com'), true,
+    'active tunnel host must be allowed');
+  assert.strictEqual(
+    security.hostAllowed('other.trycloudflare.com', 3000, 'abc.trycloudflare.com'), false,
+    'only the active tunnel host is allowed');
+
+  // localOnly 必须是 server/security.js 这一份共享实现。
+  // 历史 bug：routes/control.js 自己复制了一份只比对 req.ip 的弱版本，
+  // 而 cloudflared 从 127.0.0.1 连入 → 隧道一开所有公网请求都被判成本机。
+  assert.strictEqual(typeof security.localOnly, 'function', 'localOnly must be exported from server/security');
+  var sharedLocalOnly = security.localOnly;
+  var forwardedControl = await runMiddleware(sharedLocalOnly, mockReq({
+    path:'/api/config',
+    headers:{ 'x-forwarded-for':'9.9.9.9' }
+  }));
+  assert.strictEqual(forwardedControl.nextCalled, false,
+    'loopback socket + x-forwarded-for (tunnel) must NOT count as local');
+  assert.strictEqual(forwardedControl.res.statusCode, 403);
+
+  var cfControl = await runMiddleware(sharedLocalOnly, mockReq({
+    path:'/api/config',
+    headers:{ 'cf-connecting-ip':'9.9.9.9' }
+  }));
+  assert.strictEqual(cfControl.nextCalled, false, 'cf-connecting-ip must NOT count as local');
+
+  // req.ip 是可伪造的输入，localOnly 不能依赖它
+  var spoofedIp = await runMiddleware(sharedLocalOnly, mockReq({
+    path:'/api/config',
+    ip:'127.0.0.1',
+    socket:{ remoteAddress:'8.8.8.8' }
+  }));
+  assert.strictEqual(spoofedIp.nextCalled, false, 'localOnly must use socket address, not req.ip');
+
+  var directControl = await runMiddleware(sharedLocalOnly, mockReq({ path:'/api/config' }));
+  assert.strictEqual(directControl.nextCalled, true, 'direct loopback must pass');
+
+  // control.js 与 maintenance.js 必须共用同一份判定，避免副本再次漂移
+  var control = require('../../routes/control');
+  assert.strictEqual(control._test.localOnly, security.localOnly,
+    'routes/control.js must reuse server/security.localOnly, not a local copy');
+  assert.strictEqual(maintenance._test.isDirectLocalRequest, security.isDirectLocalRequest,
+    'routes/maintenance.js must reuse server/security.isDirectLocalRequest');
+
   var redacted = diagnostics.redactText('Tunnel https://x.trycloudflare.com?token=abcdef0123456789 and token=deadbeefcafebabe');
   assert.ok(!/abcdef0123456789/.test(redacted), 'URL tokens must be redacted');
   assert.ok(!/deadbeefcafebabe/.test(redacted), 'kv tokens must be redacted');

@@ -5,6 +5,10 @@ import { resolveModelProfile } from '@/utils/promptPolicy'
 import { imgPut } from '@/composables/useImageStore'
 import { kvGet, kvSet } from '@/composables/useKVStore'
 
+// 与 useBackup.ts / GalleryView.vue 共用同一组键。改这里必须同步那两处。
+const HISTORY_STORAGE_KEY = 'aics_pb_history'
+const PROJECT_STORAGE_KEY = 'aics_pb_projects'
+
 export type CharKey = 'nene' | 'natsume' | 'triad'
 
 export interface Scene {
@@ -415,7 +419,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
       }
       const updated = [...history.value, historyEntry]
       history.value = updated
-      await kvSet('aics_pb_history', updated)
+      await kvSet(HISTORY_STORAGE_KEY, updated)
       return historyEntry
     } catch (e) { console.warn('commitHistoryEntry failed', e); return null }
   }
@@ -424,13 +428,31 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     const idx = history.value.findIndex(h => h.id === id)
     if (idx < 0) return
     history.value.splice(idx, 1)
-    await kvSet('aics_pb_history', history.value)
+    await kvSet(HISTORY_STORAGE_KEY, history.value)
   }
 
   async function loadHistory() {
     try {
-      const raw = await kvGet<HistoryEntry[]>('aics_pb_history')
+      const raw = await kvGet<HistoryEntry[]>(HISTORY_STORAGE_KEY)
       if (Array.isArray(raw)) history.value = raw
+    } catch {}
+    // projects 以前只声明不加载 → 下拉框恒空，每条历史都写 project:''
+    await loadProjects()
+  }
+
+  async function loadProjects() {
+    try {
+      let raw = await kvGet<Array<{ id: string; name?: string; title?: string }>>(PROJECT_STORAGE_KEY)
+      if (!Array.isArray(raw) || !raw.length) {
+        // 兼容旧键（作品册早期用的是 aics_projects）
+        const legacy = await kvGet<Array<{ id: string; name?: string; title?: string }>>('aics_projects')
+        if (Array.isArray(legacy) && legacy.length) raw = legacy
+      }
+      if (!Array.isArray(raw)) return
+      // 作品册用 title，导演台用 name —— 两边字段历史上就不一致，这里统一
+      projects.value = raw
+        .filter(p => p && typeof p === 'object' && p.id)
+        .map(p => ({ id: String(p.id), name: String(p.name || p.title || p.id) }))
     } catch {}
   }
 
@@ -447,7 +469,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     activeScene, charPrompt, loraLine, emotionPrompt, filteredScenes,
     setChar, setStory, toggleEmotion, setShot, setLighting, setComposition,
     setColorMood, toggleManualTag, loadScene, clearScene, flash,
-    loadData, loadHistory,
+    loadData, loadHistory, loadProjects,
     saveDraft, restoreDraft, snapshotDraft,
     commitHistoryEntry, removeHistoryEntry,
     sdParamsTouched, markParamTouched, applyModelProfile,

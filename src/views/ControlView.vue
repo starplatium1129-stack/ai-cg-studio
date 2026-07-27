@@ -1,5 +1,7 @@
 ﻿<template>
   <div class="control-page">
+    <!-- /control 挂在 AppLayout 之外，所以跳转链接与 main 地标要在这里自备 -->
+    <a class="skip-link" href="#control-main">跳到主要内容</a>
     <nav class="nav">
       <div class="nav-inner nav-local">
         <RouterLink to="/" class="nav-local-brand">
@@ -13,7 +15,7 @@
       </div>
     </nav>
 
-    <div class="control-shell">
+    <main id="control-main" class="control-shell" tabindex="-1">
       <header class="control-intro">
         <div>
           <div class="gallery-kicker">Local control room</div>
@@ -249,7 +251,7 @@
           </div>
         </div>
       </details>
-    </div>
+    </main>
 
     <div class="toast" :class="{ show: toast.visible, error: toast.error }">{{ toast.msg }}</div>
   </div>
@@ -375,7 +377,7 @@ function toggleTunnel() {
 
 function renderStatus(data: any) {
   lastStatus = data
-  tunnelActive.value = !!(data.tunnelStatus === 'active' || data.shareLink)
+  tunnelActive.value = !!(data.tunnelStatus === 'active' || data.shareLinkAvailable)
   sdOnline.value = !!data.sdOnline
   ttsOnline.value = !!data.ttsOnline
   ollamaOnline.value = !!data.ollamaOnline
@@ -385,7 +387,9 @@ function renderStatus(data: any) {
   modeBusy.value = !!data.modeBusy
   operation.value = data.operation || (operation.value?.status === 'running' ? operation.value : null)
   tunnelStatus.value = data.tunnelStatus || ''
-  shareLink.value = data.shareLink || ''
+  // 分享链接含原始 token，已从 /api/status 拆到仅本机可读的 /api/share-link
+  if (data.shareLinkAvailable) void loadShareLink()
+  else shareLink.value = ''
   if (data.localLink) localLink.value = data.localLink
   if (data.uptime != null) uptime.value = '网站已运行 ' + fmt(data.uptime)
   if (data.scripts) scripts.value = { ...scripts.value, ...data.scripts }
@@ -432,10 +436,20 @@ function renderStatus(data: any) {
   serviceChecking.value = false
 }
 
+async function loadShareLink() {
+  try {
+    const r = await fetch('/api/share-link')
+    if (!r.ok) { shareLink.value = ''; return }
+    const data = await r.json()
+    shareLink.value = typeof data.shareLink === 'string' ? data.shareLink : ''
+  } catch { shareLink.value = '' }
+}
+
 async function pollStatus(force = false) {
   if (force) serviceChecking.value = true
   try {
     const r = await fetch('/api/status' + (force ? '?fresh=1' : ''))
+    if (!r.ok) { serviceChecking.value = false; return }
     renderStatus(await r.json())
   } catch { serviceChecking.value = false }
 }

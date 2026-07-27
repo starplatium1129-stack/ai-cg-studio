@@ -1,0 +1,171 @@
+'use strict';
+/**
+ * scripts/tests/test-gateway-contract.js
+ *
+ * 路由级安全 / 正确性回归。断言的是真实 HTTP 响应，而不是 helper 的返回值 ——
+ * 2026-07-27 审计的教训：test-security.js 断言了 server/security.js 里正确的那份
+ * isDirectLocalRequest，而 bug 在 routes/control.js 自己复制的弱版本里，
+ * 于是「测通过」和「线上安全」完全脱钩。
+ */
+
+var assert = require('assert');
+var http = require('http');
+var path = require('path');
+var startGateway = require(path.join(__dirname, '..', '..', 'server.js')).startGateway;
+
+var PORT = 3893;
+var TOKEN = 'contract-token-0123456789abcdef0123456789ab';
+var LOCAL = { Host:'127.0.0.1:' + PORT };
+// 隧道请求的形状：socket 来自 127.0.0.1（cloudflared），但带转发头。
+var TUNNELED = { Host:'127.0.0.1:' + PORT, 'x-forwarded-for':'9.9.9.9', 'x-token':TOKEN };
+
+function request(options) {
+  return new Promise(function (resolve, reject) {
+    var req = http.request({
+      host:'127.0.0.1',
+      port:PORT,
+      method:options.method || 'GET',
+      path:options.path,
+      headers:options.headers || {}
+    }, function (res) {
+      var chunks = [];
+      res.on('data', function (chunk) { chunks.push(chunk); });
+      res.on('end', function () {
+        var body = Buffer.concat(chunks).toString('utf8');
+        var json = null;
+        try { json = JSON.parse(body); } catch (error) {}
+        resolve({ status:res.statusCode, headers:res.headers, body:body, json:json });
+      });
+    });
+    req.on('error', reject);
+    if (options.body) req.write(options.body);
+    req.end();
+  });
+}
+
+function postJson(pathname, payload, headers) {
+  var body = JSON.stringify(payload);
+  return request({
+    method:'POST',
+    path:pathname,
+    headers:Object.assign({ 'Content-Type':'application/json', 'Content-Length':Buffer.byteLength(body) },
+      headers || LOCAL),
+    body:body
+  });
+}
+
+function upgradeRequest(headers) {
+  return new Promise(function (resolve) {
+    var req = http.request({
+      host:'127.0.0.1',
+      port:PORT,
+      method:'GET',
+      path:'/sdapi/v1/progress',
+      headers:Object.assign({
+        Connection:'Upgrade',
+        Upgrade:'websocket',
+        'Sec-WebSocket-Version':'13',
+        'Sec-WebSocket-Key':'dGhlIHNhbXBsZSBub25jZQ=='
+      }, headers || {})
+    });
+    req.on('upgrade', function (res, socket) { socket.destroy(); resolve({ status:res.statusCode, kind:'upgraded' }); });
+    req.on('response', function (res) { res.resume(); resolve({ status:res.statusCode, kind:'response' }); });
+    req.on('error', function (error) { resolve({ status:0, kind:'error', message:error.message }); });
+    req.end();
+  });
+}
+
+async function main() {
+  var handle = startGateway({
+    env:{ PORT:String(PORT), TOKEN:TOKEN, DISABLE_TUNNEL:'1', HOST:'127.0.0.1' }
+  });
+  await new Promise(function (resolve) { setTimeout(resolve, 700); });
+
+  try {
+    // ---- S-1: 隧道请求不得被当成本机 ----
+    var tunneledConfig = await postJson('/api/config', { sdHost:'http://127.0.0.1:1234' }, TUNNELED);
+    assert.strictEqual(tunneledConfig.status, 403,
+      'POST /api/config over tunnel must be 403, got ' + tunneledConfig.status);
+
+    var localOnlyRoutes = ['/api/status', '/api/logs', '/api/diagnostics', '/api/share-link'];
+    for (var i = 0; i < localOnlyRoutes.length; i++) {
+      var tunneled = await request({ path:localOnlyRoutes[i], headers:TUNNELED });
+      assert.strictEqual(tunneled.status, 403,
+        localOnlyRoutes[i] + ' over tunnel must be 403, got ' + tunneled.status);
+    }
+
+    var localStatus = await request({ path:'/api/status', headers:LOCAL });
+    assert.strictEqual(localStatus.status, 200, 'direct-local /api/status must still work');
+
+    // ---- S-3: 上游 host 只接受本机 http ----
+    var ssrfHosts = ['http://169.254.169.254', 'http://evil.example.com:7860', 'https://127.0.0.1:7860'];
+    for (var h = 0; h < ssrfHosts.length; h++) {
+      var rejected = await postJson('/api/config', { sdHost:ssrfHosts[h] });
+      assert.strictEqual(rejected.status, 400, ssrfHosts[h] + ' must be rejected with 400');
+    }
+    var accepted = await postJson('/api/config', { sdHost:'http://127.0.0.1:7860' });
+    assert.strictEqual(accepted.status, 200, 'loopback sdHost must be accepted');
+
+    // ---- S-4: 原始 token 不得出现在轮询接口里；Host 白名单生效 ----
+    var status = await request({ path:'/api/status', headers:LOCAL });
+    assert.ok(status.body.indexOf(TOKEN) === -1, '/api/status must not leak the raw token');
+    assert.ok(status.json && status.json.shareLink === undefined,
+      '/api/status must not carry shareLink; use /api/share-link');
+
+    var foreignHost = await request({ path:'/api/health', headers:{ Host:'attacker.example.com' } });
+    assert.strictEqual(foreignHost.status, 421, 'foreign Host must be refused (DNS rebinding guard)');
+
+    var diagnostics = await request({ path:'/api/diagnostics', headers:LOCAL });
+    assert.strictEqual(diagnostics.status, 200);
+    assert.ok(diagnostics.body.indexOf(TOKEN) === -1, '/api/diagnostics must redact the token');
+
+    // ---- S-2: 未鉴权 WS upgrade 被拒，且不能弄死进程 ----
+    var unauthUpgrade = await upgradeRequest({ Host:'127.0.0.1:' + PORT, 'x-forwarded-for':'9.9.9.9' });
+    assert.ok(unauthUpgrade.status === 401 || unauthUpgrade.status === 0,
+      'unauthenticated WS upgrade must be refused, got ' + unauthUpgrade.status);
+
+    await new Promise(function (resolve) { setTimeout(resolve, 300); });
+    var aliveAfterUpgrade = await request({ path:'/api/health', headers:LOCAL });
+    assert.strictEqual(aliveAfterUpgrade.status, 200,
+      'gateway must survive an unauthenticated WS upgrade (it used to crash on res.status)');
+
+    // ---- B-3: 状态码与错误信封 ----
+    var missingImage = await request({ path:'/scene-showcase/images/sc999.jpg', headers:LOCAL });
+    assert.strictEqual(missingImage.status, 404, 'missing showcase asset must be 404, not 500');
+    assert.ok(missingImage.body.indexOf('E:\\') === -1 && missingImage.body.indexOf(':\\') === -1,
+      'error bodies must not leak absolute host paths');
+
+    var oversize = await postJson('/api/translate', { text:'x'.repeat(70000) });
+    assert.strictEqual(oversize.status, 413, 'oversize body must be 413, not 500');
+
+    var badJson = await request({
+      method:'POST',
+      path:'/api/translate',
+      headers:Object.assign({ 'Content-Type':'application/json' }, LOCAL),
+      body:'{not json'
+    });
+    assert.strictEqual(badJson.status, 400, 'malformed JSON must be 400');
+
+    // ---- B-4: 未知 API 路由必须是 JSON 404，不能是 SPA 外壳 ----
+    var unknownApi = await request({ path:'/api/does-not-exist', headers:LOCAL });
+    assert.strictEqual(unknownApi.status, 404, 'unknown /api route must be 404, got ' + unknownApi.status);
+    assert.ok(String(unknownApi.headers['content-type'] || '').indexOf('json') !== -1,
+      'unknown /api route must return JSON, not text/html');
+
+    // 前端路由仍应回 SPA 外壳
+    var spaRoute = await request({ path:'/scene-explorer', headers:LOCAL });
+    assert.ok(spaRoute.status === 200 || spaRoute.status === 404,
+      'SPA route should resolve (200 with dist/, 404 without)');
+
+    console.log('Gateway contract tests passed: tunnel localOnly, host validation, ' +
+      'rebinding guard, WS upgrade auth, error envelopes, api 404');
+  } finally {
+    handle.shutdown();
+  }
+  setTimeout(function () { process.exit(0); }, 300);
+}
+
+main().catch(function (error) {
+  console.error(error);
+  process.exit(1);
+});
