@@ -71,7 +71,7 @@
     "speech": "gentle and considerate; flusters easily; may reveal too much while panicking; becomes resolute when protecting loved ones",
     "source": "YUZUSOFT《サノバウィッチ / 魔女的夜宴》",
     "lora": {
-      "name": "ayachi_nene_v14",
+      "name": "ayachi_nene_v15",
       "weight": 0.8,
       "recommended_scene": [
         "sc001",
@@ -196,7 +196,7 @@
     "speech": "reserved and concise; care shown through actions; blushes at intimate topics; sharper wording when flustered",
     "source": "YUZUSOFT《喫茶ステラと死神の蝶 / 星光咖啡馆与死神之蝶》",
     "lora": {
-      "name": "shiki_natsume_v14",
+      "name": "shiki_natsume_v15",
       "weight": 0.9,
       "recommended_scene": [
         "sc005",

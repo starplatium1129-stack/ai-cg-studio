@@ -283,7 +283,7 @@ function importScenes() {
     const scene = {
       id: item.id, title: item.title || '未命名', category: item.category || '恋爱',
       story: item.story || '', char: item.char || 'nene', character: item.char === 'triad' ? ['nene','natsume'] : [item.char || 'nene'],
-      lora: item.lora || (item.char === 'natsume' ? 'shiki_natsume_v14' : item.char === 'triad' ? 'ayachi_nene_v14:0.52, shiki_natsume_v14:0.52' : 'ayachi_nene_v14'),
+      lora: item.lora || (item.char === 'natsume' ? 'shiki_natsume_v15' : item.char === 'triad' ? 'ayachi_nene_v15:0.52, shiki_natsume_v15:0.52' : 'ayachi_nene_v15'),
       emotion: item.emotion || '恋爱', season: item.season || '不限', time: item.time || '深夜',
       timeOfDay: item.timeOfDay || 'late_night', tags: item.tags || [], mature: item.mature || false,
       rating: item.rating || (item.mature ? 'R18' : 'All'), location: item.location || '',
@@ -338,7 +338,7 @@ function updateCharacterDefaults() {
   const field = document.getElementById('formLora');
   const knownBinding = /^(?:ayachi_nene|shiki_natsume)_v\d+(?::[\d.]+)?(?:,\s*(?:ayachi_nene|shiki_natsume)_v\d+(?::[\d.]+)?)?$/.test(field.value.trim());
   if (!field.value.trim() || knownBinding) {
-    field.value = character === 'natsume' ? 'shiki_natsume_v14' : character === 'triad' ? 'ayachi_nene_v14:0.52, shiki_natsume_v14:0.52' : 'ayachi_nene_v14';
+    field.value = character === 'natsume' ? 'shiki_natsume_v15' : character === 'triad' ? 'ayachi_nene_v15:0.52, shiki_natsume_v15:0.52' : 'ayachi_nene_v15';
   }
 }
 
@@ -382,7 +382,7 @@ function openAddModal() {
   document.getElementById('formTitle').value = '';
   document.getElementById('formCategory').value = '恋爱';
   document.getElementById('formChar').value = 'nene';
-  document.getElementById('formLora').value = 'ayachi_nene_v14';
+  document.getElementById('formLora').value = 'ayachi_nene_v15';
   document.getElementById('formEmotion').value = '恋爱';
   document.getElementById('formSeason').value = '不限';
   document.getElementById('formTime').value = '深夜';

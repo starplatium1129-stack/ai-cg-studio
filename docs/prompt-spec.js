@@ -14,7 +14,7 @@ var MODULES = [
   { id:'o',  on:true, cls:'x',  label:'Composition', text:'rule of thirds, by window, depth' },
   { id:'l',  on:true, cls:'l',  label:'Lighting',    text:'golden hour, backlit, soft shadows, warm atmosphere' },
   { id:'x',  on:true, cls:'m-d', label:'Extra',      text:'hair blowing, depth of field, cinematic lighting' },
-  { id:'lo', on:true, cls:'lo', label:'LoRA',        text:'<lora:ayachi_nene_v14:0.8>' }
+  { id:'lo', on:true, cls:'lo', label:'LoRA',        text:'<lora:ayachi_nene_v15:0.8>' }
 ];
 
 function escapeHtml(value) {

@@ -30,7 +30,7 @@ const timeValues = new Set(['morning', 'afternoon', 'sunset', 'evening', 'night'
 const charValues = new Set(['nene', 'natsume', 'triad']);
 const ratingValues = new Set(['All', 'R15', 'R18']);
 const promptTrigger = { nene: 'ayachi_nene', natsume: 'shiki_natsume' };
-const promptLora = { nene: 'ayachi_nene_v14', natsume: 'shiki_natsume_v14' };
+const promptLora = { nene: 'ayachi_nene_v15', natsume: 'shiki_natsume_v15' };
 const driftMarkers = [
   '\u4e03\u7eea', '\u3059\u3054\u3044', '\u9b45\u9b54', '\u732b\u8033', 'Devon', '\u758f\u53f2',
   '\u94f6\u8272\u53d1\u4e1d', '\u6e7f\u900f\u7684\u94f6\u8272\u957f\u53d1', '\u7c89\u8272\u957f\u53d1', '\u7c89\u53d1'

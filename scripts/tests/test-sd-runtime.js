@@ -58,7 +58,7 @@ async function testDualEnhancementPayload() {
     'bad anatomy',
     {
       char:'triad',
-      lora:'ayachi_nene_v14:0.55, shiki_natsume_v14:0.55',
+      lora:'ayachi_nene_v15:0.55, shiki_natsume_v15:0.55',
       dualEnhancement:{
         regional:true,
         generationMode:'Attention',
@@ -71,7 +71,7 @@ async function testDualEnhancementPayload() {
   );
 
   assert(payload.prompt.split(/\bBREAK\b/).length === 3, 'dual regional prompt must contain base, left, and right scopes');
-  assert(payload.prompt.indexOf('<lora:ayachi_nene_v14:0.55>') < payload.prompt.indexOf('BREAK'), 'dual LoRAs must live in the shared base scope in Attention mode');
+  assert(payload.prompt.indexOf('<lora:ayachi_nene_v15:0.55>') < payload.prompt.indexOf('BREAK'), 'dual LoRAs must live in the shared base scope in Attention mode');
   assert(payload.alwayson_scripts['Regional Prompter'], 'Regional Prompter payload must be enabled');
   assert.strictEqual(payload.alwayson_scripts['Regional Prompter'].args[11], 'Attention');
   assert(payload.alwayson_scripts.ControlNet, 'ControlNet payload must be enabled when a pose exists');
@@ -86,7 +86,7 @@ async function testDualEnhancementPayload() {
   payload = null;
   const single = await connector.generateImage('1girl, ayachi_nene, close_up', '', {
     char:'nene',
-    lora:'ayachi_nene_v14:0.85',
+    lora:'ayachi_nene_v15:0.85',
     dualEnhancement:{ regional:true, controlImage:'data:image/png;base64,cG9zZQ==' }
   });
   assert(!payload.alwayson_scripts, 'single-character generation must remain extension-free');

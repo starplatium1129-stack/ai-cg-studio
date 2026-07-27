@@ -91,6 +91,10 @@ CHARACTERS = {
         ],
     },
     "natsume": {
+        # seed 2784519 consistently triggers mole artifacts regardless of epoch
+        # (base model noise interference, confirmed v15 gate 2026-07-27:
+        #  e12→wrong-side mole, e15→double mole, same seed both times)
+        "excluded_seeds": [2784519],
         "candidates": {
             "v11": "shiki_natsume_v11",
             "v12": "shiki_natsume_v12",
@@ -162,7 +166,12 @@ def generate() -> list[dict]:
     for character, item in CHARACTERS.items():
         image_dir = OUTPUT / character / "images"
         image_dir.mkdir(parents=True, exist_ok=True)
+        excluded = set(item.get("excluded_seeds", []))
         for seed in SEEDS:
+            if seed in excluded:
+                done += len(item["tests"]) * len(item["candidates"])
+                print(f"[skip] {character} seed={seed} (excluded_seed)", flush=True)
+                continue
             for test in item["tests"]:
                 for version, lora in item["candidates"].items():
                     done += 1
@@ -249,7 +258,7 @@ def fit(path: Path, size: tuple[int, int]) -> Image.Image:
 
 def blinded_mapping(character: str, test: str, seed: int) -> dict[str, str]:
     versions = list(CHARACTERS[character]["candidates"])
-    codes = ["A", "B", "C", "D", "E"]
+    codes = [chr(ord("A") + index) for index in range(len(versions))]
     random.Random(f"identity-gate-{character}-{test}-{seed}-2026-07-22").shuffle(versions)
     return dict(zip(codes, versions, strict=True))
 
@@ -267,15 +276,18 @@ def make_sheets(records: list[dict]) -> dict[str, dict[str, str]]:
         mappings[character] = {}
         sheet_dir = OUTPUT / character / "blinded_sheets"
         sheet_dir.mkdir(parents=True, exist_ok=True)
+        excluded = set(item.get("excluded_seeds", []))
         for seed in SEEDS:
+            if seed in excluded:
+                continue
             for test in item["tests"]:
                 mapping = blinded_mapping(character, test.name, seed)
                 mappings[character][f"{test.name}_seed-{seed}"] = mapping
-                sheet = Image.new("RGB", (cell[0] * 6, cell[1] + label_height), "#f7f3ef")
+                sheet = Image.new("RGB", (cell[0] * (len(mapping) + 1), cell[1] + label_height), "#f7f3ef")
                 draw = ImageDraw.Draw(sheet)
                 sheet.paste(reference_image(test, cell), (0, 0))
                 draw.text((10, cell[1] + 13), "OFFICIAL", fill="#211c24", font=font)
-                for column, code in enumerate(["A", "B", "C", "D", "E"], start=1):
+                for column, code in enumerate(mapping, start=1):
                     version = mapping[code]
                     record = by_key[(character, test.name, seed, version)]
                     sheet.paste(fit(Path(record["file"]), cell), (column * cell[0], 0))

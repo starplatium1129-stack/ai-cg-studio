@@ -86,7 +86,7 @@ selection.forEach(([candidateId, attempt], index) => {
     story: `${adult ? '【成年 After Story】' : '【官方 CG 灵感】'}${moments[candidateId].replace('“', '「').replace('”', '」')}${storyDetail[character]}`,
     char: character,
     character: [character],
-    lora: character === 'nene' ? 'ayachi_nene_v14' : 'shiki_natsume_v14',
+    lora: character === 'nene' ? 'ayachi_nene_v15' : 'shiki_natsume_v15',
     emotion: adult ? '亲密' : '心动',
     season: '不限',
     time: /night|moon|dark|夜|深蓝/.test(source.prompt + source.title) ? '夜晚' : '白天',

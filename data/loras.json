@@ -1,7 +1,7 @@
 [
   {
     "id": "L_NENE_V14",
-    "name": "ayachi_nene_v14",
+    "name": "ayachi_nene_v15",
     "version": "1.4.0",
     "trigger": "ayachi_nene",
     "character": "NENE_001",
@@ -60,7 +60,7 @@
   },
   {
     "id": "L_NAT_V14",
-    "name": "shiki_natsume_v14",
+    "name": "shiki_natsume_v15",
     "version": "1.4.0",
     "trigger": "shiki_natsume",
     "character": "NAT_001",
