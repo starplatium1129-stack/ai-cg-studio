@@ -39,7 +39,19 @@
           <div class="strip-label" id="featuredScenesLabel">
             <span class="dot"></span> 今天可以从这里开始 · <span>{{ sceneCountCopy }}</span>
           </div>
-          <div class="strip-scroll" ref="featuredScenesEl"></div>
+          <div class="strip-scroll">
+          <a v-for="s in featuredScenes" :key="s.id" class="sc sc-strip"
+            :href="`/prompt-builder?scene=${encodeURIComponent(s.id)}&step=4&generate=1`">
+            <div class="sc-band"></div>
+            <div class="sc-body">
+              <div class="sc-title">{{ s.title }}</div>
+              <div v-if="s.story" class="sc-story">{{ s.story }}</div>
+              <div class="sc-tags">
+                <span v-for="t in (s.tags || []).slice(0,2)" :key="t" class="sc-tag">{{ t }}</span>
+              </div>
+            </div>
+          </a>
+        </div>
         </div>
       </div>
     </section>
@@ -116,7 +128,16 @@
         <h2>最近用过的场景</h2>
         <RouterLink to="/scene-explorer" class="link">继续找灵感 →</RouterLink>
       </div>
-      <div class="recent-scenes-row" ref="recentScenesEl"></div>
+      <div class="recent-scenes-row">
+        <a v-for="s in recentScenes" :key="s.id" class="sc sc-strip"
+          :href="`/prompt-builder?scene=${encodeURIComponent(s.id)}&step=4&generate=1`">
+          <div class="sc-band"></div>
+          <div class="sc-body">
+            <div class="sc-title">{{ s.title }}</div>
+            <div v-if="s.story" class="sc-story">{{ s.story }}</div>
+          </div>
+        </a>
+      </div>
     </section>
 
     <!-- 最近创作 -->
@@ -155,12 +176,9 @@
 
 <script setup lang="ts">
 import { ref, onMounted, reactive } from 'vue'
-
-// 全局工具库（由 index.html 通过 <script> 标签注入）
-declare const AICKVStore: any
-declare const AICGImageStore: any
-declare const AICSceneUX: any
-declare const createSceneCard: (scene: any, opts: any) => HTMLElement
+import { kvInit, kvGet, kvSet } from '@/composables/useKVStore'
+import { imgGet } from '@/composables/useImageStore'
+import { readRecent } from '@/utils/sceneUX'
 
 const DRAFT_KEY = 'aics_pb_last_draft'
 
@@ -170,9 +188,8 @@ const continueLink = ref({ to: '/prompt-builder', icon: '✨', label: '开始绘
 const continueHint = ref('')
 const recentWorks = ref<any[]>([])
 const recentScenes = ref<any[]>([])
+const featuredScenes = ref<any[]>([])
 const coverUrls = reactive<Record<string, string>>({})
-const featuredScenesEl = ref<HTMLElement | null>(null)
-const recentScenesEl = ref<HTMLElement | null>(null)
 
 function charName(id: string) {
   return id === 'nene' ? '宁宁' : id === 'natsume' ? '夏目' : id || '·'
@@ -209,47 +226,27 @@ async function loadSceneHighlights() {
       .filter((s: any) => s && !s.mature)
       .slice(0, 6)
 
-    if (featuredScenesEl.value && typeof createSceneCard !== 'undefined') {
-      featuredScenesEl.value.innerHTML = ''
-      picks.forEach((scene: any) => {
-        featuredScenesEl.value!.appendChild(createSceneCard(scene, {
-          mode: 'strip', clickable: true,
-          onPick: (s: any) => { window.location.href = `/prompt-builder?scene=${encodeURIComponent(s.id)}&step=4&generate=1` }
-        }))
-      })
-    }
+    featuredScenes.value = picks
 
     // 最近用过的场景
-    if (typeof AICSceneUX !== 'undefined') {
-      const recent: any[] = AICSceneUX.readRecent(localStorage) || []
-      const recentPicks = recent
-        .map((item: any) => scenes.find((s: any) => s.id === item.id))
-        .filter(Boolean)
-        .slice(0, 6)
-      recentScenes.value = recentPicks
-      if (recentScenesEl.value && recentPicks.length && typeof createSceneCard !== 'undefined') {
-        recentPicks.forEach((scene: any) => {
-          recentScenesEl.value!.appendChild(createSceneCard(scene, {
-            mode: 'strip', clickable: true,
-            onPick: (s: any) => { window.location.href = `/prompt-builder?scene=${encodeURIComponent(s.id)}&step=4&generate=1` }
-          }))
-        })
-      }
-    }
+    const recent = readRecent(localStorage)
+    const recentPicks = recent
+      .map((item: any) => scenes.find((s: any) => s.id === item.id))
+      .filter(Boolean)
+      .slice(0, 6)
+    recentScenes.value = recentPicks
   } catch (err: any) {
     sceneCountCopy.value = '精选场景'
-    if (featuredScenesEl.value) {
-      featuredScenesEl.value.innerHTML = `<div class="strip-state strip-state-error">⚠️ 场景加载失败：${err.message}</div>`
-    }
+    console.warn('场景加载失败：', err.message)
   }
 }
 
 async function loadRecentWorks() {
   try {
-    let history: any[] = await AICKVStore.get('aics_pb_history') || []
+    let history: any[] = await kvGet<any[]>('aics_pb_history') || []
     if (!history.length) {
       const old = JSON.parse(localStorage.getItem('aics_pb_history') || '[]')
-      if (old.length) { history = old; await AICKVStore.set('aics_pb_history', old); localStorage.removeItem('aics_pb_history') }
+      if (old.length) { history = old; await kvSet('aics_pb_history', old); localStorage.removeItem('aics_pb_history') }
     }
     recentWorks.value = history.slice(0, 3)
 
@@ -259,11 +256,10 @@ async function loadRecentWorks() {
       continueHint.value = `最近保存「${h.sceneTitle || h.scene || '未命名'}」`
     }
 
-    // 加载封面图
     recentWorks.value.forEach(async (h: any) => {
       if (!h.image_id) return
       try {
-        const blob = await AICGImageStore.get(h.image_id)
+        const blob = await imgGet(h.image_id)
         if (blob) coverUrls[h.image_id] = URL.createObjectURL(blob)
       } catch {}
     })
@@ -273,11 +269,12 @@ async function loadRecentWorks() {
 onMounted(async () => {
   initContinueDraft()
   await loadSceneHighlights()
-  if (typeof AICKVStore !== 'undefined') {
-    await AICKVStore.init()
+  try {
+    await kvInit()
     await loadRecentWorks()
-  }
+  } catch (e) { console.warn('KV store unavailable', e) }
 })
+
 </script>
 
 <style scoped>

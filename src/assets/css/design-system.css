@@ -1080,7 +1080,88 @@ tr:hover td { background: var(--bg-hover); }
 .gap-4   { gap: var(--s-4); }
 .wrap    { flex-wrap: wrap; }
 
-/* ---- Responsive ---- */
+/* ============================================================
+   动画工具类 / 滚动揭示 / 交互增强
+   ============================================================ */
+
+/* ── 滚动揭示：初始隐藏 → JS 添加 .revealed 后淡入 ── */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity .52s var(--ease-out), transform .52s var(--ease-out);
+}
+[data-reveal].revealed {
+  opacity: 1;
+  transform: none;
+}
+[data-reveal][data-reveal-delay="1"] { transition-delay: .08s; }
+[data-reveal][data-reveal-delay="2"] { transition-delay: .16s; }
+[data-reveal][data-reveal-delay="3"] { transition-delay: .24s; }
+[data-reveal][data-reveal-delay="4"] { transition-delay: .32s; }
+
+/* ── 脉冲点（在线状态） ── */
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 0 currentColor; opacity: 1; }
+  50%       { box-shadow: 0 0 0 5px transparent; opacity: .72; }
+}
+.pulse { animation: pulse-dot 2s ease-in-out infinite; }
+
+/* ── 旋转加载圈 ── */
+@keyframes spin { to { transform: rotate(360deg); } }
+.spin { animation: spin .7s linear infinite; }
+
+/* ── 浮动悬停（卡片增强） ── */
+.hover-lift {
+  transition: transform var(--t-base), box-shadow var(--t-base);
+}
+.hover-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ── 按钮加载状态 ── */
+.btn[data-loading]::after {
+  content: '';
+  display: inline-block;
+  width: .85em; height: .85em;
+  margin-left: .5em;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin .65s linear infinite;
+  vertical-align: middle;
+}
+
+/* ── 淡入淡出工具 ── */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+.animate-in { animation: fade-in .28s var(--ease-out) both; }
+
+/* ── 数字/内容变化高亮 ── */
+@keyframes flash-accent {
+  0%   { color: var(--accent); }
+  100% { color: inherit; }
+}
+.flash-value { animation: flash-accent .9s var(--ease-out) both; }
+
+/* ── 平滑主题切换 ── */
+*,
+*::before,
+*::after {
+  transition:
+    background-color .22s ease,
+    border-color     .22s ease,
+    color            .12s ease,
+    fill             .12s ease;
+}
+/* 禁止为动画元素叠加颜色过渡（避免闪烁） */
+[data-no-theme-transition],
+[data-no-theme-transition] * {
+  transition: none !important;
+}
+
 @media (max-width: 768px) {
   html { font-size: 14px; }
   .nav-inner { position: relative; }

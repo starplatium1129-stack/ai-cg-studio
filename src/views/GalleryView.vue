@@ -119,10 +119,8 @@
 
 <script setup lang="ts">
 import { ref, computed, reactive, onMounted, onUnmounted, watch, nextTick } from 'vue'
-
-declare const AICKVStore: any
-declare const AICGImageStore: any
-declare const AICStorageHealth: any
+import { kvInit, kvGet, kvSet } from '@/composables/useKVStore'
+import { imgGet } from '@/composables/useImageStore'
 
 const HISTORY_KEY = 'aics_pb_history'
 const PROJECT_KEY = 'aics_projects'
@@ -244,7 +242,7 @@ async function hydrateCards() {
     if (cardUrls[item.id]) continue
     const fallback = safeImageUrl(item.image_url)
     try {
-      const blob = item.image_id ? await AICGImageStore.get(item.image_id) : null
+      const blob = item.image_id ? await imgGet(item.image_id) : null
       if (blob) cardUrls[item.id] = trackUrl(URL.createObjectURL(blob))
       else if (fallback) cardUrls[item.id] = fallback
       else if (item.image_data && String(item.image_data).startsWith('data:image/')) cardUrls[item.id] = item.image_data
@@ -258,7 +256,7 @@ async function hydrateViewer(item: any, seq: number) {
   viewerUrl.value = ''
   const fallback = safeImageUrl(item.image_url)
   try {
-    const blob = item.image_id ? await AICGImageStore.get(item.image_id) : null
+    const blob = item.image_id ? await imgGet(item.image_id) : null
     if (seq !== viewerIndex.value) return
     if (blob) viewerUrl.value = trackUrl(URL.createObjectURL(blob))
     else if (fallback) viewerUrl.value = fallback
@@ -318,26 +316,22 @@ function onKeydown(e: KeyboardEvent) {
 onMounted(async () => {
   document.addEventListener('keydown', onKeydown)
   try {
-    await AICKVStore.init()
-    let historyRaw = await AICKVStore.get(HISTORY_KEY)
-    let projectRaw = await AICKVStore.get(PROJECT_KEY)
+    await kvInit()
+    let historyRaw = await kvGet<any[]>(HISTORY_KEY)
+    let projectRaw = await kvGet<any[]>(PROJECT_KEY)
     if (!historyRaw) {
       try { historyRaw = JSON.parse(localStorage.getItem(HISTORY_KEY) || 'null') } catch {}
       if (Array.isArray(historyRaw) && historyRaw.length) {
-        await AICKVStore.set(HISTORY_KEY, historyRaw); localStorage.removeItem(HISTORY_KEY)
+        await kvSet(HISTORY_KEY, historyRaw); localStorage.removeItem(HISTORY_KEY)
       }
     }
     if (!projectRaw) {
       try { projectRaw = JSON.parse(localStorage.getItem(PROJECT_KEY) || 'null') } catch {}
       if (Array.isArray(projectRaw) && projectRaw.length) {
-        await AICKVStore.set(PROJECT_KEY, projectRaw); localStorage.removeItem(PROJECT_KEY)
+        await kvSet(PROJECT_KEY, projectRaw); localStorage.removeItem(PROJECT_KEY)
       }
     }
-    history.value = Array.isArray(historyRaw) ? historyRaw.filter((item: any) => {
-      if (!(item && typeof item === 'object')) return false
-      if (typeof AICStorageHealth !== 'undefined') return AICStorageHealth.validateHistoryEntry(item).ok
-      return true
-    }) : []
+    history.value = Array.isArray(historyRaw) ? historyRaw.filter((item: any) => item && typeof item === 'object') : []
     projects.value = Array.isArray(projectRaw) ? projectRaw : []
   } catch (e) { console.warn('gallery storage init failed', e) }
 

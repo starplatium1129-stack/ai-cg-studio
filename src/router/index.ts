@@ -19,9 +19,10 @@ const router = createRouter({
         { path: 'scene-manager',  name: 'manager',       component: () => import('@/views/SceneManagerView.vue') },
         { path: 'color-script',   name: 'color-script',  component: () => import('@/views/ColorScriptView.vue') },
         { path: 'scenario',       name: 'scenario',      component: () => import('@/views/ScenarioView.vue') },
-        { path: 'control',        name: 'control',       component: () => import('@/views/ControlView.vue') },
       ]
-    }
+    },
+    // control 有自己的完整导航栏，不套 AppLayout（避免双 nav）
+    { path: '/control', name: 'control', component: () => import('@/views/ControlView.vue'), meta: { transition: 'fade' } }
   ]
 })
 

@@ -30,30 +30,18 @@ This is an unofficial, non-commercial fan project and is not affiliated with or 
 
 ## Recommended setup
 
-1. In Stability Matrix, keep `--api --port 7860` in the WebUI launch arguments. The current reForge package is started automatically by the control panel.
+1. In Stability Matrix, keep `--api --port 7860` in the WebUI launch arguments.
 2. Double-click `control.bat`.
 3. Confirm the WebUI address. When the sibling local voice setup is present, the launcher also starts GPT-SoVITS; the gateway switches the evaluated Nene/Natsume weights for each request.
 4. Click **启动并生成分享链接**.
 5. Use **打开本地网站（无需 Token）** for yourself, or copy the token-protected link for a friend.
-6. Click **停止全部服务** when finished. This stops the local gateway, sharing tunnel, GPT-SoVITS, and the reForge process started by the control panel. A separately manual WebUI is left untouched.
+6. Click **停止全部服务** when finished.
 
 `--api` does not prevent normal use of the WebUI interface. If Stability Matrix uses another port, enter the address shown in its log.
-
-On the configured machine, the control panel also supplies the shared ControlNet model directory. Regional Prompter, ControlNet, and ADetailer are discovered through their APIs; if one is unavailable, the director falls back gracefully instead of changing the single-character pipeline.
 
 Public sharing requires `cloudflared` at its standard Windows install path. Without it, the local site and SD connection still work.
 
 See [STARTUP.md](STARTUP.md) for full setup and troubleshooting instructions.
-
-## Static preview
-
-To browse the site without SD generation:
-
-```powershell
-python -m http.server 8090
-```
-
-Open `http://127.0.0.1:8090/`. A plain static server does not provide the `/sdapi` proxy or mount the separate approved showcase; use `control.bat` when you need the result gallery.
 
 ## Data and privacy
 
@@ -61,7 +49,7 @@ Open `http://127.0.0.1:8090/`. A plain static server does not provide the `/sdap
 - Personal history and images are stored mainly in the current browser through IndexedDB.
 - The project has no account system or hosted cloud database.
 - Runtime configuration, logs, process state, and friend-generated outputs stay in the git-ignored `runtime/` directory.
-- Reviewed samples stay in the sibling `AI/SceneShowcase/` directory. The gateway exposes only its manifest, thumbnails, contact sheets, and approved full images; `SCENE_SHOWCASE_DIR` can override the location.
+- Reviewed samples stay in the sibling `AI/SceneShowcase/` directory.
 - A friend link reaches your local gateway through a temporary tunnel, so share it only with people you trust.
 - Restarting the gateway creates a new token; the temporary domain may also change.
 
@@ -70,44 +58,84 @@ Open `http://127.0.0.1:8090/`. A plain static server does not provide the `/sdap
 ```text
 绫季绘境/
 ├── DESIGN.md               # Canonical website and control-panel design contract
-├── index.html              # Home page
+├── index.html              # Vite SPA entry point (no global scripts)
+├── vite.config.ts          # Vite build config + dev proxy to Express
 ├── control.bat             # Windows control panel launcher
-├── server.js               # Site server, SD proxy, and temporary sharing
-├── tools/                  # Creator, scene, showcase, character, gallery, and LoRA pages
-├── data/                   # Scene, character, tag, and preset data
-├── css/                    # Shared design system
-├── docs/                   # Creative standards, quality checks, and maintenance notes
-├── scripts/                # Runtime helpers, maintenance, tests, and archived workflows
-└── runtime/                # Local config, logs, process state, and generated outputs
+├── server.js               # Express: static serving, SD proxy, sharing
+├── src/                    # Vue 3 SPA source (Vite build target)
+│   ├── config/             #   Character constants, prompt definitions
+│   ├── utils/              #   Stream parsing, scene UX pure functions
+│   ├── stores/             #   Pinia: scene data, prompt-builder state
+│   ├── composables/        #   Chat storage, Live2D, voice, SD generate, IndexedDB
+│   ├── components/         #   AppLayout, AppNav, SceneCard, ThemeToggle
+│   ├── views/              #   One .vue per route (all lazy-loaded)
+│   └── assets/css/         #   Design system tokens, component styles
+├── routes/                 # Express API routes (chat, voice, live2d, maintenance)
+├── services/               # TypeScript runtime services (Ollama, TTS, HTTP client…)
+├── types/                  # Shared TypeScript type definitions
+├── data/                   # Runtime JSON: scenes, characters, tags, presets
+├── assets/                 # Static assets: character images, Live2D models, vendor SDKs
+├── css/                    # CSS for docs/ HTML pages (separate from src/assets/css/)
+├── tools/                  # Remaining utility JS: prompt-policy, sd-api, nav, theme…
+├── docs/                   # Creative standards, quality checks, maintenance notes
+├── scripts/                # Maintenance, tests, and runtime helpers
+└── runtime/                # Local config, logs, process state, generated outputs
 ```
 
-Run the scene validator with:
+**Key data files** (fetched at runtime by the SPA, not bundled by Vite):
+
+- `data/scenes.json` — generated from `data/scenes/*.json`; do not edit directly
+- `data/scenes/*.json` — source scene shards, maintained per character/series
+- `data/curation.json` — featured and signature scene ordering
+- `data/characters.json` — Nene, Natsume character definitions and LoRA config
+- `data/tags.json` — normalised tag and category mappings
+- `data/loras.json` — LoRA model configuration
+
+## Architecture
+
+The frontend is a **Vue 3 SPA** built with Vite and TypeScript.
+
+- **State** — Pinia stores for scene data and director state (replaces previous global window variables)
+- **Composables** — `useVoice`, `useLive2D`, `useChatStorage`, `useSDGenerate`, `useKVStore`, `useImageStore`
+- **Routing** — Vue Router with lazy-loaded route components
+- **Styling** — design-token CSS in `src/assets/css/`; no CSS-in-JS
+
+The backend is an **Express server** (`server.js`) that:
+- Serves the Vite production build from `dist/`
+- Proxies SD WebUI API (`/sdapi`, `/controlnet`, `/adetailer`)
+- Provides chat (`/api/chat`), voice (`/api/tts`, `/api/translate`), and Live2D status APIs
+- Hosts static `data/`, `assets/`, `tools/`, and `docs/` directories
+
+In development, run both:
+
+```powershell
+node server.js          # Express on :3000
+npm run dev             # Vite on :5173 (proxies API calls to :3000)
+```
+
+In production, `npm run build` outputs to `dist/`, which Express serves directly.
+
+## Validation
 
 ```powershell
 npm run validate
 ```
 
-Website and control-panel changes follow [DESIGN.md](DESIGN.md). It is the
-canonical UI contract; `css/design-system.css` implements its tokens at runtime.
-The separate CG art-direction note describes generated images rather than the
-interface.
+Runs design lint, runtime TypeScript build, type check, scene/content contract validation, and all script tests. Run after any structural change.
 
-Use `npm run optimize-scenes` after importing or bulk-editing Scenes to canonicalize prompt tags, camera framing, negative prompts, and unresolved placeholders.
+```powershell
+npm run test:e2e        # Playwright browser smoke tests
+npm run typecheck       # TypeScript check for both app and runtime
+```
 
-Use `npm run classify-ratings` after adding Scenes. It keeps `rating` (`All`, `R15`, `R18`) aligned with the image tags; only `R18` scenes are behind the adult-content toggle.
+Use `npm run optimize-scenes` after importing or bulk-editing Scenes to canonicalize prompt tags, camera framing, and negative prompts.
 
-For normal maintenance, use **More → Scene Manager** in the local site. It can add,
-edit, duplicate, retire, and validate Scenes, replace reviewed samples, create a
-backup, and write the correct source shards without requiring manual JSON edits.
-Direct edits to `data/scenes/*.json` are reserved for bulk or structural work;
-`data/scenes.json` remains generated output.
+Use `npm run classify-ratings` after adding Scenes to keep `rating` aligned with image tags.
+
+For normal maintenance, use **More → Scene Manager** in the local site.
 
 ## Scope
 
-The project stays intentionally small: reliable local creation, high-quality Scene
-content, straightforward maintenance, and safe temporary sharing come first.
-Desktop is the primary workspace; mobile remains usable but is not allowed to
-reduce the desktop canvas. Accounts, subscriptions, a public Scene store, and
-community uploads are not planned.
+The project stays intentionally small: reliable local creation, high-quality Scene content, straightforward maintenance, and safe temporary sharing come first. Accounts, subscriptions, a public Scene store, and community uploads are not planned.
 
 > Prompts describe images. Scenes describe moments.

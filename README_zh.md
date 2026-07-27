@@ -14,23 +14,19 @@
 
 ## 现在能做什么
 
-- 浏览和搜索 297 个场景，并按角色、分类、季节与内容分级筛选（全年龄 / R15 / R18）
-- 在“效果样张”中查看逐场景审核的实际成图，按精选、角色和分级筛选，并直接带着场景进入导演台
+- 浏览和搜索 298 个场景，并按角色、分类、季节与内容分级筛选（全年龄 / R15 / R18）
+- 在"效果样张"中查看逐场景审核的实际成图，按精选、角色和分级筛选，并直接带着场景进入导演台
 - 从场景直接进入导演工作台，调整故事、情绪、镜头、构图、光照与色彩
-- 从场景卡点击“快速出图”，复用最近一次成功生成的模型和参数直接调用 SD；连接失败时保留 Prompt，不会重复提交
 - 自动组合 Positive / Negative Prompt，并按场景注入对应 LoRA
 - 连接 AUTOMATIC1111、Forge 或 ReForge，直接读取模型与采样配置并生成图片
-- 在当前 reForge 环境中自动增强双人构图：Regional Prompter 分离宁宁与夏目的提示词区域，逐场景 OpenPose 图稳定站位，只在远景双人脸上保守启用 ADetailer；单人出图继续使用逐场景审核过的原基线
-- 在“角色对话”中连接本机 Ollama，与宁宁或夏目进行流式文字聊天；句子级语音流水线边生成、边翻译、边合成、顺序播放，Live2D 立绘随真实语音振幅对口型、随情感切换表情，闲置模型自动卸载释放显存
-- 控制面板提供显存资源调度：绘图优先 / 聊天优先一键切换（先释放、再加载），语音、WebUI、Ollama 可单独启停，语音服务默认不自动启动
-- 识别显存不足、LoRA/模型缺失、采样器不兼容、超时与网关离线，并给出对应的手动恢复按钮
-- 查看生成进度、预计剩余时间，停止任务，固定 Seed，使用 hires.fix；也可以顺序排队并用同一 Seed 快速微调
+- 在当前 reForge 环境中自动增强双人构图：Regional Prompter 分离提示词区域，逐场景 OpenPose 图稳定站位，ADetailer 只在远景双人脸上保守启用
+- 在"角色房间"中连接本机 Ollama，与宁宁或夏目进行流式文字聊天；句子级语音流水线边生成、边翻译、边合成、顺序播放，Live2D 立绘随真实语音振幅对口型、随情感切换表情
+- 控制面板提供显存资源调度：绘图优先 / 聊天优先一键切换，语音、WebUI、Ollama 可单独启停
+- 查看生成进度、停止任务、固定 Seed、使用 hires.fix、顺序排队
 - 中文阅读文本与配音稿彼此独立：画面保持中文，角色默认说日文，也可切换中文演绎
-- 将作品、参数、评分、收藏和备注保存在当前浏览器中，并用一个 JSON 文件完整备份或恢复本地数据
-- 在作品册中按原始横竖比例欣赏成图：瀑布流不裁切，点击进入近全屏观画，创作参数默认收进侧栏
+- 将作品、参数、评分、收藏和备注保存在当前浏览器的 IndexedDB 中，并用 JSON 文件完整备份或恢复
+- 在作品册中按原始横竖比例欣赏成图，点击进入近全屏观画
 - 通过带 Token 的临时链接，让朋友使用你电脑上的 SD WebUI 出图
-
-部分场景还支持动态占位符：工作台会根据故事文字调整亲密强度、互动方式和感官反馈。它只是辅助，不会替代场景本身的故事和构图。
 
 ## 最常用的启动方式
 
@@ -42,129 +38,116 @@
 --api --port 7860
 ```
 
-`--api` 只会开放本地接口，不影响你正常打开和使用 WebUI 自带界面。实际端口不是 7860 时，以 Stability Matrix 日志显示的地址为准。
-
-当前电脑的控制面板还会把共享 ControlNet 模型目录传给 reForge。网站通过 API 自动识别 Regional Prompter、ControlNet 和 ADetailer；某项能力不可用时会自动降级，不会改变单人出图链路。
+`--api` 只会开放本地接口，不影响正常使用 WebUI。实际端口不是 7860 时，以 Stability Matrix 日志显示的地址为准。
 
 ### 2. 打开控制面板
 
-双击 `control.bat`，确认 WebUI 地址后点击 **启动并生成分享链接**。当前电脑已配置并评测宁宁、夏目的本地 GPT-SoVITS 专用权重；网关会按角色排队切换模型，避免多人使用时串音。每次回复会锁定同一个角色参考音与确定性采样参数，情绪可以改变表情和表达，但不会逐句更换身份参考；中文继续使用稳定参考。没有语音服务时，导演台的日文或中文系统声音试听仍可使用。
+双击 `control.bat`，确认 WebUI 地址后点击 **启动并生成分享链接**。
 
 - 自己使用：点击 **打开本地网站（无需 Token）**
 - 分享朋友：复制控制面板中的带 Token 链接
-- 使用结束：点击 **停止网站网关**，只关闭网站与分享隧道。绘图、语音和聊天服务由上方独立按钮或“绘图优先 / 聊天优先”模式管理，不会被网站停止按钮连带关闭。
+- 使用结束：点击 **停止全部服务**
 
-首次运行会安装 Node.js 依赖。公网分享依赖本机安装的 `cloudflared`；没有安装时，本地网站和 SD WebUI 连接仍可使用，只是不会生成公网链接。
+首次运行会安装 Node.js 依赖。公网分享依赖本机安装的 `cloudflared`；没有安装时本地网站和 SD 连接仍可使用。
 
 完整说明与排错方法见 [STARTUP.md](STARTUP.md)。
 
-## 只浏览页面
+## 使用流程
 
-如果只想查看场景和文档，不需要直接调用 SD WebUI，可以使用普通静态服务器：
-
-```powershell
-python -m http.server 8090
 ```
-
-然后打开 `http://127.0.0.1:8090/`。不要直接双击 `index.html`，否则浏览器会阻止页面读取 JSON 数据。
-
-普通静态服务器不会挂载独立的最终样张目录；需要浏览“效果样张”时，请使用 `control.bat` 启动本地网关。
-
-## 使用方式
-
-```text
 想画的瞬间
   ↓
-选择 Scene
+选择 Scene（场景库或首页精选）
   ↓
-调整故事、角色和画面决策
+调整故事、角色、情绪、镜头、构图、光照
   ↓
-生成 Prompt
-  ↓
-调用 SD WebUI 出图，并按需生成角色语音
+生成 Prompt → 调用 SD WebUI 出图
   ↓
 评分、收藏、重新生成或做变体
 ```
 
-Scene 是创作的起点，Prompt 是它面向 Stable Diffusion 的输出。这样做的目的不是隐藏 Prompt，而是让“想画什么”先于“标签怎么写”。
+Scene 是创作的起点，Prompt 是它面向 Stable Diffusion 的输出。
 
-常用场景可以直接选择“快速出图”。首次使用会采用当前稳定参数；成功生成后，网站只在当前浏览器记录本次可用的模型、采样器、CFG、Steps、尺寸和高清修复配置，供下次快速创作复用。Seed 不会被快速模式强制复用。
+## 技术架构
 
-导演台支持 `Ctrl/Cmd + Enter` 直接出图、`Ctrl/Cmd + Shift + Enter` 加入队列、`Ctrl/Cmd + S` 保存记录，以及 `/` 聚焦场景搜索。生成完成后选择“同 Seed 微调”，可以固定构图基础再调整 Prompt 或参数。
+**前端**：Vue 3 SPA，Vite 构建，TypeScript，Pinia 状态管理
 
-## 数据与分享
+- `src/stores/` — Pinia：场景数据、导演台状态（替代原来分散的全局变量）
+- `src/composables/` — useVoice、useLive2D、useChatStorage、useSDGenerate、useKVStore、useImageStore
+- `src/views/` — 每条路由对应一个 `.vue`，全部懒加载
+- `src/config/` + `src/utils/` — 角色常量、场景搜索纯函数、流式解析工具
 
-- 场景、角色和默认参数来自仓库中的 JSON 文件
-- 历史、收藏、项目和图片主要保存在浏览器的 IndexedDB 中
-- 导演台右上角可以导出包含历史、项目、设置和本地图片的版本化备份；恢复时可选择合并或覆盖
-- 项目本身没有账号系统或云端数据库，也不会自动把个人历史同步到第三方账户
-- 网关配置、PID、Token、日志和朋友生成图集中保存在忽略提交的 `runtime/` 目录
-- 逐场景审核样张保存在相邻的 `AI/SceneShowcase/`，网关只公开清单、缩略图和最终合格大图；也可通过 `SCENE_SHOWCASE_DIR` 指定其他目录
-- 开启朋友分享时会建立临时公网通道；链接持有者可以调用你本机的 SD WebUI，请只发给信任的人
-- 每次重新启动网关都会生成新的 Token，临时域名也可能变化
-- “停止生成”调用 WebUI 的全局中断；多人同时使用时，可能会停止当前正在运行的任务
+**后端**：Node.js + Express（`server.js`）
+
+- 生产模式：Express 直接 serve Vite 构建产物 `dist/`
+- 开发模式：Vite dev server（`:5173`）通过代理把 API 请求转发到 Express（`:3000`）
+- 提供聊天、语音、Live2D 状态、维护等 API 接口
+- 静态 serve `data/`、`assets/`、`tools/`、`docs/` 目录
+
+**数据**（运行时 fetch，不被 Vite 打包）：
+
+- `data/scenes.json` — 由分片自动生成，供前端读取
+- `data/curation.json` — 精选/招牌场景排序
+- `data/characters.json` — 角色定义与 LoRA 配置
+- `data/tags.json`、`data/loras.json`、`data/presets.json` 等
+
+**静态资源**（Express 提供）：
+
+- `assets/characters/` — 角色立绘图
+- `assets/live2d/` — Live2D 模型文件
+- `assets/vendor/` — wl-live2d、Pixi.js、Cubism SDK
 
 ## 项目结构
 
 ```text
 绫季绘境/
 ├── DESIGN.md               # 网站与控制面板的唯一总设计规范
-├── index.html              # 首页
+├── index.html              # Vite SPA 入口（无全局脚本注入）
+├── vite.config.ts          # Vite 构建配置 + dev 代理
 ├── control.bat             # Windows 控制面板入口
-├── server.js               # 静态站点、SD API 代理与临时分享
-├── tools/                  # 导演台、场景库、效果样张、角色、画廊、LoRA 等页面
-├── data/                   # 场景、角色、标签、参数与示例数据
-├── css/                    # 共用设计系统
+├── server.js               # Express：静态服务、SD 代理、临时分享
+├── src/                    # Vue 3 SPA 源码（Vite 构建目标）
+│   ├── config/             #   角色常量、导演台静态定义
+│   ├── utils/              #   流式解析、场景 UX 纯函数
+│   ├── stores/             #   Pinia：场景数据、导演台状态
+│   ├── composables/        #   Voice / Live2D / Chat / SD / IndexedDB
+│   ├── components/         #   布局、导航、主题切换、场景卡片
+│   ├── views/              #   每路由一个 Vue 视图组件
+│   └── assets/css/         #   设计系统 Token、组件样式
+├── routes/                 # Express API 路由（chat / voice / live2d / maintenance）
+├── services/               # TypeScript 运行时服务（Ollama、TTS、HTTP…）
+├── types/                  # 共享 TypeScript 类型定义
+├── data/                   # 运行时 JSON 数据（scenes / characters / tags…）
+├── assets/                 # 静态资源（角色立绘、Live2D、vendor SDK）
+├── css/                    # docs/ 文档页专用 CSS
+├── tools/                  # 剩余工具 JS（prompt-policy、sd-api、nav、theme…）
 ├── docs/                   # 创作规范、质量标准和维护手册
-├── scripts/                # 运行辅助、维护、测试与历史归档脚本
-└── runtime/                # 本机配置、日志、进程状态与朋友生成图（自动创建）
+├── scripts/                # 维护、测试与运行辅助脚本
+└── runtime/                # 本机配置、日志、进程状态与朋友生成图
 ```
 
-核心数据：
+## 数据与分享
 
-- `data/scenes/*.json`：按角色与系列维护的场景源文件
-- `data/scenes.json`：由分片自动生成、供网页读取的 284 个场景
-- `data/curation.json`：精选场景顺序与情绪入口
-- `data/characters.json`：绫地宁宁、四季夏目及其角色设定
-- `data/tags.json`：规范化标签与分类映射
-- `data/loras.json`：角色 LoRA 配置
-
-## 文档入口
-
-- [知识库](docs/index.html)：全部文档入口
-- [创作取向](docs/philosophy.html)：为什么从 Scene 开始
-- [项目定位](docs/worldview.html)：这个工具想保留什么、舍弃什么
-- [Scene 规范](docs/scene-spec.html)：场景数据与推荐参数
-- [Prompt 规范](docs/prompt-spec.html)：Prompt 组装顺序
-- [质量检查](docs/quality-standard.html)：出图后的五项自检
-- [产品路线图与边界](docs/roadmap.html)：后续加固、新功能阶段、完成标准和明确不计划的内容
-- [网站设计规范](DESIGN.md)：网站与控制面板的唯一 UI 设计依据
+- 场景、角色和默认参数来自仓库中的 JSON 文件
+- 历史、收藏、项目和图片主要保存在浏览器的 IndexedDB 中
+- 右上角可以导出包含历史、项目、设置和图片的版本化备份；恢复时可选合并或覆盖
+- 项目没有账号系统或云端数据库
+- 网关配置、Token、日志和朋友生成图保存在忽略提交的 `runtime/` 目录
+- 开启分享时会建立临时公网通道；链接持有者可调用你本机的 SD WebUI，请只发给信任的人
 
 ## 维护与校验
 
-安装依赖后可运行：
-
 ```powershell
-npm run validate
+npm run validate        # 完整校验：design lint + 构建 + 类型检查 + 场景/内容契约 + 所有脚本测试
+npm run test:e2e        # Playwright 浏览器冒烟测试
+npm run typecheck       # TypeScript 检查（app + runtime）
+npm run optimize-scenes # 批量规范化新增场景的标签/参数
+npm run classify-ratings # 对齐场景内容分级
 ```
 
-校验脚本会检查场景 ID、角色、分类、内容分级、标签、Prompt、未解析占位符、镜头标签和负面词是否一致。需要批量规范新增场景时运行 `npm run optimize-scenes`；新增或调整成人向场景后运行 `npm run classify-ratings`。只有 `R18` 会受“显示成人内容”开关控制。
+日常增删场景、修改故事、维护标签或替换样张，直接使用网站中的 **更多 → 场景管理**。
 
-日常增删场景、修改故事、维护标签、调整精选/招牌推荐或替换样张，直接使用网站中的“更多 → 场景管理”。页面会暂存修改，点击“保存到项目”后自动备份、写入正确分片并运行检查，不要求维护者理解代码、手写 JSON 或执行命令。
-
-页面结构与控制器已经分离：HTML 负责布局，页面行为放在同名 JavaScript 文件中；控制面板的耗时操作由独立状态模块统一串行化。运行 `npm run test:architecture` 可以防止大段控制逻辑重新混回 HTML。
-
-关键流程另有真实 Chromium 回归与性能预算：`npm run test:e2e` 会打开首页、导演台、场景管理和作品册；`npm run typecheck` 检查渐进迁移的 TypeScript 数据契约。角色、LoRA 与场景引用也会在完整校验中自动核对。
-
-只有批量处理或调整数据结构时才需要编辑 `data/scenes/*.json`；不要直接修改自动生成的 `data/scenes.json`。完整流程见 [场景库维护手册](docs/maintenance.md)。
-
-## 技术说明
-
-- 前端：HTML、CSS、原生 JavaScript
-- 本地网关：Node.js、Express、HTTP 代理
-- 数据：JSON、IndexedDB、localStorage
-- SD 后端：AUTOMATIC1111、Forge、ReForge 的 WebUI API
-- 临时分享：Cloudflare Quick Tunnel + Token
+只有批量处理或调整数据结构时才需要编辑 `data/scenes/*.json`；不要直接修改自动生成的 `data/scenes.json`。
 
 ## 维护原则
 

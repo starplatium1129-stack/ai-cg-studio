@@ -12,6 +12,7 @@ var createChatRouter = require('./routes/chat').createChatRouter;
 var createVoiceRouter = require('./routes/voice').createVoiceRouter;
 var createLive2dRouter = require('./routes/live2d').createLive2dRouter;
 var createMaintenanceRouter = require('./routes/maintenance').createMaintenanceRouter;
+var createControlRouter = require('./routes/control').createControlRouter;
 
 var ONE_DAY = 24 * 60 * 60 * 1000;
 var ONE_WEEK = 7 * ONE_DAY;
@@ -46,10 +47,17 @@ function createGateway(options) {
   var voice = createVoiceRouter(config, options.services);
   var live2d = createLive2dRouter(config, options.services);
   var maintenance = createMaintenanceRouter(config);
+
+  // 控制面板路由需要访问 gateway 对象（tunnelUrl、startTunnel/stopTunnel）
+  // 用闭包延迟引用，避免循环依赖
+  var gatewayState = { tunnelUrl:'', startTunnel:null, stopTunnel:null };
+  var control = createControlRouter(config, function() { return gatewayState; });
+
   app.use(chat.router);
   app.use(voice.router);
   app.use(live2d.router);
   app.use(maintenance.router);
+  app.use(control);
 
   app.get('/api/health', function (req, res) {
     var live2dStatus = live2d.service.status();
@@ -177,6 +185,7 @@ function createGateway(options) {
         if (match) pendingTunnelUrl = match[0];
         if (pendingTunnelUrl && /Registered tunnel connection/i.test(log)) {
           tunnelUrl = pendingTunnelUrl;
+          gatewayState.tunnelUrl = tunnelUrl;
           console.log('  🌪 Tunnel ready (token redacted; open control panel for share link)');
           clearInterval(poll);
         }
@@ -186,13 +195,22 @@ function createGateway(options) {
     }, 1000);
   }
 
-  function close() {
-    voice.close();
+  function stopTunnel() {
+    tunnelUrl = ''; gatewayState.tunnelUrl = '';
     if (tunnelProcess && tunnelProcess.pid) {
       try { process.kill(tunnelProcess.pid); } catch (error) {}
     }
     tunnelProcess = null;
   }
+
+  function close() {
+    voice.close();
+    stopTunnel();
+  }
+
+  // 将控制函数暴露给 gatewayState，供 control 路由调用
+  gatewayState.startTunnel = startTunnel;
+  gatewayState.stopTunnel  = stopTunnel;
 
   return {
     app:app,

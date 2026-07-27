@@ -2,10 +2,14 @@
   <div class="page-root">
     <AppNav />
     <main>
-      <RouterView />
+      <RouterView v-slot="{ Component, route }">
+        <Transition :name="route.meta.transition as string || 'page'" mode="out-in">
+          <component :is="Component" :key="route.path" />
+        </Transition>
+      </RouterView>
     </main>
     <footer class="site-footer">
-      <p>© 2024 绫季绘境 · 个人创作工作台</p>
+      <p>© 2025 绫季绘境 · 个人创作工作台</p>
     </footer>
   </div>
 </template>

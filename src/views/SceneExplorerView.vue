@@ -124,8 +124,11 @@ import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import SceneCard from '@/components/SceneCard.vue'
 
-declare const AICSceneUX: any
-declare const AICKVStore: any
+import { tier as uxTier, matchesSearch as uxMatchesSearch, searchScore as uxSearchScore,
+  isPersonalFavorite as uxIsFav, personalScore as uxPersonalScore,
+  personalReason as uxPersonalReason, analyzeQuery as uxAnalyze,
+  buildPreferenceProfile } from '@/utils/sceneUX'
+import { kvInit, kvGet } from '@/composables/useKVStore'
 
 const PAGE_SIZE = 24
 const MATURE_KEY = 'aics_show_mature'
@@ -186,7 +189,7 @@ function matchesTime(s: any, v: string) {
   if(v==='night') return ['night','late_night','evening'].includes(s.timeOfDay)
   return s.timeOfDay===v
 }
-function tier(s: any) { return AICSceneUX?.tier?.(s, curation.value) ?? 'standard' }
+function tier(s: any) { return uxTier(s, curation.value) }
 function sigIds(): string[] { return curation.value.signatureSceneIds||[] }
 function curIds(): string[] { return curation.value.curatedSceneIds||[] }
 function cScore(s: any) {
@@ -204,8 +207,8 @@ function timeLabel(v: string) {
   return ({morning:'清晨',afternoon:'午后',sunset:'黄昏',night:'夜晚',late_night:'深夜',dawn:'黎明',evening:'夜晚',all_day:'全天'} as any)[v]||v||''
 }
 function personalReason(s: any) {
-  const r = AICSceneUX?.personalReason?.(s, profile.value) || (curation.value.recommendationReasons||{})[s.id] || ''
-  return /实机生成与直接视觉复核/.test(r)?'':r
+  const r = uxPersonalReason(s, profile.value) || (curation.value.recommendationReasons||{})[s.id] || ''
+  return /实机生成与直接视觉复核/.test(r) ? '' : r
 }
 function themeCount(id: string) {
   return scenes.value.filter(s=>(showMature.value||!s.mature)&&matchesTheme(s,id)).length
@@ -241,27 +244,26 @@ const filtered = computed(() => {
     const t = tier(s)
     if (!q && fTier.value === 'featured' && t !== 'signature' && t !== 'curated') return false
     if (fTier.value !== 'all' && fTier.value !== 'featured' && t !== fTier.value) return false
-    if (sortBy.value === 'favorite' && !favs.value.has(s.id) && !AICSceneUX?.isPersonalFavorite?.(s, profile.value)) return false
-    return !q || (AICSceneUX?.matchesSearch?.(s, q, curation.value, [primaryCat(s), timeLabel(s.timeOfDay)]) ?? true)
+    if (sortBy.value === 'favorite' && !favs.value.has(s.id) && !uxIsFav(s, profile.value)) return false
+    return !q || uxMatchesSearch(s, q, curation.value, [primaryCat(s), timeLabel(s.timeOfDay)])
   })
   return r.sort((a,b) => {
     if (q) {
-      const rel = (AICSceneUX?.searchScore?.(b,q,curation.value,[primaryCat(b),timeLabel(b.timeOfDay)])??0)-(AICSceneUX?.searchScore?.(a,q,curation.value,[primaryCat(a),timeLabel(a.timeOfDay)])??0)
+      const rel = uxSearchScore(b,q,curation.value,[primaryCat(b),timeLabel(b.timeOfDay)])-uxSearchScore(a,q,curation.value,[primaryCat(a),timeLabel(a.timeOfDay)])
       if (rel) return rel
     }
     if (sortBy.value==='newest') return String(b.id).localeCompare(String(a.id),undefined,{numeric:true})
     if (sortBy.value==='title') return String(a.title).localeCompare(String(b.title),'zh-CN')
-    if (sortBy.value==='favorite') return (AICSceneUX?.personalScore?.(b,profile.value)??0)-(AICSceneUX?.personalScore?.(a,profile.value)??0)
-    if (sortBy.value==='smart') return ((AICSceneUX?.personalScore?.(b,profile.value)??0)*500+cScore(b))-((AICSceneUX?.personalScore?.(a,profile.value)??0)*500+cScore(a))
+    if (sortBy.value==='favorite') return uxPersonalScore(b,profile.value)-uxPersonalScore(a,profile.value)
+    if (sortBy.value==='smart') return (uxPersonalScore(b,profile.value)*500+cScore(b))-(uxPersonalScore(a,profile.value)*500+cScore(a))
     return cScore(b)-cScore(a)
   })
 })
 const paged = computed(() => filtered.value.slice(0, visible.value))
 
 const intentHtml = computed(() => {
-  if (!AICSceneUX?.analyzeQuery) return ''
   const q = searchQuery.value.trim()
-  const a = AICSceneUX.analyzeQuery(q, curation.value)
+  const a = uxAnalyze(q, curation.value)
   const exp = q && fTier.value==='featured' ? '已自动扩展至完整场景库。' : ''
   const understood = a.intents?.length ? `已理解为：<strong>${a.intents.join(' · ')}</strong>。` : (q?'正在搜索标题、故事、情绪、地点和视觉标签。':'可以直接描述想画的完整句子。')
   const personal = profile.value.entries ? ` 已结合本机${profile.value.entries}条创作记录排序。` : ' 完成作品评分后，推荐会逐渐贴近你的偏好。'
@@ -297,12 +299,12 @@ async function init() {
   } catch(e) { console.warn('scene load failed', e) }
 
   try {
-    const fallback = () => { try { return AICSceneUX.buildPreferenceProfile(JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]')) } catch { return AICSceneUX.buildPreferenceProfile([]) } }
-    if (window.AICKVStore) {
-      await AICKVStore.init()
-      const h = await AICKVStore.get(HISTORY_KEY)
-      profile.value = Array.isArray(h) ? AICSceneUX.buildPreferenceProfile(h) : fallback()
-    } else { profile.value = fallback() }
+    const fallback = () => { try { return buildPreferenceProfile(JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]')) } catch { return buildPreferenceProfile([]) } }
+    try {
+      await kvInit()
+      const h = await kvGet<any[]>(HISTORY_KEY)
+      profile.value = Array.isArray(h) ? buildPreferenceProfile(h) : fallback()
+    } catch { profile.value = fallback() }
   } catch {}
 
   loading.value = false

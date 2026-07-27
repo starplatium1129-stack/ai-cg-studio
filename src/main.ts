@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
 import './assets/css/design-system.css'
@@ -13,4 +14,4 @@ const stored = (() => {
 })()
 document.documentElement.setAttribute('data-theme', stored === 'light' ? 'light' : 'dark')
 
-createApp(App).use(router).mount('#app')
+createApp(App).use(createPinia()).use(router).mount('#app')
