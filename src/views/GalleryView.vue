@@ -144,6 +144,7 @@ import { ref, computed, reactive, onMounted, onUnmounted, watch, nextTick } from
 import { kvInit, kvGet, kvSet } from '@/composables/useKVStore'
 import { imgGet, imgDelete } from '@/composables/useImageStore'
 import { useSceneStore } from '@/stores/sceneStore'
+import { useFocusTrap } from '@/composables/useFocusTrap'
 
 const sceneStore = useSceneStore()
 
@@ -171,7 +172,6 @@ const pendingDeleteId = ref<string | number | null>(null)
 const deleting = ref(false)
 const closeBtn = ref<HTMLElement | null>(null)
 const viewerEl = ref<HTMLElement | null>(null)
-let returnFocus: HTMLElement | null = null
 const objectUrls = new Set<string>()
 /** 查看器当前显示的 blob URL，翻页时要主动释放 */
 let viewerObjectUrl = ''
@@ -350,22 +350,23 @@ function releaseViewerUrl() {
 /* ---------- Viewer 控制 ---------- */
 function openViewer(index: number) {
   if (!visible.value[index]) return
-  if (viewerIndex.value < 0) returnFocus = document.activeElement as HTMLElement
   viewerIndex.value = index
   infoOpen.value = false
-  document.body.classList.add('viewer-open')
   hydrateViewer(visible.value[index], index)
-  nextTick(() => closeBtn.value?.focus({ preventScroll: true }))
 }
 function closeViewer() {
   viewerIndex.value = -1
   infoOpen.value = false
   releaseViewerUrl()
   viewerUrl.value = ''
-  document.body.classList.remove('viewer-open')
-  returnFocus?.focus?.({ preventScroll: true })
-  returnFocus = null
 }
+
+// 焦点存取、Tab 陷阱、Escape、滚动锁统一由 useFocusTrap 负责。
+// 这里原本是全项目唯一做对的那份实现，已抽成 composable 给其余弹层复用。
+useFocusTrap(viewerEl, () => viewerIndex.value >= 0, {
+  onEscape: closeViewer,
+  initialFocus: closeBtn,
+})
 function step(delta: number) {
   const next = viewerIndex.value + delta
   if (next >= 0 && next < visible.value.length) openViewer(next)
@@ -412,23 +413,10 @@ function copyPrompt() {
 /* ---------- 键盘 ---------- */
 function onKeydown(e: KeyboardEvent) {
   if (viewerIndex.value < 0) return
-  if (e.key === 'Escape') return closeViewer()
+  // Escape 与 Tab 陷阱由 useFocusTrap 处理
   if (e.key === 'ArrowLeft') return step(-1)
   if (e.key === 'ArrowRight') return step(1)
   if (e.key.toLowerCase() === 'i') { infoOpen.value = !infoOpen.value; return }
-  if (e.key === 'Tab') {
-    const root = viewerEl.value
-    if (!root) return
-    const focusable = Array.from(root.querySelectorAll<HTMLElement>(
-      'button:not([disabled]),a[href],input:not([disabled]),textarea:not([disabled]),select:not([disabled]),[tabindex]:not([tabindex="-1"])'
-    )).filter(el => el.offsetParent !== null || el === document.activeElement)
-    if (!focusable.length) { e.preventDefault(); return }
-    const first = focusable[0]
-    const last = focusable[focusable.length - 1]
-    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus() }
-    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus() }
-    else if (!root.contains(document.activeElement)) { e.preventDefault(); first.focus() }
-  }
 }
 
 /* ---------- 初始化 ---------- */
@@ -476,7 +464,6 @@ onMounted(async () => {
 
 onUnmounted(() => {
   document.removeEventListener('keydown', onKeydown)
-  document.body.classList.remove('viewer-open')
   revokeAll()
 })
 
@@ -553,7 +540,6 @@ watch(visible, () => { hydrateCards() })
 .viewer-details { margin:0 0 var(--s-5); border-top:1px solid var(--on-art-line); }
 .viewer-details summary { padding:var(--s-3) 0; color:var(--on-art-secondary); font-size:var(--fs-label-xs); cursor:pointer; }
 .viewer-prompt { max-height:220px; overflow:auto; padding:var(--s-3); border-radius:var(--r-md); background:var(--art-backdrop); color:var(--on-art-secondary); font:400 var(--fs-mono-sm)/1.65 var(--font-mono); white-space:pre-wrap; word-break:break-word; }
-body.viewer-open { overflow:hidden; }
 @media (max-width:900px) {
   .art-viewer { grid-template-columns:1fr; }
   .viewer-stage { padding:60px 42px 78px; }

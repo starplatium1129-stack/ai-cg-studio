@@ -171,13 +171,17 @@
           <div class="voice-grid">
             <div class="voice-card">
               <div class="voice-card-title">宁宁</div>
-              <input id="v-nene-ref" v-model="voiceNeneRef" class="input" placeholder="参考音频路径" />
-              <input id="v-nene-prompt" v-model="voiceNenePrompt" class="input" placeholder="提示文本（日文）" />
+              <label class="sr-only" for="v-nene-ref">宁宁参考音频路径</label>
+            <input id="v-nene-ref" v-model="voiceNeneRef" class="input" placeholder="参考音频路径" />
+              <label class="sr-only" for="v-nene-prompt">宁宁提示文本（日文）</label>
+            <input id="v-nene-prompt" v-model="voiceNenePrompt" class="input" placeholder="提示文本（日文）" />
             </div>
             <div class="voice-card">
               <div class="voice-card-title">夏目</div>
-              <input id="v-nat-ref" v-model="voiceNatsumeRef" class="input" placeholder="参考音频路径" />
-              <input id="v-nat-prompt" v-model="voiceNatsumePrompt" class="input" placeholder="提示文本（日文）" />
+              <label class="sr-only" for="v-nat-ref">夏目参考音频路径</label>
+            <input id="v-nat-ref" v-model="voiceNatsumeRef" class="input" placeholder="参考音频路径" />
+              <label class="sr-only" for="v-nat-prompt">夏目提示文本（日文）</label>
+            <input id="v-nat-prompt" v-model="voiceNatsumePrompt" class="input" placeholder="提示文本（日文）" />
             </div>
           </div>
         </details>
@@ -191,12 +195,13 @@
 
         <div class="tunnel-toggle-row">
           <div class="tunnel-toggle-label">
-            <span class="tunnel-toggle-text">开启公网分享通道</span>
+            <span id="tunnel-switch-label" class="tunnel-toggle-text">开启公网分享通道</span>
             <span class="tunnel-toggle-hint">{{ tunnelEnabled ? '朋友可通过临时链接访问' : '关闭后仅本机可访问' }}</span>
           </div>
           <button
             class="tunnel-switch" type="button" role="switch"
             :aria-checked="tunnelEnabled ? 'true' : 'false'"
+        aria-labelledby="tunnel-switch-label"
             @click="toggleTunnel"
           ><span class="tunnel-switch-knob"></span></button>
         </div>

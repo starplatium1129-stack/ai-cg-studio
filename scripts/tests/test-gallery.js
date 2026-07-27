@@ -52,13 +52,34 @@ assert(
   view.includes("'ArrowLeft'") && view.includes("'ArrowRight'"),
   'immersive viewer must support keyboard navigation',
 );
+// 焦点管理已抽成 useFocusTrap（原先 6 个弹层里只有这里做对了）。
+// 断言视图接上了它，而不是再手写一份。
 assert(
-  view.includes("'Escape'"),
-  'immersive viewer must close on Escape',
+  /useFocusTrap\(\s*viewerEl/.test(view),
+  'immersive viewer must use the shared useFocusTrap composable',
 );
 assert(
-  /Tab/.test(view) && /focus\(\)/.test(view),
-  'immersive viewer must trap focus and restore it on close',
+  /onEscape:\s*closeViewer/.test(view),
+  'immersive viewer must close on Escape via useFocusTrap',
+);
+assert(
+  /initialFocus:\s*closeBtn/.test(view),
+  'immersive viewer must move focus into the dialog on open',
+);
+
+// composable 本身必须真的实现陷阱与焦点还原
+const trap = read('src/composables/useFocusTrap.ts');
+assert(
+  trap.includes("event.key !== 'Tab'") && trap.includes('shiftKey'),
+  'useFocusTrap must implement a real Tab cycle',
+);
+assert(
+  /returnFocus\.value\?\.focus\?\./.test(trap),
+  'useFocusTrap must restore focus to the opener on close',
+);
+assert(
+  trap.includes("classList.add('overlay-open')") && trap.includes("classList.remove('overlay-open')"),
+  'useFocusTrap must lock and unlock background scroll',
 );
 
 // ── 本地原图读取与释放 ────────────────────────────────────────────────────

@@ -239,48 +239,54 @@
     <!-- 编辑 Modal -->
     <Teleport to="body">
       <div v-if="editing" class="overlay" @click.self="closeModal">
-        <div class="modal-card modal-card-wide">
-          <h2>{{ editingId ? '编辑场景 · ' + editing.id : '新增场景' }}</h2>
-          <div class="form-grid">
-            <div class="form-group"><label>ID</label><input v-model="editing.id" class="input" :disabled="!!editingId" placeholder="sc001" /></div>
-            <div class="form-group"><label>标题 *</label><input v-model="editing.title" class="input" :class="{invalid: !editing.title.trim() && triedSave}" /></div>
-            <div class="form-group"><label>分类</label><input v-model="editing.category" class="input" placeholder="恋爱 / 日常 / 校园…" /></div>
-            <div class="form-group">
-              <label>角色</label>
+        <div
+          ref="modalEl"
+          class="modal-card modal-card-wide"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="scene-editor-title"
+        >
+          <h2 id="scene-editor-title">{{ editingId ? '编辑场景 · ' + editing.id : '新增场景' }}</h2>
+          <div class="form-grid" aria-describedby="scene-form-hint">
+            <label class="form-group"><span class="field-label">ID</span><input v-model="editing.id" class="input" :disabled="!!editingId" placeholder="sc001" /></label>
+            <label class="form-group"><span class="field-label">标题 *</span><input v-model="editing.title" class="input" required :aria-invalid="!editing.title.trim() && triedSave" :class="{invalid: !editing.title.trim() && triedSave}" /></label>
+            <label class="form-group"><span class="field-label">分类</span><input v-model="editing.category" class="input" placeholder="恋爱 / 日常 / 校园…" /></label>
+            <label class="form-group">
+              <span class="field-label">角色</span>
               <select v-model="editing.char" class="filter-select" @change="updateCharacterDefaults">
                 <option value="nene">宁宁</option><option value="natsume">夏目</option><option value="triad">双人</option>
               </select>
-            </div>
-            <div class="form-group"><label>LoRA</label><input v-model="editing.lora" class="input" /></div>
-            <div class="form-group"><label>情绪</label><input v-model="editing.emotion" class="input" /></div>
-            <div class="form-group"><label>季节</label><input v-model="editing.season" class="input" placeholder="春/夏/秋/冬/不限" /></div>
-            <div class="form-group"><label>时段</label><input v-model="editing.time" class="input" placeholder="清晨/白天/黄昏/深夜" /></div>
-            <div class="form-group"><label>timeOfDay</label><input v-model="editing.timeOfDay" class="input" placeholder="morning/noon/late_night" /></div>
-            <div class="form-group">
-              <label>分级</label>
+            </label>
+            <label class="form-group"><span class="field-label">LoRA</span><input v-model="editing.lora" class="input" /></label>
+            <label class="form-group"><span class="field-label">情绪</span><input v-model="editing.emotion" class="input" /></label>
+            <label class="form-group"><span class="field-label">季节</span><input v-model="editing.season" class="input" placeholder="春/夏/秋/冬/不限" /></label>
+            <label class="form-group"><span class="field-label">时段</span><input v-model="editing.time" class="input" placeholder="清晨/白天/黄昏/深夜" /></label>
+            <label class="form-group"><span class="field-label">timeOfDay</span><input v-model="editing.timeOfDay" class="input" placeholder="morning/noon/late_night" /></label>
+            <label class="form-group">
+              <span class="field-label">分级</span>
               <select v-model="editing.rating" class="filter-select">
                 <option value="All">All</option><option value="R15">R15</option><option value="R18">R18</option>
               </select>
-            </div>
-            <div class="form-group">
-              <label>策展层级</label>
+            </label>
+            <label class="form-group">
+              <span class="field-label">策展层级</span>
               <select v-model="curationTierValue" class="filter-select" @change="onCurationTierChange">
                 <option value="normal">普通</option><option value="review">待审</option><option value="curated">精选</option><option value="signature">招牌</option>
               </select>
-            </div>
-            <div class="form-group form-group-full"><label>推荐理由（招牌必填）</label><input v-model="curationReason" class="input" :disabled="curationTierValue==='normal'||curationTierValue==='review'" :class="{invalid: curationTierValue==='signature' && !curationReason.trim() && triedSave}" /></div>
-            <div class="form-group"><label>地点</label><input v-model="editing.location" class="input" /></div>
-            <div class="form-group"><label>天气</label><input v-model="editing.weather" class="input" /></div>
-            <div class="form-group"><label>镜头</label><input v-model="editing.camera" class="input" /></div>
-            <div class="form-group"><label>光照</label><input v-model="editing.lighting" class="input" /></div>
-            <div class="form-group form-group-full"><label>标签（逗号分隔）</label><input v-model="tagsInput" class="input" placeholder="silk, looking_back,…" /></div>
-            <div class="form-group form-group-full"><label>用途（逗号分隔）</label><input v-model="usageInput" class="input" placeholder="壁纸, 表情包" /></div>
-            <div class="form-group form-group-full"><label>故事 *</label><textarea v-model="editing.story" class="input" rows="3" :class="{invalid: !editing.story.trim() && triedSave}"></textarea></div>
-            <div class="form-group form-group-full"><label>故事日文</label><textarea v-model="editing.storyJa" class="input" rows="2"></textarea></div>
-            <div class="form-group form-group-full"><label>画面提示词</label><textarea v-model="editing.prompt" class="input" rows="2"></textarea></div>
-            <div class="form-group form-group-full"><label>负面提示词</label><textarea v-model="editing.negative" class="input input-mono" rows="2"></textarea></div>
+            </label>
+            <label class="form-group form-group-full"><span class="field-label">推荐理由（招牌必填）</span><input v-model="curationReason" class="input" :disabled="curationTierValue==='normal'||curationTierValue==='review'" :aria-invalid="curationTierValue==='signature' && !curationReason.trim() && triedSave" :class="{invalid: curationTierValue==='signature' && !curationReason.trim() && triedSave}" /></label>
+            <label class="form-group"><span class="field-label">地点</span><input v-model="editing.location" class="input" /></label>
+            <label class="form-group"><span class="field-label">天气</span><input v-model="editing.weather" class="input" /></label>
+            <label class="form-group"><span class="field-label">镜头</span><input v-model="editing.camera" class="input" /></label>
+            <label class="form-group"><span class="field-label">光照</span><input v-model="editing.lighting" class="input" /></label>
+            <label class="form-group form-group-full"><span class="field-label">标签（逗号分隔）</span><input v-model="tagsInput" class="input" placeholder="silk, looking_back,…" /></label>
+            <label class="form-group form-group-full"><span class="field-label">用途（逗号分隔）</span><input v-model="usageInput" class="input" placeholder="壁纸, 表情包" /></label>
+            <label class="form-group form-group-full"><span class="field-label">故事 *</span><textarea v-model="editing.story" class="input" rows="3" required :aria-invalid="!editing.story.trim() && triedSave" :class="{invalid: !editing.story.trim() && triedSave}"></textarea></label>
+            <label class="form-group form-group-full"><span class="field-label">故事日文</span><textarea v-model="editing.storyJa" class="input" rows="2"></textarea></label>
+            <label class="form-group form-group-full"><span class="field-label">画面提示词</span><textarea v-model="editing.prompt" class="input" rows="2"></textarea></label>
+            <label class="form-group form-group-full"><span class="field-label">负面提示词</span><textarea v-model="editing.negative" class="input input-mono" rows="2"></textarea></label>
           </div>
-          <p v-if="formHint" class="form-hint">{{ formHint }}</p>
+          <p v-if="formHint" id="scene-form-hint" class="form-hint" role="alert">{{ formHint }}</p>
           <div class="modal-actions">
             <button class="btn btn-primary" type="button" @click="saveScene">保存</button>
             <button class="btn btn-ghost" type="button" @click="copyJson">复制 JSON</button>
@@ -296,8 +302,12 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 import { useSceneStore } from '@/stores/sceneStore'
+import { useFocusTrap } from '@/composables/useFocusTrap'
 
 const sceneStore = useSceneStore()
+
+/** 场景编辑器是破坏性弹层，必须有焦点陷阱 + Escape（原先只有 @click.self） */
+const modalEl = ref<HTMLElement | null>(null)
 
 const TABS = [
   { id:'scenes',     label:'场景库' },
@@ -679,6 +689,8 @@ function openEditModal(id: string) {
 
 function closeModal() { editing.value = null; editingId.value = '' }
 
+useFocusTrap(modalEl, () => editing.value !== null, { onEscape: closeModal })
+
 function setSceneCuration(id: string, tier: string, reason: string) {
   const groups = ['signatureSceneIds','curatedSceneIds','reviewSceneIds'] as const
   groups.forEach(g => {
@@ -944,7 +956,8 @@ tr:hover td { background:var(--bg-elevated); }
 .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:var(--s-3); margin-bottom:var(--s-3); }
 .form-group { display:grid; gap:var(--s-1); }
 .form-group-full { grid-column:1 / -1; }
-.form-group label { font-size:var(--fs-label-sm); color:var(--text-muted); font-weight:600; }
+.form-group { cursor:default; }
+.field-label { font-size:var(--fs-label-sm); color:var(--text-muted); font-weight:600; }
 .input { padding:var(--s-2) var(--s-3); background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-md); color:var(--text-primary); font:var(--fs-body)/1.5 var(--font-sans); outline:none; width:100%; resize:vertical; }
 .input-mono { font-family:var(--font-mono); font-size:var(--fs-label); }
 .input:focus { border-color:var(--accent); }

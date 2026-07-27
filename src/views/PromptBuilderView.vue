@@ -570,8 +570,14 @@
     <!-- 备份恢复确认 -->
     <Teleport to="body">
       <div v-if="backup.pending.value" class="backup-overlay open" @click.self="backup.discard()">
-        <div class="backup-card">
-          <h3>从备份恢复</h3>
+        <div
+          ref="backupCardEl"
+          class="backup-card"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="backup-restore-title"
+        >
+          <h3 id="backup-restore-title">从备份恢复</h3>
           <p>选择恢复方式。覆盖会替换现有数据，合并会按 id 保留较新的记录。</p>
           <div class="backup-summary">
             <strong>{{ backup.pendingName.value }}</strong>
@@ -617,6 +623,7 @@ import { kvGet } from '@/composables/useKVStore'
 import { useSDQueue, type SDQueueJob } from '@/composables/useSDQueue'
 import { classifySDError, SAFE_SAMPLING, LIGHT_LOAD, type SDErrorReport, type SDRecoveryId } from '@/utils/sdError'
 import { useBackup, type BackupSummary } from '@/composables/useBackup'
+import { useFocusTrap } from '@/composables/useFocusTrap'
 import type { HistoryEntry, Scene } from '@/stores/promptBuilderStore'
 
 const router = useRouter()
@@ -963,6 +970,12 @@ async function runJob(job: Omit<SDQueueJob, 'id'>, opts: { disableLora?: boolean
 
 // ── 备份 / 恢复 ────────────────────────────────────────────────────────────
 const backup = useBackup((m) => pb.flash(m))
+
+/** 恢复确认弹层：覆盖本地是破坏性操作，必须有焦点陷阱 + Escape */
+const backupCardEl = ref<HTMLElement | null>(null)
+useFocusTrap(backupCardEl, () => backup.pending.value !== null, {
+  onEscape: () => { if (!backup.busy.value) backup.discard() },
+})
 const backupFileEl = ref<HTMLInputElement | null>(null)
 const utilityEl = ref<HTMLDetailsElement | null>(null)
 const pendingSummary = ref<BackupSummary | null>(null)

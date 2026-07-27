@@ -224,8 +224,8 @@ src/
 ### AX — 无障碍
 
 - ✅ **AX-1 全站没有 `<main>` 地标**。`AppLayout.vue` 的 `<div id="main">` 已改真 `<main>`（并把 `outline:none` 换成 `:focus-visible` 可见落点）；`/control` 挂在 `AppLayout` 之外，已自备 `.skip-link` + `<main id="control-main">`。
-- ⬜ **AX-2 51 个表单控件没有程序化标签**（30 个正确）。全应用只有 **3 个 `for=`**。最集中处 `SceneManagerView.vue:245-281` —— 22 字段场景编辑器，每个 `<label>` 都是无 `for` 的兄弟节点。`ControlView.vue:172-178` 已有 `id`，只缺 `for`。
-- ⬜ **AX-3 6 个弹层里 5 个没有焦点管理**。`GalleryView.vue:325-395` 是正确实现（存取焦点、真 Tab 陷阱、Escape、滚动锁），其余五个都没复用。`SceneManagerView.vue:241`（破坏性场景编辑器）只有 `@click.self`。`ShowcaseView.vue:90` 用 `<dialog :open>` 而非 `showModal()` → **非模态**：无 top layer、无 inert 背景、无焦点约束。
+- ✅ **AX-2 51 个表单控件没有程序化标签**。`SceneManagerView` 的 22 字段编辑器改为 `<label class="form-group">` 包裹控件（`.form-group` 本来就是 `display:grid`，布局不变且无需发明 22 个 id），内层文案改 `<span class="field-label">`；必填字段补 `required` + `aria-invalid`，`formHint` 挂 `role="alert"` 并被 `aria-describedby` 引用。`ControlView` 四个声线输入补 `sr-only` label，公网暴露开关补 `aria-labelledby`。原文：全应用只有 **3 个 `for=`**。最集中处 `SceneManagerView.vue:245-281` —— 22 字段场景编辑器，每个 `<label>` 都是无 `for` 的兄弟节点。`ControlView.vue:172-178` 已有 `id`，只缺 `for`。
+- ✅ **AX-3 6 个弹层里 5 个没有焦点管理**。已抽出 `src/composables/useFocusTrap.ts`（焦点存取 + 真 Tab 陷阱 + Escape + 滚动锁），`GalleryView` 改为复用它（删掉手写那份），场景编辑器与备份恢复弹层接上并补 `role="dialog"`/`aria-modal`，`ShowcaseView` 改用 `showModal()` 拿真模态。`body.overlay-open` 提到设计系统（原先写在 GalleryView 的 scoped 块里，根本作用不到 body）。原文：`GalleryView.vue:325-395` 是正确实现（存取焦点、真 Tab 陷阱、Escape、滚动锁），其余五个都没复用。`SceneManagerView.vue:241`（破坏性场景编辑器）只有 `@click.self`。`ShowcaseView.vue:90` 用 `<dialog :open>` 而非 `showModal()` → **非模态**：无 top layer、无 inert 背景、无焦点约束。
   改法：把 Gallery 的陷阱抽成 `useFocusTrap()`；`design-system.css:858-885` 已有 `.overlay`/`.modal-card` 原语，四个视图仍在手搓。
 - ✅ **AX-4 主路径键盘不可达**。剧本卡与角色简介展开已改真 `<button>`（后者补 `aria-expanded`），`AppNav` 品牌改真 `RouterLink`。原文：`ScenarioView.vue:14` 剧本卡是 `<div @click>`，无 role/tabindex/keydown，而它是进入剧本查看器的唯一入口。`CharacterView.vue:38` 简介展开同样只有 click，且内容确实被 CSS 截断。`AppNav.vue:4` 把品牌做成 `<div role="link" tabindex="0">` 而非 `RouterLink`。
 - ✅ **AX-5 `aria-current` 全站 0 处**。主/次导航都已补；顺带删掉 `<summary aria-label>`（它会盖掉可见文字「更多」，违反 SC 2.5.3）。原文：`AppNav.vue:21` 仅用 class 标记当前路由。
@@ -233,7 +233,7 @@ src/
   - ✅ `prefers-color-scheme`：`useTheme` 已导出 `preferredTheme()`，首访跟随系统，未显式选过主题时随系统实时切换；`index.html` 补 `<meta name="color-scheme">`。
   - ✅ 根字号：`15px` → `93.75%`（移动端 `14px` → `87.5%`），视觉不变但恢复跟随浏览器字号设置（SC 1.4.4）。
   - ✅ reduced-motion：全局块补 `transition-duration`；`useLive2D.setPaused` 现在判 `prefers-reduced-motion` 并停 pixi ticker（CSS 关不掉 WebGL）。
-  - `ControlView.vue:195` 公网暴露开关是 `role="switch"` 且无可及名称 —— 正是把本机开向互联网的那个控件。
+  - ✅ 公网暴露开关（`role="switch"`）已补 `aria-labelledby`（随 AX-2 一起修）。
   - `CharacterView.vue:9` 与 `ChatView.vue:18` 声明了 `role="tablist"` 却无 `tabpanel`/`aria-controls`/方向键 —— 半成品模式比纯按钮更糟。
   - `ChatView.vue:69` 把 `aria-live="polite"` 加在整个消息历史上 → 流式输出每个 token 都重播报。
   - **mood 卡文字是潜伏的 1.38:1**：`mood.css:22` 设 `color: var(--mood-color)`，目前只因 `director.css:944` 泄漏出一条未作用域限定的覆盖才看起来正常。正确作用域化 `director.css` 会立刻让标题掉到 1.38:1。`design-system.css:58-63` 已记录该陷阱并提供 `--mood-*-text`。

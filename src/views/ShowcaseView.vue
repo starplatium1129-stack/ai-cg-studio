@@ -87,7 +87,10 @@
 
     <!-- 查看器 dialog -->
     <Teleport to="body">
-      <dialog ref="dialogEl" class="showcase-viewer" :open="!!currentEntry" aria-label="样张查看器" @click.self="closeViewer">
+      <!-- 必须用 showModal() 打开（见 watch(currentEntry)）：
+           设 open 属性只是非模态 dialog —— 没有 top layer、没有 ::backdrop、
+           背景不 inert，Tab 能直接跑到下面的网格里 -->
+      <dialog ref="dialogEl" class="showcase-viewer" aria-label="样张查看器" @click.self="closeViewer" @cancel.prevent="closeViewer">
         <div v-if="currentEntry" class="viewer-layout">
           <div class="viewer-art">
             <img :src="imgSrc(currentEntry)" :alt="currentEntry.title" />
@@ -165,6 +168,22 @@ const currentEntry = computed(() => filtered.value[currentIdx.value] ?? null)
 
 function openViewer(id: string) { currentId.value = id }
 function closeViewer() { currentId.value = '' }
+
+/**
+ * 真模态由浏览器负责：showModal() 给我们 top layer、inert 背景、
+ * 原生焦点约束与 Escape，都是 :open 属性拿不到的。
+ */
+watch(currentEntry, (entry) => {
+  const dialog = dialogEl.value
+  if (!dialog) return
+  if (entry && !dialog.open) {
+    dialog.showModal()
+    document.body.classList.add('overlay-open')
+  } else if (!entry && dialog.open) {
+    dialog.close()
+    document.body.classList.remove('overlay-open')
+  }
+})
 function move(step: number) {
   const arr = filtered.value
   if (!arr.length) return
@@ -183,7 +202,7 @@ function onKey(e: KeyboardEvent) {
   if (!currentEntry.value) return
   if (e.key === 'ArrowLeft') move(-1)
   if (e.key === 'ArrowRight') move(1)
-  if (e.key === 'Escape') closeViewer()
+  // Escape 交给 <dialog> 原生处理（@cancel），这里不再重复
 }
 
 onMounted(async () => {
@@ -208,7 +227,10 @@ onMounted(async () => {
     unavailable.value = true
   }
 })
-onUnmounted(() => document.removeEventListener('keydown', onKey))
+onUnmounted(() => {
+  document.removeEventListener('keydown', onKey)
+  document.body.classList.remove('overlay-open')
+})
 </script>
 
 <style scoped>
