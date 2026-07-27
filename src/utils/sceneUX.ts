@@ -216,6 +216,50 @@ export function isPersonalFavorite(scene: { id: string }, profile: PreferencePro
   return !!(scene && profile?.scenes?.[scene.id]?.favorites)
 }
 
+function tagKey(value: unknown): string {
+  return String(value ?? '').trim().toLowerCase().replace(/[\s-]+/g, '_')
+}
+
+/**
+ * 判断当前 story 是否仍等同于场景自带故事。
+ * 用于「脱离场景」时决定该不该清空文本：场景原文要清，用户自己写的要留。
+ */
+export function isSceneBoundStory(scene: any, story: unknown, baseStory?: unknown): boolean {
+  if (!scene) return false
+  const current = String(story ?? '').replace(/\s+/g, ' ').trim()
+  const original = String(baseStory || scene.story || '').replace(/\s+/g, ' ').trim()
+  return !!current && !!original && current === original
+}
+
+/**
+ * 从历史记录恢复手动标签。
+ * 老记录没有 manual_tags 快照时，用兼容场景的 tags 兜底；
+ * 若场景与当前角色不兼容，则剔除该场景的内建标签，只留用户真正手加的。
+ */
+export function restoreHistoryManualTags(entry: any, scene: any, sceneCompatible: boolean): string[] {
+  const hasSnapshot = Array.isArray(entry?.manual_tags)
+  const source: unknown[] = hasSnapshot
+    ? entry.manual_tags
+    : (scene && sceneCompatible && Array.isArray(scene.tags) ? scene.tags : [])
+  const staleSceneTags = scene && !sceneCompatible
+    ? new Set<string>((scene.tags || []).map(tagKey))
+    : null
+  const seen = new Set<string>()
+  return source.filter((tag): tag is string => {
+    if (typeof tag !== 'string' || !tag.trim()) return false
+    const key = tagKey(tag)
+    if (!key || (staleSceneTags && staleSceneTags.has(key)) || seen.has(key)) return false
+    seen.add(key)
+    return true
+  })
+}
+
+/** 场景不兼容时，不要把仍绑定该场景的故事文本带回来 */
+export function restoreHistoryStory(entry: any, scene: any, sceneCompatible: boolean): string {
+  const story = typeof entry?.story === 'string' ? entry.story : ''
+  return scene && !sceneCompatible && isSceneBoundStory(scene, story, scene.story) ? '' : story
+}
+
 export function readRecent(storage?: Storage): Array<{ id: string; title: string; char: string; usedAt: number }> {
   try {
     const items = JSON.parse((storage ?? localStorage).getItem(RECENT_KEY) ?? '[]')

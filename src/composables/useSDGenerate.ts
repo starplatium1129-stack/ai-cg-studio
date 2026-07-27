@@ -12,6 +12,8 @@ export interface SDGenerateParams {
   hr_fix?: boolean
   hr_scale?: number
   hr_upscaler?: string
+  hr_second_pass_steps?: number
+  denoising_strength?: number
   seed?: number
   model?: string
   alwayson_scripts?: Record<string, unknown>
@@ -27,6 +29,7 @@ export interface SDStatus {
 
 export function useSDGenerate() {
   const online      = ref(false)
+  const checkpoint  = ref('')
   const generating  = ref(false)
   const progress    = ref(0)
   const statusText  = ref('')
@@ -42,16 +45,42 @@ export function useSDGenerate() {
   let abortCtrl: AbortController | null = null
 
   async function checkStatus(): Promise<boolean> {
+    // 优先走网关聚合接口；失败则直接探测 /sdapi（本机代理）
     try {
       const r = await fetch('/api/sd-status', { cache: 'no-store' })
-      if (!r.ok) { online.value = false; return false }
-      const data = await r.json()
-      online.value   = Boolean(data.online)
-      samplers.value  = data.samplers  ?? []
-      schedulers.value = data.schedulers ?? []
-      upscalers.value  = data.upscalers  ?? []
-      models.value     = data.models     ?? []
-      return online.value
+      if (r.ok) {
+        const data = await r.json()
+        online.value = Boolean(data.online)
+        samplers.value = data.samplers ?? []
+        schedulers.value = data.schedulers ?? []
+        upscalers.value = data.upscalers ?? []
+        models.value = data.models ?? []
+        checkpoint.value = data.checkpoint ?? ''
+        if (online.value) return true
+      }
+    } catch { /* fall through */ }
+
+    try {
+      const [modelsRes, samplersRes, schedulersRes] = await Promise.all([
+        fetch('/sdapi/v1/sd-models', { cache: 'no-store' }),
+        fetch('/sdapi/v1/samplers', { cache: 'no-store' }).catch(() => null),
+        fetch('/sdapi/v1/schedulers', { cache: 'no-store' }).catch(() => null),
+      ])
+      if (!modelsRes.ok) { online.value = false; return false }
+      const modelList = await modelsRes.json()
+      online.value = true
+      models.value = Array.isArray(modelList)
+        ? modelList.map((m: any) => m.title || m.model_name || m.name || '').filter(Boolean)
+        : []
+      if (samplersRes?.ok) {
+        const list = await samplersRes.json()
+        samplers.value = Array.isArray(list) ? list.map((s: any) => s.name || s).filter(Boolean) : []
+      }
+      if (schedulersRes?.ok) {
+        const list = await schedulersRes.json()
+        schedulers.value = Array.isArray(list) ? list.map((s: any) => s.name || s.label || s).filter(Boolean) : []
+      }
+      return true
     } catch {
       online.value = false
       return false
@@ -92,25 +121,29 @@ export function useSDGenerate() {
       // Parse size string like "832×1216" into width/height
       const [w, h] = parseSize(params)
 
+      // 与旧 sd-api.js 默认对齐：CFG 5.5、Karras、hires denoise 0.35
       const payload: Record<string, unknown> = {
         prompt:          params.prompt,
         negative_prompt: params.negative_prompt ?? '',
         width:  w,
         height: h,
-        cfg_scale:   params.cfg_scale   ?? 7,
+        cfg_scale:   params.cfg_scale   ?? 5.5,
         steps:       params.steps       ?? 28,
         sampler_name: params.sampler_name ?? 'DPM++ 2M',
-        scheduler:   params.scheduler   ?? 'Karras',
         seed:        params.seed        ?? -1,
+        batch_size:  1,
+        n_iter:      1,
         send_images:  true,
         save_images:  false,
       }
+      if (params.scheduler) payload.scheduler = params.scheduler
 
       if (params.hr_fix) {
-        payload.enable_hr      = true
-        payload.hr_scale       = params.hr_scale    ?? 1.5
-        payload.hr_upscaler    = params.hr_upscaler ?? 'R-ESRGAN 4x+ Anime6B'
-        payload.denoising_strength = 0.55
+        payload.enable_hr = true
+        payload.hr_scale = params.hr_scale ?? 1.5
+        payload.hr_upscaler = params.hr_upscaler || 'Latent'
+        payload.hr_second_pass_steps = params.hr_second_pass_steps ?? Math.max(10, Math.round((params.steps ?? 28) * 0.5))
+        payload.denoising_strength = params.denoising_strength ?? 0.35
       }
 
       if (params.alwayson_scripts) payload.alwayson_scripts = params.alwayson_scripts
@@ -173,7 +206,8 @@ export function useSDGenerate() {
   }
 
   return {
-    online: readonly(online), generating: readonly(generating),
+    online: readonly(online), checkpoint: readonly(checkpoint),
+    generating: readonly(generating),
     progress: readonly(progress), statusText: readonly(statusText),
     resultUrl: readonly(resultUrl), resultSeed: readonly(resultSeed),
     errorMsg: readonly(errorMsg), samplers: readonly(samplers),

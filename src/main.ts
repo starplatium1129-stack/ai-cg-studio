@@ -7,6 +7,7 @@ import './assets/css/scene-card.css'
 import './assets/css/viewer.css'
 import './assets/css/mood.css'
 import './assets/css/director.css'
+import './assets/css/chat.css'
 
 // 初始主题：从 localStorage 读取，默认 dark
 const stored = (() => {
