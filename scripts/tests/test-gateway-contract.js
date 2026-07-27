@@ -206,9 +206,32 @@ async function main() {
     var srcLeak = await request({ path:'/src/main.ts', headers:LOCAL });
     assert.strictEqual(srcLeak.status, 404, 'only design-system.css may be exposed from src/');
 
+    // ---- P-7: 预压产物优先（brotli > gzip > 原文）----
+    // 只有跑过 npm run precompress 才有 .br；没有就跳过而不是失败。
+    if (fs.existsSync(path.join(__dirname, '..', '..', 'data', 'scenes.json.br'))) {
+      var brotli = await request({ path:'/data/scenes.json', headers:Object.assign({ 'Accept-Encoding':'br' }, LOCAL) });
+      assert.strictEqual(brotli.headers['content-encoding'], 'br', 'brotli must win when accepted');
+      assert.ok(String(brotli.headers['content-type'] || '').indexOf('json') !== -1,
+        'precompressed response must keep the original content type');
+      assert.ok(String(brotli.headers.vary || '').indexOf('Accept-Encoding') !== -1,
+        'precompressed response must Vary on Accept-Encoding');
+
+      var gzipped = await request({ path:'/data/scenes.json', headers:Object.assign({ 'Accept-Encoding':'gzip' }, LOCAL) });
+      assert.strictEqual(gzipped.headers['content-encoding'], 'gzip', 'gzip must be the fallback');
+      assert.ok(brotli.body.length < gzipped.body.length, 'brotli must be smaller than gzip');
+
+      var identity = await request({ path:'/data/scenes.json', headers:Object.assign({ 'Accept-Encoding':'identity' }, LOCAL) });
+      assert.strictEqual(identity.status, 200, 'clients without br/gzip must still get the file');
+      assert.ok(!identity.headers['content-encoding'], 'identity response must not claim an encoding');
+
+      // 预压查找不得成为目录穿越入口
+      var traversal = await request({ path:'/data/../server.js', headers:Object.assign({ 'Accept-Encoding':'br' }, LOCAL) });
+      assert.notStrictEqual(traversal.status, 200, 'precompressed lookup must not escape the data allowlist');
+    }
+
     console.log('Gateway contract tests passed: tunnel localOnly, host validation, ' +
       'rebinding guard, WS upgrade auth, error envelopes, api 404, sdapi allowlist, ' +
-      'data allowlist, immutable assets');
+      'data allowlist, immutable assets, precompressed serving');
   } finally {
     handle.shutdown();
   }

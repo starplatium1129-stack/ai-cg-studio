@@ -38,3 +38,7 @@ tunnel.log
 
 # Dual-pose skeleton images (generated)
 assets/dual-poses/*.png
+
+# 预压产物（npm run precompress 生成，随构建重新产生）
+*.br
+*.gz

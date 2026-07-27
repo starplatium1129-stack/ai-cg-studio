@@ -29,6 +29,22 @@ export default defineConfig({
     outDir: 'dist',
     emptyOutDir: true,
     // 避免与 Express 已有的 /assets/ 路由（角色图等）冲突
-    assetsDir: '_app'
+    assetsDir: '_app',
+    // 固定构建目标，别随 Vite 默认值漂移；与 package.json 的 browserslist 对齐
+    target: ['chrome111', 'edge111', 'firefox113', 'safari16.4'],
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          // 框架单独成块：应用代码改动不该让 Vue/Router/Pinia 的缓存一起失效
+          if (id.includes('node_modules/vue/') ||
+              id.includes('node_modules/@vue/') ||
+              id.includes('node_modules/vue-router/') ||
+              id.includes('node_modules/pinia/')) {
+            return 'vendor'
+          }
+          return undefined
+        }
+      }
+    }
   }
 })

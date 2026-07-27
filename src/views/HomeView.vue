@@ -30,8 +30,25 @@
           </div>
         </div>
         <aside class="hero-orbit" aria-label="宁宁与夏目的角色视觉">
-          <img class="hero-character nene" src="/assets/characters/nene-home-cg.jpg" alt="绫地宁宁" decoding="async" />
-          <img class="hero-character natsume" src="/assets/characters/natsume-home-cg.jpg" alt="四季夏目" decoding="async" />
+        <!-- width/height 是内在尺寸（实测 1024×1344），用来预留版位避免布局抖动；
+             CSS 仍然控制显示尺寸。这两张是首屏 LCP 候选，故不 lazy 且给高优先级。 -->
+        <img
+          class="hero-character nene"
+          src="/assets/characters/nene-home-cg.jpg"
+          alt="绫地宁宁"
+          width="1024"
+          height="1344"
+          decoding="async"
+          fetchpriority="high"
+        />
+        <img
+          class="hero-character natsume"
+          src="/assets/characters/natsume-home-cg.jpg"
+          alt="四季夏目"
+          width="1024"
+          height="1344"
+          decoding="async"
+        />
           <div class="orbit-label"><strong>NENE × NATSUME</strong><span>把今天的心动，收进画面。</span></div>
         </aside>
         <div class="hero-strip" aria-labelledby="featuredScenesLabel">

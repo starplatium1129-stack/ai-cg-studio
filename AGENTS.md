@@ -214,12 +214,12 @@ src/
 - ✅ **P-3 带 hash 的产物没有 `immutable`**。`dist/_app` 已改 `max-age=31536000, immutable`，`dist/index.html` 保持 `no-cache`（已加路由级断言）。原文：`server.js:95` 给 `dist/` 一律 `max-age=86400` → 34 个 JS/CSS 文件永远每天回验一次。改法：`dist/_app` → `max-age=31536000, immutable`；仅 `dist/index.html` 保持 `no-cache`。
 - ✅ **P-4 字体在打包后的 CSS 里 `@import`**。已移到 `index.html` 的 `preconnect` + `link`。字重保留 5 个：`src/` 里 500 用了 16 次、700 用了 49 次，砍掉会让浏览器合成假粗体。原文：`src/assets/css/design-system.css:8`，已确认它出现在构建产物 CSS 的第 1 个字符 → HTML→CSS→CSS→字体 三段串行 RTT，且请求了 5 个 CJK 字重。改法：改 `index.html` 里 `preconnect` + `link`，字重砍到 2–3 个。
 - ✅ **P-5 110KB 路由专用 CSS 全局加载**。`director.css` / `chat.css` 已移入各自视图 → 全局 CSS **139KB → 45.6KB（−67%）**。原文：`src/main.ts:5-10` 无条件 import `director.css`（91.6KB）+ `chat.css`（18.6KB），占 139KB 全局包的 79%。改法：把这两个 import 移进各自视图，`cssCodeSplit` 已开启会自动切块。
-- ⬜ **P-6 首屏大图**。`HomeView.vue:33-34` 两张 1024×1344 JPEG 合计 787KB，无 `width`/`height`/`srcset`、未用 WebP（而立绘已经在用 WebP）。
-- ⬜ **P-7 无 Brotli**。实测 `scenes.json` 229.7 → **155.2KB**（−32%）。改法：`vite-plugin-compression` 预压 + 静态预压产物服务。
+- ✅ **P-6 首屏大图**。已补 width/height（实测 1024×1344，消除布局抖动）+ 首图 fetchpriority=high。WebP/srcss 转码仍待做（需要图像工具）。原文：`HomeView.vue:33-34` 两张 1024×1344 JPEG 合计 787KB，无 `width`/`height`/`srcset`、未用 WebP（而立绘已经在用 WebP）。
+- ✅ **P-7 无 Brotli**。新增 scripts/maintenance/precompress.js（构建后预压 .br/.gz，已挂 build:all）+ 服务端优先发预压产物。实测 scenes.json 913KB → 233KB gzip → **155KB brotli**；全量 3412KB → 733KB。原文：实测 `scenes.json` 229.7 → **155.2KB**（−32%）。改法：`vite-plugin-compression` 预压 + 静态预压产物服务。
 - ⬜ **P-8 42.85MB 贴图已入 git 版本库**（`git ls-files` 已确认）。每次 clone 都要付，且已在历史里。改法：Git LFS 或改为外部下载步骤。**重写历史是破坏性操作，需先征得确认。**
 - ✅ **P-9 搜索每次击键全量重算**。已加 150ms debounce（清空立即生效）+ 评分预计算 Map，比较器不再重复调 `uxSearchScore`。原文：`SceneExplorerView.vue:278` 在比较器里每次比较调 `uxSearchScore` 两次 ≈ 每次重算 4900 次评分；全 `src/` 无任何 debounce。改法：150ms debounce + 预计算评分 Map。
 - ✅ **P-10 890KB 构建输入被公开托管**。`/data` 改成 6 文件白名单，`data/scenes/*.json` 与 `history/projects/prompts.json` 等个人内容一并不再外露（已加路由级断言）。原文：`data/scenes/*.json` 是 `build-scenes.js` 的输入，被 `server.js:105` 暴露，无客户端读取。改法：移出托管根目录。
-- ⬜ **P-11 `vite.config.ts:28-33`** 无 `manualChunks`、无 analyzer、无图片管线、无 `build.target`；`package.json` 无 `browserslist`。
+- ✅ **P-11 `vite.config.ts` 构建配置**。已补 `manualChunks`（vendor 分块：入口 **107KB → 7.9KB** + vendor 103KB，应用改动不再让框架缓存失效）、`build.target` 与 `package.json` 的 `browserslist`。analyzer 与图片管线仍待做。
 
 ### AX — 无障碍
 

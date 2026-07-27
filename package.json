@@ -10,8 +10,8 @@
     "start": "node server.js",
     "dev": "vite",
     "build": "vite build",
-    "build:all": "npm run build && npm run build:runtime",
-    "prod": "npm run build && npm start",
+    "build:all": "npm run build && npm run build:runtime && npm run precompress",
+    "prod": "npm run build && npm run precompress && npm start",
     "dev:server": "node server.js",
     "typecheck:app": "tsc -p tsconfig.app.json --noEmit",
     "validate": "npm run design:lint && npm run build:runtime && npm run typecheck && node scripts/tests/test-style-debt.js && node scripts/maintenance/scan-style-literals.js --check && node scripts/maintenance/check-contrast.js --check && node scripts/maintenance/lint-colors.js --check && node scripts/maintenance/build-scenes.js --check && node scripts/maintenance/optimize-scenes.js --check && node scripts/maintenance/classify-scene-ratings.js --check && node scripts/maintenance/validate-scenes.js && node scripts/maintenance/validate-content-contracts.js && node scripts/tests/test-page-architecture.js && node scripts/tests/test-control-operation.js && node scripts/tests/test-serial-queue.js && node scripts/tests/test-http-client.js && node scripts/tests/test-live2d-service.js && node scripts/tests/test-wav-quality.js && node scripts/tests/test-voice-baseline.js && node scripts/tests/test-voice-profile-contract.js && node scripts/tests/test-scene-ux.js && node scripts/tests/test-quick-create.js && node scripts/tests/test-sd-error.js && node scripts/tests/test-data-backup.js && node scripts/tests/test-storage-reliability.js && node scripts/tests/test-storage-health.js && node scripts/tests/test-security.js && node scripts/tests/test-gateway-contract.js && node scripts/tests/test-prompt-policy.js && node scripts/tests/test-sd-runtime.js && node scripts/tests/test-prompt-builder-modules.js && node scripts/tests/test-showcase.js && node scripts/tests/test-gallery.js && node scripts/tests/test-maintenance.js && node scripts/tests/test-chat.js && node scripts/tests/test-resource-scheduling.js",
@@ -53,7 +53,8 @@
     "scenes:normalize": "node scripts/maintenance/classify-scene-ratings.js --write && node scripts/maintenance/optimize-scenes.js --write && node scripts/maintenance/validate-scenes.js",
     "optimize-scenes": "node scripts/maintenance/optimize-scenes.js --write",
     "classify-ratings": "node scripts/maintenance/classify-scene-ratings.js --write",
-    "lint:colors": "node scripts/maintenance/lint-colors.js"
+    "lint:colors": "node scripts/maintenance/lint-colors.js",
+    "precompress": "node scripts/maintenance/precompress.js"
   },
   "dependencies": {
     "compression": "^1.8.1",
@@ -74,5 +75,11 @@
   },
   "overrides": {
     "gh-pages": "6.3.0"
-  }
+  },
+  "browserslist": [
+    "chrome >= 111",
+    "edge >= 111",
+    "firefox >= 113",
+    "safari >= 16.4"
+  ]
 }
