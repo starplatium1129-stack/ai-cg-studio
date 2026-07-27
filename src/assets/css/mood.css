@@ -1,0 +1,55 @@
+/* ============================================================
+   绫季绘境 · Color mood cards
+   原先同一组件在 css/director.css、tools/color-script.html、tools/style.html
+   三处各有一份不同取值(网格列宽/圆角/色带高度/字号)。此处收敛为一份基准
+   + 两个尺寸修饰类,尺寸差异用 .mood-grid-sm / .mood-grid-lg 表达。
+   Depends on: design-system.css
+   ============================================================ */
+
+/* 基准:色彩剧本页的中等密度 */
+.mood-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--mood-col, 130px), 1fr));
+  gap: var(--s-3);
+}
+.mood-card {
+  overflow: hidden;
+  width: 100%;
+  padding: 0;
+  border: 2px solid var(--border-soft);
+  border-radius: var(--r-lg);
+  background: var(--bg-surface);
+  color: var(--mood-color, inherit);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color var(--t-fast), transform var(--t-base) var(--ease-out), box-shadow var(--t-base);
+}
+.mood-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+/* 选中态用自身情绪色描边,故走 currentColor(由 --mood-color 提供) */
+.mood-card.active { border-color: currentColor; box-shadow: var(--glow-md); }
+.mood-card.selected { border-color: var(--accent); box-shadow: var(--glow-sm); }
+.mood-strip { display: flex; height: var(--mood-strip-h, 36px); }
+.mood-swatch { flex: 1; background: var(--swatch, transparent); }
+.mood-body { padding: var(--s-2) var(--s-3); }
+.mood-name { font-size: var(--fs-body); font-weight: 600; }
+.mood-en { color: var(--text-muted); font: 400 var(--fs-label-xs) var(--font-mono); }
+.mood-desc { color: var(--text-muted); font-size: var(--fs-label-xs); line-height: 1.4; }
+
+/* 画风页:更大的取色卡 */
+.mood-grid-lg { --mood-col: 160px; --mood-strip-h: 40px; }
+.mood-grid-lg .mood-name { font-weight: 700; }
+
+/* 导演台右栏:极紧凑,一行放得下 4 张 */
+.mood-grid-sm { --mood-col: 64px; --mood-strip-h: 20px; gap: var(--s-2); }
+.mood-grid-sm .mood-card { border-radius: var(--r-md); background: var(--bg-deep); }
+/* 2px 5px:紧凑卡内部微调,升到 4px 会让右栏多出一行 */
+.mood-grid-sm .mood-body { padding: 2px 5px; }
+.mood-grid-sm .mood-name { font-size: var(--fs-mono-sm); }
+
+@media (max-width: 768px) {
+  .mood-grid-lg { --mood-col: 140px; }
+}
+@media (max-width: 480px) {
+  .mood-grid-lg { grid-template-columns: repeat(2, 1fr); }
+}

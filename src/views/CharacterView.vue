@@ -1,0 +1,137 @@
+﻿<template>
+  <main class="page" style="--page-max:1100px">
+    <div class="page-kicker">Character routes</div>
+    <h1 class="title">角色档案</h1>
+    <p class="subtitle">视觉特征、性格与绑定模型——这里是角色在这台机器上的完整档案。</p>
+
+    <div v-if="loading" class="empty-state"><div class="empty-state-icon">⏳</div><p>加载中…</p></div>
+    <template v-else>
+      <div class="character-tabs" role="tablist">
+        <button v-for="c in characters" :key="c.id" class="character-tab"
+          :class="{ active: current?.id === c.id }" role="tab"
+          :aria-selected="current?.id === c.id"
+          @click="current = c">{{ c.icon }} {{ c.name }}</button>
+      </div>
+
+      <section v-if="current" class="character-hero card-direct card-level-3">
+        <div class="portrait" :class="{ natsume: current.id === 'natsume' }">
+          <img v-if="current.portrait?.image" class="portrait-image"
+            :src="current.portrait.image" :alt="current.portrait.alt || current.name"
+            loading="eager" decoding="async" />
+          <span class="portrait-badge">{{ current.icon }} 官方角色立绘</span>
+          <span class="portrait-source">{{ current.source }}</span>
+        </div>
+        <div>
+          <h2 class="character-name">{{ current.name }}</h2>
+          <div v-if="hasIdentity" class="identity-row">
+            <span v-if="current.identity?.role" class="item role">{{ current.identity.role }}</span>
+            <span v-if="current.identity?.age" class="item">{{ current.identity.age }}</span>
+            <span v-if="current.identity?.occupation" class="item">{{ current.identity.occupation }}</span>
+          </div>
+          <div v-if="current.alias?.length" class="character-alias">{{ current.alias.join(' / ') }}</div>
+          <div v-if="current.voice" class="voice-block">
+            <span class="voice-label">语气示例</span>{{ current.voice }}
+          </div>
+          <div class="tags-grid">
+            <span v-for="(t,i) in current.tags" :key="t" class="tag-chip" :class="'m'+i%6">{{ t }}</span>
+          </div>
+          <div v-if="current.bg_story" class="bg-story" :class="{ expanded: bgExpanded }" @click="bgExpanded=!bgExpanded">{{ current.bg_story }}</div>
+          <div class="detail-grid">
+            <section class="detail-section"><div class="lab">性格标签</div><div class="chips"><span v-for="p in current.personality" :key="p" class="chip trait">{{ p }}</span></div></section>
+            <section class="detail-section"><div class="lab">喜欢的事</div><div class="chips"><span v-for="l in current.likes" :key="l" class="chip">{{ l }}</span></div></section>
+            <section v-if="current.lora" class="detail-section wide">
+              <div class="lab">绑定 LoRA</div>
+              <div class="char-lora">触发词：<code>{{ (current.lora.trigger_words||[]).join(', ') }}</code></div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section v-if="recommendations.length" style="margin-top:var(--s-7)">
+        <h2 class="recommend-title">推荐场景</h2>
+        <div class="recommend-grid">
+          <RouterLink v-for="s in recommendations" :key="s.id" class="card-direct"
+            :to="'/prompt-builder?scene='+encodeURIComponent(s.id)">
+            <div class="cg-title">{{ s.title }}</div>
+            <div class="cg-story">{{ s.story }}</div>
+          </RouterLink>
+        </div>
+      </section>
+    </template>
+  </main>
+</template>
+
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue'
+
+const characters = ref<any[]>([])
+const scenes = ref<any[]>([])
+const loading = ref(true)
+const current = ref<any>(null)
+const bgExpanded = ref(false)
+
+const hasIdentity = computed(() => {
+  const id = current.value?.identity || {}
+  return id.role || id.age || id.occupation || id.faction
+})
+const recommendations = computed(() => {
+  if (!current.value?.lora?.recommended_scene) return []
+  return current.value.lora.recommended_scene
+    .map((id: string) => scenes.value.find(s => s.id === id))
+    .filter(Boolean)
+})
+
+onMounted(async () => {
+  try {
+    const [c, s] = await Promise.all([
+      fetch('/data/characters.json?v=6').then(r => r.json()),
+      fetch('/data/scenes.json?v=6').then(r => r.json()),
+    ])
+    characters.value = Array.isArray(c) ? c : []
+    scenes.value = Array.isArray(s) ? s : []
+    current.value = characters.value[0] || null
+  } catch {}
+  loading.value = false
+})
+</script>
+
+<style scoped>
+.character-tabs { display:flex; gap:var(--s-2); margin-bottom:var(--s-5); }
+.character-tab { padding:var(--s-2) var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-pill); background:var(--bg-surface); color:var(--text-secondary); cursor:pointer; font:600 var(--fs-body-sm) var(--font-sans); transition:all var(--t-fast); }
+.character-tab.active,.character-tab:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
+.character-hero { display:grid; grid-template-columns:320px 1fr; gap:var(--s-6); padding:var(--s-6); }
+.portrait { position:relative; min-height:520px; border-radius:var(--r-xl); overflow:hidden; background:linear-gradient(155deg,#4d3d67,#171422); }
+.portrait.natsume { background:linear-gradient(155deg,#3a3a2a,#1a1a10); }
+.portrait-image { position:absolute; bottom:0; left:50%; transform:translateX(-50%); max-height:100%; object-fit:contain; }
+.portrait-badge,.portrait-source { position:absolute; font-size:var(--fs-mono-xs); color:rgba(255,255,255,.5); }
+.portrait-badge { top:var(--s-3); left:var(--s-3); }
+.portrait-source { bottom:var(--s-3); right:var(--s-3); }
+.character-name { font-size:clamp(1.6rem,3vw,2.4rem); font-weight:800; margin-bottom:var(--s-2); }
+.identity-row { display:flex; flex-wrap:wrap; gap:var(--s-2); margin-bottom:var(--s-3); }
+.identity-row .item { padding:3px var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-pill); font-size:var(--fs-label-sm); color:var(--text-secondary); }
+.identity-row .item.role { color:var(--accent); border-color:var(--accent); background:var(--accent-soft); }
+.character-alias { color:var(--text-muted); font-size:var(--fs-label-sm); margin-bottom:var(--s-3); }
+.voice-block { margin:var(--s-3) 0; padding:var(--s-2) var(--s-3); border-left:3px solid var(--accent); background:var(--accent-soft); color:var(--text-secondary); font-size:var(--fs-body); font-style:italic; }
+.voice-label { display:block; margin-bottom:2px; color:var(--accent); font-size:var(--fs-mono-xs); font-style:normal; letter-spacing:.08em; text-transform:uppercase; }
+.tags-grid { display:flex; flex-wrap:wrap; gap:var(--s-2); margin-bottom:var(--s-3); }
+.tag-chip { padding:var(--s-1) var(--s-3); border-radius:var(--r-pill); color:var(--on-mood-text); font-size:var(--fs-label-sm); }
+.tag-chip.m0{background:var(--mood-joy)}.tag-chip.m1{background:var(--mood-love)}.tag-chip.m2{background:var(--mood-calm)}.tag-chip.m3{background:var(--mood-sad)}.tag-chip.m4{background:var(--mood-tension)}.tag-chip.m5{background:var(--mood-warmth)}
+.bg-story { position:relative; max-height:80px; overflow:hidden; color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:1.7; cursor:pointer; transition:max-height var(--t-base); }
+.bg-story.expanded { max-height:500px; }
+.bg-story::after { content:'展开'; position:absolute; right:0; bottom:0; padding-left:var(--s-6); background:linear-gradient(90deg,transparent,var(--bg-surface)); color:var(--accent); font-size:var(--fs-label-xs); }
+.bg-story.expanded::after { content:none; }
+.detail-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--s-3); }
+.detail-section { padding:var(--s-3); border-radius:var(--r-md); background:var(--bg-deep); }
+.detail-section.wide { grid-column:1/-1; }
+.lab { margin-bottom:var(--s-2); color:var(--text-muted); font-size:var(--fs-mono-sm); font-weight:700; letter-spacing:.07em; text-transform:uppercase; }
+.chips { display:flex; flex-wrap:wrap; gap:var(--s-2); }
+.chips .chip { padding:var(--s-1) var(--s-3); font-size:var(--fs-label-sm); cursor:default; }
+.chips .chip.trait { border-color:var(--border-soft); background:var(--bg-surface); color:var(--text-primary); }
+.char-lora { color:var(--text-secondary); font-size:var(--fs-body-sm); }
+.char-lora code { color:var(--accent); font-family:var(--font-mono); }
+.recommend-title { margin:0 0 var(--s-3); font-size:var(--fs-title-sm); }
+.recommend-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:var(--s-3); }
+.cg-title { margin-bottom:var(--s-1); font-size:var(--fs-title-xs); font-weight:800; }
+.cg-story { color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:1.65; }
+@media(max-width:700px){.character-hero{grid-template-columns:1fr}.portrait{min-height:380px}.detail-grid{grid-template-columns:1fr}}
+</style>

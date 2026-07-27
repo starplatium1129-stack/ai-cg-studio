@@ -1,0 +1,202 @@
+﻿<template>
+  <article class="page" style="--page-max:1000px">
+    <div class="page-kicker">Color script</div>
+    <h1 class="title">🎨 色彩情绪 (Color Script)</h1>
+    <p class="subtitle">告诉它今天是什么心情，它把颜色和光都替你想好。</p>
+
+    <div class="info-callout">
+      <strong>🎯 设计理念</strong> | 色相与情绪绑定（暖黄＝温馨、粉色＝羞怯、蓝紫＝忧伤神秘）。美术规范第 1.2 节：克制为主，避免糖水色。
+      选一个情绪，系统会自动生成色彩语言、光照理由与提示词标签。
+    </div>
+
+    <p class="emphasis-plain mb-3">今天的情绪色板</p>
+    <div class="mood-grid">
+      <button
+        v-for="m in MOODS" :key="m.id"
+        type="button" class="mood-card"
+        :class="{ active: selected?.id === m.id }"
+        :style="{ '--mood-color': m.color }"
+        @click="select(m)"
+      >
+        <div class="mood-strip">
+          <div v-for="c in m.palette" :key="c" class="mood-swatch" :style="{ '--swatch': c }"></div>
+        </div>
+        <div class="mood-body">
+          <div class="mood-name">{{ m.icon }} {{ m.name }}</div>
+          <div class="mood-en">{{ m.en }}</div>
+        </div>
+      </button>
+    </div>
+
+    <Transition name="fade-up">
+      <div v-if="selected" class="result-panel card-level-3 show">
+        <h3>
+          <span class="mood-icon" :style="{ '--mood-color': selected.color }">{{ selected.icon }}</span>
+          {{ selected.name }} → 色彩 → 光照
+        </h3>
+        <div class="palette" style="display:flex;gap:var(--s-1);margin-bottom:var(--s-4)">
+          <div v-for="c in selected.palette" :key="c" class="palette-swatch" :style="{ '--swatch': c }">{{ c }}</div>
+        </div>
+        <div class="mapping-grid">
+          <div v-for="(val, key) in selected.mapping" :key="key" class="mapping-item">
+            <div class="mapping-label">{{ key }}</div>
+            <div class="mapping-value">{{ val }}</div>
+          </div>
+        </div>
+        <div v-if="violations.length" class="art-warn show">
+          ⚠️ 检测到 {{ violations.length }} 个违反美术规范的标签: {{ violations.join(', ') }}
+        </div>
+        <div class="prompt-label">自动翻译 Prompt</div>
+        <div class="prompt-code" v-html="colorizedPrompt"></div>
+        <div class="result-actions">
+          <button class="btn btn-primary" type="button" @click="copyPrompt">📋 复制 Prompt</button>
+          <button class="btn btn-ghost" type="button" @click="exportTxt">⬇️ 导出 .txt</button>
+          <RouterLink :to="'/prompt-builder?mood=' + selected.id" class="btn btn-ghost">→ 加载到开始绘制</RouterLink>
+          <button class="btn btn-ghost" type="button" @click="selected = null">🔄 换一个情绪</button>
+        </div>
+      </div>
+    </Transition>
+
+    <h2 class="section-title" style="margin-top:var(--s-8)">📖 美术规范 · 色彩对照</h2>
+    <p class="note mb-3">写每一条提示词前，先问自己："这符合我们的美术规范吗？"</p>
+    <div class="art-ref">
+      <div class="art-ref-card good">
+        <div class="art-ref-title">✅ 推崇使用</div>
+        <div>
+          <span v-for="t in GOOD_TAGS" :key="t" class="art-tag ok">{{ t }}</span>
+        </div>
+      </div>
+      <div class="art-ref-card bad">
+        <div class="art-ref-title">❌ 禁止使用</div>
+        <div>
+          <span v-for="t in BANNED_TAGS" :key="t" class="art-tag no">{{ t }}</span>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="section-title" style="margin-top:var(--s-6)">💡 光照规范 · 每个光源都有理由</h2>
+    <p class="note mb-3">光源不能只为好看而堆叠，它必须服务于故事与时间。</p>
+    <div class="lighting-ref">
+      <div v-for="l in LIGHTINGS" :key="l.name" class="lighting-mini">
+        <div class="lighting-icon">{{ l.icon }}</div>
+        <div class="lighting-name">{{ l.name }}</div>
+        <div class="lighting-reason">{{ l.reason }}</div>
+      </div>
+    </div>
+  </article>
+</template>
+
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+
+const BANNED_TAGS = ['neon','glowing','oversaturated','vivid colors','vivid','rainbow','high contrast','harsh lighting','extremely detailed','ultra detailed']
+const GOOD_TAGS = ['soft colors','pastel tones','warm atmosphere','gentle palette','muted tones','harmonious colors','warm soft lighting','backlit glow']
+const LIGHTINGS = [
+  { icon:'🌅', name:'夕阳',   reason:'放学/黄昏/温馨/回忆' },
+  { icon:'🪟', name:'窗光',   reason:'室内/安静/治愈/独处' },
+  { icon:'🌄', name:'逆光',   reason:'神秘/回忆/感动/剪影' },
+  { icon:'🌙', name:'月光',   reason:'夜晚/孤独/宁静/思念' },
+  { icon:'🏮', name:'夜灯',   reason:'夜祭/温馨/安全感/传统' },
+  { icon:'☁️', name:'阴天柔光', reason:'平静/文艺/清新/日常' },
+]
+const MOODS = [
+  { id:'joy',     icon:'☀️', name:'快乐', en:'Joy',     color:'#FFD54F', palette:['#FFE082','#FFD54F','#FFB300','#FF8F00','#FFF8E1'], mapping:{'色相':'暖黄色 / 浅橙色 / 柔粉','光照':'Golden Hour / 午后阳光 / 明亮','氛围':'活力 / 温暖 / 清爽','天气':'晴天 / 微风'}, prompt:'warm yellow tones, golden hour, bright sunlight, cheerful atmosphere, soft breeze, warm color palette, vibrant but soft' },
+  { id:'love',    icon:'💕', name:'恋爱', en:'Love',    color:'#F06292', palette:['#F8BBD0','#F06292','#EC407A','#AD1457','#FFF0F5'], mapping:{'色相':'夕阳 / 粉色 / 暖光','光照':'Golden Hour / 逆光 / 柔光','氛围':'暧昧 / 心跳 / 羞涩','天气':'黄昏 / 樱花季'}, prompt:'pink tone, golden hour, warm light, backlit, romantic atmosphere, soft glow, blush, cherry blossom color, dreamy' },
+  { id:'calm',    icon:'🍃', name:'平静', en:'Calm',    color:'#81C784', palette:['#C8E6C9','#81C784','#4CAF50','#2E7D32','#F1F8E9'], mapping:{'色相':'淡绿 / 青绿 / 奶白','光照':'阴天柔光 / 窗光 / 自然光','氛围':'安静 / 治愈 / 文艺','天气':'多云 / 雨后'}, prompt:'soft green tones, overcast light, window light, calm atmosphere, peaceful, gentle colors, clean aesthetic, healing' },
+  { id:'sad',     icon:'🌧', name:'忧伤', en:'Sad',     color:'#64B5F6', palette:['#BBDEFB','#64B5F6','#1E88E5','#0D47A1','#E3F2FD'], mapping:{'色相':'蓝色 / 灰蓝 / 冷调','光照':'月光 / 阴天 / 冷调窗光','氛围':'孤独 / 回忆 / 思念','天气':'雨天 / 阴天 / 夜晚'}, prompt:'blue tones, cool color palette, rainy day, overcast, melancholic atmosphere, lonely, nostalgic, soft blue light' },
+  { id:'tension', icon:'🌙', name:'神秘', en:'Mystery', color:'#BA68C8', palette:['#E1BEE7','#BA68C8','#8E24AA','#4A148C','#F3E5F5'], mapping:{'色相':'紫蓝 / 深紫 / 冷调','光照':'月光 / 逆光 / 暗调','氛围':'神秘 / 距离 / 梦幻','天气':'夜晚 / 雾 / 雨'}, prompt:'purple and blue tones, moonlight, backlit, rim light, mysterious atmosphere, ethereal, dreamlike, cool shadows' },
+  { id:'warmth',  icon:'🏮', name:'温馨', en:'Warmth',  color:'#FFB74D', palette:['#FFE0B2','#FFB74D','#F57C00','#E65100','#FFF3E0'], mapping:{'色相':'暖橙 / 橘红 / 米黄','光照':'夜灯 / 烛光 / 室内暖光','氛围':'安全感 / 家庭 / 治愈','天气':'夜晚 / 秋雨'}, prompt:'warm orange tones, lantern light, indoor warm light, cozy atmosphere, candlelight, safe feeling, homely, autumn warmth' },
+]
+
+const selected = ref<any>(null)
+
+function esc(s: string) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
+function norm(t: string) { return t.split(',').map(s => s.trim().replace(/[\s-]+/g,'_')).join(', ') }
+
+const violations = computed(() => {
+  if (!selected.value) return []
+  const lower = selected.value.prompt.toLowerCase()
+  return BANNED_TAGS.filter(b => lower.includes(b.toLowerCase()))
+})
+
+const colorizedPrompt = computed(() => {
+  if (!selected.value) return ''
+  return norm(selected.value.prompt).split(',').map(tk => {
+    const t = tk.trim()
+    const low = t.toLowerCase().replace(/[\s\/]+/g, '_')
+    const bad = BANNED_TAGS.some(b => low === b.toLowerCase().replace(/[\s\/]+/g,'_') || low.includes(b.toLowerCase().replace(/[\s\/]+/g,'_')))
+    return bad ? `<span class="violate">${esc(t)}</span>` : esc(t)
+  }).join(',')
+})
+
+function select(m: any) { selected.value = m }
+
+function copyPrompt() {
+  if (!selected.value) return
+  navigator.clipboard.writeText(selected.value.prompt)
+    .then(() => showToast('📋 已复制到剪贴板'))
+    .catch(() => prompt('请手动复制', selected.value.prompt))
+}
+
+function exportTxt() {
+  if (!selected.value) return
+  const body = selected.value.prompt + '\n\n# mood: ' + selected.value.id + '\n# usage: 复制到 Prompt Builder v5 Step 4 色彩氛围'
+  const a = document.createElement('a')
+  a.href = URL.createObjectURL(new Blob([body], { type: 'text/plain' }))
+  a.download = 'color-' + selected.value.id + '.txt'
+  a.click()
+  URL.revokeObjectURL(a.href)
+}
+
+function showToast(msg: string) {
+  let t = document.getElementById('cs-toast')
+  if (!t) { t = document.createElement('div'); t.id = 'cs-toast'; t.className = 'cs-toast'; t.setAttribute('role','status'); document.body.appendChild(t) }
+  t.textContent = msg; t.classList.add('show')
+  setTimeout(() => t!.classList.remove('show'), 1600)
+}
+</script>
+
+<style scoped>
+.info-callout { background:var(--accent-soft); border:1px solid var(--accent); border-radius:var(--r-md); padding:var(--s-3) var(--s-4); margin-bottom:var(--s-5); font-size:var(--fs-body-sm); }
+.info-callout strong { color:var(--accent); }
+.emphasis-plain { color:var(--text-primary); font-weight:600; }
+.mb-3 { margin-bottom:var(--s-3); }
+.note { color:var(--text-muted); font-size:var(--fs-body-sm); }
+.section-title { font-size:var(--fs-title-sm); font-weight:700; margin-bottom:var(--s-2); }
+
+.result-panel { padding:var(--s-5); border:1px solid var(--accent); border-radius:var(--r-xl); background:var(--bg-surface); margin-top:var(--s-5); }
+.result-panel h3 { margin-bottom:var(--s-3); font-size:var(--fs-title-sm); }
+.palette-swatch { width:48px; height:48px; border-radius:var(--r-md); background:var(--swatch); display:grid; place-items:end center; padding-bottom:4px; font-size:9px; color:rgba(0,0,0,.6); }
+.mapping-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:var(--s-3); margin-bottom:var(--s-4); }
+.mapping-item { background:var(--bg-elevated); border:1px solid var(--border-soft); border-radius:var(--r-md); padding:var(--s-3); }
+.mapping-label { font-size:var(--fs-label-sm); color:var(--text-muted); text-transform:uppercase; letter-spacing:.05em; margin-bottom:var(--s-1); }
+.mapping-value { font-size:var(--fs-body); font-weight:600; }
+.prompt-label { margin-bottom:var(--s-1); color:var(--accent); font-size:var(--fs-label-sm); font-weight:600; letter-spacing:.06em; text-transform:uppercase; }
+.prompt-code { padding:var(--s-3); background:var(--bg-elevated); border-radius:var(--r-md); font-family:var(--font-mono); font-size:var(--fs-mono-sm); line-height:1.7; margin-bottom:var(--s-3); word-break:break-word; }
+:deep(.violate) { color:var(--danger-text); text-decoration:underline wavy; }
+.art-warn { display:none; align-items:center; gap:var(--s-2); background:color-mix(in srgb,var(--warning) 12%,transparent); border:1px solid var(--warning); border-radius:var(--r-md); padding:var(--s-2) var(--s-3); margin-bottom:var(--s-3); color:var(--warning-text); font-size:var(--fs-label); }
+.art-warn.show { display:flex; }
+.result-actions { display:flex; gap:var(--s-2); flex-wrap:wrap; }
+
+.art-ref { display:grid; grid-template-columns:1fr 1fr; gap:var(--s-3); margin-bottom:var(--s-5); }
+.art-ref-card { border-radius:var(--r-lg); padding:var(--s-4); border:1px solid var(--border-soft); }
+.art-ref-card.good { background:color-mix(in srgb,var(--success) 6%,transparent); border-color:color-mix(in srgb,var(--success) 30%,transparent); }
+.art-ref-card.bad { background:color-mix(in srgb,var(--danger) 6%,transparent); border-color:color-mix(in srgb,var(--danger) 30%,transparent); }
+.art-ref-title { font-size:var(--fs-body); font-weight:700; margin-bottom:var(--s-2); }
+.art-ref-card.good .art-ref-title { color:var(--success-text); }
+.art-ref-card.bad .art-ref-title { color:var(--danger-text); }
+.art-tag { display:inline-block; margin:2px 3px; padding:3px var(--s-3); border-radius:var(--r-pill); font-size:var(--fs-label-sm); font-weight:600; }
+.art-tag.ok { background:color-mix(in srgb,var(--success) 12%,transparent); color:var(--success-text); }
+.art-tag.no { background:color-mix(in srgb,var(--danger) 12%,transparent); color:var(--danger-text); }
+
+.lighting-ref { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:var(--s-2); margin-bottom:var(--s-5); }
+.lighting-mini { background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-md); padding:var(--s-3); text-align:center; }
+.lighting-icon { margin-bottom:2px; font-size:var(--fs-title); }
+.lighting-name { font-size:var(--fs-body-sm); font-weight:600; }
+.lighting-reason { font-size:var(--fs-label-xs); color:var(--accent); font-style:italic; margin-top:2px; line-height:1.3; }
+
+.fade-up-enter-active { transition:opacity .3s,transform .3s; }
+.fade-up-enter-from { opacity:0; transform:translateY(12px); }
+
+@media(max-width:768px) { .art-ref { grid-template-columns:1fr; } }
+</style>

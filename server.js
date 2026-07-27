@@ -77,9 +77,18 @@ function createGateway(options) {
     res.json({ url:tunnelUrl });
   });
 
+  // Vue SPA — 优先从 dist/ 提供；dist/ 不存在时回退到旧 index.html
+  var DIST_DIR = path.join(config.ROOT_DIR, 'dist');
+  var distReady = fs.existsSync(path.join(DIST_DIR, 'index.html'));
+  if (distReady) {
+    // Vite 构建产物（_app/ 里的 JS/CSS）
+    app.use(express.static(DIST_DIR, staticOptions(ONE_DAY)));
+  }
+
   app.get(['/', '/index.html'], function (req, res) {
     res.setHeader('Cache-Control', 'no-cache');
-    res.sendFile(path.join(config.ROOT_DIR, 'index.html'));
+    var spaEntry = path.join(DIST_DIR, 'index.html');
+    res.sendFile(fs.existsSync(spaEntry) ? spaEntry : path.join(config.ROOT_DIR, 'index.html'));
   });
   app.use('/css', express.static(path.join(config.ROOT_DIR, 'css'), staticOptions(ONE_DAY)));
   app.use('/assets', express.static(path.join(config.ROOT_DIR, 'assets'), staticOptions(ONE_WEEK)));
@@ -119,6 +128,16 @@ function createGateway(options) {
       }
     }
   }));
+
+  // SPA fallback — Vue Router 的前端路由在刷新时返回 index.html
+  app.get('*', function (req, res, next) {
+    var spaEntry = path.join(config.ROOT_DIR, 'dist', 'index.html');
+    if (!fs.existsSync(spaEntry)) return next();
+    var ext = path.extname(req.path);
+    if (ext && ext !== '.html') return next();
+    res.setHeader('Cache-Control', 'no-cache');
+    res.sendFile(spaEntry);
+  });
 
   app.use(function (error, req, res, next) {
     if (res.headersSent) return next(error);

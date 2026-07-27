@@ -5,6 +5,12 @@
   "description": "个人使用的 Galgame 风格 AI CG 场景工作台与 SD WebUI 网关",
   "scripts": {
     "start": "node server.js",
+    "dev": "vite",
+    "build": "vite build",
+    "build:all": "npm run build && npm run build:runtime",
+    "prod": "npm run build && npm start",
+    "dev:server": "node server.js",
+    "typecheck:app": "tsc -p tsconfig.app.json --noEmit",
     "validate": "npm run design:lint && npm run build:runtime && npm run typecheck && node scripts/tests/test-style-debt.js && node scripts/maintenance/scan-style-literals.js --check && node scripts/maintenance/check-contrast.js --check && node scripts/maintenance/build-scenes.js --check && node scripts/maintenance/optimize-scenes.js --check && node scripts/maintenance/classify-scene-ratings.js --check && node scripts/maintenance/validate-scenes.js && node scripts/maintenance/validate-content-contracts.js && node scripts/tests/test-page-architecture.js && node scripts/tests/test-control-operation.js && node scripts/tests/test-serial-queue.js && node scripts/tests/test-http-client.js && node scripts/tests/test-live2d-service.js && node scripts/tests/test-wav-quality.js && node scripts/tests/test-voice-baseline.js && node scripts/tests/test-voice-profile-contract.js && node scripts/tests/test-scene-ux.js && node scripts/tests/test-quick-create.js && node scripts/tests/test-sd-error.js && node scripts/tests/test-data-backup.js && node scripts/tests/test-storage-reliability.js && node scripts/tests/test-storage-health.js && node scripts/tests/test-security.js && node scripts/tests/test-prompt-policy.js && node scripts/tests/test-sd-runtime.js && node scripts/tests/test-prompt-builder-modules.js && node scripts/tests/test-showcase.js && node scripts/tests/test-gallery.js && node scripts/tests/test-maintenance.js && node scripts/tests/test-chat.js && node scripts/tests/test-resource-scheduling.js",
     "design:lint": "designmd lint DESIGN.md",
     "build:runtime": "tsc -p tsconfig.runtime.json",
@@ -49,13 +55,17 @@
     "compression": "^1.8.1",
     "express": "^4.21.0",
     "http-proxy-middleware": "^3.0.0",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0",
     "wl-live2d": "^1.0.8"
   },
   "devDependencies": {
     "@google/design.md": "^0.3.0",
     "@playwright/test": "^1.62.0",
     "@types/node": "^26.1.1",
-    "typescript": "^7.0.2"
+    "@vitejs/plugin-vue": "^5.2.4",
+    "typescript": "^7.0.2",
+    "vite": "^6.3.5"
   },
   "overrides": {
     "gh-pages": "6.3.0"
