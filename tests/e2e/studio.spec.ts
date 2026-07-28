@@ -134,6 +134,9 @@ test('director separates a focused scene mode from the expert tag workflow', asy
   await promptHealth.locator('summary').click();
   await expect(page.locator('.preview-output')).toBeVisible();
   await expect(page.locator('.preview-output')).not.toHaveText(/^选择左侧场景/);
+  await expect(page.locator('.preview-output')).toContainText('masterpiece');
+  await expect(page.locator('.preview-output')).toContainText('<lora:');
+  await expect(page.locator('.preview-output')).toContainText('[NEG]');
   // 质量前缀必须来自模型 profile，而不是硬编码
   await expect(page.locator('.monitor-profile')).not.toHaveText('');
 

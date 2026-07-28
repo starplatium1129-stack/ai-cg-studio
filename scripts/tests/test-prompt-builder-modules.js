@@ -37,6 +37,7 @@ const modules = [
   ['src/utils/sdRequest.ts', ['buildTxt2ImgRequest', 'parseTxt2ImgResponse', 'DEFAULT_SD_NEGATIVE']],
   ['src/composables/useSDGenerate.ts', ['checkStatus', 'generate', 'cancel']],
   ['src/composables/useSDQueue.ts', ['useSDQueue', 'SD_QUEUE_LIMIT']],
+  ['src/composables/usePromptAssembly.ts', ['usePromptAssembly', 'qualityPrefix', 'modelNegativePrompt', 'resolveLoraSpecs', 'applyFraming', 'analyzeParts']],
   ['src/composables/useBackup.ts', ['exportBackup', 'restore', 'healthCheck', 'cleanOrphanImages']],
   ['src/composables/useVoice.ts', ['startTurn', 'append', 'finishTurn']],
   ['src/composables/useImageStore.ts', ['imgPut', 'imgGet', 'imgDeleteMany']],
@@ -93,18 +94,32 @@ if (/\bany\b/.test(storeSource)) fail('prompt builder store must keep scene, pro
 
 // ── 2. 导演台视图必须真正接线这些能力 ────────────────────────────────────
 const view = read('src/views/PromptBuilderView.vue');
+const promptAssembly = read('src/composables/usePromptAssembly.ts');
 if (/\bany\b/.test(view)) fail('PromptBuilderView must keep deep links, scenes, and history explicitly typed');
+if (/\bany\b/.test(promptAssembly)) fail('prompt assembly must keep its store and policy boundary explicitly typed');
 if (/entry\.char\b/.test(view) || !view.includes('entry.character')) {
   fail('history deep links must restore the canonical character field');
 }
 
-const wiring = [
+const promptPipeline = [
   ['qualityPrefix', 'quality prefix must come from the model profile, not a hardcoded string'],
   ['modelNegativePrompt', 'negative prompt must apply the model profile merge/replace策略'],
   ['resolveLoraSpecs', 'LoRA weight must be resolved per framing'],
   ['applyFraming', 'framing conflicts must be resolved at composition time'],
   ['sceneTemplateText', 'scene templates must be sanitized before use'],
   ['analyzeParts', 'prompt structure health must be reported'],
+];
+for (const [marker, message] of promptPipeline) {
+  if (!promptAssembly.includes(marker)) fail(message);
+}
+if (!view.includes('usePromptAssembly')) {
+  fail('PromptBuilderView must consume the dedicated prompt assembly composable');
+}
+if (view.includes("from '@/utils/promptPolicy'")) {
+  fail('prompt policy composition must stay owned by usePromptAssembly');
+}
+
+const wiring = [
   ['classifySDError', 'generation failures must be classified into recovery actions'],
   ['useSDQueue', 'director must support a serial generation queue'],
   ['PromptDataTools', 'director must mount the local data backup/restore component'],

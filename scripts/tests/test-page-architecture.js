@@ -133,6 +133,7 @@ const requiredModules = [
   'src/composables/useLive2D.ts',
   'src/composables/useSDGenerate.ts',
   'src/composables/useSDQueue.ts',
+  'src/composables/usePromptAssembly.ts',
   'src/composables/useBackup.ts',
   'src/composables/useKVStore.ts',
   'src/composables/useImageStore.ts',

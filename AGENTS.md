@@ -43,6 +43,7 @@
 - `PromptHealthPanel.vue`：Prompt 结构与违规提示。
 - `GenerationQueuePanel.vue`：出图队列。
 - `SDRecoveryPanel.vue`：SD 错误分类和恢复动作。
+- `usePromptAssembly.ts`：模型 Profile、有效场景、角色特征、LoRA 权重与正负 Prompt 组装、健康报告和预览。它只拥有派生的 Prompt 策略；场景/UI、SD 队列、历史和生命周期继续留在 `PromptBuilderView.vue`。
 
 继续拆分时按状态与生命周期所有权拆，不要仅为了减少行数搬函数。
 
@@ -89,10 +90,6 @@
 `src/` 业务实现中的显式 `any` 已清零，新增代码不得回退；`vite-env.d.ts` 的 Vue 通配模块声明不计入业务类型债。
 
 ## 当前待办
-
-### P2：大型视图继续按所有权拆分
-
-- `PromptBuilderView.vue` 仍约 1193 行：`GenerationParamsPanel` 与 `GenerationOutputControls` 已拥有参数、分辨率和生成动作 UI；Prompt 组装管线仍留在页面，待形成稳定 composable 边界后再迁。
 
 ### P1：v15 核心样张审核
 

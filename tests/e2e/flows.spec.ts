@@ -131,6 +131,9 @@ test('flow 1 · 出图：选场景 → 生成 → 成片入册，参数如实送
   expect(payload.seed).toBe(4242);
   expect(payload.send_images).toBe(true);
   expect(payload.save_images).toBe(false);
+  expect(String(payload.prompt)).toContain('masterpiece');
+  expect(String(payload.prompt)).toContain('ayachi_nene');
+  expect(String(payload.prompt)).toContain('school_uniform');
   expect(String(payload.prompt)).toContain('<lora:');
   // 负面默认开启，且必须真的带上去
   expect(String(payload.negative_prompt)).toContain('worst quality');
