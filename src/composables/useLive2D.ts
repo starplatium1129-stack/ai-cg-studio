@@ -21,6 +21,10 @@ interface Live2DCatalog {
   models: Record<string, Live2DModelInfo>
 }
 
+interface Live2DCoreModel {
+  setParameterValueById(id: string, value: number, weight: number): void
+}
+
 interface Live2DModel {
   visible: boolean
   width: number
@@ -30,18 +34,12 @@ interface Live2DModel {
   scale: { x: number; y: number; set(value: number): void }
   internalModel?: {
     on(event: 'beforeModelUpdate', callback: () => void): void
-    coreModel?: { setParameterValueById(id: string, value: number, weight: number): void }
-    motionManager?: { definitions?: Record<string, unknown[]> }
-    settings?: {
-      motions?: Record<string, unknown[]>
-      hitAreas?: unknown[]
-    }
+    coreModel?: Live2DCoreModel
+    settings?: { hitAreas?: unknown[] }
   }
-  focus?(x: number, y: number): void
-  motion?(group: string, index?: number, priority?: number): Promise<unknown> | unknown
-  expression?(name: string): Promise<unknown> | unknown
   hitTest?(x: number, y: number): string[]
-  tap?(x: number, y: number): void
+  motion?(group: string, index: number, priority?: number): Promise<boolean> | boolean
+  expression?(name: string): Promise<unknown> | unknown
 }
 
 interface Live2DApp {
@@ -56,6 +54,22 @@ interface Live2DApp {
 
 type Live2DFactory = (options: Record<string, unknown>) => Live2DApp
 type Live2DLibrary = { wlLive2d: Live2DFactory }
+
+interface Live2DInteraction {
+  group: string
+  hint: string
+  duration: number
+}
+
+const INTERACTION_MOTIONS: Record<string, Live2DInteraction> = {
+  Hair: { group: 'TapHair', hint: '摸了摸呆毛', duration: 245_000 },
+  Head: { group: 'TapHead', hint: '摸了摸头顶', duration: 5_000 },
+  Face: { group: 'TapFace', hint: '轻碰了脸颊', duration: 5_000 },
+  LeftChest: { group: 'TapLeftChest', hint: '触发了左侧互动', duration: 3_500 },
+  RightChest: { group: 'TapRightChest', hint: '触发了右侧互动', duration: 3_500 },
+  Skirt: { group: 'TapSkirt', hint: '触发了裙摆互动', duration: 9_000 },
+  Body: { group: 'TapBody', hint: '轻碰了身体', duration: 5_000 },
+}
 
 function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error)
@@ -112,13 +126,9 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   let resizeObserver: ResizeObserver | null = null
   let onResize: (() => void) | null = null
   let visibilityHandler: (() => void) | null = null
-  let pointerMoveHandler: ((event: PointerEvent) => void) | null = null
-  let pointerLeaveHandler: (() => void) | null = null
   let pointerClickHandler: ((event: MouseEvent) => void) | null = null
-  let focusFrame = 0
-  let focusPoint: { x: number; y: number } | null = null
-  let expressionTimer = 0
-  let interactionIndex = 0
+  let activeInteraction = ''
+  let interactionTimer = 0
   let mouthHooked = false
   let speaking = false
   let hostEl: HTMLElement | null = null
@@ -250,7 +260,10 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
           selector: hostSelector, fixed: false, drag: false, sayHello: false, hitFrame: false,
           menus: [], tips: { talk: false, drag: false, motionMessage: false, message: [], talkApis: [] },
           transitionTime: 250,
-          models: [{ path: info.modelUrl, width: canvas.width, height: canvas.height, position: { x: 0, y: 0 }, motionPreload: 'IDLE' }],
+          // The model only loads after a user explicitly enables Live2D. Once
+          // enabled, preload the small motion files so the first tap is a real
+          // interaction instead of a delayed network request.
+          models: [{ path: info.modelUrl, width: canvas.width, height: canvas.height, position: { x: 0, y: 0 }, motionPreload: 'ALL' }],
         })
         app.onModelLoaded((m: Live2DModel) => {
           if (destroyed.value || char !== character.value) { finish(false); return }
@@ -297,11 +310,12 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   }
 
   function applyMouth() {
-    if (!model?.visible || !speaking) return
+    if (!model?.visible) return
     try {
       // Cubism motion/physics run before this event. Write with full weight so
       // their idle mouth value cannot overwrite the audio amplitude.
-      model.internalModel?.coreModel?.setParameterValueById('ParamMouthOpenY', mouthValue.value, 1)
+      const core = model.internalModel?.coreModel
+      if (speaking) core?.setParameterValueById('ParamMouthOpenY', mouthValue.value, 1)
     } catch {}
   }
 
@@ -314,11 +328,10 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     cvs.addEventListener('webglcontextrestored', () => retry())
   }
 
-  function worldPoint(event: PointerEvent | MouseEvent) {
+  function worldPoint(event: MouseEvent) {
     const canvas = hostEl?.querySelector('canvas')
     const rect = canvas?.getBoundingClientRect() ?? stageEl?.getBoundingClientRect()
-    if (!rect) return null
-    if (!rect.width || !rect.height) return null
+    if (!rect || !rect.width || !rect.height) return null
     const screen = app?.app?.screen
     const width = Number(screen?.width) || 420
     const height = Number(screen?.height) || 610
@@ -328,87 +341,92 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     }
   }
 
-  function centerFocus() {
-    if (!ready.value || typeof model?.focus !== 'function') return
-    const screen = app?.app?.screen
-    model.focus((Number(screen?.width) || 420) / 2, (Number(screen?.height) || 610) / 2)
+  function interactionFromStagePosition(event: MouseEvent): Live2DInteraction | null {
+    const rect = stageEl?.getBoundingClientRect()
+    if (!rect?.width || !rect.height) return null
+    const x = (event.clientX - rect.left) / rect.width
+    const y = (event.clientY - rect.top) / rect.height
+    if (y < 0.14) return INTERACTION_MOTIONS.Hair
+    if (y < 0.27) return INTERACTION_MOTIONS.Head
+    if (y < 0.42) return INTERACTION_MOTIONS.Face
+    if (y > 0.73) return INTERACTION_MOTIONS.Skirt
+    if (y < 0.65 && x < 0.43) return INTERACTION_MOTIONS.LeftChest
+    if (y < 0.65 && x > 0.57) return INTERACTION_MOTIONS.RightChest
+    return INTERACTION_MOTIONS.Body
   }
 
-  function motionDefinitions(): Record<string, unknown[]> {
-    return model?.internalModel?.motionManager?.definitions
-      ?? model?.internalModel?.settings?.motions
-      ?? {}
+  function interactionAt(event: MouseEvent): Live2DInteraction {
+    // wl-live2d sometimes reports the broad body mesh for every DOM click
+    // after it internally scales the canvas. Resolve the source-model zones
+    // from the visible stage first, so head, face, chest and skirt actions do
+    // not collapse into one motion. Retain Cubism's precise hit result as the
+    // fallback when the stage has not been measured yet.
+    const stageInteraction = interactionFromStagePosition(event)
+    if (stageInteraction) return stageInteraction
+    const point = worldPoint(event)
+    const hitAreas = point && typeof model?.hitTest === 'function'
+      ? model.hitTest(point.x, point.y)
+      : []
+    const interaction = hitAreas.map((area) => INTERACTION_MOTIONS[area]).find((item): item is Live2DInteraction => Boolean(item))
+    return interaction || INTERACTION_MOTIONS.Head
   }
 
-  function playInteraction(hitAreas: string[] = [], forcedExpression = '') {
-    if (!ready.value || !model?.visible || prefersReducedMotion() || mouthValue.value > 0) return
-    const groups = motionDefinitions()
-    const groupNames = Object.keys(groups)
-    const hitHead = hitAreas.some(name => /head|头/i.test(name))
-    const tapGroup = hitHead
-      ? groupNames.find(name => /tap.*head|head.*tap|摸头/i.test(name))
-      : undefined
-    const group = tapGroup || groupNames.find(name => name.toLowerCase() === 'idle')
-    const motions = group ? groups[group] : null
-    if (group && motions?.length && typeof model.motion === 'function') {
-      const index = tapGroup ? undefined : interactionIndex % motions.length
-      const result = model.motion(group, index, 3)
-      if (isCatchable(result)) result.catch(() => {})
-    }
-
-    const reactions = ['happy', 'shy', 'gentle']
-    applyExpression(forcedExpression || reactions[interactionIndex % reactions.length])
-    interactionIndex += 1
-    clearTimeout(expressionTimer)
-    expressionTimer = window.setTimeout(() => applyExpression(desiredExpression), 1800)
+  function markInteractionStarted(interaction: Live2DInteraction) {
+    activeInteraction = interaction.group
+    clearTimeout(interactionTimer)
+    interactionTimer = window.setTimeout(() => {
+      if (activeInteraction === interaction.group) activeInteraction = ''
+    }, interaction.duration + 600)
+    interactionHint.value = interaction.hint
+    setState('ready', 'Live2D 已连接')
     stageEl?.classList.remove('live2d-reacting')
     void stageEl?.offsetWidth
     stageEl?.classList.add('live2d-reacting')
   }
 
-  function interact(kind: 'greet' | 'head' = 'greet') {
-    if (kind === 'head') {
-      playInteraction(['Head'], 'shy')
-      interactionHint.value = '她有点害羞，但没有躲开。'
-    } else {
-      playInteraction([], 'happy')
-      interactionHint.value = '她注意到你了，轻轻回应了一下。'
+  function interactionFailed(interaction: Live2DInteraction) {
+    if (activeInteraction === interaction.group) {
+      interactionHint.value = '这个动作正在进行中'
+      return
     }
-    window.setTimeout(() => {
-      if (ready.value) interactionHint.value = '移动指针，她会看向你 · 也可以使用下方互动按钮'
-    }, 2400)
+    interactionHint.value = '动作没有启动，请重试'
+    setState('degraded', 'Live2D 动作未启动', `未能启动 ${interaction.group}`, true)
+  }
+
+  function playInteraction(interaction: Live2DInteraction) {
+    if (!ready.value || !model?.visible || prefersReducedMotion() || mouthValue.value > 0) return
+    // pixi-live2d-display uses the third argument as motion priority. Passing
+    // null is treated as MotionPriority.NONE, which silently rejects the
+    // motion while still letting the click hint update. FORCE interrupts idle
+    // motion so a deliberate tap is always visible. We do not ship source WAVs;
+    // this API does not need one for an authored motion to play.
+    resumeRendering()
+    if (typeof model.motion !== 'function') {
+      interactionFailed(interaction)
+      return
+    }
+    const result = model.motion(interaction.group, 0, 3)
+    if (isCatchable(result)) {
+      result.then((started: unknown) => {
+        if (started === true) markInteractionStarted(interaction)
+        else interactionFailed(interaction)
+      }).catch((error: unknown) => {
+        interactionHint.value = '动作暂时不可用，请重试'
+        setState('degraded', 'Live2D 动作暂不可用', errorMessage(error), true)
+      })
+      return
+    }
+    if (result === true) markInteractionStarted(interaction)
+    else interactionFailed(interaction)
   }
 
   function bindInteractionEvents() {
-    if (!stageEl || pointerMoveHandler) return
-    interactionHint.value = '移动指针，她会看向你 · 也可以使用下方互动按钮'
-    pointerMoveHandler = (event) => {
-      if (event.pointerType === 'touch' || !ready.value || prefersReducedMotion()) return
-      focusPoint = worldPoint(event)
-      if (!focusPoint || focusFrame) return
-      focusFrame = window.requestAnimationFrame(() => {
-        focusFrame = 0
-        if (focusPoint && typeof model?.focus === 'function') model.focus(focusPoint.x, focusPoint.y)
-      })
-    }
-    pointerLeaveHandler = () => {
-      focusPoint = null
-      if (focusFrame) cancelAnimationFrame(focusFrame)
-      focusFrame = 0
-      centerFocus()
-    }
+    if (!stageEl || pointerClickHandler) return
+    interactionHint.value = '点击呆毛、头部、脸、身体、两侧或裙摆可触发原生互动'
     pointerClickHandler = (event) => {
       if ((event.target as HTMLElement | null)?.closest('button, a, input, select, textarea')) return
-      const point = worldPoint(event)
-      const hitAreas = model?.internalModel?.settings?.hitAreas
-      const hits = point && typeof model?.hitTest === 'function' ? model.hitTest(point.x, point.y) : []
-      if (point && Array.isArray(hitAreas) && hitAreas.length && typeof model?.tap === 'function') {
-        model.tap(point.x, point.y)
-      }
-      playInteraction(Array.isArray(hits) ? hits : [])
+      playInteraction(interactionAt(event))
     }
-    stageEl.addEventListener('pointermove', pointerMoveHandler)
-    stageEl.addEventListener('pointerleave', pointerLeaveHandler)
     stageEl.addEventListener('click', pointerClickHandler)
   }
 
@@ -483,7 +501,6 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   }
 
   function setExpression(emotion: string) {
-    clearTimeout(expressionTimer)
     desiredExpression = emotion || 'neutral'
     applyExpression(desiredExpression)
   }
@@ -512,9 +529,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
 
   function destroyRuntime() {
     clearTimeout(loadTimer); loadTimer = 0
-    clearTimeout(expressionTimer); expressionTimer = 0
-    if (focusFrame) cancelAnimationFrame(focusFrame)
-    focusFrame = 0; focusPoint = null
+    clearTimeout(interactionTimer); interactionTimer = 0; activeInteraction = ''
     ready.value = false; mouthValue.value = 0; mouthHooked = false; speaking = false; desiredExpression = 'neutral'; model = null
     loadedCharacter.value = ''
     stageEl?.classList.remove('live2d-ready')
@@ -528,15 +543,13 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     resizeObserver?.disconnect()
     if (onResize) window.removeEventListener('resize', onResize)
     if (visibilityHandler) { document.removeEventListener('visibilitychange', visibilityHandler); visibilityHandler = null }
-    if (stageEl && pointerMoveHandler) stageEl.removeEventListener('pointermove', pointerMoveHandler)
-    if (stageEl && pointerLeaveHandler) stageEl.removeEventListener('pointerleave', pointerLeaveHandler)
     if (stageEl && pointerClickHandler) stageEl.removeEventListener('click', pointerClickHandler)
-    pointerMoveHandler = null; pointerLeaveHandler = null; pointerClickHandler = null
+    pointerClickHandler = null
   }
 
   return {
     ready, enabled, character, loadedCharacter, mouthValue, interactionHint,
     init, enable, disable, setCharacter, setMouth, setExpression, setSpeaking,
-    setPaused, layout, retry, interact, destroy,
+    setPaused, layout, retry, destroy,
   }
 }

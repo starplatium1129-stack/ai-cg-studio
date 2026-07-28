@@ -1,5 +1,7 @@
 import { ref } from 'vue'
-import { SentenceBuffer, fixWavHeader, inferEmotion, isAbortError, responseError } from '@/utils/stream'
+import {
+  SentenceBuffer, extractSpokenDialogue, fixWavHeader, inferEmotion, isAbortError, responseError,
+} from '@/utils/stream'
 
 export interface VoiceAvailability {
   online: boolean
@@ -21,6 +23,7 @@ interface PreparedSentence {
   text: string
   language: 'ja' | 'zh'
   emotion: string
+  consistency: 'locked' | 'adaptive'
 }
 
 interface SynthesizedClip {
@@ -43,12 +46,18 @@ interface AudioWithSource extends HTMLAudioElement {
 
 interface StatusError extends Error {
   status?: number
+  detail?: unknown
 }
 
 type AudioContextConstructor = new () => AudioContext
 
 function errorMessage(error: unknown): string {
-  return error instanceof Error ? error.message : String(error)
+  if (!(error instanceof Error)) return String(error)
+  const rawDetail = (error as StatusError).detail
+  const detail = typeof rawDetail === 'string'
+    ? rawDetail.replace(/\s+/g, ' ').trim().slice(0, 240)
+    : ''
+  return detail && !error.message.includes(detail) ? `${error.message}：${detail}` : error.message
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -98,7 +107,10 @@ export function useVoice(options: {
   const availability = ref<VoiceAvailability>({ online: false, voices: {} })
 
   // 内部不需要响应式的可变状态
-  let sentenceBuffer = new SentenceBuffer({ immediateFirst: true })
+  // GPT-SoVITS is much more stable with a little sentence context. Holding a
+  // short interjection for the following sentence avoids clipped, repeated
+  // "诶…那个…" style fragments.
+  let sentenceBuffer = new SentenceBuffer({ minimumLength: 16, maximumLength: 72 })
   let session = 0, controller: AbortController | null = null
   let translateChain: Promise<PreparedSentence | null> = Promise.resolve(null)
   let synthChain: Promise<void> = Promise.resolve()
@@ -218,9 +230,11 @@ export function useVoice(options: {
   }
 
   async function prepareSentence(sourceText: string, meta: VoiceTurn, signal: AbortSignal): Promise<PreparedSentence | null> {
-    const cleaned = String(sourceText || '').replace(/[「」『』"""'()（）*＊]/g, '').trim()
+    const dialogue = extractSpokenDialogue(sourceText)
+    const cleaned = dialogue.text.replace(/[「」『』"""']/g, '').trim()
     if (!cleaned) return null
-    const rawEmotion = inferEmotion(cleaned, meta.character)
+    const directionText = dialogue.directions.join(' ')
+    const rawEmotion = inferEmotion(directionText ? `${directionText} ${cleaned}` : cleaned, meta.character)
     let emotion: string
     if (rawEmotion === 'neutral') { _neutralStreak++; emotion = _neutralStreak >= 3 ? 'neutral' : _lastEmotion }
     else { _neutralStreak = 0; emotion = rawEmotion }
@@ -233,24 +247,55 @@ export function useVoice(options: {
       else translationFailed = true
     } catch (e) { if (isAbortError(e)) throw e; translationFailed = true }
     if (translationFailed && !_warnedTranslation) { _warnedTranslation = true; onError('日文翻译不可用，本次改用中文发音。') }
-    return { text: translated || cleaned, language: translated ? 'ja' : 'zh', emotion }
+    return {
+      text: translated || cleaned,
+      language: translated ? 'ja' : 'zh',
+      emotion,
+      // A written direction is an explicit request for a new delivery. Keep
+      // normal sentences locked to one reference for a coherent identity, but
+      // let the configured emotion reference take effect for that cue.
+      consistency: directionText && rawEmotion !== 'neutral' ? 'adaptive' : 'locked',
+    }
+  }
+
+  async function requestTts(request: PreparedSentence, meta: VoiceTurn, signal: AbortSignal): Promise<Response> {
+    const timeoutController = new AbortController()
+    let timedOut = false
+    const stopOnTurnAbort = () => timeoutController.abort()
+    signal.addEventListener('abort', stopOnTurnAbort, { once: true })
+    const timer = window.setTimeout(() => { timedOut = true; timeoutController.abort() }, 90_000)
+    try {
+      return await fetch('/api/tts', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: timeoutController.signal,
+        body: JSON.stringify({
+          voice: meta.voice, text: request.text, language: request.language,
+          emotion: request.emotion, referenceEmotion: meta.referenceEmotion,
+          consistency: request.consistency, speed: 1,
+        }),
+      })
+    } catch (error) {
+      if (signal.aborted) throw error
+      if (timedOut) {
+        const timeout = new Error('单句语音合成超过 90 秒') as StatusError
+        timeout.status = 504
+        throw timeout
+      }
+      throw error
+    } finally {
+      clearTimeout(timer)
+      signal.removeEventListener('abort', stopOnTurnAbort)
+    }
   }
 
   async function synthesize(request: PreparedSentence, meta: VoiceTurn, signal: AbortSignal): Promise<SynthesizedClip> {
     let ttsError: Error | undefined
     // GPT-SoVITS 偶发瞬时失败（模型换权重 / 队列抖动 / 空音频）。
-    // 之前只重试 1 次且不管空 body，所以会出现“某句突然没声”。
-    const MAX_ATTEMPTS = 3
+    // A stuck upstream used to block the entire reply for several minutes.
+    // Bound one sentence and retry once so later dialogue can still continue.
+    const MAX_ATTEMPTS = 2
     for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
       try {
-        const r = await fetch('/api/tts', {
-          method: 'POST', headers: { 'Content-Type': 'application/json' }, signal,
-          body: JSON.stringify({
-            voice: meta.voice, text: request.text, language: request.language,
-            emotion: request.emotion, referenceEmotion: meta.referenceEmotion,
-            consistency: 'locked', speed: 1,
-          }),
-        })
+        const r = await requestTts(request, meta, signal)
         if (!r.ok) {
           const error = await responseError(r, '语音服务暂不可用') as StatusError
           error.status = r.status
@@ -269,10 +314,13 @@ export function useVoice(options: {
         if (isAbortError(e) || signal.aborted) throw e
         const error = e as StatusError
         const status = Number(error.status)
-        const transient = error.name === 'TypeError' || status >= 500 || status === 429
+        // A client timeout or a full server queue may leave the upstream worker
+        // busy even after this request is aborted. Retrying that same sentence
+        // creates duplicate GPU work and is the usual source of repeated audio.
+        const transient = error.name === 'TypeError' || status === 429 || status === 500 || status === 502
         if (transient && attempt < MAX_ATTEMPTS - 1) {
-          // 退避：220ms → 500ms，给 GPT-SoVITS 留出恢复时间
-          const backoff = 220 * Math.pow(2, attempt)
+          // Give a recovering GPT-SoVITS worker one short, bounded retry.
+          const backoff = 350 * Math.pow(2, attempt)
           await new Promise(res => setTimeout(res, backoff))
           if (signal.aborted) throw e
           ttsError = error

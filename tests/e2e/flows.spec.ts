@@ -305,7 +305,25 @@ test('flow 3b · 聊天配音：开启实时配音后逐句走翻译 + TTS', asy
   expect(String(ttsCalls[0].body?.text)).toContain('[JA]');
 });
 
-test('flow 3c · 聊天中断：停止后已生成的片段保留并标记', async ({ page, request }) => {
+test('flow 3c · 聊天配音：舞台提示保留显示但不进入朗读', async ({ page, request }) => {
+  await fault(request, MOCK.ollama, { reply: '（稍微有点慌乱）诶、和我一起看吗……' });
+  await page.goto('/chat');
+  await toggle(page, '.voice-toggle input[type="checkbox"]', true);
+  await expect(page.locator('.voice-capability')).toHaveAttribute('data-state', 'ready');
+
+  await page.locator('.chat-input').fill('一起看恐怖片吗？');
+  await page.locator('.send-btn').click();
+  await expect(page.locator('.message.assistant .message-bubble')).toContainText('稍微有点慌乱', { timeout: 15_000 });
+  await expect.poll(async () => (await callsTo(request, MOCK.tts, '/tts')).length,
+    { timeout: 20_000 }).toBeGreaterThanOrEqual(1);
+
+  const translationCalls = await callsTo(request, MOCK.translate, '/translate');
+  const ttsCalls = await callsTo(request, MOCK.tts, '/tts');
+  expect(String(translationCalls[0].body?.text)).toBe('诶、和我一起看吗……');
+  expect(String(ttsCalls[0].body?.text)).not.toContain('稍微有点慌乱');
+});
+
+test('flow 3d · 聊天中断：停止后已生成的片段保留并标记', async ({ page, request }) => {
   // 拉长上游延迟，好在流中途按停止
   await fault(request, MOCK.ollama, { latency: 400 });
   await page.goto('/chat');

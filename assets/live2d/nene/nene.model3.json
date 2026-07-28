@@ -1,7 +1,13 @@
 {
   "Version": 3,
   "HitAreas": [
-    { "Name": "Head", "Id": "ArtMesh175" }
+    { "Name": "Hair", "Id": "ArtMesh73" },
+    { "Name": "Head", "Id": "ArtMesh175" },
+    { "Name": "Face", "Id": "ArtMesh178" },
+    { "Name": "LeftChest", "Id": "ArtMesh321" },
+    { "Name": "RightChest", "Id": "ArtMesh110" },
+    { "Name": "Skirt", "Id": "ArtMesh330" },
+    { "Name": "Body", "Id": "ArtMesh332" }
   ],
   "FileReferences": {
     "Moc": "nene.moc3",
@@ -23,6 +29,24 @@
         { "File": "motions/idle_03.motion3.json", "FadeInTime": 0.6, "FadeOutTime": 0.6 }
       ],
       "TapHead": [
+        { "File": "motions/tap_head.motion3.json", "FadeInTime": 0.35, "FadeOutTime": 0.55 }
+      ],
+      "TapHair": [
+        { "File": "motions/tap_hair.motion3.json", "FadeInTime": 0.35, "FadeOutTime": 0.55 }
+      ],
+      "TapFace": [
+        { "File": "motions/tap_head.motion3.json", "FadeInTime": 0.35, "FadeOutTime": 0.55 }
+      ],
+      "TapLeftChest": [
+        { "File": "motions/tap_chest.motion3.json", "FadeInTime": 0.35, "FadeOutTime": 0.55 }
+      ],
+      "TapRightChest": [
+        { "File": "motions/tap_chest.motion3.json", "FadeInTime": 0.35, "FadeOutTime": 0.55 }
+      ],
+      "TapSkirt": [
+        { "File": "motions/tap_skirt.motion3.json", "FadeInTime": 0.35, "FadeOutTime": 0.55 }
+      ],
+      "TapBody": [
         { "File": "motions/tap_head.motion3.json", "FadeInTime": 0.35, "FadeOutTime": 0.55 }
       ]
     }

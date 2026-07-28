@@ -47,10 +47,6 @@
       <div v-if="live2d.interactionHint.value" class="live2d-interaction-hint">
         {{ live2d.interactionHint.value }}
       </div>
-      <div v-if="live2d.ready.value" class="live2d-quick-actions" aria-label="Live2D 互动">
-        <button type="button" @click.stop="live2d.interact('greet')">👋 打招呼</button>
-        <button type="button" @click.stop="live2d.interact('head')">♡ 摸摸头</button>
-      </div>
       <div class="portrait-caption">
         <strong>{{ character.name }}</strong>
         <span>{{ character.caption }}</span>

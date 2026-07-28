@@ -223,6 +223,14 @@ async function run() {
     voiceModule.includes("consistency: 'locked'") && voiceModule.includes('referenceEmotion: meta.referenceEmotion'),
     'one reply must lock a single identity reference across all sentences'
   );
+  assert(
+    voiceModule.includes('extractSpokenDialogue')
+      && voiceModule.includes("consistency: directionText && rawEmotion !== 'neutral' ? 'adaptive' : 'locked'")
+      && voiceModule.includes('90_000')
+      && voiceModule.includes('minimumLength: 16')
+      && voiceModule.includes('status === 502'),
+    'voice must omit roleplay directions, honor their emotion, and bound stuck synthesis'
+  );
   assert(voiceModule.includes('AbortController') && voiceModule.includes('messageAudio'), 'voice sessions must support cancellation and replay');
   assert(!/\bany\b/.test(voiceModule), 'voice queue, turn, API responses, and Web Audio boundaries must stay explicitly typed');
   assert(
@@ -233,18 +241,29 @@ async function run() {
   assert(voiceModule.includes('getByteTimeDomainData') && voiceModule.includes('onMouth'), 'lip sync must use real audio amplitude');
   assert(live2dModule.includes('ResizeObserver') && live2dModule.includes('webglcontextlost'), 'Live2D must recover layout and WebGL failures');
   assert(live2dModule.includes('setExpression') && live2dModule.includes('setSpeaking') && live2dModule.includes('applyMouth') && live2dModule.includes('ParamMouthOpenY'), 'Live2D must write real speech amplitudes into the mouth parameter');
-  assert(live2dModule.includes('model.focus') && live2dModule.includes('model.hitTest'), 'Live2D must support pointer focus and model hit testing');
+  assert(
+    live2dModule.includes('INTERACTION_MOTIONS')
+      && live2dModule.includes('worldPoint')
+      && live2dModule.includes('model.hitTest(point.x, point.y)')
+      && live2dModule.includes('interactionFromStagePosition')
+      && live2dModule.includes('wl-live2d sometimes reports the broad body mesh for every DOM click')
+      && live2dModule.includes('model.motion(interaction.group, 0, 3)')
+      && live2dModule.includes("motionPreload: 'ALL'")
+      && live2dModule.includes('function markInteractionStarted')
+      && live2dModule.includes("interactionHint.value = '这个动作正在进行中'")
+      && live2dModule.includes("interactionHint.value = '动作没有启动，请重试'"),
+    'Live2D clicks must map source hit areas to authored motions with FORCE priority, report feedback only after startup, and distinguish an active motion from a real failure'
+  );
+  assert(
+    live2dModule.includes('点击呆毛、头部、脸、身体、两侧或裙摆可触发原生互动'),
+    'Live2D must advertise every packaged source interaction area'
+  );
   assert(!/\bany\b/.test(live2dModule), 'Live2D catalog, runtime, controller, and model boundaries must stay explicitly typed');
   assert(
     live2dModule.includes('readLive2DCatalog') && live2dModule.includes('readLibrary'),
     'Live2D status JSON and dynamic runtime exports must be narrowed before use'
   );
-  assert(
-    characterStageComponent.includes("live2d.interact('greet')")
-      && characterStageComponent.includes("live2d.interact('head')")
-      && live2dModule.includes("function interact(kind: 'greet' | 'head'"),
-    'Live2D must expose keyboard-accessible greeting and head-pat interactions'
-  );
+  assert(!characterStageComponent.includes('live2d-quick-actions') && !live2dModule.includes('beginGreetingGesture'), 'Live2D must not expose simulated quick actions');
   assert(
     live2dModule.includes('options.autoLoad === true')
       && live2dModule.includes("setState('idle', '启用 Live2D'"),
@@ -284,6 +303,10 @@ async function run() {
   assert(sentences.push('嗯。').length === 0, 'short sentence should wait for the next boundary');
   assert(sentences.push('今天过得怎么样？')[0] === '嗯。今天过得怎么样？', 'short sentence should merge without being lost');
   assert(sentences.push('最后一句', true)[0] === '最后一句', 'flush must emit the remaining sentence');
+  var dialogue = utils.extractSpokenDialogue('（稍微有点慌乱）诶、和我一起看吗……');
+  assert(dialogue.text === '诶、和我一起看吗……', 'roleplay directions must not enter spoken dialogue');
+  assert(JSON.stringify(dialogue.directions) === JSON.stringify(['稍微有点慌乱']), 'roleplay directions must remain available for emotion selection');
+  assert(utils.inferEmotion(dialogue.directions.join(' '), 'nene') === 'shy', 'nervous stage directions must select a shy delivery');
 
   var wav = new ArrayBuffer(48);
   var wavView = new DataView(wav);
@@ -360,9 +383,14 @@ async function run() {
   var liveStatus = live2dService.status();
   assert(liveStatus.models.nene.available, 'Nene Live2D model and all references must exist');
   var neneManifest = JSON.parse(fs.readFileSync(path.join(root, 'assets', 'live2d', 'nene', 'nene.model3.json'), 'utf8'));
-  assert(neneManifest.HitAreas.some(function (area) { return area.Name === 'Head'; }), 'Nene model must expose the source-model head hit area');
-  assert(neneManifest.FileReferences.Motions.TapHead.length === 1, 'Nene model must expose the safe head-tap motion');
-  assert(!neneManifest.FileReferences.Motions.TapHead[0].Sound, 'head-tap interaction must not conflict with AI voice playback');
+  ['Hair', 'Head', 'Face', 'LeftChest', 'RightChest', 'Skirt', 'Body'].forEach(function (name) {
+    assert(neneManifest.HitAreas.some(function (area) { return area.Name === name; }), 'Nene model must expose source hit area ' + name);
+  });
+  ['TapHair', 'TapHead', 'TapFace', 'TapLeftChest', 'TapRightChest', 'TapSkirt', 'TapBody'].forEach(function (group) {
+    var motions = neneManifest.FileReferences.Motions[group];
+    assert(Array.isArray(motions) && motions.length === 1, 'Nene model must expose source motion group ' + group);
+    assert(!motions[0].Sound, group + ' must not conflict with AI voice playback');
+  });
   assert(!liveStatus.models.natsume.available, 'missing Natsume model must use a declared fallback');
 
   var mock = createMockAiServer();
