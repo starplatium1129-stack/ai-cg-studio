@@ -36,7 +36,8 @@ const modules = [
   ['src/composables/useVoice.ts', ['startTurn', 'append', 'finishTurn']],
   ['src/composables/useImageStore.ts', ['imgPut', 'imgGet', 'imgDeleteMany']],
   ['src/composables/useKVStore.ts', ['kvGet', 'kvSet']],
-  ['src/components/HistoryPanel.vue', ['history-wrap', 'imgGet']],
+   ['src/components/HistoryPanel.vue', ['history-wrap', 'imgGet']],
+  ['src/components/VoiceStudio.vue', ['voice-studio', '/api/tts-status', '/api/translate', '/api/tts']],
 ];
 
 for (const [rel, markers] of modules) {
@@ -63,6 +64,7 @@ const wiring = [
   ['commitHistoryEntry', 'generated art must be committed to IndexedDB-backed history'],
   ['applyModelProfile', 'SD params must follow the matched checkpoint profile'],
   ['HistoryPanel', 'director must render the artwork history panel'],
+  ['VoiceStudio', 'director must mount the dedicated voice studio component'],
   ['reuseLastSeed', 'director must allow reusing the last seed'],
   ['runRecovery', 'director must offer one-click error recovery'],
 ];
@@ -80,14 +82,27 @@ for (const param of ['scene', 'regen', 'variant', 'mood', 'resume', 'quick']) {
   if (!new RegExp(`q\\.${param}`).test(view)) fail('missing deep-link restoration for ?' + param);
 }
 
-// 配音工作室接线
+// 配音工作室的 HTTP 接线归 VoiceStudio 所有；PromptBuilderView 只负责传入
+// 当前角色/故事默认值，避免它再次变成第六个子系统的宿主。
+const voiceStudio = read('src/components/VoiceStudio.vue');
 for (const marker of ['/api/tts-status', '/api/translate', '/api/tts', 'voice-studio']) {
-  if (!view.includes(marker)) fail('voice studio must be wired: ' + marker);
+  if (!voiceStudio.includes(marker)) fail('voice studio must own: ' + marker);
+}
+for (const marker of ['initial-voice', 'suggested-caption']) {
+  if (!view.includes(marker)) fail('director must wire voice studio prop: ' + marker);
 }
 
 // ── 3. 出图参数必须与底模 profile 一致，且支持 hires 细项 ────────────────
 for (const marker of ['hr_second_pass_steps', 'denoising_strength', 'hiresSteps', 'hiresDenoise']) {
   if (!view.includes(marker)) fail('hires pipeline must expose ' + marker);
+}
+for (const marker of ['faceDetailer', 'face_yolov8s.pt', 'hand_yolov8n.pt', 'buildSingleDetailerScripts']) {
+  if (!view.includes(marker)) fail('high-resolution detailer must retain ' + marker);
+}
+
+const sdGenerate = read('src/composables/useSDGenerate.ts');
+for (const marker of ['pollInFlight', 'pollFailures', 'void pollProgress(token)', '进度读取失败']) {
+  if (!sdGenerate.includes(marker)) fail('SD progress polling must retain ' + marker);
 }
 
 // ── 4. 样式层仍提供共享 chrome ───────────────────────────────────────────

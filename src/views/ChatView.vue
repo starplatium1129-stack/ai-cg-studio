@@ -15,18 +15,25 @@
 
     <section class="chat-layout" aria-label="角色聊天">
       <aside class="character-card">
-        <div class="character-tabs" role="tablist" aria-label="选择角色">
+        <!-- tablist 模式补全：aria-controls 指向立绘面板 + roving tabindex + 方向键 -->
+        <div class="character-tabs" role="tablist" aria-label="选择角色" @keydown="tabs.onKeydown">
           <button
-            v-for="id in ['nene','natsume']" :key="id"
+            v-for="id in CHARACTER_IDS" :key="id"
             class="character-tab" type="button"
             :class="{ active: activeChar === id }"
             :data-character="id" role="tab"
+            :id="tabs.tabId(id)"
+            :aria-controls="tabs.panelId(id)"
             :aria-selected="activeChar === id ? 'true' : 'false'"
+            :tabindex="tabs.tabIndex(id)"
             @click="switchCharacter(id)"
           >{{ id === 'nene' ? '🔮 宁宁' : '☕ 夏目' }}</button>
         </div>
 
         <div class="portrait-stage" ref="stageRef" :data-character="activeChar"
+             role="tabpanel"
+             :id="tabs.panelId(activeChar)"
+             :aria-labelledby="tabs.tabId(activeChar)"
              :class="{ speaking: isSpeaking }">
           <div class="room-signal">
             <span>{{ currentCharacter.roomCode }}</span>
@@ -66,7 +73,10 @@
           </select>
         </div>
 
-        <div class="chat-list" ref="chatListRef" aria-live="polite">
+        <!-- 不在整个消息历史上挂 aria-live：流式输出时每个 token 都会让读屏
+             把整段重播一遍。改为 role="log"（读屏只播报新增节点），
+             并把"回复已完成"这件事交给下面的 .chat-announce 单独播报一次。 -->
+        <div class="chat-list" ref="chatListRef" role="log" aria-label="对话记录">
           <!-- Empty state -->
           <div v-if="!currentMessages.length" class="chat-empty">
             <span class="chat-empty-kicker">{{ currentCharacter.roomCode }}</span>
@@ -128,8 +138,9 @@
                 <span class="voice-capability-dot"></span>{{ voiceCapabilityText }}
               </span>
               <span class="voice-status" aria-live="polite">{{ voiceStatusText }}</span>
-              <a v-show="showVoiceRecovery" class="voice-recovery"
-                href="http://127.0.0.1:3001/" target="_blank" rel="noreferrer">启动语音 →</a>
+              <!-- 语音启停已经迁进 SPA 的 /control；旧 3001 control-server 已删除。
+                   硬编码旧端口会把用户带到一个拒绝连接的死链接。 -->
+              <RouterLink v-show="showVoiceRecovery" class="voice-recovery" to="/control">启动语音 →</RouterLink>
               <label class="volume-slider" title="音量">
                 <span class="volume-icon">🔊</span>
                 <input type="range" v-model.number="volume" min="0" max="100"
@@ -146,6 +157,8 @@
 
           <div class="chat-error" role="status" aria-live="polite"
             :data-kind="chatErrorKind">{{ chatError }}</div>
+          <!-- 流式回复只在收尾时播报一次，避免逐 token 刷读屏 -->
+          <p class="sr-only" role="status" aria-live="polite">{{ replyAnnouncement }}</p>
         </div>
       </section>
     </section>
@@ -162,6 +175,7 @@ import { useChatStorage } from '@/composables/useChatStorage'
 import { useLive2D } from '@/composables/useLive2D'
 import { useVoice } from '@/composables/useVoice'
 import { parseNdjsonResponse, isAbortError } from '@/utils/stream'
+import { useRovingTabs } from '@/composables/useRovingTabs'
 
 const router = useRouter()
 
@@ -187,6 +201,7 @@ const voiceCapabilityState = ref('offline')
 const voiceCapabilityText  = ref('检查语音…')
 const showVoiceRecovery    = ref(false)
 const streamingMid  = ref('')
+const replyAnnouncement = ref('')
 const playingMid    = ref('')
 const isSpeaking    = ref(false)
 const autoVoice     = ref(true)
@@ -238,6 +253,14 @@ const voice = useVoice({
 
 // ── Derived ───────────────────────────────────────────────────────────────
 const currentCharacter = computed(() => CHARACTERS[activeChar.value] || CHARACTERS.nene)
+
+const CHARACTER_IDS = ['nene', 'natsume'] as const
+const tabs = useRovingTabs(
+  () => CHARACTER_IDS as unknown as readonly string[],
+  activeChar,
+  switchCharacter,
+  { prefix: 'chatchar' },
+)
 
 const currentMessages = computed(() => storage.messages(activeChar.value))
 
@@ -351,6 +374,7 @@ async function sendMessage() {
 
   const char = activeChar.value
   const msgs = storage.messages(char)
+  replyAnnouncement.value = ''
   msgs.push({ role: 'user', content: text, mid: '', stopped: false })
   storage.trim(char)
   const assistant = { role: 'assistant' as const, content: '', mid: createMessageId(), stopped: false }
@@ -389,6 +413,8 @@ async function sendMessage() {
     })
 
     assistant.content = assistant.content.trim() || '……'
+    // 收尾时播报一次完整回复，取代逐 token 刷 live region
+    replyAnnouncement.value = `${currentCharacter.value.name}说：${assistant.content}`
     voice.finishTurn()
   } catch (error) {
     if (isAbortError(error)) {

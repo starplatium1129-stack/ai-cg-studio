@@ -2,6 +2,8 @@
 
 var express = require('express');
 var httpClient = require('../services/http-client');
+var security = require('../server/security');
+var envelope = require('../server/http-envelope');
 var createTranslationService = require('../services/translation-service').createTranslationService;
 var createTtsService = require('../services/tts-service').createTtsService;
 
@@ -40,10 +42,16 @@ function createVoiceRouter(config, dependencies) {
     profiles:config.VOICE_PROFILES
   });
 
-  router.post('/api/translate', express.json({ limit:'32kb' }), function (req, res) {
+  // 限流额度要按实时配音的真实节奏定：一条聊天回复会按句拆成多次
+  // translate + tts，所以桶要足够大，只挡住持续滥用。本机直连不受限。
+  var translateLimit = security.rateLimit({ capacity:40, refillMs:1000, label:'翻译' });
+  var ttsLimit = security.rateLimit({ capacity:40, refillMs:1000, label:'语音合成' });
+  var prepareLimit = security.rateLimit({ capacity:12, refillMs:2000, label:'声线预热' });
+
+  router.post('/api/translate', translateLimit, express.json({ limit:'32kb' }), function (req, res) {
     var text = String(req.body && req.body.text || '').trim();
     if (!text || text.length > 2000) {
-      return res.status(400).json({ error:'待翻译中文需在 1—2000 字之间。' });
+      return envelope.fail(res, 400, '待翻译中文需在 1—2000 字之间。');
     }
     var controller = new AbortController();
     req.once('aborted', function () { controller.abort(); });
@@ -59,7 +67,7 @@ function createVoiceRouter(config, dependencies) {
       });
     }).catch(function (error) {
       if (httpClient.isAbortError(error) || controller.signal.aborted) return;
-      if (!res.headersSent) res.status(503).json({ error:error.message || '本地日语翻译暂不可用。' });
+      if (!res.headersSent) envelope.fail(res, 503, error.message || '本地日语翻译暂不可用。');
     });
   });
 
@@ -81,11 +89,11 @@ function createVoiceRouter(config, dependencies) {
     });
   });
 
-  router.post('/api/voice/prepare', express.json({ limit:'4kb' }), function (req, res) {
+  router.post('/api/voice/prepare', prepareLimit, express.json({ limit:'4kb' }), function (req, res) {
     var voice = String(req.body && req.body.voice || '');
     var needsTranslation = req.body && req.body.translation === true;
     if (!['nene', 'natsume'].includes(voice)) {
-      return res.status(400).json({ error:'不支持的角色声线' });
+      return envelope.fail(res, 400, '不支持的角色声线');
     }
 
     var controller = new AbortController();
@@ -107,16 +115,14 @@ function createVoiceRouter(config, dependencies) {
     }).catch(function (error) {
       if (httpClient.isAbortError(error) || controller.signal.aborted) return;
       if (!res.headersSent) {
-        res.status(error.status >= 400 && error.status < 500 ? error.status : 503).json({
-          error:error.message || '声线预热失败'
-        });
+        envelope.fail(res, envelope.statusFor(error, 503), error.message || '声线预热失败');
       }
     });
   });
 
-  router.post('/api/tts', express.json({ limit:'32kb' }), function (req, res) {
+  router.post('/api/tts', ttsLimit, express.json({ limit:'32kb' }), function (req, res) {
     var validation = tts.validate(req.body);
-    if (validation.error) return res.status(validation.status).json({ error:validation.error });
+    if (validation.error) return envelope.fail(res, validation.status, validation.error);
 
     var controller = new AbortController();
     req.once('aborted', function () { controller.abort(); });
@@ -139,12 +145,11 @@ function createVoiceRouter(config, dependencies) {
       if (httpClient.isAbortError(error) || controller.signal.aborted) return;
       if (!res.headersSent) {
         // 队列已满是 503（客户端可重试），不是 502（上游坏了）
-        var status = error.code === 'QUEUE_FULL' ? 503
-          : (error.status >= 400 && error.status < 500 ? error.status : 502);
-        res.status(status).json({
-          error:error.code === 'QUEUE_FULL' ? '语音队列繁忙' : 'GPT-SoVITS 生成失败',
-          detail:error.detail || error.message
-        });
+        var status = error.code === 'QUEUE_FULL' ? 503 : envelope.statusFor(error, 502);
+        envelope.fail(res,
+          status,
+          error.code === 'QUEUE_FULL' ? '语音队列繁忙' : 'GPT-SoVITS 生成失败',
+          { detail:error.detail || error.message, code:error.code || undefined });
       } else if (!res.writableEnded) {
         res.destroy(error);
       }

@@ -1,0 +1,126 @@
+'use strict';
+/**
+ * scripts/tests/mock-stack.js
+ *
+ * 启动「四个假上游 + 一个真网关」，供 tests/e2e/flows.spec.ts 使用。
+ * 由 playwright.config.ts 的第二个 webServer 拉起；也可以手动跑：
+ *
+ *   node scripts/tests/mock-stack.js
+ *
+ * 设计约束：
+ *  1. 网关是真的 —— createGateway 的中间件栈、SD 代理白名单、NDJSON 中继、
+ *     音频背压中继全部参与。只有上游被替换。
+ *  2. runtime 目录必须隔离。控制面板路由会往 RUNTIME.config 落盘（autoTunnel、
+ *     voices、上游 host），跑一次 E2E 不该改用户真实的 runtime/config.json。
+ *  3. 声线 profile 直接注入。tts-service 只检查 refAudioPath / promptText 是否
+ *     存在（不 stat 文件），所以假路径足够让 /api/tts-status 报 voices.nene=true。
+ */
+
+var fs = require('fs');
+var os = require('os');
+var path = require('path');
+var createGateway = require(path.join(__dirname, '..', '..', 'server.js')).createGateway;
+var loadGatewayConfig = require(path.join(__dirname, '..', '..', 'server', 'config.js')).loadGatewayConfig;
+var runtimePaths = require(path.join(__dirname, '..', 'runtime', 'runtime-paths.js'));
+var mocks = require('./mock-upstreams');
+
+var PORTS = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'tests', 'e2e', 'mock-ports.json'), 'utf8'));
+var ROOT_DIR = path.join(__dirname, '..', '..');
+var TOKEN = 'mock-stack-token-0123456789abcdef0123';
+
+function isolatedRuntime() {
+  var dir = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-e2e-runtime-'));
+  return runtimePaths.createRuntimePaths(dir);
+}
+
+function buildConfig(runtime) {
+  var config = loadGatewayConfig(ROOT_DIR, {
+    PORT:String(PORTS.gateway),
+    HOST:'127.0.0.1',
+    TOKEN:TOKEN,
+    DISABLE_TUNNEL:'1',
+    SD_HOST:'http://127.0.0.1:' + PORTS.sd,
+    TTS_HOST:'http://127.0.0.1:' + PORTS.tts,
+    OLLAMA_HOST:'http://127.0.0.1:' + PORTS.ollama,
+    TRANSLATE_PORT:String(PORTS.translate)
+  });
+
+  // runtime 换到临时目录：控制面板写盘不得污染真实 runtime/
+  config.RUNTIME = runtime;
+  config.RUNTIME_ROOT = runtime.root;
+  config.TRANSLATION_LOG = path.join(runtime.logs, 'translate.log');
+
+  // 声线 profile：让 /api/tts-status 报两个角色都已配置
+  config.VOICE_PROFILES = {
+    nene:{
+      refAudioPath:'D:/mock/nene/neutral.wav',
+      promptText:'ねえ、ちょっと聞いてもいい？',
+      promptLang:'ja',
+      gptWeightsPath:'D:/mock/nene/gpt.ckpt',
+      sovitsWeightsPath:'D:/mock/nene/sovits.pth',
+      references:{
+        gentle:{ refAudioPath:'D:/mock/nene/gentle.wav', promptText:'大丈夫だよ。', promptLang:'ja' }
+      }
+    },
+    natsume:{
+      refAudioPath:'D:/mock/natsume/neutral.wav',
+      promptText:'まったく、無理しないで。',
+      promptLang:'ja',
+      gptWeightsPath:'D:/mock/natsume/gpt.ckpt',
+      sovitsWeightsPath:'D:/mock/natsume/sovits.pth'
+    }
+  };
+
+  // 翻译常驻服务已由 mock 顶替，禁掉 legacy spawn 回退：
+  // 指向不存在的路径，translation-service 会直接拒绝而不是拉起 python.exe
+  config.TRANSLATION_PYTHON = path.join(runtime.root, 'no-such-python.exe');
+  config.TRANSLATION_SCRIPT = path.join(runtime.root, 'no-such-script.py');
+  return config;
+}
+
+async function start() {
+  var runtime = isolatedRuntime();
+  var upstreams = [
+    { name:'sd', port:PORTS.sd, mock:mocks.createSdMock() },
+    { name:'ollama', port:PORTS.ollama, mock:mocks.createOllamaMock() },
+    { name:'tts', port:PORTS.tts, mock:mocks.createTtsMock() },
+    { name:'translate', port:PORTS.translate, mock:mocks.createTranslateMock() }
+  ];
+
+  for (var i = 0; i < upstreams.length; i += 1) {
+    await mocks.listen(upstreams[i].mock.server, upstreams[i].port);
+    console.log('  🧪 mock ' + upstreams[i].name + ' → http://127.0.0.1:' + upstreams[i].port);
+  }
+
+  var config = buildConfig(runtime);
+  var gateway = createGateway({ config:config });
+  var server = gateway.app.listen(config.PORT, config.HOST, function () {
+    console.log('  🔗 mock gateway → http://127.0.0.1:' + config.PORT);
+    console.log('  🗂 isolated runtime → ' + runtime.root);
+  });
+  server.on('upgrade', gateway.handleUpgrade);
+
+  // 未捕获异常不该静默带走整个 mock 栈
+  process.on('unhandledRejection', function (reason) {
+    console.error('  ❌ mock stack unhandled rejection:', reason && reason.stack || reason);
+  });
+
+  function shutdown() {
+    try { gateway.close(); } catch (error) {}
+    upstreams.forEach(function (item) { try { item.mock.server.close(); } catch (error) {} });
+    server.close(function () { process.exit(0); });
+    setTimeout(function () { process.exit(0); }, 2000).unref();
+  }
+  process.once('SIGINT', shutdown);
+  process.once('SIGTERM', shutdown);
+  return { gateway:gateway, server:server, upstreams:upstreams, config:config, shutdown:shutdown };
+}
+
+if (require.main === module) {
+  start().catch(function (error) {
+    console.error('mock stack failed to start:', error);
+    process.exit(1);
+  });
+}
+
+module.exports = { start:start, PORTS:PORTS, TOKEN:TOKEN };

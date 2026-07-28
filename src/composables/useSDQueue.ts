@@ -29,7 +29,7 @@ export interface SDQueueJob {
   hiresUpscaler: string
   hiresSteps: number
   denoisingStrength: number
-  [k: string]: unknown
+  faceDetailer: boolean
 }
 
 export type SDJobRunner = (job: SDQueueJob) => Promise<{ status: 'success' | 'cancelled' | 'failure'; error?: any }>

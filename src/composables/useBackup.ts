@@ -11,6 +11,17 @@ const HISTORY_KEY = 'aics_pb_history'
 const PROJECT_KEY = 'aics_pb_projects'
 const SCHEMA_VERSION = 2
 
+/**
+ * 备份兼容旧版本的自由字段，但恢复/合并只依赖 id、timestamp、image_id。
+ * `any[]` 会让损坏 JSON 里的任意值一路穿进 IndexedDB；这里保留未知字段以免
+ * 降级恢复时丢数据，同时让所有使用点必须先经过对象窄化。
+ */
+export type BackupRecord = Record<string, unknown> & {
+  id?: unknown
+  timestamp?: unknown
+  image_id?: unknown
+}
+
 const SETTINGS_KEYS = [
   'aics_theme',
   'aics_sd_settings_v1',
@@ -33,8 +44,8 @@ export interface BackupFile {
   schemaVersion: number
   createdAt: string
   data: {
-    history: any[]
-    projects: any[]
+    history: BackupRecord[]
+    projects: BackupRecord[]
     settings: Record<string, string>
   }
   images: BackupImage[]
@@ -85,21 +96,22 @@ export function summarize(backup: BackupFile): BackupSummary {
   }
 }
 
-export function normalize(raw: any): BackupFile {
+export function normalize(raw: unknown): BackupFile {
   if (!raw || typeof raw !== 'object') throw new Error('备份文件格式不正确')
-  const data = raw.data ?? {}
+  const source = raw as Record<string, unknown>
+  const data = source.data && typeof source.data === 'object' ? source.data as Record<string, unknown> : {}
   const file: BackupFile = {
-    app: String(raw.app || 'ai-cg-studio'),
-    appVersion: String(raw.appVersion || ''),
-    schemaVersion: Number(raw.schemaVersion) || 1,
-    createdAt: String(raw.createdAt || ''),
+    app: String(source.app || 'ai-cg-studio'),
+    appVersion: String(source.appVersion || ''),
+    schemaVersion: Number(source.schemaVersion) || 1,
+    createdAt: String(source.createdAt || ''),
     data: {
-      history: Array.isArray(data.history) ? data.history : [],
-      projects: Array.isArray(data.projects) ? data.projects : [],
-      settings: data.settings && typeof data.settings === 'object' ? data.settings : {},
+      history: Array.isArray(data.history) ? data.history.filter(isBackupRecord) : [],
+      projects: Array.isArray(data.projects) ? data.projects.filter(isBackupRecord) : [],
+      settings: data.settings && typeof data.settings === 'object' ? data.settings as Record<string, string> : {},
     },
-    images: Array.isArray(raw.images)
-      ? raw.images.filter((i: any) => i?.id && typeof i.dataUrl === 'string')
+    images: Array.isArray(source.images)
+      ? source.images.filter(isBackupImage)
       : [],
   }
   if (!file.data.history.length && !file.data.projects.length && !file.images.length) {
@@ -109,8 +121,23 @@ export function normalize(raw: any): BackupFile {
 }
 
 /** 按 id 合并：同 id 保留较新的（timestamp 大者） */
-export function mergeById(current: any[], incoming: any[]): any[] {
-  const map = new Map<string, any>()
+function isBackupRecord(value: unknown): value is BackupRecord {
+  return Boolean(value && typeof value === 'object' && !Array.isArray(value))
+}
+
+function isBackupImage(value: unknown): value is BackupImage {
+  if (!value || typeof value !== 'object') return false
+  const image = value as Partial<BackupImage>
+  return Boolean(image.id && typeof image.dataUrl === 'string')
+}
+
+function errorMessage(error: unknown, fallback: string) {
+  if (error instanceof Error && error.message) return error.message
+  return String(error ?? '').trim() || fallback
+}
+
+export function mergeById(current: BackupRecord[], incoming: BackupRecord[]): BackupRecord[] {
+  const map = new Map<string, BackupRecord>()
   ;[...(current || []), ...(incoming || [])].forEach(item => {
     if (!item || typeof item !== 'object') return
     const key = String(item.id ?? item.timestamp ?? Math.random())
@@ -131,8 +158,8 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     onFlash('正在整理备份…')
     try {
       const [history, projects, images] = await Promise.all([
-        kvGet<any[]>(HISTORY_KEY),
-        kvGet<any[]>(PROJECT_KEY),
+        kvGet<BackupRecord[]>(HISTORY_KEY),
+        kvGet<BackupRecord[]>(PROJECT_KEY),
         imgList(),
       ])
       const encoded: BackupImage[] = []
@@ -170,9 +197,9 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
       URL.revokeObjectURL(url)
       const info = summarize(backup)
       onFlash(`备份完成：${info.history} 条记录 · ${info.images} 张图片 · ${Math.max(1, Math.round(json.length / 1024))} KB`)
-    } catch (e: any) {
+    } catch (e) {
       console.error('backup export failed', e)
-      onFlash('备份失败：' + (e.message || '请检查浏览器存储'))
+      onFlash('备份失败：' + errorMessage(e, '请检查浏览器存储'))
     } finally {
       busy.value = false
     }
@@ -188,10 +215,10 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
       pending.value = normalize(JSON.parse(await file.text()))
       pendingName.value = file.name
       return summarize(pending.value)
-    } catch (e: any) {
+    } catch (e) {
       pending.value = null
       pendingName.value = ''
-      onFlash('无法读取备份：' + (e.message || '文件已损坏'))
+      onFlash('无法读取备份：' + errorMessage(e, '文件已损坏'))
       return null
     }
   }
@@ -209,8 +236,8 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     try {
       const imported = pending.value
       const [curHistory, curProjects] = await Promise.all([
-        kvGet<any[]>(HISTORY_KEY),
-        kvGet<any[]>(PROJECT_KEY),
+        kvGet<BackupRecord[]>(HISTORY_KEY),
+        kvGet<BackupRecord[]>(PROJECT_KEY),
       ])
       const history = replace
         ? imported.data.history
@@ -247,9 +274,9 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
       onFlash((replace ? '覆盖' : '合并') + '恢复完成，即将刷新页面…')
       setTimeout(() => window.location.reload(), 700)
       return true
-    } catch (e: any) {
+    } catch (e) {
       console.error('backup restore failed', e)
-      onFlash('恢复失败：' + (e.message || '备份数据无效'))
+      onFlash('恢复失败：' + errorMessage(e, '备份数据无效'))
       return false
     } finally {
       busy.value = false
@@ -259,7 +286,7 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
   /** 存储体检：历史条数、图片体积、配额占用 */
   async function healthCheck(): Promise<string> {
     try {
-      const [history, images] = await Promise.all([kvGet<any[]>(HISTORY_KEY), imgList()])
+      const [history, images] = await Promise.all([kvGet<BackupRecord[]>(HISTORY_KEY), imgList()])
       const historyCount = Array.isArray(history) ? history.length : 0
       const imageCount = images?.length ?? 0
       const bytes = (images || []).reduce((sum, r) => sum + (Number(r.size) || 0), 0)
@@ -275,15 +302,15 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
       } catch {}
 
       // 孤儿图片：历史里没引用但仍占空间
-      const referenced = new Set((history || []).map((h: any) => h?.image_id).filter(Boolean))
-      const orphans = (images || []).filter(r => !referenced.has(r.id))
+      const referenced = new Set((history || []).map(h => h.image_id).filter(Boolean).map(String))
+      const orphans = (images || []).filter(r => !referenced.has(String(r.id)))
 
       const msg = `存储体检：${historyCount} 条作品 · ${imageCount} 张图片 · ${mb} MB${quotaText}`
         + (orphans.length ? ` · ${orphans.length} 张孤儿图片可清理` : ' · 正常')
       onFlash(msg)
       return msg
-    } catch (e: any) {
-      onFlash('存储体检失败：' + (e.message || '请检查浏览器存储'))
+    } catch (e) {
+      onFlash('存储体检失败：' + errorMessage(e, '请检查浏览器存储'))
       return ''
     }
   }
@@ -291,16 +318,16 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
   /** 清理未被历史引用的图片 */
   async function cleanOrphanImages(): Promise<number> {
     try {
-      const [history, images] = await Promise.all([kvGet<any[]>(HISTORY_KEY), imgList()])
-      const referenced = new Set((history || []).map((h: any) => h?.image_id).filter(Boolean))
-      const orphans = (images || []).filter(r => !referenced.has(r.id))
+      const [history, images] = await Promise.all([kvGet<BackupRecord[]>(HISTORY_KEY), imgList()])
+      const referenced = new Set((history || []).map(h => h.image_id).filter(Boolean).map(String))
+      const orphans = (images || []).filter(r => !referenced.has(String(r.id)))
       if (!orphans.length) { onFlash('没有需要清理的孤儿图片'); return 0 }
       if (!window.confirm(`将删除 ${orphans.length} 张未被作品引用的图片。建议先导出备份。确定继续吗？`)) return 0
       await imgDeleteMany(orphans.map(r => r.id))
       onFlash(`已清理 ${orphans.length} 张孤儿图片`)
       return orphans.length
-    } catch (e: any) {
-      onFlash('清理失败：' + (e.message || '请重试'))
+    } catch (e) {
+      onFlash('清理失败：' + errorMessage(e, '请重试'))
       return 0
     }
   }

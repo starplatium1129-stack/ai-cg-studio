@@ -6,14 +6,23 @@
 
     <div v-if="loading" class="empty-state"><div class="empty-state-icon">⏳</div><p>加载中…</p></div>
     <template v-else>
-      <div class="character-tabs" role="tablist">
+      <!-- tablist 模式补全：aria-controls + roving tabindex + 方向键。
+           原先只有 role/aria-selected，读屏会承诺方向键切换但按了没反应。 -->
+      <div class="character-tabs" role="tablist" aria-label="选择角色" @keydown="tabs.onKeydown">
         <button v-for="c in characters" :key="c.id" class="character-tab"
-          :class="{ active: current?.id === c.id }" role="tab"
+          :class="{ active: current?.id === c.id }" type="button" role="tab"
+          :id="tabs.tabId(c.id)"
+          :aria-controls="tabs.panelId(c.id)"
           :aria-selected="current?.id === c.id"
-          @click="current = c">{{ c.icon }} {{ c.name }}</button>
+          :tabindex="tabs.tabIndex(c.id)"
+          @click="selectCharacter(c.id)">{{ c.icon }} {{ c.name }}</button>
       </div>
 
-      <section v-if="current" class="character-hero card-direct card-level-3">
+      <section v-if="current" class="character-hero card-direct card-level-3"
+        role="tabpanel"
+        :id="tabs.panelId(current.id)"
+        :aria-labelledby="tabs.tabId(current.id)"
+        tabindex="0">
         <div class="portrait" :class="{ natsume: current.id === 'natsume' }">
           <img v-if="current.portrait?.image" class="portrait-image"
             :src="current.portrait.image" :alt="current.portrait.alt || current.name"
@@ -33,7 +42,7 @@
             <span class="voice-label">语气示例</span>{{ current.voice }}
           </div>
           <div class="tags-grid">
-            <span v-for="(t,i) in current.tags" :key="t" class="tag-chip" :class="'m'+i%6">{{ t }}</span>
+            <span v-for="(t,i) in current.tags" :key="t" class="tag-chip" :class="tagClass(i)">{{ t }}</span>
           </div>
           <!-- 简介被 CSS 截断（max-height），展开是真的在露出内容，
            所以必须是可聚焦控件并汇报 aria-expanded；原先只有 @click -->
@@ -73,6 +82,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useSceneStore } from '@/stores/sceneStore'
+import { useRovingTabs } from '@/composables/useRovingTabs'
 
 const sceneStore = useSceneStore()
 const characters = ref<any[]>([])
@@ -80,6 +90,19 @@ const scenes = ref<any[]>([])
 const loading = ref(true)
 const current = ref<any>(null)
 const bgExpanded = ref(false)
+
+const characterIds = computed<string[]>(() => characters.value.map(c => String(c.id)))
+function selectCharacter(id: string) {
+  const found = characters.value.find(c => String(c.id) === id)
+  if (found) { current.value = found; bgExpanded.value = false }
+}
+function tagClass(index: unknown) { return 'm' + (Number(index) % 6) }
+const tabs = useRovingTabs(
+  characterIds,
+  () => String(current.value?.id ?? ''),
+  selectCharacter,
+  { prefix: 'character' },
+)
 
 const hasIdentity = computed(() => {
   const id = current.value?.identity || {}

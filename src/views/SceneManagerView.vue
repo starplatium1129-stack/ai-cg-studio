@@ -302,6 +302,12 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 import { useSceneStore } from '@/stores/sceneStore'
+// 场景编辑器的领域模型契约。原先整块是 any[] / any —— 这个视图会全量覆盖写回
+// data/scenes/*.json，字段拼错或丢字段等于静默删数据。
+import type {
+  SceneDraft, TagRecord, CurationData, CurationTier,
+  SceneSaveResult, MaintenanceRunResult,
+} from '@/types/api'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 
 const sceneStore = useSceneStore()
@@ -328,15 +334,15 @@ const TOOLS = [
 ]
 const PAGE_SIZE = 30
 
-const scenes = ref<any[]>([])
-const tags = ref<any[]>([])
-const curation = ref<any>({})
+const scenes = ref<SceneDraft[]>([])
+const tags = ref<TagRecord[]>([])
+const curation = ref<CurationData>({})
 const loading = ref(true)
 const loadError = ref('')
 const tab = ref('scenes')
 const search = ref(''); const fCat = ref(''); const fChar = ref(''); const fRating = ref('')
 const sortBy = ref('id'); const page = ref(1)
-const editing = ref<any>(null)
+const editing = ref<SceneDraft | null>(null)
 const editingId = ref('')
 const curationTierValue = ref('normal')
 const curationReason = ref('')
@@ -350,7 +356,7 @@ const maintenanceHint = ref('所有改动已同步')
 const importInput = ref('')
 const importResult = ref('')
 const toolRunning = ref(false)
-const toolResult = ref<any>(null)
+const toolResult = ref<{ ok: boolean; output: string } | null>(null)
 const toolResultTitle = ref('')
 
 const categories = computed(() => [...new Set(scenes.value.map(s => s.category))].sort())
@@ -359,12 +365,12 @@ const stats = computed(() => {
   const s = scenes.value
   return [
     { label:'总场景', value: s.length },
-    { label:'宁宁',   value: s.filter((x:any) => x.char==='nene').length },
-    { label:'夏目',   value: s.filter((x:any) => x.char==='natsume').length },
-    { label:'双人',   value: s.filter((x:any) => x.char==='triad'||x.char==='both').length },
-    { label:'All',    value: s.filter((x:any) => x.rating==='All').length },
-    { label:'R15',    value: s.filter((x:any) => x.rating==='R15').length },
-    { label:'R18',    value: s.filter((x:any) => x.rating==='R18').length },
+    { label:'宁宁',   value: s.filter((x) => x.char==='nene').length },
+    { label:'夏目',   value: s.filter((x) => x.char==='natsume').length },
+    { label:'双人',   value: s.filter((x) => x.char==='triad'||x.char==='both').length },
+    { label:'All',    value: s.filter((x) => x.rating==='All').length },
+    { label:'R15',    value: s.filter((x) => x.rating==='R15').length },
+    { label:'R18',    value: s.filter((x) => x.rating==='R18').length },
     { label:'Tags',   value: tags.value.length },
   ]
 })
@@ -408,20 +414,20 @@ const tagUsage = computed(() => {
 })
 
 const tagCats = computed(() => {
-  const found = [...new Set(tags.value.map((t: any) => t.cat).filter(Boolean))] as string[]
+  const found = [...new Set(tags.value.map((t) => t.cat).filter(Boolean))] as string[]
   return [...new Set([...TAG_CATS, ...found])]
 })
 
 const filteredTags = computed(() => {
   const q = tagSearch.value.trim().toLowerCase()
   return tags.value
-    .filter((t: any) => {
+    .filter((t) => {
       if (tagCatFilter.value && t.cat !== tagCatFilter.value) return false
       if (!q) return true
       return [t.id, t.en, t.cn, t.cat].join(' ').toLowerCase().includes(q)
     })
     .slice()
-    .sort((a: any, b: any) => (tagUsage.value[b.en] || 0) - (tagUsage.value[a.en] || 0))
+    .sort((a, b) => (tagUsage.value[b.en] || 0) - (tagUsage.value[a.en] || 0))
 })
 const tagTotalPages = computed(() => Math.max(1, Math.ceil(filteredTags.value.length / TAG_PAGE_SIZE)))
 const pagedTags = computed(() =>
@@ -430,7 +436,7 @@ const pagedTags = computed(() =>
 watch([tagSearch, tagCatFilter], () => { tagPage.value = 1 })
 
 function nextTagId() {
-  const max = tags.value.reduce((m: number, t: any) =>
+  const max = tags.value.reduce((m: number, t) =>
     Math.max(m, parseInt(String(t.id).replace('tag_', ''), 10) || 0), 0)
   return 'tag_' + String(max + 1).padStart(3, '0')
 }
@@ -438,7 +444,7 @@ function nextTagId() {
 function openAddTag() {
   const en = prompt('标签英文名（Danbooru 格式，用下划线）：')
   if (!en?.trim()) return
-  if (tags.value.some((t: any) => String(t.en).toLowerCase() === en.trim().toLowerCase())) {
+  if (tags.value.some((t) => String(t.en).toLowerCase() === en.trim().toLowerCase())) {
     alert('这个英文名已存在'); return
   }
   const cn = prompt('标签中文名：')
@@ -452,11 +458,11 @@ function openAddTag() {
 }
 
 function openEditTag(id: string) {
-  const tag: any = tags.value.find((t: any) => t.id === id)
+  const tag = tags.value.find((t) => t.id === id)
   if (!tag) return
   const en = prompt('标签英文名：', tag.en)
   if (!en?.trim()) return
-  if (tags.value.some((t: any) => t.id !== id && String(t.en).toLowerCase() === en.trim().toLowerCase())) {
+  if (tags.value.some((t) => t.id !== id && String(t.en).toLowerCase() === en.trim().toLowerCase())) {
     alert('这个英文名已存在'); return
   }
   const cn = prompt('标签中文名：', tag.cn || '')
@@ -483,11 +489,11 @@ function openEditTag(id: string) {
 }
 
 function deleteTag(id: string) {
-  const tag: any = tags.value.find((t: any) => t.id === id)
+  const tag = tags.value.find((t) => t.id === id)
   if (!tag) return
   const used = tagUsage.value[tag.en] || 0
   if (!confirm(`确认删除标签「${tag.en}」？${used ? `场景中的 ${used} 处引用也会一并移除。` : ''}`)) return
-  tags.value = tags.value.filter((t: any) => t.id !== id)
+  tags.value = tags.value.filter((t) => t.id !== id)
   scenes.value.forEach(s => {
     if (Array.isArray(s.tags)) s.tags = s.tags.filter((v: string) => v !== tag.en)
   })
@@ -523,7 +529,7 @@ const showcaseUrl = computed(() =>
     : '',
 )
 
-function previewImage(s: any) {
+function previewImage(s: SceneDraft) {
   selectedImageId.value = s.id
   selectedImageTitle.value = s.title
   showcaseError.value = false
@@ -584,13 +590,13 @@ async function onShowcasePicked(e: Event) {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id: selectedImageId.value, image: normalized, thumbnail }),
     })
-    const data = await r.json()
+    const data = await r.json() as SceneSaveResult
     if (!r.ok) throw new Error(data.error || '保存失败')
     showcaseFeedback.value = data.message || '样张已保存'
     showcaseVersion.value = Date.now()
-  } catch (err: any) {
+  } catch (err) {
     showcaseError.value = true
-    showcaseFeedback.value = '未能保存：' + (err.message || '请确认通过本机控制面板打开网站')
+    showcaseFeedback.value = '未能保存：' + errorMessage(err, '请确认通过本机控制面板打开网站')
   } finally {
     uploadBusy.value = false
     input.value = ''
@@ -598,12 +604,12 @@ async function onShowcasePicked(e: Event) {
 }
 
 // ── 重复检测 ──────────────────────────────────────────────────────────────
-const dupGroups = ref<Array<{ keyword: string; scenes: any[] }>>([])
+const dupGroups = ref<Array<{ keyword: string; scenes: SceneDraft[] }>>([])
 const dupResult = ref('')
 const dupChecked = ref(false)
 
 function detectDuplicates() {
-  const groups: Array<{ keyword: string; scenes: any[] }> = []
+  const groups: Array<{ keyword: string; scenes: SceneDraft[] }> = []
   let total = 0
   DUP_KEYWORDS.forEach(kw => {
     const matches = scenes.value.filter(s =>
@@ -623,7 +629,15 @@ function deleteSceneFromDup(id: string) {
 
 function charIcon(v: string) { return v==='nene'?'🌸':v==='natsume'?'🍂':'✦' }
 function charLabel(v: string) { return v==='nene'?'宁宁':v==='natsume'?'夏目':v==='triad'||v==='both'?'双人':v||'—' }
-function tierLabel(v: string) { return ({signature:'招牌', curated:'精选', review:'待审', normal:''} as any)[v] || '' }
+function errorMessage(error: unknown, fallback: string) {
+  if (error instanceof Error && error.message) return error.message
+  const text = String(error ?? '').trim()
+  return text || fallback
+}
+const TIER_LABELS: Record<CurationTier, string> = {
+  signature: '招牌', curated: '精选', review: '待审', normal: '',
+}
+function tierLabel(v: string) { return TIER_LABELS[v as CurationTier] || '' }
 
 function curationTier(id: string) {
   if ((curation.value.signatureSceneIds||[]).includes(id)) return 'signature'
@@ -638,18 +652,18 @@ function markDirty(message: string) {
 }
 
 function updateCharacterDefaults() {
-  const c = editing.value?.char
-  if (!c || editingId.value) return
-  if (c === 'nene') editing.value.lora = 'ayachi_nene_v15'
-  else if (c === 'natsume') editing.value.lora = 'shiki_natsume_v15'
-  else if (c === 'triad') editing.value.lora = 'ayachi_nene_v15:0.52, shiki_natsume_v15:0.52'
+  const scene = editing.value
+  if (!scene || editingId.value) return
+  if (scene.char === 'nene') scene.lora = 'ayachi_nene_v15'
+  else if (scene.char === 'natsume') scene.lora = 'shiki_natsume_v15'
+  else if (scene.char === 'triad') scene.lora = 'ayachi_nene_v15:0.52, shiki_natsume_v15:0.52'
 }
 
 function onCurationTierChange() {
   if (curationTierValue.value === 'normal' || curationTierValue.value === 'review') curationReason.value = ''
 }
 
-function blankScene(): any {
+function blankScene(): SceneDraft {
   return {
     id: '', title: '', category: '恋爱', char: 'nene',
     lora: 'ayachi_nene_v15', emotion: '恋爱',
@@ -677,7 +691,9 @@ function openAddModal() {
 function openEditModal(id: string) {
   const s = scenes.value.find(x => x.id === id)
   if (!s) return
-  editing.value = JSON.parse(JSON.stringify(s))
+  // sceneStore 的值是 Vue reactive proxy；structuredClone(proxy) 会抛 DataCloneError。
+  // 这里需要的是脱离响应式的可编辑快照，JSON round-trip 正合适（场景数据是 JSON）。
+  editing.value = JSON.parse(JSON.stringify(s)) as SceneDraft
   editingId.value = id
   curationTierValue.value = curationTier(id)
   curationReason.value = (curation.value.recommendationReasons || {})[id] || ''
@@ -691,13 +707,21 @@ function closeModal() { editing.value = null; editingId.value = '' }
 
 useFocusTrap(modalEl, () => editing.value !== null, { onEscape: closeModal })
 
+/** 策展层级 → curation.json 里对应的数组字段 */
+const TIER_BUCKETS = {
+  signature: 'signatureSceneIds',
+  curated: 'curatedSceneIds',
+  review: 'reviewSceneIds',
+} as const
+
 function setSceneCuration(id: string, tier: string, reason: string) {
-  const groups = ['signatureSceneIds','curatedSceneIds','reviewSceneIds'] as const
-  groups.forEach(g => {
-    if (!Array.isArray(curation.value[g])) curation.value[g] = []
-    curation.value[g] = curation.value[g].filter((x:string) => x !== id)
+  const buckets = ['signatureSceneIds', 'curatedSceneIds', 'reviewSceneIds'] as const
+  buckets.forEach(key => {
+    const list = curation.value[key]
+    curation.value[key] = (Array.isArray(list) ? list : []).filter(x => x !== id)
   })
-  if (tier !== 'normal') (curation.value as any)[tier + 'SceneIds'].push(id)
+  const target = TIER_BUCKETS[tier as keyof typeof TIER_BUCKETS]
+  if (target) (curation.value[target] as string[]).push(id)
   if (!curation.value.recommendationReasons) curation.value.recommendationReasons = {}
   if (reason) curation.value.recommendationReasons[id] = reason
   else delete curation.value.recommendationReasons[id]
@@ -706,6 +730,7 @@ function setSceneCuration(id: string, tier: string, reason: string) {
 function saveScene() {
   triedSave.value = true
   const e = editing.value
+  if (!e) return
   if (!e.title?.trim() || !e.story?.trim()) { formHint.value = '请先补齐标题和故事'; return }
   if (curationTierValue.value === 'signature' && !curationReason.value.trim()) { formHint.value = '招牌场景必须填写推荐理由'; return }
   e.character = e.char === 'triad' ? ['nene','natsume'] : [e.char]
@@ -714,10 +739,10 @@ function saveScene() {
   e.mature = e.rating === 'R18'
   if (editingId.value) {
     const idx = scenes.value.findIndex(s => s.id === editingId.value)
-    if (idx >= 0) scenes.value[idx] = JSON.parse(JSON.stringify(e))
+    if (idx >= 0) scenes.value[idx] = JSON.parse(JSON.stringify(e)) as SceneDraft
   } else {
     if (scenes.value.some(s => s.id === e.id)) { formHint.value = 'ID 已存在：' + e.id; return }
-    scenes.value.push(JSON.parse(JSON.stringify(e)))
+    scenes.value.push(JSON.parse(JSON.stringify(e)) as SceneDraft)
   }
   setSceneCuration(e.id, curationTierValue.value, curationReason.value.trim())
   closeModal()
@@ -735,7 +760,7 @@ function duplicateScene(id: string) {
   const source = scenes.value.find(s => s.id === id)
   if (!source) return
   const maxId = scenes.value.reduce((m, s) => Math.max(m, parseInt(String(s.id).replace('sc','')) || 0), 0)
-  const copy = JSON.parse(JSON.stringify(source))
+  const copy = JSON.parse(JSON.stringify(source)) as SceneDraft
   copy.id = 'sc' + String(maxId + 1).padStart(3, '0')
   copy.title = source.title + ' · 副本'
   scenes.value.push(copy)
@@ -760,26 +785,35 @@ function exportJSON() {
 function importScenes() {
   const input = importInput.value.trim()
   if (!input) { importResult.value = '<p class="msg-danger">请粘贴 JSON</p>'; return }
-  let data: any
-  try { data = JSON.parse(input) } catch (e:any) { importResult.value = '<p class="msg-danger">JSON 错误：' + esc(e.message) + '</p>'; return }
-  if (!Array.isArray(data)) data = [data]
+  let parsed: unknown
+  try { parsed = JSON.parse(input) } catch (e) { importResult.value = '<p class="msg-danger">JSON 错误：' + esc(errorMessage(e, '无法解析')) + '</p>'; return }
+  const data = Array.isArray(parsed) ? parsed : [parsed]
   const existingIds = new Set(scenes.value.map(s => s.id))
   const success: string[] = [], skipped: string[] = [], errors: string[] = []
-  data.forEach((item:any, idx:number) => {
-    if (!item.id) { errors.push('#' + idx + ' 缺少 id'); return }
-    if (existingIds.has(item.id)) { skipped.push(item.id); return }
-    const scene = {
-      id: item.id, title: item.title || '未命名', category: item.category || '恋爱',
-      story: item.story || '', char: item.char || 'nene',
-      character: item.char === 'triad' ? ['nene','natsume'] : [item.char || 'nene'],
-      lora: item.lora || (item.char === 'natsume' ? 'shiki_natsume_v15' : item.char === 'triad' ? 'ayachi_nene_v15:0.52, shiki_natsume_v15:0.52' : 'ayachi_nene_v15'),
-      emotion: item.emotion || '恋爱', season: item.season || '不限', time: item.time || '深夜',
-      timeOfDay: item.timeOfDay || 'late_night', tags: item.tags || [], mature: item.mature || false,
-      rating: item.rating || (item.mature ? 'R18' : 'All'), location: item.location || '',
-      weather: item.weather || '', camera: item.camera || '', lighting: item.lighting || '',
-      usage: item.usage || ['壁纸用'], prompt: item.prompt || '',
-      negative: item.negative || 'worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands',
-      storyJa: item.storyJa || ''
+  data.forEach((item, idx) => {
+    if (!item || typeof item !== 'object') { errors.push('#' + idx + ' 不是对象'); return }
+    const raw = item as Record<string, unknown>
+    const id = String(raw.id || '').trim()
+    if (!id) { errors.push('#' + idx + ' 缺少 id'); return }
+    if (existingIds.has(id)) { skipped.push(id); return }
+    const char = String(raw.char || 'nene')
+    const mature = Boolean(raw.mature)
+    const rating = raw.rating === 'R15' || raw.rating === 'R18' || raw.rating === 'All'
+      ? raw.rating : (mature ? 'R18' : 'All')
+    const list = (key: string, fallback: string[]) => Array.isArray(raw[key])
+      ? raw[key].map(String).filter(Boolean) : fallback
+    const scene: SceneDraft = {
+      id, title: String(raw.title || '未命名'), category: String(raw.category || '恋爱'),
+      story: String(raw.story || ''), char,
+      character: char === 'triad' ? ['nene','natsume'] : [char],
+      lora: String(raw.lora || (char === 'natsume' ? 'shiki_natsume_v15' : char === 'triad' ? 'ayachi_nene_v15:0.52, shiki_natsume_v15:0.52' : 'ayachi_nene_v15')),
+      emotion: String(raw.emotion || '恋爱'), season: String(raw.season || '不限'), time: String(raw.time || '深夜'),
+      timeOfDay: String(raw.timeOfDay || 'late_night'), tags: list('tags', []), mature,
+      rating, location: String(raw.location || ''), weather: String(raw.weather || ''),
+      camera: String(raw.camera || ''), lighting: String(raw.lighting || ''),
+      usage: list('usage', ['壁纸用']), prompt: String(raw.prompt || ''),
+      negative: String(raw.negative || 'worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands'),
+      storyJa: String(raw.storyJa || '')
     }
     scenes.value.push(scene); existingIds.add(scene.id); success.push(scene.id)
   })
@@ -800,14 +834,14 @@ async function saveToProject() {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ scenes: scenes.value, tags: tags.value, curation: curation.value })
     })
-    const data = await r.json()
-    if (!r.ok) throw new Error(data.error || '保存失败')
+    const data = await r.json() as SceneSaveResult
+    if (!r.ok || !data.ok) throw new Error(data.error || '保存失败')
     dirty.value = false
     maintenanceHint.value = data.count + ' 个场景已同步；备份编号 ' + data.backup
     // 作废共享缓存：其他页面正拿着写回前的旧副本
     sceneStore.loaded = false
-  } catch (e:any) {
-    maintenanceHint.value = '保存未完成：' + e.message
+  } catch (e) {
+    maintenanceHint.value = '保存未完成：' + errorMessage(e, '请重试')
   } finally {
     saving.value = false
   }
@@ -825,10 +859,10 @@ async function runTool(taskId: string) {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ task: taskId })
     })
-    const data = await r.json()
-    toolResult.value = { ok: !!data.ok, output: data.output || '(no output)' }
-  } catch (e:any) {
-    toolResult.value = { ok: false, output: '网络请求失败：' + e.message }
+    const data = await r.json() as MaintenanceRunResult
+    toolResult.value = { ok: !!data.ok, output: data.output || data.error || '(no output)' }
+  } catch (e) {
+    toolResult.value = { ok: false, output: '网络请求失败：' + errorMessage(e, '请重试') }
   } finally {
     toolRunning.value = false
   }
@@ -852,12 +886,13 @@ async function loadFromStore(force = false) {
     await (force ? sceneStore.reload() : sceneStore.load())
     if (sceneStore.error) throw new Error(sceneStore.error)
     if (!Array.isArray(sceneStore.scenes)) throw new Error('scenes.json 格式错误')
-    scenes.value = JSON.parse(JSON.stringify(sceneStore.scenes))
-    tags.value = JSON.parse(JSON.stringify(sceneStore.tags))
-    curation.value = JSON.parse(JSON.stringify(sceneStore.curation))
+    // 同样不能 structuredClone reactive proxy，数据源本身是 JSON。
+    scenes.value = JSON.parse(JSON.stringify(sceneStore.scenes)) as SceneDraft[]
+    tags.value = JSON.parse(JSON.stringify(sceneStore.tags)) as TagRecord[]
+    curation.value = JSON.parse(JSON.stringify(sceneStore.curation)) as CurationData
     loadError.value = ''
-  } catch (err:any) {
-    loadError.value = err.message
+  } catch (err) {
+    loadError.value = errorMessage(err, '场景数据加载失败')
   }
 }
 

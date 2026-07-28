@@ -2,6 +2,8 @@
 
 var express = require('express');
 var httpClient = require('../services/http-client');
+var security = require('../server/security');
+var envelope = require('../server/http-envelope');
 var createOllamaService = require('../services/ollama-service').createOllamaService;
 
 function chatCharacterPrompt(character) {
@@ -103,9 +105,13 @@ function createChatRouter(config, dependencies) {
     res.json(data);
   });
 
-  router.post('/api/chat', express.json({ limit:'64kb' }), function (req, res) {
+  // 隧道来的请求限流：一次对话生成要占满 GPU 数十秒，队列上限挡不住
+  // "持续以消化速度提交"这种打法。本机直连不受限。
+  var chatLimit = security.rateLimit({ capacity:10, refillMs:3000, label:'聊天' });
+
+  router.post('/api/chat', chatLimit, express.json({ limit:'64kb' }), function (req, res) {
     var validation = validateChatBody(req.body);
-    if (validation.error) return res.status(400).json({ error:validation.error });
+    if (validation.error) return envelope.fail(res, 400, validation.error);
 
     var controller = new AbortController();
     var doneSent = false;
@@ -143,8 +149,7 @@ function createChatRouter(config, dependencies) {
     }).catch(function (error) {
       if (httpClient.isAbortError(error) || controller.signal.aborted) return;
       if (!res.headersSent) {
-        res.status(error.status >= 400 && error.status < 500 ? error.status : 503).json({
-          error:error.message || 'Ollama 暂不可用',
+        envelope.fail(res, envelope.statusFor(error, 503), error.message || 'Ollama 暂不可用', {
           detail:error.detail || ''
         });
         return;

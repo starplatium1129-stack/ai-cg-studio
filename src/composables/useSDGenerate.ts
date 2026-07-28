@@ -42,6 +42,9 @@ export function useSDGenerate() {
   const models      = ref<string[]>([])
 
   let pollTimer = 0
+  let pollInFlight = false
+  let pollFailures = 0
+  let progressToken = 0
   let abortCtrl: AbortController | null = null
 
   async function checkStatus(): Promise<boolean> {
@@ -88,22 +91,50 @@ export function useSDGenerate() {
   }
 
   function stopPolling() {
-    clearInterval(pollTimer); pollTimer = 0; progress.value = 0
+    progressToken += 1
+    clearInterval(pollTimer); pollTimer = 0; pollInFlight = false; progress.value = 0
+  }
+
+  async function pollProgress(token: number) {
+    if (pollInFlight || token !== progressToken || !generating.value) return
+    pollInFlight = true
+    try {
+      const r = await fetch('/sdapi/v1/progress?skip_current_image=true', { cache: 'no-store' })
+      if (!r.ok) throw new Error('HTTP ' + r.status)
+      const data = await r.json()
+      if (token !== progressToken || !generating.value) return
+
+      const reported = Number(data.progress)
+      const state = data.state || {}
+      const stepProgress = Number(state.sampling_steps) > 0
+        ? Number(state.sampling_step || 0) / Number(state.sampling_steps)
+        : 0
+      const ratio = Math.max(
+        Number.isFinite(reported) ? reported : 0,
+        Number.isFinite(stepProgress) ? stepProgress : 0,
+      )
+      progress.value = Math.round(Math.min(1, Math.max(0, ratio)) * 100)
+      pollFailures = 0
+
+      const eta = Math.max(0, Math.ceil(Number(data.eta_relative) || 0))
+      statusText.value = progress.value > 0
+        ? `SD WebUI 生成中 · ${progress.value}%${eta ? ` · 约剩 ${eta} 秒` : ''}`
+        : 'SD WebUI 排队或准备中…'
+    } catch {
+      if (token !== progressToken || !generating.value) return
+      pollFailures += 1
+      if (pollFailures >= 3) statusText.value = 'SD WebUI 生成中 · 进度读取失败，仍在等待结果…'
+    } finally {
+      pollInFlight = false
+    }
   }
 
   function startPolling() {
     stopPolling()
-    pollTimer = window.setInterval(async () => {
-      try {
-        const r = await fetch('/sdapi/v1/progress?skip_current_image=true', { cache: 'no-store' })
-        if (!r.ok) return
-        const data = await r.json()
-        progress.value = Math.round((data.progress ?? 0) * 100)
-        if (data.current_image) {
-          // intermediate preview - ignored for now
-        }
-      } catch {}
-    }, 1200) as unknown as number
+    pollFailures = 0
+    const token = ++progressToken
+    void pollProgress(token)
+    pollTimer = window.setInterval(() => { void pollProgress(token) }, 700) as unknown as number
   }
 
   async function generate(params: SDGenerateParams): Promise<string | null> {
@@ -198,7 +229,8 @@ export function useSDGenerate() {
   function cancel() {
     if (!generating.value) return
     abortCtrl?.abort()
-    // Also interrupt SD WebUI
+    // 通知 WebUI 中断。故意不查 response.ok：本地 abort 已经生效，
+    // 这一发只是让 GPU 早点松手；失败了也没有可做的补救动作。
     fetch('/sdapi/v1/interrupt', { method: 'POST' }).catch(() => {})
   }
 

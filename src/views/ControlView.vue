@@ -258,13 +258,19 @@
       </details>
     </main>
 
-    <div class="toast" :class="{ show: toast.visible, error: toast.error }">{{ toast.msg }}</div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import AppThemeToggle from '@/components/AppThemeToggle.vue'
+import { useToast } from '@/composables/useToast'
+// /api/status 与 /api/logs 的契约类型。原先整体当 any —— 字段拼错、后端改名
+// 都要等运行时才炸，而这个视图正好在破坏性路径上（改上游 host、启停服务、
+// 开关公网隧道）。
+import type {
+  ControlStatus, ControlLogs, ControlOperationView, ControlActionResult, ApiFailure,
+} from '@/types/api'
 
 const tunnelActive = ref(false)
 const sdOnline = ref(false)
@@ -274,7 +280,7 @@ const webuiManaged = ref(false)
 const ollamaModels = ref<string[]>([])
 const ollamaVram = ref(0)
 const modeBusy = ref(false)
-const operation = ref<any>(null)
+const operation = ref<ControlOperationView | null>(null)
 const serviceChecking = ref(false)
 const scripts = ref({ voiceStart: true, voiceStop: true, webui: true })
 
@@ -298,10 +304,8 @@ const actionNote = ref('')
 const logs = ref<string[]>([])
 const logBoxEl = ref<HTMLElement | null>(null)
 const logIndex = ref(0)
-const toast = ref({ visible: false, msg: '', error: false })
-let toastTimer: ReturnType<typeof setTimeout> | null = null
 let pollTimer: ReturnType<typeof setInterval> | null = null
-let lastStatus: any = null
+let lastStatus: ControlStatus | null = null
 
 const opBusy = computed(() => !!(operation.value && operation.value.status === 'running') || modeBusy.value)
 const opStatusLabel = computed(() => {
@@ -347,10 +351,22 @@ const readyLabel = computed(() => {
   return n + ' / 3 服务在线'
 })
 
+/**
+ * 全站唯一那套 toast（App.vue 里的 AppToast + useToast）。
+ * 这里原先自建了第四套：一个 .toast div + 自管计时器，
+ * 既没有 live region 也没有可聚焦的关闭动作。
+ */
+const toastApi = useToast()
 function showToast(msg: string, isError = false) {
-  toast.value = { visible: true, msg, error: isError }
-  if (toastTimer) clearTimeout(toastTimer)
-  toastTimer = setTimeout(() => { toast.value.visible = false }, 2800)
+  if (isError) toastApi.error(msg)
+  else toastApi.info(msg)
+}
+
+/** catch 里取消息：替代 `catch (e: any) { e.message }` —— unknown 才是 catch 的真实类型 */
+function errorMessage(error: unknown, fallback: string): string {
+  if (error instanceof Error && error.message) return error.message
+  const text = String(error ?? '').trim()
+  return text || fallback
 }
 function copy(text: string) {
   if (!text) return
@@ -380,7 +396,7 @@ function toggleTunnel() {
   mainBtnLabel.value = tunnelActive.value ? '停止公网分享' : '启动并生成分享链接'
 }
 
-function renderStatus(data: any) {
+function renderStatus(data: ControlStatus) {
   lastStatus = data
   tunnelActive.value = !!(data.tunnelStatus === 'active' || data.shareLinkAvailable)
   sdOnline.value = !!data.sdOnline
@@ -455,14 +471,22 @@ async function pollStatus(force = false) {
   try {
     const r = await fetch('/api/status' + (force ? '?fresh=1' : ''))
     if (!r.ok) { serviceChecking.value = false; return }
-    renderStatus(await r.json())
+    const data = await r.json()
+    renderStatus(data)
+    // 探测失败现在是 200 + ok:false + degraded（与三个同族 *-status 一致）。
+    // 之前后端回 500，这里的 `if (!r.ok) return` 会把状态墙冻在上一次的值上，
+    // 用户看到的是"点了没反应"而不是"探测失败"。
+    if (data.ok === false && data.error) showToast('服务探测失败：' + data.error, true)
   } catch { serviceChecking.value = false }
 }
 
 async function pollLogs() {
   try {
     const r = await fetch('/api/logs?since=' + logIndex.value)
-    const data = await r.json()
+    // 必须查 ok：403（非本机）/ 421（Host 不在白名单）会回 JSON 错误信封，
+    // 不查的话 data.logs 恒为 undefined，日志面板静默停更而没有任何提示。
+    if (!r.ok) return
+    const data = await r.json() as ControlLogs
     if (data.operation) operation.value = data.operation
     if (data.logs?.length) {
       const fresh = data.logs.filter((l: string) => !logs.value.includes(l))
@@ -511,50 +535,70 @@ async function saveConfig() {
     if (!r.ok) throw new Error(data.error || '保存失败')
     showToast('生成服务配置已保存')
     pollStatus(true)
-  } catch (e: any) { showToast(e.message, true); pollStatus() }
+  } catch (e) { showToast(errorMessage(e, '保存失败'), true); pollStatus() }
 }
 
 async function saveAutoStartVoice() {
   try {
-    await fetch('/api/preference', {
+    const r = await fetch('/api/preference', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ autoStartVoice: autoStartVoice.value }),
     })
+    // 不查 ok 的话，写盘失败也会弹"已开启" —— 用户下次重启才发现偏好没存上
+    if (!r.ok) {
+      const data = await r.json().catch(() => ({}))
+      throw new Error(data.error || `保存失败 (${r.status})`)
+    }
     showToast(autoStartVoice.value ? '已开启：下次自动启动语音' : '已关闭：语音改为按需启动')
-  } catch { showToast('保存失败', true) }
+  } catch (e) {
+    // 请求失败时把开关拨回去，避免 UI 与落盘状态不一致
+    autoStartVoice.value = !autoStartVoice.value
+    showToast(errorMessage(e, '保存失败'), true)
+  }
+}
+
+/**
+ * POST 一个控制动作并解出统一信封。
+ *
+ * 六处调用曾各写一遍 `json() → 查 ok → throw`，其中两处只读 data.msg、
+ * 两处只读 data.error —— 后端信封统一后（server/http-envelope.js）
+ * 这里也收敛成一份，少写一个候选字段就退化成"操作失败"的问题随之消失。
+ */
+async function postControl(path: string, body: unknown, fallback: string): Promise<ControlActionResult> {
+  const r = await fetch(path, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  })
+  const data = await r.json().catch(() => null) as ControlActionResult | ApiFailure | null
+  if (!data) throw new Error(`${fallback} (HTTP ${r.status})`)
+  if (!r.ok || data.ok === false) {
+    const failure = data as ApiFailure
+    throw new Error([failure.error || fallback, failure.detail].filter(Boolean).join('：'))
+  }
+  return data as ControlActionResult
 }
 
 async function serviceAction(service: string, action: string) {
   if (opBusy.value) { showToast('有操作正在进行，请稍候', true); return }
   showToast((action === 'start' ? '正在启动' : action === 'stop' ? '正在停止' : '正在处理') + '…')
   try {
-    const r = await fetch('/api/service/' + service, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action }),
-    })
-    const data = await r.json()
-    if (!r.ok || data.ok === false) throw new Error(data.error || data.msg || '操作失败')
+    const data = await postControl('/api/service/' + service, { action }, '操作失败')
     if (data.operation) operation.value = data.operation
     showToast(data.message || '已提交')
     pollStatus(true); pollLogs()
-  } catch (e: any) { showToast(e.message, true); pollStatus(true) }
+  } catch (e) { showToast(errorMessage(e, '操作失败'), true); pollStatus(true) }
 }
 
 async function switchMode(mode: 'draw' | 'chat') {
   if (opBusy.value) { showToast('有操作正在进行，请稍候', true); return }
   showToast(mode === 'draw' ? '切换到绘图优先…' : '切换到聊天优先…')
   try {
-    const r = await fetch('/api/mode', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ mode }),
-    })
-    const data = await r.json()
-    if (!r.ok || data.ok === false) throw new Error(data.error || data.msg || '模式切换失败')
+    const data = await postControl('/api/mode', { mode }, '模式切换失败')
     if (data.operation) operation.value = data.operation
     modeBusy.value = true
     showToast(data.message || '模式切换已开始')
     pollStatus(true); pollLogs()
-  } catch (e: any) { showToast(e.message, true); pollStatus(true) }
+  } catch (e) { showToast(errorMessage(e, '模式切换失败'), true); pollStatus(true) }
 }
 
 async function doStart() {
@@ -563,15 +607,10 @@ async function doStart() {
   mainBtnLabel.value = '正在启用公网分享…'
   try {
     await saveConfig()
-    const r = await fetch('/api/start', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ enableTunnel: tunnelEnabled.value }),
-    })
-    const data = await r.json()
-    if (!data.ok) throw new Error(data.msg || '启动失败')
+    await postControl('/api/start', { enableTunnel: tunnelEnabled.value }, '启动失败')
     showToast('公网分享已启用')
     startPolling()
-  } catch (e: any) { showToast('启动失败：' + e.message, true) }
+  } catch (e) { showToast('启动失败：' + errorMessage(e, '未知原因'), true) }
   finally { actionBusy.value = false; pollStatus() }
 }
 
@@ -579,17 +618,12 @@ async function doStop() {
   actionBusy.value = true
   mainBtnLabel.value = '正在停止公网分享…'
   try {
-    const r = await fetch('/api/stop', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ stopManagedServices: false }),
-    })
-    const data = await r.json()
-    if (!data.ok) throw new Error(data.msg || '停止失败')
+    await postControl('/api/stop', { stopManagedServices: false }, '停止失败')
     showToast('公网分享已停止；网站与各生成服务不受影响')
     shareLink.value = ''
     tunnelStatus.value = 'disabled'
     tunnelActive.value = false
-  } catch (e: any) { showToast('停止失败：' + e.message, true) }
+  } catch (e) { showToast('停止失败：' + errorMessage(e, '未知原因'), true) }
   finally { actionBusy.value = false; pollStatus() }
 }
 
@@ -606,7 +640,7 @@ async function exportDiag() {
     a.click()
     URL.revokeObjectURL(a.href)
     showToast('诊断包已导出')
-  } catch (e: any) { showToast(e.message || '诊断包导出失败', true) }
+  } catch (e) { showToast(errorMessage(e, '诊断包导出失败'), true) }
 }
 
 onMounted(() => { startPolling() })
@@ -912,18 +946,6 @@ details[open] .chevron { transform: rotate(90deg); }
 .log-box .info { color: var(--info-text); }
 .log-box .err { color: var(--danger-text); }
 .log-empty { color: var(--text-muted); font-family: var(--font-sans); text-align: center; padding: var(--s-4); }
-
-.toast {
-  position: fixed; left: 50%; bottom: var(--s-5); z-index: var(--z-toast);
-  transform: translate(-50%, 18px); max-width: min(420px, calc(100% - 32px));
-  padding: var(--s-3) var(--s-4); color: var(--text-primary);
-  background: var(--bg-surface); border: 1px solid var(--border-strong);
-  border-radius: var(--r-md); box-shadow: var(--shadow-md);
-  font-size: var(--fs-label-sm); line-height: 1.45; text-align: center;
-  opacity: 0; pointer-events: none; transition: opacity var(--t-fast), transform var(--t-fast);
-}
-.toast.show { opacity: 1; transform: translate(-50%, 0); }
-.toast.error { border-color: var(--danger-text); color: var(--danger-text); }
 
 @media (max-width: 900px) {
   .control-intro { grid-template-columns: 1fr; }

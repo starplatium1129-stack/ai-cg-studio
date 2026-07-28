@@ -169,6 +169,79 @@ async function main() {
         sdBlocked[b] + ' must return JSON 404, not the SPA shell');
     }
 
+    // ---- B-6: 错误信封只有一种形状 ----
+    // 曾经有四种同时存在（{error} / {ok:false,msg} / {ok:false,error} / {error,detail}），
+    // 于是前端到处写 `data.error || data.msg || '操作失败'` —— 少写一个候选就退化成无信息文案。
+    var errorCases = [
+      { name:'unknown api 404', res:await request({ path:'/api/does-not-exist', headers:LOCAL }) },
+      { name:'blocked sdapi 404', res:await request({ path:'/sdapi/v1/nope', headers:LOCAL }) },
+      { name:'bad chat body 400', res:await postJson('/api/chat', { messages:[] }) },
+      { name:'bad translate body 400', res:await postJson('/api/translate', { text:'' }) },
+      { name:'bad voice 400', res:await postJson('/api/voice/prepare', { voice:'nobody' }) },
+      { name:'bad tts 400', res:await postJson('/api/tts', { voice:'nobody', text:'x' }) },
+      { name:'ssrf host 400', res:await postJson('/api/config', { sdHost:'http://evil.example.com' }) },
+      { name:'unknown maintenance task 400', res:await postJson('/api/maintenance/run', { task:'nope' }) },
+      { name:'tunneled localOnly 403', res:await request({ path:'/api/logs', headers:TUNNELED }) },
+      { name:'oversize body 413', res:await postJson('/api/translate', { text:'x'.repeat(70000) }) }
+    ];
+    for (var e = 0; e < errorCases.length; e++) {
+      var envelopeCase = errorCases[e];
+      var body = envelopeCase.res.json;
+      assert.ok(body, envelopeCase.name + ' must return a JSON body');
+      assert.strictEqual(body.ok, false, envelopeCase.name + ' must carry ok:false');
+      assert.strictEqual(typeof body.error, 'string',
+        envelopeCase.name + ' must carry a string error');
+      assert.ok(body.error.length > 0, envelopeCase.name + ' error must not be empty');
+    }
+
+    // 成功信封同样固定：ok:true
+    var okConfig = await postJson('/api/config', { sdHost:'http://127.0.0.1:7860' });
+    assert.strictEqual(okConfig.json && okConfig.json.ok, true, 'success envelope must carry ok:true');
+
+    // /api/status 探测失败必须回 200 + ok:false，与三个同族 *-status 一致。
+    // 回 500 时前端的 `if (!r.ok) return` 会把状态墙冻在上一次的值上。
+    var statusSiblings = ['/api/status', '/api/sd-status', '/api/tts-status', '/api/chat-status'];
+    for (var s = 0; s < statusSiblings.length; s++) {
+      var probe = await request({ path:statusSiblings[s], headers:LOCAL });
+      assert.strictEqual(probe.status, 200,
+        statusSiblings[s] + ' must report degraded state as 200, got ' + probe.status);
+      assert.ok(probe.json, statusSiblings[s] + ' must return JSON');
+    }
+
+    // ---- S-5: GPU 路由限流（token bucket）----
+    // 队列的 maxPending 只挡"堆积"，挡不住"持续以队列消化速度提交" ——
+    // 那会把 GPU 永久占满，而本机用户只看到"一直在排队"。
+    // 断言路由的真实响应：隧道形状会拿到 429 + Retry-After，本机直连不受限。
+    // 并发突发请求才能测 token bucket。顺序请求会在每次 SD 代理失败的间隙里
+    // 慢慢补回令牌，最后测到的是"请求足够慢就不该限"而不是限流本身。
+    var burst = await Promise.all(Array.from({ length:24 }, function () {
+      return postJson('/sdapi/v1/txt2img', { prompt:'probe' }, TUNNELED);
+    }));
+    var throttled = burst.find(function (shot) { return shot.status === 429; }) || null;
+    var allowedBeforeLimit = burst.filter(function (shot) { return shot.status !== 429; }).length;
+    assert.ok(throttled, 'tunneled txt2img must eventually hit the rate limit');
+    // 断言具体位置而不只是"最终会挡"：桶容量是 server.js 里的 capacity:12，
+    // 留一格余量给补充速率。放行数量若漂到区间外，说明桶被改过而测试没跟上。
+    assert.ok(allowedBeforeLimit >= 8 && allowedBeforeLimit <= 13,
+      'txt2img bucket should admit ~12 before throttling, admitted ' + allowedBeforeLimit);
+    assert.ok(Number(throttled.headers['retry-after']) > 0,
+      'rate-limited response must carry Retry-After, got ' + throttled.headers['retry-after']);
+    assert.ok(throttled.json && Number(throttled.json.retryAfterSeconds) > 0,
+      'rate-limited body must state the retry delay');
+
+    // 本机直连是电脑主人，不该被自己的限流挡住。
+    // SD 未启动时代理回 502，这里只断言"不是 429"。
+    for (var lg = 0; lg < 8; lg++) {
+      var localShot = await postJson('/sdapi/v1/txt2img', { prompt:'probe' }, LOCAL);
+      assert.notStrictEqual(localShot.status, 429,
+        'direct-local requests must never be rate limited (attempt ' + (lg + 1) + ')');
+    }
+
+    // 廉价读端点不该共用出图的桶
+    var cheapRead = await request({ path:'/sdapi/v1/samplers', headers:TUNNELED });
+    assert.notStrictEqual(cheapRead.status, 429,
+      'cheap SD reads must not share the txt2img bucket');
+
     // ---- P-10: data/ 只暴露 SPA 真正读取的文件 ----
     var privateData = [
       'scenes/nene-core.json',   // build-scenes.js 的输入，客户端从不读

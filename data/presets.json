@@ -13,10 +13,10 @@
       "steps": 30,
       "cfg": 6,
       "size": "1024×1344",
-      "hires_steps": 20,
+      "hires_steps": 30,
       "hires_scale": 1.5,
       "hires_upscaler": "R-ESRGAN 4x+ Anime6B",
-      "hires_denoising_strength": 0.4
+      "hires_denoising_strength": 0.5
     },
     {
       "id": "noobai_xl_11",

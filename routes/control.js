@@ -15,6 +15,7 @@ var https   = require('https');
 var cp      = require('child_process');
 var security = require('../server/security');
 var diagnostics = require('../server/diagnostics');
+var envelope = require('../server/http-envelope');
 var localOnly = security.localOnly;
 var createOperationManager = require('../services/control-operation').createOperationManager;
 
@@ -359,7 +360,33 @@ function createControlRouter(config, gatewayRef) {
         }
       });
     }).catch(function(e) {
-      res.status(500).json({ error: e.message });
+      // 探测失败不是 500。三个同族接口（/api/sd-status、/api/tts-status、
+      // /api/chat-status）都回 200 + online:false，只有这里回 500，
+      // 于是前端 `if (!r.ok) return` 会把整块状态墙冻在上一次的值上，
+      // 而用户看到的是"没反应"而不是"探测失败"。
+      res.setHeader('Cache-Control', 'no-store');
+      res.status(200).json({
+        ok:false,
+        error:e.message || '服务状态探测失败',
+        running:true,
+        degraded:true,
+        sdOnline:false, ttsOnline:false, ollamaOnline:false,
+        ollamaModels:[], ollamaVram:0, webuiManaged:false,
+        modeBusy:!!state.modeBusy,
+        operation:state.operation,
+        sdHost:config.SD_HOST, ttsHost:config.TTS_HOST, ollamaHost:config.OLLAMA_HOST,
+        localLink:'http://127.0.0.1:' + config.PORT + '/',
+        shareLinkAvailable:false,
+        tunnelStatus:config.DISABLE_TUNNEL ? 'disabled' : 'waiting',
+        tunnelAvailable:!config.DISABLE_TUNNEL && !!config.CLOUDFLARED_PATH,
+        uptime:Math.floor((Date.now() - startTime) / 1000),
+        voices:config.VOICE_PROFILES || {},
+        scripts:{
+          voiceStart:fs.existsSync(VOICE_START_SCRIPT),
+          voiceStop:fs.existsSync(VOICE_STOP_SCRIPT),
+          webui:fs.existsSync(WEBUI_MANAGER_SCRIPT)
+        }
+      });
     });
   });
 
@@ -388,9 +415,9 @@ function createControlRouter(config, gatewayRef) {
         writeJson(config.RUNTIME.config, saved);
       } catch (e) {}
       controlLog('公网分享通道已请求启动');
-      res.json({ ok:true, msg:'公网分享通道已启动' });
+      envelope.ok(res, { message:'公网分享通道已启动' });
     } catch(e) {
-      res.status(500).json({ ok:false, msg:e.message });
+      envelope.fail(res, 500, e.message);
     }
   });
 
@@ -406,9 +433,9 @@ function createControlRouter(config, gatewayRef) {
         writeJson(config.RUNTIME.config, saved);
       } catch (e) {}
       controlLog('公网分享通道已停止');
-      res.json({ ok:true, msg:'公网分享通道已停止' });
+      envelope.ok(res, { message:'公网分享通道已停止' });
     } catch(e) {
-      res.status(500).json({ ok:false, msg:e.message });
+      envelope.fail(res, 500, e.message);
     }
   });
 
@@ -429,10 +456,8 @@ function createControlRouter(config, gatewayRef) {
         if (!body[field.key]) continue;
         var safe = security.safeLocalUrl(body[field.key]);
         if (!safe) {
-          return res.status(400).json({
-            ok:false,
-            error:field.label + ' 地址只接受本机 http，例如 http://127.0.0.1:7860'
-          });
+          return envelope.fail(res, 400,
+            field.label + ' 地址只接受本机 http，例如 http://127.0.0.1:7860');
         }
         saved[field.key] = safe;
         config[field.configKey] = safe;
@@ -444,9 +469,9 @@ function createControlRouter(config, gatewayRef) {
       if (typeof body.autoStartVoice === 'boolean') saved.autoStartVoice = body.autoStartVoice;
       writeJson(config.RUNTIME.config, saved);
       controlLog('服务配置已保存');
-      res.json({ ok:true, sdHost:config.SD_HOST, ttsHost:config.TTS_HOST, ollamaHost:config.OLLAMA_HOST });
+      envelope.ok(res, { sdHost:config.SD_HOST, ttsHost:config.TTS_HOST, ollamaHost:config.OLLAMA_HOST });
     } catch(e) {
-      res.status(500).json({ error:e.message });
+      envelope.fail(res, 500, e.message);
     }
   });
 
@@ -457,9 +482,9 @@ function createControlRouter(config, gatewayRef) {
       var saved = readJson(config.RUNTIME.config);
       if (typeof body.autoStartVoice === 'boolean') saved.autoStartVoice = body.autoStartVoice;
       writeJson(config.RUNTIME.config, saved);
-      res.json({ ok:true, autoStartVoice: !!saved.autoStartVoice });
+      envelope.ok(res, { autoStartVoice: !!saved.autoStartVoice });
     } catch(e) {
-      res.status(500).json({ error:e.message });
+      envelope.fail(res, 500, e.message);
     }
   });
 

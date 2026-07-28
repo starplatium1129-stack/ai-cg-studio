@@ -324,22 +324,25 @@
               </optgroup>
             </select></label>
             <span class="sd-vram-hint" :class="vramLevel">{{ vramHint }}</span>
+            <span v-if="baseResolutionRisk" class="sd-base-resolution-hint" :class="baseResolutionRisk">{{ baseResolutionHint }}</span>
             <label class="hires-label">
               <span class="switch"><input type="checkbox" v-model="pb.sdParams.hiresFix"><span class="slider"></span></span>
               hires.fix
+            </label>
+            <label v-if="canUseFaceDetailer" class="hires-label">
+              <span class="switch"><input type="checkbox" v-model="pb.sdParams.faceDetailer" @change="pb.markParamTouched('faceDetailer')"><span class="slider"></span></span>
+              面部与手部修复
             </label>
             <details v-if="pb.sdParams.hiresFix" class="sd-advanced-options">
               <summary>高级设置</summary>
               <div class="sd-advanced-grid">
                 <label>放大<select v-model.number="pb.sdParams.hiresScale" @change="pb.markParamTouched('hiresScale')"><option :value="1.5">1.5×</option><option :value="2">2×</option></select></label>
                 <label>二阶段步数<input type="number" v-model.number="pb.sdParams.hiresSteps" min="0" max="60" step="1" @change="pb.markParamTouched('hiresSteps')"></label>
-                <label>重绘幅度<input type="number" v-model.number="pb.sdParams.hiresDenoise" min="0.1" max="0.9" step="0.05" @change="pb.markParamTouched('hiresDenoise')"></label>
-                <label>放大器<select v-model="pb.sdParams.hiresUpscaler" @change="pb.markParamTouched('hiresUpscaler')">
-                  <option>Latent</option>
-                  <option>Latent (nearest)</option>
-                  <option>R-ESRGAN 4x+ Anime6B</option>
-                  <option v-for="u in sd.upscalers.value" :key="u" :value="u">{{ u }}</option>
-                </select></label>
+                 <label>重绘幅度<input type="number" v-model.number="pb.sdParams.hiresDenoise" min="0.1" max="0.9" step="0.05" @change="pb.markParamTouched('hiresDenoise')"></label>
+                 <label>放大器<select v-model="pb.sdParams.hiresUpscaler" @change="pb.markParamTouched('hiresUpscaler')">
+                   <option>R-ESRGAN 4x+ Anime6B</option>
+                   <option>R-ESRGAN 4x+</option>
+                 </select></label>
               </div>
             </details>
           </div>
@@ -347,7 +350,7 @@
           <div class="preview-actions">
             <button class="btn btn-primary" type="button"
               :disabled="sd.generating.value || !sd.online.value"
-              @click="callGenerate">
+               @click="() => callGenerate()">
               {{ sd.generating.value ? '生成中…' : '生成图片' }}
             </button>
             <button v-if="sd.generating.value" class="btn btn-ghost" type="button"
@@ -415,65 +418,10 @@
             </div>
           </div>
 
-          <!-- Voice studio -->
-          <section class="voice-studio" aria-label="成片配音">
-            <div class="voice-head">
-              <div>
-                <div class="voice-title">成片配音</div>
-                <div class="voice-sub">中文字幕可单独保留；日文配音稿用于 GPT-SoVITS。</div>
-              </div>
-              <span class="voice-state" :class="voiceStateKind">{{ voiceStateLabel }}</span>
-            </div>
-            <div class="voice-controls">
-              <label class="voice-field">角色
-                <select v-model="voiceChar">
-                  <option value="nene">宁宁</option>
-                  <option value="natsume">夏目</option>
-                </select>
-              </label>
-              <label class="voice-field">语言
-                <select v-model="voiceLang">
-                  <option value="ja">日语配音</option>
-                  <option value="zh">中文配音</option>
-                </select>
-              </label>
-              <label class="voice-field">情绪
-                <select v-model="voiceEmotion">
-                  <option v-for="e in VOICE_EMOTIONS" :key="e.id" :value="e.id">{{ e.label }}</option>
-                </select>
-              </label>
-              <label class="voice-field">语速
-                <select v-model.number="voiceSpeed">
-                  <option :value="0.85">慢 0.85×</option>
-                  <option :value="1">正常 1.0×</option>
-                  <option :value="1.15">快 1.15×</option>
-                </select>
-              </label>
-            </div>
-            <div class="voice-copy">
-              <div class="voice-copy-head">
-                <span class="voice-copy-title">中文字幕</span>
-                <span class="voice-copy-note">画面旁白 / 台词</span>
-              </div>
-              <textarea class="voice-text voice-caption-text" v-model="voiceCaption" rows="3" placeholder="写下要配的中文台词或旁白…"></textarea>
-            </div>
-            <details class="voice-script-details" :open="voiceLang==='ja'">
-              <summary>日文 / 实际配音稿</summary>
-              <textarea class="voice-text" v-model="voiceScript" rows="3" placeholder="日文配音稿；可从中文一键翻译"></textarea>
-            </details>
-            <div class="voice-actions">
-              <button class="btn btn-ghost" type="button" :disabled="voiceBusy || !voiceCaption.trim() || voiceLang!=='ja'" @click="translateVoice">翻译成日文</button>
-              <button class="btn btn-ghost" type="button" :disabled="!voicePlayText" @click="previewVoice">系统试听</button>
-              <button class="btn btn-primary" type="button" :disabled="voiceBusy || !voicePlayText" @click="generateVoice">
-                {{ voiceBusy ? '生成中…' : '生成 AI 声线' }}
-              </button>
-              <button v-if="!voiceOnline" class="btn btn-ghost" type="button" :disabled="voiceBusy" @click="refreshVoiceStatus">重新检测</button>
-            </div>
-            <div class="voice-status">{{ voiceStatus }}</div>
-            <a v-if="!voiceOnline" class="voice-recovery" href="/control">→ 到控制面板启动语音服务</a>
-            <audio v-if="voiceAudioUrl" class="voice-audio show" :src="voiceAudioUrl" controls></audio>
-            <a v-if="voiceAudioUrl" class="btn btn-ghost voice-download show" :href="voiceAudioUrl" :download="voiceDownloadName">下载 WAV</a>
-          </section>
+          <VoiceStudio
+            :initial-voice="pb.char === 'natsume' ? 'natsume' : 'nene'"
+            :suggested-caption="pb.story"
+          />
         </div>
       </div>
 
@@ -569,17 +517,17 @@
 
     <!-- 备份恢复确认 -->
     <Teleport to="body">
-      <div v-if="backup.pending.value" class="backup-overlay open" @click.self="backup.discard()">
+      <div v-if="backup.pending.value" class="pb-backup-overlay open" @click.self="backup.discard()">
         <div
           ref="backupCardEl"
-          class="backup-card"
+          class="pb-backup-card"
           role="dialog"
           aria-modal="true"
           aria-labelledby="backup-restore-title"
         >
           <h3 id="backup-restore-title">从备份恢复</h3>
           <p>选择恢复方式。覆盖会替换现有数据，合并会按 id 保留较新的记录。</p>
-          <div class="backup-summary">
+          <div class="pb-backup-summary">
             <strong>{{ backup.pendingName.value }}</strong>
             <span>
               {{ pendingSummary?.history ?? 0 }} 条历史 ·
@@ -588,7 +536,7 @@
               数据版本 v{{ backup.pending.value.schemaVersion }}
             </span>
           </div>
-          <div class="backup-actions">
+          <div class="pb-backup-actions">
             <button class="btn btn-ghost" type="button" :disabled="backup.busy.value" @click="backup.discard()">取消</button>
             <button class="btn btn-ghost" type="button" :disabled="backup.busy.value" @click="backup.restore('merge')">合并恢复</button>
             <button class="btn btn-danger" type="button" :disabled="backup.busy.value" @click="backup.restore('replace')">覆盖本地</button>
@@ -605,7 +553,7 @@
 <script setup lang="ts">
 // 导演台专属样式（91.6KB）随本路由块加载，不再进全局包
 import '@/assets/css/director.css'
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { useSDGenerate } from '@/composables/useSDGenerate'
@@ -624,6 +572,7 @@ import { useSDQueue, type SDQueueJob } from '@/composables/useSDQueue'
 import { classifySDError, SAFE_SAMPLING, LIGHT_LOAD, type SDErrorReport, type SDRecoveryId } from '@/utils/sdError'
 import { useBackup, type BackupSummary } from '@/composables/useBackup'
 import { useFocusTrap } from '@/composables/useFocusTrap'
+import VoiceStudio from '@/components/VoiceStudio.vue'
 import type { HistoryEntry, Scene } from '@/stores/promptBuilderStore'
 
 const router = useRouter()
@@ -634,45 +583,6 @@ const sd = useSDGenerate()
 // ── UI state ──────────────────────────────────────────────────────────────
 const sceneLimit = ref(20)
 const sdSize = ref('832x1216')
-
-// ── Voice studio ──────────────────────────────────────────────────────────
-const voiceChar = ref<'nene' | 'natsume'>('nene')
-const voiceLang = ref<'ja' | 'zh'>('ja')
-const voiceCaption = ref('')
-const voiceScript = ref('')
-const voiceStatus = ref('选择角色并写下中文字幕后，可翻译或直接生成声线。')
-const voiceBusy = ref(false)
-const voiceOnline = ref(false)
-const voiceConfigured = ref(false)
-const voiceAudioUrl = ref('')
-const voiceBlob = ref<Blob | null>(null)
-let voiceObjectUrl = ''
-
-const voiceEmotion = ref('neutral')
-const voiceSpeed = ref(1)
-const VOICE_EMOTIONS = [
-  { id: 'neutral', label: '平静' },
-  { id: 'gentle',  label: '温柔' },
-  { id: 'happy',   label: '开心' },
-  { id: 'shy',     label: '害羞' },
-  { id: 'serious', label: '认真' },
-  { id: 'sad',     label: '难过' },
-]
-
-const voicePlayText = computed(() => (voiceLang.value === 'ja' ? voiceScript.value : voiceCaption.value).trim())
-const canGenerateVoice = computed(() => voiceOnline.value && voiceConfigured.value && !!voicePlayText.value)
-const voiceStateKind = computed(() => {
-  if (voiceBusy.value) return 'warn'
-  if (voiceOnline.value && voiceConfigured.value) return 'ready'
-  return 'warn'
-})
-const voiceStateLabel = computed(() => {
-  if (voiceBusy.value) return '生成中'
-  if (voiceOnline.value && voiceConfigured.value) return 'AI 声线就绪'
-  if (voiceOnline.value) return '声线未配置'
-  return '语音未启动'
-})
-const voiceDownloadName = computed(() => `aics_voice_${voiceChar.value}_${voiceLang.value}_${Date.now()}.wav`)
 
 // ── 显存预算提示（重构前的 sdBudgetHint） ─────────────────────────────────
 const vramBudget = computed(() => {
@@ -689,12 +599,31 @@ const vramLevel = computed(() => {
   if (mp > 4) return 'warn'
   return ''
 })
+const baseResolutionRisk = computed(() => {
+  const [w, h] = sdSize.value.split('x').map(Number)
+  const megapixels = ((w || 832) * (h || 1216)) / 1_000_000
+  // SDXL is most coherent near its 1024^2 training buckets. This is unrelated to VRAM.
+  if (megapixels > 1.8) return 'danger'
+  if (megapixels > 1.5) return 'warn'
+  return ''
+})
 const vramHint = computed(() => {
   const b = vramBudget.value
   const base = `最终 ${b.width}×${b.height} · ${b.megapixels.toFixed(1)} MP`
   if (vramLevel.value === 'danger') return base + ' · 16G 显存可能 OOM'
   if (vramLevel.value === 'warn') return base + ' · 接近 16G 上限'
   return base
+})
+const baseResolutionHint = computed(() => {
+  const [w, h] = sdSize.value.split('x').map(Number)
+  const megapixels = ((w || 832) * (h || 1216)) / 1_000_000
+  const base = `基础 ${w}×${h} · ${megapixels.toFixed(1)} MP`
+  if (baseResolutionRisk.value === 'danger') return base + ' · SDXL 人物结构风险高'
+  return base + ' · SDXL 人物结构风险偏高'
+})
+const canUseFaceDetailer = computed(() => {
+  const [w, h] = sdSize.value.split('x').map(Number)
+  return pb.char !== 'triad' && !pb.sdParams.hiresFix && ((w || 832) * (h || 1216)) > 1_500_000
 })
 
 // ── Static data ───────────────────────────────────────────────────────────
@@ -937,6 +866,44 @@ function captureJob(): Omit<SDQueueJob, 'id'> | null {
     hiresUpscaler: pb.sdParams.hiresUpscaler,
     hiresSteps: pb.sdParams.hiresSteps,
     denoisingStrength: pb.sdParams.hiresDenoise,
+    faceDetailer: pb.sdParams.faceDetailer,
+  }
+}
+
+function buildSingleDetailerScripts(): Record<string, unknown> {
+  return {
+    ADetailer: {
+      args: [
+        true,
+        false,
+        {
+          ad_model: 'face_yolov8s.pt',
+          ad_prompt: 'detailed eyes, clean face, character-accurate facial features',
+          ad_negative_prompt: 'deformed face, asymmetrical eyes, cross-eyed',
+          ad_confidence: 0.35,
+          ad_denoising_strength: 0.18,
+          ad_inpaint_only_masked: true,
+          ad_inpaint_only_masked_padding: 32,
+          ad_use_inpaint_width_height: true,
+          ad_inpaint_width: 768,
+          ad_inpaint_height: 768,
+          is_api: true,
+        },
+        {
+          ad_model: 'hand_yolov8n.pt',
+          ad_prompt: 'detailed hands, five fingers, natural fingers',
+          ad_negative_prompt: 'extra fingers, missing fingers, fused fingers, malformed hands',
+          ad_confidence: 0.3,
+          ad_denoising_strength: 0.16,
+          ad_inpaint_only_masked: true,
+          ad_inpaint_only_masked_padding: 32,
+          ad_use_inpaint_width_height: true,
+          ad_inpaint_width: 768,
+          ad_inpaint_height: 768,
+          is_api: true,
+        },
+      ],
+    },
   }
 }
 
@@ -945,6 +912,10 @@ async function runJob(job: Omit<SDQueueJob, 'id'>, opts: { disableLora?: boolean
   const [w, h] = String(job.size).split('x').map(Number)
   let prompt = job.prompt
   if (opts.disableLora) prompt = prompt.replace(/<lora:[^>]+>\s*,?\s*/gi, '').trim().replace(/,\s*$/, '')
+  const directHighResolution = !job.hiresFix && (w || 832) * (h || 1216) > 1_500_000
+  const alwaysonScripts = job.faceDetailer && job.char !== 'triad' && directHighResolution
+    ? buildSingleDetailerScripts()
+    : undefined
 
   const url = await sd.generate({
     prompt,
@@ -962,6 +933,7 @@ async function runJob(job: Omit<SDQueueJob, 'id'>, opts: { disableLora?: boolean
     denoising_strength: job.denoisingStrength,
     seed: job.seed,
     model: job.checkpoint || undefined,
+    alwayson_scripts: alwaysonScripts,
   })
 
   if (sd.resultSeed.value) pb.sdParams.seed = sd.resultSeed.value
@@ -1000,7 +972,10 @@ const sdQueue = useSDQueue({
       sdErrorReport.value = null
       // 队列产出自动入册，避免跑完一批还要手点保存
       try {
+        // url 是本地 blob URL，不会回 HTML 错误页，但可能已被 revoke 而拿到空 blob。
+        // 空 blob 入册会在作品册里留下一条打不开的记录。
         const blob = await (await fetch(url)).blob()
+        if (!blob.size) throw new Error('成片数据已失效')
         await pb.commitHistoryEntry({
           blob, seed: sd.resultSeed.value ?? undefined,
           size: job.size, negative: job.negative, prompt: job.prompt,
@@ -1086,6 +1061,8 @@ async function saveHistory() {
     // 抓取成片 blob 写入 IndexedDB，并 commit 历史
     const response = await fetch(url)
     const blob = await response.blob()
+    // 空 blob 会入册成一条打不开的记录，宁可报错
+    if (!blob.size) { pb.flash('成片数据已失效，请重新生成'); return }
     const entry = await pb.commitHistoryEntry({
       blob,
       seed: sd.resultSeed.value ?? undefined,
@@ -1147,153 +1124,14 @@ function addTag(e: Event) {
   if (tag) { pb.toggleManualTag(tag); input.value = '' }
 }
 
-async function refreshVoiceStatus() {
-  try {
-    const r = await fetch('/api/tts-status', { cache: 'no-store' })
-    if (!r.ok) throw new Error('status')
-    const data = await r.json()
-    voiceOnline.value = Boolean(data.online)
-    voiceConfigured.value = Boolean(data.voices?.[voiceChar.value])
-    if (voiceOnline.value && voiceConfigured.value) {
-      voiceStatus.value = 'GPT-SoVITS 已连接；可翻译或生成角色声线。'
-      fetch('/api/voice/prepare', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ voice: voiceChar.value, translation: voiceLang.value === 'ja' }),
-      }).catch(() => {})
-    } else if (voiceOnline.value) {
-      voiceStatus.value = '语音服务在线，但当前角色参考音频尚未配置。'
-    } else {
-      voiceStatus.value = '语音服务未启动。可到控制面板启动 GPT-SoVITS。'
-    }
-  } catch {
-    voiceOnline.value = false
-    voiceConfigured.value = false
-    voiceStatus.value = '无法读取语音状态。'
-  }
-}
-
-function clearVoiceAudio() {
-  if (voiceObjectUrl) { URL.revokeObjectURL(voiceObjectUrl); voiceObjectUrl = '' }
-  voiceAudioUrl.value = ''
-  voiceBlob.value = null
-}
-
-async function translateVoice() {
-  const text = voiceCaption.value.trim()
-  if (!text) { pb.flash('请先写下中文字幕'); return }
-  if (voiceLang.value !== 'ja') { pb.flash('切换到日语配音后才需要翻译'); return }
-  voiceBusy.value = true
-  voiceStatus.value = '正在本机翻译成日语…'
-  try {
-    const r = await fetch('/api/translate', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text }),
-    })
-    if (!r.ok) {
-      const err = await r.json().catch(() => ({}))
-      throw new Error(err.error || '日语翻译失败')
-    }
-    const data = await r.json()
-    const translation = String(data.translation || '').trim()
-    if (!translation) throw new Error('没有得到可用的日语译文')
-    voiceScript.value = translation
-    voiceStatus.value = '已生成日语配音稿；可直接生成角色语音，也可以先微调。'
-  } catch (e: any) {
-    voiceStatus.value = e.message || '翻译失败'
-    pb.flash(voiceStatus.value)
-  } finally {
-    voiceBusy.value = false
-  }
-}
-
-function previewVoice() {
-  const text = voicePlayText.value
-  if (!text) { pb.flash('请先准备配音文本'); return }
-  if (!('speechSynthesis' in window)) { voiceStatus.value = '当前浏览器没有系统语音朗读能力'; return }
-  window.speechSynthesis.cancel()
-  const u = new SpeechSynthesisUtterance(text)
-  u.lang = voiceLang.value === 'ja' ? 'ja-JP' : 'zh-CN'
-  u.rate = 1
-  u.pitch = voiceChar.value === 'nene' ? 1.08 : 0.95
-  u.onstart = () => { voiceStatus.value = '正在用本机系统声音试听（仅检查语速与文本）' }
-  u.onend = () => { voiceStatus.value = '试听结束。满意后可生成 AI 角色声线。' }
-  window.speechSynthesis.speak(u)
-}
-
-async function generateVoice() {
-  let text = voicePlayText.value
-  if (!text && voiceLang.value === 'ja' && voiceCaption.value.trim()) {
-    await translateVoice()
-    text = voiceScript.value.trim()
-  }
-  if (!text) { pb.flash('请先准备配音文本'); return }
-
-  clearVoiceAudio()
-  voiceBusy.value = true
-  voiceStatus.value = '正在生成 AI 角色声线…'
-  try {
-    // 先探一次状态，避免拿旧的 online 结果误判
-    await refreshVoiceStatus()
-    if (!voiceConfigured.value) {
-      throw new Error('当前角色还没配置参考音频，请到控制面板的「角色声线配置」填写。')
-    }
-    await fetch('/api/voice/prepare', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ voice: voiceChar.value, translation: voiceLang.value === 'ja' }),
-    }).catch(() => {})
-
-    const r = await fetch('/api/tts', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        voice: voiceChar.value,
-        text,
-        language: voiceLang.value,
-        emotion: voiceEmotion.value,
-        referenceEmotion: voiceEmotion.value === 'neutral' ? 'gentle' : voiceEmotion.value,
-        consistency: 'locked',
-        speed: voiceSpeed.value,
-      }),
-    })
-    if (!r.ok) {
-      const err = await r.json().catch(() => ({}))
-      // 把后端真实原因带出来，而不是笼统一句“不可用”
-      const detail = String(err.detail || '')
-      if (r.status === 502 && /ECONNREFUSED|9880/.test(detail)) {
-        throw new Error('GPT-SoVITS 未启动（127.0.0.1:9880 拒绝连接）。到控制面板点「启动语音」。')
-      }
-      if (r.status === 409) {
-        throw new Error(err.error || '该角色尚未配置参考音频。')
-      }
-      throw new Error([err.error, detail].filter(Boolean).join('：') || `语音生成失败 (${r.status})`)
-    }
-    const blob = await r.blob()
-    if (!blob.size) throw new Error('语音服务返回了空音频')
-    voiceBlob.value = blob
-    voiceObjectUrl = URL.createObjectURL(blob)
-    voiceAudioUrl.value = voiceObjectUrl
-    const wait = r.headers.get('X-Voice-Queue-Wait')
-    voiceStatus.value = 'AI 声线已生成，可试听或下载 WAV。'
-      + (wait && Number(wait) > 0 ? `（排队 ${Math.round(Number(wait) / 100) / 10}s）` : '')
-    pb.flash('配音已生成')
-  } catch (e: any) {
-    voiceStatus.value = e.message || '语音生成失败'
-    pb.flash(voiceStatus.value)
-  } finally {
-    voiceBusy.value = false
-  }
-}
-
 // ── Lifecycle ─────────────────────────────────────────────────────────────
 onMounted(async () => {
   await pb.loadData()
   await sd.checkStatus()
   // 拿到 WebUI 真实 checkpoint 后，再按对应 model profile 填参数
   pb.applyModelProfile(pb.sdModelName || sd.checkpoint.value)
-  await refreshVoiceStatus()
   // 历史载入（IndexedDB）
   await pb.loadHistory()
-  if (pb.char === 'nene' || pb.char === 'natsume') voiceChar.value = pb.char
-  if (pb.story?.trim() && !voiceCaption.value) voiceCaption.value = pb.story.trim()
 
   // 深链参数恢复（?scene / ?char / ?mood / ?regen / ?resume / ?quick / ?variant）
   const q = route.query
@@ -1337,29 +1175,13 @@ onMounted(async () => {
   if (pb.lastRecommendedSize) sdSize.value = pb.lastRecommendedSize
 })
 
-onUnmounted(() => {
-  // 配音生成的 WAV 是 blob URL，只在 clearVoiceAudio 里释放，而它不会在卸载时被调用
-  clearVoiceAudio()
-})
-
 // Autosave draft
 watch([() => pb.story, () => pb.char, () => pb.sceneId, () => pb.selections, () => pb.manualTags, () => pb.colorMood], () => {
   pb.saveDraft?.()
 }, { deep: true })
 
-watch(() => pb.char, (c) => {
-  if (c === 'nene' || c === 'natsume') {
-    voiceChar.value = c
-    refreshVoiceStatus()
-  }
-})
-watch(voiceChar, () => { refreshVoiceStatus() })
-
 // 切换 SD 模型时重新套用对应 profile 的推荐参数
 watch(() => pb.sdModelName, (name) => {
   pb.applyModelProfile(name || sd.checkpoint.value)
-})
-watch(() => pb.story, (s) => {
-  if (s?.trim() && !voiceCaption.value.trim()) voiceCaption.value = s.trim()
 })
 </script>

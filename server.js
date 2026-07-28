@@ -8,6 +8,7 @@ var cp = require('child_process');
 var createProxyMiddleware = require('http-proxy-middleware').createProxyMiddleware;
 var loadGatewayConfig = require('./server/config').loadGatewayConfig;
 var security = require('./server/security');
+var envelope = require('./server/http-envelope');
 var createChatRouter = require('./routes/chat').createChatRouter;
 var createVoiceRouter = require('./routes/voice').createVoiceRouter;
 var createLive2dRouter = require('./routes/live2d').createLive2dRouter;
@@ -243,7 +244,7 @@ function createGateway(options) {
         // 直接调 res.status() 会抛 TypeError 并带走整个进程。
         if (res && typeof res.status === 'function') {
           if (!res.headersSent) {
-            res.status(502).json({ error:'SD WebUI 未响应，请确认已经启动 (' + config.SD_HOST + ')' });
+            envelope.fail(res, 502, 'SD WebUI 未响应，请确认已经启动 (' + config.SD_HOST + ')');
           }
           return;
         }
@@ -254,11 +255,17 @@ function createGateway(options) {
       }
     }
   });
+  // txt2img 是唯一真正吃 GPU 的 SD 端点，单独限流。
+  // 容量按前端出图队列的上限（8 个任务）留余量；补充速率远慢于单张出图耗时，
+  // 所以正常使用碰不到，持续刷才会碰到。其余白名单端点是廉价读，不限。
+  app.post('/sdapi/v1/txt2img', security.rateLimit({
+    capacity:12, refillMs:5000, label:'出图'
+  }));
   app.use(sdProxy);
 
   // 白名单外的 SD 路径必须是 JSON 404，不能被 SPA catch-all 吞成 200 text/html
   app.use(['/sdapi', '/controlnet', '/adetailer'], function (req, res) {
-    res.status(404).json({ error:'该 SD 接口未开放：' + req.baseUrl + req.path });
+    envelope.fail(res, 404, '该 SD 接口未开放：' + req.baseUrl + req.path);
   });
 
   // SPA fallback — Vue Router 的前端路由在刷新时返回 index.html
@@ -275,7 +282,7 @@ function createGateway(options) {
   });
 
   app.use('/api', function (req, res) {
-    res.status(404).json({ error:'接口不存在: ' + req.method + ' ' + req.baseUrl + req.path });
+    envelope.fail(res, 404, '接口不存在: ' + req.method + ' ' + req.baseUrl + req.path);
   });
 
   app.use(function (error, req, res, next) {
@@ -293,7 +300,7 @@ function createGateway(options) {
       413:'请求体过大'
     };
     if (status >= 500) console.error('  ❌ 网关内部错误:', error && error.stack || error);
-    res.status(status).json({ error:messages[status] || (status >= 500 ? '网关内部错误' : '请求无法处理') });
+    envelope.fail(res, status, messages[status] || (status >= 500 ? '网关内部错误' : '请求无法处理'));
   });
 
   function startTunnel() {

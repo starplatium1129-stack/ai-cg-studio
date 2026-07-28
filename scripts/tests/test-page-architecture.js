@@ -166,6 +166,34 @@ assert(
   'ChatView must import chat.css so it ships in the route chunk',
 );
 
+// D-1: director.css 虽然跟随 /prompt-builder 路由块加载，但 Vite 注入过一次后
+// CSS 仍会留在 document 里。过去 571 个裸选择器（`.scene-search`、`.panel`、
+// `.history-item` 等）会污染随后访问的任意路由。普通选择器必须以 `.pb` 根
+// 开始；body:has(.pb…) / @property / keyframes 是刻意保留的全局规则。
+const directorCss = read('src/assets/css/director.css');
+const leakedDirectorSelectors = [...directorCss.matchAll(/^\s*\.([A-Za-z_-][\w-]*)/gm)]
+  .map(m => m[1])
+  .filter(name => name !== 'pb' && !name.startsWith('pb-'));
+assert.strictEqual(
+  leakedDirectorSelectors.length, 0,
+  'director.css selectors must be rooted at .pb; leaked: ' + leakedDirectorSelectors.slice(0, 8).join(', '),
+);
+assert(
+  /\.pb-backup-overlay/.test(directorCss) && /class="pb-backup-overlay open"/.test(read('src/views/PromptBuilderView.vue')),
+  'teleported backup overlay must use its own pb-* namespace (it has no .pb ancestor)',
+);
+
+// chat.css 有同样的生命周期：路由块卸载后样式仍在 document，不能让 `.message`
+// `.chat-list` 等裸类污染作品册或场景页。
+const chatCss = read('src/assets/css/chat.css');
+const leakedChatSelectors = [...chatCss.matchAll(/^\s*\.([A-Za-z_-][\w-]*)/gm)]
+  .map(m => m[1])
+  .filter(name => name !== 'chat-page' && !name.startsWith('chat-page-'));
+assert.strictEqual(
+  leakedChatSelectors.length, 0,
+  'chat.css selectors must be rooted at .chat-page; leaked: ' + leakedChatSelectors.slice(0, 8).join(', '),
+);
+
 // 字体不得在打包 CSS 里 @import：那会造成 HTML→CSS→CSS→字体 三段串行 RTT
 assert(
   !/@import\s+url\(["']?https:\/\/fonts\./.test(read('src/assets/css/design-system.css')),

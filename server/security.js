@@ -1,6 +1,7 @@
 'use strict';
 
 var crypto = require('crypto');
+var envelope = require('./http-envelope');
 
 function tokenMatches(expectedToken, value) {
   if (typeof value !== 'string') return false;
@@ -19,7 +20,7 @@ function isDirectLocalRequest(req) {
 // 唯一的 localOnly 中间件。routes/control.js 与 routes/maintenance.js 都必须用这一份 ——
 // 曾经各自复制过一份，其中 control.js 的版本只比对 req.ip，隧道一开就全部失效。
 function localOnly(req, res, next) {
-  if (!isDirectLocalRequest(req)) return res.status(403).json({ error:'该操作仅限本机使用' });
+  if (!isDirectLocalRequest(req)) return envelope.fail(res, 403, '该操作仅限本机使用');
   next();
 }
 
@@ -65,7 +66,62 @@ function hostGuard(config, getTunnelUrl) {
       if (tunnelUrl) tunnelHost = new URL(tunnelUrl).host;
     } catch (error) { tunnelHost = ''; }
     if (hostAllowed(req.headers.host, config.PORT, tunnelHost)) return next();
-    return res.status(421).json({ error:'Misdirected Request — Host 不在允许列表内' });
+    return envelope.fail(res, 421, 'Misdirected Request — Host 不在允许列表内');
+  };
+}
+
+/**
+ * GPU 路由限流（token bucket）。
+ *
+ * 威胁模型：隧道一开，分享链接持有者能无限提交 txt2img / chat / tts。
+ * SerialQueue 的 maxPending 只挡住"堆积"，挡不住"持续以队列消化速度提交"——
+ * 那会把 GPU 永久占满，而本机用户看到的只是"一直在排队"。
+ *
+ * 直连本机（也就是电脑主人）不限流：他跟 GPU 的关系不是敌对的。
+ * 隧道来的请求共用一个桶 —— 按 IP 分桶没有意义，cloudflared 转出来的
+ * socket 全是 127.0.0.1，而 x-forwarded-for 是客户端可伪造的。
+ */
+function createTokenBucket(options) {
+  var capacity = Math.max(1, Number(options && options.capacity) || 10);
+  var refillMs = Math.max(1, Number(options && options.refillMs) || 1000);
+  var tokens = capacity;
+  var updatedAt = Date.now();
+
+  function refill() {
+    var now = Date.now();
+    var gained = Math.floor((now - updatedAt) / refillMs);
+    if (gained <= 0) return;
+    tokens = Math.min(capacity, tokens + gained);
+    updatedAt = now - ((now - updatedAt) % refillMs);
+  }
+
+  return {
+    /** 取一个令牌；取不到时返回建议的重试秒数 */
+    take:function () {
+      refill();
+      if (tokens > 0) {
+        tokens -= 1;
+        if (tokens === capacity - 1) updatedAt = Date.now();
+        return { ok:true };
+      }
+      return { ok:false, retryAfterSeconds:Math.ceil(refillMs / 1000) };
+    },
+    state:function () { refill(); return { tokens:tokens, capacity:capacity }; }
+  };
+}
+
+function rateLimit(options) {
+  var bucket = createTokenBucket(options);
+  var label = (options && options.label) || '该接口';
+  return function (req, res, next) {
+    if (isDirectLocalRequest(req)) return next();
+    var result = bucket.take();
+    if (result.ok) return next();
+    res.setHeader('Retry-After', String(result.retryAfterSeconds));
+    return envelope.fail(res, 429, label + '请求过于频繁，请稍后再试', {
+      code:'RATE_LIMITED',
+      retryAfterSeconds:result.retryAfterSeconds
+    });
   };
 }
 
@@ -120,7 +176,7 @@ function tokenAuth(token) {
     }
     if (req.path.startsWith('/sdapi') || req.path.startsWith('/controlnet') ||
         req.path.startsWith('/adetailer') || req.path.startsWith('/api/')) {
-      return res.status(401).json({ error:'Unauthorized — 缺少 token 参数' });
+      return envelope.fail(res, 401, 'Unauthorized — 缺少 token 参数');
     }
     return res.status(403).send(
       '<!DOCTYPE html><html><head><meta charset="utf-8"><title>绫季绘境</title>' +
@@ -141,6 +197,8 @@ module.exports = {
   safeLocalUrl:safeLocalUrl,
   hostAllowed:hostAllowed,
   hostGuard:hostGuard,
+  createTokenBucket:createTokenBucket,
+  rateLimit:rateLimit,
   normalizeRequestPath:normalizeRequestPath,
   buildContentSecurityPolicy:buildContentSecurityPolicy,
   responseHeaders:responseHeaders,

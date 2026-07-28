@@ -122,7 +122,8 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   const sdParams = reactive({
     cfg: 6, steps: 30, sampler: 'Euler a', scheduler: '',
     size: '2:3', hiresFix: false, hiresScale: 1.5,
-    hiresUpscaler: 'R-ESRGAN 4x+ Anime6B', hiresSteps: 20, hiresDenoise: 0.4,
+    hiresUpscaler: 'R-ESRGAN 4x+ Anime6B', hiresSteps: 30, hiresDenoise: 0.5,
+    faceDetailer: true,
     seedLock: false, seed: -1, quality: true, tail: true, negative: true,
     negativeCustom: '',
   })

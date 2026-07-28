@@ -1,6 +1,6 @@
 import type { IncomingMessage, ClientRequest } from 'http';
-declare const VOICES: readonly ['nene', 'natsume'];
-declare const EMOTIONS: readonly ['neutral', 'gentle', 'happy', 'shy', 'serious', 'sad'];
+declare const VOICES: readonly ["nene", "natsume"];
+declare const EMOTIONS: readonly ["neutral", "gentle", "happy", "shy", "serious", "sad"];
 type VoiceId = (typeof VOICES)[number];
 type VoiceEmotion = (typeof EMOTIONS)[number];
 type VoiceConsistency = 'locked' | 'adaptive';

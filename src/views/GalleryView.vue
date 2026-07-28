@@ -489,6 +489,14 @@ watch(visible, () => { hydrateCards() })
 .artwork:hover { transform:translateY(-3px); border-color:color-mix(in srgb,var(--accent) 38%,var(--border-soft)); box-shadow:var(--shadow-md); }
 .artwork-button { display:block; width:100%; padding:0; border:0; background:transparent; color:inherit; cursor:zoom-in; }
 .artwork-button:focus-visible { outline:3px solid var(--accent); outline-offset:-3px; }
+.artwork-tools { position:absolute; z-index:var(--z-raised); top:var(--s-2); right:var(--s-2); display:flex; align-items:center; gap:4px; opacity:0; transform:translateY(-4px); pointer-events:none; transition:opacity var(--t-fast),transform var(--t-fast); }
+.artwork:hover .artwork-tools,.artwork:focus-within .artwork-tools,.artwork-pending .artwork-tools { opacity:1; transform:none; pointer-events:auto; }
+.artwork-tool { min-height:30px; padding:0 var(--s-2); border:1px solid var(--on-art-line); border-radius:var(--r-pill); background:var(--art-scrim); color:var(--on-art-primary); font:650 var(--fs-label-xs) var(--font-sans); cursor:pointer; -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); transition:background var(--t-fast),border-color var(--t-fast),color var(--t-fast); }
+.artwork-tool:hover:not(:disabled) { border-color:color-mix(in srgb,var(--accent) 60%,var(--on-art-line)); background:color-mix(in srgb,var(--accent) 52%,var(--art-scrim)); }
+.artwork-tool.danger { border-color:color-mix(in srgb,var(--danger) 54%,var(--on-art-line)); background:color-mix(in srgb,var(--danger) 48%,var(--art-scrim)); }
+.artwork-tool.danger:hover:not(:disabled) { background:var(--danger); color:var(--text-inverse); }
+.artwork-tool:focus-visible { outline:2px solid var(--on-art-primary); outline-offset:2px; }
+.artwork-tool:disabled { cursor:wait; opacity:.65; }
 .artwork-media { position:relative; width:100%; aspect-ratio:var(--art-ratio,3/4); overflow:hidden; background:linear-gradient(135deg,color-mix(in srgb,var(--art-mat) 88%,#fff),var(--art-mat)); }
 .artwork-image { display:block; width:100%; height:100%; object-fit:contain; background:var(--art-mat); }
 .artwork-placeholder { position:absolute; inset:0; display:grid; place-items:center; color:var(--on-art-secondary); font-size:var(--fs-glyph); }
@@ -509,6 +517,7 @@ watch(visible, () => { hydrateCards() })
   .artwork-caption { opacity:1; transform:none; padding:34px var(--s-2) var(--s-2); }
   .artwork-name { font-size:var(--fs-mono-sm); }
   .artwork-date { display:none; }
+  .artwork-tools { opacity:1; transform:none; pointer-events:auto; }
 }
 @media (prefers-reduced-motion:reduce) { .artwork,.artwork-caption { transition:none !important; } }
 </style>

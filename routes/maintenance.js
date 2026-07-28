@@ -4,6 +4,7 @@ var fs = require('fs');
 var path = require('path');
 var cp = require('child_process');
 var express = require('express');
+var envelope = require('../server/http-envelope');
 
 function readJson(source) {
   return JSON.parse(fs.readFileSync(source, 'utf8'));
@@ -133,7 +134,7 @@ function decodeJpegDataUrl(value, label) {
 var isDirectLocalRequest = require('../server/security').isDirectLocalRequest;
 
 function maintenanceLocalOnly(req, res, next) {
-  if (!isDirectLocalRequest(req)) return res.status(403).json({ error: '维护操作仅允许在本机执行' });
+  if (!isDirectLocalRequest(req)) return envelope.fail(res, 403, '维护操作仅允许在本机执行');
   next();
 }
 
@@ -329,11 +330,11 @@ async function runMaintenanceChecks() {
     var scenes = req.body && req.body.scenes;
     var tags = req.body && req.body.tags;
     var curation = req.body && req.body.curation;
-    if (!Array.isArray(scenes) || !scenes.length || scenes.length > 1000) return res.status(400).json({ error:'场景数据格式错误、为空或数量超出限制' });
+    if (!Array.isArray(scenes) || !scenes.length || scenes.length > 1000) return envelope.fail(res, 400, '场景数据格式错误、为空或数量超出限制');
     var ids = new Set();
     for (var i = 0; i < scenes.length; i += 1) {
       var id = String(scenes[i] && scenes[i].id || '');
-      if (!/^sc\d{3}$/.test(id) || ids.has(id)) return res.status(400).json({ error:'场景 ID 必须唯一且符合 sc001 格式：' + id });
+      if (!/^sc\d{3}$/.test(id) || ids.has(id)) return envelope.fail(res, 400, '场景 ID 必须唯一且符合 sc001 格式：' + id);
       ids.add(id);
     }
     var snapshot;
@@ -375,15 +376,15 @@ async function runMaintenanceChecks() {
   router.post('/api/maintenance/showcase', maintenanceLocalOnly, express.json({ limit:'26mb' }), function (req, res) {
     var snapshot;
     try {
-      if (!SCENE_SHOWCASE_DIR) return res.status(503).json({ error:'尚未找到 SceneShowcase 目录' });
+      if (!SCENE_SHOWCASE_DIR) return envelope.fail(res, 503, '尚未找到 SceneShowcase 目录');
       var id = String(req.body && req.body.id || '');
-      if (!/^sc\d{3}$/.test(id)) return res.status(400).json({ error:'需要合法场景 ID' });
+      if (!/^sc\d{3}$/.test(id)) return envelope.fail(res, 400, '需要合法场景 ID');
       var scenes = sceneStore.loadSceneShards().scenes;
       var scene = scenes.find(function (item) { return item.id === id; });
-      if (!scene) return res.status(404).json({ error:'场景不存在，不能保存孤立样张：' + id });
+      if (!scene) return envelope.fail(res, 404, '场景不存在，不能保存孤立样张：' + id);
       var buffer = decodeJpegDataUrl(req.body && req.body.image, '原图');
       var thumbBuffer = req.body && req.body.thumbnail ? decodeJpegDataUrl(req.body.thumbnail, '缩略图') : buffer;
-      if (buffer.length > 15 * 1024 * 1024 || thumbBuffer.length > 3 * 1024 * 1024) return res.status(413).json({ error:'原图必须在 15MB 以内，缩略图必须在 3MB 以内' });
+      if (buffer.length > 15 * 1024 * 1024 || thumbBuffer.length > 3 * 1024 * 1024) return envelope.fail(res, 413, '原图必须在 15MB 以内，缩略图必须在 3MB 以内');
       var imageDir = path.join(SCENE_SHOWCASE_DIR, 'images');
       var thumbDir = path.join(SCENE_SHOWCASE_DIR, 'thumbs');
       fs.mkdirSync(imageDir, { recursive:true }); fs.mkdirSync(thumbDir, { recursive:true });
@@ -432,11 +433,11 @@ async function runMaintenanceChecks() {
   router.post('/api/backup', maintenanceLocalOnly, express.json({ limit:'22mb' }), function (req, res) {
     try {
       var imageBase64 = req.body.imageBase64, filename = req.body.filename;
-      if (!imageBase64) return res.status(400).json({ error:'No image data' });
+      if (!imageBase64) return envelope.fail(res, 400, 'No image data');
       var match = String(imageBase64).match(/^data:image\/(png|jpeg|webp);base64,([A-Za-z0-9+/=\r\n]+)$/);
-      if (!match) return res.status(400).json({ error:'仅支持 PNG、JPEG 或 WebP 图片' });
+      if (!match) return envelope.fail(res, 400, '仅支持 PNG、JPEG 或 WebP 图片');
       var imageBuffer = Buffer.from(match[2].replace(/\s/g, ''), 'base64');
-      if (!imageBuffer.length || imageBuffer.length > 15 * 1024 * 1024) return res.status(413).json({ error:'图片大小必须在 15MB 以内' });
+      if (!imageBuffer.length || imageBuffer.length > 15 * 1024 * 1024) return envelope.fail(res, 413, '图片大小必须在 15MB 以内');
       var backupDir = path.join(cfg.RUNTIME_ROOT, 'outputs');
       if (!fs.existsSync(backupDir)) fs.mkdirSync(backupDir, { recursive: true });
       var ext = match[1] === 'jpeg' ? '.jpg' : '.' + match[1];
@@ -444,11 +445,11 @@ async function runMaintenanceChecks() {
       var safeStem = stem.replace(/[^a-zA-Z0-9_-]+/g, '_').replace(/^_+|_+$/g, '').slice(0, 60) || 'backup';
       var name = safeStem + '_' + Date.now() + ext;
       var target = path.resolve(backupDir, name);
-      if (!target.startsWith(path.resolve(backupDir) + path.sep)) return res.status(400).json({ error:'Invalid filename' });
+      if (!target.startsWith(path.resolve(backupDir) + path.sep)) return envelope.fail(res, 400, 'Invalid filename');
       fs.writeFileSync(target, imageBuffer);
       console.log('  💾 图片已备份: ' + name);
       res.json({ status:'ok', file:name });
-    } catch (err) { res.status(500).json({ error:err.message }); }
+    } catch (err) { envelope.fail(res, 500, err.message); }
   });
 
   router.get('/api/showcase-status', function (req, res) {
@@ -472,7 +473,11 @@ async function runMaintenanceChecks() {
     'optimize':    { args:['--write'], label:'规范化提示词', desc:'统一标签命名、补全标准负面词、修复占位符' }
   };
 
-  router.post('/api/maintenance/run', maintenanceLocalOnly, express.json({ limit:'2kb' }), function (req, res) {
+  // 必须异步。原先这里是 spawnSync(timeout:120000) —— 跑在 POST handler 里，
+  // 期间整个事件循环停摆：SD 代理、进行中的 /api/chat NDJSON 流、/api/tts 的
+  // 音频中继全部一起卡死，最坏 2 分钟。/api/maintenance/scenes 早就改成
+  // runNodeScript + await 了，这条路径漏了。
+  router.post('/api/maintenance/run', maintenanceLocalOnly, express.json({ limit:'2kb' }), async function (req, res) {
     var task = String(req.body && req.body.task || '').trim();
     if (!MAINTENANCE_TASKS[task]) {
       return res.status(400).json({ ok:false, error:'不支持的任务：' + task });
@@ -480,20 +485,29 @@ async function runMaintenanceChecks() {
 
     var script = 'scripts/maintenance/' + (SCRIPT_NAMES[task] || task + '.js');
     var args = MAINTENANCE_TASKS[task].args;
-    var result = cp.spawnSync(process.execPath, [script].concat(args), {
-      cwd:path.join(__dirname, '..'), encoding:'utf8', timeout:120000, windowsHide:true
-    });
+    var result;
+    try {
+      result = await runNodeScript(script, args, 120000);
+    } catch (error) {
+      return res.status(504).json({
+        ok:false,
+        task:task,
+        label:MAINTENANCE_TASKS[task].label,
+        output:'执行出错：' + error.message,
+        exitCode:1
+      });
+    }
 
     var output = (result.stdout || '') + (result.stderr || '');
     if (output.length > 8000) output = output.slice(0, 8000) + '\n...(truncated)';
     output = output.trim();
-    if (!output) output = (result.error ? '执行出错：' + result.error.message : '任务完成，无输出');
+    if (!output) output = '任务完成，无输出';
     res.json({
-      ok: result.status === 0 && !result.error,
+      ok: result.status === 0,
       task: task,
       label: MAINTENANCE_TASKS[task].label,
       output: output,
-      exitCode: result.error ? 1 : result.status
+      exitCode: result.status
     });
   });
 
