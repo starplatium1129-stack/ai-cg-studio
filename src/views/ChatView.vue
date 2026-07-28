@@ -174,7 +174,7 @@ import { CHARACTERS, createMessageId } from '@/config/characters'
 import { useChatStorage } from '@/composables/useChatStorage'
 import { useLive2D } from '@/composables/useLive2D'
 import { useVoice } from '@/composables/useVoice'
-import { parseNdjsonResponse, isAbortError } from '@/utils/stream'
+import { inferEmotion, parseNdjsonResponse, SentenceBuffer, isAbortError } from '@/utils/stream'
 import { useRovingTabs } from '@/composables/useRovingTabs'
 
 const router = useRouter()
@@ -239,6 +239,7 @@ const voice = useVoice({
   onSpeaking:   (v, mid) => {
     isSpeaking.value = v
     playingMid.value = v && mid ? mid : ''
+    live2d.setSpeaking(v)
   },
   onExpression: (e) => live2d.setExpression(e),
   onMouth:      (v) => live2d.setMouth(v),
@@ -388,6 +389,13 @@ async function sendMessage() {
 
   const controller = new AbortController()
   activeRequest = controller
+  const emotionBuffer = new SentenceBuffer({ immediateFirst: true })
+  const applyReplyEmotion = (fragment: string, flush = false) => {
+    emotionBuffer.push(fragment, flush).forEach(sentence => {
+      live2d.setExpression(inferEmotion(sentence, char))
+    })
+  }
+  live2d.setExpression('neutral')
   voice.startTurn({ mid: assistant.mid, voice: currentCharacter.value.voice, character: char })
 
   try {
@@ -408,11 +416,13 @@ async function sendMessage() {
       }
       if (event.type !== 'token') return
       assistant.content += event.content || ''
+      applyReplyEmotion(event.content || '')
       voice.append(event.content || '')
       if (nearBottom()) scrollBottom()
     })
 
     assistant.content = assistant.content.trim() || '……'
+    applyReplyEmotion('', true)
     // 收尾时播报一次完整回复，取代逐 token 刷 live region
     replyAnnouncement.value = `${currentCharacter.value.name}说：${assistant.content}`
     voice.finishTurn()

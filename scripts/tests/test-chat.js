@@ -135,7 +135,7 @@ async function run() {
   assert(voiceModule.includes("fetch('/api/voice/prepare'") && voiceRoute.includes("router.post('/api/voice/prepare'"), 'voice models and translation must prewarm before the first line');
   assert(voiceModule.includes('getByteTimeDomainData') && voiceModule.includes('onMouth'), 'lip sync must use real audio amplitude');
   assert(live2dModule.includes('ResizeObserver') && live2dModule.includes('webglcontextlost'), 'Live2D must recover layout and WebGL failures');
-  assert(live2dModule.includes('setExpression') && live2dModule.includes('ParamMouthOpenY'), 'Live2D must support expression and mouth control');
+  assert(live2dModule.includes('setExpression') && live2dModule.includes('setSpeaking') && live2dModule.includes('ParamMouthOpenY'), 'Live2D must keep rendering for speech, expression and mouth control');
   // Live2D 运行库必须真正被加载（重构后曾漏掉，导致"运行库加载失败"）
   assert(live2dModule.includes("import('wl-live2d')"), 'Live2D runtime must be imported by the composable');
   // PixiJS 需要 unsafe-eval：CSP 必须为 /chat 放行，否则 Live2D 初始化失败
@@ -175,6 +175,8 @@ async function run() {
   assert(chatRoute.chatCharacterPrompt('nene').includes('不要每句话都结巴'), 'Nene prompt must constrain repetitive roleplay mannerisms');
   assert(chatRoute.chatCharacterPrompt('natsume').includes('关心藏进提醒'), 'Natsume prompt must preserve restrained care');
   assert(chatRoute.chatCharacterPrompt('nene').includes('不要假装知道用户没说过的'), 'character prompts must not invent shared facts');
+  assert(chatRoute.chatCharacterPrompt('nene').includes('先辨认用户这句话里的情绪'), 'Nene prompt must explicitly respond to the user emotion');
+  assert(chatRoute.chatCharacterPrompt('natsume').includes('先辨认用户这句话里的情绪'), 'Natsume prompt must explicitly respond to the user emotion');
   assert(chatRoute.chatCharacterPrompt('natsume').includes('关心不等于管束或占有'), 'character prompts must keep care distinct from control');
   assert(chatRoute.chatCharacterPrompt('nene').includes('这是私人本地角色扮演'), 'character prompts must identify the private local context');
   assert(chatRoute.chatCharacterPrompt('natsume').includes('不输出政策声明或机械拒绝'), 'character prompts must stay in character for sensitive adult topics');

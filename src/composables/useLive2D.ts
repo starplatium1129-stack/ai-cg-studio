@@ -29,6 +29,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   let hostEl: HTMLElement | null = null
   let stageEl: HTMLElement | null = null
   let hostSelector = '#live2dHost'
+  let desiredExpression = 'neutral'
 
   function setState(state: string, text: string, detail = '', retryable = false) {
     if (hostEl) { hostEl.dataset.state = state; hostEl.dataset.error = detail; hostEl.dataset.retryable = retryable ? 'true' : 'false' }
@@ -136,7 +137,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
           model = m; loadedCharacter.value = char; ready.value = true
           mouthValue.value = 0; mouthHooked = false
           bindMouthOverride(); bindContextEvents(); fit(); layout()
-          setVisible(true); setPaused(document.hidden); setState('ready', 'Live2D 已连接'); finish(true)
+          setVisible(true); setExpression(desiredExpression); setPaused(document.hidden); setState('ready', 'Live2D 已连接'); finish(true)
         })
         app.onModelError((e: any) => { fallback('Live2D 模型加载失败', String(e?.message ?? e)); finish(false) })
       } catch (e) { fallback('Live2D 初始化失败', String((e as any)?.message ?? e)); finish(false) }
@@ -212,12 +213,18 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches } catch { return false }
   }
 
+  function resumeRendering() {
+    const ticker = app?.app?.ticker
+    if (!ticker || document.hidden || prefersReducedMotion()) return
+    if (!ticker.started) { ticker.start(); layout() }
+  }
+
   function setPaused(paused: boolean) {
     const ticker = app?.app?.ticker
     if (!ticker) return
     // 减少动态效果：渲染一帧把立绘摆正，然后停住，不做待机循环
     if (paused || prefersReducedMotion()) { if (ticker.started) ticker.stop(); return }
-    if (!ticker.started) { ticker.start(); layout() }
+    resumeRendering()
   }
 
   function setVisible(value: boolean) {
@@ -227,12 +234,23 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   }
 
   function setExpression(emotion: string) {
+    desiredExpression = emotion || 'neutral'
     if (!ready.value || !model?.visible) return
-    const name = LIVE2D_EXPRESSIONS[emotion] || LIVE2D_EXPRESSIONS.neutral
+    const name = LIVE2D_EXPRESSIONS[desiredExpression] || LIVE2D_EXPRESSIONS.neutral
     try { if (typeof model.expression === 'function') model.expression(name) } catch {}
+    resumeRendering()
   }
 
-  function setMouth(value: number) { mouthValue.value = Math.max(0, Math.min(1, Number(value) || 0)) }
+  function setMouth(value: number) {
+    mouthValue.value = Math.max(0, Math.min(1, Number(value) || 0))
+    if (mouthValue.value > 0) resumeRendering()
+  }
+
+  // 表情和口型都依赖 Pixi ticker。某些 Cubism 模型在切换表情后会停掉 idle
+  // motion；语音开始时显式恢复渲染，避免出现“有声音但立绘冻结”。
+  function setSpeaking(value: boolean) {
+    if (value) resumeRendering()
+  }
 
   function fallback(text: string, detail: string) {
     ready.value = false; mouthValue.value = 0; setVisible(false)
@@ -241,7 +259,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
 
   function destroyRuntime() {
     clearTimeout(loadTimer); loadTimer = 0
-    ready.value = false; mouthValue.value = 0; mouthHooked = false; model = null
+    ready.value = false; mouthValue.value = 0; mouthHooked = false; desiredExpression = 'neutral'; model = null
     loadedCharacter.value = ''
     stageEl?.classList.remove('live2d-ready')
     if (app && typeof app.destroy === 'function') { try { app.destroy() } catch {} }
@@ -256,5 +274,5 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     if (visibilityHandler) { document.removeEventListener('visibilitychange', visibilityHandler); visibilityHandler = null }
   }
 
-  return { ready, character, loadedCharacter, mouthValue, init, setCharacter, setExpression, setMouth, setPaused, layout, retry, destroy }
+  return { ready, character, loadedCharacter, mouthValue, init, setCharacter, setMouth, setExpression, setSpeaking, setPaused, layout, retry, destroy }
 }
