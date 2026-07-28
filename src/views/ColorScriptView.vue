@@ -100,7 +100,19 @@ const LIGHTINGS = [
   { icon:'🏮', name:'夜灯',   reason:'夜祭/温馨/安全感/传统' },
   { icon:'☁️', name:'阴天柔光', reason:'平静/文艺/清新/日常' },
 ]
-const MOODS = [
+
+interface ColorMood {
+  id: string
+  icon: string
+  name: string
+  en: string
+  color: string
+  palette: string[]
+  mapping: Record<string, string>
+  prompt: string
+}
+
+const MOODS: ColorMood[] = [
   { id:'joy',     icon:'☀️', name:'快乐', en:'Joy',     color:'#FFD54F', palette:['#FFE082','#FFD54F','#FFB300','#FF8F00','#FFF8E1'], mapping:{'色相':'暖黄色 / 浅橙色 / 柔粉','光照':'Golden Hour / 午后阳光 / 明亮','氛围':'活力 / 温暖 / 清爽','天气':'晴天 / 微风'}, prompt:'warm yellow tones, golden hour, bright sunlight, cheerful atmosphere, soft breeze, warm color palette, vibrant but soft' },
   { id:'love',    icon:'💕', name:'恋爱', en:'Love',    color:'#F06292', palette:['#F8BBD0','#F06292','#EC407A','#AD1457','#FFF0F5'], mapping:{'色相':'夕阳 / 粉色 / 暖光','光照':'Golden Hour / 逆光 / 柔光','氛围':'暧昧 / 心跳 / 羞涩','天气':'黄昏 / 樱花季'}, prompt:'pink tone, golden hour, warm light, backlit, romantic atmosphere, soft glow, blush, cherry blossom color, dreamy' },
   { id:'calm',    icon:'🍃', name:'平静', en:'Calm',    color:'#81C784', palette:['#C8E6C9','#81C784','#4CAF50','#2E7D32','#F1F8E9'], mapping:{'色相':'淡绿 / 青绿 / 奶白','光照':'阴天柔光 / 窗光 / 自然光','氛围':'安静 / 治愈 / 文艺','天气':'多云 / 雨后'}, prompt:'soft green tones, overcast light, window light, calm atmosphere, peaceful, gentle colors, clean aesthetic, healing' },
@@ -109,7 +121,7 @@ const MOODS = [
   { id:'warmth',  icon:'🏮', name:'温馨', en:'Warmth',  color:'#FFB74D', palette:['#FFE0B2','#FFB74D','#F57C00','#E65100','#FFF3E0'], mapping:{'色相':'暖橙 / 橘红 / 米黄','光照':'夜灯 / 烛光 / 室内暖光','氛围':'安全感 / 家庭 / 治愈','天气':'夜晚 / 秋雨'}, prompt:'warm orange tones, lantern light, indoor warm light, cozy atmosphere, candlelight, safe feeling, homely, autumn warmth' },
 ]
 
-const selected = ref<any>(null)
+const selected = ref<ColorMood | null>(null)
 
 function esc(s: string) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
 function norm(t: string) { return t.split(',').map(s => s.trim().replace(/[\s-]+/g,'_')).join(', ') }
@@ -130,13 +142,14 @@ const colorizedPrompt = computed(() => {
   }).join(',')
 })
 
-function select(m: any) { selected.value = m }
+function select(m: ColorMood) { selected.value = m }
 
 function copyPrompt() {
   if (!selected.value) return
-  navigator.clipboard.writeText(selected.value.prompt)
+  const text = selected.value.prompt
+  navigator.clipboard.writeText(text)
     .then(() => showToast('📋 已复制到剪贴板'))
-    .catch(() => prompt('请手动复制', selected.value.prompt))
+    .catch(() => prompt('请手动复制', text))
 }
 
 function exportTxt() {

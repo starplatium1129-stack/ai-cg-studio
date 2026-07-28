@@ -82,16 +82,9 @@
 
 当前门槛覆盖真实应用 CSS、Vue SFC、运行时构建、场景契约、安全路由、存储、Prompt、SD、聊天、配音和 Playwright 流程。
 
+`src/` 业务实现中的显式 `any` 已清零，新增代码不得回退；`vite-env.d.ts` 的 Vue 通配模块声明不计入业务类型债。
+
 ## 当前待办
-
-### P1：类型债收敛
-
-`src/` 当前约有 80 处 `any`（含声明与注释中的匹配）。优先处理：
-
-1. `promptBuilderStore.ts`
-2. `ShowcaseView.vue`
-
-`SceneExplorerView.vue`、`GalleryView.vue`、`HomeView.vue`、`useLive2D.ts`、`useVoice.ts` 已清零，不要回退。优先补第三方 SDK 边界类型、API 响应类型和持久化记录类型，不做无意义的类型断言替换。
 
 ### P2：大型视图继续按所有权拆分
 
@@ -100,10 +93,8 @@
 
 ### P2：资源与构建优化
 
-1. 首页两张约 400KB JPEG 建立 WebP/AVIF + `srcset` 管线，保留明确的宽高和首图优先级。
-2. 给构建增加 bundle analyzer 与路由块体积预算。
-3. 排查 Node 的 `util._extend` 弃用警告，优先升级或替换实际引入它的依赖。
-4. 清理已经失去模板消费者的首次创作引导 CSS；若保留该体验，则补回真实状态与 E2E，而不是留下半套样式。
+1. 排查 Node 的 `util._extend` 弃用警告，优先升级或替换实际引入它的依赖。
+2. 清理已经失去模板消费者的首次创作引导 CSS；若保留该体验，则补回真实状态与 E2E，而不是留下半套样式。
 
 ### P1：v15 核心样张审核
 

@@ -1,4 +1,5 @@
 const assert = require('assert');
+const fs = require('fs');
 const path = require('path');
 const { readJson } = require('../runtime/scene-store');
 // scene-ux 已迁到 src/utils/sceneUX.ts。
@@ -6,6 +7,8 @@ const { readJson } = require('../runtime/scene-store');
 const sceneUx = require('../../src/utils/sceneUX.ts');
 
 const root = path.resolve(__dirname, '..', '..');
+assert(!/\bany\b/.test(fs.readFileSync(path.join(root, 'src/utils/sceneUX.ts'), 'utf8')),
+  'sceneUX must not regress to explicit any types');
 const scenes = readJson(path.join(root, 'data', 'scenes.json'));
 const curation = readJson(path.join(root, 'data', 'curation.json'));
 
@@ -51,6 +54,14 @@ const profile = sceneUx.buildPreferenceProfile([
   { scene:'sc002', character:'nene', timestamp:preferenceNow - 2000, favorite:false, rating:highRating },
   { scene:'sc046', character:'natsume', timestamp:preferenceNow - 3000, favorite:false, rating:lowRating }
 ], preferenceNow);
+const damagedProfile = sceneUx.buildPreferenceProfile([
+  null,
+  {},
+  { scene:42, character:{}, rating:'bad', favorite:true },
+], preferenceNow);
+assert.strictEqual(damagedProfile.entries, 2, 'preference history must count only object records');
+assert.deepStrictEqual(damagedProfile.scenes, {}, 'invalid scene ids must not create synthetic preference keys');
+assert.deepStrictEqual(damagedProfile.characters, {}, 'invalid character ids must not create synthetic preference keys');
 const preferredScene = scenes.find((scene) => scene.id === 'sc002');
 const weakScene = scenes.find((scene) => scene.id === 'sc046');
 assert(sceneUx.personalScore(preferredScene, profile) > sceneUx.personalScore(weakScene, profile), 'high-rated favorites must receive a stronger personal score');
@@ -90,6 +101,16 @@ sceneUx.rememberRecent(scenes[0], storage);
 const recent = sceneUx.readRecent(storage);
 assert.strictEqual(recent.length, 2, 'recent scenes must be deduplicated');
 assert.strictEqual(recent[0].id, scenes[0].id, 'most recent scene must be first');
+memory.set('aics_recent_scenes', JSON.stringify([
+  { id:'valid', title:5, char:'nene', usedAt:'12' },
+  null,
+  { title:'missing id' },
+]));
+assert.deepStrictEqual(
+  sceneUx.readRecent(storage),
+  [{ id:'valid', title:'', char:'nene', usedAt:12 }],
+  'damaged recent-scene storage must be normalized before use',
+);
 
 sceneUx.recordSceneUsage(scenes[0], storage, preferenceNow - 86400000);
 sceneUx.recordSceneUsage(scenes[0], storage, preferenceNow);

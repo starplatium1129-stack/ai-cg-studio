@@ -6,6 +6,27 @@ const STORE_NAME = 'images'
 
 let dbPromise: Promise<IDBDatabase> | null = null
 
+export interface StoredImageRecord {
+  id: string
+  blob: Blob
+  name: string
+  type: string
+  size: number
+  created_at: number
+}
+
+export interface ImageRecordInput {
+  id: string
+  blob: Blob
+  name?: string
+  type?: string
+  created_at?: number
+}
+
+function blobName(blob: Blob): string {
+  return 'name' in blob && typeof blob.name === 'string' ? blob.name : ''
+}
+
 function openDb(): Promise<IDBDatabase> {
   if (dbPromise) return dbPromise
   dbPromise = new Promise((resolve, reject) => {
@@ -47,11 +68,18 @@ function tx<T>(mode: IDBTransactionMode, action: (store: IDBObjectStore) => void
 export async function imgPut(file: Blob): Promise<string> {
   if (!(file instanceof Blob) || !file.size) throw new Error('图片文件为空')
   const id = createId()
-  await tx('readwrite', store => store.put({ id, blob: file, name: (file as any).name ?? '', type: file.type, size: file.size, created_at: Date.now() }))
+  await tx('readwrite', store => store.put({
+    id,
+    blob: file,
+    name: blobName(file),
+    type: file.type,
+    size: file.size,
+    created_at: Date.now(),
+  } satisfies StoredImageRecord))
   return id
 }
 
-export async function imgPutRecord(record: { id: string; blob: Blob; name?: string; type?: string; created_at?: number }): Promise<string> {
+export async function imgPutRecord(record: ImageRecordInput): Promise<string> {
   if (!record?.id?.trim()) throw new Error('图片记录缺少 ID')
   if (!(record.blob instanceof Blob) || !record.blob.size) throw new Error('图片记录为空')
   const n = { id: record.id.trim(), blob: record.blob, name: record.name ?? '', type: record.type ?? record.blob.type, size: record.blob.size, created_at: record.created_at ?? Date.now() }
@@ -79,7 +107,7 @@ export async function imgDeleteMany(ids: string[]): Promise<void> {
   await tx('readwrite', store => { unique.forEach(id => store.delete(id)) })
 }
 
-export async function imgList(): Promise<Array<{ id: string; blob: Blob; name: string; type: string; size: number; created_at: number }>> {
+export async function imgList(): Promise<StoredImageRecord[]> {
   const db = await openDb()
   return new Promise((resolve, reject) => {
     let transaction: IDBTransaction

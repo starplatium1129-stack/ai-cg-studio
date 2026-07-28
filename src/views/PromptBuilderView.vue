@@ -87,7 +87,7 @@
               class="char-btn" type="button"
               :class="{ active: pb.char === c.id }"
               :aria-pressed="pb.char === c.id"
-              @click="pb.setChar(c.id as any)">{{ c.label }}</button>
+              @click="pb.setChar(c.id)">{{ c.label }}</button>
           </div>
           <div class="traits-row">
             <button v-for="t in currentTraits" :key="t.tag"
@@ -505,10 +505,15 @@
 import '@/assets/css/director.css'
 import { ref, computed, nextTick, onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
+import {
+  NEGATIVE_DEFAULT,
+  usePromptBuilderStore,
+  type CharKey,
+  type HistoryEntry,
+  type Scene,
+} from '@/stores/promptBuilderStore'
 import { useSDGenerate } from '@/composables/useSDGenerate'
 import HistoryPanel from '@/components/HistoryPanel.vue'
-import { NEGATIVE_DEFAULT } from '@/stores/promptBuilderStore'
 import {
   adaptNegative, analyzeParts, applyFraming, checkArtDirection, dedupeParts,
   enrichDualPrompt, loraSpecText, mergeTokenText, modelNegativePrompt, norm,
@@ -532,7 +537,6 @@ import {
   writeQuickCreate,
   type QuickCreateSettings,
 } from '@/utils/quickCreate'
-import type { HistoryEntry, Scene } from '@/stores/promptBuilderStore'
 
 const router = useRouter()
 const route = useRoute()
@@ -598,11 +602,15 @@ const storyChips = [
   '雪天围围巾的温柔一瞬',
 ]
 
-const charOptions = [
+const charOptions: Array<{ id: CharKey; label: string }> = [
   { id: 'nene',    label: '🌸 宁宁' },
   { id: 'natsume', label: '🍂 夏目' },
   { id: 'triad',   label: '🌸🍂 双人' },
 ]
+
+function isCharKey(value: unknown): value is CharKey {
+  return value === 'nene' || value === 'natsume' || value === 'triad'
+}
 
 const TAG_CATEGORY_LABELS: Record<string, string> = {
   all: '全部',
@@ -696,7 +704,7 @@ const guideText = computed(() => {
 
 /** 当前 checkpoint 对应的 model profile（决定质量前缀 / 负面策略 / rating 标签） */
 const modelProfile = computed(() =>
-  resolveModelProfile(pb.modelProfiles as any, pb.sdModelName || sd.checkpoint.value),
+  resolveModelProfile(pb.modelProfiles, pb.sdModelName || sd.checkpoint.value),
 )
 
 /** 场景必须支持当前角色，否则不套用场景模板 */
@@ -725,7 +733,7 @@ const loraSpecs = computed(() =>
   resolveLoraSpecs(
     pb.char,
     effectiveScene.value,
-    pb.loraMeta as any,
+    pb.loraMeta,
     LORA_ID_BY_CHAR.value,
     { shot: pb.selections.shot, manualTags: pb.manualTags },
   ),
@@ -838,7 +846,7 @@ const negativePrompt = computed(() => {
   if (!pb.sdParams.negative) return ''
   const scene = effectiveScene.value
   // 场景自带负面优先，其次全站默认；再叠加 model profile 策略
-  const sceneNegativeBase = (scene as any)?.negative || NEGATIVE_DEFAULT
+  const sceneNegativeBase = scene?.negative || NEGATIVE_DEFAULT
   const custom = String(pb.sdParams.negativeCustom || '').trim()
   const withProfile = modelNegativePrompt(modelProfile.value, sceneNegativeBase)
   const merged = custom ? mergeTokenText(custom, withProfile) : withProfile
@@ -1206,8 +1214,8 @@ onMounted(async () => {
   // 深链参数恢复（?scene / ?char / ?mood / ?regen / ?resume / ?quick / ?variant）
   const q = route.query
   let handledDeepLink = false
-  if (typeof q.char === 'string' && ['nene','natsume','triad'].includes(q.char)) {
-    pb.setChar(q.char as any); handledDeepLink = true
+  if (isCharKey(q.char)) {
+    pb.setChar(q.char); handledDeepLink = true
   }
   if (typeof q.mood === 'string' && COLOR_MOODS.some(m => m.id === q.mood)) {
     pb.setColorMood(q.mood); handledDeepLink = true
@@ -1217,9 +1225,9 @@ onMounted(async () => {
     if (sc) { selectScene(sc); handledDeepLink = true }
   } else if (typeof q.regen === 'string' || typeof q.variant === 'string') {
     const targetId = q.regen ? Number(q.regen) : NaN
-    const entry = targetId ? (pb.history as any[]).find(h => h.id === targetId) : null
+    const entry = targetId ? pb.history.find(h => h.id === targetId) : null
     if (entry) {
-      if (entry.char) pb.setChar(entry.char)
+      if (entry.character) pb.setChar(entry.character)
       if (entry.story) pb.setStory(entry.story)
       if (entry.scene) {
         const sc = pb.scenes.find(s => s.id === entry.scene)

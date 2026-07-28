@@ -7,6 +7,25 @@ export function escapeHtml(value: unknown): string {
     .replace(/'/g, '&#39;')
 }
 
+export interface ChatStreamEvent {
+  type: string
+  model?: string
+  content?: string
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null
+}
+
+function parseChatStreamEvent(value: unknown): ChatStreamEvent | null {
+  if (!isRecord(value) || typeof value.type !== 'string') return null
+  return {
+    type: value.type,
+    model: typeof value.model === 'string' ? value.model : undefined,
+    content: typeof value.content === 'string' ? value.content : undefined,
+  }
+}
+
 export function inferEmotion(text: string, character = ''): string {
   if (/害羞|脸红|不好意思|才不是|笨蛋/.test(text)) return 'shy'
   if (/开心|高兴|太好了|哈哈|笑|期待|终于/.test(text)) return 'happy'
@@ -86,15 +105,18 @@ export class SentenceBuffer {
 async function errorFromResponse(response: Response, fallback: string): Promise<Error> {
   const text = await response.text()
   try {
-    const data = JSON.parse(text)
-    const error = Object.assign(new Error(data.error || fallback), { detail: data.detail || '' })
+    const parsed: unknown = JSON.parse(text)
+    const data = isRecord(parsed) ? parsed : {}
+    const message = typeof data.error === 'string' && data.error ? data.error : fallback
+    const detail = typeof data.detail === 'string' ? data.detail : ''
+    const error = Object.assign(new Error(message), { detail })
     return error
   } catch {
     return new Error(text.trim() || fallback)
   }
 }
 
-export async function parseNdjsonResponse(response: Response, onEvent: (e: unknown) => Promise<void> | void): Promise<void> {
+export async function parseNdjsonResponse(response: Response, onEvent: (event: ChatStreamEvent) => Promise<void> | void): Promise<void> {
   if (!response.ok) throw await errorFromResponse(response, '聊天请求失败')
   if (!response.body || typeof response.body.getReader !== 'function') throw new Error('当前浏览器不支持流式聊天')
   const reader = response.body.getReader()
@@ -102,9 +124,13 @@ export async function parseNdjsonResponse(response: Response, onEvent: (e: unkno
   let buffer = ''
   const consume = async (line: string) => {
     if (!line.trim()) return
-    let event: unknown
-    try { event = JSON.parse(line) } catch { throw new Error('聊天流返回了无效数据') }
-    if ((event as any).type === 'error') throw new Error((event as any).error || '聊天流中断')
+    let parsed: unknown
+    try { parsed = JSON.parse(line) } catch { throw new Error('聊天流返回了无效数据') }
+    if (isRecord(parsed) && parsed.type === 'error') {
+      throw new Error(typeof parsed.error === 'string' && parsed.error ? parsed.error : '聊天流中断')
+    }
+    const event = parseChatStreamEvent(parsed)
+    if (!event) throw new Error('聊天流返回了无效事件')
     await onEvent(event)
   }
   while (true) {
@@ -119,7 +145,14 @@ export async function parseNdjsonResponse(response: Response, onEvent: (e: unkno
 }
 
 export function isAbortError(error: unknown): boolean {
-  return Boolean(error && ((error as any).name === 'AbortError' || (error as any).code === 'ABORT_ERR'))
+  return isRecord(error) && (error.name === 'AbortError' || error.code === 'ABORT_ERR')
+}
+
+export function streamErrorMessage(error: unknown, fallback: string): string {
+  if (!isRecord(error)) return error instanceof Error && error.message ? error.message : fallback
+  const message = typeof error.message === 'string' ? error.message : ''
+  const detail = typeof error.detail === 'string' ? error.detail : ''
+  return (detail ? `${message || fallback}：${detail}` : message) || fallback
 }
 
 export async function responseError(response: Response, fallback: string): Promise<Error> {

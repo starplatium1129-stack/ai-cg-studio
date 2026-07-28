@@ -107,6 +107,10 @@ for (const [rel, kickerRe] of chromeViews) {
   const source = read(rel);
   assert(kickerRe.test(source), `${rel} must expose a kicker chrome primitive`);
 }
+assert(
+  !/\bany\b/.test(read('src/views/ColorScriptView.vue')),
+  'ColorScriptView must keep its mood catalog explicitly typed',
+);
 
 // 除首页与控制面板外，其余页面提供返回入口
 const backLinkViews = [
@@ -133,8 +137,14 @@ const requiredModules = [
   'src/composables/useKVStore.ts',
   'src/composables/useImageStore.ts',
   'src/utils/promptPolicy.ts',
+  'src/utils/promptBuilderPersistence.ts',
+  'src/utils/characterProfiles.ts',
+  'src/utils/chatStatus.ts',
+  'src/utils/loraCatalog.ts',
+  'src/utils/showcaseManifest.ts',
   'src/utils/sdError.ts',
   'src/utils/sdRequest.ts',
+  'src/utils/sdStatus.ts',
   'src/utils/quickCreate.ts',
   'src/utils/storageHealth.ts',
   'src/utils/sceneInference.ts',

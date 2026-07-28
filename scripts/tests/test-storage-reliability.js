@@ -14,6 +14,14 @@
  */
 
 const assert = require('assert');
+const fs = require('fs');
+const path = require('path');
+
+const imageStoreSource = fs.readFileSync(
+  path.resolve(__dirname, '../../src/composables/useImageStore.ts'),
+  'utf8',
+);
+assert(!/\bany\b/.test(imageStoreSource), 'image storage must keep Blob metadata explicitly typed');
 
 function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -141,6 +149,12 @@ async function testImageStoreTransactions() {
 
   const loaded = await img.imgGet(id);
   assert.ok(loaded instanceof Blob, 'imgGet must return the stored blob');
+
+  const namedBlob = new Blob([new Uint8Array([5])], { type: 'image/webp' });
+  Object.defineProperty(namedBlob, 'name', { value: 'sample.webp' });
+  const namedId = await img.imgPut(namedBlob);
+  const namedRecord = (await img.imgList()).find(record => record.id === namedId);
+  assert.strictEqual(namedRecord.name, 'sample.webp', 'File-compatible Blob names must be preserved');
 
   // 空 blob 必须被拒绝，避免写入坏记录
   await assert.rejects(() => img.imgPut(new Blob([])), /图片文件为空/);

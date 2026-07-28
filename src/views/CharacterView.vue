@@ -97,13 +97,19 @@ import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useSceneStore } from '@/stores/sceneStore'
 import { useRovingTabs } from '@/composables/useRovingTabs'
+import {
+  parseCharacterProfiles,
+  parseCharacterScenes,
+  type CharacterProfile,
+  type CharacterScene,
+} from '@/utils/characterProfiles'
 
 const sceneStore = useSceneStore()
 const route = useRoute()
-const characters = ref<any[]>([])
-const scenes = ref<any[]>([])
+const characters = ref<CharacterProfile[]>([])
+const scenes = ref<CharacterScene[]>([])
 const loading = ref(true)
-const current = ref<any>(null)
+const current = ref<CharacterProfile | null>(null)
 const bgExpanded = ref(false)
 
 const characterIds = computed<string[]>(() => characters.value.map(c => String(c.id)))
@@ -130,7 +136,8 @@ const recommendations = computed(() => {
   if (!Array.isArray(ids)) return []
   return ids
     .map((id: string) => scenes.value.find(s => s.id === id))
-    .filter((scene: any) => scene && [current.value.id, 'triad', 'both'].includes(scene.char))
+    .filter((scene): scene is CharacterScene =>
+      Boolean(scene && [current.value?.id, 'triad', 'both'].includes(scene.char)))
     .slice(0, 6)
 })
 const officialProfileUrl = computed(() => current.value?.id === 'nene'
@@ -145,8 +152,8 @@ function recommendationReason(id: string) {
 onMounted(async () => {
   try {
     await sceneStore.load()
-    characters.value = sceneStore.characters as any[]
-    scenes.value = sceneStore.scenes as any[]
+    characters.value = parseCharacterProfiles(sceneStore.characters)
+    scenes.value = parseCharacterScenes(sceneStore.scenes)
     const requested = typeof route.query.character === 'string' ? route.query.character : ''
     current.value = characters.value.find(c => c.id === requested) || characters.value[0] || null
   } catch (e) { console.warn('character data load failed', e) }

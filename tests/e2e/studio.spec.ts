@@ -399,6 +399,14 @@ test('scene explorer promotes locally used scenes without deleting the archive',
 test('home page stays inside the performance budget', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('.strip-scroll .sc').first()).toBeVisible();
+  const heroImages = page.locator('.hero-character');
+  await expect(heroImages).toHaveCount(2);
+  await expect(heroImages.first()).toHaveAttribute('width', '1024');
+  await expect(heroImages.first()).toHaveAttribute('height', '1344');
+  const selectedHeroSources = await heroImages.evaluateAll(images =>
+    images.map(image => (image as HTMLImageElement).currentSrc)
+  );
+  expect(selectedHeroSources.every(source => /\.(?:avif|webp)(?:$|\?)/.test(source))).toBe(true);
   const budget = await page.evaluate(() => {
     const resources = performance.getEntriesByType('resource') as PerformanceResourceTiming[];
     return {

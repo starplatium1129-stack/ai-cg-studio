@@ -1,5 +1,10 @@
 const assert = require('assert');
+const fs = require('fs');
+const path = require('path');
 const policy = require('../../src/utils/promptPolicy.ts');
+
+const source = fs.readFileSync(path.join(__dirname, '../../src/utils/promptPolicy.ts'), 'utf8');
+assert(!/\bany\b/.test(source), 'production prompt policy must keep explicit domain types');
 
 const dual = policy.dedupeText('2girls, (ayachi_nene, white_dress, blush) BREAK (shiki_natsume, white_dress, blush)');
 assert.strictEqual((dual.match(/white_dress/g) || []).length, 2, 'BREAK scopes must retain repeated attributes for both subjects');
@@ -72,5 +77,10 @@ assert(report.warnings.some(message => message.includes('镜头')), 'framing war
 
 assert(policy.sceneSupportsCharacter({ char:'nene' }, 'nene'));
 assert(!policy.sceneSupportsCharacter({ char:'nene' }, 'natsume'));
+assert.strictEqual(
+  policy.sceneTemplateText({ prompt:'cafe, school_uniform', tags:['school_uniform'] }, {}),
+  'cafe',
+  'scene template text should remove tags already supplied by scene metadata'
+);
 
 console.log('Prompt policy tests passed: production module, scoped BREAK, ratings, framing and analysis');

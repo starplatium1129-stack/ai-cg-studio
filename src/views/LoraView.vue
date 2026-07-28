@@ -13,13 +13,13 @@
         </div>
         <div v-if="l.description" class="lora-desc">{{ l.description }}</div>
         <div class="lora-meta">
-          <span v-if="l.recommended_weight" class="lora-pill">推荐权重 {{ rw(l) }}</span>
-          <span v-if="l.training?.base_model" class="lora-pill">{{ l.training.base_model }}</span>
-          <span v-if="l.dataset?.character" class="lora-pill">{{ l.dataset.character }}</span>
+          <span v-if="l.recommendedWeight" class="lora-pill">推荐权重 {{ formatLoraWeight(l.recommendedWeight) }}</span>
+          <span v-if="l.baseModel" class="lora-pill">{{ l.baseModel }}</span>
+          <span v-if="l.character" class="lora-pill">{{ l.character }}</span>
         </div>
-        <div v-if="l.trigger_words?.length" class="lora-triggers">
+        <div v-if="l.triggerWords.length" class="lora-triggers">
           <span class="lora-label">触发词</span>
-          <span v-for="tw in l.trigger_words" :key="tw" class="lora-tag">{{ tw }}</span>
+          <span v-for="tw in l.triggerWords" :key="tw" class="lora-tag">{{ tw }}</span>
         </div>
       </div>
     </div>
@@ -29,21 +29,20 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useSceneStore } from '@/stores/sceneStore'
+import {
+  formatLoraWeight,
+  parseLoraCatalog,
+  type LoraCatalogEntry,
+} from '@/utils/loraCatalog'
 
 const sceneStore = useSceneStore()
-const loras = ref<any[]>([])
+const loras = ref<LoraCatalogEntry[]>([])
 const loading = ref(true)
-
-function rw(l: any) {
-  const w = l.recommended_weight || {}
-  if (typeof w === 'number') return w
-  return Object.entries(w).map(([k,v]) => `${k}: ${Math.round(Number(v)*100)}%`).join(' / ')
-}
 
 onMounted(async () => {
   try {
     await sceneStore.load()
-    loras.value = sceneStore.loras as any[]
+    loras.value = parseLoraCatalog(sceneStore.loras)
   } catch (e) { console.warn('lora load failed', e) }
   loading.value = false
 })

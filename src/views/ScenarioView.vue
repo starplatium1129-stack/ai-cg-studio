@@ -36,7 +36,7 @@
         </div>
         <div class="char-toggle">
           <button
-            v-for="c in ['nene','natsume']" :key="c"
+            v-for="c in CHARACTER_OPTIONS" :key="c"
             class="char-btn" :class="{ active: currentChar === c }"
             type="button" @click="currentChar = c"
           >{{ c === 'nene' ? '🌸 宁宁' : '🍂 夏目' }}</button>
@@ -98,16 +98,40 @@ import { useToast } from '@/composables/useToast'
 
 const sceneStore = useSceneStore()
 
+type ScenarioCharacter = 'nene' | 'natsume'
+type ScenarioResolution = keyof typeof RES_MAP
+
+interface ScenarioAct {
+  n: string
+  title: string
+  en: string
+  desc: string
+  emotion: string
+  res: ScenarioResolution
+  lora: number
+  neg: string
+  prompt: string
+}
+
+interface Scenario {
+  id: string
+  icon: string
+  name: string
+  en: string
+  desc: string
+  acts: ScenarioAct[]
+}
+
 const BANNED_TAGS = ['neon','glowing','oversaturated','vivid colors','vivid','rainbow','high contrast','harsh lighting','extremely detailed','ultra detailed']
 const LOCK_PARAMS = 'CFG 5 · DPM++ 2M SDE · Steps 28 · Hires 0.45'
 const BASE_NEG = 'lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name'
-const CHAR_TRAITS: Record<string,string> = {
+const CHAR_TRAITS: Record<ScenarioCharacter,string> = {
   nene: 'white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon',
   natsume: 'black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip'
 }
-const CHAR_NAME: Record<string,string> = { nene: 'ayachi_nene', natsume: 'shiki_natsume' }
-const LORA_ID: Record<string,string> = { nene: 'ayachi_nene_v15:0.8', natsume: 'shiki_natsume_v15:0.9' }
-const RES_MAP: Record<string,{dim:string,vram:string,reason:string}> = {
+const CHAR_NAME: Record<ScenarioCharacter,string> = { nene: 'ayachi_nene', natsume: 'shiki_natsume' }
+const LORA_ID: Record<ScenarioCharacter,string> = { nene: 'ayachi_nene_v15:0.8', natsume: 'shiki_natsume_v15:0.9' }
+const RES_MAP = {
   'Square':    { dim:'1024×1024', vram:'~10GB', reason:'方形·头像/特写/通用' },
   'Half-body': { dim:'832×1216',  vram:'~10GB', reason:'竖版半身·肖像感·内心独白' },
   'Full CG':   { dim:'1216×832',  vram:'~10GB', reason:'横版全身·场景为主·故事感★★★' },
@@ -116,9 +140,10 @@ const RES_MAP: Record<string,{dim:string,vram:string,reason:string}> = {
   'Close-up':  { dim:'832×1216',  vram:'~10GB', reason:'近景特写·表情/情绪/亲密感' },
   'Portrait':  { dim:'832×1216',  vram:'~10GB', reason:'半身肖像·人物聚焦·柔美感' },
   'Mobile':    { dim:'720×1280',  vram:'~8GB',  reason:'手机竖屏壁纸' }
-}
+} as const
+const CHARACTER_OPTIONS = ['nene', 'natsume'] as const
 
-const SCENARIOS = [
+const SCENARIOS: Scenario[] = [
   { id:'promise', icon:'🌸', name:'放学后的约定', en:'After-School Promise', desc:'放学以后，她一直在校门口等你。花瓣落在肩上，她没有说，只是笑了起来。',
     acts:[
       { n:'01', title:'空·教室', en:'Empty Classroom', desc:'夕阳从窗户照进来，教室里已经没有人了。', emotion:'期待', res:'Half-body', lora:0.75, neg:'night, snow, autumn leaves',
@@ -153,26 +178,26 @@ const SCENARIOS = [
   }
 ]
 
-const activeScenario = ref<any>(null)
-const currentChar = ref('nene')
+const activeScenario = ref<Scenario | null>(null)
+const currentChar = ref<ScenarioCharacter>('nene')
 const sceneCount = ref('--')
 
 function esc(s: string) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
 function norm(t: string) { return t.split(',').map(s => s.trim().replace(/[\s-]+/g,'_')).join(', ') }
-function resInfo(res: string) { return RES_MAP[res] || RES_MAP['Half-body'] }
-function violations(a: any) {
+function resInfo(res: ScenarioResolution) { return RES_MAP[res] }
+function violations(a: ScenarioAct) {
   const lower = a.prompt.toLowerCase()
   return BANNED_TAGS.filter(b => lower.includes(b.toLowerCase()))
 }
-function substitutePrompt(tpl: string, char: string) {
+function substitutePrompt(tpl: string, char: ScenarioCharacter) {
   return tpl.split('\n').map(l => l.replace(/\{\{char\}\}/g, CHAR_NAME[char]).replace(/\{\{traits\}\}/g, CHAR_TRAITS[char])).join('\n')
 }
-function buildFullPrompt(a: any, char: string) {
+function buildFullPrompt(a: ScenarioAct, char: ScenarioCharacter) {
   return norm(substitutePrompt(a.prompt, char)) + ',\n<lora:' + LORA_ID[char] + '>'
 }
 
 const MODULE_CLASSES = ['m-q','m-c','m-cl','m-s','m-e','m-sh','m-co','m-l','m-d','m-lora']
-function renderModules(a: any) {
+function renderModules(a: ScenarioAct) {
   const char = currentChar.value
   const modPrompt = substitutePrompt(a.prompt, char)
   const modules = modPrompt.split('\n')
@@ -189,14 +214,14 @@ function renderModules(a: any) {
   }).join('\n')
 }
 
-function copyPrompt(a: any) {
+function copyPrompt(a: ScenarioAct) {
   const text = buildFullPrompt(a, currentChar.value)
   navigator.clipboard.writeText(text)
     .then(() => showToast('📋 已复制 (' + text.split(',').length + ' tokens)'))
     .catch(() => prompt('请手动复制', text))
 }
 
-function openScenario(s: any) { activeScenario.value = s }
+function openScenario(s: Scenario) { activeScenario.value = s }
 
 // 走全局 AppToast。原先手搓 DOM + 内联 cssText，硬编码了 z-index:9999
 // （会盖住 --z-skip 的跳转链接）、border-radius、font-size 与 rgba 阴影。

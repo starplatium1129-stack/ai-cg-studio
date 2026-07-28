@@ -182,7 +182,14 @@ import { useRoute } from 'vue-router'
 import { CHARACTERS, createMessageId } from '@/config/characters'
 import { useChatStorage } from '@/composables/useChatStorage'
 import { useVoice } from '@/composables/useVoice'
-import { inferEmotion, parseNdjsonResponse, SentenceBuffer, isAbortError } from '@/utils/stream'
+import {
+  inferEmotion,
+  parseNdjsonResponse,
+  SentenceBuffer,
+  isAbortError,
+  streamErrorMessage,
+} from '@/utils/stream'
+import { parseChatStatus, type ChatModel } from '@/utils/chatStatus'
 import ChatApiSettings from '@/components/ChatApiSettings.vue'
 import ChatCharacterStage from '@/components/ChatCharacterStage.vue'
 
@@ -202,7 +209,7 @@ const activeChar    = ref('nene')
 const busy          = ref(false)
 const voiceActive   = ref(false)
 const ollamaOnline  = ref(false)
-const models        = ref<Array<{ name: string; parameters?: string }>>([])
+const models        = ref<ChatModel[]>([])
 const currentModel  = ref('')
 const chatProvider  = ref<'local' | 'api'>('local')
 const apiBaseUrl    = ref('https://api.deepseek.com')
@@ -356,16 +363,16 @@ async function refreshChatStatus() {
   try {
     const r = await fetch('/api/chat-status', { cache: 'no-store' })
     if (!r.ok) throw new Error('聊天状态接口不可用')
-    const data = await r.json()
-    ollamaOnline.value = Boolean(data.online && data.models?.length)
-    const ms = Array.isArray(data.models) ? data.models : []
+    const data = parseChatStatus(await r.json() as unknown)
+    ollamaOnline.value = data.online && Boolean(data.models.length)
+    const ms = data.models
     models.value = ms
     if (!busy.value && chatProvider.value === 'local') {
       setChatStatus(ollamaOnline.value ? '本地聊天模型已连接' : 'Ollama 未启动', ollamaOnline.value ? 'online' : '')
     }
     // Restore model selection
     const saved = storage.state.settings.model
-    if (ms.some((m: any) => m.name === saved)) {
+    if (ms.some(m => m.name === saved)) {
       currentModel.value = saved
     } else if (data.model || ms[0]) {
       currentModel.value = data.model || ms[0]?.name || ''
@@ -539,7 +546,7 @@ async function sendMessage() {
       signal: controller.signal,
     })
 
-    await parseNdjsonResponse(response, async (event: any) => {
+    await parseNdjsonResponse(response, async (event) => {
       if (event.type === 'meta' && event.model) {
         if (chatProvider.value === 'api') {
           apiModel.value = String(event.model)
@@ -569,9 +576,12 @@ async function sendMessage() {
     } else {
       msgs.splice(msgs.indexOf(assistant), 1)
       voice.stop({ preserveMessageAudio: true, silent: true })
-      const e = error as any
-      setError((e.detail ? e.message + '：' + e.detail : e.message)
-        || (chatProvider.value === 'api' ? 'API 对话暂不可用，请检查地址、模型名和密钥。' : '聊天暂不可用，请检查 Ollama。'))
+      setError(streamErrorMessage(
+        error,
+        chatProvider.value === 'api'
+          ? 'API 对话暂不可用，请检查地址、模型名和密钥。'
+          : '聊天暂不可用，请检查 Ollama。',
+      ))
     }
   } finally {
     storage.trim(char); storage.save()
@@ -615,7 +625,7 @@ function clearCharacterConversation() {
 }
 
 function clearAllMemory() {
-  const hasMemory = Object.values(storage.state.histories).some((items) => (items as any[]).length)
+  const hasMemory = Object.values(storage.state.histories).some(items => items.length > 0)
   if (!hasMemory) return
   if (!confirm('清除宁宁和夏目的全部本地对话记忆？此操作无法撤销。')) return
   if (busy.value) abortCurrentRequest(true)

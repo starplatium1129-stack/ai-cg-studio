@@ -134,6 +134,7 @@ async function run() {
   var chatCss = fs.readFileSync(path.join(root, 'src', 'assets', 'css', 'chat.css'), 'utf8');
   var mainTs = fs.readFileSync(path.join(root, 'src', 'main.ts'), 'utf8');
   var streamUtils = fs.readFileSync(path.join(root, 'src', 'utils', 'stream.ts'), 'utf8');
+  var chatStorage = fs.readFileSync(path.join(root, 'src', 'composables', 'useChatStorage.ts'), 'utf8');
   var securitySource = fs.readFileSync(path.join(root, 'server', 'security.js'), 'utf8');
   var voiceRoute = fs.readFileSync(path.join(root, 'routes', 'voice.js'), 'utf8');
   var serverSource = fs.readFileSync(path.join(root, 'server.js'), 'utf8');
@@ -163,6 +164,9 @@ async function run() {
     'chat API settings must test credentials and discover models'
   );
   assert(html.includes('AbortController') && html.includes('stop-btn'), 'chat requests must be cancellable');
+  assert(!/\bany\b/.test(html), 'ChatView model, stream, error, and history boundaries must stay explicitly typed');
+  assert(!/\bany\b/.test(streamUtils), 'chat stream events and abort errors must stay explicitly typed');
+  assert(!/\bany\b/.test(chatStorage), 'persisted chat messages must stay explicitly typed');
   assert(html.includes('streamingMid'), 'only the active assistant message may keep the streaming cursor');
   assert(voiceModule.includes('SentenceBuffer') && /\bawait r\.arrayBuffer\(\)/.test(voiceModule), 'voice must synthesize complete sentence WAV files');
   assert(
@@ -212,6 +216,20 @@ async function run() {
   assert(serverSource.includes('createGateway') && serverSource.includes("require('./routes/chat')"), 'gateway must use modular route composition');
 
   var utils = require('../../src/utils/stream.ts');
+  var chatStatus = require('../../src/utils/chatStatus.ts');
+  var parsedStatus = chatStatus.parseChatStatus({
+    online:true,
+    model:'model-a',
+    models:[{ name:'model-a', parameters:'7B' }, null, { name:4 }]
+  });
+  assert(parsedStatus.online && parsedStatus.models.length === 1,
+    'chat status parsing must discard malformed model records');
+  assert(parsedStatus.models[0].parameters === '7B',
+    'chat status parsing must preserve display metadata');
+  assert(utils.streamErrorMessage(
+    Object.assign(new Error('upstream failed'), { detail:'timeout' }),
+    'fallback'
+  ) === 'upstream failed：timeout', 'stream errors must preserve safe detail text');
   var sentences = new utils.SentenceBuffer({ minimumLength:6 });
   assert(sentences.push('嗯。').length === 0, 'short sentence should wait for the next boundary');
   assert(sentences.push('今天过得怎么样？')[0] === '嗯。今天过得怎么样？', 'short sentence should merge without being lost');

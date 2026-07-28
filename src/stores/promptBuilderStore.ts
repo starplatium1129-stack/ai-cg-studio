@@ -1,10 +1,20 @@
 import { defineStore } from 'pinia'
 import { ref, reactive, computed } from 'vue'
 import { sceneLighting, sceneShot, sceneColorMood, sceneComposition, sceneRecommendedSize } from '@/utils/sceneInference'
-import { resolveModelProfile } from '@/utils/promptPolicy'
+import { resolveModelProfile, type LoraMeta, type ModelProfile } from '@/utils/promptPolicy'
 import { imgPut } from '@/composables/useImageStore'
 import { kvGet, kvSet } from '@/composables/useKVStore'
 import { useSceneStore } from '@/stores/sceneStore'
+import {
+  isSDParamKey,
+  parsePresetCatalog,
+  parseProjectOptions,
+  parsePromptBuilderDraft,
+  type ProjectOption,
+  type PromptBuilderDraft,
+  type PromptPreset,
+  type SDParams,
+} from '@/utils/promptBuilderPersistence'
 
 // 与 useBackup.ts / GalleryView.vue 共用同一组键。改这里必须同步那两处。
 const HISTORY_STORAGE_KEY = 'aics_pb_history'
@@ -16,6 +26,7 @@ export interface Scene {
   id: string; title: string; story?: string; prompt?: string; tags?: string[]
   char?: string; category?: string; season?: string; series?: string
   rating?: string; mature?: boolean; lora?: string; timeOfDay?: string
+  lighting?: string; camera?: string; negative?: string
   [k: string]: unknown
 }
 
@@ -94,16 +105,16 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   // ── Loaded data ─────────────────────────────────────────────────────────
   const scenes       = ref<Scene[]>([])
   const curation     = ref<Record<string, unknown>>({})
-  const loraMeta     = ref<Array<{ name: string; [k: string]: unknown }>>([])
-  const presets      = ref<Array<{ id: string; label: string; [k: string]: unknown }>>([])
-  const modelProfiles = ref<Array<{ match?: string[]; quality_prefix?: string; [k: string]: unknown }>>([])
+  const loraMeta     = ref<LoraMeta[]>([])
+  const presets      = ref<PromptPreset[]>([])
+  const modelProfiles = ref<ModelProfile[]>([])
   const tags         = ref<Array<{ en: string; cn: string; cat: string }>>([])
   const characters   = ref<Array<{ id: string; lora?: { name: string; weight: number }; traits?: Array<{ tag: string; label: string; icon?: string }>; [k: string]: unknown }>>([])
   const dataReady    = ref(false)
 
   // ── Runtime history ─────────────────────────────────────────────────────
   const history  = ref<HistoryEntry[]>([])
-  const projects = ref<Array<{ id: string; name: string }>>([])
+  const projects = ref<ProjectOption[]>([])
 
   // ── SD state ────────────────────────────────────────────────────────────
   const sdOnline      = ref(false)
@@ -119,7 +130,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   // ── SD params (synced from UI) ──────────────────────────────────────────
   // 默认值对齐 data/presets.json 的 WAI Illustrious v17（本站 LoRA 的训练底模）
   // 实际值在 loadData 后由 applyModelProfile() 按当前 checkpoint 覆盖
-  const sdParams = reactive({
+  const sdParams = reactive<SDParams>({
     cfg: 6, steps: 30, sampler: 'Euler a', scheduler: '',
     size: '2:3', hiresFix: false, hiresScale: 1.5,
     hiresUpscaler: 'R-ESRGAN 4x+ Anime6B', hiresSteps: 30, hiresDenoise: 0.5,
@@ -129,8 +140,10 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   })
 
   /** 用户是否手动改过某个参数（改过就不再被 profile 覆盖） */
-  const sdParamsTouched = ref<Set<string>>(new Set())
-  function markParamTouched(key: string) { sdParamsTouched.value.add(key) }
+  const sdParamsTouched = ref<Set<keyof SDParams>>(new Set())
+  function markParamTouched(key: string) {
+    if (isSDParamKey(key)) sdParamsTouched.value.add(key)
+  }
 
   // ── Voice state ─────────────────────────────────────────────────────────
   const voiceOnline   = ref(false)
@@ -226,16 +239,16 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
       char.value = scene.char as CharKey
     }
     // 智能推断：自动预填导演决策（仅当用户尚未手动选择时）
-    const lighting = sceneLighting(scene as any)
+    const lighting = sceneLighting(scene)
     if (lighting && !selections.lighting) selections.lighting = lighting
-    const shot = sceneShot(scene as any)
+    const shot = sceneShot(scene)
     if (shot && !selections.shot) selections.shot = shot
-    const mood = sceneColorMood(scene as any)
+    const mood = sceneColorMood(scene)
     if (mood && !colorMood.value) colorMood.value = mood
-    const comp = sceneComposition(scene as any)
+    const comp = sceneComposition(scene)
     if (comp && !selections.composition) selections.composition = comp
     // 推荐尺寸（提供给视图书写）
-    lastRecommendedSize.value = sceneRecommendedSize(scene as any)
+    lastRecommendedSize.value = sceneRecommendedSize(scene)
   }
 
   function clearScene(opts: { keepStory?: boolean } = {}) {
@@ -265,10 +278,9 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     loraMeta.value = store.loras as typeof loraMeta.value
     tags.value = store.tags as typeof tags.value
 
-    const pr = store.presets as { presets?: unknown[]; model_profiles?: unknown[] } | unknown[]
-    presets.value = (Array.isArray(pr) ? pr : (Array.isArray(pr?.presets) ? pr.presets : [])) as typeof presets.value
-    modelProfiles.value = (!Array.isArray(pr) && Array.isArray(pr?.model_profiles)
-      ? pr.model_profiles : []) as typeof modelProfiles.value
+    const catalog = parsePresetCatalog(store.presets)
+    presets.value = catalog.presets
+    modelProfiles.value = catalog.modelProfiles
 
     // presets.json 载入后立刻按底模填充推荐参数
     applyModelProfile()
@@ -279,14 +291,14 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
    * 按当前 checkpoint 匹配 model profile，并把推荐参数填入出图设置。
    * 用户手动改过的项不覆盖（sdParamsTouched）。
    */
-  function applyModelProfile(modelName?: string): Record<string, unknown> | null {
-    const profile = resolveModelProfile(modelProfiles.value as any, modelName || sdModelName.value)
+  function applyModelProfile(modelName?: string): ModelProfile | null {
+    const profile = resolveModelProfile(modelProfiles.value, modelName || sdModelName.value)
     if (!profile) return null
     const touched = sdParamsTouched.value
-    const set = (key: string, value: unknown) => {
+    const set = <K extends keyof SDParams>(key: K, value: SDParams[K] | null | undefined) => {
       if (value === undefined || value === null || value === '') return
       if (touched.has(key)) return
-      ;(sdParams as any)[key] = value
+      sdParams[key] = value
     }
     set('sampler', profile.sampler)
     if (!touched.has('scheduler') && profile.scheduler !== undefined) sdParams.scheduler = profile.scheduler || ''
@@ -301,14 +313,14 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
       const m = String(profile.size).match(/(\d+)\s*[×x]\s*(\d+)/)
       if (m) lastRecommendedSize.value = `${m[1]}x${m[2]}`
     }
-    return profile as any
+    return profile
   }
 
   // ── Draft persistence ────────────────────────────────────────────────────
   const DRAFT_KEY = 'aics_pb_last_draft'
   let draftTimer: ReturnType<typeof setTimeout> | null = null
 
-  function snapshotDraft() {
+  function snapshotDraft(): PromptBuilderDraft {
     return {
       updatedAt: Date.now(),
       story: story.value,
@@ -325,22 +337,21 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     }
   }
 
-  function applyDraft(d: any) {
-    if (!d || typeof d !== 'object') return
+  function applyDraft(d: PromptBuilderDraft) {
     if (typeof d.story === 'string') story.value = d.story
-    if (d.char) char.value = d.char as CharKey
-    if (d.sceneId) sceneId.value = d.sceneId
-    if (d.sceneBaseStory) sceneBaseStory.value = d.sceneBaseStory
-    if (d.selections && typeof d.selections === 'object') {
-      selections.emotion = Array.isArray(d.selections.emotion) ? d.selections.emotion : []
+    if (d.char) char.value = d.char
+    if (d.sceneId !== undefined) sceneId.value = d.sceneId
+    if (d.sceneBaseStory !== undefined) sceneBaseStory.value = d.sceneBaseStory
+    if (d.selections) {
+      selections.emotion = d.selections.emotion ?? []
       selections.shot = d.selections.shot ?? null
       selections.lighting = d.selections.lighting ?? null
       selections.composition = d.selections.composition ?? null
     }
     if (typeof d.colorMood === 'string' || d.colorMood === null) colorMood.value = d.colorMood
-    if (Array.isArray(d.manualTags)) manualTags.value = new Set(d.manualTags)
-    if (d.directorMode === 'basic' || d.directorMode === 'pro') directorMode.value = d.directorMode
-    if (d.sdParams && typeof d.sdParams === 'object') Object.assign(sdParams, d.sdParams)
+    if (d.manualTags) manualTags.value = new Set(d.manualTags)
+    if (d.directorMode) directorMode.value = d.directorMode
+    if (d.sdParams) Object.assign(sdParams, d.sdParams)
     if (typeof d.projectId === 'string') projectId.value = d.projectId
   }
 
@@ -349,16 +360,15 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     if (draftTimer) clearTimeout(draftTimer)
     draftTimer = setTimeout(() => {
       try { localStorage.setItem(DRAFT_KEY, JSON.stringify(snapshotDraft())) } catch {}
-    }, 280) as unknown as ReturnType<typeof setTimeout>
+    }, 280)
   }
 
   function restoreDraft(): boolean {
     try {
       const raw = localStorage.getItem(DRAFT_KEY)
       if (!raw) return false
-      const d = JSON.parse(raw)
-      if (!d || !d.updatedAt) return false
-      if (!d.sceneId && !d.story) return false
+      const d = parsePromptBuilderDraft(JSON.parse(raw))
+      if (!d) return false
       applyDraft(d)
       return true
     } catch { return false }
@@ -447,17 +457,15 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
 
   async function loadProjects() {
     try {
-      let raw = await kvGet<Array<{ id: string; name?: string; title?: string }>>(PROJECT_STORAGE_KEY)
-      if (!Array.isArray(raw) || !raw.length) {
+      let raw: unknown = await kvGet(PROJECT_STORAGE_KEY)
+      let parsed = parseProjectOptions(raw)
+      if (!parsed.length) {
         // 兼容旧键（作品册早期用的是 aics_projects）
-        const legacy = await kvGet<Array<{ id: string; name?: string; title?: string }>>('aics_projects')
-        if (Array.isArray(legacy) && legacy.length) raw = legacy
+        raw = await kvGet('aics_projects')
+        parsed = parseProjectOptions(raw)
       }
-      if (!Array.isArray(raw)) return
       // 作品册用 title，导演台用 name —— 两边字段历史上就不一致，这里统一
-      projects.value = raw
-        .filter(p => p && typeof p === 'object' && p.id)
-        .map(p => ({ id: String(p.id), name: String(p.name || p.title || p.id) }))
+      projects.value = parsed
     } catch {}
   }
 

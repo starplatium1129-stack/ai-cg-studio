@@ -1,0 +1,75 @@
+export interface LoraWeightMap {
+  portrait?: number
+  fullbody?: number
+  complex_scene?: number
+}
+
+export interface LoraCatalogEntry {
+  id: string
+  name: string
+  version: string
+  description: string
+  recommendedWeight?: number | LoraWeightMap
+  baseModel: string
+  character: string
+  triggerWords: string[]
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null
+}
+
+function text(value: unknown): string {
+  return typeof value === 'string' ? value.trim() : ''
+}
+
+function stringList(value: unknown): string[] {
+  return Array.isArray(value)
+    ? value.filter((item): item is string => typeof item === 'string' && Boolean(item.trim()))
+    : []
+}
+
+function weightMap(value: unknown): number | LoraWeightMap | undefined {
+  if (typeof value === 'number' && Number.isFinite(value)) return value
+  if (!isRecord(value)) return undefined
+  const result: LoraWeightMap = {}
+  for (const key of ['portrait', 'fullbody', 'complex_scene'] as const) {
+    const number = Number(value[key])
+    if (Number.isFinite(number)) result[key] = number
+  }
+  return Object.keys(result).length ? result : undefined
+}
+
+export function parseLoraCatalog(value: unknown): LoraCatalogEntry[] {
+  if (!Array.isArray(value)) return []
+  const seen = new Set<string>()
+  return value.flatMap((item): LoraCatalogEntry[] => {
+    if (!isRecord(item)) return []
+    const id = text(item.id)
+    const name = text(item.name)
+    if (!id || !name || seen.has(id)) return []
+    seen.add(id)
+    const training = isRecord(item.training) ? item.training : {}
+    const dataset = isRecord(item.dataset) ? item.dataset : {}
+    const triggers = stringList(item.trigger_words)
+    const trigger = text(item.trigger)
+    return [{
+      id,
+      name,
+      version: text(item.version),
+      description: text(item.description),
+      recommendedWeight: weightMap(item.recommended_weight),
+      baseModel: text(item.base_model) || text(training.base_model),
+      character: text(item.character) || text(dataset.character),
+      triggerWords: triggers.length ? triggers : (trigger ? [trigger] : []),
+    }]
+  })
+}
+
+export function formatLoraWeight(weight: number | LoraWeightMap | undefined): string {
+  if (typeof weight === 'number') return String(weight)
+  if (!weight) return ''
+  return Object.entries(weight)
+    .map(([key, value]) => `${key}: ${Math.round(value * 100)}%`)
+    .join(' / ')
+}

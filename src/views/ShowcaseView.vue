@@ -60,7 +60,9 @@
         :data-rating="entry.rating"
       >
         <button class="sample-visual" type="button" :aria-label="'查看 ' + entry.title + ' 大图'" @click="openViewer(entry.id)">
-          <img class="sample-image" :src="thumbSrc(entry)" :alt="entry.title" loading="lazy" decoding="async" />
+          <img v-if="!brokenThumbs.has(entry.id)" class="sample-image" :src="thumbSrc(entry)" :alt="entry.title"
+            loading="lazy" decoding="async" @error="markThumbError(entry)" />
+          <span v-else class="sample-image-fallback" aria-hidden="true">✦</span>
           <span class="sample-shade"></span>
           <span class="sample-badges">
             <span v-if="featured.has(entry.id)" class="sample-badge">精选</span>
@@ -93,7 +95,9 @@
       <dialog ref="dialogEl" class="showcase-viewer" aria-label="样张查看器" @click.self="closeViewer" @cancel.prevent="closeViewer">
         <div v-if="currentEntry" class="viewer-layout">
           <div class="viewer-art">
-            <img :src="imgSrc(currentEntry)" :alt="currentEntry.title" />
+            <img v-if="!viewerImageFailed" :src="imgSrc(currentEntry)" :alt="currentEntry.title"
+              @error="viewerImageFailed = true" />
+            <div v-else class="viewer-image-fallback">图片暂时无法读取</div>
           </div>
           <div class="viewer-copy">
             <button class="viewer-close" type="button" id="viewerClose" @click="closeViewer">×</button>
@@ -122,36 +126,50 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { useSceneStore } from '@/stores/sceneStore'
+import {
+  parseShowcaseManifest,
+  type ShowcaseCharacter,
+  type ShowcaseEntry,
+  type ShowcaseRating,
+} from '@/utils/showcaseManifest'
 
 const sceneStore = useSceneStore()
 
 const PAGE_SIZE = 24
-const SCOPE_OPTS = [{ v:'all', l:'全部' }, { v:'featured', l:'精选' }]
-const CHAR_OPTS  = [{ v:'all', l:'全部角色' }, { v:'nene', l:'宁宁' }, { v:'natsume', l:'夏目' }, { v:'triad', l:'双人' }]
-const RATING_OPTS= [{ v:'all', l:'全部分级' }, { v:'All', l:'全年龄' }, { v:'R15', l:'R15' }, { v:'R18', l:'R18' }]
+const SCOPE_OPTS = [{ v:'all', l:'全部' }, { v:'featured', l:'精选' }] as const
+const CHAR_OPTS  = [{ v:'all', l:'全部角色' }, { v:'nene', l:'宁宁' }, { v:'natsume', l:'夏目' }, { v:'triad', l:'双人' }] as const
+const RATING_OPTS= [{ v:'all', l:'全部分级' }, { v:'All', l:'全年龄' }, { v:'R15', l:'R15' }, { v:'R18', l:'R18' }] as const
 const LABELS: Record<string,string> = { nene:'绫地宁宁', natsume:'四季夏目', triad:'宁宁×夏目', All:'全年龄', R15:'R15', R18:'R18' }
 
-const entries   = ref<any[]>([])
+const entries   = ref<ShowcaseEntry[]>([])
 const featured  = ref(new Set<string>())
 const stats     = ref({ total: '—', safe: '—', r15: '—' })
 const unavailable = ref(false)
 const searchQuery = ref('')
-const scope       = ref('all')
-const charFilter  = ref('all')
-const ratingFilter= ref('all')
+const scope       = ref<'all' | 'featured'>('all')
+const charFilter  = ref<'all' | ShowcaseCharacter>('all')
+const ratingFilter= ref<'all' | ShowcaseRating>('all')
 const visibleCount= ref(PAGE_SIZE)
 const currentId   = ref('')
 const dialogEl    = ref<HTMLDialogElement | null>(null)
-let imgVersion    = Date.now()
+const brokenThumbs = ref(new Set<string>())
+const viewerImageFailed = ref(false)
+const viewerVersion = ref(0)
+const imgVersion = Date.now()
+const manifestController = new AbortController()
+let unmounted = false
 
-// Reset visible count on any filter change
+// Reset visible count whenever filters change
 watch([searchQuery, scope, charFilter, ratingFilter], () => { visibleCount.value = PAGE_SIZE })
 
 function norm(s: string) { return String(s||'').trim().toLocaleLowerCase('zh-CN') }
 function ratingLabel(v: string) { return LABELS[v] || v || '未分级' }
 function charLabel(v: string) { return LABELS[v] || v || '角色' }
-function thumbSrc(e: any) { return `/scene-showcase/thumbs/${encodeURIComponent(e.id)}.jpg?cv=${imgVersion}` }
-function imgSrc(e: any)   { return `/scene-showcase/images/${encodeURIComponent(e.id)}.jpg?cv=${imgVersion}&t=${Date.now()}` }
+function thumbSrc(entry: ShowcaseEntry) { return `/scene-showcase/thumbs/${encodeURIComponent(entry.id)}.jpg?cv=${imgVersion}` }
+function imgSrc(entry: ShowcaseEntry)   { return `/scene-showcase/images/${encodeURIComponent(entry.id)}.jpg?cv=${imgVersion}&v=${viewerVersion.value}` }
+function markThumbError(entry: ShowcaseEntry) {
+  brokenThumbs.value = new Set([...brokenThumbs.value, entry.id])
+}
 
 const filtered = computed(() => {
   const term = norm(searchQuery.value)
@@ -177,8 +195,13 @@ watch(currentEntry, (entry) => {
   const dialog = dialogEl.value
   if (!dialog) return
   if (entry && !dialog.open) {
+    viewerImageFailed.value = false
+    viewerVersion.value = Date.now()
     dialog.showModal()
     document.body.classList.add('overlay-open')
+  } else if (entry) {
+    viewerImageFailed.value = false
+    viewerVersion.value = Date.now()
   } else if (!entry && dialog.open) {
     dialog.close()
     document.body.classList.remove('overlay-open')
@@ -206,29 +229,35 @@ function onKey(e: KeyboardEvent) {
 }
 
 onMounted(async () => {
+  unmounted = false
   document.addEventListener('keydown', onKey)
   try {
     // manifest 是样张目录（非 data/），仍单独取；curation 走共享 store
     const [manifest] = await Promise.all([
-      fetch('/scene-showcase/manifest.json', { cache: 'no-cache' }).then(r => { if (!r.ok) throw new Error('showcase ' + r.status); return r.json() }),
+      fetch('/scene-showcase/manifest.json', { cache: 'no-cache', signal: manifestController.signal }).then(r => { if (!r.ok) throw new Error('showcase ' + r.status); return r.json() }),
       sceneStore.load().catch(() => {})
     ])
-    const curation = sceneStore.curation as any
-    if (!manifest || !Array.isArray(manifest.entries)) throw new Error('invalid manifest')
-    entries.value = manifest.entries.slice().sort((a: any, b: any) => Number(a.id.slice(2)) - Number(b.id.slice(2)))
-    featured.value = new Set([...(curation.signatureSceneIds || []), ...(curation.curatedSceneIds || [])])
+    if (unmounted) return
+    const parsed = parseShowcaseManifest(manifest)
+    const curation = sceneStore.curation
+    entries.value = parsed.entries
+    featured.value = new Set([...(curation.signatureSceneIds ?? []), ...(curation.curatedSceneIds ?? [])])
     stats.value = {
-      total: String(manifest.sceneCount || entries.value.length),
-      safe: String(manifest.counts?.All || entries.value.filter((e: any) => e.rating === 'All').length),
-      r15: String(manifest.counts?.R15 || entries.value.filter((e: any) => e.rating === 'R15').length)
+      total: String(parsed.sceneCount),
+      safe: String(parsed.counts.All),
+      r15: String(parsed.counts.R15)
     }
   } catch (err) {
+    if (manifestController.signal.aborted) return
     console.warn('Showcase unavailable:', err)
     unavailable.value = true
   }
 })
 onUnmounted(() => {
+  unmounted = true
+  manifestController.abort()
   document.removeEventListener('keydown', onKey)
+  if (dialogEl.value?.open) dialogEl.value.close()
   document.body.classList.remove('overlay-open')
 })
 </script>
@@ -274,6 +303,7 @@ onUnmounted(() => {
 .sample-visual { display:block; width:100%; padding:0; border:0; background:var(--art-mat); color:var(--on-art-primary); text-align:left; cursor:zoom-in; position:relative; overflow:hidden; }
 .sample-visual:focus-visible { outline:3px solid var(--accent); outline-offset:-3px; }
 .sample-image { width:100%; height:auto; display:block; background:var(--art-mat); transition:filter var(--t-slow) var(--ease-out),transform var(--t-slow) var(--ease-out); }
+.sample-image-fallback { display:grid; min-height:260px; place-items:center; color:var(--text-muted); font-size:var(--fs-glyph); }
 .sample:not(.sample-r18):hover .sample-image { transform:scale(1.018); }
 .sample-shade { position:absolute; inset:38% 0 0; background:linear-gradient(to bottom,transparent,var(--art-scrim)); pointer-events:none; }
 .sample-badges { position:absolute; inset:var(--s-3) var(--s-3) auto; display:flex; justify-content:space-between; gap:var(--s-2); pointer-events:none; }
@@ -339,6 +369,7 @@ onUnmounted(() => {
   display: block; max-width: 100%; max-height: min(88vh, 860px);
   width: auto; height: auto; object-fit: contain; border-radius: var(--r-lg);
 }
+.showcase-viewer .viewer-image-fallback { color:var(--on-art-secondary); font-size:var(--fs-body-sm); }
 .showcase-viewer .viewer-copy {
   min-width: 0; overflow-y: auto;
   padding: clamp(20px, 3vw, 36px);

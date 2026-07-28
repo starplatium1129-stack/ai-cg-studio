@@ -33,6 +33,21 @@ export interface SceneUsageRecord {
 
 export type SceneUsageMap = Record<string, SceneUsageRecord>
 
+export interface RecentScene {
+  id: string
+  title: string
+  char: string
+  usedAt: number
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null
+}
+
+function stringValue(value: unknown): string {
+  return typeof value === 'string' ? value : ''
+}
+
 export function readHiddenScenes(storage?: Storage): Set<string> {
   try {
     const value = JSON.parse((storage ?? localStorage).getItem(HIDDEN_SCENES_KEY) ?? '[]')
@@ -49,11 +64,11 @@ export function writeHiddenScenes(ids: Iterable<string>, storage?: Storage): voi
 export function readSceneUsage(storage?: Storage): SceneUsageMap {
   try {
     const value = JSON.parse((storage ?? localStorage).getItem(SCENE_USAGE_KEY) ?? '{}')
-    if (!value || typeof value !== 'object' || Array.isArray(value)) return {}
+    if (!isRecord(value)) return {}
     return Object.fromEntries(Object.entries(value).flatMap(([id, raw]) => {
-      const record = raw as Partial<SceneUsageRecord> | null
-      const uses = Math.max(0, Math.floor(Number(record?.uses) || 0))
-      const lastUsed = Math.max(0, Number(record?.lastUsed) || 0)
+      const record = isRecord(raw) ? raw : {}
+      const uses = Math.max(0, Math.floor(Number(record.uses) || 0))
+      const lastUsed = Math.max(0, Number(record.lastUsed) || 0)
       return id && uses ? [[id, { uses, lastUsed }]] : []
     }))
   } catch {
@@ -132,7 +147,11 @@ function normalizeQuery(value: string): string {
 
 function uniqueTerms(items: string[]): string[] {
   const seen = new Set<string>()
-  return items.map(normalizeQuery).filter(t => t && !seen.has(t) && seen.add(t) as unknown as boolean)
+  return items.map(normalizeQuery).filter(t => {
+    if (!t || seen.has(t)) return false
+    seen.add(t)
+    return true
+  })
 }
 
 function detectInside(query: string, term: string): boolean {
@@ -204,8 +223,8 @@ export function searchScore(scene: Record<string, unknown>, query: string, confi
   return score
 }
 
-function ratingAverage(rating: Record<string, number> | null | undefined): number {
-  if (!rating) return 0
+function ratingAverage(rating: unknown): number {
+  if (!isRecord(rating)) return 0
   const vals = ['face','expression','composition','hands','atmosphere'].map(k => Number(rating[k])).filter(v => v > 0 && v <= 5)
   return vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : 0
 }
@@ -224,18 +243,22 @@ function ensureStats(container: Record<string, SceneStats>, key: string): SceneS
 
 export function buildPreferenceProfile(history: unknown[], now?: number): PreferenceProfile {
   const profile: PreferenceProfile = { entries: 0, ratedEntries: 0, favorites: 0, scenes: {}, characters: {}, generatedAt: now ?? Date.now() }
-  ;(Array.isArray(history) ? history : []).forEach((entry: any) => {
-    if (!entry || typeof entry !== 'object') return
+  ;(Array.isArray(history) ? history : []).forEach((entry) => {
+    if (!isRecord(entry)) return
     profile.entries++
-    if (ratingAverage(entry.rating)) profile.ratedEntries++
+    const averageRating = ratingAverage(entry.rating)
+    if (averageRating) profile.ratedEntries++
     if (entry.favorite) profile.favorites++
-    const sc = ensureStats(profile.scenes, entry.scene)
-    const ch = ensureStats(profile.characters, normalizeChar(entry.character ?? ''))
-    ;[sc, ch].forEach(s => {
+    const sceneId = stringValue(entry.scene)
+    const characterId = normalizeChar(stringValue(entry.character))
+    const targets = [
+      sceneId ? ensureStats(profile.scenes, sceneId) : null,
+      characterId ? ensureStats(profile.characters, characterId) : null,
+    ].filter((stats): stats is SceneStats => stats !== null)
+    targets.forEach(s => {
       s.uses++
       if (entry.favorite) s.favorites++
-      const avg = ratingAverage(entry.rating)
-      if (avg) { s.ratingTotal += avg; s.rated++ }
+      if (averageRating) { s.ratingTotal += averageRating; s.rated++ }
       s.lastUsed = Math.max(s.lastUsed, Number(entry.timestamp ?? entry.id) || 0)
     })
   })
@@ -287,8 +310,8 @@ function tagKey(value: unknown): string {
  * 判断当前 story 是否仍等同于场景自带故事。
  * 用于「脱离场景」时决定该不该清空文本：场景原文要清，用户自己写的要留。
  */
-export function isSceneBoundStory(scene: any, story: unknown, baseStory?: unknown): boolean {
-  if (!scene) return false
+export function isSceneBoundStory(scene: unknown, story: unknown, baseStory?: unknown): boolean {
+  if (!isRecord(scene)) return false
   const current = String(story ?? '').replace(/\s+/g, ' ').trim()
   const original = String(baseStory || scene.story || '').replace(/\s+/g, ' ').trim()
   return !!current && !!original && current === original
@@ -299,13 +322,15 @@ export function isSceneBoundStory(scene: any, story: unknown, baseStory?: unknow
  * 老记录没有 manual_tags 快照时，用兼容场景的 tags 兜底；
  * 若场景与当前角色不兼容，则剔除该场景的内建标签，只留用户真正手加的。
  */
-export function restoreHistoryManualTags(entry: any, scene: any, sceneCompatible: boolean): string[] {
-  const hasSnapshot = Array.isArray(entry?.manual_tags)
+export function restoreHistoryManualTags(entry: unknown, scene: unknown, sceneCompatible: boolean): string[] {
+  const history = isRecord(entry) ? entry : {}
+  const sceneRecord = isRecord(scene) ? scene : null
+  const hasSnapshot = Array.isArray(history.manual_tags)
   const source: unknown[] = hasSnapshot
-    ? entry.manual_tags
-    : (scene && sceneCompatible && Array.isArray(scene.tags) ? scene.tags : [])
-  const staleSceneTags = scene && !sceneCompatible
-    ? new Set<string>((scene.tags || []).map(tagKey))
+    ? history.manual_tags as unknown[]
+    : (sceneRecord && sceneCompatible && Array.isArray(sceneRecord.tags) ? sceneRecord.tags : [])
+  const staleSceneTags = sceneRecord && !sceneCompatible
+    ? new Set<string>((Array.isArray(sceneRecord.tags) ? sceneRecord.tags : []).map(tagKey))
     : null
   const seen = new Set<string>()
   return source.filter((tag): tag is string => {
@@ -318,19 +343,29 @@ export function restoreHistoryManualTags(entry: any, scene: any, sceneCompatible
 }
 
 /** 场景不兼容时，不要把仍绑定该场景的故事文本带回来 */
-export function restoreHistoryStory(entry: any, scene: any, sceneCompatible: boolean): string {
-  const story = typeof entry?.story === 'string' ? entry.story : ''
-  return scene && !sceneCompatible && isSceneBoundStory(scene, story, scene.story) ? '' : story
+export function restoreHistoryStory(entry: unknown, scene: unknown, sceneCompatible: boolean): string {
+  const history = isRecord(entry) ? entry : {}
+  const sceneRecord = isRecord(scene) ? scene : null
+  const story = typeof history.story === 'string' ? history.story : ''
+  return sceneRecord && !sceneCompatible && isSceneBoundStory(sceneRecord, story, sceneRecord.story) ? '' : story
 }
 
-export function readRecent(storage?: Storage): Array<{ id: string; title: string; char: string; usedAt: number }> {
+export function readRecent(storage?: Storage): RecentScene[] {
   try {
-    const items = JSON.parse((storage ?? localStorage).getItem(RECENT_KEY) ?? '[]')
-    return Array.isArray(items) ? items.filter((i: any) => i?.id) : []
+    const items: unknown = JSON.parse((storage ?? localStorage).getItem(RECENT_KEY) ?? '[]')
+    return Array.isArray(items) ? items.flatMap((item): RecentScene[] => {
+      if (!isRecord(item) || typeof item.id !== 'string' || !item.id) return []
+      return [{
+        id: item.id,
+        title: stringValue(item.title),
+        char: stringValue(item.char),
+        usedAt: Math.max(0, Number(item.usedAt) || 0),
+      }]
+    }) : []
   } catch { return [] }
 }
 
-export function rememberRecent(scene: { id: string; title?: string; char?: string }, storage?: Storage): Array<{ id: string; title: string; char: string; usedAt: number }> {
+export function rememberRecent(scene: { id: string; title?: string; char?: string }, storage?: Storage): RecentScene[] {
   if (!scene?.id) return []
   const target = storage ?? localStorage
   const items = [{ id: scene.id, title: scene.title ?? '', char: scene.char ?? '', usedAt: Date.now() }, ...readRecent(target).filter(i => i.id !== scene.id)].slice(0, 8)

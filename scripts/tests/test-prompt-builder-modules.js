@@ -1,5 +1,7 @@
 'use strict';
 
+const assert = require('assert');
+
 /**
  * 导演台模块布局契约（Vue SPA 版本）
  *
@@ -19,6 +21,7 @@ const path = require('path');
 const root = path.resolve(__dirname, '..', '..');
 const read = (...parts) => fs.readFileSync(path.join(root, ...parts), 'utf8');
 const exists = (...parts) => fs.existsSync(path.join(root, ...parts));
+const persistence = require('../../src/utils/promptBuilderPersistence.ts');
 
 function fail(message) {
   throw new Error('[prompt-builder modules] ' + message);
@@ -28,6 +31,7 @@ function fail(message) {
 const modules = [
   ['src/stores/promptBuilderStore.ts', ['saveDraft', 'restoreDraft', 'commitHistoryEntry', 'applyModelProfile', 'loadScene']],
   ['src/utils/promptPolicy.ts', ['qualityPrefix', 'modelNegativePrompt', 'resolveLoraSpecs', 'applyFraming', 'norm', 'analyzeParts', 'sceneTemplateText']],
+  ['src/utils/promptBuilderPersistence.ts', ['parsePromptBuilderDraft', 'parseProjectOptions', 'parsePresetCatalog']],
   ['src/utils/sceneInference.ts', ['sceneLighting', 'sceneShot', 'sceneColorMood', 'sceneRecommendedSize']],
   ['src/utils/sdError.ts', ['classifySDError', 'SAFE_SAMPLING', 'LIGHT_LOAD']],
   ['src/utils/sdRequest.ts', ['buildTxt2ImgRequest', 'parseTxt2ImgResponse', 'DEFAULT_SD_NEGATIVE']],
@@ -53,8 +57,44 @@ for (const [rel, markers] of modules) {
   }
 }
 
+const parsedDraft = persistence.parsePromptBuilderDraft({
+  updatedAt:'123',
+  story:'雨夜',
+  char:'invalid',
+  selections:{ emotion:['shy', 7], shot:'close' },
+  sdParams:{ cfg:'5.5', steps:'bad', hiresFix:true, injected:'no' },
+});
+assert(parsedDraft, 'valid draft must survive persistence parsing');
+assert.strictEqual(parsedDraft.char, undefined, 'unknown character ids must not enter director state');
+assert.deepStrictEqual(parsedDraft.selections.emotion, ['shy'], 'draft selections must keep only string ids');
+assert.deepStrictEqual(parsedDraft.sdParams, { cfg:5.5, hiresFix:true }, 'draft SD params must whitelist known typed fields');
+assert.strictEqual(
+  persistence.parsePromptBuilderDraft({ updatedAt:1, story:'', sceneId:null }),
+  null,
+  'empty drafts must not replace current director state',
+);
+assert.deepStrictEqual(
+  persistence.parseProjectOptions([{ id:7, title:'旧项目' }, null, { id:'' }]),
+  [{ id:'7', name:'旧项目' }],
+  'legacy project ids and titles must normalize at the persistence boundary',
+);
+const parsedCatalog = persistence.parsePresetCatalog({
+  presets:[{ id:'balanced', name:'平衡' }, { name:'missing id' }],
+  model_profiles:[{ id:'wai', match:['wai', 3], steps:'28', cfg:5.5 }, null],
+});
+assert.strictEqual(parsedCatalog.presets.length, 1, 'malformed presets must be ignored');
+assert.deepStrictEqual(parsedCatalog.modelProfiles[0].match, ['wai'], 'profile match keys must be strings');
+assert.strictEqual(parsedCatalog.modelProfiles[0].steps, 28, 'numeric profile fields must normalize');
+
+const storeSource = read('src/stores/promptBuilderStore.ts');
+if (/\bany\b/.test(storeSource)) fail('prompt builder store must keep scene, profile, draft, and project boundaries explicitly typed');
+
 // ── 2. 导演台视图必须真正接线这些能力 ────────────────────────────────────
 const view = read('src/views/PromptBuilderView.vue');
+if (/\bany\b/.test(view)) fail('PromptBuilderView must keep deep links, scenes, and history explicitly typed');
+if (/entry\.char\b/.test(view) || !view.includes('entry.character')) {
+  fail('history deep links must restore the canonical character field');
+}
 
 const wiring = [
   ['qualityPrefix', 'quality prefix must come from the model profile, not a hardcoded string'],

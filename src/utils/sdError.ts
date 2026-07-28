@@ -26,9 +26,16 @@ function clean(value: unknown): string {
   return String(value ?? '').replace(/\s+/g, ' ').trim()
 }
 
-export function errorText(error: any): string {
-  let message = clean(error?.message)
-  const detail = clean(error?.detail)
+function errorRecord(error: unknown): Record<string, unknown> {
+  return typeof error === 'object' && error !== null
+    ? error as Record<string, unknown>
+    : {}
+}
+
+export function errorText(error: unknown): string {
+  const source = errorRecord(error)
+  let message = clean(source.message || (typeof error === 'string' ? error : ''))
+  const detail = clean(source.detail)
   if (detail && !message.includes(detail)) message += (message ? ' · ' : '') + detail
   return message.slice(0, 1200)
 }
@@ -40,11 +47,12 @@ function report(
   return { kind, title, message, action, details }
 }
 
-export function classifySDError(error: any): SDErrorReport {
+export function classifySDError(error: unknown): SDErrorReport {
+  const source = errorRecord(error)
   const text = errorText(error)
   const lower = text.toLowerCase()
-  const status = Number(error?.status) || 0
-  const name = String(error?.name || '')
+  const status = Number(source.status) || 0
+  const name = clean(source.name)
 
   if (name === 'AbortError') {
     return report('cancelled', '已停止生成', '本次任务已停止，参数与 Prompt 都保留在当前页面。', null, text)

@@ -63,7 +63,7 @@ export function sceneColorMood(scene: { tags?: string[]; story?: string }): stri
   return null
 }
 
-export function sceneComposition(_scene: any): string | null {
+export function sceneComposition(_scene: unknown): string | null {
   // 默认给三分法，避免空白
   return 'rule3'
 }

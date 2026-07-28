@@ -24,10 +24,15 @@ export interface ChatState {
   }
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null
+}
+
 function normalizeMessages(value: unknown): ChatMessage[] {
   if (!Array.isArray(value)) return []
-  return (value as any[])
-    .filter(m => m && (m.role === 'user' || m.role === 'assistant'))
+  return value
+    .filter((message): message is Record<string, unknown> =>
+      isRecord(message) && (message.role === 'user' || message.role === 'assistant'))
     .map(m => ({
       role: m.role as 'user' | 'assistant',
       content: String(m.content || '').slice(0, 1200),

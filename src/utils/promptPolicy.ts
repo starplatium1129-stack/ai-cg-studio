@@ -38,6 +38,16 @@ export interface LoraMeta {
   [k: string]: unknown
 }
 
+export interface PromptScene {
+  char?: string
+  prompt?: string
+  tags?: string[]
+  lora?: string
+  category?: string
+  rating?: string
+  mature?: boolean
+}
+
 const NEGATIVE_BOILERPLATE = new Set([
   'bad_quality', 'worst_quality', 'low_quality', 'normal_quality', 'worst_detail',
   'lowres', 'blurry', 'jpeg_artifacts', 'text', 'watermark', 'logo', 'signature',
@@ -318,7 +328,7 @@ export function enrichDualPrompt(template: string, neneTags: string[], natsumeTa
 }
 
 /** 场景是否支持该角色（避免把宁宁场景套到夏目身上） */
-export function sceneSupportsCharacter(scene: any, char: string): boolean {
+export function sceneSupportsCharacter(scene: PromptScene | null | undefined, char: string): boolean {
   if (!scene) return false
   const sceneChar = String(scene.char || '')
   if (!sceneChar) return true
@@ -329,12 +339,12 @@ export function sceneSupportsCharacter(scene: any, char: string): boolean {
 
 /** 场景模板净化：剥 lora、_BREAK_ 规范化、去掉与 scene.tags 重复项、framing 过滤 */
 export function sceneTemplateText(
-  scene: any,
+  scene: PromptScene | null | undefined,
   opts: { char?: string; manualTags?: Set<string>; shot?: string | null } = {},
 ): string {
   if (!scene?.prompt) return ''
   const manual = opts.manualTags ?? new Set<string>()
-  const sceneTags = new Set((scene.tags || []).map((t: string) => normalizeKey(t)))
+  const sceneTags = new Set((scene.tags || []).map(normalizeKey))
   let template = String(scene.prompt)
     .replace(/<lora:[^>]+>/gi, '')
     .replace(/_BREAK_/gi, ' BREAK ')
@@ -368,7 +378,7 @@ export interface LoraSpec { name: string; weight: number }
  */
 export function resolveLoraSpecs(
   character: string,
-  scene: any,
+  scene: PromptScene | null | undefined,
   loraMeta: LoraMeta[],
   fallbackByChar: Record<string, string>,
   context: { shot?: string | null; manualTags?: Set<string> } = {},

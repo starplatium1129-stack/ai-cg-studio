@@ -4,14 +4,19 @@ import {
   parseTxt2ImgResponse,
   type SDGenerateParams,
 } from '@/utils/sdRequest'
+import {
+  parseSDOptionList,
+  parseSDProgress,
+  parseSDStatus,
+} from '@/utils/sdStatus'
 export type { SDGenerateParams } from '@/utils/sdRequest'
 
-export interface SDStatus {
-  online: boolean
-  samplers?: string[]
-  models?: string[]
-  schedulers?: string[]
-  upscalers?: string[]
+function isAbortError(error: unknown): boolean {
+  return error instanceof Error && error.name === 'AbortError'
+}
+
+function errorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error)
 }
 
 export function useSDGenerate() {
@@ -39,13 +44,13 @@ export function useSDGenerate() {
     try {
       const r = await fetch('/api/sd-status', { cache: 'no-store' })
       if (r.ok) {
-        const data = await r.json()
-        online.value = Boolean(data.online)
-        samplers.value = data.samplers ?? []
-        schedulers.value = data.schedulers ?? []
-        upscalers.value = data.upscalers ?? []
-        models.value = data.models ?? []
-        checkpoint.value = data.checkpoint ?? ''
+        const data = parseSDStatus(await r.json() as unknown)
+        online.value = data.online
+        samplers.value = data.samplers
+        schedulers.value = data.schedulers
+        upscalers.value = data.upscalers
+        models.value = data.models
+        checkpoint.value = data.checkpoint
         if (online.value) return true
       }
     } catch { /* fall through */ }
@@ -57,18 +62,16 @@ export function useSDGenerate() {
         fetch('/sdapi/v1/schedulers', { cache: 'no-store' }).catch(() => null),
       ])
       if (!modelsRes.ok) { online.value = false; return false }
-      const modelList = await modelsRes.json()
+      const modelList: unknown = await modelsRes.json()
       online.value = true
-      models.value = Array.isArray(modelList)
-        ? modelList.map((m: any) => m.title || m.model_name || m.name || '').filter(Boolean)
-        : []
+      models.value = parseSDOptionList(modelList, ['title', 'model_name', 'name'])
       if (samplersRes?.ok) {
-        const list = await samplersRes.json()
-        samplers.value = Array.isArray(list) ? list.map((s: any) => s.name || s).filter(Boolean) : []
+        const list: unknown = await samplersRes.json()
+        samplers.value = parseSDOptionList(list)
       }
       if (schedulersRes?.ok) {
-        const list = await schedulersRes.json()
-        schedulers.value = Array.isArray(list) ? list.map((s: any) => s.name || s.label || s).filter(Boolean) : []
+        const list: unknown = await schedulersRes.json()
+        schedulers.value = parseSDOptionList(list, ['name', 'label'])
       }
       return true
     } catch {
@@ -88,22 +91,13 @@ export function useSDGenerate() {
     try {
       const r = await fetch('/sdapi/v1/progress?skip_current_image=true', { cache: 'no-store' })
       if (!r.ok) throw new Error('HTTP ' + r.status)
-      const data = await r.json()
+      const data = parseSDProgress(await r.json() as unknown)
       if (token !== progressToken || !generating.value) return
 
-      const reported = Number(data.progress)
-      const state = data.state || {}
-      const stepProgress = Number(state.sampling_steps) > 0
-        ? Number(state.sampling_step || 0) / Number(state.sampling_steps)
-        : 0
-      const ratio = Math.max(
-        Number.isFinite(reported) ? reported : 0,
-        Number.isFinite(stepProgress) ? stepProgress : 0,
-      )
-      progress.value = Math.round(Math.min(1, Math.max(0, ratio)) * 100)
+      progress.value = Math.round(data.ratio * 100)
       pollFailures = 0
 
-      const eta = Math.max(0, Math.ceil(Number(data.eta_relative) || 0))
+      const eta = data.etaSeconds
       statusText.value = progress.value > 0
         ? `SD WebUI 生成中 · ${progress.value}%${eta ? ` · 约剩 ${eta} 秒` : ''}`
         : 'SD WebUI 排队或准备中…'
@@ -152,7 +146,8 @@ export function useSDGenerate() {
         throw new Error(`SD 返回错误 ${r.status}: ${txt.slice(0, 120)}`)
       }
 
-      const result = parseTxt2ImgResponse(await r.json())
+      const rawResult: unknown = await r.json()
+      const result = parseTxt2ImgResponse(rawResult)
       const imgB64 = result.image.replace(/^data:image\/[a-z0-9.+-]+;base64,/i, '')
 
       // Convert base64 to blob URL
@@ -168,8 +163,8 @@ export function useSDGenerate() {
       statusText.value = '生成完成'
       return url
     } catch (e) {
-      if ((e as any)?.name === 'AbortError') { statusText.value = '已停止'; return null }
-      errorMsg.value   = String((e as any)?.message ?? e)
+      if (isAbortError(e)) { statusText.value = '已停止'; return null }
+      errorMsg.value   = errorMessage(e)
       statusText.value = '生成失败'
       return null
     } finally {

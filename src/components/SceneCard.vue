@@ -49,8 +49,23 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 
+export interface SceneCardScene {
+  [key: string]: unknown
+  id: string
+  title?: string
+  story?: string
+  category?: string
+  rating?: string
+  mature?: boolean
+  tags?: string[]
+  emotion?: string
+  season?: string
+  weather?: string
+  timeOfDay?: string
+}
+
 const props = withDefaults(defineProps<{
-  scene: any
+  scene: SceneCardScene
   mode?: 'grid' | 'strip' | 'recent'
   clickable?: boolean
   suppressTags?: boolean
@@ -64,7 +79,7 @@ const props = withDefaults(defineProps<{
   rating: 0,
 })
 
-const emit = defineEmits<{ pick: [scene: any] }>()
+const emit = defineEmits<{ pick: [scene: SceneCardScene] }>()
 
 const TAG_BLOCKLIST = ['official_cg', 'visual_audited']
 
@@ -76,12 +91,12 @@ const clickable = computed(() =>
 const contentRating = computed(() => props.scene.rating || (props.scene.mature ? 'R18' : 'All'))
 const thumbId = computed(() => String(props.scene.id || '').toLowerCase().replace(/[^a-z0-9_-]/g, ''))
 const thumbSrc = computed(() => {
-  const v = props.imgVersion ?? (window as any).AICS_THUMB_VERSION ?? ''
+  const v = props.imgVersion ?? ''
   return `/scene-showcase/thumbs/${thumbId.value}.jpg${v ? '?v=' + encodeURIComponent(String(v)) : ''}`
 })
 const tags = computed(() => {
   const limit = props.mode === 'strip' ? 2 : 3
-  const list = (props.scene.tags || []).filter((t: string) => !TAG_BLOCKLIST.includes(t)).slice(0, limit)
+  const list = (props.scene.tags || []).filter(t => !TAG_BLOCKLIST.includes(t)).slice(0, limit)
   if (props.scene.emotion && list.length < limit) list.push(props.scene.emotion)
   return list
 })

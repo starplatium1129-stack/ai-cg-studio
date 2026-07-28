@@ -1,5 +1,48 @@
 const assert = require('assert');
+const fs = require('fs');
+const path = require('path');
 const sdRequest = require('../../src/utils/sdRequest.ts');
+const sdGenerate = require('../../src/utils/sdStatus.ts');
+const sdGenerateSource = fs.readFileSync(
+  path.resolve(__dirname, '../../src/composables/useSDGenerate.ts'),
+  'utf8'
+);
+assert(!/\bany\b/.test(sdGenerateSource), 'useSDGenerate must not regress to explicit any types');
+const sdQueueSource = fs.readFileSync(
+  path.resolve(__dirname, '../../src/composables/useSDQueue.ts'),
+  'utf8'
+);
+assert(!/\bany\b/.test(sdQueueSource), 'useSDQueue must keep runner failures typed as unknown');
+
+function testStatusAndProgressParsing() {
+  const status = sdGenerate.parseSDStatus({
+    online:true,
+    checkpoint:'model-a',
+    models:[{ title:'Model A' }, { model_name:'Model B' }, null],
+    samplers:[{ name:'Euler' }, 'DPM++ 2M', { name:3 }],
+    schedulers:[{ label:'Karras' }],
+    upscalers:'invalid'
+  });
+  assert.strictEqual(status.online, true);
+  assert.deepStrictEqual(status.models, ['Model A', 'Model B']);
+  assert.deepStrictEqual(status.samplers, ['Euler', 'DPM++ 2M']);
+  assert.deepStrictEqual(status.schedulers, ['Karras']);
+  assert.deepStrictEqual(status.upscalers, []);
+  assert.deepStrictEqual(
+    sdGenerate.parseSDProgress({
+      progress:0.25,
+      state:{ sampling_step:6, sampling_steps:12 },
+      eta_relative:2.2
+    }),
+    { ratio:0.5, etaSeconds:3 },
+    'sampling steps must supplement stale aggregate progress'
+  );
+  assert.deepStrictEqual(
+    sdGenerate.parseSDProgress({ progress:7, eta_relative:-2 }),
+    { ratio:1, etaSeconds:0 },
+    'progress values must stay within UI bounds'
+  );
+}
 
 function testExplicitEmptyNegative() {
   let payload = sdRequest.buildTxt2ImgRequest({ prompt:'prompt', negative_prompt:'' }).payload;
@@ -157,6 +200,7 @@ async function testFailedQueueJobIsRetained() {
 }
 
 (async () => {
+  testStatusAndProgressParsing();
   testExplicitEmptyNegative();
   testDualEnhancementPayload();
   testProfilesAndCapabilities();

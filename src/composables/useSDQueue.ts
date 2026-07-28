@@ -32,7 +32,12 @@ export interface SDQueueJob {
   faceDetailer: boolean
 }
 
-export type SDJobRunner = (job: SDQueueJob) => Promise<{ status: 'success' | 'cancelled' | 'failure'; error?: any }>
+export interface SDJobOutcome {
+  status: 'success' | 'cancelled' | 'failure'
+  error?: unknown
+}
+
+export type SDJobRunner = (job: SDQueueJob) => Promise<SDJobOutcome>
 
 export function useSDQueue(options: {
   run: SDJobRunner
