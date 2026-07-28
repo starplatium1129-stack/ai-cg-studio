@@ -206,6 +206,14 @@
   opacity: 1;
 }
 
+.chat-page .portrait-stage.live2d-ready {
+  cursor: pointer;
+}
+
+.chat-page .portrait-stage.live2d-reacting .live2d-host {
+  animation: live2d-response .55s var(--ease-out);
+}
+
 .chat-page .portrait-stage.live2d-ready .portrait-main {
   opacity: 0;
 }
@@ -264,6 +272,19 @@
   color: var(--text-muted);
 }
 
+.chat-page .live2d-interaction-hint {
+  position: absolute;
+  z-index: var(--z-raised);
+  right: var(--s-4);
+  bottom: 102px;
+  left: var(--s-4);
+  color: var(--text-muted);
+  font: 600 var(--fs-mono-xs) var(--font-mono);
+  text-align: center;
+  text-shadow: 0 1px 8px var(--bg-deep);
+  pointer-events: none;
+}
+
 .chat-page .portrait-caption {
   position: absolute;
   z-index: var(--z-raised);
@@ -278,6 +299,11 @@
   font-size: var(--fs-label-sm);
   line-height: 1.55;
   backdrop-filter: blur(18px);
+}
+
+@keyframes live2d-response {
+  0%, 100% { filter: none; }
+  45% { filter: drop-shadow(0 0 18px color-mix(in srgb, var(--character-accent) 42%, transparent)); }
 }
 
 .chat-page .portrait-caption strong {
@@ -335,6 +361,17 @@
 .chat-page .conversation-head strong {
   font-size: var(--fs-body-sm);
 }
+
+.chat-page .room-setup {
+  display:flex; align-items:center; justify-content:space-between; gap:var(--s-3);
+  margin:var(--s-3) var(--s-4) 0; padding:var(--s-3);
+  border:1px solid color-mix(in srgb,var(--warning) 38%,var(--border-soft));
+  border-radius:var(--r-md); background:color-mix(in srgb,var(--warning) 8%,var(--bg-surface));
+}
+.chat-page .room-setup > div { display:grid; gap:2px; min-width:0; }
+.chat-page .room-setup strong { color:var(--text-primary); font-size:var(--fs-label); }
+.chat-page .room-setup span { color:var(--text-muted); font-size:var(--fs-label-sm); line-height:1.5; }
+.chat-page .room-setup .btn { flex:0 0 auto; justify-content:center; }
 
 .chat-page .model-select {
   max-width: 230px;
@@ -727,7 +764,8 @@
   color: var(--text-secondary);
   cursor: pointer;
   font: 650 var(--fs-mono-sm) var(--font-sans);
-  transition: all .2s ease;
+  transition: border-color var(--t-fast), background var(--t-fast), color var(--t-fast),
+              transform var(--t-fast) var(--ease-out);
   white-space: nowrap;
 }
 
@@ -872,6 +910,7 @@
 }
 
 @media (max-width: 560px) {
+  .chat-page .room-setup { align-items:stretch; flex-direction:column; }
   .chat-page .conversation-head,
   .chat-page .composer-tools {
     align-items: stretch;

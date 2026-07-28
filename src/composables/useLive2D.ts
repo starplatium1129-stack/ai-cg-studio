@@ -1,4 +1,4 @@
-import { ref, shallowRef } from 'vue'
+import { ref } from 'vue'
 import { LIVE2D_EXPRESSIONS } from '@/config/characters'
 
 export interface Live2DStatus {
@@ -15,6 +15,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   const character = ref('nene')
   const loadedCharacter = ref('')
   const mouthValue = ref(0)
+  const interactionHint = ref('')
 
   // 内部可变状态（不需要响应式）
   let catalog: any = null
@@ -25,7 +26,15 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   let resizeObserver: ResizeObserver | null = null
   let onResize: (() => void) | null = null
   let visibilityHandler: (() => void) | null = null
+  let pointerMoveHandler: ((event: PointerEvent) => void) | null = null
+  let pointerLeaveHandler: (() => void) | null = null
+  let pointerClickHandler: ((event: MouseEvent) => void) | null = null
+  let focusFrame = 0
+  let focusPoint: { x: number; y: number } | null = null
+  let expressionTimer = 0
+  let interactionIndex = 0
   let mouthHooked = false
+  let speaking = false
   let hostEl: HTMLElement | null = null
   let stageEl: HTMLElement | null = null
   let hostSelector = '#live2dHost'
@@ -64,6 +73,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     const info = modelInfo(char)
     if (!info?.available || !info?.modelUrl) {
       setVisible(false)
+      interactionHint.value = ''
       setState('static', '静态立绘', info?.source || '该角色暂无 Live2D 模型')
       return
     }
@@ -136,7 +146,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
           if (destroyed.value || char !== character.value) { finish(false); return }
           model = m; loadedCharacter.value = char; ready.value = true
           mouthValue.value = 0; mouthHooked = false
-          bindMouthOverride(); bindContextEvents(); fit(); layout()
+          bindMouthOverride(); bindContextEvents(); bindInteractionEvents(); fit(); layout()
           setVisible(true); setExpression(desiredExpression); setPaused(document.hidden); setState('ready', 'Live2D 已连接'); finish(true)
         })
         app.onModelError((e: any) => {
@@ -177,7 +187,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   }
 
   function applyMouth() {
-    if (!model?.visible) return
+    if (!model?.visible || !speaking) return
     try {
       // Cubism motion/physics run before this event. Write with full weight so
       // their idle mouth value cannot overwrite the audio amplitude.
@@ -192,6 +202,91 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     cvs.dataset.contextEvents = '1'
     cvs.addEventListener('webglcontextlost', (e) => { e.preventDefault(); fallback('Live2D 图形上下文已暂停', 'WebGL context lost') })
     cvs.addEventListener('webglcontextrestored', () => retry())
+  }
+
+  function worldPoint(event: PointerEvent | MouseEvent) {
+    const canvas = hostEl?.querySelector('canvas')
+    const rect = canvas?.getBoundingClientRect() ?? stageEl?.getBoundingClientRect()
+    if (!rect) return null
+    if (!rect.width || !rect.height) return null
+    const screen = app?.app?.screen
+    const width = Number(screen?.width) || 420
+    const height = Number(screen?.height) || 610
+    return {
+      x: Math.max(0, Math.min(width, (event.clientX - rect.left) / rect.width * width)),
+      y: Math.max(0, Math.min(height, (event.clientY - rect.top) / rect.height * height)),
+    }
+  }
+
+  function centerFocus() {
+    if (!ready.value || typeof model?.focus !== 'function') return
+    const screen = app?.app?.screen
+    model.focus((Number(screen?.width) || 420) / 2, (Number(screen?.height) || 610) / 2)
+  }
+
+  function motionDefinitions(): Record<string, unknown[]> {
+    return model?.internalModel?.motionManager?.definitions
+      ?? model?.internalModel?.settings?.motions
+      ?? {}
+  }
+
+  function playInteraction(hitAreas: string[] = []) {
+    if (!ready.value || !model?.visible || prefersReducedMotion() || mouthValue.value > 0) return
+    const groups = motionDefinitions()
+    const groupNames = Object.keys(groups)
+    const hitHead = hitAreas.some(name => /head|头/i.test(name))
+    const tapGroup = hitHead
+      ? groupNames.find(name => /tap.*head|head.*tap|摸头/i.test(name))
+      : undefined
+    const group = tapGroup || groupNames.find(name => name.toLowerCase() === 'idle')
+    const motions = group ? groups[group] : null
+    if (group && motions?.length && typeof model.motion === 'function') {
+      const index = tapGroup ? undefined : interactionIndex % motions.length
+      const result = model.motion(group, index, 3)
+      if (result && typeof result.catch === 'function') result.catch(() => {})
+    }
+
+    const reactions = ['happy', 'shy', 'gentle']
+    applyExpression(reactions[interactionIndex % reactions.length])
+    interactionIndex += 1
+    clearTimeout(expressionTimer)
+    expressionTimer = window.setTimeout(() => applyExpression(desiredExpression), 1800)
+    stageEl?.classList.remove('live2d-reacting')
+    void stageEl?.offsetWidth
+    stageEl?.classList.add('live2d-reacting')
+  }
+
+  function bindInteractionEvents() {
+    if (!stageEl || pointerMoveHandler) return
+    interactionHint.value = '移动指针，她会看向你 · 点击头部触发摸头'
+    pointerMoveHandler = (event) => {
+      if (event.pointerType === 'touch' || !ready.value || prefersReducedMotion()) return
+      focusPoint = worldPoint(event)
+      if (!focusPoint || focusFrame) return
+      focusFrame = window.requestAnimationFrame(() => {
+        focusFrame = 0
+        if (focusPoint && typeof model?.focus === 'function') model.focus(focusPoint.x, focusPoint.y)
+      })
+    }
+    pointerLeaveHandler = () => {
+      focusPoint = null
+      if (focusFrame) cancelAnimationFrame(focusFrame)
+      focusFrame = 0
+      centerFocus()
+    }
+    pointerClickHandler = (event) => {
+      if ((event.target as HTMLElement | null)?.closest('button, a, input, select, textarea')) return
+      const point = worldPoint(event)
+      const hitAreas = model?.internalModel?.settings?.hitAreas
+      const hits = point && typeof model?.hitTest === 'function' ? model.hitTest(point.x, point.y) : []
+      if (point && Array.isArray(hitAreas) && hitAreas.length && typeof model?.tap === 'function') {
+        model.tap(point.x, point.y)
+      }
+      playInteraction(Array.isArray(hits) ? hits : [])
+    }
+    stageEl.addEventListener('pointermove', pointerMoveHandler)
+    stageEl.addEventListener('pointerleave', pointerLeaveHandler)
+    stageEl.addEventListener('click', pointerClickHandler)
   }
 
   function fit() {
@@ -248,10 +343,9 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     if (model) model.visible = visible
   }
 
-  function setExpression(emotion: string) {
-    desiredExpression = emotion || 'neutral'
+  function applyExpression(emotion: string) {
     if (!ready.value || !model?.visible) return
-    const name = LIVE2D_EXPRESSIONS[desiredExpression] || LIVE2D_EXPRESSIONS.neutral
+    const name = LIVE2D_EXPRESSIONS[emotion] || LIVE2D_EXPRESSIONS.neutral
     try {
       const result = typeof model.expression === 'function' ? model.expression(name) : null
       if (result && typeof result.catch === 'function') {
@@ -263,6 +357,12 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
       setState('degraded', 'Live2D 表情暂不可用', String((error as any)?.message ?? error), true)
     }
     resumeRendering()
+  }
+
+  function setExpression(emotion: string) {
+    clearTimeout(expressionTimer)
+    desiredExpression = emotion || 'neutral'
+    applyExpression(desiredExpression)
   }
 
   function setMouth(value: number) {
@@ -277,17 +377,22 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   // 表情和口型都依赖 Pixi ticker。某些 Cubism 模型在切换表情后会停掉 idle
   // motion；语音开始时显式恢复渲染，避免出现“有声音但立绘冻结”。
   function setSpeaking(value: boolean) {
+    speaking = value
     if (value) resumeRendering()
+    else mouthValue.value = 0
   }
 
   function fallback(text: string, detail: string) {
-    ready.value = false; mouthValue.value = 0; setVisible(false)
+    ready.value = false; mouthValue.value = 0; interactionHint.value = ''; setVisible(false)
     setState('fallback', text || '静态立绘', detail || '', true)
   }
 
   function destroyRuntime() {
     clearTimeout(loadTimer); loadTimer = 0
-    ready.value = false; mouthValue.value = 0; mouthHooked = false; desiredExpression = 'neutral'; model = null
+    clearTimeout(expressionTimer); expressionTimer = 0
+    if (focusFrame) cancelAnimationFrame(focusFrame)
+    focusFrame = 0; focusPoint = null
+    ready.value = false; mouthValue.value = 0; mouthHooked = false; speaking = false; desiredExpression = 'neutral'; model = null
     loadedCharacter.value = ''
     stageEl?.classList.remove('live2d-ready')
     if (app && typeof app.destroy === 'function') { try { app.destroy() } catch {} }
@@ -300,7 +405,11 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     resizeObserver?.disconnect()
     if (onResize) window.removeEventListener('resize', onResize)
     if (visibilityHandler) { document.removeEventListener('visibilitychange', visibilityHandler); visibilityHandler = null }
+    if (stageEl && pointerMoveHandler) stageEl.removeEventListener('pointermove', pointerMoveHandler)
+    if (stageEl && pointerLeaveHandler) stageEl.removeEventListener('pointerleave', pointerLeaveHandler)
+    if (stageEl && pointerClickHandler) stageEl.removeEventListener('click', pointerClickHandler)
+    pointerMoveHandler = null; pointerLeaveHandler = null; pointerClickHandler = null
   }
 
-  return { ready, character, loadedCharacter, mouthValue, init, setCharacter, setMouth, setExpression, setSpeaking, setPaused, layout, retry, destroy }
+  return { ready, character, loadedCharacter, mouthValue, interactionHint, init, setCharacter, setMouth, setExpression, setSpeaking, setPaused, layout, retry, destroy }
 }

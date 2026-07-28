@@ -92,9 +92,9 @@ const icons: Record<string, string> = {
 .toast-info    .toast-icon { color: var(--accent); }
 
 /* TransitionGroup */
-.toast-enter-active { transition: all .25s var(--ease-out); }
-.toast-leave-active { transition: all .2s ease-in; }
-.toast-enter-from   { opacity: 0; transform: translateY(16px) scale(.94); }
+.toast-enter-active { transition: opacity var(--t-base) var(--ease-out), transform var(--t-base) var(--ease-out); }
+.toast-leave-active { transition: opacity var(--t-fast) var(--ease-out), transform var(--t-fast) var(--ease-out); }
+.toast-enter-from   { opacity: 0; transform: translateY(16px) scale(.97); }
 .toast-leave-to     { opacity: 0; transform: translateY(-8px) scale(.96); }
-.toast-move         { transition: transform .25s var(--ease-out); }
+.toast-move         { transition: transform var(--t-base) var(--ease-out); }
 </style>

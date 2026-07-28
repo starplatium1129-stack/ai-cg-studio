@@ -263,7 +263,7 @@ onUnmounted(() => {
 .scene-search:focus { border-color:var(--accent); }
 .scene-search-clear { position:absolute; top:50%; right:8px; transform:translateY(-50%); width:24px; height:24px; border:0; background:transparent; color:var(--text-muted); cursor:pointer; font-size:var(--fs-body-lg); }
 .filter-group { display:flex; gap:var(--s-1); flex-wrap:wrap; }
-.filter-pill { padding:5px 12px; border:1px solid var(--border-soft); border-radius:var(--r-pill); background:transparent; color:var(--text-secondary); cursor:pointer; font:500 var(--fs-label-sm) var(--font-sans); transition:all var(--t-fast); }
+.filter-pill { padding:5px 12px; border:1px solid var(--border-soft); border-radius:var(--r-pill); background:transparent; color:var(--text-secondary); cursor:pointer; font:500 var(--fs-label-sm) var(--font-sans); transition:border-color var(--t-fast),color var(--t-fast),background var(--t-fast),transform var(--t-fast) var(--ease-out); }
 .filter-pill.active,.filter-pill:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
 .result-meta { margin-left:auto; color:var(--text-muted); font-size:var(--fs-label-sm); white-space:nowrap; }
 :deep(.result-meta strong) { color:var(--accent); }

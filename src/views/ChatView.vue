@@ -50,6 +50,9 @@
             :disabled="!avatarRetryable"
             :title="avatarDetail"
             @click="avatarRetryable && live2d.retry()">{{ avatarText }}</button>
+          <div v-if="live2d.interactionHint.value" class="live2d-interaction-hint">
+            {{ live2d.interactionHint.value }}
+          </div>
           <div class="portrait-caption">
             <strong>{{ currentCharacter.name }}</strong>
             <span>{{ currentCharacter.caption }}</span>
@@ -74,6 +77,16 @@
               {{ m.name }}{{ m.parameters ? ' · ' + m.parameters : '' }}
             </option>
           </select>
+        </div>
+
+        <div v-if="!ollamaOnline || voiceCapabilityState === 'offline' || preparingRoom" class="room-setup">
+          <div>
+            <strong>{{ preparingRoom ? '正在准备角色房间' : '本地服务还没有就绪' }}</strong>
+            <span>{{ roomSetupText }}</span>
+          </div>
+          <button class="btn btn-primary" type="button" :disabled="preparingRoom" @click="prepareRoom">
+            {{ preparingRoom ? '准备中…' : '准备聊天环境' }}
+          </button>
         </div>
 
         <!-- 不在整个消息历史上挂 aria-live：流式输出时每个 token 都会让读屏
@@ -172,7 +185,7 @@
 // 聊天页专属样式（18.6KB）随本路由块加载，不再进全局包
 import '@/assets/css/chat.css'
 import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { CHARACTERS, createMessageId } from '@/config/characters'
 import { useChatStorage } from '@/composables/useChatStorage'
 import { useLive2D } from '@/composables/useLive2D'
@@ -180,7 +193,7 @@ import { useVoice } from '@/composables/useVoice'
 import { inferEmotion, parseNdjsonResponse, SentenceBuffer, isAbortError } from '@/utils/stream'
 import { useRovingTabs } from '@/composables/useRovingTabs'
 
-const router = useRouter()
+const route = useRoute()
 
 // ── DOM refs ──────────────────────────────────────────────────────────────
 const stageRef     = ref<HTMLElement>()
@@ -213,8 +226,10 @@ const avatarText    = ref('检测 Live2D…')
 const avatarState   = ref('checking')
 const avatarDetail  = ref('')
 const avatarRetryable = ref(false)
+const preparingRoom = ref(false)
+const roomSetupText = ref('一键切到聊天优先：释放受管绘图显存，并启动角色语音服务。')
 
-let statusTimer = 0, errorTimer = 0, draftTimer = 0
+let statusTimer = 0, errorTimer = 0, draftTimer = 0, roomPollTimer = 0
 let activeRequest: AbortController | null = null
 
 // ── Storage ───────────────────────────────────────────────────────────────
@@ -226,6 +241,11 @@ autoVoice.value = storage.state.settings.autoVoice
 volume.value   = storage.state.settings.volume != null ? storage.state.settings.volume : 80
 currentModel.value = storage.state.settings.model || ''
 activeChar.value = storage.state.active
+const requestedCharacter = typeof route.query.character === 'string' ? route.query.character : ''
+if (requestedCharacter === 'nene' || requestedCharacter === 'natsume') {
+  activeChar.value = requestedCharacter
+  storage.setActive(requestedCharacter)
+}
 
 // ── Composables ───────────────────────────────────────────────────────────
 const live2d = useLive2D((status) => {
@@ -350,6 +370,59 @@ async function refreshVoiceStatus() {
   updateVoiceCapability()
   const voiceId = currentCharacter.value.voice
   if (voice.readyFor(voiceId)) voice.prepare(voiceId, true)
+}
+
+async function pollRoomOperation(operationId: string) {
+  try {
+    const response = await fetch('/api/status', { cache: 'no-store' })
+    const data = await response.json()
+    const operation = data.operation
+    if (!operation || operation.id !== operationId) return
+    roomSetupText.value = operation.message || '正在准备本地服务…'
+    if (operation.status === 'running') return
+    clearInterval(roomPollTimer)
+    roomPollTimer = 0
+    preparingRoom.value = false
+    if (operation.status === 'failed') {
+      setError(operation.error || '聊天环境准备失败，请到控制面板查看。')
+      roomSetupText.value = '准备失败；可以到控制面板查看服务状态。'
+      return
+    }
+    await Promise.all([refreshChatStatus(), refreshVoiceStatus()])
+    roomSetupText.value = '聊天环境已就绪。'
+  } catch {
+    roomSetupText.value = '仍在后台准备；状态暂时无法读取。'
+  }
+}
+
+async function prepareRoom() {
+  if (preparingRoom.value) return
+  preparingRoom.value = true
+  setError('')
+  roomSetupText.value = '正在提交聊天优先切换…'
+  try {
+    const response = await fetch('/api/mode', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mode: 'chat' }),
+    })
+    const data = await response.json()
+    if (!response.ok || !data.ok) throw new Error(data.error || '无法切换聊天环境')
+    const operationId = String(data.operation?.id || '')
+    roomSetupText.value = data.message || '正在准备聊天环境…'
+    if (!operationId) {
+      preparingRoom.value = false
+      await Promise.all([refreshChatStatus(), refreshVoiceStatus()])
+      return
+    }
+    clearInterval(roomPollTimer)
+    roomPollTimer = window.setInterval(() => { void pollRoomOperation(operationId) }, 1800) as unknown as number
+    void pollRoomOperation(operationId)
+  } catch (error) {
+    preparingRoom.value = false
+    roomSetupText.value = '准备失败；可以到控制面板手动处理。'
+    setError((error as Error).message || '聊天环境准备失败')
+  }
 }
 
 // ── Actions ───────────────────────────────────────────────────────────────
@@ -538,7 +611,7 @@ onMounted(async () => {
 })
 
 onUnmounted(() => {
-  clearInterval(statusTimer); clearTimeout(errorTimer); clearTimeout(draftTimer)
+  clearInterval(statusTimer); clearInterval(roomPollTimer); clearTimeout(errorTimer); clearTimeout(draftTimer)
   if (activeRequest) { activeRequest.abort(); activeRequest = null }
   voice.destroy()
   live2d.destroy()

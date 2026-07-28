@@ -137,6 +137,7 @@ async function run() {
   assert(voiceModule.includes('getByteTimeDomainData') && voiceModule.includes('onMouth'), 'lip sync must use real audio amplitude');
   assert(live2dModule.includes('ResizeObserver') && live2dModule.includes('webglcontextlost'), 'Live2D must recover layout and WebGL failures');
   assert(live2dModule.includes('setExpression') && live2dModule.includes('setSpeaking') && live2dModule.includes('applyMouth') && live2dModule.includes('ParamMouthOpenY'), 'Live2D must write real speech amplitudes into the mouth parameter');
+  assert(live2dModule.includes('model.focus') && live2dModule.includes('model.hitTest'), 'Live2D must support pointer focus and model hit testing');
   assert(live2dModule.includes("'degraded'") && live2dModule.includes('已经显示的模型失效'), 'runtime expression failures must not replace a loaded Live2D model with the static portrait');
   // Live2D 运行库必须真正被加载（重构后曾漏掉，导致"运行库加载失败"）
   assert(live2dModule.includes("import('wl-live2d')"), 'Live2D runtime must be imported by the composable');
@@ -190,6 +191,10 @@ async function run() {
   });
   var liveStatus = live2dService.status();
   assert(liveStatus.models.nene.available, 'Nene Live2D model and all references must exist');
+  var neneManifest = JSON.parse(fs.readFileSync(path.join(root, 'assets', 'live2d', 'nene', 'nene.model3.json'), 'utf8'));
+  assert(neneManifest.HitAreas.some(function (area) { return area.Name === 'Head'; }), 'Nene model must expose the source-model head hit area');
+  assert(neneManifest.FileReferences.Motions.TapHead.length === 1, 'Nene model must expose the safe head-tap motion');
+  assert(!neneManifest.FileReferences.Motions.TapHead[0].Sound, 'head-tap interaction must not conflict with AI voice playback');
   assert(!liveStatus.models.natsume.available, 'missing Natsume model must use a declared fallback');
 
   var mock = createMockAiServer();

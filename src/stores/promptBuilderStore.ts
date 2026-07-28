@@ -145,7 +145,8 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   const sceneTheme    = ref('all')
   const sceneLibMode  = ref<'grid' | 'list'>('grid')
   const currentStep   = ref(1)
-  const showMatureScenes = ref(false)
+  // 本项目主要在本机自用，成人向场景默认参与检索；带图的场景卡仍由 SceneCard 做模糊揭示。
+  const showMatureScenes = ref(true)
   const activeTab     = ref('tags')
   const toastMsg      = ref('')
   const lastRecommendedSize = ref('832x1216')
@@ -318,6 +319,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
       colorMood: colorMood.value,
       manualTags: [...manualTags.value],
       sceneBaseStory: sceneBaseStory.value,
+      directorMode: directorMode.value,
       sdParams: { ...sdParams },
       projectId: projectId.value,
     }
@@ -337,6 +339,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     }
     if (typeof d.colorMood === 'string' || d.colorMood === null) colorMood.value = d.colorMood
     if (Array.isArray(d.manualTags)) manualTags.value = new Set(d.manualTags)
+    if (d.directorMode === 'basic' || d.directorMode === 'pro') directorMode.value = d.directorMode
     if (d.sdParams && typeof d.sdParams === 'object') Object.assign(sdParams, d.sdParams)
     if (typeof d.projectId === 'string') projectId.value = d.projectId
   }

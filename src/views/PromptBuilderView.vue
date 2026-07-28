@@ -18,9 +18,11 @@
         <p class="pb-sub">选一个场景，定下情绪、镜头与光照；参数会自动备好，你只管出图。</p>
       </div>
       <div class="pb-top-actions">
-        <button class="focus-mode-btn" type="button" aria-label="进入专注成片模式"
+        <button class="focus-mode-btn" type="button"
+          :aria-label="pb.focusMode ? '退出专注成片模式' : '进入专注成片模式'"
           :aria-pressed="pb.focusMode"
           @click="pb.focusMode = !pb.focusMode">
+          <span class="focus-mode-icon" aria-hidden="true">{{ pb.focusMode ? '↙' : '⛶' }}</span>
           <span class="focus-mode-label">{{ pb.focusMode ? '退出专注' : '专注成片' }}</span>
         </button>
         <div class="api-status">
@@ -56,12 +58,24 @@
 
     <div class="setup-strip">
       <div class="guide-bar">{{ guideText }}</div>
-      <div class="project-bar">
-        <label>项目</label>
-        <select v-model="pb.projectId">
-          <option value="">（无项目）</option>
-          <option v-for="p in pb.projects" :key="p.id" :value="p.id">{{ p.name }}</option>
-        </select>
+    </div>
+
+    <div class="director-mode-bar" aria-label="绘图工作模式">
+      <div class="director-mode-head">
+        <div>
+          <div class="director-mode-title">{{ pb.directorMode === 'basic' ? '场景模式' : '专家模式' }}</div>
+          <div class="director-auto-summary">{{ modeDescription }}</div>
+        </div>
+        <div class="director-mode-switch" role="group" aria-label="切换绘图工作模式">
+          <button class="director-mode-option" type="button"
+            :class="{ active: pb.directorMode === 'basic' }"
+            :aria-pressed="pb.directorMode === 'basic'"
+            @click="setDirectorMode('basic')">场景模式</button>
+          <button class="director-mode-option" type="button"
+            :class="{ active: pb.directorMode === 'pro' }"
+            :aria-pressed="pb.directorMode === 'pro'"
+            @click="setDirectorMode('pro')">专家模式</button>
+        </div>
       </div>
     </div>
 
@@ -107,7 +121,18 @@
 
         <!-- Scenes -->
         <div class="panel step-panel" id="stepScene">
-          <div class="panel-title">Scene · <span class="scene-count-badge">{{ pb.filteredScenes.length }}</span></div>
+          <div class="panel-title">Scene · <span class="scene-count-badge">{{ availableScenes.length }}</span></div>
+          <div class="scene-scope" role="group" aria-label="场景库范围">
+            <button type="button" :class="{ active: sceneCollection === 'core' }"
+              :aria-pressed="sceneCollection === 'core'"
+              @click="setSceneCollection('core')">人设核心 {{ personaCoreCount }}</button>
+            <button type="button" :class="{ active: sceneCollection === 'curated' }"
+              :aria-pressed="sceneCollection === 'curated'"
+              @click="setSceneCollection('curated')">精选 {{ curatedCount }}</button>
+            <button type="button" :class="{ active: sceneCollection === 'all' }"
+              :aria-pressed="sceneCollection === 'all'"
+              @click="setSceneCollection('all')">完整库</button>
+          </div>
           <div class="scene-search-wrap">
             <input type="search" class="scene-search" v-model="pb.sceneSearch"
               placeholder="试试：安静的夏目雨夜">
@@ -116,12 +141,12 @@
           </div>
           <div class="scene-filter-summary">
             <span class="scene-result-count" role="status" aria-live="polite">
-              {{ pb.filteredScenes.length }} 个场景
+              {{ availableScenes.length }} 个场景
             </span>
             <button class="scene-filter-reset" type="button" @click="pb.sceneSearch = ''; pb.sceneTheme = 'all'">重置筛选</button>
           </div>
-          <div class="scene-filter-label">主题</div>
-          <div class="scene-cats">
+          <div class="scene-filter-label advanced-decision">主题</div>
+          <div class="scene-cats advanced-decision">
             <button v-for="t in SCENE_THEMES" :key="t.id"
               class="scene-cat-btn" type="button"
               :class="{ active: pb.sceneTheme === t.id }"
@@ -129,27 +154,30 @@
           </div>
           <div class="scene-list">
             <div v-if="!pb.dataReady" class="scene-loading">正在加载场景库…</div>
-            <div v-else-if="!pb.filteredScenes.length" class="scene-empty">未找到匹配场景</div>
+            <div v-else-if="!availableScenes.length" class="scene-empty">未找到匹配场景</div>
             <button v-for="scene in visibleScenes" :key="scene.id"
               class="scene-card"
               :class="{ active: pb.sceneId === scene.id }"
               type="button"
               @click="selectScene(scene)">
-              <div class="scene-card-title">{{ scene.title }}</div>
+              <div class="scene-card-title">
+                {{ scene.title }}
+                <span v-if="personaCoreIds.has(scene.id)" class="scene-core-mark">人设核心</span>
+              </div>
               <div v-if="scene.story" class="scene-card-story">{{ scene.story }}</div>
               <div class="scene-card-meta">
                 <span v-if="scene.category" class="scene-cat-tag">{{ scene.category }}</span>
                 <span v-if="scene.rating && scene.rating !== 'All'" class="scene-rating-tag">{{ scene.rating }}</span>
               </div>
             </button>
-            <button v-if="pb.filteredScenes.length > sceneLimit" class="btn btn-ghost scene-more"
+            <button v-if="availableScenes.length > sceneLimit" class="btn btn-ghost scene-more"
               type="button" @click="sceneLimit += 20">
-              显示更多 ({{ pb.filteredScenes.length - sceneLimit }} 个)
+              显示更多 ({{ availableScenes.length - sceneLimit }} 个)
             </button>
           </div>
         </div>
 
-        <HistoryPanel
+        <HistoryPanel class="advanced-decision"
           :history="pb.history"
           @resume="resumeHistory"
           @duplicate="duplicateHistory"
@@ -201,8 +229,37 @@
           </div>
         </div>
 
+        <div class="panel step-panel advanced-decision expert-tag-panel" id="stepTags">
+          <div class="panel-title">词条工作台 · Tags</div>
+          <div class="manual-tags">
+            <span v-for="tag in pb.manualTags" :key="tag" class="manual-tag">
+              {{ tag }}
+              <button type="button" class="tag-remove" @click="pb.toggleManualTag(tag)">×</button>
+            </span>
+          </div>
+          <div class="tag-browser">
+            <input v-model="tagSearch" class="tag-input" type="search" placeholder="搜索中文或 Danbooru 词条" />
+            <div class="tag-categories" role="group" aria-label="词条分类">
+              <button v-for="cat in tagCategories" :key="cat.id" type="button"
+                :class="{ active: tagCategory === cat.id }"
+                :aria-pressed="tagCategory === cat.id"
+                @click="tagCategory = cat.id">{{ cat.label }}</button>
+            </div>
+            <div class="tag-results">
+              <button v-for="tag in visibleTags" :key="tag.en" type="button"
+                :class="{ selected: pb.manualTags.has(tag.en) }"
+                :aria-pressed="pb.manualTags.has(tag.en)"
+                @click="pb.toggleManualTag(tag.en)">
+                <strong>{{ tag.cn }}</strong><small>{{ tag.en }}</small>
+              </button>
+            </div>
+          </div>
+          <input class="tag-input" type="text" placeholder="也可以直接输入 Danbooru 标签后回车"
+            @keydown.enter.prevent="addTag($event)" />
+        </div>
+
         <!-- Prompt monitor -->
-        <div class="monitor" id="promptMonitor">
+        <div class="monitor advanced-decision" id="promptMonitor">
           <div class="panel-title">
             Prompt 实时预览
             <span v-if="modelProfile" class="monitor-profile">{{ modelProfile.name }}</span>
@@ -234,7 +291,7 @@
         </div>
 
         <!-- SD params -->
-        <details class="panel generation-settings">
+        <details class="panel generation-settings advanced-decision">
           <summary class="panel-title settings-summary">出图参数</summary>
           <div class="controls-grid">
             <div class="ctrl"><label>CFG</label>
@@ -323,17 +380,17 @@
                 <option value="1920x1088">1920×1088 · 大图</option>
               </optgroup>
             </select></label>
-            <span class="sd-vram-hint" :class="vramLevel">{{ vramHint }}</span>
-            <span v-if="baseResolutionRisk" class="sd-base-resolution-hint" :class="baseResolutionRisk">{{ baseResolutionHint }}</span>
-            <label class="hires-label">
+            <span class="sd-vram-hint advanced-decision" :class="vramLevel">{{ vramHint }}</span>
+            <span v-if="baseResolutionRisk" class="sd-base-resolution-hint advanced-decision" :class="baseResolutionRisk">{{ baseResolutionHint }}</span>
+            <label class="hires-label advanced-decision">
               <span class="switch"><input type="checkbox" v-model="pb.sdParams.hiresFix"><span class="slider"></span></span>
               hires.fix
             </label>
-            <label v-if="canUseFaceDetailer" class="hires-label">
+            <label v-if="canUseFaceDetailer" class="hires-label advanced-decision">
               <span class="switch"><input type="checkbox" v-model="pb.sdParams.faceDetailer" @change="pb.markParamTouched('faceDetailer')"><span class="slider"></span></span>
               面部与手部修复
             </label>
-            <details v-if="pb.sdParams.hiresFix" class="sd-advanced-options">
+            <details v-if="pb.sdParams.hiresFix" class="sd-advanced-options advanced-decision">
               <summary>高级设置</summary>
               <div class="sd-advanced-grid">
                 <label>放大<select v-model.number="pb.sdParams.hiresScale" @change="pb.markParamTouched('hiresScale')"><option :value="1.5">1.5×</option><option :value="2">2×</option></select></label>
@@ -355,10 +412,10 @@
             </button>
             <button v-if="sd.generating.value" class="btn btn-ghost" type="button"
               @click="sd.cancel()">停止生成</button>
-            <button class="btn btn-ghost" type="button" :disabled="!sdQueue.canEnqueue.value" @click="enqueueCurrent">
+            <button class="btn btn-ghost advanced-decision" type="button" :disabled="!sdQueue.canEnqueue.value" @click="enqueueCurrent">
               加入队列
             </button>
-            <button class="btn btn-ghost" type="button" :disabled="!sd.resultSeed.value" @click="reuseLastSeed">
+            <button class="btn btn-ghost advanced-decision" type="button" :disabled="!sd.resultSeed.value" @click="reuseLastSeed">
               锁定这个 seed 微调
             </button>
             <button class="btn btn-ghost" type="button" @click="pb.clearScene()">再来一次</button>
@@ -389,7 +446,7 @@
           </div>
 
           <!-- 出图队列 -->
-          <div v-if="sdQueue.total.value" class="sd-queue">
+          <div v-if="sdQueue.total.value" class="sd-queue advanced-decision">
             <div class="sd-queue-head">
               <span>出图队列 · {{ sdQueue.total.value }} 个{{ sdQueue.paused.value ? '（已暂停）' : '' }}</span>
               <span class="row-tight">
@@ -429,8 +486,11 @@
       <div class="director-col col-right">
 
         <!-- Emotion -->
-        <div class="panel step-panel" id="stepEmotion">
-          <div class="panel-title">情绪 · Emotion</div>
+        <details class="panel step-panel decision-fold" id="stepEmotion" :open="pb.directorMode === 'basic'">
+          <summary class="panel-title decision-summary">
+            <span>情绪 · Emotion</span>
+            <span class="decision-current">{{ emotionSummary }}</span>
+          </summary>
           <div class="emotion-list">
             <button v-for="e in EMOTION" :key="e.id"
               class="option" type="button"
@@ -440,11 +500,14 @@
               <span class="opt-name">{{ e.name }}</span>
             </button>
           </div>
-        </div>
+        </details>
 
         <!-- Camera / Shot -->
-        <div class="panel step-panel" id="stepCamera">
-          <div class="panel-title">镜头 · Camera</div>
+        <details class="panel step-panel advanced-decision decision-fold" id="stepCamera">
+          <summary class="panel-title decision-summary">
+            <span>镜头 · Camera</span>
+            <span class="decision-current">{{ shotSummary }}</span>
+          </summary>
           <div class="camera-list">
             <button v-for="s in SHOT" :key="s.id"
               class="option" type="button"
@@ -454,11 +517,14 @@
               <span class="opt-name">{{ s.name }}</span>
             </button>
           </div>
-        </div>
+        </details>
 
         <!-- Lighting -->
-        <div class="panel step-panel" id="stepLighting">
-          <div class="panel-title">光照 · Lighting</div>
+        <details class="panel step-panel advanced-decision decision-fold" id="stepLighting">
+          <summary class="panel-title decision-summary">
+            <span>光照 · Lighting</span>
+            <span class="decision-current">{{ lightingSummary }}</span>
+          </summary>
           <div class="lighting-list">
             <button v-for="l in LIGHTING" :key="l.id"
               class="option" type="button"
@@ -468,11 +534,14 @@
               <span class="opt-name">{{ l.name }}</span>
             </button>
           </div>
-        </div>
+        </details>
 
         <!-- Composition -->
-        <div class="panel step-panel" id="stepComposition">
-          <div class="panel-title">构图 · Composition</div>
+        <details class="panel step-panel advanced-decision decision-fold" id="stepComposition">
+          <summary class="panel-title decision-summary">
+            <span>构图 · Composition</span>
+            <span class="decision-current">{{ compositionSummary }}</span>
+          </summary>
           <div class="comp-list">
             <button v-for="c in COMPOSITION" :key="c.id"
               class="option" type="button"
@@ -482,11 +551,14 @@
               <span class="opt-name">{{ c.name }}</span>
             </button>
           </div>
-        </div>
+        </details>
 
         <!-- Color Mood -->
-        <div class="panel step-panel" id="stepMood">
-          <div class="panel-title">色彩情调 · Mood</div>
+        <details class="panel step-panel decision-fold" id="stepMood" :open="pb.directorMode === 'basic'">
+          <summary class="panel-title decision-summary">
+            <span>色彩情调 · Mood</span>
+            <span class="decision-current">{{ moodSummary }}</span>
+          </summary>
           <div class="mood-grid">
             <button v-for="m in COLOR_MOODS" :key="m.id"
               class="mood-card" type="button"
@@ -497,20 +569,7 @@
               <span class="mood-desc">{{ m.desc }}</span>
             </button>
           </div>
-        </div>
-
-        <!-- Manual tags -->
-        <div class="panel step-panel" id="stepTags">
-          <div class="panel-title">手动标签 · Tags</div>
-          <div class="manual-tags">
-            <span v-for="tag in pb.manualTags" :key="tag" class="manual-tag">
-              {{ tag }}
-              <button type="button" class="tag-remove" @click="pb.toggleManualTag(tag)">×</button>
-            </span>
-          </div>
-          <input class="tag-input" type="text" placeholder="输入 Danbooru 标签后回车"
-            @keydown.enter.prevent="addTag($event)" />
-        </div>
+        </details>
 
       </div>
     </div>
@@ -573,6 +632,7 @@ import { classifySDError, SAFE_SAMPLING, LIGHT_LOAD, type SDErrorReport, type SD
 import { useBackup, type BackupSummary } from '@/composables/useBackup'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import VoiceStudio from '@/components/VoiceStudio.vue'
+import { readHiddenScenes, rememberRecent } from '@/utils/sceneUX'
 import type { HistoryEntry, Scene } from '@/stores/promptBuilderStore'
 
 const router = useRouter()
@@ -583,6 +643,11 @@ const sd = useSDGenerate()
 // ── UI state ──────────────────────────────────────────────────────────────
 const sceneLimit = ref(20)
 const sdSize = ref('832x1216')
+const sceneCollection = ref<'core' | 'curated' | 'all'>('core')
+const hiddenSceneIds = ref(readHiddenScenes())
+const tagSearch = ref('')
+const tagCategory = ref('all')
+const DIRECTOR_MODE_KEY = 'aics_pb_director_mode'
 
 // ── 显存预算提示（重构前的 sdBudgetHint） ─────────────────────────────────
 const vramBudget = computed(() => {
@@ -640,7 +705,37 @@ const charOptions = [
   { id: 'triad',   label: '🌸🍂 双人' },
 ]
 
+const TAG_CATEGORY_LABELS: Record<string, string> = {
+  all: '全部',
+  Clothing: '服装',
+  Action: '动作',
+  Emotion: '情绪',
+  Scene: '场景',
+  Lighting: '光照',
+  Appearance: '外观',
+  Camera: '镜头',
+  Style: '画风',
+  Quality: '质量',
+  Body: '身体',
+  Mature: '成人',
+  Character: '角色',
+}
+
 // ── Derived ───────────────────────────────────────────────────────────────
+const optionName = (options: readonly { id: string; name: string }[], id: string | null) =>
+  options.find(option => option.id === id)?.name ?? '自动'
+const emotionSummary = computed(() => {
+  const names = pb.selections.emotion
+    .map(id => EMOTION.find(option => option.id === id)?.name)
+    .filter(Boolean)
+  if (!names.length) return '自动'
+  return names.length > 2 ? `${names.slice(0, 2).join('、')} +${names.length - 2}` : names.join('、')
+})
+const shotSummary = computed(() => optionName(SHOT, pb.selections.shot))
+const lightingSummary = computed(() => optionName(LIGHTING, pb.selections.lighting))
+const compositionSummary = computed(() => optionName(COMPOSITION, pb.selections.composition))
+const moodSummary = computed(() => optionName(COLOR_MOODS, pb.colorMood))
+
 const currentTraits = computed(() => {
   const charDef = pb.characters.find(c =>
     c.id.includes(pb.char) || (c.lora?.name ?? '').toLowerCase().includes(pb.char)
@@ -648,10 +743,52 @@ const currentTraits = computed(() => {
   return charDef?.traits ?? []
 })
 
-const visibleScenes = computed(() => pb.filteredScenes.slice(0, sceneLimit.value))
+const personaCoreIds = computed(() => new Set(
+  Array.isArray(pb.curation.personaCoreSceneIds)
+    ? pb.curation.personaCoreSceneIds as string[]
+    : Array.isArray(pb.curation.signatureSceneIds)
+      ? pb.curation.signatureSceneIds as string[]
+      : [],
+))
+const curatedIds = computed(() => new Set(
+  Array.isArray(pb.curation.curatedSceneIds) ? pb.curation.curatedSceneIds as string[] : [],
+))
+const availableScenes = computed(() => {
+  const base = pb.filteredScenes.filter(scene => !hiddenSceneIds.value.has(scene.id))
+  // 搜索永远扫完整可用库，避免用户必须先猜场景属于哪一层。
+  if (pb.sceneSearch.trim() || sceneCollection.value === 'all') return base
+  const ids = sceneCollection.value === 'core' ? personaCoreIds.value : curatedIds.value
+  return base.filter(scene => ids.has(scene.id))
+})
+const visibleScenes = computed(() => availableScenes.value.slice(0, sceneLimit.value))
+const personaCoreCount = computed(() =>
+  pb.filteredScenes.filter(scene => !hiddenSceneIds.value.has(scene.id) && personaCoreIds.value.has(scene.id)).length,
+)
+const curatedCount = computed(() =>
+  pb.filteredScenes.filter(scene => !hiddenSceneIds.value.has(scene.id) && curatedIds.value.has(scene.id)).length,
+)
+
+const tagCategories = computed(() => {
+  const found = new Set(pb.tags.map(tag => tag.cat).filter(Boolean))
+  return ['all', ...found].map(id => ({ id, label: TAG_CATEGORY_LABELS[id] || id }))
+})
+const visibleTags = computed(() => {
+  const q = tagSearch.value.trim().toLowerCase()
+  return pb.tags
+    .filter(tag => tagCategory.value === 'all' || tag.cat === tagCategory.value)
+    .filter(tag => !q || tag.en.toLowerCase().includes(q) || tag.cn.toLowerCase().includes(q))
+    .sort((a, b) => Number(pb.manualTags.has(b.en)) - Number(pb.manualTags.has(a.en)))
+    .slice(0, 72)
+})
+
+const modeDescription = computed(() => pb.directorMode === 'basic'
+  ? '从人设核心场景出发，镜头、光照与构图自动预填；只保留影响成片的选择。'
+  : '开放完整场景库、词条选择、Prompt 结构与全部生成参数。')
 
 const guideText = computed(() => {
-  if (!pb.story && !pb.sceneId) return '写一个故事，或选一张场景卡'
+  if (!pb.story && !pb.sceneId) return pb.directorMode === 'basic'
+    ? '先选一个贴合人设的场景，导演参数会自动准备'
+    : '写一个故事，或从完整场景库与词条开始搭建'
   if (pb.sceneId) return `场景已选：${pb.activeScene?.title ?? ''}`
   return '故事已填写，现在选择导演决策'
 })
@@ -825,8 +962,24 @@ const previewPrompt = computed(() => {
 const livePrompt = positivePrompt
 
 // ── Actions ───────────────────────────────────────────────────────────────
+function setDirectorMode(mode: 'basic' | 'pro') {
+  pb.directorMode = mode
+  sceneCollection.value = mode === 'basic' ? 'core' : 'all'
+  sceneLimit.value = 20
+}
+
+function setSceneCollection(collection: 'core' | 'curated' | 'all') {
+  if (collection === 'all' && pb.directorMode === 'basic') {
+    setDirectorMode('pro')
+    return
+  }
+  sceneCollection.value = collection
+  sceneLimit.value = 20
+}
+
 function selectScene(scene: Scene) {
   pb.loadScene(scene)
+  rememberRecent(scene)
   sceneLimit.value = 20
 }
 
@@ -1126,6 +1279,11 @@ function addTag(e: Event) {
 
 // ── Lifecycle ─────────────────────────────────────────────────────────────
 onMounted(async () => {
+  const savedMode = localStorage.getItem(DIRECTOR_MODE_KEY)
+  if (savedMode === 'pro' || savedMode === 'basic') {
+    pb.directorMode = savedMode
+    sceneCollection.value = savedMode === 'pro' ? 'all' : 'core'
+  }
   await pb.loadData()
   await sd.checkStatus()
   // 拿到 WebUI 真实 checkpoint 后，再按对应 model profile 填参数
@@ -1144,7 +1302,7 @@ onMounted(async () => {
   }
   if (typeof q.scene === 'string') {
     const sc = pb.scenes.find(s => s.id === q.scene)
-    if (sc) { pb.loadScene(sc); handledDeepLink = true }
+    if (sc) { selectScene(sc); handledDeepLink = true }
   } else if (typeof q.regen === 'string' || typeof q.variant === 'string') {
     const targetId = q.regen ? Number(q.regen) : NaN
     const entry = targetId ? (pb.history as any[]).find(h => h.id === targetId) : null
@@ -1179,6 +1337,14 @@ onMounted(async () => {
 watch([() => pb.story, () => pb.char, () => pb.sceneId, () => pb.selections, () => pb.manualTags, () => pb.colorMood], () => {
   pb.saveDraft?.()
 }, { deep: true })
+
+watch(() => pb.directorMode, mode => {
+  localStorage.setItem(DIRECTOR_MODE_KEY, mode)
+})
+
+watch([() => pb.char, () => pb.sceneSearch, () => pb.sceneTheme, sceneCollection], () => {
+  sceneLimit.value = 20
+})
 
 // 切换 SD 模型时重新套用对应 profile 的推荐参数
 watch(() => pb.sdModelName, (name) => {

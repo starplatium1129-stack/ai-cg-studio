@@ -145,6 +145,8 @@ export interface TagRecord {
 export interface CurationData {
   curatedSceneIds?: string[]
   signatureSceneIds?: string[]
+  personaCoreSceneIds?: string[]
+  personaCoreReasons?: Record<string, string>
   reviewSceneIds?: string[]
   recommendationReasons?: Record<string, string>
   [key: string]: unknown

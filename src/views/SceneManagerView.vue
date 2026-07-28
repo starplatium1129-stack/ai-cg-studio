@@ -925,7 +925,7 @@ onMounted(async () => {
 .stat-value { font-size:var(--fs-title-xs); font-weight:800; color:var(--accent); }
 .stat-label { font-size:var(--fs-label-xs); color:var(--text-muted); }
 .tab-row { display:flex; gap:var(--s-2); margin-bottom:var(--s-4); flex-wrap:wrap; }
-.tab-btn { padding:var(--s-2) var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-pill); background:transparent; color:var(--text-secondary); cursor:pointer; font:600 var(--fs-body-sm) var(--font-sans); transition:all var(--t-fast); }
+.tab-btn { padding:var(--s-2) var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-pill); background:transparent; color:var(--text-secondary); cursor:pointer; font:600 var(--fs-body-sm) var(--font-sans); transition:border-color var(--t-fast),color var(--t-fast),background var(--t-fast),transform var(--t-fast) var(--ease-out); }
 .tab-btn.active { background:var(--accent); color:var(--text-inverse); border-color:var(--accent); }
 .table-wrap { overflow-x:auto; background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-lg); margin-bottom:var(--s-4); }
 table { width:100%; border-collapse:collapse; font-size:var(--fs-body-sm); }

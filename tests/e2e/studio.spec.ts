@@ -95,16 +95,36 @@ test('home renders hero, featured scenes and live counts', async ({ page }) => {
   expect(errors).toEqual([]);
 });
 
-test('director loads scene library, prompt preview and generation params', async ({ page }) => {
+test('director separates a focused scene mode from the expert tag workflow', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
+  await page.setViewportSize({ width: 3840, height: 2160 });
   await page.goto('/prompt-builder');
 
+  await expect(page.locator('.pb')).toHaveAttribute('data-director-mode', 'basic');
   await expect(page.locator('.story-input')).toBeVisible();
   await expect(page.locator('.scene-list button.scene-card').first()).toBeVisible();
-  await expect(page.locator('.scene-count-badge')).not.toHaveText('');
+  await expect(page.locator('.scene-list button.scene-card')).toHaveCount(6);
+  await expect(page.locator('#stepTags')).toBeHidden();
+  await expect(page.locator('#projectSelect')).toHaveCount(0);
+  await expect(page.locator('.voice-studio')).toBeVisible();
+  const basicColumns = await page.locator('.director-workspace').evaluate(element => {
+    const [left, center, right] = Array.from(element.children).map(child => child.getBoundingClientRect().width);
+    return { left, center, right };
+  });
+  expect(basicColumns.left).toBeGreaterThanOrEqual(320);
+  expect(basicColumns.center).toBeGreaterThan(1400);
+  expect(basicColumns.right).toBeGreaterThanOrEqual(300);
 
   // 选一张场景后，提示词应实时生成，并带出结构健康统计
   await page.locator('.scene-list button.scene-card').first().click();
+  await page.getByRole('button', { name: '专家模式', exact: true }).click();
+  await expect(page.locator('.pb')).toHaveAttribute('data-director-mode', 'pro');
+  await expect(page.locator('#stepTags')).toBeVisible();
+  await expect(page.locator('.col-center > #stepTags')).toHaveCount(1);
+  await expect(page.locator('#stepCamera')).not.toHaveAttribute('open', '');
+  await expect(page.locator('.tag-results button')).toHaveCount(72);
+  await page.getByPlaceholder('搜索中文或 Danbooru 词条').fill('校服');
+  await expect(page.locator('.tag-results')).toContainText('school_uniform');
   await expect(page.locator('.preview-output')).not.toHaveText(/^选择左侧场景/);
   await expect(page.locator('.token-counter')).toBeVisible();
   // 质量前缀必须来自模型 profile，而不是硬编码
@@ -256,6 +276,29 @@ test('character room mounts portrait, composer and voice console', async ({ page
   expect(errors).toEqual([]);
 });
 
+test('character profile opens the selected character room and persona scenes', async ({ page }) => {
+  const errors = collectRuntimeErrors(page);
+  await page.route('**/api/chat-status', route => route.fulfill({
+    contentType: 'application/json',
+    body: JSON.stringify({ ok: true, online: false, models: [] }),
+  }));
+  await page.route('**/api/tts-status', route => route.fulfill({
+    contentType: 'application/json',
+    body: JSON.stringify({ ok: true, online: false, voices: {} }),
+  }));
+  await page.goto('/character?character=natsume');
+
+  await expect(page.locator('.character-name')).toHaveText('四季夏目');
+  await expect(page.locator('.recommend-title')).toHaveText('人设核心场景');
+  await expect(page.locator('.recommend-grid a')).toHaveCount(6);
+  await page.getByRole('link', { name: '进入她的房间' }).click();
+  await expect(page).toHaveURL(/\/chat\?character=natsume/);
+  await expect(page.locator('.portrait-stage')).toHaveAttribute('data-character', 'natsume');
+  await expect(page.locator('.room-setup')).toBeVisible();
+
+  expect(errors).toEqual([]);
+});
+
 test('style page offers full colour moods that route into the director', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   await page.goto('/style');
@@ -276,11 +319,23 @@ test('scene explorer collapses filters into a single toolbar', async ({ page }) 
   await page.goto('/scene-explorer');
 
   await expect(page.locator('.scene-toolbar')).toHaveCount(1);
-  await expect(page.locator('.sc').first()).toBeVisible();
+  await expect(page.locator('.scene-grid .sc')).toHaveCount(12);
+  await expect(page.locator('.scene-count')).toContainText('人设核心 12');
+  const firstScene = page.locator('.scene-grid .sc').first();
+  await firstScene.getByRole('button', { name: '隐藏', exact: true }).click();
+  await expect(page.locator('.scene-grid .sc')).toHaveCount(11);
   // 精细筛选默认收起，点开后才出现
   await expect(page.locator('.scene-facet-panel')).toBeHidden();
   await page.locator('.filter-toggle').click();
   await expect(page.locator('.scene-facet-panel')).toBeVisible();
+  await expect(page.getByRole('checkbox', { name: /显示成人内容/ })).toBeChecked();
+  const hiddenToggle = page.getByRole('checkbox', { name: /管理已隐藏/ });
+  await expect(hiddenToggle).toHaveAccessibleName(/1/);
+  await hiddenToggle.check();
+  await expect(page.locator('.scene-grid .sc')).toHaveCount(1);
+  const hiddenScene = page.locator('.scene-grid .sc').first();
+  await hiddenScene.getByRole('button', { name: '↩ 恢复', exact: true }).click();
+  await expect(page.locator('.scene-grid .sc')).toHaveCount(0);
 
   expect(errors).toEqual([]);
 });

@@ -3,9 +3,11 @@ import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const localChromiumCandidates = process.platform === 'win32' ? [
-  'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
   'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
-  'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe'
+  'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe',
+  // Chrome can exist on disk while its enterprise/profile bootstrap exits before
+  // Playwright attaches. Edge is the stable local smoke-test runtime on Windows.
+  'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
 ] : [];
 const executablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH ||
   localChromiumCandidates.find(candidate => existsSync(candidate));

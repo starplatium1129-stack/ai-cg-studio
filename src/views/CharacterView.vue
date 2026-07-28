@@ -44,6 +44,11 @@
           <div class="tags-grid">
             <span v-for="(t,i) in current.tags" :key="t" class="tag-chip" :class="tagClass(i)">{{ t }}</span>
           </div>
+          <div class="character-actions" aria-label="角色快捷操作">
+            <RouterLink class="btn btn-primary" :to="`/chat?character=${encodeURIComponent(current.id)}`">进入她的房间</RouterLink>
+            <RouterLink class="btn btn-ghost" :to="`/prompt-builder?char=${encodeURIComponent(current.id)}`">以她开始绘制</RouterLink>
+            <RouterLink class="btn btn-ghost" :to="`/scene-explorer?character=${encodeURIComponent(current.id)}`">看核心场景</RouterLink>
+          </div>
           <!-- 简介被 CSS 截断（max-height），展开是真的在露出内容，
            所以必须是可聚焦控件并汇报 aria-expanded；原先只有 @click -->
       <button
@@ -66,11 +71,19 @@
       </section>
 
       <section v-if="recommendations.length" class="recommend-section">
-        <h2 class="recommend-title">推荐场景</h2>
+        <div class="recommend-head">
+          <div>
+            <div class="page-kicker">Persona core</div>
+            <h2 class="recommend-title">人设核心场景</h2>
+            <p>先从最像她的瞬间开始；其他换装、AU 与成人向变体仍可在完整场景库中找到。</p>
+          </div>
+          <a v-if="officialProfileUrl" class="official-link" :href="officialProfileUrl" target="_blank" rel="noreferrer">查看官方人设依据 ↗</a>
+        </div>
         <div class="recommend-grid">
           <RouterLink v-for="s in recommendations" :key="s.id" class="card-direct"
             :to="'/prompt-builder?scene='+encodeURIComponent(s.id)">
             <div class="cg-title">{{ s.title }}</div>
+            <div v-if="recommendationReason(s.id)" class="cg-reason">{{ recommendationReason(s.id) }}</div>
             <div class="cg-story">{{ s.story }}</div>
           </RouterLink>
         </div>
@@ -81,10 +94,12 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import { useSceneStore } from '@/stores/sceneStore'
 import { useRovingTabs } from '@/composables/useRovingTabs'
 
 const sceneStore = useSceneStore()
+const route = useRoute()
 const characters = ref<any[]>([])
 const scenes = ref<any[]>([])
 const loading = ref(true)
@@ -109,18 +124,31 @@ const hasIdentity = computed(() => {
   return id.role || id.age || id.occupation || id.faction
 })
 const recommendations = computed(() => {
-  if (!current.value?.lora?.recommended_scene) return []
-  return current.value.lora.recommended_scene
+  if (!current.value) return []
+  const core = sceneStore.curation.personaCoreSceneIds
+  const ids = Array.isArray(core) && core.length ? core : current.value.lora?.recommended_scene
+  if (!Array.isArray(ids)) return []
+  return ids
     .map((id: string) => scenes.value.find(s => s.id === id))
-    .filter(Boolean)
+    .filter((scene: any) => scene && [current.value.id, 'triad', 'both'].includes(scene.char))
+    .slice(0, 6)
 })
+const officialProfileUrl = computed(() => current.value?.id === 'nene'
+  ? 'https://www.yuzu-soft.com/products/sothewitch/character.html'
+  : current.value?.id === 'natsume'
+    ? 'https://www.yuzu-soft.com/products/stella/character.html'
+    : '')
+function recommendationReason(id: string) {
+  return sceneStore.curation.personaCoreReasons?.[id] || ''
+}
 
 onMounted(async () => {
   try {
     await sceneStore.load()
     characters.value = sceneStore.characters as any[]
     scenes.value = sceneStore.scenes as any[]
-    current.value = characters.value[0] || null
+    const requested = typeof route.query.character === 'string' ? route.query.character : ''
+    current.value = characters.value.find(c => c.id === requested) || characters.value[0] || null
   } catch (e) { console.warn('character data load failed', e) }
   loading.value = false
 })
@@ -128,7 +156,7 @@ onMounted(async () => {
 
 <style scoped>
 .character-tabs { display:flex; gap:var(--s-2); margin-bottom:var(--s-5); }
-.character-tab { padding:var(--s-2) var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-pill); background:var(--bg-surface); color:var(--text-secondary); cursor:pointer; font:600 var(--fs-body-sm) var(--font-sans); transition:all var(--t-fast); }
+.character-tab { padding:var(--s-2) var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-pill); background:var(--bg-surface); color:var(--text-secondary); cursor:pointer; font:600 var(--fs-body-sm) var(--font-sans); transition:border-color var(--t-fast),color var(--t-fast),background var(--t-fast),transform var(--t-fast) var(--ease-out); }
 .character-tab.active,.character-tab:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
 .character-hero { display:grid; grid-template-columns:320px 1fr; gap:var(--s-6); padding:var(--s-6); }
 /* 立绘按"画框里的展品"处理：底光 + 顶部渐隐 + 轻微入场位移，
@@ -178,6 +206,8 @@ onMounted(async () => {
 .voice-block { margin:var(--s-3) 0; padding:var(--s-2) var(--s-3); border-left:3px solid var(--accent); background:var(--accent-soft); color:var(--text-secondary); font-size:var(--fs-body); font-style:italic; }
 .voice-label { display:block; margin-bottom:2px; color:var(--accent); font-size:var(--fs-mono-xs); font-style:normal; letter-spacing:.08em; text-transform:uppercase; }
 .tags-grid { display:flex; flex-wrap:wrap; gap:var(--s-2); margin-bottom:var(--s-3); }
+.character-actions { display:flex; flex-wrap:wrap; gap:var(--s-2); margin:var(--s-4) 0; }
+.character-actions .btn { justify-content:center; }
 /* 视觉特征标签：原来直接用 mood 原色做实心底（那是给色块调的高饱和值），
    六个彩色胶囊在紫黑档案页里像贴纸。改成同色系描边 + 极淡底，
    保留可区分度但回到画册气质。 */
@@ -209,9 +239,15 @@ onMounted(async () => {
 .char-lora { color:var(--text-secondary); font-size:var(--fs-body-sm); }
 .char-lora code { color:var(--accent); font-family:var(--font-mono); }
 .recommend-section { margin-top:var(--s-7); }
+.recommend-head { display:flex; align-items:flex-end; justify-content:space-between; gap:var(--s-4); margin-bottom:var(--s-3); }
+.recommend-head p { max-width:680px; margin:var(--s-1) 0 0; color:var(--text-muted); font-size:var(--fs-body-sm); }
 .recommend-title { margin:0 0 var(--s-3); font-size:var(--fs-title-sm); }
+.recommend-head .recommend-title { margin-bottom:0; }
+.official-link { flex:0 0 auto; color:var(--accent); font-size:var(--fs-label-sm); text-decoration:none; }
+.official-link:hover { text-decoration:underline; }
 .recommend-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:var(--s-3); }
 .cg-title { margin-bottom:var(--s-1); font-size:var(--fs-title-xs); font-weight:800; }
+.cg-reason { margin-bottom:var(--s-2); color:var(--accent); font-size:var(--fs-label-sm); line-height:1.55; }
 .cg-story { color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:1.65; }
-@media(max-width:700px){.character-hero{grid-template-columns:1fr}.portrait{min-height:380px}.detail-grid{grid-template-columns:1fr}}
+@media(max-width:700px){.character-hero{grid-template-columns:1fr}.portrait{min-height:380px}.detail-grid{grid-template-columns:1fr}.recommend-head{align-items:flex-start;flex-direction:column}.character-actions .btn{flex:1 1 100%}}
 </style>

@@ -148,3 +148,14 @@ test('narrow viewports keep the director usable without horizontal scroll', asyn
   expect(overflow).toBeLessThanOrEqual(1);
   expect(errors).toEqual([]);
 });
+
+test('narrow viewports keep the home hero inside the viewport', async ({ page }) => {
+  const errors = collectRuntimeErrors(page);
+  await page.goto('/');
+  await expect(page.locator('.home-hero')).toBeVisible();
+  const overflow = await page.evaluate(() =>
+    document.documentElement.scrollWidth - document.documentElement.clientWidth,
+  );
+  expect(overflow).toBeLessThanOrEqual(1);
+  expect(errors).toEqual([]);
+});

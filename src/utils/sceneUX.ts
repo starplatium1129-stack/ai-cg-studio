@@ -4,6 +4,8 @@ export interface SceneUXConfig {
   signatureSceneIds?: string[]
   reviewSceneIds?: string[]
   curatedSceneIds?: string[]
+  personaCoreSceneIds?: string[]
+  personaCoreReasons?: Record<string, string>
   searchAliases?: Record<string, string[]>
   recommendationReasons?: Record<string, string>
 }
@@ -21,6 +23,24 @@ interface SceneStats {
 }
 
 const RECENT_KEY = 'aics_recent_scenes'
+export const HIDDEN_SCENES_KEY = 'aics_hidden_scenes'
+
+export function readHiddenScenes(storage?: Storage): Set<string> {
+  try {
+    const value = JSON.parse((storage ?? localStorage).getItem(HIDDEN_SCENES_KEY) ?? '[]')
+    return new Set(Array.isArray(value) ? value.filter((id): id is string => typeof id === 'string') : [])
+  } catch {
+    return new Set()
+  }
+}
+
+export function writeHiddenScenes(ids: Iterable<string>, storage?: Storage): void {
+  ;(storage ?? localStorage).setItem(HIDDEN_SCENES_KEY, JSON.stringify([...new Set(ids)]))
+}
+
+export function isPersonaCore(scene: { id: string }, config: SceneUXConfig | null | undefined): boolean {
+  return list(config, 'personaCoreSceneIds').includes(scene.id)
+}
 
 function list(config: SceneUXConfig | null | undefined, key: keyof SceneUXConfig): string[] {
   const v = config?.[key]
