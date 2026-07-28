@@ -2,7 +2,7 @@
   <div class="control-page">
     <!-- /control 挂在 AppLayout 之外，所以跳转链接与 main 地标要在这里自备 -->
     <a class="skip-link" href="#control-main">跳到主要内容</a>
-    <nav class="nav">
+    <nav class="nav control-mobile-nav">
       <div class="nav-inner nav-local">
         <RouterLink to="/" class="nav-local-brand">
           <img class="nav-logo" src="/assets/logo.svg" alt="" aria-hidden="true" />
@@ -15,6 +15,26 @@
       </div>
     </nav>
 
+    <div class="control-layout">
+      <aside class="control-rail" aria-label="控制室导航">
+        <RouterLink to="/" class="control-rail-brand">
+          <img class="nav-logo" src="/assets/logo.svg" alt="" aria-hidden="true" />
+          <span><strong>本机控制室</strong><small>Local control room</small></span>
+        </RouterLink>
+        <nav class="control-rail-nav" aria-label="控制区">
+          <a class="control-rail-link" href="#control-overview"><span aria-hidden="true">◌</span>概览状态</a>
+          <a class="control-rail-link" href="#control-resources"><span aria-hidden="true">◒</span>显存调度</a>
+          <a class="control-rail-link" href="#control-services"><span aria-hidden="true">◫</span>本机服务</a>
+          <a class="control-rail-link" href="#control-share"><span aria-hidden="true">↗</span>公网分享</a>
+          <a class="control-rail-link" href="#control-logs"><span aria-hidden="true">≡</span>运行日志</a>
+        </nav>
+        <div class="control-rail-foot">
+          <RouterLink class="nav-local-home" to="/">← 回绘境</RouterLink>
+          <AppThemeToggle />
+        </div>
+      </aside>
+
+      <div class="control-content">
     <main id="control-main" class="control-shell" tabindex="-1">
       <header class="control-intro">
         <div>
@@ -26,7 +46,7 @@
       </header>
 
       <!-- 状态墙：像作品册的安静卡片，而不是一排噪声徽章 -->
-      <section class="status-wall" aria-label="连接状态">
+      <section id="control-overview" class="status-wall" aria-label="连接状态">
         <article class="status-tile" :data-state="gatewayState">
           <small>本地网关</small>
           <strong>{{ gatewayLabel }}</strong>
@@ -85,8 +105,9 @@
         </div>
       </div>
 
+      <div class="control-work-grid">
       <!-- 显存调度 -->
-      <section class="panel-card">
+      <section id="control-resources" class="panel-card resource-panel">
         <div class="panel-kicker">Resource</div>
         <h2 class="panel-heading">显存资源调度</h2>
         <p class="panel-desc">绘图、语音、聊天同时加载容易占满显存。按需切换：先释放，再加载。</p>
@@ -150,7 +171,7 @@
       </section>
 
       <!-- 本机生成服务配置 -->
-      <section class="panel-card">
+      <section id="control-services" class="panel-card service-config-panel">
         <div class="panel-kicker">01 · Services</div>
         <h2 class="panel-heading">确认本机生成服务</h2>
         <p class="panel-desc">SD WebUI 负责画面，GPT-SoVITS 负责角色语音。未装语音时，网站仍可用系统声音试听。</p>
@@ -187,8 +208,10 @@
         </details>
       </section>
 
+      </div>
+
       <!-- 公网分享 -->
-      <section class="panel-card">
+      <section id="control-share" class="panel-card share-panel">
         <div class="panel-kicker">02 · Share</div>
         <h2 class="panel-heading">公网分享通道</h2>
         <p class="panel-desc">本机访问不需要 Token；公网分享会使用临时 Token。</p>
@@ -238,7 +261,7 @@
       </section>
 
       <!-- 日志 -->
-      <details class="log-panel">
+      <details id="control-logs" class="log-panel">
         <summary>
           <span>📋 运行日志</span>
           <span class="summary-side">
@@ -257,6 +280,8 @@
         </div>
       </details>
     </main>
+      </div>
+    </div>
 
   </div>
 </template>
@@ -648,8 +673,53 @@ onUnmounted(() => { stopPolling() })
 </script>
 
 <style scoped>
-/* 版式对齐作品册：宽壳、大标题、安静卡片、克制工具条 */
-.control-page { min-height: 100vh; }
+/* 常驻控制轨道 + 克制的玻璃分层；移动端回退为熟悉的顶部导航。 */
+.control-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 88% 4%, color-mix(in srgb, var(--accent-soft) 62%, transparent), transparent 30rem),
+    var(--bg-base);
+}
+.control-mobile-nav { display: none; }
+.control-layout {
+  display: grid; grid-template-columns: minmax(208px, 244px) minmax(0, 1fr);
+  width: min(1560px, 100%); min-height: 100vh; margin: 0 auto;
+  padding: 0 clamp(12px, 2vw, 28px);
+}
+.control-rail {
+  position: sticky; top: 0; display: flex; flex-direction: column; align-self: start;
+  height: 100vh; padding: clamp(20px, 3vw, 34px) 14px 18px;
+  border-right: 1px solid color-mix(in srgb, var(--border-soft) 80%, transparent);
+  background: color-mix(in srgb, var(--bg-surface) 68%, transparent);
+  box-shadow: inset -1px 0 color-mix(in srgb, var(--on-art-primary) 7%, transparent);
+  backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+}
+.control-rail-brand {
+  display: flex; align-items: center; gap: var(--s-3); padding: 0 var(--s-3) var(--s-5);
+  color: var(--text-primary); text-decoration: none;
+}
+.control-rail-brand strong { display: block; font: 750 var(--fs-body-sm) var(--font-sans); letter-spacing: .02em; }
+.control-rail-brand small {
+  display: block; margin-top: 2px; color: var(--text-muted);
+  font: 650 var(--fs-mono-xs) var(--font-mono); letter-spacing: .1em; text-transform: uppercase;
+}
+.control-rail-nav { display: grid; gap: 5px; }
+.control-rail-link {
+  display: flex; align-items: center; gap: 11px; min-height: 42px; padding: 0 13px;
+  border: 1px solid transparent; border-radius: var(--r-lg); color: var(--text-secondary);
+  font: 650 var(--fs-label-sm) var(--font-sans); text-decoration: none;
+  transition: color var(--t-fast), background var(--t-fast), border-color var(--t-fast), transform var(--t-fast);
+}
+.control-rail-link span { width: 13px; color: var(--accent); font: 700 var(--fs-body-sm) var(--font-mono); }
+.control-rail-link:hover, .control-rail-link:focus-visible {
+  color: var(--text-primary); border-color: color-mix(in srgb, var(--accent) 22%, var(--border-soft));
+  background: color-mix(in srgb, var(--accent-soft) 54%, transparent); transform: translateX(2px);
+}
+.control-rail-foot {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--s-2);
+  margin-top: auto; padding: var(--s-3) 2px 0; border-top: 1px solid var(--border-soft);
+}
+.control-content { min-width: 0; }
 .nav-local {
   display: flex; align-items: center; justify-content: space-between;
   width: min(1100px, 100%); margin: 0 auto; padding: 0 var(--s-5);
@@ -673,13 +743,15 @@ onUnmounted(() => { stopPolling() })
 .nav-local-home:hover { color: var(--accent); background: var(--accent-soft); }
 
 .control-shell {
-  width: min(1100px, 100%);
+  width: min(1180px, 100%);
   margin: 0 auto;
-  padding: clamp(24px, 4vw, 56px) clamp(16px, 3vw, 40px) var(--s-8);
+  padding: clamp(28px, 4vw, 58px) clamp(20px, 4vw, 58px) var(--s-8);
 }
 .control-intro {
   display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end;
-  gap: var(--s-5); margin-bottom: clamp(22px, 3vw, 36px);
+  gap: var(--s-5); margin-bottom: clamp(22px, 3vw, 32px); padding: clamp(20px, 3vw, 30px);
+  border: 1px solid color-mix(in srgb, var(--border-soft) 82%, transparent); border-radius: var(--r-2xl);
+  background: color-mix(in srgb, var(--bg-surface) 76%, transparent); box-shadow: var(--shadow-sm);
 }
 .control-title {
   margin: 0; color: var(--text-primary); font-family: var(--font-display);
@@ -690,7 +762,8 @@ onUnmounted(() => { stopPolling() })
   font-size: var(--fs-body); line-height: 1.75;
 }
 .control-count {
-  color: var(--text-muted); font: 650 var(--fs-label-xs) var(--font-mono);
+  padding: 9px 12px; border: 1px solid var(--border-soft); border-radius: var(--r-pill);
+  color: var(--text-muted); background: var(--bg-deep); font: 650 var(--fs-label-xs) var(--font-mono);
   letter-spacing: .08em; white-space: nowrap;
 }
 
@@ -704,8 +777,8 @@ onUnmounted(() => { stopPolling() })
   min-width: 0; padding: var(--s-4);
   border: 1px solid color-mix(in srgb, var(--border-soft) 88%, transparent);
   border-radius: var(--r-xl);
-  background: color-mix(in srgb, var(--bg-surface) 92%, transparent);
-  box-shadow: var(--shadow-sm);
+  background: color-mix(in srgb, var(--bg-surface) 78%, transparent);
+  box-shadow: var(--shadow-sm); backdrop-filter: blur(12px);
 }
 .status-tile.primary { grid-column: 1 / -1; }
 .status-tile small {
@@ -724,7 +797,12 @@ onUnmounted(() => { stopPolling() })
   font-size: var(--fs-label-sm); line-height: 1.65; font-weight: 400;
 }
 
-.control-toolbar { margin-bottom: var(--s-5); }
+.control-toolbar {
+  position: sticky; top: 12px; z-index: var(--z-raised); display: flex; align-items: center; gap: var(--s-3);
+  margin-bottom: var(--s-5); padding: 8px 10px; border: 1px solid color-mix(in srgb, var(--border-soft) 82%, transparent);
+  border-radius: var(--r-xl); background: color-mix(in srgb, var(--bg-surface) 78%, transparent);
+  box-shadow: var(--shadow-sm); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+}
 .gallery-filter {
   min-height: 36px; padding: 0 15px; border: 1px solid transparent; border-radius: var(--r-pill);
   background: transparent; color: var(--text-secondary);
@@ -745,8 +823,20 @@ onUnmounted(() => { stopPolling() })
   margin-bottom: var(--s-4); padding: clamp(18px, 2.5vw, 28px);
   border: 1px solid color-mix(in srgb, var(--border-soft) 86%, transparent);
   border-radius: var(--r-2xl);
-  background: color-mix(in srgb, var(--bg-surface) 94%, transparent);
-  box-shadow: var(--shadow-sm);
+  background: color-mix(in srgb, var(--bg-surface) 84%, transparent);
+  box-shadow: var(--shadow-sm); backdrop-filter: blur(12px);
+}
+.control-work-grid {
+  display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(340px, .88fr);
+  align-items: start; gap: var(--s-4); margin-bottom: var(--s-4);
+}
+.control-work-grid .panel-card { margin-bottom: 0; }
+.resource-panel .mode-grid { grid-template-columns: 1fr; }
+.service-config-panel .voice-grid { grid-template-columns: 1fr; }
+.share-panel { position: relative; overflow: hidden; }
+.share-panel::before {
+  content: ''; position: absolute; inset: 0 auto 0 0; width: 3px;
+  background: linear-gradient(var(--accent), color-mix(in srgb, var(--accent) 10%, transparent));
 }
 .panel-kicker {
   margin-bottom: 6px; color: var(--text-muted);
@@ -948,14 +1038,19 @@ details[open] .chevron { transform: rotate(90deg); }
 .log-empty { color: var(--text-muted); font-family: var(--font-sans); text-align: center; padding: var(--s-4); }
 
 @media (max-width: 900px) {
+  .control-mobile-nav { display: block; }
+  .control-layout { display: block; padding: 0; }
+  .control-rail { display: none; }
   .control-intro { grid-template-columns: 1fr; }
   .control-count { display: none; }
   .status-wall { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .control-work-grid { grid-template-columns: 1fr; }
+  .resource-panel .mode-grid, .service-config-panel .voice-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 640px) {
   .nav-local { padding: 0 var(--s-3); }
   .control-shell { padding: var(--s-5) var(--s-3) var(--s-8); }
-  .status-wall, .mode-grid, .access-grid, .voice-grid { grid-template-columns: 1fr; }
+  .status-wall, .mode-grid, .access-grid, .voice-grid, .resource-panel .mode-grid, .service-config-panel .voice-grid { grid-template-columns: 1fr; }
   .status-tile.primary { grid-column: auto; }
   .field-row, .service-row, .tunnel-toggle-row { flex-direction: column; align-items: stretch; }
   .service-row-actions .btn { flex: 1; }

@@ -25,6 +25,7 @@ interface SceneStats {
 const RECENT_KEY = 'aics_recent_scenes'
 export const HIDDEN_SCENES_KEY = 'aics_hidden_scenes'
 export const SCENE_USAGE_KEY = 'aics_scene_usage_v1'
+export const SCENE_USAGE_VERSION = 1
 
 export interface SceneUsageRecord {
   uses: number
@@ -32,6 +33,11 @@ export interface SceneUsageRecord {
 }
 
 export type SceneUsageMap = Record<string, SceneUsageRecord>
+
+interface SceneUsageEnvelope {
+  version: number
+  records: SceneUsageMap
+}
 
 export interface RecentScene {
   id: string
@@ -62,16 +68,30 @@ export function writeHiddenScenes(ids: Iterable<string>, storage?: Storage): voi
 }
 
 export function readSceneUsage(storage?: Storage): SceneUsageMap {
+  const target = storage ?? localStorage
+  const empty: SceneUsageEnvelope = { version: SCENE_USAGE_VERSION, records: {} }
   try {
-    const value = JSON.parse((storage ?? localStorage).getItem(SCENE_USAGE_KEY) ?? '{}')
-    if (!isRecord(value)) return {}
-    return Object.fromEntries(Object.entries(value).flatMap(([id, raw]) => {
+    const stored = target.getItem(SCENE_USAGE_KEY)
+    const value = JSON.parse(stored ?? '{}')
+    const source = isRecord(value) && isRecord(value.records) ? value.records : value
+    if (!isRecord(source)) {
+      try { target.setItem(SCENE_USAGE_KEY, JSON.stringify(empty)) } catch {}
+      return {}
+    }
+    const records = Object.fromEntries(Object.entries(source).flatMap(([id, raw]) => {
       const record = isRecord(raw) ? raw : {}
       const uses = Math.max(0, Math.floor(Number(record.uses) || 0))
       const lastUsed = Math.max(0, Number(record.lastUsed) || 0)
-      return id && uses ? [[id, { uses, lastUsed }]] : []
+      const safeId = id.trim().slice(0, 80)
+      return safeId && uses ? [[safeId, { uses, lastUsed }]] : []
     }))
+    const migrated = JSON.stringify({ version: SCENE_USAGE_VERSION, records })
+    if (stored !== migrated) {
+      try { target.setItem(SCENE_USAGE_KEY, migrated) } catch {}
+    }
+    return records
   } catch {
+    try { target.setItem(SCENE_USAGE_KEY, JSON.stringify(empty)) } catch {}
     return {}
   }
 }
@@ -85,7 +105,12 @@ export function recordSceneUsage(scene: { id: string }, storage?: Storage, now =
     uses: Math.min((previous?.uses ?? 0) + 1, 9999),
     lastUsed: Math.max(previous?.lastUsed ?? 0, now),
   }
-  try { target.setItem(SCENE_USAGE_KEY, JSON.stringify(usage)) } catch {}
+  try {
+    target.setItem(SCENE_USAGE_KEY, JSON.stringify({
+      version: SCENE_USAGE_VERSION,
+      records: usage,
+    }))
+  } catch {}
   return usage
 }
 

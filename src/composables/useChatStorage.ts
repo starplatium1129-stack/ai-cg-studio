@@ -1,5 +1,12 @@
 import { reactive } from 'vue'
-import { CHARACTERS, STORAGE_KEY, MAX_LOCAL_MESSAGES, createMessageId } from '@/config/characters'
+import {
+  CHARACTERS, STORAGE_KEY, STORAGE_VERSION, MAX_LOCAL_MESSAGES, createMessageId,
+} from '@/config/characters'
+import {
+  normalizeChatStorage, serializeChatStorage, type PersistedChatState,
+} from '@/utils/chatStorageCore'
+
+export const CHAT_API_KEY_SESSION_KEY = 'aics_chat_api_key_v1'
 
 export interface ChatMessage {
   role: 'user' | 'assistant'
@@ -9,6 +16,7 @@ export interface ChatMessage {
 }
 
 export interface ChatState {
+  version: number
   active: string
   histories: Record<string, ChatMessage[]>
   settings: {
@@ -24,27 +32,9 @@ export interface ChatState {
   }
 }
 
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null
-}
-
-function normalizeMessages(value: unknown): ChatMessage[] {
-  if (!Array.isArray(value)) return []
-  return value
-    .filter((message): message is Record<string, unknown> =>
-      isRecord(message) && (message.role === 'user' || message.role === 'assistant'))
-    .map(m => ({
-      role: m.role as 'user' | 'assistant',
-      content: String(m.content || '').slice(0, 1200),
-      mid: m.role === 'assistant' ? String(m.mid || createMessageId()) : '',
-      stopped: m.stopped === true,
-    }))
-    .filter(m => m.content)
-    .slice(-MAX_LOCAL_MESSAGES)
-}
-
 export function useChatStorage(onError: (msg: string) => void = () => {}) {
   const state = reactive<ChatState>({
+    version: STORAGE_VERSION,
     active: 'nene',
     histories: Object.fromEntries(Object.keys(CHARACTERS).map(k => [k, []])),
     settings: {
@@ -60,34 +50,97 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     },
   })
 
-  function load() {
+  const normalizeOptions = {
+    characterIds: Object.keys(CHARACTERS),
+    maxMessages: MAX_LOCAL_MESSAGES,
+    version: STORAGE_VERSION,
+    createMessageId,
+  }
+
+  function sessionStore(): Storage | null {
+    try { return typeof sessionStorage === 'undefined' ? null : sessionStorage } catch { return null }
+  }
+
+  function readSessionApiKey(): string {
+    try { return sessionStore()?.getItem(CHAT_API_KEY_SESSION_KEY) || '' } catch { return '' }
+  }
+
+  function writeSessionApiKey(value: string) {
     try {
-      const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}')
-      state.active = raw.active === 'natsume' ? 'natsume' : 'nene'
-      for (const char of Object.keys(CHARACTERS)) {
-        state.histories[char] = normalizeMessages(raw.histories?.[char])
-      }
-      const savedModel = raw.settings?.model || localStorage.getItem('aics_chat_model') || ''
-      state.settings.model = String(savedModel)
-      state.settings.provider = raw.settings?.provider === 'api' ? 'api' : 'local'
-      state.settings.apiBaseUrl = String(raw.settings?.apiBaseUrl || 'https://api.deepseek.com').slice(0, 500)
-      state.settings.apiModel = String(raw.settings?.apiModel || 'deepseek-v4-flash').slice(0, 200)
-      state.settings.apiKey = String(raw.settings?.apiKey || '').slice(0, 1000)
-      state.settings.live2dEnabled = raw.settings?.live2dEnabled === true
-      state.settings.autoVoice = raw.settings ? raw.settings.autoVoice !== false : true
-      state.settings.volume = typeof raw.settings?.volume === 'number' ? raw.settings.volume : 80
-      for (const char of Object.keys(CHARACTERS)) {
-        state.settings.drafts[char] = String(raw.settings?.drafts?.[char] || '').slice(0, 1200)
-      }
+      const session = sessionStore()
+      if (value) session?.setItem(CHAT_API_KEY_SESSION_KEY, value)
+      else session?.removeItem(CHAT_API_KEY_SESSION_KEY)
+    } catch {}
+  }
+
+  function applyPersisted(persisted: PersistedChatState) {
+    state.version = persisted.version
+    state.active = persisted.active
+    for (const char of Object.keys(CHARACTERS)) {
+      state.histories[char] = persisted.histories[char] || []
+      state.settings.drafts[char] = persisted.settings.drafts[char] || ''
+    }
+    state.settings.model = persisted.settings.model
+    state.settings.provider = persisted.settings.provider
+    state.settings.apiBaseUrl = persisted.settings.apiBaseUrl
+    state.settings.apiModel = persisted.settings.apiModel
+    state.settings.live2dEnabled = persisted.settings.live2dEnabled
+    state.settings.autoVoice = persisted.settings.autoVoice
+    state.settings.volume = persisted.settings.volume
+  }
+
+  function persistedState(): PersistedChatState {
+    return {
+      version: STORAGE_VERSION,
+      active: state.active,
+      histories: state.histories,
+      settings: {
+        model: state.settings.model,
+        provider: state.settings.provider,
+        apiBaseUrl: state.settings.apiBaseUrl,
+        apiModel: state.settings.apiModel,
+        live2dEnabled: state.settings.live2dEnabled,
+        autoVoice: state.settings.autoVoice,
+        volume: state.settings.volume,
+        drafts: state.settings.drafts,
+      },
+    }
+  }
+
+  function load() {
+    let stored = ''
+    try {
+      stored = localStorage.getItem(STORAGE_KEY) || ''
+      const normalized = normalizeChatStorage(
+        stored ? JSON.parse(stored) : {},
+        localStorage.getItem('aics_chat_model') || '',
+        normalizeOptions,
+      )
+      applyPersisted(normalized.state)
+
+      const sessionKey = readSessionApiKey()
+      state.settings.apiKey = String(sessionKey || normalized.migratedApiKey).trim().slice(0, 1000)
+      writeSessionApiKey(state.settings.apiKey)
+
+      // Rewriting existing records through the allowlist removes legacy API keys,
+      // custom authorization headers, tokens and unknown fields from localStorage.
+      if (stored) localStorage.setItem(STORAGE_KEY, serializeChatStorage(persistedState()))
     } catch {
-      onError('本地聊天记录损坏，已使用空白会话。')
+      const clean = normalizeChatStorage({}, '', normalizeOptions).state
+      applyPersisted(clean)
+      state.settings.apiKey = ''
+      writeSessionApiKey('')
+      try { localStorage.setItem(STORAGE_KEY, serializeChatStorage(clean)) } catch {}
+      onError('本地聊天记录损坏，已恢复为空白会话。')
     }
   }
 
   function save() {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
+      state.version = STORAGE_VERSION
+      localStorage.setItem(STORAGE_KEY, serializeChatStorage(persistedState()))
       localStorage.setItem('aics_chat_model', state.settings.model || '')
+      writeSessionApiKey(state.settings.apiKey)
     } catch {
       onError('浏览器存储空间不足，本轮聊天可能无法长期保存。')
     }

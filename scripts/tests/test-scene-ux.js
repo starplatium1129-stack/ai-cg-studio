@@ -121,4 +121,29 @@ assert.strictEqual(usage[scenes[0].id].lastUsed, preferenceNow, 'scene usage mus
 assert(sceneUx.sceneUsageScore(usage[scenes[0].id], preferenceNow) > sceneUx.sceneUsageScore(usage[scenes[1].id], preferenceNow),
   'frequent and recent scenes must rank above stale one-off selections');
 
+const legacyUsageMemory = new Map([[sceneUx.SCENE_USAGE_KEY, JSON.stringify({
+  sc001:{ uses:'3.9', lastUsed:'1234', token:'must-not-survive' },
+  broken:{ uses:0, lastUsed:99 },
+  '':{ uses:10, lastUsed:99 },
+})]]);
+const legacyUsageStorage = {
+  getItem:(key) => legacyUsageMemory.has(key) ? legacyUsageMemory.get(key) : null,
+  setItem:(key, value) => legacyUsageMemory.set(key, value),
+};
+assert.deepStrictEqual(sceneUx.readSceneUsage(legacyUsageStorage), {
+  sc001:{ uses:3, lastUsed:1234 },
+}, 'legacy scene usage maps must be normalized during migration');
+assert.deepStrictEqual(JSON.parse(legacyUsageMemory.get(sceneUx.SCENE_USAGE_KEY)), {
+  version:sceneUx.SCENE_USAGE_VERSION,
+  records:{ sc001:{ uses:3, lastUsed:1234 } },
+}, 'scene usage migration must persist a versioned allowlisted envelope');
+
+legacyUsageMemory.set(sceneUx.SCENE_USAGE_KEY, '{damaged');
+assert.deepStrictEqual(sceneUx.readSceneUsage(legacyUsageStorage), {},
+  'damaged scene usage JSON must recover to an empty map');
+assert.deepStrictEqual(JSON.parse(legacyUsageMemory.get(sceneUx.SCENE_USAGE_KEY)), {
+  version:sceneUx.SCENE_USAGE_VERSION,
+  records:{},
+}, 'damaged scene usage must be replaced by a valid current envelope');
+
 console.log('Scene UX tests passed: tiers, sentence search, relevance, preferences, recent scenes, and local usage');

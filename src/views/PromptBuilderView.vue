@@ -248,135 +248,40 @@
         />
 
         <!-- SD params -->
-        <details class="panel generation-settings">
-          <summary class="panel-title settings-summary">出图参数</summary>
-          <div class="controls-grid">
-            <div class="ctrl"><label>CFG</label>
-              <select v-model.number="pb.sdParams.cfg" @change="pb.markParamTouched('cfg')">
-                <option v-for="v in [3,4,4.5,5,5.5,6,7,8]" :key="v" :value="v">{{ v }}</option>
-              </select>
-            </div>
-            <div class="ctrl"><label>Steps</label>
-              <select v-model.number="pb.sdParams.steps" @change="pb.markParamTouched('steps')">
-                <option v-for="v in [20,28,30,35,40,50]" :key="v" :value="v">{{ v }}</option>
-              </select>
-            </div>
-            <div class="ctrl ctrl-full"><label>SD 模型</label>
-              <select v-model="pb.sdModelName">
-                <option value="">使用 WebUI 当前模型</option>
-                <option v-for="m in sd.models.value" :key="m" :value="m">{{ m }}</option>
-              </select>
-            </div>
-            <div class="ctrl"><label>Sampler</label>
-              <select v-model="pb.sdParams.sampler" @change="pb.markParamTouched('sampler')">
-                <option v-for="s in (sd.samplers.value.length ? sd.samplers.value : ['Euler a','Euler','DPM++ 2M','DPM++ 2M SDE'])" :key="s">{{ s }}</option>
-              </select>
-            </div>
-            <div class="ctrl"><label>Scheduler</label>
-              <select v-model="pb.sdParams.scheduler" @change="pb.markParamTouched('scheduler')">
-                <option value="">自动</option>
-                <option v-for="s in (sd.schedulers.value.length ? sd.schedulers.value : ['Karras','Exponential'])" :key="s">{{ s }}</option>
-              </select>
-            </div>
-            <div class="ctrl toggle-row">
-              <label class="switch"><input type="checkbox" v-model="pb.sdParams.quality"><span class="slider"></span></label>
-              <label>质量前缀</label>
-            </div>
-            <div class="ctrl toggle-row">
-              <label class="switch"><input type="checkbox" v-model="pb.sdParams.negative"><span class="slider"></span></label>
-              <label>负面</label>
-            </div>
-            <div class="ctrl ctrl-seed">
-              <label class="seed-lock-label">
-                <input type="checkbox" v-model="pb.sdParams.seedLock"> 锁定 seed
-              </label>
-              <div class="seed-input-wrap">
-                <input type="number" v-model.number="pb.sdParams.seed" min="-1" step="1" placeholder="-1">
-                <button class="btn btn-ghost btn-mini" type="button" :disabled="!sd.resultSeed.value" @click="reuseLastSeed">复用</button>
-              </div>
-              <small class="ctrl-hint">{{ pb.sdParams.seedLock ? '将复用固定 seed' : '不锁定时使用随机 seed' }}</small>
-            </div>
-            <div v-if="pb.sdParams.negative" class="ctrl ctrl-full negative-editor">
-              <label>负面提示词</label>
-              <textarea v-model="pb.sdParams.negativeCustom" placeholder="留空使用默认负面；可追加如：extra fingers, bad anatomy"></textarea>
-            </div>
-          </div>
-        </details>
+        <GenerationParamsPanel
+          :params="pb.sdParams"
+          v-model:model-name="pb.sdModelName"
+          :models="sd.models.value"
+          :samplers="sd.samplers.value"
+          :schedulers="sd.schedulers.value"
+          :result-seed="sd.resultSeed.value"
+          @touch="pb.markParamTouched"
+          @reuse-seed="reuseLastSeed"
+        />
 
         <!-- Result panel -->
         <div class="result-frame step-panel" id="stepResult">
           <div class="panel-title">输出 Result</div>
 
-          <div class="sd-inline-options">
-            <label>尺寸<select v-model="sdSize">
-              <optgroup label="竖图 Portrait">
-                <option value="768x1344">768×1344</option>
-                <option value="832x1216">832×1216</option>
-                <option value="896x1344">896×1344</option>
-                <option value="1024x1344">1024×1344 · WAI 推荐</option>
-                <option value="1024x1536">1024×1536</option>
-                <option value="1152x1536">1152×1536</option>
-                <option value="1216x1664">1216×1664 · 大图</option>
-              </optgroup>
-              <optgroup label="方图 Square">
-                <option value="896x896">896×896</option>
-                <option value="1024x1024">1024×1024</option>
-                <option value="1280x1280">1280×1280</option>
-                <option value="1440x1440">1440×1440 · 大图</option>
-              </optgroup>
-              <optgroup label="横图 Landscape">
-                <option value="1216x832">1216×832</option>
-                <option value="1344x896">1344×896</option>
-                <option value="1536x1024">1536×1024</option>
-                <option value="1664x1216">1664×1216 · 大图</option>
-              </optgroup>
-              <optgroup label="16:9 官方 CG">
-                <option value="1280x720">1280×720</option>
-                <option value="1344x768">1344×768</option>
-                <option value="1600x896">1600×896</option>
-                <option value="1920x1088">1920×1088 · 大图</option>
-              </optgroup>
-            </select></label>
-            <span class="sd-vram-hint advanced-decision" :class="vramLevel">{{ vramHint }}</span>
-            <span v-if="baseResolutionRisk" class="sd-base-resolution-hint advanced-decision" :class="baseResolutionRisk">{{ baseResolutionHint }}</span>
-            <label class="hires-label advanced-decision">
-              <span class="switch"><input type="checkbox" v-model="pb.sdParams.hiresFix"><span class="slider"></span></span>
-              hires.fix
-            </label>
-            <label v-if="canUseFaceDetailer" class="hires-label advanced-decision">
-              <span class="switch"><input type="checkbox" v-model="pb.sdParams.faceDetailer" @change="pb.markParamTouched('faceDetailer')"><span class="slider"></span></span>
-              面部与手部修复
-            </label>
-            <details v-if="pb.sdParams.hiresFix" class="sd-advanced-options advanced-decision">
-              <summary>高级设置</summary>
-              <div class="sd-advanced-grid">
-                <label>放大<select v-model.number="pb.sdParams.hiresScale" @change="pb.markParamTouched('hiresScale')"><option :value="1.5">1.5×</option><option :value="2">2×</option></select></label>
-                <label>二阶段步数<input type="number" v-model.number="pb.sdParams.hiresSteps" min="0" max="60" step="1" @change="pb.markParamTouched('hiresSteps')"></label>
-                 <label>重绘幅度<input type="number" v-model.number="pb.sdParams.hiresDenoise" min="0.1" max="0.9" step="0.05" @change="pb.markParamTouched('hiresDenoise')"></label>
-                 <label>放大器<select v-model="pb.sdParams.hiresUpscaler" @change="pb.markParamTouched('hiresUpscaler')">
-                   <option>R-ESRGAN 4x+ Anime6B</option>
-                   <option>R-ESRGAN 4x+</option>
-                 </select></label>
-              </div>
-            </details>
-          </div>
-
-          <div class="preview-actions">
-            <button class="btn btn-primary" type="button"
-              :disabled="sd.generating.value || !sd.online.value"
-               @click="() => callGenerate()">
-              {{ sd.generating.value ? '生成中…' : '生成图片' }}
-            </button>
-            <button v-if="sd.generating.value" class="btn btn-ghost" type="button"
-              @click="sd.cancel()">停止生成</button>
-            <button class="btn btn-ghost" type="button" :disabled="!sdQueue.canEnqueue.value" @click="enqueueCurrent">
-              加入队列
-            </button>
-            <button class="btn btn-ghost advanced-decision" type="button" :disabled="!sd.resultSeed.value" @click="reuseLastSeed">
-              锁定这个 seed 微调
-            </button>
-            <button class="btn btn-ghost" type="button" @click="pb.clearScene()">再来一次</button>
-          </div>
+          <GenerationOutputControls
+            :params="pb.sdParams"
+            v-model:size="sdSize"
+            :vram-hint="vramHint"
+            :vram-level="vramLevel"
+            :base-resolution-risk="baseResolutionRisk"
+            :base-resolution-hint="baseResolutionHint"
+            :can-use-face-detailer="canUseFaceDetailer"
+            :generating="sd.generating.value"
+            :online="sd.online.value"
+            :result-seed="sd.resultSeed.value"
+            :queue-available="sdQueue.canEnqueue.value"
+            @touch="pb.markParamTouched"
+            @generate="callGenerate"
+            @cancel="sd.cancel()"
+            @enqueue="enqueueCurrent"
+            @reuse-seed="reuseLastSeed"
+            @reset="pb.clearScene()"
+          />
 
           <!-- Progress -->
           <div v-if="sd.generating.value" class="sd-result-area is-progress">
@@ -529,6 +434,8 @@ import VoiceStudio from '@/components/VoiceStudio.vue'
 import PromptDataTools from '@/components/PromptDataTools.vue'
 import PromptHealthPanel from '@/components/PromptHealthPanel.vue'
 import GenerationQueuePanel from '@/components/GenerationQueuePanel.vue'
+import GenerationParamsPanel from '@/components/GenerationParamsPanel.vue'
+import GenerationOutputControls from '@/components/GenerationOutputControls.vue'
 import SDRecoveryPanel from '@/components/SDRecoveryPanel.vue'
 import { readHiddenScenes, rememberRecent, recordSceneUsage } from '@/utils/sceneUX'
 import {

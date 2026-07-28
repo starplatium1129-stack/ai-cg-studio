@@ -3,9 +3,9 @@
     <div class="api-settings-head">
       <div>
         <strong>OpenAI 兼容 API</strong>
-        <span>适用于 DeepSeek、OpenCode Zen 及其他兼容 /chat/completions 的服务。</span>
+        <span>适用于 DeepSeek、OpenCode Zen、OpenCode Go 及其他兼容 /chat/completions 的服务。</span>
       </div>
-      <span class="api-storage-note">仅保存在本机浏览器</span>
+      <span class="api-storage-note">配置保存在本机，API Key 仅保留到关闭浏览器</span>
     </div>
 
     <div class="api-settings-grid">
@@ -14,6 +14,7 @@
         <select :value="vendorProxy" @change="applyVendor">
           <option value="deepseek">DeepSeek 官方</option>
           <option value="opencode">OpenCode Zen</option>
+          <option value="opencode-go">OpenCode Go</option>
           <option value="custom">其他 OpenAI 兼容 API</option>
         </select>
       </label>
@@ -65,7 +66,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 
-type ApiVendor = 'deepseek' | 'opencode' | 'custom'
+type ApiVendor = 'deepseek' | 'opencode' | 'opencode-go' | 'custom'
 interface ModelOption { value: string; label: string }
 
 const PRESET_MODELS: Record<Exclude<ApiVendor, 'custom'>, ModelOption[]> = {
@@ -79,6 +80,12 @@ const PRESET_MODELS: Record<Exclude<ApiVendor, 'custom'>, ModelOption[]> = {
     { value: 'deepseek-v4-flash', label: 'DeepSeek V4 Flash · 性价比' },
     { value: 'minimax-m2.5', label: 'MiniMax M2.5' },
     { value: 'kimi-k2.5', label: 'Kimi K2.5' },
+  ],
+  'opencode-go': [
+    { value: 'deepseek-v4-flash', label: 'DeepSeek V4 Flash · 推荐' },
+    { value: 'deepseek-v4-pro', label: 'DeepSeek V4 Pro' },
+    { value: 'kimi-k3', label: 'Kimi K3' },
+    { value: 'grok-4.5', label: 'Grok 4.5' },
   ],
 }
 
@@ -134,8 +141,8 @@ const modelOptions = computed<ModelOption[]>(() => {
   return known.concat(extras)
 })
 const modelNote = computed(() =>
-  props.vendor === 'opencode'
-    ? '免费模型适合日常角色闲聊；测试连接后会补充账号当前可见模型。'
+  props.vendor === 'opencode' || props.vendor === 'opencode-go'
+    ? 'OpenCode 模型由账号订阅决定；测试连接后会补充当前可见模型。'
     : '角色聊天默认关闭深度思考，响应更快、更省 token。'
 )
 const statusText = computed(() => testMessage.value || props.hint || '先测试连接，再保存配置。')
@@ -152,6 +159,9 @@ function applyVendor(event: Event) {
   } else if (vendor === 'opencode') {
     emit('update:baseUrl', 'https://opencode.ai/zen/v1')
     emit('update:model', 'deepseek-v4-flash-free')
+  } else if (vendor === 'opencode-go') {
+    emit('update:baseUrl', 'https://opencode.ai/zen/go/v1')
+    emit('update:model', 'deepseek-v4-flash')
   }
 }
 

@@ -165,6 +165,7 @@ async function streamCompatibleApi(input, handlers) {
   var decoder = new StringDecoder('utf8');
   var buffer = '';
   var emitted = false;
+  var malformedSse = false;
 
   for await (var chunk of result.response) {
     buffer += Buffer.isBuffer(chunk) ? decoder.write(chunk) : String(chunk);
@@ -177,7 +178,10 @@ async function streamCompatibleApi(input, handlers) {
       var payload = line.slice(5).trim();
       if (!payload || payload === '[DONE]') continue;
       var event;
-      try { event = JSON.parse(payload); } catch (error) { continue; }
+      try { event = JSON.parse(payload); } catch (error) {
+        malformedSse = true;
+        continue;
+      }
       var token = compatibleContent(event);
       if (!token) continue;
       emitted = true;
@@ -185,6 +189,12 @@ async function streamCompatibleApi(input, handlers) {
     }
   }
   buffer += decoder.end();
+
+  if (malformedSse && !emitted) {
+    throw new httpClient.UpstreamError('自定义 API 返回了畸形 SSE', {
+      code:'INVALID_SSE'
+    });
+  }
 
   if (!emitted && buffer.trim()) {
     var responseBody;

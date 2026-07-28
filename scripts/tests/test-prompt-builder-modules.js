@@ -46,6 +46,8 @@ const modules = [
   ['src/components/PromptDataTools.vue', ['useBackup', 'pb-backup-overlay', 'useFocusTrap']],
   ['src/components/PromptHealthPanel.vue', ['PromptReport', 'prompt-health-warnings', 'artViolations']],
   ['src/components/GenerationQueuePanel.vue', ['SDQueueJob', 'sd-queue-list', "emit('remove'"]],
+  ['src/components/GenerationParamsPanel.vue', ['params: SDParams', "'reuse-seed'", 'samplerOptions']],
+  ['src/components/GenerationOutputControls.vue', ['params: SDParams', 'generation-output-controls', 'queueAvailable']],
   ['src/components/SDRecoveryPanel.vue', ['SDErrorReport', "emit('recover'"]],
 ];
 
@@ -108,6 +110,8 @@ const wiring = [
   ['PromptDataTools', 'director must mount the local data backup/restore component'],
   ['PromptHealthPanel', 'director must mount the collapsible prompt health component'],
   ['GenerationQueuePanel', 'director must mount the generation queue component'],
+  ['GenerationParamsPanel', 'director must mount the dedicated generation parameter component'],
+  ['GenerationOutputControls', 'director must mount the dedicated generation output controls'],
   ['SDRecoveryPanel', 'director must mount the classified SD recovery component'],
   ['commitHistoryEntry', 'generated art must be committed to IndexedDB-backed history'],
   ['applyModelProfile', 'SD params must follow the matched checkpoint profile'],

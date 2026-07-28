@@ -271,15 +271,17 @@ function createTtsService(options: TtsServiceOptions) {
         '/set_sovits_weights?weights_path=' + encodeURIComponent(profile.sovitsWeightsPath),
         signal
       );
-      activeSoVitsWeights = profile.sovitsWeightsPath;
     }
     if (profile.gptWeightsPath && profile.gptWeightsPath !== activeGptWeights) {
       await setWeights(
         '/set_gpt_weights?weights_path=' + encodeURIComponent(profile.gptWeightsPath),
         signal
       );
-      activeGptWeights = profile.gptWeightsPath;
     }
+    // Commit cache state only after the entire upstream switch succeeds. A
+    // partial switch must be retried in full because the engine state is unknown.
+    activeSoVitsWeights = profile.sovitsWeightsPath || '';
+    activeGptWeights = profile.gptWeightsPath || '';
     activeVoice = voice;
   }
 

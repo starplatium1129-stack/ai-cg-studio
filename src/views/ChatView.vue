@@ -179,22 +179,15 @@
 import '@/assets/css/chat.css'
 import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
-import { CHARACTERS, createMessageId } from '@/config/characters'
+import { CHARACTERS } from '@/config/characters'
+import { useChatConversation } from '@/composables/useChatConversation'
 import { useChatStorage } from '@/composables/useChatStorage'
+import { useChatProvider } from '@/composables/useChatProvider'
 import { useVoice } from '@/composables/useVoice'
-import {
-  inferEmotion,
-  parseNdjsonResponse,
-  SentenceBuffer,
-  isAbortError,
-  streamErrorMessage,
-} from '@/utils/stream'
-import { parseChatStatus, type ChatModel } from '@/utils/chatStatus'
 import ChatApiSettings from '@/components/ChatApiSettings.vue'
 import ChatCharacterStage from '@/components/ChatCharacterStage.vue'
 
 const route = useRoute()
-type ApiVendor = 'deepseek' | 'opencode' | 'custom'
 
 // ── DOM refs ──────────────────────────────────────────────────────────────
 const chatListRef  = ref<HTMLElement>()
@@ -208,27 +201,12 @@ const characterStageRef = ref<{
 const activeChar    = ref('nene')
 const busy          = ref(false)
 const voiceActive   = ref(false)
-const ollamaOnline  = ref(false)
-const models        = ref<ChatModel[]>([])
-const currentModel  = ref('')
-const chatProvider  = ref<'local' | 'api'>('local')
-const apiBaseUrl    = ref('https://api.deepseek.com')
-const apiModel      = ref('deepseek-v4-flash')
-const apiKey        = ref('')
-const apiVendor     = ref<ApiVendor>('custom')
-const apiSettingsOpen = ref(false)
-const apiConfigHint = ref('')
-const inputText     = ref('')
 const chatError     = ref('')
 const chatErrorKind = ref('')
-const chatStatusText = ref('正在检查本地聊天模型…')
-const statusKind    = ref('')
 const voiceStatusText = ref('')
 const voiceCapabilityState = ref('offline')
 const voiceCapabilityText  = ref('检查语音…')
 const showVoiceRecovery    = ref(false)
-const streamingMid  = ref('')
-const replyAnnouncement = ref('')
 const playingMid    = ref('')
 const isSpeaking    = ref(false)
 const autoVoice     = ref(true)
@@ -236,26 +214,22 @@ const volume        = ref(80)
 const preparingRoom = ref(false)
 const roomSetupText = ref('一键切到聊天优先：释放受管绘图显存，并启动角色语音服务。')
 
-let statusTimer = 0, errorTimer = 0, draftTimer = 0, roomPollTimer = 0
-let activeRequest: AbortController | null = null
+let statusTimer = 0, errorTimer = 0, roomPollTimer = 0
 
 // ── Storage ───────────────────────────────────────────────────────────────
 const storage = useChatStorage((msg) => setError(msg, 'warning', 9000))
 storage.load()
 
+const {
+  ollamaOnline, models, currentModel, chatProvider, apiBaseUrl, apiModel, apiKey,
+  apiVendor, apiSettingsOpen, apiConfigHint, chatStatusText, statusKind,
+  apiConfigured, chatReady, refreshChatStatus, setChatProvider, saveApiSettings,
+  setChatStatus, setBusy,
+} = useChatProvider({ storage, isBusy: busy })
+
 // Restore persisted settings
 autoVoice.value = storage.state.settings.autoVoice
 volume.value   = storage.state.settings.volume != null ? storage.state.settings.volume : 80
-currentModel.value = storage.state.settings.model || ''
-chatProvider.value = storage.state.settings.provider
-apiBaseUrl.value = storage.state.settings.apiBaseUrl
-apiModel.value = storage.state.settings.apiModel
-apiKey.value = storage.state.settings.apiKey
-const savedApiBase = apiBaseUrl.value.replace(/\/+$/, '')
-apiVendor.value = savedApiBase === 'https://api.deepseek.com'
-  ? 'deepseek'
-  : savedApiBase === 'https://opencode.ai/zen/v1' ? 'opencode' : 'custom'
-apiSettingsOpen.value = chatProvider.value === 'api' && !apiModel.value
 activeChar.value = storage.state.active
 const requestedCharacter = typeof route.query.character === 'string' ? route.query.character : ''
 if (requestedCharacter === 'nene' || requestedCharacter === 'natsume') {
@@ -288,13 +262,6 @@ const voice = useVoice({
 const currentCharacter = computed(() => CHARACTERS[activeChar.value] || CHARACTERS.nene)
 
 const currentMessages = computed(() => storage.messages(activeChar.value))
-const apiConfigured = computed(() =>
-  Boolean(apiBaseUrl.value.trim() && apiModel.value.trim()
-    && (apiVendor.value === 'custom' || apiKey.value.trim()))
-)
-const chatReady = computed(() =>
-  chatProvider.value === 'api' ? apiConfigured.value : ollamaOnline.value
-)
 const setupTitle = computed(() => {
   if (preparingRoom.value) return '正在准备角色房间'
   if (chatProvider.value === 'api' && !apiConfigured.value) return '还没有配置自定义 API'
@@ -321,11 +288,6 @@ function setError(message: string, kind = 'error', timeout = 7000) {
   if (message && timeout) {
     errorTimer = window.setTimeout(() => setError(''), timeout) as unknown as number
   }
-}
-
-function setChatStatus(text: string, kind = '') {
-  chatStatusText.value = text
-  statusKind.value     = kind
 }
 
 function updateVoiceCapability() {
@@ -358,37 +320,36 @@ function scrollBottom() {
   })
 }
 
-// ── API calls ─────────────────────────────────────────────────────────────
-async function refreshChatStatus() {
-  try {
-    const r = await fetch('/api/chat-status', { cache: 'no-store' })
-    if (!r.ok) throw new Error('聊天状态接口不可用')
-    const data = parseChatStatus(await r.json() as unknown)
-    ollamaOnline.value = data.online && Boolean(data.models.length)
-    const ms = data.models
-    models.value = ms
-    if (!busy.value && chatProvider.value === 'local') {
-      setChatStatus(ollamaOnline.value ? '本地聊天模型已连接' : 'Ollama 未启动', ollamaOnline.value ? 'online' : '')
-    }
-    // Restore model selection
-    const saved = storage.state.settings.model
-    if (ms.some(m => m.name === saved)) {
-      currentModel.value = saved
-    } else if (data.model || ms[0]) {
-      currentModel.value = data.model || ms[0]?.name || ''
-      storage.setModel(currentModel.value)
-    }
-    if (!ms.length) {
-      currentModel.value = ''
-      if (chatProvider.value === 'local') setChatStatus('Ollama 未启动')
-    }
-  } catch {
-    ollamaOnline.value = false
-    models.value = []
-    if (!busy.value && chatProvider.value === 'local') setChatStatus('Ollama 未启动')
-  }
-}
+const {
+  inputText,
+  streamingMid,
+  replyAnnouncement,
+  abortCurrentRequest,
+  sendMessage,
+  useStarter,
+  onInputChange,
+  destroy: destroyConversation,
+  stopEverything: stopConversation,
+} = useChatConversation({
+  storage,
+  voice,
+  activeChar,
+  currentCharacter,
+  busy,
+  chatReady,
+  chatProvider,
+  currentModel,
+  apiBaseUrl,
+  apiModel,
+  apiKey,
+  setBusy,
+  onError: setError,
+  onExpression: emotion => characterStageRef.value?.setExpression(emotion),
+  nearBottom,
+  scrollBottom,
+})
 
+// ── 服务准备 ─────────────────────────────────────────────────────────────
 async function refreshVoiceStatus() {
   await voice.refreshAvailability()
   updateVoiceCapability()
@@ -449,157 +410,9 @@ async function prepareRoom() {
   }
 }
 
-// ── Actions ───────────────────────────────────────────────────────────────
-function setChatProvider(provider: 'local' | 'api') {
-  if (busy.value || chatProvider.value === provider) return
-  chatProvider.value = provider
-  storage.setProvider(provider)
-  apiConfigHint.value = ''
-  if (provider === 'api') {
-    apiSettingsOpen.value = !apiConfigured.value
-    setChatStatus(apiConfigured.value ? `自定义 API · ${apiModel.value}` : '等待配置自定义 API', apiConfigured.value ? 'online' : '')
-  } else {
-    setChatStatus(ollamaOnline.value ? '本地聊天模型已连接' : 'Ollama 未启动', ollamaOnline.value ? 'online' : '')
-  }
-}
-
-function saveApiSettings() {
-  if (!apiConfigured.value) {
-    apiConfigHint.value = apiVendor.value !== 'custom'
-      ? `请填写 ${apiVendor.value === 'opencode' ? 'OpenCode Zen' : 'DeepSeek'} API Key。`
-      : '请填写 API 地址和模型名。'
-    return
-  }
-  storage.setApiSettings({
-    baseUrl: apiBaseUrl.value,
-    model: apiModel.value,
-    apiKey: apiKey.value,
-  })
-  apiConfigHint.value = '配置已保存在这个浏览器中。'
-  apiSettingsOpen.value = false
-  setChatStatus(`自定义 API · ${apiModel.value}`, 'online')
-}
-
-function abortCurrentRequest(silent = false) {
-  if (!activeRequest) return
-  activeRequest.abort(); activeRequest = null
-  voice.stop({ preserveMessageAudio: true, silent: true })
-  if (!silent) setError('已停止本次回复。', 'info', 2500)
-}
-
+// ── 对话动作 ─────────────────────────────────────────────────────────────
 function stopEverything() {
-  const wasBusy     = Boolean(activeRequest)
-  const wasSpeaking = voice.isActive()
-  if (!wasBusy && !wasSpeaking) return
-  abortCurrentRequest(true)
-  voice.stop({ preserveMessageAudio: true, silent: true })
-  voiceStatusText.value = ''
-  setError(wasBusy ? '已停止本次回复。' : '已停止语音播放。', 'info', 2500)
-}
-
-async function sendMessage() {
-  const text = inputText.value.trim()
-  if (!text || busy.value || !chatReady.value) return
-  setError('')
-  voice.ensureAudioContext()
-
-  const char = activeChar.value
-  const msgs = storage.messages(char)
-  replyAnnouncement.value = ''
-  msgs.push({ role: 'user', content: text, mid: '', stopped: false })
-  storage.trim(char)
-  const assistant = { role: 'assistant' as const, content: '', mid: createMessageId(), stopped: false }
-  msgs.push(assistant)
-  storage.save()
-  inputText.value = ''
-  storage.setDraft(char, '')
-  streamingMid.value = assistant.mid
-  scrollBottom()
-  setBusy(true)
-
-  const controller = new AbortController()
-  activeRequest = controller
-  const emotionBuffer = new SentenceBuffer({ immediateFirst: true })
-  const applyReplyEmotion = (fragment: string, flush = false) => {
-    emotionBuffer.push(fragment, flush).forEach(sentence => {
-      characterStageRef.value?.setExpression(inferEmotion(sentence, char))
-    })
-  }
-  characterStageRef.value?.setExpression('neutral')
-  voice.startTurn({ mid: assistant.mid, voice: currentCharacter.value.voice, character: char })
-
-  try {
-    const response = await fetch('/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        character: char,
-        provider: chatProvider.value,
-        model: currentModel.value,
-        api: chatProvider.value === 'api' ? {
-          baseUrl: apiBaseUrl.value,
-          model: apiModel.value,
-          apiKey: apiKey.value,
-        } : undefined,
-        messages: msgs.slice(0, -1).map(m => ({ role: m.role, content: m.content })),
-      }),
-      signal: controller.signal,
-    })
-
-    await parseNdjsonResponse(response, async (event) => {
-      if (event.type === 'meta' && event.model) {
-        if (chatProvider.value === 'api') {
-          apiModel.value = String(event.model)
-          storage.setApiSettings({ baseUrl: apiBaseUrl.value, model: apiModel.value, apiKey: apiKey.value })
-        } else {
-          currentModel.value = String(event.model)
-          storage.setModel(currentModel.value)
-        }
-      }
-      if (event.type !== 'token') return
-      assistant.content += event.content || ''
-      applyReplyEmotion(event.content || '')
-      voice.append(event.content || '')
-      if (nearBottom()) scrollBottom()
-    })
-
-    assistant.content = assistant.content.trim() || '……'
-    applyReplyEmotion('', true)
-    // 收尾时播报一次完整回复，取代逐 token 刷 live region
-    replyAnnouncement.value = `${currentCharacter.value.name}说：${assistant.content}`
-    voice.finishTurn()
-  } catch (error) {
-    if (isAbortError(error)) {
-      assistant.content = assistant.content.trim()
-      assistant.stopped = Boolean(assistant.content)
-      if (!assistant.content) msgs.splice(msgs.indexOf(assistant), 1)
-    } else {
-      msgs.splice(msgs.indexOf(assistant), 1)
-      voice.stop({ preserveMessageAudio: true, silent: true })
-      setError(streamErrorMessage(
-        error,
-        chatProvider.value === 'api'
-          ? 'API 对话暂不可用，请检查地址、模型名和密钥。'
-          : '聊天暂不可用，请检查 Ollama。',
-      ))
-    }
-  } finally {
-    storage.trim(char); storage.save()
-    streamingMid.value = ''
-    if (activeRequest === controller) activeRequest = null
-    setBusy(false)
-    scrollBottom()
-  }
-}
-
-function setBusy(value: boolean) {
-  busy.value = value
-  if (value) setChatStatus('正在生成回复…', 'busy')
-  else if (chatProvider.value === 'api') {
-    setChatStatus(apiConfigured.value ? `自定义 API · ${apiModel.value}` : '等待配置自定义 API', apiConfigured.value ? 'online' : '')
-  } else {
-    setChatStatus(ollamaOnline.value ? '本地聊天模型已连接' : '聊天模型未连接', ollamaOnline.value ? 'online' : '')
-  }
+  if (stopConversation()) voiceStatusText.value = ''
 }
 
 function switchCharacter(char: string) {
@@ -632,17 +445,6 @@ function clearAllMemory() {
   voice.stop({ preserveMessageAudio: false, silent: true })
   storage.clear()
   setError('全部本地聊天记忆已清除。', 'info', 3000)
-}
-
-function useStarter(text: string) {
-  inputText.value = text
-  storage.setDraft(activeChar.value, text)
-}
-
-function onInputChange() {
-  clearTimeout(draftTimer)
-  const char = activeChar.value, val = inputText.value
-  draftTimer = window.setTimeout(() => storage.setDraft(char, val), 240) as unknown as number
 }
 
 function onAutoVoiceChange() {
@@ -681,8 +483,8 @@ onMounted(async () => {
 })
 
 onUnmounted(() => {
-  clearInterval(statusTimer); clearInterval(roomPollTimer); clearTimeout(errorTimer); clearTimeout(draftTimer)
-  if (activeRequest) { activeRequest.abort(); activeRequest = null }
+  clearInterval(statusTimer); clearInterval(roomPollTimer); clearTimeout(errorTimer)
+  destroyConversation()
   voice.destroy()
 })
 </script>

@@ -106,8 +106,10 @@ function tailLog(file, since) {
   } catch { return []; }
 }
 
-function createControlRouter(config, gatewayRef) {
+function createControlRouter(config, gatewayRef, dependencies) {
+  dependencies = dependencies || {};
   var router = express.Router();
+  var persistConfig = typeof dependencies.writeJson === 'function' ? dependencies.writeJson : writeJson;
   var startTime = Date.now();
   var rootDir = config.ROOT_DIR || path.join(__dirname, '..');
   var VOICE_START_SCRIPT = path.resolve(rootDir, '..', 'AI', 'Voice', 'Start-Voice.ps1');
@@ -205,6 +207,10 @@ function createControlRouter(config, gatewayRef) {
     });
   }
 
+  var runManagedScript = typeof dependencies.runScriptAsync === 'function'
+    ? dependencies.runScriptAsync
+    : runScriptAsync;
+
   // managed-webui.ps1 -Action Status 单次实测 ~2.2 秒，而控制面板 3 秒轮询一次 →
   // 不缓存的话面板一开就永久重叠 spawn PowerShell。缓存 + in-flight 去重 + fresh=1 强制刷新。
   var WEBUI_STATUS_TTL = 15000;
@@ -218,7 +224,7 @@ function createControlRouter(config, gatewayRef) {
     // 已有探测在飞就复用，避免并发轮询叠加 spawn
     if (webuiStatusInflight) return webuiStatusInflight;
 
-    webuiStatusInflight = runScriptAsync(WEBUI_MANAGER_SCRIPT, ['-Action', 'Status'], 15000)
+    webuiStatusInflight = runManagedScript(WEBUI_MANAGER_SCRIPT, ['-Action', 'Status'], 15000)
       .then(function (status) {
         webuiStatusCache.at = Date.now();
         if (status.ok && status.message) {
@@ -241,6 +247,23 @@ function createControlRouter(config, gatewayRef) {
   }
 
   async function refreshServiceStates(force) {
+    if (typeof dependencies.refreshServiceStates === 'function') {
+      var supplied = await dependencies.refreshServiceStates(force) || {};
+      state.sdOnline = !!supplied.sdOnline;
+      state.ttsOnline = !!supplied.ttsOnline;
+      state.ollamaOnline = !!supplied.ollamaOnline;
+      state.ollamaModels = Array.isArray(supplied.ollamaModels) ? supplied.ollamaModels : [];
+      state.ollamaVram = Number(supplied.ollamaVram) || 0;
+      if (typeof supplied.webuiManaged === 'boolean') state.webuiManaged = supplied.webuiManaged;
+      return {
+        sdOnline: state.sdOnline,
+        ttsOnline: state.ttsOnline,
+        ollamaOnline: state.ollamaOnline,
+        ollamaModels: state.ollamaModels,
+        ollamaVram: state.ollamaVram,
+        webuiManaged: state.webuiManaged
+      };
+    }
     var results = await Promise.all([
       pingSd(config.SD_HOST, 2500),
       pingTts(config.TTS_HOST, 2500),
@@ -412,7 +435,7 @@ function createControlRouter(config, gatewayRef) {
       try {
         var saved = readJson(config.RUNTIME.config);
         saved.autoTunnel = true;
-        writeJson(config.RUNTIME.config, saved);
+        persistConfig(config.RUNTIME.config, saved);
       } catch (e) {}
       controlLog('公网分享通道已请求启动');
       envelope.ok(res, { message:'公网分享通道已启动' });
@@ -430,7 +453,7 @@ function createControlRouter(config, gatewayRef) {
       try {
         var saved = readJson(config.RUNTIME.config);
         saved.autoTunnel = false;
-        writeJson(config.RUNTIME.config, saved);
+        persistConfig(config.RUNTIME.config, saved);
       } catch (e) {}
       controlLog('公网分享通道已停止');
       envelope.ok(res, { message:'公网分享通道已停止' });
@@ -444,6 +467,8 @@ function createControlRouter(config, gatewayRef) {
     try {
       var body = req.body || {};
       var saved = readJson(config.RUNTIME.config);
+      var configUpdates = [];
+      var nextVoiceProfiles = null;
       // 三个上游 host 必须落在本机 http。不校验的话这里是 SSRF，
       // 而且值会落盘 → 重启后 /sdapi 代理会指向攻击者选定的地址。
       var hostFields = [
@@ -460,14 +485,16 @@ function createControlRouter(config, gatewayRef) {
             field.label + ' 地址只接受本机 http，例如 http://127.0.0.1:7860');
         }
         saved[field.key] = safe;
-        config[field.configKey] = safe;
+        configUpdates.push({ key:field.configKey, value:safe });
       }
       if (body.voices && typeof body.voices === 'object') {
         saved.voices = body.voices;
-        config.VOICE_PROFILES = body.voices;
+        nextVoiceProfiles = body.voices;
       }
       if (typeof body.autoStartVoice === 'boolean') saved.autoStartVoice = body.autoStartVoice;
-      writeJson(config.RUNTIME.config, saved);
+      persistConfig(config.RUNTIME.config, saved);
+      configUpdates.forEach(function (update) { config[update.key] = update.value; });
+      if (nextVoiceProfiles) config.VOICE_PROFILES = nextVoiceProfiles;
       controlLog('服务配置已保存');
       envelope.ok(res, { sdHost:config.SD_HOST, ttsHost:config.TTS_HOST, ollamaHost:config.OLLAMA_HOST });
     } catch(e) {
@@ -481,7 +508,7 @@ function createControlRouter(config, gatewayRef) {
       var body = req.body || {};
       var saved = readJson(config.RUNTIME.config);
       if (typeof body.autoStartVoice === 'boolean') saved.autoStartVoice = body.autoStartVoice;
-      writeJson(config.RUNTIME.config, saved);
+      persistConfig(config.RUNTIME.config, saved);
       envelope.ok(res, { autoStartVoice: !!saved.autoStartVoice });
     } catch(e) {
       envelope.fail(res, 500, e.message);
@@ -498,8 +525,8 @@ function createControlRouter(config, gatewayRef) {
       '正在验证语音服务状态'
     ]);
     var task = action === 'start'
-      ? runScriptAsync(VOICE_START_SCRIPT, ['-WaitSeconds', '60'], 90000)
-      : runScriptAsync(VOICE_STOP_SCRIPT, [], 30000);
+      ? runManagedScript(VOICE_START_SCRIPT, ['-WaitSeconds', '60'], 90000)
+      : runManagedScript(VOICE_STOP_SCRIPT, [], 30000);
     task.then(async function (result) {
       ops.update(operation, 1);
       await refreshServiceStates(true); // 启停后缓存必然过期
@@ -535,7 +562,7 @@ function createControlRouter(config, gatewayRef) {
       action === 'start' ? '正在启动 SD WebUI' : '正在停止 SD WebUI',
       '正在验证绘图服务状态'
     ]);
-    runScriptAsync(WEBUI_MANAGER_SCRIPT, ['-Action', action === 'start' ? 'Start' : 'Stop'], 90000).then(async function (result) {
+    runManagedScript(WEBUI_MANAGER_SCRIPT, ['-Action', action === 'start' ? 'Start' : 'Stop'], 90000).then(async function (result) {
       if (result.ok && result.message) {
         try {
           var parsed = JSON.parse(result.message);
@@ -609,7 +636,7 @@ function createControlRouter(config, gatewayRef) {
     (async function () {
       if (mode === 'draw') {
         controlLog('模式切换：绘图优先 — 停止语音服务');
-        var stopVoice = await runScriptAsync(VOICE_STOP_SCRIPT, [], 30000);
+        var stopVoice = await runManagedScript(VOICE_STOP_SCRIPT, [], 30000);
         if (!stopVoice.ok) controlLog('停止语音服务时出现提示: ' + stopVoice.error);
         ops.update(operation, 1);
         controlLog('模式切换：绘图优先 — 卸载 Ollama 模型');
@@ -617,7 +644,7 @@ function createControlRouter(config, gatewayRef) {
         if (!unload.ok) controlLog('Ollama 卸载提示: ' + (unload.error || unload.message || ''));
         ops.update(operation, 2);
         controlLog('模式切换：绘图优先 — 启动 WebUI');
-        var startWebui = await runScriptAsync(WEBUI_MANAGER_SCRIPT, ['-Action', 'Start'], 90000);
+        var startWebui = await runManagedScript(WEBUI_MANAGER_SCRIPT, ['-Action', 'Start'], 90000);
         if (startWebui.ok) {
           try { state.webuiManaged = !!JSON.parse(startWebui.message || '{}').managed; } catch {}
           controlLog('绘图优先模式就绪：显存已优先让给 WebUI');
@@ -628,7 +655,7 @@ function createControlRouter(config, gatewayRef) {
       } else {
         if (state.webuiManaged) {
           controlLog('模式切换：聊天优先 — 停止受管 WebUI 释放显存');
-          var stopWebui = await runScriptAsync(WEBUI_MANAGER_SCRIPT, ['-Action', 'Stop'], 60000);
+          var stopWebui = await runManagedScript(WEBUI_MANAGER_SCRIPT, ['-Action', 'Stop'], 60000);
           if (stopWebui.ok) {
             try { state.webuiManaged = !!JSON.parse(stopWebui.message || '{}').managed; } catch {}
           } else {
@@ -639,7 +666,7 @@ function createControlRouter(config, gatewayRef) {
         }
         ops.update(operation, 1);
         controlLog('模式切换：聊天优先 — 启动语音服务');
-        var startVoice = await runScriptAsync(VOICE_START_SCRIPT, ['-WaitSeconds', '60'], 90000);
+        var startVoice = await runManagedScript(VOICE_START_SCRIPT, ['-WaitSeconds', '60'], 90000);
         if (startVoice.ok) controlLog('聊天优先模式就绪：语音服务已启动');
         else throw new Error('语音服务启动失败: ' + startVoice.error);
         ops.update(operation, 2);

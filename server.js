@@ -105,6 +105,7 @@ function precompressed(rootDir) {
 
 function createGateway(options) {
   options = options || {};
+  var spawn = options.spawn || cp.spawn;
   var config = options.config || loadGatewayConfig(__dirname, options.env || process.env);
   var app = express();
   var tunnelUrl = '';
@@ -315,7 +316,7 @@ function createGateway(options) {
     var runtimeTools = require('./scripts/runtime/runtime-paths');
     runtimeTools.rotateLog(config.RUNTIME.tunnelLog, 2 * 1024 * 1024);
     var logFd = fs.openSync(config.RUNTIME.tunnelLog, 'w');
-    tunnelProcess = cp.spawn(config.CLOUDFLARED_PATH, [
+    tunnelProcess = spawn(config.CLOUDFLARED_PATH, [
       'tunnel', '--url', 'http://localhost:' + config.PORT
     ], {
       stdio:['ignore', logFd, logFd],

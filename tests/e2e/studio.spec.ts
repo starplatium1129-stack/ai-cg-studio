@@ -255,6 +255,8 @@ test('control panel shows service status wall and scheduling controls', async ({
   const errors = collectRuntimeErrors(page);
   await page.goto('/control');
 
+  await expect(page.locator('.control-rail')).toBeVisible();
+  await expect(page.locator('.control-rail-link')).toHaveCount(5);
   await expect(page.locator('.gallery-kicker')).toContainText('Local control room');
   await expect(page.locator('.control-title')).toBeVisible();
   await expect(page.locator('.status-tile').first()).toBeVisible();
@@ -303,6 +305,10 @@ test('character room mounts portrait, composer and voice console', async ({ page
   await page.getByLabel('服务商').selectOption('opencode');
   await expect(page.getByLabel('API 地址')).toHaveValue('https://opencode.ai/zen/v1');
   await expect(page.getByLabel('模型名')).toHaveValue('deepseek-v4-flash-free');
+  await page.getByLabel('服务商').selectOption('opencode-go');
+  await expect(page.getByLabel('API 地址')).toHaveValue('https://opencode.ai/zen/go/v1');
+  await expect(page.getByLabel('模型名')).toHaveValue('deepseek-v4-flash');
+  await page.getByLabel('服务商').selectOption('opencode');
   await page.getByLabel('API Key').fill('test-key');
   await page.getByRole('button', { name: '测试连接' }).click();
   await expect(page.locator('.api-test-status')).toContainText('连接成功，发现 2 个模型');
@@ -310,6 +316,54 @@ test('character room mounts portrait, composer and voice console', async ({ page
   await expect(page.locator('.voice-console')).toBeVisible();
 
   expect(errors).toEqual([]);
+});
+
+test('chat storage migrates legacy settings and removes durable credentials', async ({ page }) => {
+  await page.addInitScript(() => {
+    if (sessionStorage.getItem('e2e_chat_storage_seeded') === '1') return;
+    sessionStorage.setItem('e2e_chat_storage_seeded', '1');
+    localStorage.setItem('aics_chat_v1', JSON.stringify({
+      version: 1,
+      activeCharacter: 'natsume',
+      provider: 'api',
+      api: {
+        baseUrl: 'https://legacy.example/v1',
+        model: 'legacy-model',
+        apiKey: 'legacy-browser-secret',
+        headers: { Authorization: 'Bearer legacy-browser-secret' },
+      },
+      settings: { password: 'must-not-survive' },
+    }));
+  });
+  await page.goto('/chat');
+  await expect(page.locator('.portrait-stage')).toHaveAttribute('data-character', 'natsume');
+
+  const migrated = await page.evaluate(() => ({
+    local: localStorage.getItem('aics_chat_v1') || '',
+    sessionKey: sessionStorage.getItem('aics_chat_api_key_v1'),
+  }));
+  const durable = JSON.parse(migrated.local);
+  expect(durable.version).toBe(3);
+  expect(durable.settings.provider).toBe('api');
+  expect(durable.settings.apiBaseUrl).toBe('https://legacy.example/v1');
+  expect(durable.settings.apiModel).toBe('legacy-model');
+  expect(migrated.local).not.toContain('legacy-browser-secret');
+  expect(migrated.local).not.toContain('apiKey');
+  expect(migrated.local).not.toContain('Authorization');
+  expect(migrated.local).not.toContain('password');
+  expect(migrated.sessionKey).toBe('legacy-browser-secret');
+
+  await page.evaluate(() => {
+    localStorage.setItem('aics_chat_v1', '{damaged');
+    sessionStorage.removeItem('aics_chat_api_key_v1');
+  });
+  await page.reload();
+  await expect(page.locator('.chat-input')).toBeVisible();
+  const recovered = await page.evaluate(() => JSON.parse(localStorage.getItem('aics_chat_v1') || '{}'));
+  expect(recovered.version).toBe(3);
+  expect(recovered.active).toBe('nene');
+  expect(recovered.histories).toEqual({ nene: [], natsume: [] });
+  expect(recovered.settings.provider).toBe('local');
 });
 
 test('character profile opens the selected character room and persona scenes', async ({ page }) => {

@@ -26,6 +26,22 @@ function close(server) {
   });
 }
 
+async function postJson(url, payload) {
+  var response = await fetch(url, {
+    method:'POST',
+    headers:{ 'Content-Type':'application/json' },
+    body:JSON.stringify(payload)
+  });
+  var body = await response.text();
+  var json = null;
+  try { json = JSON.parse(body); } catch (error) {}
+  return { status:response.status, body:body, json:json };
+}
+
+function readNdjson(body) {
+  return body.trim().split('\n').filter(Boolean).map(function (line) { return JSON.parse(line); });
+}
+
 function createMockAiServer() {
   var state = {
     activeChat:0,
@@ -71,6 +87,15 @@ function createMockAiServer() {
       if (req.url === '/v1/models') {
         state.compatibleAuth = String(req.headers.authorization || '');
         res.setHeader('Content-Type', 'application/json');
+        if (state.compatibleAuth === 'Bearer rejected-key') {
+          res.statusCode = 401;
+          res.end(JSON.stringify({ error:{ message:'credential rejected' } }));
+          return;
+        }
+        if (state.compatibleAuth === 'Bearer empty-list-key') {
+          res.end(JSON.stringify({ data:[] }));
+          return;
+        }
         res.end(JSON.stringify({ data:[
           { id:'compatible-model' },
           { id:'compatible-model-fast' }
@@ -80,6 +105,16 @@ function createMockAiServer() {
       if (req.url === '/v1/chat/completions') {
         state.compatiblePayloads.push(body);
         state.compatibleAuth = String(req.headers.authorization || '');
+        if (body.model === 'json-model') {
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify({ choices:[{ message:{ content:'non-stream reply' } }] }));
+          return;
+        }
+        if (body.model === 'malformed-sse-model') {
+          res.setHeader('Content-Type', 'text/event-stream');
+          res.end('data: {not valid json}\n\ndata: [DONE]\n\n');
+          return;
+        }
         res.setHeader('Content-Type', 'text/event-stream');
         var utf8Event = Buffer.from('data: {"choices":[{"delta":{"content":"你好"}}]}\n\ndata: [DONE]\n\n', 'utf8');
         var chineseStart = utf8Event.indexOf(Buffer.from('你', 'utf8'));
@@ -135,6 +170,8 @@ async function run() {
   var mainTs = fs.readFileSync(path.join(root, 'src', 'main.ts'), 'utf8');
   var streamUtils = fs.readFileSync(path.join(root, 'src', 'utils', 'stream.ts'), 'utf8');
   var chatStorage = fs.readFileSync(path.join(root, 'src', 'composables', 'useChatStorage.ts'), 'utf8');
+  var chatProvider = fs.readFileSync(path.join(root, 'src', 'composables', 'useChatProvider.ts'), 'utf8');
+  var chatConversation = fs.readFileSync(path.join(root, 'src', 'composables', 'useChatConversation.ts'), 'utf8');
   var securitySource = fs.readFileSync(path.join(root, 'server', 'security.js'), 'utf8');
   var voiceRoute = fs.readFileSync(path.join(root, 'routes', 'voice.js'), 'utf8');
   var serverSource = fs.readFileSync(path.join(root, 'server.js'), 'utf8');
@@ -151,8 +188,14 @@ async function run() {
   assert(html.includes('voice-console') && html.includes('replay-btn'), 'live voice and replay must share one visual control');
   assert(!html.includes('portrait-blink') && !html.includes('scheduleBlink'), 'static portraits must not use a duplicate-image blink effect');
   assert(!chatCss.includes('portrait-talk'), 'static portraits must not scale or bounce while voice is playing');
-  assert(html.includes("fetch('/api/chat'") && html.includes('parseNdjsonResponse'), 'chat view must stream from the gateway');
+  assert(
+    html.includes('useChatConversation')
+      && chatConversation.includes("fetch('/api/chat'")
+      && chatConversation.includes('parseNdjsonResponse'),
+    'chat conversation composable must stream from the gateway'
+  );
   assert(html.includes('ChatApiSettings'), 'chat API settings must have independent component ownership');
+  assert(html.includes('useChatProvider') && chatProvider.includes('refreshChatStatus') && chatProvider.includes('saveApiSettings'), 'chat provider settings and status must have composable ownership');
   assert(
     characterStageComponent.includes('defineExpose({ setSpeaking, setExpression, setMouth })')
       && characterStageComponent.includes("emit('live2dEnabled'"),
@@ -163,8 +206,15 @@ async function run() {
       && apiSettingsComponent.includes('discoveredModels'),
     'chat API settings must test credentials and discover models'
   );
-  assert(html.includes('AbortController') && html.includes('stop-btn'), 'chat requests must be cancellable');
+  assert(
+    apiSettingsComponent.includes("'opencode-go'")
+      && apiSettingsComponent.includes('https://opencode.ai/zen/go/v1')
+      && apiSettingsComponent.includes('deepseek-v4-flash'),
+    'OpenCode Go must offer its dedicated endpoint and DeepSeek V4 Flash preset'
+  );
+  assert(chatConversation.includes('AbortController') && html.includes('stop-btn'), 'chat requests must be cancellable');
   assert(!/\bany\b/.test(html), 'ChatView model, stream, error, and history boundaries must stay explicitly typed');
+  assert(!/\bany\b/.test(chatConversation), 'chat conversation stream, cancellation, and draft boundaries must stay explicitly typed');
   assert(!/\bany\b/.test(streamUtils), 'chat stream events and abort errors must stay explicitly typed');
   assert(!/\bany\b/.test(chatStorage), 'persisted chat messages must stay explicitly typed');
   assert(html.includes('streamingMid'), 'only the active assistant message may keep the streaming cursor');
@@ -283,6 +333,16 @@ async function run() {
       && opencodeValidation.value.pathname === '/zen/v1/chat/completions',
     'OpenCode Zen must use its OpenAI-compatible chat endpoint'
   );
+  var opencodeGoValidation = chatRoute.validateCompatibleApi({
+    baseUrl:'https://opencode.ai/zen/go/v1',
+    model:'deepseek-v4-flash',
+    apiKey:'secret'
+  });
+  assert(
+    opencodeGoValidation.value.vendor === 'opencode'
+      && opencodeGoValidation.value.pathname === '/zen/go/v1/chat/completions',
+    'OpenCode Go must preserve its dedicated OpenAI-compatible chat endpoint'
+  );
   assert(chatRoute.chatCharacterPrompt('nene').includes('不要每句话都结巴'), 'Nene prompt must constrain repetitive roleplay mannerisms');
   assert(chatRoute.chatCharacterPrompt('natsume').includes('关心藏进提醒'), 'Natsume prompt must preserve restrained care');
   assert(chatRoute.chatCharacterPrompt('nene').includes('不要假装知道用户没说过的'), 'character prompts must not invent shared facts');
@@ -398,6 +458,8 @@ async function run() {
     await close(mock.server);
   }
 
+  var providerMock = createMockAiServer();
+  var providerBase = await listen(providerMock.server);
   var gatewayModule = require('../../server');
   var gateway = gatewayModule.createGateway({ env:{ DISABLE_TUNNEL:'1' } });
   var gatewayServer = http.createServer(gateway.app);
@@ -436,12 +498,56 @@ async function run() {
       body:JSON.stringify({ character:'bad', messages:[] })
     });
     assert(badChat.status === 400, 'chat route must reject invalid input without contacting Ollama');
+
+    var emptyModels = await postJson(gatewayBase + '/api/chat-provider/test', {
+      baseUrl:providerBase + '/v1', model:'compatible-model', apiKey:'empty-list-key'
+    });
+    assert(
+      emptyModels.status === 200 && emptyModels.json && emptyModels.json.ok
+        && emptyModels.json.modelCount === 0 && emptyModels.json.models.length === 0,
+      'compatible provider test must report an empty model list without treating the API as offline',
+    );
+
+    var rejectedCredentials = await postJson(gatewayBase + '/api/chat-provider/test', {
+      baseUrl:providerBase + '/v1', model:'compatible-model', apiKey:'rejected-key'
+    });
+    assert(
+      rejectedCredentials.status === 401 && rejectedCredentials.json && !rejectedCredentials.json.ok
+        && rejectedCredentials.json.error.includes('401') && !rejectedCredentials.body.includes('rejected-key'),
+      'compatible provider authentication failures must keep the 401 status and never leak the API key',
+    );
+
+    var jsonCompletion = await postJson(gatewayBase + '/api/chat', {
+      character:'nene', provider:'api',
+      api:{ baseUrl:providerBase + '/v1', model:'json-model', apiKey:'local-secret' },
+      messages:[{ role:'user', content:'hello' }]
+    });
+    var jsonEvents = readNdjson(jsonCompletion.body);
+    assert(
+      jsonCompletion.status === 200 && jsonEvents.some(function (event) {
+        return event.type === 'token' && event.content === 'non-stream reply';
+      }) && jsonEvents.some(function (event) { return event.type === 'done'; }),
+      'compatible chat must convert a non-stream OpenAI response into gateway NDJSON events',
+    );
+
+    var malformedSse = await postJson(gatewayBase + '/api/chat', {
+      character:'nene', provider:'api',
+      api:{ baseUrl:providerBase + '/v1', model:'malformed-sse-model', apiKey:'local-secret' },
+      messages:[{ role:'user', content:'hello' }]
+    });
+    var malformedEvents = readNdjson(malformedSse.body);
+    assert(
+      malformedSse.status === 200 && malformedEvents.some(function (event) { return event.type === 'error'; })
+        && !malformedEvents.some(function (event) { return event.type === 'done'; }),
+      'a malformed compatible SSE stream must end with a gateway error event rather than false success',
+    );
   } finally {
     gateway.close();
     await close(gatewayServer);
+    await close(providerMock.server);
   }
 
-  console.log('Chat tests passed: modular gateway, static delivery, serialized AI queues, cancellable streaming voice, Live2D recovery and fallback');
+  console.log('Chat tests passed: modular gateway, compatible API contracts, serialized AI queues, cancellable streaming voice, Live2D recovery and fallback');
 }
 
 run().catch(function (error) {

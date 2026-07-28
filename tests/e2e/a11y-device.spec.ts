@@ -159,3 +159,25 @@ test('narrow viewports keep the home hero inside the viewport', async ({ page })
   expect(overflow).toBeLessThanOrEqual(1);
   expect(errors).toEqual([]);
 });
+
+test('control layout keeps its navigation usable without horizontal scroll', async ({ page }) => {
+  const errors = collectRuntimeErrors(page);
+  await page.goto('/control');
+  await expect(page.locator('.control-title')).toBeVisible();
+
+  const narrow = page.viewportSize()!.width <= 900;
+  if (narrow) {
+    await expect(page.locator('.control-mobile-nav')).toBeVisible();
+    await expect(page.locator('.control-rail')).toBeHidden();
+  } else {
+    await expect(page.locator('.control-mobile-nav')).toBeHidden();
+    await expect(page.locator('.control-rail')).toBeVisible();
+    await expect(page.locator('.control-rail-link')).toHaveCount(5);
+  }
+
+  const overflow = await page.evaluate(() =>
+    document.documentElement.scrollWidth - document.documentElement.clientWidth,
+  );
+  expect(overflow).toBeLessThanOrEqual(1);
+  expect(errors).toEqual([]);
+});
