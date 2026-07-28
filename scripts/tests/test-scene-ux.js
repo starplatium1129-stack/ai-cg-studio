@@ -91,4 +91,13 @@ const recent = sceneUx.readRecent(storage);
 assert.strictEqual(recent.length, 2, 'recent scenes must be deduplicated');
 assert.strictEqual(recent[0].id, scenes[0].id, 'most recent scene must be first');
 
-console.log('Scene UX tests passed: tiers, sentence search, relevance, preferences, and recent scenes');
+sceneUx.recordSceneUsage(scenes[0], storage, preferenceNow - 86400000);
+sceneUx.recordSceneUsage(scenes[0], storage, preferenceNow);
+sceneUx.recordSceneUsage(scenes[1], storage, preferenceNow - 100 * 86400000);
+const usage = sceneUx.readSceneUsage(storage);
+assert.strictEqual(usage[scenes[0].id].uses, 2, 'scene selections must increment local usage');
+assert.strictEqual(usage[scenes[0].id].lastUsed, preferenceNow, 'scene usage must retain the latest selection time');
+assert(sceneUx.sceneUsageScore(usage[scenes[0].id], preferenceNow) > sceneUx.sceneUsageScore(usage[scenes[1].id], preferenceNow),
+  'frequent and recent scenes must rank above stale one-off selections');
+
+console.log('Scene UX tests passed: tiers, sentence search, relevance, preferences, recent scenes, and local usage');

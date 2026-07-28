@@ -13,6 +13,11 @@ export interface ChatState {
   histories: Record<string, ChatMessage[]>
   settings: {
     model: string
+    provider: 'local' | 'api'
+    apiBaseUrl: string
+    apiModel: string
+    apiKey: string
+    live2dEnabled: boolean
     autoVoice: boolean
     volume: number
     drafts: Record<string, string>
@@ -37,7 +42,17 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   const state = reactive<ChatState>({
     active: 'nene',
     histories: Object.fromEntries(Object.keys(CHARACTERS).map(k => [k, []])),
-    settings: { model: '', autoVoice: true, volume: 80, drafts: Object.fromEntries(Object.keys(CHARACTERS).map(k => [k, ''])) },
+    settings: {
+      model: '',
+      provider: 'local',
+      apiBaseUrl: 'https://api.deepseek.com',
+      apiModel: 'deepseek-v4-flash',
+      apiKey: '',
+      live2dEnabled: false,
+      autoVoice: true,
+      volume: 80,
+      drafts: Object.fromEntries(Object.keys(CHARACTERS).map(k => [k, ''])),
+    },
   })
 
   function load() {
@@ -49,6 +64,11 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
       }
       const savedModel = raw.settings?.model || localStorage.getItem('aics_chat_model') || ''
       state.settings.model = String(savedModel)
+      state.settings.provider = raw.settings?.provider === 'api' ? 'api' : 'local'
+      state.settings.apiBaseUrl = String(raw.settings?.apiBaseUrl || 'https://api.deepseek.com').slice(0, 500)
+      state.settings.apiModel = String(raw.settings?.apiModel || 'deepseek-v4-flash').slice(0, 200)
+      state.settings.apiKey = String(raw.settings?.apiKey || '').slice(0, 1000)
+      state.settings.live2dEnabled = raw.settings?.live2dEnabled === true
       state.settings.autoVoice = raw.settings ? raw.settings.autoVoice !== false : true
       state.settings.volume = typeof raw.settings?.volume === 'number' ? raw.settings.volume : 80
       for (const char of Object.keys(CHARACTERS)) {
@@ -74,6 +94,14 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
 
   function setActive(char: string) { state.active = char === 'natsume' ? 'natsume' : 'nene'; save() }
   function setModel(model: string) { state.settings.model = String(model || ''); save() }
+  function setProvider(provider: 'local' | 'api') { state.settings.provider = provider === 'api' ? 'api' : 'local'; save() }
+  function setApiSettings(settings: { baseUrl: string; model: string; apiKey: string }) {
+    state.settings.apiBaseUrl = String(settings.baseUrl || '').trim().slice(0, 500)
+    state.settings.apiModel = String(settings.model || '').trim().slice(0, 200)
+    state.settings.apiKey = String(settings.apiKey || '').trim().slice(0, 1000)
+    save()
+  }
+  function setLive2dEnabled(value: boolean) { state.settings.live2dEnabled = Boolean(value); save() }
   function setAutoVoice(v: boolean) { state.settings.autoVoice = Boolean(v); save() }
   function setVolume(v: number) { state.settings.volume = Math.max(0, Math.min(100, Math.round(Number(v) || 80))); save() }
   function draft(char = state.active) { return state.settings.drafts[char] || '' }
@@ -92,5 +120,9 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     save()
   }
 
-  return { state, load, save, messages, setActive, setModel, setAutoVoice, setVolume, draft, setDraft, trim, clear }
+  return {
+    state, load, save, messages,
+    setActive, setModel, setProvider, setApiSettings,
+    setLive2dEnabled, setAutoVoice, setVolume, draft, setDraft, trim, clear,
+  }
 }

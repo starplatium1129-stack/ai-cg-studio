@@ -33,7 +33,9 @@ function createMockAiServer() {
     activeVoice:0,
     maxActiveVoice:0,
     voicePayloads:[],
-    unloaded:[]
+    unloaded:[],
+    compatiblePayloads:[],
+    compatibleAuth:''
   };
   var server = http.createServer(function (req, res) {
     var chunks = [];
@@ -64,6 +66,27 @@ function createMockAiServer() {
           res.end();
           state.activeChat -= 1;
         }, 35);
+        return;
+      }
+      if (req.url === '/v1/models') {
+        state.compatibleAuth = String(req.headers.authorization || '');
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify({ data:[
+          { id:'compatible-model' },
+          { id:'compatible-model-fast' }
+        ] }));
+        return;
+      }
+      if (req.url === '/v1/chat/completions') {
+        state.compatiblePayloads.push(body);
+        state.compatibleAuth = String(req.headers.authorization || '');
+        res.setHeader('Content-Type', 'text/event-stream');
+        var utf8Event = Buffer.from('data: {"choices":[{"delta":{"content":"你好"}}]}\n\ndata: [DONE]\n\n', 'utf8');
+        var chineseStart = utf8Event.indexOf(Buffer.from('你', 'utf8'));
+        res.write(utf8Event.subarray(0, chineseStart + 1));
+        setTimeout(function () {
+          res.end(utf8Event.subarray(chineseStart + 1));
+        }, 10);
         return;
       }
       if (req.url === '/docs') {
@@ -104,6 +127,8 @@ async function consumeVoice(service, input) {
 async function run() {
   // 角色房间已迁为 Vue：ChatView.vue + useVoice / useLive2D composable
   var html = fs.readFileSync(path.join(root, 'src', 'views', 'ChatView.vue'), 'utf8');
+  var apiSettingsComponent = fs.readFileSync(path.join(root, 'src', 'components', 'ChatApiSettings.vue'), 'utf8');
+  var characterStageComponent = fs.readFileSync(path.join(root, 'src', 'components', 'ChatCharacterStage.vue'), 'utf8');
   var voiceModule = fs.readFileSync(path.join(root, 'src', 'composables', 'useVoice.ts'), 'utf8');
   var live2dModule = fs.readFileSync(path.join(root, 'src', 'composables', 'useLive2D.ts'), 'utf8');
   var chatCss = fs.readFileSync(path.join(root, 'src', 'assets', 'css', 'chat.css'), 'utf8');
@@ -114,17 +139,29 @@ async function run() {
   var serverSource = fs.readFileSync(path.join(root, 'server.js'), 'utf8');
 
   assert(html.includes('chat-page'), 'chat view must render the character room shell');
-  assert(html.includes("'nene'") && html.includes("'natsume'") && html.includes('switchCharacter'), 'both characters must be selectable');
+  assert(characterStageComponent.includes("'nene'") && characterStageComponent.includes("'natsume'") && html.includes('switchCharacter'), 'both characters must be selectable');
   // chat.css 是路由专属样式：由 ChatView 自己 import，随 /chat 的懒加载块下发，
   // 不再进全局包（它曾占 139KB 全局 CSS 的 13%，而只有一个路由用得到）。
   assert(html.includes('assets/css/chat.css'), 'chat styles must be imported by the chat view');
   assert(!mainTs.includes('assets/css/chat.css'), 'chat styles must not ship in the global entry bundle');
-  assert(html.includes('useVoice') && html.includes('useLive2D'), 'chat view must compose voice and Live2D');
-  assert(html.includes("'live2d-ready': live2d.ready"), 'Vue must own the Live2D visibility class so voice state renders cannot restore the static portrait');
+  assert(html.includes('useVoice') && html.includes('ChatCharacterStage'), 'chat view must compose voice and the character stage');
+  assert(characterStageComponent.includes('useLive2D'), 'the character stage must own the Live2D lifecycle');
+  assert(characterStageComponent.includes("'live2d-ready': live2d.ready"), 'Vue must own the Live2D visibility class so voice state renders cannot restore the static portrait');
   assert(html.includes('voice-console') && html.includes('replay-btn'), 'live voice and replay must share one visual control');
   assert(!html.includes('portrait-blink') && !html.includes('scheduleBlink'), 'static portraits must not use a duplicate-image blink effect');
   assert(!chatCss.includes('portrait-talk'), 'static portraits must not scale or bounce while voice is playing');
   assert(html.includes("fetch('/api/chat'") && html.includes('parseNdjsonResponse'), 'chat view must stream from the gateway');
+  assert(html.includes('ChatApiSettings'), 'chat API settings must have independent component ownership');
+  assert(
+    characterStageComponent.includes('defineExpose({ setSpeaking, setExpression, setMouth })')
+      && characterStageComponent.includes("emit('live2dEnabled'"),
+    'the character stage must expose only voice animation controls and persist the Live2D preference'
+  );
+  assert(
+    apiSettingsComponent.includes("fetch('/api/chat-provider/test'")
+      && apiSettingsComponent.includes('discoveredModels'),
+    'chat API settings must test credentials and discover models'
+  );
   assert(html.includes('AbortController') && html.includes('stop-btn'), 'chat requests must be cancellable');
   assert(html.includes('streamingMid'), 'only the active assistant message may keep the streaming cursor');
   assert(voiceModule.includes('SentenceBuffer') && /\bawait r\.arrayBuffer\(\)/.test(voiceModule), 'voice must synthesize complete sentence WAV files');
@@ -138,6 +175,17 @@ async function run() {
   assert(live2dModule.includes('ResizeObserver') && live2dModule.includes('webglcontextlost'), 'Live2D must recover layout and WebGL failures');
   assert(live2dModule.includes('setExpression') && live2dModule.includes('setSpeaking') && live2dModule.includes('applyMouth') && live2dModule.includes('ParamMouthOpenY'), 'Live2D must write real speech amplitudes into the mouth parameter');
   assert(live2dModule.includes('model.focus') && live2dModule.includes('model.hitTest'), 'Live2D must support pointer focus and model hit testing');
+  assert(
+    characterStageComponent.includes("live2d.interact('greet')")
+      && characterStageComponent.includes("live2d.interact('head')")
+      && live2dModule.includes("function interact(kind: 'greet' | 'head'"),
+    'Live2D must expose keyboard-accessible greeting and head-pat interactions'
+  );
+  assert(
+    live2dModule.includes('options.autoLoad === true')
+      && live2dModule.includes("setState('idle', '启用 Live2D'"),
+    'Live2D must stay unloaded until the user explicitly enables it'
+  );
   assert(live2dModule.includes("'degraded'") && live2dModule.includes('已经显示的模型失效'), 'runtime expression failures must not replace a loaded Live2D model with the static portrait');
   // Live2D 运行库必须真正被加载（重构后曾漏掉，导致"运行库加载失败"）
   assert(live2dModule.includes("import('wl-live2d')"), 'Live2D runtime must be imported by the composable');
@@ -175,6 +223,38 @@ async function run() {
     messages:[{ role:'user', content:'你好' }]
   }).value, 'valid chat body must pass');
   assert(chatRoute.validateChatBody({ character:'unknown', messages:[] }).error, 'invalid character must be rejected');
+  assert(chatRoute.validateChatBody({
+    character:'nene',
+    provider:'api',
+    api:{ baseUrl:'http://example.com/v1', model:'model-a', apiKey:'secret' },
+    messages:[{ role:'user', content:'hello' }]
+  }).error, 'remote compatible APIs must require HTTPS');
+  var compatibleValidation = chatRoute.validateChatBody({
+    character:'nene',
+    provider:'api',
+    api:{ baseUrl:'https://api.example.com/v1', model:'model-a', apiKey:'secret' },
+    messages:[{ role:'user', content:'hello' }]
+  });
+  assert(
+    compatibleValidation.value.api.pathname === '/v1/chat/completions',
+    'compatible API base paths must preserve the /v1 prefix'
+  );
+  var deepseekValidation = chatRoute.validateCompatibleApi({
+    baseUrl:'https://api.deepseek.com',
+    model:'deepseek-v4-flash',
+    apiKey:'secret'
+  });
+  assert(deepseekValidation.value.vendor === 'deepseek', 'official DeepSeek endpoints must receive the role-chat optimization');
+  var opencodeValidation = chatRoute.validateCompatibleApi({
+    baseUrl:'https://opencode.ai/zen/v1',
+    model:'deepseek-v4-flash-free',
+    apiKey:'secret'
+  });
+  assert(
+    opencodeValidation.value.vendor === 'opencode'
+      && opencodeValidation.value.pathname === '/zen/v1/chat/completions',
+    'OpenCode Zen must use its OpenAI-compatible chat endpoint'
+  );
   assert(chatRoute.chatCharacterPrompt('nene').includes('不要每句话都结巴'), 'Nene prompt must constrain repetitive roleplay mannerisms');
   assert(chatRoute.chatCharacterPrompt('natsume').includes('关心藏进提醒'), 'Natsume prompt must preserve restrained care');
   assert(chatRoute.chatCharacterPrompt('nene').includes('不要假装知道用户没说过的'), 'character prompts must not invent shared facts');
@@ -218,6 +298,29 @@ async function run() {
     assert(mock.state.maxActiveChat === 1, 'Ollama streams must be serialized');
     assert(mock.state.unloaded.includes('model-a'), 'switching models must unload the previous model');
     assert(outputs.join('') === '你好。你好。', 'split NDJSON chunks must be reconstructed');
+
+    var compatibleOutput = [];
+    var localApi = chatRoute.validateCompatibleApi({
+      baseUrl:mockBase + '/v1',
+      model:'compatible-model',
+      apiKey:'local-secret'
+    });
+    assert(localApi.value, 'loopback compatible APIs may use HTTP');
+    var compatibleStatus = await chatRoute.inspectCompatibleApi(localApi.value);
+    assert(
+      compatibleStatus.online && compatibleStatus.models.includes('compatible-model-fast'),
+      'compatible API diagnostics must authenticate and discover models'
+    );
+    await chatRoute.streamCompatibleApi({
+      api:localApi.value,
+      messages:[{ role:'system', content:'persona' }, { role:'user', content:'hello' }]
+    }, {
+      onToken:function (content) { compatibleOutput.push(content); }
+    });
+    assert(compatibleOutput.join('') === '你好', 'compatible API SSE must preserve Chinese characters split across UTF-8 chunks');
+    assert(!compatibleOutput.join('').includes('\uFFFD'), 'compatible API output must not contain replacement characters');
+    assert(mock.state.compatibleAuth === 'Bearer local-secret', 'compatible API key must be sent as a bearer token');
+    assert(mock.state.compatiblePayloads[0].messages[0].content === 'persona', 'compatible APIs must receive the character system prompt');
 
     var abortController = new AbortController();
     var resolveStarted;

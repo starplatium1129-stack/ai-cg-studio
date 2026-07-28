@@ -1,6 +1,7 @@
 'use strict';
 
 var express = require('express');
+var StringDecoder = require('string_decoder').StringDecoder;
 var httpClient = require('../services/http-client');
 var security = require('../server/security');
 var envelope = require('../server/http-envelope');
@@ -49,6 +50,7 @@ function chatCharacterPrompt(character) {
 
 function validateChatBody(body) {
   var character = String(body && body.character || 'nene');
+  var provider = body && body.provider === 'api' ? 'api' : 'local';
   var requestedModel = String(body && body.model || '');
   var rawMessages = body && body.messages;
   if (!['nene', 'natsume'].includes(character)) return { error:'不支持的聊天角色' };
@@ -68,12 +70,175 @@ function validateChatBody(body) {
     messages.push({ role:role, content:content });
   }
   if (totalLength > 12000) return { error:'当前对话过长，请清空或开启新对话' };
+  var api = null;
+  if (provider === 'api') {
+    var apiValidation = validateCompatibleApi(body && body.api);
+    if (apiValidation.error) return { error:apiValidation.error };
+    api = apiValidation.value;
+  }
   return {
     value:{
       character:character,
+      provider:provider,
       model:requestedModel,
+      api:api,
       messages:[{ role:'system', content:chatCharacterPrompt(character) }].concat(messages)
     }
+  };
+}
+
+function validateCompatibleApi(input) {
+  var baseUrl = String(input && input.baseUrl || '').trim();
+  var model = String(input && input.model || '').trim();
+  var apiKey = String(input && input.apiKey || '').trim();
+  if (!baseUrl || baseUrl.length > 500) return { error:'API 地址不能为空或过长' };
+  if (!model || model.length > 200) return { error:'API 模型名不能为空或过长' };
+  if (apiKey.length > 1000) return { error:'API Key 过长' };
+
+  var parsed;
+  try { parsed = new URL(baseUrl); } catch (error) {
+    return { error:'API 地址格式无效' };
+  }
+  var hostname = parsed.hostname.toLowerCase();
+  var localHost = hostname === '127.0.0.1' || hostname === 'localhost' || hostname === '::1' || hostname === '[::1]';
+  if (parsed.protocol !== 'https:' && !(parsed.protocol === 'http:' && localHost)) {
+    return { error:'远程 API 必须使用 HTTPS；本机地址可以使用 HTTP' };
+  }
+  if (parsed.username || parsed.password || parsed.search || parsed.hash) {
+    return { error:'API 地址不能包含账号、查询参数或锚点' };
+  }
+  parsed.pathname = parsed.pathname.replace(/\/+$/, '') + '/';
+  var endpoint = parsed.pathname.endsWith('/chat/completions')
+    ? parsed
+    : new URL('chat/completions', parsed);
+  return {
+    value:{
+      baseUrl:endpoint.origin,
+      pathname:endpoint.pathname,
+      model:model,
+      apiKey:apiKey,
+      vendor:hostname === 'api.deepseek.com'
+        ? 'deepseek'
+        : hostname === 'opencode.ai' && endpoint.pathname.startsWith('/zen/') ? 'opencode' : 'custom'
+    }
+  };
+}
+
+function compatibleContent(event) {
+  var choice = event && Array.isArray(event.choices) ? event.choices[0] : null;
+  if (!choice) return '';
+  if (choice.delta && typeof choice.delta.content === 'string') return choice.delta.content;
+  if (choice.message && typeof choice.message.content === 'string') return choice.message.content;
+  return typeof choice.text === 'string' ? choice.text : '';
+}
+
+async function streamCompatibleApi(input, handlers) {
+  handlers = handlers || {};
+  var api = input.api;
+  var result = await httpClient.request(api.baseUrl, api.pathname, {
+    method:'POST',
+    headers:Object.assign(
+      { Accept:'text/event-stream, application/json' },
+      api.apiKey ? { Authorization:'Bearer ' + api.apiKey } : {}
+    ),
+    json:Object.assign({
+      model:api.model,
+      messages:input.messages,
+      stream:true
+    }, api.vendor === 'deepseek' ? { thinking:{ type:'disabled' } } : {}),
+    signal:input.signal,
+    timeoutMs:120000,
+    timeoutMessage:'自定义 API 对话超时'
+  });
+  var statusCode = result.response.statusCode || 0;
+  if (statusCode < 200 || statusCode >= 300) {
+    var errorBody = await httpClient.readBody(result.response, 64 * 1024);
+    throw new httpClient.UpstreamError('自定义 API 返回 ' + statusCode, {
+      code:'UPSTREAM_STATUS',
+      status:statusCode,
+      detail:errorBody.toString('utf8').slice(0, 500)
+    });
+  }
+
+  if (handlers.onStart) await handlers.onStart({ model:api.model, queueWaitMs:0 });
+  var contentType = String(result.response.headers['content-type'] || '').toLowerCase();
+  var decoder = new StringDecoder('utf8');
+  var buffer = '';
+  var emitted = false;
+
+  for await (var chunk of result.response) {
+    buffer += Buffer.isBuffer(chunk) ? decoder.write(chunk) : String(chunk);
+    if (!contentType.includes('text/event-stream') && !buffer.includes('\ndata:')) continue;
+    var lines = buffer.split(/\r?\n/);
+    buffer = lines.pop() || '';
+    for (var i = 0; i < lines.length; i += 1) {
+      var line = lines[i].trim();
+      if (!line.startsWith('data:')) continue;
+      var payload = line.slice(5).trim();
+      if (!payload || payload === '[DONE]') continue;
+      var event;
+      try { event = JSON.parse(payload); } catch (error) { continue; }
+      var token = compatibleContent(event);
+      if (!token) continue;
+      emitted = true;
+      if (handlers.onToken) await handlers.onToken(token);
+    }
+  }
+  buffer += decoder.end();
+
+  if (!emitted && buffer.trim()) {
+    var responseBody;
+    try { responseBody = JSON.parse(buffer); } catch (error) {
+      throw new httpClient.UpstreamError('自定义 API 返回了无法识别的响应', {
+        code:'INVALID_JSON',
+        detail:buffer.slice(0, 300)
+      });
+    }
+    var content = compatibleContent(responseBody);
+    if (content && handlers.onToken) await handlers.onToken(content);
+  }
+  if (handlers.onDone) await handlers.onDone();
+}
+
+async function inspectCompatibleApi(api, signal) {
+  var modelsPath = api.pathname.replace(/\/chat\/completions$/, '/models');
+  var result = await httpClient.request(api.baseUrl, modelsPath, {
+    method:'GET',
+    headers:Object.assign(
+      { Accept:'application/json' },
+      api.apiKey ? { Authorization:'Bearer ' + api.apiKey } : {}
+    ),
+    signal:signal,
+    timeoutMs:15000,
+    timeoutMessage:'API 连接测试超时'
+  });
+  var body = await httpClient.readBody(result.response, 512 * 1024);
+  var statusCode = result.response.statusCode || 0;
+  if (statusCode < 200 || statusCode >= 300) {
+    throw new httpClient.UpstreamError('API 连接测试返回 ' + statusCode, {
+      code:'UPSTREAM_STATUS',
+      status:statusCode,
+      detail:body.toString('utf8').slice(0, 500)
+    });
+  }
+  var data;
+  try { data = JSON.parse(body.toString('utf8')); } catch (error) {
+    throw new httpClient.UpstreamError('模型列表不是有效 JSON', {
+      code:'INVALID_JSON',
+      detail:String(error && error.message || error)
+    });
+  }
+  var rawModels = Array.isArray(data && data.data)
+    ? data.data
+    : Array.isArray(data && data.models) ? data.models : [];
+  var models = rawModels.map(function (item) {
+    return String(item && (item.id || item.name) || '').trim();
+  }).filter(Boolean).slice(0, 200);
+  return {
+    online:true,
+    vendor:api.vendor,
+    models:models,
+    modelCount:models.length
   };
 }
 
@@ -111,6 +276,22 @@ function createChatRouter(config, dependencies) {
     res.json(data);
   });
 
+  router.post('/api/chat-provider/test', security.localOnly, express.json({ limit:'8kb' }), async function (req, res) {
+    var validation = validateCompatibleApi(req.body);
+    if (validation.error) return envelope.fail(res, 400, validation.error);
+    var controller = new AbortController();
+    req.once('aborted', function () { controller.abort(); });
+    try {
+      var result = await inspectCompatibleApi(validation.value, controller.signal);
+      envelope.ok(res, result);
+    } catch (error) {
+      if (httpClient.isAbortError(error)) return;
+      envelope.fail(res, envelope.statusFor(error, 502), error.message || 'API 连接测试失败', {
+        detail:error.detail || ''
+      });
+    }
+  });
+
   // 隧道来的请求限流：一次对话生成要占满 GPU 数十秒，队列上限挡不住
   // "持续以消化速度提交"这种打法。本机直连不受限。
   var chatLimit = security.rateLimit({ capacity:10, refillMs:3000, label:'聊天' });
@@ -127,9 +308,13 @@ function createChatRouter(config, dependencies) {
       if (!res.writableEnded) abort();
     });
 
-    service.streamChat({
+    var chatService = validation.value.provider === 'api'
+      ? { streamChat:streamCompatibleApi }
+      : service;
+    chatService.streamChat({
       character:validation.value.character,
       model:validation.value.model,
+      api:validation.value.api,
       messages:validation.value.messages,
       signal:controller.signal
     }, {
@@ -175,5 +360,8 @@ module.exports = {
   createChatRouter:createChatRouter,
   chatCharacterPrompt:chatCharacterPrompt,
   validateChatBody:validateChatBody,
+  validateCompatibleApi:validateCompatibleApi,
+  streamCompatibleApi:streamCompatibleApi,
+  inspectCompatibleApi:inspectCompatibleApi,
   writeEvent:writeEvent
 };

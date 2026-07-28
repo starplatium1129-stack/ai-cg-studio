@@ -11,6 +11,7 @@ export interface Live2DStatus {
 
 export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   const ready = ref(false)
+  const enabled = ref(false)
   const destroyed = ref(false)
   const character = ref('nene')
   const loadedCharacter = ref('')
@@ -45,7 +46,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     onStatus({ state, text, detail, retryable, ready: ready.value })
   }
 
-  async function init(char: string, host: HTMLElement, stage: HTMLElement) {
+  async function init(char: string, host: HTMLElement, stage: HTMLElement, options: { autoLoad?: boolean } = {}) {
     hostEl = host; stageEl = stage
     // wl-live2d 只接受 CSS selector，这里保证宿主节点有稳定 id 可选中
     if (!hostEl.id) hostEl.id = 'live2dHost'
@@ -58,7 +59,12 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
       catalog = await response.json()
       observeSize()
       bindVisibility()
-      await setCharacter(character.value)
+      enabled.value = options.autoLoad === true
+      if (enabled.value) await setCharacter(character.value)
+      else {
+        setVisible(false)
+        setState('idle', '启用 Live2D', '点击后才下载并加载动态模型', true)
+      }
     } catch (e) {
       fallback('Live2D 未就绪', String((e as any)?.message ?? e))
     }
@@ -77,6 +83,12 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
       setState('static', '静态立绘', info?.source || '该角色暂无 Live2D 模型')
       return
     }
+    if (!enabled.value) {
+      setVisible(false)
+      interactionHint.value = ''
+      setState('idle', '启用 Live2D', '点击后才下载并加载动态模型', true)
+      return
+    }
     if (ready.value && loadedCharacter.value === char) {
       setVisible(true); setState('ready', 'Live2D 已连接')
       setPaused(document.hidden); layout(); return
@@ -86,8 +98,22 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
 
   async function retry() {
     if (destroyed.value) return
+    if (!enabled.value) return enable()
     destroyRuntime()
     await setCharacter(character.value)
+  }
+
+  async function enable() {
+    if (destroyed.value) return false
+    enabled.value = true
+    return setCharacter(character.value)
+  }
+
+  function disable() {
+    enabled.value = false
+    destroyRuntime()
+    interactionHint.value = ''
+    setState('idle', '启用 Live2D', '动态模型已释放；点击可重新加载', true)
   }
 
   /**
@@ -230,7 +256,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
       ?? {}
   }
 
-  function playInteraction(hitAreas: string[] = []) {
+  function playInteraction(hitAreas: string[] = [], forcedExpression = '') {
     if (!ready.value || !model?.visible || prefersReducedMotion() || mouthValue.value > 0) return
     const groups = motionDefinitions()
     const groupNames = Object.keys(groups)
@@ -247,7 +273,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     }
 
     const reactions = ['happy', 'shy', 'gentle']
-    applyExpression(reactions[interactionIndex % reactions.length])
+    applyExpression(forcedExpression || reactions[interactionIndex % reactions.length])
     interactionIndex += 1
     clearTimeout(expressionTimer)
     expressionTimer = window.setTimeout(() => applyExpression(desiredExpression), 1800)
@@ -256,9 +282,22 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     stageEl?.classList.add('live2d-reacting')
   }
 
+  function interact(kind: 'greet' | 'head' = 'greet') {
+    if (kind === 'head') {
+      playInteraction(['Head'], 'shy')
+      interactionHint.value = '她有点害羞，但没有躲开。'
+    } else {
+      playInteraction([], 'happy')
+      interactionHint.value = '她注意到你了，轻轻回应了一下。'
+    }
+    window.setTimeout(() => {
+      if (ready.value) interactionHint.value = '移动指针，她会看向你 · 也可以使用下方互动按钮'
+    }, 2400)
+  }
+
   function bindInteractionEvents() {
     if (!stageEl || pointerMoveHandler) return
-    interactionHint.value = '移动指针，她会看向你 · 点击头部触发摸头'
+    interactionHint.value = '移动指针，她会看向你 · 也可以使用下方互动按钮'
     pointerMoveHandler = (event) => {
       if (event.pointerType === 'touch' || !ready.value || prefersReducedMotion()) return
       focusPoint = worldPoint(event)
@@ -401,7 +440,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   }
 
   function destroy() {
-    destroyed.value = true; destroyRuntime()
+    destroyed.value = true; enabled.value = false; destroyRuntime()
     resizeObserver?.disconnect()
     if (onResize) window.removeEventListener('resize', onResize)
     if (visibilityHandler) { document.removeEventListener('visibilitychange', visibilityHandler); visibilityHandler = null }
@@ -411,5 +450,9 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     pointerMoveHandler = null; pointerLeaveHandler = null; pointerClickHandler = null
   }
 
-  return { ready, character, loadedCharacter, mouthValue, interactionHint, init, setCharacter, setMouth, setExpression, setSpeaking, setPaused, layout, retry, destroy }
+  return {
+    ready, enabled, character, loadedCharacter, mouthValue, interactionHint,
+    init, enable, disable, setCharacter, setMouth, setExpression, setSpeaking,
+    setPaused, layout, retry, interact, destroy,
+  }
 }

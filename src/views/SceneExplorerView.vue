@@ -45,6 +45,18 @@
         </button>
       </div>
 
+      <div class="scene-personal-nav" aria-label="我的场景视图">
+        <span class="scene-personal-label">我的场景</span>
+        <button type="button" :class="{ active: fTier === 'personal' && !showHidden }"
+          @click="showPersonalScenes">常用 {{ usedCount }}</button>
+        <button type="button" :class="{ active: sortBy === 'favorite' && !showHidden }"
+          @click="showFavoriteScenes">收藏 {{ favoriteCount }}</button>
+        <button type="button" :class="{ active: showHidden }"
+          @click="showHiddenScenes">已隐藏 {{ hiddenCount }}</button>
+        <button type="button" :class="{ active: fTier === 'all' && sortBy === 'smart' && !showHidden }"
+          @click="showAllScenes">完整库 {{ availableCount }}</button>
+      </div>
+
       <div class="scene-cats">
         <button v-for="d in THEME_DEFS" :key="d.id" type="button" class="scene-cat"
           :class="{ active: activeTheme === d.id }"
@@ -62,8 +74,8 @@
           <label class="scene-filter-field">时段<select v-model="fTime"><option value="all">全部时段</option><option value="morning">清晨</option><option value="afternoon">午后</option><option value="sunset">黄昏</option><option value="night">夜晚与深夜</option><option value="dawn">黎明</option></select></label>
           <label class="scene-filter-field">系列<select v-model="fSeries"><option value="all">全部系列</option><option value="after">After Story</option><option value="fanwork">同人</option><option value="active">Active Sync</option></select></label>
           <label class="scene-filter-field">分级<select v-model="fRating"><option value="all">全部分级</option><option value="All">全年龄</option><option value="R15">R15</option><option value="R18">R18</option></select></label>
-          <label class="scene-filter-field">层级<select v-model="fTier"><option value="core">人设核心</option><option value="featured">招牌与精选</option><option value="signature">只看招牌</option><option value="curated">只看精选</option><option value="all">完整库</option></select></label>
-          <label class="scene-filter-field">排序<select v-model="sortBy"><option value="smart">✨ 智能推荐</option><option value="curated">主理人精选</option><option value="favorite">我的收藏</option><option value="newest">最新加入</option><option value="title">名称A-Z</option></select></label>
+          <label class="scene-filter-field">层级<select v-model="fTier"><option value="personal">我的常用</option><option value="core">人设核心</option><option value="featured">招牌与精选</option><option value="signature">只看招牌</option><option value="curated">只看精选</option><option value="all">完整库</option></select></label>
+          <label class="scene-filter-field">排序<select v-model="sortBy"><option value="smart">✨ 智能推荐</option><option value="used">最近常用</option><option value="curated">主理人精选</option><option value="favorite">我的收藏</option><option value="newest">最新加入</option><option value="title">名称A-Z</option></select></label>
         </div>
         <div class="scene-filter-meta">
           <label class="mature-toggle"><input type="checkbox" v-model="showMature" @change="onMatureChange" /> 显示成人内容 <span>({{ matureCount }})</span></label>
@@ -80,6 +92,7 @@
         <SceneCard v-for="s in paged" :key="s.id" :scene="s" mode="grid" :clickable="false" suppressTags
           :class="flashId === s.id ? 'scene-flash' : ''" :data-scene-id="s.id">
           <template #band>
+            <span v-if="usageFor(s)" class="sc-tier personal">常用 {{ usageFor(s)?.uses }}</span>
             <span v-if="isCore(s)" class="sc-tier signature">人设核心</span>
             <span v-else-if="tier(s) === 'signature'" class="sc-tier signature">招牌</span>
             <span v-else-if="tier(s) === 'curated'" class="sc-tier curated">精选</span>
@@ -145,9 +158,33 @@ import SceneCard from '@/components/SceneCard.vue'
 import { tier as uxTier, matchesSearch as uxMatchesSearch, searchScore as uxSearchScore,
   isPersonalFavorite as uxIsFav, personalScore as uxPersonalScore,
   personalReason as uxPersonalReason, analyzeQuery as uxAnalyze,
-  buildPreferenceProfile, isPersonaCore, readHiddenScenes, writeHiddenScenes } from '@/utils/sceneUX'
+  buildPreferenceProfile, isPersonaCore, readHiddenScenes, writeHiddenScenes,
+  readSceneUsage, sceneUsageScore, type SceneUsageRecord, type PreferenceProfile,
+  type SceneUXConfig } from '@/utils/sceneUX'
 import { kvInit, kvGet } from '@/composables/useKVStore'
-import { useSceneStore } from '@/stores/sceneStore'
+import { useSceneStore, type Scene, type CurationData } from '@/stores/sceneStore'
+
+interface ExplorerScene extends Scene {
+  title?: string
+  category?: string
+  story?: string
+  char?: string
+  emotion?: string
+  season?: string
+  timeOfDay?: string
+  rating?: string
+  mature?: boolean
+  camera?: string
+  lighting?: string
+  location?: string
+  weather?: string
+  tags?: string[]
+}
+
+interface ExplorerCuration extends CurationData, SceneUXConfig {
+  moodRails?: Array<{ character: string; icon?: string; title: string; subtitle: string; query: string }>
+  recommendationReasons?: Record<string, string>
+}
 
 const PAGE_SIZE = 24
 const MATURE_KEY = 'aics_show_mature'
@@ -174,14 +211,23 @@ const DEFAULT_RAILS = [
 
 const route = useRoute()
 const sceneStore = useSceneStore()
-const scenes = ref<any[]>([])
-const curation = ref<any>({ curatedSceneIds:[], moodRails:[], signatureSceneIds:[], reviewSceneIds:[] })
-const profile = ref<any>({ entries: 0 })
+const scenes = ref<ExplorerScene[]>([])
+const curation = ref<ExplorerCuration>({ curatedSceneIds:[], moodRails:[], signatureSceneIds:[], reviewSceneIds:[] })
+const profile = ref<PreferenceProfile>(buildPreferenceProfile([]))
 const loading = ref(true)
 const flashId = ref('')
-const drawerScene = ref<any>(null)
-const favs = ref<Set<string>>(new Set(JSON.parse(localStorage.getItem(FAV_KEY) || '[]')))
+const drawerScene = ref<ExplorerScene | null>(null)
+function readFavorites() {
+  try {
+    const value = JSON.parse(localStorage.getItem(FAV_KEY) || '[]')
+    return new Set<string>(Array.isArray(value) ? value.filter((id): id is string => typeof id === 'string') : [])
+  } catch {
+    return new Set<string>()
+  }
+}
+const favs = ref(readFavorites())
 const hiddenIds = ref(readHiddenScenes())
+const localUsage = ref(readSceneUsage())
 const showHidden = ref(false)
 const showMature = ref(localStorage.getItem(MATURE_KEY) == null ? LOCAL_OWNER : localStorage.getItem(MATURE_KEY) === '1')
 
@@ -200,7 +246,9 @@ watch(searchQuery, (value) => {
 })
 const activeTheme = ref('all')
 const fChar = ref('all'); const fSeason = ref('all'); const fTime = ref('all')
-const fSeries = ref('all'); const fRating = ref('all'); const fTier = ref('core')
+const fSeries = ref('all'); const fRating = ref('all')
+const defaultTier = Object.keys(localUsage.value).length || favs.value.size ? 'personal' : 'core'
+const fTier = ref(defaultTier)
 const sortBy = ref('smart')
 const visible = ref(PAGE_SIZE)
 const filtersOpen = ref(false)
@@ -213,7 +261,7 @@ const activeFacetCount = computed(() => {
   if (fTime.value !== 'all') n++
   if (fSeries.value !== 'all') n++
   if (fRating.value !== 'all') n++
-  if (fTier.value !== 'core') n++
+  if (fTier.value !== defaultTier) n++
   if (sortBy.value !== 'smart') n++
   if (showHidden.value) n++
   // 本机默认展示成人内容是产品默认值，不应让工具条一进入就显示「筛选 1」。
@@ -226,60 +274,75 @@ const activeFacetCount = computed(() => {
 const moodRails = computed(() => curation.value.moodRails?.length ? curation.value.moodRails : DEFAULT_RAILS)
 const matureCount = computed(() => scenes.value.filter(s => s.mature).length)
 const hiddenCount = computed(() => hiddenIds.value.size)
+const usedCount = computed(() => Object.keys(localUsage.value).length)
+const favoriteCount = computed(() => scenes.value.filter(s => favs.value.has(s.id) || uxIsFav(s, profile.value)).length)
+const availableCount = computed(() => scenes.value.filter(s => !hiddenIds.value.has(s.id) && (showMature.value || !s.mature)).length)
 const tierLabel = computed(() => {
   if (showHidden.value) return '已隐藏'
-  return ({ core: '人设核心', featured: '精选', signature: '招牌', curated: '精选', all: '全库' } as Record<string, string>)[fTier.value] || '场景'
+  return ({ personal: '我的常用', core: '人设核心', featured: '精选', signature: '招牌', curated: '精选', all: '全库' } as Record<string, string>)[fTier.value] || '场景'
 })
 
-function primaryCat(s: any) { const c = s.category||'其他'; return c==='Active_Sync_Scenes'?'Active Sync':c.split('/')[0] }
+function primaryCat(s: ExplorerScene) { const c = s.category||'其他'; return c==='Active_Sync_Scenes'?'Active Sync':c.split('/')[0] }
 function themeDef(id: string) { return THEME_DEFS.find(d=>d.id===id)||THEME_DEFS[0] }
-function matchesTheme(s: any, id: string) { return id==='all'||themeDef(id).categories.includes(primaryCat(s)) }
-function matchesSeries(s: any, v: string) {
+function matchesTheme(s: ExplorerScene, id: string) { return id==='all'||themeDef(id).categories.includes(primaryCat(s)) }
+function matchesSeries(s: ExplorerScene, v: string) {
   const c=s.category||''
   if(v==='after') return /After_Story/i.test(c)
   if(v==='fanwork') return /同人/.test(c)
   if(v==='active') return c==='Active_Sync_Scenes'
   return true
 }
-function matchesTime(s: any, v: string) {
+function matchesTime(s: ExplorerScene, v: string) {
   if(v==='all') return true
-  if(v==='night') return ['night','late_night','evening'].includes(s.timeOfDay)
+  if(v==='night') return ['night','late_night','evening'].includes(s.timeOfDay || '')
   return s.timeOfDay===v
 }
-function tier(s: any) { return uxTier(s, curation.value) }
-function isCore(s: any) { return isPersonaCore(s, curation.value) }
+function tier(s: ExplorerScene) { return uxTier(s, curation.value) }
+function isCore(s: ExplorerScene) { return isPersonaCore(s, curation.value) }
 function sigIds(): string[] { return curation.value.signatureSceneIds||[] }
 function curIds(): string[] { return curation.value.curatedSceneIds||[] }
 function coreIds(): string[] { return curation.value.personaCoreSceneIds||curation.value.signatureSceneIds||[] }
-function cScore(s: any) {
+function cScore(s: ExplorerScene) {
   if(coreIds().includes(s.id)) return 30000-coreIds().indexOf(s.id)
   if(sigIds().includes(s.id)) return 20000-sigIds().indexOf(s.id)
   const f=curIds().indexOf(s.id); if(f>=0) return 10000-f
   const c=[s.story,s.emotion,s.camera,s.lighting,s.location].filter(Boolean).length
   return c*100+Math.min((s.story||'').length,500)+(s.rating==='All'?20:0)
 }
-function charName(s: any) {
+function charName(s: ExplorerScene) {
   const c=s.char||''
   return c==='nene'||c==='ayachi_nene'?'宁宁':c==='natsume'||c==='shiki_natsume'?'夏目':c==='triad'?'双人':c
 }
-function seasonLabel(v: string) { return ({春:'🌸春',夏:'☀️夏',秋:'🍂秋',冬:'❄️冬'} as any)[v]||v||'' }
-function timeLabel(v: string) {
-  return ({morning:'清晨',afternoon:'午后',sunset:'黄昏',night:'夜晚',late_night:'深夜',dawn:'黎明',evening:'夜晚',all_day:'全天'} as any)[v]||v||''
+function seasonLabel(v?: string) { return ({春:'🌸春',夏:'☀️夏',秋:'🍂秋',冬:'❄️冬'} as Record<string, string>)[v || '']||v||'' }
+function timeLabel(v?: string) {
+  return ({morning:'清晨',afternoon:'午后',sunset:'黄昏',night:'夜晚',late_night:'深夜',dawn:'黎明',evening:'夜晚',all_day:'全天'} as Record<string, string>)[v || '']||v||''
 }
-function personalReason(s: any) {
-  const r = uxPersonalReason(s, profile.value) || (curation.value.recommendationReasons||{})[s.id] || ''
+function personalReason(s: ExplorerScene) {
+  const usage = usageFor(s)
+  const localReason = usage
+    ? `你选用过 ${usage.uses} 次${usage.lastUsed ? ` · 最近 ${relativeUsedAt(usage.lastUsed)}` : ''}`
+    : ''
+  const r = localReason || uxPersonalReason(s, profile.value) || (curation.value.recommendationReasons||{})[s.id] || ''
   return /实机生成与直接视觉复核/.test(r) ? '' : r
+}
+function usageFor(s: ExplorerScene): SceneUsageRecord | undefined { return localUsage.value[s.id] }
+function isPersonalScene(s: ExplorerScene) {
+  return Boolean(usageFor(s) || favs.value.has(s.id) || uxIsFav(s, profile.value))
+}
+function relativeUsedAt(timestamp: number) {
+  const days = Math.max(0, Math.floor((Date.now() - timestamp) / 86400000))
+  return days === 0 ? '今天' : days === 1 ? '昨天' : days < 30 ? `${days} 天前` : '较早'
 }
 function themeCount(id: string) {
   return scenes.value.filter(s=>(showMature.value||!s.mature)&&!hiddenIds.value.has(s.id)&&matchesTheme(s,id)).length
 }
-function dv(s: any) {
-  const cm: any={半身中景:'半身',全身远景:'远景',全身中景:'全身',特写:'特写',特写镜头:'特写',面部特写:'特写',远景:'远景',中景:'半身',全身:'全身',半身:'半身'}
-  const lm: any={窗光:'窗光',黄金时刻:'黄昏光',逆光:'逆光',月光:'月光',夜灯:'夜灯',霓虹:'霓虹',烛光:'烛光',阴天:'阴天光',夕阳光:'黄昏光',晨光:'晨光'}
+function dv(s: ExplorerScene) {
+  const cm: Record<string, string>={半身中景:'半身',全身远景:'远景',全身中景:'全身',特写:'特写',特写镜头:'特写',面部特写:'特写',远景:'远景',中景:'半身',全身:'全身',半身:'半身'}
+  const lm: Record<string, string>={窗光:'窗光',黄金时刻:'黄昏光',逆光:'逆光',月光:'月光',夜灯:'夜灯',霓虹:'霓虹',烛光:'烛光',阴天:'阴天光',夕阳光:'黄昏光',晨光:'晨光'}
   const ca=String(s.camera||'')
-  const shot=cm[s.camera]||(/第一人称|主观/i.test(ca)?'第一人称':/俯视|俯瞰/.test(ca)?'俯视':/仰视|微仰/.test(ca)?'仰视':/侧面|侧方/.test(ca)?'侧面':/近景|特写/.test(ca)?'特写':/全身|远景/.test(ca)?'远景':'半身')
+  const shot=cm[s.camera || '']||(/第一人称|主观/i.test(ca)?'第一人称':/俯视|俯瞰/.test(ca)?'俯视':/仰视|微仰/.test(ca)?'仰视':/侧面|侧方/.test(ca)?'侧面':/近景|特写/.test(ca)?'特写':/全身|远景/.test(ca)?'远景':'半身')
   const li=String(s.lighting||'')
-  const lighting=lm[s.lighting]||(/夕阳|黄昏|黄金|落日/.test(li)?'黄昏光':/逆光|背光/.test(li)?'逆光':/月光|星光/.test(li)?'月光':/窗光|晨光|朝阳/.test(li)?'窗光':/阴天|雨天|漫射/.test(li)?'柔光':/灯|烛|暖光|霓虹/.test(li)?'夜灯':'自然光')
+  const lighting=lm[s.lighting || '']||(/夕阳|黄昏|黄金|落日/.test(li)?'黄昏光':/逆光|背光/.test(li)?'逆光':/月光|星光/.test(li)?'月光':/窗光|晨光|朝阳/.test(li)?'窗光':/阴天|雨天|漫射/.test(li)?'柔光':/灯|烛|暖光|霓虹/.test(li)?'夜灯':'自然光')
   const t=(s.tags||[]).join(',').toLowerCase(); const em=(s.emotion||'').toLowerCase()
   let color='自然'
   if(/sunset|dusk|golden|黄昏|夕阳|浪漫/.test(t)||/love|shy|恋爱|害羞/.test(em)) color='暖橙'
@@ -305,9 +368,10 @@ const filtered = computed(() => {
     if (fRating.value !== 'all' && (s.rating||(s.mature?'R18':'All')) !== fRating.value) return false
     const t = tier(s)
     if (!showHidden.value) {
+      if (!q && fTier.value === 'personal' && !isPersonalScene(s)) return false
       if (!q && fTier.value === 'core' && !isCore(s)) return false
       if (!q && fTier.value === 'featured' && t !== 'signature' && t !== 'curated') return false
-      if (fTier.value !== 'all' && fTier.value !== 'featured' && fTier.value !== 'core' && t !== fTier.value) return false
+      if (fTier.value !== 'all' && fTier.value !== 'personal' && fTier.value !== 'featured' && fTier.value !== 'core' && t !== fTier.value) return false
     }
     if (sortBy.value === 'favorite' && !favs.value.has(s.id) && !uxIsFav(s, profile.value)) return false
     return !q || uxMatchesSearch(s, q, curation.value, [primaryCat(s), timeLabel(s.timeOfDay)])
@@ -327,8 +391,17 @@ const filtered = computed(() => {
     }
     if (sortBy.value==='newest') return String(b.id).localeCompare(String(a.id),undefined,{numeric:true})
     if (sortBy.value==='title') return String(a.title).localeCompare(String(b.title),'zh-CN')
-    if (sortBy.value==='favorite') return uxPersonalScore(b,profile.value)-uxPersonalScore(a,profile.value)
-    if (sortBy.value==='smart') return (uxPersonalScore(b,profile.value)*500+cScore(b))-(uxPersonalScore(a,profile.value)*500+cScore(a))
+    if (sortBy.value==='used') return sceneUsageScore(usageFor(b))-sceneUsageScore(usageFor(a))
+    if (sortBy.value==='favorite') {
+      const favoriteScore = (s: ExplorerScene) => (favs.value.has(s.id) ? 100000 : 0)
+        + uxPersonalScore(s, profile.value) * 500
+        + sceneUsageScore(usageFor(s))
+      return favoriteScore(b) - favoriteScore(a)
+    }
+    if (sortBy.value==='smart') {
+      return (sceneUsageScore(usageFor(b))*400+uxPersonalScore(b,profile.value)*500+cScore(b))
+        -(sceneUsageScore(usageFor(a))*400+uxPersonalScore(a,profile.value)*500+cScore(a))
+    }
     return cScore(b)-cScore(a)
   })
 })
@@ -337,7 +410,7 @@ const paged = computed(() => filtered.value.slice(0, visible.value))
 const intentHtml = computed(() => {
   const q = debouncedQuery.value.trim()
   const a = uxAnalyze(q, curation.value)
-  const exp = q && (fTier.value==='core' || fTier.value==='featured') ? '已自动扩展至完整场景库。' : ''
+  const exp = q && ['personal','core','featured'].includes(fTier.value) ? '已自动扩展至完整场景库。' : ''
   const understood = a.intents?.length ? `已理解为：<strong>${a.intents.join(' · ')}</strong>。` : (q?'正在搜索标题、故事、情绪、地点和视觉标签。':'可以直接描述想画的完整句子。')
   const personal = profile.value.entries ? ` 已结合本机${profile.value.entries}条创作记录排序。` : ' 完成作品评分后，推荐会逐渐贴近你的偏好。'
   return exp + understood + personal
@@ -356,10 +429,22 @@ function toggleHidden(id: string) {
   hiddenIds.value = new Set(hiddenIds.value)
   writeHiddenScenes(hiddenIds.value)
 }
+function showPersonalScenes() {
+  showHidden.value = false; fTier.value = 'personal'; sortBy.value = 'used'; filtersOpen.value = false
+}
+function showFavoriteScenes() {
+  showHidden.value = false; fTier.value = 'all'; sortBy.value = 'favorite'; filtersOpen.value = false
+}
+function showHiddenScenes() {
+  showHidden.value = true; fTier.value = 'all'; sortBy.value = 'smart'; filtersOpen.value = false
+}
+function showAllScenes() {
+  showHidden.value = false; fTier.value = 'all'; sortBy.value = 'smart'; filtersOpen.value = false
+}
 function applyMoodRail(q: string) { searchQuery.value = q; activeTheme.value = 'all'; nextTick(() => document.getElementById('sceneSearch')?.focus()) }
 function resetFilters() {
   searchQuery.value=''; activeTheme.value='all'; fChar.value='all'; fSeason.value='all'
-  fTime.value='all'; fSeries.value='all'; fRating.value='all'; fTier.value='core'; sortBy.value='smart'; showHidden.value=false
+  fTime.value='all'; fSeries.value='all'; fRating.value='all'; fTier.value=defaultTier; sortBy.value='smart'; showHidden.value=false
 }
 function onMatureChange() {
   if (showMature.value && !confirm('此区域包含成人向文字内容。请确认你已成年并希望继续查看。')) { showMature.value=false; return }
@@ -371,7 +456,7 @@ async function init() {
   try {
     // 共享数据走 sceneStore 单例，不再各页独立 fetch
     await sceneStore.load()
-    scenes.value = sceneStore.scenes as any[]
+    scenes.value = sceneStore.scenes as ExplorerScene[]
     curation.value = sceneStore.curation || curation.value
   } catch(e) { console.warn('scene load failed', e) }
 
@@ -379,16 +464,15 @@ async function init() {
     const fallback = () => { try { return buildPreferenceProfile(JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]')) } catch { return buildPreferenceProfile([]) } }
     try {
       await kvInit()
-      const h = await kvGet<any[]>(HISTORY_KEY)
+      const h = await kvGet<unknown[]>(HISTORY_KEY)
       profile.value = Array.isArray(h) ? buildPreferenceProfile(h) : fallback()
     } catch { profile.value = fallback() }
   } catch {}
 
   loading.value = false
 
-  const qp = new URLSearchParams(route.query as any)
-  const focusId = qp.get('scene')
-  const charParam = qp.get('character')
+  const focusId = typeof route.query.scene === 'string' ? route.query.scene : null
+  const charParam = typeof route.query.character === 'string' ? route.query.character : null
   if (['nene','natsume','triad'].includes(charParam||'')) fChar.value = charParam!
   if (focusId) {
     const pending = localStorage.getItem('aics_pending_scene')
@@ -452,6 +536,27 @@ onUnmounted(() => {
 .toolbar-primary .scene-search-wrap { flex:1 1 260px; min-width:0; margin:0; }
 .toolbar-primary .scene-count { color:var(--text-muted); font:600 var(--fs-mono-sm) var(--font-mono); white-space:nowrap; }
 .toolbar-primary .scene-count strong { color:var(--accent); }
+.scene-personal-nav {
+  display:flex; align-items:center; gap:var(--s-2); overflow-x:auto;
+  padding-bottom:2px; scrollbar-width:thin;
+}
+.scene-personal-label {
+  flex:0 0 auto; margin-right:2px; color:var(--text-muted);
+  font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.08em; text-transform:uppercase;
+}
+.scene-personal-nav button {
+  flex:0 0 auto; min-height:34px; padding:0 13px;
+  border:1px solid var(--border-soft); border-radius:var(--r-pill);
+  background:var(--bg-elevated); color:var(--text-secondary);
+  font:650 var(--fs-label-sm) var(--font-sans); cursor:pointer;
+  transition:border-color var(--t-fast),background var(--t-fast),color var(--t-fast);
+}
+.scene-personal-nav button:hover {
+  border-color:color-mix(in srgb,var(--accent) 45%,var(--border-soft)); color:var(--accent);
+}
+.scene-personal-nav button.active {
+  border-color:var(--accent); background:var(--accent-soft); color:var(--accent);
+}
 .filter-toggle {
   display:inline-flex; align-items:center; gap:6px; min-height:36px; padding:0 14px;
   border:1px solid var(--border-soft); border-radius:var(--r-pill);
@@ -531,6 +636,7 @@ onUnmounted(() => {
 .story-actions .btn { flex:1; }
 
 :deep(.sc-tier) { flex:0 0 auto; padding:1px var(--s-2); border:1px solid var(--accent); border-radius:var(--r-pill); color:var(--accent); font-size:var(--fs-mono-sm); font-weight:800; }
+:deep(.sc-tier.personal) { color:var(--success); border-color:color-mix(in srgb,var(--success) 70%,var(--border-soft)); }
 :deep(.sc-tier.signature) { color:var(--natsume-amber); border-color:var(--natsume-amber); }
 
 @media (max-width:768px) {

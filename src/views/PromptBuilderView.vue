@@ -31,28 +31,7 @@
           </span>
         </div>
 
-        <!-- 数据工具 -->
-        <details ref="utilityEl" class="utility-menu">
-          <summary class="utility-trigger" aria-label="数据工具">···</summary>
-          <div class="utility-popover">
-            <div class="utility-label">本地数据</div>
-            <div class="utility-actions">
-              <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.exportBackup()">
-                ⬇️ 导出备份
-              </button>
-              <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="pickBackupFile">
-                ⬆️ 从备份恢复
-              </button>
-              <input ref="backupFileEl" class="sr-only" type="file" accept="application/json" @change="onBackupFilePicked" />
-            </div>
-            <div class="utility-divider"></div>
-            <div class="utility-label">存储维护</div>
-            <div class="utility-actions">
-              <button class="btn btn-ghost wide" type="button" @click="backup.healthCheck()">🩺 存储体检</button>
-              <button class="btn btn-ghost wide" type="button" @click="backup.cleanOrphanImages()">🧹 清理孤儿图片</button>
-            </div>
-          </div>
-        </details>
+        <PromptDataTools @flash="pb.flash" />
       </div>
     </div>
 
@@ -258,40 +237,18 @@
             @keydown.enter.prevent="addTag($event)" />
         </div>
 
-        <!-- Prompt monitor -->
-        <div class="monitor advanced-decision" id="promptMonitor">
-          <div class="panel-title">
-            Prompt 实时预览
-            <span v-if="modelProfile" class="monitor-profile">{{ modelProfile.name }}</span>
-          </div>
-          <div class="preview-output">{{ previewPrompt || '选择左侧场景或调整右侧画面选项，提示词会在这里实时生成。' }}</div>
-
-          <div class="token-row">
-            <span class="token-counter" :class="promptReport.level" :title="promptReport.warnings.join(' · ')">
-              <span class="bar"><i :style="{ '--progress': Math.min(100, Math.round(promptReport.positiveCount / 72 * 100)) + '%' }"></i></span>
-              <span class="num">{{ promptReport.positiveCount }}</span>
-              <span class="muted">正向 /</span>
-              <span class="neg-num">{{ promptReport.negativeCount }}</span>
-              <span class="muted">负向</span>
-              <span class="prompt-health">{{ promptReport.label }}</span>
-            </span>
-            <span v-if="loraSpecs.length" class="lora-hint">
-              LoRA {{ loraSpecs.map(s => s.name + ':' + s.weight).join(' · ') }}
-            </span>
-          </div>
-
-          <div class="art-warn" :hidden="!artViolations.length">
-            ⚠️ 检测到 {{ artViolations.length }} 个违反美术规范的标签：{{ artViolations.join(', ') }}
-          </div>
-
-          <div class="preview-actions">
-            <button class="btn btn-primary" type="button" @click="copyPrompt">复制</button>
-            <button class="btn btn-ghost" type="button" @click="saveHistory">保存</button>
-          </div>
-        </div>
+        <PromptHealthPanel
+          :prompt="previewPrompt"
+          :model-name="modelProfile?.name"
+          :report="promptReport"
+          :art-violations="artViolations"
+          :lora-text="loraSpecs.map(s => s.name + ':' + s.weight).join(' · ')"
+          @copy="copyPrompt"
+          @save="saveHistory"
+        />
 
         <!-- SD params -->
-        <details class="panel generation-settings advanced-decision">
+        <details class="panel generation-settings">
           <summary class="panel-title settings-summary">出图参数</summary>
           <div class="controls-grid">
             <div class="ctrl"><label>CFG</label>
@@ -412,7 +369,7 @@
             </button>
             <button v-if="sd.generating.value" class="btn btn-ghost" type="button"
               @click="sd.cancel()">停止生成</button>
-            <button class="btn btn-ghost advanced-decision" type="button" :disabled="!sdQueue.canEnqueue.value" @click="enqueueCurrent">
+            <button class="btn btn-ghost" type="button" :disabled="!sdQueue.canEnqueue.value" @click="enqueueCurrent">
               加入队列
             </button>
             <button class="btn btn-ghost advanced-decision" type="button" :disabled="!sd.resultSeed.value" @click="reuseLastSeed">
@@ -427,53 +384,17 @@
             <div class="sd-progress"><span class="sd-progress-bar" :style="{ '--progress': sd.progress.value + '%' }"></span></div>
           </div>
 
-          <!-- Error + 分类恢复 -->
-          <div v-if="sdErrorReport" class="sd-recovery">
-            <div class="sd-recovery-title">{{ sdErrorReport.title }}</div>
-            <div class="sd-recovery-copy">{{ sdErrorReport.message }}</div>
-            <div class="sd-recovery-actions">
-              <button
-                v-if="sdErrorReport.action"
-                class="btn btn-primary btn-sm" type="button"
-                @click="runRecovery(sdErrorReport.action.id)"
-              >{{ sdErrorReport.action.label }}</button>
-              <button class="btn btn-ghost btn-sm" type="button" @click="dismissError">忽略</button>
-            </div>
-            <details v-if="sdErrorReport.details">
-              <summary>技术细节</summary>
-              <pre>{{ sdErrorReport.details }}</pre>
-            </details>
-          </div>
-
-          <!-- 出图队列 -->
-          <div v-if="sdQueue.total.value" class="sd-queue advanced-decision">
-            <div class="sd-queue-head">
-              <span>出图队列 · {{ sdQueue.total.value }} 个{{ sdQueue.paused.value ? '（已暂停）' : '' }}</span>
-              <span class="row-tight">
-                <button v-if="sdQueue.paused.value" class="btn btn-ghost btn-sm" type="button" @click="sdQueue.resume()">继续</button>
-                <button v-else class="btn btn-ghost btn-sm" type="button" @click="sdQueue.pause()">暂停</button>
-                <button class="btn btn-ghost btn-sm" type="button" @click="sdQueue.clear()">清空等待</button>
-              </span>
-            </div>
-            <div class="sd-queue-list">
-              <div v-if="sdQueue.activeJob.value" class="sd-queue-item">
-                <span class="sd-queue-index">生成中</span>
-                <div class="sd-queue-copy">
-                  <div class="sd-queue-title">{{ sdQueue.activeJob.value.title }}</div>
-                  <div class="sd-queue-meta">{{ sdQueue.activeJob.value.size }} · seed {{ sdQueue.activeJob.value.seed < 0 ? '随机' : sdQueue.activeJob.value.seed }}</div>
-                </div>
-                <span></span>
-              </div>
-              <div v-for="(job, i) in sdQueue.queue.value" :key="job.id" class="sd-queue-item">
-                <span class="sd-queue-index">{{ i + 1 }}</span>
-                <div class="sd-queue-copy">
-                  <div class="sd-queue-title">{{ job.title }}</div>
-                  <div class="sd-queue-meta">{{ job.size }} · seed {{ job.seed < 0 ? '随机' : job.seed }}</div>
-                </div>
-                <button class="sd-queue-remove" type="button" aria-label="移出队列" @click="sdQueue.remove(job.id)">×</button>
-              </div>
-            </div>
-          </div>
+          <SDRecoveryPanel :report="sdErrorReport" @recover="runRecovery" @dismiss="dismissError" />
+          <GenerationQueuePanel
+            :total="sdQueue.total.value"
+            :paused="sdQueue.paused.value"
+            :active-job="sdQueue.activeJob.value"
+            :queue="sdQueue.queue.value"
+            @pause="sdQueue.pause"
+            @resume="sdQueue.resume"
+            @clear="sdQueue.clear"
+            @remove="sdQueue.remove"
+          />
 
           <VoiceStudio
             :initial-voice="pb.char === 'natsume' ? 'natsume' : 'nene'"
@@ -574,36 +495,6 @@
       </div>
     </div>
 
-    <!-- 备份恢复确认 -->
-    <Teleport to="body">
-      <div v-if="backup.pending.value" class="pb-backup-overlay open" @click.self="backup.discard()">
-        <div
-          ref="backupCardEl"
-          class="pb-backup-card"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="backup-restore-title"
-        >
-          <h3 id="backup-restore-title">从备份恢复</h3>
-          <p>选择恢复方式。覆盖会替换现有数据，合并会按 id 保留较新的记录。</p>
-          <div class="pb-backup-summary">
-            <strong>{{ backup.pendingName.value }}</strong>
-            <span>
-              {{ pendingSummary?.history ?? 0 }} 条历史 ·
-              {{ pendingSummary?.projects ?? 0 }} 个项目 ·
-              {{ pendingSummary?.images ?? 0 }} 张图片 ·
-              数据版本 v{{ backup.pending.value.schemaVersion }}
-            </span>
-          </div>
-          <div class="pb-backup-actions">
-            <button class="btn btn-ghost" type="button" :disabled="backup.busy.value" @click="backup.discard()">取消</button>
-            <button class="btn btn-ghost" type="button" :disabled="backup.busy.value" @click="backup.restore('merge')">合并恢复</button>
-            <button class="btn btn-danger" type="button" :disabled="backup.busy.value" @click="backup.restore('replace')">覆盖本地</button>
-          </div>
-        </div>
-      </div>
-    </Teleport>
-
     <!-- Toast -->
     <div v-if="pb.toastMsg" class="pb-toast" role="status" aria-live="polite">{{ pb.toastMsg }}</div>
   </article>
@@ -629,10 +520,12 @@ import { EMOTION, SHOT, LIGHTING, COMPOSITION, COLOR_MOODS, SCENE_THEMES } from 
 import { kvGet } from '@/composables/useKVStore'
 import { useSDQueue, type SDQueueJob } from '@/composables/useSDQueue'
 import { classifySDError, SAFE_SAMPLING, LIGHT_LOAD, type SDErrorReport, type SDRecoveryId } from '@/utils/sdError'
-import { useBackup, type BackupSummary } from '@/composables/useBackup'
-import { useFocusTrap } from '@/composables/useFocusTrap'
 import VoiceStudio from '@/components/VoiceStudio.vue'
-import { readHiddenScenes, rememberRecent } from '@/utils/sceneUX'
+import PromptDataTools from '@/components/PromptDataTools.vue'
+import PromptHealthPanel from '@/components/PromptHealthPanel.vue'
+import GenerationQueuePanel from '@/components/GenerationQueuePanel.vue'
+import SDRecoveryPanel from '@/components/SDRecoveryPanel.vue'
+import { readHiddenScenes, rememberRecent, recordSceneUsage } from '@/utils/sceneUX'
 import type { HistoryEntry, Scene } from '@/stores/promptBuilderStore'
 
 const router = useRouter()
@@ -980,6 +873,7 @@ function setSceneCollection(collection: 'core' | 'curated' | 'all') {
 function selectScene(scene: Scene) {
   pb.loadScene(scene)
   rememberRecent(scene)
+  recordSceneUsage(scene)
   sceneLimit.value = 20
 }
 
@@ -1091,29 +985,6 @@ async function runJob(job: Omit<SDQueueJob, 'id'>, opts: { disableLora?: boolean
 
   if (sd.resultSeed.value) pb.sdParams.seed = sd.resultSeed.value
   return url
-}
-
-// ── 备份 / 恢复 ────────────────────────────────────────────────────────────
-const backup = useBackup((m) => pb.flash(m))
-
-/** 恢复确认弹层：覆盖本地是破坏性操作，必须有焦点陷阱 + Escape */
-const backupCardEl = ref<HTMLElement | null>(null)
-useFocusTrap(backupCardEl, () => backup.pending.value !== null, {
-  onEscape: () => { if (!backup.busy.value) backup.discard() },
-})
-const backupFileEl = ref<HTMLInputElement | null>(null)
-const utilityEl = ref<HTMLDetailsElement | null>(null)
-const pendingSummary = ref<BackupSummary | null>(null)
-
-function pickBackupFile() { backupFileEl.value?.click() }
-
-async function onBackupFilePicked(e: Event) {
-  const input = e.target as HTMLInputElement
-  const file = input.files?.[0]
-  if (!file) return
-  pendingSummary.value = await backup.loadFile(file)
-  input.value = ''
-  if (utilityEl.value) utilityEl.value.open = false
 }
 
 const sdQueue = useSDQueue({

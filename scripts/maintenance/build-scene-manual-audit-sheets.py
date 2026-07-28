@@ -125,10 +125,11 @@ def main() -> None:
     parser.add_argument("--scenes", type=Path, default=Path("data/scenes.json"))
     parser.add_argument("--audit", type=Path, required=True)
     parser.add_argument("--attempt", type=int, default=1)
+    parser.add_argument("--output-subdir", default="manual_sheets")
     args = parser.parse_args()
 
     scenes = load_json(args.scenes)
-    output = args.audit / "manual_sheets"
+    output = args.audit / args.output_subdir
     output.mkdir(parents=True, exist_ok=True)
     manifest = []
     available = []

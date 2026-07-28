@@ -107,12 +107,15 @@ test('director separates a focused scene mode from the expert tag workflow', asy
   await expect(page.locator('#stepTags')).toBeHidden();
   await expect(page.locator('#projectSelect')).toHaveCount(0);
   await expect(page.locator('.voice-studio')).toBeVisible();
+  const shellWidth = await page.locator('.pb').evaluate(element => element.getBoundingClientRect().width);
+  expect(shellWidth).toBeGreaterThanOrEqual(1800);
+  expect(shellWidth).toBeLessThanOrEqual(1880);
   const basicColumns = await page.locator('.director-workspace').evaluate(element => {
     const [left, center, right] = Array.from(element.children).map(child => child.getBoundingClientRect().width);
     return { left, center, right };
   });
   expect(basicColumns.left).toBeGreaterThanOrEqual(320);
-  expect(basicColumns.center).toBeGreaterThan(1400);
+  expect(basicColumns.center).toBeGreaterThan(900);
   expect(basicColumns.right).toBeGreaterThanOrEqual(300);
 
   // 选一张场景后，提示词应实时生成，并带出结构健康统计
@@ -125,8 +128,12 @@ test('director separates a focused scene mode from the expert tag workflow', asy
   await expect(page.locator('.tag-results button')).toHaveCount(72);
   await page.getByPlaceholder('搜索中文或 Danbooru 词条').fill('校服');
   await expect(page.locator('.tag-results')).toContainText('school_uniform');
+  const promptHealth = page.locator('#promptMonitor');
+  await expect(promptHealth).not.toHaveAttribute('open', '');
+  await expect(promptHealth.locator('.prompt-health-summary .token-counter')).toBeVisible();
+  await promptHealth.locator('summary').click();
+  await expect(page.locator('.preview-output')).toBeVisible();
   await expect(page.locator('.preview-output')).not.toHaveText(/^选择左侧场景/);
-  await expect(page.locator('.token-counter')).toBeVisible();
   // 质量前缀必须来自模型 profile，而不是硬编码
   await expect(page.locator('.monitor-profile')).not.toHaveText('');
 
@@ -262,6 +269,20 @@ test('control panel shows service status wall and scheduling controls', async ({
 
 test('character room mounts portrait, composer and voice console', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
+  const live2dAssetRequests: string[] = [];
+  page.on('request', request => {
+    if (request.url().includes('/assets/live2d/nene/')) live2dAssetRequests.push(request.url());
+  });
+  await page.route('**/api/chat-provider/test', route => route.fulfill({
+    contentType: 'application/json',
+    body: JSON.stringify({
+      ok: true,
+      online: true,
+      vendor: 'opencode',
+      models: ['deepseek-v4-flash-free', 'zen-discovered-model'],
+      modelCount: 2,
+    }),
+  }));
   await page.goto('/chat');
 
   await expect(page.locator('.page-kicker')).toContainText('Character room');
@@ -270,8 +291,23 @@ test('character room mounts portrait, composer and voice console', async ({ page
   await expect(page.locator('.send-btn')).toBeVisible();
   await expect(page.locator('.portrait-main')).toBeVisible();
   await expect(page.locator('.voice-console')).toBeVisible();
+  await expect(page.locator('.avatar-status')).toHaveText('启用 Live2D');
+  expect(live2dAssetRequests).toEqual([]);
   // 两个角色都可切换
   await expect(page.locator('.character-tab')).toHaveCount(2);
+  await page.getByRole('button', { name: '自定义 API', exact: true }).click();
+  await expect(page.locator('.api-settings')).toBeVisible();
+  await expect(page.getByLabel('服务商')).toHaveValue('deepseek');
+  await expect(page.getByLabel('API 地址')).toHaveValue('https://api.deepseek.com');
+  await expect(page.getByLabel('模型名')).toHaveValue('deepseek-v4-flash');
+  await page.getByLabel('服务商').selectOption('opencode');
+  await expect(page.getByLabel('API 地址')).toHaveValue('https://opencode.ai/zen/v1');
+  await expect(page.getByLabel('模型名')).toHaveValue('deepseek-v4-flash-free');
+  await page.getByLabel('API Key').fill('test-key');
+  await page.getByRole('button', { name: '测试连接' }).click();
+  await expect(page.locator('.api-test-status')).toContainText('连接成功，发现 2 个模型');
+  await expect(page.getByLabel('模型名').locator('option')).toHaveCount(6);
+  await expect(page.locator('.voice-console')).toBeVisible();
 
   expect(errors).toEqual([]);
 });
@@ -336,6 +372,26 @@ test('scene explorer collapses filters into a single toolbar', async ({ page }) 
   const hiddenScene = page.locator('.scene-grid .sc').first();
   await hiddenScene.getByRole('button', { name: '↩ 恢复', exact: true }).click();
   await expect(page.locator('.scene-grid .sc')).toHaveCount(0);
+
+  expect(errors).toEqual([]);
+});
+
+test('scene explorer promotes locally used scenes without deleting the archive', async ({ page }) => {
+  const errors = collectRuntimeErrors(page);
+  await page.addInitScript(() => {
+    localStorage.setItem('aics_scene_usage_v1', JSON.stringify({
+      sc001: { uses: 3, lastUsed: Date.now() },
+    }));
+  });
+
+  await page.goto('/scene-explorer');
+  await expect(page.getByRole('button', { name: '常用 1', exact: true })).toHaveClass(/active/);
+  await expect(page.locator('.scene-grid .sc')).toHaveCount(1);
+  await expect(page.locator('.sc-tier.personal')).toContainText('常用 3');
+
+  await page.getByRole('button', { name: /完整库/ }).click();
+  await expect(page.locator('.scene-grid .sc')).toHaveCount(24);
+  await expect(page.locator('.scene-count')).toContainText('全库');
 
   expect(errors).toEqual([]);
 });

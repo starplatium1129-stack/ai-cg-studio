@@ -38,6 +38,10 @@ const modules = [
   ['src/composables/useKVStore.ts', ['kvGet', 'kvSet']],
    ['src/components/HistoryPanel.vue', ['history-wrap', 'imgGet']],
   ['src/components/VoiceStudio.vue', ['voice-studio', '/api/tts-status', '/api/translate', '/api/tts']],
+  ['src/components/PromptDataTools.vue', ['useBackup', 'pb-backup-overlay', 'useFocusTrap']],
+  ['src/components/PromptHealthPanel.vue', ['PromptReport', 'prompt-health-warnings', 'artViolations']],
+  ['src/components/GenerationQueuePanel.vue', ['SDQueueJob', 'sd-queue-list', "emit('remove'"]],
+  ['src/components/SDRecoveryPanel.vue', ['SDErrorReport', "emit('recover'"]],
 ];
 
 for (const [rel, markers] of modules) {
@@ -60,7 +64,10 @@ const wiring = [
   ['analyzeParts', 'prompt structure health must be reported'],
   ['classifySDError', 'generation failures must be classified into recovery actions'],
   ['useSDQueue', 'director must support a serial generation queue'],
-  ['useBackup', 'director must expose local data backup/restore'],
+  ['PromptDataTools', 'director must mount the local data backup/restore component'],
+  ['PromptHealthPanel', 'director must mount the collapsible prompt health component'],
+  ['GenerationQueuePanel', 'director must mount the generation queue component'],
+  ['SDRecoveryPanel', 'director must mount the classified SD recovery component'],
   ['commitHistoryEntry', 'generated art must be committed to IndexedDB-backed history'],
   ['applyModelProfile', 'SD params must follow the matched checkpoint profile'],
   ['HistoryPanel', 'director must render the artwork history panel'],

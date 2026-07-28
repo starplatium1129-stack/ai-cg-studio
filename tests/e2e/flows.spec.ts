@@ -141,7 +141,8 @@ test('flow 1 · 出图：选场景 → 生成 → 成片入册，参数如实送
   // 保存快照 → IndexedDB 落盘 + 历史面板出现记录
   await page.getByRole('button', { name: '保存快照' }).click();
   await expect(page.locator('.pb-toast')).toContainText('快照已存入本地作品册');
-  await expect(page.locator('.history-item').first()).toBeVisible();
+  // 场景模式会收起高级历史面板，但记录仍应真实写入 DOM / IndexedDB。
+  await expect(page.locator('.history-item')).toHaveCount(1);
   await expect(page.locator('.history-item').first().locator('.history-meta')).toContainText('seed 4242');
 
   expect(errors).toEqual([]);
@@ -365,7 +366,8 @@ test('flow 4 · 备份：导出含图片的备份 → 覆盖恢复回同一份�
     });
   });
   await page.reload();
-  await expect(page.locator('.history-empty')).toBeVisible();
+  // 场景模式会隐藏高级历史面板；这里验证数据已清空，不把可见性误当成存储契约。
+  await expect(page.locator('.history-empty')).toHaveCount(1);
 
   await page.locator('.utility-trigger').click();
   await page.locator('.utility-actions input[type="file"]').setInputFiles(backupPath!);

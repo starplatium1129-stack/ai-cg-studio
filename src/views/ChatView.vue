@@ -14,78 +14,71 @@
     </header>
 
     <section class="chat-layout" aria-label="角色聊天">
-      <aside class="character-card">
-        <!-- tablist 模式补全：aria-controls 指向立绘面板 + roving tabindex + 方向键 -->
-        <div class="character-tabs" role="tablist" aria-label="选择角色" @keydown="tabs.onKeydown">
-          <button
-            v-for="id in CHARACTER_IDS" :key="id"
-            class="character-tab" type="button"
-            :class="{ active: activeChar === id }"
-            :data-character="id" role="tab"
-            :id="tabs.tabId(id)"
-            :aria-controls="tabs.panelId(id)"
-            :aria-selected="activeChar === id ? 'true' : 'false'"
-            :tabindex="tabs.tabIndex(id)"
-            @click="switchCharacter(id)"
-          >{{ id === 'nene' ? '🔮 宁宁' : '☕ 夏目' }}</button>
-        </div>
-
-        <div class="portrait-stage" ref="stageRef" :data-character="activeChar"
-              role="tabpanel"
-              :id="tabs.panelId(activeChar)"
-              :aria-labelledby="tabs.tabId(activeChar)"
-              :class="{
-                speaking: isSpeaking,
-                'live2d-ready': live2d.ready && live2d.loadedCharacter.value === activeChar,
-              }">
-          <div class="room-signal">
-            <span>{{ currentCharacter.roomCode }}</span>
-            <small>{{ currentCharacter.roomMood }}</small>
-          </div>
-          <img class="portrait-main" :src="currentCharacter.image" :alt="currentCharacter.name" />
-          <div class="live2d-host" ref="live2dHostRef" aria-hidden="true"></div>
-          <div class="voice-halo" aria-hidden="true"></div>
-          <button class="avatar-status" type="button"
-            :data-state="avatarState"
-            :disabled="!avatarRetryable"
-            :title="avatarDetail"
-            @click="avatarRetryable && live2d.retry()">{{ avatarText }}</button>
-          <div v-if="live2d.interactionHint.value" class="live2d-interaction-hint">
-            {{ live2d.interactionHint.value }}
-          </div>
-          <div class="portrait-caption">
-            <strong>{{ currentCharacter.name }}</strong>
-            <span>{{ currentCharacter.caption }}</span>
-          </div>
-        </div>
-
-        <div class="character-info">
-          <p>{{ currentCharacter.description }}</p>
-          <div class="character-status">
-            <span class="status-dot" :class="statusKind"></span>
-            <span>{{ chatStatusText }}</span>
-          </div>
-        </div>
-      </aside>
+      <ChatCharacterStage
+        ref="characterStageRef"
+        :active-id="activeChar"
+        :character="currentCharacter"
+        :speaking="isSpeaking"
+        :chat-status-text="chatStatusText"
+        :status-kind="statusKind"
+        :auto-load="storage.state.settings.live2dEnabled"
+        @select="switchCharacter"
+        @live2d-enabled="storage.setLive2dEnabled"
+      />
 
       <section class="conversation-card">
         <div class="conversation-head">
           <strong>和{{ currentCharacter.name }}的房间</strong>
-          <select class="model-select" v-model="currentModel" :disabled="busy || !ollamaOnline" aria-label="选择聊天模型">
-            <option v-if="!ollamaOnline || !models.length" value="">{{ ollamaOnline ? '无可用模型' : '正在发现模型…' }}</option>
-            <option v-for="m in models" :key="m.name" :value="m.name">
-              {{ m.name }}{{ m.parameters ? ' · ' + m.parameters : '' }}
-            </option>
-          </select>
+          <div class="model-controls">
+            <div class="provider-switch" role="group" aria-label="对话模型来源">
+              <button type="button" :class="{ active: chatProvider === 'local' }"
+                :aria-pressed="chatProvider === 'local'"
+                :disabled="busy" @click="setChatProvider('local')">本地模型</button>
+              <button type="button" :class="{ active: chatProvider === 'api' }"
+                :aria-pressed="chatProvider === 'api'"
+                :disabled="busy" @click="setChatProvider('api')">自定义 API</button>
+            </div>
+            <select v-if="chatProvider === 'local'" class="model-select" v-model="currentModel"
+              :disabled="busy || !ollamaOnline" aria-label="选择本地聊天模型">
+              <option v-if="!ollamaOnline || !models.length" value="">{{ ollamaOnline ? '无可用模型' : '正在发现模型…' }}</option>
+              <option v-for="m in models" :key="m.name" :value="m.name">
+                {{ m.name }}{{ m.parameters ? ' · ' + m.parameters : '' }}
+              </option>
+            </select>
+            <button v-else class="api-settings-toggle" type="button"
+              :aria-expanded="apiSettingsOpen"
+              @click="apiSettingsOpen = !apiSettingsOpen">
+              {{ apiConfigured ? apiModel : '配置 API' }} <span aria-hidden="true">⚙</span>
+            </button>
+          </div>
         </div>
 
-        <div v-if="!ollamaOnline || voiceCapabilityState === 'offline' || preparingRoom" class="room-setup">
+        <ChatApiSettings
+          v-if="chatProvider === 'api' && apiSettingsOpen"
+          :vendor="apiVendor"
+          :base-url="apiBaseUrl"
+          :model="apiModel"
+          :api-key="apiKey"
+          :hint="apiConfigHint"
+          @update:vendor="apiVendor = $event"
+          @update:base-url="apiBaseUrl = $event"
+          @update:model="apiModel = $event"
+          @update:api-key="apiKey = $event"
+          @save="saveApiSettings"
+        />
+
+        <div v-if="(!chatReady || voiceCapabilityState === 'offline' || preparingRoom)
+          && !(chatProvider === 'api' && !chatReady && apiSettingsOpen)" class="room-setup">
           <div>
-            <strong>{{ preparingRoom ? '正在准备角色房间' : '本地服务还没有就绪' }}</strong>
-            <span>{{ roomSetupText }}</span>
+            <strong>{{ setupTitle }}</strong>
+            <span>{{ setupDescription }}</span>
           </div>
-          <button class="btn btn-primary" type="button" :disabled="preparingRoom" @click="prepareRoom">
+          <button v-if="chatProvider === 'local' || (chatReady && voiceCapabilityState === 'offline')"
+            class="btn btn-primary" type="button" :disabled="preparingRoom" @click="prepareRoom">
             {{ preparingRoom ? '准备中…' : '准备聊天环境' }}
+          </button>
+          <button v-else class="btn btn-primary" type="button" @click="apiSettingsOpen = true">
+            配置 API
           </button>
         </div>
 
@@ -137,8 +130,8 @@
               :title="busy ? '停止生成回复' : '停止语音播放'"
               @click="stopEverything">停止</button>
             <button class="btn btn-primary send-btn" type="button"
-              :disabled="busy || !ollamaOnline"
-              :title="ollamaOnline ? '' : '请先启动 Ollama'"
+              :disabled="busy || !chatReady"
+              :title="chatReady ? '' : (chatProvider === 'api' ? '请先配置 API' : '请先启动 Ollama')"
               @click="sendMessage">发送</button>
           </div>
 
@@ -188,17 +181,21 @@ import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import { CHARACTERS, createMessageId } from '@/config/characters'
 import { useChatStorage } from '@/composables/useChatStorage'
-import { useLive2D } from '@/composables/useLive2D'
 import { useVoice } from '@/composables/useVoice'
 import { inferEmotion, parseNdjsonResponse, SentenceBuffer, isAbortError } from '@/utils/stream'
-import { useRovingTabs } from '@/composables/useRovingTabs'
+import ChatApiSettings from '@/components/ChatApiSettings.vue'
+import ChatCharacterStage from '@/components/ChatCharacterStage.vue'
 
 const route = useRoute()
+type ApiVendor = 'deepseek' | 'opencode' | 'custom'
 
 // ── DOM refs ──────────────────────────────────────────────────────────────
-const stageRef     = ref<HTMLElement>()
-const live2dHostRef = ref<HTMLElement>()
 const chatListRef  = ref<HTMLElement>()
+const characterStageRef = ref<{
+  setSpeaking: (value: boolean) => void
+  setExpression: (emotion: string) => void
+  setMouth: (value: number) => void
+}>()
 
 // ── Core state ────────────────────────────────────────────────────────────
 const activeChar    = ref('nene')
@@ -207,6 +204,13 @@ const voiceActive   = ref(false)
 const ollamaOnline  = ref(false)
 const models        = ref<Array<{ name: string; parameters?: string }>>([])
 const currentModel  = ref('')
+const chatProvider  = ref<'local' | 'api'>('local')
+const apiBaseUrl    = ref('https://api.deepseek.com')
+const apiModel      = ref('deepseek-v4-flash')
+const apiKey        = ref('')
+const apiVendor     = ref<ApiVendor>('custom')
+const apiSettingsOpen = ref(false)
+const apiConfigHint = ref('')
 const inputText     = ref('')
 const chatError     = ref('')
 const chatErrorKind = ref('')
@@ -222,10 +226,6 @@ const playingMid    = ref('')
 const isSpeaking    = ref(false)
 const autoVoice     = ref(true)
 const volume        = ref(80)
-const avatarText    = ref('检测 Live2D…')
-const avatarState   = ref('checking')
-const avatarDetail  = ref('')
-const avatarRetryable = ref(false)
 const preparingRoom = ref(false)
 const roomSetupText = ref('一键切到聊天优先：释放受管绘图显存，并启动角色语音服务。')
 
@@ -240,6 +240,15 @@ storage.load()
 autoVoice.value = storage.state.settings.autoVoice
 volume.value   = storage.state.settings.volume != null ? storage.state.settings.volume : 80
 currentModel.value = storage.state.settings.model || ''
+chatProvider.value = storage.state.settings.provider
+apiBaseUrl.value = storage.state.settings.apiBaseUrl
+apiModel.value = storage.state.settings.apiModel
+apiKey.value = storage.state.settings.apiKey
+const savedApiBase = apiBaseUrl.value.replace(/\/+$/, '')
+apiVendor.value = savedApiBase === 'https://api.deepseek.com'
+  ? 'deepseek'
+  : savedApiBase === 'https://opencode.ai/zen/v1' ? 'opencode' : 'custom'
+apiSettingsOpen.value = chatProvider.value === 'api' && !apiModel.value
 activeChar.value = storage.state.active
 const requestedCharacter = typeof route.query.character === 'string' ? route.query.character : ''
 if (requestedCharacter === 'nene' || requestedCharacter === 'natsume') {
@@ -248,13 +257,6 @@ if (requestedCharacter === 'nene' || requestedCharacter === 'natsume') {
 }
 
 // ── Composables ───────────────────────────────────────────────────────────
-const live2d = useLive2D((status) => {
-  avatarText.value     = status.text
-  avatarState.value    = status.state
-  avatarDetail.value   = status.detail
-  avatarRetryable.value = status.retryable
-})
-
 const voice = useVoice({
   enabled:      () => autoVoice.value,
   onStatus:     (t) => { voiceStatusText.value = t },
@@ -262,10 +264,10 @@ const voice = useVoice({
   onSpeaking:   (v, mid) => {
     isSpeaking.value = v
     playingMid.value = v && mid ? mid : ''
-    live2d.setSpeaking(v)
+    characterStageRef.value?.setSpeaking(v)
   },
-  onExpression: (e) => live2d.setExpression(e),
-  onMouth:      (v) => live2d.setMouth(v),
+  onExpression: (e) => characterStageRef.value?.setExpression(e),
+  onMouth:      (v) => characterStageRef.value?.setMouth(v),
   onAudioReady: (mid) => {
     // trigger re-render so replay button appears
     const msgs = storage.messages(activeChar.value)
@@ -278,20 +280,32 @@ const voice = useVoice({
 // ── Derived ───────────────────────────────────────────────────────────────
 const currentCharacter = computed(() => CHARACTERS[activeChar.value] || CHARACTERS.nene)
 
-const CHARACTER_IDS = ['nene', 'natsume'] as const
-const tabs = useRovingTabs(
-  () => CHARACTER_IDS as unknown as readonly string[],
-  activeChar,
-  switchCharacter,
-  { prefix: 'chatchar' },
-)
-
 const currentMessages = computed(() => storage.messages(activeChar.value))
+const apiConfigured = computed(() =>
+  Boolean(apiBaseUrl.value.trim() && apiModel.value.trim()
+    && (apiVendor.value === 'custom' || apiKey.value.trim()))
+)
+const chatReady = computed(() =>
+  chatProvider.value === 'api' ? apiConfigured.value : ollamaOnline.value
+)
+const setupTitle = computed(() => {
+  if (preparingRoom.value) return '正在准备角色房间'
+  if (chatProvider.value === 'api' && !apiConfigured.value) return '还没有配置自定义 API'
+  if (chatProvider.value === 'local' && !ollamaOnline.value) return '本地聊天模型还没有就绪'
+  return '角色语音还没有就绪'
+})
+const setupDescription = computed(() => {
+  if (preparingRoom.value) return roomSetupText.value
+  if (chatProvider.value === 'api' && !apiConfigured.value) {
+    return '填写兼容 OpenAI 格式的地址、模型名和密钥后即可对话。'
+  }
+  if (chatProvider.value === 'api') return 'API 对话已经可用；准备本地语音后可以继续使用逐句配音。'
+  return roomSetupText.value
+})
 
 const hasReplayable = computed(() =>
   currentMessages.value.some(m => m.role === 'assistant' && m.mid && voice.hasAudio(m.mid))
 )
-
 // ── Helpers ───────────────────────────────────────────────────────────────
 function setError(message: string, kind = 'error', timeout = 7000) {
   clearTimeout(errorTimer)
@@ -346,7 +360,7 @@ async function refreshChatStatus() {
     ollamaOnline.value = Boolean(data.online && data.models?.length)
     const ms = Array.isArray(data.models) ? data.models : []
     models.value = ms
-    if (!busy.value) {
+    if (!busy.value && chatProvider.value === 'local') {
       setChatStatus(ollamaOnline.value ? '本地聊天模型已连接' : 'Ollama 未启动', ollamaOnline.value ? 'online' : '')
     }
     // Restore model selection
@@ -357,11 +371,14 @@ async function refreshChatStatus() {
       currentModel.value = data.model || ms[0]?.name || ''
       storage.setModel(currentModel.value)
     }
-    if (!ms.length) { currentModel.value = ''; setChatStatus('Ollama 未启动') }
+    if (!ms.length) {
+      currentModel.value = ''
+      if (chatProvider.value === 'local') setChatStatus('Ollama 未启动')
+    }
   } catch {
     ollamaOnline.value = false
     models.value = []
-    if (!busy.value) setChatStatus('Ollama 未启动')
+    if (!busy.value && chatProvider.value === 'local') setChatStatus('Ollama 未启动')
   }
 }
 
@@ -426,6 +443,36 @@ async function prepareRoom() {
 }
 
 // ── Actions ───────────────────────────────────────────────────────────────
+function setChatProvider(provider: 'local' | 'api') {
+  if (busy.value || chatProvider.value === provider) return
+  chatProvider.value = provider
+  storage.setProvider(provider)
+  apiConfigHint.value = ''
+  if (provider === 'api') {
+    apiSettingsOpen.value = !apiConfigured.value
+    setChatStatus(apiConfigured.value ? `自定义 API · ${apiModel.value}` : '等待配置自定义 API', apiConfigured.value ? 'online' : '')
+  } else {
+    setChatStatus(ollamaOnline.value ? '本地聊天模型已连接' : 'Ollama 未启动', ollamaOnline.value ? 'online' : '')
+  }
+}
+
+function saveApiSettings() {
+  if (!apiConfigured.value) {
+    apiConfigHint.value = apiVendor.value !== 'custom'
+      ? `请填写 ${apiVendor.value === 'opencode' ? 'OpenCode Zen' : 'DeepSeek'} API Key。`
+      : '请填写 API 地址和模型名。'
+    return
+  }
+  storage.setApiSettings({
+    baseUrl: apiBaseUrl.value,
+    model: apiModel.value,
+    apiKey: apiKey.value,
+  })
+  apiConfigHint.value = '配置已保存在这个浏览器中。'
+  apiSettingsOpen.value = false
+  setChatStatus(`自定义 API · ${apiModel.value}`, 'online')
+}
+
 function abortCurrentRequest(silent = false) {
   if (!activeRequest) return
   activeRequest.abort(); activeRequest = null
@@ -445,7 +492,7 @@ function stopEverything() {
 
 async function sendMessage() {
   const text = inputText.value.trim()
-  if (!text || busy.value || !ollamaOnline.value) return
+  if (!text || busy.value || !chatReady.value) return
   setError('')
   voice.ensureAudioContext()
 
@@ -468,10 +515,10 @@ async function sendMessage() {
   const emotionBuffer = new SentenceBuffer({ immediateFirst: true })
   const applyReplyEmotion = (fragment: string, flush = false) => {
     emotionBuffer.push(fragment, flush).forEach(sentence => {
-      live2d.setExpression(inferEmotion(sentence, char))
+      characterStageRef.value?.setExpression(inferEmotion(sentence, char))
     })
   }
-  live2d.setExpression('neutral')
+  characterStageRef.value?.setExpression('neutral')
   voice.startTurn({ mid: assistant.mid, voice: currentCharacter.value.voice, character: char })
 
   try {
@@ -480,7 +527,13 @@ async function sendMessage() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         character: char,
+        provider: chatProvider.value,
         model: currentModel.value,
+        api: chatProvider.value === 'api' ? {
+          baseUrl: apiBaseUrl.value,
+          model: apiModel.value,
+          apiKey: apiKey.value,
+        } : undefined,
         messages: msgs.slice(0, -1).map(m => ({ role: m.role, content: m.content })),
       }),
       signal: controller.signal,
@@ -488,7 +541,13 @@ async function sendMessage() {
 
     await parseNdjsonResponse(response, async (event: any) => {
       if (event.type === 'meta' && event.model) {
-        currentModel.value = String(event.model); storage.setModel(currentModel.value)
+        if (chatProvider.value === 'api') {
+          apiModel.value = String(event.model)
+          storage.setApiSettings({ baseUrl: apiBaseUrl.value, model: apiModel.value, apiKey: apiKey.value })
+        } else {
+          currentModel.value = String(event.model)
+          storage.setModel(currentModel.value)
+        }
       }
       if (event.type !== 'token') return
       assistant.content += event.content || ''
@@ -511,7 +570,8 @@ async function sendMessage() {
       msgs.splice(msgs.indexOf(assistant), 1)
       voice.stop({ preserveMessageAudio: true, silent: true })
       const e = error as any
-      setError((e.detail ? e.message + '：' + e.detail : e.message) || '聊天暂不可用，请检查 Ollama。')
+      setError((e.detail ? e.message + '：' + e.detail : e.message)
+        || (chatProvider.value === 'api' ? 'API 对话暂不可用，请检查地址、模型名和密钥。' : '聊天暂不可用，请检查 Ollama。'))
     }
   } finally {
     storage.trim(char); storage.save()
@@ -525,7 +585,11 @@ async function sendMessage() {
 function setBusy(value: boolean) {
   busy.value = value
   if (value) setChatStatus('正在生成回复…', 'busy')
-  else setChatStatus(ollamaOnline.value ? '本地聊天模型已连接' : '聊天模型未连接', ollamaOnline.value ? 'online' : '')
+  else if (chatProvider.value === 'api') {
+    setChatStatus(apiConfigured.value ? `自定义 API · ${apiModel.value}` : '等待配置自定义 API', apiConfigured.value ? 'online' : '')
+  } else {
+    setChatStatus(ollamaOnline.value ? '本地聊天模型已连接' : '聊天模型未连接', ollamaOnline.value ? 'online' : '')
+  }
 }
 
 function switchCharacter(char: string) {
@@ -537,7 +601,6 @@ function switchCharacter(char: string) {
   activeChar.value = char
   document.documentElement.style.setProperty('--character-accent', CHARACTERS[char].accent)
   inputText.value = storage.draft(char)
-  live2d.setCharacter(char)
   updateVoiceCapability()
   setError('')
 }
@@ -594,14 +657,11 @@ onMounted(async () => {
   document.documentElement.style.setProperty('--character-accent', currentCharacter.value.accent)
   inputText.value = storage.draft(activeChar.value)
 
-  // Init Live2D with template refs
-  await nextTick()
-  if (live2dHostRef.value && stageRef.value) {
-    live2d.init(activeChar.value, live2dHostRef.value, stageRef.value)
-  }
-
   await refreshChatStatus()
   await refreshVoiceStatus()
+  if (chatProvider.value === 'api') {
+    setChatStatus(apiConfigured.value ? `自定义 API · ${apiModel.value}` : '等待配置自定义 API', apiConfigured.value ? 'online' : '')
+  }
   voice.setVolume(volume.value / 100)
 
   statusTimer = window.setInterval(() => {
@@ -614,6 +674,5 @@ onUnmounted(() => {
   clearInterval(statusTimer); clearInterval(roomPollTimer); clearTimeout(errorTimer); clearTimeout(draftTimer)
   if (activeRequest) { activeRequest.abort(); activeRequest = null }
   voice.destroy()
-  live2d.destroy()
 })
 </script>

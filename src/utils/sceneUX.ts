@@ -24,6 +24,14 @@ interface SceneStats {
 
 const RECENT_KEY = 'aics_recent_scenes'
 export const HIDDEN_SCENES_KEY = 'aics_hidden_scenes'
+export const SCENE_USAGE_KEY = 'aics_scene_usage_v1'
+
+export interface SceneUsageRecord {
+  uses: number
+  lastUsed: number
+}
+
+export type SceneUsageMap = Record<string, SceneUsageRecord>
 
 export function readHiddenScenes(storage?: Storage): Set<string> {
   try {
@@ -36,6 +44,41 @@ export function readHiddenScenes(storage?: Storage): Set<string> {
 
 export function writeHiddenScenes(ids: Iterable<string>, storage?: Storage): void {
   ;(storage ?? localStorage).setItem(HIDDEN_SCENES_KEY, JSON.stringify([...new Set(ids)]))
+}
+
+export function readSceneUsage(storage?: Storage): SceneUsageMap {
+  try {
+    const value = JSON.parse((storage ?? localStorage).getItem(SCENE_USAGE_KEY) ?? '{}')
+    if (!value || typeof value !== 'object' || Array.isArray(value)) return {}
+    return Object.fromEntries(Object.entries(value).flatMap(([id, raw]) => {
+      const record = raw as Partial<SceneUsageRecord> | null
+      const uses = Math.max(0, Math.floor(Number(record?.uses) || 0))
+      const lastUsed = Math.max(0, Number(record?.lastUsed) || 0)
+      return id && uses ? [[id, { uses, lastUsed }]] : []
+    }))
+  } catch {
+    return {}
+  }
+}
+
+export function recordSceneUsage(scene: { id: string }, storage?: Storage, now = Date.now()): SceneUsageMap {
+  if (!scene?.id) return readSceneUsage(storage)
+  const target = storage ?? localStorage
+  const usage = readSceneUsage(target)
+  const previous = usage[scene.id]
+  usage[scene.id] = {
+    uses: Math.min((previous?.uses ?? 0) + 1, 9999),
+    lastUsed: Math.max(previous?.lastUsed ?? 0, now),
+  }
+  try { target.setItem(SCENE_USAGE_KEY, JSON.stringify(usage)) } catch {}
+  return usage
+}
+
+export function sceneUsageScore(record: SceneUsageRecord | undefined, now = Date.now()): number {
+  if (!record) return 0
+  const days = Math.max(0, (now - record.lastUsed) / 86400000)
+  const recency = days <= 1 ? 12 : days <= 7 ? 8 : days <= 30 ? 4 : days <= 90 ? 1 : 0
+  return Math.min(record.uses, 12) * 4 + recency
 }
 
 export function isPersonaCore(scene: { id: string }, config: SceneUXConfig | null | undefined): boolean {

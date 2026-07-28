@@ -179,7 +179,7 @@ assert.strictEqual(
   'director.css selectors must be rooted at .pb; leaked: ' + leakedDirectorSelectors.slice(0, 8).join(', '),
 );
 assert(
-  /\.pb-backup-overlay/.test(directorCss) && /class="pb-backup-overlay open"/.test(read('src/views/PromptBuilderView.vue')),
+  /\.pb-backup-overlay/.test(directorCss) && /class="pb-backup-overlay open"/.test(read('src/components/PromptDataTools.vue')),
   'teleported backup overlay must use its own pb-* namespace (it has no .pb ancestor)',
 );
 
