@@ -40,6 +40,7 @@ assert.strictEqual(migrated.state.active, 'natsume');
 assert.strictEqual(migrated.state.settings.provider, 'api');
 assert.strictEqual(migrated.state.settings.apiBaseUrl, 'https://legacy.example/v1');
 assert.strictEqual(migrated.state.settings.apiModel, 'legacy-api-model');
+assert.strictEqual(migrated.state.settings.live2dOutfit, 'school');
 assert.strictEqual(migrated.state.settings.drafts.natsume, 'remembered draft');
 assert.deepStrictEqual(migrated.state.histories.natsume.map(message => message.content), ['second', 'third']);
 assert.strictEqual(migrated.state.histories.natsume[0].mid, 'legacy-mid');
@@ -58,6 +59,7 @@ const damaged = core.normalizeChatStorage({
     provider:'other',
     apiBaseUrl:{},
     apiModel:[],
+    live2dOutfit:'not-a-real-outfit',
     volume:999,
     drafts:{ nene:{ nested:'bad' } },
   },
@@ -69,6 +71,7 @@ assert.deepStrictEqual(damaged.state.histories, { nene:[], natsume:[] });
 assert.strictEqual(damaged.state.settings.provider, 'local');
 assert.strictEqual(damaged.state.settings.apiBaseUrl, 'https://api.deepseek.com');
 assert.strictEqual(damaged.state.settings.apiModel, 'deepseek-v4-flash');
+assert.strictEqual(damaged.state.settings.live2dOutfit, 'school');
 assert.strictEqual(damaged.state.settings.volume, 100);
 assert.deepStrictEqual(damaged.state.settings.drafts, { nene:'', natsume:'' });
 assert.strictEqual(damaged.migratedApiKey, '');

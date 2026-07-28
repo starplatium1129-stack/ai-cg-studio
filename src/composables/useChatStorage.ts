@@ -26,6 +26,7 @@ export interface ChatState {
     apiModel: string
     apiKey: string
     live2dEnabled: boolean
+    live2dOutfit: string
     autoVoice: boolean
     volume: number
     drafts: Record<string, string>
@@ -44,6 +45,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
       apiModel: 'deepseek-v4-flash',
       apiKey: '',
       live2dEnabled: false,
+      live2dOutfit: 'school',
       autoVoice: true,
       volume: 80,
       drafts: Object.fromEntries(Object.keys(CHARACTERS).map(k => [k, ''])),
@@ -85,6 +87,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     state.settings.apiBaseUrl = persisted.settings.apiBaseUrl
     state.settings.apiModel = persisted.settings.apiModel
     state.settings.live2dEnabled = persisted.settings.live2dEnabled
+    state.settings.live2dOutfit = persisted.settings.live2dOutfit
     state.settings.autoVoice = persisted.settings.autoVoice
     state.settings.volume = persisted.settings.volume
   }
@@ -100,6 +103,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
         apiBaseUrl: state.settings.apiBaseUrl,
         apiModel: state.settings.apiModel,
         live2dEnabled: state.settings.live2dEnabled,
+        live2dOutfit: state.settings.live2dOutfit,
         autoVoice: state.settings.autoVoice,
         volume: state.settings.volume,
         drafts: state.settings.drafts,
@@ -160,6 +164,10 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     save()
   }
   function setLive2dEnabled(value: boolean) { state.settings.live2dEnabled = Boolean(value); save() }
+  function setLive2dOutfit(value: string) {
+    state.settings.live2dOutfit = String(value || 'school').slice(0, 40)
+    save()
+  }
   function setAutoVoice(v: boolean) { state.settings.autoVoice = Boolean(v); save() }
   function setVolume(v: number) { state.settings.volume = Math.max(0, Math.min(100, Math.round(Number(v) || 80))); save() }
   function draft(char = state.active) { return state.settings.drafts[char] || '' }
@@ -181,6 +189,6 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   return {
     state, load, save, messages,
     setActive, setModel, setProvider, setApiSettings,
-    setLive2dEnabled, setAutoVoice, setVolume, draft, setDraft, trim, clear,
+    setLive2dEnabled, setLive2dOutfit, setAutoVoice, setVolume, draft, setDraft, trim, clear,
   }
 }

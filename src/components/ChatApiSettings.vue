@@ -1,46 +1,57 @@
 <template>
   <form class="api-settings" @submit.prevent="$emit('save')">
     <div class="api-settings-head">
-      <div>
-        <strong>OpenAI 兼容 API</strong>
-        <span>适用于 DeepSeek、OpenCode Zen、OpenCode Go 及其他兼容 /chat/completions 的服务。</span>
+      <div class="api-title-lockup">
+        <span class="api-mark" aria-hidden="true">↗</span>
+        <div>
+          <small>MODEL GATEWAY</small>
+          <strong>连接对话模型</strong>
+          <span>使用 DeepSeek、OpenCode 或任意 OpenAI 兼容服务。</span>
+        </div>
       </div>
-      <span class="api-storage-note">配置保存在本机，API Key 仅保留到关闭浏览器</span>
+      <span class="api-storage-note"><i aria-hidden="true"></i>密钥仅保留到关闭浏览器</span>
     </div>
+
+    <fieldset class="api-vendor-picker">
+      <legend>服务商</legend>
+      <button
+        v-for="option in VENDOR_OPTIONS"
+        :key="option.value"
+        type="button"
+        :data-vendor="option.value"
+        :class="{ active: vendorProxy === option.value }"
+        :aria-pressed="vendorProxy === option.value"
+        @click="selectVendor(option.value)"
+      >
+        <span>{{ option.label }}</span>
+        <small>{{ option.note }}</small>
+      </button>
+    </fieldset>
 
     <div class="api-settings-grid">
       <label class="api-field">
-        <span>服务商</span>
-        <select :value="vendorProxy" @change="applyVendor">
-          <option value="deepseek">DeepSeek 官方</option>
-          <option value="opencode">OpenCode Zen</option>
-          <option value="opencode-go">OpenCode Go</option>
-          <option value="custom">其他 OpenAI 兼容 API</option>
-        </select>
-      </label>
-      <label class="api-field">
-        <span>API 地址</span>
+        <span><i aria-hidden="true">01</i> API 地址</span>
         <input v-model.trim="baseUrlProxy" type="url" maxlength="500"
           placeholder="https://api.example.com/v1" autocomplete="url" required />
       </label>
       <label class="api-field">
-        <span>模型名</span>
-        <select v-if="vendorProxy !== 'custom'" v-model="modelProxy" required>
+        <span><i aria-hidden="true">02</i> 模型</span>
+        <select v-if="vendorProxy !== 'custom'" v-model="modelProxy" aria-label="模型名" required>
           <option v-for="option in modelOptions" :key="option.value" :value="option.value">
             {{ option.label }}
           </option>
         </select>
         <template v-else>
           <input v-model.trim="modelProxy" list="chat-api-models" maxlength="200"
+            aria-label="模型名"
             placeholder="填写服务商提供的模型 ID" autocomplete="off" required />
           <datalist id="chat-api-models">
             <option v-for="modelName in discoveredModels" :key="modelName" :value="modelName" />
           </datalist>
         </template>
-        <small v-if="vendorProxy !== 'custom'">{{ modelNote }}</small>
       </label>
       <label class="api-field">
-        <span>API Key{{ vendorProxy === 'custom' ? '（可留空）' : '' }}</span>
+        <span><i aria-hidden="true">03</i> API Key{{ vendorProxy === 'custom' ? '（可留空）' : '' }}</span>
         <div class="api-key-field">
           <input v-model.trim="apiKeyProxy" :type="showApiKey ? 'text' : 'password'"
             maxlength="1000" placeholder="sk-…" autocomplete="off"
@@ -48,6 +59,7 @@
           <button type="button" @click="showApiKey = !showApiKey">{{ showApiKey ? '隐藏' : '显示' }}</button>
         </div>
       </label>
+      <p class="api-model-note">{{ modelNote }}</p>
     </div>
 
     <div class="api-settings-actions">
@@ -68,6 +80,14 @@ import { computed, ref } from 'vue'
 
 type ApiVendor = 'deepseek' | 'opencode' | 'opencode-go' | 'custom'
 interface ModelOption { value: string; label: string }
+interface VendorOption { value: ApiVendor; label: string; note: string }
+
+const VENDOR_OPTIONS: VendorOption[] = [
+  { value: 'deepseek', label: 'DeepSeek', note: '官方' },
+  { value: 'opencode', label: 'OpenCode Zen', note: '免费模型' },
+  { value: 'opencode-go', label: 'OpenCode Go', note: '高速通道' },
+  { value: 'custom', label: '自定义', note: '兼容接口' },
+]
 
 const PRESET_MODELS: Record<Exclude<ApiVendor, 'custom'>, ModelOption[]> = {
   deepseek: [
@@ -147,8 +167,7 @@ const modelNote = computed(() =>
 )
 const statusText = computed(() => testMessage.value || props.hint || '先测试连接，再保存配置。')
 
-function applyVendor(event: Event) {
-  const vendor = (event.target as HTMLSelectElement).value as ApiVendor
+function selectVendor(vendor: ApiVendor) {
   emit('update:vendor', vendor)
   discoveredModels.value = []
   testState.value = ''

@@ -3,10 +3,8 @@ import { createMessageId, type CharacterConfig } from '@/config/characters'
 import { useChatStorage } from '@/composables/useChatStorage'
 import { useVoice } from '@/composables/useVoice'
 import {
-  inferEmotion,
   isAbortError,
   parseNdjsonResponse,
-  SentenceBuffer,
   streamErrorMessage,
 } from '@/utils/stream'
 
@@ -27,7 +25,6 @@ interface ChatConversationOptions {
   apiKey: Ref<string>
   setBusy: (value: boolean) => void
   onError: (message: string, kind?: string, timeout?: number) => void
-  onExpression: (emotion: string) => void
   nearBottom: () => boolean
   scrollBottom: () => void
 }
@@ -80,13 +77,6 @@ export function useChatConversation(options: ChatConversationOptions) {
 
     const controller = new AbortController()
     activeRequest = controller
-    const emotionBuffer = new SentenceBuffer({ immediateFirst: true })
-    const applyReplyEmotion = (fragment: string, flush = false) => {
-      emotionBuffer.push(fragment, flush).forEach(sentence => {
-        options.onExpression(inferEmotion(sentence, characterId))
-      })
-    }
-    options.onExpression('neutral')
     options.voice.startTurn({
       mid: assistant.mid,
       voice: options.currentCharacter.value.voice,
@@ -127,13 +117,11 @@ export function useChatConversation(options: ChatConversationOptions) {
         }
         if (event.type !== 'token') return
         assistant.content += event.content || ''
-        applyReplyEmotion(event.content || '')
         options.voice.append(event.content || '')
         if (options.nearBottom()) options.scrollBottom()
       })
 
       assistant.content = assistant.content.trim() || '……'
-      applyReplyEmotion('', true)
       replyAnnouncement.value = `${options.currentCharacter.value.name}说：${assistant.content}`
       options.voice.finishTurn()
     } catch (error) {

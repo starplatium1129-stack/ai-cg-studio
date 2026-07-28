@@ -52,13 +52,19 @@ export const CHARACTERS: Record<string, CharacterConfig> = {
   },
 }
 
-export const LIVE2D_EXPRESSIONS: Record<string, string> = {
-  neutral: 'expression1',
-  gentle: 'expression1',
-  happy: 'expression2',
-  shy: 'expression3',
-  sad: 'expression4',
-  serious: 'expression5',
+export const LIVE2D_OUTFITS = [
+  { id: 'school', label: '校服', expression: 'expression1' },
+  { id: 'casual', label: '常服', expression: 'expression2' },
+  { id: 'sleepwear', label: '睡衣', expression: 'expression3' },
+  { id: 'cosplay', label: 'COS 服', expression: 'expression4' },
+  { id: 'witch', label: '魔女服', expression: 'expression5' },
+] as const
+
+export type Live2DOutfitId = typeof LIVE2D_OUTFITS[number]['id']
+export const DEFAULT_LIVE2D_OUTFIT: Live2DOutfitId = 'school'
+
+export function findLive2DOutfit(id: string) {
+  return LIVE2D_OUTFITS.find(outfit => outfit.id === id) ?? LIVE2D_OUTFITS[0]
 }
 
 export const STORAGE_KEY = 'aics_chat_v1'

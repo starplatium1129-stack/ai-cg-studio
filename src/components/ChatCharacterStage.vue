@@ -44,6 +44,50 @@
         :title="avatarActionTitle"
         @click="handleAvatarAction"
       >{{ avatarText }}</button>
+      <div
+        v-if="live2d.ready.value && activeId === 'nene'"
+        class="live2d-wardrobe"
+        :class="{ open: wardrobeOpen }"
+        @click.stop
+      >
+        <button
+          class="wardrobe-trigger"
+          type="button"
+          :aria-expanded="wardrobeOpen"
+          aria-controls="nene-wardrobe-menu"
+          @click="wardrobeOpen = !wardrobeOpen"
+        >
+          <span class="wardrobe-symbol" aria-hidden="true">✦</span>
+          <span class="wardrobe-copy">
+            <small>WARDROBE</small>
+            <strong>{{ activeOutfitLabel }}</strong>
+          </span>
+          <span class="wardrobe-chevron" aria-hidden="true">⌄</span>
+        </button>
+        <div
+          v-if="wardrobeOpen"
+          id="nene-wardrobe-menu"
+          class="wardrobe-menu"
+          role="radiogroup"
+          aria-label="宁宁服装"
+        >
+          <span class="wardrobe-menu-title">选择服装</span>
+          <button
+            v-for="option in LIVE2D_OUTFITS"
+            :key="option.id"
+            class="wardrobe-option"
+            type="button"
+            role="radio"
+            :aria-checked="outfit === option.id"
+            :class="{ active: outfit === option.id }"
+            :disabled="outfitBusy"
+            @click="handleOutfitChange(option.id)"
+          >
+            <span>{{ option.label }}</span>
+            <i aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
       <div v-if="live2d.interactionHint.value" class="live2d-interaction-hint">
         {{ live2d.interactionHint.value }}
       </div>
@@ -65,7 +109,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
-import type { CharacterConfig } from '@/config/characters'
+import { LIVE2D_OUTFITS, type CharacterConfig } from '@/config/characters'
 import { useLive2D } from '@/composables/useLive2D'
 import { useRovingTabs } from '@/composables/useRovingTabs'
 
@@ -78,11 +122,13 @@ const props = defineProps<{
   chatStatusText: string
   statusKind: string
   autoLoad: boolean
+  outfit: string
 }>()
 
 const emit = defineEmits<{
   select: [id: string]
   live2dEnabled: [enabled: boolean]
+  outfitChanged: [outfit: string]
 }>()
 
 const stageRef = ref<HTMLElement>()
@@ -91,6 +137,11 @@ const avatarText = ref('检测 Live2D…')
 const avatarState = ref('checking')
 const avatarDetail = ref('')
 const avatarRetryable = ref(false)
+const outfitBusy = ref(false)
+const wardrobeOpen = ref(false)
+const activeOutfitLabel = computed(() =>
+  LIVE2D_OUTFITS.find(option => option.id === props.outfit)?.label ?? LIVE2D_OUTFITS[0].label
+)
 
 const live2d = useLive2D((status) => {
   avatarText.value = status.text
@@ -138,26 +189,41 @@ function setSpeaking(value: boolean) {
   live2d.setSpeaking(value)
 }
 
-function setExpression(emotion: string) {
-  live2d.setExpression(emotion)
-}
-
 function setMouth(value: number) {
   live2d.setMouth(value)
 }
 
+async function handleOutfitChange(next: string) {
+  if (outfitBusy.value || next === live2d.outfit.value) return
+  outfitBusy.value = true
+  try {
+    if (await live2d.setOutfit(next)) {
+      emit('outfitChanged', live2d.outfit.value)
+      wardrobeOpen.value = false
+    }
+  } finally {
+    outfitBusy.value = false
+  }
+}
+
 watch(() => props.activeId, (id) => {
+  wardrobeOpen.value = false
   void live2d.setCharacter(id)
+})
+
+watch(() => props.outfit, (value) => {
+  if (value !== live2d.outfit.value) void live2d.setOutfit(value)
 })
 
 onMounted(() => {
   if (!live2dHostRef.value || !stageRef.value) return
   void live2d.init(props.activeId, live2dHostRef.value, stageRef.value, {
     autoLoad: props.autoLoad,
+    outfit: props.outfit,
   })
 })
 
 onUnmounted(() => live2d.destroy())
 
-defineExpose({ setSpeaking, setExpression, setMouth })
+defineExpose({ setSpeaking, setMouth })
 </script>

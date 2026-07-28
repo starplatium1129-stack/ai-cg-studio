@@ -1,5 +1,9 @@
 import { ref } from 'vue'
-import { LIVE2D_EXPRESSIONS } from '@/config/characters'
+import {
+  DEFAULT_LIVE2D_OUTFIT,
+  findLive2DOutfit,
+  type Live2DOutfitId,
+} from '@/config/characters'
 
 export interface Live2DStatus {
   state: 'checking' | 'idle' | 'static' | 'loading' | 'ready' | 'degraded' | 'fallback'
@@ -39,7 +43,7 @@ interface Live2DModel {
   }
   hitTest?(x: number, y: number): string[]
   motion?(group: string, index: number, priority?: number): Promise<boolean> | boolean
-  expression?(name: string): Promise<unknown> | unknown
+  expression?(name: string): Promise<boolean> | boolean
 }
 
 interface Live2DApp {
@@ -65,8 +69,8 @@ const INTERACTION_MOTIONS: Record<string, Live2DInteraction> = {
   Hair: { group: 'TapHair', hint: '摸了摸呆毛', duration: 245_000 },
   Head: { group: 'TapHead', hint: '摸了摸头顶', duration: 5_000 },
   Face: { group: 'TapFace', hint: '轻碰了脸颊', duration: 5_000 },
-  LeftChest: { group: 'TapLeftChest', hint: '触发了左侧互动', duration: 3_500 },
-  RightChest: { group: 'TapRightChest', hint: '触发了右侧互动', duration: 3_500 },
+  LeftChest: { group: 'TapLeftChest', hint: '碰到了画面左侧胸前，宁宁有点生气', duration: 3_500 },
+  RightChest: { group: 'TapRightChest', hint: '碰到了画面右侧胸前，宁宁有点生气', duration: 3_500 },
   Skirt: { group: 'TapSkirt', hint: '触发了裙摆互动', duration: 9_000 },
   Body: { group: 'TapBody', hint: '轻碰了身体', duration: 5_000 },
 }
@@ -116,6 +120,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   const loadedCharacter = ref('')
   const mouthValue = ref(0)
   const interactionHint = ref('')
+  const outfit = ref<Live2DOutfitId>(DEFAULT_LIVE2D_OUTFIT)
 
   // 内部可变状态（不需要响应式）
   let catalog: Live2DCatalog | null = null
@@ -134,19 +139,24 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   let hostEl: HTMLElement | null = null
   let stageEl: HTMLElement | null = null
   let hostSelector = '#live2dHost'
-  let desiredExpression = 'neutral'
 
   function setState(state: Live2DStatus['state'], text: string, detail = '', retryable = false) {
     if (hostEl) { hostEl.dataset.state = state; hostEl.dataset.error = detail; hostEl.dataset.retryable = retryable ? 'true' : 'false' }
     onStatus({ state, text, detail, retryable, ready: ready.value })
   }
 
-  async function init(char: string, host: HTMLElement, stage: HTMLElement, options: { autoLoad?: boolean } = {}) {
+  async function init(
+    char: string,
+    host: HTMLElement,
+    stage: HTMLElement,
+    options: { autoLoad?: boolean; outfit?: string } = {},
+  ) {
     hostEl = host; stageEl = stage
     // wl-live2d 只接受 CSS selector，这里保证宿主节点有稳定 id 可选中
     if (!hostEl.id) hostEl.id = 'live2dHost'
     hostSelector = '#' + hostEl.id
     character.value = char || character.value
+    outfit.value = findLive2DOutfit(options.outfit || outfit.value).id
     setState('checking', '检查 Live2D…')
     try {
       const response = await fetch('/api/live2d-status', { cache: 'no-store' })
@@ -270,14 +280,16 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
           model = m; loadedCharacter.value = char; ready.value = true
           mouthValue.value = 0; mouthHooked = false
           bindMouthOverride(); bindContextEvents(); bindInteractionEvents(); fit(); layout()
-          setVisible(true); setExpression(desiredExpression); setPaused(document.hidden); setState('ready', 'Live2D 已连接'); finish(true)
+          setVisible(true); setPaused(document.hidden); setState('ready', 'Live2D 已连接')
+          void setOutfit(outfit.value)
+          finish(true)
         })
         app.onModelError((e: Error) => {
           const detail = errorMessage(e)
-          // wl-live2d 复用这一个回调报告初始载入和之后的 expression/motion
+          // wl-live2d 复用这一个回调报告初始载入和之后的 outfit/motion
           // 错误。后者不代表已经显示的模型失效，不能因此切回静态立绘。
           if (ready.value && loadedCharacter.value === char) {
-            setState('degraded', 'Live2D 动作暂不可用', detail, true)
+            setState('degraded', 'Live2D 动作或换装暂不可用', detail, true)
             return
           }
           fallback('Live2D 模型加载失败', detail); finish(false)
@@ -346,28 +358,35 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     if (!rect?.width || !rect.height) return null
     const x = (event.clientX - rect.left) / rect.width
     const y = (event.clientY - rect.top) / rect.height
-    if (y < 0.14) return INTERACTION_MOTIONS.Hair
-    if (y < 0.27) return INTERACTION_MOTIONS.Head
-    if (y < 0.42) return INTERACTION_MOTIONS.Face
-    if (y > 0.73) return INTERACTION_MOTIONS.Skirt
-    if (y < 0.65 && x < 0.43) return INTERACTION_MOTIONS.LeftChest
-    if (y < 0.65 && x > 0.57) return INTERACTION_MOTIONS.RightChest
+    // These zones follow the full visible model after the canvas is fitted
+    // into the stage: face, chest, skirt, then exposed legs/body.
+    if (y < 0.12) return INTERACTION_MOTIONS.Hair
+    if (y < 0.19) return INTERACTION_MOTIONS.Head
+    if (y < 0.29) return INTERACTION_MOTIONS.Face
+    // Chest motions are intentional, reactive source motions. Keep their
+    // hit bands tight so shoulder, arm, waist and ordinary body taps do not
+    // accidentally invoke them.
+    if (y >= 0.29 && y < 0.42 && x >= 0.40 && x < 0.50) return INTERACTION_MOTIONS.LeftChest
+    if (y >= 0.29 && y < 0.42 && x >= 0.50 && x <= 0.60) return INTERACTION_MOTIONS.RightChest
+    if (y >= 0.42 && y < 0.57) return INTERACTION_MOTIONS.Skirt
     return INTERACTION_MOTIONS.Body
   }
 
   function interactionAt(event: MouseEvent): Live2DInteraction {
-    // wl-live2d sometimes reports the broad body mesh for every DOM click
-    // after it internally scales the canvas. Resolve the source-model zones
-    // from the visible stage first, so head, face, chest and skirt actions do
-    // not collapse into one motion. Retain Cubism's precise hit result as the
-    // fallback when the stage has not been measured yet.
+    // The wl-live2d canvas is scaled and positioned inside the portrait card,
+    // so its hitTest coordinates do not line up with the visible DOM stage.
+    // Use the measured stage bands for user-facing semantics.
     const stageInteraction = interactionFromStagePosition(event)
     if (stageInteraction) return stageInteraction
+    // wl-live2d sometimes reports the broad body mesh for every DOM click;
+    // retain the measured hit areas only as a last-resort fallback.
     const point = worldPoint(event)
     const hitAreas = point && typeof model?.hitTest === 'function'
       ? model.hitTest(point.x, point.y)
       : []
-    const interaction = hitAreas.map((area) => INTERACTION_MOTIONS[area]).find((item): item is Live2DInteraction => Boolean(item))
+    const interaction = hitAreas.map(area => INTERACTION_MOTIONS[area])
+      .find((item): item is Live2DInteraction => Boolean(item))
+    if (interaction) return interaction
     return interaction || INTERACTION_MOTIONS.Head
   }
 
@@ -450,7 +469,10 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
       const wrapper = hostEl.firstElementChild as HTMLElement | null
       if (!wrapper) return
       const ws = hostEl.clientWidth / 420, hs = hostEl.clientHeight / 610
-      const scale = Math.min(1.08, Math.max(ws, hs) * 1.08)
+      // The canvas is 420×610 while the chat portrait is often shorter than
+      // 610px. Fit both dimensions instead of fitting width then clipping the
+      // character's head and upper body above the stage.
+      const scale = Math.min(1.08, Math.min(ws, hs) * 0.98)
       wrapper.style.transform = `translateX(-50%) scale(${scale > 0 ? scale : 1})`
       fit()
     } catch {}
@@ -484,37 +506,39 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     if (model) model.visible = visible
   }
 
-  function applyExpression(emotion: string) {
-    if (!ready.value || !model?.visible) return
-    const name = LIVE2D_EXPRESSIONS[emotion] || LIVE2D_EXPRESSIONS.neutral
-    try {
-      const result = typeof model.expression === 'function' ? model.expression(name) : null
-      if (isCatchable(result)) {
-        result.catch((error: unknown) => {
-          setState('degraded', 'Live2D 表情暂不可用', errorMessage(error), true)
-        })
-      }
-    } catch (error) {
-      setState('degraded', 'Live2D 表情暂不可用', errorMessage(error), true)
+  async function setOutfit(id: string): Promise<boolean> {
+    const target = findLive2DOutfit(id)
+    outfit.value = target.id
+    if (!ready.value || !model?.visible) return true
+    if (typeof model.expression !== 'function') {
+      setState('degraded', 'Live2D 换装暂不可用', '当前运行库未提供 Expression 接口', true)
+      return false
     }
-    resumeRendering()
-  }
-
-  function setExpression(emotion: string) {
-    desiredExpression = emotion || 'neutral'
-    applyExpression(desiredExpression)
+    try {
+      resumeRendering()
+      const started = await Promise.resolve(model.expression(target.expression))
+      if (started === false) {
+        setState('degraded', 'Live2D 换装未完成', `模型拒绝了 ${target.label} Expression`, true)
+        return false
+      }
+      setState('ready', 'Live2D 已连接')
+      return true
+    } catch (error) {
+      setState('degraded', 'Live2D 换装暂不可用', errorMessage(error), true)
+      return false
+    }
   }
 
   function setMouth(value: number) {
     mouthValue.value = Math.max(0, Math.min(1, Number(value) || 0))
     // Do not depend solely on the internal event emitter. Some Cubism builds
-    // skip it for a frame after an expression change, which made speech look
+    // skip it for a frame after an outfit change, which made speech look
     // frozen even while the audio analyser was producing amplitudes.
     applyMouth()
     if (mouthValue.value > 0) resumeRendering()
   }
 
-  // 表情和口型都依赖 Pixi ticker。某些 Cubism 模型在切换表情后会停掉 idle
+  // 换装和口型都依赖 Pixi ticker。某些 Cubism 模型在切换 Expression 后会停掉 idle
   // motion；语音开始时显式恢复渲染，避免出现“有声音但立绘冻结”。
   function setSpeaking(value: boolean) {
     speaking = value
@@ -530,7 +554,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   function destroyRuntime() {
     clearTimeout(loadTimer); loadTimer = 0
     clearTimeout(interactionTimer); interactionTimer = 0; activeInteraction = ''
-    ready.value = false; mouthValue.value = 0; mouthHooked = false; speaking = false; desiredExpression = 'neutral'; model = null
+    ready.value = false; mouthValue.value = 0; mouthHooked = false; speaking = false; model = null
     loadedCharacter.value = ''
     stageEl?.classList.remove('live2d-ready')
     if (app && typeof app.destroy === 'function') { try { app.destroy() } catch {} }
@@ -548,8 +572,8 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   }
 
   return {
-    ready, enabled, character, loadedCharacter, mouthValue, interactionHint,
-    init, enable, disable, setCharacter, setMouth, setExpression, setSpeaking,
+    ready, enabled, character, loadedCharacter, mouthValue, interactionHint, outfit,
+    init, enable, disable, setCharacter, setMouth, setOutfit, setSpeaking,
     setPaused, layout, retry, destroy,
   }
 }

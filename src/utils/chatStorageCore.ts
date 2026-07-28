@@ -22,11 +22,14 @@ export interface PersistedChatState {
     apiBaseUrl: string
     apiModel: string
     live2dEnabled: boolean
+    live2dOutfit: string
     autoVoice: boolean
     volume: number
     drafts: Record<string, string>
   }
 }
+
+const LIVE2D_OUTFIT_IDS = new Set(['school', 'casual', 'sleepwear', 'cosplay', 'witch'])
 
 export interface NormalizedChatStorage {
   state: PersistedChatState
@@ -90,6 +93,7 @@ export function normalizeChatStorage(
   const volume = Number.isFinite(rawVolume)
     ? Math.max(0, Math.min(100, Math.round(rawVolume)))
     : 80
+  const outfitCandidate = text(settings.live2dOutfit, 40)
 
   return {
     state: {
@@ -107,6 +111,7 @@ export function normalizeChatStorage(
           || text(legacyApi.model, 200)
           || 'deepseek-v4-flash',
         live2dEnabled: settings.live2dEnabled === true,
+        live2dOutfit: LIVE2D_OUTFIT_IDS.has(outfitCandidate) ? outfitCandidate : 'school',
         autoVoice: settings.autoVoice !== false,
         volume,
         drafts: normalizedDrafts,

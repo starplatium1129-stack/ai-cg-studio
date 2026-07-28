@@ -170,6 +170,7 @@ async function run() {
   var mainTs = fs.readFileSync(path.join(root, 'src', 'main.ts'), 'utf8');
   var streamUtils = fs.readFileSync(path.join(root, 'src', 'utils', 'stream.ts'), 'utf8');
   var chatStorage = fs.readFileSync(path.join(root, 'src', 'composables', 'useChatStorage.ts'), 'utf8');
+  var characterConfig = fs.readFileSync(path.join(root, 'src', 'config', 'characters.ts'), 'utf8');
   var chatProvider = fs.readFileSync(path.join(root, 'src', 'composables', 'useChatProvider.ts'), 'utf8');
   var chatConversation = fs.readFileSync(path.join(root, 'src', 'composables', 'useChatConversation.ts'), 'utf8');
   var securitySource = fs.readFileSync(path.join(root, 'server', 'security.js'), 'utf8');
@@ -197,9 +198,10 @@ async function run() {
   assert(html.includes('ChatApiSettings'), 'chat API settings must have independent component ownership');
   assert(html.includes('useChatProvider') && chatProvider.includes('refreshChatStatus') && chatProvider.includes('saveApiSettings'), 'chat provider settings and status must have composable ownership');
   assert(
-    characterStageComponent.includes('defineExpose({ setSpeaking, setExpression, setMouth })')
-      && characterStageComponent.includes("emit('live2dEnabled'"),
-    'the character stage must expose only voice animation controls and persist the Live2D preference'
+    characterStageComponent.includes('defineExpose({ setSpeaking, setMouth })')
+      && characterStageComponent.includes("emit('live2dEnabled'")
+      && characterStageComponent.includes("emit('outfitChanged'"),
+    'the character stage must expose only voice animation controls and persist Live2D preferences'
   );
   assert(
     apiSettingsComponent.includes("fetch('/api/chat-provider/test'")
@@ -240,12 +242,32 @@ async function run() {
   assert(voiceModule.includes("fetch('/api/voice/prepare'") && voiceRoute.includes("router.post('/api/voice/prepare'"), 'voice models and translation must prewarm before the first line');
   assert(voiceModule.includes('getByteTimeDomainData') && voiceModule.includes('onMouth'), 'lip sync must use real audio amplitude');
   assert(live2dModule.includes('ResizeObserver') && live2dModule.includes('webglcontextlost'), 'Live2D must recover layout and WebGL failures');
-  assert(live2dModule.includes('setExpression') && live2dModule.includes('setSpeaking') && live2dModule.includes('applyMouth') && live2dModule.includes('ParamMouthOpenY'), 'Live2D must write real speech amplitudes into the mouth parameter');
+  assert(live2dModule.includes('setOutfit') && live2dModule.includes('setSpeaking') && live2dModule.includes('applyMouth') && live2dModule.includes('ParamMouthOpenY'), 'Live2D must switch authored outfits and write real speech amplitudes into the mouth parameter');
+  assert(
+    characterConfig.includes("{ id: 'school', label: '校服', expression: 'expression1' }")
+      && characterConfig.includes("{ id: 'casual', label: '常服', expression: 'expression2' }")
+      && characterConfig.includes("{ id: 'sleepwear', label: '睡衣', expression: 'expression3' }")
+      && characterConfig.includes("{ id: 'cosplay', label: 'COS 服', expression: 'expression4' }")
+      && characterConfig.includes("{ id: 'witch', label: '魔女服', expression: 'expression5' }")
+      && characterStageComponent.includes('aria-label="宁宁服装"')
+      && characterStageComponent.includes('class="wardrobe-menu"')
+      && apiSettingsComponent.includes(':data-vendor="option.value"')
+      && live2dModule.includes('model.expression(target.expression)')
+      && !live2dModule.includes('LIVE2D_EXPRESSIONS')
+      && !html.includes('setExpression'),
+    'all five source-authored outfits must be explicit controls and must not be driven by chat emotion'
+  );
   assert(
     live2dModule.includes('INTERACTION_MOTIONS')
       && live2dModule.includes('worldPoint')
       && live2dModule.includes('model.hitTest(point.x, point.y)')
       && live2dModule.includes('interactionFromStagePosition')
+      && live2dModule.includes('if (y < 0.29) return INTERACTION_MOTIONS.Face')
+      && live2dModule.includes("hint: '碰到了画面左侧胸前，宁宁有点生气'")
+      && live2dModule.includes("hint: '碰到了画面右侧胸前，宁宁有点生气'")
+      && live2dModule.includes('y >= 0.29 && y < 0.42 && x >= 0.40 && x < 0.50')
+      && live2dModule.includes('y >= 0.42 && y < 0.57')
+      && live2dModule.includes('return INTERACTION_MOTIONS.Body')
       && live2dModule.includes('wl-live2d sometimes reports the broad body mesh for every DOM click')
       && live2dModule.includes('model.motion(interaction.group, 0, 3)')
       && live2dModule.includes("motionPreload: 'ALL'")

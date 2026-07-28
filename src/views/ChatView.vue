@@ -22,8 +22,10 @@
         :chat-status-text="chatStatusText"
         :status-kind="statusKind"
         :auto-load="storage.state.settings.live2dEnabled"
+        :outfit="storage.state.settings.live2dOutfit"
         @select="switchCharacter"
         @live2d-enabled="storage.setLive2dEnabled"
+        @outfit-changed="storage.setLive2dOutfit"
       />
 
       <section class="conversation-card">
@@ -193,7 +195,6 @@ const route = useRoute()
 const chatListRef  = ref<HTMLElement>()
 const characterStageRef = ref<{
   setSpeaking: (value: boolean) => void
-  setExpression: (emotion: string) => void
   setMouth: (value: number) => void
 }>()
 
@@ -247,7 +248,6 @@ const voice = useVoice({
     playingMid.value = v && mid ? mid : ''
     characterStageRef.value?.setSpeaking(v)
   },
-  onExpression: (e) => characterStageRef.value?.setExpression(e),
   onMouth:      (v) => characterStageRef.value?.setMouth(v),
   onAudioReady: (mid) => {
     // trigger re-render so replay button appears
@@ -344,7 +344,6 @@ const {
   apiKey,
   setBusy,
   onError: setError,
-  onExpression: emotion => characterStageRef.value?.setExpression(emotion),
   nearBottom,
   scrollBottom,
 })

@@ -272,6 +272,142 @@
   color: var(--text-muted);
 }
 
+.chat-page .live2d-wardrobe {
+  position: absolute;
+  z-index: var(--z-raised);
+  top: calc(var(--s-3) + 36px);
+  right: var(--s-3);
+}
+
+.chat-page .wardrobe-trigger {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 104px;
+  padding: 5px 7px;
+  border: 1px solid color-mix(in srgb, var(--character-accent) 28%, var(--glass-edge));
+  border-radius: var(--r-md);
+  background:
+    linear-gradient(120deg, color-mix(in srgb, var(--character-accent) 13%, transparent), transparent 70%),
+    var(--glass-fill-strong);
+  color: var(--text-primary);
+  box-shadow: inset 0 1px 0 var(--glass-highlight), var(--shadow-sm);
+  cursor: pointer;
+  backdrop-filter: blur(18px);
+}
+
+.chat-page .wardrobe-trigger:hover,
+.chat-page .live2d-wardrobe.open .wardrobe-trigger {
+  border-color: color-mix(in srgb, var(--character-accent) 62%, var(--border-soft));
+  background:
+    linear-gradient(120deg, color-mix(in srgb, var(--character-accent) 20%, transparent), transparent 72%),
+    var(--glass-fill-strong);
+}
+
+.chat-page .wardrobe-symbol {
+  display: grid;
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--character-accent) 40%, transparent);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--character-accent) 12%, transparent);
+  color: var(--character-accent);
+}
+
+.chat-page .wardrobe-copy {
+  display: grid;
+  flex: 1;
+  gap: 1px;
+  text-align: left;
+}
+
+.chat-page .wardrobe-copy small,
+.chat-page .wardrobe-menu-title {
+  color: var(--text-muted);
+  font: 700 var(--fs-mono-xs) var(--font-mono);
+  letter-spacing: .08em;
+}
+
+.chat-page .wardrobe-copy strong {
+  font-size: var(--fs-label-sm);
+}
+
+.chat-page .wardrobe-chevron {
+  color: var(--text-muted);
+  transition: transform var(--t-fast);
+}
+
+.chat-page .live2d-wardrobe.open .wardrobe-chevron {
+  transform: rotate(180deg);
+}
+
+.chat-page .wardrobe-menu {
+  position: absolute;
+  top: calc(100% + 7px);
+  right: 0;
+  display: grid;
+  width: 148px;
+  gap: 3px;
+  padding: var(--s-2);
+  border: 1px solid color-mix(in srgb, var(--character-accent) 30%, var(--glass-edge));
+  border-radius: var(--r-lg);
+  background:
+    linear-gradient(145deg, color-mix(in srgb, var(--character-accent) 9%, transparent), transparent 58%),
+    var(--glass-fill-strong);
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(24px);
+}
+
+.chat-page .wardrobe-menu-title {
+  padding: 4px 6px 5px;
+}
+
+.chat-page .wardrobe-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 29px;
+  padding: 4px 7px;
+  border: 1px solid transparent;
+  border-radius: var(--r-md);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font: 600 var(--fs-label-xs) var(--font-sans);
+  text-align: left;
+}
+
+.chat-page .wardrobe-option:hover {
+  background: color-mix(in srgb, var(--character-accent) 9%, transparent);
+  color: var(--text-primary);
+}
+
+.chat-page .wardrobe-option i {
+  width: 7px;
+  height: 7px;
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+}
+
+.chat-page .wardrobe-option.active {
+  border-color: color-mix(in srgb, var(--character-accent) 26%, transparent);
+  background: color-mix(in srgb, var(--character-accent) 14%, transparent);
+  color: var(--character-accent);
+}
+
+.chat-page .wardrobe-option.active i {
+  border-color: var(--character-accent);
+  background: var(--character-accent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--character-accent) 65%, transparent);
+}
+
+.chat-page .wardrobe-option:disabled {
+  cursor: wait;
+  opacity: .6;
+}
+
 .chat-page .live2d-interaction-hint {
   position: absolute;
   z-index: var(--z-raised);
@@ -423,12 +559,16 @@
 
 .chat-page .api-settings {
   display: grid;
-  gap: var(--s-3);
+  gap: var(--s-4);
   margin: var(--s-3) var(--s-4) 0;
-  padding: var(--s-3);
-  border: 1px solid color-mix(in srgb, var(--character-accent) 32%, var(--border-soft));
-  border-radius: var(--r-lg);
-  background: color-mix(in srgb, var(--character-accent) 5%, var(--bg-surface));
+  padding: var(--s-4);
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--character-accent) 24%, var(--border-soft));
+  border-radius: var(--r-xl);
+  background:
+    radial-gradient(circle at 4% 0%, color-mix(in srgb, var(--character-accent) 12%, transparent), transparent 32%),
+    linear-gradient(145deg, color-mix(in srgb, var(--bg-elevated) 45%, var(--bg-surface)), var(--bg-surface));
+  box-shadow: inset 0 1px 0 var(--glass-highlight), var(--shadow-sm);
 }
 
 .chat-page .api-settings-head,
@@ -439,14 +579,26 @@
   gap: var(--s-3);
 }
 
-.chat-page .api-settings-head > div {
+.chat-page .api-title-lockup {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+}
+
+.chat-page .api-title-lockup > div {
   display: grid;
   gap: 2px;
 }
 
-.chat-page .api-settings-head strong {
+.chat-page .api-title-lockup strong {
   color: var(--text-primary);
-  font-size: var(--fs-label);
+  font: 650 var(--fs-body) var(--font-serif);
+}
+
+.chat-page .api-title-lockup > div > small {
+  color: var(--character-accent);
+  font: 700 var(--fs-mono-xs) var(--font-mono);
+  letter-spacing: .13em;
 }
 
 .chat-page .api-settings-head span,
@@ -454,6 +606,19 @@
   color: var(--text-muted);
   font-size: var(--fs-label-xs);
   line-height: 1.5;
+}
+
+.chat-page .api-mark {
+  display: grid;
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--character-accent) 36%, var(--border-soft));
+  border-radius: var(--r-lg);
+  background: color-mix(in srgb, var(--character-accent) 11%, var(--bg-deep));
+  color: var(--character-accent) !important;
+  font-size: var(--fs-title-sm) !important;
 }
 
 .chat-page .api-test-status[data-state="testing"] {
@@ -475,10 +640,82 @@
 }
 
 .chat-page .api-storage-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   flex: 0 0 auto;
-  padding: 3px 8px;
+  padding: 5px 9px;
   border: 1px solid var(--border-soft);
   border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--bg-deep) 72%, transparent);
+}
+
+.chat-page .api-storage-note i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--success) 48%, transparent);
+}
+
+.chat-page .api-vendor-picker {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 4px;
+  margin: 0;
+  padding: 4px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-lg);
+  background: color-mix(in srgb, var(--bg-deep) 82%, transparent);
+}
+
+.chat-page .api-vendor-picker legend {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.chat-page .api-vendor-picker button {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+  min-height: 44px;
+  padding: 6px 9px;
+  border: 1px solid transparent;
+  border-radius: var(--r-md);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  text-align: left;
+}
+
+.chat-page .api-vendor-picker button span {
+  overflow: hidden;
+  color: var(--text-secondary);
+  font: 650 var(--fs-label-sm) var(--font-sans);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chat-page .api-vendor-picker button small {
+  color: var(--text-muted);
+  font: var(--fs-mono-xs) var(--font-mono);
+}
+
+.chat-page .api-vendor-picker button:hover {
+  background: color-mix(in srgb, var(--character-accent) 7%, transparent);
+}
+
+.chat-page .api-vendor-picker button.active {
+  border-color: color-mix(in srgb, var(--character-accent) 34%, var(--border-soft));
+  background: color-mix(in srgb, var(--character-accent) 13%, var(--bg-surface));
+  box-shadow: var(--shadow-sm);
+}
+
+.chat-page .api-vendor-picker button.active span {
+  color: var(--character-accent);
 }
 
 .chat-page .api-settings-grid {
@@ -495,19 +732,33 @@
   font-size: var(--fs-label-xs);
 }
 
-.chat-page .api-field-wide {
+.chat-page .api-field-wide,
+.chat-page .api-model-note {
   grid-column: 1 / -1;
+}
+
+.chat-page .api-field > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-secondary);
+  font-weight: 650;
+}
+
+.chat-page .api-field > span i {
+  color: var(--character-accent);
+  font: 700 var(--fs-mono-xs) var(--font-mono);
 }
 
 .chat-page .api-field input,
 .chat-page .api-field select {
   width: 100%;
   min-width: 0;
-  min-height: 36px;
-  padding: 6px 9px;
+  min-height: 42px;
+  padding: 8px 11px;
   border: 1px solid var(--border-soft);
-  border-radius: var(--r-sm);
-  background: var(--bg-deep);
+  border-radius: var(--r-md);
+  background: color-mix(in srgb, var(--bg-deep) 88%, transparent);
   color: var(--text-primary);
   font: var(--fs-label-sm) var(--font-sans);
   outline: none;
@@ -525,6 +776,13 @@
   line-height: 1.45;
 }
 
+.chat-page .api-model-note {
+  margin: -2px 0 0;
+  color: var(--text-muted);
+  font-size: var(--fs-mono-sm);
+  line-height: 1.45;
+}
+
 .chat-page .api-key-field {
   position: relative;
 }
@@ -537,13 +795,19 @@
   position: absolute;
   top: 50%;
   right: 7px;
-  padding: 3px 5px;
-  border: 0;
-  background: transparent;
+  padding: 4px 7px;
+  border: 1px solid transparent;
+  border-radius: var(--r-sm);
+  background: color-mix(in srgb, var(--bg-elevated) 60%, transparent);
   color: var(--text-muted);
   cursor: pointer;
   font: var(--fs-label-xs) var(--font-sans);
   transform: translateY(-50%);
+}
+
+.chat-page .api-key-field button:hover {
+  border-color: var(--border-soft);
+  color: var(--text-primary);
 }
 
 .chat-page .room-setup {
@@ -1124,6 +1388,10 @@
 
   .chat-page .api-settings-grid {
     grid-template-columns: 1fr;
+  }
+
+  .chat-page .api-vendor-picker {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .chat-page .api-field-wide {

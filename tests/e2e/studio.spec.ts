@@ -299,16 +299,16 @@ test('character room mounts portrait, composer and voice console', async ({ page
   await expect(page.locator('.character-tab')).toHaveCount(2);
   await page.getByRole('button', { name: '自定义 API', exact: true }).click();
   await expect(page.locator('.api-settings')).toBeVisible();
-  await expect(page.getByLabel('服务商')).toHaveValue('deepseek');
+  await expect(page.locator('[data-vendor="deepseek"]')).toHaveAttribute('aria-pressed', 'true');
   await expect(page.getByLabel('API 地址')).toHaveValue('https://api.deepseek.com');
   await expect(page.getByLabel('模型名')).toHaveValue('deepseek-v4-flash');
-  await page.getByLabel('服务商').selectOption('opencode');
+  await page.locator('[data-vendor="opencode"]').click();
   await expect(page.getByLabel('API 地址')).toHaveValue('https://opencode.ai/zen/v1');
   await expect(page.getByLabel('模型名')).toHaveValue('deepseek-v4-flash-free');
-  await page.getByLabel('服务商').selectOption('opencode-go');
+  await page.locator('[data-vendor="opencode-go"]').click();
   await expect(page.getByLabel('API 地址')).toHaveValue('https://opencode.ai/zen/go/v1');
   await expect(page.getByLabel('模型名')).toHaveValue('deepseek-v4-flash');
-  await page.getByLabel('服务商').selectOption('opencode');
+  await page.locator('[data-vendor="opencode"]').click();
   await page.getByLabel('API Key').fill('test-key');
   await page.getByRole('button', { name: '测试连接' }).click();
   await expect(page.locator('.api-test-status')).toContainText('连接成功，发现 2 个模型');
@@ -347,6 +347,7 @@ test('chat storage migrates legacy settings and removes durable credentials', as
   expect(durable.settings.provider).toBe('api');
   expect(durable.settings.apiBaseUrl).toBe('https://legacy.example/v1');
   expect(durable.settings.apiModel).toBe('legacy-model');
+  expect(durable.settings.live2dOutfit).toBe('school');
   expect(migrated.local).not.toContain('legacy-browser-secret');
   expect(migrated.local).not.toContain('apiKey');
   expect(migrated.local).not.toContain('Authorization');
@@ -364,6 +365,7 @@ test('chat storage migrates legacy settings and removes durable credentials', as
   expect(recovered.active).toBe('nene');
   expect(recovered.histories).toEqual({ nene: [], natsume: [] });
   expect(recovered.settings.provider).toBe('local');
+  expect(recovered.settings.live2dOutfit).toBe('school');
 });
 
 test('character profile opens the selected character room and persona scenes', async ({ page }) => {
