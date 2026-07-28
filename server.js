@@ -459,7 +459,8 @@ function startGateway(options) {
     console.log('  🔊 TTS 后端: ' + config.TTS_HOST);
     console.log('  💬 Ollama 后端: ' + config.OLLAMA_HOST);
     console.log('  🖼️ 场景样张: ' + (config.SCENE_SHOWCASE_DIR || '未配置'));
-    console.log('  🔐 Token: stored in runtime/state (length ' + String(config.TOKEN || '').length + ')');
+    console.log('  🔐 Token: ' + (config.TOKEN_SOURCE || 'runtime/state')
+      + ' (length ' + String(config.TOKEN || '').length + ')');
     console.log('  ══════════════════════════════════════════');
     console.log('');
     // 公网分享不再随网关自动开启：默认仅本机，由控制面板显式启动。

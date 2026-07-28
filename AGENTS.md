@@ -30,6 +30,7 @@
 - 业务组合函数：`src/composables/`。
 - Prompt、场景推断、SD 请求构建与错误策略：`src/utils/`。
 - 网关：Express，路由位于 `routes/`，安全与公共服务位于 `server/`、`services/`。
+- 分享 token：未设置 `TOKEN` 环境变量时，首次启动生成并持久化至 `runtime/state/gateway_token`；重启必须复用该 token。`TOKEN` 环境变量仅作显式覆盖，不得改写持久化 token。
 - 数据：场景运行时数据通过 `sceneStore` 单例加载；不要重新添加散落的 `/data/*.json` fetch。
 - 图片与历史：IndexedDB，封装在 `useKVStore`、`useImageStore`、`useBackup`。
 - `docs/*.html` 仍使用 `tools/nav.js`、`theme.js`、`local-status.js`；这些是文档站运行时，不属于已删除的应用控制器。
@@ -90,11 +91,6 @@
 
 - `PromptBuilderView.vue` 仍约 1224 行：下一步可抽出生成参数/输出控制，但 Prompt 组装管线应在形成稳定 composable 边界后再迁。
 - `ChatView.vue` 仍约 678 行：可把消息流控制、供应商会话状态拆成 composable；UI 已拆为 API 设置和角色舞台组件。
-
-### P2：资源与构建优化
-
-1. 排查 Node 的 `util._extend` 弃用警告，优先升级或替换实际引入它的依赖。
-2. 清理已经失去模板消费者的首次创作引导 CSS；若保留该体验，则补回真实状态与 E2E，而不是留下半套样式。
 
 ### P1：v15 核心样张审核
 

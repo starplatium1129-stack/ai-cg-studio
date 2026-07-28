@@ -207,6 +207,19 @@ assert(
   /\.pb-backup-overlay/.test(directorCss) && /class="pb-backup-overlay open"/.test(read('src/components/PromptDataTools.vue')),
   'teleported backup overlay must use its own pb-* namespace (it has no .pb ancestor)',
 );
+for (const retiredFirstCreationSelector of [
+  'stage-welcome', 'first-creation-actions', 'first-creation-note',
+  'recent-scene-shortcuts', 'recent-scene-chip', 'data-first-creation', 'firstCreationPulse',
+]) {
+  assert(
+    !directorCss.includes(retiredFirstCreationSelector),
+    'director.css must not retain the unused first-creation selector: ' + retiredFirstCreationSelector,
+  );
+}
+assert(
+  /\.pb \.stage-quick-actions/.test(directorCss),
+  'the live stage quick actions must retain their scoped styling',
+);
 
 // chat.css 有同样的生命周期：路由块卸载后样式仍在 document，不能让 `.message`
 // `.chat-list` 等裸类污染作品册或场景页。

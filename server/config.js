@@ -27,6 +27,35 @@ function readJson(file) {
   }
 }
 
+function readGatewayToken(file) {
+  try {
+    var token = fs.readFileSync(file, 'utf8').trim();
+    return /^[a-f0-9]{64}$/i.test(token) ? token : '';
+  } catch (error) {
+    return '';
+  }
+}
+
+function writeGatewayToken(file, token) {
+  var temporary = file + '.' + process.pid + '.tmp';
+  try {
+    fs.writeFileSync(temporary, token + '\n', { encoding:'utf8', mode:0o600 });
+    fs.renameSync(temporary, file);
+  } catch (error) {
+    try { fs.unlinkSync(temporary); } catch (cleanupError) {}
+    console.warn('  Unable to persist gateway token:', error.message);
+  }
+}
+
+function resolveGatewayToken(envToken, tokenFile) {
+  if (envToken) return envToken;
+  var savedToken = readGatewayToken(tokenFile);
+  if (savedToken) return savedToken;
+  var token = crypto.randomBytes(32).toString('hex');
+  writeGatewayToken(tokenFile, token);
+  return token;
+}
+
 function boundedInteger(value, fallback, min, max) {
   var number = Number(value);
   if (!Number.isFinite(number)) return fallback;
@@ -68,7 +97,10 @@ function loadGatewayConfig(rootDir, env) {
     RUNTIME_ROOT:runtime.root,
     PORT:boundedInteger(env.PORT, 3000, 1, 65535),
     HOST:env.HOST || '127.0.0.1',
-    TOKEN:env.TOKEN || crypto.randomBytes(32).toString('hex'),
+    // Explicit TOKEN remains an operator override. Otherwise keep one random
+    // token per runtime so a shared URL survives gateway restarts.
+    TOKEN:resolveGatewayToken(env.TOKEN, runtime.gatewayToken),
+    TOKEN_SOURCE:env.TOKEN ? 'environment' : 'runtime/state',
     SD_HOST:resolveUpstreamHost(env.SD_HOST, saved.sdHost, 'http://127.0.0.1:7860'),
     SD_API_AUTH:env.SD_API_AUTH || '',
     TTS_HOST:resolveUpstreamHost(env.TTS_HOST, saved.ttsHost, 'http://127.0.0.1:9880'),
@@ -93,5 +125,6 @@ function loadGatewayConfig(rootDir, env) {
 module.exports = {
   loadGatewayConfig:loadGatewayConfig,
   resolveSceneShowcaseDir:resolveSceneShowcaseDir,
-  boundedInteger:boundedInteger
+  boundedInteger:boundedInteger,
+  resolveGatewayToken:resolveGatewayToken
 };
