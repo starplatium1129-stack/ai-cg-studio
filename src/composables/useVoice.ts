@@ -222,7 +222,9 @@ export function useVoice(options: {
       if (audio && !audio.paused && !audio.ended) {
         analyser!.getByteTimeDomainData(samples); let sum = 0
         for (const s of samples) { const n = (s - 128) / 128; sum += n * n }
-        target = Math.min(1, Math.sqrt(sum / samples.length) * 3.4)
+        // GPT-SoVITS WAV peaks are comparatively quiet after browser mixing.
+        // Keep real RMS data, but calibrate it into Cubism's 0..1 mouth range.
+        target = Math.min(1, Math.sqrt(sum / samples.length) * 6.5)
       }
       lipSmooth += (target - lipSmooth) * 0.35
       if (lipSmooth < 0.015) lipSmooth = 0

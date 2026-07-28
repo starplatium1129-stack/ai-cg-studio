@@ -139,7 +139,16 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
           bindMouthOverride(); bindContextEvents(); fit(); layout()
           setVisible(true); setExpression(desiredExpression); setPaused(document.hidden); setState('ready', 'Live2D 已连接'); finish(true)
         })
-        app.onModelError((e: any) => { fallback('Live2D 模型加载失败', String(e?.message ?? e)); finish(false) })
+        app.onModelError((e: any) => {
+          const detail = String(e?.message ?? e)
+          // wl-live2d 复用这一个回调报告初始载入和之后的 expression/motion
+          // 错误。后者不代表已经显示的模型失效，不能因此切回静态立绘。
+          if (ready.value && loadedCharacter.value === char) {
+            setState('degraded', 'Live2D 动作暂不可用', detail, true)
+            return
+          }
+          fallback('Live2D 模型加载失败', detail); finish(false)
+        })
       } catch (e) { fallback('Live2D 初始化失败', String((e as any)?.message ?? e)); finish(false) }
       })()
     })
@@ -164,10 +173,16 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   function bindMouthOverride() {
     if (!model?.internalModel || mouthHooked) return
     mouthHooked = true
-    model.internalModel.on('beforeModelUpdate', () => {
-      if (!model?.visible) return
-      try { model.internalModel.coreModel.setParameterValueById('ParamMouthOpenY', mouthValue.value) } catch {}
-    })
+    model.internalModel.on('beforeModelUpdate', applyMouth)
+  }
+
+  function applyMouth() {
+    if (!model?.visible) return
+    try {
+      // Cubism motion/physics run before this event. Write with full weight so
+      // their idle mouth value cannot overwrite the audio amplitude.
+      model.internalModel.coreModel.setParameterValueById('ParamMouthOpenY', mouthValue.value, 1)
+    } catch {}
   }
 
   function bindContextEvents() {
@@ -237,12 +252,25 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     desiredExpression = emotion || 'neutral'
     if (!ready.value || !model?.visible) return
     const name = LIVE2D_EXPRESSIONS[desiredExpression] || LIVE2D_EXPRESSIONS.neutral
-    try { if (typeof model.expression === 'function') model.expression(name) } catch {}
+    try {
+      const result = typeof model.expression === 'function' ? model.expression(name) : null
+      if (result && typeof result.catch === 'function') {
+        result.catch((error: unknown) => {
+          setState('degraded', 'Live2D 表情暂不可用', String((error as any)?.message ?? error), true)
+        })
+      }
+    } catch (error) {
+      setState('degraded', 'Live2D 表情暂不可用', String((error as any)?.message ?? error), true)
+    }
     resumeRendering()
   }
 
   function setMouth(value: number) {
     mouthValue.value = Math.max(0, Math.min(1, Number(value) || 0))
+    // Do not depend solely on the internal event emitter. Some Cubism builds
+    // skip it for a frame after an expression change, which made speech look
+    // frozen even while the audio analyser was producing amplitudes.
+    applyMouth()
     if (mouthValue.value > 0) resumeRendering()
   }
 

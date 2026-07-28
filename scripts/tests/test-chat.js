@@ -120,6 +120,7 @@ async function run() {
   assert(html.includes('assets/css/chat.css'), 'chat styles must be imported by the chat view');
   assert(!mainTs.includes('assets/css/chat.css'), 'chat styles must not ship in the global entry bundle');
   assert(html.includes('useVoice') && html.includes('useLive2D'), 'chat view must compose voice and Live2D');
+  assert(html.includes("'live2d-ready': live2d.ready"), 'Vue must own the Live2D visibility class so voice state renders cannot restore the static portrait');
   assert(html.includes('voice-console') && html.includes('replay-btn'), 'live voice and replay must share one visual control');
   assert(!html.includes('portrait-blink') && !html.includes('scheduleBlink'), 'static portraits must not use a duplicate-image blink effect');
   assert(!chatCss.includes('portrait-talk'), 'static portraits must not scale or bounce while voice is playing');
@@ -135,7 +136,8 @@ async function run() {
   assert(voiceModule.includes("fetch('/api/voice/prepare'") && voiceRoute.includes("router.post('/api/voice/prepare'"), 'voice models and translation must prewarm before the first line');
   assert(voiceModule.includes('getByteTimeDomainData') && voiceModule.includes('onMouth'), 'lip sync must use real audio amplitude');
   assert(live2dModule.includes('ResizeObserver') && live2dModule.includes('webglcontextlost'), 'Live2D must recover layout and WebGL failures');
-  assert(live2dModule.includes('setExpression') && live2dModule.includes('setSpeaking') && live2dModule.includes('ParamMouthOpenY'), 'Live2D must keep rendering for speech, expression and mouth control');
+  assert(live2dModule.includes('setExpression') && live2dModule.includes('setSpeaking') && live2dModule.includes('applyMouth') && live2dModule.includes('ParamMouthOpenY'), 'Live2D must write real speech amplitudes into the mouth parameter');
+  assert(live2dModule.includes("'degraded'") && live2dModule.includes('已经显示的模型失效'), 'runtime expression failures must not replace a loaded Live2D model with the static portrait');
   // Live2D 运行库必须真正被加载（重构后曾漏掉，导致"运行库加载失败"）
   assert(live2dModule.includes("import('wl-live2d')"), 'Live2D runtime must be imported by the composable');
   // PixiJS 需要 unsafe-eval：CSP 必须为 /chat 放行，否则 Live2D 初始化失败

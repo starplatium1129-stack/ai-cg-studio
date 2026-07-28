@@ -31,10 +31,13 @@
         </div>
 
         <div class="portrait-stage" ref="stageRef" :data-character="activeChar"
-             role="tabpanel"
-             :id="tabs.panelId(activeChar)"
-             :aria-labelledby="tabs.tabId(activeChar)"
-             :class="{ speaking: isSpeaking }">
+              role="tabpanel"
+              :id="tabs.panelId(activeChar)"
+              :aria-labelledby="tabs.tabId(activeChar)"
+              :class="{
+                speaking: isSpeaking,
+                'live2d-ready': live2d.ready && live2d.loadedCharacter.value === activeChar,
+              }">
           <div class="room-signal">
             <span>{{ currentCharacter.roomCode }}</span>
             <small>{{ currentCharacter.roomMood }}</small>
