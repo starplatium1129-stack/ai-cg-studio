@@ -1,6 +1,18 @@
 import { ref } from 'vue'
 import { kvGet, kvSet } from '@/composables/useKVStore'
 import { imgList, imgPutRecord, imgDeleteMany } from '@/composables/useImageStore'
+import {
+  createBackup,
+  mergeBackupRecords,
+  normalizeBackup,
+  summarizeBackup,
+  type BackupFile,
+  type BackupImage,
+  type BackupRecord,
+  type BackupSummary,
+} from '@/utils/backupCore'
+import { inspectStorageHealth, summarizeStorageHealth } from '@/utils/storageHealth'
+export type { BackupSummary } from '@/utils/backupCore'
 
 /**
  * 本地数据备份 / 恢复 — 从重构前 tools/prompt-builder/backup.js 迁移。
@@ -9,18 +21,6 @@ import { imgList, imgPutRecord, imgDeleteMany } from '@/composables/useImageStor
 
 const HISTORY_KEY = 'aics_pb_history'
 const PROJECT_KEY = 'aics_pb_projects'
-const SCHEMA_VERSION = 2
-
-/**
- * 备份兼容旧版本的自由字段，但恢复/合并只依赖 id、timestamp、image_id。
- * `any[]` 会让损坏 JSON 里的任意值一路穿进 IndexedDB；这里保留未知字段以免
- * 降级恢复时丢数据，同时让所有使用点必须先经过对象窄化。
- */
-export type BackupRecord = Record<string, unknown> & {
-  id?: unknown
-  timestamp?: unknown
-  image_id?: unknown
-}
 
 const SETTINGS_KEYS = [
   'aics_theme',
@@ -29,34 +29,6 @@ const SETTINGS_KEYS = [
   'aics_scene_favorites',
   'aics_tunnel_off',
 ]
-
-export interface BackupImage {
-  id: string
-  name?: string
-  type?: string
-  created_at?: number
-  dataUrl: string
-}
-
-export interface BackupFile {
-  app: string
-  appVersion: string
-  schemaVersion: number
-  createdAt: string
-  data: {
-    history: BackupRecord[]
-    projects: BackupRecord[]
-    settings: Record<string, string>
-  }
-  images: BackupImage[]
-}
-
-export interface BackupSummary {
-  history: number
-  projects: number
-  images: number
-  settings: number
-}
 
 function blobToDataUrl(blob: Blob): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -85,50 +57,6 @@ function collectSettings(): Record<string, string> {
     } catch {}
   })
   return out
-}
-
-export function summarize(backup: BackupFile): BackupSummary {
-  return {
-    history: backup.data?.history?.length ?? 0,
-    projects: backup.data?.projects?.length ?? 0,
-    images: backup.images?.length ?? 0,
-    settings: Object.keys(backup.data?.settings ?? {}).length,
-  }
-}
-
-export function normalize(raw: unknown): BackupFile {
-  if (!raw || typeof raw !== 'object') throw new Error('备份文件格式不正确')
-  const source = raw as Record<string, unknown>
-  const data = source.data && typeof source.data === 'object' ? source.data as Record<string, unknown> : {}
-  const file: BackupFile = {
-    app: String(source.app || 'ai-cg-studio'),
-    appVersion: String(source.appVersion || ''),
-    schemaVersion: Number(source.schemaVersion) || 1,
-    createdAt: String(source.createdAt || ''),
-    data: {
-      history: Array.isArray(data.history) ? data.history.filter(isBackupRecord) : [],
-      projects: Array.isArray(data.projects) ? data.projects.filter(isBackupRecord) : [],
-      settings: data.settings && typeof data.settings === 'object' ? data.settings as Record<string, string> : {},
-    },
-    images: Array.isArray(source.images)
-      ? source.images.filter(isBackupImage)
-      : [],
-  }
-  if (!file.data.history.length && !file.data.projects.length && !file.images.length) {
-    throw new Error('备份文件里没有可恢复的数据')
-  }
-  return file
-}
-
-/** 按 id 合并：同 id 保留较新的（timestamp 大者） */
-function isBackupRecord(value: unknown): value is BackupRecord {
-  return Boolean(value && typeof value === 'object' && !Array.isArray(value))
-}
-
-function isBackupImage(value: unknown): value is BackupImage {
-  if (!value || typeof value !== 'object') return false
-  const image = value as Partial<BackupImage>
-  return Boolean(image.id && typeof image.dataUrl === 'string')
 }
 
 function errorMessage(error: unknown, fallback: string) {
@@ -174,18 +102,14 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
           })
         } catch (e) { console.warn('skip image', record.id, e) }
       }
-      const backup: BackupFile = {
-        app: 'ai-cg-studio',
+      const backup = createBackup({
         appVersion: '1.5.0',
-        schemaVersion: SCHEMA_VERSION,
         createdAt: new Date().toISOString(),
-        data: {
-          history: Array.isArray(history) ? history : [],
-          projects: Array.isArray(projects) ? projects : [],
-          settings: collectSettings(),
-        },
+        history: Array.isArray(history) ? history : [],
+        projects: Array.isArray(projects) ? projects : [],
+        settings: collectSettings(),
         images: encoded,
-      }
+      })
       const json = JSON.stringify(backup)
       const blob = new Blob([json], { type: 'application/json;charset=utf-8' })
       const url = URL.createObjectURL(blob)
@@ -195,7 +119,7 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
       a.download = `aics-backup-${stamp}.json`
       a.click()
       URL.revokeObjectURL(url)
-      const info = summarize(backup)
+      const info = summarizeBackup(backup)
       onFlash(`备份完成：${info.history} 条记录 · ${info.images} 张图片 · ${Math.max(1, Math.round(json.length / 1024))} KB`)
     } catch (e) {
       console.error('backup export failed', e)
@@ -212,9 +136,9 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
       return null
     }
     try {
-      pending.value = normalize(JSON.parse(await file.text()))
+      pending.value = normalizeBackup(JSON.parse(await file.text()))
       pendingName.value = file.name
-      return summarize(pending.value)
+      return summarizeBackup(pending.value)
     } catch (e) {
       pending.value = null
       pendingName.value = ''
@@ -241,10 +165,10 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
       ])
       const history = replace
         ? imported.data.history
-        : mergeById(curHistory || [], imported.data.history)
+        : mergeBackupRecords(curHistory || [], imported.data.history)
       const projects = replace
         ? imported.data.projects
-        : mergeById(curProjects || [], imported.data.projects)
+        : mergeBackupRecords(curProjects || [], imported.data.projects)
 
       if (replace) {
         const existing = await imgList()
@@ -287,26 +211,17 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
   async function healthCheck(): Promise<string> {
     try {
       const [history, images] = await Promise.all([kvGet<BackupRecord[]>(HISTORY_KEY), imgList()])
-      const historyCount = Array.isArray(history) ? history.length : 0
-      const imageCount = images?.length ?? 0
       const bytes = (images || []).reduce((sum, r) => sum + (Number(r.size) || 0), 0)
       const mb = (bytes / 1024 / 1024).toFixed(1)
 
-      let quotaText = ''
+      let quota: StorageEstimate | null = null
       try {
-        const est = await navigator.storage?.estimate?.()
-        if (est?.usage != null && est?.quota) {
-          const pct = Math.round((est.usage / est.quota) * 100)
-          quotaText = ` · 浏览器配额已用 ${pct}%`
-        }
+        quota = await navigator.storage?.estimate?.() || null
       } catch {}
 
-      // 孤儿图片：历史里没引用但仍占空间
-      const referenced = new Set((history || []).map(h => h.image_id).filter(Boolean).map(String))
-      const orphans = (images || []).filter(r => !referenced.has(String(r.id)))
-
-      const msg = `存储体检：${historyCount} 条作品 · ${imageCount} 张图片 · ${mb} MB${quotaText}`
-        + (orphans.length ? ` · ${orphans.length} 张孤儿图片可清理` : ' · 正常')
+      const report = inspectStorageHealth(history, images, { quota })
+      const msg = `存储体检：${summarizeStorageHealth(report)} · 图片 ${mb} MB`
+        + (report.ok && !report.orphanImageIds.length ? ' · 正常' : '')
       onFlash(msg)
       return msg
     } catch (e) {
@@ -319,8 +234,9 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
   async function cleanOrphanImages(): Promise<number> {
     try {
       const [history, images] = await Promise.all([kvGet<BackupRecord[]>(HISTORY_KEY), imgList()])
-      const referenced = new Set((history || []).map(h => h.image_id).filter(Boolean).map(String))
-      const orphans = (images || []).filter(r => !referenced.has(String(r.id)))
+      const report = inspectStorageHealth(history, images)
+      const orphanIds = new Set(report.orphanImageIds)
+      const orphans = (images || []).filter(r => orphanIds.has(String(r.id)))
       if (!orphans.length) { onFlash('没有需要清理的孤儿图片'); return 0 }
       if (!window.confirm(`将删除 ${orphans.length} 张未被作品引用的图片。建议先导出备份。确定继续吗？`)) return 0
       await imgDeleteMany(orphans.map(r => r.id))

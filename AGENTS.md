@@ -28,10 +28,11 @@
 - 共享组件：`src/components/`。
 - 状态：`src/stores/sceneStore.ts` 与 `src/stores/promptBuilderStore.ts`。
 - 业务组合函数：`src/composables/`。
-- Prompt、场景推断与错误策略：`src/utils/`。
+- Prompt、场景推断、SD 请求构建与错误策略：`src/utils/`。
 - 网关：Express，路由位于 `routes/`，安全与公共服务位于 `server/`、`services/`。
 - 数据：场景运行时数据通过 `sceneStore` 单例加载；不要重新添加散落的 `/data/*.json` fetch。
 - 图片与历史：IndexedDB，封装在 `useKVStore`、`useImageStore`、`useBackup`。
+- `docs/*.html` 仍使用 `tools/nav.js`、`theme.js`、`local-status.js`；这些是文档站运行时，不属于已删除的应用控制器。
 
 ### 已形成独立所有权的绘图组件
 
@@ -83,36 +84,19 @@
 
 ## 当前待办
 
-### P1：清理遗留运行时与双实现
-
-`tools/` 不能整体直接删除，需要按消费者迁移：
-
-1. 将 `scripts/tests/test-prompt-policy.js` 从 `tools/prompt-policy.js` 迁到 `src/utils/promptPolicy.ts` 的真实实现。
-2. 将 `scripts/tests/test-data-backup.js` 从 `tools/data-backup.js` 迁到可独立测试的 TypeScript 备份核心。
-3. 将 `scripts/tests/test-sd-runtime.js` 与 `generate-dual-showcase-candidates.js` 从 `tools/sd-api.js` 迁到当前 SD 请求构建模块。
-4. 区分 docs 仍使用的 `nav.js` / `theme.js` 与真正无消费者的脚本；先迁消费者，再删除文件。
-5. 复核并删除确认无运行时消费者的 `icon-system.js`、`local-status.js`、`quick-create.js` 等。
-
-目标：同一业务规则只有一个实现，测试直接覆盖生产实现。
-
 ### P1：类型债收敛
 
-`src/` 当前约有 146 处 `any`（含声明与注释中的匹配）。优先处理：
+`src/` 当前约有 80 处 `any`（含声明与注释中的匹配）。优先处理：
 
-1. `useLive2D.ts`
-2. `useVoice.ts`
-3. `GalleryView.vue`
-4. `HomeView.vue`
-5. `promptBuilderStore.ts`
-6. `ShowcaseView.vue`
+1. `promptBuilderStore.ts`
+2. `ShowcaseView.vue`
 
-`SceneExplorerView.vue` 已清零，不要回退。优先补第三方 SDK 边界类型、API 响应类型和持久化记录类型，不做无意义的类型断言替换。
+`SceneExplorerView.vue`、`GalleryView.vue`、`HomeView.vue`、`useLive2D.ts`、`useVoice.ts` 已清零，不要回退。优先补第三方 SDK 边界类型、API 响应类型和持久化记录类型，不做无意义的类型断言替换。
 
 ### P2：大型视图继续按所有权拆分
 
 - `PromptBuilderView.vue` 仍约 1224 行：下一步可抽出生成参数/输出控制，但 Prompt 组装管线应在形成稳定 composable 边界后再迁。
 - `ChatView.vue` 仍约 678 行：可把消息流控制、供应商会话状态拆成 composable；UI 已拆为 API 设置和角色舞台组件。
-- 对 `GalleryView`、`HomeView` 的类型清理与资源生命周期一起处理，避免纯机械拆文件。
 
 ### P2：资源与构建优化
 

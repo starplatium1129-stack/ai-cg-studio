@@ -10,6 +10,7 @@
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
+const { buildTxt2ImgRequest } = require('../../src/utils/sdRequest.ts');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const AI_ROOT = path.resolve(ROOT, '..', 'AI');
@@ -92,7 +93,7 @@ async function getJson(url) {
 async function generate(scene, attempt, checkpoint) {
   const { width, height } = dimensionsFor(scene);
   const seed = stableSeed(scene.id, attempt);
-  const payload = {
+  const { payload } = buildTxt2ImgRequest({
     prompt: buildPrompt(scene),
     negative_prompt: buildNegative(scene),
     width,
@@ -101,13 +102,8 @@ async function generate(scene, attempt, checkpoint) {
     steps: 30,
     sampler_name: 'Euler a',
     seed,
-    batch_size: 1,
-    n_iter: 1,
-    send_images: true,
-    save_images: false,
-    override_settings: { sd_model_checkpoint: checkpoint },
-    override_settings_restore_afterwards: true,
-  };
+    model: checkpoint,
+  });
   const response = await fetch(`${API}/sdapi/v1/txt2img`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

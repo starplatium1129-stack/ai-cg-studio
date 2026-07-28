@@ -173,7 +173,7 @@
             :href="`/prompt-builder?regen=${encodeURIComponent(h.id)}`"
           >
             <div class="recent-cover" :data-image-id="h.image_id">
-              <img v-if="coverUrls[h.image_id]" :src="coverUrls[h.image_id]" alt="" />
+              <img v-if="coverUrl(h)" :src="coverUrl(h)" alt="" />
               <span v-else class="placeholder">🎬</span>
             </div>
             <div class="recent-body">
@@ -195,6 +195,8 @@ import { imgGet } from '@/composables/useImageStore'
 import { readRecent } from '@/utils/sceneUX'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import { useSceneStore } from '@/stores/sceneStore'
+import type { Scene } from '@/stores/sceneStore'
+import { artworkTimestamp, parseArtworkRecords, type ArtworkRecord } from '@/types/artwork'
 
 useScrollReveal()
 
@@ -204,37 +206,65 @@ const sceneCountCopy = ref('场景加载中')
 const sceneLibraryCopy = ref('招牌瞬间已备好情绪与镜头。')
 const continueLink = ref({ to: '/prompt-builder', icon: '✨', label: '开始绘制' })
 const continueHint = ref('')
-const recentWorks = ref<any[]>([])
-const recentScenes = ref<any[]>([])
-const featuredScenes = ref<any[]>([])
+type HomeScene = Scene & { title?: string; mature?: boolean }
+
+const recentWorks = ref<ArtworkRecord[]>([])
+const recentScenes = ref<HomeScene[]>([])
+const featuredScenes = ref<HomeScene[]>([])
 const sceneStore = useSceneStore()
 const coverUrls = reactive<Record<string, string>>({})
 /** 卸载标记：异步 imgGet 回来时组件可能已经没了 */
 let unmounted = false
 
-function charName(id: string) {
+function charName(id: string | undefined) {
   return id === 'nene' ? '宁宁' : id === 'natsume' ? '夏目' : id || '·'
 }
-function fmtDate(ts: number) {
-  return new Date(ts).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })
+function fmtDate(ts: string | number | undefined) {
+  const value = typeof ts === 'number' || typeof ts === 'string' ? ts : 0
+  return new Date(value).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })
+}
+function coverUrl(item: ArtworkRecord): string {
+  return item.image_id ? coverUrls[item.image_id] || '' : ''
+}
+
+function errorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error)
+}
+
+function isHomeScene(scene: Scene): scene is HomeScene {
+  return typeof scene.id === 'string'
+    && (scene.mature === undefined || typeof scene.mature === 'boolean')
+}
+
+function readDraft(value: string | null): { updatedAt: number; sceneId?: string; sceneTitle?: string; story?: string } | null {
+  try {
+    const parsed: unknown = JSON.parse(value || 'null')
+    if (!parsed || typeof parsed !== 'object') return null
+    const draft = parsed as Record<string, unknown>
+    if (!Number(draft.updatedAt)) return null
+    return {
+      updatedAt: Number(draft.updatedAt),
+      sceneId: typeof draft.sceneId === 'string' ? draft.sceneId : undefined,
+      sceneTitle: typeof draft.sceneTitle === 'string' ? draft.sceneTitle : undefined,
+      story: typeof draft.story === 'string' ? draft.story : undefined,
+    }
+  } catch { return null }
 }
 
 function initContinueDraft() {
-  try {
-    const draft = JSON.parse(localStorage.getItem(DRAFT_KEY) || 'null')
-    if (!draft || !draft.updatedAt || (!draft.sceneId && !draft.story)) return false
-    const title = draft.sceneTitle || draft.story || '未完成创作'
-    continueLink.value = { to: '/prompt-builder?resume=1', icon: '↩', label: '继续上次创作' }
-    continueHint.value = `上次停在「${String(title).slice(0, 24)}」`
-    return true
-  } catch { return false }
+  const draft = readDraft(localStorage.getItem(DRAFT_KEY))
+  if (!draft || (!draft.sceneId && !draft.story)) return false
+  const title = draft.sceneTitle || draft.story || '未完成创作'
+  continueLink.value = { to: '/prompt-builder?resume=1', icon: '↩', label: '继续上次创作' }
+  continueHint.value = `上次停在「${title.slice(0, 24)}」`
+  return true
 }
 
 async function loadSceneHighlights() {
   try {
     await sceneStore.load()
-    const scenes = sceneStore.scenes as any[]
-    const curation = sceneStore.curation as any
+    const scenes = sceneStore.scenes.filter(isHomeScene)
+    const curation = sceneStore.curation
     const signatures: string[] = Array.isArray(curation.signatureSceneIds) ? curation.signatureSceneIds : []
     const curated: string[] = Array.isArray(curation.curatedSceneIds) ? curation.curatedSceneIds : []
     const ids = [...signatures, ...curated.filter((id: string) => !signatures.includes(id))]
@@ -242,8 +272,8 @@ async function loadSceneHighlights() {
     sceneLibraryCopy.value = `${ids.length} 个招牌与精选，完整库共 ${scenes.length} 个。`
 
     const picks = ids
-      .map((id: string) => scenes.find((s: any) => s.id === id))
-      .filter((s: any) => s && !s.mature)
+      .map(id => scenes.find(scene => scene.id === id))
+      .filter((scene): scene is HomeScene => Boolean(scene && !scene.mature))
       .slice(0, 6)
 
     featuredScenes.value = picks
@@ -251,29 +281,26 @@ async function loadSceneHighlights() {
     // 最近用过的场景
     const recent = readRecent(localStorage)
     const recentPicks = recent
-      .map((item: any) => scenes.find((s: any) => s.id === item.id))
-      .filter(Boolean)
+      .map(item => scenes.find(scene => scene.id === item.id))
+      .filter((scene): scene is HomeScene => Boolean(scene))
       .slice(0, 6)
     recentScenes.value = recentPicks
-  } catch (err: any) {
+  } catch (err) {
     sceneCountCopy.value = '精选场景'
-    console.warn('场景加载失败：', err.message)
+    console.warn('场景加载失败：', errorMessage(err))
   }
 }
 
 async function loadRecentWorks() {
   try {
-    let history: any[] = await kvGet<any[]>('aics_pb_history') || []
+    let history = parseArtworkRecords(await kvGet('aics_pb_history'))
     if (!history.length) {
-      const old = JSON.parse(localStorage.getItem('aics_pb_history') || '[]')
+      let old: ArtworkRecord[] = []
+      try { old = parseArtworkRecords(JSON.parse(localStorage.getItem('aics_pb_history') || '[]')) } catch {}
       if (old.length) { history = old; await kvSet('aics_pb_history', old); localStorage.removeItem('aics_pb_history') }
     }
     // 历史按生成顺序 append，直接 slice 拿到的是最旧的三幅
-    const stamp = (h: any) => {
-      const t = new Date(h?.timestamp).getTime()
-      return Number.isFinite(t) ? t : (Number(h?.id) || 0)
-    }
-    recentWorks.value = history.slice().sort((a, b) => stamp(b) - stamp(a)).slice(0, 3)
+    recentWorks.value = history.slice().sort((a, b) => artworkTimestamp(b) - artworkTimestamp(a)).slice(0, 3)
 
     if (!initContinueDraft() && recentWorks.value[0]) {
       const h = recentWorks.value[0]
@@ -281,7 +308,7 @@ async function loadRecentWorks() {
       continueHint.value = `最近保存「${h.sceneTitle || h.scene || '未命名'}」`
     }
 
-    recentWorks.value.forEach(async (h: any) => {
+    await Promise.all(recentWorks.value.map(async h => {
       if (!h.image_id) return
       try {
         const blob = await imgGet(h.image_id)
@@ -291,7 +318,7 @@ async function loadRecentWorks() {
         if (coverUrls[h.image_id]) URL.revokeObjectURL(coverUrls[h.image_id])
         coverUrls[h.image_id] = URL.createObjectURL(blob)
       } catch {}
-    })
+    }))
   } catch (e) { console.warn('读取历史失败', e) }
 }
 

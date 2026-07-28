@@ -124,6 +124,7 @@ const requiredModules = [
   'src/main.ts',
   'src/stores/promptBuilderStore.ts',
   'src/stores/sceneStore.ts',
+  'src/types/artwork.ts',
   'src/composables/useVoice.ts',
   'src/composables/useLive2D.ts',
   'src/composables/useSDGenerate.ts',
@@ -133,6 +134,9 @@ const requiredModules = [
   'src/composables/useImageStore.ts',
   'src/utils/promptPolicy.ts',
   'src/utils/sdError.ts',
+  'src/utils/sdRequest.ts',
+  'src/utils/quickCreate.ts',
+  'src/utils/storageHealth.ts',
   'src/utils/sceneInference.ts',
   'src/utils/sceneUX.ts',
   'src/utils/stream.ts',
@@ -140,6 +144,17 @@ const requiredModules = [
 for (const rel of requiredModules) {
   assert(exists(rel), `${rel} must exist`);
 }
+
+const docsNav = read('tools/nav.js');
+const docsStatus = read('tools/local-status.js');
+assert(
+  !/tools\/[a-z-]+\.html/.test(docsNav + docsStatus),
+  'docs navigation must link to current SPA routes, not deleted tools/*.html pages',
+);
+assert(
+  docsNav.includes("href:'prompt-builder'") && docsStatus.includes("d + 'control"),
+  'docs navigation and local status actions must expose current creation/control routes',
+);
 
 // ── 6. 样式加载分层：跨路由的进全局，路由专属的进各自视图 ────────────────
 // director.css(91.6KB) + chat.css(18.6KB) 曾占 139KB 全局包的 79%，

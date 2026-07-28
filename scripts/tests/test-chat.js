@@ -170,11 +170,21 @@ async function run() {
     'one reply must lock a single identity reference across all sentences'
   );
   assert(voiceModule.includes('AbortController') && voiceModule.includes('messageAudio'), 'voice sessions must support cancellation and replay');
+  assert(!/\bany\b/.test(voiceModule), 'voice queue, turn, API responses, and Web Audio boundaries must stay explicitly typed');
+  assert(
+    voiceModule.includes('readVoiceAvailability') && voiceModule.includes('readTranslation'),
+    'voice API responses must be narrowed at the JSON boundary'
+  );
   assert(voiceModule.includes("fetch('/api/voice/prepare'") && voiceRoute.includes("router.post('/api/voice/prepare'"), 'voice models and translation must prewarm before the first line');
   assert(voiceModule.includes('getByteTimeDomainData') && voiceModule.includes('onMouth'), 'lip sync must use real audio amplitude');
   assert(live2dModule.includes('ResizeObserver') && live2dModule.includes('webglcontextlost'), 'Live2D must recover layout and WebGL failures');
   assert(live2dModule.includes('setExpression') && live2dModule.includes('setSpeaking') && live2dModule.includes('applyMouth') && live2dModule.includes('ParamMouthOpenY'), 'Live2D must write real speech amplitudes into the mouth parameter');
   assert(live2dModule.includes('model.focus') && live2dModule.includes('model.hitTest'), 'Live2D must support pointer focus and model hit testing');
+  assert(!/\bany\b/.test(live2dModule), 'Live2D catalog, runtime, controller, and model boundaries must stay explicitly typed');
+  assert(
+    live2dModule.includes('readLive2DCatalog') && live2dModule.includes('readLibrary'),
+    'Live2D status JSON and dynamic runtime exports must be narrowed before use'
+  );
   assert(
     characterStageComponent.includes("live2d.interact('greet')")
       && characterStageComponent.includes("live2d.interact('head')")

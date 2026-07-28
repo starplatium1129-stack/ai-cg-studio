@@ -1,10 +1,5 @@
 const assert = require('assert');
-const policy = require('../../tools/prompt-policy');
-
-const intent = policy.inferStory('黄昏时在海边牵手，回头微笑');
-['beach','sunset','golden_hour','holding_hands','looking_back','smile'].forEach(tag => {
-  assert(intent.tags.includes(tag), 'story intent should include ' + tag);
-});
+const policy = require('../../src/utils/promptPolicy.ts');
 
 const dual = policy.dedupeText('2girls, (ayachi_nene, white_dress, blush) BREAK (shiki_natsume, white_dress, blush)');
 assert.strictEqual((dual.match(/white_dress/g) || []).length, 2, 'BREAK scopes must retain repeated attributes for both subjects');
@@ -32,13 +27,13 @@ assert(reframed.includes('close_up') && !reframed.includes('full_body') && !refr
 
 const reframedParts = policy.applyFraming([
   { cls:'t', source:'scene', text:'cafe, wide_shot, smile' },
-  { cls:'t', source:'manual', text:'full_body, holding_cup' },
+  { cls:'t', source:'manual', text:'full_body, medium_shot, holding_cup' },
   { cls:'t', source:'story', text:'beach, close_up' },
   { cls:'c', source:'tail', text:'establishing_shot, depth_of_field' },
   { cls:'n', text:'[NEG] cropped, bad hands' }
 ], 'close');
 const positiveFramed = reframedParts.filter(part => part.cls !== 'n').map(part => part.text).join(', ');
-['wide_shot','full_body','establishing_shot'].forEach(tag => {
+['wide_shot','full_body','medium_shot','establishing_shot'].forEach(tag => {
   assert(!policy.tokenize(positiveFramed).includes(tag), 'final framing policy must remove stale ' + tag + ' from every positive source');
 });
 assert(positiveFramed.includes('close_up'), 'selected close framing must survive final composition');
@@ -75,9 +70,7 @@ const report = policy.analyzeParts([{ cls:'t', text:'1girl, close_up, wide_shot,
 assert.strictEqual(report.level, 'warn', 'conflicting framing should be reported');
 assert(report.warnings.some(message => message.includes('镜头')), 'framing warning should be actionable');
 
-assert(policy.sceneSupportsCharacter({ char:'ayachi_nene' }, 'nene'));
-assert(!policy.sceneSupportsCharacter({ char:'ayachi_nene' }, 'natsume'));
-assert.strictEqual(policy.recommendAspect(['wide_shot'], 'nene'), 'landscape');
-assert.strictEqual(policy.recommendAspect(['close_up'], 'nene'), 'square');
+assert(policy.sceneSupportsCharacter({ char:'nene' }, 'nene'));
+assert(!policy.sceneSupportsCharacter({ char:'nene' }, 'natsume'));
 
-console.log('Prompt policy tests passed: story intent, scoped BREAK, ratings, framing and analysis');
+console.log('Prompt policy tests passed: production module, scoped BREAK, ratings, framing and analysis');

@@ -558,3 +558,41 @@ test('flow 6e · 深链：未知场景 id 不得让导演台崩在半途', async
   await expect(page.locator('.scene-context-title')).toHaveCount(0);
   expect(errors).toEqual([]);
 });
+
+test('flow 6f · 快速出图：复用最近成功参数并自动提交一次生成', async ({ page, request }) => {
+  const errors = collectRuntimeErrors(page);
+  await page.addInitScript(() => {
+    localStorage.setItem('aics_sd_last_success_v1', JSON.stringify({
+      version: 1,
+      savedAt: 1,
+      checkpoint: 'waiNSFWIllustrious_v140.safetensors [abc123]',
+      sampler: 'Euler a',
+      scheduler: 'Karras',
+      cfg: 6,
+      steps: 22,
+      size: '896×1152',
+      hiresFix: false,
+      hiresUpscaler: 'Latent',
+      hiresScale: 1.5,
+    }));
+  });
+
+  await page.goto('/prompt-builder?scene=sc001&quick=1');
+  await expect(page.locator('.result-image')).toBeVisible();
+  const generated = await callsTo(request, MOCK.sd, '/sdapi/v1/txt2img');
+  expect(generated).toHaveLength(1);
+  expect(generated[0].body).toMatchObject({
+    width: 896,
+    height: 1152,
+    sampler_name: 'Euler a',
+    scheduler: 'Karras',
+    cfg_scale: 6,
+    steps: 22,
+  });
+  const savedAt = await page.evaluate(() => {
+    const saved = JSON.parse(localStorage.getItem('aics_sd_last_success_v1') || '{}');
+    return Number(saved.savedAt);
+  });
+  expect(savedAt).toBeGreaterThan(1);
+  expect(errors).toEqual([]);
+});

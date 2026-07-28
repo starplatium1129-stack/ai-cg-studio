@@ -169,22 +169,22 @@ async function main() {
     return match ? match[1] : '';
   }
 
-  var defaultCsp = security.buildContentSecurityPolicy('/tools/gallery.html');
+  var defaultCsp = security.buildContentSecurityPolicy('/gallery');
   var defaultScript = scriptSrcDirective(defaultCsp);
   assert.ok(defaultScript.includes("'self'"), 'migrated pages must use script-src self');
   assert.ok(!defaultScript.includes("'unsafe-inline'"), 'migrated pages must not allow script unsafe-inline');
   assert.ok(!defaultScript.includes("'unsafe-eval'"), 'non-chat pages must not allow unsafe-eval');
 
-  var chatScript = scriptSrcDirective(security.buildContentSecurityPolicy('/tools/chat.html'));
+  var chatScript = scriptSrcDirective(security.buildContentSecurityPolicy('/chat'));
   assert.ok(chatScript.includes("'unsafe-eval'"), 'chat CSP must allow Live2D runtime');
   assert.ok(!chatScript.includes("'unsafe-inline'"), 'chat should not need script unsafe-inline');
 
-  var builderScript = scriptSrcDirective(security.buildContentSecurityPolicy('/tools/prompt-builder.html'));
+  var builderScript = scriptSrcDirective(security.buildContentSecurityPolicy('/prompt-builder'));
   assert.ok(builderScript.includes("'self'"), 'prompt-builder must use script-src self');
   assert.ok(!builderScript.includes("'unsafe-inline'"), 'prompt-builder handlers migrated — no script unsafe-inline');
   assert.ok(!builderScript.includes("'unsafe-eval'"), 'prompt-builder must not get eval');
 
-  var headers = await runMiddleware(security.responseHeaders, mockReq({ path:'/tools/control.html' }));
+  var headers = await runMiddleware(security.responseHeaders, mockReq({ path:'/control' }));
   assert.strictEqual(headers.nextCalled, true);
   var headerScript = scriptSrcDirective(headers.res.headers['Content-Security-Policy']);
   assert.ok(headerScript.includes("'self'"));

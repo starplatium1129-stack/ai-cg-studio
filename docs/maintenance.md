@@ -32,32 +32,34 @@
 | `data/scenes.json` | 供静态网页读取的构建产物 | 否 |
 | `data/curation.json` | 精品层级、推荐理由、语义搜索和情绪入口 | 场景推荐由网页维护；搜索规则变化时编辑 |
 | `scripts/runtime/scene-store.js` | 所有维护脚本共用的读写层 | 结构变化时编辑 |
-| `tools/scene-ux.js` | 搜索意图、相关度和本机偏好排序的共享逻辑 | 搜索规则变化时编辑 |
+| `src/utils/sceneUX.ts` | 搜索意图、相关度和本机偏好排序的共享逻辑 | 搜索规则变化时编辑 |
 | `tools/nav.js`、`tools/local-status.js` | 全站导航与本机绘图/对话/语音状态汇总 | 页面入口或服务状态契约变化时编辑 |
-| `tools/quick-create.js` | 最近成功参数的规范化、存取、摘要和快速路由 | 快速创作规则变化时编辑 |
-| `tools/sd-error.js` | SD 错误分类、用户提示与恢复动作建议 | 出图异常或恢复策略变化时编辑 |
-| `tools/data-backup.js` | 本地备份格式、版本迁移、校验与合并规则 | 备份结构变化时编辑 |
-| `tools/prompt-builder/*.js` | 导演台按状态、场景、Prompt、SD、语音、历史和交互拆分的模块 | 修改对应职责时编辑 |
+| `src/utils/quickCreate.ts` | 最近成功参数的规范化、存取、摘要和快速路由 | 快速创作规则变化时编辑 |
+| `src/utils/storageHealth.ts` | 历史损坏、缺图、孤立图和容量诊断 | 存储体检规则变化时编辑 |
+| `src/utils/sdError.ts` | SD 错误分类、用户提示与恢复动作建议 | 出图异常或恢复策略变化时编辑 |
+| `src/utils/sdRequest.ts` | 浏览器与维护脚本共用的 SD 请求构建、扩展参数和响应解析 | SD 参数或扩展协议变化时编辑 |
+| `src/utils/backupCore.ts` | 本地备份格式、版本迁移、校验与合并规则 | 备份结构变化时编辑 |
+| `src/views/PromptBuilderView.vue`、`src/stores/promptBuilderStore.ts`、`src/components/` | 导演台编排、状态与独立生命周期组件 | 修改对应职责时编辑 |
 | `server.js` | 只负责组装网关、中间件、静态资源、SD 代理和进程启动 | 新增顶层能力时编辑 |
 | `server/config.js`、`server/security.js` | 运行时配置、目录发现、Token 与安全响应头 | 配置项或访问策略变化时编辑 |
 | `routes/*.js` | HTTP 输入校验、响应格式与客户端断开处理 | API 契约变化时编辑 |
 | `services/*.js` | Ollama、翻译、GPT-SoVITS、Live2D 检查及串行资源调度 | 上游协议或调度策略变化时编辑 |
-| `tools/chat/*.mjs` | 角色房间的状态、存储、流解析、实时配音和 Live2D 生命周期 | 修改对应职责时编辑 |
-| `css/chat.css` | 角色房间独立布局、动效和响应式样式 | 只修改视觉时编辑 |
+| `src/views/ChatView.vue`、`src/composables/useChatStorage.ts`、`useVoice.ts`、`useLive2D.ts` | 角色房间编排、存储、实时配音和 Live2D 生命周期 | 修改对应职责时编辑 |
+| `src/assets/css/chat.css` | 角色房间独立布局、动效和响应式样式 | 只修改视觉时编辑 |
 
 ## 角色聊天、实时语音与 Live2D
 
 角色房间按“页面状态 → 浏览器能力控制器 → 网关路由 → 上游服务”分层：
 
-1. `tools/chat/app.mjs` 只编排会话、界面和用户操作；聊天记录由 `storage.mjs` 统一迁移、裁剪和保存。
-2. `voice.mjs` 负责句子切分、翻译/TTS 取消、顺序播放、重播与真实音频振幅口型；不要把这些状态重新写回 `app.mjs`。
-3. `live2d.mjs` 负责模型目录状态、加载超时、尺寸观察、WebGL 丢失恢复和静态立绘回退；模型完整性由 `services/live2d-service.js` 在服务端检查。
+1. `ChatView.vue` 只编排会话与用户操作；聊天记录由 `useChatStorage.ts` 统一迁移、裁剪和保存。
+2. `useVoice.ts` 负责句子切分、翻译/TTS 取消、顺序播放、重播与真实音频振幅口型；不要把这些状态重新写回视图。
+3. `ChatCharacterStage.vue` 与 `useLive2D.ts` 负责按需加载、尺寸观察、WebGL 丢失恢复和静态立绘回退；模型完整性由 `services/live2d-service.js` 在服务端检查。
 4. `routes/` 只处理 HTTP 契约。上游请求、模型切换和 GPU 队列统一留在 `services/`，方便使用模拟上游做测试。
 5. Ollama 和 GPT-SoVITS 都必须在完整响应结束后才释放串行队列。客户端点击停止、切角色或关闭页面时，应通过 `AbortController` 一直取消到上游请求，避免后台继续占用显存。
 
 `tools/local-status.js` 是所有内容页共享的轻量状态入口，只探测现有
 `/api/health`、`/api/chat-status`、`/api/tts-status` 和 SD 代理，不管理进程。
-启动、停止和显存模式切换仍由 `tools/control-server.js` 与控制台负责，避免
+启动、停止和显存模式切换仍由 `routes/control.js`、共享服务与控制台负责，避免
 每个页面各自实现一套调度逻辑。
 
 聊天页与导演台会在角色确定后调用 `POST /api/voice/prepare`，并行预热翻译模型和当前角色的 GPT-SoVITS 权重。一次聊天回复必须锁定同一个 `referenceEmotion` 与 `consistency: locked`，句子情绪只能驱动表情，不能逐句更换身份参考音。TTS 使用固定 seed 与完整短句非流式 WAV；客户端在当前句播放时继续生成下一句。导演台按句生成并立即播放已经完成的片段，完整 WAV 仍会在全部片段完成后提供重播与下载。
@@ -86,25 +88,25 @@ npm run test:voice-quality
 
 ## 作品册
 
-作品册由 `tools/gallery.html` 提供展览布局，`tools/gallery.js` 负责 IndexedDB 作品读取、筛选、原图生命周期与沉浸观画状态。展墙按作品记录尺寸和图片解码后的真实尺寸保留比例，禁止为统一卡片高度使用 `object-fit: cover`。列表只延迟读取缩略展示，进入观画模式后再加载选中作品；离开页面或切换筛选时必须释放 Blob Object URL。
+作品册由 `src/views/GalleryView.vue` 提供展览布局，`useKVStore` 与 `useImageStore` 负责 IndexedDB 数据。展墙按作品记录尺寸和图片解码后的真实尺寸保留比例，禁止为统一卡片高度使用 `object-fit: cover`。列表只延迟读取缩略展示，进入观画模式后再加载选中作品；离开页面或切换筛选时必须释放 Blob Object URL。
 
 修改作品册后至少运行 `npm run test:gallery`，并分别检查横图、竖图、方图、空作品册、键盘方向键、侧栏和移动端两列布局。
 
 ## 页面与控制逻辑边界
 
-应用页面的 HTML 只保留语义结构、表单和样式引用；控制逻辑必须放在同名的外部 JavaScript 文件中，例如 `tools/control.html` 对应 `tools/control.js`，`tools/scene-manager.html` 对应 `tools/scene-manager.js`。不要把大段 `<script>` 重新写回 HTML。这样修改布局时不必同时穿过业务逻辑，也能让浏览器缓存脚本并为后续逐文件迁移 TypeScript 保留清晰边界。
+应用页面统一由 `src/views/*.vue` 承载，并通过路由懒加载。跨页面状态放在 Pinia store，可复用业务和生命周期放在 composable，纯规则放在 `src/utils/`；不要恢复旧 `tools/*.html` 控制器或向 `index.html` 注入全局脚本。
 
-`npm run test:architecture` 会检查主要页面没有内联控制器、对应脚本存在且能够被 JavaScript 解析。新建应用页面时应把它加入 `scripts/tests/test-page-architecture.js`。HTML 上现有的事件属性属于后续渐进迁移范围；在全部改为事件监听器之前，非聊天页面的 CSP 仍需要兼容这些事件属性。
+`npm run test:architecture` 会检查 SPA 入口、路由懒加载、SFC 结构、共享组件所有权和路由专属 CSS。新建应用页面时应把它加入 `src/router/index.ts`，并同步扩展 `scripts/tests/test-page-architecture.js`。
 
 `npm run test:e2e` 使用本机 Chrome/Edge 或 Playwright Chromium 打开首页、导演台、场景管理、作品册、控制面板与角色房间，覆盖外部控制器加载、场景数据、作品比例、沉浸观画、首页性能预算和热页 chrome。本机可设 `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` 或依赖配置中的本机浏览器探测。测试产物位于 `test-results/`，仅失败诊断使用，不提交到项目。
 
-TypeScript 采用渐进迁移。`types/content.ts`、`types/control.ts`、`types/storage.ts` 先定义角色、LoRA、场景、语音、控制状态和作品库契约；`npm run typecheck` 检查契约与浏览器测试，`npm run build:runtime` 编译已迁移的运行时模块（`control-operation`、`serial-queue`、`http-client`、`tts-service`、`ollama-service`、`translation-service`、`live2d-service`）。不要为了迁移而一次重写稳定的旧控制器。每次把一个模块迁入 TypeScript，都必须先由现有行为测试保护。
+前端由 `vue-tsc` 检查 SFC 与 TypeScript；网关运行时模块由 `tsconfig.runtime.json` 编译并提交同目录 `.js`/`.d.ts`。新增共享契约时优先定义在生产模块旁或 `src/types/`，测试直接加载生产 TypeScript，不再维护 JavaScript 测试副本。
 
 CI 在 `.github/workflows/quality.yml`：push 与 PR 执行 `npm ci` → `npm run validate` → Playwright Chromium e2e。
 
 `scripts/maintenance/validate-content-contracts.js` 检查角色 ID、身份锚点、肖像文件、LoRA 强度、测试场景和场景角色引用。它已进入 `npm run validate`，修改 `characters.json` 或 `loras.json` 时不再依赖人工发现引用断裂。
 
-控制面板的操作状态机源文件是 `services/control-operation.ts`（emit 为同目录 `.js`）。它统一负责耗时操作互斥、阶段进度、完成/失败状态和过期回调保护；`tools/control-server.js` 只编排具体服务。新增 GPU 操作时必须复用这个状态机，不要再创建另一套 busy 标志。修改该模块后运行 `npm run build:runtime` 与 `npm run test:control-operation`。
+控制面板的操作状态机源文件是 `services/control-operation.ts`（emit 为同目录 `.js`）。它统一负责耗时操作互斥、阶段进度、完成/失败状态和过期回调保护；`routes/control.js` 编排具体服务。新增 GPU 操作时必须复用这个状态机，不要再创建另一套 busy 标志。修改该模块后运行 `npm run build:runtime` 与 `npm run test:control-operation`。
 
 GPU 串行队列源文件是 `services/serial-queue.ts`（emit 为同目录 `.js`）。语音、翻译与聊天等单通道任务通过它排队，失败任务不得阻断后续任务。修改后运行 `npm run build:runtime` 与 `npm run test:serial-queue`。
 
@@ -183,7 +185,7 @@ VOICE_BASELINE_LIVE=1 VOICE_BASELINE_WRITE=1 npm run benchmark:voice-baseline
 
 ## 本地备份与生成队列
 
-- 备份文件通过 `tools/data-backup.js` 统一声明格式与版本。历史记录仍会在恢复后经过现有的历史迁移函数，旧记录无需手动转换。
+- 备份文件通过 `src/utils/backupCore.ts` 统一声明格式与版本，脚本测试直接覆盖该生产核心。历史记录仍会在恢复后经过现有的历史迁移函数，旧记录无需手动转换。
 - 合并恢复以记录 ID 去重，备份中的同 ID 数据优先；覆盖恢复会先明确确认，并替换当前项目、记录、设置与本地图片。
 - 队列任务在加入时冻结 Prompt、负面词、角色、场景、构图、项目和 SD 参数，后续修改工作台不会污染已排队任务或其作品记录。
 - 队列只负责当前页面会话中的顺序生成，不持久化未完成任务，避免刷新后意外继续调用 SD。
@@ -226,7 +228,7 @@ npm run validate
 - 修改快速参数格式或路由时，同步扩展 `scripts/tests/test-quick-create.js`。
 - 修改 SD 错误识别或恢复动作时，同步扩展 `scripts/tests/test-sd-error.js`。
 - 修改备份字段、迁移或合并规则时，同步扩展 `scripts/tests/test-data-backup.js`。
-- 不把导演台的新逻辑重新塞回 `prompt-builder.html`；按职责编辑 `tools/prompt-builder/` 中的模块，并同步扩展 `scripts/tests/test-prompt-builder-modules.js`。
-- 场景色调、镜头、光照与构图推断集中维护在 `tools/prompt-builder/scene-inference.js`，不要复制回场景渲染代码。
+- 不把导演台的新逻辑重新堆回 `PromptBuilderView.vue`；按状态与生命周期所有权拆到 store、composable、组件或纯工具，并同步扩展 `scripts/tests/test-prompt-builder-modules.js`。
+- 场景色调、镜头、光照与构图推断集中维护在 `src/utils/sceneInference.ts`，不要复制回视图或场景卡。
 - 新增角色时，同时增加角色资料、对应分片、Manifest 条目和校验规则。
 - 批量脚本必须通过 `scene-store.js` 写回，避免只改聚合文件。

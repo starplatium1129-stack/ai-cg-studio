@@ -145,6 +145,8 @@ import { kvInit, kvGet, kvSet } from '@/composables/useKVStore'
 import { imgGet, imgDelete } from '@/composables/useImageStore'
 import { useSceneStore } from '@/stores/sceneStore'
 import { useFocusTrap } from '@/composables/useFocusTrap'
+import type { Scene, LoraMeta } from '@/stores/sceneStore'
+import { artworkTimestamp, parseArtworkRecords, type ArtworkRecord } from '@/types/artwork'
 
 const sceneStore = useSceneStore()
 
@@ -155,10 +157,16 @@ const PROJECT_KEY = 'aics_pb_projects'
 /** 旧键，仅用于一次性迁移 */
 const LEGACY_PROJECT_KEY = 'aics_projects'
 
-const history = ref<any[]>([])
-const projects = ref<any[]>([])
-const scenes = ref<any[]>([])
-const loras = ref<any[]>([])
+interface GalleryProject {
+  id: string
+  title: string
+  history_ids: Array<string | number>
+}
+
+const history = ref<ArtworkRecord[]>([])
+const projects = ref<GalleryProject[]>([])
+const scenes = ref<Scene[]>([])
+const loras = ref<LoraMeta[]>([])
 const favoriteOnly = ref(false)
 const projectFilter = ref('')
 const viewerIndex = ref(-1)
@@ -175,6 +183,8 @@ const viewerEl = ref<HTMLElement | null>(null)
 const objectUrls = new Set<string>()
 /** 查看器当前显示的 blob URL，翻页时要主动释放 */
 let viewerObjectUrl = ''
+let viewerLoadToken = 0
+let unmounted = false
 
 /* ---------- 派生数据 ---------- */
 const visible = computed(() => {
@@ -193,7 +203,7 @@ const current = computed(() => visible.value[viewerIndex.value] || null)
 
 const groups = computed(() => {
   const order = ['今天', '本周', '更早']
-  const buckets: Record<string, any[]> = {}
+  const buckets: Record<string, ArtworkRecord[]> = {}
   visible.value.forEach(item => {
     const key = dayGroup(stamp(item))
     ;(buckets[key] = buckets[key] || []).push(item)
@@ -211,39 +221,37 @@ const facts = computed(() => {
     ? (scores.reduce((s, v) => s + v, 0) / scores.length).toFixed(1) + ' / 5'
     : '未评分'
   return [
-    { label: '尺寸', value: i.size },
+    { label: '尺寸', value: i.size || '' },
     { label: '评分', value: avg },
     { label: 'LoRA', value: loraName(i.lora) },
     { label: '模型', value: modelName(i.checkpoint) },
-    { label: 'Seed', value: i.seed },
-    { label: 'Sampler', value: i.sampler },
+    { label: 'Seed', value: i.seed == null ? '' : String(i.seed) },
+    { label: 'Sampler', value: i.sampler || '' },
   ]
 })
 
 /* ---------- 工具函数 ---------- */
-function sceneFor(id: string) { return scenes.value.find(s => s.id === id) }
-function sceneTitle(id: string) { return sceneFor(id)?.title ?? (id || '未命名作品') }
-function loraName(id: string) {
+function sceneFor(id: string | null | undefined) { return scenes.value.find(s => s.id === id) }
+function sceneTitle(id: string | null | undefined) {
+  const title = sceneFor(id)?.title
+  return typeof title === 'string' ? title : (id || '未命名作品')
+}
+function loraName(id: string | null | undefined) {
   if (!id) return '—'
   const item = loras.value.find(l => l.id === id || (l.name && (l.name === id || String(id).startsWith(l.name))))
   return item ? item.name : id
 }
-function modelName(value: string) {
+function modelName(value: string | undefined) {
   if (!value) return 'WebUI 当前模型'
   const name = String(value).split(/[\\/]/).pop()!.replace(/\s*\[[a-f0-9]+\]\s*$/i, '')
   return name.length > 42 ? name.slice(0, 39) + '…' : name
 }
-function characterName(v: string) {
+function characterName(v: string | undefined) {
   return v === 'nene' ? '绫地宁宁' : v === 'natsume' ? '四季夏目'
     : v === 'triad' || v === 'both' ? '宁宁与夏目' : v || '—'
 }
 /** 时间戳兜底：老记录可能把 timestamp 存成字符串，或干脆没有 */
-function stamp(item: any): number {
-  const t = new Date(item?.timestamp).getTime()
-  if (Number.isFinite(t)) return t
-  const fromId = Number(item?.id)
-  return Number.isFinite(fromId) ? fromId : 0
-}
+function stamp(item: ArtworkRecord): number { return artworkTimestamp(item) }
 function formatDate(ts: number) {
   const d = new Date(ts)
   return Number.isFinite(d.getTime())
@@ -267,7 +275,7 @@ function clampRatio(r: number) { return Math.max(0.36, Math.min(2.8, r)) }
  * 中间、两侧留黑。所以真实尺寸（naturalWidth/Height，见 measure()）优先，
  * 只有还没解码出来时才退回元数据。
  */
-function ratioOf(item: any) {
+function ratioOf(item: ArtworkRecord) {
   const measured = measuredRatios[item.id]
   if (measured) return clampRatio(measured)
   let w = Number(item.width || item.image_width || item.actual?.width)
@@ -286,8 +294,8 @@ function measure(id: string | number, e: Event) {
   const r = img.naturalWidth / img.naturalHeight
   if (Math.abs((measuredRatios[id] ?? 0) - r) > 0.001) measuredRatios[id] = r
 }
-function indexOf(item: any) { return visible.value.indexOf(item) }
-function safeImageUrl(v: string) {
+function indexOf(item: ArtworkRecord) { return visible.value.indexOf(item) }
+function safeImageUrl(v: string | undefined) {
   if (typeof v !== 'string' || !v.trim()) return ''
   try {
     const url = new URL(v.trim(), location.href)
@@ -307,6 +315,8 @@ async function hydrateCards() {
     const fallback = safeImageUrl(item.image_url)
     try {
       const blob = item.image_id ? await imgGet(item.image_id) : null
+      if (unmounted) return
+      if (!history.value.some(entry => entry.id === item.id)) continue
       if (blob) cardUrls[item.id] = trackUrl(URL.createObjectURL(blob))
       else if (fallback) cardUrls[item.id] = fallback
       else if (item.image_data && String(item.image_data).startsWith('data:image/')) cardUrls[item.id] = item.image_data
@@ -316,15 +326,16 @@ async function hydrateCards() {
   }
 }
 
-async function hydrateViewer(item: any, seq: number) {
+async function hydrateViewer(item: ArtworkRecord) {
   // 上一张查看器大图用完就释放：卡片缩略图有 cardUrls 去重，
   // 而查看器每翻一张都新建一个 blob URL，不放就攒到卸载才清。
   releaseViewerUrl()
   viewerUrl.value = ''
+  const token = ++viewerLoadToken
   const fallback = safeImageUrl(item.image_url)
   try {
     const blob = item.image_id ? await imgGet(item.image_id) : null
-    if (seq !== viewerIndex.value) return
+    if (unmounted || token !== viewerLoadToken || current.value?.id !== item.id) return
     if (blob) {
       viewerObjectUrl = URL.createObjectURL(blob)
       objectUrls.add(viewerObjectUrl)
@@ -349,12 +360,14 @@ function releaseViewerUrl() {
 
 /* ---------- Viewer 控制 ---------- */
 function openViewer(index: number) {
-  if (!visible.value[index]) return
+  const item = visible.value[index]
+  if (!item) return
   viewerIndex.value = index
   infoOpen.value = false
-  hydrateViewer(visible.value[index], index)
+  void hydrateViewer(item)
 }
 function closeViewer() {
+  viewerLoadToken += 1
   viewerIndex.value = -1
   infoOpen.value = false
   releaseViewerUrl()
@@ -376,7 +389,7 @@ function step(delta: number) {
  * 从作品册移除一幅：历史条目 + IndexedDB 里的原图一起删，
  * 否则图片会变成没人引用的孤儿，继续占着配额。
  */
-async function confirmDelete(item: any) {
+async function confirmDelete(item: ArtworkRecord) {
   if (deleting.value) return
   deleting.value = true
   try {
@@ -421,11 +434,12 @@ function onKeydown(e: KeyboardEvent) {
 
 /* ---------- 初始化 ---------- */
 onMounted(async () => {
+  unmounted = false
   document.addEventListener('keydown', onKeydown)
   try {
     await kvInit()
-    let historyRaw = await kvGet<any[]>(HISTORY_KEY)
-    let projectRaw = await kvGet<any[]>(PROJECT_KEY)
+    let historyRaw: unknown = await kvGet(HISTORY_KEY)
+    let projectRaw: unknown = await kvGet(PROJECT_KEY)
     if (!historyRaw) {
       try { historyRaw = JSON.parse(localStorage.getItem(HISTORY_KEY) || 'null') } catch {}
       if (Array.isArray(historyRaw) && historyRaw.length) {
@@ -440,7 +454,7 @@ onMounted(async () => {
     }
     // 一次性迁移：把旧键 'aics_projects' 下的项目搬到统一键，避免用户之前建的项目凭空消失
     if (!projectRaw) {
-      let legacy: any = await kvGet(LEGACY_PROJECT_KEY).catch(() => null)
+      let legacy: unknown = await kvGet(LEGACY_PROJECT_KEY).catch(() => null)
       if (!legacy) {
         try { legacy = JSON.parse(localStorage.getItem(LEGACY_PROJECT_KEY) || 'null') } catch {}
       }
@@ -450,19 +464,34 @@ onMounted(async () => {
         localStorage.removeItem(LEGACY_PROJECT_KEY)
       }
     }
-    history.value = Array.isArray(historyRaw) ? historyRaw.filter((item: any) => item && typeof item === 'object') : []
-    projects.value = Array.isArray(projectRaw) ? projectRaw : []
+    history.value = parseArtworkRecords(historyRaw)
+    projects.value = Array.isArray(projectRaw)
+      ? projectRaw.flatMap((item): GalleryProject[] => {
+          if (!item || typeof item !== 'object') return []
+          const raw = item as Record<string, unknown>
+          if (typeof raw.id !== 'string' && typeof raw.id !== 'number') return []
+          return [{
+            id: String(raw.id),
+            title: String(raw.title || raw.name || raw.id),
+            history_ids: Array.isArray(raw.history_ids)
+              ? raw.history_ids.filter((id): id is string | number => typeof id === 'string' || typeof id === 'number')
+              : [],
+          }]
+        })
+      : []
   } catch (e) { console.warn('gallery storage init failed', e) }
 
   try {
     await sceneStore.load()
-    scenes.value = sceneStore.scenes as any[]
-    loras.value = sceneStore.loras as any[]
+    scenes.value = sceneStore.scenes
+    loras.value = sceneStore.loras
   } catch (e) { console.warn('gallery data load failed', e) }
   await hydrateCards()
 })
 
 onUnmounted(() => {
+  unmounted = true
+  viewerLoadToken += 1
   document.removeEventListener('keydown', onKeydown)
   revokeAll()
 })

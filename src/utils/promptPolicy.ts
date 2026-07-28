@@ -5,6 +5,7 @@
 export interface PromptPart {
   cls?: 'q' | 'c' | 't' | 'l' | 'n' | 'p'
   text: string
+  [key: string]: unknown
 }
 
 export interface ModelProfile {
@@ -38,10 +39,12 @@ export interface LoraMeta {
 }
 
 const NEGATIVE_BOILERPLATE = new Set([
-  'bad_quality', 'worst_quality', 'low_quality', 'normal_quality', 'lowres', 'blurry',
-  'jpeg_artifacts', 'text', 'watermark', 'logo', 'signature', 'bad_anatomy', 'bad_hands',
-  'mutated_hands', 'extra_fingers', 'missing_fingers', 'extra_arms', 'extra_legs',
-  'deformed', 'duplicate', 'cropped', 'poorly_drawn_face',
+  'bad_quality', 'worst_quality', 'low_quality', 'normal_quality', 'worst_detail',
+  'lowres', 'blurry', 'jpeg_artifacts', 'text', 'watermark', 'logo', 'signature',
+  'username', 'sketch', 'censor', 'old', 'early', 'bad_anatomy', 'bad_hands',
+  'mutated_hands', 'extra_fingers', 'missing_fingers', 'fused_fingers', 'extra_arms',
+  'extra_legs', 'extra_limbs', 'deformed', 'bad_proportions', 'duplicate', 'cropped',
+  'poorly_drawn_face',
 ])
 
 /** 已知多词 Danbooru 标签：空格 → 下划线（长度降序，避免短词先匹配） */
@@ -101,7 +104,10 @@ export function tokenize(text: string): string[] {
 }
 
 export function splitBreaks(text: string): string[] {
-  return String(text || '').split(/\bBREAK\b/i).map(s => s.trim()).filter(Boolean)
+  return String(text || '')
+    .replace(/\s*,?\s*\bBREAK\b\s*,?\s*/gi, '\u0000BREAK\u0000')
+    .split('\u0000BREAK\u0000')
+    .map(section => section.trim())
 }
 
 function dedupeSegment(text: string, seen = new Set<string>()): string {
@@ -113,8 +119,18 @@ function dedupeSegment(text: string, seen = new Set<string>()): string {
   }).join(', ')
 }
 
+/** BREAK 是角色作用域边界；不同角色可以重复服装、表情等主体属性。 */
+export function dedupeText(text: string, externalSeen?: Set<string>): string {
+  const sections = splitBreaks(text)
+  if (sections.length === 1) return dedupeSegment(sections[0], externalSeen ?? new Set())
+  return sections
+    .map(section => dedupeSegment(section, new Set()))
+    .filter(Boolean)
+    .join(' BREAK ')
+}
+
 export function sanitizePrompt(text: string): string {
-  return dedupeSegment(String(text || '').replace(/\s+/g, ' '), new Set())
+  return dedupeText(String(text || '').replace(/\s+/g, ' '))
 }
 
 export function mergeTokenText(...texts: string[]): string {
@@ -225,14 +241,18 @@ export function adaptNegative(
 
 // ── Framing（镜头冲突消解） ────────────────────────────────────────────────
 
-const WIDE_TOKENS = new Set(['full_body', 'wide_shot', 'long_shot', 'deep_focus'])
-const CLOSE_TOKENS = new Set(['close_up', 'extreme_close_up', 'portrait_shot', 'close_up_detail', 'macro'])
-const MID_TOKENS = new Set(['medium_shot', 'upper_body', 'cowboy_shot', 'half_body', 'bust'])
+const WIDE_TOKENS = new Set(['full_body', 'wide_shot', 'long_shot', 'establishing_shot', 'deep_focus'])
+const CLOSE_TOKENS = new Set([
+  'close_up', 'extreme_close_up', 'portrait_shot', 'close_up_detail',
+  'face_focus', 'upper_face', 'portrait', 'macro',
+])
+const MID_TOKENS = new Set(['medium_shot', 'upper_body', 'cowboy_shot', 'waist_up', 'half_body', 'bust'])
 
 export function resolveFramingMode(shot?: string | null, manualTags: string[] = []): '' | 'wide' | 'close' | 'mid' {
   if (shot === 'wide') return 'wide'
   if (shot === 'close' || shot === 'detail') return 'close'
   if (shot === 'medium') return 'mid'
+  if (shot) return ''
   const keys = manualTags.map(normalizeKey)
   if (keys.some(k => WIDE_TOKENS.has(k))) return 'wide'
   if (keys.some(k => CLOSE_TOKENS.has(k))) return 'close'
@@ -244,8 +264,15 @@ export function resolveFramingMode(shot?: string | null, manualTags: string[] = 
 export function filterFraming(text: string, shot?: string | null): string {
   const mode = resolveFramingMode(shot)
   if (!mode) return text
-  const drop = mode === 'wide' ? CLOSE_TOKENS : mode === 'close' ? WIDE_TOKENS : new Set([...WIDE_TOKENS, ...CLOSE_TOKENS])
-  return tokenize(text).filter(token => !drop.has(normalizeKey(token))).join(', ')
+  const drop = mode === 'wide'
+    ? new Set([...CLOSE_TOKENS, ...MID_TOKENS])
+    : mode === 'close'
+      ? new Set([...WIDE_TOKENS, ...MID_TOKENS])
+      : new Set([...WIDE_TOKENS, ...CLOSE_TOKENS])
+  return splitBreaks(text)
+    .map(section => tokenize(section).filter(token => !drop.has(normalizeKey(token))).join(', '))
+    .filter(Boolean)
+    .join(' BREAK ')
 }
 
 export function applyFraming(parts: PromptPart[], shot?: string | null): PromptPart[] {
@@ -258,21 +285,36 @@ export function applyFraming(parts: PromptPart[], shot?: string | null): PromptP
 }
 
 export function dedupeParts(parts: PromptPart[]): PromptPart[] {
-  const seen = new Set<string>()
+  const positiveSeen = new Set<string>()
+  const negativeSeen = new Set<string>()
   return parts.map(part => {
-    if (part.cls === 'n' || part.cls === 'l') return part
-    return { ...part, text: dedupeSegment(part.text, seen) }
+    if (part.cls === 'l') return part
+    const seen = part.cls === 'n' ? negativeSeen : positiveSeen
+    const scoped = /\bBREAK\b/i.test(part.text)
+    return { ...part, text: dedupeText(part.text, scoped ? undefined : seen) }
   }).filter(part => part.text.trim())
 }
 
 // ── 双人构图增强 ──────────────────────────────────────────────────────────
 
 export function enrichDualPrompt(template: string, neneTags: string[], natsumeTags: string[]): string {
-  const base = String(template || '').trim()
-  const nene = norm(neneTags.join(', '))
-  const natsume = norm(natsumeTags.join(', '))
-  const dual = `2girls, ${nene} BREAK ${natsume}`
-  return base ? `${base} BREAK ${dual}` : dual
+  const sections = splitBreaks(template)
+  const left = sections[0] || ''
+  const right = sections[1] || ''
+  const leftStart = left.lastIndexOf('(')
+  const global = leftStart >= 0 ? left.slice(0, leftStart).replace(/,\s*$/, '') : left.replace(/,\s*$/, '')
+  const leftBlock = leftStart >= 0 ? left.slice(leftStart) : ''
+  const leftIsNatsume = /shiki_natsume/i.test(leftBlock)
+  const rightIsNene = /ayachi_nene/i.test(right)
+  const mergeSubject = (block: string, identityTags: string[]) => {
+    let raw = block.trim()
+    if (raw.startsWith('(')) raw = raw.slice(1)
+    if (raw.endsWith(')')) raw = raw.slice(0, -1)
+    return `(${dedupeText([...identityTags, ...tokenize(raw)].join(', '))})`
+  }
+  const enrichedLeft = mergeSubject(leftBlock, leftIsNatsume ? natsumeTags : neneTags)
+  const enrichedRight = mergeSubject(right, rightIsNene ? neneTags : natsumeTags)
+  return `${[global, enrichedLeft].filter(Boolean).join(', ')} BREAK ${enrichedRight}`
 }
 
 /** 场景是否支持该角色（避免把宁宁场景套到夏目身上） */
@@ -389,22 +431,41 @@ export interface PromptReport {
 
 /** 逗号标签数统计（不冒充具体模型 tokenizer） */
 export function analyzeParts(parts: PromptPart[]): PromptReport {
-  let positiveCount = 0
-  let negativeCount = 0
+  const positive: string[] = []
+  const negative: string[] = []
+  let hasBreak = false
   const warnings: string[] = []
   parts.forEach(part => {
-    const count = tokenize(part.text.replace(/^\s*\[NEG\]\s*/i, '')).length
-    if (part.cls === 'n') negativeCount += count
-    else if (part.cls !== 'l') positiveCount += count
+    if (/\bBREAK\b/i.test(part.text)) hasBreak = true
+    if (part.cls === 'l') return
+    const target = part.cls === 'n' ? negative : positive
+    splitBreaks(part.text.replace(/^\s*\[NEG\]\s*/i, '')).forEach(section => {
+      tokenize(section).forEach(token => {
+        if (!/^<lora:/i.test(token)) target.push(normalizeKey(token))
+      })
+    })
   })
+  const framingFamilies = new Set(positive.map(token =>
+    WIDE_TOKENS.has(token) ? 'wide' : CLOSE_TOKENS.has(token) ? 'close' : MID_TOKENS.has(token) ? 'mid' : '',
+  ).filter(Boolean))
+  if (framingFamilies.size > 1) warnings.push('镜头景别相互竞争')
+  if (!hasBreak && positive.includes('closed_eyes') && positive.includes('looking_at_viewer')) warnings.push('闭眼与直视镜头冲突')
+  if (!hasBreak && ['standing', 'sitting', 'lying', 'kneeling'].filter(pose => positive.includes(pose)).length > 1) {
+    warnings.push('主体姿势相互冲突')
+  }
+  const negativeSet = new Set(negative)
+  const overlap = [...new Set(positive.filter(tag => negativeSet.has(tag)))]
+  if (overlap.length) warnings.push('正负词冲突：' + overlap.slice(0, 3).join('、'))
   let level: 'ok' | 'warn' | 'over' = 'ok'
   let label = '结构均衡'
-  if (positiveCount > 90) { level = 'over'; label = '标签过载'; warnings.push('正向标签超过 90 个，模型容易忽略后段。') }
-  else if (positiveCount > 72) { level = 'warn'; label = '偏长'; warnings.push('正向标签超过 72 个，建议精简。') }
-  else if (positiveCount < 8) { level = 'warn'; label = '信息偏少'; warnings.push('正向标签过少，画面可能缺少细节。') }
+  if (positive.length > 90) { level = 'over'; label = '标签过载'; warnings.push('正向标签超过 90 个，模型容易忽略后段。') }
+  else if (positive.length > 72) { level = 'warn'; label = '偏长'; warnings.push('正向标签超过 72 个，建议精简。') }
+  else if (positive.length < 8) { level = 'warn'; label = '信息偏少'; warnings.push('正向标签过少，画面可能缺少细节。') }
   const violations = checkArtDirection(parts.map(p => p.text).join(', '))
   if (violations.length) warnings.push('违反美术规范：' + violations.join(', '))
-  return { positiveCount, negativeCount, level, label, warnings }
+  if (warnings.length && level === 'ok') { level = 'warn'; label = warnings[0] }
+  if (warnings.length > 2) level = 'over'
+  return { positiveCount: positive.length, negativeCount: negative.length, level, label, warnings }
 }
 
 export function splitPromptBlocks(text: string): { positive: string; negative: string } {

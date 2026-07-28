@@ -1,7 +1,7 @@
 const assert = require('assert');
-const sdError = require('../../tools/sd-error');
+const sdError = require('../../src/utils/sdError.ts');
 
-function classify(error){ return sdError.classify(error); }
+function classify(error){ return sdError.classifySDError(error); }
 
 assert.strictEqual(classify({ message:'CUDA out of memory', status:500 }).kind, 'oom');
 assert.strictEqual(classify({ message:'could not find lora ayachi_nene', status:500 }).action.id, 'retry_without_lora');
@@ -13,4 +13,4 @@ assert.strictEqual(classify({ name:'NetworkError', message:'无法连接 SD WebU
 assert.strictEqual(classify({ name:'AbortError', message:'已取消生成' }).kind, 'cancelled');
 assert.strictEqual(classify({ status:400, detail:'invalid request' }).kind, 'parameters');
 
-console.log('SD error tests passed: classification and recovery actions');
+console.log('SD error tests passed against the production TypeScript module');

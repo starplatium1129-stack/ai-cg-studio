@@ -30,6 +30,7 @@ const modules = [
   ['src/utils/promptPolicy.ts', ['qualityPrefix', 'modelNegativePrompt', 'resolveLoraSpecs', 'applyFraming', 'norm', 'analyzeParts', 'sceneTemplateText']],
   ['src/utils/sceneInference.ts', ['sceneLighting', 'sceneShot', 'sceneColorMood', 'sceneRecommendedSize']],
   ['src/utils/sdError.ts', ['classifySDError', 'SAFE_SAMPLING', 'LIGHT_LOAD']],
+  ['src/utils/sdRequest.ts', ['buildTxt2ImgRequest', 'parseTxt2ImgResponse', 'DEFAULT_SD_NEGATIVE']],
   ['src/composables/useSDGenerate.ts', ['checkStatus', 'generate', 'cancel']],
   ['src/composables/useSDQueue.ts', ['useSDQueue', 'SD_QUEUE_LIMIT']],
   ['src/composables/useBackup.ts', ['exportBackup', 'restore', 'healthCheck', 'cleanOrphanImages']],
@@ -108,6 +109,9 @@ for (const marker of ['faceDetailer', 'face_yolov8s.pt', 'hand_yolov8n.pt', 'bui
 }
 
 const sdGenerate = read('src/composables/useSDGenerate.ts');
+if (!sdGenerate.includes('buildTxt2ImgRequest') || !sdGenerate.includes('parseTxt2ImgResponse')) {
+  fail('SD composable must use the shared production request builder and response parser');
+}
 for (const marker of ['pollInFlight', 'pollFailures', 'void pollProgress(token)', '进度读取失败']) {
   if (!sdGenerate.includes(marker)) fail('SD progress polling must retain ' + marker);
 }

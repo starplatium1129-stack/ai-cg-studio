@@ -503,7 +503,7 @@
 <script setup lang="ts">
 // 导演台专属样式（91.6KB）随本路由块加载，不再进全局包
 import '@/assets/css/director.css'
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, nextTick, onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { useSDGenerate } from '@/composables/useSDGenerate'
@@ -526,6 +526,12 @@ import PromptHealthPanel from '@/components/PromptHealthPanel.vue'
 import GenerationQueuePanel from '@/components/GenerationQueuePanel.vue'
 import SDRecoveryPanel from '@/components/SDRecoveryPanel.vue'
 import { readHiddenScenes, rememberRecent, recordSceneUsage } from '@/utils/sceneUX'
+import {
+  quickCreateSummary,
+  readQuickCreate,
+  writeQuickCreate,
+  type QuickCreateSettings,
+} from '@/utils/quickCreate'
 import type { HistoryEntry, Scene } from '@/stores/promptBuilderStore'
 
 const router = useRouter()
@@ -966,7 +972,7 @@ async function runJob(job: Omit<SDQueueJob, 'id'>, opts: { disableLora?: boolean
 
   const url = await sd.generate({
     prompt,
-    negative_prompt: job.negative || undefined,
+    negative_prompt: job.negative,
     width: w || 832,
     height: h || 1216,
     cfg_scale: job.cfg,
@@ -984,6 +990,19 @@ async function runJob(job: Omit<SDQueueJob, 'id'>, opts: { disableLora?: boolean
   })
 
   if (sd.resultSeed.value) pb.sdParams.seed = sd.resultSeed.value
+  if (url) {
+    writeQuickCreate({
+      checkpoint: job.checkpoint,
+      sampler: job.sampler,
+      scheduler: job.scheduler,
+      cfg: job.cfg,
+      steps: job.steps,
+      size: job.size,
+      hiresFix: job.hiresFix,
+      hiresUpscaler: job.hiresUpscaler,
+      hiresScale: job.hiresScale,
+    })
+  }
   return url
 }
 
@@ -1109,6 +1128,28 @@ function reuseLastSeed() {
   pb.flash(`已锁定 seed ${seed}`)
 }
 
+function applyQuickCreateSettings(settings: QuickCreateSettings | null) {
+  if (!settings) return
+  // 快速出图参数等同于用户已经确认过的参数。先标记 touched，避免 checkpoint
+  // 变更触发的异步 watcher 再用 model profile 覆盖刚恢复的值。
+  ;['sampler', 'scheduler', 'cfg', 'steps', 'size', 'hiresFix', 'hiresUpscaler', 'hiresScale']
+    .forEach(key => pb.markParamTouched(key))
+  if (settings.checkpoint && sd.models.value.includes(settings.checkpoint)) {
+    pb.sdModelName = settings.checkpoint
+    pb.applyModelProfile(settings.checkpoint)
+  }
+  if (settings.sampler && sd.samplers.value.includes(settings.sampler)) pb.sdParams.sampler = settings.sampler
+  if (!settings.scheduler || sd.schedulers.value.includes(settings.scheduler)) pb.sdParams.scheduler = settings.scheduler
+  if (settings.cfg > 0) pb.sdParams.cfg = settings.cfg
+  if (settings.steps > 0) pb.sdParams.steps = settings.steps
+  if (settings.size) sdSize.value = settings.size.replace('×', 'x')
+  pb.sdParams.hiresFix = settings.hiresFix
+  if (settings.hiresUpscaler && sd.upscalers.value.includes(settings.hiresUpscaler)) {
+    pb.sdParams.hiresUpscaler = settings.hiresUpscaler
+  }
+  if (settings.hiresScale > 0) pb.sdParams.hiresScale = settings.hiresScale
+}
+
 function applyHistory(entry: HistoryEntry, keepAsVariant = false) {
   if (entry.character) pb.setChar(entry.character)
   if (entry.story) pb.setStory(entry.story)
@@ -1202,6 +1243,19 @@ onMounted(async () => {
   if (!handledDeepLink) pb.restoreDraft()
   // 推荐尺寸同步到出图选择
   if (pb.lastRecommendedSize) sdSize.value = pb.lastRecommendedSize
+
+  if (q.quick === '1') {
+    const savedQuick = readQuickCreate()
+    applyQuickCreateSettings(savedQuick)
+    await nextTick()
+    if (!sd.online.value) {
+      pb.flash('快速出图未启动：SD WebUI 当前未连接，Prompt 已保留')
+    } else if (livePrompt.value) {
+      const reused = quickCreateSummary(savedQuick)
+      pb.flash(reused ? `正在快速出图 · ${reused}` : '正在使用当前推荐参数快速出图')
+      await callGenerate()
+    }
+  }
 })
 
 // Autosave draft

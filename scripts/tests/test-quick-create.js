@@ -1,9 +1,9 @@
 const assert = require('assert');
-const quick = require('../../tools/quick-create');
+const quick = require('../../src/utils/quickCreate.ts');
 
 const memory = new Map();
 const storage = { getItem:(key) => memory.has(key) ? memory.get(key) : null, setItem:(key, value) => memory.set(key, value) };
-const saved = quick.write({
+const saved = quick.writeQuickCreate({
   savedAt:Date.UTC(2026, 6, 22),
   checkpoint:'models/anime-v1.safetensors',
   sampler:'DPM++ 2M',
@@ -20,9 +20,9 @@ assert(saved, 'successful settings must be writable');
 assert.strictEqual(saved.size, '832×1216', 'size must use the UI separator');
 assert.strictEqual(saved.checkpoint, 'models/anime-v1.safetensors');
 assert.strictEqual(saved.seed, undefined, 'quick settings must not persist a generation seed');
-assert.deepStrictEqual(quick.read(storage), saved, 'stored settings must round-trip');
-assert(quick.summary(saved).includes('anime-v1') && quick.summary(saved).includes('28 steps'), 'summary must expose the important reused parameters');
-assert.strictEqual(quick.url('sc 002'), 'prompt-builder.html?scene=sc%20002&quick=1', 'quick URL must encode scene ids');
-assert.strictEqual(quick.normalize({}), null, 'empty settings must not be considered successful');
+assert.deepStrictEqual(quick.readQuickCreate(storage), saved, 'stored settings must round-trip');
+assert(quick.quickCreateSummary(saved).includes('anime-v1') && quick.quickCreateSummary(saved).includes('28 steps'), 'summary must expose the important reused parameters');
+assert.strictEqual(quick.quickCreateUrl('sc 002'), '/prompt-builder?scene=sc%20002&quick=1', 'quick URL must encode scene ids');
+assert.strictEqual(quick.normalizeQuickCreate({}), null, 'empty settings must not be considered successful');
 
-console.log('Quick create tests passed: settings, summary, storage, and URL');
+console.log('Quick create tests passed against the production TypeScript module');

@@ -13,18 +13,18 @@
   // 用户可见的导航项(创作流,概念已折叠)
   // Create = 全站最大入口,Director 为内部实现名,对用户隐身
   var PRIMARY_NAV = [
-    { id:'scene',     label:'灵感场景',       href:'tools/scene-explorer.html', icon:'🌸' },
-    { id:'director',  label:'开始绘制',       href:'tools/prompt-builder.html', icon:'✦' },
-    { id:'chat',      label:'角色房间',       href:'tools/chat.html',            icon:'☕' },
-    { id:'showcase',  label:'效果样张',       href:'tools/showcase.html',       icon:'🖼' },
-    { id:'gallery',   label:'作品册',         href:'tools/gallery.html',        icon:'🎞' }
+    { id:'scene',     label:'灵感场景',       href:'scene-explorer', icon:'🌸' },
+    { id:'director',  label:'开始绘制',       href:'prompt-builder', icon:'✦' },
+    { id:'chat',      label:'角色房间',       href:'chat',           icon:'☕' },
+    { id:'showcase',  label:'效果样张',       href:'showcase',       icon:'🖼' },
+    { id:'gallery',   label:'作品册',         href:'gallery',        icon:'🎞' }
   ];
   var SECONDARY_NAV = [
     { id:'guide',      label:'新手教程',       href:'docs/getting-started.html',  icon:'🧭' },
-    { id:'character', label:'角色档案',       href:'tools/character.html',      icon:'👤' },
-    { id:'style',     label:'画风',           href:'tools/style.html',          icon:'🎨' },
-    { id:'lora',      label:'模型',           href:'tools/lora.html',           icon:'🧪' },
-    { id:'manager',   label:'场景管理',       href:'tools/scene-manager.html',  icon:'🎬' },
+    { id:'character', label:'角色档案',       href:'character',                 icon:'👤' },
+    { id:'style',     label:'画风',           href:'style',                     icon:'🎨' },
+    { id:'lora',      label:'模型',           href:'lora',                      icon:'🧪' },
+    { id:'manager',   label:'场景管理',       href:'scene-manager',             icon:'🎬' },
     { id:'docs',      label:'手册',           href:'docs/index.html',           icon:'📖' }
   ];
 
@@ -45,8 +45,7 @@
     document.head.appendChild(script);
   }
 
-  // .nav-logo 的唯一定义。品牌位由本文件注入(control.html 是唯一写死 <img> 的页面,
-  // 用同一个 class),规则跟着注入方走,才不会出现"页面各写一份内联尺寸"。
+  // .nav-logo 由文档导航统一注入，避免各页面重复内联尺寸。
   function ensureLogoStyle() {
     if (document.querySelector('style[data-nav-style]')) return;
     var style = document.createElement('style');

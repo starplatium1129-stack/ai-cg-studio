@@ -9,10 +9,76 @@ export interface VoiceAvailability {
   error?: string
 }
 
-interface AudioWithSource extends HTMLAudioElement { __sourceNode?: AudioNode | null }
+interface VoiceTurn {
+  mid: string
+  voice: string
+  character: string
+  session: number
+  referenceEmotion: string
+}
+
+interface PreparedSentence {
+  text: string
+  language: 'ja' | 'zh'
+  emotion: string
+}
+
+interface SynthesizedClip {
+  url: string
+  emotion: string
+}
+
+interface QueuedClip extends SynthesizedClip {
+  mid: string
+  session: number
+}
+
+interface TranslationResponse {
+  translation?: string
+}
+
+interface AudioWithSource extends HTMLAudioElement {
+  __sourceNode?: MediaElementAudioSourceNode | null
+}
+
+interface StatusError extends Error {
+  status?: number
+}
+
+type AudioContextConstructor = new () => AudioContext
+
+function errorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error)
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null
+}
+
+function readVoiceAvailability(value: unknown): VoiceAvailability {
+  if (!isRecord(value)) throw new Error('语音状态响应格式无效')
+  const voices = isRecord(value.voices)
+    ? Object.fromEntries(Object.entries(value.voices).map(([key, available]) => [key, Boolean(available)]))
+    : {}
+  const translation = isRecord(value.translation)
+    ? { ready: Boolean(value.translation.ready) }
+    : undefined
+  return {
+    online: Boolean(value.online),
+    voices,
+    translation,
+    activeVoice: typeof value.activeVoice === 'string' ? value.activeVoice : undefined,
+    error: typeof value.error === 'string' ? value.error : undefined,
+  }
+}
+
+function readTranslation(value: unknown): TranslationResponse {
+  if (!isRecord(value)) return {}
+  return { translation: typeof value.translation === 'string' ? value.translation : undefined }
+}
 
 function removeAudioSource(audio: AudioWithSource) {
-  try { if (audio?.__sourceNode) (audio.__sourceNode as any).disconnect() } catch {}
+  try { audio.__sourceNode?.disconnect() } catch {}
   if (audio) audio.__sourceNode = null
 }
 
@@ -34,23 +100,23 @@ export function useVoice(options: {
   // 内部不需要响应式的可变状态
   let sentenceBuffer = new SentenceBuffer({ immediateFirst: true })
   let session = 0, controller: AbortController | null = null
-  let translateChain: Promise<unknown> = Promise.resolve()
-  let synthChain: Promise<unknown> = Promise.resolve()
-  let pending = 0, queue: any[] = [], playing = false
+  let translateChain: Promise<PreparedSentence | null> = Promise.resolve(null)
+  let synthChain: Promise<void> = Promise.resolve()
+  let pending = 0, queue: QueuedClip[] = [], playing = false
   let currentAudio: AudioWithSource | null = null, replayAudio: AudioWithSource | null = null
-  const messageAudio = new Map<string, { url: string; emotion: string }[]>()
+  const messageAudio = new Map<string, SynthesizedClip[]>()
   let audioContext: AudioContext | null = null, analyser: AnalyserNode | null = null
   let gainNode: GainNode | null = null, lipFrame = 0, lipSmooth = 0
   let prepareKey = '', preparing: Promise<boolean> | null = null
-  let turn: any = null, _lastEmotion = 'neutral', _neutralStreak = 0
+  let turn: VoiceTurn | null = null, _lastEmotion = 'neutral', _neutralStreak = 0
   let _warnedTranslation = false, _warnedAnalyser = false
 
   async function refreshAvailability() {
     try {
       const r = await fetch('/api/tts-status', { cache: 'no-store' })
       if (!r.ok) throw new Error('语音状态接口不可用')
-      availability.value = await r.json()
-    } catch (e) { availability.value = { online: false, voices: {}, error: String((e as any)?.message ?? e) } }
+      availability.value = readVoiceAvailability(await r.json())
+    } catch (e) { availability.value = { online: false, voices: {}, error: errorMessage(e) } }
     return availability.value
   }
 
@@ -85,7 +151,10 @@ export function useVoice(options: {
   function ensureAudioContext() {
     if (!audioContext) {
       try {
-        const AC = (window as any).AudioContext || (window as any).webkitAudioContext
+        const audioWindow = window as Window & typeof globalThis & {
+          webkitAudioContext?: AudioContextConstructor
+        }
+        const AC: AudioContextConstructor | undefined = audioWindow.AudioContext || audioWindow.webkitAudioContext
         if (!AC) return
         audioContext = new AC()
         const ac = audioContext!
@@ -104,7 +173,7 @@ export function useVoice(options: {
     stop({ preserveMessageAudio: true, silent: true })
     ensureAudioContext(); session++
     controller = new AbortController()
-    sentenceBuffer.reset(); translateChain = Promise.resolve(); synthChain = Promise.resolve()
+    sentenceBuffer.reset(); translateChain = Promise.resolve(null); synthChain = Promise.resolve()
     pending = 0; turn = { ...meta, session, referenceEmotion: '' }
     _lastEmotion = 'neutral'; _neutralStreak = 0
     prepare(meta.voice, true)
@@ -113,21 +182,23 @@ export function useVoice(options: {
 
   function append(text: string) {
     if (!turn || !enabled() || !readyFor(turn.voice)) return
-    sentenceBuffer.push(text, false).forEach(s => enqueue(s, turn))
+    const activeTurn = turn
+    sentenceBuffer.push(text, false).forEach(s => enqueue(s, activeTurn))
   }
 
   function finishTurn() {
     if (!turn || !enabled() || !readyFor(turn.voice)) return
-    sentenceBuffer.push('', true).forEach(s => enqueue(s, turn))
+    const activeTurn = turn
+    sentenceBuffer.push('', true).forEach(s => enqueue(s, activeTurn))
   }
 
-  function enqueue(sentence: string, meta: any) {
+  function enqueue(sentence: string, meta: VoiceTurn) {
     const sess = meta.session
     if (sess !== session || !controller) return
     const signal = controller.signal; pending++; onStatus('语音合成中…'); notifyActivity()
     const prepared = (translateChain = translateChain
       .then(() => sess !== session || signal.aborted ? null : prepareSentence(sentence, meta, signal))
-      .catch(e => { if (!isAbortError(e) && sess === session) onError('一句配音失败（不影响聊天）：' + (e as any).message); return null }))
+      .catch(e => { if (!isAbortError(e) && sess === session) onError('一句配音失败（不影响聊天）：' + errorMessage(e)); return null }))
     synthChain = synthChain.then(async () => {
       const req = await prepared
       if (!req || sess !== session || signal.aborted) return null
@@ -138,7 +209,7 @@ export function useVoice(options: {
       const clips = messageAudio.get(meta.mid) || []; clips.push({ url: item.url, emotion: item.emotion || 'neutral' })
       messageAudio.set(meta.mid, clips); queue.push({ ...item, mid: meta.mid, session: sess })
       onAudioReady(meta.mid); pump(sess)
-    }).catch(e => { if (!isAbortError(e) && sess === session) onError('一句配音失败（不影响聊天）：' + (e as any).message) })
+    }).catch(e => { if (!isAbortError(e) && sess === session) onError('一句配音失败（不影响聊天）：' + errorMessage(e)) })
     .finally(() => {
       if (sess !== session) return; pending = Math.max(0, pending - 1)
       if (pending === 0) onStatus(playing || queue.length ? '播放中…' : '')
@@ -146,7 +217,7 @@ export function useVoice(options: {
     })
   }
 
-  async function prepareSentence(sourceText: string, meta: any, signal: AbortSignal) {
+  async function prepareSentence(sourceText: string, meta: VoiceTurn, signal: AbortSignal): Promise<PreparedSentence | null> {
     const cleaned = String(sourceText || '').replace(/[「」『』"""'()（）*＊]/g, '').trim()
     if (!cleaned) return null
     const rawEmotion = inferEmotion(cleaned, meta.character)
@@ -158,14 +229,14 @@ export function useVoice(options: {
     let translated = '', translationFailed = false
     try {
       const tr = await fetch('/api/translate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: cleaned }), signal })
-      if (tr.ok) { const d = await tr.json(); translated = String(d.translation || '').replace(/\n+/g, '。').trim() }
+      if (tr.ok) { const d = readTranslation(await tr.json()); translated = String(d.translation || '').replace(/\n+/g, '。').trim() }
       else translationFailed = true
     } catch (e) { if (isAbortError(e)) throw e; translationFailed = true }
     if (translationFailed && !_warnedTranslation) { _warnedTranslation = true; onError('日文翻译不可用，本次改用中文发音。') }
     return { text: translated || cleaned, language: translated ? 'ja' : 'zh', emotion }
   }
 
-  async function synthesize(request: any, meta: any, signal: AbortSignal) {
+  async function synthesize(request: PreparedSentence, meta: VoiceTurn, signal: AbortSignal): Promise<SynthesizedClip> {
     let ttsError: Error | undefined
     // GPT-SoVITS 偶发瞬时失败（模型换权重 / 队列抖动 / 空音频）。
     // 之前只重试 1 次且不管空 body，所以会出现“某句突然没声”。
@@ -180,11 +251,15 @@ export function useVoice(options: {
             consistency: 'locked', speed: 1,
           }),
         })
-        if (!r.ok) { const e = await responseError(r, '语音服务暂不可用'); (e as any).status = r.status; throw e }
+        if (!r.ok) {
+          const error = await responseError(r, '语音服务暂不可用') as StatusError
+          error.status = r.status
+          throw error
+        }
         let buffer = await r.arrayBuffer()
         // 空音频（44 字节以下连 WAV 头都不完整）视为瞬时失败，值得重试
         if (!buffer || buffer.byteLength < 64) {
-          const empty = new Error('语音服务返回空音频') as any
+          const empty: StatusError = new Error('语音服务返回空音频')
           empty.status = 502
           throw empty
         }
@@ -192,25 +267,26 @@ export function useVoice(options: {
         return { url: URL.createObjectURL(new Blob([buffer], { type: 'audio/wav' })), emotion: request.emotion }
       } catch (e) {
         if (isAbortError(e) || signal.aborted) throw e
-        const status = Number((e as any).status)
-        const transient = (e as any).name === 'TypeError' || status >= 500 || status === 429
+        const error = e as StatusError
+        const status = Number(error.status)
+        const transient = error.name === 'TypeError' || status >= 500 || status === 429
         if (transient && attempt < MAX_ATTEMPTS - 1) {
           // 退避：220ms → 500ms，给 GPT-SoVITS 留出恢复时间
           const backoff = 220 * Math.pow(2, attempt)
           await new Promise(res => setTimeout(res, backoff))
           if (signal.aborted) throw e
-          ttsError = e as Error
+          ttsError = error
           continue
         }
         throw e
       }
     }
-    throw ttsError
+    throw ttsError ?? new Error('语音合成失败')
   }
 
   function attachAnalyser(audio: AudioWithSource) {
     if (!audioContext || !analyser || audio.__sourceNode) return
-    try { audio.__sourceNode = audioContext.createMediaElementSource(audio); (audio.__sourceNode as any).connect(analyser) }
+    try { audio.__sourceNode = audioContext.createMediaElementSource(audio); audio.__sourceNode.connect(analyser) }
     catch { if (!_warnedAnalyser) { _warnedAnalyser = true; onError('浏览器阻止了音频分析，口型同步本次不可用。') } }
   }
 
@@ -243,7 +319,9 @@ export function useVoice(options: {
 
   function pump(sess: number) {
     if (playing || !queue.length || sess !== session) return
-    playing = true; const item = queue.shift()
+    const item = queue.shift()
+    if (!item) return
+    playing = true
     const audio = new Audio(item.url) as AudioWithSource
     currentAudio = audio; attachAnalyser(audio)
     onExpression(item.emotion); onSpeaking(true, item.mid); onStatus('播放中…'); notifyActivity()
@@ -257,7 +335,7 @@ export function useVoice(options: {
       pump(sess); notifyActivity()
     }
     audio.addEventListener('ended', done); audio.addEventListener('error', done)
-    audio.play().then(() => startLipSync()).catch(e => { onError('浏览器阻止了自动播放，请点击消息下方的"重播"。'); done() })
+    audio.play().then(() => startLipSync()).catch(() => { onError('浏览器阻止了自动播放，请点击消息下方的"重播"。'); done() })
   }
 
   async function playMessage(mid: string): Promise<boolean> {
@@ -287,7 +365,7 @@ export function useVoice(options: {
 
   function stop(opts: { preserveMessageAudio?: boolean; silent?: boolean } = {}) {
     session++; controller?.abort(); controller = null; turn = null
-    sentenceBuffer.reset(); translateChain = Promise.resolve(); synthChain = Promise.resolve(); pending = 0
+    sentenceBuffer.reset(); translateChain = Promise.resolve(null); synthChain = Promise.resolve(); pending = 0
     const refs = new Set<string>(); messageAudio.forEach(c => c.forEach(cl => refs.add(cl.url)))
     queue.forEach(it => { if (!refs.has(it.url)) URL.revokeObjectURL(it.url) }); queue = []
     if (currentAudio) { currentAudio.pause(); removeAudioSource(currentAudio); currentAudio.removeAttribute('src') }

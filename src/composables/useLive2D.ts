@@ -2,11 +2,96 @@ import { ref } from 'vue'
 import { LIVE2D_EXPRESSIONS } from '@/config/characters'
 
 export interface Live2DStatus {
-  state: string
+  state: 'checking' | 'idle' | 'static' | 'loading' | 'ready' | 'degraded' | 'fallback'
   text: string
   detail: string
   retryable: boolean
   ready: boolean
+}
+
+interface Live2DModelInfo {
+  available: boolean
+  modelUrl: string
+  source: string
+  missing: string[]
+  canvas?: { width: number; height: number }
+}
+
+interface Live2DCatalog {
+  models: Record<string, Live2DModelInfo>
+}
+
+interface Live2DModel {
+  visible: boolean
+  width: number
+  height: number
+  x: number
+  y: number
+  scale: { x: number; y: number; set(value: number): void }
+  internalModel?: {
+    on(event: 'beforeModelUpdate', callback: () => void): void
+    coreModel?: { setParameterValueById(id: string, value: number, weight: number): void }
+    motionManager?: { definitions?: Record<string, unknown[]> }
+    settings?: {
+      motions?: Record<string, unknown[]>
+      hitAreas?: unknown[]
+    }
+  }
+  focus?(x: number, y: number): void
+  motion?(group: string, index?: number, priority?: number): Promise<unknown> | unknown
+  expression?(name: string): Promise<unknown> | unknown
+  hitTest?(x: number, y: number): string[]
+  tap?(x: number, y: number): void
+}
+
+interface Live2DApp {
+  app?: {
+    screen?: { width: number; height: number }
+    ticker?: { started: boolean; start(): void; stop(): void }
+  }
+  onModelLoaded(callback: (model: Live2DModel) => void): void
+  onModelError(callback: (error: Error) => void): void
+  destroy(): void
+}
+
+type Live2DFactory = (options: Record<string, unknown>) => Live2DApp
+type Live2DLibrary = { wlLive2d: Live2DFactory }
+
+function errorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error)
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null
+}
+
+function isCatchable(value: unknown): value is { catch(handler: (error: unknown) => void): unknown } {
+  return isRecord(value) && typeof value.catch === 'function'
+}
+
+function readLive2DCatalog(value: unknown): Live2DCatalog {
+  if (!isRecord(value) || !isRecord(value.models)) throw new Error('Live2D 状态响应格式无效')
+  const models: Record<string, Live2DModelInfo> = {}
+  for (const [character, raw] of Object.entries(value.models)) {
+    if (!isRecord(raw)) continue
+    models[character] = {
+      available: Boolean(raw.available),
+      modelUrl: typeof raw.modelUrl === 'string' ? raw.modelUrl : '',
+      source: typeof raw.source === 'string' ? raw.source : '',
+      missing: Array.isArray(raw.missing) ? raw.missing.filter((item): item is string => typeof item === 'string') : [],
+      canvas: isRecord(raw.canvas)
+        ? { width: Number(raw.canvas.width) || 420, height: Number(raw.canvas.height) || 610 }
+        : undefined,
+    }
+  }
+  return { models }
+}
+
+function readLibrary(value: unknown): Live2DLibrary | null {
+  if (typeof value === 'function') return { wlLive2d: value as Live2DFactory }
+  if (!isRecord(value)) return null
+  if (typeof value.wlLive2d === 'function') return { wlLive2d: value.wlLive2d as Live2DFactory }
+  return readLibrary(value.default)
 }
 
 export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
@@ -19,9 +104,9 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   const interactionHint = ref('')
 
   // 内部可变状态（不需要响应式）
-  let catalog: any = null
-  let app: any = null
-  let model: any = null
+  let catalog: Live2DCatalog | null = null
+  let app: Live2DApp | null = null
+  let model: Live2DModel | null = null
   let loading: Promise<boolean> | null = null
   let loadTimer = 0
   let resizeObserver: ResizeObserver | null = null
@@ -41,7 +126,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   let hostSelector = '#live2dHost'
   let desiredExpression = 'neutral'
 
-  function setState(state: string, text: string, detail = '', retryable = false) {
+  function setState(state: Live2DStatus['state'], text: string, detail = '', retryable = false) {
     if (hostEl) { hostEl.dataset.state = state; hostEl.dataset.error = detail; hostEl.dataset.retryable = retryable ? 'true' : 'false' }
     onStatus({ state, text, detail, retryable, ready: ready.value })
   }
@@ -56,7 +141,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     try {
       const response = await fetch('/api/live2d-status', { cache: 'no-store' })
       if (!response.ok) throw new Error('Live2D 状态接口不可用')
-      catalog = await response.json()
+      catalog = readLive2DCatalog(await response.json())
       observeSize()
       bindVisibility()
       enabled.value = options.autoLoad === true
@@ -66,7 +151,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
         setState('idle', '启用 Live2D', '点击后才下载并加载动态模型', true)
       }
     } catch (e) {
-      fallback('Live2D 未就绪', String((e as any)?.message ?? e))
+      fallback('Live2D 未就绪', errorMessage(e))
     }
   }
 
@@ -121,32 +206,31 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
    * 重构前靠 index.html 的全局 <script> 注入；Vue SPA 没有那段脚本，
    * 所以这里改成动态 import npm 包，并兼容 default / 命名导出 / 全局三种形态。
    */
-  async function loadLibrary(): Promise<any> {
-    const existing = (window as any)['wl-live2d']
-    if (existing && typeof existing.wlLive2d === 'function') return existing
+  async function loadLibrary(): Promise<Live2DLibrary> {
+    const live2DWindow = window as Window & typeof globalThis & { 'wl-live2d'?: Live2DLibrary }
+    const existing = readLibrary(live2DWindow['wl-live2d'])
+    if (existing) return existing
     try {
-      const mod: any = await import('wl-live2d')
-      const wlLive2d = mod?.wlLive2d ?? mod?.default?.wlLive2d ?? mod?.default
-      if (typeof wlLive2d === 'function') {
-        const lib = { wlLive2d }
-        ;(window as any)['wl-live2d'] = lib
-        return lib
+      const library = readLibrary(await import('wl-live2d'))
+      if (library) {
+        live2DWindow['wl-live2d'] = library
+        return library
       }
       throw new Error('wl-live2d 导出中没有 wlLive2d')
     } catch (e) {
-      throw new Error('wl-live2d 运行库导入失败：' + String((e as any)?.message ?? e))
+      throw new Error('wl-live2d 运行库导入失败：' + errorMessage(e))
     }
   }
 
-  function load(char: string, info: any): Promise<boolean> {
+  function load(char: string, info: Live2DModelInfo): Promise<boolean> {
     if (loading) return loading
     loading = new Promise((resolve) => {
       void (async () => {
-      let library: any
+      let library: Live2DLibrary
       try {
         library = await loadLibrary()
       } catch (e) {
-        fallback('Live2D 运行库加载失败', String((e as any)?.message ?? e))
+        fallback('Live2D 运行库加载失败', errorMessage(e))
         loading = null
         resolve(false); return
       }
@@ -168,15 +252,15 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
           transitionTime: 250,
           models: [{ path: info.modelUrl, width: canvas.width, height: canvas.height, position: { x: 0, y: 0 }, motionPreload: 'IDLE' }],
         })
-        app.onModelLoaded((m: any) => {
+        app.onModelLoaded((m: Live2DModel) => {
           if (destroyed.value || char !== character.value) { finish(false); return }
           model = m; loadedCharacter.value = char; ready.value = true
           mouthValue.value = 0; mouthHooked = false
           bindMouthOverride(); bindContextEvents(); bindInteractionEvents(); fit(); layout()
           setVisible(true); setExpression(desiredExpression); setPaused(document.hidden); setState('ready', 'Live2D 已连接'); finish(true)
         })
-        app.onModelError((e: any) => {
-          const detail = String(e?.message ?? e)
+        app.onModelError((e: Error) => {
+          const detail = errorMessage(e)
           // wl-live2d 复用这一个回调报告初始载入和之后的 expression/motion
           // 错误。后者不代表已经显示的模型失效，不能因此切回静态立绘。
           if (ready.value && loadedCharacter.value === char) {
@@ -185,7 +269,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
           }
           fallback('Live2D 模型加载失败', detail); finish(false)
         })
-      } catch (e) { fallback('Live2D 初始化失败', String((e as any)?.message ?? e)); finish(false) }
+      } catch (e) { fallback('Live2D 初始化失败', errorMessage(e)); finish(false) }
       })()
     })
     return loading
@@ -217,7 +301,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     try {
       // Cubism motion/physics run before this event. Write with full weight so
       // their idle mouth value cannot overwrite the audio amplitude.
-      model.internalModel.coreModel.setParameterValueById('ParamMouthOpenY', mouthValue.value, 1)
+      model.internalModel?.coreModel?.setParameterValueById('ParamMouthOpenY', mouthValue.value, 1)
     } catch {}
   }
 
@@ -269,7 +353,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     if (group && motions?.length && typeof model.motion === 'function') {
       const index = tapGroup ? undefined : interactionIndex % motions.length
       const result = model.motion(group, index, 3)
-      if (result && typeof result.catch === 'function') result.catch(() => {})
+      if (isCatchable(result)) result.catch(() => {})
     }
 
     const reactions = ['happy', 'shy', 'gentle']
@@ -339,7 +423,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
       if (!nw || !nh) return
       const scale = Math.min(sw / nw, sh / nh) * 0.99
       model.scale.set(scale); model.x = (sw - nw * scale) / 2; model.y = sh - nh * scale
-    } catch (e) { fallback('Live2D 布局失败', String((e as any)?.message ?? e)) }
+    } catch (e) { fallback('Live2D 布局失败', errorMessage(e)) }
   }
 
   function layout() {
@@ -387,13 +471,13 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     const name = LIVE2D_EXPRESSIONS[emotion] || LIVE2D_EXPRESSIONS.neutral
     try {
       const result = typeof model.expression === 'function' ? model.expression(name) : null
-      if (result && typeof result.catch === 'function') {
+      if (isCatchable(result)) {
         result.catch((error: unknown) => {
-          setState('degraded', 'Live2D 表情暂不可用', String((error as any)?.message ?? error), true)
+          setState('degraded', 'Live2D 表情暂不可用', errorMessage(error), true)
         })
       }
     } catch (error) {
-      setState('degraded', 'Live2D 表情暂不可用', String((error as any)?.message ?? error), true)
+      setState('degraded', 'Live2D 表情暂不可用', errorMessage(error), true)
     }
     resumeRendering()
   }

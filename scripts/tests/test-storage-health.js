@@ -1,7 +1,7 @@
 'use strict';
 
 var assert = require('assert');
-var health = require('../../tools/storage-health.js');
+var health = require('../../src/utils/storageHealth.ts');
 
 var good = [
   { id:1, timestamp:100, image_id:'img_a', prompt:'ok' },
@@ -27,7 +27,7 @@ var partition = health.quarantinePartition(mixed);
 assert.strictEqual(partition.good.length, 3);
 assert.strictEqual(partition.bad.length, 5);
 
-var report = health.inspect(mixed, ['img_a', 'img_orphan'], {
+var report = health.inspectStorageHealth(mixed, ['img_a', 'img_orphan'], {
   quota:{ usage:50, quota:100 }
 });
 assert.strictEqual(report.historyCount, 3);
@@ -38,19 +38,19 @@ assert.deepStrictEqual(report.orphanImageIds, ['img_orphan']);
 assert.strictEqual(report.quota.ratio, 0.5);
 assert.strictEqual(report.ok, false);
 
-var clean = health.inspect(good, ['img_a', 'img_b']);
+var clean = health.inspectStorageHealth(good, ['img_a', 'img_b']);
 assert.strictEqual(clean.ok, true);
 assert.strictEqual(clean.missingImageIds.length, 0);
 assert.strictEqual(clean.orphanImageIds.length, 0);
 
-assert.strictEqual(health.estimateQuota(null), null);
-assert.deepStrictEqual(health.estimateQuota({ usage:10, quota:40 }), {
+assert.strictEqual(health.estimateStorageQuota(null), null);
+assert.deepStrictEqual(health.estimateStorageQuota({ usage:10, quota:40 }), {
   usage:10, quota:40, ratio:0.25
 });
 
-var summary = health.summarize(report);
+var summary = health.summarizeStorageHealth(report);
 assert.ok(summary.indexOf('3 条历史') !== -1);
 assert.ok(summary.indexOf('隔离') !== -1);
-assert.strictEqual(health.QUARANTINE_KEY, 'aics_pb_history_quarantine');
+assert.strictEqual(health.HISTORY_QUARANTINE_KEY, 'aics_pb_history_quarantine');
 
-console.log('Storage health tests passed: partition, missing/orphan, quota, summarize');
+console.log('Storage health tests passed against the production TypeScript module');

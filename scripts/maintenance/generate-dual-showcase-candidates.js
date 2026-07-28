@@ -4,14 +4,15 @@
 /**
  * Generate reproducible, website-equivalent candidates for every dual scene.
  *
- * This intentionally executes tools/sd-api.js instead of maintaining a second
- * implementation of the Regional Prompter / ControlNet / ADetailer payload.
+ * Uses the same production request builder as the Vue director so Regional
+ * Prompter / ControlNet / ADetailer payload rules cannot drift.
  */
 
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
-const vm = require('vm');
+const promptPolicy = require('../../src/utils/promptPolicy.ts');
+const { buildTxt2ImgRequest, parseTxt2ImgResponse } = require('../../src/utils/sdRequest.ts');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const DEFAULT_OUTPUT = path.resolve(ROOT, '..', 'AI', 'Reviews', 'DualShowcase', '2026-07-23_regional_v1');
@@ -51,25 +52,6 @@ function stripLoras(prompt) {
     .trim();
 }
 
-function makeRuntime() {
-  const context = {
-    console,
-    fetch,
-    AbortController,
-    Promise,
-    setTimeout,
-    clearTimeout,
-    URLSearchParams,
-    TextEncoder,
-    TextDecoder
-  };
-  context.window = context;
-  context.globalThis = context;
-  vm.runInNewContext(fs.readFileSync(path.join(ROOT, 'tools', 'prompt-policy.js'), 'utf8'), context);
-  vm.runInNewContext(fs.readFileSync(path.join(ROOT, 'tools', 'sd-api.js'), 'utf8'), context);
-  return context;
-}
-
 async function getJson(url) {
   const response = await fetch(url);
   if (!response.ok) throw new Error(`${url} returned HTTP ${response.status}`);
@@ -102,8 +84,6 @@ async function main() {
   if (!controlModel) throw new Error('Xinsir SDXL OpenPose model is unavailable');
   if (!(adetailerInfo.ad_model || []).includes('face_yolov8s.pt')) throw new Error('face_yolov8s.pt is unavailable');
 
-  const runtime = makeRuntime();
-  const connector = new runtime.SDWebUIConnector(API);
   const manifestPath = path.join(output, 'generation-manifest.json');
   const manifest = fs.existsSync(manifestPath) ? readJson(manifestPath) : [];
   const records = new Map(manifest.map((item) => [`${item.sceneId}:${item.attempt}`, item]));
@@ -122,7 +102,7 @@ async function main() {
       const basePrompt = stripLoras(scene.prompt);
       const prompt = [
         'masterpiece, best quality, amazing quality',
-        runtime.AICPromptPolicy.enrichDualPrompt(
+        promptPolicy.enrichDualPrompt(
           basePrompt,
           ['ayachi_nene', 'white_hair', 'very_long_hair', 'low_twintails', 'purple_eyes', 'ahoge', 'pink_hair_ribbons'],
           ['shiki_natsume', 'black_hair', 'long_hair', 'yellow_eyes', 'two_red_hairclips', 'mole_under_eye']
@@ -135,19 +115,20 @@ async function main() {
 
       console.log(`[generate] ${scene.id} attempt ${attempt} seed ${seed}` +
         ` regional=on control=${useControl ? 'on' : 'off'} adetailer=${wide ? 'on' : 'off'}`);
-      const result = await connector.generateImage(prompt, scene.negative || '', {
+      const request = buildTxt2ImgRequest({
+        prompt,
+        negative_prompt: scene.negative || '',
         char: 'triad',
         lora: scene.lora,
-        checkpoint: modelInfo.sd_model_checkpoint || '',
+        model: modelInfo.sd_model_checkpoint || '',
         width: 1344,
         height: 896,
         steps: 30,
-        cfg: 6,
-        sampler: 'Euler a',
+        cfg_scale: 6,
+        sampler_name: 'Euler a',
         scheduler: '',
         seed,
-        timeoutMs: 30 * 60 * 1000,
-        dualEnhancement: {
+        dual_enhancement: {
           regional: true,
           ratios: '1,1',
           baseRatio: '0.3',
@@ -161,6 +142,20 @@ async function main() {
           adModel: 'face_yolov8s.pt'
         }
       });
+      const response = await fetch(`${API}/sdapi/v1/txt2img`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(request.payload),
+        signal: AbortSignal.timeout(30 * 60 * 1000),
+      });
+      if (!response.ok) {
+        throw new Error(`txt2img ${scene.id} attempt ${attempt} returned HTTP ${response.status}: ${(await response.text()).slice(0, 300)}`);
+      }
+      const result = {
+        ...parseTxt2ImgResponse(await response.json()),
+        payload: request.payload,
+        enhancements: request.enhancements,
+      };
 
       fs.mkdirSync(imageDir, { recursive: true });
       fs.writeFileSync(imagePath, Buffer.from(result.image.split(',', 2)[1], 'base64'));

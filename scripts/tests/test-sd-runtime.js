@@ -1,65 +1,20 @@
 const assert = require('assert');
-const fs = require('fs');
-const vm = require('vm');
+const sdRequest = require('../../src/utils/sdRequest.ts');
 
-function source(path) {
-  return fs.readFileSync(path, 'utf8');
-}
-
-function select(initial) {
-  const element = {
-    options: [],
-    value: '',
-    appendChild(option) {
-      this.options.push(option);
-      if (!this.value) this.value = option.value;
-    }
-  };
-  Object.defineProperty(element, 'textContent', {
-    set() {
-      element.options.length = 0;
-      element.value = '';
-    }
-  });
-  (initial || []).forEach(value => element.appendChild({ value, textContent: value }));
-  return element;
-}
-
-async function testExplicitEmptyNegative() {
-  let payload;
-  const context = { console, setTimeout, clearTimeout, AbortController };
-  context.window = context;
-  vm.runInNewContext(source('tools/sd-api.js'), context);
-  const connector = new context.SDWebUIConnector('');
-  connector.request = (_path, init) => {
-    payload = JSON.parse(init.body);
-    return Promise.resolve({ images: ['abc'], info: '{}' });
-  };
-
-  await connector.generateImage('prompt', '', {});
+function testExplicitEmptyNegative() {
+  let payload = sdRequest.buildTxt2ImgRequest({ prompt:'prompt', negative_prompt:'' }).payload;
   assert.strictEqual(payload.negative_prompt, '', 'explicit empty negative prompt must stay empty');
-  await connector.generateImage('prompt', undefined, {});
+  payload = sdRequest.buildTxt2ImgRequest({ prompt:'prompt' }).payload;
   assert(payload.negative_prompt.includes('worst quality'), 'omitted negative prompt should use defaults');
 }
 
-async function testDualEnhancementPayload() {
-  let payload;
-  const context = { console, setTimeout, clearTimeout, AbortController, Promise };
-  context.window = context;
-  vm.runInNewContext(source('tools/sd-api.js'), context);
-  const connector = new context.SDWebUIConnector('');
-  connector.request = (_path, init) => {
-    payload = JSON.parse(init.body);
-    return Promise.resolve({ images: ['abc'], info: '{}' });
-  };
-
-  const result = await connector.generateImage(
-    'masterpiece, 2girls, candlelit bedroom, (ayachi_nene, white_hair, purple_eyes) BREAK (shiki_natsume, black_hair, yellow_eyes)',
-    'bad anatomy',
-    {
+function testDualEnhancementPayload() {
+  const result = sdRequest.buildTxt2ImgRequest({
+      prompt:'masterpiece, 2girls, candlelit bedroom, (ayachi_nene, white_hair, purple_eyes) BREAK (shiki_natsume, black_hair, yellow_eyes)',
+      negative_prompt:'bad anatomy',
       char:'triad',
       lora:'ayachi_nene_v15:0.55, shiki_natsume_v15:0.55',
-      dualEnhancement:{
+      dual_enhancement:{
         regional:true,
         generationMode:'Attention',
         controlModel:'xinsir_openpose_sdxl_1.0 [d0333a45]',
@@ -67,8 +22,8 @@ async function testDualEnhancementPayload() {
         adetailer:true,
         adModel:'face_yolov8s.pt'
       }
-    }
-  );
+  });
+  const payload = result.payload;
 
   assert(payload.prompt.split(/\bBREAK\b/).length === 3, 'dual regional prompt must contain base, left, and right scopes');
   assert(payload.prompt.indexOf('<lora:ayachi_nene_v15:0.55>') < payload.prompt.indexOf('BREAK'), 'dual LoRAs must live in the shared base scope in Attention mode');
@@ -83,14 +38,22 @@ async function testDualEnhancementPayload() {
     { regional:true, controlNet:true, adetailer:true }
   );
 
-  payload = null;
-  const single = await connector.generateImage('1girl, ayachi_nene, close_up', '', {
+  const single = sdRequest.buildTxt2ImgRequest({
+    prompt:'1girl, ayachi_nene, close_up',
+    negative_prompt:'',
     char:'nene',
     lora:'ayachi_nene_v15:0.85',
-    dualEnhancement:{ regional:true, controlImage:'data:image/png;base64,cG9zZQ==' }
+    dual_enhancement:{ regional:true, controlImage:'data:image/png;base64,cG9zZQ==' }
   });
-  assert(!payload.alwayson_scripts, 'single-character generation must remain extension-free');
+  assert(!single.payload.alwayson_scripts, 'single-character generation must remain extension-free');
   assert.strictEqual(single.enhancements.regional, false);
+
+  const parsed = sdRequest.parseTxt2ImgResponse({
+    images:['abc'],
+    info:JSON.stringify({ seed:42, all_seeds:[42], infotexts:['ok'] })
+  });
+  assert.strictEqual(parsed.image, 'data:image/png;base64,abc');
+  assert.strictEqual(parsed.seed, 42);
 }
 
 // ── 模型 profile 与能力协商（迁移到 src/utils/promptPolicy.ts） ──────────
@@ -194,8 +157,8 @@ async function testFailedQueueJobIsRetained() {
 }
 
 (async () => {
-  await testExplicitEmptyNegative();
-  await testDualEnhancementPayload();
+  testExplicitEmptyNegative();
+  testDualEnhancementPayload();
   testProfilesAndCapabilities();
   await testFailedQueueJobIsRetained();
   console.log('SD runtime tests passed: negative toggle, dual enhancement payload, profile resolution, LoRA framing weights, and queue retention');

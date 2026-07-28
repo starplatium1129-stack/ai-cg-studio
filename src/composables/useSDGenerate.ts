@@ -1,23 +1,10 @@
 import { ref, readonly, onUnmounted, getCurrentInstance } from 'vue'
-
-export interface SDGenerateParams {
-  prompt: string
-  negative_prompt?: string
-  width?: number
-  height?: number
-  cfg_scale?: number
-  steps?: number
-  sampler_name?: string
-  scheduler?: string
-  hr_fix?: boolean
-  hr_scale?: number
-  hr_upscaler?: string
-  hr_second_pass_steps?: number
-  denoising_strength?: number
-  seed?: number
-  model?: string
-  alwayson_scripts?: Record<string, unknown>
-}
+import {
+  buildTxt2ImgRequest,
+  parseTxt2ImgResponse,
+  type SDGenerateParams,
+} from '@/utils/sdRequest'
+export type { SDGenerateParams } from '@/utils/sdRequest'
 
 export interface SDStatus {
   online: boolean
@@ -149,40 +136,7 @@ export function useSDGenerate() {
     startPolling()
 
     try {
-      // Parse size string like "832×1216" into width/height
-      const [w, h] = parseSize(params)
-
-      // 与旧 sd-api.js 默认对齐：CFG 5.5、Karras、hires denoise 0.35
-      const payload: Record<string, unknown> = {
-        prompt:          params.prompt,
-        negative_prompt: params.negative_prompt ?? '',
-        width:  w,
-        height: h,
-        cfg_scale:   params.cfg_scale   ?? 5.5,
-        steps:       params.steps       ?? 28,
-        sampler_name: params.sampler_name ?? 'DPM++ 2M',
-        seed:        params.seed        ?? -1,
-        batch_size:  1,
-        n_iter:      1,
-        send_images:  true,
-        save_images:  false,
-      }
-      if (params.scheduler) payload.scheduler = params.scheduler
-
-      if (params.hr_fix) {
-        payload.enable_hr = true
-        payload.hr_scale = params.hr_scale ?? 1.5
-        payload.hr_upscaler = params.hr_upscaler || 'Latent'
-        payload.hr_second_pass_steps = params.hr_second_pass_steps ?? Math.max(10, Math.round((params.steps ?? 28) * 0.5))
-        payload.denoising_strength = params.denoising_strength ?? 0.35
-      }
-
-      if (params.alwayson_scripts) payload.alwayson_scripts = params.alwayson_scripts
-
-      // Override checkpoint if specified
-      let overrideSettings: Record<string, unknown> | undefined
-      if (params.model) overrideSettings = { sd_model_checkpoint: params.model }
-      if (overrideSettings) { payload.override_settings = overrideSettings; payload.override_settings_restore_afterwards = true }
+      const { payload } = buildTxt2ImgRequest(params)
 
       statusText.value = 'SD WebUI 生成中…'
 
@@ -198,9 +152,8 @@ export function useSDGenerate() {
         throw new Error(`SD 返回错误 ${r.status}: ${txt.slice(0, 120)}`)
       }
 
-      const data = await r.json()
-      const imgB64 = data.images?.[0]
-      if (!imgB64) throw new Error('SD 未返回图片数据')
+      const result = parseTxt2ImgResponse(await r.json())
+      const imgB64 = result.image.replace(/^data:image\/[a-z0-9.+-]+;base64,/i, '')
 
       // Convert base64 to blob URL
       const byteStr = atob(imgB64)
@@ -211,7 +164,7 @@ export function useSDGenerate() {
       // 覆盖前先释放上一张，否则每出一张图泄漏一个 blob URL
       if (resultUrl.value && resultUrl.value !== url) URL.revokeObjectURL(resultUrl.value)
       resultUrl.value  = url
-      resultSeed.value = data.info ? JSON.parse(data.info)?.seed ?? null : null
+      resultSeed.value = result.seed
       statusText.value = '生成完成'
       return url
     } catch (e) {
@@ -263,11 +216,4 @@ export function useSDGenerate() {
     models: readonly(models),
     checkStatus, generate, cancel, clearResult, dispose,
   }
-}
-
-// ── Helpers ────────────────────────────────────────────────────────────────
-function parseSize(params: SDGenerateParams): [number, number] {
-  // params may have width/height directly, or encode in a size string
-  if (params.width && params.height) return [params.width, params.height]
-  return [832, 1216] // fallback
 }

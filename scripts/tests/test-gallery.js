@@ -17,9 +17,23 @@ const path = require('path');
 
 const root = path.resolve(__dirname, '..', '..');
 const read = (relative) => fs.readFileSync(path.join(root, relative), 'utf8');
+const { artworkTimestamp, parseArtworkRecords } = require('../../src/types/artwork.ts');
 
 const view = read('src/views/GalleryView.vue');
+const home = read('src/views/HomeView.vue');
+const artworkTypes = read('src/types/artwork.ts');
 const layout = read('src/components/AppLayout.vue');
+
+assert.deepStrictEqual(
+  parseArtworkRecords([null, {}, { id:'', prompt:'bad' }, { id:7, prompt:'ok' }]),
+  [{ id:7, prompt:'ok' }],
+  'persisted artwork parsing must reject malformed records without losing valid entries',
+);
+assert.strictEqual(
+  artworkTimestamp({ id:42, timestamp:'not-a-date' }),
+  42,
+  'legacy artwork timestamps must fall back to numeric ids',
+);
 
 // ── 展墙：瀑布流 + 原始比例 ───────────────────────────────────────────────
 assert(
@@ -94,6 +108,23 @@ assert(
 assert(
   view.includes('hydrateCards'),
   'gallery must hydrate card images lazily rather than eagerly decoding everything',
+);
+assert(
+  view.includes('viewerLoadToken') && view.includes('unmounted'),
+  'gallery async image loads must not write stale URLs after navigation or unmount',
+);
+assert(
+  home.includes('Promise.all') && home.includes('unmounted'),
+  'home cover hydration must be awaited and guarded against component unmount',
+);
+assert(
+  view.includes('parseArtworkRecords') && home.includes('parseArtworkRecords')
+    && artworkTypes.includes('interface ArtworkRecord'),
+  'home and gallery must share one typed compatibility boundary for persisted artwork',
+);
+assert(
+  !/\bany\b/.test(view) && !/\bany\b/.test(home),
+  'home and gallery persistence, scene, event, and image lifecycles must stay explicitly typed',
 );
 
 // ── 图片加载策略 ──────────────────────────────────────────────────────────
