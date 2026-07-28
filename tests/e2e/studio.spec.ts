@@ -20,6 +20,35 @@ function collectRuntimeErrors(page: Page) {
   return errors;
 }
 
+const SHOWCASE_PIXEL = Buffer.from(
+  'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==',
+  'base64',
+);
+
+/** 视觉回归必须自带审核样张，仓库没有样张时也验证正常查看器路径。 */
+async function mockShowcase(page: Page) {
+  await page.route('**/scene-showcase/manifest.json', route => route.fulfill({
+    contentType: 'application/json',
+    body: JSON.stringify({
+      sceneCount: 1,
+      counts: { All: 1, R15: 0, R18: 0 },
+      entries: [{
+        id: 'e2e-showcase',
+        title: '测试样张',
+        story: '用于验证样张查看器布局。',
+        category: '日常',
+        char: 'nene',
+        rating: 'All',
+        attempt: 1,
+      }],
+    }),
+  }));
+  await page.route(/\/scene-showcase\/(?:thumbs|images)\/e2e-showcase\.jpg(?:\?.*)?$/, route => route.fulfill({
+    contentType: 'image/png',
+    body: SHOWCASE_PIXEL,
+  }));
+}
+
 /** 往 IndexedDB 塞两条作品记录（一横一竖），用于作品册相关用例 */
 async function seedGallery(page: Page) {
   await page.evaluate(async () => {
@@ -162,6 +191,7 @@ test('gallery preserves horizontal and vertical art in the immersive viewer', as
 
 test('showcase renders one frosted toolbar and a side-by-side viewer', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
+  await mockShowcase(page);
   await page.goto('/showcase');
 
   await expect(page.locator('.sample').first()).toBeVisible();

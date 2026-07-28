@@ -12,18 +12,16 @@
 - 改完跑相关测试；触及公共契约时跑 `npm run validate`（含 design lint、runtime build、typecheck、场景校验与脚本测试）。
 - 浏览器冒烟：`npm run test:e2e`（本机 Chrome/Edge 可作 Playwright 可执行文件）。
 - 运行时 TS 模块：改 `services/*.ts` 后执行 `npm run build:runtime`，提交 emit 的 `.js` / `.d.ts`。
-- Vue SPA：改 `src/` 下文件后执行 `npm run typecheck:app` 确认无类型错误，再执行 `npm run build` 确认构建通过。
+- Vue SPA：改 `src/` 下文件后执行 `npm run typecheck:app`（`vue-tsc`，真实解析 `.vue` SFC）确认无类型错误，再执行 `npm run build` 确认构建通过。不要用裸 `tsc -p tsconfig.app.json` 代替，它会跳过所有 `.vue`。
 
-### ⚠ 门槛本身的已知盲区（修完 A-1 前不要相信绿灯）
+### 门槛历史盲区（已修）
 
-`npm run validate` 全绿并不代表样式/安全无回归，因为部分门槛在检查「应用根本不加载的东西」：
+> 2026-07-27 的旧门槛曾检查应用根本不加载的 CSS 树；现已统一到真实源。保留此节是为了防止回退。
 
-| 门槛 | 实际读取 | 应用真正加载 |
-|---|---|---|
-| `scripts/maintenance/check-contrast.js:13` | `css/design-system.css` | `src/assets/css/design-system.css` |
-| `scripts/maintenance/scan-style-literals.js:18` | `css/` 目录 | `src/assets/css/` + SFC `<style>` |
-| `scripts/tests/test-style-debt.js:76` | `css/` 目录 | 同上 |
-| `scripts/maintenance/lint-colors.js:47` | `tools` / `docs` / `css` | `src/` |
+| 门槛 | 现在读取 |
+|---|---|
+| contrast / style literal / style debt / color lint | `src/assets/css/**`、SFC `<style>` 与模板内联样式 |
+| SPA typecheck | `vue-tsc -p tsconfig.app.json --noEmit`（已进 `validate`） |
 
 - `css/director.css`、`css/scene-card.css`、`css/mood.css`、`css/viewer.css` **没有任何页面加载**（只有 11 个 `docs/*.html` 用到 `css/design-system.css` + `css/docs.css`）。
 - `server/diagnostics.js`（`redactText`/`redactConfig`/`readLogTail`）**只有 `scripts/tests/test-security.js` 引用**，生产路由完全没接。
@@ -61,11 +59,13 @@ src/
 │   ├── useBackup.ts         备份/恢复（history/projects/images → JSON）
 │   ├── useKVStore.ts        IndexedDB KV 存储
 │   ├── useImageStore.ts     IndexedDB 图片 Blob 存储
-│   ├── useToast.ts          全局提示（⚠ 当前 0 视图使用，见 C-4）
+│   ├── useToast.ts          全局提示
+│   ├── useRovingTabs.ts     tablist roving tabindex + 方向键
 │   ├── useTheme.ts          明暗主题
 │   └── useScrollReveal.ts   滚动入场（已接 prefers-reduced-motion）
 ├── components/              AppLayout / AppNav / SceneCard / AppThemeToggle /
-│                            AppToast / AppSkeleton / HistoryPanel
+│                            AppToast / AppSkeleton / HistoryPanel / VoiceStudio
+├── types/api.ts             SPA API / 场景编辑器契约
 ├── views/                   每路由一个 .vue，全部懒加载
 └── assets/css/              设计系统 Token、组件样式（应用真正加载的那一份）
 ```
@@ -107,12 +107,12 @@ src/
 - **sceneUX 纯函数** — tier / matchesSearch / searchScore / buildPreferenceProfile / readRecent 等，已从全局迁入 `src/utils/sceneUX.ts`
 - **校验入口** — `npm run validate` 串联 design lint、`build:runtime`、typecheck、场景/内容契约与大量 `scripts/tests/*`
 - **契约类型** — `types/*` + 渐进运行时：`control-operation` / `serial-queue` / `http-client` / `tts-service` / `ollama-service` / `translation-service` / `live2d-service`
-- **E2E** — Playwright：`tests/e2e/`，`npm run test:e2e`
+- **E2E** — Playwright：`tests/e2e/`，`npm run test:e2e` 会先 build；`flows.spec.ts` 跑真网关 + SD/Ollama/GPT-SoVITS/translate mock 上游，覆盖出图、配音、聊天、备份、场景保存、深链（17 cases）。
 - **CI** — `.github/workflows/quality.yml`：push/PR 跑 `npm run validate` + Playwright e2e
 
 ### 仍待推进
 
-- **测试加深** — E2E 测试用例需更新以覆盖新 Vue SPA 路由与交互（旧版 DOM id 已变化）
+- **测试加深** — 主流程 mock 上游 E2E 已覆盖；可继续补低频控制面与异常组合。
 - **CI 硬化** — e2e 可拆夜间若 push 过慢
 - **tools/ 遗留清理** — `tools/*.js`（`prompt-policy.js` 292 行、`sd-api.js` 421 行、`icon-system.js`、`data-backup.js`）**已无 `src/` 消费者**，功能已分别迁入 `src/utils/promptPolicy.ts`、`useSDGenerate.ts`、`useBackup.ts`。当前只剩 `docs/*.html` 与 `scripts/maintenance/generate-dual-showcase-candidates.js` 引用。迁移成本已变成「删除 + 改 docs」，见 D-2。
 
@@ -171,8 +171,7 @@ src/
   改法：加 `safeLocalUrl()`（仅 http、hostname 属于 loopback 集合），在 `control.js:352` 与 `server/config.js:58-62` 两处都校验；代理改用 `router` 选项按请求解析 target。
 - ✅ **S-4 `/api/status` 泄露原始 token；无 Host 校验 → DNS rebinding**。`routes/control.js:294` 把 `shareLink`（含 `?token=`）放进响应，而 `/api/status`（`:271`）没有 `localOnly`。叠加 `server/security.js:54` 对任何 loopback socket 无条件放行、且不校验 `Host`/`Origin`：用户访问的任意网页可 rebind 到 127.0.0.1 → `POST /api/start` 开隧道 → 读 `shareLink` 拿 token → 获得持久远程访问。
   改法：`tokenAuth` 前加 Host 白名单（`127.0.0.1[:port]` / `localhost[:port]` / 当前活跃 `*.trycloudflare.com`，其余 421）；`shareLink` 移到单独的 `isDirectLocalRequest` 保护端点；`/api/status` 与 `/api/logs` 补 `localOnly`。
-- ✅ **S-5 `/sdapi` 全量透传 + 无限流**。已改 8 端点白名单（其余 JSON 404）+ `SerialQueue` 加 `maxPending`（默认 16，超出回 503）。限流（token bucket）仍待做。原文：`server.js:126-128` 整段转发 `/sdapi`/`/controlnet`/`/adetailer`，SD API 可换模型、装了扩展还能碰文件系统。`services/serial-queue.ts:35` 无深度上限（实测连塞 500 个任务全部接受）；`/api/chat`、`/api/tts`、`/api/translate` 无限流。
-  改法：只放行 `useSDGenerate.ts` 真正用到的 6 个端点（`sd-models`/`samplers`/`schedulers`/`progress`/`txt2img`/`interrupt`），其余 404；`SerialQueue` 加 `maxPending` → 503；GPU 路由加 token bucket。
+- ✅ **S-5 `/sdapi` 全量透传 + 无限流**。已改 8 端点白名单（其余 JSON 404）+ `SerialQueue` 加 `maxPending`（默认 16，超出回 503）+ 隧道请求 token bucket：`txt2img`、chat、tts、translate、voice prepare 分桶限流，直连本机不受限。`test-gateway-contract.js` 并发突发请求断言真实路由回 `429` + `Retry-After`，避免顺序请求因补桶而测出假绿。
 - ✅ **S-6 500 响应回带绝对路径**。`server.js:157` `detail:error.message`。与 B-3 一起修。
 
 ### B — 后端正确性（P1）
@@ -184,7 +183,7 @@ src/
 - ✅ **B-3 错误处理丢弃 `err.status`，404 与 413 都变成 500**。`server.js:154` 只特判 JSON 解析失败。已实测：`GET /scene-showcase/images/sc999.jpg` → `500` 且 `detail` 含完整主机路径；60KB body → `500 "request entity too large"` 而非 413。
 - ✅ **B-4 SPA catch-all 把未知 API 路由吞成 `200 text/html`**。`server.js:143-147` 匹配 `*`，而 `/api/does-not-exist` 没有扩展名 → 实测返回 SPA 外壳且状态 200。改法：`if (req.path.startsWith('/api/')) return next()`。
 - ✅ **B-5 运行时改 host 到不了 SD 代理**。`control.js:352` 改的是 `config.SD_HOST`，但 `server.js:123` 在构造时就把 `target` 定住了 → 面板报成功，`/sdapi/*` 仍打旧 host 直到重启。改法：用代理的 `router` 选项按请求解析。
-- ⬜ **B-6 其余**：
+- ✅ **B-6 其余**：
   - ✅ 被 abort 的任务仍占 FIFO 位：`SerialQueue.run` 加了 `signal` 选项，排队期间断开即出队；chat 与 tts 两条路径都已接上（含回归用例）。
   - ✅ 翻译服务：就绪轮询 handle 提为 `readyPoll` 并在 `close()` 里清掉；exit handler 不再提前置空 `starting`（那会让并发 `ensureServer` 再 spawn 一个 python）。
   - ✅ `runScriptAsync` 超时改走新的 `killProcessTree`（Windows 上 `taskkill /T /F`），不再孤立 SD/语音进程；stdout/stderr 加 64KB 上限。
@@ -192,7 +191,7 @@ src/
   - ✅ 已在 `startGateway` 补 `unhandledRejection` / `uncaughtException` 兜底。
   - ✅ 两处回滚 catch 改走 `attemptRollback`：回滚失败时返回 500 + `dataIntegrity:"INCONSISTENT"` + 恢复指引，不再假装只是"保存失败"。其余空 catch 仍在。
   - ✅ `/api/logs` 改走 `readLogTail`（只 seek 尾部 64KB）。`gateway.log` 轮转仍待做。
-  - API 有 4 种错误信封；`/api/status` 探测失败回 500，而三个同族 `*-status` 回 200 + `online:false`。
+  - ✅ 错误信封已统一到 `server/http-envelope.js`：失败 `{ok:false,error,detail?,code?}`、成功 `{ok:true,...}`；`/api/status` 探测失败改为 `200 + ok:false + degraded`，与三个同族 `*-status` 对齐。网关契约测试覆盖 400/401/403/404/413/429。
 
 ### C — 前端正确性（P2，静默数据丢失）
 
@@ -201,22 +200,22 @@ src/
 - ✅ **C-3 `useSceneStore` 是死代码**。已扩成六个数据文件的唯一加载口（带 `response.ok`、单版本号、`reload()`），7 处重复 fetch 全部改走它，`src/` 现在 0 处直接 `fetch('/data/...')`。原文：全 `src/` 仅 `sceneStore.ts:15` 自身定义一处匹配。为「单例缓存 scenes.json」而建的 store 零消费者，同时 7 处独立 fetch 该文件、用 4 种不同 cache key —— 包括 `SceneManagerView.vue:833` 的 `?v=' + Date.now()`，保证每次进页面都全量传 230KB。
 - ✅ **C-4 blob URL 泄漏 + 无 unmount 清理**。已修四处：`useSDGenerate` 覆盖前 revoke + 新增 `dispose()`（`onUnmounted` 自动挂载，停轮询 + abort in-flight）；`HomeView` 卸载释放全部封面 URL 并加 `unmounted` 竞态标记；`PromptBuilderView` 卸载调 `clearVoiceAudio()`；`GalleryView` 查看器翻页即释放上一张（`releaseViewerUrl`，并避开仍被缩略图引用的 URL）。
 - ✅ **C-5 无 404 路由、无滚动恢复**。已加 `:pathMatch(.*)*` → 新建 `src/views/NotFoundView.vue`，以及 `scrollBehavior`（savedPosition / hash 锚点 / 回顶）。
-- ⬜ **C-6 `PromptBuilderView.vue` 1243 行装了六个子系统**：prompt 管线（`:761-857`）、配音工作室（`:630-666`/`:1135-1269`）、出图队列（`:979-1007`）、错误恢复（`:1021-1060`）、备份 UI（`:962-977`）、深链恢复（`:1283-1322`）。`SceneManagerView.vue`（877）与 `ControlView.vue`（870）紧随其后。
-- ⬜ **C-7 类型纪律**：`src/` 有 213 处 `any`、48 处 `as any`、56 处裸 `fetch(`。`SceneManagerView.vue:318-340` 把整个领域模型声明为 `any[]`/`any`；`ControlView.vue:376` 把 `/api/status` 契约整体当 `any`。多数 `fetch` 不查 `response.ok`（`sceneStore.ts:27`、`promptBuilderStore.ts:249-254` 等 10 处）→ HTML 错误页会被当数据解析。
-- ✅ **C-8 四套并存的 toast，全局那套零使用**。`ColorScriptView` 与 `ScenarioView` 已改用 `useToast`（前者的 `.cs-toast` 无样式 bug 随之消失）；`AppToast` 同时修掉嵌套 live region 与「关闭动作挂在不可聚焦 div 上」。`ControlView` 自建那套仍在。原文：`useToast` + `AppToast.vue` 已挂在 `App.vue:7` 却无视图 import；另有 `promptBuilderStore.flash()`、`ControlView.vue:254` 自建、`ScenarioView.vue:194-203` 与 `ColorScriptView.vue:151-156` 直接 `document.createElement` 内联样式。其中 `ColorScriptView` 用的 `.cs-toast` **在任何样式表里都没有定义** —— 那个 toast 现在渲染为页面底部的无样式裸文本，是功能 bug 不只是债。
+- ⬜ **C-6 `PromptBuilderView.vue` 仍偏大（现约 1155 行）**。已抽出 `VoiceStudio.vue`（状态、翻译、TTS、WAV URL 生命周期归组件自身），但 prompt 管线、出图队列/恢复、备份 UI、深链恢复仍在视图内。继续拆分时按独立所有权做，不要只为行数搬函数。
+- ⬜ **C-7 类型纪律**：已从约 225 处 `any` 降到 163；`SceneManagerView` 的领域模型、`ControlView` 的状态契约、`useBackup` 持久化记录已类型化，关键 `fetch` 已补 `response.ok`。仍需逐步收敛 `SceneExplorer`、`useVoice`、`useLive2D` 等低风险剩余项。
+- ✅ **C-8 四套并存的 toast**。`ControlView` 已迁到全局 `useToast`；`ColorScriptView` / `ScenarioView` 也复用它，`AppToast` 负责唯一 live region 与可聚焦关闭按钮。
 
 ### P — 性能
 
 > bundle 本身是健康的：入口 107.4KB（gzip 42.5KB）、14 条路由全懒加载、925KB 的 pixi/Cubism 块已正确隔离在 `/chat` 之后。问题全在资源与数据。
 
-- ⬜ **P-1 42.85MB 的 Live2D 贴图**。`assets/live2d/nene/textures/texture_00.png`，8192×8192 RGBA，PNG 不可 gzip → 首次进 `/chat` 连 `nene.moc3` 共 45.35MB 实打实走网络。改法：重导为 4096² WebP 或 KTX2（约 2–4MB）；并把下载改为用户显式开启 Live2D 后才触发，而非 `onMounted`。
+- ⏸️ **P-1 42.85MB 的 Live2D 贴图**。用户明确暂不处理；保持现状。若重启，方案仍是 4096² WebP/KTX2 + 显式开启 Live2D 后下载。
 - ✅ **P-2 `scenes.json` 被 fetch 7 次**（892.5KB / gzip 229.7KB / 297 条，4 种 cache key）。随 C-3 修完：现在整个会话只取一次。
 - ✅ **P-3 带 hash 的产物没有 `immutable`**。`dist/_app` 已改 `max-age=31536000, immutable`，`dist/index.html` 保持 `no-cache`（已加路由级断言）。原文：`server.js:95` 给 `dist/` 一律 `max-age=86400` → 34 个 JS/CSS 文件永远每天回验一次。改法：`dist/_app` → `max-age=31536000, immutable`；仅 `dist/index.html` 保持 `no-cache`。
 - ✅ **P-4 字体在打包后的 CSS 里 `@import`**。已移到 `index.html` 的 `preconnect` + `link`。字重保留 5 个：`src/` 里 500 用了 16 次、700 用了 49 次，砍掉会让浏览器合成假粗体。原文：`src/assets/css/design-system.css:8`，已确认它出现在构建产物 CSS 的第 1 个字符 → HTML→CSS→CSS→字体 三段串行 RTT，且请求了 5 个 CJK 字重。改法：改 `index.html` 里 `preconnect` + `link`，字重砍到 2–3 个。
 - ✅ **P-5 110KB 路由专用 CSS 全局加载**。`director.css` / `chat.css` 已移入各自视图 → 全局 CSS **139KB → 45.6KB（−67%）**。原文：`src/main.ts:5-10` 无条件 import `director.css`（91.6KB）+ `chat.css`（18.6KB），占 139KB 全局包的 79%。改法：把这两个 import 移进各自视图，`cssCodeSplit` 已开启会自动切块。
 - ✅ **P-6 首屏大图**。已补 width/height（实测 1024×1344，消除布局抖动）+ 首图 fetchpriority=high。WebP/srcss 转码仍待做（需要图像工具）。原文：`HomeView.vue:33-34` 两张 1024×1344 JPEG 合计 787KB，无 `width`/`height`/`srcset`、未用 WebP（而立绘已经在用 WebP）。
 - ✅ **P-7 无 Brotli**。新增 scripts/maintenance/precompress.js（构建后预压 .br/.gz，已挂 build:all）+ 服务端优先发预压产物。实测 scenes.json 913KB → 233KB gzip → **155KB brotli**；全量 3412KB → 733KB。原文：实测 `scenes.json` 229.7 → **155.2KB**（−32%）。改法：`vite-plugin-compression` 预压 + 静态预压产物服务。
-- ⬜ **P-8 42.85MB 贴图已入 git 版本库**（`git ls-files` 已确认）。每次 clone 都要付，且已在历史里。改法：Git LFS 或改为外部下载步骤。**重写历史是破坏性操作，需先征得确认。**
+- ⏸️ **P-8 42.85MB 贴图已入 git 版本库**。用户明确暂不处理。Git LFS / 外部下载 / 重写历史均需单独决策，后者是破坏性操作。
 - ✅ **P-9 搜索每次击键全量重算**。已加 150ms debounce（清空立即生效）+ 评分预计算 Map，比较器不再重复调 `uxSearchScore`。原文：`SceneExplorerView.vue:278` 在比较器里每次比较调 `uxSearchScore` 两次 ≈ 每次重算 4900 次评分；全 `src/` 无任何 debounce。改法：150ms debounce + 预计算评分 Map。
 - ✅ **P-10 890KB 构建输入被公开托管**。`/data` 改成 6 文件白名单，`data/scenes/*.json` 与 `history/projects/prompts.json` 等个人内容一并不再外露（已加路由级断言）。原文：`data/scenes/*.json` 是 `build-scenes.js` 的输入，被 `server.js:105` 暴露，无客户端读取。改法：移出托管根目录。
 - ✅ **P-11 `vite.config.ts` 构建配置**。已补 `manualChunks`（vendor 分块：入口 **107KB → 7.9KB** + vendor 103KB，应用改动不再让框架缓存失效）、`build.target` 与 `package.json` 的 `browserslist`。analyzer 与图片管线仍待做。
@@ -229,19 +228,18 @@ src/
   改法：把 Gallery 的陷阱抽成 `useFocusTrap()`；`design-system.css:858-885` 已有 `.overlay`/`.modal-card` 原语，四个视图仍在手搓。
 - ✅ **AX-4 主路径键盘不可达**。剧本卡与角色简介展开已改真 `<button>`（后者补 `aria-expanded`），`AppNav` 品牌改真 `RouterLink`。原文：`ScenarioView.vue:14` 剧本卡是 `<div @click>`，无 role/tabindex/keydown，而它是进入剧本查看器的唯一入口。`CharacterView.vue:38` 简介展开同样只有 click，且内容确实被 CSS 截断。`AppNav.vue:4` 把品牌做成 `<div role="link" tabindex="0">` 而非 `RouterLink`。
 - ✅ **AX-5 `aria-current` 全站 0 处**。主/次导航都已补；顺带删掉 `<summary aria-label>`（它会盖掉可见文字「更多」，违反 SC 2.5.3）。原文：`AppNav.vue:21` 仅用 class 标记当前路由。
-- ⬜ **AX-6 其余**：
+- ✅ **AX-6 其余**：
   - ✅ `prefers-color-scheme`：`useTheme` 已导出 `preferredTheme()`，首访跟随系统，未显式选过主题时随系统实时切换；`index.html` 补 `<meta name="color-scheme">`。
   - ✅ 根字号：`15px` → `93.75%`（移动端 `14px` → `87.5%`），视觉不变但恢复跟随浏览器字号设置（SC 1.4.4）。
   - ✅ reduced-motion：全局块补 `transition-duration`；`useLive2D.setPaused` 现在判 `prefers-reduced-motion` 并停 pixi ticker（CSS 关不掉 WebGL）。
   - ✅ 公网暴露开关（`role="switch"`）已补 `aria-labelledby`（随 AX-2 一起修）。
-  - `CharacterView.vue:9` 与 `ChatView.vue:18` 声明了 `role="tablist"` 却无 `tabpanel`/`aria-controls`/方向键 —— 半成品模式比纯按钮更糟。
-  - `ChatView.vue:69` 把 `aria-live="polite"` 加在整个消息历史上 → 流式输出每个 token 都重播报。
-  - **mood 卡文字是潜伏的 1.38:1**：`mood.css:22` 设 `color: var(--mood-color)`，目前只因 `director.css:944` 泄漏出一条未作用域限定的覆盖才看起来正常。正确作用域化 `director.css` 会立刻让标题掉到 1.38:1。`design-system.css:58-63` 已记录该陷阱并提供 `--mood-*-text`。
-  - **对比度门槛只测了 `--bg-deep` 一种背景**：合成到 `--bg-elevated` 上时 `--text-muted` 为 **4.03**、`--danger` 为 **3.79**，均不达标，且二者确实用在该表面上。
+  - ✅ `CharacterView` / `ChatView` 已复用 `useRovingTabs`：`tabpanel`、`aria-controls`、roving tabindex 与方向键均齐全。
+  - ✅ 聊天记录由整段 `aria-live` 改为 `role="log"`，流式回复收尾时只单次播报。
+  - ✅ mood 标题改走 `--mood-*-text`；对比度门槛核算深/base/surface/elevated 四个表面及 3:1 非文字图形。
 
 ### D — CSS 架构 / 技术债
 
-- ⬜ **D-1 `director.css` 有 571 个未作用域选择器、`chat.css` 94 个**，两者都全局 import → 与视图 `<style>` 产生 **107 处类名冲突**（`.scene-search` 被定义三次）。scoped 样式靠 `[data-v-*]` 权重胜出，所以现在是静默的 —— 直到有人把 `director.css` 正确作用域化，两个视图会当场丢掉 focus 样式。`src/` 有 57 个 `!important`，多数在跟这个泄漏对抗。
+- ✅ **D-1 `director.css` / `chat.css` 选择器泄漏**。普通 director 选择器均根在 `.pb`，chat 选择器均根在 `.chat-page`；`HistoryPanel` 子组件样式因此仍可命中，Teleport 的备份弹层改唯一 `.pb-backup-*` 命名空间。`test-page-architecture.js` 会拒绝未来新增的裸类选择器。
 - ✅ **D-2 删掉 `css/` 里 4 个孤儿文件**（连 `css/design-system.css` 共 5 个：它是 `src/` 那份的分叉副本，已漂移 20 行）。`docs/*.html` 改指唯一实现，服务端只暴露那一个文件。`css/` 现在只剩 `docs.css`。`tools/*.js` 清理仍待做。原文：（`director.css`/`scene-card.css`/`mood.css`/`viewer.css`，无人加载），并让 `docs/*.html` 指向真正的设计系统。同时清理 `tools/*.js`（见「仍待推进」）。
 
 #### 已恢复（2026-07-27 本轮）

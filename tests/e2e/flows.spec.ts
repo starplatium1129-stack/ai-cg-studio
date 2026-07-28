@@ -1,5 +1,5 @@
 ﻿import { readFileSync } from 'node:fs';
-import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
+import { expect, test, type APIRequestContext, type Locator, type Page } from '@playwright/test';
 import MOCK_PORTS from './mock-ports.json';
 
 /**
@@ -77,8 +77,8 @@ async function openGenerationSettings(page: Page) {
  * 常规 check() 会被判成 pointer 被拦截。force 让点击直接落在 input 上，
  * v-model 的 change 仍会触发。
  */
-async function toggle(page: Page, selector: string, on: boolean) {
-  const input = page.locator(selector);
+async function toggle(page: Page, target: string | Locator, on: boolean) {
+  const input = typeof target === 'string' ? page.locator(target) : target;
   if (await input.isChecked() === on) return;
   // design-system 的开关把 input 做成 `opacity:0; width:0; height:0`，
   // 真正可点的是同级的 .slider/.voice-switch。所以点包裹的 <label>：
@@ -153,7 +153,7 @@ test('flow 1b · 出图失败：CUDA OOM 分类成可执行的降负载重试', 
   await expect(page.locator('.api-status .badge')).toHaveText(/SD 已连接/);
 
   await page.locator('.sd-inline-options select').first().selectOption('1216x1664');
-  await toggle(page, '.hires-label input[type="checkbox"]', true);
+  await toggle(page, page.getByRole('checkbox', { name: 'hires.fix', exact: true }), true);
   await page.getByRole('button', { name: '生成图片' }).click();
 
   // 分类结果必须是显存不足，而不是笼统的"生成失败"
