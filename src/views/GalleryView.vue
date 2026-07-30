@@ -1,15 +1,23 @@
 <template>
   <article class="gallery-shell gallery-page">
-    <header class="gallery-intro">
+    <ArchivePageHero
+      class="gallery-intro"
+      chapter="06"
+      section="Private archive"
+      shape="frame"
+      label="私人作品档案的画框粒子标记"
+      caption="COLLECTION 06 / 08"
+      compact
+    >
       <div>
         <div class="gallery-kicker">Private collection</div>
         <h1 class="gallery-title">作品册</h1>
         <p class="gallery-subtitle">原比例安静欣赏。先看画面，参数只在你点开时出现。</p>
       </div>
-      <div class="gallery-count">{{ countLabel }}</div>
-    </header>
+      <template #meta><div class="gallery-count">{{ countLabel }}</div></template>
+    </ArchivePageHero>
 
-    <div class="gallery-toolbar sticky-toolbar" aria-label="作品筛选">
+    <div class="gallery-toolbar sticky-toolbar" aria-label="作品筛选" data-reveal>
       <button class="gallery-filter" :class="{ active: favoriteOnly }" type="button" @click="favoriteOnly = !favoriteOnly">
         ♥ 收藏 {{ favoriteCount }}
       </button>
@@ -20,13 +28,15 @@
       <span class="gallery-toolbar-note">点作品进入沉浸观画</span>
     </div>
 
-    <section aria-live="polite">
-      <div v-if="!visible.length" class="empty-state">
-        <div class="empty-state-icon">✦</div>
-        <h2>展墙还在等第一幅作品</h2>
-        <p>完成绘制后，原图会按自己的横竖比例进这里。作品只存在这台电脑，参数不挡画面。</p>
+    <section aria-live="polite" data-reveal data-reveal-delay="1">
+      <ArchiveStatePanel
+        v-if="!visible.length"
+        kind="empty"
+        title="展墙还在等第一幅作品"
+        message="完成绘制后，原图会按自己的横竖比例进这里。作品只存在这台电脑，参数不挡画面。"
+      >
         <RouterLink class="btn btn-primary" to="/prompt-builder">开始绘制</RouterLink>
-      </div>
+      </ArchiveStatePanel>
       <div v-else class="gallery-wall">
         <template v-for="group in groups" :key="group.key">
           <div class="gallery-section">{{ group.key }}</div>
@@ -145,10 +155,14 @@ import { kvInit, kvGet, kvSet } from '@/composables/useKVStore'
 import { imgGet, imgDelete } from '@/composables/useImageStore'
 import { useSceneStore } from '@/stores/sceneStore'
 import { useFocusTrap } from '@/composables/useFocusTrap'
+import ArchivePageHero from '@/components/visual/ArchivePageHero.vue'
+import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
+import { useScrollReveal } from '@/composables/useScrollReveal'
 import type { Scene, LoraMeta } from '@/stores/sceneStore'
 import { artworkTimestamp, parseArtworkRecords, type ArtworkRecord } from '@/types/artwork'
 
 const sceneStore = useSceneStore()
+useScrollReveal()
 
 const HISTORY_KEY = 'aics_pb_history'
 // 必须与 useBackup.ts 的 PROJECT_KEY 一致。曾经这里写 'aics_projects'，
@@ -501,7 +515,7 @@ watch(visible, () => { hydrateCards() })
 
 <style scoped>
 .gallery-shell { width:min(1880px,100%); margin:0 auto; padding:clamp(24px,4vw,64px) clamp(14px,3vw,48px) var(--s-8); }
-.gallery-intro { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:end; gap:var(--s-5); margin:0 auto clamp(24px,4vw,48px); max-width:1500px; }
+.gallery-intro { margin:0 auto clamp(24px,4vw,48px); max-width:1500px; }
 .gallery-title { margin:0; color:var(--text-primary); font-family:var(--font-display); font-size:clamp(2rem,4vw,4.4rem); font-weight:760; letter-spacing:-.045em; line-height:.98; }
 .gallery-subtitle { max-width:660px; margin:var(--s-3) 0 0; color:var(--text-secondary); font-size:clamp(.86rem,1.2vw,1rem); line-height:1.8; }
 .gallery-count { color:var(--text-muted); font:650 var(--fs-label-xs) var(--font-mono); letter-spacing:.08em; white-space:nowrap; }
@@ -538,7 +552,7 @@ watch(visible, () => { hydrateCards() })
 .gallery-section { column-span:all; display:flex; align-items:center; gap:var(--s-3); margin:var(--s-3) 0 var(--s-4); color:var(--text-muted); font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.13em; text-transform:uppercase; }
 .gallery-section::after { content:""; height:1px; flex:1; background:var(--border-soft); }
 
-@media (max-width:900px) { .gallery-intro { grid-template-columns:1fr; } .gallery-count { display:none; } }
+@media (max-width:900px) { .gallery-count { display:none; } }
 @media (max-width:600px) {
   .gallery-shell { padding:var(--s-5) var(--s-3) var(--s-8); }
   .gallery-wall { columns:2 135px; column-gap:var(--s-3); }

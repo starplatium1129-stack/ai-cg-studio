@@ -4,7 +4,12 @@
     <section class="container">
       <div class="home-hero">
         <div class="hero-copy">
-          <span class="eyebrow">✦ NENE &amp; NATSUME ATELIER</span>
+          <div class="hero-register" aria-label="本期绘境信息">
+            <span>Featured edition</span>
+            <span>{{ sceneCountCopy }}</span>
+            <span>Local studio</span>
+          </div>
+          <span class="eyebrow">NENE &amp; NATSUME ATELIER</span>
           <h1 class="hero-title">绫季绘境<span class="jp">把心动的一瞬，画成一张 CG</span></h1>
           <p class="hero-sub">选一个想画的瞬间。角色、情绪与光线会替你备好，你只管按下出图。</p>
           <p class="hero-jp">「 ときめきの一瞬を、一枚の CG に 」</p>
@@ -30,6 +35,14 @@
           </div>
         </div>
         <aside class="hero-orbit" aria-label="宁宁与夏目的角色视觉">
+        <div class="hero-watermark" aria-hidden="true">ATELIER</div>
+        <SemanticParticleField
+          class="hero-particles"
+          shape="atelier"
+          density="ambient"
+          label="粒子组成的绘境工作室双轨标记"
+          caption="ARCHIVE / 01"
+        />
         <!-- width/height 是内在尺寸（实测 1024×1344），用来预留版位避免布局抖动；
              CSS 仍然控制显示尺寸。这两张是首屏 LCP 候选，故不 lazy 且给高优先级。 -->
         <picture>
@@ -216,6 +229,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, reactive } from 'vue'
 import SceneCard from '@/components/SceneCard.vue'
+import SemanticParticleField from '@/components/visual/SemanticParticleField.vue'
 import { kvInit, kvGet, kvSet } from '@/composables/useKVStore'
 import { imgGet } from '@/composables/useImageStore'
 import { readRecent } from '@/utils/sceneUX'
@@ -381,15 +395,20 @@ onUnmounted(() => {
 .home-hero { position:relative; padding:var(--s-8) 0 var(--s-6); display:grid; grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr); grid-template-rows:auto auto; gap:var(--s-5) var(--s-6); align-items:end; }
 .home-hero::before { content:""; position:absolute; left:-18px; top:var(--s-8); width:2px; height:92px; border-radius:var(--r-pill); background:linear-gradient(180deg,var(--accent),var(--accent-violet),transparent); opacity:.72; }
 .hero-copy { grid-column:1; grid-row:1; align-self:end; min-width:0; }
+.hero-register { display:flex; align-items:center; gap:var(--s-3); margin-bottom:var(--s-4); color:var(--text-muted); font:650 var(--fs-mono-xs) var(--font-mono); letter-spacing:.12em; text-transform:uppercase; }
+.hero-register span { display:inline-flex; align-items:center; gap:var(--s-2); }
+.hero-register span+span::before { content:""; width:18px; height:1px; background:var(--archive-blue); opacity:.72; }
 .hero-title { max-width:12ch; text-wrap:balance; font-size:clamp(2.4rem,4.5vw,3.8rem); font-weight:800; line-height:1.08; margin-bottom:var(--s-4); letter-spacing:-0.025em; }
 .hero-title :deep(.accent) { background:linear-gradient(135deg,var(--accent) 60%,var(--mood-love)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
 .jp { display:block; margin-top:var(--s-2); font-size:.25em; letter-spacing:.32em; text-transform:uppercase; color:var(--accent-violet); -webkit-text-fill-color:var(--accent-violet); }
 .hero-sub { font-size:var(--fs-body-lg); color:var(--text-secondary); margin-bottom:var(--s-3); max-width:520px; line-height:1.7; }
 .hero-jp { color:var(--accent-violet); font-size:var(--fs-label); letter-spacing:0.3em; margin:0 0 var(--s-5); opacity:.9; }
 .ctas { display:flex; gap:var(--s-3); flex-wrap:wrap; margin-bottom:var(--s-4); align-items:center; }
-.hero-orbit { grid-column:2; grid-row:1; min-width:0; min-height:380px; position:relative; isolation:isolate; border:1px solid var(--border-soft); border-radius:var(--r-stage); overflow:hidden; background:linear-gradient(135deg,var(--accent-glow),transparent 42%),var(--stage-violet); box-shadow:inset 0 1px 0 var(--on-art-line),var(--shadow-lg); }
+.hero-orbit { grid-column:2; grid-row:1; min-width:0; min-height:380px; position:relative; isolation:isolate; border:1px solid var(--border-soft); border-radius:var(--r-xl); overflow:hidden; background:linear-gradient(135deg,var(--accent-glow),transparent 42%),var(--stage-violet); box-shadow:inset 0 1px 0 var(--on-art-line),var(--shadow-lg); }
 .hero-orbit::before { content:""; position:absolute; z-index:var(--z-raised); inset:0; pointer-events:none; background:linear-gradient(115deg,var(--on-art-sheen),transparent 18%,transparent 70%,var(--on-art-wash)); mix-blend-mode:soft-light; opacity:.48; }
 .hero-orbit::after { content:""; position:absolute; z-index:var(--z-base); inset:0; pointer-events:none; box-shadow:inset 0 0 72px color-mix(in srgb,var(--art-backdrop) 34%,transparent); }
+.hero-particles { position:absolute; z-index:var(--z-base); inset:0; min-height:100%; opacity:.54; mix-blend-mode:screen; }
+.hero-watermark { position:absolute; z-index:var(--z-base); top:var(--s-4); left:var(--s-4); color:var(--on-art-wash); font:800 clamp(2rem,5vw,4.5rem) var(--font-mono); letter-spacing:-.07em; writing-mode:vertical-rl; pointer-events:none; }
 .hero-character { position:absolute; z-index:var(--z-base); bottom:0; width:72%; height:94%; object-fit:contain; object-position:center bottom; filter:drop-shadow(0 24px 28px rgba(8,5,18,.36)); transition:transform .6s var(--ease-out),filter .6s ease; }
 /* 双人分割：原来两张各占 54% + 斜切，宽屏下右侧人物会被容器边缘切掉。
    改成各占 52% 并把 object-position 收回中心，接缝仍在中线附近。 */
@@ -466,6 +485,9 @@ onUnmounted(() => {
   .home-hero::before { display:none; }
   .hero-title { max-width:none; }
   .hero-orbit { min-height:330px; }
+  .hero-register { gap:var(--s-2); flex-wrap:wrap; }
+  .hero-register span:last-child { display:none; }
 }
 @media (prefers-reduced-motion:reduce) { .tool-card,.recent-card { transition:none; } }
+@media (prefers-reduced-transparency:reduce) { .hero-particles { mix-blend-mode:normal; opacity:.3; } }
 </style>

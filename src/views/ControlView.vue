@@ -1,5 +1,6 @@
 ﻿<template>
   <div class="control-page">
+    <RouteAtmosphere />
     <!-- /control 挂在 AppLayout 之外，所以跳转链接与 main 地标要在这里自备 -->
     <a class="skip-link" href="#control-main">跳到主要内容</a>
     <nav class="nav control-mobile-nav">
@@ -10,6 +11,7 @@
         </RouterLink>
         <div class="nav-local-actions">
           <RouterLink class="nav-local-home" to="/">← 回绘境</RouterLink>
+          <AppSoundToggle />
           <AppThemeToggle />
         </div>
       </div>
@@ -30,12 +32,21 @@
         </nav>
         <div class="control-rail-foot">
           <RouterLink class="nav-local-home" to="/">← 回绘境</RouterLink>
+          <AppSoundToggle />
           <AppThemeToggle />
         </div>
       </aside>
 
       <div class="control-content">
     <main id="control-main" class="control-shell" tabindex="-1">
+      <WorkspaceArchiveBar
+        chapter="13"
+        title="LOCAL CONTROL"
+        subtitle="GATEWAY · SD · VOICE · CHAT"
+        :status="serviceChecking || opBusy ? 'CHECKING SERVICES' : feedbackText.toUpperCase()"
+        :state="serviceChecking || opBusy ? 'active' : (readyState === 'on' ? 'success' : 'warning')"
+        shape="spark"
+      />
       <header class="control-intro">
         <div>
           <div class="gallery-kicker">Local control room</div>
@@ -288,7 +299,10 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
+import AppSoundToggle from '@/components/AppSoundToggle.vue'
 import AppThemeToggle from '@/components/AppThemeToggle.vue'
+import RouteAtmosphere from '@/components/visual/RouteAtmosphere.vue'
+import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import { useToast } from '@/composables/useToast'
 // /api/status 与 /api/logs 的契约类型。原先整体当 any —— 字段拼错、后端改名
 // 都要等运行时才炸，而这个视图正好在破坏性路径上（改上游 host、启停服务、

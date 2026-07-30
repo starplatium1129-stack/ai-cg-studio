@@ -10,7 +10,7 @@
           class="toast-item"
           :class="`toast-${t.type}`"
         >
-          <span class="toast-icon" aria-hidden="true">{{ icons[t.type] }}</span>
+          <span class="toast-icon" aria-hidden="true"><ArchiveIcon :name="icons[t.type]" /></span>
           <span class="toast-msg">{{ t.msg }}</span>
           <!-- 关闭动作挂在按钮本身，而不是外层 div：
                原先 div 才是 @click 的宿主，但它不可聚焦 -->
@@ -19,7 +19,7 @@
             type="button"
             :aria-label="`关闭提示：${t.msg}`"
             @click="dismiss(t.id)"
-          >×</button>
+          ><ArchiveIcon name="close" /></button>
         </div>
       </TransitionGroup>
     </div>
@@ -27,15 +27,16 @@
 </template>
 
 <script setup lang="ts">
-import { useToast } from '@/composables/useToast'
+import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
+import { useToast, type ToastType } from '@/composables/useToast'
 
 const { toasts, dismiss } = useToast()
 
-const icons: Record<string, string> = {
-  info:    'ℹ',
-  success: '✓',
-  error:   '✕',
-  warning: '⚠',
+const icons: Record<ToastType, ArchiveIconName> = {
+  info: 'info',
+  success: 'success',
+  error: 'error',
+  warning: 'warning',
 }
 </script>
 
@@ -69,7 +70,7 @@ const icons: Record<string, string> = {
   font-weight: 600;
   color: var(--text-primary);
   pointer-events: auto;
-  cursor: pointer;
+  cursor: default;
   max-width: min(460px, 90vw);
   white-space: pre-wrap;
   word-break: break-word;
@@ -77,9 +78,9 @@ const icons: Record<string, string> = {
 }
 .toast-item:hover { opacity: .88; }
 
-.toast-icon { font-size: 1em; flex-shrink: 0; }
+.toast-icon { display:grid; place-items:center; font-size: 1em; flex-shrink: 0; }
 .toast-msg  { flex: 1; }
-.toast-close { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 0 0 0 var(--s-1); font-size: 1.1em; line-height: 1; }
+.toast-close { display:grid; place-items:center; background:none; border:none; color:var(--text-muted); cursor:pointer; padding:var(--s-1); font-size:.9em; line-height:1; }
 
 /* 图标是这四种提示唯一的颜色信号,按设计系统契约必须走 --*-text
    (原 token 是给色块/描边调的,浅色主题下当图标只有 1.9–2.6:1) */

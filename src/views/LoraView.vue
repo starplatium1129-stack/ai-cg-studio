@@ -1,10 +1,35 @@
 ﻿<template>
   <article class="page" style="--page-max:1100px">
+    <WorkspaceArchiveBar
+      chapter="10"
+      title="MODEL SHELF"
+      :subtitle="loading ? 'READING LOCAL CATALOG' : `${loras.length} CHARACTER PROFILES`"
+      :status="loading ? 'SCANNING' : (loras.length ? 'CATALOG READY' : 'EMPTY CATALOG')"
+      :state="loading ? 'active' : (loras.length ? 'success' : 'warning')"
+      shape="frame"
+    />
     <div class="page-kicker">Model shelf</div>
-    <h1 class="title">模型</h1>
-    <p class="subtitle">模型决定她的脸和气质能不能稳住。出图时自动带上，这里只是让你知道带的是什么。</p>
-    <div v-if="loading" class="empty-state"><div class="empty-state-icon">⏳</div><p>正在加载模型数据…</p></div>
-    <div v-else-if="!loras.length" class="empty-state"><div class="empty-state-icon">🧪</div><p>暂无模型数据。</p></div>
+    <div class="lora-title-row">
+      <div>
+        <h1 class="title">模型</h1>
+        <p class="subtitle">模型决定她的脸和气质能不能稳住。出图时自动带上，这里只是让你知道带的是什么。</p>
+      </div>
+      <RouterLink class="btn btn-primary" to="/training?kind=lora">打开训练台</RouterLink>
+    </div>
+    <ArchiveStatePanel
+      v-if="loading"
+      kind="loading"
+      title="正在读取模型目录"
+      message="正在核对本机 LoRA 档案与推荐权重。"
+    />
+    <ArchiveStatePanel
+      v-else-if="!loras.length"
+      kind="empty"
+      title="模型目录还是空的"
+      message="完成一次 LoRA 训练或导入模型后，资料会出现在这里。"
+    >
+      <RouterLink class="btn btn-primary" to="/training?kind=lora">前往训练台</RouterLink>
+    </ArchiveStatePanel>
     <div v-else class="lora-grid">
       <div v-for="l in loras" :key="l.id" class="lora-card">
         <div class="lora-header">
@@ -29,6 +54,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useSceneStore } from '@/stores/sceneStore'
+import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
+import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import {
   formatLoraWeight,
   parseLoraCatalog,
@@ -49,6 +76,15 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+.lora-title-row {
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:var(--s-4);
+  margin-bottom:var(--s-5);
+}
+.lora-title-row .title { margin-bottom:var(--s-2); }
+.lora-title-row .subtitle { margin-bottom:0; }
 .lora-grid { display:grid; gap:var(--s-4); grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); }
 .lora-card { padding:var(--s-5); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); }
 .lora-header { display:flex; align-items:baseline; gap:var(--s-2); margin-bottom:var(--s-2); }
@@ -60,4 +96,8 @@ onMounted(async () => {
 .lora-triggers { display:flex; flex-wrap:wrap; gap:var(--s-1); align-items:center; }
 .lora-label { font-size:var(--fs-label-xs); color:var(--text-muted); font-weight:700; letter-spacing:.06em; }
 .lora-tag { padding:2px var(--s-2); background:var(--accent-soft); color:var(--accent); border-radius:var(--r-pill); font-size:var(--fs-mono-xs); }
+
+@media (max-width:640px) {
+  .lora-title-row { align-items:flex-start; flex-direction:column; }
+}
 </style>

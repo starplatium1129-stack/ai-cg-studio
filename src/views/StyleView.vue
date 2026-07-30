@@ -1,14 +1,23 @@
 ﻿<template>
   <article class="page style-page" style="--page-max:1000px">
     <a class="nav-back" href="/" @click.prevent="$router.push('/')">← 回首页</a>
-    <div class="page-kicker">Art direction</div>
-    <h1 class="title">画风</h1>
-    <p class="subtitle">先定下今天的调子。选好之后，绘制台会让整张画面都听这个调子。</p>
+    <ArchivePageHero
+      chapter="04"
+      section="Visual grammar"
+      shape="spark"
+      label="由色彩和光线组成的抽象粒子标记"
+      caption="PALETTE 04 / 08"
+      compact
+    >
+      <div class="page-kicker">Art direction</div>
+      <h1 class="title">画风</h1>
+      <p class="subtitle">先定下今天的调子。选好之后，绘制台会让整张画面都听这个调子。</p>
+    </ArchivePageHero>
 
-    <div class="section-title">色彩氛围 (Color Moods)</div>
-    <p class="note mb-3">点一张色板，会带着对应情绪色调进入开始绘制。</p>
+    <div class="section-title" data-reveal>色彩氛围 (Color Moods)</div>
+    <p class="note mb-3" data-reveal>点一张色板，会带着对应情绪色调进入开始绘制。</p>
 
-    <div class="mood-grid mood-grid-lg">
+    <div class="mood-grid mood-grid-lg" data-reveal data-reveal-delay="1">
       <RouterLink
         v-for="m in MOODS"
         :key="m.id"
@@ -33,12 +42,12 @@
       </RouterLink>
     </div>
 
-    <div class="style-actions">
+    <div class="style-actions" data-reveal data-reveal-delay="2">
       <RouterLink to="/color-script" class="btn btn-ghost">📖 查看完整色彩剧本 (Color Script)</RouterLink>
       <RouterLink to="/prompt-builder" class="btn btn-primary">✦ 直接开始绘制</RouterLink>
     </div>
 
-    <section class="style-tips card-info">
+    <section class="style-tips card-info" data-reveal data-reveal-delay="3">
       <h2 class="section-title m-0">使用提示</h2>
       <ul class="tip-list">
         <li>色板会写入导演台的「色彩情调」，并进入 Prompt。</li>
@@ -51,8 +60,11 @@
 
 <script setup lang="ts">
 import { COLOR_MOODS } from '@/config/promptConstants'
+import ArchivePageHero from '@/components/visual/ArchivePageHero.vue'
+import { useScrollReveal } from '@/composables/useScrollReveal'
 
 const MOODS = COLOR_MOODS
+useScrollReveal()
 </script>
 
 <style scoped>

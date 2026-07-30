@@ -1,4 +1,5 @@
 import { ref, readonly } from 'vue'
+import { playInterfaceTone, type InterfaceTone } from '@/composables/useInterfaceFeedback'
 
 export type ToastType = 'info' | 'success' | 'error' | 'warning'
 
@@ -16,6 +17,10 @@ export function useToast() {
   function show(msg: string, type: ToastType = 'info', duration = 2800) {
     const id = ++nextId
     toasts.value.push({ id, msg, type, duration })
+    const tones: Record<ToastType, InterfaceTone> = {
+      info: 'tap', success: 'success', error: 'warning', warning: 'warning',
+    }
+    playInterfaceTone(tones[type])
     setTimeout(() => dismiss(id), duration)
   }
 

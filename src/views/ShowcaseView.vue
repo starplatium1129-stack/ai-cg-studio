@@ -1,7 +1,14 @@
 ﻿<template>
   <article class="page showcase-page">
     <a @click.prevent="$router.push('/')" href="/" class="nav-back">← 回首页</a>
-    <section class="showcase-hero">
+    <ArchivePageHero
+      class="showcase-archive"
+      chapter="05"
+      section="Approved works"
+      shape="atelier"
+      label="审核样张档案的工作室粒子标记"
+      caption="SHOWCASE 05 / 08"
+    >
       <div class="showcase-copy">
         <div class="page-kicker">Approved Scene Gallery</div>
         <h1>场景，实际能画成什么样</h1>
@@ -16,9 +23,9 @@
           <div class="hero-stat"><strong>{{ stats.r15 }}</strong><span>R15</span></div>
         </div>
       </div>
-    </section>
+    </ArchivePageHero>
 
-    <div class="toolbar-shell" aria-label="样张筛选">
+    <div class="toolbar-shell" aria-label="样张筛选" data-reveal>
       <div class="search-row">
         <div class="search-field">
           <input v-model="searchQuery" type="search" class="scene-search" id="showcaseSearch" placeholder="🔍 搜索场景名、情绪、角色…" />
@@ -39,21 +46,26 @@
       </div>
     </div>
 
-    <div v-if="unavailable" class="empty empty-block">
-      <span class="empty-glyph" aria-hidden="true">🖼</span>
-      <h2>展示素材暂未连接</h2>
-      <p>重新启动控制面板后会自动连接 AI/SceneShowcase 中最新的审核展示集。</p>
+    <ArchiveStatePanel
+      v-if="unavailable"
+      class="empty empty-block"
+      kind="error"
+      title="展示素材暂未连接"
+      message="重新启动控制面板后会自动连接 AI/SceneShowcase 中最新的审核展示集。"
+    >
       <RouterLink class="btn btn-primary" to="/scene-explorer">先逛灵感场景</RouterLink>
-    </div>
+    </ArchiveStatePanel>
 
-    <div v-else-if="!filtered.length" class="empty-state">
-      <div class="empty-state-icon">✦</div>
-      <h2>没有找到匹配样张</h2>
-      <p>试试更短的关键词，或者切回"全部角色 / 全部分级"。</p>
+    <ArchiveStatePanel
+      v-else-if="!filtered.length"
+      kind="empty"
+      title="没有找到匹配样张"
+      message="试试更短的关键词，或者切回“全部角色 / 全部分级”。"
+    >
       <button class="btn btn-ghost" type="button" @click="resetFilters">重置筛选</button>
-    </div>
+    </ArchiveStatePanel>
 
-    <div v-else class="showcase-grid">
+    <div v-else class="showcase-grid" data-reveal data-reveal-delay="1">
       <article
         v-for="entry in paged" :key="entry.id"
         class="sample" :class="{ 'sample-r18': entry.rating === 'R18' }"
@@ -126,6 +138,9 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { useSceneStore } from '@/stores/sceneStore'
+import ArchivePageHero from '@/components/visual/ArchivePageHero.vue'
+import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
+import { useScrollReveal } from '@/composables/useScrollReveal'
 import {
   parseShowcaseManifest,
   type ShowcaseCharacter,
@@ -134,6 +149,7 @@ import {
 } from '@/utils/showcaseManifest'
 
 const sceneStore = useSceneStore()
+useScrollReveal()
 
 const PAGE_SIZE = 24
 const SCOPE_OPTS = [{ v:'all', l:'全部' }, { v:'featured', l:'精选' }] as const
@@ -266,7 +282,7 @@ onUnmounted(() => {
 /* 空状态:替代原先的内联 padding/text-align/font-size */
 .empty-block { padding:var(--s-8) 0; text-align:center; }
 .empty-glyph { font-size:var(--fs-glyph); }
-.showcase-hero { padding:var(--s-8) var(--s-6) var(--s-5); border-radius:var(--r-xl); background:linear-gradient(135deg,var(--accent-soft),transparent 62%),var(--bg-surface); border:1px solid var(--border-soft); margin-bottom:var(--s-5); }
+.showcase-archive { margin-bottom:var(--s-5); }
 .showcase-copy h1 { font-size:clamp(1.6rem,3vw,2.8rem); font-weight:800; margin-bottom:var(--s-3); }
 .showcase-copy p { color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:1.7; margin-bottom:var(--s-4); }
 .hero-actions { display:flex; gap:var(--s-2); flex-wrap:wrap; margin-bottom:var(--s-4); }

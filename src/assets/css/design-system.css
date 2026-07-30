@@ -34,6 +34,8 @@
   --accent-soft:    rgba(244, 166, 215, 0.15);
   --accent-glow:    rgba(223, 168, 255, 0.34);
   --accent-violet:  #bba7ff;
+  --archive-blue:   #18bde8;
+  --archive-blue-soft: rgba(24, 189, 232, 0.14);
   --nene-violet:    #b895ff;
   --natsume-amber:  #f2bb68;
 
@@ -207,6 +209,8 @@
   --accent-soft:    rgba(160, 68, 114, 0.10);
   --accent-glow:    rgba(160, 68, 114, 0.18);
   --accent-violet:  #5f4499;   /* 压深:原 #7656c9 在暖米纸上不足 4.5:1 */
+  --archive-blue:   #166f91;
+  --archive-blue-soft: rgba(22, 111, 145, 0.10);
   /* 角色品牌色:浅纸上当文字/描边用,必须压深到 AA */
   --nene-violet:    #5a3d9e;
   --natsume-amber:  #7a5210;
@@ -398,7 +402,7 @@ body > *:has(+ .footer),
 }
 .nav-links { display: flex; gap: var(--s-3); align-items: center; }
 .nav-links a {
-  position:relative;
+  position:relative; display:inline-flex; align-items:center; gap:6px;
   color: var(--text-secondary); font-size: var(--fs-body-sm); font-weight: 600;
   transition: color var(--t-fast), background var(--t-fast), transform var(--t-fast) var(--ease-out);
   padding: 6px 10px; border-radius: var(--r-pill);
@@ -441,6 +445,7 @@ body > *:has(+ .footer),
   display:flex; align-items:center; gap:7px; border-radius:var(--r-md);
   padding:9px 10px; font-size: var(--fs-label-sm); white-space:nowrap;
 }
+.nav-links .archive-icon { width:1.05em; height:1.05em; }
 
 /* ---- Local atelier status ---- */
 .local-status { position:relative; }
@@ -498,7 +503,8 @@ body > *:has(+ .footer),
   color: var(--accent);
   transform: rotate(-15deg);
 }
-.theme-toggle-icon { pointer-events: none; }
+.theme-toggle-icon { display:grid; place-items:center; pointer-events:none; font-size:1rem; }
+.nav-menu-toggle .archive-icon { width:1em; height:1em; }
 
 /* ---- Page header ---- */
 .page-header {
@@ -784,6 +790,9 @@ pre code { background: none; padding: 0; color: var(--text-primary); }
    尺寸修饰: .btn-sm 紧凑行内 / 默认 40px / .btn-lg 页面主入口
    所有变体共享 disabled 与 :active 行为,页面不要再造第二套 */
 .btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
   display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2);
   min-height: 40px;
   padding: var(--s-2) var(--s-4);
@@ -794,6 +803,19 @@ pre code { background: none; padding: 0; color: var(--text-primary); }
   text-decoration: none;
   transition: background var(--t-fast), border-color var(--t-fast),
               color var(--t-fast), transform var(--t-fast), box-shadow var(--t-fast);
+}
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: -1px auto -1px -42%;
+  width: 32%;
+  background: linear-gradient(100deg, transparent, color-mix(in srgb, var(--glass-specular) 42%, transparent), transparent);
+  transform: skewX(-18deg);
+  transition: left var(--t-slow) var(--ease-out);
+  pointer-events: none;
+}
+@media (hover: hover) {
+  .btn:hover::before { left: 118%; }
 }
 .btn-primary {
   background:linear-gradient(135deg,color-mix(in srgb,var(--accent-hover) 56%,var(--accent)),var(--accent));
@@ -819,6 +841,8 @@ pre code { background: none; padding: 0; color: var(--text-primary); }
   box-shadow: none;
   pointer-events: none;
 }
+.btn:disabled::before,
+.btn[aria-disabled="true"]::before { display: none; }
 .btn-sm { min-height: 32px; padding: var(--s-1) var(--s-3); font-size: var(--fs-label-sm); border-radius: var(--r-sm); }
 .btn-lg { min-height: 52px; padding: var(--s-3) var(--s-6); font-size: var(--fs-title-xs); border-radius: var(--r-lg); }
 /* 图标按钮:DESIGN.md 禁止图标唯一化关键操作,故必须带 aria-label */

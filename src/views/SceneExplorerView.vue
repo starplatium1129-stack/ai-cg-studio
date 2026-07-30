@@ -1,15 +1,27 @@
 ﻿<template>
   <article class="page" style="--page-max: 1100px;">
-    <div class="page-kicker">Scene discovery</div>
-    <h1 class="title">灵感场景</h1>
-    <p class="subtitle">默认只看贴合人设的核心瞬间；其余 <strong>{{ scenes.length }} 个场景</strong>保留为可搜索档案，不再一次全部压到你面前。</p>
-
-    <section class="curation-panel" aria-label="场景灵感精选">
-      <div class="curation-intro">
-        <span class="curation-kicker">Nene × Natsume</span>
-        <h2>从角色的心情，走进场景</h2>
-        <p>宁宁的柔软慌乱、夏目的克制关心，才是灵感场景真正的索引。</p>
+    <section class="scene-atlas" aria-labelledby="sceneAtlasTitle">
+      <div class="scene-atlas-copy">
+        <div class="scene-atlas-register" aria-label="场景档案章节">
+          <span>Scene archive</span>
+          <strong>{{ activeThemeIndex }}</strong>
+          <span>{{ activeThemeLabel }}</span>
+        </div>
+        <div class="page-kicker">Scene discovery / 场景发现</div>
+        <h1 id="sceneAtlasTitle" class="title">灵感场景</h1>
+        <p class="subtitle">默认只看贴合人设的核心瞬间；其余 <strong>{{ scenes.length }} 个场景</strong>保留为可搜索档案。</p>
+        <div class="curation-intro">
+          <span class="curation-kicker">Nene × Natsume</span>
+          <h2>从角色的心情，走进场景</h2>
+          <p>选择下面的主题，点云会从一段情绪重新组成下一幅场景标记。</p>
+        </div>
       </div>
+      <SemanticParticleField
+        class="scene-atlas-particles"
+        :shape="activeParticleShape"
+        :label="particleLabel"
+        :caption="particleCaption"
+      />
       <div class="mood-rails" aria-live="polite">
         <button v-for="rail in moodRails" :key="rail.title" type="button" class="mood-rail"
           :class="[rail.character === 'nene' || rail.character === 'natsume' ? rail.character : '']"
@@ -154,6 +166,8 @@
 import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import SceneCard from '@/components/SceneCard.vue'
+import SemanticParticleField from '@/components/visual/SemanticParticleField.vue'
+import type { ParticleShapeId } from '@/utils/particleShapes'
 
 import { tier as uxTier, matchesSearch as uxMatchesSearch, searchScore as uxSearchScore,
   isPersonalFavorite as uxIsFav, personalScore as uxPersonalScore,
@@ -204,6 +218,17 @@ const THEME_DEFS = [
   { id: 'story',    label: '剧情', icon: '🎬', categories: ['战斗','Active Sync'] },
   { id: 'fanwork',  label: '同人', icon: '✧', categories: ['同人'] },
 ]
+const PARTICLE_SHAPES: Record<string, ParticleShapeId> = {
+  all: 'atelier',
+  romance: 'heart',
+  daily: 'cup',
+  intimate: 'moon',
+  school: 'book',
+  travel: 'mountain',
+  festival: 'lantern',
+  story: 'frame',
+  fanwork: 'spark',
+}
 const DEFAULT_RAILS = [
   { character:'nene',    icon:'🌙', title:'宁宁的月光秘密', subtitle:'图书馆 · 樱色 · 魔女', query:'nene library' },
   { character:'natsume', icon:'☕', title:'夏目的夜灯关心', subtitle:'咖啡馆 · 雨夜 · 琥珀', query:'natsume cafe'  },
@@ -246,6 +271,12 @@ watch(searchQuery, (value) => {
   searchTimer = setTimeout(() => { debouncedQuery.value = value }, 150)
 })
 const activeTheme = ref('all')
+const activeParticleShape = computed<ParticleShapeId>(() => PARTICLE_SHAPES[activeTheme.value] || 'atelier')
+const activeThemeDefinition = computed(() => themeDef(activeTheme.value))
+const activeThemeLabel = computed(() => activeThemeDefinition.value.label)
+const activeThemeIndex = computed(() => String(Math.max(1, THEME_DEFS.findIndex(item => item.id === activeTheme.value) + 1)).padStart(2, '0'))
+const particleLabel = computed(() => `${activeThemeLabel.value}场景的粒子轮廓，切换主题时重新组合`)
+const particleCaption = computed(() => `ARCHIVE ${activeThemeIndex.value} / ${String(THEME_DEFS.length).padStart(2, '0')}`)
 const fChar = ref('all'); const fSeason = ref('all'); const fTime = ref('all')
 const fSeries = ref('all'); const fRating = ref('all')
 const defaultTier = Object.keys(localUsage.value).length || favs.value.size ? 'personal' : 'core'
@@ -496,15 +527,23 @@ onUnmounted(() => {
 
 <style scoped>
 .page { --page-max: 1100px; }
-.subtitle { margin-bottom: var(--s-6); }
+.subtitle { margin-bottom:0; }
 
-.curation-panel { position:relative; overflow:hidden; display:grid; grid-template-columns:minmax(220px,.9fr) 2fr; gap:var(--s-4); margin:-10px 0 var(--s-5); padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-xl); background:linear-gradient(120deg,var(--accent-soft),transparent 62%),linear-gradient(145deg,var(--glass-highlight),transparent 28%),var(--bg-surface); box-shadow:var(--shadow-glass-sm); }
-.curation-panel::after { content:""; position:absolute; inset:auto -8% -70% auto; width:240px; aspect-ratio:1; border-radius:50%; background:radial-gradient(circle,color-mix(in srgb,var(--nene-violet) 15%,transparent),transparent 70%); pointer-events:none; }
+.scene-atlas { position:relative; overflow:hidden; display:grid; grid-template-columns:minmax(0,.9fr) minmax(340px,1.1fr); gap:var(--s-5); margin-bottom:var(--s-5); padding:var(--s-5); border:1px solid var(--border-soft); border-radius:var(--r-xl); background:linear-gradient(120deg,var(--archive-blue-soft),transparent 58%),linear-gradient(145deg,var(--glass-highlight),transparent 28%),var(--bg-surface); box-shadow:var(--shadow-glass-sm); }
+.scene-atlas::before { content:"SCENE"; position:absolute; left:-.04em; bottom:-.22em; color:color-mix(in srgb,var(--text-primary) 4%,transparent); font:800 clamp(4rem,10vw,8rem) var(--font-mono); letter-spacing:-.08em; pointer-events:none; }
+.scene-atlas-copy { position:relative; z-index:var(--z-raised); display:flex; flex-direction:column; justify-content:center; min-width:0; }
+.scene-atlas-register { display:grid; grid-template-columns:auto auto 1fr; align-items:center; gap:var(--s-3); margin-bottom:var(--s-5); color:var(--text-muted); font:650 var(--fs-mono-xs) var(--font-mono); letter-spacing:.12em; text-transform:uppercase; }
+.scene-atlas-register strong { color:var(--archive-blue); font-size:var(--fs-title); line-height:1; }
+.scene-atlas-register span:last-child { justify-self:end; color:var(--text-secondary); }
+.scene-atlas .title { max-width:8ch; margin-bottom:var(--s-3); font-size:clamp(2.6rem,5vw,4.8rem); line-height:.98; letter-spacing:-.06em; }
+.scene-atlas .subtitle { max-width:38rem; color:var(--text-secondary); line-height:1.7; }
+.scene-atlas-particles { min-height:330px; border-left:1px solid var(--border-soft); }
 .curation-intro { display:flex; flex-direction:column; justify-content:center; }
-.curation-kicker { display:flex; align-items:center; gap:8px; color:var(--text-muted); font:650 var(--fs-mono-xs) var(--font-mono); letter-spacing:.13em; text-transform:uppercase; }
-.curation-intro h2 { margin:var(--s-1) 0 2px; font-size:var(--fs-title-xs); }
+.curation-intro { margin-top:var(--s-5); padding-top:var(--s-4); border-top:1px solid var(--border-soft); }
+.curation-kicker { display:flex; align-items:center; gap:var(--s-2); color:var(--archive-blue); font:650 var(--fs-mono-xs) var(--font-mono); letter-spacing:.13em; text-transform:uppercase; }
+.curation-intro h2 { margin:var(--s-1) 0 var(--s-1); font-size:var(--fs-title-xs); }
 .curation-intro p { margin:0; color:var(--text-muted); font-size:var(--fs-label); line-height:1.6; }
-.mood-rails { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--s-2); }
+.mood-rails { position:relative; z-index:var(--z-raised); grid-column:1 / -1; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--s-2); padding-top:var(--s-4); border-top:1px solid var(--border-soft); }
 .mood-rail { position:relative; overflow:hidden; min-height:96px; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); color:var(--text-primary); text-align:left; background:var(--bg-elevated); cursor:pointer; box-shadow:inset 0 1px 0 var(--glass-highlight); transition:transform var(--t-fast) var(--ease-out),border-color var(--t-fast),box-shadow var(--t-fast); }
 .mood-rail.nene { background:linear-gradient(135deg,color-mix(in srgb,var(--nene-violet) 20%,transparent),color-mix(in srgb,var(--accent) 8%,transparent)),var(--bg-elevated); }
 .mood-rail.natsume { background:linear-gradient(135deg,color-mix(in srgb,var(--natsume-amber) 20%,transparent),color-mix(in srgb,var(--text-primary) 10%,transparent)),var(--bg-elevated); }
@@ -646,11 +685,20 @@ onUnmounted(() => {
   .ex-decision { display:none; }
   .scene-facet-grid { grid-template-columns:1fr 1fr; }
   .scene-more-filters .scene-facet-grid { grid-template-columns:1fr 1fr; }
-  .curation-panel { grid-template-columns:1fr; }
+  .scene-atlas { grid-template-columns:minmax(0,1fr); padding:var(--s-4); }
+  .scene-atlas .title { max-width:none; }
+  .scene-atlas-particles { min-height:250px; border-left:0; border-top:1px solid var(--border-soft); }
   .mood-rails { display:flex; overflow-x:auto; padding-bottom:3px; }
   .mood-rail { flex:0 0 min(230px,82vw); }
   .scene-cats { flex-wrap:nowrap; overflow-x:auto; padding-bottom:4px; }
   .scene-cat { flex:none; }
 }
-@media (max-width:420px) { .scene-facet-grid { grid-template-columns:1fr; } }
+@media (max-width:420px) {
+  .scene-facet-grid { grid-template-columns:1fr; }
+  .scene-atlas-register { grid-template-columns:auto auto; }
+  .scene-atlas-register span:last-child { display:none; }
+}
+@media (prefers-reduced-transparency:reduce) {
+  .scene-atlas { background:var(--bg-surface); }
+}
 </style>

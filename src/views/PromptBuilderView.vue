@@ -11,6 +11,15 @@
   >
     <a @click.prevent="$router.push('/')" href="/" class="nav-back">← 回首页</a>
 
+    <WorkspaceArchiveBar
+      chapter="01"
+      title="DIRECTOR CONSOLE"
+      :subtitle="pb.activeScene?.title || modeDescription"
+      :status="sd.generating.value ? 'RENDERING' : (sd.online.value ? 'SD READY' : 'CONNECTING SD')"
+      :state="sd.generating.value ? 'active' : (sd.online.value ? 'success' : 'warning')"
+      :shape="pb.directorMode === 'pro' ? 'spark' : 'frame'"
+    />
+
     <div class="pb-topline">
       <div class="pb-header">
         <div class="pb-kicker">Nene &amp; Natsume Private Atelier</div>
@@ -429,6 +438,7 @@ import GenerationQueuePanel from '@/components/GenerationQueuePanel.vue'
 import GenerationParamsPanel from '@/components/GenerationParamsPanel.vue'
 import GenerationOutputControls from '@/components/GenerationOutputControls.vue'
 import SDRecoveryPanel from '@/components/SDRecoveryPanel.vue'
+import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import { readHiddenScenes, rememberRecent, recordSceneUsage } from '@/utils/sceneUX'
 import {
   quickCreateSummary,

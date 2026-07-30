@@ -1,16 +1,25 @@
 <template>
   <article class="page" style="--page-max:1000px">
-    <div class="page-kicker">Color script</div>
-    <h1 class="title">🎨 色彩情绪 (Color Script)</h1>
-    <p class="subtitle">告诉它今天是什么心情，它把颜色和光都替你想好。</p>
+    <ArchivePageHero
+      chapter="07"
+      section="Chromatic record"
+      shape="spark"
+      label="色彩剧本的光谱粒子标记"
+      caption="COLOR SCRIPT 07 / 08"
+      compact
+    >
+      <div class="page-kicker">Color script</div>
+      <h1 class="title">色彩情绪</h1>
+      <p class="subtitle">告诉它今天是什么心情，它把颜色和光都替你想好。</p>
+    </ArchivePageHero>
 
-    <div class="info-callout">
+    <div class="info-callout" data-reveal>
       <strong>🎯 设计理念</strong> | 色相与情绪绑定（暖黄＝温馨、粉色＝羞怯、蓝紫＝忧伤神秘）。美术规范第 1.2 节：克制为主，避免糖水色。
       选一个情绪，系统会自动生成色彩语言、光照理由与提示词标签。
     </div>
 
     <p class="emphasis-plain mb-3">今天的情绪色板</p>
-    <div class="mood-grid">
+    <div class="mood-grid" data-reveal data-reveal-delay="1">
       <button
         v-for="m in MOODS" :key="m.id"
         type="button" class="mood-card"
@@ -89,6 +98,10 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useToast } from '@/composables/useToast'
+import ArchivePageHero from '@/components/visual/ArchivePageHero.vue'
+import { useScrollReveal } from '@/composables/useScrollReveal'
+
+useScrollReveal()
 
 const BANNED_TAGS = ['neon','glowing','oversaturated','vivid colors','vivid','rainbow','high contrast','harsh lighting','extremely detailed','ultra detailed']
 const GOOD_TAGS = ['soft colors','pastel tones','warm atmosphere','gentle palette','muted tones','harmonious colors','warm soft lighting','backlit glow']

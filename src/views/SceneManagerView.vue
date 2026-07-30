@@ -1,5 +1,13 @@
 ﻿<template>
   <article class="page" style="--page-max:1400px">
+    <WorkspaceArchiveBar
+      chapter="12"
+      title="SCENE MAINTENANCE"
+      :subtitle="`${scenes.length || '—'} RECORDS · ${tab.toUpperCase()}`"
+      :status="saving ? 'WRITING PROJECT' : (dirty ? 'UNSAVED CHANGES' : 'ARCHIVE SYNCED')"
+      :state="saving ? 'active' : (dirty ? 'warning' : 'success')"
+      shape="frame"
+    />
     <header class="sm-head">
       <div>
         <div class="page-kicker">Scene manager</div>
@@ -17,11 +25,12 @@
       </div>
     </header>
 
-    <div v-if="loadError" class="empty-state">
-      <div class="empty-state-icon">⚠️</div>
-      <p>{{ loadError }}</p>
-      <p class="hint-sm">请确认通过 localhost 访问且文件存在</p>
-    </div>
+    <ArchiveStatePanel
+      v-if="loadError"
+      kind="error"
+      title="场景档案读取失败"
+      :message="`${loadError} 请确认通过 localhost 访问且文件存在。`"
+    />
 
     <template v-else>
       <!-- Stats -->
@@ -309,6 +318,8 @@ import type {
   SceneSaveResult, MaintenanceRunResult,
 } from '@/types/api'
 import { useFocusTrap } from '@/composables/useFocusTrap'
+import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
+import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 
 const sceneStore = useSceneStore()
 
@@ -654,9 +665,9 @@ function markDirty(message: string) {
 function updateCharacterDefaults() {
   const scene = editing.value
   if (!scene || editingId.value) return
-  if (scene.char === 'nene') scene.lora = 'ayachi_nene_v15'
-  else if (scene.char === 'natsume') scene.lora = 'shiki_natsume_v15'
-  else if (scene.char === 'triad') scene.lora = 'ayachi_nene_v15:0.52, shiki_natsume_v15:0.52'
+  if (scene.char === 'nene') scene.lora = 'ayachi_nene_v18_wd14'
+  else if (scene.char === 'natsume') scene.lora = 'shiki_natsume_v18_wd14'
+  else if (scene.char === 'triad') scene.lora = 'ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.42'
 }
 
 function onCurationTierChange() {
@@ -666,7 +677,7 @@ function onCurationTierChange() {
 function blankScene(): SceneDraft {
   return {
     id: '', title: '', category: '恋爱', char: 'nene',
-    lora: 'ayachi_nene_v15', emotion: '恋爱',
+    lora: 'ayachi_nene_v18_wd14', emotion: '恋爱',
     season: '不限', time: '深夜', timeOfDay: 'late_night',
     rating: 'All', mature: false,
     location: '', weather: '', camera: '', lighting: '',
@@ -806,7 +817,7 @@ function importScenes() {
       id, title: String(raw.title || '未命名'), category: String(raw.category || '恋爱'),
       story: String(raw.story || ''), char,
       character: char === 'triad' ? ['nene','natsume'] : [char],
-      lora: String(raw.lora || (char === 'natsume' ? 'shiki_natsume_v15' : char === 'triad' ? 'ayachi_nene_v15:0.52, shiki_natsume_v15:0.52' : 'ayachi_nene_v15')),
+      lora: String(raw.lora || (char === 'natsume' ? 'shiki_natsume_v18_wd14' : char === 'triad' ? 'ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.42' : 'ayachi_nene_v18_wd14')),
       emotion: String(raw.emotion || '恋爱'), season: String(raw.season || '不限'), time: String(raw.time || '深夜'),
       timeOfDay: String(raw.timeOfDay || 'late_night'), tags: list('tags', []), mature,
       rating, location: String(raw.location || ''), weather: String(raw.weather || ''),

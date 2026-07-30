@@ -1,16 +1,25 @@
 ﻿<template>
   <article class="page" style="--page-max:1100px">
-    <div class="page-kicker">Scenario mode</div>
-    <h1 class="title">🎞 剧本模式</h1>
-    <p class="subtitle">把一个故事拆成多帧 CG；每一幕都包含完整的场景结构、美术自检与分层负面提示词。</p>
+    <ArchivePageHero
+      chapter="08"
+      section="Narrative sequence"
+      shape="book"
+      label="多幕剧本的书页粒子标记"
+      caption="SCENARIO 08 / 08"
+      compact
+    >
+      <div class="page-kicker">Scenario mode</div>
+      <h1 class="title">剧本模式</h1>
+      <p class="subtitle">把一个故事拆成多帧 CG；每一幕都包含完整的场景结构、美术自检与分层负面提示词。</p>
+    </ArchivePageHero>
 
-    <div class="info-callout">
+    <div class="info-callout" data-reveal>
       <strong>🎯 设计理念</strong> | 每一幕都是一个完整场景。切换右上角角色后，全部分幕的提示词会在宁宁与夏目之间同步转换。
       当前灵感场景共有 <strong>{{ sceneCount }}</strong> 个。
     </div>
 
     <!-- 剧本列表 -->
-    <div v-if="!activeScenario" class="scenario-list">
+    <div v-if="!activeScenario" class="scenario-list" data-reveal data-reveal-delay="1">
       <!-- 必须是 button:这是进入剧本查看器的唯一入口,
            原先是 <div @click>,没有 role/tabindex/keydown → 键盘完全进不去 -->
       <button
@@ -95,8 +104,11 @@
 import { ref, onMounted } from 'vue'
 import { useSceneStore } from '@/stores/sceneStore'
 import { useToast } from '@/composables/useToast'
+import ArchivePageHero from '@/components/visual/ArchivePageHero.vue'
+import { useScrollReveal } from '@/composables/useScrollReveal'
 
 const sceneStore = useSceneStore()
+useScrollReveal()
 
 type ScenarioCharacter = 'nene' | 'natsume'
 type ScenarioResolution = keyof typeof RES_MAP
@@ -130,7 +142,7 @@ const CHAR_TRAITS: Record<ScenarioCharacter,string> = {
   natsume: 'black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip'
 }
 const CHAR_NAME: Record<ScenarioCharacter,string> = { nene: 'ayachi_nene', natsume: 'shiki_natsume' }
-const LORA_ID: Record<ScenarioCharacter,string> = { nene: 'ayachi_nene_v15:0.8', natsume: 'shiki_natsume_v15:0.9' }
+const LORA_ID: Record<ScenarioCharacter,string> = { nene: 'ayachi_nene_v18_wd14:0.85', natsume: 'shiki_natsume_v18_wd14:0.65' }
 const RES_MAP = {
   'Square':    { dim:'1024×1024', vram:'~10GB', reason:'方形·头像/特写/通用' },
   'Half-body': { dim:'832×1216',  vram:'~10GB', reason:'竖版半身·肖像感·内心独白' },
@@ -190,7 +202,11 @@ function violations(a: ScenarioAct) {
   return BANNED_TAGS.filter(b => lower.includes(b.toLowerCase()))
 }
 function substitutePrompt(tpl: string, char: ScenarioCharacter) {
-  return tpl.split('\n').map(l => l.replace(/\{\{char\}\}/g, CHAR_NAME[char]).replace(/\{\{traits\}\}/g, CHAR_TRAITS[char])).join('\n')
+  return tpl.split('\n').map(l => {
+    let line = l.replace(/\{\{char\}\}/g, CHAR_NAME[char]).replace(/\{\{traits\}\}/g, CHAR_TRAITS[char])
+    if (char === 'nene' && /school uniform/i.test(line)) line = line.replace(/school uniform/i, 'nene_school_uniform, school uniform')
+    return line
+  }).join('\n')
 }
 function buildFullPrompt(a: ScenarioAct, char: ScenarioCharacter) {
   return norm(substitutePrompt(a.prompt, char)) + ',\n<lora:' + LORA_ID[char] + '>'
@@ -201,7 +217,7 @@ function renderModules(a: ScenarioAct) {
   const char = currentChar.value
   const modPrompt = substitutePrompt(a.prompt, char)
   const modules = modPrompt.split('\n')
-  modules.push('<lora:' + CHAR_NAME[char] + '_v11:' + a.lora + '>')
+  modules.push('<lora:' + LORA_ID[char] + '>')
   return modules.map((line, i) => {
     const cls = MODULE_CLASSES[i] || 'm-q'
     const parts = line.split(',').map(tk => {

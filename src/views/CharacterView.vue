@@ -1,14 +1,32 @@
 ﻿<template>
   <article class="page" style="--page-max:1100px">
-    <div class="page-kicker">Character routes</div>
-    <h1 class="title">角色档案</h1>
-    <p class="subtitle">视觉特征、性格与绑定模型——这里是角色在这台机器上的完整档案。</p>
+    <ArchivePageHero
+      chapter="03"
+      section="Identity file"
+      :shape="current?.id === 'natsume' ? 'lantern' : 'moon'"
+      :label="`${current?.name || '角色'}的身份档案粒子标记`"
+      caption="PERSONA 03 / 08"
+      compact
+    >
+      <div class="page-kicker">Character routes</div>
+      <h1 class="title">角色档案</h1>
+      <p class="subtitle">视觉特征、性格与绑定模型——这里是角色在这台机器上的完整档案。</p>
+      <template #meta>
+        <span class="archive-status">LOCAL PROFILE</span>
+        <span class="archive-status">{{ characters.length || '—' }} SUBJECTS</span>
+      </template>
+    </ArchivePageHero>
 
-    <div v-if="loading" class="empty-state"><div class="empty-state-icon">⏳</div><p>加载中…</p></div>
+    <ArchiveStatePanel
+      v-if="loading"
+      kind="loading"
+      title="正在读取角色档案"
+      message="身份资料、绑定模型与视觉特征正在从本机载入。"
+    />
     <template v-else>
       <!-- tablist 模式补全：aria-controls + roving tabindex + 方向键。
            原先只有 role/aria-selected，读屏会承诺方向键切换但按了没反应。 -->
-      <div class="character-tabs" role="tablist" aria-label="选择角色" @keydown="tabs.onKeydown">
+      <div class="character-tabs" role="tablist" aria-label="选择角色" data-reveal @keydown="tabs.onKeydown">
         <button v-for="c in characters" :key="c.id" class="character-tab"
           :class="{ active: current?.id === c.id }" type="button" role="tab"
           :id="tabs.tabId(c.id)"
@@ -18,7 +36,7 @@
           @click="selectCharacter(c.id)">{{ c.icon }} {{ c.name }}</button>
       </div>
 
-      <section v-if="current" class="character-hero card-direct card-level-3"
+      <section v-if="current" class="character-hero card-direct card-level-3" data-reveal data-reveal-delay="1"
         role="tabpanel"
         :id="tabs.panelId(current.id)"
         :aria-labelledby="tabs.tabId(current.id)"
@@ -70,7 +88,7 @@
         </div>
       </section>
 
-      <section v-if="recommendations.length" class="recommend-section">
+      <section v-if="recommendations.length" class="recommend-section" data-reveal data-reveal-delay="2">
         <div class="recommend-head">
           <div>
             <div class="page-kicker">Persona core</div>
@@ -97,6 +115,9 @@ import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useSceneStore } from '@/stores/sceneStore'
 import { useRovingTabs } from '@/composables/useRovingTabs'
+import ArchivePageHero from '@/components/visual/ArchivePageHero.vue'
+import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
+import { useScrollReveal } from '@/composables/useScrollReveal'
 import {
   parseCharacterProfiles,
   parseCharacterScenes,
@@ -111,6 +132,7 @@ const scenes = ref<CharacterScene[]>([])
 const loading = ref(true)
 const current = ref<CharacterProfile | null>(null)
 const bgExpanded = ref(false)
+useScrollReveal()
 
 const characterIds = computed<string[]>(() => characters.value.map(c => String(c.id)))
 function selectCharacter(id: string) {
@@ -162,6 +184,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+.archive-status { padding:4px 9px; border:1px solid var(--border-soft); color:var(--text-muted); font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.1em; }
 .character-tabs { display:flex; gap:var(--s-2); margin-bottom:var(--s-5); }
 .character-tab { padding:var(--s-2) var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-pill); background:var(--bg-surface); color:var(--text-secondary); cursor:pointer; font:600 var(--fs-body-sm) var(--font-sans); transition:border-color var(--t-fast),color var(--t-fast),background var(--t-fast),transform var(--t-fast) var(--ease-out); }
 .character-tab.active,.character-tab:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }

@@ -2,6 +2,7 @@
   <div class="page-root">
     <a class="skip-link" href="#main">跳到主要内容</a>
     <AppNav />
+    <RouteAtmosphere />
     <!-- 必须是真的 <main>：skip-link 指向这里，之前是 div，跳转链接落在一个普通容器上 -->
     <main id="main" class="page-main" tabindex="-1">
       <RouterView v-slot="{ Component, route }">
@@ -18,15 +19,20 @@
 
 <script setup lang="ts">
 import AppNav from './AppNav.vue'
+import RouteAtmosphere from './visual/RouteAtmosphere.vue'
 </script>
 
 <style scoped>
 .page-root {
+  position: relative;
+  isolation: isolate;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 .page-main {
+  position: relative;
+  z-index: var(--z-raised);
   flex: 1;
   min-width: 0;
 }
@@ -36,6 +42,8 @@ import AppNav from './AppNav.vue'
   outline-offset: -2px;
 }
 .site-footer {
+  position: relative;
+  z-index: var(--z-raised);
   padding: var(--s-4) var(--s-6);
   text-align: center;
   font-size: var(--fs-body-sm);

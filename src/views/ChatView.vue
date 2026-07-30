@@ -1,6 +1,14 @@
 ﻿<template>
   <article class="chat-page">
     <a @click.prevent="$router.push('/')" href="/" class="nav-back">← 回首页</a>
+    <WorkspaceArchiveBar
+      chapter="09"
+      title="CHARACTER ROOM"
+      :subtitle="`${currentCharacter.name} · ${chatProvider === 'local' ? 'LOCAL MODEL' : 'OPENAI-COMPATIBLE API'}`"
+      :status="busy ? 'COMPOSING' : (voiceActive ? 'VOICE PLAYBACK' : (chatReady ? 'ROOM READY' : 'ROOM OFFLINE'))"
+      :state="busy || voiceActive ? 'active' : (chatReady ? 'success' : 'warning')"
+      :shape="activeChar === 'natsume' ? 'lantern' : 'heart'"
+    />
     <header class="chat-head">
       <div>
         <div class="page-kicker">Character room</div>
@@ -188,6 +196,7 @@ import { useChatProvider } from '@/composables/useChatProvider'
 import { useVoice } from '@/composables/useVoice'
 import ChatApiSettings from '@/components/ChatApiSettings.vue'
 import ChatCharacterStage from '@/components/ChatCharacterStage.vue'
+import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 
 const route = useRoute()
 

@@ -17,7 +17,8 @@
           :aria-current="activeId === item.id ? 'page' : undefined"
           @click="closeMenu"
         >
-          {{ item.icon }} {{ item.label }}
+          <ArchiveIcon :name="item.icon" />
+          <span>{{ item.label }}</span>
         </RouterLink>
 
         <!-- 更多 -->
@@ -33,12 +34,14 @@
               :aria-current="activeId === item.id ? 'page' : undefined"
               @click="closeMenu"
             >
-              {{ item.icon }}<span>{{ item.label }}</span>
+              <ArchiveIcon :name="item.icon" />
+              <span>{{ item.label }}</span>
             </RouterLink>
           </div>
         </details>
 
         <!-- 主题切换 -->
+        <AppSoundToggle />
         <AppThemeToggle />
       </div>
 
@@ -49,7 +52,7 @@
         :aria-expanded="menuOpen ? 'true' : 'false'"
         :aria-label="menuOpen ? '关闭导航菜单' : '打开导航菜单'"
         @click="toggleMenu"
-      >{{ menuOpen ? '✕' : '☰' }}</button>
+      ><ArchiveIcon :name="menuOpen ? 'close' : 'menu'" /></button>
     </div>
   </nav>
 </template>
@@ -58,24 +61,34 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import AppThemeToggle from './AppThemeToggle.vue'
+import AppSoundToggle from './AppSoundToggle.vue'
+import ArchiveIcon, { type ArchiveIconName } from './visual/ArchiveIcon.vue'
 
 const route = useRoute()
 const menuOpen = ref(false)
 const linksEl = ref<HTMLElement | null>(null)
 const moreEl = ref<HTMLDetailsElement | null>(null)
 
-const primaryNav = [
-  { id: 'scene',    label: '灵感场景', to: '/scene-explorer', icon: '🌸' },
-  { id: 'director', label: '开始绘制', to: '/prompt-builder',  icon: '✦' },
-  { id: 'chat',     label: '角色房间', to: '/chat',            icon: '☕' },
-  { id: 'showcase', label: '效果样张', to: '/showcase',         icon: '🖼' },
-  { id: 'gallery',  label: '作品册',   to: '/gallery',          icon: '🎞' },
+interface NavItem {
+  id: string
+  label: string
+  to: string
+  icon: ArchiveIconName
+}
+
+const primaryNav: NavItem[] = [
+  { id: 'scene',    label: '灵感场景', to: '/scene-explorer', icon: 'scene' },
+  { id: 'director', label: '开始绘制', to: '/prompt-builder', icon: 'spark' },
+  { id: 'chat',     label: '角色房间', to: '/chat',           icon: 'chat' },
+  { id: 'showcase', label: '效果样张', to: '/showcase',       icon: 'image' },
+  { id: 'gallery',  label: '作品册',   to: '/gallery',        icon: 'gallery' },
 ]
-const secondaryNav = [
-  { id: 'character', label: '角色档案', to: '/character',     icon: '👤' },
-  { id: 'style',     label: '画风',     to: '/style',          icon: '🎨' },
-  { id: 'lora',      label: '模型',     to: '/lora',           icon: '🧪' },
-  { id: 'manager',   label: '场景管理', to: '/scene-manager',  icon: '🎬' },
+const secondaryNav: NavItem[] = [
+  { id: 'character', label: '角色档案', to: '/character',    icon: 'character' },
+  { id: 'style',     label: '画风',     to: '/style',        icon: 'palette' },
+  { id: 'lora',      label: '模型',     to: '/lora',         icon: 'model' },
+  { id: 'training',  label: '训练台',   to: '/training',     icon: 'training' },
+  { id: 'manager',   label: '场景管理', to: '/scene-manager', icon: 'manager' },
 ]
 
 const activeId = computed(() => {
