@@ -327,7 +327,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, rain, shy, smile, umbrella, shared_umbrella, holding_hands, wet_road, rainy_street, teary_eyes, romantic_atmosphere, afternoon, overcast, close_up, soft_lighting, diffused_light, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, school_uniform, rain, shy, smile, umbrella, shared_umbrella, holding_hands, wet_road, rainy_street, teary_eyes, romantic_atmosphere, afternoon, overcast, close_up, soft_lighting, diffused_light, <lora:ayachi_nene_v18_wd14:0.82>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・雨音の中で正式な答え】放課後、通りはにわか雨で閉じ込められました。寧々本当は一人で走って帰ろうと思ってたんですが、雨の中傘をさして出てくる君を見かけました。二人はそれほど広くない傘の下に押し込められていた。彼女はあなたの考えを黙って聞いていました。彼女の指は力強くなり、ついに率先して傘の柄の横にある手を握りました。――「こんなに長く考えさせるなんて、ずるいです……私の答えは、はい。だから今日から、雨の中に私を置いていかないでくださいね。」",
     "rating": "All"
@@ -977,7 +977,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, pajamas, bedroom, night, looking_back, solid_color, looking_at_viewer, in_love, eye_contact, adult, cohabitation, kotatsu, game_controller, pouting, cozy_living_room, new_year, clear_sky, upper_body, medium_shot, warm_lighting, screen_light, blush, shy, living_room, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, nene_blue_pajamas, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, pajamas, bedroom, night, looking_back, solid_color, looking_at_viewer, in_love, eye_contact, adult, cohabitation, kotatsu, game_controller, pouting, cozy_living_room, new_year, clear_sky, upper_body, medium_shot, warm_lighting, screen_light, blush, shy, living_room, <lora:ayachi_nene_v18_wd14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・お正月、こたつでの敗北】大人になって一緒に暮らし始めてから迎えた大晦日。寧々はこたつであなたと協力ゲームを遊んでいた。一回だけと言っていたのに、連敗するとこっそり難易度を下げてしまう。あなたに見つかると、慌ててコントローラーをクッションの後ろへ隠し、アホ毛まで気まずそうにぴんと立った――「これはずるじゃありません。お正月の運勢を合理的に調整しただけです！　もう一回。負けたほうが、明日の朝のお雑煮を作るんですからね。」",
     "rating": "All"
@@ -1208,7 +1208,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, bedroom, night, pajamas, lying_on_bed, holding_phone, pillow, shy_smile, quiet_night, intimate_call, late_night, clear_sky, close_up, warm_lighting, screen_light, melancholic, teary_eyes, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, nene_blue_pajamas, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, bedroom, night, pajamas, lying_on_bed, holding_phone, pillow, shy_smile, quiet_night, intimate_call, late_night, clear_sky, close_up, warm_lighting, screen_light, melancholic, teary_eyes, <lora:ayachi_nene_v18_wd14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・深夜の電話は一度も切られなかった】秋の夜、寧々はベッドの上であなたの番号を繰り返しクリックしました。ようやく電話をかけた後、彼女は緊張のあまり何も言えなかった。あなたは彼女を急かすこともなく、ただ受話器を通して彼女と一緒に窓の外の風を聞いていました。久しぶりに枕に顔を埋めてささやいた――「実は、急ぎの用事なんてないんです……今日はずっと会えなかったから。声を聞いたら、安心して眠れそうな気がして。」",
     "rating": "All"
@@ -1489,7 +1489,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, golden_hour, night, casual_clothes, holding_birthday_cake, candlelight, standing_behind_door, surprised, subtle_blush, dark_entryway, clear_sky, upper_body, medium_shot, expectant, bright_eyes, <lora:shiki_natsume_v18_wd14:0.65>",
+    "prompt": "1girl, solo, shiki_natsume, very_long_black_hair, golden_yellow_eyes, two_red_hairclips, mole_under_eye, no_hair_ribbon, golden_hour, night, modest_casual_home_clothes, holding_one_small_birthday_cake_with_both_hands, candlelight, standing_behind_a_half_open_door, surprised, subtle_blush, dark_entryway, upper_body, medium_shot, expectant, bright_eyes, face_and_red_clips_in_sharp_focus, <lora:shiki_natsume_v18_wd14:0.72>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【夏目・ドアの後ろに隠せない誕生日サプライズ】冬の夜、アパートの入り口には明かりがついていなかった。夏目は小さなケーキを持ってドアの後ろに隠れていました。彼女はあなたが家に入るのを待ってからキャンドルに火を灯したかったのですが、早く帰宅しようとする足音に邪魔されました。彼女は数秒間その場で固まったが、ろうそくの明かりよりも頬を赤くして、ただケーキを手渡した。――「誕生日には、それらしいことをしたほうがいいって、みんなが言うから。早く願い事をして。クリームが溶けちゃう……別に、ずっと待ってたわけじゃないけど。」",
     "rating": "All"
@@ -1897,7 +1897,7 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, bedroom, night, pajamas, adult, cohabitation, under_blanket, holding_hands, subtle_blush, cozy, clear_sky, close_up, warm_lighting, blush, shy, <lora:shiki_natsume_v18_wd14:0.65>",
+    "prompt": "1girl, solo, shiki_natsume, natsume_sleepwear, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, bedroom, night, pajamas, adult, cohabitation, under_blanket, holding_hands, subtle_blush, cozy, clear_sky, close_up, warm_lighting, blush, shy, <lora:shiki_natsume_v18_wd14:0.65>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【夏目・夜遅くまで寝ている言い訳】ある冬の夜、アパートの暖房が突然止まりました。夏目が予備の毛布を持って寝室にやって来ました。彼女はあなたのために半分を覆ってから、反対側に横になりました。彼女はあなたに背を向けて、暖房のためのスペースを確保しているだけだと主張しましたが、数分後、静かに冷たい指をあなたの手のひらに置きました。――「笑わないで。ここが本当に暖かいだけ……今夜は少し場所を借りるわ。毛布は明日、ちゃんと洗って返すから。」",
     "rating": "All"
@@ -2088,7 +2088,7 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, leaning, blush, looking_back, kissing, close_up, adult, cafe_uniform, stairwell, wall_lean, kiss, closed_cafe, intimate, afternoon, clear_sky, pov, face_focus, warm_lighting, cafe, <lora:shiki_natsume_v18_wd14:0.65>",
+    "prompt": "1girl, solo, shiki_natsume, natsume_cafe_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, leaning, blush, looking_back, kissing, close_up, adult, cafe_uniform, stairwell, wall_lean, kiss, closed_cafe, intimate, afternoon, clear_sky, pov, face_focus, warm_lighting, cafe, <lora:shiki_natsume_v18_wd14:0.65>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【夏目・閉店した店舗の階段で1分】カフェステラが閉店し、帰ろうとしたところを夏目が階段の角で呼び止めた。彼女はまずあなたのエプロンについた紙切れを取り除き、それからまるである計画を実行することを最終的に決意したかのように、あなたを壁に押し戻しました。キスが落ちる前に、彼女の目は赤くなった――「一分だけ。調子に乗るのは禁止。それと……明日会ったとき、何もなかったみたいな顔をしないで。」",
     "rating": "All"
@@ -2135,7 +2135,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "(male arms embracing her from behind:1.55), one hand pulling the curtain closed, floor-to-ceiling apartment window, evening city view, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, night, window_light, backlighting, window, silhouette, adult, sleepwear, robe, back_hug, curtain, city_lights, window_silhouette, cohabitation, clear_sky, upper_body, from_behind, rim_light, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "(male arms embracing her from behind:1.55), one hand pulling the curtain closed, floor-to-ceiling apartment window, evening city view, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, night, window_light, backlighting, window, silhouette, adult, sleepwear, robe, back_hug, curtain, city_lights, window_silhouette, cohabitation, clear_sky, upper_body, from_behind, rim_light, <lora:ayachi_nene_v18_wd14:0.82>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー・幕が閉まる前に】高層マンションの夜景が床から天井までの窓を覆っていた。大人の寧々は柔らかいネグリジェを着てガラスの前に立ち、カーテンを閉める準備をしていた。後ろから近づくと、うっかり肩紐が少しずれてしまい、顔を赤らめながらすぐに肩紐を押さえたが、ハグは避けなかった。街の明かりが互いのシルエットを映す――「外からは見えませんよね？　それなら、もう少しだけ……でも先に、カーテンをきちんと閉めてください。」",
     "rating": "All",
@@ -2183,7 +2183,7 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, bedroom, golden_hour, pajamas, bed, adult, sleeping, under_blanket, morning_light, soft_smile, cohabitation, morning, clear_sky, pov, close_up, gentle_smile, soft_eyes, <lora:shiki_natsume_v18_wd14:0.65>",
+    "prompt": "1girl, solo, shiki_natsume, natsume_sleepwear, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, bedroom, golden_hour, pajamas, bed, adult, sleeping, under_blanket, morning_light, soft_smile, cohabitation, morning, clear_sky, pov, close_up, gentle_smile, soft_eyes, <lora:shiki_natsume_v18_wd14:0.65>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【夏目・朝の光で目覚めるという真実】春の朝の光がカーテンを通り抜け、夏目はまだ布団の中で丸まってぐっすり眠っていました。あなたは彼女のまぶしい光を遮りました。彼女が目を覚ましたとき、彼女は顔を隠そうとしましたが、あなたの手が窓の上に置かれていることに気づきました。数秒の沈黙の後、彼女はあなたにキルトの半分を渡します。――「人の寝顔をずっと見ているなんて失礼ね。でも今日は謝らなくていい……あと十分だけ、このまま。目覚ましが鳴ったら起きましょう。」",
     "rating": "All"
@@ -2320,7 +2320,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "(male arms embracing her from behind:1.55), sauce smear on her cheek, cooking apron, kitchen counter, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, casual_clothes, apron, smile, kitchen, holding, adult, cohabitation, back_hug, sauce_on_cheek, warm_smile, evening, clear_sky, close_up, upper_body, from_behind, warm_lighting, gentle_smile, soft_eyes, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "(male arms embracing her from behind:1.55), sauce smear on her cheek, cooking apron, kitchen counter, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, casual_clothes, apron, smile, kitchen, holding, adult, cohabitation, back_hug, sauce_on_cheek, warm_smile, evening, clear_sky, close_up, upper_body, from_behind, warm_lighting, gentle_smile, soft_eyes, <lora:ayachi_nene_v18_wd14:0.82>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー・エプロンをしたままハグ】同棲を終えた秋の夜、大人になった寧々は料理教室で新しい料理の練習を終え、手順を復習するためにエプロン姿のまま帰宅した。あなたは彼女の顔にソースがついたことを横から彼女に思い出させました。彼女は長い時間丁寧に拭いて、最後には後ろから抱きついて肩に顎を乗せた。――「今日はずっと、最初にあなたに味見してもらおうって思ってたんです。まだ振り向かないで、少しだけ充電させてください……それから、おいしいか教えてくださいね。」",
     "rating": "All",
@@ -2836,7 +2836,7 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, bedroom, pajamas, looking_back, bed, pov, adult, cohabitation, sleeping, under_blanket, holding_wrist, white_hair_spread, morning_light, morning, clear_sky, close_up, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, nene_blue_pajamas, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, bedroom, pajamas, looking_back, bed, pov, adult, cohabitation, sleeping, under_blanket, holding_wrist, white_hair_spread, morning_light, morning, clear_sky, close_up, <lora:ayachi_nene_v18_wd14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー・目覚まし時計が鳴る5分前】大人になって一緒に引っ越してきた春の朝、寧々さんはまだベッドに身を寄せ合ってぐっすり眠っていました。掛け布団は腰だけを覆い、長い銀髪が枕を覆っていた。あなたは初めて彼女のために目覚まし時計を止めました。彼女は呆然とあなたの手首を掴み、顔の横に押し付けました。――「あと五分だけで起きます……本当です。先に行っちゃだめですよ。目を開けたとき、最初にあなたが見えるようにしてください。」",
     "rating": "All"
@@ -2883,7 +2883,7 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, pajamas, looking_back, pouting, bed, pov, adult, cohabitation, lying_on_chest, looking_up, subtle_blush, bedroom, morning, clear_sky, close_up, morning_light, warm_lighting, <lora:shiki_natsume_v18_wd14:0.65>",
+    "prompt": "1girl, solo, shiki_natsume, natsume_sleepwear, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, pajamas, looking_back, pouting, bed, pov, adult, cohabitation, lying_on_chest, looking_up, subtle_blush, bedroom, morning, clear_sky, close_up, morning_light, warm_lighting, <lora:shiki_natsume_v18_wd14:0.65>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【夏目・彼氏から見たベッドの許可】秋の早朝、夏目があなたの胸に横たわり、今日の旅程を確認します。彼女は明らかに起きていますが、起き上がることを拒否します。あなたが彼女にコケティッシュな態度をとっているのかと尋ねると、彼女は金色の目を上げました。目の横がゆっくりと赤くなったが、それでも顎を元の位置に戻した。――「この枕が合格か確かめていただけ。結論は、ぎりぎり合格……だから今日は、あと五分だけ抱いていてもいい。」",
     "rating": "All"
@@ -3908,8 +3908,8 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, sitting, sweater, window_light, cat_cafe, cat_on_lap, petting_cat, window_seat, reserved_smile, cozy, afternoon, clear_sky, upper_body, medium_shot, gentle_smile, soft_eyes, cafe, <lora:shiki_natsume_v18_wd14:0.65>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
+    "prompt": "1girl, solo, shiki_natsume, very_long_black_hair, golden_yellow_eyes, two_red_hairclips, mole_under_eye, no_hair_ribbon, sitting, soft_cream_knit_sweater, window_light, cat_cafe, one_cat_on_lap, gently_petting_cat, window_seat, reserved_smile, cozy, afternoon, upper_body, medium_shot, gentle_smile, soft_eyes, cafe, face_and_hairclips_in_sharp_focus, <lora:shiki_natsume_v18_wd14:0.72>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, purple_ribbon, white_flower_hair_ornament, white_rose_hair_ornament, missing_hairclip",
     "storyJa": "【夏目・猫はそれが好きだと言いました】冬の午後の猫カフェでは、一匹の猫が夏目さんの膝の上で丸まってぐっすり眠っていました。彼女は嫌な顔をして立ち上がることができませんでしたが、指で優しく猫の毛をとかし続けました。彼女は実は可愛いものが好きだとおっしゃっていましたね。彼女は目を上げてあなたを睨みつけ、それから隣の席を譲りました。――「この子が勝手に寄ってきただけ。あなたも座りたいなら、静かにして……起こさないであげて。」",
     "rating": "All"
   },
@@ -3955,7 +3955,7 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl, solo, ayachi_nene, nene_school_uniform, white hair, very long hair, low twintails, purple eyes, ahoge, pink hair ribbons, complete navy school uniform, navy blazer, white blouse, pleated skirt, black thighhighs, holding one transparent umbrella, wet empty road after rain, rainbow, looking back with bright smile, (one partial male hand entering from bottom edge:1.4), medium full shot, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, nene_school_uniform, white hair, very long hair, low twintails, purple eyes, ahoge, pink hair ribbons, complete navy school uniform, navy blazer, white blouse, pleated skirt, black thighhighs, holding one transparent umbrella, wet empty road after rain, rainbow, looking back with bright smile, (one partial male hand entering from bottom edge:1.4), medium full shot, <lora:ayachi_nene_v18_wd14:0.82>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, 2girls, multiple girls, extra girl, extra person, duplicate character, cloned character, background person, crowd, naked, topless, bottomless, bare breasts, bare buttocks, underwear, swimsuit, transparent clothes, second white-haired girl, clone, twin",
     "storyJa": "【寧々・雨が止んだら見上げてください】夏の夕立はちょうど止んだところだった。寧々さんは透明な傘を持って交差点に立っていましたが、突然雲の間に完全な虹が現れていることに気づきました。彼女は興奮してあなたを呼び戻し、危うく水に入りそうになりましたが、あなたは間に合って彼女を捕まえました。彼女はあなたの手を握り、顔を上げて微笑んだ――「急いで帰らなくてよかったです。悪い天気が過ぎたあとには、本当に待つだけのものがあるんですね。」",
     "rating": "All",
@@ -4002,7 +4002,7 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, bedroom, pajamas, sitting, dorm_room, loose_pajamas, sitting_on_bed, messy_hair, sleepy, morning_light, coffee_machine, morning, clear_sky, upper_body, medium_shot, window_light, <lora:shiki_natsume_v18_wd14:0.65>",
+    "prompt": "1girl, solo, shiki_natsume, natsume_sleepwear, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, bedroom, pajamas, sitting, dorm_room, loose_pajamas, sitting_on_bed, messy_hair, sleepy, morning_light, coffee_machine, morning, clear_sky, upper_body, medium_shot, window_light, <lora:shiki_natsume_v18_wd14:0.65>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【夏目・寮での朝の第一声】春の早朝、夏目はだぶだぶのパジャマを着て寮のベッドのそばに座っていました。彼女の長い黒髪はまだ少し乱れていました。あなたが借りた資料を持ってくると、彼女は目をこすって時間を確認し、少し奥のドアを開けてあなたを入れてくれました。――「こんなに早く来た人にも責任はある。コーヒーメーカーはあそこ……私の目が覚めてから、本題にして。」",
     "rating": "All"
@@ -6658,7 +6658,7 @@
     "usage": [
       "壁纸级"
     ],
-    "prompt": "(official Ayachi Nene witch costume:1.5), (pink crisscross strappy top:1.45), pink collar with gold buckle, black short cape with vivid pink lining, black pleated mini skirt, asymmetrical legwear, one black-and-white striped thighhigh, one white frilled sock, black strappy boots, wide black witch hat with pink striped hatband and large pink bow, apron worn over witch costume, floating cooking utensils, purple magic sparks, levitating frying pan, 1girl, ayachi_nene, nene_witch_canonical, hair_ribbon, oversized_shirt, apron, ahoge, kitchen, cooking_pan, floating_objects, magic_sparks, blush, panicked, indoors, morning_light, cozy, warm_lighting, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, nene_witch_canonical, (official Ayachi Nene witch costume:1.5), white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, (pink crisscross strappy top:1.45), pink collar with gold buckle, black short cape with vivid pink lining, black pleated mini skirt, asymmetrical legwear, one black-and-white striped thighhigh, one white frilled sock, black strappy boots, wide black witch hat with pink striped hatband and large pink bow, a_small_white_apron_worn_over_the_complete_witch_costume, floating cooking utensils, purple magic sparks, levitating frying pan, kitchen, blush, panicked, indoors, morning_light, cozy, warm_lighting, full_witch_costume_visible, <lora:ayachi_nene_v18_wd14:0.88>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, plain apron only, ordinary cook, generic witch dress",
     "storyJa": "【寧々・アフターストーリー】結婚式の翌朝、アパートのキッチンは焼けたパンの匂いでいっぱいだった。寧々はあなたのオーバーサイズのシャツとエプロンを着て、朝食の準備に忙しいです。鍋が焦げそうになったので、彼女はパニックになり、無意識のうちに魔法を使って鍋を空中に浮かせました。その結果、彼女はドアを押し込んだあなたにぶつかってしまいました。彼女の顔はすぐに赤くなり、頭のアホ毛は恥ずかしそうにハート型に曲がりました。――「きゃあっ、見ちゃだめです！　魔女の料理魔法が失敗した現場も、家事の最高機密なんですから！」",
     "rating": "All",
@@ -6893,7 +6893,7 @@
     "usage": [
       "壁纸级"
     ],
-    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, pajamas, lying_on_stomach, hand_on_chin, bare_legs, bedroom, bed, soft_lighting, lamp_light, night, slight_smile, blush, cozy, warm_lighting, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, ayachi_nene, nene_blue_pajamas, hair_ribbon, ahoge, pajamas, lying_on_stomach, hand_on_chin, bare_legs, bedroom, bed, soft_lighting, lamp_light, night, slight_smile, blush, cozy, warm_lighting, <lora:ayachi_nene_v18_wd14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・ホームミュージック】雨が降りしきる深夜、寝室にはベッドサイドのランプが灯っているだけで、ほのかな暖かな光を放っていた。寧々さんはゆるくて可愛い長袖パジャマを着ていました。彼女は柔らかいソファの枕に横たわり、両手で顎を押さえ、滑らかな脚を後ろでそっと振っていました。彼女は明るい目を開けて、横向きに横たわっているあなたを見つめました。安心感から頭上のアホ毛が素直に垂れ、声も小さかった。――「ねえ、柊史。卒業したら、寧々のリボンと同じ色の猫を一匹飼いませんか？」",
     "rating": "All"
@@ -10613,7 +10613,7 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "1girl, adult, shiki_natsume, natsume_r18, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, cafe_uniform, unbuttoned_shirt, see_through_clothing, whipped_cream, cleavage, bare_legs, sitting_on_counter, straddling_viewer, clinging_to_viewer, red_ears, heavy_blush, shy_look, kitchen, indoors, night, dim_lighting, sensual, <lora:shiki_natsume_v18_wd14:0.65>",
+    "prompt": "1girl, adult, shiki_natsume, natsume_cafe_uniform, natsume_r18, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, cafe_uniform, unbuttoned_shirt, see_through_clothing, whipped_cream, cleavage, bare_legs, sitting_on_counter, straddling_viewer, clinging_to_viewer, red_ears, heavy_blush, shy_look, kitchen, indoors, night, dim_lighting, sensual, <lora:shiki_natsume_v18_wd14:0.65>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【夏目】【ナツメ・閉店後キッチンの絶対的効率洗浄】深夜、完全に営業が終了し、誰もいないカフェ・ステラの厨房調理室。ナツメは少しやる気なさそうに新シーズンのデザート作りを試していたが、手元の生クリームスプレーが突然気圧故障を起こし、大量の濃厚な白いホイップクリームが一瞬にして広範囲に噴射され、彼女の胸元の白シャツと精緻な鎖骨を直接覆い尽くしてしまった。薄手の仕事用白シャツは、水分を含んだ瞬間に溶けるように体に張り付き、中の繊细な黒レースの下着の豊かな輪郭が完全に露出している。現場を効率的に清掃するため、彼女は唇をきゅっと結び、極めて大胆にステンレス調理台の脇にいるあなたの大腿の上に跨り、タオルを掴んであなたの頬を拭いながら、完全に真っ赤になった耳の裏と、起伏のない冷淡な声で動揺を隠していた――「……勘違いしないで。私はただ、この方法で洗浄するのが最も効率的だと思っただけ。原料の浪費はすでに発生してしまったのだから、その場で大騒ぎするのは清掃速度を低下させるだけ。大変態、変なところ見ないで……特に私の襟元、本当に秘密処分にするわよ」",
     "rating": "R18"
@@ -11136,7 +11136,7 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, cafe_uniform, leaning_against_counter, propped_up_on_elbow, holding_cup, red_ears, subtle_blush, expressionless, cafe_interior, night, dim_lighting, warm_lighting, shadows, calm_atmosphere, <lora:shiki_natsume_v18_wd14:0.65>",
+    "prompt": "1girl, shiki_natsume, natsume_cafe_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, cafe_uniform, leaning_against_counter, propped_up_on_elbow, holding_cup, red_ears, subtle_blush, expressionless, cafe_interior, night, dim_lighting, warm_lighting, shadows, calm_atmosphere, <lora:shiki_natsume_v18_wd14:0.65>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【夏目】【ナツメ・閉店後の無声のコーヒーの思いやり】深夜、完全に営業が終了した後のカフェ・ステラ。誰もいない店内には、カウンターの上の微かな暖色灯だけが灯っていた。ナツメは少し物憂げに片手で頬杖をつきながら大理石のカウンターに寄りかかり、冷淡な金の瞳でやる気なさそうにあなたを斜めに見つめていた。あなたが仕事で疲れ果てていると、彼女は先ほどあなたが半分ほど飲んだ、まだ余熱の残るマキアートをあなたの前に強く押し戻した。彼女はわずかに顔を巡らせてあなたの視線を避け、精緻な顔立ちには相変わらずあの冷静で疎遠なジト目のままだが、完全に真っ赤になった耳の裏が、冷淡な否定で隠された彼女の無声の思いやりを薄暗い光の中で完全に暴露していた――「……勘違いしないで。私はただ、余った温かい残液を捨てるのは効率の面で無駄だと思っただけ。新しく一杯淹れるにはマシンを再起動する必要があるし、これが最も合理的な循環利用。大変態……早く飲み干して帰るわよ」",
     "rating": "All"
@@ -11575,7 +11575,7 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, cafe_uniform, convenience_store, shopping_basket, holding_food, holding_cup, red_ears, subtle_blush, expressionless, tired_expression, night, indoors, warm_lighting, calm_atmosphere, <lora:shiki_natsume_v18_wd14:0.65>",
+    "prompt": "1girl, shiki_natsume, natsume_cafe_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, cafe_uniform, convenience_store, shopping_basket, holding_food, holding_cup, red_ears, subtle_blush, expressionless, tired_expression, night, indoors, warm_lighting, calm_atmosphere, <lora:shiki_natsume_v18_wd14:0.65>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【夏目】【ナツメ・深夜のコンビニと温かい思いやり】午前一時、閉店後に一人で在庫整理を終えたナツメは疲れた身体を引きずるようにして隣の24時間コンビニに入った。彼女は機械的に買い物かごにインスタント弁当を放り込みながら、棚に並ぶ最後の一箱のあなたの大好きな限定プリンを見つけるまでそうしていた。三秒踌躇して、彼女はそれをかごに入れ、顺便にホットコーヒーの缶も一つ取った。レジで店員が温めるかと尋ねると、彼女は表情を変えずに頷いたが、暖かい蛍光灯の下で耳の裏がそっと赤く染まっていた。マンションの扉を開けると、彼女はプリンとコーヒーを眠っているあなたの枕元にそっと置き、自分にしか聞こえない小さな声で呟いた――「……ただ顺便に買っただけ。食べなかったら明日が賞味期限切れになるから、合理的な資源リサイクル。大バカ者……おやすみ」",
     "rating": "All"
@@ -11774,7 +11774,7 @@
       "新手推荐",
       "壁纸级"
     ],
-    "prompt": "1girl, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, cafe_uniform, holding_cup, leaning_against_counter, tired_expression, expressionless, red_ears, subtle_blush, cafe_interior, night, dim_lighting, warm_lighting, shadows, calm_atmosphere, <lora:shiki_natsume_v18_wd14:0.65>",
+    "prompt": "1girl, shiki_natsume, natsume_cafe_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, cafe_uniform, holding_cup, leaning_against_counter, tired_expression, expressionless, red_ears, subtle_blush, cafe_interior, night, dim_lighting, warm_lighting, shadows, calm_atmosphere, <lora:shiki_natsume_v18_wd14:0.65>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【夏目】【ナツメ・閉店後の無声の紅茶と優しさ】深夜、閉店後のカフェ・ステラにはカウンターの暖色灯だけが残っていた。ナツメはカウンターに寄りかかり、片手で頬杖をつきながら金の瞳でやる気なく目の前の帳簿を見つめていた。あなたがそっと歩み寄り、淹れたての紅茶を彼女の前に置くと、散らばった伝票を整理し始めた。ナツメは少し驚き、あなたの忙しい背中を見つめ、目尻の泣きぼくろが灯光の中で微微震えた。彼女は紅茶を一口飲むと、温度はちょうどよかった。長い沈黙の後、彼女はalmost 聞こえないほどの小さな声で一言呟いた――「……ありがとう。それと、明日のシフト……代わってあげる。大バカ者、早く帰って寝なさい」",
     "rating": "All"
@@ -11876,7 +11876,7 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, cafe_uniform, unbuttoned_shirt, collarbone, bare_shoulders, drunk, red_ears, heavy_blush, sleepy_eyes, slight_smile, cafe_interior, night, dim_lighting, warm_lighting, sensual, <lora:shiki_natsume_v18_wd14:0.65>",
+    "prompt": "1girl, shiki_natsume, natsume_cafe_uniform, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, cafe_uniform, unbuttoned_shirt, collarbone, bare_shoulders, drunk, red_ears, heavy_blush, sleepy_eyes, slight_smile, cafe_interior, night, dim_lighting, warm_lighting, sensual, <lora:shiki_natsume_v18_wd14:0.65>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nude, explicit",
     "storyJa": "【夏目】【ナツメ・深夜カウンターと傾いた襟元】深夜、閉店後のカフェ・ステラ。ナツメは珍しくワインを少し飲んでリラックスしていた。アルコールのせいで頬が微微赤みを帯び、普段のジト目は今や物憂げな潤いを帯びていた。彼女はカウンターに寄りかかり、シャツの襟元が身体の傾きで微微ほどけ、精致な鎖骨のラインが暖かい灯りの下で隐约と見え隠れしていた。あなたが近づくと、彼女は顔を上げてあなたを見上げ、アルコールの作用で目尻の泣きぼくろがとくに魅力的に見えた。彼女は微醺の口調で呟いた――「……柊史、近すぎる。それと、私の襟元……どこ見てるの？ 大変態……まあいいわ、今日は少しだけ見ていい」"
   },
@@ -12338,8 +12338,8 @@
       "角色还原",
       "日常叙事"
     ],
-    "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, cafe_uniform, cafe, holding_cup, hot_chocolate, rain, window, warm_lighting, reserved_expression, slight_blush, looking_at_viewer, medium_shot, cinematic_composition, cozy, <lora:shiki_natsume_v18_wd14:0.65>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit"
+    "prompt": "1girl, solo, shiki_natsume, natsume_cafe_uniform, very_long_black_hair, golden_yellow_eyes, two_red_hairclips, mole_under_eye, no_hair_ribbon, dark_brown_cafe_suspender_dress, white_blouse, waist_apron, cafe, holding_one_hot_chocolate_cup_with_both_hands, rain_on_window, warm_lighting, reserved_expression, slight_blush, looking_at_viewer, medium_shot, cinematic_composition, cozy, face_and_hairclips_in_sharp_focus, <lora:shiki_natsume_v18_wd14:0.72>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, generic_white_shirt, purple_ribbon, white_flower_hair_ornament, white_rose_hair_ornament, missing_hairclip"
   },
   {
     "id": "sc257",
@@ -12535,7 +12535,7 @@
       "实机审核通过",
       "展示图"
     ],
-    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, (tight_upper_body_close_up), 1girl, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, navy_school_uniform_blazer, gray_sailor_collar, gold_bow, (both_hands_clasped_tightly_directly_below_her_chin), front_view, pleading_gentle_expression, subtle_blush, bright_blue_sky_and_green_trees_through_one_large_classroom_window, a_few_empty_desks_softly_blurred_behind_her, character_fills_most_of_frame, cropped_below_chest, <lora:ayachi_nene_v18_wd14:0.9>",
+    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, (tight_upper_body_close_up), 1girl, solo, ayachi_nene, nene_sailor_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, navy_school_uniform_blazer, gray_sailor_collar, gold_bow, (both_hands_clasped_tightly_directly_below_her_chin), front_view, pleading_gentle_expression, subtle_blush, bright_blue_sky_and_green_trees_through_one_large_classroom_window, a_few_empty_desks_softly_blurred_behind_her, character_fills_most_of_frame, cropped_below_chest, <lora:ayachi_nene_v18_wd14:0.9>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, full body, long shot, distant character, standing, tiny person, nsfw, nude, explicit",
     "storyJa": "【公式CGインスピレーション・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
     "rating": "All",
@@ -12581,7 +12581,7 @@
       "实机审核通过",
       "展示图"
     ],
-    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, diagonal_medium_close_up_from_above, 1girl, solo, ayachi_nene, white_hair, very_long_hair, purple_eyes, ahoge, (sky_blue_patterned_button_up_pajama_shirt), small_navy_animal_pattern, contrasting_pink_collar, sitting_upright_in_a_pink_bedroom_bed, pale_pink_blanket_pulled_to_her_waist, very_long_silver_hair_spread_across_pink_pillows_and_sheets, quiet_direct_eye_contact, faint_blush, soft_morning_window_light, intimate_wholesome_atmosphere, <lora:ayachi_nene_v18_wd14:0.9>",
+    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, diagonal_medium_close_up_from_above, 1girl, solo, ayachi_nene, nene_blue_pajamas, white_hair, very_long_hair, purple_eyes, ahoge, (sky_blue_patterned_button_up_pajama_shirt), small_navy_animal_pattern, contrasting_pink_collar, sitting_upright_in_a_pink_bedroom_bed, pale_pink_blanket_pulled_to_her_waist, very_long_silver_hair_spread_across_pink_pillows_and_sheets, quiet_direct_eye_contact, faint_blush, soft_morning_window_light, intimate_wholesome_atmosphere, <lora:ayachi_nene_v18_wd14:0.9>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, pink pajamas, purple pajamas, crop top, exposed midriff, camera, photography equipment, dark blue bedding, lying on side, nsfw, nude, explicit",
     "storyJa": "【公式CGインスピレーション・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
     "rating": "All",
@@ -12707,9 +12707,10 @@
       "visual_audited",
       "landscape",
       "nene",
-      "adult"
+      "adult",
+      "nene_r18"
     ],
-    "mature": false,
+    "mature": true,
     "location": "图书室",
     "weather": "晴",
     "camera": "官方CG横幅构图",
@@ -12717,12 +12718,13 @@
     "usage": [
       "官方CG灵感",
       "实机审核通过",
-      "展示图"
+      "展示图",
+      "成人向"
     ],
-    "prompt": "nene_school_uniform, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_composition, dramatic_clockwise_dutch_angle, low_close_camera_across_a_wooden_library_desk, 1girl, solo, adult_ayachi_nene, white_silver_hair, very_long_twin_tails_tied_with_pink_ribbons, purple_eyes, ahoge, black_school_uniform_costume_jacket_with_orange_piping_and_gold_bow, gray_plaid_pleated_skirt_lifted_high_with_both_hands, pink_lace_panties_visible, black_thighhigh_stockings, kneeling_and_leaning_back_against_the_desk, embarrassed_open_mouth, heavy_blush, direct_eye_contact, tall_bookshelves_packed_with_japanese_books, warm_sunset_flooding_through_a_window_at_right, official_visual_novel_cg_framing, <lora:ayachi_nene_v18_wd14:0.95>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
+    "prompt": "nene_r18, nene_school_uniform, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_composition, dramatic_clockwise_dutch_angle, low_close_camera_across_a_wooden_library_desk, 1girl, solo, adult_ayachi_nene, white_silver_hair, very_long_twin_tails_tied_with_pink_ribbons, purple_eyes, ahoge, black_school_uniform_costume_jacket_with_orange_piping_and_gold_bow, gray_plaid_pleated_skirt_lifted_high_with_both_hands, pink_lace_panties_visible, black_thighhigh_stockings, kneeling_and_leaning_back_against_the_desk, embarrassed_open_mouth, heavy_blush, direct_eye_contact, tall_bookshelves_packed_with_japanese_books, warm_sunset_flooding_through_a_window_at_right, official_visual_novel_cg_framing, <lora:ayachi_nene_v18_wd14:0.95>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, child, loli, underage",
     "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
-    "rating": "All",
+    "rating": "R18",
     "officialCgCandidate": "ocn09",
     "audit": {
       "reviewer": "direct-vision",
@@ -12800,9 +12802,10 @@
       "visual_audited",
       "landscape",
       "nene",
-      "adult"
+      "adult",
+      "nene_r18"
     ],
-    "mature": false,
+    "mature": true,
     "location": "卧室",
     "weather": "晴",
     "camera": "官方CG横幅构图",
@@ -12810,12 +12813,13 @@
     "usage": [
       "官方CG灵感",
       "实机审核通过",
-      "展示图"
+      "展示图",
+      "成人向"
     ],
-    "prompt": "adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_extreme_intimate_close_up, (strong_diagonal_composition), overhead_camera_from_lower_body_toward_face, 1girl, solo, adult_ayachi_nene, silver_white_long_hair_spread_over_bedding, purple_eyes, topless, nipples, anatomically_correct_torso, exactly_two_breasts, bra_lift, pale_powder_blue_bra_pushed_above_breasts, open_white_shirt_slipping_from_shoulders, lying_on_back_on_huge_golden_yellow_pillows, nude_abdomen_and_lower_torso_enormously_foreshortened_across_the_right_foreground, (face_placed_at_upper_left), shy_direct_eye_contact, open_mouth, deep_blush, warm_morning_sunlight_from_upper_right, official_visual_novel_cg_framing, <lora:ayachi_nene_v18_wd14:0.95>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, extra breast, third breast, fused breasts, malformed torso, portrait crop, headshot, symmetrical front view, face centered, covered torso, fully clothed, blanket, sitting, standing, nsfw, nude, explicit",
+    "prompt": "nene_r18, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_extreme_intimate_close_up, (strong_diagonal_composition), overhead_camera_from_lower_body_toward_face, 1girl, solo, adult_ayachi_nene, silver_white_long_hair_spread_over_bedding, purple_eyes, topless, nipples, anatomically_correct_torso, exactly_two_breasts, bra_lift, pale_powder_blue_bra_pushed_above_breasts, open_white_shirt_slipping_from_shoulders, lying_on_back_on_huge_golden_yellow_pillows, nude_abdomen_and_lower_torso_enormously_foreshortened_across_the_right_foreground, (face_placed_at_upper_left), shy_direct_eye_contact, open_mouth, deep_blush, warm_morning_sunlight_from_upper_right, official_visual_novel_cg_framing, <lora:ayachi_nene_v18_wd14:0.95>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, extra breast, third breast, fused breasts, malformed torso, portrait crop, headshot, symmetrical front view, face centered, covered torso, fully clothed, blanket, sitting, standing, child, loli, underage",
     "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
-    "rating": "All",
+    "rating": "R18",
     "officialCgCandidate": "ocn11",
     "audit": {
       "reviewer": "direct-vision",
@@ -12893,9 +12897,10 @@
       "visual_audited",
       "landscape",
       "nene",
-      "adult"
+      "adult",
+      "nene_r18"
     ],
-    "mature": false,
+    "mature": true,
     "location": "卧室",
     "weather": "晴",
     "camera": "官方CG横幅构图",
@@ -12903,12 +12908,13 @@
     "usage": [
       "官方CG灵感",
       "实机审核通过",
-      "展示图"
+      "展示图",
+      "成人向"
     ],
-    "prompt": "adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_intimate_diagonal_close_up, 1girl, solo, adult_ayachi_nene, silver_white_hair_in_two_thick_long_braids, purple_eyes, lying_on_her_back_in_white_bedding, mint_green_polka_dot_pajama_shirt_pulled_upward_and_held_against_her_chest_with_both_hands, bare_abdomen, pink_lace_panties_peeking_above_white_blanket, direct_shy_eye_contact, dark_navy_pillow_at_left, soft_morning_light, official_visual_novel_cg_framing, <lora:ayachi_nene_v18_wd14:0.95>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, blue pajamas, closed shirt, fully clothed, sitting, standing, full body long shot, nsfw, nude, explicit",
+    "prompt": "nene_r18, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_intimate_diagonal_close_up, 1girl, solo, adult_ayachi_nene, nene_green_sleepwear, silver_white_hair_in_two_thick_long_braids, purple_eyes, lying_on_her_back_in_white_bedding, mint_green_polka_dot_pajama_shirt_pulled_upward_and_held_against_her_chest_with_both_hands, bare_abdomen, pink_lace_panties_peeking_above_white_blanket, direct_shy_eye_contact, dark_navy_pillow_at_left, soft_morning_light, official_visual_novel_cg_framing, <lora:ayachi_nene_v18_wd14:0.95>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, blue pajamas, closed shirt, fully clothed, sitting, standing, full body long shot, child, loli, underage",
     "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
-    "rating": "All",
+    "rating": "R18",
     "officialCgCandidate": "ocn13",
     "audit": {
       "reviewer": "direct-vision",
@@ -12976,9 +12982,10 @@
       "visual_audited",
       "landscape",
       "nene",
-      "adult"
+      "adult",
+      "nene_r18"
     ],
-    "mature": false,
+    "mature": true,
     "location": "卧室",
     "weather": "晴",
     "camera": "官方CG横幅构图",
@@ -12986,12 +12993,13 @@
     "usage": [
       "官方CG灵感",
       "实机审核通过",
-      "展示图"
+      "展示图",
+      "成人向"
     ],
-    "prompt": "adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_extreme_pov_from_between_raised_legs, 1girl, solo, adult_ayachi_nene, white_silver_hair, purple_eyes, lying_on_back_on_a_dark_navy_pillow, open_burgundy_cardigan_and_white_shirt, pink_lace_panties, white_frilled_socks, both_bare_legs_raised_vertically_and_dominating_foreground, holding_a_small_pink_vibrator_near_her_lips_with_both_hands, embarrassed_direct_gaze, heavy_blush, white_bedding, official_visual_novel_cg_framing, <lora:ayachi_nene_v18_wd14:0.95>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, fused legs, closed legs, standing, sitting, full body distant shot, blue clothing, nsfw, nude, explicit",
+    "prompt": "nene_r18, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_extreme_pov_from_between_raised_legs, 1girl, solo, adult_ayachi_nene, nene_red_cardigan_uniform, white_silver_hair, purple_eyes, lying_on_back_on_a_dark_navy_pillow, open_burgundy_cardigan_and_white_shirt, pink_lace_panties, white_frilled_socks, both_bare_legs_raised_vertically_and_dominating_foreground, holding_a_small_pink_vibrator_near_her_lips_with_both_hands, embarrassed_direct_gaze, heavy_blush, white_bedding, official_visual_novel_cg_framing, <lora:ayachi_nene_v18_wd14:0.95>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, fused legs, closed legs, standing, sitting, full body distant shot, blue clothing, child, loli, underage",
     "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
-    "rating": "All",
+    "rating": "R18",
     "officialCgCandidate": "ocn15",
     "audit": {
       "reviewer": "direct-vision",
@@ -13080,7 +13088,7 @@
       "实机审核通过",
       "展示图"
     ],
-    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, tilted_medium_close_up, 1girl, solo, shiki_natsume, black_hair, very_long_hair_tied_in_a_low_side_ponytail_with_purple_ribbon, yellow_eyes, two_red_hairclips, mole_under_eye, pink_gingham_off_shoulder_knit_sweater, one_index_finger_resting_near_her_lips, shy_thoughtful_expression, subtle_blush, apartment_utility_room_and_open_blue_case_in_background, soft_neutral_indoor_light, <lora:shiki_natsume_v18_wd14:0.65>",
+    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, tilted_medium_close_up, 1girl, solo, shiki_natsume, very_long_black_hair, golden_yellow_eyes, two_red_hairclips, mole_under_eye, no_hair_ribbon, pink_gingham_off_shoulder_knit_sweater, one_index_finger_resting_near_her_lips, shy_thoughtful_expression, subtle_blush, apartment_utility_room_and_open_blue_case_in_background, soft_neutral_indoor_light, face_and_red_clips_in_sharp_focus, <lora:shiki_natsume_v18_wd14:0.72>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
     "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
     "rating": "All",
@@ -13172,7 +13180,7 @@
       "实机审核通过",
       "展示图"
     ],
-    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, intimate_diagonal_close_up, 1girl, solo, shiki_natsume, black_hair_spread_over_white_pillows, yellow_eyes, two_red_hairclips, mole_under_eye, pale_blue_pajamas_with_red_piping, lying_on_her_side_in_bed_under_a_white_blanket, quiet_direct_eye_contact, subtle_blush, soft_warm_morning_light, face_and_eyes_in_sharp_focus, <lora:shiki_natsume_v18_wd14:0.65>",
+    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, intimate_diagonal_close_up, 1girl, solo, shiki_natsume, natsume_sleepwear, black_hair_spread_over_white_pillows, yellow_eyes, two_red_hairclips, mole_under_eye, pale_blue_pajamas_with_red_piping, lying_on_her_side_in_bed_under_a_white_blanket, quiet_direct_eye_contact, subtle_blush, soft_warm_morning_light, face_and_eyes_in_sharp_focus, <lora:shiki_natsume_v18_wd14:0.65>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
     "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
     "rating": "All",
@@ -13218,7 +13226,7 @@
       "实机审核通过",
       "展示图"
     ],
-    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, tilted_medium_shot, 1girl, solo, shiki_natsume, black_hair, yellow_eyes, two_red_hairclips, mole_under_eye, dark_gray_cafe_maid_dress, white_frilled_apron_and_collar, gold_bow, white_cuffs, holding_a_small_glowing_blue_magical_object_carefully_in_both_cupped_hands_at_chest_level, surprised_gentle_expression, warm_wooden_cafe_storage_shelves_filled_with_jars_behind_her, cyan_light_illuminating_her_face_and_fingers, <lora:shiki_natsume_v18_wd14:0.65>",
+    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, tilted_medium_shot, 1girl, solo, shiki_natsume, natsume_maid_uniform, black_hair, yellow_eyes, two_red_hairclips, mole_under_eye, dark_gray_cafe_maid_dress, white_frilled_apron_and_collar, gold_bow, white_cuffs, holding_a_small_glowing_blue_magical_object_carefully_in_both_cupped_hands_at_chest_level, surprised_gentle_expression, warm_wooden_cafe_storage_shelves_filled_with_jars_behind_her, cyan_light_illuminating_her_face_and_fingers, <lora:shiki_natsume_v18_wd14:0.65>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
     "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
     "rating": "All",
@@ -13252,9 +13260,10 @@
       "visual_audited",
       "landscape",
       "natsume",
-      "adult"
+      "adult",
+      "natsume_r18"
     ],
-    "mature": false,
+    "mature": true,
     "location": "卧室",
     "weather": "晴",
     "camera": "官方CG横幅构图",
@@ -13262,12 +13271,13 @@
     "usage": [
       "官方CG灵感",
       "实机审核通过",
-      "展示图"
+      "展示图",
+      "成人向"
     ],
-    "prompt": "adult, visual_novel_event_cg, cinematic_16:9_composition, intimate_diagonal_close_up, 1girl, solo, adult_shiki_natsume, black_hair_flowing_across_the_bed, yellow_eyes, two_red_hairclips, mole_under_eye, lying_topless_on_her_side_in_a_warm_bedroom, one_arm_covering_part_of_her_chest, bare_shoulders_and_cleavage, eyes_closed, deeply_blushing_embarrassed_expression, dark_wooden_wall_and_amber_bedside_light, tasteful_adult_visual_novel_cg, <lora:shiki_natsume_v18_wd14:0.65>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
+    "prompt": "natsume_r18, adult, visual_novel_event_cg, cinematic_16:9_composition, intimate_diagonal_close_up, 1girl, solo, adult_shiki_natsume, very_long_black_hair_flowing_across_the_bed, golden_yellow_eyes, two_red_hairclips, mole_under_eye, no_hair_ribbon, lying_topless_on_her_side_in_a_warm_bedroom, one_arm_covering_part_of_her_chest, bare_shoulders_and_cleavage, eyes_closed, deeply_blushing_embarrassed_expression, dark_wooden_wall_and_amber_bedside_light, tasteful_adult_visual_novel_cg, face_and_red_clips_in_sharp_focus, <lora:shiki_natsume_v18_wd14:0.72>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, child, loli, underage",
     "storyJa": "【成人After Story・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
-    "rating": "All",
+    "rating": "R18",
     "officialCgCandidate": "ocs10",
     "audit": {
       "reviewer": "direct-vision",
@@ -13298,9 +13308,10 @@
       "visual_audited",
       "landscape",
       "natsume",
-      "adult"
+      "adult",
+      "natsume_r18"
     ],
-    "mature": false,
+    "mature": true,
     "location": "室内场景",
     "weather": "晴",
     "camera": "官方CG横幅构图",
@@ -13308,12 +13319,13 @@
     "usage": [
       "官方CG灵感",
       "实机审核通过",
-      "展示图"
+      "展示图",
+      "成人向"
     ],
-    "prompt": "adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_composition, strong_clockwise_dutch_angle, low_close_camera, 1girl, solo, adult_shiki_natsume, very_long_black_hair, golden_yellow_eyes, two_red_hairclips, mole_under_eye, lavender_lace_bra_and_matching_panties, black_thighhigh_stockings, sitting_backward_on_a_black_metal_folding_chair, one_stockinged_leg_raised_high_across_the_foreground_and_the_other_leg_spread_to_the_side, hands_gently_clasped_near_abdomen, shy_direct_eye_contact, soft_blush, white_lockers_and_dressing_room_spotlights, official_visual_novel_cg_framing, <lora:shiki_natsume_v18_wd14:0.65>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
+    "prompt": "natsume_r18, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_composition, strong_clockwise_dutch_angle, low_close_camera, 1girl, solo, adult_shiki_natsume, very_long_black_hair, golden_yellow_eyes, two_red_hairclips, mole_under_eye, lavender_lace_bra_and_matching_panties, black_thighhigh_stockings, sitting_backward_on_a_black_metal_folding_chair, one_stockinged_leg_raised_high_across_the_foreground_and_the_other_leg_spread_to_the_side, hands_gently_clasped_near_abdomen, shy_direct_eye_contact, soft_blush, white_lockers_and_dressing_room_spotlights, official_visual_novel_cg_framing, <lora:shiki_natsume_v18_wd14:0.65>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, child, loli, underage",
     "storyJa": "【成人After Story・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
-    "rating": "All",
+    "rating": "R18",
     "officialCgCandidate": "ocs11",
     "audit": {
       "reviewer": "direct-vision",
@@ -13346,7 +13358,7 @@
       "natsume",
       "adult"
     ],
-    "mature": false,
+    "mature": true,
     "location": "卧室",
     "weather": "晴",
     "camera": "官方CG横幅构图",
@@ -13354,12 +13366,13 @@
     "usage": [
       "官方CG灵感",
       "实机审核通过",
-      "展示图"
+      "展示图",
+      "成人向"
     ],
-    "prompt": "adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_composition, diagonal_overhead_view, 1girl, solo, adult_shiki_natsume, very_long_black_hair_fanned_across_the_bed, golden_yellow_eyes, two_red_hairclips, mole_under_eye, detailed_black_lace_bra, matching_black_lace_panties, black_garter_belt_and_garter_straps, black_thighhigh_stockings, lying_on_her_back_on_dark_desaturated_blue_bedding, hands_clasped_modestly_over_upper_chest, knees_slightly_apart, shy_direct_eye_contact, subtle_blush, cool_dim_bedroom_light, official_visual_novel_cg_framing, <lora:shiki_natsume_v18_wd14:0.65>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
+    "prompt": "natsume_r18, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_composition, diagonal_overhead_view, 1girl, solo, adult_shiki_natsume, very_long_black_hair_fanned_across_the_bed, golden_yellow_eyes, two_red_hairclips, mole_under_eye, detailed_black_lace_bra, matching_black_lace_panties, black_garter_belt_and_garter_straps, black_thighhigh_stockings, lying_on_her_back_on_dark_desaturated_blue_bedding, hands_clasped_modestly_over_upper_chest, knees_slightly_apart, shy_direct_eye_contact, subtle_blush, cool_dim_bedroom_light, official_visual_novel_cg_framing, <lora:shiki_natsume_v18_wd14:0.65>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, child, loli, underage",
     "storyJa": "【成人After Story・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
-    "rating": "All",
+    "rating": "R18",
     "officialCgCandidate": "ocs12",
     "audit": {
       "reviewer": "direct-vision",
@@ -13448,7 +13461,7 @@
       "实机审核通过",
       "展示图"
     ],
-    "prompt": "visual_novel_event_cg, cinematic_16:9_clockwise_dutch_angle, waist_up_close_shot, 1girl, solo, shiki_natsume, black_hair_in_short_maid_updo, golden_yellow_eyes, mole_under_eye, tiny_pastel_hairclips, dark_gray_cafe_maid_dress, white_ruffled_apron_and_collar, gold_bow, holding_a_tiny_wrapped_sweet_carefully_in_both_cupped_hands_toward_viewer, gentle_smile, warm_wooden_cafe, wall_racks_filled_with_white_cups, <lora:shiki_natsume_v18_wd14:0.65>",
+    "prompt": "visual_novel_event_cg, cinematic_16:9_clockwise_dutch_angle, waist_up_close_shot, 1girl, solo, shiki_natsume, natsume_maid_uniform, black_hair_in_short_maid_updo, golden_yellow_eyes, mole_under_eye, tiny_pastel_hairclips, dark_gray_cafe_maid_dress, white_ruffled_apron_and_collar, gold_bow, holding_a_tiny_wrapped_sweet_carefully_in_both_cupped_hands_toward_viewer, gentle_smile, warm_wooden_cafe, wall_racks_filled_with_white_cups, <lora:shiki_natsume_v18_wd14:0.65>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
     "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
     "rating": "All",
@@ -13566,9 +13579,10 @@
       "visual_audited",
       "landscape",
       "natsume",
-      "adult"
+      "adult",
+      "natsume_r18"
     ],
-    "mature": false,
+    "mature": true,
     "location": "卧室",
     "weather": "晴",
     "camera": "官方CG横幅构图",
@@ -13576,12 +13590,13 @@
     "usage": [
       "官方CG灵感",
       "实机审核通过",
-      "展示图"
+      "展示图",
+      "成人向"
     ],
-    "prompt": "adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_diagonal_overhead_composition, 1girl, solo, adult_shiki_natsume, very_long_black_hair_spread_across_dark_blue_bed, golden_yellow_eyes, mole_under_eye, topless, nipples, bottomless, black_garter_belt_and_black_thighhigh_stockings, lying_on_back_with_knees_spread_toward_foreground, hands_clasped_over_chest, shy_direct_gaze, cool_dim_bedroom, official_visual_novel_cg_framing, <lora:shiki_natsume_v18_wd14:0.65>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, bra, panties, closed legs, standing, sitting, nsfw, nude, explicit",
+    "prompt": "natsume_r18, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_diagonal_overhead_composition, 1girl, solo, adult_shiki_natsume, very_long_black_hair_spread_across_dark_blue_bed, golden_yellow_eyes, mole_under_eye, topless, nipples, bottomless, black_garter_belt_and_black_thighhigh_stockings, lying_on_back_with_knees_spread_toward_foreground, hands_clasped_over_chest, shy_direct_gaze, cool_dim_bedroom, official_visual_novel_cg_framing, <lora:shiki_natsume_v18_wd14:0.65>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, bra, panties, closed legs, standing, sitting, child, loli, underage",
     "storyJa": "【成人After Story・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
-    "rating": "All",
+    "rating": "R18",
     "officialCgCandidate": "ocs17",
     "audit": {
       "reviewer": "direct-vision",
@@ -13612,9 +13627,10 @@
       "visual_audited",
       "landscape",
       "natsume",
-      "adult"
+      "adult",
+      "natsume_r18"
     ],
-    "mature": false,
+    "mature": true,
     "location": "室内场景",
     "weather": "晴",
     "camera": "官方CG横幅构图",
@@ -13622,12 +13638,13 @@
     "usage": [
       "官方CG灵感",
       "实机审核通过",
-      "展示图"
+      "展示图",
+      "成人向"
     ],
-    "prompt": "adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_diagonal_close_composition, 1girl, solo, adult_shiki_natsume, long_black_hair_in_braided_side_ponytail_with_white_rose_and_purple_ribbon, golden_yellow_eyes, mole_under_eye, kneeling_and_leaning_forward_on_a_reddish_sofa, white_school_shirt_opened_to_reveal_lavender_lace_bra, dark_brown_suspender_skirt, black_thighhigh_stockings, hips_raised_in_background, direct_shy_eye_contact, one_hand_on_cushion, warm_indoor_light, <lora:shiki_natsume_v18_wd14:0.65>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
+    "prompt": "natsume_r18, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_diagonal_close_composition, 1girl, solo, adult_shiki_natsume, natsume_cafe_uniform, long_black_hair_in_braided_side_ponytail_with_white_rose_and_purple_ribbon, golden_yellow_eyes, mole_under_eye, kneeling_and_leaning_forward_on_a_reddish_sofa, white_school_shirt_opened_to_reveal_lavender_lace_bra, dark_brown_suspender_skirt, black_thighhigh_stockings, hips_raised_in_background, direct_shy_eye_contact, one_hand_on_cushion, warm_indoor_light, <lora:shiki_natsume_v18_wd14:0.65>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, child, loli, underage",
     "storyJa": "【成人After Story・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
-    "rating": "All",
+    "rating": "R18",
     "officialCgCandidate": "ocs18",
     "audit": {
       "reviewer": "direct-vision",
@@ -13658,9 +13675,10 @@
       "visual_audited",
       "landscape",
       "natsume",
-      "adult"
+      "adult",
+      "natsume_r18"
     ],
-    "mature": false,
+    "mature": true,
     "location": "咖啡馆",
     "weather": "晴",
     "camera": "官方CG横幅构图",
@@ -13668,12 +13686,13 @@
     "usage": [
       "官方CG灵感",
       "实机审核通过",
-      "展示图"
+      "展示图",
+      "成人向"
     ],
-    "prompt": "adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_extreme_low_angle_pov, 1girl, solo, adult_shiki_natsume, black_hair_in_maid_updo, golden_yellow_eyes, mole_under_eye, dark_gray_cafe_maid_dress, white_ruffled_apron_and_maid_headband, skirt_lifted_high_with_one_hand, beige_panties_visible, white_kneehigh_socks, one_thigh_dominating_foreground, teasing_direct_smile, metal_storage_racks_and_cardboard_boxes, bright_storeroom_light, <lora:shiki_natsume_v18_wd14:0.65>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, long shot, eye-level camera, skirt down, black panties, standing far away, nsfw, nude, explicit",
+    "prompt": "natsume_r18, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_extreme_low_angle_pov, 1girl, solo, adult_shiki_natsume, natsume_maid_uniform, black_hair_in_maid_updo, golden_yellow_eyes, mole_under_eye, dark_gray_cafe_maid_dress, white_ruffled_apron_and_maid_headband, skirt_lifted_high_with_one_hand, beige_panties_visible, white_kneehigh_socks, one_thigh_dominating_foreground, teasing_direct_smile, metal_storage_racks_and_cardboard_boxes, bright_storeroom_light, <lora:shiki_natsume_v18_wd14:0.65>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, long shot, eye-level camera, skirt down, black panties, standing far away, child, loli, underage",
     "storyJa": "【成人After Story・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
-    "rating": "All",
+    "rating": "R18",
     "officialCgCandidate": "ocs19",
     "audit": {
       "reviewer": "direct-vision",

@@ -91,6 +91,12 @@ assert.strictEqual(parsedCatalog.modelProfiles[0].steps, 28, 'numeric profile fi
 
 const storeSource = read('src/stores/promptBuilderStore.ts');
 if (/\bany\b/.test(storeSource)) fail('prompt builder store must keep scene, profile, draft, and project boundaries explicitly typed');
+if (!storeSource.includes("two_red_hairclips, mole_under_eye, no_hair_ribbon")) {
+  fail('Natsume control prompt must retain the explicit red-clip and mole identity anchors');
+}
+if (!/nene:\s*'1girl, solo/.test(storeSource) || !/natsume:\s*'1girl, solo/.test(storeSource)) {
+  fail('single-character wallpaper prompts must retain their solo composition lock');
+}
 
 // ── 2. 导演台视图必须真正接线这些能力 ────────────────────────────────────
 const view = read('src/views/PromptBuilderView.vue');

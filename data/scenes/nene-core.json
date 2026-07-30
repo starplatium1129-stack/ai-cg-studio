@@ -279,7 +279,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, rain, shy, smile, umbrella, shared_umbrella, holding_hands, wet_road, rainy_street, teary_eyes, romantic_atmosphere, afternoon, overcast, close_up, soft_lighting, diffused_light, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, school_uniform, rain, shy, smile, umbrella, shared_umbrella, holding_hands, wet_road, rainy_street, teary_eyes, romantic_atmosphere, afternoon, overcast, close_up, soft_lighting, diffused_light, <lora:ayachi_nene_v18_wd14:0.82>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・雨音の中で正式な答え】放課後、通りはにわか雨で閉じ込められました。寧々本当は一人で走って帰ろうと思ってたんですが、雨の中傘をさして出てくる君を見かけました。二人はそれほど広くない傘の下に押し込められていた。彼女はあなたの考えを黙って聞いていました。彼女の指は力強くなり、ついに率先して傘の柄の横にある手を握りました。――「こんなに長く考えさせるなんて、ずるいです……私の答えは、はい。だから今日から、雨の中に私を置いていかないでくださいね。」",
     "rating": "All"
@@ -794,7 +794,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, bedroom, night, pajamas, lying_on_bed, holding_phone, pillow, shy_smile, quiet_night, intimate_call, late_night, clear_sky, close_up, warm_lighting, screen_light, melancholic, teary_eyes, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, nene_blue_pajamas, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, bedroom, night, pajamas, lying_on_bed, holding_phone, pillow, shy_smile, quiet_night, intimate_call, late_night, clear_sky, close_up, warm_lighting, screen_light, melancholic, teary_eyes, <lora:ayachi_nene_v18_wd14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・深夜の電話は一度も切られなかった】秋の夜、寧々はベッドの上であなたの番号を繰り返しクリックしました。ようやく電話をかけた後、彼女は緊張のあまり何も言えなかった。あなたは彼女を急かすこともなく、ただ受話器を通して彼女と一緒に窓の外の風を聞いていました。久しぶりに枕に顔を埋めてささやいた――「実は、急ぎの用事なんてないんです……今日はずっと会えなかったから。声を聞いたら、安心して眠れそうな気がして。」",
     "rating": "All"
@@ -1808,7 +1808,7 @@
       "展示图",
       "CG"
     ],
-    "prompt": "1girl, solo, ayachi_nene, nene_school_uniform, white hair, very long hair, low twintails, purple eyes, ahoge, pink hair ribbons, complete navy school uniform, navy blazer, white blouse, pleated skirt, black thighhighs, holding one transparent umbrella, wet empty road after rain, rainbow, looking back with bright smile, (one partial male hand entering from bottom edge:1.4), medium full shot, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, nene_school_uniform, white hair, very long hair, low twintails, purple eyes, ahoge, pink hair ribbons, complete navy school uniform, navy blazer, white blouse, pleated skirt, black thighhighs, holding one transparent umbrella, wet empty road after rain, rainbow, looking back with bright smile, (one partial male hand entering from bottom edge:1.4), medium full shot, <lora:ayachi_nene_v18_wd14:0.82>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, 2girls, multiple girls, extra girl, extra person, duplicate character, cloned character, background person, crowd, naked, topless, bottomless, bare breasts, bare buttocks, underwear, swimsuit, transparent clothes, second white-haired girl, clone, twin",
     "storyJa": "【寧々・雨が止んだら見上げてください】夏の夕立はちょうど止んだところだった。寧々さんは透明な傘を持って交差点に立っていましたが、突然雲の間に完全な虹が現れていることに気づきました。彼女は興奮してあなたを呼び戻し、危うく水に入りそうになりましたが、あなたは間に合って彼女を捕まえました。彼女はあなたの手を握り、顔を上げて微笑んだ――「急いで帰らなくてよかったです。悪い天気が過ぎたあとには、本当に待つだけのものがあるんですね。」",
     "rating": "All",
@@ -1996,7 +1996,7 @@
     "usage": [
       "壁纸级"
     ],
-    "prompt": "(official Ayachi Nene witch costume:1.5), (pink crisscross strappy top:1.45), pink collar with gold buckle, black short cape with vivid pink lining, black pleated mini skirt, asymmetrical legwear, one black-and-white striped thighhigh, one white frilled sock, black strappy boots, wide black witch hat with pink striped hatband and large pink bow, apron worn over witch costume, floating cooking utensils, purple magic sparks, levitating frying pan, 1girl, ayachi_nene, nene_witch_canonical, hair_ribbon, oversized_shirt, apron, ahoge, kitchen, cooking_pan, floating_objects, magic_sparks, blush, panicked, indoors, morning_light, cozy, warm_lighting, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, nene_witch_canonical, (official Ayachi Nene witch costume:1.5), white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, (pink crisscross strappy top:1.45), pink collar with gold buckle, black short cape with vivid pink lining, black pleated mini skirt, asymmetrical legwear, one black-and-white striped thighhigh, one white frilled sock, black strappy boots, wide black witch hat with pink striped hatband and large pink bow, a_small_white_apron_worn_over_the_complete_witch_costume, floating cooking utensils, purple magic sparks, levitating frying pan, kitchen, blush, panicked, indoors, morning_light, cozy, warm_lighting, full_witch_costume_visible, <lora:ayachi_nene_v18_wd14:0.88>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, plain apron only, ordinary cook, generic witch dress",
     "storyJa": "【寧々・アフターストーリー】結婚式の翌朝、アパートのキッチンは焼けたパンの匂いでいっぱいだった。寧々はあなたのオーバーサイズのシャツとエプロンを着て、朝食の準備に忙しいです。鍋が焦げそうになったので、彼女はパニックになり、無意識のうちに魔法を使って鍋を空中に浮かせました。その結果、彼女はドアを押し込んだあなたにぶつかってしまいました。彼女の顔はすぐに赤くなり、頭のアホ毛は恥ずかしそうにハート型に曲がりました。――「きゃあっ、見ちゃだめです！　魔女の料理魔法が失敗した現場も、家事の最高機密なんですから！」",
     "rating": "All",
@@ -2090,7 +2090,7 @@
     "usage": [
       "壁纸级"
     ],
-    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, pajamas, lying_on_stomach, hand_on_chin, bare_legs, bedroom, bed, soft_lighting, lamp_light, night, slight_smile, blush, cozy, warm_lighting, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, ayachi_nene, nene_blue_pajamas, hair_ribbon, ahoge, pajamas, lying_on_stomach, hand_on_chin, bare_legs, bedroom, bed, soft_lighting, lamp_light, night, slight_smile, blush, cozy, warm_lighting, <lora:ayachi_nene_v18_wd14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・ホームミュージック】雨が降りしきる深夜、寝室にはベッドサイドのランプが灯っているだけで、ほのかな暖かな光を放っていた。寧々さんはゆるくて可愛い長袖パジャマを着ていました。彼女は柔らかいソファの枕に横たわり、両手で顎を押さえ、滑らかな脚を後ろでそっと振っていました。彼女は明るい目を開けて、横向きに横たわっているあなたを見つめました。安心感から頭上のアホ毛が素直に垂れ、声も小さかった。――「ねえ、柊史。卒業したら、寧々のリボンと同じ色の猫を一匹飼いませんか？」",
     "rating": "All"
@@ -2887,7 +2887,7 @@
       "实机审核通过",
       "展示图"
     ],
-    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, (tight_upper_body_close_up), 1girl, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, navy_school_uniform_blazer, gray_sailor_collar, gold_bow, (both_hands_clasped_tightly_directly_below_her_chin), front_view, pleading_gentle_expression, subtle_blush, bright_blue_sky_and_green_trees_through_one_large_classroom_window, a_few_empty_desks_softly_blurred_behind_her, character_fills_most_of_frame, cropped_below_chest, <lora:ayachi_nene_v18_wd14:0.9>",
+    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, (tight_upper_body_close_up), 1girl, solo, ayachi_nene, nene_sailor_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, navy_school_uniform_blazer, gray_sailor_collar, gold_bow, (both_hands_clasped_tightly_directly_below_her_chin), front_view, pleading_gentle_expression, subtle_blush, bright_blue_sky_and_green_trees_through_one_large_classroom_window, a_few_empty_desks_softly_blurred_behind_her, character_fills_most_of_frame, cropped_below_chest, <lora:ayachi_nene_v18_wd14:0.9>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, full body, long shot, distant character, standing, tiny person, nsfw, nude, explicit",
     "storyJa": "【公式CGインスピレーション・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
     "rating": "All",
@@ -2933,7 +2933,7 @@
       "实机审核通过",
       "展示图"
     ],
-    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, diagonal_medium_close_up_from_above, 1girl, solo, ayachi_nene, white_hair, very_long_hair, purple_eyes, ahoge, (sky_blue_patterned_button_up_pajama_shirt), small_navy_animal_pattern, contrasting_pink_collar, sitting_upright_in_a_pink_bedroom_bed, pale_pink_blanket_pulled_to_her_waist, very_long_silver_hair_spread_across_pink_pillows_and_sheets, quiet_direct_eye_contact, faint_blush, soft_morning_window_light, intimate_wholesome_atmosphere, <lora:ayachi_nene_v18_wd14:0.9>",
+    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, diagonal_medium_close_up_from_above, 1girl, solo, ayachi_nene, nene_blue_pajamas, white_hair, very_long_hair, purple_eyes, ahoge, (sky_blue_patterned_button_up_pajama_shirt), small_navy_animal_pattern, contrasting_pink_collar, sitting_upright_in_a_pink_bedroom_bed, pale_pink_blanket_pulled_to_her_waist, very_long_silver_hair_spread_across_pink_pillows_and_sheets, quiet_direct_eye_contact, faint_blush, soft_morning_window_light, intimate_wholesome_atmosphere, <lora:ayachi_nene_v18_wd14:0.9>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, pink pajamas, purple pajamas, crop top, exposed midriff, camera, photography equipment, dark blue bedding, lying on side, nsfw, nude, explicit",
     "storyJa": "【公式CGインスピレーション・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
     "rating": "All",

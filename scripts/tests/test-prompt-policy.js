@@ -79,8 +79,8 @@ assert(policy.sceneSupportsCharacter({ char:'nene' }, 'nene'));
 assert(!policy.sceneSupportsCharacter({ char:'nene' }, 'natsume'));
 assert.strictEqual(
   policy.sceneTemplateText({ prompt:'cafe, school_uniform', tags:['school_uniform'] }, {}),
-  'cafe',
-  'scene template text should remove tags already supplied by scene metadata'
+  'cafe, school_uniform',
+  'scene template text must retain scene identity tags because metadata is not appended to the final prompt'
 );
 
 assert.deepStrictEqual(
@@ -89,8 +89,14 @@ assert.deepStrictEqual(
     'nene',
     { nene:'ayachi_nene_v18_wd14' }
   ),
-  ['nene_r18', 'nene_witch_canonical'],
-  'v18 mature witch scenes must receive both the adult gate and canonical outfit control'
+  [
+    'nene_r18', 'nene_witch_canonical', 'witch_hat', 'black_cape',
+    'criss-cross_halter', 'crop_top', 'strap_between_breasts', 'pink_bow',
+    'pink_ribbon', 'black_skirt', 'asymmetrical_legwear',
+    'striped_thighhighs', 'single_thighhigh', 'single_sock', 'frilled_socks',
+    'midriff'
+  ],
+  'v18 mature witch scenes must receive the adult gate and exact trained outfit bundle'
 );
 assert.deepStrictEqual(
   policy.characterControlTokens(
@@ -98,8 +104,38 @@ assert.deepStrictEqual(
     'nene',
     { nene:'ayachi_nene_v18_wd14' }
   ),
-  ['nene_school_uniform'],
-  'canonical school scenes must receive the learned uniform control'
+  [
+    'nene_school_uniform', 'school_uniform', 'blazer', 'yellow_bowtie',
+    'plaid_skirt', 'pleated_skirt', 'grey_skirt', 'black_thighhighs',
+    'zettai_ryouiki'
+  ],
+  'canonical school scenes must receive the exact trained uniform bundle'
+);
+assert.deepStrictEqual(
+  policy.characterControlTokens(
+    { prompt:'shiki_natsume, qipao, standing' },
+    'natsume',
+    { natsume:'shiki_natsume_v18_wd14' }
+  ),
+  [
+    'natsume_official_qipao', 'chinese_clothes', 'china_dress', 'red_dress',
+    'floral_print', 'side_slit', 'long_sleeves', 'black_thighhighs',
+    'hair_bun', 'double_bun', 'hair_flower', 'red_flower'
+  ],
+  'official qipao scenes must use the exact v18 caption vocabulary'
+);
+assert.deepStrictEqual(
+  policy.characterControlTokens(
+    { prompt:'shiki_natsume, cafe_uniform, closed_cafe' },
+    'natsume',
+    { natsume:'shiki_natsume_v18_wd14' }
+  ),
+  [
+    'natsume_cafe_uniform', 'white_shirt', 'suspenders', 'suspender_skirt',
+    'brown_skirt', 'long_sleeves', 'collared_shirt', 'purple_ribbon',
+    'hair_flower'
+  ],
+  'official cafe scenes must use the exact v18 caption vocabulary'
 );
 assert.deepStrictEqual(
   policy.characterControlTokens(

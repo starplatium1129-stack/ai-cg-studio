@@ -47,7 +47,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, pajamas, bedroom, night, looking_back, solid_color, looking_at_viewer, in_love, eye_contact, adult, cohabitation, kotatsu, game_controller, pouting, cozy_living_room, new_year, clear_sky, upper_body, medium_shot, warm_lighting, screen_light, blush, shy, living_room, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, nene_blue_pajamas, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, pajamas, bedroom, night, looking_back, solid_color, looking_at_viewer, in_love, eye_contact, adult, cohabitation, kotatsu, game_controller, pouting, cozy_living_room, new_year, clear_sky, upper_body, medium_shot, warm_lighting, screen_light, blush, shy, living_room, <lora:ayachi_nene_v18_wd14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・お正月、こたつでの敗北】大人になって一緒に暮らし始めてから迎えた大晦日。寧々はこたつであなたと協力ゲームを遊んでいた。一回だけと言っていたのに、連敗するとこっそり難易度を下げてしまう。あなたに見つかると、慌ててコントローラーをクッションの後ろへ隠し、アホ毛まで気まずそうにぴんと立った――「これはずるじゃありません。お正月の運勢を合理的に調整しただけです！　もう一回。負けたほうが、明日の朝のお雑煮を作るんですからね。」",
     "rating": "All"
@@ -233,7 +233,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "(male arms embracing her from behind:1.55), one hand pulling the curtain closed, floor-to-ceiling apartment window, evening city view, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, night, window_light, backlighting, window, silhouette, adult, sleepwear, robe, back_hug, curtain, city_lights, window_silhouette, cohabitation, clear_sky, upper_body, from_behind, rim_light, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "(male arms embracing her from behind:1.55), one hand pulling the curtain closed, floor-to-ceiling apartment window, evening city view, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, night, window_light, backlighting, window, silhouette, adult, sleepwear, robe, back_hug, curtain, city_lights, window_silhouette, cohabitation, clear_sky, upper_body, from_behind, rim_light, <lora:ayachi_nene_v18_wd14:0.82>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー・幕が閉まる前に】高層マンションの夜景が床から天井までの窓を覆っていた。大人の寧々は柔らかいネグリジェを着てガラスの前に立ち、カーテンを閉める準備をしていた。後ろから近づくと、うっかり肩紐が少しずれてしまい、顔を赤らめながらすぐに肩紐を押さえたが、ハグは避けなかった。街の明かりが互いのシルエットを映す――「外からは見えませんよね？　それなら、もう少しだけ……でも先に、カーテンをきちんと閉めてください。」",
     "rating": "All",
@@ -282,7 +282,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "(male arms embracing her from behind:1.55), sauce smear on her cheek, cooking apron, kitchen counter, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, casual_clothes, apron, smile, kitchen, holding, adult, cohabitation, back_hug, sauce_on_cheek, warm_smile, evening, clear_sky, close_up, upper_body, from_behind, warm_lighting, gentle_smile, soft_eyes, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "(male arms embracing her from behind:1.55), sauce smear on her cheek, cooking apron, kitchen counter, 1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, casual_clothes, apron, smile, kitchen, holding, adult, cohabitation, back_hug, sauce_on_cheek, warm_smile, evening, clear_sky, close_up, upper_body, from_behind, warm_lighting, gentle_smile, soft_eyes, <lora:ayachi_nene_v18_wd14:0.82>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー・エプロンをしたままハグ】同棲を終えた秋の夜、大人になった寧々は料理教室で新しい料理の練習を終え、手順を復習するためにエプロン姿のまま帰宅した。あなたは彼女の顔にソースがついたことを横から彼女に思い出させました。彼女は長い時間丁寧に拭いて、最後には後ろから抱きついて肩に顎を乗せた。――「今日はずっと、最初にあなたに味見してもらおうって思ってたんです。まだ振り向かないで、少しだけ充電させてください……それから、おいしいか教えてくださいね。」",
     "rating": "All",
@@ -377,7 +377,7 @@
       "展示图",
       "头像"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, bedroom, pajamas, looking_back, bed, pov, adult, cohabitation, sleeping, under_blanket, holding_wrist, white_hair_spread, morning_light, morning, clear_sky, close_up, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, solo, ayachi_nene, nene_blue_pajamas, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, bedroom, pajamas, looking_back, bed, pov, adult, cohabitation, sleeping, under_blanket, holding_wrist, white_hair_spread, morning_light, morning, clear_sky, close_up, <lora:ayachi_nene_v18_wd14:0.8>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit",
     "storyJa": "【寧々・大人のアフターストーリー・目覚まし時計が鳴る5分前】大人になって一緒に引っ越してきた春の朝、寧々さんはまだベッドに身を寄せ合ってぐっすり眠っていました。掛け布団は腰だけを覆い、長い銀髪が枕を覆っていた。あなたは初めて彼女のために目覚まし時計を止めました。彼女は呆然とあなたの手首を掴み、顔の横に押し付けました。――「あと五分だけで起きます……本当です。先に行っちゃだめですよ。目を開けたとき、最初にあなたが見えるようにしてください。」",
     "rating": "All"
@@ -3563,9 +3563,10 @@
       "visual_audited",
       "landscape",
       "nene",
-      "adult"
+      "adult",
+      "nene_r18"
     ],
-    "mature": false,
+    "mature": true,
     "location": "图书室",
     "weather": "晴",
     "camera": "官方CG横幅构图",
@@ -3573,12 +3574,13 @@
     "usage": [
       "官方CG灵感",
       "实机审核通过",
-      "展示图"
+      "展示图",
+      "成人向"
     ],
-    "prompt": "nene_school_uniform, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_composition, dramatic_clockwise_dutch_angle, low_close_camera_across_a_wooden_library_desk, 1girl, solo, adult_ayachi_nene, white_silver_hair, very_long_twin_tails_tied_with_pink_ribbons, purple_eyes, ahoge, black_school_uniform_costume_jacket_with_orange_piping_and_gold_bow, gray_plaid_pleated_skirt_lifted_high_with_both_hands, pink_lace_panties_visible, black_thighhigh_stockings, kneeling_and_leaning_back_against_the_desk, embarrassed_open_mouth, heavy_blush, direct_eye_contact, tall_bookshelves_packed_with_japanese_books, warm_sunset_flooding_through_a_window_at_right, official_visual_novel_cg_framing, <lora:ayachi_nene_v18_wd14:0.95>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
+    "prompt": "nene_r18, nene_school_uniform, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_composition, dramatic_clockwise_dutch_angle, low_close_camera_across_a_wooden_library_desk, 1girl, solo, adult_ayachi_nene, white_silver_hair, very_long_twin_tails_tied_with_pink_ribbons, purple_eyes, ahoge, black_school_uniform_costume_jacket_with_orange_piping_and_gold_bow, gray_plaid_pleated_skirt_lifted_high_with_both_hands, pink_lace_panties_visible, black_thighhigh_stockings, kneeling_and_leaning_back_against_the_desk, embarrassed_open_mouth, heavy_blush, direct_eye_contact, tall_bookshelves_packed_with_japanese_books, warm_sunset_flooding_through_a_window_at_right, official_visual_novel_cg_framing, <lora:ayachi_nene_v18_wd14:0.95>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, child, loli, underage",
     "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
-    "rating": "All",
+    "rating": "R18",
     "officialCgCandidate": "ocn09",
     "audit": {
       "reviewer": "direct-vision",
@@ -3656,9 +3658,10 @@
       "visual_audited",
       "landscape",
       "nene",
-      "adult"
+      "adult",
+      "nene_r18"
     ],
-    "mature": false,
+    "mature": true,
     "location": "卧室",
     "weather": "晴",
     "camera": "官方CG横幅构图",
@@ -3666,12 +3669,13 @@
     "usage": [
       "官方CG灵感",
       "实机审核通过",
-      "展示图"
+      "展示图",
+      "成人向"
     ],
-    "prompt": "adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_extreme_intimate_close_up, (strong_diagonal_composition), overhead_camera_from_lower_body_toward_face, 1girl, solo, adult_ayachi_nene, silver_white_long_hair_spread_over_bedding, purple_eyes, topless, nipples, anatomically_correct_torso, exactly_two_breasts, bra_lift, pale_powder_blue_bra_pushed_above_breasts, open_white_shirt_slipping_from_shoulders, lying_on_back_on_huge_golden_yellow_pillows, nude_abdomen_and_lower_torso_enormously_foreshortened_across_the_right_foreground, (face_placed_at_upper_left), shy_direct_eye_contact, open_mouth, deep_blush, warm_morning_sunlight_from_upper_right, official_visual_novel_cg_framing, <lora:ayachi_nene_v18_wd14:0.95>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, extra breast, third breast, fused breasts, malformed torso, portrait crop, headshot, symmetrical front view, face centered, covered torso, fully clothed, blanket, sitting, standing, nsfw, nude, explicit",
+    "prompt": "nene_r18, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_extreme_intimate_close_up, (strong_diagonal_composition), overhead_camera_from_lower_body_toward_face, 1girl, solo, adult_ayachi_nene, silver_white_long_hair_spread_over_bedding, purple_eyes, topless, nipples, anatomically_correct_torso, exactly_two_breasts, bra_lift, pale_powder_blue_bra_pushed_above_breasts, open_white_shirt_slipping_from_shoulders, lying_on_back_on_huge_golden_yellow_pillows, nude_abdomen_and_lower_torso_enormously_foreshortened_across_the_right_foreground, (face_placed_at_upper_left), shy_direct_eye_contact, open_mouth, deep_blush, warm_morning_sunlight_from_upper_right, official_visual_novel_cg_framing, <lora:ayachi_nene_v18_wd14:0.95>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, extra breast, third breast, fused breasts, malformed torso, portrait crop, headshot, symmetrical front view, face centered, covered torso, fully clothed, blanket, sitting, standing, child, loli, underage",
     "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
-    "rating": "All",
+    "rating": "R18",
     "officialCgCandidate": "ocn11",
     "audit": {
       "reviewer": "direct-vision",
@@ -3749,9 +3753,10 @@
       "visual_audited",
       "landscape",
       "nene",
-      "adult"
+      "adult",
+      "nene_r18"
     ],
-    "mature": false,
+    "mature": true,
     "location": "卧室",
     "weather": "晴",
     "camera": "官方CG横幅构图",
@@ -3759,12 +3764,13 @@
     "usage": [
       "官方CG灵感",
       "实机审核通过",
-      "展示图"
+      "展示图",
+      "成人向"
     ],
-    "prompt": "adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_intimate_diagonal_close_up, 1girl, solo, adult_ayachi_nene, silver_white_hair_in_two_thick_long_braids, purple_eyes, lying_on_her_back_in_white_bedding, mint_green_polka_dot_pajama_shirt_pulled_upward_and_held_against_her_chest_with_both_hands, bare_abdomen, pink_lace_panties_peeking_above_white_blanket, direct_shy_eye_contact, dark_navy_pillow_at_left, soft_morning_light, official_visual_novel_cg_framing, <lora:ayachi_nene_v18_wd14:0.95>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, blue pajamas, closed shirt, fully clothed, sitting, standing, full body long shot, nsfw, nude, explicit",
+    "prompt": "nene_r18, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_intimate_diagonal_close_up, 1girl, solo, adult_ayachi_nene, nene_green_sleepwear, silver_white_hair_in_two_thick_long_braids, purple_eyes, lying_on_her_back_in_white_bedding, mint_green_polka_dot_pajama_shirt_pulled_upward_and_held_against_her_chest_with_both_hands, bare_abdomen, pink_lace_panties_peeking_above_white_blanket, direct_shy_eye_contact, dark_navy_pillow_at_left, soft_morning_light, official_visual_novel_cg_framing, <lora:ayachi_nene_v18_wd14:0.95>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, blue pajamas, closed shirt, fully clothed, sitting, standing, full body long shot, child, loli, underage",
     "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
-    "rating": "All",
+    "rating": "R18",
     "officialCgCandidate": "ocn13",
     "audit": {
       "reviewer": "direct-vision",
@@ -3832,9 +3838,10 @@
       "visual_audited",
       "landscape",
       "nene",
-      "adult"
+      "adult",
+      "nene_r18"
     ],
-    "mature": false,
+    "mature": true,
     "location": "卧室",
     "weather": "晴",
     "camera": "官方CG横幅构图",
@@ -3842,12 +3849,13 @@
     "usage": [
       "官方CG灵感",
       "实机审核通过",
-      "展示图"
+      "展示图",
+      "成人向"
     ],
-    "prompt": "adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_extreme_pov_from_between_raised_legs, 1girl, solo, adult_ayachi_nene, white_silver_hair, purple_eyes, lying_on_back_on_a_dark_navy_pillow, open_burgundy_cardigan_and_white_shirt, pink_lace_panties, white_frilled_socks, both_bare_legs_raised_vertically_and_dominating_foreground, holding_a_small_pink_vibrator_near_her_lips_with_both_hands, embarrassed_direct_gaze, heavy_blush, white_bedding, official_visual_novel_cg_framing, <lora:ayachi_nene_v18_wd14:0.95>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, fused legs, closed legs, standing, sitting, full body distant shot, blue clothing, nsfw, nude, explicit",
+    "prompt": "nene_r18, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_extreme_pov_from_between_raised_legs, 1girl, solo, adult_ayachi_nene, nene_red_cardigan_uniform, white_silver_hair, purple_eyes, lying_on_back_on_a_dark_navy_pillow, open_burgundy_cardigan_and_white_shirt, pink_lace_panties, white_frilled_socks, both_bare_legs_raised_vertically_and_dominating_foreground, holding_a_small_pink_vibrator_near_her_lips_with_both_hands, embarrassed_direct_gaze, heavy_blush, white_bedding, official_visual_novel_cg_framing, <lora:ayachi_nene_v18_wd14:0.95>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, fused legs, closed legs, standing, sitting, full body distant shot, blue clothing, child, loli, underage",
     "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
-    "rating": "All",
+    "rating": "R18",
     "officialCgCandidate": "ocn15",
     "audit": {
       "reviewer": "direct-vision",
