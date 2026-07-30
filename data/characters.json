@@ -237,7 +237,7 @@
     "source": "YUZUSOFT《喫茶ステラと死神の蝶 / 星光咖啡馆与死神之蝶》",
     "lora": {
       "name": "shiki_natsume_v18_wd14",
-      "weight": 0.65,
+      "weight": 0.85,
       "recommended_scene": [
         "sc005",
         "sc018",

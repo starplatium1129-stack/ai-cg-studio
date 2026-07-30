@@ -49,3 +49,21 @@ test('global motion feedback is suppressed when reduced motion is requested', as
   }))
   expect(state).toEqual({ loader: 'none', impulse: 'none' })
 })
+
+test('repeated navigation keeps a visible route view mounted', async ({ page }) => {
+  await page.goto('/')
+
+  for (const destination of [
+    { label: '灵感场景', url: /\/scene-explorer$/, heading: '灵感场景' },
+    { label: '效果样张', url: /\/showcase$/, heading: '场景，实际能画成什么样' },
+    { label: '作品册', url: /\/gallery$/, heading: '作品册' },
+  ]) {
+    await page.getByRole('link', { name: destination.label, exact: true }).click()
+    await expect(page).toHaveURL(destination.url)
+    await expect(page.locator('#main')).toContainText(destination.heading)
+    expect(await page.locator('#main .route-view').evaluateAll(views => views.some(view => {
+      const style = getComputedStyle(view)
+      return style.opacity !== '0' && view.getBoundingClientRect().height > 0
+    }))).toBe(true)
+  }
+})

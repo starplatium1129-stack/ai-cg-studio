@@ -30,7 +30,14 @@
 
     <section aria-live="polite" data-reveal data-reveal-delay="1">
       <ArchiveStatePanel
-        v-if="!visible.length"
+        v-if="galleryLoading"
+        class="gallery-loading-wall"
+        kind="loading"
+        title="正在读取本地作品档案"
+        message="先建立展墙结构，再逐张解码原图。"
+      />
+      <ArchiveStatePanel
+        v-else-if="!visible.length"
         kind="empty"
         title="展墙还在等第一幅作品"
         message="完成绘制后，原图会按自己的横竖比例进这里。作品只存在这台电脑，参数不挡画面。"
@@ -76,7 +83,8 @@
                   referrerpolicy="no-referrer"
                   @load="measure(item.id, $event)"
                 />
-                <div v-else class="artwork-placeholder">✦</div>
+                <div v-else-if="missingImageIds.has(item.id)" class="artwork-placeholder">✦</div>
+                <div v-else class="artwork-skeleton" aria-hidden="true"></div>
                 <div class="artwork-caption">
                   <span>
                     <span class="artwork-name">{{ sceneTitle(item.scene) }}</span>
@@ -183,10 +191,12 @@ const scenes = ref<Scene[]>([])
 const loras = ref<LoraMeta[]>([])
 const favoriteOnly = ref(false)
 const projectFilter = ref('')
+const galleryLoading = ref(true)
 const viewerIndex = ref(-1)
 const infoOpen = ref(false)
 const viewerUrl = ref('')
 const cardUrls = reactive<Record<string, string>>({})
+const missingImageIds = ref(new Set<string | number>())
 /** 图片实际比例，键为历史条目 id；元数据不可信时以此为准 */
 const measuredRatios = reactive<Record<string, number>>({})
 /** 待确认删除的条目 id：删除不可撤销，所以要点两次 */
@@ -317,6 +327,9 @@ function safeImageUrl(v: string | undefined) {
   } catch { return '' }
 }
 function trackUrl(url: string) { objectUrls.add(url); return url }
+function markImageMissing(id: string | number) {
+  missingImageIds.value = new Set([...missingImageIds.value, id])
+}
 function revokeAll() {
   objectUrls.forEach(u => URL.revokeObjectURL(u))
   objectUrls.clear()
@@ -334,8 +347,10 @@ async function hydrateCards() {
       if (blob) cardUrls[item.id] = trackUrl(URL.createObjectURL(blob))
       else if (fallback) cardUrls[item.id] = fallback
       else if (item.image_data && String(item.image_data).startsWith('data:image/')) cardUrls[item.id] = item.image_data
+      else markImageMissing(item.id)
     } catch {
       if (fallback) cardUrls[item.id] = fallback
+      else markImageMissing(item.id)
     }
   }
 }
@@ -418,6 +433,7 @@ async function confirmDelete(item: ArtworkRecord) {
     const url = cardUrls[item.id]
     if (url && url.startsWith('blob:')) { URL.revokeObjectURL(url); objectUrls.delete(url) }
     delete cardUrls[item.id]
+    if (missingImageIds.value.delete(item.id)) missingImageIds.value = new Set(missingImageIds.value)
     delete measuredRatios[item.id]
     pendingDeleteId.value = null
 
@@ -494,13 +510,14 @@ onMounted(async () => {
         })
       : []
   } catch (e) { console.warn('gallery storage init failed', e) }
+  galleryLoading.value = false
 
   try {
     await sceneStore.load()
     scenes.value = sceneStore.scenes
     loras.value = sceneStore.loras
   } catch (e) { console.warn('gallery data load failed', e) }
-  await hydrateCards()
+  void hydrateCards()
 })
 
 onUnmounted(() => {
@@ -521,20 +538,22 @@ watch(visible, () => { hydrateCards() })
 .gallery-count { color:var(--text-muted); font:650 var(--fs-label-xs) var(--font-mono); letter-spacing:.08em; white-space:nowrap; }
 
 .gallery-toolbar { max-width:1500px; margin:0 auto clamp(24px,3vw,38px); display:flex; align-items:center; gap:var(--s-2); }
-.gallery-filter { min-height:36px; padding:0 15px; border:1px solid transparent; border-radius:var(--r-pill); background:transparent; color:var(--text-secondary); font:650 var(--fs-label-sm) var(--font-sans); cursor:pointer; transition:border-color var(--t-fast),background var(--t-fast),color var(--t-fast); }
+.gallery-filter { min-height:36px; padding:0 15px; border:1px solid transparent; border-radius:var(--r-terminal); background:transparent; color:var(--text-secondary); font:650 var(--fs-label-sm) var(--font-sans); cursor:pointer; transition:border-color var(--t-fast),background var(--t-fast),color var(--t-fast); }
 .gallery-filter:hover,.gallery-filter.active { border-color:color-mix(in srgb,var(--accent) 34%,var(--border-soft)); background:var(--accent-soft); color:var(--accent); }
-.gallery-project { min-height:36px; min-width:140px; padding:0 34px 0 13px; border:1px solid transparent; border-radius:var(--r-pill); background:transparent; color:var(--text-secondary); font:650 var(--fs-label-sm) var(--font-sans); cursor:pointer; outline:none; }
+.gallery-project { min-height:36px; min-width:140px; padding:0 34px 0 13px; border:1px solid transparent; border-radius:var(--r-terminal); background:transparent; color:var(--text-secondary); font:650 var(--fs-label-sm) var(--font-sans); cursor:pointer; outline:none; }
 .gallery-project:focus { border-color:var(--accent); }
 .gallery-toolbar-note { margin-left:auto; padding-right:var(--s-3); color:var(--text-muted); font-size:var(--fs-mono-sm); white-space:nowrap; }
 
 .gallery-wall { max-width:1500px; margin:0 auto; columns:4 260px; column-gap:clamp(12px,1.6vw,24px); }
-.artwork { position:relative; break-inside:avoid; margin:0 0 clamp(12px,1.6vw,24px); overflow:hidden; border:1px solid color-mix(in srgb,var(--border-soft) 78%,transparent); border-radius:clamp(10px,1.2vw,18px); background:var(--art-mat); box-shadow:var(--shadow-sm); transition:transform var(--t-base),box-shadow var(--t-base),border-color var(--t-base); }
+.gallery-loading-wall { min-height:340px; }
+.artwork { position:relative; break-inside:avoid; margin:0 0 clamp(12px,1.6vw,24px); overflow:hidden; border:1px solid color-mix(in srgb,var(--border-soft) 78%,transparent); border-radius:var(--r-dossier); background:var(--art-mat); box-shadow:var(--shadow-sm); transition:transform var(--t-base),box-shadow var(--t-base),border-color var(--t-base); }
+.artwork::before { position:absolute; z-index:var(--z-raised); top:-1px; left:var(--s-3); width:28px; height:var(--line-hairline); background:var(--archive-cyan); content:""; opacity:.82; pointer-events:none; }
 .artwork:hover { transform:translateY(-3px); border-color:color-mix(in srgb,var(--accent) 38%,var(--border-soft)); box-shadow:var(--shadow-md); }
 .artwork-button { display:block; width:100%; padding:0; border:0; background:transparent; color:inherit; cursor:zoom-in; }
 .artwork-button:focus-visible { outline:3px solid var(--accent); outline-offset:-3px; }
 .artwork-tools { position:absolute; z-index:var(--z-raised); top:var(--s-2); right:var(--s-2); display:flex; align-items:center; gap:4px; opacity:0; transform:translateY(-4px); pointer-events:none; transition:opacity var(--t-fast),transform var(--t-fast); }
 .artwork:hover .artwork-tools,.artwork:focus-within .artwork-tools,.artwork-pending .artwork-tools { opacity:1; transform:none; pointer-events:auto; }
-.artwork-tool { min-height:30px; padding:0 var(--s-2); border:1px solid var(--on-art-line); border-radius:var(--r-pill); background:var(--art-scrim); color:var(--on-art-primary); font:650 var(--fs-label-xs) var(--font-sans); cursor:pointer; -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); transition:background var(--t-fast),border-color var(--t-fast),color var(--t-fast); }
+.artwork-tool { min-height:30px; padding:0 var(--s-2); border:1px solid var(--on-art-line); border-radius:var(--r-terminal); background:var(--art-scrim); color:var(--on-art-primary); font:650 var(--fs-label-xs) var(--font-sans); cursor:pointer; -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); transition:background var(--t-fast),border-color var(--t-fast),color var(--t-fast); }
 .artwork-tool:hover:not(:disabled) { border-color:color-mix(in srgb,var(--accent) 60%,var(--on-art-line)); background:color-mix(in srgb,var(--accent) 52%,var(--art-scrim)); }
 .artwork-tool.danger { border-color:color-mix(in srgb,var(--danger) 54%,var(--on-art-line)); background:color-mix(in srgb,var(--danger) 48%,var(--art-scrim)); }
 .artwork-tool.danger:hover:not(:disabled) { background:var(--danger); color:var(--text-inverse); }
@@ -543,6 +562,7 @@ watch(visible, () => { hydrateCards() })
 .artwork-media { position:relative; width:100%; aspect-ratio:var(--art-ratio,3/4); overflow:hidden; background:linear-gradient(135deg,color-mix(in srgb,var(--art-mat) 88%,#fff),var(--art-mat)); }
 .artwork-image { display:block; width:100%; height:100%; object-fit:contain; background:var(--art-mat); }
 .artwork-placeholder { position:absolute; inset:0; display:grid; place-items:center; color:var(--on-art-secondary); font-size:var(--fs-glyph); }
+.artwork-skeleton { position:absolute; inset:0; background:linear-gradient(105deg,var(--art-mat) 18%,color-mix(in srgb,var(--art-mat) 76%,var(--text-primary)) 42%,var(--art-mat) 68%); background-size:220% 100%; animation:gallerySkeleton 1.3s linear infinite; }
 .artwork-caption { position:absolute; inset:auto 0 0; display:flex; align-items:flex-end; justify-content:space-between; gap:var(--s-3); padding:40px var(--s-3) var(--s-3); color:var(--on-art-primary); background:linear-gradient(transparent,var(--art-scrim)); opacity:0; transform:translateY(8px); transition:opacity var(--t-fast) var(--ease-out),transform var(--t-fast) var(--ease-out); text-align:left; pointer-events:none; }
 .artwork:hover .artwork-caption,.artwork-button:focus-visible .artwork-caption { opacity:1; transform:none; }
 .artwork-name { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:var(--fs-label-sm); font-weight:700; }
@@ -556,13 +576,14 @@ watch(visible, () => { hydrateCards() })
 @media (max-width:600px) {
   .gallery-shell { padding:var(--s-5) var(--s-3) var(--s-8); }
   .gallery-wall { columns:2 135px; column-gap:var(--s-3); }
-  .artwork { margin-bottom:var(--s-3); border-radius:var(--r-md); }
+  .artwork { margin-bottom:var(--s-3); border-radius:var(--r-dossier); }
   .artwork-caption { opacity:1; transform:none; padding:34px var(--s-2) var(--s-2); }
   .artwork-name { font-size:var(--fs-mono-sm); }
   .artwork-date { display:none; }
   .artwork-tools { opacity:1; transform:none; pointer-events:auto; }
 }
-@media (prefers-reduced-motion:reduce) { .artwork,.artwork-caption { transition:none !important; } }
+@media (prefers-reduced-motion:reduce) { .artwork,.artwork-caption { transition:none !important; } .artwork-skeleton { animation:none; } }
+@keyframes gallerySkeleton { to { background-position:-120% 0; } }
 </style>
 
 <style>

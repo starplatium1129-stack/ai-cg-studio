@@ -21,8 +21,11 @@
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { playInterfaceTone, type InterfaceTone } from '@/composables/useInterfaceFeedback'
+import { prefetchRoute } from '@/router'
+import { useSceneStore } from '@/stores/sceneStore'
 
 const router = useRouter()
+const sceneStore = useSceneStore()
 const routeLoading = ref(false)
 const routeCutActive = ref(false)
 const routeCutCode = ref('00')
@@ -38,6 +41,11 @@ let impulseTimer = 0
 let routeTimer = 0
 let removeBefore: (() => void) | null = null
 let removeAfter: (() => void) | null = null
+let removeError: (() => void) | null = null
+const prefetchedPaths = new Set<string>()
+const SCENE_DATA_ROUTES = new Set([
+  '/scene-explorer', '/prompt-builder', '/showcase', '/gallery', '/character', '/style',
+])
 
 const ROUTE_LABELS: Record<string, [string, string]> = {
   '/': ['00', 'ATELIER HOME'],
@@ -68,6 +76,24 @@ function interactiveTarget(target: EventTarget | null): HTMLElement | null {
     : null
 }
 
+function prefetchLink(target: EventTarget | null) {
+  if (!(target instanceof Element)) return
+  const link = target.closest<HTMLAnchorElement>('a[href]')
+  if (!link || link.target === '_blank') return
+  let url: URL
+  try { url = new URL(link.href, window.location.href) } catch { return }
+  if (url.origin !== window.location.origin || url.pathname === window.location.pathname) return
+  const path = url.pathname
+  if (!prefetchedPaths.has(path)) {
+    prefetchedPaths.add(path)
+    prefetchRoute(`${path}${url.search}`)
+  }
+  if (SCENE_DATA_ROUTES.has(path) && !sceneStore.loaded) void sceneStore.load()
+}
+
+function onPointerOver(event: PointerEvent) { prefetchLink(event.target) }
+function onFocusIn(event: FocusEvent) { prefetchLink(event.target) }
+
 function onPointerDown(event: PointerEvent) {
   const target = interactiveTarget(event.target)
   if (!target) return
@@ -94,6 +120,8 @@ function onClick(event: MouseEvent) {
 onMounted(() => {
   document.addEventListener('pointerdown', onPointerDown, { passive: true })
   document.addEventListener('click', onClick)
+  document.addEventListener('pointerover', onPointerOver, { passive: true })
+  document.addEventListener('focusin', onFocusIn)
   removeBefore = router.beforeEach((to) => {
     window.clearTimeout(routeTimer)
     setRouteCut(to.path)
@@ -107,13 +135,21 @@ onMounted(() => {
       routeCutActive.value = false
     }, 440)
   })
+  removeError = router.onError(() => {
+    window.clearTimeout(routeTimer)
+    routeLoading.value = false
+    routeCutActive.value = false
+  })
 })
 
 onUnmounted(() => {
   document.removeEventListener('pointerdown', onPointerDown)
   document.removeEventListener('click', onClick)
+  document.removeEventListener('pointerover', onPointerOver)
+  document.removeEventListener('focusin', onFocusIn)
   removeBefore?.()
   removeAfter?.()
+  removeError?.()
   window.clearTimeout(impulseTimer)
   window.clearTimeout(routeTimer)
 })
@@ -124,8 +160,12 @@ onUnmounted(() => {
 .route-loader i { display:block; width:38%; height:100%; background:linear-gradient(90deg,transparent,var(--archive-blue),var(--accent),transparent); transform:translateX(-110%); }
 .route-loader.active { opacity:1; }
 .route-loader.active i { animation:route-loader-run .82s var(--ease-out) infinite; }
-.interaction-impulse { position:fixed; z-index:var(--z-toast); left:var(--impulse-x); top:var(--impulse-y); width:12px; height:12px; border:1px solid var(--archive-blue); border-radius:50%; opacity:0; transform:translate(-50%,-50%) scale(.2); pointer-events:none; }
+.interaction-impulse { position:fixed; z-index:var(--z-toast); left:var(--impulse-x); top:var(--impulse-y); width:12px; height:12px; border:1px solid var(--archive-blue); border-radius:50%; opacity:0; transform:translate3d(-50%,-50%,0) scale(.2); pointer-events:none; will-change:transform,opacity; }
+.interaction-impulse::before { content:""; position:absolute; top:50%; left:50%; width:92px; height:1px; background:linear-gradient(90deg,transparent,var(--archive-cyan),var(--accent),transparent); opacity:0; transform:translate3d(-50%,-50%,0) scaleX(.16); transform-origin:center; }
+.interaction-impulse::after { content:""; position:absolute; top:50%; left:50%; width:4px; height:4px; border-radius:50%; background:var(--archive-cyan); box-shadow:0 0 10px color-mix(in srgb,var(--archive-cyan) 72%,transparent); opacity:0; transform:translate3d(-50%,-50%,0) scale(.4); }
 .interaction-impulse.active { animation:interaction-impulse .42s var(--ease-out) both; }
+.interaction-impulse.active::before { animation:interaction-scan .32s var(--ease-out) .04s both; }
+.interaction-impulse.active::after { animation:interaction-core .24s var(--ease-out) both; }
 .route-cut { position:fixed; z-index:var(--z-toast); inset:0; overflow:hidden; pointer-events:none; opacity:0; }
 .route-cut-wash { position:absolute; inset:0; background:linear-gradient(110deg,transparent 0 42%,color-mix(in srgb,var(--archive-blue) 5%,transparent) 48%,transparent 54%); transform:translateX(-100%); }
 .route-cut-line { position:absolute; height:1px; background:linear-gradient(90deg,transparent,var(--archive-blue),var(--accent),transparent); transform:scaleX(0); transform-origin:left; }
@@ -140,7 +180,9 @@ onUnmounted(() => {
 .route-cut.active .route-cut-line-b { animation:route-cut-line-reverse .38s var(--ease-out) .08s both; }
 .route-cut.active .route-cut-register { animation:route-cut-register .32s var(--ease-out) .06s both; }
 @keyframes route-loader-run { to{transform:translateX(290%)} }
-@keyframes interaction-impulse { 0%{opacity:.8;transform:translate(-50%,-50%) scale(.25)} 100%{opacity:0;transform:translate(-50%,-50%) scale(3.4)} }
+@keyframes interaction-impulse { 0%{opacity:.78;transform:translate3d(-50%,-50%,0) scale(.25)} 66%{opacity:.34;transform:translate3d(-50%,-50%,0) scale(3.2)} 100%{opacity:0;transform:translate3d(-50%,-50%,0) scale(4.8)} }
+@keyframes interaction-scan { 0%{opacity:0;transform:translate3d(-50%,-50%,0) scaleX(.16)} 24%{opacity:.92} 100%{opacity:0;transform:translate3d(-50%,-50%,0) scaleX(1)} }
+@keyframes interaction-core { 0%{opacity:0;transform:translate3d(-50%,-50%,0) scale(.4)} 28%{opacity:1;transform:translate3d(-50%,-50%,0) scale(1)} 100%{opacity:0;transform:translate3d(-50%,-50%,0) scale(.25)} }
 @keyframes route-cut-wash { 0%{transform:translateX(-100%)} 65%{transform:translateX(16%)} 100%{transform:translateX(100%)} }
 @keyframes route-cut-line { from{transform:scaleX(0)} to{transform:scaleX(1)} }
 @keyframes route-cut-line-reverse { from{transform:scaleX(0)} to{transform:scaleX(1)} }

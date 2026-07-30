@@ -9,7 +9,7 @@
       "natsume",
       "nene"
     ],
-    "lora": "ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.42",
+    "lora": "ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.52",
     "emotion": "极致依赖",
     "season": "不限",
     "time": "深夜",
@@ -43,7 +43,7 @@
     "usage": [
       "核心CG"
     ],
-    "prompt": "2girls, two adult women only, both_women_wearing_distinct_bridal_gowns, both_women_seated_side_by_side_on_edge_of_bed, candlelit_newlywed_bedroom, one_written_promise_card_resting_across_their_joined_palms, warm_soft_light, emotional_wedding_night, medium_shot, clearly_different_faces, (ayachi_nene_on_the_left, white_hair, very_long_low_twintails, purple_eyes, ahoge, pink_hair_ribbons, white_lace_wedding_dress, long_bridal_veil, shy_emotional_smile, holding_the_promise_card) BREAK (shiki_natsume_on_the_right, black_hair, long_hair, yellow_eyes, two_red_hairclips_only, mole_under_eye, no_hair_ribbon, elegant_ivory_satin_wedding_dress, short_bridal_veil, restrained_tender_smile, one_hand_reaching_to_straighten_nene_bridal_hair_ornament), <lora:ayachi_nene_v18_wd14:0.52>, <lora:shiki_natsume_v18_wd14:0.42>",
+    "prompt": "2girls, two adult women only, both_women_wearing_distinct_bridal_gowns, both_women_seated_side_by_side_on_edge_of_bed, candlelit_newlywed_bedroom, one_written_promise_card_resting_across_their_joined_palms, warm_soft_light, emotional_wedding_night, medium_shot, clearly_different_faces, (ayachi_nene_on_the_left, white_hair, very_long_low_twintails, purple_eyes, ahoge, pink_hair_ribbons, white_lace_wedding_dress, long_bridal_veil, shy_emotional_smile, holding_the_promise_card) BREAK (shiki_natsume_on_the_right, black_hair, long_hair, yellow_eyes, two_red_hairclips_only, mole_under_eye, no_hair_ribbon, elegant_ivory_satin_wedding_dress, short_bridal_veil, restrained_tender_smile, one_hand_reaching_to_straighten_nene_bridal_hair_ornament), <lora:ayachi_nene_v18_wd14:0.52>, <lora:shiki_natsume_v18_wd14:0.52>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, heterochromia, swapped eye colors, wrong eye color, same eye color, same hair color, cloned face, identical twins, extra girl, 3girls, male, man, boy, 1boy, girls kissing each other, holding each other's hands, pink ribbon on black-haired woman, white bow on black-haired woman, mole on white-haired woman, apron, kitchen, cooking, witch hat",
     "storyJa": "【夏目＆寧々・大人のAU・結婚式後の契約書】式典の後、新しい家には温かいろうそくの灯りだけが残りました。大人になった寧々と夏目は重いベールを脱ぎ、左右に一人ずつ隣に座り、三人で書いた将来の約束を手のひらに置いた。寧々さんは緊張しながらも率直にあなたと手を握り、一方で夏目さんは彼女の傾いたヘアアクセサリーを直すのを手伝いましたが、それでも彼女が感動したことを認めませんでした。――「今夜から、どんなことがあっても、誰か一人で無理をするのは禁止です。」",
     "rating": "All",
@@ -60,7 +60,7 @@
       "natsume",
       "nene"
     ],
-    "lora": "ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.42",
+    "lora": "ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.52",
     "emotion": "Absolute Dependency",
     "season": "不限",
     "time": "仪式时刻",
@@ -94,7 +94,7 @@
     "usage": [
       "协议核心"
     ],
-    "prompt": "2girls, two adult women only, grand_ceremonial_hall_with_vaulted_dome, (three_luminous_heart_rate_curves_projected_across_the_dome:1.45), (one_slowly_rotating_glowing_halo_encircling_both_women:1.4), both_women_standing_apart_and_reaching_one_open_hand_toward_unseen_viewer, their_free_hands_over_their_hearts, wide_shot, full_body, epic_soft_lighting, clearly_different_faces, (ayachi_nene_on_the_left, white_hair, very_long_low_twintails, purple_eyes, ahoge, pink_hair_ribbons:1.35, white_ceremonial_dress, tears_of_joy, smiling_through_tears, glowing_heart_rate_arc_behind_her, shared_halo_overhead, left_hand_reaching_toward_unseen_viewer) BREAK (shiki_natsume_on_the_right, black_hair, long_hair, yellow_eyes, two_red_hairclips_only, mole_under_eye, no_hair_ribbon, white_ceremonial_dress, restrained_smile, blush, glowing_heart_rate_arc_behind_her, shared_halo_overhead, right_hand_reaching_toward_unseen_viewer), <lora:ayachi_nene_v18_wd14:0.52>, <lora:shiki_natsume_v18_wd14:0.42>",
+    "prompt": "2girls, two adult women only, grand_ceremonial_hall_with_vaulted_dome, (three_luminous_heart_rate_curves_projected_across_the_dome:1.45), (one_slowly_rotating_glowing_halo_encircling_both_women:1.4), both_women_standing_apart_and_reaching_one_open_hand_toward_unseen_viewer, their_free_hands_over_their_hearts, wide_shot, full_body, epic_soft_lighting, clearly_different_faces, (ayachi_nene_on_the_left, white_hair, very_long_low_twintails, purple_eyes, ahoge, pink_hair_ribbons:1.35, white_ceremonial_dress, tears_of_joy, smiling_through_tears, glowing_heart_rate_arc_behind_her, shared_halo_overhead, left_hand_reaching_toward_unseen_viewer) BREAK (shiki_natsume_on_the_right, black_hair, long_hair, yellow_eyes, two_red_hairclips_only, mole_under_eye, no_hair_ribbon, white_ceremonial_dress, restrained_smile, blush, glowing_heart_rate_arc_behind_her, shared_halo_overhead, right_hand_reaching_toward_unseen_viewer), <lora:ayachi_nene_v18_wd14:0.52>, <lora:shiki_natsume_v18_wd14:0.52>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, girls holding each other's hands, girls kissing each other, pink ribbon on black-haired woman, white ribbon on black-haired woman, flower hair ornament on black-haired woman, mole on white-haired woman, identical twins, third woman, 3girls, male, man, boy, 1boy, camera, video camera, television camera, filming equipment, photography equipment",
     "storyJa": "【夏目＆寧々・大人のAU・3人契約の無限ループ】式典ホールのライトカーテンは、3つの心拍数曲線をドームに投影します。寧々と夏目はそれぞれ左手と右手を持ちます。同期値がしきい値を超えた後も、制御を失うことはありませんでした。代わりに、ゆっくりと回転する後光となって安定しました。寧々が最初に笑い、泣き、夏目がしっかりと手を握り、短い言葉で3人の宣誓を終えました。――「誰かが誰かに寄りかかるんじゃない。私たちはみんな、ここに残ることを選んで、何度でも選び直すんです。」",
     "rating": "All",
@@ -111,7 +111,7 @@
       "nene",
       "natsume"
     ],
-    "lora": "ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.42",
+    "lora": "ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.52",
     "emotion": "恋爱",
     "season": "不限",
     "time": "深夜",
@@ -148,7 +148,7 @@
       "核心协议",
       "壁纸级"
     ],
-    "prompt": "2girls, two adult women only, mysterious_cafe_interior_after_closing, wooden_bar_counter, night, dim_warm_ambient_lighting, wide_shot, full_body, clearly_different_faces, (ayachi_nene_sitting_on_the_left, white_hair, very_long_low_twintails, purple_eyes, ahoge, pink_hair_ribbons, neat_classic_maid_dress, casting_small_pink_magic_sparkles, one_floating_teacup_pouring_tea_itself, gentle_smile, blush) BREAK (shiki_natsume_leaning_on_bar_counter_on_the_right, black_hair, long_hair, yellow_eyes, two_red_hairclips, mole_under_eye, black_maid_style_tactical_gear, typing_on_open_laptop, seductive_side_glance_at_viewer, confident_smirk, blush), <lora:ayachi_nene_v18_wd14:0.52>, <lora:shiki_natsume_v18_wd14:0.42>",
+    "prompt": "2girls, two adult women only, mysterious_cafe_interior_after_closing, wooden_bar_counter, night, dim_warm_ambient_lighting, wide_shot, full_body, clearly_different_faces, (ayachi_nene_sitting_on_the_left, white_hair, very_long_low_twintails, purple_eyes, ahoge, pink_hair_ribbons, neat_classic_maid_dress, casting_small_pink_magic_sparkles, one_floating_teacup_pouring_tea_itself, gentle_smile, blush) BREAK (shiki_natsume_leaning_on_bar_counter_on_the_right, black_hair, long_hair, yellow_eyes, two_red_hairclips, mole_under_eye, black_maid_style_tactical_gear, typing_on_open_laptop, seductive_side_glance_at_viewer, confident_smirk, blush), <lora:ayachi_nene_v18_wd14:0.52>, <lora:shiki_natsume_v18_wd14:0.52>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, pink ribbon on black-haired woman, mole on white-haired woman, identical costumes, closed laptop, no laptop, extra girl, 3girls, male, man, boy, 1boy",
     "storyJa": "【寧々＆夏目・大人のAfter Story・魔法と異能のカフェ】あなたと寧々、夏目の三人は、魔法と異能が交差する小さなカフェを開いた。閉店後の店内には、暖かな間接照明だけが残っている。寧々は魔法でティーカップに紅茶を注ぎ、エージェント風のメイド服に着替えた夏目は、カウンターにもたれて秘密の帳簿を確認していた。やがて彼女はパソコンから顔を上げ、からかうような視線をあなたへ向ける――「ねえ、店長。今夜の二人分の残業代……自分で払うつもり？」",
     "rating": "All",
@@ -165,7 +165,7 @@
       "nene",
       "natsume"
     ],
-    "lora": "ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.42",
+    "lora": "ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.52",
     "emotion": "恋爱",
     "season": "不限",
     "time": "清晨",
@@ -205,7 +205,7 @@
       "核心协议",
       "壁纸级"
     ],
-    "prompt": "2girls, two adult women only, POV_from_viewer_lying_on_pillow, cozy_bedroom, both_women_under_same_blanket_on_opposite_sides_of_viewer, warm_morning_light, soft_shadows, looking_at_viewer, extreme_closeness, intimate_close_up, clearly_different_faces, (ayachi_nene_lying_on_the_left, white_hair, very_long_low_twintails, purple_eyes, heart_shaped_ahoge, pink_hair_ribbons, oversized_cream_sweater, gripping_viewer_shirt_hem, deep_blush, shy_smile) BREAK (shiki_natsume_propped_on_one_elbow_on_the_right, black_hair, long_hair, yellow_eyes, two_red_hairclips, mole_under_eye, loose_dark_pajamas, off_shoulder, sleepy_seductive_look, slight_teasing_smile, blush), <lora:ayachi_nene_v18_wd14:0.52>, <lora:shiki_natsume_v18_wd14:0.42>",
+    "prompt": "2girls, two adult women only, POV_from_viewer_lying_on_pillow, cozy_bedroom, both_women_under_same_blanket_on_opposite_sides_of_viewer, warm_morning_light, soft_shadows, looking_at_viewer, extreme_closeness, intimate_close_up, clearly_different_faces, (ayachi_nene_lying_on_the_left, white_hair, very_long_low_twintails, purple_eyes, heart_shaped_ahoge, pink_hair_ribbons, oversized_cream_sweater, gripping_viewer_shirt_hem, deep_blush, shy_smile) BREAK (shiki_natsume_propped_on_one_elbow_on_the_right, black_hair, long_hair, yellow_eyes, two_red_hairclips, mole_under_eye, loose_dark_pajamas, off_shoulder, sleepy_seductive_look, slight_teasing_smile, blush), <lora:ayachi_nene_v18_wd14:0.52>, <lora:shiki_natsume_v18_wd14:0.52>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, standing, sitting upright, girls kissing each other, pink ribbon on black-haired woman, mole on white-haired woman, identical twins, extra girl, 3girls, male, man, boy, 1boy",
     "storyJa": "【寧々＆夏目・大人のアフターストーリー・究極に甘い修羅場】どこまでも怠惰な朝。あなたは暖かいベッドから目覚め、最も幸せな「おはよう、このお寝坊さん。今朝の約束、二度寝は禁止だからね。」",
     "rating": "All",
@@ -222,7 +222,7 @@
       "nene",
       "natsume"
     ],
-    "lora": "ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.42",
+    "lora": "ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.52",
     "emotion": "恋爱",
     "season": "不限",
     "time": "深夜",
@@ -264,7 +264,7 @@
       "核心协议",
       "成人向"
     ],
-    "prompt": "natsume_r18, nene_r18, 2girls, two adult women only, POV_from_viewer_lying_on_messy_bed, adult, naked, bedroom, late_night, warm_dim_bedside_light, viewer_hands_visible_in_foreground, both_women_focused_on_viewer_not_each_other, extreme_intimacy, sweat, messy_hair, close_up, clearly_different_faces, (ayachi_nene_straddling_viewer_on_the_left, white_hair, very_long_low_twintails, purple_eyes, ahoge, pink_hair_ribbons, interlocking_fingers_with_viewer_left_hand, heavy_blush, passionate_look, open_mouth) BREAK (shiki_natsume_leaning_over_viewer_from_the_right, black_hair, long_hair, yellow_eyes, two_red_hairclips, mole_under_eye, embracing_viewer_from_behind, kissing_viewer_neck, closed_eyes, heavy_blush), <lora:ayachi_nene_v18_wd14:0.52>, <lora:shiki_natsume_v18_wd14:0.42>",
+    "prompt": "natsume_r18, nene_r18, 2girls, two adult women only, POV_from_viewer_lying_on_messy_bed, adult, naked, bedroom, late_night, warm_dim_bedside_light, viewer_hands_visible_in_foreground, both_women_focused_on_viewer_not_each_other, extreme_intimacy, sweat, messy_hair, close_up, clearly_different_faces, (ayachi_nene_straddling_viewer_on_the_left, white_hair, very_long_low_twintails, purple_eyes, ahoge, pink_hair_ribbons, interlocking_fingers_with_viewer_left_hand, heavy_blush, passionate_look, open_mouth) BREAK (shiki_natsume_leaning_over_viewer_from_the_right, black_hair, long_hair, yellow_eyes, two_red_hairclips, mole_under_eye, embracing_viewer_from_behind, kissing_viewer_neck, closed_eyes, heavy_blush), <lora:ayachi_nene_v18_wd14:0.52>, <lora:shiki_natsume_v18_wd14:0.52>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform, girls kissing each other, women embracing each other, pink ribbon on black-haired woman, mole on white-haired woman, identical twins, extra girl, 3girls, male, man, boy, 1boy",
     "storyJa": "【寧々＆夏目・大人のアフターストーリー・二人のヒロインによる至福の修羅フィールド】薬物と感情の同調率が200％を超えるという極限の制約の中、二人の少女は普段の拘束を完全に放棄した。ベッドの上の服は全部なくなり、シーツもぐちゃぐちゃになっていました。寧々はあなたにまたがり、顔は汗と赤面で覆われ、両手はあなたの手でしっかりと握り締められ、必死にあなたの温もりを求めています。夏目が後ろからしがみつき、首筋に熱い唇を噛みつきます。ここは病的な愛と汗と肉体が詰まった至福のブラックホール――「柊史、店長……私たちの心の防壁は、とっくに消えてる。だから今夜は、ずっとそばにいて。」",
     "rating": "R18",
@@ -281,7 +281,7 @@
       "nene",
       "natsume"
     ],
-    "lora": "ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.42",
+    "lora": "ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.52",
     "emotion": "恋爱",
     "season": "不限",
     "time": "深夜",
@@ -324,7 +324,7 @@
       "绝对独占",
       "成人向"
     ],
-    "prompt": "natsume_r18, nene_r18, 2girls, two adult women only, adult, POV_from_viewer_lying_between_them, private_bedroom, late_night, messy_bed_and_scattered_clothes, warm_dim_ambient_light, one_viewer_hand_visible_at_center, both_women_focused_on_offscreen_viewer_not_each_other, no_contact_between_women, extreme_intimacy, heavy_blush, sweat, messy_hair, close_up, clearly_different_faces, (ayachi_nene_on_the_left, white_hair, very_long_low_twintails, purple_eyes, ahoge, pink_hair_ribbons, unbuttoned_pink_shirt, both_hands_wrapped_around_one_viewer_hand, open_mouth, passionate_look) BREAK (shiki_natsume_on_the_right, black_hair, long_hair, yellow_eyes, two_red_hairclips, mole_under_eye, dark_off_shoulder_pajamas, one_arm_extending_out_of_frame_around_viewer_shoulder, face_turned_toward_offscreen_viewer_neck, closed_eyes, intense_blush), <lora:ayachi_nene_v18_wd14:0.52>, <lora:shiki_natsume_v18_wd14:0.42>",
+    "prompt": "natsume_r18, nene_r18, 2girls, two adult women only, adult, POV_from_viewer_lying_between_them, private_bedroom, late_night, messy_bed_and_scattered_clothes, warm_dim_ambient_light, one_viewer_hand_visible_at_center, both_women_focused_on_offscreen_viewer_not_each_other, no_contact_between_women, extreme_intimacy, heavy_blush, sweat, messy_hair, close_up, clearly_different_faces, (ayachi_nene_on_the_left, white_hair, very_long_low_twintails, purple_eyes, ahoge, pink_hair_ribbons, unbuttoned_pink_shirt, both_hands_wrapped_around_one_viewer_hand, open_mouth, passionate_look) BREAK (shiki_natsume_on_the_right, black_hair, long_hair, yellow_eyes, two_red_hairclips, mole_under_eye, dark_off_shoulder_pajamas, one_arm_extending_out_of_frame_around_viewer_shoulder, face_turned_toward_offscreen_viewer_neck, closed_eyes, intense_blush), <lora:ayachi_nene_v18_wd14:0.52>, <lora:shiki_natsume_v18_wd14:0.52>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform, girls kissing each other, women embracing each other, pink ribbon on black-haired woman, mole on white-haired woman, identical twins, extra girl, 3girls, male, man, boy, 1boy",
     "storyJa": "【寧々＆夏目・大人のAfter Story・心がほどける夜】誰にも邪魔されない部屋で、三人は長い一日の終わりを迎えていた。寧々はあなたの左手を握り、安心したように肩を寄せている。夏目も反対側からそっと寄りかかり、いつもの強がりを忘れた穏やかな表情を見せた。魔法と異能、二つの世界を隔てていた壁はもうない。窓の外で夜が静かに更けていくなか、三人の呼吸だけが同じ速さへ重なっていった。",
     "rating": "R18",

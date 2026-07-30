@@ -142,7 +142,7 @@ const CHAR_TRAITS: Record<ScenarioCharacter,string> = {
   natsume: 'black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip'
 }
 const CHAR_NAME: Record<ScenarioCharacter,string> = { nene: 'ayachi_nene', natsume: 'shiki_natsume' }
-const LORA_ID: Record<ScenarioCharacter,string> = { nene: 'ayachi_nene_v18_wd14:0.85', natsume: 'shiki_natsume_v18_wd14:0.65' }
+const LORA_ID: Record<ScenarioCharacter,string> = { nene: 'ayachi_nene_v18_wd14:0.85', natsume: 'shiki_natsume_v18_wd14:0.85' }
 const RES_MAP = {
   'Square':    { dim:'1024×1024', vram:'~10GB', reason:'方形·头像/特写/通用' },
   'Half-body': { dim:'832×1216',  vram:'~10GB', reason:'竖版半身·肖像感·内心独白' },

@@ -10,14 +10,16 @@
     @keydown.space.prevent="clickable && emit('pick', scene)"
   >
     <div class="sc-band">
+      <div v-if="thumbId" class="sc-thumb-skeleton" :class="{ visible: !thumbLoaded && !thumbFailed }" aria-hidden="true"></div>
       <img
         v-if="thumbId"
         class="sc-thumb"
-        :class="{ 'sc-thumb-r18': contentRating === 'R18', 'sc-thumb-missing': thumbFailed }"
+        :class="{ 'sc-thumb-r18': contentRating === 'R18', 'sc-thumb-missing': thumbFailed, 'sc-thumb-ready': thumbLoaded }"
         :src="thumbSrc"
         alt=""
         loading="lazy"
         decoding="async"
+        @load="thumbLoaded = true"
         @error="thumbFailed = true"
       />
       <span v-if="thumbId" class="sc-id">{{ thumbId.toUpperCase() }}</span>
@@ -47,7 +49,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 
 export interface SceneCardScene {
   [key: string]: unknown
@@ -84,6 +86,7 @@ const emit = defineEmits<{ pick: [scene: SceneCardScene] }>()
 const TAG_BLOCKLIST = ['official_cg', 'visual_audited']
 
 const thumbFailed = ref(false)
+const thumbLoaded = ref(false)
 
 const clickable = computed(() =>
   props.clickable === true || (props.clickable !== false && props.mode !== 'strip')
@@ -93,6 +96,10 @@ const thumbId = computed(() => String(props.scene.id || '').toLowerCase().replac
 const thumbSrc = computed(() => {
   const v = props.imgVersion ?? ''
   return `/scene-showcase/thumbs/${thumbId.value}.jpg${v ? '?v=' + encodeURIComponent(String(v)) : ''}`
+})
+watch(thumbSrc, () => {
+  thumbLoaded.value = false
+  thumbFailed.value = false
 })
 const tags = computed(() => {
   const limit = props.mode === 'strip' ? 2 : 3

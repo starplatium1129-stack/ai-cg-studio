@@ -93,6 +93,8 @@ const VENDOR_OPTIONS: VendorOption[] = [
 const PRESET_MODELS: Record<Exclude<ApiVendor, 'custom'>, ModelOption[]> = {
   cliproxy: [
     { value: 'gemini-3.6-flash-high', label: 'Gemini 3.6 Flash High · 日常聊天推荐' },
+    { value: 'claude-sonnet-4-6', label: 'Claude Sonnet 4.6 · 思维推演推荐' },
+    { value: 'claude-opus-4-6-thinking', label: 'Claude Opus 4.6 · 强推理' },
     { value: 'gemini-3.5-flash-low', label: 'Gemini 3.5 Flash · 更省额度' },
     { value: 'gemini-3.1-pro-low', label: 'Gemini 3.1 Pro · 复杂问题' },
     { value: 'gpt-5.4-mini', label: 'GPT-5.4 Mini · Codex 账号' },

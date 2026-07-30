@@ -886,15 +886,16 @@ onUnmounted(() => {
 .training-hero .subtitle { margin-bottom: 0; }
 
 .hero-status {
-  display: flex;
+  position: relative; display: flex;
   align-items: center;
   gap: var(--s-3);
   min-width: 210px;
   padding: var(--s-3) var(--s-4);
   border: 1px solid var(--border-soft);
-  border-radius: var(--r-xl);
+  border-radius: var(--r-terminal);
   background: color-mix(in srgb, var(--bg-surface) 88%, transparent);
 }
+.hero-status::before { position: absolute; top: -1px; left: var(--s-3); width: 26px; height: var(--line-hairline); background: var(--archive-cyan); content: ''; }
 
 .hero-status-dot {
   width: 10px;
@@ -960,10 +961,11 @@ onUnmounted(() => {
   min-width: 0;
   padding: var(--s-3);
   border: 1px solid var(--border-soft);
-  border-radius: var(--r-2xl);
+  border-radius: var(--r-dossier);
   background: color-mix(in srgb, var(--bg-surface) 91%, transparent);
   box-shadow: var(--shadow-sm);
 }
+.workbench-rail::before { position: absolute; top: -1px; left: var(--s-4); width: 34px; height: var(--line-hairline); background: var(--archive-cyan); content: ''; }
 
 .rail-heading {
   display: flex; align-items: center; justify-content: space-between;
@@ -981,7 +983,7 @@ onUnmounted(() => {
   width: 100%;
   padding: var(--s-3);
   border: 1px solid transparent;
-  border-radius: var(--r-xl);
+  border-radius: var(--r-terminal);
   background: transparent;
   color: var(--text-secondary);
   text-align: left;
@@ -1028,12 +1030,15 @@ onUnmounted(() => {
 .plan-card,
 .voice-pipeline,
 .log-console {
-  padding: clamp(18px, 2.4vw, 26px);
+  position: relative; padding: clamp(18px, 2.4vw, 26px);
   border: 1px solid var(--border-soft);
-  border-radius: var(--r-2xl);
+  border-radius: var(--r-dossier);
   background: color-mix(in srgb, var(--bg-surface) 88%, transparent);
   box-shadow: var(--shadow-sm);
 }
+.plan-card::before,
+.voice-pipeline::before,
+.log-console::before { position: absolute; top: -1px; left: var(--s-4); width: 34px; height: var(--line-hairline); background: var(--archive-cyan); content: ''; }
 
 .plan-card {
   display: grid;
@@ -1059,7 +1064,7 @@ onUnmounted(() => {
 }
 .plan-specs div {
   min-width: 0; padding: var(--s-2) var(--s-3);
-  border: 1px solid var(--border-soft); border-radius: var(--r-lg); background: var(--bg-deep);
+  border: 1px solid var(--border-soft); border-radius: var(--r-terminal); background: var(--bg-deep);
 }
 .plan-specs span,
 .plan-specs strong { display: block; }
@@ -1070,7 +1075,7 @@ onUnmounted(() => {
   padding-top: var(--s-3); border-top: 1px solid var(--border-soft);
 }
 .plan-gates span {
-  padding: 4px var(--s-2); border-radius: var(--r-pill);
+  padding: 4px var(--s-2); border-radius: var(--r-terminal);
   background: color-mix(in srgb, var(--success) 10%, transparent);
   color: var(--success-text); font-size: var(--fs-mono-xs);
 }
@@ -1081,7 +1086,7 @@ onUnmounted(() => {
 }
 .job-card {
   min-width: 0; overflow: hidden; padding: var(--s-4);
-  border: 1px solid var(--border-soft); border-radius: var(--r-2xl);
+  border: 1px solid var(--border-soft); border-radius: var(--r-dossier);
   background: color-mix(in srgb, var(--bg-surface) 92%, transparent);
   box-shadow: var(--shadow-sm);
 }
@@ -1121,7 +1126,7 @@ onUnmounted(() => {
 .token-list span,
 .category-list span {
   padding: 4px 8px; border: 1px solid var(--border-soft);
-  border-radius: var(--r-pill); background: var(--bg-deep);
+  border-radius: var(--r-terminal); background: var(--bg-deep);
   color: var(--text-secondary); font-size: var(--fs-mono-xs);
 }
 .category-list b { margin-left: 4px; color: var(--text-primary); }

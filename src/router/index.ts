@@ -60,6 +60,18 @@ const router = createRouter({
   }
 })
 
+/** Warm a lazy route without changing location. Used on internal-link intent. */
+export function prefetchRoute(path: string): void {
+  if (path === CHAT_PATH) return
+  const route = router.resolve(path)
+  for (const record of route.matched) {
+    const component = record.components?.default
+    if (typeof component === 'function') {
+      void (component as () => Promise<unknown>)().catch(() => {})
+    }
+  }
+}
+
 router.beforeEach((to, from) => {
   // 首帧就地判定：当前文档若禁 eval，说明服务端在按路由收紧 CSP
   if (!evalAllowed()) markStrictCsp()

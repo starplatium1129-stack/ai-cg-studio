@@ -3,7 +3,7 @@
     <section class="scene-atlas" aria-labelledby="sceneAtlasTitle">
       <div class="scene-atlas-copy">
         <div class="scene-atlas-register" aria-label="场景档案章节">
-          <span>Scene archive</span>
+          <span class="archive-kicker">SCENE ARCHIVE</span>
           <strong>{{ activeThemeIndex }}</strong>
           <span>{{ activeThemeLabel }}</span>
         </div>
@@ -97,11 +97,16 @@
       </div>
     </div>
 
-    <div class="scene-grid">
-      <div v-if="loading" class="sc-empty"><div class="ic">⏳</div><p>正在加载灵感场景…</p></div>
-      <div v-else-if="paged.length === 0" class="sc-empty"><div class="ic">🌸</div><p>没有匹配的场景。<br/>试试切到其他分类或清除搜索。</p></div>
+    <div v-if="loading" class="scene-grid scene-grid-skeleton" role="status" aria-label="正在加载场景档案">
+      <div v-for="index in 6" :key="index" class="scene-skeleton" aria-hidden="true">
+        <i></i><span></span><span></span><small></small>
+      </div>
+    </div>
+    <div v-else class="scene-grid stagger-container">
+      <div v-if="paged.length === 0" class="sc-empty"><div class="ic">🌸</div><p>没有匹配的场景。<br/>试试切到其他分类或清除搜索。</p></div>
       <template v-else>
         <SceneCard v-for="s in paged" :key="s.id" :scene="s" mode="grid" :clickable="false" suppressTags
+          class="stagger-item"
           :class="flashId === s.id ? 'scene-flash' : ''" :data-scene-id="s.id">
           <template #band>
             <span v-if="usageFor(s)" class="sc-tier personal">常用 {{ usageFor(s)?.uses }}</span>
@@ -563,15 +568,16 @@ onUnmounted(() => {
 :deep(.search-intent strong) { color:var(--accent); }
 
 .scene-toolbar {
-  display:grid; gap:var(--s-3); margin-bottom:var(--s-5);
+  position:relative; display:grid; gap:var(--s-3); margin-bottom:var(--s-5);
   padding:var(--s-3);
-  border:1px solid color-mix(in srgb,var(--border-soft) 80%,transparent);
-  border-radius:var(--r-2xl);
+  border:1px solid color-mix(in srgb,var(--archive-cyan) 18%,var(--border-soft));
+  border-radius:var(--r-dossier);
   background:color-mix(in srgb,var(--bg-surface) 88%,transparent);
   box-shadow:var(--shadow-glass-sm);
   -webkit-backdrop-filter:blur(20px) saturate(130%);
   backdrop-filter:blur(20px) saturate(130%);
 }
+.scene-toolbar::before { content:''; position:absolute; top:-1px; left:var(--s-4); width:42px; height:var(--line-hairline); background:var(--archive-cyan); }
 .toolbar-primary { display:flex; align-items:center; gap:var(--s-2); flex-wrap:wrap; }
 .toolbar-primary .scene-search-wrap { flex:1 1 260px; min-width:0; margin:0; }
 .toolbar-primary .scene-count { color:var(--text-muted); font:600 var(--fs-mono-sm) var(--font-mono); white-space:nowrap; }
@@ -586,7 +592,7 @@ onUnmounted(() => {
 }
 .scene-personal-nav button {
   flex:0 0 auto; min-height:34px; padding:0 13px;
-  border:1px solid var(--border-soft); border-radius:var(--r-pill);
+  border:1px solid var(--border-soft); border-radius:var(--r-terminal);
   background:var(--bg-elevated); color:var(--text-secondary);
   font:650 var(--fs-label-sm) var(--font-sans); cursor:pointer;
   transition:border-color var(--t-fast),background var(--t-fast),color var(--t-fast);
@@ -599,7 +605,7 @@ onUnmounted(() => {
 }
 .filter-toggle {
   display:inline-flex; align-items:center; gap:6px; min-height:36px; padding:0 14px;
-  border:1px solid var(--border-soft); border-radius:var(--r-pill);
+  border:1px solid var(--border-soft); border-radius:var(--r-terminal);
   background:transparent; color:var(--text-secondary);
   font:650 var(--fs-label-sm) var(--font-sans); cursor:pointer;
   transition:border-color var(--t-fast),background var(--t-fast),color var(--t-fast);
@@ -614,17 +620,20 @@ onUnmounted(() => {
   font:700 var(--fs-mono-xs) var(--font-mono);
 }
 .scene-facet-panel {
-  display:grid; gap:var(--s-3); padding-top:var(--s-3);
-  border-top:1px solid var(--border-soft);
+  display:grid; gap:var(--s-3); padding:var(--s-3);
+  border:var(--line-hairline) solid var(--border-soft);
+  border-radius:var(--r-terminal);
+  background:color-mix(in srgb,var(--bg-deep) 54%,transparent);
   animation:facetIn .22s var(--ease-out) both;
 }
 @keyframes facetIn { from { opacity:0; transform:translateY(-4px); } to { opacity:1; transform:none; } }
 @media (prefers-reduced-motion:reduce) { .scene-facet-panel { animation:none; } }
 .scene-filter-label { font-size:var(--fs-label-xs); color:var(--text-muted); font-weight:700; letter-spacing:.08em; text-transform:uppercase; margin-bottom:var(--s-2); }
-.scene-cats { display:flex; flex-wrap:wrap; gap:var(--s-2); }
-.scene-cat { appearance:none; padding:6px 16px; border:1px solid var(--border-soft); background:var(--bg-surface); color:var(--text-secondary); border-radius:var(--r-pill); cursor:pointer; font:500 var(--fs-body-sm) var(--font-sans); transition:border-color var(--t-fast),background var(--t-fast),color var(--t-fast); }
+.scene-cats { display:flex; flex-wrap:wrap; gap:0; border-bottom:var(--line-hairline) solid var(--border-soft); }
+.scene-cat { appearance:none; position:relative; padding:7px 15px; border:0; background:transparent; color:var(--text-secondary); cursor:pointer; font:500 var(--fs-body-sm) var(--font-sans); transition:background var(--t-fast),color var(--t-fast); }
 .scene-cat:hover { border-color:var(--accent); color:var(--accent); }
-.scene-cat.active { background:var(--accent); color:var(--text-inverse); border-color:var(--accent); }
+.scene-cat.active { background:color-mix(in srgb,var(--archive-blue-soft) 78%,transparent); color:var(--archive-cyan); }
+.scene-cat.active::after { content:''; position:absolute; right:15px; bottom:calc(0px - var(--line-hairline)); left:15px; height:2px; background:var(--archive-cyan); }
 /* 合并后一个面板里有 7 个字段，4 列更紧凑 */
 .scene-facet-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:var(--s-3); }
 .scene-filter-field { display:grid; gap:var(--s-1); color:var(--text-muted); font-size:var(--fs-label-xs); font-weight:600; }
@@ -646,6 +655,13 @@ onUnmounted(() => {
 .scene-reset:hover { color:var(--accent); }
 
 .scene-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:var(--s-4); }
+.scene-skeleton { min-height:300px; overflow:hidden; padding:var(--s-3); border:1px solid var(--archive-line); border-radius:var(--r-dossier); background:var(--bg-surface); }
+.scene-skeleton i,.scene-skeleton span,.scene-skeleton small { display:block; border-radius:var(--r-terminal); background:linear-gradient(105deg,var(--bg-deep) 18%,var(--bg-elevated) 42%,var(--bg-deep) 68%); background-size:220% 100%; animation:archiveSkeleton 1.3s linear infinite; }
+.scene-skeleton i { height:174px; margin:-1px -1px var(--s-3); }
+.scene-skeleton span { width:72%; height:14px; margin-bottom:var(--s-2); }
+.scene-skeleton span:nth-of-type(2) { width:48%; }
+.scene-skeleton small { width:34%; height:10px; margin-top:var(--s-4); }
+@keyframes archiveSkeleton { to { background-position:-120% 0; } }
 .scene-load { display:flex; justify-content:center; margin-top:var(--s-5); }
 .scene-fav.saved { color:var(--accent); border-color:var(--accent); background:var(--accent-soft); }
 .scene-flash { outline:3px solid var(--accent); outline-offset:var(--s-1); }
@@ -700,5 +716,8 @@ onUnmounted(() => {
 }
 @media (prefers-reduced-transparency:reduce) {
   .scene-atlas { background:var(--bg-surface); }
+}
+@media (prefers-reduced-motion:reduce) {
+  .scene-skeleton i,.scene-skeleton span,.scene-skeleton small { animation:none; }
 }
 </style>

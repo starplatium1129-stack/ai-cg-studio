@@ -5,7 +5,7 @@
       <div class="home-hero">
         <div class="hero-copy">
           <div class="hero-register" aria-label="本期绘境信息">
-            <span>Featured edition</span>
+            <span class="archive-kicker">ARCHIVE // 00</span>
             <span>{{ sceneCountCopy }}</span>
             <span>Local studio</span>
           </div>

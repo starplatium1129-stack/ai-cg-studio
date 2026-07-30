@@ -281,11 +281,14 @@
   z-index: var(--z-raised);
   top: var(--s-3);
   right: var(--s-3);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   max-width: 150px;
   padding: 5px 9px;
   overflow: hidden;
   border: 1px solid var(--glass-edge);
-  border-radius: var(--r-pill);
+  border-radius: var(--r-terminal);
   background: var(--glass-fill-strong);
   color: var(--text-muted);
   cursor: default;
@@ -293,6 +296,16 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   backdrop-filter: blur(14px);
+}
+
+.chat-page .avatar-status::before {
+  width: 5px;
+  height: 5px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 8px currentColor;
+  content: "";
 }
 
 .chat-page .avatar-status[data-state="ready"] {
@@ -595,16 +608,29 @@
 
 .chat-page .api-settings {
   display: grid;
+  position: relative;
   gap: var(--s-4);
   margin: var(--s-3) var(--s-4) 0;
   padding: var(--s-4);
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--character-accent) 24%, var(--border-soft));
-  border-radius: var(--r-xl);
+  border-radius: var(--r-dossier);
   background:
+    linear-gradient(90deg, var(--archive-grid) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(var(--archive-grid) 1px, transparent 1px) 0 0 / 24px 24px,
     radial-gradient(circle at 4% 0%, color-mix(in srgb, var(--character-accent) 12%, transparent), transparent 32%),
     linear-gradient(145deg, color-mix(in srgb, var(--bg-elevated) 45%, var(--bg-surface)), var(--bg-surface));
   box-shadow: inset 0 1px 0 var(--glass-highlight), var(--shadow-sm);
+}
+
+.chat-page .api-settings::before {
+  position: absolute;
+  top: -1px;
+  left: var(--s-4);
+  width: 42px;
+  height: var(--line-hairline);
+  background: var(--archive-cyan);
+  content: "";
 }
 
 .chat-page .api-settings-head,
@@ -669,6 +695,17 @@
   color: var(--danger-text);
 }
 
+.chat-page .api-test-status {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0 var(--s-2);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-terminal);
+  background: color-mix(in srgb, var(--bg-deep) 72%, transparent);
+  font-family: var(--font-mono);
+}
+
 .chat-page .api-settings-buttons {
   display: flex;
   flex: 0 0 auto;
@@ -701,7 +738,7 @@
   margin: 0;
   padding: 4px;
   border: 1px solid var(--border-soft);
-  border-radius: var(--r-lg);
+  border-radius: var(--r-terminal);
   background: color-mix(in srgb, var(--bg-deep) 82%, transparent);
 }
 
@@ -720,7 +757,7 @@
   min-height: 44px;
   padding: 6px 9px;
   border: 1px solid transparent;
-  border-radius: var(--r-md);
+  border-radius: var(--r-terminal);
   background: transparent;
   color: var(--text-muted);
   cursor: pointer;
@@ -793,7 +830,7 @@
   min-height: 42px;
   padding: 8px 11px;
   border: 1px solid var(--border-soft);
-  border-radius: var(--r-md);
+  border-radius: var(--r-terminal);
   background: color-mix(in srgb, var(--bg-deep) 88%, transparent);
   color: var(--text-primary);
   font: var(--fs-label-sm) var(--font-sans);

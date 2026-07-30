@@ -131,8 +131,8 @@
     "trigger": "shiki_natsume",
     "character": "NAT_001",
     "strength": {
-      "default": 0.65,
-      "min": 0.5,
+      "default": 0.85,
+      "min": 0.65,
       "max": 1
     },
     "compatible_models": [
@@ -145,13 +145,13 @@
       "sc050",
       "sc073"
     ],
-    "description": "四季夏目角色 LoRA v18。45 张唯一图经 WD14 自动打标和逐图人工复核后从 WAI Illustrious v17 训练；脸部优先，natsume_r18 显式门控成人状态，natsume_official_qipao 控制官方旗袍。",
+    "description": "四季夏目角色 LoRA v18。40 张当前唯一图经 WD14 自动打标和逐图人工复核后从 WAI Illustrious v17 训练；脸部优先，natsume_r18 显式门控成人状态，natsume_official_qipao 控制官方旗袍。",
     "dataset": {
-      "images": 45,
+      "images": 40,
       "composition": {
-        "safe": 28,
-        "official_qipao": 6,
-        "adult": 17
+        "safe": 24,
+        "official_qipao": 4,
+        "adult": 16
       },
       "resolution": 1024,
       "strategy": "WD14 auto-caption, per-image human cleanup, unified identity with explicit R18 and qipao controls"
@@ -170,14 +170,14 @@
       "concept_loss_weights": {
         "safe": 1,
         "official_qipao": 1,
-        "adult": 0.4
+        "adult": 1
       },
-      "config": "OneTrainer/training_configs/shiki_natsume_v18_wd14_balanced_r18.json"
+      "config": "OneTrainer/training_configs/shiki_natsume_v18_wd14.json"
     },
     "recommended_weight": {
-      "portrait": 0.65,
-      "fullbody": 0.65,
-      "complex_scene": 0.62
+      "portrait": 0.85,
+      "fullbody": 0.85,
+      "complex_scene": 0.82
     },
     "base_model": "waiIllustriousSDXL_v170",
     "trainer": "OneTrainer",
@@ -234,7 +234,7 @@
         "signature_feature_presence_rate": 0.75,
         "critical_identity_error": 0
       },
-      "evidence": "Reviews/ModelEvaluations/natsume_v18_wd14_gate_2026-07-30/final/evaluation-report.md",
+      "evidence": "Reviews/ModelEvaluations/natsume_v18_wd14_gate_2026-07-30_v18_eval/evaluation-report.md",
       "metrics": {
         "脸部身份": "6/6 不弱于 v17，优于 v15",
         "普通全身": "3/3",

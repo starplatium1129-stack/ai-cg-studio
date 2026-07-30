@@ -770,7 +770,7 @@ function updateCharacterDefaults() {
   if (!scene || editingId.value) return
   if (scene.char === 'nene') scene.lora = 'ayachi_nene_v18_wd14'
   else if (scene.char === 'natsume') scene.lora = 'shiki_natsume_v18_wd14'
-  else if (scene.char === 'triad') scene.lora = 'ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.42'
+  else if (scene.char === 'triad') scene.lora = 'ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.52'
 }
 
 function onCurationTierChange() {
@@ -920,7 +920,7 @@ function importScenes() {
       id, title: String(raw.title || '未命名'), category: String(raw.category || '恋爱'),
       story: String(raw.story || ''), char,
       character: char === 'triad' ? ['nene','natsume'] : [char],
-      lora: String(raw.lora || (char === 'natsume' ? 'shiki_natsume_v18_wd14' : char === 'triad' ? 'ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.42' : 'ayachi_nene_v18_wd14')),
+      lora: String(raw.lora || (char === 'natsume' ? 'shiki_natsume_v18_wd14' : char === 'triad' ? 'ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.52' : 'ayachi_nene_v18_wd14')),
       emotion: String(raw.emotion || '恋爱'), season: String(raw.season || '不限'), time: String(raw.time || '深夜'),
       timeOfDay: String(raw.timeOfDay || 'late_night'), tags: list('tags', []), mature,
       rating, location: String(raw.location || ''), weather: String(raw.weather || ''),

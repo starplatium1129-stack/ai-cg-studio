@@ -6,8 +6,10 @@
     <!-- 必须是真的 <main>：skip-link 指向这里，之前是 div，跳转链接落在一个普通容器上 -->
     <main id="main" class="page-main" tabindex="-1">
       <RouterView v-slot="{ Component, route }">
-        <Transition :name="route.meta.transition as string || 'page'" mode="out-in">
-          <component :is="Component" :key="route.path" />
+        <Transition :name="route.meta.transition as string || 'page'">
+          <div class="route-view" :key="route.path">
+            <component :is="Component" />
+          </div>
         </Transition>
       </RouterView>
     </main>
@@ -34,6 +36,11 @@ import RouteAtmosphere from './visual/RouteAtmosphere.vue'
   position: relative;
   z-index: var(--z-raised);
   flex: 1;
+  min-width: 0;
+  display: grid;
+}
+.route-view {
+  grid-area: 1 / 1;
   min-width: 0;
 }
 /* 用 skip-link 跳进来时要有可见落点，但鼠标点击不该出现描边 */

@@ -7,6 +7,7 @@
     :aria-label="decorative ? undefined : label"
     :aria-hidden="decorative ? 'true' : undefined"
     @pointermove="onPointerMove"
+    @pointerdown="onPointerDown"
     @pointerleave="onPointerLeave"
   >
     <canvas ref="canvas" aria-hidden="true"></canvas>
@@ -43,8 +44,8 @@ const props = withDefaults(defineProps<{
 interface RuntimeParticle {
   x: number
   y: number
-  startX: number
-  startY: number
+  velocityX: number
+  velocityY: number
   targetX: number
   targetY: number
   tone: 0 | 1 | 2
@@ -74,22 +75,25 @@ let dpr = 1
 let particles: RuntimeParticle[] = []
 let palette: Palette = { primary: '#d9d5df', secondary: '#77717f', accent: '#f4a6d7' }
 let visible = true
-let transitionStart = 0
-let transitionDuration = 1180
 let pointerX = -10000
 let pointerY = -10000
 let pointerActive = false
+let pointerReleasedAt = -Infinity
+let pulseX = -10000
+let pulseY = -10000
+let pulseStartedAt = -Infinity
 let lastFrame = 0
+let lastPhysicsFrame = 0
 let slowFrames = 0
 let qualityScale = 1
 
 function preferredCount(): number {
-  if (reduceMotion.value) return 260
+  if (reduceMotion.value) return 420
   const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory
   const compact = window.matchMedia('(max-width: 760px)').matches
-  if (props.density === 'backdrop') return Math.round((compact ? 84 : 128) * qualityScale)
-  if (compact || (memory !== undefined && memory <= 4)) return Math.round(260 * qualityScale)
-  return Math.round((props.density === 'ambient' ? 340 : 520) * qualityScale)
+  if (props.density === 'backdrop') return Math.round((compact ? 220 : 380) * qualityScale)
+  if (compact || (memory !== undefined && memory <= 4)) return Math.round(520 * qualityScale)
+  return Math.round((props.density === 'ambient' ? 780 : 1380) * qualityScale)
 }
 
 function readPalette() {
@@ -100,7 +104,7 @@ function readPalette() {
     secondary: style.getPropertyValue('--text-muted').trim() || '#77717f',
     accent: style.getPropertyValue('--archive-blue').trim() || style.getPropertyValue('--accent-violet').trim() || '#f4a6d7',
   }
-  if (reduceMotion.value) draw(performance.now())
+  draw()
 }
 
 function targetPosition(point: ParticlePoint): { x: number; y: number } {
@@ -125,13 +129,13 @@ function setShape(animate = true) {
   particles = shape.map((point, index) => {
     const target = targetPosition(point)
     const current = previous[index]
-    const x = current?.x ?? Math.random() * width
-    const y = current?.y ?? Math.random() * height
+    const x = current?.x ?? (animate ? Math.random() * width : target.x)
+    const y = current?.y ?? (animate ? Math.random() * height : target.y)
     return {
       x,
       y,
-      startX: x,
-      startY: y,
+      velocityX: current?.velocityX ?? 0,
+      velocityY: current?.velocityY ?? 0,
       targetX: target.x,
       targetY: target.y,
       tone: point.tone,
@@ -139,57 +143,87 @@ function setShape(animate = true) {
     }
   })
 
-  transitionStart = performance.now()
-  transitionDuration = animate && !reduceMotion.value ? 1180 : 0
-  if (!transitionDuration) {
+  if (!animate || reduceMotion.value) {
     particles.forEach((particle) => {
       particle.x = particle.targetX
       particle.y = particle.targetY
+      particle.velocityX = 0
+      particle.velocityY = 0
     })
-    draw(transitionStart)
+    draw()
   } else {
     startLoop()
   }
 }
 
-function easeOutQuart(value: number): number {
-  return 1 - (1 - value) ** 4
-}
-
-function draw(now: number) {
-  if (!context || !canvas.value) return
-  context.clearRect(0, 0, width, height)
-  const rawProgress = transitionDuration ? Math.min(1, (now - transitionStart) / transitionDuration) : 1
-  const progress = easeOutQuart(rawProgress)
-  const signalEnergy = props.signal === 'active' ? 1.75 : props.signal === 'warning' ? 1.35 : props.signal === 'success' ? 1.15 : 1
-  const idleAmount = reduceMotion.value ? 0 : (props.density === 'ambient' ? 2.2 : 3.6) * signalEnergy
-  const paths = [new Path2D(), new Path2D(), new Path2D()]
+function simulateParticles(now: number): boolean {
+  const elapsed = lastPhysicsFrame ? Math.min(32, Math.max(1, now - lastPhysicsFrame)) : 16.67
+  const step = elapsed / 16.67
+  const recoveryReady = !pointerActive && now - pointerReleasedAt > 220
+  const pulseAge = now - pulseStartedAt
+  const pulseActive = pulseAge >= 0 && pulseAge < 420
+  const interactionRadius = Math.min(150, Math.max(90, width * 0.22))
+  let moving = pointerActive || pulseActive || !recoveryReady
 
   for (const particle of particles) {
-    particle.x = particle.startX + (particle.targetX - particle.startX) * progress
-    particle.y = particle.startY + (particle.targetY - particle.startY) * progress
-    const driftX = Math.sin(now * 0.00046 + particle.phase) * idleAmount
-    const driftY = Math.cos(now * 0.00038 + particle.phase * 1.3) * idleAmount * 0.72
-    let offsetX = 0
-    let offsetY = 0
+    const spring = pointerActive ? 0.015 : recoveryReady ? 0.048 : 0
+    particle.velocityX += (particle.targetX - particle.x) * spring * step
+    particle.velocityY += (particle.targetY - particle.y) * spring * step
 
-    if (props.interactive && pointerActive && !reduceMotion.value) {
+    if (props.interactive && pointerActive) {
       const dx = particle.x - pointerX
       const dy = particle.y - pointerY
       const distance = Math.hypot(dx, dy)
-      const radius = Math.min(132, Math.max(84, width * 0.18))
-      if (distance > 0 && distance < radius) {
-        const force = (1 - distance / radius) ** 2 * 14
-        offsetX = dx / distance * force
-        offsetY = dy / distance * force
+      if (distance < interactionRadius) {
+        const directionX = distance > 0.1 ? dx / distance : Math.cos(particle.phase)
+        const directionY = distance > 0.1 ? dy / distance : Math.sin(particle.phase)
+        const force = (1 - distance / interactionRadius) ** 2 * 3.8
+        particle.velocityX += directionX * force * step
+        particle.velocityY += directionY * force * step
       }
     }
 
+    if (pulseActive) {
+      const dx = particle.x - pulseX
+      const dy = particle.y - pulseY
+      const distance = Math.hypot(dx, dy)
+      const ringRadius = interactionRadius * (pulseAge / 420) * 1.25
+      const ringWeight = Math.exp(-(((distance - ringRadius) / 18) ** 2))
+      if (ringWeight > 0.01) {
+        const directionX = distance > 0.1 ? dx / distance : Math.cos(particle.phase)
+        const directionY = distance > 0.1 ? dy / distance : Math.sin(particle.phase)
+        particle.velocityX += directionX * ringWeight * 2.6 * step
+        particle.velocityY += directionY * ringWeight * 2.6 * step
+      }
+    }
+
+    const damping = Math.pow(pointerActive ? 0.79 : 0.83, step)
+    particle.velocityX *= damping
+    particle.velocityY *= damping
+    particle.x += particle.velocityX * step
+    particle.y += particle.velocityY * step
+
+    if (Math.abs(particle.velocityX) > 0.012 || Math.abs(particle.velocityY) > 0.012
+      || Math.abs(particle.targetX - particle.x) > 0.12 || Math.abs(particle.targetY - particle.y) > 0.12) {
+      moving = true
+    }
+  }
+
+  lastPhysicsFrame = now
+  return moving
+}
+
+function draw() {
+  if (!context || !canvas.value) return
+  context.clearRect(0, 0, width, height)
+  const paths = [new Path2D(), new Path2D(), new Path2D()]
+
+  for (const particle of particles) {
     const energyScale = props.signal === 'active' ? 1.22 : props.signal === 'warning' ? 1.1 : 1
     const radius = (particle.tone === 2 ? 1.55 : particle.tone === 1 ? 1.05 : 0.78) * energyScale
     const path = paths[particle.tone]
-    path.moveTo(particle.x + driftX + offsetX + radius, particle.y + driftY + offsetY)
-    path.arc(particle.x + driftX + offsetX, particle.y + driftY + offsetY, radius, 0, Math.PI * 2)
+    path.moveTo(particle.x + radius, particle.y)
+    path.arc(particle.x, particle.y, radius, 0, Math.PI * 2)
   }
   context.globalAlpha = .72
   context.fillStyle = palette.primary
@@ -215,12 +249,15 @@ function renderFrame(now: number) {
     }
   }
   lastFrame = now
-  draw(now)
+  const moving = simulateParticles(now)
+  draw()
+  if (!moving) stopLoop()
 }
 
 function startLoop() {
   if (stopScheduledFrame || !visible || document.hidden || reduceMotion.value) return
   lastFrame = 0
+  lastPhysicsFrame = 0
   stopScheduledFrame = registerParticleFrame(renderFrame, 60)
 }
 
@@ -228,6 +265,7 @@ function stopLoop() {
   stopScheduledFrame?.()
   stopScheduledFrame = null
   lastFrame = 0
+  lastPhysicsFrame = 0
 }
 
 function resize() {
@@ -235,9 +273,8 @@ function resize() {
   const rect = host.value.getBoundingClientRect()
   width = Math.max(1, Math.round(rect.width))
   height = Math.max(1, Math.round(rect.height))
-  dpr = props.density === 'hero'
-    ? Math.min(window.devicePixelRatio || 1, 1.25)
-    : 1
+  const dprLimit = props.density === 'hero' ? 1.5 : props.density === 'ambient' ? 1.35 : 1.2
+  dpr = Math.min(window.devicePixelRatio || 1, dprLimit)
   canvas.value.width = Math.round(width * dpr)
   canvas.value.height = Math.round(height * dpr)
   canvas.value.style.width = `${width}px`
@@ -265,8 +302,19 @@ function onPointerMove(event: PointerEvent) {
   startLoop()
 }
 
+function onPointerDown(event: PointerEvent) {
+  if (!host.value || event.pointerType === 'touch' || reduceMotion.value) return
+  const rect = host.value.getBoundingClientRect()
+  pulseX = event.clientX - rect.left
+  pulseY = event.clientY - rect.top
+  pulseStartedAt = performance.now()
+  startLoop()
+}
+
 function onPointerLeave() {
   pointerActive = false
+  pointerReleasedAt = performance.now()
+  startLoop()
 }
 
 function onVisibilityChange() {

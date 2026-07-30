@@ -187,6 +187,9 @@
             <span>CANVAS</span>
             <span class="stage-ready">{{ sd.generating.value ? 'RENDERING' : 'READY' }}</span>
           </div>
+          <div class="stage-corners" aria-hidden="true">
+            <i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i>
+          </div>
           <img class="stage-muse nene" src="/assets/characters/nene-official.webp" alt="" aria-hidden="true" decoding="async">
           <img class="stage-muse natsume" src="/assets/characters/natsume-official.webp" alt="" aria-hidden="true" decoding="async">
           <div class="stage-message">
@@ -209,7 +212,10 @@
         </section>
 
         <!-- Result image -->
-        <div v-if="sd.resultUrl.value" class="result-image-wrap">
+        <div v-if="sd.resultUrl.value" class="result-image-wrap archive-canvas">
+          <div class="stage-corners" aria-hidden="true">
+            <i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i>
+          </div>
           <img class="result-image" :src="sd.resultUrl.value" alt="生成的图片" />
           <div class="result-image-actions">
             <button class="btn btn-ghost" type="button" @click="saveResult">保存快照</button>
