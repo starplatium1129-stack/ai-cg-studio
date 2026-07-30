@@ -188,7 +188,11 @@ async function generateVoice() {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         voice: voiceChar.value, text, language: voiceLang.value, emotion: voiceEmotion.value,
-        referenceEmotion: voiceEmotion.value === 'neutral' ? 'gentle' : voiceEmotion.value,
+        // `neutral` deliberately uses the character's main reference clip.
+        // Do not silently substitute the gentle clip: that makes the visible
+        // 平静 choice sound warm/comforting and hides whether emotion routing
+        // is actually working.
+        referenceEmotion: voiceEmotion.value,
         consistency: 'locked', speed: voiceSpeed.value,
       }),
     })

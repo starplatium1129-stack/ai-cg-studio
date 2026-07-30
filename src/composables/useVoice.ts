@@ -239,7 +239,12 @@ export function useVoice(options: {
     if (rawEmotion === 'neutral') { _neutralStreak++; emotion = _neutralStreak >= 3 ? 'neutral' : _lastEmotion }
     else { _neutralStreak = 0; emotion = rawEmotion }
     _lastEmotion = emotion
-    if (!meta.referenceEmotion) meta.referenceEmotion = rawEmotion === 'neutral' ? 'gentle' : rawEmotion
+    const firstReference = meta.referenceEmotion
+    // Keep the neutral turn on the character's main reference clip.  The
+    // backend falls back to profile.refAudioPath when `referenceEmotion` is
+    // neutral; mapping it to gentle here would make ordinary chat inherit a
+    // different timbre and make the UI's emotion label misleading.
+    if (!meta.referenceEmotion) meta.referenceEmotion = rawEmotion
     let translated = '', translationFailed = false
     try {
       const tr = await fetch('/api/translate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: cleaned }), signal })
@@ -247,14 +252,16 @@ export function useVoice(options: {
       else translationFailed = true
     } catch (e) { if (isAbortError(e)) throw e; translationFailed = true }
     if (translationFailed && !_warnedTranslation) { _warnedTranslation = true; onError('日文翻译不可用，本次改用中文发音。') }
+    const emotionChanged = Boolean(firstReference && emotion !== firstReference)
     return {
       text: translated || cleaned,
       language: translated ? 'ja' : 'zh',
       emotion,
-      // A written direction is an explicit request for a new delivery. Keep
-      // normal sentences locked to one reference for a coherent identity, but
-      // let the configured emotion reference take effect for that cue.
-      consistency: directionText && rawEmotion !== 'neutral' ? 'adaptive' : 'locked',
+      // Keep a stable reference while a reply stays in one mood.  When the
+      // classifier detects a real change (or an explicit stage direction),
+      // switch to the current emotion reference so the spoken audio does not
+      // remain gentle/neutral while the UI expression has already changed.
+      consistency: (directionText && rawEmotion !== 'neutral') || emotionChanged ? 'adaptive' : 'locked',
     }
   }
 

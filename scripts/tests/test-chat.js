@@ -164,6 +164,7 @@ async function run() {
   var html = fs.readFileSync(path.join(root, 'src', 'views', 'ChatView.vue'), 'utf8');
   var apiSettingsComponent = fs.readFileSync(path.join(root, 'src', 'components', 'ChatApiSettings.vue'), 'utf8');
   var characterStageComponent = fs.readFileSync(path.join(root, 'src', 'components', 'ChatCharacterStage.vue'), 'utf8');
+  var voiceStudio = fs.readFileSync(path.join(root, 'src', 'components', 'VoiceStudio.vue'), 'utf8');
   var voiceModule = fs.readFileSync(path.join(root, 'src', 'composables', 'useVoice.ts'), 'utf8');
   var live2dModule = fs.readFileSync(path.join(root, 'src', 'composables', 'useLive2D.ts'), 'utf8');
   var chatCss = fs.readFileSync(path.join(root, 'src', 'assets', 'css', 'chat.css'), 'utf8');
@@ -223,11 +224,18 @@ async function run() {
   assert(voiceModule.includes('SentenceBuffer') && /\bawait r\.arrayBuffer\(\)/.test(voiceModule), 'voice must synthesize complete sentence WAV files');
   assert(
     voiceModule.includes("consistency: 'locked'") && voiceModule.includes('referenceEmotion: meta.referenceEmotion'),
-    'one reply must lock a single identity reference across all sentences'
+    'voice must lock a stable identity reference while a sentence mood stays unchanged'
+  );
+  assert(
+    voiceStudio.includes('referenceEmotion: voiceEmotion.value,')
+      && !voiceStudio.includes("voiceEmotion.value === 'neutral' ? 'gentle'")
+      && voiceModule.includes('meta.referenceEmotion = rawEmotion'),
+    'neutral delivery must use the character main reference instead of silently borrowing gentle emotion'
   );
   assert(
     voiceModule.includes('extractSpokenDialogue')
-      && voiceModule.includes("consistency: directionText && rawEmotion !== 'neutral' ? 'adaptive' : 'locked'")
+      && voiceModule.includes("(directionText && rawEmotion !== 'neutral') || emotionChanged ? 'adaptive' : 'locked'")
+      && voiceModule.includes('const emotionChanged = Boolean(firstReference && emotion !== firstReference)')
       && voiceModule.includes('90_000')
       && voiceModule.includes('minimumLength: 16')
       && voiceModule.includes('status === 502'),
@@ -500,10 +508,11 @@ async function run() {
     await consumeVoice(tts, { voice:'nene', text:'綾地寧々です。', language:'ja', emotion:'shy', referenceEmotion:'gentle', consistency:'locked', speed:1 });
     var lockedPayload = mock.state.voicePayloads[mock.state.voicePayloads.length - 1];
     assert(lockedPayload.ref_audio_path === 'nene-gentle.wav', 'locked voice must keep the turn reference even when the sentence emotion changes');
-    assert(lockedPayload.text.includes('あやち ねね') && lockedPayload.text_split_method === 'cut0', 'Japanese speech must normalize character names and preserve the complete sentence');
+    assert(lockedPayload.text.includes('あやち ねね') && lockedPayload.text_split_method === 'cut5', 'Japanese speech must normalize character names and preserve the complete sentence');
     assert(lockedPayload.seed === 1234 && lockedPayload.top_k === 15 && lockedPayload.streaming_mode === false, 'short sentence synthesis must use deterministic identity settings instead of ineffective audio streaming');
     var ttsModule = require('../../services/tts-service');
     assert(ttsModule.normalizeSpeechText('  四季夏目\nありがとう。 ', 'ja') === 'しき なつめ。ありがとう。', 'speech normalization must keep every sentence and stabilize character-name pronunciation');
+    assert(ttsModule.normalizeSpeechText('\u30fb\u30c6\u30b9\u30c8', 'ja') === '\u30c6\u30b9\u30c8', 'speech normalization must remove the Windows-incompatible Japanese middle dot');
   } finally {
     await close(mock.server);
   }

@@ -126,6 +126,9 @@ function normalizeSpeechText(value: unknown, language: string): string {
   let text = String(value || '')
     .normalize('NFKC')
     .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F\u200B-\u200D\uFEFF]/g, '')
+    // GPT-SoVITS' Windows-side Japanese tokenizer can fail while logging U+30FB
+    // through a GBK console.  It is an emphasis separator, not spoken content.
+    .replace(/\u30fb/g, '')
     .replace(/[ \t]+/g, ' ')
     .replace(/\s*\n\s*/g, '。')
     .replace(/。{2,}/g, '。')
@@ -203,7 +206,9 @@ function validateInput(
         ref_audio_path: (emotionReference && emotionReference.refAudioPath) || profile.refAudioPath,
         prompt_lang: (emotionReference && emotionReference.promptLang) || profile.promptLang || 'ja',
         prompt_text: (emotionReference && emotionReference.promptText) || profile.promptText,
-        text_split_method: 'cut0',
+        // cut5 is the stable Japanese sentence splitter for the installed
+        // GPT-SoVITS v2Pro/v2ProPlus API; cut0 rejects ordinary Japanese text.
+        text_split_method: 'cut5',
         batch_size: 1,
         split_bucket: false,
         speed_factor: speed,
