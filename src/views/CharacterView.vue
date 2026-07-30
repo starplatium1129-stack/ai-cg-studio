@@ -1,5 +1,5 @@
 ﻿<template>
-  <article class="page" style="--page-max:1100px">
+  <article class="page character-page" style="--page-max:1100px">
     <ArchivePageHero
       chapter="03"
       section="Identity file"
@@ -185,10 +185,12 @@ onMounted(async () => {
 
 <style scoped>
 .archive-status { padding:4px 9px; border:1px solid var(--border-soft); color:var(--text-muted); font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.1em; }
-.character-tabs { display:flex; gap:var(--s-2); margin-bottom:var(--s-5); }
+.character-tabs { position:relative; display:flex; gap:var(--s-2); margin-bottom:var(--s-5); padding-left:var(--s-4); }
+.character-tabs::before { content:""; position:absolute; left:0; top:0; bottom:0; width:2px; background:linear-gradient(180deg,var(--archive-blue),var(--accent),transparent); }
 .character-tab { padding:var(--s-2) var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-pill); background:var(--bg-surface); color:var(--text-secondary); cursor:pointer; font:600 var(--fs-body-sm) var(--font-sans); transition:border-color var(--t-fast),color var(--t-fast),background var(--t-fast),transform var(--t-fast) var(--ease-out); }
 .character-tab.active,.character-tab:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
-.character-hero { display:grid; grid-template-columns:320px 1fr; gap:var(--s-6); padding:var(--s-6); }
+.character-hero { position:relative; overflow:hidden; display:grid; grid-template-columns:320px 1fr; gap:var(--s-6); padding:var(--s-6); }
+.character-hero::before { content:""; position:absolute; top:-1px; left:var(--s-6); width:42px; height:1px; background:var(--archive-blue); opacity:.86; }
 /* 立绘按"画框里的展品"处理：底光 + 顶部渐隐 + 轻微入场位移，
    与作品册的画框语言保持一致 */
 .portrait {
@@ -268,7 +270,8 @@ onMounted(async () => {
 .chips .chip.trait { border-color:var(--border-soft); background:var(--bg-surface); color:var(--text-primary); }
 .char-lora { color:var(--text-secondary); font-size:var(--fs-body-sm); }
 .char-lora code { color:var(--accent); font-family:var(--font-mono); }
-.recommend-section { margin-top:var(--s-7); }
+.recommend-section { position:relative; margin-top:var(--s-7); padding-top:var(--s-5); border-top:1px solid var(--border-soft); }
+.recommend-section::before { content:"02 / PERSONA CORE"; position:absolute; top:-.55em; left:0; padding-right:var(--s-2); background:var(--bg-base); color:var(--archive-blue); font:650 var(--fs-mono-xs) var(--font-mono); letter-spacing:.1em; }
 .recommend-head { display:flex; align-items:flex-end; justify-content:space-between; gap:var(--s-4); margin-bottom:var(--s-3); }
 .recommend-head p { max-width:680px; margin:var(--s-1) 0 0; color:var(--text-muted); font-size:var(--fs-body-sm); }
 .recommend-title { margin:0 0 var(--s-3); font-size:var(--fs-title-sm); }

@@ -99,21 +99,25 @@
       </div>
       <div class="tools-grid">
         <RouterLink to="/prompt-builder" class="tool-card card-create card-level-2">
+          <span class="tool-index" aria-hidden="true">01 / MAKE</span>
           <span class="ic">✦</span><span class="t">开始绘制</span>
           <span class="d">选场景、调情绪与镜头，一键出图。</span>
           <span class="go">→ 打开</span>
         </RouterLink>
         <RouterLink to="/scene-explorer" class="tool-card card-create card-level-2">
+          <span class="tool-index" aria-hidden="true">02 / SCENE</span>
           <span class="ic">🌸</span><span class="t">灵感场景</span>
           <span class="d">{{ sceneLibraryCopy }}</span>
           <span class="go">→ 打开</span>
         </RouterLink>
         <RouterLink to="/chat" class="tool-card card-create card-level-2">
+          <span class="tool-index" aria-hidden="true">03 / ROOM</span>
           <span class="ic">☕</span><span class="t">角色房间</span>
           <span class="d">和宁宁或夏目聊一会儿，声音也在本机。</span>
           <span class="go">→ 进入房间</span>
         </RouterLink>
         <RouterLink to="/showcase" class="tool-card card-create card-level-2">
+          <span class="tool-index" aria-hidden="true">04 / ARCHIVE</span>
           <span class="ic">🖼</span><span class="t">效果样张</span>
           <span class="d">逐张审核后的真实成图，不是示意图。</span>
           <span class="go">→ 浏览</span>
@@ -132,21 +136,25 @@
       </div>
       <div class="tools-grid">
         <RouterLink to="/character" class="tool-card card-create">
+          <span class="tool-index" aria-hidden="true">05 / PROFILE</span>
           <span class="ic">👤</span><span class="t">角色档案</span>
           <span class="d">视觉特征、性格与绑定模型。</span>
           <span class="go">→ 打开</span>
         </RouterLink>
         <RouterLink to="/style" class="tool-card card-create">
+          <span class="tool-index" aria-hidden="true">06 / PALETTE</span>
           <span class="ic">🎨</span><span class="t">画风</span>
           <span class="d">色调、配色与画面情绪。</span>
           <span class="go">→ 打开</span>
         </RouterLink>
         <RouterLink to="/lora" class="tool-card card-create">
+          <span class="tool-index" aria-hidden="true">07 / MODEL</span>
           <span class="ic">🧪</span><span class="t">模型</span>
           <span class="d">训练信息与推荐强度。</span>
           <span class="go">→ 打开</span>
         </RouterLink>
         <RouterLink to="/gallery" class="tool-card card-create">
+          <span class="tool-index" aria-hidden="true">08 / WORKS</span>
           <span class="ic">🎞</span><span class="t">作品册</span>
           <span class="d">本机创作，原比例安静欣赏。</span>
           <span class="go">→ 打开</span>
@@ -392,6 +400,12 @@ onUnmounted(() => {
 
 /* ---------- Hero ---------- */
 .home-hero { position:relative; padding:var(--s-8) 0 var(--s-6); display:grid; grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr); grid-template-rows:auto auto; gap:var(--s-5) var(--s-6); align-items:end; }
+.home-page .hero-copy { animation:homeCopyIn .58s var(--ease-out) .04s both; }
+.home-page .hero-orbit { animation:homeOrbitIn .66s var(--ease-out) .12s both; }
+.home-page .hero-strip { animation:homeStripIn .62s var(--ease-out) .22s both; }
+@keyframes homeCopyIn { from { opacity:0; transform:translateX(-12px); } to { opacity:1; transform:none; } }
+@keyframes homeOrbitIn { from { opacity:0; filter:blur(8px); transform:translateX(12px) scale(.985); } to { opacity:1; filter:none; transform:none; } }
+@keyframes homeStripIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
 .home-hero::before { content:""; position:absolute; left:-18px; top:var(--s-8); width:2px; height:92px; border-radius:var(--r-pill); background:linear-gradient(180deg,var(--accent),var(--accent-violet),transparent); opacity:.72; }
 .hero-copy { grid-column:1; grid-row:1; align-self:end; min-width:0; }
 .hero-register { display:flex; align-items:center; gap:var(--s-3); margin-bottom:var(--s-4); color:var(--text-muted); font:650 var(--fs-mono-xs) var(--font-mono); letter-spacing:.12em; text-transform:uppercase; }
@@ -403,7 +417,7 @@ onUnmounted(() => {
 .hero-sub { font-size:var(--fs-body-lg); color:var(--text-secondary); margin-bottom:var(--s-3); max-width:520px; line-height:1.7; }
 .hero-jp { color:var(--accent-violet); font-size:var(--fs-label); letter-spacing:0.3em; margin:0 0 var(--s-5); opacity:.9; }
 .ctas { display:flex; gap:var(--s-3); flex-wrap:wrap; margin-bottom:var(--s-4); align-items:center; }
-.hero-orbit { grid-column:2; grid-row:1; min-width:0; min-height:380px; position:relative; isolation:isolate; border:1px solid var(--border-soft); border-radius:var(--r-xl); overflow:hidden; background:linear-gradient(135deg,var(--accent-glow),transparent 42%),var(--stage-violet); box-shadow:inset 0 1px 0 var(--on-art-line),var(--shadow-lg); }
+.hero-orbit { grid-column:2; grid-row:1; min-width:0; min-height:380px; position:relative; isolation:isolate; border:1px solid var(--border-soft); border-radius:var(--r-xl); overflow:hidden; background:linear-gradient(90deg,color-mix(in srgb,var(--on-art-line) 42%,transparent) 1px,transparent 1px) 0 0/32px 32px,linear-gradient(color-mix(in srgb,var(--on-art-line) 42%,transparent) 1px,transparent 1px) 0 0/32px 32px,linear-gradient(135deg,var(--accent-glow),transparent 42%),var(--stage-violet); box-shadow:inset 0 1px 0 var(--on-art-line),var(--shadow-lg); }
 .hero-orbit::before { content:""; position:absolute; z-index:var(--z-raised); inset:0; pointer-events:none; background:linear-gradient(115deg,var(--on-art-sheen),transparent 18%,transparent 70%,var(--on-art-wash)); mix-blend-mode:soft-light; opacity:.48; }
 .hero-orbit::after { content:""; position:absolute; z-index:var(--z-base); inset:0; pointer-events:none; box-shadow:inset 0 0 72px color-mix(in srgb,var(--art-backdrop) 34%,transparent); }
 .hero-particles { position:absolute; z-index:var(--z-base); inset:0; min-height:100%; opacity:.46; }
@@ -423,7 +437,7 @@ onUnmounted(() => {
 .orbit-label { position:absolute; z-index:var(--z-raised); left:var(--s-5); right:var(--s-5); bottom:var(--s-5); padding:var(--s-3) var(--s-4); border:1px solid var(--on-art-line); border-radius:var(--r-xl); background:var(--art-scrim-soft); backdrop-filter:blur(16px); }
 .orbit-label strong { display:block; font-size:var(--fs-body-sm); letter-spacing:.08em; color:var(--on-art-primary); }
 .orbit-label span { display:block; margin-top:3px; color:var(--on-art-secondary); font-size:var(--fs-label-sm); }
-.hero-strip { grid-column:1 / -1; grid-row:2; position:relative; background:linear-gradient(135deg,var(--accent-soft),transparent 65%),var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-xl); padding:var(--s-4) var(--s-5); overflow:hidden; }
+.hero-strip { grid-column:1 / -1; grid-row:2; position:relative; background:linear-gradient(135deg,var(--accent-soft),transparent 65%),var(--bg-surface); border:1px solid var(--border-soft); border-left:3px solid var(--archive-blue); border-radius:var(--r-md); padding:var(--s-4) var(--s-5); overflow:hidden; }
 .strip-label { display:flex; align-items:center; gap:var(--s-2); font-size:var(--fs-label-xs); font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-muted); margin-bottom:var(--s-3); }
 .strip-label .dot { width:6px; height:6px; border-radius:50%; background:var(--accent); box-shadow:var(--glow-sm); }
 .strip-scroll { display:flex; gap:var(--s-3); overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; padding-bottom:var(--s-2); }
@@ -435,7 +449,8 @@ onUnmounted(() => {
 /* ---------- Sections ---------- */
 .home-section { padding:var(--s-6) 0; border-top:1px solid var(--border-soft); }
 .home-section-quiet { padding:var(--s-5) 0; }
-.home-section-head { display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:var(--s-4); gap:var(--s-4); }
+.home-section-head { position:relative; display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:var(--s-4); padding-left:var(--s-4); gap:var(--s-4); }
+.home-section-head::before { content:""; position:absolute; left:0; top:2px; bottom:2px; width:2px; background:linear-gradient(180deg,var(--archive-blue),var(--accent),transparent); }
 .home-section-head h2 { font-size:var(--fs-title-sm); margin-bottom:var(--s-1); }
 .home-section-head .hint { font-size:var(--fs-body-sm); color:var(--text-muted); margin:0; }
 .home-section-head .link { font-size:var(--fs-body-sm); flex-shrink:0; }
@@ -445,7 +460,9 @@ onUnmounted(() => {
 .tools-grid { display:grid; grid-template-columns:1fr; gap:var(--s-3); }
 @media (min-width:768px) { .tools-grid { grid-template-columns:repeat(2,1fr); } }
 @media (min-width:1200px) { .tools-grid { grid-template-columns:repeat(4,1fr); } }
-.tool-card { display:flex; flex-direction:column; gap:var(--s-2); min-height:176px; background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-lg); padding:var(--s-5); text-decoration:none; color:var(--text-primary); transition:border-color var(--t-fast),transform var(--t-fast) var(--ease-out),box-shadow var(--t-fast); }
+.tool-card { display:flex; flex-direction:column; gap:var(--s-2); min-height:176px; background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-md); padding:var(--s-5); text-decoration:none; color:var(--text-primary); transition:border-color var(--t-fast),transform var(--t-fast) var(--ease-out),box-shadow var(--t-fast); }
+.tool-card .tool-index { position:absolute; top:var(--s-3); right:var(--s-4); color:var(--archive-blue); font:650 var(--fs-mono-xs) var(--font-mono); letter-spacing:.1em; opacity:.78; }
+.tool-card .ic { margin-top:var(--s-3); }
 .tool-card:hover { border-color:color-mix(in srgb,var(--accent) 58%,var(--border-soft)); transform:translateY(-2px); }
 .tool-card .ic { display:grid; place-items:center; width:36px; height:36px; border:1px solid color-mix(in srgb,var(--accent) 28%,var(--border-soft)); border-radius:var(--r-lg); background:var(--accent-soft); font-size:var(--fs-title-sm); box-shadow:inset 0 1px 0 var(--glass-highlight); }
 .tool-card .t { font-weight:700; font-size:var(--fs-body-lg); }
@@ -487,6 +504,9 @@ onUnmounted(() => {
   .hero-register { gap:var(--s-2); flex-wrap:wrap; }
   .hero-register span:last-child { display:none; }
 }
-@media (prefers-reduced-motion:reduce) { .tool-card,.recent-card { transition:none; } }
+@media (prefers-reduced-motion:reduce) {
+  .home-page .hero-copy, .home-page .hero-orbit, .home-page .hero-strip { animation:none; }
+  .tool-card,.recent-card { transition:none; }
+}
 @media (prefers-reduced-transparency:reduce) { .hero-particles { mix-blend-mode:normal; opacity:.3; } }
 </style>

@@ -103,6 +103,9 @@
 
   /* ---- 宽屏工作台 ---- */
   .pb .director-workspace { display:grid; grid-template-columns:clamp(252px,16.5vw,300px) minmax(560px,1.2fr) clamp(260px,16.5vw,300px); grid-template-areas:"story stage decisions"; gap:16px; align-items:start; animation:pbWorkspaceIn .38s var(--ease-out) both; }
+  .pb .director-workspace > .col-left { animation:directorRailIn .48s var(--ease-out) .04s both; }
+  .pb .director-workspace > .col-center { animation:directorStageIn .56s var(--ease-out) .1s both; }
+  .pb .director-workspace > .col-right { animation:directorRailIn .48s var(--ease-out) .16s both; }
   .pb[data-director-mode="basic"] .director-workspace {
     grid-template-columns:minmax(320px,400px) minmax(640px,1fr) minmax(300px,350px);
     grid-template-areas:"story stage decisions";
@@ -255,9 +258,10 @@
   .pb .panel {
     background:color-mix(in srgb,var(--bg-surface) 96%,var(--bg-base));
     border:1px solid color-mix(in srgb,var(--border-soft) 62%,transparent);
-    border-radius:var(--r-lg); padding:var(--s-4); box-shadow:none;
+    border-radius:var(--r-md); padding:var(--s-4); box-shadow:none; position:relative;
     transition:border-color var(--t-fast),background var(--t-fast),transform var(--t-fast);
   }
+  .pb .col-left .panel::before, .pb .col-right .panel::before { content:''; position:absolute; top:-1px; left:var(--s-4); width:34px; height:1px; background:var(--archive-blue); opacity:.72; pointer-events:none; }
   .pb .col-left .panel:hover, .pb .col-right .panel:hover {
     border-color:color-mix(in srgb,var(--border-soft) 92%,transparent);
   }
@@ -699,7 +703,9 @@
   .pb[data-character="nene"] .guide-bar { border-left-color:var(--nene-violet); }
   .pb[data-character="natsume"] .guide-bar { border-left-color:var(--natsume-amber); }
   .pb[data-character="natsume"] .stage-placeholder-icon { color:var(--natsume-amber); background:color-mix(in srgb,var(--natsume-amber) 14%,transparent); box-shadow:var(--shadow-lg); }
-  @keyframes pbWorkspaceIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:none; } }
+   @keyframes pbWorkspaceIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:none; } }
+   @keyframes directorRailIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+   @keyframes directorStageIn { from { opacity:0; filter:blur(5px); transform:scale(.994); } to { opacity:1; filter:none; transform:none; } }
 
   @media (max-width: 1380px) {
     .pb { padding-inline:var(--s-4); }
@@ -1144,10 +1150,13 @@
     width:var(--progress, 0%);
     transition:width .4s var(--ease-out);
   }
-  @media (prefers-reduced-motion: reduce) {
-    .pb .stage-placeholder.is-generating::before,
-    .pb .stage-placeholder.is-generating::after { animation:none !important; }
-  }
+   @media (prefers-reduced-motion: reduce) {
+     .pb .director-workspace > .col-left,
+     .pb .director-workspace > .col-center,
+     .pb .director-workspace > .col-right { animation:none !important; }
+     .pb .stage-placeholder.is-generating::before,
+     .pb .stage-placeholder.is-generating::after { animation:none !important; }
+   }
 
   @keyframes aicsShutterReveal {
     0% { opacity: 0; filter: brightness(1.7) blur(8px); transform: scale(0.96); }

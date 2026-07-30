@@ -53,6 +53,15 @@ for (const theme of THEMES) {
       if (url !== '/control') {
         await page.waitForLoadState('networkidle').catch(() => {});
       }
+      // Full-page screenshots do not scroll the viewport, so native lazy images
+      // below the fold may otherwise appear as false blank cards in audit sheets.
+      await page.evaluate(() => {
+        document.querySelectorAll<HTMLImageElement>('img[loading="lazy"]')
+          .forEach(image => { image.loading = 'eager'; });
+      });
+      await page.waitForFunction(() =>
+        Array.from(document.images).every(image => image.complete),
+      ).catch(() => {});
       await page.waitForTimeout(1500);
       await page.screenshot({
         path: path.join(OUT, `${theme}-${name}.png`),
