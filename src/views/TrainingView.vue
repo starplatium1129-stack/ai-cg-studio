@@ -46,7 +46,7 @@
       <span class="loading-orbit" aria-hidden="true"></span>
       <div>
         <strong>正在读取训练资产</strong>
-        <p>检查 v16 数据集、OneTrainer、GPT-SoVITS 与训练清单…</p>
+        <p>检查 LoRA v18、语音 v16、OneTrainer、GPT-SoVITS 与训练清单…</p>
       </div>
     </div>
 
@@ -112,16 +112,16 @@
           :aria-labelledby="kindTabs.tabId('lora')"
           class="training-panel"
         >
-          <section class="plan-card" aria-labelledby="v16-plan-title">
+          <section class="plan-card" aria-labelledby="v18-plan-title">
             <div class="plan-copy">
-              <div class="panel-kicker">V16 primary plan</div>
-              <h2 id="v16-plan-title">服装与脸型优先的 LoRA 方案</h2>
+              <div class="panel-kicker">V18 verified plan</div>
+              <h2 id="v18-plan-title">脸型优先、服装可控的 LoRA 方案</h2>
               <p>
-                以身份锚点、经典服装和互动样本分层训练；文本编码器冻结，成人样本保持纳入，
-                但降低互动与成人组权重，避免把姿势或另一角色写进身份。
+                以身份锚点、经典服装和成人样本分层训练；文本编码器在 epoch 30 停训，
+                成人内容继续留在统一角色 LoRA 中，并用独立控制词避免普通场景泄漏。
               </p>
             </div>
-            <div class="plan-specs" aria-label="v16 主要训练参数">
+            <div class="plan-specs" aria-label="v18 主要训练参数">
               <div v-for="spec in loraSpecs" :key="spec.label">
                 <span>{{ spec.label }}</span>
                 <strong>{{ spec.value }}</strong>
@@ -148,7 +148,7 @@
                   {{ job.character === 'nene' ? '宁' : '夏' }}
                 </div>
                 <div class="job-title">
-                  <div class="job-eyebrow">{{ characterName(job.character) }} · LoRA v16</div>
+                  <div class="job-eyebrow">{{ characterName(job.character) }} · LoRA v18</div>
                   <h3 :id="`${job.id}-title`">{{ job.label }}</h3>
                 </div>
                 <span class="badge" :class="statusBadge(job.status)">
@@ -567,14 +567,14 @@ const plans: Record<TrainingCharacter, TrainingPlan> = {
   nene: {
     character: 'nene',
     identity: ['银白超长发', '低双马尾', '紫瞳与呆毛', '粉色发带'],
-    outfit: { label: '宁宁经典魔女服', token: 'official_witch_outfit' },
-    epochs: 80,
+    outfit: { label: '宁宁经典魔女服', token: 'nene_witch_canonical' },
+    epochs: 143,
   },
   natsume: {
     character: 'natsume',
     identity: ['黑色长发', '金黄色眼睛', '眼下痣', '侧边发夹'],
     outfit: { label: '夏目经典旗袍服', token: 'natsume_official_qipao' },
-    epochs: 70,
+    epochs: 223,
   },
 }
 
@@ -582,22 +582,27 @@ const loraSpecs = [
   { label: '底模', value: 'WAI Illustrious SDXL v170' },
   { label: '分辨率', value: '1024 + Buckets' },
   { label: 'LoRA', value: 'Rank 32 / Alpha 32' },
-  { label: 'UNet 学习率', value: '4e-5' },
-  { label: '有效批量', value: '1 × 累积 4' },
+  { label: 'UNet 学习率', value: '1e-4' },
+  { label: '有效批量', value: '4 × 累积 1' },
   { label: '精度', value: 'BF16' },
-  { label: 'Warmup', value: '5%' },
+  { label: '调度器', value: 'Constant' },
   { label: '损失权重', value: 'Min-SNR 5' },
 ]
 
 const categoryNames: Record<string, string> = {
   identity: '身份锚点',
   identity_anchors: '身份锚点',
+  identity_safe: '安全身份样本',
+  identity_r18: 'R18 身份样本',
   official: '官方素材',
   official_cg: '官方 CG',
   reference: '参考立绘',
   curated: '精选 CG',
   outfit_witch: '魔女服',
+  witch_full_body: '魔女服全身立绘',
+  witch_cg: '魔女服构图 CG',
   outfit_qipao: '旗袍服',
+  qipao_safe: '官方旗袍',
   outfit_school: '校服',
   interaction: '互动样本',
   adult_solo: '成人单人',
@@ -663,7 +668,7 @@ function categoryLabel(category: string): string {
 }
 
 function isAdultCategory(category: string): boolean {
-  return category.includes('adult')
+  return category.includes('adult') || category.includes('r18')
 }
 
 function adultCount(categories: Record<string, number>): number {

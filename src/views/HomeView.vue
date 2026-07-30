@@ -46,19 +46,9 @@
         <!-- width/height 是内在尺寸（实测 1024×1344），用来预留版位避免布局抖动；
              CSS 仍然控制显示尺寸。这两张是首屏 LCP 候选，故不 lazy 且给高优先级。 -->
         <picture>
-          <source
-            type="image/avif"
-            srcset="/assets/characters/nene-home-cg-512.avif 512w, /assets/characters/nene-home-cg-1024.avif 1024w"
-            sizes="(max-width: 768px) 52vw, 286px"
-          />
-          <source
-            type="image/webp"
-            srcset="/assets/characters/nene-home-cg-512.webp 512w, /assets/characters/nene-home-cg-1024.webp 1024w"
-            sizes="(max-width: 768px) 52vw, 286px"
-          />
           <img
             class="hero-character nene"
-            src="/assets/characters/nene-home-cg.jpg"
+            :src="heroAssets.nene"
             alt="绫地宁宁"
             width="1024"
             height="1344"
@@ -68,19 +58,9 @@
           />
         </picture>
         <picture>
-          <source
-            type="image/avif"
-            srcset="/assets/characters/natsume-home-cg-512.avif 512w, /assets/characters/natsume-home-cg-1024.avif 1024w"
-            sizes="(max-width: 768px) 52vw, 286px"
-          />
-          <source
-            type="image/webp"
-            srcset="/assets/characters/natsume-home-cg-512.webp 512w, /assets/characters/natsume-home-cg-1024.webp 1024w"
-            sizes="(max-width: 768px) 52vw, 286px"
-          />
           <img
             class="hero-character natsume"
-            src="/assets/characters/natsume-home-cg.jpg"
+            :src="heroAssets.natsume"
             alt="四季夏目"
             width="1024"
             height="1344"
@@ -253,6 +233,10 @@ const recentScenes = ref<HomeScene[]>([])
 const featuredScenes = ref<HomeScene[]>([])
 const sceneStore = useSceneStore()
 const coverUrls = reactive<Record<string, string>>({})
+const heroAssets = reactive({
+  nene: '/assets/characters/nene-home-cg.jpg',
+  natsume: '/assets/characters/natsume-home-cg.jpg',
+})
 /** 卸载标记：异步 imgGet 回来时组件可能已经没了 */
 let unmounted = false
 
@@ -331,6 +315,20 @@ async function loadSceneHighlights() {
   }
 }
 
+async function loadHomeHeroAssets() {
+  try {
+    const response = await fetch('/api/maintenance/home-hero')
+    if (!response.ok) return
+    const payload = await response.json() as { entries?: Record<string, { image?: string; version?: number }> }
+    for (const key of ['nene', 'natsume'] as const) {
+      const image = payload.entries?.[key]?.image
+      if (typeof image === 'string' && /^\/scene-showcase\/home\/(nene|natsume)\.jpg(?:\?[^"'<>]*)?$/.test(image)) {
+        heroAssets[key] = image
+      }
+    }
+  } catch { /* maintenance API is optional; bundled fallback remains available */ }
+}
+
 async function loadRecentWorks() {
   try {
     let history = parseArtworkRecords(await kvGet('aics_pb_history'))
@@ -364,6 +362,7 @@ async function loadRecentWorks() {
 
 onMounted(async () => {
   initContinueDraft()
+  await loadHomeHeroAssets()
   await loadSceneHighlights()
   try {
     await kvInit()
@@ -407,7 +406,7 @@ onUnmounted(() => {
 .hero-orbit { grid-column:2; grid-row:1; min-width:0; min-height:380px; position:relative; isolation:isolate; border:1px solid var(--border-soft); border-radius:var(--r-xl); overflow:hidden; background:linear-gradient(135deg,var(--accent-glow),transparent 42%),var(--stage-violet); box-shadow:inset 0 1px 0 var(--on-art-line),var(--shadow-lg); }
 .hero-orbit::before { content:""; position:absolute; z-index:var(--z-raised); inset:0; pointer-events:none; background:linear-gradient(115deg,var(--on-art-sheen),transparent 18%,transparent 70%,var(--on-art-wash)); mix-blend-mode:soft-light; opacity:.48; }
 .hero-orbit::after { content:""; position:absolute; z-index:var(--z-base); inset:0; pointer-events:none; box-shadow:inset 0 0 72px color-mix(in srgb,var(--art-backdrop) 34%,transparent); }
-.hero-particles { position:absolute; z-index:var(--z-base); inset:0; min-height:100%; opacity:.54; mix-blend-mode:screen; }
+.hero-particles { position:absolute; z-index:var(--z-base); inset:0; min-height:100%; opacity:.46; }
 .hero-watermark { position:absolute; z-index:var(--z-base); top:var(--s-4); left:var(--s-4); color:var(--on-art-wash); font:800 clamp(2rem,5vw,4.5rem) var(--font-mono); letter-spacing:-.07em; writing-mode:vertical-rl; pointer-events:none; }
 .hero-character { position:absolute; z-index:var(--z-base); bottom:0; width:72%; height:94%; object-fit:contain; object-position:center bottom; filter:drop-shadow(0 24px 28px rgba(8,5,18,.36)); transition:transform .6s var(--ease-out),filter .6s ease; }
 /* 双人分割：原来两张各占 54% + 斜切，宽屏下右侧人物会被容器边缘切掉。

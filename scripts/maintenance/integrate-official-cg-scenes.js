@@ -71,7 +71,19 @@ selection.forEach(([candidateId, attempt], index) => {
   const id = `sc${String(260 + index).padStart(3, '0')}`;
   const adult = source.rating === 'R18';
   const character = source.character;
-  const promptText = source.prompt.replace(/masterpiece, best quality, amazing quality, /, '');
+  let promptText = source.prompt
+    .replace(/masterpiece, best quality, amazing quality, /, '')
+    .replace(/ayachi_nene_v\d+(?:_[a-z0-9]+)*:[0-9.]+/gi, 'ayachi_nene_v18_wd14:0.85')
+    .replace(/shiki_natsume_v\d+(?:_[a-z0-9]+)*:[0-9.]+/gi, 'shiki_natsume_v18_wd14:0.65');
+  if (adult) {
+    promptText = promptText.replace(
+      character === 'nene' ? /\bayachi_nene\b(?!_)/i : /\bshiki_natsume\b(?!_)/i,
+      match => `${match}, ${character === 'nene' ? 'nene_r18' : 'natsume_r18'}`,
+    );
+  }
+  if (character === 'natsume' && /qipao|cheongsam|china[_ ]dress/i.test(promptText)) {
+    promptText = promptText.replace(/\bshiki_natsume\b(?!_)/i, match => `${match}, natsume_official_qipao`);
+  }
   const originalSize = source.size;
   const [originalWidth, originalHeight] = originalSize.split('×').map(Number);
   const size = originalWidth > originalHeight ? originalSize : '1344×768';
@@ -86,7 +98,7 @@ selection.forEach(([candidateId, attempt], index) => {
     story: `${adult ? '【成年 After Story】' : '【官方 CG 灵感】'}${moments[candidateId].replace('“', '「').replace('”', '」')}${storyDetail[character]}`,
     char: character,
     character: [character],
-    lora: character === 'nene' ? 'ayachi_nene_v15' : 'shiki_natsume_v15',
+    lora: character === 'nene' ? 'ayachi_nene_v18_wd14' : 'shiki_natsume_v18_wd14',
     emotion: adult ? '亲密' : '心动',
     season: '不限',
     time: /night|moon|dark|夜|深蓝/.test(source.prompt + source.title) ? '夜晚' : '白天',

@@ -50,9 +50,9 @@ function main() {
     aiRoot,
     'OneTrainer',
     'training_configs',
-    'ayachi_nene_v16.json'
+    'ayachi_nene_v18_wd14_curated.json'
   );
-  var image = path.join(aiRoot, 'Datasets', 'v16', 'nene', 'identity_anchors', 'anchor.png');
+  var image = path.join(aiRoot, 'Datasets', 'Characters', 'Ayachi_Nene', 'V18_WD14_Curated', 'identity_anchors', 'anchor.png');
   var voicePython = path.join(aiRoot, 'GPT-SoVITS-env', 'python.exe');
   var voiceScript = path.join(aiRoot, 'Voice', 'tools', 'train_gpt_sovits_character.py');
   var voiceDataset = path.join(aiRoot, 'Voice', 'datasets-v16', 'nene');
@@ -98,9 +98,9 @@ function main() {
 
     var overview = service.overview();
     assert.strictEqual(overview.workspace.available, true);
-    assert.ok(overview.readyJobs.indexOf('lora-nene-v16') >= 0);
+    assert.ok(overview.readyJobs.indexOf('lora-nene-v18') >= 0);
     assert.strictEqual(
-      overview.datasets.find(function (item) { return item.id === 'lora-nene-v16'; }).images,
+      overview.datasets.find(function (item) { return item.id === 'lora-nene-v18'; }).images,
       1
     );
     var voiceSummary = overview.datasets.find(function (item) { return item.id === 'voice-nene'; });
@@ -109,7 +109,7 @@ function main() {
     assert.strictEqual(voiceSummary.evalSamples, 1);
     assert.strictEqual(voiceSummary.testSamples, 1);
 
-    var started = service.startJob('lora-nene-v16');
+    var started = service.startJob('lora-nene-v18');
     assert.strictEqual(started.status, 'running');
     assert.strictEqual(started.pid, 4242);
     assert.strictEqual(spawnCalls.length, 1);
@@ -127,20 +127,20 @@ function main() {
         'utf8'
       )
     );
-    var running = service.getJob('lora-nene-v16');
+    var running = service.getJob('lora-nene-v18');
     assert.strictEqual(running.progress.epoch, 1);
     assert.strictEqual(running.progress.epochs, 2);
     assert.strictEqual(running.progress.step, 1);
     assert.strictEqual(running.progress.steps, 4);
     assert.strictEqual(running.progress.stage, 'LoRA 训练');
 
-    var logs = service.getLogs('lora-nene-v16', 0, 0);
+    var logs = service.getLogs('lora-nene-v18', 0, 0);
     assert.ok(logs.text.indexOf('loss=0.1234') >= 0);
     assert.ok(logs.nextCursor > 0);
     assert.strictEqual(logs.reset, true);
 
     assert.throws(
-      function () { service.startJob('lora-natsume-v16'); },
+      function () { service.startJob('lora-natsume-v18'); },
       function (error) {
         return error instanceof trainingModule.TrainingServiceError
           && error.code === 'TRAINING_BUSY'
@@ -155,11 +155,11 @@ function main() {
       }
     );
 
-    var stopping = service.stopJob('lora-nene-v16');
+    var stopping = service.stopJob('lora-nene-v18');
     assert.strictEqual(stopping.status, 'stopping');
     assert.deepStrictEqual(killed, [{ pid:4242, child:child }]);
     child.emit('close', null);
-    var stopped = service.getJob('lora-nene-v16');
+    var stopped = service.getJob('lora-nene-v18');
     assert.strictEqual(stopped.status, 'stopped');
     assert.ok(stopped.finishedAt > stopped.startedAt);
 

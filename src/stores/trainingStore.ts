@@ -70,10 +70,10 @@ export const useTrainingStore = defineStore('training', () => {
   const loading = ref(false)
   const error = ref('')
   const actionJobId = ref<TrainingJobId | null>(null)
-  const selectedJobId = ref<TrainingJobId>('lora-nene-v16')
+  const selectedJobId = ref<TrainingJobId>('lora-nene-v18')
   const logs = ref<Record<TrainingJobId, TrainingLogState>>({
-    'lora-nene-v16': emptyLogState(),
-    'lora-natsume-v16': emptyLogState(),
+    'lora-nene-v18': emptyLogState(),
+    'lora-natsume-v18': emptyLogState(),
     'voice-nene': emptyLogState(),
     'voice-natsume': emptyLogState(),
   })

@@ -225,6 +225,38 @@
               <button type="button" class="tag-remove" @click="pb.toggleManualTag(tag)">×</button>
             </span>
           </div>
+          <div class="outfit-presets" aria-label="v18 官方服装词包">
+            <div class="outfit-presets-head">
+              <strong>v18 官方服装词包</strong>
+              <span>一键加入训练原词，也可以继续单独选 tag</span>
+            </div>
+            <div class="outfit-preset-list">
+              <button v-for="bundle in visibleOutfitBundles" :key="bundle.id"
+                type="button" class="outfit-preset"
+                :class="{ selected: bundle.tags.every(tag => pb.manualTags.has(tag)) }"
+                :aria-pressed="bundle.tags.every(tag => pb.manualTags.has(tag))"
+                @click="toggleOutfitBundle(bundle.tags)">
+                <strong>{{ bundle.label }}</strong>
+                <small>{{ bundle.tags.slice(0, 4).join(', ') }}{{ bundle.tags.length > 4 ? ' …' : '' }}</small>
+              </button>
+            </div>
+            <div class="r18-controls" aria-label="R18 角色门控词">
+              <div class="outfit-presets-head r18-controls-head">
+                <strong>R18 角色门控词</strong>
+                <span>按角色启用，仅在成人场景中选择</span>
+              </div>
+              <div class="outfit-preset-list">
+              <button v-for="control in visibleR18Controls" :key="control.tag"
+                type="button" class="outfit-preset r18-control"
+                :class="{ selected: pb.manualTags.has(control.tag) }"
+                :aria-pressed="pb.manualTags.has(control.tag)"
+                @click="pb.toggleManualTag(control.tag)">
+                <strong>{{ control.label }}</strong>
+                <small>{{ control.tag }}</small>
+              </button>
+              </div>
+            </div>
+          </div>
           <div class="tag-browser">
             <input v-model="tagSearch" class="tag-input" type="search" placeholder="搜索中文或 Danbooru 词条" />
             <div class="tag-categories" role="group" aria-label="词条分类">
@@ -311,8 +343,10 @@
           />
 
           <VoiceStudio
+            :key="pb.sceneId || 'freeform'"
+            ref="voiceStudioRef"
             :initial-voice="pb.char === 'natsume' ? 'natsume' : 'nene'"
-            :suggested-caption="pb.story"
+            :suggested-caption="pb.activeScene?.story || pb.story"
           />
         </div>
       </div>
@@ -459,6 +493,7 @@ const sceneCollection = ref<'core' | 'curated' | 'all'>('core')
 const hiddenSceneIds = ref(readHiddenScenes())
 const tagSearch = ref('')
 const tagCategory = ref('all')
+const voiceStudioRef = ref<{ setSuggestedCaption?: (caption: string) => void } | null>(null)
 const DIRECTOR_MODE_KEY = 'aics_pb_director_mode'
 
 // ── 显存预算提示（重构前的 sdBudgetHint） ─────────────────────────────────
@@ -535,7 +570,86 @@ const TAG_CATEGORY_LABELS: Record<string, string> = {
   Body: '身体',
   Mature: '成人',
   Character: '角色',
+  'Official Outfit': '官方服装',
 }
+
+type OutfitBundle = { id: string; character: 'nene' | 'natsume'; label: string; tags: string[] }
+/**
+ * UI catalog key normalization only. Prompt token policy stays inside
+ * usePromptAssembly/promptPolicy so this view remains a consumer.
+ */
+function normalizeCatalogKey(token: string): string {
+  return String(token || '')
+    .replace(/^\s*\[NEG\]\s*/i, '')
+    .replace(/^\s*<lora:|>\s*$/gi, '')
+    .replace(/^\s*\(+|\)+\s*$/g, '')
+    .replace(/:\s*-?\d+(?:\.\d+)?\s*$/g, '')
+    .trim()
+    .toLowerCase()
+    .replace(/[\s\-/]+/g, '_')
+}
+const OUTFIT_BUNDLES: OutfitBundle[] = [
+  {
+    id: 'nene-witch', character: 'nene', label: '宁宁 · 经典魔女服',
+    tags: ['nene_witch_canonical', 'witch_hat', 'black_cape', 'criss-cross_halter', 'crop_top', 'strap_between_breasts', 'pink_bow', 'black_skirt', 'asymmetrical_legwear', 'striped_thighhighs', 'frilled_socks'],
+  },
+  {
+    id: 'nene-school', character: 'nene', label: '宁宁 · 学院制服',
+    tags: ['nene_school_uniform', 'school_uniform', 'blazer', 'yellow_bowtie', 'plaid_skirt', 'pleated_skirt', 'grey_skirt', 'black_thighhighs'],
+  },
+  {
+    id: 'nene-sailor', character: 'nene', label: '宁宁 · 水手制服',
+    tags: ['nene_sailor_uniform', 'grey_sailor_collar', 'black_shirt', 'sailor_shirt', 'serafuku'],
+  },
+  {
+    id: 'nene-blue-pajamas', character: 'nene', label: '宁宁 · 蓝色睡衣',
+    tags: ['nene_blue_pajamas', 'pajamas', 'animal_print', 'cat_print', 'long_sleeves'],
+  },
+  {
+    id: 'nene-green-sleepwear', character: 'nene', label: '宁宁 · 绿色睡衣',
+    tags: ['nene_green_sleepwear', 'sleepwear', 'nightgown', 'polka_dot', 'short_sleeves', 'twin_braids'],
+  },
+  {
+    id: 'natsume-qipao', character: 'natsume', label: '夏目 · 官方旗袍',
+    tags: ['natsume_official_qipao', 'chinese_clothes', 'china_dress', 'red_dress', 'floral_print', 'side_slit', 'long_sleeves', 'black_thighhighs', 'hair_bun', 'double_bun', 'hair_flower', 'red_flower'],
+  },
+  {
+    id: 'natsume-cafe', character: 'natsume', label: '夏目 · 咖啡店制服',
+    tags: ['natsume_cafe_uniform', 'white_shirt', 'suspenders', 'suspender_skirt', 'brown_skirt', 'long_sleeves', 'collared_shirt', 'purple_ribbon', 'hair_flower'],
+  },
+  {
+    id: 'natsume-maid', character: 'natsume', label: '夏目 · 女仆服',
+    tags: ['natsume_maid_uniform', 'maid', 'maid_apron', 'white_apron', 'maid_headdress', 'long_sleeves', 'frills'],
+  },
+  {
+    id: 'natsume-sleepwear', character: 'natsume', label: '夏目 · 睡衣',
+    tags: ['natsume_sleepwear', 'shirt', 'blue_shirt', 'pillow', 'on_bed'],
+  },
+]
+const OUTFIT_TAG_LABELS: Record<string, string> = {
+  nene_witch_canonical: '宁宁魔女服主控制词',
+  nene_school_uniform: '宁宁校服主控制词',
+  nene_sailor_uniform: '宁宁水手服主控制词',
+  nene_blue_pajamas: '宁宁蓝色睡衣主控制词',
+  nene_green_sleepwear: '宁宁绿色睡衣主控制词',
+  nene_red_cardigan_uniform: '宁宁红色开衫制服主控制词',
+  natsume_official_qipao: '夏目旗袍主控制词',
+  natsume_cafe_uniform: '夏目咖啡制服主控制词',
+  natsume_maid_uniform: '夏目女仆服主控制词',
+  natsume_sleepwear: '夏目睡衣主控制词',
+}
+const R18_CONTROLS = [
+  { character: 'nene', tag: 'nene_r18', label: '宁宁 R18' },
+  { character: 'natsume', tag: 'natsume_r18', label: '夏目 R18' },
+] as const
+const NON_MANUAL_TAGS = new Set([
+  'masterpiece', 'best_quality', 'highly_detailed', 'absurdres', 'very_aesthetic',
+  'amazing_quality', 'newest', 'ultra_detailed', 'highres', 'score_9', 'score_8_up',
+  'worst_quality', 'low_quality', 'normal_quality', 'lowres', 'blurry', 'jpeg_artifacts',
+  'text', 'watermark', 'logo', 'signature', 'bad_anatomy', 'bad_hands', 'extra_fingers',
+  'missing_fingers', 'fused_fingers', 'extra_arms', 'extra_legs', 'deformed',
+  'bad_proportions', 'duplicate', 'cropped', 'child', 'loli', 'underage',
+])
 
 // ── Derived ───────────────────────────────────────────────────────────────
 const optionName = (options: readonly { id: string; name: string }[], id: string | null) =>
@@ -578,17 +692,51 @@ const curatedCount = computed(() =>
 )
 
 const tagCategories = computed(() => {
-  const found = new Set(pb.tags.map(tag => tag.cat).filter(Boolean))
+  const found = new Set(tagCatalog.value.map(tag => tag.cat).filter(Boolean))
   return ['all', ...found].map(id => ({ id, label: TAG_CATEGORY_LABELS[id] || id }))
+})
+const tagCatalog = computed(() => {
+  const merged = new Map(pb.tags.filter(tag => tag.cat !== 'Quality' && !NON_MANUAL_TAGS.has(normalizeCatalogKey(tag.en))).map(tag => [tag.en, tag]))
+  const addSceneTag = (raw: unknown) => {
+    const source = String(raw || '').trim()
+    if (!source || /^<lora:/i.test(source) || /^break$/i.test(source)) return
+    const en = normalizeCatalogKey(source)
+    if (!en || en.length > 64 || NON_MANUAL_TAGS.has(en) || merged.has(en)) return
+    const mature = /(?:^|_)(?:r18|adult|nsfw|nude|topless|nipples|explicit|pussy|penis|sex|lingerie)(?:_|$)/i.test(en)
+    const official = Boolean(OUTFIT_TAG_LABELS[en])
+    merged.set(en, {
+      en,
+      cn: OUTFIT_TAG_LABELS[en] || (mature ? '场景成人词' : '场景词条'),
+      cat: official ? 'Official Outfit' : (mature ? 'Mature' : 'Scene'),
+    })
+  }
+  pb.scenes.forEach(scene => {
+    ;(scene.tags || []).forEach(addSceneTag)
+    String(scene.prompt || '').split(',').forEach(addSceneTag)
+  })
+  OUTFIT_BUNDLES.forEach(bundle => bundle.tags.forEach(en => {
+    if (!merged.has(en)) merged.set(en, {
+      en,
+      cn: OUTFIT_TAG_LABELS[en] || 'v18 训练服装词',
+      cat: 'Official Outfit',
+    })
+  }))
+  return [...merged.values()]
 })
 const visibleTags = computed(() => {
   const q = tagSearch.value.trim().toLowerCase()
-  return pb.tags
+  return tagCatalog.value
     .filter(tag => tagCategory.value === 'all' || tag.cat === tagCategory.value)
     .filter(tag => !q || tag.en.toLowerCase().includes(q) || tag.cn.toLowerCase().includes(q))
     .sort((a, b) => Number(pb.manualTags.has(b.en)) - Number(pb.manualTags.has(a.en)))
     .slice(0, 72)
 })
+const visibleOutfitBundles = computed(() =>
+  OUTFIT_BUNDLES.filter(bundle => pb.char === 'triad' || bundle.character === pb.char),
+)
+const visibleR18Controls = computed(() =>
+  R18_CONTROLS.filter(control => pb.char === 'triad' || control.character === pb.char),
+)
 
 const modeDescription = computed(() => pb.directorMode === 'basic'
   ? '从人设核心场景出发，镜头、光照与构图自动预填；只保留影响成片的选择。'
@@ -634,6 +782,7 @@ function setSceneCollection(collection: 'core' | 'curated' | 'all') {
 
 function selectScene(scene: Scene) {
   pb.loadScene(scene)
+  voiceStudioRef.value?.setSuggestedCaption?.(scene.story ?? '')
   rememberRecent(scene)
   recordSceneUsage(scene)
   sceneLimit.value = 20
@@ -943,6 +1092,16 @@ function addTag(e: Event) {
   const input = e.target as HTMLInputElement
   const tag = input.value.trim().replace(/\s+/g, '_').toLowerCase()
   if (tag) { pb.toggleManualTag(tag); input.value = '' }
+}
+
+function toggleOutfitBundle(tags: string[]) {
+  const next = new Set(pb.manualTags)
+  const selected = tags.every(tag => next.has(tag))
+  tags.forEach(tag => {
+    if (selected) next.delete(tag)
+    else next.add(tag)
+  })
+  pb.manualTags = next
 }
 
 // ── Lifecycle ─────────────────────────────────────────────────────────────

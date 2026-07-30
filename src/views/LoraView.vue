@@ -46,6 +46,33 @@
           <span class="lora-label">触发词</span>
           <span v-for="tw in l.triggerWords" :key="tw" class="lora-tag">{{ tw }}</span>
         </div>
+        <section v-if="l.evaluation" class="evaluation-panel" aria-label="模型评测结果">
+          <div class="evaluation-head">
+            <div>
+              <span class="lora-label">固定种子人工盲审</span>
+              <strong>{{ l.evaluation.evaluatedAt || '已完成' }}</strong>
+            </div>
+            <span class="badge badge-success">{{ l.evaluation.status === 'passed' ? '已通过' : l.evaluation.status }}</span>
+          </div>
+          <div class="evaluation-metrics">
+            <div v-for="metric in l.evaluation.metrics" :key="metric[0]">
+              <span>{{ metric[0] }}</span>
+              <strong>{{ metric[1] }}</strong>
+            </div>
+          </div>
+          <p v-if="l.evaluation.knownLimitation" class="evaluation-limit">
+            <strong>已知限制：</strong>{{ l.evaluation.knownLimitation }}
+          </p>
+          <details>
+            <summary>查看评测方法与证据</summary>
+            <dl>
+              <div v-if="l.evaluation.matrix"><dt>对照矩阵</dt><dd>{{ l.evaluation.matrix }}</dd></div>
+              <div v-if="l.evaluation.method"><dt>方法</dt><dd>{{ l.evaluation.method }}</dd></div>
+              <div v-if="l.evaluation.selectionReason"><dt>晋升理由</dt><dd>{{ l.evaluation.selectionReason }}</dd></div>
+              <div v-if="l.evaluation.evidence"><dt>报告路径</dt><dd><code>{{ l.evaluation.evidence }}</code></dd></div>
+            </dl>
+          </details>
+        </section>
       </div>
     </div>
   </article>
@@ -96,8 +123,25 @@ onMounted(async () => {
 .lora-triggers { display:flex; flex-wrap:wrap; gap:var(--s-1); align-items:center; }
 .lora-label { font-size:var(--fs-label-xs); color:var(--text-muted); font-weight:700; letter-spacing:.06em; }
 .lora-tag { padding:2px var(--s-2); background:var(--accent-soft); color:var(--accent); border-radius:var(--r-pill); font-size:var(--fs-mono-xs); }
+.evaluation-panel { margin-top:var(--s-4); padding-top:var(--s-4); border-top:1px solid var(--border-soft); }
+.evaluation-head { display:flex; justify-content:space-between; align-items:center; gap:var(--s-3); margin-bottom:var(--s-3); }
+.evaluation-head > div { display:grid; gap:2px; }
+.evaluation-head strong { font-size:var(--fs-body-sm); }
+.evaluation-metrics { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--s-2); }
+.evaluation-metrics > div { display:grid; gap:2px; padding:var(--s-2); border-radius:var(--r-md); background:var(--bg-elevated); }
+.evaluation-metrics span { color:var(--text-muted); font-size:var(--fs-label-xs); }
+.evaluation-metrics strong { font-size:var(--fs-body-sm); }
+.evaluation-limit { margin:var(--s-3) 0 0; color:var(--warning-text); font-size:var(--fs-body-sm); line-height:1.55; }
+.evaluation-panel details { margin-top:var(--s-3); color:var(--text-secondary); font-size:var(--fs-body-sm); }
+.evaluation-panel summary { cursor:pointer; color:var(--text-primary); font-weight:700; }
+.evaluation-panel dl { display:grid; gap:var(--s-2); margin:var(--s-3) 0 0; }
+.evaluation-panel dl > div { display:grid; gap:2px; }
+.evaluation-panel dt { color:var(--text-muted); font-size:var(--fs-label-xs); }
+.evaluation-panel dd { margin:0; line-height:1.55; overflow-wrap:anywhere; }
+.evaluation-panel code { white-space:normal; }
 
 @media (max-width:640px) {
   .lora-title-row { align-items:flex-start; flex-direction:column; }
+  .evaluation-metrics { grid-template-columns:1fr; }
 }
 </style>

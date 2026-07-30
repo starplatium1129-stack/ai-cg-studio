@@ -14,7 +14,7 @@ import fs = require('fs');
 import path = require('path');
 import childProcess = require('child_process');
 
-const JOB_IDS = ['lora-nene-v16', 'lora-natsume-v16', 'voice-nene', 'voice-natsume'] as const;
+const JOB_IDS = ['lora-nene-v18', 'lora-natsume-v18', 'voice-nene', 'voice-natsume'] as const;
 type TrainingJobId = (typeof JOB_IDS)[number];
 type JobKind = 'lora' | 'voice';
 type JobStatus = 'idle' | 'running' | 'stopping' | 'completed' | 'failed' | 'stopped';
@@ -170,18 +170,18 @@ class TrainingServiceError extends Error {
 
 const DEFINITIONS: readonly JobDefinition[] = [
   {
-    id: 'lora-nene-v16',
+    id: 'lora-nene-v18',
     kind: 'lora',
     character: 'nene',
-    label: '宁宁 LoRA v16',
-    datasetId: 'lora-nene-v16',
+    label: '宁宁 LoRA v18',
+    datasetId: 'lora-nene-v18',
   },
   {
-    id: 'lora-natsume-v16',
+    id: 'lora-natsume-v18',
     kind: 'lora',
     character: 'natsume',
-    label: '夏目 LoRA v16',
-    datasetId: 'lora-natsume-v16',
+    label: '夏目 LoRA v18',
+    datasetId: 'lora-natsume-v18',
   },
   {
     id: 'voice-nene',
@@ -204,22 +204,26 @@ const DATASET_PREVIEWS: Readonly<Record<string, {
   label: string;
   blurred: boolean;
 }>> = {
-  'lora-nene-v16': {
+  'lora-nene-v18': {
     relativePath: path.join(
       'Reviews',
       'ModelEvaluations',
-      'v16_dataset_audit',
-      'nene-witch-v16-01.jpg',
+      'nene_v18_wd14_gate_2026-07-30',
+      'final',
+      'blinded_sheets',
+      'witch-canonical-full-body_seed-1038976852.jpg',
     ),
     label: '宁宁魔女服训练样本审核表',
     blurred: false,
   },
-  'lora-natsume-v16': {
+  'lora-natsume-v18': {
     relativePath: path.join(
       'Reviews',
       'ModelEvaluations',
-      'v16_dataset_audit',
-      'natsume-qipao-v16-01.jpg',
+      'natsume_v18_wd14_gate_2026-07-30',
+      'final',
+      'blinded_sheets',
+      'qipao-canonical-full-body_seed-1038976852.jpg',
     ),
     label: '夏目旗袍服训练样本审核表',
     blurred: false,
@@ -231,22 +235,26 @@ const DATASET_ADULT_PREVIEWS: Readonly<Record<string, {
   label: string;
   blurred: boolean;
 }>> = {
-  'lora-nene-v16': {
+  'lora-nene-v18': {
     relativePath: path.join(
       'Reviews',
       'ModelEvaluations',
-      'v16_dataset_audit',
-      'nene-adult-v16-blurred-01.jpg',
+      'nene_v18_wd14_gate_2026-07-30',
+      'final',
+      'blinded_sheets',
+      'r18-solo-body-identity_seed-1038976852.jpg',
     ),
     label: '宁宁 R18 分层样本（默认模糊）',
     blurred: true,
   },
-  'lora-natsume-v16': {
+  'lora-natsume-v18': {
     relativePath: path.join(
       'Reviews',
       'ModelEvaluations',
-      'v16_dataset_audit',
-      'natsume-adult-v16-blurred-01.jpg',
+      'natsume_v18_wd14_gate_2026-07-30',
+      'final',
+      'blinded_sheets',
+      'r18-solo-body-identity_seed-1038976852.jpg',
     ),
     label: '夏目 R18 分层样本（默认模糊）',
     blurred: true,
@@ -507,19 +515,12 @@ function countFiles(directory: string, extension: string): number {
   }
 }
 
-function findV16Config(configDirectory: string, character: 'nene' | 'natsume'): string {
-  const prefix = character === 'nene' ? 'ayachi_nene_v16' : 'shiki_natsume_v16';
-  const exact = `${prefix}.json`;
-  try {
-    const names = fs.readdirSync(configDirectory, { withFileTypes: true })
-      .filter((entry) => entry.isFile() && new RegExp(`^${prefix}(?:_[A-Za-z0-9-]+)?\\.json$`).test(entry.name))
-      .map((entry) => entry.name)
-      .sort((a, b) => a.localeCompare(b));
-    if (names.includes(exact)) return path.join(configDirectory, exact);
-    return names.length ? path.join(configDirectory, names[0]) : '';
-  } catch {
-    return '';
-  }
+function findV18Config(configDirectory: string, character: 'nene' | 'natsume'): string {
+  const name = character === 'nene'
+    ? 'ayachi_nene_v18_wd14_curated.json'
+    : 'shiki_natsume_v18_wd14_balanced_r18.json';
+  const file = path.join(configDirectory, name);
+  return fs.existsSync(file) ? file : '';
 }
 
 function defaultKillProcess(
@@ -668,18 +669,20 @@ function createTrainingService(options: TrainingServiceOptions) {
     let configName = '';
 
     if (definition.kind === 'lora') {
-      datasetPath = path.join(aiRoot, 'Datasets', 'v16', definition.character);
+      datasetPath = definition.character === 'nene'
+        ? path.join(aiRoot, 'Datasets', 'Characters', 'Ayachi_Nene', 'V18_WD14_Curated')
+        : path.join(aiRoot, 'Datasets', 'Characters', 'Shiki_Natsume', 'V17_WD14_Curated');
       executablePath = pythonOneTrainer;
       scriptPath = oneTrainerScript;
       cwd = oneTrainerRoot;
-      const configPath = findV16Config(path.join(oneTrainerRoot, 'training_configs'), definition.character);
+      const configPath = findV18Config(path.join(oneTrainerRoot, 'training_configs'), definition.character);
       configName = configPath ? path.basename(configPath) : '';
       args = configPath ? ['--config-path', configPath] : [];
       if (!fs.existsSync(pythonOneTrainer)) missing.push('OneTrainer Python 环境未安装');
       if (!fs.existsSync(oneTrainerScript)) missing.push('OneTrainer CLI 尚未安装');
-      if (!configPath) missing.push('v16 训练配置尚未准备');
+      if (!configPath) missing.push('v18 训练配置尚未准备');
       const dataset = walkDataset(datasetPath);
-      if (!fs.existsSync(datasetPath) || dataset.images === 0) missing.push('v16 图片数据集尚未准备');
+      if (!fs.existsSync(datasetPath) || dataset.images === 0) missing.push('v18 图片数据集尚未准备');
     } else {
       datasetPath = path.join(
         voiceRoot,
@@ -797,7 +800,7 @@ function createTrainingService(options: TrainingServiceOptions) {
         id: definition.datasetId,
         kind: 'lora',
         character: definition.character,
-        version: 'v16',
+        version: 'v18',
         ready: scanned.images > 0 && fs.existsSync(inspection.datasetPath),
         images: scanned.images,
         captions: scanned.captions,
@@ -1133,7 +1136,7 @@ export = {
   createTrainingService,
   _test: {
     defaultProgress,
-    findV16Config,
+    findV18Config,
     normalizeLogChunk,
     parseProgress,
     walkDataset,

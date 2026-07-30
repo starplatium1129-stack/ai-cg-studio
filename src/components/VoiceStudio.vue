@@ -74,6 +74,7 @@ const toast = useToast()
 const voiceChar = ref<'nene' | 'natsume'>(props.initialVoice)
 const voiceLang = ref<'ja' | 'zh'>('ja')
 const voiceCaption = ref('')
+const lastSuggestedCaption = ref('')
 const voiceScript = ref('')
 const voiceStatus = ref('选择角色并写下中文字幕后，可翻译或直接生成声线。')
 const voiceBusy = ref(false)
@@ -219,9 +220,28 @@ async function generateVoice() {
 
 watch(() => props.initialVoice, voice => { voiceChar.value = voice; void refreshVoiceStatus() })
 watch(() => props.suggestedCaption, caption => {
-  if (caption?.trim() && !voiceCaption.value.trim()) voiceCaption.value = caption.trim()
+  const nextCaption = caption?.trim() || ''
+  // 场景切换时，若当前字幕仍是上一个场景自动填入的内容，就替换成新场景；
+  // 用户手动改过字幕后则保留，避免“切场景”覆盖正在编辑的台词。
+  const canReplace = !voiceCaption.value.trim() || voiceCaption.value.trim() === lastSuggestedCaption.value
+  if (canReplace && nextCaption !== voiceCaption.value.trim()) {
+    voiceCaption.value = nextCaption
+    voiceScript.value = ''
+    clearVoiceAudio()
+  }
+  lastSuggestedCaption.value = nextCaption
 }, { immediate: true })
 watch(voiceChar, () => { void refreshVoiceStatus() })
 onMounted(() => { void refreshVoiceStatus() })
 onUnmounted(clearVoiceAudio)
+
+function setSuggestedCaption(caption: string) {
+  const nextCaption = caption.trim()
+  voiceCaption.value = nextCaption
+  lastSuggestedCaption.value = nextCaption
+  voiceScript.value = ''
+  clearVoiceAudio()
+}
+
+defineExpose({ setSuggestedCaption })
 </script>

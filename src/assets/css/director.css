@@ -940,6 +940,44 @@
     border:1px solid var(--accent); border-radius:var(--r-pill);
     background:var(--accent-soft); color:var(--accent); font-size:var(--fs-label-xs);
   }
+  .pb .outfit-presets {
+    display:grid; gap:var(--s-2); margin:var(--s-3) 0;
+    padding:var(--s-3); border:1px solid color-mix(in srgb,var(--accent) 28%,var(--border-soft));
+    border-radius:var(--r-md); background:color-mix(in srgb,var(--accent-soft) 42%,var(--bg-deep));
+  }
+  .pb .outfit-presets-head { display:flex; align-items:baseline; justify-content:space-between; gap:var(--s-2); flex-wrap:wrap; }
+  .pb .outfit-presets-head strong { color:var(--text-primary); font-size:var(--fs-label); }
+  .pb .outfit-presets-head span { color:var(--text-muted); font-size:var(--fs-label-xs); }
+  .pb .outfit-preset-list { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--s-2); }
+  .pb .outfit-preset {
+    display:grid; gap:3px; min-width:0; padding:var(--s-2);
+    border:1px solid var(--border-soft); border-radius:var(--r-sm);
+    background:var(--bg-deep); color:var(--text-secondary); cursor:pointer; text-align:left;
+  }
+  .pb .outfit-preset:hover, .pb .outfit-preset.selected {
+    border-color:var(--accent); background:var(--accent-soft); color:var(--accent);
+  }
+  .pb .outfit-preset strong, .pb .outfit-preset small { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .pb .outfit-preset strong { font-size:var(--fs-label-sm); }
+  .pb .outfit-preset small { color:var(--text-muted); font:var(--fs-mono-xs) var(--font-mono); }
+  .pb .r18-controls {
+    display:grid; gap:var(--s-2); margin-top:var(--s-2); padding-top:var(--s-3);
+    border-top:1px solid var(--border-soft);
+  }
+  .pb .r18-controls-head strong { color:var(--danger-text); }
+  .pb .r18-control {
+    border-color:color-mix(in srgb,var(--danger) 28%,var(--border-soft));
+    background:color-mix(in srgb,var(--danger) 5%,var(--bg-deep));
+  }
+  .pb .r18-control:hover, .pb .r18-control.selected {
+    border-color:var(--danger);
+    background:color-mix(in srgb,var(--danger) 12%,var(--bg-deep));
+    color:var(--danger-text);
+  }
+  .pb .r18-control.selected { box-shadow:inset 3px 0 0 var(--danger); }
+  @media (max-width:480px) {
+    .pb .outfit-preset-list { grid-template-columns:1fr; }
+  }
   .pb .tag-remove {
     border:0; background:transparent; color:inherit; cursor:pointer;
     font:inherit; opacity:.7; line-height:1; padding:0;

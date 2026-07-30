@@ -73,21 +73,21 @@ async function mockTrainingWorkbench(page: Page) {
     progress: { stage: '待开始', message: '', percent: 0 },
   });
   const jobs = [
-    { ...makeJob('lora-nene-v16', 'lora', 'nene', '宁宁 LoRA v16'), configName: 'ayachi_nene_v16.json' },
-    { ...makeJob('lora-natsume-v16', 'lora', 'natsume', '夏目 LoRA v16'), configName: 'shiki_natsume_v16.json' },
+    { ...makeJob('lora-nene-v18', 'lora', 'nene', '宁宁 LoRA v18'), configName: 'ayachi_nene_v18_wd14_curated.json' },
+    { ...makeJob('lora-natsume-v18', 'lora', 'natsume', '夏目 LoRA v18'), configName: 'shiki_natsume_v18_wd14_balanced_r18.json' },
     makeJob('voice-nene', 'voice', 'nene', '宁宁角色语音'),
     makeJob('voice-natsume', 'voice', 'natsume', '夏目角色语音'),
   ];
   const datasets = [
     {
-      id: 'lora-nene-v16', kind: 'lora', character: 'nene', version: 'v16',
+      id: 'lora-nene-v18', kind: 'lora', character: 'nene', version: 'v18',
       ready: true, images: 64, captions: 64, bytes: 1024,
       categories: { identity_anchors: 5, outfit_witch: 8, adult_solo: 8, validation: 6 },
       missing: [], preview: { available: true, label: '宁宁魔女服训练样本审核表', blurred: false },
       adultPreview: { available: true, label: '宁宁 R18 分层样本（默认模糊）', blurred: true },
     },
     {
-      id: 'lora-natsume-v16', kind: 'lora', character: 'natsume', version: 'v16',
+      id: 'lora-natsume-v18', kind: 'lora', character: 'natsume', version: 'v18',
       ready: true, images: 76, captions: 76, bytes: 2048,
       categories: { identity_anchors: 4, outfit_qipao: 9, adult_solo: 14, validation: 8 },
       missing: [], preview: { available: true, label: '夏目旗袍服训练样本审核表', blurred: false },
@@ -123,7 +123,7 @@ async function mockTrainingWorkbench(page: Page) {
   await page.route(/\/api\/training\/jobs\/[^/]+\/logs(?:\?.*)?$/, route => route.fulfill({
     contentType: 'application/json',
     body: JSON.stringify({
-      ok: true, id: 'lora-nene-v16', cursor: 0, nextCursor: 0,
+      ok: true, id: 'lora-nene-v18', cursor: 0, nextCursor: 0,
       reset: false, version: 0, text: '', lines: [],
     }),
   }));

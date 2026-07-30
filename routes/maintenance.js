@@ -237,6 +237,31 @@ async function runMaintenanceChecks() {
     } catch (e) { return null; }
   }
 
+  function readHomeHeroManifest() {
+    var fallback = { version:1, entries:{} };
+    if (!SCENE_SHOWCASE_DIR) return fallback;
+    var source = path.join(SCENE_SHOWCASE_DIR, 'home-hero.json');
+    try {
+      var data = readJson(source);
+      return data && data.entries && typeof data.entries === 'object' ? data : fallback;
+    } catch (e) { return fallback; }
+  }
+
+  router.get('/api/maintenance/home-hero', function (req, res) {
+    var manifest = readHomeHeroManifest();
+    var entries = {};
+    Object.keys(manifest.entries || {}).forEach(function (character) {
+      if (!/^(nene|natsume)$/.test(character)) return;
+      var entry = manifest.entries[character];
+      if (!entry || entry.image !== 'home/' + character + '.jpg') return;
+      entries[character] = {
+        image:'/scene-showcase/home/' + character + '.jpg?v=' + encodeURIComponent(String(entry.updatedAt || manifest.version || 1)),
+        updatedAt:entry.updatedAt || null
+      };
+    });
+    res.json({ ok:true, version:manifest.version || 1, entries:entries });
+  });
+
   function cleanOrphanedSceneRefs() {
     // 保存场景后自动清理 characters.json 和 loras.json 中引用已删除场景的条目
     var activeIds = new Set(sceneStore.loadSceneShards().scenes.map(function (s) { return s.id; }));
@@ -427,6 +452,41 @@ async function runMaintenanceChecks() {
           : '自动回滚也失败了（' + rollback.error + '）。样张目录可能只写了一半，'
             + '请用 runtime 备份目录里最近一份 showcase-* 手动恢复。'
       });
+    }
+  });
+
+  router.post('/api/maintenance/home-hero', maintenanceLocalOnly, express.json({ limit:'26mb' }), function (req, res) {
+    var snapshot;
+    try {
+      if (!SCENE_SHOWCASE_DIR) return envelope.fail(res, 503, '尚未找到 SceneShowcase 目录');
+      var character = String(req.body && req.body.character || '');
+      if (!/^(nene|natsume)$/.test(character)) return envelope.fail(res, 400, '首页主视觉角色无效');
+      var action = String(req.body && req.body.action || 'replace');
+      var root = path.join(SCENE_SHOWCASE_DIR, 'home');
+      var imagePath = path.join(root, character + '.jpg');
+      var manifestPath = path.join(SCENE_SHOWCASE_DIR, 'home-hero.json');
+      snapshot = snapshotFiles([imagePath, manifestPath]);
+      var backupDir = saveSnapshotBackup(snapshot, MAINTENANCE_BACKUP_DIR, 'home-hero-' + character);
+      var manifest = readHomeHeroManifest();
+      if (action === 'reset') {
+        if (fs.existsSync(imagePath)) fs.unlinkSync(imagePath);
+        delete manifest.entries[character];
+      } else {
+        var buffer = decodeJpegDataUrl(req.body && req.body.image, '首页主视觉');
+        if (buffer.length > 15 * 1024 * 1024) return envelope.fail(res, 413, '首页主视觉必须在 15MB 以内');
+        fs.mkdirSync(root, { recursive:true });
+        writeFileAtomic(imagePath, buffer);
+        manifest.entries[character] = {
+          image:'home/' + character + '.jpg',
+          updatedAt:new Date().toISOString()
+        };
+      }
+      manifest.version = Number(manifest.version || 1) + 1;
+      writeJson(manifestPath, manifest);
+      res.json({ ok:true, character:character, action:action, backup:path.basename(backupDir), message:action === 'reset' ? '已恢复内置首页主视觉' : '首页主视觉已保存' });
+    } catch (error) {
+      var rollback = attemptRollback(snapshot, 'home-hero');
+      res.status(rollback.ok ? 400 : 500).json({ ok:false, error:error.message, rolledBack:rollback.ok, dataIntegrity:rollback.ok ? 'restored' : 'INCONSISTENT' });
     }
   });
 

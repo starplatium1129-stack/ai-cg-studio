@@ -151,6 +151,17 @@ test('flow 1 · 出图：选场景 → 生成 → 成片入册，参数如实送
   expect(errors).toEqual([]);
 });
 
+test('flow 1a · 切换场景：中文字幕跟随第二个场景更新', async ({ page }) => {
+  await page.goto('/prompt-builder?scene=sc001');
+  const caption = page.locator('.voice-caption-text');
+  await expect(caption).toHaveValue(/放学后的等待/);
+
+  await page.locator('button.scene-card').filter({ hasText: '樱花树下的约定' }).click();
+  await expect(page.locator('button.scene-card.active')).toContainText('樱花树下的约定');
+  await expect(caption).toHaveValue(/樱花树下的约定/);
+  await expect(caption).not.toHaveValue(/放学后的等待/);
+});
+
 test('flow 1b · 出图失败：CUDA OOM 分类成可执行的降负载重试', async ({ page, request }) => {
   await fault(request, MOCK.sd, { oom: true });
   await page.goto('/prompt-builder?scene=sc001');

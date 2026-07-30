@@ -1,5 +1,5 @@
 import childProcess = require('child_process');
-declare const JOB_IDS: readonly ["lora-nene-v16", "lora-natsume-v16", "voice-nene", "voice-natsume"];
+declare const JOB_IDS: readonly ["lora-nene-v18", "lora-natsume-v18", "voice-nene", "voice-natsume"];
 type TrainingJobId = (typeof JOB_IDS)[number];
 type JobKind = 'lora' | 'voice';
 type JobStatus = 'idle' | 'running' | 'stopping' | 'completed' | 'failed' | 'stopped';
@@ -131,7 +131,7 @@ declare function walkDataset(root: string): {
     bytes: number;
     categories: Record<string, number>;
 };
-declare function findV16Config(configDirectory: string, character: 'nene' | 'natsume'): string;
+declare function findV18Config(configDirectory: string, character: 'nene' | 'natsume'): string;
 declare function createTrainingService(options: TrainingServiceOptions): {
     overview: () => Record<string, unknown>;
     listDatasets: () => {
@@ -158,12 +158,12 @@ declare function createTrainingService(options: TrainingServiceOptions): {
     inspectJob: (value: unknown) => JobInspection;
 };
 declare const _default: {
-    JOB_IDS: readonly ["lora-nene-v16", "lora-natsume-v16", "voice-nene", "voice-natsume"];
+    JOB_IDS: readonly ["lora-nene-v18", "lora-natsume-v18", "voice-nene", "voice-natsume"];
     TrainingServiceError: typeof TrainingServiceError;
     createTrainingService: typeof createTrainingService;
     _test: {
         defaultProgress: typeof defaultProgress;
-        findV16Config: typeof findV16Config;
+        findV18Config: typeof findV18Config;
         normalizeLogChunk: typeof normalizeLogChunk;
         parseProgress: typeof parseProgress;
         walkDataset: typeof walkDataset;

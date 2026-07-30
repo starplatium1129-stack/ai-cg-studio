@@ -13,8 +13,8 @@ function idFromRequest(req) {
   if (!value && req.body && typeof req.body.id === 'string') value = req.body.id;
   if (!value && req.body && typeof req.body.kind === 'string') {
     var kind = req.body.kind;
-    if (kind === 'lora-nene' || kind === 'nene' || kind === 'lora-nene-v16') value = 'lora-nene-v16';
-    if (kind === 'lora-natsume' || kind === 'natsume' || kind === 'lora-natsume-v16') value = 'lora-natsume-v16';
+    if (kind === 'lora-nene' || kind === 'nene' || kind === 'lora-nene-v16' || kind === 'lora-nene-v18') value = 'lora-nene-v18';
+    if (kind === 'lora-natsume' || kind === 'natsume' || kind === 'lora-natsume-v16' || kind === 'lora-natsume-v18') value = 'lora-natsume-v18';
     if (kind === 'voice-nene' || kind === 'voice-nene-v16') value = 'voice-nene';
     if (kind === 'voice-natsume' || kind === 'voice-natsume-v16') value = 'voice-natsume';
   }

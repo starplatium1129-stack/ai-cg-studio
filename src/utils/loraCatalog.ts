@@ -13,6 +13,16 @@ export interface LoraCatalogEntry {
   baseModel: string
   character: string
   triggerWords: string[]
+  evaluation?: {
+    status: string
+    evaluatedAt: string
+    method: string
+    matrix: string
+    evidence: string
+    metrics: Array<[string, string]>
+    knownLimitation: string
+    selectionReason: string
+  }
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -53,6 +63,14 @@ export function parseLoraCatalog(value: unknown): LoraCatalogEntry[] {
     const dataset = isRecord(item.dataset) ? item.dataset : {}
     const triggers = stringList(item.trigger_words)
     const trigger = text(item.trigger)
+    const validation = isRecord(item.validation) ? item.validation : {}
+    const metrics = isRecord(validation.metrics)
+      ? Object.entries(validation.metrics).flatMap(([label, result]) => {
+          const value = text(result)
+          return value ? [[label, value] as [string, string]] : []
+        })
+      : []
+    const hasEvaluation = Boolean(text(validation.status) || metrics.length || text(validation.evidence))
     return [{
       id,
       name,
@@ -62,6 +80,16 @@ export function parseLoraCatalog(value: unknown): LoraCatalogEntry[] {
       baseModel: text(item.base_model) || text(training.base_model),
       character: text(item.character) || text(dataset.character),
       triggerWords: triggers.length ? triggers : (trigger ? [trigger] : []),
+      ...(hasEvaluation ? { evaluation: {
+        status: text(validation.status),
+        evaluatedAt: text(validation.evaluated_at),
+        method: text(validation.method),
+        matrix: text(validation.matrix),
+        evidence: text(validation.evidence),
+        metrics,
+        knownLimitation: text(validation.known_limitation),
+        selectionReason: text(validation.selection_reason),
+      } } : {}),
     }]
   })
 }

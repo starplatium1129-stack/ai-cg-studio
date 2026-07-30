@@ -55,21 +55,55 @@
       "official_witch": [
         "nene_witch_canonical",
         "witch_hat",
-        "witch_dress",
         "black_cape",
-        "pink_lining",
-        "striped_legwear",
+        "criss-cross_halter",
+        "crop_top",
+        "strap_between_breasts",
+        "pink_bow",
+        "black_skirt",
+        "asymmetrical_legwear",
+        "striped_thighhighs",
+        "single_thighhigh",
+        "frilled_socks",
         "midriff"
       ],
       "official_school": [
         "nene_school_uniform",
-        "navy_blazer",
-        "yellow_neck_bow",
-        "grey_plaid_skirt",
-        "dark_thighhighs"
+        "school_uniform",
+        "blazer",
+        "yellow_bowtie",
+        "plaid_skirt",
+        "pleated_skirt",
+        "grey_skirt",
+        "black_thighhighs",
+        "zettai_ryouiki"
+      ],
+      "official_sailor": [
+        "nene_sailor_uniform",
+        "grey_sailor_collar",
+        "black_shirt",
+        "sailor_shirt",
+        "serafuku"
+      ],
+      "official_blue_pajamas": [
+        "nene_blue_pajamas",
+        "pajamas",
+        "animal_print",
+        "cat_print",
+        "long_sleeves"
+      ],
+      "official_green_sleepwear": [
+        "nene_green_sleepwear",
+        "sleepwear",
+        "nightgown",
+        "polka_dot",
+        "short_sleeves",
+        "twin_braids"
       ]
     },
     "validation": {
+      "status": "passed",
+      "evaluated_at": "2026-07-30",
       "method": "same-seed blinded A/B against official references; face and signature accessories weighted first",
       "baseline": "ayachi_nene_v16_eval at 0.70 and 0.80",
       "matrix": "v16 0.70/0.80 vs v18 0.65/0.75 across 6 scenarios x 3 fixed seeds, followed by v18 0.85 focus gate",
@@ -79,6 +113,13 @@
         "critical_identity_error": 0
       },
       "evidence": "Reviews/ModelEvaluations/nene_v18_wd14_gate_2026-07-30/final/evaluation-report.md",
+      "metrics": {
+        "脸部身份": "6/6 优于 v16",
+        "普通场景泄漏": "0/3",
+        "官方校服": "通过",
+        "经典魔女服": "通过"
+      },
+      "known_limitation": "魔女服胸前粉色交叉绑带仍会随 seed 缺失。",
       "scores_recorded": true,
       "selection_reason": "v18 consistently restored the official youthful round face, short chin and eye ratio better than v16; 0.85 gave the strongest identity lock without safe/R18 leakage"
     }
@@ -143,16 +184,48 @@
     "outfit_guidance": {
       "official_qipao": [
         "natsume_official_qipao",
-        "red_china_dress",
-        "mandarin_collar",
-        "gold_trim",
-        "floral_pattern",
+        "chinese_clothes",
+        "china_dress",
+        "red_dress",
+        "floral_print",
+        "side_slit",
+        "long_sleeves",
         "black_thighhighs",
         "hair_bun",
+        "double_bun",
+        "hair_flower",
+        "red_flower"
+      ],
+      "official_cafe": [
+        "natsume_cafe_uniform",
+        "white_shirt",
+        "suspenders",
+        "suspender_skirt",
+        "brown_skirt",
+        "long_sleeves",
+        "collared_shirt",
+        "purple_ribbon",
         "hair_flower"
+      ],
+      "official_maid": [
+        "natsume_maid_uniform",
+        "maid",
+        "maid_apron",
+        "white_apron",
+        "maid_headdress",
+        "long_sleeves",
+        "frills"
+      ],
+      "official_sleepwear": [
+        "natsume_sleepwear",
+        "blue_shirt",
+        "pillow",
+        "on_bed"
       ]
     },
     "validation": {
+      "status": "passed",
+      "evaluated_at": "2026-07-30",
       "method": "same-seed blinded v15/v17/v18 comparison against official references; face and body weighted first",
       "baseline": "production shiki_natsume_v15 at 0.90 and rejected v17 at 0.65",
       "matrix": "v15 0.90, v17 0.65, v18 0.65/0.75 x 3 seeds x 6 scenarios = 72 images",
@@ -162,6 +235,14 @@
         "critical_identity_error": 0
       },
       "evidence": "Reviews/ModelEvaluations/natsume_v18_wd14_gate_2026-07-30/final/evaluation-report.md",
+      "metrics": {
+        "脸部身份": "6/6 不弱于 v17，优于 v15",
+        "普通全身": "3/3",
+        "官方旗袍全身": "2/3",
+        "普通场景泄漏": "0/3",
+        "R18 全身": "1/3"
+      },
+      "known_limitation": "R18 的两枚 seed 仍偏向大腿以上构图；当前只达到与 v15 持平。",
       "scores_recorded": true,
       "selection_reason": "v18 0.65 kept face identity at least as strong as v17, improved over production v15, passed ordinary fullbody 3/3 and qipao 2/3 with zero safe leakage; R18 fullbody improved from v17 0/3 to 1/3"
     }

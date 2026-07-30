@@ -85,19 +85,50 @@
         "official_witch": [
           "nene_witch_canonical",
           "witch_hat",
-          "witch_dress",
           "black_cape",
-          "pink_lining",
-          "striped_legwear",
+          "criss-cross_halter",
+          "crop_top",
+          "strap_between_breasts",
+          "pink_bow",
+          "black_skirt",
+          "asymmetrical_legwear",
+          "striped_thighhighs",
+          "single_thighhigh",
+          "frilled_socks",
           "midriff"
         ],
         "official_school": [
           "nene_school_uniform",
-          "navy_blazer",
-          "gold_piping",
-          "yellow_neck_bow",
-          "grey_plaid_skirt",
-          "dark_thighhighs"
+          "school_uniform",
+          "blazer",
+          "yellow_bowtie",
+          "plaid_skirt",
+          "pleated_skirt",
+          "grey_skirt",
+          "black_thighhighs",
+          "zettai_ryouiki"
+        ],
+        "official_sailor": [
+          "nene_sailor_uniform",
+          "grey_sailor_collar",
+          "black_shirt",
+          "sailor_shirt",
+          "serafuku"
+        ],
+        "official_blue_pajamas": [
+          "nene_blue_pajamas",
+          "pajamas",
+          "animal_print",
+          "cat_print",
+          "long_sleeves"
+        ],
+        "official_green_sleepwear": [
+          "nene_green_sleepwear",
+          "sleepwear",
+          "nightgown",
+          "polka_dot",
+          "short_sleeves",
+          "twin_braids"
         ]
       }
     },
@@ -217,13 +248,43 @@
       "special_outfits": {
         "official_qipao": [
           "natsume_official_qipao",
-          "red_china_dress",
-          "mandarin_collar",
-          "gold_trim",
-          "floral_pattern",
+          "chinese_clothes",
+          "china_dress",
+          "red_dress",
+          "floral_print",
+          "side_slit",
+          "long_sleeves",
           "black_thighhighs",
           "hair_bun",
+          "double_bun",
+          "hair_flower",
+          "red_flower"
+        ],
+        "official_cafe": [
+          "natsume_cafe_uniform",
+          "white_shirt",
+          "suspenders",
+          "suspender_skirt",
+          "brown_skirt",
+          "long_sleeves",
+          "collared_shirt",
+          "purple_ribbon",
           "hair_flower"
+        ],
+        "official_maid": [
+          "natsume_maid_uniform",
+          "maid",
+          "maid_apron",
+          "white_apron",
+          "maid_headdress",
+          "long_sleeves",
+          "frills"
+        ],
+        "official_sleepwear": [
+          "natsume_sleepwear",
+          "blue_shirt",
+          "pillow",
+          "on_bed"
         ]
       }
     },

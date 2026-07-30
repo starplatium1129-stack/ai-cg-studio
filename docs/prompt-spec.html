@@ -152,7 +152,7 @@
     <div class="module-content">
       <h4>LoRA <span class="cn">角色 LoRA</span></h4>
       <p>通常放在末尾。权重可从 0.6–0.8 起步，再按实测调整。</p>
-      <div class="example">&lt;lora:ayachi_nene_v15:0.8&gt;</div>
+      <div class="example">&lt;lora:ayachi_nene_v18_wd14:0.85&gt;</div>
     </div>
   </div>
 
@@ -165,6 +165,24 @@
     <div class="prompt-code" id="output"></div>
     <button type="button" class="btn btn-ghost mt-4" data-action="reset-modules">🔄 重置</button>
   </div>
+
+  <h2 class="section-title">v18 官方服装调用规范</h2>
+  <p>官方服装必须使用训练 caption 中的主控制词和配套原词。主控制词选择服装身份，配套词锁定配色、剪裁、发型和腿部细节；不要用未经训练的近义词替换它们。</p>
+  <table>
+    <thead><tr><th>服装</th><th>训练控制词</th><th>必须优先使用的训练原词</th></tr></thead>
+    <tbody>
+      <tr><td>宁宁经典魔女服</td><td><code>nene_witch_canonical</code></td><td><code>witch_hat, black_cape, criss-cross_halter, crop_top, strap_between_breasts, black_skirt, asymmetrical_legwear, striped_thighhighs, frilled_socks</code></td></tr>
+      <tr><td>宁宁学院制服</td><td><code>nene_school_uniform</code></td><td><code>school_uniform, blazer, yellow_bowtie, plaid_skirt, pleated_skirt, grey_skirt, black_thighhighs</code></td></tr>
+      <tr><td>宁宁水手制服</td><td><code>nene_sailor_uniform</code></td><td><code>grey_sailor_collar, black_shirt, sailor_shirt, serafuku</code></td></tr>
+      <tr><td>宁宁蓝色睡衣</td><td><code>nene_blue_pajamas</code></td><td><code>pajamas, animal_print, cat_print, long_sleeves</code></td></tr>
+      <tr><td>宁宁绿色睡衣</td><td><code>nene_green_sleepwear</code></td><td><code>sleepwear, nightgown, polka_dot, short_sleeves, twin_braids</code></td></tr>
+      <tr><td>夏目红色旗袍</td><td><code>natsume_official_qipao</code></td><td><code>chinese_clothes, china_dress, red_dress, floral_print, side_slit, black_thighhighs, double_bun, hair_flower</code></td></tr>
+      <tr><td>夏目咖啡店制服</td><td><code>natsume_cafe_uniform</code></td><td><code>white_shirt, suspenders, suspender_skirt, brown_skirt, purple_ribbon, hair_flower</code></td></tr>
+      <tr><td>夏目女仆服</td><td><code>natsume_maid_uniform</code></td><td><code>maid, maid_apron, white_apron, maid_headdress, long_sleeves, frills</code></td></tr>
+      <tr><td>夏目睡衣</td><td><code>natsume_sleepwear</code></td><td><code>blue_shirt, pillow, on_bed</code></td></tr>
+    </tbody>
+  </table>
+  <p class="note"><code>nene_r18</code> / <code>natsume_r18</code> 只控制成人状态，不能代替服装控制词。R18 官方服装场景需要同时包含成人门控和对应服装包。</p>
 
   <!-- LoRA weight guide -->
   <h2 class="section-title">LoRA 权重指南</h2>

@@ -107,13 +107,13 @@ function createTrainingStub(previewFile) {
     close:0
   };
   var currentJobs = {
-    'lora-nene-v16':job('lora-nene-v16'),
-    'lora-natsume-v16':job('lora-natsume-v16'),
+    'lora-nene-v18':job('lora-nene-v18'),
+    'lora-natsume-v18':job('lora-natsume-v18'),
     'voice-nene':job('voice-nene'),
     'voice-natsume':job('voice-natsume')
   };
   var datasets = [{
-    id:'lora-nene-v16',
+    id:'lora-nene-v18',
     kind:'lora',
     character:'nene',
     version:'v16',
@@ -179,7 +179,7 @@ function createTrainingStub(previewFile) {
       getDatasetPreview:function (id) {
         var variant = arguments[1] || 'signature';
         calls.getDatasetPreview.push(variant === 'signature' ? id : id + ':' + variant);
-        if (id !== 'lora-nene-v16') {
+        if (id !== 'lora-nene-v18') {
           throw new TrainingServiceError('Preview unavailable', 'PREVIEW_UNAVAILABLE', 404);
         }
         return {
@@ -209,7 +209,7 @@ function createTrainingStub(previewFile) {
             'Another GPU training job is active',
             'JOB_BUSY',
             409,
-            'lora-nene-v16'
+            'lora-nene-v18'
           );
         }
         var next = Object.assign({}, requireJob(id), {
@@ -354,19 +354,19 @@ async function main() {
     assert.strictEqual(stub.calls.listDatasets, 1);
 
     var preview = await request(port, {
-      path:'/api/training/datasets/lora-nene-v16/preview'
+      path:'/api/training/datasets/lora-nene-v18/preview'
     });
     assert.strictEqual(preview.status, 200, 'training preview must return the allowlisted image');
     assert.ok(String(preview.headers['content-type'] || '').indexOf('image/jpeg') >= 0);
     assert.strictEqual(preview.headers['content-disposition'], 'inline');
-    assert.deepStrictEqual(stub.calls.getDatasetPreview, ['lora-nene-v16']);
+    assert.deepStrictEqual(stub.calls.getDatasetPreview, ['lora-nene-v18']);
 
     var adultPreview = await request(port, {
-      path:'/api/training/datasets/lora-nene-v16/adult-preview'
+      path:'/api/training/datasets/lora-nene-v18/adult-preview'
     });
     assert.strictEqual(adultPreview.status, 200, 'adult preview must return the pre-blurred allowlisted image');
     assert.ok(String(adultPreview.headers['content-type'] || '').indexOf('image/jpeg') >= 0);
-    assert.deepStrictEqual(stub.calls.getDatasetPreview, ['lora-nene-v16', 'lora-nene-v16:adult']);
+    assert.deepStrictEqual(stub.calls.getDatasetPreview, ['lora-nene-v18', 'lora-nene-v18:adult']);
 
     var unavailablePreview = await request(port, {
       path:'/api/training/datasets/voice-nene/preview'
@@ -379,27 +379,27 @@ async function main() {
     assert.strictEqual(stub.calls.listJobs, 1);
 
     var jobResponse = await request(port, {
-      path:'/api/training/jobs/lora-nene-v16'
+      path:'/api/training/jobs/lora-nene-v18'
     });
     assertSuccess(jobResponse, 'single training job');
-    assert.strictEqual(jobResponse.json.job.id, 'lora-nene-v16');
-    assert.deepStrictEqual(stub.calls.getJob, ['lora-nene-v16']);
+    assert.strictEqual(jobResponse.json.job.id, 'lora-nene-v18');
+    assert.deepStrictEqual(stub.calls.getJob, ['lora-nene-v18']);
 
     var logs = await request(port, {
-      path:'/api/training/jobs/lora-nene-v16/logs?cursor=7&version=3'
+      path:'/api/training/jobs/lora-nene-v18/logs?cursor=7&version=3'
     });
     assertSuccess(logs, 'training logs');
     assert.strictEqual(logs.json.cursor, 7);
     assert.strictEqual(logs.json.nextCursor, 19);
     assert.strictEqual(logs.json.reset, false);
     assert.deepStrictEqual(stub.calls.getLogs[0], {
-      id:'lora-nene-v16',
+      id:'lora-nene-v18',
       cursor:'7',
       version:'3'
     });
 
     var logAlias = await request(port, {
-      path:'/api/training/logs/lora-nene-v16?cursor=0&version=2'
+      path:'/api/training/logs/lora-nene-v18?cursor=0&version=2'
     });
     assertSuccess(logAlias, 'training log alias');
     assert.strictEqual(logAlias.json.reset, true);
@@ -408,21 +408,21 @@ async function main() {
     var started = await request(port, {
       method:'POST',
       path:'/api/training/jobs',
-      body:{ id:'lora-nene-v16' }
+      body:{ id:'lora-nene-v18' }
     });
     assertSuccess(started, 'start training job');
     assert.strictEqual(started.json.job.status, 'running');
     assert.strictEqual(started.json.job.pid, 4242);
-    assert.deepStrictEqual(stub.calls.startJob, ['lora-nene-v16']);
+    assert.deepStrictEqual(stub.calls.startJob, ['lora-nene-v18']);
 
     var stopped = await request(port, {
       method:'POST',
-      path:'/api/training/jobs/lora-nene-v16/stop',
+      path:'/api/training/jobs/lora-nene-v18/stop',
       body:{}
     });
     assertSuccess(stopped, 'stop training job');
     assert.strictEqual(stopped.json.job.status, 'stopping');
-    assert.deepStrictEqual(stub.calls.stopJob, ['lora-nene-v16']);
+    assert.deepStrictEqual(stub.calls.stopJob, ['lora-nene-v18']);
 
     var startedByKind = await request(port, {
       method:'POST',
@@ -430,8 +430,8 @@ async function main() {
       body:{ kind:'natsume' }
     });
     assertSuccess(startedByKind, 'start training job by safe alias');
-    assert.strictEqual(startedByKind.json.job.id, 'lora-natsume-v16');
-    assert.strictEqual(stub.calls.startJob[1], 'lora-natsume-v16');
+    assert.strictEqual(startedByKind.json.job.id, 'lora-natsume-v18');
+    assert.strictEqual(stub.calls.startJob[1], 'lora-natsume-v18');
 
     var unknownJob = await request(port, {
       method:'POST',
@@ -453,7 +453,7 @@ async function main() {
       body:{}
     });
     assertFailure(busyJob, 409, 'JOB_BUSY', 'busy GPU job');
-    assert.strictEqual(busyJob.json.detail, 'lora-nene-v16');
+    assert.strictEqual(busyJob.json.detail, 'lora-nene-v18');
 
     var malformedJson = await request(port, {
       method:'POST',

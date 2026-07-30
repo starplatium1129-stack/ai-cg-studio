@@ -1,6 +1,6 @@
 export const TRAINING_JOB_IDS = [
-  'lora-nene-v16',
-  'lora-natsume-v16',
+  'lora-nene-v18',
+  'lora-natsume-v18',
   'voice-nene',
   'voice-natsume',
 ] as const

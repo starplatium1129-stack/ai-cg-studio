@@ -155,6 +155,33 @@
 
       <!-- 样张管理 -->
       <template v-if="tab==='images'">
+        <section class="home-hero-maintenance">
+          <div class="toolbar">
+            <strong>首页主视觉</strong>
+            <span class="list-meta">当前首页右侧的宁宁 / 夏目两张图，可单独替换</span>
+          </div>
+          <p class="note">上传后会归一化为 JPEG 并写入本机 SceneShowcase；首页刷新后立即生效。点击“恢复内置图”可回退到项目自带版本。</p>
+          <div class="image-grid home-hero-grid">
+            <button v-for="hero in homeHeroes" :key="hero.id" class="sm-image-card" type="button" :class="{ active: selectedHeroId === hero.id }" @click="previewHero(hero)">
+              <span class="sm-card-id">首页 · {{ hero.id }}</span>
+              <span class="sm-card-title">{{ hero.title }}</span>
+              <span class="sm-card-meta">{{ hero.updatedAt ? `已替换 ${hero.updatedAt}` : '使用内置图' }}</span>
+            </button>
+          </div>
+          <div v-if="selectedHeroId" class="image-preview">
+            <div class="image-preview-head">
+              <strong>首页 · {{ selectedHeroTitle }}</strong>
+              <span class="row-tight">
+                <button class="btn btn-ghost btn-sm" type="button" :disabled="uploadBusy" @click="pickHero">上传 / 替换</button>
+                <button class="btn btn-ghost btn-sm" type="button" :disabled="uploadBusy" @click="resetHero">恢复内置图</button>
+                <button class="btn btn-ghost btn-sm" type="button" @click="selectedHeroId = ''">关闭</button>
+              </span>
+            </div>
+            <img class="image-preview-img home-hero-preview" :src="heroUrl" :alt="selectedHeroTitle" />
+            <input ref="heroFileEl" class="sr-only" type="file" accept="image/png,image/jpeg,image/webp" @change="onHeroPicked" />
+            <p class="image-feedback" :class="{ err: showcaseError }">{{ showcaseFeedback }}</p>
+          </div>
+        </section>
         <div class="toolbar">
           <input v-model="imageSearch" class="search-input" type="search" placeholder="🔍 搜索场景 ID 或标题…" />
           <span class="list-meta">{{ filteredImageScenes.length }} 个场景</span>
@@ -522,6 +549,14 @@ const showcaseError = ref(false)
 const showcaseVersion = ref(Date.now())
 const uploadBusy = ref(false)
 const showcaseFileEl = ref<HTMLInputElement | null>(null)
+const heroFileEl = ref<HTMLInputElement | null>(null)
+const selectedHeroId = ref('')
+const selectedHeroTitle = ref('')
+const homeHeroVersion = ref(Date.now())
+const homeHeroes = ref([
+  { id:'nene', title:'宁宁', updatedAt:'' },
+  { id:'natsume', title:'夏目', updatedAt:'' },
+])
 
 const filteredImageScenes = computed(() => {
   const q = imageSearch.value.trim().toLowerCase()
@@ -539,6 +574,9 @@ const showcaseUrl = computed(() =>
     ? `/scene-showcase/images/${encodeURIComponent(selectedImageId.value)}.jpg?v=${showcaseVersion.value}`
     : '',
 )
+const heroUrl = computed(() => selectedHeroId.value
+  ? `/scene-showcase/home/${selectedHeroId.value}.jpg?v=${homeHeroVersion.value}`
+  : '')
 
 function previewImage(s: SceneDraft) {
   selectedImageId.value = s.id
@@ -552,6 +590,39 @@ function onShowcaseMissing() {
   showcaseFeedback.value = '该场景还没有样张，可直接上传一张。'
 }
 function pickShowcase() { showcaseFileEl.value?.click() }
+function previewHero(hero: { id:string; title:string; updatedAt:string }) {
+  selectedHeroId.value = hero.id
+  selectedHeroTitle.value = hero.title
+  showcaseError.value = false
+  homeHeroVersion.value = Date.now()
+  showcaseFeedback.value = '支持 PNG / JPEG / WebP，最大 15MB；仅本机可替换。'
+}
+function pickHero() { heroFileEl.value?.click() }
+
+async function loadHomeHeroes() {
+  try {
+    const response = await fetch('/api/maintenance/home-hero')
+    if (!response.ok) return
+    const data = await response.json() as { entries?: Record<string, { updatedAt?: string }> }
+    homeHeroes.value = homeHeroes.value.map(hero => ({ ...hero, updatedAt: data.entries?.[hero.id]?.updatedAt ? new Date(data.entries[hero.id].updatedAt!).toLocaleString('zh-CN') : '' }))
+  } catch {}
+}
+
+async function resetHero() {
+  if (!selectedHeroId.value || !confirm(`恢复${selectedHeroTitle.value}的内置首页图？`)) return
+  uploadBusy.value = true
+  try {
+    const r = await fetch('/api/maintenance/home-hero', { method:'POST', headers:{ 'Content-Type':'application/json' }, body:JSON.stringify({ character:selectedHeroId.value, action:'reset' }) })
+    const data = await r.json() as { ok?:boolean; error?:string; message?:string }
+    if (!r.ok) throw new Error(data.error || '恢复失败')
+    showcaseFeedback.value = data.message || '已恢复内置图'
+    homeHeroVersion.value = Date.now()
+    await loadHomeHeroes()
+  } catch (err) {
+    showcaseError.value = true
+    showcaseFeedback.value = '未能恢复：' + errorMessage(err, '请确认通过本机控制面板打开网站')
+  } finally { uploadBusy.value = false }
+}
 
 /** 归一化为 JPEG，与后端 15MB 原图 / 3MB 缩略图限制对齐 */
 function jpegAtWidth(image: HTMLImageElement, maxWidth: number, quality: number): string {
@@ -612,6 +683,38 @@ async function onShowcasePicked(e: Event) {
     uploadBusy.value = false
     input.value = ''
   }
+}
+
+async function onHeroPicked(e: Event) {
+  const input = e.target as HTMLInputElement
+  const file = input.files?.[0]
+  if (!file || !selectedHeroId.value) return
+  showcaseError.value = false
+  uploadBusy.value = true
+  showcaseFeedback.value = '正在保存首页主视觉…'
+  try {
+    if (file.size > 15 * 1024 * 1024) throw new Error('图片超过 15MB，请先压缩')
+    const dataUrl = await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = () => resolve(String(reader.result || ''))
+      reader.onerror = () => reject(new Error('无法读取这张图片'))
+      reader.readAsDataURL(file)
+    })
+    const image = await new Promise<HTMLImageElement>((resolve, reject) => {
+      const img = new Image(); img.onload = () => resolve(img); img.onerror = () => reject(new Error('无法解析这张图片')); img.src = dataUrl
+    })
+    if (image.naturalWidth * image.naturalHeight > 60_000_000) throw new Error('图片像素过大，请使用不超过 6000 万像素的版本')
+    const normalized = jpegAtWidth(image, 4096, 0.94)
+    const r = await fetch('/api/maintenance/home-hero', { method:'POST', headers:{ 'Content-Type':'application/json' }, body:JSON.stringify({ character:selectedHeroId.value, image:normalized }) })
+    const data = await r.json() as { ok?:boolean; error?:string; message?:string }
+    if (!r.ok) throw new Error(data.error || '保存失败')
+    showcaseFeedback.value = data.message || '首页主视觉已保存'
+    homeHeroVersion.value = Date.now()
+    await loadHomeHeroes()
+  } catch (err) {
+    showcaseError.value = true
+    showcaseFeedback.value = '未能保存：' + errorMessage(err, '请确认通过本机控制面板打开网站')
+  } finally { uploadBusy.value = false; input.value = '' }
 }
 
 // ── 重复检测 ──────────────────────────────────────────────────────────────
@@ -910,6 +1013,7 @@ async function loadFromStore(force = false) {
 onMounted(async () => {
   // 首次进入拉最新落盘状态：编辑器要基于真实文件而不是别的页面留下的内存副本
   await loadFromStore(true)
+  await loadHomeHeroes()
   loading.value = false
 })
 </script>
@@ -979,6 +1083,9 @@ tr:hover td { background:var(--bg-elevated); }
 .sm-image-card { display:grid; gap:3px; text-align:left; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); cursor:pointer; transition:border-color var(--t-fast),transform var(--t-fast); }
 .sm-image-card:hover { border-color:var(--accent); transform:translateY(-2px); }
 .sm-image-card.active { border-color:var(--accent); background:var(--accent-soft); }
+.home-hero-maintenance { margin-bottom:var(--s-5); }
+.home-hero-grid { grid-template-columns:repeat(2,minmax(180px,1fr)); margin-bottom:var(--s-3); }
+.home-hero-preview { max-width:520px; }
 .sm-card-id { color:var(--text-muted); font:650 var(--fs-mono-xs) var(--font-mono); }
 .sm-card-title { color:var(--text-primary); font-size:var(--fs-label-sm); font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .sm-card-meta { color:var(--text-muted); font-size:var(--fs-mono-xs); }
