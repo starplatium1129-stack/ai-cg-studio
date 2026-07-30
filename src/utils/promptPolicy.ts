@@ -459,6 +459,32 @@ export function enrichDualPrompt(template: string, neneTags: string[], natsumeTa
   return `${[global, enrichedLeft].filter(Boolean).join(', ')} BREAK ${enrichedRight}`
 }
 
+const NATSUME_IDENTITY_TOKENS = new Set([
+  '1girl', 'solo', 'shiki_natsume', 'black_hair', 'long_hair', 'very_long_hair',
+  'very_long_black_hair', 'yellow_eyes', 'golden_yellow_eyes', 'mole_under_eye',
+  'hairclip', 'two_red_hairclips', 'two_red_hairclips_only', 'no_hair_ribbon',
+])
+
+const NATSUME_PARTNER_TOKENS = new Set([
+  'holding_hands', 'holding_arm', 'interlocked_fingers', 'kissing', 'kiss', 'neck_kiss',
+  'leaning_on_shoulder', 'lying_on_chest', 'sitting_on_lap', 'straddling',
+  'straddling_viewer', 'trapping_viewer', 'trapped_by_viewer', 'clinging_to_viewer',
+  'caught_by_viewer', 'close_face_to_face_distance', 'tense_close_contact',
+])
+
+function sanitizeNatsumeSoloTemplate(template: string): string {
+  return splitBreaks(template).map(section => tokenize(section)
+    .filter(token => {
+      const key = normalizeKey(token)
+      if (NATSUME_IDENTITY_TOKENS.has(key) || NATSUME_PARTNER_TOKENS.has(key)) return false
+      // Keep camera POVs, but remove phrases that require a visible partner.
+      return !/(?:^|_)(?:male|man|boy|viewer)(?:_|$)/.test(key) && !/^(?:1boy|1man)$/.test(key)
+    })
+    .join(', '))
+    .filter(Boolean)
+    .join(' BREAK ')
+}
+
 /** 场景是否支持该角色（避免把宁宁场景套到夏目身上） */
 export function sceneSupportsCharacter(scene: PromptScene | null | undefined, char: string): boolean {
   if (!scene) return false
@@ -494,6 +520,9 @@ export function sceneTemplateText(
       ['ayachi_nene', 'white_hair', 'very_long_hair', 'low_twintails', 'purple_eyes', 'ahoge', 'hair_ribbon'],
       ['shiki_natsume', 'black_hair', 'long_hair', 'yellow_eyes', 'mole_under_eye', 'hairclip'],
     )
+  } else if (opts.char === 'natsume') {
+    // The character line supplies the canonical identity; scenes remain solo regardless of old interaction tags.
+    template = sanitizeNatsumeSoloTemplate(template)
   }
   return filterFraming(norm(template), opts.shot)
 }

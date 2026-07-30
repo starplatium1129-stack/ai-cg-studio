@@ -83,6 +83,16 @@ assert.strictEqual(
   'scene template text must retain scene identity tags because metadata is not appended to the final prompt'
 );
 
+const natsumeSoloTemplate = policy.sceneTemplateText({
+  prompt:'1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, holding_hands, straddling_viewer, (POV male hand around her waist:1.5), cafe, warm_lighting',
+}, { char:'natsume' });
+['cafe', 'warm_lighting'].forEach(token => {
+  assert(policy.tokenize(natsumeSoloTemplate).includes(token), 'Natsume solo scenes must retain non-interaction direction');
+});
+['1girl', 'solo', 'shiki_natsume', 'black_hair', 'long_hair', 'yellow_eyes', 'mole_under_eye', 'hairclip', 'holding_hands', 'straddling_viewer', 'male'].forEach(token => {
+  assert(!natsumeSoloTemplate.includes(token), 'Natsume solo scenes must remove redundant identity and partner constraint ' + token);
+});
+
 assert.deepStrictEqual(
   policy.characterControlTokens(
     { prompt:'ayachi_nene, official_witch_outfit, bedroom', rating:'R18', mature:true },

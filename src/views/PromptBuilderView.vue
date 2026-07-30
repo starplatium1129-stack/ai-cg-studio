@@ -222,6 +222,7 @@
           <div class="manual-tags">
             <span v-for="tag in pb.manualTags" :key="tag" class="manual-tag">
               {{ tag }}
+              <span class="sr-only">（{{ tagMeaning(tag) }}）</span>
               <button type="button" class="tag-remove" @click="pb.toggleManualTag(tag)">×</button>
             </span>
           </div>
@@ -269,8 +270,9 @@
               <button v-for="tag in visibleTags" :key="tag.en" type="button"
                 :class="{ selected: pb.manualTags.has(tag.en) }"
                 :aria-pressed="pb.manualTags.has(tag.en)"
+                :title="tagMeaning(tag.en, tag.cn)"
                 @click="pb.toggleManualTag(tag.en)">
-                <strong>{{ tag.cn }}</strong><small>{{ tag.en }}</small>
+                <strong>{{ tagMeaning(tag.en, tag.cn) }}</strong><small>{{ tag.en }}</small>
               </button>
             </div>
           </div>
@@ -474,6 +476,7 @@ import GenerationOutputControls from '@/components/GenerationOutputControls.vue'
 import SDRecoveryPanel from '@/components/SDRecoveryPanel.vue'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import { readHiddenScenes, rememberRecent, recordSceneUsage } from '@/utils/sceneUX'
+import { tagMeaning } from '@/utils/tagMeaning'
 import {
   quickCreateSummary,
   readQuickCreate,
