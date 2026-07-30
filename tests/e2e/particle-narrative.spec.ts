@@ -18,7 +18,9 @@ test('route atmosphere persists and updates its archive identity across navigati
   await expect(page).toHaveURL(/\/gallery$/)
   await expect(page.locator('.route-atmosphere')).toHaveCount(1)
   await expect(page.locator('.route-index > span')).toHaveText('06')
-  await expect(page.locator('.route-atmosphere canvas')).toBeVisible()
+  await expect(page.locator('.route-atmosphere canvas')).toHaveCount(0)
+  await expect(page.locator('.archive-page-hero canvas')).toBeVisible()
+  await expect(page.locator('canvas')).toHaveCount(1)
 })
 
 test('workspace state bars use real character and service state', async ({ page }) => {

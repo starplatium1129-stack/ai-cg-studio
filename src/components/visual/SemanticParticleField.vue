@@ -20,6 +20,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, watch } from 'vue'
 import { createParticleShape, type ParticlePoint, type ParticleShapeId } from '@/utils/particleShapes'
+import { registerParticleFrame } from '@/utils/particleScheduler'
 
 const props = withDefaults(defineProps<{
   shape: ParticleShapeId
@@ -66,7 +67,7 @@ let resizeObserver: ResizeObserver | null = null
 let intersectionObserver: IntersectionObserver | null = null
 let themeObserver: MutationObserver | null = null
 let motionMedia: MediaQueryList | null = null
-let frameId = 0
+let stopScheduledFrame: (() => void) | null = null
 let width = 0
 let height = 0
 let dpr = 1
@@ -86,9 +87,9 @@ function preferredCount(): number {
   if (reduceMotion.value) return 260
   const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory
   const compact = window.matchMedia('(max-width: 760px)').matches
-  if (props.density === 'backdrop') return Math.round((compact ? 120 : 180) * qualityScale)
-  if (compact || (memory !== undefined && memory <= 4)) return Math.round(360 * qualityScale)
-  return Math.round((props.density === 'ambient' ? 520 : 860) * qualityScale)
+  if (props.density === 'backdrop') return Math.round((compact ? 84 : 128) * qualityScale)
+  if (compact || (memory !== undefined && memory <= 4)) return Math.round(260 * qualityScale)
+  return Math.round((props.density === 'ambient' ? 340 : 520) * qualityScale)
 }
 
 function readPalette() {
@@ -113,7 +114,7 @@ function targetPosition(point: ParticlePoint): { x: number; y: number } {
 
 function setShape(animate = true) {
   if (!width || !height) return
-  const count = Math.max(120, preferredCount())
+  const count = Math.max(props.density === 'backdrop' ? 80 : 120, preferredCount())
   const shape = createParticleShape(props.shape, count)
   const previous = particles.slice().sort((a, b) => {
     const rowA = Math.round(a.y / Math.max(1, height) * 18)
@@ -162,6 +163,7 @@ function draw(now: number) {
   const progress = easeOutQuart(rawProgress)
   const signalEnergy = props.signal === 'active' ? 1.75 : props.signal === 'warning' ? 1.35 : props.signal === 'success' ? 1.15 : 1
   const idleAmount = reduceMotion.value ? 0 : (props.density === 'ambient' ? 2.2 : 3.6) * signalEnergy
+  const paths = [new Path2D(), new Path2D(), new Path2D()]
 
   for (const particle of particles) {
     particle.x = particle.startX + (particle.targetX - particle.startX) * progress
@@ -185,21 +187,27 @@ function draw(now: number) {
 
     const energyScale = props.signal === 'active' ? 1.22 : props.signal === 'warning' ? 1.1 : 1
     const radius = (particle.tone === 2 ? 1.55 : particle.tone === 1 ? 1.05 : 0.78) * energyScale
-    context.globalAlpha = particle.tone === 2 ? 0.9 : particle.tone === 1 ? 0.46 : 0.72
-    context.fillStyle = particle.tone === 2 ? palette.accent : particle.tone === 1 ? palette.secondary : palette.primary
-    context.beginPath()
-    context.arc(particle.x + driftX + offsetX, particle.y + driftY + offsetY, radius, 0, Math.PI * 2)
-    context.fill()
+    const path = paths[particle.tone]
+    path.moveTo(particle.x + driftX + offsetX + radius, particle.y + driftY + offsetY)
+    path.arc(particle.x + driftX + offsetX, particle.y + driftY + offsetY, radius, 0, Math.PI * 2)
   }
+  context.globalAlpha = .72
+  context.fillStyle = palette.primary
+  context.fill(paths[0])
+  context.globalAlpha = .46
+  context.fillStyle = palette.secondary
+  context.fill(paths[1])
+  context.globalAlpha = .9
+  context.fillStyle = palette.accent
+  context.fill(paths[2])
   context.globalAlpha = 1
 }
 
 function renderFrame(now: number) {
-  frameId = 0
   if (!visible || document.hidden || reduceMotion.value) return
   if (lastFrame) {
     const elapsed = now - lastFrame
-    slowFrames = elapsed > 24 ? slowFrames + 1 : Math.max(0, slowFrames - 2)
+    slowFrames = elapsed > 28 ? slowFrames + 1 : Math.max(0, slowFrames - 2)
     if (slowFrames >= 20 && qualityScale > 0.48) {
       qualityScale *= 0.7
       slowFrames = 0
@@ -208,19 +216,18 @@ function renderFrame(now: number) {
   }
   lastFrame = now
   draw(now)
-  frameId = requestAnimationFrame(renderFrame)
 }
 
 function startLoop() {
-  if (!frameId && visible && !document.hidden && !reduceMotion.value) {
-    lastFrame = 0
-    frameId = requestAnimationFrame(renderFrame)
-  }
+  if (stopScheduledFrame || !visible || document.hidden || reduceMotion.value) return
+  lastFrame = 0
+  stopScheduledFrame = registerParticleFrame(renderFrame, 60)
 }
 
 function stopLoop() {
-  if (frameId) cancelAnimationFrame(frameId)
-  frameId = 0
+  stopScheduledFrame?.()
+  stopScheduledFrame = null
+  lastFrame = 0
 }
 
 function resize() {
@@ -228,9 +235,9 @@ function resize() {
   const rect = host.value.getBoundingClientRect()
   width = Math.max(1, Math.round(rect.width))
   height = Math.max(1, Math.round(rect.height))
-  dpr = props.density === 'backdrop'
-    ? 1
-    : Math.min(window.devicePixelRatio || 1, window.matchMedia('(max-width: 760px)').matches ? 1.25 : 1.75)
+  dpr = props.density === 'hero'
+    ? Math.min(window.devicePixelRatio || 1, 1.25)
+    : 1
   canvas.value.width = Math.round(width * dpr)
   canvas.value.height = Math.round(height * dpr)
   canvas.value.style.width = `${width}px`
@@ -274,7 +281,11 @@ function onMotionPreference(event: MediaQueryListEvent | MediaQueryList) {
 }
 
 watch(() => props.shape, () => setShape(true))
-watch(() => props.density, () => setShape(false))
+watch(() => props.density, () => {
+  stopLoop()
+  resize()
+  startLoop()
+})
 watch(() => props.signal, () => startLoop())
 
 onMounted(() => {
@@ -358,8 +369,8 @@ canvas { display:none; position:absolute; inset:0; width:100%; height:100%; z-in
 .density-backdrop { min-height:100%; background-size:64px 64px,64px 64px,auto; }
 .is-bare { min-height:100%; background:none; }
 .is-bare::before,.is-bare::after,.is-bare .particle-caption { display:none; }
-.signal-active canvas { filter:drop-shadow(0 0 8px color-mix(in srgb,var(--particle-accent) 32%,transparent)); }
-.signal-warning canvas { filter:drop-shadow(0 0 7px color-mix(in srgb,var(--warning) 26%,transparent)); }
+.signal-active canvas { opacity:.92; }
+.signal-warning canvas { opacity:.86; }
 @media (max-width:760px) {
   .semantic-particle-field { min-height:240px; background-size:34px 34px,34px 34px,auto; }
   .particle-caption { right:var(--s-3); }

@@ -7,6 +7,7 @@
     aria-hidden="true"
   >
     <SemanticParticleField
+      v-if="!routeHasOwnParticle"
       class="route-atmosphere-field"
       :shape="activeShape"
       label=""
@@ -62,6 +63,17 @@ const ROUTE_META: Record<string, RouteAtmosphereMeta> = {
 }
 
 const route = useRoute()
+const ROUTES_WITH_OWN_PARTICLES = new Set([
+  '/',
+  '/scene-explorer',
+  '/character',
+  '/style',
+  '/showcase',
+  '/gallery',
+  '/color-script',
+  '/scenario',
+])
+const routeHasOwnParticle = computed(() => ROUTES_WITH_OWN_PARTICLES.has(route.path))
 const signalState = ref<ParticleSignalState>('idle')
 const signalShape = ref<ParticleShapeId | null>(null)
 const signalLabel = ref('')
@@ -172,7 +184,6 @@ onUnmounted(() => {
   inset: -8% -5% -8% 42%;
   min-height: 116%;
   opacity: .34;
-  filter: blur(.15px);
   transform: translate3d(var(--route-shift-x,0),var(--route-shift-y,0),0);
   transition: transform .8s var(--ease-out);
   -webkit-mask-image: radial-gradient(ellipse at 55% 44%, #000 0 34%, transparent 74%);

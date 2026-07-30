@@ -7,7 +7,7 @@
       <strong>{{ title }}</strong>
       <span>{{ subtitle }}</span>
     </div>
-    <div class="workspace-line" aria-hidden="true"><i></i></div>
+    <div class="workspace-line" aria-hidden="true"><i :key="revision"></i></div>
     <div class="workspace-state" role="status" aria-live="polite">
       <span class="workspace-state-dot" aria-hidden="true"></span>
       {{ status }}
@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import type { ParticleShapeId } from '@/utils/particleShapes'
 import { emitParticleSignal, type ParticleSignalState } from '@/utils/particleSignal'
 
@@ -32,8 +32,10 @@ const props = withDefaults(defineProps<{
   state: 'idle',
   shape: 'atelier',
 })
+const revision = ref(0)
 
 function signal() {
+  revision.value += 1
   emitParticleSignal({
     state: props.state,
     shape: props.shape,
@@ -84,7 +86,7 @@ watch(() => [props.state, props.shape, props.status], signal)
 .workspace-copy strong { color:var(--text-primary); font:750 var(--fs-mono-sm) var(--font-mono); letter-spacing:.11em; }
 .workspace-copy span { overflow:hidden; color:var(--text-muted); font-size:var(--fs-label-xs); text-overflow:ellipsis; white-space:nowrap; }
 .workspace-line { height:1px; overflow:hidden; background:var(--border-soft); }
-.workspace-line i { display:block; width:34%; height:100%; background:linear-gradient(90deg,transparent,var(--archive-blue),transparent); animation:workspace-scan 2.8s linear infinite; }
+.workspace-line i { display:block; width:34%; height:100%; background:linear-gradient(90deg,transparent,var(--archive-blue),transparent); animation:workspace-scan .82s var(--ease-out) both; }
 .workspace-state { display:flex; align-items:center; gap:7px; color:var(--text-secondary); font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.08em; white-space:nowrap; }
 .workspace-state-dot { width:6px; height:6px; border-radius:50%; background:var(--text-muted); box-shadow:0 0 0 3px color-mix(in srgb,var(--text-muted) 12%,transparent); }
 [data-state="active"] .workspace-state-dot { background:var(--archive-blue); animation:workspace-pulse 1.15s ease-in-out infinite; }
@@ -92,7 +94,8 @@ watch(() => [props.state, props.shape, props.status], signal)
 [data-state="warning"] .workspace-state-dot { background:var(--warning); }
 .workspace-radar { position:relative; width:36px; height:36px; }
 .workspace-radar i { position:absolute; inset:50%; border:1px solid color-mix(in srgb,var(--archive-blue) 42%,transparent); border-radius:50%; transform:translate(-50%,-50%); }
-.workspace-radar i:nth-child(1){width:8px;height:8px}.workspace-radar i:nth-child(2){width:20px;height:20px}.workspace-radar i:nth-child(3){width:34px;height:34px;border-style:dashed;animation:workspace-rotate 9s linear infinite}
+.workspace-radar i:nth-child(1){width:8px;height:8px}.workspace-radar i:nth-child(2){width:20px;height:20px}.workspace-radar i:nth-child(3){width:34px;height:34px;border-style:dashed}
+[data-state="active"] .workspace-radar i:nth-child(3){animation:workspace-rotate 3.2s linear infinite}
 @keyframes workspace-scan { from{transform:translateX(-110%)} to{transform:translateX(310%)} }
 @keyframes workspace-pulse { 50%{box-shadow:0 0 0 7px transparent} }
 @keyframes workspace-rotate { to{transform:translate(-50%,-50%) rotate(360deg)} }

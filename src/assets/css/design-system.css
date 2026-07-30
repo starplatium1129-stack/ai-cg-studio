@@ -270,8 +270,8 @@
 @view-transition { navigation: auto; }
 ::view-transition-old(root) { animation: aics-page-out var(--t-fast) var(--ease-out) both; }
 ::view-transition-new(root) { animation: aics-page-in var(--t-base) var(--ease-out) both; }
-@keyframes aics-page-out { to { opacity:0; filter:blur(5px); transform:scale(.995); } }
-@keyframes aics-page-in { from { opacity:0; filter:blur(7px); transform:translateY(5px) scale(.998); } }
+@keyframes aics-page-out { to { opacity:0; transform:scale(.995); } }
+@keyframes aics-page-in { from { opacity:0; transform:translateY(5px) scale(.998); } }
 
 /* ---- Reset ---- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }

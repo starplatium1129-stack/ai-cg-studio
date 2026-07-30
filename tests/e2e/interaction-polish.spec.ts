@@ -26,6 +26,8 @@ test('navigation uses the archive icon system and emits pointer feedback', async
   await sceneLink.click()
   await expect(page).toHaveURL(/\/scene-explorer$/)
   await expect(page.locator('.route-loader')).toHaveCount(1)
+  await expect(page.locator('.route-cut')).toHaveClass(/active/)
+  await expect(page.locator('.route-cut-register')).toContainText('SCENE ARCHIVE')
 })
 
 test('gallery empty content uses the shared archive state panel', async ({ page }) => {

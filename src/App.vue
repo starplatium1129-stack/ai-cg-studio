@@ -1,9 +1,11 @@
 <template>
-  <RouterView v-slot="{ Component, route }">
-    <Transition :name="route.meta.transition as string || 'page'" mode="out-in">
-      <component :is="Component" :key="route.path" />
-    </Transition>
-  </RouterView>
+  <div class="route-stage">
+    <RouterView v-slot="{ Component, route }">
+      <Transition :name="route.meta.transition as string || 'page'">
+        <component :is="Component" :key="route.path" />
+      </Transition>
+    </RouterView>
+  </div>
   <AppInteractionLayer />
   <AppToast />
 </template>
@@ -14,17 +16,26 @@ import AppToast from '@/components/AppToast.vue'
 </script>
 
 <style>
+.route-stage {
+  display: grid;
+  align-items: start;
+  min-width: 0;
+}
+.route-stage > * {
+  grid-area: 1 / 1;
+  min-width: 0;
+}
+
 /* ── 页面路由过渡 ─────────────────────────────────────────────────────── */
 .page-enter-active,
 .page-leave-active {
   transform-origin: 50% 24%;
   transition:
-    opacity .3s ease,
-    transform .36s var(--ease-out),
-    filter .3s ease;
+    opacity .18s ease,
+    transform .24s var(--ease-out);
 }
-.page-enter-from { opacity: 0; transform: translateY(14px) scale(.995); filter: blur(5px); }
-.page-leave-to   { opacity: 0; transform: translateY(-7px) scale(1.002); filter: blur(2px); }
+.page-enter-from { opacity: 0; transform: translateY(8px); }
+.page-leave-to   { opacity: 0; transform: translateY(-4px); }
 
 /* 控制面板用 fade-only（不做位移，避免全屏闪）*/
 .fade-enter-active,
@@ -38,6 +49,6 @@ import AppToast from '@/components/AppToast.vue'
   .fade-enter-active,
   .fade-leave-active { transition-duration: .01ms; }
   .page-enter-from,
-  .page-leave-to { transform: none; filter: none; }
+  .page-leave-to { transform: none; }
 }
 </style>
