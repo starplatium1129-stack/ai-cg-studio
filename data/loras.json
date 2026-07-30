@@ -1,13 +1,13 @@
 [
   {
-    "id": "L_NENE_V15",
-    "name": "ayachi_nene_v15",
-    "version": "1.5.0",
+    "id": "L_NENE_V18_WD14",
+    "name": "ayachi_nene_v18_wd14",
+    "version": "1.8.0",
     "trigger": "ayachi_nene",
     "character": "NENE_001",
     "strength": {
-      "default": 0.8,
-      "min": 0.5,
+      "default": 0.85,
+      "min": 0.65,
       "max": 1
     },
     "compatible_models": [
@@ -21,74 +21,76 @@
       "sc034",
       "sc049"
     ],
-    "description": "绫地宁宁角色 LoRA v15。在 v14 权重上用 v15 数据集续训（文本编码器 lr=1e-6），采用 epoch 12 存档而非最终 e15；默认优先保证官方脸、紫瞳、低双马尾与粉色发带。",
+    "description": "绫地宁宁角色 LoRA v18。55 张唯一图经 WD14 自动打标和逐图人工复核后从 WAI Illustrious v17 训练；普通与 R18 身份统一，nene_r18 显式门控成人内容，脸部还原优先。",
     "dataset": {
-      "images": 61,
+      "images": 55,
       "composition": {
-        "curated": 34,
-        "official_cg": 13,
-        "adult_cg": 9,
-        "reference": 5
+        "safe": 33,
+        "adult": 22
       },
       "resolution": 1024,
-      "strategy": "v14 continuation on v15 dataset, identity-first checkpoint selection"
+      "strategy": "WD14 auto-caption, per-image human cleanup, unified identity with explicit R18 and canonical-outfit controls"
     },
     "training": {
-      "selected_checkpoint": "continuation-te1 epoch 12",
-      "resumed_from": "ayachi_nene_v14.safetensors",
+      "selected_checkpoint": "final epoch 143",
+      "resumed_from": "waiIllustriousSDXL_v170",
       "rank": 32,
       "alpha": 32,
       "batch_size": 4,
-      "unet_learning_rate": 0.000005,
-      "text_encoder_learning_rate": 0.000001,
-      "epochs_run": 15,
-      "concept_loss_weights": {
-        "curated": 1,
-        "official_cg": 1,
-        "reference": 1.25,
-        "adult_cg": 0.65
-      },
-      "config": "OneTrainer/training_configs/ayachi_nene_v15_continuation_te1.json"
+      "unet_learning_rate": 0.0001,
+      "text_encoder_1_learning_rate": 0.00003,
+      "text_encoder_2_learning_rate": 0.000003,
+      "text_encoder_stop_epoch": 30,
+      "epochs_run": 143,
+      "config": "OneTrainer/training_configs/ayachi_nene_v18_wd14_curated.json"
     },
     "recommended_weight": {
-      "portrait": 0.8,
-      "fullbody": 0.78,
-      "complex_scene": 0.75
+      "portrait": 0.85,
+      "fullbody": 0.85,
+      "complex_scene": 0.82
     },
     "base_model": "waiIllustriousSDXL_v170",
     "trainer": "OneTrainer",
     "outfit_guidance": {
       "official_witch": [
+        "nene_witch_canonical",
         "witch_hat",
         "witch_dress",
         "black_cape",
         "pink_lining",
         "striped_legwear",
         "midriff"
+      ],
+      "official_school": [
+        "nene_school_uniform",
+        "navy_blazer",
+        "yellow_neck_bow",
+        "grey_plaid_skirt",
+        "dark_thighhighs"
       ]
     },
     "validation": {
       "method": "same-seed blinded A/B against official references; face and signature accessories weighted first",
-      "baseline": "production-v13-e15, served from ayachi_nene_v14.safetensors",
-      "matrix": "6 candidates (v14 baseline + e3/e6/e9/e12/e15) x 3 seeds x 4 scenarios = 72 images",
+      "baseline": "ayachi_nene_v16_eval at 0.70 and 0.80",
+      "matrix": "v16 0.70/0.80 vs v18 0.65/0.75 across 6 scenarios x 3 fixed seeds, followed by v18 0.85 focus gate",
       "hard_gates": {
         "mean_face_score": 8.5,
         "signature_feature_presence_rate": 0.75,
         "critical_identity_error": 0
       },
-      "evidence": "Reviews/ModelEvaluations/nene_v15_continuation_te1_gate_2026-07-27/",
-      "scores_recorded": false,
-      "selection_reason": "UNRECORDED - blinded sheets survive but per-candidate scores were never written down; see README cleanup rules"
+      "evidence": "Reviews/ModelEvaluations/nene_v18_wd14_gate_2026-07-30/final/evaluation-report.md",
+      "scores_recorded": true,
+      "selection_reason": "v18 consistently restored the official youthful round face, short chin and eye ratio better than v16; 0.85 gave the strongest identity lock without safe/R18 leakage"
     }
   },
   {
-    "id": "L_NAT_V15",
-    "name": "shiki_natsume_v15",
-    "version": "1.5.0",
+    "id": "L_NAT_V18_WD14",
+    "name": "shiki_natsume_v18_wd14",
+    "version": "1.8.0",
     "trigger": "shiki_natsume",
     "character": "NAT_001",
     "strength": {
-      "default": 0.9,
+      "default": 0.65,
       "min": 0.5,
       "max": 1
     },
@@ -102,44 +104,45 @@
       "sc050",
       "sc073"
     ],
-    "description": "四季夏目角色 LoRA v15。在 v14 权重上用 v15 数据集续训（文本编码器 lr=1e-6），采用最终 epoch 15；优先保证脸型、金瞳、泪痣、发夹与旗袍还原。",
+    "description": "四季夏目角色 LoRA v18。45 张唯一图经 WD14 自动打标和逐图人工复核后从 WAI Illustrious v17 训练；脸部优先，natsume_r18 显式门控成人状态，natsume_official_qipao 控制官方旗袍。",
     "dataset": {
-      "images": 70,
+      "images": 45,
       "composition": {
-        "curated": 46,
-        "official_cg": 13,
-        "adult_cg": 8,
-        "reference": 3
+        "safe": 28,
+        "official_qipao": 6,
+        "adult": 17
       },
       "resolution": 1024,
-      "strategy": "v14 continuation on v15 dataset, identity-first checkpoint selection"
+      "strategy": "WD14 auto-caption, per-image human cleanup, unified identity with explicit R18 and qipao controls"
     },
     "training": {
-      "selected_checkpoint": "continuation-te1 epoch 15 (final)",
-      "resumed_from": "shiki_natsume_v14.safetensors",
+      "selected_checkpoint": "final epoch 223",
+      "resumed_from": "waiIllustriousSDXL_v170",
       "rank": 32,
       "alpha": 32,
       "batch_size": 4,
-      "unet_learning_rate": 0.000005,
-      "text_encoder_learning_rate": 0.000001,
-      "epochs_run": 15,
+      "unet_learning_rate": 0.0001,
+      "text_encoder_1_learning_rate": 0.00003,
+      "text_encoder_2_learning_rate": 0.000003,
+      "text_encoder_stop_epoch": 30,
+      "epochs_run": 223,
       "concept_loss_weights": {
-        "curated": 1,
-        "official_cg": 1,
-        "reference": 1.25,
-        "adult_cg": 0.65
+        "safe": 1,
+        "official_qipao": 1,
+        "adult": 0.4
       },
-      "config": "OneTrainer/training_configs/shiki_natsume_v15_continuation_te1.json"
+      "config": "OneTrainer/training_configs/shiki_natsume_v18_wd14_balanced_r18.json"
     },
     "recommended_weight": {
-      "portrait": 0.95,
-      "fullbody": 0.9,
-      "complex_scene": 0.85
+      "portrait": 0.65,
+      "fullbody": 0.65,
+      "complex_scene": 0.62
     },
     "base_model": "waiIllustriousSDXL_v170",
     "trainer": "OneTrainer",
     "outfit_guidance": {
       "official_qipao": [
+        "natsume_official_qipao",
         "red_china_dress",
         "mandarin_collar",
         "gold_trim",
@@ -150,17 +153,17 @@
       ]
     },
     "validation": {
-      "method": "same-seed blinded A/B against official references; face and signature accessories weighted first",
-      "baseline": "production-v14, served from shiki_natsume_v14.safetensors",
-      "matrix": "6 candidates (v14 baseline + e3/e6/e9/e12/e15) x 3 seeds x 4 scenarios = 72 images",
+      "method": "same-seed blinded v15/v17/v18 comparison against official references; face and body weighted first",
+      "baseline": "production shiki_natsume_v15 at 0.90 and rejected v17 at 0.65",
+      "matrix": "v15 0.90, v17 0.65, v18 0.65/0.75 x 3 seeds x 6 scenarios = 72 images",
       "hard_gates": {
         "mean_face_score": 8.5,
         "signature_feature_presence_rate": 0.75,
         "critical_identity_error": 0
       },
-      "evidence": "Reviews/ModelEvaluations/natsume_v15_continuation_te1_gate_2026-07-27/",
-      "scores_recorded": false,
-      "selection_reason": "UNRECORDED - blinded sheets survive but per-candidate scores were never written down; see README cleanup rules"
+      "evidence": "Reviews/ModelEvaluations/natsume_v18_wd14_gate_2026-07-30/final/evaluation-report.md",
+      "scores_recorded": true,
+      "selection_reason": "v18 0.65 kept face identity at least as strong as v17, improved over production v15, passed ordinary fullbody 3/3 and qipao 2/3 with zero safe leakage; R18 fullbody improved from v17 0/3 to 1/3"
     }
   }
 ]

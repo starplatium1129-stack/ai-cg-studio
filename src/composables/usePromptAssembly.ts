@@ -7,6 +7,7 @@ import {
   adaptNegative,
   analyzeParts,
   applyFraming,
+  characterControlTokens,
   checkArtDirection,
   dedupeParts,
   enrichDualPrompt,
@@ -103,9 +104,11 @@ export function usePromptAssembly(
     const traitTags = currentTraits.value
       .filter(trait => pb.manualTags.has(trait.tag))
       .map(trait => trait.tag)
+    const controlTags = characterControlTokens(scene, pb.char, loraIdByChar.value)
     const charLine = pb.charPrompt
     if (charLine) {
-      parts.push({ cls: 'c', text: norm(traitTags.length ? `${charLine}, ${traitTags.join(', ')}` : charLine) })
+      const identityTags = [...controlTags, ...traitTags]
+      parts.push({ cls: 'c', text: norm(identityTags.length ? `${charLine}, ${identityTags.join(', ')}` : charLine) })
     }
 
     // 3) 双人：无场景模板时补构图增强

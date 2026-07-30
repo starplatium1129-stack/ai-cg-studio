@@ -202,6 +202,44 @@ export function sceneRating(scene: unknown): 'R18' | 'R15' | 'ALL' {
   return 'ALL'
 }
 
+/**
+ * 新一代统一角色 LoRA 的显式控制词。成人内容、官方服装都必须由场景
+ * 明确触发，不能仅依赖训练集中的共现关系；旧模型不会收到未学习的新词。
+ */
+export function characterControlTokens(
+  scene: PromptScene | null | undefined,
+  character: string,
+  activeLoras: Record<string, string> = {},
+): string[] {
+  if (!scene) return []
+  const source = normalizeKey([scene.prompt || '', ...(scene.tags || [])].join(','))
+  const controls: string[] = []
+  const includesNene = character === 'nene' || character === 'triad'
+  const includesNatsume = character === 'natsume' || character === 'triad'
+  const neneSupportsControls = /ayachi_nene_v(?:18|19|[2-9]\d)/i.test(activeLoras.nene || '')
+  const natsumeSupportsControls = /shiki_natsume_v(?:17|18|19|[2-9]\d)/i.test(activeLoras.natsume || '')
+
+  if (includesNene && neneSupportsControls) {
+    if (sceneRating(scene) === 'R18') controls.push('nene_r18')
+    if (/(?:nene_witch_canonical|official(?:_ayachi_nene)?_witch|witch_costume)/.test(source)) {
+      controls.push('nene_witch_canonical')
+    } else if (
+      /(?:nene_school_uniform|navy_school_uniform|complete_navy_school_uniform)/.test(source)
+      || (/(?:school_uniform|navy_blazer)/.test(source) && !/(?:magenta|red_cardigan)/.test(source))
+    ) {
+      controls.push('nene_school_uniform')
+    }
+  }
+
+  if (includesNatsume && natsumeSupportsControls) {
+    if (sceneRating(scene) === 'R18') controls.push('natsume_r18')
+    if (/(?:natsume_official_qipao|qipao|cheongsam|china_dress)/.test(source)) {
+      controls.push('natsume_official_qipao')
+    }
+  }
+  return [...new Set(controls)]
+}
+
 function profileRatingTag(profile: ModelProfile | null, scene: unknown): string {
   if (!profile) return ''
   const rating = sceneRating(scene)
@@ -387,7 +425,11 @@ export function resolveLoraSpecs(
   const refs = String(raw).split(',').map(value => {
     const clean = value.trim().replace(/^<lora:/i, '').replace(/>$/, '')
     const parts = clean.split(':')
-    return { name: (parts[0] || '').trim(), explicit: Number(parts[1]) }
+    let name = (parts[0] || '').trim()
+    // 场景库存保留历史版本号时，运行时统一迁移到 characters.json 的正式模型。
+    if (/^ayachi_nene_v\d+/i.test(name) && fallbackByChar.nene) name = fallbackByChar.nene
+    if (/^shiki_natsume_v\d+/i.test(name) && fallbackByChar.natsume) name = fallbackByChar.natsume
+    return { name, explicit: Number(parts[1]) }
   }).filter(item => item.name)
   if (!refs.length) return []
 

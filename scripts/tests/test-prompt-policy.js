@@ -83,4 +83,39 @@ assert.strictEqual(
   'scene template text should remove tags already supplied by scene metadata'
 );
 
+assert.deepStrictEqual(
+  policy.characterControlTokens(
+    { prompt:'ayachi_nene, official_witch_outfit, bedroom', rating:'R18', mature:true },
+    'nene',
+    { nene:'ayachi_nene_v18_wd14' }
+  ),
+  ['nene_r18', 'nene_witch_canonical'],
+  'v18 mature witch scenes must receive both the adult gate and canonical outfit control'
+);
+assert.deepStrictEqual(
+  policy.characterControlTokens(
+    { prompt:'ayachi_nene, navy_blazer, school_uniform' },
+    'nene',
+    { nene:'ayachi_nene_v18_wd14' }
+  ),
+  ['nene_school_uniform'],
+  'canonical school scenes must receive the learned uniform control'
+);
+assert.deepStrictEqual(
+  policy.characterControlTokens(
+    { prompt:'ayachi_nene, nightgown', rating:'R18', mature:true },
+    'nene',
+    { nene:'ayachi_nene_v15' }
+  ),
+  [],
+  'legacy models must not receive control words they never learned'
+);
+const migratedLora = policy.resolveLoraSpecs(
+  'nene',
+  { lora:'ayachi_nene_v15:0.85' },
+  [{ name:'ayachi_nene_v18_wd14', strength:{ default:0.85 } }],
+  { nene:'ayachi_nene_v18_wd14' }
+);
+assert.strictEqual(migratedLora[0].name, 'ayachi_nene_v18_wd14', 'legacy scene LoRA ids must resolve to the promoted model');
+
 console.log('Prompt policy tests passed: production module, scoped BREAK, ratings, framing and analysis');

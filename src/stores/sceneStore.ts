@@ -45,7 +45,7 @@ export interface TagMeta {
  * 以前每个视图各写一个（?v=9 / ?v=6 / 无 / Date.now()），页面间会看到
  * 同一份库的不同快照。
  */
-export const DATA_VERSION = 11
+export const DATA_VERSION = 13
 
 /** 带 response.ok 检查的 JSON 读取 —— 否则 HTML 错误页会被当数据解析 */
 async function loadJson<T>(file: string, fallback: T, version: number): Promise<T> {
