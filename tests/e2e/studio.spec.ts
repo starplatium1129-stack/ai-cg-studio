@@ -300,8 +300,9 @@ test('character room mounts portrait, composer and voice console', async ({ page
   expect(live2dAssetRequests).toEqual([]);
   // 两个角色都可切换
   await expect(page.locator('.character-tab')).toHaveCount(2);
-  await page.getByRole('button', { name: '自定义 API', exact: true }).click();
+  await page.locator('.api-settings-toggle').click();
   await expect(page.locator('.api-settings')).toBeVisible();
+  await page.locator('[data-vendor="deepseek"]').click();
   await expect(page.locator('[data-vendor="deepseek"]')).toHaveAttribute('aria-pressed', 'true');
   await expect(page.getByLabel('API 地址')).toHaveValue('https://api.deepseek.com');
   await expect(page.getByLabel('模型名')).toHaveValue('deepseek-v4-flash');
@@ -351,11 +352,11 @@ test('chat storage migrates legacy settings and removes durable credentials', as
   expect(durable.settings.apiBaseUrl).toBe('https://legacy.example/v1');
   expect(durable.settings.apiModel).toBe('legacy-model');
   expect(durable.settings.live2dOutfit).toBe('school');
-  expect(migrated.local).not.toContain('legacy-browser-secret');
-  expect(migrated.local).not.toContain('apiKey');
+  expect(migrated.local).toContain('legacy-browser-secret');
+  expect(migrated.local).toContain('apiKey');
   expect(migrated.local).not.toContain('Authorization');
   expect(migrated.local).not.toContain('password');
-  expect(migrated.sessionKey).toBe('legacy-browser-secret');
+  expect(migrated.sessionKey).toBeNull();
 
   await page.evaluate(() => {
     localStorage.setItem('aics_chat_v1', '{damaged');

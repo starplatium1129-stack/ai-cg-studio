@@ -78,11 +78,12 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 
-type ApiVendor = 'deepseek' | 'opencode' | 'opencode-go' | 'custom'
+type ApiVendor = 'cliproxy' | 'deepseek' | 'opencode' | 'opencode-go' | 'custom'
 interface ModelOption { value: string; label: string }
 interface VendorOption { value: ApiVendor; label: string; note: string }
 
 const VENDOR_OPTIONS: VendorOption[] = [
+  { value: 'cliproxy', label: '本地 Gemini', note: 'CLIProxyAPI 多账号' },
   { value: 'deepseek', label: 'DeepSeek', note: '官方' },
   { value: 'opencode', label: 'OpenCode Zen', note: '免费模型' },
   { value: 'opencode-go', label: 'OpenCode Go', note: '高速通道' },
@@ -90,6 +91,12 @@ const VENDOR_OPTIONS: VendorOption[] = [
 ]
 
 const PRESET_MODELS: Record<Exclude<ApiVendor, 'custom'>, ModelOption[]> = {
+  cliproxy: [
+    { value: 'gemini-3.6-flash-high', label: 'Gemini 3.6 Flash High · 日常聊天推荐' },
+    { value: 'gemini-3.5-flash-low', label: 'Gemini 3.5 Flash · 更省额度' },
+    { value: 'gemini-3.1-pro-low', label: 'Gemini 3.1 Pro · 复杂问题' },
+    { value: 'gpt-5.4-mini', label: 'GPT-5.4 Mini · Codex 账号' },
+  ],
   deepseek: [
     { value: 'deepseek-v4-flash', label: 'DeepSeek V4 Flash · 推荐' },
     { value: 'deepseek-v4-pro', label: 'DeepSeek V4 Pro · 更强' },
@@ -175,6 +182,10 @@ function selectVendor(vendor: ApiVendor) {
   if (vendor === 'deepseek') {
     emit('update:baseUrl', 'https://api.deepseek.com')
     emit('update:model', 'deepseek-v4-flash')
+  } else if (vendor === 'cliproxy') {
+    emit('update:baseUrl', 'http://127.0.0.1:8317/v1')
+    emit('update:model', 'gemini-3.6-flash-high')
+    emit('update:apiKey', 'sk-local-proxy-key-2024')
   } else if (vendor === 'opencode') {
     emit('update:baseUrl', 'https://opencode.ai/zen/v1')
     emit('update:model', 'deepseek-v4-flash-free')

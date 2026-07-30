@@ -147,6 +147,12 @@
 
           <div class="composer-tools">
             <div class="voice-console" aria-label="角色声线控制">
+              <label v-if="chatProvider === 'api' && apiModel.startsWith('gemini-')" class="voice-toggle">
+                <input type="checkbox" v-model="webSearchEnabled" />
+                <span class="voice-switch" aria-hidden="true"><span></span></span>
+                <span class="voice-toggle-copy"><strong>联网检索</strong><small>用 Google Search 补充近期信息</small></span>
+              </label>
+              <span v-if="chatProvider === 'api' && apiModel.startsWith('gemini-')" class="voice-divider" aria-hidden="true"></span>
               <label class="voice-toggle">
                 <input type="checkbox" v-model="autoVoice" @change="onAutoVoiceChange" />
                 <span class="voice-switch" aria-hidden="true"><span></span></span>
@@ -271,6 +277,10 @@ const voice = useVoice({
 const currentCharacter = computed(() => CHARACTERS[activeChar.value] || CHARACTERS.nene)
 
 const currentMessages = computed(() => storage.messages(activeChar.value))
+const webSearchEnabled = computed({
+  get: () => storage.state.settings.webSearchEnabled,
+  set: value => storage.setWebSearchEnabled(value),
+})
 const setupTitle = computed(() => {
   if (preparingRoom.value) return '正在准备角色房间'
   if (chatProvider.value === 'api' && !apiConfigured.value) return '还没有配置自定义 API'
@@ -351,6 +361,7 @@ const {
   apiBaseUrl,
   apiModel,
   apiKey,
+  webSearchEnabled,
   setBusy,
   onError: setError,
   nearBottom,

@@ -21,6 +21,8 @@ export interface PersistedChatState {
     provider: 'local' | 'api'
     apiBaseUrl: string
     apiModel: string
+    apiKey: string
+    webSearchEnabled: boolean
     live2dEnabled: boolean
     live2dOutfit: string
     autoVoice: boolean
@@ -102,14 +104,19 @@ export function normalizeChatStorage(
       histories: normalizedHistories,
       settings: {
         model: text(settings.model, 200) || text(raw.model, 200) || text(legacyModel, 200),
-        provider: providerCandidate === 'api' ? 'api' : 'local',
+        provider: providerCandidate === 'local' ? 'local' : 'api',
         apiBaseUrl: text(settings.apiBaseUrl, 500)
           || text(settings.baseUrl, 500)
           || text(legacyApi.baseUrl, 500)
-          || 'https://api.deepseek.com',
+          || 'http://127.0.0.1:8317/v1',
         apiModel: text(settings.apiModel, 200)
           || text(legacyApi.model, 200)
-          || 'deepseek-v4-flash',
+          || 'gemini-3.6-flash-high',
+        apiKey: text(settings.apiKey, 1000)
+          || text(raw.apiKey, 1000)
+          || text(legacyApi.apiKey, 1000)
+          || 'sk-local-proxy-key-2024',
+        webSearchEnabled: settings.webSearchEnabled !== false,
         live2dEnabled: settings.live2dEnabled === true,
         live2dOutfit: LIVE2D_OUTFIT_IDS.has(outfitCandidate) ? outfitCandidate : 'school',
         autoVoice: settings.autoVoice !== false,
@@ -117,11 +124,7 @@ export function normalizeChatStorage(
         drafts: normalizedDrafts,
       },
     },
-    // Legacy versions persisted credentials in localStorage. The composable moves
-    // this value into sessionStorage, then rewrites durable data through an allowlist.
-    migratedApiKey: text(settings.apiKey, 1000)
-      || text(raw.apiKey, 1000)
-      || text(legacyApi.apiKey, 1000),
+    migratedApiKey: '',
   }
 }
 

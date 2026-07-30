@@ -82,6 +82,7 @@ function validateChatBody(body) {
       provider:provider,
       model:requestedModel,
       api:api,
+      webSearch:body && body.webSearch === true,
       messages:[{ role:'system', content:chatCharacterPrompt(character) }].concat(messages)
     }
   };
@@ -145,7 +146,8 @@ async function streamCompatibleApi(input, handlers) {
       model:api.model,
       messages:input.messages,
       stream:true
-    }, api.vendor === 'deepseek' ? { thinking:{ type:'disabled' } } : {}),
+    }, api.vendor === 'deepseek' ? { thinking:{ type:'disabled' } } : {},
+    input.webSearch && /^gemini-/i.test(api.model) ? { tools:[{ google_search:{} }] } : {}),
     signal:input.signal,
     timeoutMs:120000,
     timeoutMessage:'自定义 API 对话超时'
@@ -325,6 +327,7 @@ function createChatRouter(config, dependencies) {
       character:validation.value.character,
       model:validation.value.model,
       api:validation.value.api,
+      webSearch:validation.value.webSearch,
       messages:validation.value.messages,
       signal:controller.signal
     }, {

@@ -45,11 +45,15 @@ assert.strictEqual(migrated.state.settings.drafts.natsume, 'remembered draft');
 assert.deepStrictEqual(migrated.state.histories.natsume.map(message => message.content), ['second', 'third']);
 assert.strictEqual(migrated.state.histories.natsume[0].mid, 'legacy-mid');
 assert.strictEqual(migrated.state.histories.natsume[1].mid, 'generated-id');
-assert.strictEqual(migrated.migratedApiKey, 'legacy-secret');
+assert.strictEqual(migrated.state.settings.apiKey, 'legacy-secret');
+assert.strictEqual(migrated.state.settings.webSearchEnabled, true);
+assert.strictEqual(migrated.migratedApiKey, '');
 
 const durable = core.serializeChatStorage(migrated.state);
-assert(!/legacy-secret|apiKey|password|Authorization|headers/.test(durable),
-  'durable chat storage must never retain credentials or custom authorization fields');
+assert(/"apiKey":"legacy-secret"/.test(durable),
+  'explicitly persisted local chat configuration must retain its API key');
+assert(!/password|Authorization|headers/.test(durable),
+  'durable chat storage must still discard unknown secrets and custom authorization fields');
 
 const damaged = core.normalizeChatStorage({
   version:'broken',
@@ -68,9 +72,11 @@ const damaged = core.normalizeChatStorage({
 assert.strictEqual(damaged.state.version, 3);
 assert.strictEqual(damaged.state.active, 'nene');
 assert.deepStrictEqual(damaged.state.histories, { nene:[], natsume:[] });
-assert.strictEqual(damaged.state.settings.provider, 'local');
-assert.strictEqual(damaged.state.settings.apiBaseUrl, 'https://api.deepseek.com');
-assert.strictEqual(damaged.state.settings.apiModel, 'deepseek-v4-flash');
+assert.strictEqual(damaged.state.settings.provider, 'api');
+assert.strictEqual(damaged.state.settings.apiBaseUrl, 'http://127.0.0.1:8317/v1');
+assert.strictEqual(damaged.state.settings.apiModel, 'gemini-3.6-flash-high');
+assert.strictEqual(damaged.state.settings.apiKey, 'sk-local-proxy-key-2024');
+assert.strictEqual(damaged.state.settings.webSearchEnabled, true);
 assert.strictEqual(damaged.state.settings.live2dOutfit, 'school');
 assert.strictEqual(damaged.state.settings.volume, 100);
 assert.deepStrictEqual(damaged.state.settings.drafts, { nene:'', natsume:'' });
@@ -79,4 +85,4 @@ assert.strictEqual(damaged.migratedApiKey, '');
 const current = core.normalizeChatStorage(JSON.parse(durable), 'ignored-model', options);
 assert.deepStrictEqual(current.state, migrated.state, 'current chat storage must round-trip without drift');
 
-console.log('Chat storage tests passed: migration, damaged recovery, and durable secret cleanup');
+console.log('Chat storage tests passed: migration, durable local configuration, and damaged recovery');

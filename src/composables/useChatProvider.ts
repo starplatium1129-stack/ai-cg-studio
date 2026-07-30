@@ -2,7 +2,7 @@ import { computed, ref, type Ref } from 'vue'
 import { useChatStorage, type ChatState } from '@/composables/useChatStorage'
 import { parseChatStatus, type ChatModel } from '@/utils/chatStatus'
 
-export type ApiVendor = 'deepseek' | 'opencode' | 'opencode-go' | 'custom'
+export type ApiVendor = 'cliproxy' | 'deepseek' | 'opencode' | 'opencode-go' | 'custom'
 type ChatStorage = ReturnType<typeof useChatStorage>
 
 interface ChatProviderOptions {
@@ -33,6 +33,7 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
     const savedApiBase = apiBaseUrl.value.replace(/\/+$/, '')
     apiVendor.value = savedApiBase === 'https://api.deepseek.com'
       ? 'deepseek'
+      : savedApiBase === 'http://127.0.0.1:8317/v1' ? 'cliproxy'
       : savedApiBase === 'https://opencode.ai/zen/v1' ? 'opencode'
         : savedApiBase === 'https://opencode.ai/zen/go/v1' ? 'opencode-go' : 'custom'
     apiSettingsOpen.value = chatProvider.value === 'api' && !apiModel.value

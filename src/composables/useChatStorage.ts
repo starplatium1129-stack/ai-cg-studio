@@ -6,8 +6,6 @@ import {
   normalizeChatStorage, serializeChatStorage, type PersistedChatState,
 } from '@/utils/chatStorageCore'
 
-export const CHAT_API_KEY_SESSION_KEY = 'aics_chat_api_key_v1'
-
 export interface ChatMessage {
   role: 'user' | 'assistant'
   content: string
@@ -25,6 +23,7 @@ export interface ChatState {
     apiBaseUrl: string
     apiModel: string
     apiKey: string
+    webSearchEnabled: boolean
     live2dEnabled: boolean
     live2dOutfit: string
     autoVoice: boolean
@@ -40,10 +39,11 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     histories: Object.fromEntries(Object.keys(CHARACTERS).map(k => [k, []])),
     settings: {
       model: '',
-      provider: 'local',
-      apiBaseUrl: 'https://api.deepseek.com',
-      apiModel: 'deepseek-v4-flash',
-      apiKey: '',
+      provider: 'api',
+      apiBaseUrl: 'http://127.0.0.1:8317/v1',
+      apiModel: 'gemini-3.6-flash-high',
+      apiKey: 'sk-local-proxy-key-2024',
+      webSearchEnabled: true,
       live2dEnabled: false,
       live2dOutfit: 'school',
       autoVoice: true,
@@ -59,22 +59,6 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     createMessageId,
   }
 
-  function sessionStore(): Storage | null {
-    try { return typeof sessionStorage === 'undefined' ? null : sessionStorage } catch { return null }
-  }
-
-  function readSessionApiKey(): string {
-    try { return sessionStore()?.getItem(CHAT_API_KEY_SESSION_KEY) || '' } catch { return '' }
-  }
-
-  function writeSessionApiKey(value: string) {
-    try {
-      const session = sessionStore()
-      if (value) session?.setItem(CHAT_API_KEY_SESSION_KEY, value)
-      else session?.removeItem(CHAT_API_KEY_SESSION_KEY)
-    } catch {}
-  }
-
   function applyPersisted(persisted: PersistedChatState) {
     state.version = persisted.version
     state.active = persisted.active
@@ -86,6 +70,8 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     state.settings.provider = persisted.settings.provider
     state.settings.apiBaseUrl = persisted.settings.apiBaseUrl
     state.settings.apiModel = persisted.settings.apiModel
+    state.settings.apiKey = persisted.settings.apiKey
+    state.settings.webSearchEnabled = persisted.settings.webSearchEnabled
     state.settings.live2dEnabled = persisted.settings.live2dEnabled
     state.settings.live2dOutfit = persisted.settings.live2dOutfit
     state.settings.autoVoice = persisted.settings.autoVoice
@@ -102,6 +88,8 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
         provider: state.settings.provider,
         apiBaseUrl: state.settings.apiBaseUrl,
         apiModel: state.settings.apiModel,
+        apiKey: state.settings.apiKey,
+        webSearchEnabled: state.settings.webSearchEnabled,
         live2dEnabled: state.settings.live2dEnabled,
         live2dOutfit: state.settings.live2dOutfit,
         autoVoice: state.settings.autoVoice,
@@ -122,18 +110,14 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
       )
       applyPersisted(normalized.state)
 
-      const sessionKey = readSessionApiKey()
-      state.settings.apiKey = String(sessionKey || normalized.migratedApiKey).trim().slice(0, 1000)
-      writeSessionApiKey(state.settings.apiKey)
+      state.settings.apiKey = String(normalized.state.settings.apiKey || normalized.migratedApiKey).trim().slice(0, 1000)
 
-      // Rewriting existing records through the allowlist removes legacy API keys,
-      // custom authorization headers, tokens and unknown fields from localStorage.
+      // Rewriting existing records through the allowlist removes unsupported
+      // authorization headers, tokens and unknown fields from localStorage.
       if (stored) localStorage.setItem(STORAGE_KEY, serializeChatStorage(persistedState()))
     } catch {
       const clean = normalizeChatStorage({}, '', normalizeOptions).state
       applyPersisted(clean)
-      state.settings.apiKey = ''
-      writeSessionApiKey('')
       try { localStorage.setItem(STORAGE_KEY, serializeChatStorage(clean)) } catch {}
       onError('本地聊天记录损坏，已恢复为空白会话。')
     }
@@ -144,7 +128,6 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
       state.version = STORAGE_VERSION
       localStorage.setItem(STORAGE_KEY, serializeChatStorage(persistedState()))
       localStorage.setItem('aics_chat_model', state.settings.model || '')
-      writeSessionApiKey(state.settings.apiKey)
     } catch {
       onError('浏览器存储空间不足，本轮聊天可能无法长期保存。')
     }
@@ -163,6 +146,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     state.settings.apiKey = String(settings.apiKey || '').trim().slice(0, 1000)
     save()
   }
+  function setWebSearchEnabled(value: boolean) { state.settings.webSearchEnabled = Boolean(value); save() }
   function setLive2dEnabled(value: boolean) { state.settings.live2dEnabled = Boolean(value); save() }
   function setLive2dOutfit(value: string) {
     state.settings.live2dOutfit = String(value || 'school').slice(0, 40)
@@ -188,7 +172,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
 
   return {
     state, load, save, messages,
-    setActive, setModel, setProvider, setApiSettings,
+    setActive, setModel, setProvider, setApiSettings, setWebSearchEnabled,
     setLive2dEnabled, setLive2dOutfit, setAutoVoice, setVolume, draft, setDraft, trim, clear,
   }
 }

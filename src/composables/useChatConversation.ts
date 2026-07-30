@@ -23,6 +23,7 @@ interface ChatConversationOptions {
   apiBaseUrl: Ref<string>
   apiModel: Ref<string>
   apiKey: Ref<string>
+  webSearchEnabled: Ref<boolean>
   setBusy: (value: boolean) => void
   onError: (message: string, kind?: string, timeout?: number) => void
   nearBottom: () => boolean
@@ -96,6 +97,7 @@ export function useChatConversation(options: ChatConversationOptions) {
             model: options.apiModel.value,
             apiKey: options.apiKey.value,
           } : undefined,
+          webSearch: options.chatProvider.value === 'api' && options.webSearchEnabled.value,
           messages: messages.slice(0, -1).map(message => ({ role: message.role, content: message.content })),
         }),
         signal: controller.signal,
