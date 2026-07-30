@@ -93,6 +93,10 @@ function loadGatewayConfig(rootDir, env) {
 
   return {
     ROOT_DIR:rootDir,
+    // The sibling AI workspace contains the local LoRA and voice assets.  It
+    // is only used by the local training API; the browser never supplies this
+    // path.
+    AI_WORKSPACE_ROOT:path.resolve(env.AI_WORKSPACE_ROOT || path.join(rootDir, '..', 'AI')),
     RUNTIME:runtime,
     RUNTIME_ROOT:runtime.root,
     PORT:boundedInteger(env.PORT, 3000, 1, 65535),

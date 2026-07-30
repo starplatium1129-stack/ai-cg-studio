@@ -17,6 +17,7 @@
     "services/tts-service.ts",
     "services/ollama-service.ts",
     "services/translation-service.ts",
-    "services/live2d-service.ts"
+    "services/live2d-service.ts",
+    "services/training-service.ts"
   ]
 }

@@ -14,6 +14,7 @@ var createVoiceRouter = require('./routes/voice').createVoiceRouter;
 var createLive2dRouter = require('./routes/live2d').createLive2dRouter;
 var createMaintenanceRouter = require('./routes/maintenance').createMaintenanceRouter;
 var createControlRouter = require('./routes/control').createControlRouter;
+var createTrainingRouter = require('./routes/training').createTrainingRouter;
 
 var ONE_DAY = 24 * 60 * 60 * 1000;
 var ONE_WEEK = 7 * ONE_DAY;
@@ -127,6 +128,7 @@ function createGateway(options) {
   var voice = createVoiceRouter(config, options.services);
   var live2d = createLive2dRouter(config, options.services);
   var maintenance = createMaintenanceRouter(config);
+  var training = createTrainingRouter(config, options.services);
 
   // 控制面板路由需要访问 gateway 对象（tunnelUrl、startTunnel/stopTunnel）
   // 用闭包延迟引用，避免循环依赖
@@ -138,6 +140,7 @@ function createGateway(options) {
   app.use(live2d.router);
   app.use(maintenance.router);
   app.use(control);
+  app.use(training.router);
 
   app.get('/api/health', function (req, res) {
     var live2dStatus = live2d.service.status();
@@ -396,6 +399,7 @@ function createGateway(options) {
 
   function close() {
     voice.close();
+    training.close();
     stopTunnel();
   }
 
@@ -431,7 +435,13 @@ function createGateway(options) {
   return {
     app:app,
     config:config,
-    services:{ chat:chat.service, tts:voice.tts, translation:voice.translation, live2d:live2d.service },
+    services:{
+      chat:chat.service,
+      tts:voice.tts,
+      translation:voice.translation,
+      live2d:live2d.service,
+      training:training.service
+    },
     startTunnel:startTunnel,
     handleUpgrade:handleUpgrade,
     close:close

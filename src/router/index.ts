@@ -41,6 +41,7 @@ const router = createRouter({
         { path: 'character',      name: 'character',     component: () => import('@/views/CharacterView.vue') },
         { path: 'style',          name: 'style',         component: () => import('@/views/StyleView.vue') },
         { path: 'lora',           name: 'lora',          component: () => import('@/views/LoraView.vue') },
+        { path: 'training',       name: 'training',      component: () => import('@/views/TrainingView.vue') },
         { path: 'scene-manager',  name: 'manager',       component: () => import('@/views/SceneManagerView.vue') },
         { path: 'color-script',   name: 'color-script',  component: () => import('@/views/ColorScriptView.vue') },
         { path: 'scenario',       name: 'scenario',      component: () => import('@/views/ScenarioView.vue') },
