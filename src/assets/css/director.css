@@ -145,8 +145,9 @@
   }
   .pb .stage-ready { display:flex; align-items:center; gap:var(--s-2); }
   .pb .stage-ready::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--success); box-shadow:0 0 10px color-mix(in srgb,var(--success) 50%,transparent); }
-  .pb .stage-muse { position:absolute; z-index:var(--z-base); right:-12%; bottom:-3%; width:52%; height:92%; object-fit:contain; object-position:center bottom; opacity:0; filter:saturate(.72) contrast(.94); pointer-events:none; transition:opacity .5s ease,filter .5s ease,transform .5s var(--ease-out); -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 28%,#000 100%); mask-image:linear-gradient(180deg,transparent 0%,#000 28%,#000 100%); }
-  .pb[data-character="nene"] .stage-muse.nene, .pb[data-character="natsume"] .stage-muse.natsume { opacity:.22; }
+  .pb .stage-muse { position:absolute; z-index:var(--z-base); right:-12%; bottom:-3%; width:52%; height:92%; object-fit:contain; object-position:center bottom; opacity:0; filter:saturate(.76) contrast(.96); pointer-events:none; transition:opacity .5s ease,filter .5s ease,transform .5s var(--ease-out); -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 28%,#000 100%); mask-image:linear-gradient(180deg,transparent 0%,#000 28%,#000 100%); }
+  @keyframes stageMuseBreath { 0% { transform: translateY(0) scale(1); filter: saturate(.76) contrast(.96); } 100% { transform: translateY(-7px) scale(1.018); filter: saturate(.88) contrast(1.02); } }
+  .pb[data-character="nene"] .stage-muse.nene, .pb[data-character="natsume"] .stage-muse.natsume { opacity:.34; animation: stageMuseBreath 6s ease-in-out infinite alternate; }
   .pb[data-character="natsume"] .stage-placeholder {
     background:
       radial-gradient(circle at 68% 22%,color-mix(in srgb,var(--accent) 18%,transparent),transparent 38%),
@@ -285,7 +286,8 @@
   .pb .char-btn:hover { border-color: var(--accent); color: var(--accent); }
   .pb .char-btn.active { border-color: var(--accent); background: var(--accent-soft); color: var(--text-primary); box-shadow: var(--glow-sm); }
   .pb .traits-row { display: flex; gap: var(--s-2); flex-wrap: wrap; margin-top: var(--s-3); }
-  .pb .trait-chip { padding: 3px var(--s-3); background: var(--bg-elevated); border:0; border-radius: var(--r-pill); font:inherit; font-size: var(--fs-label-sm); color: var(--text-secondary); cursor:pointer; }
+  .pb .trait-chip { padding: 3px var(--s-3); background: color-mix(in srgb, var(--bg-elevated) 88%, var(--accent-soft)); border: 1px solid color-mix(in srgb, var(--border-soft) 80%, var(--accent-soft)); border-radius: var(--r-pill); font:inherit; font-size: var(--fs-label-sm); color: var(--text-primary); cursor:pointer; transition: border-color var(--t-fast), color var(--t-fast), background var(--t-fast), box-shadow var(--t-fast); }
+  .pb .trait-chip:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); box-shadow: 0 0 10px var(--accent-glow); }
   .pb .traits-row:empty { margin-top: 0; }
 
   /* Scene library (compact list) */
@@ -338,7 +340,7 @@
   .pb .cat-tab.active { background: var(--accent); border-color: var(--accent); color: var(--bg-deep); }
   .pb .tag-pool { display: flex; flex-wrap: wrap; gap: 4px; }
   /* 2px 纵向内距:tag 池密度很高,升到 4px 会让 tag-pool 高出一行,故保留 */
-  .pb .tag-chip { padding: 2px var(--s-2); background: var(--bg-elevated); border: 1px solid var(--border-soft); border-radius: var(--r-pill); font: 400 var(--fs-mono-sm) var(--font-sans); color: var(--text-secondary); cursor: pointer; transition: border-color var(--t-fast),color var(--t-fast),background var(--t-fast),transform var(--t-fast) var(--ease-out); }
+  .pb .tag-chip { padding: 2px var(--s-2); background: color-mix(in srgb, var(--bg-elevated) 90%, var(--bg-surface)); border: 1px solid color-mix(in srgb, var(--border-soft) 85%, var(--accent-soft)); border-radius: var(--r-pill); font: 400 var(--fs-mono-sm) var(--font-sans); color: color-mix(in srgb, var(--text-primary) 92%, var(--text-secondary)); cursor: pointer; transition: border-color var(--t-fast),color var(--t-fast),background var(--t-fast),transform var(--t-fast) var(--ease-out),box-shadow var(--t-fast); }
   .pb .tag-chip:hover { border-color: var(--accent); color: var(--accent); }
   .pb .tag-chip.active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
   .pb .tag-chip.banned { color: var(--danger-text); border-color: color-mix(in srgb, var(--danger) 30%, transparent); text-decoration: line-through; opacity: 0.7; }

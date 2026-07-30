@@ -87,6 +87,12 @@ async function toggle(page: Page, target: string | Locator, on: boolean) {
   await expect(input).toBeChecked({ checked: on });
 }
 
+async function useLocalChat(page: Page) {
+  const button = page.getByRole('button', { name: '本地模型', exact: true });
+  if (await button.getAttribute('aria-pressed') !== 'true') await button.click();
+  await expect(button).toHaveAttribute('aria-pressed', 'true');
+}
+
 // 浏览器上下文按用例隔离，localStorage / IndexedDB 天然是空的 ——
 // 不要在 addInitScript 里清库：那会在 restore() 触发的 reload 上再清一次。
 test.beforeEach(async ({ request }) => {
@@ -270,9 +276,10 @@ test('flow 2b · 配音失败：GPT-SoVITS 502 带出真实原因而不是"不�
 test('flow 3 · 聊天：流式回复逐字到达，system prompt 由网关注入', async ({ page, request }) => {
   const errors = collectRuntimeErrors(page);
   await page.goto('/chat');
+  await useLocalChat(page);
 
   // 关掉实时配音：这条用例只测聊天流
-  await toggle(page, '.voice-toggle input[type="checkbox"]', false);
+  await toggle(page, page.getByRole('checkbox', { name: /实时配音/ }), false);
   await expect(page.locator('.model-select')).toBeEnabled();
   await expect(page.locator('.character-status')).toContainText('本地聊天模型已连接');
 
@@ -301,7 +308,8 @@ test('flow 3 · 聊天：流式回复逐字到达，system prompt 由网关注�
 
 test('flow 3b · 聊天配音：开启实时配音后逐句走翻译 + TTS', async ({ page, request }) => {
   await page.goto('/chat');
-  await toggle(page, '.voice-toggle input[type="checkbox"]', true);
+  await useLocalChat(page);
+  await toggle(page, page.getByRole('checkbox', { name: /实时配音/ }), true);
   await expect(page.locator('.voice-capability')).toHaveAttribute('data-state', 'ready');
 
   await page.locator('.chat-input').fill('陪我说说话');
@@ -322,7 +330,8 @@ test('flow 3b · 聊天配音：开启实时配音后逐句走翻译 + TTS', asy
 test('flow 3c · 聊天配音：舞台提示保留显示但不进入朗读', async ({ page, request }) => {
   await fault(request, MOCK.ollama, { reply: '（稍微有点慌乱）诶、和我一起看吗……' });
   await page.goto('/chat');
-  await toggle(page, '.voice-toggle input[type="checkbox"]', true);
+  await useLocalChat(page);
+  await toggle(page, page.getByRole('checkbox', { name: /实时配音/ }), true);
   await expect(page.locator('.voice-capability')).toHaveAttribute('data-state', 'ready');
 
   await page.locator('.chat-input').fill('一起看恐怖片吗？');
@@ -341,7 +350,8 @@ test('flow 3d · 聊天中断：停止后已生成的片段保留并标记', asy
   // 拉长上游延迟，好在流中途按停止
   await fault(request, MOCK.ollama, { latency: 400 });
   await page.goto('/chat');
-  await toggle(page, '.voice-toggle input[type="checkbox"]', false);
+  await useLocalChat(page);
+  await toggle(page, page.getByRole('checkbox', { name: /实时配音/ }), false);
   await expect(page.locator('.model-select')).toBeEnabled();
 
   await page.locator('.chat-input').fill('讲个长故事');

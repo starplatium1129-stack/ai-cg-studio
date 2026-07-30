@@ -368,7 +368,7 @@ test('chat storage migrates legacy settings and removes durable credentials', as
   expect(recovered.version).toBe(3);
   expect(recovered.active).toBe('nene');
   expect(recovered.histories).toEqual({ nene: [], natsume: [] });
-  expect(recovered.settings.provider).toBe('local');
+  expect(recovered.settings.provider).toBe('api');
   expect(recovered.settings.live2dOutfit).toBe('school');
 });
 

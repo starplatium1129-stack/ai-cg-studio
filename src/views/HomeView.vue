@@ -234,8 +234,8 @@ const featuredScenes = ref<HomeScene[]>([])
 const sceneStore = useSceneStore()
 const coverUrls = reactive<Record<string, string>>({})
 const heroAssets = reactive({
-  nene: '/assets/characters/nene-home-cg.jpg',
-  natsume: '/assets/characters/natsume-home-cg.jpg',
+  nene: '/assets/characters/nene-home-cg-1024.webp',
+  natsume: '/assets/characters/natsume-home-cg-1024.webp',
 })
 /** 卸载标记：异步 imgGet 回来时组件可能已经没了 */
 let unmounted = false
