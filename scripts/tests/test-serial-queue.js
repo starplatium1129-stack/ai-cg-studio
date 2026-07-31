@@ -3,6 +3,9 @@
 const assert = require('assert');
 const SerialQueue = require('../../services/serial-queue');
 
+const { test } = require('node:test');
+
+test("Serial queue tests passed: FIFO order, wait context, failure isolation, admission control, and abort dequeue", () => {
 const queue = new SerialQueue('test-queue');
 assert.deepStrictEqual(queue.status(), { name: 'test-queue', active: 0, pending: 0, maxPending: 16 });
 
@@ -107,3 +110,5 @@ function checkAbortDequeue() {
     assert.strictEqual(q.status().pending, 0, 'aborted job must leave the queue');
   });
 }
+
+});

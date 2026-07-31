@@ -1,5 +1,8 @@
 'use strict';
 
+const { test } = require('node:test');
+
+test("showcase", () => {
 /**
  * 效果样张页契约（Vue SPA 版本）
  *
@@ -169,7 +172,4 @@ if (fs.existsSync(showcaseRoot)) {
   }
 }
 
-console.log(
-  'Showcase tests passed: manifest loading, ratio-safe art wall, blurred R18 browsing, '
-  + `director links, teleported viewer styles, routing, and ${checkedAssets} approved assets`,
-);
+});

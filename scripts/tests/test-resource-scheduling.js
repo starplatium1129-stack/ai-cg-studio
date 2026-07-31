@@ -1,5 +1,8 @@
 'use strict';
 
+const { test } = require('node:test');
+
+test("Resource scheduling tests passed: VRAM modes, service controls, persistent translation, Ollama keep_alive, tunnel opt-in", () => {
 /**
  * 显存资源调度契约
  *
@@ -110,4 +113,4 @@ assert(
 assert(controlView.includes('startPolling()'), 'control panel must begin health polling as soon as it opens');
 assert(!/\son(click|change|input)=/.test(controlView), 'control panel must not use inline HTML event attributes');
 
-console.log('Resource scheduling tests passed: VRAM modes, service controls, persistent translation, Ollama keep_alive, tunnel opt-in');
+});

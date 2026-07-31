@@ -3,6 +3,9 @@
 const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
+const { test } = require('node:test');
+
+test("Character profile tests passed: boundary parsing, scene records, and typed views", () => {
 const {
   parseCharacterProfiles,
   parseCharacterScenes,
@@ -52,4 +55,4 @@ assert(
   'ScenarioView must keep its static scenario and character contracts explicit',
 );
 
-console.log('Character profile tests passed: boundary parsing, scene records, and typed views');
+});

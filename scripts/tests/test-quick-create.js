@@ -1,6 +1,9 @@
 const assert = require('assert');
 const quick = require('../../src/utils/quickCreate.ts');
 
+const { test } = require('node:test');
+
+test("Quick create tests passed against the production TypeScript module", () => {
 const memory = new Map();
 const storage = { getItem:(key) => memory.has(key) ? memory.get(key) : null, setItem:(key, value) => memory.set(key, value) };
 const saved = quick.writeQuickCreate({
@@ -25,4 +28,4 @@ assert(quick.quickCreateSummary(saved).includes('anime-v1') && quick.quickCreate
 assert.strictEqual(quick.quickCreateUrl('sc 002'), '/prompt-builder?scene=sc%20002&quick=1', 'quick URL must encode scene ids');
 assert.strictEqual(quick.normalizeQuickCreate({}), null, 'empty settings must not be considered successful');
 
-console.log('Quick create tests passed against the production TypeScript module');
+});

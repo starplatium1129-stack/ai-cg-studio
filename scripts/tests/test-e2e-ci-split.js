@@ -4,6 +4,9 @@ const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
 
+const { test } = require('node:test');
+
+test("E2E CI split tests passed: critical PR paths and nightly visual matrix stay separated", () => {
 const root = path.resolve(__dirname, '..', '..');
 const pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
 const quality = fs.readFileSync(path.join(root, '.github', 'workflows', 'quality.yml'), 'utf8');
@@ -39,4 +42,4 @@ assert.match(nightly, /workflow_dispatch:/);
 assert.match(nightly, /npm run test:e2e:nightly:run/);
 assert.match(nightly, /Upload visual review screenshots/);
 
-console.log('E2E CI split tests passed: critical PR paths and nightly visual matrix stay separated');
+});

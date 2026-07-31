@@ -3,6 +3,9 @@
 const assert = require('assert');
 const core = require('../../src/utils/chatStorageCore.ts');
 
+const { test } = require('node:test');
+
+test("Chat storage tests passed: migration, durable local configuration, and damaged recovery", () => {
 const options = {
   characterIds:['nene', 'natsume'],
   maxMessages:2,
@@ -85,4 +88,4 @@ assert.strictEqual(damaged.migratedApiKey, '');
 const current = core.normalizeChatStorage(JSON.parse(durable), 'ignored-model', options);
 assert.deepStrictEqual(current.state, migrated.state, 'current chat storage must round-trip without drift');
 
-console.log('Chat storage tests passed: migration, durable local configuration, and damaged recovery');
+});

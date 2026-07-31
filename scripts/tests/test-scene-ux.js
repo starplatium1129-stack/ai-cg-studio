@@ -1,6 +1,9 @@
 const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
+const { test } = require('node:test');
+
+test("Scene UX tests passed: tiers, sentence search, relevance, preferences, recent scenes, and local usage", () => {
 const { readJson } = require('../runtime/scene-store');
 // scene-ux 已迁到 src/utils/sceneUX.ts。
 // Node 22+ 支持直接 require TS（自动剥离类型），无需为测试维护 CJS 副本。
@@ -146,4 +149,4 @@ assert.deepStrictEqual(JSON.parse(legacyUsageMemory.get(sceneUx.SCENE_USAGE_KEY)
   records:{},
 }, 'damaged scene usage must be replaced by a valid current envelope');
 
-console.log('Scene UX tests passed: tiers, sentence search, relevance, preferences, recent scenes, and local usage');
+});

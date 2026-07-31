@@ -1,6 +1,9 @@
 const assert = require('assert');
 const backup = require('../../src/utils/backupCore.ts');
 
+const { test } = require('node:test');
+
+test("Local data backup tests passed against the production TypeScript core", () => {
 const created = backup.createBackup({
   appVersion:'1.5.0',
   history:[{ id:1, timestamp:10, prompt:'old' }],
@@ -47,4 +50,4 @@ assert.throws(() => backup.normalizeBackup({
   images:[{ id:'bad', dataUrl:'data:text/html;base64,YQ==' }],
 }), /没有可恢复/);
 
-console.log('Local data backup tests passed against the production TypeScript core');
+});

@@ -3,6 +3,9 @@
 const assert = require('assert');
 const quality = require('../runtime/wav-quality');
 
+const { test } = require('node:test');
+
+test("WAV quality tests passed: format, duration, loudness, silence edges, clipping, DC and baseline compare", () => {
 function makeWav({ sampleRate = 24000, seconds = 1, amplitude = .25, dc = 0 }) {
   const frames = Math.round(sampleRate * seconds);
   const buffer = Buffer.alloc(44 + frames * 2);
@@ -63,4 +66,4 @@ assert(
   'large RMS drift must fail baseline compare'
 );
 
-console.log('WAV quality tests passed: format, duration, loudness, silence edges, clipping, DC and baseline compare');
+});

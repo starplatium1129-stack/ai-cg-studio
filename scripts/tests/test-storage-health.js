@@ -3,6 +3,9 @@
 var assert = require('assert');
 var health = require('../../src/utils/storageHealth.ts');
 
+const { test } = require('node:test');
+
+test("Storage health tests passed against the production TypeScript module", () => {
 var good = [
   { id:1, timestamp:100, image_id:'img_a', prompt:'ok' },
   { id:2, timestamp:200, image_id:'img_b', prompt:'ok2' },
@@ -53,4 +56,4 @@ assert.ok(summary.indexOf('3 条历史') !== -1);
 assert.ok(summary.indexOf('隔离') !== -1);
 assert.strictEqual(health.HISTORY_QUARANTINE_KEY, 'aics_pb_history_quarantine');
 
-console.log('Storage health tests passed against the production TypeScript module');
+});

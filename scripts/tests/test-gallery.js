@@ -1,5 +1,8 @@
 'use strict';
 
+const { test } = require('node:test');
+
+test("Gallery tests passed: original ratios, masonry wall, immersive viewer with focus trap, lazy images and cleanup", () => {
 /**
  * 作品册契约（Vue SPA 版本）
  *
@@ -143,4 +146,4 @@ assert(
   'shared layout must expose a skip link and main landmark for the gallery',
 );
 
-console.log('Gallery tests passed: original ratios, masonry wall, immersive viewer with focus trap, lazy images and cleanup');
+});

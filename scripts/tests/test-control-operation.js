@@ -1,6 +1,9 @@
 'use strict';
 
 const assert = require('assert');
+const { test } = require('node:test');
+
+test("Control operation tests passed: serialization, progress, stale guards, and failures", () => {
 const { createOperationManager } = require('../../services/control-operation');
 
 const state = { operation:null };
@@ -35,4 +38,4 @@ manager.finish(second, new Error('离线'));
 assert.strictEqual(second.status, 'failed', 'errors must produce a failed operation');
 assert(second.error.includes('离线'), 'failed operation must preserve its reason');
 
-console.log('Control operation tests passed: serialization, progress, stale guards, and failures');
+});

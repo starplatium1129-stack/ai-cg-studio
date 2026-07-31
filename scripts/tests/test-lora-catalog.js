@@ -3,6 +3,9 @@
 const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
+const { test } = require('node:test');
+
+test("LoRA catalog tests passed: production fields, weights, triggers, and typed cards", () => {
 const { parseLoraCatalog, formatLoraWeight } = require('../../src/utils/loraCatalog.ts');
 
 const root = path.resolve(__dirname, '..', '..');
@@ -43,4 +46,4 @@ for (const relative of ['src/views/LoraView.vue', 'src/components/SceneCard.vue'
   assert(!/\bany\b/.test(source), relative + ' must stay explicitly typed');
 }
 
-console.log('LoRA catalog tests passed: production fields, weights, triggers, and typed cards');
+});

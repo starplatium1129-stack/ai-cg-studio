@@ -3,6 +3,9 @@ const fs = require('fs');
 const path = require('path');
 const policy = require('../../src/utils/promptPolicy.ts');
 
+const { test } = require('node:test');
+
+test("Prompt policy tests passed: production module, scoped BREAK, ratings, framing and analysis", () => {
 const source = fs.readFileSync(path.join(__dirname, '../../src/utils/promptPolicy.ts'), 'utf8');
 assert(!/\bany\b/.test(source), 'production prompt policy must keep explicit domain types');
 
@@ -164,4 +167,4 @@ const migratedLora = policy.resolveLoraSpecs(
 );
 assert.strictEqual(migratedLora[0].name, 'ayachi_nene_v18_wd14', 'legacy scene LoRA ids must resolve to the promoted model');
 
-console.log('Prompt policy tests passed: production module, scoped BREAK, ratings, framing and analysis');
+});

@@ -5,6 +5,9 @@ const fs = require('fs');
 const path = require('path');
 const tts = require('../../services/tts-service');
 
+const { test } = require('node:test');
+
+test("Voice profile contract tests passed: VoiceProfile fields, validateInput, locked emotion refs", () => {
 const root = path.resolve(__dirname, '..', '..');
 const contentTypes = fs.readFileSync(path.join(root, 'types', 'content.ts'), 'utf8');
 
@@ -103,4 +106,4 @@ const zhLocked = tts.validateInput({
 assert(!zhLocked.error, 'Chinese input must still validate');
 assert.strictEqual(zhLocked.value.payload.ref_audio_path, profiles.nene.refAudioPath, 'Chinese path must use neutral main ref');
 
-console.log('Voice profile contract tests passed: VoiceProfile fields, validateInput, locked emotion refs');
+});

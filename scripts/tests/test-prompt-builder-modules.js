@@ -2,6 +2,9 @@
 
 const assert = require('assert');
 
+const { test } = require('node:test');
+
+test("Prompt Builder module layout tests passed: ownership, wiring, hires pipeline, chrome, and regression guards", () => {
 /**
  * 导演台模块布局契约（Vue SPA 版本）
  *
@@ -221,4 +224,4 @@ for (const fn of ['isSceneBoundStory', 'restoreHistoryManualTags', 'restoreHisto
   if (!sceneUx.includes('export function ' + fn)) fail('sceneUX must export ' + fn);
 }
 
-console.log('Prompt Builder module layout tests passed: ownership, wiring, hires pipeline, chrome, and regression guards');
+});

@@ -1,6 +1,9 @@
 'use strict';
 
 const assert = require('assert');
+const { test } = require('node:test');
+
+test("Bundle budget tests passed: lazy route discovery, CSS aggregation, and limit failures", () => {
 const {
   DEFAULT_BUDGETS,
   evaluateManifest,
@@ -45,4 +48,4 @@ const failing = evaluateManifest(
 );
 assert(failing.violations.some(message => message.includes('HomeView JavaScript')));
 
-console.log('Bundle budget tests passed: lazy route discovery, CSS aggregation, and limit failures');
+});

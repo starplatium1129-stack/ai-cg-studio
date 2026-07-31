@@ -5,6 +5,9 @@ const fs = require('fs');
 const path = require('path');
 const quality = require('../runtime/wav-quality');
 
+const { test } = require('node:test');
+
+test("VOICE_BASELINE_LIVE=1 set: offline structure checks passed; use scripts/maintenance/check-voice-baseline.js for live capture.", () => {
 const root = path.resolve(__dirname, '..', '..');
 const baselinePath = path.join(root, 'scripts', 'fixtures', 'voice-baseline.json');
 const metricsPath = path.join(root, 'scripts', 'fixtures', 'voice-baseline-metrics.json');
@@ -84,4 +87,4 @@ if (process.env.VOICE_BASELINE_LIVE === '1') {
   console.log('VOICE_BASELINE_LIVE=1 set: offline structure checks passed; use scripts/maintenance/check-voice-baseline.js for live capture.');
 }
 
-console.log('Voice baseline tests passed: fixed lines, golden metrics shape, offline quality gates');
+});

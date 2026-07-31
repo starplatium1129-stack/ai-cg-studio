@@ -1,4 +1,7 @@
 'use strict';
+const { test } = require('node:test');
+
+test("gateway-contract", () => {
 /**
  * scripts/tests/test-gateway-contract.js
  *
@@ -314,4 +317,6 @@ async function main() {
 main().catch(function (error) {
   console.error(error);
   process.exit(1);
+});
+
 });

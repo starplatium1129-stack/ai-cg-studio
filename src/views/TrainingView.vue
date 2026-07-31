@@ -529,6 +529,12 @@ import { storeToRefs } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
 import { useRovingTabs } from '@/composables/useRovingTabs'
 import { useTrainingStore } from '@/stores/trainingStore'
+import {
+  adultCount, adultPreviewUrl, categoryEntries, categoryLabel,
+  characterName, datasetPreviewUrl, formatBytes, formatDate, formatLoss,
+  formatPercent, isAdultCategory, statusBadge, statusLabel, trainSplitPercent,
+  planFor as planForFromPlans,
+} from '@/composables/useTrainingFormat'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import type {
   TrainingCharacter,
@@ -563,6 +569,11 @@ const kinds: Array<{ id: TrainingKind; index: string; label: string; note: strin
   { id: 'voice', index: '02', label: '角色语音', note: 'GPT-SoVITS 训练与评测' },
 ]
 
+// 模板用单参版本：planFor(character) 从本视图的 plans 常量取值
+function planFor(character: TrainingCharacter): TrainingPlan {
+  return planForFromPlans(plans, character)
+}
+
 const plans: Record<TrainingCharacter, TrainingPlan> = {
   nene: {
     character: 'nene',
@@ -589,36 +600,6 @@ const loraSpecs = [
   { label: '损失权重', value: 'Min-SNR 5' },
 ]
 
-const categoryNames: Record<string, string> = {
-  identity: '身份锚点',
-  identity_anchors: '身份锚点',
-  identity_safe: '安全身份样本',
-  identity_r18: 'R18 身份样本',
-  official: '官方素材',
-  official_cg: '官方 CG',
-  reference: '参考立绘',
-  curated: '精选 CG',
-  outfit_witch: '魔女服',
-  witch_full_body: '魔女服全身立绘',
-  witch_cg: '魔女服构图 CG',
-  outfit_qipao: '旗袍服',
-  qipao_safe: '官方旗袍',
-  outfit_school: '校服',
-  interaction: '互动样本',
-  adult_solo: '成人单人',
-  adult_interaction: '成人互动',
-  validation: '验证保留',
-}
-
-const statusNames: Record<TrainingJobStatus, string> = {
-  idle: '待开始',
-  running: '训练中',
-  stopping: '停止中',
-  completed: '已完成',
-  failed: '失败',
-  stopped: '已停止',
-}
-
 const activeKind = ref<TrainingKind>(route.query.kind === 'voice' ? 'voice' : 'lora')
 const logElement = ref<HTMLElement | null>(null)
 const mounted = ref(false)
@@ -642,91 +623,8 @@ const logPlaceholder = computed(() => {
   return '还没有运行日志。点击“开始训练”后，进度与输出会在这里更新。'
 })
 
-function characterName(character: TrainingCharacter): string {
-  return character === 'nene' ? '绫地宁宁' : '四季夏目'
-}
-
-function planFor(character: TrainingCharacter): TrainingPlan {
-  return plans[character]
-}
-
 function datasetFor(job: TrainingJob): TrainingDataset | null {
   return store.datasetFor(job)
-}
-
-function categoryEntries(categories: Record<string, number>): Array<[string, number]> {
-  const order = Object.keys(categoryNames)
-  return Object.entries(categories).sort(([a], [b]) => {
-    const aIndex = order.indexOf(a)
-    const bIndex = order.indexOf(b)
-    return (aIndex < 0 ? order.length : aIndex) - (bIndex < 0 ? order.length : bIndex)
-  })
-}
-
-function categoryLabel(category: string): string {
-  return categoryNames[category] ?? category.replaceAll('_', ' ')
-}
-
-function isAdultCategory(category: string): boolean {
-  return category.includes('adult') || category.includes('r18')
-}
-
-function adultCount(categories: Record<string, number>): number {
-  return Object.entries(categories)
-    .filter(([category]) => isAdultCategory(category))
-    .reduce((total, [, count]) => total + count, 0)
-}
-
-function formatBytes(bytes: number): string {
-  if (!bytes) return '0 MB'
-  return `${(bytes / 1024 / 1024).toFixed(bytes >= 100 * 1024 * 1024 ? 0 : 1)} MB`
-}
-
-function datasetPreviewUrl(dataset: TrainingDataset | null): string {
-  return dataset ? `/api/training/datasets/${encodeURIComponent(dataset.id)}/preview` : ''
-}
-
-function adultPreviewUrl(dataset: TrainingDataset | null): string {
-  return dataset ? `/api/training/datasets/${encodeURIComponent(dataset.id)}/adult-preview` : ''
-}
-
-function formatPercent(percent: number): string {
-  const safe = Math.max(0, Math.min(100, Number.isFinite(percent) ? percent : 0))
-  return `${safe.toFixed(safe % 1 === 0 ? 0 : 1)}%`
-}
-
-function formatLoss(loss: number): string {
-  return Number.isFinite(loss) ? loss.toFixed(4) : '—'
-}
-
-function formatDate(timestamp: number): string {
-  return new Intl.DateTimeFormat('zh-CN', {
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-  }).format(timestamp)
-}
-
-function trainSplitPercent(dataset: TrainingDataset | null): number {
-  const train = dataset?.trainSamples ?? 0
-  const evaluation = dataset?.evalSamples ?? 0
-  const test = dataset?.testSamples ?? 0
-  const total = train + evaluation + test
-  return total ? Math.round((train / total) * 100) : 0
-}
-
-function statusLabel(status: TrainingJobStatus): string {
-  return statusNames[status]
-}
-
-function statusBadge(status: TrainingJobStatus): string {
-  if (status === 'running') return 'badge-warning'
-  if (status === 'completed') return 'badge-success'
-  if (status === 'failed') return 'badge-danger'
-  if (status === 'stopping' || status === 'stopped') return 'badge-info'
-  return ''
 }
 
 function isActive(job: TrainingJob): boolean {

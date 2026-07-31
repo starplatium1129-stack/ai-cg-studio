@@ -13,6 +13,9 @@ const path = require('path');
 
 const sources = require('../maintenance/style-sources');
 
+const { test } = require('node:test');
+
+test("style-debt", () => {
 const root = sources.ROOT;
 const failures = [];
 
@@ -151,5 +154,4 @@ const carriers = [...htmlFiles, ...sfcFiles].reduce((total, rel) => {
   const source = fs.readFileSync(path.join(root, rel), 'utf8');
   return total + (source.match(/\s:?style="/g) || []).length;
 }, 0);
-console.log(`Style debt tests passed: ${htmlFiles.length} pages + ${sfcFiles.length} SFCs CSP-ready, ` +
-  `${carriers} custom-property carriers, ${defined.size} design tokens resolved`);
+});

@@ -1,5 +1,8 @@
 'use strict';
 
+const { test } = require('node:test');
+
+test("page-architecture", () => {
 /**
  * Vue SPA 页面架构校验（重构后版本）
  *
@@ -259,8 +262,4 @@ assert(
   'inferEmotion keywords must not contain replacement characters (encoding damage)',
 );
 
-console.log(
-  `Page architecture tests passed: ${viewImports.length} lazy routes, `
-  + `${vueFiles.length} SFCs CSP-ready, ${requiredModules.length} core modules present, `
-  + 'emotion inference intact',
-);
+});
