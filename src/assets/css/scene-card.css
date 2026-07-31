@@ -66,7 +66,7 @@
 .sc-id {
   position: absolute; z-index: var(--z-raised); left: var(--s-2); bottom: var(--s-2);
   font: 700 var(--fs-mono-xs) var(--font-mono); letter-spacing: 0.12em;
-  color: var(--on-art-primary); background: var(--art-scrim-soft);
+  color: var(--on-art-primary); background: color-mix(in srgb, var(--art-scrim-soft) 84%, var(--bg-deep));
   padding: 2px var(--s-2); border-radius: var(--r-sm); backdrop-filter: blur(6px);
 }
 .sc-badge {

@@ -81,7 +81,7 @@ watch(() => [props.state, props.shape, props.status], signal)
   font:760 var(--fs-title-xs) var(--font-mono);
   letter-spacing:-.04em;
 }
-.workspace-code small { color:var(--text-muted); font:650 var(--fs-mono-xs) var(--font-mono); letter-spacing:.06em; }
+.workspace-code small { color:var(--text-secondary); font:650 var(--fs-mono-xs) var(--font-mono); letter-spacing:.06em; }
 .workspace-copy { display:grid; min-width:0; gap:2px; }
 .workspace-copy strong { color:var(--text-primary); font:750 var(--fs-mono-sm) var(--font-mono); letter-spacing:.11em; }
 .workspace-copy span { overflow:hidden; color:var(--text-muted); font-size:var(--fs-label-xs); text-overflow:ellipsis; white-space:nowrap; }

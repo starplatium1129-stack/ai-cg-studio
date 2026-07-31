@@ -255,6 +255,8 @@ test('training workbench keeps visual samples and keyboard tabs usable', async (
   await mockTrainingWorkbench(page);
   await page.goto('/training?kind=lora');
   await expect(page.getByRole('heading', { name: '角色训练台' })).toHaveCount(1);
+  // 数据集详情（审核样张/分层）默认折叠：先展开再断言样本可见与模糊遮罩
+  await page.locator('.dataset-details summary').first().click();
   await expect(page.locator('.dataset-preview img')).toHaveCount(2);
   await expect(page.locator('.dataset-preview img').first()).toBeVisible();
   await expect(page.locator('.adult-preview img')).toHaveCount(2);

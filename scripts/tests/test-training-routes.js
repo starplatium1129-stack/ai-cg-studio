@@ -1,4 +1,5 @@
 'use strict';
+const { test } = require('node:test');
 
 /**
  * Training route contract tests.
@@ -8,6 +9,7 @@
  * the public contract without starting OneTrainer or GPT-SoVITS.
  */
 
+test('training-routes', async () => {
 var assert = require('assert');
 var fs = require('fs');
 var http = require('http');
@@ -553,7 +555,5 @@ async function main() {
   }
 }
 
-main().catch(function (error) {
-  console.error(error);
-  process.exitCode = 1;
+await main();
 });

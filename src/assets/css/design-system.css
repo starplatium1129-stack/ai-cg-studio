@@ -1168,6 +1168,13 @@ tr:hover td { background: var(--bg-hover); }
   ::view-transition-old(root), ::view-transition-new(root) { animation:none !important; }
 }
 
+/* 内容密集页（导演台 / 训练台）右下角水印会与面板叠压，隐藏之；
+   其余页面仍保留首屏水印（滚动后由 RouteAtmosphere 渐隐） */
+body:has(.pb) .route-atmosphere .route-index,
+body:has(.training-page) .route-atmosphere .route-index {
+  display: none;
+}
+
 @media (prefers-reduced-transparency: reduce) {
   :root { --glass-fill:var(--bg-surface); --glass-fill-strong:var(--bg-elevated); }
   .nav, .card, .card-info, .card-create { -webkit-backdrop-filter:none !important; backdrop-filter:none !important; }

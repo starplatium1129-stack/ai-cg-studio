@@ -1,4 +1,5 @@
 'use strict';
+const { test } = require('node:test');
 
 var assert = require('assert');
 var events = require('events');
@@ -97,7 +98,7 @@ function createWeightMock() {
   return { server:server, state:state };
 }
 
-async function run() {
+test('control-failure-contract: timeout, config rollback, voice weights, tunnel exit', async () => {
   var temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-control-failure-'));
   var controlRuntime = runtimePaths.createRuntimePaths(path.join(temporaryRoot, 'control'));
   var controlConfig = baseConfig(projectRoot, controlRuntime);
@@ -204,9 +205,4 @@ async function run() {
   }
 
   console.log('Control failure contracts passed: timeout, config rollback, voice weights, tunnel exit');
-}
-
-run().catch(function (error) {
-  console.error(error.stack || error);
-  process.exitCode = 1;
 });

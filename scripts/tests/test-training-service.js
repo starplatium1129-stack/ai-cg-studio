@@ -1,4 +1,5 @@
 'use strict';
+const { test } = require('node:test');
 
 /**
  * Training service process-contract tests.
@@ -7,6 +8,7 @@
  * launching Python or touching the real GPU workspace.
  */
 
+test('training-service', () => {
 var assert = require('assert');
 var EventEmitter = require('events');
 var fs = require('fs');
@@ -290,9 +292,5 @@ function main() {
   }
 }
 
-try {
-  main();
-} catch (error) {
-  console.error(error);
-  process.exitCode = 1;
-}
+main();
+});

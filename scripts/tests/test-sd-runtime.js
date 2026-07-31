@@ -1,3 +1,4 @@
+const { test } = require('node:test');
 const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
@@ -199,14 +200,11 @@ async function testFailedQueueJobIsRetained() {
   assert(full.total.value <= 8, 'queue must not exceed its limit');
 }
 
-(async () => {
+test('sd-runtime: negative toggle, dual enhancement payload, profile resolution, LoRA framing weights, and queue retention', async () => {
   testStatusAndProgressParsing();
   testExplicitEmptyNegative();
   testDualEnhancementPayload();
   testProfilesAndCapabilities();
   await testFailedQueueJobIsRetained();
   console.log('SD runtime tests passed: negative toggle, dual enhancement payload, profile resolution, LoRA framing weights, and queue retention');
-})().catch(error => {
-  console.error(error);
-  process.exit(1);
 });

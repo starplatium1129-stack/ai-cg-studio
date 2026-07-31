@@ -1,5 +1,7 @@
 'use strict';
+const { test } = require('node:test');
 
+test('chat', async () => {
 var fs = require('fs');
 var path = require('path');
 var http = require('http');
@@ -610,7 +612,5 @@ async function run() {
   console.log('Chat tests passed: modular gateway, compatible API contracts, serialized AI queues, cancellable streaming voice, Live2D recovery and fallback');
 }
 
-run().catch(function (error) {
-  console.error(error.stack || error);
-  process.exitCode = 1;
+await run();
 });

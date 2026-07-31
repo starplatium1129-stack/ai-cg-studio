@@ -94,6 +94,8 @@ const atmosphereStyle = computed(() => ({
   '--route-shift-x': `${shiftX.value}px`,
   '--route-shift-y': `${shiftY.value}px`,
   '--route-progress': String(scrollProgress.value),
+  // 水印只在首屏（未滚动时）完整显示；一旦滚动就渐隐，避免与内容卡片叠压
+  '--route-index-opacity': scrollProgress.value > 0.02 ? '0' : '0.55',
 }))
 
 function onPointerMove(event: PointerEvent) {
@@ -233,7 +235,8 @@ onUnmounted(() => {
   font: 700 var(--fs-mono-xs) var(--font-mono);
   letter-spacing: .12em;
   text-align: right;
-  opacity: .55;
+  opacity: var(--route-index-opacity, .55);
+  transition: opacity .45s var(--ease-out);
 }
 .route-index span { color: var(--archive-blue); font-size: var(--fs-title-xs); }
 .route-index strong { color: var(--text-secondary); }

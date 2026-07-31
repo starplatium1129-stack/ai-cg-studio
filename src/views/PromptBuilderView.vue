@@ -14,9 +14,9 @@
     <WorkspaceArchiveBar
       chapter="01"
       title="DIRECTOR CONSOLE"
-      :subtitle="pb.activeScene?.title || modeDescription"
-      :status="sd.generating.value ? 'RENDERING' : (sd.online.value ? 'SD READY' : 'CONNECTING SD')"
-      :state="sd.generating.value ? 'active' : (sd.online.value ? 'success' : 'warning')"
+      :subtitle="pb.activeScene?.title || (pb.directorMode === 'basic' ? '场景模式' : '专家模式')"
+      :status="pb.directorMode === 'basic' ? 'SCENE MODE' : 'PRO MODE'"
+      :state="pb.directorMode === 'basic' ? 'success' : 'active'"
       :shape="pb.directorMode === 'pro' ? 'spark' : 'frame'"
     />
 
@@ -42,10 +42,6 @@
 
         <PromptDataTools @flash="pb.flash" />
       </div>
-    </div>
-
-    <div class="setup-strip">
-      <div class="guide-bar">{{ guideText }}</div>
     </div>
 
     <div class="director-mode-bar" aria-label="绘图工作模式">
@@ -474,6 +470,8 @@ import { usePromptAssembly } from '@/composables/usePromptAssembly'
 import { EMOTION, SHOT, LIGHTING, COMPOSITION, COLOR_MOODS, SCENE_THEMES } from '@/config/promptConstants'
 import { useSDQueue, type SDQueueJob } from '@/composables/useSDQueue'
 import { classifySDError, SAFE_SAMPLING, LIGHT_LOAD, type SDErrorReport, type SDRecoveryId } from '@/utils/sdError'
+import { useDirectorCatalog } from '@/composables/useDirectorCatalog'
+import { useDirectorDerived } from '@/composables/useDirectorDerived'
 // 折叠面板内的重量级组件走异步加载：它们不参与首屏渲染，按需下载可显著
 // 降低导演台路由块体积（预算上限 JS 128KB / CSS 100KB）。
 const VoiceStudio = defineAsyncComponent(() => import('@/components/VoiceStudio.vue'))
@@ -500,6 +498,12 @@ const route = useRoute()
 const pb = usePromptBuilderStore()
 const sd = useSDGenerate()
 
+const {
+  storyChips,
+  charOptions,
+  isCharKey,
+} = useDirectorCatalog()
+
 // 与 config/characters.ts 共用 Express 服务的同一份角色立绘 URL。
 // 之前写成静态 src="/assets/..."，Vite transformAssetUrls 会在构建时把它
 // 打包进 dist/_app 生成 hashed 副本 —— 同一张图两套缓存，还多占 ~163KB。
@@ -518,258 +522,37 @@ const tagCategory = ref('all')
 const voiceStudioRef = ref<{ setSuggestedCaption?: (caption: string) => void } | null>(null)
 const DIRECTOR_MODE_KEY = 'aics_pb_director_mode'
 
-// ── 显存预算提示（重构前的 sdBudgetHint） ─────────────────────────────────
-const vramBudget = computed(() => {
-  const [w, h] = sdSize.value.split('x').map(Number)
-  const scale = pb.sdParams.hiresFix ? (pb.sdParams.hiresScale || 1.5) : 1
-  const finalW = Math.round((w || 832) * scale)
-  const finalH = Math.round((h || 1216) * scale)
-  return { width: finalW, height: finalH, megapixels: (finalW * finalH) / 1_000_000 }
-})
-const vramLevel = computed(() => {
-  const mp = vramBudget.value.megapixels
-  // 16GB 显存下 SDXL：约 4MP 内稳，6MP 起偏紧
-  if (mp > 6) return 'danger'
-  if (mp > 4) return 'warn'
-  return ''
-})
-const baseResolutionRisk = computed(() => {
-  const [w, h] = sdSize.value.split('x').map(Number)
-  const megapixels = ((w || 832) * (h || 1216)) / 1_000_000
-  // SDXL is most coherent near its 1024^2 training buckets. This is unrelated to VRAM.
-  if (megapixels > 1.8) return 'danger'
-  if (megapixels > 1.5) return 'warn'
-  return ''
-})
-const vramHint = computed(() => {
-  const b = vramBudget.value
-  const base = `最终 ${b.width}×${b.height} · ${b.megapixels.toFixed(1)} MP`
-  if (vramLevel.value === 'danger') return base + ' · 16G 显存可能 OOM'
-  if (vramLevel.value === 'warn') return base + ' · 接近 16G 上限'
-  return base
-})
-const baseResolutionHint = computed(() => {
-  const [w, h] = sdSize.value.split('x').map(Number)
-  const megapixels = ((w || 832) * (h || 1216)) / 1_000_000
-  const base = `基础 ${w}×${h} · ${megapixels.toFixed(1)} MP`
-  if (baseResolutionRisk.value === 'danger') return base + ' · SDXL 人物结构风险高'
-  return base + ' · SDXL 人物结构风险偏高'
-})
-const canUseFaceDetailer = computed(() => {
-  const [w, h] = sdSize.value.split('x').map(Number)
-  return pb.char !== 'triad' && !pb.sdParams.hiresFix && ((w || 832) * (h || 1216)) > 1_500_000
-})
-
-// ── Static data ───────────────────────────────────────────────────────────
-const storyChips = [
-  '放学后在樱花树下等人的宁宁',
-  '第一次在海边看日出的夏目',
-  '夏夜祭典穿浴衣看烟花',
-  '雪天围围巾的温柔一瞬',
-]
-
-const charOptions: Array<{ id: CharKey; iconName: ArchiveIconName; label: string }> = [
-  { id: 'nene',    iconName: 'nene',    label: '宁宁' },
-  { id: 'natsume', iconName: 'natsume', label: '夏目' },
-  { id: 'triad',   iconName: 'triad',   label: '双人' },
-]
-
-function isCharKey(value: unknown): value is CharKey {
-  return value === 'nene' || value === 'natsume' || value === 'triad'
-}
-
-const TAG_CATEGORY_LABELS: Record<string, string> = {
-  all: '全部',
-  Clothing: '服装',
-  Action: '动作',
-  Emotion: '情绪',
-  Scene: '场景',
-  Lighting: '光照',
-  Appearance: '外观',
-  Camera: '镜头',
-  Style: '画风',
-  Quality: '质量',
-  Body: '身体',
-  Mature: '成人',
-  Character: '角色',
-  'Official Outfit': '官方服装',
-}
-
-type OutfitBundle = { id: string; character: 'nene' | 'natsume'; label: string; tags: string[] }
-/**
- * UI catalog key normalization only. Prompt token policy stays inside
- * usePromptAssembly/promptPolicy so this view remains a consumer.
- */
-function normalizeCatalogKey(token: string): string {
-  return String(token || '')
-    .replace(/^\s*\[NEG\]\s*/i, '')
-    .replace(/^\s*<lora:|>\s*$/gi, '')
-    .replace(/^\s*\(+|\)+\s*$/g, '')
-    .replace(/:\s*-?\d+(?:\.\d+)?\s*$/g, '')
-    .trim()
-    .toLowerCase()
-    .replace(/[\s\-/]+/g, '_')
-}
-const OUTFIT_BUNDLES: OutfitBundle[] = [
-  {
-    id: 'nene-witch', character: 'nene', label: '宁宁 · 经典魔女服',
-    tags: ['nene_witch_canonical', 'witch_hat', 'black_cape', 'criss-cross_halter', 'crop_top', 'strap_between_breasts', 'pink_bow', 'black_skirt', 'asymmetrical_legwear', 'striped_thighhighs', 'frilled_socks'],
-  },
-  {
-    id: 'nene-school', character: 'nene', label: '宁宁 · 学院制服',
-    tags: ['nene_school_uniform', 'school_uniform', 'blazer', 'yellow_bowtie', 'plaid_skirt', 'pleated_skirt', 'grey_skirt', 'black_thighhighs'],
-  },
-  {
-    id: 'nene-sailor', character: 'nene', label: '宁宁 · 水手制服',
-    tags: ['nene_sailor_uniform', 'grey_sailor_collar', 'black_shirt', 'sailor_shirt', 'serafuku'],
-  },
-  {
-    id: 'nene-blue-pajamas', character: 'nene', label: '宁宁 · 蓝色睡衣',
-    tags: ['nene_blue_pajamas', 'pajamas', 'animal_print', 'cat_print', 'long_sleeves'],
-  },
-  {
-    id: 'nene-green-sleepwear', character: 'nene', label: '宁宁 · 绿色睡衣',
-    tags: ['nene_green_sleepwear', 'sleepwear', 'nightgown', 'polka_dot', 'short_sleeves', 'twin_braids'],
-  },
-  {
-    id: 'natsume-qipao', character: 'natsume', label: '夏目 · 官方旗袍',
-    tags: ['natsume_official_qipao', 'chinese_clothes', 'china_dress', 'red_dress', 'floral_print', 'side_slit', 'long_sleeves', 'black_thighhighs', 'hair_bun', 'double_bun', 'hair_flower', 'red_flower'],
-  },
-  {
-    id: 'natsume-cafe', character: 'natsume', label: '夏目 · 咖啡店制服',
-    tags: ['natsume_cafe_uniform', 'white_shirt', 'suspenders', 'suspender_skirt', 'brown_skirt', 'long_sleeves', 'collared_shirt', 'purple_ribbon', 'hair_flower'],
-  },
-  {
-    id: 'natsume-maid', character: 'natsume', label: '夏目 · 女仆服',
-    tags: ['natsume_maid_uniform', 'maid', 'maid_apron', 'white_apron', 'maid_headdress', 'long_sleeves', 'frills'],
-  },
-  {
-    id: 'natsume-sleepwear', character: 'natsume', label: '夏目 · 睡衣',
-    tags: ['natsume_sleepwear', 'shirt', 'blue_shirt', 'pillow', 'on_bed'],
-  },
-]
-const OUTFIT_TAG_LABELS: Record<string, string> = {
-  nene_witch_canonical: '宁宁魔女服主控制词',
-  nene_school_uniform: '宁宁校服主控制词',
-  nene_sailor_uniform: '宁宁水手服主控制词',
-  nene_blue_pajamas: '宁宁蓝色睡衣主控制词',
-  nene_green_sleepwear: '宁宁绿色睡衣主控制词',
-  nene_red_cardigan_uniform: '宁宁红色开衫制服主控制词',
-  natsume_official_qipao: '夏目旗袍主控制词',
-  natsume_cafe_uniform: '夏目咖啡制服主控制词',
-  natsume_maid_uniform: '夏目女仆服主控制词',
-  natsume_sleepwear: '夏目睡衣主控制词',
-}
-const R18_CONTROLS = [
-  { character: 'nene', tag: 'nene_r18', label: '宁宁 R18' },
-  { character: 'natsume', tag: 'natsume_r18', label: '夏目 R18' },
-] as const
-const NON_MANUAL_TAGS = new Set([
-  'masterpiece', 'best_quality', 'highly_detailed', 'absurdres', 'very_aesthetic',
-  'amazing_quality', 'newest', 'ultra_detailed', 'highres', 'score_9', 'score_8_up',
-  'worst_quality', 'low_quality', 'normal_quality', 'lowres', 'blurry', 'jpeg_artifacts',
-  'text', 'watermark', 'logo', 'signature', 'bad_anatomy', 'bad_hands', 'extra_fingers',
-  'missing_fingers', 'fused_fingers', 'extra_arms', 'extra_legs', 'deformed',
-  'bad_proportions', 'duplicate', 'cropped', 'child', 'loli', 'underage',
-])
-
-// ── Derived ───────────────────────────────────────────────────────────────
-const optionName = (options: readonly { id: string; name: string }[], id: string | null) =>
-  options.find(option => option.id === id)?.name ?? '自动'
-const emotionSummary = computed(() => {
-  const names = pb.selections.emotion
-    .map(id => EMOTION.find(option => option.id === id)?.name)
-    .filter(Boolean)
-  if (!names.length) return '自动'
-  return names.length > 2 ? `${names.slice(0, 2).join('、')} +${names.length - 2}` : names.join('、')
-})
-const shotSummary = computed(() => optionName(SHOT, pb.selections.shot))
-const lightingSummary = computed(() => optionName(LIGHTING, pb.selections.lighting))
-const compositionSummary = computed(() => optionName(COMPOSITION, pb.selections.composition))
-const moodSummary = computed(() => optionName(COLOR_MOODS, pb.colorMood))
-
-const personaCoreIds = computed(() => new Set(
-  Array.isArray(pb.curation.personaCoreSceneIds)
-    ? pb.curation.personaCoreSceneIds as string[]
-    : Array.isArray(pb.curation.signatureSceneIds)
-      ? pb.curation.signatureSceneIds as string[]
-      : [],
-))
-const curatedIds = computed(() => new Set(
-  Array.isArray(pb.curation.curatedSceneIds) ? pb.curation.curatedSceneIds as string[] : [],
-))
-const availableScenes = computed(() => {
-  const base = pb.filteredScenes.filter(scene => !hiddenSceneIds.value.has(scene.id))
-  // 搜索永远扫完整可用库，避免用户必须先猜场景属于哪一层。
-  if (pb.sceneSearch.trim() || sceneCollection.value === 'all') return base
-  const ids = sceneCollection.value === 'core' ? personaCoreIds.value : curatedIds.value
-  return base.filter(scene => ids.has(scene.id))
-})
-const visibleScenes = computed(() => availableScenes.value.slice(0, sceneLimit.value))
-const personaCoreCount = computed(() =>
-  pb.filteredScenes.filter(scene => !hiddenSceneIds.value.has(scene.id) && personaCoreIds.value.has(scene.id)).length,
-)
-const curatedCount = computed(() =>
-  pb.filteredScenes.filter(scene => !hiddenSceneIds.value.has(scene.id) && curatedIds.value.has(scene.id)).length,
-)
-
-const tagCategories = computed(() => {
-  const found = new Set(tagCatalog.value.map(tag => tag.cat).filter(Boolean))
-  return ['all', ...found].map(id => ({ id, label: TAG_CATEGORY_LABELS[id] || id }))
-})
-const tagCatalog = computed(() => {
-  const merged = new Map(pb.tags.filter(tag => tag.cat !== 'Quality' && !NON_MANUAL_TAGS.has(normalizeCatalogKey(tag.en))).map(tag => [tag.en, tag]))
-  const addSceneTag = (raw: unknown) => {
-    const source = String(raw || '').trim()
-    if (!source || /^<lora:/i.test(source) || /^break$/i.test(source)) return
-    const en = normalizeCatalogKey(source)
-    if (!en || en.length > 64 || NON_MANUAL_TAGS.has(en) || merged.has(en)) return
-    const mature = /(?:^|_)(?:r18|adult|nsfw|nude|topless|nipples|explicit|pussy|penis|sex|lingerie)(?:_|$)/i.test(en)
-    const official = Boolean(OUTFIT_TAG_LABELS[en])
-    merged.set(en, {
-      en,
-      cn: OUTFIT_TAG_LABELS[en] || (mature ? '场景成人词' : '场景词条'),
-      cat: official ? 'Official Outfit' : (mature ? 'Mature' : 'Scene'),
-    })
-  }
-  pb.scenes.forEach(scene => {
-    ;(scene.tags || []).forEach(addSceneTag)
-    String(scene.prompt || '').split(',').forEach(addSceneTag)
-  })
-  OUTFIT_BUNDLES.forEach(bundle => bundle.tags.forEach(en => {
-    if (!merged.has(en)) merged.set(en, {
-      en,
-      cn: OUTFIT_TAG_LABELS[en] || 'v18 训练服装词',
-      cat: 'Official Outfit',
-    })
-  }))
-  return [...merged.values()]
-})
-const visibleTags = computed(() => {
-  const q = tagSearch.value.trim().toLowerCase()
-  return tagCatalog.value
-    .filter(tag => tagCategory.value === 'all' || tag.cat === tagCategory.value)
-    .filter(tag => !q || tag.en.toLowerCase().includes(q) || tag.cn.toLowerCase().includes(q))
-    .sort((a, b) => Number(pb.manualTags.has(b.en)) - Number(pb.manualTags.has(a.en)))
-    .slice(0, 72)
-})
-const visibleOutfitBundles = computed(() =>
-  OUTFIT_BUNDLES.filter(bundle => pb.char === 'triad' || bundle.character === pb.char),
-)
-const visibleR18Controls = computed(() =>
-  R18_CONTROLS.filter(control => pb.char === 'triad' || control.character === pb.char),
-)
-
-const modeDescription = computed(() => pb.directorMode === 'basic'
-  ? '从人设核心场景出发，镜头、光照与构图自动预填；只保留影响成片的选择。'
-  : '开放完整场景库、词条选择、Prompt 结构与全部生成参数。')
-
-const guideText = computed(() => {
-  if (!pb.story && !pb.sceneId) return pb.directorMode === 'basic'
-    ? '先选一个贴合人设的场景，导演参数会自动准备'
-    : '写一个故事，或从完整场景库与词条开始搭建'
-  if (pb.sceneId) return `场景已选：${pb.activeScene?.title ?? ''}`
-  return '故事已填写，现在选择导演决策'
+// ── Derived（场景筛选 / 词条目录 / 摘要 / 显存提示）──────────────────────
+const {
+  emotionSummary,
+  shotSummary,
+  lightingSummary,
+  compositionSummary,
+  moodSummary,
+  personaCoreIds,
+  availableScenes,
+  visibleScenes,
+  personaCoreCount,
+  curatedCount,
+  tagCategories,
+  tagCatalog,
+  visibleTags,
+  visibleOutfitBundles,
+  visibleR18Controls,
+  modeDescription,
+  vramLevel,
+  baseResolutionRisk,
+  vramHint,
+  baseResolutionHint,
+  canUseFaceDetailer,
+} = useDirectorDerived({
+  pb,
+  hiddenSceneIds,
+  sceneCollection,
+  sceneLimit,
+  tagSearch,
+  tagCategory,
+  sdSize,
 })
 
 // ── Prompt 组装 ───────────────────────────────────────────────────────────

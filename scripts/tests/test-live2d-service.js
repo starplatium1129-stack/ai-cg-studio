@@ -1,4 +1,5 @@
 'use strict';
+const { test } = require('node:test');
 
 const assert = require('assert');
 const fs = require('fs');
@@ -13,6 +14,7 @@ function write(filePath, body) {
   fs.writeFileSync(filePath, body);
 }
 
+test('live2d-service: complete model, path escape, missing assets, status', () => {
 try {
   const completeDir = path.join(root, 'nene');
   write(
@@ -79,3 +81,4 @@ try {
 } finally {
   fs.rmSync(root, { recursive: true, force: true });
 }
+});

@@ -1,4 +1,5 @@
 'use strict';
+const { test } = require('node:test');
 
 /**
  * 本地存储可靠性
@@ -204,13 +205,10 @@ function testMissingIndexedDb() {
   });
 }
 
-(async () => {
+test('storage-reliability: KV commit ordering, cache integrity on failure, image transactions, and missing-IndexedDB handling', async () => {
   await testKvCacheWaitsForCommit();
   await testImageStoreTransactions();
   testMissingIndexedDb();
   await delay(0);
   console.log('Storage reliability tests passed: KV commit ordering, cache integrity on failure, image transactions, and missing-IndexedDB handling');
-})().catch(error => {
-  console.error(error);
-  process.exit(1);
 });
