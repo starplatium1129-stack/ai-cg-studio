@@ -11,8 +11,8 @@
     >
       <div class="showcase-copy">
         <div class="page-kicker">Approved Scene Gallery</div>
-        <h1>场景，实际能画成什么样</h1>
-        <p>不是概念图，是当前角色模型真实生成、逐张审核后留下的样张。先看成片，再挑想画的故事。</p>
+        <h1>定稿样张 · Verified Showcase</h1>
+        <p>非概念示意，均为当前模型组合真实生成、经逐张人工审计后收录的定稿样张。先观成片，再觅心动。</p>
         <div class="hero-actions">
           <button class="btn btn-ghost" type="button" :disabled="!entries.length" @click="openRandom">↻ 随机翻一张</button>
           <RouterLink class="btn btn-ghost" to="/scene-explorer">去灵感场景</RouterLink>
@@ -28,7 +28,7 @@
     <div class="toolbar-shell" aria-label="样张筛选" data-reveal>
       <div class="search-row">
         <div class="search-field">
-          <input v-model="searchQuery" type="search" class="scene-search" id="showcaseSearch" placeholder="🔍 搜索场景名、情绪、角色…" />
+          <input v-model="searchQuery" type="search" class="scene-search" id="showcaseSearch" placeholder="搜索场景、情绪、角色或关键词…" />
           <button class="scene-search-clear" type="button" aria-label="清空" @click="searchQuery=''">×</button>
         </div>
         <div class="filter-group">

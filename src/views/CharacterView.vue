@@ -10,7 +10,7 @@
     >
       <div class="page-kicker">Character routes</div>
       <h1 class="title">角色档案</h1>
-      <p class="subtitle">视觉特征、性格与绑定模型——这里是角色在这台机器上的完整档案。</p>
+      <p class="subtitle">视觉特征、性格轨迹与绑定模型——凝结角色在工坊中的完整身份设定。</p>
       <template #meta>
         <span class="archive-status">LOCAL PROFILE</span>
         <span class="archive-status">{{ characters.length || '—' }} SUBJECTS</span>

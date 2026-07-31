@@ -132,7 +132,7 @@
         <div class="chat-composer">
           <div class="composer-row">
             <textarea class="chat-input" v-model="inputText" rows="2" maxlength="1200"
-              placeholder="对她说点什么……" aria-label="聊天输入"
+              placeholder="轻声对她说点什么吧……" aria-label="聊天输入"
               @keydown.enter.exact.prevent="sendMessage"
               @input="onInputChange"></textarea>
             <button class="btn btn-ghost stop-btn" type="button"

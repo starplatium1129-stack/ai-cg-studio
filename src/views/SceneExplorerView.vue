@@ -9,7 +9,7 @@
         </div>
         <div class="page-kicker">Scene discovery / 场景发现</div>
         <h1 id="sceneAtlasTitle" class="title">灵感场景</h1>
-        <p class="subtitle">默认只看贴合人设的核心瞬间；其余 <strong>{{ scenes.length }} 个场景</strong>保留为可搜索档案。</p>
+        <p class="subtitle">精选契合人设的高光瞬间，每一幕均预设镜头与叙事光影。其余 <strong>{{ scenes.length }} 个场景</strong>悉数收录于工坊档案。</p>
         <div class="curation-intro">
           <span class="curation-kicker">Nene × Natsume</span>
           <h2>从角色的心情，走进场景</h2>
@@ -39,7 +39,7 @@
         <label class="sr-only" for="sceneSearch">搜索场景</label>
         <div class="scene-search-wrap">
           <input v-model="searchQuery" type="search" class="scene-search" id="sceneSearch"
-            placeholder="🔍 试试：心动、安静、宁宁经典感、夏目经典感" />
+            placeholder="搜索场景、镜头、时段或关键词（如：雨夜、围围巾、夏目经典感）" />
           <button v-if="searchQuery" class="scene-search-clear" type="button" aria-label="清空" @click="searchQuery = ''">×</button>
         </div>
         <span class="scene-count" role="status" aria-live="polite">

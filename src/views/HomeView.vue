@@ -11,7 +11,7 @@
           </div>
           <span class="eyebrow">NENE &amp; NATSUME ATELIER</span>
           <h1 class="hero-title">绫季绘境<span class="jp">把心动的一瞬，画成一张 CG</span></h1>
-          <p class="hero-sub">选一个想画的瞬间。角色、情绪与光线会替你备好，你只管按下出图。</p>
+          <p class="hero-sub">选择触动心弦的瞬间。角色身份、情绪克制与叙事光影已悉数就绪。</p>
           <p class="hero-jp">「 ときめきの一瞬を、一枚の CG に 」</p>
           <div class="ctas">
             <RouterLink :to="continueLink.to" class="btn btn-lg btn-primary" id="continueCta">
@@ -93,15 +93,15 @@
       <div class="home-section-head">
         <div>
           <span class="eyebrow"><span class="num">01</span> 创作入口</span>
-          <h2>从这里开画</h2>
-          <p class="hint">想出图就进绘制台；想先找感觉，去灵感或角色房间。</p>
+          <h2>创作工坊 · Studio</h2>
+          <p class="hint">即刻开启画面绘制；亦可在场景灵感或角色房间静享酝酿。</p>
         </div>
       </div>
       <div class="tools-grid">
         <RouterLink to="/prompt-builder" class="tool-card card-create card-level-2">
           <span class="tool-index" aria-hidden="true">01 / MAKE</span>
           <span class="ic"><ArchiveIcon name="spark" /></span><span class="t">开始绘制</span>
-          <span class="d">选场景、调情绪与镜头，一键出图。</span>
+          <span class="d">调和镜头、光影与情绪，将心动定格成专属 CG。</span>
           <span class="go">→ 打开</span>
         </RouterLink>
         <RouterLink to="/scene-explorer" class="tool-card card-create card-level-2">
@@ -113,13 +113,13 @@
         <RouterLink to="/chat" class="tool-card card-create card-level-2">
           <span class="tool-index" aria-hidden="true">03 / ROOM</span>
           <span class="ic"><ArchiveIcon name="chat" /></span><span class="t">角色房间</span>
-          <span class="d">和宁宁或夏目聊一会儿，声音也在本机。</span>
+          <span class="d">与宁宁或夏目静享片刻对谈，全流程本地语音陪伴。</span>
           <span class="go">→ 进入房间</span>
         </RouterLink>
         <RouterLink to="/showcase" class="tool-card card-create card-level-2">
           <span class="tool-index" aria-hidden="true">04 / ARCHIVE</span>
           <span class="ic"><ArchiveIcon name="image" /></span><span class="t">效果样张</span>
-          <span class="d">逐张审核后的真实成图，不是示意图。</span>
+          <span class="d">人工逐张审计的定稿画册，凝结真实的画面叙事。</span>
           <span class="go">→ 浏览</span>
         </RouterLink>
       </div>
@@ -130,33 +130,33 @@
       <div class="home-section-head">
         <div>
           <span class="eyebrow">资料与回顾</span>
-          <h2>慢慢看的部分</h2>
-          <p class="hint">角色、画风、模型与作品册——需要时再打开。</p>
+          <h2>工坊档案 · Archives</h2>
+          <p class="hint">细描角色设定，凝固色彩基调，在无扰的本机空间慢慢回味。</p>
         </div>
       </div>
       <div class="tools-grid">
         <RouterLink to="/character" class="tool-card card-create">
           <span class="tool-index" aria-hidden="true">05 / PROFILE</span>
           <span class="ic"><ArchiveIcon name="character" /></span><span class="t">角色档案</span>
-          <span class="d">视觉特征、性格与绑定模型。</span>
+          <span class="d">设定细目、官方特征词与 LoRA 模型映射。</span>
           <span class="go">→ 打开</span>
         </RouterLink>
         <RouterLink to="/style" class="tool-card card-create">
           <span class="tool-index" aria-hidden="true">06 / PALETTE</span>
           <span class="ic"><ArchiveIcon name="palette" /></span><span class="t">画风</span>
-          <span class="d">色调、配色与画面情绪。</span>
+          <span class="d">画面色阶、氛围基调与色彩脚本。</span>
           <span class="go">→ 打开</span>
         </RouterLink>
         <RouterLink to="/lora" class="tool-card card-create">
           <span class="tool-index" aria-hidden="true">07 / MODEL</span>
           <span class="ic"><ArchiveIcon name="model" /></span><span class="t">模型</span>
-          <span class="d">训练信息与推荐强度。</span>
+          <span class="d">训练集配比、触发词典与推荐权重。</span>
           <span class="go">→ 打开</span>
         </RouterLink>
         <RouterLink to="/gallery" class="tool-card card-create">
           <span class="tool-index" aria-hidden="true">08 / WORKS</span>
           <span class="ic"><ArchiveIcon name="gallery" /></span><span class="t">作品册</span>
-          <span class="d">本机创作，原比例安静欣赏。</span>
+          <span class="d">沉浸式展示本机创作，以原始画幅安静收藏。</span>
           <span class="go">→ 打开</span>
         </RouterLink>
       </div>
