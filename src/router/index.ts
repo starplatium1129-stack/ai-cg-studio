@@ -50,7 +50,7 @@ const router = createRouter({
       ]
     },
     // control 有自己的完整导航栏，不套 AppLayout（避免双 nav）
-    { path: '/control', name: 'control', component: () => import('@/views/ControlView.vue'), meta: { transition: 'fade' } }
+    { path: '/control', name: 'control', component: () => import('@/views/ControlView.vue') }
   ],
   // 路由切换回到顶部；带 hash 时定位到锚点，浏览器前进/后退时还原原位置
   scrollBehavior(to, from, savedPosition) {

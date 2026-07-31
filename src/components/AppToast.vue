@@ -3,7 +3,7 @@
     <!-- 只在容器上声明一次 live region。子项再挂 role="status" 会造成
          嵌套 live region，读屏可能重复播报或整条丢掉。 -->
     <div class="toast-stack" aria-live="polite" aria-atomic="false">
-      <TransitionGroup name="toast">
+      <TransitionGroup :css="false" @enter="onToastEnter" @leave="onToastLeave">
         <div
           v-for="t in toasts"
           :key="t.id"
@@ -27,6 +27,7 @@
 </template>
 
 <script setup lang="ts">
+import { animateMini } from 'motion'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import { useToast, type ToastType } from '@/composables/useToast'
 
@@ -37,6 +38,29 @@ const icons: Record<ToastType, ArchiveIconName> = {
   success: 'success',
   error: 'error',
   warning: 'warning',
+}
+
+// toast 进出走 spring：多个 toast 连续弹出时可互相打断、从当前值续走，
+// 不会像固定时长 keyframes 那样排队撞墙。
+function onToastEnter(el: Element, done: () => void) {
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const t = reduced
+    ? animateMini(el as HTMLElement, { opacity: [0, 1] }, { duration: 0.12 })
+    : animateMini(
+        el as HTMLElement,
+        { opacity: [0, 1], transform: ['translateY(16px) scale(.97)', 'translateY(0) scale(1)'] },
+        { type: 'spring', bounce: 0, duration: 0.38 },
+      )
+  t.then(done)
+}
+
+function onToastLeave(el: Element, done: () => void) {
+  const t = animateMini(
+    el as HTMLElement,
+    { opacity: 0, transform: 'translateY(-8px) scale(.96)' },
+    { duration: 0.16, ease: 'easeOut' },
+  )
+  t.then(done)
 }
 </script>
 
@@ -92,10 +116,6 @@ const icons: Record<ToastType, ArchiveIconName> = {
 .toast-warning .toast-icon { color: var(--warning-text); }
 .toast-info    .toast-icon { color: var(--accent); }
 
-/* TransitionGroup */
-.toast-enter-active { transition: opacity var(--t-base) var(--ease-out), transform var(--t-base) var(--ease-out); }
-.toast-leave-active { transition: opacity var(--t-fast) var(--ease-out), transform var(--t-fast) var(--ease-out); }
-.toast-enter-from   { opacity: 0; transform: translateY(16px) scale(.97); }
-.toast-leave-to     { opacity: 0; transform: translateY(-8px) scale(.96); }
-.toast-move         { transition: transform var(--t-base) var(--ease-out); }
+/* TransitionGroup 进出由 motion spring 接管，这里只留布局稳定类 */
+.toast-move { transition: transform var(--t-base) var(--ease-out); }
 </style>

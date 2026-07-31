@@ -1,5 +1,4 @@
 const fs = require('fs');
-const path = require('path');
 const http = require('http');
 
 const shot = 'E:/code/2/lora/AI-CG-Studio/scripts/maintenance/ui-shots/02-prompt-builder-emotions.png';

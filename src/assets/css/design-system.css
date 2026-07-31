@@ -404,7 +404,7 @@ body > *:has(+ .footer),
 }
 .nav-brand {
   font-weight: 700; font-size: var(--fs-title-xs);
-  color: var(--text-primary); letter-spacing: .04em;
+  color: var(--text-primary); letter-spacing: .02em;
   display: flex; align-items: center; gap: var(--s-2); cursor:pointer;
 }
 /* .55rem 低于 --fs-mono-xs:品牌副标 caps,只承载 6 个字母,不参与正文层级 */
@@ -587,7 +587,7 @@ body > *:has(+ .footer),
   font-family: var(--font-display);
   font-size: clamp(1.55rem, 2.4vw, 2.4rem);
   font-weight: 760;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.03em;
   line-height: 1.15;
 }
 .page-subtitle {
@@ -1033,7 +1033,7 @@ body.overlay-open { overflow: hidden; }
   font-family: var(--font-display);
   font-size: clamp(1.55rem, 2.4vw, var(--fs-display));
   font-weight: 760;
-  letter-spacing: -.025em;
+  letter-spacing: -.03em;
   line-height: 1.15;
 }
 .subtitle {

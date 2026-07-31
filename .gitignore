@@ -42,3 +42,10 @@ assets/dual-poses/*.png
 # 预压产物（npm run precompress 生成，随构建重新产生）
 *.br
 *.gz
+
+# 本地设计指导 skills（emilkowalski/skills，不进仓库）
+.agents/
+skills-lock.json
+
+# 临时 UI 截图（Gemini 视觉复核用，不入库）
+scripts/maintenance/ui-shots/
