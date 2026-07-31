@@ -133,8 +133,10 @@ function compatibleContent(event) {
 
 function buildWebSearchParams(api) {
   if (/^gemini-/i.test(api.model)) return { tools:[{ google_search:{} }] };
+  // 只有确认支持 web_search 参数的供应商才注入；未知/自定义 OpenAI 兼容端点
+  // 收到未知参数会 400，联网检索直接失败。
   if (api.vendor === 'deepseek' || api.vendor === 'opencode') return { web_search:true };
-  return { web_search:true };
+  return {};
 }
 
 async function streamCompatibleApi(input, handlers) {

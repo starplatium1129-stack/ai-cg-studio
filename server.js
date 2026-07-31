@@ -187,7 +187,10 @@ function createGateway(options) {
     proxyTimeout:20 * 60 * 1000,
     auth:config.SD_API_AUTH || undefined,
     on:{
-      proxyReq:function () { console.log('  → SD API 请求已转发'); },
+      // 每次转发都打日志会把长时运行的日志刷成噪音；需要排查时用 DEBUG=1。
+      proxyReq:function () {
+        if (process.env.DEBUG === '1') console.log('  → SD API 请求已转发');
+      },
       error:function (error, req, res) {
         console.error('  ❌ SD 代理错误:', error.message);
         // upgrade 失败时第三个参数是裸 net.Socket，不是 Express response。

@@ -148,14 +148,11 @@ export function useSDGenerate() {
 
       const rawResult: unknown = await r.json()
       const result = parseTxt2ImgResponse(rawResult)
-      const imgB64 = result.image.replace(/^data:image\/[a-z0-9.+-]+;base64,/i, '')
-
-      // Convert base64 to blob URL
-      const byteStr = atob(imgB64)
-      const ab = new ArrayBuffer(byteStr.length)
-      const view = new Uint8Array(ab)
-      for (let i = 0; i < byteStr.length; i++) view[i] = byteStr.charCodeAt(i)
-      const url = URL.createObjectURL(new Blob([ab], { type: 'image/png' }))
+      const dataUrl = /^data:/.test(result.image) ? result.image : `data:image/png;base64,${result.image}`
+      // atob + 逐字节循环在主线程同步解码，hi-res 大图会卡住页面数秒；
+      // fetch(dataUrl).blob() 走浏览器原生解码（异步），并保留 dataUrl 自带的真实 mime。
+      const blob = await fetch(dataUrl).then(x => x.blob())
+      const url = URL.createObjectURL(blob)
       // 覆盖前先释放上一张，否则每出一张图泄漏一个 blob URL
       if (resultUrl.value && resultUrl.value !== url) URL.revokeObjectURL(resultUrl.value)
       resultUrl.value  = url

@@ -20,6 +20,15 @@ import {
 const HISTORY_STORAGE_KEY = 'aics_pb_history'
 const PROJECT_STORAGE_KEY = 'aics_pb_projects'
 
+/** 历史条目 id：Date.now() + 同毫秒序号，避免并发入册/保存撞 id */
+let historyIdLastMs = 0
+let historyIdCounter = 0
+function historyIdSeq(now: number): number {
+  if (now !== historyIdLastMs) { historyIdLastMs = now; historyIdCounter = 0 }
+  historyIdCounter += 1
+  return now * 1000 + historyIdCounter
+}
+
 export type CharKey = 'nene' | 'natsume' | 'triad'
 
 export interface Scene {
@@ -410,7 +419,9 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
       const imageId = await imgPut(entry.blob)
       const measured = await measureBlob(entry.blob)
       const now = Date.now()
-      const id = now
+      // Date.now() 同毫秒内「队列自动入册 + 手动保存」并发会撞 id，
+      // removeHistoryEntry 可能误删另一条；加模块级序号保证唯一。
+      const id = historyIdSeq(now)
       const historyEntry: HistoryEntry = {
         id,
         timestamp: now,

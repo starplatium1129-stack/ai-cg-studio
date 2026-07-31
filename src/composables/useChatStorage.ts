@@ -3,6 +3,9 @@ import {
   CHARACTERS, STORAGE_KEY, STORAGE_VERSION, MAX_LOCAL_MESSAGES, createMessageId,
 } from '@/config/characters'
 import {
+  CLIPROXY_BASE_URL, CLIPROXY_API_KEY, CLIPROXY_DEFAULT_MODEL,
+} from '@/config/chatApi'
+import {
   normalizeChatStorage, serializeChatStorage, type PersistedChatState,
 } from '@/utils/chatStorageCore'
 
@@ -40,10 +43,10 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     settings: {
       model: '',
       provider: 'api',
-      apiBaseUrl: 'http://127.0.0.1:8317/v1',
-      apiModel: 'gemini-3.6-flash-high',
-      apiKey: 'sk-local-proxy-key-2024',
-      webSearchEnabled: true,
+      apiBaseUrl: CLIPROXY_BASE_URL,
+      apiModel: CLIPROXY_DEFAULT_MODEL,
+      apiKey: CLIPROXY_API_KEY,
+      webSearchEnabled: false,
       live2dEnabled: false,
       live2dOutfit: 'school',
       autoVoice: true,

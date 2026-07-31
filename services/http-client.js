@@ -111,8 +111,17 @@ function request(baseUrl, pathname, options) {
         });
         req.on('error', function (error) {
             cleanupAbort();
-            if (!settled)
+            if (!settled) {
                 reject(error);
+                return;
+            }
+            // 响应头已发出（流式场景）：不能静默吞掉 socket 错误，
+            // 否则 TTS 音频流 / SSE 聊天流中途断连时调用方只看到"流提前结束"，
+            // 无法区分正常结束与上游截断。把错误传给 response 流，让
+            // for await / data 读取方能感知并抛给调用方的 catch。
+            if (responseRef && !responseRef.destroyed && !responseRef.complete) {
+                responseRef.destroy(error);
+            }
         });
         req.end(payload === null ? undefined : payload);
     });

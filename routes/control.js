@@ -427,8 +427,14 @@ function createControlRouter(config, gatewayRef, dependencies) {
   });
 
   // POST /api/start — 启动公网隧道
+  // enableTunnel=false（控制面板开关关闭）时不得启动：UI 承诺与实际行为
+  // 必须一致，否则用户关掉开关后点主按钮照样开隧道。
   router.post('/api/start', localOnly, express.json({ limit:'2kb' }), function(req, res) {
     try {
+      var enableTunnel = req.body && req.body.enableTunnel === false ? false : true;
+      if (!enableTunnel) {
+        return envelope.ok(res, { message:'公网分享已保持关闭（开关未开启）' });
+      }
       var gw = gatewayRef ? gatewayRef() : null;
       if (gw && typeof gw.startTunnel === 'function') gw.startTunnel();
       // 记住偏好：下次启动网关时自动开分享

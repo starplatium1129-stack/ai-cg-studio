@@ -445,11 +445,24 @@ const filtered = computed(() => {
 })
 const paged = computed(() => filtered.value.slice(0, visible.value))
 
+function escapeHtml(value: unknown): string {
+  return String(value == null ? '' : value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
 const intentHtml = computed(() => {
   const q = debouncedQuery.value.trim()
   const a = uxAnalyze(q, curation.value)
   const exp = q && ['personal','core','featured'].includes(fTier.value) ? '已自动扩展至完整场景库。' : ''
-  const understood = a.intents?.length ? `已理解为：<strong>${a.intents.join(' · ')}</strong>。` : (q?'正在搜索标题、故事、情绪、地点和视觉标签。':'可以直接描述想画的完整句子。')
+  // intents 可能包含用户原始输入（alias 未命中时 push normalized），
+  // 拼进 v-html 前必须转义，否则搜索结果里直接注入 HTML。
+  const understood = a.intents?.length
+    ? `已理解为：<strong>${escapeHtml(a.intents.join(' · '))}</strong>。`
+    : (q ? '正在搜索标题、故事、情绪、地点和视觉标签。' : '可以直接描述想画的完整句子。')
   const personal = profile.value.entries ? ` 已结合本机${profile.value.entries}条创作记录排序。` : ' 完成作品评分后，推荐会逐渐贴近你的偏好。'
   return exp + understood + personal
 })

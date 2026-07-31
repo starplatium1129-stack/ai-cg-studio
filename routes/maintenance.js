@@ -278,7 +278,7 @@ async function runMaintenanceChecks() {
     } catch (e) { return fallback; }
   }
 
-  router.get('/api/maintenance/home-hero', function (req, res) {
+  router.get('/api/maintenance/home-hero', maintenanceLocalOnly, function (req, res) {
     var manifest = readHomeHeroManifest();
     var entries = {};
     Object.keys(manifest.entries || {}).forEach(function (character) {
@@ -543,7 +543,7 @@ async function runMaintenanceChecks() {
     } catch (err) { envelope.fail(res, 500, err.message); }
   });
 
-  router.get('/api/showcase-status', function (req, res) {
+  router.get('/api/showcase-status', maintenanceLocalOnly, function (req, res) {
     var manifest = readSceneShowcaseManifest();
     res.setHeader('Cache-Control', 'no-store');
     if (!manifest) return res.json({ available:false, sceneCount:0 });

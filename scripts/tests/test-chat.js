@@ -163,6 +163,7 @@ async function run() {
   // 角色房间已迁为 Vue：ChatView.vue + useVoice / useLive2D composable
   var html = fs.readFileSync(path.join(root, 'src', 'views', 'ChatView.vue'), 'utf8');
   var apiSettingsComponent = fs.readFileSync(path.join(root, 'src', 'components', 'ChatApiSettings.vue'), 'utf8');
+  var chatApiConfig = fs.readFileSync(path.join(root, 'src', 'config', 'chatApi.ts'), 'utf8');
   var characterStageComponent = fs.readFileSync(path.join(root, 'src', 'components', 'ChatCharacterStage.vue'), 'utf8');
   var voiceStudio = fs.readFileSync(path.join(root, 'src', 'components', 'VoiceStudio.vue'), 'utf8');
   var voiceModule = fs.readFileSync(path.join(root, 'src', 'composables', 'useVoice.ts'), 'utf8');
@@ -211,8 +212,9 @@ async function run() {
   );
   assert(
     apiSettingsComponent.includes("'opencode-go'")
-      && apiSettingsComponent.includes('https://opencode.ai/zen/go/v1')
-      && apiSettingsComponent.includes('deepseek-v4-flash'),
+      && apiSettingsComponent.includes('OPENCODE_GO_BASE_URL')
+      && chatApiConfig.includes('https://opencode.ai/zen/go/v1')
+      && chatApiConfig.includes('deepseek-v4-flash'),
     'OpenCode Go must offer its dedicated endpoint and DeepSeek V4 Flash preset'
   );
   assert(chatConversation.includes('AbortController') && html.includes('stop-btn'), 'chat requests must be cancellable');

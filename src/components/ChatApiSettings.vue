@@ -77,6 +77,12 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import {
+  CLIPROXY_BASE_URL, CLIPROXY_API_KEY, CLIPROXY_DEFAULT_MODEL,
+  DEEPSEEK_BASE_URL, DEEPSEEK_DEFAULT_MODEL,
+  OPENCODE_BASE_URL, OPENCODE_DEFAULT_MODEL,
+  OPENCODE_GO_BASE_URL, OPENCODE_GO_DEFAULT_MODEL,
+} from '@/config/chatApi'
 
 type ApiVendor = 'cliproxy' | 'deepseek' | 'opencode' | 'opencode-go' | 'custom'
 interface ModelOption { value: string; label: string }
@@ -182,18 +188,18 @@ function selectVendor(vendor: ApiVendor) {
   testState.value = ''
   testMessage.value = ''
   if (vendor === 'deepseek') {
-    emit('update:baseUrl', 'https://api.deepseek.com')
-    emit('update:model', 'deepseek-v4-flash')
+    emit('update:baseUrl', DEEPSEEK_BASE_URL)
+    emit('update:model', DEEPSEEK_DEFAULT_MODEL)
   } else if (vendor === 'cliproxy') {
-    emit('update:baseUrl', 'http://127.0.0.1:8317/v1')
-    emit('update:model', 'gemini-3.6-flash-high')
-    emit('update:apiKey', 'sk-local-proxy-key-2024')
+    emit('update:baseUrl', CLIPROXY_BASE_URL)
+    emit('update:model', CLIPROXY_DEFAULT_MODEL)
+    emit('update:apiKey', CLIPROXY_API_KEY)
   } else if (vendor === 'opencode') {
-    emit('update:baseUrl', 'https://opencode.ai/zen/v1')
-    emit('update:model', 'deepseek-v4-flash-free')
+    emit('update:baseUrl', OPENCODE_BASE_URL)
+    emit('update:model', OPENCODE_DEFAULT_MODEL)
   } else if (vendor === 'opencode-go') {
-    emit('update:baseUrl', 'https://opencode.ai/zen/go/v1')
-    emit('update:model', 'deepseek-v4-flash')
+    emit('update:baseUrl', OPENCODE_GO_BASE_URL)
+    emit('update:model', OPENCODE_GO_DEFAULT_MODEL)
   }
 }
 

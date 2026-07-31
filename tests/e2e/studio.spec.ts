@@ -466,7 +466,9 @@ test('home page stays inside the performance budget', async ({ page }) => {
   const selectedHeroSources = await heroImages.evaluateAll(images =>
     images.map(image => (image as HTMLImageElement).currentSrc)
   );
-  expect(selectedHeroSources.every(source => /\.(?:avif|webp)(?:$|\?)/.test(source))).toBe(true);
+  // 内置 hero 是 webp/avif；用户经场景管理替换的首页主视觉允许 jpg/png
+  //（POST /api/maintenance/home-hero 接受 PNG/JPEG/WebP）。
+  expect(selectedHeroSources.every(source => /\.(?:avif|webp|jpe?g|png)(?:$|\?)/.test(source))).toBe(true);
   const budget = await page.evaluate(() => {
     const resources = performance.getEntriesByType('resource') as PerformanceResourceTiming[];
     return {

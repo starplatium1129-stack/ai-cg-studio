@@ -1,6 +1,7 @@
 import { computed, ref, type Ref } from 'vue'
 import { useChatStorage, type ChatState } from '@/composables/useChatStorage'
 import { parseChatStatus, type ChatModel } from '@/utils/chatStatus'
+import { DEEPSEEK_BASE_URL, DEEPSEEK_DEFAULT_MODEL } from '@/config/chatApi'
 
 export type ApiVendor = 'cliproxy' | 'deepseek' | 'opencode' | 'opencode-go' | 'custom'
 type ChatStorage = ReturnType<typeof useChatStorage>
@@ -15,8 +16,8 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
   const models = ref<ChatModel[]>([])
   const currentModel = ref('')
   const chatProvider = ref<'local' | 'api'>('local')
-  const apiBaseUrl = ref('https://api.deepseek.com')
-  const apiModel = ref('deepseek-v4-flash')
+  const apiBaseUrl = ref(DEEPSEEK_BASE_URL)
+  const apiModel = ref(DEEPSEEK_DEFAULT_MODEL)
   const apiKey = ref('')
   const apiVendor = ref<ApiVendor>('custom')
   const apiSettingsOpen = ref(false)
