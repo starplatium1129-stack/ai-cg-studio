@@ -20,7 +20,7 @@
       <div class="sm-head-actions">
         <button class="btn btn-ghost" type="button" @click="exportJSON" :disabled="!scenes.length">⬇️ 导出 JSON</button>
         <button class="btn btn-primary" type="button" :disabled="!dirty || saving" @click="saveToProject">
-          {{ saving ? '正在保存…' : '💾 保存到项目' }}
+          {{ saving ? '正在保存…' : '▣ 保存到项目' }}
         </button>
       </div>
     </header>
@@ -366,10 +366,10 @@ const TABS = [
 
 const DUP_KEYWORDS = ['吊带','丝绸','围裙','泳衣','温泉','旗袍','毛衣','衬衫','图书馆','天台','烟花','神社','巫女','咖啡','卧室','寝室','影音室','休息室','后厨','厨房','吧台','晚礼服','魔女','洛丽塔','浴衣','和服','赛车','冰箱','冷藏','露台','阳台','泳池','书房','试衣']
 const TOOLS = [
-  { id:'lint-colors', icon:'🎨', label:'检查硬编码颜色', desc:'扫描未用 token 的硬编码颜色' },
-  { id:'validate',   icon:'✅', label:'完整场景校验',   desc:'ID 唯一性、字段完整性、评级一致性' },
-  { id:'classify',   icon:'🏷', label:'更新场景评级',   desc:'根据标签重新计算 All/R15/R18' },
-  { id:'optimize',   icon:'⚙️', label:'规范化提示词',   desc:'统一标签命名、补全负面词' },
+  { id:'lint-colors', icon:'◉', label:'检查硬编码颜色', desc:'扫描未用 token 的硬编码颜色' },
+  { id:'validate',   icon:'✓', label:'完整场景校验',   desc:'ID 唯一性、字段完整性、评级一致性' },
+  { id:'classify',   icon:'▣', label:'更新场景评级',   desc:'根据标签重新计算 All/R15/R18' },
+  { id:'optimize',   icon:'⚙', label:'规范化提示词',   desc:'统一标签命名、补全负面词' },
 ]
 const PAGE_SIZE = 30
 
@@ -481,7 +481,7 @@ function deleteSceneFromDup(id: string) {
   detectDuplicates()
 }
 
-function charIcon(v: string) { return v==='nene'?'🌸':v==='natsume'?'🍂':'✦' }
+  function charIcon(v: string) { return v==='nene'?'◉':v==='natsume'?'◎':'✦' }
 function charLabel(v: string) { return v==='nene'?'宁宁':v==='natsume'?'夏目':v==='triad'||v==='both'?'双人':v||'—' }
 function errorMessage(error: unknown, fallback: string) {
   if (error instanceof Error && error.message) return error.message

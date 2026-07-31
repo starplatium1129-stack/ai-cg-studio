@@ -91,7 +91,7 @@
 
       <div class="control-toolbar sticky-toolbar">
         <button class="gallery-filter" type="button" :disabled="serviceChecking || opBusy" @click="pollStatus(true)">
-          <span :class="{ spin: serviceChecking }">🔍</span> 检测所有服务
+          <span :class="{ spin: serviceChecking }">⟳</span> 检测所有服务
         </button>
         <span class="toolbar-note">操作只影响本机进程；网站网关始终在运行</span>
       </div>
@@ -124,12 +124,11 @@
         <p class="panel-desc">绘图、语音、聊天同时加载容易占满显存。按需切换：先释放，再加载。</p>
         <div class="mode-grid">
           <button class="mode-card" type="button" :disabled="opBusy || modeBusy" @click="switchMode('draw')">
-            <span class="mode-title">🎨 绘图优先</span>
+            <span class="mode-title">◉ 绘图优先</span>
             <span class="mode-desc">停止语音、卸载 Ollama，把显存让给 WebUI 出图。</span>
           </button>
           <button class="mode-card" type="button" :disabled="opBusy || modeBusy" @click="switchMode('chat')">
-            <span class="mode-title">☕ 聊天优先</span>
-            <span class="mode-desc">停止受管 WebUI，启动语音，专注角色房间。</span>
+            <span class="mode-title">☕ 聊天优先</span>            <span class="mode-desc">停止受管 WebUI，启动语音，专注角色房间。</span>
           </button>
         </div>
 
@@ -199,7 +198,7 @@
         <p class="field-help">默认按需启动；默认端口为 <code>9880</code>。</p>
 
         <details class="voice-config">
-          <summary>🎙 角色声线配置 · 参考音频必须是 GPT-SoVITS 能读取的本机路径</summary>
+          <summary>◈ 角色声线配置 · 参考音频必须是 GPT-SoVITS 能读取的本机路径</summary>
           <div class="voice-grid">
             <div class="voice-card">
               <div class="voice-card-title">宁宁</div>
@@ -274,7 +273,7 @@
       <!-- 日志 -->
       <details id="control-logs" class="log-panel">
         <summary>
-          <span>📋 运行日志</span>
+          <span>▤ 运行日志</span>
           <span class="summary-side">
             <button class="btn btn-ghost btn-sm" type="button" @click.stop="exportDiag">导出诊断包</button>
             <button class="btn btn-ghost btn-sm" type="button" @click.stop="clearLogs">清空显示</button>

@@ -14,7 +14,7 @@
     </ArchivePageHero>
 
     <div class="info-callout" data-reveal>
-      <strong>🎯 设计理念</strong> | 色相与情绪绑定（暖黄＝温馨、粉色＝羞怯、蓝紫＝忧伤神秘）。美术规范第 1.2 节：克制为主，避免糖水色。
+      <strong>◎ 设计理念</strong> | 色相与情绪绑定（暖黄＝温馨、粉色＝羞怯、蓝紫＝忧伤神秘）。美术规范第 1.2 节：克制为主，避免糖水色。
       选一个情绪，系统会自动生成色彩语言、光照理由与提示词标签。
     </div>
 
@@ -53,37 +53,37 @@
           </div>
         </div>
         <div v-if="violations.length" class="art-warn show">
-          ⚠️ 检测到 {{ violations.length }} 个违反美术规范的标签: {{ violations.join(', ') }}
+          [!] 检测到 {{ violations.length }} 个违反美术规范的标签: {{ violations.join(', ') }}
         </div>
         <div class="prompt-label">自动翻译 Prompt</div>
         <div class="prompt-code" v-html="colorizedPrompt"></div>
         <div class="result-actions">
-          <button class="btn btn-primary" type="button" @click="copyPrompt">📋 复制 Prompt</button>
-          <button class="btn btn-ghost" type="button" @click="exportTxt">⬇️ 导出 .txt</button>
+          <button class="btn btn-primary" type="button" @click="copyPrompt">⧉ 复制 Prompt</button>
+          <button class="btn btn-ghost" type="button" @click="exportTxt">⭳ 导出 .txt</button>
           <RouterLink :to="'/prompt-builder?mood=' + selected.id" class="btn btn-ghost">→ 加载到开始绘制</RouterLink>
-          <button class="btn btn-ghost" type="button" @click="selected = null">🔄 换一个情绪</button>
+          <button class="btn btn-ghost" type="button" @click="selected = null">⟳ 换一个情绪</button>
         </div>
       </div>
     </Transition>
 
-    <h2 class="section-title spaced-lg">📖 美术规范 · 色彩对照</h2>
+    <h2 class="section-title spaced-lg">◈ 美术规范 · 色彩对照</h2>
     <p class="note mb-3">写每一条提示词前，先问自己："这符合我们的美术规范吗？"</p>
     <div class="art-ref">
       <div class="art-ref-card good">
-        <div class="art-ref-title">✅ 推崇使用</div>
+        <div class="art-ref-title">[+] 推崇使用</div>
         <div>
           <span v-for="t in GOOD_TAGS" :key="t" class="art-tag ok">{{ t }}</span>
         </div>
       </div>
       <div class="art-ref-card bad">
-        <div class="art-ref-title">❌ 禁止使用</div>
+        <div class="art-ref-title">[×] 禁止使用</div>
         <div>
           <span v-for="t in BANNED_TAGS" :key="t" class="art-tag no">{{ t }}</span>
         </div>
       </div>
     </div>
 
-    <h2 class="section-title spaced">💡 光照规范 · 每个光源都有理由</h2>
+    <h2 class="section-title spaced">◉ 光照规范 · 每个光源都有理由</h2>
     <p class="note mb-3">光源不能只为好看而堆叠，它必须服务于故事与时间。</p>
     <div class="lighting-ref">
       <div v-for="l in LIGHTINGS" :key="l.name" class="lighting-mini">
@@ -106,12 +106,12 @@ useScrollReveal()
 
 const GOOD_TAGS = ['soft colors','pastel tones','warm atmosphere','gentle palette','muted tones','harmonious colors','warm soft lighting','backlit glow']
 const LIGHTINGS = [
-  { icon:'🌅', name:'夕阳',   reason:'放学/黄昏/温馨/回忆' },
-  { icon:'🪟', name:'窗光',   reason:'室内/安静/治愈/独处' },
-  { icon:'🌄', name:'逆光',   reason:'神秘/回忆/感动/剪影' },
-  { icon:'🌙', name:'月光',   reason:'夜晚/孤独/宁静/思念' },
-  { icon:'🏮', name:'夜灯',   reason:'夜祭/温馨/安全感/传统' },
-  { icon:'☁️', name:'阴天柔光', reason:'平静/文艺/清新/日常' },
+  { icon:'◉', name:'夕阳',   reason:'放学/黄昏/温馨/回忆' },
+  { icon:'▢', name:'窗光',   reason:'室内/安静/治愈/独处' },
+  { icon:'◑', name:'逆光',   reason:'神秘/回忆/感动/剪影' },
+  { icon:'☾', name:'月光',   reason:'夜晚/孤独/宁静/思念' },
+  { icon:'◈', name:'夜灯',   reason:'夜祭/温馨/安全感/传统' },
+  { icon:'☁', name:'阴天柔光', reason:'平静/文艺/清新/日常' },
 ]
 
 interface ColorMood {
@@ -126,12 +126,12 @@ interface ColorMood {
 }
 
 const MOODS: ColorMood[] = [
-  { id:'joy',     icon:'☀️', name:'快乐', en:'Joy',     color:'#FFD54F', palette:['#FFE082','#FFD54F','#FFB300','#FF8F00','#FFF8E1'], mapping:{'色相':'暖黄色 / 浅橙色 / 柔粉','光照':'Golden Hour / 午后阳光 / 明亮','氛围':'活力 / 温暖 / 清爽','天气':'晴天 / 微风'}, prompt:'warm yellow tones, golden hour, bright sunlight, cheerful atmosphere, soft breeze, warm color palette, vibrant but soft' },
-  { id:'love',    icon:'💕', name:'恋爱', en:'Love',    color:'#F06292', palette:['#F8BBD0','#F06292','#EC407A','#AD1457','#FFF0F5'], mapping:{'色相':'夕阳 / 粉色 / 暖光','光照':'Golden Hour / 逆光 / 柔光','氛围':'暧昧 / 心跳 / 羞涩','天气':'黄昏 / 樱花季'}, prompt:'pink tone, golden hour, warm light, backlit, romantic atmosphere, soft glow, blush, cherry blossom color, dreamy' },
-  { id:'calm',    icon:'🍃', name:'平静', en:'Calm',    color:'#81C784', palette:['#C8E6C9','#81C784','#4CAF50','#2E7D32','#F1F8E9'], mapping:{'色相':'淡绿 / 青绿 / 奶白','光照':'阴天柔光 / 窗光 / 自然光','氛围':'安静 / 治愈 / 文艺','天气':'多云 / 雨后'}, prompt:'soft green tones, overcast light, window light, calm atmosphere, peaceful, gentle colors, clean aesthetic, healing' },
-  { id:'sad',     icon:'🌧', name:'忧伤', en:'Sad',     color:'#64B5F6', palette:['#BBDEFB','#64B5F6','#1E88E5','#0D47A1','#E3F2FD'], mapping:{'色相':'蓝色 / 灰蓝 / 冷调','光照':'月光 / 阴天 / 冷调窗光','氛围':'孤独 / 回忆 / 思念','天气':'雨天 / 阴天 / 夜晚'}, prompt:'blue tones, cool color palette, rainy day, overcast, melancholic atmosphere, lonely, nostalgic, soft blue light' },
-  { id:'tension', icon:'🌙', name:'神秘', en:'Mystery', color:'#BA68C8', palette:['#E1BEE7','#BA68C8','#8E24AA','#4A148C','#F3E5F5'], mapping:{'色相':'紫蓝 / 深紫 / 冷调','光照':'月光 / 逆光 / 暗调','氛围':'神秘 / 距离 / 梦幻','天气':'夜晚 / 雾 / 雨'}, prompt:'purple and blue tones, moonlight, backlit, rim light, mysterious atmosphere, ethereal, dreamlike, cool shadows' },
-  { id:'warmth',  icon:'🏮', name:'温馨', en:'Warmth',  color:'#FFB74D', palette:['#FFE0B2','#FFB74D','#F57C00','#E65100','#FFF3E0'], mapping:{'色相':'暖橙 / 橘红 / 米黄','光照':'夜灯 / 烛光 / 室内暖光','氛围':'安全感 / 家庭 / 治愈','天气':'夜晚 / 秋雨'}, prompt:'warm orange tones, lantern light, indoor warm light, cozy atmosphere, candlelight, safe feeling, homely, autumn warmth' },
+  { id:'joy',     icon:'☀', name:'快乐', en:'Joy',     color:'#FFD54F', palette:['#FFE082','#FFD54F','#FFB300','#FF8F00','#FFF8E1'], mapping:{'色相':'暖黄色 / 浅橙色 / 柔粉','光照':'Golden Hour / 午后阳光 / 明亮','氛围':'活力 / 温暖 / 清爽','天气':'晴天 / 微风'}, prompt:'warm yellow tones, golden hour, bright sunlight, cheerful atmosphere, soft breeze, warm color palette, vibrant but soft' },
+  { id:'love',    icon:'♡', name:'恋爱', en:'Love',    color:'#F06292', palette:['#F8BBD0','#F06292','#EC407A','#AD1457','#FFF0F5'], mapping:{'色相':'夕阳 / 粉色 / 暖光','光照':'Golden Hour / 逆光 / 柔光','氛围':'暧昧 / 心跳 / 羞涩','天气':'黄昏 / 樱花季'}, prompt:'pink tone, golden hour, warm light, backlit, romantic atmosphere, soft glow, blush, cherry blossom color, dreamy' },
+  { id:'calm',    icon:'❋', name:'平静', en:'Calm',    color:'#81C784', palette:['#C8E6C9','#81C784','#4CAF50','#2E7D32','#F1F8E9'], mapping:{'色相':'淡绿 / 青绿 / 奶白','光照':'阴天柔光 / 窗光 / 自然光','氛围':'安静 / 治愈 / 文艺','天气':'多云 / 雨后'}, prompt:'soft green tones, overcast light, window light, calm atmosphere, peaceful, gentle colors, clean aesthetic, healing' },
+  { id:'sad',     icon:'☔', name:'忧伤', en:'Sad',     color:'#64B5F6', palette:['#BBDEFB','#64B5F6','#1E88E5','#0D47A1','#E3F2FD'], mapping:{'色相':'蓝色 / 灰蓝 / 冷调','光照':'月光 / 阴天 / 冷调窗光','氛围':'孤独 / 回忆 / 思念','天气':'雨天 / 阴天 / 夜晚'}, prompt:'blue tones, cool color palette, rainy day, overcast, melancholic atmosphere, lonely, nostalgic, soft blue light' },
+  { id:'tension', icon:'☾', name:'神秘', en:'Mystery', color:'#BA68C8', palette:['#E1BEE7','#BA68C8','#8E24AA','#4A148C','#F3E5F5'], mapping:{'色相':'紫蓝 / 深紫 / 冷调','光照':'月光 / 逆光 / 暗调','氛围':'神秘 / 距离 / 梦幻','天气':'夜晚 / 雾 / 雨'}, prompt:'purple and blue tones, moonlight, backlit, rim light, mysterious atmosphere, ethereal, dreamlike, cool shadows' },
+  { id:'warmth',  icon:'◈', name:'温馨', en:'Warmth',  color:'#FFB74D', palette:['#FFE0B2','#FFB74D','#F57C00','#E65100','#FFF3E0'], mapping:{'色相':'暖橙 / 橘红 / 米黄','光照':'夜灯 / 烛光 / 室内暖光','氛围':'安全感 / 家庭 / 治愈','天气':'夜晚 / 秋雨'}, prompt:'warm orange tones, lantern light, indoor warm light, cozy atmosphere, candlelight, safe feeling, homely, autumn warmth' },
 ]
 
 const selected = ref<ColorMood | null>(null)
@@ -161,7 +161,7 @@ function copyPrompt() {
   if (!selected.value) return
   const text = selected.value.prompt
   navigator.clipboard.writeText(text)
-    .then(() => showToast('📋 已复制到剪贴板'))
+    .then(() => showToast('⧉ 已复制到剪贴板'))
     .catch(() => prompt('请手动复制', text))
 }
 

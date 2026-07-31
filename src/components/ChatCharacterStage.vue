@@ -14,7 +14,7 @@
         :aria-selected="activeId === id ? 'true' : 'false'"
         :tabindex="tabs.tabIndex(id)"
         @click="emit('select', id)"
-      >{{ id === 'nene' ? '🔮 宁宁' : '☕ 夏目' }}</button>
+      >{{ id === 'nene' ? '◉ 宁宁' : '◎ 夏目' }}</button>
     </div>
 
     <div

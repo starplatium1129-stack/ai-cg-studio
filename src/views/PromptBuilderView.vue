@@ -96,7 +96,9 @@
               class="char-btn" type="button"
               :class="{ active: pb.char === c.id }"
               :aria-pressed="pb.char === c.id"
-              @click="pb.setChar(c.id)">{{ c.label }}</button>
+              @click="pb.setChar(c.id)">
+              <ArchiveIcon :name="c.iconName" /> {{ c.label }}
+            </button>
           </div>
           <div class="traits-row">
             <button v-for="t in currentTraits" :key="t.tag"
@@ -373,7 +375,7 @@
               class="option" type="button"
               :class="{ selected: pb.selections.emotion.includes(e.id) }"
               @click="pb.toggleEmotion(e.id)">
-              <span class="opt-icon">{{ e.icon }}</span>
+              <span class="opt-icon"><ArchiveIcon :name="e.iconName" /></span>
               <span class="opt-name">{{ e.name }}</span>
             </button>
           </div>
@@ -482,6 +484,7 @@ const GenerationParamsPanel = defineAsyncComponent(() => import('@/components/Ge
 const GenerationOutputControls = defineAsyncComponent(() => import('@/components/GenerationOutputControls.vue'))
 const SDRecoveryPanel = defineAsyncComponent(() => import('@/components/SDRecoveryPanel.vue'))
 const HistoryPanel = defineAsyncComponent(() => import('@/components/HistoryPanel.vue'))
+import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import { readHiddenScenes, rememberRecent, recordSceneUsage } from '@/utils/sceneUX'
 import { tagMeaning } from '@/utils/tagMeaning'
@@ -565,10 +568,10 @@ const storyChips = [
   '雪天围围巾的温柔一瞬',
 ]
 
-const charOptions: Array<{ id: CharKey; label: string }> = [
-  { id: 'nene',    label: '🌸 宁宁' },
-  { id: 'natsume', label: '🍂 夏目' },
-  { id: 'triad',   label: '🌸🍂 双人' },
+const charOptions: Array<{ id: CharKey; iconName: ArchiveIconName; label: string }> = [
+  { id: 'nene',    iconName: 'nene',    label: '宁宁' },
+  { id: 'natsume', iconName: 'natsume', label: '夏目' },
+  { id: 'triad',   iconName: 'triad',   label: '双人' },
 ]
 
 function isCharKey(value: unknown): value is CharKey {

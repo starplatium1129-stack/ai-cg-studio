@@ -1,25 +1,29 @@
 // 导演台：情绪、镜头、光照、构图、色彩情调静态定义
 
+import type { ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
+
 export interface ChoiceDef { id: string; icon: string; name: string; en: string; prompt?: string }
 export interface ColorMoodDef { id: string; icon: string; name: string; en: string; colors: string[]; desc: string; prompt: string }
+/** 带单色矢量图标的选项（ArchiveIcon 名），替代彩色 Emoji 的 UI 展示 */
+export interface IconChoiceDef extends ChoiceDef { iconName: ArchiveIconName }
 
-export const EMOTION: ChoiceDef[] = [
-  { id:'happy',   icon:'😊', name:'开心',  en:'Happy',     prompt:'bright_smile' },
-  { id:'shy',     icon:'🙈', name:'害羞',  en:'Shy',       prompt:'shy, blushing' },
-  { id:'miss',    icon:'🥺', name:'思念',  en:'Missing',   prompt:'longing_look' },
-  { id:'expect',  icon:'✨', name:'期待',  en:'Expectant', prompt:'expectant, bright_eyes' },
-  { id:'nervous', icon:'😅', name:'紧张',  en:'Nervous',   prompt:'nervous, blushing' },
-  { id:'gentle',  icon:'🤗', name:'温柔',  en:'Gentle',    prompt:'gentle_expression' },
-  { id:'moved',   icon:'😢', name:'感动',  en:'Moved',     prompt:'teary_eyes' },
-  { id:'sad',     icon:'😞', name:'失落',  en:'Sad',       prompt:'sad' },
-  { id:'calm',    icon:'🍃', name:'平静',  en:'Calm',      prompt:'calm' },
-  { id:'joyful',  icon:'🥰', name:'幸福',  en:'Joyful',    prompt:'in_love, blush' },
-  { id:'relaxed', icon:'😌', name:'放松',  en:'Relaxed',   prompt:'relaxed' },
-  { id:'serious', icon:'😤', name:'认真',  en:'Serious',   prompt:'serious' },
-  { id:'love',    icon:'💗', name:'恋爱',  en:'In Love',   prompt:'in_love, blush' },
-  { id:'sleepy',  icon:'😴', name:'困倦',  en:'Sleepy',    prompt:'sleepy' },
-  { id:'spoiled', icon:'🍭', name:'撒娇',  en:'Spoiled',   prompt:'pouting' },
-  { id:'wronged', icon:'😢', name:'委屈',  en:'Wronged',   prompt:'teary_eyes, pout' },
+export const EMOTION: IconChoiceDef[] = [
+  { id:'happy',   icon:'', iconName:'happy',   name:'开心',  en:'Happy',     prompt:'bright_smile' },
+  { id:'shy',     icon:'', iconName:'shy',     name:'害羞',  en:'Shy',       prompt:'shy, blushing' },
+  { id:'miss',    icon:'', iconName:'miss',    name:'思念',  en:'Missing',   prompt:'longing_look' },
+  { id:'expect',  icon:'', iconName:'expect',  name:'期待',  en:'Expectant', prompt:'expectant, bright_eyes' },
+  { id:'nervous', icon:'', iconName:'nervous', name:'紧张',  en:'Nervous',   prompt:'nervous, blushing' },
+  { id:'gentle',  icon:'', iconName:'gentle',  name:'温柔',  en:'Gentle',    prompt:'gentle_expression' },
+  { id:'moved',   icon:'', iconName:'moved',   name:'感动',  en:'Moved',     prompt:'teary_eyes' },
+  { id:'sad',     icon:'', iconName:'sad',     name:'失落',  en:'Sad',       prompt:'sad' },
+  { id:'calm',    icon:'', iconName:'calm',    name:'平静',  en:'Calm',      prompt:'calm' },
+  { id:'joyful',  icon:'', iconName:'joyful',  name:'幸福',  en:'Joyful',    prompt:'in_love, blush' },
+  { id:'relaxed', icon:'', iconName:'relaxed', name:'放松',  en:'Relaxed',   prompt:'relaxed' },
+  { id:'serious', icon:'', iconName:'serious', name:'认真',  en:'Serious',   prompt:'serious' },
+  { id:'love',    icon:'', iconName:'love',    name:'恋爱',  en:'In Love',   prompt:'in_love, blush' },
+  { id:'sleepy',  icon:'', iconName:'sleepy',  name:'困倦',  en:'Sleepy',    prompt:'sleepy' },
+  { id:'spoiled', icon:'', iconName:'spoiled', name:'撒娇',  en:'Spoiled',   prompt:'pouting' },
+  { id:'wronged', icon:'', iconName:'wronged', name:'委屈',  en:'Wronged',   prompt:'teary_eyes, pout' },
 ]
 
 export const SHOT: ChoiceDef[] = [
@@ -67,10 +71,10 @@ export const SCENE_THEMES = [
   { id:'all',      label:'全部',    icon:'✦', cat:[] },
   { id:'romance',  label:'恋爱',    icon:'♡', cat:['恋爱'] },
   { id:'daily',    label:'日常',    icon:'☕', cat:['日常'] },
-  { id:'intimate', label:'亲密',    icon:'🌙', cat:['亲密','R15'] },
-  { id:'school',   label:'校园',    icon:'🎓', cat:['校园'] },
-  { id:'travel',   label:'旅行',    icon:'🧳', cat:['旅行'] },
-  { id:'festival', label:'节日',    icon:'🎐', cat:['祭典・节日'] },
-  { id:'story',    label:'剧情',    icon:'🎬', cat:['战斗','Active Sync'] },
+  { id:'intimate', label:'亲密',    icon:'☾', cat:['亲密','R15'] },
+  { id:'school',   label:'校园',    icon:'⌘', cat:['校园'] },
+  { id:'travel',   label:'旅行',    icon:'✈', cat:['旅行'] },
+  { id:'festival', label:'节日',    icon:'✿', cat:['祭典・节日'] },
+  { id:'story',    label:'剧情',    icon:'▶', cat:['战斗','Active Sync'] },
   { id:'fanwork',  label:'同人',    icon:'✧', cat:['同人'] },
 ]

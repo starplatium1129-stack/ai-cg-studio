@@ -14,7 +14,7 @@
     </ArchivePageHero>
 
     <div class="info-callout" data-reveal>
-      <strong>🎯 设计理念</strong> | 每一幕都是一个完整场景。切换右上角角色后，全部分幕的提示词会在宁宁与夏目之间同步转换。
+      <strong>◎ 设计理念</strong> | 每一幕都是一个完整场景。切换右上角角色后，全部分幕的提示词会在宁宁与夏目之间同步转换。
       当前灵感场景共有 <strong>{{ sceneCount }}</strong> 个。
     </div>
 
@@ -48,7 +48,7 @@
             v-for="c in CHARACTER_OPTIONS" :key="c"
             class="char-btn" :class="{ active: currentChar === c }"
             type="button" @click="currentChar = c"
-          >{{ c === 'nene' ? '🌸 宁宁' : '🍂 夏目' }}</button>
+          >{{ c === 'nene' ? '◉ 宁宁' : '◎ 夏目' }}</button>
         </div>
       </div>
       <p class="viewer-desc">{{ activeScenario.desc }}</p>
@@ -67,11 +67,11 @@
             <div class="scene-meta"><div class="label">角色</div><div class="value">{{ currentChar }}</div></div>
             <div class="scene-meta"><div class="label">Resolution</div><div class="value" :title="resInfo(a.res).dim">{{ a.res }}</div></div>
             <div class="scene-meta"><div class="label">LoRA</div><div class="value">{{ a.lora }}</div></div>
-            <div class="scene-meta"><div class="label">锁定参数 <span class="lock-badge">🔒</span></div><div class="value value-dense">{{ LOCK_PARAMS }}</div></div>
+            <div class="scene-meta"><div class="label">锁定参数 <span class="lock-badge">▣</span></div><div class="value value-dense">{{ LOCK_PARAMS }}</div></div>
           </div>
 
           <div class="res-rec">
-            <span class="res-icon">📐</span>
+            <span class="res-icon">◳</span>
             <strong>推荐 {{ a.res }} ({{ resInfo(a.res).dim }} · {{ resInfo(a.res).vram }})</strong>
             → {{ resInfo(a.res).reason }}
           </div>
@@ -90,7 +90,7 @@
           </div>
 
           <div class="act-actions">
-            <button class="btn btn-primary" type="button" @click="copyPrompt(a)">📋 复制本幕 Prompt</button>
+            <button class="btn btn-primary" type="button" @click="copyPrompt(a)">⧉ 复制本幕 Prompt</button>
             <RouterLink :to="'/prompt-builder?scenario=' + activeScenario.id" class="btn btn-ghost">→ 去开始绘制</RouterLink>
           </div>
         </div>
@@ -156,7 +156,7 @@ const RES_MAP = {
 const CHARACTER_OPTIONS = ['nene', 'natsume'] as const
 
 const SCENARIOS: Scenario[] = [
-  { id:'promise', icon:'🌸', name:'放学后的约定', en:'After-School Promise', desc:'放学以后，她一直在校门口等你。花瓣落在肩上，她没有说，只是笑了起来。',
+  { id:'promise', icon:'❋', name:'放学后的约定', en:'After-School Promise', desc:'放学以后，她一直在校门口等你。花瓣落在肩上，她没有说，只是笑了起来。',
     acts:[
       { n:'01', title:'空·教室', en:'Empty Classroom', desc:'夕阳从窗户照进来，教室里已经没有人了。', emotion:'期待', res:'Half-body', lora:0.75, neg:'night, snow, autumn leaves',
         prompt:'masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed\n1girl, solo, {{char}}, {{traits}}\nschool uniform\nclassroom, window, afternoon, sunlight streaming, dust motes\ngentle smile, soft eyes, looking through window, expectant\nclose-up, upper body\ncentered composition, by window, soft focus\nwindow light, soft afternoon glow, warm, quiet atmosphere\nbeautiful detailed eyes, depth of field' },
@@ -168,7 +168,7 @@ const SCENARIOS: Scenario[] = [
         prompt:'masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed\n1girl, solo, {{char}}, {{traits}}\nschool uniform, pleated skirt\nschool gate, cherry blossoms in bloom, petals floating\ngentle smile, soft eyes, blush, looking at viewer\nmedium shot, looking back, over shoulder\nrule of thirds, by school gate, depth\ngolden hour, backlit, soft shadows, warm atmosphere\nbeautiful detailed eyes, depth of field' }
     ]
   },
-  { id:'rainy', icon:'🌧', name:'雨天的共伞', en:'Sharing an Umbrella', desc:'突然下起雨。两个人挤在一把伞下。肩膀贴着肩膀。沉默比语言多。',
+  { id:'rainy', icon:'☔', name:'雨天的共伞', en:'Sharing an Umbrella', desc:'突然下起雨。两个人挤在一把伞下。肩膀贴着肩膀。沉默比语言多。',
     acts:[
       { n:'01', title:'雨落', en:'Rain Falls', desc:'天空变暗。雨点打在柏油路上。她没有伞。', emotion:'失落', res:'Wide CG', lora:0.75, neg:'sunny, bright lighting, day, summer, cherry blossoms',
         prompt:'masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed\n1girl, solo, {{char}}, {{traits}}\nschool uniform, no umbrella, wet\nrainy street, wet road, puddle reflections, grey sky\nsad, distant gaze, walking alone\nwide shot, full body, small in frame\nrule of thirds, leading lines, depth\novercast, cool tones, soft diffused light, rainy atmosphere\nbeautiful detailed eyes, depth of field, melancholic' },
@@ -178,7 +178,7 @@ const SCENARIOS: Scenario[] = [
         prompt:'masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed\n1girl, solo, {{char}}, {{traits}}\nunder umbrella, rain, close to viewer\nshy, looking away, slight blush, intimate\nclose-up, face and umbrella edge, intimate distance\ncentered, foreground framing\novercast, rainy atmosphere, soft lighting, cool tones\nbeautiful detailed eyes, beautiful detailed hair, depth of field' }
     ]
   },
-  { id:'sakura', icon:'🌸', name:'樱花树下的初见', en:'Under the Sakura', desc:'春天的公园，樱花盛开。她站在树下等人，花瓣落在发梢。',
+  { id:'sakura', icon:'❋', name:'樱花树下的初见', en:'Under the Sakura', desc:'春天的公园，樱花盛开。她站在树下等人，花瓣落在发梢。',
     acts:[
       { n:'01', title:'等待', en:'Waiting', desc:'她站在樱花树下，不时看一眼路的尽头。', emotion:'期待', res:'Full CG', lora:0.75, neg:'night, snow, autumn leaves, winter, rain',
         prompt:'masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed\n1girl, solo, {{char}}, {{traits}}\nschool uniform, spring coat\npark, sakura tree in full bloom, petals floating, afternoon\nexpectant, looking at path, gentle, hopeful\nwide shot, full body, among sakura\nrule of thirds, layered foreground petals, depth\nsoft spring light, warm pink glow, petals in air, dreamlike\nhair blowing, beautiful detailed eyes, depth of field' },
@@ -233,7 +233,7 @@ function renderModules(a: ScenarioAct) {
 function copyPrompt(a: ScenarioAct) {
   const text = buildFullPrompt(a, currentChar.value)
   navigator.clipboard.writeText(text)
-    .then(() => showToast('📋 已复制 (' + text.split(',').length + ' tokens)'))
+    .then(() => showToast('⧉ 已复制 (' + text.split(',').length + ' tokens)'))
     .catch(() => prompt('请手动复制', text))
 }
 

@@ -188,7 +188,7 @@
       </div>
       <div class="recent-grid" ref="recentWorksEl">
         <div v-if="!recentWorks.length" class="empty-state">
-          <div class="empty-state-icon">🎞</div>
+          <div class="empty-state-icon">▤</div>
           <p>作品册还是空的。去开始绘制，留下第一张 CG。</p>
           <RouterLink to="/prompt-builder" class="btn btn-primary">✦ 开始绘制</RouterLink>
         </div>
@@ -201,7 +201,7 @@
           >
             <div class="recent-cover" :data-image-id="h.image_id">
               <img v-if="coverUrl(h)" :src="coverUrl(h)" alt="" />
-              <span v-else class="placeholder">🎬</span>
+              <span v-else class="placeholder">▤</span>
             </div>
             <div class="recent-body">
               <div class="recent-title">{{ h.sceneTitle || h.scene || '未命名' }}</div>

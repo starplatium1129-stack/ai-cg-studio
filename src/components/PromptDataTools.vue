@@ -5,17 +5,17 @@
       <div class="utility-label">本地数据</div>
       <div class="utility-actions">
         <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.exportBackup()">
-          ⬇️ 导出备份
+          ⭳ 导出备份
         </button>
         <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="pickBackupFile">
-          ⬆️ 从备份恢复
+          ⭱ 从备份恢复
         </button>
         <input ref="backupFileEl" class="sr-only" type="file" accept="application/json" @change="onBackupFilePicked" />
       </div>
       <div class="utility-divider"></div>
       <div class="utility-label">存储维护</div>
       <div class="utility-actions">
-        <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.healthCheck()">🩺 存储体检</button>
+        <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.healthCheck()">◉ 存储体检</button>
         <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.cleanOrphanImages()">🧹 清理孤儿图片</button>
       </div>
     </div>
