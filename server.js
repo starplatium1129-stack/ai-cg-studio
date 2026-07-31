@@ -213,7 +213,7 @@ function createGateway(options) {
   app.use('/scene-showcase', function (req, res, next) {
     if (!config.SCENE_SHOWCASE_DIR) return res.status(404).end();
     var relative = req.path.replace(/\\/g, '/');
-    var allowed = /^\/(?:manifest\.json|00-cover\.jpg|README\.txt|images\/sc\d{3}\.(?:jpg|png|webp)|thumbs\/sc\d{3}\.(?:jpg|png|webp)|sheets\/[a-z0-9_-]+\/[a-z0-9_.-]+\.jpg)$/i;
+    var allowed = /^\/(?:manifest\.json|00-cover\.jpg|README\.txt|home\/nene\.jpg|home\/natsume\.jpg|images\/sc\d{3}\.(?:jpg|png|webp)|thumbs\/sc\d{3}\.(?:jpg|png|webp)|sheets\/[a-z0-9_-]+\/[a-z0-9_.-]+\.jpg)$/i;
     if (!allowed.test(relative)) return res.status(404).end();
     res.setHeader('Cache-Control', relative === '/manifest.json' ? 'no-cache' : 'public, max-age=604800');
     next();
