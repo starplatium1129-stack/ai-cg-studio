@@ -988,38 +988,6 @@
     "related": []
   },
   {
-    "id": "tag_123",
-    "cat": "Quality",
-    "en": "masterpiece",
-    "cn": "杰作",
-    "weight": 1,
-    "related": []
-  },
-  {
-    "id": "tag_124",
-    "cat": "Quality",
-    "en": "best quality",
-    "cn": "最高质量",
-    "weight": 1,
-    "related": []
-  },
-  {
-    "id": "tag_125",
-    "cat": "Quality",
-    "en": "highly detailed",
-    "cn": "高精度",
-    "weight": 0.85,
-    "related": []
-  },
-  {
-    "id": "tag_126",
-    "cat": "Quality",
-    "en": "absurdres",
-    "cn": "超高清",
-    "weight": 0.8,
-    "related": []
-  },
-  {
     "cat": "Appearance",
     "en": "white_hair",
     "cn": "白发",

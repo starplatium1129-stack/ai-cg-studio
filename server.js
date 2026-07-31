@@ -109,11 +109,6 @@ function createGateway(options) {
     });
   });
 
-  app.get('/api/tunnel-status', function (req, res) {
-    res.setHeader('Cache-Control', 'no-store');
-    res.json({ url:tunnelManager ? tunnelManager.getUrl() : '' });
-  });
-
   // Vue SPA — 优先从 dist/ 提供；dist/ 不存在时回退到旧 index.html
   var DIST_DIR = path.join(config.ROOT_DIR, 'dist');
   var distReady = fs.existsSync(path.join(DIST_DIR, 'index.html'));

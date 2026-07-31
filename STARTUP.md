@@ -210,7 +210,7 @@ node server.js
 - `runtime/config.json`：SD、TTS 与角色声线配置
 - `runtime/state/`：网关与隧道的 PID、端口和网关 Token（首次启动生成后持久化复用，重启不换；`TOKEN` 环境变量可显式覆盖；长度 64 hex）
 - `runtime/logs/`：控制面板、网关和隧道日志（日志中不打印完整 Token）
-- `runtime/outputs/`：本机生成图备份（`/api/backup` 仅本机可写）
+- `runtime/outputs/`：旧版 `friend_outputs` 的迁移目录（当前无写入端点）
 - 控制面板「导出诊断包」：汇总服务状态、网关健康与脱敏日志，便于排错
 
 旧版根目录中的 `.gateway_*`、`tunnel.log` 和 `friend_outputs/` 会在首次启动时自动迁移。`runtime/` 已被 Git 忽略，不应提交。

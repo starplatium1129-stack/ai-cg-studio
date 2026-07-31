@@ -187,15 +187,15 @@ test('control-failure-contract: timeout, config rollback, voice weights, tunnel 
     fs.writeFileSync(tunnelRuntime.tunnelLog,
       'https://stable-test.trycloudflare.com\nRegistered tunnel connection\n', 'utf8');
     var readyTunnel = await waitFor(async function () {
-      var status = await getJson(gatewayBase, '/api/tunnel-status');
-      return status.json.url || '';
-    }, 'tunnel ready URL');
-    assert.strictEqual(readyTunnel, 'https://stable-test.trycloudflare.com');
+      var status = await getJson(gatewayBase, '/api/status');
+      return status.json.tunnelStatus === 'active' ? 'active' : '';
+    }, 'tunnel ready status');
+    assert.strictEqual(readyTunnel, 'active');
 
     tunnelChild.emit('exit', 1);
     var stoppedTunnel = await waitFor(async function () {
-      var status = await getJson(gatewayBase, '/api/tunnel-status');
-      return status.json.url === '';
+      var status = await getJson(gatewayBase, '/api/status');
+      return status.json.tunnelStatus === 'waiting' ? 'cleared' : '';
     }, 'tunnel exit status cleanup');
     assert(stoppedTunnel, 'tunnel exit must remove the stale public URL from the real status route');
   } finally {

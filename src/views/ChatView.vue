@@ -167,8 +167,8 @@
                    硬编码旧端口会把用户带到一个拒绝连接的死链接。 -->
               <RouterLink v-show="showVoiceRecovery" class="voice-recovery" to="/control">启动语音 →</RouterLink>
               <label class="volume-slider" title="音量">
-                <span class="volume-icon"><ArchiveIcon name="sound" /></span>
-                <input type="range" v-model.number="volume" min="0" max="100"
+                <span class="volume-icon" aria-hidden="true"><ArchiveIcon name="sound" /></span>
+                <input type="range" v-model.number="volume" min="0" max="100" aria-label="音量"
                   @input="voice.setVolume(volume / 100)" />
               </label>
               <button class="replay-btn" type="button" title="重新播放上一条语音"

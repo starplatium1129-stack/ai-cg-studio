@@ -5,7 +5,7 @@
 'use strict';
 
 var MODULES = [
-  { id:'q',  on:true, cls:'q',  label:'Quality',     text:'masterpiece, best quality, newest, very aesthetic, absurdres, highly detailed' },
+  { id:'q',  on:true, cls:'q',  label:'Quality',     text:'masterpiece, best quality, very aesthetic, absurdres' },
   { id:'c',  on:true, cls:'c',  label:'Character',   text:'1girl, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, blazer, yellow_bowtie, plaid_skirt, pleated_skirt, grey_skirt, black_thighhighs' },
   { id:'s',  on:true, cls:'s',  label:'Story',       text:'after school, school gate, waiting' },
   { id:'e',  on:true, cls:'e',  label:'Emotion',     text:'gentle smile, soft eyes, blush, looking at viewer' },

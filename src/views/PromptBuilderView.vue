@@ -76,7 +76,7 @@
             @input="onStoryInput"></textarea>
           <div v-if="pb.activeScene" class="scene-context">
             <span class="scene-context-title">{{ pb.activeScene.title }}</span>
-            <button class="scene-context-detach" type="button" @click="pb.clearScene({ keepStory: true })">× 脱离</button>
+            <button class="scene-context-detach" type="button" @click="detachScene()">× 脱离</button>
           </div>
           <div class="story-chips">
             <button v-for="s in storyChips" :key="s" type="button" class="story-chip"
@@ -599,10 +599,16 @@ function selectScene(scene: Scene) {
   sceneLimit.value = 20
 }
 
+function detachScene() {
+  if (!pb.sceneId) return
+  pb.clearScene({ keepStory: true })
+  pb.flash('已脱离场景，仅保留故事')
+}
+
 function onStoryInput() {
   // Clear scene context if user edits story away from scene's default
   if (pb.sceneId && pb.story !== pb.sceneBaseStory) {
-    pb.clearScene({ keepStory: true })
+    detachScene()
   }
 }
 

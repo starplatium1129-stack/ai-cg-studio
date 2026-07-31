@@ -630,6 +630,23 @@ function conflictGroups(groups: Array<{ name: string; tokens: string[] }>, tags:
   return hit.length > 1 ? hit.map(group => group.name) : []
 }
 
+/** 词条目录级互斥：服装 / 时段 / 天气。UI 层选择新标签时替换同组旧标签。 */
+const MUTUAL_EXCLUSION_GROUPS = [...OUTFIT_FAMILIES, ...TIME_GROUPS, ...WEATHER_GROUPS]
+
+/** 返回 tag 命中的互斥组名（无则 null） */
+export function mutualGroupOf(tag: string): string | null {
+  const key = normalizeKey(tag)
+  const group = MUTUAL_EXCLUSION_GROUPS.find(g => g.tokens.some(t => normalizeKey(t) === key))
+  return group ? group.name : null
+}
+
+/** 返回 tags 中属于 groupName 互斥组的成员 */
+export function membersOfMutualGroup(groupName: string, tags: string[]): string[] {
+  const group = MUTUAL_EXCLUSION_GROUPS.find(g => g.name === groupName)
+  if (!group) return []
+  return tags.filter(t => group.tokens.some(gt => normalizeKey(gt) === normalizeKey(t)))
+}
+
 export interface PromptReport {
   positiveCount: number
   negativeCount: number

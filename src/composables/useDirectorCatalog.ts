@@ -35,7 +35,6 @@ export const TAG_CATEGORY_LABELS: Record<string, string> = {
   Appearance: '外观',
   Camera: '镜头',
   Style: '画风',
-  Quality: '质量',
   Body: '身体',
   Mature: '成人',
   Character: '角色',

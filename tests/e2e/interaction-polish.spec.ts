@@ -55,7 +55,7 @@ test('repeated navigation keeps a visible route view mounted', async ({ page }) 
 
   for (const destination of [
     { label: '灵感场景', url: /\/scene-explorer$/, heading: '灵感场景' },
-    { label: '效果样张', url: /\/showcase$/, heading: '场景，实际能画成什么样' },
+    { label: '效果样张', url: /\/showcase$/, heading: '定稿样张 · Verified Showcase' },
     { label: '作品册', url: /\/gallery$/, heading: '作品册' },
   ]) {
     await page.getByRole('link', { name: destination.label, exact: true }).click()

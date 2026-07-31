@@ -116,26 +116,26 @@
 
 P1 · 近期
 
-1. SceneManagerView 编辑弹窗脏关闭确认：Escape / 点遮罩 / 取消会静默丢弃全部未保存字段（页面级脏态到不了弹窗，需弹窗内 dirty 追踪 + 确认）。
-2. 破坏性操作补确认：TrainingView 停止训练（可能已跑数小时）、ControlView 停止 SD / GPT-SoVITS 服务（正在出图/配音时误点即中断）。
-3. 生成参数解释：`GenerationParamsPanel` 的 CFG / Steps / Sampler / Scheduler 只有裸标签，场景模式下普通用户看不懂该调什么（补 tooltip/解释文案）。
-4. PromptBuilderView 故事编辑静默解除场景关联：`onStoryInput` 改动故事即 `clearScene({keepStory:true})`，无任何提示（至少补 toast 说明"已脱离场景，仅保留故事"）。
+1. ~~SceneManagerView 编辑弹窗脏关闭确认~~（2026-07-31 完成：`closeModal` 加表单快照对比，脏改时 `confirm` 拦截 Escape/遮罩/取消；保存后快照刷新不弹）。
+2. ~~破坏性操作补确认~~（2026-07-31 完成：TrainingView 停止训练、ControlView 停止 SD/GPT-SoVITS 均前置 `confirm`，沿用全站 `window.confirm` 模式；Ollama 卸载是显存释放、可逆，不加）。
+3. ~~生成参数解释~~（2026-07-31 完成：GenerationParamsPanel 的 CFG/Steps/Sampler/Scheduler/SD 模型/负面 textarea 补 `title` 中文解释）。
+4. ~~PromptBuilderView 故事编辑静默解除场景关联~~（2026-07-31 完成：新增 `detachScene()`，输入脱离与手动 × 均 flash「已脱离场景，仅保留故事」）。
 
 P2 · 词条搭配收尾
 
-5. docs 质量词示例修订：`docs/prompt-spec.html`、`scene-spec.html`、`art-direction.html` 里的 6 连质量词（newest, very aesthetic, absurdres, highly detailed）与 WAI 官方"不要堆质量词"建议冲突，改为官方 3 词或注明质量前缀由模型 profile 注入。
-6. `data/tags.json` Quality 分类处理：允许用户手选 4 个质量词叠加在 profile 前缀上（最终 6-7 个），考虑移除该分类或加"模型已默认注入"说明。
-7. 词条目录级互斥（可选）：服装 / 时段 / 天气在 UI 层做互斥选择（目前只有健康检查告警，不拦截选择）。
+5. ~~docs 质量词示例修订~~（2026-07-31 完成：`docs/prompt-spec.js/html`、`scene-spec.html`、`art-direction.html` 与 `src/config/scenarios.ts` 的六连质量词统一为规范前缀 `masterpiece, best quality, very aesthetic, absurdres`，并注明由模型 profile 注入）。
+6. ~~`data/tags.json` Quality 分类处理~~（2026-07-31 完成：Quality 分类纯冗余——前端过滤不展示、非前缀来源；删除 4 个 Quality 标签与 `TAG_CATEGORY_LABELS` 的 `Quality` 条目，`DATA_VERSION` 重算）。
+7. ~~词条目录级互斥~~（2026-07-31 完成：服装/时段/天气在 `toggleManualTag` 里同组互斥，选新标签自动替换旧标签并 flash 提示；健康告警保留兜底）。
 
 P3 · 工程卫生与长期观察
 
-8. 服务端死端点清理评估：`POST /api/backup`、`GET /api/showcase-status`、`GET /api/tunnel-status` 前端零调用；`POST /api/stop` 的 `stopManagedServices` 参数传了没人读（移除需同步测试与 STARTUP.md 文档）。
-9. `/control` 常驻入口评估：目前仅 `/chat` 语音离线态小链接可达，控制面板发现性低（若接受当前设计可不做）。
+8. ~~服务端死端点清理评估~~（2026-07-31 完成：删除 `POST /api/backup`、`GET /api/showcase-status`、`GET /api/tunnel-status`，移除 `stopManagedServices` 参数；隧道测试改断言 `/api/status.tunnelStatus`，test-security 路径占位换 `/api/maintenance/scenes`，STARTUP.md 同步）。
+9. ~~`/control` 常驻入口评估~~（2026-07-31 完成：运维控制台入 `AppNav`「更多」secondary，gear 图标，比仅在语音离线时出现更可发现）。
 10. 主 CSS 655KB（brotli 104KB）观察：路由拆分收益小、视觉回归风险大，暂缓；若样式继续膨胀再评估。
 11. 字体权重精简评估：Noto Sans SC 5 权重 × ~13 unicode-range 子集 = 55+ 请求（已从性能预算请求数排除，体积仍受 transferBytes 约束）；评估可否减到 4 个权重。
 12. RouteAtmosphere 粒子场按路由重建观察：每次路由切换重建 SemanticParticleField，可评估 keep-alive/复用，收益小、风险中。
-13. 可访问性小项：ChatView 音量滑块无可访问名称（`title="音量"` 不会进读屏名称）；SceneExplorerView 故事抽屉无焦点管理（复用 `useFocusTrap`，与全站弹层行为一致）。
-14. ControlView 保存交互：host 输入框按 Enter 不保存、无 keydown 处理；「保存全部并检测」按钮只挂在 TTS 行下方（只改 SD 地址的用户要找半天）。
+13. ~~可访问性小项~~（2026-07-31 完成：ChatView 音量滑块补 `aria-label="音量"`、图标 `aria-hidden`；SceneExplorerView 故事抽屉补 `role="dialog"`/`aria-modal` 并用 `useFocusTrap` 替换手写 Escape 监听）。
+14. ~~ControlView 保存交互~~（2026-07-31 完成：SD/TTS host 输入补 `@keydown.enter="saveConfig"`，保存按钮复制到 SD 行，只改 SD 地址也能就近保存）。
 
 ### 已完成：P1 · v18 核心样张审核（2026-07-31）
 

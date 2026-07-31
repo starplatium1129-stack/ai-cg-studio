@@ -143,7 +143,7 @@ export function useControlActions(status: StatusApi, { showToast }: ActionHooks)
     status.actionBusy.value = true
     status.mainBtnLabel.value = '正在停止公网分享…'
     try {
-      await postControl('/api/stop', { stopManagedServices: false }, '停止失败')
+      await postControl('/api/stop', {}, '停止失败')
       showToast('公网分享已停止；网站与各生成服务不受影响')
       status.shareLink.value = ''
       status.tunnelStatus.value = 'disabled'

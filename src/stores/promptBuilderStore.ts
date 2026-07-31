@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, reactive, computed } from 'vue'
 import { sceneLighting, sceneShot, sceneColorMood, sceneComposition, sceneRecommendedSize } from '@/utils/sceneInference'
-import { resolveModelProfile, type LoraMeta, type ModelProfile } from '@/utils/promptPolicy'
+import { resolveModelProfile, mutualGroupOf, membersOfMutualGroup, type LoraMeta, type ModelProfile } from '@/utils/promptPolicy'
 import { imgPut } from '@/composables/useImageStore'
 import { kvGet, kvSet } from '@/composables/useKVStore'
 import { useSceneStore } from '@/stores/sceneStore'
@@ -236,8 +236,17 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
 
   function toggleManualTag(tag: string) {
     const next = new Set(manualTags.value)
-    if (next.has(tag)) next.delete(tag); else next.add(tag)
+    if (next.has(tag)) { next.delete(tag); manualTags.value = next; return }
+    // 词条目录级互斥：服装 / 时段 / 天气同组互斥，选新标签替换旧标签
+    let replaced: string[] = []
+    const group = mutualGroupOf(tag)
+    if (group) {
+      replaced = membersOfMutualGroup(group, [...next])
+      replaced.forEach(t => next.delete(t))
+    }
+    next.add(tag)
     manualTags.value = next
+    if (replaced.length) flash(`已用「${tag}」替换同组「${replaced.join('、')}」`)
   }
 
   function loadScene(scene: Scene) {

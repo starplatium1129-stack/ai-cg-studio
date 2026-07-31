@@ -405,6 +405,8 @@ const curationTierValue = ref('normal')
 const curationReason = ref('')
 const tagsInput = ref('')
 const usageInput = ref('')
+/** 弹窗打开时的表单快照，用于脏关闭确认 */
+const modalSnapshot = ref('')
 const triedSave = ref(false)
 const formHint = ref('')
 const dirty = ref(false)
@@ -540,6 +542,17 @@ function openAddModal() {
   usageInput.value = '壁纸用'
   triedSave.value = false
   formHint.value = ''
+  modalSnapshot.value = serializeModal()
+}
+
+function serializeModal() {
+  return JSON.stringify({
+    ...editing.value,
+    curationTierValue: curationTierValue.value,
+    curationReason: curationReason.value,
+    tagsInput: tagsInput.value,
+    usageInput: usageInput.value,
+  })
 }
 
 function openEditModal(id: string) {
@@ -555,9 +568,17 @@ function openEditModal(id: string) {
   usageInput.value = (s.usage || []).join(', ')
   triedSave.value = false
   formHint.value = ''
+  modalSnapshot.value = serializeModal()
 }
 
-function closeModal() { editing.value = null; editingId.value = '' }
+function closeModal() {
+  if (editing.value && modalSnapshot.value && serializeModal() !== modalSnapshot.value) {
+    if (!confirm('有未保存的修改，确定放弃？')) return
+  }
+  editing.value = null
+  editingId.value = ''
+  modalSnapshot.value = ''
+}
 
 useFocusTrap(modalEl, () => editing.value !== null, { onEscape: closeModal })
 
@@ -599,6 +620,7 @@ function saveScene() {
     scenes.value.push(JSON.parse(JSON.stringify(e)) as SceneDraft)
   }
   setSceneCuration(e.id, curationTierValue.value, curationReason.value.trim())
+  modalSnapshot.value = serializeModal()
   closeModal()
   markDirty('场景内容有修改，等待保存到项目')
 }

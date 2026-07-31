@@ -384,7 +384,7 @@
                   class="btn btn-danger"
                   :disabled="actionJobId !== null || job.status === 'stopping'"
                   :data-loading="actionJobId === job.id || undefined"
-                  @click="stop(job.id)"
+                  @click="confirmStop(job)"
                 >
                   {{ job.status === 'stopping' ? '正在停止' : '停止训练' }}
                 </button>
@@ -526,7 +526,7 @@
                   class="btn btn-danger"
                   :disabled="actionJobId !== null || job.status === 'stopping'"
                   :data-loading="actionJobId === job.id || undefined"
-                  @click="stop(job.id)"
+                  @click="confirmStop(job)"
                 >
                   {{ job.status === 'stopping' ? '正在停止' : '停止训练' }}
                 </button>
@@ -942,6 +942,11 @@ function canStart(job: TrainingJob): boolean {
     && actionJobId.value === null
     && activeJob.value === null
     && !isActive(job)
+}
+
+function confirmStop(job: TrainingJob): void {
+  if (!confirm(`停止训练「${job.label}」？正在进行的训练将中断，进度不会保留。`)) return
+  stop(job.id)
 }
 
 async function beginTraining(job: TrainingJob): Promise<void> {

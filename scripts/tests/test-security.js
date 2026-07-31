@@ -89,15 +89,15 @@ test('tokenAuth：本机放行、远程拒绝、token 放行', async () => {
 
 test('maintenanceLocalOnly：远程 403、本机放行', async () => {
   const localOnly = maintenance._test.maintenanceLocalOnly;
-  const remoteBackup = await runMiddleware(localOnly, mockReq({
+  const remoteMaintenance = await runMiddleware(localOnly, mockReq({
     socket: { remoteAddress: '8.8.8.8' },
-    path: '/api/backup',
+    path: '/api/maintenance/scenes',
   }));
-  assert.equal(remoteBackup.nextCalled, false);
-  assert.equal(remoteBackup.res.statusCode, 403);
+  assert.equal(remoteMaintenance.nextCalled, false);
+  assert.equal(remoteMaintenance.res.statusCode, 403);
 
-  const localBackup = await runMiddleware(localOnly, mockReq({ path: '/api/backup' }));
-  assert.equal(localBackup.nextCalled, true);
+  const localMaintenance = await runMiddleware(localOnly, mockReq({ path: '/api/maintenance/scenes' }));
+  assert.equal(localMaintenance.nextCalled, true);
 });
 
 test('safeLocalUrl：只接受本机 http', () => {

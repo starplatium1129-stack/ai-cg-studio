@@ -152,7 +152,8 @@
   </article>
 
   <Teleport to="body">
-    <div v-show="drawerScene" class="story-drawer" :class="{ open: !!drawerScene }" @click.self="drawerScene = null">
+    <div v-show="drawerScene" ref="drawerEl" class="story-drawer" role="dialog" aria-modal="true" aria-label="场景故事"
+      :class="{ open: !!drawerScene }" @click.self="drawerScene = null">
       <div class="story-card" v-if="drawerScene">
         <h3>🌸 {{ drawerScene.title }}</h3>
         <div class="story-meta">{{ charName(drawerScene) }} · {{ seasonLabel(drawerScene.season) }} · {{ timeLabel(drawerScene.timeOfDay) }} · {{ drawerScene.emotion }}</div>
@@ -168,7 +169,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, computed, watch, onMounted, nextTick } from 'vue'
 import { watchDebounced } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
 import SceneCard from '@/components/SceneCard.vue'
@@ -182,6 +183,7 @@ import { tier as uxTier, matchesSearch as uxMatchesSearch, searchScore as uxSear
   readSceneUsage, sceneUsageScore, type SceneUsageRecord, type PreferenceProfile,
   type SceneUXConfig } from '@/utils/sceneUX'
 import { kvInit, kvGet } from '@/composables/useKVStore'
+import { useFocusTrap } from '@/composables/useFocusTrap'
 import { useSceneStore, type Scene, type CurationData } from '@/stores/sceneStore'
 import { quickCreateUrl } from '@/utils/quickCreate'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -250,6 +252,8 @@ const profile = ref<PreferenceProfile>(buildPreferenceProfile([]))
 const loading = ref(true)
 const flashId = ref('')
 const drawerScene = ref<ExplorerScene | null>(null)
+const drawerEl = ref<HTMLElement | null>(null)
+useFocusTrap(drawerEl, () => drawerScene.value !== null, { onEscape: () => { drawerScene.value = null } })
 function readFavorites() {
   try {
     const value = JSON.parse(localStorage.getItem(FAV_KEY) || '[]')
@@ -499,7 +503,6 @@ function onMatureChange() {
   if (showMature.value && !confirm('此区域包含成人向文字内容。请确认你已成年并希望继续查看。')) { showMature.value=false; return }
   localStorage.setItem(MATURE_KEY, showMature.value?'1':'0')
 }
-function onKey(e: KeyboardEvent) { if (e.key==='Escape') drawerScene.value=null }
 
 async function init() {
   try {
@@ -530,10 +533,7 @@ async function init() {
   }
 }
 
-onMounted(() => { document.addEventListener('keydown', onKey); init() })
-onUnmounted(() => {
-  document.removeEventListener('keydown', onKey)
-})
+onMounted(() => { init() })
 </script>
 
 <style scoped>

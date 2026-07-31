@@ -259,16 +259,7 @@ async function runMaintenanceChecks() {
   }
 }
 
-  function readSceneShowcaseManifest() {
-    if (!SCENE_SHOWCASE_DIR) return null;
-    try {
-      var manifest = JSON.parse(fs.readFileSync(path.join(SCENE_SHOWCASE_DIR, 'manifest.json'), 'utf8'));
-      if (!manifest || !Array.isArray(manifest.entries)) return null;
-      return manifest;
-    } catch (e) { return null; }
-  }
-
-  function readHomeHeroManifest() {
+function readHomeHeroManifest() {
     var fallback = { version:1, entries:{} };
     if (!SCENE_SHOWCASE_DIR) return fallback;
     var source = path.join(SCENE_SHOWCASE_DIR, 'home-hero.json');
@@ -519,35 +510,6 @@ async function runMaintenanceChecks() {
       var rollback = attemptRollback(snapshot, 'home-hero');
       res.status(rollback.ok ? 400 : 500).json({ ok:false, error:error.message, rolledBack:rollback.ok, dataIntegrity:rollback.ok ? 'restored' : 'INCONSISTENT' });
     }
-  });
-
-  router.post('/api/backup', maintenanceLocalOnly, express.json({ limit:'22mb' }), function (req, res) {
-    try {
-      var imageBase64 = req.body.imageBase64, filename = req.body.filename;
-      if (!imageBase64) return envelope.fail(res, 400, 'No image data');
-      var match = String(imageBase64).match(/^data:image\/(png|jpeg|webp);base64,([A-Za-z0-9+/=\r\n]+)$/);
-      if (!match) return envelope.fail(res, 400, '仅支持 PNG、JPEG 或 WebP 图片');
-      var imageBuffer = Buffer.from(match[2].replace(/\s/g, ''), 'base64');
-      if (!imageBuffer.length || imageBuffer.length > 15 * 1024 * 1024) return envelope.fail(res, 413, '图片大小必须在 15MB 以内');
-      var backupDir = path.join(cfg.RUNTIME_ROOT, 'outputs');
-      if (!fs.existsSync(backupDir)) fs.mkdirSync(backupDir, { recursive: true });
-      var ext = match[1] === 'jpeg' ? '.jpg' : '.' + match[1];
-      var stem = filename ? path.parse(path.basename(String(filename))).name : 'backup';
-      var safeStem = stem.replace(/[^a-zA-Z0-9_-]+/g, '_').replace(/^_+|_+$/g, '').slice(0, 60) || 'backup';
-      var name = safeStem + '_' + Date.now() + ext;
-      var target = path.resolve(backupDir, name);
-      if (!target.startsWith(path.resolve(backupDir) + path.sep)) return envelope.fail(res, 400, 'Invalid filename');
-      fs.writeFileSync(target, imageBuffer);
-      console.log('  💾 图片已备份: ' + name);
-      res.json({ status:'ok', file:name });
-    } catch (err) { envelope.fail(res, 500, err.message); }
-  });
-
-  router.get('/api/showcase-status', maintenanceLocalOnly, function (req, res) {
-    var manifest = readSceneShowcaseManifest();
-    res.setHeader('Cache-Control', 'no-store');
-    if (!manifest) return res.json({ available:false, sceneCount:0 });
-    res.json({ available:true, sceneCount:Number(manifest.sceneCount) || manifest.entries.length, counts:manifest.counts || {}, sourceAudit:manifest.sourceAudit || '' });
   });
 
   // ---- 维护脚本一键执行 ----

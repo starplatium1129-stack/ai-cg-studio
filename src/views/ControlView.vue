@@ -141,7 +141,7 @@
             </span>
             <span class="service-row-actions">
               <button class="btn btn-ghost btn-sm" type="button" :disabled="opBusy" @click="serviceAction('webui','start')">启动</button>
-              <button class="btn btn-danger btn-sm" type="button" :disabled="opBusy" @click="serviceAction('webui','stop')">停止</button>
+              <button class="btn btn-danger btn-sm" type="button" :disabled="opBusy" @click="confirmServiceAction('webui','stop')">停止</button>
             </span>
           </div>
           <div class="service-row">
@@ -152,7 +152,7 @@
             </span>
             <span class="service-row-actions">
               <button class="btn btn-ghost btn-sm" type="button" :disabled="opBusy" @click="serviceAction('voice','start')">启动</button>
-              <button class="btn btn-danger btn-sm" type="button" :disabled="opBusy" @click="serviceAction('voice','stop')">停止</button>
+              <button class="btn btn-danger btn-sm" type="button" :disabled="opBusy" @click="confirmServiceAction('voice','stop')">停止</button>
             </span>
           </div>
           <div class="service-row">
@@ -187,12 +187,15 @@
         <p class="panel-desc">SD WebUI 负责画面，GPT-SoVITS 负责角色语音。未装语音时，网站仍可用系统声音试听。</p>
 
         <label class="field-label" for="sd-host">Stability Matrix / SD WebUI 地址</label>
-        <input id="sd-host" v-model="sdHost" class="input input-mono" type="text" placeholder="http://127.0.0.1:7860" spellcheck="false" />
+        <div class="field-row">
+          <input id="sd-host" v-model="sdHost" class="input input-mono" type="text" placeholder="http://127.0.0.1:7860" spellcheck="false" @keydown.enter="saveConfig" />
+          <button class="btn btn-ghost" type="button" @click="saveConfig">保存全部并检测</button>
+        </div>
         <p class="field-help">端口以启动日志为准；推荐参数：<code>--api --port 7860</code></p>
 
         <label class="field-label" for="tts-host">GPT-SoVITS API 地址</label>
         <div class="field-row">
-          <input id="tts-host" v-model="ttsHost" class="input input-mono" type="text" placeholder="http://127.0.0.1:9880" spellcheck="false" />
+          <input id="tts-host" v-model="ttsHost" class="input input-mono" type="text" placeholder="http://127.0.0.1:9880" spellcheck="false" @keydown.enter="saveConfig" />
           <button class="btn btn-ghost" type="button" @click="saveConfig">保存全部并检测</button>
         </div>
         <p class="field-help">默认按需启动；默认端口为 <code>9880</code>。</p>
@@ -342,6 +345,18 @@ const {
 } = actions
 
 function lineClass(line: string) { return status.lineClass(line) }
+
+const SERVICE_STOP_LABELS: Record<string, string> = {
+  webui: 'SD WebUI 绘图服务',
+  voice: 'GPT-SoVITS 语音服务',
+}
+
+function confirmServiceAction(service: string, action: string): void {
+  if (action !== 'stop') { serviceAction(service, action); return }
+  const label = SERVICE_STOP_LABELS[service] || service
+  if (!confirm(`停止${label}？正在出图或配音的任务会中断。`)) return
+  serviceAction(service, action)
+}
 
 // 网关是恒在线的（本页就是网关自身），保持模板可读的稳定标签
 const gatewayState = 'on'

@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test'
 const archivePages = [
   { path: '/character', chapter: '03', heading: '角色档案' },
   { path: '/style', chapter: '04', heading: '画风' },
-  { path: '/showcase', chapter: '05', heading: '场景，实际能画成什么样' },
+  { path: '/showcase', chapter: '05', heading: '定稿样张 · Verified Showcase' },
   { path: '/gallery', chapter: '06', heading: '作品册' },
   { path: '/color-script', chapter: '07', heading: '色彩情绪' },
   { path: '/scenario', chapter: '08', heading: '剧本模式' },
