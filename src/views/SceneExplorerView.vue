@@ -169,6 +169,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
+import { watchDebounced } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
 import SceneCard from '@/components/SceneCard.vue'
 import SemanticParticleField from '@/components/visual/SemanticParticleField.vue'
@@ -267,15 +268,12 @@ const searchQuery = ref('')
 /**
  * 输入框绑 searchQuery（打字要立刻回显），过滤/排序读 debouncedQuery。
  * 全 src/ 之前没有任何 debounce，297 条的过滤+排序每次击键都全量重跑。
+ * VueUse watchDebounced 替代手写 timer；清空立刻生效（debounceFilter 首个参数）。
  */
 const debouncedQuery = ref('')
-let searchTimer: ReturnType<typeof setTimeout> | null = null
-watch(searchQuery, (value) => {
-  if (searchTimer) clearTimeout(searchTimer)
-  // 清空要立刻生效，否则删完还要等 150ms 才回到全部结果
-  if (!value.trim()) { debouncedQuery.value = value; return }
-  searchTimer = setTimeout(() => { debouncedQuery.value = value }, 150)
-})
+watchDebounced(searchQuery, (value) => {
+  debouncedQuery.value = value
+}, { debounce: 150, maxWait: 0, immediate: true })
 const activeTheme = ref('all')
 const activeParticleShape = computed<ParticleShapeId>(() => PARTICLE_SHAPES[activeTheme.value] || 'atelier')
 const activeThemeDefinition = computed(() => themeDef(activeTheme.value))
@@ -540,7 +538,6 @@ async function init() {
 onMounted(() => { document.addEventListener('keydown', onKey); init() })
 onUnmounted(() => {
   document.removeEventListener('keydown', onKey)
-  if (searchTimer) clearTimeout(searchTimer)
 })
 </script>
 
