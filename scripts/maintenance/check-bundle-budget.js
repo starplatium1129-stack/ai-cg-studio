@@ -6,12 +6,21 @@ const path = require('path');
 const DEFAULT_BUDGETS = Object.freeze({
   routeJavaScript: 128 * 1024,
   routeCss: 100 * 1024,
+  // wl-live2d 懒加载块：pixi.js + pixi-live2d-display + cubism4 core 全内联，
+  // 大小由依赖决定，这里监控防止未来升级/引入新依赖把它撑得更大。
+  lazyChunk: 1000 * 1024,
 });
 
 function routeEntries(manifest) {
   return Object.entries(manifest)
     .map(([key, entry]) => ({ key, ...entry }))
     .filter(entry => entry.isDynamicEntry === true && /^src\/views\/.+\.vue$/.test(entry.src || entry.key));
+}
+
+function lazyChunks(manifest) {
+  return Object.entries(manifest)
+    .map(([key, entry]) => ({ key, ...entry }))
+    .filter(entry => entry.isDynamicEntry === true && !/^src\/views\/.+\.vue$/.test(entry.src || entry.key));
 }
 
 function evaluateManifest(manifest, sizeOf, budgets = DEFAULT_BUDGETS) {
@@ -55,12 +64,27 @@ function run(distDir = path.resolve(__dirname, '../../dist')) {
     throw new Error(`Route bundle budget exceeded:\n${result.violations.join('\n')}`);
   }
 
+  // 非路由动态块（wl-live2d 等）只监控大小上限，不设路由级预算
+  const lazy = lazyChunks(manifest).map(entry => ({
+    key: entry.key,
+    file: entry.file,
+    javascript: fs.statSync(path.join(distDir, entry.file)).size,
+  }));
+  const lazyViolations = lazy
+    .filter(entry => entry.javascript > DEFAULT_BUDGETS.lazyChunk)
+    .map(entry => `${entry.key} JavaScript ${entry.javascript} > ${DEFAULT_BUDGETS.lazyChunk}`);
+  if (lazyViolations.length) {
+    throw new Error(`Lazy chunk budget exceeded:\n${lazyViolations.join('\n')}`);
+  }
+
   const largestJs = [...result.routes].sort((a, b) => b.javascript - a.javascript)[0];
   const largestCss = [...result.routes].sort((a, b) => b.css - a.css)[0];
+  const largestLazy = lazy.sort((a, b) => b.javascript - a.javascript)[0];
   console.log(
     `Route bundle budget passed: ${result.routes.length} routes; `
     + `largest JS ${largestJs.route} ${kib(largestJs.javascript)} / ${kib(DEFAULT_BUDGETS.routeJavaScript)}; `
-    + `largest CSS ${largestCss.route} ${kib(largestCss.css)} / ${kib(DEFAULT_BUDGETS.routeCss)}`,
+    + `largest CSS ${largestCss.route} ${kib(largestCss.css)} / ${kib(DEFAULT_BUDGETS.routeCss)}; `
+    + `largest lazy ${path.basename(largestLazy.key)} ${kib(largestLazy.javascript)} / ${kib(DEFAULT_BUDGETS.lazyChunk)}`,
   );
   return result;
 }
@@ -74,4 +98,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { DEFAULT_BUDGETS, evaluateManifest, routeEntries, run };
+module.exports = { DEFAULT_BUDGETS, evaluateManifest, routeEntries, lazyChunks, run };

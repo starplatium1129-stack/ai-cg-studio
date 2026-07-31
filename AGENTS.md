@@ -106,8 +106,11 @@
 
 P1 · 近期
 
-1. Live2D 运行时块瘦身：`wl-live2d` 动态块 945.6KB（gzip 263KB / brotli 211KB），构建已有 >500KB 警告；确认 `assets/vendor/live2d` 静态副本能否替代 npm 包，或拆分 pixi 与 wl-live2d；至少纳入 bundle 预算监控。
-2. 消除 /chat 进出整页刷新：CSP 因 Live2D 需要 `unsafe-eval` 而按路由换页（`src/router/index.ts` 与 `server/security.js`）；评估子文档/iframe 隔离或独立入口，避免二次渲染与瞬时状态丢失；若暂缓需在文档写明权衡。
+1. Live2D 运行时块瘦身：~~确认 `assets/vendor/live2d` 静态副本能否替代 npm 包~~（2026-07-31 调查结论：wl-live2d bundle 完全自包含 pixi.js + pixi-live2d-display + cubism4 core，静态副本同尺寸无收益；实质瘦身需重写渲染层，暂缓），已纳入 bundle 预算监控（`check-bundle-budget.js` lazy chunk 上限 1000KB）。
+2. ~~消除 /chat 进出整页刷新~~（2026-07-31 评估后暂缓，权衡见下）：CSP 因 Live2D 需要 `unsafe-eval` 而按路由换页（`src/router/index.ts` 与 `server/security.js`）。
+   - 现状已是"最小刷新"：仅进出 `/chat` 各整页一次；`/chat` 内部导航不刷；服务端未收紧 CSP（dev server）时不刷。
+   - 状态丢失面小：草稿（`aics_pb_last_draft`）与会话（`useChatStorage`）均 localStorage 持久化，丢失的只是瞬时内存态。
+   - iframe/独立入口方案需把 ChatCharacterStage + useLive2D（730 行）搬进子文档并过 postMessage 桥（点击分区→动作分派、换装→expression、状态回传），并新增服务端宽松 CSP 路由；收益（免两次刷新）与风险（Live2D 交互回归）不成比例，暂缓；若未来 Live2D 交互简化或 cubism core 出 wasm 免 eval 版本，再重新评估。
 3. 拆分大视图：`TrainingView.vue`（1313 行）、`PromptBuilderView.vue`（1136 行）、`SceneManagerView.vue`（1048 行）、`ControlView.vue`（1019 行）按状态与生命周期所有权拆 composables/子组件，不按行数搬。
 4. ~~修正文档漂移~~（2026-07-31 完成：STARTUP.md token 持久化描述、README 场景数 297、tools 结构描述已修正）。
 5. 测试体系渐进迁移：36 个 `scripts/tests/*.js` 断言脚本迁到 `node:test`（保持命令兼容），补覆盖率统计与失败定位。

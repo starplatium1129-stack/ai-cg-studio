@@ -298,7 +298,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
+import { onMounted, onUnmounted } from 'vue'
 import AppSoundToggle from '@/components/AppSoundToggle.vue'
 import AppThemeToggle from '@/components/AppThemeToggle.vue'
 import RouteAtmosphere from '@/components/visual/RouteAtmosphere.vue'
@@ -307,88 +307,8 @@ import { useToast } from '@/composables/useToast'
 // /api/status 与 /api/logs 的契约类型。原先整体当 any —— 字段拼错、后端改名
 // 都要等运行时才炸，而这个视图正好在破坏性路径上（改上游 host、启停服务、
 // 开关公网隧道）。
-import type {
-  ControlStatus, ControlLogs, ControlOperationView, ControlActionResult, ApiFailure,
-} from '@/types/api'
-
-const tunnelActive = ref(false)
-const sdOnline = ref(false)
-const ttsOnline = ref(false)
-const ollamaOnline = ref(false)
-const webuiManaged = ref(false)
-const ollamaModels = ref<string[]>([])
-const ollamaVram = ref(0)
-const modeBusy = ref(false)
-const operation = ref<ControlOperationView | null>(null)
-const serviceChecking = ref(false)
-const scripts = ref({ voiceStart: true, voiceStop: true, webui: true })
-
-const sdHost = ref('http://127.0.0.1:7860')
-const ttsHost = ref('http://127.0.0.1:9880')
-const voiceNeneRef = ref('')
-const voiceNenePrompt = ref('')
-const voiceNatsumeRef = ref('')
-const voiceNatsumePrompt = ref('')
-const autoStartVoice = ref(false)
-const tunnelEnabled = ref((() => { try { return localStorage.getItem('aics_tunnel_off') !== '1' } catch { return true } })())
-const tunnelStatus = ref('')
-const shareLink = ref('')
-const localLink = ref('http://127.0.0.1:3000/')
-const uptime = ref('')
-const actionBusy = ref(false)
-const mainBtnLabel = ref('启动并生成分享链接')
-const feedbackClass = ref('config-feedback warn')
-const feedbackText = ref('正在检测本地服务…')
-const actionNote = ref('')
-const logs = ref<string[]>([])
-const logBoxEl = ref<HTMLElement | null>(null)
-const logIndex = ref(0)
-let pollTimer: ReturnType<typeof setInterval> | null = null
-let lastStatus: ControlStatus | null = null
-
-const opBusy = computed(() => !!(operation.value && operation.value.status === 'running') || modeBusy.value)
-const opStatusLabel = computed(() => {
-  const s = operation.value?.status
-  return s === 'running' ? '进行中' : s === 'completed' ? '完成' : s === 'failed' ? '失败' : ''
-})
-const opProgress = computed(() => {
-  const op = operation.value
-  if (!op?.stages?.length) return op?.status === 'completed' ? 100 : op?.status === 'running' ? 35 : 0
-  if (op.status === 'completed') return 100
-  if (op.status === 'failed') return Math.min(100, ((op.stageIndex + 1) / op.stages.length) * 100)
-  return Math.min(95, ((op.stageIndex + 0.35) / op.stages.length) * 100)
-})
-const ollamaBadgeText = computed(() => {
-  if (!ollamaOnline.value) return '未连接'
-  if (!ollamaModels.value.length) return '在线 · 模型未加载'
-  const v = fmtVram(ollamaVram.value)
-  return '已加载 ' + ollamaModels.value.length + ' 个' + (v ? ' · ' + v : '')
-})
-const ollamaMeta = computed(() => {
-  if (!ollamaOnline.value) return '未连接'
-  if (!ollamaModels.value.length) return '在线 · 无加载模型'
-  const v = fmtVram(ollamaVram.value)
-  return '占用 ' + (v || (ollamaModels.value.length + ' 模型'))
-})
-const voiceConfiguredCount = computed(() => {
-  let n = 0
-  if (voiceNeneRef.value.trim() && voiceNenePrompt.value.trim()) n += 1
-  if (voiceNatsumeRef.value.trim() && voiceNatsumePrompt.value.trim()) n += 1
-  return n
-})
-const gatewayState = computed(() => 'on')
-const gatewayLabel = computed(() => '运行中')
-const shareState = computed(() => tunnelActive.value ? 'on' : (tunnelStatus.value === 'disabled' ? 'off' : 'warn'))
-const shareLabel = computed(() => tunnelActive.value ? '通道已开' : (tunnelStatus.value === 'disabled' ? '仅本机' : '待启用'))
-const readyState = computed(() => {
-  if (sdOnline.value && ttsOnline.value) return 'on'
-  if (sdOnline.value || ttsOnline.value) return 'warn'
-  return 'off'
-})
-const readyLabel = computed(() => {
-  const n = [sdOnline.value, ttsOnline.value, ollamaOnline.value].filter(Boolean).length
-  return n + ' / 3 服务在线'
-})
+import { useControlStatus } from '@/composables/useControlStatus'
+import { useControlActions } from '@/composables/useControlActions'
 
 /**
  * 全站唯一那套 toast（App.vue 里的 AppToast + useToast）。
@@ -401,289 +321,35 @@ function showToast(msg: string, isError = false) {
   else toastApi.info(msg)
 }
 
-/** catch 里取消息：替代 `catch (e: any) { e.message }` —— unknown 才是 catch 的真实类型 */
-function errorMessage(error: unknown, fallback: string): string {
-  if (error instanceof Error && error.message) return error.message
-  const text = String(error ?? '').trim()
-  return text || fallback
-}
-function copy(text: string) {
-  if (!text) return
-  navigator.clipboard.writeText(text).then(() => showToast('已复制到剪贴板')).catch(() => showToast('复制失败', true))
-}
-function fmt(seconds: number) {
-  const v = Math.max(0, Number(seconds) || 0)
-  if (v < 60) return v + ' 秒'
-  const m = Math.floor(v / 60)
-  return m < 60 ? m + ' 分钟' : Math.floor(m / 60) + ' 小时 ' + (m % 60) + ' 分钟'
-}
-function fmtVram(bytes: number) {
-  const n = Number(bytes) || 0
-  if (n <= 0) return ''
-  if (n < 1024 ** 3) return (n / 1024 ** 2).toFixed(0) + ' MB'
-  return (n / 1024 ** 3).toFixed(1) + ' GB'
-}
-function lineClass(line: string) {
-  const low = line.toLowerCase()
-  if (low.includes('error') || low.includes('failed') || low.includes('失败')) return 'err'
-  if (low.includes('started') || low.includes('ready') || low.includes('已启') || low.includes('就绪')) return 'info'
-  return ''
-}
-function toggleTunnel() {
-  tunnelEnabled.value = !tunnelEnabled.value
-  try { localStorage.setItem('aics_tunnel_off', tunnelEnabled.value ? '' : '1') } catch {}
-  mainBtnLabel.value = tunnelActive.value ? '停止公网分享' : '启动并生成分享链接'
-}
+const status = useControlStatus({ showToast })
+const actions = useControlActions(status, { showToast })
 
-function renderStatus(data: ControlStatus) {
-  lastStatus = data
-  tunnelActive.value = !!(data.tunnelStatus === 'active' || data.shareLinkAvailable)
-  sdOnline.value = !!data.sdOnline
-  ttsOnline.value = !!data.ttsOnline
-  ollamaOnline.value = !!data.ollamaOnline
-  webuiManaged.value = !!data.webuiManaged
-  ollamaModels.value = Array.isArray(data.ollamaModels) ? data.ollamaModels : []
-  ollamaVram.value = Number(data.ollamaVram) || 0
-  modeBusy.value = !!data.modeBusy
-  operation.value = data.operation || (operation.value?.status === 'running' ? operation.value : null)
-  tunnelStatus.value = data.tunnelStatus || ''
-  // 分享链接含原始 token，已从 /api/status 拆到仅本机可读的 /api/share-link
-  if (data.shareLinkAvailable) void loadShareLink()
-  else shareLink.value = ''
-  if (data.localLink) localLink.value = data.localLink
-  if (data.uptime != null) uptime.value = '网站已运行 ' + fmt(data.uptime)
-  if (data.scripts) scripts.value = { ...scripts.value, ...data.scripts }
+// 模板引用解构：状态域
+const {
+  tunnelActive, sdOnline, ttsOnline, ollamaOnline, webuiManaged, ollamaModels, ollamaVram,
+  modeBusy, operation, serviceChecking, scripts,
+  sdHost, ttsHost, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice,
+  tunnelStatus, shareLink, localLink, uptime, actionBusy, mainBtnLabel,
+  feedbackClass, feedbackText, actionNote, logs, logBoxEl,
+  opBusy, opStatusLabel, opProgress, ollamaBadgeText, ollamaMeta, voiceConfiguredCount,
+  shareState, shareLabel, readyState, readyLabel,
+  pollStatus, clearLogs,
+} = status
 
-  const ae = document.activeElement as HTMLElement | null
-  const aeId = ae?.id || ''
-  if (aeId !== 'sd-host' && data.sdHost) sdHost.value = data.sdHost
-  if (aeId !== 'tts-host' && data.ttsHost) ttsHost.value = data.ttsHost
-  const voices = data.voices || {}
-  const nene = voices.nene || {}
-  const natsume = voices.natsume || {}
-  if (aeId !== 'v-nene-ref') voiceNeneRef.value = nene.refAudioPath || voiceNeneRef.value
-  if (aeId !== 'v-nene-prompt') voiceNenePrompt.value = nene.promptText || voiceNenePrompt.value
-  if (aeId !== 'v-nat-ref') voiceNatsumeRef.value = natsume.refAudioPath || voiceNatsumeRef.value
-  if (aeId !== 'v-nat-prompt') voiceNatsumePrompt.value = natsume.promptText || voiceNatsumePrompt.value
-  if (ae?.tagName !== 'INPUT' || (ae as HTMLInputElement).type !== 'checkbox') {
-    autoStartVoice.value = !!data.autoStartVoice
-  }
+// 模板引用解构：操作域
+const {
+  tunnelEnabled, copy, toggleTunnel, saveConfig, saveAutoStartVoice,
+  serviceAction, switchMode, doStart, doStop, exportDiag,
+} = actions
 
-  actionBusy.value = !!(data.operation && data.operation.status === 'running')
-  mainBtnLabel.value = tunnelActive.value ? '停止公网分享' : '启动并生成分享链接'
+function lineClass(line: string) { return status.lineClass(line) }
 
-  if (data.sdOnline && data.ttsOnline && data.ollamaOnline) {
-    feedbackClass.value = 'config-feedback ok'
-    feedbackText.value = '画面、语音与聊天均已就绪'
-    actionNote.value = '可以完整使用绘制台、角色房间与配音。'
-  } else if (data.sdOnline && data.ttsOnline) {
-    feedbackClass.value = 'config-feedback ok'
-    feedbackText.value = '画面与语音就绪'
-    actionNote.value = '出图与 AI 声线可用；需要聊天时启动 Ollama。'
-  } else if (data.sdOnline) {
-    feedbackClass.value = 'config-feedback warn'
-    feedbackText.value = '画面创作就绪'
-    actionNote.value = '可正常出图。需要声线时启动 GPT-SoVITS。'
-  } else if (data.ttsOnline) {
-    feedbackClass.value = 'config-feedback warn'
-    feedbackText.value = '语音已连接 · 等待 SD'
-    actionNote.value = '点「启动」SD WebUI，或切换到绘图优先。'
-  } else {
-    feedbackClass.value = 'config-feedback warn'
-    feedbackText.value = '浏览可用 · 等待生成服务'
-    actionNote.value = '网站本身正常。用下方服务行启动 SD / 语音，或本机开好后再检测。'
-  }
-  serviceChecking.value = false
-}
+// 网关是恒在线的（本页就是网关自身），保持模板可读的稳定标签
+const gatewayState = 'on'
+const gatewayLabel = '运行中'
 
-async function loadShareLink() {
-  try {
-    const r = await fetch('/api/share-link')
-    if (!r.ok) { shareLink.value = ''; return }
-    const data = await r.json()
-    shareLink.value = typeof data.shareLink === 'string' ? data.shareLink : ''
-  } catch { shareLink.value = '' }
-}
-
-async function pollStatus(force = false) {
-  if (force) serviceChecking.value = true
-  try {
-    const r = await fetch('/api/status' + (force ? '?fresh=1' : ''))
-    if (!r.ok) { serviceChecking.value = false; return }
-    const data = await r.json()
-    renderStatus(data)
-    // 探测失败现在是 200 + ok:false + degraded（与三个同族 *-status 一致）。
-    // 之前后端回 500，这里的 `if (!r.ok) return` 会把状态墙冻在上一次的值上，
-    // 用户看到的是"点了没反应"而不是"探测失败"。
-    if (data.ok === false && data.error) showToast('服务探测失败：' + data.error, true)
-  } catch { serviceChecking.value = false }
-}
-
-async function pollLogs() {
-  try {
-    const r = await fetch('/api/logs?since=' + logIndex.value)
-    // 必须查 ok：403（非本机）/ 421（Host 不在白名单）会回 JSON 错误信封，
-    // 不查的话 data.logs 恒为 undefined，日志面板静默停更而没有任何提示。
-    if (!r.ok) return
-    const data = await r.json() as ControlLogs
-    if (data.operation) operation.value = data.operation
-    if (data.logs?.length) {
-      const fresh = data.logs.filter((l: string) => !logs.value.includes(l))
-      if (fresh.length) {
-        logs.value.push(...fresh)
-        if (logs.value.length > 300) logs.value = logs.value.slice(-200)
-        logIndex.value += data.logs.length
-        await nextTick()
-        if (logBoxEl.value) logBoxEl.value.scrollTop = logBoxEl.value.scrollHeight
-      } else {
-        logIndex.value += data.logs.length
-      }
-    }
-  } catch {}
-}
-
-function clearLogs() { logs.value = []; logIndex.value = 0 }
-function startPolling() {
-  if (pollTimer) return
-  pollStatus(); pollLogs()
-  pollTimer = setInterval(() => { pollStatus(); pollLogs() }, 3000)
-}
-function stopPolling() { if (pollTimer) clearInterval(pollTimer); pollTimer = null }
-
-function buildConfigPayload() {
-  const neneBase = lastStatus?.voices?.nene || {}
-  const natBase = lastStatus?.voices?.natsume || {}
-  return {
-    sdHost: sdHost.value.trim(),
-    ttsHost: ttsHost.value.trim(),
-    voices: {
-      nene: { ...neneBase, refAudioPath: voiceNeneRef.value.trim(), promptText: voiceNenePrompt.value.trim(), promptLang: 'ja', textLang: 'ja' },
-      natsume: { ...natBase, refAudioPath: voiceNatsumeRef.value.trim(), promptText: voiceNatsumePrompt.value.trim(), promptLang: 'ja', textLang: 'ja' },
-    },
-  }
-}
-
-async function saveConfig() {
-  feedbackText.value = '正在保存并重新检测…'
-  try {
-    const r = await fetch('/api/config', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(buildConfigPayload()),
-    })
-    const data = await r.json()
-    if (!r.ok) throw new Error(data.error || '保存失败')
-    showToast('生成服务配置已保存')
-    pollStatus(true)
-  } catch (e) { showToast(errorMessage(e, '保存失败'), true); pollStatus() }
-}
-
-async function saveAutoStartVoice() {
-  try {
-    const r = await fetch('/api/preference', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ autoStartVoice: autoStartVoice.value }),
-    })
-    // 不查 ok 的话，写盘失败也会弹"已开启" —— 用户下次重启才发现偏好没存上
-    if (!r.ok) {
-      const data = await r.json().catch(() => ({}))
-      throw new Error(data.error || `保存失败 (${r.status})`)
-    }
-    showToast(autoStartVoice.value ? '已开启：下次自动启动语音' : '已关闭：语音改为按需启动')
-  } catch (e) {
-    // 请求失败时把开关拨回去，避免 UI 与落盘状态不一致
-    autoStartVoice.value = !autoStartVoice.value
-    showToast(errorMessage(e, '保存失败'), true)
-  }
-}
-
-/**
- * POST 一个控制动作并解出统一信封。
- *
- * 六处调用曾各写一遍 `json() → 查 ok → throw`，其中两处只读 data.msg、
- * 两处只读 data.error —— 后端信封统一后（server/http-envelope.js）
- * 这里也收敛成一份，少写一个候选字段就退化成"操作失败"的问题随之消失。
- */
-async function postControl(path: string, body: unknown, fallback: string): Promise<ControlActionResult> {
-  const r = await fetch(path, {
-    method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  })
-  const data = await r.json().catch(() => null) as ControlActionResult | ApiFailure | null
-  if (!data) throw new Error(`${fallback} (HTTP ${r.status})`)
-  if (!r.ok || data.ok === false) {
-    const failure = data as ApiFailure
-    throw new Error([failure.error || fallback, failure.detail].filter(Boolean).join('：'))
-  }
-  return data as ControlActionResult
-}
-
-async function serviceAction(service: string, action: string) {
-  if (opBusy.value) { showToast('有操作正在进行，请稍候', true); return }
-  showToast((action === 'start' ? '正在启动' : action === 'stop' ? '正在停止' : '正在处理') + '…')
-  try {
-    const data = await postControl('/api/service/' + service, { action }, '操作失败')
-    if (data.operation) operation.value = data.operation
-    showToast(data.message || '已提交')
-    pollStatus(true); pollLogs()
-  } catch (e) { showToast(errorMessage(e, '操作失败'), true); pollStatus(true) }
-}
-
-async function switchMode(mode: 'draw' | 'chat') {
-  if (opBusy.value) { showToast('有操作正在进行，请稍候', true); return }
-  showToast(mode === 'draw' ? '切换到绘图优先…' : '切换到聊天优先…')
-  try {
-    const data = await postControl('/api/mode', { mode }, '模式切换失败')
-    if (data.operation) operation.value = data.operation
-    modeBusy.value = true
-    showToast(data.message || '模式切换已开始')
-    pollStatus(true); pollLogs()
-  } catch (e) { showToast(errorMessage(e, '模式切换失败'), true); pollStatus(true) }
-}
-
-async function doStart() {
-  if (!lastStatus) { showToast('控制面板仍在读取配置，请稍候再试', true); pollStatus(); return }
-  actionBusy.value = true
-  mainBtnLabel.value = '正在启用公网分享…'
-  try {
-    await saveConfig()
-    await postControl('/api/start', { enableTunnel: tunnelEnabled.value }, '启动失败')
-    showToast('公网分享已启用')
-    startPolling()
-  } catch (e) { showToast('启动失败：' + errorMessage(e, '未知原因'), true) }
-  finally { actionBusy.value = false; pollStatus() }
-}
-
-async function doStop() {
-  actionBusy.value = true
-  mainBtnLabel.value = '正在停止公网分享…'
-  try {
-    await postControl('/api/stop', { stopManagedServices: false }, '停止失败')
-    showToast('公网分享已停止；网站与各生成服务不受影响')
-    shareLink.value = ''
-    tunnelStatus.value = 'disabled'
-    tunnelActive.value = false
-  } catch (e) { showToast('停止失败：' + errorMessage(e, '未知原因'), true) }
-  finally { actionBusy.value = false; pollStatus() }
-}
-
-async function exportDiag() {
-  showToast('正在整理诊断包…')
-  try {
-    const r = await fetch('/api/diagnostics')
-    const data = await r.json()
-    if (!r.ok) throw new Error(data?.error || '诊断包导出失败')
-    const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 16)
-    const a = document.createElement('a')
-    a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json;charset=utf-8' }))
-    a.download = 'lingji-diagnostics-' + stamp + '.json'
-    a.click()
-    URL.revokeObjectURL(a.href)
-    showToast('诊断包已导出')
-  } catch (e) { showToast(errorMessage(e, '诊断包导出失败'), true) }
-}
-
-onMounted(() => { startPolling() })
-onUnmounted(() => { stopPolling() })
+onMounted(() => { status.startPolling() })
+onUnmounted(() => { status.stopPolling() })
 </script>
 
 <style scoped>

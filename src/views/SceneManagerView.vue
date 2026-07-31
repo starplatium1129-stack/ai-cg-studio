@@ -345,6 +345,8 @@ import type {
   SceneSaveResult, MaintenanceRunResult,
 } from '@/types/api'
 import { useFocusTrap } from '@/composables/useFocusTrap'
+import { useSceneShowcaseUpload } from '@/composables/useSceneShowcaseUpload'
+import { useSceneTagManager } from '@/composables/useSceneTagManager'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 
@@ -362,7 +364,6 @@ const TABS = [
   { id:'tools',      label:'维护工具' },
 ]
 
-const TAG_CATS = ['Character','Clothing','Action','Emotion','Scene','Lighting','Body','Appearance']
 const DUP_KEYWORDS = ['吊带','丝绸','围裙','泳衣','温泉','旗袍','毛衣','衬衫','图书馆','天台','烟花','神社','巫女','咖啡','卧室','寝室','影音室','休息室','后厨','厨房','吧台','晚礼服','魔女','洛丽塔','浴衣','和服','赛车','冰箱','冷藏','露台','阳台','泳池','书房','试衣']
 const TOOLS = [
   { id:'lint-colors', icon:'🎨', label:'检查硬编码颜色', desc:'扫描未用 token 的硬编码颜色' },
@@ -380,6 +381,24 @@ const loadError = ref('')
 const tab = ref('scenes')
 const search = ref(''); const fCat = ref(''); const fChar = ref(''); const fRating = ref('')
 const sortBy = ref('id'); const page = ref(1)
+
+// 标签库 CRUD（改名级联、使用频次、筛选分页）
+const tagManager = useSceneTagManager({ tags, scenes, markDirty })
+const {
+  tagSearch, tagCatFilter, tagPage, tagUsage, tagCats, filteredTags, tagTotalPages, pagedTags,
+  openAddTag, openEditTag, deleteTag,
+} = tagManager
+
+// 样张与首页主视觉上传（预览、JPEG 归一化、上传/恢复生命周期）
+const showcase = useSceneShowcaseUpload({ scenes, errorMessage })
+const {
+  imageSearch, imagePage, selectedImageId, selectedImageTitle,
+  showcaseFeedback, showcaseError, showcaseVersion, uploadBusy,
+  showcaseFileEl, heroFileEl, selectedHeroId, selectedHeroTitle, homeHeroVersion, homeHeroes,
+  filteredImageScenes, imageTotalPages, pagedImageScenes, showcaseUrl, heroUrl,
+  previewImage, onShowcaseMissing, pickShowcase, previewHero, pickHero,
+  loadHomeHeroes, resetHero, onShowcasePicked, onHeroPicked,
+} = showcase
 const editing = ref<SceneDraft | null>(null)
 const editingId = ref('')
 const curationTierValue = ref('normal')
@@ -437,285 +456,6 @@ watch([search, fCat, fChar, fRating, sortBy], () => { page.value = 1 })
 
 const totalPages = computed(() => Math.max(1, Math.ceil(filtered.value.length / PAGE_SIZE)))
 const paged = computed(() => filtered.value.slice((page.value-1)*PAGE_SIZE, page.value*PAGE_SIZE))
-
-// ── 标签库 CRUD ────────────────────────────────────────────────────────────
-// 注意：tags.json 的字段是 en/cn/cat/weight，不是 name/description/category
-const TAG_PAGE_SIZE = 60
-const tagSearch = ref('')
-const tagCatFilter = ref('')
-const tagPage = ref(1)
-
-const tagUsage = computed(() => {
-  const map: Record<string, number> = {}
-  scenes.value.forEach(s => (s.tags || []).forEach((t: string) => { map[t] = (map[t] || 0) + 1 }))
-  return map
-})
-
-const tagCats = computed(() => {
-  const found = [...new Set(tags.value.map((t) => t.cat).filter(Boolean))] as string[]
-  return [...new Set([...TAG_CATS, ...found])]
-})
-
-const filteredTags = computed(() => {
-  const q = tagSearch.value.trim().toLowerCase()
-  return tags.value
-    .filter((t) => {
-      if (tagCatFilter.value && t.cat !== tagCatFilter.value) return false
-      if (!q) return true
-      return [t.id, t.en, t.cn, t.cat].join(' ').toLowerCase().includes(q)
-    })
-    .slice()
-    .sort((a, b) => (tagUsage.value[b.en] || 0) - (tagUsage.value[a.en] || 0))
-})
-const tagTotalPages = computed(() => Math.max(1, Math.ceil(filteredTags.value.length / TAG_PAGE_SIZE)))
-const pagedTags = computed(() =>
-  filteredTags.value.slice((tagPage.value - 1) * TAG_PAGE_SIZE, tagPage.value * TAG_PAGE_SIZE),
-)
-watch([tagSearch, tagCatFilter], () => { tagPage.value = 1 })
-
-function nextTagId() {
-  const max = tags.value.reduce((m: number, t) =>
-    Math.max(m, parseInt(String(t.id).replace('tag_', ''), 10) || 0), 0)
-  return 'tag_' + String(max + 1).padStart(3, '0')
-}
-
-function openAddTag() {
-  const en = prompt('标签英文名（Danbooru 格式，用下划线）：')
-  if (!en?.trim()) return
-  if (tags.value.some((t) => String(t.en).toLowerCase() === en.trim().toLowerCase())) {
-    alert('这个英文名已存在'); return
-  }
-  const cn = prompt('标签中文名：')
-  if (!cn?.trim()) return
-  const cat = prompt(`分类（${TAG_CATS.join(' / ')}）：`, 'Scene')
-  if (!cat?.trim()) return
-  const weight = Number(prompt('默认权重（0–2）：', '0.8'))
-  if (!Number.isFinite(weight) || weight <= 0 || weight > 2) { alert('权重必须是 0–2 之间的数字'); return }
-  tags.value.push({ id: nextTagId(), cat: cat.trim(), en: en.trim(), cn: cn.trim(), weight, related: [] })
-  markDirty('新增标签等待保存到项目')
-}
-
-function openEditTag(id: string) {
-  const tag = tags.value.find((t) => t.id === id)
-  if (!tag) return
-  const en = prompt('标签英文名：', tag.en)
-  if (!en?.trim()) return
-  if (tags.value.some((t) => t.id !== id && String(t.en).toLowerCase() === en.trim().toLowerCase())) {
-    alert('这个英文名已存在'); return
-  }
-  const cn = prompt('标签中文名：', tag.cn || '')
-  if (!cn?.trim()) return
-  const cat = prompt('分类：', tag.cat || 'Scene')
-  if (!cat?.trim()) return
-  const weight = Number(prompt('默认权重（0–2）：', String(tag.weight ?? 0.8)))
-  if (!Number.isFinite(weight) || weight <= 0 || weight > 2) { alert('权重必须是 0–2 之间的数字'); return }
-
-  const oldEn = tag.en
-  Object.assign(tag, { en: en.trim(), cn: cn.trim(), cat: cat.trim(), weight })
-  if (oldEn !== tag.en) {
-    // 改名级联：场景里引用的旧标签一并替换，否则引用会悬空
-    let touched = 0
-    scenes.value.forEach(s => {
-      if (!Array.isArray(s.tags)) return
-      const next = s.tags.map((v: string) => (v === oldEn ? tag.en : v))
-      if (next.join('\u0000') !== s.tags.join('\u0000')) { s.tags = next; touched++ }
-    })
-    markDirty(`标签改名已级联更新 ${touched} 个场景，等待保存`)
-  } else {
-    markDirty('标签修改等待保存到项目')
-  }
-}
-
-function deleteTag(id: string) {
-  const tag = tags.value.find((t) => t.id === id)
-  if (!tag) return
-  const used = tagUsage.value[tag.en] || 0
-  if (!confirm(`确认删除标签「${tag.en}」？${used ? `场景中的 ${used} 处引用也会一并移除。` : ''}`)) return
-  tags.value = tags.value.filter((t) => t.id !== id)
-  scenes.value.forEach(s => {
-    if (Array.isArray(s.tags)) s.tags = s.tags.filter((v: string) => v !== tag.en)
-  })
-  markDirty('标签删除及其场景引用等待保存')
-}
-
-// ── 样张管理 ──────────────────────────────────────────────────────────────
-const IMAGE_PAGE_SIZE = 60
-const imageSearch = ref('')
-const imagePage = ref(1)
-const selectedImageId = ref('')
-const selectedImageTitle = ref('')
-const showcaseFeedback = ref('')
-const showcaseError = ref(false)
-const showcaseVersion = ref(Date.now())
-const uploadBusy = ref(false)
-const showcaseFileEl = ref<HTMLInputElement | null>(null)
-const heroFileEl = ref<HTMLInputElement | null>(null)
-const selectedHeroId = ref('')
-const selectedHeroTitle = ref('')
-const homeHeroVersion = ref(Date.now())
-const homeHeroes = ref([
-  { id:'nene', title:'宁宁', updatedAt:'' },
-  { id:'natsume', title:'夏目', updatedAt:'' },
-])
-
-const filteredImageScenes = computed(() => {
-  const q = imageSearch.value.trim().toLowerCase()
-  if (!q) return scenes.value
-  return scenes.value.filter(s => (s.id + ' ' + s.title).toLowerCase().includes(q))
-})
-const imageTotalPages = computed(() => Math.max(1, Math.ceil(filteredImageScenes.value.length / IMAGE_PAGE_SIZE)))
-const pagedImageScenes = computed(() =>
-  filteredImageScenes.value.slice((imagePage.value - 1) * IMAGE_PAGE_SIZE, imagePage.value * IMAGE_PAGE_SIZE),
-)
-watch(imageSearch, () => { imagePage.value = 1 })
-
-const showcaseUrl = computed(() =>
-  selectedImageId.value
-    ? `/scene-showcase/images/${encodeURIComponent(selectedImageId.value)}.jpg?v=${showcaseVersion.value}`
-    : '',
-)
-const heroUrl = computed(() => selectedHeroId.value
-  ? `/scene-showcase/home/${selectedHeroId.value}.jpg?v=${homeHeroVersion.value}`
-  : '')
-
-function previewImage(s: SceneDraft) {
-  selectedImageId.value = s.id
-  selectedImageTitle.value = s.title
-  showcaseError.value = false
-  showcaseVersion.value = Date.now()
-  showcaseFeedback.value = '支持 PNG / JPEG / WebP，最大 15MB；仅本机可替换。'
-}
-function onShowcaseMissing() {
-  showcaseError.value = true
-  showcaseFeedback.value = '该场景还没有样张，可直接上传一张。'
-}
-function pickShowcase() { showcaseFileEl.value?.click() }
-function previewHero(hero: { id:string; title:string; updatedAt:string }) {
-  selectedHeroId.value = hero.id
-  selectedHeroTitle.value = hero.title
-  showcaseError.value = false
-  homeHeroVersion.value = Date.now()
-  showcaseFeedback.value = '支持 PNG / JPEG / WebP，最大 15MB；仅本机可替换。'
-}
-function pickHero() { heroFileEl.value?.click() }
-
-async function loadHomeHeroes() {
-  try {
-    const response = await fetch('/api/maintenance/home-hero')
-    if (!response.ok) return
-    const data = await response.json() as { entries?: Record<string, { updatedAt?: string }> }
-    homeHeroes.value = homeHeroes.value.map(hero => ({ ...hero, updatedAt: data.entries?.[hero.id]?.updatedAt ? new Date(data.entries[hero.id].updatedAt!).toLocaleString('zh-CN') : '' }))
-  } catch {}
-}
-
-async function resetHero() {
-  if (!selectedHeroId.value || !confirm(`恢复${selectedHeroTitle.value}的内置首页图？`)) return
-  uploadBusy.value = true
-  try {
-    const r = await fetch('/api/maintenance/home-hero', { method:'POST', headers:{ 'Content-Type':'application/json' }, body:JSON.stringify({ character:selectedHeroId.value, action:'reset' }) })
-    const data = await r.json() as { ok?:boolean; error?:string; message?:string }
-    if (!r.ok) throw new Error(data.error || '恢复失败')
-    showcaseFeedback.value = data.message || '已恢复内置图'
-    homeHeroVersion.value = Date.now()
-    await loadHomeHeroes()
-  } catch (err) {
-    showcaseError.value = true
-    showcaseFeedback.value = '未能恢复：' + errorMessage(err, '请确认通过本机控制面板打开网站')
-  } finally { uploadBusy.value = false }
-}
-
-/** 归一化为 JPEG，与后端 15MB 原图 / 3MB 缩略图限制对齐 */
-function jpegAtWidth(image: HTMLImageElement, maxWidth: number, quality: number): string {
-  const scale = Math.min(1, maxWidth / image.naturalWidth)
-  const canvas = document.createElement('canvas')
-  canvas.width = Math.max(1, Math.round(image.naturalWidth * scale))
-  canvas.height = Math.max(1, Math.round(image.naturalHeight * scale))
-  const ctx = canvas.getContext('2d', { alpha: false })!
-  ctx.imageSmoothingEnabled = true
-  ctx.imageSmoothingQuality = 'high'
-  ctx.drawImage(image, 0, 0, canvas.width, canvas.height)
-  return canvas.toDataURL('image/jpeg', quality)
-}
-
-async function onShowcasePicked(e: Event) {
-  const input = e.target as HTMLInputElement
-  const file = input.files?.[0]
-  if (!file || !selectedImageId.value) return
-  showcaseError.value = false
-  if (file.size > 15 * 1024 * 1024) {
-    showcaseError.value = true
-    showcaseFeedback.value = '图片超过 15MB，请先压缩。'
-    input.value = ''
-    return
-  }
-  uploadBusy.value = true
-  showcaseFeedback.value = '正在保存样张…'
-  try {
-    const dataUrl = await new Promise<string>((resolve, reject) => {
-      const reader = new FileReader()
-      reader.onload = () => resolve(String(reader.result || ''))
-      reader.onerror = () => reject(new Error('无法读取这张图片'))
-      reader.readAsDataURL(file)
-    })
-    const image = await new Promise<HTMLImageElement>((resolve, reject) => {
-      const img = new Image()
-      img.onload = () => resolve(img)
-      img.onerror = () => reject(new Error('无法解析这张图片'))
-      img.src = dataUrl
-    })
-    if (image.naturalWidth * image.naturalHeight > 60_000_000) {
-      throw new Error('图片像素过大，请使用不超过 6000 万像素的版本')
-    }
-    const normalized = jpegAtWidth(image, 4096, 0.94)
-    const thumbnail = jpegAtWidth(image, 560, 0.86)
-    const r = await fetch('/api/maintenance/showcase', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: selectedImageId.value, image: normalized, thumbnail }),
-    })
-    const data = await r.json() as SceneSaveResult
-    if (!r.ok) throw new Error(data.error || '保存失败')
-    showcaseFeedback.value = data.message || '样张已保存'
-    showcaseVersion.value = Date.now()
-  } catch (err) {
-    showcaseError.value = true
-    showcaseFeedback.value = '未能保存：' + errorMessage(err, '请确认通过本机控制面板打开网站')
-  } finally {
-    uploadBusy.value = false
-    input.value = ''
-  }
-}
-
-async function onHeroPicked(e: Event) {
-  const input = e.target as HTMLInputElement
-  const file = input.files?.[0]
-  if (!file || !selectedHeroId.value) return
-  showcaseError.value = false
-  uploadBusy.value = true
-  showcaseFeedback.value = '正在保存首页主视觉…'
-  try {
-    if (file.size > 15 * 1024 * 1024) throw new Error('图片超过 15MB，请先压缩')
-    const dataUrl = await new Promise<string>((resolve, reject) => {
-      const reader = new FileReader()
-      reader.onload = () => resolve(String(reader.result || ''))
-      reader.onerror = () => reject(new Error('无法读取这张图片'))
-      reader.readAsDataURL(file)
-    })
-    const image = await new Promise<HTMLImageElement>((resolve, reject) => {
-      const img = new Image(); img.onload = () => resolve(img); img.onerror = () => reject(new Error('无法解析这张图片')); img.src = dataUrl
-    })
-    if (image.naturalWidth * image.naturalHeight > 60_000_000) throw new Error('图片像素过大，请使用不超过 6000 万像素的版本')
-    const normalized = jpegAtWidth(image, 4096, 0.94)
-    const r = await fetch('/api/maintenance/home-hero', { method:'POST', headers:{ 'Content-Type':'application/json' }, body:JSON.stringify({ character:selectedHeroId.value, image:normalized }) })
-    const data = await r.json() as { ok?:boolean; error?:string; message?:string }
-    if (!r.ok) throw new Error(data.error || '保存失败')
-    showcaseFeedback.value = data.message || '首页主视觉已保存'
-    homeHeroVersion.value = Date.now()
-    await loadHomeHeroes()
-  } catch (err) {
-    showcaseError.value = true
-    showcaseFeedback.value = '未能保存：' + errorMessage(err, '请确认通过本机控制面板打开网站')
-  } finally { uploadBusy.value = false; input.value = '' }
-}
 
 // ── 重复检测 ──────────────────────────────────────────────────────────────
 const dupGroups = ref<Array<{ keyword: string; scenes: SceneDraft[] }>>([])

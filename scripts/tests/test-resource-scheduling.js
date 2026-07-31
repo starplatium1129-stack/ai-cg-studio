@@ -20,6 +20,8 @@ const read = (...parts) => fs.readFileSync(path.join(root, ...parts), 'utf8');
 
 const control = read('routes', 'control.js');
 const controlView = read('src', 'views', 'ControlView.vue');
+// 控制面板脚本已按状态所有权拆出：自动启停偏好归 useControlActions
+const controlActions = read('src', 'composables', 'useControlActions.ts');
 const gatewayConfig = read('server', 'config.js');
 const ollamaService = read('services', 'ollama-service.js');
 const translationService = read('services', 'translation-service.js');
@@ -93,7 +95,7 @@ assert(
   'control panel must expose per-service controls',
 );
 assert(
-  controlView.includes('autoStartVoice') && controlView.includes('/api/preference'),
+  controlActions.includes('autoStartVoice') && controlActions.includes('/api/preference'),
   'control panel must make voice auto-start an explicit preference',
 );
 assert(controlView.includes('ollamaBadgeText') || controlView.includes('ollamaVram'), 'control panel must show Ollama online and VRAM status');
