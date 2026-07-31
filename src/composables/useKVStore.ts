@@ -5,7 +5,6 @@ const DB_VERSION = 1
 const STORE_NAME = 'kv'
 
 let dbPromise: Promise<IDBDatabase> | null = null
-const memCache: Record<string, unknown> = {}
 
 function openDb(): Promise<IDBDatabase> {
   if (dbPromise) return dbPromise
@@ -27,15 +26,15 @@ function openDb(): Promise<IDBDatabase> {
 }
 
 export async function kvGet<T = unknown>(key: string): Promise<T | null> {
-  if (memCache[key] !== undefined) return JSON.parse(JSON.stringify(memCache[key])) as T
+  // 不再走内存缓存：memCache 是标签页私有副本，跨标签页写入后另一页会
+  // 一直读到旧值（历史/作品册"丢新记录"）。IndexedDB 单键读取是毫秒级，
+  // 本项目数据量下直接查库没有可感知的性能代价。
   const db = await openDb()
   return new Promise((resolve, reject) => {
     const tx = db.transaction(STORE_NAME, 'readonly')
     const req = tx.objectStore(STORE_NAME).get(key)
     req.onsuccess = () => {
-      const val = req.result?.value ?? null
-      if (val !== null) memCache[key] = JSON.parse(JSON.stringify(val))
-      resolve(val as T | null)
+      resolve((req.result?.value ?? null) as T | null)
     }
     req.onerror = () => reject(req.error)
   })
@@ -47,7 +46,7 @@ export async function kvSet(key: string, value: unknown): Promise<void> {
   return new Promise((resolve, reject) => {
     const tx = db.transaction(STORE_NAME, 'readwrite')
     tx.objectStore(STORE_NAME).put({ key, value: snapshot })
-    tx.oncomplete = () => { memCache[key] = JSON.parse(JSON.stringify(snapshot)); resolve() }
+    tx.oncomplete = () => resolve()
     tx.onerror = () => reject(tx.error)
     tx.onabort = () => reject(tx.error ?? new Error('KV 事务已取消'))
   })
