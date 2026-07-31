@@ -14,7 +14,7 @@ This is an unofficial, non-commercial fan project and is not affiliated with or 
 
 ## Features
 
-- 298 searchable and filterable Scenes, classified as All, R15, or R18 by depicted content
+- 297 searchable and filterable Scenes, classified as All, R15, or R18 by depicted content
 - A reviewed result gallery with one approved image per Scene, featured/character/rating filters, and direct links back into the director
 - A director workspace for story, character, mood, camera, composition, lighting, and color
 - Automatic Positive / Negative Prompt assembly and scene-aware LoRA injection
@@ -76,7 +76,7 @@ See [STARTUP.md](STARTUP.md) for full setup and troubleshooting instructions.
 ├── data/                   # Runtime JSON: scenes, characters, tags, presets
 ├── assets/                 # Static assets: character images, Live2D models, vendor SDKs
 ├── css/                    # CSS for docs/ HTML pages (separate from src/assets/css/)
-├── tools/                  # Remaining utility JS: prompt-policy, sd-api, nav, theme…
+├── tools/                  # Docs runtime helpers: nav, theme, local-status; translation model installer
 ├── docs/                   # Creative standards, quality checks, maintenance notes
 ├── scripts/                # Maintenance, tests, and runtime helpers
 └── runtime/                # Local config, logs, process state, generated outputs

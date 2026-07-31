@@ -100,6 +100,31 @@
 
 若后续 v18 全量 297 场景样张需要整体重出，可复用同一套生成→审核→落盘链路。
 
+### 待办：项目健康度优化（2026-07-31）
+
+基线：`npm run validate`、`npm run build`、92 个关键 Playwright 用例全部通过。以下按优先级推进，完成一项勾掉一项。
+
+P1 · 近期
+
+1. Live2D 运行时块瘦身：`wl-live2d` 动态块 945.6KB（gzip 263KB / brotli 211KB），构建已有 >500KB 警告；确认 `assets/vendor/live2d` 静态副本能否替代 npm 包，或拆分 pixi 与 wl-live2d；至少纳入 bundle 预算监控。
+2. 消除 /chat 进出整页刷新：CSP 因 Live2D 需要 `unsafe-eval` 而按路由换页（`src/router/index.ts` 与 `server/security.js`）；评估子文档/iframe 隔离或独立入口，避免二次渲染与瞬时状态丢失；若暂缓需在文档写明权衡。
+3. 拆分大视图：`TrainingView.vue`（1313 行）、`PromptBuilderView.vue`（1136 行）、`SceneManagerView.vue`（1048 行）、`ControlView.vue`（1019 行）按状态与生命周期所有权拆 composables/子组件，不按行数搬。
+4. ~~修正文档漂移~~（2026-07-31 完成：STARTUP.md token 持久化描述、README 场景数 297、tools 结构描述已修正）。
+5. 测试体系渐进迁移：36 个 `scripts/tests/*.js` 断言脚本迁到 `node:test`（保持命令兼容），补覆盖率统计与失败定位。
+
+P2 · 工程卫生与基础设施
+
+6. ~~仓库卫生~~（2026-07-31 完成：pptx 移入 docs/、清理 data 旧文件、删除 agents/test-branch 及其 worktree）。
+7. JS lint：现有门禁覆盖 CSS 字面量/颜色/对比度，JS 侧补 ESLint（未使用变量、显式 `any` 回退、console 残留），并串接进 `npm run validate`。
+8. 字体自托管：Google Fonts 改为本地托管 Noto Sans SC / JetBrains Mono，保证离线可用并收紧 CSP。
+9. 如计划公开分享仓库，补 LICENSE 文件。
+
+P3 · 长期观察
+
+10. 场景扩容时评估 `data/scenes.json`（899KB / brotli 155KB）按角色分片或索引化加载。
+11. `services/training-service.ts`（1069 行）在训练功能稳定后按数据集/任务/日志拆分。
+12. Express 5 升级评估（不急），需覆盖中间件与代理兼容性测试。
+
 ## 明确暂缓
 
 - Live2D 42.85MB 贴图压缩、KTX2/WebP 转换。
