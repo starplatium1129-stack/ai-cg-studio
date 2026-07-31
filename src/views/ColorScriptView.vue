@@ -100,10 +100,10 @@ import { ref, computed } from 'vue'
 import { useToast } from '@/composables/useToast'
 import ArchivePageHero from '@/components/visual/ArchivePageHero.vue'
 import { useScrollReveal } from '@/composables/useScrollReveal'
+import { BANNED_TAGS } from '@/utils/promptPolicy'
 
 useScrollReveal()
 
-const BANNED_TAGS = ['neon','glowing','oversaturated','vivid colors','vivid','rainbow','high contrast','harsh lighting','extremely detailed','ultra detailed']
 const GOOD_TAGS = ['soft colors','pastel tones','warm atmosphere','gentle palette','muted tones','harmonious colors','warm soft lighting','backlit glow']
 const LIGHTINGS = [
   { icon:'🌅', name:'夕阳',   reason:'放学/黄昏/温馨/回忆' },

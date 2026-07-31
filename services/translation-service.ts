@@ -34,6 +34,17 @@ interface TranslationStatus {
   cached: number;
 }
 
+function killProcessTree(child: cp.ChildProcess | null): void {
+  if (!child || !child.pid) return;
+  if (process.platform === 'win32') {
+    try {
+      cp.execFileSync('taskkill', ['/pid', String(child.pid), '/T', '/F'], { stdio: 'ignore' });
+      return;
+    } catch { /* 进程可能已退出，回退到 kill */ }
+  }
+  try { child.kill(); } catch { /* ignore */ }
+}
+
 function createTranslationService(options: TranslationServiceOptions) {
   const queue = new SerialQueue('zh-ja-translation');
   let child: ChildProcess | null = null;
@@ -191,11 +202,11 @@ function createTranslationService(options: TranslationServiceOptions) {
         stdio: ['pipe', 'pipe', 'pipe']
       });
       const timer = setTimeout(function () {
-        if (!finished) legacy.kill();
+        if (!finished) killProcessTree(legacy);
       }, 180000);
 
       function onAbort() {
-        legacy.kill();
+        killProcessTree(legacy);
         finish(httpClient.abortError());
       }
       function finish(error?: Error | null, result?: TranslationResult) {

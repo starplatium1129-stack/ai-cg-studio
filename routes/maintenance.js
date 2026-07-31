@@ -169,6 +169,35 @@ function createMaintenanceRouter(cfg) {
     return snapshotFiles(files);
   }
 
+function killProcessTree(child) {
+  if (!child || !child.pid) return;
+  if (process.platform === 'win32') {
+    try {
+      cp.execFileSync('taskkill', ['/pid', String(child.pid), '/T', '/F'], { stdio:'ignore' });
+      return;
+    } catch (error) { /* 进程可能已退出，回退到 kill */ }
+  }
+  try { child.kill(); } catch (error) {}
+}
+
+/**
+ * 网关在跑的子进程登记表：/api/maintenance/run 与场景保存校验链可能耗时
+ * 数分钟，网关退出时必须连树回收，否则脚本会继续写文件直到自然结束。
+ */
+var activeChildren = new Set();
+
+function trackChild(child) {
+  activeChildren.add(child);
+  child.once('close', function () { activeChildren.delete(child); });
+  child.once('error', function () { activeChildren.delete(child); });
+  return child;
+}
+
+function killActiveChildren() {
+  activeChildren.forEach(function (child) { killProcessTree(child); });
+  activeChildren.clear();
+}
+
 /**
  * 异步 spawn 一个 node 脚本。
  *
@@ -178,9 +207,9 @@ function createMaintenanceRouter(cfg) {
  */
 function runNodeScript(script, args, timeoutMs) {
   return new Promise(function (resolve, reject) {
-    var child = cp.spawn(process.execPath, [script].concat(args || []), {
+    var child = trackChild(cp.spawn(process.execPath, [script].concat(args || []), {
       cwd:path.join(__dirname, '..'), windowsHide:true
-    });
+    }));
     var stdout = '';
     var stderr = '';
     var LOG_CAP = 64 * 1024;  // 别让多话的脚本把字符串撑爆
@@ -189,7 +218,9 @@ function runNodeScript(script, args, timeoutMs) {
     var timer = setTimeout(function () {
       if (settled) return;
       settled = true;
-      try { child.kill(); } catch (error) {}
+      // 脚本可能又 spawn 了子进程（如 validate 链），只 kill 本体会让它们
+      // 变孤儿继续写文件；连树一起收。
+      killProcessTree(child);
       reject(new Error(path.basename(script) + ' 执行超时（' + Math.round((timeoutMs || 120000) / 1000) + ' 秒）'));
     }, timeoutMs || 120000);
 
@@ -571,7 +602,11 @@ async function runMaintenanceChecks() {
     });
   });
 
-  return { router:router, sceneStore:sceneStore };
+  return {
+    router:router,
+    sceneStore:sceneStore,
+    close:killActiveChildren
+  };
 }
 
 module.exports = {

@@ -256,6 +256,7 @@ function createGateway(options) {
   function close() {
     voice.close();
     training.close();
+    if (maintenance && typeof maintenance.close === 'function') maintenance.close();
     if (tunnelManager) tunnelManager.stop();
   }
 

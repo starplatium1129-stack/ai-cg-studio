@@ -190,8 +190,8 @@
           <div class="stage-corners" aria-hidden="true">
             <i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i>
           </div>
-          <img class="stage-muse nene" src="/assets/characters/nene-official.webp" alt="" aria-hidden="true" decoding="async">
-          <img class="stage-muse natsume" src="/assets/characters/natsume-official.webp" alt="" aria-hidden="true" decoding="async">
+          <img class="stage-muse nene" :src="stageMuseUrl.nene" alt="" aria-hidden="true" decoding="async">
+          <img class="stage-muse natsume" :src="stageMuseUrl.natsume" alt="" aria-hidden="true" decoding="async">
           <div class="stage-message">
             <!-- 生成中：呼吸 + 进度，缓解等待焦虑 -->
             <div v-if="sd.generating.value" class="stage-generating-copy">
@@ -496,6 +496,14 @@ const router = useRouter()
 const route = useRoute()
 const pb = usePromptBuilderStore()
 const sd = useSDGenerate()
+
+// 与 config/characters.ts 共用 Express 服务的同一份角色立绘 URL。
+// 之前写成静态 src="/assets/..."，Vite transformAssetUrls 会在构建时把它
+// 打包进 dist/_app 生成 hashed 副本 —— 同一张图两套缓存，还多占 ~163KB。
+const stageMuseUrl = {
+  nene: '/assets/characters/nene-official.webp',
+  natsume: '/assets/characters/natsume-official.webp',
+}
 
 // ── UI state ──────────────────────────────────────────────────────────────
 const sceneLimit = ref(20)

@@ -297,6 +297,8 @@ function createChatRouter(config, dependencies) {
     if (validation.error) return envelope.fail(res, 400, validation.error);
     var controller = new AbortController();
     req.once('aborted', function () { controller.abort(); });
+    // 客户端在模型列表拉取完成前断开（如关面板）也要中止，避免 15s 探测白跑
+    res.once('close', function () { if (!res.writableEnded) controller.abort(); });
     try {
       var result = await inspectCompatibleApi(validation.value, controller.signal);
       envelope.ok(res, result);

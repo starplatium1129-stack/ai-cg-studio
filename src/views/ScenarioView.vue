@@ -106,6 +106,7 @@ import { useSceneStore } from '@/stores/sceneStore'
 import { useToast } from '@/composables/useToast'
 import ArchivePageHero from '@/components/visual/ArchivePageHero.vue'
 import { useScrollReveal } from '@/composables/useScrollReveal'
+import { BANNED_TAGS } from '@/utils/promptPolicy'
 
 const sceneStore = useSceneStore()
 useScrollReveal()
@@ -134,7 +135,6 @@ interface Scenario {
   acts: ScenarioAct[]
 }
 
-const BANNED_TAGS = ['neon','glowing','oversaturated','vivid colors','vivid','rainbow','high contrast','harsh lighting','extremely detailed','ultra detailed']
 const LOCK_PARAMS = 'CFG 5 · DPM++ 2M SDE · Steps 28 · Hires 0.45'
 const BASE_NEG = 'lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name'
 const CHAR_TRAITS: Record<ScenarioCharacter,string> = {

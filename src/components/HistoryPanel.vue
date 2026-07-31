@@ -6,7 +6,7 @@
       <article v-for="item in items" :key="item.id" class="history-item">
         <div class="history-thumb">
           <img v-if="thumbs[item.id]" :src="thumbs[item.id]" alt="历史作品缩略图" loading="lazy">
-          <img v-else class="history-placeholder" src="/assets/characters/nene-official.webp" alt="" aria-hidden="true">
+          <img v-else class="history-placeholder" :src="placeholderUrl" alt="" aria-hidden="true">
           <span class="history-thumb-badge">v{{ item.version || 1 }}</span>
         </div>
         <div class="history-main">
@@ -38,6 +38,9 @@
 import { computed, onBeforeUnmount, reactive, watch } from 'vue'
 import { imgGet } from '@/composables/useImageStore'
 import type { HistoryEntry } from '@/stores/promptBuilderStore'
+
+// 与 config/characters.ts 共用 Express 服务的同一份立绘 URL，避免 Vite 打包副本
+const placeholderUrl = '/assets/characters/nene-official.webp'
 
 const props = defineProps<{ history: HistoryEntry[] }>()
 defineEmits<{

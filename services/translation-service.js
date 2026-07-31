@@ -37,6 +37,21 @@ const path = __importStar(require("path"));
 const cp = __importStar(require("child_process"));
 const SerialQueue = require("./serial-queue");
 const httpClient = require("./http-client");
+function killProcessTree(child) {
+    if (!child || !child.pid)
+        return;
+    if (process.platform === 'win32') {
+        try {
+            cp.execFileSync('taskkill', ['/pid', String(child.pid), '/T', '/F'], { stdio: 'ignore' });
+            return;
+        }
+        catch { /* 进程可能已退出，回退到 kill */ }
+    }
+    try {
+        child.kill();
+    }
+    catch { /* ignore */ }
+}
 function createTranslationService(options) {
     const queue = new SerialQueue('zh-ja-translation');
     let child = null;
@@ -197,10 +212,10 @@ function createTranslationService(options) {
             });
             const timer = setTimeout(function () {
                 if (!finished)
-                    legacy.kill();
+                    killProcessTree(legacy);
             }, 180000);
             function onAbort() {
-                legacy.kill();
+                killProcessTree(legacy);
                 finish(httpClient.abortError());
             }
             function finish(error, result) {
