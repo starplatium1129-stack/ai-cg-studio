@@ -201,7 +201,7 @@ async function run() {
   assert(html.includes('ChatApiSettings'), 'chat API settings must have independent component ownership');
   assert(html.includes('useChatProvider') && chatProvider.includes('refreshChatStatus') && chatProvider.includes('saveApiSettings'), 'chat provider settings and status must have composable ownership');
   assert(
-    characterStageComponent.includes('defineExpose({ setSpeaking, setMouth })')
+    characterStageComponent.includes('defineExpose({ setSpeaking, setMouth, setEmotion })')
       && characterStageComponent.includes("emit('live2dEnabled'")
       && characterStageComponent.includes("emit('outfitChanged'"),
     'the character stage must expose only voice animation controls and persist Live2D preferences'

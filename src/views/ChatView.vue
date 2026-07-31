@@ -111,7 +111,7 @@
           <template v-else>
             <div v-for="msg in currentMessages" :key="msg.mid"
               class="message"
-              :class="[msg.role, msg.mid && msg.mid === streamingMid ? 'streaming' : '']"
+              :class="[msg.role, msg.mid && msg.mid === streamingMid ? 'streaming' : '', msg.mid === playingMid ? 'speaking' : '']"
               :data-mid="msg.mid">
               <div class="message-avatar">{{ msg.role === 'user' ? '你' : currentCharacter.icon }}</div>
               <div class="message-body">
@@ -169,7 +169,7 @@
               <label class="volume-slider" title="音量">
                 <span class="volume-icon" aria-hidden="true"><ArchiveIcon name="sound" /></span>
                 <input type="range" v-model.number="volume" min="0" max="100" aria-label="音量"
-                  @input="voice.setVolume(volume / 100)" />
+                  @input="onVolumeChange" />
               </label>
               <button class="replay-btn" type="button" title="重新播放上一条语音"
                 :disabled="!hasReplayable"
@@ -212,6 +212,7 @@ const chatListRef  = ref<HTMLElement>()
 const characterStageRef = ref<{
   setSpeaking: (value: boolean) => void
   setMouth: (value: number) => void
+  setEmotion: (emotion: string) => void
 }>()
 
 // ── Core state ────────────────────────────────────────────────────────────
@@ -265,6 +266,7 @@ const voice = useVoice({
     characterStageRef.value?.setSpeaking(v)
   },
   onMouth:      (v) => characterStageRef.value?.setMouth(v),
+  onExpression: (emotion) => characterStageRef.value?.setEmotion(emotion),
   onAudioReady: (mid) => {
     // trigger re-render so replay button appears
     const msgs = storage.messages(activeChar.value)
@@ -273,6 +275,11 @@ const voice = useVoice({
   },
   onActivity:   (active) => { voiceActive.value = active },
 })
+
+function onVolumeChange() {
+  voice.setVolume(volume.value / 100)
+  storage.setVolume(volume.value)
+}
 
 // ── Derived ───────────────────────────────────────────────────────────────
 const currentCharacter = computed(() => CHARACTERS[activeChar.value] || CHARACTERS.nene)

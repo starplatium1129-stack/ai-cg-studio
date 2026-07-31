@@ -263,7 +263,7 @@
   bottom: 8%;
   left: 50%;
   width: 42%;
-  border: 1px solid color-mix(in srgb, var(--character-accent) 32%, transparent);
+  border: 1px solid color-mix(in srgb, var(--halo-accent, var(--character-accent)) 32%, transparent);
   border-radius: 50%;
   aspect-ratio: 1;
   opacity: 0;
@@ -275,6 +275,13 @@
   animation: voice-pulse 1.1s ease-out infinite;
   opacity: .9;
 }
+
+/* TTS 情绪 → 光环色（情绪不触碰服装 expression，纯 CSS 通道） */
+.chat-page .portrait-stage.emotion-shy .voice-halo     { --halo-accent: var(--mood-love); }
+.chat-page .portrait-stage.emotion-happy .voice-halo   { --halo-accent: var(--mood-joy); }
+.chat-page .portrait-stage.emotion-sad .voice-halo     { --halo-accent: var(--mood-sad); }
+.chat-page .portrait-stage.emotion-serious .voice-halo { --halo-accent: var(--mood-tension); }
+.chat-page .portrait-stage.emotion-gentle .voice-halo  { --halo-accent: var(--mood-calm); }
 
 .chat-page .avatar-status {
   position: absolute;
@@ -1030,6 +1037,14 @@
   background: var(--accent);
   content: "";
   vertical-align: -2px;
+}
+
+/* TTS 播放当前句：角色气泡柔和高亮 */
+.chat-page .message.speaking .message-bubble {
+  border-color: color-mix(in srgb, var(--character-accent) 45%, var(--border-soft));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--character-accent) 16%, transparent),
+    0 10px 26px -14px color-mix(in srgb, var(--character-accent) 50%, transparent);
 }
 
 .chat-page .message-meta {

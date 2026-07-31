@@ -21,10 +21,7 @@
       :id="tabs.panelId(activeId)"
       ref="stageRef"
       class="portrait-stage"
-      :class="{
-        speaking,
-        'live2d-ready': live2d.ready.value && live2d.loadedCharacter.value === activeId,
-      }"
+      :class="[{ speaking, 'live2d-ready': live2d.ready.value && live2d.loadedCharacter.value === activeId }, `emotion-${emotion}`]"
       :data-character="activeId"
       role="tabpanel"
       :aria-labelledby="tabs.tabId(activeId)"
@@ -131,6 +128,7 @@ const emit = defineEmits<{
 
 const stageRef = ref<HTMLElement>()
 const live2dHostRef = ref<HTMLElement>()
+const emotion = ref('neutral')
 const avatarText = ref('检测 Live2D…')
 const avatarState = ref('checking')
 const avatarDetail = ref('')
@@ -191,6 +189,10 @@ function setMouth(value: number) {
   live2d.setMouth(value)
 }
 
+function setEmotion(value: string) {
+  emotion.value = value
+}
+
 async function handleOutfitChange(next: string) {
   if (outfitBusy.value || next === live2d.outfit.value) return
   outfitBusy.value = true
@@ -223,5 +225,5 @@ onMounted(() => {
 
 onUnmounted(() => live2d.destroy())
 
-defineExpose({ setSpeaking, setMouth })
+defineExpose({ setSpeaking, setMouth, setEmotion })
 </script>
