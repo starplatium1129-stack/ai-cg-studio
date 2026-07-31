@@ -57,6 +57,16 @@
     </ArchiveStatePanel>
 
     <ArchiveStatePanel
+      v-else-if="manifestLoading"
+      class="empty empty-block"
+      kind="empty"
+      title="正在读取样张目录…"
+      message="连接 AI/SceneShowcase 审核展示集。"
+    >
+      <span class="btn btn-ghost" aria-disabled="true">加载中</span>
+    </ArchiveStatePanel>
+
+    <ArchiveStatePanel
       v-else-if="!filtered.length"
       kind="empty"
       title="没有找到匹配样张"
@@ -112,7 +122,7 @@
             <div v-else class="viewer-image-fallback">图片暂时无法读取</div>
           </div>
           <div class="viewer-copy">
-            <button class="viewer-close" type="button" id="viewerClose" @click="closeViewer">×</button>
+            <button class="viewer-close" type="button" id="viewerClose" aria-label="关闭大图" @click="closeViewer">×</button>
             <div class="viewer-kicker">Artwork</div>
             <h2>{{ currentEntry.title }}</h2>
             <div class="viewer-meta">
@@ -161,6 +171,8 @@ const entries   = ref<ShowcaseEntry[]>([])
 const featured  = ref(new Set<string>())
 const stats     = ref({ total: '—', safe: '—', r15: '—' })
 const unavailable = ref(false)
+/** manifest 未返回前显示加载面板，避免闪现错误的"没有匹配样张"空状态 */
+const manifestLoading = ref(true)
 const searchQuery = ref('')
 const scope       = ref<'all' | 'featured'>('all')
 const charFilter  = ref<'all' | ShowcaseCharacter>('all')
@@ -247,6 +259,7 @@ function onKey(e: KeyboardEvent) {
 onMounted(async () => {
   unmounted = false
   document.addEventListener('keydown', onKey)
+  manifestLoading.value = true
   try {
     // manifest 是样张目录（非 data/），仍单独取；curation 走共享 store
     const [manifest] = await Promise.all([
@@ -254,6 +267,7 @@ onMounted(async () => {
       sceneStore.load().catch(() => {})
     ])
     if (unmounted) return
+    manifestLoading.value = false
     const parsed = parseShowcaseManifest(manifest)
     const curation = sceneStore.curation
     entries.value = parsed.entries
@@ -266,6 +280,7 @@ onMounted(async () => {
   } catch (err) {
     if (manifestController.signal.aborted) return
     console.warn('Showcase unavailable:', err)
+    manifestLoading.value = false
     unavailable.value = true
   }
 })

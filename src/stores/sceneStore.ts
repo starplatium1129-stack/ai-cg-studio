@@ -41,11 +41,15 @@ export interface TagMeta {
 }
 
 /**
- * 静态数据的缓存版本号。改 data/*.json 后 +1。
- * 以前每个视图各写一个（?v=9 / ?v=6 / 无 / Date.now()），页面间会看到
- * 同一份库的不同快照。
+ * 静态数据的缓存版本号。
+ *
+ * 服务端对 /data/*.json 已按 immutable 缓存，浏览器靠 ?v= 换 URL 拿新数据，
+ * 因此这个值必须与 data/*.json 的内容一一对应：scripts/maintenance/
+ * validate-content-contracts.js 会用数据内容的 sha1 派生期望值并校验，
+ * 改过 data/*.json 后 `npm run validate` 会提示这里该改成什么。
+ * 以前是手动计数（曾到 15），现在由内容锁定，不会再出现"改数据忘升版本"。
  */
-export const DATA_VERSION = 15
+export const DATA_VERSION = 4245883961
 
 /** 带 response.ok 检查的 JSON 读取 —— 否则 HTML 错误页会被当数据解析 */
 async function loadJson<T>(file: string, fallback: T, version: number): Promise<T> {

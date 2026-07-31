@@ -24,7 +24,9 @@ const PROJECT_KEY = 'aics_pb_projects'
 
 const SETTINGS_KEYS = [
   'aics_theme',
-  'aics_sd_settings_v1',
+  // 快速出图的上次参数（PromptBuilderView 写入）——原来这里记的是早已
+  // 没有生产者的死键 aics_sd_settings_v1，备份会漏掉真实的出图设置。
+  'aics_sd_last_success_v1',
   'aics_pb_last_draft',
   'aics_scene_favorites',
   'aics_tunnel_off',

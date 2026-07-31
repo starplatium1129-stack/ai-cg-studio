@@ -23,6 +23,14 @@
       message="正在核对本机 LoRA 档案与推荐权重。"
     />
     <ArchiveStatePanel
+      v-else-if="loadError"
+      kind="error"
+      title="模型目录读取失败"
+      message="本地模型档案暂时读不到，请稍后重试。"
+    >
+      <button class="btn btn-primary" type="button" @click="loadCatalog">重新读取</button>
+    </ArchiveStatePanel>
+    <ArchiveStatePanel
       v-else-if="!loras.length"
       kind="empty"
       title="模型目录还是空的"
@@ -92,14 +100,22 @@ import {
 const sceneStore = useSceneStore()
 const loras = ref<LoraCatalogEntry[]>([])
 const loading = ref(true)
+const loadError = ref('')
 
-onMounted(async () => {
+async function loadCatalog() {
+  loading.value = true
+  loadError.value = ''
   try {
     await sceneStore.load()
     loras.value = parseLoraCatalog(sceneStore.loras)
-  } catch (e) { console.warn('lora load failed', e) }
+  } catch (e) {
+    console.warn('lora load failed', e)
+    loadError.value = String(e instanceof Error ? e.message : e)
+  }
   loading.value = false
-})
+}
+
+onMounted(() => { void loadCatalog() })
 </script>
 
 <style scoped>

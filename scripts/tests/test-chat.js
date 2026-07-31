@@ -549,7 +549,7 @@ async function run() {
     assert(cssResponse.headers.get('content-encoding') === 'gzip', 'text assets larger than 1 KB should be compressed');
 
     var dataResponse = await fetch(gatewayBase + '/data/scenes.json');
-    assert((dataResponse.headers.get('cache-control') || '').includes('no-cache'), 'editable project data must revalidate on every visit');
+    assert((dataResponse.headers.get('cache-control') || '').includes('immutable'), 'data files are cached immutable; freshness is versioned by ?v=DATA_VERSION and enforced by validate-content-contracts');
 
     var assetResponse = await fetch(gatewayBase + '/assets/logo.svg');
     assert((assetResponse.headers.get('cache-control') || '').includes('max-age=604800'), 'stable image assets should use a one-week browser cache');

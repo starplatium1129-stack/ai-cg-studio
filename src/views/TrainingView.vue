@@ -605,6 +605,7 @@ import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
 import { useRovingTabs } from '@/composables/useRovingTabs'
+import { useToast } from '@/composables/useToast'
 import { useTrainingStore } from '@/stores/trainingStore'
 import {
   adultCount, adultPreviewUrl, categoryEntries, categoryLabel,
@@ -782,7 +783,22 @@ function setParam(id: TrainingJobId, key: string, raw: string): void {
   const parsed = Number(raw)
   if (!Number.isFinite(parsed)) return
   const field = loraParamFields.find((item) => item.key === key)
-  if (field && (parsed < field.min || parsed > field.max)) return
+  if (field) {
+    // 越界不要静默拒收：输入框会弹回原值而用户不知道为什么。
+    // 直接钳制到边界并提示，下次进页面仍记得这个值。
+    if (parsed < field.min) {
+      draft.values[key] = field.min
+      window.localStorage.setItem(paramsKey(id), JSON.stringify(draft.values))
+      showToast(`${field.label} 不能低于 ${field.min}，已设为 ${field.min}`)
+      return
+    }
+    if (parsed > field.max) {
+      draft.values[key] = field.max
+      window.localStorage.setItem(paramsKey(id), JSON.stringify(draft.values))
+      showToast(`${field.label} 不能高于 ${field.max}，已设为 ${field.max}`)
+      return
+    }
+  }
   draft.values[key] = parsed
   window.localStorage.setItem(paramsKey(id), JSON.stringify(draft.values))
 }
@@ -890,6 +906,7 @@ function dismissOnboarding(): void {
 }
 
 const activeKind = ref<TrainingKind>(route.query.kind === 'voice' ? 'voice' : 'lora')
+const { show: showToast } = useToast()
 const logElement = ref<HTMLElement | null>(null)
 const mounted = ref(false)
 const stickToBottom = ref(true)

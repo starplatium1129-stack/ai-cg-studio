@@ -86,6 +86,8 @@ const primaryNav: NavItem[] = [
 const secondaryNav: NavItem[] = [
   { id: 'character', label: '角色档案', to: '/character',    icon: 'character' },
   { id: 'style',     label: '画风',     to: '/style',        icon: 'palette' },
+  { id: 'scenario',  label: '剧本模式', to: '/scenario',     icon: 'scene' },
+  { id: 'color-script', label: '色调脚本', to: '/color-script', icon: 'palette' },
   { id: 'lora',      label: '模型',     to: '/lora',         icon: 'model' },
   { id: 'training',  label: '训练台',   to: '/training',     icon: 'training' },
   { id: 'manager',   label: '场景管理', to: '/scene-manager', icon: 'manager' },

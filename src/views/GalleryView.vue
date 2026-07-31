@@ -163,6 +163,7 @@ import { kvInit, kvGet, kvSet } from '@/composables/useKVStore'
 import { imgGet, imgDelete } from '@/composables/useImageStore'
 import { useSceneStore } from '@/stores/sceneStore'
 import { useFocusTrap } from '@/composables/useFocusTrap'
+import { useToast } from '@/composables/useToast'
 import ArchivePageHero from '@/components/visual/ArchivePageHero.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import { useScrollReveal } from '@/composables/useScrollReveal'
@@ -171,6 +172,7 @@ import { artworkTimestamp, parseArtworkRecords, type ArtworkRecord } from '@/typ
 
 const sceneStore = useSceneStore()
 useScrollReveal()
+const { show: showToast } = useToast()
 
 const HISTORY_KEY = 'aics_pb_history'
 // 必须与 useBackup.ts 的 PROJECT_KEY 一致。曾经这里写 'aics_projects'，
@@ -336,23 +338,34 @@ function revokeAll() {
 }
 
 /* ---------- 图片加载 ---------- */
+/**
+ * 数百张作品时逐张串行 await imgGet 会让长列表的后面全部等第一张，
+ * 这里按固定并发数分块补齐：首屏卡片快速出现，后续成批补图。
+ */
+const HYDRATE_CONCURRENCY = 4
 async function hydrateCards() {
-  for (const item of visible.value) {
-    if (cardUrls[item.id]) continue
-    const fallback = safeImageUrl(item.image_url)
-    try {
-      const blob = item.image_id ? await imgGet(item.image_id) : null
+  const pending = visible.value.filter(item => !cardUrls[item.id])
+  let index = 0
+  async function worker() {
+    while (index < pending.length) {
+      const item = pending[index++]
       if (unmounted) return
       if (!history.value.some(entry => entry.id === item.id)) continue
-      if (blob) cardUrls[item.id] = trackUrl(URL.createObjectURL(blob))
-      else if (fallback) cardUrls[item.id] = fallback
-      else if (item.image_data && String(item.image_data).startsWith('data:image/')) cardUrls[item.id] = item.image_data
-      else markImageMissing(item.id)
-    } catch {
-      if (fallback) cardUrls[item.id] = fallback
-      else markImageMissing(item.id)
+      const fallback = safeImageUrl(item.image_url)
+      try {
+        const blob = item.image_id ? await imgGet(item.image_id) : null
+        if (unmounted) return
+        if (blob) cardUrls[item.id] = trackUrl(URL.createObjectURL(blob))
+        else if (fallback) cardUrls[item.id] = fallback
+        else if (item.image_data && String(item.image_data).startsWith('data:image/')) cardUrls[item.id] = item.image_data
+        else markImageMissing(item.id)
+      } catch {
+        if (fallback) cardUrls[item.id] = fallback
+        else markImageMissing(item.id)
+      }
     }
   }
+  await Promise.all(Array.from({ length: Math.min(HYDRATE_CONCURRENCY, pending.length) }, () => worker()))
 }
 
 async function hydrateViewer(item: ArtworkRecord) {
@@ -425,8 +438,10 @@ async function confirmDelete(item: ArtworkRecord) {
     const wasOpen = viewerIndex.value >= 0
     const removedIndex = visible.value.indexOf(item)
 
-    history.value = history.value.filter(h => h.id !== item.id)
-    await kvSet(HISTORY_KEY, history.value)
+    // 先持久化成功再改界面；失败时界面不动作，避免"删了但下次又出现"
+    const next = history.value.filter(h => h.id !== item.id)
+    await kvSet(HISTORY_KEY, next)
+    history.value = next
     if (item.image_id) await imgDelete(item.image_id).catch(() => {})
 
     // 释放这张卡自己的 object URL，并清掉派生缓存
@@ -444,13 +459,18 @@ async function confirmDelete(item: ArtworkRecord) {
     }
   } catch (e) {
     console.warn('delete artwork failed', e)
+    showToast('删除失败，请重试')
   } finally {
     deleting.value = false
   }
 }
 
 function copyPrompt() {
-  if (current.value?.prompt) navigator.clipboard.writeText(current.value.prompt)
+  const text = current.value?.prompt
+  if (!text) return
+  navigator.clipboard.writeText(text)
+    .then(() => showToast('Prompt 已复制'))
+    .catch(() => showToast('复制失败，请手动选取'))
 }
 
 /* ---------- 键盘 ---------- */

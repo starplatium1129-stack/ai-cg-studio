@@ -471,8 +471,14 @@ test('home page stays inside the performance budget', async ({ page }) => {
   expect(selectedHeroSources.every(source => /\.(?:avif|webp|jpe?g|png)(?:$|\?)/.test(source))).toBe(true);
   const budget = await page.evaluate(() => {
     const resources = performance.getEntriesByType('resource') as PerformanceResourceTiming[];
+    // 请求数不含 woff2：自托管 Noto Sans SC 按 unicode-range 拆了数十个子集，
+    // 中文页面必然触发 50+ 次字体请求（每个 ~30KB），这是 CJK 字体的固有形态，
+    // 不算应用膨胀；字体体积由下方 transferBytes 上限统一约束。
+    const nonFontRequests = resources.filter(item =>
+      !/\.woff2?($|\?)/i.test(item.name)
+    );
     return {
-      requests: resources.length,
+      requests: nonFontRequests.length,
       transferBytes: resources.reduce((sum, item) => sum + item.transferSize, 0),
       domNodes: document.querySelectorAll('*').length,
       // 带颜色过渡的元素数：曾经用 * 选择器命中近 200 个，是性能回归信号

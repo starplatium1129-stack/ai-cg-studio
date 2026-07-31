@@ -2,8 +2,36 @@
 
 var fs = require('fs');
 var path = require('path');
+var crypto = require('crypto');
 
 var ROOT = path.resolve(__dirname, '..', '..');
+
+/**
+ * 浏览器读取 data/*.json 时带 ?v=DATA_VERSION，服务端按 immutable 缓存。
+ * 这里用数据内容的稳定哈希锁定 DATA_VERSION：任何人改了 data 而忘了
+ * 在 sceneStore.ts 升版本号，validate 就会失败，避免客户端吃到旧缓存。
+ */
+function contentVersion() {
+  var hash = crypto.createHash('sha1');
+  ['scenes.json', 'curation.json', 'characters.json', 'loras.json', 'tags.json', 'presets.json'].forEach(function (name) {
+    hash.update(name + '=' + fs.readFileSync(path.join(ROOT, 'data', name), 'utf8').length + ';');
+    hash.update(fs.readFileSync(path.join(ROOT, 'data', name)));
+  });
+  return Number(parseInt(hash.digest('hex').slice(0, 8), 16));
+}
+
+function checkDataVersion() {
+  var storeSource = fs.readFileSync(path.join(ROOT, 'src', 'stores', 'sceneStore.ts'), 'utf8');
+  var match = /DATA_VERSION\s*=\s*(\d+)/.exec(storeSource);
+  if (!match) return ['sceneStore.ts is missing DATA_VERSION'];
+  var expected = contentVersion();
+  var actual = Number(match[1]);
+  if (actual !== expected) {
+    return ['DATA_VERSION mismatch: sceneStore.ts has ' + actual + ', data content expects ' + expected
+      + ' (改过 data/*.json 后必须同步升 sceneStore.ts 的 DATA_VERSION，否则客户端命中 immutable 旧缓存)'];
+  }
+  return [];
+}
 
 function readJson(relative) {
   return JSON.parse(fs.readFileSync(path.join(ROOT, relative), 'utf8'));
@@ -81,6 +109,7 @@ function main() {
   var errors = validateContent(data, function (relative) {
     return fs.existsSync(path.resolve(ROOT, 'data', relative));
   });
+  errors = errors.concat(checkDataVersion());
   if (errors.length) {
     console.error(errors.map(function (error) { return '  - ' + error; }).join('\n'));
     process.exitCode = 1;

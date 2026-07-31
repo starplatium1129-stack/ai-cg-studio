@@ -449,8 +449,11 @@ function switchCharacter(char: string) {
 }
 
 function clearCharacterConversation() {
+  const messages = storage.messages(activeChar.value)
+  if (!messages.length) return
+  if (!confirm('清空当前角色的这段本地对话？此操作无法撤销。')) return
   if (busy.value) abortCurrentRequest(true)
-  const mids = storage.messages(activeChar.value).map(m => m.mid).filter(Boolean)
+  const mids = messages.map(m => m.mid).filter(Boolean)
   voice.stop({ preserveMessageAudio: true, silent: true })
   voice.clearMessages(mids)
   storage.clear(activeChar.value)

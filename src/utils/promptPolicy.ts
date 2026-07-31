@@ -594,6 +594,42 @@ export function checkArtDirection(text: string): string[] {
   )
 }
 
+/** 质量词堆叠：WAI0731 官方建议正向只用 3 个左右质量词，
+ * 过多或过长的负面会降低成图质量（官方原话）。 */
+const QUALITY_TOKENS = new Set([
+  'masterpiece', 'best_quality', 'amazing_quality', 'very_aesthetic',
+  'absurdres', 'newest', 'highres', 'highly_detailed',
+])
+
+/** 同一画面里出现两个以上服装族系会互相打架（校服 vs 泳装 vs 浴衣…） */
+const OUTFIT_FAMILIES: Array<{ name: string; tokens: string[] }> = [
+  { name: '校服/水手服', tokens: ['school_uniform', 'sailor_uniform', 'blazer', 'serafuku', 'sailor_shirt', 'pleated_skirt', 'plaid_skirt'] },
+  { name: '泳装', tokens: ['swimsuit', 'school_swimsuit', 'one-piece_swimsuit', 'wet_swimsuit', 'tight_swimsuit', 'bikini'] },
+  { name: '和服/旗袍', tokens: ['kimono', 'yukata', 'furisode', 'hakama', 'japanese_clothes', 'cheongsam', 'qipao', 'china_dress', 'hanbok'] },
+  { name: '睡衣/居家', tokens: ['pajamas', 'nightgown', 'sleepwear', 'roomwear'] },
+  { name: '女仆/侍应', tokens: ['maid', 'maid_apron', 'maid_headdress', 'waitress', 'cafe_uniform'] },
+  { name: '浴巾/半裸围裙', tokens: ['naked_apron', 'apron_only', 'bath_towel', 'towel_around_body', 'slipping_towel'] },
+]
+
+/** 时间段互斥：夜间场景不该同时出现日间词 */
+const TIME_GROUPS: Array<{ name: string; tokens: string[] }> = [
+  { name: '日间', tokens: ['morning', 'day', 'daylight', 'daytime', 'noon'] },
+  { name: '傍晚/午后', tokens: ['afternoon', 'evening', 'sunset', 'dusk', 'golden_hour', 'golden hour'] },
+  { name: '夜间', tokens: ['night', 'midnight', 'nighttime', 'moonlight', 'night_sky', 'city_lights'] },
+]
+
+/** 天气互斥：下雨 vs 晴天 vs 下雪 */
+const WEATHER_GROUPS: Array<{ name: string; tokens: string[] }> = [
+  { name: '雨天', tokens: ['rain', 'rainy', 'raining', 'rainy_day', 'rainy_night', 'rain_storm'] },
+  { name: '雪天', tokens: ['snow', 'snowing', 'snowy', 'snowstorm'] },
+  { name: '晴天', tokens: ['clear_sky', 'sunny', 'sunshine', 'clear_weather'] },
+]
+
+function conflictGroups(groups: Array<{ name: string; tokens: string[] }>, tags: string[]): string[] {
+  const hit = groups.filter(group => group.tokens.some(token => tags.includes(token)))
+  return hit.length > 1 ? hit.map(group => group.name) : []
+}
+
 export interface PromptReport {
   positiveCount: number
   negativeCount: number
@@ -625,6 +661,22 @@ export function analyzeParts(parts: PromptPart[]): PromptReport {
   if (!hasBreak && positive.includes('closed_eyes') && positive.includes('looking_at_viewer')) warnings.push('闭眼与直视镜头冲突')
   if (!hasBreak && ['standing', 'sitting', 'lying', 'kneeling'].filter(pose => positive.includes(pose)).length > 1) {
     warnings.push('主体姿势相互冲突')
+  }
+  const qualityCount = positive.filter(token => QUALITY_TOKENS.has(token)).length
+  if (qualityCount > 5) {
+    warnings.push(`质量词过多（${qualityCount} 个）：模型作者建议不要堆叠质量标签，多了反而降质变糊`)
+  }
+  const outfitConflict = conflictGroups(OUTFIT_FAMILIES, positive)
+  if (outfitConflict.length > 1) {
+    warnings.push('服装相互冲突：' + outfitConflict.join('、') + ' 同时出现，模型会随机挑一套')
+  }
+  const timeConflict = conflictGroups(TIME_GROUPS, positive)
+  if (timeConflict.length > 1) {
+    warnings.push('时段相互冲突：' + timeConflict.join('、') + ' 同时出现')
+  }
+  const weatherConflict = conflictGroups(WEATHER_GROUPS, positive)
+  if (weatherConflict.length > 1) {
+    warnings.push('天气相互冲突：' + weatherConflict.join('、') + ' 同时出现')
   }
   const negativeSet = new Set(negative)
   const overlap = [...new Set(positive.filter(tag => negativeSet.has(tag)))]

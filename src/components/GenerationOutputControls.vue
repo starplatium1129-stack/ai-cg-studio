@@ -63,7 +63,7 @@
       <button class="btn btn-ghost advanced-decision" type="button" :disabled="resultSeed == null" @click="$emit('reuse-seed')">
         锁定这个 seed 微调
       </button>
-      <button class="btn btn-ghost" type="button" @click="$emit('reset')">再来一次</button>
+      <button class="btn btn-ghost" type="button" @click="$emit('reset')">清空并重来</button>
     </div>
   </div>
 </template>

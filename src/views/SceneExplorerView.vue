@@ -524,14 +524,9 @@ async function init() {
   const charParam = typeof route.query.character === 'string' ? route.query.character : null
   if (['nene','natsume','triad'].includes(charParam||'')) fChar.value = charParam!
   if (focusId) {
-    const pending = localStorage.getItem('aics_pending_scene')
-    localStorage.removeItem('aics_pending_scene')
-    if (pending) { try { const p=JSON.parse(pending); if(p.id===focusId) drawerScene.value=p } catch {} }
-    else {
-      await nextTick()
-      const el = document.querySelector(`[data-scene-id="${focusId}"]`) as HTMLElement
-      if (el) { el.scrollIntoView({behavior:'smooth',block:'center'}); flashId.value=focusId; setTimeout(()=>flashId.value='',2000) }
-    }
+    await nextTick()
+    const el = document.querySelector(`[data-scene-id="${focusId}"]`) as HTMLElement
+    if (el) { el.scrollIntoView({behavior:'smooth',block:'center'}); flashId.value=focusId; setTimeout(()=>flashId.value='',2000) }
   }
 }
 

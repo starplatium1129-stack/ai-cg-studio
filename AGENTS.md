@@ -99,6 +99,44 @@
 
 ## 当前待办
 
+### 已完成：P1 · 四维全站审计（2026-07-31）
+
+功能完整性 / 词条搭配 / 性能 / UX 四维审计（详见会话报告），已落地：
+
+1. 性能：`/data/*.json` 由 no-cache 改为 `immutable`（客户端 `?v=DATA_VERSION` 版本化），`precompressed.js` 同步缓存策略并补 `/data` 白名单（此前可被预压产物绕过）；`DATA_VERSION` 改为数据内容 sha1 派生并接入 `validate-content-contracts.js` 强制校验（改 data 忘升版本会红）；HomeView 最近创作裸 `<a>` → RouterLink；GalleryView 图片串行加载改 4 并发分块。
+2. 功能完整性：剧本数据抽到 `src/config/scenarios.ts`，`?scenario=` 深链生效（质量行不搬，前缀由 profile 决定）；`?generate=1`（样张/抽屉"调整后生成"）真正触发生成；`/scenario`、`/color-script` 补入导航"更多"（此前零入口/单入口）；useBackup 备份白名单死键 `aics_sd_settings_v1` 换活键 `aics_sd_last_success_v1`；删除 SceneExplorerView 无写入者的 `aics_pending_scene` 死分支。
+3. 词条搭配（以 WAI0731 官方模型页为权威基准）：确认 WAI v17 profile 质量/负面前缀与官方完全一致；`analyzeParts` 健康检查新增质量词堆叠（>5 个）、服装族系冲突、时段冲突、天气冲突告警（test-prompt-policy.js 覆盖）。
+4. UX：`再来一次`改"清空并重来"+确认（原按钮会静默清空故事/场景/全部词条）；删除历史/新对话/清空对话补确认；GalleryView 复制 Prompt 有反馈、删除先持久化后改界面（失败回滚+提示）；Showcase 加载中不再闪现错误空状态；训练参数越界改为钳制到边界+提示（原静默拒收）；LoraView/CharacterView 加载失败区分空态并给重试；Showcase 查看器关闭按钮补 aria-label。
+5. 基建修复：`test-style-debt.js` 检查器 bug（三元表达式字符串被误判为对象键，基线代码即误报）与 `test-character-profiles.js`、`test-chat.js` 断言更新到新契约；home 性能预算测试把 woff2 请求排除出计数（CJK 字体固有 50+ 子集，体积仍由 transferBytes 上限约束）。
+6. 验证：`npm run validate` 全绿、`npm run build` 通过、92 个关键 Playwright 用例全绿。
+
+### 待办：四维审计遗留（2026-07-31）
+
+四维审计中"报告但未动"的项。按优先级推进，完成一项勾掉一项。
+
+P1 · 近期
+
+1. SceneManagerView 编辑弹窗脏关闭确认：Escape / 点遮罩 / 取消会静默丢弃全部未保存字段（页面级脏态到不了弹窗，需弹窗内 dirty 追踪 + 确认）。
+2. 破坏性操作补确认：TrainingView 停止训练（可能已跑数小时）、ControlView 停止 SD / GPT-SoVITS 服务（正在出图/配音时误点即中断）。
+3. 生成参数解释：`GenerationParamsPanel` 的 CFG / Steps / Sampler / Scheduler 只有裸标签，场景模式下普通用户看不懂该调什么（补 tooltip/解释文案）。
+4. PromptBuilderView 故事编辑静默解除场景关联：`onStoryInput` 改动故事即 `clearScene({keepStory:true})`，无任何提示（至少补 toast 说明"已脱离场景，仅保留故事"）。
+
+P2 · 词条搭配收尾
+
+5. docs 质量词示例修订：`docs/prompt-spec.html`、`scene-spec.html`、`art-direction.html` 里的 6 连质量词（newest, very aesthetic, absurdres, highly detailed）与 WAI 官方"不要堆质量词"建议冲突，改为官方 3 词或注明质量前缀由模型 profile 注入。
+6. `data/tags.json` Quality 分类处理：允许用户手选 4 个质量词叠加在 profile 前缀上（最终 6-7 个），考虑移除该分类或加"模型已默认注入"说明。
+7. 词条目录级互斥（可选）：服装 / 时段 / 天气在 UI 层做互斥选择（目前只有健康检查告警，不拦截选择）。
+
+P3 · 工程卫生与长期观察
+
+8. 服务端死端点清理评估：`POST /api/backup`、`GET /api/showcase-status`、`GET /api/tunnel-status` 前端零调用；`POST /api/stop` 的 `stopManagedServices` 参数传了没人读（移除需同步测试与 STARTUP.md 文档）。
+9. `/control` 常驻入口评估：目前仅 `/chat` 语音离线态小链接可达，控制面板发现性低（若接受当前设计可不做）。
+10. 主 CSS 655KB（brotli 104KB）观察：路由拆分收益小、视觉回归风险大，暂缓；若样式继续膨胀再评估。
+11. 字体权重精简评估：Noto Sans SC 5 权重 × ~13 unicode-range 子集 = 55+ 请求（已从性能预算请求数排除，体积仍受 transferBytes 约束）；评估可否减到 4 个权重。
+12. RouteAtmosphere 粒子场按路由重建观察：每次路由切换重建 SemanticParticleField，可评估 keep-alive/复用，收益小、风险中。
+13. 可访问性小项：ChatView 音量滑块无可访问名称（`title="音量"` 不会进读屏名称）；SceneExplorerView 故事抽屉无焦点管理（复用 `useFocusTrap`，与全站弹层行为一致）。
+14. ControlView 保存交互：host 输入框按 Enter 不保存、无 keydown 处理；「保存全部并检测」按钮只挂在 TTS 行下方（只改 SD 地址的用户要找半天）。
+
 ### 已完成：P1 · v18 核心样张审核（2026-07-31）
 
 1. 用 `generate-v18-core-showcase.js` 为 30 个核心场景生成可审计候选集（固定 `waiIllustriousSDXL_v170` 检查、确定性 seed、独立目录 `AI/Reviews/SceneAudits/2026-07-30_v18_core`）。

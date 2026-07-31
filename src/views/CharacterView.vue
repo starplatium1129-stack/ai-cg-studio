@@ -23,6 +23,14 @@
       title="正在读取角色档案"
       message="身份资料、绑定模型与视觉特征正在从本机载入。"
     />
+    <ArchiveStatePanel
+      v-else-if="loadError"
+      kind="error"
+      title="角色档案读取失败"
+      message="本地角色资料暂时读不到，请稍后重试。"
+    >
+      <button class="btn btn-primary" type="button" @click="loadProfiles">重新读取</button>
+    </ArchiveStatePanel>
     <template v-else>
       <!-- tablist 模式补全：aria-controls + roving tabindex + 方向键。
            原先只有 role/aria-selected，读屏会承诺方向键切换但按了没反应。 -->
@@ -171,16 +179,25 @@ function recommendationReason(id: string) {
   return sceneStore.curation.personaCoreReasons?.[id] || ''
 }
 
-onMounted(async () => {
+const loadError = ref('')
+
+async function loadProfiles() {
+  loading.value = true
+  loadError.value = ''
   try {
     await sceneStore.load()
     characters.value = parseCharacterProfiles(sceneStore.characters)
     scenes.value = parseCharacterScenes(sceneStore.scenes)
     const requested = typeof route.query.character === 'string' ? route.query.character : ''
     current.value = characters.value.find(c => c.id === requested) || characters.value[0] || null
-  } catch (e) { console.warn('character data load failed', e) }
+  } catch (e) {
+    console.warn('character data load failed', e)
+    loadError.value = String(e instanceof Error ? e.message : e)
+  }
   loading.value = false
-})
+}
+
+onMounted(() => { void loadProfiles() })
 </script>
 
 <style scoped>

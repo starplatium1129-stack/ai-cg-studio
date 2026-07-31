@@ -327,7 +327,7 @@
             @cancel="sd.cancel()"
             @enqueue="enqueueCurrent"
             @reuse-seed="reuseLastSeed"
-            @reset="pb.clearScene()"
+            @reset="resetAll"
           />
 
           <!-- Progress -->
@@ -472,6 +472,12 @@ import { useSDQueue, type SDQueueJob } from '@/composables/useSDQueue'
 import { classifySDError, SAFE_SAMPLING, LIGHT_LOAD, type SDErrorReport, type SDRecoveryId } from '@/utils/sdError'
 import { useDirectorCatalog } from '@/composables/useDirectorCatalog'
 import { useDirectorDerived } from '@/composables/useDirectorDerived'
+import {
+  findScenario,
+  substituteScenarioPrompt,
+  SCENARIO_RES_MAP,
+  type ScenarioCharacter,
+} from '@/config/scenarios'
 // 折叠面板内的重量级组件走异步加载：它们不参与首屏渲染，按需下载可显著
 // 降低导演台路由块体积（预算上限 JS 128KB / CSS 100KB）。
 const VoiceStudio = defineAsyncComponent(() => import('@/components/VoiceStudio.vue'))
@@ -889,8 +895,16 @@ function applyHistory(entry: HistoryEntry, keepAsVariant = false) {
 function resumeHistory(entry: HistoryEntry) { applyHistory(entry) }
 function duplicateHistory(entry: HistoryEntry) { applyHistory(entry, true) }
 async function deleteHistory(entry: HistoryEntry) {
+  if (!confirm(`删除历史「${entry.sceneTitle || entry.scene || '未命名'}」？此操作不可撤销。`)) return
   await pb.removeHistoryEntry(entry.id)
   pb.flash('历史记录已删除')
+}
+
+/** 「清空并重来」：会清空故事、场景关联、全部词条与导演决策，先确认再执行 */
+function resetAll() {
+  if (!confirm('清空当前故事、场景与全部词条，重新开始？此操作不可撤销。')) return
+  pb.clearScene()
+  pb.flash('已清空，可以开始新的一幅')
 }
 
 function addTag(e: Event) {
@@ -923,9 +937,32 @@ onMounted(async () => {
   // 历史载入（IndexedDB）
   await pb.loadHistory()
 
-  // 深链参数恢复（?scene / ?char / ?mood / ?regen / ?resume / ?quick / ?variant）
+  // 深链参数恢复（?scene / ?char / ?mood / ?scenario / ?regen / ?resume / ?quick / ?variant / ?generate）
   const q = route.query
   let handledDeepLink = false
+  const scenarioId = typeof q.scenario === 'string' ? q.scenario : ''
+  if (scenarioId) {
+    // 剧本模式分幕 → 导演台：第一幕的语义词条落成手动词条，
+    // 质量行不搬（质量前缀由模型 profile 决定，剧本里的六连质量词
+    // 正是 WAI 作者建议避免的堆叠写法）。
+    const scenario = findScenario(scenarioId)
+    const act = scenario?.acts[0]
+    if (act) {
+      const char = isCharKey(q.char) ? (q.char as ScenarioCharacter) : 'nene'
+      pb.setChar(char)
+      pb.setStory(`${scenario.name} · ${act.title}：${act.desc}`)
+      const semanticTokens = substituteScenarioPrompt(act.prompt, char)
+        .split('\n')
+        .slice(1)
+        .flatMap(line => line.split(',').map(token => token.trim().replace(/[\s-]+/g, '_')))
+        .filter(Boolean)
+      pb.manualTags = new Set(semanticTokens)
+      const dim = SCENARIO_RES_MAP[act.res]?.dim
+      if (dim) sdSize.value = dim.replace('×', 'x')
+      pb.flash(`已载入剧本《${scenario.name}》第一幕 ${act.title}，可调整后生成`)
+      handledDeepLink = true
+    }
+  }
   if (isCharKey(q.char)) {
     pb.setChar(q.char); handledDeepLink = true
   }
@@ -973,6 +1010,15 @@ onMounted(async () => {
     } else if (livePrompt.value) {
       const reused = quickCreateSummary(savedQuick)
       pb.flash(reused ? `正在快速出图 · ${reused}` : '正在使用当前推荐参数快速出图')
+      await callGenerate()
+    }
+  } else if (q.generate === '1') {
+    // 样张/场景抽屉的「调整后生成」：场景与词条已在上面载入，这里直接出图
+    await nextTick()
+    if (!sd.online.value) {
+      pb.flash('SD WebUI 未连接，场景与词条已就位，可稍后生成')
+    } else if (livePrompt.value) {
+      pb.flash('正在按调整后的场景生成')
       await callGenerate()
     }
   }

@@ -193,11 +193,11 @@
           <RouterLink to="/prompt-builder" class="btn btn-primary">✦ 开始绘制</RouterLink>
         </div>
         <template v-else>
-          <a
+          <RouterLink
             v-for="h in recentWorks"
             :key="h.id"
             class="recent-card"
-            :href="`/prompt-builder?regen=${encodeURIComponent(h.id)}`"
+            :to="`/prompt-builder?regen=${encodeURIComponent(h.id)}`"
           >
             <div class="recent-cover" :data-image-id="h.image_id">
               <img v-if="coverUrl(h)" :src="coverUrl(h)" alt="" />
@@ -207,7 +207,7 @@
               <div class="recent-title">{{ h.sceneTitle || h.scene || '未命名' }}</div>
               <div class="recent-meta">{{ charName(h.character) }} · {{ fmtDate(h.timestamp) }}</div>
             </div>
-          </a>
+          </RouterLink>
         </template>
       </div>
     </section>

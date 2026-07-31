@@ -14,6 +14,7 @@ const {
 const root = path.resolve(__dirname, '..', '..');
 const characterView = fs.readFileSync(path.join(root, 'src/views/CharacterView.vue'), 'utf8');
 const scenarioView = fs.readFileSync(path.join(root, 'src/views/ScenarioView.vue'), 'utf8');
+const scenarioConfig = fs.readFileSync(path.join(root, 'src/config/scenarios.ts'), 'utf8');
 
 const profiles = parseCharacterProfiles([
   {
@@ -46,13 +47,18 @@ assert.deepStrictEqual(
 );
 assert(!/\bany\b/.test(characterView), 'CharacterView must not regress to explicit any types');
 assert(!/\bany\b/.test(scenarioView), 'ScenarioView must not regress to explicit any types');
+assert(!/\bany\b/.test(scenarioConfig), 'scenario contract module must not regress to explicit any types');
 assert(
   characterView.includes('parseCharacterProfiles') && characterView.includes('parseCharacterScenes'),
   'CharacterView must normalize store data through production parsers',
 );
 assert(
-  scenarioView.includes('interface ScenarioAct') && scenarioView.includes('ScenarioCharacter'),
-  'ScenarioView must keep its static scenario and character contracts explicit',
+  scenarioConfig.includes('interface ScenarioAct') && scenarioConfig.includes('ScenarioCharacter'),
+  'scenario contract must stay explicit in the shared module both views consume',
+);
+assert(
+  scenarioView.includes('@/config/scenarios') && scenarioView.includes('substituteScenarioPrompt'),
+  'ScenarioView must consume the shared scenario contract instead of duplicating data',
 );
 
 });

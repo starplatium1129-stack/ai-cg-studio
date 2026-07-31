@@ -151,11 +151,19 @@ function createGateway(options) {
     'scenes.json', 'curation.json', 'characters.json',
     'loras.json', 'tags.json', 'presets.json'
   ];
+  // 客户端统一经 sceneStore 带 ?v=DATA_VERSION 读取，版本号变即换 URL，
+  // 因此这里可以放心给一年 immutable 缓存；改动 data/*.json 只需升版本号。
+  // 之前是 no-cache：scenes.json 230KB gzip 等 6 个文件每次刷新都重传。
   app.use('/data', function (req, res, next) {
     var name = req.path.replace(/^\//, '');
     if (PUBLIC_DATA_FILES.indexOf(name) === -1) return res.status(404).end();
+    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
     next();
-  }, express.static(path.join(config.ROOT_DIR, 'data'), staticOptions(0)));
+  }, express.static(path.join(config.ROOT_DIR, 'data'), {
+    dotfiles:'deny',
+    index:false,
+    maxAge:ONE_YEAR
+  }));
   app.use('/scene-showcase', function (req, res, next) {
     if (!config.SCENE_SHOWCASE_DIR) return res.status(404).end();
     var relative = req.path.replace(/\\/g, '/');

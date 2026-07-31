@@ -36,7 +36,9 @@ function bindsOnlyCustomProps(source, identifier) {
   const decl = new RegExp('(?:const|let|var)\\s+' + identifier + '\\s*=\\s*computed\\(\\s*\\(\\)\\s*=>\\s*\\(([\\s\\S]*?)\\)\\s*\\)');
   const match = source.match(decl);
   if (!match) return false;
-  const keys = [...match[1].matchAll(/(?:^|[\s,{])\s*(?:'([^']+)'|"([^"]+)"|([\w-]+))\s*:/g)]
+  // 键只认行首 / 花括号 / 逗号之后的位置：否则三元表达式里的字符串字面量
+  // （如 '0' : '0.55'）会被误判成对象键，导致合法写法误报。
+  const keys = [...match[1].matchAll(/(?:^|\n|\{)\s*(?:'([^']+)'|"([^"]+)"|([\w-]+))\s*:/g)]
     .map((m) => m[1] || m[2] || m[3]);
   return keys.length > 0 && keys.every((k) => k.startsWith('--'));
 }

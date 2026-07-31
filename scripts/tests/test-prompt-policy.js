@@ -78,6 +78,26 @@ const report = policy.analyzeParts([{ cls:'t', text:'1girl, close_up, wide_shot,
 assert.strictEqual(report.level, 'warn', 'conflicting framing should be reported');
 assert(report.warnings.some(message => message.includes('镜头')), 'framing warning should be actionable');
 
+// 词条搭配：质量词堆叠 / 服装冲突 / 时段冲突 / 天气冲突
+const qualityStack = policy.analyzeParts([{ cls:'q', text:'masterpiece, best quality, amazing quality, very aesthetic, absurdres, newest, highres, highly detailed, 1girl' }]);
+assert(qualityStack.warnings.some(message => message.includes('质量词过多')), 'stacked quality tokens should warn');
+
+const outfitConflict = policy.analyzeParts([{ cls:'t', text:'school_uniform, swimsuit, kimono, smile' }]);
+assert(outfitConflict.warnings.some(message => message.includes('服装相互冲突')), 'outfit families should warn when mixed');
+
+const timeConflict = policy.analyzeParts([{ cls:'t', text:'day, night, smile' }]);
+assert(timeConflict.warnings.some(message => message.includes('时段相互冲突')), 'day and night should conflict');
+
+const weatherConflict = policy.analyzeParts([{ cls:'t', text:'rain, clear_sky, smile' }]);
+assert(weatherConflict.warnings.some(message => message.includes('天气相互冲突')), 'rain and clear sky should conflict');
+
+const coherent = policy.analyzeParts([{ cls:'t', text:'night, moonlight, rain, wet, standing, 1girl, solo, umbrella, city_lights, medium_shot, smile' }]);
+assert(!coherent.warnings.some(message => message.includes('时段')), 'moonlight belongs to night family');
+assert(!coherent.warnings.some(message => message.includes('天气')), 'rain without conflicting sky should not warn');
+
+const goldenAfternoon = policy.analyzeParts([{ cls:'t', text:'afternoon, golden hour, school_uniform, smile' }]);
+assert(!goldenAfternoon.warnings.some(message => message.includes('时段')), 'golden hour belongs to the afternoon/evening family');
+
 assert(policy.sceneSupportsCharacter({ char:'nene' }, 'nene'));
 assert(!policy.sceneSupportsCharacter({ char:'nene' }, 'natsume'));
 assert.strictEqual(
