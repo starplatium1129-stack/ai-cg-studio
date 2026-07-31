@@ -4,6 +4,8 @@
 
 [中文说明](README_zh.md)
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 ## About
 
 绫季绘境 is a personal hobby project built for local use and occasional sharing with trusted friends. It is not a hosted service, public community, or commercial platform.
@@ -137,5 +139,9 @@ For normal maintenance, use **More → Scene Manager** in the local site.
 ## Scope
 
 The project stays intentionally small: reliable local creation, high-quality Scene content, straightforward maintenance, and safe temporary sharing come first. Accounts, subscriptions, a public Scene store, and community uploads are not planned.
+
+## License
+
+MIT — see [LICENSE](LICENSE). The character content (Ayachi Nene, Shiki Natsume, and their original works) belongs to their respective rights holders; this project is an unofficial fan work and does not claim ownership of them.
 
 > Prompts describe images. Scenes describe moments.
