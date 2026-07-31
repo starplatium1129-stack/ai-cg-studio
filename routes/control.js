@@ -98,14 +98,6 @@ function pingOllamaDetail(urlStr, timeoutMs) {
     });
 }
 
-function tailLog(file, since) {
-  try {
-    if (!fs.existsSync(file)) return [];
-    var lines = fs.readFileSync(file, 'utf8').split('\n').filter(Boolean);
-    return lines.slice(Math.max(0, since || 0));
-  } catch { return []; }
-}
-
 function createControlRouter(config, gatewayRef, dependencies) {
   dependencies = dependencies || {};
   var router = express.Router();

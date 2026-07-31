@@ -107,7 +107,7 @@ export class SentenceBuffer {
     if (flush && this.buffer.trim()) { complete.push(this.buffer.trim()); this.buffer = '' }
     const output: string[] = []
     complete.forEach((sentence, idx) => {
-      let val = this.short + sentence; this.short = ''
+      const val = this.short + sentence; this.short = ''
       const isLast = idx === complete.length - 1
       const allowShort = this.immediateFirst && this.emitted === 0
       if (!flush && isLast && !allowShort && val.length < this.minimumLength) { this.short = val }

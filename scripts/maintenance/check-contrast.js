@@ -6,12 +6,8 @@
 // 只核算"会被当文字色使用"的 token(功能色 + mood + 角色品牌色)。
 // AA 正文阈值 4.5:1;大号文字/图形 3:1。这里一律按 4.5 严格核算。
 
-const fs = require('fs');
-const path = require('path');
-
 const sources = require('./style-sources');
 
-const root = sources.ROOT;
 // 必须读应用真正加载的那一份。曾经这里读 css/design-system.css，
 // 而 SPA 加载的是 src/assets/css/design-system.css —— 门槛在审计一棵死树。
 const css = sources.read(sources.DESIGN_SYSTEM);

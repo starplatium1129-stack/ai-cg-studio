@@ -86,10 +86,9 @@ function scanFile(filepath) {
   } else if (filepath.endsWith('.html') || filepath.endsWith('.vue')) {
     // Extract <style> blocks（.vue 与 .html 同一形态）
     var inStyle = false;
-    var styleBase = 0;
     lines.forEach(function (line, i) {
       var lineno = i + 1;
-      if (/<style\b/i.test(line)) { inStyle = true; styleBase = lineno; return; }
+      if (/<style\b/i.test(line)) { inStyle = true; return; }
       if (/<\/style>/i.test(line)) { inStyle = false; return; }
       if (!inStyle) return;
       // Skip token definitions

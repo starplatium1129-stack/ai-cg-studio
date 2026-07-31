@@ -154,4 +154,5 @@ const carriers = [...htmlFiles, ...sfcFiles].reduce((total, rel) => {
   const source = fs.readFileSync(path.join(root, rel), 'utf8');
   return total + (source.match(/\s:?style="/g) || []).length;
 }, 0);
+console.log('inline style occurrences: ' + carriers);
 });

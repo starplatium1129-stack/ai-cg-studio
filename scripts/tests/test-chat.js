@@ -3,7 +3,6 @@
 var fs = require('fs');
 var path = require('path');
 var http = require('http');
-var pathToFileURL = require('url').pathToFileURL;
 var root = path.resolve(__dirname, '..', '..');
 
 function assert(condition, message) {

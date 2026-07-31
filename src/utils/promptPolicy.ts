@@ -83,7 +83,7 @@ export function norm(text: string): string {
   return String(text || '')
     .split(',')
     .map(seg => {
-      let s = seg.trim()
+      const s = seg.trim()
       if (!s) return ''
       // lora 语法保持原样
       if (/^<lora:/i.test(s)) return s

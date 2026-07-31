@@ -151,7 +151,6 @@ assert(
 
 // ── 实际资产自洽 ──────────────────────────────────────────────────────────
 const showcaseRoot = path.resolve(root, '..', 'AI', 'SceneShowcase');
-let checkedAssets = 0;
 if (fs.existsSync(showcaseRoot)) {
   const candidates = fs.readdirSync(showcaseRoot, { withFileTypes: true })
     .filter(entry => entry.isDirectory() && fs.existsSync(path.join(showcaseRoot, entry.name, 'manifest.json')))
@@ -168,7 +167,6 @@ if (fs.existsSync(showcaseRoot)) {
       assert(fs.existsSync(path.join(selected, 'images', entry.id + '.jpg')), 'missing approved image: ' + entry.id);
       assert(fs.existsSync(path.join(selected, 'thumbs', entry.id + '.jpg')), 'missing approved thumbnail: ' + entry.id);
     });
-    checkedAssets = manifest.entries.length;
   }
 }
 

@@ -110,7 +110,7 @@ export function useVoice(options: {
   // GPT-SoVITS is much more stable with a little sentence context. Holding a
   // short interjection for the following sentence avoids clipped, repeated
   // "诶…那个…" style fragments.
-  let sentenceBuffer = new SentenceBuffer({ minimumLength: 16, maximumLength: 72 })
+  const sentenceBuffer = new SentenceBuffer({ minimumLength: 16, maximumLength: 72 })
   let session = 0, controller: AbortController | null = null
   let translateChain: Promise<PreparedSentence | null> = Promise.resolve(null)
   let synthChain: Promise<void> = Promise.resolve()

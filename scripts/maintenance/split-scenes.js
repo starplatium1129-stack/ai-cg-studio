@@ -1,5 +1,4 @@
 /** Import data/scenes.json into the canonical scene shards. */
-const fs = require('fs');
 const { aggregatePath, readJson, writeSceneShards } = require('../runtime/scene-store');
 
 if (!process.argv.includes('--write')) {

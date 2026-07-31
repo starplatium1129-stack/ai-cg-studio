@@ -241,9 +241,14 @@ assert(
   !/@import\s+url\(["']?https:\/\/fonts\./.test(read('src/assets/css/design-system.css')),
   'fonts must be preconnected/linked from index.html, not @import-ed inside bundled CSS',
 );
+// 字体已本地自托管：main.ts 从 @fontsource 引入，index.html 不再请求 Google Fonts
 assert(
-  /rel="preconnect"[^>]*fonts\.gstatic\.com/.test(read('index.html')),
-  'index.html must preconnect to fonts.gstatic.com',
+  /@fontsource\/(noto-sans-sc|jetbrains-mono)\//.test(read('src/main.ts')),
+  'fonts must be self-hosted via @fontsource in main.ts',
+);
+assert(
+  !/fonts\.gstatic\.com/.test(read('index.html')),
+  'index.html must not reference Google Fonts CDN when fonts are self-hosted',
 );
 
 // ── 7. 情绪推断不得退化为空实现（曾因编码损坏永远返回 neutral） ──────────

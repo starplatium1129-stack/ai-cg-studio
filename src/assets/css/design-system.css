@@ -5,9 +5,8 @@
    Theme: dark(紫黑) / light(暖薰衣草白) 双主题切换
    ============================================================ */
 
-/* 字体不在这里 @import —— CSS @import 只有等本表解析完才会被发现，
-   造成 HTML → CSS → Google CSS → 字体文件 三段串行 RTT。
-   改为 index.html 里的 preconnect + link（见 index.html <head>）。 */
+/* 字体不在这里 @import —— 字体已本地自托管（@fontsource，见 src/main.ts），
+   离线可用且不依赖 Google Fonts；这里只需声明 font-family。 */
 
 :root {
   /* ---- Core palette (dark default, overridden in [data-theme="light"]) ---- */

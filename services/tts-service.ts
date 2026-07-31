@@ -9,7 +9,6 @@ const LANGUAGES = ['ja', 'zh'] as const;
 const EMOTIONS = ['neutral', 'gentle', 'happy', 'shy', 'serious', 'sad'] as const;
 
 type VoiceId = (typeof VOICES)[number];
-type VoiceLanguage = (typeof LANGUAGES)[number];
 type VoiceEmotion = (typeof EMOTIONS)[number];
 type VoiceConsistency = 'locked' | 'adaptive';
 
@@ -148,7 +147,7 @@ function validateInput(
 ): ValidationResult {
   const voice = String((input && input.voice) || '');
   const rawText = String((input && input.text) || '').trim();
-  let language = String((input && input.language) || 'ja').toLowerCase();
+  const language = String((input && input.language) || 'ja').toLowerCase();
   let emotion = String((input && input.emotion) || 'neutral').toLowerCase();
   let consistency = String((input && input.consistency) || 'adaptive').toLowerCase();
   let referenceEmotion = String((input && input.referenceEmotion) || emotion).toLowerCase();

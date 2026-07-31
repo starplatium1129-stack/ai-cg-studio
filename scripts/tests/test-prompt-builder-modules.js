@@ -205,13 +205,13 @@ if (!designCss.includes('@view-transition') || !designCss.includes('--glass-fill
 if (!designCss.includes('.nav-back') || !designCss.includes('.page-kicker') || !designCss.includes('.empty-state')) {
   fail('missing shared atelier chrome components');
 }
-// 字体现在由 index.html preconnect + link 加载（CSS @import 会串行化 RTT）。
+// 字体已本地自托管（@fontsource，src/main.ts 引入；index.html 不再请求 Google）。
 // 仍要确认字体族在 token 里声明，且入口真的去取了它。
 if (!designCss.includes('Noto Sans SC')) {
   fail('missing Noto Sans SC in the --font-* token stack');
 }
-if (!read('index.html').includes('Noto+Sans+SC')) {
-  fail('index.html must load Noto Sans SC (preconnect + stylesheet link)');
+if (!read('src/main.ts').includes('@fontsource/noto-sans-sc')) {
+  fail('main.ts must import self-hosted Noto Sans SC from @fontsource');
 }
 // 全局颜色过渡不得回退成通配符（性能回归信号）
 if (/^\s*\*,\s*$[\s\S]{0,80}transition:/m.test(designCss)) {

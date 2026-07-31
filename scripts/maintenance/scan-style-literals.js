@@ -36,9 +36,7 @@ for (const rel of targets) {
   const abs = path.join(root, rel);
   if (!fs.existsSync(abs)) { console.log('  (missing) ' + rel); continue; }
   const raw = fs.readFileSync(abs, 'utf8');
-  let css = '';
-  if (rel.endsWith('.css')) css = raw;
-  else css = sources.sfcStyleBlocks(raw); // .vue 与 .html 的 <style> 块同一形态
+  let css = rel.endsWith('.css') ? raw : sources.sfcStyleBlocks(raw); // .vue 与 .html 的 <style> 块同一形态
   css = css.replace(/\/\*[\s\S]*?\*\//g, ' ');
   // token 定义行本身就是字面量的合法归宿(--accent-soft: rgba(...)),不算漂移。
   // 只统计"使用点"的字面量。

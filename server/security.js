@@ -143,8 +143,9 @@ function buildContentSecurityPolicy(pathValue) {
   if (chatPage) scriptSrc += " 'unsafe-eval'";
   return "default-src 'self'; img-src 'self' data: blob: https:; media-src 'self' data: blob:; " +
     'script-src ' + scriptSrc + '; ' +
-    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
-    "font-src 'self' https://fonts.gstatic.com data:; " +
+    "style-src 'self' 'unsafe-inline'; " +
+    // 字体已本地自托管（@fontsource），不再放行 Google Fonts
+    "font-src 'self' data:; " +
     "connect-src 'self' data: blob: https:; " +
     "object-src 'none'; base-uri 'self'; frame-ancestors 'none'";
 }
