@@ -98,8 +98,8 @@ def main() -> None:
             })
 
     curation = json.loads((ROOT / "data" / "curation.json").read_text(encoding="utf-8"))
-    builder.build_cover(entries, curation.get("curatedSceneIds", []), showcase / "00-cover.jpg")
-    builder.build_html(entries, showcase)
+    builder.build_cover(entries, curation.get("curatedSceneIds", []), showcase / "00-cover.jpg", builder.derive_version_label(args.audit))
+    builder.build_html(entries, showcase, builder.derive_version_label(args.audit))
     clean_entries = [{key: entry[key] for key in ["id", "title", "category", "story", "char", "rating", "attempt", "image", "thumb"]} for entry in entries]
     updated = {
         "version": 3,

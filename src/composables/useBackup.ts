@@ -64,17 +64,6 @@ function errorMessage(error: unknown, fallback: string) {
   return String(error ?? '').trim() || fallback
 }
 
-export function mergeById(current: BackupRecord[], incoming: BackupRecord[]): BackupRecord[] {
-  const map = new Map<string, BackupRecord>()
-  ;[...(current || []), ...(incoming || [])].forEach(item => {
-    if (!item || typeof item !== 'object') return
-    const key = String(item.id ?? item.timestamp ?? Math.random())
-    const prev = map.get(key)
-    if (!prev || Number(item.timestamp || 0) >= Number(prev.timestamp || 0)) map.set(key, item)
-  })
-  return [...map.values()].sort((a, b) => Number(b.timestamp || 0) - Number(a.timestamp || 0))
-}
-
 export function useBackup(onFlash: (msg: string) => void = () => {}) {
   const busy = ref(false)
   const pending = ref<BackupFile | null>(null)

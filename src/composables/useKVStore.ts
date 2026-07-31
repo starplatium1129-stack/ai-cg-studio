@@ -53,15 +53,5 @@ export async function kvSet(key: string, value: unknown): Promise<void> {
   })
 }
 
-export async function kvRemove(key: string): Promise<void> {
-  const db = await openDb()
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(STORE_NAME, 'readwrite')
-    tx.objectStore(STORE_NAME).delete(key)
-    tx.oncomplete = () => { delete memCache[key]; resolve() }
-    tx.onerror = () => reject(tx.error)
-  })
-}
-
 /** 兼容旧版 AICKVStore.init() 调用 */
 export const kvInit = openDb

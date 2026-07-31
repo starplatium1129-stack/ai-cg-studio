@@ -84,8 +84,15 @@ function createTranslationService(options) {
     }
     function startServer() {
         return new Promise(function (resolve, reject) {
+            let settled = false;
+            function settle(fn) {
+                if (settled)
+                    return;
+                settled = true;
+                fn();
+            }
             if (!fs.existsSync(options.python) || !fs.existsSync(options.script)) {
-                reject(new Error('本地日语翻译组件尚未安装。'));
+                settle(function () { reject(new Error('本地日语翻译组件尚未安装。')); });
                 return;
             }
             let logFd = 'ignore';
@@ -109,22 +116,25 @@ function createTranslationService(options) {
             catch (error) {
                 if (logFd !== 'ignore')
                     fs.closeSync(logFd);
-                reject(error);
+                settle(function () { reject(error); });
                 return;
             }
             if (logFd !== 'ignore')
                 fs.closeSync(logFd);
-            child.once('exit', function () {
+            child.once('exit', function (code, signal) {
                 ready = false;
                 child = null;
-                // 不在这里清 starting：startServer 的 promise 可能还没结算，
-                // 提前置空会让并发的 ensureServer 看到 starting === null 而再 spawn
-                // 一个 python.exe。清理交给 ensureServer 的 finally。
+                // 启动窗口内退出必须结算 startServer 的 promise，否则 ensureServer
+                // 的 starting 永远 pending，整条翻译队列会挂死到网关重启。
                 stopReadyPoll();
+                settle(function () {
+                    reject(new Error('本地日语翻译组件启动后立即退出（' + (signal ? 'signal ' + signal : 'exit ' + code) + '），请查看日志：' + options.logFile));
+                });
             });
-            child.once('error', function () {
+            child.once('error', function (error) {
                 ready = false;
                 stopReadyPoll();
+                settle(function () { reject(error); });
             });
             let attempts = 0;
             if (readyPoll)
@@ -137,11 +147,11 @@ function createTranslationService(options) {
                         stopReadyPoll();
                         ready = true;
                         console.log('  🌐 中日翻译常驻服务已就绪 (port ' + options.port + ')');
-                        resolve(true);
+                        settle(function () { resolve(true); });
                     }
                     else if (attempts >= 120 || !child) {
                         stopReadyPoll();
-                        reject(new Error('翻译常驻服务启动超时'));
+                        settle(function () { reject(new Error('翻译常驻服务启动超时')); });
                     }
                 })
                     .catch(function () { });

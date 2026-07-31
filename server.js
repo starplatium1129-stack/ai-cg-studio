@@ -407,29 +407,37 @@ function createGateway(options) {
   gatewayState.startTunnel = startTunnel;
   gatewayState.stopTunnel  = stopTunnel;
 
-  // upgrade 请求不经过 Express 中间件，所以在这里复刻 tokenAuth 的判定。
+  // upgrade 请求不经过 Express 中间件，所以在这里复刻 hostGuard + tokenAuth 的判定。
   function handleUpgrade(req, socket, head) {
-    var pathname = String(req.url || '/').split('?')[0];
-    if (SD_PROXY_ALLOWLIST.indexOf(pathname) === -1) { socket.destroy(); return; }
+    try {
+      var pathname = String(req.url || '/').split('?')[0];
+      if (SD_PROXY_ALLOWLIST.indexOf(pathname) === -1) { socket.destroy(); return; }
+      // hostGuard 的 DNS rebinding 防御必须同样覆盖 WebSocket 升级路径。
+      // 这里直接复用纯函数 hostAllowed（hostGuard 是 Express 中间件，依赖 res）。
+      if (!security.hostAllowed(req.headers.host, config.PORT, tunnelUrl)) { socket.destroy(); return; }
 
-    var authorized = security.isDirectLocalRequest(req);
-    if (!authorized) {
-      var query = '';
-      var q = String(req.url || '').indexOf('?');
-      if (q >= 0) query = String(req.url).slice(q + 1);
-      var suppliedToken = new URLSearchParams(query).get('token') || req.headers['x-token'] || '';
-      if (!suppliedToken) {
-        var cookieMatch = (req.headers.cookie || '').match(/(?:^|;\s*)aics_token=([^;]+)/);
-        if (cookieMatch) suppliedToken = cookieMatch[1];
+      var authorized = security.isDirectLocalRequest(req);
+      if (!authorized) {
+        var query = '';
+        var q = String(req.url || '').indexOf('?');
+        if (q >= 0) query = String(req.url).slice(q + 1);
+        var suppliedToken = new URLSearchParams(query).get('token') || req.headers['x-token'] || '';
+        if (!suppliedToken) {
+          var cookieMatch = (req.headers.cookie || '').match(/(?:^|;\s*)aics_token=([^;]+)/);
+          if (cookieMatch) suppliedToken = cookieMatch[1];
+        }
+        authorized = security.tokenMatches(config.TOKEN, suppliedToken);
       }
-      authorized = security.tokenMatches(config.TOKEN, suppliedToken);
+      if (!authorized) {
+        try { socket.write('HTTP/1.1 401 Unauthorized\r\nConnection: close\r\n\r\n'); } catch (error) {}
+        socket.destroy();
+        return;
+      }
+      sdProxy.upgrade(req, socket, head);
+    } catch (error) {
+      console.error('  ❌ WebSocket 升级失败:', error && error.stack || error);
+      try { socket.destroy(); } catch (ignore) {}
     }
-    if (!authorized) {
-      try { socket.write('HTTP/1.1 401 Unauthorized\r\nConnection: close\r\n\r\n'); } catch (error) {}
-      socket.destroy();
-      return;
-    }
-    sdProxy.upgrade(req, socket, head);
   }
 
   return {
@@ -460,8 +468,7 @@ function startGateway(options) {
     console.error('  ❌ 未捕获异常:', error && error.stack || error);
   });
 
-  var server = gateway.app.listen(config.PORT, config.HOST, function () {
-    console.log('');
+  var server = gateway.app.listen(config.PORT, config.HOST, function () {    console.log('');
     console.log('  ══════════════════════════════════════════');
     console.log('  🔗 绫季绘境 联机网关已启动');
     console.log('  📗 端口: ' + config.PORT);
@@ -481,6 +488,13 @@ function startGateway(options) {
     var autoTunnel = process.env.AUTO_TUNNEL === '1' || saved.autoTunnel === true;
     if (autoTunnel) gateway.startTunnel();
     else console.log('  🔒 仅本机访问（公网分享可在控制面板启动）');
+  });
+
+  // 端口占用 / 权限错误等监听失败必须立刻退出，不能留一个没有监听器的僵尸进程，
+  // 否则后续 startTunnel 还会指向一个死端口。
+  server.once('error', function (error) {
+    console.error('  ❌ 网关监听失败:', error && error.message || error);
+    process.exit(1);
   });
 
   server.on('upgrade', gateway.handleUpgrade);

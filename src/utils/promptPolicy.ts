@@ -640,8 +640,3 @@ export function analyzeParts(parts: PromptPart[]): PromptReport {
   if (warnings.length > 2) level = 'over'
   return { positiveCount: positive.length, negativeCount: negative.length, level, label, warnings }
 }
-
-export function splitPromptBlocks(text: string): { positive: string; negative: string } {
-  const [positive, negative = ''] = String(text || '').split(/\n?\s*\[NEG\]\s*\n?/i)
-  return { positive: positive.trim(), negative: negative.trim() }
-}

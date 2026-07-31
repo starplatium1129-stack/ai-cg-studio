@@ -80,7 +80,18 @@ def build_sheet(entries: list[dict], target: Path, heading: str, page: int, page
     canvas.save(target, "JPEG", quality=90, optimize=True, progressive=True, subsampling=0)
 
 
-def build_cover(entries: list[dict], curated_ids: list[str], target: Path) -> None:
+def derive_version_label(audit_dir: Path | None = None) -> str:
+    """从审核目录名推导展示版本标注，例如 2026-07-30_v18_core -> 宁宁 / 夏目 · v18 · 2026-07-30。"""
+    if audit_dir is not None:
+        name = Path(audit_dir).name
+        parts = name.split("_", 1)
+        if len(parts) == 2 and parts[0][:4].isdigit():
+            version = parts[1].split("_")[0]
+            return f"宁宁 / 夏目 · {version} · {parts[0]}"
+    return "宁宁 / 夏目"
+
+
+def build_cover(entries: list[dict], curated_ids: list[str], target: Path, version_label: str = "宁宁 / 夏目") -> None:
     entry_map = {entry["id"]: entry for entry in entries if entry["rating"] != "R18"}
     selected = [entry_map[scene_id] for scene_id in curated_ids if scene_id in entry_map][:12]
     if len(selected) < 12:
@@ -90,7 +101,7 @@ def build_cover(entries: list[dict], curated_ids: list[str], target: Path) -> No
     canvas = Image.new("RGB", (width, height), "#f7f3ee")
     draw = ImageDraw.Draw(canvas)
     draw.text((72, 68), "AI CG Studio · 场景效果总览", fill="#241f29", font=load_font(52, bold=True))
-    draw.text((74, 137), f"{len(entries)} 个场景 · {len(entries)} 张最终合格样张 · 宁宁 / 夏目 v14", fill="#766d7a", font=load_font(27))
+    draw.text((74, 137), f"{len(entries)} 个场景 · {len(entries)} 张最终合格样张 · {version_label}", fill="#766d7a", font=load_font(27))
     card_w, card_h = 420, 500
     start_y = 220
     for index, entry in enumerate(selected):
@@ -106,7 +117,7 @@ def build_cover(entries: list[dict], curated_ids: list[str], target: Path) -> No
     canvas.save(target, "JPEG", quality=92, optimize=True, progressive=True, subsampling=0)
 
 
-def build_html(entries: list[dict], output: Path) -> None:
+def build_html(entries: list[dict], output: Path, version_label: str = "宁宁 / 夏目") -> None:
     total = len(entries)
     data = []
     for entry in entries:
@@ -133,7 +144,7 @@ main{{padding:28px clamp(16px,4vw,64px) 70px}} .count{{margin:0 0 18px;color:var
 .empty{{padding:80px;text-align:center;color:var(--muted)}} footer{{padding:30px;text-align:center;color:var(--muted)}}
 dialog{{border:0;border-radius:26px;padding:0;max-width:min(94vw,1100px);background:#17131a;color:#fff;box-shadow:0 30px 100px #0008}} dialog::backdrop{{background:#17131ad9;backdrop-filter:blur(8px)}} dialog img{{display:block;max-width:90vw;max-height:82vh}} .close{{position:absolute;right:14px;top:14px;background:#0009;color:#fff;border-color:#ffffff33}}
 </style></head><body>
-<header><div class="top"><div><h1>{total} 场景效果展示</h1><div class="sub">所有图片均来自对应场景的最终合格生成结果</div></div><div class="sub">宁宁 / 夏目 · v14 · 2026-07-23</div></div>
+<header><div class="top"><div><h1>{total} 场景效果展示</h1><div class="sub">所有图片均来自对应场景的最终合格生成结果</div></div><div class="sub">{version_label}</div></div>
 <div class="controls"><input id="q" placeholder="搜索标题、故事、分类或角色"><button data-char="all" class="active">全部角色</button><button data-char="nene">绫地宁宁</button><button data-char="natsume">四季夏目</button><button data-char="triad">双角色</button><button data-rating="all" class="active">全部分级</button><button data-rating="All">全年龄</button><button data-rating="R15">R15</button><button data-rating="R18" class="adult">R18</button></div></header>
 <main><div class="count" id="count"></div><div class="grid" id="grid"></div></main><footer>AI CG Studio · 本地个人创作展示</footer>
 <dialog id="viewer"><button id="closeViewer" class="close">关闭</button><img id="full" alt=""></dialog>
@@ -199,8 +210,9 @@ def main() -> None:
             sheet_manifest.append({"rating": rating, "page": page_index + 1, "path": relative.as_posix(), "sceneIds": [item["id"] for item in batch]})
 
     curation = json.loads(args.curation.read_text(encoding="utf-8"))
-    build_cover(entries, curation.get("curatedSceneIds", []), args.output / "00-cover.jpg")
-    build_html(entries, args.output)
+    version_label = derive_version_label(args.audit)
+    build_cover(entries, curation.get("curatedSceneIds", []), args.output / "00-cover.jpg", version_label)
+    build_html(entries, args.output, version_label)
     manifest_entries = []
     for entry in entries:
         item = {key: entry[key] for key in ["id", "title", "category", "story", "char", "rating", "attempt"]}
