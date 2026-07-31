@@ -9,22 +9,25 @@
    离线可用且不依赖 Google Fonts；这里只需声明 font-family。 */
 
 :root {
-  /* ---- Core palette (dark default, overridden in [data-theme="light"]) ---- */
-  --bg-deep:       #100d1b;     /* 最深背景 */
-  --bg-base:       #171329;     /* 页面背景 */
-  --bg-surface:    rgba(37, 31, 61, 0.68); /* 玻璃卡片 */
-  --bg-elevated:   rgba(59, 49, 91, 0.78); /* 浮层/输入框 */
-  --bg-hover:      rgba(85, 71, 126, 0.72);/* 悬停态 */
+  /* ---- Core palette (dark default, overridden in [data-theme="light"]) ----
+     2026-07-31 暗色重塑：从"灰紫蓝"走向浓郁紫罗兰(带微品红)，与宁宁粉光晕
+     呼应，摆脱通用 AI 站深蓝灰。对比度经 check-contrast 验证（text-muted
+     在 bg-elevated 上仍 ≥4.5:1）。 */
+  --bg-deep:       #110b22;     /* 最深背景:近乎纯紫黑 */
+  --bg-base:       #191230;     /* 页面背景:浓郁紫罗兰 */
+  --bg-surface:    rgba(43, 31, 69, 0.68); /* 玻璃卡片:紫罗兰玻璃 */
+  --bg-elevated:   rgba(62, 46, 94, 0.78); /* 浮层/输入框:更紫;亮度贴近旧值保 AA(见 check-contrast) */
+  --bg-hover:      rgba(92, 70, 127, 0.72);/* 悬停态 */
 
-  --border-soft:   rgba(220, 209, 255, 0.16);
-  --border-strong: rgba(231, 205, 255, 0.36);
+  --border-soft:   rgba(226, 205, 255, 0.17);
+  --border-strong: rgba(238, 210, 255, 0.38);
 
   /* ---- Text ---- */
   --text-primary:   #E8E8F0;   /* 主文字 */
   --text-secondary: #A8A8C0;   /* 副文字 */
   /* 占位/说明。#8C8CA3 在 --bg-deep 上够(5.84),但合成到 --bg-elevated
      (#32294d) 上只有 4.10 —— 而 .sc-tag、.local-status-refresh 等确实用在那层。 */
-  --text-muted:     #9494A9;
+  --text-muted:     #a2a2ba;   /* 2026-07-31 提亮:紫罗兰暗底上小字辨识度 */
   --text-inverse:   #17171C;   /* 粉底深色字反色 */
 
   /* ---- Accent (樱花粉 — 仅高亮/CTAs) ---- */
@@ -46,12 +49,12 @@
   --archive-ember:       #e65338;
   --archive-grid:        rgba(236, 226, 255, 0.05);
   --archive-line:        rgba(236, 226, 255, 0.14);
-  --archive-glass:       rgba(23, 19, 41, 0.76);
+  --archive-glass:       rgba(25, 18, 48, 0.76);
   --r-dossier:           6px;
   --r-terminal:          4px;
   --line-hairline:       1px;
 
-  --nav-bg: rgba(23, 19, 41, 0.72);
+  --nav-bg: rgba(25, 18, 48, 0.72);
   --glass-highlight: rgba(255, 255, 255, 0.09);
   --glass-fill: rgba(43, 35, 70, 0.58);
   --glass-fill-strong: rgba(49, 40, 78, 0.74);

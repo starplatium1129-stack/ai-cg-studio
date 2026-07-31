@@ -516,7 +516,7 @@
     transition: border-color var(--t-fast), transform var(--t-base) var(--ease-out),
                 box-shadow var(--t-base), filter var(--t-base), opacity var(--t-base);
   }
-  .pb .option .opt-icon, .pb .option .option-icon { filter:saturate(.55); opacity:.8; transition:filter var(--t-base),opacity var(--t-base); }
+  .pb .option .opt-icon, .pb .option .option-icon { filter:saturate(.75); opacity:.92; transition:filter var(--t-base),opacity var(--t-base); }
   .pb .option:hover { border-color: var(--accent); background: var(--accent-soft); transform: translateY(-1px); }
   .pb .option:hover .opt-icon, .pb .option:hover .option-icon { filter:saturate(1); opacity:1; }
   .pb .option.selected { border-color: var(--accent); background: var(--accent-soft); box-shadow: 0 0 10px var(--accent-glow); }
