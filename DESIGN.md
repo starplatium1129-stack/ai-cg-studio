@@ -63,9 +63,9 @@ spacing:
   4xl: "64px"
 rounded:
   sm: "4px"
-  md: "8px"
-  lg: "12px"
-  xl: "16px"
+  md: "4px"
+  lg: "6px"
+  xl: "8px"
   pill: "999px"
 components:
   page-dark:

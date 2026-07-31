@@ -510,7 +510,7 @@
   /* 未选中的选项降饱和：16 个高饱和色块会把视线从画布拽走 */
   .pb .option {
     width:100%; background: var(--bg-deep);
-    border: 1px solid color-mix(in srgb,var(--border-soft) 58%,transparent);
+    border: 1px solid color-mix(in srgb,var(--border-strong) 62%,transparent);
     border-radius: var(--r-md); padding: var(--s-2); text-align: center;
     color:inherit; font:inherit; cursor: pointer;
     transition: border-color var(--t-fast), transform var(--t-base) var(--ease-out),
