@@ -11,6 +11,12 @@ export interface CharacterConfig {
   starters: string[]
   voice: string
   accent: string
+  officialQuote?: string
+  officialQuoteCn?: string
+  birthday?: string
+  bloodType?: string
+  height?: string
+  threeSizes?: string
 }
 
 export const CHARACTERS: Record<string, CharacterConfig> = {
@@ -31,6 +37,12 @@ export const CHARACTERS: Record<string, CharacterConfig> = {
     ],
     voice: 'nene',
     accent: '#b895ff',
+    officialQuote: '「……あの、さっきのコト……忘れちゃってくださいね？」',
+    officialQuoteCn: '“……那个，刚才发生的事情……请您彻底忘掉好吗？”',
+    birthday: '7月21日（巨蟹座）',
+    bloodType: 'A型',
+    height: '154 cm',
+    threeSizes: 'B88 (F-Cup) / W58 / H85',
   },
   natsume: {
     id: 'natsume',
@@ -49,6 +61,12 @@ export const CHARACTERS: Record<string, CharacterConfig> = {
     ],
     voice: 'natsume',
     accent: '#f2bb68',
+    officialQuote: '「私を雇えば、もれなく優秀なアルバイトがついてきますよ」',
+    officialQuoteCn: '“如果雇佣我的话，就会无条件附赠一名极其优秀的兼职员工哦。”',
+    birthday: '8月12日（狮子座）',
+    bloodType: 'AB型',
+    height: '158 cm',
+    threeSizes: 'B82 (C-Cup) / W57 / H82',
   },
 }
 
