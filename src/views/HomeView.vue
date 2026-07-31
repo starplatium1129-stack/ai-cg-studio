@@ -15,23 +15,23 @@
           <p class="hero-jp">「 ときめきの一瞬を、一枚の CG に 」</p>
           <div class="ctas">
             <RouterLink :to="continueLink.to" class="btn btn-lg btn-primary" id="continueCta">
-              <span class="ic">{{ continueLink.icon }}</span> {{ continueLink.label }}
+              <span class="ic"><ArchiveIcon :name="continueIconName" /></span> {{ continueLink.label }}
             </RouterLink>
-            <RouterLink to="/showcase" class="btn btn-lg btn-ghost"><span class="ic">🖼</span> 先看成片</RouterLink>
+            <RouterLink to="/showcase" class="btn btn-lg btn-ghost"><span class="ic"><ArchiveIcon name="image" /></span> 先看成片</RouterLink>
           </div>
           <div class="continue-hint" v-if="continueHint">
             <strong>{{ continueHint }}</strong>
           </div>
           <div class="chain">
-            <div class="chain-step"><span class="ic">📖</span> 故事 <span class="en">Story</span></div>
+            <div class="chain-step"><span class="ic"><ArchiveIcon name="spark" /></span> 故事 <span class="en">Story</span></div>
             <span class="chain-arrow">→</span>
-            <div class="chain-step"><span class="ic">👤</span> 角色 <span class="en">Character</span></div>
+            <div class="chain-step"><span class="ic"><ArchiveIcon name="character" /></span> 角色 <span class="en">Character</span></div>
             <span class="chain-arrow">→</span>
-            <div class="chain-step"><span class="ic">🎬</span> 场景 <span class="en">Scene</span></div>
+            <div class="chain-step"><span class="ic"><ArchiveIcon name="scene" /></span> 场景 <span class="en">Scene</span></div>
             <span class="chain-arrow">→</span>
-            <div class="chain-step"><span class="ic">✦</span> 绘制 <span class="en">Draw</span></div>
+            <div class="chain-step"><span class="ic"><ArchiveIcon name="palette" /></span> 绘制 <span class="en">Draw</span></div>
             <span class="chain-arrow">→</span>
-            <div class="chain-step final"><span class="ic">🖼</span> 画面 <span class="en">Image</span></div>
+            <div class="chain-step final"><span class="ic"><ArchiveIcon name="gallery" /></span> 画面 <span class="en">Image</span></div>
           </div>
         </div>
         <aside class="hero-orbit" aria-label="宁宁与夏目的角色视觉">
@@ -100,25 +100,25 @@
       <div class="tools-grid">
         <RouterLink to="/prompt-builder" class="tool-card card-create card-level-2">
           <span class="tool-index" aria-hidden="true">01 / MAKE</span>
-          <span class="ic">✦</span><span class="t">开始绘制</span>
+          <span class="ic"><ArchiveIcon name="spark" /></span><span class="t">开始绘制</span>
           <span class="d">选场景、调情绪与镜头，一键出图。</span>
           <span class="go">→ 打开</span>
         </RouterLink>
         <RouterLink to="/scene-explorer" class="tool-card card-create card-level-2">
           <span class="tool-index" aria-hidden="true">02 / SCENE</span>
-          <span class="ic">🌸</span><span class="t">灵感场景</span>
+          <span class="ic"><ArchiveIcon name="scene" /></span><span class="t">灵感场景</span>
           <span class="d">{{ sceneLibraryCopy }}</span>
           <span class="go">→ 打开</span>
         </RouterLink>
         <RouterLink to="/chat" class="tool-card card-create card-level-2">
           <span class="tool-index" aria-hidden="true">03 / ROOM</span>
-          <span class="ic">☕</span><span class="t">角色房间</span>
+          <span class="ic"><ArchiveIcon name="chat" /></span><span class="t">角色房间</span>
           <span class="d">和宁宁或夏目聊一会儿，声音也在本机。</span>
           <span class="go">→ 进入房间</span>
         </RouterLink>
         <RouterLink to="/showcase" class="tool-card card-create card-level-2">
           <span class="tool-index" aria-hidden="true">04 / ARCHIVE</span>
-          <span class="ic">🖼</span><span class="t">效果样张</span>
+          <span class="ic"><ArchiveIcon name="image" /></span><span class="t">效果样张</span>
           <span class="d">逐张审核后的真实成图，不是示意图。</span>
           <span class="go">→ 浏览</span>
         </RouterLink>
@@ -137,25 +137,25 @@
       <div class="tools-grid">
         <RouterLink to="/character" class="tool-card card-create">
           <span class="tool-index" aria-hidden="true">05 / PROFILE</span>
-          <span class="ic">👤</span><span class="t">角色档案</span>
+          <span class="ic"><ArchiveIcon name="character" /></span><span class="t">角色档案</span>
           <span class="d">视觉特征、性格与绑定模型。</span>
           <span class="go">→ 打开</span>
         </RouterLink>
         <RouterLink to="/style" class="tool-card card-create">
           <span class="tool-index" aria-hidden="true">06 / PALETTE</span>
-          <span class="ic">🎨</span><span class="t">画风</span>
+          <span class="ic"><ArchiveIcon name="palette" /></span><span class="t">画风</span>
           <span class="d">色调、配色与画面情绪。</span>
           <span class="go">→ 打开</span>
         </RouterLink>
         <RouterLink to="/lora" class="tool-card card-create">
           <span class="tool-index" aria-hidden="true">07 / MODEL</span>
-          <span class="ic">🧪</span><span class="t">模型</span>
+          <span class="ic"><ArchiveIcon name="model" /></span><span class="t">模型</span>
           <span class="d">训练信息与推荐强度。</span>
           <span class="go">→ 打开</span>
         </RouterLink>
         <RouterLink to="/gallery" class="tool-card card-create">
           <span class="tool-index" aria-hidden="true">08 / WORKS</span>
-          <span class="ic">🎞</span><span class="t">作品册</span>
+          <span class="ic"><ArchiveIcon name="gallery" /></span><span class="t">作品册</span>
           <span class="d">本机创作，原比例安静欣赏。</span>
           <span class="go">→ 打开</span>
         </RouterLink>
@@ -218,6 +218,7 @@
 import { ref, onMounted, onUnmounted, reactive } from 'vue'
 import SceneCard from '@/components/SceneCard.vue'
 import SemanticParticleField from '@/components/visual/SemanticParticleField.vue'
+import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import { kvInit, kvGet, kvSet } from '@/composables/useKVStore'
 import { imgGet } from '@/composables/useImageStore'
 import { readRecent } from '@/utils/sceneUX'
@@ -232,6 +233,7 @@ const DRAFT_KEY = 'aics_pb_last_draft'
 
 const sceneCountCopy = ref('场景加载中')
 const sceneLibraryCopy = ref('招牌瞬间已备好情绪与镜头。')
+const continueIconName = ref<ArchiveIconName>('spark')
 const continueLink = ref({ to: '/prompt-builder', icon: '✨', label: '开始绘制' })
 const continueHint = ref('')
 type HomeScene = Scene & { title?: string; mature?: boolean }
@@ -288,6 +290,7 @@ function initContinueDraft() {
   if (!draft || (!draft.sceneId && !draft.story)) return false
   const title = draft.sceneTitle || draft.story || '未完成创作'
   continueLink.value = { to: '/prompt-builder?resume=1', icon: '↩', label: '继续上次创作' }
+  continueIconName.value = 'refresh'
   continueHint.value = `上次停在「${title.slice(0, 24)}」`
   return true
 }

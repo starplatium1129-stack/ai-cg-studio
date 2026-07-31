@@ -548,8 +548,13 @@ test('flow 6c · 深链：?resume=1 恢复上次草稿', async ({ page }) => {
   await page.goto('/prompt-builder');
   await page.locator('.story-input').fill('雪天围围巾的温柔一瞬');
   await page.locator('.trait-chip').first().click();
-  await expect.poll(async () => page.evaluate(() => localStorage.getItem('aics_pb_last_draft')))
-    .not.toBeNull();
+  // 等草稿保存包含 manualTags（saveDraft 有 280ms debounce，仅检查 non-null 会命中
+  // 早于 trait-chip 点击的草稿快照，导致恢复后缺少 tag）
+  await expect.poll(async () => page.evaluate(() => {
+    const raw = localStorage.getItem('aics_pb_last_draft')
+    if (!raw) return null
+    try { const d = JSON.parse(raw); return Array.isArray(d.manualTags) && d.manualTags.length > 0 ? 'ok' : null } catch { return null }
+  })).toBe('ok');
 
   await page.goto('/prompt-builder?resume=1');
   await expect(page.locator('.story-input')).toHaveValue('雪天围围巾的温柔一瞬');

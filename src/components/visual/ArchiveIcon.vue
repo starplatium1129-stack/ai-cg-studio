@@ -21,6 +21,7 @@ export type ArchiveIconName =
   | 'character' | 'palette' | 'model' | 'training' | 'manager'
   | 'info' | 'success' | 'error' | 'warning' | 'sound' | 'mute'
   | 'close' | 'refresh' | 'sun' | 'moon' | 'menu'
+  | 'gear' | 'lightning' | 'lock' | 'eye' | 'wand' | 'speaker' | 'filter' | 'search'
 
 const props = defineProps<{ name: ArchiveIconName }>()
 
@@ -46,6 +47,14 @@ const ICON_PATHS: Record<ArchiveIconName, string[]> = {
   sun: ['M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z', 'M12 2v2M12 20v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4'],
   moon: ['M20 15.3A8.5 8.5 0 0 1 8.7 4a8.5 8.5 0 1 0 11.3 11.3Z'],
   menu: ['M4 7h16M4 12h16M4 17h16'],
+  gear: ['M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z', 'M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 0 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5V21a2 2 0 0 1-4 0v-.2a1.6 1.6 0 0 0-1-1.5 1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 0 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H3a2 2 0 0 1 0-4h.2a1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 0 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3 1.6 1.6 0 0 0 1-1.5V3a2 2 0 0 1 4 0v.2a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 0 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8 1.6 1.6 0 0 0 1.5 1H21a2 2 0 0 1 0 4h-.2a1.6 1.6 0 0 0-1.4 1Z'],
+  lightning: ['M13 2 4.5 13.5H12L11 22l8.5-11.5H12L13 2Z'],
+  lock: ['M6 10V7a6 6 0 1 1 12 0v3', 'M5 10h14v11H5z', 'M12 14v3'],
+  eye: ['M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z', 'M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z'],
+  wand: ['M15 4l-2 2 3 3 2-2-3-3Z', 'm13 6-9.5 9.5a2.12 2.12 0 0 0 3 3L16 9', 'M18 3v2M21 6h-2'],
+  speaker: ['M11 5 6 9H2v6h4l5 4V5Z', 'M15.5 8.5a5 5 0 0 1 0 7', 'M18.5 5.5a9 9 0 0 1 0 13'],
+  filter: ['M22 3H2l8 9.46V19l4 2v-8.54L22 3Z'],
+  search: ['M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z', 'm21 21-4.35-4.35'],
 }
 
 const paths = computed(() => ICON_PATHS[props.name])

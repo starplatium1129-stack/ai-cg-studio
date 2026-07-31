@@ -118,11 +118,11 @@
                 <div class="message-bubble">{{ msg.content }}</div>
                 <div class="message-meta">
                   <span v-if="msg.stopped" class="message-note">已停止</span>
-                  <button v-if="msg.role === 'assistant' && msg.mid && voice.hasAudio(msg.mid)"
-                    class="msg-voice-btn" type="button"
-                    :class="{ playing: playingMid === msg.mid }"
-                    :data-mid="msg.mid" title="重播这条语音"
-                    @click="voice.playMessage(msg.mid)">🔊 重播</button>
+                    <button v-if="msg.role === 'assistant' && msg.mid && voice.hasAudio(msg.mid)"
+                      class="msg-voice-btn" type="button"
+                      :class="{ playing: playingMid === msg.mid }"
+                      :data-mid="msg.mid" title="重播这条语音"
+                      @click="voice.playMessage(msg.mid)"><ArchiveIcon name="sound" /> 重播</button>
                 </div>
               </div>
             </div>
@@ -167,7 +167,7 @@
                    硬编码旧端口会把用户带到一个拒绝连接的死链接。 -->
               <RouterLink v-show="showVoiceRecovery" class="voice-recovery" to="/control">启动语音 →</RouterLink>
               <label class="volume-slider" title="音量">
-                <span class="volume-icon">🔊</span>
+                <span class="volume-icon"><ArchiveIcon name="sound" /></span>
                 <input type="range" v-model.number="volume" min="0" max="100"
                   @input="voice.setVolume(volume / 100)" />
               </label>
@@ -203,6 +203,7 @@ import { useVoice } from '@/composables/useVoice'
 import ChatApiSettings from '@/components/ChatApiSettings.vue'
 import ChatCharacterStage from '@/components/ChatCharacterStage.vue'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 
 const route = useRoute()
 

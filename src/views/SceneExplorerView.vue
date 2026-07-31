@@ -134,7 +134,7 @@
                 <span>色调 <strong>{{ dv(s2).color }}</strong></span>
               </div>
               <div class="ex-secondary">
-                <a class="btn btn-ghost btn-sm" :href="quickCreateUrl(s2.id)">⚡ 直接出图</a>
+                <a class="btn btn-ghost btn-sm" :href="quickCreateUrl(s2.id)"><ArchiveIcon name="lightning" /> 直接出图</a>
                 <button class="btn btn-ghost btn-sm" type="button" @click.stop="drawerScene = s2">📖 故事</button>
                 <button class="btn btn-ghost btn-sm scene-fav" :class="{ saved: favs.has(s2.id) }"
                   type="button" @click.stop="toggleFav(s2.id)">{{ favs.has(s2.id) ? '♥ 已收' : '♡ 收藏' }}</button>
@@ -158,7 +158,7 @@
         <div class="story-meta">{{ charName(drawerScene) }} · {{ seasonLabel(drawerScene.season) }} · {{ timeLabel(drawerScene.timeOfDay) }} · {{ drawerScene.emotion }}</div>
         <div class="story-body">{{ drawerScene.story || '' }}</div>
         <div class="story-actions">
-          <a class="btn btn-primary" :href="quickCreateUrl(drawerScene.id)">⚡ 快速出图</a>
+          <a class="btn btn-primary" :href="quickCreateUrl(drawerScene.id)"><ArchiveIcon name="lightning" /> 快速出图</a>
           <RouterLink class="btn btn-ghost" :to="'/prompt-builder?scene=' + encodeURIComponent(drawerScene.id) + '&step=4&generate=1'">🎬 调整后生成</RouterLink>
           <button class="btn btn-ghost" type="button" @click="drawerScene = null">关闭</button>
         </div>
@@ -183,6 +183,7 @@ import { tier as uxTier, matchesSearch as uxMatchesSearch, searchScore as uxSear
 import { kvInit, kvGet } from '@/composables/useKVStore'
 import { useSceneStore, type Scene, type CurationData } from '@/stores/sceneStore'
 import { quickCreateUrl } from '@/utils/quickCreate'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 
 interface ExplorerScene extends Scene {
   title?: string
