@@ -118,8 +118,8 @@ P1 · 近期
 P2 · 工程卫生与基础设施
 
 6. ~~仓库卫生~~（2026-07-31 完成：pptx 移入 docs/、清理 data 旧文件、删除 agents/test-branch 及其 worktree）。
-7. JS lint：现有门禁覆盖 CSS 字面量/颜色/对比度，JS 侧补 ESLint（未使用变量、显式 `any` 回退、console 残留），并串接进 `npm run validate`。
-8. 字体自托管：Google Fonts 改为本地托管 Noto Sans SC / JetBrains Mono，保证离线可用并收紧 CSP。
+7. ~~JS lint~~（2026-07-31 完成：ESLint flat config 接入 `npm run validate`，0 error 门禁覆盖未使用变量/显式 any 回退/console 残留/v-html；清理 4 个死变量与 1 个死函数）。
+8. ~~字体自托管~~（2026-07-31 完成：Google Fonts 换 @fontsource 本地 woff2，CSP 移除 fonts.googleapis.com/gstatic.com，离线可用）。
 9. 如计划公开分享仓库，补 LICENSE 文件。
 
 P3 · 长期观察
