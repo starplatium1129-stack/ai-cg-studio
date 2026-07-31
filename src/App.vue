@@ -7,8 +7,65 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, onUnmounted } from 'vue'
+import { kvInit, kvGet, kvSet } from '@/composables/useKVStore'
+import { imgGet } from '@/composables/useImageStore'
+import { blobThumbDataUrl, thumbKey } from '@/utils/imageThumb'
 import AppInteractionLayer from '@/components/AppInteractionLayer.vue'
 import AppToast from '@/components/AppToast.vue'
+
+// 与 GalleryView 的 HISTORY_KEY 保持一致
+const HISTORY_KEY = 'aics_pb_history'
+
+interface ThumbWarmEntry { image_id?: string }
+
+let warmStopped = false
+let warmHandle = 0
+
+/** 后台按空闲时间给历史图库补缩略图，首次进作品册就有缓存 */
+async function warmGalleryThumbs() {
+  try { await kvInit() } catch { return }
+  let list: ThumbWarmEntry[] = []
+  try {
+    const raw = await kvGet(HISTORY_KEY)
+    list = (Array.isArray(raw) ? raw : []).filter(
+      (r): r is ThumbWarmEntry => !!r && typeof r === 'object'
+        && typeof (r as ThumbWarmEntry).image_id === 'string',
+    )
+  } catch { return }
+  let index = 0
+  const step = async () => {
+    if (warmStopped || index >= list.length) return
+    const imageId = (list[index++].image_id as string)
+    try {
+      const cached = await kvGet(thumbKey(imageId))
+      if (!(typeof cached === 'string' && cached.startsWith('data:image/'))) {
+        const blob = await imgGet(imageId)
+        if (blob) {
+          const dataUrl = await blobThumbDataUrl(blob)
+          if (dataUrl) await kvSet(thumbKey(imageId), dataUrl)
+        }
+      }
+    } catch { /* 单张失败跳过，缩略图只是缓存 */ }
+    scheduleNext()
+  }
+  const scheduleNext = () => {
+    if (warmStopped) return
+    if (typeof window.requestIdleCallback === 'function') {
+      warmHandle = window.requestIdleCallback(() => { void step() }, { timeout: 4000 }) as unknown as number
+    } else {
+      warmHandle = window.setTimeout(() => { void step() }, 120) as unknown as number
+    }
+  }
+  scheduleNext()
+}
+
+onMounted(() => { void warmGalleryThumbs() })
+onUnmounted(() => {
+  warmStopped = true
+  if (typeof window.cancelIdleCallback === 'function') window.cancelIdleCallback(warmHandle)
+  else window.clearTimeout(warmHandle)
+})
 </script>
 
 <style>

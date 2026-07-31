@@ -74,14 +74,14 @@
             >
               <div class="artwork-media" :style="{ '--art-ratio': String(ratioOf(item)) }">
                 <img
-                  v-if="cardUrls[item.id]"
+                  v-if="cardUrls[item.id] || thumbUrls[item.id]"
                   class="artwork-image"
-                  :src="cardUrls[item.id]"
+                  :src="cardUrls[item.id] || thumbUrls[item.id]"
                   :alt="sceneTitle(item.scene)"
                   loading="lazy"
                   decoding="async"
                   referrerpolicy="no-referrer"
-                  @load="measure(item.id, $event)"
+                  @load="measure(item, $event)"
                 />
                 <div v-else-if="missingImageIds.has(item.id)" class="artwork-placeholder">✦</div>
                 <div v-else class="artwork-skeleton" aria-hidden="true"></div>
@@ -167,6 +167,7 @@ import { useToast } from '@/composables/useToast'
 import ArchivePageHero from '@/components/visual/ArchivePageHero.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import { useScrollReveal } from '@/composables/useScrollReveal'
+import { jpegThumbDataUrl, thumbKey } from '@/utils/imageThumb'
 import type { Scene, LoraMeta } from '@/stores/sceneStore'
 import { artworkTimestamp, parseArtworkRecords, type ArtworkRecord } from '@/types/artwork'
 
@@ -198,6 +199,8 @@ const viewerIndex = ref(-1)
 const infoOpen = ref(false)
 const viewerUrl = ref('')
 const cardUrls = reactive<Record<string, string>>({})
+/** 缩略图缓存（KV dataURL），比 HD blob 快读先显示 */
+const thumbUrls = reactive<Record<string, string>>({})
 const missingImageIds = ref(new Set<string | number>())
 /** 图片实际比例，键为历史条目 id；元数据不可信时以此为准 */
 const measuredRatios = reactive<Record<string, number>>({})
@@ -313,12 +316,31 @@ function ratioOf(item: ArtworkRecord) {
   return clampRatio(w > 0 && h > 0 ? w / h : 3 / 4)
 }
 
-/** 图片解码完成后用真实像素纠正画框 */
-function measure(id: string | number, e: Event) {
+/** 图片解码完成后用真实像素纠正画框；HD 图顺带回填缩略图缓存 */
+function measure(item: ArtworkRecord, e: Event) {
   const img = e.target as HTMLImageElement
   if (!img.naturalWidth || !img.naturalHeight) return
   const r = img.naturalWidth / img.naturalHeight
-  if (Math.abs((measuredRatios[id] ?? 0) - r) > 0.001) measuredRatios[id] = r
+  if (Math.abs((measuredRatios[item.id] ?? 0) - r) > 0.001) measuredRatios[item.id] = r
+  // 只有高清图（非缩略图）才回填，用已解码的 img 画缩略图，零额外解码
+  if (img.naturalWidth >= 700) void cacheBackfillThumb(item, img)
+}
+
+/** 防同一张图并发重复生成缩略图 */
+const thumbPending = new Set<string>()
+
+async function cacheBackfillThumb(item: ArtworkRecord, img: HTMLImageElement) {
+  const imageId = item.image_id
+  if (!imageId || thumbPending.has(imageId) || thumbUrls[item.id]) return
+  thumbPending.add(imageId)
+  try {
+    const dataUrl = jpegThumbDataUrl(img)
+    if (dataUrl) {
+      await kvSet(thumbKey(imageId), dataUrl)
+      thumbUrls[item.id] = dataUrl
+    }
+  } catch { /* 缩略图只是缓存，失败不影响展示 */ }
+  finally { thumbPending.delete(imageId) }
 }
 function indexOf(item: ArtworkRecord) { return visible.value.indexOf(item) }
 function safeImageUrl(v: string | undefined) {
@@ -343,6 +365,28 @@ function revokeAll() {
  * 这里按固定并发数分块补齐：首屏卡片快速出现，后续成批补图。
  */
 const HYDRATE_CONCURRENCY = 4
+/** 缩略图是 KV 小 dataURL，读得快，并发放高 */
+const THUMB_CONCURRENCY = 8
+async function hydrateThumbs() {
+  const pending = visible.value.filter(item => !cardUrls[item.id] && !thumbUrls[item.id])
+  let index = 0
+  async function worker() {
+    while (index < pending.length) {
+      const item = pending[index++]
+      if (unmounted) return
+      if (!item.image_id) continue
+      try {
+        const thumb = await kvGet<string>(thumbKey(item.image_id))
+        if (unmounted) return
+        if (typeof thumb === 'string' && thumb.startsWith('data:image/')) {
+          thumbUrls[item.id] = thumb
+        }
+      } catch { /* 缩略图缺失正常，直接走 HD */ }
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(THUMB_CONCURRENCY, pending.length) }, () => worker()))
+}
+
 async function hydrateCards() {
   const pending = visible.value.filter(item => !cardUrls[item.id])
   let index = 0
@@ -442,12 +486,16 @@ async function confirmDelete(item: ArtworkRecord) {
     const next = history.value.filter(h => h.id !== item.id)
     await kvSet(HISTORY_KEY, next)
     history.value = next
-    if (item.image_id) await imgDelete(item.image_id).catch(() => {})
+    if (item.image_id) {
+      await imgDelete(item.image_id).catch(() => {})
+      await kvSet(thumbKey(item.image_id), null).catch(() => {})
+    }
 
     // 释放这张卡自己的 object URL，并清掉派生缓存
     const url = cardUrls[item.id]
     if (url && url.startsWith('blob:')) { URL.revokeObjectURL(url); objectUrls.delete(url) }
     delete cardUrls[item.id]
+    delete thumbUrls[item.id]
     if (missingImageIds.value.delete(item.id)) missingImageIds.value = new Set(missingImageIds.value)
     delete measuredRatios[item.id]
     pendingDeleteId.value = null
@@ -537,6 +585,7 @@ onMounted(async () => {
     scenes.value = sceneStore.scenes
     loras.value = sceneStore.loras
   } catch (e) { console.warn('gallery data load failed', e) }
+  void hydrateThumbs()
   void hydrateCards()
 })
 
@@ -547,7 +596,7 @@ onUnmounted(() => {
   revokeAll()
 })
 
-watch(visible, () => { hydrateCards() })
+watch(visible, () => { hydrateThumbs(); hydrateCards() })
 </script>
 
 <style scoped>
@@ -580,7 +629,7 @@ watch(visible, () => { hydrateCards() })
 .artwork-tool:focus-visible { outline:2px solid var(--on-art-primary); outline-offset:2px; }
 .artwork-tool:disabled { cursor:wait; opacity:.65; }
 .artwork-media { position:relative; width:100%; aspect-ratio:var(--art-ratio,3/4); overflow:hidden; background:linear-gradient(135deg,color-mix(in srgb,var(--art-mat) 88%,#fff),var(--art-mat)); }
-.artwork-image { display:block; width:100%; height:100%; object-fit:contain; background:var(--art-mat); }
+.artwork-image { display:block; width:100%; height:100%; object-fit:contain; background:var(--art-mat); animation:galleryImageIn .35s ease; }
 .artwork-placeholder { position:absolute; inset:0; display:grid; place-items:center; color:var(--on-art-secondary); font-size:var(--fs-glyph); }
 .artwork-skeleton { position:absolute; inset:0; background:linear-gradient(105deg,var(--art-mat) 18%,color-mix(in srgb,var(--art-mat) 76%,var(--text-primary)) 42%,var(--art-mat) 68%); background-size:220% 100%; animation:gallerySkeleton 1.3s linear infinite; }
 .artwork-caption { position:absolute; inset:auto 0 0; display:flex; align-items:flex-end; justify-content:space-between; gap:var(--s-3); padding:40px var(--s-3) var(--s-3); color:var(--on-art-primary); background:linear-gradient(transparent,var(--art-scrim)); opacity:0; transform:translateY(8px); transition:opacity var(--t-fast) var(--ease-out),transform var(--t-fast) var(--ease-out); text-align:left; pointer-events:none; }
@@ -604,6 +653,7 @@ watch(visible, () => { hydrateCards() })
 }
 @media (prefers-reduced-motion:reduce) { .artwork,.artwork-caption { transition:none !important; } .artwork-skeleton { animation:none; } }
 @keyframes gallerySkeleton { to { background-position:-120% 0; } }
+@keyframes galleryImageIn { from { opacity:0 } to { opacity:1 } }
 </style>
 
 <style>

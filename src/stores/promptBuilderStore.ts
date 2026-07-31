@@ -4,6 +4,7 @@ import { sceneLighting, sceneShot, sceneColorMood, sceneComposition, sceneRecomm
 import { resolveModelProfile, mutualGroupOf, membersOfMutualGroup, type LoraMeta, type ModelProfile } from '@/utils/promptPolicy'
 import { imgPut } from '@/composables/useImageStore'
 import { kvGet, kvSet } from '@/composables/useKVStore'
+import { blobThumbDataUrl, thumbKey } from '@/utils/imageThumb'
 import { useSceneStore } from '@/stores/sceneStore'
 import {
   isSDParamKey,
@@ -420,12 +421,21 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     })
   }
 
+  /** 入册时顺带生成缩略图缓存（fire-and-forget，失败忽略不影响入册） */
+  async function cacheThumbnail(imageId: string, blob: Blob): Promise<void> {
+    try {
+      const dataUrl = await blobThumbDataUrl(blob)
+      if (dataUrl) await kvSet(thumbKey(imageId), dataUrl)
+    } catch { /* 缩略图只是缓存，丢了下次进作品册会补 */ }
+  }
+
   // ── History entry commit (IndexedDB image save) ──────────────────────────
   async function commitHistoryEntry(entry: Partial<HistoryEntry> & {
     blob: Blob; seed?: number; size?: string; negative?: string; prompt: string
   }): Promise<HistoryEntry | null> {
     try {
       const imageId = await imgPut(entry.blob)
+      void cacheThumbnail(imageId, entry.blob)
       const measured = await measureBlob(entry.blob)
       const now = Date.now()
       // Date.now() 同毫秒内「队列自动入册 + 手动保存」并发会撞 id，
