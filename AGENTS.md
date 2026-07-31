@@ -36,6 +36,13 @@
 - 图片与历史：IndexedDB，封装在 `useKVStore`、`useImageStore`、`useBackup`。
 - `docs/*.html` 仍使用 `tools/nav.js`、`theme.js`、`local-status.js`；这些是文档站运行时，不属于已删除的应用控制器。
 
+### 训练台参数契约（白名单覆盖）
+
+- 浏览器可覆盖的训练参数仅限 `TrainingParamOverrides` 白名单字段（epochs/batch_size/gradient_accumulation_steps/lora_rank/lora_alpha/unet_learning_rate/text_encoder_learning_rate/text_encoder_stop_epoch）；未知 key、非数字、越界一律 400。
+- 覆盖值由服务端写入 `training_configs/.ui_plans/` 下带时间戳的一次性配置副本（原配置只读），浏览器仍无法直接传路径或命令；无覆盖时保持原配置启动。
+- `GET /api/training/jobs/:id/config` 返回白名单字段与推荐值（来源为磁盘 v18 配置），voice 任务返回 `available: false`。
+- 前端参数草稿按 job 持久化在 `aics_training_params_<jobId>`（localStorage），"开始训练"只提交与推荐值不同的字段；ETA 由前端滑动平均步速外推，不依赖服务端时钟。
+
 ### 已形成独立所有权的绘图组件
 
 - `VoiceStudio.vue`：配音、翻译、音频生命周期。

@@ -70,6 +70,7 @@ interface JobInspection {
     ready: boolean;
     missing: string[];
     configName?: string;
+    configPath?: string;
     datasetPath: string;
     executablePath: string;
     scriptPath: string;
@@ -95,6 +96,35 @@ interface PublicJob {
     logVersion: number;
     progress: TrainingProgress;
 }
+/**
+ * 浏览器可覆盖的训练参数白名单。
+ * 只允许数值字段，且 key 必须命中白名单；未知 key / 越界 / 非数字一律拒绝。
+ * 覆盖值由服务端写入一次性配置副本，浏览器始终无法直接传路径或命令。
+ */
+interface TrainingParamOverrides {
+    epochs?: number;
+    batch_size?: number;
+    gradient_accumulation_steps?: number;
+    lora_rank?: number;
+    lora_alpha?: number;
+    unet_learning_rate?: number;
+    text_encoder_learning_rate?: number;
+    text_encoder_stop_epoch?: number;
+}
+interface PublicJobConfig {
+    id: TrainingJobId;
+    kind: JobKind;
+    available: boolean;
+    fields: Record<string, number>;
+    recommended: Record<string, number>;
+}
+declare function sanitizeOverrides(value: unknown): TrainingParamOverrides;
+/**
+ * 把白名单覆盖写进一次性配置副本，返回副本路径。
+ * 原配置只读；副本落在 training_configs/.ui_plans/ 下，文件名带时间戳，
+ * 避免与 OneTrainer 的 prevent_overwrites 冲突。
+ */
+declare function applyOverridesToConfig(configPath: string, overrides: TrainingParamOverrides, id: TrainingJobId, stamp?: () => number): string;
 interface TrainingServiceOptions {
     aiRoot: string;
     runtimeRoot: string;
@@ -142,6 +172,7 @@ declare function createTrainingService(options: TrainingServiceOptions): {
     };
     getDatasetPreview: (datasetId: string, variant?: "signature" | "adult") => DatasetPreviewFile;
     getJob: (value: unknown) => PublicJob;
+    getJobConfig: (value: unknown) => PublicJobConfig;
     getLogs: (value: unknown, cursorValue: unknown, versionValue: unknown) => {
         id: TrainingJobId;
         cursor: number;
@@ -151,7 +182,7 @@ declare function createTrainingService(options: TrainingServiceOptions): {
         text: string;
         lines: string[];
     };
-    startJob: (value: unknown) => PublicJob;
+    startJob: (value: unknown, overridesValue?: unknown) => PublicJob;
     stopJob: (value: unknown) => PublicJob;
     close: () => void;
     isKnownJobId: typeof isJobId;
@@ -167,6 +198,8 @@ declare const _default: {
         normalizeLogChunk: typeof normalizeLogChunk;
         parseProgress: typeof parseProgress;
         walkDataset: typeof walkDataset;
+        sanitizeOverrides: typeof sanitizeOverrides;
+        applyOverridesToConfig: typeof applyOverridesToConfig;
     };
 };
 export = _default;

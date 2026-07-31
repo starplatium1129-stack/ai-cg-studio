@@ -104,6 +104,15 @@ function createTrainingRouter(config, dependencies) {
     }
   });
 
+  router.get('/api/training/jobs/:id/config', function (req, res) {
+    try {
+      res.setHeader('Cache-Control', 'no-store');
+      return envelope.ok(res, { config: service.getJobConfig(idFromRequest(req)) });
+    } catch (error) {
+      return serviceError(res, error);
+    }
+  });
+
   function logsHandler(req, res) {
     try {
       res.setHeader('Cache-Control', 'no-store');
@@ -126,7 +135,8 @@ function createTrainingRouter(config, dependencies) {
       if (!id || JOB_IDS.indexOf(id) === -1) {
         return envelope.fail(res, 400, '请选择一个受支持的训练任务', { code: 'UNKNOWN_JOB' });
       }
-      return envelope.ok(res, { job: service.startJob(id) });
+      var overrides = req.body && typeof req.body === 'object' ? req.body.overrides : undefined;
+      return envelope.ok(res, { job: service.startJob(id, overrides) });
     } catch (error) {
       return serviceError(res, error);
     }

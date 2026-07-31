@@ -19,6 +19,103 @@ const STATE_FILE_NAME = 'jobs.json';
 const ANSI_RE = /\u001b\][0-?]*[ -/]*[@-~]|\u001b\[[0-?]*[ -/]*[@-~]/g;
 const VOICE_DATASET_VERSION = 'datasets-v16';
 const VOICE_EXPERIMENT_SUFFIX = 'voice-v16';
+const OVERRIDE_RULES = {
+    epochs: { min: 1, max: 500, integer: true },
+    batch_size: { min: 1, max: 16, integer: true },
+    gradient_accumulation_steps: { min: 1, max: 8, integer: true },
+    lora_rank: { min: 4, max: 128, integer: true },
+    lora_alpha: { min: 4, max: 128, integer: true },
+    unet_learning_rate: { min: 1e-7, max: 1e-3 },
+    text_encoder_learning_rate: { min: 1e-7, max: 1e-3 },
+    text_encoder_stop_epoch: { min: 0, max: 500, integer: true },
+};
+function sanitizeOverrides(value) {
+    if (value === undefined || value === null)
+        return {};
+    if (typeof value !== 'object' || Array.isArray(value)) {
+        throw new TrainingServiceError('训练参数格式不正确', 'INVALID_OVERRIDES', 400);
+    }
+    const overrides = {};
+    for (const [key, raw] of Object.entries(value)) {
+        const rule = OVERRIDE_RULES[key];
+        if (!rule) {
+            throw new TrainingServiceError(`不支持的训练参数: ${key}`, 'UNKNOWN_OVERRIDE', 400);
+        }
+        if (typeof raw !== 'number' || !Number.isFinite(raw)) {
+            throw new TrainingServiceError(`参数 ${key} 必须是数字`, 'INVALID_OVERRIDE', 400);
+        }
+        if (rule.integer && !Number.isInteger(raw)) {
+            throw new TrainingServiceError(`参数 ${key} 必须是整数`, 'INVALID_OVERRIDE', 400);
+        }
+        if (raw < rule.min || raw > rule.max) {
+            throw new TrainingServiceError(`参数 ${key} 超出允许范围 ${rule.min}–${rule.max}`, 'OVERRIDE_OUT_OF_RANGE', 400);
+        }
+        overrides[key] = raw;
+    }
+    return overrides;
+}
+function asFiniteNumber(value, fallback = 0) {
+    return typeof value === 'number' && Number.isFinite(value) ? value : fallback;
+}
+function asObject(value) {
+    return value && typeof value === 'object' && !Array.isArray(value)
+        ? value
+        : {};
+}
+function readJsonObject(filePath) {
+    try {
+        const parsed = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        return parsed && typeof parsed === 'object' && !Array.isArray(parsed)
+            ? parsed
+            : {};
+    }
+    catch {
+        return {};
+    }
+}
+/**
+ * 把白名单覆盖写进一次性配置副本，返回副本路径。
+ * 原配置只读；副本落在 training_configs/.ui_plans/ 下，文件名带时间戳，
+ * 避免与 OneTrainer 的 prevent_overwrites 冲突。
+ */
+function applyOverridesToConfig(configPath, overrides, id, stamp = Date.now) {
+    if (Object.keys(overrides).length === 0)
+        return configPath;
+    const config = readJsonObject(configPath);
+    if (Object.keys(config).length === 0) {
+        throw new TrainingServiceError('无法读取训练配置，不能应用参数覆盖', 'CONFIG_UNREADABLE', 409);
+    }
+    if (overrides.epochs !== undefined)
+        config.epochs = overrides.epochs;
+    if (overrides.batch_size !== undefined)
+        config.batch_size = overrides.batch_size;
+    if (overrides.gradient_accumulation_steps !== undefined) {
+        config.gradient_accumulation_steps = overrides.gradient_accumulation_steps;
+    }
+    if (overrides.lora_rank !== undefined)
+        config.lora_rank = overrides.lora_rank;
+    if (overrides.lora_alpha !== undefined)
+        config.lora_alpha = overrides.lora_alpha;
+    if (overrides.unet_learning_rate !== undefined) {
+        config.unet = { ...asObject(config.unet), learning_rate: overrides.unet_learning_rate };
+    }
+    if (overrides.text_encoder_learning_rate !== undefined || overrides.text_encoder_stop_epoch !== undefined) {
+        const textEncoder = asObject(config.text_encoder);
+        if (overrides.text_encoder_learning_rate !== undefined) {
+            textEncoder.learning_rate = overrides.text_encoder_learning_rate;
+        }
+        if (overrides.text_encoder_stop_epoch !== undefined) {
+            textEncoder.stop_training_after = overrides.text_encoder_stop_epoch;
+        }
+        config.text_encoder = textEncoder;
+    }
+    const uiPlansDir = path.join(path.dirname(configPath), '.ui_plans');
+    ensureDirectory(uiPlansDir);
+    const stampText = new Date(stamp()).toISOString().replace(/[:.]/g, '-');
+    const outPath = path.join(uiPlansDir, `${path.basename(configPath, '.json')}.ui_${stampText}.json`);
+    fs.writeFileSync(outPath, `${JSON.stringify(config, null, 2)}\n`, 'utf8');
+    return outPath;
+}
 class TrainingServiceError extends Error {
     code;
     status;
@@ -472,6 +569,7 @@ function createTrainingService(options) {
         let cwd = '';
         let args = [];
         let configName = '';
+        let loraConfigPath = '';
         if (definition.kind === 'lora') {
             datasetPath = definition.character === 'nene'
                 ? path.join(aiRoot, 'Datasets', 'Characters', 'Ayachi_Nene', 'V18_WD14_Curated')
@@ -480,6 +578,7 @@ function createTrainingService(options) {
             scriptPath = oneTrainerScript;
             cwd = oneTrainerRoot;
             const configPath = findV18Config(path.join(oneTrainerRoot, 'training_configs'), definition.character);
+            loraConfigPath = configPath;
             configName = configPath ? path.basename(configPath) : '';
             args = configPath ? ['--config-path', configPath] : [];
             if (!fs.existsSync(pythonOneTrainer))
@@ -532,12 +631,36 @@ function createTrainingService(options) {
             ready: missing.length === 0,
             missing,
             configName: configName || undefined,
+            configPath: loraConfigPath,
             datasetPath,
             executablePath,
             scriptPath,
             cwd,
             args,
         };
+    }
+    function getJobConfig(value) {
+        const id = assertKnownId(value);
+        const inspection = inspectJob(id);
+        const empty = { id, kind: inspection.definition.kind, available: false, fields: {}, recommended: {} };
+        if (inspection.definition.kind !== 'lora' || !inspection.configPath)
+            return empty;
+        const config = readJsonObject(inspection.configPath);
+        if (Object.keys(config).length === 0)
+            return empty;
+        const unet = asObject(config.unet);
+        const textEncoder = asObject(config.text_encoder);
+        const fields = {
+            epochs: asFiniteNumber(config.epochs),
+            batch_size: asFiniteNumber(config.batch_size),
+            gradient_accumulation_steps: asFiniteNumber(config.gradient_accumulation_steps, 1),
+            lora_rank: asFiniteNumber(config.lora_rank),
+            lora_alpha: asFiniteNumber(config.lora_alpha),
+            unet_learning_rate: asFiniteNumber(unet.learning_rate),
+            text_encoder_learning_rate: asFiniteNumber(textEncoder.learning_rate),
+            text_encoder_stop_epoch: asFiniteNumber(textEncoder.stop_training_after),
+        };
+        return { id, kind: 'lora', available: true, fields, recommended: { ...fields } };
     }
     function publicJob(id) {
         const state = stateFor(id);
@@ -676,8 +799,9 @@ function createTrainingService(options) {
             throw new TrainingServiceError(`“${definition.label}”仍在进行，请等待当前任务完成`, 'TRAINING_BUSY', 409);
         }
     }
-    function startJob(value) {
+    function startJob(value, overridesValue) {
         const id = assertKnownId(value);
+        const overrides = sanitizeOverrides(overridesValue);
         assertNoActiveJob();
         const inspection = inspectJob(id);
         if (!inspection.ready) {
@@ -705,9 +829,18 @@ function createTrainingService(options) {
         saveStates();
         let child;
         try {
-            const commandArgs = inspection.definition.kind === 'lora'
-                ? [inspection.scriptPath, ...inspection.args]
-                : inspection.args;
+            let commandArgs;
+            if (inspection.definition.kind === 'lora') {
+                const configPath = inspection.configPath
+                    ? applyOverridesToConfig(inspection.configPath, overrides, id, now)
+                    : '';
+                commandArgs = configPath
+                    ? [inspection.scriptPath, '--config-path', configPath]
+                    : [inspection.scriptPath];
+            }
+            else {
+                commandArgs = inspection.args;
+            }
             child = spawn(inspection.executablePath, commandArgs, {
                 cwd: inspection.cwd,
                 shell: false,
@@ -912,6 +1045,7 @@ function createTrainingService(options) {
         listJobs,
         getDatasetPreview,
         getJob: (value) => publicJob(assertKnownId(value)),
+        getJobConfig,
         getLogs,
         startJob,
         stopJob,
@@ -930,5 +1064,7 @@ module.exports = {
         normalizeLogChunk,
         parseProgress,
         walkDataset,
+        sanitizeOverrides,
+        applyOverridesToConfig,
     },
 };

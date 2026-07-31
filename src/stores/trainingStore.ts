@@ -5,10 +5,12 @@ import {
   type TrainingApiError,
   type TrainingDataset,
   type TrainingJob,
+  type TrainingJobConfig,
   type TrainingJobId,
   type TrainingLogResponse,
   type TrainingLogState,
   type TrainingOverview,
+  type TrainingParamOverrides,
 } from '@/types/training'
 
 interface SuccessEnvelope {
@@ -21,6 +23,7 @@ interface JobEnvelope extends SuccessEnvelope {
 
 type OverviewEnvelope = SuccessEnvelope & TrainingOverview
 type LogsEnvelope = SuccessEnvelope & TrainingLogResponse
+type ConfigEnvelope = SuccessEnvelope & { config: TrainingJobConfig }
 
 const MAX_VISIBLE_LOG_CHARS = 180_000
 
@@ -141,13 +144,13 @@ export const useTrainingStore = defineStore('training', () => {
           : overview.value.activeJobId
   }
 
-  async function start(id: TrainingJobId): Promise<void> {
+  async function start(id: TrainingJobId, overrides?: TrainingParamOverrides): Promise<void> {
     actionJobId.value = id
     error.value = ''
     try {
       const payload = await request<JobEnvelope>('/api/training/jobs', {
         method: 'POST',
-        body: JSON.stringify({ id }),
+        body: JSON.stringify({ id, overrides: overrides ?? {} }),
       })
       updateJob(payload.job)
       selectedJobId.value = id
@@ -206,6 +209,16 @@ export const useTrainingStore = defineStore('training', () => {
     }
   }
 
+  async function loadJobConfig(id: TrainingJobId): Promise<TrainingJobConfig | null> {
+    try {
+      const payload = await request<ConfigEnvelope>(`/api/training/jobs/${encodeURIComponent(id)}/config`)
+      return payload.config
+    } catch (cause: unknown) {
+      error.value = cause instanceof Error ? cause.message : String(cause)
+      return null
+    }
+  }
+
   function selectJob(id: TrainingJobId): void {
     selectedJobId.value = id
   }
@@ -240,6 +253,7 @@ export const useTrainingStore = defineStore('training', () => {
     refresh,
     start,
     stop,
+    loadJobConfig,
     loadLogs,
     selectJob,
     clearError,

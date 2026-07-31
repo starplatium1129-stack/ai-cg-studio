@@ -100,6 +100,7 @@ function createTrainingStub(previewFile) {
     listDatasets:0,
     listJobs:0,
     getJob:[],
+    getJobConfig:[],
     getLogs:[],
     getDatasetPreview:[],
     startJob:[],
@@ -176,6 +177,38 @@ function createTrainingStub(previewFile) {
         calls.getJob.push(id);
         return requireJob(id);
       },
+      getJobConfig:function (id) {
+        calls.getJobConfig.push(id);
+        requireJob(id);
+        if (id.indexOf('voice-') === 0) {
+          return { id:id, kind:'voice', available:false, fields:{}, recommended:{} };
+        }
+        return {
+          id:id,
+          kind:'lora',
+          available:true,
+          fields:{
+            epochs:143,
+            batch_size:4,
+            gradient_accumulation_steps:1,
+            lora_rank:32,
+            lora_alpha:32,
+            unet_learning_rate:0.0001,
+            text_encoder_learning_rate:0.00003,
+            text_encoder_stop_epoch:30
+          },
+          recommended:{
+            epochs:143,
+            batch_size:4,
+            gradient_accumulation_steps:1,
+            lora_rank:32,
+            lora_alpha:32,
+            unet_learning_rate:0.0001,
+            text_encoder_learning_rate:0.00003,
+            text_encoder_stop_epoch:30
+          }
+        };
+      },
       getDatasetPreview:function (id) {
         var variant = arguments[1] || 'signature';
         calls.getDatasetPreview.push(variant === 'signature' ? id : id + ':' + variant);
@@ -202,8 +235,8 @@ function createTrainingStub(previewFile) {
           lines:['epoch 2/80 - loss 0.094']
         };
       },
-      startJob:function (id) {
-        calls.startJob.push(id);
+      startJob:function (id, overrides) {
+        calls.startJob.push({ id:id, overrides:overrides });
         if (id === 'voice-nene') {
           throw new TrainingServiceError(
             'Another GPU training job is active',
@@ -413,7 +446,33 @@ async function main() {
     assertSuccess(started, 'start training job');
     assert.strictEqual(started.json.job.status, 'running');
     assert.strictEqual(started.json.job.pid, 4242);
-    assert.deepStrictEqual(stub.calls.startJob, ['lora-nene-v18']);
+    assert.deepStrictEqual(stub.calls.startJob, [{ id:'lora-nene-v18', overrides:undefined }]);
+
+    var configResponse = await request(port, {
+      path:'/api/training/jobs/lora-nene-v18/config'
+    });
+    assertSuccess(configResponse, 'training job config');
+    assert.strictEqual(configResponse.json.config.available, true);
+    assert.strictEqual(configResponse.json.config.fields.epochs, 143);
+    assert.strictEqual(configResponse.json.config.recommended.lora_rank, 32);
+    assert.deepStrictEqual(stub.calls.getJobConfig, ['lora-nene-v18']);
+
+    var voiceConfig = await request(port, {
+      path:'/api/training/jobs/voice-nene/config'
+    });
+    assertSuccess(voiceConfig, 'voice job config');
+    assert.strictEqual(voiceConfig.json.config.available, false);
+
+    var startedWithOverrides = await request(port, {
+      method:'POST',
+      path:'/api/training/jobs',
+      body:{ id:'lora-natsume-v18', overrides:{ epochs:90, lora_rank:64 } }
+    });
+    assertSuccess(startedWithOverrides, 'start training job with whitelisted overrides');
+    assert.deepStrictEqual(stub.calls.startJob[1], {
+      id:'lora-natsume-v18',
+      overrides:{ epochs:90, lora_rank:64 }
+    });
 
     var stopped = await request(port, {
       method:'POST',
@@ -431,7 +490,7 @@ async function main() {
     });
     assertSuccess(startedByKind, 'start training job by safe alias');
     assert.strictEqual(startedByKind.json.job.id, 'lora-natsume-v18');
-    assert.strictEqual(stub.calls.startJob[1], 'lora-natsume-v18');
+    assert.strictEqual(stub.calls.startJob[2].id, 'lora-natsume-v18');
 
     var unknownJob = await request(port, {
       method:'POST',
@@ -439,7 +498,7 @@ async function main() {
       body:{ id:'arbitrary-command' }
     });
     assertFailure(unknownJob, 400, 'UNKNOWN_JOB', 'unknown training job');
-    assert.strictEqual(stub.calls.startJob.length, 2,
+    assert.strictEqual(stub.calls.startJob.length, 3,
       'unknown job ids must be rejected before reaching the service');
 
     var missingJob = await request(port, {

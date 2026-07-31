@@ -113,6 +113,25 @@ export interface TrainingPlan {
   epochs: number
 }
 
+export interface TrainingParamOverrides {
+  epochs?: number
+  batch_size?: number
+  gradient_accumulation_steps?: number
+  lora_rank?: number
+  lora_alpha?: number
+  unet_learning_rate?: number
+  text_encoder_learning_rate?: number
+  text_encoder_stop_epoch?: number
+}
+
+export interface TrainingJobConfig {
+  id: TrainingJobId
+  kind: TrainingKind
+  available: boolean
+  fields: Record<string, number>
+  recommended: Record<string, number>
+}
+
 export interface TrainingApiError {
   ok: false
   error: string

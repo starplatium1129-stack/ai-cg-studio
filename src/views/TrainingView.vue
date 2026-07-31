@@ -51,6 +51,15 @@
     </div>
 
     <div v-else class="workbench">
+      <div v-if="!onboardingDismissed" class="training-onboarding" role="region" aria-label="首次使用指引">
+        <div class="onboarding-steps">
+          <span><b>1</b>选择左侧训练类型：角色 LoRA 或角色语音</span>
+          <span><b>2</b>检查数据集已就绪（卡片上的图片 / 音频统计）</span>
+          <span><b>3</b>参数已按验证方案填好，直接点“开始训练”；想改随时可调</span>
+        </div>
+        <button type="button" class="btn btn-ghost btn-sm" @click="dismissOnboarding">知道了，开始使用</button>
+      </div>
+
       <aside class="workbench-rail" aria-label="训练类型">
         <div class="rail-heading">
           <span>训练流程</span>
@@ -171,84 +180,124 @@
                 <code>{{ planFor(job.character).outfit.token }}</code>
               </div>
 
-              <figure
-                v-if="datasetFor(job)?.preview.available"
-                class="dataset-preview"
-              >
-                <a
-                  :href="datasetPreviewUrl(datasetFor(job))"
-                  target="_blank"
-                  rel="noopener"
-                  :aria-label="`打开${datasetFor(job)?.preview.label}`"
+              <section class="param-panel" aria-labelledby="`${job.id}-params`">
+                <header class="param-head">
+                  <div>
+                    <span class="field-name">训练参数 · 推荐值已就绪</span>
+                    <h4 :id="`${job.id}-params`">不修改也能直接开始，改动只作用于本次训练</h4>
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-ghost btn-sm"
+                    :disabled="!draftFor(job.id).values"
+                    @click="resetParams(job.id)"
+                  >恢复推荐值</button>
+                </header>
+                <div class="param-grid">
+                  <label
+                    v-for="field in loraParamFields"
+                    :key="field.key"
+                    class="param-field"
+                  >
+                    <span>{{ field.label }}</span>
+                    <input
+                      type="number"
+                      :step="field.step"
+                      :min="field.min"
+                      :max="field.max"
+                      :value="paramValue(job.id, field.key)"
+                      :disabled="isActive(job) || draftFor(job.id).loading"
+                      @change="setParam(job.id, field.key, ($event.target as HTMLInputElement).value)"
+                    >
+                    <small v-if="field.unit">{{ field.unit }}</small>
+                  </label>
+                </div>
+                <p v-if="draftFor(job.id).error" class="param-note param-error" role="status">
+                  {{ draftFor(job.id).error }}
+                </p>
+              </section>
+
+              <details class="dataset-details">
+                <summary>数据集详情</summary>
+                <figure
+                  v-if="datasetFor(job)?.preview.available"
+                  class="dataset-preview"
                 >
-                  <img
-                    :src="datasetPreviewUrl(datasetFor(job))"
-                    :alt="datasetFor(job)?.preview.label"
-                    :class="{ blurred: datasetFor(job)?.preview.blurred }"
-                    loading="lazy"
-                    decoding="async"
+                  <a
+                    :href="datasetPreviewUrl(datasetFor(job))"
+                    target="_blank"
+                    rel="noopener"
+                    :aria-label="`打开${datasetFor(job)?.preview.label}`"
                   >
-                  <span>打开审核表</span>
-                </a>
-                <figcaption>
-                  <strong>经典服装可视审核</strong>
-                  <small>{{ datasetFor(job)?.preview.label }} · 训练样本接触表，不是生成结果</small>
-                </figcaption>
-              </figure>
+                    <img
+                      :src="datasetPreviewUrl(datasetFor(job))"
+                      :alt="datasetFor(job)?.preview.label"
+                      :class="{ blurred: datasetFor(job)?.preview.blurred }"
+                      loading="lazy"
+                      decoding="async"
+                    >
+                    <span>打开审核表</span>
+                  </a>
+                  <figcaption>
+                    <strong>经典服装可视审核</strong>
+                    <small>{{ datasetFor(job)?.preview.label }} · 训练样本接触表，不是生成结果</small>
+                  </figcaption>
+                </figure>
 
-              <div v-if="datasetFor(job)" class="dataset-stats">
-                <div>
-                  <strong>{{ datasetFor(job)?.images ?? 0 }}</strong>
-                  <span>图片</span>
+                <div v-if="datasetFor(job)" class="dataset-stats">
+                  <div>
+                    <strong>{{ datasetFor(job)?.images ?? 0 }}</strong>
+                    <span>图片</span>
+                  </div>
+                  <div>
+                    <strong>{{ datasetFor(job)?.captions ?? 0 }}</strong>
+                    <span>标注</span>
+                  </div>
+                  <div>
+                    <strong>{{ formatBytes(datasetFor(job)?.bytes ?? 0) }}</strong>
+                    <span>体积</span>
+                  </div>
+                  <div>
+                    <strong>{{ datasetFor(job)?.categories.validation ?? 0 }}</strong>
+                    <span>保留验证</span>
+                  </div>
                 </div>
-                <div>
-                  <strong>{{ datasetFor(job)?.captions ?? 0 }}</strong>
-                  <span>标注</span>
-                </div>
-                <div>
-                  <strong>{{ formatBytes(datasetFor(job)?.bytes ?? 0) }}</strong>
-                  <span>体积</span>
-                </div>
-                <div>
-                  <strong>{{ datasetFor(job)?.categories.validation ?? 0 }}</strong>
-                  <span>保留验证</span>
-                </div>
-              </div>
 
-              <div v-if="datasetFor(job)" class="category-section">
-                <span class="field-name">样本分层</span>
-                <div class="category-list">
-                  <span
-                    v-for="category in categoryEntries(datasetFor(job)?.categories ?? {})"
-                    :key="category[0]"
-                    :class="{ adult: isAdultCategory(category[0]) }"
-                  >
-                    {{ categoryLabel(category[0]) }}
-                    <b>{{ category[1] }}</b>
-                  </span>
+                <div v-if="datasetFor(job)" class="category-section">
+                  <span class="field-name">样本分层</span>
+                  <div class="category-list">
+                    <span
+                      v-for="category in categoryEntries(datasetFor(job)?.categories ?? {})"
+                      :key="category[0]"
+                      :class="{ adult: isAdultCategory(category[0]) }"
+                    >
+                      {{ categoryLabel(category[0]) }}
+                      <b>{{ category[1] }}</b>
+                    </span>
+                  </div>
                 </div>
-              </div>
 
-              <div class="adult-strip">
-                <div class="adult-preview" aria-hidden="true">
-                  <img
-                    v-if="datasetFor(job)?.adultPreview.available"
-                    :src="adultPreviewUrl(datasetFor(job))"
-                    alt=""
-                    :class="{ blurred: datasetFor(job)?.adultPreview.blurred }"
-                    loading="lazy"
-                    decoding="async"
-                  >
-                  <template v-else>
-                    <i></i><i></i><i></i>
-                  </template>
+                <div class="adult-strip">
+                  <div class="adult-preview" aria-hidden="true">
+                    <img
+                      v-if="datasetFor(job)?.adultPreview.available"
+                      :src="adultPreviewUrl(datasetFor(job))"
+                      alt=""
+                      :class="{ blurred: datasetFor(job)?.adultPreview.blurred }"
+                      loading="lazy"
+                      decoding="async"
+                    >
+                    <template v-else>
+                      <i></i><i></i><i></i>
+                    </template>
+                  </div>
+                  <div>
+                    <span>R18 样本 · 默认纳入</span>
+                    <strong>{{ adultCount(datasetFor(job)?.categories ?? {}) }} 张分层素材</strong>
+                    <small>成人样本已纳入训练；缩略图始终使用预先模糊的审核表。</small>
+                  </div>
                 </div>
-                <div>
-                  <span>R18 样本 · 默认纳入</span>
-                  <strong>{{ adultCount(datasetFor(job)?.categories ?? {}) }} 张分层素材</strong>
-                  <small>成人样本已纳入训练；缩略图始终使用预先模糊的审核表。</small>
-                </div>
-              </div>
+              </details>
 
               <div v-if="!job.ready" class="missing-note" role="status">
                 <strong>启动前还缺少</strong>
@@ -279,10 +328,20 @@
                   <span v-if="job.progress.loss !== undefined">
                     Loss {{ formatLoss(job.progress.loss) }}
                   </span>
+                  <span v-if="etaText(job)" class="eta-text">{{ etaText(job) }}</span>
                   <span v-if="!job.progress.epochs && !job.progress.steps">
                     {{ job.configName || '等待训练配置' }}
                   </span>
                 </div>
+                <svg
+                  v-if="lossPolyline(job.id).length > 0"
+                  class="loss-chart"
+                  viewBox="0 0 160 30"
+                  preserveAspectRatio="none"
+                  aria-hidden="true"
+                >
+                  <polyline :points="lossPolyline(job.id)"></polyline>
+                </svg>
                 <p
                   v-if="job.error && (job.status === 'failed' || job.status === 'stopped')"
                   class="job-error"
@@ -317,7 +376,7 @@
                   class="btn btn-primary"
                   :disabled="!canStart(job)"
                   :data-loading="actionJobId === job.id || undefined"
-                  @click="start(job.id)"
+                  @click="beginTraining(job)"
                 >
                   {{ job.status === 'completed' ? '再次训练' : '开始训练' }}
                 </button>
@@ -540,16 +599,18 @@ import type {
   TrainingCharacter,
   TrainingDataset,
   TrainingJob,
+  TrainingJobConfig,
   TrainingJobId,
   TrainingJobStatus,
   TrainingKind,
+  TrainingParamOverrides,
   TrainingPlan,
 } from '@/types/training'
 
 const route = useRoute()
 const router = useRouter()
 const store = useTrainingStore()
-const { clearError, loadLogs, refresh, start, stop } = store
+const { clearError, loadJobConfig, loadLogs, refresh, start, stop } = store
 const {
   overview,
   loading,
@@ -600,6 +661,194 @@ const loraSpecs = [
   { label: '损失权重', value: 'Min-SNR 5' },
 ]
 
+/* ── 可编辑训练参数（白名单字段，服务端校验后写入一次性配置副本）── */
+const loraParamFields = [
+  { key: 'epochs', label: '训练轮数', unit: 'epoch', step: 1, min: 1, max: 500 },
+  { key: 'batch_size', label: '批量大小', unit: '', step: 1, min: 1, max: 16 },
+  { key: 'gradient_accumulation_steps', label: '梯度累积', unit: '步', step: 1, min: 1, max: 8 },
+  { key: 'lora_rank', label: 'LoRA 秩', unit: '', step: 1, min: 4, max: 128 },
+  { key: 'lora_alpha', label: 'LoRA Alpha', unit: '', step: 1, min: 4, max: 128 },
+  { key: 'unet_learning_rate', label: 'UNet 学习率', unit: '', step: 1e-5, min: 1e-7, max: 1e-3 },
+  { key: 'text_encoder_learning_rate', label: '文本编码器学习率', unit: '', step: 1e-6, min: 1e-7, max: 1e-3 },
+  { key: 'text_encoder_stop_epoch', label: '文本编码器停训', unit: '轮', step: 1, min: 0, max: 500 },
+] as const
+
+interface ParamDraft {
+  loading: boolean
+  error: string
+  values: Record<string, number> | null
+  recommended: Record<string, number> | null
+}
+
+const paramDrafts = ref<Partial<Record<TrainingJobId, ParamDraft>>>({})
+const lossHistory = ref<Partial<Record<TrainingJobId, number[]>>>({})
+const stepSamples = ref<Partial<Record<TrainingJobId, Array<{ t: number; step: number }>>>>({})
+const onboardingDismissed = ref(
+  window.localStorage.getItem('aics_training_onboarded') === '1',
+)
+
+function paramsKey(id: TrainingJobId): string {
+  return `aics_training_params_${id}`
+}
+
+function draftFor(id: TrainingJobId): ParamDraft {
+  let draft = paramDrafts.value[id]
+  if (!draft) {
+    draft = { loading: false, error: '', values: null, recommended: null }
+    paramDrafts.value[id] = draft
+  }
+  return draft
+}
+
+async function ensureParams(id: TrainingJobId): Promise<void> {
+  const draft = draftFor(id)
+  if (draft.loading || draft.values) return
+  draft.loading = true
+  draft.error = ''
+  const config = await loadJobConfig(id)
+  if (!config?.available || !config.fields) {
+    draft.error = '无法读取训练配置，参数面板不可用。'
+    draft.loading = false
+    return
+  }
+  draft.recommended = { ...config.recommended }
+  try {
+    const saved = JSON.parse(window.localStorage.getItem(paramsKey(id)) ?? '') as unknown
+    if (saved && typeof saved === 'object' && !Array.isArray(saved)) {
+      draft.values = { ...config.recommended, ...saved as Record<string, number> }
+    } else {
+      draft.values = { ...config.recommended }
+    }
+  } catch {
+    draft.values = { ...config.recommended }
+  }
+  draft.loading = false
+}
+
+function paramValue(id: TrainingJobId, key: string): number | '' {
+  const draft = draftFor(id)
+  const value = draft.values?.[key] ?? draft.recommended?.[key]
+  return typeof value === 'number' ? value : ''
+}
+
+function setParam(id: TrainingJobId, key: string, raw: string): void {
+  const draft = draftFor(id)
+  if (!draft.values || !draft.recommended) return
+  if (raw === '') {
+    delete draft.values[key]
+    window.localStorage.setItem(paramsKey(id), JSON.stringify(draft.values))
+    return
+  }
+  const parsed = Number(raw)
+  if (!Number.isFinite(parsed)) return
+  const field = loraParamFields.find((item) => item.key === key)
+  if (field && (parsed < field.min || parsed > field.max)) return
+  draft.values[key] = parsed
+  window.localStorage.setItem(paramsKey(id), JSON.stringify(draft.values))
+}
+
+function resetParams(id: TrainingJobId): void {
+  const draft = draftFor(id)
+  if (!draft.recommended) return
+  draft.values = { ...draft.recommended }
+  window.localStorage.removeItem(paramsKey(id))
+}
+
+function overridesFor(id: TrainingJobId): TrainingParamOverrides {
+  const draft = draftFor(id)
+  const overrides: TrainingParamOverrides = {}
+  if (!draft.values || !draft.recommended) return overrides
+  for (const field of loraParamFields) {
+    const current = draft.values[field.key]
+    const recommended = draft.recommended[field.key]
+    if (typeof current === 'number' && current !== recommended) {
+      ;(overrides as Record<string, number>)[field.key] = current
+    }
+  }
+  return overrides
+}
+
+function formatLr(value: number | ''): string {
+  if (value === '') return '—'
+  if (value >= 1e-3) return String(value)
+  if (value >= 1e-5) return String(value).replace(/0+$/, '')
+  return value.toExponential(1).replace(/\.0/, '')
+}
+
+/* ── ETA：滑动平均步速外推剩余时间 ── */
+function sampleStep(job: TrainingJob): void {
+  if (typeof job.progress.step !== 'number' || typeof job.progress.steps !== 'number') return
+  if (job.progress.steps <= 0) return
+  let samples = stepSamples.value[job.id]
+  if (!samples) {
+    samples = []
+    stepSamples.value[job.id] = samples
+  }
+  const last = samples[samples.length - 1]
+  if (last && job.progress.step === last.step) return
+  samples.push({ t: Date.now(), step: job.progress.step })
+  if (samples.length > 8) samples.shift()
+}
+
+function etaText(job: TrainingJob): string {
+  if (typeof job.progress.step !== 'number' || typeof job.progress.steps !== 'number') return ''
+  if (job.progress.steps <= 0 || job.progress.step <= 0) return ''
+  const samples = stepSamples.value[job.id]
+  if (!samples || samples.length < 2) return ''
+  const first = samples[0]
+  const last = samples[samples.length - 1]
+  const seconds = Math.max(1, (last.t - first.t) / 1000)
+  const rate = Math.max(0, (last.step - first.step) / seconds)
+  if (rate <= 0) return ''
+  const remaining = Math.round((job.progress.steps - job.progress.step) / rate)
+  if (remaining < 60) return '预计不足 1 分钟'
+  const hours = Math.floor(remaining / 3600)
+  const minutes = Math.round((remaining % 3600) / 60)
+  return hours > 0 ? `预计约 ${hours} 小时 ${minutes} 分` : `预计约 ${minutes} 分钟`
+}
+
+/* ── Loss 迷你趋势线 ── */
+function sampleLoss(job: TrainingJob): void {
+  if (typeof job.progress.loss !== 'number') return
+  let points = lossHistory.value[job.id]
+  if (!points) {
+    points = []
+    lossHistory.value[job.id] = points
+  }
+  if (points.length === 0 || points[points.length - 1] !== job.progress.loss) {
+    points.push(job.progress.loss)
+    if (points.length > 40) points.shift()
+  }
+}
+
+function lossPolyline(id: TrainingJobId): string {
+  const points = lossHistory.value[id] ?? []
+  if (points.length < 2) return ''
+  const width = 160
+  const height = 30
+  const min = Math.min(...points)
+  const max = Math.max(...points)
+  const span = Math.max(1e-9, max - min)
+  const stepX = width / (points.length - 1)
+  return points
+    .map((value, index) => {
+      const x = (index * stepX).toFixed(1)
+      const y = (height - 3 - ((value - min) / span) * (height - 6)).toFixed(1)
+      return `${x},${y}`
+    })
+    .join(' ')
+}
+
+function resetJobTelemetry(id: TrainingJobId): void {
+  lossHistory.value[id] = []
+  stepSamples.value[id] = []
+}
+
+function dismissOnboarding(): void {
+  onboardingDismissed.value = true
+  window.localStorage.setItem('aics_training_onboarded', '1')
+}
+
 const activeKind = ref<TrainingKind>(route.query.kind === 'voice' ? 'voice' : 'lora')
 const logElement = ref<HTMLElement | null>(null)
 const mounted = ref(false)
@@ -636,6 +885,12 @@ function canStart(job: TrainingJob): boolean {
     && actionJobId.value === null
     && activeJob.value === null
     && !isActive(job)
+}
+
+async function beginTraining(job: TrainingJob): Promise<void> {
+  resetJobTelemetry(job.id)
+  await ensureParams(job.id)
+  await start(job.id, overridesFor(job.id))
 }
 
 async function setKind(kind: TrainingKind, syncRoute = true): Promise<void> {
@@ -677,6 +932,8 @@ async function poll(): Promise<void> {
   await store.refresh(true)
   if (!mounted.value) return
   if (!activeJob.value || !isActive(activeJob.value)) return
+  sampleStep(activeJob.value)
+  sampleLoss(activeJob.value)
   await store.loadLogs(selectedJobId.value)
 }
 
@@ -733,7 +990,7 @@ watch(
   { immediate: true },
 )
 
-async function initialize(): Promise<void> {
+  async function initialize(): Promise<void> {
   await store.refresh()
   if (!mounted.value) return
   const initial = jobs.value.find((job) => job.kind === activeKind.value)
@@ -750,6 +1007,9 @@ async function initialize(): Promise<void> {
     store.selectJob(activeJob.value.id)
   } else if (initial) {
     store.selectJob(initial.id)
+  }
+  for (const job of visibleJobs.value) {
+    if (job.kind === 'lora') await ensureParams(job.id)
   }
   await store.loadLogs(selectedJobId.value)
   if (!mounted.value) return
@@ -852,6 +1112,38 @@ onUnmounted(() => {
   align-items: start;
   gap: var(--s-5);
 }
+
+.training-onboarding {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  margin-bottom: var(--s-4);
+  padding: var(--s-3) var(--s-4);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--border-soft));
+  border-radius: var(--r-lg);
+  background: var(--accent-soft);
+}
+.onboarding-steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3) var(--s-4);
+  color: var(--text-secondary);
+  font-size: var(--fs-label-sm);
+}
+.onboarding-steps span { display: inline-flex; align-items: center; gap: 7px; }
+.onboarding-steps b {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--text-inverse);
+  font: 700 var(--fs-mono-xs) var(--font-mono);
+}
+.training-onboarding .btn { flex: 0 0 auto; white-space: nowrap; }
 
 .workbench-rail {
   position: sticky;
@@ -1128,6 +1420,131 @@ onUnmounted(() => {
 .adult-strip strong { margin-top: 3px; color: var(--text-primary); font-size: var(--fs-label-sm); }
 .adult-strip small { margin-top: 3px; color: var(--text-muted); font-size: var(--fs-mono-xs); line-height: 1.4; }
 
+.param-panel {
+  margin-bottom: var(--s-3);
+  padding: var(--s-3);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-lg);
+  background: var(--bg-deep);
+}
+.param-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--s-3);
+  margin-bottom: var(--s-3);
+}
+.param-head h4 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: var(--fs-label-sm);
+  font-weight: 600;
+}
+.param-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-2);
+}
+.param-field {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 92px auto;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 7px 10px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-md);
+  background: var(--bg-surface);
+}
+.param-field > span {
+  color: var(--text-secondary);
+  font-size: var(--fs-mono-xs);
+  overflow-wrap: anywhere;
+}
+.param-field input {
+  width: 100%;
+  min-width: 0;
+  padding: 5px 7px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-md);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  font: 600 var(--fs-mono-xs) / 1.3 var(--font-mono);
+  text-align: right;
+  cursor: text;
+}
+.param-field input:hover:not(:disabled) { border-color: var(--accent); }
+.param-field input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: var(--ring);
+}
+.param-field input:disabled { opacity: .55; cursor: not-allowed; }
+.param-field small { color: var(--text-muted); font-size: var(--fs-mono-xs); }
+.param-note {
+  margin: var(--s-2) 0 0;
+  color: var(--text-muted);
+  font-size: var(--fs-mono-xs);
+  line-height: 1.5;
+}
+.param-error { color: var(--warning-text); }
+
+.dataset-details {
+  margin-bottom: var(--s-3);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-lg);
+  background: var(--bg-deep);
+}
+.dataset-details > summary {
+  padding: 8px 12px;
+  color: var(--text-secondary);
+  font-size: var(--fs-label-sm);
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+.dataset-details > summary::-webkit-details-marker { display: none; }
+.dataset-details > summary::before {
+  content: '▸';
+  display: inline-block;
+  margin-right: 8px;
+  color: var(--accent);
+  transition: transform var(--t-fast) var(--ease-out);
+}
+.dataset-details[open] > summary::before { transform: rotate(90deg); }
+.dataset-details > summary:hover { color: var(--text-primary); }
+.dataset-details > summary:focus-visible {
+  outline: none;
+  border-radius: var(--r-lg);
+  box-shadow: var(--ring);
+}
+.dataset-details > .dataset-preview,
+.dataset-details > .dataset-stats,
+.dataset-details > .category-section,
+.dataset-details > .adult-strip {
+  margin: 0 10px 10px;
+}
+.dataset-details > .dataset-preview { margin-top: 2px; }
+
+.eta-text { color: var(--accent); font-weight: 650; }
+
+.loss-chart {
+  display: block;
+  width: 100%;
+  height: 34px;
+  margin-top: var(--s-2);
+  overflow: visible;
+}
+.loss-chart polyline {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  opacity: .85;
+}
+
 .missing-note {
   display: grid; gap: 3px; margin-bottom: var(--s-3); padding: var(--s-3);
   border-radius: var(--r-lg); background: color-mix(in srgb, var(--warning) 9%, var(--bg-deep));
@@ -1290,6 +1707,9 @@ onUnmounted(() => {
   .rail-heading, .rail-summary, .local-note { display: none; }
   .kind-tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .kind-tab { grid-template-columns: auto minmax(0, 1fr); padding: var(--s-2) var(--s-3); }
+  .training-onboarding { align-items: stretch; flex-direction: column; }
+  .onboarding-steps { flex-direction: column; align-items: flex-start; }
+  .training-onboarding .btn { align-self: flex-start; }
   .plan-specs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .voice-pipeline ol {
     grid-template-columns: repeat(2, minmax(0, 1fr)); overflow: visible;

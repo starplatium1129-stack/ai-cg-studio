@@ -99,6 +99,7 @@ interface JobInspection {
   ready: boolean;
   missing: string[];
   configName?: string;
+  configPath?: string;
   datasetPath: string;
   executablePath: string;
   scriptPath: string;
@@ -124,6 +125,136 @@ interface PublicJob {
   runCount: number;
   logVersion: number;
   progress: TrainingProgress;
+}
+
+/**
+ * 浏览器可覆盖的训练参数白名单。
+ * 只允许数值字段，且 key 必须命中白名单；未知 key / 越界 / 非数字一律拒绝。
+ * 覆盖值由服务端写入一次性配置副本，浏览器始终无法直接传路径或命令。
+ */
+interface TrainingParamOverrides {
+  epochs?: number;
+  batch_size?: number;
+  gradient_accumulation_steps?: number;
+  lora_rank?: number;
+  lora_alpha?: number;
+  unet_learning_rate?: number;
+  text_encoder_learning_rate?: number;
+  text_encoder_stop_epoch?: number;
+}
+
+interface PublicJobConfig {
+  id: TrainingJobId;
+  kind: JobKind;
+  available: boolean;
+  fields: Record<string, number>;
+  recommended: Record<string, number>;
+}
+
+const OVERRIDE_RULES: Record<string, { min: number; max: number; integer?: boolean }> = {
+  epochs: { min: 1, max: 500, integer: true },
+  batch_size: { min: 1, max: 16, integer: true },
+  gradient_accumulation_steps: { min: 1, max: 8, integer: true },
+  lora_rank: { min: 4, max: 128, integer: true },
+  lora_alpha: { min: 4, max: 128, integer: true },
+  unet_learning_rate: { min: 1e-7, max: 1e-3 },
+  text_encoder_learning_rate: { min: 1e-7, max: 1e-3 },
+  text_encoder_stop_epoch: { min: 0, max: 500, integer: true },
+};
+
+function sanitizeOverrides(value: unknown): TrainingParamOverrides {
+  if (value === undefined || value === null) return {};
+  if (typeof value !== 'object' || Array.isArray(value)) {
+    throw new TrainingServiceError('训练参数格式不正确', 'INVALID_OVERRIDES', 400);
+  }
+  const overrides: TrainingParamOverrides = {};
+  for (const [key, raw] of Object.entries(value as Record<string, unknown>)) {
+    const rule = OVERRIDE_RULES[key];
+    if (!rule) {
+      throw new TrainingServiceError(`不支持的训练参数: ${key}`, 'UNKNOWN_OVERRIDE', 400);
+    }
+    if (typeof raw !== 'number' || !Number.isFinite(raw)) {
+      throw new TrainingServiceError(`参数 ${key} 必须是数字`, 'INVALID_OVERRIDE', 400);
+    }
+    if (rule.integer && !Number.isInteger(raw)) {
+      throw new TrainingServiceError(`参数 ${key} 必须是整数`, 'INVALID_OVERRIDE', 400);
+    }
+    if (raw < rule.min || raw > rule.max) {
+      throw new TrainingServiceError(
+        `参数 ${key} 超出允许范围 ${rule.min}–${rule.max}`,
+        'OVERRIDE_OUT_OF_RANGE',
+        400,
+      );
+    }
+    (overrides as Record<string, number>)[key] = raw;
+  }
+  return overrides;
+}
+
+function asFiniteNumber(value: unknown, fallback = 0): number {
+  return typeof value === 'number' && Number.isFinite(value) ? value : fallback;
+}
+
+function asObject(value: unknown): Record<string, unknown> {
+  return value && typeof value === 'object' && !Array.isArray(value)
+    ? value as Record<string, unknown>
+    : {};
+}
+
+function readJsonObject(filePath: string): Record<string, unknown> {
+  try {
+    const parsed = JSON.parse(fs.readFileSync(filePath, 'utf8')) as unknown;
+    return parsed && typeof parsed === 'object' && !Array.isArray(parsed)
+      ? parsed as Record<string, unknown>
+      : {};
+  } catch {
+    return {};
+  }
+}
+
+/**
+ * 把白名单覆盖写进一次性配置副本，返回副本路径。
+ * 原配置只读；副本落在 training_configs/.ui_plans/ 下，文件名带时间戳，
+ * 避免与 OneTrainer 的 prevent_overwrites 冲突。
+ */
+function applyOverridesToConfig(
+  configPath: string,
+  overrides: TrainingParamOverrides,
+  id: TrainingJobId,
+  stamp: () => number = Date.now,
+): string {
+  if (Object.keys(overrides).length === 0) return configPath;
+  const config = readJsonObject(configPath);
+  if (Object.keys(config).length === 0) {
+    throw new TrainingServiceError('无法读取训练配置，不能应用参数覆盖', 'CONFIG_UNREADABLE', 409);
+  }
+  if (overrides.epochs !== undefined) config.epochs = overrides.epochs;
+  if (overrides.batch_size !== undefined) config.batch_size = overrides.batch_size;
+  if (overrides.gradient_accumulation_steps !== undefined) {
+    config.gradient_accumulation_steps = overrides.gradient_accumulation_steps;
+  }
+  if (overrides.lora_rank !== undefined) config.lora_rank = overrides.lora_rank;
+  if (overrides.lora_alpha !== undefined) config.lora_alpha = overrides.lora_alpha;
+    if (overrides.unet_learning_rate !== undefined) {
+      config.unet = { ...asObject(config.unet), learning_rate: overrides.unet_learning_rate };
+    }
+    if (overrides.text_encoder_learning_rate !== undefined || overrides.text_encoder_stop_epoch !== undefined) {
+      const textEncoder = asObject(config.text_encoder);
+      if (overrides.text_encoder_learning_rate !== undefined) {
+        textEncoder.learning_rate = overrides.text_encoder_learning_rate;
+      }
+      if (overrides.text_encoder_stop_epoch !== undefined) {
+        textEncoder.stop_training_after = overrides.text_encoder_stop_epoch;
+      }
+      config.text_encoder = textEncoder;
+    }
+
+  const uiPlansDir = path.join(path.dirname(configPath), '.ui_plans');
+  ensureDirectory(uiPlansDir);
+  const stampText = new Date(stamp()).toISOString().replace(/[:.]/g, '-');
+  const outPath = path.join(uiPlansDir, `${path.basename(configPath, '.json')}.ui_${stampText}.json`);
+  fs.writeFileSync(outPath, `${JSON.stringify(config, null, 2)}\n`, 'utf8');
+  return outPath;
 }
 
 interface TrainingServiceOptions {
@@ -667,6 +798,7 @@ function createTrainingService(options: TrainingServiceOptions) {
     let cwd = '';
     let args: string[] = [];
     let configName = '';
+    let loraConfigPath = '';
 
     if (definition.kind === 'lora') {
       datasetPath = definition.character === 'nene'
@@ -676,6 +808,7 @@ function createTrainingService(options: TrainingServiceOptions) {
       scriptPath = oneTrainerScript;
       cwd = oneTrainerRoot;
       const configPath = findV18Config(path.join(oneTrainerRoot, 'training_configs'), definition.character);
+      loraConfigPath = configPath;
       configName = configPath ? path.basename(configPath) : '';
       args = configPath ? ['--config-path', configPath] : [];
       if (!fs.existsSync(pythonOneTrainer)) missing.push('OneTrainer Python 环境未安装');
@@ -720,12 +853,35 @@ function createTrainingService(options: TrainingServiceOptions) {
       ready: missing.length === 0,
       missing,
       configName: configName || undefined,
+      configPath: loraConfigPath,
       datasetPath,
       executablePath,
       scriptPath,
       cwd,
       args,
     };
+  }
+
+  function getJobConfig(value: unknown): PublicJobConfig {
+    const id = assertKnownId(value);
+    const inspection = inspectJob(id);
+    const empty: PublicJobConfig = { id, kind: inspection.definition.kind, available: false, fields: {}, recommended: {} };
+    if (inspection.definition.kind !== 'lora' || !inspection.configPath) return empty;
+    const config = readJsonObject(inspection.configPath);
+    if (Object.keys(config).length === 0) return empty;
+    const unet = asObject(config.unet);
+    const textEncoder = asObject(config.text_encoder);
+    const fields: Record<string, number> = {
+      epochs: asFiniteNumber(config.epochs),
+      batch_size: asFiniteNumber(config.batch_size),
+      gradient_accumulation_steps: asFiniteNumber(config.gradient_accumulation_steps, 1),
+      lora_rank: asFiniteNumber(config.lora_rank),
+      lora_alpha: asFiniteNumber(config.lora_alpha),
+      unet_learning_rate: asFiniteNumber(unet.learning_rate),
+      text_encoder_learning_rate: asFiniteNumber(textEncoder.learning_rate),
+      text_encoder_stop_epoch: asFiniteNumber(textEncoder.stop_training_after),
+    };
+    return { id, kind: 'lora', available: true, fields, recommended: { ...fields } };
   }
 
   function publicJob(id: TrainingJobId): PublicJob {
@@ -881,8 +1037,9 @@ function createTrainingService(options: TrainingServiceOptions) {
     }
   }
 
-  function startJob(value: unknown): PublicJob {
+  function startJob(value: unknown, overridesValue?: unknown): PublicJob {
     const id = assertKnownId(value);
+    const overrides = sanitizeOverrides(overridesValue);
     assertNoActiveJob();
     const inspection = inspectJob(id);
     if (!inspection.ready) {
@@ -917,9 +1074,17 @@ function createTrainingService(options: TrainingServiceOptions) {
 
     let child: ChildHandle;
     try {
-      const commandArgs = inspection.definition.kind === 'lora'
-        ? [inspection.scriptPath, ...inspection.args]
-        : inspection.args;
+      let commandArgs: string[];
+      if (inspection.definition.kind === 'lora') {
+        const configPath = inspection.configPath
+          ? applyOverridesToConfig(inspection.configPath, overrides, id, now)
+          : '';
+        commandArgs = configPath
+          ? [inspection.scriptPath, '--config-path', configPath]
+          : [inspection.scriptPath];
+      } else {
+        commandArgs = inspection.args;
+      }
       child = spawn(inspection.executablePath, commandArgs, {
         cwd: inspection.cwd,
         shell: false,
@@ -1121,6 +1286,7 @@ function createTrainingService(options: TrainingServiceOptions) {
     listJobs,
     getDatasetPreview,
     getJob: (value: unknown): PublicJob => publicJob(assertKnownId(value)),
+    getJobConfig,
     getLogs,
     startJob,
     stopJob,
@@ -1140,5 +1306,7 @@ export = {
     normalizeLogChunk,
     parseProgress,
     walkDataset,
+    sanitizeOverrides,
+    applyOverridesToConfig,
   },
 };

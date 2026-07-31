@@ -69,7 +69,18 @@ function main() {
   try {
     writeFile(python);
     writeFile(script, 'print("train")\n');
-    writeFile(config, '{}\n');
+    writeFile(config, JSON.stringify({
+      __version: 11,
+      training_method: 'LORA',
+      epochs: 143,
+      batch_size: 4,
+      gradient_accumulation_steps: 1,
+      lora_rank: 32,
+      lora_alpha: 32,
+      learning_rate: 3e-6,
+      unet: { __version: 0, learning_rate: 0.0001 },
+      text_encoder: { __version: 0, learning_rate: 3e-5, stop_training_after: 30 }
+    }, null, 2));
     writeFile(image, 'not-a-real-png');
     writeFile(image.replace(/\.png$/, '.txt'), 'ayachi_nene, face_anchor\n');
     writeFile(voicePython);
@@ -85,7 +96,7 @@ function main() {
       runtimeRoot:runtimeRoot,
       spawn:function (command, args, options) {
         spawnCalls.push({ command:command, args:args, options:options });
-        return spawnCalls.length === 1 ? child : voiceChild;
+        return command.indexOf('GPT-SoVITS') >= 0 ? voiceChild : child;
       },
       killProcess:function (pid, handle) {
         killed.push({ pid:pid, child:handle });
@@ -119,6 +130,17 @@ function main() {
     assert.strictEqual(spawnCalls[0].options.shell, false);
     assert.strictEqual(spawnCalls[0].options.windowsHide, true);
     assert.deepStrictEqual(spawnCalls[0].options.stdio, ['ignore', 'pipe', 'pipe']);
+
+    var jobConfig = service.getJobConfig('lora-nene-v18');
+    assert.strictEqual(jobConfig.available, true);
+    assert.strictEqual(jobConfig.fields.epochs, 143);
+    assert.strictEqual(jobConfig.fields.batch_size, 4);
+    assert.strictEqual(jobConfig.fields.lora_rank, 32);
+    assert.strictEqual(jobConfig.fields.unet_learning_rate, 0.0001);
+    assert.strictEqual(jobConfig.fields.text_encoder_stop_epoch, 30);
+    assert.deepStrictEqual(jobConfig.recommended, jobConfig.fields);
+    var voiceConfig = service.getJobConfig('voice-nene');
+    assert.strictEqual(voiceConfig.available, false);
 
     child.stdout.emit(
       'data',
@@ -163,6 +185,46 @@ function main() {
     assert.strictEqual(stopped.status, 'stopped');
     assert.ok(stopped.finishedAt > stopped.startedAt);
 
+    var restarted = service.startJob('lora-nene-v18', { epochs: 100, batch_size: 2, unet_learning_rate: 5e-4 });
+    assert.strictEqual(restarted.status, 'running');
+    assert.strictEqual(spawnCalls.length, 2);
+    var planArg = spawnCalls[1].args[2];
+    assert.ok(path.dirname(planArg).indexOf(path.join('training_configs', '.ui_plans')) >= 0);
+    var planConfig = JSON.parse(fs.readFileSync(planArg, 'utf8'));
+    assert.strictEqual(planConfig.epochs, 100);
+    assert.strictEqual(planConfig.batch_size, 2);
+    assert.strictEqual(planConfig.unet.learning_rate, 5e-4);
+    assert.strictEqual(planConfig.text_encoder.learning_rate, 3e-5);
+    assert.strictEqual(planConfig.lora_rank, 32);
+    var originalConfig = JSON.parse(fs.readFileSync(config, 'utf8'));
+    assert.strictEqual(originalConfig.epochs, 143);
+    assert.throws(
+      function () { service.startJob('lora-nene-v18', { epochs: 99999 }); },
+      function (error) {
+        return error instanceof trainingModule.TrainingServiceError
+          && error.code === 'OVERRIDE_OUT_OF_RANGE'
+          && error.status === 400;
+      }
+    );
+    assert.throws(
+      function () { service.startJob('lora-nene-v18', { learning_rate: 1e-4 }); },
+      function (error) {
+        return error instanceof trainingModule.TrainingServiceError
+          && error.code === 'UNKNOWN_OVERRIDE'
+          && error.status === 400;
+      }
+    );
+    assert.throws(
+      function () { service.startJob('lora-nene-v18', { epochs: 'many' }); },
+      function (error) {
+        return error instanceof trainingModule.TrainingServiceError
+          && error.code === 'INVALID_OVERRIDE'
+          && error.status === 400;
+      }
+    );
+    service.stopJob('lora-nene-v18');
+    child.emit('close', null);
+
     fs.unlinkSync(voiceTestList);
     var missingTestSplit = service.getJob('voice-nene');
     assert.strictEqual(missingTestSplit.ready, false);
@@ -172,9 +234,9 @@ function main() {
     var startedVoice = service.startJob('voice-nene');
     assert.strictEqual(startedVoice.status, 'running');
     assert.strictEqual(startedVoice.pid, 4343);
-    assert.strictEqual(spawnCalls.length, 2);
-    assert.strictEqual(spawnCalls[1].command, voicePython);
-    assert.deepStrictEqual(spawnCalls[1].args, [
+    assert.strictEqual(spawnCalls.length, 3);
+    assert.strictEqual(spawnCalls[2].command, voicePython);
+    assert.deepStrictEqual(spawnCalls[2].args, [
       voiceScript,
       '--character',
       'nene',
@@ -185,14 +247,15 @@ function main() {
       '--experiment-suffix',
       'voice-v16'
     ]);
-    assert.strictEqual(spawnCalls[1].options.cwd, path.join(aiRoot, 'Voice'));
-    assert.strictEqual(spawnCalls[1].options.shell, false);
+    assert.strictEqual(spawnCalls[2].options.cwd, path.join(aiRoot, 'Voice'));
+    assert.strictEqual(spawnCalls[2].options.shell, false);
     voiceChild.emit('close', 0);
     assert.strictEqual(service.getJob('voice-nene').status, 'completed');
 
     console.log(
       'Training service tests passed: LoRA/voice readiness, fixed argv, shell:false, ' +
-      'progress/logs, busy guard, unknown-id rejection, and stop lifecycle'
+      'progress/logs, busy guard, unknown-id rejection, stop lifecycle, ' +
+      'whitelisted overrides (config copies, ranges, unknown keys)'
     );
   } finally {
     if (service) service.close();
