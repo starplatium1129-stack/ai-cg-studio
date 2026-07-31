@@ -469,42 +469,39 @@
   text-shadow: 0 1px 8px var(--bg-deep);
   pointer-events: none;
 }
-.chat-page .portrait-caption {
-  position: absolute;
-  z-index: var(--z-raised);
-  right: var(--s-4);
-  bottom: var(--s-4);
-  left: var(--s-4);
-  padding: var(--s-3);
-  border: 1px solid var(--glass-edge);
-  border-radius: var(--r-lg);
-  background: var(--glass-fill-strong);
-  color: var(--text-secondary);
-  font-size: var(--fs-label-sm);
-  line-height: 1.55;
-  backdrop-filter: blur(18px);
-}
-
 @keyframes live2d-response {
   0%, 100% { filter: none; }
   45% { filter: drop-shadow(0 0 18px color-mix(in srgb, var(--character-accent) 42%, transparent)); }
 }
 
-.chat-page .portrait-caption strong {
+.chat-page .character-info {
+  flex-shrink: 0;
+  padding: var(--s-4);
+  border-top: 1px solid var(--border-soft);
+}
+
+.chat-page .character-info .character-name {
   display: block;
   color: var(--text-primary);
   font-size: var(--fs-body);
+  font-weight: 700;
 }
 
-.chat-page .character-info {
-  padding: var(--s-4);
-  border-top: 1px solid var(--border-soft);
+.chat-page .character-info .character-caption {
+  margin: 2px 0 0;
+  color: var(--text-muted);
+  font-size: var(--fs-label-sm);
+  line-height: 1.5;
 }
 
 .chat-page .character-info p {
   color: var(--text-secondary);
   font-size: var(--fs-label-sm);
   line-height: 1.65;
+}
+/* 性格文案比描述弱一档，避免和 description 抢层级（特异性高于 .character-info p） */
+.chat-page .character-info .character-caption {
+  color: var(--text-muted);
 }
 
 .chat-page .character-status {
@@ -1427,6 +1424,18 @@
 
   .chat-page .conversation-card {
     min-height: min(680px, 78dvh);
+  }
+}
+
+/* 矮屏：角色舞台让出底部信息区，避免名字/描述被裁切 */
+@media (max-height: 780px) {
+  .chat-page .portrait-stage {
+    min-height: 300px;
+  }
+
+  /* 舞台压缩后心情文案会碰立绘头部，只保留房间代号 */
+  .chat-page .room-signal small {
+    display: none;
   }
 }
 

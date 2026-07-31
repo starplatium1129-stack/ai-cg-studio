@@ -91,13 +91,11 @@
       <div v-if="live2d.interactionHint.value" class="live2d-interaction-hint">
         {{ live2d.interactionHint.value }}
       </div>
-      <div class="portrait-caption">
-        <strong>{{ character.name }}</strong>
-        <span>{{ character.caption }}</span>
-      </div>
     </div>
 
     <div class="character-info">
+      <strong class="character-name">{{ character.name }}</strong>
+      <p class="character-caption">{{ character.caption }}</p>
       <p>{{ character.description }}</p>
       <div class="character-status">
         <span class="status-dot" :class="statusKind"></span>
