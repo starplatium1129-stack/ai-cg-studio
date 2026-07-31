@@ -75,8 +75,10 @@ assert(
   server.includes('AUTO_TUNNEL') && server.includes('autoTunnel'),
   'gateway must not auto-open the public tunnel unless explicitly opted in',
 );
+// 隧道生命周期已拆到 server/tunnel.js（createTunnelManager）
+const tunnelModule = read('server', 'tunnel.js');
 assert(
-  /tunnelStopped/.test(server),
+  /tunnelStopped/.test(tunnelModule),
   'stopTunnel must latch a stopped flag so the poller cannot revive the share URL',
 );
 

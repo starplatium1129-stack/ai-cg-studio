@@ -9,6 +9,8 @@ var createProxyMiddleware = require('http-proxy-middleware').createProxyMiddlewa
 var loadGatewayConfig = require('./server/config').loadGatewayConfig;
 var security = require('./server/security');
 var envelope = require('./server/http-envelope');
+var { precompressed } = require('./server/precompressed');
+var { createTunnelManager } = require('./server/tunnel');
 var createChatRouter = require('./routes/chat').createChatRouter;
 var createVoiceRouter = require('./routes/voice').createVoiceRouter;
 var createLive2dRouter = require('./routes/live2d').createLive2dRouter;
@@ -47,80 +49,19 @@ function staticOptions(maxAge) {
   };
 }
 
-var PRECOMPRESSIBLE = /\.(?:js|css|html|json|svg|txt|map)$/i;
-
-/**
- * 优先发预压产物（.br / .gz）。
- *
- * compression 中间件是每个请求现场压一次，而且只有 gzip；
- * 预压之后既省 CPU 又能用上 brotli（实测 scenes.json gzip 229.7KB →
- * brotli 155.2KB）。产物由 scripts/maintenance/precompress.js 生成。
- */
-function precompressed(rootDir) {
-  return function (req, res, next) {
-    if (req.method !== 'GET' && req.method !== 'HEAD') return next();
-    if (!PRECOMPRESSIBLE.test(req.path)) return next();
-
-    var accept = String(req.headers['accept-encoding'] || '');
-    var encoding = /\bbr\b/.test(accept) ? 'br' : (/\bgzip\b/.test(accept) ? 'gzip' : '');
-    if (!encoding) return next();
-
-    // 只服务白名单目录，且必须落在 root 内（防目录穿越）
-    var allowed = /^\/(?:_app\/|data\/|assets\/|css\/|docs\/|index\.html$)/.test(req.path);
-    if (!allowed) return next();
-
-    var base = req.path === '/index.html' || req.path.indexOf('/_app/') === 0
-      ? path.join(rootDir, 'dist', req.path)
-      : path.join(rootDir, req.path);
-    var resolved = path.resolve(base);
-    if (resolved.indexOf(path.resolve(rootDir) + path.sep) !== 0) return next();
-
-    var suffix = encoding === 'br' ? '.br' : '.gz';
-    var compressedFile = resolved + suffix;
-    if (!fs.existsSync(compressedFile)) return next();
-
-    // 直接把预压文件发出去。改写 req.url 交给下游是不行的：
-    // 后面的 /data 白名单会看到 "scenes.json.br" 而拒掉。
-    res.setHeader('Content-Encoding', encoding);
-    res.setHeader('Vary', 'Accept-Encoding');
-    var type = express.static.mime.lookup(resolved);
-    if (type) {
-      res.setHeader('Content-Type', type +
-        (/^text\/|json|javascript|svg/.test(type) ? '; charset=utf-8' : ''));
-    }
-    // 缓存策略要与未压缩版本一致
-    if (req.path.indexOf('/_app/') === 0) {
-      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
-    } else if (/\.(?:html|json)$/i.test(req.path)) {
-      res.setHeader('Cache-Control', 'no-cache');
-    }
-    res.sendFile(compressedFile, function (error) {
-      // 发送失败（文件刚被删等）就回退到未压缩路径
-      if (error && !res.headersSent) {
-        res.removeHeader('Content-Encoding');
-        next();
-      }
-    });
-  };
-}
-
 function createGateway(options) {
   options = options || {};
   var spawn = options.spawn || cp.spawn;
   var config = options.config || loadGatewayConfig(__dirname, options.env || process.env);
   var app = express();
-  var tunnelUrl = '';
-  var pendingTunnelUrl = '';
-  var tunnelProcess = null;
-  var tunnelPoll = null;
-  var tunnelStopped = false;
 
   app.disable('x-powered-by');
   app.use(security.responseHeaders);
   app.use(precompressed(config.ROOT_DIR));
   // Host 白名单必须在 tokenAuth 之前：tokenAuth 对 loopback socket 无条件放行，
   // 不校验 Host 时任意网页都能把域名 rebind 到 127.0.0.1 并以「本机」身份调控制接口。
-  app.use(security.hostGuard(config, function () { return tunnelUrl; }));
+  var tunnelManager = null;
+  app.use(security.hostGuard(config, function () { return tunnelManager ? tunnelManager.getUrl() : ''; }));
   app.use(security.tokenAuth(config.TOKEN));
   app.use(compression({ threshold:1024 }));
 
@@ -133,6 +74,11 @@ function createGateway(options) {
   // 控制面板路由需要访问 gateway 对象（tunnelUrl、startTunnel/stopTunnel）
   // 用闭包延迟引用，避免循环依赖
   var gatewayState = { tunnelUrl:'', startTunnel:null, stopTunnel:null };
+  tunnelManager = createTunnelManager({
+    config:config,
+    spawn:spawn,
+    onStateChange:function () { gatewayState.tunnelUrl = tunnelManager.getUrl(); }
+  });
   var control = createControlRouter(config, function() { return gatewayState; });
 
   app.use(chat.router);
@@ -165,7 +111,7 @@ function createGateway(options) {
 
   app.get('/api/tunnel-status', function (req, res) {
     res.setHeader('Cache-Control', 'no-store');
-    res.json({ url:tunnelUrl });
+    res.json({ url:tunnelManager ? tunnelManager.getUrl() : '' });
   });
 
   // Vue SPA — 优先从 dist/ 提供；dist/ 不存在时回退到旧 index.html
@@ -307,105 +253,15 @@ function createGateway(options) {
     envelope.fail(res, status, messages[status] || (status >= 500 ? '网关内部错误' : '请求无法处理'));
   });
 
-  function startTunnel() {
-    if (config.DISABLE_TUNNEL) return;
-    if (!fs.existsSync(config.CLOUDFLARED_PATH)) {
-      console.log('  ⚠ cloudflared not found, tunnel disabled');
-      return;
-    }
-    if (tunnelProcess) return; // 已在运行，避免重复 spawn
-    tunnelStopped = false;
-    console.log('  🌪 Starting Cloudflare Tunnel...');
-    var runtimeTools = require('./scripts/runtime/runtime-paths');
-    runtimeTools.rotateLog(config.RUNTIME.tunnelLog, 2 * 1024 * 1024);
-    var logFd = fs.openSync(config.RUNTIME.tunnelLog, 'w');
-    tunnelProcess = spawn(config.CLOUDFLARED_PATH, [
-      'tunnel', '--url', 'http://localhost:' + config.PORT
-    ], {
-      stdio:['ignore', logFd, logFd],
-      detached:true,
-      windowsHide:true
-    });
-    tunnelProcess.unref();
-    fs.closeSync(logFd);
-    try { fs.writeFileSync(config.RUNTIME.tunnelPid, String(tunnelProcess.pid)); } catch (error) {}
-
-    // cloudflared 自己挂掉时必须清空 tunnelProcess。
-    // 否则 startTunnel 顶部的 `if (tunnelProcess) return` 会让后续每一次启动
-    // 都变成静默 no-op，而控制面板照样收到 {ok:true}。
-    var thisProcess = tunnelProcess;
-    function handleTunnelExit(reason) {
-      if (tunnelProcess !== thisProcess) return;  // 已经被 stopTunnel 换掉了
-      console.log('  🌪 Tunnel process ended (' + reason + ')');
-      tunnelProcess = null;
-      tunnelUrl = '';
-      pendingTunnelUrl = '';
-      gatewayState.tunnelUrl = '';
-      if (tunnelPoll) { clearInterval(tunnelPoll); tunnelPoll = null; }
-    }
-    tunnelProcess.on('exit', function (code) { handleTunnelExit('exit ' + code); });
-    tunnelProcess.on('error', function (error) { handleTunnelExit(error.message); });
-
-    if (tunnelPoll) { clearInterval(tunnelPoll); tunnelPoll = null; }
-    var attempts = 0;
-    tunnelPoll = setInterval(function () {
-      // 已经点过停止就不要再把 URL 写回来
-      if (tunnelStopped) { clearInterval(tunnelPoll); tunnelPoll = null; return; }
-      try {
-        var log = fs.readFileSync(config.RUNTIME.tunnelLog, 'utf8');
-        var match = log.match(/https:\/\/\S+trycloudflare\.com/);
-        if (match) pendingTunnelUrl = match[0];
-        if (pendingTunnelUrl && /Registered tunnel connection/i.test(log)) {
-          tunnelUrl = pendingTunnelUrl;
-          gatewayState.tunnelUrl = tunnelUrl;
-          console.log('  🌪 Tunnel ready (token redacted; open control panel for share link)');
-          clearInterval(tunnelPoll); tunnelPoll = null;
-        }
-      } catch (error) {}
-      attempts += 1;
-      if (attempts > 30) { clearInterval(tunnelPoll); tunnelPoll = null; }
-    }, 1000);
-  }
-
-  function stopTunnel() {
-    tunnelStopped = true;
-    tunnelUrl = ''; pendingTunnelUrl = ''; gatewayState.tunnelUrl = '';
-    if (tunnelPoll) { clearInterval(tunnelPoll); tunnelPoll = null; }
-
-    var pids = [];
-    if (tunnelProcess && tunnelProcess.pid) pids.push(tunnelProcess.pid);
-    // detached 进程用 taskkill /T 收掉整棵树，process.kill 杀不干净
-    try {
-      var saved = fs.existsSync(config.RUNTIME.tunnelPid)
-        ? String(fs.readFileSync(config.RUNTIME.tunnelPid, 'utf8')).trim()
-        : '';
-      if (/^\d+$/.test(saved) && pids.indexOf(Number(saved)) === -1) pids.push(Number(saved));
-    } catch (error) {}
-
-    pids.forEach(function (pid) {
-      if (process.platform === 'win32') {
-        try { cp.execFileSync('taskkill', ['/pid', String(pid), '/T', '/F'], { stdio:'ignore' }); }
-        catch (error) { try { process.kill(pid); } catch (e) {} }
-      } else {
-        try { process.kill(pid); } catch (error) {}
-      }
-    });
-    try { if (fs.existsSync(config.RUNTIME.tunnelPid)) fs.unlinkSync(config.RUNTIME.tunnelPid); } catch (error) {}
-    // 清掉日志，避免下次轮询读到上一次的旧 URL
-    try { fs.writeFileSync(config.RUNTIME.tunnelLog, ''); } catch (error) {}
-    tunnelProcess = null;
-    console.log('  🌪 Tunnel stopped');
-  }
-
   function close() {
     voice.close();
     training.close();
-    stopTunnel();
+    if (tunnelManager) tunnelManager.stop();
   }
 
   // 将控制函数暴露给 gatewayState，供 control 路由调用
-  gatewayState.startTunnel = startTunnel;
-  gatewayState.stopTunnel  = stopTunnel;
+  gatewayState.startTunnel = function () { if (tunnelManager) tunnelManager.start(); };
+  gatewayState.stopTunnel  = function () { if (tunnelManager) tunnelManager.stop(); };
 
   // upgrade 请求不经过 Express 中间件，所以在这里复刻 hostGuard + tokenAuth 的判定。
   function handleUpgrade(req, socket, head) {
@@ -414,7 +270,7 @@ function createGateway(options) {
       if (SD_PROXY_ALLOWLIST.indexOf(pathname) === -1) { socket.destroy(); return; }
       // hostGuard 的 DNS rebinding 防御必须同样覆盖 WebSocket 升级路径。
       // 这里直接复用纯函数 hostAllowed（hostGuard 是 Express 中间件，依赖 res）。
-      if (!security.hostAllowed(req.headers.host, config.PORT, tunnelUrl)) { socket.destroy(); return; }
+      if (!security.hostAllowed(req.headers.host, config.PORT, tunnelManager ? tunnelManager.getUrl() : '')) { socket.destroy(); return; }
 
       var authorized = security.isDirectLocalRequest(req);
       if (!authorized) {
@@ -450,7 +306,7 @@ function createGateway(options) {
       live2d:live2d.service,
       training:training.service
     },
-    startTunnel:startTunnel,
+    startTunnel:function () { if (tunnelManager) tunnelManager.start(); },
     handleUpgrade:handleUpgrade,
     close:close
   };

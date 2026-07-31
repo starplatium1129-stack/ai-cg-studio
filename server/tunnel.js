@@ -1,0 +1,133 @@
+'use strict';
+
+/**
+ * Cloudflare Tunnel 生命周期管理。
+ *
+ * 从 server.js 抽出，负责 cloudflared 子进程的启动、轮询、停止与退出清理。
+ * 与网关的耦合通过回调收敛：
+ *   - onStateChange(): tunnelUrl 变化时通知外部（同步 gatewayState / 控制面板）
+ */
+
+var fs = require('fs');
+var cp = require('child_process');
+
+function createTunnelManager(options) {
+  options = options || {};
+  var config = options.config;
+  var spawn = options.spawn || cp.spawn;
+  var onStateChange = options.onStateChange || function () {};
+
+  var tunnelUrl = '';
+  var pendingTunnelUrl = '';
+  var tunnelProcess = null;
+  var tunnelPoll = null;
+  var tunnelStopped = false;
+
+  function getUrl() {
+    return tunnelUrl;
+  }
+
+  function clearUrl() {
+    tunnelUrl = '';
+    pendingTunnelUrl = '';
+    onStateChange();
+  }
+
+  function start() {
+    if (config.DISABLE_TUNNEL) return;
+    if (!fs.existsSync(config.CLOUDFLARED_PATH)) {
+      console.log('  ⚠ cloudflared not found, tunnel disabled');
+      return;
+    }
+    if (tunnelProcess) return; // 已在运行，避免重复 spawn
+    tunnelStopped = false;
+    console.log('  🌪 Starting Cloudflare Tunnel...');
+    var runtimeTools = require('../scripts/runtime/runtime-paths');
+    runtimeTools.rotateLog(config.RUNTIME.tunnelLog, 2 * 1024 * 1024);
+    var logFd = fs.openSync(config.RUNTIME.tunnelLog, 'w');
+    tunnelProcess = spawn(config.CLOUDFLARED_PATH, [
+      'tunnel', '--url', 'http://localhost:' + config.PORT
+    ], {
+      stdio:['ignore', logFd, logFd],
+      detached:true,
+      windowsHide:true
+    });
+    tunnelProcess.unref();
+    fs.closeSync(logFd);
+    try { fs.writeFileSync(config.RUNTIME.tunnelPid, String(tunnelProcess.pid)); } catch (error) {}
+
+    // cloudflared 自己挂掉时必须清空 tunnelProcess。
+    // 否则 start 顶部的 `if (tunnelProcess) return` 会让后续每一次启动
+    // 都变成静默 no-op，而控制面板照样收到 {ok:true}。
+    var thisProcess = tunnelProcess;
+    function handleTunnelExit(reason) {
+      if (tunnelProcess !== thisProcess) return;  // 已经被 stop 换掉了
+      console.log('  🌪 Tunnel process ended (' + reason + ')');
+      tunnelProcess = null;
+      clearUrl();
+      if (tunnelPoll) { clearInterval(tunnelPoll); tunnelPoll = null; }
+    }
+    tunnelProcess.on('exit', function (code) { handleTunnelExit('exit ' + code); });
+    tunnelProcess.on('error', function (error) { handleTunnelExit(error.message); });
+
+    if (tunnelPoll) { clearInterval(tunnelPoll); tunnelPoll = null; }
+    var attempts = 0;
+    tunnelPoll = setInterval(function () {
+      // 已经点过停止就不要再把 URL 写回来
+      if (tunnelStopped) { clearInterval(tunnelPoll); tunnelPoll = null; return; }
+      try {
+        var log = fs.readFileSync(config.RUNTIME.tunnelLog, 'utf8');
+        var match = log.match(/https:\/\/\S+trycloudflare\.com/);
+        if (match) pendingTunnelUrl = match[0];
+        if (pendingTunnelUrl && /Registered tunnel connection/i.test(log)) {
+          tunnelUrl = pendingTunnelUrl;
+          onStateChange();
+          console.log('  🌪 Tunnel ready (token redacted; open control panel for share link)');
+          clearInterval(tunnelPoll); tunnelPoll = null;
+        }
+      } catch (error) {}
+      attempts += 1;
+      if (attempts > 30) { clearInterval(tunnelPoll); tunnelPoll = null; }
+    }, 1000);
+  }
+
+  function stop() {
+    tunnelStopped = true;
+    clearUrl();
+    if (tunnelPoll) { clearInterval(tunnelPoll); tunnelPoll = null; }
+
+    var pids = [];
+    if (tunnelProcess && tunnelProcess.pid) pids.push(tunnelProcess.pid);
+    // detached 进程用 taskkill /T 收掉整棵树，process.kill 杀不干净
+    try {
+      var saved = fs.existsSync(config.RUNTIME.tunnelPid)
+        ? String(fs.readFileSync(config.RUNTIME.tunnelPid, 'utf8')).trim()
+        : '';
+      if (/^\d+$/.test(saved) && pids.indexOf(Number(saved)) === -1) pids.push(Number(saved));
+    } catch (error) {}
+
+    pids.forEach(function (pid) {
+      if (process.platform === 'win32') {
+        try { cp.execFileSync('taskkill', ['/pid', String(pid), '/T', '/F'], { stdio:'ignore' }); }
+        catch (error) { try { process.kill(pid); } catch (e) {} }
+      } else {
+        try { process.kill(pid); } catch (error) {}
+      }
+    });
+    try { if (fs.existsSync(config.RUNTIME.tunnelPid)) fs.unlinkSync(config.RUNTIME.tunnelPid); } catch (error) {}
+    // 清掉日志，避免下次轮询读到上一次的旧 URL
+    try { fs.writeFileSync(config.RUNTIME.tunnelLog, ''); } catch (error) {}
+    tunnelProcess = null;
+    console.log('  🌪 Tunnel stopped');
+  }
+
+  return {
+    start:start,
+    stop:stop,
+    getUrl:getUrl
+  };
+}
+
+module.exports = {
+  createTunnelManager:createTunnelManager
+};

@@ -459,7 +459,7 @@
 <script setup lang="ts">
 // 导演台专属样式（91.6KB）随本路由块加载，不再进全局包
 import '@/assets/css/director.css'
-import { ref, computed, nextTick, onMounted, watch } from 'vue'
+import { ref, computed, nextTick, onMounted, watch, defineAsyncComponent } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import {
   usePromptBuilderStore,
@@ -469,17 +469,19 @@ import {
 } from '@/stores/promptBuilderStore'
 import { useSDGenerate } from '@/composables/useSDGenerate'
 import { usePromptAssembly } from '@/composables/usePromptAssembly'
-import HistoryPanel from '@/components/HistoryPanel.vue'
 import { EMOTION, SHOT, LIGHTING, COMPOSITION, COLOR_MOODS, SCENE_THEMES } from '@/config/promptConstants'
 import { useSDQueue, type SDQueueJob } from '@/composables/useSDQueue'
 import { classifySDError, SAFE_SAMPLING, LIGHT_LOAD, type SDErrorReport, type SDRecoveryId } from '@/utils/sdError'
-import VoiceStudio from '@/components/VoiceStudio.vue'
-import PromptDataTools from '@/components/PromptDataTools.vue'
-import PromptHealthPanel from '@/components/PromptHealthPanel.vue'
-import GenerationQueuePanel from '@/components/GenerationQueuePanel.vue'
-import GenerationParamsPanel from '@/components/GenerationParamsPanel.vue'
-import GenerationOutputControls from '@/components/GenerationOutputControls.vue'
-import SDRecoveryPanel from '@/components/SDRecoveryPanel.vue'
+// 折叠面板内的重量级组件走异步加载：它们不参与首屏渲染，按需下载可显著
+// 降低导演台路由块体积（预算上限 JS 128KB / CSS 100KB）。
+const VoiceStudio = defineAsyncComponent(() => import('@/components/VoiceStudio.vue'))
+const PromptDataTools = defineAsyncComponent(() => import('@/components/PromptDataTools.vue'))
+const PromptHealthPanel = defineAsyncComponent(() => import('@/components/PromptHealthPanel.vue'))
+const GenerationQueuePanel = defineAsyncComponent(() => import('@/components/GenerationQueuePanel.vue'))
+const GenerationParamsPanel = defineAsyncComponent(() => import('@/components/GenerationParamsPanel.vue'))
+const GenerationOutputControls = defineAsyncComponent(() => import('@/components/GenerationOutputControls.vue'))
+const SDRecoveryPanel = defineAsyncComponent(() => import('@/components/SDRecoveryPanel.vue'))
+const HistoryPanel = defineAsyncComponent(() => import('@/components/HistoryPanel.vue'))
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import { readHiddenScenes, rememberRecent, recordSceneUsage } from '@/utils/sceneUX'
 import { tagMeaning } from '@/utils/tagMeaning'
