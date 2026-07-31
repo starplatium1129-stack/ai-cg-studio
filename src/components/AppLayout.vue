@@ -26,32 +26,49 @@ import RouteAtmosphere from './visual/RouteAtmosphere.vue'
 
 // 路由进出走 spring：连续快速切页时上一个动画从当前值被打断重定向，
 // 不会像固定时长 keyframes 那样"撞墙"。leave 只做快速淡出，把舞台让给新页。
-let activeAnim: ReturnType<typeof animateMini> | null = null
+// 注意：动画被 stop 后 .then(done) 不会触发，必须在这里强制调用 done，
+// 否则 Vue 永远等不到旧节点移除，页面会叠在一起。
+let activeAnim: { controls: ReturnType<typeof animateMini>; done: () => void } | null = null
+
+// done 可能在"动画自然完成"和"stop 强制完成"两条路径被触发，只执行一次
+function onceDone(done: () => void) {
+  let called = false
+  return () => {
+    if (called) return
+    called = true
+    done()
+  }
+}
 
 function stopActive() {
-  activeAnim?.stop()
-  activeAnim = null
+  if (activeAnim) {
+    activeAnim.controls.stop()
+    activeAnim.done()
+    activeAnim = null
+  }
 }
 
 function onEnter(el: Element, done: () => void) {
   stopActive()
+  const doneOnce = onceDone(done)
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  if (reduced) {
-    activeAnim = animateMini(el as HTMLElement, { opacity: [0, 1] }, { duration: 0.12 })
-  } else {
-    activeAnim = animateMini(
-      el as HTMLElement,
-      { opacity: [0, 1], transform: ['translateY(14px) scale(.992)', 'translateY(0) scale(1)'] },
-      { type: 'spring', bounce: 0, duration: 0.42 },
-    )
-  }
-  activeAnim.then(done)
+  const controls = reduced
+    ? animateMini(el as HTMLElement, { opacity: [0, 1] }, { duration: 0.12 })
+    : animateMini(
+        el as HTMLElement,
+        { opacity: [0, 1], transform: ['translateY(14px) scale(.992)', 'translateY(0) scale(1)'] },
+        { type: 'spring', bounce: 0, duration: 0.42 },
+      )
+  activeAnim = { controls, done: doneOnce }
+  controls.then(doneOnce)
 }
 
 function onLeave(el: Element, done: () => void) {
   stopActive()
-  activeAnim = animateMini(el as HTMLElement, { opacity: 0, transform: 'translateY(-6px)' }, { duration: 0.16, ease: 'easeOut' })
-  activeAnim.then(done)
+  const doneOnce = onceDone(done)
+  const controls = animateMini(el as HTMLElement, { opacity: 0, transform: 'translateY(-6px)' }, { duration: 0.16, ease: 'easeOut' })
+  activeAnim = { controls, done: doneOnce }
+  controls.then(doneOnce)
 }
 </script>
 
