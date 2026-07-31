@@ -131,6 +131,12 @@ function compatibleContent(event) {
   return typeof choice.text === 'string' ? choice.text : '';
 }
 
+function buildWebSearchParams(api) {
+  if (/^gemini-/i.test(api.model)) return { tools:[{ google_search:{} }] };
+  if (api.vendor === 'deepseek' || api.vendor === 'opencode') return { web_search:true };
+  return { web_search:true };
+}
+
 async function streamCompatibleApi(input, handlers) {
   handlers = handlers || {};
   var api = input.api;
@@ -145,7 +151,7 @@ async function streamCompatibleApi(input, handlers) {
       messages:input.messages,
       stream:true
     }, api.vendor === 'deepseek' ? { thinking:{ type:'disabled' } } : {},
-    input.webSearch && /^gemini-/i.test(api.model) ? { tools:[{ google_search:{} }] } : {}),
+    input.webSearch ? buildWebSearchParams(api) : {}),
     signal:input.signal,
     timeoutMs:120000,
     timeoutMessage:'自定义 API 对话超时'

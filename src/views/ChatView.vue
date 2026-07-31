@@ -147,12 +147,12 @@
 
           <div class="composer-tools">
             <div class="voice-console" aria-label="角色声线控制">
-              <label v-if="chatProvider === 'api' && apiModel.startsWith('gemini-')" class="voice-toggle">
+              <label v-if="chatProvider === 'api'" class="voice-toggle">
                 <input type="checkbox" v-model="webSearchEnabled" />
                 <span class="voice-switch" aria-hidden="true"><span></span></span>
-                <span class="voice-toggle-copy"><strong>联网检索</strong><small>用 Google Search 补充近期信息</small></span>
+                <span class="voice-toggle-copy"><strong>联网检索</strong><small>补充最新信息</small></span>
               </label>
-              <span v-if="chatProvider === 'api' && apiModel.startsWith('gemini-')" class="voice-divider" aria-hidden="true"></span>
+              <span v-if="chatProvider === 'api'" class="voice-divider" aria-hidden="true"></span>
               <label class="voice-toggle">
                 <input type="checkbox" v-model="autoVoice" @change="onAutoVoiceChange" />
                 <span class="voice-switch" aria-hidden="true"><span></span></span>
