@@ -184,6 +184,7 @@ function createTranslationService(options: TranslationServiceOptions) {
       let output = '';
       let errorOutput = '';
       let finished = false;
+      const OUTPUT_CAP = 64 * 1024;
       const legacy = cp.spawn(options.python, [options.script], {
         windowsHide: true,
         env: Object.assign({}, process.env, { PYTHONUTF8: '1' }),
@@ -209,12 +210,12 @@ function createTranslationService(options: TranslationServiceOptions) {
       if (signal) signal.addEventListener('abort', onAbort, { once: true });
       if (legacy.stdout) {
         legacy.stdout.on('data', function (chunk: Buffer) {
-          output += chunk.toString('utf8');
+          if (output.length < OUTPUT_CAP) output += chunk.toString('utf8').slice(0, OUTPUT_CAP - output.length);
         });
       }
       if (legacy.stderr) {
         legacy.stderr.on('data', function (chunk: Buffer) {
-          errorOutput += chunk.toString('utf8');
+          if (errorOutput.length < OUTPUT_CAP) errorOutput += chunk.toString('utf8').slice(0, OUTPUT_CAP - errorOutput.length);
         });
       }
       legacy.once('error', function (error) {

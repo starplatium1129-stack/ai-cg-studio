@@ -9,7 +9,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "vite",
-    "build": "vite build && node scripts/maintenance/check-bundle-budget.js",
+    "build": "vite build && node scripts/maintenance/check-bundle-budget.js && node scripts/maintenance/precompress.js",
     "build:analyze": "vite build --mode analyze && node scripts/maintenance/check-bundle-budget.js",
     "build:all": "npm run build && npm run build:runtime && npm run precompress",
     "prod": "npm run build && npm run precompress && npm start",
@@ -85,9 +85,6 @@
     "typescript": "5.9.3",
     "vite": "^6.3.5",
     "vue-tsc": "3.3.8"
-  },
-  "overrides": {
-    "gh-pages": "6.3.0"
   },
   "browserslist": [
     "chrome >= 111",

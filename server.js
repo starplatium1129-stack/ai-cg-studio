@@ -497,6 +497,13 @@ function startGateway(options) {
     process.exit(1);
   });
 
+  // 显式 HTTP 超时，不依赖 Node 默认值：
+  // headersTimeout 覆盖慢隧道上的请求头接收；requestTimeout 覆盖大上传
+  // （26MB 样张经 cloudflared）的完整接收窗口；keepAliveTimeout 给复用连接留余量。
+  server.requestTimeout = 600000;
+  server.headersTimeout = 120000;
+  server.keepAliveTimeout = 6000;
+
   server.on('upgrade', gateway.handleUpgrade);
 
   var closing = false;

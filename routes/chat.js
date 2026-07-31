@@ -356,8 +356,9 @@ function createChatRouter(config, dependencies) {
       if (!res.writableEnded) res.end();
     }).catch(function (error) {
       if (httpClient.isAbortError(error) || controller.signal.aborted) return;
+      var fallback = validation.value.provider === 'api' ? '聊天 API 暂不可用' : 'Ollama 暂不可用';
       if (!res.headersSent) {
-        envelope.fail(res, envelope.statusFor(error, 503), error.message || 'Ollama 暂不可用', {
+        envelope.fail(res, envelope.statusFor(error, 503), error.message || fallback, {
           detail:error.detail || ''
         });
         return;
