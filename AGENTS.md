@@ -110,69 +110,40 @@
 5. 基建修复：`test-style-debt.js` 检查器 bug（三元表达式字符串被误判为对象键，基线代码即误报）与 `test-character-profiles.js`、`test-chat.js` 断言更新到新契约；home 性能预算测试把 woff2 请求排除出计数（CJK 字体固有 50+ 子集，体积仍由 transferBytes 上限约束）。
 6. 验证：`npm run validate` 全绿、`npm run build` 通过、92 个关键 Playwright 用例全绿。
 
-### 待办：四维审计遗留（2026-07-31）
+### 已完成：四维审计遗留（2026-07-31）
 
-四维审计中"报告但未动"的项。按优先级推进，完成一项勾掉一项。
-
-P1 · 近期
-
-1. ~~SceneManagerView 编辑弹窗脏关闭确认~~（2026-07-31 完成：`closeModal` 加表单快照对比，脏改时 `confirm` 拦截 Escape/遮罩/取消；保存后快照刷新不弹）。
-2. ~~破坏性操作补确认~~（2026-07-31 完成：TrainingView 停止训练、ControlView 停止 SD/GPT-SoVITS 均前置 `confirm`，沿用全站 `window.confirm` 模式；Ollama 卸载是显存释放、可逆，不加）。
-3. ~~生成参数解释~~（2026-07-31 完成：GenerationParamsPanel 的 CFG/Steps/Sampler/Scheduler/SD 模型/负面 textarea 补 `title` 中文解释）。
-4. ~~PromptBuilderView 故事编辑静默解除场景关联~~（2026-07-31 完成：新增 `detachScene()`，输入脱离与手动 × 均 flash「已脱离场景，仅保留故事」）。
-
-P2 · 词条搭配收尾
-
-5. ~~docs 质量词示例修订~~（2026-07-31 完成：`docs/prompt-spec.js/html`、`scene-spec.html`、`art-direction.html` 与 `src/config/scenarios.ts` 的六连质量词统一为规范前缀 `masterpiece, best quality, very aesthetic, absurdres`，并注明由模型 profile 注入）。
-6. ~~`data/tags.json` Quality 分类处理~~（2026-07-31 完成：Quality 分类纯冗余——前端过滤不展示、非前缀来源；删除 4 个 Quality 标签与 `TAG_CATEGORY_LABELS` 的 `Quality` 条目，`DATA_VERSION` 重算）。
-7. ~~词条目录级互斥~~（2026-07-31 完成：服装/时段/天气在 `toggleManualTag` 里同组互斥，选新标签自动替换旧标签并 flash 提示；健康告警保留兜底）。
-
-P3 · 工程卫生与长期观察
-
-8. ~~服务端死端点清理评估~~（2026-07-31 完成：删除 `POST /api/backup`、`GET /api/showcase-status`、`GET /api/tunnel-status`，移除 `stopManagedServices` 参数；隧道测试改断言 `/api/status.tunnelStatus`，test-security 路径占位换 `/api/maintenance/scenes`，STARTUP.md 同步）。
-9. ~~`/control` 常驻入口评估~~（2026-07-31 完成：运维控制台入 `AppNav`「更多」secondary，gear 图标，比仅在语音离线时出现更可发现）。
-10. 主 CSS 655KB（brotli 104KB）观察：路由拆分收益小、视觉回归风险大，暂缓；若样式继续膨胀再评估。
-11. 字体权重精简评估：Noto Sans SC 5 权重 × ~13 unicode-range 子集 = 55+ 请求（已从性能预算请求数排除，体积仍受 transferBytes 约束）；评估可否减到 4 个权重。
-12. RouteAtmosphere 粒子场按路由重建观察：每次路由切换重建 SemanticParticleField，可评估 keep-alive/复用，收益小、风险中。
-13. ~~可访问性小项~~（2026-07-31 完成：ChatView 音量滑块补 `aria-label="音量"`、图标 `aria-hidden`；SceneExplorerView 故事抽屉补 `role="dialog"`/`aria-modal` 并用 `useFocusTrap` 替换手写 Escape 监听）。
-14. ~~ControlView 保存交互~~（2026-07-31 完成：SD/TTS host 输入补 `@keydown.enter="saveConfig"`，保存按钮复制到 SD 行，只改 SD 地址也能就近保存）。
+- 破坏性/UX 确认：SceneManagerView 编辑弹窗脏关闭确认、TrainingView/ControlView 停止确认、GenerationParamsPanel 参数 tooltip、故事脱离场景 toast。
+- 词条收尾：docs 质量词统一为规范前缀、删冗余 Quality 分类（DATA_VERSION 重算）、词条目录级互斥（服装/时段/天气）。
+- 工程卫生：删死端点（`/api/backup`、`/api/showcase-status`、`/api/tunnel-status`、`stopManagedServices`）、`/control` 入导航、a11y 小项、ControlView 保存交互。
 
 ### 已完成：P1 · v18 核心样张审核（2026-07-31）
 
 1. 用 `generate-v18-core-showcase.js` 为 30 个核心场景生成可审计候选集（固定 `waiIllustriousSDXL_v170` 检查、确定性 seed、独立目录 `AI/Reviews/SceneAudits/2026-07-30_v18_core`）。
 2. 用 `build-scene-manual-audit-sheets.py` 生成 6 份分批审核表。
-3. 30 个场景全部按“图片审核”约束通过复核并记录到 `manual-review.json`。
+3. 30 个场景全部按"图片审核"约束通过复核并记录到 `manual-review.json`。
 4. 用 `update-v18-core-showcase.py` 将定稿样张同步进线上展示集（大图/缩略图/manifest/分页 sheets），`DATA_VERSION` 升到 15，展示页定向 E2E（`flows.spec.ts`）与 `npm run validate` 全绿。
 
 若后续 v18 全量 297 场景样张需要整体重出，可复用同一套生成→审核→落盘链路。
 
-### 待办：项目健康度优化（2026-07-31）
+### 已完成：项目健康度优化（2026-07-31）
 
-基线：`npm run validate`、`npm run build`、92 个关键 Playwright 用例全部通过。以下按优先级推进，完成一项勾掉一项。
+- 拆分大视图（ControlView/SceneManagerView/TrainingView/PromptBuilderView）、文档漂移修正、测试体系 node:test 迁移、仓库卫生、JS lint、字体自托管、LICENSE。
 
-P1 · 近期
+### 待办
 
-1. Live2D 运行时块瘦身：~~确认 `assets/vendor/live2d` 静态副本能否替代 npm 包~~（2026-07-31 调查结论：wl-live2d bundle 完全自包含 pixi.js + pixi-live2d-display + cubism4 core，静态副本同尺寸无收益；实质瘦身需重写渲染层，暂缓），已纳入 bundle 预算监控（`check-bundle-budget.js` lazy chunk 上限 1000KB）。
-2. ~~消除 /chat 进出整页刷新~~（2026-07-31 评估后暂缓，权衡见下）：CSP 因 Live2D 需要 `unsafe-eval` 而按路由换页（`src/router/index.ts` 与 `server/security.js`）。
-   - 现状已是"最小刷新"：仅进出 `/chat` 各整页一次；`/chat` 内部导航不刷；服务端未收紧 CSP（dev server）时不刷。
-   - 状态丢失面小：草稿（`aics_pb_last_draft`）与会话（`useChatStorage`）均 localStorage 持久化，丢失的只是瞬时内存态。
-   - iframe/独立入口方案需把 ChatCharacterStage + useLive2D（730 行）搬进子文档并过 postMessage 桥（点击分区→动作分派、换装→expression、状态回传），并新增服务端宽松 CSP 路由；收益（免两次刷新）与风险（Live2D 交互回归）不成比例，暂缓；若未来 Live2D 交互简化或 cubism core 出 wasm 免 eval 版本，再重新评估。
-3. 拆分大视图：`TrainingView.vue`（1313 行）、`PromptBuilderView.vue`（1136 行）、`SceneManagerView.vue`（1048 行）、`ControlView.vue`（1019 行）按状态与生命周期所有权拆 composables/子组件，不按行数搬。~~ControlView（1019 → ~400）与 SceneManagerView（1048 → ~860）已拆~~（2026-07-31：`useControlStatus`/`useControlActions`/`useSceneShowcaseUpload`/`useSceneTagManager`）；~~TrainingView 脚本已拆~~（2026-07-31：格式化/分类/状态文案收敛到 `useTrainingFormat`，脚本 345 → ~200 行）；~~PromptBuilderView 已拆~~（2026-07-31：静态目录与派生状态收敛到 `useDirectorCatalog`/`useDirectorDerived`，1204 → ~990 行）。
-4. ~~修正文档漂移~~（2026-07-31 完成：STARTUP.md token 持久化描述、README 场景数 297、tools 结构描述已修正）。
-5. 测试体系渐进迁移：36 个 `scripts/tests/*.js` 断言脚本迁到 `node:test`（保持命令兼容），补覆盖率统计与失败定位。~~已全部迁移~~（2026-07-31：`test-sd-error`、`test-maintenance` 手工示范 + 22 个纯断言文件自动包裹 + `test-http-client`、`test-gateway-token`、`test-chat`、`test-training-routes`、`test-training-service`、`test-sd-runtime`、`test-storage-reliability`、`test-control-failure-contract`、`test-live2d-service` 手工；迁移模式：断言包进 `test()`，命令兼容，失败给用例名与位置）。
+暂缓（已评估有结论，条件具备再动）：
 
-P2 · 工程卫生与基础设施
+1. Live2D 运行时块瘦身：wl-live2d bundle 完全自包含（pixi.js + cubism4 core），静态副本同尺寸无收益；实质瘦身需重写渲染层。已纳入 bundle 预算监控（lazy chunk 上限 1000KB）。
+2. 消除 /chat 进出整页刷新：CSP 因 Live2D 需要 `unsafe-eval` 而按路由换页，现状已是"最小刷新"（仅进出各一次）；iframe/独立入口方案收益与 Live2D 交互回归风险不成比例。
 
-6. ~~仓库卫生~~（2026-07-31 完成：pptx 移入 docs/、清理 data 旧文件、删除 agents/test-branch 及其 worktree）。
-7. ~~JS lint~~（2026-07-31 完成：ESLint flat config 接入 `npm run validate`，0 error 门禁覆盖未使用变量/显式 any 回退/console 残留/v-html；清理 4 个死变量与 1 个死函数）。
-8. ~~字体自托管~~（2026-07-31 完成：Google Fonts 换 @fontsource 本地 woff2，CSP 移除 fonts.googleapis.com/gstatic.com，离线可用）。
-9. ~~如计划公开分享仓库，补 LICENSE 文件~~（2026-07-31 完成：MIT LICENSE + README/README_zh 许可说明与徽章）。
+长期观察：
 
-P3 · 长期观察
-
-10. 场景扩容时评估 `data/scenes.json`（899KB / brotli 155KB）按角色分片或索引化加载。
-11. `services/training-service.ts`（1069 行）在训练功能稳定后按数据集/任务/日志拆分。
-12. Express 5 升级评估（不急），需覆盖中间件与代理兼容性测试。
+3. 主 CSS 655KB（brotli 104KB）：路由拆分收益小、视觉回归风险大，暂缓；若样式继续膨胀再评估。
+4. 字体权重：Noto Sans SC 5 权重 × ~13 unicode-range 子集 = 55+ 请求，评估可否减到 4 个权重（体积仍受 transferBytes 约束）。
+5. RouteAtmosphere 粒子场按路由重建：可评估 keep-alive/复用，收益小、风险中。
+6. `data/scenes.json`（899KB / brotli 155KB）扩容时按角色分片或索引化加载。
+7. `services/training-service.ts`（1069 行）训练功能稳定后按数据集/任务/日志拆分。
+8. Express 5 升级评估（不急），需覆盖中间件与代理兼容性测试。
 
 ## 明确暂缓
 
