@@ -111,9 +111,9 @@ P1 · 近期
    - 现状已是"最小刷新"：仅进出 `/chat` 各整页一次；`/chat` 内部导航不刷；服务端未收紧 CSP（dev server）时不刷。
    - 状态丢失面小：草稿（`aics_pb_last_draft`）与会话（`useChatStorage`）均 localStorage 持久化，丢失的只是瞬时内存态。
    - iframe/独立入口方案需把 ChatCharacterStage + useLive2D（730 行）搬进子文档并过 postMessage 桥（点击分区→动作分派、换装→expression、状态回传），并新增服务端宽松 CSP 路由；收益（免两次刷新）与风险（Live2D 交互回归）不成比例，暂缓；若未来 Live2D 交互简化或 cubism core 出 wasm 免 eval 版本，再重新评估。
-3. 拆分大视图：`TrainingView.vue`（1313 行）、`PromptBuilderView.vue`（1136 行）、`SceneManagerView.vue`（1048 行）、`ControlView.vue`（1019 行）按状态与生命周期所有权拆 composables/子组件，不按行数搬。
+3. 拆分大视图：`TrainingView.vue`（1313 行）、`PromptBuilderView.vue`（1136 行）、`SceneManagerView.vue`（1048 行）、`ControlView.vue`（1019 行）按状态与生命周期所有权拆 composables/子组件，不按行数搬。~~ControlView（1019 → ~400）与 SceneManagerView（1048 → ~860）已拆~~（2026-07-31：`useControlStatus`/`useControlActions`/`useSceneShowcaseUpload`/`useSceneTagManager`）；TrainingView 与 PromptBuilderView 待续。
 4. ~~修正文档漂移~~（2026-07-31 完成：STARTUP.md token 持久化描述、README 场景数 297、tools 结构描述已修正）。
-5. 测试体系渐进迁移：36 个 `scripts/tests/*.js` 断言脚本迁到 `node:test`（保持命令兼容），补覆盖率统计与失败定位。
+5. 测试体系渐进迁移：36 个 `scripts/tests/*.js` 断言脚本迁到 `node:test`（保持命令兼容），补覆盖率统计与失败定位。~~已迁移示范 2 个~~（2026-07-31：`test-sd-error`、`test-maintenance`；迁移模式：顶层断言包进 `test()`，命令兼容，失败给用例名与位置）。
 
 P2 · 工程卫生与基础设施
 
