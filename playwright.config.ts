@@ -35,6 +35,9 @@ const FLOWS_SPEC = /flows\.spec\.ts/;
 export default defineConfig({
   testDir: './tests/e2e',
   fullyParallel: false,
+  // 本地默认用满 CPU 核并行跑 5 个 project（desktop/flows/窄屏/平板/手机），
+  // 92 个用例从串行 10+ 分钟降到 1-3 分钟；CI 上 2 workers 防止 runner OOM。
+  workers: process.env.CI ? 2 : undefined,
   timeout: 30_000,
   expect: { timeout: 8_000 },
   retries: process.env.CI ? 1 : 0,
