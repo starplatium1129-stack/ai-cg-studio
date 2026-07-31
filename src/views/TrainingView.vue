@@ -180,6 +180,24 @@
                 <code>{{ planFor(job.character).outfit.token }}</code>
               </div>
 
+              <div v-if="job.datasetOptions?.length" class="dataset-picker">
+                <label :for="`${job.id}-dataset`">训练数据集</label>
+                <select
+                  :id="`${job.id}-dataset`"
+                  class="select"
+                  :value="selectedDatasetId(job)"
+                  :disabled="isActive(job)"
+                  @change="setDataset(job, ($event.target as HTMLSelectElement).value)"
+                >
+                  <option v-for="option in job.datasetOptions" :key="option.id" :value="option.id">
+                    {{ option.name }}{{ option.ready ? '' : '（无图片）' }}
+                  </option>
+                </select>
+                <span class="picker-hint">
+                  {{ datasetOptionFor(job)?.images ?? 0 }} 张图片 · 切换后统计即时更新
+                </span>
+              </div>
+
               <section class="param-panel" aria-labelledby="`${job.id}-params`">
                 <header class="param-head">
                   <div>
@@ -244,30 +262,30 @@
                   </figcaption>
                 </figure>
 
-                <div v-if="datasetFor(job)" class="dataset-stats">
+                <div v-if="datasetFor(job) || datasetOptionFor(job)" class="dataset-stats">
                   <div>
-                    <strong>{{ datasetFor(job)?.images ?? 0 }}</strong>
+                    <strong>{{ datasetOptionFor(job)?.images ?? datasetFor(job)?.images ?? 0 }}</strong>
                     <span>图片</span>
                   </div>
                   <div>
-                    <strong>{{ datasetFor(job)?.captions ?? 0 }}</strong>
+                    <strong>{{ datasetOptionFor(job)?.captions ?? datasetFor(job)?.captions ?? 0 }}</strong>
                     <span>标注</span>
                   </div>
                   <div>
-                    <strong>{{ formatBytes(datasetFor(job)?.bytes ?? 0) }}</strong>
+                    <strong>{{ formatBytes(datasetOptionFor(job)?.bytes ?? datasetFor(job)?.bytes ?? 0) }}</strong>
                     <span>体积</span>
                   </div>
                   <div>
-                    <strong>{{ datasetFor(job)?.categories.validation ?? 0 }}</strong>
+                    <strong>{{ datasetOptionFor(job)?.categories.validation ?? 0 }}</strong>
                     <span>保留验证</span>
                   </div>
                 </div>
 
-                <div v-if="datasetFor(job)" class="category-section">
+                <div v-if="datasetOptionFor(job)?.categories" class="category-section">
                   <span class="field-name">样本分层</span>
                   <div class="category-list">
                     <span
-                      v-for="category in categoryEntries(datasetFor(job)?.categories ?? {})"
+                      v-for="category in categoryEntries(datasetOptionFor(job)?.categories ?? {})"
                       :key="category[0]"
                       :class="{ adult: isAdultCategory(category[0]) }"
                     >
@@ -293,7 +311,7 @@
                   </div>
                   <div>
                     <span>R18 样本 · 默认纳入</span>
-                    <strong>{{ adultCount(datasetFor(job)?.categories ?? {}) }} 张分层素材</strong>
+                    <strong>{{ adultCount(datasetOptionFor(job)?.categories ?? {}) }} 张分层素材</strong>
                     <small>成人样本已纳入训练；缩略图始终使用预先模糊的审核表。</small>
                   </div>
                 </div>
@@ -683,9 +701,31 @@ interface ParamDraft {
 const paramDrafts = ref<Partial<Record<TrainingJobId, ParamDraft>>>({})
 const lossHistory = ref<Partial<Record<TrainingJobId, number[]>>>({})
 const stepSamples = ref<Partial<Record<TrainingJobId, Array<{ t: number; step: number }>>>>({})
+const selectedDataset = ref<Partial<Record<TrainingJobId, string>>>({})
 const onboardingDismissed = ref(
   window.localStorage.getItem('aics_training_onboarded') === '1',
 )
+
+function datasetKey(id: TrainingJobId): string {
+  return `aics_training_dataset_${id}`
+}
+
+function selectedDatasetId(job: TrainingJob): string {
+  const local = selectedDataset.value[job.id] ?? window.localStorage.getItem(datasetKey(job.id)) ?? ''
+  if (local && job.datasetOptions?.some((option) => option.id === local)) return local
+  return job.selectedDataset ?? ''
+}
+
+function setDataset(job: TrainingJob, id: string): void {
+  selectedDataset.value[job.id] = id
+  window.localStorage.setItem(datasetKey(job.id), id)
+}
+
+function datasetOptionFor(job: TrainingJob): NonNullable<TrainingJob['datasetOptions']>[number] | null {
+  const options = job.datasetOptions ?? []
+  const id = selectedDatasetId(job)
+  return options.find((option) => option.id === id) ?? options[0] ?? null
+}
 
 function paramsKey(id: TrainingJobId): string {
   return `aics_training_params_${id}`
@@ -890,7 +930,8 @@ function canStart(job: TrainingJob): boolean {
 async function beginTraining(job: TrainingJob): Promise<void> {
   resetJobTelemetry(job.id)
   await ensureParams(job.id)
-  await start(job.id, overridesFor(job.id))
+  const dataset = selectedDatasetId(job) || undefined
+  await start(job.id, overridesFor(job.id), dataset)
 }
 
 async function setKind(kind: TrainingKind, syncRoute = true): Promise<void> {
@@ -1488,6 +1529,26 @@ onUnmounted(() => {
   line-height: 1.5;
 }
 .param-error { color: var(--warning-text); }
+
+.dataset-picker {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--s-2);
+  margin-bottom: var(--s-3);
+  padding: var(--s-2) var(--s-3);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-lg);
+  background: var(--bg-deep);
+}
+.dataset-picker label {
+  color: var(--text-muted);
+  font: 650 var(--fs-mono-xs) var(--font-mono);
+  letter-spacing: .07em;
+}
+.dataset-picker .select { min-height: 32px; font-size: var(--fs-label-sm); }
+.dataset-picker .select:disabled { opacity: .55; cursor: not-allowed; }
+.picker-hint { color: var(--text-muted); font-size: var(--fs-mono-xs); white-space: nowrap; }
 
 .dataset-details {
   margin-bottom: var(--s-3);

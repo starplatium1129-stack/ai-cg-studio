@@ -136,7 +136,8 @@ function createTrainingRouter(config, dependencies) {
         return envelope.fail(res, 400, '请选择一个受支持的训练任务', { code: 'UNKNOWN_JOB' });
       }
       var overrides = req.body && typeof req.body === 'object' ? req.body.overrides : undefined;
-      return envelope.ok(res, { job: service.startJob(id, overrides) });
+      var dataset = req.body && typeof req.body === 'object' ? req.body.dataset : undefined;
+      return envelope.ok(res, { job: service.startJob(id, overrides, dataset) });
     } catch (error) {
       return serviceError(res, error);
     }

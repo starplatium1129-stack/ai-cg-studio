@@ -144,13 +144,13 @@ export const useTrainingStore = defineStore('training', () => {
           : overview.value.activeJobId
   }
 
-  async function start(id: TrainingJobId, overrides?: TrainingParamOverrides): Promise<void> {
+  async function start(id: TrainingJobId, overrides?: TrainingParamOverrides, dataset?: string): Promise<void> {
     actionJobId.value = id
     error.value = ''
     try {
       const payload = await request<JobEnvelope>('/api/training/jobs', {
         method: 'POST',
-        body: JSON.stringify({ id, overrides: overrides ?? {} }),
+        body: JSON.stringify({ id, overrides: overrides ?? {}, dataset }),
       })
       updateJob(payload.job)
       selectedJobId.value = id

@@ -235,8 +235,8 @@ function createTrainingStub(previewFile) {
           lines:['epoch 2/80 - loss 0.094']
         };
       },
-      startJob:function (id, overrides) {
-        calls.startJob.push({ id:id, overrides:overrides });
+      startJob:function (id, overrides, dataset) {
+        calls.startJob.push({ id:id, overrides:overrides, dataset:dataset });
         if (id === 'voice-nene') {
           throw new TrainingServiceError(
             'Another GPU training job is active',
@@ -446,7 +446,7 @@ async function main() {
     assertSuccess(started, 'start training job');
     assert.strictEqual(started.json.job.status, 'running');
     assert.strictEqual(started.json.job.pid, 4242);
-    assert.deepStrictEqual(stub.calls.startJob, [{ id:'lora-nene-v18', overrides:undefined }]);
+    assert.deepStrictEqual(stub.calls.startJob, [{ id:'lora-nene-v18', overrides:undefined, dataset:undefined }]);
 
     var configResponse = await request(port, {
       path:'/api/training/jobs/lora-nene-v18/config'
@@ -466,12 +466,13 @@ async function main() {
     var startedWithOverrides = await request(port, {
       method:'POST',
       path:'/api/training/jobs',
-      body:{ id:'lora-natsume-v18', overrides:{ epochs:90, lora_rank:64 } }
+      body:{ id:'lora-natsume-v18', overrides:{ epochs:90, lora_rank:64 }, dataset:'V18_Unified' }
     });
     assertSuccess(startedWithOverrides, 'start training job with whitelisted overrides');
     assert.deepStrictEqual(stub.calls.startJob[1], {
       id:'lora-natsume-v18',
-      overrides:{ epochs:90, lora_rank:64 }
+      overrides:{ epochs:90, lora_rank:64 },
+      dataset:'V18_Unified'
     });
 
     var stopped = await request(port, {

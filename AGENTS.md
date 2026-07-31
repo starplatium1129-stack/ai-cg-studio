@@ -42,6 +42,7 @@
 - 覆盖值由服务端写入 `training_configs/.ui_plans/` 下带时间戳的一次性配置副本（原配置只读），浏览器仍无法直接传路径或命令；无覆盖时保持原配置启动。
 - `GET /api/training/jobs/:id/config` 返回白名单字段与推荐值（来源为磁盘 v18 配置），voice 任务返回 `available: false`。
 - 前端参数草稿按 job 持久化在 `aics_training_params_<jobId>`（localStorage），"开始训练"只提交与推荐值不同的字段；ETA 由前端滑动平均步速外推，不依赖服务端时钟。
+- LoRA 数据集可切换：服务端枚举 `AI/Datasets/Characters/<角色>/` 下非隐藏子目录为候选（`job.datasetOptions` 含每个候选的图片/标注/体积/分层统计），浏览器只传枚举 id（未知 id 一律 400，仍不传路径）；`job.selectedDataset` 是默认目录（宁宁 `V18_WD14_Curated`、夏目 `V17_WD14_Curated`，无则取枚举首个）。前端选择持久化在 `aics_training_dataset_<jobId>`。
 
 ### 已形成独立所有权的绘图组件
 

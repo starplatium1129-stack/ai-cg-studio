@@ -83,6 +83,8 @@ function main() {
     }, null, 2));
     writeFile(image, 'not-a-real-png');
     writeFile(image.replace(/\.png$/, '.txt'), 'ayachi_nene, face_anchor\n');
+    writeFile(path.join(aiRoot, 'Datasets', 'Characters', 'Ayachi_Nene', 'V18_Unified', 'identity', 'alt.png'), 'x');
+    writeFile(path.join(aiRoot, 'Datasets', 'Characters', 'Ayachi_Nene', 'V18_Unified', 'identity', 'alt.txt'), 'ayachi_nene\n');
     writeFile(voicePython);
     writeFile(voiceScript, 'print("train voice")\n');
     writeFile(path.join(aiRoot, 'GPT-SoVITS', '.keep'));
@@ -119,6 +121,19 @@ function main() {
     assert.strictEqual(voiceSummary.trainSamples, 1);
     assert.strictEqual(voiceSummary.evalSamples, 1);
     assert.strictEqual(voiceSummary.testSamples, 1);
+
+    var loraJob = overview.jobs.find(function (item) { return item.id === 'lora-nene-v18'; });
+    assert.strictEqual(loraJob.selectedDataset, 'V18_WD14_Curated');
+    assert.strictEqual(loraJob.datasetOptions.length, 2);
+    var unified = loraJob.datasetOptions.find(function (item) { return item.id === 'V18_Unified'; });
+    assert.strictEqual(unified.images, 1);
+    assert.strictEqual(unified.captions, 1);
+    assert.strictEqual(unified.ready, true);
+    assert.strictEqual(
+      service.getJob('voice-nene').datasetOptions.length,
+      0,
+      'voice jobs must not expose image dataset options'
+    );
 
     var started = service.startJob('lora-nene-v18');
     assert.strictEqual(started.status, 'running');
@@ -198,6 +213,8 @@ function main() {
     assert.strictEqual(planConfig.lora_rank, 32);
     var originalConfig = JSON.parse(fs.readFileSync(config, 'utf8'));
     assert.strictEqual(originalConfig.epochs, 143);
+    service.stopJob('lora-nene-v18');
+    child.emit('close', null);
     assert.throws(
       function () { service.startJob('lora-nene-v18', { epochs: 99999 }); },
       function (error) {
@@ -222,6 +239,16 @@ function main() {
           && error.status === 400;
       }
     );
+    assert.throws(
+      function () { service.startJob('lora-nene-v18', {}, 'not-a-real-dataset'); },
+      function (error) {
+        return error instanceof trainingModule.TrainingServiceError
+          && error.code === 'UNKNOWN_DATASET'
+          && error.status === 400;
+      }
+    );
+    var startedWithDataset = service.startJob('lora-nene-v18', {}, 'V18_Unified');
+    assert.strictEqual(startedWithDataset.status, 'running');
     service.stopJob('lora-nene-v18');
     child.emit('close', null);
 
@@ -234,9 +261,9 @@ function main() {
     var startedVoice = service.startJob('voice-nene');
     assert.strictEqual(startedVoice.status, 'running');
     assert.strictEqual(startedVoice.pid, 4343);
-    assert.strictEqual(spawnCalls.length, 3);
-    assert.strictEqual(spawnCalls[2].command, voicePython);
-    assert.deepStrictEqual(spawnCalls[2].args, [
+    assert.strictEqual(spawnCalls.length, 4);
+    assert.strictEqual(spawnCalls[3].command, voicePython);
+    assert.deepStrictEqual(spawnCalls[3].args, [
       voiceScript,
       '--character',
       'nene',
@@ -247,8 +274,8 @@ function main() {
       '--experiment-suffix',
       'voice-v16'
     ]);
-    assert.strictEqual(spawnCalls[2].options.cwd, path.join(aiRoot, 'Voice'));
-    assert.strictEqual(spawnCalls[2].options.shell, false);
+    assert.strictEqual(spawnCalls[3].options.cwd, path.join(aiRoot, 'Voice'));
+    assert.strictEqual(spawnCalls[3].options.shell, false);
     voiceChild.emit('close', 0);
     assert.strictEqual(service.getJob('voice-nene').status, 'completed');
 

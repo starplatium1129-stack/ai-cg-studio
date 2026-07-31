@@ -402,6 +402,39 @@ function walkDataset(root) {
     }
     return result;
 }
+const CHARACTER_DATASET_DIRS = {
+    nene: 'Ayachi_Nene',
+    natsume: 'Shiki_Natsume',
+};
+const DEFAULT_DATASETS = {
+    nene: 'V18_WD14_Curated',
+    natsume: 'V17_WD14_Curated',
+};
+/** 枚举角色目录下可作为训练数据集的子目录（排除隐藏目录），浏览器不传路径，只传这里的 id。 */
+function listDatasetCandidates(aiRoot, character) {
+    const root = path.join(aiRoot, 'Datasets', 'Characters', CHARACTER_DATASET_DIRS[character]);
+    let entries;
+    try {
+        entries = fs.readdirSync(root, { withFileTypes: true });
+    }
+    catch {
+        return [];
+    }
+    return entries
+        .filter((entry) => entry.isDirectory() && !entry.name.startsWith('.'))
+        .map((entry) => ({ id: entry.name, name: entry.name }))
+        .sort((a, b) => a.id.localeCompare(b.id));
+}
+function defaultDatasetFor(aiRoot, character) {
+    const candidates = listDatasetCandidates(aiRoot, character);
+    const preferred = DEFAULT_DATASETS[character];
+    if (preferred && candidates.some((item) => item.id === preferred))
+        return preferred;
+    return candidates[0]?.id ?? '';
+}
+function isKnownDataset(aiRoot, character, datasetId) {
+    return listDatasetCandidates(aiRoot, character).some((item) => item.id === datasetId);
+}
 function countLines(file) {
     try {
         const text = fs.readFileSync(file, 'utf8');
@@ -554,7 +587,7 @@ function createTrainingService(options) {
         stateFor(id).logVersion += 1;
         return true;
     }
-    function inspectJob(id) {
+    function inspectJob(id, datasetId) {
         const definition = definitionFor(id);
         const oneTrainerRoot = path.join(aiRoot, 'OneTrainer');
         const voiceRoot = path.join(aiRoot, 'Voice');
@@ -570,10 +603,14 @@ function createTrainingService(options) {
         let args = [];
         let configName = '';
         let loraConfigPath = '';
+        let resolvedDatasetId = '';
         if (definition.kind === 'lora') {
-            datasetPath = definition.character === 'nene'
-                ? path.join(aiRoot, 'Datasets', 'Characters', 'Ayachi_Nene', 'V18_WD14_Curated')
-                : path.join(aiRoot, 'Datasets', 'Characters', 'Shiki_Natsume', 'V17_WD14_Curated');
+            const selectedDataset = typeof datasetId === 'string' && datasetId
+                && isKnownDataset(aiRoot, definition.character, datasetId)
+                ? datasetId
+                : defaultDatasetFor(aiRoot, definition.character);
+            resolvedDatasetId = selectedDataset;
+            datasetPath = path.join(aiRoot, 'Datasets', 'Characters', CHARACTER_DATASET_DIRS[definition.character], selectedDataset);
             executablePath = pythonOneTrainer;
             scriptPath = oneTrainerScript;
             cwd = oneTrainerRoot;
@@ -589,7 +626,7 @@ function createTrainingService(options) {
                 missing.push('v18 训练配置尚未准备');
             const dataset = walkDataset(datasetPath);
             if (!fs.existsSync(datasetPath) || dataset.images === 0)
-                missing.push('v18 图片数据集尚未准备');
+                missing.push('所选图片数据集尚未准备');
         }
         else {
             datasetPath = path.join(voiceRoot, VOICE_DATASET_VERSION, definition.character);
@@ -633,6 +670,7 @@ function createTrainingService(options) {
             configName: configName || undefined,
             configPath: loraConfigPath,
             datasetPath,
+            datasetId: resolvedDatasetId || undefined,
             executablePath,
             scriptPath,
             cwd,
@@ -662,6 +700,23 @@ function createTrainingService(options) {
         };
         return { id, kind: 'lora', available: true, fields, recommended: { ...fields } };
     }
+    function datasetOptionsFor(definition) {
+        if (definition.kind !== 'lora')
+            return [];
+        return listDatasetCandidates(aiRoot, definition.character).map((candidate) => {
+            const root = path.join(aiRoot, 'Datasets', 'Characters', CHARACTER_DATASET_DIRS[definition.character], candidate.id);
+            const scanned = walkDataset(root);
+            return {
+                id: candidate.id,
+                name: candidate.name,
+                images: scanned.images,
+                captions: scanned.captions,
+                bytes: scanned.bytes,
+                categories: scanned.categories,
+                ready: scanned.images > 0,
+            };
+        });
+    }
     function publicJob(id) {
         const state = stateFor(id);
         const inspection = inspectJob(id);
@@ -674,6 +729,8 @@ function createTrainingService(options) {
             ready: inspection.ready,
             missing: inspection.missing,
             configName: inspection.configName,
+            datasetOptions: datasetOptionsFor(inspection.definition),
+            selectedDataset: inspection.datasetId,
             status: state.status,
             pid: state.pid,
             startedAt: state.startedAt,
@@ -799,11 +856,19 @@ function createTrainingService(options) {
             throw new TrainingServiceError(`“${definition.label}”仍在进行，请等待当前任务完成`, 'TRAINING_BUSY', 409);
         }
     }
-    function startJob(value, overridesValue) {
+    function startJob(value, overridesValue, datasetValue) {
         const id = assertKnownId(value);
         const overrides = sanitizeOverrides(overridesValue);
+        const definition = definitionFor(id);
+        const datasetId = datasetValue === undefined || datasetValue === null
+            ? undefined
+            : typeof datasetValue === 'string' && isKnownDataset(aiRoot, definition.character, datasetValue)
+                ? datasetValue
+                : (() => {
+                    throw new TrainingServiceError('未知的数据集，请从候选列表中选择', 'UNKNOWN_DATASET', 400, typeof datasetValue === 'string' ? datasetValue : String(datasetValue));
+                })();
         assertNoActiveJob();
-        const inspection = inspectJob(id);
+        const inspection = inspectJob(id, datasetId);
         if (!inspection.ready) {
             throw new TrainingServiceError(`${inspection.definition.label} 尚未就绪`, 'NOT_READY', 409, inspection.missing.join('；'));
         }
@@ -1066,5 +1131,7 @@ module.exports = {
         walkDataset,
         sanitizeOverrides,
         applyOverridesToConfig,
+        listDatasetCandidates,
+        defaultDatasetFor,
     },
 };

@@ -72,6 +72,7 @@ interface JobInspection {
     configName?: string;
     configPath?: string;
     datasetPath: string;
+    datasetId?: string;
     executablePath: string;
     scriptPath: string;
     cwd: string;
@@ -86,6 +87,8 @@ interface PublicJob {
     ready: boolean;
     missing: string[];
     configName?: string;
+    datasetOptions: PublicDatasetOption[];
+    selectedDataset?: string;
     status: JobStatus;
     pid: number;
     startedAt: number;
@@ -95,6 +98,15 @@ interface PublicJob {
     runCount: number;
     logVersion: number;
     progress: TrainingProgress;
+}
+interface PublicDatasetOption {
+    id: string;
+    name: string;
+    images: number;
+    captions: number;
+    bytes: number;
+    categories: Record<string, number>;
+    ready: boolean;
 }
 /**
  * 浏览器可覆盖的训练参数白名单。
@@ -161,6 +173,13 @@ declare function walkDataset(root: string): {
     bytes: number;
     categories: Record<string, number>;
 };
+interface DatasetCandidate {
+    id: string;
+    name: string;
+}
+/** 枚举角色目录下可作为训练数据集的子目录（排除隐藏目录），浏览器不传路径，只传这里的 id。 */
+declare function listDatasetCandidates(aiRoot: string, character: 'nene' | 'natsume'): DatasetCandidate[];
+declare function defaultDatasetFor(aiRoot: string, character: 'nene' | 'natsume'): string;
 declare function findV18Config(configDirectory: string, character: 'nene' | 'natsume'): string;
 declare function createTrainingService(options: TrainingServiceOptions): {
     overview: () => Record<string, unknown>;
@@ -182,7 +201,7 @@ declare function createTrainingService(options: TrainingServiceOptions): {
         text: string;
         lines: string[];
     };
-    startJob: (value: unknown, overridesValue?: unknown) => PublicJob;
+    startJob: (value: unknown, overridesValue?: unknown, datasetValue?: unknown) => PublicJob;
     stopJob: (value: unknown) => PublicJob;
     close: () => void;
     isKnownJobId: typeof isJobId;
@@ -200,6 +219,8 @@ declare const _default: {
         walkDataset: typeof walkDataset;
         sanitizeOverrides: typeof sanitizeOverrides;
         applyOverridesToConfig: typeof applyOverridesToConfig;
+        listDatasetCandidates: typeof listDatasetCandidates;
+        defaultDatasetFor: typeof defaultDatasetFor;
     };
 };
 export = _default;

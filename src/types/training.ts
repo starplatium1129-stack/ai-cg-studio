@@ -54,6 +54,16 @@ export interface TrainingDataset {
   }
 }
 
+export interface TrainingDatasetOption {
+  id: string
+  name: string
+  images: number
+  captions: number
+  bytes: number
+  categories: Record<string, number>
+  ready: boolean
+}
+
 export interface TrainingJob {
   id: TrainingJobId
   kind: TrainingKind
@@ -63,6 +73,8 @@ export interface TrainingJob {
   ready: boolean
   missing: string[]
   configName?: string
+  datasetOptions?: TrainingDatasetOption[]
+  selectedDataset?: string
   status: TrainingJobStatus
   pid: number
   startedAt: number

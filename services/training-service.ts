@@ -101,6 +101,7 @@ interface JobInspection {
   configName?: string;
   configPath?: string;
   datasetPath: string;
+  datasetId?: string;
   executablePath: string;
   scriptPath: string;
   cwd: string;
@@ -116,6 +117,8 @@ interface PublicJob {
   ready: boolean;
   missing: string[];
   configName?: string;
+  datasetOptions: PublicDatasetOption[];
+  selectedDataset?: string;
   status: JobStatus;
   pid: number;
   startedAt: number;
@@ -125,6 +128,16 @@ interface PublicJob {
   runCount: number;
   logVersion: number;
   progress: TrainingProgress;
+}
+
+interface PublicDatasetOption {
+  id: string;
+  name: string;
+  images: number;
+  captions: number;
+  bytes: number;
+  categories: Record<string, number>;
+  ready: boolean;
 }
 
 /**
@@ -626,6 +639,47 @@ function walkDataset(root: string): {
   return result;
 }
 
+const CHARACTER_DATASET_DIRS: Readonly<Record<'nene' | 'natsume', string>> = {
+  nene: 'Ayachi_Nene',
+  natsume: 'Shiki_Natsume',
+};
+
+const DEFAULT_DATASETS: Readonly<Record<'nene' | 'natsume', string>> = {
+  nene: 'V18_WD14_Curated',
+  natsume: 'V17_WD14_Curated',
+};
+
+interface DatasetCandidate {
+  id: string;
+  name: string;
+}
+
+/** 枚举角色目录下可作为训练数据集的子目录（排除隐藏目录），浏览器不传路径，只传这里的 id。 */
+function listDatasetCandidates(aiRoot: string, character: 'nene' | 'natsume'): DatasetCandidate[] {
+  const root = path.join(aiRoot, 'Datasets', 'Characters', CHARACTER_DATASET_DIRS[character]);
+  let entries: fs.Dirent[];
+  try {
+    entries = fs.readdirSync(root, { withFileTypes: true });
+  } catch {
+    return [];
+  }
+  return entries
+    .filter((entry) => entry.isDirectory() && !entry.name.startsWith('.'))
+    .map((entry) => ({ id: entry.name, name: entry.name }))
+    .sort((a, b) => a.id.localeCompare(b.id));
+}
+
+function defaultDatasetFor(aiRoot: string, character: 'nene' | 'natsume'): string {
+  const candidates = listDatasetCandidates(aiRoot, character);
+  const preferred = DEFAULT_DATASETS[character];
+  if (preferred && candidates.some((item) => item.id === preferred)) return preferred;
+  return candidates[0]?.id ?? '';
+}
+
+function isKnownDataset(aiRoot: string, character: 'nene' | 'natsume', datasetId: string): boolean {
+  return listDatasetCandidates(aiRoot, character).some((item) => item.id === datasetId);
+}
+
 function countLines(file: string): number {
   try {
     const text = fs.readFileSync(file, 'utf8');
@@ -783,7 +837,7 @@ function createTrainingService(options: TrainingServiceOptions) {
     return true;
   }
 
-  function inspectJob(id: TrainingJobId): JobInspection {
+  function inspectJob(id: TrainingJobId, datasetId?: string): JobInspection {
     const definition = definitionFor(id);
     const oneTrainerRoot = path.join(aiRoot, 'OneTrainer');
     const voiceRoot = path.join(aiRoot, 'Voice');
@@ -799,11 +853,21 @@ function createTrainingService(options: TrainingServiceOptions) {
     let args: string[] = [];
     let configName = '';
     let loraConfigPath = '';
+    let resolvedDatasetId = '';
 
     if (definition.kind === 'lora') {
-      datasetPath = definition.character === 'nene'
-        ? path.join(aiRoot, 'Datasets', 'Characters', 'Ayachi_Nene', 'V18_WD14_Curated')
-        : path.join(aiRoot, 'Datasets', 'Characters', 'Shiki_Natsume', 'V17_WD14_Curated');
+      const selectedDataset = typeof datasetId === 'string' && datasetId
+        && isKnownDataset(aiRoot, definition.character, datasetId)
+        ? datasetId
+        : defaultDatasetFor(aiRoot, definition.character);
+      resolvedDatasetId = selectedDataset;
+      datasetPath = path.join(
+        aiRoot,
+        'Datasets',
+        'Characters',
+        CHARACTER_DATASET_DIRS[definition.character],
+        selectedDataset,
+      );
       executablePath = pythonOneTrainer;
       scriptPath = oneTrainerScript;
       cwd = oneTrainerRoot;
@@ -815,7 +879,7 @@ function createTrainingService(options: TrainingServiceOptions) {
       if (!fs.existsSync(oneTrainerScript)) missing.push('OneTrainer CLI 尚未安装');
       if (!configPath) missing.push('v18 训练配置尚未准备');
       const dataset = walkDataset(datasetPath);
-      if (!fs.existsSync(datasetPath) || dataset.images === 0) missing.push('v18 图片数据集尚未准备');
+      if (!fs.existsSync(datasetPath) || dataset.images === 0) missing.push('所选图片数据集尚未准备');
     } else {
       datasetPath = path.join(
         voiceRoot,
@@ -855,6 +919,7 @@ function createTrainingService(options: TrainingServiceOptions) {
       configName: configName || undefined,
       configPath: loraConfigPath,
       datasetPath,
+      datasetId: resolvedDatasetId || undefined,
       executablePath,
       scriptPath,
       cwd,
@@ -884,6 +949,29 @@ function createTrainingService(options: TrainingServiceOptions) {
     return { id, kind: 'lora', available: true, fields, recommended: { ...fields } };
   }
 
+  function datasetOptionsFor(definition: JobDefinition): PublicDatasetOption[] {
+    if (definition.kind !== 'lora') return [];
+    return listDatasetCandidates(aiRoot, definition.character).map((candidate) => {
+      const root = path.join(
+        aiRoot,
+        'Datasets',
+        'Characters',
+        CHARACTER_DATASET_DIRS[definition.character],
+        candidate.id,
+      );
+      const scanned = walkDataset(root);
+      return {
+        id: candidate.id,
+        name: candidate.name,
+        images: scanned.images,
+        captions: scanned.captions,
+        bytes: scanned.bytes,
+        categories: scanned.categories,
+        ready: scanned.images > 0,
+      };
+    });
+  }
+
   function publicJob(id: TrainingJobId): PublicJob {
     const state = stateFor(id);
     const inspection = inspectJob(id);
@@ -896,6 +984,8 @@ function createTrainingService(options: TrainingServiceOptions) {
       ready: inspection.ready,
       missing: inspection.missing,
       configName: inspection.configName,
+      datasetOptions: datasetOptionsFor(inspection.definition),
+      selectedDataset: inspection.datasetId,
       status: state.status,
       pid: state.pid,
       startedAt: state.startedAt,
@@ -1037,11 +1127,24 @@ function createTrainingService(options: TrainingServiceOptions) {
     }
   }
 
-  function startJob(value: unknown, overridesValue?: unknown): PublicJob {
+  function startJob(value: unknown, overridesValue?: unknown, datasetValue?: unknown): PublicJob {
     const id = assertKnownId(value);
     const overrides = sanitizeOverrides(overridesValue);
+    const definition = definitionFor(id);
+    const datasetId = datasetValue === undefined || datasetValue === null
+      ? undefined
+      : typeof datasetValue === 'string' && isKnownDataset(aiRoot, definition.character, datasetValue)
+        ? datasetValue
+        : (() => {
+          throw new TrainingServiceError(
+            '未知的数据集，请从候选列表中选择',
+            'UNKNOWN_DATASET',
+            400,
+            typeof datasetValue === 'string' ? datasetValue : String(datasetValue),
+          );
+        })();
     assertNoActiveJob();
-    const inspection = inspectJob(id);
+    const inspection = inspectJob(id, datasetId);
     if (!inspection.ready) {
       throw new TrainingServiceError(
         `${inspection.definition.label} 尚未就绪`,
@@ -1308,5 +1411,7 @@ export = {
     walkDataset,
     sanitizeOverrides,
     applyOverridesToConfig,
+    listDatasetCandidates,
+    defaultDatasetFor,
   },
 };
