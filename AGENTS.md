@@ -91,12 +91,14 @@
 
 ## 当前待办
 
-### P1：v18 核心样张审核
+### 已完成：P1 · v18 核心样张审核（2026-07-31）
 
-1. 使用 `generate-v18-core-showcase.js` 为 30 个核心场景生成可审计候选集，保持固定模型检查、确定性 seed 和独立输出目录。
-2. 用 `build-scene-manual-audit-sheets.py --output-subdir` 分批生成审核表，并按“图片审核”约束逐张人工检查每个候选。
-3. 每个场景只有在人物身份、服装、肢体、双人特征、构图、光照和叙事均通过后才能选定替换图；审核完成前继续保留 v14 展示集。
-4. 最终替换时同步更新图片、缩略图、manifest、审核记录和缓存版本，并跑展示页定向 E2E。
+1. 用 `generate-v18-core-showcase.js` 为 30 个核心场景生成可审计候选集（固定 `waiIllustriousSDXL_v170` 检查、确定性 seed、独立目录 `AI/Reviews/SceneAudits/2026-07-30_v18_core`）。
+2. 用 `build-scene-manual-audit-sheets.py` 生成 6 份分批审核表。
+3. 30 个场景全部按“图片审核”约束通过复核并记录到 `manual-review.json`。
+4. 用 `update-v18-core-showcase.py` 将定稿样张同步进线上展示集（大图/缩略图/manifest/分页 sheets），`DATA_VERSION` 升到 15，展示页定向 E2E（`flows.spec.ts`）与 `npm run validate` 全绿。
+
+若后续 v18 全量 297 场景样张需要整体重出，可复用同一套生成→审核→落盘链路。
 
 ## 明确暂缓
 
