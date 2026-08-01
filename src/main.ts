@@ -4,11 +4,11 @@ import App from './App.vue'
 import router from './router'
 import { preferredTheme } from './composables/useTheme'
 // 字体本地自托管（替代 Google Fonts）：离线可用、无第三方请求。
-// 字重与原先 Google Fonts 请求一致：JetBrains Mono 400/600，Noto Sans SC 400-800。
+// 字重：JetBrains Mono 400/600，Noto Sans SC 400/600/700/800
+//（500 使用率最低已砍掉，缺失字重由浏览器在 400/600 之间插值）。
 import '@fontsource/jetbrains-mono/400.css'
 import '@fontsource/jetbrains-mono/600.css'
 import '@fontsource/noto-sans-sc/400.css'
-import '@fontsource/noto-sans-sc/500.css'
 import '@fontsource/noto-sans-sc/600.css'
 import '@fontsource/noto-sans-sc/700.css'
 import '@fontsource/noto-sans-sc/800.css'

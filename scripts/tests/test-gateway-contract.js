@@ -255,7 +255,11 @@ async function main() {
       var hidden = await request({ path:'/data/' + privateData[d], headers:LOCAL });
       assert.strictEqual(hidden.status, 404, '/data/' + privateData[d] + ' must not be public');
     }
-    var publicData = ['scenes.json', 'curation.json', 'characters.json', 'loras.json', 'tags.json', 'presets.json'];
+    var publicData = [
+      'scenes.json', 'scenes-index.json', 'scenes-core.json',
+      'scenes-nene.json', 'scenes-natsume.json', 'scenes-shared.json',
+      'curation.json', 'characters.json', 'loras.json', 'tags.json', 'presets.json'
+    ];
     for (var pd = 0; pd < publicData.length; pd++) {
       var served = await request({ path:'/data/' + publicData[pd], headers:LOCAL });
       assert.strictEqual(served.status, 200, '/data/' + publicData[pd] + ' must stay served');

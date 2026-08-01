@@ -288,6 +288,29 @@ test('character room mounts portrait, composer and voice console', async ({ page
       modelCount: 2,
     }),
   }));
+  // 本机 runtime/state/chat_api_config.json 可能已存在站主托管配置；
+  // 预置"用户已配置"的本地 API 草稿，让本用例聚焦供应商预设切换，
+  // 不依赖站主配置是否存在，也不去清除用户真实配置。
+  await page.addInitScript(() => {
+    localStorage.setItem('aics_chat_v1', JSON.stringify({
+      version: 3,
+      active: 'nene',
+      histories: { nene: [], natsume: [] },
+      settings: {
+        model: 'local-model',
+        provider: 'api',
+        apiBaseUrl: 'https://local.example/v1',
+        apiModel: 'local-model',
+        apiKey: 'local-key',
+        webSearchEnabled: false,
+        live2dEnabled: false,
+        live2dOutfit: 'school',
+        autoVoice: false,
+        volume: 80,
+        drafts: { nene: '', natsume: '' },
+      },
+    }))
+  });
   await page.goto('/chat');
 
   await expect(page.locator('.page-kicker')).toContainText('Character room');
@@ -474,9 +497,8 @@ test('home page stays inside the performance budget', async ({ page }) => {
     // 请求数不含 woff2：自托管 Noto Sans SC 按 unicode-range 拆了数十个子集，
     // 中文页面必然触发 50+ 次字体请求（每个 ~30KB），这是 CJK 字体的固有形态，
     // 不算应用膨胀；字体体积由下方 transferBytes 上限统一约束。
-    const nonFontRequests = resources.filter(item =>
-      !/\.woff2?($|\?)/i.test(item.name)
-    );
+    const fontRequests = resources.filter(item => /\.woff2?($|\?)/i.test(item.name));
+    const nonFontRequests = resources.filter(item => !/\.woff2?($|\?)/i.test(item.name));
     return {
       requests: nonFontRequests.length,
       transferBytes: resources.reduce((sum, item) => sum + item.transferSize, 0),
@@ -486,12 +508,17 @@ test('home page stays inside the performance budget', async ({ page }) => {
         const d = getComputedStyle(el).transitionDuration;
         return d && d !== '0s';
       }).length,
+      font500: fontRequests.filter(item => /-500-/.test(item.name)).length,
     };
   });
   expect(budget.requests).toBeLessThanOrEqual(60);
+  // Noto Sans SC 字重由 5 降到 4（砍掉 500）后字体文件数下降约 20%；
+  // transferBytes 保留原 3.2MB 上限——并行回归时资源请求有抖动，
+  // 字体瘦身的收益由 font500=0 与构建产物文件数（498→400）双重断言。
   expect(budget.transferBytes).toBeLessThanOrEqual(3_200_000);
   expect(budget.domNodes).toBeLessThanOrEqual(1_800);
   expect(budget.animated).toBeLessThanOrEqual(120);
+  expect(budget.font500).toBe(0);
 });
 
 test('roadmap exposes prioritized phases and product boundaries', async ({ page }) => {
@@ -500,5 +527,19 @@ test('roadmap exposes prioritized phases and product boundaries', async ({ page 
   await expect(page.getByRole('heading', { name: '产品路线图', level: 1 })).toBeVisible();
   await expect(page.locator('.phase')).toHaveCount(5);
   await expect(page.getByRole('heading', { name: '产品边界' })).toBeVisible();
+  expect(errors).toEqual([]);
+});
+
+test('guest first visit shows a one-time guide and dismissal persists', async ({ page }) => {
+  const errors = collectRuntimeErrors(page);
+  await page.goto('/?guest=1');
+  await expect(page.getByRole('region', { name: '访客导览' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '欢迎来到 绫姬绘境' })).toBeVisible();
+  await page.getByRole('button', { name: '知道了，开始浏览' }).click();
+  await expect(page.getByRole('region', { name: '访客导览' })).toBeHidden();
+  const dismissed = await page.evaluate(() => localStorage.getItem('aics_guest_guide_dismissed'));
+  expect(dismissed).toBe('1');
+  await page.goto('/?guest=1');
+  await expect(page.getByRole('region', { name: '访客导览' })).toBeHidden();
   expect(errors).toEqual([]);
 });

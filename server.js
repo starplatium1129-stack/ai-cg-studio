@@ -79,7 +79,9 @@ function createGateway(options) {
     spawn:spawn,
     onStateChange:function () { gatewayState.tunnelUrl = tunnelManager.getUrl(); }
   });
-  var control = createControlRouter(config, function() { return gatewayState; });
+  var control = createControlRouter(config, function() { return gatewayState; }, {
+    translation: voice.translation
+  });
 
   app.use(chat.router);
   app.use(voice.router);
@@ -143,7 +145,9 @@ function createGateway(options) {
   // 这类个人内容，以及 data/scenes/*.json（build-scenes.js 的输入，共 893KB，
   // 客户端从不读取）。
   var PUBLIC_DATA_FILES = [
-    'scenes.json', 'curation.json', 'characters.json',
+    'scenes.json', 'scenes-index.json', 'scenes-core.json',
+    'scenes-nene.json', 'scenes-natsume.json', 'scenes-shared.json',
+    'curation.json', 'characters.json',
     'loras.json', 'tags.json', 'presets.json'
   ];
   // 客户端统一经 sceneStore 带 ?v=DATA_VERSION 读取，版本号变即换 URL，
@@ -267,6 +271,7 @@ function createGateway(options) {
     voice.close();
     training.close();
     if (maintenance && typeof maintenance.close === 'function') maintenance.close();
+    if (control && typeof control.close === 'function') control.close();
     if (tunnelManager) tunnelManager.stop();
   }
 

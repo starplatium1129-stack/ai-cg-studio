@@ -68,7 +68,7 @@
         </article>
         <article class="status-tile" :data-state="ttsOnline ? 'on' : 'off'">
           <small>GPT-SoVITS</small>
-          <strong>{{ ttsOnline ? '已连接' : '未连接' }}</strong>
+          <strong>{{ ttsOnline ? '已连接' : (ttsSelfHealing ? '自愈中…' : '未连接') }}</strong>
         </article>
         <article class="status-tile" :data-state="ollamaOnline ? 'on' : 'off'">
           <small>Ollama 聊天</small>
@@ -341,7 +341,7 @@ const actions = useControlActions(status, { showToast })
 // 模板引用解构：状态域
 const {
   tunnelActive, sdOnline, ttsOnline, ollamaOnline, webuiManaged, ollamaModels, ollamaVram,
-  modeBusy, operation, serviceChecking, scripts,
+  modeBusy, operation, selfHealing, serviceChecking, scripts,
   sdHost, ttsHost, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice,
   tunnelStatus, shareLink, localLink, uptime, actionBusy, mainBtnLabel, webBuild,
   feedbackClass, feedbackText, actionNote, logs, logBoxEl,
@@ -357,6 +357,10 @@ const {
 } = actions
 
 const webBuildStale = computed(() => !!webBuild.value && webBuild.value.stale && webBuild.value.distReady)
+const ttsSelfHealing = computed(() => {
+  const service = selfHealing.value?.services?.tts
+  return Boolean(service && (service.restarting || service.attempt > 0))
+})
 const buildLabel = computed(() => {
   if (!webBuild.value) return '构建状态未知'
   if (!webBuild.value.distReady) return '尚未构建'

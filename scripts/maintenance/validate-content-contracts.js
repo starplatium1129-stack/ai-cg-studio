@@ -13,7 +13,11 @@ var ROOT = path.resolve(__dirname, '..', '..');
  */
 function contentVersion() {
   var hash = crypto.createHash('sha1');
-  ['scenes.json', 'curation.json', 'characters.json', 'loras.json', 'tags.json', 'presets.json'].forEach(function (name) {
+  [
+    'scenes.json', 'scenes-index.json', 'scenes-core.json',
+    'scenes-nene.json', 'scenes-natsume.json', 'scenes-shared.json',
+    'curation.json', 'characters.json', 'loras.json', 'tags.json', 'presets.json'
+  ].forEach(function (name) {
     hash.update(name + '=' + fs.readFileSync(path.join(ROOT, 'data', name), 'utf8').length + ';');
     hash.update(fs.readFileSync(path.join(ROOT, 'data', name)));
   });
@@ -100,6 +104,69 @@ function validateContent(data, fileExists) {
   return errors;
 }
 
+function validateSceneShards(data) {
+  var errors = [];
+  var scenes = data.scenes;
+  if (!Array.isArray(scenes)) return errors;
+  var byId = new Map(scenes.map(function (scene) { return [scene.id, scene]; }));
+  var shards = ['nene', 'natsume', 'shared'].map(function (char) {
+    var file = 'scenes-' + char + '.json';
+    try {
+      var items = readJson('data/' + file);
+      if (!Array.isArray(items)) errors.push(file + ' must be an array');
+      return { char: char, file: file, items: Array.isArray(items) ? items : [] };
+    } catch (error) {
+      errors.push(file + ' is missing or unreadable');
+      return { char: char, file: file, items: [] };
+    }
+  });
+  var seen = new Set();
+  shards.forEach(function (shard) {
+    shard.items.forEach(function (scene) {
+      if (!scene || !scene.id) { errors.push(shard.file + ' contains an item without id'); return; }
+      if (seen.has(scene.id)) { errors.push(scene.id + ' appears in multiple browser shards'); return; }
+      seen.add(scene.id);
+      var canonical = byId.get(scene.id);
+      if (!canonical) { errors.push(shard.file + ' contains unknown scene ' + scene.id); return; }
+      if (JSON.stringify(scene) !== JSON.stringify(canonical)) {
+        errors.push(shard.file + ' scene ' + scene.id + ' differs from scenes.json');
+      }
+      var expectedChar = scene.char === 'natsume' ? 'natsume'
+        : scene.char === 'triad' ? 'shared' : 'nene';
+      if (expectedChar !== shard.char) {
+        errors.push(scene.id + ' is placed in ' + shard.file + ' but char=' + scene.char);
+      }
+    });
+  });
+  if (seen.size !== scenes.length) {
+    errors.push('browser shards cover ' + seen.size + ' scenes, expected ' + scenes.length);
+  }
+
+  try {
+    var index = readJson('data/scenes-index.json');
+    if (Number(index.total) !== scenes.length) errors.push('scenes-index.json total mismatch');
+    var coreIds = Array.isArray(index.tiers && index.tiers.core) ? index.tiers.core : [];
+    var coreFile = readJson('data/scenes-core.json');
+    if (!Array.isArray(coreFile)) errors.push('scenes-core.json must be an array');
+    else {
+      if (coreFile.length !== coreIds.length) errors.push('scenes-core.json length differs from index tiers.core');
+      coreIds.forEach(function (id, position) {
+        if (!coreFile[position] || coreFile[position].id !== id || !byId.has(id)) {
+          errors.push('scenes-core.json[' + position + '] does not match index tier id ' + id);
+        }
+      });
+      if (coreFile.some(function (scene) { return !byId.has(scene.id); })) {
+        errors.push('scenes-core.json references scenes outside scenes.json');
+      }
+    }
+    var ordered = Array.isArray(index.orderedIds) ? index.orderedIds : [];
+    if (ordered.length !== scenes.length) errors.push('scenes-index.json orderedIds length mismatch');
+  } catch (error) {
+    errors.push('scenes-index.json is missing or unreadable');
+  }
+  return errors;
+}
+
 function main() {
   var data = {
     characters:readJson('data/characters.json'),
@@ -109,6 +176,7 @@ function main() {
   var errors = validateContent(data, function (relative) {
     return fs.existsSync(path.resolve(ROOT, 'data', relative));
   });
+  errors = errors.concat(validateSceneShards(data));
   errors = errors.concat(checkDataVersion());
   if (errors.length) {
     console.error(errors.map(function (error) { return '  - ' + error; }).join('\n'));

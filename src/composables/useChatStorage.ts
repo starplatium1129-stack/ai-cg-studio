@@ -8,6 +8,18 @@ import {
 import {
   normalizeChatStorage, serializeChatStorage, type PersistedChatState,
 } from '@/utils/chatStorageCore'
+import {
+  CHAT_ARCHIVE_KEY,
+  archiveCounts,
+  archiveMessages,
+  chatArchiveToMarkdown,
+  emptyChatArchive,
+  mergeArchiveIntoHistory,
+  mergeChatArchives,
+  normalizeChatArchive,
+  serializeChatArchive,
+  type ChatArchive,
+} from '@/utils/chatArchive'
 
 export interface ChatMessage {
   role: 'user' | 'assistant'
@@ -64,6 +76,34 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
 
   /** 用户从未配置过 API（当前是开箱即用兜底值）；站主配置优先于此标记 */
   const neverConfigured = ref(true)
+  const archive = ref<ChatArchive>(emptyChatArchive(Object.keys(CHARACTERS)))
+
+  function loadArchive() {
+    try {
+      archive.value = normalizeChatArchive(
+        JSON.parse(localStorage.getItem(CHAT_ARCHIVE_KEY) || 'null'),
+        Object.keys(CHARACTERS),
+      )
+    } catch {
+      archive.value = emptyChatArchive(Object.keys(CHARACTERS))
+    }
+  }
+
+  function saveArchive() {
+    try {
+      localStorage.setItem(CHAT_ARCHIVE_KEY, serializeChatArchive(archive.value))
+    } catch {
+      onError('浏览器存储空间不足，聊天归档可能无法长期保存。')
+    }
+  }
+
+  /** 把超限消息转入归档，而不是直接丢弃。 */
+  function archiveOverflow(char: string, messages: ChatMessage[], limit: number) {
+    if (messages.length <= limit) return
+    const removed = messages.splice(0, messages.length - limit)
+    archive.value = archiveMessages(archive.value, char, removed)
+    saveArchive()
+  }
 
   function applyPersisted(persisted: PersistedChatState) {
     state.version = persisted.version
@@ -109,8 +149,20 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     let stored = ''
     try {
       stored = localStorage.getItem(STORAGE_KEY) || ''
+      const raw = stored ? JSON.parse(stored) : {}
+      // 先把持久化里的超限消息归档，再走白名单归一化，保证旧消息不丢。
+      const rawHistories = raw && typeof raw === 'object' && (raw as Record<string, unknown>).histories
+      if (rawHistories && typeof rawHistories === 'object') {
+        for (const char of Object.keys(CHARACTERS)) {
+          const list = (rawHistories as Record<string, unknown>)[char]
+          if (Array.isArray(list) && list.length > MAX_LOCAL_MESSAGES) {
+            const overflow = list.slice(0, list.length - MAX_LOCAL_MESSAGES)
+            archive.value = archiveMessages(archive.value, char, overflow as ChatMessage[])
+          }
+        }
+      }
       const normalized = normalizeChatStorage(
-        stored ? JSON.parse(stored) : {},
+        raw,
         localStorage.getItem('aics_chat_model') || '',
         normalizeOptions,
       )
@@ -122,20 +174,25 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
       // Rewriting existing records through the allowlist removes unsupported
       // authorization headers, tokens and unknown fields from localStorage.
       if (stored) localStorage.setItem(STORAGE_KEY, serializeChatStorage(persistedState()))
+      saveArchive()
     } catch {
       const clean = normalizeChatStorage({}, '', normalizeOptions).state
       applyPersisted(clean)
       neverConfigured.value = true
       try { localStorage.setItem(STORAGE_KEY, serializeChatStorage(clean)) } catch {}
+      saveArchive()
       onError('本地聊天记录损坏，已恢复为空白会话。')
     }
   }
+
+  loadArchive()
 
   function save() {
     try {
       state.version = STORAGE_VERSION
       localStorage.setItem(STORAGE_KEY, serializeChatStorage(persistedState()))
       localStorage.setItem('aics_chat_model', state.settings.model || '')
+      saveArchive()
     } catch {
       onError('浏览器存储空间不足，本轮聊天可能无法长期保存。')
     }
@@ -172,7 +229,51 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   }
   function trim(char = state.active) {
     const msgs = messages(char)
-    if (msgs.length > MAX_LOCAL_MESSAGES) msgs.splice(0, msgs.length - MAX_LOCAL_MESSAGES)
+    archiveOverflow(char, msgs, MAX_LOCAL_MESSAGES)
+  }
+  function archiveCount(): Record<string, number>
+  function archiveCount(char: string): number
+  function archiveCount(char?: string) {
+    const counts = archiveCounts(archive.value, Object.keys(CHARACTERS))
+    return char ? counts[char] || 0 : counts
+  }
+  function exportArchiveJson(): string {
+    return serializeChatArchive(archive.value)
+  }
+  function exportArchiveMarkdown(): string {
+    const names: Record<string, string> = {}
+    for (const id of Object.keys(CHARACTERS)) names[id] = CHARACTERS[id].name
+    return chatArchiveToMarkdown(archive.value, names)
+  }
+  /** 导入归档 JSON：合并去重后落盘，返回导入条数。 */
+  function importArchiveJson(textValue: string): number {
+    const incoming = normalizeChatArchive(JSON.parse(textValue), Object.keys(CHARACTERS))
+    const before = archiveCounts(archive.value, Object.keys(CHARACTERS))
+    archive.value = mergeChatArchives(archive.value, incoming)
+    saveArchive()
+    const after = archiveCounts(archive.value, Object.keys(CHARACTERS))
+    return Object.keys(after).reduce((sum, id) => sum + Math.max(0, after[id] - (before[id] || 0)), 0)
+  }
+  /** 把该角色归档并回当前对话；返回并入条数。 */
+  function restoreFromArchive(char = state.active): number {
+    if (!CHARACTERS[char]) return 0
+    const archived = archive.value.archived[char] || []
+    if (!archived.length) return 0
+    const history = messages(char)
+    const merged = mergeArchiveIntoHistory(history, archived)
+    const added = merged.length - history.length
+    if (added > 0) {
+      // 完整并回（不截断）：超过 20 条的部分在下次 trim 时会再次归档，
+      // 归档按 mid 去重，不会产生副本，也不会丢失。
+      state.histories[char] = merged
+      save()
+    }
+    return added
+  }
+  function clearArchive(char?: string) {
+    if (char) archive.value.archived[char] = []
+    else archive.value = emptyChatArchive(Object.keys(CHARACTERS))
+    saveArchive()
   }
   function clear(char?: string) {
     if (char) { state.histories[char] = [] }
@@ -184,5 +285,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     state, load, save, messages, neverConfigured,
     setActive, setModel, setProvider, setApiSettings, setWebSearchEnabled,
     setLive2dEnabled, setLive2dOutfit, setAutoVoice, setVolume, draft, setDraft, trim, clear,
+    archiveCount, exportArchiveJson, exportArchiveMarkdown, importArchiveJson,
+    restoreFromArchive, clearArchive,
   }
 }

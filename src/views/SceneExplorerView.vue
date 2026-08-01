@@ -285,6 +285,8 @@ const showHidden = ref(false)
 const showMature = ref(localStorage.getItem(MATURE_KEY) == null ? LOCAL_OWNER : localStorage.getItem(MATURE_KEY) === '1')
 
 const searchQuery = ref('')
+/** 首帧数据就绪标记：避免初始化时赋初值触发数据 watch 重复加载 */
+let dataReady = false
 /**
  * 输入框绑 searchQuery（打字要立刻回显），过滤/排序读 debouncedQuery。
  * 全 src/ 之前没有任何 debounce，297 条的过滤+排序每次击键都全量重跑。
@@ -522,8 +524,18 @@ function onMatureChange() {
 
 async function init() {
   try {
-    // 共享数据走 sceneStore 单例，不再各页独立 fetch
-    await sceneStore.load()
+    // 场景库按需拉取：默认只载入"人设核心"子集（index + shared + core），
+    // 切到具体角色时只拉对应分片，切到全库/精选等才拉完整三片。
+    const charParam = typeof route.query.character === 'string' ? route.query.character : null
+    if (['nene', 'natsume', 'triad'].includes(charParam || '')) fChar.value = charParam!
+    const personalDefault = Object.keys(localUsage.value).length || favs.value.size
+    if (charParam && ['nene', 'natsume', 'triad'].includes(charParam)) {
+      await sceneStore.loadCharacter(charParam)
+    } else if (personalDefault) {
+      await sceneStore.load()
+    } else {
+      await sceneStore.ensureCore()
+    }
     scenes.value = sceneStore.scenes as ExplorerScene[]
     curation.value = sceneStore.curation || curation.value
   } catch(e) { console.warn('scene load failed', e) }
@@ -540,14 +552,33 @@ async function init() {
   loading.value = false
 
   const focusId = typeof route.query.scene === 'string' ? route.query.scene : null
-  const charParam = typeof route.query.character === 'string' ? route.query.character : null
-  if (['nene','natsume','triad'].includes(charParam||'')) fChar.value = charParam!
+  dataReady = true
   if (focusId) {
     await nextTick()
     const el = document.querySelector(`[data-scene-id="${focusId}"]`) as HTMLElement
     if (el) { el.scrollIntoView({behavior:'smooth',block:'center'}); flashId.value=focusId; setTimeout(()=>flashId.value='',2000) }
   }
 }
+
+watch([fChar, fTier], async () => {
+  if (!dataReady) return
+  loading.value = true
+  try {
+    if (fChar.value !== 'all') {
+      await sceneStore.ensureCharacter(fChar.value)
+    } else if (fTier.value === 'core') {
+      await sceneStore.ensureCore()
+    } else {
+      await sceneStore.load()
+    }
+    scenes.value = sceneStore.scenes as ExplorerScene[]
+    curation.value = sceneStore.curation || curation.value
+  } catch (e) {
+    console.warn('scene data switch failed', e)
+  } finally {
+    loading.value = false
+  }
+})
 
 onMounted(() => { init() })
 </script>

@@ -24,6 +24,7 @@ export function useControlStatus({ showToast }: StatusHooks) {
   const ollamaVram = ref(0)
   const modeBusy = ref(false)
   const operation = ref<ControlOperationView | null>(null)
+  const selfHealing = ref<ControlStatus['selfHealing'] | null>(null)
   const serviceChecking = ref(false)
   const scripts = ref({ voiceStart: true, voiceStop: true, webui: true })
 
@@ -125,6 +126,7 @@ export function useControlStatus({ showToast }: StatusHooks) {
     ollamaVram.value = Number(data.ollamaVram) || 0
     modeBusy.value = !!data.modeBusy
     operation.value = data.operation || (operation.value?.status === 'running' ? operation.value : null)
+    selfHealing.value = data.selfHealing && typeof data.selfHealing === 'object' ? data.selfHealing : null
     tunnelStatus.value = data.tunnelStatus || ''
     // 分享链接含原始 token，已从 /api/status 拆到仅本机可读的 /api/share-link
     if (data.shareLinkAvailable) void loadShareLink()
@@ -235,7 +237,7 @@ export function useControlStatus({ showToast }: StatusHooks) {
   function stopPolling() { if (pollTimer) clearInterval(pollTimer); pollTimer = null }
 
   return {
-    tunnelActive, sdOnline, ttsOnline, ollamaOnline, webuiManaged, ollamaModels, ollamaVram,
+    tunnelActive, sdOnline, ttsOnline, ollamaOnline, webuiManaged, ollamaModels, ollamaVram, selfHealing,
     modeBusy, operation, serviceChecking, scripts,
     sdHost, ttsHost, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice,
     tunnelStatus, shareLink, localLink, uptime, actionBusy, mainBtnLabel, webBuild,

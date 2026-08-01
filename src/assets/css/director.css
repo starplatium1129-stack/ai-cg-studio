@@ -249,7 +249,7 @@
   .pb .scene-name { display:block; font-weight:700; font-size:var(--fs-body); margin-bottom:2px; }
   .pb .scene-story { display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:3; overflow:hidden; font-size:var(--fs-label-sm); color:var(--text-secondary); margin-bottom:var(--s-2); line-height:1.5; }
   .pb .scene-meta { display:flex; flex-wrap:wrap; gap:4px; }
-  .pb .scene-tag { font-size:var(--fs-label-sm) !important; padding:3px 8px; font-weight:500; background:var(--bg-deep); border-radius:var(--r-sm); color:var(--text-muted); }
+  .pb .scene-tag { font-size:var(--fs-label-sm) !important; padding:3px 8px; font-weight:600; background:var(--bg-deep); border-radius:var(--r-sm); color:var(--text-muted); }
   .pb .scene-tag.emotion { background:var(--accent-soft); color:var(--accent); }
   .pb .scene-tag.rating.r18 { background:color-mix(in srgb, var(--danger) 22%, var(--bg-deep)); color:color-mix(in srgb, var(--danger) 70%, #fff); }
   .pb .scene-tag.rating.r15 { background:color-mix(in srgb, var(--warning) 24%, var(--bg-deep)); color:color-mix(in srgb, var(--warning) 74%, #fff); }
@@ -408,7 +408,7 @@
   .pb .preview-output .l { color: var(--success-text); }
   .pb .preview-output .n { color: var(--danger-text); }
   .pb .preview-output .violate { position: relative; background: color-mix(in srgb,var(--danger) 15%,transparent); color: var(--danger-text); padding: 0 var(--s-2); border-radius: var(--r-sm); border-bottom: 2px dashed var(--danger); cursor: help; }
-  .pb .preview-output .violate::after { content: "🎨 美术防线提示：此标签由于过载易破坏赛璐珞空气感，建议优化。"; position: absolute; bottom: 135%; left: 50%; transform: translateX(-50%) scale(0.92); background: var(--bg-surface); border: 1px solid var(--danger); color: var(--text-primary); font-size: var(--fs-label-sm); font-weight: 500; padding: var(--s-2) var(--s-3); border-radius: var(--r-md); box-shadow: var(--shadow-lg); pointer-events: none; opacity: 0; transition: opacity var(--t-fast) var(--ease-out),transform var(--t-fast) var(--ease-out); white-space: nowrap; z-index: var(--z-popover); }
+  .pb .preview-output .violate::after { content: "🎨 美术防线提示：此标签由于过载易破坏赛璐珞空气感，建议优化。"; position: absolute; bottom: 135%; left: 50%; transform: translateX(-50%) scale(0.92); background: var(--bg-surface); border: 1px solid var(--danger); color: var(--text-primary); font-size: var(--fs-label-sm); font-weight: 600; padding: var(--s-2) var(--s-3); border-radius: var(--r-md); box-shadow: var(--shadow-lg); pointer-events: none; opacity: 0; transition: opacity var(--t-fast) var(--ease-out),transform var(--t-fast) var(--ease-out); white-space: nowrap; z-index: var(--z-popover); }
   .pb .preview-output .violate:hover::after { opacity: 1; transform: translateX(-50%) scale(1); }
   .pb .token-row { display: flex; align-items: center; gap: var(--s-2); margin-top: var(--s-2); }
   .pb .token-counter { font-family: var(--font-mono); font-size: var(--fs-label-sm); color: var(--text-secondary); display: inline-flex; align-items: center; gap: var(--s-2); }
@@ -421,7 +421,7 @@
   .pb .token-counter.over .prompt-health { color:var(--danger-text); }
   /* 可见性由 hidden 属性驱动(原先靠 style.display 内联切换);
      [hidden] 与类选择器同权重,故显式写一条保证隐藏生效 */
-  .pb .art-warn { display: flex; align-items: center; gap: var(--s-2); background: color-mix(in srgb,var(--warning) 12%,transparent); border: 1px solid var(--warning); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); margin-top: var(--s-3); color: var(--warning-text); font-size: var(--fs-label); font-weight: 500; }
+  .pb .art-warn { display: flex; align-items: center; gap: var(--s-2); background: color-mix(in srgb,var(--warning) 12%,transparent); border: 1px solid var(--warning); border-radius: var(--r-md); padding: var(--s-2) var(--s-3); margin-top: var(--s-3); color: var(--warning-text); font-size: var(--fs-label); font-weight: 600; }
   .pb .art-warn[hidden] { display: none; }
   .pb .preview-actions { display: flex; gap: var(--s-2); flex-wrap: wrap; margin-top: var(--s-3); }
   .pb .preview-actions .btn { font-size: var(--fs-label); padding: var(--s-1) var(--s-3); }
@@ -792,7 +792,7 @@
   .pb .sd-advanced-grid #sdSeedDisplay { grid-column:1 / -1; min-height:1em; }
   .pb .sd-budget-hint { width:100%; margin-top:-5px; color:var(--text-muted); font-size:var(--fs-mono-sm); }
   /* ---- 原先挂在 prompt-builder.html 上的内联样式,收敛为组件类 ---- */
-  .pb .scene-count-badge { color:var(--text-muted); font-weight:500; }
+  .pb .scene-count-badge { color:var(--text-muted); font-weight:600; }
   .pb .scene-mature-row input { accent-color:var(--accent); }
   .pb .settings-summary { padding:var(--s-3) var(--s-4); cursor:pointer; list-style:none; }
   .pb .settings-summary::-webkit-details-marker { display:none; }

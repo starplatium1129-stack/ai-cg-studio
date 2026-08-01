@@ -12,6 +12,11 @@ import {
   type BackupSummary,
 } from '@/utils/backupCore'
 import { inspectStorageHealth, summarizeStorageHealth } from '@/utils/storageHealth'
+import {
+  cleanDeadLocalKeys,
+  collectLiveLocalSettings,
+  isLiveLocalKey,
+} from '@/utils/storageKeys'
 export type { BackupSummary } from '@/utils/backupCore'
 
 /**
@@ -32,16 +37,6 @@ export function readLastBackupAt(): number {
   } catch { return 0 }
 }
 
-const SETTINGS_KEYS = [
-  'aics_theme',
-  // 快速出图的上次参数（PromptBuilderView 写入）——原来这里记的是早已
-  // 没有生产者的死键 aics_sd_settings_v1，备份会漏掉真实的出图设置。
-  'aics_sd_last_success_v1',
-  'aics_pb_last_draft',
-  'aics_scene_favorites',
-  'aics_tunnel_off',
-]
-
 function blobToDataUrl(blob: Blob): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
@@ -61,14 +56,8 @@ function dataUrlToBlob(dataUrl: string): Blob {
 }
 
 function collectSettings(): Record<string, string> {
-  const out: Record<string, string> = {}
-  SETTINGS_KEYS.forEach(key => {
-    try {
-      const value = localStorage.getItem(key)
-      if (value != null) out[key] = value
-    } catch {}
-  })
-  return out
+  // 活键统一登记在 src/utils/storageKeys.ts：精确键 + 训练动态前缀。
+  return collectLiveLocalSettings(localStorage)
 }
 
 function errorMessage(error: unknown, fallback: string) {
@@ -87,6 +76,9 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     busy.value = true
     onFlash('正在整理备份…')
     try {
+      // 导出前清理已确认无写入者的死键（如 aics_sd_settings_v1），
+      // 避免备份文件长期携带废弃内容。
+      const removedDead = cleanDeadLocalKeys(localStorage)
       const [history, projects, images] = await Promise.all([
         kvGet<BackupRecord[]>(HISTORY_KEY),
         kvGet<BackupRecord[]>(PROJECT_KEY),
@@ -124,7 +116,8 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
       const info = summarizeBackup(backup)
       lastBackupAt.value = Date.now()
       try { localStorage.setItem(BACKUP_AT_KEY, String(lastBackupAt.value)) } catch {}
-      onFlash(`备份完成：${info.history} 条记录 · ${info.images} 张图片 · ${Math.max(1, Math.round(json.length / 1024))} KB`)
+      onFlash(`备份完成：${info.history} 条记录 · ${info.images} 张图片 · ${Math.max(1, Math.round(json.length / 1024))} KB`
+        + (removedDead ? ` · 已清理 ${removedDead} 个废弃存储键` : ''))
     } catch (e) {
       console.error('backup export failed', e)
       onFlash('备份失败：' + errorMessage(e, '请检查浏览器存储'))
@@ -231,9 +224,19 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
 
       await Promise.all([kvSet(HISTORY_KEY, history), kvSet(PROJECT_KEY, projects)])
 
-      if (replace) SETTINGS_KEYS.forEach(k => { try { localStorage.removeItem(k) } catch {} })
+      if (replace) {
+        // 覆盖恢复：先清掉所有活键（含动态前缀），再按白名单写回。
+        const liveKeys: string[] = []
+        for (let index = 0; index < localStorage.length; index += 1) {
+          const key = localStorage.key(index)
+          if (key && isLiveLocalKey(key)) liveKeys.push(key)
+        }
+        for (const key of liveKeys) {
+          try { localStorage.removeItem(key) } catch {}
+        }
+      }
       Object.entries(imported.data.settings || {}).forEach(([k, v]) => {
-        if (SETTINGS_KEYS.includes(k)) { try { localStorage.setItem(k, String(v)) } catch {} }
+        if (isLiveLocalKey(k)) { try { localStorage.setItem(k, String(v)) } catch {} }
       })
 
       pending.value = null

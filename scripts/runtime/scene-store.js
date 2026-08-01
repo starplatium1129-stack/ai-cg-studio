@@ -6,6 +6,13 @@ const dataDir = path.join(root, 'data');
 const shardsDir = path.join(dataDir, 'scenes');
 const manifestPath = path.join(shardsDir, 'manifest.json');
 const aggregatePath = path.join(dataDir, 'scenes.json');
+const browserShardPath = {
+  nene: path.join(dataDir, 'scenes-nene.json'),
+  natsume: path.join(dataDir, 'scenes-natsume.json'),
+  shared: path.join(dataDir, 'scenes-shared.json')
+};
+const corePath = path.join(dataDir, 'scenes-core.json');
+const indexPath = path.join(dataDir, 'scenes-index.json');
 
 function readJson(source) {
   return JSON.parse(fs.readFileSync(source, 'utf8'));
@@ -74,8 +81,67 @@ function writeSceneShards(scenes) {
   }
 }
 
+function readCuration() {
+  try {
+    const curation = readJson(path.join(dataDir, 'curation.json'));
+    return curation && typeof curation === 'object' ? curation : {};
+  } catch (error) {
+    return {};
+  }
+}
+
+function tierIds(curation, key) {
+  const ids = curation && Array.isArray(curation[key]) ? curation[key] : [];
+  return ids.filter((id) => typeof id === 'string').slice(0, 2000);
+}
+
+function groupBrowserShards(scenes) {
+  const groups = { nene: [], natsume: [], shared: [] };
+  const seen = new Set();
+  for (const scene of sortScenes(scenes)) {
+    if (!scene || !scene.id) continue;
+    const char = scene.char === 'natsume' ? 'natsume' : (scene.char === 'triad' ? 'shared' : 'nene');
+    if (seen.has(scene.id)) continue;
+    seen.add(scene.id);
+    groups[char].push(scene);
+  }
+  return groups;
+}
+
+function writeBrowserShards(scenes) {
+  const groups = groupBrowserShards(scenes);
+  for (const char of Object.keys(groups)) {
+    writeTextAtomic(browserShardPath[char], jsonText(groups[char]));
+  }
+  return groups;
+}
+
+function writeCoreAndIndex(scenes, curation, groups) {
+  const byId = new Map(scenes.map((scene) => [scene.id, scene]));
+  const coreIds = tierIds(curation, 'personaCoreSceneIds').filter((id) => byId.has(id));
+  writeTextAtomic(corePath, jsonText(coreIds.map((id) => byId.get(id))));
+
+  const index = {
+    version: 1,
+    total: scenes.length,
+    shards: {
+      nene: { file: 'scenes-nene.json', count: groups.nene.length },
+      natsume: { file: 'scenes-natsume.json', count: groups.natsume.length },
+      shared: { file: 'scenes-shared.json', count: groups.shared.length }
+    },
+    tiers: {
+      core: coreIds
+    },
+    orderedIds: sortScenes(scenes).map((scene) => scene.id)
+  };
+  writeTextAtomic(indexPath, jsonText(index));
+}
+
 function writeAggregate(scenes) {
-  writeTextAtomic(aggregatePath, jsonText(sortScenes(scenes)));
+  const sorted = sortScenes(scenes);
+  writeTextAtomic(aggregatePath, jsonText(sorted));
+  const groups = writeBrowserShards(sorted);
+  writeCoreAndIndex(sorted, readCuration(), groups);
 }
 
 function writeSceneSet(scenes) {
@@ -84,12 +150,37 @@ function writeSceneSet(scenes) {
 }
 
 function aggregateIsCurrent(scenes) {
+  const sorted = sortScenes(scenes);
   if (!fs.existsSync(aggregatePath)) return false;
-  return fs.readFileSync(aggregatePath, 'utf8') === jsonText(sortScenes(scenes));
+  if (fs.readFileSync(aggregatePath, 'utf8') !== jsonText(sorted)) return false;
+  const expected = groupBrowserShards(sorted);
+  for (const char of Object.keys(expected)) {
+    if (fs.readFileSync(browserShardPath[char], 'utf8') !== jsonText(expected[char])) return false;
+  }
+  // 校验 core / index 时先写入内存版本再比较磁盘，避免 --check 污染文件
+  const byId = new Map(sorted.map((scene) => [scene.id, scene]));
+  const curation = readCuration();
+  const coreIds = tierIds(curation, 'personaCoreSceneIds').filter((id) => byId.has(id));
+  if (fs.readFileSync(corePath, 'utf8') !== jsonText(coreIds.map((id) => byId.get(id)))) return false;
+  const index = {
+    version: 1,
+    total: sorted.length,
+    shards: {
+      nene: { file: 'scenes-nene.json', count: expected.nene.length },
+      natsume: { file: 'scenes-natsume.json', count: expected.natsume.length },
+      shared: { file: 'scenes-shared.json', count: expected.shared.length }
+    },
+    tiers: { core: coreIds },
+    orderedIds: sorted.map((scene) => scene.id)
+  };
+  return fs.readFileSync(indexPath, 'utf8') === jsonText(index);
 }
 
 module.exports = {
   aggregatePath,
+  browserShardPath,
+  corePath,
+  indexPath,
   jsonText,
   loadSceneShards,
   readJson,

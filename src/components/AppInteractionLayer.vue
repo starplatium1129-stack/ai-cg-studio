@@ -135,7 +135,7 @@ onMounted(() => {
     routeTimer = window.setTimeout(() => {
       routeLoading.value = false
       routeCutActive.value = false
-    }, 320)
+    }, 640)
   })
   removeError = router.onError(() => {
     window.clearTimeout(routeTimer)

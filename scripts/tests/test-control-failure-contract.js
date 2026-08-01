@@ -206,3 +206,6 @@ test('control-failure-contract: timeout, config rollback, voice weights, tunnel 
 
   console.log('Control failure contracts passed: timeout, config rollback, voice weights, tunnel exit');
 });
+
+// 自愈看门狗单测随控制面失败契约一起跑（validate 已串接本文件）。
+require('./test-service-watchdog');

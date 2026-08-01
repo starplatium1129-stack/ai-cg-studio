@@ -18,7 +18,9 @@ var PRECOMPRESSIBLE = /\.(?:js|css|html|json|svg|txt|map)$/i;
  *  /data 白名单之前执行，不在这里再查一遍，data/ 下任何新 json 的预压
  *  产物都会被直接发出去，绕过公开文件白名单。 */
 var PUBLIC_DATA_FILES = [
-  'scenes.json', 'curation.json', 'characters.json',
+  'scenes.json', 'scenes-index.json', 'scenes-core.json',
+  'scenes-nene.json', 'scenes-natsume.json', 'scenes-shared.json',
+  'curation.json', 'characters.json',
   'loras.json', 'tags.json', 'presets.json'
 ];
 

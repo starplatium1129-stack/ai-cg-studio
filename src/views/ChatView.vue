@@ -18,8 +18,22 @@
       <div class="chat-actions">
         <button class="btn btn-ghost" type="button" @click="clearCharacterConversation">新对话</button>
         <button class="btn btn-ghost" type="button" @click="clearAllMemory">清除全部记忆</button>
+        <button
+          class="btn btn-ghost"
+          type="button"
+          :aria-expanded="archiveOpen ? 'true' : 'false'"
+          @click="archiveOpen = !archiveOpen"
+        >记忆归档</button>
       </div>
     </header>
+
+    <ChatArchivePanel
+      v-if="archiveOpen"
+      :storage="storage"
+      :active-char="activeChar"
+      @close="archiveOpen = false"
+      @notice="(message, kind) => setError(message, kind || 'info', 4500)"
+    />
 
     <section class="chat-layout" aria-label="角色聊天">
       <ChatCharacterStage
@@ -207,6 +221,7 @@ import { useChatProvider } from '@/composables/useChatProvider'
 import { useVoice } from '@/composables/useVoice'
 import ChatApiSettings from '@/components/ChatApiSettings.vue'
 import ChatCharacterStage from '@/components/ChatCharacterStage.vue'
+import ChatArchivePanel from '@/components/ChatArchivePanel.vue'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 
@@ -236,6 +251,7 @@ const autoVoice     = ref(true)
 const volume        = ref(80)
 const preparingRoom = ref(false)
 const roomSetupText = ref('一键切到聊天优先：释放受管绘图显存，并启动角色语音服务。')
+const archiveOpen = ref(false)
 
 let statusTimer = 0, errorTimer = 0, roomPollTimer = 0
 

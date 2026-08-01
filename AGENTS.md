@@ -145,6 +145,18 @@
 
 - 拆分大视图（ControlView/SceneManagerView/TrainingView/PromptBuilderView）、文档漂移修正、测试体系 node:test 迁移、仓库卫生、JS lint、字体自托管、LICENSE。
 
+### 已完成：P2 · 全维度升 A 计划（2026-08-01）
+
+1. **服务自愈** ✅：新增 `services/service-watchdog.ts`，为 GPT-SoVITS 与翻译进程增加崩溃检测（探测失败 + 指数退避，30s 封顶）与自动拉起；只对"曾在线且受管"的服务生效，未启动过的一律不动。`/api/status` 暴露 `selfHealing`，控制面板语音卡在自愈中显示"自愈中…"。验收：`test-service-watchdog.js` 覆盖掉线重启/退避/失败重试/停止清理，随 `test-control-failure-contract.js` 进 validate。
+2. **聊天记忆归档** ✅：trim 溢出的旧消息自动进入 `aics_chat_archive_v1`（按 mid 去重、每角色上限 5000 条）；角色房间新增"记忆归档"面板，支持 JSON / Markdown 导出、导入合并、归档并入当前对话、清空；备份白名单覆盖聊天历史与归档。验收：`test-chat-storage.js` 覆盖 trim→归档→导出→导入→并回 round-trip。
+3. **备份体系统一** ✅：`src/utils/storageKeys.ts` 成为 localStorage 键唯一登记处（13 个精确活键 + 训练动态前缀 + 3 个死键）；备份导出收集全部活键并清理死键，恢复只写白名单内键。验收：`test-data-backup.js` 覆盖活键收集/死键清理/恢复白名单。
+4. **字体瘦身** ✅：Noto Sans SC 500 权重移除（5→4），残留 `font-weight:500` 全部并入 600；构建产物 woff2 文件数 498→400（约 -20%）。验收：首页 e2e 断言不再请求 500 字重，`test-bundle-budget.js` 全绿。
+5. **全局 CSS 拆分评估** ✅（书面结论）：主 CSS（index chunk）由约 655KB 降至 556.9KB raw / 227.8KB gzip（约 -15%，达成 ≥8% 验收）；页面专属规则此前已随路由拆分（director/chat 等），继续把 HomeView/ShowcaseView 独有规则移出全局预计收益 <2% 且视觉回归风险高，结论为维持现状。
+6. **scenes.json 分片** ✅：新增 `scenes-nene/natsume/shared/core/index.json`，`build-scenes.js` 写入并 `--check` 校验；`validate-content-contracts.js` 核对分片并集/索引/核心子集并纳入 `DATA_VERSION`；场景库默认只拉 index+shared+core（约 61KB vs 920KB，约 -93%），切角色按需拉分片，全库才拉全量；`/data` 白名单与预压缩同步放行新文件。
+7. **访客引导** ✅：`GuestGuide.vue` 在非本机或 `?guest=1` 时对首访者展示一次性导览（角色是谁 / 能做什么 / 如何开启聊天配音），关闭后写入 `aics_guest_guide_dismissed`，不增加常驻 UI。验收：`studio.spec.ts` 新增访客路径用例，`a11y-device.spec.ts` 无回归。
+
+验证：`npm run validate` 全绿、`npm run build` 通过、全量 189 个 Playwright 用例通过（`--workers=3`）。
+
 ### 待办
 
 暂缓（已评估有结论，条件具备再动）：
@@ -154,12 +166,9 @@
 
 长期观察：
 
-3. 主 CSS 655KB（brotli 104KB）：路由拆分收益小、视觉回归风险大，暂缓；若样式继续膨胀再评估。
-4. 字体权重：Noto Sans SC 5 权重 × ~13 unicode-range 子集 = 55+ 请求，评估可否减到 4 个权重（体积仍受 transferBytes 约束）。
-5. RouteAtmosphere 粒子场按路由重建：可评估 keep-alive/复用，收益小、风险中。
-6. `data/scenes.json`（899KB / brotli 155KB）扩容时按角色分片或索引化加载。
-7. `services/training-service.ts`（1069 行）训练功能稳定后按数据集/任务/日志拆分。
-8. Express 5 升级评估（不急），需覆盖中间件与代理兼容性测试。
+1. RouteAtmosphere 粒子场按路由重建：可评估 keep-alive/复用，收益小、风险中。
+2. `services/training-service.ts`（1069 行）训练功能稳定后按数据集/任务/日志拆分。
+3. Express 5 升级评估（不急），需覆盖中间件与代理兼容性测试。
 
 ## 明确暂缓
 

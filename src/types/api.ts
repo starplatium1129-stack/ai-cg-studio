@@ -81,6 +81,18 @@ export interface ControlStatus {
   scripts: { voiceStart: boolean; voiceStop: boolean; webui: boolean }
   /** 前端构建状态：公网分享伺服 dist/，源码过期时 stale=true */
   webBuild?: { distReady: boolean; builtAt: string | null; stale: boolean }
+  /** 服务自愈看门狗状态：restarting/attempt 表示正在自动拉起 */
+  selfHealing?: {
+    running: boolean
+    services: Record<string, {
+      healthy: boolean
+      managed: boolean
+      restarting: boolean
+      attempt: number
+      lastError: string
+      lastRestartAt: number
+    }>
+  }
 }
 
 /** GET /api/logs */

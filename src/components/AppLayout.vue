@@ -3,6 +3,7 @@
     <a class="skip-link" href="#main">跳到主要内容</a>
     <AppNav />
     <RouteAtmosphere />
+    <GuestGuide />
     <!-- 必须是真的 <main>：skip-link 指向这里，之前是 div，跳转链接落在一个普通容器上 -->
     <main id="main" class="page-main" tabindex="-1">
       <RouterView v-slot="{ Component, route }">
@@ -28,6 +29,7 @@
 import { animateMini } from 'motion'
 import AppNav from './AppNav.vue'
 import RouteAtmosphere from './visual/RouteAtmosphere.vue'
+import GuestGuide from './GuestGuide.vue'
 
 // 路由进出走 spring：连续快速切页时上一个动画从当前值被打断重定向，
 // 不会像固定时长 keyframes 那样"撞墙"。leave 只做快速淡出，把舞台让给新页。

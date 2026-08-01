@@ -51,3 +51,62 @@ assert.throws(() => backup.normalizeBackup({
 }), /没有可恢复/);
 
 });
+
+test('Backup storage-key inventory: live keys collected, dead keys cleaned, restore allowlist', () => {
+  const keys = require('../../src/utils/storageKeys.ts');
+  const live = [
+    'aics_theme', 'aics_interface_sound_v1', 'aics_sd_last_success_v1',
+    'aics_pb_last_draft', 'aics_pb_director_mode', 'aics_scene_favorites',
+    'aics_show_mature', 'aics_tunnel_off', 'aics_chat_v1', 'aics_chat_model',
+    'aics_chat_api_drafts', 'aics_chat_archive_v1', 'aics_training_onboarded',
+  ];
+  live.forEach(key => {
+    assert.strictEqual(keys.isLiveLocalKey(key), true, key + ' must be a live backup key');
+  });
+  assert.strictEqual(keys.isLiveLocalKey('aics_training_params_voice-lora'), true);
+  assert.strictEqual(keys.isLiveLocalKey('aics_training_dataset_nene'), true);
+  assert.strictEqual(keys.isLiveLocalKey('aics_sd_settings_v1'), false);
+  assert.strictEqual(keys.isLiveLocalKey('aics_projects'), false);
+  assert.strictEqual(keys.isLiveLocalKey('random_unknown_key'), false);
+
+  const dead = ['aics_sd_settings_v1', 'aics_projects', 'aics_pending_scene'];
+  dead.forEach(key => assert.strictEqual(keys.isDeadLocalKey(key), true, key + ' must be a dead key'));
+
+  const stored = new Map([
+    ['aics_theme', 'dark'],
+    ['aics_chat_v1', '{"version":3}'],
+    ['aics_chat_archive_v1', '{"version":1}'],
+    ['aics_training_params_lora-v18', '{"epochs":8}'],
+    ['aics_sd_settings_v1', 'stale'],
+    ['aics_projects', 'stale'],
+    ['aics_pending_scene', 'stale'],
+    ['random_unknown_key', 'must not leak'],
+  ]);
+  const fakeStorage = {
+    length: stored.size,
+    key: (index) => [...stored.keys()][index] ?? null,
+    getItem: (key) => stored.get(key) ?? null,
+    setItem: (key, value) => { stored.set(key, value) },
+    removeItem: (key) => { stored.delete(key) },
+  };
+
+  const collected = keys.collectLiveLocalSettings(fakeStorage);
+  assert.deepStrictEqual(Object.keys(collected).sort(), [
+    'aics_chat_archive_v1', 'aics_chat_v1', 'aics_theme', 'aics_training_params_lora-v18',
+  ]);
+  assert.strictEqual(collected['aics_training_params_lora-v18'], '{"epochs":8}');
+  assert.strictEqual(collected.random_unknown_key, undefined);
+
+  const removed = keys.cleanDeadLocalKeys(fakeStorage);
+  assert.strictEqual(removed, 3, 'all three dead keys must be removed');
+  assert.strictEqual(stored.has('aics_sd_settings_v1'), false);
+  assert.strictEqual(stored.has('aics_projects'), false);
+  assert.strictEqual(stored.has('aics_pending_scene'), false);
+  assert.strictEqual(stored.has('aics_theme'), true);
+  assert.strictEqual(stored.has('random_unknown_key'), true, 'unknown keys must not be touched');
+
+  assert.strictEqual(keys.isRestorableLocalKey('aics_chat_v1'), true);
+  assert.strictEqual(keys.isRestorableLocalKey('aics_training_dataset_nene'), true);
+  assert.strictEqual(keys.isRestorableLocalKey('aics_sd_settings_v1'), false);
+  assert.strictEqual(keys.isRestorableLocalKey('random_unknown_key'), false);
+});

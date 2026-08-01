@@ -135,3 +135,61 @@ assert.strictEqual(userSavedSameValues.neverConfigured, false,
   'a real user-saved API config must stay user-configured');
 
 });
+
+test('Chat archive round-trip: trim overflow, export/import, markdown and restore', () => {
+  const archive = require('../../src/utils/chatArchive.ts');
+  const ids = ['nene', 'natsume'];
+  const fresh = archive.emptyChatArchive(ids);
+  assert.deepStrictEqual(fresh.archived, { nene: [], natsume: [] });
+
+  const messages = [
+    { role: 'user', content: '第一句', mid: 'm1', stopped: false },
+    { role: 'assistant', content: '第二句', mid: 'm2', stopped: false },
+    { role: 'assistant', content: '重复句', mid: 'm2', stopped: false },
+    { role: 'user', content: '第三句', mid: '', stopped: false },
+  ];
+  const archived = archive.archiveMessages(fresh, 'nene', messages);
+  assert.strictEqual(archived.archived.nene.length, 3, 'archive must dedupe by mid');
+
+  // 超限消息来自 trim：前 20 条进归档，剩下 20 条留在会话
+  const overflow = Array.from({ length: 25 }, (_, index) => ({
+    role: index % 2 ? 'assistant' : 'user',
+    content: `old-${index}`,
+    mid: `m-old-${index}`,
+    stopped: false,
+  }));
+  const trimmed = archive.archiveMessages(archive.emptyChatArchive(ids), 'nene', overflow);
+  assert.strictEqual(trimmed.archived.nene.length, 25);
+
+  const serialized = archive.serializeChatArchive(trimmed);
+  const parsed = archive.normalizeChatArchive(JSON.parse(serialized), ids);
+  assert.deepStrictEqual(parsed, trimmed, 'archive must round-trip through JSON');
+
+  const merged = archive.mergeChatArchives(parsed, archive.emptyChatArchive(ids));
+  assert.strictEqual(merged.archived.nene.length, 25);
+  const mergedDup = archive.mergeChatArchives(parsed, parsed);
+  assert.strictEqual(mergedDup.archived.nene.length, 25, 'merging identical archives must not duplicate');
+
+  // 并回当前对话：按 mid 去重、保持归档顺序
+  const history = [
+    { role: 'user', content: 'current', mid: 'm-current', stopped: false },
+    { role: 'assistant', content: 'old-0', mid: 'm-old-0', stopped: false },
+  ];
+  const restored = archive.mergeArchiveIntoHistory(history, parsed.archived.nene);
+  assert.strictEqual(restored.length, 26, 'restore must append archive messages without duplicating');
+  assert.strictEqual(restored[0].content, 'current');
+  assert.strictEqual(restored[1].content, 'old-0');
+  assert.strictEqual(restored[restored.length - 1].content, 'old-24');
+
+  const markdown = archive.chatArchiveToMarkdown(parsed, { nene: '宁宁', natsume: '夏目' });
+  assert(/\# 角色聊天归档/.test(markdown), 'markdown export must have a title');
+  assert(/## 宁宁（25 条）/.test(markdown), 'markdown export must list per-character counts');
+  assert(/\*\*宁宁\*\*：old-1/.test(markdown), 'markdown export must render assistant lines');
+  assert(/\*\*你\*\*：old-0/.test(markdown), 'markdown export must render user lines');
+
+  const damaged = archive.normalizeChatArchive({
+    version: 'broken',
+    archived: { nene: [{ role: 'system', content: 'x' }, { role: 'user', content: 'ok', mid: 123 }] },
+  }, ids);
+  assert.deepStrictEqual(damaged.archived.nene.map(m => m.content), ['ok']);
+});

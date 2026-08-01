@@ -1043,7 +1043,7 @@ body.overlay-open { overflow: hidden; }
 .chip {
   display: inline-flex; align-items: center; gap: var(--s-1);
   padding: var(--s-1) var(--s-3); border-radius: var(--r-pill);
-  font-size: var(--fs-label); font-weight: 500;
+  font-size: var(--fs-label); font-weight: 600;
   background: var(--bg-elevated);
   border: 1px solid var(--border-soft);
   color: var(--text-secondary);

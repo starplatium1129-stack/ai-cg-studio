@@ -24,9 +24,11 @@ test('navigation uses the archive icon system and emits pointer feedback', async
   await expect(page.locator('.interaction-impulse')).toHaveClass(/active/)
 
   await sceneLink.click()
+  // 先断言转场切屏动画（active 窗口只有数百毫秒），再断言 URL，
+  // 避免并行负载下 load 事件把 320ms 的 active 窗口拖过去。
+  await expect(page.locator('.route-cut')).toHaveClass(/active/)
   await expect(page).toHaveURL(/\/scene-explorer$/)
   await expect(page.locator('.route-loader')).toHaveCount(1)
-  await expect(page.locator('.route-cut')).toHaveClass(/active/)
   await expect(page.locator('.route-cut-register')).toContainText('SCENE ARCHIVE')
 })
 
@@ -35,7 +37,7 @@ test('gallery empty content uses the shared archive state panel', async ({ page 
 
   const state = page.locator('.archive-state-panel[data-kind="empty"]')
   await expect(state).toBeVisible()
-  await expect(state).toContainText('展墙还在等第一幅作品')
+  await expect(state).toContainText('展墙还在等你的第一幅作品')
   await expect(state.getByRole('link', { name: '开始绘制' })).toBeVisible()
 })
 

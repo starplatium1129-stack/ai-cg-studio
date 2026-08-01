@@ -18,6 +18,7 @@ var diagnostics = require('../server/diagnostics');
 var envelope = require('../server/http-envelope');
 var localOnly = security.localOnly;
 var createOperationManager = require('../services/control-operation').createOperationManager;
+var createServiceWatchdog = require('../services/service-watchdog').createServiceWatchdog;
 
 // ── 前端构建状态：公网分享伺服的是 dist/ 产物，源码改动后不重建
 //    分享出去的就是旧版。这里对比 dist/index.html 与最近修改的源文件。 ──
@@ -193,11 +194,13 @@ function createControlRouter(config, gatewayRef, dependencies) {
     operation: null,
     modeBusy: false,
     webuiManaged: false,
+    ttsManaged: false,
     ollamaModels: [],
     ollamaVram: 0,
     controlLogs: []
   };
   var ops = createOperationManager(state);
+  var watchdog = null;
 
   function controlLog(msg) {
     var line = '[' + new Date().toLocaleTimeString('zh-CN', { hour12:false }) + '] ' + msg;
@@ -449,6 +452,7 @@ function createControlRouter(config, gatewayRef, dependencies) {
         uptime: Math.floor((Date.now() - startTime) / 1000),
         autoStartVoice: !!saved.autoStartVoice,
         voices: config.VOICE_PROFILES || {},
+        selfHealing: watchdog ? watchdog.status() : null,
         webBuild: webBuildInfo(config),
         scripts: {
           voiceStart: fs.existsSync(VOICE_START_SCRIPT),
@@ -478,6 +482,7 @@ function createControlRouter(config, gatewayRef, dependencies) {
         tunnelAvailable:!config.DISABLE_TUNNEL && !!config.CLOUDFLARED_PATH,
         uptime:Math.floor((Date.now() - startTime) / 1000),
         voices:config.VOICE_PROFILES || {},
+        selfHealing:watchdog ? watchdog.status() : null,
         scripts:{
           voiceStart:fs.existsSync(VOICE_START_SCRIPT),
           voiceStop:fs.existsSync(VOICE_STOP_SCRIPT),
@@ -622,6 +627,7 @@ function createControlRouter(config, gatewayRef, dependencies) {
           : '停止脚本已结束，但语音接口仍可访问');
       }
       controlLog('GPT-SoVITS ' + (action === 'start' ? '已启动' : '已停止'));
+      state.ttsManaged = action === 'start';
       ops.finish(operation, null, action === 'start' ? '语音服务已就绪' : '语音服务已停止');
     }).catch(function (error) {
       controlLog('GPT-SoVITS ' + action + ' 失败: ' + error.message);
@@ -717,6 +723,7 @@ function createControlRouter(config, gatewayRef, dependencies) {
       if (mode === 'draw') {
         controlLog('模式切换：绘图优先 — 停止语音服务');
         var stopVoice = await runManagedScript(VOICE_STOP_SCRIPT, [], 30000);
+        state.ttsManaged = false;
         if (!stopVoice.ok) controlLog('停止语音服务时出现提示: ' + stopVoice.error);
         ops.update(operation, 1);
         controlLog('模式切换：绘图优先 — 卸载 Ollama 模型');
@@ -749,6 +756,7 @@ function createControlRouter(config, gatewayRef, dependencies) {
         var startVoice = await runManagedScript(VOICE_START_SCRIPT, ['-WaitSeconds', '60'], 90000);
         if (startVoice.ok) controlLog('聊天优先模式就绪：语音服务已启动');
         else throw new Error('语音服务启动失败: ' + startVoice.error);
+        state.ttsManaged = true;
         ops.update(operation, 2);
       }
       await refreshServiceStates(true); // 模式切换刚动过服务，必须重新探测
@@ -822,9 +830,56 @@ function createControlRouter(config, gatewayRef, dependencies) {
     });
   });
 
+  // 服务自愈看门狗：GPT-SoVITS / 翻译进程崩溃后自动拉起（指数退避）。
+  // 只有"曾在线且受管"的服务才自动重启，未启动过的一律不动。
+  watchdog = createServiceWatchdog({
+    intervalMs: Number(config.SELF_HEALING_INTERVAL_MS) || 5000,
+    maxBackoffMs: 30000,
+    services: [
+      {
+        name: 'tts',
+        probe: function () { return pingTts(config.TTS_HOST, 2500); },
+        restart: function () {
+          return runManagedScript(VOICE_START_SCRIPT, ['-WaitSeconds', '60'], 90000)
+            .then(function (result) { return { ok: !!result.ok, error: result.error }; });
+        },
+        shouldManage: function () {
+          if (state.ttsManaged) return true;
+          try { return !!readJson(config.RUNTIME.config).autoStartVoice; } catch (error) { return false; }
+        }
+      },
+      {
+        name: 'translation',
+        probe: function () {
+          return dependencies.translation ? dependencies.translation.ping() : Promise.resolve(false);
+        },
+        restart: function () {
+          if (!dependencies.translation) return Promise.resolve({ ok: false, error: '翻译服务不可用' });
+          return dependencies.translation.prepare()
+            .then(function () { return { ok: true }; })
+            .catch(function (error) {
+              return { ok: false, error: (error && error.message) || '翻译服务重启失败' };
+            });
+        },
+        shouldManage: function () {
+          if (!dependencies.translation) return false;
+          return fs.existsSync(config.TRANSLATION_PYTHON) && fs.existsSync(config.TRANSLATION_SCRIPT);
+        }
+      }
+    ],
+    onEvent: function (event) {
+      controlLog('自愈看门狗 ' + event.service + ' → ' + event.kind
+        + (event.error ? '：' + event.error : '')
+        + (event.attempt ? '（第 ' + event.attempt + ' 次）' : ''));
+    }
+  });
+  watchdog.start();
+
   // 启动时探测一次受管 WebUI 状态
   refreshServiceStates().catch(function () {});
 
+  router.watchdog = watchdog;
+  router.close = function () { if (watchdog) watchdog.stop(); };
   return router;
 }
 
