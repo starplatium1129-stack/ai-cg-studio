@@ -134,7 +134,7 @@
             </div>
             <div class="viewer-story">{{ currentEntry.story }}</div>
             <div class="viewer-actions">
-              <RouterLink class="btn btn-primary" :to="'/prompt-builder?scene=' + encodeURIComponent(currentEntry.id) + '&step=4&generate=1'">✦ 画这个场景</RouterLink>
+              <RouterLink class="btn btn-primary" :to="'/prompt-builder?scene=' + encodeURIComponent(currentEntry.id) + '&step=4&generate=1'"><ArchiveIcon name="spark" /> 画这个场景</RouterLink>
               <button class="btn btn-ghost" type="button" @click="move(-1)">← 上一张</button>
               <button class="btn btn-ghost" type="button" @click="move(1)">下一张 →</button>
             </div>

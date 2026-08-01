@@ -54,7 +54,7 @@
           aria-controls="nene-wardrobe-menu"
           @click="wardrobeOpen = !wardrobeOpen"
         >
-          <span class="wardrobe-symbol" aria-hidden="true">✦</span>
+          <span class="wardrobe-symbol" aria-hidden="true"><ArchiveIcon name="wardrobe" /></span>
           <span class="wardrobe-copy">
             <small>WARDROBE</small>
             <strong>{{ activeOutfitLabel }}</strong>

@@ -18,7 +18,7 @@
         </div>
       </div>
       <div class="sm-head-actions">
-        <button class="btn btn-ghost" type="button" @click="exportJSON" :disabled="!scenes.length">⬇️ 导出 JSON</button>
+        <button class="btn btn-ghost" type="button" @click="exportJSON" :disabled="!scenes.length"><ArchiveIcon name="download" /> 导出 JSON</button>
         <button class="btn btn-primary" type="button" :disabled="!dirty || saving" @click="saveToProject">
           {{ saving ? '正在保存…' : '▣ 保存到项目' }}
         </button>
@@ -49,7 +49,7 @@
       <!-- 场景表 -->
       <template v-if="tab==='scenes'">
         <div class="toolbar">
-          <input v-model="search" class="search-input" type="search" placeholder="🔍 搜索 ID、标题、故事、标签…" />
+          <input v-model="search" class="search-input" type="search" placeholder="搜索 ID、标题、故事、标签…" />
           <select v-model="fCat" class="filter-select">
             <option value="">全部分类</option>
             <option v-for="c in categories" :key="c" :value="c">{{ c }}</option>
@@ -116,7 +116,7 @@
       <!-- 标签库 -->
       <template v-if="tab==='tags'">
         <div class="toolbar">
-          <input v-model="tagSearch" class="search-input" type="search" placeholder="🔍 搜索标签（英文/中文/分类）…" />
+          <input v-model="tagSearch" class="search-input" type="search" placeholder="搜索标签（英文/中文/分类）…" />
           <select v-model="tagCatFilter" class="filter-select">
             <option value="">全部分类</option>
             <option v-for="c in tagCats" :key="c" :value="c">{{ c }}</option>
@@ -183,7 +183,7 @@
           </div>
         </section>
         <div class="toolbar">
-          <input v-model="imageSearch" class="search-input" type="search" placeholder="🔍 搜索场景 ID 或标题…" />
+          <input v-model="imageSearch" class="search-input" type="search" placeholder="搜索场景 ID 或标题…" />
           <span class="list-meta">{{ filteredImageScenes.length }} 个场景</span>
         </div>
         <p class="note">点场景查看当前样张，可上传替换。图片会归一化为 JPEG（原图 ≤4096px，缩略图 560px），上限 15MB / 6000 万像素。</p>
@@ -257,7 +257,7 @@
       <template v-if="tab==='tools'">
         <div class="tool-grid">
           <button v-for="t in TOOLS" :key="t.id" class="sm-tool-card" type="button" :disabled="toolRunning" @click="runTool(t.id)">
-            <div class="sm-tool-icon">{{ t.icon }}</div>
+            <div class="sm-tool-icon"><ArchiveIcon :name="t.iconName" /></div>
             <div class="sm-tool-label">{{ t.label }}</div>
             <div class="sm-tool-desc">{{ t.desc }}</div>
           </button>
@@ -265,7 +265,7 @@
         <div v-if="toolResult" class="tool-result-panel">
           <div class="tool-result-head">
             <strong>{{ toolResultTitle }}</strong>
-            <span class="badge" :class="toolResult.ok ? 'badge-success' : 'badge-danger'">{{ toolResult.ok ? '✓ 通过' : '⚠️ 有问题' }}</span>
+            <span class="badge" :class="toolResult.ok ? 'badge-success' : 'badge-danger'">{{ toolResult.ok ? '通过' : '有问题' }}</span>
           </div>
           <pre class="tool-output">{{ toolResult.output }}</pre>
         </div>
@@ -349,6 +349,7 @@ import { useSceneShowcaseUpload } from '@/composables/useSceneShowcaseUpload'
 import { useSceneTagManager } from '@/composables/useSceneTagManager'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 
 const sceneStore = useSceneStore()
 
@@ -365,11 +366,11 @@ const TABS = [
 ]
 
 const DUP_KEYWORDS = ['吊带','丝绸','围裙','泳衣','温泉','旗袍','毛衣','衬衫','图书馆','天台','烟花','神社','巫女','咖啡','卧室','寝室','影音室','休息室','后厨','厨房','吧台','晚礼服','魔女','洛丽塔','浴衣','和服','赛车','冰箱','冷藏','露台','阳台','泳池','书房','试衣']
-const TOOLS = [
-  { id:'lint-colors', icon:'◉', label:'检查硬编码颜色', desc:'扫描未用 token 的硬编码颜色' },
-  { id:'validate',   icon:'✓', label:'完整场景校验',   desc:'ID 唯一性、字段完整性、评级一致性' },
-  { id:'classify',   icon:'▣', label:'更新场景评级',   desc:'根据标签重新计算 All/R15/R18' },
-  { id:'optimize',   icon:'⚙', label:'规范化提示词',   desc:'统一标签命名、补全负面词' },
+const TOOLS: Array<{ id: string; iconName: 'palette' | 'success' | 'filter' | 'gear'; label: string; desc: string }> = [
+  { id:'lint-colors', iconName:'palette', label:'检查硬编码颜色', desc:'扫描未用 token 的硬编码颜色' },
+  { id:'validate',   iconName:'success', label:'完整场景校验',   desc:'ID 唯一性、字段完整性、评级一致性' },
+  { id:'classify',   iconName:'filter',  label:'更新场景评级',   desc:'根据标签重新计算 All/R15/R18' },
+  { id:'optimize',   iconName:'gear',    label:'规范化提示词',   desc:'统一标签命名、补全负面词' },
 ]
 const PAGE_SIZE = 30
 
@@ -483,7 +484,7 @@ function deleteSceneFromDup(id: string) {
   detectDuplicates()
 }
 
-  function charIcon(v: string) { return v==='nene'?'◉':v==='natsume'?'◎':'✦' }
+  function charIcon(v: string) { return v==='nene'?'宁':v==='natsume'?'夏':v==='triad'||v==='both'?'双':'—' }
 function charLabel(v: string) { return v==='nene'?'宁宁':v==='natsume'?'夏目':v==='triad'||v==='both'?'双人':v||'—' }
 function errorMessage(error: unknown, fallback: string) {
   if (error instanceof Error && error.message) return error.message
@@ -728,7 +729,7 @@ async function runTool(taskId: string) {
   const tool = TOOLS.find(t => t.id === taskId)
   if (!tool) return
   toolRunning.value = true
-  toolResultTitle.value = tool.icon + ' ' + tool.label
+  toolResultTitle.value = tool.iconName + ' ' + tool.label
   toolResult.value = { ok: true, output: '...' }
   try {
     const r = await fetch('/api/maintenance/run', {

@@ -19,7 +19,7 @@
           </div>
           <div class="history-side">
             <span class="history-rating" :class="{ rated: averageRating(item) > 0 }">
-              <span :class="item.favorite ? 'favorite' : 'star'">{{ item.favorite ? '♥' : '★' }}</span>
+              <span :class="item.favorite ? 'favorite' : 'star'"><ArchiveIcon :name="item.favorite ? 'love' : 'star'" /></span>
               {{ averageRating(item) ? averageRating(item).toFixed(1) : '未评分' }}
             </span>
             <div class="history-actions" aria-label="历史操作">
@@ -37,6 +37,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, reactive, watch } from 'vue'
 import { imgGet } from '@/composables/useImageStore'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import type { HistoryEntry } from '@/stores/promptBuilderStore'
 
 // 与 config/characters.ts 共用 Express 服务的同一份立绘 URL，避免 Vite 打包副本

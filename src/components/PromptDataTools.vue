@@ -5,18 +5,18 @@
       <div class="utility-label">本地数据</div>
       <div class="utility-actions">
         <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.exportBackup()">
-          ⭳ 导出备份
+          <ArchiveIcon name="download" /> 导出备份
         </button>
         <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="pickBackupFile">
-          ⭱ 从备份恢复
+          <ArchiveIcon name="upload" /> 从备份恢复
         </button>
         <input ref="backupFileEl" class="sr-only" type="file" accept="application/json" @change="onBackupFilePicked" />
       </div>
       <div class="utility-divider"></div>
       <div class="utility-label">存储维护</div>
       <div class="utility-actions">
-        <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.healthCheck()">◉ 存储体检</button>
-        <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.cleanOrphanImages()">🧹 清理孤儿图片</button>
+        <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.healthCheck()"><ArchiveIcon name="health" /> 存储体检</button>
+        <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.cleanOrphanImages()"><ArchiveIcon name="broom" /> 清理孤儿图片</button>
       </div>
     </div>
   </details>
@@ -55,6 +55,7 @@
 import { ref } from 'vue'
 import { useBackup, type BackupSummary } from '@/composables/useBackup'
 import { useFocusTrap } from '@/composables/useFocusTrap'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 
 const emit = defineEmits<{ flash: [message: string] }>()
 

@@ -38,7 +38,7 @@
       <div class="sc-meta">
         <span class="sc-meta-l">
           <span v-if="rating > 0" class="sc-stars">
-            <span v-for="i in 5" :key="i" :class="{ on: i <= Math.round(rating) }">★</span>
+            <ArchiveIcon v-for="i in 5" :key="i" class="sc-star" :class="{ on: i <= Math.round(rating) }" name="star" />
           </span>
         </span>
         <span class="sc-meta-r">{{ metaText }}</span>
@@ -50,6 +50,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 
 export interface SceneCardScene {
   [key: string]: unknown

@@ -77,7 +77,7 @@
           </div>
 
           <div v-if="violations(a).length" class="art-warn show">
-            ⚠️ 本幕有 {{ violations(a).length }} 个违反美术规范的标签: {{ violations(a).join(', ') }}
+            ⚠ 本幕有 {{ violations(a).length }} 个违反美术规范的标签: {{ violations(a).join(', ') }}
           </div>
 
           <div class="prompt-label">Positive (10 模块)</div>

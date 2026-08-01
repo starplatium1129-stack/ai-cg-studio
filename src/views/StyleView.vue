@@ -43,8 +43,8 @@
     </div>
 
     <div class="style-actions" data-reveal data-reveal-delay="2">
-      <RouterLink to="/color-script" class="btn btn-ghost">◈ 查看完整色彩剧本 (Color Script)</RouterLink>
-      <RouterLink to="/prompt-builder" class="btn btn-primary">✦ 直接开始绘制</RouterLink>
+      <RouterLink to="/color-script" class="btn btn-ghost"><ArchiveIcon name="palette" /> 查看完整色彩剧本 (Color Script)</RouterLink>
+      <RouterLink to="/prompt-builder" class="btn btn-primary"><ArchiveIcon name="spark" /> 直接开始绘制</RouterLink>
     </div>
 
     <section class="style-tips card-info" data-reveal data-reveal-delay="3">

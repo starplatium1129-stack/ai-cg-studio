@@ -59,9 +59,9 @@
         <div class="prompt-code" v-html="colorizedPrompt"></div>
         <div class="result-actions">
           <button class="btn btn-primary" type="button" @click="copyPrompt">⧉ 复制 Prompt</button>
-          <button class="btn btn-ghost" type="button" @click="exportTxt">⭳ 导出 .txt</button>
+          <button class="btn btn-ghost" type="button" @click="exportTxt"><ArchiveIcon name="download" /> 导出 .txt</button>
           <RouterLink :to="'/prompt-builder?mood=' + selected.id" class="btn btn-ghost">→ 加载到开始绘制</RouterLink>
-          <button class="btn btn-ghost" type="button" @click="selected = null">⟳ 换一个情绪</button>
+          <button class="btn btn-ghost" type="button" @click="selected = null"><ArchiveIcon name="refresh" /> 换一个情绪</button>
         </div>
       </div>
     </Transition>

@@ -122,7 +122,7 @@
             </div>
             <div v-if="personalReason(s2)" class="ex-curation">{{ personalReason(s2) }}</div>
             <div class="ex-actions">
-              <RouterLink :to="'/prompt-builder?scene=' + encodeURIComponent(s2.id)" class="btn btn-primary">✦ 开始绘制</RouterLink>
+              <RouterLink :to="'/prompt-builder?scene=' + encodeURIComponent(s2.id)" class="btn btn-primary"><ArchiveIcon name="spark" /> 开始绘制</RouterLink>
               <button class="btn btn-ghost scene-hide-action" type="button" @click.stop="toggleHidden(s2.id)">
                 {{ hiddenIds.has(s2.id) ? '↩ 恢复' : '隐藏' }}
               </button>
@@ -135,9 +135,9 @@
               </div>
               <div class="ex-secondary">
                 <a class="btn btn-ghost btn-sm" :href="quickCreateUrl(s2.id)"><ArchiveIcon name="lightning" /> 直接出图</a>
-                <button class="btn btn-ghost btn-sm" type="button" @click.stop="drawerScene = s2">📖 故事</button>
+                <button class="btn btn-ghost btn-sm" type="button" @click.stop="drawerScene = s2"><ArchiveIcon name="book" /> 故事</button>
                 <button class="btn btn-ghost btn-sm scene-fav" :class="{ saved: favs.has(s2.id) }"
-                  type="button" @click.stop="toggleFav(s2.id)">{{ favs.has(s2.id) ? '♥ 已收' : '♡ 收藏' }}</button>
+                  type="button" @click.stop="toggleFav(s2.id)"><ArchiveIcon :name="favs.has(s2.id) ? 'love' : 'star'" /> {{ favs.has(s2.id) ? '已收' : '收藏' }}</button>
               </div>
             </div>
           </template>
@@ -155,12 +155,12 @@
     <div v-show="drawerScene" ref="drawerEl" class="story-drawer" role="dialog" aria-modal="true" aria-label="场景故事"
       :class="{ open: !!drawerScene }" @click.self="drawerScene = null">
       <div class="story-card" v-if="drawerScene">
-        <h3>🌸 {{ drawerScene.title }}</h3>
+        <h3><ArchiveIcon name="cherry" /> {{ drawerScene.title }}</h3>
         <div class="story-meta">{{ charName(drawerScene) }} · {{ seasonLabel(drawerScene.season) }} · {{ timeLabel(drawerScene.timeOfDay) }} · {{ drawerScene.emotion }}</div>
         <div class="story-body">{{ drawerScene.story || '' }}</div>
         <div class="story-actions">
           <a class="btn btn-primary" :href="quickCreateUrl(drawerScene.id)"><ArchiveIcon name="lightning" /> 快速出图</a>
-          <RouterLink class="btn btn-ghost" :to="'/prompt-builder?scene=' + encodeURIComponent(drawerScene.id) + '&step=4&generate=1'">🎬 调整后生成</RouterLink>
+          <RouterLink class="btn btn-ghost" :to="'/prompt-builder?scene=' + encodeURIComponent(drawerScene.id) + '&step=4&generate=1'"><ArchiveIcon name="clap" /> 调整后生成</RouterLink>
           <button class="btn btn-ghost" type="button" @click="drawerScene = null">关闭</button>
         </div>
       </div>
@@ -369,7 +369,7 @@ function charName(s: ExplorerScene) {
   const c=s.char||''
   return c==='nene'||c==='ayachi_nene'?'宁宁':c==='natsume'||c==='shiki_natsume'?'夏目':c==='triad'?'双人':c
 }
-function seasonLabel(v?: string) { return ({春:'🌸春',夏:'☀️夏',秋:'🍂秋',冬:'❄️冬'} as Record<string, string>)[v || '']||v||'' }
+function seasonLabel(v?: string) { return ({春:'春',夏:'夏',秋:'秋',冬:'冬'} as Record<string, string>)[v || '']||v||'' }
 function timeLabel(v?: string) {
   return ({morning:'清晨',afternoon:'午后',sunset:'黄昏',night:'夜晚',late_night:'深夜',dawn:'黎明',evening:'夜晚',all_day:'全天'} as Record<string, string>)[v || '']||v||''
 }

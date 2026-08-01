@@ -19,7 +19,7 @@
 
     <div class="gallery-toolbar sticky-toolbar" aria-label="作品筛选" data-reveal>
       <button class="gallery-filter" :class="{ active: favoriteOnly }" type="button" @click="favoriteOnly = !favoriteOnly">
-        ♥ 收藏 {{ favoriteCount }}
+        <ArchiveIcon name="love" /> 收藏 {{ favoriteCount }}
       </button>
       <select v-model="projectFilter" class="gallery-project" aria-label="按项目筛选">
         <option value="">全部项目</option>
@@ -90,7 +90,7 @@
                     <span class="artwork-name">{{ sceneTitle(item.scene) }}</span>
                     <span class="artwork-date">{{ formatDate(stamp(item)) }}</span>
                   </span>
-                  <span class="artwork-mark">{{ item.favorite ? '♥' : '＋' }}</span>
+                  <span class="artwork-mark"><ArchiveIcon v-if="item.favorite" name="love" /><span v-else aria-hidden="true">＋</span></span>
                 </div>
               </div>
             </button>
