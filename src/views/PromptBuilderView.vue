@@ -188,6 +188,7 @@
           <div class="stage-corners" aria-hidden="true">
             <i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i>
           </div>
+          <i class="stage-magic-ring" aria-hidden="true"></i>
           <img class="stage-muse nene" :src="stageMuseUrl.nene" alt="" aria-hidden="true" decoding="async">
           <img class="stage-muse natsume" :src="stageMuseUrl.natsume" alt="" aria-hidden="true" decoding="async">
           <div class="stage-message">

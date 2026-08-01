@@ -146,12 +146,45 @@
      padding:var(--s-2) var(--s-3); border:1px solid var(--glass-edge); border-radius:var(--r-terminal);
      color:var(--text-muted); font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.12em;
    }
-   .pb .stage-corners { position:absolute; z-index:var(--z-raised); inset:8px; pointer-events:none; }
-   .pb .stage-corners i { position:absolute; width:22px; height:22px; border-color:color-mix(in srgb,var(--archive-cyan) 72%,var(--accent)); border-style:solid; opacity:.78; }
-   .pb .stage-corners .tl { top:0; left:0; border-width:var(--line-hairline) 0 0 var(--line-hairline); }
-   .pb .stage-corners .tr { top:0; right:0; border-width:var(--line-hairline) var(--line-hairline) 0 0; }
-   .pb .stage-corners .bl { bottom:0; left:0; border-width:0 0 var(--line-hairline) var(--line-hairline); }
-   .pb .stage-corners .br { right:0; bottom:0; border-width:0 var(--line-hairline) var(--line-hairline) 0; }
+  .pb .stage-corners { position:absolute; z-index:var(--z-raised); inset:8px; pointer-events:none; }
+  .pb .stage-corners i { position:absolute; width:22px; height:22px; border-color:color-mix(in srgb,var(--archive-cyan) 72%,var(--accent)); border-style:solid; opacity:.78; }
+  .pb .stage-corners .tl { top:0; left:0; border-width:var(--line-hairline) 0 0 var(--line-hairline); }
+  .pb .stage-corners .tr { top:0; right:0; border-width:var(--line-hairline) var(--line-hairline) 0 0; }
+  .pb .stage-corners .bl { bottom:0; left:0; border-width:0 0 var(--line-hairline) var(--line-hairline); }
+  .pb .stage-corners .br { right:0; bottom:0; border-width:0 var(--line-hairline) var(--line-hairline) 0; }
+  /* 生成中魔法阵：双环断弧反向旋转（conic 断弧 + mask 环带裁切，零硬编码色；
+     只有 .is-generating 时淡入，reduced-motion 由全局动画降级） */
+  .pb .stage-magic-ring {
+    position:absolute; z-index:var(--z-base);
+    left:50%; top:46%;
+    width:min(40vw,470px); aspect-ratio:1;
+    transform:translate(-50%,-50%);
+    border-radius:50%;
+    pointer-events:none;
+    opacity:0;
+    transition:opacity .6s var(--ease-out);
+    background:
+      conic-gradient(from 20deg, transparent 0 42%, color-mix(in srgb,var(--accent) 34%,transparent) 58% 76%, transparent 94%),
+      radial-gradient(circle, transparent 0 60%, color-mix(in srgb,var(--accent-violet) 16%,transparent) 65% 67%, transparent 69%);
+    -webkit-mask:radial-gradient(closest-side, transparent 0 76%, var(--text-primary) 76% 79%, transparent 79%);
+    mask:radial-gradient(closest-side, transparent 0 76%, var(--text-primary) 76% 79%, transparent 79%);
+  }
+  .pb .stage-magic-ring::after {
+    content:''; position:absolute; inset:19%;
+    border-radius:50%;
+    background:conic-gradient(from 200deg, transparent 0 32%, color-mix(in srgb,var(--accent-violet) 28%,transparent) 50% 64%, transparent 84%);
+    -webkit-mask:radial-gradient(closest-side, transparent 0 70%, var(--text-primary) 70% 74%, transparent 74%);
+    mask:radial-gradient(closest-side, transparent 0 70%, var(--text-primary) 70% 74%, transparent 74%);
+  }
+  .pb .stage-placeholder.is-generating .stage-magic-ring {
+    opacity:1;
+    animation:stageMagicSpin 24s linear infinite;
+  }
+  .pb .stage-placeholder.is-generating .stage-magic-ring::after {
+    animation:stageMagicSpinRev 31s linear infinite;
+  }
+  @keyframes stageMagicSpin { to { transform:translate(-50%,-50%) rotate(360deg); } }
+  @keyframes stageMagicSpinRev { to { transform:rotate(-360deg); } }
   .pb .stage-ready { display:flex; align-items:center; gap:var(--s-2); }
   .pb .stage-ready::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--success); box-shadow:0 0 10px color-mix(in srgb,var(--success) 50%,transparent); }
   .pb .stage-muse { position:absolute; z-index:var(--z-base); right:-12%; bottom:-3%; width:52%; height:92%; object-fit:contain; object-position:center bottom; opacity:0; filter:saturate(.76) contrast(.96); pointer-events:none; transition:opacity .5s ease,filter .5s ease,transform .5s var(--ease-out); -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 28%,#000 100%); mask-image:linear-gradient(180deg,transparent 0%,#000 28%,#000 100%); }

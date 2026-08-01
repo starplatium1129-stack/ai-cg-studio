@@ -8,6 +8,9 @@
     @click="clickable && emit('pick', scene)"
     @keydown.enter.prevent="clickable && emit('pick', scene)"
     @keydown.space.prevent="clickable && emit('pick', scene)"
+    @mousemove="onSpotMove"
+    @mouseenter="onSpotEnter"
+    @mouseleave="onSpotLeave"
   >
     <div class="sc-band">
       <div v-if="thumbId" class="sc-thumb-skeleton" :class="{ visible: !thumbLoaded && !thumbFailed }" aria-hidden="true"></div>
@@ -88,6 +91,32 @@ const TAG_BLOCKLIST = ['official_cg', 'visual_audited']
 
 const thumbFailed = ref(false)
 const thumbLoaded = ref(false)
+
+// 鼠标跟随光斑：hover 时光斑中心跟随指针（CSS 自定义属性承载坐标，
+// 不直接写 style 属性，符合样式债门禁；卡片级 passive 监听开销极小）
+const spotEl = ref<HTMLElement | null>(null)
+let spotFrame = 0
+function onSpotEnter(e: MouseEvent) {
+  const el = e.currentTarget as HTMLElement
+  spotEl.value = el
+  el.style.setProperty('--sc-spot-o', '1')
+}
+function onSpotLeave(e: MouseEvent) {
+  const el = e.currentTarget as HTMLElement
+  spotEl.value = null
+  el.style.setProperty('--sc-spot-o', '0')
+}
+function onSpotMove(e: MouseEvent) {
+  const el = e.currentTarget as HTMLElement
+  if (spotEl.value !== el) return
+  if (spotFrame) return
+  spotFrame = requestAnimationFrame(() => {
+    spotFrame = 0
+    const r = el.getBoundingClientRect()
+    el.style.setProperty('--sc-spot-x', String(e.clientX - r.left))
+    el.style.setProperty('--sc-spot-y', String(e.clientY - r.top))
+  })
+}
 
 const clickable = computed(() =>
   props.clickable === true || (props.clickable !== false && props.mode !== 'strip')
