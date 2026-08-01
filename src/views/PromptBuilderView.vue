@@ -227,10 +227,10 @@
         <div class="panel step-panel advanced-decision expert-tag-panel" id="stepTags">
           <div class="panel-title">词条工作台 · Tags</div>
           <div class="manual-tags">
-            <span v-for="tag in pb.manualTags" :key="tag" class="manual-tag">
-              {{ tag }}
-              <span class="sr-only">（{{ tagMeaning(tag) }}）</span>
-              <button type="button" class="tag-remove" @click="pb.toggleManualTag(tag)">×</button>
+            <span v-for="tag in pb.manualTags" :key="tag" class="manual-tag" :title="tagMeaning(tag)">
+              <span class="manual-tag-en">{{ tag }}</span>
+              <span v-if="tagLabel(tag)" class="manual-tag-cn">{{ tagLabel(tag) }}</span>
+              <button type="button" class="tag-remove" :aria-label="'移除词条 ' + tag" @click="pb.toggleManualTag(tag)">×</button>
             </span>
           </div>
           <div class="outfit-presets" aria-label="v18 官方服装词包">
@@ -998,6 +998,12 @@ function addTag(e: Event) {
   const input = e.target as HTMLInputElement
   const tag = input.value.trim().replace(/\s+/g, '_').toLowerCase()
   if (tag) { pb.toggleManualTag(tag); input.value = '' }
+}
+
+/** chip 里的中文释义；完全未知的词条不占位 */
+function tagLabel(tag: string): string {
+  const meaning = tagMeaning(tag)
+  return meaning === '未收录释义' ? '' : meaning
 }
 
 function toggleOutfitBundle(tags: string[]) {

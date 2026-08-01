@@ -954,10 +954,14 @@
   }
   .pb .manual-tags { display:flex; flex-wrap:wrap; gap:6px; min-height:28px; margin-bottom:var(--s-2); }
   .pb .manual-tag {
-    display:inline-flex; align-items:center; gap:4px; padding:3px 10px;
-    border:1px solid var(--accent); border-radius:var(--r-pill);
+    display:inline-flex; flex-direction:column; align-items:flex-start; gap:1px;
+    padding:4px 22px 4px 10px; position:relative;
+    border:1px solid var(--accent); border-radius:var(--r-md);
     background:var(--accent-soft); color:var(--accent); font-size:var(--fs-label-xs);
   }
+  .pb .manual-tag-en { font-family:var(--font-mono); font-weight:700; letter-spacing:.02em; }
+  .pb .manual-tag-cn { color:var(--text-secondary); font-size:var(--fs-label-xs); line-height:1.3; }
+  .pb .manual-tag .tag-remove { position:absolute; top:2px; right:4px; }
   .pb .outfit-presets {
     display:grid; gap:var(--s-2); margin:var(--s-3) 0;
     padding:var(--s-3); border:1px solid color-mix(in srgb,var(--accent) 28%,var(--border-soft));
