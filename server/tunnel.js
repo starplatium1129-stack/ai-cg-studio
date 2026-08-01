@@ -17,11 +17,17 @@ function createTunnelManager(options) {
   var spawn = options.spawn || cp.spawn;
   var onStateChange = options.onStateChange || function () {};
 
-  var tunnelUrl = '';
-  var pendingTunnelUrl = '';
-  var tunnelProcess = null;
-  var tunnelPoll = null;
-  var tunnelStopped = false;
+var tunnelUrl = '';
+var pendingTunnelUrl = '';
+var tunnelProcess = null;
+var tunnelPoll = null;
+var tunnelStopped = false;
+var restartTimer = null;
+var restartAttempts = 0;
+
+var RESTART_BASE_MS = 5000;
+var RESTART_MAX_MS = 30000;
+var RESTART_LIMIT = 10;
 
   function getUrl() {
     return tunnelUrl;
@@ -41,6 +47,7 @@ function createTunnelManager(options) {
     }
     if (tunnelProcess) return; // 已在运行，避免重复 spawn
     tunnelStopped = false;
+    restartAttempts = 0;
     console.log('  🌪 Starting Cloudflare Tunnel...');
     var runtimeTools = require('../scripts/runtime/runtime-paths');
     runtimeTools.rotateLog(config.RUNTIME.tunnelLog, 2 * 1024 * 1024);
@@ -66,9 +73,30 @@ function createTunnelManager(options) {
       tunnelProcess = null;
       clearUrl();
       if (tunnelPoll) { clearInterval(tunnelPoll); tunnelPoll = null; }
+      scheduleRestart();
     }
     tunnelProcess.on('exit', function (code) { handleTunnelExit('exit ' + code); });
     tunnelProcess.on('error', function (error) { handleTunnelExit(error.message); });
+
+    // 自动重连：TryCloudflare 免费隧道会被 Cloudflare 侧不定期回收，
+    // 进程退出后不清空状态就保持"分享中"，朋友访问只会得到 1033
+    // 或连接失败。指数退避拉起（5s → 10s → …→ 30s，最多 10 次），
+    // 手动点过停止就永远不再拉起。
+    function scheduleRestart() {
+      if (tunnelStopped) return;
+      if (restartTimer) return;
+      restartAttempts += 1;
+      if (restartAttempts > RESTART_LIMIT) {
+        console.log('  🌪 Tunnel restart limit reached, give up (share link expired)');
+        return;
+      }
+      var delay = Math.min(RESTART_MAX_MS, RESTART_BASE_MS * restartAttempts);
+      console.log('  🌪 Tunnel restart scheduled in ' + delay + 'ms (attempt ' + restartAttempts + ')');
+      restartTimer = setTimeout(function () {
+        restartTimer = null;
+        start();
+      }, delay);
+    }
 
     if (tunnelPoll) { clearInterval(tunnelPoll); tunnelPoll = null; }
     var attempts = 0;
@@ -81,6 +109,7 @@ function createTunnelManager(options) {
         if (match) pendingTunnelUrl = match[0];
         if (pendingTunnelUrl && /Registered tunnel connection/i.test(log)) {
           tunnelUrl = pendingTunnelUrl;
+          restartAttempts = 0;  // 连接成功，重连计数清零
           onStateChange();
           console.log('  🌪 Tunnel ready (token redacted; open control panel for share link)');
           clearInterval(tunnelPoll); tunnelPoll = null;
@@ -93,6 +122,7 @@ function createTunnelManager(options) {
 
   function stop() {
     tunnelStopped = true;
+    if (restartTimer) { clearTimeout(restartTimer); restartTimer = null; }
     clearUrl();
     if (tunnelPoll) { clearInterval(tunnelPoll); tunnelPoll = null; }
 
