@@ -24,7 +24,7 @@
       <div class="pb-header">
         <div class="pb-kicker">Nene &amp; Natsume Private Atelier</div>
         <h1 class="pb-title">开始绘制</h1>
-        <p class="pb-sub">选一个场景，定下情绪、镜头与光照；参数会自动备好，你只管出图。</p>
+        <p class="pb-sub">挑选触动心灵的场景，凝定情绪、镜头与光效；提示词与模型参数将静候呈献，只需轻点出图。</p>
       </div>
       <div class="pb-top-actions">
         <button class="focus-mode-btn" type="button"
@@ -198,11 +198,11 @@
               <div class="stage-progress-ring"><i :style="{ '--progress': sd.progress.value + '%' }"></i></div>
             </div>
             <div v-else class="stage-idle">
-              <div class="stage-placeholder-title">成片将在这里出现</div>
+              <div class="stage-placeholder-title">心动成片将在此处呈现</div>
               <div class="stage-quick-actions">
                 <button class="btn btn-ghost" type="button"
                   @click="pb.sceneSearch = ''">
-                  自己找场景
+                  探索灵感场景
                 </button>
               </div>
             </div>

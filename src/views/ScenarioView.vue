@@ -10,11 +10,11 @@
     >
       <div class="page-kicker">Scenario mode</div>
       <h1 class="title">剧本模式</h1>
-      <p class="subtitle">把一个故事拆成多帧 CG；每一幕都包含完整的场景结构、美术自检与分层负面提示词。</p>
+      <p class="subtitle">将一段动人的相遇拆解为多幕 CG 叙事；每一幕均凝炼完整的场景结构、色彩基调与意象表达。</p>
     </ArchivePageHero>
 
     <div class="info-callout" data-reveal>
-      <strong>◎ 设计理念</strong> | 每一幕都是一个完整场景。切换右上角角色后，全部分幕的提示词会在宁宁与夏目之间同步转换。
+      <strong>◎ 设计理念</strong> | 每一幕均为独立而完整的叙事画面。切换右上角角色后，全分幕的提示词将在宁宁与夏目之间灵动转换。
       当前灵感场景共有 <strong>{{ sceneCount }}</strong> 个。
     </div>
 

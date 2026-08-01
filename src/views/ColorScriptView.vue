@@ -66,25 +66,25 @@
       </div>
     </Transition>
 
-    <h2 class="section-title spaced-lg">◈ 美术规范 · 色彩对照</h2>
-    <p class="note mb-3">写每一条提示词前，先问自己："这符合我们的美术规范吗？"</p>
+    <h2 class="section-title spaced-lg">◈ 美术指导 · 色彩对照</h2>
+    <p class="note mb-3">写下提示词前，先问自己：“这段文字是否准确勾勒出了心中的氛围与情绪？”</p>
     <div class="art-ref">
       <div class="art-ref-card good">
-        <div class="art-ref-title">[+] 推崇使用</div>
+        <div class="art-ref-title">[+] 推荐使用</div>
         <div>
           <span v-for="t in GOOD_TAGS" :key="t" class="art-tag ok">{{ t }}</span>
         </div>
       </div>
       <div class="art-ref-card bad">
-        <div class="art-ref-title">[×] 禁止使用</div>
+        <div class="art-ref-title">[×] 避免使用</div>
         <div>
           <span v-for="t in BANNED_TAGS" :key="t" class="art-tag no">{{ t }}</span>
         </div>
       </div>
     </div>
 
-    <h2 class="section-title spaced">◉ 光照规范 · 每个光源都有理由</h2>
-    <p class="note mb-3">光源不能只为好看而堆叠，它必须服务于故事与时间。</p>
+    <h2 class="section-title spaced">◉ 光影指导 · 让光芒诉说故事</h2>
+    <p class="note mb-3">每一束光线都有出现的理由，它服务于此刻的空气、时间与叙事。</p>
     <div class="lighting-ref">
       <div v-for="l in LIGHTINGS" :key="l.name" class="lighting-mini">
         <div class="lighting-icon"><ArchiveIcon :name="l.iconName" /></div>

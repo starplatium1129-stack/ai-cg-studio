@@ -11,11 +11,11 @@
     >
       <div class="page-kicker">Art direction</div>
       <h1 class="title">画风</h1>
-      <p class="subtitle">定下画面色彩基调。选择后，绘制台将引导整体画面的光影与色彩渲染。</p>
+      <p class="subtitle">色板决定画面情绪与氛围温度。在此探寻专属美学与色彩剧本。</p>
     </ArchivePageHero>
 
-    <div class="section-title" data-reveal>色彩氛围 (Color Moods)</div>
-    <p class="note mb-3" data-reveal>点击色彩样板，将携带对应色彩脚本直接开启画面绘制。</p>
+    <div class="section-title" data-reveal>色彩氛围 · Color Moods</div>
+    <p class="note mb-3" data-reveal>选择倾心的色板，将带着对应的色彩脚本直接开启画面绘制。</p>
 
     <div class="mood-grid mood-grid-lg stagger-container" data-reveal data-reveal-delay="1">
       <RouterLink

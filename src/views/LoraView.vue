@@ -12,7 +12,7 @@
     <div class="lora-title-row">
       <div>
         <h1 class="title">模型</h1>
-        <p class="subtitle">模型奠定角色的面容精细度与人设气质。出图时自动调度，此处呈现模型特征与推荐权重。</p>
+        <p class="subtitle">模型奠定角色的面容精细度与人设气质。出图时智能自动调度，在此呈现模型特征与推荐权重。</p>
       </div>
       <RouterLink class="btn btn-primary" to="/training?kind=lora">打开训练台</RouterLink>
     </div>

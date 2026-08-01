@@ -7,9 +7,9 @@
           <strong>{{ activeThemeIndex }}</strong>
           <span>{{ activeThemeLabel }}</span>
         </div>
-        <div class="page-kicker">Scene discovery / 场景发现</div>
+        <div class="page-kicker">Scene discovery / 场景探寻</div>
         <h1 id="sceneAtlasTitle" class="title">灵感场景</h1>
-        <p class="subtitle">精选契合人设的高光瞬间，每一幕均预设镜头与叙事光影。其余 <strong>{{ scenes.length }} 个场景</strong>悉数收录于工坊档案。</p>
+        <p class="subtitle">精选契合人设的高光瞬间，每一幕均悉数预设镜头与叙事光影。其余 <strong>{{ scenes.length }} 个场景</strong>已完整收录于工坊档案。</p>
         <div class="curation-intro">
           <span class="curation-kicker">Nene × Natsume</span>
           <h2>从角色的心情，走进场景</h2>

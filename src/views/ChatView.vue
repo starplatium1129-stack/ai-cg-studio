@@ -13,7 +13,7 @@
       <div>
         <div class="page-kicker">Character room</div>
         <h1 class="chat-title">角色房间</h1>
-        <p class="chat-subtitle">让宁宁或夏目陪你聊一会儿。回复、声音与记忆都留在这台电脑。</p>
+        <p class="chat-subtitle">让宁宁或夏目陪你聊一会儿。对谈、声线与温暖记忆，都安静珍藏于本机。</p>
       </div>
       <div class="chat-actions">
         <button class="btn btn-ghost" type="button" @click="clearCharacterConversation">新对话</button>

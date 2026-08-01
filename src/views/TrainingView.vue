@@ -13,8 +13,8 @@
         <div class="page-kicker">Character training workbench</div>
         <h1 class="title">角色训练台</h1>
         <p class="subtitle">
-          把宁宁与夏目的 LoRA、角色语音、数据集检查和训练日志放在同一处。
-          所有任务只在这台电脑上运行，一次只启动一个训练进程。
+          集约管理宁宁与夏目的 LoRA 训练、语音合成、数据集核验与训练日志。
+          所有训练任务均只在本机安全执行，并保持严格单任务调度。
         </p>
       </div>
       <div class="hero-status" :data-ready="workspaceReady ? 'true' : 'false'">

@@ -11,7 +11,7 @@
           </div>
           <span class="eyebrow">NENE &amp; NATSUME ATELIER</span>
           <h1 class="hero-title">绫季绘境<span class="jp">把心动的一瞬，画成一张 CG</span></h1>
-          <p class="hero-sub">选择触动心弦的瞬间。角色身份、情绪克制与叙事光影已悉数就绪。</p>
+          <p class="hero-sub">捕捉触动心弦的瞬间。在收束的叙事光影与情绪之中，画下专属你的 CG。</p>
           <p class="hero-jp">「 ときめきの一瞬を、一枚の CG に 」</p>
           <div class="ctas">
             <RouterLink :to="continueLink.to" class="btn btn-lg btn-primary" id="continueCta">
@@ -101,7 +101,7 @@
         <RouterLink to="/prompt-builder" class="tool-card card-create card-level-2">
           <span class="tool-index" aria-hidden="true">01 / MAKE</span>
           <span class="ic"><ArchiveIcon name="spark" /></span><span class="t">开始绘制</span>
-          <span class="d">调和镜头、光影与情绪，将心动定格成专属 CG。</span>
+          <span class="d">调和镜头、光影与克制的情绪，将心动一瞬定格为专属 CG。</span>
           <span class="go">→ 打开</span>
         </RouterLink>
         <RouterLink to="/scene-explorer" class="tool-card card-create card-level-2">
@@ -113,13 +113,13 @@
         <RouterLink to="/chat" class="tool-card card-create card-level-2">
           <span class="tool-index" aria-hidden="true">03 / ROOM</span>
           <span class="ic"><ArchiveIcon name="chat" /></span><span class="t">角色房间</span>
-          <span class="d">与宁宁或夏目静享片刻对谈，全流程本地语音陪伴。</span>
+          <span class="d">与宁宁或夏目静享片刻独白，全流程本地语音温情陪伴。</span>
           <span class="go">→ 进入房间</span>
         </RouterLink>
         <RouterLink to="/showcase" class="tool-card card-create card-level-2">
           <span class="tool-index" aria-hidden="true">04 / ARCHIVE</span>
           <span class="ic"><ArchiveIcon name="image" /></span><span class="t">效果样张</span>
-          <span class="d">人工逐张审计的定稿画册，凝结真实的画面叙事。</span>
+          <span class="d">经人工细致复核的定稿画册，凝结帧帧动人的画面叙事。</span>
           <span class="go">→ 浏览</span>
         </RouterLink>
       </div>
@@ -138,25 +138,25 @@
         <RouterLink to="/character" class="tool-card card-create">
           <span class="tool-index" aria-hidden="true">05 / PROFILE</span>
           <span class="ic"><ArchiveIcon name="character" /></span><span class="t">角色档案</span>
-          <span class="d">设定细目、官方特征词与 LoRA 模型映射。</span>
+          <span class="d">收录角色设定、官方特征词与 LoRA 契约映射。</span>
           <span class="go">→ 打开</span>
         </RouterLink>
         <RouterLink to="/style" class="tool-card card-create">
           <span class="tool-index" aria-hidden="true">06 / PALETTE</span>
           <span class="ic"><ArchiveIcon name="palette" /></span><span class="t">画风</span>
-          <span class="d">画面色阶、氛围基调与色彩脚本。</span>
+          <span class="d">探寻画面色阶、情绪氛围与色彩剧本。</span>
           <span class="go">→ 打开</span>
         </RouterLink>
         <RouterLink to="/lora" class="tool-card card-create">
           <span class="tool-index" aria-hidden="true">07 / MODEL</span>
           <span class="ic"><ArchiveIcon name="model" /></span><span class="t">模型</span>
-          <span class="d">训练集配比、触发词典与推荐权重。</span>
+          <span class="d">查阅训练集配比、触发词典与最佳推荐权重。</span>
           <span class="go">→ 打开</span>
         </RouterLink>
         <RouterLink to="/gallery" class="tool-card card-create">
           <span class="tool-index" aria-hidden="true">08 / WORKS</span>
           <span class="ic"><ArchiveIcon name="gallery" /></span><span class="t">作品册</span>
-          <span class="d">沉浸式展示本机创作，以原始画幅安静收藏。</span>
+          <span class="d">以纯净原始画幅，安静收存属于你的每一张心动创作。</span>
           <span class="go">→ 打开</span>
         </RouterLink>
       </div>
@@ -232,7 +232,7 @@ useScrollReveal()
 const DRAFT_KEY = 'aics_pb_last_draft'
 
 const sceneCountCopy = ref('场景加载中')
-const sceneLibraryCopy = ref('招牌瞬间已备好情绪与镜头。')
+const sceneLibraryCopy = ref('招牌灵感瞬间，已悉数备好镜头与光影基调。')
 const continueIconName = ref<ArchiveIconName>('spark')
 const continueLink = ref({ to: '/prompt-builder', icon: '✨', label: '开始绘制' })
 const continueHint = ref('')
