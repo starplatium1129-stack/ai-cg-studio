@@ -26,7 +26,7 @@
         <button v-for="rail in moodRails" :key="rail.title" type="button" class="mood-rail"
           :class="[rail.character === 'nene' || rail.character === 'natsume' ? rail.character : '']"
           @click="applyMoodRail(rail.query)">
-          <span class="mood-icon">{{ rail.icon || '✦' }}</span>
+          <span class="mood-icon"><ArchiveIcon :name="railIconName(rail.icon)" /></span>
           <strong>{{ rail.title }}</strong><small>{{ rail.subtitle }}</small>
         </button>
       </div>
@@ -73,7 +73,7 @@
         <button v-for="d in THEME_DEFS" :key="d.id" type="button" class="scene-cat"
           :class="{ active: activeTheme === d.id }"
           :aria-pressed="activeTheme === d.id ? 'true' : 'false'"
-          @click="activeTheme = d.id">{{ d.icon }} {{ d.label }} {{ themeCount(d.id) }}</button>
+          @click="activeTheme = d.id"><ArchiveIcon :name="d.iconName" /> {{ d.label }} {{ themeCount(d.id) }}</button>
       </div>
 
       <div v-if="intentHtml" class="search-intent" aria-live="polite" v-html="intentHtml"></div>
@@ -81,13 +81,13 @@
       <!-- 精细筛选默认收起 -->
       <div v-show="filtersOpen" class="scene-facet-panel">
         <div class="scene-facet-grid">
-          <label class="scene-filter-field">角色<select v-model="fChar"><option value="all">全部角色</option><option value="nene">🌸 宁宁</option><option value="natsume">🍂 夏目</option><option value="triad">🌸🍂 双人</option></select></label>
-          <label class="scene-filter-field">季节<select v-model="fSeason"><option value="all">全部季节</option><option value="春">🌸 春</option><option value="夏">☀️ 夏</option><option value="秋">🍂 秋</option><option value="冬">❄️ 冬</option></select></label>
+          <label class="scene-filter-field">角色<select v-model="fChar"><option value="all">全部角色</option><option value="nene">宁宁</option><option value="natsume">夏目</option><option value="triad">双人</option></select></label>
+          <label class="scene-filter-field">季节<select v-model="fSeason"><option value="all">全部季节</option><option value="春">春</option><option value="夏">夏</option><option value="秋">秋</option><option value="冬">冬</option></select></label>
           <label class="scene-filter-field">时段<select v-model="fTime"><option value="all">全部时段</option><option value="morning">清晨</option><option value="afternoon">午后</option><option value="sunset">黄昏</option><option value="night">夜晚与深夜</option><option value="dawn">黎明</option></select></label>
           <label class="scene-filter-field">系列<select v-model="fSeries"><option value="all">全部系列</option><option value="after">After Story</option><option value="fanwork">同人</option><option value="active">Active Sync</option></select></label>
           <label class="scene-filter-field">分级<select v-model="fRating"><option value="all">全部分级</option><option value="All">全年龄</option><option value="R15">R15</option><option value="R18">R18</option></select></label>
           <label class="scene-filter-field">层级<select v-model="fTier"><option value="personal">我的常用</option><option value="core">人设核心</option><option value="featured">招牌与精选</option><option value="signature">只看招牌</option><option value="curated">只看精选</option><option value="all">完整库</option></select></label>
-          <label class="scene-filter-field">排序<select v-model="sortBy"><option value="smart">✨ 智能推荐</option><option value="used">最近常用</option><option value="curated">主理人精选</option><option value="favorite">我的收藏</option><option value="newest">最新加入</option><option value="title">名称A-Z</option></select></label>
+          <label class="scene-filter-field">排序<select v-model="sortBy"><option value="smart">智能推荐</option><option value="used">最近常用</option><option value="curated">主理人精选</option><option value="favorite">我的收藏</option><option value="newest">最新加入</option><option value="title">名称A-Z</option></select></label>
         </div>
         <div class="scene-filter-meta">
           <label class="mature-toggle"><input type="checkbox" v-model="showMature" @change="onMatureChange" /> 显示成人内容 <span>({{ matureCount }})</span></label>
@@ -186,7 +186,7 @@ import { kvInit, kvGet } from '@/composables/useKVStore'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import { useSceneStore, type Scene, type CurationData } from '@/stores/sceneStore'
 import { quickCreateUrl } from '@/utils/quickCreate'
-import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 
 interface ExplorerScene extends Scene {
   title?: string
@@ -216,16 +216,16 @@ const FAV_KEY = 'aics_scene_favorites'
 const HISTORY_KEY = 'aics_pb_history'
 const LOCAL_OWNER = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(window.location.hostname)
 
-const THEME_DEFS = [
-  { id: 'all',      label: '全部', icon: '✦', categories: [] as string[] },
-  { id: 'romance',  label: '恋爱', icon: '♡', categories: ['恋爱'] },
-  { id: 'daily',    label: '日常', icon: '☕', categories: ['日常'] },
-  { id: 'intimate', label: '亲密', icon: '🌙', categories: ['亲密','R15'] },
-  { id: 'school',   label: '校园', icon: '🎓', categories: ['校园'] },
-  { id: 'travel',   label: '旅行', icon: '🧳', categories: ['旅行'] },
-  { id: 'festival', label: '节日', icon: '🎐', categories: ['祭典・节日'] },
-  { id: 'story',    label: '剧情', icon: '🎬', categories: ['战斗','Active Sync'] },
-  { id: 'fanwork',  label: '同人', icon: '✧', categories: ['同人'] },
+const THEME_DEFS: Array<{ id: string; label: string; iconName: ArchiveIconName; categories: string[] }> = [
+  { id: 'all',      label: '全部', iconName: 'spark',     categories: [] as string[] },
+  { id: 'romance',  label: '恋爱', iconName: 'love',      categories: ['恋爱'] },
+  { id: 'daily',    label: '日常', iconName: 'coffee',    categories: ['日常'] },
+  { id: 'intimate', label: '亲密', iconName: 'moonlight', categories: ['亲密','R15'] },
+  { id: 'school',   label: '校园', iconName: 'cap',       categories: ['校园'] },
+  { id: 'travel',   label: '旅行', iconName: 'plane',     categories: ['旅行'] },
+  { id: 'festival', label: '节日', iconName: 'flower',    categories: ['祭典・节日'] },
+  { id: 'story',    label: '剧情', iconName: 'clap',      categories: ['战斗','Active Sync'] },
+  { id: 'fanwork',  label: '同人', iconName: 'spark',     categories: ['同人'] },
 ]
 const PARTICLE_SHAPES: Record<string, ParticleShapeId> = {
   all: 'atelier',
@@ -243,6 +243,22 @@ const DEFAULT_RAILS = [
   { character:'natsume', icon:'☕', title:'夏目的夜灯关心', subtitle:'咖啡馆 · 雨夜 · 琥珀', query:'natsume cafe'  },
   { character:'shared',  icon:'🌅', title:'夏日远行',       subtitle:'海风 · 黄昏 · 纪念',   query:'beach sunset' },
 ]
+
+/** curation.json 的 moodRails 仍是 emoji；渲染时映射到手绘图标，避免改数据升版本 */
+function railIconName(icon: string | undefined): ArchiveIconName {
+  switch (icon) {
+    case '🌙': return 'moonlight'
+    case '☕': return 'coffee'
+    case '🌅': case '🌄': return 'goldenhour'
+    case '🌸': return 'cherry'
+    case '🍂': return 'autumnleaf'
+    case '💕': case '❤': return 'love'
+    case '📖': return 'book'
+    case '🎬': return 'clap'
+    case '✿': return 'flower'
+    default: return 'spark'
+  }
+}
 
 const route = useRoute()
 const sceneStore = useSceneStore()

@@ -99,7 +99,7 @@
           <!-- Empty state -->
           <div v-if="!currentMessages.length" class="chat-empty">
             <span class="chat-empty-kicker">{{ currentCharacter.roomCode }}</span>
-            <div class="icon">{{ currentCharacter.icon }}</div>
+            <div class="icon"><ArchiveIcon :name="currentCharacter.id === 'natsume' ? 'natsume' : 'nene'" /></div>
             <div>{{ currentCharacter.greeting }}</div>
             <div class="chat-starters" aria-label="对话开场建议">
               <button v-for="s in currentCharacter.starters" :key="s" type="button"
@@ -113,7 +113,7 @@
               class="message"
               :class="[msg.role, msg.mid && msg.mid === streamingMid ? 'streaming' : '', msg.mid === playingMid ? 'speaking' : '']"
               :data-mid="msg.mid">
-              <div class="message-avatar">{{ msg.role === 'user' ? '你' : currentCharacter.icon }}</div>
+              <div class="message-avatar"><span v-if="msg.role === 'user'">你</span><ArchiveIcon v-else :name="currentCharacter.id === 'natsume' ? 'natsume' : 'nene'" /></div>
               <div class="message-body">
                 <div class="message-bubble">{{ msg.content }}</div>
                 <div class="message-meta">

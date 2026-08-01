@@ -136,7 +136,7 @@
             <button v-for="t in SCENE_THEMES" :key="t.id"
               class="scene-cat-btn" type="button"
               :class="{ active: pb.sceneTheme === t.id }"
-              @click="pb.sceneTheme = t.id">{{ t.icon }} {{ t.label }}</button>
+              @click="pb.sceneTheme = t.id"><ArchiveIcon :name="t.iconName" /> {{ t.label }}</button>
           </div>
           <div class="scene-list">
             <div v-if="!pb.dataReady" class="scene-loading">正在加载场景库…</div>
@@ -388,7 +388,7 @@
               class="option" type="button"
               :class="{ selected: pb.selections.shot === s.id }"
               @click="pb.setShot(pb.selections.shot === s.id ? null : s.id)">
-              <span class="opt-icon">{{ s.icon }}</span>
+              <span class="opt-icon"><ArchiveIcon :name="s.iconName" /></span>
               <span class="opt-name">{{ s.name }}</span>
             </button>
           </div>
@@ -405,7 +405,7 @@
               class="option" type="button"
               :class="{ selected: pb.selections.lighting === l.id }"
               @click="pb.setLighting(pb.selections.lighting === l.id ? null : l.id)">
-              <span class="opt-icon">{{ l.icon }}</span>
+              <span class="opt-icon"><ArchiveIcon :name="l.iconName" /></span>
               <span class="opt-name">{{ l.name }}</span>
             </button>
           </div>
@@ -422,7 +422,7 @@
               class="option" type="button"
               :class="{ selected: pb.selections.composition === c.id }"
               @click="pb.setComposition(pb.selections.composition === c.id ? null : c.id)">
-              <span class="opt-icon">{{ c.icon }}</span>
+              <span class="opt-icon"><ArchiveIcon :name="c.iconName" /></span>
               <span class="opt-name">{{ c.name }}</span>
             </button>
           </div>
@@ -439,7 +439,7 @@
               class="mood-card" type="button"
               :class="{ active: pb.colorMood === m.id }"
               @click="pb.setColorMood(pb.colorMood === m.id ? null : m.id)">
-              <span class="mood-icon">{{ m.icon }}</span>
+              <span class="mood-icon"><ArchiveIcon :name="m.iconName" /></span>
               <span class="mood-name">{{ m.name }}</span>
               <span class="mood-desc">{{ m.desc }}</span>
             </button>

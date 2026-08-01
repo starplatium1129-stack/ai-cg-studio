@@ -28,7 +28,7 @@
         class="scenario-card card-create card-level-2"
         @click="openScenario(s)"
       >
-        <span class="scenario-icon" aria-hidden="true">{{ s.icon }}</span>
+        <span class="scenario-icon" aria-hidden="true"><ArchiveIcon :name="s.iconName" /></span>
         <span class="scenario-name">{{ s.name }}</span>
         <span class="scenario-en">{{ s.en }}</span>
         <span class="scenario-desc">{{ s.desc }}</span>
@@ -40,7 +40,7 @@
     <div v-else class="viewer show">
       <div class="viewer-header-row">
         <div>
-          <h2 class="viewer-h2">{{ activeScenario.icon }} {{ activeScenario.name }}</h2>
+          <h2 class="viewer-h2"><ArchiveIcon :name="activeScenario.iconName" /> {{ activeScenario.name }}</h2>
           <div class="viewer-en">{{ activeScenario.en }}</div>
         </div>
         <div class="char-toggle">
@@ -105,6 +105,7 @@ import { ref, onMounted } from 'vue'
 import { useSceneStore } from '@/stores/sceneStore'
 import { useToast } from '@/composables/useToast'
 import ArchivePageHero from '@/components/visual/ArchivePageHero.vue'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import { BANNED_TAGS } from '@/utils/promptPolicy'
 import {

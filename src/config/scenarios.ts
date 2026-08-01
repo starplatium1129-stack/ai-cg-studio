@@ -19,6 +19,7 @@ export interface ScenarioAct {
 export interface Scenario {
   id: string
   icon: string
+  iconName: 'cherry' | 'rain' | 'flower' | 'book'
   name: string
   en: string
   desc: string
@@ -71,7 +72,7 @@ export function buildScenarioPrompt(act: ScenarioAct, char: ScenarioCharacter): 
 }
 
 export const SCENARIOS: Scenario[] = [
-  { id:'promise', icon:'❋', name:'放学后的约定', en:'After-School Promise', desc:'放学以后，她一直在校门口等你。花瓣落在肩上，她没有说，只是笑了起来。',
+  { id:'promise', icon:'❋', iconName:'cherry', name:'放学后的约定', en:'After-School Promise', desc:'放学以后，她一直在校门口等你。花瓣落在肩上，她没有说，只是笑了起来。',
     acts:[
       { n:'01', title:'空·教室', en:'Empty Classroom', desc:'夕阳从窗户照进来，教室里已经没有人了。', emotion:'期待', res:'Half-body', lora:0.75, neg:'night, snow, autumn leaves',
         prompt:'masterpiece, best quality, very aesthetic, absurdres\n1girl, solo, {{char}}, {{traits}}\nschool uniform\nclassroom, window, afternoon, sunlight streaming, dust motes\ngentle smile, soft eyes, looking through window, expectant\nclose-up, upper body\ncentered composition, by window, soft focus\nwindow light, soft afternoon glow, warm, quiet atmosphere\nbeautiful detailed eyes, depth of field' },
@@ -83,7 +84,7 @@ export const SCENARIOS: Scenario[] = [
         prompt:'masterpiece, best quality, very aesthetic, absurdres\n1girl, solo, {{char}}, {{traits}}\nschool uniform, pleated skirt\nschool gate, cherry blossoms in bloom, petals floating\ngentle smile, soft eyes, blush, looking at viewer\nmedium shot, looking back, over shoulder\nrule of thirds, by school gate, depth\ngolden hour, backlit, soft shadows, warm atmosphere\nbeautiful detailed eyes, depth of field' },
     ]
   },
-  { id:'rainy', icon:'☔', name:'雨天的共伞', en:'Sharing an Umbrella', desc:'突然下起雨。两个人挤在一把伞下。肩膀贴着肩膀。沉默比语言多。',
+  { id:'rainy', icon:'☔', iconName:'rain', name:'雨天的共伞', en:'Sharing an Umbrella', desc:'突然下起雨。两个人挤在一把伞下。肩膀贴着肩膀。沉默比语言多。',
     acts:[
       { n:'01', title:'雨落', en:'Rain Falls', desc:'天空变暗。雨点打在柏油路上。她没有伞。', emotion:'失落', res:'Wide CG', lora:0.75, neg:'sunny, bright lighting, day, summer, cherry blossoms',
         prompt:'masterpiece, best quality, very aesthetic, absurdres\n1girl, solo, {{char}}, {{traits}}\nschool uniform, no umbrella, wet\nrainy street, wet road, puddle reflections, grey sky\nsad, distant gaze, walking alone\nwide shot, full body, small in frame\nrule of thirds, leading lines, depth\novercast, cool tones, soft diffused light, rainy atmosphere\nbeautiful detailed eyes, depth of field, melancholic' },
@@ -93,7 +94,7 @@ export const SCENARIOS: Scenario[] = [
         prompt:'masterpiece, best quality, very aesthetic, absurdres\n1girl, solo, {{char}}, {{traits}}\nunder umbrella, rain, close to viewer\nshy, looking away, slight blush, intimate\nclose-up, face and umbrella edge, intimate distance\ncentered, foreground framing\novercast, rainy atmosphere, soft lighting, cool tones\nbeautiful detailed eyes, beautiful detailed hair, depth of field' },
     ]
   },
-  { id:'sakura', icon:'❋', name:'樱花树下的初见', en:'Under the Sakura', desc:'春天的公园，樱花盛开。她站在树下等人，花瓣落在发梢。',
+  { id:'sakura', icon:'❋', iconName:'flower', name:'樱花树下的初见', en:'Under the Sakura', desc:'春天的公园，樱花盛开。她站在树下等人，花瓣落在发梢。',
     acts:[
       { n:'01', title:'等待', en:'Waiting', desc:'她站在樱花树下，不时看一眼路的尽头。', emotion:'期待', res:'Full CG', lora:0.75, neg:'night, snow, autumn leaves, winter, rain',
         prompt:'masterpiece, best quality, very aesthetic, absurdres\n1girl, solo, {{char}}, {{traits}}\nschool uniform, spring coat\npark, sakura tree in full bloom, petals floating, afternoon\nexpectant, looking at path, gentle, hopeful\nwide shot, full body, among sakura\nrule of thirds, layered foreground petals, depth\nsoft spring light, warm pink glow, petals in air, dreamlike\nhair blowing, beautiful detailed eyes, depth of field' },

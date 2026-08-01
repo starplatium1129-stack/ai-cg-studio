@@ -34,7 +34,7 @@
           />
         </div>
         <div class="mood-body">
-          <div class="mood-name">{{ m.icon }} {{ m.name }} <span class="mood-en">{{ m.en }}</span></div>
+          <div class="mood-name"><ArchiveIcon :name="m.iconName" /> {{ m.name }} <span class="mood-en">{{ m.en }}</span></div>
           <div class="mood-desc">{{ m.desc }}</div>
           <div class="mood-prompt-hint">{{ m.prompt }}</div>
         </div>
@@ -61,6 +61,7 @@
 <script setup lang="ts">
 import { COLOR_MOODS } from '@/config/promptConstants'
 import ArchivePageHero from '@/components/visual/ArchivePageHero.vue'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 
 const MOODS = COLOR_MOODS

@@ -41,7 +41,7 @@
           :aria-controls="tabs.panelId(c.id)"
           :aria-selected="current?.id === c.id"
           :tabindex="tabs.tabIndex(c.id)"
-          @click="selectCharacter(c.id)">{{ c.icon }} {{ c.name }}</button>
+          @click="selectCharacter(c.id)"><ArchiveIcon :name="c.id === 'natsume' ? 'natsume' : 'nene'" /> {{ c.name }}</button>
       </div>
 
       <section v-if="current" class="character-hero card-direct card-level-3" data-reveal data-reveal-delay="1"
@@ -53,7 +53,7 @@
           <img v-if="current.portrait?.image" class="portrait-image"
             :src="current.portrait.image" :alt="current.portrait.alt || current.name"
             loading="eager" decoding="async" />
-          <span class="portrait-badge">{{ current.icon }} 官方角色立绘</span>
+          <span class="portrait-badge"><ArchiveIcon :name="current.id === 'natsume' ? 'natsume' : 'nene'" /> 官方角色立绘</span>
           <span class="portrait-source">{{ current.source }}</span>
         </div>
         <div>
@@ -125,6 +125,7 @@ import { useSceneStore } from '@/stores/sceneStore'
 import { useRovingTabs } from '@/composables/useRovingTabs'
 import ArchivePageHero from '@/components/visual/ArchivePageHero.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import {
   parseCharacterProfiles,
