@@ -25,6 +25,7 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
   /** 站主托管配置（公网访客可直接使用，密钥留在服务端） */
   const hostApiConfigured = ref(false)
   const hostApiModel = ref('')
+  const hostApiBaseUrl = ref('')
   const chatStatusText = ref('正在检查本地聊天模型…')
   const statusKind = ref('')
 
@@ -50,9 +51,10 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
     try {
       const response = await fetch('/api/chat-provider/host-config', { cache: 'no-store' })
       if (!response.ok) return
-      const data = await response.json() as { configured?: boolean; model?: string }
+      const data = await response.json() as { configured?: boolean; model?: string; baseUrl?: string }
       hostApiConfigured.value = data.configured === true
       hostApiModel.value = String(data.model || '')
+      hostApiBaseUrl.value = String(data.baseUrl || '')
     } catch { /* 服务端不支持时静默降级 */ }
   }
 
@@ -176,7 +178,7 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
   return {
     ollamaOnline, models, currentModel, chatProvider, apiBaseUrl, apiModel, apiKey,
     apiVendor, apiSettingsOpen, apiConfigHint, chatStatusText, statusKind,
-    hostApiConfigured, hostApiModel, useHostConfig,
+    hostApiConfigured, hostApiModel, hostApiBaseUrl, useHostConfig,
     apiConfigured, apiConfiguredByUser, chatReady, refreshChatStatus, refreshHostConfig,
     saveHostConfig, clearHostConfig,
     setChatProvider, saveApiSettings,

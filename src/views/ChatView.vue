@@ -58,7 +58,7 @@
             <button v-else class="api-settings-toggle" type="button"
               :aria-expanded="apiSettingsOpen"
               @click="apiSettingsOpen = !apiSettingsOpen">
-              {{ apiConfigured ? apiModel : (useHostConfig ? (hostApiModel || '站主 API') : '配置 API') }} <ArchiveIcon name="gear" />
+              {{ useHostConfig ? (hostApiModel || '站主 API') : (apiConfigured ? apiModel : '配置 API') }} <ArchiveIcon name="gear" />
             </button>
           </div>
         </div>
@@ -66,9 +66,9 @@
         <ChatApiSettings
           v-if="chatProvider === 'api' && apiSettingsOpen"
           :vendor="apiVendor"
-          :base-url="apiBaseUrl"
-          :model="apiModel"
-          :api-key="apiKey"
+          :base-url="useHostConfig ? (hostApiBaseUrl || apiBaseUrl) : apiBaseUrl"
+          :model="useHostConfig ? (hostApiModel || apiModel) : apiModel"
+          :api-key="useHostConfig ? '' : apiKey"
           :hint="apiConfigHint"
           :is-local-host="isLocalHost"
           :host-configured="hostApiConfigured"
@@ -246,7 +246,7 @@ storage.load()
 const {
   ollamaOnline, models, currentModel, chatProvider, apiBaseUrl, apiModel, apiKey,
   apiVendor, apiSettingsOpen, apiConfigHint, chatStatusText, statusKind,
-  hostApiConfigured, hostApiModel, useHostConfig,
+  hostApiConfigured, hostApiModel, hostApiBaseUrl, useHostConfig,
   apiConfigured, chatReady, refreshChatStatus, refreshHostConfig,
   saveHostConfig, clearHostConfig,
   setChatProvider, saveApiSettings,
