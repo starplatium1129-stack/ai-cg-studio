@@ -97,6 +97,8 @@ function onFocusIn(event: FocusEvent) { prefetchLink(event.target) }
 function onPointerDown(event: PointerEvent) {
   const target = interactiveTarget(event.target)
   if (!target) return
+  // 点击瞬间就开始拉取目标路由 chunk，比 hover 预取再快一拍
+  prefetchLink(event.target)
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     window.clearTimeout(impulseTimer)
     impulseX.value = event.clientX
@@ -133,7 +135,7 @@ onMounted(() => {
     routeTimer = window.setTimeout(() => {
       routeLoading.value = false
       routeCutActive.value = false
-    }, 440)
+    }, 320)
   })
   removeError = router.onError(() => {
     window.clearTimeout(routeTimer)

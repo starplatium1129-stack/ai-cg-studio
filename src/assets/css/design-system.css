@@ -1468,8 +1468,29 @@ html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; 
 :where(code, .mono, .archive-code, .fs-mono, .count, .stat, .seed, .progress-copy strong) { font-variant-numeric: tabular-nums; }
 /* 标准按钮按压反馈：只影响 .btn，不碰卡片 / 开关 / 图面按钮 */
 .btn:not(:disabled):active { transform: translateY(1px) scale(.98); }
-/* 主题切换过渡：useTheme 切换瞬间给 <html> 挂 theme-fade，240ms 后移除 */
-html.theme-fade, html.theme-fade * { transition: background-color .18s ease, color .18s ease, border-color .18s ease, fill .18s ease, stroke .18s ease !important; }
+/* 主题切换过渡：useTheme 切换瞬间给 <html> 挂 theme-fade。
+   只对高频表面（页面、导航、卡片、面板、文本行）做颜色过渡，
+   不用 * 通配——全 DOM 同时过渡会掉帧，且 !important 会踩掉其他过渡 */
+html.theme-fade body,
+html.theme-fade .page-root,
+html.theme-fade .nav,
+html.theme-fade .page-main,
+html.theme-fade .site-footer,
+html.theme-fade .card,
+html.theme-fade .card-create,
+html.theme-fade .panel,
+html.theme-fade .section,
+html.theme-fade .toolbar,
+html.theme-fade .chip,
+html.theme-fade .tag,
+html.theme-fade h1,
+html.theme-fade h2,
+html.theme-fade h3,
+html.theme-fade p,
+html.theme-fade span,
+html.theme-fade .btn {
+  transition: background-color .24s ease, color .24s ease, border-color .24s ease;
+}
 /* 通用图片入场：给需要"翻开画集"质感的图片用 */
 @keyframes archive-image-in { from { opacity: 0 } to { opacity: 1 } }
 

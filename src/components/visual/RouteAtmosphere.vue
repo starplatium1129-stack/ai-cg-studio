@@ -140,7 +140,7 @@ watch(() => route.path, () => {
   transitionTimer = window.setTimeout(() => {
     transitioning.value = false
     signalState.value = 'idle'
-  }, 760)
+  }, 560)
 })
 
 onMounted(() => {
@@ -222,7 +222,7 @@ onUnmounted(() => {
   transform-origin:top;
   transition:transform .16s linear;
 }
-.is-transitioning .route-scan { animation: route-scan 760ms var(--ease-out) both; }
+.is-transitioning .route-scan { animation: route-scan 560ms var(--ease-out) both; }
 .route-index {
   position: absolute;
   right: clamp(18px, 3vw, 48px);

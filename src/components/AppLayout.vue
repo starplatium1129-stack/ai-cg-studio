@@ -56,8 +56,8 @@ function onEnter(el: Element, done: () => void) {
     ? animateMini(el as HTMLElement, { opacity: [0, 1] }, { duration: 0.12 })
     : animateMini(
         el as HTMLElement,
-        { opacity: [0, 1], transform: ['translateY(14px) scale(.992)', 'translateY(0) scale(1)'] },
-        { type: 'spring', bounce: 0, duration: 0.42 },
+        { opacity: [0, 1], transform: ['translateY(10px) scale(.994)', 'translateY(0) scale(1)'] },
+        { type: 'spring', bounce: 0, duration: 0.32 },
       )
   activeAnim = { controls, done: doneOnce }
   controls.then(doneOnce)
@@ -66,7 +66,7 @@ function onEnter(el: Element, done: () => void) {
 function onLeave(el: Element, done: () => void) {
   stopActive()
   const doneOnce = onceDone(done)
-  const controls = animateMini(el as HTMLElement, { opacity: 0, transform: 'translateY(-6px)' }, { duration: 0.16, ease: 'easeOut' })
+  const controls = animateMini(el as HTMLElement, { opacity: 0, transform: 'translateY(-4px)' }, { duration: 0.12, ease: 'easeOut' })
   activeAnim = { controls, done: doneOnce }
   controls.then(doneOnce)
 }

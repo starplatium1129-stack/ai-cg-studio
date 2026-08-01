@@ -39,11 +39,12 @@ try {
 
 export function useTheme() {
   function toggle() {
-    // 切换瞬间挂过渡类，让背景/文字/边框平滑变色而非瞬切
+    // 切换瞬间挂过渡类，让背景/文字/边框平滑变色而非瞬切。
+    // 时长略长于 CSS 过渡（.24s），确保动画完成后再摘除。
     const root = document.documentElement
     root.classList.add('theme-fade')
     theme.value = theme.value === 'dark' ? 'light' : 'dark'
-    window.setTimeout(() => root.classList.remove('theme-fade'), 260)
+    window.setTimeout(() => root.classList.remove('theme-fade'), 300)
   }
   return { theme, toggle }
 }
