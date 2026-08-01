@@ -97,6 +97,23 @@ export function normalizeChatStorage(
     : 80
   const outfitCandidate = text(settings.live2dOutfit, 40)
 
+  // API 配置：逐层取用户已保存的值；只有"从未配置过"（三个字段全空）时
+  // 才用本地代理（CLIProxyAPI）默认，保证开箱即用。
+  // 之前是逐字段兜底：用户只要有一个字段为空（custom 模式 key 留空、
+  // 旧存储缺字段等），加载时就会被覆盖成本地 Gemini，丢失 Go/DeepSeek 配置。
+  const apiBaseUrl = text(settings.apiBaseUrl, 500)
+    || text(settings.baseUrl, 500)
+    || text(legacyApi.baseUrl, 500)
+  const apiModel = text(settings.apiModel, 200)
+    || text(legacyApi.model, 200)
+  const apiKey = text(settings.apiKey, 1000)
+    || text(raw.apiKey, 1000)
+    || text(legacyApi.apiKey, 1000)
+  const neverConfigured = !apiBaseUrl && !apiModel && !apiKey
+  const finalApiBaseUrl = apiBaseUrl || (neverConfigured ? 'http://127.0.0.1:8317/v1' : '')
+  const finalApiModel = apiModel || (neverConfigured ? 'gemini-3.6-flash-high' : '')
+  const finalApiKey = apiKey || (neverConfigured ? 'sk-local-proxy-key-2024' : '')
+
   return {
     state: {
       version: options.version,
@@ -105,17 +122,9 @@ export function normalizeChatStorage(
       settings: {
         model: text(settings.model, 200) || text(raw.model, 200) || text(legacyModel, 200),
         provider: providerCandidate === 'local' ? 'local' : 'api',
-        apiBaseUrl: text(settings.apiBaseUrl, 500)
-          || text(settings.baseUrl, 500)
-          || text(legacyApi.baseUrl, 500)
-          || 'http://127.0.0.1:8317/v1',
-        apiModel: text(settings.apiModel, 200)
-          || text(legacyApi.model, 200)
-          || 'gemini-3.6-flash-high',
-        apiKey: text(settings.apiKey, 1000)
-          || text(raw.apiKey, 1000)
-          || text(legacyApi.apiKey, 1000)
-          || 'sk-local-proxy-key-2024',
+        apiBaseUrl: finalApiBaseUrl,
+        apiModel: finalApiModel,
+        apiKey: finalApiKey,
         webSearchEnabled: settings.webSearchEnabled !== false,
         live2dEnabled: settings.live2dEnabled === true,
         live2dOutfit: LIVE2D_OUTFIT_IDS.has(outfitCandidate) ? outfitCandidate : 'school',
