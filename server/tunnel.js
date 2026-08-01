@@ -39,15 +39,44 @@ var RESTART_LIMIT = 10;
     onStateChange();
   }
 
-  function start() {
+  function killPids(pids) {
+    pids.forEach(function (pid) {
+      if (process.platform === 'win32') {
+        try { cp.execFileSync('taskkill', ['/pid', String(pid), '/T', '/F'], { stdio:'ignore' }); }
+        catch (error) { try { process.kill(pid); } catch (e) {} }
+      } else {
+        try { process.kill(pid); } catch (error) {}
+      }
+    });
+  }
+
+  // 清理上次会话残留的 cloudflared：网关被强杀时 detached 子进程没人
+  // 回收，旧实例占着 metrics 端口 / trycloudflare 并发名额，新实例注册
+  // 成功后会立即 exit 1，隧道永远起不来。
+  function killStaleTunnel() {
+    var stale = [];
+    if (tunnelProcess && tunnelProcess.pid) stale.push(tunnelProcess.pid);
+    try {
+      var saved = fs.existsSync(config.RUNTIME.tunnelPid)
+        ? String(fs.readFileSync(config.RUNTIME.tunnelPid, 'utf8')).trim()
+        : '';
+      if (/^\d+$/.test(saved) && stale.indexOf(Number(saved)) === -1) stale.push(Number(saved));
+    } catch (error) {}
+    if (stale.length) killPids(stale);
+    try { if (fs.existsSync(config.RUNTIME.tunnelPid)) fs.unlinkSync(config.RUNTIME.tunnelPid); } catch (error) {}
+  }
+
+  // manual=true 表示用户/开机显式启动（重连计数清零）；自动重连传 false
+  function start(manual) {
     if (config.DISABLE_TUNNEL) return;
     if (!fs.existsSync(config.CLOUDFLARED_PATH)) {
       console.log('  ⚠ cloudflared not found, tunnel disabled');
       return;
     }
     if (tunnelProcess) return; // 已在运行，避免重复 spawn
+    if (manual !== false) restartAttempts = 0;
+    killStaleTunnel();
     tunnelStopped = false;
-    restartAttempts = 0;
     console.log('  🌪 Starting Cloudflare Tunnel...');
     var runtimeTools = require('../scripts/runtime/runtime-paths');
     runtimeTools.rotateLog(config.RUNTIME.tunnelLog, 2 * 1024 * 1024);
@@ -94,7 +123,7 @@ var RESTART_LIMIT = 10;
       console.log('  🌪 Tunnel restart scheduled in ' + delay + 'ms (attempt ' + restartAttempts + ')');
       restartTimer = setTimeout(function () {
         restartTimer = null;
-        start();
+        start(false);  // 自动重连不清零计数
       }, delay);
     }
 
@@ -136,14 +165,7 @@ var RESTART_LIMIT = 10;
       if (/^\d+$/.test(saved) && pids.indexOf(Number(saved)) === -1) pids.push(Number(saved));
     } catch (error) {}
 
-    pids.forEach(function (pid) {
-      if (process.platform === 'win32') {
-        try { cp.execFileSync('taskkill', ['/pid', String(pid), '/T', '/F'], { stdio:'ignore' }); }
-        catch (error) { try { process.kill(pid); } catch (e) {} }
-      } else {
-        try { process.kill(pid); } catch (error) {}
-      }
-    });
+    killPids(pids);
     try { if (fs.existsSync(config.RUNTIME.tunnelPid)) fs.unlinkSync(config.RUNTIME.tunnelPid); } catch (error) {}
     // 清掉日志，避免下次轮询读到上一次的旧 URL
     try { fs.writeFileSync(config.RUNTIME.tunnelLog, ''); } catch (error) {}
