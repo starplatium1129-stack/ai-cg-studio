@@ -9,7 +9,9 @@ const { test } = require('node:test');
 
 test("Voice profile contract tests passed: VoiceProfile fields, validateInput, locked emotion refs", () => {
 const root = path.resolve(__dirname, '..', '..');
-const contentTypes = fs.readFileSync(path.join(root, 'types', 'content.ts'), 'utf8');
+// 契约源头是 tts-service.ts 的类型定义（validateInput 实际消费的形态）；
+// 根目录 types/ 已迁移进 src/，这里直接断言后端契约本身。
+const ttsSource = fs.readFileSync(path.join(root, 'services', 'tts-service.ts'), 'utf8');
 
 const requiredVoiceFields = [
   'refAudioPath',
@@ -26,14 +28,14 @@ const requiredVoiceFields = [
 
 for (const field of requiredVoiceFields) {
   assert(
-    contentTypes.includes(field + ':'),
+    ttsSource.includes(field + '?') || ttsSource.includes(field + ':'),
     'VoiceProfile contract must declare ' + field
   );
 }
 
-assert(contentTypes.includes("export type VoiceId = 'nene' | 'natsume'"), 'VoiceId must cover nene/natsume');
-assert(contentTypes.includes("export type VoiceEmotion"), 'VoiceEmotion must be declared');
-assert(contentTypes.includes('export interface VoiceTtsInput'), 'VoiceTtsInput must be declared');
+assert(ttsSource.includes("type VoiceId = (typeof VOICES)[number]"), 'VoiceId must cover nene/natsume');
+assert(ttsSource.includes("type VoiceEmotion"), 'VoiceEmotion must be declared');
+assert(ttsSource.includes('interface VoiceTtsInput'), 'VoiceTtsInput must be declared');
 
 const profiles = {
   nene: {

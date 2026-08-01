@@ -321,7 +321,10 @@ function createTtsService(options: TtsServiceOptions) {
       const upstream = await httpClient.request(host, '/tts', {
         method: 'POST',
         json: validated.payload,
-        timeoutMs: 5 * 60 * 1000,
+        // 单句 44 字内正常生成 10-30s；180s 上限覆盖排队（16 项队列）
+        // 也足以兜住异常。5 分钟超时会卡死整条 GPU 队列 5 分钟，
+        // 缩短后挂起的引擎更快失败并释放队列（客户端会自动提示重播）。
+        timeoutMs: 180 * 1000,
         timeoutMessage: 'GPT-SoVITS 生成超时',
         signal: streamOpts.signal
       });

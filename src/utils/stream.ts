@@ -75,14 +75,19 @@ export class SentenceBuffer {
   minimumLength: number
   maximumLength: number
   immediateFirst: boolean
+  firstThreshold: number
   buffer = ''
   short = ''
   emitted = 0
 
-  constructor(options: { minimumLength?: number; maximumLength?: number; immediateFirst?: boolean } = {}) {
+  constructor(options: { minimumLength?: number; maximumLength?: number; immediateFirst?: boolean; firstThreshold?: number } = {}) {
     this.minimumLength = options.minimumLength ?? 4
     this.maximumLength = options.maximumLength ?? 100
     this.immediateFirst = Boolean(options.immediateFirst)
+    // 首句单独阈值：对话开场白通常短，等满 minimumLength 才放行会拖慢
+    // 第一句语音；达到 firstThreshold 的首句立即合成（默认等同 minimumLength，
+    // 不传即保持原行为）。
+    this.firstThreshold = options.firstThreshold ?? options.minimumLength ?? 4
   }
 
   reset() { this.buffer = ''; this.short = ''; this.emitted = 0 }
@@ -109,7 +114,8 @@ export class SentenceBuffer {
     complete.forEach((sentence, idx) => {
       const val = this.short + sentence; this.short = ''
       const isLast = idx === complete.length - 1
-      const allowShort = this.immediateFirst && this.emitted === 0
+      const first = this.emitted === 0
+      const allowShort = (this.immediateFirst && first) || (first && val.length >= this.firstThreshold)
       if (!flush && isLast && !allowShort && val.length < this.minimumLength) { this.short = val }
       else { output.push(val); this.emitted++ }
     })

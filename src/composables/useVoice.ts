@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import {
-  SentenceBuffer, extractSpokenDialogue, fixWavHeader, inferEmotion, isAbortError, responseError,
+  SentenceBuffer, extractSpokenDialogue, inferEmotion, isAbortError, responseError,
 } from '@/utils/stream'
 
 export interface VoiceAvailability {
@@ -112,7 +112,11 @@ export function useVoice(options: {
   // GPT-SoVITS is much more stable with a little sentence context. Holding a
   // short interjection for the following sentence avoids clipped, repeated
   // "诶…那个…" style fragments.
-  const sentenceBuffer = new SentenceBuffer({ minimumLength: 16, maximumLength: 72 })
+  // 单句上限收紧到 44 字：更长文本 cut5 内部分多段，GPT-SoVITS 更容易
+  // 复读/结巴，且单句 GPU 时间随长度线性增长，是长语句等待和"反复说
+  // 一个词"的主要来源之一。首句放宽到 8 字即放行：对话开场白通常短，
+  // 等满 12 字才合成会让第一句语音明显滞后。
+  const sentenceBuffer = new SentenceBuffer({ minimumLength: 12, maximumLength: 44, firstThreshold: 8 })
   let session = 0, controller: AbortController | null = null
   let translateChain: Promise<PreparedSentence | null> = Promise.resolve(null)
   let synthChain: Promise<void> = Promise.resolve()
@@ -267,10 +271,10 @@ export function useVoice(options: {
     }
   }
 
-  async function requestTts(request: PreparedSentence, meta: VoiceTurn, signal: AbortSignal): Promise<string> {
+  async function requestTts(request: PreparedSentence, meta: VoiceTurn): Promise<string> {
     // 流式端点：audio 元素直连 GET，浏览器对 PCM WAV 边下边播，
     // 播放开始不再等整段音频下载完（公网分享下感知延迟明显下降）。
-    // 服务端按句缓存，重播/同句重复不重复占用 GPU 队列。
+    // 服务端按句缓存 + in-flight 合并，重播/同句重复不重复占用 GPU 队列。
     const params = new URLSearchParams({
       voice: meta.voice,
       text: request.text,
@@ -287,7 +291,7 @@ export function useVoice(options: {
     // 流式路径：失败（HTTP 错误 / 空音频 / 超时）由播放层的 audio error
     // 事件捕获并触发一次重试，这里只负责构造播放地址。
     if (signal.aborted) throw new DOMException('aborted', 'AbortError')
-    return { url: await requestTts(request, meta, signal), emotion: request.emotion }
+    return { url: await requestTts(request, meta), emotion: request.emotion }
   }
 
   function attachAnalyser(audio: AudioWithSource) {
@@ -331,36 +335,58 @@ export function useVoice(options: {
     const audio = new Audio(item.url) as AudioWithSource
     currentAudio = audio; attachAnalyser(audio)
     onExpression(item.emotion); onSpeaking(true, item.mid); onStatus('播放中…'); notifyActivity()
-    let finished = false
-    // 流式端点：90 秒内拿不到音频数据按失败处理（与服务端队列上限对齐）
-    const loadTimer = window.setTimeout(() => {
-      if (finished || audio.readyState >= 2) return
-      finish(false)
-    }, 90_000)
-    const finish = (succeeded: boolean) => {
+    let finished = false, started = false
+    let waitExtensions = 0, loadTimer = 0
+    // 公网分享下生成排队可能超过 90 秒。请求还活着（NETWORK_LOADING）时不判死：
+    // 判死会触发重试，未命中缓存时等于把整句重新生成一遍，等待翻倍。
+    // 只有连接已死（error 事件）或拖过总上限才放弃，放弃时也不再重试。
+    const scheduleTimeout = () => {
+      loadTimer = window.setTimeout(() => {
+        if (finished || started) return
+        if (audio.readyState < 2 && audio.networkState === 2 && waitExtensions < 2) {
+          waitExtensions++
+          onStatus(waitExtensions === 1 ? '语音生成较慢，继续等待…' : '语音生成很慢，还在排队…')
+          scheduleTimeout()
+          return
+        }
+        finish(false, 'timeout')
+      }, 90_000)
+    }
+    const finish = (succeeded: boolean, reason?: 'timeout' | 'error') => {
       if (finished) return; finished = true
       clearTimeout(loadTimer)
+      audio.removeEventListener('playing', onPlaying)
       audio.removeEventListener('ended', done); audio.removeEventListener('error', onErrorEvent)
+      // 必须清掉旧元素：公网慢速下旧请求可能仍在下载，play() 已调用，
+      // 数据一到浏览器会自动开播，与重试的新元素同时响（"反复说一个词"）。
+      audio.pause()
+      audio.removeAttribute('src')
       removeAudioSource(audio)
       if (currentAudio === audio) currentAudio = null; playing = false
       if (succeeded) {
         if (!queue.length) { onSpeaking(false, item.mid); onExpression('neutral'); onStatus(pending > 0 ? '语音合成中…' : '') }
         pump(sess); notifyActivity()
       } else {
-        // 播放失败（上游错误/空音频/超时）：给一次重试机会，避免整句静默丢失
-        if (item.retryLeft !== 0 && sess === session) {
+        // 只有"加载阶段失败"（HTTP/网络错误，还没出声）给一次重试机会；
+        // 已开始播放后断流或超时一律不重试，避免整句从头重复播报。
+        const retryable = !started && reason !== 'timeout' && item.retryLeft !== 0 && sess === session
+        if (retryable) {
           onStatus('语音加载失败，重试…')
           queue.unshift({ ...item, retryLeft: (item.retryLeft ?? 1) - 1 })
         } else {
           onSpeaking(false, item.mid); onExpression('neutral'); onStatus('')
-          onError('语音播放失败，请点击"重播"再试。')
+          if (reason === 'timeout') onError('语音生成超时，请点击"重播"再试。')
+          else if (!started) onError('语音播放失败，请点击"重播"再试。')
         }
         pump(sess); notifyActivity()
       }
     }
+    function onPlaying() { started = true }
     function done() { finish(true) }
-    function onErrorEvent() { finish(false) }
+    function onErrorEvent() { finish(false, 'error') }
+    audio.addEventListener('playing', onPlaying)
     audio.addEventListener('ended', done); audio.addEventListener('error', onErrorEvent)
+    scheduleTimeout()
     audio.play().then(() => startLipSync()).catch(() => { onError('浏览器阻止了自动播放，请点击消息下方的"重播"。'); done() })
   }
 
@@ -374,7 +400,12 @@ export function useVoice(options: {
       const audio = new Audio(clip.url) as AudioWithSource
       replayAudio = audio; attachAnalyser(audio); onExpression(clip.emotion || 'neutral')
       await new Promise<void>(res => {
-        const done = () => { audio.removeEventListener('ended', done); audio.removeEventListener('error', done); removeAudioSource(audio); res() }
+        const done = () => {
+          audio.removeEventListener('ended', done); audio.removeEventListener('error', done)
+          audio.pause()
+          audio.removeAttribute('src')
+          removeAudioSource(audio); res()
+        }
         audio.addEventListener('ended', done); audio.addEventListener('error', done)
         audio.play().then(() => startLipSync()).catch(done)
       })

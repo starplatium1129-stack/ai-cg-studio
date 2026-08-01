@@ -93,22 +93,29 @@ function validateChatBody(body) {
   var requestedModel = String(body && body.model || '');
   var rawMessages = body && body.messages;
   if (!['nene', 'natsume'].includes(character)) return { error:'不支持的聊天角色' };
-  if (!Array.isArray(rawMessages) || !rawMessages.length || rawMessages.length > 24) {
+  if (!Array.isArray(rawMessages) || !rawMessages.length) {
     return { error:'对话记录必须包含 1—24 条消息' };
   }
 
-  var messages = [];
-  var totalLength = 0;
-  for (var i = 0; i < rawMessages.length; i += 1) {
+  // 长对话平滑裁剪：超 24 条或超 12000 字时从旧到新丢弃（系统提示词另行
+  // 注入），而不是 400 打断——云 API 上下文窗口固定，超限的旧消息本来就
+  // 会被截断；裁剪让长时间对话永不中断。
+  var kept = [];
+  var used = 0;
+  var count = 0;
+  for (var i = rawMessages.length - 1; i >= 0 && count < 24; i -= 1) {
     var role = String(rawMessages[i] && rawMessages[i].role || '');
     var content = String(rawMessages[i] && rawMessages[i].content || '').trim();
     if (!['user', 'assistant'].includes(role) || !content || content.length > 1200) {
       return { error:'对话消息格式错误或内容过长' };
     }
-    totalLength += content.length;
-    messages.push({ role:role, content:content });
+    if (used + content.length > 12000 && kept.length) break;
+    used += content.length;
+    count += 1;
+    kept.unshift({ role:role, content:content });
   }
-  if (totalLength > 12000) return { error:'当前对话过长，请清空或开启新对话' };
+  if (!kept.length) return { error:'对话记录必须包含有效的消息' };
+
   var api = null;
   var useHostConfig = body && body.hostConfig === true;
   if (provider === 'api') {
@@ -128,7 +135,7 @@ function validateChatBody(body) {
       model:requestedModel,
       api:api,
       webSearch:body && body.webSearch === true,
-      messages:[{ role:'system', content:chatCharacterPrompt(character) }].concat(messages)
+      messages:[{ role:'system', content:chatCharacterPrompt(character) }].concat(kept)
     }
   };
 }
@@ -409,7 +416,7 @@ function createChatRouter(config, dependencies) {
   // "持续以消化速度提交"这种打法。本机直连不受限。
   var chatLimit = security.rateLimit({ capacity:10, refillMs:3000, label:'聊天' });
 
-  router.post('/api/chat', chatLimit, express.json({ limit:'64kb' }), function (req, res) {
+  router.post('/api/chat', chatLimit, express.json({ limit:'256kb' }), function (req, res) {
     var validation = validateChatBody(req.body);
     if (validation.error) return envelope.fail(res, 400, validation.error);
 

@@ -34,6 +34,11 @@ async function relayAudio(source, res) {
 // 回放缓存，不再重复占用 GPU 队列。
 var ttsAudioCache = new Map();
 var TTS_CACHE_MAX_ENTRIES = 60;
+// 正在生成中的句子：cacheKey -> Promise<Buffer>。客户端重试或多位访客
+// 同时听到同一句时，直接共享同一次生成，不再重复占用 GPU 队列。
+// 首个请求断开（signal abort）会连带中止共享生成；等待方会拿到 abort
+// 后走客户端重试路径，不会出现同句双生成。
+var inFlightTts = new Map();
 
 // 与前端 src/utils/stream.ts 的 fixWavHeader 等价：GPT-SoVITS 的 RIFF 长度
 // 字段不可靠，修好后浏览器（含流式解码）才能稳定播放。
@@ -223,25 +228,62 @@ function createVoiceRouter(config, dependencies) {
     req.once('aborted', function () { controller.abort(); });
     res.once('close', function () { if (!res.writableEnded) controller.abort(); });
 
-    tts.stream(body, {
+    function relayBufferedAudio(audio) {
+      if (res.destroyed || res.writableEnded) return;
+      res.status(200);
+      res.setHeader('Content-Type', 'audio/wav');
+      res.setHeader('Cache-Control', 'no-store');
+      res.setHeader('X-Accel-Buffering', 'no');
+      res.flushHeaders();
+      return relayAudio([audio], res);
+    }
+
+    var existing = inFlightTts.get(cacheKey);
+    if (existing) {
+      existing.then(function (audio) {
+        res.setHeader('X-TTS-Cache', 'hit');
+        return relayBufferedAudio(audio);
+      }).then(function () {
+        if (!res.writableEnded) res.end();
+      }).catch(function (error) {
+        if (httpClient.isAbortError(error) || controller.signal.aborted) return;
+        if (!res.headersSent) {
+          var status = error.code === 'QUEUE_FULL' ? 503 : envelope.statusFor(error, 502);
+          envelope.fail(res,
+            status,
+            error.code === 'QUEUE_FULL' ? '语音队列繁忙' : 'GPT-SoVITS 生成失败',
+            { detail:error.detail || error.message, code:error.code || undefined });
+        } else if (!res.writableEnded) {
+          res.destroy(error);
+        }
+      });
+      return;
+    }
+
+    var chunks = [];
+    var generation = tts.stream(body, {
       signal:controller.signal,
       onResponse:async function (result) {
         if (controller.signal.aborted) throw httpClient.abortError();
-        var chunks = [];
         for await (var chunk of result.response) { chunks.push(Buffer.from(chunk)); }
         if (controller.signal.aborted) throw httpClient.abortError();
-        var audio = fixWavHeaderServer(Buffer.concat(chunks));
-        if (audio.length < 64) throw new Error('语音服务返回空音频');
-        cacheTtsAudio(cacheKey, audio);
-        if (res.destroyed || res.writableEnded) return;
-        res.status(200);
-        res.setHeader('Content-Type', result.contentType || 'audio/wav');
-        res.setHeader('Cache-Control', 'no-store');
-        res.setHeader('X-TTS-Cache', 'miss');
-        res.flushHeaders();
-        await relayAudio([audio], res);
-        if (!res.writableEnded) res.end();
       }
+    }).then(function () {
+      var audio = fixWavHeaderServer(Buffer.concat(chunks));
+      if (audio.length < 64) throw new Error('语音服务返回空音频');
+      cacheTtsAudio(cacheKey, audio);
+      return audio;
+    });
+    inFlightTts.set(cacheKey, generation);
+    generation.catch(function () {}).finally(function () {
+      if (inFlightTts.get(cacheKey) === generation) inFlightTts.delete(cacheKey);
+    });
+
+    generation.then(function (audio) {
+      res.setHeader('X-TTS-Cache', 'miss');
+      return relayBufferedAudio(audio);
+    }).then(function () {
+      if (!res.writableEnded) res.end();
     }).catch(function (error) {
       if (httpClient.isAbortError(error) || controller.signal.aborted) return;
       if (!res.headersSent) {

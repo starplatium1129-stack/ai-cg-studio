@@ -212,6 +212,7 @@ async function run() {
   var chatConversation = fs.readFileSync(path.join(root, 'src', 'composables', 'useChatConversation.ts'), 'utf8');
   var securitySource = fs.readFileSync(path.join(root, 'server', 'security.js'), 'utf8');
   var voiceRoute = fs.readFileSync(path.join(root, 'routes', 'voice.js'), 'utf8');
+  var chatRouteSource = fs.readFileSync(path.join(root, 'routes', 'chat.js'), 'utf8');
   var serverSource = fs.readFileSync(path.join(root, 'server.js'), 'utf8');
 
   assert(html.includes('chat-page'), 'chat view must render the character room shell');
@@ -265,8 +266,9 @@ async function run() {
   assert(
     voiceRoute.includes('router.get(\'/api/tts\'')
       && voiceRoute.includes('Buffer.concat') && voiceRoute.includes('fixWavHeaderServer')
-      && voiceRoute.includes('ttsAudioCache'),
-    'streaming endpoint must collect, fix and cache the complete sentence WAV server-side'
+      && voiceRoute.includes('ttsAudioCache')
+      && voiceRoute.includes('inFlightTts'),
+    'streaming endpoint must collect, fix and cache the complete sentence WAV server-side and coalesce identical in-flight generations'
   );
   assert(
     voiceModule.includes("consistency: 'locked'") && voiceModule.includes('referenceEmotion: meta.referenceEmotion'),
@@ -284,8 +286,18 @@ async function run() {
       && voiceModule.includes('const emotionChanged = Boolean(firstReference && emotion !== firstReference)')
       && voiceModule.includes('90_000')
       && voiceModule.includes('retryLeft')
-      && voiceModule.includes('minimumLength: 16'),
+      && voiceModule.includes('minimumLength: 12')
+      && voiceModule.includes('maximumLength: 44')
+      && voiceModule.includes('firstThreshold: 8'),
     'voice must omit roleplay directions, honor their emotion, and bound stuck synthesis'
+  );
+  assert(
+    voiceModule.includes('audio.networkState === 2')
+      && voiceModule.includes("onStatus(waitExtensions === 1 ? '语音生成较慢，继续等待…' : '语音生成很慢，还在排队…')")
+      && voiceModule.includes("audio.pause()") && voiceModule.includes("audio.removeAttribute('src')")
+      && voiceModule.includes('function onPlaying() { started = true }')
+      && voiceModule.includes("const retryable = !started && reason !== 'timeout' && item.retryLeft !== 0 && sess === session"),
+    'voice must never double-play or replay from the start after mid-playback failure, and must extend slow generations instead of killing them'
   );
   assert(voiceModule.includes('AbortController') && voiceModule.includes('messageAudio'), 'voice sessions must support cancellation and replay');
   assert(!/\bany\b/.test(voiceModule), 'voice queue, turn, API responses, and Web Audio boundaries must stay explicitly typed');
@@ -359,6 +371,13 @@ async function run() {
     assert(streamUtils.includes("'" + emotion + "'"), 'inferEmotion must classify ' + emotion);
   });
   assert(serverSource.includes('createGateway') && serverSource.includes("require('./routes/chat')"), 'gateway must use modular route composition');
+  assert(
+    chatRouteSource.includes('kept.unshift')
+      && chatRouteSource.includes('used + content.length > 12000')
+      && chatRouteSource.includes('count < 24')
+      && !chatRouteSource.includes('当前对话过长'),
+    'long conversations must be trimmed from the oldest messages instead of being rejected'
+  );
 
   var utils = require('../../src/utils/stream.ts');
   var chatStatus = require('../../src/utils/chatStatus.ts');
@@ -379,6 +398,13 @@ async function run() {
   assert(sentences.push('嗯。').length === 0, 'short sentence should wait for the next boundary');
   assert(sentences.push('今天过得怎么样？')[0] === '嗯。今天过得怎么样？', 'short sentence should merge without being lost');
   assert(sentences.push('最后一句', true)[0] === '最后一句', 'flush must emit the remaining sentence');
+  var firstSentences = new utils.SentenceBuffer({ minimumLength:12, firstThreshold:8 });
+  assert(firstSentences.push('嗯嗯嗯嗯。').length === 0, 'first sentence below firstThreshold should still wait');
+  assert(firstSentences.push('今天也辛苦啦！')[0] === '嗯嗯嗯嗯。今天也辛苦啦！', 'under-threshold first sentence must merge with the next');
+  var firstFast = new utils.SentenceBuffer({ minimumLength:12, firstThreshold:8 });
+  assert(firstFast.push('今天过得怎么样？')[0] === '今天过得怎么样？', 'first sentence reaching firstThreshold must emit immediately');
+  assert(firstFast.push('很好。').length === 0, 'later short sentences must still wait for the normal minimum');
+  assert(firstFast.push('', true)[0] === '很好。', 'flush must still emit a short later sentence');
   var dialogue = utils.extractSpokenDialogue('（稍微有点慌乱）诶、和我一起看吗……');
   assert(dialogue.text === '诶、和我一起看吗……', 'roleplay directions must not enter spoken dialogue');
   assert(JSON.stringify(dialogue.directions) === JSON.stringify(['稍微有点慌乱']), 'roleplay directions must remain available for emotion selection');
@@ -603,6 +629,25 @@ async function run() {
       body:JSON.stringify({ character:'bad', messages:[] })
     });
     assert(badChat.status === 400, 'chat route must reject invalid input without contacting Ollama');
+
+    // 超长对话（>12000 字 / >24 条）必须从旧到新平滑裁剪并照常转发，不能 400 打断
+    var longMessages = [];
+    for (var li = 0; li < 30; li += 1) {
+      longMessages.push({ role: li % 2 ? 'assistant' : 'user', content: '长对话填充。'.repeat(120) });
+    }
+    longMessages.push({ role:'user', content:'最近的这条消息一定要被保留' });
+    var trimmedChat = await postJson(gatewayBase + '/api/chat', {
+      character:'nene', provider:'api',
+      api:{ baseUrl:providerBase + '/v1', model:'json-model', apiKey:'local-secret' },
+      messages:longMessages
+    });
+    var trimmedEvents = readNdjson(trimmedChat.body);
+    assert(
+      trimmedChat.status === 200 && trimmedEvents.some(function (event) {
+        return event.type === 'token';
+      }),
+      'an over-budget conversation must be trimmed and forwarded, not rejected',
+    );
 
     var emptyModels = await postJson(gatewayBase + '/api/chat-provider/test', {
       baseUrl:providerBase + '/v1', model:'compatible-model', apiKey:'empty-list-key'
