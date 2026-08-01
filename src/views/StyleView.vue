@@ -17,7 +17,7 @@
     <div class="section-title" data-reveal>色彩氛围 (Color Moods)</div>
     <p class="note mb-3" data-reveal>点击色彩样板，将携带对应色彩脚本直接开启画面绘制。</p>
 
-    <div class="mood-grid mood-grid-lg" data-reveal data-reveal-delay="1">
+    <div class="mood-grid mood-grid-lg stagger-container" data-reveal data-reveal-delay="1">
       <RouterLink
         v-for="m in MOODS"
         :key="m.id"

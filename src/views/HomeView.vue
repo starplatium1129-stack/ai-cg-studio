@@ -186,10 +186,10 @@
         <h2>最近创作</h2>
         <RouterLink to="/gallery" class="link">打开作品册 →</RouterLink>
       </div>
-      <div class="recent-grid" ref="recentWorksEl">
+      <div class="recent-grid stagger-container" ref="recentWorksEl">
         <div v-if="!recentWorks.length" class="empty-state">
           <div class="empty-state-icon">▤</div>
-          <p>作品册还是空的。去开始绘制，留下第一张 CG。</p>
+          <p>还没有作品呢……如果你愿意，我可以陪你把第一张画出来。</p>
           <RouterLink to="/prompt-builder" class="btn btn-primary">✦ 开始绘制</RouterLink>
         </div>
         <template v-else>

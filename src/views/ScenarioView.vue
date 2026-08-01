@@ -19,7 +19,7 @@
     </div>
 
     <!-- 剧本列表 -->
-    <div v-if="!activeScenario" class="scenario-list" data-reveal data-reveal-delay="1">
+    <div v-if="!activeScenario" class="scenario-list stagger-container" data-reveal data-reveal-delay="1">
       <!-- 必须是 button:这是进入剧本查看器的唯一入口,
            原先是 <div @click>,没有 role/tabindex/keydown → 键盘完全进不去 -->
       <button

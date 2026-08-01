@@ -19,7 +19,7 @@
     </div>
 
     <p class="emphasis-plain mb-3">今天的情绪色板</p>
-    <div class="mood-grid" data-reveal data-reveal-delay="1">
+    <div class="mood-grid stagger-container" data-reveal data-reveal-delay="1">
       <button
         v-for="m in MOODS" :key="m.id"
         type="button" class="mood-card"

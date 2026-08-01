@@ -1,7 +1,7 @@
 ﻿<template>
   <section class="history-wrap" aria-label="作品历史">
     <div class="panel-title">历史 · History</div>
-    <div v-if="!items.length" class="history-empty">还没有保存的作品。生成图片后点“保存快照”，这里会显示缩略图、seed 与版本记录。</div>
+    <div v-if="!items.length" class="history-empty">还没有保存的作品。生成后点“保存快照”，我会把每一张都好好收着。</div>
     <div v-else class="history-list compact-history-list">
       <article v-for="item in items" :key="item.id" class="history-item">
         <div class="history-thumb">

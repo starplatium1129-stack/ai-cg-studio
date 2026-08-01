@@ -38,13 +38,13 @@
       />
       <ArchiveStatePanel
         v-else-if="!visible.length"
-        kind="empty"
-        title="展墙还在等第一幅作品"
-        message="完成绘制后，原图会按自己的横竖比例进这里。作品只存在这台电脑，参数不挡画面。"
-      >
+  kind="empty"
+  title="展墙还在等你的第一幅作品"
+  message="画好之后，它会按自己的横竖比例住进来。作品只存在这台电脑，参数不挡画面。"
+>
         <RouterLink class="btn btn-primary" to="/prompt-builder">开始绘制</RouterLink>
       </ArchiveStatePanel>
-      <div v-else class="gallery-wall">
+      <div v-else class="gallery-wall stagger-container">
         <template v-for="group in groups" :key="group.key">
           <div class="gallery-section">{{ group.key }}</div>
           <article

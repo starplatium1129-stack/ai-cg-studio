@@ -69,13 +69,13 @@
     <ArchiveStatePanel
       v-else-if="!filtered.length"
       kind="empty"
-      title="没有找到匹配样张"
-      message="试试更短的关键词，或者切回“全部角色 / 全部分级”。"
+      title="这批样张里没有你要的"
+      message="换个关键词或筛选，我再帮你找找看。"
     >
       <button class="btn btn-ghost" type="button" @click="resetFilters">重置筛选</button>
     </ArchiveStatePanel>
 
-    <div v-else class="showcase-grid" data-reveal data-reveal-delay="1">
+    <div v-else class="showcase-grid stagger-container" data-reveal data-reveal-delay="1">
       <article
         v-for="entry in paged" :key="entry.id"
         class="sample" :class="{ 'sample-r18': entry.rating === 'R18' }"

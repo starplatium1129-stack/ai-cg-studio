@@ -103,7 +103,7 @@
       </div>
     </div>
     <div v-else class="scene-grid stagger-container">
-      <div v-if="paged.length === 0" class="sc-empty"><div class="ic">🌸</div><p>没有匹配的场景。<br/>试试切到其他分类或清除搜索。</p></div>
+      <div v-if="paged.length === 0" class="sc-empty"><div class="ic">🌸</div><p>没有找到这样的场景……<br/>换个关键词，我再帮你翻翻。</p></div>
       <template v-else>
         <SceneCard v-for="s in paged" :key="s.id" :scene="s" mode="grid" :clickable="false" suppressTags
           class="stagger-item"

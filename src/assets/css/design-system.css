@@ -1321,6 +1321,10 @@ body:has(.training-page) .route-atmosphere .route-index {
 .stagger-item {
   animation: stagger-in 0.35s var(--ease-out) both;
 }
+/* 容器内的直接子项自动级联入场：列表只需挂 stagger-container 类 */
+.stagger-container > * {
+  animation: stagger-in 0.35s var(--ease-out) both;
+}
 .stagger-container > *:nth-child(1) { animation-delay: 0.03s; }
 .stagger-container > *:nth-child(2) { animation-delay: 0.07s; }
 .stagger-container > *:nth-child(3) { animation-delay: 0.11s; }
