@@ -113,10 +113,19 @@ export function normalizeChatStorage(
   const apiKey = text(settings.apiKey, 1000)
     || text(raw.apiKey, 1000)
     || text(legacyApi.apiKey, 1000)
-  const neverConfigured = !apiBaseUrl && !apiModel && !apiKey
-  const finalApiBaseUrl = apiBaseUrl || (neverConfigured ? 'http://127.0.0.1:8317/v1' : '')
-  const finalApiModel = apiModel || (neverConfigured ? 'gemini-3.6-flash-high' : '')
-  const finalApiKey = apiKey || (neverConfigured ? 'sk-local-proxy-key-2024' : '')
+  // "从未配置"判定：三个字段全空，或恰好是开箱即用兜底默认值。
+  // 早期版本 normalize 会把兜底默认（本机 CLIProxy + Gemini）持久化进
+  // localStorage——这些用户从未主动配置，站主托管配置必须优先于兜底，
+  // 否则公网访客（以及本机用户）永远被"看起来已配置"的兜底值拦在站主
+  // 配置之外，聊天一直打本机 127.0.0.1:8317 而失败。
+  const FALLBACK_BASE_URL = 'http://127.0.0.1:8317/v1'
+  const FALLBACK_MODEL = 'gemini-3.6-flash-high'
+  const FALLBACK_KEY = 'sk-local-proxy-key-2024'
+  const equalsFallback = apiBaseUrl === FALLBACK_BASE_URL && apiModel === FALLBACK_MODEL && apiKey === FALLBACK_KEY
+  const neverConfigured = (!apiBaseUrl && !apiModel && !apiKey) || equalsFallback
+  const finalApiBaseUrl = apiBaseUrl || (neverConfigured ? FALLBACK_BASE_URL : '')
+  const finalApiModel = apiModel || (neverConfigured ? FALLBACK_MODEL : '')
+  const finalApiKey = apiKey || (neverConfigured ? FALLBACK_KEY : '')
 
   return {
     neverConfigured: neverConfigured,
