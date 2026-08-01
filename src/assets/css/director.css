@@ -372,7 +372,7 @@
     background: linear-gradient(180deg, color-mix(in srgb, var(--archive-blue) 42%, transparent), color-mix(in srgb, var(--accent) 38%, transparent));
     border: 2px solid transparent;
     background-clip: padding-box;
-    border-radius: 999px;
+    border-radius: var(--r-pill);
   }
   .pb .scene-list::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(180deg, color-mix(in srgb, var(--archive-blue) 70%, transparent), color-mix(in srgb, var(--accent) 62%, transparent));

@@ -145,6 +145,55 @@ for (const [name, where] of referenced) {
   if (!defined.has(name)) fail(`${where} 引用了未定义的设计 token ${name}(会静默掉样式)`);
 }
 
+// ---- 4. 视觉 slop 反模式（Impeccable 41 条规则中与本项目视觉语言相关的两条） ---
+// 4a. 渐变字(background-clip:text)白名单:只允许 .hero-title 与 .page-header,
+//     防止 AI 把任意标题/按钮都涂成渐变(impeccable 的 gradient-text 反模式)。
+// 4b. border-radius 必须走 token:硬编码数字圆角会让视觉系统漂移;允许 50%(圆形)、
+//     含 var(--r-*) 的混合值、以及 .nav-links 的 45° 菱形指示点(既有装饰)。
+
+// 取 background-clip:text / border-radius 所在规则块的选择器文本。
+// 必须用配对扫描：lastIndexOf('{')/lastIndexOf('}') 在嵌套块(如 @supports)
+// 里会配对错乱(找到内层空块的 } 导致切片为空)。
+function selectorOf(text, index) {
+  let depth = 0;
+  for (let j = index; j >= 0; j -= 1) {
+    const c = text[j];
+    if (c === '}') depth += 1;
+    else if (c === '{') {
+      if (depth === 0) {
+        const start = text.lastIndexOf('}', j);
+        return text.slice(start + 1, j).replace(/\s+/g, ' ').trim();
+      }
+      depth -= 1;
+    }
+  }
+  return '';
+}
+
+for (const rel of cssFiles) {
+  const raw = fs.readFileSync(path.join(root, rel), 'utf8');
+  // 剥注释后再扫描:注释里的 { } 与 background-clip 示例不算真实规则
+  const text = raw.replace(/\/\*[\s\S]*?\*\//g, ' ');
+  for (const match of text.matchAll(/background-clip:\s*text\s*;/g)) {
+    const selector = selectorOf(text, match.index);
+    if (!/\.hero-title|\.page-header|\.title-gradient/.test(selector)) {
+      const line = text.slice(0, match.index).split('\n').length;
+      fail(`${rel}:${line} 渐变字(background-clip:text)只允许 .hero-title / .page-header / .title-gradient,当前选择器: ${selector.slice(0, 60)}`);
+    }
+  }
+  for (const match of text.matchAll(/border-radius:\s*([^;}]+)/g)) {
+    const value = match[1].trim();
+    if (/^((50%|0)(\s+(50%|0))*)$/.test(value)) continue;
+    if (value.includes('var(')) continue;
+    if (/^[a-z-]+$/.test(value)) continue;
+    const selector = selectorOf(text, match.index);
+    // .nav-brand .dot 是品牌 logo 菱形(非对称圆角是品牌图形本身,有注释声明)
+    if (selector.includes('.nav-brand .dot')) continue;
+    const line = text.slice(0, match.index).split('\n').length;
+    fail(`${rel}:${line} border-radius 必须用 var(--r-*) 或 50%(圆形): "${value}" → ${selector.slice(0, 60)}`);
+  }
+}
+
 // ---- 报告 ------------------------------------------------------------------
 if (failures.length) {
   console.error('样式债门禁失败:');

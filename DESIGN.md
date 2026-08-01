@@ -279,6 +279,60 @@ Do not mix sharp system-tool rectangles, soft consumer-app pills, and oversized
 glass bubbles in the same control group. Icon geometry, border weight, radius,
 and padding must make adjacent controls feel like one family.
 
+## Anime Visual Language
+
+Established 2026-08-01. This project reads as a blog-style anime atelier: dark
+violet night as the default theme, pink-white dream as the light theme. The
+"anime" feel comes from light layering, sticker-like details, and motion
+rhythm — never from oversaturation (see Colors) or from copying an official
+game site.
+
+### Theme semantics
+
+- Dark theme is "night studio": violet-black base, sakura pink accent, star
+  specks and drifting petals as quiet atmosphere.
+- Light theme is "pink-white dream": near-white pink paper, soft plum shadows,
+  the same decorations in lower opacity.
+- Both themes must pass the contrast gate; text tokens and deep accent values
+  are shared across themes.
+
+### Decor layers (all fixed, pointer-events: none, aria-hidden)
+
+- `body` background: 1px dot grid (24px cell, derived from `--border-strong`)
+  plus two character-color light orbs that float on artistic pages.
+- `.kana-watermark`: vertical kana signature ("あとりえ / ATELIER ARCHIVE") on
+  the right mid-edge; hidden on the director, training, and narrow screens.
+- `.starfield`: sparse pink-violet star specks drifting slowly; must never
+  compete with reading contrast.
+- Sakura petals fall as a foreground layer on artistic pages.
+- New floating decorations must be token-colored, reduced-motion safe, and
+  either hidden or severely dimmed on content-dense pages.
+
+### Sticker & polaroid rules
+
+- Chibi/polaroid cards may tilt alternately (±2deg), wear a sticker caption
+  and a rotated character-color stamp (NENE violet / NATSUME amber).
+- Polaroid frames (padding + bottom caption) are for unpacked game material
+  only; ordinary UI cards stay flat and token-driven.
+- Seals (red "綾季" stamp) are reserved for the footer signature; do not
+  scatter seal-like badges elsewhere.
+
+### Gradient text
+
+- `background-clip: text` is allowed only on `.hero-title`, `.page-header`,
+  and `.title-gradient` (enforced by test-style-debt.js).
+- Everywhere else, color stays flat and token-based.
+
+### Q-version assets
+
+- Source: `scripts/maintenance/chibi-import.py` converts unpacked SD event CGs
+  into 480/960px webp pairs under `assets/chibi/`.
+- Selection standard: medium-shot composition with the full head and ahoge,
+  clean background, no English sticker/panel overlays.
+- Usage: home chibi strip with dialog lightbox, 404 companion, chat-stage
+  expression switcher. Do not reuse a character's chibi in more than one
+  context per page.
+
 ## Components
 
 ### Navigation
