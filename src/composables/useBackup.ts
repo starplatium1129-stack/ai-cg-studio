@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { kvGet, kvSet } from '@/composables/useKVStore'
-import { imgList, imgPutRecord, imgDeleteMany } from '@/composables/useImageStore'
+import { imgList, imgGet, imgPutRecord, imgDeleteMany } from '@/composables/useImageStore'
 import {
   createBackup,
   mergeBackupRecords,
@@ -133,6 +133,45 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     }
   }
 
+  /**
+   * 导出作品图片：把 IndexedDB 里的原图逐个下载成文件。
+   * 与导出备份（JSON 恢复包）不同，这里导出的是可以直接使用的图片。
+   */
+  async function exportImages(): Promise<void> {
+    if (busy.value) return
+    busy.value = true
+    onFlash('正在整理作品图片…')
+    try {
+      const records = (await imgList()) || []
+      let saved = 0
+      for (const record of records) {
+        try {
+          const blob = record.blob instanceof Blob ? record.blob : (record.id ? await imgGet(record.id) : null)
+          if (!blob) continue
+          const url = URL.createObjectURL(blob)
+          const a = document.createElement('a')
+          const ext = (blob.type || 'image/png').split('/')[1] || 'png'
+          a.href = url
+          a.download = `cg-${String(record.name || record.id || saved + 1).replace(/[\\/:*?"<>|]/g, '_')}.${ext}`
+          document.body.appendChild(a)
+          a.click()
+          a.remove()
+          // 大图下载完成后才释放 blob URL，避免下载中断
+          window.setTimeout(() => URL.revokeObjectURL(url), 60_000)
+          saved++
+        } catch { /* 单张失败跳过 */ }
+      }
+      onFlash(saved
+        ? `已开始下载 ${saved} 张作品图片（浏览器可能询问「允许下载多个文件」）`
+        : '没有找到可导出的图片')
+    } catch (e) {
+      console.error('export images failed', e)
+      onFlash('导出图片失败：' + errorMessage(e, '请检查浏览器存储'))
+    } finally {
+      busy.value = false
+    }
+  }
+
   async function loadFile(file: File): Promise<BackupSummary | null> {
     if (!file) return null
     if (file.size > 512 * 1024 * 1024) {
@@ -252,5 +291,5 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     }
   }
 
-  return { busy, pending, pendingName, lastBackupAt, exportBackup, loadFile, discard, restore, healthCheck, cleanOrphanImages }
+  return { busy, pending, pendingName, lastBackupAt, exportBackup, exportImages, loadFile, discard, restore, healthCheck, cleanOrphanImages }
 }

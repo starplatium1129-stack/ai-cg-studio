@@ -10,8 +10,13 @@
       </div>
       <div class="utility-label">本地数据</div>
       <div class="utility-actions">
-        <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.exportBackup()">
-          <ArchiveIcon name="download" /> 导出备份
+        <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.exportBackup()"
+          title="导出 JSON 恢复文件（含全部图片数据），用于日后「从备份恢复」">
+          <ArchiveIcon name="download" /> 导出备份 JSON
+        </button>
+        <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.exportImages()"
+          title="把作品册的每张原图下载成独立的图片文件">
+          <ArchiveIcon name="image" /> 导出作品图片
         </button>
         <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="pickBackupFile">
           <ArchiveIcon name="upload" /> 从备份恢复

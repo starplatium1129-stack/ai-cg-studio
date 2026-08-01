@@ -142,6 +142,7 @@
         <div class="viewer-actions">
           <RouterLink class="btn btn-primary" :to="`/prompt-builder?scene=${encodeURIComponent(current.scene || '')}&regen=${encodeURIComponent(current.id || '')}`">重新生成</RouterLink>
           <RouterLink class="btn btn-ghost" :to="`/prompt-builder?scene=${encodeURIComponent(current.scene || '')}&variant=${encodeURIComponent(current.id || '')}`">生成变体</RouterLink>
+          <button class="btn btn-ghost" type="button" @click="downloadCurrent">下载原图</button>
           <button class="btn btn-ghost" type="button" @click="copyPrompt">复制 Prompt</button>
           <button v-if="pendingDeleteId !== current.id" class="btn btn-ghost btn-danger" type="button"
             @click="pendingDeleteId = current.id">删除这幅</button>
@@ -541,6 +542,21 @@ function copyPrompt() {
   navigator.clipboard.writeText(text)
     .then(() => showToast('Prompt 已复制'))
     .catch(() => showToast('复制失败，请手动选取'))
+}
+
+/** 下载当前作品的原图文件（优先 HD blob，回落缩略图） */
+function downloadCurrent() {
+  const item = current.value
+  if (!item) return
+  const url = cardUrls[item.id] || thumbUrls[item.id] || viewerUrl.value
+  if (!url) return
+  const a = document.createElement('a')
+  a.href = url
+  const name = (sceneTitle(item.scene) || 'artwork').replace(/[\\/:*?"<>|]/g, '_')
+  a.download = `${name}-${item.seed ?? item.id}.png`
+  document.body.appendChild(a)
+  a.click()
+  a.remove()
 }
 
 /* ---------- 键盘 ---------- */
