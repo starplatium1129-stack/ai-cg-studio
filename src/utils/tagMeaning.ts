@@ -338,7 +338,7 @@ const EXACT_MEANINGS: Record<string, string> = {
   handjob: '手交', creampie: '内射', cum: '精液', hickeys: '吻痕',
   love_bites: '吻痕', kiss_marks: '吻痕', bondage: '束缚', handcuffs: '手铐',
   tied_up: '被捆绑', blindfold: '眼罩', spanking: '打屁股', vibrator: '震动棒',
-  dildo: '假阳具', sex_toys: '情趣玩具', kissing: '接吻', embrace: '拥抱',
+  dildo: '假阳具', sex_toys: '情趣玩具', kissing: '接吻', embrace: '拥抱', embracing: '拥抱',
   caressing: '抚摸', fondling: '爱抚', petting: '爱抚', snuggling: '依偎',
   spooning: '相拥而眠', lap_sitting: '坐在膝上', straddling_viewer: '跨坐面对镜头',
   trapped: '被困住', clinging_to: '依偎着', hugging_from_behind: '从背后环抱',

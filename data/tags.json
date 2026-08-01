@@ -1118,7 +1118,7 @@
  {
   "cat": "Body",
   "en": "no_panties",
-  "cn": "真空",
+  "cn": "真空（无内裤）",
   "weight": 0.8,
   "related": [],
   "id": "tag_143"
@@ -1334,7 +1334,7 @@
  {
   "cat": "Body",
   "en": "no_bra",
-  "cn": "真空",
+  "cn": "真空（无胸罩）",
   "weight": 0.8,
   "related": [],
   "id": "tag_170"
@@ -2879,7 +2879,7 @@
   "id": "tag_363",
   "cat": "Mature",
   "en": "naked",
-  "cn": "裸体",
+  "cn": "全裸",
   "weight": 0.8,
   "related": []
  },
@@ -2927,7 +2927,7 @@
   "id": "tag_369",
   "cat": "Mature",
   "en": "lingerie",
-  "cn": "内衣",
+  "cn": "情趣内衣",
   "weight": 0.8,
   "related": []
  },
@@ -2996,14 +2996,6 @@
   "related": []
  },
  {
-  "id": "tag_378",
-  "cat": "Mature",
-  "en": "bare_midriff",
-  "cn": "露腰",
-  "weight": 0.8,
-  "related": []
- },
- {
   "id": "tag_379",
   "cat": "Mature",
   "en": "bare_abdomen",
@@ -3060,14 +3052,6 @@
   "related": []
  },
  {
-  "id": "tag_386",
-  "cat": "Mature",
-  "en": "embracing",
-  "cn": "拥抱",
-  "weight": 0.8,
-  "related": []
- },
- {
   "id": "tag_387",
   "cat": "Mature",
   "en": "erotic",
@@ -3103,14 +3087,6 @@
   "id": "tag_391",
   "cat": "Mature",
   "en": "blowjob",
-  "cn": "口交",
-  "weight": 0.8,
-  "related": []
- },
- {
-  "id": "tag_392",
-  "cat": "Mature",
-  "en": "fellatio",
   "cn": "口交",
   "weight": 0.8,
   "related": []
