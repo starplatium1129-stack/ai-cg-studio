@@ -86,6 +86,29 @@
             </RouterLink>
           </div>
         </div>
+        <!-- Q 版小剧场：解包素材精选（assets/chibi），点击看大图 -->
+        <div class="chibi-strip" aria-labelledby="chibiLabel">
+          <div class="strip-label" id="chibiLabel">
+            <span class="dot"></span> Q 版小剧场 · <span>解包 SD 日常</span>
+          </div>
+          <div class="chibi-scroll">
+            <button
+              v-for="c in chibiList"
+              :key="c.id"
+              class="chibi-card"
+              type="button"
+              :aria-label="`查看大图：${c.label}`"
+              @click="openChibi(c)"
+            >
+              <img :src="c.thumb" :alt="c.label" loading="lazy" decoding="async" />
+              <span class="chibi-tag">{{ c.tag }}</span>
+            </button>
+          </div>
+        </div>
+        <dialog ref="chibiDialogEl" class="chibi-dialog" @click.self="closeChibi">
+          <img v-if="chibiLarge" :src="chibiLarge" alt="" class="chibi-large" />
+          <button class="chibi-dialog-close" type="button" aria-label="关闭" @click="closeChibi">×</button>
+        </dialog>
       </div>
     </section>
 
@@ -255,6 +278,25 @@ const heroOrbitEl = ref<HTMLElement | null>(null)
 const heroWmEl = ref<HTMLElement | null>(null)
 const stripEl = ref<HTMLElement | null>(null)
 let heroScrollFrame = 0
+
+// ── Q 版小剧场（解包 SD 素材，见 scripts/maintenance/chibi-import.py） ──
+const CHIBI = [
+  { id: 'nene-smile',   thumb: '/assets/chibi/nene-smile.webp',   large: '/assets/chibi/nene-smile-full.webp',   label: '宁宁 · 治愈微笑', tag: 'NENE' },
+  { id: 'natsume-shy',  thumb: '/assets/chibi/natsume-shy.webp',  large: '/assets/chibi/natsume-shy-full.webp',  label: '夏目 · 害羞捂嘴', tag: 'NATSUME' },
+  { id: 'nene-night',   thumb: '/assets/chibi/nene-night.webp',   large: '/assets/chibi/nene-night-full.webp',   label: '宁宁 · 睡衣时光', tag: 'NENE' },
+  { id: 'natsume-cafe', thumb: '/assets/chibi/natsume-cafe.webp', large: '/assets/chibi/natsume-cafe-full.webp', label: '夏目 · 咖啡馆日常', tag: 'NATSUME' },
+] as const
+const chibiList = ref(CHIBI)
+const chibiDialogEl = ref<HTMLDialogElement | null>(null)
+const chibiLarge = ref('')
+function openChibi(c: { large: string }) {
+  chibiLarge.value = c.large
+  chibiDialogEl.value?.showModal()
+}
+function closeChibi() {
+  chibiDialogEl.value?.close()
+  chibiLarge.value = ''
+}
 
 /** 横条只在真正可滚动时显示右缘渐隐，避免宽屏误遮最后一张卡 */
 function updateStripFade() {
@@ -508,6 +550,61 @@ onUnmounted(() => {
 .strip-scroll.can-scroll { mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent); -webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent); }
 .strip-scroll::-webkit-scrollbar { height:4px; }
 .strip-scroll::-webkit-scrollbar-thumb { background:var(--border-soft); border-radius:var(--r-pill); }
+
+/* Q 版小剧场：解包 SD 卡横条（玻璃卡语言与 hero-strip 同源） */
+.home-page .chibi-strip {
+  grid-column:1 / -1;
+  margin-top: var(--s-3);
+  padding: var(--s-3) var(--s-4);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 8%, transparent), transparent 55%), var(--bg-surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  animation: homeStripIn .62s var(--ease-out) .32s both;
+}
+.chibi-scroll {
+  display:flex; gap:var(--s-3); overflow-x:auto;
+  scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch;
+  padding:2px var(--s-2) var(--s-2) 0; scrollbar-width:thin;
+}
+.chibi-scroll::-webkit-scrollbar { height:4px; }
+.chibi-scroll::-webkit-scrollbar-thumb { background:var(--border-soft); border-radius:var(--r-pill); }
+.chibi-card {
+  flex:0 0 auto; position:relative; width:min(300px,64vw);
+  border:0; padding:0; cursor:pointer; text-align:left; background:transparent;
+  border-radius: var(--r-lg); overflow:hidden;
+  scroll-snap-align:start;
+  transition: transform var(--t-fast) var(--ease-out), box-shadow var(--t-fast);
+}
+.chibi-card img {
+  display:block; width:100%; aspect-ratio:5/3; object-fit:cover;
+  filter: saturate(.92); transition: filter var(--t-base), transform var(--t-base) var(--ease-out);
+}
+.chibi-card:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -14px color-mix(in srgb, var(--accent) 45%, transparent); }
+.chibi-card:hover img { filter: saturate(1.05); transform: scale(1.02); }
+.chibi-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.chibi-tag {
+  position:absolute; left:10px; bottom:10px;
+  padding:2px 10px; border-radius:var(--r-pill);
+  background:var(--art-scrim); color:var(--on-art-primary);
+  font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.12em;
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+}
+.chibi-dialog {
+  border:0; padding:var(--s-2); border-radius:var(--r-2xl);
+  background: color-mix(in srgb, var(--bg-elevated) 92%, transparent);
+  box-shadow: var(--shadow-lg), 0 0 0 1px var(--border-soft);
+  max-width:min(960px,92vw);
+}
+.chibi-dialog::backdrop { background: color-mix(in srgb, var(--bg-deep) 72%, transparent); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.chibi-large { display:block; max-width:100%; max-height:82vh; border-radius:var(--r-xl); }
+.chibi-dialog-close {
+  position:absolute; top:var(--s-2); right:var(--s-2);
+  width:36px; height:36px; border:1px solid var(--border-soft); border-radius:50%;
+  background:var(--bg-deep); color:var(--text-secondary);
+  font-size:var(--fs-body-lg); cursor:pointer; line-height:1;
+}
+.chibi-dialog-close:hover { color:var(--accent); border-color:var(--accent); }
 .continue-hint { min-height:20px; margin-top:var(--s-2); color:var(--text-muted); font-size:var(--fs-label-sm); }
 .continue-hint strong { color:var(--accent); }
 

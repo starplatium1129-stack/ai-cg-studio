@@ -1,5 +1,6 @@
 <template>
   <article class="page notfound-page">
+    <img class="notfound-chibi" src="/assets/chibi/natsume-shy.webp" alt="四季夏目 Q 版：页面迷路时捂嘴害羞" width="480" height="288" loading="eager" decoding="async" />
     <h1 class="title">页面走丢了</h1>
     <p class="subtitle">地址 <code class="notfound-path">{{ path }}</code> 不存在。</p>
 
@@ -33,6 +34,15 @@ const path = computed(() => route.fullPath)
 .notfound-path {
   color: var(--text-secondary);
   word-break: break-all;
+}
+
+.notfound-chibi {
+  width: min(420px, 78vw);
+  aspect-ratio: 5/3;
+  object-fit: cover;
+  border-radius: var(--r-2xl);
+  border: 1px solid var(--border-soft);
+  box-shadow: 0 18px 44px -18px color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
 .notfound-actions {

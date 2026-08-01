@@ -77,8 +77,7 @@
             role="radio"
             :aria-checked="outfit === option.id"
             :class="{ active: outfit === option.id }"
-            :disabled="outfitBusy"
-            @click="handleOutfitChange(option.id)"
+            :disabled="outfitBusy"            @click="handleOutfitChange(option.id)"
           >
             <span>{{ option.label }}</span>
             <i aria-hidden="true"></i>
@@ -97,6 +96,33 @@
       <div class="character-status">
         <span class="status-dot" :class="statusKind"></span>
         <span>{{ chatStatusText }}</span>
+      </div>
+    </div>
+
+    <!-- Q 版小剧场：解包 SD 素材按角色切换（assets/chibi，见 scripts/maintenance/chibi-import.py） -->
+    <div class="chibi-theater" aria-label="Q版小剧场">
+      <div class="chibi-show-wrap">
+        <img
+          class="chibi-show"
+          :src="chibiCurrent.large"
+          :alt="`${character.name} Q版：${chibiCurrent.label}`"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+      <div class="chibi-picks" role="tablist" aria-label="Q版表情">
+        <button
+          v-for="c in chibiForCharacter"
+          :key="c.id"
+          class="chibi-pick"
+          type="button"
+          role="tab"
+          :aria-selected="chibiIdx === c.id ? 'true' : 'false'"
+          :title="c.label"
+          @click="chibiIdx = c.id"
+        >
+          <img :src="c.thumb" :alt="c.label" loading="lazy" decoding="async" />
+        </button>
       </div>
     </div>
   </aside>
@@ -137,6 +163,31 @@ const outfitBusy = ref(false)
 const wardrobeOpen = ref(false)
 const activeOutfitLabel = computed(() =>
   LIVE2D_OUTFITS.find(option => option.id === props.outfit)?.label ?? LIVE2D_OUTFITS[0].label
+)
+
+// ── Q 版小剧场（解包 SD 素材按角色切换） ──
+interface ChibiEntry { id: string; thumb: string; large: string; label: string }
+const CHIBI_BY_CHAR: Record<string, ChibiEntry[]> = {
+  nene: [
+    { id: 'nene-smile',  thumb: '/assets/chibi/nene-smile.webp',  large: '/assets/chibi/nene-smile-full.webp',  label: '治愈微笑' },
+    { id: 'nene-happy',  thumb: '/assets/chibi/nene-happy.webp',  large: '/assets/chibi/nene-happy-full.webp',  label: '幸福颜艺' },
+    { id: 'nene-ramen',  thumb: '/assets/chibi/nene-ramen.webp',  large: '/assets/chibi/nene-ramen-full.webp',  label: '拉面满足' },
+    { id: 'nene-night',  thumb: '/assets/chibi/nene-night.webp',  large: '/assets/chibi/nene-night-full.webp',  label: '睡衣时光' },
+  ],
+  natsume: [
+    { id: 'natsume-shy',  thumb: '/assets/chibi/natsume-shy.webp',  large: '/assets/chibi/natsume-shy-full.webp',  label: '害羞捂嘴' },
+    { id: 'natsume-feed', thumb: '/assets/chibi/natsume-feed.webp', large: '/assets/chibi/natsume-feed-full.webp', label: '喂食日常' },
+    { id: 'natsume-cafe', thumb: '/assets/chibi/natsume-cafe.webp', large: '/assets/chibi/natsume-cafe-full.webp', label: '咖啡馆日常' },
+  ],
+}
+const chibiForCharacter = computed(() => CHIBI_BY_CHAR[props.activeId] ?? CHIBI_BY_CHAR.nene)
+const chibiIdx = ref(chibiForCharacter.value[0].id)
+watch(() => props.activeId, () => {
+  const list = chibiForCharacter.value
+  if (!list.some(item => item.id === chibiIdx.value)) chibiIdx.value = list[0].id
+})
+const chibiCurrent = computed(() =>
+  chibiForCharacter.value.find(item => item.id === chibiIdx.value) ?? chibiForCharacter.value[0]
 )
 
 const live2d = useLive2D((status) => {
