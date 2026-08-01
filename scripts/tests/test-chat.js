@@ -258,7 +258,16 @@ async function run() {
   assert(!/\bany\b/.test(streamUtils), 'chat stream events and abort errors must stay explicitly typed');
   assert(!/\bany\b/.test(chatStorage), 'persisted chat messages must stay explicitly typed');
   assert(html.includes('streamingMid'), 'only the active assistant message may keep the streaming cursor');
-  assert(voiceModule.includes('SentenceBuffer') && /\bawait r\.arrayBuffer\(\)/.test(voiceModule), 'voice must synthesize complete sentence WAV files');
+  assert(
+    voiceModule.includes('SentenceBuffer') && voiceModule.includes("'/api/tts?'") && voiceModule.includes('URLSearchParams'),
+    'voice must stream complete sentence WAV via the GET endpoint so public playback starts before the whole file is downloaded'
+  );
+  assert(
+    voiceRoute.includes('router.get(\'/api/tts\'')
+      && voiceRoute.includes('Buffer.concat') && voiceRoute.includes('fixWavHeaderServer')
+      && voiceRoute.includes('ttsAudioCache'),
+    'streaming endpoint must collect, fix and cache the complete sentence WAV server-side'
+  );
   assert(
     voiceModule.includes("consistency: 'locked'") && voiceModule.includes('referenceEmotion: meta.referenceEmotion'),
     'voice must lock a stable identity reference while a sentence mood stays unchanged'
@@ -274,8 +283,8 @@ async function run() {
       && voiceModule.includes("(directionText && rawEmotion !== 'neutral') || emotionChanged ? 'adaptive' : 'locked'")
       && voiceModule.includes('const emotionChanged = Boolean(firstReference && emotion !== firstReference)')
       && voiceModule.includes('90_000')
-      && voiceModule.includes('minimumLength: 16')
-      && voiceModule.includes('status === 502'),
+      && voiceModule.includes('retryLeft')
+      && voiceModule.includes('minimumLength: 16'),
     'voice must omit roleplay directions, honor their emotion, and bound stuck synthesis'
   );
   assert(voiceModule.includes('AbortController') && voiceModule.includes('messageAudio'), 'voice sessions must support cancellation and replay');

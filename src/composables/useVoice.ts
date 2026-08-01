@@ -34,6 +34,8 @@ interface SynthesizedClip {
 interface QueuedClip extends SynthesizedClip {
   mid: string
   session: number
+  /** 流式播放失败时的剩余重试次数（服务端句级缓存使重试不再重复烧 GPU） */
+  retryLeft?: number
 }
 
 interface TranslationResponse {
@@ -265,78 +267,27 @@ export function useVoice(options: {
     }
   }
 
-  async function requestTts(request: PreparedSentence, meta: VoiceTurn, signal: AbortSignal): Promise<Response> {
-    const timeoutController = new AbortController()
-    let timedOut = false
-    const stopOnTurnAbort = () => timeoutController.abort()
-    signal.addEventListener('abort', stopOnTurnAbort, { once: true })
-    const timer = window.setTimeout(() => { timedOut = true; timeoutController.abort() }, 90_000)
-    try {
-      return await fetch('/api/tts', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: timeoutController.signal,
-        body: JSON.stringify({
-          voice: meta.voice, text: request.text, language: request.language,
-          emotion: request.emotion, referenceEmotion: meta.referenceEmotion,
-          consistency: request.consistency, speed: 1,
-        }),
-      })
-    } catch (error) {
-      if (signal.aborted) throw error
-      if (timedOut) {
-        const timeout = new Error('单句语音合成超过 90 秒') as StatusError
-        timeout.status = 504
-        throw timeout
-      }
-      throw error
-    } finally {
-      clearTimeout(timer)
-      signal.removeEventListener('abort', stopOnTurnAbort)
-    }
+  async function requestTts(request: PreparedSentence, meta: VoiceTurn, signal: AbortSignal): Promise<string> {
+    // 流式端点：audio 元素直连 GET，浏览器对 PCM WAV 边下边播，
+    // 播放开始不再等整段音频下载完（公网分享下感知延迟明显下降）。
+    // 服务端按句缓存，重播/同句重复不重复占用 GPU 队列。
+    const params = new URLSearchParams({
+      voice: meta.voice,
+      text: request.text,
+      language: request.language,
+      emotion: request.emotion,
+      referenceEmotion: meta.referenceEmotion,
+      consistency: request.consistency,
+      speed: '1',
+    })
+    return '/api/tts?' + params.toString()
   }
 
   async function synthesize(request: PreparedSentence, meta: VoiceTurn, signal: AbortSignal): Promise<SynthesizedClip> {
-    let ttsError: Error | undefined
-    // GPT-SoVITS 偶发瞬时失败（模型换权重 / 队列抖动 / 空音频）。
-    // A stuck upstream used to block the entire reply for several minutes.
-    // Bound one sentence and retry once so later dialogue can still continue.
-    const MAX_ATTEMPTS = 2
-    for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
-      try {
-        const r = await requestTts(request, meta, signal)
-        if (!r.ok) {
-          const error = await responseError(r, '语音服务暂不可用') as StatusError
-          error.status = r.status
-          throw error
-        }
-        let buffer = await r.arrayBuffer()
-        // 空音频（44 字节以下连 WAV 头都不完整）视为瞬时失败，值得重试
-        if (!buffer || buffer.byteLength < 64) {
-          const empty: StatusError = new Error('语音服务返回空音频')
-          empty.status = 502
-          throw empty
-        }
-        buffer = fixWavHeader(buffer)
-        return { url: URL.createObjectURL(new Blob([buffer], { type: 'audio/wav' })), emotion: request.emotion }
-      } catch (e) {
-        if (isAbortError(e) || signal.aborted) throw e
-        const error = e as StatusError
-        const status = Number(error.status)
-        // A client timeout or a full server queue may leave the upstream worker
-        // busy even after this request is aborted. Retrying that same sentence
-        // creates duplicate GPU work and is the usual source of repeated audio.
-        const transient = error.name === 'TypeError' || status === 429 || status === 500 || status === 502
-        if (transient && attempt < MAX_ATTEMPTS - 1) {
-          // Give a recovering GPT-SoVITS worker one short, bounded retry.
-          const backoff = 350 * Math.pow(2, attempt)
-          await new Promise(res => setTimeout(res, backoff))
-          if (signal.aborted) throw e
-          ttsError = error
-          continue
-        }
-        throw e
-      }
-    }
-    throw ttsError ?? new Error('语音合成失败')
+    // 流式路径：失败（HTTP 错误 / 空音频 / 超时）由播放层的 audio error
+    // 事件捕获并触发一次重试，这里只负责构造播放地址。
+    if (signal.aborted) throw new DOMException('aborted', 'AbortError')
+    return { url: await requestTts(request, meta, signal), emotion: request.emotion }
   }
 
   function attachAnalyser(audio: AudioWithSource) {
@@ -381,15 +332,35 @@ export function useVoice(options: {
     currentAudio = audio; attachAnalyser(audio)
     onExpression(item.emotion); onSpeaking(true, item.mid); onStatus('播放中…'); notifyActivity()
     let finished = false
-    const done = () => {
+    // 流式端点：90 秒内拿不到音频数据按失败处理（与服务端队列上限对齐）
+    const loadTimer = window.setTimeout(() => {
+      if (finished || audio.readyState >= 2) return
+      finish(false)
+    }, 90_000)
+    const finish = (succeeded: boolean) => {
       if (finished) return; finished = true
-      audio.removeEventListener('ended', done); audio.removeEventListener('error', done)
+      clearTimeout(loadTimer)
+      audio.removeEventListener('ended', done); audio.removeEventListener('error', onErrorEvent)
       removeAudioSource(audio)
       if (currentAudio === audio) currentAudio = null; playing = false
-      if (!queue.length) { onSpeaking(false, item.mid); onExpression('neutral'); onStatus(pending > 0 ? '语音合成中…' : '') }
-      pump(sess); notifyActivity()
+      if (succeeded) {
+        if (!queue.length) { onSpeaking(false, item.mid); onExpression('neutral'); onStatus(pending > 0 ? '语音合成中…' : '') }
+        pump(sess); notifyActivity()
+      } else {
+        // 播放失败（上游错误/空音频/超时）：给一次重试机会，避免整句静默丢失
+        if (item.retryLeft !== 0 && sess === session) {
+          onStatus('语音加载失败，重试…')
+          queue.unshift({ ...item, retryLeft: (item.retryLeft ?? 1) - 1 })
+        } else {
+          onSpeaking(false, item.mid); onExpression('neutral'); onStatus('')
+          onError('语音播放失败，请点击"重播"再试。')
+        }
+        pump(sess); notifyActivity()
+      }
     }
-    audio.addEventListener('ended', done); audio.addEventListener('error', done)
+    function done() { finish(true) }
+    function onErrorEvent() { finish(false) }
+    audio.addEventListener('ended', done); audio.addEventListener('error', onErrorEvent)
     audio.play().then(() => startLipSync()).catch(() => { onError('浏览器阻止了自动播放，请点击消息下方的"重播"。'); done() })
   }
 
