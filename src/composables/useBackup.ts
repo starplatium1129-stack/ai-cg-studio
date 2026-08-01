@@ -22,6 +22,16 @@ export type { BackupSummary } from '@/utils/backupCore'
 const HISTORY_KEY = 'aics_pb_history'
 const PROJECT_KEY = 'aics_pb_projects'
 
+/** 上次成功备份的时间戳（localStorage），供"距上次备份"提醒使用 */
+const BACKUP_AT_KEY = 'aics_backup_last_at'
+
+export function readLastBackupAt(): number {
+  try {
+    const value = Number(localStorage.getItem(BACKUP_AT_KEY))
+    return Number.isFinite(value) && value > 0 ? value : 0
+  } catch { return 0 }
+}
+
 const SETTINGS_KEYS = [
   'aics_theme',
   // 快速出图的上次参数（PromptBuilderView 写入）——原来这里记的是早已
@@ -70,6 +80,7 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
   const busy = ref(false)
   const pending = ref<BackupFile | null>(null)
   const pendingName = ref('')
+  const lastBackupAt = ref(readLastBackupAt())
 
   async function exportBackup(): Promise<void> {
     if (busy.value) return
@@ -111,6 +122,8 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
       a.click()
       URL.revokeObjectURL(url)
       const info = summarizeBackup(backup)
+      lastBackupAt.value = Date.now()
+      try { localStorage.setItem(BACKUP_AT_KEY, String(lastBackupAt.value)) } catch {}
       onFlash(`备份完成：${info.history} 条记录 · ${info.images} 张图片 · ${Math.max(1, Math.round(json.length / 1024))} KB`)
     } catch (e) {
       console.error('backup export failed', e)
@@ -239,5 +252,5 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     }
   }
 
-  return { busy, pending, pendingName, exportBackup, loadFile, discard, restore, healthCheck, cleanOrphanImages }
+  return { busy, pending, pendingName, lastBackupAt, exportBackup, loadFile, discard, restore, healthCheck, cleanOrphanImages }
 }

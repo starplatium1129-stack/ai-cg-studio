@@ -419,9 +419,11 @@ onMounted(async () => {
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     window.addEventListener('scroll', onHeroScroll, { passive: true })
   }
-  // 横条内容是异步载入的，DOM 渲染完成后才能判断是否真的可滚动
+  // 横条内容是异步载入的，DOM 渲染完成后才能判断是否真的可滚动；
+  // 图片解码会进一步撑宽卡片，再延时重测一次避免漏判
   await nextTick()
   updateStripFade()
+  window.setTimeout(updateStripFade, 500)
   window.addEventListener('resize', updateStripFade)
 })
 

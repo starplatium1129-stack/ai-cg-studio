@@ -1,7 +1,13 @@
 <template>
   <details ref="utilityEl" class="utility-menu">
-    <summary class="utility-trigger" aria-label="数据工具">···</summary>
+    <summary class="utility-trigger" aria-label="数据工具">
+      ···
+      <span v-if="backupStale" class="utility-dot" aria-hidden="true"></span>
+    </summary>
     <div class="utility-popover">
+      <div v-if="backupStale" class="utility-note" role="status">
+        <ArchiveIcon name="health" /> 距上次备份 {{ backupDays }} 天，建议导出一次以防数据丢失
+      </div>
       <div class="utility-label">本地数据</div>
       <div class="utility-actions">
         <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.exportBackup()">
@@ -52,7 +58,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useBackup, type BackupSummary } from '@/composables/useBackup'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -64,6 +70,19 @@ const backupCardEl = ref<HTMLElement | null>(null)
 const backupFileEl = ref<HTMLInputElement | null>(null)
 const utilityEl = ref<HTMLDetailsElement | null>(null)
 const pendingSummary = ref<BackupSummary | null>(null)
+
+/** 超过 7 天未备份（或从未备份）时在触发器上亮角标，菜单内给提示 */
+const BACKUP_REMIND_DAYS = 7
+const backupStale = computed(() => {
+  const last = backup.lastBackupAt.value
+  if (!last) return true
+  return Date.now() - last > BACKUP_REMIND_DAYS * 24 * 60 * 60 * 1000
+})
+const backupDays = computed(() => {
+  const last = backup.lastBackupAt.value
+  if (!last) return 0
+  return Math.max(0, Math.floor((Date.now() - last) / (24 * 60 * 60 * 1000)))
+})
 
 useFocusTrap(backupCardEl, () => backup.pending.value !== null, {
   onEscape: () => { if (!backup.busy.value) discard() },
@@ -88,3 +107,22 @@ async function onBackupFilePicked(event: Event) {
   if (utilityEl.value) utilityEl.value.open = false
 }
 </script>
+
+<style scoped>
+.utility-trigger { position: relative; }
+.utility-dot {
+  position: absolute; top: 2px; right: 2px;
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--warning);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--warning) 70%, transparent);
+}
+.utility-note {
+  display: flex; align-items: center; gap: var(--s-2);
+  margin-bottom: var(--s-3); padding: var(--s-2) var(--s-3);
+  border: 1px solid color-mix(in srgb, var(--warning) 45%, transparent);
+  border-radius: var(--r-md);
+  background: color-mix(in srgb, var(--warning) 10%, transparent);
+  color: var(--warning-text);
+  font-size: var(--fs-label);
+}
+</style>
