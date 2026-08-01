@@ -19,15 +19,17 @@
     />
     <div class="route-scan" aria-hidden="true"></div>
     <div class="route-progress" aria-hidden="true"><i></i></div>
-    <div class="sakura-fall" aria-hidden="true">
-      <span v-for="(leaf, index) in sakuraLeaves" :key="index" :style="leafStyle(leaf)"></span>
-    </div>
     <div class="route-index" aria-hidden="true">
       <span>{{ routeMeta.code }}</span>
       <strong>{{ signalLabel || routeMeta.label }}</strong>
       <i></i>
       <small>LOCAL ARCHIVE</small>
     </div>
+  </div>
+  <!-- 樱花花雨是独立前景层：不继承氛围层的 opacity:0.2 压制，
+       飘在内容之上（pointer-events:none），参考站同款"前景花雨" -->
+  <div class="sakura-fall" aria-hidden="true">
+    <span v-for="(leaf, index) in sakuraLeaves" :key="index" :style="leafStyle(leaf)"></span>
   </div>
 </template>
 
@@ -145,11 +147,11 @@ const sakuraLeaves: SakuraLeaf[] = Array.from({ length: 16 }, (_, index) => {
   const layer = index % 4 // 0 近景 / 3 远景
   return {
     left: 6 + (index * 6.1 + 3) % 88,
-    size: layer === 0 ? 20 + (index % 3) * 3 : layer === 3 ? 9 + (index % 2) * 2 : 13 + (index % 3) * 3,
+    size: layer === 0 ? 24 + (index % 3) * 4 : layer === 3 ? 10 + (index % 2) * 2 : 14 + (index % 3) * 4,
     duration: 11 + (index % 5) * 1.7,
     delay: -(index * 1.4),
     drift: -90 - (index % 4) * 22,
-    opacity: layer === 3 ? 0.22 : 0.34 + layer * 0.14,
+    opacity: layer === 3 ? 0.3 : 0.5 + layer * 0.12,
     blur: layer === 3 ? 1.2 : layer === 0 ? 0 : 0.5,
     spin: (index % 2 ? 1 : -1) * (240 + (index % 3) * 120),
   }
@@ -251,26 +253,28 @@ onUnmounted(() => {
   background: linear-gradient(90deg,transparent,color-mix(in srgb,var(--archive-blue) 12%,transparent),transparent);
   transform: skewX(-12deg);
 }
-/* 樱花下落：纯 transform 动画，GPU 合成；reduced-motion 下整层禁用 */
+/* 樱花下落：独立前景层（fixed），纯 transform 动画 GPU 合成；
+   飘在内容之上但 pointer-events:none，不挡任何交互 */
 .sakura-fall {
-  position: absolute;
+  position: fixed;
   inset: 0;
   overflow: hidden;
   pointer-events: none;
-  z-index: var(--z-base);
+  z-index: 10;
 }
 .sakura-fall span {
   position: absolute;
-  top: -8vh;
+  top: -9vh;
   border-radius: 100% 0 100% 0;
-  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 62%, transparent), color-mix(in srgb, var(--mood-love) 55%, transparent));
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 74%, transparent), color-mix(in srgb, var(--mood-love) 68%, transparent));
+  box-shadow: 0 0 6px color-mix(in srgb, var(--mood-love) 22%, transparent);
   will-change: transform;
   animation: sakura-fall linear infinite;
 }
 @keyframes sakura-fall {
-  0%   { transform: translate3d(0, -8vh, 0) rotate(0deg); }
+  0%   { transform: translate3d(0, -9vh, 0) rotate(0deg); }
   55%  { transform: translate3d(calc(var(--drift) * 0.55), 54vh, 0) rotate(calc(var(--spin) * 0.55)); }
-  100% { transform: translate3d(var(--drift), 110vh, 0) rotate(var(--spin)); }
+  100% { transform: translate3d(var(--drift), 112vh, 0) rotate(var(--spin)); }
 }
 .route-progress {
   position:absolute;
