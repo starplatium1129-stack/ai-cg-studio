@@ -270,10 +270,10 @@ Honor `prefers-reduced-motion` and `prefers-reduced-transparency`.
 
 ## Shapes
 
-Use `4–8px` radii for inputs and compact controls, `12–16px` for cards and
+Use `8–10px` radii for inputs and compact controls, `14–20px` for cards and
 sections, and pill shapes only for filters, small status badges, and segmented
-controls. The artwork viewer or main stage may use a larger optical radius when
-it reads as one continuous frame.
+controls. The artwork viewer or main stage may use a larger optical radius (up
+to 24px) when it reads as one continuous frame.
 
 Do not mix sharp system-tool rectangles, soft consumer-app pills, and oversized
 glass bubbles in the same control group. Icon geometry, border weight, radius,

@@ -50,8 +50,8 @@
   --archive-grid:        rgba(236, 226, 255, 0.05);
   --archive-line:        rgba(236, 226, 255, 0.14);
   --archive-glass:       rgba(25, 18, 48, 0.76);
-  --r-dossier:           6px;
-  --r-terminal:          4px;
+  --r-dossier:           14px;
+  --r-terminal:          6px;
   --line-hairline:       1px;
 
   --nav-bg: rgba(25, 18, 48, 0.72);
@@ -139,8 +139,10 @@
      sm/md 输入与紧凑控件 | lg/xl 卡片与区块 | 2xl 浮层 | stage 画面框 | pill 筛选与状态
      2026-07-31 视觉审查修订：整体收紧（md 8→4 / lg 12→6 / xl 16→8），
      大圆角弱化战术/工业属性，2-4px 是方舟档案语言的核心特征。 */
-  --r-sm: 4px; --r-md: 4px; --r-lg: 6px; --r-xl: 8px;
-  --r-2xl: 14px; --r-3xl: 16px; --r-stage: 18px; --r-pill: 999px;
+  /* 圆角阶梯：博客式二次元圆润感（2026-08-01 从方舟战术小圆角放宽，
+     与 DESIGN.md §Shapes 同步）。pill 仍只用于胶囊/徽章/筛选。 */
+  --r-sm: 8px; --r-md: 10px; --r-lg: 14px; --r-xl: 16px;
+  --r-2xl: 20px; --r-3xl: 22px; --r-stage: 24px; --r-pill: 999px;
 
   /* ---- Shadow ladder(仅三级,对应 DESIGN.md §Elevation 的 L1/L2/L3) ----
      2026-07-31 视觉审查修订：阴影整体收敛（弱化柔光），层级靠 1px 硬边框
@@ -312,10 +314,14 @@ body {
   -webkit-font-smoothing: antialiased;
   isolation: isolate;
   overflow-x: hidden;
+  /* 网点纹理层:galgame 杂志式 1px 网点(色值随主题走 --border-strong,
+     深色=淡紫点 / 浅色=暖棕点),作为最上层压在光晕上 */
   background-image:
+    radial-gradient(circle at 1px 1px, color-mix(in srgb, var(--border-strong) 26%, transparent) 1px, transparent 0),
     linear-gradient(118deg, color-mix(in srgb, white 2%, transparent), transparent 34%),
     radial-gradient(circle at 12% 18%, color-mix(in srgb, var(--accent) 6%, transparent), transparent 26rem),
     radial-gradient(circle at 88% 30%, color-mix(in srgb, var(--archive-blue) 7%, transparent), transparent 30rem);
+  background-size: 24px 24px, auto, auto, auto;
 }
 
 body::before, body::after {
@@ -340,6 +346,66 @@ body:has(.home-page, .chat-page, .gallery-page, .showcase-page)::after {
   animation: float-orb 22s ease-in-out infinite alternate-reverse;
 }
 @keyframes float-orb { to { transform: translate3d(3rem, 1.5rem, 0) scale(1.05); } }
+
+/* ---- 日系竖排假名水印（工坊签名层） ----
+   DOM 在 AppLayout；fixed + z-below 与光斑同级（body 的 isolation 保证
+   它浮在背景之上、内容之下）。色值走 --accent-violet 自动适配深浅主题。 */
+.kana-watermark {
+  position: fixed;
+  right: clamp(0.75rem, 3vw, 2.25rem);
+  top: 46%;
+  transform: translateY(-50%);
+  z-index: var(--z-below);
+  pointer-events: none;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-2);
+  opacity: 1;
+  transition: opacity var(--t-base) var(--ease-out);
+}
+.kana-watermark .kana-main {
+  writing-mode: vertical-rl;
+  font: 700 var(--fs-display) var(--font-serif);
+  letter-spacing: 0.22em;
+  line-height: 1.25;
+  color: color-mix(in srgb, var(--accent-violet) 9%, transparent);
+  text-orientation: upright;
+}
+.kana-watermark .kana-sub {
+  font: 600 var(--fs-mono-xs) var(--font-mono);
+  letter-spacing: 0.34em;
+  color: color-mix(in srgb, var(--accent-violet) 7%, transparent);
+  writing-mode: vertical-rl;
+}
+/* 内容密集页（导演台 / 训练台）水印会与面板叠压，与 route-index 同策略隐藏 */
+body:has(.pb, .training-page) .kana-watermark { opacity: 0; }
+@media (max-width: 640px) { .kana-watermark { opacity: 0; } }
+
+/* ---- 博客式星光层：散落的柔光星点缓慢上浮呼吸（与樱花雨错开节奏），
+   DOM 在 AppLayout，z-below 浮在背景之上内容之下。reduced-motion 由全局
+   动画降级兜底。 */
+.starfield {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-below);
+  pointer-events: none;
+  user-select: none;
+  background-image:
+    radial-gradient(1.5px 1.5px at 12% 24%, color-mix(in srgb, var(--accent) 50%, transparent), transparent 100%),
+    radial-gradient(1px 1px at 29% 68%, color-mix(in srgb, var(--accent-violet) 55%, transparent), transparent 100%),
+    radial-gradient(2px 2px at 46% 14%, color-mix(in srgb, var(--mood-love-text) 40%, transparent), transparent 100%),
+    radial-gradient(1.5px 1.5px at 64% 46%, color-mix(in srgb, var(--accent) 45%, transparent), transparent 100%),
+    radial-gradient(1px 1px at 79% 78%, color-mix(in srgb, var(--accent-violet) 50%, transparent), transparent 100%),
+    radial-gradient(2px 2px at 90% 30%, color-mix(in srgb, var(--mood-love-text) 35%, transparent), transparent 100%),
+    radial-gradient(1px 1px at 38% 90%, color-mix(in srgb, var(--accent) 42%, transparent), transparent 100%);
+  animation: starfield-float 16s ease-in-out infinite alternate;
+}
+@keyframes starfield-float {
+  from { opacity: .45; transform: translateY(0); }
+  to   { opacity: .75; transform: translateY(-12px); }
+}
 
 a { color: var(--accent); text-decoration: none; transition: color var(--t-fast); }
 a:hover { color: var(--accent-hover); }
@@ -567,8 +633,11 @@ body > *:has(+ .footer),
 .page-kicker::before,
 .pb-kicker::before {
   content: "";
-  width: 22px; height: 1px;
-  background: linear-gradient(90deg, var(--accent), var(--natsume-amber));
+  width: 26px; height: 6px;
+  border-radius: var(--r-pill);
+  background: linear-gradient(90deg, var(--accent), var(--accent-violet));
+  box-shadow: 0 0 8px color-mix(in srgb, var(--accent) 30%, transparent);
+  transform: rotate(-2deg);
 }
 .gallery-kicker {
   color: var(--accent);

@@ -22,6 +22,13 @@
     <footer class="site-footer">
       <p>© 2025 绫季绘境 · 个人创作工作台</p>
     </footer>
+    <!-- 日系竖排假名水印：纯装饰层（aria-hidden），样式与主题适配在 design-system.css -->
+    <div class="kana-watermark" aria-hidden="true">
+      <span class="kana-main">あとりえ</span>
+      <span class="kana-sub">ATELIER ARCHIVE</span>
+    </div>
+    <!-- 博客式星光层：纯装饰（aria-hidden），样式在 design-system.css -->
+    <div class="starfield" aria-hidden="true"></div>
   </div>
 </template>
 
@@ -112,5 +119,21 @@ function onLeave(el: Element, done: () => void) {
   color: var(--text-muted);
   border-top: 1px solid var(--border-soft);
   background: color-mix(in srgb, var(--bg-deep) 55%, transparent);
+}
+/* 朱印印章：页脚签名（色值由 --danger 派生，无硬编码） */
+.site-footer::after {
+  content: "綾季";
+  display: inline-grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  margin-left: var(--s-3);
+  border: 2px solid color-mix(in srgb, var(--danger) 42%, transparent);
+  border-radius: var(--r-sm);
+  color: color-mix(in srgb, var(--danger) 55%, transparent);
+  font: 700 var(--fs-body-sm) var(--font-serif);
+  letter-spacing: 0.06em;
+  transform: rotate(-8deg);
+  vertical-align: middle;
 }
 </style>

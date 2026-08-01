@@ -511,6 +511,58 @@
   color: var(--text-muted);
 }
 
+/* Q 版小剧场：解包 SD 素材按角色切换（assets/chibi） */
+.chat-page .chibi-theater {
+  flex-shrink: 0;
+  padding: var(--s-2) var(--s-4) var(--s-4);
+  border-top: 1px solid var(--border-soft);
+  display: grid;
+  gap: var(--s-2);
+}
+.chat-page .chibi-show-wrap {
+  position: relative;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  border: 1px solid var(--border-soft);
+  background: var(--bg-deep);
+}
+.chat-page .chibi-show {
+  display: block;
+  width: 100%;
+  aspect-ratio: 5/3;
+  object-fit: cover;
+  transition: opacity .35s var(--ease-out), transform .5s var(--ease-out);
+}
+.chat-page .chibi-picks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
+  gap: var(--s-2);
+}
+.chat-page .chibi-pick {
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-md);
+  padding: 0;
+  overflow: hidden;
+  cursor: pointer;
+  background: var(--bg-deep);
+  transition: border-color var(--t-fast), box-shadow var(--t-fast), transform var(--t-fast);
+}
+.chat-page .chibi-pick img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 5/3;
+  object-fit: cover;
+  opacity: .78;
+  transition: opacity var(--t-fast), transform var(--t-base) var(--ease-out);
+}
+.chat-page .chibi-pick:hover { border-color: color-mix(in srgb, var(--character-accent) 50%, var(--border-soft)); transform: translateY(-1px); }
+.chat-page .chibi-pick:hover img { opacity: 1; }
+.chat-page .chibi-pick[aria-selected="true"] {
+  border-color: var(--character-accent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--character-accent) 26%, transparent), var(--glow-sm);
+}
+.chat-page .chibi-pick[aria-selected="true"] img { opacity: 1; }
+
 .chat-page .character-status {
   display: flex;
   align-items: center;
@@ -1010,6 +1062,7 @@
 }
 
 .chat-page .message-bubble {
+  position: relative;
   padding: 10px 13px;
   border: 1px solid var(--border-soft);
   /* bubble tail: tighten corner toward avatar */
@@ -1020,6 +1073,16 @@
   line-height: 1.7;
   white-space: pre-wrap;
   word-break: break-word;
+}
+/* 角色消息：左侧角色色渐变条（::before 独立于 speaking 边框，不冲突） */
+.chat-page .message:not(.user) .message-bubble::before {
+  content: "";
+  position: absolute;
+  left: -1px; top: 14px; bottom: 14px;
+  width: 3px;
+  border-radius: var(--r-pill);
+  background: linear-gradient(180deg, var(--character-accent), color-mix(in srgb, var(--character-accent) 38%, var(--accent-violet)));
+  opacity: .8;
 }
 
 .chat-page .message.user .message-bubble {
