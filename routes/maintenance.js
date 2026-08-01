@@ -269,7 +269,10 @@ function readHomeHeroManifest() {
     } catch (e) { return fallback; }
   }
 
-  router.get('/api/maintenance/home-hero', maintenanceLocalOnly, function (req, res) {
+  // GET 必须公开：公网访客也要拿到运行时首页立绘配置（只含图片路径，
+  // 不含任何敏感信息）。之前 maintenanceLocalOnly 把公网 403 掉，
+  // 访客只能看到打包进 dist 的默认旧立绘——"公网首页还是老图"的根源。
+  router.get('/api/maintenance/home-hero', function (req, res) {
     var manifest = readHomeHeroManifest();
     var entries = {};
     Object.keys(manifest.entries || {}).forEach(function (character) {
