@@ -213,9 +213,11 @@ test('flow 1c · 出图队列：串行执行、自动入册', async ({ page, req
 // 2. 配音
 // ─────────────────────────────────────────────────────────────────────────────
 test('flow 2 · 配音：中文字幕 → 本机翻译 → GPT-SoVITS 生成 WAV', async ({ page, request }) => {
+  // 整套负载下 mock 网关的 voice 状态查询会变慢，放宽等待
+  const VOICE_TIMEOUT = 12_000;
   const errors = collectRuntimeErrors(page);
   await page.goto('/prompt-builder');
-  await expect(page.locator('.voice-state')).toHaveText('AI 声线就绪');
+  await expect(page.locator('.voice-state')).toHaveText('AI 声线就绪', { timeout: VOICE_TIMEOUT });
 
   /**
    * 显式切到夏目。
@@ -225,7 +227,7 @@ test('flow 2 · 配音：中文字幕 → 本机翻译 → GPT-SoVITS 生成 WAV
    * "本次是否 set_*_weights" 会随执行顺序漂移。换声线强制重新激活，断言才稳定。
    */
   await page.locator('.voice-field select').first().selectOption('natsume');
-  await expect(page.locator('.voice-state')).toHaveText('AI 声线就绪');
+  await expect(page.locator('.voice-state')).toHaveText('AI 声线就绪', { timeout: VOICE_TIMEOUT });
 
   await page.locator('.voice-caption-text').fill('今天也辛苦了，先休息一会儿吧。');
   await page.getByRole('button', { name: '翻译成日文' }).click();
@@ -239,7 +241,7 @@ test('flow 2 · 配音：中文字幕 → 本机翻译 → GPT-SoVITS 生成 WAV
   expect(String(translateCalls[0].body?.text)).toContain('今天也辛苦了');
 
   await page.getByRole('button', { name: '生成 AI 声线' }).click();
-  await expect(page.locator('.voice-audio')).toBeVisible();
+  await expect(page.locator('.voice-audio')).toBeVisible({ timeout: VOICE_TIMEOUT });
   await expect(page.locator('.voice-download')).toBeVisible();
   await expect(page.locator('.voice-status')).toContainText('AI 声线已生成');
 
@@ -257,9 +259,10 @@ test('flow 2 · 配音：中文字幕 → 本机翻译 → GPT-SoVITS 生成 WAV
 });
 
 test('flow 2b · 配音失败：GPT-SoVITS 502 带出真实原因而不是"不可用"', async ({ page, request }) => {
+  const VOICE_TIMEOUT = 12_000;
   await fault(request, MOCK.tts, { ttsStatus: 500, ttsError: 'RuntimeError: reference audio missing' });
   await page.goto('/prompt-builder');
-  await expect(page.locator('.voice-state')).toHaveText('AI 声线就绪');
+  await expect(page.locator('.voice-state')).toHaveText('AI 声线就绪', { timeout: VOICE_TIMEOUT });
 
   await page.locator('.voice-caption-text').fill('测试失败路径。');
   await page.locator('.voice-field select').nth(1).selectOption('zh');  // 跳过翻译

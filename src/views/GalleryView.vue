@@ -367,6 +367,25 @@ function revokeAll() {
 const HYDRATE_CONCURRENCY = 4
 /** 缩略图是 KV 小 dataURL，读得快，并发放高 */
 const THUMB_CONCURRENCY = 8
+/**
+ * KeepAlive 后 HD blob 常驻内存，几百张大图会吃掉数百 MB。
+ * 只保留最近 HD_CACHE_LIMIT 张的 blob，超出释放并回落缩略图；
+ * 查看器大图单独走 hydrateViewer，不受影响。
+ */
+const HD_CACHE_LIMIT = 40
+function trimCardUrls() {
+  const ids = Object.keys(cardUrls)
+  if (ids.length <= HD_CACHE_LIMIT) return
+  const excess = ids.length - HD_CACHE_LIMIT
+  for (const id of ids.slice(0, excess)) {
+    const url = cardUrls[id]
+    if (url && url.startsWith('blob:')) {
+      URL.revokeObjectURL(url)
+      objectUrls.delete(url)
+    }
+    delete cardUrls[id]
+  }
+}
 async function hydrateThumbs() {
   const pending = visible.value.filter(item => !cardUrls[item.id] && !thumbUrls[item.id])
   let index = 0
@@ -410,6 +429,7 @@ async function hydrateCards() {
     }
   }
   await Promise.all(Array.from({ length: Math.min(HYDRATE_CONCURRENCY, pending.length) }, () => worker()))
+  trimCardUrls()
 }
 
 async function hydrateViewer(item: ArtworkRecord) {
