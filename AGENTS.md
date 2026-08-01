@@ -81,7 +81,7 @@
 
 ## 质量门槛
 
-- 小改先跑相关测试，不需要每次都跑完整套。
+- 小改先跑相关测试，不需要每次都跑完整套。**默认禁止无脑全量 92 用例**（多 worker 全量会把本机跑卡），按下面的规模分级走。
 - 修改 `src/`：
   1. `npm run typecheck:app`
   2. `npm run build`
@@ -92,6 +92,22 @@
 - 最终浏览器回归：`npm run test:e2e`
 - 不要用裸 `tsc -p tsconfig.app.json` 代替 `vue-tsc`；它不会真实检查 `.vue` SFC。
 - `npm run test:e2e` 会先构建；已有新构建时可用定向 `npx playwright test ...`，避免重复构建。
+
+### E2E 分级策略（2026-08-01 起执行，避免全量把机器跑卡）
+
+按改动范围选最轻的验证路径：
+
+| 改动规模 | 验证 | E2E 是否跑 |
+|---|---|---|
+| 单视图文案/样式 | `typecheck:app` + `build` + 该页浏览器截图自查 | 不跑 |
+| 单视图/组件逻辑 | 上面 + `node scripts/tests/test-*.js`（对应模块） | 不跑或 `--grep` 相关用例 |
+| 路由/布局/全局 CSS/跨页组件 | 上面 + `npx playwright test tests/e2e/studio.spec.ts tests/e2e/flows.spec.ts` | 跑两个文件 |
+| 交互/a11y/视觉语言相关 | 加 `tests/e2e/a11y-device.spec.ts`、`archive-visual-language.spec.ts`、`interaction-polish.spec.ts` | 定向跑 |
+| 提交前兜底（跨页大改） | 全量 | `npx playwright test --workers=3`（或 4） |
+
+- 定向跑保持默认多 worker（快且只开少量浏览器，不卡）；全量时**用 `--workers=3` 或 `4` 折中**，别用默认 workers 数全量跑。
+- `--grep` 按用例名模糊匹配：`npx playwright test --grep "深链|quick|预算"`。
+- 全量仅在「路由/全局布局/全局 CSS」这类改动时做一次；做完记住结果，后续小改不要再全量。
 
 当前门槛覆盖真实应用 CSS、Vue SFC、运行时构建、场景契约、安全路由、存储、Prompt、SD、聊天、配音和 Playwright 流程。
 
