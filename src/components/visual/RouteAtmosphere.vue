@@ -29,7 +29,20 @@
   <!-- 樱花花雨是独立前景层：不继承氛围层的 opacity:0.2 压制，
        飘在内容之上（pointer-events:none），参考站同款"前景花雨" -->
   <div class="sakura-fall" aria-hidden="true">
-    <span v-for="(leaf, index) in sakuraLeaves" :key="index" :style="leafStyle(leaf)"></span>
+    <span
+      v-for="(leaf, index) in sakuraLeaves"
+      :key="index"
+      :style="{
+        '--sakura-left': leaf.left + '%',
+        '--sakura-size': leaf.size + 'px',
+        '--sakura-opacity': String(leaf.opacity),
+        '--sakura-blur': leaf.blur ? 'blur(' + leaf.blur + 'px)' : 'none',
+        '--sakura-duration': leaf.duration + 's',
+        '--sakura-delay': leaf.delay + 's',
+        '--drift': leaf.drift + 'px',
+        '--spin': leaf.spin + 'deg',
+      }"
+    ></span>
   </div>
 </template>
 
@@ -157,20 +170,6 @@ const sakuraLeaves: SakuraLeaf[] = Array.from({ length: 16 }, (_, index) => {
   }
 })
 
-function leafStyle(leaf: SakuraLeaf): Record<string, string> {
-  return {
-    left: `${leaf.left}%`,
-    width: `${leaf.size}px`,
-    height: `${leaf.size}px`,
-    opacity: String(leaf.opacity),
-    filter: leaf.blur ? `blur(${leaf.blur}px)` : 'none',
-    animationDuration: `${leaf.duration}s`,
-    animationDelay: `${leaf.delay}s`,
-    '--drift': `${leaf.drift}px`,
-    '--spin': `${leaf.spin}deg`,
-  }
-}
-
 function onSignal(event: Event) {
   const detail = (event as CustomEvent<ParticleSignalDetail>).detail
   if (!detail) return
@@ -265,11 +264,18 @@ onUnmounted(() => {
 .sakura-fall span {
   position: absolute;
   top: -9vh;
+  left: var(--sakura-left);
+  width: var(--sakura-size);
+  height: var(--sakura-size);
+  opacity: var(--sakura-opacity);
+  filter: var(--sakura-blur);
   border-radius: 100% 0 100% 0;
   background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 74%, transparent), color-mix(in srgb, var(--mood-love) 68%, transparent));
   box-shadow: 0 0 6px color-mix(in srgb, var(--mood-love) 22%, transparent);
   will-change: transform;
   animation: sakura-fall linear infinite;
+  animation-duration: var(--sakura-duration);
+  animation-delay: var(--sakura-delay);
 }
 @keyframes sakura-fall {
   0%   { transform: translate3d(0, -9vh, 0) rotate(0deg); }

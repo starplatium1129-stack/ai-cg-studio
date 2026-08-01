@@ -727,7 +727,7 @@ onUnmounted(() => { status.stopPolling() })
 }
 .build-head { display: flex; align-items: baseline; gap: var(--s-2); }
 .build-kicker { font: var(--fs-mono-sm) var(--font-mono); color: var(--text-muted); letter-spacing: 0.06em; }
-.build-head strong { font-size: var(--fs-body-s); }
+.build-head strong { font-size: var(--fs-body-sm); }
 .build-card[data-stale="true"] .build-head strong { color: var(--warning); }
 .build-desc { color: var(--text-muted); font-size: var(--fs-label-xs); line-height: 1.55; margin: 0; }
 .build-card .btn { align-self: flex-start; }

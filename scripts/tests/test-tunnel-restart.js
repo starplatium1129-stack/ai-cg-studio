@@ -27,8 +27,6 @@ FakeChild.prototype = Object.create(EventEmitter.prototype);
 FakeChild.prototype.constructor = FakeChild;
 var fakeProcess = new FakeChild();
 var spawned = 0;
-var exitHandlers = [];
-var errorHandlers = [];
 
 function fakeSpawn() {
   spawned += 1;
@@ -37,7 +35,6 @@ function fakeSpawn() {
 
 function makeManager() {
   spawned = 0;
-  exitHandlers = [];
   var dir = fs.mkdtempSync(path.join(os.tmpdir(), 'tunnel-test-'));
   var config = {
     DISABLE_TUNNEL: false,
@@ -59,7 +56,7 @@ function makeManager() {
 
 test('tunnel auto-restarts after cloudflared exits unexpectedly', function (t) {
   t.after(function () { manager.stop(); fs.rmSync(dir, { recursive: true, force: true }); });
-  var { manager, dir, config } = makeManager();
+  var { manager, dir } = makeManager();
   manager.start();
   assert.strictEqual(spawned, 1, 'first spawn');
 

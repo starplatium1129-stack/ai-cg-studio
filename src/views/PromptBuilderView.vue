@@ -457,7 +457,7 @@
 
     <!-- 出图大图对比：上一张 vs 当前 -->
     <Teleport to="body">
-      <div v-if="compareOpen && prevResult && lastResult" class="compare-overlay" @click.self="closeCompare">
+      <div v-if="compareOpen && prevResult && lastResult" class="pb-compare-overlay" @click.self="closeCompare">
         <div ref="compareEl" class="pb-compare" role="dialog" aria-modal="true" aria-label="出图对比">
           <div class="pb-compare-head">
             <div>

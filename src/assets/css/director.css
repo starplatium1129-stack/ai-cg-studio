@@ -1209,7 +1209,7 @@
 @media (max-width:860px) { .pb-compare-grid { grid-template-columns:1fr; } .pb-compare-visual img { max-height:56vh; } }
 @media (prefers-reduced-motion:reduce) { .pb-compare { animation:none; } }
 /* 出图对比遮罩层：fixed 全屏（Teleport 到 body，必须有独立定位） */
-.compare-overlay {
+.pb-compare-overlay {
   position: fixed; inset: 0; z-index: var(--z-overlay);
   display: grid; place-items: center; padding: var(--s-4);
   background: color-mix(in srgb, var(--art-backdrop) 78%, transparent);
