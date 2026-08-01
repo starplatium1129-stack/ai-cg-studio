@@ -333,8 +333,18 @@
   .pb .scene-cat:hover { border-color: var(--accent); color: var(--accent); }
   .pb .scene-cat.active { background: var(--accent); color: var(--text-inverse); border-color: var(--accent); }
   .pb .scene-list { display: flex; flex-direction: column; gap: 2px; max-height:min(46vh,540px); overflow-y: auto; transition: max-height var(--t-base) var(--ease-out); }
-  .pb .scene-list::-webkit-scrollbar { width: 4px; }
-  .pb .scene-list::-webkit-scrollbar-thumb { background: var(--border-soft); border-radius: var(--r-pill); }
+  /* 与全局滚动条同一套渐变语言：细版但同色系，避免暗色下灰线突兀 */
+  .pb .scene-list::-webkit-scrollbar { width: 6px; }
+  .pb .scene-list::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--archive-blue) 42%, transparent), color-mix(in srgb, var(--accent) 38%, transparent));
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    border-radius: 999px;
+  }
+  .pb .scene-list::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--archive-blue) 70%, transparent), color-mix(in srgb, var(--accent) 62%, transparent));
+    background-clip: padding-box;
+  }
   .pb .scene-search:focus ~ .scene-list,
   .pb .scene-list:hover { max-height:min(54vh,640px); }
   .pb .scene-item { display: flex; align-items: center; gap: var(--s-2); padding: 4px 8px; border-radius: var(--r-sm); cursor: pointer; transition: background var(--t-fast); }

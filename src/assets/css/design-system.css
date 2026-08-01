@@ -140,7 +140,7 @@
      2026-07-31 视觉审查修订：整体收紧（md 8→4 / lg 12→6 / xl 16→8），
      大圆角弱化战术/工业属性，2-4px 是方舟档案语言的核心特征。 */
   --r-sm: 4px; --r-md: 4px; --r-lg: 6px; --r-xl: 8px;
-  --r-2xl: 12px; --r-3xl: 14px; --r-stage: 16px; --r-pill: 999px;
+  --r-2xl: 14px; --r-3xl: 16px; --r-stage: 18px; --r-pill: 999px;
 
   /* ---- Shadow ladder(仅三级,对应 DESIGN.md §Elevation 的 L1/L2/L3) ----
      2026-07-31 视觉审查修订：阴影整体收敛（弱化柔光），层级靠 1px 硬边框
@@ -314,7 +314,8 @@ body {
   overflow-x: hidden;
   background-image:
     linear-gradient(118deg, color-mix(in srgb, white 2%, transparent), transparent 34%),
-    radial-gradient(circle at 12% 18%, color-mix(in srgb, var(--accent) 6%, transparent), transparent 26rem);
+    radial-gradient(circle at 12% 18%, color-mix(in srgb, var(--accent) 6%, transparent), transparent 26rem),
+    radial-gradient(circle at 88% 30%, color-mix(in srgb, var(--archive-blue) 7%, transparent), transparent 30rem);
 }
 
 body::before, body::after {
@@ -351,12 +352,6 @@ a:hover { color: var(--accent-hover); }
 img { max-width: 100%; display: block; }
 
 ::selection { background: var(--accent-glow); color: var(--text-primary); }
-
-/* ---- Scrollbar ---- */
-::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-track { background: var(--bg-deep); }
-::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: var(--r-sm); }
-::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
 /* ============================================================
    Layout
@@ -1462,34 +1457,48 @@ html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; 
 ::selection { background: color-mix(in srgb, var(--accent) 26%, transparent); color: inherit; }
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--border-strong) 88%, transparent); border: 3px solid transparent; background-clip: padding-box; border-radius: 999px; }
-::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--text-muted) 92%, transparent); background-clip: padding-box; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--archive-blue) 42%, transparent), color-mix(in srgb, var(--accent) 38%, transparent));
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--archive-blue) 70%, transparent), color-mix(in srgb, var(--accent) 62%, transparent));
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-corner { background: transparent; }
+/* textarea 的原生灰色拖拽把手无法主题化，隐藏后拖拽区域仍在（光标会变 resize） */
+::-webkit-resizer { background: transparent; }
+textarea { scrollbar-width: thin; }
 /* 统计数字 / 进度 / 参数等机器数字纵向对齐，跳动时不左右抖 */
 :where(code, .mono, .archive-code, .fs-mono, .count, .stat, .seed, .progress-copy strong) { font-variant-numeric: tabular-nums; }
 /* 标准按钮按压反馈：只影响 .btn，不碰卡片 / 开关 / 图面按钮 */
 .btn:not(:disabled):active { transform: translateY(1px) scale(.98); }
 /* 主题切换过渡：useTheme 切换瞬间给 <html> 挂 theme-fade。
-   只对高频表面（页面、导航、卡片、面板、文本行）做颜色过渡，
-   不用 * 通配——全 DOM 同时过渡会掉帧，且 !important 会踩掉其他过渡 */
+   只对高频表面（页面、导航、文本、按钮）做颜色过渡：
+   卡片/面板/徽章数量大，同时过渡会掉帧；瞬时变色 + 表面过渡
+   在观感上同样平滑。粒子层在切换期间整体隐藏，避免 canvas
+   逐帧重绘拖累合成线程。 */
 html.theme-fade body,
 html.theme-fade .page-root,
 html.theme-fade .nav,
 html.theme-fade .page-main,
 html.theme-fade .site-footer,
-html.theme-fade .card,
-html.theme-fade .card-create,
-html.theme-fade .panel,
-html.theme-fade .section,
-html.theme-fade .toolbar,
-html.theme-fade .chip,
-html.theme-fade .tag,
 html.theme-fade h1,
 html.theme-fade h2,
 html.theme-fade h3,
 html.theme-fade p,
 html.theme-fade span,
 html.theme-fade .btn {
-  transition: background-color .24s ease, color .24s ease, border-color .24s ease;
+  transition: background-color .22s ease, color .22s ease, border-color .22s ease;
+}
+html.theme-fade .route-atmosphere-field,
+html.theme-fade .scene-atlas-particles,
+html.theme-fade .hero-particles,
+html.theme-fade .hero-orbit,
+html.theme-fade .sakura-fall {
+  visibility: hidden;
 }
 /* 通用图片入场：给需要"翻开画集"质感的图片用 */
 @keyframes archive-image-in { from { opacity: 0 } to { opacity: 1 } }

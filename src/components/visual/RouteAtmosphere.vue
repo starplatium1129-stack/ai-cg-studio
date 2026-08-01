@@ -19,6 +19,9 @@
     />
     <div class="route-scan" aria-hidden="true"></div>
     <div class="route-progress" aria-hidden="true"><i></i></div>
+    <div class="sakura-fall" aria-hidden="true">
+      <span v-for="(leaf, index) in sakuraLeaves" :key="index" :style="leafStyle(leaf)"></span>
+    </div>
     <div class="route-index" aria-hidden="true">
       <span>{{ routeMeta.code }}</span>
       <strong>{{ signalLabel || routeMeta.label }}</strong>
@@ -122,6 +125,50 @@ function resetSignal() {
   signalLabel.value = ''
 }
 
+interface SakuraLeaf {
+  left: number
+  size: number
+  duration: number
+  delay: number
+  drift: number
+  opacity: number
+  blur: number
+  spin: number
+}
+
+/**
+ * 全站背景的樱花点缀：16 片 CSS 花瓣斜向飘落（右上→左下，参考手账风
+ * 站点的中密度花雨），大小/模糊/透明度分层制造景深；纯 transform +
+ * filter 动画走 GPU 合成，不占 canvas 预算。
+ */
+const sakuraLeaves: SakuraLeaf[] = Array.from({ length: 16 }, (_, index) => {
+  const layer = index % 4 // 0 近景 / 3 远景
+  return {
+    left: 6 + (index * 6.1 + 3) % 88,
+    size: layer === 0 ? 20 + (index % 3) * 3 : layer === 3 ? 9 + (index % 2) * 2 : 13 + (index % 3) * 3,
+    duration: 11 + (index % 5) * 1.7,
+    delay: -(index * 1.4),
+    drift: -90 - (index % 4) * 22,
+    opacity: layer === 3 ? 0.22 : 0.34 + layer * 0.14,
+    blur: layer === 3 ? 1.2 : layer === 0 ? 0 : 0.5,
+    spin: (index % 2 ? 1 : -1) * (240 + (index % 3) * 120),
+  }
+})
+
+function leafStyle(leaf: SakuraLeaf): Record<string, string> {
+  return {
+    left: `${leaf.left}%`,
+    width: `${leaf.size}px`,
+    height: `${leaf.size}px`,
+    opacity: String(leaf.opacity),
+    filter: leaf.blur ? `blur(${leaf.blur}px)` : 'none',
+    animationDuration: `${leaf.duration}s`,
+    animationDelay: `${leaf.delay}s`,
+    '--drift': `${leaf.drift}px`,
+    '--spin': `${leaf.spin}deg`,
+  }
+}
+
 function onSignal(event: Event) {
   const detail = (event as CustomEvent<ParticleSignalDetail>).detail
   if (!detail) return
@@ -204,6 +251,27 @@ onUnmounted(() => {
   background: linear-gradient(90deg,transparent,color-mix(in srgb,var(--archive-blue) 12%,transparent),transparent);
   transform: skewX(-12deg);
 }
+/* 樱花下落：纯 transform 动画，GPU 合成；reduced-motion 下整层禁用 */
+.sakura-fall {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: var(--z-base);
+}
+.sakura-fall span {
+  position: absolute;
+  top: -8vh;
+  border-radius: 100% 0 100% 0;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 62%, transparent), color-mix(in srgb, var(--mood-love) 55%, transparent));
+  will-change: transform;
+  animation: sakura-fall linear infinite;
+}
+@keyframes sakura-fall {
+  0%   { transform: translate3d(0, -8vh, 0) rotate(0deg); }
+  55%  { transform: translate3d(calc(var(--drift) * 0.55), 54vh, 0) rotate(calc(var(--spin) * 0.55)); }
+  100% { transform: translate3d(var(--drift), 110vh, 0) rotate(var(--spin)); }
+}
 .route-progress {
   position:absolute;
   z-index:var(--z-raised);
@@ -258,5 +326,9 @@ onUnmounted(() => {
   .route-scan { display:none; }
   .route-atmosphere-field { transform:none; transition:none; }
   .route-progress i { transition:none; }
+  .sakura-fall { display:none; }
+}
+@media (max-width: 760px) {
+  .sakura-fall { opacity:.55; }
 }
 </style>

@@ -69,6 +69,7 @@ let intersectionObserver: IntersectionObserver | null = null
 let themeObserver: MutationObserver | null = null
 let motionMedia: MediaQueryList | null = null
 let stopScheduledFrame: (() => void) | null = null
+let paletteFrame = 0
 let width = 0
 let height = 0
 let dpr = 1
@@ -105,6 +106,19 @@ function readPalette() {
     accent: style.getPropertyValue('--archive-blue').trim() || style.getPropertyValue('--accent-violet').trim() || '#f4a6d7',
   }
   draw()
+}
+
+/**
+ * 主题切换时所有粒子场会同时触发 MutationObserver。
+ * 直接同步 readPalette 会在切换瞬间做 N 次 getComputedStyle（强制 reflow），
+ * 这正是深色/浅色切换卡顿的来源之一：合并到下一帧批量执行一次。
+ */
+function schedulePaletteRead() {
+  if (paletteFrame) return
+  paletteFrame = requestAnimationFrame(() => {
+    paletteFrame = 0
+    readPalette()
+  })
 }
 
 function targetPosition(point: ParticlePoint): { x: number; y: number } {
@@ -349,7 +363,7 @@ onMounted(() => {
     else stopLoop()
   }, { rootMargin: '120px' })
   intersectionObserver.observe(host.value)
-  themeObserver = new MutationObserver(readPalette)
+  themeObserver = new MutationObserver(schedulePaletteRead)
   themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
   document.addEventListener('visibilitychange', onVisibilityChange)
   readPalette()
@@ -359,6 +373,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   stopLoop()
+  if (paletteFrame) cancelAnimationFrame(paletteFrame)
   resizeObserver?.disconnect()
   intersectionObserver?.disconnect()
   themeObserver?.disconnect()
