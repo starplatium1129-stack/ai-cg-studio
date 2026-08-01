@@ -271,6 +271,18 @@
         </div>
         <div class="uptime">{{ uptime }}</div>
         <p class="security-note">分享链接可以调用你电脑上的 SD WebUI，请只发给信任的人。</p>
+
+        <!-- 前端构建：分享伺服 dist/，源码改动后需重建 -->
+        <div class="build-card" :data-stale="webBuildStale ? 'true' : 'false'">
+          <div class="build-head">
+            <span class="build-kicker">Web build</span>
+            <strong>{{ buildLabel }}</strong>
+          </div>
+          <p class="build-desc">{{ buildDesc }}</p>
+          <button class="btn btn-ghost btn-sm" type="button" :disabled="buildingWeb || opBusy" @click="buildWeb">
+            {{ buildingWeb ? '构建中…' : (webBuildStale ? '重新构建前端' : '重新构建前端') }}
+          </button>
+        </div>
       </section>
 
       <!-- 日志 -->
@@ -300,7 +312,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue'
+import { computed, onMounted, onUnmounted } from 'vue'
 import AppSoundToggle from '@/components/AppSoundToggle.vue'
 import AppThemeToggle from '@/components/AppThemeToggle.vue'
 import RouteAtmosphere from '@/components/visual/RouteAtmosphere.vue'
@@ -331,7 +343,7 @@ const {
   tunnelActive, sdOnline, ttsOnline, ollamaOnline, webuiManaged, ollamaModels, ollamaVram,
   modeBusy, operation, serviceChecking, scripts,
   sdHost, ttsHost, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice,
-  tunnelStatus, shareLink, localLink, uptime, actionBusy, mainBtnLabel,
+  tunnelStatus, shareLink, localLink, uptime, actionBusy, mainBtnLabel, webBuild,
   feedbackClass, feedbackText, actionNote, logs, logBoxEl,
   opBusy, opStatusLabel, opProgress, ollamaBadgeText, ollamaMeta, voiceConfiguredCount,
   shareState, shareLabel, readyState, readyLabel,
@@ -341,8 +353,22 @@ const {
 // 模板引用解构：操作域
 const {
   tunnelEnabled, copy, toggleTunnel, saveConfig, saveAutoStartVoice,
-  serviceAction, switchMode, doStart, doStop, exportDiag,
+  serviceAction, switchMode, doStart, doStop, exportDiag, buildWeb, buildingWeb,
 } = actions
+
+const webBuildStale = computed(() => !!webBuild.value && webBuild.value.stale && webBuild.value.distReady)
+const buildLabel = computed(() => {
+  if (!webBuild.value) return '构建状态未知'
+  if (!webBuild.value.distReady) return '尚未构建'
+  if (webBuild.value.stale) return '构建已过期'
+  return '构建已是最新'
+})
+const buildDesc = computed(() => {
+  if (!webBuild.value || !webBuild.value.distReady) return '公网分享伺服的是构建产物；尚未构建时分享可能无法显示最新页面。'
+  const built = webBuild.value.builtAt ? '于 ' + new Date(webBuild.value.builtAt).toLocaleString('zh-CN') + ' 构建' : ''
+  if (webBuild.value.stale) return built + '，但源码此后有修改——分享出去的是旧版页面，请重新构建。'
+  return built + '，与当前源码一致。'
+})
 
 function lineClass(line: string) { return status.lineClass(line) }
 
@@ -689,6 +715,22 @@ onUnmounted(() => { status.stopPolling() })
   border: 1px solid color-mix(in srgb, var(--warning) 16%, transparent);
   font-size: var(--fs-label-xs); line-height: 1.55;
 }
+.build-card {
+  margin-top: var(--s-3); padding: var(--s-3) var(--s-4);
+  display: flex; flex-direction: column; gap: var(--s-2);
+  border: 1px solid var(--border-soft); border-radius: var(--r-md);
+  background: color-mix(in srgb, var(--bg-surface) 40%, transparent);
+}
+.build-card[data-stale="true"] {
+  border-color: color-mix(in srgb, var(--warning) 30%, transparent);
+  background: color-mix(in srgb, var(--warning) 6%, transparent);
+}
+.build-head { display: flex; align-items: baseline; gap: var(--s-2); }
+.build-kicker { font: var(--fs-mono-sm) var(--font-mono); color: var(--text-muted); letter-spacing: 0.06em; }
+.build-head strong { font-size: var(--fs-body-s); }
+.build-card[data-stale="true"] .build-head strong { color: var(--warning); }
+.build-desc { color: var(--text-muted); font-size: var(--fs-label-xs); line-height: 1.55; margin: 0; }
+.build-card .btn { align-self: flex-start; }
 
 .operation-panel.running { border-color: color-mix(in srgb, var(--warning) 42%, var(--border-soft)); }
 .operation-panel.completed { border-color: color-mix(in srgb, var(--success) 42%, var(--border-soft)); }

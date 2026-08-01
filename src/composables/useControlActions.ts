@@ -168,8 +168,31 @@ export function useControlActions(status: StatusApi, { showToast }: ActionHooks)
     } catch (e) { showToast(errorMessage(e, '诊断包导出失败'), true) }
   }
 
+  const buildingWeb = ref(false)
+
+  /** 重新构建前端（公网分享伺服 dist/，源码改动后需重建才生效） */
+  async function buildWeb() {
+    if (buildingWeb.value) return
+    buildingWeb.value = true
+    showToast('正在构建前端，约需 10-30 秒…')
+    try {
+      const r = await fetch('/api/maintenance/build-web', { method: 'POST' })
+      const data = await r.json() as { ok?: boolean; error?: string; durationMs?: number; tail?: string }
+      if (!r.ok || data.ok === false) {
+        throw new Error(data.error || '构建失败（HTTP ' + r.status + '）')
+      }
+      showToast(`前端已重建（${Math.round((data.durationMs || 0) / 1000)} 秒），分享内容已更新`)
+    } catch (e) {
+      showToast('构建失败：' + errorMessage(e, '未知原因'), true)
+    } finally {
+      buildingWeb.value = false
+      status.pollStatus(true)
+    }
+  }
+
   return {
     tunnelEnabled, errorMessage, copy, toggleTunnel, saveConfig, saveAutoStartVoice,
     postControl, serviceAction, switchMode, doStart, doStop, exportDiag,
+    buildWeb, buildingWeb,
   }
 }

@@ -40,6 +40,8 @@ export function useControlStatus({ showToast }: StatusHooks) {
   const shareLink = ref('')
   const localLink = ref('http://127.0.0.1:3000/')
   const uptime = ref('')
+  /** 前端构建信息：公网分享伺服 dist/，源码过期时提示重建 */
+  const webBuild = ref<{ distReady: boolean; builtAt: string | null; stale: boolean } | null>(null)
   const actionBusy = ref(false)
   const mainBtnLabel = ref('启动并生成分享链接')
   const feedbackClass = ref('config-feedback warn')
@@ -130,6 +132,11 @@ export function useControlStatus({ showToast }: StatusHooks) {
     if (data.localLink) localLink.value = data.localLink
     if (data.uptime != null) uptime.value = '网站已运行 ' + fmt(data.uptime)
     if (data.scripts) scripts.value = { ...scripts.value, ...data.scripts }
+    if (data.webBuild) webBuild.value = {
+      distReady:!!data.webBuild.distReady,
+      builtAt:data.webBuild.builtAt || null,
+      stale:!!data.webBuild.stale,
+    }
 
     const ae = document.activeElement as HTMLElement | null
     const aeId = ae?.id || ''
@@ -231,7 +238,7 @@ export function useControlStatus({ showToast }: StatusHooks) {
     tunnelActive, sdOnline, ttsOnline, ollamaOnline, webuiManaged, ollamaModels, ollamaVram,
     modeBusy, operation, serviceChecking, scripts,
     sdHost, ttsHost, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice,
-    tunnelStatus, shareLink, localLink, uptime, actionBusy, mainBtnLabel,
+    tunnelStatus, shareLink, localLink, uptime, actionBusy, mainBtnLabel, webBuild,
     feedbackClass, feedbackText, actionNote, logs, logBoxEl, logIndex,
     opBusy, opStatusLabel, opProgress, ollamaBadgeText, ollamaMeta, voiceConfiguredCount,
     shareState, shareLabel, readyState, readyLabel,

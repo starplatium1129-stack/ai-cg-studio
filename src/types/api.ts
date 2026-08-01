@@ -79,6 +79,8 @@ export interface ControlStatus {
   autoStartVoice?: boolean
   voices: Partial<Record<'nene' | 'natsume', VoiceProfileView>>
   scripts: { voiceStart: boolean; voiceStop: boolean; webui: boolean }
+  /** 前端构建状态：公网分享伺服 dist/，源码过期时 stale=true */
+  webBuild?: { distReady: boolean; builtAt: string | null; stale: boolean }
 }
 
 /** GET /api/logs */

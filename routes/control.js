@@ -19,6 +19,87 @@ var envelope = require('../server/http-envelope');
 var localOnly = security.localOnly;
 var createOperationManager = require('../services/control-operation').createOperationManager;
 
+// ── 前端构建状态：公网分享伺服的是 dist/ 产物，源码改动后不重建
+//    分享出去的就是旧版。这里对比 dist/index.html 与最近修改的源文件。 ──
+var BUILD_SOURCE_GLOBS = ['index.html', 'vite.config.ts', 'src', 'public'];
+var WEB_BUILD_LOCK = null;
+
+function newestSourceMtime(rootDir) {
+  var newest = 0;
+  var walk = function (dir) {
+    var entries;
+    try { entries = fs.readdirSync(dir, { withFileTypes:true }); } catch (error) { return; }
+    for (var i = 0; i < entries.length; i += 1) {
+      var entry = entries[i];
+      if (entry.name === 'node_modules' || entry.name === 'dist' || entry.name === '.git') continue;
+      var full = path.join(dir, entry.name);
+      try {
+        if (entry.isDirectory()) walk(full);
+        else {
+          var stat = fs.statSync(full);
+          if (stat.mtimeMs > newest) newest = stat.mtimeMs;
+        }
+      } catch (error) { /* 跳过不可读文件 */ }
+    }
+  };
+  for (var i = 0; i < BUILD_SOURCE_GLOBS.length; i += 1) {
+    var target = path.join(rootDir, BUILD_SOURCE_GLOBS[i]);
+    var stat;
+    try { stat = fs.statSync(target); } catch (error) { continue; }
+    if (stat.isDirectory()) walk(target);
+    else if (stat.mtimeMs > newest) newest = stat.mtimeMs;
+  }
+  return newest;
+}
+
+function webBuildInfo(config) {
+  var distIndex = path.join(config.ROOT_DIR, 'dist', 'index.html');
+  var distStat = null;
+  try { distStat = fs.statSync(distIndex); } catch (error) { /* 无构建 */ }
+  var sourceNewest = newestSourceMtime(config.ROOT_DIR);
+  return {
+    distReady:Boolean(distStat),
+    builtAt:distStat ? new Date(distStat.mtimeMs).toISOString() : null,
+    stale:Boolean(distStat && sourceNewest > distStat.mtimeMs + 5000),
+    sourceNewest:new Date(sourceNewest).toISOString()
+  };
+}
+
+function runWebBuild(config, callback) {
+  if (WEB_BUILD_LOCK) {
+    callback({ ok:false, error:'已有构建在进行中' });
+    return;
+  }
+  WEB_BUILD_LOCK = true;
+  var startedAt = Date.now();
+  var child = cp.spawn('npm', ['run', 'build'], {
+    cwd:config.ROOT_DIR,
+    shell:process.platform === 'win32',
+    env:Object.assign({}, process.env, { NODE_ENV:'production' }),
+    stdio:['ignore', 'pipe', 'pipe']
+  });
+  var tail = '';
+  var onOutput = function (chunk) {
+    var text = String(chunk || '');
+    tail = (tail + text).slice(-4000);
+  };
+  child.stdout.on('data', onOutput);
+  child.stderr.on('data', onOutput);
+  child.on('error', function (error) {
+    WEB_BUILD_LOCK = false;
+    callback({ ok:false, error:error.message, durationMs:Date.now() - startedAt, tail:tail });
+  });
+  child.on('close', function (code) {
+    WEB_BUILD_LOCK = false;
+    callback({
+      ok:code === 0,
+      error:code === 0 ? null : '构建失败（退出码 ' + code + '）',
+      durationMs:Date.now() - startedAt,
+      tail:tail.slice(-2000)
+    });
+  });
+}
+
 function readJson(file) {
   try { return JSON.parse(fs.readFileSync(file, 'utf8')); } catch { return {}; }
 }
@@ -368,6 +449,7 @@ function createControlRouter(config, gatewayRef, dependencies) {
         uptime: Math.floor((Date.now() - startTime) / 1000),
         autoStartVoice: !!saved.autoStartVoice,
         voices: config.VOICE_PROFILES || {},
+        webBuild: webBuildInfo(config),
         scripts: {
           voiceStart: fs.existsSync(VOICE_START_SCRIPT),
           voiceStop: fs.existsSync(VOICE_STOP_SCRIPT),
@@ -702,6 +784,14 @@ function createControlRouter(config, gatewayRef, dependencies) {
     }
     res.setHeader('Cache-Control', 'no-store');
     res.json({ logs:lines, total: since + lines.length, operation: state.operation });
+  });
+
+  // 重新构建前端：公网分享伺服 dist/，源码改动后不重建分享出去就是旧版
+  router.post('/api/maintenance/build-web', localOnly, function (req, res) {
+    res.setHeader('Cache-Control', 'no-store');
+    runWebBuild(config, function (result) {
+      envelope.ok(res, Object.assign({ ok:result.ok, durationMs:result.durationMs, error:result.error, tail:result.tail }, { webBuild:webBuildInfo(config) }));
+    });
   });
 
   // GET /api/diagnostics
