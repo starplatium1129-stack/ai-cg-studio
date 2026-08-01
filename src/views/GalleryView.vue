@@ -21,11 +21,14 @@
       <button class="gallery-filter" :class="{ active: favoriteOnly }" type="button" @click="favoriteOnly = !favoriteOnly">
         <ArchiveIcon name="love" /> 收藏 {{ favoriteCount }}
       </button>
+      <button class="gallery-filter" :class="{ active: compareMode }" type="button" @click="toggleCompare">
+        <ArchiveIcon name="framecomp" /> 对比
+      </button>
       <select v-model="projectFilter" class="gallery-project" aria-label="按项目筛选">
         <option value="">全部项目</option>
         <option v-for="p in projects" :key="p.id" :value="p.id">{{ p.title }}</option>
       </select>
-      <span class="gallery-toolbar-note">点作品进入沉浸观画</span>
+      <span class="gallery-toolbar-note">{{ compareMode ? '点选两幅作品开始对比' : '点作品进入沉浸观画' }}</span>
     </div>
 
     <section aria-live="polite" data-reveal data-reveal-delay="1">
@@ -51,7 +54,7 @@
             v-for="item in group.items"
             :key="item.id"
             class="artwork"
-            :class="{ 'artwork-pending': pendingDeleteId === item.id }"
+            :class="{ 'artwork-pending': pendingDeleteId === item.id, 'artwork-compare-selected': compareMode && compareIds.includes(item.id) }"
             :style="{ '--art-ratio': ratioOf(item) }"
           >
             <!-- 删除按钮必须是 .artwork-button 的兄弟节点：button 不能嵌 button -->
@@ -69,8 +72,8 @@
             <button
               class="artwork-button"
               type="button"
-              :aria-label="`欣赏作品：${sceneTitle(item.scene)}`"
-              @click="openViewer(indexOf(item))"
+              :aria-label="`${compareMode ? '选择对比：' : '欣赏作品：'}${sceneTitle(item.scene)}`"
+              @click="compareMode ? pickCompare(item) : openViewer(indexOf(item))"
             >
               <div class="artwork-media" :style="{ '--art-ratio': String(ratioOf(item)) }">
                 <img
@@ -155,6 +158,45 @@
       </aside>
     </div>
   </Teleport>
+
+  <!-- 变体对比：并排两幅 + 参数对照 -->
+  <Teleport to="body">
+    <div v-if="compareOpen" class="overlay compare-overlay" @click.self="closeCompare">
+      <div ref="compareEl" class="compare-panel" role="dialog" aria-modal="true" aria-label="作品对比">
+        <div class="compare-head">
+          <div>
+            <div class="compare-kicker">Variant compare</div>
+            <h3>变体对比</h3>
+          </div>
+          <button class="btn btn-ghost btn-sm" type="button" @click="closeCompare">关闭</button>
+        </div>
+        <div class="compare-grid">
+          <figure v-for="(item, index) in compareItems" :key="item.id" class="compare-card">
+            <div class="compare-visual">
+              <img v-if="compareUrl(item)" :src="compareUrl(item)" :alt="sceneTitle(item.scene)"
+                loading="eager" decoding="async" />
+              <span v-else class="compare-placeholder">✦</span>
+              <span class="compare-tag">A{{ index + 1 }}</span>
+            </div>
+            <figcaption class="compare-meta">
+              <strong>{{ sceneTitle(item.scene) || '未命名作品' }}</strong>
+              <span class="compare-sub">{{ characterName(item.character) }} · {{ formatDate(stamp(item)) }}</span>
+              <dl class="compare-facts">
+                <template v-for="f in compareFacts(item)" :key="f.label">
+                  <dt>{{ f.label }}</dt>
+                  <dd :title="f.value">{{ f.value }}</dd>
+                </template>
+              </dl>
+              <details class="compare-prompt">
+                <summary>Prompt</summary>
+                <code>{{ item.prompt || '未保存 Prompt' }}</code>
+              </details>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </Teleport>
 </template>
 
 <script setup lang="ts">
@@ -198,6 +240,11 @@ const galleryLoading = ref(true)
 const viewerIndex = ref(-1)
 const infoOpen = ref(false)
 const viewerUrl = ref('')
+/** 对比模式：工具栏开关 + 选中的两幅作品 */
+const compareMode = ref(false)
+const compareIds = ref<Array<string | number>>([])
+const compareOpen = ref(false)
+const compareEl = ref<HTMLElement | null>(null)
 const cardUrls = reactive<Record<string, string>>({})
 /** 缩略图缓存（KV dataURL），比 HD blob 快读先显示 */
 const thumbUrls = reactive<Record<string, string>>({})
@@ -490,6 +537,71 @@ function step(delta: number) {
   const next = viewerIndex.value + delta
   if (next >= 0 && next < visible.value.length) openViewer(next)
 }
+
+/* ---------- 变体对比 ---------- */
+function toggleCompare() {
+  compareMode.value = !compareMode.value
+  compareIds.value = []
+  compareOpen.value = false
+}
+
+function pickCompare(item: ArtworkRecord) {
+  const ids = compareIds.value
+  const idx = ids.indexOf(item.id)
+  if (idx >= 0) {
+    ids.splice(idx, 1)
+    return
+  }
+  if (ids.length >= 2) ids.shift()
+  ids.push(item.id)
+  if (ids.length === 2) compareOpen.value = true
+}
+
+const compareItems = computed<ArtworkRecord[]>(() =>
+  compareIds.value
+    .map(id => history.value.find(h => h.id === id))
+    .filter((h): h is ArtworkRecord => !!h),
+)
+
+function compareUrl(item: ArtworkRecord): string {
+  return cardUrls[item.id] || thumbUrls[item.id] || ''
+}
+
+function compareFacts(item: ArtworkRecord): Array<{ label: string; value: string }> {
+  const seed = Number(item.seed)
+  return [
+    { label: 'Seed', value: Number.isFinite(seed) && seed >= 0 ? String(seed) : '随机' },
+    { label: '尺寸', value: String(item.size || '—') },
+    { label: '采样器', value: String(item.sampler || '—') },
+    { label: '调度器', value: String(item.scheduler || '自动') },
+    { label: 'CFG', value: String(item.cfg ?? '—') },
+    { label: 'Steps', value: String(item.steps ?? '—') },
+    { label: '高清修复', value: item.hiresFix ? `×${item.hiresScale ?? 1.5}` : '关' },
+    { label: '版本', value: `v${item.version || 1}` },
+  ]
+}
+
+function closeCompare() {
+  compareOpen.value = false
+  compareIds.value = []
+}
+
+useFocusTrap(compareEl, () => compareOpen.value, {
+  onEscape: closeCompare,
+})
+
+watch(compareOpen, (opened) => {
+  if (!opened) return
+  // 对比视图需要 HD 大图：被内存修剪释放的卡片在这里补齐
+  compareItems.value.forEach((item) => {
+    if (!cardUrls[item.id] && !thumbUrls[item.id] && item.image_id) {
+      void imgGet(item.image_id).then((blob) => {
+        if (blob && !cardUrls[item.id]) cardUrls[item.id] = trackUrl(URL.createObjectURL(blob))
+      }).catch(() => {})
+    }
+  })
+})
+
 /* ---------- 删除 ---------- */
 /**
  * 从作品册移除一幅：历史条目 + IndexedDB 里的原图一起删，
@@ -674,6 +786,14 @@ watch(visible, () => { hydrateThumbs(); hydrateCards() })
 @media (prefers-reduced-motion:reduce) { .artwork,.artwork-caption { transition:none !important; } .artwork-skeleton { animation:none; } }
 @keyframes gallerySkeleton { to { background-position:-120% 0; } }
 @keyframes galleryImageIn { from { opacity:0; filter:blur(6px); } to { opacity:1; filter:blur(0); } }
+/* 对比模式下卡片选中态 */
+.artwork-compare-selected { outline:2px solid var(--accent); outline-offset:3px; }
+.artwork-compare-selected::after {
+  content:"已选"; position:absolute; z-index:var(--z-raised); top:var(--s-3); left:var(--s-3);
+  padding:2px var(--s-2); border-radius:var(--r-pill);
+  background:var(--accent); color:var(--text-inverse);
+  font:700 var(--fs-mono-xs) var(--font-mono);
+}
 </style>
 
 <style>
@@ -717,4 +837,34 @@ watch(visible, () => { hydrateThumbs(); hydrateCards() })
   .viewer-next { right:var(--s-2); }
 }
 @media (prefers-reduced-motion:reduce) { .art-viewer,.viewer-info { transition:none !important; } }
+
+/* ---------- 变体对比（Teleport 到 body） ---------- */
+.compare-overlay { display:grid; place-items:center; padding:var(--s-4); background:color-mix(in srgb, var(--art-backdrop) 78%, transparent); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); }
+.compare-panel {
+  width:min(1180px, 96vw); max-height:92vh; overflow-y:auto;
+  padding:var(--s-5); border:1px solid var(--border-soft); border-radius:var(--r-stage);
+  background:var(--bg-surface); color:var(--text-primary); box-shadow:var(--shadow-lg);
+  animation:compare-in .24s var(--ease-out) both;
+}
+@keyframes compare-in { from { opacity:0; transform:translateY(10px) scale(.99); } to { opacity:1; transform:none; } }
+.compare-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--s-4); }
+.compare-kicker { color:var(--text-muted); font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.12em; text-transform:uppercase; }
+.compare-head h3 { margin:2px 0 0; font-size:var(--fs-title); }
+.compare-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:var(--s-4); align-items:start; }
+.compare-card { min-width:0; border:1px solid var(--border-soft); border-radius:var(--r-2xl); overflow:hidden; background:var(--bg-elevated); }
+.compare-visual { position:relative; aspect-ratio:4/5; max-height:44vh; width:100%; background:var(--art-mat); display:grid; place-items:center; overflow:hidden; }
+.compare-visual img { width:100%; height:100%; object-fit:contain; }
+.compare-placeholder { color:var(--text-muted); font-size:var(--fs-glyph); }
+.compare-tag { position:absolute; top:var(--s-3); left:var(--s-3); padding:2px var(--s-3); border-radius:var(--r-pill); background:var(--accent); color:var(--text-inverse); font:700 var(--fs-mono-sm) var(--font-mono); }
+.compare-meta { padding:var(--s-4); }
+.compare-meta strong { display:block; font-size:var(--fs-title-sm); }
+.compare-sub { display:block; margin:2px 0 var(--s-3); color:var(--text-muted); font-size:var(--fs-label-sm); }
+.compare-facts { display:grid; grid-template-columns:auto 1fr; gap:2px var(--s-3); margin:0; }
+.compare-facts dt { color:var(--text-muted); font:600 var(--fs-mono-xs) var(--font-mono); }
+.compare-facts dd { margin:0; text-align:right; font:500 var(--fs-mono-xs) var(--font-mono); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.compare-prompt { margin-top:var(--s-3); }
+.compare-prompt summary { cursor:pointer; color:var(--text-muted); font:700 var(--fs-mono-xs) var(--font-mono); }
+.compare-prompt code { display:block; margin-top:var(--s-2); padding:var(--s-2) var(--s-3); border-radius:var(--r-md); background:var(--bg-deep); color:var(--text-secondary); font:400 var(--fs-mono-sm)/1.7 var(--font-mono); white-space:pre-wrap; word-break:break-word; max-height:120px; overflow-y:auto; }
+@media (max-width:700px) { .compare-grid { grid-template-columns:1fr; } }
+@media (prefers-reduced-motion:reduce) { .compare-panel { animation:none; } }
 </style>

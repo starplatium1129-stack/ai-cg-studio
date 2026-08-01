@@ -4,6 +4,7 @@
   </div>
   <AppInteractionLayer />
   <AppToast />
+  <GlobalSearch />
 </template>
 
 <script setup lang="ts">
@@ -13,6 +14,7 @@ import { imgGet } from '@/composables/useImageStore'
 import { blobThumbDataUrl, thumbKey } from '@/utils/imageThumb'
 import AppInteractionLayer from '@/components/AppInteractionLayer.vue'
 import AppToast from '@/components/AppToast.vue'
+import GlobalSearch from '@/components/GlobalSearch.vue'
 
 // 与 GalleryView 的 HISTORY_KEY 保持一致
 const HISTORY_KEY = 'aics_pb_history'
