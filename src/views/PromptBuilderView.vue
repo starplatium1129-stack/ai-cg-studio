@@ -217,6 +217,9 @@
           <img class="result-image" :src="sd.resultUrl.value" alt="生成的图片" />
           <div class="result-image-actions">
             <button class="btn btn-ghost" type="button" @click="saveResult">保存快照</button>
+            <button class="btn btn-ghost" type="button" :disabled="!prevResult" @click="compareOpen = true">
+              与上一张对比
+            </button>
             <button class="btn btn-ghost" type="button" @click="sd.clearResult()">清除</button>
           </div>
         </div>
@@ -451,6 +454,38 @@
 
     <!-- Toast -->
     <div v-if="pb.toastMsg" class="pb-toast" role="status" aria-live="polite">{{ pb.toastMsg }}</div>
+
+    <!-- 出图大图对比：上一张 vs 当前 -->
+    <Teleport to="body">
+      <div v-if="compareOpen && prevResult && lastResult" class="compare-overlay" @click.self="closeCompare">
+        <div ref="compareEl" class="pb-compare" role="dialog" aria-modal="true" aria-label="出图对比">
+          <div class="pb-compare-head">
+            <div>
+              <div class="pb-compare-kicker">Result compare</div>
+              <h3>与上一张对比</h3>
+            </div>
+            <button class="btn btn-ghost btn-sm" type="button" @click="closeCompare">关闭</button>
+          </div>
+          <div class="pb-compare-grid">
+            <figure v-for="(snap, index) in [prevResult, lastResult]" :key="index" class="pb-compare-card">
+              <div class="pb-compare-visual">
+                <img :src="snap.url" :alt="'对比图 ' + (index + 1)" loading="eager" decoding="async" />
+                <span class="pb-compare-tag" :class="{ current: index === 1 }">{{ index === 0 ? '上一张' : '当前' }}</span>
+              </div>
+              <figcaption class="pb-compare-facts">
+                <span>Seed {{ snap.seed ?? '随机' }}</span>
+                <span>{{ snap.size }}</span>
+                <span>{{ snap.sampler }}</span>
+                <span>CFG {{ snap.cfg }}</span>
+                <span>Steps {{ snap.steps }}</span>
+                <span>Hires {{ snap.hires }}</span>
+                <span class="pb-compare-time">{{ snap.at }}</span>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </Teleport>
   </article>
 </template>
 
@@ -472,6 +507,7 @@ import { useSDQueue, type SDQueueJob } from '@/composables/useSDQueue'
 import { classifySDError, SAFE_SAMPLING, LIGHT_LOAD, type SDErrorReport, type SDRecoveryId } from '@/utils/sdError'
 import { useDirectorCatalog } from '@/composables/useDirectorCatalog'
 import { useDirectorDerived } from '@/composables/useDirectorDerived'
+import { useFocusTrap } from '@/composables/useFocusTrap'
 import {
   findScenario,
   substituteScenarioPrompt,
@@ -574,6 +610,51 @@ const {
   previewPrompt,
 } = usePromptAssembly(pb, sd.checkpoint)
 const livePrompt = positivePrompt
+
+// ── 出图对比：记住上一张结果，生成新图后可并排大图对比 ──────────────
+interface ResultSnapshot {
+  url: string
+  seed: number | null
+  size: string
+  sampler: string
+  cfg: number
+  steps: number
+  hires: string
+  at: string
+}
+const prevResult = ref<ResultSnapshot | null>(null)
+const lastResult = ref<ResultSnapshot | null>(null)
+const compareOpen = ref(false)
+const compareEl = ref<HTMLElement | null>(null)
+
+function resultSnapshot(url: string): ResultSnapshot {
+  return {
+    url,
+    seed: sd.resultSeed.value ?? (pb.sdParams.seedLock && pb.sdParams.seed >= 0 ? pb.sdParams.seed : null),
+    size: sdSize.value,
+    sampler: pb.sdParams.sampler || sd.samplers.value[0] || '—',
+    cfg: pb.sdParams.cfg,
+    steps: pb.sdParams.steps,
+    hires: pb.sdParams.hiresFix ? `×${pb.sdParams.hiresScale ?? 1.5}` : '关',
+    at: new Date().toLocaleTimeString(),
+  }
+}
+
+// 新一轮生成开始时 resultUrl 会被清空（''），完成后再写入新值；
+// 因此只在"有值且与上一张不同"时轮转快照。
+watch(() => sd.resultUrl.value, (url, oldUrl) => {
+  if (!url || url === oldUrl) return
+  if (lastResult.value) prevResult.value = lastResult.value
+  lastResult.value = resultSnapshot(url)
+})
+
+function closeCompare() {
+  compareOpen.value = false
+}
+
+useFocusTrap(compareEl, () => compareOpen.value, {
+  onEscape: closeCompare,
+})
 
 // ── Actions ───────────────────────────────────────────────────────────────
 function setDirectorMode(mode: 'basic' | 'pro') {

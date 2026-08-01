@@ -1181,3 +1181,33 @@
     .pb .monitor-rec .dot, .pb .review-star { animation: none; transition: none; }
   }
 
+
+/* ---------- 出图大图对比（Teleport 到 body） ---------- */
+.pb-compare {
+  width:min(1320px, 96vw); max-height:92vh; overflow-y:auto;
+  padding:var(--s-5); border:1px solid var(--border-soft); border-radius:var(--r-stage);
+  background:var(--bg-surface); color:var(--text-primary); box-shadow:var(--shadow-lg);
+  animation:pb-compare-in .24s var(--ease-out) both;
+}
+@keyframes pb-compare-in { from { opacity:0; transform:translateY(10px) scale(.99); } to { opacity:1; transform:none; } }
+.pb-compare-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:var(--s-4); }
+.pb-compare-kicker { color:var(--text-muted); font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.12em; text-transform:uppercase; }
+.pb-compare-head h3 { margin:2px 0 0; font-size:var(--fs-title); }
+.pb-compare-grid { display:grid; grid-template-columns:1fr 1fr; gap:var(--s-4); align-items:start; }
+.pb-compare-card { min-width:0; border:1px solid var(--border-soft); border-radius:var(--r-2xl); overflow:hidden; background:var(--bg-elevated); }
+.pb-compare-visual { position:relative; background:var(--art-backdrop); display:grid; place-items:center; padding:var(--s-2); }
+.pb-compare-visual img { display:block; max-width:100%; max-height:72vh; width:auto; height:auto; object-fit:contain; }
+.pb-compare-tag { position:absolute; top:var(--s-3); left:var(--s-3); padding:2px var(--s-3); border-radius:var(--r-pill); background:var(--bg-surface); color:var(--text-secondary); font:700 var(--fs-mono-sm) var(--font-mono); }
+.pb-compare-tag.current { background:var(--accent); color:var(--text-inverse); }
+.pb-compare-facts { display:flex; flex-wrap:wrap; gap:var(--s-2); padding:var(--s-3); }
+.pb-compare-facts span { padding:2px var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-pill); color:var(--text-secondary); font:600 var(--fs-mono-xs) var(--font-mono); }
+.pb-compare-facts .pb-compare-time { color:var(--text-muted); }
+@media (max-width:860px) { .pb-compare-grid { grid-template-columns:1fr; } .pb-compare-visual img { max-height:56vh; } }
+@media (prefers-reduced-motion:reduce) { .pb-compare { animation:none; } }
+/* 出图对比遮罩层：fixed 全屏（Teleport 到 body，必须有独立定位） */
+.compare-overlay {
+  position: fixed; inset: 0; z-index: var(--z-overlay);
+  display: grid; place-items: center; padding: var(--s-4);
+  background: color-mix(in srgb, var(--art-backdrop) 78%, transparent);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+}
