@@ -1,11 +1,48 @@
 'use strict';
 
 var express = require('express');
+var fs = require('fs');
+var path = require('path');
 var StringDecoder = require('string_decoder').StringDecoder;
 var httpClient = require('../services/http-client');
 var security = require('../server/security');
 var envelope = require('../server/http-envelope');
 var createOllamaService = require('../services/ollama-service').createOllamaService;
+
+// ── 站主 API 配置托管 ──────────────────────────────────────────────
+// 公网分享时访客的浏览器里没有主人的密钥；这套配置让访客直接使用
+// 站主配好的 API，而 GET 接口永远不回传 apiKey。
+function chatHostConfigPath(config) {
+  return path.join(config.RUNTIME.state, 'chat_api_config.json');
+}
+
+function readHostConfig(config) {
+  try {
+    var parsed = JSON.parse(fs.readFileSync(chatHostConfigPath(config), 'utf8'));
+    var baseUrl = String(parsed && parsed.baseUrl || '').trim();
+    var model = String(parsed && parsed.model || '').trim();
+    var apiKey = String(parsed && parsed.apiKey || '').trim();
+    if (!baseUrl || !model) return null;
+    return { baseUrl:baseUrl, model:model, apiKey:apiKey };
+  } catch (error) { return null; }
+}
+
+function writeHostConfig(config, value) {
+  fs.mkdirSync(config.RUNTIME.state, { recursive:true });
+  fs.writeFileSync(chatHostConfigPath(config), JSON.stringify(value, null, 2), { mode:0o600 });
+}
+
+function hostConfigPublic(config) {
+  var stored = readHostConfig(config);
+  if (!stored) return { configured:false };
+  return {
+    configured:true,
+    baseUrl:stored.baseUrl,
+    model:stored.model,
+    // 不返回 apiKey：访客只使用，不查看
+    updatedAt:null
+  };
+}
 
 function chatCharacterPrompt(character) {
   if (character === 'natsume') {
@@ -69,10 +106,16 @@ function validateChatBody(body) {
   }
   if (totalLength > 12000) return { error:'当前对话过长，请清空或开启新对话' };
   var api = null;
+  var useHostConfig = body && body.hostConfig === true;
   if (provider === 'api') {
-    var apiValidation = validateCompatibleApi(body && body.api);
-    if (apiValidation.error) return { error:apiValidation.error };
-    api = apiValidation.value;
+    if (useHostConfig) {
+      // 访客模式：密钥在服务端，前端只带一个标记
+      api = { hostConfig:true };
+    } else {
+      var apiValidation = validateCompatibleApi(body && body.api);
+      if (apiValidation.error) return { error:apiValidation.error };
+      api = apiValidation.value;
+    }
   }
   return {
     value:{
@@ -139,9 +182,30 @@ function buildWebSearchParams(api) {
   return {};
 }
 
-async function streamCompatibleApi(input, handlers) {
+async function streamCompatibleApi(input, handlers, gatewayConfig) {
   handlers = handlers || {};
   var api = input.api;
+  // 访客模式（hostConfig:true）：从站主托管配置注入 baseUrl/model/key，
+  // 前端始终拿不到密钥
+  if (api && api.hostConfig === true) {
+    var host = readHostConfig(gatewayConfig);
+    if (!host) {
+      throw new httpClient.UpstreamError('站主尚未配置 API，请在控制面板的聊天设置中保存', {
+        code:'HOST_CONFIG_MISSING',
+        status:400
+      });
+    }
+    api = {
+      baseUrl:host.baseUrl,
+      pathname:new URL('chat/completions', host.baseUrl.replace(/\/+$/, '') + '/').pathname,
+      model:host.model,
+      apiKey:host.apiKey,
+      vendor:host.baseUrl.includes('api.deepseek.com')
+        ? 'deepseek'
+        : host.baseUrl.includes('opencode.ai') ? 'opencode' : 'custom'
+    };
+    input = Object.assign({}, input, { api:api });
+  }
   var result = await httpClient.request(api.baseUrl, api.pathname, {
     method:'POST',
     headers:Object.assign(
@@ -312,6 +376,30 @@ function createChatRouter(config, dependencies) {
     }
   });
 
+  // 站主 API 配置托管：GET 任何人可读（不含密钥），写/删仅本机
+  router.get('/api/chat-provider/host-config', function (req, res) {
+    res.setHeader('Cache-Control', 'no-store');
+    envelope.ok(res, hostConfigPublic(config));
+  });
+
+  router.post('/api/chat-provider/host-config', security.localOnly, express.json({ limit:'8kb' }), function (req, res) {
+    var validation = validateCompatibleApi(req.body);
+    if (validation.error) return envelope.fail(res, 400, validation.error);
+    writeHostConfig(config, {
+      baseUrl:validation.value.baseUrl,
+      model:validation.value.model,
+      apiKey:validation.value.apiKey
+    });
+    envelope.ok(res, hostConfigPublic(config));
+  });
+
+  router.delete('/api/chat-provider/host-config', security.localOnly, function (req, res) {
+    try {
+      fs.unlinkSync(chatHostConfigPath(config));
+    } catch (error) { /* 不存在也视为成功 */ }
+    envelope.ok(res, { configured:false });
+  });
+
   // 隧道来的请求限流：一次对话生成要占满 GPU 数十秒，队列上限挡不住
   // "持续以消化速度提交"这种打法。本机直连不受限。
   var chatLimit = security.rateLimit({ capacity:10, refillMs:3000, label:'聊天' });
@@ -329,7 +417,7 @@ function createChatRouter(config, dependencies) {
     });
 
     var chatService = validation.value.provider === 'api'
-      ? { streamChat:streamCompatibleApi }
+      ? { streamChat:function (input, handlers) { return streamCompatibleApi(input, handlers, config); } }
       : service;
     chatService.streamChat({
       character:validation.value.character,

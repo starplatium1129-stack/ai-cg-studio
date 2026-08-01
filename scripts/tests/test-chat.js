@@ -603,6 +603,49 @@ async function run() {
         && !malformedEvents.some(function (event) { return event.type === 'done'; }),
       'a malformed compatible SSE stream must end with a gateway error event rather than false success',
     );
+
+    // ── 站主 API 配置托管：访客只使用、看不到密钥 ──
+    var hostBefore = await fetch(gatewayBase + '/api/chat-provider/host-config');
+    var hostBeforeJson = await hostBefore.json();
+    assert(hostBefore.status === 200 && hostBeforeJson.configured === false, 'host config must start unconfigured');
+
+    var hostSave = await postJson(gatewayBase + '/api/chat-provider/host-config', {
+      baseUrl:providerBase + '/v1', model:'json-model', apiKey:'host-secret-key'
+    });
+    var hostSaveJson = hostSave.json;
+    assert(
+      hostSave.status === 200 && hostSaveJson.configured === true && !hostSave.body.includes('host-secret-key'),
+      'saving host config must succeed locally and never echo the API key',
+    );
+
+    var hostAfter = await fetch(gatewayBase + '/api/chat-provider/host-config');
+    var hostAfterBody = await hostAfter.text();
+    assert(
+      hostAfter.status === 200 && hostAfterBody.includes('json-model') && !hostAfterBody.includes('host-secret-key'),
+      'reading host config must expose model but never the API key',
+    );
+
+    // 公网视角（非本机 Host）写入必须被拒绝
+    var remoteWrite = await postJsonWithHost(gatewayBase + '/api/chat-provider/host-config', {
+      baseUrl:providerBase + '/v1', model:'evil', apiKey:'evil-key'
+    }, 'evil.example.com');
+    assert(remoteWrite.status === 421 || remoteWrite.status === 403, 'remote host must not be able to write host config');
+
+    // 访客聊天：hostConfig 标记 → 上游必须收到站主密钥
+    var hostChat = await postJson(gatewayBase + '/api/chat', {
+      character:'nene', provider:'api', hostConfig:true,
+      messages:[{ role:'user', content:'hello' }]
+    });
+    var hostEvents = readNdjson(hostChat.body);
+    assert(
+      hostChat.status === 200 && hostEvents.some(function (event) { return event.type === 'token'; })
+        && providerMock.receivedAuth === 'Bearer host-secret-key',
+      'hostConfig chat must stream via the stored host key without the visitor supplying one',
+    );
+
+    var hostClear = await fetch(gatewayBase + '/api/chat-provider/host-config', { method:'DELETE' });
+    var hostClearJson = await hostClear.json();
+    assert(hostClear.status === 200 && hostClearJson.configured === false, 'clearing host config must reset to unconfigured');
   } finally {
     gateway.close();
     await close(gatewayServer);

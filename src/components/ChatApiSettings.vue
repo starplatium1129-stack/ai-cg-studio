@@ -72,11 +72,23 @@
         <button class="btn btn-primary btn-sm" type="submit">保存并使用</button>
       </div>
     </div>
+    <div v-if="isLocalHost" class="api-host-row">
+      <button class="btn btn-ghost btn-sm" type="button" :disabled="!canSaveHost" @click="emit('save-host')">
+        <ArchiveIcon name="upload" /> 保存为站主配置（访客可直接使用）
+      </button>
+      <button v-if="hostConfigured" class="btn btn-ghost btn-sm" type="button" @click="emit('clear-host')">
+        <ArchiveIcon name="close" /> 清除站主配置
+      </button>
+    </div>
+    <p v-else-if="hostConfigured" class="api-host-hint">
+      <ArchiveIcon name="lock" /> 站主已配置模型（{{ hostModel }}），无需密钥即可对话；密钥不会被传输或显示。
+    </p>
   </form>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import {
   CLIPROXY_BASE_URL, CLIPROXY_API_KEY, CLIPROXY_DEFAULT_MODEL,
   DEEPSEEK_BASE_URL, DEEPSEEK_DEFAULT_MODEL,
@@ -130,6 +142,9 @@ const props = defineProps<{
   model: string
   apiKey: string
   hint?: string
+  isLocalHost?: boolean
+  hostConfigured?: boolean
+  hostModel?: string
 }>()
 
 const emit = defineEmits<{
@@ -138,6 +153,8 @@ const emit = defineEmits<{
   'update:model': [value: string]
   'update:apiKey': [value: string]
   save: []
+  'save-host': []
+  'clear-host': []
 }>()
 
 const showApiKey = ref(false)
@@ -145,6 +162,35 @@ const testing = ref(false)
 const testState = ref('')
 const testMessage = ref('')
 const discoveredModels = ref<string[]>([])
+/**
+ * 每个服务商独立的草稿：切换按钮时先保存当前商家的 baseUrl/model/key，
+ * 再恢复目标商家上次填过的值（没有才用预设），来回切换互不覆盖。
+ * 之前是"点谁用谁的预设"——已填的内容会被下一个商家的预设冲掉。
+ * 草稿持久化到 localStorage，刷新页面后仍能找回各商家填过的内容。
+ */
+const DRAFTS_KEY = 'aics_chat_api_drafts'
+interface VendorDraft { baseUrl: string; model: string; apiKey: string }
+const vendorDrafts = ref<Record<string, VendorDraft>>({})
+try {
+  const stored = localStorage.getItem(DRAFTS_KEY)
+  if (stored) {
+    const parsed = JSON.parse(stored) as Record<string, unknown>
+    const restored: Record<string, VendorDraft> = {}
+    for (const [key, value] of Object.entries(parsed)) {
+      if (value && typeof value === 'object') {
+        const draft = value as VendorDraft
+        if (typeof draft.baseUrl === 'string' && typeof draft.model === 'string' && typeof draft.apiKey === 'string') {
+          restored[key] = { baseUrl: draft.baseUrl, model: draft.model, apiKey: draft.apiKey }
+        }
+      }
+    }
+    vendorDrafts.value = restored
+  }
+} catch { /* 草稿损坏则忽略 */ }
+
+watch(vendorDrafts, (value) => {
+  try { localStorage.setItem(DRAFTS_KEY, JSON.stringify(value)) } catch {}
+}, { deep: true })
 
 const vendorProxy = computed({
   get: () => props.vendor,
@@ -167,6 +213,7 @@ const canTest = computed(() =>
   Boolean(props.baseUrl.trim() && props.model.trim()
     && (props.vendor === 'custom' || props.apiKey.trim()))
 )
+const canSaveHost = computed(() => canTest.value)
 const modelOptions = computed<ModelOption[]>(() => {
   if (props.vendor === 'custom') return []
   const known = PRESET_MODELS[props.vendor]
@@ -183,10 +230,28 @@ const modelNote = computed(() =>
 const statusText = computed(() => testMessage.value || props.hint || '先测试连接，再保存配置。')
 
 function selectVendor(vendor: ApiVendor) {
+  const current = props.vendor
+  // 先把当前商家的草稿存起来
+  if (current !== vendor) {
+    vendorDrafts.value[current] = {
+      baseUrl: props.baseUrl,
+      model: props.model,
+      apiKey: props.apiKey,
+    }
+  }
   emit('update:vendor', vendor)
   discoveredModels.value = []
   testState.value = ''
   testMessage.value = ''
+
+  // 目标商家有草稿就恢复，没有才填预设
+  const saved = vendorDrafts.value[vendor]
+  if (saved) {
+    emit('update:baseUrl', saved.baseUrl)
+    emit('update:model', saved.model)
+    emit('update:apiKey', saved.apiKey)
+    return
+  }
   if (vendor === 'deepseek') {
     emit('update:baseUrl', DEEPSEEK_BASE_URL)
     emit('update:model', DEEPSEEK_DEFAULT_MODEL)

@@ -22,6 +22,9 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
   const apiVendor = ref<ApiVendor>('custom')
   const apiSettingsOpen = ref(false)
   const apiConfigHint = ref('')
+  /** 站主托管配置（公网访客可直接使用，密钥留在服务端） */
+  const hostApiConfigured = ref(false)
+  const hostApiModel = ref('')
   const chatStatusText = ref('正在检查本地聊天模型…')
   const statusKind = ref('')
 
@@ -42,12 +45,56 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
 
   restoreSettings(storage.state)
 
+  /** 拉取站主托管配置（接口不回传密钥，只告知是否可用） */
+  async function refreshHostConfig() {
+    try {
+      const response = await fetch('/api/chat-provider/host-config', { cache: 'no-store' })
+      if (!response.ok) return
+      const data = await response.json() as { configured?: boolean; model?: string }
+      hostApiConfigured.value = data.configured === true
+      hostApiModel.value = String(data.model || '')
+    } catch { /* 服务端不支持时静默降级 */ }
+  }
+
+  /** 本机：把当前本地配置保存为站主托管配置（访客直接可用） */
+  async function saveHostConfig(): Promise<string> {
+    if (!apiConfigured.value) return '请先完善本地 API 配置'
+    try {
+      const response = await fetch('/api/chat-provider/host-config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          baseUrl: apiBaseUrl.value,
+          model: apiModel.value,
+          apiKey: apiKey.value,
+        }),
+      })
+      if (!response.ok) return '保存失败：HTTP ' + response.status
+      await refreshHostConfig()
+      return '已保存为站主配置，公网访客可直接使用（密钥不会暴露）'
+    } catch {
+      return '保存失败，请检查网络'
+    }
+  }
+
+  async function clearHostConfig(): Promise<void> {
+    try { await fetch('/api/chat-provider/host-config', { method: 'DELETE' }) } catch {}
+    hostApiConfigured.value = false
+    hostApiModel.value = ''
+  }
+
   const apiConfigured = computed(() =>
     Boolean(apiBaseUrl.value.trim() && apiModel.value.trim()
       && (apiVendor.value === 'custom' || apiKey.value.trim())),
   )
+  /** 访客模式：本地无配置但站主已托管时也可用 */
+  const useHostConfig = computed(() =>
+    chatProvider.value === 'api' && !apiConfigured.value && hostApiConfigured.value,
+  )
   const chatReady = computed(() =>
-    chatProvider.value === 'api' ? apiConfigured.value : ollamaOnline.value,
+    chatProvider.value === 'api'
+      ? apiConfigured.value || hostApiConfigured.value
+      : ollamaOnline.value,
   )
 
   function setChatStatus(text: string, kind = '') {
@@ -83,14 +130,19 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
     }
   }
 
+  function apiStatusText(): string {
+    if (useHostConfig.value) return `站主配置 · ${hostApiModel.value || 'API'}`
+    return apiConfigured.value ? `自定义 API · ${apiModel.value}` : '等待配置自定义 API'
+  }
+
   function setChatProvider(provider: 'local' | 'api') {
     if (isBusy.value || chatProvider.value === provider) return
     chatProvider.value = provider
     storage.setProvider(provider)
     apiConfigHint.value = ''
     if (provider === 'api') {
-      apiSettingsOpen.value = !apiConfigured.value
-      setChatStatus(apiConfigured.value ? `自定义 API · ${apiModel.value}` : '等待配置自定义 API', apiConfigured.value ? 'online' : '')
+      apiSettingsOpen.value = !apiConfigured.value && !hostApiConfigured.value
+      setChatStatus(apiStatusText(), (apiConfigured.value || hostApiConfigured.value) ? 'online' : '')
     } else {
       setChatStatus(ollamaOnline.value ? '本地聊天模型已连接' : 'Ollama 未启动', ollamaOnline.value ? 'online' : '')
     }
@@ -113,7 +165,7 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
     isBusy.value = value
     if (value) setChatStatus('正在生成回复…', 'busy')
     else if (chatProvider.value === 'api') {
-      setChatStatus(apiConfigured.value ? `自定义 API · ${apiModel.value}` : '等待配置自定义 API', apiConfigured.value ? 'online' : '')
+      setChatStatus(apiStatusText(), (apiConfigured.value || hostApiConfigured.value) ? 'online' : '')
     } else {
       setChatStatus(ollamaOnline.value ? '本地聊天模型已连接' : '聊天模型未连接', ollamaOnline.value ? 'online' : '')
     }
@@ -122,7 +174,10 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
   return {
     ollamaOnline, models, currentModel, chatProvider, apiBaseUrl, apiModel, apiKey,
     apiVendor, apiSettingsOpen, apiConfigHint, chatStatusText, statusKind,
-    apiConfigured, chatReady, refreshChatStatus, setChatProvider, saveApiSettings,
+    hostApiConfigured, hostApiModel, useHostConfig,
+    apiConfigured, chatReady, refreshChatStatus, refreshHostConfig,
+    saveHostConfig, clearHostConfig,
+    setChatProvider, saveApiSettings,
     setChatStatus, setBusy: setBusyStatus,
   }
 }

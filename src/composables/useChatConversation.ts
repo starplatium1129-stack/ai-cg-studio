@@ -24,6 +24,8 @@ interface ChatConversationOptions {
   apiModel: Ref<string>
   apiKey: Ref<string>
   webSearchEnabled: Ref<boolean>
+  /** 使用站主托管配置（访客模式）：前端不带 key，服务端代填 */
+  useHostConfig: Ref<boolean>
   setBusy: (value: boolean) => void
   onError: (message: string, kind?: string, timeout?: number) => void
   nearBottom: () => boolean
@@ -85,18 +87,20 @@ export function useChatConversation(options: ChatConversationOptions) {
     })
 
     try {
+      const hostMode = options.chatProvider.value === 'api' && options.useHostConfig.value
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           character: characterId,
           provider: options.chatProvider.value,
-          model: options.currentModel.value,
-          api: options.chatProvider.value === 'api' ? {
+          model: hostMode ? '' : options.currentModel.value,
+          api: !hostMode && options.chatProvider.value === 'api' ? {
             baseUrl: options.apiBaseUrl.value,
             model: options.apiModel.value,
             apiKey: options.apiKey.value,
           } : undefined,
+          hostConfig: hostMode || undefined,
           webSearch: options.chatProvider.value === 'api' && options.webSearchEnabled.value,
           messages: messages.slice(0, -1).map(message => ({ role: message.role, content: message.content })),
         }),
@@ -105,7 +109,7 @@ export function useChatConversation(options: ChatConversationOptions) {
 
       await parseNdjsonResponse(response, async event => {
         if (event.type === 'meta' && event.model) {
-          if (options.chatProvider.value === 'api') {
+          if (options.chatProvider.value === 'api' && !hostMode) {
             options.apiModel.value = String(event.model)
             options.storage.setApiSettings({
               baseUrl: options.apiBaseUrl.value,

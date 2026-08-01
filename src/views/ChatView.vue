@@ -70,11 +70,16 @@
           :model="apiModel"
           :api-key="apiKey"
           :hint="apiConfigHint"
+          :is-local-host="isLocalHost"
+          :host-configured="hostApiConfigured"
+          :host-model="hostApiModel"
           @update:vendor="apiVendor = $event"
           @update:base-url="apiBaseUrl = $event"
           @update:model="apiModel = $event"
           @update:api-key="apiKey = $event"
           @save="saveApiSettings"
+          @save-host="saveToHost"
+          @clear-host="clearHostConfigAndRefresh"
         />
 
         <div v-if="(!chatReady || voiceCapabilityState === 'offline' || preparingRoom)
@@ -241,9 +246,27 @@ storage.load()
 const {
   ollamaOnline, models, currentModel, chatProvider, apiBaseUrl, apiModel, apiKey,
   apiVendor, apiSettingsOpen, apiConfigHint, chatStatusText, statusKind,
-  apiConfigured, chatReady, refreshChatStatus, setChatProvider, saveApiSettings,
+  hostApiConfigured, hostApiModel, useHostConfig,
+  apiConfigured, chatReady, refreshChatStatus, refreshHostConfig,
+  saveHostConfig, clearHostConfig,
+  setChatProvider, saveApiSettings,
   setChatStatus, setBusy,
 } = useChatProvider({ storage, isBusy: busy })
+void refreshHostConfig()
+
+const isLocalHost = computed(() =>
+  ['localhost', '127.0.0.1', '[::1]'].includes(window.location.hostname),
+)
+
+async function saveToHost() {
+  const message = await saveHostConfig()
+  setError(message, 'info', 4000)
+}
+
+async function clearHostConfigAndRefresh() {
+  await clearHostConfig()
+  setError('站主配置已清除', 'info', 3000)
+}
 
 // Restore persisted settings
 autoVoice.value = storage.state.settings.autoVoice
@@ -370,6 +393,7 @@ const {
   apiModel,
   apiKey,
   webSearchEnabled,
+  useHostConfig,
   setBusy,
   onError: setError,
   nearBottom,
@@ -502,7 +526,11 @@ onMounted(async () => {
   await refreshChatStatus()
   await refreshVoiceStatus()
   if (chatProvider.value === 'api') {
-    setChatStatus(apiConfigured.value ? `自定义 API · ${apiModel.value}` : '等待配置自定义 API', apiConfigured.value ? 'online' : '')
+    if (useHostConfig.value) {
+      setChatStatus(`站主配置 · ${hostApiModel.value || 'API'}`, 'online')
+    } else {
+      setChatStatus(apiConfigured.value ? `自定义 API · ${apiModel.value}` : '等待配置自定义 API', apiConfigured.value ? 'online' : '')
+    }
   }
   voice.setVolume(volume.value / 100)
 
