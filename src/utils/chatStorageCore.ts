@@ -36,6 +36,10 @@ const LIVE2D_OUTFIT_IDS = new Set(['school', 'casual', 'sleepwear', 'cosplay', '
 export interface NormalizedChatStorage {
   state: PersistedChatState
   migratedApiKey: string
+  /** 用户从未配置过 API（当前用的是开箱即用的兜底默认值）。
+   *  此时站主托管配置应优先于兜底默认 —— 否则公网访客永远
+   *  被默认值"伪装成已配置"，站主配置形同虚设。 */
+  neverConfigured: boolean
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -115,6 +119,7 @@ export function normalizeChatStorage(
   const finalApiKey = apiKey || (neverConfigured ? 'sk-local-proxy-key-2024' : '')
 
   return {
+    neverConfigured: neverConfigured,
     state: {
       version: options.version,
       active,
@@ -136,7 +141,6 @@ export function normalizeChatStorage(
     migratedApiKey: '',
   }
 }
-
 export function serializeChatStorage(state: PersistedChatState): string {
   return JSON.stringify({
     version: state.version,

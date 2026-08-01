@@ -7,6 +7,21 @@ var path = require('path');
 var http = require('http');
 var root = path.resolve(__dirname, '..', '..');
 
+// 站主配置是真实运行时文件，测试不得破坏用户已保存的配置：
+// 开始时备份，结束时原样恢复（包括"原本不存在"的情况）。
+var hostConfigPath = path.join(root, 'runtime', 'state', 'chat_api_config.json');
+var hostConfigBackup = fs.existsSync(hostConfigPath) ? fs.readFileSync(hostConfigPath) : null;
+var hostConfigExisted = hostConfigBackup !== null;
+// 测试期间要求"站主配置从未保存"，临时移走真实文件（若有），结束后原样恢复
+if (hostConfigExisted) fs.unlinkSync(hostConfigPath);
+
+function restoreHostConfig() {
+  try {
+    if (hostConfigExisted) fs.writeFileSync(hostConfigPath, hostConfigBackup);
+    else if (fs.existsSync(hostConfigPath)) fs.unlinkSync(hostConfigPath);
+  } catch (error) { /* 恢复失败不掩盖测试结果 */ }
+}
+
 function assert(condition, message) {
   if (!condition) throw new Error('[chat] ' + message);
 }
@@ -31,6 +46,25 @@ async function postJson(url, payload) {
   var response = await fetch(url, {
     method:'POST',
     headers:{ 'Content-Type':'application/json' },
+    body:JSON.stringify(payload)
+  });
+  var body = await response.text();
+  var json = null;
+  try { json = JSON.parse(body); } catch (error) {}
+  return { status:response.status, body:body, json:json };
+}
+
+// 模拟公网访客（localOnly 判定：本机 socket + 无转发头才放行）。
+// 公网请求需要 token；用 X-Token 头（query token 会 302 种 cookie，
+// fetch 跟随后不带 cookie 反而 401）。
+async function postJsonWithHost(url, payload, forwardedFor) {
+  var response = await fetch(url, {
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'X-Forwarded-For':forwardedFor || '8.8.8.8',
+      'X-Token':'test-token'
+    },
     body:JSON.stringify(payload)
   });
   var body = await response.text();
@@ -523,7 +557,7 @@ async function run() {
   var providerMock = createMockAiServer();
   var providerBase = await listen(providerMock.server);
   var gatewayModule = require('../../server');
-  var gateway = gatewayModule.createGateway({ env:{ DISABLE_TUNNEL:'1' } });
+  var gateway = gatewayModule.createGateway({ env:{ DISABLE_TUNNEL:'1', TOKEN:'test-token' } });
   var gatewayServer = http.createServer(gateway.app);
   var gatewayBase = await listen(gatewayServer);
   try {
@@ -639,7 +673,7 @@ async function run() {
     var hostEvents = readNdjson(hostChat.body);
     assert(
       hostChat.status === 200 && hostEvents.some(function (event) { return event.type === 'token'; })
-        && providerMock.receivedAuth === 'Bearer host-secret-key',
+        && providerMock.state.compatibleAuth === 'Bearer host-secret-key',
       'hostConfig chat must stream via the stored host key without the visitor supplying one',
     );
 
@@ -647,6 +681,7 @@ async function run() {
     var hostClearJson = await hostClear.json();
     assert(hostClear.status === 200 && hostClearJson.configured === false, 'clearing host config must reset to unconfigured');
   } finally {
+    restoreHostConfig();
     gateway.close();
     await close(gatewayServer);
     await close(providerMock.server);

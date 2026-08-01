@@ -58,7 +58,7 @@
             <button v-else class="api-settings-toggle" type="button"
               :aria-expanded="apiSettingsOpen"
               @click="apiSettingsOpen = !apiSettingsOpen">
-              {{ apiConfigured ? apiModel : '配置 API' }} <ArchiveIcon name="gear" />
+              {{ apiConfigured ? apiModel : (useHostConfig ? (hostApiModel || '站主 API') : '配置 API') }} <ArchiveIcon name="gear" />
             </button>
           </div>
         </div>

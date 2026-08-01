@@ -23,7 +23,11 @@ function readHostConfig(config) {
     var model = String(parsed && parsed.model || '').trim();
     var apiKey = String(parsed && parsed.apiKey || '').trim();
     if (!baseUrl || !model) return null;
-    return { baseUrl:baseUrl, model:model, apiKey:apiKey };
+    // 旧格式没有 pathname：用 baseUrl 重拼一次
+    var pathname = typeof parsed.pathname === 'string' && parsed.pathname
+      ? parsed.pathname
+      : new URL('chat/completions', baseUrl.replace(/\/+$/, '') + '/').pathname;
+    return { baseUrl:baseUrl, pathname:pathname, model:model, apiKey:apiKey };
   } catch (error) { return null; }
 }
 
@@ -197,7 +201,7 @@ async function streamCompatibleApi(input, handlers, gatewayConfig) {
     }
     api = {
       baseUrl:host.baseUrl,
-      pathname:new URL('chat/completions', host.baseUrl.replace(/\/+$/, '') + '/').pathname,
+      pathname:host.pathname,
       model:host.model,
       apiKey:host.apiKey,
       vendor:host.baseUrl.includes('api.deepseek.com')
@@ -387,6 +391,7 @@ function createChatRouter(config, dependencies) {
     if (validation.error) return envelope.fail(res, 400, validation.error);
     writeHostConfig(config, {
       baseUrl:validation.value.baseUrl,
+      pathname:validation.value.pathname,
       model:validation.value.model,
       apiKey:validation.value.apiKey
     });

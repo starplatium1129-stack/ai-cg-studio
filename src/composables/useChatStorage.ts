@@ -1,4 +1,4 @@
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import {
   CHARACTERS, STORAGE_KEY, STORAGE_VERSION, MAX_LOCAL_MESSAGES, createMessageId,
 } from '@/config/characters'
@@ -62,6 +62,9 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     createMessageId,
   }
 
+  /** 用户从未配置过 API（当前是开箱即用兜底值）；站主配置优先于此标记 */
+  const neverConfigured = ref(true)
+
   function applyPersisted(persisted: PersistedChatState) {
     state.version = persisted.version
     state.active = persisted.active
@@ -112,6 +115,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
         normalizeOptions,
       )
       applyPersisted(normalized.state)
+      neverConfigured.value = normalized.neverConfigured
 
       state.settings.apiKey = String(normalized.state.settings.apiKey || normalized.migratedApiKey).trim().slice(0, 1000)
 
@@ -121,6 +125,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     } catch {
       const clean = normalizeChatStorage({}, '', normalizeOptions).state
       applyPersisted(clean)
+      neverConfigured.value = true
       try { localStorage.setItem(STORAGE_KEY, serializeChatStorage(clean)) } catch {}
       onError('本地聊天记录损坏，已恢复为空白会话。')
     }
@@ -147,6 +152,8 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     state.settings.apiBaseUrl = String(settings.baseUrl || '').trim().slice(0, 500)
     state.settings.apiModel = String(settings.model || '').trim().slice(0, 200)
     state.settings.apiKey = String(settings.apiKey || '').trim().slice(0, 1000)
+    // 用户显式保存过 API 配置，不再是"从未配置"，站主配置不再抢占
+    neverConfigured.value = false
     save()
   }
   function setWebSearchEnabled(value: boolean) { state.settings.webSearchEnabled = Boolean(value); save() }
@@ -174,7 +181,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   }
 
   return {
-    state, load, save, messages,
+    state, load, save, messages, neverConfigured,
     setActive, setModel, setProvider, setApiSettings, setWebSearchEnabled,
     setLive2dEnabled, setLive2dOutfit, setAutoVoice, setVolume, draft, setDraft, trim, clear,
   }

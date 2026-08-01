@@ -87,9 +87,11 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
     Boolean(apiBaseUrl.value.trim() && apiModel.value.trim()
       && (apiVendor.value === 'custom' || apiKey.value.trim())),
   )
-  /** 访客模式：本地无配置但站主已托管时也可用 */
+  /** 用户真实保存过自己的 API 配置（而非开箱即用的兜底默认值） */
+  const apiConfiguredByUser = computed(() => !storage.neverConfigured.value)
+  /** 访客模式：本地从未配置（或仅是兜底默认）且站主已托管时，使用站主配置 */
   const useHostConfig = computed(() =>
-    chatProvider.value === 'api' && !apiConfigured.value && hostApiConfigured.value,
+    chatProvider.value === 'api' && !apiConfiguredByUser.value && hostApiConfigured.value,
   )
   const chatReady = computed(() =>
     chatProvider.value === 'api'
@@ -175,7 +177,7 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
     ollamaOnline, models, currentModel, chatProvider, apiBaseUrl, apiModel, apiKey,
     apiVendor, apiSettingsOpen, apiConfigHint, chatStatusText, statusKind,
     hostApiConfigured, hostApiModel, useHostConfig,
-    apiConfigured, chatReady, refreshChatStatus, refreshHostConfig,
+    apiConfigured, apiConfiguredByUser, chatReady, refreshChatStatus, refreshHostConfig,
     saveHostConfig, clearHostConfig,
     setChatProvider, saveApiSettings,
     setChatStatus, setBusy: setBusyStatus,
