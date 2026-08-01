@@ -1472,3 +1472,9 @@ html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; 
 html.theme-fade, html.theme-fade * { transition: background-color .18s ease, color .18s ease, border-color .18s ease, fill .18s ease, stroke .18s ease !important; }
 /* 通用图片入场：给需要"翻开画集"质感的图片用 */
 @keyframes archive-image-in { from { opacity: 0 } to { opacity: 1 } }
+
+/* ── 排版节奏：叙事行宽 ──
+   subtitle / hint / note 等引导语限宽，避免整行撑满后阅读感散掉 */
+:where(.subtitle, .hero-sub, .hint, .note, .page-subtitle, .chat-subtitle, .gallery-subtitle) {
+  max-width: 62ch;
+}

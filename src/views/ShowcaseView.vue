@@ -350,9 +350,13 @@ onUnmounted(() => {
 .sample:hover { transform:translateY(-3px); border-color:color-mix(in srgb,var(--accent) 42%,var(--border-soft)); box-shadow:var(--shadow-md); }
 .sample-visual { display:block; width:100%; padding:0; border:0; background:var(--art-mat); color:var(--on-art-primary); text-align:left; cursor:zoom-in; position:relative; overflow:hidden; }
 .sample-visual:focus-visible { outline:3px solid var(--accent); outline-offset:-3px; }
-.sample-image { width:100%; height:auto; display:block; background:var(--art-mat); opacity:0; transition:opacity .3s var(--ease-out),filter var(--t-slow) var(--ease-out),transform var(--t-slow) var(--ease-out); }
-.sample-image-ready { opacity:1; }
+.sample-image { width:100%; height:auto; display:block; background:var(--art-mat); opacity:0; filter:blur(7px); transition:opacity .3s var(--ease-out),filter .5s var(--ease-out),transform var(--t-slow) var(--ease-out); }
+.sample-image-ready { opacity:1; filter:blur(0); }
 .sample-image-fallback { display:grid; min-height:260px; place-items:center; color:var(--text-muted); font-size:var(--fs-glyph); }
+/* R18 遮罩优先于渐进模糊：未悬停时始终是深模糊 */
+.sample-r18 .sample-image,
+.sample-r18 .sample-image,
+.sample-r18 .sample-image.sample-image-ready { filter:blur(18px) saturate(.78); transform:scale(1.08); }
 .sample:not(.sample-r18):hover .sample-image { transform:scale(1.018); }
 .sample-shade { position:absolute; inset:38% 0 0; background:linear-gradient(to bottom,transparent,var(--art-scrim)); pointer-events:none; }
 .sample-badges { position:absolute; inset:var(--s-3) var(--s-3) auto; display:flex; justify-content:space-between; gap:var(--s-2); pointer-events:none; }
@@ -365,11 +369,14 @@ onUnmounted(() => {
 .sample-sensitive strong { font-size:var(--fs-label-sm); letter-spacing:.12em; }
 .sample-sensitive span { color:var(--on-art-secondary); font-size:var(--fs-mono-xs); }
 .sample-r18 .sample-image { filter:blur(18px) saturate(.78); transform:scale(1.08); }
+.sample-r18 .sample-image.sample-image-ready { filter:blur(18px) saturate(.78); transform:scale(1.08); }
 @media(hover:hover) {
-  .sample-r18:hover .sample-image { filter:blur(0) saturate(1); transform:scale(1.018); }
+  .sample-r18:hover .sample-image,
+  .sample-r18:hover .sample-image.sample-image-ready { filter:blur(0) saturate(1); transform:scale(1.018); }
   .sample-r18:hover .sample-sensitive { opacity:0; transform:translate(-50%,-45%); }
 }
-.sample-r18:focus-within .sample-image { filter:blur(0) saturate(1); transform:scale(1.018); }
+.sample-r18:focus-within .sample-image,
+.sample-r18:focus-within .sample-image.sample-image-ready { filter:blur(0) saturate(1); transform:scale(1.018); }
 .sample-r18:focus-within .sample-sensitive { opacity:0; transform:translate(-50%,-45%); }
 .load-wrap { display:flex; justify-content:center; margin:var(--s-6) 0; }
 .load-more { min-width:190px; }
@@ -402,17 +409,18 @@ onUnmounted(() => {
   width: min(1160px, 96vw);
   max-height: min(92vh, 900px);
   overflow: hidden;
-  border: 1px solid var(--glass-edge);
+  border: 1px solid color-mix(in srgb, var(--on-art-line) 42%, transparent);
   border-radius: var(--r-stage);
-  background: var(--bg-elevated);
-  color: var(--text-primary);
+  /* 查看器永远处于暗色画布，不随浅色主题变亮 */
+  background: color-mix(in srgb, var(--art-backdrop) 84%, var(--bg-deep));
+  color: var(--on-art-primary);
   box-shadow: var(--shadow-lg);
 }
 .showcase-viewer .viewer-art {
   min-width: 0; min-height: 0;
   display: flex; align-items: center; justify-content: center;
-  padding: var(--s-4);
-  background: var(--art-mat);
+  padding: clamp(16px, 3vw, 40px);
+  background: radial-gradient(120% 90% at 50% 12%, color-mix(in srgb, var(--accent-glow) 20%, transparent), transparent 60%), var(--art-backdrop);
 }
 .showcase-viewer .viewer-art img {
   display: block; max-width: 100%; max-height: min(88vh, 860px);
@@ -424,10 +432,13 @@ onUnmounted(() => {
 .showcase-viewer .viewer-copy {
   min-width: 0; overflow-y: auto;
   padding: clamp(20px, 3vw, 36px);
-  border-left: 1px solid var(--border-soft);
-  background: var(--bg-elevated);
+  border-left: 1px solid color-mix(in srgb, var(--on-art-line) 30%, transparent);
+  background: transparent;
+  color: var(--on-art-primary);
 }
-.showcase-viewer .viewer-copy .viewer-close { float: right; margin: -6px -6px var(--s-3) var(--s-3); }
+.showcase-viewer .viewer-copy .viewer-close { float: right; margin: -6px -6px var(--s-3) var(--s-3); border-color: color-mix(in srgb, var(--on-art-line) 55%, transparent); background: color-mix(in srgb, var(--art-scrim) 65%, transparent); color: var(--on-art-primary); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+.showcase-viewer .viewer-copy .viewer-close:hover { border-color: var(--on-art-line); color: var(--on-art-primary); background: color-mix(in srgb, var(--on-art-line) 14%, transparent); }
+.showcase-viewer .viewer-copy .viewer-kicker { color: var(--on-art-secondary); }
 .showcase-viewer .viewer-copy h2 {
   margin: var(--s-3) 0 var(--s-2);
   font-size: clamp(1.25rem, 2.4vw, 1.9rem); line-height: 1.25;
@@ -435,15 +446,26 @@ onUnmounted(() => {
 .showcase-viewer .viewer-meta { display: flex; gap: var(--s-2); flex-wrap: wrap; margin-bottom: var(--s-4); }
 .showcase-viewer .viewer-meta span {
   padding: var(--s-1) var(--s-2); border-radius: var(--r-pill);
-  background: var(--accent-soft); color: var(--accent);
+  background: color-mix(in srgb, var(--on-art-line) 16%, transparent);
+  color: var(--on-art-primary);
   font: 700 var(--fs-mono-sm) var(--font-mono);
 }
 .showcase-viewer .viewer-story {
-  color: var(--text-secondary); font-size: var(--fs-body-sm);
+  color: var(--on-art-secondary); font-size: var(--fs-body-sm);
   line-height: 1.8; margin-bottom: var(--s-5);
 }
 .showcase-viewer .viewer-actions { display: grid; gap: var(--s-2); }
 .showcase-viewer .viewer-actions .btn { justify-content: center; }
+/* 查看器永远处于暗色画布：按钮用 on-art 色系，避免浅色主题下对比不足 */
+.showcase-viewer .btn-ghost {
+  color: var(--on-art-secondary);
+  border-color: color-mix(in srgb, var(--on-art-line) 62%, transparent);
+}
+.showcase-viewer .btn-ghost:hover {
+  color: var(--on-art-primary);
+  border-color: var(--on-art-line);
+  background: color-mix(in srgb, var(--on-art-line) 12%, transparent);
+}
 body:has(.showcase-viewer[open]) { overflow: hidden; }
 
 @media (max-width: 1000px) {

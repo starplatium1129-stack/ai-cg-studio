@@ -653,7 +653,7 @@ watch(visible, () => { hydrateThumbs(); hydrateCards() })
 }
 @media (prefers-reduced-motion:reduce) { .artwork,.artwork-caption { transition:none !important; } .artwork-skeleton { animation:none; } }
 @keyframes gallerySkeleton { to { background-position:-120% 0; } }
-@keyframes galleryImageIn { from { opacity:0 } to { opacity:1 } }
+@keyframes galleryImageIn { from { opacity:0; filter:blur(6px); } to { opacity:1; filter:blur(0); } }
 </style>
 
 <style>

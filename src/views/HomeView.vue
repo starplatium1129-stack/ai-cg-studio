@@ -3,7 +3,7 @@
     <!-- Hero -->
     <section class="container">
       <div class="home-hero">
-        <div class="hero-copy">
+        <div ref="heroCopyEl" class="hero-copy">
           <div class="hero-register" aria-label="本期绘境信息">
             <span class="archive-kicker">ARCHIVE // 00</span>
             <span>{{ sceneCountCopy }}</span>
@@ -11,7 +11,7 @@
           </div>
           <span class="eyebrow">NENE &amp; NATSUME ATELIER</span>
           <h1 class="hero-title">绫季绘境<span class="jp">把心动的一瞬，画成一张 CG</span></h1>
-          <p class="hero-sub">捕捉触动心弦的瞬间。在收束的叙事光影与情绪之中，画下专属你的 CG。</p>
+          <p class="hero-sub">捕捉触动心弦的瞬间，画下专属你的 CG。</p>
           <p class="hero-jp">「 ときめきの一瞬を、一枚の CG に 」</p>
           <div class="ctas">
             <RouterLink :to="continueLink.to" class="btn btn-lg btn-primary" id="continueCta">
@@ -34,8 +34,8 @@
             <div class="chain-step final"><span class="ic"><ArchiveIcon name="gallery" /></span> 画面 <span class="en">Image</span></div>
           </div>
         </div>
-        <aside class="hero-orbit" aria-label="宁宁与夏目的角色视觉">
-        <div class="hero-watermark" aria-hidden="true">ATELIER</div>
+        <aside ref="heroOrbitEl" class="hero-orbit" aria-label="宁宁与夏目的角色视觉">
+        <div ref="heroWmEl" class="hero-watermark" aria-hidden="true">ATELIER</div>
         <SemanticParticleField
           class="hero-particles"
           shape="atelier"
@@ -74,7 +74,7 @@
           <div class="strip-label" id="featuredScenesLabel">
             <span class="dot"></span> 今天可以从这里开始 · <span>{{ sceneCountCopy }}</span>
           </div>
-          <div class="strip-scroll">
+          <div ref="stripEl" class="strip-scroll">
             <RouterLink
               v-for="s in featuredScenes"
               :key="s.id"
@@ -215,7 +215,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, reactive } from 'vue'
+import { ref, onMounted, onUnmounted, reactive, nextTick } from 'vue'
 import SceneCard from '@/components/SceneCard.vue'
 import SemanticParticleField from '@/components/visual/SemanticParticleField.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
@@ -249,6 +249,42 @@ const heroAssets = reactive({
 })
 /** 卸载标记：异步 imgGet 回来时组件可能已经没了 */
 let unmounted = false
+const heroCopyEl = ref<HTMLElement | null>(null)
+const heroOrbitEl = ref<HTMLElement | null>(null)
+const heroWmEl = ref<HTMLElement | null>(null)
+const stripEl = ref<HTMLElement | null>(null)
+let heroScrollFrame = 0
+
+/** 横条只在真正可滚动时显示右缘渐隐，避免宽屏误遮最后一张卡 */
+function updateStripFade() {
+  const el = stripEl.value
+  if (!el) return
+  el.classList.toggle('can-scroll', el.scrollWidth > el.clientWidth + 4)
+}
+
+/**
+ * 滚动叙事：hero 三层以不同速率上移（视差），标题随滚动淡出，
+ * 让首屏像一页被轻轻翻走。reduced-motion 下完全跳过。
+ */
+function onHeroScroll() {
+  if (heroScrollFrame) return
+  heroScrollFrame = requestAnimationFrame(() => {
+    heroScrollFrame = 0
+    const y = window.scrollY
+    if (y <= 0) {
+      if (heroCopyEl.value) { heroCopyEl.value.style.transform = ''; heroCopyEl.value.style.opacity = '' }
+      if (heroOrbitEl.value) heroOrbitEl.value.style.transform = ''
+      if (heroWmEl.value) heroWmEl.value.style.transform = ''
+      return
+    }
+    if (heroCopyEl.value) {
+      heroCopyEl.value.style.transform = `translateY(${y * 0.1}px)`
+      heroCopyEl.value.style.opacity = String(Math.max(0, 1 - y / 420))
+    }
+    if (heroOrbitEl.value) heroOrbitEl.value.style.transform = `translateY(${y * 0.05}px)`
+    if (heroWmEl.value) heroWmEl.value.style.transform = `translateY(${y * 0.14}px)`
+  })
+}
 
 function charName(id: string | undefined) {
   return id === 'nene' ? '宁宁' : id === 'natsume' ? '夏目' : id || '·'
@@ -379,10 +415,20 @@ onMounted(async () => {
     await kvInit()
     await loadRecentWorks()
   } catch (e) { console.warn('KV store unavailable', e) }
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    window.addEventListener('scroll', onHeroScroll, { passive: true })
+  }
+  // 横条内容是异步载入的，DOM 渲染完成后才能判断是否真的可滚动
+  await nextTick()
+  updateStripFade()
+  window.addEventListener('resize', updateStripFade)
 })
 
 onUnmounted(() => {
   unmounted = true
+  window.removeEventListener('scroll', onHeroScroll)
+  window.removeEventListener('resize', updateStripFade)
+  if (heroScrollFrame) cancelAnimationFrame(heroScrollFrame)
   // 首页封面是 IndexedDB blob，不释放就会一直挂在内存里
   Object.keys(coverUrls).forEach((key) => {
     if (coverUrls[key]) URL.revokeObjectURL(coverUrls[key])
@@ -394,12 +440,12 @@ onUnmounted(() => {
 
 <style scoped>
 /* ---------- Story → Scene → Prompt → Image chain ---------- */
-.chain { display:flex; align-items:center; gap:var(--s-2); max-width:100%; margin:var(--s-5) 0; flex-wrap:nowrap; overflow-x:auto; padding:2px 0 var(--s-2); scroll-snap-type:x proximity; }
-.chain-step { display:flex; flex:0 0 auto; align-items:center; gap:var(--s-2); scroll-snap-align:start; background:linear-gradient(145deg,var(--glass-highlight),transparent 45%),var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-md); padding:var(--s-2) var(--s-4); font-size:var(--fs-body-sm); font-weight:650; box-shadow:inset 0 1px 0 var(--glass-highlight); }
-.chain-step .ic { font-size:var(--fs-body-lg); }
-.chain-step .en { font-size:var(--fs-mono-sm); color:var(--text-muted); font-weight:400; }
-.chain-step.final { border-color:var(--accent); background:linear-gradient(135deg,var(--accent-soft),var(--bg-surface)); box-shadow:var(--glow-sm); }
-.chain-arrow { color:var(--text-muted); font-size:var(--fs-body-sm); }
+.chain { display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-2) 6px; max-width:100%; margin:var(--s-5) 0; }
+.chain-step { display:flex; flex:0 0 auto; align-items:center; gap:6px; background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-md); padding:6px 12px; font-size:var(--fs-body-sm); font-weight:650; }
+.chain-step .ic { font-size:.95rem; }
+.chain-step .en { font-size:var(--fs-mono-xs); color:var(--text-muted); font-weight:400; }
+.chain-step.final { border-color:var(--accent); background:var(--accent-soft); }
+.chain-arrow { color:var(--text-muted); font-size:var(--fs-label); }
 
 /* ---------- Hero ---------- */
 .home-hero { position:relative; padding:var(--s-8) 0 var(--s-6); display:grid; grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr); grid-template-rows:auto auto; gap:var(--s-5) var(--s-6); align-items:end; }
@@ -423,8 +469,8 @@ onUnmounted(() => {
 .hero-orbit { grid-column:2; grid-row:1; min-width:0; min-height:380px; position:relative; isolation:isolate; border:1px solid var(--border-soft); border-radius:var(--r-xl); overflow:hidden; background:linear-gradient(90deg,color-mix(in srgb,var(--on-art-line) 42%,transparent) 1px,transparent 1px) 0 0/32px 32px,linear-gradient(color-mix(in srgb,var(--on-art-line) 42%,transparent) 1px,transparent 1px) 0 0/32px 32px,linear-gradient(135deg,var(--accent-glow),transparent 42%),var(--stage-violet); box-shadow:inset 0 1px 0 var(--on-art-line),var(--shadow-lg); }
 .hero-orbit::before { content:""; position:absolute; z-index:var(--z-raised); inset:0; pointer-events:none; background:linear-gradient(115deg,var(--on-art-sheen),transparent 18%,transparent 70%,var(--on-art-wash)); mix-blend-mode:soft-light; opacity:.48; }
 .hero-orbit::after { content:""; position:absolute; z-index:var(--z-base); inset:0; pointer-events:none; box-shadow:inset 0 0 72px color-mix(in srgb,var(--art-backdrop) 34%,transparent); }
-.hero-particles { position:absolute; z-index:var(--z-base); inset:0; min-height:100%; opacity:.46; }
-.hero-watermark { position:absolute; z-index:var(--z-base); top:var(--s-4); left:var(--s-4); color:var(--on-art-wash); font:800 clamp(2rem,5vw,4.5rem) var(--font-mono); letter-spacing:-.07em; writing-mode:vertical-rl; pointer-events:none; }
+.hero-particles { position:absolute; z-index:var(--z-base); inset:0; min-height:100%; opacity:.36; }
+.hero-watermark { position:absolute; z-index:var(--z-base); top:var(--s-4); left:var(--s-4); color:var(--on-art-wash); font:800 clamp(2rem,5vw,4.5rem) var(--font-mono); letter-spacing:-.07em; writing-mode:vertical-rl; pointer-events:none; opacity:.32; will-change:transform; }
 .hero-character { position:absolute; z-index:var(--z-base); bottom:0; width:72%; height:94%; object-fit:contain; object-position:center bottom; filter:drop-shadow(0 24px 28px rgba(8,5,18,.36)); transition:transform .6s var(--ease-out),filter .6s ease; }
 /* 双人分割：原来两张各占 54% + 斜切，宽屏下右侧人物会被容器边缘切掉。
    改成各占 52% 并把 object-position 收回中心，接缝仍在中线附近。 */
@@ -443,18 +489,19 @@ onUnmounted(() => {
 .hero-strip { grid-column:1 / -1; grid-row:2; position:relative; background:linear-gradient(135deg,var(--accent-soft),transparent 65%),var(--bg-surface); border:1px solid var(--border-soft); border-left:3px solid var(--archive-blue); border-radius:var(--r-md); padding:var(--s-4) var(--s-5); overflow:hidden; }
 .strip-label { display:flex; align-items:center; gap:var(--s-2); font-size:var(--fs-label-xs); font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-muted); margin-bottom:var(--s-3); }
 .strip-label .dot { width:6px; height:6px; border-radius:50%; background:var(--accent); box-shadow:var(--glow-sm); }
-.strip-scroll { display:flex; gap:var(--s-3); overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; padding-bottom:var(--s-2); }
+.strip-scroll { display:flex; gap:var(--s-3); overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; padding:2px var(--s-2) var(--s-2) 0; scrollbar-width:thin; }
+.strip-scroll.can-scroll { mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent); -webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent); }
 .strip-scroll::-webkit-scrollbar { height:4px; }
 .strip-scroll::-webkit-scrollbar-thumb { background:var(--border-soft); border-radius:var(--r-pill); }
 .continue-hint { min-height:20px; margin-top:var(--s-2); color:var(--text-muted); font-size:var(--fs-label-sm); }
 .continue-hint strong { color:var(--accent); }
 
 /* ---------- Sections ---------- */
-.home-section { padding:var(--s-6) 0; border-top:1px solid var(--border-soft); }
-.home-section-quiet { padding:var(--s-5) 0; }
-.home-section-head { position:relative; display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:var(--s-4); padding-left:var(--s-4); gap:var(--s-4); }
+.home-section { padding:clamp(40px, 6vw, 76px) 0; border-top:1px solid var(--border-soft); }
+.home-section-quiet { padding:clamp(32px, 4.5vw, 56px) 0; }
+.home-section-head { position:relative; display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:var(--s-5); padding-left:var(--s-4); gap:var(--s-4); }
 .home-section-head::before { content:""; position:absolute; left:0; top:2px; bottom:2px; width:2px; background:linear-gradient(180deg,var(--archive-blue),var(--accent),transparent); }
-.home-section-head h2 { font-size:var(--fs-title-sm); margin-bottom:var(--s-1); }
+.home-section-head h2 { font-size:var(--fs-title); margin-bottom:var(--s-1); }
 .home-section-head .hint { font-size:var(--fs-body-sm); color:var(--text-muted); margin:0; }
 .home-section-head .link { font-size:var(--fs-body-sm); flex-shrink:0; }
 .eyebrow .num { color:var(--text-muted); font-weight:600; }
