@@ -1,6 +1,6 @@
 <template>
   <article class="page notfound-page">
-    <img class="notfound-chibi" src="/assets/chibi/natsume-shy.webp" alt="四季夏目 Q 版：页面迷路时捂嘴害羞" width="480" height="288" loading="eager" decoding="async" />
+    <img class="notfound-chibi" src="/assets/chibi/natsume-coffee.webp" alt="四季夏目 Q 版：页面迷路时也要从容地接一杯咖啡" width="480" height="288" loading="eager" decoding="async" />
     <h1 class="title">页面走丢了</h1>
     <p class="subtitle">地址 <code class="notfound-path">{{ path }}</code> 不存在。</p>
 

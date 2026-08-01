@@ -514,10 +514,30 @@
 /* Q 版小剧场：解包 SD 素材按角色切换（assets/chibi） */
 .chat-page .chibi-theater {
   flex-shrink: 0;
-  padding: var(--s-2) var(--s-4) var(--s-4);
+  padding: var(--s-3) var(--s-4) var(--s-4);
   border-top: 1px solid var(--border-soft);
   display: grid;
   gap: var(--s-2);
+}
+.chat-page .chibi-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-2);
+}
+.chat-page .chibi-title {
+  font-size: var(--fs-label-xs);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+.chat-page .chibi-current {
+  font-size: var(--fs-mono-sm);
+  color: var(--character-accent);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .chat-page .chibi-show-wrap {
   position: relative;

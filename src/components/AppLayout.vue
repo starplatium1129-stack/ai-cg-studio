@@ -20,7 +20,7 @@
       </RouterView>
     </main>
     <footer class="site-footer">
-      <p>© 2025 绫季绘境 · 个人创作工作台</p>
+      <p>© {{ currentYear }} 绫季绘境 · 个人创作工作台</p>
     </footer>
     <!-- 日系竖排假名水印：纯装饰层（aria-hidden），样式与主题适配在 design-system.css -->
     <div class="kana-watermark" aria-hidden="true">
@@ -53,6 +53,9 @@ function onceDone(done: () => void) {
     done()
   }
 }
+
+// 页脚年份跟随当前年份，避免手写年份过期
+const currentYear = new Date().getFullYear()
 
 function stopActive() {
   if (activeAnim) {

@@ -14,12 +14,14 @@ SRC = os.path.join(r"E:\code\2\lora\AI\Assets\VisualPipeline\decoded")
 OUT = os.path.join(ROOT, "assets", "chibi")
 
 # (源文件, 输出名, 展示宽, 灯箱宽)
+# 选图标准：Q 版 SD 中景构图（人物头部/呆毛完整入镜）、背景干净、无英文
+# 贴纸/漫画框覆盖。2026-08-01 换入 nene-study / natsume-coffee，移除特写
+# 裁切（nene-smile）与带英文黑框（natsume-shy）的图。
 JOBS = [
-    ("nene/ev/entry_00031_501f.png", "nene-smile", 480, 960),
+    ("nene/ev/entry_00057_5039.png", "nene-study", 480, 960),
     ("nene/ev/entry_00033_5021.png", "nene-happy", 480, 960),
-    ("nene/ev/entry_00042_502a.png", "nene-ramen", 480, 960),
     ("nene/ev/entry_00044_502c.png", "nene-night", 480, 960),
-    ("natsume/ev/entry_00120_5078.png", "natsume-shy", 480, 960),
+    ("natsume/ev/entry_00140_508c.png", "natsume-coffee", 480, 960),
     ("natsume/ev/entry_00080_5050.png", "natsume-feed", 480, 960),
     ("natsume/ev/entry_00200_50c8.png", "natsume-cafe", 480, 960),
 ]

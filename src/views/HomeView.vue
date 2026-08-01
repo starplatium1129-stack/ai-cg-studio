@@ -93,15 +93,19 @@
           </div>
           <div class="chibi-scroll">
             <button
-              v-for="c in chibiList"
+              v-for="(c, index) in chibiList"
               :key="c.id"
               class="chibi-card"
+              :class="index % 2 ? 'tilt-right' : 'tilt-left'"
               type="button"
               :aria-label="`查看大图：${c.label}`"
               @click="openChibi(c)"
             >
               <img :src="c.thumb" :alt="c.label" loading="lazy" decoding="async" />
-              <span class="chibi-tag">{{ c.tag }}</span>
+              <span class="chibi-cap">
+                <span class="chibi-cap-text">{{ c.label }}</span>
+                <span class="chibi-stamp">{{ c.tag }}</span>
+              </span>
             </button>
           </div>
         </div>
@@ -280,11 +284,12 @@ const stripEl = ref<HTMLElement | null>(null)
 let heroScrollFrame = 0
 
 // ── Q 版小剧场（解包 SD 素材，见 scripts/maintenance/chibi-import.py） ──
+// 选图标准：中景构图、头部完整、背景干净（避免特写裁切与英文贴纸）
 const CHIBI = [
-  { id: 'nene-smile',   thumb: '/assets/chibi/nene-smile.webp',   large: '/assets/chibi/nene-smile-full.webp',   label: '宁宁 · 治愈微笑', tag: 'NENE' },
-  { id: 'natsume-shy',  thumb: '/assets/chibi/natsume-shy.webp',  large: '/assets/chibi/natsume-shy-full.webp',  label: '夏目 · 害羞捂嘴', tag: 'NATSUME' },
-  { id: 'nene-night',   thumb: '/assets/chibi/nene-night.webp',   large: '/assets/chibi/nene-night-full.webp',   label: '宁宁 · 睡衣时光', tag: 'NENE' },
-  { id: 'natsume-cafe', thumb: '/assets/chibi/natsume-cafe.webp', large: '/assets/chibi/natsume-cafe-full.webp', label: '夏目 · 咖啡馆日常', tag: 'NATSUME' },
+  { id: 'nene-study',   thumb: '/assets/chibi/nene-study.webp',   large: '/assets/chibi/nene-study-full.webp',   label: '自习时的心跳', tag: 'NENE' },
+  { id: 'natsume-coffee', thumb: '/assets/chibi/natsume-coffee.webp', large: '/assets/chibi/natsume-coffee-full.webp', label: '咖啡时间', tag: 'NATSUME' },
+  { id: 'nene-night',   thumb: '/assets/chibi/nene-night.webp',   large: '/assets/chibi/nene-night-full.webp',   label: '睡衣时光', tag: 'NENE' },
+  { id: 'natsume-feed', thumb: '/assets/chibi/natsume-feed.webp', large: '/assets/chibi/natsume-feed-full.webp', label: '喂食日常', tag: 'NATSUME' },
 ] as const
 const chibiList = ref(CHIBI)
 const chibiDialogEl = ref<HTMLDialogElement | null>(null)
@@ -570,26 +575,46 @@ onUnmounted(() => {
 .chibi-scroll::-webkit-scrollbar { height:4px; }
 .chibi-scroll::-webkit-scrollbar-thumb { background:var(--border-soft); border-radius:var(--r-pill); }
 .chibi-card {
-  flex:0 0 auto; position:relative; width:min(300px,64vw);
-  border:0; padding:0; cursor:pointer; text-align:left; background:transparent;
-  border-radius: var(--r-lg); overflow:hidden;
+  flex:0 0 auto; position:relative; width:min(288px,62vw);
+  padding:8px 8px 6px;
+  border:1px solid var(--border-soft);
+  border-radius: var(--r-lg);
+  background: color-mix(in srgb, var(--bg-elevated) 86%, transparent);
+  box-shadow: var(--shadow-glass-sm);
+  cursor:pointer; text-align:left;
   scroll-snap-align:start;
-  transition: transform var(--t-fast) var(--ease-out), box-shadow var(--t-fast);
+  display:grid; gap:6px;
+  transition: transform var(--t-fast) var(--ease-out), box-shadow var(--t-fast), border-color var(--t-fast);
 }
+/* 拍立得错落感：奇偶交替微倾斜，hover 归正放大 */
+.chibi-card.tilt-left  { transform: rotate(-1.8deg); }
+.chibi-card.tilt-right { transform: rotate(1.6deg); }
+.chibi-card:hover { transform: rotate(0) translateY(-3px) scale(1.02); border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); box-shadow: 0 16px 34px -16px color-mix(in srgb, var(--accent) 45%, transparent), var(--shadow-glass-md); }
+.chibi-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .chibi-card img {
   display:block; width:100%; aspect-ratio:5/3; object-fit:cover;
-  filter: saturate(.92); transition: filter var(--t-base), transform var(--t-base) var(--ease-out);
+  border-radius: var(--r-md);
+  filter: saturate(.94); transition: filter var(--t-base), transform var(--t-base) var(--ease-out);
 }
-.chibi-card:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -14px color-mix(in srgb, var(--accent) 45%, transparent); }
-.chibi-card:hover img { filter: saturate(1.05); transform: scale(1.02); }
-.chibi-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.chibi-tag {
-  position:absolute; left:10px; bottom:10px;
-  padding:2px 10px; border-radius:var(--r-pill);
-  background:var(--art-scrim); color:var(--on-art-primary);
-  font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.12em;
-  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+.chibi-card:hover img { filter: saturate(1.06); }
+.chibi-cap {
+  display:flex; align-items:center; justify-content:space-between; gap:var(--s-2);
+  padding: 0 2px 2px;
 }
+.chibi-cap-text {
+  font-size: var(--fs-label-sm); font-weight:600; color: var(--text-secondary);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+/* 印章式小徽章：斜贴角色色（NENE 紫 / NATSUME 琥珀） */
+.chibi-stamp {
+  flex:none;
+  padding:1px 8px; border-radius: var(--r-sm);
+  font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.1em;
+  transform: rotate(-3deg);
+  color: var(--text-inverse);
+}
+.chibi-card:nth-child(odd) .chibi-stamp { background: linear-gradient(135deg, var(--nene-violet), color-mix(in srgb, var(--nene-violet) 60%, var(--accent-violet))); }
+.chibi-card:nth-child(even) .chibi-stamp { background: linear-gradient(135deg, var(--natsume-amber), color-mix(in srgb, var(--natsume-amber) 55%, var(--mood-warmth))); }
 .chibi-dialog {
   border:0; padding:var(--s-2); border-radius:var(--r-2xl);
   background: color-mix(in srgb, var(--bg-elevated) 92%, transparent);
