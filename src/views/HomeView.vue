@@ -200,7 +200,7 @@
             :to="`/prompt-builder?regen=${encodeURIComponent(h.id)}`"
           >
             <div class="recent-cover" :data-image-id="h.image_id">
-              <img v-if="coverUrl(h)" :src="coverUrl(h)" alt="" />
+              <img v-if="coverUrl(h)" :src="coverUrl(h)" alt="" class="recent-cover-img" />
               <span v-else class="placeholder">▤</span>
             </div>
             <div class="recent-body">
@@ -478,7 +478,7 @@ onUnmounted(() => {
 .recent-card { background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-lg); overflow:hidden; cursor:pointer; transition:border-color var(--t-fast),transform var(--t-fast); text-decoration:none; color:var(--text-primary); }
 .recent-card:hover { border-color:var(--accent); transform:translateY(-2px); }
 .recent-cover { aspect-ratio:4/3; display:flex; align-items:center; justify-content:center; background:var(--bg-deep); font-size:var(--fs-glyph); overflow:hidden; }
-.recent-cover img { width:100%; height:100%; object-fit:cover; }
+.recent-cover img { width:100%; height:100%; object-fit:cover; animation:archive-image-in .3s ease; }
 .recent-cover .placeholder { color:var(--text-muted); }
 .recent-body { padding:var(--s-3); }
 .recent-title { font-weight:700; font-size:var(--fs-body-sm); margin-bottom:2px; }

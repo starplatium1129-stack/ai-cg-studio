@@ -82,8 +82,8 @@
         :data-rating="entry.rating"
       >
         <button class="sample-visual" type="button" :aria-label="'查看 ' + entry.title + ' 大图'" @click="openViewer(entry.id)">
-          <img v-if="!brokenThumbs.has(entry.id)" class="sample-image" :src="thumbSrc(entry)" :alt="entry.title"
-            loading="lazy" decoding="async" @error="markThumbError(entry)" />
+          <img v-if="!brokenThumbs.has(entry.id)" class="sample-image" :class="{ 'sample-image-ready': loadedThumbs.has(entry.id) }" :src="thumbSrc(entry)" :alt="entry.title"
+            loading="lazy" decoding="async" @load="markThumbLoaded(entry)" @error="markThumbError(entry)" />
           <span v-else class="sample-image-fallback" aria-hidden="true">✦</span>
           <span class="sample-shade"></span>
           <span class="sample-badges">
@@ -117,8 +117,8 @@
       <dialog ref="dialogEl" class="showcase-viewer" aria-label="样张查看器" @click.self="closeViewer" @cancel.prevent="closeViewer">
         <div v-if="currentEntry" class="viewer-layout">
           <div class="viewer-art">
-            <img v-if="!viewerImageFailed" :src="imgSrc(currentEntry)" :alt="currentEntry.title"
-              @error="viewerImageFailed = true" />
+            <img v-if="!viewerImageFailed" :class="{ 'viewer-image-ready': viewerImageReady }" :src="imgSrc(currentEntry)" :alt="currentEntry.title"
+              @load="viewerImageReady = true" @error="viewerImageFailed = true" />
             <div v-else class="viewer-image-fallback">图片暂时无法读取</div>
           </div>
           <div class="viewer-copy">
@@ -181,7 +181,15 @@ const visibleCount= ref(PAGE_SIZE)
 const currentId   = ref('')
 const dialogEl    = ref<HTMLDialogElement | null>(null)
 const brokenThumbs = ref(new Set<string>())
+const loadedThumbs = ref(new Set<string>())
 const viewerImageFailed = ref(false)
+const viewerImageReady = ref(false)
+
+function markThumbLoaded(entry: ShowcaseEntry) {
+  if (!loadedThumbs.value.has(entry.id)) {
+    loadedThumbs.value = new Set([...loadedThumbs.value, entry.id])
+  }
+}
 const viewerVersion = ref(0)
 const imgVersion = Date.now()
 const manifestController = new AbortController()
@@ -224,11 +232,13 @@ watch(currentEntry, (entry) => {
   if (!dialog) return
   if (entry && !dialog.open) {
     viewerImageFailed.value = false
+    viewerImageReady.value = false
     viewerVersion.value = Date.now()
     dialog.showModal()
     document.body.classList.add('overlay-open')
   } else if (entry) {
     viewerImageFailed.value = false
+    viewerImageReady.value = false
     viewerVersion.value = Date.now()
   } else if (!entry && dialog.open) {
     dialog.close()
@@ -340,7 +350,8 @@ onUnmounted(() => {
 .sample:hover { transform:translateY(-3px); border-color:color-mix(in srgb,var(--accent) 42%,var(--border-soft)); box-shadow:var(--shadow-md); }
 .sample-visual { display:block; width:100%; padding:0; border:0; background:var(--art-mat); color:var(--on-art-primary); text-align:left; cursor:zoom-in; position:relative; overflow:hidden; }
 .sample-visual:focus-visible { outline:3px solid var(--accent); outline-offset:-3px; }
-.sample-image { width:100%; height:auto; display:block; background:var(--art-mat); transition:filter var(--t-slow) var(--ease-out),transform var(--t-slow) var(--ease-out); }
+.sample-image { width:100%; height:auto; display:block; background:var(--art-mat); opacity:0; transition:opacity .3s var(--ease-out),filter var(--t-slow) var(--ease-out),transform var(--t-slow) var(--ease-out); }
+.sample-image-ready { opacity:1; }
 .sample-image-fallback { display:grid; min-height:260px; place-items:center; color:var(--text-muted); font-size:var(--fs-glyph); }
 .sample:not(.sample-r18):hover .sample-image { transform:scale(1.018); }
 .sample-shade { position:absolute; inset:38% 0 0; background:linear-gradient(to bottom,transparent,var(--art-scrim)); pointer-events:none; }
@@ -406,7 +417,9 @@ onUnmounted(() => {
 .showcase-viewer .viewer-art img {
   display: block; max-width: 100%; max-height: min(88vh, 860px);
   width: auto; height: auto; object-fit: contain; border-radius: var(--r-lg);
+  opacity: 0; transition: opacity .3s var(--ease-out);
 }
+.showcase-viewer .viewer-art img.viewer-image-ready { opacity: 1; }
 .showcase-viewer .viewer-image-fallback { color:var(--on-art-secondary); font-size:var(--fs-body-sm); }
 .showcase-viewer .viewer-copy {
   min-width: 0; overflow-y: auto;
