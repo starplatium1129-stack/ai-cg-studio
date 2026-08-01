@@ -159,12 +159,16 @@ function createGateway(options) {
     index:false,
     maxAge:ONE_YEAR
   }));
+  // scene-showcase 是运行时媒体（换图即时生效）：no-cache + ETag，
+  // 文件没变回 304 零流量，变了立即出新图。
+  // 之前是 7 天强缓存且封面 URL 无版本号 —— 换图后浏览器继续显示旧图，
+  // 用户会误以为"网站还是以前的"。
   app.use('/scene-showcase', function (req, res, next) {
     if (!config.SCENE_SHOWCASE_DIR) return res.status(404).end();
     var relative = req.path.replace(/\\/g, '/');
     var allowed = /^\/(?:manifest\.json|00-cover\.jpg|README\.txt|home\/nene\.jpg|home\/natsume\.jpg|images\/sc\d{3}\.(?:jpg|png|webp)|thumbs\/sc\d{3}\.(?:jpg|png|webp)|sheets\/[a-z0-9_-]+\/[a-z0-9_.-]+\.jpg)$/i;
     if (!allowed.test(relative)) return res.status(404).end();
-    res.setHeader('Cache-Control', relative === '/manifest.json' ? 'no-cache' : 'public, max-age=604800');
+    res.setHeader('Cache-Control', 'no-cache');
     next();
   }, config.SCENE_SHOWCASE_DIR
     ? express.static(config.SCENE_SHOWCASE_DIR, { dotfiles:'deny', index:false, fallthrough:false })
