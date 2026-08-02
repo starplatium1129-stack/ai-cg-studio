@@ -1,5 +1,5 @@
 <template>
-  <aside class="character-card">
+  <aside class="character-card" :data-character="activeId">
     <div class="character-tabs" role="tablist" aria-label="选择角色" @keydown="tabs.onKeydown">
       <button
         v-for="id in CHARACTER_IDS"
@@ -23,6 +23,9 @@
       class="portrait-stage"
       :class="[{ speaking, 'live2d-ready': live2d.ready.value && live2d.loadedCharacter.value === activeId }, `emotion-${emotion}`]"
       :data-character="activeId"
+      :data-emotion="emotion"
+      :data-mouth-level="mouthLevel.toFixed(3)"
+      :data-audio-peak="audioPeak.toFixed(3)"
       role="tabpanel"
       :aria-labelledby="tabs.tabId(activeId)"
     >
@@ -41,8 +44,33 @@
         :title="avatarActionTitle"
         @click="handleAvatarAction"
       >{{ avatarText }}</button>
+      <button
+        v-if="avatarState === 'idle'"
+        class="live2d-enable-cta"
+        type="button"
+        @click.stop="handleAvatarAction"
+      >
+        <span class="live2d-enable-cta-kicker">LIVE2D / ON DEMAND</span>
+        <strong>加载{{ character.name }}动态立绘</strong>
+        <small>点击后按需下载模型与动作</small>
+      </button>
+    </div>
+
+    <div class="character-info">
+      <div class="character-info-head">
+        <strong class="character-name">{{ character.name }}</strong>
+        <div class="character-status">
+          <span class="status-dot" :class="statusKind"></span>
+          <span>{{ chatStatusText }}</span>
+        </div>
+      </div>
+      <p class="character-caption">{{ character.caption }}</p>
+      <p class="character-description" :title="character.description">{{ character.description }}</p>
+      <div v-if="live2d.interactionHint.value" class="live2d-interaction-hint">
+        {{ live2d.interactionHint.value }}
+      </div>
       <div
-        v-if="live2d.ready.value && activeId === 'nene'"
+        v-if="live2d.ready.value"
         class="live2d-wardrobe"
         :class="{ open: wardrobeOpen }"
         @click.stop
@@ -51,7 +79,7 @@
           class="wardrobe-trigger"
           type="button"
           :aria-expanded="wardrobeOpen"
-          aria-controls="nene-wardrobe-menu"
+          :aria-controls="`${activeId}-wardrobe-menu`"
           @click="wardrobeOpen = !wardrobeOpen"
         >
           <span class="wardrobe-symbol" aria-hidden="true"><ArchiveIcon name="wardrobe" /></span>
@@ -63,70 +91,27 @@
         </button>
         <div
           v-if="wardrobeOpen"
-          id="nene-wardrobe-menu"
+          :id="`${activeId}-wardrobe-menu`"
           class="wardrobe-menu"
           role="radiogroup"
-          aria-label="宁宁服装"
+          :aria-label="activeId === 'natsume' ? '夏目服装' : '宁宁服装'"
         >
           <span class="wardrobe-menu-title">选择服装</span>
           <button
-            v-for="option in LIVE2D_OUTFITS"
+            v-for="option in outfitOptions"
             :key="option.id"
             class="wardrobe-option"
             type="button"
             role="radio"
             :aria-checked="outfit === option.id"
             :class="{ active: outfit === option.id }"
-            :disabled="outfitBusy"            @click="handleOutfitChange(option.id)"
+            :disabled="outfitBusy"
+            @click="handleOutfitChange(option.id)"
           >
             <span>{{ option.label }}</span>
             <i aria-hidden="true"></i>
           </button>
         </div>
-      </div>
-      <div v-if="live2d.interactionHint.value" class="live2d-interaction-hint">
-        {{ live2d.interactionHint.value }}
-      </div>
-    </div>
-
-    <div class="character-info">
-      <strong class="character-name">{{ character.name }}</strong>
-      <p class="character-caption">{{ character.caption }}</p>
-      <p>{{ character.description }}</p>
-      <div class="character-status">
-        <span class="status-dot" :class="statusKind"></span>
-        <span>{{ chatStatusText }}</span>
-      </div>
-    </div>
-
-    <!-- Q 版小剧场：解包 SD 素材按角色切换（assets/chibi，见 scripts/maintenance/chibi-import.py） -->
-    <div class="chibi-theater" aria-label="Q版小剧场">
-      <div class="chibi-head">
-        <span class="chibi-title">今日萌态</span>
-        <span class="chibi-current">{{ chibiCurrent.label }}</span>
-      </div>
-      <div class="chibi-show-wrap">
-        <img
-          class="chibi-show"
-          :src="chibiCurrent.large"
-          :alt="`${character.name} Q版：${chibiCurrent.label}`"
-          loading="lazy"
-          decoding="async"
-        />
-      </div>
-      <div class="chibi-picks" role="tablist" aria-label="Q版表情">
-        <button
-          v-for="c in chibiForCharacter"
-          :key="c.id"
-          class="chibi-pick"
-          type="button"
-          role="tab"
-          :aria-selected="chibiIdx === c.id ? 'true' : 'false'"
-          :title="c.label"
-          @click="chibiIdx = c.id"
-        >
-          <img :src="c.thumb" :alt="c.label" loading="lazy" decoding="async" />
-        </button>
       </div>
     </div>
   </aside>
@@ -134,9 +119,18 @@
 
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
-import { LIVE2D_OUTFITS, type CharacterConfig } from '@/config/characters'
+import {
+  DEFAULT_LIVE2D_OUTFIT,
+  DEFAULT_NATSUME_OUTFIT,
+  findLive2DOutfit,
+  findNatsumeOutfit,
+  LIVE2D_OUTFITS,
+  NATSUME_OUTFITS,
+  type CharacterConfig,
+} from '@/config/characters'
 import { useLive2D } from '@/composables/useLive2D'
 import { useRovingTabs } from '@/composables/useRovingTabs'
+import { createEmotionRuntime, NATSUME_RUNTIME_CONFIG, NENE_RUNTIME_CONFIG } from '@/utils/emotionRuntime'
 
 const CHARACTER_IDS = ['nene', 'natsume'] as const
 
@@ -159,39 +153,30 @@ const emit = defineEmits<{
 const stageRef = ref<HTMLElement>()
 const live2dHostRef = ref<HTMLElement>()
 const emotion = ref('neutral')
+const mouthLevel = ref(0)
+const audioPeak = ref(0)
 const avatarText = ref('检测 Live2D…')
 const avatarState = ref('checking')
 const avatarDetail = ref('')
 const avatarRetryable = ref(false)
 const outfitBusy = ref(false)
 const wardrobeOpen = ref(false)
-const activeOutfitLabel = computed(() =>
-  LIVE2D_OUTFITS.find(option => option.id === props.outfit)?.label ?? LIVE2D_OUTFITS[0].label
-)
-
-// ── Q 版小剧场（解包 SD 素材按角色切换） ──
-interface ChibiEntry { id: string; thumb: string; large: string; label: string }
-const CHIBI_BY_CHAR: Record<string, ChibiEntry[]> = {
-  nene: [
-    { id: 'nene-study',  thumb: '/assets/chibi/nene-study.webp',  large: '/assets/chibi/nene-study-full.webp',  label: '自习时的心跳' },
-    { id: 'nene-happy',  thumb: '/assets/chibi/nene-happy.webp',  large: '/assets/chibi/nene-happy-full.webp',  label: '拉面满足' },
-    { id: 'nene-night',  thumb: '/assets/chibi/nene-night.webp',  large: '/assets/chibi/nene-night-full.webp',  label: '睡衣时光' },
-  ],
-  natsume: [
-    { id: 'natsume-coffee', thumb: '/assets/chibi/natsume-coffee.webp', large: '/assets/chibi/natsume-coffee-full.webp', label: '咖啡时间' },
-    { id: 'natsume-feed',   thumb: '/assets/chibi/natsume-feed.webp',   large: '/assets/chibi/natsume-feed-full.webp',   label: '喂食日常' },
-    { id: 'natsume-cafe',   thumb: '/assets/chibi/natsume-cafe.webp',   large: '/assets/chibi/natsume-cafe-full.webp',   label: '咖啡馆日常' },
-  ],
-}
-const chibiForCharacter = computed(() => CHIBI_BY_CHAR[props.activeId] ?? CHIBI_BY_CHAR.nene)
-const chibiIdx = ref(chibiForCharacter.value[0].id)
-watch(() => props.activeId, () => {
-  const list = chibiForCharacter.value
-  if (!list.some(item => item.id === chibiIdx.value)) chibiIdx.value = list[0].id
+// 换装选择按角色记忆（宁宁/夏目共用 storage 单字段，值空间分离）
+const outfitByChar = ref<Record<string, string>>({
+  nene: DEFAULT_LIVE2D_OUTFIT,
+  natsume: DEFAULT_NATSUME_OUTFIT,
 })
-const chibiCurrent = computed(() =>
-  chibiForCharacter.value.find(item => item.id === chibiIdx.value) ?? chibiForCharacter.value[0]
+function currentOutfitId() {
+  return outfitByChar.value[props.activeId] ?? props.outfit
+}
+const outfitOptions = computed(() =>
+  props.activeId === 'natsume' ? NATSUME_OUTFITS : LIVE2D_OUTFITS,
 )
+const activeOutfitLabel = computed(() => {
+  const list = outfitOptions.value
+  const found = list.find(option => option.id === currentOutfitId())
+  return found?.label ?? list[0].label
+})
 
 const live2d = useLive2D((status) => {
   avatarText.value = status.text
@@ -199,6 +184,12 @@ const live2d = useLive2D((status) => {
   avatarDetail.value = status.detail
   avatarRetryable.value = status.retryable
 })
+
+const neneRuntime = createEmotionRuntime(NENE_RUNTIME_CONFIG)
+const natsumeRuntime = createEmotionRuntime(NATSUME_RUNTIME_CONFIG)
+function activeRuntime() {
+  return props.activeId === 'natsume' ? natsumeRuntime : neneRuntime
+}
 
 const activeIdRef = computed(() => props.activeId)
 const tabs = useRovingTabs(
@@ -223,6 +214,7 @@ const avatarActionTitle = computed(() => {
 
 async function handleAvatarAction() {
   if (!live2d.enabled.value) {
+    await activeRuntime().activate()
     emit('live2dEnabled', true)
     await live2d.enable()
     return
@@ -237,22 +229,40 @@ async function handleAvatarAction() {
 
 function setSpeaking(value: boolean) {
   live2d.setSpeaking(value)
+  if (!value) {
+    mouthLevel.value = 0
+    audioPeak.value = 0
+  }
 }
 
 function setMouth(value: number) {
+  mouthLevel.value = Math.max(0, Math.min(1, value))
   live2d.setMouth(value)
+}
+
+function setAudioLevel(level: number, peak = level) {
+  audioPeak.value = Math.max(0, Math.min(1, peak))
+  live2d.setAudioLevel(level, peak)
 }
 
 function setEmotion(value: string) {
   emotion.value = value
+  activeRuntime().pushEmotion(value)
+}
+
+function setUserMessage() {
+  activeRuntime().onUserMessage()
 }
 
 async function handleOutfitChange(next: string) {
-  if (outfitBusy.value || next === live2d.outfit.value) return
+  if (outfitBusy.value) return
+  if (props.activeId === 'natsume' && findNatsumeOutfit(next).id !== next) return
+  if (props.activeId === 'nene' && findLive2DOutfit(next).id !== next) return
   outfitBusy.value = true
   try {
     if (await live2d.setOutfit(next)) {
-      emit('outfitChanged', live2d.outfit.value)
+      outfitByChar.value = { ...outfitByChar.value, [props.activeId]: next }
+      emit('outfitChanged', next)
       wardrobeOpen.value = false
     }
   } finally {
@@ -262,22 +272,55 @@ async function handleOutfitChange(next: string) {
 
 watch(() => props.activeId, (id) => {
   wardrobeOpen.value = false
-  void live2d.setCharacter(id)
+  live2d.attachEmotionRuntime(activeRuntime())
+  const remembered = id === 'natsume'
+    ? findNatsumeOutfit(props.outfit).id
+    : findLive2DOutfit(props.outfit).id
+  outfitByChar.value = { ...outfitByChar.value, [id]: remembered }
+  void (async () => {
+    if (live2d.enabled.value) await activeRuntime().activate()
+    await live2d.setCharacter(id)
+    if (props.activeId === id && remembered !== live2d.outfit.value) await live2d.setOutfit(remembered)
+  })()
 })
 
 watch(() => props.outfit, (value) => {
-  if (value !== live2d.outfit.value) void live2d.setOutfit(value)
+  // 外部（storage 恢复/其他标签页）带来的值只认当前角色的值空间
+  if (props.activeId === 'natsume') {
+    const valid = findNatsumeOutfit(value).id
+    if (value !== valid || valid !== currentOutfitId()) {
+      outfitByChar.value = { ...outfitByChar.value, natsume: valid }
+      if (valid !== live2d.outfit.value) void live2d.setOutfit(valid)
+    }
+  } else {
+    const valid = findLive2DOutfit(value).id
+    if (value !== valid || valid !== currentOutfitId()) {
+      outfitByChar.value = { ...outfitByChar.value, nene: valid }
+      if (valid !== live2d.outfit.value) void live2d.setOutfit(valid)
+    }
+  }
 })
 
 onMounted(() => {
   if (!live2dHostRef.value || !stageRef.value) return
-  void live2d.init(props.activeId, live2dHostRef.value, stageRef.value, {
-    autoLoad: props.autoLoad,
-    outfit: props.outfit,
-  })
+  live2d.attachEmotionRuntime(activeRuntime())
+  const initialOutfit = props.activeId === 'natsume'
+    ? findNatsumeOutfit(props.outfit).id
+    : findLive2DOutfit(props.outfit).id
+  outfitByChar.value = { ...outfitByChar.value, [props.activeId]: initialOutfit }
+  void (async () => {
+    if (props.autoLoad) await activeRuntime().activate()
+    await live2d.init(props.activeId, live2dHostRef.value!, stageRef.value!, {
+      autoLoad: props.autoLoad,
+      outfit: initialOutfit,
+    })
+  })()
 })
 
-onUnmounted(() => live2d.destroy())
+onUnmounted(() => {
+  live2d.attachEmotionRuntime(null)
+  live2d.destroy()
+})
 
-defineExpose({ setSpeaking, setMouth, setEmotion })
+defineExpose({ setSpeaking, setMouth, setAudioLevel, setEmotion, setUserMessage })
 </script>

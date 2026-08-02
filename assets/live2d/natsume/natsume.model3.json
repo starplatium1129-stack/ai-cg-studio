@@ -1,0 +1,346 @@
+{
+  "Version": 3,
+  "HitAreas": [
+    {
+      "Name": "外框",
+      "Id": "ArtMesh63"
+    },
+    {
+      "Name": "摸腿",
+      "Id": "ArtMesh61",
+      "Order": 1
+    },
+    {
+      "Name": "摸头",
+      "Id": "Houfa_buchong",
+      "Order": 1
+    },
+    {
+      "Name": "摸手",
+      "Id": "ArtMesh5",
+      "Order": 2
+    },
+    {
+      "Name": "摸胸",
+      "Id": "ArtMesh62",
+      "Order": 1
+    },
+    {
+      "Name": "摸脚",
+      "Id": "ArtMesh60",
+      "Order": 1
+    },
+    {
+      "Name": "摸裙子",
+      "Id": "ArtMesh11",
+      "Order": 1
+    }
+  ],
+  "FileReferences": {
+    "Moc": "natsume.moc3",
+    "Textures": [
+      "textures/texture_00.webp",
+      "textures/texture_01.webp",
+      "textures/texture_02.webp",
+      "textures/texture_03.webp",
+      "textures/texture_04.webp",
+      "textures/texture_05.webp",
+      "textures/texture_06.webp",
+      "textures/texture_07.webp",
+      "textures/texture_08.webp",
+      "textures/texture_09.webp",
+      "textures/texture_10.webp",
+      "textures/texture_11.webp",
+      "textures/texture_12.webp",
+      "textures/texture_13.webp"
+    ],
+    "Physics": "natsume.physics3.json",
+    "Motions": {
+      "TapFrame": [
+        {
+          "Name": "外框1",
+          "File": "motions/TapFrame_0.motion3.json",
+          "Priority": 2,
+          "Interruptable": true,
+          "Weight": 2
+        },
+        {
+          "Name": "外框2",
+          "File": "motions/TapFrame_1.motion3.json",
+          "Priority": 2,
+          "Interruptable": true,
+          "Weight": 2
+        },
+        {
+          "Name": "外框3",
+          "File": "motions/TapFrame_2.motion3.json",
+          "Priority": 2,
+          "Interruptable": true,
+          "Weight": 2
+        },
+        {
+          "Name": "外框4",
+          "File": "motions/TapFrame_3.motion3.json",
+          "Priority": 2,
+          "Interruptable": true,
+          "Weight": 2
+        },
+        {
+          "Name": "外框5",
+          "File": "motions/TapFrame_4.motion3.json",
+          "Priority": 2,
+          "Interruptable": true,
+          "Weight": 2
+        },
+        {
+          "Name": "外框6",
+          "File": "motions/TapFrame_5.motion3.json",
+          "Priority": 2,
+          "Interruptable": true,
+          "Weight": 2
+        },
+        {
+          "Name": "外框7",
+          "File": "motions/TapFrame_6.motion3.json",
+          "Priority": 2
+        }
+      ],
+      "TapLeg": [
+        {
+          "Name": "摸腿1",
+          "File": "motions/TapLeg_0.motion3.json",
+          "Priority": 2,
+          "Interruptable": true
+        },
+        {
+          "Name": "摸腿3",
+          "File": "motions/TapLeg_1.motion3.json",
+          "Priority": 2,
+          "Interruptable": true
+        },
+        {
+          "Name": "摸腿4",
+          "File": "motions/TapLeg_2.motion3.json",
+          "Priority": 2,
+          "Interruptable": true
+        }
+      ],
+      "Idle": [
+        {
+          "Name": "站立",
+          "File": "motions/Idle_0.motion3.json",
+          "Priority": 2,
+          "Interruptable": true,
+          "Weight": 400
+        },
+        {
+          "Name": "待机1",
+          "File": "motions/Idle_1.motion3.json",
+          "Priority": 2,
+          "Interruptable": true,
+          "Weight": 200
+        },
+        {
+          "Name": "待机2",
+          "File": "motions/Idle_2.motion3.json",
+          "Priority": 2,
+          "Interruptable": true,
+          "Weight": 10
+        },
+        {
+          "Name": "待机3",
+          "File": "motions/Idle_3.motion3.json",
+          "Priority": 2,
+          "Interruptable": true,
+          "Weight": 10
+        },
+        {
+          "Name": "待机4",
+          "File": "motions/Idle_4.motion3.json",
+          "Priority": 2,
+          "Interruptable": true,
+          "Weight": 10
+        },
+        {
+          "Name": "待机5",
+          "File": "motions/Idle_5.motion3.json",
+          "Priority": 2,
+          "Interruptable": true,
+          "Weight": 10
+        },
+        {
+          "Name": "待机6",
+          "File": "motions/Idle_6.motion3.json",
+          "Priority": 2,
+          "Interruptable": true,
+          "Weight": 10
+        }
+      ],
+      "Start": [
+        {
+          "Name": "登场1",
+          "File": "motions/Start_0.motion3.json",
+          "Priority": 2
+        },
+        {
+          "Name": "登场2",
+          "File": "motions/Start_1.motion3.json",
+          "Priority": 2
+        },
+        {
+          "Name": "登场3",
+          "File": "motions/Start_2.motion3.json",
+          "Priority": 2
+        },
+        {
+          "Name": "登场4",
+          "File": "motions/Start_3.motion3.json",
+          "Priority": 2
+        },
+        {
+          "Name": "登场5",
+          "File": "motions/Start_4.motion3.json",
+          "Priority": 2,
+          "Weight": 3
+        }
+      ],
+      "TapHead": [
+        {
+          "Name": "摸头1",
+          "File": "motions/TapHead_0.motion3.json",
+          "Priority": 2,
+          "Interruptable": true
+        },
+        {
+          "Name": "摸头2",
+          "File": "motions/TapHead_1.motion3.json",
+          "Priority": 2,
+          "Interruptable": true
+        },
+        {
+          "Name": "摸头3",
+          "File": "motions/TapHead_2.motion3.json",
+          "Priority": 2,
+          "Interruptable": true
+        },
+        {
+          "Name": "摸头4",
+          "File": "motions/TapHead_3.motion3.json",
+          "Priority": 2,
+          "Interruptable": true
+        },
+        {
+          "Name": "摸头5",
+          "File": "motions/TapHead_4.motion3.json",
+          "Priority": 2
+        }
+      ],
+      "TapHand": [
+        {
+          "Name": "摸手1",
+          "File": "motions/TapHand_0.motion3.json",
+          "Priority": 2,
+          "Interruptable": true
+        },
+        {
+          "Name": "摸手2",
+          "File": "motions/TapHand_1.motion3.json",
+          "Priority": 2,
+          "Interruptable": true
+        }
+      ],
+      "TapChest": [
+        {
+          "Name": "摸胸",
+          "File": "motions/TapChest_0.motion3.json",
+          "Priority": 2,
+          "Interruptable": true
+        },
+        {
+          "Name": "摸胸2",
+          "File": "motions/TapChest_1.motion3.json",
+          "Priority": 2,
+          "Interruptable": true
+        },
+        {
+          "Name": "摸胸3",
+          "File": "motions/TapChest_2.motion3.json",
+          "Priority": 2,
+          "Interruptable": true
+        },
+        {
+          "Name": "摸胸4",
+          "File": "motions/TapChest_3.motion3.json",
+          "Priority": 2
+        }
+      ],
+      "TapFoot": [
+        {
+          "Name": "摸脚1",
+          "File": "motions/TapFoot_0.motion3.json",
+          "Priority": 2
+        },
+        {
+          "Name": "摸脚2",
+          "File": "motions/TapFoot_1.motion3.json",
+          "Priority": 2
+        }
+      ],
+      "TapSkirt": [
+        {
+          "Name": "摸裙子1",
+          "File": "motions/TapSkirt_0.motion3.json",
+          "Priority": 2,
+          "Interruptable": true
+        },
+        {
+          "Name": "摸裙子2",
+          "File": "motions/TapSkirt_1.motion3.json",
+          "Priority": 2,
+          "Interruptable": true
+        },
+        {
+          "Name": "摸裙子3",
+          "File": "motions/TapSkirt_2.motion3.json",
+          "Priority": 2,
+          "Interruptable": true
+        },
+        {
+          "Name": "摸裙子4",
+          "File": "motions/TapSkirt_3.motion3.json",
+          "Priority": 2,
+          "Interruptable": true
+        },
+        {
+          "Name": "摸裙子5",
+          "File": "motions/TapSkirt_4.motion3.json",
+          "Priority": 2
+        }
+      ],
+      "Leave": [
+        {
+          "Name": "待机最终",
+          "File": "motions/Leave_0.motion3.json",
+          "Priority": 9
+        }
+      ]
+    }
+  },
+  "Groups": [
+    {
+      "Target": "Parameter",
+      "Name": "EyeBlink",
+      "Ids": [
+        "ParamEyeLOpen",
+        "ParamEyeLOpen2"
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Name": "LipSync",
+      "Ids": [
+        "ParamMouthOpenY"
+      ]
+    }
+  ]
+}

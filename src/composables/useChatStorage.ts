@@ -41,6 +41,7 @@ export interface ChatState {
     webSearchEnabled: boolean
     live2dEnabled: boolean
     live2dOutfit: string
+    live2dOutfits: Record<string, string>
     autoVoice: boolean
     volume: number
     drafts: Record<string, string>
@@ -61,6 +62,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
       webSearchEnabled: false,
       live2dEnabled: false,
       live2dOutfit: 'school',
+      live2dOutfits: { nene: 'school', natsume: 'natsume-cafe' },
       autoVoice: true,
       volume: 80,
       drafts: Object.fromEntries(Object.keys(CHARACTERS).map(k => [k, ''])),
@@ -120,6 +122,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     state.settings.webSearchEnabled = persisted.settings.webSearchEnabled
     state.settings.live2dEnabled = persisted.settings.live2dEnabled
     state.settings.live2dOutfit = persisted.settings.live2dOutfit
+    state.settings.live2dOutfits = persisted.settings.live2dOutfits
     state.settings.autoVoice = persisted.settings.autoVoice
     state.settings.volume = persisted.settings.volume
   }
@@ -138,6 +141,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
         webSearchEnabled: state.settings.webSearchEnabled,
         live2dEnabled: state.settings.live2dEnabled,
         live2dOutfit: state.settings.live2dOutfit,
+        live2dOutfits: state.settings.live2dOutfits,
         autoVoice: state.settings.autoVoice,
         volume: state.settings.volume,
         drafts: state.settings.drafts,
@@ -202,7 +206,11 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     return state.histories[char] || []
   }
 
-  function setActive(char: string) { state.active = char === 'natsume' ? 'natsume' : 'nene'; save() }
+  function setActive(char: string) {
+    state.active = char === 'natsume' ? 'natsume' : 'nene'
+    state.settings.live2dOutfit = state.settings.live2dOutfits[state.active] || 'school'
+    save()
+  }
   function setModel(model: string) { state.settings.model = String(model || ''); save() }
   function setProvider(provider: 'local' | 'api') { state.settings.provider = provider === 'api' ? 'api' : 'local'; save() }
   function setApiSettings(settings: { baseUrl: string; model: string; apiKey: string }) {
@@ -215,8 +223,15 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   }
   function setWebSearchEnabled(value: boolean) { state.settings.webSearchEnabled = Boolean(value); save() }
   function setLive2dEnabled(value: boolean) { state.settings.live2dEnabled = Boolean(value); save() }
-  function setLive2dOutfit(value: string) {
-    state.settings.live2dOutfit = String(value || 'school').slice(0, 40)
+  function live2dOutfit(char = state.active) {
+    return state.settings.live2dOutfits[char] || (char === 'natsume' ? 'natsume-cafe' : 'school')
+  }
+  function setLive2dOutfit(char: string, value: string) {
+    if (!CHARACTERS[char]) return
+    const fallback = char === 'natsume' ? 'natsume-cafe' : 'school'
+    const next = String(value || fallback).slice(0, 40)
+    state.settings.live2dOutfits = { ...state.settings.live2dOutfits, [char]: next }
+    if (char === state.active) state.settings.live2dOutfit = next
     save()
   }
   function setAutoVoice(v: boolean) { state.settings.autoVoice = Boolean(v); save() }
@@ -284,7 +299,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   return {
     state, load, save, messages, neverConfigured,
     setActive, setModel, setProvider, setApiSettings, setWebSearchEnabled,
-    setLive2dEnabled, setLive2dOutfit, setAutoVoice, setVolume, draft, setDraft, trim, clear,
+    setLive2dEnabled, live2dOutfit, setLive2dOutfit, setAutoVoice, setVolume, draft, setDraft, trim, clear,
     archiveCount, exportArchiveJson, exportArchiveMarkdown, importArchiveJson,
     restoreFromArchive, clearArchive,
   }

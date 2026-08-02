@@ -100,11 +100,13 @@ export function useVoice(options: {
   onSpeaking?: (v: boolean, mid?: string) => void
   onExpression?: (emotion: string) => void
   onMouth?: (v: number) => void
+  onAudioLevel?: (level: number, peak: number) => void
   onAudioReady?: (mid: string) => void
   onActivity?: (active: boolean) => void
 }) {
   const { enabled, onStatus = () => {}, onError = () => {}, onSpeaking = () => {},
-    onExpression = () => {}, onMouth = () => {}, onAudioReady = () => {}, onActivity = () => {} } = options
+    onExpression = () => {}, onMouth = () => {}, onAudioLevel = () => {},
+    onAudioReady = () => {}, onActivity = () => {} } = options
 
   const availability = ref<VoiceAvailability>({ online: false, voices: {} })
 
@@ -305,9 +307,14 @@ export function useVoice(options: {
     const samples = new Uint8Array(analyser.fftSize)
     const tick = () => {
       const audio = currentAudio || replayAudio; let target = 0
+      let peak = 0
       if (audio && !audio.paused && !audio.ended) {
         analyser!.getByteTimeDomainData(samples); let sum = 0
-        for (const s of samples) { const n = (s - 128) / 128; sum += n * n }
+        for (const s of samples) {
+          const n = (s - 128) / 128
+          sum += n * n
+          peak = Math.max(peak, Math.abs(n))
+        }
         // GPT-SoVITS WAV peaks are comparatively quiet after browser mixing.
         // Keep real RMS data, but calibrate it into Cubism's 0..1 mouth range.
         target = Math.min(1, Math.sqrt(sum / samples.length) * 6.5)
@@ -315,13 +322,17 @@ export function useVoice(options: {
       lipSmooth += (target - lipSmooth) * 0.35
       if (lipSmooth < 0.015) lipSmooth = 0
       onMouth(lipSmooth)
+      onAudioLevel(lipSmooth, Math.min(1, peak * 2.2))
       if ((audio && !audio.ended) || lipSmooth > 0.01) lipFrame = requestAnimationFrame(tick)
       else stopLipSync()
     }
     lipFrame = requestAnimationFrame(tick)
   }
 
-  function stopLipSync() { if (lipFrame) cancelAnimationFrame(lipFrame); lipFrame = 0; lipSmooth = 0; onMouth(0) }
+  function stopLipSync() {
+    if (lipFrame) cancelAnimationFrame(lipFrame)
+    lipFrame = 0; lipSmooth = 0; onMouth(0); onAudioLevel(0, 0)
+  }
   function setVolume(value: number) {
     value = Math.max(0, Math.min(1, Number(value) || 1))
     if (audioContext && gainNode) gainNode.gain.linearRampToValueAtTime(value, audioContext.currentTime + 0.05)

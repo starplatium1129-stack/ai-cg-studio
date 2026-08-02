@@ -4,7 +4,7 @@
     <WorkspaceArchiveBar
       chapter="09"
       title="CHARACTER ROOM"
-      :subtitle="`${currentCharacter.name} · ${chatProvider === 'local' ? 'LOCAL MODEL' : 'OPENAI-COMPATIBLE API'}`"
+      :subtitle="`${currentCharacter.name} · PRIVATE MEMORY`"
       :status="busy ? 'COMPOSING' : (voiceActive ? 'VOICE PLAYBACK' : (chatReady ? 'ROOM READY' : 'ROOM OFFLINE'))"
       :state="busy || voiceActive ? 'active' : (chatReady ? 'success' : 'warning')"
       :shape="activeChar === 'natsume' ? 'lantern' : 'heart'"
@@ -44,10 +44,10 @@
         :chat-status-text="chatStatusText"
         :status-kind="statusKind"
         :auto-load="storage.state.settings.live2dEnabled"
-        :outfit="storage.state.settings.live2dOutfit"
+        :outfit="storage.live2dOutfit(activeChar)"
         @select="switchCharacter"
         @live2d-enabled="storage.setLive2dEnabled"
-        @outfit-changed="storage.setLive2dOutfit"
+        @outfit-changed="storage.setLive2dOutfit(activeChar, $event)"
       />
 
       <section class="conversation-card">
@@ -152,7 +152,7 @@
           <div class="composer-row">
             <textarea class="chat-input" v-model="inputText" rows="2" maxlength="1200"
               placeholder="轻声对她说点什么吧……" aria-label="聊天输入"
-              @keydown.enter.exact.prevent="sendMessage"
+              @keydown.enter.exact.prevent="handleSend"
               @input="onInputChange"></textarea>
             <button class="btn btn-ghost stop-btn" type="button"
               v-show="busy || voiceActive"
@@ -161,7 +161,7 @@
             <button class="btn btn-primary send-btn" type="button"
               :disabled="busy || !chatReady"
               :title="chatReady ? '' : (chatProvider === 'api' ? '请先配置 API' : '请先启动 Ollama')"
-              @click="sendMessage">发送</button>
+              @click="handleSend">发送</button>
           </div>
 
           <div class="composer-tools">
@@ -232,7 +232,9 @@ const chatListRef  = ref<HTMLElement>()
 const characterStageRef = ref<{
   setSpeaking: (value: boolean) => void
   setMouth: (value: number) => void
+  setAudioLevel: (level: number, peak?: number) => void
   setEmotion: (emotion: string) => void
+  setUserMessage: () => void
 }>()
 
 // ── Core state ────────────────────────────────────────────────────────────
@@ -305,6 +307,7 @@ const voice = useVoice({
     characterStageRef.value?.setSpeaking(v)
   },
   onMouth:      (v) => characterStageRef.value?.setMouth(v),
+  onAudioLevel: (level, peak) => characterStageRef.value?.setAudioLevel(level, peak),
   onExpression: (emotion) => characterStageRef.value?.setEmotion(emotion),
   onAudioReady: (mid) => {
     // trigger re-render so replay button appears
@@ -412,9 +415,19 @@ const {
   useHostConfig,
   setBusy,
   onError: setError,
+  // 无配音时由流式回复文本驱动情绪；配音开启时每句 TTS 情绪更准，让位
+  onStreamEmotion: (emotion) => {
+    if (autoVoice.value) return
+    characterStageRef.value?.setEmotion(emotion)
+  },
   nearBottom,
   scrollBottom,
 })
+
+function handleSend() {
+  characterStageRef.value?.setUserMessage()
+  void sendMessage()
+}
 
 // ── 服务准备 ─────────────────────────────────────────────────────────────
 async function refreshVoiceStatus() {

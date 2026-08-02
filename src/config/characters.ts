@@ -11,6 +11,11 @@ export interface CharacterConfig {
   starters: string[]
   voice: string
   accent: string
+  live2dLayout: {
+    scale: number
+    anchorX: number
+    bottomOffset: number
+  }
   officialQuote?: string
   officialQuoteCn?: string
   birthday?: string
@@ -37,6 +42,7 @@ export const CHARACTERS: Record<string, CharacterConfig> = {
     ],
     voice: 'nene',
     accent: '#b895ff',
+    live2dLayout: { scale: 1.1, anchorX: 0.5, bottomOffset: 34 },
     officialQuote: '「……あの、さっきのコト……忘れちゃってくださいね？」',
     officialQuoteCn: '“……那个，刚才发生的事情……请您彻底忘掉好吗？”',
     birthday: '7月21日（巨蟹座）',
@@ -61,6 +67,7 @@ export const CHARACTERS: Record<string, CharacterConfig> = {
     ],
     voice: 'natsume',
     accent: '#f2bb68',
+    live2dLayout: { scale: 1, anchorX: 0.5, bottomOffset: 0 },
     officialQuote: '「私を雇えば、もれなく優秀なアルバイトがついてきますよ」',
     officialQuoteCn: '“如果雇佣我的话，就会无条件附赠一名极其优秀的兼职员工哦。”',
     birthday: '8月12日（狮子座）',
@@ -83,6 +90,20 @@ export const DEFAULT_LIVE2D_OUTFIT: Live2DOutfitId = 'school'
 
 export function findLive2DOutfit(id: string) {
   return LIVE2D_OUTFITS.find(outfit => outfit.id === id) ?? LIVE2D_OUTFITS[0]
+}
+
+/** 夏目当前只有源模型自带的咖啡店制服，没有可验证的换装层。 */
+export const NATSUME_OUTFITS = [
+  {
+    id: 'natsume-cafe', label: '咖啡店制服',
+  },
+] as const
+
+export type NatsumeOutfitId = typeof NATSUME_OUTFITS[number]['id']
+export const DEFAULT_NATSUME_OUTFIT: NatsumeOutfitId = 'natsume-cafe'
+
+export function findNatsumeOutfit(id: string) {
+  return NATSUME_OUTFITS.find(outfit => outfit.id === id) ?? NATSUME_OUTFITS[0]
 }
 
 export const STORAGE_KEY = 'aics_chat_v1'

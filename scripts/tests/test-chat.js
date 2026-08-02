@@ -236,7 +236,7 @@ async function run() {
   assert(html.includes('ChatApiSettings'), 'chat API settings must have independent component ownership');
   assert(html.includes('useChatProvider') && chatProvider.includes('refreshChatStatus') && chatProvider.includes('saveApiSettings'), 'chat provider settings and status must have composable ownership');
   assert(
-    characterStageComponent.includes('defineExpose({ setSpeaking, setMouth, setEmotion })')
+    characterStageComponent.includes('defineExpose({ setSpeaking, setMouth, setAudioLevel, setEmotion, setUserMessage })')
       && characterStageComponent.includes("emit('live2dEnabled'")
       && characterStageComponent.includes("emit('outfitChanged'"),
     'the character stage must expose only voice animation controls and persist Live2D preferences'
@@ -308,14 +308,14 @@ async function run() {
   assert(voiceModule.includes("fetch('/api/voice/prepare'") && voiceRoute.includes("router.post('/api/voice/prepare'"), 'voice models and translation must prewarm before the first line');
   assert(voiceModule.includes('getByteTimeDomainData') && voiceModule.includes('onMouth'), 'lip sync must use real audio amplitude');
   assert(live2dModule.includes('ResizeObserver') && live2dModule.includes('webglcontextlost'), 'Live2D must recover layout and WebGL failures');
-  assert(live2dModule.includes('setOutfit') && live2dModule.includes('setSpeaking') && live2dModule.includes('applyMouth') && live2dModule.includes('ParamMouthOpenY'), 'Live2D must switch authored outfits and write real speech amplitudes into the mouth parameter');
+  assert(live2dModule.includes('setOutfit') && live2dModule.includes('setSpeaking') && live2dModule.includes('setMouth') && live2dModule.includes('ParamMouthOpenY'), 'Live2D must switch authored outfits and write real speech amplitudes into the mouth parameter');
   assert(
     characterConfig.includes("{ id: 'school', label: '校服', expression: 'expression1' }")
       && characterConfig.includes("{ id: 'casual', label: '常服', expression: 'expression2' }")
       && characterConfig.includes("{ id: 'sleepwear', label: '睡衣', expression: 'expression3' }")
       && characterConfig.includes("{ id: 'cosplay', label: 'COS 服', expression: 'expression4' }")
       && characterConfig.includes("{ id: 'witch', label: '魔女服', expression: 'expression5' }")
-      && characterStageComponent.includes('aria-label="宁宁服装"')
+      && characterStageComponent.includes(":aria-label=\"activeId === 'natsume' ? '夏目服装' : '宁宁服装'\"")
       && characterStageComponent.includes('class="wardrobe-menu"')
       && apiSettingsComponent.includes(':data-vendor="option.value"')
       && live2dModule.includes('model.expression(target.expression)')
@@ -343,7 +343,7 @@ async function run() {
     'Live2D clicks must map source hit areas to authored motions with FORCE priority, report feedback only after startup, and distinguish an active motion from a real failure'
   );
   assert(
-    live2dModule.includes('点击呆毛、头部、脸、身体、两侧或裙摆可触发原生互动'),
+    live2dModule.includes('点击呆毛、头部、脸、身体、两侧或裙摆可互动'),
     'Live2D must advertise every packaged source interaction area'
   );
   assert(!/\bany\b/.test(live2dModule), 'Live2D catalog, runtime, controller, and model boundaries must stay explicitly typed');
@@ -493,7 +493,7 @@ async function run() {
     assert(Array.isArray(motions) && motions.length === 1, 'Nene model must expose source motion group ' + group);
     assert(!motions[0].Sound, group + ' must not conflict with AI voice playback');
   });
-  assert(!liveStatus.models.natsume.available, 'missing Natsume model must use a declared fallback');
+  assert(liveStatus.models.natsume.available, 'Natsume Live2D model and all references must exist');
 
   var mock = createMockAiServer();
   var mockBase = await listen(mock.server);

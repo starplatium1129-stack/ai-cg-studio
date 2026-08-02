@@ -139,6 +139,16 @@ function createGateway(options) {
     if (req.path !== '/design-system.css') return res.status(404).end();
     next();
   }, express.static(path.join(config.ROOT_DIR, 'src', 'assets', 'css'), staticOptions(ONE_DAY)));
+  // Live2D manifests reference unhashed moc/texture/motion files. Revalidate
+  // them so model fixes do not leave existing browsers on a week-old asset set.
+  app.use(['/assets/live2d', '/assets/live2d-current'], function (req, res, next) {
+    res.setHeader('Cache-Control', 'no-cache');
+    next();
+  }, express.static(path.join(config.ROOT_DIR, 'assets', 'live2d'), {
+    dotfiles:'deny',
+    index:false,
+    fallthrough:false
+  }));
   app.use('/assets', express.static(path.join(config.ROOT_DIR, 'assets'), staticOptions(ONE_WEEK)));
   // 只放行 SPA 真正读取的数据文件。
   // 之前整个 data/ 目录对外可读，包括 history.json / projects.json / prompts.json

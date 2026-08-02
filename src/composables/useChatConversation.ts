@@ -3,6 +3,7 @@ import { createMessageId, type CharacterConfig } from '@/config/characters'
 import { useChatStorage } from '@/composables/useChatStorage'
 import { useVoice } from '@/composables/useVoice'
 import {
+  inferEmotion,
   isAbortError,
   parseNdjsonResponse,
   streamErrorMessage,
@@ -28,6 +29,8 @@ interface ChatConversationOptions {
   useHostConfig: Ref<boolean>
   setBusy: (value: boolean) => void
   onError: (message: string, kind?: string, timeout?: number) => void
+  /** 流式回复文本驱动情绪（无配音时替代 TTS 情绪通道）；情绪变化才回调 */
+  onStreamEmotion?: (emotion: string) => void
   nearBottom: () => boolean
   scrollBottom: () => void
 }
@@ -65,6 +68,21 @@ export function useChatConversation(options: ChatConversationOptions) {
     options.voice.ensureAudioContext()
 
     const characterId = options.activeChar.value
+    const streamEmotion = { value: 'neutral' }
+    const maybeStreamEmotion = (replyText: string) => {
+      if (!options.onStreamEmotion || replyText.length < 4) return
+      const emotion = inferEmotion(replyText, characterId)
+      if (emotion !== streamEmotion.value) {
+        streamEmotion.value = emotion
+        options.onStreamEmotion(emotion)
+      }
+    }
+    const resetStreamEmotion = () => {
+      if (options.onStreamEmotion && streamEmotion.value !== 'neutral') {
+        streamEmotion.value = 'neutral'
+        options.onStreamEmotion('neutral')
+      }
+    }
     const messages = options.storage.messages(characterId)
     replyAnnouncement.value = ''
     messages.push({ role: 'user', content: text, mid: '', stopped: false })
@@ -123,6 +141,7 @@ export function useChatConversation(options: ChatConversationOptions) {
         }
         if (event.type !== 'token') return
         assistant.content += event.content || ''
+        maybeStreamEmotion(assistant.content)
         options.voice.append(event.content || '')
         if (options.nearBottom()) options.scrollBottom()
       })
@@ -146,6 +165,7 @@ export function useChatConversation(options: ChatConversationOptions) {
         ))
       }
     } finally {
+      resetStreamEmotion()
       options.storage.trim(characterId)
       options.storage.save()
       streamingMid.value = ''

@@ -59,6 +59,9 @@
 
 - `ChatApiSettings.vue`：本地/API 供应商切换、连接测试与模型发现。
 - `ChatCharacterStage.vue`：角色切换、立绘与按需 Live2D 生命周期。用户显式启用前不得下载大贴图；启用后可预加载小型原生动作，保证首次点击也有反馈。宁宁打包源模型的呆毛、头部、脸、身体、两侧与裙摆及对应原生动作；`wl-live2d` 在缩放后可能把 DOM 点击全部报为 Body，因此由可见舞台分区稳定分派到源码动作，Cubism hit test 只作未测量时的回退。动作调用的第三个参数是 `MotionPriority`，点击必须传 `FORCE`（数值 `3`）；传 `null` 会静默拒绝。互动提示与高亮只能在渲染器返回动作已启动后显示；同一动作播放期间再次点击应提示“动作进行中”，只有无活动动作时的拒绝才报失败。宁宁的 `expression1` 至 `expression5` 是模型自带的校服、常服、睡衣、COS 服与魔女服，不是情绪表情；只能由显式换装控件切换并持久化，聊天或 TTS 情绪不得调用。不得打包或播放源项目 WAV（角色配音仍由现有 TTS 负责），不得用参数生成伪动作或伪换装。
+- 情绪表演运行时 `src/utils/emotionRuntime.ts`（纯 TS，无 DOM）：由 ChatCharacterStage 创建并 attach 到 useLive2D，`beforeModelUpdate` 里批量写入表情参数。只驱动 cdi3 中"按键切换"表情零件（脸红/害羞/泪珠/期待眼珠/高光等）与标准参数（眉毛/微笑眼/嘴型），不得驱动 `ParamCheek21-24/40-43` 动作切换、`Param37/62-64` 动画参数与换装参数。`pushEmotion('neutral')` 立即开始淡出（回合结束回中性），不保持强度。归零的参数自动交还给 idle 动作，避免常驻覆写压死待机动画。反应脉冲（用户发消息→期待眼珠+眉微抬 1.1s）独立于情绪强度。测试 `test-emotion-runtime.js` 已在 validate 链。
+- 情绪输入有两条通道：TTS 逐句情绪（useVoice `onExpression`，配音开启时为准）与流式回复文本情绪（useChatConversation `onStreamEmotion`，无配音时兜底，文本 ≥4 字、情绪变化才回调，回合结束复位 neutral）。两者互斥：`onStreamEmotion` 在 ChatView 侧检查 `autoVoice` 后让位 TTS 通道。
+- 夏目 Live2D（`assets/live2d/natsume/`，源目录 `E:/code/live2d/星光咖啡馆与死神之蝶—四季夏目/`）：源目录只有单个导出态 `Moc.moc3`/`model.json`，没有可编辑 `.cmo3`、服装 Expressions 或分服装模型。逐张审核 14 张源贴图确认：只有 `Textures_.png` 至 `Textures__7.png` 包含绑定到 moc3 的咖啡店制服网格；`Textures__8.png` 至 `Textures__13.png` 中的旗袍、常服等是完整静态立绘/其他角色素材，不是可变形服装网格，不能通过 Part、Drawable 或参数切成 Live2D 衣装。moc3 无 `ParamMouthOpenY`，口型由 `ParamMouthForm3`（-0.5..0）驱动，`MOUTH_PARAMS` 按角色映射；无 Expressions，衣橱只能公开咖啡店制服。严禁再按 `Part2-28` 连续编号猜服装、驱动 `Param37`/`Param52-75` 拼装衣服、强制 Drawable opacity，或把静态立绘宣称为 Live2D 换装；这些层属于动作、遮罩、叠加素材或未绑定图片，会造成缺衣、串层并破坏原生动作。若要增加夏目衣装，只接受原作者可编辑 Cubism 工程、已绑定的独立 `.moc3`/`.model3.json`，或重新在 Cubism 中完成网格绑定；仅使用现有静态立绘时必须明确降级为静态图片切换。情绪参数表 `NATSUME_RUNTIME_CONFIG` 只驱动 `ParamCheek`/`ParamBrow*`（不碰 `ParamEyeLOpen/Open2` 眨眼组、嘴型与数字物理参数），reaction 脉冲为脸红+眉微抬；互动分区与 `NATSUME_INTERACTIONS`/`NATSUME_HIT_AREA_MAP` 按角色切换。源目录动作 WAV 一律不打包（宁宁、夏目同约束）。
 - `useChatStorage.ts`：会话、草稿、供应商配置和 Live2D 偏好持久化。
 
 `useVoice.ts` 会保留聊天气泡中的舞台提示，但必须在翻译和 TTS 前剥离；提示文本用于情绪推断。短促片段需要并句，单句合成必须有有限超时和重试，并显示上游失败明细；超时或队列繁忙时不得重复提交同一句。配音播放层必须遵守：句子缓冲上限 44 字（更长文本 GPT-SoVITS 易复读/单句 GPU 时间线性上涨），首句 ≥8 字即放行（`firstThreshold: 8`，开场白不等满 12 字）；任何结束路径（含超时/失败重试）必须先 `pause()`+清除 `src` 再开新元素，严禁旧元素后台存活与重试元素叠播；只有"加载阶段失败"（还没出声）允许重试一次，已开播后断流或超时一律不重试，避免整句从头重复；超时时若请求仍活着（`networkState===2`）延展等待而非判死。`GET /api/tts` 服务端对同句生成做 in-flight 合并（`inFlightTts`），重试/多访客同句不重复占 GPU 队列；上游合成超时 180s（卡死更快释放 GPU 队列）。长对话不 400：`POST /api/chat` 对超 24 条或 12000 字的消息从旧到新平滑裁剪（body 上限 256kb，前端最多 20 条×1200 字，裁剪必须在 body 解析之后真正接管）。
@@ -157,7 +160,18 @@
 
 验证：`npm run validate` 全绿、`npm run build` 通过、全量 189 个 Playwright 用例通过（`--workers=3`）。
 
+### 已完成：角色房间与 Live2D 收尾（2026-08-02）
+
+1. **角色比例实机校准**：新增 `CharacterConfig.live2dLayout`；宁宁底部基线下移，夏目独立缩放避免头发与鞋底在平板/手机裁切。桌面 `1440×960`、窄桌面 `1280×800`、平板 `768×1024`、手机 `390×844` 均检查无横向滚动、无裁切，双角色底部基线一致。
+2. **日系二次元房间视觉收尾**：聊天舞台改用 `--stage-violet`/`--stage-amber`，角色卡标记、选中 Tab、房间铭牌和樱花前景按角色收敛；顶部副标题弱化供应商术语，窄屏补底部呼吸空间，浅色主题修正衣橱徽章与快捷键提示对比度。
+3. **真实 TTS 情绪回归**：启动本机 GPT-SoVITS，宁宁/夏目各生成 `neutral/gentle/happy/shy/serious/sad` 六条真实日语音频，全部通过 WAV 质量门槛；新增 `regress-voice-emotions.js` 与 `regress-chat-voice-live.mjs`，真实 `/api/tts` 播放路径验证口型、RMS/peak、情绪切换和 neutral 平滑淡出。
+4. **SoulLink 原生动画适配**：新增 `live2dNativeAdapter.ts`，`RuntimeSnapshot.nativeAnimation` 现在经过角色级、失败关闭的白名单 adapter；参数抑制、优先级、token 去重、过期模型和定时释放均有纯测试覆盖。当前宁宁五个 Expression 仍仅作衣装，夏目无 Expressions，未把任何未验证的 Tap/Idle/Start/Leave 动作冒充情绪动作。
+
+验证：`npm run typecheck:app`、`npm run build`、`node --test scripts/tests/test-emotion-runtime.js`、Live2D 定向 E2E 2/2、真实 TTS 12/12 音频质量回归、真实浏览器配音路径 12/12 均通过。
+
 ### 待办
+
+当前无本轮遗留事项。未来只有在取得模型作者提供的、明确标注为情绪用途的原生 motion/expression 后，才增加非空 SoulLink native allowlist。
 
 暂缓（已评估有结论，条件具备再动）：
 

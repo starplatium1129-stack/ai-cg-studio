@@ -1,9 +1,12 @@
 import { ref } from 'vue'
 import {
+  CHARACTERS,
   DEFAULT_LIVE2D_OUTFIT,
   findLive2DOutfit,
-  type Live2DOutfitId,
+  findNatsumeOutfit,
 } from '@/config/characters'
+import type { EmotionRuntime } from '@/utils/emotionRuntime'
+import { createLive2dNativeAdapter } from '@/utils/live2dNativeAdapter'
 
 export interface Live2DStatus {
   state: 'checking' | 'idle' | 'static' | 'loading' | 'ready' | 'degraded' | 'fallback'
@@ -49,7 +52,11 @@ interface Live2DModel {
 interface Live2DApp {
   app?: {
     screen?: { width: number; height: number }
-    ticker?: { started: boolean; start(): void; stop(): void }
+    ticker?: {
+      started: boolean
+      start(): void
+      stop(): void
+    }
   }
   onModelLoaded(callback: (model: Live2DModel) => void): void
   onModelError(callback: (error: Error) => void): void
@@ -73,6 +80,30 @@ const INTERACTION_MOTIONS: Record<string, Live2DInteraction> = {
   RightChest: { group: 'TapRightChest', hint: '碰到了画面右侧胸前，宁宁有点生气', duration: 3_500 },
   Skirt: { group: 'TapSkirt', hint: '触发了裙摆互动', duration: 9_000 },
   Body: { group: 'TapBody', hint: '轻碰了身体', duration: 5_000 },
+}
+
+// 夏目模型（Live2DViewerEX 工坊解包）的互动区：头/手/胸/裙/腿/脚/外框。
+// 动作分组已由 natsume-live2d-import.py 重命名为宁宁同款英文名。
+const NATSUME_INTERACTIONS: Record<string, Live2DInteraction> = {
+  Head: { group: 'TapHead', hint: '摸了摸夏目的头', duration: 5_000 },
+  Hand: { group: 'TapHand', hint: '握了握夏目的手', duration: 5_000 },
+  Chest: { group: 'TapChest', hint: '夏目微微皱眉，咖啡差点洒了', duration: 4_000 },
+  Skirt: { group: 'TapSkirt', hint: '触发了裙摆互动', duration: 9_000 },
+  Leg: { group: 'TapLeg', hint: '夏目别开了视线', duration: 5_000 },
+  Foot: { group: 'TapFoot', hint: '夏目轻轻缩了缩脚', duration: 4_000 },
+  Frame: { group: 'TapFrame', hint: '夏目抬眼看了你一下', duration: 5_000 },
+}
+// 夏目 model3.json 的 HitAreas 是中文名（解包保留），映射到互动键
+const NATSUME_HIT_AREA_MAP: Record<string, string> = {
+  外框: 'Frame', 摸腿: 'Leg', 摸头: 'Head', 摸手: 'Hand',
+  摸胸: 'Chest', 摸脚: 'Foot', 摸裙子: 'Skirt',
+}
+
+// 夏目 model3.json 的 LipSync 组指向 ParamMouthOpenY，但 moc3 实际没有该参数；
+// 说话动作（Idle_6 等）用 ParamMouthForm3（-0.5..0）驱动嘴部开合。
+const MOUTH_PARAMS: Record<string, { id: string; scale: number }> = {
+  nene: { id: 'ParamMouthOpenY', scale: 1 },
+  natsume: { id: 'ParamMouthForm3', scale: -0.5 },
 }
 
 function errorMessage(error: unknown): string {
@@ -120,7 +151,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   const loadedCharacter = ref('')
   const mouthValue = ref(0)
   const interactionHint = ref('')
-  const outfit = ref<Live2DOutfitId>(DEFAULT_LIVE2D_OUTFIT)
+  const outfit = ref<string>(DEFAULT_LIVE2D_OUTFIT)
 
   // 内部可变状态（不需要响应式）
   let catalog: Live2DCatalog | null = null
@@ -132,6 +163,13 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   let onResize: (() => void) | null = null
   let visibilityHandler: (() => void) | null = null
   let pointerClickHandler: ((event: MouseEvent) => void) | null = null
+  let pointerGazeHandler: ((event: PointerEvent) => void) | null = null
+  let pointerGazeLeaveHandler: (() => void) | null = null
+  let pointerGazeX = 0
+  let pointerGazeY = 0
+  let pointerGazeCurrentX = 0
+  let pointerGazeCurrentY = 0
+  let pointerGazeActive = false
   let activeInteraction = ''
   let interactionTimer = 0
   let mouthHooked = false
@@ -139,6 +177,10 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   let hostEl: HTMLElement | null = null
   let stageEl: HTMLElement | null = null
   let hostSelector = '#live2dHost'
+  let emotionRuntime: EmotionRuntime | null = null
+  const nativeAnimationAdapter = createLive2dNativeAdapter()
+  const emotionCurrent: Record<string, number> = {}
+  let lastParamFrame = 0
 
   function setState(state: Live2DStatus['state'], text: string, detail = '', retryable = false) {
     if (hostEl) { hostEl.dataset.state = state; hostEl.dataset.error = detail; hostEl.dataset.retryable = retryable ? 'true' : 'false' }
@@ -156,7 +198,10 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     if (!hostEl.id) hostEl.id = 'live2dHost'
     hostSelector = '#' + hostEl.id
     character.value = char || character.value
-    outfit.value = findLive2DOutfit(options.outfit || outfit.value).id
+    bindPointerGaze()
+    outfit.value = char === 'natsume'
+      ? findNatsumeOutfit(options.outfit || outfit.value).id
+      : findLive2DOutfit(options.outfit || outfit.value).id
     setState('checking', '检查 Live2D…')
     try {
       const response = await fetch('/api/live2d-status', { cache: 'no-store' })
@@ -194,6 +239,15 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
       setState('idle', '启用 Live2D', '点击后才下载并加载动态模型', true)
       return
     }
+    if (ready.value && loadedCharacter.value === char) {
+      setVisible(true); setState('ready', 'Live2D 已连接')
+      setPaused(document.hidden); layout(); return
+    }
+    // A character switch can happen while the previous model is still loading.
+    // Wait for that request to settle, then retry the character that is still
+    // selected instead of returning the obsolete request's result.
+    if (loading) await loading
+    if (destroyed.value || !enabled.value || char !== character.value) return
     if (ready.value && loadedCharacter.value === char) {
       setVisible(true); setState('ready', 'Live2D 已连接')
       setPaused(document.hidden); layout(); return
@@ -318,16 +372,62 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   function bindMouthOverride() {
     if (!model?.internalModel || mouthHooked) return
     mouthHooked = true
-    model.internalModel.on('beforeModelUpdate', applyMouth)
+    model.internalModel.on('beforeModelUpdate', applyParameters)
   }
 
-  function applyMouth() {
+  function attachEmotionRuntime(runtime: EmotionRuntime | null) {
+    emotionRuntime = runtime
+    nativeAnimationAdapter.reset()
+    for (const key of Object.keys(emotionCurrent)) delete emotionCurrent[key]
+    lastParamFrame = 0
+  }
+
+  function applyParameters() {
     if (!model?.visible) return
     try {
       // Cubism motion/physics run before this event. Write with full weight so
-      // their idle mouth value cannot overwrite the audio amplitude.
+      // their idle values cannot overwrite the audio amplitude or emotion.
       const core = model.internalModel?.coreModel
-      if (speaking) core?.setParameterValueById('ParamMouthOpenY', mouthValue.value, 1)
+      if (!core) return
+      if (speaking) {
+        const mouth = MOUTH_PARAMS[character.value] ?? MOUTH_PARAMS.nene
+        core.setParameterValueById(mouth.id, mouthValue.value * mouth.scale, 1)
+      }
+      if (!emotionRuntime) return
+      const now = performance.now()
+      const dt = Math.min(0.12, (now - lastParamFrame) / 1000 || 1 / 60)
+      lastParamFrame = now
+      emotionRuntime.update(dt)
+      if (stageEl) stageEl.dataset.emotionIntensity = emotionRuntime.intensity().toFixed(3)
+      const frame = emotionRuntime.performanceFrame()
+      if (!prefersReducedMotion()) {
+        void nativeAnimationAdapter.apply(frame.nativeAnimation, model, character.value)
+      }
+      const targets = { ...frame.live2dParams, ...emotionRuntime.targets() }
+      for (const id of nativeAnimationAdapter.activeSuppressedParamIds()) {
+        delete targets[id]
+        delete emotionCurrent[id]
+      }
+      pointerGazeCurrentX += (pointerGazeX - pointerGazeCurrentX) * Math.min(1, dt * 7)
+      pointerGazeCurrentY += (pointerGazeY - pointerGazeCurrentY) * Math.min(1, dt * 7)
+      if (pointerGazeActive || Math.abs(pointerGazeCurrentX) > 0.01 || Math.abs(pointerGazeCurrentY) > 0.01) {
+        // While the cursor is present, preserve the precise native mouse gaze.
+        // SoulLink resumes only after the pointer has left the stage.
+        targets.ParamEyeBallX = pointerGazeCurrentX
+        targets.ParamEyeBallY = pointerGazeCurrentY
+      }
+      for (const [id, target] of Object.entries(targets)) {
+        const current = emotionCurrent[id] ?? 0
+        const next = current + (target - current) * Math.min(1, dt * 6)
+        emotionCurrent[id] = next
+        core.setParameterValueById(id, next, 1)
+      }
+      // 归零的参数交还给 idle 动作，避免表情参数常驻覆写把待机动画压死
+      for (const id of Object.keys(emotionCurrent)) {
+        if (targets[id] === 0 && Math.abs(emotionCurrent[id]) < 0.004) {
+          delete emotionCurrent[id]
+        }
+      }
     } catch {}
   }
 
@@ -338,6 +438,25 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     cvs.dataset.contextEvents = '1'
     cvs.addEventListener('webglcontextlost', (e) => { e.preventDefault(); fallback('Live2D 图形上下文已暂停', 'WebGL context lost') })
     cvs.addEventListener('webglcontextrestored', () => retry())
+  }
+
+  function bindPointerGaze() {
+    if (!stageEl || pointerGazeHandler) return
+    pointerGazeHandler = (event) => {
+      if (event.pointerType === 'touch') return
+      const rect = stageEl?.getBoundingClientRect()
+      if (!rect?.width || !rect.height) return
+      pointerGazeX = Math.max(-1, Math.min(1, ((event.clientX - rect.left) / rect.width - 0.5) * 2))
+      pointerGazeY = Math.max(-1, Math.min(1, ((event.clientY - rect.top) / rect.height - 0.5) * -2))
+      pointerGazeActive = true
+    }
+    pointerGazeLeaveHandler = () => {
+      pointerGazeActive = false
+      pointerGazeX = 0
+      pointerGazeY = 0
+    }
+    stageEl.addEventListener('pointermove', pointerGazeHandler)
+    stageEl.addEventListener('pointerleave', pointerGazeLeaveHandler)
   }
 
   function worldPoint(event: MouseEvent) {
@@ -358,6 +477,15 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     if (!rect?.width || !rect.height) return null
     const x = (event.clientX - rect.left) / rect.width
     const y = (event.clientY - rect.top) / rect.height
+    // 夏目：坐姿咖啡馆系模型，按 头/手/胸/裙/腿/脚 分区
+    if (character.value === 'natsume') {
+      if (y < 0.14) return NATSUME_INTERACTIONS.Head
+      if (y < 0.26) return NATSUME_INTERACTIONS.Hand
+      if (y < 0.38) return NATSUME_INTERACTIONS.Chest
+      if (y < 0.55) return NATSUME_INTERACTIONS.Skirt
+      if (y < 0.72) return NATSUME_INTERACTIONS.Leg
+      return NATSUME_INTERACTIONS.Foot
+    }
     // These zones follow the full visible model after the canvas is fitted
     // into the stage: face, chest, skirt, then exposed legs/body.
     if (y < 0.12) return INTERACTION_MOTIONS.Hair
@@ -384,10 +512,12 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     const hitAreas = point && typeof model?.hitTest === 'function'
       ? model.hitTest(point.x, point.y)
       : []
-    const interaction = hitAreas.map(area => INTERACTION_MOTIONS[area])
+    const interaction = hitAreas
+      .map(area => (character.value === 'natsume' ? NATSUME_HIT_AREA_MAP[area] : area))
+      .map(area => (character.value === 'natsume' ? NATSUME_INTERACTIONS[area] : INTERACTION_MOTIONS[area]))
       .find((item): item is Live2DInteraction => Boolean(item))
     if (interaction) return interaction
-    return interaction || INTERACTION_MOTIONS.Head
+    return character.value === 'natsume' ? NATSUME_INTERACTIONS.Head : INTERACTION_MOTIONS.Head
   }
 
   function markInteractionStarted(interaction: Live2DInteraction) {
@@ -441,7 +571,9 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
 
   function bindInteractionEvents() {
     if (!stageEl || pointerClickHandler) return
-    interactionHint.value = '点击呆毛、头部、脸、身体、两侧或裙摆可触发原生互动'
+    interactionHint.value = character.value === 'natsume'
+      ? '移动鼠标可跟随视线；点击头部、手、胸前、裙子、腿或脚可互动'
+      : '移动鼠标可跟随视线；点击呆毛、头部、脸、身体、两侧或裙摆可互动'
     pointerClickHandler = (event) => {
       if ((event.target as HTMLElement | null)?.closest('button, a, input, select, textarea')) return
       playInteraction(interactionAt(event))
@@ -458,8 +590,17 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
       const sx = model.scale?.x || 1, sy = model.scale?.y || 1
       const nw = model.width / sx, nh = model.height / sy
       if (!nw || !nh) return
-      const scale = Math.min(sw / nw, sh / nh) * 0.99
-      model.scale.set(scale); model.x = (sw - nw * scale) / 2; model.y = sh - nh * scale
+      // The moc bounds include different transparent margins, so each model
+      // owns an explicit visual calibration rather than sharing one multiplier.
+      const profile = CHARACTERS[character.value]?.live2dLayout ?? {
+        scale: 1,
+        anchorX: 0.5,
+        bottomOffset: 0,
+      }
+      const scale = Math.min(sw / nw, sh / nh) * profile.scale
+      model.scale.set(scale)
+      model.x = (sw - nw * scale) * profile.anchorX
+      model.y = sh - nh * scale + profile.bottomOffset
     } catch (e) { fallback('Live2D 布局失败', errorMessage(e)) }
   }
 
@@ -468,11 +609,13 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     try {
       const wrapper = hostEl.firstElementChild as HTMLElement | null
       if (!wrapper) return
-      const ws = hostEl.clientWidth / 420, hs = hostEl.clientHeight / 610
-      // The canvas is 420×610 while the chat portrait is often shorter than
-      // 610px. Fit both dimensions instead of fitting width then clipping the
-      // character's head and upper body above the stage.
-      const scale = Math.min(1.08, Math.min(ws, hs) * 0.98)
+      // 用实际 canvas 尺寸做比例（不同模型画布不同），不硬编码 420×610
+      const cvs = hostEl.querySelector('canvas') as HTMLCanvasElement | null
+      const cw = (cvs && (parseFloat(cvs.style.width) || cvs.width)) || 420
+      const ch = (cvs && (parseFloat(cvs.style.height) || cvs.height)) || 610
+      const ws = hostEl.clientWidth / cw, hs = hostEl.clientHeight / ch
+      // 舞台按角色卡片尺寸缩放画布；上限放宽到 1.28，让模型尽量撑满
+      const scale = Math.min(1.28, Math.min(ws, hs) * 0.995)
       wrapper.style.transform = `translateX(-50%) scale(${scale > 0 ? scale : 1})`
       fit()
     } catch {}
@@ -507,6 +650,12 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   }
 
   async function setOutfit(id: string): Promise<boolean> {
+    // 夏目当前只有源模型自带的咖啡店制服，没有可切换衣装。
+    if (character.value === 'natsume') {
+      const target = findNatsumeOutfit(id)
+      outfit.value = target.id
+      return true
+    }
     const target = findLive2DOutfit(id)
     outfit.value = target.id
     if (!ready.value || !model?.visible) return true
@@ -534,14 +683,19 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     // Do not depend solely on the internal event emitter. Some Cubism builds
     // skip it for a frame after an outfit change, which made speech look
     // frozen even while the audio analyser was producing amplitudes.
-    applyMouth()
+    applyParameters()
     if (mouthValue.value > 0) resumeRendering()
+  }
+
+  function setAudioLevel(level: number, peak = level) {
+    emotionRuntime?.setAudioLevel(level, peak)
   }
 
   // 换装和口型都依赖 Pixi ticker。某些 Cubism 模型在切换 Expression 后会停掉 idle
   // motion；语音开始时显式恢复渲染，避免出现“有声音但立绘冻结”。
   function setSpeaking(value: boolean) {
     speaking = value
+    emotionRuntime?.setSpeaking(value)
     if (value) resumeRendering()
     else mouthValue.value = 0
   }
@@ -554,11 +708,28 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   function destroyRuntime() {
     clearTimeout(loadTimer); loadTimer = 0
     clearTimeout(interactionTimer); interactionTimer = 0; activeInteraction = ''
-    ready.value = false; mouthValue.value = 0; mouthHooked = false; speaking = false; model = null
+    // Stop Pixi before clearing model state. Otherwise an authored motion can
+    // tick once during character switching and read arrays already released by
+    // wl-live2d's destroy path.
+    const currentApp = app
+    const currentModel = model
+    const ticker = currentApp?.app?.ticker
+    if (ticker?.started) ticker.stop()
+    if (currentModel) currentModel.visible = false
+    ready.value = false; mouthValue.value = 0; mouthHooked = false; speaking = false
+    for (const key of Object.keys(emotionCurrent)) delete emotionCurrent[key]
+    nativeAnimationAdapter.reset()
+    lastParamFrame = 0
     loadedCharacter.value = ''
     stageEl?.classList.remove('live2d-ready')
-    if (app && typeof app.destroy === 'function') { try { app.destroy() } catch {} }
+    if (currentApp && typeof currentApp.destroy === 'function') { try { currentApp.destroy() } catch {} }
+    model = null
     app = null
+    pointerGazeCurrentX = 0
+    pointerGazeCurrentY = 0
+    pointerGazeX = 0
+    pointerGazeY = 0
+    pointerGazeActive = false
     if (hostEl) hostEl.innerHTML = ''
   }
 
@@ -568,12 +739,16 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     if (onResize) window.removeEventListener('resize', onResize)
     if (visibilityHandler) { document.removeEventListener('visibilitychange', visibilityHandler); visibilityHandler = null }
     if (stageEl && pointerClickHandler) stageEl.removeEventListener('click', pointerClickHandler)
+    if (stageEl && pointerGazeHandler) stageEl.removeEventListener('pointermove', pointerGazeHandler)
+    if (stageEl && pointerGazeLeaveHandler) stageEl.removeEventListener('pointerleave', pointerGazeLeaveHandler)
     pointerClickHandler = null
+    pointerGazeHandler = null
+    pointerGazeLeaveHandler = null
   }
 
   return {
     ready, enabled, character, loadedCharacter, mouthValue, interactionHint, outfit,
-    init, enable, disable, setCharacter, setMouth, setOutfit, setSpeaking,
-    setPaused, layout, retry, destroy,
+    init, enable, disable, setCharacter, setMouth, setAudioLevel, setOutfit, setSpeaking,
+    attachEmotionRuntime, setPaused, layout, retry, destroy,
   }
 }

@@ -39,7 +39,7 @@ try {
   const complete = live2d.inspectModel(root, 'nene');
   assert.strictEqual(complete.available, true);
   assert.strictEqual(complete.source, 'project-local');
-  assert.strictEqual(complete.modelUrl, '/assets/live2d/nene/nene.model3.json');
+  assert.strictEqual(complete.modelUrl, '/assets/live2d-current/nene/nene.model3.json');
   assert.deepStrictEqual(complete.missing, []);
 
   const incompleteDir = path.join(root, 'natsume');

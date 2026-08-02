@@ -25,13 +25,23 @@ export interface PersistedChatState {
     webSearchEnabled: boolean
     live2dEnabled: boolean
     live2dOutfit: string
+    live2dOutfits: Record<string, string>
     autoVoice: boolean
     volume: number
     drafts: Record<string, string>
   }
 }
 
-const LIVE2D_OUTFIT_IDS = new Set(['school', 'casual', 'sleepwear', 'cosplay', 'witch'])
+const NENE_OUTFIT_IDS = new Set(['school', 'casual', 'sleepwear', 'cosplay', 'witch'])
+const NATSUME_OUTFIT_IDS = new Set(['natsume-cafe'])
+
+function normalizedOutfit(character: string, candidate: unknown): string {
+  const outfit = text(candidate, 40)
+  if (character === 'natsume') {
+    return NATSUME_OUTFIT_IDS.has(outfit) ? outfit : 'natsume-cafe'
+  }
+  return NENE_OUTFIT_IDS.has(outfit) ? outfit : 'school'
+}
 
 export interface NormalizedChatStorage {
   state: PersistedChatState
@@ -100,6 +110,13 @@ export function normalizeChatStorage(
     ? Math.max(0, Math.min(100, Math.round(rawVolume)))
     : 80
   const outfitCandidate = text(settings.live2dOutfit, 40)
+  const rawOutfits = isRecord(settings.live2dOutfits) ? settings.live2dOutfits : {}
+  const live2dOutfits: Record<string, string> = {}
+  for (const id of ids) {
+    // v3 stored one outfit string. It belonged to the active room, so only
+    // use it as the migration fallback for that character.
+    live2dOutfits[id] = normalizedOutfit(id, rawOutfits[id] ?? (id === active ? outfitCandidate : ''))
+  }
 
   // API 配置：逐层取用户已保存的值；只有"从未配置过"（三个字段全空）时
   // 才用本地代理（CLIProxyAPI）默认，保证开箱即用。
@@ -141,7 +158,8 @@ export function normalizeChatStorage(
         apiKey: finalApiKey,
         webSearchEnabled: settings.webSearchEnabled !== false,
         live2dEnabled: settings.live2dEnabled === true,
-        live2dOutfit: LIVE2D_OUTFIT_IDS.has(outfitCandidate) ? outfitCandidate : 'school',
+        live2dOutfit: live2dOutfits[active],
+        live2dOutfits,
         autoVoice: settings.autoVoice !== false,
         volume,
         drafts: normalizedDrafts,

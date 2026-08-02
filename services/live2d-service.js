@@ -95,7 +95,7 @@ function inspectModel(rootDir, character) {
     });
     result.available = result.missing.length === 0;
     result.modelUrl = result.available
-        ? '/assets/live2d/' + encodeURIComponent(character) + '/' + manifestName
+        ? '/assets/live2d-current/' + encodeURIComponent(character) + '/' + manifestName
         : '';
     result.source = result.available ? 'project-local' : 'incomplete-model';
     result.canvas = { width: 420, height: 610 };
