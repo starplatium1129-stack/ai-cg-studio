@@ -45,7 +45,8 @@ interface Live2DModel {
     settings?: { hitAreas?: unknown[] }
   }
   hitTest?(x: number, y: number): string[]
-  motion?(group: string, index: number, priority?: number): Promise<boolean> | boolean
+  focus?(x: number, y: number, instant?: boolean): void
+  motion?(group: string, index?: number, priority?: number): Promise<boolean> | boolean
   expression?(name: string): Promise<boolean> | boolean
 }
 
@@ -85,13 +86,13 @@ const INTERACTION_MOTIONS: Record<string, Live2DInteraction> = {
 // 夏目模型（Live2DViewerEX 工坊解包）的互动区：头/手/胸/裙/腿/脚/外框。
 // 动作分组已由 natsume-live2d-import.py 重命名为宁宁同款英文名。
 const NATSUME_INTERACTIONS: Record<string, Live2DInteraction> = {
-  Head: { group: 'TapHead', hint: '摸了摸夏目的头', duration: 5_000 },
-  Hand: { group: 'TapHand', hint: '握了握夏目的手', duration: 5_000 },
-  Chest: { group: 'TapChest', hint: '夏目微微皱眉，咖啡差点洒了', duration: 4_000 },
-  Skirt: { group: 'TapSkirt', hint: '触发了裙摆互动', duration: 9_000 },
-  Leg: { group: 'TapLeg', hint: '夏目别开了视线', duration: 5_000 },
-  Foot: { group: 'TapFoot', hint: '夏目轻轻缩了缩脚', duration: 4_000 },
-  Frame: { group: 'TapFrame', hint: '夏目抬眼看了你一下', duration: 5_000 },
+  Head: { group: 'TapHead', hint: '摸了摸夏目的头', duration: 11_750 },
+  Hand: { group: 'TapHand', hint: '握了握夏目的手', duration: 6_317 },
+  Chest: { group: 'TapChest', hint: '夏目微微皱眉，咖啡差点洒了', duration: 6_150 },
+  Skirt: { group: 'TapSkirt', hint: '触发了裙摆互动', duration: 7_717 },
+  Leg: { group: 'TapLeg', hint: '夏目别开了视线', duration: 5_333 },
+  Foot: { group: 'TapFoot', hint: '夏目轻轻缩了缩脚', duration: 6_333 },
+  Frame: { group: 'TapFrame', hint: '夏目抬眼看了你一下', duration: 5_633 },
 }
 // 夏目 model3.json 的 HitAreas 是中文名（解包保留），映射到互动键
 const NATSUME_HIT_AREA_MAP: Record<string, string> = {
@@ -105,6 +106,8 @@ const MOUTH_PARAMS: Record<string, { id: string; scale: number }> = {
   nene: { id: 'ParamMouthOpenY', scale: 1 },
   natsume: { id: 'ParamMouthForm3', scale: -0.5 },
 }
+
+const POINTER_FOCUS_PARAMS = ['ParamAngleX', 'ParamAngleY', 'ParamEyeBallX', 'ParamEyeBallY']
 
 function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error)
@@ -163,7 +166,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   let onResize: (() => void) | null = null
   let visibilityHandler: (() => void) | null = null
   let pointerClickHandler: ((event: MouseEvent) => void) | null = null
-  let pointerGazeHandler: ((event: PointerEvent) => void) | null = null
+  let pointerGazeHandler: ((event: MouseEvent) => void) | null = null
   let pointerGazeLeaveHandler: (() => void) | null = null
   let pointerGazeX = 0
   let pointerGazeY = 0
@@ -408,13 +411,23 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
         delete targets[id]
         delete emotionCurrent[id]
       }
-      pointerGazeCurrentX += (pointerGazeX - pointerGazeCurrentX) * Math.min(1, dt * 7)
-      pointerGazeCurrentY += (pointerGazeY - pointerGazeCurrentY) * Math.min(1, dt * 7)
-      if (pointerGazeActive || Math.abs(pointerGazeCurrentX) > 0.01 || Math.abs(pointerGazeCurrentY) > 0.01) {
-        // While the cursor is present, preserve the precise native mouse gaze.
-        // SoulLink resumes only after the pointer has left the stage.
-        targets.ParamEyeBallX = pointerGazeCurrentX
-        targets.ParamEyeBallY = pointerGazeCurrentY
+      if (typeof model.focus === 'function') {
+        // pixi-live2d-display already maps focus to the model's authored eye
+        // and head parameters. Do not overwrite those values with SoulLink.
+        if (pointerGazeActive) {
+          for (const id of POINTER_FOCUS_PARAMS) {
+            delete targets[id]
+            delete emotionCurrent[id]
+          }
+        }
+      } else {
+        // Keep a parameter fallback for runtimes without the native focus API.
+        pointerGazeCurrentX += (pointerGazeX - pointerGazeCurrentX) * Math.min(1, dt * 7)
+        pointerGazeCurrentY += (pointerGazeY - pointerGazeCurrentY) * Math.min(1, dt * 7)
+        if (pointerGazeActive || Math.abs(pointerGazeCurrentX) > 0.01 || Math.abs(pointerGazeCurrentY) > 0.01) {
+          targets.ParamEyeBallX = pointerGazeCurrentX
+          targets.ParamEyeBallY = pointerGazeCurrentY
+        }
       }
       for (const [id, target] of Object.entries(targets)) {
         const current = emotionCurrent[id] ?? 0
@@ -443,20 +456,34 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   function bindPointerGaze() {
     if (!stageEl || pointerGazeHandler) return
     pointerGazeHandler = (event) => {
-      if (event.pointerType === 'touch') return
       const rect = stageEl?.getBoundingClientRect()
       if (!rect?.width || !rect.height) return
       pointerGazeX = Math.max(-1, Math.min(1, ((event.clientX - rect.left) / rect.width - 0.5) * 2))
       pointerGazeY = Math.max(-1, Math.min(1, ((event.clientY - rect.top) / rect.height - 0.5) * -2))
       pointerGazeActive = true
+      const point = worldPoint(event)
+      const focus = model?.focus
+      const nativeFocus = Boolean(point && focus)
+      if (point && focus) focus.call(model, point.x, point.y)
+      if (stageEl) {
+        stageEl.dataset.pointerFocus = nativeFocus ? 'native' : 'fallback'
+        stageEl.dataset.pointerGazeX = pointerGazeX.toFixed(3)
+        stageEl.dataset.pointerGazeY = pointerGazeY.toFixed(3)
+      }
     }
     pointerGazeLeaveHandler = () => {
       pointerGazeActive = false
       pointerGazeX = 0
       pointerGazeY = 0
+      const focus = model?.focus
+      if (focus) {
+        const screen = app?.app?.screen
+        focus.call(model, (Number(screen?.width) || 420) / 2, (Number(screen?.height) || 610) / 2)
+      }
+      if (stageEl) stageEl.dataset.pointerFocus = 'idle'
     }
-    stageEl.addEventListener('pointermove', pointerGazeHandler)
-    stageEl.addEventListener('pointerleave', pointerGazeLeaveHandler)
+    stageEl.addEventListener('mousemove', pointerGazeHandler)
+    stageEl.addEventListener('mouseleave', pointerGazeLeaveHandler)
   }
 
   function worldPoint(event: MouseEvent) {
@@ -554,7 +581,10 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
       interactionFailed(interaction)
       return
     }
-    const result = model.motion(interaction.group, 0, 3)
+    // Natsume's alternate visual layers are authored inside different motion
+    // variants. Let Cubism choose a variant instead of pinning every hit area
+    // to index 0; the motion owns all temporary parameter/layer changes.
+    const result = model.motion(interaction.group, undefined, 3)
     if (isCatchable(result)) {
       result.then((started: unknown) => {
         if (started === true) markInteractionStarted(interaction)
@@ -739,8 +769,8 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     if (onResize) window.removeEventListener('resize', onResize)
     if (visibilityHandler) { document.removeEventListener('visibilitychange', visibilityHandler); visibilityHandler = null }
     if (stageEl && pointerClickHandler) stageEl.removeEventListener('click', pointerClickHandler)
-    if (stageEl && pointerGazeHandler) stageEl.removeEventListener('pointermove', pointerGazeHandler)
-    if (stageEl && pointerGazeLeaveHandler) stageEl.removeEventListener('pointerleave', pointerGazeLeaveHandler)
+      if (stageEl && pointerGazeHandler) stageEl.removeEventListener('mousemove', pointerGazeHandler)
+      if (stageEl && pointerGazeLeaveHandler) stageEl.removeEventListener('mouseleave', pointerGazeLeaveHandler)
     pointerClickHandler = null
     pointerGazeHandler = null
     pointerGazeLeaveHandler = null

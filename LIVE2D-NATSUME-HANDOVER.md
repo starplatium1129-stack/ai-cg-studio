@@ -5,8 +5,8 @@
 ## 当前状态
 
 - 夏目模型已接入角色房间，支持按需加载、原生动作、互动、口型、鼠标视线和 SoulLink 情绪微动。
-- 已稳定验证的衣装只有 `natsume-cafe`（咖啡店制服）。衣橱暂时只公开这一项。
-- 原始工坊 LPK 的元数据只登记了 1 个正式 `costume`，但 moc3 内含多组默认隐藏 Drawable。它们可能是动作零件、表情层或衣装候选，不能仅凭 Part 编号命名。
+- 已稳定验证的衣装只有 `natsume-cafe`（咖啡店制服）。夏目不是多套可选衣装模型，界面只显示单一制服状态。
+- moc3 内含多组默认隐藏 Drawable；它们由原作者写入各个互动 motion 的参数曲线，在动作播放期间临时显隐，表现为服装/叠层效果。它们不是独立 Expression，也不能从衣橱单独选择。
 - 源 LPK：`E:\code\live2d\3295121105\3295121105.lpk`，配置：同目录 `config.json`。
 - 已用公开 `spawner1145/lpk-unpacker` 和原始 `fileId`/`metaData` 完整复核；解密结果与 `assets/live2d/natsume/` 的 moc3、物理和 41 个动作一致。
 
@@ -17,7 +17,8 @@
 - 语音的真实 RMS/peak 已传入 SoulLink `AudioLevelAnalyzer`，逐句情绪继续由 `useVoice.onExpression` 驱动。
 - 夏目 SoulLink profile 只驱动安全的头、身、视线、眉毛与 `ParamCheek`，不碰眨眼、口型和衣装选择参数。
 - 原始 41 个 motion 中共有 750 条 PartOpacity 曲线，所有值都恒为 `1`；曲线存在性不能用来推断衣装开关。
-- `Param52-61`、`Param65`、`Param67-75` 能控制隐藏 Drawable，但单独打开或按连续 Part 分组会出现重复制服、白色遮罩、鞋腿串层等问题。
+- `Param36-61`、`Param62-64` 和 `Param65-75` 属于 moc 内部由动作使用的图层/动画通道；单独打开或按连续 Part 分组会出现重复制服、白色遮罩、鞋腿串层等问题。必须让原生 motion 以完整曲线拥有这些参数。
+- 互动同组动作不能固定播放第 `0` 个变体；当前运行时交给 Cubism 随机选择已导入的原作者 motion 变体，因此摸头、摸裙等会自然触发不同的临时图层效果。
 
 ## 已否决方案
 
@@ -33,12 +34,12 @@
 - 后续应补齐的是模型 Profile 校准、原生 animation adapter 和可重复的截图审核，而不是盲目引入 `runtime-core` 或第二套 PIXI renderer。
 - `@soullink-emotion/live2d-pixi` 基于 PIXI v7；当前 `wl-live2d` 自带渲染依赖，直接并存会重复 PIXI/Cubism 运行时，除非决定整体替换渲染层。
 
-## 后续衣装工作
+## 后续互动工作
 
-1. 建立隔离校准页，暂停 idle、物理、情绪和语音，仅加载 moc3。
-2. 对隐藏 Drawable 做精确白名单组合，而不是按父 Part 全开。
-3. 每个候选至少验证：稳定 1 秒、两轮 idle、互动动作、页面重载、脸/肢体/鞋子/遮罩无串层。
-4. 逐张视觉审核通过后，才加入 `NATSUME_OUTFITS`、存储白名单和 E2E。
+1. 保持 `NATSUME_OUTFITS` 只有 `natsume-cafe`，不再新增猜测式服装候选。
+2. 对每个互动分组验证所有原生 motion 变体，重点检查隐藏图层、脸、肢体、鞋子和遮罩无串层。
+3. 不直接写入 `Param36-75` 或 Part opacity；任何临时服装/叠层效果都必须来自完整 authored motion。
+4. 若将来取得作者提供的正式第二套模型或 Expression，再另行建立真正的换装契约。
 
 ## 相关文件
 

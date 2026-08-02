@@ -11,8 +11,8 @@
     />
     <header class="chat-head">
       <div>
-        <div class="page-kicker">Character room</div>
-        <h1 class="chat-title">角色房间</h1>
+        <div class="page-kicker">人物記録 / Character room</div>
+        <h1 class="chat-title">角色房间 <span>静かな対話室</span></h1>
         <p class="chat-subtitle">让宁宁或夏目陪你聊一会儿。对谈、声线与温暖记忆，都安静珍藏于本机。</p>
       </div>
       <div class="chat-actions">

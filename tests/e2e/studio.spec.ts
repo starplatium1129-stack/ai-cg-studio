@@ -382,14 +382,17 @@ test('Natsume Live2D loads, reacts, and keeps wardrobe memory per character', as
   await expect(page.locator('.avatar-status')).toHaveAttribute('data-state', 'ready', { timeout: 30_000 });
   await expect(page.locator('.live2d-host canvas')).toBeVisible();
   await expect(page.locator('.wardrobe-trigger')).toContainText('咖啡店制服');
-
-  await page.locator('.wardrobe-trigger').click();
-  await expect(page.locator('.wardrobe-option')).toHaveCount(1);
-  await expect(page.getByRole('radio', { name: '咖啡店制服' })).toBeChecked();
+  await expect(page.locator('.wardrobe-static')).toContainText('互动动作含原生图层效果');
+  await expect(page.locator('.wardrobe-menu')).toHaveCount(0);
 
   const stage = page.locator('.portrait-stage');
   const box = await stage.boundingBox();
   if (!box) throw new Error('Natsume portrait stage has no layout box');
+  await page.mouse.move(box.x + box.width * 0.8, box.y + box.height * 0.35);
+  await expect(stage).toHaveAttribute('data-pointer-focus', 'native');
+  await expect(stage).toHaveAttribute('data-pointer-gaze-x', /0\.[4-9]\d*/);
+  await page.mouse.move(box.x - 4, box.y - 4);
+  await expect(stage).toHaveAttribute('data-pointer-focus', 'idle');
   await page.mouse.click(box.x + box.width * 0.5, box.y + box.height * 0.08);
   await expect(page.locator('.live2d-interaction-hint')).toContainText('摸了摸夏目的头');
 

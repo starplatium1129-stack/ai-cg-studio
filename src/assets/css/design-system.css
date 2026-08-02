@@ -40,6 +40,8 @@
   --archive-blue-soft: rgba(24, 189, 232, 0.14);
   --nene-violet:    #b895ff;
   --natsume-amber:  #f2bb68;
+  --editorial-gold: #d7b56d;
+  --editorial-gold-soft: rgba(215, 181, 109, 0.12);
 
   /* ---- Archive & Technical Semantics (Arknights-inspired) ---- */
   --archive-paper:       #f2f5f3;
@@ -103,7 +105,7 @@
   --font-mono:      "JetBrains Mono", "Fira Code", "Consolas", monospace;
   --font-display:   "Noto Sans SC", "HarmonyOS Sans SC", "PingFang SC", "Microsoft YaHei UI", sans-serif;
   /* 装饰性衬线字形槽(汉字水印/占位图标),不用于正文 */
-  --font-serif:     "Noto Serif SC", "Source Han Serif SC", Georgia, serif;
+  --font-serif:     "Yu Mincho", "Hiragino Mincho ProN", "Songti SC", "STSong", "SimSun", Georgia, serif;
 
   /* ---- Font size scale (DESIGN.md §Typography 的运行时实现) ----
      mono-*  机读标签(kicker/badge/seed)   |  label-*  控件与元数据
@@ -239,6 +241,8 @@
   /* 角色品牌色:浅纸上当文字/描边用,必须压深到 AA */
   --nene-violet:    #5a3d9e;
   --natsume-amber:  #7a5210;
+  --editorial-gold: #896121;
+  --editorial-gold-soft: rgba(137, 97, 33, 0.09);
 
   /* 粉紫柔影:读作纸影,不是灰雾 */
   --shadow-sm: 0 1px 3px rgba(158, 90, 130, 0.08);
@@ -927,7 +931,8 @@ pre code { background: none; padding: 0; color: var(--text-primary); }
 .btn-primary {
   background:linear-gradient(135deg,color-mix(in srgb,var(--accent-hover) 56%,var(--accent)),var(--accent));
   color:var(--text-inverse);
-  box-shadow:inset 0 1px 0 color-mix(in srgb,var(--glass-specular) 72%,transparent);
+  border-color:color-mix(in srgb,var(--editorial-gold) 38%,transparent);
+  box-shadow:inset 0 1px 0 color-mix(in srgb,var(--glass-specular) 72%,transparent),inset 0 -1px 0 color-mix(in srgb,var(--editorial-gold) 28%,transparent);
 }
 .btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: var(--shadow-sm); }
 .btn-ghost {

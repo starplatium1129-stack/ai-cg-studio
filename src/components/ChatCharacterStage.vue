@@ -75,7 +75,21 @@
         :class="{ open: wardrobeOpen }"
         @click.stop
       >
+        <div
+          v-if="activeId === 'natsume'"
+          class="wardrobe-trigger wardrobe-static"
+          role="status"
+          aria-label="夏目当前只有咖啡店制服，互动动作会触发原生临时图层效果"
+        >
+          <span class="wardrobe-symbol" aria-hidden="true"><ArchiveIcon name="wardrobe" /></span>
+          <span class="wardrobe-copy">
+            <small>SINGLE COSTUME</small>
+            <strong>{{ activeOutfitLabel }}</strong>
+          </span>
+          <span class="wardrobe-note">互动动作含原生图层效果</span>
+        </div>
         <button
+          v-else
           class="wardrobe-trigger"
           type="button"
           :aria-expanded="wardrobeOpen"
@@ -90,11 +104,11 @@
           <span class="wardrobe-chevron" aria-hidden="true">⌄</span>
         </button>
         <div
-          v-if="wardrobeOpen"
+          v-if="activeId !== 'natsume' && wardrobeOpen"
           :id="`${activeId}-wardrobe-menu`"
           class="wardrobe-menu"
           role="radiogroup"
-          :aria-label="activeId === 'natsume' ? '夏目服装' : '宁宁服装'"
+          aria-label="宁宁服装"
         >
           <span class="wardrobe-menu-title">选择服装</span>
           <button

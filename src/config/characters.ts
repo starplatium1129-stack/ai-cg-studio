@@ -92,7 +92,7 @@ export function findLive2DOutfit(id: string) {
   return LIVE2D_OUTFITS.find(outfit => outfit.id === id) ?? LIVE2D_OUTFITS[0]
 }
 
-/** 夏目当前只有源模型自带的咖啡店制服，没有可验证的换装层。 */
+/** 夏目只有源模型自带的咖啡店制服；互动 motion 的临时叠层不属于可选换装。 */
 export const NATSUME_OUTFITS = [
   {
     id: 'natsume-cafe', label: '咖啡店制服',
