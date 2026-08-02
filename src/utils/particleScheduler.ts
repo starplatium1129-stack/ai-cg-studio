@@ -20,8 +20,13 @@ function tick(now: number): void {
   rafId = 0
   if (document.hidden) return
   for (const item of particles.values()) {
-    if (now < item.nextAt) continue
-    item.nextAt = now + item.interval
+    // The hero field follows every native RAF. Comparing against 16.67ms
+    // is enough to accidentally skip alternate frames on a 60Hz display.
+    if (item.interval && now + 0.5 < item.nextAt) continue
+    if (item.interval) {
+      item.nextAt = item.nextAt ? item.nextAt + item.interval : now + item.interval
+      if (item.nextAt < now - item.interval) item.nextAt = now + item.interval
+    }
     item.frame(now)
   }
   schedule()
@@ -37,7 +42,9 @@ function bindVisibility(): void {
 export function registerParticleFrame(frame: ParticleFrame, fps = 30): () => void {
   bindVisibility()
   const id = ++nextId
-  particles.set(id, { frame, interval: 1000 / Math.max(12, fps), nextAt: 0 })
+  const nativeRefresh = fps <= 0 || fps >= 55
+  const requestedFps = Math.max(12, fps)
+  particles.set(id, { frame, interval: nativeRefresh ? 0 : 1000 / requestedFps, nextAt: 0 })
   schedule()
   return () => {
     particles.delete(id)

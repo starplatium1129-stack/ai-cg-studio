@@ -50,6 +50,8 @@ interface RuntimeParticle {
   targetY: number
   tone: 0 | 1 | 2
   phase: number
+  depth: number
+  size: number
 }
 
 interface Palette {
@@ -154,6 +156,8 @@ function setShape(animate = true) {
       targetY: target.y,
       tone: point.tone,
       phase: current?.phase ?? Math.random() * Math.PI * 2,
+      depth: current?.depth ?? 0.55 + Math.random() * 0.45,
+      size: current?.size ?? 0.88 + Math.random() * 0.24,
     }
   })
 
@@ -175,23 +179,25 @@ function simulateParticles(now: number): boolean {
   const step = elapsed / 16.67
   const recoveryReady = !pointerActive && now - pointerReleasedAt > 220
   const pulseAge = now - pulseStartedAt
-  const pulseActive = pulseAge >= 0 && pulseAge < 420
+  const pulseActive = pulseAge >= 0 && pulseAge < 520
   const interactionRadius = Math.min(150, Math.max(90, width * 0.22))
+  const interactionRadiusSquared = interactionRadius * interactionRadius
   let moving = pointerActive || pulseActive || !recoveryReady
 
   for (const particle of particles) {
-    const spring = pointerActive ? 0.015 : recoveryReady ? 0.048 : 0
+    const spring = pointerActive ? 0.024 : recoveryReady ? 0.054 : 0
     particle.velocityX += (particle.targetX - particle.x) * spring * step
     particle.velocityY += (particle.targetY - particle.y) * spring * step
 
     if (props.interactive && pointerActive) {
       const dx = particle.x - pointerX
       const dy = particle.y - pointerY
-      const distance = Math.hypot(dx, dy)
-      if (distance < interactionRadius) {
+      const distanceSquared = dx * dx + dy * dy
+      if (distanceSquared < interactionRadiusSquared) {
+        const distance = Math.sqrt(distanceSquared)
         const directionX = distance > 0.1 ? dx / distance : Math.cos(particle.phase)
         const directionY = distance > 0.1 ? dy / distance : Math.sin(particle.phase)
-        const force = (1 - distance / interactionRadius) ** 2 * 3.8
+        const force = (1 - distance / interactionRadius) ** 2 * 2.35
         particle.velocityX += directionX * force * step
         particle.velocityY += directionY * force * step
       }
@@ -200,18 +206,24 @@ function simulateParticles(now: number): boolean {
     if (pulseActive) {
       const dx = particle.x - pulseX
       const dy = particle.y - pulseY
-      const distance = Math.hypot(dx, dy)
-      const ringRadius = interactionRadius * (pulseAge / 420) * 1.25
-      const ringWeight = Math.exp(-(((distance - ringRadius) / 18) ** 2))
-      if (ringWeight > 0.01) {
+      const ringRadius = Math.min(30, interactionRadius * 0.24) + pulseAge * 0.24
+      const ringBand = 48
+      const distanceSquared = dx * dx + dy * dy
+      const innerRadius = Math.max(0, ringRadius - ringBand)
+      const outerRadius = ringRadius + ringBand
+      if (distanceSquared >= innerRadius * innerRadius && distanceSquared <= outerRadius * outerRadius) {
+        const distance = Math.sqrt(distanceSquared)
+        const ringWeight = Math.exp(-(((distance - ringRadius) / 16) ** 2)) * (1 - pulseAge / 620)
         const directionX = distance > 0.1 ? dx / distance : Math.cos(particle.phase)
         const directionY = distance > 0.1 ? dy / distance : Math.sin(particle.phase)
-        particle.velocityX += directionX * ringWeight * 2.6 * step
-        particle.velocityY += directionY * ringWeight * 2.6 * step
+        if (ringWeight > 0.01) {
+          particle.velocityX += directionX * ringWeight * 2.4 * step
+          particle.velocityY += directionY * ringWeight * 2.4 * step
+        }
       }
     }
 
-    const damping = Math.pow(pointerActive ? 0.79 : 0.83, step)
+    const damping = Math.pow(pointerActive ? 0.84 : 0.86, step)
     particle.velocityX *= damping
     particle.velocityY *= damping
     particle.x += particle.velocityX * step
@@ -227,17 +239,60 @@ function simulateParticles(now: number): boolean {
   return moving
 }
 
-function draw() {
+function draw(now = performance.now()) {
   if (!context || !canvas.value) return
   context.clearRect(0, 0, width, height)
   const paths = [new Path2D(), new Path2D(), new Path2D()]
+  const signalEnergy = props.signal === 'active' ? 1.35 : props.signal === 'warning' ? 1.15 : props.signal === 'success' ? 1.08 : 1
+  const driftAmount = reduceMotion.value ? 0 : (props.density === 'backdrop' ? 0.8 : props.density === 'ambient' ? 1.7 : 2.8) * signalEnergy
+  const pulseAge = now - pulseStartedAt
+  const pulseActive = pulseAge >= 0 && pulseAge < 520
+  const highlights = pointerActive || pulseActive ? new Path2D() : null
+  const interactionRadius = Math.min(150, Math.max(90, width * 0.22))
+  const interactionRadiusSquared = interactionRadius * interactionRadius
 
   for (const particle of particles) {
-    const energyScale = props.signal === 'active' ? 1.22 : props.signal === 'warning' ? 1.1 : 1
+    const driftPhase = now * 0.00034 + particle.phase
+    const driftX = Math.sin(driftPhase) * driftAmount * (0.62 + particle.depth * 0.38)
+    const driftY = Math.cos(driftPhase * 0.86 + particle.phase * 0.17) * driftAmount * 0.72 * (0.62 + particle.depth * 0.38)
+    const x = particle.x + driftX
+    const y = particle.y + driftY
+    const energyScale = (props.signal === 'active' ? 1.16 : props.signal === 'warning' ? 1.08 : 1) * particle.size
     const radius = (particle.tone === 2 ? 1.55 : particle.tone === 1 ? 1.05 : 0.78) * energyScale
     const path = paths[particle.tone]
-    path.moveTo(particle.x + radius, particle.y)
-    path.arc(particle.x, particle.y, radius, 0, Math.PI * 2)
+    path.moveTo(x + radius, y)
+    path.arc(x, y, radius, 0, Math.PI * 2)
+
+    let focus = 0
+    if (pointerActive && props.interactive) {
+      const dx = x - pointerX
+      const dy = y - pointerY
+      const distanceSquared = dx * dx + dy * dy
+      if (distanceSquared < interactionRadiusSquared) {
+        const distanceRatio = 1 - distanceSquared / interactionRadiusSquared
+        focus = distanceRatio * distanceRatio
+      }
+    }
+    let pulse = 0
+    if (pulseActive) {
+      const ringRadius = Math.min(30, interactionRadius * 0.24) + pulseAge * 0.24
+      const ringBand = 48
+      const dx = x - pulseX
+      const dy = y - pulseY
+      const distanceSquared = dx * dx + dy * dy
+      const innerRadius = Math.max(0, ringRadius - ringBand)
+      const outerRadius = ringRadius + ringBand
+      if (distanceSquared >= innerRadius * innerRadius && distanceSquared <= outerRadius * outerRadius) {
+        const distance = Math.sqrt(distanceSquared)
+        pulse = Math.exp(-(((distance - ringRadius) / 16) ** 2)) * Math.max(0, 1 - pulseAge / 620)
+      }
+    }
+    const shimmer = Math.max(focus * 0.42, pulse)
+    if (highlights && shimmer > 0.16 && (particle.tone > 0 || particle.phase % 1.7 < 0.25)) {
+      const highlightRadius = radius * (1 + shimmer * 0.38)
+      highlights.moveTo(x + highlightRadius, y)
+      highlights.arc(x, y, highlightRadius, 0, Math.PI * 2)
+    }
   }
   context.globalAlpha = .72
   context.fillStyle = palette.primary
@@ -248,6 +303,11 @@ function draw() {
   context.globalAlpha = .9
   context.fillStyle = palette.accent
   context.fill(paths[2])
+  if (highlights) {
+    context.globalAlpha = .34
+    context.fillStyle = palette.accent
+    context.fill(highlights)
+  }
   context.globalAlpha = 1
 }
 
@@ -264,15 +324,16 @@ function renderFrame(now: number) {
   }
   lastFrame = now
   const moving = simulateParticles(now)
-  draw()
-  if (!moving) stopLoop()
+  draw(now)
+  if (!moving && props.density === 'backdrop') stopLoop()
 }
 
 function startLoop() {
   if (stopScheduledFrame || !visible || document.hidden || reduceMotion.value) return
   lastFrame = 0
   lastPhysicsFrame = 0
-  stopScheduledFrame = registerParticleFrame(renderFrame, 60)
+  const fps = props.density === 'hero' ? 0 : props.density === 'ambient' ? 45 : 30
+  stopScheduledFrame = registerParticleFrame(renderFrame, fps)
 }
 
 function stopLoop() {
