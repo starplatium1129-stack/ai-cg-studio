@@ -21,6 +21,7 @@ export interface CompanionDesktopBridge {
   }>
   toggleAlwaysOnTop(): Promise<boolean>
   getSettings(): Promise<{ openAtLogin: boolean }>
+  isPackaged(): Promise<boolean>
   setAutostart(enabled: boolean): Promise<boolean>
   pickFiles(): Promise<DesktopFile[]>
   saveImage(payload: { data: Uint8Array; name?: string }): Promise<{ saved: boolean; filePath?: string }>

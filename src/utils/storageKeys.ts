@@ -12,6 +12,12 @@
 export const COMPANION_LIVE2D_KEY = 'aics_companion_live2d_v1'
 export const COMPANION_BEHAVIOR_KEY = 'aics_companion_behavior_v1'
 
+/**
+ * 上次成功备份的时间戳（localStorage）——活键但刻意不参与备份导出：
+ * 恢复时不应把旧环境的备份时间戳覆盖到新环境。
+ */
+export const BACKUP_AT_KEY = 'aics_backup_last_at'
+
 export const LIVE_LOCAL_KEYS = [
   'aics_theme',
   'aics_interface_sound_v1',

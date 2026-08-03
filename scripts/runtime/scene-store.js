@@ -1,7 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 
-const root = path.resolve(__dirname, '..', '..');
+const root = path.resolve(
+  process.env.AICS_DATA_ROOT
+    || process.env.AICS_APP_ROOT
+    || path.resolve(__dirname, '..', '..'),
+);
 const dataDir = path.join(root, 'data');
 const shardsDir = path.join(dataDir, 'scenes');
 const manifestPath = path.join(shardsDir, 'manifest.json');

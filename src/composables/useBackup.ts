@@ -13,6 +13,7 @@ import {
 } from '@/utils/backupCore'
 import { inspectStorageHealth, summarizeStorageHealth } from '@/utils/storageHealth'
 import {
+  BACKUP_AT_KEY,
   cleanDeadLocalKeys,
   collectLiveLocalSettings,
   isLiveLocalKey,
@@ -27,8 +28,8 @@ export type { BackupSummary } from '@/utils/backupCore'
 const HISTORY_KEY = 'aics_pb_history'
 const PROJECT_KEY = 'aics_pb_projects'
 
-/** 上次成功备份的时间戳（localStorage），供"距上次备份"提醒使用 */
-const BACKUP_AT_KEY = 'aics_backup_last_at'
+// 备份时间戳键（BACKUP_AT_KEY）已登记在 storageKeys.ts：
+// 活键但刻意不参与备份导出，恢复时不覆盖新环境的时间戳。
 
 export function readLastBackupAt(): number {
   try {

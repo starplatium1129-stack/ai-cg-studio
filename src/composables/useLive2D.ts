@@ -77,7 +77,7 @@ interface Live2DInteraction {
 }
 
 const INTERACTION_MOTIONS: Record<string, Live2DInteraction> = {
-  Hair: { group: 'TapHair', hint: '摸了摸呆毛', duration: 245_000 },
+  Hair: { group: 'TapHair', hint: '摸了摸呆毛', duration: 5_000 },
   Head: { group: 'TapHead', hint: '摸了摸头顶', duration: 5_000 },
   Face: { group: 'TapFace', hint: '轻碰了脸颊', duration: 5_000 },
   LeftChest: { group: 'TapLeftChest', hint: '碰到了画面左侧胸前，宁宁有点生气', duration: 3_500 },

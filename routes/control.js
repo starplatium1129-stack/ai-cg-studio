@@ -19,11 +19,14 @@ var envelope = require('../server/http-envelope');
 var localOnly = security.localOnly;
 var createOperationManager = require('../services/control-operation').createOperationManager;
 var createServiceWatchdog = require('../services/service-watchdog').createServiceWatchdog;
+// 子进程登记表与进程树回收：构建进程与维护脚本共用同一份，网关退出时一并回收
+var maintenanceRuntime = require('./maintenance');
 
 // ── 前端构建状态：公网分享伺服的是 dist/ 产物，源码改动后不重建
 //    分享出去的就是旧版。这里对比 dist/index.html 与最近修改的源文件。 ──
 var BUILD_SOURCE_GLOBS = ['index.html', 'vite.config.ts', 'src', 'public'];
 var WEB_BUILD_LOCK = null;
+var WEB_BUILD_TIMEOUT_MS = 10 * 60 * 1000;
 
 function newestSourceMtime(rootDir) {
   var newest = 0;
@@ -73,12 +76,20 @@ function runWebBuild(config, callback) {
   }
   WEB_BUILD_LOCK = true;
   var startedAt = Date.now();
+  var timedOut = false;
   var child = cp.spawn('npm', ['run', 'build'], {
     cwd:config.ROOT_DIR,
     shell:process.platform === 'win32',
     env:Object.assign({}, process.env, { NODE_ENV:'production' }),
     stdio:['ignore', 'pipe', 'pipe']
   });
+  // 构建挂起（磁盘满、npm 网络等）时不能永久占用锁：超时强制终止并释放。
+  // 同时登记进维护链的 activeChildren，网关退出时随进程树一起回收。
+  maintenanceRuntime.trackChild(child);
+  var timeout = setTimeout(function () {
+    timedOut = true;
+    maintenanceRuntime.killProcessTree(child);
+  }, WEB_BUILD_TIMEOUT_MS);
   var tail = '';
   var onOutput = function (chunk) {
     var text = String(chunk || '');
@@ -87,14 +98,17 @@ function runWebBuild(config, callback) {
   child.stdout.on('data', onOutput);
   child.stderr.on('data', onOutput);
   child.on('error', function (error) {
+    clearTimeout(timeout);
     WEB_BUILD_LOCK = false;
     callback({ ok:false, error:error.message, durationMs:Date.now() - startedAt, tail:tail });
   });
   child.on('close', function (code) {
+    clearTimeout(timeout);
     WEB_BUILD_LOCK = false;
     callback({
-      ok:code === 0,
-      error:code === 0 ? null : '构建失败（退出码 ' + code + '）',
+      ok:code === 0 && !timedOut,
+      error:timedOut ? '构建超时（' + Math.round(WEB_BUILD_TIMEOUT_MS / 60000) + ' 分钟）已终止'
+        : (code === 0 ? null : '构建失败（退出码 ' + code + '）'),
       durationMs:Date.now() - startedAt,
       tail:tail.slice(-2000)
     });
@@ -797,6 +811,10 @@ function createControlRouter(config, gatewayRef, dependencies) {
   // 重新构建前端：公网分享伺服 dist/，源码改动后不重建分享出去就是旧版
   router.post('/api/maintenance/build-web', localOnly, function (req, res) {
     res.setHeader('Cache-Control', 'no-store');
+    if (maintenanceRuntime.isDesktopPackagedMode(config)) {
+      return envelope.fail(res, 501, '桌面应用模式下无法重新构建前端（源码不在安装包内）。' +
+        '请在源码开发模式中执行 npm run build。', { code:'DESKTOP_MAINTENANCE_UNAVAILABLE' });
+    }
     runWebBuild(config, function (result) {
       envelope.ok(res, Object.assign({ ok:result.ok, durationMs:result.durationMs, error:result.error, tail:result.tail }, { webBuild:webBuildInfo(config) }));
     });

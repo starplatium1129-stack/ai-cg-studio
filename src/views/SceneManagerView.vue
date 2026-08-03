@@ -19,8 +19,8 @@
       </div>
       <div class="sm-head-actions">
         <button class="btn btn-ghost" type="button" @click="exportJSON" :disabled="!scenes.length"><ArchiveIcon name="download" /> 导出 JSON</button>
-        <button class="btn btn-primary" type="button" :disabled="!dirty || saving" @click="saveToProject">
-          {{ saving ? '正在保存…' : '▣ 保存到项目' }}
+        <button class="btn btn-primary" type="button" :disabled="!dirty || saving || desktopPackaged" :title="desktopPackaged ? '桌面应用模式不支持保存场景内容' : ''" @click="saveToProject">
+          {{ saving ? '正在保存…' : (desktopPackaged ? '桌面模式不可保存' : '▣ 保存到项目') }}
         </button>
       </div>
     </header>
@@ -265,7 +265,7 @@
       <!-- 维护工具 -->
       <template v-if="tab==='tools'">
         <div class="tool-grid">
-          <button v-for="t in TOOLS" :key="t.id" class="sm-tool-card" type="button" :disabled="toolRunning" @click="runTool(t.id)">
+          <button v-for="t in TOOLS" :key="t.id" class="sm-tool-card" type="button" :disabled="toolRunning || desktopPackaged" :title="desktopPackaged ? '桌面应用模式不支持维护任务' : ''" @click="runTool(t.id)">
             <div class="sm-tool-icon"><ArchiveIcon :name="t.iconName" /></div>
             <div class="sm-tool-label">{{ t.label }}</div>
             <div class="sm-tool-desc">{{ t.desc }}</div>
@@ -422,6 +422,8 @@ const formHint = ref('')
 const dirty = ref(false)
 const saving = ref(false)
 const maintenanceHint = ref('所有改动已同步')
+/** 桌面打包模式：data 在只读应用包内，场景保存与维护任务不可用 */
+const desktopPackaged = ref(false)
 const importInput = ref('')
 const importResult = ref('')
 const toolRunning = ref(false)
@@ -760,7 +762,15 @@ function onBeforeUnload(e: BeforeUnloadEvent) {
   if (!dirty.value) return
   e.preventDefault(); e.returnValue = ''
 }
-onMounted(() => { window.addEventListener('beforeunload', onBeforeUnload) })
+onMounted(() => {
+  window.addEventListener('beforeunload', onBeforeUnload)
+  if (window.companionDesktop) {
+    window.companionDesktop.isPackaged().then(packaged => {
+      desktopPackaged.value = packaged
+      if (packaged) maintenanceHint.value = '桌面应用模式：场景内容位于只读应用包内，保存与维护任务不可用'
+    }).catch(() => { /* 查询失败保持可用，服务端仍有 501 兜底 */ })
+  }
+})
 onBeforeUnmount(() => { window.removeEventListener('beforeunload', onBeforeUnload) })
 
 /**

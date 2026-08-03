@@ -14,7 +14,8 @@
 - 角色空间同时支持本地 Ollama 与 OpenAI-compatible API（含 DeepSeek、OpenCode 类端点）；模型名必须可配置或发现，不能由供应商名称猜测。
 - 角色配音是现有功能，重构布局时不得删除。
 - 网站 `/chat` 的 Live2D 默认按需加载，用户显式启用前不得下载大贴图；Electron Companion 是明确例外：窗口可见启动时默认加载，`--hidden` 与用户显式关闭时不得下载。
-- 陪伴行为（`companionBehavior.ts`）：主动提醒不调用 LLM、不自动出声，台词只来自 `COMPANION_LINES` 确定性轮转；安静时段（默认 23:00-8:00）与勿扰期内不产出、不出队，队列保留到关闭勿扰；配置只存 `aics_companion_behavior_v1`。
+- 陪伴行为（`companionBehavior.ts`）：主动提醒不调用 LLM、不自动出声，台词只来自 `COMPANION_LINES` 确定性轮转与环境问候表 `ENVIRONMENT_LINES`（`environmentContext.ts`，同为确定性台词、按时间片/环境选择，不调 LLM）；安静时段（默认 23:00-8:00）与勿扰期内不产出、不出队，队列保留到关闭勿扰；配置只存 `aics_companion_behavior_v1`。
+- 桌面打包模式限制：`desktop/main.ts` 仅在 `app.isPackaged` 时注入 `AICS_DESKTOP_PACKAGED=1`（dev 模式 `electron .` 不注入）。该模式下 data 位于只读 asar、维护脚本未打包、系统 npm/node 读不了 asar，故场景内容维护链路（`/api/maintenance/scenes`、`/api/maintenance/run`、`/api/maintenance/build-web`）返回 501 `DESKTOP_MAINTENANCE_UNAVAILABLE`；`/api/maintenance/showcase` 与 `home-hero` 写 AI 工作区不受限。前端 SceneManagerView/ControlView 通过 `companionDesktop.isPackaged()` 禁用入口。测试锚点：test-gateway-contract.js「desktop mode 501」。
 
 ## 图片审核
 

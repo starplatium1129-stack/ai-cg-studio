@@ -706,7 +706,12 @@ watch(replyAnnouncement, announcement => {
 })
 
 async function togglePin() {
-  if (desktopBridge) alwaysOnTop.value = await desktopBridge.toggleAlwaysOnTop()
+  if (!desktopBridge) return
+  try {
+    alwaysOnTop.value = await desktopBridge.toggleAlwaysOnTop()
+  } catch (e) {
+    console.warn('companion pin toggle failed', e)
+  }
 }
 
 function toggleMouseEvents() {
@@ -773,17 +778,27 @@ onMounted(async () => {
       characterStageRef.value?.setDesktopVisible?.(desktopWindowVisible.value)
       void refreshRoomState()
     })
-    const desktopState = await desktopBridge.getState()
-    if (!viewAlive) return
-    alwaysOnTop.value = desktopState.alwaysOnTop
-    ignoreMouseEvents.value = desktopState.ignoreMouseEvents
-    const legacyLive2dOverride = desktopLive2dOverride.value
-    desktopLive2dOverride.value = desktopState.live2dEnabled ?? legacyLive2dOverride
-    if (desktopState.live2dEnabled == null && legacyLive2dOverride != null) {
-      desktopBridge.setLive2dEnabled(legacyLive2dOverride)
+    let desktopState: Awaited<ReturnType<typeof desktopBridge.getState>> | null = null
+    try {
+      desktopState = await desktopBridge.getState()
+    } catch (e) {
+      console.warn('companion desktop state unavailable', e)
     }
-    setDesktopVisibility(desktopState.visible)
-    setDesktopPowerMode(desktopState.onBatteryPower)
+    if (!viewAlive) return
+    if (desktopState) {
+      alwaysOnTop.value = desktopState.alwaysOnTop
+      ignoreMouseEvents.value = desktopState.ignoreMouseEvents
+      const legacyLive2dOverride = desktopLive2dOverride.value
+      desktopLive2dOverride.value = desktopState.live2dEnabled ?? legacyLive2dOverride
+      if (desktopState.live2dEnabled == null && legacyLive2dOverride != null) {
+        desktopBridge.setLive2dEnabled(legacyLive2dOverride)
+      }
+      setDesktopVisibility(desktopState.visible)
+      setDesktopPowerMode(desktopState.onBatteryPower)
+    } else {
+      // IPC 失败时按页面可见性兜底，保证可见窗口里的 Live2D 仍能按需加载
+      setDesktopVisibility(!document.hidden)
+    }
   }
 })
 onUnmounted(() => {
@@ -805,6 +820,10 @@ onUnmounted(() => {
   if (desktopBridge && visibilitySubscription != null) desktopBridge.offVisibilityChanged(visibilitySubscription)
   if (desktopBridge && powerModeSubscription != null) desktopBridge.offPowerModeChanged(powerModeSubscription)
   if (desktopBridge && interactionModeSubscription != null) desktopBridge.offInteractionModeChanged(interactionModeSubscription)
-  document.documentElement.classList.remove('companion-mode', 'companion-desktop')
+  document.documentElement.classList.remove(
+    'companion-mode', 'companion-desktop', 'companion-immersive', 'companion-ui-hidden',
+  )
+  uiHidden = false
+  immersive.value = false
 })
 </script>

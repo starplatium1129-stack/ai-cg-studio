@@ -173,6 +173,14 @@ export function useControlActions(status: StatusApi, { showToast }: ActionHooks)
   /** 重新构建前端（公网分享伺服 dist/，源码改动后需重建才生效） */
   async function buildWeb() {
     if (buildingWeb.value) return
+    if (window.companionDesktop) {
+      try {
+        if (await window.companionDesktop.isPackaged()) {
+          showToast('桌面应用模式不支持重建前端（源码不在安装包内）', true)
+          return
+        }
+      } catch { /* 查询失败继续走服务端，501 兜底 */ }
+    }
     buildingWeb.value = true
     showToast('正在构建前端，约需 10-30 秒…')
     try {

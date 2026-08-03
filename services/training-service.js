@@ -478,7 +478,7 @@ function defaultKillProcess(pid, child, platform) {
         }
     }
     if (child?.kill) {
-        child.kill(platform === 'win32' ? 'SIGTERM' : 'SIGTERM');
+        child.kill('SIGTERM');
         return;
     }
     try {

@@ -121,10 +121,6 @@ export function useCharacterRoomSession() {
     onMouth: (value) => characterStageRef.value?.setMouth(value),
     onAudioLevel: (level, peak) => characterStageRef.value?.setAudioLevel(level, peak),
     onExpression: (emotion) => characterStageRef.value?.setEmotion(emotion),
-    onAudioReady: (mid) => {
-      const message = storage.messages(activeChar.value).find(item => item.mid === mid)
-      if (message) void message
-    },
     onActivity: (active) => { voiceActive.value = active },
   })
 

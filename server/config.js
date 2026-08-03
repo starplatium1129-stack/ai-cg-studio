@@ -140,9 +140,15 @@ function loadGatewayConfig(rootDir, env) {
     TRANSLATE_PORT:translatePort,
     TRANSLATE_URL:'http://127.0.0.1:' + translatePort,
     TRANSLATION_LOG:path.join(runtime.logs, 'translate.log'),
+    // 控制面板服务自愈的探测间隔；此前 control.js 读这个字段但 config 从未定义，
+    // 恒为默认 5000ms。这里补上 env 解析，让配置真正生效。
+    SELF_HEALING_INTERVAL_MS:boundedInteger(env.SELF_HEALING_INTERVAL_MS, 5000, 1000, 60000),
     LIVE2D_ROOT:path.join(assetsRoot, 'live2d'),
     SCENE_SHOWCASE_DIR:resolveSceneShowcaseDir(appRoot, env.SCENE_SHOWCASE_DIR, workspaceRoot),
     DISABLE_TUNNEL:env.DISABLE_TUNNEL === '1',
+    // 桌面打包模式（desktop/main.ts 仅在 app.isPackaged 时注入）：
+    // 场景内容维护链路（scenes/run/build-web）返回 501，展示类不受限。
+    DESKTOP_PACKAGED:env.AICS_DESKTOP_PACKAGED === '1',
     CLOUDFLARED_PATH:env.CLOUDFLARED_PATH || 'C:\\Program Files (x86)\\cloudflared\\cloudflared.exe'
   };
 }

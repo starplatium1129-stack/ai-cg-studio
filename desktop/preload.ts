@@ -45,6 +45,7 @@ contextBridge.exposeInMainWorld('companionDesktop', {
   }>,
   toggleAlwaysOnTop: () => ipcRenderer.invoke('desktop:toggle-always-on-top') as Promise<boolean>,
   getSettings: () => ipcRenderer.invoke('desktop:get-settings') as Promise<{ openAtLogin: boolean }>,
+  isPackaged: () => ipcRenderer.invoke('desktop:is-packaged') as Promise<boolean>,
   setAutostart: (enabled: boolean) => ipcRenderer.invoke('desktop:set-autostart', enabled) as Promise<boolean>,
   pickFiles: () => ipcRenderer.invoke('desktop:pick-files') as Promise<DesktopFile[]>,
   saveImage: (payload: { data: Uint8Array; name?: string }) => ipcRenderer.invoke('desktop:save-image', payload) as Promise<{ saved: boolean; filePath?: string }>,

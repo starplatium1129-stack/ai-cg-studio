@@ -138,6 +138,52 @@ function maintenanceLocalOnly(req, res, next) {
   next();
 }
 
+/**
+ * 打包模式（Electron 安装版）判定：data 位于只读 asar、维护脚本未打包、
+ * npm/系统 node 也读不了 asar 内文件 —— 内容维护链路整体不可用。
+ * 标志由 desktop/main.ts 仅在 app.isPackaged 时注入（config.DESKTOP_PACKAGED）。
+ */
+function isDesktopPackagedMode(cfg) {
+  return Boolean(cfg && cfg.DESKTOP_PACKAGED);
+}
+
+const DESKTOP_MAINTENANCE_UNAVAILABLE = '桌面应用模式下场景内容编辑不可用（数据位于只读的应用包内）。' +
+  '请在源码开发模式（npm run dev / npm start）中编辑场景内容。';
+
+function desktopMaintenanceUnavailable(req, res) {
+  return envelope.fail(res, 501, DESKTOP_MAINTENANCE_UNAVAILABLE, { code:'DESKTOP_MAINTENANCE_UNAVAILABLE' });
+}
+
+function killProcessTree(child) {
+  if (!child || !child.pid) return;
+  if (process.platform === 'win32') {
+    try {
+      cp.execFileSync('taskkill', ['/pid', String(child.pid), '/T', '/F'], { stdio:'ignore' });
+      return;
+    } catch (error) { /* 进程可能已退出，回退到 kill */ }
+  }
+  try { child.kill(); } catch (error) {}
+}
+
+/**
+ * 网关在跑的子进程登记表：/api/maintenance/run 与场景保存校验链可能耗时
+ * 数分钟，网关退出时必须连树回收，否则脚本会继续写文件直到自然结束。
+ * 模块级共享：control.js 的构建进程也登记到这里（经 module.exports 暴露）。
+ */
+var activeChildren = new Set();
+
+function trackChild(child) {
+  activeChildren.add(child);
+  child.once('close', function () { activeChildren.delete(child); });
+  child.once('error', function () { activeChildren.delete(child); });
+  return child;
+}
+
+function killActiveChildren() {
+  activeChildren.forEach(function (child) { killProcessTree(child); });
+  activeChildren.clear();
+}
+
 function createMaintenanceRouter(cfg) {
   var router = express.Router();
   var sceneStore = require('../scripts/runtime/scene-store');
@@ -146,7 +192,7 @@ function createMaintenanceRouter(cfg) {
   var MAINTENANCE_BACKUP_DIR = path.join(cfg.RUNTIME_ROOT, 'maintenance-backups');
 
   function maintenanceSnapshot(deletedIds) {
-    var dataDir = path.join(__dirname, '..', 'data');
+    var dataDir = path.join(cfg.ROOT_DIR, 'data');
     var files = [
       sceneStore.aggregatePath,
       path.join(dataDir, 'retired-scenes.json'),
@@ -169,43 +215,7 @@ function createMaintenanceRouter(cfg) {
     return snapshotFiles(files);
   }
 
-function killProcessTree(child) {
-  if (!child || !child.pid) return;
-  if (process.platform === 'win32') {
-    try {
-      cp.execFileSync('taskkill', ['/pid', String(child.pid), '/T', '/F'], { stdio:'ignore' });
-      return;
-    } catch (error) { /* 进程可能已退出，回退到 kill */ }
-  }
-  try { child.kill(); } catch (error) {}
-}
-
-/**
- * 网关在跑的子进程登记表：/api/maintenance/run 与场景保存校验链可能耗时
- * 数分钟，网关退出时必须连树回收，否则脚本会继续写文件直到自然结束。
- */
-var activeChildren = new Set();
-
-function trackChild(child) {
-  activeChildren.add(child);
-  child.once('close', function () { activeChildren.delete(child); });
-  child.once('error', function () { activeChildren.delete(child); });
-  return child;
-}
-
-function killActiveChildren() {
-  activeChildren.forEach(function (child) { killProcessTree(child); });
-  activeChildren.clear();
-}
-
-/**
- * 异步 spawn 一个 node 脚本。
- *
- * 必须异步：原先用 spawnSync，三个子进程各 timeout:120000，全在 POST handler
- * 里同步跑 —— 期间整个事件循环停摆，SD 代理与进行中的 /api/chat NDJSON 流
- * 一起卡死，最坏 6 分钟。
- */
-function runNodeScript(script, args, timeoutMs) {
+  function runNodeScript(script, args, timeoutMs) {
   return new Promise(function (resolve, reject) {
     var child = trackChild(cp.spawn(process.execPath, [script].concat(args || []), {
       cwd:path.join(__dirname, '..'), windowsHide:true
@@ -290,7 +300,7 @@ function readHomeHeroManifest() {
   function cleanOrphanedSceneRefs() {
     // 保存场景后自动清理 characters.json 和 loras.json 中引用已删除场景的条目
     var activeIds = new Set(sceneStore.loadSceneShards().scenes.map(function (s) { return s.id; }));
-    var dataDir = path.join(__dirname, '..', 'data');
+    var dataDir = path.join(cfg.ROOT_DIR, 'data');
     var changed = false;
 
     // Clean characters.json
@@ -333,7 +343,7 @@ function readHomeHeroManifest() {
 
   function autoRetireDeletedScenes(incomingScenes, previousScenes) {
     var incomingIds = new Set(incomingScenes.map(function (s) { return s.id; }));
-    var retiredPath = path.join(__dirname, '..', 'data', 'retired-scenes.json');
+    var retiredPath = path.join(cfg.ROOT_DIR, 'data', 'retired-scenes.json');
     var data = readJson(retiredPath);
     var retiredRecords = data.records || [];
     var retiredIds = new Set(retiredRecords.map(function (r) { return r.id; }));
@@ -377,6 +387,7 @@ function readHomeHeroManifest() {
   }
 
   router.post('/api/maintenance/scenes', maintenanceLocalOnly, express.json({ limit:'12mb' }), async function (req, res) {
+    if (isDesktopPackagedMode(cfg)) return desktopMaintenanceUnavailable(req, res);
     var scenes = req.body && req.body.scenes;
     var tags = req.body && req.body.tags;
     var curation = req.body && req.body.curation;
@@ -398,10 +409,10 @@ function readHomeHeroManifest() {
       var backupDir = saveSnapshotBackup(snapshot, MAINTENANCE_BACKUP_DIR, 'content');
       sceneStore.writeSceneSet(scenes);
       if (tags !== undefined) {
-        writeJson(path.join(__dirname, '..', 'data', 'tags.json'), tags);
+        writeJson(path.join(cfg.ROOT_DIR, 'data', 'tags.json'), tags);
       }
       if (curation !== undefined) {
-        writeJson(path.join(__dirname, '..', 'data', 'curation.json'), cleanCuration);
+        writeJson(path.join(cfg.ROOT_DIR, 'data', 'curation.json'), cleanCuration);
       }
       autoRetireDeletedScenes(scenes, prevScenes);
       cleanOrphanedSceneRefs();
@@ -534,6 +545,7 @@ function readHomeHeroManifest() {
   // 音频中继全部一起卡死，最坏 2 分钟。/api/maintenance/scenes 早就改成
   // runNodeScript + await 了，这条路径漏了。
   router.post('/api/maintenance/run', maintenanceLocalOnly, express.json({ limit:'2kb' }), async function (req, res) {
+    if (isDesktopPackagedMode(cfg)) return desktopMaintenanceUnavailable(req, res);
     var task = String(req.body && req.body.task || '').trim();
     if (!MAINTENANCE_TASKS[task]) {
       return res.status(400).json({ ok:false, error:'不支持的任务：' + task });
@@ -576,6 +588,11 @@ function readHomeHeroManifest() {
 
 module.exports = {
   createMaintenanceRouter:createMaintenanceRouter,
+  // 子进程登记/回收共享给 control.js（build-web 的构建进程也要在网关退出时回收）
+  trackChild:trackChild,
+  killActiveChildren:killActiveChildren,
+  killProcessTree:killProcessTree,
+  isDesktopPackagedMode:isDesktopPackagedMode,
   _test:{
     decodeJpegDataUrl:decodeJpegDataUrl,
     isDirectLocalRequest:isDirectLocalRequest,

@@ -57,12 +57,14 @@ function createGateway(options) {
 
   app.disable('x-powered-by');
   app.use(security.responseHeaders);
-  app.use(precompressed(config.ROOT_DIR));
   // Host 白名单必须在 tokenAuth 之前：tokenAuth 对 loopback socket 无条件放行，
   // 不校验 Host 时任意网页都能把域名 rebind 到 127.0.0.1 并以「本机」身份调控制接口。
+  // precompressed 也必须在两者之后：否则远程无 token / rebinding 请求能直接拿到
+  // _app、assets、docs 等预压产物，绕过 tokenAuth 与 hostGuard。
   var tunnelManager = null;
   app.use(security.hostGuard(config, function () { return tunnelManager ? tunnelManager.getUrl() : ''; }));
   app.use(security.tokenAuth(config.TOKEN));
+  app.use(precompressed(config.ROOT_DIR));
   app.use(compression({ threshold:1024 }));
 
   var chat = createChatRouter(config, options.services);

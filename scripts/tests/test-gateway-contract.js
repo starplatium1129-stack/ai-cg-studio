@@ -27,7 +27,7 @@ function request(options) {
   return new Promise(function (resolve, reject) {
     var req = http.request({
       host:'127.0.0.1',
-      port:PORT,
+      port:options.port || PORT,
       method:options.method || 'GET',
       path:options.path,
       headers:options.headers || {}
@@ -311,9 +311,32 @@ async function main() {
       assert.notStrictEqual(traversal.status, 200, 'precompressed lookup must not escape the data allowlist');
     }
 
+    // ---- 桌面打包模式（AICS_DESKTOP_PACKAGED=1）：内容维护链路必须 501 ----
+    var DESKTOP_PORT = 3894;
+    var desktopHandle = startGateway({
+      env:{ PORT:String(DESKTOP_PORT), TOKEN:TOKEN, DISABLE_TUNNEL:'1', HOST:'127.0.0.1', AICS_DESKTOP_PACKAGED:'1' }
+    });
+    await new Promise(function (resolve) { setTimeout(resolve, 700); });
+    var desktopLocal = { Host:'127.0.0.1:' + DESKTOP_PORT };
+    var scenesPost = await request({
+      port:DESKTOP_PORT, method:'POST', path:'/api/maintenance/scenes',
+      headers:Object.assign({ 'Content-Type':'application/json', 'Content-Length':2 }, desktopLocal),
+      body:'{}'
+    });
+    assert.strictEqual(scenesPost.status, 501, 'desktop packaged mode must refuse scene saves with 501');
+    var toolRun = await request({
+      port:DESKTOP_PORT, method:'POST', path:'/api/maintenance/run',
+      headers:Object.assign({ 'Content-Type':'application/json', 'Content-Length':2 }, desktopLocal),
+      body:'{}'
+    });
+    assert.strictEqual(toolRun.status, 501, 'desktop packaged mode must refuse maintenance tasks with 501');
+    var buildWeb = await request({ port:DESKTOP_PORT, method:'POST', path:'/api/maintenance/build-web', headers:desktopLocal });
+    assert.strictEqual(buildWeb.status, 501, 'desktop packaged mode must refuse build-web with 501');
+    desktopHandle.shutdown();
+
     console.log('Gateway contract tests passed: tunnel localOnly, host validation, ' +
       'rebinding guard, WS upgrade auth, error envelopes, api 404, sdapi allowlist, ' +
-      'data allowlist, immutable assets, precompressed serving');
+      'data allowlist, immutable assets, precompressed serving, desktop mode 501');
   } finally {
     handle.shutdown();
   }

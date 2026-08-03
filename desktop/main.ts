@@ -571,6 +571,9 @@ async function start(): Promise<void> {
       AICS_TOOLS_ROOT: paths.toolsRoot,
       AICS_RUNTIME_ROOT: paths.runtimeRoot,
       AI_WORKSPACE_ROOT: paths.aiWorkspaceRoot,
+      // 仅打包模式注入：data 在只读 asar、维护脚本与 npm 均不可用，
+      // 网关据此对场景内容维护链路返回 501（dev 模式 electron . 不注入）。
+      ...(app.isPackaged ? { AICS_DESKTOP_PACKAGED: '1' } : {}),
     },
     onExit: () => scheduleGatewayRestart(),
     onOutput: (stream, text) => desktopLogger?.log('debug', `[gateway:${stream}] ${text.trim()}`),
@@ -674,6 +677,10 @@ ipcMain.handle('desktop:toggle-always-on-top', event => {
 ipcMain.handle('desktop:get-settings', event => {
   requireTrustedDesktopSender(event)
   return { openAtLogin: app.getLoginItemSettings(loginItemOptions()).openAtLogin }
+})
+ipcMain.handle('desktop:is-packaged', event => {
+  requireTrustedDesktopSender(event)
+  return app.isPackaged
 })
 ipcMain.handle('desktop:set-autostart', (event, enabled: unknown) => {
   requireTrustedDesktopSender(event)

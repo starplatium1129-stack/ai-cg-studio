@@ -246,7 +246,12 @@ function createVoiceRouter(config, dependencies) {
       }).then(function () {
         if (!res.writableEnded) res.end();
       }).catch(function (error) {
-        if (httpClient.isAbortError(error) || controller.signal.aborted) return;
+        if (httpClient.isAbortError(error) || controller.signal.aborted) {
+          // 共享的生成被首个请求取消时，等待方不能悬挂连接：给一个明确的失败。
+          if (!res.headersSent) res.status(502).end();
+          else if (!res.writableEnded) res.destroy();
+          return;
+        }
         if (!res.headersSent) {
           var status = error.code === 'QUEUE_FULL' ? 503 : envelope.statusFor(error, 502);
           envelope.fail(res,
