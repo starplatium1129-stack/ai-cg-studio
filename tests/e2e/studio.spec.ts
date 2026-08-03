@@ -401,6 +401,7 @@ test('desktop companion keeps the chat loop in a compact standalone layout', asy
   expect(live2dAssetRequests).toEqual([]);
 
   await page.addInitScript(() => {
+    (window as any).__ignoreMouseCalls = [];
     Object.defineProperty(window, 'companionDesktop', {
       configurable: true,
       value: {
@@ -408,7 +409,7 @@ test('desktop companion keeps the chat loop in a compact standalone layout', asy
         hide: () => {},
         quit: () => {},
         openAtelier: () => {},
-        setIgnoreMouseEvents: () => {},
+        setIgnoreMouseEvents: (value: boolean) => (window as any).__ignoreMouseCalls.push(value),
         setLive2dEnabled: () => {},
         getState: async () => ({
           alwaysOnTop: false,
@@ -474,6 +475,27 @@ test('desktop companion keeps the chat loop in a compact standalone layout', asy
   await dndButton.click();
   await expect(dndButton).toHaveAttribute('aria-pressed', 'false');
   await expect(page.locator('.companion-dnd-toggle')).toBeVisible();
+  // 穿透模式下悬停可交互元素会自动请求恢复交互（避免"点不到恢复按钮"卡死）；
+  // 悬停穿透切换按钮本身不恢复（避免刚穿透又立刻恢复的死循环）
+  const mouseToggleButton = page.locator('.companion-window-actions button').nth(1);
+  await mouseToggleButton.click();
+  await expect(mouseToggleButton).toHaveAttribute('aria-pressed', 'true');
+  await expect(mouseToggleButton).toHaveText('恢复交互');
+  const mouseCallsBefore = await page.evaluate(() => (window as any).__ignoreMouseCalls.length);
+  await page.waitForTimeout(500); // 越过点击后的 400ms 抑制窗口
+  // 悬停"置顶"按钮（穿透切换按钮以外的可交互元素）→ 触发自动恢复
+  await page.evaluate(() => {
+    const button = document.querySelectorAll('.companion-window-actions button')[0] as HTMLElement;
+    const rect = button.getBoundingClientRect();
+    const event = new PointerEvent('pointermove', {
+      bubbles: true,
+      clientX: rect.x + rect.width / 2,
+      clientY: rect.y + rect.height / 2,
+    });
+    window.dispatchEvent(event);
+  });
+  await expect.poll(() => page.evaluate(() => (window as any).__ignoreMouseCalls.length)).toBeGreaterThan(mouseCallsBefore);
+  await expect(mouseToggleButton).toHaveAttribute('aria-pressed', 'false');
   expect(errors).toEqual([]);
 });
 

@@ -8,7 +8,7 @@
     <div class="companion-ambience" aria-hidden="true">
       <i></i><i></i><i></i>
     </div>
-    <header class="companion-toolbar">
+    <header class="companion-toolbar" :data-hidden="immersive ? 'true' : undefined">
       <div class="companion-identity">
         <span>{{ currentCharacter.roomCode }}</span>
         <h1>与{{ currentCharacter.name }}相伴</h1>
@@ -37,6 +37,13 @@
           @change="onImportInputChange"
         />
         <button type="button" class="companion-import-btn" title="导入本地图片到作品册" @click="importInputRef?.click()">导图</button>
+        <button
+          v-if="desktopBridge"
+          class="companion-immersive-btn"
+          type="button"
+          title="沉浸模式：只保留角色与对话（Esc 退出）"
+          @click="enterImmersive"
+        >沉浸</button>
         <div v-if="desktopBridge" class="companion-window-actions" aria-label="桌面窗口控制">
           <button type="button" title="切换窗口置顶" :aria-pressed="alwaysOnTop" @click="togglePin">
             {{ alwaysOnTop ? '取消置顶' : '置顶' }}
@@ -60,7 +67,14 @@
       </div>
     </header>
 
-    <main class="companion-stage" aria-label="桌面陪伴模式">
+    <main class="companion-stage" aria-label="桌面陪伴模式" :data-immersive="immersive ? 'true' : undefined">
+      <button
+        v-if="desktopBridge && immersive"
+        class="companion-exit-immersive"
+        type="button"
+        title="退出沉浸模式（Esc）"
+        @click="exitImmersive"
+      >退出沉浸</button>
       <ChatCharacterStage
         ref="characterStageRef"
         :active-id="activeChar"
@@ -125,8 +139,7 @@
           v-if="!chatReady || voiceCapabilityState === 'offline' || preparingRoom"
           class="companion-setup"
           :data-state="preparingRoom ? 'active' : 'warning'"
-        >
-          <div>
+        >          <div>
             <strong>{{ setupTitle }}</strong>
             <span>{{ setupDescription }}</span>
           </div>
@@ -327,6 +340,8 @@ let greetedSlotKey = ''
 let uiIdleTimer = 0
 let uiHidden = false
 let lastPointerMove = Date.now()
+let mouseToggleBlockedUntil = 0
+const immersive = ref(false)
 let resumeSubscription: number | undefined
 let shownSubscription: number | undefined
 let visibilitySubscription: number | undefined
@@ -363,11 +378,49 @@ function setUiHidden(hidden: boolean) {
   document.documentElement.classList.toggle('companion-ui-hidden', hidden)
 }
 
-function onPointerMove() {
+function enterImmersive() {
+  if (!desktopBridge) return
+  immersive.value = true
+  document.documentElement.classList.add('companion-immersive')
+  // 进入沉浸前取消自动隐现计时，避免冲突
+  clearTimeout(uiIdleTimer)
+  uiHidden = false
+  document.documentElement.classList.remove('companion-ui-hidden')
+}
+
+function exitImmersive() {
+  if (!immersive.value) return
+  immersive.value = false
+  document.documentElement.classList.remove('companion-immersive')
+}
+
+function onWindowKeydown(event: KeyboardEvent) {
+  noteActivity()
+  if (event.key === 'Escape' && immersive.value) {
+    exitImmersive()
+  }
+}
+
+function onPointerMove(event: PointerEvent) {
   lastPointerMove = Date.now()
   if (uiHidden) setUiHidden(false)
   clearTimeout(uiIdleTimer)
   if (!desktopBridge) return
+  // 穿透模式只转发 mousemove、不转发 click——鼠标悬停在可交互元素上时
+  // 自动恢复交互，否则"恢复交互"按钮永远点不到（看起来像卡死）。
+  // 排除穿透切换按钮本身：悬停它不应恢复（会刚穿透又立刻恢复）。
+  if (ignoreMouseEvents.value && Date.now() >= mouseToggleBlockedUntil) {
+    const element = document.elementFromPoint(event.clientX, event.clientY)
+    const interactive = element instanceof HTMLElement
+      && Boolean(element.closest('button, a, input, textarea, select, [role="button"], [tabindex]'))
+    // 排除穿透切换按钮本身：悬停它不应恢复（会刚穿透又立刻恢复）
+    const self = element instanceof HTMLElement ? element.closest('button') : null
+    const onToggleButton = Boolean(self && /穿透|恢复交互/.test(self.textContent || ''))
+    if (interactive && !onToggleButton) {
+      ignoreMouseEvents.value = false
+      desktopBridge.setIgnoreMouseEvents(false)
+    }
+  }
   uiIdleTimer = window.setTimeout(() => {
     if (!viewAlive || !desktopWindowVisible.value) return
     // 输入框聚焦时保持 UI（正在打字不能突然消失）
@@ -657,7 +710,15 @@ async function togglePin() {
 }
 
 function toggleMouseEvents() {
-  if (desktopBridge) desktopBridge.setIgnoreMouseEvents(!ignoreMouseEvents.value)
+  if (!desktopBridge) return
+  // 本地立即翻转（主进程回发 desktop:interaction-mode 作兜底同步），
+  // 避免回发丢失时按钮状态与真实穿透不一致
+  const next = !ignoreMouseEvents.value
+  ignoreMouseEvents.value = next
+  desktopBridge.setIgnoreMouseEvents(next)
+  // 刚切换穿透的瞬间抑制自动恢复：防止点击"穿透"按钮时
+  // 悬停触发的恢复把状态又翻回去
+  mouseToggleBlockedUntil = Date.now() + 400
 }
 
 function setDesktopVisibility(visible: boolean) {
@@ -690,7 +751,7 @@ onMounted(async () => {
   behaviorTimer = window.setInterval(runBehaviorTick, 30_000) as unknown as number
   eventPollTimer = window.setInterval(() => { void pollCompanionEvents() }, 30_000) as unknown as number
   window.addEventListener('pointerdown', noteActivity, { passive: true })
-  window.addEventListener('keydown', noteActivity, { passive: true })
+  window.addEventListener('keydown', onWindowKeydown, { passive: true })
   window.addEventListener('wheel', noteActivity, { passive: true })
   window.addEventListener('pointermove', onPointerMove, { passive: true })
   window.addEventListener('dragover', onWindowDragOver, { passive: false })
@@ -732,7 +793,7 @@ onUnmounted(() => {
   clearTimeout(clipboardCardTimer)
   if (clipboardCard.value?.previewUrl) URL.revokeObjectURL(clipboardCard.value.previewUrl)
   window.removeEventListener('pointerdown', noteActivity)
-  window.removeEventListener('keydown', noteActivity)
+  window.removeEventListener('keydown', onWindowKeydown)
   window.removeEventListener('wheel', noteActivity)
   window.removeEventListener('pointermove', onPointerMove)
   window.removeEventListener('dragover', onWindowDragOver)

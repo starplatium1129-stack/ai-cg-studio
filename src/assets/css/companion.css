@@ -1321,3 +1321,61 @@ html.companion-desktop.companion-ui-hidden .companion-stage::after {
     transition: none;
   }
 }
+
+/* Immersive mode: only the character and the dialog remain */
+.companion-page .companion-immersive-btn {
+  min-height: 26px;
+  padding: 3px 9px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: var(--fs-label-xs);
+}
+
+.companion-page .companion-immersive-btn:hover,
+.companion-page .companion-immersive-btn:focus-visible {
+  border-color: var(--character-accent);
+  color: var(--text-primary);
+}
+
+.companion-page .companion-exit-immersive {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: calc(var(--z-overlay) + 1);
+  min-height: 28px;
+  padding: 4px 12px;
+  border: 1px solid color-mix(in srgb, var(--character-accent) 50%, var(--border-soft));
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--bg-deep) 55%, transparent);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: var(--text-primary);
+  cursor: pointer;
+  font-size: var(--fs-label-xs);
+  opacity: .55;
+  transition: opacity var(--t-fast);
+}
+
+.companion-page .companion-exit-immersive:hover,
+.companion-page .companion-exit-immersive:focus-visible {
+  opacity: 1;
+}
+
+/* Immersive mode hides everything except the character and the dialog */
+html.companion-immersive .companion-toolbar,
+html.companion-immersive .companion-status,
+html.companion-immersive .companion-workspace-settings,
+html.companion-immersive .companion-clipboard-card,
+html.companion-immersive .companion-reminders,
+html.companion-immersive .companion-setup {
+  display: none;
+}
+
+html.companion-immersive .companion-conversation {
+  background: transparent;
+  border-color: transparent;
+  padding-bottom: var(--s-2);
+}
