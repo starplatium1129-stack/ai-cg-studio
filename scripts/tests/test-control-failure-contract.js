@@ -77,6 +77,8 @@ function baseConfig(rootDir, runtime) {
     TRANSLATE_URL:'http://127.0.0.1:5310',
     TRANSLATION_LOG:path.join(runtime.logs, 'translate.log'),
     LIVE2D_ROOT:path.join(rootDir, 'assets', 'live2d'),
+    ASSETS_ROOT:path.join(rootDir, 'assets'),
+    TOOLS_ROOT:path.join(rootDir, 'tools'),
     SCENE_SHOWCASE_DIR:'',
     VOICE_PROFILES:{},
     DISABLE_TUNNEL:true,

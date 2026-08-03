@@ -9,6 +9,9 @@
  */
 
 /** 精确活键：全站仍在读写的 localStorage 键。 */
+export const COMPANION_LIVE2D_KEY = 'aics_companion_live2d_v1'
+export const COMPANION_BEHAVIOR_KEY = 'aics_companion_behavior_v1'
+
 export const LIVE_LOCAL_KEYS = [
   'aics_theme',
   'aics_interface_sound_v1',
@@ -25,6 +28,8 @@ export const LIVE_LOCAL_KEYS = [
   'aics_chat_model',
   'aics_chat_api_drafts',
   'aics_chat_archive_v1',
+  COMPANION_LIVE2D_KEY,
+  COMPANION_BEHAVIOR_KEY,
   'aics_training_onboarded',
   'aics_guest_guide_dismissed',
 ] as const

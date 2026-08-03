@@ -116,3 +116,35 @@ export function createMessageId(): string {
   }
   return 'm-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10)
 }
+
+/** 陪伴模式确定性台词：无操作提醒与归来欢迎（不调用 LLM，离线可用）。 */
+export const COMPANION_LINES: Record<string, { idle: string[]; return: string[] }> = {
+  nene: {
+    idle: [
+      '……那个，你还在忙吗？如果累了的话，休息一下也没关系的哦。',
+      '都过去这么久了……要不要稍微说说话？当然，静静待着也很好。',
+      '我一直在旁边陪着你……不过，偶尔也看看我，好吗？',
+    ],
+    return: [
+      '欢迎回来。……我一直都在这里哦。',
+      '你回来啦。刚才，有好好休息吗？',
+    ],
+  },
+  natsume: {
+    idle: [
+      '……忙得都忘了这边还有个人？咖啡我帮你续好了。',
+      '这么安静，还以为你睡着了。没事，我守着店呢。',
+      '喂，我可不会一直干等下去。……开玩笑的，慢慢忙。',
+    ],
+    return: [
+      '回来了？正好，热饮还温着。',
+      '哦，回来了。……也不是特别在等你。',
+    ],
+  },
+}
+
+export function pickCompanionLine(characterId: string, kind: 'idle' | 'return', offset = 0): string {
+  const lines = COMPANION_LINES[characterId]?.[kind]
+  if (!lines || !lines.length) return kind === 'idle' ? '……我在这里哦。' : '欢迎回来。'
+  return lines[((Math.abs(offset) % lines.length) + lines.length) % lines.length]
+}

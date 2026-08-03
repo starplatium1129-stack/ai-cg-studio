@@ -97,6 +97,7 @@ function createGateway(options) {
       ok:true,
       app:'ai-cg-studio',
       gateway:true,
+      desktopProtocol:1,
       port:Number(config.PORT),
       capabilities:{
         chat:true,

@@ -66,6 +66,8 @@ function createConfig(temporaryRoot) {
     TRANSLATE_URL:'http://127.0.0.1:5310',
     TRANSLATION_LOG:path.join(logsRoot, 'translation.log'),
     LIVE2D_ROOT:path.join(repositoryRoot, 'assets', 'live2d'),
+    ASSETS_ROOT:path.join(repositoryRoot, 'assets'),
+    TOOLS_ROOT:path.join(repositoryRoot, 'tools'),
     SCENE_SHOWCASE_DIR:'',
     DISABLE_TUNNEL:true,
     CLOUDFLARED_PATH:'cloudflared'

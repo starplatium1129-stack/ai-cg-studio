@@ -60,7 +60,7 @@ test('Backup storage-key inventory: live keys collected, dead keys cleaned, rest
     'aics_recent_scenes', 'aics_hidden_scenes', 'aics_scene_usage_v1',
     'aics_show_mature', 'aics_tunnel_off', 'aics_chat_v1', 'aics_chat_model',
     'aics_chat_api_drafts', 'aics_chat_archive_v1', 'aics_training_onboarded',
-    'aics_guest_guide_dismissed',
+    'aics_guest_guide_dismissed', 'aics_companion_live2d_v1',
   ];
   live.forEach(key => {
     assert.strictEqual(keys.isLiveLocalKey(key), true, key + ' must be a live backup key');
@@ -78,6 +78,7 @@ test('Backup storage-key inventory: live keys collected, dead keys cleaned, rest
     ['aics_theme', 'dark'],
     ['aics_chat_v1', '{"version":3}'],
     ['aics_chat_archive_v1', '{"version":1}'],
+    ['aics_companion_live2d_v1', 'true'],
     ['aics_scene_usage_v1', '{"nene-cafe":3}'],
     ['aics_training_params_lora-v18', '{"epochs":8}'],
     ['aics_sd_settings_v1', 'stale'],
@@ -95,7 +96,7 @@ test('Backup storage-key inventory: live keys collected, dead keys cleaned, rest
 
   const collected = keys.collectLiveLocalSettings(fakeStorage);
   assert.deepStrictEqual(Object.keys(collected).sort(), [
-    'aics_chat_archive_v1', 'aics_chat_v1', 'aics_scene_usage_v1', 'aics_theme', 'aics_training_params_lora-v18',
+    'aics_chat_archive_v1', 'aics_chat_v1', 'aics_companion_live2d_v1', 'aics_scene_usage_v1', 'aics_theme', 'aics_training_params_lora-v18',
   ]);
   assert.strictEqual(collected['aics_training_params_lora-v18'], '{"epochs":8}');
   assert.strictEqual(collected.random_unknown_key, undefined);

@@ -132,6 +132,8 @@ async function main() {
     var aliveAfterUpgrade = await request({ path:'/api/health', headers:LOCAL });
     assert.strictEqual(aliveAfterUpgrade.status, 200,
       'gateway must survive an unauthenticated WS upgrade (it used to crash on res.status)');
+    assert.strictEqual(aliveAfterUpgrade.json.desktopProtocol, 1,
+      'gateway health must expose the desktop compatibility protocol');
 
     // ---- B-3: 状态码与错误信封 ----
     var missingImage = await request({ path:'/scene-showcase/images/sc999.jpg', headers:LOCAL });

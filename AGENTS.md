@@ -13,7 +13,8 @@
 - 绘图页内容宽度与作品册接近，不铺满 4K 屏幕。
 - 角色空间同时支持本地 Ollama 与 OpenAI-compatible API（含 DeepSeek、OpenCode 类端点）；模型名必须可配置或发现，不能由供应商名称猜测。
 - 角色配音是现有功能，重构布局时不得删除。
-- Live2D 默认按需加载，用户显式启用前不得下载大贴图。
+- 网站 `/chat` 的 Live2D 默认按需加载，用户显式启用前不得下载大贴图；Electron Companion 是明确例外：窗口可见启动时默认加载，`--hidden` 与用户显式关闭时不得下载。
+- 陪伴行为（`companionBehavior.ts`）：主动提醒不调用 LLM、不自动出声，台词只来自 `COMPANION_LINES` 确定性轮转；安静时段（默认 23:00-8:00）与勿扰期内不产出、不出队，队列保留到关闭勿扰；配置只存 `aics_companion_behavior_v1`。
 
 ## 图片审核
 
@@ -170,6 +171,16 @@
 4. **SoulLink 原生动画适配**：新增 `live2dNativeAdapter.ts`，`RuntimeSnapshot.nativeAnimation` 现在经过角色级、失败关闭的白名单 adapter；参数抑制、优先级、token 去重、过期模型和定时释放均有纯测试覆盖。当前宁宁五个 Expression 仍仅作衣装，夏目无 Expressions，未把任何未验证的 Tap/Idle/Start/Leave 动作冒充情绪动作。
 
 验证：`npm run typecheck:app`、`npm run build`、`node --test scripts/tests/test-emotion-runtime.js`、Live2D 定向 E2E 2/2、真实 TTS 12/12 音频质量回归、真实浏览器配音路径 12/12 均通过。
+
+### 已完成：桌面 Companion 日志诊断与陪伴行为（2026-08-03）
+
+1. **日志诊断** ✅：新增 `desktop/logger.ts`（同步文件日志，512KB 轮转 ×3，写失败静默降级）；`desktop/main.ts` 记录启动/网关/窗口/退出生命周期，网关子进程 stdout/stderr 经 `GatewaySupervisor.onOutput` 转发进日志；托盘新增"查看日志文件"，preload/IPC 暴露 `openLog()`。
+2. **陪伴行为** ✅：新增 `src/utils/companionBehavior.ts`（纯 TS 状态机）：idle 无操作提醒、安静时段（默认 23:00-8:00，跨天判断）、提醒冷却、常驻气泡队列（FIFO + 容量上限 + 手动关闭）与勿扰优先级（勿扰期不产出/不出队，队列保留，关闭后恢复）。不调用 LLM、不自动出声，台词来自 `characters.ts` 的 `COMPANION_LINES`（确定性轮转）。配置持久化在 `aics_companion_behavior_v1`（storageKeys 已登记）。
+3. **CompanionView 集成** ✅：勿扰开关按钮、安静时段角标、提醒气泡区（可关闭）、窗口重新可见且离开超阈值时入队"回来"问候；活动监听（pointerdown/keydown/wheel）重置 idle 计时。
+4. **测试** ✅：`test-companion-behavior.js`（12 用例）与 logger 轮转用例并入 validate；桌面 Companion E2E 增加勿扰开关断言。
+5. **既有漂移修复**：d55d1e0 把 server.js 静态服务切到 `config.ASSETS_ROOT/TOOLS_ROOT` 但 `test-control-failure-contract.js`/`test-training-routes.js` 的 baseConfig 未同步（HEAD 下 validate 就红），补齐字段；`test-chat.js` 断言适配 ChatCharacterStage 多行 `defineExpose` 与新增桌面控制方法。
+
+验证：`npm run validate` 全绿、`npm run typecheck` 通过、`npm run build` 通过、桌面 Companion 定向 E2E 通过。
 
 ### 待办
 

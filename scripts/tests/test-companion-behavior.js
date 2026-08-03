@@ -1,0 +1,140 @@
+const assert = require('assert');
+const { test } = require('node:test');
+const {
+  createCompanionBehavior,
+  normalizeCompanionConfig,
+  isInQuietHours,
+  DEFAULT_COMPANION_CONFIG,
+} = require('../../src/utils/companionBehavior.ts');
+
+function minutesAgo(minutes) {
+  return Date.now() - minutes * 60_000;
+}
+
+test('配置归一化：非法值回退默认，合法值钳制到范围', () => {
+  const normalized = normalizeCompanionConfig({ idleMinutes: 'x', cooldownMinutes: 9999, quietStartHour: -5, quietEndHour: 30, queueLimit: 0 });
+  assert.equal(normalized.idleMinutes, DEFAULT_COMPANION_CONFIG.idleMinutes);
+  assert.equal(normalized.cooldownMinutes, 24 * 60);
+  assert.equal(normalized.quietStartHour, 0);
+  assert.equal(normalized.quietEndHour, 23);
+  assert.equal(normalized.queueLimit, 1);
+  assert.deepEqual(normalizeCompanionConfig(null), DEFAULT_COMPANION_CONFIG);
+});
+
+test('安静时段判断：同一天内与跨天两种形态', () => {
+  const day = new Date(2026, 7, 3, 10, 0, 0).getTime();
+  assert.equal(isInQuietHours(day, 23, 8), false, '10 点不在 23-8 安静段');
+  assert.equal(isInQuietHours(day, 8, 23), true, '10 点在 8-23 安静段');
+  const night = new Date(2026, 7, 3, 23, 30, 0).getTime();
+  assert.equal(isInQuietHours(night, 23, 8), true, '23:30 在 23-8 安静段');
+  const dawn = new Date(2026, 7, 4, 3, 0, 0).getTime();
+  assert.equal(isInQuietHours(dawn, 23, 8), true, '凌晨 3 点在 23-8 安静段');
+  assert.equal(isInQuietHours(day, 23, 23), false, '起止相同视为未配置安静段');
+});
+
+test('idle 提醒：未到阈值不触发，超过阈值触发，冷却期内不重复', () => {
+  const behavior = createCompanionBehavior({ idleMinutes: 30, cooldownMinutes: 20 });
+  const base = new Date(2026, 7, 3, 10, 0, 0).getTime();
+  behavior.noteActivity(base - 10 * 60_000);
+  assert.equal(behavior.tick(base), null, '10 分钟无操作不应触发');
+  behavior.noteActivity(base - 31 * 60_000);
+  const reminder = behavior.tick(base);
+  assert.ok(reminder, '31 分钟无操作应触发 idle 提醒');
+  assert.equal(reminder.kind, 'idle');
+  assert.equal(behavior.pending().length, 1);
+  behavior.noteActivity(base - 10 * 60_000);
+  behavior.noteActivity(base - 35 * 60_000);
+  assert.equal(behavior.tick(base + 60_000), null, '冷却期内不应重复提醒');
+  behavior.noteActivity(base - 60 * 60_000);
+  assert.ok(behavior.tick(base + 21 * 60_000), '冷却结束后可再次提醒');
+});
+
+test('idleMinutes=0 关闭提醒', () => {
+  const behavior = createCompanionBehavior({ idleMinutes: 0 });
+  const base = new Date(2026, 7, 3, 10, 0, 0).getTime();
+  behavior.noteActivity(base - 120 * 60_000);
+  assert.equal(behavior.tick(base), null);
+});
+
+test('安静时段抑制 idle 提醒', () => {
+  const quiet = new Date(2026, 7, 3, 23, 30, 0).getTime();
+  const behavior = createCompanionBehavior({ idleMinutes: 5, quietStartHour: 23, quietEndHour: 8 });
+  behavior.noteActivity(quiet - 10 * 60_000);
+  assert.equal(behavior.tick(quiet), null, '安静时段不得产出提醒');
+  assert.equal(behavior.pending().length, 0);
+  const busy = new Date(2026, 7, 3, 10, 0, 0).getTime();
+  behavior.noteActivity(busy - 10 * 60_000);
+  assert.ok(behavior.tick(busy), '非安静时段正常产出');
+});
+
+test('勿扰：不产出新提醒，队列保留，关闭后继续出队', () => {
+  const behavior = createCompanionBehavior({ idleMinutes: 1, cooldownMinutes: 0 });
+  behavior.noteActivity(minutesAgo(5));
+  const reminder = behavior.tick();
+  assert.ok(reminder);
+  behavior.setConfig({ dnd: true });
+  assert.equal(behavior.isDnd(), true);
+  assert.equal(behavior.tick(), null, '勿扰中不再产出');
+  assert.equal(behavior.pending().length, 1, '已有队列保留');
+  assert.equal(behavior.dequeue(), null, '勿扰中不得出队');
+  behavior.setConfig({ dnd: false });
+  const popped = behavior.dequeue();
+  assert.equal(popped?.id, reminder.id, '关闭勿扰后按 FIFO 出队');
+  assert.equal(behavior.pending().length, 0);
+});
+
+test('return 提醒：不受 idle/冷却约束，但受勿扰约束', () => {
+  const behavior = createCompanionBehavior({ idleMinutes: 120, cooldownMinutes: 1000 });
+  const reminder = behavior.noteReturn('欢迎回来。');
+  assert.ok(reminder);
+  assert.equal(reminder.kind, 'return');
+  assert.equal(reminder.line, '欢迎回来。');
+  behavior.setConfig({ dnd: true });
+  assert.equal(behavior.noteReturn('回来啦。'), null, '勿扰中 return 不产出');
+});
+
+test('队列容量上限：超限裁剪最早入队项', () => {
+  const behavior = createCompanionBehavior({ idleMinutes: 1, cooldownMinutes: 0, queueLimit: 2 });
+  behavior.noteReturn('a');
+  behavior.noteReturn('b');
+  behavior.noteReturn('c');
+  const pending = behavior.pending();
+  assert.equal(pending.length, 2);
+  assert.equal(pending[0].line, 'b', '队列裁剪应丢弃最早项');
+  assert.equal(pending[1].line, 'c');
+});
+
+test('dismiss 移除指定提醒；clear 清空队列', () => {
+  const behavior = createCompanionBehavior({ queueLimit: 5 });
+  const first = behavior.noteReturn('one');
+  const second = behavior.noteReturn('two');
+  behavior.dismiss(first.id);
+  assert.equal(behavior.pending().length, 1);
+  assert.equal(behavior.pending()[0].id, second.id);
+  behavior.clear();
+  assert.equal(behavior.pending().length, 0);
+});
+
+test('cooldownRemainingMs：正数表示仍在冷却，负数表示可再次提醒', () => {
+  const behavior = createCompanionBehavior({ cooldownMinutes: 10 });
+  behavior.noteReturn('x');
+  assert(behavior.cooldownRemainingMs() > 0, '提醒后应立即处于冷却');
+  const later = behavior.cooldownRemainingMs(Date.now() + 11 * 60_000);
+  assert(later < 0, '11 分钟后应过冷却');
+});
+
+test('enabled=false 时全部主动行为停摆', () => {
+  const behavior = createCompanionBehavior({ enabled: false, idleMinutes: 1 });
+  behavior.noteActivity(minutesAgo(5));
+  assert.equal(behavior.tick(), null);
+  assert.equal(behavior.noteReturn('hi'), null);
+  assert.equal(behavior.pending().length, 0);
+});
+
+test('台词选取：无台词角色回退默认，负偏移安全取模', () => {
+  const { pickCompanionLine } = require('../../src/config/characters.ts');
+  assert.match(pickCompanionLine('nene', 'idle', 0), /。/);
+  assert.match(pickCompanionLine('natsume', 'return', 1), /。/);
+  assert.equal(pickCompanionLine('unknown', 'idle', 0), '……我在这里哦。');
+  assert.equal(pickCompanionLine('nene', 'idle', -2), pickCompanionLine('nene', 'idle', 2));
+});

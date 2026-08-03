@@ -399,6 +399,65 @@ test('desktop companion keeps the chat loop in a compact standalone layout', asy
   }));
   expect(overflow.document).toBeLessThanOrEqual(overflow.viewport);
   expect(live2dAssetRequests).toEqual([]);
+
+  await page.addInitScript(() => {
+    Object.defineProperty(window, 'companionDesktop', {
+      configurable: true,
+      value: {
+        isDesktop: true,
+        hide: () => {},
+        quit: () => {},
+        openAtelier: () => {},
+        setIgnoreMouseEvents: () => {},
+        setLive2dEnabled: () => {},
+        getState: async () => ({
+          alwaysOnTop: false,
+          ignoreMouseEvents: false,
+          visible: true,
+          onBatteryPower: false,
+          live2dEnabled: null,
+        }),
+        toggleAlwaysOnTop: async () => false,
+        getSettings: async () => ({ openAtLogin: false }),
+        setAutostart: async () => false,
+        pickFiles: async () => [],
+        openWorkspace: async () => false,
+        openRuntime: async () => false,
+        notify: () => {},
+        onFileDrop: () => 1,
+        offFileDrop: () => {},
+        onResume: () => 1,
+        offResume: () => {},
+        onShown: () => 1,
+        offShown: () => {},
+        onVisibilityChanged: () => 1,
+        offVisibilityChanged: () => {},
+        onPowerModeChanged: () => 1,
+        offPowerModeChanged: () => {},
+        onInteractionModeChanged: () => 1,
+        offInteractionModeChanged: () => {},
+      },
+    });
+  });
+  await page.reload();
+  const companionCsp = await page.evaluate(async () => {
+    const response = await fetch('/companion', { cache: 'no-store' });
+    return response.headers.get('content-security-policy') || '';
+  });
+  if (companionCsp.includes("'unsafe-eval'")) {
+    await expect(page.locator('.live2d-host')).toHaveAttribute('data-state', 'ready', { timeout: 25_000 });
+    await expect(page.locator('.live2d-host canvas')).toHaveCount(1);
+  } else {
+    await expect(page.locator('.live2d-host')).toHaveAttribute('data-state', 'fallback', { timeout: 25_000 });
+    await expect(page.locator('.live2d-host')).toHaveAttribute('data-error', /unsafe-eval/);
+  }
+  await expect(page.locator('.live2d-enable-cta')).toHaveCount(0);
+  const dndButton = page.locator('.companion-dnd-toggle');
+  await expect(dndButton).toHaveCount(1);
+  await expect(dndButton).toHaveAttribute('aria-pressed', 'false');
+  await dndButton.click();
+  await expect(dndButton).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('.companion-reminders')).toHaveCount(0);
   expect(errors).toEqual([]);
 });
 

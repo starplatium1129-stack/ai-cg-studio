@@ -12,6 +12,8 @@ interface CharacterStageHandle {
   setAudioLevel: (level: number, peak?: number) => void
   setEmotion: (emotion: string) => void
   setUserMessage: () => void
+  setDesktopVisible?: (visible: boolean) => void
+  setDesktopPerformanceMode?: (onBatteryPower: boolean) => void
 }
 
 export function useCharacterRoomSession() {
@@ -231,6 +233,11 @@ export function useCharacterRoomSession() {
     if (voice.readyFor(voiceId)) voice.prepare(voiceId, true)
   }
 
+  async function refreshRoomState() {
+    if (autoVoice.value) voice.ensureAudioContext()
+    await Promise.all([refreshChatStatus(), refreshVoiceStatus()])
+  }
+
   async function pollRoomOperation(operationId: string) {
     try {
       const response = await fetch('/api/status', { cache: 'no-store' })
@@ -361,6 +368,7 @@ export function useCharacterRoomSession() {
     }
     voice.setVolume(volume.value / 100)
     statusTimer = window.setInterval(() => {
+      if (document.hidden) return
       if (!busy.value) void refreshChatStatus()
       void refreshVoiceStatus()
     }, 30000) as unknown as number
@@ -440,5 +448,6 @@ export function useCharacterRoomSession() {
     clearAllMemory,
     onAutoVoiceChange,
     replayLast,
+    refreshRoomState,
   }
 }

@@ -175,6 +175,7 @@ const avatarDetail = ref('')
 const avatarRetryable = ref(false)
 const outfitBusy = ref(false)
 const wardrobeOpen = ref(false)
+const live2dInitialized = ref(false)
 // 换装选择按角色记忆（宁宁/夏目共用 storage 单字段，值空间分离）
 const outfitByChar = ref<Record<string, string>>({
   nene: DEFAULT_LIVE2D_OUTFIT,
@@ -229,8 +230,8 @@ const avatarActionTitle = computed(() => {
 async function handleAvatarAction() {
   if (!live2d.enabled.value) {
     await activeRuntime().activate()
-    emit('live2dEnabled', true)
     await live2d.enable()
+    emit('live2dEnabled', true)
     return
   }
   if (live2d.ready.value) {
@@ -266,6 +267,15 @@ function setEmotion(value: string) {
 
 function setUserMessage() {
   activeRuntime().onUserMessage()
+}
+
+function setDesktopVisible(visible: boolean) {
+  live2d.setPaused(!visible)
+  if (visible) void live2d.recover()
+}
+
+function setDesktopPerformanceMode(onBatteryPower: boolean) {
+  live2d.setMaxFps(onBatteryPower ? 30 : 60)
 }
 
 async function handleOutfitChange(next: string) {
@@ -315,6 +325,14 @@ watch(() => props.outfit, (value) => {
   }
 })
 
+watch(() => props.autoLoad, (enabled) => {
+  if (!enabled || !live2dInitialized.value || live2d.enabled.value) return
+  void (async () => {
+    await activeRuntime().activate()
+    await live2d.enable()
+  })()
+})
+
 onMounted(() => {
   if (!live2dHostRef.value || !stageRef.value) return
   live2d.attachEmotionRuntime(activeRuntime())
@@ -328,6 +346,11 @@ onMounted(() => {
       autoLoad: props.autoLoad,
       outfit: initialOutfit,
     })
+    live2dInitialized.value = true
+    if (props.autoLoad && !live2d.enabled.value) {
+      await activeRuntime().activate()
+      await live2d.enable()
+    }
   })()
 })
 
@@ -336,5 +359,13 @@ onUnmounted(() => {
   live2d.destroy()
 })
 
-defineExpose({ setSpeaking, setMouth, setAudioLevel, setEmotion, setUserMessage })
+defineExpose({
+  setSpeaking,
+  setMouth,
+  setAudioLevel,
+  setEmotion,
+  setUserMessage,
+  setDesktopVisible,
+  setDesktopPerformanceMode,
+})
 </script>

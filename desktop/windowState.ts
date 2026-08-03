@@ -18,11 +18,18 @@ export interface WorkArea {
 export interface CompanionPreferences {
   alwaysOnTop: boolean
   ignoreMouseEvents: boolean
+  live2dEnabled: boolean | null
+}
+
+export interface WindowBoundsConstraints {
+  minWidth?: number
+  minHeight?: number
 }
 
 const DEFAULT_PREFERENCES: CompanionPreferences = {
   alwaysOnTop: false,
   ignoreMouseEvents: false,
+  live2dEnabled: null,
 }
 
 const DEFAULT_BOUNDS: WindowBounds = { x: 24, y: 80, width: 540, height: 760 }
@@ -49,9 +56,15 @@ export function loadWindowBounds(filePath: string, fallback: WindowBounds = DEFA
   }
 }
 
-export function clampWindowBounds(bounds: WindowBounds, workArea: WorkArea): WindowBounds {
-  const width = Math.max(360, Math.min(Math.round(bounds.width), workArea.width))
-  const height = Math.max(480, Math.min(Math.round(bounds.height), workArea.height))
+export function clampWindowBounds(
+  bounds: WindowBounds,
+  workArea: WorkArea,
+  constraints: WindowBoundsConstraints = {},
+): WindowBounds {
+  const minWidth = constraints.minWidth ?? 360
+  const minHeight = constraints.minHeight ?? 480
+  const width = Math.max(Math.min(minWidth, workArea.width), Math.min(Math.round(bounds.width), workArea.width))
+  const height = Math.max(Math.min(minHeight, workArea.height), Math.min(Math.round(bounds.height), workArea.height))
   const x = Math.max(workArea.x - width + 80, Math.min(Math.round(bounds.x), workArea.x + workArea.width - 80))
   const y = Math.max(workArea.y, Math.min(Math.round(bounds.y), workArea.y + workArea.height - 80))
   return { x, y, width, height }
@@ -80,6 +93,7 @@ export function loadCompanionPreferences(
     return {
       alwaysOnTop: value.alwaysOnTop === true,
       ignoreMouseEvents: value.ignoreMouseEvents === true,
+      live2dEnabled: typeof value.live2dEnabled === 'boolean' ? value.live2dEnabled : null,
     }
   } catch {
     return fallback
@@ -92,6 +106,29 @@ export function saveCompanionPreferences(filePath: string, preferences: Companio
   try {
     fs.mkdirSync(directory, { recursive: true })
     fs.writeFileSync(temporary, JSON.stringify(preferences), 'utf8')
+    fs.renameSync(temporary, filePath)
+  } catch {
+    try { fs.unlinkSync(temporary) } catch { /* best effort */ }
+  }
+}
+
+export function loadDesktopGatewayPort(filePath: string, fallback = 3000): number {
+  try {
+    const raw: unknown = JSON.parse(fs.readFileSync(filePath, 'utf8'))
+    const port = raw && typeof raw === 'object' ? Number((raw as Record<string, unknown>).port) : NaN
+    return Number.isInteger(port) && port >= 1024 && port <= 65_535 ? port : fallback
+  } catch {
+    return fallback
+  }
+}
+
+export function saveDesktopGatewayPort(filePath: string, port: number): void {
+  if (!Number.isInteger(port) || port < 1024 || port > 65_535) return
+  const directory = path.dirname(filePath)
+  const temporary = `${filePath}.${process.pid}.tmp`
+  try {
+    fs.mkdirSync(directory, { recursive: true })
+    fs.writeFileSync(temporary, JSON.stringify({ port }), 'utf8')
     fs.renameSync(temporary, filePath)
   } catch {
     try { fs.unlinkSync(temporary) } catch { /* best effort */ }

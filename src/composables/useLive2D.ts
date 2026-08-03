@@ -57,6 +57,7 @@ interface Live2DApp {
     screen?: { width: number; height: number }
     ticker?: {
       started: boolean
+      maxFPS?: number
       start(): void
       stop(): void
     }
@@ -196,6 +197,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   let activeInteraction = ''
   let interactionTimer = 0
   let leaveTimer = 0
+  let lifecycleToken = 0
   let entranceUntil = 0
   let mouthHooked = false
   let speaking = false
@@ -207,6 +209,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   const blinkScheduler = createBlinkScheduler()
   const emotionCurrent: Record<string, number> = {}
   let lastParamFrame = 0
+  let maxFps = 60
 
   function setState(state: Live2DStatus['state'], text: string, detail = '', retryable = false) {
     if (hostEl) { hostEl.dataset.state = state; hostEl.dataset.error = detail; hostEl.dataset.retryable = retryable ? 'true' : 'false' }
@@ -283,6 +286,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
 
   async function retry() {
     if (destroyed.value) return
+    if (loading) return loading
     if (!enabled.value) return enable()
     destroyRuntime()
     await setCharacter(character.value)
@@ -290,11 +294,15 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
 
   async function enable() {
     if (destroyed.value) return false
+    lifecycleToken += 1
+    clearTimeout(leaveTimer)
+    leaveTimer = 0
     enabled.value = true
     return setCharacter(character.value)
   }
 
   function disable() {
+    const token = ++lifecycleToken
     enabled.value = false
     interactionHint.value = ''
     // 告别动作：先播一小段 Leave 再销毁，避免"切换回静态立绘"瞬间硬切。
@@ -304,6 +312,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
       : null
     const started = isCatchable(playable) ? playable.then((v: unknown) => v === true).catch(() => false) : Promise.resolve(playable === true)
     void started.then((ok: boolean) => {
+      if (token !== lifecycleToken || enabled.value) return
       if (!ok) {
         destroyRuntime()
         setState('idle', '启用 Live2D', '动态模型已释放；点击可重新加载', true)
@@ -313,6 +322,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
       setState('idle', '正在道别…', '播放告别动作后释放资源', false)
       clearTimeout(leaveTimer)
       leaveTimer = window.setTimeout(() => {
+        if (token !== lifecycleToken || enabled.value) return
         destroyRuntime()
         setState('idle', '启用 Live2D', '动态模型已释放；点击可重新加载', true)
       }, LEAVE_PLAY_MS)
@@ -373,6 +383,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
           // interaction instead of a delayed network request.
           models: [{ path: info.modelUrl, width: canvas.width, height: canvas.height, position: { x: 0, y: 0 }, motionPreload: 'ALL' }],
         })
+        applyTickerLimit()
         app.onModelLoaded((m: Live2DModel) => {
           if (destroyed.value || char !== character.value) { finish(false); return }
           model = m; loadedCharacter.value = char; ready.value = true
@@ -757,7 +768,18 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   function resumeRendering() {
     const ticker = app?.app?.ticker
     if (!ticker || document.hidden || prefersReducedMotion()) return
+    applyTickerLimit()
     if (!ticker.started) { ticker.start(); layout() }
+  }
+
+  function applyTickerLimit() {
+    const ticker = app?.app?.ticker
+    if (ticker) ticker.maxFPS = maxFps
+  }
+
+  function setMaxFps(value: number) {
+    maxFps = Math.max(24, Math.min(120, Math.round(value) || 60))
+    applyTickerLimit()
   }
 
   function setPaused(paused: boolean) {
@@ -766,6 +788,19 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     // 减少动态效果：渲染一帧把立绘摆正，然后停住，不做待机循环
     if (paused || prefersReducedMotion()) { if (ticker.started) ticker.stop(); return }
     resumeRendering()
+  }
+
+  async function recover() {
+    if (destroyed.value || !enabled.value || document.hidden) return
+    if (loading) await loading
+    if (destroyed.value || !enabled.value || document.hidden) return
+    if (!ready.value || !model || loadedCharacter.value !== character.value) {
+      await retry()
+      return
+    }
+    setVisible(true)
+    setPaused(false)
+    layout()
   }
 
   function setVisible(value: boolean) {
@@ -862,6 +897,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   }
 
   function destroy() {
+    lifecycleToken += 1
     destroyed.value = true; enabled.value = false; destroyRuntime()
     resizeObserver?.disconnect()
     if (onResize) window.removeEventListener('resize', onResize)
@@ -877,6 +913,6 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   return {
     ready, enabled, character, loadedCharacter, mouthValue, interactionHint, outfit,
     init, enable, disable, setCharacter, setMouth, setAudioLevel, setOutfit, setSpeaking,
-    attachEmotionRuntime, setPaused, layout, retry, destroy,
+    attachEmotionRuntime, setPaused, setMaxFps, recover, layout, retry, destroy,
   }
 }
