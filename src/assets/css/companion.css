@@ -1379,3 +1379,18 @@ html.companion-immersive .companion-conversation {
   border-color: transparent;
   padding-bottom: var(--s-2);
 }
+
+/* Immersive mode: fully transparent background (desktop window is transparent) */
+html.companion-immersive body {
+  background: transparent;
+}
+
+html.companion-immersive .companion-page::before,
+html.companion-immersive .companion-page::after,
+html.companion-immersive .companion-ambience {
+  display: none;
+}
+
+html.companion-immersive .companion-page {
+  background: transparent;
+}
