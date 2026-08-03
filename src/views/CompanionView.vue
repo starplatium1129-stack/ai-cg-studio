@@ -3,6 +3,7 @@
     class="companion-page"
     :data-character="activeChar"
     :data-power-mode="desktopBridge ? (onBatteryPower ? 'efficiency' : 'quality') : undefined"
+    :data-ui-hidden="uiHidden || undefined"
   >
     <div class="companion-ambience" aria-hidden="true">
       <i></i><i></i><i></i>
@@ -230,6 +231,7 @@ import { useCharacterRoomSession } from '@/composables/useCharacterRoomSession'
 import ChatCharacterStage from '@/components/ChatCharacterStage.vue'
 import { imgCount } from '@/composables/useImageStore'
 import { pickCompanionLine } from '@/config/characters'
+import { pickEnvironmentGreeting } from '@/utils/environmentContext'
 import { importLocalImages } from '@/utils/desktopImport'
 import type { ImportSourceFile } from '@/utils/desktopImportCore'
 import { createCompanionBehavior, normalizeCompanionConfig, type CompanionReminder } from '@/utils/companionBehavior'
@@ -321,6 +323,10 @@ let reminderLineOffset = 0
 let eventLineOffset = 0
 let eventPolling = false
 let lastActivityAt = Date.now()
+let greetedSlotKey = ''
+let uiIdleTimer = 0
+let uiHidden = false
+let lastPointerMove = Date.now()
 let resumeSubscription: number | undefined
 let shownSubscription: number | undefined
 let visibilitySubscription: number | undefined
@@ -350,6 +356,27 @@ function noteActivity() {
   lastActivityAt = Date.now()
 }
 
+/** 沉浸模式：鼠标在舞台活动时 UI 浮现，静止数秒后自动隐去（桌面窗口）。 */
+function setUiHidden(hidden: boolean) {
+  if (uiHidden === hidden) return
+  uiHidden = hidden
+  document.documentElement.classList.toggle('companion-ui-hidden', hidden)
+}
+
+function onPointerMove() {
+  lastPointerMove = Date.now()
+  if (uiHidden) setUiHidden(false)
+  clearTimeout(uiIdleTimer)
+  if (!desktopBridge) return
+  uiIdleTimer = window.setTimeout(() => {
+    if (!viewAlive || !desktopWindowVisible.value) return
+    // 输入框聚焦时保持 UI（正在打字不能突然消失）
+    if (document.activeElement instanceof HTMLTextAreaElement
+      || document.activeElement instanceof HTMLInputElement) return
+    if (Date.now() - lastPointerMove > 3000) setUiHidden(true)
+  }, 3200) as unknown as number
+}
+
 function toggleDnd() {
   const next = !behavior.config().dnd
   behavior.setConfig({ dnd: next })
@@ -362,6 +389,24 @@ function dismissReminder(id: string) {
   syncReminders()
 }
 
+/** 时间片问候：同一时间片只入队一次；周日/周末视为不同片 */
+function currentGreetedSlotKey(): string {
+  const now = new Date()
+  const greeting = pickEnvironmentGreeting(activeChar.value, now)
+  return `${activeChar.value}:${greeting.slot}:${greeting.weekend ? 'w' : 'd'}`
+}
+
+function maybeGreetByTime(force = false) {
+  if (!behaviorEnabled.value) return
+  const key = currentGreetedSlotKey()
+  if (!force && key === greetedSlotKey) return
+  greetedSlotKey = key
+  const greeting = pickEnvironmentGreeting(activeChar.value, new Date(), reminderLineOffset)
+  reminderLineOffset += 1
+  const reminder = behavior.noteReturn(greeting.line)
+  if (reminder) syncReminders()
+}
+
 function runBehaviorTick() {
   const reminder = behavior.tick()
   if (reminder) {
@@ -369,6 +414,8 @@ function runBehaviorTick() {
     reminder.line = pickCompanionLine(activeChar.value, 'idle', reminderLineOffset)
     syncReminders()
   }
+  // 跨时间片（午→下午、工作日→周末）时给一条环境问候
+  if (viewAlive && desktopWindowVisible.value) maybeGreetByTime()
 }
 
 async function pollCompanionEvents() {
@@ -625,6 +672,8 @@ function setDesktopVisibility(visible: boolean) {
       const reminder = behavior.noteReturn(pickCompanionLine(activeChar.value, 'return', reminderLineOffset))
       if (reminder) syncReminders()
     }
+    // 窗口重新可见：若时间片/周末状态变了，给一条环境问候
+    maybeGreetByTime()
     noteActivity()
   }
   characterStageRef.value?.setDesktopVisible?.(visible)
@@ -643,9 +692,11 @@ onMounted(async () => {
   window.addEventListener('pointerdown', noteActivity, { passive: true })
   window.addEventListener('keydown', noteActivity, { passive: true })
   window.addEventListener('wheel', noteActivity, { passive: true })
+  window.addEventListener('pointermove', onPointerMove, { passive: true })
   window.addEventListener('dragover', onWindowDragOver, { passive: false })
   window.addEventListener('drop', onWindowDrop, { passive: false })
   syncReminders()
+  maybeGreetByTime()
   void pollCompanionEvents()
   void refreshWorkspaceState()
   if (desktopBridge) {
@@ -683,6 +734,7 @@ onUnmounted(() => {
   window.removeEventListener('pointerdown', noteActivity)
   window.removeEventListener('keydown', noteActivity)
   window.removeEventListener('wheel', noteActivity)
+  window.removeEventListener('pointermove', onPointerMove)
   window.removeEventListener('dragover', onWindowDragOver)
   window.removeEventListener('drop', onWindowDrop)
   if (desktopBridge && clipboardImageSubscription != null) desktopBridge.offClipboardImage(clipboardImageSubscription)

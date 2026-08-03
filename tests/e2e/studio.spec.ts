@@ -460,6 +460,11 @@ test('desktop companion keeps the chat loop in a compact standalone layout', asy
     await expect(page.locator('.live2d-host')).toHaveAttribute('data-error', /unsafe-eval/);
   }
   await expect(page.locator('.live2d-enable-cta')).toHaveCount(0);
+  // 环境问候：挂载时按时间片入队一条问候气泡
+  await expect(page.locator('.companion-reminder-bubble')).toHaveCount(1);
+  await expect(page.locator('.companion-reminder-bubble p')).toHaveText(/。/);
+  await page.locator('.companion-reminder-bubble button').click();
+  await expect(page.locator('.companion-reminder-bubble')).toHaveCount(0);
   const dndButton = page.locator('.companion-dnd-toggle');
   await expect(dndButton).toHaveCount(1);
   await expect(dndButton).toHaveAttribute('aria-pressed', 'false');

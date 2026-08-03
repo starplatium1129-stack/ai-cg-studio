@@ -1261,3 +1261,63 @@ html.companion-mode:not(.companion-desktop) body {
   gap: 6px;
   justify-content: flex-end;
 }
+
+/* Immersive mode: UI fades away while idle, glass surfaces, stage shadow */
+html.companion-desktop .companion-toolbar,
+html.companion-desktop .companion-conversation {
+  transition: opacity .45s var(--ease-out), transform .45s var(--ease-out);
+}
+
+html.companion-desktop.companion-ui-hidden .companion-toolbar,
+html.companion-desktop.companion-ui-hidden .companion-conversation {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+}
+
+html.companion-desktop.companion-ui-hidden .companion-toolbar {
+  transform: translateY(-10px);
+}
+
+html.companion-desktop .companion-toolbar,
+html.companion-desktop .companion-conversation,
+html.companion-desktop .companion-clipboard-card,
+html.companion-desktop .companion-reminder-bubble {
+  -webkit-backdrop-filter: blur(14px) saturate(1.25);
+  backdrop-filter: blur(14px) saturate(1.25);
+}
+
+html.companion-desktop .companion-conversation {
+  background: color-mix(in srgb, var(--bg-deep) 42%, transparent);
+}
+
+html.companion-desktop .companion-bubbles {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 18%, #000 92%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 18%, #000 92%, transparent 100%);
+}
+
+/* Stage floor shadow grounds the character on the desktop */
+html.companion-desktop .companion-stage::after {
+  position: absolute;
+  right: 18%;
+  bottom: 4px;
+  left: 18%;
+  height: 46px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, color-mix(in srgb, var(--character-accent) 24%, transparent), transparent 68%);
+  content: "";
+  filter: blur(10px);
+  opacity: .8;
+  pointer-events: none;
+}
+
+html.companion-desktop.companion-ui-hidden .companion-stage::after {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.companion-desktop .companion-toolbar,
+  html.companion-desktop .companion-conversation {
+    transition: none;
+  }
+}

@@ -231,6 +231,8 @@ P1 已完成真实 Windows Electron 回归；仍需在不同显卡驱动、多�
 - [x] 任务栏进度：训练进行中 Atelier/桌宠窗口任务栏显示进度环，完成/失败自动清除。
 - [x] 导出到磁盘：作品册原图在桌面版走原生保存对话框（`desktop:save-image`），浏览器保持下载。
 - [x] 深链协议 `aics://gallery|training|chat|control|...`：second-instance/冷启动 argv 解析并唤起 Atelier 对应页（`desktop/deepLink.ts` 纯函数可测）。
+- [x] 环境感知问候（`environmentContext.ts` 纯 TS）：7 个时间片 × 平日/周末的确定性台词，窗口重新可见/跨时间片时入队一条问候气泡；不调 LLM、离线可用。
+- [x] 沉浸式舞台：鼠标活动时 UI 浮现、静止 3.2s 自动隐去（打字中不隐藏）；工具栏/对话区/气泡玻璃化（backdrop blur + 半透明），气泡区渐变遮罩，角色底部投影着地。
 - [ ] 经用户显式授权后再评估语音输入。
 
 ### P3：桌面能力延伸（软件特性）
