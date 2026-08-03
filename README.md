@@ -29,6 +29,7 @@ This is an unofficial, non-commercial fan project and is not affiliated with or 
 - Scene-aware Japanese voice references for neutral, gentle, happy, shy, serious, and sad delivery; Chinese keeps the stable neutral reference
 - Local history, ratings, favorites, notes, projects, and image storage, with a versioned JSON backup and restore flow
 - Temporary token-protected links for trusted friends to use your local SD WebUI
+- An optional desktop Companion app (Electron): a frameless, transparent, always-on-top floating character window for the chat room, with tray menu, global hotkeys, clipboard awareness, quiet-hours reminders, and a separate Atelier workspace window; start it with `npm run desktop` after building
 
 ## Recommended setup
 
@@ -53,7 +54,7 @@ See [STARTUP.md](STARTUP.md) for full setup and troubleshooting instructions.
 - Runtime configuration, logs, process state, and friend-generated outputs stay in the git-ignored `runtime/` directory.
 - Reviewed samples stay in the sibling `AI/SceneShowcase/` directory.
 - A friend link reaches your local gateway through a temporary tunnel, so share it only with people you trust.
-- Restarting the gateway creates a new token; the temporary domain may also change.
+- The gateway token persists across restarts (stored under `runtime/state/gateway_token`); only the temporary tunnel domain may change.
 
 ## Project layout
 
@@ -74,6 +75,8 @@ See [STARTUP.md](STARTUP.md) for full setup and troubleshooting instructions.
 │   └── assets/css/         #   Design system tokens, component styles
 ├── routes/                 # Express API routes (chat, voice, live2d, maintenance)
 ├── services/               # TypeScript runtime services (Ollama, TTS, HTTP client…)
+├── desktop/                # Electron Companion shell (main, preload, gateway supervisor)
+├── desktop-dist/           # Compiled Electron main-process output (tsconfig.desktop.json)
 ├── types/                  # Shared TypeScript type definitions
 ├── data/                   # Runtime JSON: scenes, characters, tags, presets
 ├── assets/                 # Static assets: character images, Live2D models, vendor SDKs

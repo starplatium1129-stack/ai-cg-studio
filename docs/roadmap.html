@@ -4,7 +4,7 @@
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="绫季绘境后续改进、新功能方向、完成标准与产品边界。">
+<meta name="description" content="产品路线图已迁移到 Markdown 文档（visual-architecture-roadmap.md），此页保留旧链接。">
 <title>产品路线图 · 绫季绘境</title>
 <link rel="stylesheet" href="../src/assets/css/design-system.css">
 <link rel="stylesheet" href="../css/docs.css?v=1">
@@ -12,79 +12,10 @@
 <script src="../tools/theme.js?v=5"></script>
 <style>
   .page { --page-max: 1040px; }
-  .hero { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:var(--s-5); align-items:end; margin-bottom:var(--s-6); }
-  /* 路线图标题保持纯色(无 .title-gradient):这一页是执行清单,不做区首页的装饰标题 */
+  .hero { margin-bottom:var(--s-6); }
   .subtitle { max-width:720px; margin:0; }
-  .updated { color:var(--text-muted); font-family:var(--font-mono); font-size:var(--fs-label-sm); white-space:nowrap; }
-
-  /* 项目状态数字卡 — 原名 .status-card 与 tools/control.html 的服务状态卡重名,
-     语义不同(这里是统计数字,那里是服务徽章),故加前缀 */
-  .status-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:var(--s-3); margin-bottom:var(--s-6); }
-  .roadmap-stat { padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); }
-  .roadmap-stat strong { display:block; font-size:var(--fs-title); color:var(--accent); margin-bottom:4px; }
-  .roadmap-stat span { color:var(--text-muted); font-size:var(--fs-label-sm); line-height:1.5; }
-
-  /* 原名 .principle 与 docs/philosophy.html 的原则卡重名且取值不同,故加前缀 */
-  .roadmap-principle { margin-bottom:var(--s-6); padding:var(--s-4); border:1px solid var(--border-soft); border-left:4px solid var(--accent); border-radius:var(--r-lg); background:var(--bg-surface); }
-  .roadmap-principle strong { display:block; margin-bottom:var(--s-2); }
-  .roadmap-principle p { margin:0; color:var(--text-secondary); line-height:1.75; }
-
-  .roadmap { position:relative; padding-left:34px; }
-  .roadmap::before { content:''; position:absolute; left:9px; top:12px; bottom:12px; width:2px; background:var(--border-soft); }
-  .phase { position:relative; margin-bottom:var(--s-5); }
-  .phase::before { content:''; position:absolute; left:-31px; top:25px; width:14px; height:14px; border-radius:50%; border:3px solid var(--bg-base); background:var(--text-muted); box-shadow:0 0 0 2px var(--border-strong); }
-  .phase.done::before { background:var(--success); box-shadow:0 0 0 2px var(--success); }
-  .phase.now::before { background:var(--accent); box-shadow:0 0 0 5px var(--accent-glow); }
-  .phase-card { border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); overflow:hidden; }
-  .phase.now .phase-card { border-color:var(--accent); box-shadow:0 0 24px var(--accent-glow); }
-  .phase-head { display:flex; align-items:flex-start; gap:var(--s-3); padding:var(--s-4); border-bottom:1px solid var(--border-soft); }
-  .phase-index { flex:0 0 auto; padding:var(--s-1) var(--s-3); border-radius:var(--r-pill); background:var(--accent-soft); color:var(--accent); font:700 var(--fs-label-sm) var(--font-mono); }
-  .phase.done .phase-index { color:var(--success-text); background:color-mix(in srgb,var(--success) 12%,transparent); }
-  .phase-title { flex:1; min-width:0; }
-  .phase-title h2 { margin:0 0 var(--s-1); font-size:var(--fs-title-xs); }
-  .phase-title p { margin:0; color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:1.6; }
-  .phase-state { flex:0 0 auto; padding:3px var(--s-2); border-radius:var(--r-pill); background:var(--bg-elevated); color:var(--text-muted); font-size:var(--fs-label-xs); font-weight:700; }
-  .phase.now .phase-state { background:var(--accent); color:var(--text-inverse); }
-  .phase.done .phase-state { color:var(--success-text); background:color-mix(in srgb,var(--success) 12%,transparent); }
-  .phase-body { padding:var(--s-4); }
-  .work-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--s-3); }
-  .work-item { padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-elevated); }
-  .work-item h3 { margin:0 0 var(--s-2); font-size:var(--fs-body); }
-  .work-item p { margin:0; color:var(--text-secondary); font-size:var(--fs-label); line-height:1.65; }
-  .work-item .priority { display:inline-block; margin-bottom:var(--s-2); color:var(--accent); font:700 var(--fs-mono-sm) var(--font-mono); text-transform:uppercase; letter-spacing:.08em; }
-  .done-list { list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--s-2) var(--s-4); }
-  .done-list li { color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:1.6; }
-  .done-list li::before { content:'✓'; margin-right:8px; color:var(--success-text); font-weight:800; }
-  .gate { margin-top:var(--s-3); padding:var(--s-3); border-radius:var(--r-md); background:var(--accent-soft); color:var(--text-secondary); font-size:var(--fs-label); line-height:1.65; }
-  .gate strong { color:var(--text-primary); }
-
-  .section { margin-top:var(--s-6); }
-  .section h2 { margin:0 0 var(--s-3); font-size:var(--fs-title-sm); }
-  .metric-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--s-3); }
-  .metric { padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); }
-  .metric h3 { margin:0 0 var(--s-2); font-size:var(--fs-body); }
-  .metric p { margin:0; color:var(--text-secondary); font-size:var(--fs-label); line-height:1.65; }
-  .boundary { display:grid; grid-template-columns:1fr 1fr; gap:var(--s-3); }
-  .boundary-card { padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); }
-  .boundary-card h3 { margin:0 0 var(--s-3); font-size:var(--fs-body-lg); }
-  .boundary-card ul { margin:0; padding-left:1.2rem; color:var(--text-secondary); }
-  .boundary-card li { margin-bottom:var(--s-2); font-size:var(--fs-body-sm); line-height:1.6; }
-  .boundary-card.no { border-color:color-mix(in srgb,var(--danger) 30%,var(--border-soft)); }
-
-  @media (max-width:800px) {
-    .hero { grid-template-columns:1fr; gap:var(--s-2); }
-    .status-grid,.metric-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
-    .work-grid,.done-list,.boundary { grid-template-columns:1fr; }
-  }
-  @media (max-width:520px) {
-    .page { padding-inline:var(--s-3); }
-    .status-grid { grid-template-columns:1fr 1fr; }
-    .roadmap { padding-left:26px; }
-    .roadmap::before { left:6px; }
-    .phase::before { left:-26px; }
-    .phase-head { flex-wrap:wrap; }
-    .phase-state { margin-left:auto; }
-  }
+  .moved { padding:var(--s-5); border:1px solid var(--border-soft); border-left:4px solid var(--accent); border-radius:var(--r-lg); background:var(--bg-surface); }
+  .moved p { margin:0 0 var(--s-3); color:var(--text-secondary); line-height:1.75; }
 </style>
 </head>
 <body data-nav="docs">
@@ -95,171 +26,15 @@
   <a href="../index.html" class="nav-back">← 回首页</a>
 
   <header class="hero">
-    <div>
-      <h1 class="title">产品路线图</h1>
-      <p class="subtitle">先守住作品、角色和故事，再增加真正能缩短创作路径的新能力。路线图按价值和依赖排序，不承诺固定日期；只有前一阶段达到完成标准，才进入下一阶段。</p>
-    </div>
-    <div class="updated">UPDATED · 2026-07-26</div>
+    <h1 class="title">产品路线图</h1>
+    <p class="subtitle">路线图已迁移为仓库内 Markdown 文档，随 AGENTS.md 一起维护。此页仅为保留旧链接的过渡页。</p>
   </header>
 
-  <section class="status-grid" aria-label="当前项目状态">
-    <div class="roadmap-stat"><strong>297</strong><span>已校验场景<br>网页直接维护</span></div>
-    <div class="roadmap-stat"><strong>2</strong><span>角色创作路线<br>宁宁与夏目</span></div>
-    <div class="roadmap-stat"><strong>4/4</strong><span>关键浏览器流程<br>自动回归通过</span></div>
-    <div class="roadmap-stat"><strong>0</strong><span>已知依赖漏洞<br>质量门禁启用</span></div>
+  <section class="moved">
+    <p>现行路线图（视觉减法与架构整理方向、执行顺序与长期观察项）见：</p>
+    <p><a href="visual-architecture-roadmap.md"><strong>docs/visual-architecture-roadmap.md</strong></a></p>
+    <p>历史 HTML 路线图（BASE / PHASE1 均已落地）与桌面 Companion 研究记录已完成使命，归档于 <code>scripts/archive/docs/</code>。</p>
   </section>
-
-  <section class="roadmap-principle">
-    <strong>路线图原则：稳定底座已经完成，后续以真实创作收益驱动。</strong>
-    <p>新增功能必须至少改善一种结果：更容易找到场景、更快得到满意画面、更稳定地保存作品、更一致地呈现角色，或更容易诊断服务。只增加页面、依赖和设置项而不改善这些结果的功能不进入开发。</p>
-  </section>
-
-  <div class="roadmap">
-    <section class="phase done">
-      <div class="phase-card">
-        <header class="phase-head">
-          <span class="phase-index">BASE</span>
-          <div class="phase-title"><h2>稳定创作底座</h2><p>从场景维护、导演出图到作品欣赏、语音和服务控制，已经形成完整本地闭环。</p></div>
-          <span class="phase-state">已完成</span>
-        </header>
-        <div class="phase-body">
-          <ul class="done-list">
-            <li>场景、标签、精选层级和样张无代码维护</li>
-            <li>事务备份、原子写入、校验失败自动回滚</li>
-            <li>横竖图原比例展墙和沉浸式作品观赏</li>
-            <li>控制面板健康检查、进度状态和 GPU 操作互斥</li>
-            <li>固定声线参考、确定性采样和逐句完整语音</li>
-            <li>TypeScript 契约、单元测试、浏览器回归和 CI</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <section class="phase now">
-      <div class="phase-card">
-        <header class="phase-head">
-          <span class="phase-index">PHASE 1</span>
-          <div class="phase-title"><h2>可靠性精修</h2><p>不扩张产品边界，优先消除剩余数据丢失、浏览器兼容、诊断和安全隐患。</p></div>
-          <span class="phase-state">下一阶段</span>
-        </header>
-        <div class="phase-body">
-          <div class="work-grid">
-            <article class="work-item"><span class="priority">P0 · 存储</span><h3>作品库存储体检</h3><p>已完成：IndexedDB 容量预警、损坏记录隔离、存储体检入口；完整作品包导入导出沿用现有备份格式。</p></article>
-            <article class="work-item"><span class="priority">P0 · 诊断</span><h3>一键导出诊断包</h3><p>已完成：控制面板汇总服务版本、端口、健康状态、脱敏配置与日志尾部。</p></article>
-            <article class="work-item"><span class="priority">P1 · 安全</span><h3>移除 HTML 事件属性</h3><p>已完成：中页与导演台均改为 data-action 委托；script CSP 默认 self，仅聊天页保留 unsafe-eval（Live2D）。</p></article>
-            <article class="work-item"><span class="priority">P1 · 类型</span><h3>渐进迁移高风险模块</h3><p>运行时服务已迁齐：`control-operation`、`serial-queue`、`http-client`、`tts-service`、`ollama-service`、`translation-service`、`live2d-service`（TS + emit + 单测）。`tools/` 控制器仍按需渐进，不整库重写。</p></article>
-            <article class="work-item"><span class="priority">P1 · 语音</span><h3>真实声线基线</h3><p>已完成：宁宁/夏目固定台词矩阵、golden metrics、leading/trailing silence 与基线对比；离线进 validate，live 捕获 opt-in。</p></article>
-            <article class="work-item"><span class="priority">P2 · 兼容</span><h3>无障碍与设备矩阵</h3><p>已完成：首页/导演台/作品册/控制台 skip+main；作品册观画 focus trap 与焦点回归；Playwright 覆盖窄桌面、平板、手机视口 smoke。</p></article>
-          </div>
-          <div class="gate"><strong>进入下一阶段的标准：</strong>连续使用中没有数据丢失；完整备份可恢复；控制面板问题可通过诊断包定位；浏览器回归、性能预算和 CI 持续通过。</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="phase">
-      <div class="phase-card">
-        <header class="phase-head">
-          <span class="phase-index">PHASE 2</span>
-          <div class="phase-title"><h2>创作体验增强</h2><p>在不遮挡画面的前提下，让比较、整理和继续创作更自然。</p></div>
-          <span class="phase-state">可靠性完成后</span>
-        </header>
-        <div class="phase-body">
-          <div class="work-grid">
-            <article class="work-item"><span class="priority">作品册</span><h3>私人展览与画册</h3><p>按项目、角色、季节或自定义主题组成展览，提供安静的全屏播放；默认仍先看作品，不把参数铺在画面上。</p></article>
-            <article class="work-item"><span class="priority">比较</span><h3>同 Seed 版本对照</h3><p>并排或滑杆比较两张作品，显示真正变化的 Prompt 与参数，帮助判断 LoRA、构图和光照调整是否有效。</p></article>
-            <article class="work-item"><span class="priority">分支</span><h3>作品变体树</h3><p>从满意作品继续微调，记录父作品、Seed 和变化原因，避免历史记录变成无法理解的平铺列表。</p></article>
-            <article class="work-item"><span class="priority">项目</span><h3>可移植创作包</h3><p>导出一个项目的故事、场景、Prompt、参数、语音和作品原图；导入时预览冲突并允许合并。</p></article>
-            <article class="work-item"><span class="priority">发现</span><h3>本地偏好推荐解释</h3><p>继续使用本机收藏和评分改善场景排序，同时说明“为什么推荐”，并提供一键关闭或重置。</p></article>
-            <article class="work-item"><span class="priority">语音</span><h3>台词与音频工作流</h3><p>让场景台词、角色、字幕和生成音频保持对应，支持单句重做与整段导出，不引入复杂时间轴编辑器。</p></article>
-          </div>
-          <div class="gate"><strong>完成标准：</strong>新能力必须减少重复操作或提高作品选择质量；作品展示仍保持原比例、低干扰和键盘可用；旧项目无迁移损失。</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="phase">
-      <div class="phase-card">
-        <header class="phase-head">
-          <span class="phase-index">PHASE 3</span>
-          <div class="phase-title"><h2>内容与工作流扩展</h2><p>只有实际需要第三个角色、新工作流或批量迁移时才启动，避免提前泛化。</p></div>
-          <span class="phase-state">按真实需求</span>
-        </header>
-        <div class="phase-body">
-          <div class="work-grid">
-            <article class="work-item"><span class="priority">角色</span><h3>配置驱动的新角色接入</h3><p>通过角色资料、LoRA、语音、立绘和校验清单注册角色，自动生成筛选项；角色独有提示词仍需人工审核。</p></article>
-            <article class="work-item"><span class="priority">场景</span><h3>场景包导入导出</h3><p>把场景数据、标签、精选信息和审核样张打成可验证的内容包，支持预览、冲突检测与回滚。</p></article>
-            <article class="work-item"><span class="priority">工作流</span><h3>ComfyUI 工作流导出</h3><p>将当前导演参数映射为版本化 workflow JSON；先支持常用单人路径，再评估双人区域控制。</p></article>
-            <article class="work-item"><span class="priority">参考图</span><h3>色彩、光照和构图辅助</h3><p>从用户主动选择的参考图提取画面方向，只生成可检查的建议，不自动覆盖角色 DNA 或故事内容。</p></article>
-            <article class="work-item"><span class="priority">训练</span><h3>素材与标签导出</h3><p>按角色、服装和身份锚点导出本地训练清单，保留来源与审核状态，不在网站内承担完整训练平台。</p></article>
-            <article class="work-item"><span class="priority">控制</span><h3>可选参考图管线</h3><p>针对明确场景评估 IP-Adapter、ControlNet 或区域提示，能力不可用时必须无损回退到现有出图链路。</p></article>
-          </div>
-          <div class="gate"><strong>启动条件：</strong>至少存在一个真实内容包、第三角色或 ComfyUI 工作流需求；先制作最小试点，通过身份、构图和维护成本评审后再进入主流程。</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="phase">
-      <div class="phase-card">
-        <header class="phase-head">
-          <span class="phase-index">RESEARCH</span>
-          <div class="phase-title"><h2>长期研究方向</h2><p>可以做原型，但不承诺进入正式产品；必须证明比现有简单流程更好。</p></div>
-          <span class="phase-state">不设期限</span>
-        </header>
-        <div class="phase-body">
-          <div class="work-grid">
-            <article class="work-item"><span class="priority">故事</span><h3>本地故事润色助手</h3><p>只在用户请求时提供角色一致性、动作可画性和镜头建议，保留原文并能逐项接受或拒绝。</p></article>
-            <article class="work-item"><span class="priority">分镜</span><h3>多画面故事板</h3><p>把一段故事拆成少量连续 CG，并锁定角色身份、服装和时间线；先解决一致性，再考虑批量生成。</p></article>
-            <article class="work-item"><span class="priority">质量</span><h3>可解释的候选图比较</h3><p>结合固定 Seed、人工评分和身份锚点生成对照报告，辅助挑图，不让自动分数替代逐张观察。</p></article>
-            <article class="work-item"><span class="priority">性能</span><h3>闲时预热与资源预测</h3><p>根据设备和当前模式建议加载顺序；不得未经允许常驻占用显存，也不得后台自动开始生成。</p></article>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <section class="section">
-    <h2>衡量是否真的变好</h2>
-    <div class="metric-grid">
-      <article class="metric"><h3>可靠性</h3><p>保存失败不丢数据；备份可恢复；损坏记录不拖垮整个作品库；所有写入都有明确结果。</p></article>
-      <article class="metric"><h3>创作效率</h3><p>从故事到首次出图的操作减少；重新找到满意配置更快；重复输入和手工文件操作继续下降。</p></article>
-      <article class="metric"><h3>画面体验</h3><p>横图、竖图和方图始终完整呈现；画面优先于参数；新增功能不让导演台和作品册变成仪表盘。</p></article>
-      <article class="metric"><h3>角色一致性</h3><p>脸、发型、瞳色、装饰、服装、双人特征和声音身份有稳定基线，变化能够被发现和解释。</p></article>
-      <article class="metric"><h3>性能</h3><p>关键页面继续满足请求数、脚本体积和传输预算；离开页面后释放 Blob URL、音频和服务资源。</p></article>
-      <article class="metric"><h3>维护成本</h3><p>普通内容更新不改代码；结构变更有契约、迁移和测试；不为一个功能复制第二套状态与存储逻辑。</p></article>
-    </div>
-  </section>
-
-  <section class="section">
-    <h2>产品边界</h2>
-    <div class="boundary">
-      <article class="boundary-card">
-        <h3>可以考虑</h3>
-        <ul>
-          <li>本地优先、可导出、可恢复的个人创作能力</li>
-          <li>能提高角色身份、构图和故事表现的辅助工具</li>
-          <li>按真实需求增加角色、场景包和生成工作流</li>
-          <li>让朋友安全查看或临时体验的轻量分享</li>
-        </ul>
-      </article>
-      <article class="boundary-card no">
-        <h3>暂不计划</h3>
-        <ul>
-          <li>公开注册、社交关系、社区投稿和公开作品流</li>
-          <li>Scene 商店、订阅、支付或商业化运营后台</li>
-          <li>长期托管的云端图库、云端生成和用户数据平台</li>
-          <li>为了技术潮流重写为大型前端框架或拆成微服务</li>
-          <li>无人审核的自动发布、自动训练和自动替换模型</li>
-        </ul>
-      </article>
-    </div>
-  </section>
-
-  <section class="roadmap-principle section">
-    <strong>执行节奏</strong>
-    <p>一次只推进一个主要能力：先写清用户问题和完成标准，再做最小版本，补数据迁移与测试，真实使用一段时间后决定继续、调整或删除。路线图不是功能承诺清单，任何项目都可以因为收益不足而取消。</p>
-  </section>
-
-  <footer class="footer"><p>绫季绘境 · 从真实创作出发持续精修</p><p class="muted mt-4">稳定优先，画面优先，角色优先，本地优先。</p></footer>
 </article>
 
 </body>

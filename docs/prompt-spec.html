@@ -167,19 +167,24 @@
   </div>
 
   <h2 class="section-title">v18 官方服装调用规范</h2>
-  <p>官方服装必须使用训练 caption 中的主控制词和配套原词。主控制词选择服装身份，配套词锁定配色、剪裁、发型和腿部细节；不要用未经训练的近义词替换它们。</p>
+  <p>官方服装必须使用训练 caption 中的主控制词和配套原词。主控制词选择服装身份，配套词锁定配色、剪裁、发型和腿部细节；不要用未经训练的近义词替换它们。完整控制词清单见 <a href="tag-standard.html#outfit-tags">标签标准 · 角色 LoRA 专属服装标签</a>。</p>
   <table>
     <thead><tr><th>服装</th><th>训练控制词</th><th>必须优先使用的训练原词</th></tr></thead>
     <tbody>
-      <tr><td>宁宁经典魔女服</td><td><code>nene_witch_canonical</code></td><td><code>witch_hat, black_cape, criss-cross_halter, crop_top, strap_between_breasts, black_skirt, asymmetrical_legwear, striped_thighhighs, frilled_socks</code></td></tr>
-      <tr><td>宁宁学院制服</td><td><code>nene_school_uniform</code></td><td><code>school_uniform, blazer, yellow_bowtie, plaid_skirt, pleated_skirt, grey_skirt, black_thighhighs</code></td></tr>
-      <tr><td>宁宁水手制服</td><td><code>nene_sailor_uniform</code></td><td><code>grey_sailor_collar, black_shirt, sailor_shirt, serafuku</code></td></tr>
+      <tr><td>宁宁经典魔女服</td><td><code>nene_witch_canonical</code></td><td><code>witch_hat, black_cape, criss-cross_halter, crop_top, strap_between_breasts, pink_bow, pink_ribbon, black_skirt, asymmetrical_legwear, striped_thighhighs, single_thighhigh, single_sock, frilled_socks, midriff</code></td></tr>
+      <tr><td>宁宁学院制服</td><td><code>nene_school_uniform</code></td><td><code>school_uniform, blazer, yellow_bowtie, plaid_skirt, pleated_skirt, grey_skirt, black_thighhighs, zettai_ryouiki</code></td></tr>
+      <tr><td>宁宁水手制服</td><td><code>nene_sailor_uniform</code></td><td><code>school_uniform, grey_sailor_collar, black_shirt, sailor_shirt, serafuku</code></td></tr>
+      <tr><td>宁宁红色开衫制服</td><td><code>nene_red_cardigan_uniform</code></td><td><code>cardigan, white_shirt, pleated_skirt, black_skirt, white_socks</code></td></tr>
       <tr><td>宁宁蓝色睡衣</td><td><code>nene_blue_pajamas</code></td><td><code>pajamas, animal_print, cat_print, long_sleeves</code></td></tr>
       <tr><td>宁宁绿色睡衣</td><td><code>nene_green_sleepwear</code></td><td><code>sleepwear, nightgown, polka_dot, short_sleeves, twin_braids</code></td></tr>
-      <tr><td>夏目红色旗袍</td><td><code>natsume_official_qipao</code></td><td><code>chinese_clothes, china_dress, red_dress, floral_print, side_slit, black_thighhighs, double_bun, hair_flower</code></td></tr>
-      <tr><td>夏目咖啡店制服</td><td><code>natsume_cafe_uniform</code></td><td><code>white_shirt, suspenders, suspender_skirt, brown_skirt, purple_ribbon, hair_flower</code></td></tr>
+      <tr><td>宁宁蝙蝠连衣裙</td><td><code>nene_bat_dress</code></td><td><code>black_dress, asymmetrical_clothes, bat_hair_ornament, black_thighhighs, garter_straps</code></td></tr>
+      <tr><td>宁宁黑色连衣裙</td><td><code>nene_black_dress</code></td><td><code>black_dress, skirt, garter_straps, thighhighs</code></td></tr>
+      <tr><td>夏目红色旗袍</td><td><code>natsume_official_qipao</code></td><td><code>chinese_clothes, china_dress, red_dress, floral_print, side_slit, long_sleeves, black_thighhighs, hair_bun, double_bun, hair_flower, red_flower</code></td></tr>
+      <tr><td>夏目咖啡店制服</td><td><code>natsume_cafe_uniform</code></td><td><code>white_shirt, suspenders, suspender_skirt, brown_skirt, long_sleeves, collared_shirt, purple_ribbon, hair_flower</code></td></tr>
+      <tr><td>夏目粉色咖啡制服</td><td><code>natsume_pink_cafe_uniform</code></td><td><code>pink_shirt, pink_skirt, waist_apron, white_apron, frills, striped</code></td></tr>
       <tr><td>夏目女仆服</td><td><code>natsume_maid_uniform</code></td><td><code>maid, maid_apron, white_apron, maid_headdress, long_sleeves, frills</code></td></tr>
-      <tr><td>夏目睡衣</td><td><code>natsume_sleepwear</code></td><td><code>blue_shirt, pillow, on_bed</code></td></tr>
+      <tr><td>夏目冬季外套</td><td><code>natsume_winter_coat</code></td><td><code>coat, fur_trim, hair_ribbon, hair_flower</code></td></tr>
+      <tr><td>夏目睡衣</td><td><code>natsume_sleepwear</code></td><td><code>shirt, blue_shirt, pillow, on_bed</code></td></tr>
     </tbody>
   </table>
   <p class="note"><code>nene_r18</code> / <code>natsume_r18</code> 只控制成人状态，不能代替服装控制词。R18 官方服装场景需要同时包含成人门控和对应服装包。</p>

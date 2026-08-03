@@ -900,12 +900,11 @@ test('home page stays inside the performance budget', async ({ page }) => {
   expect(budget.font500).toBe(0);
 });
 
-test('roadmap exposes prioritized phases and product boundaries', async ({ page }) => {
+test('roadmap points to the markdown roadmap document', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   await page.goto('/docs/roadmap.html');
   await expect(page.getByRole('heading', { name: '产品路线图', level: 1 })).toBeVisible();
-  await expect(page.locator('.phase')).toHaveCount(5);
-  await expect(page.getByRole('heading', { name: '产品边界' })).toBeVisible();
+  await expect(page.locator('a[href="visual-architecture-roadmap.md"]')).toBeVisible();
   expect(errors).toEqual([]);
 });
 
