@@ -18,7 +18,7 @@
     </ArchivePageHero>
 
     <div class="gallery-toolbar sticky-toolbar" aria-label="作品筛选" data-reveal>
-      <button class="gallery-filter" :class="{ active: favoriteOnly }" type="button" @click="favoriteOnly = !favoriteOnly">
+      <button class="gallery-filter" :class="{ active: favoriteOnly }" type="button" :aria-pressed="favoriteOnly" @click="favoriteOnly = !favoriteOnly">
         <ArchiveIcon name="love" /> 收藏 {{ favoriteCount }}
       </button>
       <select v-model="projectFilter" class="gallery-project" aria-label="按项目筛选">
@@ -37,12 +37,28 @@
         message="先建立展墙结构，再逐张解码原图。"
       />
       <ArchiveStatePanel
-        v-else-if="!visible.length"
-  kind="empty"
-  title="展墙还在等你的第一幅作品"
-  message="画好之后，它会按自己的横竖比例住进来。作品只存在这台电脑，参数不挡画面。"
->
+        v-else-if="galleryError"
+        kind="error"
+        title="本地作品档案读取失败"
+        :message="galleryError"
+      >
+        <button class="btn btn-primary" type="button" @click="loadGalleryStorage">重新读取</button>
+      </ArchiveStatePanel>
+      <ArchiveStatePanel
+        v-else-if="!history.length"
+        kind="empty"
+        title="展墙还在等你的第一幅作品"
+        message="画好之后，它会按自己的横竖比例住进来。作品只存在这台电脑，参数不挡画面。"
+      >
         <RouterLink class="btn btn-primary" to="/prompt-builder">开始绘制</RouterLink>
+      </ArchiveStatePanel>
+      <ArchiveStatePanel
+        v-else-if="!visible.length"
+        kind="empty"
+        title="当前筛选下没有作品"
+        message="作品仍在本地档案中，重置收藏或项目筛选即可重新显示。"
+      >
+        <button class="btn btn-primary" type="button" @click="resetGalleryFilters">重置筛选</button>
       </ArchiveStatePanel>
       <div v-else class="gallery-wall stagger-container">
         <template v-for="group in groups" :key="group.key">
@@ -197,6 +213,7 @@ const loras = ref<LoraMeta[]>([])
 const favoriteOnly = ref(false)
 const projectFilter = ref('')
 const galleryLoading = ref(true)
+const galleryError = ref('')
 const viewerIndex = ref(-1)
 const infoOpen = ref(false)
 const viewerUrl = ref('')
@@ -241,6 +258,11 @@ const groups = computed(() => {
   })
   return order.filter(k => buckets[k]?.length).map(k => ({ key: k, items: buckets[k] }))
 })
+
+function resetGalleryFilters() {
+  favoriteOnly.value = false
+  projectFilter.value = ''
+}
 
 const facts = computed(() => {
   if (!current.value) return []
@@ -569,9 +591,9 @@ function onKeydown(e: KeyboardEvent) {
 }
 
 /* ---------- 初始化 ---------- */
-onMounted(async () => {
-  unmounted = false
-  document.addEventListener('keydown', onKeydown)
+async function loadGalleryStorage() {
+  galleryLoading.value = true
+  galleryError.value = ''
   try {
     await kvInit()
     let historyRaw: unknown = await kvGet(HISTORY_KEY)
@@ -615,8 +637,17 @@ onMounted(async () => {
           }]
         })
       : []
-  } catch (e) { console.warn('gallery storage init failed', e) }
-  galleryLoading.value = false
+  } catch (e) {
+    galleryError.value = e instanceof Error ? e.message : String(e)
+  } finally {
+    galleryLoading.value = false
+  }
+}
+
+onMounted(async () => {
+  unmounted = false
+  document.addEventListener('keydown', onKeydown)
+  await loadGalleryStorage()
 
   try {
     await sceneStore.load()
@@ -640,7 +671,7 @@ watch(visible, () => { hydrateThumbs(); hydrateCards() })
 <style scoped>
 .gallery-shell { width:min(1880px,100%); margin:0 auto; padding:clamp(24px,4vw,64px) clamp(14px,3vw,48px) var(--s-8); }
 .gallery-intro { margin:0 auto clamp(24px,4vw,48px); max-width:1500px; }
-.gallery-title { margin:0; color:var(--text-primary); font-family:var(--font-display); font-size:clamp(2rem,4vw,4.4rem); font-weight:760; letter-spacing:-.045em; line-height:.98; }
+.gallery-title { margin:0; color:var(--text-primary); font-family:var(--font-display); font-size:clamp(2rem,3.8vw,3.95rem); font-weight:760; letter-spacing:-.045em; line-height:.98; }
 .gallery-subtitle { max-width:660px; margin:var(--s-3) 0 0; color:var(--text-secondary); font-size:clamp(.86rem,1.2vw,1rem); line-height:1.8; }
 .gallery-count { color:var(--text-muted); font:650 var(--fs-label-xs) var(--font-mono); letter-spacing:.08em; white-space:nowrap; }
 
@@ -655,11 +686,11 @@ watch(visible, () => { hydrateThumbs(); hydrateCards() })
 .gallery-loading-wall { min-height:340px; }
 .artwork { position:relative; break-inside:avoid; margin:0 0 clamp(12px,1.6vw,24px); overflow:hidden; border:1px solid color-mix(in srgb,var(--border-soft) 78%,transparent); border-radius:var(--r-dossier); background:var(--art-mat); box-shadow:var(--shadow-sm); transition:transform var(--t-base),box-shadow var(--t-base),border-color var(--t-base); }
 .artwork::before { position:absolute; z-index:var(--z-raised); top:-1px; left:var(--s-3); width:28px; height:var(--line-hairline); background:var(--archive-cyan); content:""; opacity:.82; pointer-events:none; }
-.artwork:hover { transform:translateY(-3px); border-color:color-mix(in srgb,var(--accent) 38%,var(--border-soft)); box-shadow:var(--shadow-md); }
+.artwork:hover { border-color:color-mix(in srgb,var(--accent) 38%,var(--border-soft)); box-shadow:var(--shadow-md); }
 .artwork-button { display:block; width:100%; padding:0; border:0; background:transparent; color:inherit; cursor:zoom-in; }
 .artwork-button:focus-visible { outline:3px solid var(--accent); outline-offset:-3px; }
 .artwork-tools { position:absolute; z-index:var(--z-raised); top:var(--s-2); right:var(--s-2); display:flex; align-items:center; gap:4px; opacity:0; transform:translateY(-4px); pointer-events:none; transition:opacity var(--t-fast),transform var(--t-fast); }
-.artwork:hover .artwork-tools,.artwork:focus-within .artwork-tools,.artwork-pending .artwork-tools { opacity:1; transform:none; pointer-events:auto; }
+.artwork:focus-within .artwork-tools,.artwork-pending .artwork-tools { opacity:1; transform:none; pointer-events:auto; }
 .artwork-tool { min-height:30px; padding:0 var(--s-2); border:1px solid var(--on-art-line); border-radius:var(--r-terminal); background:var(--art-scrim); color:var(--on-art-primary); font:650 var(--fs-label-xs) var(--font-sans); cursor:pointer; -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); transition:background var(--t-fast),border-color var(--t-fast),color var(--t-fast); }
 .artwork-tool:hover:not(:disabled) { border-color:color-mix(in srgb,var(--accent) 60%,var(--on-art-line)); background:color-mix(in srgb,var(--accent) 52%,var(--art-scrim)); }
 .artwork-tool.danger { border-color:color-mix(in srgb,var(--danger) 54%,var(--on-art-line)); background:color-mix(in srgb,var(--danger) 48%,var(--art-scrim)); }
@@ -671,13 +702,19 @@ watch(visible, () => { hydrateThumbs(); hydrateCards() })
 .artwork-placeholder { position:absolute; inset:0; display:grid; place-items:center; color:var(--on-art-secondary); font-size:var(--fs-glyph); }
 .artwork-skeleton { position:absolute; inset:0; background:linear-gradient(105deg,var(--art-mat) 18%,color-mix(in srgb,var(--art-mat) 76%,var(--text-primary)) 42%,var(--art-mat) 68%); background-size:220% 100%; animation:gallerySkeleton 1.3s linear infinite; }
 .artwork-caption { position:absolute; inset:auto 0 0; display:flex; align-items:flex-end; justify-content:space-between; gap:var(--s-3); padding:40px var(--s-3) var(--s-3); color:var(--on-art-primary); background:linear-gradient(transparent,var(--art-scrim)); opacity:0; transform:translateY(8px); transition:opacity var(--t-fast) var(--ease-out),transform var(--t-fast) var(--ease-out); text-align:left; pointer-events:none; }
-.artwork:hover .artwork-caption,.artwork-button:focus-visible .artwork-caption { opacity:1; transform:none; }
+.artwork-button:focus-visible .artwork-caption { opacity:1; transform:none; }
 .artwork-name { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:var(--fs-label-sm); font-weight:700; }
 .artwork-date { display:block; margin-top:2px; color:var(--on-art-secondary); font-size:var(--fs-mono-xs); }
 .artwork-mark { flex:0 0 auto; font-size:var(--fs-label-sm); }
 
 .gallery-section { column-span:all; display:flex; align-items:center; gap:var(--s-3); margin:var(--s-3) 0 var(--s-4); color:var(--text-muted); font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.13em; text-transform:uppercase; }
 .gallery-section::after { content:""; height:1px; flex:1; background:var(--border-soft); }
+
+@media (hover: hover) and (pointer: fine) {
+  .artwork:hover { transform:translateY(-3px); }
+  .artwork:hover .artwork-tools { opacity:1; transform:none; pointer-events:auto; }
+  .artwork:hover .artwork-caption { opacity:1; transform:none; }
+}
 
 @media (max-width:900px) { .gallery-count { display:none; } }
 @media (max-width:600px) {
@@ -687,7 +724,8 @@ watch(visible, () => { hydrateThumbs(); hydrateCards() })
   .artwork-caption { opacity:1; transform:none; padding:34px var(--s-2) var(--s-2); }
   .artwork-name { font-size:var(--fs-mono-sm); }
   .artwork-date { display:none; }
-  .artwork-tools { opacity:1; transform:none; pointer-events:auto; }
+  .artwork-tools { opacity:0; transform:translateY(-4px); pointer-events:none; }
+  .artwork-pending .artwork-tools { opacity:1; transform:none; pointer-events:auto; }
 }
 @media (prefers-reduced-motion:reduce) { .artwork,.artwork-caption { transition:none !important; } .artwork-skeleton { animation:none; } }
 @keyframes gallerySkeleton { to { background-position:-120% 0; } }

@@ -98,10 +98,12 @@ useScrollReveal()
   transform: translateY(4px);
   transition: opacity var(--t-fast), transform var(--t-fast);
 }
-.style-mood-card:hover .mood-go,
 .style-mood-card:focus-visible .mood-go {
   opacity: 1;
   transform: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .style-mood-card:hover .mood-go { opacity:1; transform:none; }
 }
 .style-actions {
   display: flex;

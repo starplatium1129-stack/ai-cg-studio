@@ -142,6 +142,7 @@ interface TrainingServiceOptions {
     runtimeRoot: string;
     spawn?: SpawnFunction;
     killProcess?: (pid: number, child?: ChildHandle) => void;
+    isProcessAlive?: (pid: number) => boolean;
     now?: () => number;
     platform?: NodeJS.Platform;
     logMaxBytes?: number;

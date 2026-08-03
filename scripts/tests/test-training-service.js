@@ -64,9 +64,10 @@ function main() {
   var voiceTestList = path.join(voiceDataset, 'test.list');
   var spawnCalls = [];
   var killed = [];
-  var child = createFakeChild(4242);
-  var voiceChild = createFakeChild(4343);
-  var service = null;
+    var child = createFakeChild(4242);
+    var voiceChild = createFakeChild(4343);
+    var service = null;
+    var recoveredService = null;
 
   try {
     writeFile(python);
@@ -281,13 +282,42 @@ function main() {
     voiceChild.emit('close', 0);
     assert.strictEqual(service.getJob('voice-nene').status, 'completed');
 
+    // 网关重启时旧进程可能仍然存在；旧服务没有 child 句柄，后续必须在查询时
+    // 重新校准，而不能让 jobs.json 永久停在 running。
+    service.close();
+    service = null;
+    var stateFile = path.join(runtimeRoot, 'training', 'jobs.json');
+    var persisted = JSON.parse(fs.readFileSync(stateFile, 'utf8'));
+    persisted.jobs['lora-nene-v18'] = {
+      id:'lora-nene-v18', status:'running', pid:9999, startedAt:1800000000000,
+      finishedAt:0, exitCode:null, error:'', stopRequested:false, runCount:8,
+      logVersion:1, progress:{ stage:'LoRA 训练', message:'旧网关已重启', percent:42 },
+    };
+    fs.writeFileSync(stateFile, JSON.stringify(persisted), 'utf8');
+    var processPresent = true;
+    recoveredService = trainingModule.createTrainingService({
+      aiRoot:aiRoot,
+      runtimeRoot:runtimeRoot,
+      isProcessAlive:function () { return processPresent; },
+      now:function () { return 1800000005000; },
+    });
+    assert.strictEqual(recoveredService.getJob('lora-nene-v18').status, 'running');
+    processPresent = false;
+    var reconciled = recoveredService.getJob('lora-nene-v18');
+    assert.strictEqual(reconciled.status, 'failed');
+    assert.strictEqual(reconciled.progress.stage, '进程已丢失');
+    assert.ok(reconciled.error.indexOf('未发现训练进程') >= 0);
+    recoveredService.close();
+    recoveredService = null;
+
     console.log(
       'Training service tests passed: LoRA/voice readiness, fixed argv, shell:false, ' +
       'progress/logs, busy guard, unknown-id rejection, stop lifecycle, ' +
-      'whitelisted overrides (config copies, ranges, unknown keys)'
+      'whitelisted overrides (config copies, ranges, unknown keys), restart reconciliation'
     );
   } finally {
     if (service) service.close();
+    if (recoveredService) recoveredService.close();
     safeRemove(temporaryRoot);
   }
 }

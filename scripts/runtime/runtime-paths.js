@@ -5,8 +5,8 @@ function ensureDirectory(directory) {
   if (!fs.existsSync(directory)) fs.mkdirSync(directory, { recursive: true });
 }
 
-function createRuntimePaths(projectRoot) {
-  const root = path.join(projectRoot, 'runtime');
+function createRuntimePaths(projectRoot, configuredRoot) {
+  const root = configuredRoot ? path.resolve(configuredRoot) : path.join(projectRoot, 'runtime');
   const state = path.join(root, 'state');
   const logs = path.join(root, 'logs');
   const outputs = path.join(root, 'outputs');

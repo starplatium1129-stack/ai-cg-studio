@@ -4,8 +4,8 @@
       chapter="12"
       title="SCENE MAINTENANCE"
       :subtitle="`${scenes.length || '—'} RECORDS · ${tab.toUpperCase()}`"
-      :status="saving ? 'WRITING PROJECT' : (dirty ? 'UNSAVED CHANGES' : 'ARCHIVE SYNCED')"
-      :state="saving ? 'active' : (dirty ? 'warning' : 'success')"
+      :status="loading ? 'READING ARCHIVE' : (loadError ? 'ARCHIVE EXCEPTION' : (saving ? 'WRITING PROJECT' : (dirty ? 'UNSAVED CHANGES' : 'ARCHIVE SYNCED')))"
+      :state="loading ? 'active' : (loadError ? 'warning' : (saving ? 'active' : (dirty ? 'warning' : 'success')))"
       shape="frame"
     />
     <header class="sm-head">
@@ -13,8 +13,8 @@
         <div class="page-kicker">Scene manager</div>
         <h1 class="title">场景管理</h1>
         <div class="maintenance-state" :class="{ dirty: dirty }">
-          <strong id="maintenanceTitle">{{ dirty ? '有尚未保存的修改' : '已同步' }}</strong>
-          <span id="maintenanceHint">{{ maintenanceHint }}</span>
+          <strong id="maintenanceTitle">{{ loading ? '正在读取场景档案' : (loadError ? '场景档案暂不可用' : (dirty ? '有尚未保存的修改' : '已同步')) }}</strong>
+          <span id="maintenanceHint">{{ loading ? '正在同步磁盘数据…' : (loadError || maintenanceHint) }}</span>
         </div>
       </div>
       <div class="sm-head-actions">
@@ -26,11 +26,20 @@
     </header>
 
     <ArchiveStatePanel
-      v-if="loadError"
+      v-if="loading"
+      kind="loading"
+      title="正在读取场景档案"
+      message="正在从本地数据源同步场景、标签和维护记录。"
+    />
+
+    <ArchiveStatePanel
+      v-else-if="loadError"
       kind="error"
       title="场景档案读取失败"
       :message="`${loadError} 请确认通过 localhost 访问且文件存在。`"
-    />
+    >
+      <button class="btn btn-primary" type="button" @click="loadFromStore(true)">重新读取</button>
+    </ArchiveStatePanel>
 
     <template v-else>
       <!-- Stats -->
@@ -759,6 +768,7 @@ onBeforeUnmount(() => { window.removeEventListener('beforeunload', onBeforeUnloa
  * 以前用 `?v=' + Date.now()`，等于每次进页面都全量重传 230KB 且永不复用。
  */
 async function loadFromStore(force = false) {
+  loading.value = true
   try {
     await (force ? sceneStore.reload() : sceneStore.load())
     if (sceneStore.error) throw new Error(sceneStore.error)
@@ -770,6 +780,8 @@ async function loadFromStore(force = false) {
     loadError.value = ''
   } catch (err) {
     loadError.value = errorMessage(err, '场景数据加载失败')
+  } finally {
+    loading.value = false
   }
 }
 
@@ -777,7 +789,6 @@ onMounted(async () => {
   // 首次进入拉最新落盘状态：编辑器要基于真实文件而不是别的页面留下的内存副本
   await loadFromStore(true)
   await loadHomeHeroes()
-  loading.value = false
 })
 </script>
 
@@ -832,7 +843,7 @@ tr:hover td { background:var(--bg-elevated); }
 
 .tool-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:var(--s-3); margin-bottom:var(--s-4); }
 .sm-tool-card { display:flex; flex-direction:column; gap:var(--s-1); text-align:left; padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); cursor:pointer; transition:border-color var(--t-fast),transform var(--t-fast); }
-.sm-tool-card:hover:not(:disabled) { border-color:var(--accent); transform:translateY(-2px); }
+.sm-tool-card:hover:not(:disabled) { border-color:var(--accent); }
 .sm-tool-card:disabled { opacity:.5; cursor:not-allowed; }
 .sm-tool-icon { font-size:var(--fs-title); }
 .sm-tool-label { font-weight:700; font-size:var(--fs-body); color:var(--text-primary); }
@@ -844,7 +855,11 @@ tr:hover td { background:var(--bg-elevated); }
 /* 样张管理 */
 .image-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:var(--s-2); margin-bottom:var(--s-3); }
 .sm-image-card { display:grid; gap:3px; text-align:left; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); cursor:pointer; transition:border-color var(--t-fast),transform var(--t-fast); }
-.sm-image-card:hover { border-color:var(--accent); transform:translateY(-2px); }
+.sm-image-card:hover { border-color:var(--accent); }
+@media (hover: hover) and (pointer: fine) {
+  .sm-tool-card:hover:not(:disabled),
+  .sm-image-card:hover { transform:translateY(-2px); }
+}
 .sm-image-card.active { border-color:var(--accent); background:var(--accent-soft); }
 .home-hero-maintenance { margin-bottom:var(--s-5); }
 .home-hero-grid { grid-template-columns:repeat(2,minmax(180px,1fr)); margin-bottom:var(--s-3); }

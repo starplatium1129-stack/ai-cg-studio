@@ -23,12 +23,22 @@ test('navigation uses the archive icon system and emits pointer feedback', async
   await sceneLink.dispatchEvent('pointerdown', { clientX: 180, clientY: 40, pointerType: 'mouse' })
   await expect(page.locator('.interaction-impulse')).toHaveClass(/active/)
 
+  await page.evaluate(() => {
+    const cut = document.querySelector('.route-cut')
+    if (!cut) return
+    const state = window as Window & { __routeCutSeen?: boolean; __routeCutObserver?: MutationObserver }
+    state.__routeCutSeen = cut.classList.contains('active')
+    state.__routeCutObserver?.disconnect()
+    state.__routeCutObserver = new MutationObserver(() => {
+      if (cut.classList.contains('active')) state.__routeCutSeen = true
+    })
+    state.__routeCutObserver.observe(cut, { attributes: true, attributeFilter: ['class'] })
+  })
+
   await sceneLink.click()
-  // 先断言转场切屏动画（active 窗口只有数百毫秒），再断言 URL，
-  // 避免并行负载下 load 事件把 320ms 的 active 窗口拖过去。
-  await expect(page.locator('.route-cut')).toHaveClass(/active/)
+  expect(await page.evaluate(() => (window as Window & { __routeCutSeen?: boolean }).__routeCutSeen)).toBe(true)
   await expect(page).toHaveURL(/\/scene-explorer$/)
-  await expect(page.locator('.route-loader')).toHaveCount(1)
+  await expect(page.locator('.route-loader')).not.toHaveClass(/active/)
   await expect(page.locator('.route-cut-register')).toContainText('SCENE ARCHIVE')
 })
 

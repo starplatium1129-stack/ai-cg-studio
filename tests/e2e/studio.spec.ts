@@ -353,6 +353,55 @@ test('character room mounts portrait, composer and voice console', async ({ page
   expect(errors).toEqual([]);
 });
 
+test('desktop companion keeps the chat loop in a compact standalone layout', async ({ page }) => {
+  const errors = collectRuntimeErrors(page);
+  const live2dAssetRequests: string[] = [];
+  page.on('request', request => {
+    if (request.url().includes('/assets/live2d-current/')) live2dAssetRequests.push(request.url());
+  });
+  await page.addInitScript(() => {
+    localStorage.setItem('aics_chat_v1', JSON.stringify({
+      version: 3,
+      active: 'nene',
+      histories: {
+        nene: [{ role: 'assistant', content: '今天也在这里陪着你。', mid: 'companion-seed' }],
+        natsume: [],
+      },
+      settings: {
+        model: 'local-model',
+        provider: 'api',
+        apiBaseUrl: 'https://local.example/v1',
+        apiModel: 'local-model',
+        apiKey: 'local-key',
+        webSearchEnabled: false,
+        live2dEnabled: false,
+        live2dOutfit: 'school',
+        autoVoice: false,
+        volume: 70,
+        drafts: { nene: '', natsume: '' },
+      },
+    }));
+  });
+  await page.setViewportSize({ width: 520, height: 720 });
+  await page.goto('/companion');
+
+  await expect(page.locator('.companion-page')).toBeVisible();
+  await expect(page.locator('.page-root')).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: '与绫地宁宁相伴', level: 1 })).toBeVisible();
+  await expect(page.locator('.companion-input')).toBeVisible();
+  await expect(page.locator('.companion-bubble')).toContainText('今天也在这里陪着你');
+  await expect(page.locator('.character-tab')).toHaveCount(2);
+  await expect(page.locator('.live2d-enable-cta')).toContainText('加载绫地宁宁动态立绘');
+  await expect(page.locator('.companion-room-link')).toHaveAttribute('href', '/chat');
+  const overflow = await page.evaluate(() => ({
+    viewport: window.innerWidth,
+    document: document.documentElement.scrollWidth,
+  }));
+  expect(overflow.document).toBeLessThanOrEqual(overflow.viewport);
+  expect(live2dAssetRequests).toEqual([]);
+  expect(errors).toEqual([]);
+});
+
 test('Natsume Live2D loads, reacts, and keeps wardrobe memory per character', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   await page.addInitScript(() => {
@@ -403,6 +452,130 @@ test('Natsume Live2D loads, reacts, and keeps wardrobe memory per character', as
 
   const settings = await page.evaluate(() => JSON.parse(localStorage.getItem('aics_chat_v1') || '{}').settings);
   expect(settings.live2dOutfits).toEqual({ nene: 'school', natsume: 'natsume-cafe' });
+  expect(errors).toEqual([]);
+});
+
+test('Natsume Live2D eyes blink symmetrically via the blink scheduler', async ({ page }) => {
+  const errors = collectRuntimeErrors(page);
+  await page.addInitScript(() => {
+    localStorage.setItem('aics_chat_v1', JSON.stringify({
+      version: 3,
+      active: 'natsume',
+      histories: { nene: [], natsume: [] },
+      settings: {
+        model: '',
+        provider: 'api',
+        apiBaseUrl: '',
+        apiModel: '',
+        apiKey: '',
+        webSearchEnabled: false,
+        live2dEnabled: true,
+        live2dOutfit: 'natsume-cafe',
+        live2dOutfits: { nene: 'school', natsume: 'natsume-cafe' },
+        autoVoice: false,
+        volume: 80,
+        drafts: { nene: '', natsume: '' },
+      },
+    }));
+  });
+
+  await page.goto('/chat');
+  await expect(page.locator('.portrait-stage')).toHaveAttribute('data-character', 'natsume');
+  await expect(page.locator('.avatar-status')).toHaveAttribute('data-state', 'ready', { timeout: 30_000 });
+
+  // 眨眼调度器把双眼参数逐帧写同一值（stage.dataset.blink = 1 睁 / 0 闭）。
+  // 采样 12 秒：必须出现至少一次完整眨眼，且眨眼结束后回到全睁。
+  const stage = page.locator('.portrait-stage');
+  const samples: string[] = [];
+  const deadline = Date.now() + 12_000;
+  while (Date.now() < deadline) {
+    samples.push(await stage.getAttribute('data-blink') || '');
+    await page.waitForTimeout(120);
+  }
+  const values = samples.map(Number).filter(v => Number.isFinite(v));
+  expect(values.length).toBeGreaterThan(50);
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+  expect(min, `12 秒内应出现至少一次眨眼（实测最小值 ${min}）`).toBeLessThan(0.5);
+  expect(max, '眨眼之间眼睛应回到全睁').toBe(1);
+  expect(errors).toEqual([]);
+});
+
+test('Natsume plays the Start entrance motion on load', async ({ page }) => {
+  test.setTimeout(60_000);
+  const errors = collectRuntimeErrors(page);
+  await page.addInitScript(() => {
+    localStorage.setItem('aics_chat_v1', JSON.stringify({
+      version: 3,
+      active: 'natsume',
+      histories: { nene: [], natsume: [] },
+      settings: {
+        model: '',
+        provider: 'api',
+        apiBaseUrl: '',
+        apiModel: '',
+        apiKey: '',
+        webSearchEnabled: false,
+        live2dEnabled: true,
+        live2dOutfit: 'natsume-cafe',
+        live2dOutfits: { nene: 'school', natsume: 'natsume-cafe' },
+        autoVoice: false,
+        volume: 80,
+        drafts: { nene: '', natsume: '' },
+      },
+    }));
+  });
+
+  await page.goto('/chat');
+  await expect(page.locator('.avatar-status')).toHaveAttribute('data-state', 'ready', { timeout: 45_000 });
+
+  // 登场动作（Start 组）启动后，覆盖式眨眼暂停、stage.dataset.entrance='1'，
+  // 窗口 5.2s 后回到 '0'。采样 7 秒必须能抓到 '1'。
+  const stage = page.locator('.portrait-stage');
+  const seen: string[] = [];
+  const deadline = Date.now() + 7_000;
+  while (Date.now() < deadline) {
+    seen.push(await stage.getAttribute('data-entrance') || '');
+    await page.waitForTimeout(100);
+  }
+  expect(seen, '模型加载后应播放一次登场动作').toContain('1');
+  expect(errors).toEqual([]);
+});
+
+test('Natsume plays the Leave farewell before releasing Live2D', async ({ page }) => {
+  test.setTimeout(60_000);
+  const errors = collectRuntimeErrors(page);
+  await page.addInitScript(() => {
+    localStorage.setItem('aics_chat_v1', JSON.stringify({
+      version: 3,
+      active: 'natsume',
+      histories: { nene: [], natsume: [] },
+      settings: {
+        model: '',
+        provider: 'api',
+        apiBaseUrl: '',
+        apiModel: '',
+        apiKey: '',
+        webSearchEnabled: false,
+        live2dEnabled: true,
+        live2dOutfit: 'natsume-cafe',
+        live2dOutfits: { nene: 'school', natsume: 'natsume-cafe' },
+        autoVoice: false,
+        volume: 80,
+        drafts: { nene: '', natsume: '' },
+      },
+    }));
+  });
+
+  await page.goto('/chat');
+  await expect(page.locator('.avatar-status')).toHaveAttribute('data-state', 'ready', { timeout: 45_000 });
+  await page.locator('.avatar-status').click();
+
+  // 先进入告别阶段（播 Leave 动作），再释放模型
+  await expect(page.locator('.avatar-status')).toContainText('正在道别');
+  await expect(page.locator('.live2d-host canvas')).toBeHidden({ timeout: 12_000 });
+  await expect(page.locator('.avatar-status')).toHaveAttribute('data-state', 'idle');
+  await expect(page.locator('.avatar-status')).toContainText('启用 Live2D');
   expect(errors).toEqual([]);
 });
 
@@ -642,13 +815,13 @@ test('roadmap exposes prioritized phases and product boundaries', async ({ page 
 test('guest first visit shows a one-time guide and dismissal persists', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   await page.goto('/?guest=1');
-  await expect(page.getByRole('region', { name: '访客导览' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: '欢迎来到 绫姬绘境' })).toBeVisible();
+  await expect(page.getByRole('dialog', { name: '访客导览' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '欢迎来到 绫季绘境' })).toBeVisible();
   await page.getByRole('button', { name: '知道了，开始浏览' }).click();
-  await expect(page.getByRole('region', { name: '访客导览' })).toBeHidden();
+  await expect(page.getByRole('dialog', { name: '访客导览' })).toBeHidden();
   const dismissed = await page.evaluate(() => localStorage.getItem('aics_guest_guide_dismissed'));
   expect(dismissed).toBe('1');
   await page.goto('/?guest=1');
-  await expect(page.getByRole('region', { name: '访客导览' })).toBeHidden();
+  await expect(page.getByRole('dialog', { name: '访客导览' })).toBeHidden();
   expect(errors).toEqual([]);
 });

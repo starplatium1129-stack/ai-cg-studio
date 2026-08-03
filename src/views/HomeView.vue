@@ -490,14 +490,14 @@ onUnmounted(() => {
 
 <style scoped>
 /* ---------- Story → Scene → Prompt → Image chain ---------- */
-.chain { display:flex; align-items:center; gap:0; max-width:100%; margin:var(--s-5) 0; overflow-x:auto; scrollbar-width:none; }
+.chain { display:flex; align-items:center; gap:0; max-width:100%; margin:var(--s-5) 0; overflow:visible; }
 .chain::-webkit-scrollbar { display:none; }
-.chain-step { display:flex; flex:0 0 auto; align-items:center; gap:6px; padding:7px 0; border-bottom:1px solid var(--border-soft); color:var(--text-secondary); font-size:var(--fs-body-sm); font-weight:650; white-space:nowrap; }
+.chain-step { display:flex; flex:1 1 0; min-width:0; align-items:center; justify-content:center; gap:6px; padding:7px 0; border-bottom:1px solid var(--border-soft); color:var(--text-secondary); font-size:var(--fs-body-sm); font-weight:650; white-space:nowrap; }
 .chain-step::before { content:attr(data-step); margin-right:2px; color:var(--editorial-gold); font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.08em; }
 .chain-step .ic { color:var(--accent-violet); font-size:.92rem; }
 .chain-step .en { font-size:var(--fs-mono-xs); color:var(--text-muted); font-weight:400; }
 .chain-step.final { border-color:var(--editorial-gold); color:var(--text-primary); }
-.chain-arrow { flex:0 0 clamp(20px,3vw,42px); height:1px; margin:0 8px; overflow:hidden; background:linear-gradient(90deg,var(--border-soft),var(--editorial-gold),var(--border-soft)); color:transparent; }
+.chain-arrow { flex:0 1 clamp(12px,2vw,28px); height:1px; margin:0 4px; overflow:hidden; background:linear-gradient(90deg,var(--border-soft),var(--editorial-gold),var(--border-soft)); color:transparent; }
 
 /* ---------- Hero ---------- */
 .home-hero { position:relative; padding:var(--s-8) 0 var(--s-6); display:grid; grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr); grid-template-rows:auto auto; gap:var(--s-5) var(--s-6); align-items:end; }
@@ -513,7 +513,7 @@ onUnmounted(() => {
 .hero-register .archive-kicker { color:var(--editorial-gold); }
 .hero-register span { display:inline-flex; align-items:center; gap:var(--s-2); }
 .hero-register span+span::before { content:""; width:18px; height:1px; background:var(--archive-blue); opacity:.72; }
-.hero-title { max-width:12ch; text-wrap:balance; margin-bottom:var(--s-4); font:600 clamp(2.4rem,4.5vw,3.8rem)/1.08 var(--font-serif); letter-spacing:.02em; }
+.hero-title { max-width:12ch; text-wrap:balance; margin-bottom:var(--s-4); font:600 clamp(2.4rem,4.7vw,4.2rem)/1.06 var(--font-serif); letter-spacing:.02em; }
 .hero-title :deep(.accent) { background:linear-gradient(135deg,var(--accent) 60%,var(--mood-love)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
 .jp { display:block; margin-top:var(--s-2); font-size:.25em; letter-spacing:.32em; text-transform:uppercase; color:var(--accent-violet); -webkit-text-fill-color:var(--accent-violet); }
 .hero-sub { font-size:var(--fs-body-lg); color:var(--text-secondary); margin-bottom:var(--s-3); max-width:520px; line-height:1.7; }
@@ -542,8 +542,10 @@ onUnmounted(() => {
 .hero-character.nene { left:0; width:52%; height:100%; object-fit:cover; object-position:46% 32%; filter:saturate(1.04) contrast(1.03); clip-path:polygon(0 0,100% 0,88% 100%,0 100%); }
 .hero-character.natsume { right:0; width:52%; height:100%; object-fit:cover; object-position:54% 30%; filter:saturate(1.04) contrast(1.03); clip-path:polygon(12% 0,100% 0,100% 100%,0 100%); }
 /* 悬停时两人向中间靠一点，做出"同框"的呼应 */
-.hero-orbit:hover .hero-character.nene { transform:translateX(1.5%) scale(1.015); }
-.hero-orbit:hover .hero-character.natsume { transform:translateX(-1.5%) scale(1.015); }
+@media (hover: hover) and (pointer: fine) {
+  .hero-orbit:hover .hero-character.nene { transform:translateX(1.5%) scale(1.015); }
+  .hero-orbit:hover .hero-character.natsume { transform:translateX(-1.5%) scale(1.015); }
+}
 @media (prefers-reduced-motion:reduce) {
   .hero-orbit:hover .hero-character.nene,
   .hero-orbit:hover .hero-character.natsume { transform:none; }
@@ -592,7 +594,7 @@ onUnmounted(() => {
 /* 拍立得错落感：奇偶交替微倾斜，hover 归正放大 */
 .chibi-card.tilt-left  { transform: rotate(-1.8deg); }
 .chibi-card.tilt-right { transform: rotate(1.6deg); }
-.chibi-card:hover { transform: rotate(0) translateY(-3px) scale(1.02); border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); box-shadow: 0 16px 34px -16px color-mix(in srgb, var(--accent) 45%, transparent), var(--shadow-glass-md); }
+.chibi-card:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); box-shadow: 0 16px 34px -16px color-mix(in srgb, var(--accent) 45%, transparent), var(--shadow-glass-md); }
 .chibi-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .chibi-card img {
   display:block; width:100%; aspect-ratio:5/3; object-fit:cover;
@@ -653,17 +655,16 @@ onUnmounted(() => {
 .tool-card { display:flex; flex-direction:column; gap:var(--s-2); min-height:176px; background:linear-gradient(145deg,var(--editorial-gold-soft),transparent 26%),var(--bg-surface); border:1px solid var(--border-soft); border-radius:2px var(--r-lg) 2px var(--r-lg); padding:var(--s-5); text-decoration:none; color:var(--text-primary); transition:border-color var(--t-fast),transform var(--t-fast) var(--ease-out),box-shadow var(--t-fast); }
 .tool-card .tool-index { position:absolute; top:var(--s-3); right:var(--s-4); color:var(--editorial-gold); font:650 var(--fs-mono-xs) var(--font-mono); letter-spacing:.1em; opacity:.86; }
 .tool-card .ic { margin-top:var(--s-3); }
-.tool-card:hover { border-color:color-mix(in srgb,var(--accent) 58%,var(--border-soft)); transform:translateY(-2px); }
+.tool-card:hover { border-color:color-mix(in srgb,var(--accent) 58%,var(--border-soft)); }
 .tool-card .ic { display:grid; place-items:center; width:36px; height:36px; border:1px solid color-mix(in srgb,var(--accent) 28%,var(--border-soft)); border-radius:var(--r-lg); background:var(--accent-soft); font-size:var(--fs-title-sm); box-shadow:inset 0 1px 0 var(--glass-highlight); }
 .tool-card .t { font:600 var(--fs-title-xs)/1.35 var(--font-serif); letter-spacing:.025em; }
 .tool-card .d { font-size:var(--fs-label); color:var(--text-muted); line-height:1.5; margin:0; flex:1; }
 .tool-card .go { display:inline-flex; align-items:center; gap:var(--s-1); width:max-content; font-size:var(--fs-label-sm); color:var(--accent); margin-top:var(--s-2); transition:transform var(--t-fast) var(--ease-out); }
-.tool-card:hover .go { transform:translateX(3px); }
 
 /* ---------- Recent ---------- */
 .recent-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:var(--s-4); }
 .recent-card { background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-lg); overflow:hidden; cursor:pointer; transition:border-color var(--t-fast),transform var(--t-fast); text-decoration:none; color:var(--text-primary); }
-.recent-card:hover { border-color:var(--accent); transform:translateY(-2px); }
+.recent-card:hover { border-color:var(--accent); }
 .recent-cover { aspect-ratio:4/3; display:flex; align-items:center; justify-content:center; background:var(--bg-deep); font-size:var(--fs-glyph); overflow:hidden; }
 .recent-cover img { width:100%; height:100%; object-fit:cover; animation:archive-image-in .3s ease; }
 .recent-cover .placeholder { color:var(--text-muted); }
@@ -677,7 +678,17 @@ onUnmounted(() => {
 @media (max-width:600px) { .recent-grid { grid-template-columns:1fr 1fr; } }
 .recent-grid .empty-state { grid-column:1 / -1; margin-top:0; }
 
+@media (hover: hover) and (pointer: fine) {
+  .chibi-card:hover { transform:rotate(0) translateY(-3px) scale(1.02); }
+  .tool-card:hover { transform:translateY(-2px); }
+  .tool-card:hover .go { transform:translateX(3px); }
+  .recent-card:hover { transform:translateY(-2px); }
+}
+
 /* ---------- Responsive ---------- */
+@media (min-width:769px) and (max-width:1400px) {
+  .chain-step .en { display:none; }
+}
 @media (max-width:768px) {
   .home-hero { grid-template-columns:minmax(0,1fr); gap:var(--s-5); }
   .hero-copy,.hero-strip,.hero-orbit { grid-column:1; grid-row:auto; min-width:0; width:100%; max-width:100%; }

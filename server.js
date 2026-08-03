@@ -144,12 +144,12 @@ function createGateway(options) {
   app.use(['/assets/live2d', '/assets/live2d-current'], function (req, res, next) {
     res.setHeader('Cache-Control', 'no-cache');
     next();
-  }, express.static(path.join(config.ROOT_DIR, 'assets', 'live2d'), {
+  }, express.static(config.LIVE2D_ROOT, {
     dotfiles:'deny',
     index:false,
     fallthrough:false
   }));
-  app.use('/assets', express.static(path.join(config.ROOT_DIR, 'assets'), staticOptions(ONE_WEEK)));
+  app.use('/assets', express.static(config.ASSETS_ROOT, staticOptions(ONE_WEEK)));
   // 只放行 SPA 真正读取的数据文件。
   // 之前整个 data/ 目录对外可读，包括 history.json / projects.json / prompts.json
   // 这类个人内容，以及 data/scenes/*.json（build-scenes.js 的输入，共 893KB，
@@ -191,7 +191,7 @@ function createGateway(options) {
   app.use('/tools', function (req, res, next) {
     if (req.path === '/control-server.js') return res.status(404).end();
     next();
-  }, express.static(path.join(config.ROOT_DIR, 'tools'), staticOptions(ONE_DAY)));
+  }, express.static(config.TOOLS_ROOT, staticOptions(ONE_DAY)));
 
   var sdProxy = createProxyMiddleware({
     // router 按请求解析 target：控制面板改 SD_HOST 后立即生效。

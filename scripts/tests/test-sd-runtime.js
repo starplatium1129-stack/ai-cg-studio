@@ -9,6 +9,10 @@ const sdGenerateSource = fs.readFileSync(
   'utf8'
 );
 assert(!/\bany\b/.test(sdGenerateSource), 'useSDGenerate must not regress to explicit any types');
+assert(
+  /function dispose\(\)[\s\S]*?cancel\(\)/.test(sdGenerateSource),
+  'disposing the generation composable must interrupt an active WebUI job before leaving the page',
+);
 const sdQueueSource = fs.readFileSync(
   path.resolve(__dirname, '../../src/composables/useSDQueue.ts'),
   'utf8'

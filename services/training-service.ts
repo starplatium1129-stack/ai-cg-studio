@@ -275,6 +275,7 @@ interface TrainingServiceOptions {
   runtimeRoot: string;
   spawn?: SpawnFunction;
   killProcess?: (pid: number, child?: ChildHandle) => void;
+  isProcessAlive?: (pid: number) => boolean;
   now?: () => number;
   platform?: NodeJS.Platform;
   logMaxBytes?: number;
@@ -759,6 +760,7 @@ function createTrainingService(options: TrainingServiceOptions) {
   const spawn: SpawnFunction = options.spawn || ((command, args, spawnOptions) =>
     childProcess.spawn(command, args, spawnOptions) as unknown as ChildHandle);
   const killProcess = options.killProcess || ((pid, child) => defaultKillProcess(pid, child, platform));
+  const isAlive = options.isProcessAlive || processAlive;
   const states = new Map<TrainingJobId, PersistedJobState>();
   const children = new Map<TrainingJobId, ChildHandle>();
   const parserBuffers = new Map<TrainingJobId, string>();
@@ -771,7 +773,7 @@ function createTrainingService(options: TrainingServiceOptions) {
   const savedJobs = isRecord(saved) && isRecord(saved.jobs) ? saved.jobs : {};
   for (const id of JOB_IDS) {
     const state = normalizeState(id, savedJobs[id]);
-    if ((state.status === 'running' || state.status === 'stopping') && !processAlive(state.pid)) {
+    if ((state.status === 'running' || state.status === 'stopping') && !isAlive(state.pid)) {
       state.status = state.stopRequested ? 'stopped' : 'failed';
       state.finishedAt = now();
       state.error = state.stopRequested ? '' : '网关重启后未发现训练进程';
@@ -786,6 +788,36 @@ function createTrainingService(options: TrainingServiceOptions) {
   function stateFor(id: TrainingJobId): PersistedJobState {
     return states.get(id)!;
   }
+
+  function reconcileOrphanedJobs(): boolean {
+    let changed = false;
+    for (const id of JOB_IDS) {
+      const state = stateFor(id);
+      if (
+        (state.status !== 'running' && state.status !== 'stopping')
+        || children.has(id)
+        || isAlive(state.pid)
+      ) continue;
+      state.status = state.stopRequested ? 'stopped' : 'failed';
+      state.finishedAt = now();
+      state.error = state.stopRequested ? '' : '训练网关重启后未发现训练进程';
+      state.progress = {
+        ...state.progress,
+        stage: state.stopRequested ? '已停止' : '进程已丢失',
+        message: state.error || '训练已停止',
+        percent: state.stopRequested ? state.progress.percent : Math.min(99, state.progress.percent),
+      };
+      state.stopRequested = false;
+      changed = true;
+    }
+    if (changed) saveStates();
+    return changed;
+  }
+
+  const orphanReconcileTimer = setInterval(() => {
+    try { reconcileOrphanedJobs(); } catch { /* 查询失败不应中断训练服务轮询 */ }
+  }, 5000);
+  orphanReconcileTimer.unref?.();
 
   function saveStates(): void {
     writeJsonAtomic(stateFile, { version: 1, jobs: Object.fromEntries(states) });
@@ -1090,7 +1122,14 @@ function createTrainingService(options: TrainingServiceOptions) {
   }
 
   function listJobs(): { jobs: PublicJob[] } {
+    reconcileOrphanedJobs();
     return { jobs: JOB_IDS.map(publicJob) };
+  }
+
+  function getJob(value: unknown): PublicJob {
+    const id = assertKnownId(value);
+    reconcileOrphanedJobs();
+    return publicJob(id);
   }
 
   function overview(): Record<string, unknown> {
@@ -1115,6 +1154,7 @@ function createTrainingService(options: TrainingServiceOptions) {
   }
 
   function assertNoActiveJob(): void {
+    reconcileOrphanedJobs();
     const active = JOB_IDS.map((id) => stateFor(id))
       .find((state) => state.status === 'running' || state.status === 'stopping');
     if (active) {
@@ -1288,6 +1328,7 @@ function createTrainingService(options: TrainingServiceOptions) {
 
   function stopJob(value: unknown): PublicJob {
     const id = assertKnownId(value);
+    reconcileOrphanedJobs();
     const state = stateFor(id);
     if (state.status !== 'running' && state.status !== 'stopping') {
       throw new TrainingServiceError('当前没有正在运行的训练任务', 'NOT_RUNNING', 409);
@@ -1374,6 +1415,7 @@ function createTrainingService(options: TrainingServiceOptions) {
   }
 
   function close(): void {
+    clearInterval(orphanReconcileTimer);
     for (const timer of persistTimers.values()) clearTimeout(timer);
     persistTimers.clear();
     try {
@@ -1388,7 +1430,7 @@ function createTrainingService(options: TrainingServiceOptions) {
     listDatasets,
     listJobs,
     getDatasetPreview,
-    getJob: (value: unknown): PublicJob => publicJob(assertKnownId(value)),
+    getJob,
     getJobConfig,
     getLogs,
     startJob,

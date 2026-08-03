@@ -19,7 +19,7 @@
     />
     <div class="route-scan" aria-hidden="true"></div>
     <div class="route-progress" aria-hidden="true"><i></i></div>
-    <div class="route-index" aria-hidden="true">
+    <div v-if="showRouteIndex" class="route-index" aria-hidden="true">
       <span>{{ routeMeta.code }}</span>
       <strong>{{ signalLabel || routeMeta.label }}</strong>
       <i></i>
@@ -28,7 +28,7 @@
   </div>
   <!-- 樱花花雨是独立前景层：不继承氛围层的 opacity:0.2 压制，
        飘在内容之上（pointer-events:none），参考站同款"前景花雨" -->
-  <div class="sakura-fall" aria-hidden="true">
+  <div v-if="showSakura" class="sakura-fall" aria-hidden="true">
     <span
       v-for="(leaf, index) in sakuraLeaves"
       :key="index"
@@ -91,7 +91,20 @@ const ROUTES_WITH_OWN_PARTICLES = new Set([
   '/color-script',
   '/scenario',
 ])
+const ROUTES_WITH_SAKURA = new Set([
+  '/',
+  '/scene-explorer',
+  '/character',
+  '/style',
+  '/showcase',
+  '/gallery',
+  '/color-script',
+  '/scenario',
+  '/chat',
+])
 const routeHasOwnParticle = computed(() => ROUTES_WITH_OWN_PARTICLES.has(route.path))
+const showRouteIndex = computed(() => !routeHasOwnParticle.value)
+const showSakura = computed(() => ROUTES_WITH_SAKURA.has(route.path))
 const signalState = ref<ParticleSignalState>('idle')
 const signalShape = ref<ParticleShapeId | null>(null)
 const signalLabel = ref('')
@@ -103,6 +116,7 @@ let signalTimer = 0
 let transitionTimer = 0
 let pointerFrame = 0
 let scrollFrame = 0
+const ROUTE_ATMOSPHERE_MS = 560
 
 const routeMeta = computed(() => ROUTE_META[route.path] || {
   code: '99', label: 'LOCAL ARCHIVE', shape: 'atelier' as ParticleShapeId,
@@ -117,7 +131,7 @@ const atmosphereStyle = computed(() => ({
 }))
 
 function onPointerMove(event: PointerEvent) {
-  if (pointerFrame || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+  if (routeHasOwnParticle.value || pointerFrame || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
   pointerFrame = requestAnimationFrame(() => {
     pointerFrame = 0
     shiftX.value = ((event.clientX / Math.max(1, window.innerWidth)) - .5) * 22
@@ -188,7 +202,7 @@ watch(() => route.path, () => {
   transitionTimer = window.setTimeout(() => {
     transitioning.value = false
     signalState.value = 'idle'
-  }, 560)
+  }, ROUTE_ATMOSPHERE_MS)
 })
 
 onMounted(() => {
@@ -216,7 +230,7 @@ onUnmounted(() => {
   overflow: hidden;
   pointer-events: none;
   opacity: .2;
-  transition: opacity .5s ease;
+  transition: opacity var(--motion-atmosphere) var(--ease-out);
 }
 .route-atmosphere::after {
   content: "";
@@ -235,7 +249,7 @@ onUnmounted(() => {
   min-height: 116%;
   opacity: .34;
   transform: translate3d(var(--route-shift-x,0),var(--route-shift-y,0),0);
-  transition: transform .8s var(--ease-out);
+  transition: transform var(--motion-atmosphere) var(--ease-out);
   -webkit-mask-image: radial-gradient(ellipse at 55% 44%, #000 0 34%, transparent 74%);
   mask-image: radial-gradient(ellipse at 55% 44%, #000 0 34%, transparent 74%);
 }
@@ -300,7 +314,7 @@ onUnmounted(() => {
   transform-origin:top;
   transition:transform .16s linear;
 }
-.is-transitioning .route-scan { animation: route-scan 560ms var(--ease-out) both; }
+.is-transitioning .route-scan { animation: route-scan var(--motion-atmosphere) var(--ease-out) both; }
 .route-index {
   position: absolute;
   right: clamp(18px, 3vw, 48px);
@@ -314,7 +328,7 @@ onUnmounted(() => {
   letter-spacing: .12em;
   text-align: right;
   opacity: var(--route-index-opacity, .55);
-  transition: opacity .45s var(--ease-out);
+  transition: opacity var(--motion-surface) var(--ease-out);
 }
 .route-index span { color: var(--archive-blue); font-size: var(--fs-title-xs); }
 .route-index strong { color: var(--text-secondary); }
@@ -330,6 +344,8 @@ onUnmounted(() => {
   .route-atmosphere-field { inset: 12% -34% 18% 24%; }
   .route-index { display:none; }
   .route-progress { right:2px; }
+  .sakura-fall { opacity:.38; }
+  .sakura-fall span:nth-child(n + 9) { display:none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .route-atmosphere { transition:none; opacity:.1; }
@@ -337,8 +353,5 @@ onUnmounted(() => {
   .route-atmosphere-field { transform:none; transition:none; }
   .route-progress i { transition:none; }
   .sakura-fall { display:none; }
-}
-@media (max-width: 760px) {
-  .sakura-fall { opacity:.55; }
 }
 </style>

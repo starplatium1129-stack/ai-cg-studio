@@ -2,13 +2,14 @@
   <div class="route-stage">
     <RouterView />
   </div>
-  <AppInteractionLayer />
-  <AppToast />
-  <GlobalSearch />
+  <AppInteractionLayer v-if="!isCompanion" />
+  <AppToast v-if="!isCompanion" />
+  <GlobalSearch v-if="!isCompanion" />
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue'
+import { computed, onMounted, onUnmounted } from 'vue'
+import { useRoute } from 'vue-router'
 import { kvInit, kvGet, kvSet } from '@/composables/useKVStore'
 import { imgGet } from '@/composables/useImageStore'
 import { blobThumbDataUrl, thumbKey } from '@/utils/imageThumb'
@@ -18,6 +19,8 @@ import GlobalSearch from '@/components/GlobalSearch.vue'
 
 // 与 GalleryView 的 HISTORY_KEY 保持一致
 const HISTORY_KEY = 'aics_pb_history'
+const route = useRoute()
+const isCompanion = computed(() => route.path === '/companion')
 
 interface ThumbWarmEntry { image_id?: string }
 
@@ -62,7 +65,7 @@ async function warmGalleryThumbs() {
   scheduleNext()
 }
 
-onMounted(() => { void warmGalleryThumbs() })
+onMounted(() => { if (!isCompanion.value) void warmGalleryThumbs() })
 onUnmounted(() => {
   warmStopped = true
   if (typeof window.cancelIdleCallback === 'function') window.cancelIdleCallback(warmHandle)

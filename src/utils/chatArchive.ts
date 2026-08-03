@@ -69,23 +69,23 @@ export function serializeChatArchive(archive: ChatArchive): string {
   })
 }
 
-function messageKey(message: PersistedChatMessage): string {
-  return message.mid ? `mid:${message.mid}` : `text:${message.role}:${message.content}`
+function messageKey(message: PersistedChatMessage): string | null {
+  return message.mid ? `mid:${message.mid}` : null
 }
 
-/** 追加被 trim 掉的消息；按 mid/内容去重，保持原有顺序，超出上限丢最旧。 */
+/** 追加被 trim 掉的消息；有 mid 时去重，无 mid 的旧消息宁可保留重复也不误删。 */
 export function archiveMessages(
   archive: ChatArchive,
   characterId: string,
   removed: PersistedChatMessage[],
 ): ChatArchive {
   if (!archive.archived[characterId]) archive.archived[characterId] = []
-  const seen = new Set(archive.archived[characterId].map(messageKey))
+  const seen = new Set(archive.archived[characterId].map(messageKey).filter((key): key is string => Boolean(key)))
   const additions: PersistedChatMessage[] = []
   for (const message of removed) {
     const key = messageKey(message)
-    if (seen.has(key)) continue
-    seen.add(key)
+    if (key && seen.has(key)) continue
+    if (key) seen.add(key)
     additions.push(message)
   }
   if (additions.length) {
@@ -103,17 +103,17 @@ export function archiveCounts(archive: ChatArchive, characterIds: string[]): Rec
   return counts
 }
 
-/** 把归档消息并回当前对话：按 mid 去重，保持归档顺序。 */
+/** 把归档消息并回当前对话：有 mid 时去重，保持归档顺序。 */
 export function mergeArchiveIntoHistory(
   history: PersistedChatMessage[],
   archived: PersistedChatMessage[],
 ): PersistedChatMessage[] {
-  const seen = new Set(history.map(messageKey))
+  const seen = new Set(history.map(messageKey).filter((key): key is string => Boolean(key)))
   const additions: PersistedChatMessage[] = []
   for (const message of archived) {
     const key = messageKey(message)
-    if (seen.has(key)) continue
-    seen.add(key)
+    if (key && seen.has(key)) continue
+    if (key) seen.add(key)
     additions.push(message)
   }
   return [...history, ...additions]

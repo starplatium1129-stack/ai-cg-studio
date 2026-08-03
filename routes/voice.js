@@ -214,7 +214,7 @@ function createVoiceRouter(config, dependencies) {
     var validation = tts.validate(body);
     if (validation.error) return envelope.fail(res, validation.status, validation.error);
 
-    var cacheKey = [body.voice, body.language, body.text, body.referenceEmotion, body.consistency, body.speed].join('|');
+    var cacheKey = [body.voice, body.language, body.text, body.emotion, body.referenceEmotion, body.consistency, body.speed].join('|');
     var cached = ttsAudioCache.get(cacheKey);
     if (cached) {
       res.setHeader('Content-Type', 'audio/wav');

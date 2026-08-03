@@ -178,12 +178,18 @@
         <section
           v-show="!sd.resultUrl.value"
           class="stage-placeholder"
-          :class="{ 'is-generating': sd.generating.value }"
+          :class="{
+            'is-generating': sd.generating.value,
+            'is-error': !!sd.errorMsg.value,
+            'is-paused': sd.statusText.value === '已停止',
+          }"
           aria-label="成片监看区"
         >
           <div class="stage-chrome">
             <span>CANVAS</span>
-            <span class="stage-ready">{{ sd.generating.value ? 'RENDERING' : 'READY' }}</span>
+            <span class="stage-ready">
+              {{ sd.generating.value ? 'RENDERING' : (sd.errorMsg.value ? 'ATTENTION' : (sd.statusText.value === '已停止' ? 'PAUSED' : 'READY')) }}
+            </span>
           </div>
           <div class="stage-corners" aria-hidden="true">
             <i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i>
@@ -197,6 +203,20 @@
               <div class="stage-generating-title">正在绘制这一张</div>
               <div class="stage-generating-sub">{{ sd.statusText.value || '模型正在推理…' }} {{ sd.progress.value }}%</div>
               <div class="stage-progress-ring"><i :style="{ '--progress': sd.progress.value + '%' }"></i></div>
+            </div>
+            <div v-else-if="sd.errorMsg.value" class="stage-idle">
+              <div class="stage-placeholder-title">这一张没有完成</div>
+              <div class="stage-placeholder-copy">{{ sd.errorMsg.value }}</div>
+              <div class="stage-quick-actions">
+                <button class="btn btn-primary" type="button" @click="callGenerate()">重新生成</button>
+              </div>
+            </div>
+            <div v-else-if="sd.statusText.value === '已停止'" class="stage-idle">
+              <div class="stage-placeholder-title">生成已停止</div>
+              <div class="stage-placeholder-copy">当前画布已安全暂停，可以调整内容后重新生成。</div>
+              <div class="stage-quick-actions">
+                <button class="btn btn-primary" type="button" @click="callGenerate()">重新生成</button>
+              </div>
             </div>
             <div v-else class="stage-idle">
               <div class="stage-placeholder-title">心动成片将在此处呈现</div>

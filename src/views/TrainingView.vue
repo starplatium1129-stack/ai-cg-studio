@@ -42,13 +42,13 @@
       <button type="button" class="btn btn-ghost btn-sm" @click="clearError">知道了</button>
     </div>
 
-    <div v-if="loading && !overview" class="loading-card" aria-live="polite">
-      <span class="loading-orbit" aria-hidden="true"></span>
-      <div>
-        <strong>正在读取训练资产</strong>
-        <p>检查 LoRA v18、语音 v16、OneTrainer、GPT-SoVITS 与训练清单…</p>
-      </div>
-    </div>
+    <ArchiveStatePanel
+      v-if="loading && !overview"
+      class="training-loading"
+      kind="loading"
+      title="正在读取训练资产"
+      message="检查 LoRA v18、语音 v16、OneTrainer、GPT-SoVITS 与训练清单…"
+    />
 
     <div v-else class="workbench">
       <div v-if="!onboardingDismissed" class="training-onboarding" role="region" aria-label="首次使用指引">
@@ -614,6 +614,7 @@ import {
   planFor as planForFromPlans,
 } from '@/composables/useTrainingFormat'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
+import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import type {
   TrainingCharacter,
   TrainingDataset,
@@ -1105,6 +1106,7 @@ onUnmounted(() => {
 }
 
 .training-hero .subtitle { margin-bottom: 0; }
+.training-hero .title { font-size: clamp(2rem, 3vw, 3.25rem); font-weight: 800; letter-spacing: -.04em; line-height: 1.06; }
 
 .hero-status {
   position: relative; display: flex;
@@ -1150,24 +1152,6 @@ onUnmounted(() => {
 }
 .training-alert strong { color: var(--danger-text); }
 .training-alert p { margin: 4px 0 0; color: var(--text-secondary); font-size: var(--fs-label-sm); }
-
-.loading-card {
-  display: flex;
-  align-items: center;
-  gap: var(--s-4);
-  min-height: 220px;
-  padding: var(--s-6);
-  border: 1px solid var(--border-soft);
-  border-radius: var(--r-2xl);
-  background: var(--bg-surface);
-}
-.loading-card strong { display: block; color: var(--text-primary); font-size: var(--fs-title-xs); }
-.loading-card p { margin: var(--s-1) 0 0; color: var(--text-muted); }
-.loading-orbit {
-  width: 34px; height: 34px; flex: none;
-  border: 2px solid var(--border-strong); border-top-color: var(--accent);
-  border-radius: 50%; animation: spin .7s linear infinite;
-}
 
 .workbench {
   display: grid;
@@ -1287,7 +1271,7 @@ onUnmounted(() => {
   border: 1px solid var(--border-soft);
   border-radius: var(--r-dossier);
   background: color-mix(in srgb, var(--bg-surface) 88%, transparent);
-  box-shadow: var(--shadow-sm);
+  box-shadow: none;
 }
 .plan-card::before,
 .voice-pipeline::before,
@@ -1313,11 +1297,12 @@ onUnmounted(() => {
   margin: var(--s-2) 0 0; color: var(--text-secondary); font-size: var(--fs-label-sm); line-height: 1.7;
 }
 .plan-specs {
-  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-2);
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-3);
 }
 .plan-specs div {
-  min-width: 0; padding: var(--s-2) var(--s-3);
-  border: 1px solid var(--border-soft); border-radius: var(--r-terminal); background: var(--bg-deep);
+  min-width: 0; padding: 0 0 0 var(--s-3);
+  border: 0; border-left: 2px solid color-mix(in srgb, var(--accent) 46%, var(--border-soft));
+  border-radius: 0; background: transparent;
 }
 .plan-specs span,
 .plan-specs strong { display: block; }
@@ -1340,8 +1325,8 @@ onUnmounted(() => {
 .job-card {
   min-width: 0; overflow: hidden; padding: var(--s-4);
   border: 1px solid var(--border-soft); border-radius: var(--r-dossier);
-  background: color-mix(in srgb, var(--bg-surface) 92%, transparent);
-  box-shadow: var(--shadow-sm);
+  background: color-mix(in srgb, var(--bg-surface) 84%, transparent);
+  box-shadow: none;
 }
 .job-card.status-running { border-color: color-mix(in srgb, var(--warning) 48%, var(--border-soft)); }
 .job-card.status-completed { border-color: color-mix(in srgb, var(--success) 42%, var(--border-soft)); }
@@ -1352,16 +1337,18 @@ onUnmounted(() => {
   align-items: center; gap: var(--s-3); margin-bottom: var(--s-4);
 }
 .character-mark {
-  display: grid; place-items: center; width: 42px; height: 42px;
-  border: 1px solid color-mix(in srgb, var(--nene-violet) 42%, var(--border-soft));
-  border-radius: var(--r-lg); color: var(--nene-violet);
-  background: color-mix(in srgb, var(--nene-violet) 12%, var(--bg-deep));
-  font: 750 var(--fs-title-xs) var(--font-display);
+  display: grid; place-items: center; width: 44px; height: 44px;
+  border: 1px solid color-mix(in srgb, var(--nene-violet) 54%, var(--border-soft));
+  border-radius: var(--r-md); color: var(--nene-violet);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--nene-violet) 18%, transparent), var(--bg-deep));
+  box-shadow: 0 0 12px color-mix(in srgb, var(--nene-violet) 20%, transparent);
+  font: 800 1.15rem var(--font-serif);
 }
 .job-natsume .character-mark {
-  border-color: color-mix(in srgb, var(--natsume-amber) 42%, var(--border-soft));
+  border-color: color-mix(in srgb, var(--natsume-amber) 54%, var(--border-soft));
   color: var(--natsume-amber);
-  background: color-mix(in srgb, var(--natsume-amber) 11%, var(--bg-deep));
+  background: linear-gradient(135deg, color-mix(in srgb, var(--natsume-amber) 18%, transparent), var(--bg-deep));
+  box-shadow: 0 0 12px color-mix(in srgb, var(--natsume-amber) 20%, transparent);
 }
 .job-title { min-width: 0; }
 .job-eyebrow { color: var(--text-muted); font-size: var(--fs-mono-xs); }
@@ -1394,13 +1381,14 @@ onUnmounted(() => {
   border: 1px solid color-mix(in srgb, var(--accent) 25%, var(--border-soft));
   border-radius: var(--r-lg); background: var(--accent-soft);
 }
+.outfit-focus > div { min-width: 0; }
 .outfit-focus span,
 .outfit-focus strong { display: block; }
 .outfit-focus span { color: var(--text-muted); font-size: var(--fs-mono-xs); }
 .outfit-focus strong { margin-top: 3px; color: var(--text-primary); font-size: var(--fs-label); }
 .outfit-focus code {
-  max-width: 48%; color: var(--accent); font-size: var(--fs-mono-xs);
-  overflow-wrap: anywhere; text-align: right;
+  min-width: 0; max-width: 48%; color: var(--accent); font-size: var(--fs-mono-xs);
+  line-height: 1.45; overflow-wrap: anywhere; word-break: break-word; text-align: right;
 }
 
 .dataset-preview {
@@ -1425,7 +1413,9 @@ onUnmounted(() => {
   object-fit: cover;
   transition: transform var(--t-base) var(--ease-out);
 }
-.dataset-preview a:hover img { transform: scale(1.025); }
+@media (hover: hover) and (pointer: fine) {
+  .dataset-preview a:hover img { transform: scale(1.025); }
+}
 .dataset-preview img.blurred { filter: blur(16px); transform: scale(1.08); }
 .dataset-preview a > span {
   position: absolute;
@@ -1488,7 +1478,7 @@ onUnmounted(() => {
   padding: var(--s-3);
   border: 1px solid var(--border-soft);
   border-radius: var(--r-lg);
-  background: var(--bg-deep);
+  background: color-mix(in srgb, var(--bg-deep) 72%, transparent);
 }
 .param-head {
   display: flex;

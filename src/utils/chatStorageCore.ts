@@ -72,9 +72,7 @@ function normalizeMessages(
     .map(message => ({
       role: message.role as 'user' | 'assistant',
       content: text(message.content, 1200),
-      mid: message.role === 'assistant'
-        ? text(message.mid, 160) || text(message.id, 160) || createMessageId()
-        : '',
+      mid: text(message.mid, 160) || text(message.id, 160) || createMessageId(),
       stopped: message.stopped === true,
     }))
     .filter(message => message.content)

@@ -189,8 +189,9 @@ export function useSDGenerate() {
    * 会一直跑到标签页关闭，in-flight 的 txt2img 也不会被取消。
    */
   function dispose() {
+    // 页面离开也要通知 WebUI，否则断开的浏览器请求不一定会释放 GPU 生成。
+    cancel()
     stopPolling()
-    abortCtrl?.abort()
     abortCtrl = null
     if (resultUrl.value) { URL.revokeObjectURL(resultUrl.value); resultUrl.value = '' }
   }

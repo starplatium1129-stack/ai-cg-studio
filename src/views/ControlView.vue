@@ -159,7 +159,7 @@
             <span class="service-row-name">
               <span class="dot" :class="{ on: ollamaOnline }"></span>
               Ollama 聊天模型
-              <span class="service-row-meta">{{ ollamaMeta }}</span>
+              <span class="service-row-meta" :title="ollamaMeta">{{ ollamaMeta }}</span>
             </span>
             <span class="service-row-actions">
               <button class="btn btn-danger btn-sm" type="button" :disabled="opBusy || !ollamaModels.length" @click="serviceAction('ollama','unload')">卸载模型释放显存</button>
@@ -188,14 +188,14 @@
 
         <label class="field-label" for="sd-host">Stability Matrix / SD WebUI 地址</label>
         <div class="field-row">
-          <input id="sd-host" v-model="sdHost" class="input input-mono" type="text" placeholder="http://127.0.0.1:7860" spellcheck="false" @keydown.enter="saveConfig" />
+          <input id="sd-host" v-model="sdHost" class="input input-mono" type="text" :title="sdHost" placeholder="http://127.0.0.1:7860" spellcheck="false" @keydown.enter="saveConfig" />
           <button class="btn btn-ghost" type="button" @click="saveConfig">保存全部并检测</button>
         </div>
         <p class="field-help">端口以启动日志为准；推荐参数：<code>--api --port 7860</code></p>
 
         <label class="field-label" for="tts-host">GPT-SoVITS API 地址</label>
         <div class="field-row">
-          <input id="tts-host" v-model="ttsHost" class="input input-mono" type="text" placeholder="http://127.0.0.1:9880" spellcheck="false" @keydown.enter="saveConfig" />
+          <input id="tts-host" v-model="ttsHost" class="input input-mono" type="text" :title="ttsHost" placeholder="http://127.0.0.1:9880" spellcheck="false" @keydown.enter="saveConfig" />
           <button class="btn btn-ghost" type="button" @click="saveConfig">保存全部并检测</button>
         </div>
         <p class="field-help">默认按需启动；默认端口为 <code>9880</code>。</p>
@@ -437,7 +437,10 @@ onUnmounted(() => { status.stopPolling() })
 .control-rail-link span { width: 13px; color: var(--accent); font: 700 var(--fs-body-sm) var(--font-mono); }
 .control-rail-link:hover, .control-rail-link:focus-visible {
   color: var(--text-primary); border-color: color-mix(in srgb, var(--accent) 22%, var(--border-soft));
-  background: color-mix(in srgb, var(--accent-soft) 54%, transparent); transform: translateX(2px);
+  background: color-mix(in srgb, var(--accent-soft) 54%, transparent);
+}
+@media (hover: hover) and (pointer: fine) {
+  .control-rail-link:hover { transform: translateX(2px); }
 }
 .control-rail-foot {
   display: flex; align-items: center; justify-content: space-between; gap: var(--s-2);
@@ -496,16 +499,20 @@ onUnmounted(() => { status.stopPolling() })
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--s-3);
+  padding: var(--s-3) var(--s-4);
+  border: 1px solid color-mix(in srgb, var(--border-soft) 70%, transparent);
+  border-radius: var(--r-dossier);
+  background: color-mix(in srgb, var(--bg-surface) 45%, transparent);
+  box-shadow: none;
+  backdrop-filter: blur(8px);
   margin-bottom: var(--s-4);
 }
 .status-tile {
-  position: relative; min-width: 0; padding: var(--s-4);
-  border: 1px solid color-mix(in srgb, var(--border-soft) 88%, transparent);
-  border-radius: var(--r-dossier);
-  background: color-mix(in srgb, var(--bg-surface) 78%, transparent);
-  box-shadow: var(--shadow-sm); backdrop-filter: blur(12px);
+  position: relative; min-width: 0; padding: 2px 0 2px var(--s-3);
+  border: 0; border-left: 2px solid color-mix(in srgb, var(--border-strong) 45%, transparent);
+  border-radius: 0; background: transparent; box-shadow: none; backdrop-filter: none;
 }
-.status-tile::before { content: ''; position: absolute; top: -1px; left: var(--s-3); width: 24px; height: var(--line-hairline); background: var(--archive-cyan); opacity: .8; }
+.status-tile::before { display: none; }
 .status-tile.primary { grid-column: 1 / -1; }
 .status-tile small {
   display: block; color: var(--text-muted);
@@ -571,7 +578,7 @@ onUnmounted(() => { status.stopPolling() })
 }
 .panel-heading {
   margin: 0 0 8px; color: var(--text-primary);
-  font-size: var(--fs-title-xs); font-weight: 750; letter-spacing: -.01em;
+  font-size: clamp(1.05rem, 1.4vw, 1.3rem); font-weight: 760; letter-spacing: -.02em;
 }
 .panel-desc, .panel-foot {
   margin: 0 0 var(--s-4); color: var(--text-secondary);
@@ -589,7 +596,9 @@ onUnmounted(() => { status.stopPolling() })
 .mode-card:hover:not(:disabled) {
   border-color: color-mix(in srgb, var(--accent) 42%, var(--border-soft));
   background: color-mix(in srgb, var(--accent-soft) 55%, var(--bg-deep));
-  transform: translateY(-2px);
+}
+@media (hover: hover) and (pointer: fine) {
+  .mode-card:hover:not(:disabled) { transform: translateY(-2px); }
 }
 .mode-card:disabled { opacity: .45; cursor: not-allowed; transform: none; }
 .mode-title { font-size: var(--fs-body-sm); font-weight: 750; }
@@ -602,7 +611,8 @@ onUnmounted(() => { status.stopPolling() })
   background: var(--bg-deep); flex-wrap: wrap;
 }
 .service-row-name {
-  display: inline-flex; align-items: center; gap: 8px;
+  display: inline-flex; align-items: center; gap: 8px; min-width: 0;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   font: 650 var(--fs-label-sm) var(--font-sans); color: var(--text-primary);
 }
 .service-row-name .dot {
@@ -612,7 +622,7 @@ onUnmounted(() => { status.stopPolling() })
   background: var(--success);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--success) 14%, transparent);
 }
-.service-row-meta { color: var(--text-muted); font: 500 var(--fs-mono-xs) var(--font-mono); }
+.service-row-meta { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-muted); font: 500 var(--fs-mono-xs) var(--font-mono); }
 .service-row-actions { display: flex; gap: var(--s-2); flex-wrap: wrap; }
 
 .autostart-row {

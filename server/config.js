@@ -86,17 +86,22 @@ function resolveSceneShowcaseDir(rootDir, configured) {
 
 function loadGatewayConfig(rootDir, env) {
   env = env || process.env;
-  var runtime = runtimeTools.createRuntimePaths(rootDir);
-  runtimeTools.migrateLegacyRuntime(rootDir, runtime);
+  var appRoot = path.resolve(env.AICS_APP_ROOT || rootDir);
+  var assetsRoot = path.resolve(env.AICS_ASSETS_ROOT || path.join(appRoot, 'assets'));
+  var toolsRoot = path.resolve(env.AICS_TOOLS_ROOT || path.join(appRoot, 'tools'));
+  var runtime = runtimeTools.createRuntimePaths(appRoot, env.AICS_RUNTIME_ROOT);
+  runtimeTools.migrateLegacyRuntime(appRoot, runtime);
   var saved = readJson(runtime.config);
   var translatePort = boundedInteger(env.TRANSLATE_PORT, 5310, 1024, 65535);
 
   return {
-    ROOT_DIR:rootDir,
+    ROOT_DIR:appRoot,
+    ASSETS_ROOT:assetsRoot,
+    TOOLS_ROOT:toolsRoot,
     // The sibling AI workspace contains the local LoRA and voice assets.  It
     // is only used by the local training API; the browser never supplies this
     // path.
-    AI_WORKSPACE_ROOT:path.resolve(env.AI_WORKSPACE_ROOT || path.join(rootDir, '..', 'AI')),
+    AI_WORKSPACE_ROOT:path.resolve(env.AI_WORKSPACE_ROOT || path.join(appRoot, '..', 'AI')),
     RUNTIME:runtime,
     RUNTIME_ROOT:runtime.root,
     PORT:boundedInteger(env.PORT, 3000, 1, 65535),
@@ -114,13 +119,13 @@ function loadGatewayConfig(rootDir, env) {
     OLLAMA_KEEP_ALIVE:env.OLLAMA_KEEP_ALIVE || '10m',
     OLLAMA_NUM_PREDICT:boundedInteger(env.OLLAMA_NUM_PREDICT, 300, 32, 2048),
     OLLAMA_NUM_CTX:boundedInteger(env.OLLAMA_NUM_CTX, 4096, 1024, 32768),
-    TRANSLATION_PYTHON:env.TRANSLATION_PYTHON || path.resolve(rootDir, '..', 'AI', 'GPT-SoVITS-env', 'python.exe'),
-    TRANSLATION_SCRIPT:path.join(rootDir, 'tools', 'translate-zh-ja.py'),
+    TRANSLATION_PYTHON:env.TRANSLATION_PYTHON || path.resolve(appRoot, '..', 'AI', 'GPT-SoVITS-env', 'python.exe'),
+    TRANSLATION_SCRIPT:path.join(toolsRoot, 'translate-zh-ja.py'),
     TRANSLATE_PORT:translatePort,
     TRANSLATE_URL:'http://127.0.0.1:' + translatePort,
     TRANSLATION_LOG:path.join(runtime.logs, 'translate.log'),
-    LIVE2D_ROOT:path.join(rootDir, 'assets', 'live2d'),
-    SCENE_SHOWCASE_DIR:resolveSceneShowcaseDir(rootDir, env.SCENE_SHOWCASE_DIR),
+    LIVE2D_ROOT:path.join(assetsRoot, 'live2d'),
+    SCENE_SHOWCASE_DIR:resolveSceneShowcaseDir(appRoot, env.SCENE_SHOWCASE_DIR),
     DISABLE_TUNNEL:env.DISABLE_TUNNEL === '1',
     CLOUDFLARED_PATH:env.CLOUDFLARED_PATH || 'C:\\Program Files (x86)\\cloudflared\\cloudflared.exe'
   };

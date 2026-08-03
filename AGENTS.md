@@ -62,6 +62,8 @@
 - 情绪表演运行时 `src/utils/emotionRuntime.ts`（纯 TS，无 DOM）：由 ChatCharacterStage 创建并 attach 到 useLive2D，`beforeModelUpdate` 里批量写入表情参数。只驱动 cdi3 中"按键切换"表情零件（脸红/害羞/泪珠/期待眼珠/高光等）与标准参数（眉毛/微笑眼/嘴型），不得驱动 `ParamCheek21-24/40-43` 动作切换、`Param37/62-64` 动画参数与换装参数。`pushEmotion('neutral')` 立即开始淡出（回合结束回中性），不保持强度。归零的参数自动交还给 idle 动作，避免常驻覆写压死待机动画。反应脉冲（用户发消息→期待眼珠+眉微抬 1.1s）独立于情绪强度。测试 `test-emotion-runtime.js` 已在 validate 链。
 - 情绪输入有两条通道：TTS 逐句情绪（useVoice `onExpression`，配音开启时为准）与流式回复文本情绪（useChatConversation `onStreamEmotion`，无配音时兜底，文本 ≥4 字、情绪变化才回调，回合结束复位 neutral）。两者互斥：`onStreamEmotion` 在 ChatView 侧检查 `autoVoice` 后让位 TTS 通道。
 - 夏目 Live2D（`assets/live2d/natsume/`，源目录 `E:/code/live2d/星光咖啡馆与死神之蝶—四季夏目/`）：源目录只有单个导出态 `Moc.moc3`/`model.json`，没有可编辑 `.cmo3`、服装 Expressions 或分服装模型。14 个纹理槽都被 moc3 使用；主制服网格和默认隐藏叠层共同存在，部分互动 motion 会通过完整参数曲线临时显隐这些叠层，因此不能把动作效果误登记成多套衣装。moc3 无 `ParamMouthOpenY`，口型由 `ParamMouthForm3`（-0.5..0）驱动，`MOUTH_PARAMS` 按角色映射；无 Expressions，衣橱只能公开咖啡店制服。严禁再按 `Part2-28` 连续编号猜服装、驱动 `Param36-75` 拼装衣服、强制 Drawable opacity，或固定只播放动作分组第 `0` 个；这些参数由作者 motion 所有，必须让完整原生动作自然驱动，否则会造成缺衣、串层并破坏原生动作。若要增加夏目衣装，只接受原作者可编辑 Cubism 工程、已绑定的独立 `.moc3`/`.model3.json`，或重新在 Cubism 中完成网格绑定；仅使用现有静态立绘时必须明确降级为静态图片切换。情绪参数表 `NATSUME_RUNTIME_CONFIG` 只驱动 `ParamCheek`/`ParamBrow*`（不碰 `ParamEyeLOpen/Open2` 眨眼组、嘴型、`Param36-75` 与数字物理参数），reaction 脉冲为脸红+眉微抬；互动分区与 `NATSUME_INTERACTIONS`/`NATSUME_HIT_AREA_MAP` 按角色切换。源目录动作 WAV 一律不打包（宁宁、夏目同约束）。
+- 眨眼由 `src/utils/blinkScheduler.ts`（纯 TS）调度，`useLive2D.applyParameters` 在 `beforeModelUpdate` 里以全权重把同一值写入 EyeBlink 组双眼参数（宁宁 `ParamEyeLOpen/ParamEyeROpen`，夏目 `ParamEyeLOpen/ParamEyeLOpen2`），间隔 2.5-5s 随机、单次约 0.31s，保证双眼永远同步。不要改回依赖 wl-live2d 自动眨眼（其 CubismEyeBlink 只在无运动更新的帧触发，循环 Idle 下永不触发）或夏目作者 Idle 眼曲线（左右眼不同步，会出现持续数秒的单眼 Wink）。测试 `test-blink-scheduler.js` 已在 validate 链，E2E 断言见 studio.spec.ts「eyes blink symmetrically」。
+- 动作分发由 wl-live2d 完成，实测行为：Idle 组每 ~5 秒（各动作时长）随机轮换一个；点击互动（Tap* 组）每次随机抽一个变体，28 个全部可达；Start 登场组在模型加载完成后随机播一次（宁宁无 Start 组自动跳过；登场期间暂停 blinkScheduler 覆盖，让作者眼曲线原样呈现，Start_4 含开场闭眼）；Leave 告别组在关闭 Live2D 时先播 5s（`LEAVE_PLAY_MS`）再销毁。E2E 断言见 studio.spec.ts「entrance motion」「Leave farewell」。
 - `useChatStorage.ts`：会话、草稿、供应商配置和 Live2D 偏好持久化。
 
 `useVoice.ts` 会保留聊天气泡中的舞台提示，但必须在翻译和 TTS 前剥离；提示文本用于情绪推断。短促片段需要并句，单句合成必须有有限超时和重试，并显示上游失败明细；超时或队列繁忙时不得重复提交同一句。配音播放层必须遵守：句子缓冲上限 44 字（更长文本 GPT-SoVITS 易复读/单句 GPU 时间线性上涨），首句 ≥8 字即放行（`firstThreshold: 8`，开场白不等满 12 字）；任何结束路径（含超时/失败重试）必须先 `pause()`+清除 `src` 再开新元素，严禁旧元素后台存活与重试元素叠播；只有"加载阶段失败"（还没出声）允许重试一次，已开播后断流或超时一律不重试，避免整句从头重复；超时时若请求仍活着（`networkState===2`）延展等待而非判死。`GET /api/tts` 服务端对同句生成做 in-flight 合并（`inFlightTts`），重试/多访客同句不重复占 GPU 队列；上游合成超时 180s（卡死更快释放 GPU 队列）。长对话不 400：`POST /api/chat` 对超 24 条或 12000 字的消息从旧到新平滑裁剪（body 上限 256kb，前端最多 20 条×1200 字，裁剪必须在 body 解析之后真正接管）。
@@ -171,7 +173,9 @@
 
 ### 待办
 
-当前无本轮遗留事项。未来只有在取得模型作者提供的、明确标注为情绪用途的原生 motion/expression 后，才增加非空 SoulLink native allowlist。
+视觉与架构下一阶段路线已记录在 `docs/visual-architecture-roadmap.md`。执行顺序为视觉减法与标题层级 → 动效和移动端持续动画收口 → 训练/控制/绘图窄屏层级 → 状态组件统一 → API client 与存储 Repository → 按所有权拆分大型模块；不做框架重写。
+
+Live2D 方面仍只有在取得模型作者提供的、明确标注为情绪用途的原生 motion/expression 后，才增加非空 SoulLink native allowlist。
 
 暂缓（已评估有结论，条件具备再动）：
 

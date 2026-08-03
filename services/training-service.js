@@ -511,6 +511,7 @@ function createTrainingService(options) {
     const logMaxBytes = Math.max(64 * 1024, Math.round(options.logMaxBytes || LOG_MAX_BYTES_DEFAULT));
     const spawn = options.spawn || ((command, args, spawnOptions) => childProcess.spawn(command, args, spawnOptions));
     const killProcess = options.killProcess || ((pid, child) => defaultKillProcess(pid, child, platform));
+    const isAlive = options.isProcessAlive || processAlive;
     const states = new Map();
     const children = new Map();
     const parserBuffers = new Map();
@@ -521,7 +522,7 @@ function createTrainingService(options) {
     const savedJobs = isRecord(saved) && isRecord(saved.jobs) ? saved.jobs : {};
     for (const id of JOB_IDS) {
         const state = normalizeState(id, savedJobs[id]);
-        if ((state.status === 'running' || state.status === 'stopping') && !processAlive(state.pid)) {
+        if ((state.status === 'running' || state.status === 'stopping') && !isAlive(state.pid)) {
             state.status = state.stopRequested ? 'stopped' : 'failed';
             state.finishedAt = now();
             state.error = state.stopRequested ? '' : '网关重启后未发现训练进程';
@@ -535,6 +536,37 @@ function createTrainingService(options) {
     function stateFor(id) {
         return states.get(id);
     }
+    function reconcileOrphanedJobs() {
+        let changed = false;
+        for (const id of JOB_IDS) {
+            const state = stateFor(id);
+            if ((state.status !== 'running' && state.status !== 'stopping')
+                || children.has(id)
+                || isAlive(state.pid))
+                continue;
+            state.status = state.stopRequested ? 'stopped' : 'failed';
+            state.finishedAt = now();
+            state.error = state.stopRequested ? '' : '训练网关重启后未发现训练进程';
+            state.progress = {
+                ...state.progress,
+                stage: state.stopRequested ? '已停止' : '进程已丢失',
+                message: state.error || '训练已停止',
+                percent: state.stopRequested ? state.progress.percent : Math.min(99, state.progress.percent),
+            };
+            state.stopRequested = false;
+            changed = true;
+        }
+        if (changed)
+            saveStates();
+        return changed;
+    }
+    const orphanReconcileTimer = setInterval(() => {
+        try {
+            reconcileOrphanedJobs();
+        }
+        catch { /* 查询失败不应中断训练服务轮询 */ }
+    }, 5000);
+    orphanReconcileTimer.unref?.();
     function saveStates() {
         writeJsonAtomic(stateFile, { version: 1, jobs: Object.fromEntries(states) });
     }
@@ -827,7 +859,13 @@ function createTrainingService(options) {
         return { datasets: DEFINITIONS.map(datasetSummary) };
     }
     function listJobs() {
+        reconcileOrphanedJobs();
         return { jobs: JOB_IDS.map(publicJob) };
+    }
+    function getJob(value) {
+        const id = assertKnownId(value);
+        reconcileOrphanedJobs();
+        return publicJob(id);
     }
     function overview() {
         const listed = listJobs().jobs;
@@ -849,6 +887,7 @@ function createTrainingService(options) {
         return value;
     }
     function assertNoActiveJob() {
+        reconcileOrphanedJobs();
         const active = JOB_IDS.map((id) => stateFor(id))
             .find((state) => state.status === 'running' || state.status === 'stopping');
         if (active) {
@@ -1011,6 +1050,7 @@ function createTrainingService(options) {
     }
     function stopJob(value) {
         const id = assertKnownId(value);
+        reconcileOrphanedJobs();
         const state = stateFor(id);
         if (state.status !== 'running' && state.status !== 'stopping') {
             throw new TrainingServiceError('当前没有正在运行的训练任务', 'NOT_RUNNING', 409);
@@ -1094,6 +1134,7 @@ function createTrainingService(options) {
         };
     }
     function close() {
+        clearInterval(orphanReconcileTimer);
         for (const timer of persistTimers.values())
             clearTimeout(timer);
         persistTimers.clear();
@@ -1109,7 +1150,7 @@ function createTrainingService(options) {
         listDatasets,
         listJobs,
         getDatasetPreview,
-        getJob: (value) => publicJob(assertKnownId(value)),
+        getJob,
         getJobConfig,
         getLogs,
         startJob,

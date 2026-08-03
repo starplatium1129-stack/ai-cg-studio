@@ -164,7 +164,11 @@ for (const entry of layoutRoutes) {
 }
 
 test('every route keeps exactly one h1', async ({ page }) => {
-  for (const entry of [...layoutRoutes, { path: '/control', name: 'control' }]) {
+  for (const entry of [
+    ...layoutRoutes,
+    { path: '/companion', name: 'companion' },
+    { path: '/control', name: 'control' },
+  ]) {
     await page.goto(entry.path);
     await expect(page.locator('h1'), `${entry.name} must have a single h1`).toHaveCount(1);
   }

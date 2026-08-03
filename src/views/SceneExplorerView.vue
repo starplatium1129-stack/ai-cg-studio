@@ -97,15 +97,36 @@
       </div>
     </div>
 
-    <div v-if="loading" class="scene-grid scene-grid-skeleton" role="status" aria-label="正在加载场景档案">
-      <div v-for="index in 6" :key="index" class="scene-skeleton" aria-hidden="true">
-        <i></i><span></span><span></span><small></small>
-      </div>
-    </div>
+    <ArchiveStatePanel
+      v-if="loading"
+      kind="loading"
+      title="正在读取场景档案"
+      message="正在载入角色场景、策展层级和本机偏好。"
+    />
+    <ArchiveStatePanel
+      v-else-if="loadError"
+      kind="error"
+      title="场景档案读取失败"
+      :message="loadError"
+    >
+      <button class="btn btn-primary" type="button" @click="init">重新读取</button>
+    </ArchiveStatePanel>
+    <ArchiveStatePanel
+      v-else-if="scenes.length === 0"
+      kind="empty"
+      title="场景档案目前为空"
+      message="本地场景数据已读取，但还没有可浏览的场景记录。"
+    />
+    <ArchiveStatePanel
+      v-else-if="paged.length === 0"
+      kind="empty"
+      title="没有符合当前条件的场景"
+      message="换个关键词或重置筛选，我再帮你翻翻完整档案。"
+    >
+      <button class="btn btn-primary" type="button" @click="resetFilters">重置筛选</button>
+    </ArchiveStatePanel>
     <div v-else class="scene-grid stagger-container">
-      <div v-if="paged.length === 0" class="sc-empty"><div class="ic">🌸</div><p>没有找到这样的场景……<br/>换个关键词，我再帮你翻翻。</p></div>
-      <template v-else>
-        <SceneCard v-for="s in paged" :key="s.id" :scene="s" mode="grid" :clickable="false" suppressTags
+      <SceneCard v-for="s in paged" :key="s.id" :scene="s" mode="grid" :clickable="false" suppressTags
           class="stagger-item"
           :class="flashId === s.id ? 'scene-flash' : ''" :data-scene-id="s.id">
           <template #band>
@@ -141,10 +162,9 @@
               </div>
             </div>
           </template>
-        </SceneCard>
-      </template>
+      </SceneCard>
     </div>
-    <div v-show="visible < filtered.length" class="scene-load">
+    <div v-show="!loading && !loadError && visible < filtered.length" class="scene-load">
       <button class="btn btn-ghost" type="button" @click="visible += PAGE_SIZE">
         加载更多（剩余 {{ filtered.length - visible }}）
       </button>
@@ -173,6 +193,7 @@ import { ref, computed, watch, onMounted, nextTick } from 'vue'
 import { watchDebounced } from '@vueuse/core'
 import { useRoute, useRouter } from 'vue-router'
 import SceneCard from '@/components/SceneCard.vue'
+import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import SemanticParticleField from '@/components/visual/SemanticParticleField.vue'
 import type { ParticleShapeId } from '@/utils/particleShapes'
 
@@ -266,6 +287,7 @@ const scenes = ref<ExplorerScene[]>([])
 const curation = ref<ExplorerCuration>({ curatedSceneIds:[], moodRails:[], signatureSceneIds:[], reviewSceneIds:[] })
 const profile = ref<PreferenceProfile>(buildPreferenceProfile([]))
 const loading = ref(true)
+const loadError = ref('')
 const flashId = ref('')
 const drawerScene = ref<ExplorerScene | null>(null)
 const drawerEl = ref<HTMLElement | null>(null)
@@ -523,6 +545,9 @@ function onMatureChange() {
 }
 
 async function init() {
+  dataReady = false
+  loading.value = true
+  loadError.value = ''
   try {
     // 场景库按需拉取：默认只载入"人设核心"子集（index + shared + core），
     // 切到具体角色时只拉对应分片，切到全库/精选等才拉完整三片。
@@ -536,9 +561,12 @@ async function init() {
     } else {
       await sceneStore.ensureCore()
     }
+    if (sceneStore.error) throw new Error(sceneStore.error)
     scenes.value = sceneStore.scenes as ExplorerScene[]
     curation.value = sceneStore.curation || curation.value
-  } catch(e) { console.warn('scene load failed', e) }
+  } catch(e) {
+    loadError.value = e instanceof Error ? e.message : String(e)
+  }
 
   try {
     const fallback = () => { try { return buildPreferenceProfile(JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]')) } catch { return buildPreferenceProfile([]) } }
@@ -571,10 +599,12 @@ watch([fChar, fTier], async () => {
     } else {
       await sceneStore.load()
     }
+    if (sceneStore.error) throw new Error(sceneStore.error)
     scenes.value = sceneStore.scenes as ExplorerScene[]
     curation.value = sceneStore.curation || curation.value
+    loadError.value = ''
   } catch (e) {
-    console.warn('scene data switch failed', e)
+    loadError.value = e instanceof Error ? e.message : String(e)
   } finally {
     loading.value = false
   }
@@ -593,7 +623,7 @@ onMounted(() => { init() })
 .scene-atlas-register { display:grid; grid-template-columns:auto auto 1fr; align-items:center; gap:var(--s-3); margin-bottom:var(--s-5); color:var(--text-muted); font:650 var(--fs-mono-xs) var(--font-mono); letter-spacing:.12em; text-transform:uppercase; }
 .scene-atlas-register strong { color:var(--archive-blue); font-size:var(--fs-title); line-height:1; }
 .scene-atlas-register span:last-child { justify-self:end; color:var(--text-secondary); }
-.scene-atlas .title { max-width:8ch; margin-bottom:var(--s-3); font-size:clamp(2.6rem,5vw,4.8rem); line-height:.98; letter-spacing:-.06em; }
+.scene-atlas .title { max-width:8ch; margin-bottom:var(--s-3); font-size:clamp(2.6rem,4.4vw,4.05rem); line-height:.98; letter-spacing:-.06em; }
 .scene-atlas .subtitle { max-width:38rem; color:var(--text-secondary); line-height:1.7; }
 .scene-atlas-particles { min-height:330px; border-left:1px solid var(--border-soft); }
 .curation-intro { display:flex; flex-direction:column; justify-content:center; }
@@ -605,8 +635,11 @@ onMounted(() => { init() })
 .mood-rail { position:relative; overflow:hidden; min-height:96px; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); color:var(--text-primary); text-align:left; background:var(--bg-elevated); cursor:pointer; box-shadow:inset 0 1px 0 var(--glass-highlight); transition:transform var(--t-fast) var(--ease-out),border-color var(--t-fast),box-shadow var(--t-fast); }
 .mood-rail.nene { background:linear-gradient(135deg,color-mix(in srgb,var(--nene-violet) 20%,transparent),color-mix(in srgb,var(--accent) 8%,transparent)),var(--bg-elevated); }
 .mood-rail.natsume { background:linear-gradient(135deg,color-mix(in srgb,var(--natsume-amber) 20%,transparent),color-mix(in srgb,var(--text-primary) 10%,transparent)),var(--bg-elevated); }
-.mood-rail:hover { transform:translateY(-3px); border-color:var(--accent); box-shadow:var(--shadow-sm); }
+.mood-rail:hover { border-color:var(--accent); box-shadow:var(--shadow-sm); }
 .mood-rail:active { transform:translateY(0) scale(.97); }
+@media (hover: hover) and (pointer: fine) {
+  .mood-rail:hover { transform:translateY(-3px); }
+}
 .mood-icon { display:block; font-size:var(--fs-title-sm); margin-bottom:var(--s-1); }
 .mood-rail strong { display:block; font-size:var(--fs-body-sm); }
 .mood-rail small { color:var(--text-muted); font-size:var(--fs-mono-sm); }
@@ -708,13 +741,6 @@ onMounted(() => { init() })
 .scene-reset:hover { color:var(--accent); }
 
 .scene-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:var(--s-4); }
-.scene-skeleton { min-height:300px; overflow:hidden; padding:var(--s-3); border:1px solid var(--archive-line); border-radius:var(--r-dossier); background:var(--bg-surface); }
-.scene-skeleton i,.scene-skeleton span,.scene-skeleton small { display:block; border-radius:var(--r-terminal); background:linear-gradient(105deg,var(--bg-deep) 18%,var(--bg-elevated) 42%,var(--bg-deep) 68%); background-size:220% 100%; animation:archiveSkeleton 1.3s linear infinite; }
-.scene-skeleton i { height:174px; margin:-1px -1px var(--s-3); }
-.scene-skeleton span { width:72%; height:14px; margin-bottom:var(--s-2); }
-.scene-skeleton span:nth-of-type(2) { width:48%; }
-.scene-skeleton small { width:34%; height:10px; margin-top:var(--s-4); }
-@keyframes archiveSkeleton { to { background-position:-120% 0; } }
 .scene-load { display:flex; justify-content:center; margin-top:var(--s-5); }
 .scene-fav.saved { color:var(--accent); border-color:var(--accent); background:var(--accent-soft); }
 .scene-flash { outline:3px solid var(--accent); outline-offset:var(--s-1); }
@@ -769,8 +795,5 @@ onMounted(() => { init() })
 }
 @media (prefers-reduced-transparency:reduce) {
   .scene-atlas { background:var(--bg-surface); }
-}
-@media (prefers-reduced-motion:reduce) {
-  .scene-skeleton i,.scene-skeleton span,.scene-skeleton small { animation:none; }
 }
 </style>

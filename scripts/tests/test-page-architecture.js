@@ -134,6 +134,7 @@ const requiredModules = [
   'src/types/artwork.ts',
   'src/composables/useVoice.ts',
   'src/composables/useLive2D.ts',
+  'src/composables/useCharacterRoomSession.ts',
   'src/composables/useSDGenerate.ts',
   'src/composables/useSDQueue.ts',
   'src/composables/usePromptAssembly.ts',
@@ -193,6 +194,15 @@ assert(
 assert(
   /assets\/css\/chat\.css/.test(read('src/views/ChatView.vue')),
   'ChatView must import chat.css so it ships in the route chunk',
+);
+assert(
+  /assets\/css\/companion\.css/.test(read('src/views/CompanionView.vue')),
+  'CompanionView must import its own route-scoped stylesheet',
+);
+assert(
+  !/assets\/css\/companion\.css/.test(read('src/views/ChatView.vue'))
+    && !/(?:import\s+ChatView|<ChatView)/.test(read('src/views/CompanionView.vue')),
+  'website chat and companion must remain independent presentation roots',
 );
 
 // D-1: director.css 虽然跟随 /prompt-builder 路由块加载，但 Vite 注入过一次后

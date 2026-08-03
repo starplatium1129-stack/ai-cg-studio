@@ -136,6 +136,26 @@ const userSavedSameValues = core.normalizeChatStorage({
 assert.strictEqual(userSavedSameValues.neverConfigured, false,
   'a real user-saved API config must stay user-configured');
 
+let nextMessageId = 0;
+const repeatedUserMessages = core.normalizeChatStorage({
+  version:3,
+  active:'nene',
+  histories:{ nene:[
+    { role:'user', content:'好的' },
+    { role:'user', content:'好的' },
+  ] },
+  settings:{},
+}, '', {
+  ...options,
+  maxMessages:20,
+  createMessageId:() => `user-${++nextMessageId}`,
+});
+assert.deepStrictEqual(
+  repeatedUserMessages.state.histories.nene.map(message => message.mid),
+  ['user-1', 'user-2'],
+  'repeated user messages must receive distinct durable ids',
+);
+
 });
 
 test('Chat archive round-trip: trim overflow, export/import, markdown and restore', () => {
@@ -152,6 +172,15 @@ test('Chat archive round-trip: trim overflow, export/import, markdown and restor
   ];
   const archived = archive.archiveMessages(fresh, 'nene', messages);
   assert.strictEqual(archived.archived.nene.length, 3, 'archive must dedupe by mid');
+
+  const repeatedWithoutLegacyIds = archive.archiveMessages(archive.emptyChatArchive(ids), 'nene', [
+    { role: 'user', content: '好的', mid: '', stopped: false },
+    { role: 'user', content: '好的', mid: '', stopped: false },
+  ]);
+  assert.strictEqual(
+    repeatedWithoutLegacyIds.archived.nene.length, 2,
+    'legacy messages without ids must preserve legitimate repeated user turns',
+  );
 
   // 超限消息来自 trim：前 20 条进归档，剩下 20 条留在会话
   const overflow = Array.from({ length: 25 }, (_, index) => ({

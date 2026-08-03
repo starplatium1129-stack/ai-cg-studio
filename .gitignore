@@ -15,6 +15,10 @@ test-results/
 playwright-report/
 # Vite 构建产物
 dist/
+# Electron TypeScript 构建产物
+desktop-dist/
+# Electron 安装包与 unpacked 产物
+/release*/
 # 美术审阅截图产物(tests/e2e/capture.spec.ts 生成,仅本地用于逐张观察)
 .review-shots/
 __pycache__/

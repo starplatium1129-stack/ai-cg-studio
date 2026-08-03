@@ -19,7 +19,7 @@
   text-decoration: none;
   box-shadow: var(--shadow-glass-sm); backdrop-filter: blur(18px) saturate(120%);
 }
-.sc:hover { border-color: color-mix(in srgb,var(--archive-blue) 62%,var(--border-soft)); transform: translateY(-3px); box-shadow: var(--shadow-glass-md), 0 0 0 1px var(--archive-blue-soft); }
+.sc:hover { border-color: color-mix(in srgb,var(--archive-blue) 62%,var(--border-soft)); box-shadow: var(--shadow-glass-md), 0 0 0 1px var(--archive-blue-soft); }
 .sc[role="button"]:active { transform:translateY(0) scale(.985); box-shadow:var(--shadow-sm); }
 .sc:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .sc-static { cursor: default; }
@@ -54,12 +54,12 @@
 .sc-thumb-skeleton { position:absolute; inset:0; z-index:0; opacity:0; background:linear-gradient(105deg,var(--bg-deep) 18%,var(--bg-elevated) 42%,var(--bg-deep) 68%); background-size:220% 100%; transition:opacity var(--t-fast); }
 .sc-thumb-skeleton.visible { opacity:1; animation:archive-skeleton-shimmer 1.3s linear infinite; }
 .sc-thumb-missing { display: none; }
-.sc:hover .sc-thumb { transform: scale(1.03); }
+.sc:hover .sc-thumb { transform: none; }
 /* R18 预览默认模糊，悬停/聚焦即可揭示，与样张页保持一致。 */
 .sc-thumb-r18 { filter: blur(16px) saturate(.85); transform: scale(1.08); }
 .sc-thumb-r18.sc-thumb-ready { filter: blur(16px) saturate(.85); transform: scale(1.08); }
 .sc:hover .sc-thumb-r18, .sc:focus-within .sc-thumb-r18,
-.sc:hover .sc-thumb-r18.sc-thumb-ready, .sc:focus-within .sc-thumb-r18.sc-thumb-ready { filter: blur(0) saturate(1); transform: scale(1.03); }
+.sc:hover .sc-thumb-r18.sc-thumb-ready, .sc:focus-within .sc-thumb-r18.sc-thumb-ready { filter: blur(0) saturate(1); transform: scale(1.08); }
 .sc[data-rating="R18"] .sc-band::before {
   content:"R18 · 悬停预览"; position:absolute; z-index:var(--z-raised);
   left:50%; top:50%; transform:translate(-50%,-50%);
@@ -71,6 +71,12 @@
 }
 .sc[data-rating="R18"]:hover .sc-band::before,
 .sc[data-rating="R18"]:focus-within .sc-band::before { opacity:0; }
+@media (hover: hover) and (pointer: fine) {
+  .sc:hover { transform: translateY(-3px); }
+  .sc:hover .sc-thumb { transform: scale(1.03); }
+  .sc:hover .sc-thumb-r18,
+  .sc:hover .sc-thumb-r18.sc-thumb-ready { transform: scale(1.03); }
+}
 .sc-cat {
   position: relative; z-index: var(--z-raised);
   margin-left: auto; font-size: var(--fs-mono-sm); font-weight: 700; letter-spacing: 0.05em;

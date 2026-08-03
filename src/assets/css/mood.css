@@ -29,7 +29,7 @@
   cursor: pointer;
   transition: border-color var(--t-fast), transform var(--t-base) var(--ease-out), box-shadow var(--t-base);
 }
-.mood-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.mood-card:hover { border-color: var(--accent); }
 /* 选中态用自身情绪色描边。border-color 属于非文字图形(3:1),
    直接用 --mood-color 没问题;文字则一律走 --text-primary。 */
 .mood-card.active { border-color: var(--mood-color, var(--accent)); box-shadow: var(--glow-md); }
@@ -53,6 +53,10 @@
 /* 2px 5px:紧凑卡内部微调,升到 4px 会让右栏多出一行 */
 .mood-grid-sm .mood-body { padding: 2px 5px; }
 .mood-grid-sm .mood-name { font-size: var(--fs-mono-sm); }
+
+@media (hover: hover) and (pointer: fine) {
+  .mood-card:hover { transform: translateY(-2px); }
+}
 
 @media (max-width: 768px) {
   .mood-grid-lg { --mood-col: 140px; }

@@ -289,7 +289,7 @@ function createTranslationService(options) {
                     throw error;
                 }
             }
-        });
+        }, { signal });
     }
     function prepare(signal) {
         return ensureServer(signal);

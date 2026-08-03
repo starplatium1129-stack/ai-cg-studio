@@ -7,6 +7,7 @@ import {
 } from '@/config/characters'
 import type { EmotionRuntime } from '@/utils/emotionRuntime'
 import { createLive2dNativeAdapter } from '@/utils/live2dNativeAdapter'
+import { createBlinkScheduler } from '@/utils/blinkScheduler'
 
 export interface Live2DStatus {
   state: 'checking' | 'idle' | 'static' | 'loading' | 'ready' | 'degraded' | 'fallback'
@@ -43,6 +44,7 @@ interface Live2DModel {
     on(event: 'beforeModelUpdate', callback: () => void): void
     coreModel?: Live2DCoreModel
     settings?: { hitAreas?: unknown[] }
+    motionManager?: { definitions?: Record<string, unknown> }
   }
   hitTest?(x: number, y: number): string[]
   focus?(x: number, y: number, instant?: boolean): void
@@ -106,6 +108,24 @@ const MOUTH_PARAMS: Record<string, { id: string; scale: number }> = {
   nene: { id: 'ParamMouthOpenY', scale: 1 },
   natsume: { id: 'ParamMouthForm3', scale: -0.5 },
 }
+
+// 眨眼组与 model3.json 的 Groups.EyeBlink 一致。wl-live2d 的自动眨眼在
+// 循环 Idle 运动期间从不触发，且夏目各 Idle 的作者眼曲线左右眼不同步
+// （ParamEyeLOpen / ParamEyeLOpen2 长时间一闭一睁）；这里统一由
+// blinkScheduler 逐帧覆盖双眼参数，保证同步眨眼。
+const BLINK_PARAMS: Record<string, readonly string[]> = {
+  nene: ['ParamEyeLOpen', 'ParamEyeROpen'],
+  natsume: ['ParamEyeLOpen', 'ParamEyeLOpen2'],
+}
+
+// 登场动作：夏目模型加载完成后随机播一个（Live2DViewerEX 原版行为）。
+// Start 运动 1.6-4.4s，眼曲线左右眼同步（Start_4 含开场闭眼），登场期间
+// 暂停覆盖式眨眼，让作者动画原样呈现。宁宁没有 Start 组，自动降级为 no-op。
+const ENTRANCE_GROUP = 'Start'
+const ENTRANCE_MAX_MS = 5_200
+// 告别动作：关闭 Live2D 时先播一小段 Leave（14s 的"待机最终"），再销毁。
+const LEAVE_GROUP = 'Leave'
+const LEAVE_PLAY_MS = 5_000
 
 const POINTER_FOCUS_PARAMS = ['ParamAngleX', 'ParamAngleY', 'ParamEyeBallX', 'ParamEyeBallY']
 
@@ -175,6 +195,8 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   let pointerGazeActive = false
   let activeInteraction = ''
   let interactionTimer = 0
+  let leaveTimer = 0
+  let entranceUntil = 0
   let mouthHooked = false
   let speaking = false
   let hostEl: HTMLElement | null = null
@@ -182,6 +204,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   let hostSelector = '#live2dHost'
   let emotionRuntime: EmotionRuntime | null = null
   const nativeAnimationAdapter = createLive2dNativeAdapter()
+  const blinkScheduler = createBlinkScheduler()
   const emotionCurrent: Record<string, number> = {}
   let lastParamFrame = 0
 
@@ -273,9 +296,27 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
 
   function disable() {
     enabled.value = false
-    destroyRuntime()
     interactionHint.value = ''
-    setState('idle', '启用 Live2D', '动态模型已释放；点击可重新加载', true)
+    // 告别动作：先播一小段 Leave 再销毁，避免"切换回静态立绘"瞬间硬切。
+    // 减少动态效果或动作不可用时直接销毁；告别期间再次点击可立即重载。
+    const playable = ready.value && model && typeof model.motion === 'function' && !prefersReducedMotion()
+      ? model.motion(LEAVE_GROUP, undefined, 3)
+      : null
+    const started = isCatchable(playable) ? playable.then((v: unknown) => v === true).catch(() => false) : Promise.resolve(playable === true)
+    void started.then((ok: boolean) => {
+      if (!ok) {
+        destroyRuntime()
+        setState('idle', '启用 Live2D', '动态模型已释放；点击可重新加载', true)
+        return
+      }
+      resumeRendering()
+      setState('idle', '正在道别…', '播放告别动作后释放资源', false)
+      clearTimeout(leaveTimer)
+      leaveTimer = window.setTimeout(() => {
+        destroyRuntime()
+        setState('idle', '启用 Live2D', '动态模型已释放；点击可重新加载', true)
+      }, LEAVE_PLAY_MS)
+    })
   }
 
   /**
@@ -338,6 +379,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
           mouthValue.value = 0; mouthHooked = false
           bindMouthOverride(); bindContextEvents(); bindInteractionEvents(); fit(); layout()
           setVisible(true); setPaused(document.hidden); setState('ready', 'Live2D 已连接')
+          playEntrance()
           void setOutfit(outfit.value)
           finish(true)
         })
@@ -372,6 +414,37 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     document.addEventListener('visibilitychange', visibilityHandler)
   }
 
+  function playEntrance() {
+    if (prefersReducedMotion()) return
+    if (!model) return
+    const motionFn = model.motion
+    if (typeof motionFn !== 'function') return
+    const motion = motionFn.bind(model)
+    const definitions = model.internalModel?.motionManager?.definitions
+    const startDefs = definitions && Array.isArray(definitions[ENTRANCE_GROUP])
+      ? definitions[ENTRANCE_GROUP] as unknown[]
+      : null
+    if (!startDefs || startDefs.length === 0) return
+    // 模型刚加载完成时 Start 组的动作可能还在预加载，startRandomMotion 会
+    // 因组内全部未就绪直接返回 false；这里重试直到登场动作真正启动。
+    let attempts = 0
+    const tryStart = () => {
+      if (attempts++ > 40 || destroyed.value || !model) return
+      const result = motion(ENTRANCE_GROUP, undefined, 2)
+      const started = isCatchable(result)
+        ? result.then((v: unknown) => v === true).catch(() => false)
+        : Promise.resolve(result === true)
+      void started.then((ok: boolean) => {
+        if (ok) {
+          entranceUntil = performance.now() + ENTRANCE_MAX_MS
+          return
+        }
+        window.setTimeout(tryStart, 250)
+      })
+    }
+    tryStart()
+  }
+
   function bindMouthOverride() {
     if (!model?.internalModel || mouthHooked) return
     mouthHooked = true
@@ -396,10 +469,26 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
         const mouth = MOUTH_PARAMS[character.value] ?? MOUTH_PARAMS.nene
         core.setParameterValueById(mouth.id, mouthValue.value * mouth.scale, 1)
       }
-      if (!emotionRuntime) return
       const now = performance.now()
       const dt = Math.min(0.12, (now - lastParamFrame) / 1000 || 1 / 60)
       lastParamFrame = now
+      // 覆盖式眨眼：双眼参数永远写同一个值（1=睁、0=闭），修掉作者眼曲线
+      // 左右眼不同步造成的"单眼 Wink"，并保证定时眨眼（见 blinkScheduler）。
+      // 登场动作（Start 组）期间暂停覆盖：其眼曲线左右同步（含开场闭眼），
+      // 让作者动画原样呈现。
+      const inEntrance = now < entranceUntil
+      if (inEntrance) {
+        if (stageEl) stageEl.dataset.blink = '1.000'
+      } else {
+        const blinkValue = blinkScheduler.update(dt)
+        const blinkIds = BLINK_PARAMS[character.value]
+        if (blinkIds) {
+          for (const id of blinkIds) core.setParameterValueById(id, blinkValue, 1)
+        }
+        if (stageEl) stageEl.dataset.blink = blinkValue.toFixed(3)
+      }
+      if (stageEl) stageEl.dataset.entrance = inEntrance ? '1' : '0'
+      if (!emotionRuntime) return
       emotionRuntime.update(dt)
       if (stageEl) stageEl.dataset.emotionIntensity = emotionRuntime.intensity().toFixed(3)
       const frame = emotionRuntime.performanceFrame()
@@ -449,7 +538,13 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     const cvs = hostEl.querySelector('canvas') as HTMLCanvasElement | null
     if (!cvs || cvs.dataset.contextEvents === '1') return
     cvs.dataset.contextEvents = '1'
-    cvs.addEventListener('webglcontextlost', (e) => { e.preventDefault(); fallback('Live2D 图形上下文已暂停', 'WebGL context lost') })
+    cvs.addEventListener('webglcontextlost', (e) => {
+      e.preventDefault()
+      // 销毁/卸载阶段（disable、角色切换）移除 canvas 也会触发该事件，
+      // 此时模型已经下线，不能再用"图形上下文已暂停"覆盖退出提示。
+      if (!ready.value || !model) return
+      fallback('Live2D 图形上下文已暂停', 'WebGL context lost')
+    })
     cvs.addEventListener('webglcontextrestored', () => retry())
   }
 
@@ -738,6 +833,8 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   function destroyRuntime() {
     clearTimeout(loadTimer); loadTimer = 0
     clearTimeout(interactionTimer); interactionTimer = 0; activeInteraction = ''
+    clearTimeout(leaveTimer); leaveTimer = 0
+    entranceUntil = 0
     // Stop Pixi before clearing model state. Otherwise an authored motion can
     // tick once during character switching and read arrays already released by
     // wl-live2d's destroy path.
@@ -749,6 +846,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     ready.value = false; mouthValue.value = 0; mouthHooked = false; speaking = false
     for (const key of Object.keys(emotionCurrent)) delete emotionCurrent[key]
     nativeAnimationAdapter.reset()
+    blinkScheduler.reset()
     lastParamFrame = 0
     loadedCharacter.value = ''
     stageEl?.classList.remove('live2d-ready')

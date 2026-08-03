@@ -79,10 +79,10 @@
   .pb .aic-icon svg { width:100%; height:100%; display:block; }
   .pb .focus-mode-btn { min-height:36px; display:inline-flex; align-items:center; justify-content:center; gap:var(--s-2); padding:0 var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-pill); color:var(--text-secondary); cursor:pointer; font:650 var(--fs-label-sm) var(--font-sans); transition:background var(--t-fast),border-color var(--t-fast),color var(--t-fast),transform var(--t-fast); }
   .pb .focus-mode-icon { display:inline-grid; place-items:center; font-size:var(--fs-body-lg); line-height:1; }
-  .pb .focus-mode-btn:hover, .pb .focus-mode-btn[aria-pressed="true"] { border-color:color-mix(in srgb,var(--accent) 50%,var(--border-soft)); background:var(--bg-elevated); color:var(--accent); transform:translateY(-1px); }
+  .pb .focus-mode-btn:hover, .pb .focus-mode-btn[aria-pressed="true"] { border-color:color-mix(in srgb,var(--accent) 50%,var(--border-soft)); background:var(--bg-elevated); color:var(--accent); }
   .pb .utility-menu { position:relative; }
   .pb .utility-trigger { width:36px; height:36px; display:grid; place-items:center; border:1px solid var(--border-soft); border-radius:50%; color:var(--text-secondary); cursor:pointer; font:800 var(--fs-label-sm) var(--font-mono); letter-spacing:.08em; transition:background var(--t-fast),border-color var(--t-fast),transform var(--t-fast); }
-  .pb .utility-trigger:hover, .pb .utility-menu.open .utility-trigger { border-color:color-mix(in srgb,var(--accent) 50%,var(--border-soft)); background:var(--bg-elevated); transform:translateY(-1px); }
+  .pb .utility-trigger:hover, .pb .utility-menu.open .utility-trigger { border-color:color-mix(in srgb,var(--accent) 50%,var(--border-soft)); background:var(--bg-elevated); }
   .pb .utility-popover { position:absolute; z-index:var(--z-popover); top:calc(100% + 10px); right:0; width:min(300px,calc(100vw - 32px)); padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-2xl); box-shadow:var(--shadow-lg); }
   .pb .utility-label { margin:2px 4px 8px; color:var(--text-muted); font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.1em; text-transform:uppercase; }
   .pb .utility-actions { display:grid; grid-template-columns:1fr 1fr; gap:var(--s-2); }
@@ -102,12 +102,12 @@
   .pb .panel-title .aic-icon, .pb .director-card-name .aic-icon { color:var(--accent); font-size:var(--fs-body-lg); }
 
   /* ---- 宽屏工作台 ---- */
-  .pb .director-workspace { display:grid; grid-template-columns:clamp(252px,16.5vw,300px) minmax(560px,1.2fr) clamp(260px,16.5vw,300px); grid-template-areas:"story stage decisions"; gap:16px; align-items:start; animation:pbWorkspaceIn .38s var(--ease-out) both; }
+  .pb .director-workspace { display:grid; grid-template-columns:clamp(240px,15vw,280px) minmax(620px,1.45fr) clamp(240px,15vw,280px); grid-template-areas:"story stage decisions"; gap:16px; align-items:start; animation:pbWorkspaceIn .38s var(--ease-out) both; }
   .pb .director-workspace > .col-left { animation:directorRailIn .48s var(--ease-out) .04s both; }
   .pb .director-workspace > .col-center { animation:directorStageIn .56s var(--ease-out) .1s both; }
   .pb .director-workspace > .col-right { animation:directorRailIn .48s var(--ease-out) .16s both; }
   .pb[data-director-mode="basic"] .director-workspace {
-    grid-template-columns:minmax(320px,400px) minmax(640px,1fr) minmax(300px,350px);
+    grid-template-columns:minmax(300px,360px) minmax(680px,1.35fr) minmax(280px,320px);
     grid-template-areas:"story stage decisions";
   }
   .pb[data-director-mode="basic"] .col-left,
@@ -121,19 +121,19 @@
   .pb .col-center > .panel { margin-top:0 !important; }
   .pb .col-center > .stage-placeholder { order:0; }
   .pb .col-center > .result-image-wrap { order:0; }
-  .pb .col-center > .expert-tag-panel { order:1; }
-  .pb .col-center > #stepResult { order:2; }
-  .pb .col-center > .monitor { order:3; }
-  .pb .col-center > .generation-settings { order:4; }
+  .pb .col-center > #stepResult { order:1; }
+  .pb .col-center > .monitor { order:2; }
+  .pb .col-center > .generation-settings { order:3; }
+  .pb .col-center > .expert-tag-panel { order:4; }
   /* 画面舞台:唯一定义(原先 :704 的 liquid glass 块又整份覆盖了 background/box-shadow/transition) */
   .pb .stage-placeholder {
     position:relative; isolation:isolate; overflow:hidden;
-    min-height:clamp(430px,58vh,740px);
+     min-height:clamp(430px,62vh,780px);
     display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
-    border:1px solid color-mix(in srgb,var(--border-soft) 82%,transparent);
+     border:1px solid color-mix(in srgb,var(--accent) 28%,var(--border-soft));
     border-radius:var(--r-stage);
     background:
-      radial-gradient(circle at 28% 18%,color-mix(in srgb,var(--accent) 15%,transparent),transparent 35%),
+       radial-gradient(circle at 28% 18%,color-mix(in srgb,var(--accent) 18%,transparent),transparent 35%),
       linear-gradient(145deg,color-mix(in srgb,var(--bg-elevated) 86%,transparent),var(--bg-deep));
     box-shadow:inset 0 1px 0 var(--glass-highlight),inset 0 -1px 0 color-mix(in srgb,var(--accent) 8%,transparent),var(--shadow-lg);
     transition:background .7s ease,border-color .58s ease,box-shadow .58s ease;
@@ -187,6 +187,10 @@
   @keyframes stageMagicSpinRev { to { transform:rotate(-360deg); } }
   .pb .stage-ready { display:flex; align-items:center; gap:var(--s-2); }
   .pb .stage-ready::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--success); box-shadow:0 0 10px color-mix(in srgb,var(--success) 50%,transparent); }
+  .pb .stage-placeholder.is-error .stage-ready { color:var(--danger-text); }
+  .pb .stage-placeholder.is-error .stage-ready::before { background:var(--danger); box-shadow:0 0 10px color-mix(in srgb,var(--danger) 50%,transparent); }
+  .pb .stage-placeholder.is-paused .stage-ready { color:var(--warning-text); }
+  .pb .stage-placeholder.is-paused .stage-ready::before { background:var(--warning); box-shadow:0 0 10px color-mix(in srgb,var(--warning) 50%,transparent); }
   .pb .stage-muse { position:absolute; z-index:var(--z-base); right:-12%; bottom:-3%; width:52%; height:92%; object-fit:contain; object-position:center bottom; opacity:0; filter:saturate(.76) contrast(.96); pointer-events:none; transition:opacity .5s ease,filter .5s ease,transform .5s var(--ease-out); -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 28%,#000 100%); mask-image:linear-gradient(180deg,transparent 0%,#000 28%,#000 100%); }
   @keyframes stageMuseBreath { 0% { transform: translateY(0) scale(1); filter: saturate(.76) contrast(.96); } 100% { transform: translateY(-7px) scale(1.018); filter: saturate(.88) contrast(1.02); } }
   .pb[data-character="nene"] .stage-muse.nene, .pb[data-character="natsume"] .stage-muse.natsume { opacity:.34; animation: stageMuseBreath 6s ease-in-out infinite alternate; }
@@ -232,30 +236,10 @@
   .pb #stepResult { display:flex; flex-direction:column; gap:var(--s-3); }
   .pb.step-4 #stepResult { min-height:clamp(560px,74vh,940px); }
   .pb #stepResult > .panel-title { order:0; margin-bottom:0; }
-  .pb #stepResult > .first-success-coach { order:1; }
-  .pb #stepResult > #sdResultArea { order:1; }
-  .pb #stepResult > .preview-actions { order:2; }
-  .pb #stepResult > .sd-inline-options { order:3; }
-  .pb #stepResult > .voice-studio { order:4; width:100%; max-width:none; overflow:hidden; position:static; }
-  .pb #stepResult > .prompt-details { order:5; }
-  .pb .prompt-details { background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-md); }
-  /* 表面由下方 liquid glass 组声明;此处只留几何与折叠态 */
-  .pb .first-success-coach { display:none; padding:var(--s-3); border:1px solid color-mix(in srgb,var(--accent) 36%,var(--border-soft)); border-radius:var(--r-md); }
-  .pb[data-first-success="1"] .first-success-coach { display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); animation:pbWorkspaceIn .3s ease both; }
-  .pb .first-success-copy { min-width:0; color:var(--text-secondary); font-size:var(--fs-label-sm); line-height:1.5; }
-  .pb .first-success-copy strong { display:block; color:var(--text-primary); font-size:var(--fs-label); }
-  .pb .first-success-actions { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:var(--s-2); }
-  .pb .first-success-actions .btn { min-height:34px; padding-inline:var(--s-3); font-size:var(--fs-mono-sm); }
-  .pb .prompt-summary { padding:var(--s-3); cursor:pointer; font-size:var(--fs-label); font-weight:650; color:var(--text-secondary); list-style:none; }
-  .pb .prompt-summary::-webkit-details-marker { display:none; }
-  .pb .prompt-summary::before { content:'▶'; display:inline-block; margin-right:var(--s-2); font-size:var(--fs-mono-sm); transition:transform .2s; }
-  .pb .prompt-details[open] .prompt-summary::before { transform:rotate(90deg); }
-  .pb .prompt-summary-hint { font-size:var(--fs-mono-sm); font-weight:400; color:var(--text-muted); }
-  .pb .prompt-details[open] .prompt-summary-hint { display:none; }
-  .pb #stepResult.has-image { gap:var(--s-4); }
+   .pb #stepResult > .voice-studio { order:4; width:100%; max-width:none; overflow:hidden; position:static; }
   /* Scene 卡片色带(按分类着色,直观区分场景类型) */
   .pb .scene-card { position:relative; padding:0; background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-md); transition:border-color var(--t-fast), transform var(--t-base) var(--ease-out), box-shadow var(--t-base); overflow:hidden; flex-shrink:0; min-height:0; }
-  .pb .scene-card:hover, .pb .scene-card:focus-within { border-color:var(--accent); transform:translateY(-2px); }
+  .pb .scene-card:hover, .pb .scene-card:focus-within { border-color:var(--accent); }
   .pb .scene-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:4px; border-radius:var(--r-md) 0 0 var(--r-md); }
   .pb .scene-card-main { display:flex; align-items:flex-start; gap:var(--s-3); width:100%; min-height:100%; padding:var(--s-3) var(--s-3) calc(var(--s-3) + 28px); border:0; background:transparent; color:inherit; text-align:left; font:inherit; cursor:pointer; }
   .pb .scene-card-main:focus-visible { outline:2px solid var(--accent); outline-offset:-3px; }
@@ -266,7 +250,7 @@
   .pb .scene-text { flex:1; min-width:0; display:flex; flex-direction:column; }
   .pb .scene-card .scene-direct-btn { position:absolute; right:var(--s-2); bottom:var(--s-2); display:none; z-index:var(--z-raised); padding:var(--s-1) var(--s-3); font-size:var(--fs-label-sm); font-weight:600; background:var(--accent); color:var(--text-inverse); border-radius:var(--r-pill); box-shadow:var(--shadow-md); cursor:pointer; border:none; transition:transform var(--t-fast); }
   .pb .scene-card:hover .scene-direct-btn, .pb .scene-card:focus-within .scene-direct-btn { display:inline-flex; }
-  .pb .scene-card .scene-direct-btn:hover { transform:scale(1.06); }
+  .pb .scene-card .scene-direct-btn:hover { transform:none; }
   .pb .scene-card[data-recommended="1"], .pb .scene-card[data-char-match="1"] { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-glow),var(--shadow-md); animation:obScenePulse .9s ease 1; }
   .pb .scene-card[data-char-match="0"] { opacity:0.45; }
   @keyframes obScenePulse { 0%,100%{box-shadow:0 0 0 2px var(--accent-glow),var(--shadow-md);} 50%{box-shadow:0 0 0 6px var(--accent-glow),var(--shadow-lg);} }
@@ -773,7 +757,8 @@
   }
   @media (max-width: 900px) {
     .pb .director-workspace { grid-template-columns:1fr; grid-template-areas:"stage" "story" "decisions"; }
-    .pb[data-director-mode="basic"] .director-workspace { grid-template-columns:1fr; grid-template-areas:"story" "decisions" "stage"; }
+    .pb[data-director-mode="basic"] .director-workspace { grid-template-columns:1fr; grid-template-areas:"story" "stage" "decisions"; }
+    .pb.has-result .director-workspace { grid-template-areas:"stage" "story" "decisions"; }
     .pb .col-left, .pb .col-center, .pb .col-right { grid-column:1; position:static; max-height:none; overflow:visible; }
     .pb .stage-placeholder, .pb.step-4 #stepResult { min-height:clamp(420px,65vh,680px); }
     .pb .stage-message { width:min(78%,360px); transform:none; }
@@ -893,32 +878,6 @@
   .pb .sd-queue-meta { color:var(--text-muted); font-size:var(--fs-mono-sm); }
   .pb .sd-queue-remove { border:0; background:transparent; color:var(--text-muted); cursor:pointer; font-size:var(--fs-body-lg); }
   .pb .sd-queue-remove:hover { color:var(--danger-text); }
-  .pb #sdCancelBtn[hidden] { display:none; }
-  .pb #stepResult.has-image #sdResultArea { min-height:clamp(520px,76vh,980px); margin-top:0 !important; padding:var(--s-3); display:flex !important; flex-direction:column; justify-content:center; border:1px solid var(--border-soft); border-radius:var(--r-xl); background:radial-gradient(circle at 50% 38%,var(--bg-elevated),var(--bg-deep) 72%); }
-  /* has-image 用了 display:flex !important,故 hidden 也必须 !important 才能压住 */
-  .pb #stepResult.has-image #sdResultArea[hidden] { display:none !important; }
-  .pb #stepResult.has-image .sd-inline-options,
-  .pb #stepResult.has-image .prompt-details { opacity:.88; }
-  .pb.focus-mode #stepResult.has-image .sd-inline-options,
-  .pb.focus-mode #stepResult.has-image .prompt-details,
-  .pb.focus-mode #stepResult.has-image .voice-studio { display:none !important; }
-  .pb #sdImageSlot { flex:1; min-height:0; display:flex; align-items:center; justify-content:center; }
-  /* 唯一定义:原先 :754 又重复声明了 box-shadow/border 与曝光动效 */
-  .pb #sdImageSlot img {
-    display:block; max-width:100%; max-height:82vh; object-fit:contain;
-    border:1px solid var(--border-soft); border-radius:var(--r-md);
-    box-shadow:var(--shadow-lg);
-    opacity:0; transform:scale(.98);
-    animation:aicsShutterReveal 1.2s var(--ease-out) forwards;
-  }
-  /* 生成中的实时预览：不走曝光动效，避免每次刷新都重新淡入 */
-  .pb #sdImageSlot img.sd-preview-image {
-    opacity:.62; transform:none; animation:none;
-    filter:saturate(.9);
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .pb #sdImageSlot img { opacity:1; transform:none; animation:none; }
-  }
   @media (max-width: 768px) {
     .pb-topline { align-items:stretch; flex-direction:column; gap:var(--s-2); margin-bottom:var(--s-2); }
     .pb-sub { display:none; }
@@ -934,9 +893,6 @@
     .pb .sd-advanced-grid { position:static; grid-template-columns:1fr; width:100%; min-width:0; margin-top:var(--s-2); box-shadow:none; }
     .pb .sd-advanced-grid #sdSeedDisplay { grid-column:auto; }
     .pb .preview-actions .btn { flex:1 1 calc(50% - var(--s-2)); min-height:44px; }
-    .pb[data-first-success="1"] .first-success-coach { align-items:stretch; flex-direction:column; }
-    .pb .first-success-actions { justify-content:stretch; }
-    .pb .first-success-actions .btn { flex:1 1 calc(50% - 6px); min-height:40px; }
     .pb-backup-actions .btn { flex:1 1 100%; min-height:44px; }
     .pb .col-right .generate-btn { min-height:50px; }
     .pb.focus-mode { padding:var(--s-2); }
@@ -1076,10 +1032,12 @@
    }
    .pb .result-image-wrap.archive-canvas { border-color:color-mix(in srgb,var(--archive-cyan) 30%,var(--border-soft)); border-radius:var(--r-dossier); }
    .pb .archive-canvas .stage-corners { inset:10px; }
-  .pb .result-image {
-    display:block; width:100%; max-height:min(78vh,920px); object-fit:contain;
-    margin:0 auto; background:radial-gradient(circle at 50% 40%,var(--bg-elevated),var(--bg-deep));
-  }
+   .pb .result-image {
+     display:block; width:100%; max-height:min(78vh,920px); object-fit:contain;
+     margin:0 auto; background:radial-gradient(circle at 50% 40%,var(--bg-elevated),var(--bg-deep));
+     opacity:0; transform:scale(.985); filter:brightness(1.18) blur(4px);
+     animation:aicsShutterReveal .52s var(--ease-out) forwards;
+   }
    .pb .result-image-actions {
      display:flex; justify-content:center; flex-wrap:wrap; gap:var(--s-2);
      padding:var(--s-3); border-top:1px solid var(--border-soft);
@@ -1122,7 +1080,7 @@
     backdrop-filter:blur(22px) saturate(165%) contrast(1.04);
     box-shadow:inset 0 1px 0 var(--glass-highlight),inset 0 -1px 0 color-mix(in srgb,var(--accent) 8%,transparent),var(--shadow-sm);
   }
-  .pb .utility-popover, .pb .director-mode-bar, .pb .first-success-coach, .pb-backup-card {
+  .pb .utility-popover, .pb .director-mode-bar, .pb-backup-card {
     background:
       linear-gradient(125deg,var(--glass-specular),transparent 28%,transparent 72%,color-mix(in srgb,var(--accent) 9%,transparent)),
       var(--glass-fill-strong);
@@ -1151,15 +1109,44 @@
   @keyframes characterGlassSweep { 0% { opacity:0; transform:translateX(-22%) rotate(-4deg); } 42% { opacity:.26; } 100% { opacity:0; transform:translateX(22%) rotate(-4deg); } }
   @media (max-width:768px) {
     .pb .focus-mode-btn, .pb .utility-trigger, .pb .api-status .badge, .pb .stage-chrome { -webkit-backdrop-filter:blur(16px) saturate(145%); backdrop-filter:blur(16px) saturate(145%); }
-    .pb .utility-popover, .pb .director-mode-bar, .pb .first-success-coach, .pb-backup-card { -webkit-backdrop-filter:blur(20px) saturate(145%); backdrop-filter:blur(20px) saturate(145%); }
+    .pb .utility-popover, .pb .director-mode-bar, .pb-backup-card { -webkit-backdrop-filter:blur(20px) saturate(145%); backdrop-filter:blur(20px) saturate(145%); }
     .pb .stage-chrome { left:12px; right:12px; top:12px; }
   }
   @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
-    .pb .focus-mode-btn, .pb .utility-trigger, .pb .api-status .badge, .pb .stage-chrome, .pb .utility-popover, .pb .director-mode-bar, .pb .first-success-coach, .pb-backup-card { background:var(--bg-surface); }
+    .pb .focus-mode-btn, .pb .utility-trigger, .pb .api-status .badge, .pb .stage-chrome, .pb .utility-popover, .pb .director-mode-bar, .pb-backup-card { background:var(--bg-surface); }
   }
-  @media (prefers-reduced-transparency: reduce) {
-    .pb .focus-mode-btn, .pb .utility-trigger, .pb .api-status .badge, .pb .stage-chrome, .pb .utility-popover, .pb .director-mode-bar, .pb .first-success-coach, .pb-backup-card { -webkit-backdrop-filter:none !important; backdrop-filter:none !important; background:var(--bg-surface); }
-  }
+@media (prefers-reduced-transparency: reduce) {
+    .pb .focus-mode-btn, .pb .utility-trigger, .pb .api-status .badge, .pb .stage-chrome, .pb .utility-popover, .pb .director-mode-bar, .pb-backup-card { -webkit-backdrop-filter:none !important; backdrop-filter:none !important; background:var(--bg-surface); }
+}
+
+/* Hover 位移只属于精确指针；触屏保留颜色/边框反馈，不粘住卡片位置。 */
+@media (hover: hover) and (pointer: fine) {
+  .pb .focus-mode-btn:hover,
+  .pb .utility-trigger:hover,
+  .pb .scene-card:hover,
+  .pb .cat-tab:hover,
+  .pb .option:hover,
+  .pb .generate-btn:hover,
+  .pb .history-item:hover { transform: translateY(-1px); }
+  .pb .scene-card:hover { transform: translateY(-2px); }
+  .pb .scene-card .scene-direct-btn:hover { transform: scale(1.06); }
+  .pb .history-item:hover .history-thumb img { transform: scale(1.025); }
+  .pb .review-star:hover { transform: scale(1.15); }
+}
+@media (hover: none), (pointer: coarse) {
+  .pb .focus-mode-btn:hover,
+  .pb .utility-trigger:hover,
+  .pb .scene-card:hover,
+  .pb .scene-card:focus-within,
+  .pb .scene-card .scene-direct-btn:hover,
+  .pb .cat-tab:hover,
+  .pb .option:hover,
+  .pb .generate-btn:hover,
+  .pb .history-item:hover,
+  .pb .history-item:hover .history-thumb img,
+  .pb .review-star:hover { transform: none !important; }
+}
+
   /* ── 生成等待：画布呼吸 + 扫光 ──
      出图要几十秒，静止的深色块会放大等待焦虑。 */
   .pb .stage-placeholder.is-generating { border-color:color-mix(in srgb,var(--accent) 42%,var(--border-soft)); }
@@ -1208,11 +1195,10 @@
      .pb .stage-placeholder.is-generating::after { animation:none !important; }
    }
 
-  @keyframes aicsShutterReveal {
-    0% { opacity: 0; filter: brightness(1.7) blur(8px); transform: scale(0.96); }
-    40% { opacity: 0.85; filter: brightness(1.18) blur(3px); }
-    100% { opacity: 1; filter: brightness(1) blur(0); transform: scale(1); }
-  }
+   @keyframes aicsShutterReveal {
+     0% { opacity:0; filter:brightness(1.18) blur(4px); transform:scale(.985); }
+     100% { opacity:1; filter:brightness(1) blur(0); transform:scale(1); }
+   }
   @media (prefers-reduced-motion: reduce) {
     .pb *, .pb *::before, .pb *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
     .pb .monitor-rec .dot, .pb .review-star { animation: none; transition: none; }

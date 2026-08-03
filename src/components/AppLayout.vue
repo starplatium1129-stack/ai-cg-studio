@@ -38,11 +38,12 @@ import AppNav from './AppNav.vue'
 import RouteAtmosphere from './visual/RouteAtmosphere.vue'
 import GuestGuide from './GuestGuide.vue'
 
-// 路由进出走 spring：连续快速切页时上一个动画从当前值被打断重定向，
-// 不会像固定时长 keyframes 那样"撞墙"。leave 只做快速淡出，把舞台让给新页。
-// 注意：动画被 stop 后 .then(done) 不会触发，必须在这里强制调用 done，
-// 否则 Vue 永远等不到旧节点移除，页面会叠在一起。
-let activeAnim: { controls: ReturnType<typeof animateMini>; done: () => void } | null = null
+// 每个路由节点独立持有动画。进入与离开可能同时发生，若共用单个句柄，
+// leave 会把新页面的 enter 停在 opacity:0，快速切页时就会出现空白舞台。
+const activeAnimations = new Map<Element, {
+  controls: ReturnType<typeof animateMini>
+  done: () => void
+}>()
 
 // done 可能在"动画自然完成"和"stop 强制完成"两条路径被触发，只执行一次
 function onceDone(done: () => void) {
@@ -57,35 +58,45 @@ function onceDone(done: () => void) {
 // 页脚年份跟随当前年份，避免手写年份过期
 const currentYear = new Date().getFullYear()
 
-function stopActive() {
-  if (activeAnim) {
-    activeAnim.controls.stop()
-    activeAnim.done()
-    activeAnim = null
-  }
+function stopActive(el: Element) {
+  const active = activeAnimations.get(el)
+  if (!active) return
+  active.controls.stop()
+  active.done()
+  activeAnimations.delete(el)
+}
+
+function trackAnimation(el: Element, controls: ReturnType<typeof animateMini>, done: () => void) {
+  activeAnimations.set(el, { controls, done })
+  controls.then(() => {
+    done()
+    if (activeAnimations.get(el)?.controls === controls) activeAnimations.delete(el)
+  })
 }
 
 function onEnter(el: Element, done: () => void) {
-  stopActive()
+  stopActive(el)
   const doneOnce = onceDone(done)
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  const controls = reduced
+  const routeCut = document.documentElement.dataset.routeMotion === 'cut'
+  const controls = reduced || routeCut
     ? animateMini(el as HTMLElement, { opacity: [0, 1] }, { duration: 0.12 })
     : animateMini(
         el as HTMLElement,
         { opacity: [0, 1], transform: ['translateY(10px) scale(.994)', 'translateY(0) scale(1)'] },
         { type: 'spring', bounce: 0, duration: 0.32 },
       )
-  activeAnim = { controls, done: doneOnce }
-  controls.then(doneOnce)
+  trackAnimation(el, controls, doneOnce)
 }
 
 function onLeave(el: Element, done: () => void) {
-  stopActive()
+  stopActive(el)
   const doneOnce = onceDone(done)
-  const controls = animateMini(el as HTMLElement, { opacity: 0, transform: 'translateY(-4px)' }, { duration: 0.12, ease: 'easeOut' })
-  activeAnim = { controls, done: doneOnce }
-  controls.then(doneOnce)
+  const routeCut = document.documentElement.dataset.routeMotion === 'cut'
+  const controls = routeCut
+    ? animateMini(el as HTMLElement, { opacity: 0 }, { duration: 0.08, ease: 'easeOut' })
+    : animateMini(el as HTMLElement, { opacity: 0, transform: 'translateY(-4px)' }, { duration: 0.12, ease: 'easeOut' })
+  trackAnimation(el, controls, doneOnce)
 }
 </script>
 

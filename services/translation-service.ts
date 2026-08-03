@@ -266,7 +266,7 @@ function createTranslationService(options: TranslationServiceOptions) {
           throw error;
         }
       }
-    });
+    }, { signal });
   }
 
   function prepare(signal?: AbortSignal): Promise<boolean> {

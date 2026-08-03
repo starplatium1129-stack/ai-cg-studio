@@ -1,10 +1,19 @@
 <template>
-  <aside v-if="visible" class="guest-guide" role="region" aria-label="访客导览">
+  <aside
+    v-if="visible"
+    ref="guideEl"
+    class="guest-guide"
+    role="dialog"
+    aria-modal="true"
+    aria-describedby="guest-guide-description"
+    aria-label="访客导览"
+    @click.self="dismiss"
+  >
     <div class="guest-guide-card">
       <div class="guest-guide-body">
         <span class="guest-guide-kicker">FIRST VISIT · 一次导览</span>
-        <h2>欢迎来到 绫姬绘境</h2>
-        <p>
+        <h2 id="guest-guide-title">欢迎来到 绫季绘境</h2>
+        <p id="guest-guide-description">
           这里是你朋友的本地创作间：浏览场景图鉴、带着场景去导演台出图、或去角色房间
           和 <strong>宁宁 / 夏目</strong> 聊天。
         </p>
@@ -15,13 +24,14 @@
             语音默认跟随回复自动播放，也可在房间内单独开关。</li>
         </ul>
       </div>
-      <button class="btn btn-primary" type="button" @click="dismiss">知道了，开始浏览</button>
+      <button ref="dismissButton" class="btn btn-primary" type="button" @click="dismiss">知道了，开始浏览</button>
     </div>
   </aside>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import { useFocusTrap } from '@/composables/useFocusTrap'
 
 const DISMISS_KEY = 'aics_guest_guide_dismissed'
 
@@ -32,7 +42,19 @@ try {
   dismissed = localStorage.getItem(DISMISS_KEY) === '1'
 } catch { /* 隐私模式忽略 */ }
 
-const visible = ref((isNonLocal || forcedGuest) && !dismissed)
+const shouldShow = (isNonLocal || forcedGuest) && !dismissed
+const visible = ref(false)
+const guideEl = ref<HTMLElement | null>(null)
+const dismissButton = ref<HTMLElement | null>(null)
+
+useFocusTrap(guideEl, () => visible.value, {
+  onEscape: dismiss,
+  initialFocus: dismissButton,
+})
+
+onMounted(() => {
+  if (shouldShow) visible.value = true
+})
 
 function dismiss() {
   visible.value = false

@@ -39,12 +39,19 @@ const impulseStyle = computed(() => ({
 }))
 let impulseTimer = 0
 let routeTimer = 0
+let routeLoadingTimer = 0
 let removeBefore: (() => void) | null = null
 let removeAfter: (() => void) | null = null
 let removeError: (() => void) | null = null
+const ROUTE_CUT_SETTLE_MS = 420
+const ROUTE_STANDARD_SETTLE_MS = 120
+const ROUTE_LOADER_DELAY_MS = 120
 const prefetchedPaths = new Set<string>()
 const SCENE_DATA_ROUTES = new Set([
   '/scene-explorer', '/prompt-builder', '/showcase', '/gallery', '/character', '/style',
+])
+const IMMERSIVE_ROUTE_CUTS = new Set([
+  '/', '/scene-explorer', '/chat', '/showcase', '/gallery', '/character', '/style', '/scenario', '/color-script',
 ])
 
 const ROUTE_LABELS: Record<string, [string, string]> = {
@@ -99,13 +106,14 @@ function onPointerDown(event: PointerEvent) {
   if (!target) return
   // 点击瞬间就开始拉取目标路由 chunk，比 hover 预取再快一拍
   prefetchLink(event.target)
-  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const shouldPulse = target.matches('a[href],.btn-primary,.btn-danger,[data-tone="confirm"],[data-tone="danger"]')
+  if (shouldPulse && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     window.clearTimeout(impulseTimer)
     impulseX.value = event.clientX
     impulseY.value = event.clientY
     impulseVisible.value = false
     requestAnimationFrame(() => { impulseVisible.value = true })
-    impulseTimer = window.setTimeout(() => { impulseVisible.value = false }, 420)
+    impulseTimer = window.setTimeout(() => { impulseVisible.value = false }, 240)
   }
 }
 
@@ -126,21 +134,35 @@ onMounted(() => {
   document.addEventListener('focusin', onFocusIn)
   removeBefore = router.beforeEach((to) => {
     window.clearTimeout(routeTimer)
+    window.clearTimeout(routeLoadingTimer)
+    routeLoading.value = false
     setRouteCut(to.path)
-    routeLoading.value = true
-    routeCutActive.value = !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    routeLoadingTimer = window.setTimeout(() => {
+      routeLoading.value = true
+    }, ROUTE_LOADER_DELAY_MS)
+    const routeUsesCut = IMMERSIVE_ROUTE_CUTS.has(to.path)
+      || IMMERSIVE_ROUTE_CUTS.has(router.currentRoute.value.path)
+    document.documentElement.dataset.routeMotion = routeUsesCut ? 'cut' : 'standard'
+    routeCutActive.value = IMMERSIVE_ROUTE_CUTS.has(to.path)
+      && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
     return true
   })
   removeAfter = router.afterEach(() => {
+    window.clearTimeout(routeLoadingTimer)
+    routeLoading.value = false
+    const settleDelay = routeCutActive.value ? ROUTE_CUT_SETTLE_MS : ROUTE_STANDARD_SETTLE_MS
     routeTimer = window.setTimeout(() => {
       routeLoading.value = false
       routeCutActive.value = false
-    }, 640)
+      delete document.documentElement.dataset.routeMotion
+    }, settleDelay)
   })
   removeError = router.onError(() => {
     window.clearTimeout(routeTimer)
+    window.clearTimeout(routeLoadingTimer)
     routeLoading.value = false
     routeCutActive.value = false
+    delete document.documentElement.dataset.routeMotion
   })
 })
 
@@ -154,20 +176,22 @@ onUnmounted(() => {
   removeError?.()
   window.clearTimeout(impulseTimer)
   window.clearTimeout(routeTimer)
+  window.clearTimeout(routeLoadingTimer)
+  delete document.documentElement.dataset.routeMotion
 })
 </script>
 
 <style scoped>
-.route-loader { position:fixed; z-index:var(--z-toast); inset:0 0 auto; height:2px; overflow:hidden; pointer-events:none; opacity:0; transition:opacity var(--t-fast); }
+.route-loader { position:fixed; z-index:var(--z-toast); inset:0 0 auto; height:2px; overflow:hidden; pointer-events:none; opacity:0; transition:opacity var(--motion-press) var(--ease-out); }
 .route-loader i { display:block; width:38%; height:100%; background:linear-gradient(90deg,transparent,var(--archive-blue),var(--accent),transparent); transform:translateX(-110%); }
 .route-loader.active { opacity:1; }
 .route-loader.active i { animation:route-loader-run .82s var(--ease-out) infinite; }
 .interaction-impulse { position:fixed; z-index:var(--z-toast); left:var(--impulse-x); top:var(--impulse-y); width:12px; height:12px; border:1px solid var(--archive-blue); border-radius:50%; opacity:0; transform:translate3d(-50%,-50%,0) scale(.2); pointer-events:none; will-change:transform,opacity; }
 .interaction-impulse::before { content:""; position:absolute; top:50%; left:50%; width:92px; height:1px; background:linear-gradient(90deg,transparent,var(--archive-cyan),var(--accent),transparent); opacity:0; transform:translate3d(-50%,-50%,0) scaleX(.16); transform-origin:center; }
 .interaction-impulse::after { content:""; position:absolute; top:50%; left:50%; width:4px; height:4px; border-radius:50%; background:var(--archive-cyan); box-shadow:0 0 10px color-mix(in srgb,var(--archive-cyan) 72%,transparent); opacity:0; transform:translate3d(-50%,-50%,0) scale(.4); }
-.interaction-impulse.active { animation:interaction-impulse .42s var(--ease-out) both; }
-.interaction-impulse.active::before { animation:interaction-scan .32s var(--ease-out) .04s both; }
-.interaction-impulse.active::after { animation:interaction-core .24s var(--ease-out) both; }
+.interaction-impulse.active { animation:interaction-impulse var(--motion-control) var(--ease-out) both; }
+.interaction-impulse.active::before { animation:interaction-scan var(--motion-control) var(--ease-out) .02s both; }
+.interaction-impulse.active::after { animation:interaction-core var(--motion-press) var(--ease-out) both; }
 .route-cut { position:fixed; z-index:var(--z-toast); inset:0; overflow:hidden; pointer-events:none; opacity:0; }
 .route-cut-wash { position:absolute; inset:0; background:linear-gradient(110deg,transparent 0 42%,color-mix(in srgb,var(--archive-blue) 5%,transparent) 48%,transparent 54%); transform:translateX(-100%); }
 .route-cut-line { position:absolute; height:1px; background:linear-gradient(90deg,transparent,var(--archive-blue),var(--accent),transparent); transform:scaleX(0); transform-origin:left; }
@@ -177,10 +201,10 @@ onUnmounted(() => {
 .route-cut-register span { color:var(--archive-blue); font-size:clamp(1.4rem,3vw,2.6rem); letter-spacing:-.06em; }
 .route-cut-register strong { font:inherit; color:var(--text-secondary); }
 .route-cut.active { opacity:1; }
-.route-cut.active .route-cut-wash { animation:route-cut-wash .44s var(--ease-out) both; }
-.route-cut.active .route-cut-line-a { animation:route-cut-line .34s var(--ease-out) .04s both; }
-.route-cut.active .route-cut-line-b { animation:route-cut-line-reverse .38s var(--ease-out) .08s both; }
-.route-cut.active .route-cut-register { animation:route-cut-register .32s var(--ease-out) .06s both; }
+.route-cut.active .route-cut-wash { animation:route-cut-wash var(--motion-route-cut) var(--ease-out) both; }
+.route-cut.active .route-cut-line-a { animation:route-cut-line var(--motion-route) var(--ease-out) .04s both; }
+.route-cut.active .route-cut-line-b { animation:route-cut-line-reverse var(--motion-route) var(--ease-out) .08s both; }
+.route-cut.active .route-cut-register { animation:route-cut-register var(--motion-route) var(--ease-out) .06s both; }
 @keyframes route-loader-run { to{transform:translateX(290%)} }
 @keyframes interaction-impulse { 0%{opacity:.78;transform:translate3d(-50%,-50%,0) scale(.25)} 66%{opacity:.34;transform:translate3d(-50%,-50%,0) scale(3.2)} 100%{opacity:0;transform:translate3d(-50%,-50%,0) scale(4.8)} }
 @keyframes interaction-scan { 0%{opacity:0;transform:translate3d(-50%,-50%,0) scaleX(.16)} 24%{opacity:.92} 100%{opacity:0;transform:translate3d(-50%,-50%,0) scaleX(1)} }

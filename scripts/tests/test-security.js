@@ -177,6 +177,10 @@ test('CSP：按路由收紧，非聊天页无 unsafe-eval，字体本地化后�
   assert.ok(chatScript.includes("'unsafe-eval'"), 'chat CSP must allow Live2D runtime');
   assert.ok(!chatScript.includes("'unsafe-inline'"), 'chat should not need script unsafe-inline');
 
+  const companionScript = scriptSrcDirective(security.buildContentSecurityPolicy('/companion'));
+  assert.ok(companionScript.includes("'unsafe-eval'"), 'companion CSP must allow Live2D runtime');
+  assert.ok(!companionScript.includes("'unsafe-inline'"), 'companion should not need script unsafe-inline');
+
   const builderScript = scriptSrcDirective(security.buildContentSecurityPolicy('/prompt-builder'));
   assert.ok(builderScript.includes("'self'"), 'prompt-builder must use script-src self');
   assert.ok(!builderScript.includes("'unsafe-inline'"), 'prompt-builder handlers migrated — no script unsafe-inline');

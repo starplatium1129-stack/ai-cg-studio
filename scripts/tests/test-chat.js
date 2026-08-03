@@ -195,8 +195,10 @@ async function consumeVoice(service, input) {
 }
 
 async function run() {
-  // 角色房间已迁为 Vue：ChatView.vue + useVoice / useLive2D composable
+  // 网站角色房间与 Companion 是独立视图，只共享最小会话编排。
   var html = fs.readFileSync(path.join(root, 'src', 'views', 'ChatView.vue'), 'utf8');
+  var companionHtml = fs.readFileSync(path.join(root, 'src', 'views', 'CompanionView.vue'), 'utf8');
+  var roomSession = fs.readFileSync(path.join(root, 'src', 'composables', 'useCharacterRoomSession.ts'), 'utf8');
   var apiSettingsComponent = fs.readFileSync(path.join(root, 'src', 'components', 'ChatApiSettings.vue'), 'utf8');
   var chatApiConfig = fs.readFileSync(path.join(root, 'src', 'config', 'chatApi.ts'), 'utf8');
   var characterStageComponent = fs.readFileSync(path.join(root, 'src', 'components', 'ChatCharacterStage.vue'), 'utf8');
@@ -216,25 +218,35 @@ async function run() {
   var serverSource = fs.readFileSync(path.join(root, 'server.js'), 'utf8');
 
   assert(html.includes('chat-page'), 'chat view must render the character room shell');
+  assert(companionHtml.includes('companion-page'), 'companion view must render its own desktop shell');
+  assert(!companionHtml.includes("import ChatView") && !companionHtml.includes('<ChatView'), 'companion must not wrap the website chat view');
+  assert(
+    html.includes('useCharacterRoomSession')
+      && companionHtml.includes('useCharacterRoomSession')
+      && roomSession.includes('useChatConversation')
+      && roomSession.includes('useChatProvider')
+      && roomSession.includes('useVoice'),
+    'website chat and companion must share only the character-room session core'
+  );
   assert(characterStageComponent.includes("'nene'") && characterStageComponent.includes("'natsume'") && html.includes('switchCharacter'), 'both characters must be selectable');
   // chat.css 是路由专属样式：由 ChatView 自己 import，随 /chat 的懒加载块下发，
   // 不再进全局包（它曾占 139KB 全局 CSS 的 13%，而只有一个路由用得到）。
   assert(html.includes('assets/css/chat.css'), 'chat styles must be imported by the chat view');
   assert(!mainTs.includes('assets/css/chat.css'), 'chat styles must not ship in the global entry bundle');
-  assert(html.includes('useVoice') && html.includes('ChatCharacterStage'), 'chat view must compose voice and the character stage');
+  assert(roomSession.includes('useVoice') && html.includes('ChatCharacterStage'), 'shared session must own voice while the chat view composes the character stage');
   assert(characterStageComponent.includes('useLive2D'), 'the character stage must own the Live2D lifecycle');
   assert(characterStageComponent.includes("'live2d-ready': live2d.ready"), 'Vue must own the Live2D visibility class so voice state renders cannot restore the static portrait');
   assert(html.includes('voice-console') && html.includes('replay-btn'), 'live voice and replay must share one visual control');
   assert(!html.includes('portrait-blink') && !html.includes('scheduleBlink'), 'static portraits must not use a duplicate-image blink effect');
   assert(!chatCss.includes('portrait-talk'), 'static portraits must not scale or bounce while voice is playing');
   assert(
-    html.includes('useChatConversation')
+    roomSession.includes('useChatConversation')
       && chatConversation.includes("fetch('/api/chat'")
       && chatConversation.includes('parseNdjsonResponse'),
     'chat conversation composable must stream from the gateway'
   );
   assert(html.includes('ChatApiSettings'), 'chat API settings must have independent component ownership');
-  assert(html.includes('useChatProvider') && chatProvider.includes('refreshChatStatus') && chatProvider.includes('saveApiSettings'), 'chat provider settings and status must have composable ownership');
+  assert(roomSession.includes('useChatProvider') && chatProvider.includes('refreshChatStatus') && chatProvider.includes('saveApiSettings'), 'chat provider settings and status must have composable ownership');
   assert(
     characterStageComponent.includes('defineExpose({ setSpeaking, setMouth, setAudioLevel, setEmotion, setUserMessage })')
       && characterStageComponent.includes("emit('live2dEnabled'")
@@ -255,6 +267,8 @@ async function run() {
   );
   assert(chatConversation.includes('AbortController') && html.includes('stop-btn'), 'chat requests must be cancellable');
   assert(!/\bany\b/.test(html), 'ChatView model, stream, error, and history boundaries must stay explicitly typed');
+  assert(!/\bany\b/.test(companionHtml), 'CompanionView boundaries must stay explicitly typed');
+  assert(!/\bany\b/.test(roomSession), 'shared character-room session boundaries must stay explicitly typed');
   assert(!/\bany\b/.test(chatConversation), 'chat conversation stream, cancellation, and draft boundaries must stay explicitly typed');
   assert(!/\bany\b/.test(streamUtils), 'chat stream events and abort errors must stay explicitly typed');
   assert(!/\bany\b/.test(chatStorage), 'persisted chat messages must stay explicitly typed');
@@ -267,7 +281,8 @@ async function run() {
     voiceRoute.includes('router.get(\'/api/tts\'')
       && voiceRoute.includes('Buffer.concat') && voiceRoute.includes('fixWavHeaderServer')
       && voiceRoute.includes('ttsAudioCache')
-      && voiceRoute.includes('inFlightTts'),
+      && voiceRoute.includes('inFlightTts')
+      && voiceRoute.includes('body.emotion'),
     'streaming endpoint must collect, fix and cache the complete sentence WAV server-side and coalesce identical in-flight generations'
   );
   assert(
@@ -361,10 +376,12 @@ async function run() {
   assert(live2dModule.includes("'degraded'") && live2dModule.includes('已经显示的模型失效'), 'runtime expression failures must not replace a loaded Live2D model with the static portrait');
   // Live2D 运行库必须真正被加载（重构后曾漏掉，导致"运行库加载失败"）
   assert(live2dModule.includes("import('wl-live2d')"), 'Live2D runtime must be imported by the composable');
-  // PixiJS 需要 unsafe-eval：CSP 必须为 /chat 放行，否则 Live2D 初始化失败
+  // PixiJS 需要 unsafe-eval：两个 Live2D 页面都必须放行，否则运行时初始化失败
   assert(
-    securitySource.includes("path === '/chat'") && securitySource.includes('unsafe-eval'),
-    'CSP must allow unsafe-eval on the chat route for the Live2D renderer'
+    securitySource.includes("path === '/chat'")
+      && securitySource.includes("path === '/companion'")
+      && securitySource.includes('unsafe-eval'),
+    'CSP must allow unsafe-eval on chat and companion routes for the Live2D renderer'
   );
   // 情绪关键词曾因编码损坏全部失效，导致语音永远 neutral
   assert(!/\uFFFD/.test(streamUtils), 'emotion keywords must not contain replacement characters');
@@ -606,6 +623,10 @@ async function run() {
     assert(chatResponse.ok, 'chat route must be served by the SPA fallback');
     var chatCsp = chatResponse.headers.get('content-security-policy') || '';
     assert(chatCsp.includes("'unsafe-eval'"), 'chat route CSP must allow the Live2D renderer');
+    var companionResponse = await fetch(gatewayBase + '/companion');
+    assert(companionResponse.ok, 'companion route must be served by the SPA fallback');
+    var companionCsp = companionResponse.headers.get('content-security-policy') || '';
+    assert(companionCsp.includes("'unsafe-eval'"), 'companion route CSP must allow the Live2D renderer');
     var homeResponse = await fetch(gatewayBase + '/');
     assert(homeResponse.ok, 'home route must be served');
     var homeCsp = homeResponse.headers.get('content-security-policy') || '';

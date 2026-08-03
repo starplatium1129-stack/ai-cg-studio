@@ -42,6 +42,7 @@ assert(/num_ctx\s*:\s*numContext/.test(ollamaService), 'gateway must cap Ollama 
 assert(/async function unload/.test(ollamaService) && ollamaService.includes('activeModel'), 'gateway must unload old model before loading a different one to avoid double VRAM consumption');
 assert(translationService.includes('ensureServer') && translationService.includes("'--serve'"), 'gateway must manage a persistent translation server');
 assert(translationService.includes('runLegacy'), 'gateway must keep the spawn-per-call translation as fallback');
+assert(translationService.includes('}, { signal });'), 'aborted translation requests must leave the pending queue immediately');
 assert(/prepare\s*:\s*prepare/.test(translationService), 'voice clients must be able to prewarm the translation model');
 assert(gatewayConfig.includes('TRANSLATE_PORT') && translationService.includes("'/health'"), 'gateway must health-check the translation server');
 

@@ -2,15 +2,15 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 /**
  * Live2D（PixiJS）编译着色器要用 new Function，需要 CSP 的 'unsafe-eval'。
- * 服务端只给 /chat 这一个文档放行（server/security.js），可是 SPA 只在首次
- * 请求时拿一次 CSP：从首页点进 /chat 属于前端路由跳转，不发新文档请求，
+ * 服务端只给 Live2D 页面文档放行（server/security.js），可是 SPA 只在首次
+ * 请求时拿一次 CSP：从首页点进 Live2D 路由属于前端跳转，不发新文档请求，
  * 沿用的还是首页那份不含 unsafe-eval 的策略，于是 Live2D 必然初始化失败。
- * 这也解释了"直接打开 /chat 正常、从站内点进去就挂"。
+ * 这也解释了"直接打开 Live2D 页面正常、从站内点进去就挂"。
  *
- * 处理办法是进出 /chat 时强制整页跳转，让浏览器重新取一份该路由的 CSP。
+ * 处理办法是进出 Live2D 页面时强制整页跳转，让浏览器重新取对应 CSP。
  * 代价是两次刷新，换来的是其余路由继续维持不含 unsafe-eval 的严格策略。
  */
-const CHAT_PATH = '/chat'
+const LIVE2D_PATHS = new Set(['/chat', '/companion'])
 const STRICT_FLAG = 'aics_csp_strict'
 
 function evalAllowed(): boolean {
@@ -49,7 +49,8 @@ const router = createRouter({
         { path: ':pathMatch(.*)*', name: 'not-found',    component: () => import('@/views/NotFoundView.vue') },
       ]
     },
-    // control 有自己的完整导航栏，不套 AppLayout（避免双 nav）
+    // 桌宠与控制面板都有独立完整布局，不套 AppLayout。
+    { path: '/companion', name: 'companion', component: () => import('@/views/CompanionView.vue') },
     { path: '/control', name: 'control', component: () => import('@/views/ControlView.vue') }
   ],
   // 路由切换回到顶部；带 hash 时定位到锚点，浏览器前进/后退时还原原位置
@@ -62,7 +63,7 @@ const router = createRouter({
 
 /** Warm a lazy route without changing location. Used on internal-link intent. */
 export function prefetchRoute(path: string): void {
-  if (path === CHAT_PATH) return
+  if (LIVE2D_PATHS.has(path)) return
   const route = router.resolve(path)
   for (const record of route.matched) {
     const component = record.components?.default
@@ -81,11 +82,11 @@ router.beforeEach((to, from) => {
   // 初次进入（无 from）由浏览器自己请求文档，CSP 已经对路径生效
   if (!from.matched.length) return true
 
-  const toChat = to.path === CHAT_PATH
-  const fromChat = from.path === CHAT_PATH
-  if (toChat === fromChat) return true
+  const toLive2D = LIVE2D_PATHS.has(to.path)
+  const fromLive2D = LIVE2D_PATHS.has(from.path)
+  if (toLive2D === fromLive2D) return true
 
-  // 进 /chat 换到带 unsafe-eval 的文档；离开时换回严格文档，
+  // 进 Live2D 页面换到带 unsafe-eval 的文档；离开时换回严格文档，
   // 顺带彻底释放 WebGL 上下文与 Pixi ticker
   window.location.assign(to.fullPath)
   return false
