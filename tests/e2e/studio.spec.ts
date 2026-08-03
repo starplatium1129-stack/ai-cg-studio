@@ -458,6 +458,9 @@ test('desktop companion keeps the chat loop in a compact standalone layout', asy
   await dndButton.click();
   await expect(dndButton).toHaveAttribute('aria-pressed', 'true');
   await expect(page.locator('.companion-reminders')).toHaveCount(0);
+  await dndButton.click();
+  await expect(dndButton).toHaveAttribute('aria-pressed', 'false');
+  await expect(page.locator('.companion-dnd-toggle')).toBeVisible();
   expect(errors).toEqual([]);
 });
 

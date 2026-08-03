@@ -117,3 +117,15 @@ export async function imgList(): Promise<StoredImageRecord[]> {
     req.onerror   = () => reject(req.error ?? new Error('图片列表读取失败'))
   })
 }
+
+/** 只数记录数（不拉 Blob），供陪伴事件检测器等轻量轮询使用。 */
+export async function imgCount(): Promise<number> {
+  const db = await openDb()
+  return new Promise((resolve, reject) => {
+    let transaction: IDBTransaction
+    try { transaction = db.transaction(STORE_NAME, 'readonly') } catch (e) { reject(e); return }
+    const req = transaction.objectStore(STORE_NAME).getAllKeys()
+    req.onsuccess = () => resolve(Array.isArray(req.result) ? req.result.length : 0)
+    req.onerror   = () => reject(req.error ?? new Error('图片计数失败'))
+  })
+}

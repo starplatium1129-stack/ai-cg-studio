@@ -1120,3 +1120,47 @@ html.companion-mode:not(.companion-desktop) body {
   color: var(--text-muted);
   font-size: var(--fs-label-xs);
 }
+
+/* Companion event bubbles: clickable, kind-tinted */
+.companion-page .companion-reminder-bubble[data-kind="event"] {
+  border-style: dashed;
+  cursor: default;
+}
+
+.companion-page .companion-reminder-bubble.companion-reminder-link {
+  cursor: pointer;
+}
+
+.companion-page .companion-reminder-bubble[data-event-kind="sd-done"] {
+  border-color: color-mix(in srgb, var(--character-accent) 70%, var(--border-strong));
+}
+
+.companion-page .companion-reminder-bubble[data-event-kind="training-completed"],
+.companion-page .companion-reminder-bubble[data-event-kind="service-back"] {
+  border-color: color-mix(in srgb, #7ddc8f 55%, var(--border-soft));
+  background: color-mix(in srgb, #7ddc8f 9%, var(--bg-surface));
+}
+
+.companion-page .companion-reminder-bubble[data-event-kind="training-failed"],
+.companion-page .companion-reminder-bubble[data-event-kind="service-down"] {
+  border-color: color-mix(in srgb, #ff9d9d 55%, var(--border-soft));
+  background: color-mix(in srgb, #ff9d9d 9%, var(--bg-surface));
+}
+
+/* Companion local image import button */
+.companion-page .companion-import-btn {
+  min-height: 26px;
+  padding: 3px 9px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: var(--fs-label-xs);
+}
+
+.companion-page .companion-import-btn:hover,
+.companion-page .companion-import-btn:focus-visible {
+  border-color: var(--character-accent);
+  color: var(--text-primary);
+}

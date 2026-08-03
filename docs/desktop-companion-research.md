@@ -219,11 +219,14 @@ P1 已完成真实 Windows Electron 回归；仍需在不同显卡驱动、多�
 - [x] `extraResources` 与打包路径验证。
 - [x] 基础多屏/DPI/睡眠唤醒/WebGL 恢复逻辑与真实 Electron 回归。
 - [x] 主进程文件日志（`desktop/logger.ts`，512KB 轮转 ×3，网关子进程输出转发，托盘/渲染器可打开日志文件）；安装/升级/卸载策略：数据全部落在 `userData`，安装器不写运行状态。
+- [x] NSIS 打包闭环：`package:desktop:installer` 产出安装包，静默安装→`--hidden` 启动（网关自启、`desktopProtocol:1`、日志入 `userData/gateway/desktop.log`）→卸载（安装目录清空、`userData` 保留）全部验证通过。
 
 ### P2：陪伴行为
 
 - [x] 无操作提醒、安静时段（23:00-8:00 默认、可配置）与提醒冷却（确定性状态机 `src/utils/companionBehavior.ts`，不调用 LLM、不自动出声）。
 - [x] 常驻气泡队列（容量上限 + FIFO + 手动关闭）与勿扰优先级（勿扰期间不产出、不出队，队列保留，关闭后恢复）。
+- [x] 事件播报（`companionEvents.ts`）：轮询 `/api/status` + `/api/training/jobs` + 作品库计数，出图完成/训练完成/训练失败/服务掉线/服务恢复 → 角色气泡（事件色 + 点击跳转 Atelier 对应页）+ 系统通知；同类事件节流，受勿扰/安静时段约束。
+- [x] 本地图片导入（`desktopImport.ts`）：桌宠拖入或选择本地图片 → 写入共享 IndexedDB 作品册（KV 记录 + 图片库 + 缩略图），Atelier 作品册立即可见，角色气泡反馈。
 - [ ] 经用户显式授权后再评估语音输入。
 
 ## 明确不做

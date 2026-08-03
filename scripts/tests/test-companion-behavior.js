@@ -137,4 +137,39 @@ test('台词选取：无台词角色回退默认，负偏移安全取模', () =>
   assert.match(pickCompanionLine('natsume', 'return', 1), /。/);
   assert.equal(pickCompanionLine('unknown', 'idle', 0), '……我在这里哦。');
   assert.equal(pickCompanionLine('nene', 'idle', -2), pickCompanionLine('nene', 'idle', 2));
+  assert.match(pickCompanionLine('nene', 'event', 0, 'sd-done'), /图/);
+  assert.match(pickCompanionLine('natsume', 'event', 0, 'training-failed'), /。/);
+  assert.equal(pickCompanionLine('unknown', 'event', 0, 'sd-done'), '有件事想告诉你……');
+});
+
+test('事件播报：入队 kind=event 且带 eventKind，不受 idle 冷却约束', () => {
+  const behavior = createCompanionBehavior({ idleMinutes: 120, cooldownMinutes: 1000 });
+  behavior.noteReturn('welcome');
+  const reminder = behavior.noteEvent('sd-done', '新图做好啦！');
+  assert.ok(reminder, '事件应入队');
+  assert.equal(reminder.kind, 'event');
+  assert.equal(reminder.eventKind, 'sd-done');
+  assert.equal(behavior.pending().length, 2, '事件与 return 共存');
+  behavior.noteReturn('welcome-again');
+  assert.equal(behavior.pending().length, 3, '事件不消耗 idle 冷却（return 仍可入队）');
+});
+
+test('事件播报：同类事件按 eventCooldownMinutes 节流，不同类互不阻塞', () => {
+  const base = new Date(2026, 7, 3, 10, 0, 0).getTime();
+  const behavior = createCompanionBehavior({ eventCooldownMinutes: 10 });
+  assert.ok(behavior.noteEvent('sd-done', 'a', base), '首次事件直接入队');
+  assert.equal(behavior.noteEvent('sd-done', 'b', base + 60_000), null, '1 分钟后同类仍节流');
+  assert.ok(behavior.noteEvent('training-completed', 'c', base + 60_000), '不同类事件不受阻塞');
+  assert.ok(behavior.noteEvent('sd-done', 'd', base + 11 * 60_000), '11 分钟后同类放行');
+});
+
+test('事件播报：安静时段与勿扰抑制，勿扰关闭后事件仍可入队', () => {
+  const quiet = new Date(2026, 7, 3, 23, 30, 0).getTime();
+  const behavior = createCompanionBehavior({ quietStartHour: 23, quietEndHour: 8 });
+  assert.equal(behavior.noteEvent('sd-done', 'a', quiet), null, '安静时段不播报');
+  behavior.setConfig({ dnd: true });
+  const busy = new Date(2026, 7, 3, 10, 0, 0).getTime();
+  assert.equal(behavior.noteEvent('sd-done', 'b', busy), null, '勿扰中不播报');
+  behavior.setConfig({ dnd: false });
+  assert.ok(behavior.noteEvent('sd-done', 'c', busy), '关闭勿扰后事件正常');
 });

@@ -7,7 +7,7 @@
  */
 
 export interface CompanionBehaviorConfig {
-  /** 主动行为总开关（无操作提醒、常驻气泡） */
+  /** 主动行为总开关（无操作提醒、常驻气泡、事件播报） */
   enabled: boolean
   /** 勿扰：暂停一切主动气泡出队；队列保留，关闭勿扰后继续 */
   dnd: boolean
@@ -21,7 +21,16 @@ export interface CompanionBehaviorConfig {
   quietEndHour: number
   /** 气泡队列容量 */
   queueLimit: number
+  /** 同类事件（出图/训练/服务）最短播报间隔 */
+  eventCooldownMinutes: number
 }
+
+export type CompanionEventKind =
+  | 'sd-done'
+  | 'training-completed'
+  | 'training-failed'
+  | 'service-back'
+  | 'service-down'
 
 export interface CompanionReminder {
   /** 提醒标识（入队时分配） */
@@ -29,7 +38,9 @@ export interface CompanionReminder {
   /** 入队时间（epoch ms） */
   at: number
   /** 提醒种类，UI 可据此选择样式 */
-  kind: 'idle' | 'return'
+  kind: 'idle' | 'return' | 'event'
+  /** 事件提醒的具体事件（kind === 'event' 时有效），UI 可据此跳转 */
+  eventKind?: CompanionEventKind
   /** 台词内容（由调用方提供，按当前角色选择） */
   line: string
 }
@@ -46,6 +57,12 @@ export interface CompanionBehaviorHandle {
   tick(now?: number): CompanionReminder | null
   /** 角色回到前台/窗口重新可见时入队一条"回来"气泡（受安静时段与 dnd 约束） */
   noteReturn(line: string, now?: number): CompanionReminder | null
+  /**
+   * 入队一条事件播报（出图/训练/服务事件，受安静时段与 dnd 约束）。
+   * 同类事件按 eventCooldownMinutes 节流，避免轮询重复触发；
+   * 事件不消耗 idle 提醒冷却。
+   */
+  noteEvent(eventKind: CompanionEventKind, line: string, now?: number): CompanionReminder | null
   /** 当前是否处于安静时段 */
   inQuietHours(now?: number): boolean
   /** 勿扰状态（引用会随配置变更） */
@@ -73,6 +90,7 @@ export const DEFAULT_COMPANION_CONFIG: CompanionBehaviorConfig = {
   quietStartHour: 23,
   quietEndHour: 8,
   queueLimit: 3,
+  eventCooldownMinutes: 10,
 }
 
 export function normalizeCompanionConfig(raw: unknown): CompanionBehaviorConfig {
@@ -85,6 +103,7 @@ export function normalizeCompanionConfig(raw: unknown): CompanionBehaviorConfig 
     quietStartHour: clampInt(value.quietStartHour, 0, 23, DEFAULT_COMPANION_CONFIG.quietStartHour),
     quietEndHour: clampInt(value.quietEndHour, 0, 23, DEFAULT_COMPANION_CONFIG.quietEndHour),
     queueLimit: clampInt(value.queueLimit, 1, 20, DEFAULT_COMPANION_CONFIG.queueLimit),
+    eventCooldownMinutes: clampInt(value.eventCooldownMinutes, 0, 24 * 60, DEFAULT_COMPANION_CONFIG.eventCooldownMinutes),
   }
 }
 
@@ -124,6 +143,7 @@ export function createCompanionBehavior(
 ): CompanionBehaviorHandle {
   const config = normalizeCompanionConfig(rawConfig)
   const queue: CompanionReminder[] = []
+  const lastEventAt = new Map<CompanionEventKind, number>()
   let lastActivity = Date.now()
   let lastReminderAt = Number.NEGATIVE_INFINITY
 
@@ -135,8 +155,8 @@ export function createCompanionBehavior(
     return config.enabled && !config.dnd && !isInQuietHours(now, config.quietStartHour, config.quietEndHour)
   }
 
-  function enqueue(kind: 'idle' | 'return', line: string, now: number): CompanionReminder {
-    const reminder: CompanionReminder = { id: createReminderId(), at: now, kind, line }
+  function enqueue(kind: 'idle' | 'return' | 'event', line: string, now: number, eventKind?: CompanionEventKind): CompanionReminder {
+    const reminder: CompanionReminder = { id: createReminderId(), at: now, kind, line, ...(eventKind ? { eventKind } : {}) }
     queue.push(reminder)
     if (queue.length > config.queueLimit) queue.splice(0, queue.length - config.queueLimit)
     return reminder
@@ -158,6 +178,14 @@ export function createCompanionBehavior(
     return enqueue('return', line, now)
   }
 
+  function noteEvent(eventKind: CompanionEventKind, line: string, now = Date.now()): CompanionReminder | null {
+    if (!canProduce(now)) return null
+    const lastAt = lastEventAt.get(eventKind) ?? Number.NEGATIVE_INFINITY
+    if (now - lastAt < config.eventCooldownMinutes * 60000) return null
+    lastEventAt.set(eventKind, now)
+    return enqueue('event', line, now, eventKind)
+  }
+
   function dequeue(_now = Date.now()): CompanionReminder | null {
     if (config.dnd) return null
     return queue.shift() ?? null
@@ -172,6 +200,7 @@ export function createCompanionBehavior(
     noteActivity,
     tick,
     noteReturn,
+    noteEvent,
     inQuietHours: (now = Date.now()) => isInQuietHours(now, config.quietStartHour, config.quietEndHour),
     isDnd: () => config.dnd,
     pending: () => queue.slice(),

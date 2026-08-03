@@ -117,8 +117,16 @@ export function createMessageId(): string {
   return 'm-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10)
 }
 
-/** 陪伴模式确定性台词：无操作提醒与归来欢迎（不调用 LLM，离线可用）。 */
-export const COMPANION_LINES: Record<string, { idle: string[]; return: string[] }> = {
+/** 陪伴模式确定性台词：无操作提醒、归来欢迎与事件播报（不调用 LLM，离线可用）。 */
+export interface CompanionEventLines {
+  'sd-done': string[]
+  'training-completed': string[]
+  'training-failed': string[]
+  'service-back': string[]
+  'service-down': string[]
+}
+
+export const COMPANION_LINES: Record<string, { idle: string[]; return: string[]; events: CompanionEventLines }> = {
   nene: {
     idle: [
       '……那个，你还在忙吗？如果累了的话，休息一下也没关系的哦。',
@@ -129,6 +137,13 @@ export const COMPANION_LINES: Record<string, { idle: string[]; return: string[] 
       '欢迎回来。……我一直都在这里哦。',
       '你回来啦。刚才，有好好休息吗？',
     ],
+    events: {
+      'sd-done': ['新图做好啦！要和我一起去看看吗？', '出图完成了哦。这次画得怎么样？'],
+      'training-completed': ['训练完成了！辛苦啦～', '训练跑完了，成果应该还不错吧？'],
+      'training-failed': ['训练好像中断了……别担心，我们一起看看日志吧。', '唔……训练失败了。要我陪你排查吗？'],
+      'service-back': ['服务恢复啦，一切又回到正轨了。', '刚才是有点手忙脚乱……现在没事了哦。'],
+      'service-down': ['呜……有服务好像掉线了，要不要去控制面板看看？', '好像有哪里断开了……我来提醒你一下。'],
+    },
   },
   natsume: {
     idle: [
@@ -140,11 +155,33 @@ export const COMPANION_LINES: Record<string, { idle: string[]; return: string[] 
       '回来了？正好，热饮还温着。',
       '哦，回来了。……也不是特别在等你。',
     ],
+    events: {
+      'sd-done': ['图出好了。这次的可别翻车。', '新图入库了。验收一下？'],
+      'training-completed': ['训练收工了。看来能派上用场。', '训练完成。成果比预期能打。'],
+      'training-failed': ['训练挂了。先看日志，别急着重跑。', '训练中断了……要查原因的话我陪着。'],
+      'service-back': ['服务回来了。刚才是虚惊一场？', '后端恢复了。早该如此。'],
+      'service-down': ['有服务掉线了。控制面板去看看？', '连接断了。……要我盯着恢复吗？'],
+    },
   },
 }
 
-export function pickCompanionLine(characterId: string, kind: 'idle' | 'return', offset = 0): string {
-  const lines = COMPANION_LINES[characterId]?.[kind]
-  if (!lines || !lines.length) return kind === 'idle' ? '……我在这里哦。' : '欢迎回来。'
+export function pickCompanionLine(
+  characterId: string,
+  kind: 'idle' | 'return' | 'event',
+  offset = 0,
+  eventKind?: 'sd-done' | 'training-completed' | 'training-failed' | 'service-back' | 'service-down',
+): string {
+  const character = COMPANION_LINES[characterId]
+  let lines: string[] | undefined
+  if (kind === 'event' && eventKind) {
+    lines = character?.events?.[eventKind]
+  } else if (kind === 'idle' || kind === 'return') {
+    lines = character?.[kind]
+  }
+  if (!lines || !lines.length) {
+    if (kind === 'idle') return '……我在这里哦。'
+    if (kind === 'return') return '欢迎回来。'
+    return '有件事想告诉你……'
+  }
   return lines[((Math.abs(offset) % lines.length) + lines.length) % lines.length]
 }

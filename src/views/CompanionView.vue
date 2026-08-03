@@ -26,6 +26,16 @@
           :title="dnd ? '关闭勿扰：恢复角色主动问候' : '开启勿扰：暂停角色主动问候（安静时段自动生效）'"
           @click="toggleDnd"
         >{{ dnd ? '勿扰中' : '勿扰' }}</button>
+        <input
+          ref="importInputRef"
+          class="sr-only"
+          type="file"
+          accept="image/*"
+          multiple
+          aria-label="导入本地图片到作品册"
+          @change="onImportInputChange"
+        />
+        <button type="button" class="companion-import-btn" title="导入本地图片到作品册" @click="importInputRef?.click()">导图</button>
         <div v-if="desktopBridge" class="companion-window-actions" aria-label="桌面窗口控制">
           <button type="button" title="切换窗口置顶" :aria-pressed="alwaysOnTop" @click="togglePin">
             {{ alwaysOnTop ? '取消置顶' : '置顶' }}
@@ -71,10 +81,14 @@
             :key="reminder.id"
             class="companion-reminder-bubble"
             :data-kind="reminder.kind"
+            :data-event-kind="reminder.eventKind || undefined"
+            :title="reminder.kind === 'event' && reminder.eventKind ? (desktopBridge ? '点击打开对应页面' : '') : ''"
+            :class="{ 'companion-reminder-link': reminder.kind === 'event' && reminder.eventKind }"
+            @click="openReminderRoute(reminder)"
           >
             <span class="companion-reminder-name">{{ currentCharacter.name }}</span>
             <p>{{ reminder.line }}</p>
-            <button type="button" aria-label="关闭这条问候" @click="dismissReminder(reminder.id)">×</button>
+            <button type="button" aria-label="关闭这条问候" @click.stop="dismissReminder(reminder.id)">×</button>
           </div>
         </div>
         <div ref="chatListRef" class="companion-bubbles" role="log" aria-label="最近对话">
@@ -174,8 +188,17 @@ import '@/assets/css/companion.css'
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useCharacterRoomSession } from '@/composables/useCharacterRoomSession'
 import ChatCharacterStage from '@/components/ChatCharacterStage.vue'
+import { imgCount } from '@/composables/useImageStore'
 import { pickCompanionLine } from '@/config/characters'
+import { importLocalImages } from '@/utils/desktopImport'
+import type { ImportSourceFile } from '@/utils/desktopImportCore'
 import { createCompanionBehavior, normalizeCompanionConfig, type CompanionReminder } from '@/utils/companionBehavior'
+import {
+  createCompanionEventDetector,
+  EVENT_NOTIFY_TITLE,
+  EVENT_ROUTE,
+  type CompanionDetectedEvent,
+} from '@/utils/companionEvents'
 import { COMPANION_BEHAVIOR_KEY, COMPANION_LIVE2D_KEY } from '@/utils/storageKeys'
 
 const {
@@ -232,8 +255,14 @@ const quietHoursText = computed(() => {
   const { quietStartHour, quietEndHour } = behavior.config()
   return `安静时段 ${quietStartHour}:00 – ${quietEndHour}:00 不主动问候`
 })
+const eventDetector = createCompanionEventDetector()
+const importInputRef = ref<HTMLInputElement>()
 let behaviorTimer = 0
+let eventPollTimer = 0
+let importBusy = false
 let reminderLineOffset = 0
+let eventLineOffset = 0
+let eventPolling = false
 let lastActivityAt = Date.now()
 let resumeSubscription: number | undefined
 let shownSubscription: number | undefined
@@ -283,6 +312,114 @@ function runBehaviorTick() {
     reminder.line = pickCompanionLine(activeChar.value, 'idle', reminderLineOffset)
     syncReminders()
   }
+}
+
+async function pollCompanionEvents() {
+  if (eventPolling || !viewAlive) return
+  eventPolling = true
+  try {
+    const [statusResponse, trainingResponse, imageCount] = await Promise.all([
+      fetch('/api/status', { cache: 'no-store' }).catch(() => null),
+      fetch('/api/training/jobs', { cache: 'no-store' }).catch(() => null),
+      imgCount().catch(() => -1),
+    ])
+    if (!viewAlive) return
+    if (statusResponse && statusResponse.ok) {
+      const status: unknown = await statusResponse.json().catch(() => null)
+      const value = status && typeof status === 'object' ? status as Record<string, unknown> : null
+      if (value) {
+        const jobs: { id: string; status: 'idle' | 'running' | 'stopping' | 'completed' | 'failed' | 'stopped' }[] = []
+        if (trainingResponse && trainingResponse.ok) {
+          const trainingData: unknown = await trainingResponse.json().catch(() => null)
+          const jobsValue = trainingData && typeof trainingData === 'object'
+            ? (trainingData as Record<string, unknown>).jobs : null
+          if (Array.isArray(jobsValue)) {
+            const allowedStatuses = ['idle', 'running', 'stopping', 'completed', 'failed', 'stopped']
+            for (const item of jobsValue) {
+              const job = item && typeof item === 'object' ? item as Record<string, unknown> : null
+              if (job && typeof job.id === 'string' && typeof job.status === 'string'
+                && allowedStatuses.includes(job.status)) {
+                jobs.push({ id: job.id, status: job.status as 'idle' | 'running' | 'stopping' | 'completed' | 'failed' | 'stopped' })
+              }
+            }
+          }
+        }
+        const events = eventDetector.ingest({
+          imageCount: imageCount >= 0 ? imageCount : 0,
+          services: {
+            sdOnline: value.sdOnline === true,
+            ttsOnline: value.ttsOnline === true,
+            ollamaOnline: value.ollamaOnline === true,
+          },
+          jobs,
+        })
+        for (const event of events) {
+          eventLineOffset += 1
+          const line = pickCompanionLine(activeChar.value, 'event', eventLineOffset, event)
+          const reminder = behavior.noteEvent(event, line)
+          if (reminder) {
+            syncReminders()
+            if (desktopBridge) desktopBridge.notify(EVENT_NOTIFY_TITLE[event], line)
+          }
+        }
+      }
+    }
+  } catch {
+    // 轮询失败静默：下次再试
+  } finally {
+    eventPolling = false
+  }
+}
+
+function openReminderRoute(reminder: CompanionReminder) {
+  if (reminder.kind !== 'event' || !reminder.eventKind) return
+  const route = EVENT_ROUTE[reminder.eventKind as CompanionDetectedEvent]
+  if (!route) return
+  if (desktopBridge) {
+    dismissReminder(reminder.id)
+    desktopBridge.openAtelier(route)
+  }
+}
+
+async function handleImportedFiles(files: readonly ImportSourceFile[]) {
+  if (importBusy || !files.length) return
+  importBusy = true
+  try {
+    const { imported, skipped } = await importLocalImages(files)
+    if (imported > 0) {
+      reminderLineOffset += 1
+      const line = `收到 ${imported} 张图片，已经放进作品册啦${skipped > 0 ? `（${skipped} 张格式不支持）` : ''}。`
+      const reminder = behavior.noteReturn(line)
+      if (reminder) syncReminders()
+      if (desktopBridge) desktopBridge.notify(currentCharacter.value.name, line)
+      // 导入也会让图片计数增加；重置检测器基线避免误报 sd-done
+      eventDetector.reset()
+    } else if (skipped > 0) {
+      const line = '这几张图片好像打不开……再试试别的？'
+      const reminder = behavior.noteReturn(line)
+      if (reminder) syncReminders()
+    }
+  } finally {
+    importBusy = false
+  }
+}
+
+function onImportInputChange() {
+  const input = importInputRef.value
+  const files = input?.files ? Array.from(input.files) : []
+  if (input) input.value = ''
+  void handleImportedFiles(files.map(file => ({ name: file.name, size: file.size, type: file.type, blob: file })))
+}
+
+function onWindowDrop(event: DragEvent) {
+  const files = event.dataTransfer?.files
+  if (!files || !files.length) return
+  event.preventDefault()
+  void handleImportedFiles(Array.from(files).map(file => ({ name: file.name, size: file.size, type: file.type, blob: file })))
+}
+
+function onWindowDragOver(event: DragEvent) {
+  event.preventDefault()
 }
 
 function readDesktopLive2dOverride(): boolean | null {
@@ -343,10 +480,14 @@ onMounted(async () => {
   document.documentElement.classList.add('companion-mode')
   dnd.value = behavior.config().dnd
   behaviorTimer = window.setInterval(runBehaviorTick, 30_000) as unknown as number
+  eventPollTimer = window.setInterval(() => { void pollCompanionEvents() }, 30_000) as unknown as number
   window.addEventListener('pointerdown', noteActivity, { passive: true })
   window.addEventListener('keydown', noteActivity, { passive: true })
   window.addEventListener('wheel', noteActivity, { passive: true })
+  window.addEventListener('dragover', onWindowDragOver, { passive: false })
+  window.addEventListener('drop', onWindowDrop, { passive: false })
   syncReminders()
+  void pollCompanionEvents()
   if (desktopBridge) {
     document.documentElement.classList.add('companion-desktop')
     shownSubscription = desktopBridge.onShown(() => setDesktopVisibility(true))
@@ -374,9 +515,12 @@ onMounted(async () => {
 onUnmounted(() => {
   viewAlive = false
   clearInterval(behaviorTimer)
+  clearInterval(eventPollTimer)
   window.removeEventListener('pointerdown', noteActivity)
   window.removeEventListener('keydown', noteActivity)
   window.removeEventListener('wheel', noteActivity)
+  window.removeEventListener('dragover', onWindowDragOver)
+  window.removeEventListener('drop', onWindowDrop)
   if (desktopBridge && resumeSubscription != null) desktopBridge.offResume(resumeSubscription)
   if (desktopBridge && shownSubscription != null) desktopBridge.offShown(shownSubscription)
   if (desktopBridge && visibilitySubscription != null) desktopBridge.offVisibilityChanged(visibilitySubscription)
