@@ -274,6 +274,14 @@ function setDesktopVisible(visible: boolean) {
   if (visible) void live2d.recover()
 }
 
+function setGlobalPointer(
+  screenX: number,
+  screenY: number,
+  windowBounds: { x: number; y: number; width: number; height: number },
+) {
+  live2d.setGlobalPointer(screenX, screenY, windowBounds)
+}
+
 function setDesktopPerformanceMode(onBatteryPower: boolean) {
   live2d.setMaxFps(onBatteryPower ? 30 : 60)
 }
@@ -367,5 +375,6 @@ defineExpose({
   setUserMessage,
   setDesktopVisible,
   setDesktopPerformanceMode,
+  setGlobalPointer,
 })
 </script>

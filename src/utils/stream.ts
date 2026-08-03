@@ -2,6 +2,11 @@ export interface ChatStreamEvent {
   type: string
   model?: string
   content?: string
+  /** 工具调用事件（type:'tool-call'）：index/id/name/arguments */
+  index?: number
+  id?: string
+  name?: string
+  arguments?: string
 }
 
 export interface RoleplaySpeech {
@@ -19,6 +24,10 @@ function parseChatStreamEvent(value: unknown): ChatStreamEvent | null {
     type: value.type,
     model: typeof value.model === 'string' ? value.model : undefined,
     content: typeof value.content === 'string' ? value.content : undefined,
+    index: typeof value.index === 'number' ? value.index : undefined,
+    id: typeof value.id === 'string' ? value.id : undefined,
+    name: typeof value.name === 'string' ? value.name : undefined,
+    arguments: typeof value.arguments === 'string' ? value.arguments : undefined,
   }
 }
 

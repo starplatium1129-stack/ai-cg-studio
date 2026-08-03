@@ -150,6 +150,26 @@ function createMockAiServer() {
           res.end('data: {not valid json}\n\ndata: [DONE]\n\n');
           return;
         }
+        if (body.model === 'tool-call-model') {
+          res.setHeader('Content-Type', 'text/event-stream');
+          // OpenAI 兼容的 tool_calls 增量：id/name 首次出现，arguments 分片；
+          // 思考轮带工具调用：reasoning_content 增量先到（DeepSeek V4 回传契约）
+          res.write('data: {"choices":[{"delta":{"reasoning_content":"我得先看看"}}]}\n\n');
+          res.write('data: {"choices":[{"delta":{"tool_calls":[{"index":0,"id":"call_1","function":{"name":"list_files","arguments":"{\\"path\\":\\"\\"}"}}]}}]}\n\n');
+          res.write('data: {"choices":[{"delta":{"content":"让我看看工作区里有什么。"}}]}\n\n');
+          res.write('data: {"choices":[{"delta":{"tool_calls":[{"index":0,"function":{"arguments":"."}}]}}]}\n\n');
+          res.end('data: [DONE]\n\n');
+          return;
+        }
+        if (body.model === 'thinking-model') {
+          res.setHeader('Content-Type', 'text/event-stream');
+          // DeepSeek 思考模式：reasoning_content 增量先到，正文后到
+          res.end('data: {"choices":[{"delta":{"reasoning_content":"让我想想"}}]}\n\n' +
+            'data: {"choices":[{"delta":{"reasoning_content":"再想想"}}]}\n\n' +
+            'data: {"choices":[{"delta":{"content":"答案是 42"}}]}\n\n' +
+            'data: [DONE]\n\n');
+          return;
+        }
         res.setHeader('Content-Type', 'text/event-stream');
         var utf8Event = Buffer.from('data: {"choices":[{"delta":{"content":"你好"}}]}\n\ndata: [DONE]\n\n', 'utf8');
         var chineseStart = utf8Event.indexOf(Buffer.from('你', 'utf8'));
@@ -248,7 +268,7 @@ async function run() {
   assert(html.includes('ChatApiSettings'), 'chat API settings must have independent component ownership');
   assert(roomSession.includes('useChatProvider') && chatProvider.includes('refreshChatStatus') && chatProvider.includes('saveApiSettings'), 'chat provider settings and status must have composable ownership');
   assert(
-    /defineExpose\(\{[\s\S]*setSpeaking,[\s\S]*setMouth,[\s\S]*setAudioLevel,[\s\S]*setEmotion,[\s\S]*setUserMessage,?\s*(?:setDesktopVisible,?\s*)?(?:setDesktopPerformanceMode,?\s*)?\}\)/.test(characterStageComponent)
+    /defineExpose\(\{[\s\S]*setSpeaking,[\s\S]*setMouth,[\s\S]*setAudioLevel,[\s\S]*setEmotion,[\s\S]*setUserMessage,?\s*(?:setDesktopVisible,?\s*)?(?:setDesktopPerformanceMode,?\s*)?(?:setGlobalPointer,?\s*)?\}\)/.test(characterStageComponent)
       && characterStageComponent.includes("emit('live2dEnabled'")
       && characterStageComponent.includes("emit('outfitChanged'"),
     'the character stage must expose only voice animation controls and persist Live2D preferences'
@@ -391,7 +411,7 @@ async function run() {
   assert(serverSource.includes('createGateway') && serverSource.includes("require('./routes/chat')"), 'gateway must use modular route composition');
   assert(
     chatRouteSource.includes('kept.unshift')
-      && chatRouteSource.includes('used + content.length > 12000')
+      && chatRouteSource.includes('used + text.length > 12000')
       && chatRouteSource.includes('count < 24')
       && !chatRouteSource.includes('当前对话过长'),
     'long conversations must be trimmed from the oldest messages instead of being rejected'
@@ -557,6 +577,138 @@ async function run() {
     assert(!compatibleOutput.join('').includes('\uFFFD'), 'compatible API output must not contain replacement characters');
     assert(mock.state.compatibleAuth === 'Bearer local-secret', 'compatible API key must be sent as a bearer token');
     assert(mock.state.compatiblePayloads[0].messages[0].content === 'persona', 'compatible APIs must receive the character system prompt');
+
+    // ---- 桌宠本地工具（companionTools）：tools 注入 + tool_calls 增量事件 ----
+    var toolCalls = [];
+    var toolTokens = [];
+    var toolApi = chatRoute.validateCompatibleApi({
+      baseUrl:mockBase + '/v1',
+      model:'tool-call-model',
+      apiKey:'local-secret'
+    });
+    await chatRoute.streamCompatibleApi({
+      api:toolApi.value,
+      messages:[{ role:'system', content:'persona' }, { role:'user', content:'看看工作区' }],
+      companionTools:true
+    }, {
+      onToken:function (content) { toolTokens.push(content); },
+      onToolCall:function (call) { toolCalls.push(call); }
+    });
+    var toolPayload = mock.state.compatiblePayloads[mock.state.compatiblePayloads.length - 1];
+    assert(
+      Array.isArray(toolPayload.tools) && toolPayload.tools.some(function (t) {
+        return t.type === 'function' && t.function && t.function.name === 'list_files';
+      }),
+      'companionTools must inject the local tool schemas into the upstream request'
+    );
+    assert(!toolPayload.tools.some(function (t) {
+      return t.function && !['list_files', 'read_file', 'write_file', 'run_command', 'read_image', 'get_workspace_info'].includes(t.function.name);
+    }), 'only the whitelisted companion tools may be advertised');
+    assert(toolCalls.length === 1, 'split tool_calls deltas must accumulate into one event');
+    assert(toolCalls[0].id === 'call_1', 'tool-call event must carry the call id');
+    assert(toolCalls[0].name === 'list_files', 'tool-call event must carry the tool name');
+    assert(toolCalls[0].arguments === '{"path":""}.', 'tool-call arguments must be concatenated across chunks');
+    assert(toolCalls[0].reasoning === '我得先看看', 'tool-call events must carry the round reasoning for V4 round-trip');
+    assert(toolTokens.join('') === '让我看看工作区里有什么。', 'text tokens must still stream alongside tool calls');
+
+    // ---- 思考模式（thinking）：reasoning_content 增量事件 + 参数注入 ----
+    var reasoningChunks = [];
+    var thinkingTokens = [];
+    var thinkingApi = chatRoute.validateCompatibleApi({
+      baseUrl:mockBase + '/v1',
+      model:'thinking-model',
+      apiKey:'local-secret'
+    });
+    await chatRoute.streamCompatibleApi({
+      api:thinkingApi.value,
+      messages:[{ role:'system', content:'persona' }, { role:'user', content:'想一下' }],
+      reasoning:'high'
+    }, {
+      onReasoning:function (content) { reasoningChunks.push(content); },
+      onToken:function (content) { thinkingTokens.push(content); }
+    });
+    assert(reasoningChunks.join('') === '让我想想再想想', 'reasoning_content deltas must stream as reasoning events');
+    assert(thinkingTokens.join('') === '答案是 42', 'final content must still stream after reasoning');
+    assert(
+      chatRouteSource.includes("input.reasoning === 'low' ? { reasoning_effort:'high' } : { reasoning_effort:'max' }"),
+      'deepseek V4 must map low→high effort and medium/high→max effort with thinking enabled/disabled'
+    );
+    assert(
+      chatRouteSource.includes('reasoning_effort:input.reasoning'),
+      'opencode endpoints must receive the OpenAI reasoning_effort parameter'
+    );
+    var badReasoning = chatRoute.validateChatBody({
+      character:'nene',
+      provider:'api',
+      api:{ baseUrl:'https://api.deepseek.com/v1', model:'deepseek-chat', apiKey:'k' },
+      reasoning:'turbo',
+      messages:[{ role:'user', content:'hi' }]
+    });
+    assert(badReasoning.error, 'unknown reasoning levels must be rejected');
+
+    // validateChatBody：tool 消息接受、未知工具拒绝、reasoning_content 回传
+    var toolRound = chatRoute.validateChatBody({
+      character:'nene',
+      provider:'api',
+      api:{ baseUrl:'https://api.deepseek.com/v1', model:'deepseek-chat', apiKey:'k' },
+      companionTools:true,
+      messages:[
+        { role:'user', content:'看看' },
+        { role:'assistant', content:'', reasoning_content:'我先想想', tool_calls:[{ id:'call_9', type:'function', function:{ name:'read_file', arguments:'{"path":"a.txt"}' } }] },
+        { role:'tool', tool_call_id:'call_9', content:'文件内容' }
+      ]
+    });
+    assert(toolRound.value, 'tool messages must be accepted when companionTools is enabled');
+    var toolMessages = toolRound.value.messages.filter(function (m) { return m.role === 'tool' || Array.isArray(m.tool_calls); });
+    assert(toolMessages.length === 2, 'tool messages must survive validation untouched');
+    var toolCallMsg = toolRound.value.messages.find(function (m) { return Array.isArray(m.tool_calls); });
+    assert(
+      toolCallMsg && toolCallMsg.reasoning_content === '我先想想',
+      'V4 reasoning_content must round-trip through validation alongside tool_calls'
+    );
+    var badTool = chatRoute.validateChatBody({
+      character:'nene',
+      provider:'api',
+      api:{ baseUrl:'https://api.deepseek.com/v1', model:'deepseek-chat', apiKey:'k' },
+      messages:[
+        { role:'user', content:'看看' },
+        { role:'assistant', content:'', tool_calls:[{ id:'call_1', type:'function', function:{ name:'evil_tool', arguments:'{}' } }] }
+      ]
+    });
+    assert(badTool.error, 'unknown tool names must be rejected by validation');
+
+    // validateChatBody：多模态 user 消息（read_image 结果）接受，非法图片 URL 拒绝
+    var multimodal = chatRoute.validateChatBody({
+      character:'nene',
+      provider:'api',
+      api:{ baseUrl:'https://api.deepseek.com/v1', model:'deepseek-chat', apiKey:'k' },
+      messages:[
+        { role:'user', content:'看看' },
+        { role:'assistant', content:'', tool_calls:[{ id:'call_9', type:'function', function:{ name:'read_image', arguments:'{"path":"pic.png"}' } }] },
+        { role:'tool', tool_call_id:'call_9', content:'已读取图片' },
+        { role:'user', content:[
+          { type:'text', text:'（这是 read_image 返回的图片）' },
+          { type:'image_url', image_url:{ url:'data:image/png;base64,iVBORw0KGgo=' } }
+        ] }
+      ]
+    });
+    assert(multimodal.value, 'multimodal user messages from read_image must be accepted');
+    var multimodalParts = multimodal.value.messages.filter(function (m) { return Array.isArray(m.content); });
+    assert(multimodalParts.length === 1, 'multimodal content arrays must survive validation');
+    assert(
+      multimodalParts[0].content.some(function (p) { return p.type === 'image_url' && p.image_url.url.startsWith('data:image/png;base64,'); }),
+      'image_url parts must be preserved'
+    );
+    var badImage = chatRoute.validateChatBody({
+      character:'nene',
+      provider:'api',
+      api:{ baseUrl:'https://api.deepseek.com/v1', model:'deepseek-chat', apiKey:'k' },
+      messages:[
+        { role:'user', content:[{ type:'image_url', image_url:{ url:'http://evil.example.com/steal.png' } }] }
+      ]
+    });
+    assert(badImage.error, 'remote image URLs must be rejected');
+    assert(/data URL/.test(badImage.error), 'rejection message must explain the data URL rule');
 
     var abortController = new AbortController();
     var resolveStarted;

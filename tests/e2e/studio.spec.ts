@@ -499,6 +499,68 @@ test('desktop companion keeps the chat loop in a compact standalone layout', asy
   expect(errors).toEqual([]);
 });
 
+test('speech input: hold-talk entry hidden until ASR endpoint configured', async ({ page }) => {
+  const errors = collectRuntimeErrors(page);
+  await page.addInitScript(() => {
+    localStorage.setItem('aics_chat_v1', JSON.stringify({
+      version: 3,
+      active: 'nene',
+      histories: { nene: [], natsume: [] },
+      settings: {
+        model: 'local-model',
+        provider: 'api',
+        apiBaseUrl: 'https://local.example/v1',
+        apiModel: 'local-model',
+        apiKey: 'local-key',
+        webSearchEnabled: false,
+        live2dEnabled: false,
+        live2dOutfit: 'school',
+        autoVoice: false,
+        volume: 80,
+        drafts: { nene: '', natsume: '' },
+      },
+    }))
+  });
+  await page.goto('/chat');
+
+  // 未配置 ASR 端点：按住说话入口不出现
+  await expect(page.locator('.chat-input')).toBeVisible();
+  await expect(page.locator('.hold-talk-btn')).toHaveCount(0);
+
+  // 配置启用 + http 端点后出现
+  await page.evaluate(() => {
+    localStorage.setItem('aics_speech_input_v1', JSON.stringify({
+      enabled: true,
+      kind: 'openai',
+      endpoint: 'http://127.0.0.1:8000/v1',
+      model: 'whisper-1',
+      apiKey: '',
+      language: '',
+      autoSend: false,
+    }))
+  });
+  await page.reload();
+  await expect(page.locator('.hold-talk-btn')).toBeVisible();
+  await expect(page.locator('.hold-talk-btn')).toHaveText(/按住说话/);
+
+  // 设置弹层可打开、关闭；保存后配置持久化
+  await page.getByRole('button', { name: '语音输入设置' }).click();
+  await expect(page.locator('.speech-settings')).toBeVisible();
+  await expect(page.getByLabel('服务地址')).toHaveValue('http://127.0.0.1:8000/v1');
+  await page.getByRole('button', { name: '关闭' }).click();
+  await expect(page.locator('.speech-settings')).toHaveCount(0);
+
+  // 禁用后入口再次隐藏
+  await page.evaluate(() => {
+    const raw = JSON.parse(localStorage.getItem('aics_speech_input_v1') || '{}');
+    localStorage.setItem('aics_speech_input_v1', JSON.stringify({ ...raw, enabled: false }))
+  });
+  await page.reload();
+  await expect(page.locator('.hold-talk-btn')).toHaveCount(0);
+
+  expect(errors).toEqual([]);
+});
+
 test('Natsume Live2D loads, reacts, and keeps wardrobe memory per character', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   await page.addInitScript(() => {

@@ -62,18 +62,33 @@
                 :aria-pressed="chatProvider === 'api'"
                 :disabled="busy" @click="setChatProvider('api')">自定义 API</button>
             </div>
-            <select v-if="chatProvider === 'local'" class="model-select" v-model="currentModel"
-              :disabled="busy || !ollamaOnline" aria-label="选择本地聊天模型">
-              <option v-if="!ollamaOnline || !models.length" value="">{{ ollamaOnline ? '无可用模型' : '正在发现模型…' }}</option>
-              <option v-for="m in models" :key="m.name" :value="m.name">
-                {{ m.name }}{{ m.parameters ? ' · ' + m.parameters : '' }}
-              </option>
-            </select>
-            <button v-else class="api-settings-toggle" type="button"
-              :aria-expanded="apiSettingsOpen"
-              @click="apiSettingsOpen = !apiSettingsOpen">
-              {{ useHostConfig ? (hostApiModel || '站主 API') : (apiConfigured ? apiModel : '配置 API') }} <ArchiveIcon name="gear" />
-            </button>
+            <template v-if="chatProvider === 'local'">
+              <select class="model-select" v-model="currentModel"
+                :disabled="busy || !ollamaOnline" aria-label="选择本地聊天模型">
+                <option v-if="!ollamaOnline || !models.length" value="">{{ ollamaOnline ? '无可用模型' : '正在发现模型…' }}</option>
+                <option v-for="m in models" :key="m.name" :value="m.name">
+                  {{ m.name }}{{ m.parameters ? ' · ' + m.parameters : '' }}
+                </option>
+              </select>
+            </template>
+            <template v-else>
+              <label class="thinking-toggle" title="模型推理强度（像 OpenCode 一样多档；off 不思考）">
+                <span>推理</span>
+                <select class="model-select reasoning-select" v-model="reasoning"
+                  :disabled="busy" aria-label="模型推理强度"
+                  @change="onReasoningChange(reasoning)">
+                  <option value="off">关</option>
+                  <option value="low">低</option>
+                  <option value="medium">中</option>
+                  <option value="high">高</option>
+                </select>
+              </label>
+              <button class="api-settings-toggle" type="button"
+                :aria-expanded="apiSettingsOpen"
+                @click="apiSettingsOpen = !apiSettingsOpen">
+                {{ useHostConfig ? (hostApiModel || '站主 API') : (apiConfigured ? apiModel : '配置 API') }} <ArchiveIcon name="gear" />
+              </button>
+            </template>
           </div>
         </div>
 
@@ -143,6 +158,17 @@
           </template>
         </div>
 
+        <div v-if="toolActivity" class="chat-tool-indicator" role="status">
+          🔧 {{ toolActivity }}
+        </div>
+
+        <div v-if="thinkingActivity" class="chat-tool-indicator" role="status">
+          💭 思考中…
+        </div>
+
+        <SpeechInputSettings v-if="speechSettingsOpen" class="speech-settings-host"
+          @save="onSpeechSettingsSaved" @close="speechSettingsOpen = false" />
+
         <div class="chat-composer">
           <div class="composer-row">
             <textarea class="chat-input" v-model="inputText" rows="2" maxlength="1200"
@@ -189,6 +215,24 @@
                 <span aria-hidden="true">↩</span> 重播上一条
               </button>
             </div>
+            <template v-if="speechReady">
+              <span class="voice-divider" aria-hidden="true"></span>
+              <button class="hold-talk-btn" type="button"
+                :data-state="speechState"
+                :disabled="speechBusy"
+                :title="speechError || '按住说话，松开识别'"
+                @pointerdown.prevent="onSpeechPress"
+                @pointerup="onSpeechRelease"
+                @pointercancel="onSpeechCancel"
+                @pointerleave="onSpeechLeave">
+                <ArchiveIcon name="sound" /> {{ speechButtonText }}
+              </button>
+              <span class="voice-status speech-state-text" aria-live="polite">{{ speechStateText }}</span>
+              <button class="speech-config-btn" type="button" title="语音输入设置" aria-label="语音输入设置"
+                @click="speechSettingsOpen = !speechSettingsOpen">
+                设置
+              </button>
+            </template>
             <span class="keyboard-hint">Enter 发送 · Shift+Enter 换行</span>
           </div>
 
@@ -203,12 +247,16 @@
 
 <script setup lang="ts">
 import '@/assets/css/chat.css'
+import { computed, onBeforeUnmount, ref } from 'vue'
 import { useCharacterRoomSession } from '@/composables/useCharacterRoomSession'
 import ChatApiSettings from '@/components/ChatApiSettings.vue'
 import ChatCharacterStage from '@/components/ChatCharacterStage.vue'
 import ChatArchivePanel from '@/components/ChatArchivePanel.vue'
+import SpeechInputSettings from '@/components/SpeechInputSettings.vue'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import { useVoiceInput, type VoiceInputState } from '@/composables/useVoiceInput'
+import { isSpeechInputReady, loadSpeechInputConfig } from '@/utils/speechInputConfig'
 
 const {
   chatListRef,
@@ -250,6 +298,10 @@ const {
   isLocalHost,
   currentCharacter,
   currentMessages,
+  toolActivity,
+  thinkingActivity,
+  reasoning,
+  onReasoningChange,
   webSearchEnabled,
   setupTitle,
   setupDescription,
@@ -275,4 +327,68 @@ const {
   onAutoVoiceChange,
   replayLast,
 } = useCharacterRoomSession()
+
+const speechConfig = ref(loadSpeechInputConfig())
+const speechSettingsOpen = ref(false)
+const {
+  state: speechState,
+  errorMessage: speechError,
+  supported: speechSupported,
+  start: speechStart,
+  stop: speechStop,
+  cancel: speechCancel,
+  release: speechRelease,
+} = useVoiceInput({
+  config: () => speechConfig.value,
+  onText: onSpeechText,
+})
+
+const speechReady = computed(() => isSpeechInputReady(speechConfig.value) && speechSupported)
+const speechBusy = computed(() => speechState.value === 'capturing' || speechState.value === 'acquiring' || speechState.value === 'recognizing')
+
+const speechButtonText = computed(() => {
+  switch (speechState.value) {
+    case 'acquiring': return '启动中…'
+    case 'capturing': return '松开结束'
+    case 'recognizing': return '识别中…'
+    case 'error': return '重试'
+    default: return '按住说话'
+  }
+})
+
+const speechStateText = computed(() => {
+  switch (speechState.value) {
+    case 'capturing': return '聆听中…'
+    case 'recognizing': return '正在识别…'
+    case 'error': return speechError.value
+    default: return ''
+  }
+})
+
+function onSpeechText(text: string): void {
+  inputText.value = text
+  if (speechConfig.value.autoSend && chatReady.value && !busy.value) handleSend()
+}
+
+function onSpeechPress(): void {
+  void speechStart()
+}
+
+function onSpeechRelease(): void {
+  speechStop()
+}
+
+function onSpeechCancel(): void {
+  speechCancel()
+}
+
+function onSpeechLeave(event: PointerEvent): void {
+  if (speechState.value === 'capturing' && event.buttons > 0) speechCancel()
+}
+
+function onSpeechSettingsSaved(): void {
+  speechConfig.value = loadSpeechInputConfig()
+}
+
+onBeforeUnmount(() => speechRelease())
 </script>

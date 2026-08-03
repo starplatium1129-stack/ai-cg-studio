@@ -14,6 +14,7 @@ interface CharacterStageHandle {
   setUserMessage: () => void
   setDesktopVisible?: (visible: boolean) => void
   setDesktopPerformanceMode?: (onBatteryPower: boolean) => void
+  setGlobalPointer?: (screenX: number, screenY: number, bounds: { x: number; y: number; width: number; height: number }) => void
 }
 
 export function useCharacterRoomSession() {
@@ -183,6 +184,27 @@ export function useCharacterRoomSession() {
     })
   }
 
+  /** 桌宠本地工具活动指示（悬浮窗/聊天页显示"正在执行 …"） */
+  const toolActivity = ref('')
+  /** 模型思考过程指示（thinking 模式下收到 reasoning 增量时显示） */
+  const thinkingActivity = ref(false)
+  /** 仅桌面应用启用本地工具；浏览器访问时保持纯聊天 */
+  const companionTools = ref(Boolean(window.companionDesktop))
+  /** 模型推理强度（opencode 风格多档：off/low/medium/high；默认中档） */
+  const reasoning = ref<'off' | 'low' | 'medium' | 'high'>((() => {
+    try {
+      const stored = localStorage.getItem('aics_chat_thinking_v1')
+      if (stored === '0' || stored === 'off') return 'off'
+      if (stored === 'low' || stored === 'medium' || stored === 'high') return stored
+      return 'medium'
+    } catch { return 'medium' }
+  })())
+
+  function onReasoningChange(level: 'off' | 'low' | 'medium' | 'high') {
+    reasoning.value = level
+    try { localStorage.setItem('aics_chat_thinking_v1', level) } catch { /* 隐私模式忽略 */ }
+  }
+
   const {
     inputText,
     streamingMid,
@@ -207,11 +229,19 @@ export function useCharacterRoomSession() {
     apiKey,
     webSearchEnabled,
     useHostConfig,
+    companionTools,
+    reasoning,
     setBusy,
     onError: setError,
     onStreamEmotion: (emotion) => {
       if (autoVoice.value) return
       characterStageRef.value?.setEmotion(emotion)
+    },
+    onToolActivity: (activity) => {
+      toolActivity.value = activity ?? ''
+    },
+    onThinking: (thinking) => {
+      thinkingActivity.value = thinking !== null
     },
     nearBottom,
     scrollBottom,
@@ -386,6 +416,10 @@ export function useCharacterRoomSession() {
     voiceActive,
     chatError,
     chatErrorKind,
+    toolActivity,
+    thinkingActivity,
+    reasoning,
+    onReasoningChange,
     voiceStatusText,
     voiceCapabilityState,
     voiceCapabilityText,

@@ -7,6 +7,7 @@ var StringDecoder = require('string_decoder').StringDecoder;
 var httpClient = require('../services/http-client');
 var security = require('../server/security');
 var envelope = require('../server/http-envelope');
+var companionTools = require('../server/companion-tools');
 var createOllamaService = require('../services/ollama-service').createOllamaService;
 
 // ── 站主 API 配置托管 ──────────────────────────────────────────────
@@ -87,34 +88,121 @@ function chatCharacterPrompt(character) {
   ].join('\n');
 }
 
+function normalizeMultimodalContent(parts) {
+  if (!Array.isArray(parts) || !parts.length || parts.length > 8) {
+    return { error:'多模态消息格式错误' };
+  }
+  var normalized = [];
+  for (var i = 0; i < parts.length; i += 1) {
+    var part = parts[i] || {};
+    if (part.type === 'text') {
+      var text = String(part.text || '').trim();
+      if (!text || text.length > 1200) return { error:'多模态文本过长' };
+      normalized.push({ type:'text', text:text });
+      continue;
+    }
+    if (part.type === 'image_url') {
+      var url = String(part.image_url && part.image_url.url || '');
+      // 只接受 data URL 图片（read_image 工具输出），防任意 URL 注入
+      if (!/^data:image\/(?:png|jpeg|webp|gif);base64,/.test(url) || url.length > 12 * 1024 * 1024) {
+        return { error:'图片消息只接受工作区图片的 data URL' };
+      }
+      normalized.push({ type:'image_url', image_url:{ url:url } });
+      continue;
+    }
+    return { error:'多模态消息包含未知内容类型' };
+  }
+  return { content:normalized };
+}
+
+function normalizeToolMessage(raw) {
+  var role = String(raw && raw.role || '');
+  if (role === 'assistant') {
+    if (!Array.isArray(raw.tool_calls) || !raw.tool_calls.length || raw.tool_calls.length > 8) {
+      return { error:'assistant 工具调用消息格式错误' };
+    }
+    var content = String(raw.content || '');
+    if (content.length > 1200) return { error:'工具调用消息内容过长' };
+    // DeepSeek V4 要求思考轮带 tool_calls 时必须回传 reasoning_content
+    var reasoningContent = String(raw.reasoning_content || '');
+    if (reasoningContent.length > 20000) return { error:'推理过程过长' };
+    var toolCalls = [];
+    for (var i = 0; i < raw.tool_calls.length; i += 1) {
+      var call = raw.tool_calls[i] || {};
+      var id = String(call.id || '');
+      var name = String(call.function && call.function.name || '');
+      var argsText = String(call.function && call.function.arguments || '');
+      if (!id || id.length > 128) return { error:'工具调用 ID 无效' };
+      if (!companionTools.isKnownToolName(name)) return { error:'未知的工具调用：' + name };
+      if (argsText.length > 4000) return { error:'工具调用参数过长' };
+      toolCalls.push({ id:id, type:'function', function:{ name:name, arguments:argsText } });
+    }
+    var message = { role:'assistant', content:content, tool_calls:toolCalls };
+    if (reasoningContent) message.reasoning_content = reasoningContent;
+    return { message:message };
+  }
+  if (role === 'tool') {
+    var callId = String(raw.tool_call_id || '');
+    var toolContent = String(raw.content || '');
+    if (!callId || callId.length > 128) return { error:'工具结果 ID 无效' };
+    if (toolContent.length > 60000) return { error:'工具结果过长' };
+    return { message:{ role:'tool', tool_call_id:callId, content:toolContent } };
+  }
+  return { error:'工具消息角色无效' };
+}
+
 function validateChatBody(body) {
   var character = String(body && body.character || 'nene');
   var provider = body && body.provider === 'api' ? 'api' : 'local';
   var requestedModel = String(body && body.model || '');
   var rawMessages = body && body.messages;
+  var companionTools = body && body.companionTools === true;
   if (!['nene', 'natsume'].includes(character)) return { error:'不支持的聊天角色' };
   if (!Array.isArray(rawMessages) || !rawMessages.length) {
     return { error:'对话记录必须包含 1—24 条消息' };
   }
 
-  // 长对话平滑裁剪：超 24 条或超 12000 字时从旧到新丢弃（系统提示词另行
-  // 注入），而不是 400 打断——云 API 上下文窗口固定，超限的旧消息本来就
-  // 会被截断；裁剪让长时间对话永不中断。
+  // 工具消息（assistant tool_calls / role:tool）不参与裁剪：它们来自最近的
+  // 工具循环（数量少、在对话尾部），且必须与配套消息相邻才能被上游接受。
+  var toolMessages = [];
+  var textSource = [];
+  for (var i = 0; i < rawMessages.length; i += 1) {
+    var role = String(rawMessages[i] && rawMessages[i].role || '');
+    if (role === 'tool' || (role === 'assistant' && Array.isArray(rawMessages[i].tool_calls) && rawMessages[i].tool_calls.length)) {
+      var normalized = normalizeToolMessage(rawMessages[i]);
+      if (normalized.error) return { error:normalized.error };
+      toolMessages.push(normalized.message);
+    } else {
+      textSource.push(rawMessages[i]);
+    }
+  }
+
+  // 普通消息裁剪（原有逻辑）：user/assistant 文本消息。多模态 user 消息
+  // （content 数组，含图片）单独校验且不参与裁剪——数量少、体积受
+  // express.json body 上限约束。
   var kept = [];
   var used = 0;
   var count = 0;
-  for (var i = rawMessages.length - 1; i >= 0 && count < 24; i -= 1) {
-    var role = String(rawMessages[i] && rawMessages[i].role || '');
-    var content = String(rawMessages[i] && rawMessages[i].content || '').trim();
-    if (!['user', 'assistant'].includes(role) || !content || content.length > 1200) {
+  for (var j = textSource.length - 1; j >= 0 && count < 24; j -= 1) {
+    var textRole = String(textSource[j] && textSource[j].role || '');
+    var content = textSource[j] && textSource[j].content;
+    if (textRole === 'user' && Array.isArray(content)) {
+      var multimodal = normalizeMultimodalContent(content);
+      if (multimodal.error) return { error:multimodal.error };
+      kept.unshift({ role:'user', content:multimodal.content });
+      count += 1;
+      continue;
+    }
+    var text = String(content || '').trim();
+    if (!['user', 'assistant'].includes(textRole) || !text || text.length > 1200) {
       return { error:'对话消息格式错误或内容过长' };
     }
-    if (used + content.length > 12000 && kept.length) break;
-    used += content.length;
+    if (used + text.length > 12000 && kept.length) break;
+    used += text.length;
     count += 1;
-    kept.unshift({ role:role, content:content });
+    kept.unshift({ role:textRole, content:text });
   }
-  if (!kept.length) return { error:'对话记录必须包含有效的消息' };
+  if (!kept.length && !toolMessages.length) return { error:'对话记录必须包含有效的消息' };
 
   var api = null;
   var useHostConfig = body && body.hostConfig === true;
@@ -128,6 +216,10 @@ function validateChatBody(body) {
       api = apiValidation.value;
     }
   }
+  var reasoning = String(body && body.reasoning || '');
+  if (reasoning && ['low', 'medium', 'high', 'off'].indexOf(reasoning) === -1) {
+    return { error:'推理强度必须是 off / low / medium / high' };
+  }
   return {
     value:{
       character:character,
@@ -135,7 +227,9 @@ function validateChatBody(body) {
       model:requestedModel,
       api:api,
       webSearch:body && body.webSearch === true,
-      messages:[{ role:'system', content:chatCharacterPrompt(character) }].concat(kept)
+      companionTools:companionTools,
+      reasoning:reasoning,
+      messages:[{ role:'system', content:chatCharacterPrompt(character) }].concat(kept).concat(toolMessages)
     }
   };
 }
@@ -185,6 +279,21 @@ function compatibleContent(event) {
   return typeof choice.text === 'string' ? choice.text : '';
 }
 
+/** 思考过程增量（DeepSeek reasoning_content / OpenAI 兼容 reasoning）。 */
+function compatibleReasoning(event) {
+  var choice = event && Array.isArray(event.choices) ? event.choices[0] : null;
+  if (!choice) return '';
+  if (choice.delta) {
+    if (typeof choice.delta.reasoning_content === 'string') return choice.delta.reasoning_content;
+    if (typeof choice.delta.reasoning === 'string') return choice.delta.reasoning;
+  }
+  if (choice.message) {
+    if (typeof choice.message.reasoning_content === 'string') return choice.message.reasoning_content;
+    if (typeof choice.message.reasoning === 'string') return choice.message.reasoning;
+  }
+  return '';
+}
+
 function buildWebSearchParams(api) {
   if (/^gemini-/i.test(api.model)) return { tools:[{ google_search:{} }] };
   // 只有确认支持 web_search 参数的供应商才注入；未知/自定义 OpenAI 兼容端点
@@ -227,8 +336,25 @@ async function streamCompatibleApi(input, handlers, gatewayConfig) {
       model:api.model,
       messages:input.messages,
       stream:true
-    }, api.vendor === 'deepseek' ? { thinking:{ type:'disabled' } } : {},
-    input.webSearch ? buildWebSearchParams(api) : {}),
+    },
+      // 推理强度按供应商官方文档注入：
+      // - DeepSeek V4：thinking.type 只有 enabled/disabled 两值；强度是
+      //   顶层 reasoning_effort（high/max 两档，官方兼容映射 low/medium→high，
+      //   xhigh→max）。off → 关闭思考；low → high 档；medium/high → max 档
+      //   （默认 medium 即 max）。
+      // - OpenCode 端点吃 OpenAI 标准的 reasoning_effort 多档参数。
+      // - 其余端点不注入（防 400）。
+      api.vendor === 'deepseek'
+        ? (input.reasoning === 'off'
+          ? { thinking:{ type:'disabled' } }
+          : Object.assign(
+            { thinking:{ type:'enabled' } },
+            input.reasoning === 'low' ? { reasoning_effort:'high' } : { reasoning_effort:'max' }))
+        : api.vendor === 'opencode' && input.reasoning && input.reasoning !== 'off'
+          ? { reasoning_effort:input.reasoning }
+          : {},
+      input.webSearch ? buildWebSearchParams(api) : {},
+      input.companionTools ? { tools:companionTools.TOOL_DEFINITIONS } : {}),
     signal:input.signal,
     timeoutMs:120000,
     timeoutMessage:'自定义 API 对话超时'
@@ -250,6 +376,54 @@ async function streamCompatibleApi(input, handlers, gatewayConfig) {
   var emitted = false;
   var malformedSse = false;
 
+  // tool_calls 流式增量按 index 累积（OpenAI 兼容格式：id 与 name 只在
+  // 首次 chunk 出现，arguments 是字符串分片）；流结束时统一 flush 成事件。
+  // reasoningText 累积思考全文：DeepSeek V4 在思考轮带 tool_calls 时，
+  // 下一轮必须回传 reasoning_content，否则上游 400。
+  var toolCallsByIndex = Object.create(null);
+  var reasoningText = '';
+  function accumulateToolCalls(event) {
+    var choice = event && Array.isArray(event.choices) ? event.choices[0] : null;
+    var deltas = choice && Array.isArray(choice.delta && choice.delta.tool_calls)
+      ? choice.delta.tool_calls
+      : (choice && Array.isArray(choice.message && choice.message.tool_calls)
+        ? choice.message.tool_calls.map(function (call) {
+          return { id:call && call.id, function:call && call.function };
+        }) : null);
+    if (!deltas) return;
+    for (var i = 0; i < deltas.length; i += 1) {
+      var delta = deltas[i] || {};
+      var index = Number(delta.index);
+      if (!Number.isInteger(index) || index < 0 || index > 16) continue;
+      var acc = toolCallsByIndex[index] || (toolCallsByIndex[index] = { id:'', name:'', arguments:'' });
+      if (typeof delta.id === 'string') acc.id = delta.id;
+      if (delta.function) {
+        // 部分实现会把 name 也分片传输，用拼接兼容
+        if (typeof delta.function.name === 'string') acc.name += delta.function.name;
+        if (typeof delta.function.arguments === 'string') acc.arguments += delta.function.arguments;
+      }
+    }
+  }
+  function flushToolCalls() {
+    if (!handlers.onToolCall) return Promise.resolve();
+    var indexes = Object.keys(toolCallsByIndex).map(Number).sort(function (a, b) { return a - b; });
+    var chain = Promise.resolve();
+    indexes.forEach(function (index) {
+      var call = toolCallsByIndex[index];
+      if (!call.id || !call.name) return;
+      chain = chain.then(function () {
+        return handlers.onToolCall({
+          index:index,
+          id:call.id,
+          name:call.name,
+          arguments:call.arguments,
+          reasoning:reasoningText
+        });
+      });
+    });
+    return chain;
+  }
+
   for await (var chunk of result.response) {
     buffer += Buffer.isBuffer(chunk) ? decoder.write(chunk) : String(chunk);
     if (!contentType.includes('text/event-stream') && !buffer.includes('\ndata:')) continue;
@@ -265,6 +439,14 @@ async function streamCompatibleApi(input, handlers, gatewayConfig) {
         malformedSse = true;
         continue;
       }
+      accumulateToolCalls(event);
+      var reasoning = compatibleReasoning(event);
+      if (reasoning) {
+        reasoningText += reasoning;
+        emitted = true;
+        if (handlers.onReasoning) await handlers.onReasoning(reasoning);
+        continue;
+      }
       var token = compatibleContent(event);
       if (!token) continue;
       emitted = true;
@@ -273,7 +455,7 @@ async function streamCompatibleApi(input, handlers, gatewayConfig) {
   }
   buffer += decoder.end();
 
-  if (malformedSse && !emitted) {
+  if (malformedSse && !emitted && !Object.keys(toolCallsByIndex).length) {
     throw new httpClient.UpstreamError('自定义 API 返回了畸形 SSE', {
       code:'INVALID_SSE'
     });
@@ -287,9 +469,16 @@ async function streamCompatibleApi(input, handlers, gatewayConfig) {
         detail:buffer.slice(0, 300)
       });
     }
+    accumulateToolCalls(responseBody);
+    var reasoningBody = compatibleReasoning(responseBody);
+    if (reasoningBody) {
+      reasoningText += reasoningBody;
+      if (handlers.onReasoning) await handlers.onReasoning(reasoningBody);
+    }
     var content = compatibleContent(responseBody);
     if (content && handlers.onToken) await handlers.onToken(content);
   }
+  await flushToolCalls();
   if (handlers.onDone) await handlers.onDone();
 }
 
@@ -416,7 +605,7 @@ function createChatRouter(config, dependencies) {
   // "持续以消化速度提交"这种打法。本机直连不受限。
   var chatLimit = security.rateLimit({ capacity:10, refillMs:3000, label:'聊天' });
 
-  router.post('/api/chat', chatLimit, express.json({ limit:'256kb' }), function (req, res) {
+  router.post('/api/chat', chatLimit, express.json({ limit:'14mb' }), function (req, res) {
     var validation = validateChatBody(req.body);
     if (validation.error) return envelope.fail(res, 400, validation.error);
 
@@ -436,6 +625,8 @@ function createChatRouter(config, dependencies) {
       model:validation.value.model,
       api:validation.value.api,
       webSearch:validation.value.webSearch,
+      companionTools:validation.value.companionTools,
+      reasoning:validation.value.reasoning,
       messages:validation.value.messages,
       signal:controller.signal
     }, {
@@ -450,6 +641,12 @@ function createChatRouter(config, dependencies) {
       },
       onToken:function (content) {
         return writeEvent(res, { type:'token', content:content });
+      },
+      onToolCall:function (call) {
+        return writeEvent(res, Object.assign({ type:'tool-call' }, call));
+      },
+      onReasoning:function (content) {
+        return writeEvent(res, { type:'reasoning', content:content });
       },
       onDone:function () {
         if (doneSent) return;

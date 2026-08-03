@@ -398,6 +398,19 @@ html.companion-mode body {
   gap: var(--s-2);
 }
 
+.companion-page .companion-tool-indicator {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: var(--s-2) var(--s-3);
+  border-top: 1px solid var(--border-soft);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: var(--fs-label-sm);
+  font-family: var(--font-mono);
+  letter-spacing: .02em;
+}
+
 .companion-page .companion-input {
   min-width: 0;
   min-height: 48px;

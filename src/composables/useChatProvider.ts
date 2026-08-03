@@ -1,7 +1,8 @@
-import { computed, ref, type Ref } from 'vue'
+import { computed, getCurrentScope, onScopeDispose, ref, type Ref } from 'vue'
 import { useChatStorage, type ChatState } from '@/composables/useChatStorage'
 import { parseChatStatus, type ChatModel } from '@/utils/chatStatus'
 import { DEEPSEEK_BASE_URL, DEEPSEEK_DEFAULT_MODEL } from '@/config/chatApi'
+import { STORAGE_KEY } from '@/config/characters'
 
 export type ApiVendor = 'cliproxy' | 'deepseek' | 'opencode' | 'opencode-go' | 'custom'
 type ChatStorage = ReturnType<typeof useChatStorage>
@@ -173,6 +174,21 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
     } else {
       setChatStatus(ollamaOnline.value ? '本地聊天模型已连接' : '聊天模型未连接', ollamaOnline.value ? 'online' : '')
     }
+  }
+
+  // 跨窗口配置同步：在 Atelier 聊天页保存配置后，已打开的 Companion 悬浮窗
+  // （或另一个标签页）立即生效。storage 事件只由其他窗口的写入触发，本窗口
+  // 只读不写，不会循环。
+  function syncApiSettingsFromStorage(event: StorageEvent) {
+    if (event.storageArea !== localStorage) return
+    if (event.key !== null && event.key !== STORAGE_KEY && event.key !== 'aics_chat_model') return
+    restoreSettings(storage.state)
+    setChatStatus(apiStatusText(), (apiConfigured.value || hostApiConfigured.value) ? 'online' : '')
+    void refreshHostConfig()
+  }
+  window.addEventListener('storage', syncApiSettingsFromStorage)
+  if (getCurrentScope()) {
+    onScopeDispose(() => window.removeEventListener('storage', syncApiSettingsFromStorage))
   }
 
   return {

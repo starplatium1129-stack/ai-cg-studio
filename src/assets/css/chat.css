@@ -1300,6 +1300,19 @@ body:has(.chat-page) .sakura-fall {
   background: var(--bg-surface);
 }
 
+.chat-page .chat-tool-indicator {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: var(--s-2) var(--s-4);
+  border-top: 1px solid var(--border-soft);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: var(--fs-label-sm);
+  font-family: var(--font-mono);
+  letter-spacing: .02em;
+}
+
 .chat-page .composer-row {
   display: flex;
   align-items: flex-end;
@@ -1372,6 +1385,32 @@ body:has(.chat-page) .sakura-fall {
   gap: 8px;
   cursor: pointer;
   white-space: nowrap;
+}
+
+.chat-page .thinking-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  color: var(--text-secondary);
+  font-size: var(--fs-label-sm);
+}
+
+.chat-page .thinking-toggle select {
+  max-width: 72px;
+  padding: 2px 4px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-sm);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  font-size: var(--fs-label-sm);
+  cursor: pointer;
+}
+
+.chat-page .thinking-toggle:has(select:disabled) {
+  opacity: .55;
+  cursor: not-allowed;
 }
 
 .chat-page .voice-toggle input {
@@ -1524,6 +1563,76 @@ body:has(.chat-page) .sakura-fall {
   cursor: default;
   opacity: .45;
 }
+
+.chat-page .hold-talk-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  padding: 4px 12px;
+  border: 1px solid color-mix(in srgb, var(--character-accent) 38%, var(--border-soft));
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--character-accent) 10%, var(--bg-surface));
+  color: var(--character-accent, var(--accent));
+  cursor: pointer;
+  font: 650 var(--fs-mono-sm) var(--font-sans);
+  white-space: nowrap;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: border-color var(--t-fast), background var(--t-fast), color var(--t-fast);
+}
+
+.chat-page .hold-talk-btn:hover {
+  border-color: var(--character-accent, var(--accent));
+}
+
+.chat-page .hold-talk-btn[data-state="capturing"] {
+  background: color-mix(in srgb, var(--character-accent) 22%, var(--bg-surface));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--character-accent) 18%, transparent);
+}
+
+.chat-page .hold-talk-btn[data-state="recognizing"] {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.chat-page .hold-talk-btn[data-state="error"] {
+  border-color: color-mix(in srgb, var(--danger) 45%, var(--border-soft));
+  color: var(--danger-text);
+}
+
+.chat-page .hold-talk-btn:disabled {
+  cursor: default;
+  opacity: .85;
+}
+
+.chat-page .speech-state-text {
+  color: var(--text-muted);
+}
+
+.chat-page .speech-config-btn {
+  flex: none;
+  padding: 4px 8px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-md);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  font: 650 var(--fs-mono-xs) var(--font-sans);
+  white-space: nowrap;
+  transition: border-color var(--t-fast), color var(--t-fast);
+}
+
+.chat-page .speech-config-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.chat-page .speech-settings-host {
+  margin: 0 var(--s-4) var(--s-3);
+}
+
 
 .chat-page .volume-slider {
   display: inline-flex;

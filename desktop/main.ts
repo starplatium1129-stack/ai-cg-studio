@@ -19,6 +19,7 @@ import {
 import { resolveDesktopPaths, type DesktopPaths } from './paths'
 import { createFileLogger, type FileLogger } from './logger'
 import { normalizeAtelierPath, parseDeepLink } from './deepLink'
+import { runTool, type ToolContext, type ToolResult } from './toolRunner'
 
 app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required')
 app.setAppUserModelId('com.aics.studio')
@@ -47,6 +48,9 @@ let desktopLogger: FileLogger | null = null
 let clipboardTimer = 0
 let clipboardTextSignature = ''
 let clipboardImageSignature = ''
+let globalMouseTimer = 0
+let lastGlobalMouseX = 0
+let lastGlobalMouseY = 0
 
 function runtimeRoot(): string {
   return app.getPath('userData')
@@ -359,6 +363,35 @@ function startClipboardWatch(): void {
   }, 1500) as unknown as number
 }
 
+/**
+ * 全局鼠标轮询：角色目光跟随屏幕任意位置的鼠标（DOM mousemove 只覆盖窗口
+ * 内）。约 30fps，坐标变化 ≥2px 才发送；窗口隐藏时不发。窗口内的精确凝视
+ * 仍由渲染端 DOM 事件负责，渲染端收到 inWindow=true 时跳过。
+ */
+function startGlobalMouseWatch(): void {
+  clearInterval(globalMouseTimer)
+  globalMouseTimer = setInterval(() => {
+    if (quitting || !companionWindow || companionWindow.isDestroyed() || !companionWindow.isVisible()) return
+    try {
+      const point = screen.getCursorScreenPoint()
+      if (Math.abs(point.x - lastGlobalMouseX) < 2 && Math.abs(point.y - lastGlobalMouseY) < 2) return
+      lastGlobalMouseX = point.x
+      lastGlobalMouseY = point.y
+      const bounds = companionWindow.getBounds()
+      const inWindow = point.x >= bounds.x && point.x <= bounds.x + bounds.width
+        && point.y >= bounds.y && point.y <= bounds.y + bounds.height
+      companionWindow.webContents.send('desktop:global-mouse', {
+        x: point.x,
+        y: point.y,
+        inWindow,
+        bounds: { x: bounds.x, y: bounds.y, width: bounds.width, height: bounds.height },
+      })
+    } catch {
+      // 屏幕查询瞬时失败（多显示器热插拔）时静默跳过
+    }
+  }, 33) as unknown as number
+}
+
 async function toggleAlwaysOnTop(): Promise<boolean> {
   if (!companionWindow || companionWindow.isDestroyed()) return false
   const value = !companionWindow.isAlwaysOnTop()
@@ -603,6 +636,7 @@ async function start(): Promise<void> {
   startClipboardWatch()
   createTray()
   createCompanionWindow()
+  startGlobalMouseWatch()
   startGatewayMonitor()
   // 冷启动深链：aics://xxx 传在 argv 里
   const deepLinkArg = process.argv.find(arg => arg.startsWith('aics://'))
@@ -616,6 +650,7 @@ function shutdown(): void {
   clearInterval(gatewayHealthTimer)
   clearTimeout(saveAtelierBoundsTimer)
   clearInterval(clipboardTimer)
+  clearInterval(globalMouseTimer)
   if (supervisor) void supervisor.stop()
   if (atelierWindow && !atelierWindow.isDestroyed()) atelierWindow.destroy()
   if (companionWindow && !companionWindow.isDestroyed()) companionWindow.destroy()
@@ -779,6 +814,22 @@ ipcMain.on('desktop:set-progress', (event, value: unknown) => {
   // 训练/生成本地任务时任务栏图标显示进度环；完成/空闲时清除
   atelierWindow?.setProgressBar(Number.isFinite(progress) ? progress : -1)
   companionWindow?.setProgressBar(Number.isFinite(progress) ? progress : -1)
+})
+
+// 桌宠本地工具（Companion Tools）：LLM 通过 tool_calls 驱动，渲染端经此
+// IPC 在 AI 工作区内执行文件读写与命令（toolRunner 内做路径白名单与上限）。
+const TOOL_NAMES = new Set(['list_files', 'read_file', 'write_file', 'run_command', 'read_image', 'get_workspace_info'])
+ipcMain.handle('desktop:run-tool', async (event, name: unknown, args: unknown) => {
+  requireTrustedDesktopSender(event)
+  const toolName = typeof name === 'string' ? name : ''
+  if (!TOOL_NAMES.has(toolName)) throw new Error(`未知工具：${toolName}`)
+  const rawArgs = args && typeof args === 'object' && !Array.isArray(args) ? args as Record<string, unknown> : {}
+  const context: ToolContext = {
+    workspaceRoot: process.env.AI_WORKSPACE_ROOT || requireDesktopPaths().aiWorkspaceRoot,
+  }
+  const result: ToolResult = await runTool(context, toolName, rawArgs)
+  logInfo(`[tool] ${toolName} → ${result.ok ? 'ok' : 'error'} ${result.output.slice(0, 120).replace(/\s+/g, ' ')}`)
+  return result
 })
 
 const gotLock = app.requestSingleInstanceLock()

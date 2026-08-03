@@ -17,6 +17,14 @@ const powerModeHandlers = new Map<number, IpcListener>()
 const interactionModeHandlers = new Map<number, IpcListener>()
 const clipboardImageHandlers = new Map<number, IpcListener>()
 const clipboardTextHandlers = new Map<number, IpcListener>()
+const globalMouseHandlers = new Map<number, IpcListener>()
+
+export interface GlobalMouseState {
+  x: number
+  y: number
+  inWindow: boolean
+  bounds: { x: number; y: number; width: number; height: number }
+}
 
 function droppedFiles(event: DragEvent): DesktopFile[] {
   return Array.from(event.dataTransfer?.files || []).flatMap(file => {
@@ -56,6 +64,8 @@ contextBridge.exposeInMainWorld('companionDesktop', {
   setWorkspace: (root: string) => ipcRenderer.invoke('desktop:set-workspace', root) as Promise<{ root: string }>,
   notify: (title: string, body: string) => ipcRenderer.send('desktop:notify', title, body),
   setProgress: (progress: number | null) => ipcRenderer.send('desktop:set-progress', progress),
+  runTool: (name: string, args: Record<string, unknown>) =>
+    ipcRenderer.invoke('desktop:run-tool', name, args) as Promise<{ ok: boolean; output: string; imageDataUrl?: string }>,
   onFileDrop: (listener: (files: DesktopFile[]) => void) => {
     const subscriptionId = ++nextSubscriptionId
     const onDragOver = (event: DragEvent) => event.preventDefault()
@@ -169,5 +179,30 @@ contextBridge.exposeInMainWorld('companionDesktop', {
     const handler = clipboardTextHandlers.get(subscriptionId)
     if (handler) ipcRenderer.removeListener('desktop:clipboard-text', handler)
     clipboardTextHandlers.delete(subscriptionId)
+  },
+  onGlobalMouse: (listener: (state: GlobalMouseState) => void) => {
+    const subscriptionId = ++nextSubscriptionId
+    const handler: IpcListener = (_event, state: unknown) => {
+      if (!state || typeof state !== 'object') return
+      const value = state as Record<string, unknown>
+      const bounds = value.bounds && typeof value.bounds === 'object' ? value.bounds as Record<string, unknown> : null
+      if (typeof value.x !== 'number' || typeof value.y !== 'number' || typeof value.inWindow !== 'boolean') return
+      if (!bounds || typeof bounds.x !== 'number' || typeof bounds.y !== 'number'
+        || typeof bounds.width !== 'number' || typeof bounds.height !== 'number') return
+      listener({
+        x: value.x,
+        y: value.y,
+        inWindow: value.inWindow,
+        bounds: { x: bounds.x, y: bounds.y, width: bounds.width, height: bounds.height },
+      })
+    }
+    ipcRenderer.on('desktop:global-mouse', handler)
+    globalMouseHandlers.set(subscriptionId, handler)
+    return subscriptionId
+  },
+  offGlobalMouse: (subscriptionId: number) => {
+    const handler = globalMouseHandlers.get(subscriptionId)
+    if (handler) ipcRenderer.removeListener('desktop:global-mouse', handler)
+    globalMouseHandlers.delete(subscriptionId)
   },
 })

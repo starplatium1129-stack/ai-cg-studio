@@ -605,6 +605,39 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     }
   }
 
+  /**
+   * 全局目光凝视（桌面悬浮窗外）：主进程轮询屏幕鼠标坐标并经 IPC 送达。
+   * 与窗口内 DOM 逻辑共用同一套归一化与 focus 坐标变换；窗口内更新由
+   * DOM 事件负责（更平滑），这里只处理鼠标在窗口外的时刻。
+   */
+  function setGlobalPointer(screenX: number, screenY: number, windowBounds: { x: number; y: number; width: number; height: number }): void {
+    if (!ready.value || !model) return
+    const rect = stageEl?.getBoundingClientRect()
+    if (!rect?.width || !rect.height) return
+    // 无边框窗口的 bounds 即内容区在屏幕上的位置：clientX = 屏幕坐标 − bounds
+    const clientX = screenX - windowBounds.x
+    const clientY = screenY - windowBounds.y
+    pointerGazeX = Math.max(-1, Math.min(1, ((clientX - rect.left) / rect.width - 0.5) * 2))
+    pointerGazeY = Math.max(-1, Math.min(1, ((clientY - rect.top) / rect.height - 0.5) * -2))
+    pointerGazeActive = true
+    const focus = model?.focus
+    if (focus) {
+      const canvas = hostEl?.querySelector('canvas')
+      const canvasRect = canvas?.getBoundingClientRect() ?? rect
+      const screen = app?.app?.screen
+      const width = Number(screen?.width) || 420
+      const height = Number(screen?.height) || 610
+      focus.call(model,
+        Math.max(0, Math.min(width, (clientX - canvasRect.left) / canvasRect.width * width)),
+        Math.max(0, Math.min(height, (clientY - canvasRect.top) / canvasRect.height * height)))
+    }
+    if (stageEl) {
+      stageEl.dataset.pointerFocus = 'global'
+      stageEl.dataset.pointerGazeX = pointerGazeX.toFixed(3)
+      stageEl.dataset.pointerGazeY = pointerGazeY.toFixed(3)
+    }
+  }
+
   function interactionFromStagePosition(event: MouseEvent): Live2DInteraction | null {
     const rect = stageEl?.getBoundingClientRect()
     if (!rect?.width || !rect.height) return null
@@ -914,5 +947,6 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     ready, enabled, character, loadedCharacter, mouthValue, interactionHint, outfit,
     init, enable, disable, setCharacter, setMouth, setAudioLevel, setOutfit, setSpeaking,
     attachEmotionRuntime, setPaused, setMaxFps, recover, layout, retry, destroy,
+    setGlobalPointer,
   }
 }

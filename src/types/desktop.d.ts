@@ -32,6 +32,7 @@ export interface CompanionDesktopBridge {
   setWorkspace(root: string): Promise<{ root: string }>
   notify(title: string, body: string): void
   setProgress(progress: number | null): void
+  runTool(name: string, args: Record<string, unknown>): Promise<{ ok: boolean; output: string; imageDataUrl?: string }>
   onFileDrop(listener: (files: DesktopFile[]) => void): number
   offFileDrop(subscriptionId: number): void
   onResume(listener: () => void): number
@@ -48,6 +49,8 @@ export interface CompanionDesktopBridge {
   offClipboardImage(subscriptionId: number): void
   onClipboardText(listener: (text: string) => void): number
   offClipboardText(subscriptionId: number): void
+  onGlobalMouse(listener: (state: { x: number; y: number; inWindow: boolean; bounds: { x: number; y: number; width: number; height: number } }) => void): number
+  offGlobalMouse(subscriptionId: number): void
 }
 
 declare global {

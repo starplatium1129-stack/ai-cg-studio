@@ -153,6 +153,14 @@
           <RouterLink v-else class="btn btn-primary" to="/chat">前往配置</RouterLink>
         </div>
 
+        <div v-if="toolActivity" class="companion-tool-indicator" role="status">
+          🔧 {{ toolActivity }}
+        </div>
+
+        <div v-if="thinkingActivity" class="companion-tool-indicator" role="status">
+          💭 思考中…
+        </div>
+
         <div class="companion-composer">
           <textarea
             class="companion-input"
@@ -264,6 +272,8 @@ const {
   voiceActive,
   chatError,
   chatErrorKind,
+  toolActivity,
+  thinkingActivity,
   voiceStatusText,
   voiceCapabilityState,
   isSpeaking,
@@ -347,6 +357,7 @@ let shownSubscription: number | undefined
 let visibilitySubscription: number | undefined
 let powerModeSubscription: number | undefined
 let interactionModeSubscription: number | undefined
+let globalMouseSubscription: number | undefined
 let viewAlive = true
 
 function readBehaviorConfig() {
@@ -773,6 +784,12 @@ onMounted(async () => {
     visibilitySubscription = desktopBridge.onVisibilityChanged(setDesktopVisibility)
     powerModeSubscription = desktopBridge.onPowerModeChanged(setDesktopPowerMode)
     interactionModeSubscription = desktopBridge.onInteractionModeChanged(value => { ignoreMouseEvents.value = value })
+    // 全局目光跟随：鼠标在悬浮窗之外时，角色目光仍随屏幕鼠标转动。
+    // 窗口内由舞台 DOM 事件驱动（更平滑），这里跳过 inWindow 更新。
+    globalMouseSubscription = desktopBridge.onGlobalMouse(state => {
+      if (state.inWindow) return
+      characterStageRef.value?.setGlobalPointer?.(state.x, state.y, state.bounds)
+    })
     resumeSubscription = desktopBridge.onResume(() => {
       if (!desktopWindowVisible.value) return
       characterStageRef.value?.setDesktopVisible?.(desktopWindowVisible.value)
@@ -820,6 +837,7 @@ onUnmounted(() => {
   if (desktopBridge && visibilitySubscription != null) desktopBridge.offVisibilityChanged(visibilitySubscription)
   if (desktopBridge && powerModeSubscription != null) desktopBridge.offPowerModeChanged(powerModeSubscription)
   if (desktopBridge && interactionModeSubscription != null) desktopBridge.offInteractionModeChanged(interactionModeSubscription)
+  if (desktopBridge && globalMouseSubscription != null) desktopBridge.offGlobalMouse(globalMouseSubscription)
   document.documentElement.classList.remove(
     'companion-mode', 'companion-desktop', 'companion-immersive', 'companion-ui-hidden',
   )
