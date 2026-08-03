@@ -436,6 +436,14 @@ test('desktop companion keeps the chat loop in a compact standalone layout', asy
         offPowerModeChanged: () => {},
         onInteractionModeChanged: () => 1,
         offInteractionModeChanged: () => {},
+        onClipboardImage: () => 1,
+        offClipboardImage: () => {},
+        onClipboardText: () => 1,
+        offClipboardText: () => {},
+        setProgress: () => {},
+        saveImage: async () => ({ saved: false }),
+        getWorkspace: async () => ({ root: '', exists: false }),
+        setWorkspace: async () => ({ root: '' }),
       },
     });
   });

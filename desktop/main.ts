@@ -1,4 +1,4 @@
-import { app, BrowserWindow, dialog, globalShortcut, Menu, nativeImage, Notification, powerMonitor, screen, session, shell, Tray, utilityProcess } from 'electron'
+import { app, BrowserWindow, clipboard, dialog, globalShortcut, Menu, nativeImage, Notification, powerMonitor, screen, session, shell, Tray, utilityProcess } from 'electron'
 import { ipcMain } from 'electron'
 import fs from 'node:fs'
 import path from 'node:path'
@@ -18,6 +18,7 @@ import {
 } from './windowState'
 import { resolveDesktopPaths, type DesktopPaths } from './paths'
 import { createFileLogger, type FileLogger } from './logger'
+import { normalizeAtelierPath, parseDeepLink } from './deepLink'
 
 app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required')
 app.setAppUserModelId('com.aics.studio')
@@ -43,6 +44,9 @@ let desktopPaths: DesktopPaths | null = null
 let startHidden = false
 let onBatteryPower = false
 let desktopLogger: FileLogger | null = null
+let clipboardTimer = 0
+let clipboardTextSignature = ''
+let clipboardImageSignature = ''
 
 function runtimeRoot(): string {
   return app.getPath('userData')
@@ -154,8 +158,14 @@ function showAtelier(): void {
   atelierWindow.webContents.setBackgroundThrottling(false)
 }
 
-function normalizeAtelierPath(value: unknown): string {
-  return typeof value === 'string' && /^\/(?:[a-z0-9-]+)?$/i.test(value) ? value : '/'
+function handleDeepLink(url: string): void {
+  const pathname = parseDeepLink(url)
+  if (!pathname) {
+    logWarn(`Ignored deep link: ${url}`)
+    return
+  }
+  logInfo(`Deep link → ${pathname}`)
+  createAtelierWindow(pathname)
 }
 
 function createAtelierWindow(targetPath = '/'): void {
@@ -303,6 +313,50 @@ function registerShortcuts(): void {
   globalShortcut.register('CommandOrControl+Shift+Space', toggleCompanionVisibility)
   globalShortcut.register('CommandOrControl+Shift+A', () => createAtelierWindow())
   globalShortcut.register('CommandOrControl+Shift+P', () => setIgnoreMouseEvents(!ignoreMouseEvents))
+}
+
+function clipboardHash(value: string | Buffer): string {
+  let hash = 5381
+  const data = typeof value === 'string' ? Buffer.from(value, 'utf8') : value
+  for (let i = 0; i < data.length; i += 1) {
+    hash = ((hash << 5) + hash + data[i]) >>> 0
+  }
+  return hash.toString(36)
+}
+
+/** 轮询剪贴板：图片或文本变化时通知 Companion（剪贴板无事件 API，只能轮询）。 */
+function startClipboardWatch(): void {
+  clearInterval(clipboardTimer)
+  clipboardTimer = setInterval(() => {
+    if (quitting || !companionWindow || companionWindow.isDestroyed()) return
+    // 只观察本应用之外的复制：Atelier 内部复制不需要提示
+    if (companionWindow.isFocused() || atelierWindow?.isFocused()) return
+    try {
+      const image = clipboard.readImage()
+      if (!image.isEmpty()) {
+        const png = image.toPNG()
+        const signature = clipboardHash(png)
+        if (signature !== clipboardImageSignature && png.length > 0) {
+          clipboardImageSignature = signature
+          companionWindow.webContents.send('desktop:clipboard-image', png)
+        }
+        return
+      }
+      const text = clipboard.readText()
+      const trimmed = text.trim()
+      if (trimmed.length >= 4 && trimmed.length <= 400) {
+        const signature = clipboardHash(trimmed)
+        if (signature !== clipboardTextSignature) {
+          clipboardTextSignature = signature
+          companionWindow.webContents.send('desktop:clipboard-text', trimmed)
+        }
+      } else if (trimmed.length === 0) {
+        clipboardTextSignature = ''
+      }
+    } catch {
+      // 剪贴板被其他进程占用时静默跳过
+    }
+  }, 1500) as unknown as number
 }
 
 async function toggleAlwaysOnTop(): Promise<boolean> {
@@ -543,9 +597,13 @@ async function start(): Promise<void> {
   screen.on('display-removed', keepCompanionOnScreen)
   screen.on('display-metrics-changed', keepCompanionOnScreen)
   registerShortcuts()
+  startClipboardWatch()
   createTray()
   createCompanionWindow()
   startGatewayMonitor()
+  // 冷启动深链：aics://xxx 传在 argv 里
+  const deepLinkArg = process.argv.find(arg => arg.startsWith('aics://'))
+  if (deepLinkArg) handleDeepLink(deepLinkArg)
 }
 
 function shutdown(): void {
@@ -554,6 +612,7 @@ function shutdown(): void {
   clearTimeout(gatewayRestartTimer)
   clearInterval(gatewayHealthTimer)
   clearTimeout(saveAtelierBoundsTimer)
+  clearInterval(clipboardTimer)
   if (supervisor) void supervisor.stop()
   if (atelierWindow && !atelierWindow.isDestroyed()) atelierWindow.destroy()
   if (companionWindow && !companionWindow.isDestroyed()) companionWindow.destroy()
@@ -633,6 +692,30 @@ ipcMain.handle('desktop:pick-files', async event => {
     }
   })
 })
+ipcMain.handle('desktop:save-image', async (event, payload: unknown) => {
+  requireTrustedDesktopSender(event)
+  const value = payload && typeof payload === 'object' ? payload as Record<string, unknown> : null
+  if (!value || typeof value.data !== 'object' || value.data === null) {
+    throw new Error('导出数据无效')
+  }
+  const data = value.data as Uint8Array
+  if (!(data instanceof Uint8Array) || data.length === 0) throw new Error('导出图片为空')
+  const suggestedName = typeof value.name === 'string' && value.name.trim()
+    ? value.name.trim().replace(/[\\/:*?"<>|]/g, '_').slice(0, 120)
+    : 'image.png'
+  const ext = path.extname(suggestedName).toLowerCase() || '.png'
+  const result = await dialog.showSaveDialog({
+    title: '导出图片',
+    defaultPath: suggestedName,
+    filters: [
+      { name: ext === '.jpg' || ext === '.jpeg' ? 'JPEG 图片' : ext === '.webp' ? 'WebP 图片' : 'PNG 图片', extensions: [ext.replace('.', '')] },
+      { name: '所有文件', extensions: ['*'] },
+    ],
+  })
+  if (result.canceled || !result.filePath) return { saved: false }
+  fs.writeFileSync(result.filePath, Buffer.from(data))
+  return { saved: true, filePath: result.filePath }
+})
 ipcMain.handle('desktop:open-workspace', event => {
   requireTrustedDesktopSender(event)
   return openWorkspace()
@@ -680,13 +763,46 @@ ipcMain.handle('desktop:open-log', event => {
 ipcMain.on('desktop:notify', (event, title: unknown, body: unknown) => {
   if (isTrustedDesktopSender(event)) showDesktopNotification(title, body)
 })
+ipcMain.on('desktop:set-progress', (event, value: unknown) => {
+  if (!isTrustedDesktopSender(event)) return
+  const progress = typeof value === 'number' && Number.isFinite(value)
+    ? Math.max(0, Math.min(1, value))
+    : value === null ? -1 : NaN
+  if (Number.isNaN(progress)) return
+  // 训练/生成本地任务时任务栏图标显示进度环；完成/空闲时清除
+  atelierWindow?.setProgressBar(Number.isFinite(progress) ? progress : -1)
+  companionWindow?.setProgressBar(Number.isFinite(progress) ? progress : -1)
+})
 
 const gotLock = app.requestSingleInstanceLock()
 if (!gotLock) {
   app.quit()
 } else {
-  app.on('second-instance', () => showCompanion(true))
-  app.whenReady().then(start).catch(error => {
+  app.on('second-instance', (_event, argv) => {
+    // Windows 深链走 second-instance 的 argv；macOS 走 open-url
+    for (const arg of argv) {
+      if (typeof arg === 'string' && arg.startsWith('aics://')) {
+        handleDeepLink(arg)
+        return
+      }
+    }
+    showCompanion(true)
+  })
+  app.on('open-url', (event, url) => {
+    event.preventDefault()
+    handleDeepLink(url)
+  })
+  app.whenReady().then(async () => {
+    // 注册 aics:// 协议（打包后由安装器写入注册表；开发模式动态注册）
+    if (process.defaultApp) {
+      if (process.argv.length >= 2) {
+        app.setAsDefaultProtocolClient('aics', process.execPath, [path.resolve(process.argv[1])])
+      }
+    } else {
+      app.setAsDefaultProtocolClient('aics')
+    }
+    await start()
+  }).catch(error => {
     logError(`Companion startup failed: ${String(error)}`)
     app.quit()
   })

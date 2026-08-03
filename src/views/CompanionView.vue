@@ -91,6 +91,17 @@
             <button type="button" aria-label="关闭这条问候" @click.stop="dismissReminder(reminder.id)">×</button>
           </div>
         </div>
+        <div v-if="clipboardCard" class="companion-clipboard-card" role="status" aria-live="polite">
+          <img v-if="clipboardCard.kind === 'image'" :src="clipboardCard.previewUrl" alt="" />
+          <div>
+            <strong>{{ clipboardCard.kind === 'image' ? '检测到复制的图片' : '检测到复制的文本' }}</strong>
+            <p v-if="clipboardCard.kind === 'text'" class="companion-clipboard-preview">{{ clipboardCard.text }}</p>
+          </div>
+          <div class="companion-clipboard-actions">
+            <button type="button" class="btn btn-primary btn-sm" @click="acceptClipboardCard">{{ clipboardCard.kind === 'image' ? '存入作品册' : '发给角色' }}</button>
+            <button type="button" class="btn btn-ghost btn-sm" @click="dismissClipboardCard">忽略</button>
+          </div>
+        </div>
         <div ref="chatListRef" class="companion-bubbles" role="log" aria-label="最近对话">
           <div v-if="!companionMessages.length" class="companion-empty">
             <span>{{ currentCharacter.name }}</span>
@@ -293,6 +304,16 @@ const workspaceSaving = ref(false)
 const workspaceTooltip = computed(() => workspaceExists.value
   ? `AI 工作区：${workspaceInput.value || '已配置'}`
   : '未配置 AI 工作区：样张预览与训练不可用，点击设置')
+interface ClipboardCard {
+  kind: 'image' | 'text'
+  png?: Uint8Array
+  previewUrl?: string
+  text?: string
+}
+const clipboardCard = ref<ClipboardCard | null>(null)
+let clipboardCardTimer = 0
+let clipboardImageSubscription: number | undefined
+let clipboardTextSubscription: number | undefined
 let behaviorTimer = 0
 let eventPollTimer = 0
 let importBusy = false
@@ -364,7 +385,7 @@ async function pollCompanionEvents() {
       const status: unknown = await statusResponse.json().catch(() => null)
       const value = status && typeof status === 'object' ? status as Record<string, unknown> : null
       if (value) {
-        const jobs: { id: string; status: 'idle' | 'running' | 'stopping' | 'completed' | 'failed' | 'stopped' }[] = []
+        const jobs: { id: string; status: 'idle' | 'running' | 'stopping' | 'completed' | 'failed' | 'stopped'; percent: number }[] = []
         if (trainingResponse && trainingResponse.ok) {
           const trainingData: unknown = await trainingResponse.json().catch(() => null)
           const jobsValue = trainingData && typeof trainingData === 'object'
@@ -375,11 +396,20 @@ async function pollCompanionEvents() {
               const job = item && typeof item === 'object' ? item as Record<string, unknown> : null
               if (job && typeof job.id === 'string' && typeof job.status === 'string'
                 && allowedStatuses.includes(job.status)) {
-                jobs.push({ id: job.id, status: job.status as 'idle' | 'running' | 'stopping' | 'completed' | 'failed' | 'stopped' })
+                const progress = job.progress && typeof job.progress === 'object'
+                  ? (job.progress as Record<string, unknown>).percent : undefined
+                jobs.push({
+                  id: job.id,
+                  status: job.status as 'idle' | 'running' | 'stopping' | 'completed' | 'failed' | 'stopped',
+                  percent: typeof progress === 'number' && Number.isFinite(progress) ? progress : 0,
+                })
               }
             }
           }
         }
+        // 任务栏进度环：训练中的任务显示 percent；空闲/完成/失败清除
+        const activeJob = jobs.find(job => job.status === 'running' || job.status === 'stopping')
+        desktopBridge?.setProgress(activeJob ? (activeJob.percent || 0) / 100 : null)
         const events = eventDetector.ingest({
           imageCount: imageCount >= 0 ? imageCount : 0,
           services: {
@@ -491,6 +521,66 @@ async function saveWorkspace() {
   }
 }
 
+function showClipboardCard(card: ClipboardCard) {
+  clipboardCard.value = card
+  clearTimeout(clipboardCardTimer)
+  clipboardCardTimer = window.setTimeout(dismissClipboardCard, 20_000) as unknown as number
+}
+
+function clipboardPngBlob(png: Uint8Array): Blob | null {
+  try {
+    const copy = new Uint8Array(png.byteLength)
+    copy.set(png)
+    return new Blob([copy.buffer as ArrayBuffer], { type: 'image/png' })
+  } catch {
+    return null
+  }
+}
+
+function onClipboardImage(png: Uint8Array) {
+  if (!viewAlive) return
+  const blob = clipboardPngBlob(png)
+  if (!blob) return
+  try {
+    const previewUrl = URL.createObjectURL(blob)
+    showClipboardCard({ kind: 'image', png, previewUrl })
+  } catch { /* 大图/内存异常时忽略 */ }
+}
+
+function onClipboardText(text: string) {
+  if (!viewAlive) return
+  showClipboardCard({ kind: 'text', text: text.slice(0, 400) })
+}
+
+function dismissClipboardCard() {
+  clearTimeout(clipboardCardTimer)
+  if (clipboardCard.value?.previewUrl) URL.revokeObjectURL(clipboardCard.value.previewUrl)
+  clipboardCard.value = null
+}
+
+async function acceptClipboardCard() {
+  const card = clipboardCard.value
+  if (!card) return
+  if (card.kind === 'image' && card.png) {
+    const blob = clipboardPngBlob(card.png)
+    dismissClipboardCard()
+    if (!blob) return
+    const { imported } = await importLocalImages([{ name: `剪贴板-${Date.now()}.png`, size: blob.size, type: 'image/png', blob }])
+    if (imported > 0) {
+      const reminder = behavior.noteReturn('收到剪贴板里的图片，已经放进作品册啦。')
+      if (reminder) syncReminders()
+      if (desktopBridge) desktopBridge.notify(currentCharacter.value.name, '图片已存入作品册')
+      eventDetector.reset()
+    }
+  } else if (card.kind === 'text' && card.text) {
+    const text = card.text
+    dismissClipboardCard()
+    inputText.value = text
+    storage.setDraft(activeChar.value, text)
+    chatListRef.value?.scrollTo({ top: chatListRef.value.scrollHeight, behavior: 'smooth' })
+  }
+}
+
 function readDesktopLive2dOverride(): boolean | null {
   if (!desktopBridge) return null
   try {
@@ -560,6 +650,8 @@ onMounted(async () => {
   void refreshWorkspaceState()
   if (desktopBridge) {
     document.documentElement.classList.add('companion-desktop')
+    clipboardImageSubscription = desktopBridge.onClipboardImage(onClipboardImage)
+    clipboardTextSubscription = desktopBridge.onClipboardText(onClipboardText)
     shownSubscription = desktopBridge.onShown(() => setDesktopVisibility(true))
     visibilitySubscription = desktopBridge.onVisibilityChanged(setDesktopVisibility)
     powerModeSubscription = desktopBridge.onPowerModeChanged(setDesktopPowerMode)
@@ -586,11 +678,15 @@ onUnmounted(() => {
   viewAlive = false
   clearInterval(behaviorTimer)
   clearInterval(eventPollTimer)
+  clearTimeout(clipboardCardTimer)
+  if (clipboardCard.value?.previewUrl) URL.revokeObjectURL(clipboardCard.value.previewUrl)
   window.removeEventListener('pointerdown', noteActivity)
   window.removeEventListener('keydown', noteActivity)
   window.removeEventListener('wheel', noteActivity)
   window.removeEventListener('dragover', onWindowDragOver)
   window.removeEventListener('drop', onWindowDrop)
+  if (desktopBridge && clipboardImageSubscription != null) desktopBridge.offClipboardImage(clipboardImageSubscription)
+  if (desktopBridge && clipboardTextSubscription != null) desktopBridge.offClipboardText(clipboardTextSubscription)
   if (desktopBridge && resumeSubscription != null) desktopBridge.offResume(resumeSubscription)
   if (desktopBridge && shownSubscription != null) desktopBridge.offShown(shownSubscription)
   if (desktopBridge && visibilitySubscription != null) desktopBridge.offVisibilityChanged(visibilitySubscription)

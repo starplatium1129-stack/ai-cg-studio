@@ -567,15 +567,28 @@ function copyPrompt() {
 }
 
 /** 下载当前作品的原图文件（优先 HD blob，回落缩略图） */
-function downloadCurrent() {
+async function downloadCurrent() {
   const item = current.value
   if (!item) return
+  const name = (sceneTitle(item.scene) || 'artwork').replace(/[\\/:*?"<>|]/g, '_')
+  const fileName = `${name}-${item.seed ?? item.id}.png`
+  // 桌面版：原生保存对话框，可自由选择保存位置
+  if (window.companionDesktop) {
+    try {
+      const blob = await imgGet(String(item.image_id || item.id))
+      if (blob) {
+        const data = new Uint8Array(await blob.arrayBuffer())
+        const result = await window.companionDesktop.saveImage({ data, name: fileName })
+        if (result.saved) showToast(`已保存到 ${result.filePath || '所选位置'}`)
+        return
+      }
+    } catch { /* 落到浏览器下载兜底 */ }
+  }
   const url = cardUrls[item.id] || thumbUrls[item.id] || viewerUrl.value
   if (!url) return
   const a = document.createElement('a')
   a.href = url
-  const name = (sceneTitle(item.scene) || 'artwork').replace(/[\\/:*?"<>|]/g, '_')
-  a.download = `${name}-${item.seed ?? item.id}.png`
+  a.download = fileName
   document.body.appendChild(a)
   a.click()
   a.remove()

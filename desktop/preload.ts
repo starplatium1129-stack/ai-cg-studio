@@ -15,6 +15,8 @@ const shownHandlers = new Map<number, () => void>()
 const visibilityHandlers = new Map<number, IpcListener>()
 const powerModeHandlers = new Map<number, IpcListener>()
 const interactionModeHandlers = new Map<number, IpcListener>()
+const clipboardImageHandlers = new Map<number, IpcListener>()
+const clipboardTextHandlers = new Map<number, IpcListener>()
 
 function droppedFiles(event: DragEvent): DesktopFile[] {
   return Array.from(event.dataTransfer?.files || []).flatMap(file => {
@@ -45,12 +47,14 @@ contextBridge.exposeInMainWorld('companionDesktop', {
   getSettings: () => ipcRenderer.invoke('desktop:get-settings') as Promise<{ openAtLogin: boolean }>,
   setAutostart: (enabled: boolean) => ipcRenderer.invoke('desktop:set-autostart', enabled) as Promise<boolean>,
   pickFiles: () => ipcRenderer.invoke('desktop:pick-files') as Promise<DesktopFile[]>,
+  saveImage: (payload: { data: Uint8Array; name?: string }) => ipcRenderer.invoke('desktop:save-image', payload) as Promise<{ saved: boolean; filePath?: string }>,
   openWorkspace: () => ipcRenderer.invoke('desktop:open-workspace') as Promise<boolean>,
   openRuntime: () => ipcRenderer.invoke('desktop:open-runtime') as Promise<boolean>,
   openLog: () => ipcRenderer.invoke('desktop:open-log') as Promise<boolean>,
   getWorkspace: () => ipcRenderer.invoke('desktop:get-workspace') as Promise<{ root: string; exists: boolean }>,
   setWorkspace: (root: string) => ipcRenderer.invoke('desktop:set-workspace', root) as Promise<{ root: string }>,
   notify: (title: string, body: string) => ipcRenderer.send('desktop:notify', title, body),
+  setProgress: (progress: number | null) => ipcRenderer.send('desktop:set-progress', progress),
   onFileDrop: (listener: (files: DesktopFile[]) => void) => {
     const subscriptionId = ++nextSubscriptionId
     const onDragOver = (event: DragEvent) => event.preventDefault()
@@ -136,5 +140,33 @@ contextBridge.exposeInMainWorld('companionDesktop', {
     const handler = interactionModeHandlers.get(subscriptionId)
     if (handler) ipcRenderer.removeListener('desktop:interaction-mode', handler)
     interactionModeHandlers.delete(subscriptionId)
+  },
+  onClipboardImage: (listener: (png: Uint8Array) => void) => {
+    const subscriptionId = ++nextSubscriptionId
+    const handler: IpcListener = (_event, png: unknown) => {
+      if (png instanceof Uint8Array) listener(png)
+    }
+    ipcRenderer.on('desktop:clipboard-image', handler)
+    clipboardImageHandlers.set(subscriptionId, handler)
+    return subscriptionId
+  },
+  offClipboardImage: (subscriptionId: number) => {
+    const handler = clipboardImageHandlers.get(subscriptionId)
+    if (handler) ipcRenderer.removeListener('desktop:clipboard-image', handler)
+    clipboardImageHandlers.delete(subscriptionId)
+  },
+  onClipboardText: (listener: (text: string) => void) => {
+    const subscriptionId = ++nextSubscriptionId
+    const handler: IpcListener = (_event, text: unknown) => {
+      if (typeof text === 'string') listener(text)
+    }
+    ipcRenderer.on('desktop:clipboard-text', handler)
+    clipboardTextHandlers.set(subscriptionId, handler)
+    return subscriptionId
+  },
+  offClipboardText: (subscriptionId: number) => {
+    const handler = clipboardTextHandlers.get(subscriptionId)
+    if (handler) ipcRenderer.removeListener('desktop:clipboard-text', handler)
+    clipboardTextHandlers.delete(subscriptionId)
   },
 })

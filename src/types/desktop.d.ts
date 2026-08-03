@@ -23,12 +23,14 @@ export interface CompanionDesktopBridge {
   getSettings(): Promise<{ openAtLogin: boolean }>
   setAutostart(enabled: boolean): Promise<boolean>
   pickFiles(): Promise<DesktopFile[]>
+  saveImage(payload: { data: Uint8Array; name?: string }): Promise<{ saved: boolean; filePath?: string }>
   openWorkspace(): Promise<boolean>
   openRuntime(): Promise<boolean>
   openLog(): Promise<boolean>
   getWorkspace(): Promise<{ root: string; exists: boolean }>
   setWorkspace(root: string): Promise<{ root: string }>
   notify(title: string, body: string): void
+  setProgress(progress: number | null): void
   onFileDrop(listener: (files: DesktopFile[]) => void): number
   offFileDrop(subscriptionId: number): void
   onResume(listener: () => void): number
@@ -41,6 +43,10 @@ export interface CompanionDesktopBridge {
   offPowerModeChanged(subscriptionId: number): void
   onInteractionModeChanged(listener: (ignoreMouseEvents: boolean) => void): number
   offInteractionModeChanged(subscriptionId: number): void
+  onClipboardImage(listener: (png: Uint8Array) => void): number
+  offClipboardImage(subscriptionId: number): void
+  onClipboardText(listener: (text: string) => void): number
+  offClipboardText(subscriptionId: number): void
 }
 
 declare global {
