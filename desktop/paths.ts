@@ -19,6 +19,7 @@ export interface DesktopPaths {
   toolsRoot: string
   runtimeRoot: string
   aiWorkspaceRoot: string
+  aiWorkspaceFile: string
 }
 
 function firstExisting(candidates: string[]): string {
@@ -66,5 +67,6 @@ export function resolveDesktopPaths(input: DesktopPathInput): DesktopPaths {
     toolsRoot,
     runtimeRoot: path.join(path.resolve(input.userDataPath), 'gateway'),
     aiWorkspaceRoot,
+    aiWorkspaceFile: path.join(path.resolve(input.userDataPath), 'ai-workspace.json'),
   }
 }

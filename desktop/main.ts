@@ -5,9 +5,11 @@ import path from 'node:path'
 import { GatewaySupervisor } from './gatewaySupervisor'
 import {
   clampWindowBounds,
+  loadAiWorkspace,
   loadCompanionPreferences,
   loadDesktopGatewayPort,
   loadWindowBounds,
+  saveAiWorkspace,
   saveCompanionPreferences,
   saveDesktopGatewayPort,
   saveWindowBounds,
@@ -475,10 +477,22 @@ function createTray(): void {
 
 async function start(): Promise<void> {
   startHidden = process.argv.includes('--hidden')
+  const userDataPath = app.getPath('userData')
+  // 打包后 appRoot 在安装目录，父目录没有 AI/；工作区路径优先取
+  // userData 里持久化的配置（ai-workspace.json），其次环境变量。
+  if (!process.env.AI_WORKSPACE_ROOT) {
+    const savedWorkspace = loadAiWorkspace(path.join(path.resolve(userDataPath), 'ai-workspace.json'))
+    if (savedWorkspace) {
+      process.env.AI_WORKSPACE_ROOT = savedWorkspace
+      logInfo(`AI workspace from persisted config: ${savedWorkspace}`)
+    } else {
+      logWarn('AI workspace not configured; training/showcase may be unavailable')
+    }
+  }
   desktopPaths = resolveDesktopPaths({
     appPath: app.getAppPath(),
     resourcesPath: process.resourcesPath,
-    userDataPath: app.getPath('userData'),
+    userDataPath,
     isPackaged: app.isPackaged,
   })
   const paths = requireDesktopPaths()
@@ -622,6 +636,38 @@ ipcMain.handle('desktop:pick-files', async event => {
 ipcMain.handle('desktop:open-workspace', event => {
   requireTrustedDesktopSender(event)
   return openWorkspace()
+})
+ipcMain.handle('desktop:get-workspace', event => {
+  requireTrustedDesktopSender(event)
+  const paths = requireDesktopPaths()
+  return {
+    root: process.env.AI_WORKSPACE_ROOT || paths.aiWorkspaceRoot,
+    exists: fs.existsSync(process.env.AI_WORKSPACE_ROOT || paths.aiWorkspaceRoot),
+  }
+})
+ipcMain.handle('desktop:set-workspace', async (event, root: unknown) => {
+  requireTrustedDesktopSender(event)
+  if (typeof root !== 'string' || !root.trim()) {
+    throw new Error('工作区路径不能为空')
+  }
+  const paths = requireDesktopPaths()
+  if (!saveAiWorkspace(paths.aiWorkspaceFile, root.trim())) {
+    throw new Error('工作区目录不存在或不是文件夹')
+  }
+  process.env.AI_WORKSPACE_ROOT = path.resolve(root.trim())
+  logInfo(`AI workspace updated to ${process.env.AI_WORKSPACE_ROOT}`)
+  // 网关 fork 时读取 AI_WORKSPACE_ROOT；重启让它用新路径。
+  if (supervisor) {
+    await supervisor.stop()
+    gatewayBaseUrl = await supervisor.start()
+    if (companionWindow && !companionWindow.isDestroyed()) {
+      void companionWindow.loadURL(`${gatewayBaseUrl}/companion`)
+    }
+    if (atelierWindow && !atelierWindow.isDestroyed()) {
+      void atelierWindow.loadURL(`${gatewayBaseUrl}/`)
+    }
+  }
+  return { root: process.env.AI_WORKSPACE_ROOT }
 })
 ipcMain.handle('desktop:open-runtime', event => {
   requireTrustedDesktopSender(event)

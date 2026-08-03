@@ -134,3 +134,35 @@ export function saveDesktopGatewayPort(filePath: string, port: number): void {
     try { fs.unlinkSync(temporary) } catch { /* best effort */ }
   }
 }
+
+export function loadAiWorkspace(filePath: string): string {
+  try {
+    const raw: unknown = JSON.parse(fs.readFileSync(filePath, 'utf8'))
+    const root = raw && typeof raw === 'object'
+      ? (raw as Record<string, unknown>).root
+      : undefined
+    if (typeof root === 'string' && root.trim()) {
+      const resolved = path.resolve(root.trim())
+      if (fs.existsSync(resolved) && fs.statSync(resolved).isDirectory()) return resolved
+    }
+  } catch {
+    // 缺失或损坏都回退到默认解析
+  }
+  return ''
+}
+
+export function saveAiWorkspace(filePath: string, root: string): boolean {
+  const resolved = path.resolve(root)
+  if (!fs.existsSync(resolved) || !fs.statSync(resolved).isDirectory()) return false
+  const directory = path.dirname(filePath)
+  const temporary = `${filePath}.${process.pid}.tmp`
+  try {
+    fs.mkdirSync(directory, { recursive: true })
+    fs.writeFileSync(temporary, JSON.stringify({ root: resolved }), 'utf8')
+    fs.renameSync(temporary, filePath)
+    return true
+  } catch {
+    try { fs.unlinkSync(temporary) } catch { /* best effort */ }
+    return false
+  }
+}

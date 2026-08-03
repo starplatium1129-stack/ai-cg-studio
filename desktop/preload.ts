@@ -48,6 +48,8 @@ contextBridge.exposeInMainWorld('companionDesktop', {
   openWorkspace: () => ipcRenderer.invoke('desktop:open-workspace') as Promise<boolean>,
   openRuntime: () => ipcRenderer.invoke('desktop:open-runtime') as Promise<boolean>,
   openLog: () => ipcRenderer.invoke('desktop:open-log') as Promise<boolean>,
+  getWorkspace: () => ipcRenderer.invoke('desktop:get-workspace') as Promise<{ root: string; exists: boolean }>,
+  setWorkspace: (root: string) => ipcRenderer.invoke('desktop:set-workspace', root) as Promise<{ root: string }>,
   notify: (title: string, body: string) => ipcRenderer.send('desktop:notify', title, body),
   onFileDrop: (listener: (files: DesktopFile[]) => void) => {
     const subscriptionId = ++nextSubscriptionId

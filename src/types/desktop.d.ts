@@ -26,6 +26,8 @@ export interface CompanionDesktopBridge {
   openWorkspace(): Promise<boolean>
   openRuntime(): Promise<boolean>
   openLog(): Promise<boolean>
+  getWorkspace(): Promise<{ root: string; exists: boolean }>
+  setWorkspace(root: string): Promise<{ root: string }>
   notify(title: string, body: string): void
   onFileDrop(listener: (files: DesktopFile[]) => void): number
   offFileDrop(subscriptionId: number): void

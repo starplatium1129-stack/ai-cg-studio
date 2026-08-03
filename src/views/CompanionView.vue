@@ -162,6 +162,16 @@
             class="companion-runtime-mode"
             :title="onBatteryPower ? '检测到电池供电，Live2D 自动降至 30 FPS' : '接电运行，Live2D 保持 60 FPS'"
           >{{ onBatteryPower ? '30 FPS' : '60 FPS' }}</span>
+          <span
+            v-if="desktopBridge"
+            class="companion-workspace-state"
+            :data-state="workspaceExists ? 'ok' : 'missing'"
+            :title="workspaceTooltip"
+            role="button"
+            tabindex="0"
+            @click="workspaceOpen = !workspaceOpen"
+            @keydown.enter="workspaceOpen = !workspaceOpen"
+          >{{ workspaceExists ? '工作区 ✓' : '工作区 ✗' }}</span>
           <label title="音量">
             <span>音量</span>
             <input
@@ -176,6 +186,25 @@
         </footer>
         <div class="companion-error" role="status" aria-live="polite" :data-kind="chatErrorKind">
           {{ chatError }}
+        </div>
+        <div v-if="workspaceOpen" class="companion-workspace-settings" role="dialog" aria-label="AI 工作区设置">
+          <div>
+            <strong>AI 工作区</strong>
+            <span>存放样张、训练数据与配音资源的目录（例如 E:\AI）。设置后网关重启生效。</span>
+          </div>
+          <input
+            v-model="workspaceInput"
+            type="text"
+            placeholder="目录路径"
+            aria-label="AI 工作区目录路径"
+            @keydown.enter="saveWorkspace"
+          />
+          <div class="companion-workspace-actions">
+            <button type="button" class="btn btn-primary" :disabled="workspaceSaving" @click="saveWorkspace">
+              {{ workspaceSaving ? '保存中…' : '保存并重启网关' }}
+            </button>
+            <button type="button" class="btn btn-ghost" @click="workspaceOpen = false">关闭</button>
+          </div>
         </div>
         <p class="sr-only" role="status" aria-live="polite">{{ replyAnnouncement }}</p>
       </section>
@@ -257,6 +286,13 @@ const quietHoursText = computed(() => {
 })
 const eventDetector = createCompanionEventDetector()
 const importInputRef = ref<HTMLInputElement>()
+const workspaceOpen = ref(false)
+const workspaceInput = ref('')
+const workspaceExists = ref(false)
+const workspaceSaving = ref(false)
+const workspaceTooltip = computed(() => workspaceExists.value
+  ? `AI 工作区：${workspaceInput.value || '已配置'}`
+  : '未配置 AI 工作区：样张预览与训练不可用，点击设置')
 let behaviorTimer = 0
 let eventPollTimer = 0
 let importBusy = false
@@ -422,6 +458,39 @@ function onWindowDragOver(event: DragEvent) {
   event.preventDefault()
 }
 
+async function refreshWorkspaceState() {
+  if (!desktopBridge) return
+  try {
+    const workspace = await desktopBridge.getWorkspace()
+    if (!viewAlive) return
+    workspaceInput.value = workspace.root
+    workspaceExists.value = workspace.exists
+  } catch {
+    // 桌面桥未就绪时忽略
+  }
+}
+
+async function saveWorkspace() {
+  if (!desktopBridge || workspaceSaving.value) return
+  const value = workspaceInput.value.trim()
+  if (!value) return
+  workspaceSaving.value = true
+  try {
+    const result = await desktopBridge.setWorkspace(value)
+    workspaceInput.value = result.root
+    workspaceExists.value = true
+    workspaceOpen.value = false
+    chatError.value = 'AI 工作区已更新，网关已重启。'
+    chatErrorKind.value = 'info'
+    void refreshRoomState()
+  } catch (error) {
+    chatError.value = (error as Error).message || '工作区设置失败'
+    chatErrorKind.value = 'error'
+  } finally {
+    workspaceSaving.value = false
+  }
+}
+
 function readDesktopLive2dOverride(): boolean | null {
   if (!desktopBridge) return null
   try {
@@ -488,6 +557,7 @@ onMounted(async () => {
   window.addEventListener('drop', onWindowDrop, { passive: false })
   syncReminders()
   void pollCompanionEvents()
+  void refreshWorkspaceState()
   if (desktopBridge) {
     document.documentElement.classList.add('companion-desktop')
     shownSubscription = desktopBridge.onShown(() => setDesktopVisibility(true))

@@ -62,14 +62,29 @@ function boundedInteger(value, fallback, min, max) {
   return Math.max(min, Math.min(max, Math.round(number)));
 }
 
-function resolveSceneShowcaseDir(rootDir, configured) {
+function resolveSceneShowcaseDir(rootDir, configured, workspaceRoot) {
   if (configured) {
     var configuredPath = path.resolve(configured);
     if (fs.existsSync(path.join(configuredPath, 'manifest.json'))) return configuredPath;
   }
-  var root = path.resolve(rootDir, '..', 'AI', 'SceneShowcase');
-  if (fs.existsSync(path.join(root, 'manifest.json'))) return root;
-  if (!fs.existsSync(root)) return '';
+  // 桌面版把 AI_WORKSPACE_ROOT 显式传给网关（appRoot 可能在安装目录，
+  // 父目录没有 AI/）；样张目录优先从工作区解析，其次是 appRoot 兄弟目录。
+  var bases = workspaceRoot
+    ? [workspaceRoot, path.resolve(rootDir, '..', 'AI')]
+    : [path.resolve(rootDir, '..', 'AI')];
+  var root = '';
+  for (var i = 0; i < bases.length; i++) {
+    var candidate = path.join(bases[i], 'SceneShowcase');
+    if (fs.existsSync(path.join(candidate, 'manifest.json'))) {
+      root = candidate;
+      break;
+    }
+    if (fs.existsSync(candidate)) {
+      root = candidate;
+      break;
+    }
+  }
+  if (!root) return '';
   try {
     return fs.readdirSync(root, { withFileTypes:true })
       .filter(function (entry) {
@@ -93,6 +108,7 @@ function loadGatewayConfig(rootDir, env) {
   runtimeTools.migrateLegacyRuntime(appRoot, runtime);
   var saved = readJson(runtime.config);
   var translatePort = boundedInteger(env.TRANSLATE_PORT, 5310, 1024, 65535);
+  var workspaceRoot = path.resolve(env.AI_WORKSPACE_ROOT || path.join(appRoot, '..', 'AI'));
 
   return {
     ROOT_DIR:appRoot,
@@ -101,7 +117,7 @@ function loadGatewayConfig(rootDir, env) {
     // The sibling AI workspace contains the local LoRA and voice assets.  It
     // is only used by the local training API; the browser never supplies this
     // path.
-    AI_WORKSPACE_ROOT:path.resolve(env.AI_WORKSPACE_ROOT || path.join(appRoot, '..', 'AI')),
+    AI_WORKSPACE_ROOT:workspaceRoot,
     RUNTIME:runtime,
     RUNTIME_ROOT:runtime.root,
     PORT:boundedInteger(env.PORT, 3000, 1, 65535),
@@ -119,13 +135,13 @@ function loadGatewayConfig(rootDir, env) {
     OLLAMA_KEEP_ALIVE:env.OLLAMA_KEEP_ALIVE || '10m',
     OLLAMA_NUM_PREDICT:boundedInteger(env.OLLAMA_NUM_PREDICT, 300, 32, 2048),
     OLLAMA_NUM_CTX:boundedInteger(env.OLLAMA_NUM_CTX, 4096, 1024, 32768),
-    TRANSLATION_PYTHON:env.TRANSLATION_PYTHON || path.resolve(appRoot, '..', 'AI', 'GPT-SoVITS-env', 'python.exe'),
+    TRANSLATION_PYTHON:env.TRANSLATION_PYTHON || path.resolve(workspaceRoot, 'GPT-SoVITS-env', 'python.exe'),
     TRANSLATION_SCRIPT:path.join(toolsRoot, 'translate-zh-ja.py'),
     TRANSLATE_PORT:translatePort,
     TRANSLATE_URL:'http://127.0.0.1:' + translatePort,
     TRANSLATION_LOG:path.join(runtime.logs, 'translate.log'),
     LIVE2D_ROOT:path.join(assetsRoot, 'live2d'),
-    SCENE_SHOWCASE_DIR:resolveSceneShowcaseDir(appRoot, env.SCENE_SHOWCASE_DIR),
+    SCENE_SHOWCASE_DIR:resolveSceneShowcaseDir(appRoot, env.SCENE_SHOWCASE_DIR, workspaceRoot),
     DISABLE_TUNNEL:env.DISABLE_TUNNEL === '1',
     CLOUDFLARED_PATH:env.CLOUDFLARED_PATH || 'C:\\Program Files (x86)\\cloudflared\\cloudflared.exe'
   };
