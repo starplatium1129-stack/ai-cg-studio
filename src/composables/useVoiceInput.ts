@@ -1,9 +1,10 @@
 /**
- * 语音输入采集 composable（长按说话）。
+ * 语音输入采集 composable（长按说话 + 自动监听）。
  *
- * 生命周期：按住 → start() 采集（getUserMedia + 16kHz AudioContext +
- * ScriptProcessor），松开 → stop() 用 VAD 切段并识别，取消 → cancel() 丢弃。
- * 识别结果经 onText 回调交给视图（默认填入输入框，由用户确认发送）。
+ * 两种模式：
+ * - manual（长按说话）：按住 start() 采集，松开 stop() 用 VAD 切段并识别；
+ * - auto（唤醒词连续对话）：start('auto') 后持续采集，VAD 每完成一段立即
+ *   识别并回调，采集不断；stop() 停止并丢弃未完成段。
  *
  * 纯逻辑（VAD / 重采样 / WAV / ASR 请求）都在 src/utils 下，本文件只做
  * 浏览器音频管线与状态编排，不承载可测算法。
@@ -15,11 +16,14 @@ import { resampleTo16k, encodeWav16k, recognizeWithAsr } from '@/utils/voiceApi'
 import type { SpeechInputConfig } from '@/utils/speechInputConfig'
 
 export type VoiceInputState = 'idle' | 'acquiring' | 'capturing' | 'recognizing' | 'error'
+export type VoiceInputMode = 'manual' | 'auto'
+export type VoiceTextSource = VoiceInputMode
 
 export interface UseVoiceInputOptions {
   /** 实时读取当前语音输入配置（响应式） */
   config: () => SpeechInputConfig
-  onText?: (text: string) => void
+  /** 识别结果回调；source 区分自动监听（唤醒/会话路由）与手动长按（直接确认） */
+  onText?: (text: string, source: VoiceTextSource) => void
   onError?: (message: string) => void
   onStateChange?: (state: VoiceInputState, detail?: string) => void
 }
@@ -29,8 +33,10 @@ export interface UseVoiceInput {
   errorMessage: Ref<string>
   /** 浏览器是否支持麦克风采集 */
   supported: boolean
-  start(): Promise<void>
-  /** 停止采集并识别当前段（无语音则静默忽略） */
+  /** 自动监听是否运行中（auto 模式） */
+  autoListening: Ref<boolean>
+  start(mode?: VoiceInputMode): Promise<void>
+  /** manual：停止采集并识别当前段；auto：停止采集并丢弃未完成段 */
   stop(): void
   /** 停止采集并丢弃当前段 */
   cancel(): void
@@ -43,10 +49,13 @@ const TARGET_RATE = 16_000
 const TAIL_SILENCE_MS = 500
 /** 合并段的总时长上限（ms），超出丢弃尾部 */
 const MAX_COMBINED_MS = 30_000
+/** 自动模式下识别队列积压上限（段数），超限丢弃最旧段 */
+const MAX_PENDING_SEGMENTS = 4
 
 export function useVoiceInput(options: UseVoiceInputOptions): UseVoiceInput {
   const state = ref<VoiceInputState>('idle')
   const errorMessage = ref('')
+  const autoListening = ref(false)
   const supported = typeof navigator !== 'undefined' && Boolean(navigator.mediaDevices?.getUserMedia)
 
   let stream: MediaStream | null = null
@@ -56,7 +65,11 @@ export function useVoiceInput(options: UseVoiceInputOptions): UseVoiceInput {
   let muted: GainNode | null = null
   let vad: ReturnType<typeof createVadSegmenter> | null = null
   let capturing = false
+  let mode: VoiceInputMode = 'manual'
+  let recognizing = false
   let disposed = false
+  let canceled = false
+  const pendingSegments: Float32Array[] = []
 
   function setState(next: VoiceInputState, detail?: string): void {
     state.value = next
@@ -90,9 +103,64 @@ export function useVoiceInput(options: UseVoiceInputOptions): UseVoiceInput {
     context = null
   }
 
-  async function start(): Promise<void> {
+  /** 识别一段语音（自动模式下串行调用，识别期间新段入队等待）。 */
+  function recognizeSegment(segment: Float32Array, source: VoiceTextSource): void {
+    const wav = encodeWav16k(segment, TARGET_RATE)
+    setState('recognizing')
+    void recognizeWithAsr(options.config(), wav)
+      .then(result => {
+        if (disposed || canceled) return
+        setState(mode === 'auto' ? 'capturing' : 'idle')
+        if (result.text) options.onText?.(result.text, source)
+        if (mode === 'auto') drainAutoQueue()
+      })
+      .catch(error => {
+        if (disposed || canceled) return
+        const message = error instanceof Error ? error.message : '语音识别失败'
+        setState(mode === 'auto' ? 'capturing' : 'idle')
+        options.onError?.(message)
+        if (mode === 'auto') drainAutoQueue()
+      })
+  }
+
+  /** 自动模式：按序处理积压段，全部处理后若仍在采集则恢复监听。 */
+  function drainAutoQueue(): void {
+    recognizing = false
+    if (disposed || !capturing) return
+    const next = pendingSegments.shift()
+    if (next) {
+      recognizing = true
+      recognizeSegment(next, 'auto')
+    }
+  }
+
+  function handleManualStop(): void {
+    if (!vad) return
+    vad.push(new Float32Array(Math.round((TAIL_SILENCE_MS / 1000) * TARGET_RATE)))
+    const segments = vad.takeSegments()
+    if (segments.length === 0) {
+      setState('idle')
+      return
+    }
+    // 长按期间的多段按序合并（停顿会被 VAD 切成多段，合并回完整一句）。
+    const maxSamples = Math.round((MAX_COMBINED_MS / 1000) * TARGET_RATE)
+    const merged: number[] = []
+    for (const segment of segments) {
+      if (merged.length >= maxSamples) break
+      for (let i = 0; i < segment.length && merged.length < maxSamples; i += 1) merged.push(segment[i])
+    }
+    if (merged.length === 0) {
+      setState('idle')
+      return
+    }
+    recognizeSegment(new Float32Array(merged), 'manual')
+  }
+
+  async function start(nextMode: VoiceInputMode = 'manual'): Promise<void> {
     if (disposed) return
     if (state.value === 'capturing' || state.value === 'acquiring' || state.value === 'recognizing') return
+    canceled = false
+    mode = nextMode
     setState('acquiring')
     errorMessage.value = ''
     vad = createVadSegmenter({ sampleRate: TARGET_RATE })
@@ -145,71 +213,55 @@ export function useVoiceInput(options: UseVoiceInputOptions): UseVoiceInput {
       if (!capturing || !vad) return
       const channel = event.inputBuffer.getChannelData(0)
       vad.push(resampleTo16k(channel, context?.sampleRate ?? TARGET_RATE))
+      if (mode === 'auto' && !recognizing) {
+        const segments = vad.takeSegments()
+        for (const segment of segments) {
+          if (pendingSegments.length >= MAX_PENDING_SEGMENTS) pendingSegments.shift()
+          pendingSegments.push(segment)
+        }
+        drainAutoQueue()
+      }
     }
 
     capturing = true
+    autoListening.value = mode === 'auto'
     setState('capturing')
   }
 
   function stop(): void {
-    if (!capturing || !vad) return
+    if (!capturing) return
     capturing = false
-    // 补尾静音让 VAD 完结当前段，再取全部段。
-    vad.push(new Float32Array(Math.round((TAIL_SILENCE_MS / 1000) * TARGET_RATE)))
-    const segments = vad.takeSegments()
+    const wasAuto = mode === 'auto'
+    if (wasAuto) {
+      // 自动模式：停止监听，丢弃未完成段；已入队的段继续识别。
+      vad = null
+      mode = 'manual'
+    } else {
+      handleManualStop()
+    }
     cleanupTracks()
     teardownGraph()
-
-    if (segments.length === 0) {
+    if (wasAuto && !recognizing) {
       setState('idle')
-      return
     }
-
-    // 长按期间的多段按序合并（停顿会被 VAD 切成多段，合并回完整一句）。
-    const maxSamples = Math.round((MAX_COMBINED_MS / 1000) * TARGET_RATE)
-    const merged: number[] = []
-    for (const segment of segments) {
-      if (merged.length >= maxSamples) break
-      for (let i = 0; i < segment.length && merged.length < maxSamples; i += 1) merged.push(segment[i])
-    }
-    if (merged.length === 0) {
-      setState('idle')
-      return
-    }
-
-    const wav = encodeWav16k(new Float32Array(merged), TARGET_RATE)
-    setState('recognizing')
-    void recognizeWithAsr(options.config(), wav)
-      .then(result => {
-        if (disposed) return
-        setState('idle')
-        if (result.text) options.onText?.(result.text)
-      })
-      .catch(error => {
-        if (disposed) return
-        const message = error instanceof Error ? error.message : '语音识别失败'
-        setState('error', message)
-        options.onError?.(message)
-      })
+    autoListening.value = false
   }
 
   function cancel(): void {
     capturing = false
+    recognizing = false
+    canceled = true
+    pendingSegments.length = 0
     cleanupTracks()
     teardownGraph()
-    if (state.value === 'error') {
-      setState('idle')
-      return
-    }
+    autoListening.value = false
     setState('idle')
   }
 
   function release(): void {
     disposed = true
-    capturing = false
-    cleanupTracks()
-    teardownGraph()
+    cancel()
   }
 
-  return { state, errorMessage, supported, start, stop, cancel, release }
+  return { state, errorMessage, supported, autoListening, start, stop, cancel, release }
 }

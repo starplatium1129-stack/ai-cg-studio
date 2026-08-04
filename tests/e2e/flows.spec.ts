@@ -366,6 +366,39 @@ test('flow 3d · 聊天中断：停止后已生成的片段保留并标记', asy
   await expect(page.locator('.message.assistant.streaming')).toHaveCount(0);
 });
 
+test('flow 3e · 情绪标签协议：标签剥离不进展示/历史，显式驱动情绪', async ({ page, request }) => {
+  const errors = collectRuntimeErrors(page);
+  // 逐字流式延迟：给"流式期间协议情绪生效"留出断言窗口（回合结束会复位 neutral）
+  await fault(request, MOCK.ollama, { reply: '[mood=happy]今天也辛苦了，先休息一会儿吧！', latency: 150 });
+  await page.goto('/chat');
+  await useLocalChat(page);
+  await toggle(page, page.getByRole('checkbox', { name: /实时配音/ }), false);
+  await expect(page.locator('.model-select')).toBeEnabled();
+
+  await page.locator('.chat-input').fill('陪我聊聊天');
+  await page.locator('.send-btn').click();
+
+  // 发送后立即轮询流式窗口（回合结束会复位 neutral，必须在流中命中 happy）
+  let sawHappy = false;
+  for (let i = 0; i < 30; i += 1) {
+    const emotion = await page.locator('.portrait-stage').getAttribute('data-emotion');
+    if (emotion === 'happy') { sawHappy = true; break; }
+    await page.waitForTimeout(100);
+  }
+  expect(sawHappy).toBe(true);
+  await expect(page.locator('.message.assistant .message-bubble')).toContainText('今天也辛苦了', { timeout: 15_000 });
+  // 标签不泄漏到展示文本
+  await expect(page.locator('.message.assistant .message-bubble')).not.toContainText('[mood');
+  await expect(page.locator('.message.assistant .message-bubble')).not.toContainText('happy]');
+
+  // 刷新后历史记录也不含标签
+  await page.reload();
+  await expect(page.locator('.message.assistant .message-bubble')).toContainText('今天也辛苦了');
+  await expect(page.locator('.message.assistant .message-bubble')).not.toContainText('[mood');
+
+  expect(errors).toEqual([]);
+});
+
 // ─────────────────────────────────────────────────────────────────────────────
 // 4. 备份 / 恢复
 // ─────────────────────────────────────────────────────────────────────────────

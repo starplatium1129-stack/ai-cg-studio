@@ -1611,6 +1611,66 @@ body:has(.chat-page) .sakura-fall {
   color: var(--text-muted);
 }
 
+.chat-page .speech-session-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 9px;
+  border: 1px solid color-mix(in srgb, var(--character-accent) 42%, var(--border-soft));
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--character-accent) 12%, var(--bg-surface));
+  color: var(--character-accent, var(--accent));
+  font: 650 var(--fs-mono-xs) var(--font-sans);
+  white-space: nowrap;
+}
+
+.chat-page .speech-session-badge-muted {
+  border-color: var(--border-soft);
+  background: var(--bg-surface);
+  color: var(--text-muted);
+}
+
+.chat-page .speech-session-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: aics-speech-pulse 1.6s var(--ease-out) infinite;
+}
+
+.chat-page .speech-session-badge-muted .speech-session-dot {
+  animation: none;
+  opacity: .55;
+}
+
+@keyframes aics-speech-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .35; }
+}
+
+.chat-page .speech-session-end {
+  padding: 0 5px;
+  border: 0;
+  background: transparent;
+  color: currentColor;
+  cursor: pointer;
+  font: 700 var(--fs-label) var(--font-sans);
+  line-height: 1;
+  opacity: .75;
+}
+
+.chat-page .speech-session-end:hover {
+  opacity: 1;
+}
+
+.chat-page .speech-notice {
+  color: var(--warning-text);
+  font-size: var(--fs-mono-xs);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .chat-page .speech-config-btn {
   flex: none;
   padding: 4px 8px;

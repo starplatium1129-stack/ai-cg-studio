@@ -55,6 +55,27 @@
       </span>
     </label>
 
+    <label class="speech-toggle-row speech-toggle-row-sub">
+      <input type="checkbox" v-model="draft.wakeEnabled" />
+      <span class="speech-toggle-copy">
+        <strong>唤醒词连续对话</strong>
+        <small>空闲时自动监听，说出唤醒词即可对话，说结束词退出</small>
+      </span>
+    </label>
+
+    <div v-if="draft.wakeEnabled" class="speech-settings-grid speech-settings-grid-words">
+      <label class="speech-field">
+        <span><i aria-hidden="true">05</i> 唤醒词（逗号分隔）</span>
+        <input v-model="wakeWordsInput" maxlength="200" aria-label="唤醒词（逗号分隔）"
+          placeholder="宁宁（留空按角色名）" autocomplete="off" @blur="commitWakeWords" />
+      </label>
+      <label class="speech-field">
+        <span><i aria-hidden="true">06</i> 结束词（逗号分隔）</span>
+        <input v-model="endWordsInput" maxlength="200" aria-label="结束词（逗号分隔）"
+          placeholder="结束对话" autocomplete="off" @blur="commitEndWords" />
+      </label>
+    </div>
+
     <div class="speech-settings-actions">
       <span class="speech-test-status" :data-state="testState" role="status">{{ statusText }}</span>
       <div class="speech-settings-buttons">
@@ -90,6 +111,24 @@ const testing = ref(false)
 const testState = ref<'idle' | 'testing' | 'ok' | 'fail'>('idle')
 const testMessage = ref('')
 
+const wakeWordsInput = ref(draft.value.wakeWords.join('，'))
+const endWordsInput = ref(draft.value.endWords.join('，'))
+
+function splitWords(text: string): string[] {
+  return text.split(/[,，、]/).map(word => word.trim()).filter(word => word.length > 0)
+}
+
+function commitWakeWords(): void {
+  draft.value.wakeWords = splitWords(wakeWordsInput.value)
+  wakeWordsInput.value = draft.value.wakeWords.join('，')
+}
+
+function commitEndWords(): void {
+  draft.value.endWords = splitWords(endWordsInput.value)
+  if (draft.value.endWords.length === 0) draft.value.endWords = ['结束对话']
+  endWordsInput.value = draft.value.endWords.join('，')
+}
+
 const statusText = computed(() => {
   if (testState.value === 'testing') return '正在检测服务可达性…'
   if (testState.value === 'ok') return '连接正常'
@@ -121,6 +160,8 @@ async function testConnection(): Promise<void> {
 }
 
 function save(): void {
+  commitWakeWords()
+  commitEndWords()
   saveSpeechInputConfig(draft.value)
   emit('save')
 }
@@ -183,6 +224,8 @@ function save(): void {
 .speech-toggle-copy strong { display: block; font-size: var(--fs-label-sm); color: var(--text-primary); }
 .speech-toggle-copy small { display: block; font-size: var(--fs-label-xs); color: var(--text-muted); margin-top: 2px; }
 .speech-toggle-row-sub { margin-top: var(--s-3); }
+
+.speech-settings-grid-words { margin-top: var(--s-3); }
 
 .speech-settings-grid {
   display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-3);

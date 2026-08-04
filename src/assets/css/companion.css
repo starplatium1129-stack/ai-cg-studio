@@ -1185,7 +1185,7 @@ html.companion-mode:not(.companion-desktop) body {
 }
 
 .companion-page .companion-workspace-state[data-state="missing"] {
-  color: #ff9d9d;
+  color: var(--danger-text);
 }
 
 .companion-page .companion-workspace-state[data-state="ok"] {

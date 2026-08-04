@@ -7,9 +7,13 @@ const {
   DEFAULT_COMPANION_CONFIG,
 } = require('../../src/utils/companionBehavior.ts');
 
-function minutesAgo(minutes) {
-  return Date.now() - minutes * 60_000;
+function minutesAgo(minutes, from = Date.now()) {
+  return from - minutes * 60_000;
 }
+
+// 固定"白天非安静时段"基准，避免用例在 23:00-8:00 运行时被安静时段抑制
+// （测试不得依赖真实时钟）。
+const NOON = new Date(2026, 7, 3, 12, 0, 0).getTime();
 
 test('配置归一化：非法值回退默认，合法值钳制到范围', () => {
   const normalized = normalizeCompanionConfig({ idleMinutes: 'x', cooldownMinutes: 9999, quietStartHour: -5, quietEndHour: 30, queueLimit: 0 });
@@ -69,35 +73,35 @@ test('安静时段抑制 idle 提醒', () => {
 
 test('勿扰：不产出新提醒，队列保留，关闭后继续出队', () => {
   const behavior = createCompanionBehavior({ idleMinutes: 1, cooldownMinutes: 0 });
-  behavior.noteActivity(minutesAgo(5));
-  const reminder = behavior.tick();
+  behavior.noteActivity(minutesAgo(5, NOON));
+  const reminder = behavior.tick(NOON);
   assert.ok(reminder);
   behavior.setConfig({ dnd: true });
   assert.equal(behavior.isDnd(), true);
-  assert.equal(behavior.tick(), null, '勿扰中不再产出');
+  assert.equal(behavior.tick(NOON), null, '勿扰中不再产出');
   assert.equal(behavior.pending().length, 1, '已有队列保留');
-  assert.equal(behavior.dequeue(), null, '勿扰中不得出队');
+  assert.equal(behavior.dequeue(NOON), null, '勿扰中不得出队');
   behavior.setConfig({ dnd: false });
-  const popped = behavior.dequeue();
+  const popped = behavior.dequeue(NOON);
   assert.equal(popped?.id, reminder.id, '关闭勿扰后按 FIFO 出队');
   assert.equal(behavior.pending().length, 0);
 });
 
 test('return 提醒：不受 idle/冷却约束，但受勿扰约束', () => {
   const behavior = createCompanionBehavior({ idleMinutes: 120, cooldownMinutes: 1000 });
-  const reminder = behavior.noteReturn('欢迎回来。');
+  const reminder = behavior.noteReturn('欢迎回来。', NOON);
   assert.ok(reminder);
   assert.equal(reminder.kind, 'return');
   assert.equal(reminder.line, '欢迎回来。');
   behavior.setConfig({ dnd: true });
-  assert.equal(behavior.noteReturn('回来啦。'), null, '勿扰中 return 不产出');
+  assert.equal(behavior.noteReturn('回来啦。', NOON), null, '勿扰中 return 不产出');
 });
 
 test('队列容量上限：超限裁剪最早入队项', () => {
   const behavior = createCompanionBehavior({ idleMinutes: 1, cooldownMinutes: 0, queueLimit: 2 });
-  behavior.noteReturn('a');
-  behavior.noteReturn('b');
-  behavior.noteReturn('c');
+  behavior.noteReturn('a', NOON);
+  behavior.noteReturn('b', NOON);
+  behavior.noteReturn('c', NOON);
   const pending = behavior.pending();
   assert.equal(pending.length, 2);
   assert.equal(pending[0].line, 'b', '队列裁剪应丢弃最早项');
@@ -106,8 +110,8 @@ test('队列容量上限：超限裁剪最早入队项', () => {
 
 test('dismiss 移除指定提醒；clear 清空队列', () => {
   const behavior = createCompanionBehavior({ queueLimit: 5 });
-  const first = behavior.noteReturn('one');
-  const second = behavior.noteReturn('two');
+  const first = behavior.noteReturn('one', NOON);
+  const second = behavior.noteReturn('two', NOON);
   behavior.dismiss(first.id);
   assert.equal(behavior.pending().length, 1);
   assert.equal(behavior.pending()[0].id, second.id);
@@ -117,17 +121,17 @@ test('dismiss 移除指定提醒；clear 清空队列', () => {
 
 test('cooldownRemainingMs：正数表示仍在冷却，负数表示可再次提醒', () => {
   const behavior = createCompanionBehavior({ cooldownMinutes: 10 });
-  behavior.noteReturn('x');
-  assert(behavior.cooldownRemainingMs() > 0, '提醒后应立即处于冷却');
-  const later = behavior.cooldownRemainingMs(Date.now() + 11 * 60_000);
+  behavior.noteReturn('x', NOON);
+  assert(behavior.cooldownRemainingMs(NOON) > 0, '提醒后应立即处于冷却');
+  const later = behavior.cooldownRemainingMs(NOON + 11 * 60_000);
   assert(later < 0, '11 分钟后应过冷却');
 });
 
 test('enabled=false 时全部主动行为停摆', () => {
   const behavior = createCompanionBehavior({ enabled: false, idleMinutes: 1 });
-  behavior.noteActivity(minutesAgo(5));
-  assert.equal(behavior.tick(), null);
-  assert.equal(behavior.noteReturn('hi'), null);
+  behavior.noteActivity(minutesAgo(5, NOON));
+  assert.equal(behavior.tick(NOON), null);
+  assert.equal(behavior.noteReturn('hi', NOON), null);
   assert.equal(behavior.pending().length, 0);
 });
 
@@ -144,13 +148,13 @@ test('台词选取：无台词角色回退默认，负偏移安全取模', () =>
 
 test('事件播报：入队 kind=event 且带 eventKind，不受 idle 冷却约束', () => {
   const behavior = createCompanionBehavior({ idleMinutes: 120, cooldownMinutes: 1000 });
-  behavior.noteReturn('welcome');
-  const reminder = behavior.noteEvent('sd-done', '新图做好啦！');
+  behavior.noteReturn('welcome', NOON);
+  const reminder = behavior.noteEvent('sd-done', '新图做好啦！', NOON);
   assert.ok(reminder, '事件应入队');
   assert.equal(reminder.kind, 'event');
   assert.equal(reminder.eventKind, 'sd-done');
   assert.equal(behavior.pending().length, 2, '事件与 return 共存');
-  behavior.noteReturn('welcome-again');
+  behavior.noteReturn('welcome-again', NOON);
   assert.equal(behavior.pending().length, 3, '事件不消耗 idle 冷却（return 仍可入队）');
 });
 

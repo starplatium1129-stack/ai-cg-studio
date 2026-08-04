@@ -29,6 +29,12 @@ export interface SpeechInputConfig {
   language: string
   /** 识别结果是否直接发送（false 时填入输入框由用户确认） */
   autoSend: boolean
+  /** 自动监听（唤醒词连续对话）：开启后空闲时持续监听，命中唤醒词激活会话 */
+  wakeEnabled: boolean
+  /** 唤醒词表（空时调用方按角色名兜底） */
+  wakeWords: string[]
+  /** 结束词表（会话内命中即退出连续对话） */
+  endWords: string[]
 }
 
 export const DEFAULT_SPEECH_INPUT_CONFIG: SpeechInputConfig = {
@@ -39,12 +45,22 @@ export const DEFAULT_SPEECH_INPUT_CONFIG: SpeechInputConfig = {
   apiKey: '',
   language: '',
   autoSend: false,
+  wakeEnabled: false,
+  wakeWords: [],
+  endWords: ['结束对话'],
 }
 
 /** 从 raw（localStorage JSON 或未知对象）归一化为合法配置。 */
 export function normalizeSpeechInputConfig(raw: unknown): SpeechInputConfig {
   const value = (raw && typeof raw === 'object' ? raw : {}) as Record<string, unknown>
   const base = { ...DEFAULT_SPEECH_INPUT_CONFIG }
+  const wordList = (candidate: unknown): string[] => {
+    if (!Array.isArray(candidate)) return []
+    const words = candidate.filter((word): word is string => typeof word === 'string' && word.trim().length > 0)
+      .map(word => word.trim())
+    return [...new Set(words)]
+  }
+  const endWords = wordList(value.endWords)
   return {
     enabled: value.enabled === true,
     kind: value.kind === 'openai' ? 'openai' : base.kind,
@@ -55,6 +71,9 @@ export function normalizeSpeechInputConfig(raw: unknown): SpeechInputConfig {
     apiKey: typeof value.apiKey === 'string' ? value.apiKey : base.apiKey,
     language: typeof value.language === 'string' ? value.language.trim() : base.language,
     autoSend: value.autoSend === true,
+    wakeEnabled: value.wakeEnabled === true,
+    wakeWords: wordList(value.wakeWords),
+    endWords: endWords.length > 0 ? endWords : base.endWords,
   }
 }
 

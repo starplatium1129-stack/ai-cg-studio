@@ -21,37 +21,23 @@ ZcChat2 的精华集中在三处：**语音输入链路**（我们为零）、**
 
 ## 分阶段计划
 
-### P0：语音输入最小闭环（长按说话）
+### P0：语音输入最小闭环（长按说话）✅ 已完成（2026-08-04）
 
-目标：为语音输入打通第一公里，验证"采集 → VAD → ASR → 进聊天输入"链路。
+- 交付：`src/utils/vadSegmenter.ts`（纯 TS VAD 切段，22 用例）、`src/utils/voiceApi.ts`（WAV/重采样/OpenAI 兼容 ASR 抽象）、`src/utils/speechInputConfig.ts`（`aics_speech_input_v1` 已登记备份白名单）、`src/composables/useVoiceInput.ts`（manual/auto 双模式采集）、`SpeechInputSettings.vue` 配置弹层、ChatView 按住说话入口。
+- 验收：`test-vad-segmenter.js` 进 validate；typecheck/build/ESLint/E2E 全绿。
 
-- 渲染进程 `getUserMedia` 采集（仅按住按钮期间），`AudioWorklet`/ScriptProcessor 取 PCM。
-- 纯 TS VAD 切段器 `src/utils/vadSegmenter.ts`：活动段切分 + 静音丢弃（对标 `VadSegmenter`/`Pcm16kConverter`，本地先行、静音不上传）。
-- ASR 服务接口抽象 `voiceApi`：端点可配置（本地 whisper / OpenAI-compatible / 百度），无端点时按钮隐藏；模型名可配置或发现，不按供应商猜测。
-- UI：聊天输入旁"按住说话"按钮 + 状态文案（聆听中/识别中），识别文本填入输入框由用户确认发送（默认不自动发送）。
-- 验收：`test-vad-segmenter.js`（纯 TS，进 validate）；`typecheck:app` + `build`；定向 E2E（桌面窗口按住说话）。
-- 不做的：唤醒词、全局热键、连续对话（下一阶段）。
+### P1：会话状态机与连续对话 ✅ 已完成（2026-08-04）
 
-### P1：会话状态机与连续对话
+- 交付：`src/utils/speechSession.ts`（7 态状态机：waitingForWake/capturing/recognizing/waitingForReply/continuousReady/ending，12 用例）、配置扩展（wakeEnabled/wakeWords/endWords）、ChatView 集成（唤醒词命中激活、结束词退出、busy 联动自动恢复监听、听候唤醒/连续对话徽标、权限拒绝后不自动重试）。
+- 验收：`test-speech-session.js` 进 validate；E2E 覆盖唤醒词配置持久化。
+- 待办：CompanionView 的自动监听与页面级长按热键集成，待用户未提交的 CompanionView 改动落地后再实施（避免冲突）；勿扰/安静时段抑制在桌宠侧接入时生效。
 
-目标：对标 `SpeechInteractionController`（7 态）+ `SpeechSessionPolicy`，实现免手交互。
+### P2：LLM 结构化情绪协议（增强通道）✅ 已完成（2026-08-04）
 
-- 纯 TS `src/utils/speechSession.ts`：Disabled / WaitingForWake / Capturing / Recognizing / WaitingForReply / ContinuousReady / Ending；回复链路忙闲由调用方注入（复用 `isConversationOutputBusy` 思路）。
-- 唤醒词：默认角色名，per-角色可配（沿用角色配置表）；结束词默认"结束对话"。
-- 连续对话：回复播完自动恢复监听；勿扰/安静时段内不监听。
-- 全局热键：直接使用 Electron `globalShortcut`（已有，替代它的 WH_KEYBOARD_LL/XGrabKey），长按说话。
-- 验收：`test-speech-session.js`（12+ 用例，进 validate）；桌面定向 E2E（唤醒→连续→结束词）。
-- 不做的：多语言唤醒词引擎、说话人识别。
-
-### P2：LLM 结构化情绪协议（增强通道）
-
-目标：让情绪由模型显式声明，替代"从文本猜情绪"的启发式。
-
-- 流式输出协议扩展：回复文本流中携带情绪标签（如 `[mood=happy]` 行内标记或分段协议），解析进 `emotionRuntime` 驱动表情/动作。
-- 优先级保持：TTS 通道开启时以 `onExpression` 为准；协议标签仅在无配音且文本情绪回调缺席时兜底（不抢占、不并行）。
-- 协议必须降级安全：无标签、标签非法时行为与现状完全一致。
-- 验收：`test-prompt-policy.js`/`test-emotion-runtime.js` 契约扩展；`test-chat.js` 更新；chat E2E 断言情绪驱动路径。
-- 不做的：让协议控制换装、衣橱或未验证的原生动作。
+- 交付：`src/utils/moodTag.ts`（`[mood=happy]`/`[mood:happy]` 行内标签解析，12 用例；无标签/非法值/悬挂标签一律降级安全、多标签取最后合法值）；`useChatConversation` 流式接入（原始流与干净文本分离累积，标签不进展示/历史/配音，协议标签出现后文本启发式整回合让位，回合结束复位 neutral）。
+- 优先级保持：TTS 通道开启时仍以 `onExpression` 为准；协议只增强无配音兜底通道。
+- 验收：`test-mood-tag.js` 进 validate；E2E `flow 3e`（慢速流式窗口内断言 data-emotion=happy + 文本/历史无标签泄漏）。
+- 顺带修复：`mock-upstreams.js` 慢流（per-token latency 的 `ctx.state` 引用错误导致流中断）与 companion E2E 漂移（desktopBridge mock 缺 `onGlobalMouse`、环境问候/穿透恢复的时间耦合，注入"固定起点但随时间前进"的 Date mock；ChatCharacterStage autoLoad 竞态补 pending 标记）。
 
 ### P3：演出数据驱动化
 

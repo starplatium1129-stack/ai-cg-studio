@@ -9,6 +9,7 @@ import {
   parseNdjsonResponse,
   streamErrorMessage,
 } from '@/utils/stream'
+import { extractMoodTag } from '@/utils/moodTag'
 
 type ChatStorage = ReturnType<typeof useChatStorage>
 type VoiceController = ReturnType<typeof useVoice>
@@ -86,6 +87,11 @@ export function useChatConversation(options: ChatConversationOptions) {
 
     const characterId = options.activeChar.value
     const streamEmotion = { value: 'neutral' }
+    // 本回合原始流（含情绪标签），与干净展示文本分离累积。
+    let rawContent = ''
+    // 本回合是否出现过协议标签（[mood=xxx]）：出现后协议主导情绪，
+    // 文本启发式整回合让位，避免两条通道互相覆盖。
+    let moodTagged = false
     const maybeStreamEmotion = (replyText: string) => {
       if (!options.onStreamEmotion || replyText.length < 4) return
       const emotion = inferEmotion(replyText, characterId)
@@ -99,6 +105,8 @@ export function useChatConversation(options: ChatConversationOptions) {
         streamEmotion.value = 'neutral'
         options.onStreamEmotion('neutral')
       }
+      moodTagged = false
+      rawContent = ''
     }
     const messages = options.storage.messages(characterId)
     replyAnnouncement.value = ''
@@ -199,9 +207,23 @@ export function useChatConversation(options: ChatConversationOptions) {
           }
           if (event.type !== 'token') return
           options.onThinking?.(null)
-          assistant.content += event.content || ''
-          maybeStreamEmotion(assistant.content)
-          options.voice.append(event.content || '')
+          const delta = event.content || ''
+          const prevCleanLen = assistant.content.length
+          // 原始流单独累积（含未闭合标签），展示/历史/配音只吃剥离后的干净文本；
+          // 不能用 cleanText 反推 raw，否则被剥离的标签前缀会在下一 token 错位。
+          rawContent += delta
+          const extracted = extractMoodTag(rawContent)
+          assistant.content = extracted.cleanText
+          if (extracted.emotion) {
+            moodTagged = true
+            if (extracted.emotion !== streamEmotion.value) {
+              streamEmotion.value = extracted.emotion
+              options.onStreamEmotion?.(extracted.emotion)
+            }
+          } else if (!moodTagged) {
+            maybeStreamEmotion(assistant.content)
+          }
+          options.voice.append(extracted.cleanText.slice(prevCleanLen))
           if (options.nearBottom()) options.scrollBottom()
         })
 

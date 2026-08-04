@@ -142,6 +142,7 @@ function createMockServer(name, handler) {
         return handler({ req:req, res:res, path:pathname, body:body, state:state });
       })
       .catch(function (error) {
+        console.error('mock ' + name + ' handler error:', error && error.message || error);
         if (res.headersSent) { res.end(); return; }
         sendJson(res, 500, { error:'mock ' + name + ' failed: ' + error.message });
       });
@@ -249,7 +250,9 @@ function createOllamaMock() {
           message:{ role:'assistant', content:chars.slice(i, i + 3).join('') },
           done:false
         }) + '\n');
-        await delay(4);
+        // latency 既作整体前置延迟，也作逐 token 间隔：慢速流式才测得到
+        // 流中状态（如情绪标签驱动的表情窗口）。
+        await delay(ctx.state.latency || 4);
       }
       res.write(JSON.stringify({ done:true, done_reason:'stop' }) + '\n');
       res.end();

@@ -333,8 +333,16 @@ watch(() => props.outfit, (value) => {
   }
 })
 
+let pendingAutoLoad = false
+
 watch(() => props.autoLoad, (enabled) => {
-  if (!enabled || !live2dInitialized.value || live2d.enabled.value) return
+  if (!enabled || live2d.enabled.value) return
+  // init 尚未完成时先记下请求，init 完成后统一按最新 autoLoad 决定，
+  // 避免桌面 Companion 的 getState 异步完成落在 init 之前把事件丢掉。
+  if (!live2dInitialized.value) {
+    pendingAutoLoad = true
+    return
+  }
   void (async () => {
     await activeRuntime().activate()
     await live2d.enable()
@@ -355,7 +363,8 @@ onMounted(() => {
       outfit: initialOutfit,
     })
     live2dInitialized.value = true
-    if (props.autoLoad && !live2d.enabled.value) {
+    if ((props.autoLoad || pendingAutoLoad) && !live2d.enabled.value) {
+      pendingAutoLoad = false
       await activeRuntime().activate()
       await live2d.enable()
     }

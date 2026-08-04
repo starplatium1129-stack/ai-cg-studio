@@ -228,6 +228,15 @@
                 <ArchiveIcon name="sound" /> {{ speechButtonText }}
               </button>
               <span class="voice-status speech-state-text" aria-live="polite">{{ speechStateText }}</span>
+              <span v-if="speechSessionActive" class="speech-session-badge" role="status">
+                <span class="speech-session-dot" aria-hidden="true"></span>连续对话中
+                <button class="speech-session-end" type="button" title="结束连续对话" aria-label="结束连续对话"
+                  @click="onSpeechSessionEnd">×</button>
+              </span>
+              <span v-else-if="speechAutoListening" class="speech-session-badge speech-session-badge-muted" role="status">
+                <span class="speech-session-dot" aria-hidden="true"></span>听候唤醒
+              </span>
+              <span v-if="speechNotice" class="speech-notice" role="status">{{ speechNotice }}</span>
               <button class="speech-config-btn" type="button" title="语音输入设置" aria-label="语音输入设置"
                 @click="speechSettingsOpen = !speechSettingsOpen">
                 设置
@@ -247,7 +256,7 @@
 
 <script setup lang="ts">
 import '@/assets/css/chat.css'
-import { computed, onBeforeUnmount, ref } from 'vue'
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { useCharacterRoomSession } from '@/composables/useCharacterRoomSession'
 import ChatApiSettings from '@/components/ChatApiSettings.vue'
 import ChatCharacterStage from '@/components/ChatCharacterStage.vue'
@@ -255,8 +264,9 @@ import ChatArchivePanel from '@/components/ChatArchivePanel.vue'
 import SpeechInputSettings from '@/components/SpeechInputSettings.vue'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import { useVoiceInput, type VoiceInputState } from '@/composables/useVoiceInput'
+import { useVoiceInput, type VoiceTextSource, type VoiceInputState } from '@/composables/useVoiceInput'
 import { isSpeechInputReady, loadSpeechInputConfig } from '@/utils/speechInputConfig'
+import { createSpeechSession } from '@/utils/speechSession'
 
 const {
   chatListRef,
@@ -330,10 +340,13 @@ const {
 
 const speechConfig = ref(loadSpeechInputConfig())
 const speechSettingsOpen = ref(false)
+const speechSession = createSpeechSession()
+const speechNotice = ref('')
 const {
   state: speechState,
   errorMessage: speechError,
   supported: speechSupported,
+  autoListening: speechAutoListening,
   start: speechStart,
   stop: speechStop,
   cancel: speechCancel,
@@ -342,6 +355,12 @@ const {
   config: () => speechConfig.value,
   onText: onSpeechText,
 })
+
+function applySpeechSession(): void {
+  speechSession.applyConfig(speechConfig.value, currentCharacter.value.name)
+}
+
+applySpeechSession()
 
 const speechReady = computed(() => isSpeechInputReady(speechConfig.value) && speechSupported)
 const speechBusy = computed(() => speechState.value === 'capturing' || speechState.value === 'acquiring' || speechState.value === 'recognizing')
@@ -365,13 +384,67 @@ const speechStateText = computed(() => {
   }
 })
 
-function onSpeechText(text: string): void {
+const speechSessionActive = computed(() => speechSession.isSessionActive())
+
+function commitSpeechText(text: string): void {
   inputText.value = text
   if (speechConfig.value.autoSend && chatReady.value && !busy.value) handleSend()
 }
 
+function onSpeechText(text: string, source: VoiceTextSource): void {
+  // 自动监听：未进会话时先做唤醒词匹配；未命中不打扰。
+  if (source === 'auto' && !speechSession.isSessionActive()) {
+    if (speechSession.onWakeText(text)) {
+      speechNotice.value = `已唤醒${currentCharacter.value.name}，可以直接对话了`
+      return
+    }
+    return
+  }
+  const action = speechSession.onSessionText(text)
+  if (action === 'end') {
+    speechNotice.value = '已退出连续对话'
+    return
+  }
+  if (action === 'submit') {
+    speechNotice.value = ''
+    commitSpeechText(text)
+  }
+}
+
+/** 会话状态/配置/忙闲变化时对齐自动监听（唤醒词连续对话）。 */
+function reconcileAutoListen(): void {
+  const shouldListen = speechReady.value
+    && speechConfig.value.wakeEnabled
+    && !busy.value
+    && speechState.value !== 'error' // 权限被拒后不自动重试，等用户手动
+    && speechSession.shouldAutoListen()
+  if (shouldListen && !speechAutoListening.value) {
+    void speechStart('auto')
+  } else if (!shouldListen && speechAutoListening.value) {
+    speechStop()
+  }
+}
+
+watch(busy, value => {
+  if (value) {
+    speechSession.markReplyBusy()
+  } else {
+    speechSession.markReplyIdle()
+  }
+  reconcileAutoListen()
+}, { immediate: true })
+
+watch([speechState, speechConfig], () => {
+  reconcileAutoListen()
+})
+
+watch(currentCharacter, () => {
+  applySpeechSession()
+  reconcileAutoListen()
+})
+
 function onSpeechPress(): void {
-  void speechStart()
+  void speechStart('manual')
 }
 
 function onSpeechRelease(): void {
@@ -388,6 +461,15 @@ function onSpeechLeave(event: PointerEvent): void {
 
 function onSpeechSettingsSaved(): void {
   speechConfig.value = loadSpeechInputConfig()
+  applySpeechSession()
+  reconcileAutoListen()
+  speechSettingsOpen.value = false
+}
+
+function onSpeechSessionEnd(): void {
+  speechSession.endSession()
+  speechNotice.value = '已结束连续对话'
+  reconcileAutoListen()
 }
 
 onBeforeUnmount(() => speechRelease())

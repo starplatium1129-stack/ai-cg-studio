@@ -187,7 +187,7 @@
 
 视觉与架构下一阶段路线已记录在 `docs/visual-architecture-roadmap.md`。执行顺序为视觉减法与标题层级 → 动效和移动端持续动画收口 → 训练/控制/绘图窄屏层级 → 状态组件统一 → API client 与存储 Repository → 按所有权拆分大型模块；不做框架重写。
 
-桌宠语音与演出增强（吸收 ZcChat2 精华）分阶段计划已记录在 `docs/companion-voice-roadmap.md`，当前全部暂缓，待批准后按 P0 长按说话 → P1 会话状态机/连续对话 → P2 情绪协议 → P3 演出数据驱动 → P4 自定义角色资产包顺序逐阶段启动；每阶段独立验收，不串阶段。
+桌宠语音与演出增强（吸收 ZcChat2 精华）分阶段计划已记录在 `docs/companion-voice-roadmap.md`。P0（长按说话最小闭环）、P1（会话状态机/唤醒词连续对话）、P2（LLM 情绪标签协议 `[mood=xxx]` → `src/utils/moodTag.ts`，标签剥离不进展示/历史/配音、协议主导时文本启发式让位）均已完成：`vadSegmenter.ts`、`speechSession.ts`、`voiceApi.ts`、`speechInputConfig.ts`（`aics_speech_input_v1` 已登记 storageKeys）、`useVoiceInput.ts`、`SpeechInputSettings.vue`、ChatView 集成；`test-vad-segmenter.js`/`test-speech-session.js`/`test-mood-tag.js` 进 validate。CompanionView 的自动监听/热键集成待其未提交改动落地后进行。后续阶段（P3 演出数据驱动 → P4 自定义角色资产包）仍暂缓，每阶段独立验收，不串阶段。
 
 Live2D 方面仍只有在取得模型作者提供的、明确标注为情绪用途的原生 motion/expression 后，才增加非空 SoulLink native allowlist。
 

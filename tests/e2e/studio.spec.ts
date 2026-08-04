@@ -400,6 +400,25 @@ test('desktop companion keeps the chat loop in a compact standalone layout', asy
   expect(overflow.document).toBeLessThanOrEqual(overflow.viewport);
   expect(live2dAssetRequests).toEqual([]);
 
+  // 环境问候按时间片入队：固定为白天非安静时段，避免深夜跑 E2E 时
+  // 安静时段（23:00-8:00）抑制问候导致用例失败。Date.now 从固定起点
+  // 随时间真实前进（穿透恢复的 400ms 抑制窗口依赖时间流逝）。
+  await page.addInitScript(() => {
+    const RealDate = Date;
+    const fixedBase = new RealDate('2026-08-03T10:00:00').getTime();
+    const realStart = RealDate.now();
+    (window as any).Date = class extends RealDate {
+      constructor(...args: any[]) {
+        if (args.length) {
+          super(...(args as ConstructorParameters<typeof RealDate>));
+        } else {
+          super(new RealDate(fixedBase + (RealDate.now() - realStart)));
+        }
+      }
+      static now() { return fixedBase + (RealDate.now() - realStart); }
+    };
+  });
+
   await page.addInitScript(() => {
     (window as any).__ignoreMouseCalls = [];
     Object.defineProperty(window, 'companionDesktop', {
@@ -441,6 +460,8 @@ test('desktop companion keeps the chat loop in a compact standalone layout', asy
         offClipboardImage: () => {},
         onClipboardText: () => 1,
         offClipboardText: () => {},
+        onGlobalMouse: () => 1,
+        offGlobalMouse: () => {},
         setProgress: () => {},
         saveImage: async () => ({ saved: false }),
         getWorkspace: async () => ({ root: '', exists: false }),
@@ -550,6 +571,21 @@ test('speech input: hold-talk entry hidden until ASR endpoint configured', async
   await page.getByRole('button', { name: '关闭' }).click();
   await expect(page.locator('.speech-settings')).toHaveCount(0);
 
+  // 唤醒词配置：开启后字段出现，保存后持久化
+  await page.getByRole('button', { name: '语音输入设置' }).click();
+  await expect(page.getByLabel('服务地址')).toBeVisible();
+  await page.getByLabel('唤醒词连续对话').check();
+  await page.getByLabel(/唤醒词（逗号分隔）/).fill('宁宁，小宁');
+  await page.getByLabel(/结束词（逗号分隔）/).fill('再见，结束对话');
+  await page.getByRole('button', { name: '保存' }).click();
+  await expect(page.locator('.speech-settings')).toHaveCount(0);
+  await page.getByRole('button', { name: '语音输入设置' }).click();
+  await expect(page.getByLabel('唤醒词连续对话')).toBeChecked();
+  await expect(page.getByLabel(/唤醒词（逗号分隔）/)).toHaveValue('宁宁，小宁');
+  await expect(page.getByLabel(/结束词（逗号分隔）/)).toHaveValue('再见，结束对话');
+  await page.getByRole('button', { name: '关闭' }).click();
+  await expect(page.locator('.speech-settings')).toHaveCount(0);
+
   // 禁用后入口再次隐藏
   await page.evaluate(() => {
     const raw = JSON.parse(localStorage.getItem('aics_speech_input_v1') || '{}');
@@ -558,7 +594,10 @@ test('speech input: hold-talk entry hidden until ASR endpoint configured', async
   await page.reload();
   await expect(page.locator('.hold-talk-btn')).toHaveCount(0);
 
-  expect(errors).toEqual([]);
+  // 自动监听在无麦克风环境会报一次权限错误（不应无限重试）；
+  // 其余运行时错误不允许出现。
+  const permissionErrors = errors.filter(error => !/microphone|Permissions policy/.test(error));
+  expect(permissionErrors).toEqual([]);
 });
 
 test('Natsume Live2D loads, reacts, and keeps wardrobe memory per character', async ({ page }) => {
