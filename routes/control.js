@@ -200,8 +200,11 @@ function createControlRouter(config, gatewayRef, dependencies) {
   var persistConfig = typeof dependencies.writeJson === 'function' ? dependencies.writeJson : writeJson;
   var startTime = Date.now();
   var rootDir = config.ROOT_DIR || path.join(__dirname, '..');
-  var VOICE_START_SCRIPT = path.resolve(rootDir, '..', 'AI', 'Voice', 'Start-Voice.ps1');
-  var VOICE_STOP_SCRIPT  = path.resolve(rootDir, '..', 'AI', 'Voice', 'Stop-Voice.ps1');
+  // 桌面打包版把 AI 工作区放在 AI_WORKSPACE_ROOT（可在安装目录之外），
+  // 语音启停脚本必须在工作区内；回退到 appRoot 的兄弟目录（源码运行布局）。
+  var voiceRoot = config.AI_WORKSPACE_ROOT || path.resolve(rootDir, '..', 'AI');
+  var VOICE_START_SCRIPT = path.resolve(voiceRoot, 'Voice', 'Start-Voice.ps1');
+  var VOICE_STOP_SCRIPT  = path.resolve(voiceRoot, 'Voice', 'Stop-Voice.ps1');
   var WEBUI_MANAGER_SCRIPT = path.join(rootDir, 'scripts', 'runtime', 'managed-webui.ps1');
 
   var state = {
