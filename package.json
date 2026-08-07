@@ -169,6 +169,11 @@
       "createStartMenuShortcut": true
     }
   },
+  "overrides": {
+    "pixi-live2d-display": {
+      "gh-pages": "^6.3.0"
+    }
+  },
   "browserslist": [
     "chrome >= 111",
     "edge >= 111",
