@@ -51,6 +51,12 @@ export interface CompanionDesktopBridge {
   offClipboardText(subscriptionId: number): void
   onGlobalMouse(listener: (state: { x: number; y: number; inWindow: boolean; bounds: { x: number; y: number; width: number; height: number } }) => void): number
   offGlobalMouse(subscriptionId: number): void
+  minimizeWindow(): void
+  toggleMaximizeWindow(): void
+  closeWindow(): void
+  getWindowState(): Promise<{ maximized: boolean; focused: boolean }>
+  onMaximizedChanged(listener: (maximized: boolean) => void): number
+  offMaximizedChanged(subscriptionId: number): void
 }
 
 declare global {

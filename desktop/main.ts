@@ -42,6 +42,7 @@ let gatewayHealthTimer = 0
 let gatewayHealthFailures = 0
 let gatewayHealthChecking = false
 let desktopPaths: DesktopPaths | null = null
+let gatewayReadyPromise: Promise<string> | null = null
 let startHidden = false
 let onBatteryPower = false
 let desktopLogger: FileLogger | null = null
@@ -162,6 +163,16 @@ function showAtelier(): void {
   atelierWindow.webContents.setBackgroundThrottling(false)
 }
 
+/** 网关就绪后加载页面；窗口创建可与网关启动并行，无需先等网关。 */
+function loadGatewayPage(win: BrowserWindow | null, pathname: string): Promise<void> {
+  if (!win) return Promise.resolve()
+  const ready = gatewayReadyPromise || Promise.resolve(gatewayBaseUrl)
+  return ready.then(url => {
+    if (win.isDestroyed() || !url) return
+    return win.loadURL(`${url}${pathname}`)
+  })
+}
+
 function handleDeepLink(url: string): void {
   const pathname = parseDeepLink(url)
   if (!pathname) {
@@ -178,12 +189,12 @@ function createAtelierWindow(targetPath = '/'): void {
     try {
       if (new URL(atelierWindow.webContents.getURL()).pathname !== pathname) {
         atelierWindow.webContents.setBackgroundThrottling(false)
-        void atelierWindow.loadURL(`${gatewayBaseUrl}${pathname}`).then(showAtelier)
+        void loadGatewayPage(atelierWindow, pathname).then(showAtelier)
         return
       }
     } catch {
       atelierWindow.webContents.setBackgroundThrottling(false)
-      void atelierWindow.loadURL(`${gatewayBaseUrl}${pathname}`).then(showAtelier)
+      void loadGatewayPage(atelierWindow, pathname).then(showAtelier)
       return
     }
     showAtelier()
@@ -196,6 +207,7 @@ function createAtelierWindow(targetPath = '/'): void {
     title: '绫季绘境 Atelier',
     show: false,
     backgroundColor: '#110b22',
+    frame: false,
     autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
@@ -209,6 +221,8 @@ function createAtelierWindow(targetPath = '/'): void {
   atelierWindow.setMenuBarVisibility(false)
   atelierWindow.on('move', saveAtelierBounds)
   atelierWindow.on('resize', saveAtelierBounds)
+  atelierWindow.on('maximize', () => sendWindowMaximized(atelierWindow))
+  atelierWindow.on('unmaximize', () => sendWindowMaximized(atelierWindow))
   atelierWindow.on('close', event => {
     if (quitting) return
     event.preventDefault()
@@ -223,7 +237,7 @@ function createAtelierWindow(targetPath = '/'): void {
   })
   atelierWindow.webContents.on('will-navigate', (event, url) => allowGatewayNavigation(event, url))
   atelierWindow.webContents.on('will-redirect', (event, url) => allowGatewayNavigation(event, url))
-  void atelierWindow.loadURL(`${gatewayBaseUrl}${pathname}`)
+  void loadGatewayPage(atelierWindow, pathname)
   atelierWindow.once('ready-to-show', showAtelier)
 }
 
@@ -300,6 +314,11 @@ function allowGatewayNavigation(event: Electron.Event, url: string): void {
   } catch { /* invalid navigation is denied below */ }
   event.preventDefault()
   if (/^https?:\/\//i.test(url)) void shell.openExternal(url)
+}
+
+function sendWindowMaximized(win: BrowserWindow | null): void {
+  if (!win || win.isDestroyed()) return
+  win.webContents.send('desktop:window-maximized-changed', win.isMaximized())
 }
 
 function showDesktopNotification(title: unknown, body: unknown): void {
@@ -546,7 +565,7 @@ function createCompanionWindow(): void {
   })
   companionWindow.webContents.on('render-process-gone', () => reloadCompanion('renderer gone'))
   companionWindow.webContents.on('unresponsive', () => reloadCompanion('renderer unresponsive'))
-  void companionWindow.loadURL(`${gatewayBaseUrl}/companion`)
+  void loadGatewayPage(companionWindow, '/companion')
   companionWindow.once('ready-to-show', () => {
     if (!startHidden) showCompanion(true)
   })
@@ -612,9 +631,20 @@ async function start(): Promise<void> {
     onOutput: (stream, text) => desktopLogger?.log('debug', `[gateway:${stream}] ${text.trim()}`),
     fork: (modulePath, args, options) => utilityProcess.fork(modulePath, args, options),
   })
-  gatewayBaseUrl = await supervisor.start()
-  logInfo(`Gateway ${supervisor.ownsGateway ? 'started' : 'attached'} at ${gatewayBaseUrl}`)
-  saveDesktopGatewayPort(gatewayPortPath(), supervisor.port)
+  const sup = supervisor
+  const gatewayPromise = sup.start().then(url => {
+    gatewayBaseUrl = url
+    logInfo(`Gateway ${sup.ownsGateway ? 'started' : 'attached'} at ${url}`)
+    saveDesktopGatewayPort(gatewayPortPath(), sup.port)
+    return url
+  })
+  gatewayReadyPromise = gatewayPromise
+  // 窗口创建不再等待网关就绪：托盘、Companion 窗口先出现，
+  // 网关起来后统一加载页面（冷启动更快，窗口与网关并行）。
+  gatewayPromise.catch(error => {
+    logError(`Gateway start failed: ${String(error)}`)
+    scheduleGatewayRestart()
+  })
   session.defaultSession.setPermissionRequestHandler((_webContents, _permission, callback) => callback(false))
   powerMonitor.on('resume', () => {
     if (!companionWindow || companionWindow.isDestroyed()) return
@@ -804,6 +834,27 @@ ipcMain.handle('desktop:open-log', event => {
 })
 ipcMain.on('desktop:notify', (event, title: unknown, body: unknown) => {
   if (isTrustedDesktopSender(event)) showDesktopNotification(title, body)
+})
+// 无边框标题栏窗口控制：只允许本网关页面驱动自己的窗口
+ipcMain.on('desktop:window-minimize', event => {
+  if (!isTrustedDesktopSender(event)) return
+  BrowserWindow.fromWebContents(event.sender)?.minimize()
+})
+ipcMain.on('desktop:window-maximize-toggle', event => {
+  if (!isTrustedDesktopSender(event)) return
+  const win = BrowserWindow.fromWebContents(event.sender)
+  if (!win) return
+  if (win.isMaximized()) win.unmaximize()
+  else win.maximize()
+})
+ipcMain.on('desktop:window-close', event => {
+  if (!isTrustedDesktopSender(event)) return
+  BrowserWindow.fromWebContents(event.sender)?.close()
+})
+ipcMain.handle('desktop:get-window-state', event => {
+  requireTrustedDesktopSender(event)
+  const win = BrowserWindow.fromWebContents(event.sender)
+  return { maximized: win?.isMaximized() ?? false, focused: win?.isFocused() ?? false }
 })
 ipcMain.on('desktop:set-progress', (event, value: unknown) => {
   if (!isTrustedDesktopSender(event)) return

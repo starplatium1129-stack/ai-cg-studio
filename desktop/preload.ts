@@ -18,6 +18,7 @@ const interactionModeHandlers = new Map<number, IpcListener>()
 const clipboardImageHandlers = new Map<number, IpcListener>()
 const clipboardTextHandlers = new Map<number, IpcListener>()
 const globalMouseHandlers = new Map<number, IpcListener>()
+const windowMaximizedHandlers = new Map<number, IpcListener>()
 
 export interface GlobalMouseState {
   x: number
@@ -204,5 +205,23 @@ contextBridge.exposeInMainWorld('companionDesktop', {
     const handler = globalMouseHandlers.get(subscriptionId)
     if (handler) ipcRenderer.removeListener('desktop:global-mouse', handler)
     globalMouseHandlers.delete(subscriptionId)
+  },
+  minimizeWindow: () => ipcRenderer.send('desktop:window-minimize'),
+  toggleMaximizeWindow: () => ipcRenderer.send('desktop:window-maximize-toggle'),
+  closeWindow: () => ipcRenderer.send('desktop:window-close'),
+  getWindowState: () => ipcRenderer.invoke('desktop:get-window-state') as Promise<{ maximized: boolean; focused: boolean }>,
+  onMaximizedChanged: (listener: (maximized: boolean) => void) => {
+    const subscriptionId = ++nextSubscriptionId
+    const handler: IpcListener = (_event, maximized: unknown) => {
+      if (typeof maximized === 'boolean') listener(maximized)
+    }
+    ipcRenderer.on('desktop:window-maximized-changed', handler)
+    windowMaximizedHandlers.set(subscriptionId, handler)
+    return subscriptionId
+  },
+  offMaximizedChanged: (subscriptionId: number) => {
+    const handler = windowMaximizedHandlers.get(subscriptionId)
+    if (handler) ipcRenderer.removeListener('desktop:window-maximized-changed', handler)
+    windowMaximizedHandlers.delete(subscriptionId)
   },
 })

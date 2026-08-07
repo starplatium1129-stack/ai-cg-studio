@@ -1,4 +1,5 @@
 <template>
+  <DesktopTitleBar />
   <div class="route-stage">
     <RouterView />
   </div>
@@ -16,6 +17,7 @@ import { blobThumbDataUrl, thumbKey } from '@/utils/imageThumb'
 import AppInteractionLayer from '@/components/AppInteractionLayer.vue'
 import AppToast from '@/components/AppToast.vue'
 import GlobalSearch from '@/components/GlobalSearch.vue'
+import DesktopTitleBar from '@/components/DesktopTitleBar.vue'
 
 // 与 GalleryView 的 HISTORY_KEY 保持一致
 const HISTORY_KEY = 'aics_pb_history'
