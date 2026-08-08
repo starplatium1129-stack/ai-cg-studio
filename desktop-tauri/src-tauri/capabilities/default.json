@@ -1,0 +1,14 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "windows": ["companion", "atelier"],
+  "permissions": [
+    "core:default",
+    "core:window:allow-start-dragging",
+    "global-shortcut:default",
+    "notification:default",
+    "dialog:default",
+    "autostart:default",
+    "opener:default"
+  ]
+}

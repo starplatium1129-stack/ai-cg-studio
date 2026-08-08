@@ -1,0 +1,40 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "AI-CG-Studio",
+  "version": "1.5.0",
+  "identifier": "com.aics.studio",
+  "build": {
+    "devUrl": "http://127.0.0.1:3000",
+    "frontendDist": "../web"
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "icon": ["icons/icon.ico"],
+    "targets": ["nsis"],
+    "externalBin": ["binaries/node"],
+    "resources": {
+      "resources/gateway/server.js": "gateway/server.js",
+      "resources/gateway/server": "gateway/server",
+      "resources/gateway/routes": "gateway/routes",
+      "resources/gateway/services": "gateway/services",
+      "resources/gateway/scripts/runtime": "gateway/scripts/runtime",
+      "resources/gateway/data": "gateway/data",
+      "resources/gateway/dist": "gateway/dist",
+      "resources/gateway/assets": "gateway/assets",
+      "resources/gateway/tools": "gateway/tools",
+      "resources/gateway/node_modules": "gateway/node_modules"
+    },
+    "windows": {
+      "nsis": {
+        "installMode": "perMachine"
+      }
+    }
+  }
+}
