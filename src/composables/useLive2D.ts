@@ -8,6 +8,14 @@ import {
 import type { EmotionRuntime } from '@/utils/emotionRuntime'
 import { createLive2dNativeAdapter } from '@/utils/live2dNativeAdapter'
 import { createBlinkScheduler } from '@/utils/blinkScheduler'
+import { selectLive2DBackend } from '@/live2d/createBackend'
+import type {
+  Live2DBackendKind,
+  Live2DModelHandle,
+  Live2DStageBackend,
+  Live2DStageSession,
+} from '@/live2d/types'
+import { computeOverlayRect } from '@/utils/live2dOverlayLayout'
 
 export interface Live2DStatus {
   state: 'checking' | 'idle' | 'static' | 'loading' | 'ready' | 'degraded' | 'fallback'
@@ -29,48 +37,7 @@ interface Live2DCatalog {
   models: Record<string, Live2DModelInfo>
 }
 
-interface Live2DCoreModel {
-  setParameterValueById(id: string, value: number, weight: number): void
-}
-
-interface Live2DModel {
-  visible: boolean
-  width: number
-  height: number
-  x: number
-  y: number
-  scale: { x: number; y: number; set(value: number): void }
-  internalModel?: {
-    on(event: 'beforeModelUpdate', callback: () => void): void
-    coreModel?: Live2DCoreModel
-    settings?: { hitAreas?: unknown[] }
-    motionManager?: { definitions?: Record<string, unknown> }
-  }
-  hitTest?(x: number, y: number): string[]
-  focus?(x: number, y: number, instant?: boolean): void
-  motion?(group: string, index?: number, priority?: number): Promise<boolean> | boolean
-  expression?(name: string): Promise<boolean> | boolean
-}
-
-interface Live2DApp {
-  app?: {
-    screen?: { width: number; height: number }
-    ticker?: {
-      started: boolean
-      maxFPS?: number
-      start(): void
-      stop(): void
-    }
-  }
-  onModelLoaded(callback: (model: Live2DModel) => void): void
-  onModelError(callback: (error: Error) => void): void
-  destroy(): void
-}
-
-type Live2DFactory = (options: Record<string, unknown>) => Live2DApp
-type Live2DLibrary = { wlLive2d: Live2DFactory }
-
-interface Live2DInteraction {
+export interface Live2DInteraction {
   group: string
   hint: string
   duration: number
@@ -160,11 +127,12 @@ function readLive2DCatalog(value: unknown): Live2DCatalog {
   return { models }
 }
 
-function readLibrary(value: unknown): Live2DLibrary | null {
-  if (typeof value === 'function') return { wlLive2d: value as Live2DFactory }
-  if (!isRecord(value)) return null
-  if (typeof value.wlLive2d === 'function') return { wlLive2d: value.wlLive2d as Live2DFactory }
-  return readLibrary(value.default)
+function windowBoundsFromScreen(): { x: number; y: number } {
+  // WebView2 无边框窗口：screenX/screenY 是 CSS 像素（物理 ÷ DPR），
+  // 这里换算回屏幕物理像素供 overlay 定位（DPR=1 时与窗口坐标一致）。
+  // 注：Rust 桥就绪后应改为使用桥注入的窗口 bounds（更精确）。
+  const dpr = window.devicePixelRatio || 1
+  return { x: Math.round((window.screenX || 0) * dpr), y: Math.round((window.screenY || 0) * dpr) }
 }
 
 export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
@@ -176,11 +144,14 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   const mouthValue = ref(0)
   const interactionHint = ref('')
   const outfit = ref<string>(DEFAULT_LIVE2D_OUTFIT)
+  const backendKind = ref<Live2DBackendKind>('browser')
+  const backendFallback = ref<string | null>(null)
 
   // 内部可变状态（不需要响应式）
   let catalog: Live2DCatalog | null = null
-  let app: Live2DApp | null = null
-  let model: Live2DModel | null = null
+  let backend: Live2DStageBackend | null = null
+  let session: Live2DStageSession | null = null
+  let model: Live2DModelHandle | null = null
   let loading: Promise<boolean> | null = null
   let loadTimer = 0
   let resizeObserver: ResizeObserver | null = null
@@ -205,6 +176,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   let stageEl: HTMLElement | null = null
   let hostSelector = '#live2dHost'
   let emotionRuntime: EmotionRuntime | null = null
+  let nativeHitTestUnsubscribe: (() => void) | null = null
   const nativeAnimationAdapter = createLive2dNativeAdapter()
   const blinkScheduler = createBlinkScheduler()
   const emotionCurrent: Record<string, number> = {}
@@ -220,7 +192,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     char: string,
     host: HTMLElement,
     stage: HTMLElement,
-    options: { autoLoad?: boolean; outfit?: string } = {},
+    options: { autoLoad?: boolean; outfit?: string; backendKind?: Live2DBackendKind } = {},
   ) {
     hostEl = host; stageEl = stage
     // wl-live2d 只接受 CSS selector，这里保证宿主节点有稳定 id 可选中
@@ -236,6 +208,16 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
       const response = await fetch('/api/live2d-status', { cache: 'no-store' })
       if (!response.ok) throw new Error('Live2D 状态接口不可用')
       catalog = readLive2DCatalog(await response.json())
+      const selection = selectLive2DBackend(options.backendKind)
+      backend = selection.backend
+      backendKind.value = selection.effectiveKind
+      backendFallback.value = selection.fallbackReason
+      if (backendFallback.value) {
+        if (hostEl) hostEl.dataset.backend = 'browser-fallback'
+        console.warn('[live2d]', backendFallback.value)
+      } else if (hostEl) {
+        hostEl.dataset.backend = selection.effectiveKind
+      }
       observeSize()
       bindVisibility()
       enabled.value = options.autoLoad === true
@@ -329,72 +311,79 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     })
   }
 
-  /**
-   * 载入 wl-live2d 运行库。
-   * 重构前靠 index.html 的全局 <script> 注入；Vue SPA 没有那段脚本，
-   * 所以这里改成动态 import npm 包，并兼容 default / 命名导出 / 全局三种形态。
-   */
-  async function loadLibrary(): Promise<Live2DLibrary> {
-    const live2DWindow = window as Window & typeof globalThis & { 'wl-live2d'?: Live2DLibrary }
-    const existing = readLibrary(live2DWindow['wl-live2d'])
-    if (existing) return existing
-    try {
-      const library = readLibrary(await import('wl-live2d'))
-      if (library) {
-        live2DWindow['wl-live2d'] = library
-        return library
-      }
-      throw new Error('wl-live2d 导出中没有 wlLive2d')
-    } catch (e) {
-      throw new Error('wl-live2d 运行库导入失败：' + errorMessage(e))
-    }
-  }
-
   function load(char: string, info: Live2DModelInfo): Promise<boolean> {
     if (loading) return loading
+    if (!backend) return Promise.resolve(false)
     loading = new Promise((resolve) => {
       void (async () => {
-      let library: Live2DLibrary
-      try {
-        library = await loadLibrary()
-      } catch (e) {
-        fallback('Live2D 运行库加载失败', errorMessage(e))
-        loading = null
-        resolve(false); return
-      }
-      if (destroyed.value || char !== character.value) { loading = null; resolve(false); return }
-      destroyRuntime()
-      if (hostEl) hostEl.innerHTML = ''
-      setState('loading', 'Live2D 加载中…')
-      const canvas = info.canvas || { width: 420, height: 610 }
-      let settled = false
-      const finish = (v: boolean) => {
-        if (settled) return; settled = true
-        clearTimeout(loadTimer); loading = null; resolve(v)
-      }
-      loadTimer = window.setTimeout(() => { fallback('Live2D 加载超时', '模型在 20 秒内没有完成初始化'); finish(false) }, 20000)
-      try {
-        app = library.wlLive2d({
-          selector: hostSelector, fixed: false, drag: false, sayHello: false, hitFrame: false,
-          menus: [], tips: { talk: false, drag: false, motionMessage: false, message: [], talkApis: [] },
-          transitionTime: 250,
-          // The model only loads after a user explicitly enables Live2D. Once
-          // enabled, preload the small motion files so the first tap is a real
-          // interaction instead of a delayed network request.
-          models: [{ path: info.modelUrl, width: canvas.width, height: canvas.height, position: { x: 0, y: 0 }, motionPreload: 'ALL' }],
-        })
-        applyTickerLimit()
-        app.onModelLoaded((m: Live2DModel) => {
+        // 先停旧会话并清空宿主：wl-live2d 在 connect 时向 hostEl 创建 canvas，
+        // 顺序反了会把刚创建的 canvas 一起清掉。库加载失败时旧模型也随之
+        // 销毁并进入 fallback（原实现残留旧模型的行为不一致，一并修正）。
+        destroyRuntime()
+        if (hostEl) hostEl.innerHTML = ''
+        let nextSession: Live2DStageSession
+        try {
+          nextSession = await backend!.connect({
+            selector: hostSelector,
+            modelUrl: info.modelUrl,
+            canvasWidth: info.canvas?.width || 420,
+            canvasHeight: info.canvas?.height || 610,
+            character: char,
+          })
+        } catch (e) {
+          const message = errorMessage(e)
+          // 原生后端不可用：回退浏览器后端再试一次；仍失败才判加载失败
+          if (backendKind.value === 'native' && backend?.kind === 'native' && message.includes('NATIVE_BACKEND_UNAVAILABLE')) {
+            const selection = selectLive2DBackend('browser')
+            backend = selection.backend
+            backendKind.value = 'browser'
+            backendFallback.value = '原生 Live2D 桥不可用，已回退到浏览器渲染'
+            if (hostEl) hostEl.dataset.backend = 'browser-fallback'
+            console.warn('[live2d]', backendFallback.value)
+            try {
+              nextSession = await backend!.connect({
+                selector: hostSelector,
+                modelUrl: info.modelUrl,
+                canvasWidth: info.canvas?.width || 420,
+                canvasHeight: info.canvas?.height || 610,
+                character: char,
+              })
+            } catch (e2) {
+              fallback('Live2D 初始化失败', errorMessage(e2))
+              loading = null
+              resolve(false); return
+            }
+          } else {
+            fallback('Live2D 初始化失败', message)
+            loading = null
+            resolve(false); return
+          }
+        }
+        if (destroyed.value || char !== character.value) {
+          nextSession.destroy()
+          loading = null
+          resolve(false); return
+        }
+        setState('loading', 'Live2D 加载中…')
+        session = nextSession
+        const nativeCapability = session.kind === 'native' ? session.capability : null
+        let settled = false
+        const finish = (v: boolean) => {
+          if (settled) return; settled = true
+          clearTimeout(loadTimer); loading = null; resolve(v)
+        }
+        loadTimer = window.setTimeout(() => { fallback('Live2D 加载超时', '模型在 20 秒内没有完成初始化'); finish(false) }, 20000)
+        session.onModelLoaded((m: Live2DModelHandle) => {
           if (destroyed.value || char !== character.value) { finish(false); return }
           model = m; loadedCharacter.value = char; ready.value = true
           mouthValue.value = 0; mouthHooked = false
           bindMouthOverride(); bindContextEvents(); bindInteractionEvents(); fit(); layout()
           setVisible(true); setPaused(document.hidden); setState('ready', 'Live2D 已连接')
-          playEntrance()
+          if (!nativeCapability?.entranceNative) playEntrance()
           void setOutfit(outfit.value)
           finish(true)
         })
-        app.onModelError((e: Error) => {
+        session.onModelError((e: Error) => {
           const detail = errorMessage(e)
           // wl-live2d 复用这一个回调报告初始载入和之后的 outfit/motion
           // 错误。后者不代表已经显示的模型失效，不能因此切回静态立绘。
@@ -404,7 +393,6 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
           }
           fallback('Live2D 模型加载失败', detail); finish(false)
         })
-      } catch (e) { fallback('Live2D 初始化失败', errorMessage(e)); finish(false) }
       })()
     })
     return loading
@@ -430,18 +418,15 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     if (!model) return
     const motionFn = model.motion
     if (typeof motionFn !== 'function') return
-    const motion = motionFn.bind(model)
-    const definitions = model.internalModel?.motionManager?.definitions
-    const startDefs = definitions && Array.isArray(definitions[ENTRANCE_GROUP])
-      ? definitions[ENTRANCE_GROUP] as unknown[]
-      : null
-    if (!startDefs || startDefs.length === 0) return
+    // 浏览器路径：从 wl-live2d 的 motionManager.definitions 探测 Start 组
+    // （原生后端由 Rust 接管入场动作，不会走到这里）。
+    if (!(model.hasMotionGroup?.(ENTRANCE_GROUP) ?? false)) return
     // 模型刚加载完成时 Start 组的动作可能还在预加载，startRandomMotion 会
     // 因组内全部未就绪直接返回 false；这里重试直到登场动作真正启动。
     let attempts = 0
     const tryStart = () => {
       if (attempts++ > 40 || destroyed.value || !model) return
-      const result = motion(ENTRANCE_GROUP, undefined, 2)
+      const result = motionFn.call(model, ENTRANCE_GROUP, undefined, 2)
       const started = isCatchable(result)
         ? result.then((v: unknown) => v === true).catch(() => false)
         : Promise.resolve(result === true)
@@ -457,9 +442,11 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   }
 
   function bindMouthOverride() {
-    if (!model?.internalModel || mouthHooked) return
+    if (!model || mouthHooked) return
+    // 原生后端：参数由作者工程执行，不需要 beforeModelUpdate 钩子
+    if (session?.capability.parameterOverride === false) return
     mouthHooked = true
-    model.internalModel.on('beforeModelUpdate', applyParameters)
+    model.onBeforeModelUpdate(applyParameters)
   }
 
   function attachEmotionRuntime(runtime: EmotionRuntime | null) {
@@ -471,18 +458,28 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
 
   function applyParameters() {
     if (!model?.visible) return
+    const now = performance.now()
+    const dt = Math.min(0.12, (now - lastParamFrame) / 1000 || 1 / 60)
+    lastParamFrame = now
+    if (session?.capability.parameterOverride === false) {
+      // 原生后端：只传意图，参数级写入由 Cubism Native 按作者工程执行。
+      // blinkScheduler / MOUTH_PARAMS / emotionRuntime 参数 hack 全部退役。
+      if (speaking) session.sendMouthLevel?.(mouthValue.value)
+      if (stageEl) stageEl.dataset.blink = '1.000'
+      if (emotionRuntime) {
+        emotionRuntime.update(dt)
+        if (stageEl) stageEl.dataset.emotionIntensity = emotionRuntime.intensity().toFixed(3)
+        session.sendEmotion?.(emotionRuntime.lastEmotion(), emotionRuntime.intensity())
+      }
+      return
+    }
     try {
       // Cubism motion/physics run before this event. Write with full weight so
       // their idle values cannot overwrite the audio amplitude or emotion.
-      const core = model.internalModel?.coreModel
-      if (!core) return
       if (speaking) {
         const mouth = MOUTH_PARAMS[character.value] ?? MOUTH_PARAMS.nene
-        core.setParameterValueById(mouth.id, mouthValue.value * mouth.scale, 1)
+        model.setParameterValueById(mouth.id, mouthValue.value * mouth.scale, 1)
       }
-      const now = performance.now()
-      const dt = Math.min(0.12, (now - lastParamFrame) / 1000 || 1 / 60)
-      lastParamFrame = now
       // 覆盖式眨眼：双眼参数永远写同一个值（1=睁、0=闭），修掉作者眼曲线
       // 左右眼不同步造成的"单眼 Wink"，并保证定时眨眼（见 blinkScheduler）。
       // 登场动作（Start 组）期间暂停覆盖：其眼曲线左右同步（含开场闭眼），
@@ -494,7 +491,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
         const blinkValue = blinkScheduler.update(dt)
         const blinkIds = BLINK_PARAMS[character.value]
         if (blinkIds) {
-          for (const id of blinkIds) core.setParameterValueById(id, blinkValue, 1)
+          for (const id of blinkIds) model.setParameterValueById(id, blinkValue, 1)
         }
         if (stageEl) stageEl.dataset.blink = blinkValue.toFixed(3)
       }
@@ -533,7 +530,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
         const current = emotionCurrent[id] ?? 0
         const next = current + (target - current) * Math.min(1, dt * 6)
         emotionCurrent[id] = next
-        core.setParameterValueById(id, next, 1)
+        model.setParameterValueById(id, next, 1)
       }
       // 归零的参数交还给 idle 动作，避免表情参数常驻覆写把待机动画压死
       for (const id of Object.keys(emotionCurrent)) {
@@ -546,7 +543,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
 
   function bindContextEvents() {
     if (!hostEl) return
-    const cvs = hostEl.querySelector('canvas') as HTMLCanvasElement | null
+    const cvs = session?.canvasElement?.() as HTMLCanvasElement | null
     if (!cvs || cvs.dataset.contextEvents === '1') return
     cvs.dataset.contextEvents = '1'
     cvs.addEventListener('webglcontextlost', (e) => {
@@ -571,6 +568,8 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
       const focus = model?.focus
       const nativeFocus = Boolean(point && focus)
       if (point && focus) focus.call(model, point.x, point.y)
+      // 原生后端：凝视意图经桥送达 Rust（Cubism Native 驱动作者眼/头参数）
+      if (session?.sendGaze) session.sendGaze(pointerGazeX, pointerGazeY)
       if (stageEl) {
         stageEl.dataset.pointerFocus = nativeFocus ? 'native' : 'fallback'
         stageEl.dataset.pointerGazeX = pointerGazeX.toFixed(3)
@@ -583,9 +582,10 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
       pointerGazeY = 0
       const focus = model?.focus
       if (focus) {
-        const screen = app?.app?.screen
-        focus.call(model, (Number(screen?.width) || 420) / 2, (Number(screen?.height) || 610) / 2)
+        const screen = session?.getScreenSize() ?? { width: 420, height: 610 }
+        focus.call(model, screen.width / 2, screen.height / 2)
       }
+      if (session?.sendGaze) session.sendGaze(0, 0)
       if (stageEl) stageEl.dataset.pointerFocus = 'idle'
     }
     stageEl.addEventListener('mousemove', pointerGazeHandler)
@@ -593,15 +593,13 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   }
 
   function worldPoint(event: MouseEvent) {
-    const canvas = hostEl?.querySelector('canvas')
+    const canvas = session?.canvasElement?.() as HTMLCanvasElement | null
     const rect = canvas?.getBoundingClientRect() ?? stageEl?.getBoundingClientRect()
     if (!rect || !rect.width || !rect.height) return null
-    const screen = app?.app?.screen
-    const width = Number(screen?.width) || 420
-    const height = Number(screen?.height) || 610
+    const screen = session?.getScreenSize() ?? { width: 420, height: 610 }
     return {
-      x: Math.max(0, Math.min(width, (event.clientX - rect.left) / rect.width * width)),
-      y: Math.max(0, Math.min(height, (event.clientY - rect.top) / rect.height * height)),
+      x: Math.max(0, Math.min(screen.width, (event.clientX - rect.left) / rect.width * screen.width)),
+      y: Math.max(0, Math.min(screen.height, (event.clientY - rect.top) / rect.height * screen.height)),
     }
   }
 
@@ -622,15 +620,14 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     pointerGazeActive = true
     const focus = model?.focus
     if (focus) {
-      const canvas = hostEl?.querySelector('canvas')
+      const canvas = session?.canvasElement?.() as HTMLCanvasElement | null
       const canvasRect = canvas?.getBoundingClientRect() ?? rect
-      const screen = app?.app?.screen
-      const width = Number(screen?.width) || 420
-      const height = Number(screen?.height) || 610
+      const screen = session?.getScreenSize() ?? { width: 420, height: 610 }
       focus.call(model,
-        Math.max(0, Math.min(width, (clientX - canvasRect.left) / canvasRect.width * width)),
-        Math.max(0, Math.min(height, (clientY - canvasRect.top) / canvasRect.height * height)))
+        Math.max(0, Math.min(screen.width, (clientX - canvasRect.left) / canvasRect.width * screen.width)),
+        Math.max(0, Math.min(screen.height, (clientY - canvasRect.top) / canvasRect.height * screen.height)))
     }
+    if (session?.sendGaze) session.sendGaze(pointerGazeX, pointerGazeY)
     if (stageEl) {
       stageEl.dataset.pointerFocus = 'global'
       stageEl.dataset.pointerGazeX = pointerGazeX.toFixed(3)
@@ -684,6 +681,14 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
       .find((item): item is Live2DInteraction => Boolean(item))
     if (interaction) return interaction
     return character.value === 'natsume' ? NATSUME_INTERACTIONS.Head : INTERACTION_MOTIONS.Head
+  }
+
+  /** 原生路径：Cubism 原生 HitArea 命中（作者分区）→ 互动动作 */
+  function interactionFromHitAreas(areas: string[]): Live2DInteraction | null {
+    return areas
+      .map(area => (character.value === 'natsume' ? NATSUME_HIT_AREA_MAP[area] : area))
+      .map(area => (character.value === 'natsume' ? NATSUME_INTERACTIONS[area] : INTERACTION_MOTIONS[area]))
+      .find((item): item is Live2DInteraction => Boolean(item)) ?? null
   }
 
   function markInteractionStarted(interaction: Live2DInteraction) {
@@ -743,6 +748,15 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     interactionHint.value = character.value === 'natsume'
       ? '移动鼠标可跟随视线；点击头部、手、胸前、裙子、腿或脚可互动'
       : '移动鼠标可跟随视线；点击呆毛、头部、脸、身体、两侧或裙摆可互动'
+    // 原生后端：点击由 overlay 窗口捕获，Rust 做 Cubism 原生 HitArea 命中后
+    // 经 onNativeHitTest 回传，不再绑定 DOM click（overlay 会截走鼠标）。
+    if (session?.capability.hitTestNative) {
+      nativeHitTestUnsubscribe = session.onNativeHitTest?.((areas) => {
+        const interaction = interactionFromHitAreas(areas)
+        if (interaction) playInteraction(interaction)
+      }) ?? null
+      return
+    }
     pointerClickHandler = (event) => {
       if ((event.target as HTMLElement | null)?.closest('button, a, input, select, textarea')) return
       playInteraction(interactionAt(event))
@@ -753,11 +767,11 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   function fit() {
     if (!model || !hostEl) return
     try {
-      const cvs = hostEl.querySelector('canvas') as HTMLCanvasElement | null
+      const cvs = session?.canvasElement?.() as HTMLCanvasElement | null
       const sw = cvs && (parseFloat(cvs.style.width) || cvs.width) || 420
       const sh = cvs && (parseFloat(cvs.style.height) || cvs.height) || 610
-      const sx = model.scale?.x || 1, sy = model.scale?.y || 1
-      const nw = model.width / sx, nh = model.height / sy
+      const size = model.getNaturalSize()
+      const nw = size.width, nh = size.height
       if (!nw || !nh) return
       // The moc bounds include different transparent margins, so each model
       // owns an explicit visual calibration rather than sharing one multiplier.
@@ -767,25 +781,36 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
         bottomOffset: 0,
       }
       const scale = Math.min(sw / nw, sh / nh) * profile.scale
-      model.scale.set(scale)
-      model.x = (sw - nw * scale) * profile.anchorX
-      model.y = sh - nh * scale + profile.bottomOffset
+      model.applyFit(scale, (sw - nw * scale) * profile.anchorX, sh - nh * scale + profile.bottomOffset)
     } catch (e) { fallback('Live2D 布局失败', errorMessage(e)) }
   }
 
   function layout() {
     if (!ready.value || document.hidden || !hostEl) return
+    if (session?.capability.parameterOverride === false) {
+      // 原生后端：计算舞台 DOM 矩形 → 屏幕物理像素 → 下发 overlay 帧
+      if (!stageEl || !session.updateOverlay) return
+      try {
+        const rect = stageEl.getBoundingClientRect()
+        if (!rect.width || !rect.height) return
+        const bounds = windowBoundsFromScreen()
+        session.updateOverlay(computeOverlayRect({
+          stageRect: rect,
+          dpr: window.devicePixelRatio || 1,
+          windowBounds: { ...bounds, width: window.innerWidth, height: window.innerHeight },
+        }), true)
+      } catch {}
+      return
+    }
     try {
       const wrapper = hostEl.firstElementChild as HTMLElement | null
       if (!wrapper) return
       // 用实际 canvas 尺寸做比例（不同模型画布不同），不硬编码 420×610
-      const cvs = hostEl.querySelector('canvas') as HTMLCanvasElement | null
-      const cw = (cvs && (parseFloat(cvs.style.width) || cvs.width)) || 420
-      const ch = (cvs && (parseFloat(cvs.style.height) || cvs.height)) || 610
-      const ws = hostEl.clientWidth / cw, hs = hostEl.clientHeight / ch
+      const canvasSize = session?.getCanvasSize() ?? { width: 420, height: 610 }
+      const ws = hostEl.clientWidth / canvasSize.width, hs = hostEl.clientHeight / canvasSize.height
       // 舞台按角色卡片尺寸缩放画布；上限放宽到 1.28，让模型尽量撑满
       const scale = Math.min(1.28, Math.min(ws, hs) * 0.995)
-      wrapper.style.transform = `translateX(-50%) scale(${scale > 0 ? scale : 1})`
+      session?.setStageScale(scale > 0 ? scale : 1)
       fit()
     } catch {}
   }
@@ -799,28 +824,21 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   }
 
   function resumeRendering() {
-    const ticker = app?.app?.ticker
-    if (!ticker || document.hidden || prefersReducedMotion()) return
-    applyTickerLimit()
-    if (!ticker.started) { ticker.start(); layout() }
-  }
-
-  function applyTickerLimit() {
-    const ticker = app?.app?.ticker
-    if (ticker) ticker.maxFPS = maxFps
+    if (!session || document.hidden || prefersReducedMotion()) return
+    session.setMaxFps(maxFps)
+    session.setPaused(false)
+    layout()
   }
 
   function setMaxFps(value: number) {
     maxFps = Math.max(24, Math.min(120, Math.round(value) || 60))
-    applyTickerLimit()
+    session?.setMaxFps(maxFps)
   }
 
   function setPaused(paused: boolean) {
-    const ticker = app?.app?.ticker
-    if (!ticker) return
+    if (!session) return
     // 减少动态效果：渲染一帧把立绘摆正，然后停住，不做待机循环
-    if (paused || prefersReducedMotion()) { if (ticker.started) ticker.stop(); return }
-    resumeRendering()
+    session.setPaused(paused || prefersReducedMotion())
   }
 
   async function recover() {
@@ -885,7 +903,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   }
 
   // 换装和口型都依赖 Pixi ticker。某些 Cubism 模型在切换 Expression 后会停掉 idle
-  // motion；语音开始时显式恢复渲染，避免出现“有声音但立绘冻结”。
+  // motion；语音开始时显式恢复渲染，避免出现"有声音但立绘冻结"。
   function setSpeaking(value: boolean) {
     speaking = value
     emotionRuntime?.setSpeaking(value)
@@ -906,10 +924,9 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     // Stop Pixi before clearing model state. Otherwise an authored motion can
     // tick once during character switching and read arrays already released by
     // wl-live2d's destroy path.
-    const currentApp = app
+    const currentSession = session
     const currentModel = model
-    const ticker = currentApp?.app?.ticker
-    if (ticker?.started) ticker.stop()
+    if (currentSession) currentSession.setPaused(true)
     if (currentModel) currentModel.visible = false
     ready.value = false; mouthValue.value = 0; mouthHooked = false; speaking = false
     for (const key of Object.keys(emotionCurrent)) delete emotionCurrent[key]
@@ -918,9 +935,10 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     lastParamFrame = 0
     loadedCharacter.value = ''
     stageEl?.classList.remove('live2d-ready')
-    if (currentApp && typeof currentApp.destroy === 'function') { try { currentApp.destroy() } catch {} }
+    if (nativeHitTestUnsubscribe) { nativeHitTestUnsubscribe(); nativeHitTestUnsubscribe = null }
+    if (currentSession && typeof currentSession.destroy === 'function') { try { currentSession.destroy() } catch {} }
     model = null
-    app = null
+    session = null
     pointerGazeCurrentX = 0
     pointerGazeCurrentY = 0
     pointerGazeX = 0
@@ -945,6 +963,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
 
   return {
     ready, enabled, character, loadedCharacter, mouthValue, interactionHint, outfit,
+    backendKind, backendFallback,
     init, enable, disable, setCharacter, setMouth, setAudioLevel, setOutfit, setSpeaking,
     attachEmotionRuntime, setPaused, setMaxFps, recover, layout, retry, destroy,
     setGlobalPointer,

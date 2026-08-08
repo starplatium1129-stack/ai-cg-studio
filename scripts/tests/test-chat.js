@@ -225,6 +225,10 @@ async function run() {
   var voiceStudio = fs.readFileSync(path.join(root, 'src', 'components', 'VoiceStudio.vue'), 'utf8');
   var voiceModule = fs.readFileSync(path.join(root, 'src', 'composables', 'useVoice.ts'), 'utf8');
   var live2dModule = fs.readFileSync(path.join(root, 'src', 'composables', 'useLive2D.ts'), 'utf8');
+  // 双后端抽象后 wl-live2d 专属逻辑（运行库导入/模型创建/画布布局）在
+  // browserBackend；源码哨兵断言检查两者合并，防止单侧重构回退。
+  var live2dBrowserBackend = fs.readFileSync(path.join(root, 'src', 'live2d', 'browserBackend.ts'), 'utf8');
+  var live2dStageModule = live2dModule + '\n' + live2dBrowserBackend;
   var chatCss = fs.readFileSync(path.join(root, 'src', 'assets', 'css', 'chat.css'), 'utf8');
   var mainTs = fs.readFileSync(path.join(root, 'src', 'main.ts'), 'utf8');
   var streamUtils = fs.readFileSync(path.join(root, 'src', 'utils', 'stream.ts'), 'utf8');
@@ -360,19 +364,19 @@ async function run() {
     'all five source-authored outfits must be explicit controls and must not be driven by chat emotion'
   );
   assert(
-    live2dModule.includes('INTERACTION_MOTIONS')
-      && live2dModule.includes('worldPoint')
-      && live2dModule.includes('model.hitTest(point.x, point.y)')
-      && live2dModule.includes('interactionFromStagePosition')
-      && live2dModule.includes('if (y < 0.29) return INTERACTION_MOTIONS.Face')
-      && live2dModule.includes("hint: '碰到了画面左侧胸前，宁宁有点生气'")
-      && live2dModule.includes("hint: '碰到了画面右侧胸前，宁宁有点生气'")
-      && live2dModule.includes('y >= 0.29 && y < 0.42 && x >= 0.40 && x < 0.50')
-      && live2dModule.includes('y >= 0.42 && y < 0.57')
-      && live2dModule.includes('return INTERACTION_MOTIONS.Body')
-      && live2dModule.includes('wl-live2d sometimes reports the broad body mesh for every DOM click')
-      && live2dModule.includes('model.motion(interaction.group, undefined, 3)')
-      && live2dModule.includes("motionPreload: 'ALL'")
+    live2dStageModule.includes('INTERACTION_MOTIONS')
+      && live2dStageModule.includes('worldPoint')
+      && live2dStageModule.includes('model.hitTest(point.x, point.y)')
+      && live2dStageModule.includes('interactionFromStagePosition')
+      && live2dStageModule.includes('if (y < 0.29) return INTERACTION_MOTIONS.Face')
+      && live2dStageModule.includes("hint: '碰到了画面左侧胸前，宁宁有点生气'")
+      && live2dStageModule.includes("hint: '碰到了画面右侧胸前，宁宁有点生气'")
+      && live2dStageModule.includes('y >= 0.29 && y < 0.42 && x >= 0.40 && x < 0.50')
+      && live2dStageModule.includes('y >= 0.42 && y < 0.57')
+      && live2dStageModule.includes('return INTERACTION_MOTIONS.Body')
+      && live2dStageModule.includes('wl-live2d sometimes reports the broad body mesh for every DOM click')
+      && live2dStageModule.includes('model.motion(interaction.group, undefined, 3)')
+      && live2dStageModule.includes("motionPreload: 'ALL'")
       && live2dModule.includes('function markInteractionStarted')
       && live2dModule.includes("interactionHint.value = '这个动作正在进行中'")
       && live2dModule.includes("interactionHint.value = '动作没有启动，请重试'"),
@@ -382,9 +386,9 @@ async function run() {
     live2dModule.includes('点击呆毛、头部、脸、身体、两侧或裙摆可互动'),
     'Live2D must advertise every packaged source interaction area'
   );
-  assert(!/\bany\b/.test(live2dModule), 'Live2D catalog, runtime, controller, and model boundaries must stay explicitly typed');
+  assert(!/\bany\b/.test(live2dStageModule), 'Live2D catalog, runtime, controller, and model boundaries must stay explicitly typed');
   assert(
-    live2dModule.includes('readLive2DCatalog') && live2dModule.includes('readLibrary'),
+    live2dStageModule.includes('readLive2DCatalog') && live2dStageModule.includes('readLibrary'),
     'Live2D status JSON and dynamic runtime exports must be narrowed before use'
   );
   assert(!characterStageComponent.includes('live2d-quick-actions') && !live2dModule.includes('beginGreetingGesture'), 'Live2D must not expose simulated quick actions');
@@ -395,7 +399,7 @@ async function run() {
   );
   assert(live2dModule.includes("'degraded'") && live2dModule.includes('已经显示的模型失效'), 'runtime expression failures must not replace a loaded Live2D model with the static portrait');
   // Live2D 运行库必须真正被加载（重构后曾漏掉，导致"运行库加载失败"）
-  assert(live2dModule.includes("import('wl-live2d')"), 'Live2D runtime must be imported by the composable');
+  assert(live2dStageModule.includes("import('wl-live2d')"), 'Live2D runtime must be imported by the composable');
   // PixiJS 需要 unsafe-eval：两个 Live2D 页面都必须放行，否则运行时初始化失败
   assert(
     securitySource.includes("path === '/chat'")

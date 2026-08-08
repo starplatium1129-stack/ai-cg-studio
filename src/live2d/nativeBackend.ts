@@ -1,0 +1,157 @@
+﻿/**
+ * 原生渲染后端 —— Rust overlay 窗口 + Cubism Native（路径 B）。
+ *
+ * 前端经 window.aicsLive2dNative 桥与 Rust 通信：Rust 在透明 WS_EX_LAYERED
+ * overlay 窗口上用 wgpu 呈现 Live2D，模型由 Cubism Native 官方运行时执行
+ * motion/physics/pose/expression/hit-test。前端只传"意图"（口型电平、
+ * 情绪名称/强度、动作组请求、overlay 矩形），不做参数级写入。
+ *
+ * 桥不存在时 connect 必须 reject（错误名 NATIVE_BACKEND_UNAVAILABLE），
+ * useLive2D 据此 fallback 到浏览器后端。
+ */
+
+import {
+  NATIVE_BACKEND_UNAVAILABLE,
+  NATIVE_CAPABILITY,
+  type Live2DConnectOptions,
+  type Live2DModelHandle,
+  type Live2DStageBackend,
+  type Live2DStageSession,
+} from './types.ts'
+import type { Live2DMotionPriority, Live2DNativeBridge } from '@/types/live2dNative'
+
+export type NativeBridgeProvider = () => Live2DNativeBridge | null | undefined
+
+function defaultBridgeProvider(): Live2DNativeBridge | null | undefined {
+  if (typeof window === 'undefined') return undefined
+  return window.aicsLive2dNative
+}
+
+const PRIORITY_MAP: Record<number, Live2DMotionPriority> = {
+  1: 'idle',
+  2: 'normal',
+  3: 'force',
+}
+
+export function createNativeLive2DBackend(provider: NativeBridgeProvider = defaultBridgeProvider): Live2DStageBackend {
+  return {
+    kind: 'native',
+    capability: NATIVE_CAPABILITY,
+
+    async connect(options: Live2DConnectOptions): Promise<Live2DStageSession> {
+      const bridge = provider()
+      if (!bridge) {
+        throw new Error(NATIVE_BACKEND_UNAVAILABLE)
+      }
+      const character = options.character || 'nene'
+      const result = await bridge.setCharacter(options.modelUrl, { character })
+      if (!result.ok) {
+        throw new Error(`原生 Live2D 加载失败：${result.error ?? '未知错误'}`)
+      }
+
+      let destroyed = false
+      let lastRect: { x: number; y: number; width: number; height: number } = { x: 0, y: 0, width: 0, height: 0 }
+      let lastVisible = false
+      const hitTestListeners = new Set<(areas: string[]) => void>()
+      const motionStartedListeners = new Set<() => void>()
+      const motionFailedListeners = new Set<(info: { group: string; index?: number; reason: string }) => void>()
+
+      const pushFrame = () => {
+        bridge.setFrame({ rect: lastRect, visible: lastVisible, opacity: 1 })
+      }
+
+      const subscriptions: number[] = []
+      subscriptions.push(bridge.onHitTest((areas) => {
+        if (destroyed) return
+        for (const listener of hitTestListeners) listener(areas)
+      }))
+      subscriptions.push(bridge.onMotionStarted(() => {
+        if (destroyed) return
+        for (const listener of motionStartedListeners) listener()
+      }))
+      subscriptions.push(bridge.onMotionFailed((info) => {
+        if (destroyed) return
+        for (const listener of motionFailedListeners) listener(info)
+      }))
+
+      const handle: Live2DModelHandle = {
+        visible: true,
+        motion(group, index, priority) {
+          return bridge.playMotion(group, index, PRIORITY_MAP[priority ?? 3] ?? 'force')
+            .then((result) => result.ok)
+            .catch(() => false)
+        },
+        expression(name) {
+          return bridge.setExpression(name)
+            .then((result) => result.ok)
+            .catch(() => false)
+        },
+        hitTest(x, y) {
+          void bridge.hitTest(x, y).then((result) => {
+            if (!destroyed) for (const listener of hitTestListeners) listener(result.areas)
+          })
+          return []
+        },
+        focus() { /* 原生端凝视由 Rust 经 setGaze 驱动，桌面场景用全局鼠标 */ },
+        setParameterValueById() { /* 原生端不做参数写入（capability.parameterOverride=false） */ },
+        onBeforeModelUpdate() { /* 原生端由 Cubism Native 帧循环执行作者工程 */ },
+        applyFit() { /* 原生端尺寸由 overlay 帧控制（setFrame） */ },
+        getNaturalSize() { return { width: options.canvasWidth, height: options.canvasHeight } },
+        hasMotionGroup() { return false },
+      }
+
+      const session: Live2DStageSession = {
+        kind: 'native',
+        capability: NATIVE_CAPABILITY,
+        onModelLoaded(callback) {
+          bridge.onReady(() => {
+            if (!destroyed) callback(handle)
+          })
+        },
+        onModelError(_callback) {
+          // 桥没有独立错误事件：加载失败已由 connect 的 setCharacter 结果反映；
+          // 运行期错误走 onMotionFailed / onEntranceFinished 之外的退化提示。
+        },
+        setPaused(paused) {
+          lastVisible = !paused
+          pushFrame()
+        },
+        setMaxFps(_fps) {
+          // Rust 侧渲染循环帧率由壳控制；此契约预留（O8 电池降帧用）
+        },
+        getScreenSize() { return { width: options.canvasWidth, height: options.canvasHeight } },
+        getCanvasSize() { return { width: options.canvasWidth, height: options.canvasHeight } },
+        setStageScale() { /* overlay 尺寸由 live2dOverlayLayout 计算后经 updateOverlay 下发 */ },
+        updateOverlay(rect, visible) {
+          lastRect = rect
+          lastVisible = visible
+          pushFrame()
+        },
+        canvasElement() { return null },
+        onNativeHitTest(callback) {
+          hitTestListeners.add(callback)
+          return () => { hitTestListeners.delete(callback) }
+        },
+        sendMouthLevel(level) {
+          bridge.setMouthLevel(Math.max(0, Math.min(1, level)))
+        },
+        sendEmotion(name, intensity) {
+          bridge.setEmotion(name, Math.max(0, Math.min(1, intensity)))
+        },
+        sendGaze(x, y) {
+          bridge.setGaze(Math.max(-1, Math.min(1, x)), Math.max(-1, Math.min(1, y)))
+        },
+        destroy() {
+          destroyed = true
+          hitTestListeners.clear()
+          motionStartedListeners.clear()
+          motionFailedListeners.clear()
+          for (const id of subscriptions) bridge.off(id)
+          subscriptions.length = 0
+          void bridge.destroy().catch(() => { /* 析构期忽略 */ })
+        },
+      }
+      return session
+    },
+  }
+}

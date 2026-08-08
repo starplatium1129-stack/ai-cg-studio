@@ -145,6 +145,7 @@ import {
 import { useLive2D } from '@/composables/useLive2D'
 import { useRovingTabs } from '@/composables/useRovingTabs'
 import { createEmotionRuntime, NATSUME_RUNTIME_CONFIG, NENE_RUNTIME_CONFIG } from '@/utils/emotionRuntime'
+import type { Live2DBackendKind } from '@/live2d/types'
 
 const CHARACTER_IDS = ['nene', 'natsume'] as const
 
@@ -156,6 +157,12 @@ const props = defineProps<{
   statusKind: string
   autoLoad: boolean
   outfit: string
+  /**
+   * 渲染后端：'auto' 时按 html dataset `data-live2d-backend` 或 URL
+   * `?live2dBackend=` 解析（桌面 Rust 壳注入用），默认浏览器 wl-live2d。
+   * 原生后端不可用（桥缺失）时自动回退浏览器并标记 backend-fallback。
+   */
+  backend?: Live2DBackendKind | 'auto'
 }>()
 
 const emit = defineEmits<{
@@ -349,6 +356,17 @@ watch(() => props.autoLoad, (enabled) => {
   })()
 })
 
+function resolvedBackendKind(): Live2DBackendKind {
+  if (props.backend && props.backend !== 'auto') return props.backend
+  try {
+    const url = new URLSearchParams(window.location.search).get('live2dBackend')
+    if (url === 'native' || url === 'browser') return url
+    const dataset = document.documentElement.dataset.live2dBackend
+    if (dataset === 'native' || dataset === 'browser') return dataset
+  } catch { /* 非浏览器环境 */ }
+  return 'browser'
+}
+
 onMounted(() => {
   if (!live2dHostRef.value || !stageRef.value) return
   live2d.attachEmotionRuntime(activeRuntime())
@@ -361,6 +379,7 @@ onMounted(() => {
     await live2d.init(props.activeId, live2dHostRef.value!, stageRef.value!, {
       autoLoad: props.autoLoad,
       outfit: initialOutfit,
+      backendKind: resolvedBackendKind(),
     })
     live2dInitialized.value = true
     if ((props.autoLoad || pendingAutoLoad) && !live2d.enabled.value) {

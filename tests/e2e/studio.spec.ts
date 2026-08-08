@@ -1028,3 +1028,53 @@ test('guest first visit shows a one-time guide and dismissal persists', async ({
   await expect(page.getByRole('dialog', { name: '访客导览' })).toBeHidden();
   expect(errors).toEqual([]);
 });
+
+test('Live2D uses the browser backend by default and labels it on the host', async ({ page }) => {
+  test.setTimeout(60_000);
+  const errors = collectRuntimeErrors(page);
+  await page.addInitScript(() => {
+    localStorage.setItem('aics_chat_v1', JSON.stringify({
+      version: 3,
+      active: 'nene',
+      histories: { nene: [], natsume: [] },
+      settings: {
+        model: '', provider: 'api', apiBaseUrl: '', apiModel: '', apiKey: '',
+        webSearchEnabled: false, live2dEnabled: true, live2dOutfit: 'school',
+        live2dOutfits: { nene: 'school', natsume: 'natsume-cafe' },
+        autoVoice: false, volume: 80, drafts: { nene: '', natsume: '' },
+      },
+    }));
+  });
+
+  await page.goto('/chat');
+  await expect(page.locator('.live2d-host')).toHaveAttribute('data-state', 'ready', { timeout: 45_000 });
+  await expect(page.locator('.live2d-host')).toHaveAttribute('data-backend', 'browser');
+  await expect(page.locator('.live2d-host canvas')).toBeVisible();
+  expect(errors).toEqual([]);
+});
+
+test('Live2D falls back to the browser backend when native bridge is missing', async ({ page }) => {
+  test.setTimeout(60_000);
+  const errors = collectRuntimeErrors(page);
+  await page.addInitScript(() => {
+    localStorage.setItem('aics_chat_v1', JSON.stringify({
+      version: 3,
+      active: 'natsume',
+      histories: { nene: [], natsume: [] },
+      settings: {
+        model: '', provider: 'api', apiBaseUrl: '', apiModel: '', apiKey: '',
+        webSearchEnabled: false, live2dEnabled: true, live2dOutfit: 'natsume-cafe',
+        live2dOutfits: { nene: 'school', natsume: 'natsume-cafe' },
+        autoVoice: false, volume: 80, drafts: { nene: '', natsume: '' },
+      },
+    }));
+  });
+
+  // 显式请求原生后端；无 window.aicsLive2dNative 时必须回退浏览器且仍可用
+  await page.goto('/chat?live2dBackend=native');
+  await expect(page.locator('.live2d-host')).toHaveAttribute('data-state', 'ready', { timeout: 45_000 });
+  await expect(page.locator('.live2d-host')).toHaveAttribute('data-backend', 'browser-fallback');
+  await expect(page.locator('.live2d-host canvas')).toBeVisible();
+  await expect(page.locator('.avatar-status')).toHaveAttribute('data-state', 'ready');
+  expect(errors).toEqual([]);
+});

@@ -32,6 +32,7 @@
 - 状态：`src/stores/sceneStore.ts` 与 `src/stores/promptBuilderStore.ts`。
 - 业务组合函数：`src/composables/`。
 - Prompt、场景推断、SD 请求构建与错误策略：`src/utils/`。
+- Live2D 双后端：`src/live2d/`（`types.ts` 契约 / `browserBackend.ts` wl-live2d / `nativeBackend.ts` Rust overlay 桥 / `createBackend.ts` 工厂回退）。浏览器默认走 wl-live2d（行为零改动）；`ChatCharacterStage` 的 `backend` prop 或 html `data-live2d-backend` / `?live2dBackend=` 可请求原生后端，桥（`window.aicsLive2dNative`）缺失自动回退浏览器并标记 `data-backend="browser-fallback"`。原生后端只传意图（口型/情绪/凝视/动作组），参数级写入由 Cubism Native 作者工程执行；`blinkScheduler`/`MOUTH_PARAMS`/`emotionRuntime` 参数 hack 只在浏览器路径运行。IPC 契约见 `src/types/live2dNative.ts` 与 `docs/live2d-native-overlay-plan.md`（Rust 侧实现依据）。overlay 矩形一律屏幕物理像素，换算在 `src/utils/live2dOverlayLayout.ts`（纯函数）。
 - 网关：Express，路由位于 `routes/`，安全与公共服务位于 `server/`、`services/`。
 - 分享 token：未设置 `TOKEN` 环境变量时，首次启动生成并持久化至 `runtime/state/gateway_token`；重启必须复用该 token。`TOKEN` 环境变量仅作显式覆盖，不得改写持久化 token。
 - 数据：场景运行时数据通过 `sceneStore` 单例加载；不要重新添加散落的 `/data/*.json` fetch。
@@ -172,6 +173,19 @@
 4. **SoulLink 原生动画适配**：新增 `live2dNativeAdapter.ts`，`RuntimeSnapshot.nativeAnimation` 现在经过角色级、失败关闭的白名单 adapter；参数抑制、优先级、token 去重、过期模型和定时释放均有纯测试覆盖。当前宁宁五个 Expression 仍仅作衣装，夏目无 Expressions，未把任何未验证的 Tap/Idle/Start/Leave 动作冒充情绪动作。
 
 验证：`npm run typecheck:app`、`npm run build`、`node --test scripts/tests/test-emotion-runtime.js`、Live2D 定向 E2E 2/2、真实 TTS 12/12 音频质量回归、真实浏览器配音路径 12/12 均通过。
+
+### 已完成：Live2D 双后端抽象层（2026-08-08）
+
+路径 B（Rust overlay 原生渲染）的前端侧交付，与 Tauri 迁移、Rust wgpu 实现并行：
+
+1. **后端抽象** ✅：`src/live2d/types.ts`（`Live2DStageBackend`/`Live2DStageSession`/`Live2DModelHandle`/`Live2DCapability`）+ `browserBackend.ts`（wl-live2d 平移封装，行为零改动）+ `nativeBackend.ts`（桥驱动）+ `createBackend.ts`（native 无桥自动回退 browser，`data-backend="browser-fallback"`）。`useLive2D` 按 capability 分派：浏览器路径保留全部 hack 逻辑，原生路径只发意图（`sendMouthLevel`/`sendEmotion`/`sendGaze`/`updateOverlay`）。
+2. **IPC 契约** ✅：`src/types/live2dNative.ts`（`window.aicsLive2dNative` 命令/事件），`docs/live2d-native-overlay-plan.md`（能力矩阵、桌面端退役清单、坐标系约定、crate 调研结论：首选 live2d-rs v5，cubism-rs 4-r.5.1 为回退）。
+3. **布局换算** ✅：`src/utils/live2dOverlayLayout.ts` 纯函数（CSS 矩形 × DPR + 窗口原点 → 屏幕物理像素，多屏钳制）。
+4. **组件接线** ✅：`ChatCharacterStage` 新增 `backend` prop（'auto' 默认解析 html dataset / URL query）。
+5. **测试** ✅：`test-live2d-backend.js`（20 用例：布局/回退/原生会话契约/桥形状校验）入 validate 链；`test-chat.js` 源码哨兵改为合并检查 useLive2D + browserBackend；studio.spec.ts 新增默认后端标记与 native 回退 2 用例。
+6. **验收工具** ✅：`scripts/tests/measure-live2d-memory.js`（Playwright + CDP，实测 Live2D 就绪后 JS heap ~30MB，进程级回退 PowerShell WorkingSet）。
+
+验证：typecheck:app、build、Live2D 定向 E2E 7/7（含既有 blink/entrance/Leave/竞态 5 用例）、chat/emotion/blink/page-architecture/style-debt/character-profiles/live2d-backend/live2d-service 相关单测全绿。
 
 ### 已完成：桌面 Companion 日志诊断与陪伴行为（2026-08-03）
 
