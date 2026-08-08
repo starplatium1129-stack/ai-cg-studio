@@ -12,7 +12,8 @@ const root = path.resolve(__dirname, '..', '..');
 const catalog = parseLoraCatalog(JSON.parse(
   fs.readFileSync(path.join(root, 'data', 'loras.json'), 'utf8')
 ));
-assert.strictEqual(catalog.length, 2, 'production LoRA catalog must expose both character models');
+assert.strictEqual(catalog.length, 3, 'production LoRA catalog must expose both character models (nene has v18 SDXL and v19 Anima)');
+assert(catalog.some(entry => entry.id === 'L_NENE_V19_ANIMA'), 'v19 Anima LoRA must be registered');
 assert(catalog.every(entry => entry.baseModel), 'current base_model fields must reach the model shelf');
 assert(catalog.every(entry => entry.character), 'current character fields must reach the model shelf');
 assert(catalog.every(entry => entry.triggerWords.length), 'legacy trigger fields must normalize to trigger words');

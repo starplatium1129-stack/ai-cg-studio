@@ -459,6 +459,7 @@ function createControlRouter(config, gatewayRef, dependencies) {
         modeBusy: !!state.modeBusy,
         operation: state.operation,
         sdHost: config.SD_HOST,
+        comfyHost: config.COMFY_HOST,
         ttsHost: config.TTS_HOST,
         ollamaHost: config.OLLAMA_HOST,
         localLink: 'http://127.0.0.1:' + config.PORT + '/',
@@ -492,7 +493,7 @@ function createControlRouter(config, gatewayRef, dependencies) {
         ollamaModels:[], ollamaVram:0, webuiManaged:false,
         modeBusy:!!state.modeBusy,
         operation:state.operation,
-        sdHost:config.SD_HOST, ttsHost:config.TTS_HOST, ollamaHost:config.OLLAMA_HOST,
+        sdHost:config.SD_HOST, comfyHost:config.COMFY_HOST, ttsHost:config.TTS_HOST, ollamaHost:config.OLLAMA_HOST,
         localLink:'http://127.0.0.1:' + config.PORT + '/',
         shareLinkAvailable:false,
         tunnelStatus:config.DISABLE_TUNNEL ? 'disabled' : 'waiting',
@@ -575,6 +576,7 @@ function createControlRouter(config, gatewayRef, dependencies) {
       // 而且值会落盘 → 重启后 /sdapi 代理会指向攻击者选定的地址。
       var hostFields = [
         { key:'sdHost',     configKey:'SD_HOST',     label:'SD' },
+        { key:'comfyHost',  configKey:'COMFY_HOST',  label:'ComfyUI' },
         { key:'ttsHost',    configKey:'TTS_HOST',    label:'语音' },
         { key:'ollamaHost', configKey:'OLLAMA_HOST', label:'Ollama' }
       ];
@@ -598,7 +600,7 @@ function createControlRouter(config, gatewayRef, dependencies) {
       configUpdates.forEach(function (update) { config[update.key] = update.value; });
       if (nextVoiceProfiles) config.VOICE_PROFILES = nextVoiceProfiles;
       controlLog('服务配置已保存');
-      envelope.ok(res, { sdHost:config.SD_HOST, ttsHost:config.TTS_HOST, ollamaHost:config.OLLAMA_HOST });
+      envelope.ok(res, { sdHost:config.SD_HOST, comfyHost:config.COMFY_HOST, ttsHost:config.TTS_HOST, ollamaHost:config.OLLAMA_HOST });
     } catch(e) {
       envelope.fail(res, 500, e.message);
     }
@@ -831,6 +833,7 @@ function createControlRouter(config, gatewayRef, dependencies) {
       uptime: Math.floor((Date.now() - startTime) / 1000),
       port: config.PORT,
       sdHost: config.SD_HOST,
+      comfyHost: config.COMFY_HOST,
       ttsHost: config.TTS_HOST,
       ollamaHost: config.OLLAMA_HOST,
       sceneShowcaseDir: config.SCENE_SHOWCASE_DIR || '',

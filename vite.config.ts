@@ -25,6 +25,10 @@ export default defineConfig(async ({ mode }) => {
   },
   server: {
     port: 5173,
+    watch: {
+      // desktop-tauri Rust 构建产物会被锁（EBUSY 导致 dev server 崩溃）
+      ignored: ['**/desktop-tauri/**', '**/native-live2d/target/**', '**/src-tauri/**']
+    },
     proxy: {
       '/api':         { target: 'http://127.0.0.1:3000', changeOrigin: true },
       '/sdapi':       { target: 'http://127.0.0.1:3000', changeOrigin: true },

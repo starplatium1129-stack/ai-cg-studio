@@ -36,6 +36,17 @@ var SD_PROXY_ALLOWLIST = [
   '/sdapi/v1/interrupt'
 ];
 
+// ComfyUI 直通白名单：只放行前端 Anima 引擎真正调用的端点。
+// 不放开 /api 管理类端点，避免把 ComfyUI 的完整 API 暴露给 token 持有者。
+var COMFY_PROXY_ALLOWLIST = [
+  '/prompt',
+  '/queue',
+  '/history',
+  '/object_info',
+  '/interrupt',
+  '/view'
+];
+
 function staticOptions(maxAge) {
   return {
     dotfiles:'deny',
@@ -72,6 +83,7 @@ function createGateway(options) {
   var live2d = createLive2dRouter(config, options.services);
   var maintenance = createMaintenanceRouter(config);
   var training = createTrainingRouter(config, options.services);
+  var desktopTools = require('./routes/desktop-tools').createDesktopToolsRouter({ security: security });
 
   // 控制面板路由需要访问 gateway 对象（tunnelUrl、startTunnel/stopTunnel）
   // 用闭包延迟引用，避免循环依赖
@@ -91,6 +103,7 @@ function createGateway(options) {
   app.use(maintenance.router);
   app.use(control);
   app.use(training.router);
+  app.use(desktopTools);
 
   app.get('/api/health', function (req, res) {
     var live2dStatus = live2d.service.status();
@@ -240,9 +253,53 @@ function createGateway(options) {
   }));
   app.use(sdProxy);
 
-  // 白名单外的 SD 路径必须是 JSON 404，不能被 SPA catch-all 吞成 200 text/html
-  app.use(['/sdapi', '/controlnet', '/adetailer'], function (req, res) {
-    envelope.fail(res, 404, '该 SD 接口未开放：' + req.baseUrl + req.path);
+  // ComfyUI 直通代理：Anima 引擎出图走这里（ComfyUI 工作流协议与 SDXL 不兼容）。
+  var comfyProxy = createProxyMiddleware({
+    target:config.COMFY_HOST,
+    router:function () { return config.COMFY_HOST; },
+    changeOrigin:true,
+    ws:false,
+    pathRewrite:function (pathname) {
+      // ComfyUI 原生 API 没有 /comfy 前缀，转发前剥掉。
+      return pathname.replace(/^\/comfy(?=\/|$)/, '');
+    },
+    pathFilter:function (pathname) {
+      // 网关用 /comfy/* 暴露 ComfyUI 原生 API（/object_info 等无前缀路径），
+      // pathname 会带 /comfy 前缀，白名单匹配前先剥掉。
+      var p = pathname.replace(/^\/comfy(?=\/|$)/, '');
+      return COMFY_PROXY_ALLOWLIST.some(function (prefix) { return p === prefix || p.startsWith(prefix + '/'); });
+    },
+    proxyTimeout:20 * 60 * 1000,
+    on:{
+      // ComfyUI 自带 CSRF 防护：非自身 Origin 的 POST /prompt 直接 403。
+      // 网关转发时剥掉 Origin，让浏览器同源请求正常通过。
+      proxyReq:function (proxyReq) {
+        proxyReq.removeHeader('origin');
+      },
+      error:function (error, req, res) {
+        console.error('  ❌ ComfyUI 代理错误:', error.message);
+        if (res && typeof res.status === 'function') {
+          if (!res.headersSent) {
+            envelope.fail(res, 502, 'ComfyUI 未响应，请确认已经启动 (' + config.COMFY_HOST + ')');
+          }
+          return;
+        }
+        if (res && typeof res.destroy === 'function') {
+          try { res.write('HTTP/1.1 502 Bad Gateway\r\nConnection: close\r\n\r\n'); } catch (writeError) {}
+          try { res.destroy(); } catch (destroyError) {}
+        }
+      }
+    }
+  });
+  // /prompt 是唯一吃 GPU 的 Comfy 端点，与 SD 出图共用一套限流语义。
+  app.post('/comfy/prompt', security.rateLimit({
+    capacity:12, refillMs:5000, label:'Comfy 出图'
+  }));
+  app.use(comfyProxy);
+
+  // 白名单外的 SD/Comfy 路径必须是 JSON 404，不能被 SPA catch-all 吞成 200 text/html
+  app.use(['/sdapi', '/controlnet', '/adetailer', '/comfy'], function (req, res) {
+    envelope.fail(res, 404, '该接口未开放：' + req.baseUrl + req.path);
   });
 
   // SPA fallback — Vue Router 的前端路由在刷新时返回 index.html

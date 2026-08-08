@@ -5,8 +5,8 @@
     :data-director-mode="pb.directorMode"
     :class="{
       'focus-mode': pb.focusMode,
-      'step-4': Boolean(sd.resultUrl.value || sd.generating.value),
-      'has-result': Boolean(sd.resultUrl.value),
+      'step-4': Boolean(displayResultUrl || sd.generating.value),
+      'has-result': Boolean(displayResultUrl),
     }"
   >
     <a @click.prevent="$router.push('/')" href="/" class="nav-back">← 回首页</a>
@@ -176,7 +176,7 @@
 
         <!-- Stage placeholder -->
         <section
-          v-show="!sd.resultUrl.value"
+            v-show="!displayResultUrl"
           class="stage-placeholder"
           :class="{
             'is-generating': sd.generating.value,
@@ -231,11 +231,11 @@
         </section>
 
         <!-- Result image -->
-        <div v-if="sd.resultUrl.value" class="result-image-wrap archive-canvas">
+        <div v-if="displayResultUrl" class="result-image-wrap archive-canvas">
           <div class="stage-corners" aria-hidden="true">
             <i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i>
           </div>
-          <img class="result-image" :src="sd.resultUrl.value" alt="生成的图片" />
+          <img class="result-image" :src="displayResultUrl" alt="生成的图片" />
           <div class="result-image-actions">
             <button class="btn btn-ghost" type="button" @click="saveResult">保存快照</button>
             <button class="btn btn-ghost" type="button" :disabled="!prevResult" @click="compareOpen = true">
@@ -325,7 +325,7 @@
           :models="sd.models.value"
           :samplers="sd.samplers.value"
           :schedulers="sd.schedulers.value"
-          :result-seed="sd.resultSeed.value"
+          :result-seed="displayResultSeed"
           @touch="pb.markParamTouched"
           @reuse-seed="reuseLastSeed"
         />
@@ -333,6 +333,15 @@
         <!-- Result panel -->
         <div class="result-frame step-panel" id="stepResult">
           <div class="panel-title">输出 Result</div>
+
+          <div class="engine-switch" role="group" aria-label="出图引擎">
+            <button type="button" class="engine-btn" :class="{ active: drawEngine === 'sd' }" @click="setDrawEngine('sd')">
+              SD 引擎 <span class="engine-sub">WebUI · v18 LoRA</span>
+            </button>
+            <button type="button" class="engine-btn" :class="{ active: drawEngine === 'anima' }" @click="setDrawEngine('anima')">
+              Anima 引擎 <span class="engine-sub">ComfyUI · v19 LoRA</span>
+            </button>
+          </div>
 
           <GenerationOutputControls
             :params="pb.sdParams"
@@ -343,8 +352,8 @@
             :base-resolution-hint="baseResolutionHint"
             :can-use-face-detailer="canUseFaceDetailer"
             :generating="sd.generating.value"
-            :online="sd.online.value"
-            :result-seed="sd.resultSeed.value"
+            :online="engineOnline"
+            :result-seed="displayResultSeed"
             :queue-available="sdQueue.canEnqueue.value"
             @touch="pb.markParamTouched"
             @generate="callGenerate"
@@ -379,6 +388,8 @@
             :suggested-caption="pb.activeScene?.story || pb.story"
           />
         </div>
+
+        <AnimaQuickPanel ref="animaPanelRef" @result="onAnimaResult" />
       </div>
 
       <!-- ─── 右栏：风格 ───────────────────────────────────── -->
@@ -544,6 +555,7 @@ const GenerationQueuePanel = defineAsyncComponent(() => import('@/components/Gen
 const GenerationParamsPanel = defineAsyncComponent(() => import('@/components/GenerationParamsPanel.vue'))
 const GenerationOutputControls = defineAsyncComponent(() => import('@/components/GenerationOutputControls.vue'))
 const SDRecoveryPanel = defineAsyncComponent(() => import('@/components/SDRecoveryPanel.vue'))
+const AnimaQuickPanel = defineAsyncComponent(() => import('@/components/AnimaQuickPanel.vue'))
 const HistoryPanel = defineAsyncComponent(() => import('@/components/HistoryPanel.vue'))
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
@@ -651,7 +663,7 @@ const compareEl = ref<HTMLElement | null>(null)
 function resultSnapshot(url: string): ResultSnapshot {
   return {
     url,
-    seed: sd.resultSeed.value ?? (pb.sdParams.seedLock && pb.sdParams.seed >= 0 ? pb.sdParams.seed : null),
+    seed: displayResultSeed.value ?? (pb.sdParams.seedLock && pb.sdParams.seed >= 0 ? pb.sdParams.seed : null),
     size: sdSize.value,
     sampler: pb.sdParams.sampler || sd.samplers.value[0] || '—',
     cfg: pb.sdParams.cfg,
@@ -661,13 +673,8 @@ function resultSnapshot(url: string): ResultSnapshot {
   }
 }
 
-// 新一轮生成开始时 resultUrl 会被清空（''），完成后再写入新值；
-// 因此只在"有值且与上一张不同"时轮转快照。
-watch(() => sd.resultUrl.value, (url, oldUrl) => {
-  if (!url || url === oldUrl) return
-  if (lastResult.value) prevResult.value = lastResult.value
-  lastResult.value = resultSnapshot(url)
-})
+// 新一轮生成开始时结果会被清空，完成后再写入新值；
+// 因此只在"有值且与上一张不同"时轮转快照（SD 与 Anima 结果共用，定义见引擎区块）。
 
 function closeCompare() {
   compareOpen.value = false
@@ -717,6 +724,45 @@ function onStoryInput() {
 // ── 出图 + 队列 + 错误恢复 ──────────────────────────────────────────────────
 const sdErrorReport = ref<SDErrorReport | null>(null)
 function dismissError() { sdErrorReport.value = null }
+
+// 出图引擎切换：sd（reForge WebUI）/ anima（ComfyUI 直通）
+type DrawEngine = 'sd' | 'anima'
+const drawEngine = ref<DrawEngine>((localStorage.getItem('aics_draw_engine') as DrawEngine) || 'sd')
+const animaPanelRef = ref<{ generateWith: (positive: string, negative: string, seed?: number) => Promise<void>; online?: boolean; $el?: HTMLElement } | null>(null)
+
+// 引擎统一结果：SD 用 useSDGenerate，Anima 由面板上抛，主结果框共用一套展示/保存。
+const animaResult = ref<{ url: string; seed: number | null } | null>(null)
+function onAnimaResult(payload: { url: string; seed: number | null }) {
+  animaResult.value = payload
+  sd.clearResult()
+}
+const displayResultUrl = computed(() => drawEngine.value === 'anima' ? (animaResult.value?.url ?? '') : sd.resultUrl.value)
+const displayResultSeed = computed(() => drawEngine.value === 'anima' ? animaResult.value?.seed ?? null : sd.resultSeed.value)
+
+// 新一轮生成开始时结果会被清空，完成后再写入新值；
+// 因此只在"有值且与上一张不同"时轮转快照（SD 与 Anima 结果共用）。
+watch(displayResultUrl, (url, oldUrl) => {
+  if (!url || url === oldUrl) return
+  if (lastResult.value) prevResult.value = lastResult.value
+  lastResult.value = resultSnapshot(url)
+})
+function setDrawEngine(v: DrawEngine) {
+  if (drawEngine.value === v) return
+  drawEngine.value = v
+  localStorage.setItem('aics_draw_engine', v)
+  pb.flash(v === 'anima' ? '已切换到 Anima 引擎（ComfyUI + v19 LoRA）' : '已切换到 SD 引擎（WebUI）')
+  if (v === 'anima') {
+    setTimeout(() => {
+      animaPanelRef.value?.$el?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+    }, 100)
+  }
+}
+
+// Anima 模式下生成按钮的可用性取决于 ComfyUI 在线状态，而不是 SD WebUI。
+const engineOnline = computed(() => {
+  if (drawEngine.value === 'anima') return animaPanelRef.value?.online ?? false
+  return sd.online.value
+})
 
 /** 把当前导演台状态快照成一个队列任务 */
 function captureJob(): Omit<SDQueueJob, 'id'> | null {
@@ -813,7 +859,7 @@ async function runJob(job: Omit<SDQueueJob, 'id'>, opts: { disableLora?: boolean
     alwayson_scripts: alwaysonScripts,
   })
 
-  if (sd.resultSeed.value) pb.sdParams.seed = sd.resultSeed.value
+  if (displayResultSeed.value) pb.sdParams.seed = displayResultSeed.value
   if (url) {
     writeQuickCreate({
       checkpoint: job.checkpoint,
@@ -858,6 +904,7 @@ const sdQueue = useSDQueue({
 })
 
 function enqueueCurrent() {
+  if (drawEngine.value === 'anima') { pb.flash('Anima 引擎暂不支持队列，直接点击生成即可'); return }
   const job = captureJob()
   if (!job) { pb.flash('请先选择场景或填写故事'); return }
   sdQueue.enqueue(job)
@@ -865,6 +912,12 @@ function enqueueCurrent() {
 
 async function callGenerate(opts: { disableLora?: boolean } = {}) {
   if (!livePrompt.value) { pb.flash('请先选择场景或填写故事'); return }
+  if (drawEngine.value === 'anima') {
+    if (opts.disableLora) { pb.flash('Anima 引擎固定使用 v19 LoRA，无法跳过') }
+    const seed = pb.sdParams.seedLock && pb.sdParams.seed >= 0 ? pb.sdParams.seed : undefined
+    await animaPanelRef.value?.generateWith(livePrompt.value, negativePrompt.value, seed)
+    return
+  }
   sdErrorReport.value = null
   const job = captureJob()
   if (!job) return
@@ -923,7 +976,7 @@ async function copyPrompt() {
 
 async function saveHistory() {
   try {
-    const url = sd.resultUrl.value
+    const url = displayResultUrl.value
     if (!url) { pb.flash('暂无可保存的成片'); return }
     // 抓取成片 blob 写入 IndexedDB，并 commit 历史
     const response = await fetch(url)
@@ -932,7 +985,7 @@ async function saveHistory() {
     if (!blob.size) { pb.flash('成片数据已失效，请重新生成'); return }
     const entry = await pb.commitHistoryEntry({
       blob,
-      seed: sd.resultSeed.value ?? undefined,
+      seed: displayResultSeed.value ?? undefined,
       size: sdSize.value,
       negative: negativePrompt.value,
       prompt: livePrompt.value,
@@ -945,7 +998,7 @@ async function saveHistory() {
 function saveResult() { saveHistory() }
 
 function reuseLastSeed() {
-  const seed = sd.resultSeed.value ?? pb.lastSeed
+  const seed = displayResultSeed.value ?? pb.lastSeed
   if (seed == null || seed < 0) { pb.flash('还没有可复用的 seed'); return }
   pb.sdParams.seed = seed
   pb.sdParams.seedLock = true
@@ -1156,3 +1209,35 @@ watch(() => pb.sdModelName, (name) => {
   pb.applyModelProfile(name || sd.checkpoint.value)
 })
 </script>
+
+<style scoped>
+.engine-switch {
+  display: flex;
+  gap: 8px;
+  margin: 4px 0 10px;
+  flex-wrap: wrap;
+}
+.engine-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: flex-start;
+  padding: 7px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.05);
+  color: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.engine-btn.active {
+  border-color: #f06292;
+  background: rgba(240, 98, 146, 0.14);
+  color: #f8bbd0;
+}
+.engine-sub {
+  font-size: 11px;
+  opacity: 0.6;
+}
+</style>

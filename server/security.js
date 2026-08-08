@@ -176,7 +176,8 @@ function tokenAuth(token) {
       return next();
     }
     if (req.path.startsWith('/sdapi') || req.path.startsWith('/controlnet') ||
-        req.path.startsWith('/adetailer') || req.path.startsWith('/api/')) {
+        req.path.startsWith('/adetailer') || req.path.startsWith('/comfy') ||
+        req.path.startsWith('/api/')) {
       return envelope.fail(res, 401, 'Unauthorized — 缺少 token 参数');
     }
     return res.status(403).send(

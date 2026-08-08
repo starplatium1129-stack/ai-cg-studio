@@ -128,6 +128,7 @@ function loadGatewayConfig(rootDir, env) {
     TOKEN_SOURCE:env.TOKEN ? 'environment' : 'runtime/state',
     SD_HOST:resolveUpstreamHost(env.SD_HOST, saved.sdHost, 'http://127.0.0.1:7860'),
     SD_API_AUTH:env.SD_API_AUTH || '',
+    COMFY_HOST:resolveUpstreamHost(env.COMFY_HOST, saved.comfyHost, 'http://127.0.0.1:8188'),
     TTS_HOST:resolveUpstreamHost(env.TTS_HOST, saved.ttsHost, 'http://127.0.0.1:9880'),
     VOICE_PROFILES:saved.voices && typeof saved.voices === 'object' ? saved.voices : {},
     OLLAMA_HOST:resolveUpstreamHost(env.OLLAMA_HOST, saved.ollamaHost, 'http://127.0.0.1:11434'),
