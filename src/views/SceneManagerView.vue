@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <article class="page" style="--page-max:1400px">
     <WorkspaceArchiveBar
       chapter="12"
@@ -346,12 +346,13 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
+import { ApiClientError } from '../api/client.ts'
+import { maintenanceApi } from '../api/maintenanceApi.ts'
 import { useSceneStore } from '@/stores/sceneStore'
 // 场景编辑器的领域模型契约。原先整块是 any[] / any —— 这个视图会全量覆盖写回
 // data/scenes/*.json，字段拼错或丢字段等于静默删数据。
 import type {
   SceneDraft, TagRecord, CurationData, CurationTier,
-  SceneSaveResult, MaintenanceRunResult,
 } from '@/types/api'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import { useSceneShowcaseUpload } from '@/composables/useSceneShowcaseUpload'
@@ -501,6 +502,13 @@ function errorMessage(error: unknown, fallback: string) {
   if (error instanceof Error && error.message) return error.message
   const text = String(error ?? '').trim()
   return text || fallback
+}
+function maintenanceErrorMessage(error: unknown, fallback: string) {
+  if (!(error instanceof ApiClientError) || !error.responseBody) return errorMessage(error, fallback)
+  const output = typeof error.responseBody.output === 'string' ? error.responseBody.output.trim() : ''
+  const recovery = typeof error.responseBody.recovery === 'string' ? error.responseBody.recovery.trim() : ''
+  const message = output || errorMessage(error, fallback)
+  return recovery && !message.includes(recovery) ? `${message}；${recovery}` : message
 }
 const TIER_LABELS: Record<CurationTier, string> = {
   signature: '招牌', curated: '精选', review: '待审', normal: '',
@@ -718,18 +726,17 @@ async function saveToProject() {
   saving.value = true
   maintenanceHint.value = '正在保存并检查…'
   try {
-    const r = await fetch('/api/maintenance/scenes', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ scenes: scenes.value, tags: tags.value, curation: curation.value })
+    const data = await maintenanceApi.saveScenes({
+      scenes: scenes.value,
+      tags: tags.value,
+      curation: curation.value,
     })
-    const data = await r.json() as SceneSaveResult
-    if (!r.ok || !data.ok) throw new Error(data.error || '保存失败')
     dirty.value = false
     maintenanceHint.value = data.count + ' 个场景已同步；备份编号 ' + data.backup
     // 作废共享缓存：其他页面正拿着写回前的旧副本
     sceneStore.loaded = false
   } catch (e) {
-    maintenanceHint.value = '保存未完成：' + errorMessage(e, '请重试')
+    maintenanceHint.value = '保存未完成：' + maintenanceErrorMessage(e, '请重试')
   } finally {
     saving.value = false
   }
@@ -743,14 +750,10 @@ async function runTool(taskId: string) {
   toolResultTitle.value = tool.iconName + ' ' + tool.label
   toolResult.value = { ok: true, output: '...' }
   try {
-    const r = await fetch('/api/maintenance/run', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ task: taskId })
-    })
-    const data = await r.json() as MaintenanceRunResult
-    toolResult.value = { ok: !!data.ok, output: data.output || data.error || '(no output)' }
+    const data = await maintenanceApi.run(taskId)
+    toolResult.value = { ok: true, output: data.output || '(no output)' }
   } catch (e) {
-    toolResult.value = { ok: false, output: '网络请求失败：' + errorMessage(e, '请重试') }
+    toolResult.value = { ok: false, output: maintenanceErrorMessage(e, '请重试') }
   } finally {
     toolRunning.value = false
   }

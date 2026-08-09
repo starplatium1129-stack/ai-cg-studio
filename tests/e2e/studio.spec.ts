@@ -162,7 +162,7 @@ test('scene manager loads project data and opens the editor without dirtying sta
   await page.goto('/scene-manager');
 
   await expect(page.locator('table tbody tr').first()).toBeVisible();
-  await expect(page.locator('.stats')).toContainText('297');
+  await expect(page.locator('.stats')).toContainText('298');
   // 未改动时保存按钮必须不可用
   await expect(page.getByRole('button', { name: /保存到项目/ })).toBeDisabled();
 
@@ -604,6 +604,171 @@ test('speech input: hold-talk entry hidden until ASR endpoint configured', async
   // 其余运行时错误不允许出现。
   const permissionErrors = errors.filter(error => !/microphone|Permissions policy/.test(error));
   expect(permissionErrors).toEqual([]);
+});
+
+test('companion speech: page Space is hold-to-talk but DND blocks auto listening', async ({ page }) => {
+  const errors = collectRuntimeErrors(page);
+  await page.addInitScript(() => {
+    localStorage.setItem('aics_chat_v1', JSON.stringify({
+      version: 3,
+      active: 'nene',
+      histories: { nene: [], natsume: [] },
+      settings: {
+        model: 'local-model',
+        provider: 'api',
+        apiBaseUrl: 'https://local.example/v1',
+        apiModel: 'local-model',
+        apiKey: 'local-key',
+        webSearchEnabled: false,
+        live2dEnabled: false,
+        live2dOutfit: 'school',
+        autoVoice: false,
+        volume: 80,
+        drafts: { nene: '', natsume: '' },
+      },
+    }));
+    localStorage.setItem('aics_speech_input_v1', JSON.stringify({
+      enabled: true,
+      kind: 'openai',
+      endpoint: 'http://127.0.0.1:8000/v1',
+      model: 'whisper-1',
+      apiKey: '',
+      language: '',
+      autoSend: false,
+      wakeEnabled: true,
+      wakeWords: [],
+      endWords: ['结束对话'],
+    }));
+    localStorage.setItem('aics_companion_behavior_v1', JSON.stringify({
+      enabled: true,
+      dnd: true,
+      idleMinutes: 0,
+      quietStartHour: 23,
+      quietEndHour: 8,
+    }));
+    (window as any).__speechMicCalls = 0;
+    (window as any).__speechTrackStops = 0;
+    Object.defineProperty(navigator, 'mediaDevices', {
+      configurable: true,
+      value: {
+        getUserMedia: async () => {
+          (window as any).__speechMicCalls += 1;
+          return { getTracks: () => [{ stop: () => { (window as any).__speechTrackStops += 1; } }] };
+        },
+      },
+    });
+    class MockAudioContext {
+      sampleRate = 16000;
+      destination = {};
+      state = 'running';
+      createMediaStreamSource() { return { connect: () => {}, disconnect: () => {} }; }
+      createScriptProcessor() { return { connect: () => {}, disconnect: () => {}, onaudioprocess: null }; }
+      createGain() { return { gain: { value: 0 }, connect: () => {}, disconnect: () => {} }; }
+      close() { this.state = 'closed'; return Promise.resolve(); }
+    }
+    (window as any).AudioContext = MockAudioContext;
+  });
+  await page.goto('/companion');
+
+  await expect(page.locator('.companion-speech-btn')).toBeVisible();
+  await expect(page.locator('.companion-speech-cluster')).toBeVisible();
+  const speechLayout = await page.evaluate(() => {
+    const rect = (selector: string) => {
+      const element = document.querySelector(selector);
+      if (!element) return null;
+      const box = element.getBoundingClientRect();
+      return { left: box.left, right: box.right, top: box.top, bottom: box.bottom, width: box.width, height: box.height };
+    };
+    return {
+      viewport: window.innerWidth,
+      scrollWidth: document.documentElement.scrollWidth,
+      textarea: rect('.companion-input'),
+      send: rect('.companion-send'),
+      cluster: rect('.companion-speech-cluster'),
+    };
+  });
+  expect(speechLayout.scrollWidth).toBeLessThanOrEqual(speechLayout.viewport);
+  expect(speechLayout.cluster?.width).toBeGreaterThan(0);
+  expect(speechLayout.cluster?.right).toBeLessThanOrEqual(speechLayout.viewport + 1);
+  expect(speechLayout.textarea?.right).toBeLessThanOrEqual(speechLayout.send?.left || 0);
+  expect(speechLayout.send?.right).toBeLessThanOrEqual(speechLayout.cluster?.left || 0);
+  await expect(page.locator('.companion-speech-btn')).toHaveAttribute('data-state', 'idle');
+  await expect.poll(() => page.evaluate(() => (window as any).__speechMicCalls)).toBe(0);
+
+  const input = page.locator('.companion-input');
+  await input.focus();
+  await page.keyboard.down(' ');
+  await expect(page.locator('.companion-speech-btn')).toHaveAttribute('data-state', 'idle');
+  await page.keyboard.up(' ');
+
+  await page.locator('.companion-page').click({ position: { x: 10, y: 10 } });
+  await page.keyboard.down(' ');
+  await expect(page.locator('.companion-speech-btn')).toHaveAttribute('data-state', 'capturing');
+  await page.keyboard.up(' ');
+  await expect(page.locator('.companion-speech-btn')).toHaveAttribute('data-state', 'idle');
+  await expect.poll(() => page.evaluate(() => (window as any).__speechMicCalls)).toBe(1);
+  await expect.poll(() => page.evaluate(() => (window as any).__speechTrackStops)).toBe(1);
+  expect(errors).toEqual([]);
+});
+
+test('companion speech: releasing Space while acquiring cancels deferred microphone start', async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem('aics_chat_v1', JSON.stringify({
+      version: 3,
+      active: 'nene',
+      histories: { nene: [], natsume: [] },
+      settings: {
+        model: 'local-model', provider: 'api', apiBaseUrl: 'https://local.example/v1',
+        apiModel: 'local-model', apiKey: 'local-key', webSearchEnabled: false,
+        live2dEnabled: false, live2dOutfit: 'school', autoVoice: false, volume: 80,
+        drafts: { nene: '', natsume: '' },
+      },
+    }));
+    localStorage.setItem('aics_speech_input_v1', JSON.stringify({
+      enabled: true, kind: 'openai', endpoint: 'http://127.0.0.1:8000/v1',
+      model: 'whisper-1', apiKey: '', language: '', autoSend: false,
+      wakeEnabled: false, wakeWords: [], endWords: ['结束对话'],
+    }));
+    (window as any).__speechMicCalls = 0;
+    (window as any).__speechTrackStops = 0;
+    (window as any).__resolveSpeechMic = null;
+    Object.defineProperty(navigator, 'mediaDevices', {
+      configurable: true,
+      value: {
+        getUserMedia: () => {
+          (window as any).__speechMicCalls += 1;
+          return new Promise(resolve => { (window as any).__resolveSpeechMic = resolve; });
+        },
+      },
+    });
+    class MockAudioContext {
+      sampleRate = 16000;
+      destination = {};
+      state = 'running';
+      createMediaStreamSource() { return { connect: () => {}, disconnect: () => {} }; }
+      createScriptProcessor() { return { connect: () => {}, disconnect: () => {}, onaudioprocess: null }; }
+      createGain() { return { gain: { value: 0 }, connect: () => {}, disconnect: () => {} }; }
+      close() { this.state = 'closed'; return Promise.resolve(); }
+    }
+    (window as any).AudioContext = MockAudioContext;
+  });
+  await page.goto('/companion');
+  await expect(page.locator('.companion-speech-btn')).toBeVisible();
+
+  await page.locator('.companion-page').click({ position: { x: 10, y: 10 } });
+  await page.keyboard.down(' ');
+  await expect(page.locator('.companion-speech-btn')).toHaveAttribute('data-state', 'acquiring');
+  await page.keyboard.up(' ');
+  await expect(page.locator('.companion-speech-btn')).toHaveAttribute('data-state', 'idle');
+  await expect.poll(() => page.evaluate(() => (window as any).__speechMicCalls)).toBe(1);
+
+  await page.evaluate(() => {
+    (window as any).__resolveSpeechMic({
+      getTracks: () => [{ stop: () => { (window as any).__speechTrackStops += 1; } }],
+    });
+  });
+  await expect.poll(() => page.evaluate(() => (window as any).__speechTrackStops)).toBe(1);
+  await expect(page.locator('.companion-speech-btn')).toHaveAttribute('data-state', 'idle');
 });
 
 test('Natsume Live2D loads, reacts, and keeps wardrobe memory per character', async ({ page }) => {

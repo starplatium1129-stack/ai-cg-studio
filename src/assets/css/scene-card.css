@@ -6,6 +6,8 @@
    Level: L2 创作卡 · alias of .card-create (design-system)
    ============================================================ */
 .sc {
+  --z-sc-media: 0;
+  --z-sc-pointer-glow: 1;
   position:relative;
   background: linear-gradient(145deg, var(--glass-highlight), transparent 30%), var(--bg-surface);
   border: 1px solid var(--archive-line);
@@ -28,7 +30,7 @@
    透明度由 enter/leave 写入 --sc-spot-o（0/1）。z-index 1 压在缩略图
    (0) 之上、角标 (3) 与正文之下，产生"指尖划过卡片泛起柔光"的质感。 */
 .sc::before {
-  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  content: ""; position: absolute; inset: 0; z-index: var(--z-sc-pointer-glow); pointer-events: none;
   background: radial-gradient(260px circle at var(--sc-spot-x, 50%) var(--sc-spot-y, 40%),
     color-mix(in srgb, var(--accent) 12%, transparent), transparent 66%);
   opacity: var(--sc-spot-o, 0);
@@ -46,12 +48,12 @@
 }
 .sc-band::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg,var(--art-scrim-soft),transparent 30%,transparent 56%,var(--art-scrim)); pointer-events:none; z-index:var(--z-base); }
 .sc-thumb {
-  position: absolute; inset: 0; z-index: 0; /* 缩略图是卡片底层,受 .sc-band:after 的渐变保护 */
+  position: absolute; inset: 0; z-index: var(--z-sc-media); /* 缩略图是卡片底层,受 .sc-band:after 的渐变保护 */
   width: 100%; height: 100%; object-fit: cover; object-position: center 22%;
   opacity:0; filter:blur(6px); transition: opacity .28s var(--ease-out), filter .5s var(--ease-out), transform var(--t-base) var(--ease-out), filter var(--t-base);
 }
 .sc-thumb-ready { opacity:1; filter:blur(0); }
-.sc-thumb-skeleton { position:absolute; inset:0; z-index:0; opacity:0; background:linear-gradient(105deg,var(--bg-deep) 18%,var(--bg-elevated) 42%,var(--bg-deep) 68%); background-size:220% 100%; transition:opacity var(--t-fast); }
+.sc-thumb-skeleton { position:absolute; inset:0; z-index:var(--z-sc-media); opacity:0; background:linear-gradient(105deg,var(--bg-deep) 18%,var(--bg-elevated) 42%,var(--bg-deep) 68%); background-size:220% 100%; transition:opacity var(--t-fast); }
 .sc-thumb-skeleton.visible { opacity:1; animation:archive-skeleton-shimmer 1.3s linear infinite; }
 .sc-thumb-missing { display: none; }
 .sc:hover .sc-thumb { transform: none; }

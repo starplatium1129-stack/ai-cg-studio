@@ -6,6 +6,7 @@ import { imgPut } from '@/composables/useImageStore'
 import { kvGet, kvSet } from '@/composables/useKVStore'
 import { blobThumbDataUrl, thumbKey } from '@/utils/imageThumb'
 import { useSceneStore } from '@/stores/sceneStore'
+import { artworkRepository } from '@/storage/artworkRepository'
 import {
   isSDParamKey,
   parsePresetCatalog,
@@ -31,6 +32,7 @@ function historyIdSeq(now: number): number {
 }
 
 export type CharKey = 'nene' | 'natsume' | 'triad'
+export type DrawEngine = 'sd' | 'anima'
 
 export interface Scene {
   id: string; title: string; story?: string; prompt?: string; tags?: string[]
@@ -49,6 +51,8 @@ export interface HistoryEntry {
   manual_tags: string[]; lora: string | null
   cfg: number | string; steps: number | string; sampler: string
   scheduler: string; checkpoint: string; size: string
+  engine?: DrawEngine; profile?: string; model?: string
+  loraId?: string | null; loraStrength?: number | null
   /** 成片真实像素；size 只是保存时下拉框的值，作品册排版以这两个为准 */
   width: number | null; height: number | null
   rating: Record<string, number>; favorite: boolean; notes: string
@@ -432,6 +436,9 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   // ── History entry commit (IndexedDB image save) ──────────────────────────
   async function commitHistoryEntry(entry: Partial<HistoryEntry> & {
     blob: Blob; seed?: number; size?: string; negative?: string; prompt: string
+    engine?: DrawEngine; profile?: string; model?: string
+    loraId?: string | null; loraStrength?: number | null
+    cfg?: number | string; steps?: number | string; sampler?: string; scheduler?: string
   }): Promise<HistoryEntry | null> {
     try {
       const imageId = await imgPut(entry.blob)
@@ -455,9 +462,18 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
         shot: selections.shot, lighting: selections.lighting, composition: selections.composition,
         colorMood: colorMood.value,
         manual_tags: [...manualTags.value],
-        lora: loraLine.value || null,
-        cfg: sdParams.cfg, steps: sdParams.steps, sampler: sdParams.sampler,
-        scheduler: sdParams.scheduler, checkpoint: sdModelName.value, size: entry.size ?? lastRecommendedSize.value,
+        lora: (entry.lora ?? loraLine.value) || null,
+        cfg: entry.cfg ?? sdParams.cfg,
+        steps: entry.steps ?? sdParams.steps,
+        sampler: entry.sampler ?? sdParams.sampler,
+        scheduler: entry.scheduler ?? sdParams.scheduler,
+        checkpoint: entry.model ?? sdModelName.value,
+        size: entry.size ?? lastRecommendedSize.value,
+        engine: entry.engine ?? 'sd',
+        profile: entry.profile ?? '',
+        model: entry.model ?? sdModelName.value,
+        loraId: entry.loraId ?? null,
+        loraStrength: entry.loraStrength ?? null,
         width: measured.width, height: measured.height,
         rating: {}, favorite: false, notes: '',
         image_id: imageId, image_url: '',
@@ -471,10 +487,11 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   }
 
   async function removeHistoryEntry(id: number) {
-    const idx = history.value.findIndex(h => h.id === id)
-    if (idx < 0) return
-    history.value.splice(idx, 1)
-    await kvSet(HISTORY_STORAGE_KEY, history.value)
+    const result = await artworkRepository.deleteArtwork(id)
+    if (result.historyChanged) {
+      history.value = history.value.filter(entry => entry.id !== id)
+    }
+    if (result.removedProjectReferences > 0) await loadProjects()
   }
 
   async function loadHistory() {

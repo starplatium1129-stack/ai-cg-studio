@@ -286,40 +286,37 @@ channel.png bbox=(251,254)-(285,429)   ← 与主渲染完全一致
 > 7.1 的清单是设计预期；本节记录实际落地差异与验证证据。
 
 **交付内容**：
-- desktop-tauri/src-tauri/src/live2d_overlay.rs：overlay 窗口 + DX12 surface + 渲染循环 + OverlayCommand 通道（SetCharacter/PlayMotion/SetExpression/SetMouthLevel/SetEmotion/SetGaze/HitTestAsync/Destroy）+ ensure_overlay/pply_frame/ics_live2d_* IPC + selftest()。
-- desktop-tauri/src-tauri/src/main.rs：DesktopPaths 补 manage（此前 pply_frame 等全部会 state() called before manage() panic）；LIVE2D_SELFTEST=1 环境变量驱动自测。
+- desktop-tauri/src-tauri/src/live2d_overlay.rs：overlay 窗口 + DX12 surface + 渲染循环 + OverlayCommand 通道（SetCharacter/PlayMotion/SetExpression/SetMouthLevel/SetEmotion/SetGaze/HitTestAsync/Destroy）+ ensure_overlay/apply_frame/aics_live2d_* IPC + selftest()。
+- desktop-tauri/src-tauri/src/main.rs：DesktopPaths 补 manage（此前 apply_frame 等全部会 state() called before manage() panic）；LIVE2D_SELFTEST=1 环境变量驱动自测。
 - desktop-tauri/src-tauri/src/shim.rs：window.aicsLive2dNative（16 方法）companion/atelier 双窗口注入（并行会话已写，本轮确认挂载）。
-- desktop-tauri/native-live2d/src/renderer.rs：Renderer::new 增加 ormat: wgpu::TextureFormat 参数（pipeline 与 surface 格式对齐），example 同步。
+- desktop-tauri/native-live2d/src/renderer.rs：Renderer::new 增加 format: wgpu::TextureFormat 参数（pipeline 与 surface 格式对齐），example 同步。
 
 **验证证据（本机实跑）**：
 1. LIVE2D_SELFTEST=1 ai-cg-studio-desktop.exe → [live2d] adapter: "NVIDIA GeForce RTX 4070 Ti SUPER" backend=Dx12 → Cubism Core 6.0 加载宁宁（motions=8 hitareas=7）→ LIVE2D_SELFTEST_OK frames=85（800×800 overlay，3s 约 28fps，debug 构建 + vsync）。
-2. 
-ative-live2d render_frame example（offscreen）：102 draw calls、14 mask textures、6319 vertices、opaque 40516/262144 像素，1.37s 出图。
-3. 真实壳 i-cg-studio-desktop.exe 20s 冒烟：窗口 + gateway attached（:3000）无 panic。
+2. native-live2d render_frame example（offscreen）：102 draw calls、14 mask textures、6319 vertices、opaque 40516/262144 像素，1.37s 出图。
+3. 真实壳 ai-cg-studio-desktop.exe 20s 冒烟：窗口 + gateway attached（:3000）无 panic。
 
 **踩坑（本轮新）**：
 1. **Vulkan surface 对 HWND 返回空 formats**（caps.formats 空 → panic/surface has no formats）→ **必须强制 Backends::DX12**。PRIMARY 默认选中 Vulkan，RawHandle 的 HWND surface 兼容性查询为空。DX12 一次通过。
 2. **窗口必须已显示（ShowWindow SW_SHOWNA）DXGI 才能枚举格式**：create_overlay_window 创建后立即 ShowWindow 一次，位置由后续 SetWindowPos 校正；窗口创建尺寸别用 0×0。
 3. **Renderer pipeline 格式与 surface 格式不匹配**：native-live2d 硬编码 Rgba8UnormSrgb；DX12 surface 首选 sRGB 格式与 pipeline 不一致时 Render pass is incompatible panic → Renderer::new 加 format 参数，ensure_surface 先查 capabilities 再建 renderer。
 4. **SetCharacter 必须先 ensure_surface**：模型加载（load_model）要求 renderer 已建；此前只在 render_frame 里惰性建 surface，命令先行时失败 → SetCharacter 分支先 ctx.ensure_surface(hwnd)。
-5. **DesktopPaths 从未 manage**：pply_frame 等 9 个 IPC 入口 pp.state::<DesktopPaths>() 直接 panic → main.rs setup 补 pp.manage(state.paths.clone())，DesktopPaths 加 #[derive(Clone)]。
-6. **wgpu 24 与 25+ 的 API 差异**：Instance::new(&desc)（引用）、create_surface → unsafe create_surface_unsafe(SurfaceTargetUnsafe::RawHandle)、InstanceDescriptor 无 display/memory_budget_thresholds 字段（用 ackends/flags/backend_options）。
+5. **DesktopPaths 从未 manage**：apply_frame 等 9 个 IPC 入口 app.state::<DesktopPaths>() 直接 panic → main.rs setup 补 app.manage(state.paths.clone())，DesktopPaths 加 #[derive(Clone)]。
+6. **wgpu 24 与 25+ 的 API 差异**：Instance::new(&desc)（引用）、create_surface → unsafe create_surface_unsafe(SurfaceTargetUnsafe::RawHandle)、InstanceDescriptor 无 display/memory_budget_thresholds 字段（用 backends/flags/backend_options）。
 
 **与 7.1 清单差异**：
-- 未抽 overlay_hwnd()/mark_renderer_attached() 辅助函数：HWND 存 state.hwnd（isize），renderer 就绪由 RenderContext 内部保证（surface=Some ⇔ renderer=Some）；错误码不是 
-ative renderer not attached yet，而是逐命令的 enderer not created/model not loaded 等具体原因。
+- 未抽 overlay_hwnd()/mark_renderer_attached() 辅助函数：HWND 存 state.hwnd（isize），renderer 就绪由 RenderContext 内部保证（surface=Some ⇔ renderer=Some）；错误码不是 native renderer not attached yet，而是逐命令的 renderer not created/model not loaded 等具体原因。
 - CompositeAlphaMode 用 Auto（layered 窗口由 LWA_ALPHA 控制整体透明度，未强制 PreMultiplied）；selftest 验证通过，如后续要逐像素半透明再评估。
-- rame_count（AtomicU64）加入 state 供自测/诊断；渲染帧成功计数。
+- frame_count（AtomicU64）加入 state 供自测/诊断；渲染帧成功计数。
 
 **对方（渲染器/打包）接入点**：
-- 渲染线程签名 overlay_window_thread(state: Arc<Live2DOverlayState>, assets_root: PathBuf, app: Option<AppHandle>)；pp=None 时事件 emit 跳过（selftest 路径）。
-- 模型目录约定：ssets_root/live2d/<character>/（宁宁 
-ene），与 web ssets/live2d/ 同级内容；打包时注意资源路径。
+- 渲染线程签名 overlay_window_thread(state: Arc<Live2DOverlayState>, assets_root: PathBuf, app: Option<AppHandle>)；app=None 时事件 emit 跳过（selftest 路径）。
+- 模型目录约定：assets_root/live2d/<character>/（宁宁 nene），与 web assets/live2d/ 同级内容；打包时注意资源路径。
 - OverlayCommand 枚举 + oneshot reply：新命令沿用 send_command 模式即可。
 
 ### 7.5 扩展自测：命令路径全覆盖 + 渲染快照识图验证（2026-08-08 深夜）
 
-selftest 从「加载+出帧」扩展为完整命令路径覆盖，并新增渲染快照（离屏 ender_to_image 存 PNG）供识图验收：
+selftest 从「加载+出帧」扩展为完整命令路径覆盖，并新增渲染快照（离屏 render_to_image 存 PNG）供识图验收：
 
 **新增能力**：
 - OverlayCommand::Snapshot { path, reply }：渲染线程离屏 800×800 渲染 + readback 存 PNG（后续调试/验收通用）。
@@ -327,23 +324,23 @@ selftest 从「加载+出帧」扩展为完整命令路径覆盖，并新增渲�
 - LIVE2D_SNAPSHOT_DIR 环境变量指定快照输出目录。
 
 **验证证据（一次 selftest 全部通过）**：
-`
+```text
 LIVE2D_SELFTEST_HITTEST areas=["Face"]     # (0.5,0.11) 命中脸部 HitArea
 LIVE2D_SELFTEST_OK frames=109
-`
+```
 - 宁宁：TapHead 动作 ✓、SetMouthLevel(0.8) 后快照**嘴巴张开（识图确认）**✓、SetEmotion ✓、hit-test 命中 Face ✓、快照×2。
 - 夏目：加载（14×4096 纹理，debug 构建约 84s，release 会快得多）✓、Start 动作 ✓、快照确认与宁宁明显不同的角色、无渲染缺陷 ✓。
 
 **本轮新修 bug（真实验证发现，非推断）**：
 1. **HitArea Name→ArtMesh 映射缺失**：l2d_model_hit_test 原来直接用 HitArea 的 Name（如 "Hair"）查 GetDrawableIndex，而 model3.json 的 HitAreas 是 Name→Id(ArtMesh) 映射，直接查永远 -1 → 全部 miss。改为遍历 GetHitAreaCount/Name/Id 先按 Name 匹配再取 ArtMesh index。
 2. **口型/情绪/凝视参数被动作曲线覆写**：参数写入在 model.update(dt)（含 UpdateMotion）之前，动作播放中每帧覆写 → 口型恒为动作姿态。改为**先 update 再写覆写参数**（一帧延迟，可接受）。
-3. **DX12 readback 256 字节行对齐**：ender_to_image 的 copy_texture_to_buffer 用 width*4 做 bytes_per_row 在 DX12 下 Validation Error（Vulkan 不强制）。改为 padded_row = width*4 向上对齐 256，unmap 后按行去 padding（L2D_DEBUG_HIT/纹理加载耗时打印保留，env 门控）。
+3. **DX12 readback 256 字节行对齐**：render_to_image 的 copy_texture_to_buffer 用 width*4 做 bytes_per_row 在 DX12 下 Validation Error（Vulkan 不强制）。改为 padded_row = width*4 向上对齐 256，unmap 后按行去 padding（L2D_DEBUG_HIT/纹理加载耗时打印保留，env 门控）。
 
 **自测入口**：
-`
-=1; =<dir>; .\target\debug\ai-cg-studio-desktop.exe
-# 退出码 0 = 全链路通过；快照输出到 
-`
+```powershell
+$env:LIVE2D_SELFTEST = '1'; $env:LIVE2D_SNAPSHOT_DIR = '<dir>'; .\target\debug\ai-cg-studio-desktop.exe
+# 退出码 0 = 全链路通过；快照输出到 <dir>
+```
 
 **剩余待办（已知）**：
 - 真实桌面端到端（companion 页面 ?live2dBackend=native 时 overlay 与页面 Live2D 框对齐、口型随 TTS）需人工上真机确认——selftest 已覆盖同一条渲染/命令链路。
@@ -373,10 +370,61 @@ LIVE2D_SELFTEST_OK frames=109
 用户指示"简单的先做"，完成 4 项自查薄弱点修复（§5.3）：
 
 1. **夏目 hit-test 修复**：hit_area_ids() 从 model3.json HitAreas **动态解析**（Model3Json.hit_areas → name 列表，setCharacter 时存入 ctx.hit_area_names），删除 nene 硬编码映射。selftest 证据：夏目 motions=10 hitareas=7，动态读取生效。
-2. **情绪表演参数对齐浏览器路径**：pply_emotion 重写为双角色参数表（emotion_params()），宁宁 5 情绪 × 7 参数、夏目 5 情绪 × 3-4 参数，与 src/utils/emotionRuntime.ts 的 NENE/NATSUME_RUNTIME_CONFIG emotionParams 逐值对齐（base × intensity，参数不存在跳过）。原实现只驱动 ParamCheek 且忽略角色（let _ = character）。
+2. **情绪表演参数对齐浏览器路径**：apply_emotion 重写为双角色参数表（emotion_params()），宁宁 5 情绪 × 7 参数、夏目 5 情绪 × 3-4 参数，与 src/utils/emotionRuntime.ts 的 NENE/NATSUME_RUNTIME_CONFIG emotionParams 逐值对齐（base × intensity，参数不存在跳过）。原实现只驱动 ParamCheek 且忽略角色（let _ = character）。
 3. **selftest 强断言**：hit-test 结果必须**非空**（期望命中 Face），空/无结果直接 FAIL（原只打印）。
 4. **165fps 帧率支持**（用户要求）：渲染循环固定 16ms sleep（60fps 上限）改为目标帧率驱动，**默认 165**，L2D_TARGET_FPS 环境变量可覆盖（1..=1000 校验）。surface 保持 AutoVsync（165Hz 屏即 165fps）。selftest 证据：同窗口 3s 渲染帧数 100 → **170**（debug 构建 CPU 受限，release 应接近 165）。
 
 验证：LIVE2D_SELFTEST=1 全链路通过（宁宁 TapHead/口型/情绪/hit-test Face + 夏目加载/Start + 快照×3），LIVE2D_SELFTEST_HITTEST areas=["Face"]、LIVE2D_SELFTEST_OK frames=170。
 
 > 备注：期间遇到一次 PowerShell 重定向 2>&1 | Out-String 与 native stderr 的交互问题（程序秒退 exit=0 无输出，直接跑正常）——非代码问题，验证请直接调用 exe 或 2>&1 | Out-File。
+
+### 7.7 收尾轮：DPI 处理 + 自测自动化（2026-08-08 深夜）
+
+1. **DPI 感知**：overlay 渲染线程开头设置进程级 per-monitor v2（SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2)，失败回退 SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE)）。前端 live2dOverlayLayout 已换算物理像素，进程 DPI aware 后 SetWindowPos 坐标不再被系统缩放（解决旧文档 7.2 的 0.57 缩放问题）。Cargo.toml 补 Win32_UI_HiDpi feature。
+2. **自测自动化**：新增 scripts/tests/run-live2d-selftest.js + npm run test:live2d-native——定位 debug exe、设 LIVE2D_SELFTEST=1、断言退出码 0 且输出含 LIVE2D_SELFTEST_OK frames=N、240s 超时保护、快照临时目录自动清理。**未进 validate 主链**（90s+ 时长 + 依赖 DX12 真机环境，由 SOL 决策是否接入）。
+
+验证：npm run test:live2d-native → OK frames=166 hit="Face"；壳 12s 冒烟无 panic（gateway attached :3000）。
+
+### 7.8 release 验证（2026-08-08 深夜）
+
+cargo build --release + LIVE2D_SELFTEST=1：**9.2s 全链路通过**（exit=0）。
+- 纹理加载提速 ~10 倍：宁宁 8192 纹理 0.59s（debug 2.5s）、夏目 4096 纹理 0.23-0.37s/张（debug 5-6s/张）→ 夏目全 14 张 ~4s（debug 84s）
+- §5.3-5「纹理解码无缓存」在 release 下影响大幅缓解（角色切换 ~4s 可接受），是否做跨会话缓存由 SOL 决策
+
+### 7.9 L-20 Native 渲染缓存与长稳（2026-08-09）
+
+- `renderer.rs` 将模型级 geometry、UV/index buffer、texture bind group、mask texture/bind group 和动态 uniform buffer 缓存；每帧只更新动态 position/uniform 数据，mask pass 与 main pass 共用一个 command encoder。
+- 动态上传使用持久 `COPY_SRC|COPY_DST` upload buffer，每帧一次 staging 写入再 copy 到目标 buffer；纹理加载使用持久 mapped staging buffer，避免 8K/4K 纹理反复创建 native staging allocation。
+- `model.rs` 增加稳定模型 cache key、可复用 `drawables_into` snapshot 和无分配 `content_bounds` 遍历，避免 overlay 每帧重复创建 drawable 几何 Vec。
+- 保留 render order、mask 清屏、Normal/Add/Multiply/Screen、inverted mask、opacity、透明目标和 165fps 目标语义；position/UV 分离 vertex buffer 只把 position 作为动态更新项。
+
+**5 分钟 release soak 证据**：
+
+- 命令：`node scripts/tests/run-live2d-renderer-soak.js --seconds 300 --switch-every 60 --sample-ms 2000 --warmup 120 --size 800 --fps 165`
+- `48038` 帧，宁宁/夏目切换 `4` 次，`render_fps=164.8`，frame p50/p95=`1.131/1.899ms`。
+- 预热和每次角色切换稳定后 `frame_creations=0`；总缓存资源创建计数 `1278`，没有随帧数增长。
+- Working Set 首/末季度约 `511.3/509.2MiB`；GPU dedicated `480.3/448.4MiB`；GPU shared `426.6/428.6MiB`；进程级 counter 全程一致，无单调增长、OOM 或 device lost。
+- 报告：`C:\Users\ADMINI~1\AppData\Local\Temp\l2d-renderer-soak-n5NKir\renderer-soak-report.json`。
+
+参考：
+
+- `https://docs.rs/wgpu/24.0.0/wgpu/struct.Queue.html`：native `Queue::write_buffer` 使用临时 staging allocation。
+- `https://docs.rs/wgpu/24.0.0/wgpu/util/struct.StagingBelt.html`：大量小 buffer 写入应使用可复用 staging 管理；本实现因 renderer 返回 encoder 的公开契约，采用持久 upload buffer，避免要求 overlay 额外调用 recall。
+- `https://api.github.com/repos/gfx-rs/wgpu`：确认官方 wgpu 仓库为 `gfx-rs/wgpu`。
+
+### 7.10 SOL 复审与生命周期收口（2026-08-09）
+
+- C 的返工仍保留了五个发布阻断：零长度 FFI slice UB、destroy 后 renderer cache/纹理 upload buffer 滞留、隐藏 drawable/mask 首次出现时创建静态资源、Surface Lost/Outdated 未重配且被计作成功帧、soak 可继承 `L2D_*` 调试变量并在空工作量下通过。SOL 按第一轮接管规则直接修复。
+- `Model` 现在对负数/零长度/null pointer 做 checked snapshot；无可见顶点时回退全部 drawable，再回退 canvas bounds，不再产生无穷 content-fit。
+- `Renderer::release_model_resources()` 在换角色和 destroy 时同步释放 geometry、mask、uniform、dynamic upload、纹理 upload 与 CPU scratch；overlay 两条生命周期路径均显式调用。
+- 首帧预热全部 drawable geometry 与全部 mask channel；动作、衣装或作者 motion 后续显隐隐藏层时只更新动态 position/uniform，不创建静态 GPU 资源。
+- sampled color texture 固定为 `Rgba8UnormSrgb`，不再错误沿用 Windows 常见的 BGRA surface format；BGRA snapshot readback 显式转回 RGBA。宁宁 motion/口型与夏目三张 release snapshot 均经逐图检查通过，无红蓝互换、缺层、mask 破损或 alpha 光晕。
+- Surface Lost/Outdated 会立即 reconfigure 且不增加成功帧；Timeout 跳帧，OutOfMemory 终止渲染循环。uniform slot 上限改按 backing buffer 与 dynamic offset 能力计算，不再误用单次 binding size 的 256-slot 上限。
+- soak 固定 DX12、独立 Cargo target、剥离 `L2D_*` 环境，持续轮播 authored motion，每帧等待 GPU 完成并验证最小 draw call/vertex、完整资源计数、角色切换次数和最终 destroy。
+
+**本机证据**：
+
+- release selftest：3/3 snapshot，exit 0。
+- 120 秒正式短 soak：`18432` 帧，3 次角色切换，`render_fps=164.2`，frame p50/p95=`2.214/5.666ms`；预热和每次切换稳定后 `frame_creations=0`，最终 `resources_released=true`。报告：`C:\Users\ADMINI~1\AppData\Local\Temp\l2d-renderer-soak-6liXzQ\renderer-soak-report.json`。
+- 已完成的 300 秒原始报告：`47960` 帧，4 次切换，`render_fps=164.3`；丢弃两次角色预热后，首末季度 Working Set `+0.17MiB`、private bytes `+0.53MiB`、GPU dedicated+shared `+0.004MiB`，无逐周期累积。报告：`C:\Users\ADMINI~1\AppData\Local\Temp\l2d-renderer-soak-f1NimS\renderer-soak-report.json`。初次 wrapper 因混合角色锯齿斜率产生假阳性，现改为净增与正斜率同时越界才判持续增长。
+- 用户要求不继续占用本机 30 分钟；本地改用 120 秒 PASS + 300 秒稳定原始数据。self-hosted Windows Native 发布门禁固定执行 300 秒 soak，30 分钟人工 soak 保留为发布前可选强化项，不再阻断当前开发。

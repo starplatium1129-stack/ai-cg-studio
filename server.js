@@ -17,6 +17,7 @@ var createLive2dRouter = require('./routes/live2d').createLive2dRouter;
 var createMaintenanceRouter = require('./routes/maintenance').createMaintenanceRouter;
 var createControlRouter = require('./routes/control').createControlRouter;
 var createTrainingRouter = require('./routes/training').createTrainingRouter;
+var createAnimaRouter = require('./routes/anima').createAnimaRouter;
 
 var ONE_DAY = 24 * 60 * 60 * 1000;
 var ONE_WEEK = 7 * ONE_DAY;
@@ -34,17 +35,6 @@ var SD_PROXY_ALLOWLIST = [
   '/sdapi/v1/progress',
   '/sdapi/v1/txt2img',
   '/sdapi/v1/interrupt'
-];
-
-// ComfyUI 直通白名单：只放行前端 Anima 引擎真正调用的端点。
-// 不放开 /api 管理类端点，避免把 ComfyUI 的完整 API 暴露给 token 持有者。
-var COMFY_PROXY_ALLOWLIST = [
-  '/prompt',
-  '/queue',
-  '/history',
-  '/object_info',
-  '/interrupt',
-  '/view'
 ];
 
 function staticOptions(maxAge) {
@@ -83,6 +73,7 @@ function createGateway(options) {
   var live2d = createLive2dRouter(config, options.services);
   var maintenance = createMaintenanceRouter(config);
   var training = createTrainingRouter(config, options.services);
+  var anima = createAnimaRouter(config, options.services);
   var desktopTools = require('./routes/desktop-tools').createDesktopToolsRouter({ security: security });
 
   // 控制面板路由需要访问 gateway 对象（tunnelUrl、startTunnel/stopTunnel）
@@ -93,9 +84,9 @@ function createGateway(options) {
     spawn:spawn,
     onStateChange:function () { gatewayState.tunnelUrl = tunnelManager.getUrl(); }
   });
-  var control = createControlRouter(config, function() { return gatewayState; }, {
-    translation: voice.translation
-  });
+  var controlDependencies = Object.assign({}, options.control || {});
+  if (!controlDependencies.translation) controlDependencies.translation = voice.translation;
+  var control = createControlRouter(config, function() { return gatewayState; }, controlDependencies);
 
   app.use(chat.router);
   app.use(voice.router);
@@ -103,6 +94,7 @@ function createGateway(options) {
   app.use(maintenance.router);
   app.use(control);
   app.use(training.router);
+  app.use(anima.router);
   app.use(desktopTools);
 
   app.get('/api/health', function (req, res) {
@@ -253,52 +245,12 @@ function createGateway(options) {
   }));
   app.use(sdProxy);
 
-  // ComfyUI 直通代理：Anima 引擎出图走这里（ComfyUI 工作流协议与 SDXL 不兼容）。
-  var comfyProxy = createProxyMiddleware({
-    target:config.COMFY_HOST,
-    router:function () { return config.COMFY_HOST; },
-    changeOrigin:true,
-    ws:false,
-    pathRewrite:function (pathname) {
-      // ComfyUI 原生 API 没有 /comfy 前缀，转发前剥掉。
-      return pathname.replace(/^\/comfy(?=\/|$)/, '');
-    },
-    pathFilter:function (pathname) {
-      // 网关用 /comfy/* 暴露 ComfyUI 原生 API（/object_info 等无前缀路径），
-      // pathname 会带 /comfy 前缀，白名单匹配前先剥掉。
-      var p = pathname.replace(/^\/comfy(?=\/|$)/, '');
-      return COMFY_PROXY_ALLOWLIST.some(function (prefix) { return p === prefix || p.startsWith(prefix + '/'); });
-    },
-    proxyTimeout:20 * 60 * 1000,
-    on:{
-      // ComfyUI 自带 CSRF 防护：非自身 Origin 的 POST /prompt 直接 403。
-      // 网关转发时剥掉 Origin，让浏览器同源请求正常通过。
-      proxyReq:function (proxyReq) {
-        proxyReq.removeHeader('origin');
-      },
-      error:function (error, req, res) {
-        console.error('  ❌ ComfyUI 代理错误:', error.message);
-        if (res && typeof res.status === 'function') {
-          if (!res.headersSent) {
-            envelope.fail(res, 502, 'ComfyUI 未响应，请确认已经启动 (' + config.COMFY_HOST + ')');
-          }
-          return;
-        }
-        if (res && typeof res.destroy === 'function') {
-          try { res.write('HTTP/1.1 502 Bad Gateway\r\nConnection: close\r\n\r\n'); } catch (writeError) {}
-          try { res.destroy(); } catch (destroyError) {}
-        }
-      }
-    }
-  });
-  // /prompt 是唯一吃 GPU 的 Comfy 端点，与 SD 出图共用一套限流语义。
-  app.post('/comfy/prompt', security.rateLimit({
-    capacity:12, refillMs:5000, label:'Comfy 出图'
-  }));
-  app.use(comfyProxy);
-
-  // 白名单外的 SD/Comfy 路径必须是 JSON 404，不能被 SPA catch-all 吞成 200 text/html
-  app.use(['/sdapi', '/controlnet', '/adetailer', '/comfy'], function (req, res) {
+  // ComfyUI 原生端点不再对浏览器暴露。Anima 只能通过 /api/anima/* 访问
+  // 服务端固定工作流；根 prompt/history/queue/view 等路径统一回 JSON 404。
+  app.use([
+    '/sdapi', '/controlnet', '/adetailer', '/comfy',
+    '/prompt', '/queue', '/history', '/object_info', '/interrupt', '/view'
+  ], function (req, res) {
     envelope.fail(res, 404, '该接口未开放：' + req.baseUrl + req.path);
   });
 
@@ -340,6 +292,7 @@ function createGateway(options) {
   function close() {
     voice.close();
     training.close();
+    if (anima && typeof anima.close === 'function') anima.close();
     if (maintenance && typeof maintenance.close === 'function') maintenance.close();
     if (control && typeof control.close === 'function') control.close();
     if (tunnelManager) tunnelManager.stop();
@@ -390,7 +343,8 @@ function createGateway(options) {
       tts:voice.tts,
       translation:voice.translation,
       live2d:live2d.service,
-      training:training.service
+      training:training.service,
+      anima:anima.service
     },
     startTunnel:function () { if (tunnelManager) tunnelManager.start(); },
     handleUpgrade:handleUpgrade,

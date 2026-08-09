@@ -54,7 +54,7 @@
       </ArchiveStatePanel>
       <ArchiveStatePanel
         v-else-if="!visible.length"
-        kind="empty"
+        kind="filtered"
         title="当前筛选下没有作品"
         message="作品仍在本地档案中，重置收藏或项目筛选即可重新显示。"
       >
@@ -178,7 +178,8 @@
 <script setup lang="ts">
 import { ref, computed, reactive, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { kvInit, kvGet, kvSet } from '@/composables/useKVStore'
-import { imgGet, imgDelete } from '@/composables/useImageStore'
+import { imgGet } from '@/composables/useImageStore'
+import { artworkRepository } from '@/storage/artworkRepository'
 import { useSceneStore } from '@/stores/sceneStore'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import { useToast } from '@/composables/useToast'
@@ -527,14 +528,10 @@ async function confirmDelete(item: ArtworkRecord) {
     const wasOpen = viewerIndex.value >= 0
     const removedIndex = visible.value.indexOf(item)
 
-    // 先持久化成功再改界面；失败时界面不动作，避免"删了但下次又出现"
+    // Repository 先完成跨库删除与补偿回滚，再改界面；失败时界面不动作。
     const next = history.value.filter(h => h.id !== item.id)
-    await kvSet(HISTORY_KEY, next)
+    await artworkRepository.deleteArtwork(item.id)
     history.value = next
-    if (item.image_id) {
-      await imgDelete(item.image_id).catch(() => {})
-      await kvSet(thumbKey(item.image_id), null).catch(() => {})
-    }
 
     // 释放这张卡自己的 object URL，并清掉派生缓存
     const url = cardUrls[item.id]

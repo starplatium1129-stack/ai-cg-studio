@@ -3,6 +3,8 @@ import { useChatStorage, type ChatState } from '@/composables/useChatStorage'
 import { parseChatStatus, type ChatModel } from '@/utils/chatStatus'
 import { DEEPSEEK_BASE_URL, DEEPSEEK_DEFAULT_MODEL } from '@/config/chatApi'
 import { STORAGE_KEY } from '@/config/characters'
+import { chatApi } from '@/api/chatApi'
+import { ApiClientError } from '@/api/client'
 
 export type ApiVendor = 'cliproxy' | 'deepseek' | 'opencode' | 'opencode-go' | 'custom'
 type ChatStorage = ReturnType<typeof useChatStorage>
@@ -50,12 +52,10 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
   /** 拉取站主托管配置（接口不回传密钥，只告知是否可用） */
   async function refreshHostConfig() {
     try {
-      const response = await fetch('/api/chat-provider/host-config', { cache: 'no-store' })
-      if (!response.ok) return
-      const data = await response.json() as { configured?: boolean; model?: string; baseUrl?: string }
-      hostApiConfigured.value = data.configured === true
-      hostApiModel.value = String(data.model || '')
-      hostApiBaseUrl.value = String(data.baseUrl || '')
+      const data = await chatApi.getHostConfig()
+      hostApiConfigured.value = data.configured
+      hostApiModel.value = data.model || ''
+      hostApiBaseUrl.value = data.baseUrl || ''
     } catch { /* 服务端不支持时静默降级 */ }
   }
 
@@ -63,25 +63,26 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
   async function saveHostConfig(): Promise<string> {
     if (!apiConfigured.value) return '请先完善本地 API 配置'
     try {
-      const response = await fetch('/api/chat-provider/host-config', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+      await chatApi.saveHostConfig({
           baseUrl: apiBaseUrl.value,
           model: apiModel.value,
           apiKey: apiKey.value,
-        }),
       })
-      if (!response.ok) return '保存失败：HTTP ' + response.status
       await refreshHostConfig()
       return '已保存为站主配置，公网访客可直接使用（密钥不会暴露）'
-    } catch {
+    } catch (error) {
+      if (error instanceof ApiClientError) {
+        if (error.kind === 'timeout') return '保存失败，请求超时'
+        if (error.kind === 'network') return '保存失败，请检查网络'
+        if (error.kind === 'aborted') return '保存失败，请求已取消'
+        return error.status ? `保存失败：HTTP ${error.status}` : '保存失败，请检查网络'
+      }
       return '保存失败，请检查网络'
     }
   }
 
   async function clearHostConfig(): Promise<void> {
-    try { await fetch('/api/chat-provider/host-config', { method: 'DELETE' }) } catch {}
+    try { await chatApi.clearHostConfig() } catch {}
     hostApiConfigured.value = false
     hostApiModel.value = ''
   }
@@ -109,9 +110,7 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
 
   async function refreshChatStatus() {
     try {
-      const response = await fetch('/api/chat-status', { cache: 'no-store' })
-      if (!response.ok) throw new Error('聊天状态接口不可用')
-      const data = parseChatStatus(await response.json() as unknown)
+      const data = parseChatStatus(await chatApi.getStatus())
       ollamaOnline.value = data.online && Boolean(data.models.length)
       models.value = data.models
       if (!isBusy.value && chatProvider.value === 'local') {

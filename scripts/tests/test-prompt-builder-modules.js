@@ -46,7 +46,7 @@ const modules = [
   ['src/composables/useImageStore.ts', ['imgPut', 'imgGet', 'imgDeleteMany']],
   ['src/composables/useKVStore.ts', ['kvGet', 'kvSet']],
    ['src/components/HistoryPanel.vue', ['history-wrap', 'imgGet']],
-  ['src/components/VoiceStudio.vue', ['voice-studio', '/api/tts-status', '/api/translate', '/api/tts']],
+  ['src/components/VoiceStudio.vue', ['voice-studio', 'voiceApi.getStatus', 'voiceApi.prepare', 'voiceApi.translate', '/api/tts']],
   ['src/components/PromptDataTools.vue', ['useBackup', 'pb-backup-overlay', 'useFocusTrap']],
   ['src/components/PromptHealthPanel.vue', ['PromptReport', 'prompt-health-warnings', 'artViolations']],
   ['src/components/GenerationQueuePanel.vue', ['SDQueueJob', 'sd-queue-list', "emit('remove'"]],
@@ -91,9 +91,33 @@ const parsedCatalog = persistence.parsePresetCatalog({
 assert.strictEqual(parsedCatalog.presets.length, 1, 'malformed presets must be ignored');
 assert.deepStrictEqual(parsedCatalog.modelProfiles[0].match, ['wai'], 'profile match keys must be strings');
 assert.strictEqual(parsedCatalog.modelProfiles[0].steps, 28, 'numeric profile fields must normalize');
+const parsedAnima = persistence.parsePresetCatalog({
+  model_profiles:[{
+    id:'anima_base', engine:'anima', model_id:'anima-base-v1.0', tag_style:'space',
+    lora_in_prompt:false, lora_strength:'0.85', exact_tokens:['ayachi_nene', 'nene_school_uniform'], match:['anima-base-v1.0', 7],
+  }],
+}).modelProfiles[0];
+assert.strictEqual(parsedAnima.engine, 'anima', 'Anima profile engine must survive persistence parsing');
+assert.strictEqual(parsedAnima.tag_style, 'space', 'Anima tag style must survive persistence parsing');
+assert.strictEqual(parsedAnima.lora_in_prompt, false, 'Anima must not inject A1111 LoRA syntax');
+assert.strictEqual(parsedAnima.lora_strength, 0.85, 'Anima LoRA strength must normalize as a number');
+assert.deepStrictEqual(parsedAnima.exact_tokens, ['ayachi_nene', 'nene_school_uniform'], 'v19 exact token list must survive persistence parsing');
+const restoredContext = persistence.restoreHistorySceneStory(
+  { scene:'scene-cafe', story:'用户自定义：宁宁在雨后收起伞。' },
+  [{ id:'scene-cafe', title:'咖啡馆' }],
+);
+assert.strictEqual(restoredContext.scene.id, 'scene-cafe', 'history round-trip must resolve the saved scene');
+assert.strictEqual(restoredContext.story, '用户自定义：宁宁在雨后收起伞。', 'history round-trip must preserve custom story text');
+assert.deepStrictEqual(parsedAnima.match, ['anima-base-v1.0'], 'profile match list must remain string-only');
 
 const storeSource = read('src/stores/promptBuilderStore.ts');
 if (/\bany\b/.test(storeSource)) fail('prompt builder store must keep scene, profile, draft, and project boundaries explicitly typed');
+for (const marker of ['engine?: DrawEngine', 'profile?: string', 'model?: string', 'loraId?: string | null', 'loraStrength?: number | null']) {
+  if (!storeSource.includes(marker)) fail('history entries must retain generation metadata: ' + marker);
+}
+for (const marker of ['engine: entry.engine ?? \'sd\'', 'profile: entry.profile ?? \'\'', 'model: entry.model ?? sdModelName.value']) {
+  if (!storeSource.includes(marker)) fail('history commit must persist generation metadata: ' + marker);
+}
 if (!storeSource.includes("two_red_hairclips, mole_under_eye, no_hair_ribbon")) {
   fail('Natsume control prompt must retain the explicit red-clip and mole identity anchors');
 }
@@ -104,6 +128,7 @@ if (!/nene:\s*'1girl, solo/.test(storeSource) || !/natsume:\s*'1girl, solo/.test
 // ── 2. 导演台视图必须真正接线这些能力 ────────────────────────────────────
 const view = read('src/views/PromptBuilderView.vue');
 const promptAssembly = read('src/composables/usePromptAssembly.ts');
+const animaPanel = read('src/components/AnimaQuickPanel.vue');
 if (/\bany\b/.test(view)) fail('PromptBuilderView must keep deep links, scenes, and history explicitly typed');
 if (/\bany\b/.test(promptAssembly)) fail('prompt assembly must keep its store and policy boundary explicitly typed');
 if (/entry\.char\b/.test(view) || !view.includes('entry.character')) {
@@ -123,6 +148,28 @@ for (const [marker, message] of promptPipeline) {
 }
 if (!view.includes('usePromptAssembly')) {
   fail('PromptBuilderView must consume the dedicated prompt assembly composable');
+}
+for (const marker of ['DrawEngine', 'historyGenerationFields', 'animaModelId', "engine: 'anima'"]) {
+  if (!view.includes(marker)) fail('director must wire engine-specific generation metadata: ' + marker);
+}
+for (const marker of ['buildAnimaRequest', 'metadataFromJob', 'onAnimaResult', 'cancelAnimaJob', '@submit="callGenerate()"']) {
+  if (!view.includes(marker)) fail('Anima generation must be parent-owned and metadata-driven: ' + marker);
+}
+for (const forbidden of ['animaPanelRef', 'syncAnimaPanelState', 'restoreAnimaPanelState', 'querySelectorAll']) {
+  if (view.includes(forbidden)) fail('PromptBuilderView must not read Anima controls through DOM: ' + forbidden);
+}
+if (animaPanel.includes("fetch('/api/anima/jobs'")) fail('AnimaQuickPanel must not own the generation HTTP lifecycle');
+for (const marker of ['update:state', "emit('submit')", "emit('cancel')", 'readonly']) {
+  if (!animaPanel.includes(marker)) fail('AnimaQuickPanel must remain a typed presentational control surface: ' + marker);
+}
+const sceneLoad = view.indexOf('if (restoredContext.scene) pb.loadScene(restoredContext.scene)');
+const storyRestore = view.indexOf('pb.setStory(restoredContext.story)');
+if (sceneLoad < 0 || storyRestore < sceneLoad) fail('history restore must load the scene before restoring custom story text');
+if (view.includes("else if (entry.engine === 'sd')")) {
+  fail('legacy history without an engine field must restore through the SD path');
+}
+for (const marker of ['animaRequestSerial += 1', "method: 'DELETE'"]) {
+  if (!view.includes(marker)) fail('leaving the director must stop Anima polling and cancel the owned job: ' + marker);
 }
 if (view.includes("from '@/utils/promptPolicy'")) {
   fail('prompt policy composition must stay owned by usePromptAssembly');
@@ -161,8 +208,13 @@ for (const param of ['scene', 'regen', 'variant', 'mood', 'resume', 'quick']) {
 // 配音工作室的 HTTP 接线归 VoiceStudio 所有；PromptBuilderView 只负责传入
 // 当前角色/故事默认值，避免它再次变成第六个子系统的宿主。
 const voiceStudio = read('src/components/VoiceStudio.vue');
-for (const marker of ['/api/tts-status', '/api/translate', '/api/tts', 'voice-studio']) {
+const voiceApi = read('src/api/voiceApi.ts');
+for (const marker of ["import { voiceApi } from '@/api/voiceApi'", 'voiceApi.getStatus', 'voiceApi.prepare', 'voiceApi.translate', '/api/tts', 'voice-studio']) {
   if (!voiceStudio.includes(marker)) fail('voice studio must own: ' + marker);
+}
+for (const endpoint of ['/api/tts-status', '/api/voice/prepare', '/api/translate']) {
+  if (!voiceApi.includes(endpoint)) fail('voice API module must own migrated endpoint: ' + endpoint);
+  if (voiceStudio.includes(endpoint)) fail('VoiceStudio must not own migrated JSON endpoint: ' + endpoint);
 }
 for (const marker of ['initial-voice', 'suggested-caption']) {
   if (!view.includes(marker)) fail('director must wire voice studio prop: ' + marker);

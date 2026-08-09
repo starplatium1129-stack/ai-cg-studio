@@ -18,6 +18,7 @@ export interface CompanionDesktopBridge {
     visible: boolean
     onBatteryPower: boolean
     live2dEnabled: boolean | null
+    bounds?: { x: number; y: number; width: number; height: number }
   }>
   toggleAlwaysOnTop(): Promise<boolean>
   getSettings(): Promise<{ openAtLogin: boolean }>
@@ -41,6 +42,8 @@ export interface CompanionDesktopBridge {
   offShown(subscriptionId: number): void
   onVisibilityChanged(listener: (visible: boolean) => void): number
   offVisibilityChanged(subscriptionId: number): void
+  onWindowBoundsChanged?(listener: (bounds: { x: number; y: number; width: number; height: number }) => void): number
+  offWindowBoundsChanged?(subscriptionId: number): void
   onPowerModeChanged(listener: (onBatteryPower: boolean) => void): number
   offPowerModeChanged(subscriptionId: number): void
   onInteractionModeChanged(listener: (ignoreMouseEvents: boolean) => void): number

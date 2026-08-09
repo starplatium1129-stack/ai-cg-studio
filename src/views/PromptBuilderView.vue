@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <article
     class="pb"
     :data-character="pb.char"
@@ -335,11 +335,13 @@
           <div class="panel-title">输出 Result</div>
 
           <div class="engine-switch" role="group" aria-label="出图引擎">
-            <button type="button" class="engine-btn" :class="{ active: drawEngine === 'sd' }" @click="setDrawEngine('sd')">
+            <button type="button" class="engine-btn" :class="{ active: drawEngine === 'sd' }" :disabled="generationBusy" @click="setDrawEngine('sd')">
               SD 引擎 <span class="engine-sub">WebUI · v18 LoRA</span>
             </button>
-            <button type="button" class="engine-btn" :class="{ active: drawEngine === 'anima' }" @click="setDrawEngine('anima')">
-              Anima 引擎 <span class="engine-sub">ComfyUI · v19 LoRA</span>
+            <button type="button" class="engine-btn" :class="{ active: drawEngine === 'anima' }"
+              :disabled="generationBusy || pb.char !== 'nene'" :title="pb.char !== 'nene' ? 'Anima 当前只支持已审核的宁宁 v19' : undefined"
+              @click="setDrawEngine('anima')">
+              Anima 引擎 <span class="engine-sub">ComfyUI · v20 LoRA</span>
             </button>
           </div>
 
@@ -351,13 +353,13 @@
             :base-resolution-risk="baseResolutionRisk"
             :base-resolution-hint="baseResolutionHint"
             :can-use-face-detailer="canUseFaceDetailer"
-            :generating="sd.generating.value"
+             :generating="generationBusy"
             :online="engineOnline"
             :result-seed="displayResultSeed"
             :queue-available="sdQueue.canEnqueue.value"
             @touch="pb.markParamTouched"
             @generate="callGenerate"
-            @cancel="sd.cancel()"
+             @cancel="drawEngine === 'anima' ? cancelAnimaJob() : sd.cancel()"
             @enqueue="enqueueCurrent"
             @reuse-seed="reuseLastSeed"
             @reset="resetAll"
@@ -389,7 +391,12 @@
           />
         </div>
 
-        <AnimaQuickPanel ref="animaPanelRef" @result="onAnimaResult" />
+        <AnimaQuickPanel
+          :state="animaState"
+          @update:state="patchAnimaState"
+          @submit="callGenerate()"
+          @cancel="cancelAnimaJob"
+        />
       </div>
 
       <!-- ─── 右栏：风格 ───────────────────────────────────── -->
@@ -524,7 +531,7 @@
 <script setup lang="ts">
 // 导演台专属样式（91.6KB）随本路由块加载，不再进全局包
 import '@/assets/css/director.css'
-import { ref, computed, nextTick, onMounted, watch, defineAsyncComponent } from 'vue'
+import { ref, computed, nextTick, onMounted, onUnmounted, watch, defineAsyncComponent } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import {
   usePromptBuilderStore,
@@ -532,6 +539,7 @@ import {
   type HistoryEntry,
   type Scene,
 } from '@/stores/promptBuilderStore'
+import type { AnimaGenerationState, AnimaJobMetadata, AnimaResult, AnimaOption } from '@/types/anima'
 import { useSDGenerate } from '@/composables/useSDGenerate'
 import { usePromptAssembly } from '@/composables/usePromptAssembly'
 import { EMOTION, SHOT, LIGHTING, COMPOSITION, COLOR_MOODS, SCENE_THEMES } from '@/config/promptConstants'
@@ -540,6 +548,7 @@ import { classifySDError, SAFE_SAMPLING, LIGHT_LOAD, type SDErrorReport, type SD
 import { useDirectorCatalog } from '@/composables/useDirectorCatalog'
 import { useDirectorDerived } from '@/composables/useDirectorDerived'
 import { useFocusTrap } from '@/composables/useFocusTrap'
+import { restoreHistorySceneStory } from '@/utils/promptBuilderPersistence'
 import {
   findScenario,
   substituteScenarioPrompt,
@@ -567,6 +576,11 @@ import {
   writeQuickCreate,
   type QuickCreateSettings,
 } from '@/utils/quickCreate'
+import {
+  DRAW_ENGINE_SETTING,
+  settingsRepository,
+  type DrawEngine,
+} from '@/storage/settingsRepository'
 
 const router = useRouter()
 const route = useRoute()
@@ -596,6 +610,27 @@ const tagSearch = ref('')
 const tagCategory = ref('all')
 const voiceStudioRef = ref<{ setSuggestedCaption?: (caption: string) => void } | null>(null)
 const DIRECTOR_MODE_KEY = 'aics_pb_director_mode'
+
+const storedDrawEngine = settingsRepository.get(DRAW_ENGINE_SETTING)
+const drawEngine = ref<DrawEngine>(storedDrawEngine ?? 'sd')
+const animaState = ref<AnimaGenerationState>({
+  phase: 'idle', online: false, checkMsg: 'Anima 状态检查中…', models: [], loras: [],
+  prompt: '', negative: '', modelId: 'anima-base-v1.0', loraId: 'L_NENE_V20_ANIMA',
+  loraStrength: 0.85, width: 832, height: 1216, steps: 24, cfg: 3,
+  sampler: 'res_multistep', scheduler: 'simple', seed: null,
+  job: null, result: null, statusText: '', errorMsg: '',
+})
+let animaStatusTimer: ReturnType<typeof setInterval> | null = null
+let animaRequestSerial = 0
+
+const animaModelId = computed({
+  get: () => animaState.value.modelId,
+  set: value => patchAnimaState({ modelId: value }),
+})
+
+function patchAnimaState(patch: Partial<AnimaGenerationState>) {
+  animaState.value = { ...animaState.value, ...patch }
+}
 
 // ── Derived（场景筛选 / 词条目录 / 摘要 / 显存提示）──────────────────────
 const {
@@ -641,7 +676,7 @@ const {
   promptReport,
   artViolations,
   previewPrompt,
-} = usePromptAssembly(pb, sd.checkpoint)
+} = usePromptAssembly(pb, sd.checkpoint, drawEngine, animaModelId)
 const livePrompt = positivePrompt
 
 // ── 出图对比：记住上一张结果，生成新图后可并排大图对比 ──────────────
@@ -661,14 +696,16 @@ const compareOpen = ref(false)
 const compareEl = ref<HTMLElement | null>(null)
 
 function resultSnapshot(url: string): ResultSnapshot {
+  const metadata = animaState.value.result?.metadata
+  const isAnima = drawEngine.value === 'anima'
   return {
     url,
-    seed: displayResultSeed.value ?? (pb.sdParams.seedLock && pb.sdParams.seed >= 0 ? pb.sdParams.seed : null),
-    size: sdSize.value,
-    sampler: pb.sdParams.sampler || sd.samplers.value[0] || '—',
-    cfg: pb.sdParams.cfg,
-    steps: pb.sdParams.steps,
-    hires: pb.sdParams.hiresFix ? `×${pb.sdParams.hiresScale ?? 1.5}` : '关',
+    seed: displayResultSeed.value ?? (isAnima ? metadata?.seed ?? null : (pb.sdParams.seedLock && pb.sdParams.seed >= 0 ? pb.sdParams.seed : null)),
+    size: isAnima ? `${metadata?.width ?? animaState.value.width}x${metadata?.height ?? animaState.value.height}` : sdSize.value,
+    sampler: isAnima ? (metadata?.sampler ?? animaState.value.sampler) : (pb.sdParams.sampler || sd.samplers.value[0] || '—'),
+    cfg: isAnima ? (metadata?.cfg ?? animaState.value.cfg) : pb.sdParams.cfg,
+    steps: isAnima ? (metadata?.steps ?? animaState.value.steps) : pb.sdParams.steps,
+    hires: isAnima ? '关' : (pb.sdParams.hiresFix ? `×${pb.sdParams.hiresScale ?? 1.5}` : '关'),
     at: new Date().toLocaleTimeString(),
   }
 }
@@ -725,19 +762,20 @@ function onStoryInput() {
 const sdErrorReport = ref<SDErrorReport | null>(null)
 function dismissError() { sdErrorReport.value = null }
 
-// 出图引擎切换：sd（reForge WebUI）/ anima（ComfyUI 直通）
-type DrawEngine = 'sd' | 'anima'
-const drawEngine = ref<DrawEngine>((localStorage.getItem('aics_draw_engine') as DrawEngine) || 'sd')
-const animaPanelRef = ref<{ generateWith: (positive: string, negative: string, seed?: number) => Promise<void>; online?: boolean; $el?: HTMLElement } | null>(null)
-
-// 引擎统一结果：SD 用 useSDGenerate，Anima 由面板上抛，主结果框共用一套展示/保存。
-const animaResult = ref<{ url: string; seed: number | null } | null>(null)
-function onAnimaResult(payload: { url: string; seed: number | null }) {
-  animaResult.value = payload
+// 引擎统一结果：Anima 结果带不可变 job metadata，历史不再读取当前面板状态。
+function onAnimaResult(result: AnimaResult) {
+  const previous = animaState.value.result
+  if (previous && previous.url !== result.url) URL.revokeObjectURL(previous.url)
+  patchAnimaState({ result, job: result.metadata, phase: 'succeeded', statusText: '生成完成', errorMsg: '' })
   sd.clearResult()
 }
-const displayResultUrl = computed(() => drawEngine.value === 'anima' ? (animaResult.value?.url ?? '') : sd.resultUrl.value)
-const displayResultSeed = computed(() => drawEngine.value === 'anima' ? animaResult.value?.seed ?? null : sd.resultSeed.value)
+function clearAnimaResult() {
+  const previous = animaState.value.result
+  if (previous) URL.revokeObjectURL(previous.url)
+  patchAnimaState({ result: null, job: null })
+}
+const displayResultUrl = computed(() => drawEngine.value === 'anima' ? (animaState.value.result?.url ?? '') : sd.resultUrl.value)
+const displayResultSeed = computed(() => drawEngine.value === 'anima' ? animaState.value.result?.metadata.seed ?? null : sd.resultSeed.value)
 
 // 新一轮生成开始时结果会被清空，完成后再写入新值；
 // 因此只在"有值且与上一张不同"时轮转快照（SD 与 Anima 结果共用）。
@@ -747,22 +785,29 @@ watch(displayResultUrl, (url, oldUrl) => {
   lastResult.value = resultSnapshot(url)
 })
 function setDrawEngine(v: DrawEngine) {
-  if (drawEngine.value === v) return
-  drawEngine.value = v
-  localStorage.setItem('aics_draw_engine', v)
-  pb.flash(v === 'anima' ? '已切换到 Anima 引擎（ComfyUI + v19 LoRA）' : '已切换到 SD 引擎（WebUI）')
-  if (v === 'anima') {
-    setTimeout(() => {
-      animaPanelRef.value?.$el?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
-    }, 100)
+  if (v === 'anima' && pb.char !== 'nene') {
+    pb.flash('Anima 当前只支持已审核的宁宁 v19，已保留 SD 引擎')
+    return
   }
+  if (drawEngine.value === v) {
+    return
+  }
+  try {
+    settingsRepository.set(DRAW_ENGINE_SETTING, v)
+  } catch {
+    pb.flash('绘图引擎设置保存失败')
+    return
+  }
+  drawEngine.value = v
+  pb.flash(v === 'anima' ? '已切换到 Anima 引擎（ComfyUI + v20 LoRA）' : '已切换到 SD 引擎（WebUI）')
 }
 
 // Anima 模式下生成按钮的可用性取决于 ComfyUI 在线状态，而不是 SD WebUI。
 const engineOnline = computed(() => {
-  if (drawEngine.value === 'anima') return animaPanelRef.value?.online ?? false
+  if (drawEngine.value === 'anima') return pb.char === 'nene' && animaState.value.online
   return sd.online.value
 })
+const generationBusy = computed(() => sd.generating.value || ['submitting', 'running', 'cancelling'].includes(animaState.value.phase))
 
 /** 把当前导演台状态快照成一个队列任务 */
 function captureJob(): Omit<SDQueueJob, 'id'> | null {
@@ -790,6 +835,272 @@ function captureJob(): Omit<SDQueueJob, 'id'> | null {
     hiresSteps: pb.sdParams.hiresSteps,
     denoisingStrength: pb.sdParams.hiresDenoise,
     faceDetailer: pb.sdParams.faceDetailer,
+  }
+}
+
+function historyGenerationFields(): Partial<HistoryEntry> {
+  if (drawEngine.value === 'anima') {
+    const meta = animaState.value.result?.metadata || animaState.value.job
+    if (!meta) return {}
+    return {
+      engine: 'anima',
+      profile: meta.profileId,
+      model: meta.modelId,
+      lora: meta.loraId,
+      loraId: meta.loraId,
+      loraStrength: meta.loraStrength,
+      cfg: meta.cfg,
+      steps: meta.steps,
+      sampler: meta.sampler,
+      scheduler: meta.scheduler,
+      size: `${meta.width}x${meta.height}`,
+    }
+  }
+  const model = pb.sdModelName || sd.checkpoint.value || ''
+  return {
+    engine: 'sd',
+    profile: modelProfile.value?.id || '',
+    model,
+    lora: loraSpecs.value.map(spec => `${spec.name}:${spec.weight}`).join(', ') || null,
+    loraId: loraSpecs.value[0]?.name || null,
+    loraStrength: loraSpecs.value[0]?.weight ?? null,
+    cfg: pb.sdParams.cfg,
+    steps: pb.sdParams.steps,
+    sampler: pb.sdParams.sampler,
+    scheduler: pb.sdParams.scheduler,
+    size: sdSize.value,
+  }
+}
+
+interface AnimaPublicJob {
+  id: string
+  status: 'queued' | AnimaGenerationState['phase']
+  seed: number
+  resultAvailable: boolean
+  resultUrl: string | null
+  metadata?: AnimaJobMetadata
+  error: string | null
+  code: string | null
+}
+
+interface AnimaStatusResponse {
+  ok?: boolean
+  online?: boolean
+  models?: AnimaOption[]
+  loras?: AnimaOption[]
+  error?: string
+}
+
+interface AnimaRequest {
+  prompt: string
+  negative: string
+  profileId: string
+  modelId: string
+  loraId: string
+  loraStrength: number
+  width: number
+  height: number
+  steps: number
+  cfg: number
+  seed?: number
+  character: 'nene'
+}
+
+function animaRequestPayload(request: AnimaRequest): Omit<AnimaRequest, 'profileId'> {
+  return {
+    prompt: request.prompt,
+    negative: request.negative,
+    modelId: request.modelId,
+    loraId: request.loraId,
+    loraStrength: request.loraStrength,
+    width: request.width,
+    height: request.height,
+    steps: request.steps,
+    cfg: request.cfg,
+    ...(request.seed === undefined ? {} : { seed: request.seed }),
+    character: request.character,
+  }
+}
+
+function updateAnimaPromptState() {
+  patchAnimaState({
+    prompt: livePrompt.value,
+    negative: negativePrompt.value,
+  })
+}
+
+async function refreshAnimaBackend() {
+  try {
+    const response = await fetch('/api/anima/status', { cache: 'no-store' })
+    const data = await response.json() as AnimaStatusResponse
+    if (!response.ok || data.ok !== true) throw new Error(data.error || `网关返回 ${response.status}`)
+    const models = Array.isArray(data.models) ? data.models : []
+    const loras = Array.isArray(data.loras) ? data.loras : []
+    const modelId = models.some(model => model.id === animaState.value.modelId)
+      ? animaState.value.modelId
+      : (models[0]?.id || '')
+    const loraId = loras.some(lora => lora.id === animaState.value.loraId)
+      ? animaState.value.loraId
+      : (loras[0]?.id || '')
+    patchAnimaState({
+      online: data.online === true,
+      checkMsg: data.online === true
+        ? `Anima 在线 · ${models.length} 个底模 · ${loras.length} 个 LoRA`
+        : 'Anima 离线（ComfyUI 未启动或网关不可用）',
+      models, loras, modelId, loraId,
+    })
+  } catch (error) {
+    patchAnimaState({ online: false, checkMsg: 'Anima 离线（网关状态接口不可用）' })
+  }
+}
+
+function buildAnimaRequest(): AnimaRequest | null {
+  const profile = modelProfile.value
+  if (pb.char !== 'nene') {
+    pb.flash('Anima 当前只支持已审核的宁宁 v20')
+    return null
+  }
+  if (!profile || profile.engine !== 'anima' || profile.model_id !== animaState.value.modelId) {
+    pb.flash('Anima 当前底模没有已审核 profile，已拒绝生成')
+    return null
+  }
+  if (!animaState.value.loraId || !animaState.value.models.some(model => model.id === animaState.value.modelId)) {
+    pb.flash('Anima 底模尚未从服务端白名单发现')
+    return null
+  }
+  updateAnimaPromptState()
+  return {
+    prompt: livePrompt.value,
+    negative: negativePrompt.value,
+    profileId: profile.id || '',
+    modelId: animaState.value.modelId,
+    loraId: animaState.value.loraId,
+    loraStrength: animaState.value.loraStrength,
+    width: animaState.value.width,
+    height: animaState.value.height,
+    steps: animaState.value.steps,
+    cfg: animaState.value.cfg,
+    ...(animaState.value.seed == null ? {} : { seed: animaState.value.seed }),
+    character: 'nene',
+  }
+}
+
+function metadataFromJob(job: AnimaPublicJob, request: AnimaRequest): AnimaJobMetadata {
+  const supplied = job.metadata
+  const metadata = supplied && supplied.prompt === request.prompt && supplied.negative === request.negative
+    ? supplied
+    : {
+        engine: 'anima' as const,
+        id: job.id,
+        prompt: request.prompt,
+        negative: request.negative,
+        profileId: request.profileId,
+        modelId: request.modelId,
+        loraId: request.loraId,
+        loraStrength: request.loraStrength,
+        width: request.width,
+        height: request.height,
+        steps: request.steps,
+        cfg: request.cfg,
+        sampler: animaState.value.sampler,
+        scheduler: animaState.value.scheduler,
+        seed: job.seed,
+        character: 'nene' as const,
+        createdAt: Date.now(),
+        resultUrl: job.resultUrl,
+      }
+  return Object.freeze({ ...metadata, resultUrl: job.resultUrl || metadata.resultUrl || null }) as AnimaJobMetadata
+}
+
+async function readAnimaError(response: Response): Promise<string> {
+  try {
+    const data = await response.json() as { error?: string }
+    if (data.error) return data.error
+  } catch { /* use the HTTP status below */ }
+  return `网关返回 ${response.status}`
+}
+
+async function pollAnimaJob(jobId: string, request: AnimaRequest, serial: number): Promise<void> {
+  const deadline = Date.now() + 10 * 60 * 1000
+  while (Date.now() < deadline && serial === animaRequestSerial) {
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    if (serial !== animaRequestSerial) return
+    const response = await fetch('/api/anima/jobs/' + encodeURIComponent(jobId), { cache: 'no-store' })
+    if (serial !== animaRequestSerial) return
+    if (!response.ok) {
+      if (response.status >= 500) continue
+      throw new Error(await readAnimaError(response))
+    }
+    const data = await response.json() as { ok?: boolean; job?: AnimaPublicJob; error?: string }
+    if (serial !== animaRequestSerial) return
+    const job = data.job
+    if (data.ok !== true || !job) throw new Error(data.error || 'Anima 状态无效')
+    if (job.metadata) patchAnimaState({ job: metadataFromJob(job, request) })
+    if (job.status === 'cancelling') {
+      patchAnimaState({ phase: 'cancelling', statusText: '取消中…' })
+      continue
+    }
+    if (job.status === 'cancelled') {
+      patchAnimaState({ phase: 'cancelled', statusText: '任务已取消', errorMsg: '' })
+      return
+    }
+    if (job.status === 'failed') throw new Error(job.error || 'Anima 生成失败')
+    if (job.status !== 'succeeded' || !job.resultAvailable || !job.resultUrl) continue
+
+    const resultResponse = await fetch(job.resultUrl, { cache: 'no-store' })
+    const contentType = String(resultResponse.headers.get('content-type') || '')
+    if (!resultResponse.ok || !contentType.startsWith('image/')) throw new Error(await readAnimaError(resultResponse))
+    const blob = await resultResponse.blob()
+    if (serial !== animaRequestSerial) return
+    if (!blob.size) throw new Error('Anima 返回了空图片')
+    const metadata = metadataFromJob(job, request)
+    onAnimaResult({ url: URL.createObjectURL(blob), blob, metadata })
+    return
+  }
+  if (serial === animaRequestSerial) throw new Error('Anima 生成超时')
+}
+
+async function generateAnima() {
+  if (['submitting', 'running', 'cancelling'].includes(animaState.value.phase)) return
+  const request = buildAnimaRequest()
+  if (!request) return
+  if (!animaState.value.online) { pb.flash('Anima ComfyUI 当前未连接'); return }
+  const serial = ++animaRequestSerial
+  clearAnimaResult()
+  patchAnimaState({ phase: 'submitting', statusText: '提交任务…', errorMsg: '' })
+  try {
+    const response = await fetch('/api/anima/jobs', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(animaRequestPayload(request)),
+    })
+    if (!response.ok) throw new Error(await readAnimaError(response))
+    const data = await response.json() as { ok?: boolean; job?: AnimaPublicJob; error?: string }
+    if (data.ok !== true || !data.job?.id) throw new Error(data.error || 'Anima 任务创建失败')
+    const metadata = metadataFromJob(data.job, request)
+    patchAnimaState({ phase: 'running', statusText: '生成中…', job: metadata })
+    await pollAnimaJob(data.job.id, request, serial)
+  } catch (error) {
+    if (serial !== animaRequestSerial) return
+    patchAnimaState({ phase: 'failed', statusText: '生成失败', errorMsg: error instanceof Error ? error.message : String(error) })
+  }
+}
+
+async function cancelAnimaJob() {
+  const job = animaState.value.job
+  if (!job && animaState.value.phase === 'submitting') {
+    pb.flash('任务正在登记，取得任务编号后即可安全取消')
+    return
+  }
+  if (!job || !['running', 'cancelling'].includes(animaState.value.phase)) return
+  patchAnimaState({ phase: 'cancelling', statusText: '取消中…', errorMsg: '' })
+  try {
+    const response = await fetch('/api/anima/jobs/' + encodeURIComponent(job.id), { method: 'DELETE' })
+    if (!response.ok) throw new Error(await readAnimaError(response))
+    const data = await response.json() as { job?: AnimaPublicJob }
+    if (data.job?.status === 'cancelled') patchAnimaState({ phase: 'cancelled', statusText: '任务已取消' })
+  } catch (error) {
+    patchAnimaState({ phase: 'failed', statusText: '取消失败', errorMsg: error instanceof Error ? error.message : String(error) })
   }
 }
 
@@ -887,11 +1198,15 @@ const sdQueue = useSDQueue({
       try {
         // url 是本地 blob URL，不会回 HTML 错误页，但可能已被 revoke 而拿到空 blob。
         // 空 blob 入册会在作品册里留下一条打不开的记录。
-        const blob = await (await fetch(url)).blob()
+        const response = await fetch(url)
+        const contentType = response.headers.get('content-type') || ''
+        if (!response.ok || !contentType.startsWith('image/')) throw new Error('成片响应不是图片')
+        const blob = await response.blob()
         if (!blob.size) throw new Error('成片数据已失效')
         await pb.commitHistoryEntry({
           blob, seed: sd.resultSeed.value ?? undefined,
           size: job.size, negative: job.negative, prompt: job.prompt,
+          ...historyGenerationFields(),
         })
       } catch (e) { console.warn('queue autosave failed', e) }
       return { status: 'success' as const }
@@ -913,9 +1228,8 @@ function enqueueCurrent() {
 async function callGenerate(opts: { disableLora?: boolean } = {}) {
   if (!livePrompt.value) { pb.flash('请先选择场景或填写故事'); return }
   if (drawEngine.value === 'anima') {
-    if (opts.disableLora) { pb.flash('Anima 引擎固定使用 v19 LoRA，无法跳过') }
-    const seed = pb.sdParams.seedLock && pb.sdParams.seed >= 0 ? pb.sdParams.seed : undefined
-    await animaPanelRef.value?.generateWith(livePrompt.value, negativePrompt.value, seed)
+    if (opts.disableLora) { pb.flash('Anima 引擎固定使用 v20 LoRA，无法跳过') }
+    await generateAnima()
     return
   }
   sdErrorReport.value = null
@@ -978,17 +1292,34 @@ async function saveHistory() {
   try {
     const url = displayResultUrl.value
     if (!url) { pb.flash('暂无可保存的成片'); return }
-    // 抓取成片 blob 写入 IndexedDB，并 commit 历史
-    const response = await fetch(url)
-    const blob = await response.blob()
+    let blob: Blob
+    let prompt = livePrompt.value
+    let negative = negativePrompt.value
+    if (drawEngine.value === 'anima') {
+      const result = animaState.value.result
+      if (!result) { pb.flash('Anima 成片数据已失效，请重新生成'); return }
+      blob = result.blob
+      prompt = result.metadata.prompt
+      negative = result.metadata.negative
+    } else {
+      // SD blob URL 仍由浏览器生成，写入 IndexedDB 前检查响应类型。
+      const response = await fetch(url, { cache: 'no-store' })
+      const contentType = response.headers.get('content-type') || ''
+      if (!response.ok || !contentType.startsWith('image/')) {
+        pb.flash('成片响应无效，请重新生成')
+        return
+      }
+      blob = await response.blob()
+    }
     // 空 blob 会入册成一条打不开的记录，宁可报错
     if (!blob.size) { pb.flash('成片数据已失效，请重新生成'); return }
     const entry = await pb.commitHistoryEntry({
       blob,
       seed: displayResultSeed.value ?? undefined,
       size: sdSize.value,
-      negative: negativePrompt.value,
-      prompt: livePrompt.value,
+      negative,
+      prompt,
+      ...historyGenerationFields(),
     })
     if (entry) pb.flash('快照已存入本地作品册')
     else pb.flash('保存失败')
@@ -1029,13 +1360,32 @@ function applyQuickCreateSettings(settings: QuickCreateSettings | null) {
 
 function applyHistory(entry: HistoryEntry, keepAsVariant = false) {
   if (entry.character) pb.setChar(entry.character)
-  if (entry.story) pb.setStory(entry.story)
-  if (entry.scene) {
-    const sc = pb.scenes.find(s => s.id === entry.scene)
-    if (sc) pb.loadScene(sc)
+  if (entry.engine === 'anima' && entry.character === 'nene') {
+    const [width, height] = String(entry.size || '832x1216').replace('×', 'x').split('x').map(Number)
+    clearAnimaResult()
+    patchAnimaState({
+      phase: 'idle', statusText: '', errorMsg: '',
+      modelId: entry.model || 'anima-base-v1.0',
+      loraId: entry.loraId || animaState.value.loraId,
+      loraStrength: entry.loraStrength ?? animaState.value.loraStrength,
+      width: Number.isInteger(width) ? width : animaState.value.width,
+      height: Number.isInteger(height) ? height : animaState.value.height,
+      steps: Number(entry.steps) || animaState.value.steps,
+      cfg: Number(entry.cfg) || animaState.value.cfg,
+      sampler: entry.sampler || animaState.value.sampler,
+      scheduler: entry.scheduler || animaState.value.scheduler,
+      seed: entry.seed >= 0 ? entry.seed : animaState.value.seed,
+    })
+    setDrawEngine('anima')
   } else {
-    pb.clearScene({ keepStory: true })
+    // 旧历史没有 engine 字段，必须按既有 SD 契约恢复。
+    setDrawEngine('sd')
   }
+  const restoredContext = restoreHistorySceneStory(entry, pb.scenes)
+  if (restoredContext.scene) pb.loadScene(restoredContext.scene)
+  else pb.clearScene({ keepStory: true })
+  // loadScene seeds the scene story; restore the historical user story last.
+  pb.setStory(restoredContext.story)
   pb.selections.emotion.splice(0, pb.selections.emotion.length, ...(entry.emotion || []))
   pb.setShot(entry.shot || null)
   pb.setLighting(entry.lighting || null)
@@ -1047,8 +1397,9 @@ function applyHistory(entry: HistoryEntry, keepAsVariant = false) {
   pb.sdParams.steps = Number(entry.steps) || pb.sdParams.steps
   if (entry.sampler) pb.sdParams.sampler = entry.sampler
   if (entry.scheduler) pb.sdParams.scheduler = entry.scheduler
+  if (entry.model && entry.engine !== 'anima') pb.sdModelName = entry.model
   if (entry.negative) { pb.sdParams.negative = true; pb.sdParams.negativeCustom = entry.negative }
-  if (entry.size) sdSize.value = entry.size
+  if (entry.size) sdSize.value = entry.size.replace('×', 'x')
   if (keepAsVariant) pb.flash('已复制为新变体草稿')
   else pb.flash('已恢复历史参数')
 }
@@ -1057,8 +1408,12 @@ function resumeHistory(entry: HistoryEntry) { applyHistory(entry) }
 function duplicateHistory(entry: HistoryEntry) { applyHistory(entry, true) }
 async function deleteHistory(entry: HistoryEntry) {
   if (!confirm(`删除历史「${entry.sceneTitle || entry.scene || '未命名'}」？此操作不可撤销。`)) return
-  await pb.removeHistoryEntry(entry.id)
-  pb.flash('历史记录已删除')
+  try {
+    await pb.removeHistoryEntry(entry.id)
+    pb.flash('历史记录已删除')
+  } catch {
+    pb.flash('删除失败，请重试')
+  }
 }
 
 /** 「清空并重来」：会清空故事、场景关联、全部词条与导演决策，先确认再执行 */
@@ -1092,6 +1447,8 @@ function toggleOutfitBundle(tags: string[]) {
 
 // ── Lifecycle ─────────────────────────────────────────────────────────────
 onMounted(async () => {
+  void refreshAnimaBackend()
+  animaStatusTimer = setInterval(() => { void refreshAnimaBackend() }, 15000)
   const savedMode = localStorage.getItem(DIRECTOR_MODE_KEY)
   if (savedMode === 'pro' || savedMode === 'basic') {
     pb.directorMode = savedMode
@@ -1143,19 +1500,7 @@ onMounted(async () => {
     const targetId = q.regen ? Number(q.regen) : NaN
     const entry = targetId ? pb.history.find(h => h.id === targetId) : null
     if (entry) {
-      if (entry.character) pb.setChar(entry.character)
-      if (entry.story) pb.setStory(entry.story)
-      if (entry.scene) {
-        const sc = pb.scenes.find(s => s.id === entry.scene)
-        if (sc) pb.loadScene(sc)
-      }
-      if (Array.isArray(entry.emotion)) entry.emotion.forEach((e:string) => { if (!pb.selections.emotion.includes(e)) pb.selections.emotion.push(e) })
-      if (entry.shot) pb.setShot(entry.shot)
-      if (entry.lighting) pb.setLighting(entry.lighting)
-      if (entry.composition) pb.setComposition(entry.composition)
-      if (entry.colorMood) pb.setColorMood(entry.colorMood)
-      if (Array.isArray(entry.manual_tags)) { pb.manualTags = new Set(entry.manual_tags) }
-      if (entry.seed && entry.seed >= 0) { pb.sdParams.seed = entry.seed; pb.sdParams.seedLock = true }
+      applyHistory(entry, q.variant === '1')
       handledDeepLink = true
     }
   } else if (q.resume === '1') {
@@ -1172,7 +1517,7 @@ onMounted(async () => {
     const savedQuick = readQuickCreate()
     applyQuickCreateSettings(savedQuick)
     await nextTick()
-    if (!sd.online.value) {
+    if (!engineOnline.value) {
       pb.flash('快速出图未启动：SD WebUI 当前未连接，Prompt 已保留')
     } else if (livePrompt.value) {
       const reused = quickCreateSummary(savedQuick)
@@ -1182,8 +1527,8 @@ onMounted(async () => {
   } else if (q.generate === '1') {
     // 样张/场景抽屉的「调整后生成」：场景与词条已在上面载入，这里直接出图
     await nextTick()
-    if (!sd.online.value) {
-      pb.flash('SD WebUI 未连接，场景与词条已就位，可稍后生成')
+    if (!engineOnline.value) {
+      pb.flash(`${drawEngine.value === 'anima' ? 'Anima' : 'SD WebUI'} 未连接，场景与词条已就位，可稍后生成`)
     } else if (livePrompt.value) {
       pb.flash('正在按调整后的场景生成')
       await callGenerate()
@@ -1191,13 +1536,34 @@ onMounted(async () => {
   }
 })
 
+onUnmounted(() => {
+  animaRequestSerial += 1
+  if (animaStatusTimer) clearInterval(animaStatusTimer)
+  animaStatusTimer = null
+  const activeJob = animaState.value.job
+  if (activeJob && ['running', 'cancelling'].includes(animaState.value.phase)) {
+    void fetch('/api/anima/jobs/' + encodeURIComponent(activeJob.id), { method: 'DELETE' }).catch(() => {})
+  }
+  const result = animaState.value.result
+  if (result) URL.revokeObjectURL(result.url)
+})
+
 // Autosave draft
 watch([() => pb.story, () => pb.char, () => pb.sceneId, () => pb.selections, () => pb.manualTags, () => pb.colorMood], () => {
   pb.saveDraft?.()
 }, { deep: true })
 
+watch([livePrompt, negativePrompt], () => updateAnimaPromptState(), { immediate: true })
+
 watch(() => pb.directorMode, mode => {
   localStorage.setItem(DIRECTOR_MODE_KEY, mode)
+})
+
+watch(() => pb.char, char => {
+  if (drawEngine.value === 'anima' && char !== 'nene') {
+    setDrawEngine('sd')
+    pb.flash('夏目与双人模式暂不支持 Anima，已切回 SD')
+  }
 })
 
 watch([() => pb.char, () => pb.sceneSearch, () => pb.sceneTheme, sceneCollection], () => {
@@ -1212,6 +1578,8 @@ watch(() => pb.sdModelName, (name) => {
 
 <style scoped>
 .engine-switch {
+  --engine-active-border: #f06292;
+  --engine-active-text: #f8bbd0;
   display: flex;
   gap: 8px;
   margin: 4px 0 10px;
@@ -1232,9 +1600,9 @@ watch(() => pb.sdModelName, (name) => {
   transition: border-color 0.15s, background 0.15s;
 }
 .engine-btn.active {
-  border-color: #f06292;
+  border-color: var(--engine-active-border);
   background: rgba(240, 98, 146, 0.14);
-  color: #f8bbd0;
+  color: var(--engine-active-text);
 }
 .engine-sub {
   font-size: 11px;

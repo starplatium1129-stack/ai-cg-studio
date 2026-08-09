@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <article class="page showcase-page">
     <a @click.prevent="$router.push('/')" href="/" class="nav-back">← 回首页</a>
     <ArchivePageHero
@@ -59,7 +59,7 @@
     <ArchiveStatePanel
       v-else-if="manifestLoading"
       class="empty empty-block"
-      kind="empty"
+      kind="loading"
       title="正在读取样张目录…"
       message="连接 AI/SceneShowcase 审核展示集。"
     >
@@ -68,7 +68,7 @@
 
     <ArchiveStatePanel
       v-else-if="!filtered.length"
-      kind="empty"
+      kind="filtered"
       title="这批样张里没有你要的"
       message="换个关键词或筛选，我再帮你找找看。"
     >

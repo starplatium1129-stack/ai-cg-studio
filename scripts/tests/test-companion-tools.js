@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * 桌宠本地工具执行器测试（desktop/toolRunner.ts → desktop-dist）。
+ * 桌宠本地工具执行器测试（desktop/toolRunner.ts）。
  * 覆盖：路径白名单、大小写不敏感、读写上限、命令执行与未知工具拒绝。
  */
 
@@ -11,7 +11,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 
-const toolRunner = require('../../desktop-dist/toolRunner');
+const toolRunner = require('../../desktop/toolRunner.ts');
 
 function tempWorkspace() {
   return fs.mkdtempSync(path.join(os.tmpdir(), 'aics-tools-'));

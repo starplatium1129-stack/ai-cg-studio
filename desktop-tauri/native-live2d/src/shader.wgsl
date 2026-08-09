@@ -1,0 +1,95 @@
+// Live2D drawable shaders — port of the official Cubism GLES2 renderer
+// semantics: premultiplied alpha output, mask channel sampling, multiply and
+// screen colors, per-drawable opacity.
+
+struct Uniforms {
+    transform: vec4<f32>,     // [sx, sy, tx, ty] canvas -> clip
+    multiply_color: vec4<f32>,
+    screen_color: vec4<f32>,
+    misc: vec4<f32>,          // x = opacity, y = has_mask, z = inverted_mask, w = unused
+};
+
+@group(0) @binding(0) var color_tex: texture_2d<f32>;
+@group(0) @binding(1) var color_sampler: sampler;
+@group(1) @binding(0) var mask_tex: texture_2d<f32>;
+@group(1) @binding(1) var mask_sampler: sampler;
+@group(2) @binding(0) var<uniform> u: Uniforms;
+
+struct VsOut {
+    @builtin(position) position: vec4<f32>,
+    @location(0) uv: vec2<f32>,
+    @location(1) mask_uv: vec2<f32>,
+};
+
+@vertex
+fn vs_main(@location(0) pos: vec2<f32>, @location(1) uv: vec2<f32>) -> VsOut {
+    var out: VsOut;
+    out.position = vec4<f32>(
+        pos.x * u.transform.x + u.transform.z,
+        pos.y * u.transform.y + u.transform.w,
+        0.0,
+        1.0,
+    );
+    out.uv = uv;
+    // Mask textures are rendered in the same viewport as the main pass, so a
+    // drawable samples the mask channel with its own clip-space position
+    // normalized to 0..1 (the official renderer's v_maskUv). Texture V runs
+    // downward while clip Y runs upward, so the V axis is inverted here.
+    out.mask_uv = vec2<f32>(out.position.x * 0.5 + 0.5, 0.5 - out.position.y * 0.5);
+    return out;
+}
+
+// Standard drawable: texture is premultiplied by Live2D's export pipeline;
+// output premultiplied color directly (matches the official GLES2 shader).
+fn shade_standard(in: VsOut, masked: bool) -> vec4<f32> {
+    let tex = textureSample(color_tex, color_sampler, in.uv);
+    let opacity = u.misc.x;
+    let multiply = u.multiply_color;
+    var mask_a = 1.0;
+    if (masked) {
+        mask_a = textureSample(mask_tex, mask_sampler, in.mask_uv).a;
+        if (u.misc.z > 0.5) {
+            mask_a = 1.0 - mask_a;
+        }
+    }
+    let rgb = tex.rgb * multiply.rgb + u.screen_color.rgb * tex.a;
+    let a = tex.a * opacity * multiply.a * mask_a;
+    return vec4<f32>(rgb * opacity, a);
+}
+
+@fragment
+fn fs_main(in: VsOut) -> @location(0) vec4<f32> {
+    return shade_standard(in, false);
+}
+
+@fragment
+fn fs_masked(in: VsOut) -> @location(0) vec4<f32> {
+    return shade_standard(in, true);
+}
+
+// Multiply blend mode: the reference renderer adds (1 - a) back to each
+// channel so premultiplied colors multiply like straight colors.
+fn multiply_adjust(p: vec4<f32>) -> vec4<f32> {
+    return vec4<f32>(p.r + (1.0 - p.a), p.g + (1.0 - p.a), p.b + (1.0 - p.a), p.a);
+}
+
+@fragment
+fn fs_multiply(in: VsOut) -> @location(0) vec4<f32> {
+    return multiply_adjust(shade_standard(in, false));
+}
+
+@fragment
+fn fs_multiply_masked(in: VsOut) -> @location(0) vec4<f32> {
+    return multiply_adjust(shade_standard(in, true));
+}
+
+// Mask channel render: white color, alpha from texture. The official renderer
+// ignores the drawable's opacity while generating mask channels
+// (opacity only applies to the main pass), so mask sources with opacity 0
+// still contribute their shape.
+@fragment
+fn fs_mask(in: VsOut) -> @location(0) vec4<f32> {
+    let tex = textureSample(color_tex, color_sampler, in.uv);
+    let a = tex.a;
+    return vec4<f32>(1.0, 1.0, 1.0, a);
+}

@@ -52,17 +52,25 @@ onUnmounted(() => {
 
 <style scoped>
 .desktop-titlebar {
+  --desktop-titlebar-bg: #110b22;
+  --desktop-titlebar-text: #9b93b8;
+  --desktop-titlebar-dot-start: #b48cf2;
+  --desktop-titlebar-dot-end: #f2c98c;
+  --desktop-titlebar-name: #c9c2de;
+  --desktop-titlebar-page: #6f6790;
+  --desktop-titlebar-hover: #e8e4f4;
+  --desktop-titlebar-close: #e81123;
   flex: none;
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: 38px;
   padding: 0 0 0 14px;
-  background: #110b22;
+  background: var(--desktop-titlebar-bg);
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   -webkit-app-region: drag;
   user-select: none;
-  color: #9b93b8;
+  color: var(--desktop-titlebar-text);
   font-size: 12.5px;
   letter-spacing: 0.02em;
 }
@@ -78,16 +86,16 @@ onUnmounted(() => {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--nene-violet, #b48cf2), var(--natsume-amber, #f2c98c));
+  background: linear-gradient(135deg, var(--desktop-titlebar-dot-start), var(--desktop-titlebar-dot-end));
   box-shadow: 0 0 8px rgba(180, 140, 242, 0.6);
   flex: none;
 }
 .titlebar-name {
-  color: #c9c2de;
+  color: var(--desktop-titlebar-name);
   font-weight: 600;
 }
 .titlebar-page {
-  color: #6f6790;
+  color: var(--desktop-titlebar-page);
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -107,16 +115,16 @@ onUnmounted(() => {
   margin: 0;
   padding: 0;
   background: transparent;
-  color: #9b93b8;
+  color: var(--desktop-titlebar-text);
   cursor: default;
   transition: background 0.15s ease, color 0.15s ease;
 }
 .tb-btn:hover {
   background: rgba(255, 255, 255, 0.09);
-  color: #e8e4f4;
+  color: var(--desktop-titlebar-hover);
 }
 .tb-close:hover {
-  background: #e81123;
+  background: var(--desktop-titlebar-close);
   color: #fff;
 }
 </style>

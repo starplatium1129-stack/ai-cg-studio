@@ -5,14 +5,29 @@ pub const COMPANION_SHIM_JS: &str = r#"
     if (!window.__TAURI__) return false
     const invoke = window.__TAURI__.core.invoke
     const listen = window.__TAURI__.event.listen
+    const enableNativeLive2D = location.pathname.replace(/\/+$/, '') === '/companion'
     let nextId = 0
     const subs = new Map()
     const on = (event, cb) => {
       const id = ++nextId
-      listen(event, (e) => cb(e.payload)).then((un) => subs.set(id, un)).catch(() => subs.delete(id))
+      const entry = { cancelled: false, unsubscribe: null }
+      subs.set(id, entry)
+      listen(event, (e) => cb(e.payload)).then((un) => {
+        if (entry.cancelled) { try { un() } catch {} }
+        else entry.unsubscribe = un
+      }).catch(() => {
+        if (subs.get(id) === entry) subs.delete(id)
+      })
       return id
     }
-    const off = (id) => { const un = subs.get(id); if (un) { try { un() } catch {} }; subs.delete(id) }
+    const off = (id) => {
+      const entry = subs.get(id)
+      if (entry) {
+        entry.cancelled = true
+        if (entry.unsubscribe) { try { entry.unsubscribe() } catch {} }
+      }
+      subs.delete(id)
+    }
     const reportError = (where, e) => {
       try { window.__TAURI__.event.emit('aics:shim-diagnose', String(where) + ': ' + String(e && e.message || e)) } catch {}
     }
@@ -80,6 +95,7 @@ pub const COMPANION_SHIM_JS: &str = r#"
     onResume: (cb) => on('aics:resume', cb), offResume: off,
     onShown: (cb) => on('aics:shown', cb), offShown: off,
     onVisibilityChanged: (cb) => on('aics:visibility', cb), offVisibilityChanged: off,
+    onWindowBoundsChanged: (cb) => on('aics:window-bounds', cb), offWindowBoundsChanged: off,
     onPowerModeChanged: (cb) => on('aics:power-mode', cb), offPowerModeChanged: off,
     onInteractionModeChanged: (cb) => on('aics:interaction-mode', cb), offInteractionModeChanged: off,
     onClipboardImage: (cb) => on('aics:clipboard-image', cb), offClipboardImage: off,
@@ -92,12 +108,18 @@ pub const COMPANION_SHIM_JS: &str = r#"
     onMaximizedChanged: (cb) => on('aics:maximized', cb), offMaximizedChanged: off,
   }
 
-  // Live2D 原生 overlay 桥（契约见 src/types/live2dNative.ts；与 companionDesktop
-  // 同机制注入，浏览器后端/纯 Web 环境不存在）
-  window.aicsLive2dNative = {
+  // Live2D 原生 overlay 桥只注入 Companion。Atelier 与普通 Web 页面保持
+  // browser backend，避免两个窗口争用同一个全局 overlay。
+  if (enableNativeLive2D) window.aicsLive2dNative = {
     isNativeLive2D: true,
     setCharacter: (modelPath, options) => invoke('aics_live2d_set_character', { modelPath, character: options && options.character }),
-    setFrame: (frame) => invoke('aics_live2d_set_frame', { rect: frame.rect, visible: frame.visible, opacity: frame.opacity != null ? frame.opacity : null }),
+    setFrame: (frame) => invoke('aics_live2d_set_frame', {
+      rect: frame.rect,
+      visible: frame.visible,
+      opacity: frame.opacity != null ? frame.opacity : null,
+      passthrough: frame.passthrough || [],
+    }),
+    setMaxFps: (fps) => invoke('aics_live2d_set_max_fps', { fps }),
     playMotion: (group, index, priority) => invoke('aics_live2d_play_motion', { group, index: index != null ? index : null, priority: priority != null ? priority : null }),
     setExpression: (name) => invoke('aics_live2d_set_expression', { name }),
     setMouthLevel: (level) => invoke('aics_live2d_set_mouth_level', { level }),
@@ -106,12 +128,21 @@ pub const COMPANION_SHIM_JS: &str = r#"
     hitTest: (x, y) => invoke('aics_live2d_hit_test', { x, y }),
     destroy: () => invoke('aics_live2d_destroy'),
     onReady: (cb) => {
-      // ready 事件在订阅前可能已发出（connect 先 await setCharacter 后订阅）——
-      // 先查状态，已 ready 立即回调，否则订阅事件
+      let id = 0
+      let called = false
+      const once = () => {
+        if (called) return
+        called = true
+        cb()
+        off(id)
+      }
+      id = on('aics:live2d:ready', once)
+      // ready 事件在订阅前可能已发出（connect 先 await setCharacter 后订阅），
+      // 先查状态；返回真实订阅 id，destroy 可以注销 pending listener。
       invoke('aics_live2d_get_state').then((s) => {
-        if (s && s.ready) { cb(); return 0 }
-        return on('aics:live2d:ready', cb)
-      }).catch(() => on('aics:live2d:ready', cb))
+        if (s && s.ready) once()
+      }).catch(() => {})
+      return id
     },
     onMotionStarted: (cb) => on('aics:live2d:motion-started', cb),
     onMotionFailed: (cb) => on('aics:live2d:motion-failed', cb),

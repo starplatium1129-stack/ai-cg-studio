@@ -112,10 +112,14 @@ const transitioning = ref(false)
 const shiftX = ref(0)
 const shiftY = ref(0)
 const scrollProgress = ref(0)
+const reducedMotion = ref(false)
+const coarsePointer = ref(false)
 let signalTimer = 0
 let transitionTimer = 0
 let pointerFrame = 0
 let scrollFrame = 0
+let motionMedia: MediaQueryList | null = null
+let coarseMedia: MediaQueryList | null = null
 const ROUTE_ATMOSPHERE_MS = 560
 
 const routeMeta = computed(() => ROUTE_META[route.path] || {
@@ -131,7 +135,7 @@ const atmosphereStyle = computed(() => ({
 }))
 
 function onPointerMove(event: PointerEvent) {
-  if (routeHasOwnParticle.value || pointerFrame || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+  if (routeHasOwnParticle.value || coarsePointer.value || pointerFrame || reducedMotion.value) return
   pointerFrame = requestAnimationFrame(() => {
     pointerFrame = 0
     shiftX.value = ((event.clientX / Math.max(1, window.innerWidth)) - .5) * 22
@@ -152,6 +156,40 @@ function resetSignal() {
   signalState.value = 'idle'
   signalShape.value = null
   signalLabel.value = ''
+}
+
+function resetMotionState() {
+  shiftX.value = 0
+  shiftY.value = 0
+  if (pointerFrame) {
+    cancelAnimationFrame(pointerFrame)
+    pointerFrame = 0
+  }
+}
+
+function onMotionPreference(event: MediaQueryListEvent | MediaQueryList) {
+  reducedMotion.value = event.matches
+  if (reducedMotion.value) {
+    window.clearTimeout(transitionTimer)
+    transitioning.value = false
+    resetSignal()
+    resetMotionState()
+  }
+}
+
+function onCoarsePointerPreference(event: MediaQueryListEvent | MediaQueryList) {
+  coarsePointer.value = event.matches
+  if (coarsePointer.value) resetMotionState()
+}
+
+function addMediaListener(media: MediaQueryList, listener: (event: MediaQueryListEvent) => void) {
+  if (media.addEventListener) media.addEventListener('change', listener)
+  else media.addListener(listener)
+}
+
+function removeMediaListener(media: MediaQueryList, listener: (event: MediaQueryListEvent) => void) {
+  if (media.removeEventListener) media.removeEventListener('change', listener)
+  else media.removeListener(listener)
 }
 
 interface SakuraLeaf {
@@ -197,6 +235,10 @@ function onSignal(event: Event) {
 watch(() => route.path, () => {
   window.clearTimeout(transitionTimer)
   resetSignal()
+  if (reducedMotion.value) {
+    transitioning.value = false
+    return
+  }
   transitioning.value = true
   signalState.value = 'active'
   transitionTimer = window.setTimeout(() => {
@@ -206,6 +248,12 @@ watch(() => route.path, () => {
 })
 
 onMounted(() => {
+  motionMedia = window.matchMedia('(prefers-reduced-motion: reduce)')
+  coarseMedia = window.matchMedia('(pointer: coarse)')
+  onMotionPreference(motionMedia)
+  onCoarsePointerPreference(coarseMedia)
+  addMediaListener(motionMedia, onMotionPreference)
+  addMediaListener(coarseMedia, onCoarsePointerPreference)
   window.addEventListener(PARTICLE_SIGNAL_EVENT, onSignal)
   window.addEventListener('pointermove', onPointerMove, { passive: true })
   window.addEventListener('scroll', onScroll, { passive: true })
@@ -217,7 +265,9 @@ onUnmounted(() => {
   window.removeEventListener('scroll', onScroll)
   window.clearTimeout(signalTimer)
   window.clearTimeout(transitionTimer)
-  if (pointerFrame) cancelAnimationFrame(pointerFrame)
+  if (motionMedia) removeMediaListener(motionMedia, onMotionPreference)
+  if (coarseMedia) removeMediaListener(coarseMedia, onCoarsePointerPreference)
+  resetMotionState()
   if (scrollFrame) cancelAnimationFrame(scrollFrame)
 })
 </script>
@@ -346,6 +396,10 @@ onUnmounted(() => {
   .route-progress { right:2px; }
   .sakura-fall { opacity:.38; }
   .sakura-fall span:nth-child(n + 9) { display:none; }
+  .sakura-fall span { filter:none; box-shadow:none !important; will-change:auto; }
+}
+@media (pointer: coarse) {
+  .sakura-fall span { filter:none; box-shadow:none !important; will-change:auto; }
 }
 @media (prefers-reduced-motion: reduce) {
   .route-atmosphere { transition:none; opacity:.1; }

@@ -1,0 +1,50 @@
+name: Windows Native Live2D
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: windows-native-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  native:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: [self-hosted, Windows, X64, live2d-cubism]
+    timeout-minutes: 45
+    env:
+      LIVE2D_CUBISM_SDK_DIR: ${{ vars.LIVE2D_CUBISM_SDK_DIR }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Use Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24.18.0
+          cache: npm
+      - name: Verify native toolchain
+        shell: powershell
+        run: |
+          node --version
+          rustc --version
+          cargo --version
+          if (-not $env:LIVE2D_CUBISM_SDK_DIR) { throw 'LIVE2D_CUBISM_SDK_DIR is required on the self-hosted runner' }
+          if (-not (Test-Path -LiteralPath $env:LIVE2D_CUBISM_SDK_DIR)) { throw "Cubism SDK not found: $env:LIVE2D_CUBISM_SDK_DIR" }
+      - name: Install dependencies
+        run: npm ci
+      - name: Build Tauri
+        run: npm run build:tauri
+      - name: Rust tests
+        run: cargo test --locked --manifest-path desktop-tauri/src-tauri/Cargo.toml
+      - name: Native release self-test
+        run: npm run test:live2d-native:release
+      - name: Native renderer stability soak
+        run: node scripts/tests/run-live2d-renderer-soak.js --seconds 300 --switch-every 60 --sample-ms 2000 --warmup 120 --size 800 --fps 165

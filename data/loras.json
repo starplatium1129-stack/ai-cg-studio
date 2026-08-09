@@ -248,9 +248,9 @@
     }
   },
   {
-    "id": "L_NENE_V19_ANIMA",
-    "name": "ayachi_nene_v19_anima",
-    "version": "1.9.0",
+    "id": "L_NENE_V20_ANIMA",
+    "name": "ayachi_nene_v20_anima",
+    "version": "2.0.0",
     "trigger": "ayachi_nene",
     "character": "NENE_001",
     "strength": {
@@ -260,37 +260,43 @@
     },
     "compatible_models": [
       "anima-base-v1.0",
-      "anima-aesthetic-v1.1",
-      "anima-yume-v1.0"
+      "anima-aesthetic-v1.1"
     ],
     "test_scene": [
       "sc001",
       "sc010",
       "sc025"
     ],
-    "description": "绫地宁宁角色 LoRA v19（Anima）。复用 v18 的 55 张 WD14 精选数据集从 Anima base-v1.0 训练；flow matching + Qwen3 编码器，衣服还原优于 v18/WAI 组合，触发词沿用 ayachi_nene。",
+    "description": "绫地宁宁角色 LoRA v20（Anima）。55 张唯一视觉组按近重复组隔离为训练与冻结验证集，基于 Anima Base v1.0 以官方建议的 rank 32、2e-5 低学习率训练；生产选择第 8 轮，在固定生产工作流盲审中相对 v19 为 15 胜 0 平 3 负。",
     "dataset": {
       "images": 55,
       "composition": {
-        "safe": 33,
-        "adult": 22
+        "safe": 21,
+        "sensitive": 12,
+        "nsfw": 9,
+        "explicit": 13,
+        "train": 42,
+        "held_out_validation": 13
       },
       "resolution": 1024,
-      "strategy": "WD14 auto-caption, per-image human cleanup (reused from v18), unified identity with explicit R18 and canonical-outfit controls"
+      "strategy": "group-aware frozen split by review.dedupe_group; human-reviewed Anima space-style captions; non-R18 and R18 validation concepts isolated from training; explicit nene_r18 and canonical-outfit controls"
     },
     "training": {
-      "selected_checkpoint": "final epoch 45",
+      "selected_checkpoint": "epoch 8 (step 336)",
+      "selected_epoch": 8,
+      "selected_step": 336,
+      "rejected_checkpoint": "epoch 12 had two production-matrix failures; epoch 36 validation overfit",
       "resumed_from": "anima-base-v1.0",
-      "rank": 16,
-      "alpha": 16,
+      "rank": 32,
+      "alpha": 32,
       "batch_size": 1,
-      "transformer_learning_rate": 0.0001,
+      "transformer_learning_rate": 0.00002,
       "text_encoder_learning_rate": 0,
       "text_encoder_stop_epoch": 0,
-      "epochs_run": 45,
+      "epochs_run": 36,
       "timestep_distribution": "LOGIT_NORMAL",
       "layer_filter": "attn1,attn2,ff",
-      "config": "OneTrainer/training_configs/ayachi_nene_v19_anima.json"
+      "config": "OneTrainer/training_configs/ayachi_nene_v20_anima_scientific.json"
     },
     "recommended_weight": {
       "portrait": 0.85,
@@ -350,24 +356,25 @@
       ]
     },
     "validation": {
-      "status": "pending",
-      "evaluated_at": null,
-      "method": "initial A/B against v18/WAI on witch outfit; identity gate and full scenario matrix scheduled",
-      "baseline": "ayachi_nene_v18_wd14 at 0.85",
-      "matrix": "v18 0.85 vs v19 0.85 x 1 seed x 1 scenario (witch cafe), full matrix scheduled",
+      "status": "passed",
+      "evaluated_at": "2026-08-09",
+      "method": "group-aware held-out loss tracked every 2 epochs, fixed OneTrainer validation prompts, then same-prompt same-seed production ComfyUI comparison of E08/E12/V19 across 6 scenes x 3 seeds",
+      "baseline": "production ayachi_nene_v19_anima epoch 20 at 0.85",
+      "matrix": "V20 E08/E12 vs V19 production x 6 scenarios x 3 fixed seeds; identity, outfit, anatomy, narrative, diversity and safe/R18 separation reviewed cell by cell",
       "hard_gates": {
         "mean_face_score": 8.5,
         "signature_feature_presence_rate": 0.75,
         "critical_identity_error": 0
       },
-      "evidence": "ComfyUI/output/nene_v19_anima_00001_.png",
+      "evidence": "Reviews/AnimaV20CheckpointAudit/2026-08-09_baseline-a_e08_e12_vs_v19/contact_sheets",
       "metrics": {
-        "衣服还原": "初评优于 v18（用户目测）",
-        "脸部身份": "待完整评估矩阵"
+        "生产矩阵": "E08 18/18 通过；E12 有 2 个失败",
+        "相对 v19": "E08 15 胜 / 0 平 / 3 负",
+        "安全与 R18 隔离": "安全场景 12/12 无成人泄漏；R18 场景 6/6 按条件生效"
       },
-      "known_limitation": "完整 6 场景 x 3 seed 审核矩阵尚未执行；Anima 出图链路待正式接入网站",
-      "scores_recorded": false,
-      "selection_reason": "Anima base 对服装标签理解更准，v19 衣服还原初评优于 v18；脸部需完整矩阵确认"
+      "known_limitation": "深夜卧室暗光场景的皮肤质感在 3 个固定 seed 上仍略逊 v19；其余五类场景均胜出。",
+      "scores_recorded": true,
+      "selection_reason": "epoch 8 是验证低谷附近第一个固定保存点，18 张生产矩阵零结构失败；epoch 12 已出现枪械手部重叠和单人裂变双人，后续验证损失持续回升。"
     }
   }
 ]

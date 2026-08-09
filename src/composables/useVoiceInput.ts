@@ -69,6 +69,7 @@ export function useVoiceInput(options: UseVoiceInputOptions): UseVoiceInput {
   let recognizing = false
   let disposed = false
   let canceled = false
+  let startToken = 0
   const pendingSegments: Float32Array[] = []
 
   function setState(next: VoiceInputState, detail?: string): void {
@@ -159,6 +160,7 @@ export function useVoiceInput(options: UseVoiceInputOptions): UseVoiceInput {
   async function start(nextMode: VoiceInputMode = 'manual'): Promise<void> {
     if (disposed) return
     if (state.value === 'capturing' || state.value === 'acquiring' || state.value === 'recognizing') return
+    const token = ++startToken
     canceled = false
     mode = nextMode
     setState('acquiring')
@@ -166,7 +168,7 @@ export function useVoiceInput(options: UseVoiceInputOptions): UseVoiceInput {
     vad = createVadSegmenter({ sampleRate: TARGET_RATE })
 
     try {
-      stream = await navigator.mediaDevices.getUserMedia({
+      const acquiredStream = await navigator.mediaDevices.getUserMedia({
         audio: {
           channelCount: 1,
           echoCancellation: true,
@@ -174,7 +176,17 @@ export function useVoiceInput(options: UseVoiceInputOptions): UseVoiceInput {
           autoGainControl: true,
         },
       })
+      if (disposed || canceled || token !== startToken) {
+        for (const track of acquiredStream.getTracks()) track.stop()
+        if (token === startToken) setState('idle')
+        return
+      }
+      stream = acquiredStream
     } catch (error) {
+      if (disposed || canceled || token !== startToken) {
+        if (token === startToken) setState('idle')
+        return
+      }
       const name = error instanceof DOMException ? error.name : ''
       const message = name === 'NotAllowedError'
         ? '麦克风权限被拒绝，请在浏览器设置中允许后重试'
@@ -248,6 +260,7 @@ export function useVoiceInput(options: UseVoiceInputOptions): UseVoiceInput {
   }
 
   function cancel(): void {
+    startToken += 1
     capturing = false
     recognizing = false
     canceled = true

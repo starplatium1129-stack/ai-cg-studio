@@ -32,7 +32,15 @@ export interface Live2DNativeCommands {
   /** 创建/切换模型。modelPath 只接受 Rust 侧白名单资产，不接收任意路径。 */
   setCharacter(modelPath: string, options?: { character: string }): Promise<{ ok: boolean; error?: string }>
   /** 移动 overlay 并设置可见性。visible=false 时 Rust 可隐藏窗口并暂停渲染。 */
-  setFrame(frame: { rect: Live2DOverlayRect; visible: boolean; opacity?: number }): void
+  setFrame(frame: {
+    rect: Live2DOverlayRect
+    visible: boolean
+    opacity?: number
+    /** 屏幕物理像素中的 WebView 控件穿透区域。 */
+    passthrough?: Live2DOverlayRect[]
+  }): void
+  /** 设置原生渲染循环的目标帧率。 */
+  setMaxFps(fps: number): void
   /** 播放动作组（Rust 用 Cubism MotionPriority 语义，FORCE 打断 idle） */
   playMotion(group: string, index?: number, priority?: Live2DMotionPriority): Promise<{ ok: boolean; error?: string }>
   /** 应用 Expression（宁宁衣装；夏目无 Expressions 由 Rust 拒绝） */

@@ -25,9 +25,14 @@ var tunnelStopped = false;
 var restartTimer = null;
 var restartAttempts = 0;
 
-var RESTART_BASE_MS = 5000;
-var RESTART_MAX_MS = 30000;
-var RESTART_LIMIT = 10;
+  var RESTART_BASE_MS = Number.isFinite(Number(options.restartBaseMs))
+    ? Math.max(0, Number(options.restartBaseMs)) : 5000;
+  var RESTART_MAX_MS = Number.isFinite(Number(options.restartMaxMs))
+    ? Math.max(RESTART_BASE_MS, Number(options.restartMaxMs)) : 30000;
+  var RESTART_LIMIT = Number.isFinite(Number(options.restartLimit))
+    ? Math.max(0, Math.floor(Number(options.restartLimit))) : 10;
+  var POLL_INTERVAL_MS = Number.isFinite(Number(options.pollIntervalMs))
+    ? Math.max(1, Number(options.pollIntervalMs)) : 1000;
 
   function getUrl() {
     return tunnelUrl;
@@ -146,7 +151,7 @@ var RESTART_LIMIT = 10;
       } catch (error) {}
       attempts += 1;
       if (attempts > 30) { clearInterval(tunnelPoll); tunnelPoll = null; }
-    }, 1000);
+    }, POLL_INTERVAL_MS);
   }
 
   function stop() {

@@ -23,6 +23,18 @@ export interface ApiFailure {
 
 export type ApiResult<T> = ({ ok: true } & T) | ApiFailure
 
+export interface ChatStatus { online: boolean; model: string; models: Array<{ name: string; parameters?: string }> }
+export type HostConfig =
+  | { ok?: true; configured: false; model?: string; baseUrl?: string }
+  | { ok?: true; configured: true; model: string; baseUrl: string }
+export type ConfiguredHostConfig = Extract<HostConfig, { configured: true }>
+export interface ProviderTestResult { ok: true; models: string[] }
+export interface TtsStatus { online: boolean; voices: Record<string, boolean>; translation?: { ready: boolean }; activeVoice?: string; error?: string }
+export interface VoicePrepareResult { ok: true; voice: string; translation: boolean; prepareMs?: number }
+export interface TranslateResult { sourceLanguage?: string; targetLanguage?: string; translation: string; segments?: unknown[] }
+export interface Live2DStatusResponse { models: Record<string, unknown> }
+export interface SDStatusResponse { online: boolean; checkpoint: string; models: string[]; samplers: string[]; schedulers: string[]; upscalers: string[] }
+
 export function isFailure(value: unknown): value is ApiFailure {
   return Boolean(value && typeof value === 'object' && (value as ApiFailure).ok === false)
 }
@@ -80,7 +92,7 @@ export interface ControlStatus {
   voices: Partial<Record<'nene' | 'natsume', VoiceProfileView>>
   scripts: { voiceStart: boolean; voiceStop: boolean; webui: boolean }
   /** 前端构建状态：公网分享伺服 dist/，源码过期时 stale=true */
-  webBuild?: { distReady: boolean; builtAt: string | null; stale: boolean }
+  webBuild?: ControlWebBuildStatus
   /** 服务自愈看门狗状态：restarting/attempt 表示正在自动拉起 */
   selfHealing?: {
     running: boolean
@@ -95,10 +107,17 @@ export interface ControlStatus {
   }
 }
 
+export interface ControlWebBuildStatus {
+  distReady: boolean
+  builtAt: string | null
+  stale: boolean
+}
+
 /** GET /api/logs */
 export interface ControlLogs {
-  logs?: string[]
-  operation?: ControlOperationView | null
+  logs: string[]
+  total: number
+  operation: ControlOperationView | null
 }
 
 /** POST /api/service/* 与 /api/mode 的成功响应 */
@@ -107,6 +126,55 @@ export interface ControlActionResult {
   pending?: boolean
   operation?: ControlOperationView | null
   message?: string
+}
+
+export interface ControlShareLinkResult {
+  ok: true
+  shareLink: string
+}
+
+export interface ControlConfigPayload {
+  sdHost: string
+  ttsHost: string
+  voices: Partial<Record<'nene' | 'natsume', VoiceProfileView>>
+}
+
+export interface ControlConfigResult {
+  ok: true
+  sdHost: string
+  comfyHost: string
+  ttsHost: string
+  ollamaHost: string
+}
+
+export interface ControlPreferenceResult {
+  ok: true
+  autoStartVoice: boolean
+}
+
+export interface ControlDiagnostics {
+  timestamp: string
+  uptime: number
+  port: number
+  sdHost: string
+  comfyHost: string
+  ttsHost: string
+  ollamaHost: string
+  sceneShowcaseDir: string
+  disableTunnel: boolean
+  runtimeConfig: Record<string, unknown>
+  token: { present: boolean; length: number; suffix: string }
+  scripts: {
+    voiceStart: string
+    voiceStop: string
+    webui: string
+    voiceStartExists: boolean
+    voiceStopExists: boolean
+    webuiExists: boolean
+  }
+  nodeVersion: string
+  platform: string
+  operation: ControlOperationView | null
 }
 
 // ── 场景管理领域模型 ────────────────────────────────────────────────────────
@@ -168,12 +236,14 @@ export interface CurationData {
 
 /** POST /api/maintenance/scenes */
 export interface SceneSaveResult {
-  ok: boolean
-  count?: number
+  ok: true
+  count: number
   tagCount?: number
-  backup?: string
+  backup: string
   message?: string
-  error?: string
+}
+
+export interface MaintenanceFailure extends ApiFailure {
   rolledBack?: boolean
   dataIntegrity?: 'restored' | 'INCONSISTENT'
   recovery?: string
@@ -181,10 +251,46 @@ export interface SceneSaveResult {
 
 /** POST /api/maintenance/run */
 export interface MaintenanceRunResult {
-  ok: boolean
-  task?: string
-  label?: string
-  output?: string
-  exitCode?: number
-  error?: string
+  ok: true
+  task: string
+  label: string
+  output: string
+  exitCode: number
+}
+
+export type HomeHeroCharacter = 'nene' | 'natsume'
+
+export interface HomeHeroManifestEntry {
+  image: string
+  updatedAt: string | null
+}
+
+export interface HomeHeroManifestResult {
+  ok: true
+  version: number
+  entries: Partial<Record<HomeHeroCharacter, HomeHeroManifestEntry>>
+}
+
+export interface ShowcaseSaveResult {
+  ok: true
+  file: string
+  thumb: string
+  backup: string
+  message?: string
+}
+
+export interface HomeHeroSaveResult {
+  ok: true
+  character: HomeHeroCharacter
+  action: 'replace' | 'reset'
+  backup: string
+  message?: string
+}
+
+export interface MaintenanceBuildWebResult {
+  ok: true
+  durationMs: number
+  error: string | null
+  tail: string
+  webBuild: ControlWebBuildStatus
 }

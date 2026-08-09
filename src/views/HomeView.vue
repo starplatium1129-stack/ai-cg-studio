@@ -215,11 +215,16 @@
         <RouterLink to="/gallery" class="link">打开作品册 →</RouterLink>
       </div>
       <div class="recent-grid stagger-container" ref="recentWorksEl">
-        <div v-if="!recentWorks.length" class="empty-state">
-          <div class="empty-state-icon">▤</div>
-          <p>还没有作品呢……如果你愿意，我可以陪你把第一张画出来。</p>
+        <ArchiveStatePanel
+          v-if="!recentWorks.length"
+          class="recent-empty-state"
+          compact
+          kind="empty"
+          title="还没有最近作品"
+          message="画好之后，它会收进你的本地作品档案。"
+        >
           <RouterLink to="/prompt-builder" class="btn btn-primary">✦ 开始绘制</RouterLink>
-        </div>
+        </ArchiveStatePanel>
         <template v-else>
           <RouterLink
             v-for="h in recentWorks"
@@ -244,7 +249,9 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, reactive, nextTick } from 'vue'
+import { maintenanceApi } from '../api/maintenanceApi.ts'
 import SceneCard from '@/components/SceneCard.vue'
+import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import SemanticParticleField from '@/components/visual/SemanticParticleField.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import { kvInit, kvGet, kvSet } from '@/composables/useKVStore'
@@ -412,11 +419,9 @@ async function loadSceneHighlights() {
 
 async function loadHomeHeroAssets() {
   try {
-    const response = await fetch('/api/maintenance/home-hero')
-    if (!response.ok) return
-    const payload = await response.json() as { entries?: Record<string, { image?: string; version?: number }> }
+    const payload = await maintenanceApi.getHomeHero()
     for (const key of ['nene', 'natsume'] as const) {
-      const image = payload.entries?.[key]?.image
+      const image = payload.entries[key]?.image
       if (typeof image === 'string' && /^\/scene-showcase\/home\/(nene|natsume)\.jpg(?:\?[^"'<>]*)?$/.test(image)) {
         heroAssets[key] = image
       }
@@ -676,7 +681,7 @@ onUnmounted(() => {
 .sc-link { display:block; color:inherit; text-decoration:none; }
 .strip-scroll .sc-link { flex:0 0 auto; }
 @media (max-width:600px) { .recent-grid { grid-template-columns:1fr 1fr; } }
-.recent-grid .empty-state { grid-column:1 / -1; margin-top:0; }
+.recent-grid .recent-empty-state { grid-column:1 / -1; margin-top:0; }
 
 @media (hover: hover) and (pointer: fine) {
   .chibi-card:hover { transform:rotate(0) translateY(-3px) scale(1.02); }

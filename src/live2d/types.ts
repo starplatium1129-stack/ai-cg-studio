@@ -102,12 +102,18 @@ export interface Live2DStageSession {
   /** 浏览器：缩放 wrapper（translateX(-50%) scale）；原生：无（尺寸由 overlay 帧决定） */
   setStageScale(scale: number): void
   /** 原生专属：下发 overlay 矩形（屏幕物理像素）与可见性，Rust 据此 SetWindowPos */
-  updateOverlay?(rect: { x: number; y: number; width: number; height: number }, visible: boolean): void
+  updateOverlay?(
+    rect: { x: number; y: number; width: number; height: number },
+    visible: boolean,
+    passthrough?: { x: number; y: number; width: number; height: number }[],
+  ): void
   /** 浏览器：取 canvas 元素（webglcontextlost/restored 绑定）；原生：null */
   canvasElement(): HTMLElement | null
 
   /** 原生专属：Rust 回传的 Cubism 原生 HitArea 命中（kind === 'native' 时存在） */
   onNativeHitTest?(callback: (areas: string[]) => void): () => void
+  /** 原生专属：动作被拒绝（含同一互动播放中重复点击的 busy 拒绝） */
+  onMotionFailed?(callback: (info: { group: string; index?: number; reason: string }) => void): () => void
   /** 原生专属：目光凝视意图（归一化 -1..1，Rust 映射到作者眼/头参数） */
   sendGaze?(x: number, y: number): void
   /** 原生专属：口型意图（capability.lipSyncChannel === 'bridge' 时由 useLive2D 调用） */

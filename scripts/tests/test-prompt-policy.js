@@ -98,6 +98,75 @@ assert(!coherent.warnings.some(message => message.includes('天气')), 'rain wit
 const goldenAfternoon = policy.analyzeParts([{ cls:'t', text:'afternoon, golden hour, school_uniform, smile' }]);
 assert(!goldenAfternoon.warnings.some(message => message.includes('时段')), 'golden hour belongs to the afternoon/evening family');
 
+// Anima uses natural-language tags, but score tags and BREAK remain protocol tokens.
+const animaPrompt = policy.formatPromptForEngine(
+  'masterpiece, best quality, score_7, safe, (white_hair:1.1), BREAK (black_hair:1.1), <lora:ignored:0.7>',
+  'anima',
+);
+assert.strictEqual(
+  animaPrompt,
+  'masterpiece, best quality, score_7, safe, (white hair:1.1) BREAK (black hair:1.1)',
+  'Anima formatting must convert ordinary tags, preserve score tags, preserve BREAK scopes, and strip A1111 LoRA syntax',
+);
+assert.strictEqual(
+  policy.formatPromptForEngine('white_hair, best_quality', 'sd'),
+  'white_hair, best_quality',
+  'SD formatting must retain the existing underscore contract',
+);
+assert.strictEqual(
+  policy.formatPromptForEngine('white_hair, <lora:nene:0.85>', 'sd'),
+  'white_hair, <lora:nene:0.85>',
+  'SD formatting must retain A1111 LoRA syntax for the existing WebUI path',
+);
+const engineProfiles = [
+  { id:'sd', engine:'sd', match:['shared-model'], quality_prefix:'sd quality' },
+  { id:'anima', engine:'anima', model_id:'anima-base-v1.0', match:['shared-model'], tag_style:'space' },
+];
+assert.strictEqual(
+  policy.resolveModelProfile(engineProfiles, 'anima-base-v1.0', 'anima').id,
+  'anima',
+  'Anima profile lookup must not fall back to an SD profile',
+);
+assert.strictEqual(
+  policy.modelNegativePrompt(
+    { engine:'anima', negative_prefix:'worst quality, score_1, artist name', negative_mode:'merge' },
+    'blurry, chromatic aberration, score_1',
+    'anima',
+  ),
+  'worst quality, score_1, artist name, blurry, chromatic aberration',
+  'Anima negative prompts must preserve score exceptions while formatting ordinary tags',
+);
+assert.strictEqual(
+  policy.sceneTemplateText(
+    { prompt:'cafe, white_hair, score_7, <lora:ignored:0.7>' },
+    { engine:'anima' },
+  ),
+  'cafe, white hair, score_7',
+  'Anima scene templates must use the same tag policy as manually assembled prompts',
+);
+const presetProfiles = require('../../data/presets.json').model_profiles;
+const animaBase = presetProfiles.find(profile => profile.id === 'anima_base_v10');
+const animaAesthetic = presetProfiles.find(profile => profile.id === 'anima_aesthetic_v11');
+assert(animaBase && animaAesthetic, 'Anima Base and Aesthetic profiles must be present in the production catalog');
+const exactV19 = policy.formatPromptForProfile(
+  'ayachi_nene, nene_r18, nene_witch_canonical, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, warm_lighting',
+  animaBase,
+);
+['ayachi_nene', 'nene_r18', 'nene_witch_canonical', 'nene_school_uniform', 'white_hair', 'very_long_hair', 'low_twintails', 'purple_eyes'].forEach(token => {
+  assert(exactV19.includes(token), 'v19 exact control token must not be rewritten: ' + token);
+});
+assert(exactV19.includes('warm lighting'), 'ordinary scene and lighting tags should still use spaces');
+assert.strictEqual(policy.resolveModelProfile(presetProfiles, 'anima-yume-v1.0', 'anima'), null, 'unknown Anima models must not fall back to Base');
+assert(policy.qualityPrefix(animaBase, { rating:'ALL' }, 'anima').includes('score_7'), 'Anima Base must retain its score quality prefix');
+assert(policy.qualityPrefix(animaBase, { rating:'ALL' }, 'anima').includes('best_quality'), 'v19 Base must preserve the GPU-verified best_quality token');
+assert.strictEqual(policy.qualityPrefix(animaAesthetic, { rating:'ALL' }, 'anima'), 'safe', 'Anima Aesthetic must add only its rating tag when the quality prefix is intentionally empty');
+for (const profile of [animaBase, animaAesthetic]) {
+  const negative = policy.modelNegativePrompt(profile, 'bad anatomy, crowd', 'anima');
+  assert(negative.includes('crowd'), `${profile.id} must preserve scene semantic negatives`);
+  assert(!negative.includes('bad anatomy'), `${profile.id} must replace generic boilerplate negatives`);
+  assert.strictEqual(profile.lora_in_prompt, false, `${profile.id} must keep LoRA outside the Anima prompt`);
+}
+
 assert(policy.sceneSupportsCharacter({ char:'nene' }, 'nene'));
 assert(!policy.sceneSupportsCharacter({ char:'nene' }, 'natsume'));
 assert.strictEqual(
@@ -179,6 +248,14 @@ assert.deepStrictEqual(
   [],
   'legacy models must not receive control words they never learned'
 );
+const v19Controls = policy.characterControlTokens(
+  { prompt:'ayachi_nene, nene_school_uniform', rating:'R18', mature:true },
+  'nene',
+  { nene:'ayachi_nene_v20_anima' },
+);
+['nene_r18', 'nene_school_uniform', 'school_uniform', 'blazer', 'yellow_bowtie', 'plaid_skirt'].forEach(token => {
+  assert(v19Controls.includes(token), 'v19 control bundle must retain exact token ' + token);
+});
 const migratedLora = policy.resolveLoraSpecs(
   'nene',
   { lora:'ayachi_nene_v15:0.85' },

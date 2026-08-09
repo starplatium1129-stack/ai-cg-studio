@@ -32,15 +32,11 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
-
-const DISMISS_KEY = 'aics_guest_guide_dismissed'
+import { settingsRepository, GUEST_GUIDE_DISMISSED_SETTING } from '@/storage/settingsRepository.ts'
 
 const isNonLocal = !['localhost', '127.0.0.1', '[::1]'].includes(window.location.hostname)
 const forcedGuest = new URLSearchParams(window.location.search).get('guest') === '1'
-let dismissed = false
-try {
-  dismissed = localStorage.getItem(DISMISS_KEY) === '1'
-} catch { /* 隐私模式忽略 */ }
+const dismissed = settingsRepository.get(GUEST_GUIDE_DISMISSED_SETTING) ?? false
 
 const shouldShow = (isNonLocal || forcedGuest) && !dismissed
 const visible = ref(false)
@@ -58,7 +54,7 @@ onMounted(() => {
 
 function dismiss() {
   visible.value = false
-  try { localStorage.setItem(DISMISS_KEY, '1') } catch { /* 隐私模式忽略 */ }
+  settingsRepository.set(GUEST_GUIDE_DISMISSED_SETTING, true)
 }
 </script>
 

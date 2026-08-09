@@ -75,3 +75,18 @@ ZcChat2 的精华集中在三处：**语音输入链路**（我们为零）、**
 5. P4 自定义角色资产包（等待 API client / Repository 落地后再评估）。
 
 每阶段完成时：`npm run validate` 全绿、`npm run build` 通过、桌面定向 E2E 通过；大改动按质量门槛分级跑测试，不做无脑全量。
+
+### P1 CompanionView 补完 ✅（2026-08-09）
+
+- CompanionView 复用 `useVoiceInput`、`createSpeechSession`、`loadSpeechInputConfig`，接入紧凑按住说话入口、语音设置弹层、连续会话/听候唤醒/识别状态。
+- 页面级 Space 仅在非编辑目标、页面可见、聊天可用且非 busy 时启动 manual；keyup 停止，输入框、按钮空格、沉浸 Esc 与桌面快捷键不受影响。
+- 自动监听受 chat ready、DND、安静时段、页面/桌面窗口可见性和回复 busy 门控；配置保存、角色切换、窗口可见性和组件卸载都会 reconcile/release，主动陪伴仍不调用 LLM 或自动 TTS。
+- 本轮只修改 CompanionView 专属接线与测试，未增加桌面 IPC、系统热键或第二套 ASR/VAD。
+
+### P1 CompanionView 竞态复审补完 ✅（2026-08-09）
+
+- 修复 pending `getUserMedia()` 取消竞态：generation token 使过期启动在 resolve 后立即停止新拿到的 tracks，不再创建音频图或进入 capturing。
+- acquiring 松键/取消改为 cancel，capturing 才 stop；手动入口不再因 acquiring/capturing 自身 disabled，DND/安静时段仍只抑制自动监听。
+- 窗口隐藏、页面 visibilitychange、回复 busy 和卸载都会取消手动/自动采集；behavior tick 每次刷新安静时段并 reconcile，即使没有提醒也能及时停/恢自动监听。
+- 语音控件收拢为单一 `companion-speech-cluster`，连续会话提供结束按钮；增加 deferred microphone 与源码生命周期契约测试。
+- 整合构建后 Companion 语音浏览器回归已签收：`studio.spec.ts --grep "companion speech"` 2/2 通过，并通过 viewport/scrollWidth/控件不重叠断言。

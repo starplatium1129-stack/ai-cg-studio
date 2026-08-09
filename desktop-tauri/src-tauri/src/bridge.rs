@@ -17,6 +17,7 @@ pub struct DesktopState {
     pub visible: bool,
     pub on_battery_power: bool,
     pub live2d_enabled: Option<bool>,
+    pub bounds: Option<crate::window_state::WindowBounds>,
 }
 
 fn companion(app: &AppHandle) -> Option<tauri::WebviewWindow> {
@@ -47,16 +48,15 @@ pub fn get_state(app: AppHandle, state: State<AppState>) -> DesktopState {
         visible: companion(&app)
             .map(|w| w.is_visible().unwrap_or(false))
             .unwrap_or(false),
-        on_battery_power: false,
+        on_battery_power: crate::watchers::on_battery_power(),
         live2d_enabled: *state.live2d_enabled.lock().unwrap(),
+        bounds: crate::main_shared::companion_window_bounds(&app),
     }
 }
 
 #[tauri::command]
 pub fn hide(app: AppHandle) {
-    if let Some(w) = companion(&app) {
-        let _ = w.hide();
-    }
+    crate::main_shared::hide_companion(&app);
 }
 
 #[tauri::command]
@@ -190,11 +190,11 @@ pub fn window_close(app: AppHandle) {
     if let Some(w) = app.get_webview_window("atelier") {
         if w.is_visible().unwrap_or(false) {
             let _ = w.close();
-        } else if let Some(c) = companion(&app) {
-            let _ = c.hide();
+        } else if companion(&app).is_some() {
+            crate::main_shared::hide_companion(&app);
         }
-    } else if let Some(c) = companion(&app) {
-        let _ = c.hide();
+    } else if companion(&app).is_some() {
+        crate::main_shared::hide_companion(&app);
     }
 }
 

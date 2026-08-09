@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <article class="page" style="--page-max: 1100px;">
     <section class="scene-atlas" aria-labelledby="sceneAtlasTitle">
       <div class="scene-atlas-copy">
@@ -119,7 +119,7 @@
     />
     <ArchiveStatePanel
       v-else-if="paged.length === 0"
-      kind="empty"
+      kind="filtered"
       title="没有符合当前条件的场景"
       message="换个关键词或重置筛选，我再帮你翻翻完整档案。"
     >

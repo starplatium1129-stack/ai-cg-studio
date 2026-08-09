@@ -1,7 +1,7 @@
 'use strict';
 const { test } = require('node:test');
 
-test("gateway-contract", () => {
+test("gateway-contract", async () => {
 /**
  * scripts/tests/test-gateway-contract.js
  *
@@ -15,13 +15,13 @@ var assert = require('assert');
 var http = require('http');
 var fs = require('fs');
 var path = require('path');
-var startGateway = require(path.join(__dirname, '..', '..', 'server.js')).startGateway;
+var gatewayTestStack = require('./gateway-test-stack');
 
-var PORT = 3893;
+var PORT = 0;
 var TOKEN = 'contract-token-0123456789abcdef0123456789ab';
-var LOCAL = { Host:'127.0.0.1:' + PORT };
+var LOCAL = null;
 // 隧道请求的形状：socket 来自 127.0.0.1（cloudflared），但带转发头。
-var TUNNELED = { Host:'127.0.0.1:' + PORT, 'x-forwarded-for':'9.9.9.9', 'x-token':TOKEN };
+var TUNNELED = null;
 
 function request(options) {
   return new Promise(function (resolve, reject) {
@@ -80,10 +80,11 @@ function upgradeRequest(headers) {
 }
 
 async function main() {
-  var handle = startGateway({
-    env:{ PORT:String(PORT), TOKEN:TOKEN, DISABLE_TUNNEL:'1', HOST:'127.0.0.1' }
-  });
-  await new Promise(function (resolve) { setTimeout(resolve, 700); });
+  var stack = await gatewayTestStack.start({ token:TOKEN });
+  var desktopStack = null;
+  PORT = stack.address.port;
+  LOCAL = { Host:'127.0.0.1:' + PORT };
+  TUNNELED = { Host:'127.0.0.1:' + PORT, 'x-forwarded-for':'9.9.9.9', 'x-token':TOKEN };
 
   try {
     // ---- S-1: 隧道请求不得被当成本机 ----
@@ -107,7 +108,7 @@ async function main() {
       var rejected = await postJson('/api/config', { sdHost:ssrfHosts[h] });
       assert.strictEqual(rejected.status, 400, ssrfHosts[h] + ' must be rejected with 400');
     }
-    var accepted = await postJson('/api/config', { sdHost:'http://127.0.0.1:7860' });
+    var accepted = await postJson('/api/config', { sdHost:stack.config.SD_HOST });
     assert.strictEqual(accepted.status, 200, 'loopback sdHost must be accepted');
 
     // ---- S-4: 原始 token 不得出现在轮询接口里；Host 白名单生效 ----
@@ -174,6 +175,24 @@ async function main() {
         sdBlocked[b] + ' must return JSON 404, not the SPA shell');
     }
 
+    // ---- A-10: ComfyUI 原生端点不得再成为浏览器可达的代理 ----
+    var comfyBlocked = [
+      '/comfy/prompt', '/comfy/queue', '/comfy/history/abc',
+      '/comfy/interrupt', '/comfy/view?filename=output.png', '/comfy/object_info',
+      '/prompt', '/queue', '/history', '/interrupt', '/view'
+    ];
+    for (var cb = 0; cb < comfyBlocked.length; cb++) {
+      var comfyDenied = await request({ path:comfyBlocked[cb], headers:LOCAL });
+      assert.strictEqual(comfyDenied.status, 404, comfyBlocked[cb] + ' must not be exposed');
+      assert.ok(comfyDenied.json && comfyDenied.json.ok === false,
+        comfyBlocked[cb] + ' must return the JSON error envelope');
+    }
+    var remoteAnima = await request({
+      path:'/api/anima/status',
+      headers:{ Host:'127.0.0.1:' + PORT, 'x-forwarded-for':'9.9.9.9' }
+    });
+    assert.strictEqual(remoteAnima.status, 401, 'remote Anima status must require a token');
+
     // ---- B-6: 错误信封只有一种形状 ----
     // 曾经有四种同时存在（{error} / {ok:false,msg} / {ok:false,error} / {error,detail}），
     // 于是前端到处写 `data.error || data.msg || '操作失败'` —— 少写一个候选就退化成无信息文案。
@@ -200,7 +219,7 @@ async function main() {
     }
 
     // 成功信封同样固定：ok:true
-    var okConfig = await postJson('/api/config', { sdHost:'http://127.0.0.1:7860' });
+    var okConfig = await postJson('/api/config', { sdHost:stack.config.SD_HOST });
     assert.strictEqual(okConfig.json && okConfig.json.ok, true, 'success envelope must carry ok:true');
 
     // /api/status 探测失败必须回 200 + ok:false，与三个同族 *-status 一致。
@@ -312,11 +331,11 @@ async function main() {
     }
 
     // ---- 桌面打包模式（AICS_DESKTOP_PACKAGED=1）：内容维护链路必须 501 ----
-    var DESKTOP_PORT = 3894;
-    var desktopHandle = startGateway({
-      env:{ PORT:String(DESKTOP_PORT), TOKEN:TOKEN, DISABLE_TUNNEL:'1', HOST:'127.0.0.1', AICS_DESKTOP_PACKAGED:'1' }
+    desktopStack = await gatewayTestStack.start({
+      token:TOKEN,
+      env:{ AICS_DESKTOP_PACKAGED:'1' }
     });
-    await new Promise(function (resolve) { setTimeout(resolve, 700); });
+    var DESKTOP_PORT = desktopStack.address.port;
     var desktopLocal = { Host:'127.0.0.1:' + DESKTOP_PORT };
     var scenesPost = await request({
       port:DESKTOP_PORT, method:'POST', path:'/api/maintenance/scenes',
@@ -332,20 +351,15 @@ async function main() {
     assert.strictEqual(toolRun.status, 501, 'desktop packaged mode must refuse maintenance tasks with 501');
     var buildWeb = await request({ port:DESKTOP_PORT, method:'POST', path:'/api/maintenance/build-web', headers:desktopLocal });
     assert.strictEqual(buildWeb.status, 501, 'desktop packaged mode must refuse build-web with 501');
-    desktopHandle.shutdown();
-
     console.log('Gateway contract tests passed: tunnel localOnly, host validation, ' +
       'rebinding guard, WS upgrade auth, error envelopes, api 404, sdapi allowlist, ' +
       'data allowlist, immutable assets, precompressed serving, desktop mode 501');
   } finally {
-    handle.shutdown();
+    if (desktopStack) await desktopStack.close();
+    await stack.close();
   }
-  setTimeout(function () { process.exit(0); }, 300);
 }
 
-main().catch(function (error) {
-  console.error(error);
-  process.exit(1);
-});
+await main();
 
 });

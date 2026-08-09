@@ -60,7 +60,10 @@ fn start_gateway_monitor(app: AppHandle) {
                     state.info(&format!("gateway restarted at {url}"));
                     // 页面重新加载
                     if let Some(w) = app.get_webview_window("companion") {
-                        let _ = w.navigate(url.clone().parse().unwrap());
+                        let companion_url = format!("{}/companion", url.trim_end_matches('/'));
+                        if let Ok(parsed) = companion_url.parse() {
+                            let _ = w.navigate(parsed);
+                        }
                     }
                     if let Some(w) = app.get_webview_window("atelier") {
                         let _ = w.navigate(url.parse().unwrap());
@@ -151,8 +154,9 @@ fn main() {
             live2d_overlay::aics_live2d_set_frame,
             live2d_overlay::aics_live2d_play_motion,
             live2d_overlay::aics_live2d_set_expression,
-            live2d_overlay::aics_live2d_set_mouth_level,
-            live2d_overlay::aics_live2d_set_emotion,
+             live2d_overlay::aics_live2d_set_mouth_level,
+             live2d_overlay::aics_live2d_set_max_fps,
+             live2d_overlay::aics_live2d_set_emotion,
             live2d_overlay::aics_live2d_set_gaze,
             live2d_overlay::aics_live2d_hit_test,
             live2d_overlay::aics_live2d_destroy,
@@ -160,7 +164,6 @@ fn main() {
         ])
         .setup(|app| {
             let state = AppState::new(paths::resolve_paths(app.handle()));
-            app.manage(state.paths.clone());
             app.manage(state);
             let state = app.state::<AppState>();
 
@@ -260,6 +263,7 @@ fn main() {
 
             let handle = app.handle().clone();
             let shim = shim::COMPANION_SHIM_JS;
+            let show_on_start = !std::env::args().any(|arg| arg == "--hidden");
             tauri::async_runtime::spawn(async move {
                 let start = Instant::now();
                 loop {
@@ -273,7 +277,7 @@ fn main() {
                 if url.is_empty() {
                     return;
                 }
-                if let Err(e) = main_shared::create_companion_window(&handle, &url, shim) {
+                if let Err(e) = main_shared::create_companion_window(&handle, &url, shim, show_on_start) {
                     eprintln!("companion window: {e}");
                 }
             });
@@ -359,6 +363,9 @@ fn main() {
                         if let Some(w) = app_handle.get_webview_window("atelier") {
                             let _ = w.hide();
                         }
+                    } else if label == "companion" {
+                        api.prevent_close();
+                        main_shared::hide_companion(app_handle);
                     }
                 }
                 _ => {}

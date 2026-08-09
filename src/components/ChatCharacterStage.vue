@@ -270,15 +270,21 @@ function setAudioLevel(level: number, peak = level) {
 function setEmotion(value: string) {
   emotion.value = value
   activeRuntime().pushEmotion(value)
+  live2d.syncNativeEmotion()
 }
 
 function setUserMessage() {
   activeRuntime().onUserMessage()
+  live2d.syncNativeEmotion()
 }
 
 function setDesktopVisible(visible: boolean) {
   live2d.setPaused(!visible)
   if (visible) void live2d.recover()
+}
+
+function setDesktopWindowBounds(bounds: { x: number; y: number; width: number; height: number }) {
+  live2d.setDesktopWindowBounds(bounds)
 }
 
 function setGlobalPointer(
@@ -290,7 +296,9 @@ function setGlobalPointer(
 }
 
 function setDesktopPerformanceMode(onBatteryPower: boolean) {
-  live2d.setMaxFps(onBatteryPower ? 30 : 60)
+  // 原生后端：电池 30fps，接电恢复 165fps；browser 后端维持 60fps 上限。
+  const native = live2d.backendKind.value === 'native'
+  live2d.setMaxFps(onBatteryPower ? 30 : (native ? 165 : 60))
 }
 
 async function handleOutfitChange(next: string) {
@@ -402,6 +410,7 @@ defineExpose({
   setEmotion,
   setUserMessage,
   setDesktopVisible,
+  setDesktopWindowBounds,
   setDesktopPerformanceMode,
   setGlobalPointer,
 })

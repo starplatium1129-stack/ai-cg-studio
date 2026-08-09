@@ -16,6 +16,7 @@ import type {
   Live2DStageSession,
 } from '@/live2d/types'
 import { computeOverlayRect } from '@/utils/live2dOverlayLayout'
+import { mediaStatusApi } from '@/api/mediaStatusApi'
 
 export interface Live2DStatus {
   state: 'checking' | 'idle' | 'static' | 'loading' | 'ready' | 'degraded' | 'fallback'
@@ -177,11 +178,15 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   let hostSelector = '#live2dHost'
   let emotionRuntime: EmotionRuntime | null = null
   let nativeHitTestUnsubscribe: (() => void) | null = null
+  let nativeMotionFailedUnsubscribe: (() => void) | null = null
   const nativeAnimationAdapter = createLive2dNativeAdapter()
   const blinkScheduler = createBlinkScheduler()
   const emotionCurrent: Record<string, number> = {}
   let lastParamFrame = 0
   let maxFps = 60
+  let desktopWindowBounds: { x: number; y: number; width: number; height: number } | null = null
+  let nativeEmotionFrame = 0
+  let nativeEmotionLastFrame = 0
 
   function setState(state: Live2DStatus['state'], text: string, detail = '', retryable = false) {
     if (hostEl) { hostEl.dataset.state = state; hostEl.dataset.error = detail; hostEl.dataset.retryable = retryable ? 'true' : 'false' }
@@ -205,9 +210,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
       : findLive2DOutfit(options.outfit || outfit.value).id
     setState('checking', '检查 Live2D…')
     try {
-      const response = await fetch('/api/live2d-status', { cache: 'no-store' })
-      if (!response.ok) throw new Error('Live2D 状态接口不可用')
-      catalog = readLive2DCatalog(await response.json())
+      catalog = readLive2DCatalog(await mediaStatusApi.getLive2DStatus())
       const selection = selectLive2DBackend(options.backendKind)
       backend = selection.backend
       backendKind.value = selection.effectiveKind
@@ -321,6 +324,9 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
         // 销毁并进入 fallback（原实现残留旧模型的行为不一致，一并修正）。
         destroyRuntime()
         if (hostEl) hostEl.innerHTML = ''
+        // 加载状态必须在 connect 之前显示：原生后端 setCharacter 在渲染线程
+        // 加载模型与纹理可能耗时数秒，期间 UI 线程保持空闲，loading 立即可见。
+        setState('loading', 'Live2D 加载中…')
         let nextSession: Live2DStageSession
         try {
           nextSession = await backend!.connect({
@@ -364,7 +370,6 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
           loading = null
           resolve(false); return
         }
-        setState('loading', 'Live2D 加载中…')
         session = nextSession
         const nativeCapability = session.kind === 'native' ? session.capability : null
         let settled = false
@@ -379,6 +384,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
           mouthValue.value = 0; mouthHooked = false
           bindMouthOverride(); bindContextEvents(); bindInteractionEvents(); fit(); layout()
           setVisible(true); setPaused(document.hidden); setState('ready', 'Live2D 已连接')
+          startNativeEmotionClock()
           if (!nativeCapability?.entranceNative) playEntrance()
           void setOutfit(outfit.value)
           finish(true)
@@ -456,21 +462,51 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     lastParamFrame = 0
   }
 
+  function sendNativeEmotionIntent() {
+    if (session?.capability.emotionChannel !== 'bridge' || !emotionRuntime) return
+    session.sendEmotion?.(emotionRuntime.lastEmotion(), emotionRuntime.intensity())
+  }
+
+  function stopNativeEmotionClock() {
+    if (nativeEmotionFrame) window.cancelAnimationFrame(nativeEmotionFrame)
+    nativeEmotionFrame = 0
+    nativeEmotionLastFrame = 0
+  }
+
+  function nativeEmotionTick(now: number) {
+    nativeEmotionFrame = 0
+    if (
+      destroyed.value
+      || document.hidden
+      || !model?.visible
+      || session?.capability.emotionChannel !== 'bridge'
+    ) return
+    const dt = Math.min(0.12, (now - nativeEmotionLastFrame) / 1000 || 1 / 60)
+    nativeEmotionLastFrame = now
+    emotionRuntime?.update(dt)
+    if (stageEl && emotionRuntime) stageEl.dataset.emotionIntensity = emotionRuntime.intensity().toFixed(3)
+    sendNativeEmotionIntent()
+    nativeEmotionFrame = window.requestAnimationFrame(nativeEmotionTick)
+  }
+
+  function startNativeEmotionClock() {
+    if (session?.capability.emotionChannel !== 'bridge' || nativeEmotionFrame || document.hidden) return
+    nativeEmotionLastFrame = performance.now()
+    nativeEmotionFrame = window.requestAnimationFrame(nativeEmotionTick)
+  }
+
   function applyParameters() {
     if (!model?.visible) return
     const now = performance.now()
     const dt = Math.min(0.12, (now - lastParamFrame) / 1000 || 1 / 60)
     lastParamFrame = now
     if (session?.capability.parameterOverride === false) {
-      // 原生后端：只传意图，参数级写入由 Cubism Native 按作者工程执行。
-      // blinkScheduler / MOUTH_PARAMS / emotionRuntime 参数 hack 全部退役。
+      // 原生后端：只传口型意图，参数级写入由 Cubism Native 按作者工程执行。
+      // blinkScheduler / MOUTH_PARAMS 参数 hack 全部退役。情绪推进只有一个
+      // 时钟（nativeEmotionTick 的 requestAnimationFrame），口型回调不得再次
+      // update emotionRuntime，否则同一帧会被推进两次。
       if (speaking) session.sendMouthLevel?.(mouthValue.value)
       if (stageEl) stageEl.dataset.blink = '1.000'
-      if (emotionRuntime) {
-        emotionRuntime.update(dt)
-        if (stageEl) stageEl.dataset.emotionIntensity = emotionRuntime.intensity().toFixed(3)
-        session.sendEmotion?.(emotionRuntime.lastEmotion(), emotionRuntime.intensity())
-      }
       return
     }
     try {
@@ -755,6 +791,13 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
         const interaction = interactionFromHitAreas(areas)
         if (interaction) playInteraction(interaction)
       }) ?? null
+      // 同一互动播放中重复点击：Rust 拒绝并回传 motion-failed，这里直接
+      // 显示"动作进行中"（Rust 状态为准，前端 duration 计时可能已过期）。
+      nativeMotionFailedUnsubscribe = session.onMotionFailed?.((info) => {
+        if (/already playing/.test(info.reason)) {
+          interactionHint.value = '这个动作正在进行中'
+        }
+      }) ?? null
       return
     }
     pointerClickHandler = (event) => {
@@ -793,12 +836,40 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
       try {
         const rect = stageEl.getBoundingClientRect()
         if (!rect.width || !rect.height) return
-        const bounds = windowBoundsFromScreen()
-        session.updateOverlay(computeOverlayRect({
+        const bounds = desktopWindowBounds ?? {
+          ...windowBoundsFromScreen(),
+          width: window.innerWidth,
+          height: window.innerHeight,
+        }
+        // DPR 实测比例：WebView2 视口 CSS 像素与窗口物理像素的实际换算
+        // （物理宽 / CSS 宽）。不能用 window.devicePixelRatio——per-monitor
+        // 下它报告的是系统缩放（如 1.75），而 WebView2 视口可能按 1:1 布局，
+        // 用它会整体错位（overlay 偏移、控件穿透矩形全偏）。
+        const scale = bounds.width > 0 && window.innerWidth > 0
+          ? bounds.width / window.innerWidth
+          : (window.devicePixelRatio || 1)
+        const overlayRect = computeOverlayRect({
           stageRect: rect,
-          dpr: window.devicePixelRatio || 1,
-          windowBounds: { ...bounds, width: window.innerWidth, height: window.innerHeight },
-        }), true)
+          dpr: scale,
+          windowBounds: bounds,
+        })
+        const passthrough = Array.from(document.querySelectorAll<HTMLElement>(
+          'button, a, input, select, textarea, [role="button"], [tabindex]',
+        )).map((element) => {
+          // 只挖与 overlay 重叠且真正可交互的控件：输入框/发送按钮等对话
+          // 控件位于 portrait-stage 之外，但视觉上可能落在模型 region 内
+          //（全身立绘占满舞台），必须一并从 region 挖洞，否则点击被吞。
+          const control = element.getBoundingClientRect()
+          if (!control.width || !control.height) return null
+          if (control.right < rect.left || control.left > rect.right
+            || control.bottom < rect.top || control.top > rect.bottom) return null
+          return computeOverlayRect({
+            stageRect: control,
+            dpr: scale,
+            windowBounds: bounds,
+          })
+        }).filter((value): value is typeof overlayRect => Boolean(value))
+        session.updateOverlay(overlayRect, true, passthrough)
       } catch {}
       return
     }
@@ -827,18 +898,31 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     if (!session || document.hidden || prefersReducedMotion()) return
     session.setMaxFps(maxFps)
     session.setPaused(false)
+    startNativeEmotionClock()
     layout()
   }
 
   function setMaxFps(value: number) {
-    maxFps = Math.max(24, Math.min(120, Math.round(value) || 60))
+    // 原生后端接电目标 165fps（渲染线程 vsync 决定实际帧率），不能被默认
+    // 60 覆盖；browser 后端保持原有 120 上限不变。
+    const isNative = backendKind.value === 'native' && backend?.kind === 'native'
+    const cap = isNative ? 165 : 120
+    maxFps = Math.max(24, Math.min(cap, Math.round(value) || 60))
     session?.setMaxFps(maxFps)
   }
 
   function setPaused(paused: boolean) {
     if (!session) return
     // 减少动态效果：渲染一帧把立绘摆正，然后停住，不做待机循环
-    session.setPaused(paused || prefersReducedMotion())
+    const shouldPause = paused || prefersReducedMotion()
+    session.setPaused(shouldPause)
+    if (shouldPause) stopNativeEmotionClock()
+    else startNativeEmotionClock()
+  }
+
+  function setDesktopWindowBounds(bounds: { x: number; y: number; width: number; height: number }) {
+    desktopWindowBounds = bounds
+    layout()
   }
 
   async function recover() {
@@ -858,6 +942,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     const visible = Boolean(value && ready.value && loadedCharacter.value === character.value)
     stageEl?.classList.toggle('live2d-ready', visible)
     if (model) model.visible = visible
+    if (!visible && session?.capability.parameterOverride === false) session.setPaused(true)
   }
 
   async function setOutfit(id: string): Promise<boolean> {
@@ -908,7 +993,10 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     speaking = value
     emotionRuntime?.setSpeaking(value)
     if (value) resumeRendering()
-    else mouthValue.value = 0
+    else {
+      mouthValue.value = 0
+      session?.sendMouthLevel?.(0)
+    }
   }
 
   function fallback(text: string, detail: string) {
@@ -920,6 +1008,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     clearTimeout(loadTimer); loadTimer = 0
     clearTimeout(interactionTimer); interactionTimer = 0; activeInteraction = ''
     clearTimeout(leaveTimer); leaveTimer = 0
+    stopNativeEmotionClock()
     entranceUntil = 0
     // Stop Pixi before clearing model state. Otherwise an authored motion can
     // tick once during character switching and read arrays already released by
@@ -936,6 +1025,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     loadedCharacter.value = ''
     stageEl?.classList.remove('live2d-ready')
     if (nativeHitTestUnsubscribe) { nativeHitTestUnsubscribe(); nativeHitTestUnsubscribe = null }
+    if (nativeMotionFailedUnsubscribe) { nativeMotionFailedUnsubscribe(); nativeMotionFailedUnsubscribe = null }
     if (currentSession && typeof currentSession.destroy === 'function') { try { currentSession.destroy() } catch {} }
     model = null
     session = null
@@ -944,6 +1034,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     pointerGazeX = 0
     pointerGazeY = 0
     pointerGazeActive = false
+    desktopWindowBounds = null
     if (hostEl) hostEl.innerHTML = ''
   }
 
@@ -966,6 +1057,6 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     backendKind, backendFallback,
     init, enable, disable, setCharacter, setMouth, setAudioLevel, setOutfit, setSpeaking,
     attachEmotionRuntime, setPaused, setMaxFps, recover, layout, retry, destroy,
-    setGlobalPointer,
+    setGlobalPointer, setDesktopWindowBounds, syncNativeEmotion: sendNativeEmotionIntent,
   }
 }

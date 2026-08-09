@@ -25,6 +25,7 @@ var runtimePaths = require(path.join(__dirname, '..', 'runtime', 'runtime-paths.
 var mocks = require('./mock-upstreams');
 
 var PORTS = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'tests', 'e2e', 'mock-ports.json'), 'utf8'));
+var COMFY_PORT = Number(process.env.AICS_MOCK_COMFY_PORT || PORTS.comfy || (PORTS.translate + 1));
 var ROOT_DIR = path.join(__dirname, '..', '..');
 var TOKEN = 'mock-stack-token-0123456789abcdef0123';
 
@@ -35,11 +36,14 @@ function isolatedRuntime() {
 
 function buildConfig(runtime) {
   var config = loadGatewayConfig(ROOT_DIR, {
+    AICS_RUNTIME_ROOT:runtime.root,
+    AICS_DISABLE_LEGACY_RUNTIME_MIGRATION:'1',
     PORT:String(PORTS.gateway),
     HOST:'127.0.0.1',
     TOKEN:TOKEN,
     DISABLE_TUNNEL:'1',
     SD_HOST:'http://127.0.0.1:' + PORTS.sd,
+    COMFY_HOST:'http://127.0.0.1:' + COMFY_PORT,
     TTS_HOST:'http://127.0.0.1:' + PORTS.tts,
     OLLAMA_HOST:'http://127.0.0.1:' + PORTS.ollama,
     TRANSLATE_PORT:String(PORTS.translate)
@@ -82,6 +86,7 @@ async function start() {
   var runtime = isolatedRuntime();
   var upstreams = [
     { name:'sd', port:PORTS.sd, mock:mocks.createSdMock() },
+    { name:'comfy', port:COMFY_PORT, mock:mocks.createComfyMock() },
     { name:'ollama', port:PORTS.ollama, mock:mocks.createOllamaMock() },
     { name:'tts', port:PORTS.tts, mock:mocks.createTtsMock() },
     { name:'translate', port:PORTS.translate, mock:mocks.createTranslateMock() }
@@ -123,4 +128,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { start:start, PORTS:PORTS, TOKEN:TOKEN };
+module.exports = { start:start, PORTS:PORTS, COMFY_PORT:COMFY_PORT, TOKEN:TOKEN };

@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="control-page">
     <RouteAtmosphere />
     <!-- /control 挂在 AppLayout 之外，所以跳转链接与 main 地标要在这里自备 -->
@@ -58,27 +58,27 @@
 
       <!-- 状态墙：像作品册的安静卡片，而不是一排噪声徽章 -->
       <section id="control-overview" class="status-wall" aria-label="连接状态">
-        <article class="status-tile" :data-state="gatewayState">
+        <article class="status-tile status-normal" :data-state="gatewayState">
           <small>本地网关</small>
           <strong>{{ gatewayLabel }}</strong>
         </article>
-        <article class="status-tile" :data-state="sdOnline ? 'on' : 'off'">
+        <article class="status-tile" :class="{ attention: !sdOnline }" :data-state="sdOnline ? 'on' : 'off'">
           <small>SD WebUI</small>
           <strong>{{ sdOnline ? (webuiManaged ? '已连接 · 受控' : '已连接 · 手动') : '未连接' }}</strong>
         </article>
-        <article class="status-tile" :data-state="ttsOnline ? 'on' : 'off'">
+        <article class="status-tile" :class="{ attention: !ttsOnline || ttsSelfHealing }" :data-state="ttsSelfHealing ? 'warn' : (ttsOnline ? 'on' : 'off')">
           <small>GPT-SoVITS</small>
           <strong>{{ ttsOnline ? '已连接' : (ttsSelfHealing ? '自愈中…' : '未连接') }}</strong>
         </article>
-        <article class="status-tile" :data-state="ollamaOnline ? 'on' : 'off'">
+        <article class="status-tile" :class="{ attention: !ollamaOnline }" :data-state="ollamaOnline ? 'on' : 'off'">
           <small>Ollama 聊天</small>
           <strong>{{ ollamaBadgeText }}</strong>
         </article>
-        <article class="status-tile" :data-state="voiceConfiguredCount === 2 ? 'on' : (voiceConfiguredCount ? 'warn' : 'off')">
+        <article class="status-tile" :class="{ attention: voiceConfiguredCount < 2 }" :data-state="voiceConfiguredCount === 2 ? 'on' : (voiceConfiguredCount ? 'warn' : 'off')">
           <small>角色声线</small>
           <strong>{{ voiceConfiguredCount === 2 ? '宁宁与夏目已配置' : (voiceConfiguredCount ? voiceConfiguredCount + ' / 2 已配置' : '尚未配置') }}</strong>
         </article>
-        <article class="status-tile" :data-state="shareState">
+        <article class="status-tile status-normal" :data-state="shareState">
           <small>公网分享</small>
           <strong>{{ shareLabel }}</strong>
         </article>
@@ -512,6 +512,15 @@ onUnmounted(() => { status.stopPolling() })
   border: 0; border-left: 2px solid color-mix(in srgb, var(--border-strong) 45%, transparent);
   border-radius: 0; background: transparent; box-shadow: none; backdrop-filter: none;
 }
+.status-tile:not(.primary) { opacity: .72; }
+.status-tile.attention {
+  opacity: 1;
+  border-left-color: color-mix(in srgb, var(--warning) 72%, var(--border-strong));
+  background: color-mix(in srgb, var(--warning) 6%, transparent);
+}
+.status-tile.attention[data-state="off"] { border-left-color: color-mix(in srgb, var(--danger) 66%, var(--border-strong)); }
+.status-tile.attention[data-state="off"] strong { color: var(--danger-text); }
+.status-tile.status-normal { opacity: .58; }
 .status-tile::before { display: none; }
 .status-tile.primary { grid-column: 1 / -1; }
 .status-tile small {
@@ -809,5 +818,7 @@ details[open] .chevron { transform: rotate(90deg); }
   .service-row-actions .btn { flex: 1; }
   .toolbar-note { display: none; }
   .control-toolbar { border-radius: var(--r-xl); }
+  .status-tile.primary { order: -1; }
+  .status-tile.attention { order: 0; }
 }
 </style>

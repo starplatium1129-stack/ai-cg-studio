@@ -1,62 +1,18 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
+import { trainingApi } from '../api/trainingApi.ts'
 import {
   TRAINING_JOB_IDS,
-  type TrainingApiError,
   type TrainingDataset,
   type TrainingJob,
   type TrainingJobConfig,
   type TrainingJobId,
-  type TrainingLogResponse,
   type TrainingLogState,
   type TrainingOverview,
   type TrainingParamOverrides,
 } from '@/types/training'
 
-interface SuccessEnvelope {
-  ok: true
-}
-
-interface JobEnvelope extends SuccessEnvelope {
-  job: TrainingJob
-}
-
-type OverviewEnvelope = SuccessEnvelope & TrainingOverview
-type LogsEnvelope = SuccessEnvelope & TrainingLogResponse
-type ConfigEnvelope = SuccessEnvelope & { config: TrainingJobConfig }
-
 const MAX_VISIBLE_LOG_CHARS = 180_000
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value)
-}
-
-function apiError(value: unknown, fallback: string): string {
-  if (!isRecord(value)) return fallback
-  const error = value as Partial<TrainingApiError>
-  if (typeof error.error === 'string' && error.error.trim()) {
-    return typeof error.detail === 'string' && error.detail.trim()
-      ? `${error.error}：${error.detail}`
-      : error.error
-  }
-  return fallback
-}
-
-async function request<T extends SuccessEnvelope>(url: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(url, {
-    cache: 'no-store',
-    ...init,
-    headers: {
-      ...(init?.body ? { 'Content-Type': 'application/json' } : {}),
-      ...init?.headers,
-    },
-  })
-  const body = await response.json().catch(() => null) as unknown
-  if (!response.ok || !isRecord(body) || body.ok !== true) {
-    throw new Error(apiError(body, `训练服务请求失败（HTTP ${response.status}）`))
-  }
-  return body as T
-}
 
 function emptyLogState(): TrainingLogState {
   return {
@@ -106,7 +62,7 @@ export const useTrainingStore = defineStore('training', () => {
     if (refreshPromise) return refreshPromise
     loading.value = overview.value === null
     if (!silent) error.value = ''
-    refreshPromise = request<OverviewEnvelope>('/api/training/overview')
+    refreshPromise = trainingApi.getOverview()
       .then((payload) => {
         const hadOverview = overview.value !== null
         const selectedIsKnown = payload.jobs.some((job) => job.id === selectedJobId.value)
@@ -148,10 +104,7 @@ export const useTrainingStore = defineStore('training', () => {
     actionJobId.value = id
     error.value = ''
     try {
-      const payload = await request<JobEnvelope>('/api/training/jobs', {
-        method: 'POST',
-        body: JSON.stringify({ id, overrides: overrides ?? {}, dataset }),
-      })
+      const payload = await trainingApi.start(id, overrides ?? {}, dataset)
       updateJob(payload.job)
       selectedJobId.value = id
       logs.value[id] = emptyLogState()
@@ -168,10 +121,7 @@ export const useTrainingStore = defineStore('training', () => {
     actionJobId.value = id
     error.value = ''
     try {
-      const payload = await request<JobEnvelope>(`/api/training/jobs/${encodeURIComponent(id)}/stop`, {
-        method: 'POST',
-        body: JSON.stringify({}),
-      })
+      const payload = await trainingApi.stop(id)
       updateJob(payload.job)
       selectedJobId.value = id
       await loadLogs(id)
@@ -189,13 +139,7 @@ export const useTrainingStore = defineStore('training', () => {
     state.loading = true
     state.error = ''
     try {
-      const params = new URLSearchParams({
-        cursor: String(state.cursor),
-        version: String(state.version),
-      })
-      const payload = await request<LogsEnvelope>(
-        `/api/training/jobs/${encodeURIComponent(id)}/logs?${params.toString()}`,
-      )
+      const payload = await trainingApi.getLogs(id, state.cursor, state.version)
       const nextText = payload.reset ? payload.text : state.text + payload.text
       state.text = nextText.length > MAX_VISIBLE_LOG_CHARS
         ? nextText.slice(-MAX_VISIBLE_LOG_CHARS)
@@ -211,7 +155,7 @@ export const useTrainingStore = defineStore('training', () => {
 
   async function loadJobConfig(id: TrainingJobId): Promise<TrainingJobConfig | null> {
     try {
-      const payload = await request<ConfigEnvelope>(`/api/training/jobs/${encodeURIComponent(id)}/config`)
+      const payload = await trainingApi.getConfig(id)
       return payload.config
     } catch (cause: unknown) {
       error.value = cause instanceof Error ? cause.message : String(cause)

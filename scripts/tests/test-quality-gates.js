@@ -1,0 +1,87 @@
+'use strict';
+
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const { test } = require('node:test');
+
+const root = path.resolve(__dirname, '..', '..');
+const testsRoot = path.join(root, 'scripts', 'tests');
+const { QUALITY_TEST_SUITES } = require('./quality-test-inventory');
+
+function read(relativePath) {
+  return fs.readFileSync(path.join(root, relativePath), 'utf8');
+}
+
+test('quality gates cover every deterministic test exactly once', () => {
+  const assigned = Object.entries(QUALITY_TEST_SUITES).flatMap(([suite, files]) => files.map((file) => ({ suite, file })));
+  const discovered = fs.readdirSync(testsRoot)
+    .filter((file) => /^test-.*\.js$/.test(file))
+    .filter((file) => file !== 'test-quality-gates.js')
+    .sort();
+  const assignedNames = assigned.map((entry) => entry.file);
+  const duplicates = assignedNames.filter((file, index) => assignedNames.indexOf(file) !== index);
+  const missing = discovered.filter((file) => !assignedNames.includes(file));
+  const stale = assignedNames.filter((file) => !discovered.includes(file));
+
+  assert.deepEqual(duplicates, [], `test files assigned to multiple lanes: ${duplicates.join(', ')}`);
+  assert.deepEqual(missing, [], `test files missing from quality inventory: ${missing.join(', ')}`);
+  assert.deepEqual(stale, [], `quality inventory references missing files: ${stale.join(', ')}`);
+  assert.equal(QUALITY_TEST_SUITES.check[0], 'test-repo-hygiene.js');
+  assert.equal(QUALITY_TEST_SUITES.check[1], 'test-repo-hygiene-contract.js');
+  assert.ok(QUALITY_TEST_SUITES.unit.includes('test-mood-tag.js'));
+  assert.ok(QUALITY_TEST_SUITES.unit.includes('test-service-watchdog.js'));
+  assert.ok(QUALITY_TEST_SUITES.contract.includes('test-tunnel-restart.js'));
+  assert.ok(QUALITY_TEST_SUITES.desktop.includes('test-desktop.js'));
+
+  for (const file of discovered) {
+    assert.doesNotMatch(read(`scripts/tests/${file}`), /require\(['"]\.\/test-[^'"\)]+['"]\)/,
+      `${file} must not execute another test file as a hidden side effect`);
+  }
+  for (const file of [...QUALITY_TEST_SUITES.unit, ...QUALITY_TEST_SUITES.contract]) {
+    assert.doesNotMatch(read(`scripts/tests/${file}`), /desktop-dist[\\/]/,
+      `${file} must not depend on ignored desktop-dist in the Linux lanes`);
+  }
+});
+
+test('quality workflows keep default, desktop, and live lanes separated', () => {
+  const scripts = JSON.parse(read('package.json')).scripts;
+  const quality = read('.github/workflows/quality.yml');
+  const native = read('.github/workflows/windows-native.yml');
+
+  assert.equal(scripts.validate, 'npm run check && npm run test:unit && npm run test:contract');
+  assert.match(scripts['test:check'], /^node scripts\/tests\/test-quality-gates\.js && /);
+  assert.match(scripts.check, /npm run test:check/);
+  assert.match(scripts['validate:desktop'], /^npm run test:desktop$/);
+  assert.match(scripts['test:desktop'], /run-quality-suite\.js desktop/);
+  assert.doesNotMatch(scripts.validate, /test:live2d-native|test:live|test:e2e/);
+  assert.doesNotMatch(scripts.validate, /build:desktop/);
+  assert.match(scripts['test:live'], /regress-anima-prompt-tags\.js/);
+  assert.match(scripts['test:live'], /test:live2d-native:release/);
+  assert.match(scripts['build:tauri'], /run-tauri\.js build/);
+  assert.match(scripts['package:tauri'], /run-tauri\.js build/);
+  assert.doesNotMatch(scripts['build:tauri'], /prepare:tauri/);
+  assert.doesNotMatch(scripts['package:tauri'], /prepare:tauri/);
+
+  assert.match(quality, /windows-latest/);
+  assert.match(quality, /npm run validate:desktop/);
+  const checkStep = quality.indexOf('run: npm run check');
+  const unitStep = quality.indexOf('run: npm run test:unit');
+  const contractStep = quality.indexOf('run: npm run test:contract');
+  assert.ok(checkStep >= 0 && checkStep < unitStep && unitStep < contractStep,
+    'Ubuntu quality workflow must run check, unit, then contract');
+  assert.match(quality, /AICS_HYGIENE_BASE_REF/);
+  assert.doesNotMatch(quality, /npm run test:live\b|regress-anima|test:live2d-native/);
+  assert.doesNotMatch(quality, /npm run test:live2d-native/);
+  assert.match(native, /self-hosted, Windows, X64, live2d-cubism/);
+  assert.match(native, /github\.ref == 'refs\/heads\/main'/);
+  assert.match(native, /persist-credentials: false/);
+  assert.doesNotMatch(`${quality}\n${native}`, /uses:\s+actions\/(?:checkout|setup-node|cache|upload-artifact)@v\d+/,
+    'official actions must be pinned to immutable commit SHAs');
+  assert.match(native, /LIVE2D_CUBISM_SDK_DIR/);
+  assert.match(native, /npm run build:tauri/);
+  assert.match(native, /cargo test --locked --manifest-path desktop-tauri\/src-tauri\/Cargo\.toml/);
+  assert.match(native, /npm run test:live2d-native:release/);
+  assert.match(native, /run-live2d-renderer-soak\.js --seconds 300 --switch-every 60/);
+  assert.doesNotMatch(native, /pull_request:/);
+});

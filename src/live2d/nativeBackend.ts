@@ -52,12 +52,13 @@ export function createNativeLive2DBackend(provider: NativeBridgeProvider = defau
       let destroyed = false
       let lastRect: { x: number; y: number; width: number; height: number } = { x: 0, y: 0, width: 0, height: 0 }
       let lastVisible = false
+      let lastPassthrough: { x: number; y: number; width: number; height: number }[] = []
       const hitTestListeners = new Set<(areas: string[]) => void>()
       const motionStartedListeners = new Set<() => void>()
       const motionFailedListeners = new Set<(info: { group: string; index?: number; reason: string }) => void>()
 
       const pushFrame = () => {
-        bridge.setFrame({ rect: lastRect, visible: lastVisible, opacity: 1 })
+        bridge.setFrame({ rect: lastRect, visible: lastVisible, opacity: 1, passthrough: lastPassthrough })
       }
 
       const subscriptions: number[] = []
@@ -104,9 +105,10 @@ export function createNativeLive2DBackend(provider: NativeBridgeProvider = defau
         kind: 'native',
         capability: NATIVE_CAPABILITY,
         onModelLoaded(callback) {
-          bridge.onReady(() => {
+          const subscriptionId = bridge.onReady(() => {
             if (!destroyed) callback(handle)
           })
+          subscriptions.push(subscriptionId)
         },
         onModelError(_callback) {
           // 桥没有独立错误事件：加载失败已由 connect 的 setCharacter 结果反映；
@@ -116,21 +118,27 @@ export function createNativeLive2DBackend(provider: NativeBridgeProvider = defau
           lastVisible = !paused
           pushFrame()
         },
-        setMaxFps(_fps) {
-          // Rust 侧渲染循环帧率由壳控制；此契约预留（O8 电池降帧用）
+        setMaxFps(fps) {
+          // 原生渲染线程接电目标 165fps；上限放行到 165，不被浏览器 120 限制。
+          bridge.setMaxFps(Math.max(24, Math.min(165, Math.round(fps) || 60)))
         },
         getScreenSize() { return { width: options.canvasWidth, height: options.canvasHeight } },
         getCanvasSize() { return { width: options.canvasWidth, height: options.canvasHeight } },
         setStageScale() { /* overlay 尺寸由 live2dOverlayLayout 计算后经 updateOverlay 下发 */ },
-        updateOverlay(rect, visible) {
+        updateOverlay(rect, visible, passthrough = []) {
           lastRect = rect
           lastVisible = visible
+          lastPassthrough = passthrough
           pushFrame()
         },
         canvasElement() { return null },
         onNativeHitTest(callback) {
           hitTestListeners.add(callback)
           return () => { hitTestListeners.delete(callback) }
+        },
+        onMotionFailed(callback) {
+          motionFailedListeners.add(callback)
+          return () => { motionFailedListeners.delete(callback) }
         },
         sendMouthLevel(level) {
           bridge.setMouthLevel(Math.max(0, Math.min(1, level)))

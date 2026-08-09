@@ -56,6 +56,11 @@ export interface PromptPreset {
   [key: string]: unknown
 }
 
+export interface RestoredHistoryContext<TScene extends { id: string }> {
+  scene: TScene | null
+  story: string
+}
+
 const SD_PARAM_KEYS = new Set<keyof SDParams>([
   'cfg', 'steps', 'sampler', 'scheduler', 'size', 'hiresFix', 'hiresScale',
   'hiresUpscaler', 'hiresSteps', 'hiresDenoise', 'faceDetailer', 'seedLock',
@@ -151,6 +156,17 @@ export function parsePromptBuilderDraft(value: unknown): PromptBuilderDraft | nu
   }
 }
 
+/** Resolve the scene first; callers apply the returned story after loadScene(). */
+export function restoreHistorySceneStory<TScene extends { id: string }>(
+  entry: unknown,
+  scenes: TScene[],
+): RestoredHistoryContext<TScene> {
+  const record = isRecord(entry) ? entry : {}
+  const sceneId = stringValue(record.scene)
+  const scene = sceneId ? (scenes.find(item => item.id === sceneId) ?? null) : null
+  return { scene, story: stringValue(record.story) || '' }
+}
+
 export function parseProjectOptions(value: unknown): ProjectOption[] {
   if (!Array.isArray(value)) return []
   return value.flatMap((item): ProjectOption[] => {
@@ -165,6 +181,8 @@ export function parseProjectOptions(value: unknown): ProjectOption[] {
 
 function parseModelProfile(value: unknown): ModelProfile | null {
   if (!isRecord(value)) return null
+  const engine = value.engine === 'sd' || value.engine === 'anima' ? value.engine : undefined
+  const tagStyle = value.tag_style === 'underscore' || value.tag_style === 'space' ? value.tag_style : undefined
   const negativeMode = value.negative_mode === 'merge' || value.negative_mode === 'replace'
     ? value.negative_mode
     : undefined
@@ -175,6 +193,14 @@ function parseModelProfile(value: unknown): ModelProfile | null {
     ...value,
     id: stringValue(value.id),
     name: stringValue(value.name),
+    engine,
+    model_id: stringValue(value.model_id),
+    tag_style: tagStyle,
+    lora_in_prompt: typeof value.lora_in_prompt === 'boolean' ? value.lora_in_prompt : undefined,
+    lora_id: stringValue(value.lora_id),
+    lora_name: stringValue(value.lora_name),
+    lora_strength: finiteNumber(value.lora_strength),
+    exact_tokens: stringList(value.exact_tokens),
     match: stringList(value.match),
     quality_prefix: stringValue(value.quality_prefix),
     negative_prefix: stringValue(value.negative_prefix),

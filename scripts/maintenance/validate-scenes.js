@@ -316,7 +316,11 @@ for (const profile of modelProfiles) {
   if (profileIds.has(profile.id)) errors.push(label + ': duplicate model profile id');
   profileIds.add(profile.id);
   if (!Array.isArray(profile.match) || !profile.match.length) errors.push(label + ': missing model match patterns');
-  if (!profile.quality_prefix || !profile.negative_prefix) errors.push(label + ': missing prompt prefixes');
+  if (typeof profile.quality_prefix !== 'string'
+    || typeof profile.negative_prefix !== 'string'
+    || !profile.negative_prefix.trim()) {
+    errors.push(label + ': invalid prompt prefixes');
+  }
   if (!profile.sampler || !Number.isFinite(Number(profile.steps)) || !Number.isFinite(Number(profile.cfg))) errors.push(label + ': invalid generation defaults');
   if (!/^\d+×\d+$/.test(profile.size || '')) errors.push(label + ': invalid output size');
 }

@@ -87,16 +87,20 @@ export async function imgPutRecord(record: ImageRecordInput): Promise<string> {
   return n.id
 }
 
-export async function imgGet(id: string): Promise<Blob | null> {
+export async function imgGetRecord(id: string): Promise<StoredImageRecord | null> {
   if (!id?.trim()) return null
   const db = await openDb()
   return new Promise((resolve, reject) => {
     let transaction: IDBTransaction
     try { transaction = db.transaction(STORE_NAME, 'readonly') } catch (e) { reject(e); return }
     const req = transaction.objectStore(STORE_NAME).get(id.trim())
-    req.onsuccess = () => resolve(req.result?.blob instanceof Blob ? req.result.blob : null)
+    req.onsuccess = () => resolve(req.result?.blob instanceof Blob ? req.result as StoredImageRecord : null)
     req.onerror   = () => reject(req.error ?? new Error('图片读取失败'))
   })
+}
+
+export async function imgGet(id: string): Promise<Blob | null> {
+  return (await imgGetRecord(id))?.blob ?? null
 }
 
 export async function imgDelete(id: string): Promise<void> { await imgDeleteMany([id]) }

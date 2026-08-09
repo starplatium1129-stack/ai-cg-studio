@@ -11,6 +11,10 @@
   @property --character-aura { syntax:'<color>'; inherits:true; initial-value:rgba(184,149,255,.28); }
   @property --character-aura-secondary { syntax:'<color>'; inherits:true; initial-value:rgba(244,166,215,.16); }
   .pb {
+    --fs-stage-glyph: 1.7rem;
+    --fs-ios-control: 16px;
+    --z-stage-backdrop: 0;
+    --ease-stage-sweep: cubic-bezier(.4,0,.2,1);
     --character-accent:#f4a6d7; --character-accent-hover:#ffc1e8;
     --character-soft:rgba(244,166,215,.15); --character-glow:rgba(223,168,255,.34);
     --character-aura:rgba(184,149,255,.28); --character-aura-secondary:rgba(244,166,215,.16);
@@ -138,7 +142,7 @@
     box-shadow:inset 0 1px 0 var(--glass-highlight),inset 0 -1px 0 color-mix(in srgb,var(--accent) 8%,transparent),var(--shadow-lg);
     transition:background .7s ease,border-color .58s ease,box-shadow .58s ease;
   }
-  .pb .stage-placeholder::before { content:''; position:absolute; inset:0; z-index:0; /* 舞台底光,须低于立绘(--z-base)与文案(--z-raised) */ background:radial-gradient(circle at 50% 42%,color-mix(in srgb,var(--accent) 14%,transparent),transparent 32%),radial-gradient(circle at 14% 88%,rgba(242,187,104,.08),transparent 26%); pointer-events:none; }
+  .pb .stage-placeholder::before { content:''; position:absolute; inset:0; z-index:var(--z-stage-backdrop); /* 舞台底光,须低于立绘(--z-base)与文案(--z-raised) */ background:radial-gradient(circle at 50% 42%,color-mix(in srgb,var(--accent) 14%,transparent),transparent 32%),radial-gradient(circle at 14% 88%,rgba(242,187,104,.08),transparent 26%); pointer-events:none; }
   /* 位置与表面合并于此(原先 :703 又声明了一次 left/right/top/padding/border/radius) */
    .pb .stage-chrome {
      position:absolute; z-index:var(--z-raised); top:14px; left:16px; right:16px;
@@ -205,8 +209,8 @@
   .pb[data-character="triad"] .stage-muse.natsume { right:-12%; }
   .pb .stage-message { position:relative; z-index:var(--z-raised); width:min(58%,430px); transform:translateX(-24%); }
   .pb[data-character="triad"] .stage-message { transform:none; }
-  .pb .stage-placeholder-icon { width:68px; height:68px; display:grid; place-items:center; margin:0 auto var(--s-4); border:1px solid color-mix(in srgb,var(--accent) 30%,var(--border-soft)); border-radius:var(--r-2xl); background:color-mix(in srgb,var(--accent-soft) 68%,transparent); color:var(--accent); font:700 1.7rem var(--font-serif); box-shadow:0 22px 64px var(--accent-glow); }
-  /* 上一行 1.7rem 是例外:装饰性汉字水印「綾」的光学字号,不属于文本字号阶梯 */
+  .pb .stage-placeholder-icon { width:68px; height:68px; display:grid; place-items:center; margin:0 auto var(--s-4); border:1px solid color-mix(in srgb,var(--accent) 30%,var(--border-soft)); border-radius:var(--r-2xl); background:color-mix(in srgb,var(--accent-soft) 68%,transparent); color:var(--accent); font:700 var(--fs-stage-glyph) var(--font-serif); box-shadow:0 22px 64px var(--accent-glow); }
+  /* 装饰性汉字水印「綾」使用独立光学字号,不属于文本字号阶梯 */
   .pb .stage-placeholder-title { color:var(--text-primary); font-size:var(--fs-title-xs); font-weight:720; letter-spacing:-.01em; }
   .pb .stage-placeholder-copy { max-width:330px; margin-top:var(--s-2); color:var(--text-muted); font-size:var(--fs-label); line-height:1.65; }
   .pb .stage-quick-actions { display:flex; justify-content:center; flex-wrap:wrap; gap:8px; margin-top:var(--s-4); }
@@ -760,6 +764,10 @@
     .pb[data-director-mode="basic"] .director-workspace { grid-template-columns:1fr; grid-template-areas:"story" "stage" "decisions"; }
     .pb.has-result .director-workspace { grid-template-areas:"stage" "story" "decisions"; }
     .pb .col-left, .pb .col-center, .pb .col-right { grid-column:1; position:static; max-height:none; overflow:visible; }
+    .pb:not(.has-result) .col-left { grid-area:story; }
+    .pb:not(.has-result) .col-center { grid-area:stage; }
+    .pb:not(.has-result) .col-right { grid-area:decisions; }
+    .pb.has-result .col-center { grid-area:stage; }
     .pb .stage-placeholder, .pb.step-4 #stepResult { min-height:clamp(420px,65vh,680px); }
     .pb .stage-message { width:min(78%,360px); transform:none; }
     .pb .stage-muse { width:72%; opacity:0 !important; }
@@ -777,8 +785,8 @@
     .pb .voice-controls { grid-template-columns:1fr; }
     .pb .story-chip, .pb .char-btn, .pb .scene-cat, .pb .scene-filter-reset, .pb .chip-select, .pb .tag-chip, .pb .option, .pb .cat-tab { min-height: 44px; }
     .pb .scene-filter-field select, .pb .controls-grid select, .pb .sd-inline-options select { min-height: 44px; }
-    /* iOS 聚焦自动放大的唯一解法是 >=16px,这是平台约束而非设计选择,故不走 --fs-* */
-    .pb .story-input, .pb .scene-search, .pb .controls-grid select, .pb .sd-inline-options select, .pb .seed-input-wrap input, .pb .voice-text, .pb .review-notes, .pb .review-image-url { font-size:16px !important; }
+    /* iOS 聚焦自动放大要求控件字号不低于平台阈值,与正文阶梯分开归属 */
+    .pb .story-input, .pb .scene-search, .pb .controls-grid select, .pb .sd-inline-options select, .pb .seed-input-wrap input, .pb .voice-text, .pb .review-notes, .pb .review-image-url { font-size:var(--fs-ios-control) !important; }
     .pb .scene-card-main { padding-bottom:var(--s-3); }
     .pb .scene-card .scene-direct-btn { display:inline-flex; position:static; margin:0 var(--s-3) var(--s-3); min-height:40px; align-items:center; }
     .pb .scene-story { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
@@ -893,6 +901,10 @@
     .pb .sd-advanced-grid { position:static; grid-template-columns:1fr; width:100%; min-width:0; margin-top:var(--s-2); box-shadow:none; }
     .pb .sd-advanced-grid #sdSeedDisplay { grid-column:auto; }
     .pb .preview-actions .btn { flex:1 1 calc(50% - var(--s-2)); min-height:44px; }
+    .pb.has-result #stepResult { order:1; }
+    .pb.has-result #stepResult .preview-actions { order:1; }
+    .pb.has-result #stepResult .sd-queue { order:2; }
+    .pb.has-result #stepResult .voice-studio { order:3; }
     .pb-backup-actions .btn { flex:1 1 100%; min-height:44px; }
     .pb .col-right .generate-btn { min-height:50px; }
     .pb.focus-mode { padding:var(--s-2); }
@@ -1155,7 +1167,7 @@
   }
   .pb .stage-placeholder.is-generating::after {
     opacity:1;
-    animation:stageSweep 2.4s cubic-bezier(.4,0,.2,1) infinite;
+    animation:stageSweep 2.4s var(--ease-stage-sweep) infinite;
   }
   @keyframes stageBreath {
     0%, 100% { opacity:.55; transform:scale(1); }

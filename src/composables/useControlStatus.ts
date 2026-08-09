@@ -1,20 +1,23 @@
 /**
  * 控制面板 · 状态轮询与渲染（从 ControlView.vue 拆出）。
  *
- * 所有权：/api/status、/api/logs、/api/share-link 的轮询生命周期，
+ * 所有权：状态、日志与分享链接的轮询生命周期，
  * 上游在线状态、操作进度、日志缓冲与展示文案。
  */
 
 import { ref, computed, nextTick } from 'vue'
+import { ApiClientError } from '../api/client.ts'
+import { controlApi, type ControlApi } from '../api/controlApi.ts'
 import type {
   ControlStatus, ControlLogs, ControlOperationView,
 } from '@/types/api'
 
 interface StatusHooks {
   showToast: (msg: string, isError?: boolean) => void
+  api?: ControlApi
 }
 
-export function useControlStatus({ showToast }: StatusHooks) {
+export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
   const tunnelActive = ref(false)
   const sdOnline = ref(false)
   const ttsOnline = ref(false)
@@ -53,6 +56,9 @@ export function useControlStatus({ showToast }: StatusHooks) {
   const logIndex = ref(0)
   let pollTimer: ReturnType<typeof setInterval> | null = null
   let lastStatus: ControlStatus | null = null
+  let statusRequest: AbortController | null = null
+  let logsRequest: AbortController | null = null
+  let shareRequest: AbortController | null = null
 
   const opBusy = computed(() => !!(operation.value && operation.value.status === 'running') || modeBusy.value)
   const opStatusLabel = computed(() => {
@@ -130,7 +136,11 @@ export function useControlStatus({ showToast }: StatusHooks) {
     tunnelStatus.value = data.tunnelStatus || ''
     // 分享链接含原始 token，已从 /api/status 拆到仅本机可读的 /api/share-link
     if (data.shareLinkAvailable) void loadShareLink()
-    else shareLink.value = ''
+    else {
+      shareRequest?.abort()
+      shareRequest = null
+      shareLink.value = ''
+    }
     if (data.localLink) localLink.value = data.localLink
     if (data.uptime != null) uptime.value = '网站已运行 ' + fmt(data.uptime)
     if (data.scripts) scripts.value = { ...scripts.value, ...data.scripts }
@@ -183,37 +193,49 @@ export function useControlStatus({ showToast }: StatusHooks) {
   }
 
   async function loadShareLink() {
+    shareRequest?.abort()
+    const controller = new AbortController()
+    shareRequest = controller
     try {
-      const r = await fetch('/api/share-link')
-      if (!r.ok) { shareLink.value = ''; return }
-      const data = await r.json()
-      shareLink.value = typeof data.shareLink === 'string' ? data.shareLink : ''
-    } catch { shareLink.value = '' }
+      const data = await api.getShareLink({ signal: controller.signal })
+      if (shareRequest !== controller || controller.signal.aborted) return
+      shareLink.value = data.shareLink
+    } catch {
+      if (shareRequest === controller) shareLink.value = ''
+    } finally {
+      if (shareRequest === controller) shareRequest = null
+    }
   }
 
   async function pollStatus(force = false) {
     if (force) serviceChecking.value = true
+    statusRequest?.abort()
+    const controller = new AbortController()
+    statusRequest = controller
     try {
-      const r = await fetch('/api/status' + (force ? '?fresh=1' : ''))
-      if (!r.ok) { serviceChecking.value = false; return }
-      const data = await r.json()
+      const data = await api.getStatus({ fresh: force, signal: controller.signal })
+      if (statusRequest !== controller || controller.signal.aborted) return
       renderStatus(data)
       // 探测失败现在是 200 + ok:false + degraded（与三个同族 *-status 一致）。
       // 之前后端回 500，这里的 `if (!r.ok) return` 会把状态墙冻在上一次的值上，
       // 用户看到的是"点了没反应"而不是"探测失败"。
       if (data.ok === false && data.error) showToast('服务探测失败：' + data.error, true)
-    } catch { serviceChecking.value = false }
+    } catch {
+      if (statusRequest === controller) serviceChecking.value = false
+    } finally {
+      if (statusRequest === controller) statusRequest = null
+    }
   }
 
   async function pollLogs() {
+    logsRequest?.abort()
+    const controller = new AbortController()
+    logsRequest = controller
     try {
-      const r = await fetch('/api/logs?since=' + logIndex.value)
-      // 必须查 ok：403（非本机）/ 421（Host 不在白名单）会回 JSON 错误信封，
-      // 不查的话 data.logs 恒为 undefined，日志面板静默停更而没有任何提示。
-      if (!r.ok) return
-      const data = await r.json() as ControlLogs
+      const data: ControlLogs = await api.getLogs(logIndex.value, { signal: controller.signal })
+      if (logsRequest !== controller || controller.signal.aborted) return
       if (data.operation) operation.value = data.operation
-      if (data.logs?.length) {
+      if (data.logs.length) {
         const fresh = data.logs.filter((l: string) => !logs.value.includes(l))
         if (fresh.length) {
           logs.value.push(...fresh)
@@ -225,7 +247,13 @@ export function useControlStatus({ showToast }: StatusHooks) {
           logIndex.value += data.logs.length
         }
       }
-    } catch {}
+    } catch (error) {
+      if (logsRequest === controller && error instanceof ApiClientError && (error.status === 403 || error.status === 421)) {
+        clearLogs()
+      }
+    } finally {
+      if (logsRequest === controller) logsRequest = null
+    }
   }
 
   function clearLogs() { logs.value = []; logIndex.value = 0 }
@@ -234,7 +262,17 @@ export function useControlStatus({ showToast }: StatusHooks) {
     pollStatus(); pollLogs()
     pollTimer = setInterval(() => { pollStatus(); pollLogs() }, 3000)
   }
-  function stopPolling() { if (pollTimer) clearInterval(pollTimer); pollTimer = null }
+  function stopPolling() {
+    if (pollTimer) clearInterval(pollTimer)
+    pollTimer = null
+    statusRequest?.abort()
+    logsRequest?.abort()
+    shareRequest?.abort()
+    statusRequest = null
+    logsRequest = null
+    shareRequest = null
+    serviceChecking.value = false
+  }
 
   return {
     tunnelActive, sdOnline, ttsOnline, ollamaOnline, webuiManaged, ollamaModels, ollamaVram, selfHealing,

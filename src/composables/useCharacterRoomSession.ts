@@ -5,6 +5,8 @@ import { useChatConversation } from '@/composables/useChatConversation'
 import { useChatStorage } from '@/composables/useChatStorage'
 import { useChatProvider } from '@/composables/useChatProvider'
 import { useVoice } from '@/composables/useVoice'
+import { controlApi } from '@/api/controlApi'
+import { settingsRepository, CHAT_THINKING_SETTING, type ReasoningLevel } from '@/storage/settingsRepository'
 
 interface CharacterStageHandle {
   setSpeaking: (value: boolean) => void
@@ -13,6 +15,7 @@ interface CharacterStageHandle {
   setEmotion: (emotion: string) => void
   setUserMessage: () => void
   setDesktopVisible?: (visible: boolean) => void
+  setDesktopWindowBounds?: (bounds: { x: number; y: number; width: number; height: number }) => void
   setDesktopPerformanceMode?: (onBatteryPower: boolean) => void
   setGlobalPointer?: (screenX: number, screenY: number, bounds: { x: number; y: number; width: number; height: number }) => void
 }
@@ -42,6 +45,8 @@ export function useCharacterRoomSession() {
   let statusTimer = 0
   let errorTimer = 0
   let roomPollTimer = 0
+  let roomPollRequest: AbortController | null = null
+  let roomActionRequest: AbortController | null = null
 
   function setError(message: string, kind = 'error', timeout = 7000) {
     clearTimeout(errorTimer)
@@ -191,18 +196,11 @@ export function useCharacterRoomSession() {
   /** 仅桌面应用启用本地工具；浏览器访问时保持纯聊天 */
   const companionTools = ref(Boolean(window.companionDesktop))
   /** 模型推理强度（opencode 风格多档：off/low/medium/high；默认中档） */
-  const reasoning = ref<'off' | 'low' | 'medium' | 'high'>((() => {
-    try {
-      const stored = localStorage.getItem('aics_chat_thinking_v1')
-      if (stored === '0' || stored === 'off') return 'off'
-      if (stored === 'low' || stored === 'medium' || stored === 'high') return stored
-      return 'medium'
-    } catch { return 'medium' }
-  })())
+  const reasoning = ref<ReasoningLevel>(settingsRepository.get(CHAT_THINKING_SETTING) ?? 'medium')
 
   function onReasoningChange(level: 'off' | 'low' | 'medium' | 'high') {
     reasoning.value = level
-    try { localStorage.setItem('aics_chat_thinking_v1', level) } catch { /* 隐私模式忽略 */ }
+    settingsRepository.set(CHAT_THINKING_SETTING, level)
   }
 
   const {
@@ -265,9 +263,12 @@ export function useCharacterRoomSession() {
   }
 
   async function pollRoomOperation(operationId: string) {
+    roomPollRequest?.abort()
+    const controller = new AbortController()
+    roomPollRequest = controller
     try {
-      const response = await fetch('/api/status', { cache: 'no-store' })
-      const data = await response.json()
+      const data = await controlApi.getStatus({ signal: controller.signal })
+      if (roomPollRequest !== controller || controller.signal.aborted) return
       const operation = data.operation
       if (!operation || operation.id !== operationId) return
       roomSetupText.value = operation.message || '正在准备本地服务…'
@@ -283,7 +284,10 @@ export function useCharacterRoomSession() {
       await Promise.all([refreshChatStatus(), refreshVoiceStatus()])
       roomSetupText.value = '聊天环境已就绪。'
     } catch {
+      if (controller.signal.aborted) return
       roomSetupText.value = '仍在后台准备；状态暂时无法读取。'
+    } finally {
+      if (roomPollRequest === controller) roomPollRequest = null
     }
   }
 
@@ -292,14 +296,12 @@ export function useCharacterRoomSession() {
     preparingRoom.value = true
     setError('')
     roomSetupText.value = '正在提交聊天优先切换…'
+    roomActionRequest?.abort()
+    const controller = new AbortController()
+    roomActionRequest = controller
     try {
-      const response = await fetch('/api/mode', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ mode: 'chat' }),
-      })
-      const data = await response.json()
-      if (!response.ok || !data.ok) throw new Error(data.error || '无法切换聊天环境')
+      const data = await controlApi.switchMode('chat', { signal: controller.signal })
+      if (roomActionRequest !== controller || controller.signal.aborted) return
       const operationId = String(data.operation?.id || '')
       roomSetupText.value = data.message || '正在准备聊天环境…'
       if (!operationId) {
@@ -311,9 +313,12 @@ export function useCharacterRoomSession() {
       roomPollTimer = window.setInterval(() => { void pollRoomOperation(operationId) }, 1800) as unknown as number
       void pollRoomOperation(operationId)
     } catch (error) {
+      if (controller.signal.aborted) return
       preparingRoom.value = false
       roomSetupText.value = '准备失败；可以到控制面板手动处理。'
-      setError((error as Error).message || '聊天环境准备失败')
+      setError(error instanceof Error && error.message ? error.message : '聊天环境准备失败')
+    } finally {
+      if (roomActionRequest === controller) roomActionRequest = null
     }
   }
 
@@ -403,6 +408,10 @@ export function useCharacterRoomSession() {
   onUnmounted(() => {
     clearInterval(statusTimer)
     clearInterval(roomPollTimer)
+    roomPollRequest?.abort()
+    roomActionRequest?.abort()
+    roomPollRequest = null
+    roomActionRequest = null
     clearTimeout(errorTimer)
     destroyConversation()
     voice.destroy()

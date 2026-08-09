@@ -33,6 +33,8 @@ const routeCutLabel = ref('LOCAL ARCHIVE')
 const impulseVisible = ref(false)
 const impulseX = ref(0)
 const impulseY = ref(0)
+const reducedMotion = ref(false)
+const coarsePointer = ref(false)
 const impulseStyle = computed(() => ({
   '--impulse-x': `${impulseX.value}px`,
   '--impulse-y': `${impulseY.value}px`,
@@ -40,6 +42,8 @@ const impulseStyle = computed(() => ({
 let impulseTimer = 0
 let routeTimer = 0
 let routeLoadingTimer = 0
+let motionMedia: MediaQueryList | null = null
+let coarseMedia: MediaQueryList | null = null
 let removeBefore: (() => void) | null = null
 let removeAfter: (() => void) | null = null
 let removeError: (() => void) | null = null
@@ -107,7 +111,7 @@ function onPointerDown(event: PointerEvent) {
   // 点击瞬间就开始拉取目标路由 chunk，比 hover 预取再快一拍
   prefetchLink(event.target)
   const shouldPulse = target.matches('a[href],.btn-primary,.btn-danger,[data-tone="confirm"],[data-tone="danger"]')
-  if (shouldPulse && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (shouldPulse && !reducedMotion.value && !coarsePointer.value) {
     window.clearTimeout(impulseTimer)
     impulseX.value = event.clientX
     impulseY.value = event.clientY
@@ -115,6 +119,41 @@ function onPointerDown(event: PointerEvent) {
     requestAnimationFrame(() => { impulseVisible.value = true })
     impulseTimer = window.setTimeout(() => { impulseVisible.value = false }, 240)
   }
+}
+
+function clearRouteMotion() {
+  window.clearTimeout(routeTimer)
+  window.clearTimeout(routeLoadingTimer)
+  routeLoading.value = false
+  routeCutActive.value = false
+  delete document.documentElement.dataset.routeMotion
+}
+
+function onMotionPreference(event: MediaQueryListEvent | MediaQueryList) {
+  reducedMotion.value = event.matches
+  if (reducedMotion.value) {
+    window.clearTimeout(impulseTimer)
+    impulseVisible.value = false
+    clearRouteMotion()
+  }
+}
+
+function onCoarsePointerPreference(event: MediaQueryListEvent | MediaQueryList) {
+  coarsePointer.value = event.matches
+  if (coarsePointer.value) {
+    window.clearTimeout(impulseTimer)
+    impulseVisible.value = false
+  }
+}
+
+function addMediaListener(media: MediaQueryList, listener: (event: MediaQueryListEvent) => void) {
+  if (media.addEventListener) media.addEventListener('change', listener)
+  else media.addListener(listener)
+}
+
+function removeMediaListener(media: MediaQueryList, listener: (event: MediaQueryListEvent) => void) {
+  if (media.removeEventListener) media.removeEventListener('change', listener)
+  else media.removeListener(listener)
 }
 
 function onClick(event: MouseEvent) {
@@ -128,28 +167,38 @@ function onClick(event: MouseEvent) {
 }
 
 onMounted(() => {
+  motionMedia = window.matchMedia('(prefers-reduced-motion: reduce)')
+  coarseMedia = window.matchMedia('(pointer: coarse)')
+  onMotionPreference(motionMedia)
+  onCoarsePointerPreference(coarseMedia)
+  addMediaListener(motionMedia, onMotionPreference)
+  addMediaListener(coarseMedia, onCoarsePointerPreference)
   document.addEventListener('pointerdown', onPointerDown, { passive: true })
   document.addEventListener('click', onClick)
   document.addEventListener('pointerover', onPointerOver, { passive: true })
   document.addEventListener('focusin', onFocusIn)
   removeBefore = router.beforeEach((to) => {
-    window.clearTimeout(routeTimer)
-    window.clearTimeout(routeLoadingTimer)
-    routeLoading.value = false
+    clearRouteMotion()
     setRouteCut(to.path)
-    routeLoadingTimer = window.setTimeout(() => {
-      routeLoading.value = true
-    }, ROUTE_LOADER_DELAY_MS)
+    if (!reducedMotion.value) {
+      routeLoadingTimer = window.setTimeout(() => {
+        routeLoading.value = true
+      }, ROUTE_LOADER_DELAY_MS)
+    }
     const routeUsesCut = IMMERSIVE_ROUTE_CUTS.has(to.path)
       || IMMERSIVE_ROUTE_CUTS.has(router.currentRoute.value.path)
-    document.documentElement.dataset.routeMotion = routeUsesCut ? 'cut' : 'standard'
-    routeCutActive.value = IMMERSIVE_ROUTE_CUTS.has(to.path)
-      && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reducedMotion.value) delete document.documentElement.dataset.routeMotion
+    else document.documentElement.dataset.routeMotion = routeUsesCut ? 'cut' : 'standard'
+    routeCutActive.value = IMMERSIVE_ROUTE_CUTS.has(to.path) && !reducedMotion.value
     return true
   })
   removeAfter = router.afterEach(() => {
     window.clearTimeout(routeLoadingTimer)
     routeLoading.value = false
+    if (reducedMotion.value) {
+      clearRouteMotion()
+      return
+    }
     const settleDelay = routeCutActive.value ? ROUTE_CUT_SETTLE_MS : ROUTE_STANDARD_SETTLE_MS
     routeTimer = window.setTimeout(() => {
       routeLoading.value = false
@@ -158,11 +207,7 @@ onMounted(() => {
     }, settleDelay)
   })
   removeError = router.onError(() => {
-    window.clearTimeout(routeTimer)
-    window.clearTimeout(routeLoadingTimer)
-    routeLoading.value = false
-    routeCutActive.value = false
-    delete document.documentElement.dataset.routeMotion
+    clearRouteMotion()
   })
 })
 
@@ -174,10 +219,10 @@ onUnmounted(() => {
   removeBefore?.()
   removeAfter?.()
   removeError?.()
+  if (motionMedia) removeMediaListener(motionMedia, onMotionPreference)
+  if (coarseMedia) removeMediaListener(coarseMedia, onCoarsePointerPreference)
   window.clearTimeout(impulseTimer)
-  window.clearTimeout(routeTimer)
-  window.clearTimeout(routeLoadingTimer)
-  delete document.documentElement.dataset.routeMotion
+  clearRouteMotion()
 })
 </script>
 

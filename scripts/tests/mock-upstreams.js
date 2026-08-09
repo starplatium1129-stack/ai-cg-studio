@@ -209,6 +209,133 @@ function createSdMock() {
   });
 }
 
+// ── ComfyUI ──────────────────────────────────────────────────────────────────
+// 只模拟服务端 anima-service 会使用的内部端点；浏览器永远不应直接命中它。
+function createComfyMock() {
+  var jobs = new Map();
+  var historyCalls = new Map();
+  var nextId = 0;
+  return createMockServer('comfy', async function (ctx) {
+    var res = ctx.res;
+    var faults = ctx.state.faults;
+
+    if (ctx.path === '/system_stats') {
+      if (faults.offline) return sendJson(res, 503, { error:'mock Comfy offline' });
+      return sendJson(res, 200, { system:{ system: 'mock', device:'cpu' } });
+    }
+
+    if (ctx.path === '/prompt') {
+      if (faults.promptStatus) {
+        return sendJson(res, Number(faults.promptStatus), { error:String(faults.promptError || 'mock prompt failure') });
+      }
+      var promptId = 'mock-comfy-' + (++nextId);
+      jobs.set(promptId, { createdAt:Date.now(), body:ctx.body, removed:false, interrupted:false });
+      return sendJson(res, 200, { prompt_id:promptId });
+    }
+
+    if (ctx.path === '/queue' && ctx.req.method === 'GET') {
+      if (faults.queueStatus) return sendJson(res, Number(faults.queueStatus), { error:'mock queue failure' });
+      var now = Date.now();
+      var renderWindow = Math.max(0, Number(faults.renderMs) || 50);
+      var queueWindow = Math.min(renderWindow, Math.max(0, Number(faults.queueMs) || 10));
+      var running = [];
+      var pending = [];
+      jobs.forEach(function (job, promptId) {
+        if (job.removed || job.interrupted) return;
+        var item = [0, promptId, job.body && job.body.prompt, {}, []];
+        var age = now - job.createdAt;
+        if (age < queueWindow) pending.push(item);
+        else if (age < renderWindow) running.push(item);
+      });
+      return sendJson(res, 200, { queue_running:running, queue_pending:pending });
+    }
+
+    if (ctx.path === '/queue' && ctx.req.method === 'POST') {
+      var deleted = Array.isArray(ctx.body && ctx.body.delete) ? ctx.body.delete : [];
+      var deleteNow = Date.now();
+      var deleteRenderWindow = Math.max(0, Number(faults.renderMs) || 50);
+      var deleteQueueWindow = Math.min(deleteRenderWindow, Math.max(0, Number(faults.queueMs) || 10));
+      deleted.forEach(function (promptId) {
+        var job = jobs.get(String(promptId));
+        if (job && deleteNow - job.createdAt < deleteQueueWindow) job.removed = true;
+      });
+      return sendJson(res, 200, { deleted:deleted });
+    }
+
+    var cancelMatch = ctx.path.match(/^\/api\/jobs\/([^/]+)\/cancel$/);
+    if (cancelMatch && ctx.req.method === 'POST') {
+      if (faults.cancelStatus) return sendJson(res, Number(faults.cancelStatus), { error:'mock cancel failure' });
+      var cancelPromptId = decodeURIComponent(cancelMatch[1]);
+      var cancelledJob = jobs.get(cancelPromptId);
+      if (!cancelledJob || cancelledJob.removed || cancelledJob.interrupted) {
+        return sendJson(res, 200, { cancelled:false });
+      }
+      cancelledJob.interrupted = true;
+      return sendJson(res, 200, { cancelled:true });
+    }
+
+    if (ctx.path === '/interrupt' && ctx.req.method === 'POST') {
+      var interruptPromptId = ctx.body && ctx.body.prompt_id;
+      if (!interruptPromptId) return sendJson(res, 400, { error:'prompt_id required' });
+      var interrupted = jobs.get(String(interruptPromptId));
+      if (!interrupted || interrupted.removed) return sendJson(res, 200, { interrupted:false, prompt_id:interruptPromptId });
+      interrupted.interrupted = true;
+      return sendJson(res, 200, { interrupted:true, prompt_id:interruptPromptId });
+    }
+
+    var historyMatch = ctx.path.match(/^\/history\/([^/]+)$/);
+    if (historyMatch) {
+      var promptIdFromPath = decodeURIComponent(historyMatch[1]);
+      var callsForJob = (historyCalls.get(promptIdFromPath) || 0) + 1;
+      historyCalls.set(promptIdFromPath, callsForJob);
+      var transient = Math.max(0, Number(faults.historyTransient) || 0);
+      if (callsForJob <= transient) return sendJson(res, 503, { error:'mock transient history failure' });
+      if (faults.historyStatus) return sendJson(res, Number(faults.historyStatus), { error:'mock history failure' });
+      var job = jobs.get(promptIdFromPath);
+      if (!job || job.removed) return sendJson(res, 200, {});
+      if (job.interrupted) {
+        return sendJson(res, 200, {
+          [promptIdFromPath]: { status:{ status_str:'error', messages:[['execution_interrupted', 'cancelled']] } }
+        });
+      }
+      if (faults.executionError) {
+        return sendJson(res, 200, {
+          [promptIdFromPath]: { status:{ status_str:'error', messages:[['execution_error', faults.executionError]] } }
+        });
+      }
+      var renderMs = Math.max(0, Number(faults.renderMs) || 50);
+      if (Date.now() - job.createdAt < renderMs) return sendJson(res, 200, {});
+       var image = faults.resultImage && typeof faults.resultImage === 'object'
+         ? faults.resultImage
+         : { filename:'anima_app_mock.png', subfolder:'', type:'output' };
+       var outputNode = String(faults.resultNode || '10');
+       return sendJson(res, 200, {
+        [promptIdFromPath]: {
+          status:{ status_str:'success' },
+           outputs:{ [outputNode]:{ images:[image] } }
+        }
+      });
+    }
+
+    if (ctx.path === '/view') {
+      if (faults.viewStatus) return sendJson(res, Number(faults.viewStatus), { error:'mock view failure' });
+      var imageBody = Buffer.from(PNG_1X1, 'base64');
+      res.writeHead(200, {
+        'Content-Type':'image/png',
+        'Content-Length':imageBody.length,
+        'Cache-Control':'no-store'
+      });
+      return res.end(imageBody);
+    }
+
+    // These responses make accidental direct/root access observable in tests.
+    if (ctx.path === '/queue' || ctx.path === '/interrupt' || ctx.path.indexOf('/object_info') === 0) {
+      return sendJson(res, 200, { ok:true });
+    }
+    return sendJson(res, 404, { error:'mock Comfy has no ' + ctx.path });
+  });
+}
+
 // ── Ollama ──────────────────────────────────────────────────────────────────
 function createOllamaMock() {
   return createMockServer('ollama', async function (ctx) {
@@ -332,6 +459,7 @@ function listen(server, port, host) {
 
 module.exports = {
   createSdMock:createSdMock,
+  createComfyMock:createComfyMock,
   createOllamaMock:createOllamaMock,
   createTtsMock:createTtsMock,
   createTranslateMock:createTranslateMock,

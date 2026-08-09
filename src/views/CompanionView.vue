@@ -83,6 +83,7 @@
         :chat-status-text="chatStatusText"
         :status-kind="statusKind"
         :auto-load="companionAutoLoad"
+        :backend="desktopBridge ? 'native' : 'browser'"
         :outfit="storage.live2dOutfit(activeChar)"
         @select="switchCharacter"
         @live2d-enabled="handleLive2dPreference"
@@ -178,13 +179,61 @@
             type="button"
             @click="stopEverything"
           >停止</button>
-          <button
-            class="companion-send"
-            type="button"
-            :disabled="busy || !chatReady"
-            @click="handleSend"
-          >{{ busy ? '回复中' : '发送' }}</button>
-        </div>
+           <button
+             class="companion-send"
+             type="button"
+             :disabled="busy || !chatReady"
+             @click="handleSend"
+           >{{ busy ? '回复中' : '发送' }}</button>
+           <div v-if="speechReady" class="companion-speech-cluster">
+            <button
+              class="companion-speech-btn"
+              type="button"
+              :data-state="speechState"
+              :disabled="speechButtonDisabled"
+              :title="speechError || '按住说话，松开识别；也可按住 Space'"
+              @pointerdown.prevent="onSpeechPress"
+              @pointerup="onSpeechRelease"
+              @pointercancel="onSpeechCancel"
+              @pointerleave="onSpeechLeave"
+            >{{ speechButtonText }}</button>
+            <span class="companion-speech-state" role="status" aria-live="polite">
+              {{ speechStateText || (speechAutoListening ? '听候唤醒' : '') }}
+            </span>
+             <span v-if="speechSessionActive" class="companion-speech-session" role="status">
+               连续对话中
+               <button
+                 class="companion-speech-session-end"
+                 type="button"
+                 title="结束连续对话"
+                 aria-label="结束连续对话"
+                 @click="onSpeechSessionEnd"
+               >×</button>
+             </span>
+            <button
+              class="companion-speech-settings"
+              type="button"
+              title="语音输入设置"
+              aria-label="语音输入设置"
+              @click="speechSettingsOpen = !speechSettingsOpen"
+            >设置</button>
+           </div>
+           <div v-else class="companion-speech-cluster">
+             <button
+               class="companion-speech-settings"
+               type="button"
+               title="配置语音输入"
+               aria-label="配置语音输入"
+               @click="speechSettingsOpen = true"
+             >语音设置</button>
+           </div>
+         </div>
+
+        <SpeechInputSettings
+          v-if="speechSettingsOpen"
+          @save="onSpeechSettingsSaved"
+          @close="speechSettingsOpen = false"
+        />
 
         <footer class="companion-status" :data-state="statusKind">
           <span>{{ chatStatusText }}</span>
@@ -193,8 +242,8 @@
           <span
             v-if="desktopBridge"
             class="companion-runtime-mode"
-            :title="onBatteryPower ? '检测到电池供电，Live2D 自动降至 30 FPS' : '接电运行，Live2D 保持 60 FPS'"
-          >{{ onBatteryPower ? '30 FPS' : '60 FPS' }}</span>
+            :title="onBatteryPower ? '检测到电池供电，Live2D 自动降至 30 FPS' : '接电运行，Native Live2D 目标 165 FPS'"
+          >{{ onBatteryPower ? '30 FPS' : '165 FPS' }}</span>
           <span
             v-if="desktopBridge"
             class="companion-workspace-state"
@@ -248,8 +297,11 @@
 <script setup lang="ts">
 import '@/assets/css/companion.css'
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { controlApi } from '../api/controlApi.ts'
+import { trainingApi } from '../api/trainingApi.ts'
 import { useCharacterRoomSession } from '@/composables/useCharacterRoomSession'
 import ChatCharacterStage from '@/components/ChatCharacterStage.vue'
+import SpeechInputSettings from '@/components/SpeechInputSettings.vue'
 import { imgCount } from '@/composables/useImageStore'
 import { pickCompanionLine } from '@/config/characters'
 import { pickEnvironmentGreeting } from '@/utils/environmentContext'
@@ -263,6 +315,9 @@ import {
   type CompanionDetectedEvent,
 } from '@/utils/companionEvents'
 import { COMPANION_BEHAVIOR_KEY, COMPANION_LIVE2D_KEY } from '@/utils/storageKeys'
+import { useVoiceInput, type VoiceTextSource } from '@/composables/useVoiceInput'
+import { isSpeechInputReady, loadSpeechInputConfig } from '@/utils/speechInputConfig'
+import { createSpeechSession } from '@/utils/speechSession'
 
 const {
   chatListRef,
@@ -345,6 +400,7 @@ let importBusy = false
 let reminderLineOffset = 0
 let eventLineOffset = 0
 let eventPolling = false
+let eventPollController: AbortController | null = null
 let lastActivityAt = Date.now()
 let greetedSlotKey = ''
 let uiIdleTimer = 0
@@ -352,9 +408,49 @@ let uiHidden = false
 let lastPointerMove = Date.now()
 let mouseToggleBlockedUntil = 0
 const immersive = ref(false)
+const speechConfig = ref(loadSpeechInputConfig())
+const speechSettingsOpen = ref(false)
+const speechSession = createSpeechSession()
+const speechNotice = ref('')
+const documentHidden = ref(typeof document !== 'undefined' && document.hidden)
+const {
+  state: speechState,
+  errorMessage: speechError,
+  supported: speechSupported,
+  autoListening: speechAutoListening,
+  start: speechStart,
+  stop: speechStop,
+  cancel: speechCancel,
+  release: speechRelease,
+} = useVoiceInput({
+  config: () => speechConfig.value,
+  onText: onSpeechText,
+})
+const speechReady = computed(() => isSpeechInputReady(speechConfig.value) && speechSupported)
+const speechBusy = computed(() => ['acquiring', 'capturing', 'recognizing'].includes(speechState.value))
+const speechSessionActive = computed(() => speechSession.isSessionActive())
+const pageVisible = computed(() => !documentHidden.value && desktopWindowVisible.value)
+const speechButtonDisabled = computed(() => busy.value || !chatReady.value || !pageVisible.value
+  || speechState.value === 'recognizing')
+const speechButtonText = computed(() => {
+  if (speechState.value === 'acquiring') return '启动中…'
+  if (speechState.value === 'capturing') return '松开结束'
+  if (speechState.value === 'recognizing') return '识别中…'
+  if (speechState.value === 'error') return '重试'
+  return '按住说话'
+})
+const speechStateText = computed(() => {
+  if (speechState.value === 'capturing') return '聆听中…'
+  if (speechState.value === 'recognizing') return '正在识别…'
+  if (speechState.value === 'error') return speechError.value
+  return speechNotice.value
+})
+let speechHeldByKeyboard = false
+let speechHeldByPointer = false
 let resumeSubscription: number | undefined
 let shownSubscription: number | undefined
 let visibilitySubscription: number | undefined
+let windowBoundsSubscription: number | undefined
 let powerModeSubscription: number | undefined
 let interactionModeSubscription: number | undefined
 let globalMouseSubscription: number | undefined
@@ -409,7 +505,108 @@ function onWindowKeydown(event: KeyboardEvent) {
   noteActivity()
   if (event.key === 'Escape' && immersive.value) {
     exitImmersive()
+    return
   }
+  if (event.key !== ' ' || event.repeat || event.ctrlKey || event.altKey || event.metaKey || event.shiftKey) return
+  const target = event.target
+  if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement
+    || target instanceof HTMLSelectElement || (target instanceof HTMLElement && target.isContentEditable)
+    || (target instanceof HTMLElement && Boolean(target.closest('button, a, [role="button"]')))) return
+  if (speechButtonDisabled.value || speechBusy.value || speechHeldByKeyboard) return
+  speechHeldByKeyboard = true
+  event.preventDefault()
+  void speechStart('manual')
+}
+
+function onWindowKeyup(event: KeyboardEvent) {
+  if (event.key !== ' ' || !speechHeldByKeyboard) return
+  speechHeldByKeyboard = false
+  event.preventDefault()
+  if (speechState.value === 'acquiring') speechCancel()
+  else speechStop()
+}
+
+function applySpeechSession() {
+  speechSession.applyConfig(speechConfig.value, currentCharacter.value.name)
+}
+
+function commitSpeechText(text: string) {
+  inputText.value = text
+  if (speechConfig.value.autoSend && chatReady.value && !busy.value) void handleSend()
+}
+
+function onSpeechText(text: string, source: VoiceTextSource) {
+  if (source === 'auto' && !speechSession.isSessionActive()) {
+    if (speechSession.onWakeText(text)) speechNotice.value = `已唤醒${currentCharacter.value.name}，可以直接对话了`
+    return
+  }
+  const action = speechSession.onSessionText(text)
+  if (action === 'end') {
+    speechNotice.value = '已退出连续对话'
+    return
+  }
+  if (action === 'submit') {
+    speechNotice.value = ''
+    commitSpeechText(text)
+  }
+}
+
+function reconcileAutoListen() {
+  const shouldListen = speechReady.value
+    && speechConfig.value.wakeEnabled
+    && chatReady.value
+    && !busy.value
+    && !dnd.value
+    && !inQuietHours.value
+    && pageVisible.value
+    && speechState.value !== 'error'
+    && speechSession.shouldAutoListen()
+  if (shouldListen && !speechAutoListening.value && !speechBusy.value) {
+    void speechStart('auto')
+  } else if (!shouldListen && speechAutoListening.value) {
+    speechStop()
+  }
+}
+
+function onSpeechPress() {
+  if (speechButtonDisabled.value || speechBusy.value) return
+  speechHeldByPointer = true
+  void speechStart('manual')
+}
+
+function onSpeechRelease() {
+  if (!speechHeldByPointer) return
+  speechHeldByPointer = false
+  if (speechState.value === 'acquiring') speechCancel()
+  else speechStop()
+}
+
+function onSpeechCancel() {
+  speechHeldByPointer = false
+  speechCancel()
+}
+
+function onSpeechLeave(event: PointerEvent) {
+  if (speechHeldByPointer && event.buttons > 0) onSpeechCancel()
+}
+
+function onSpeechSettingsSaved() {
+  speechConfig.value = loadSpeechInputConfig()
+  applySpeechSession()
+  reconcileAutoListen()
+  speechSettingsOpen.value = false
+}
+
+function onSpeechSessionEnd() {
+  speechSession.endSession()
+  speechNotice.value = '已结束连续对话'
+  reconcileAutoListen()
+}
+
+function onDocumentVisibilityChange() {
+  documentHidden.value = document.hidden
+  if (!pageVisible.value) speechCancel()
+  reconcileAutoListen()
 }
 
 function onPointerMove(event: PointerEvent) {
@@ -446,6 +643,7 @@ function toggleDnd() {
   behavior.setConfig({ dnd: next })
   dnd.value = next
   persistBehaviorConfig()
+  reconcileAutoListen()
 }
 
 function dismissReminder(id: string) {
@@ -472,6 +670,7 @@ function maybeGreetByTime(force = false) {
 }
 
 function runBehaviorTick() {
+  syncReminders()
   const reminder = behavior.tick()
   if (reminder) {
     reminderLineOffset += 1
@@ -480,70 +679,51 @@ function runBehaviorTick() {
   }
   // 跨时间片（午→下午、工作日→周末）时给一条环境问候
   if (viewAlive && desktopWindowVisible.value) maybeGreetByTime()
+  reconcileAutoListen()
 }
 
 async function pollCompanionEvents() {
   if (eventPolling || !viewAlive) return
   eventPolling = true
+  const controller = new AbortController()
+  eventPollController = controller
   try {
-    const [statusResponse, trainingResponse, imageCount] = await Promise.all([
-      fetch('/api/status', { cache: 'no-store' }).catch(() => null),
-      fetch('/api/training/jobs', { cache: 'no-store' }).catch(() => null),
+    const [status, trainingJobs, imageCount] = await Promise.all([
+      controlApi.getStatus({ signal: controller.signal }).catch(() => null),
+      trainingApi.getJobs({ signal: controller.signal }).then(result => result.jobs).catch(() => null),
       imgCount().catch(() => -1),
     ])
-    if (!viewAlive) return
-    if (statusResponse && statusResponse.ok) {
-      const status: unknown = await statusResponse.json().catch(() => null)
-      const value = status && typeof status === 'object' ? status as Record<string, unknown> : null
-      if (value) {
-        const jobs: { id: string; status: 'idle' | 'running' | 'stopping' | 'completed' | 'failed' | 'stopped'; percent: number }[] = []
-        if (trainingResponse && trainingResponse.ok) {
-          const trainingData: unknown = await trainingResponse.json().catch(() => null)
-          const jobsValue = trainingData && typeof trainingData === 'object'
-            ? (trainingData as Record<string, unknown>).jobs : null
-          if (Array.isArray(jobsValue)) {
-            const allowedStatuses = ['idle', 'running', 'stopping', 'completed', 'failed', 'stopped']
-            for (const item of jobsValue) {
-              const job = item && typeof item === 'object' ? item as Record<string, unknown> : null
-              if (job && typeof job.id === 'string' && typeof job.status === 'string'
-                && allowedStatuses.includes(job.status)) {
-                const progress = job.progress && typeof job.progress === 'object'
-                  ? (job.progress as Record<string, unknown>).percent : undefined
-                jobs.push({
-                  id: job.id,
-                  status: job.status as 'idle' | 'running' | 'stopping' | 'completed' | 'failed' | 'stopped',
-                  percent: typeof progress === 'number' && Number.isFinite(progress) ? progress : 0,
-                })
-              }
-            }
-          }
-        }
-        // 任务栏进度环：训练中的任务显示 percent；空闲/完成/失败清除
-        const activeJob = jobs.find(job => job.status === 'running' || job.status === 'stopping')
-        desktopBridge?.setProgress(activeJob ? (activeJob.percent || 0) / 100 : null)
-        const events = eventDetector.ingest({
-          imageCount: imageCount >= 0 ? imageCount : 0,
-          services: {
-            sdOnline: value.sdOnline === true,
-            ttsOnline: value.ttsOnline === true,
-            ollamaOnline: value.ollamaOnline === true,
-          },
-          jobs,
-        })
-        for (const event of events) {
-          eventLineOffset += 1
-          const line = pickCompanionLine(activeChar.value, 'event', eventLineOffset, event)
-          const reminder = behavior.noteEvent(event, line)
-          if (reminder) {
-            syncReminders()
-            if (desktopBridge) desktopBridge.notify(EVENT_NOTIFY_TITLE[event], line)
-          }
-        }
+    if (!viewAlive || controller.signal.aborted || !status || status.ok === false) return
+    const jobs = (trainingJobs || []).map(job => ({
+      id: job.id,
+      status: job.status,
+      percent: Number.isFinite(job.progress.percent) ? job.progress.percent : 0,
+    }))
+    // 任务栏进度环：训练中的任务显示 percent；空闲/完成/失败清除
+    const activeJob = jobs.find(job => job.status === 'running' || job.status === 'stopping')
+    desktopBridge?.setProgress(activeJob ? (activeJob.percent || 0) / 100 : null)
+    const events = eventDetector.ingest({
+      imageCount: imageCount >= 0 ? imageCount : 0,
+      services: {
+        sdOnline: status.sdOnline,
+        ttsOnline: status.ttsOnline,
+        ollamaOnline: status.ollamaOnline,
+      },
+      jobs,
+    })
+    for (const event of events) {
+      eventLineOffset += 1
+      const line = pickCompanionLine(activeChar.value, 'event', eventLineOffset, event)
+      const reminder = behavior.noteEvent(event, line)
+      if (reminder) {
+        syncReminders()
+        if (desktopBridge) desktopBridge.notify(EVENT_NOTIFY_TITLE[event], line)
       }
     }
   } catch {
     // 轮询失败静默：下次再试
   } finally {
+    if (eventPollController === controller) eventPollController = null
     eventPolling = false
   }
 }
@@ -738,6 +918,11 @@ function toggleMouseEvents() {
 }
 
 function setDesktopVisibility(visible: boolean) {
+  if (!visible) {
+    speechHeldByKeyboard = false
+    speechHeldByPointer = false
+    speechCancel()
+  }
   if (desktopWindowVisible.value === visible) return
   desktopWindowVisible.value = visible
   if (visible) {
@@ -754,6 +939,7 @@ function setDesktopVisibility(visible: boolean) {
     noteActivity()
   }
   characterStageRef.value?.setDesktopVisible?.(visible)
+  reconcileAutoListen()
 }
 
 function setDesktopPowerMode(onBattery: boolean) {
@@ -761,19 +947,42 @@ function setDesktopPowerMode(onBattery: boolean) {
   characterStageRef.value?.setDesktopPerformanceMode?.(onBattery)
 }
 
+applySpeechSession()
+
+watch(busy, value => {
+  if (value) {
+    speechHeldByKeyboard = false
+    speechHeldByPointer = false
+    speechSession.markReplyBusy()
+    speechCancel()
+  } else {
+    speechSession.markReplyIdle()
+  }
+  reconcileAutoListen()
+}, { immediate: true })
+
+watch([speechState, speechConfig, dnd, inQuietHours, desktopWindowVisible, documentHidden, chatReady], reconcileAutoListen)
+watch(currentCharacter, () => {
+  applySpeechSession()
+  reconcileAutoListen()
+})
+
 onMounted(async () => {
   document.documentElement.classList.add('companion-mode')
   dnd.value = behavior.config().dnd
   behaviorTimer = window.setInterval(runBehaviorTick, 30_000) as unknown as number
   eventPollTimer = window.setInterval(() => { void pollCompanionEvents() }, 30_000) as unknown as number
   window.addEventListener('pointerdown', noteActivity, { passive: true })
-  window.addEventListener('keydown', onWindowKeydown, { passive: true })
+  window.addEventListener('keydown', onWindowKeydown, { passive: false })
+  window.addEventListener('keyup', onWindowKeyup, { passive: false })
+  document.addEventListener('visibilitychange', onDocumentVisibilityChange)
   window.addEventListener('wheel', noteActivity, { passive: true })
   window.addEventListener('pointermove', onPointerMove, { passive: true })
   window.addEventListener('dragover', onWindowDragOver, { passive: false })
   window.addEventListener('drop', onWindowDrop, { passive: false })
   syncReminders()
   maybeGreetByTime()
+  reconcileAutoListen()
   void pollCompanionEvents()
   void refreshWorkspaceState()
   if (desktopBridge) {
@@ -782,6 +991,11 @@ onMounted(async () => {
     clipboardTextSubscription = desktopBridge.onClipboardText(onClipboardText)
     shownSubscription = desktopBridge.onShown(() => setDesktopVisibility(true))
     visibilitySubscription = desktopBridge.onVisibilityChanged(setDesktopVisibility)
+    if (desktopBridge.onWindowBoundsChanged) {
+      windowBoundsSubscription = desktopBridge.onWindowBoundsChanged(bounds => {
+        characterStageRef.value?.setDesktopWindowBounds?.(bounds)
+      })
+    }
     powerModeSubscription = desktopBridge.onPowerModeChanged(setDesktopPowerMode)
     interactionModeSubscription = desktopBridge.onInteractionModeChanged(value => { ignoreMouseEvents.value = value })
     // 全局目光跟随：鼠标在悬浮窗之外时，角色目光仍随屏幕鼠标转动。
@@ -812,6 +1026,7 @@ onMounted(async () => {
       }
       setDesktopVisibility(desktopState.visible)
       setDesktopPowerMode(desktopState.onBatteryPower)
+      if (desktopState.bounds) characterStageRef.value?.setDesktopWindowBounds?.(desktopState.bounds)
     } else {
       // IPC 失败时按页面可见性兜底，保证可见窗口里的 Live2D 仍能按需加载
       setDesktopVisibility(!document.hidden)
@@ -820,12 +1035,16 @@ onMounted(async () => {
 })
 onUnmounted(() => {
   viewAlive = false
+  eventPollController?.abort()
+  eventPollController = null
   clearInterval(behaviorTimer)
   clearInterval(eventPollTimer)
   clearTimeout(clipboardCardTimer)
   if (clipboardCard.value?.previewUrl) URL.revokeObjectURL(clipboardCard.value.previewUrl)
   window.removeEventListener('pointerdown', noteActivity)
   window.removeEventListener('keydown', onWindowKeydown)
+  window.removeEventListener('keyup', onWindowKeyup)
+  document.removeEventListener('visibilitychange', onDocumentVisibilityChange)
   window.removeEventListener('wheel', noteActivity)
   window.removeEventListener('pointermove', onPointerMove)
   window.removeEventListener('dragover', onWindowDragOver)
@@ -835,9 +1054,17 @@ onUnmounted(() => {
   if (desktopBridge && resumeSubscription != null) desktopBridge.offResume(resumeSubscription)
   if (desktopBridge && shownSubscription != null) desktopBridge.offShown(shownSubscription)
   if (desktopBridge && visibilitySubscription != null) desktopBridge.offVisibilityChanged(visibilitySubscription)
+  if (desktopBridge && desktopBridge.offWindowBoundsChanged && windowBoundsSubscription != null) {
+    desktopBridge.offWindowBoundsChanged(windowBoundsSubscription)
+  }
   if (desktopBridge && powerModeSubscription != null) desktopBridge.offPowerModeChanged(powerModeSubscription)
   if (desktopBridge && interactionModeSubscription != null) desktopBridge.offInteractionModeChanged(interactionModeSubscription)
   if (desktopBridge && globalMouseSubscription != null) desktopBridge.offGlobalMouse(globalMouseSubscription)
+  speechHeldByKeyboard = false
+  speechHeldByPointer = false
+  speechCancel()
+  speechRelease()
+  speechSession.endSession()
   document.documentElement.classList.remove(
     'companion-mode', 'companion-desktop', 'companion-immersive', 'companion-ui-hidden',
   )

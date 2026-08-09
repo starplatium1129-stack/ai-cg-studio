@@ -17,6 +17,7 @@ import MOCK_PORTS from './mock-ports.json';
 
 const MOCK = {
   sd: `http://127.0.0.1:${MOCK_PORTS.sd}`,
+  comfy: `http://127.0.0.1:${MOCK_PORTS.translate + 1}`,
   ollama: `http://127.0.0.1:${MOCK_PORTS.ollama}`,
   tts: `http://127.0.0.1:${MOCK_PORTS.tts}`,
   translate: `http://127.0.0.1:${MOCK_PORTS.translate}`,
@@ -207,6 +208,41 @@ test('flow 1c · 出图队列：串行执行、自动入册', async ({ page, req
 
   const txt2img = await callsTo(request, MOCK.sd, '/sdapi/v1/txt2img');
   expect(txt2img).toHaveLength(2);
+});
+
+test('flow Anima · 应用 job 经过真网关和假 ComfyUI 出图', async ({ page, request }) => {
+  const errors = collectRuntimeErrors(page);
+  const directComfyRequests: string[] = [];
+  page.on('request', browserRequest => {
+    const url = new URL(browserRequest.url());
+    if (url.pathname.startsWith('/comfy') || ['/prompt', '/queue', '/history', '/interrupt', '/view'].includes(url.pathname)) {
+      directComfyRequests.push(url.pathname);
+    }
+  });
+
+  await fault(request, MOCK.comfy, { renderMs: 10, historyTransient: 2 });
+  await page.goto('/prompt-builder');
+  await page.locator('.engine-switch button').nth(1).click();
+  await expect(page.locator('.anima-status.is-on')).toBeVisible({ timeout: 10_000 });
+  await expect(page.locator('#stepResult .btn-primary').first()).toBeEnabled({ timeout: 10_000 });
+
+  await page.locator('.story-input').fill('宁宁在咖啡馆里穿着魔女服，对我微笑');
+  await page.locator('#stepResult .btn-primary').first().click();
+  await expect(page.locator('.result-image-wrap img.result-image')).toBeVisible({ timeout: 20_000 });
+
+  expect(directComfyRequests).toEqual([]);
+  const comfyCalls = await calls(request, MOCK.comfy);
+  expect(comfyCalls.filter(call => call.path === '/prompt')).toHaveLength(1);
+  expect(comfyCalls.filter(call => call.path.startsWith('/history/')).length).toBeGreaterThan(0);
+  expect(comfyCalls.filter(call => call.path === '/view')).toHaveLength(1);
+  expect(comfyCalls.some(call => call.path === '/queue' || call.path === '/interrupt')).toBeFalsy();
+
+  const promptPayload = comfyCalls.find(call => call.path === '/prompt')?.body?.prompt as Record<string, { class_type?: string; inputs?: Record<string, unknown> }>;
+  expect(promptPayload['1'].class_type).toBe('UNETLoader');
+  expect(promptPayload['4'].class_type).toBe('LoraLoader');
+  expect(promptPayload['7'].inputs?.batch_size).toBe(1);
+  expect(comfyCalls.filter(call => call.path === '/prompt')).toHaveLength(1);
+  expect(errors).toEqual([]);
 });
 
 // ─────────────────────────────────────────────────────────────────────────────

@@ -11,10 +11,10 @@ import {
   checkArtDirection,
   dedupeParts,
   enrichDualPrompt,
+  formatPromptForProfile,
   loraSpecText,
   mergeTokenText,
   modelNegativePrompt,
-  norm,
   normalizeKey,
   qualityPrefix,
   resolveLoraSpecs,
@@ -24,6 +24,7 @@ import {
   sceneTemplateText,
   splitBreaks,
   tokenize,
+  type PromptEngine,
   type PromptPart,
 } from '@/utils/promptPolicy'
 import { COLOR_MOODS, LIGHTING, SHOT, COMPOSITION } from '@/config/promptConstants'
@@ -38,10 +39,16 @@ type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 export function usePromptAssembly(
   pb: PromptBuilderStore,
   checkpoint: Readonly<Ref<string>>,
+  engine: Readonly<Ref<PromptEngine>>,
+  modelName: Readonly<Ref<string>>,
 ) {
-  /** 当前 checkpoint 对应的 model profile（决定质量前缀 / 负面策略 / rating 标签） */
+  /** 当前引擎 + 模型对应的 profile，禁止跨引擎回退规则。 */
   const modelProfile = computed(() =>
-    resolveModelProfile(pb.modelProfiles, pb.sdModelName || checkpoint.value),
+    resolveModelProfile(
+      pb.modelProfiles,
+      engine.value === 'anima' ? modelName.value : (pb.sdModelName || checkpoint.value),
+      engine.value,
+    ),
   )
 
   /** 场景必须支持当前角色，否则不套用场景模板。 */
@@ -74,16 +81,28 @@ export function usePromptAssembly(
     return result
   })
 
-  /** LoRA 按镜头动态定权（特写/全身/双人/复杂场景各不同）。 */
-  const loraSpecs = computed(() =>
-    resolveLoraSpecs(
-      pb.char,
-      effectiveScene.value,
-      pb.loraMeta,
-      loraIdByChar.value,
-      { shot: pb.selections.shot, manualTags: pb.manualTags },
-    ),
+  const controlLoraIds = computed<Record<string, string>>(() =>
+    engine.value === 'anima'
+      ? { nene: 'ayachi_nene_v20_anima' }
+      : loraIdByChar.value,
   )
+
+  /** SD LoRA 按镜头动态定权；Anima 的 LoRA 由固定工作流加载，不进 Prompt。 */
+  const loraSpecs = computed(() =>
+    engine.value === 'anima'
+      ? (pb.char === 'nene' && modelProfile.value?.lora_name
+        ? [{ name:modelProfile.value.lora_name, weight:Number(modelProfile.value.lora_strength) || 0.85 }]
+        : [])
+      : resolveLoraSpecs(
+          pb.char,
+          effectiveScene.value,
+          pb.loraMeta,
+          loraIdByChar.value,
+          { shot: pb.selections.shot, manualTags: pb.manualTags },
+        ),
+  )
+
+  const format = (text: string) => formatPromptForProfile(text, modelProfile.value, engine.value)
 
   /** 分块 parts：同序同类输出，供预览、健康检查与 SD 请求共用。 */
   const promptParts = computed<PromptPart[]>(() => {
@@ -95,21 +114,28 @@ export function usePromptAssembly(
       char: pb.char,
       manualTags: pb.manualTags,
       shot: selections.shot,
+      engine: engine.value,
+      profile,
     })
 
     // 1) 质量前缀（模型 profile + rating 标签）
-    if (pb.sdParams.quality) parts.push({ cls: 'q', text: qualityPrefix(profile, scene) })
+    if (pb.sdParams.quality) parts.push({ cls: 'q', text: qualityPrefix(profile, scene, engine.value) })
 
     // 2) 角色行 + 已勾选特征
     const traitTags = currentTraits.value
       .filter(trait => pb.manualTags.has(trait.tag))
       .map(trait => trait.tag)
-    const controlTags = characterControlTokens(scene, pb.char, loraIdByChar.value)
+    const controlTags = characterControlTokens(scene, pb.char, controlLoraIds.value)
     const charLine = pb.charPrompt
     if (charLine) {
       const identityTags = [...controlTags, ...traitTags]
-      parts.push({ cls: 'c', text: norm(identityTags.length ? `${charLine}, ${identityTags.join(', ')}` : charLine) })
+      parts.push({ cls: 'c', text: format(identityTags.length ? `${charLine}, ${identityTags.join(', ')}` : charLine) })
     }
+
+    // Anima 原生支持自然语言 caption；故事作为独立、可审计的 Prompt 块，
+    // 不再只用于标题和配音。SD 仍走原有标签规范化。
+    const story = String(pb.story || '').trim()
+    if (story) parts.push({ cls: 't', source: 'story', text: format(story) })
 
     // 3) 双人：无场景模板时补构图增强
     if (pb.char === 'triad' && !sceneTemplate) {
@@ -129,37 +155,37 @@ export function usePromptAssembly(
     // 精简模式：quality + character + top5 tags + shot + LoRA
     if (pb.concise) {
       if (pb.manualTags.size) {
-        parts.push({ cls: 't', text: norm([...pb.manualTags].slice(0, 5).join(', ')) })
+        parts.push({ cls: 't', text: format([...pb.manualTags].slice(0, 5).join(', ')) })
       }
       if (selections.shot) {
         const shot = SHOT.find(option => option.id === selections.shot)
-        if (shot?.prompt) parts.push({ cls: 't', text: norm(shot.prompt) })
+        if (shot?.prompt) parts.push({ cls: 't', text: format(shot.prompt) })
       }
-      loraSpecs.value.forEach(spec => parts.push({ cls: 'l', text: `<lora:${loraSpecText(spec)}>` }))
+      if (engine.value === 'sd') loraSpecs.value.forEach(spec => parts.push({ cls: 'l', text: `<lora:${loraSpecText(spec)}>` }))
       return dedupeParts(applyFraming(parts, selections.shot))
     }
 
     // 5) 色彩情调
     if (pb.colorMood) {
       const mood = COLOR_MOODS.find(option => option.id === pb.colorMood)
-      if (mood?.prompt) parts.push({ cls: 't', text: norm(mood.prompt) })
+      if (mood?.prompt) parts.push({ cls: 't', text: format(mood.prompt) })
     }
     // 6) 情绪
-    if (pb.emotionPrompt) parts.push({ cls: 't', text: norm(pb.emotionPrompt) })
+    if (pb.emotionPrompt) parts.push({ cls: 't', text: format(pb.emotionPrompt) })
     // 7) 镜头
     if (selections.shot) {
       const shot = SHOT.find(option => option.id === selections.shot)
-      if (shot?.prompt) parts.push({ cls: 't', text: norm(shot.prompt) })
+      if (shot?.prompt) parts.push({ cls: 't', text: format(shot.prompt) })
     }
     // 8) 光照
     if (selections.lighting) {
       const lighting = LIGHTING.find(option => option.id === selections.lighting)
-      if (lighting?.prompt) parts.push({ cls: 'c', text: norm(lighting.prompt) })
+      if (lighting?.prompt) parts.push({ cls: 'c', text: format(lighting.prompt) })
     }
     // 9) 构图
     if (selections.composition) {
       const composition = COMPOSITION.find(option => option.id === selections.composition)
-      if (composition?.prompt) parts.push({ cls: 't', text: norm(composition.prompt) })
+      if (composition?.prompt) parts.push({ cls: 't', text: format(composition.prompt) })
     }
 
     // 10) 手动标签（剔除与场景模板重复的）
@@ -168,7 +194,7 @@ export function usePromptAssembly(
         splitBreaks(sceneTemplate).flatMap(segment => tokenize(segment)).map(normalizeKey),
       )
       const manual = [...pb.manualTags].filter(tag => !templateKeys.has(normalizeKey(tag)))
-      if (manual.length) parts.push({ cls: 't', text: norm(manual.join(', ')) })
+      if (manual.length) parts.push({ cls: 't', text: format(manual.join(', ')) })
     }
 
     // 11) 智能 tail：全身走 deep_focus，其余 depth_of_field
@@ -176,18 +202,20 @@ export function usePromptAssembly(
       const isWide = selections.shot
         ? selections.shot === 'wide'
         : (pb.manualTags.has('wide_shot') || pb.manualTags.has('full_body'))
-      parts.push({ cls: 'c', text: isWide ? 'deep_focus' : 'depth_of_field' })
+      parts.push({ cls: 'c', text: format(isWide ? 'deep_focus' : 'depth_of_field') })
     }
 
     // 12) LoRA
-    loraSpecs.value.forEach(spec => parts.push({ cls: 'l', text: `<lora:${loraSpecText(spec)}>` }))
+    if (engine.value === 'sd') loraSpecs.value.forEach(spec => parts.push({ cls: 'l', text: `<lora:${loraSpecText(spec)}>` }))
 
     return dedupeParts(applyFraming(parts, selections.shot))
   })
 
-  const positivePrompt = computed(() =>
+  const positivePrompt = computed(() => formatPromptForProfile(
     sanitizePrompt(promptParts.value.filter(part => part.cls !== 'n').map(part => part.text).join(', ')),
-  )
+    modelProfile.value,
+    engine.value,
+  ))
 
   const negativePrompt = computed(() => {
     if (!pb.sdParams.negative) return ''
@@ -195,9 +223,12 @@ export function usePromptAssembly(
     // 场景自带负面优先，其次全站默认；再叠加 model profile 策略。
     const sceneNegativeBase = scene?.negative || NEGATIVE_DEFAULT
     const custom = String(pb.sdParams.negativeCustom || '').trim()
-    const withProfile = modelNegativePrompt(modelProfile.value, sceneNegativeBase)
+    const withProfile = modelNegativePrompt(modelProfile.value, sceneNegativeBase, engine.value)
     const merged = custom ? mergeTokenText(custom, withProfile) : withProfile
-    return adaptNegative(merged, scene, { shot: pb.selections.shot, character: pb.char })
+    const adapted = adaptNegative(merged, scene, { shot: pb.selections.shot, character: pb.char })
+    return engine.value === 'anima'
+      ? formatPromptForProfile(adapted, modelProfile.value, engine.value)
+      : adapted
   })
 
   const promptReport = computed(() => {

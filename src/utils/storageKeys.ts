@@ -12,6 +12,13 @@
 export const COMPANION_LIVE2D_KEY = 'aics_companion_live2d_v1'
 export const COMPANION_BEHAVIOR_KEY = 'aics_companion_behavior_v1'
 export const SPEECH_INPUT_KEY = 'aics_speech_input_v1'
+/** 绘图页引擎选择；键名保持不变以兼容已保存的 Anima 偏好。 */
+export const DRAW_ENGINE_KEY = 'aics_draw_engine'
+export const THEME_KEY = 'aics_theme'
+export const INTERFACE_SOUND_KEY = 'aics_interface_sound_v1'
+export const TUNNEL_OFF_KEY = 'aics_tunnel_off'
+export const CHAT_THINKING_KEY = 'aics_chat_thinking_v1'
+export const GUEST_GUIDE_DISMISSED_KEY = 'aics_guest_guide_dismissed'
 
 /**
  * 上次成功备份的时间戳（localStorage）——活键但刻意不参与备份导出：
@@ -20,8 +27,8 @@ export const SPEECH_INPUT_KEY = 'aics_speech_input_v1'
 export const BACKUP_AT_KEY = 'aics_backup_last_at'
 
 export const LIVE_LOCAL_KEYS = [
-  'aics_theme',
-  'aics_interface_sound_v1',
+  THEME_KEY,
+  INTERFACE_SOUND_KEY,
   'aics_sd_last_success_v1',
   'aics_pb_last_draft',
   'aics_pb_director_mode',
@@ -30,17 +37,18 @@ export const LIVE_LOCAL_KEYS = [
   'aics_hidden_scenes',
   'aics_scene_usage_v1',
   'aics_show_mature',
-  'aics_tunnel_off',
+  TUNNEL_OFF_KEY,
   'aics_chat_v1',
   'aics_chat_model',
   'aics_chat_api_drafts',
   'aics_chat_archive_v1',
-  'aics_chat_thinking_v1',
+  CHAT_THINKING_KEY,
   COMPANION_LIVE2D_KEY,
   COMPANION_BEHAVIOR_KEY,
   SPEECH_INPUT_KEY,
+  DRAW_ENGINE_KEY,
   'aics_training_onboarded',
-  'aics_guest_guide_dismissed',
+  GUEST_GUIDE_DISMISSED_KEY,
 ] as const
 
 /** 动态前缀活键：训练参数/数据集选择按 job 动态命名。 */

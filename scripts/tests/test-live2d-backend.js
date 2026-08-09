@@ -200,8 +200,20 @@ test('原生后端：意图通道（口型/情绪/凝视）与 overlay 帧', asy
   session.sendGaze(-0.5, 0.25);
   assert.deepEqual(bridge.calls.setGaze[0], [-0.5, 0.25]);
 
+  session.setMaxFps(30);
+  assert.deepEqual(bridge.calls.setMaxFps[0], [30]);
+  session.setMaxFps(200);
+  assert.deepEqual(bridge.calls.setMaxFps[1], [165], '原生接电目标 165fps，不被浏览器 120 上限覆盖');
+  session.setMaxFps(10);
+  assert.deepEqual(bridge.calls.setMaxFps[2], [24], '下限仍为 24');
+
   session.updateOverlay({ x: 100, y: 80, width: 300, height: 480 }, true);
-  assert.deepEqual(bridge.calls.setFrame[0][0], { rect: { x: 100, y: 80, width: 300, height: 480 }, visible: true, opacity: 1 });
+  assert.deepEqual(bridge.calls.setFrame[0][0], {
+    rect: { x: 100, y: 80, width: 300, height: 480 },
+    visible: true,
+    opacity: 1,
+    passthrough: [],
+  });
 
   session.setPaused(true);
   assert.equal(bridge.calls.setFrame[1][0].visible, false, '暂停 → overlay 隐藏');
@@ -227,13 +239,28 @@ test('原生后端：原生 HitArea 事件回传（作者分区命中）', async
   assert.equal(hits.length, 1, '退订后不再回传');
 });
 
+test('原生后端：onMotionFailed 转发 busy 拒绝（同一互动播放中）', async () => {
+  const bridge = createStubBridge();
+  const backend = createNativeLive2DBackend(() => bridge);
+  const session = await backend.connect({ selector: '#host', modelUrl: '/nene.moc3', canvasWidth: 420, canvasHeight: 610, character: 'nene' });
+
+  const failures = [];
+  const unsubscribe = session.onMotionFailed((info) => failures.push(info));
+  bridge._motionFailedListeners.forEach((listener) => listener({ group: 'TapHead', index: 2, reason: 'motion already playing: TapHead[2]' }));
+  assert.deepEqual(failures, [{ group: 'TapHead', index: 2, reason: 'motion already playing: TapHead[2]' }]);
+
+  unsubscribe();
+  bridge._motionFailedListeners.forEach((listener) => listener({ group: 'TapSkirt', index: 0, reason: 'x' }));
+  assert.equal(failures.length, 1, '退订后不再回传');
+});
+
 test('原生后端：销毁时 off 全部订阅并调用 bridge.destroy', async () => {
   const bridge = createStubBridge();
   const backend = createNativeLive2DBackend(() => bridge);
   const session = await backend.connect({ selector: '#host', modelUrl: '/nene.moc3', canvasWidth: 420, canvasHeight: 610, character: 'nene' });
   assert.equal(bridge._offCalls.length, 0, '连接阶段不应有 off');
   session.destroy();
-  assert.equal(bridge._offCalls.length, 3, '销毁应逐个 off（onHitTest/onMotionStarted/onMotionFailed）');
+  assert.equal(bridge._offCalls.length, 3, '未注册 onModelLoaded 时应逐个 off 三个连接期订阅');
   assert.equal(bridge.calls.destroy.length, 1);
   assert.equal(bridge._readyListeners.length, 0, '销毁后事件不再派发');
 });
@@ -242,7 +269,7 @@ test('原生后端：销毁时 off 全部订阅并调用 bridge.destroy', async 
 
 test('Live2DNativeBridge 契约：命令与事件方法齐全', () => {
   const bridge = createStubBridge();
-  const commands = ['setCharacter', 'setFrame', 'playMotion', 'setExpression', 'setMouthLevel', 'setEmotion', 'setGaze', 'hitTest', 'destroy'];
+  const commands = ['setCharacter', 'setFrame', 'setMaxFps', 'playMotion', 'setExpression', 'setMouthLevel', 'setEmotion', 'setGaze', 'hitTest', 'destroy'];
   const events = ['onReady', 'onMotionStarted', 'onMotionFailed', 'onHitTest', 'onEntranceFinished', 'off'];
   for (const name of commands) {
     assert.equal(typeof bridge[name], 'function', `缺失命令 ${name}`);
@@ -259,6 +286,7 @@ function createStubBridge() {
   const calls = {
     setCharacter: [],
     setFrame: [],
+    setMaxFps: [],
     playMotion: [],
     setExpression: [],
     setMouthLevel: [],
@@ -281,10 +309,12 @@ function createStubBridge() {
     calls,
     _readyListeners: listeners.ready,
     _hitTestListeners: listeners.hitTest,
+    _motionFailedListeners: listeners.motionFailed,
     _offCalls: offCalls,
 
     async setCharacter(modelPath, options) { calls.setCharacter.push([modelPath, options]); return { ok: true }; },
     setFrame(frame) { calls.setFrame.push([frame]); },
+    setMaxFps(fps) { calls.setMaxFps.push([fps]); },
     async playMotion(group, index, priority) { calls.playMotion.push([group, index, priority]); return { ok: true }; },
     async setExpression(name) { calls.setExpression.push([name]); return { ok: true }; },
     setMouthLevel(level) { calls.setMouthLevel.push([level]); },

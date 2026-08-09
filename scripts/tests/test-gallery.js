@@ -25,6 +25,7 @@ const { artworkTimestamp, parseArtworkRecords } = require('../../src/types/artwo
 const view = read('src/views/GalleryView.vue');
 const home = read('src/views/HomeView.vue');
 const artworkTypes = read('src/types/artwork.ts');
+const artworkRepository = read('src/storage/artworkRepository.ts');
 const layout = read('src/components/AppLayout.vue');
 
 assert.deepStrictEqual(
@@ -115,6 +116,14 @@ assert(
 assert(
   view.includes('viewerLoadToken') && view.includes('unmounted'),
   'gallery async image loads must not write stale URLs after navigation or unmount',
+);
+assert(
+  view.includes('artworkRepository.deleteArtwork') && !view.includes('imgDelete('),
+  'gallery deletion must use the single artwork repository instead of deleting media piecemeal',
+);
+assert(
+  artworkRepository.includes('rollbackErrors') && artworkRepository.includes('thumbnailSnapshot'),
+  'artwork repository must expose snapshot-based compensation for cross-store deletion',
 );
 assert(
   home.includes('Promise.all') && home.includes('unmounted'),

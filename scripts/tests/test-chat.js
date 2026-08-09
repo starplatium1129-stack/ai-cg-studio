@@ -5,22 +5,8 @@ test('chat', async () => {
 var fs = require('fs');
 var path = require('path');
 var http = require('http');
+var gatewayTestStack = require('./gateway-test-stack');
 var root = path.resolve(__dirname, '..', '..');
-
-// 站主配置是真实运行时文件，测试不得破坏用户已保存的配置：
-// 开始时备份，结束时原样恢复（包括"原本不存在"的情况）。
-var hostConfigPath = path.join(root, 'runtime', 'state', 'chat_api_config.json');
-var hostConfigBackup = fs.existsSync(hostConfigPath) ? fs.readFileSync(hostConfigPath) : null;
-var hostConfigExisted = hostConfigBackup !== null;
-// 测试期间要求"站主配置从未保存"，临时移走真实文件（若有），结束后原样恢复
-if (hostConfigExisted) fs.unlinkSync(hostConfigPath);
-
-function restoreHostConfig() {
-  try {
-    if (hostConfigExisted) fs.writeFileSync(hostConfigPath, hostConfigBackup);
-    else if (fs.existsSync(hostConfigPath)) fs.unlinkSync(hostConfigPath);
-  } catch (error) { /* 恢复失败不掩盖测试结果 */ }
-}
 
 function assert(condition, message) {
   if (!condition) throw new Error('[chat] ' + message);
@@ -272,13 +258,13 @@ async function run() {
   assert(html.includes('ChatApiSettings'), 'chat API settings must have independent component ownership');
   assert(roomSession.includes('useChatProvider') && chatProvider.includes('refreshChatStatus') && chatProvider.includes('saveApiSettings'), 'chat provider settings and status must have composable ownership');
   assert(
-    /defineExpose\(\{[\s\S]*setSpeaking,[\s\S]*setMouth,[\s\S]*setAudioLevel,[\s\S]*setEmotion,[\s\S]*setUserMessage,?\s*(?:setDesktopVisible,?\s*)?(?:setDesktopPerformanceMode,?\s*)?(?:setGlobalPointer,?\s*)?\}\)/.test(characterStageComponent)
+    /defineExpose\(\{[\s\S]*setSpeaking,[\s\S]*setMouth,[\s\S]*setAudioLevel,[\s\S]*setEmotion,[\s\S]*setUserMessage,?\s*(?:setDesktopVisible,?\s*)?(?:setDesktopWindowBounds,?\s*)?(?:setDesktopPerformanceMode,?\s*)?(?:setGlobalPointer,?\s*)?\}\)/.test(characterStageComponent)
       && characterStageComponent.includes("emit('live2dEnabled'")
       && characterStageComponent.includes("emit('outfitChanged'"),
     'the character stage must expose only voice animation controls and persist Live2D preferences'
   );
   assert(
-    apiSettingsComponent.includes("fetch('/api/chat-provider/test'")
+    apiSettingsComponent.includes('chatApi.testProvider')
       && apiSettingsComponent.includes('discoveredModels'),
     'chat API settings must test credentials and discover models'
   );
@@ -292,6 +278,15 @@ async function run() {
   assert(chatConversation.includes('AbortController') && html.includes('stop-btn'), 'chat requests must be cancellable');
   assert(!/\bany\b/.test(html), 'ChatView model, stream, error, and history boundaries must stay explicitly typed');
   assert(!/\bany\b/.test(companionHtml), 'CompanionView boundaries must stay explicitly typed');
+  assert(companionHtml.includes('useVoiceInput') && companionHtml.includes('createSpeechSession') && companionHtml.includes('loadSpeechInputConfig'), 'Companion speech must reuse the existing input/session modules');
+  assert(companionHtml.includes("event.key !== ' '") && companionHtml.includes('onWindowKeyup') && companionHtml.includes('speechHeldByKeyboard'), 'Companion speech must own Space keydown/keyup state');
+  assert(companionHtml.includes('documentHidden') && companionHtml.includes('!dnd.value') && companionHtml.includes('!inQuietHours.value'), 'Companion auto listening must gate visibility, DND, and quiet hours');
+  assert(companionHtml.includes("speechState.value === 'acquiring'") && companionHtml.includes('speechCancel()'), 'Companion speech must cancel pending acquisition');
+  assert(/watch\(busy, value => \{\s*if \(value\) \{\s*speechHeldByKeyboard = false\s+speechHeldByPointer = false\s+speechSession\.markReplyBusy\(\)\s+speechCancel\(\)\s*\} else \{/.test(companionHtml), 'busy=true must clear held inputs and cancel every speech mode before reconcile');
+  assert(companionHtml.includes('function setDesktopVisibility(visible: boolean)'), 'Companion visibility handler must remain present');
+  assert(companionHtml.includes('if (!visible)'), 'Companion window hiding must cancel speech');
+  assert(companionHtml.includes('syncReminders()') && companionHtml.includes('reconcileAutoListen()'), 'Companion behavior ticks must refresh quiet state and auto listening');
+  assert(companionHtml.includes('companion-speech-cluster') && companionHtml.includes('speechRelease()') && companionHtml.includes('speechSession.endSession()') && !companionHtml.includes('/audio/transcriptions'), 'Companion speech must use one UI cluster, release on unmount, and avoid a second ASR fetch path');
   assert(!/\bany\b/.test(roomSession), 'shared character-room session boundaries must stay explicitly typed');
   assert(!/\bany\b/.test(chatConversation), 'chat conversation stream, cancellation, and draft boundaries must stay explicitly typed');
   assert(!/\bany\b/.test(streamUtils), 'chat stream events and abort errors must stay explicitly typed');
@@ -341,10 +336,10 @@ async function run() {
   assert(voiceModule.includes('AbortController') && voiceModule.includes('messageAudio'), 'voice sessions must support cancellation and replay');
   assert(!/\bany\b/.test(voiceModule), 'voice queue, turn, API responses, and Web Audio boundaries must stay explicitly typed');
   assert(
-    voiceModule.includes('readVoiceAvailability') && voiceModule.includes('readTranslation'),
+    voiceModule.includes('readVoiceAvailability') && voiceModule.includes('voiceApi.translate'),
     'voice API responses must be narrowed at the JSON boundary'
   );
-  assert(voiceModule.includes("fetch('/api/voice/prepare'") && voiceRoute.includes("router.post('/api/voice/prepare'"), 'voice models and translation must prewarm before the first line');
+  assert(voiceModule.includes('voiceApi.prepare') && voiceRoute.includes("router.post('/api/voice/prepare'"), 'voice models and translation must prewarm before the first line');
   assert(voiceModule.includes('getByteTimeDomainData') && voiceModule.includes('onMouth'), 'lip sync must use real audio amplitude');
   assert(live2dModule.includes('ResizeObserver') && live2dModule.includes('webglcontextlost'), 'Live2D must recover layout and WebGL failures');
   assert(live2dModule.includes('setOutfit') && live2dModule.includes('setSpeaking') && live2dModule.includes('setMouth') && live2dModule.includes('ParamMouthOpenY'), 'Live2D must switch authored outfits and write real speech amplitudes into the mouth parameter');
@@ -765,10 +760,8 @@ async function run() {
 
   var providerMock = createMockAiServer();
   var providerBase = await listen(providerMock.server);
-  var gatewayModule = require('../../server');
-  var gateway = gatewayModule.createGateway({ env:{ DISABLE_TUNNEL:'1', TOKEN:'test-token' } });
-  var gatewayServer = http.createServer(gateway.app);
-  var gatewayBase = await listen(gatewayServer);
+  var gatewayStack = await gatewayTestStack.start({ token:'test-token' });
+  var gatewayBase = gatewayStack.baseUrl;
   try {
     var healthResponse = await fetch(gatewayBase + '/api/health');
     var health = await healthResponse.json();
@@ -913,9 +906,7 @@ async function run() {
     var hostClearJson = await hostClear.json();
     assert(hostClear.status === 200 && hostClearJson.configured === false, 'clearing host config must reset to unconfigured');
   } finally {
-    restoreHostConfig();
-    gateway.close();
-    await close(gatewayServer);
+    await gatewayStack.close();
     await close(providerMock.server);
   }
 

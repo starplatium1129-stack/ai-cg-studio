@@ -53,13 +53,23 @@ pub fn show_companion(app: &AppHandle, focus: bool) {
     }
     if !was_visible {
         let _ = w.emit("aics:shown", ());
+        let _ = w.emit("aics:visibility", true);
+    }
+}
+
+pub fn hide_companion(app: &AppHandle) {
+    let Some(w) = app.get_webview_window("companion") else { return };
+    let was_visible = w.is_visible().unwrap_or(false);
+    let _ = w.hide();
+    if was_visible {
+        let _ = w.emit("aics:visibility", false);
     }
 }
 
 pub fn toggle_companion_visibility(app: &AppHandle) {
     let Some(w) = app.get_webview_window("companion") else { return };
     if w.is_visible().unwrap_or(false) {
-        let _ = w.hide();
+        hide_companion(app);
     } else {
         show_companion(app, true);
     }
@@ -122,7 +132,7 @@ pub fn open_atelier(app: &AppHandle, gateway_url: &str, target: Option<&str>) {
     });
 }
 
-pub fn create_companion_window(app: &AppHandle, gateway_url: &str, shim: &str) -> tauri::Result<()> {
+pub fn create_companion_window(app: &AppHandle, gateway_url: &str, shim: &str, show_on_start: bool) -> tauri::Result<()> {
     let state = app.state::<AppState>();
     let bounds = companion_bounds(&state);
     let url = format!("{gateway_url}/companion");
@@ -140,20 +150,33 @@ pub fn create_companion_window(app: &AppHandle, gateway_url: &str, shim: &str) -
         .visible(false)
         .initialization_script(shim)
         .build()?;
-    let _ = win.show();
+    if show_on_start {
+        let _ = win.show();
+        let _ = win.emit("aics:shown", ());
+        let _ = win.emit("aics:visibility", true);
+    }
+    if let Some(bounds) = webview_bounds(&win) {
+        let _ = win.emit("aics:window-bounds", bounds);
+    }
     Ok(())
+}
+
+fn webview_bounds(w: &tauri::WebviewWindow) -> Option<WindowBounds> {
+    let p = w.outer_position().ok()?;
+    let s = w.outer_size().ok()?;
+    Some(WindowBounds { x: p.x as i64, y: p.y as i64, width: s.width as i64, height: s.height as i64 })
+}
+
+pub fn companion_window_bounds(app: &AppHandle) -> Option<WindowBounds> {
+    app.get_webview_window("companion").and_then(|w| webview_bounds(&w))
 }
 
 pub fn persist_window_bounds(app: &AppHandle) {
     let state = app.state::<AppState>();
     if let Some(w) = app.get_webview_window("companion") {
-        if let Ok(p) = w.outer_position() {
-            if let Ok(s) = w.outer_size() {
-                save_window_bounds(
-                    &state.paths.companion_window_file,
-                    &WindowBounds { x: p.x as i64, y: p.y as i64, width: s.width as i64, height: s.height as i64 },
-                );
-            }
+        if let Some(bounds) = webview_bounds(&w) {
+            save_window_bounds(&state.paths.companion_window_file, &bounds);
+            let _ = w.emit("aics:window-bounds", bounds);
         }
     }
     if let Some(w) = app.get_webview_window("atelier") {

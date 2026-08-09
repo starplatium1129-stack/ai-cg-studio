@@ -9,6 +9,7 @@ import {
   parseSDProgress,
   parseSDStatus,
 } from '@/utils/sdStatus'
+import { mediaStatusApi } from '@/api/mediaStatusApi'
 export type { SDGenerateParams } from '@/utils/sdRequest'
 
 function isAbortError(error: unknown): boolean {
@@ -42,9 +43,7 @@ export function useSDGenerate() {
   async function checkStatus(): Promise<boolean> {
     // 优先走网关聚合接口；失败则直接探测 /sdapi（本机代理）
     try {
-      const r = await fetch('/api/sd-status', { cache: 'no-store' })
-      if (r.ok) {
-        const data = parseSDStatus(await r.json() as unknown)
+      const data = parseSDStatus(await mediaStatusApi.getSDStatus())
         online.value = data.online
         samplers.value = data.samplers
         schedulers.value = data.schedulers
@@ -52,7 +51,6 @@ export function useSDGenerate() {
         models.value = data.models
         checkpoint.value = data.checkpoint
         if (online.value) return true
-      }
     } catch { /* fall through */ }
 
     try {

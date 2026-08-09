@@ -198,12 +198,17 @@
                 </span>
               </div>
 
-              <section class="param-panel" aria-labelledby="`${job.id}-params`">
-                <header class="param-head">
-                  <div>
+              <details class="param-panel" :aria-labelledby="`${job.id}-params`">
+                <summary class="param-summary">
+                  <span>
                     <span class="field-name">训练参数 · 推荐值已就绪</span>
-                    <h4 :id="`${job.id}-params`">不修改也能直接开始，改动只作用于本次训练</h4>
-                  </div>
+                    <strong :id="`${job.id}-params`">不修改也能直接开始</strong>
+                  </span>
+                  <span class="param-summary-note">本次覆盖 · 默认值</span>
+                </summary>
+                <div class="param-content">
+                <header class="param-head">
+                  <span>改动只作用于本次训练</span>
                   <button
                     type="button"
                     class="btn btn-ghost btn-sm"
@@ -233,7 +238,8 @@
                 <p v-if="draftFor(job.id).error" class="param-note param-error" role="status">
                   {{ draftFor(job.id).error }}
                 </p>
-              </section>
+                </div>
+              </details>
 
               <details class="dataset-details">
                 <summary>数据集详情</summary>
@@ -607,6 +613,8 @@ import { useRoute, useRouter } from 'vue-router'
 import { useRovingTabs } from '@/composables/useRovingTabs'
 import { useToast } from '@/composables/useToast'
 import { useTrainingStore } from '@/stores/trainingStore'
+import { useTrainingOnboarding } from '@/composables/useTrainingOnboarding'
+import { useTrainingParams } from '@/composables/useTrainingParams'
 import {
   adultCount, adultPreviewUrl, categoryEntries, categoryLabel,
   characterName, datasetPreviewUrl, formatBytes, formatDate, formatLoss,
@@ -619,11 +627,9 @@ import type {
   TrainingCharacter,
   TrainingDataset,
   TrainingJob,
-  TrainingJobConfig,
   TrainingJobId,
   TrainingJobStatus,
   TrainingKind,
-  TrainingParamOverrides,
   TrainingPlan,
 } from '@/types/training'
 
@@ -681,32 +687,9 @@ const loraSpecs = [
   { label: '损失权重', value: 'Min-SNR 5' },
 ]
 
-/* ── 可编辑训练参数（白名单字段，服务端校验后写入一次性配置副本）── */
-const loraParamFields = [
-  { key: 'epochs', label: '训练轮数', unit: 'epoch', step: 1, min: 1, max: 500 },
-  { key: 'batch_size', label: '批量大小', unit: '', step: 1, min: 1, max: 16 },
-  { key: 'gradient_accumulation_steps', label: '梯度累积', unit: '步', step: 1, min: 1, max: 8 },
-  { key: 'lora_rank', label: 'LoRA 秩', unit: '', step: 1, min: 4, max: 128 },
-  { key: 'lora_alpha', label: 'LoRA Alpha', unit: '', step: 1, min: 4, max: 128 },
-  { key: 'unet_learning_rate', label: 'UNet 学习率', unit: '', step: 1e-5, min: 1e-7, max: 1e-3 },
-  { key: 'text_encoder_learning_rate', label: '文本编码器学习率', unit: '', step: 1e-6, min: 1e-7, max: 1e-3 },
-  { key: 'text_encoder_stop_epoch', label: '文本编码器停训', unit: '轮', step: 1, min: 0, max: 500 },
-] as const
-
-interface ParamDraft {
-  loading: boolean
-  error: string
-  values: Record<string, number> | null
-  recommended: Record<string, number> | null
-}
-
-const paramDrafts = ref<Partial<Record<TrainingJobId, ParamDraft>>>({})
 const lossHistory = ref<Partial<Record<TrainingJobId, number[]>>>({})
 const stepSamples = ref<Partial<Record<TrainingJobId, Array<{ t: number; step: number }>>>>({})
 const selectedDataset = ref<Partial<Record<TrainingJobId, string>>>({})
-const onboardingDismissed = ref(
-  window.localStorage.getItem('aics_training_onboarded') === '1',
-)
 
 function datasetKey(id: TrainingJobId): string {
   return `aics_training_dataset_${id}`
@@ -727,109 +710,6 @@ function datasetOptionFor(job: TrainingJob): NonNullable<TrainingJob['datasetOpt
   const options = job.datasetOptions ?? []
   const id = selectedDatasetId(job)
   return options.find((option) => option.id === id) ?? options[0] ?? null
-}
-
-function paramsKey(id: TrainingJobId): string {
-  return `aics_training_params_${id}`
-}
-
-function draftFor(id: TrainingJobId): ParamDraft {
-  let draft = paramDrafts.value[id]
-  if (!draft) {
-    draft = { loading: false, error: '', values: null, recommended: null }
-    paramDrafts.value[id] = draft
-  }
-  return draft
-}
-
-async function ensureParams(id: TrainingJobId): Promise<void> {
-  const draft = draftFor(id)
-  if (draft.loading || draft.values) return
-  draft.loading = true
-  draft.error = ''
-  const config = await loadJobConfig(id)
-  if (!config?.available || !config.fields) {
-    draft.error = '无法读取训练配置，参数面板不可用。'
-    draft.loading = false
-    return
-  }
-  draft.recommended = { ...config.recommended }
-  try {
-    const saved = JSON.parse(window.localStorage.getItem(paramsKey(id)) ?? '') as unknown
-    if (saved && typeof saved === 'object' && !Array.isArray(saved)) {
-      draft.values = { ...config.recommended, ...saved as Record<string, number> }
-    } else {
-      draft.values = { ...config.recommended }
-    }
-  } catch {
-    draft.values = { ...config.recommended }
-  }
-  draft.loading = false
-}
-
-function paramValue(id: TrainingJobId, key: string): number | '' {
-  const draft = draftFor(id)
-  const value = draft.values?.[key] ?? draft.recommended?.[key]
-  return typeof value === 'number' ? value : ''
-}
-
-function setParam(id: TrainingJobId, key: string, raw: string): void {
-  const draft = draftFor(id)
-  if (!draft.values || !draft.recommended) return
-  if (raw === '') {
-    delete draft.values[key]
-    window.localStorage.setItem(paramsKey(id), JSON.stringify(draft.values))
-    return
-  }
-  const parsed = Number(raw)
-  if (!Number.isFinite(parsed)) return
-  const field = loraParamFields.find((item) => item.key === key)
-  if (field) {
-    // 越界不要静默拒收：输入框会弹回原值而用户不知道为什么。
-    // 直接钳制到边界并提示，下次进页面仍记得这个值。
-    if (parsed < field.min) {
-      draft.values[key] = field.min
-      window.localStorage.setItem(paramsKey(id), JSON.stringify(draft.values))
-      showToast(`${field.label} 不能低于 ${field.min}，已设为 ${field.min}`)
-      return
-    }
-    if (parsed > field.max) {
-      draft.values[key] = field.max
-      window.localStorage.setItem(paramsKey(id), JSON.stringify(draft.values))
-      showToast(`${field.label} 不能高于 ${field.max}，已设为 ${field.max}`)
-      return
-    }
-  }
-  draft.values[key] = parsed
-  window.localStorage.setItem(paramsKey(id), JSON.stringify(draft.values))
-}
-
-function resetParams(id: TrainingJobId): void {
-  const draft = draftFor(id)
-  if (!draft.recommended) return
-  draft.values = { ...draft.recommended }
-  window.localStorage.removeItem(paramsKey(id))
-}
-
-function overridesFor(id: TrainingJobId): TrainingParamOverrides {
-  const draft = draftFor(id)
-  const overrides: TrainingParamOverrides = {}
-  if (!draft.values || !draft.recommended) return overrides
-  for (const field of loraParamFields) {
-    const current = draft.values[field.key]
-    const recommended = draft.recommended[field.key]
-    if (typeof current === 'number' && current !== recommended) {
-      ;(overrides as Record<string, number>)[field.key] = current
-    }
-  }
-  return overrides
-}
-
-function formatLr(value: number | ''): string {
-  if (value === '') return '—'
-  if (value >= 1e-3) return String(value)
-  if (value >= 1e-5) return String(value).replace(/0+$/, '')
-  return value.toExponential(1).replace(/\.0/, '')
 }
 
 /* ── ETA：滑动平均步速外推剩余时间 ── */
@@ -901,13 +781,13 @@ function resetJobTelemetry(id: TrainingJobId): void {
   stepSamples.value[id] = []
 }
 
-function dismissOnboarding(): void {
-  onboardingDismissed.value = true
-  window.localStorage.setItem('aics_training_onboarded', '1')
-}
-
 const activeKind = ref<TrainingKind>(route.query.kind === 'voice' ? 'voice' : 'lora')
 const { show: showToast } = useToast()
+const {
+  loraParamFields, draftFor, ensureParams, paramValue,
+  setParam, resetParams, overridesFor, formatLr,
+} = useTrainingParams({ loadJobConfig, showToast })
+const { onboardingDismissed, dismissOnboarding } = useTrainingOnboarding()
 const logElement = ref<HTMLElement | null>(null)
 const mounted = ref(false)
 const stickToBottom = ref(true)
@@ -1480,12 +1360,37 @@ onUnmounted(() => {
   border-radius: var(--r-lg);
   background: color-mix(in srgb, var(--bg-deep) 72%, transparent);
 }
+.param-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  min-width: 0;
+  cursor: pointer;
+  list-style: none;
+}
+.param-summary::-webkit-details-marker { display: none; }
+.param-summary::after {
+  content: '›';
+  flex: 0 0 auto;
+  color: var(--text-muted);
+  font-size: var(--fs-title-xs);
+  transform: rotate(0deg);
+  transition: transform var(--t-fast) var(--ease-out), color var(--t-fast);
+}
+.param-panel[open] .param-summary::after { color: var(--accent); transform: rotate(90deg); }
+.param-summary .field-name { margin-bottom: 3px; }
+.param-summary strong { display: block; color: var(--text-primary); font-size: var(--fs-label-sm); }
+.param-summary-note { flex: 0 0 auto; color: var(--text-muted); font-size: var(--fs-mono-xs); }
+.param-content { margin-top: var(--s-3); }
 .param-head {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: var(--s-3);
   margin-bottom: var(--s-3);
+  color: var(--text-muted);
+  font-size: var(--fs-mono-xs);
 }
 .param-head h4 {
   margin: 0;
@@ -1809,5 +1714,7 @@ onUnmounted(() => {
   .voice-stats { grid-template-columns: 1fr; }
   .voice-pipeline ol { grid-template-columns: 1fr; }
   .console-tools label { display: none; }
+  .param-summary { align-items: flex-start; }
+  .param-summary-note { display: none; }
 }
 </style>

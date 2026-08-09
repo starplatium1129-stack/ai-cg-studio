@@ -95,6 +95,7 @@ import {
   OPENCODE_BASE_URL, OPENCODE_DEFAULT_MODEL,
   OPENCODE_GO_BASE_URL, OPENCODE_GO_DEFAULT_MODEL,
 } from '@/config/chatApi'
+import { chatApi } from '@/api/chatApi'
 
 type ApiVendor = 'cliproxy' | 'deepseek' | 'opencode' | 'opencode-go' | 'custom'
 interface ModelOption { value: string; label: string }
@@ -274,19 +275,11 @@ async function testConnection() {
   testState.value = 'testing'
   testMessage.value = '正在验证密钥并获取模型列表…'
   try {
-    const response = await fetch('/api/chat-provider/test', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+    const data = await chatApi.testProvider({
         baseUrl: props.baseUrl,
         model: props.model,
         apiKey: props.apiKey,
-      }),
     })
-    const data = await response.json()
-    if (!response.ok || !data.ok) {
-      throw new Error(data.detail ? `${data.error}：${data.detail}` : data.error || '连接测试失败')
-    }
     discoveredModels.value = Array.isArray(data.models)
       ? data.models.map(String).filter(Boolean)
       : []
@@ -296,7 +289,7 @@ async function testConnection() {
       : '连接成功；该服务没有返回模型列表。'
   } catch (error) {
     testState.value = 'error'
-    testMessage.value = (error as Error).message || '连接测试失败'
+    testMessage.value = error instanceof Error ? error.message : '连接测试失败'
   } finally {
     testing.value = false
   }

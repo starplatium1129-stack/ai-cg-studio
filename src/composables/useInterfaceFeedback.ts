@@ -1,8 +1,8 @@
 import { readonly, ref } from 'vue'
+import { settingsRepository, INTERFACE_SOUND_SETTING } from '../storage/settingsRepository.ts'
 
 export type InterfaceTone = 'tap' | 'confirm' | 'warning' | 'success'
 
-const SOUND_KEY = 'aics_interface_sound_v1'
 const soundEnabled = ref(false)
 let initialized = false
 let audioContext: AudioContext | null = null
@@ -10,7 +10,7 @@ let audioContext: AudioContext | null = null
 function initialize() {
   if (initialized || typeof window === 'undefined') return
   initialized = true
-  try { soundEnabled.value = localStorage.getItem(SOUND_KEY) === '1' } catch { /* private mode */ }
+  soundEnabled.value = settingsRepository.get(INTERFACE_SOUND_SETTING) ?? false
 }
 
 function context(): AudioContext | null {
@@ -49,7 +49,7 @@ export function useInterfaceFeedback() {
   initialize()
   function setSoundEnabled(value: boolean) {
     soundEnabled.value = value
-    try { localStorage.setItem(SOUND_KEY, value ? '1' : '0') } catch { /* private mode */ }
+    settingsRepository.set(INTERFACE_SOUND_SETTING, value)
     if (value) playInterfaceTone('success', true)
   }
   function toggleSound() { setSoundEnabled(!soundEnabled.value) }

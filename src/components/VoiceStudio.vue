@@ -62,6 +62,7 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useToast } from '@/composables/useToast'
+import { voiceApi } from '@/api/voiceApi'
 
 const props = defineProps<{
   /** 导演台角色切换时同步默认声线；用户仍可在本组件内手动改回来。 */
@@ -108,18 +109,13 @@ function errorMessage(error: unknown, fallback: string) {
 
 async function refreshVoiceStatus() {
   try {
-    const response = await fetch('/api/tts-status', { cache: 'no-store' })
-    if (!response.ok) throw new Error(`状态接口返回 ${response.status}`)
-    const data = await response.json() as { online?: boolean; voices?: Record<string, boolean> }
-    voiceOnline.value = Boolean(data.online)
-    voiceConfigured.value = Boolean(data.voices?.[voiceChar.value])
+    const data = await voiceApi.getStatus()
+    voiceOnline.value = data.online
+    voiceConfigured.value = Boolean(data.voices[voiceChar.value])
     if (voiceOnline.value && voiceConfigured.value) {
       voiceStatus.value = 'GPT-SoVITS 已连接；可翻译或生成角色声线。'
       // 预热是 best-effort：失败只让首次合成稍慢，真实错误会在生成时展示。
-      fetch('/api/voice/prepare', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ voice: voiceChar.value, translation: voiceLang.value === 'ja' }),
-      }).catch(() => {})
+      void voiceApi.prepare({ voice: voiceChar.value, translation: voiceLang.value === 'ja' }).catch(() => {})
     } else if (voiceOnline.value) {
       voiceStatus.value = '语音服务在线，但当前角色参考音频尚未配置。'
     } else {
@@ -143,12 +139,8 @@ async function translateVoice() {
   voiceBusy.value = true
   voiceStatus.value = '正在本机翻译成日语…'
   try {
-    const response = await fetch('/api/translate', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text }),
-    })
-    const data = await response.json().catch(() => ({})) as { error?: string; translation?: string }
-    if (!response.ok) throw new Error(data.error || '日语翻译失败')
-    const translation = String(data.translation || '').trim()
+    const data = await voiceApi.translate(text)
+    const translation = data.translation.trim()
     if (!translation) throw new Error('没有得到可用的日语译文')
     voiceScript.value = translation
     voiceStatus.value = '已生成日语配音稿；可直接生成角色语音，也可以先微调。'
@@ -181,10 +173,7 @@ async function generateVoice() {
     await refreshVoiceStatus()
     if (!voiceConfigured.value) throw new Error('当前角色还没配置参考音频，请到控制面板的「角色声线配置」填写。')
     // 同上：预热失败不阻断合成，/api/tts 会返回可读的真实失败原因。
-    await fetch('/api/voice/prepare', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ voice: voiceChar.value, translation: voiceLang.value === 'ja' }),
-    }).catch(() => {})
+    await voiceApi.prepare({ voice: voiceChar.value, translation: voiceLang.value === 'ja' }).catch(() => {})
     const response = await fetch('/api/tts', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

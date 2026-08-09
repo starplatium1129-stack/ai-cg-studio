@@ -105,7 +105,11 @@ function loadGatewayConfig(rootDir, env) {
   var assetsRoot = path.resolve(env.AICS_ASSETS_ROOT || path.join(appRoot, 'assets'));
   var toolsRoot = path.resolve(env.AICS_TOOLS_ROOT || path.join(appRoot, 'tools'));
   var runtime = runtimeTools.createRuntimePaths(appRoot, env.AICS_RUNTIME_ROOT);
-  runtimeTools.migrateLegacyRuntime(appRoot, runtime);
+  // Fixture stacks use an isolated runtime and must not move legacy files from
+  // the repository root. Production keeps the historical migration default.
+  if (env.AICS_DISABLE_LEGACY_RUNTIME_MIGRATION !== '1') {
+    runtimeTools.migrateLegacyRuntime(appRoot, runtime);
+  }
   var saved = readJson(runtime.config);
   var translatePort = boundedInteger(env.TRANSLATE_PORT, 5310, 1024, 65535);
   var workspaceRoot = path.resolve(env.AI_WORKSPACE_ROOT || path.join(appRoot, '..', 'AI'));

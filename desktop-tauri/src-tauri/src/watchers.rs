@@ -209,18 +209,19 @@ fn hash_string(value: &str) -> String {
 }
 
 /// 电源轮询：AC/电池变化时发 aics:power-mode（bool = 电池）。
+pub fn on_battery_power() -> bool {
+    unsafe {
+        let mut status = std::mem::zeroed::<windows_sys::Win32::System::Power::SYSTEM_POWER_STATUS>();
+        GetSystemPowerStatus(&mut status) != 0 && status.ACLineStatus == 0
+    }
+}
+
 pub fn start_power_watch(app: AppHandle) {
     thread::spawn(move || {
         let mut last_battery: Option<bool> = None;
         loop {
             thread::sleep(Duration::from_secs(5));
-            let on_battery = unsafe {
-                let mut status = std::mem::zeroed::<windows_sys::Win32::System::Power::SYSTEM_POWER_STATUS>();
-                if GetSystemPowerStatus(&mut status) == 0 {
-                    continue;
-                }
-                status.ACLineStatus == 0
-            };
+            let on_battery = on_battery_power();
             if last_battery != Some(on_battery) {
                 last_battery = Some(on_battery);
                 let _ = app.emit("aics:power-mode", on_battery);

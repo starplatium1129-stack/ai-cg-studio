@@ -254,6 +254,46 @@ test('narrow viewports keep the home hero inside the viewport', async ({ page })
   expect(errors).toEqual([]);
 });
 
+test('樱花与动效在触屏和减弱动效设备上收口', async ({ page }) => {
+  await page.addInitScript(() => {
+    const nativeMatchMedia = window.matchMedia.bind(window);
+    window.matchMedia = (query: string) => {
+      const media = nativeMatchMedia(query);
+      if (query === '(pointer: coarse)') {
+        Object.defineProperty(media, 'matches', { configurable: true, value: true });
+      }
+      return media;
+    };
+  });
+  await page.goto('/');
+
+  const sakura = page.locator('.sakura-fall span:visible');
+  const visibleSakuraCount = await sakura.count();
+  expect(visibleSakuraCount).toBeGreaterThan(0);
+  expect(visibleSakuraCount).toBeLessThanOrEqual(8);
+  const sakuraStyle = await sakura.first().evaluate((element) => {
+    const style = getComputedStyle(element);
+    return { filter: style.filter, boxShadow: style.boxShadow, willChange: style.willChange };
+  });
+  expect(sakuraStyle.filter).toBe('none');
+  expect(sakuraStyle.boxShadow).toBe('none');
+  expect(sakuraStyle.willChange).not.toBe('transform');
+
+  await page.goto('/prompt-builder');
+  await expect.poll(() => page.evaluate(() => matchMedia('(pointer: coarse)').matches)).toBe(true);
+  await page.mouse.move(100, 100);
+  const shift = await page.locator('.route-atmosphere').evaluate((element) => ({
+    x: getComputedStyle(element).getPropertyValue('--route-shift-x').trim(),
+    y: getComputedStyle(element).getPropertyValue('--route-shift-y').trim(),
+  }));
+  expect(shift).toEqual({ x: '0px', y: '0px' });
+
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await expect(page.locator('.route-loader')).not.toHaveClass(/active/);
+  await expect(page.locator('.route-cut')).not.toHaveClass(/active/);
+  await expect.poll(() => page.evaluate(() => document.documentElement.dataset.routeMotion || '')).toBe('');
+});
+
 test('training workbench keeps visual samples and keyboard tabs usable', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   await mockTrainingWorkbench(page);

@@ -14367,5 +14367,69 @@
     "prompt": "1girl, adult, ayachi_nene, nene_r18, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, nude, loose_knit_top, bare_shoulders, collarbone, side_boob, leaning_on_window, sunlight, afternoon, art_studio, intimate, eye_contact, sensual, bare_legs, <lora:ayachi_nene_v18_wd14:0.85>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform",
     "storyJa": "【寧々・大人のAfter Story・依頼私稿の専属モデル】あなたは個人のイラスト依頼を受けていた。クライアントは非常に細かい構図を指定してきた——テーマは「日常の親密な瞬間」。あなたは参考写真を見ながら丸一日描いていたが、どうしてもリアルな温かみが足りないと感じていた。寧々が温めたミルクを運んでアトリエに入ってきた。彼女はあなたの後ろに立ち、しばらくモニターのラフを見ていた。そして静かにカップを机の隅に置いた。何も言わずに、窓辺へ歩いていった。午後の日差しが横から彼女の体の輪郭を描き出し、彼女は振り返ってあなたを見た——「ポーズ参考なら……ここにいるよ。」彼女はゆったりとした淡い色のニットトップとショートパンツを着て、窓枠に寄りかかっていた。光が薄い布地を通して腰のラインと肩甲骨の形を浮かび上がらせていた。彼女は少し首を傾げ、紫色の瞳に細かな光をきらめかせた——「あなたの言う構図のままでいいよ。写真の人みたいに描かなくていい——あなたの目に映る私の姿を描いて。描き終わるまで……この姿勢を保つから。」"
+  },
+  {
+    "id": "sc300",
+    "title": "暖金咖啡馆的魔女休息日",
+    "category": "恋爱/After_Story",
+    "story": "【成年 After Story · 宁宁 · 暖金咖啡馆的魔女休息日】周末闭店后的咖啡馆只剩下拱窗外最后一束金色夕阳。宁宁没有换回日常服，而是穿着完整的官方魔女装坐在木质吧台前的高脚凳上，双手捧着刚冲好的热咖啡。黑粉披风与不对称腿袜被暖光勾出柔和边缘，她轻轻晃着靴尖，紫色眼睛隔着杯沿望向你。被问到为什么特意穿成这样时，她的呆毛立刻慌张地弯了一下——「才、才不是为了给你看哦。只是魔女偶尔也需要在喜欢的店里休息……如果你愿意坐过来，这杯可以分你一半。」",
+    "storyJa": "【寧々・大人のAfter Story・金色のカフェで過ごす魔女の休日】週末の閉店後、カフェにはアーチ窓から差し込む最後の金色の夕日だけが残っていた。寧々は普段着に戻らず、公式の魔女衣装をきちんと身にまとったまま、木のカウンター前のハイスツールに座り、淹れたてのコーヒーを両手で包んでいた。黒とピンクのケープや左右非対称のレッグウェアが柔らかな光に縁取られ、彼女はブーツのつま先を小さく揺らしながら、カップ越しに紫色の瞳を向けてくる。どうしてわざわざその服を選んだのか尋ねると、アホ毛が慌てたように曲がった——「べ、別にあなたに見せるためではありません。魔女だって、好きなお店で休みたい日があるんです……隣に座ってくれるなら、この一杯を半分だけ分けてあげます。」",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "lora": "ayachi_nene_v18_wd14",
+    "emotion": "暖光里的害羞邀请",
+    "season": "秋",
+    "time": "傍晚",
+    "timeOfDay": "sunset",
+    "tags": [
+      "adult",
+      "nene_witch_canonical",
+      "witch_hat",
+      "black_cape",
+      "criss_cross_halter",
+      "crop_top",
+      "pink_bow",
+      "asymmetrical_legwear",
+      "striped_thighhighs",
+      "frilled_socks",
+      "midriff",
+      "sitting_on_bar_stool",
+      "holding_cup",
+      "cafe",
+      "wooden_bar_counter",
+      "arched_window",
+      "golden_hour",
+      "warm_lighting",
+      "full_body",
+      "cinematic_composition",
+      "ahoge",
+      "hair_ribbon",
+      "wide_shot"
+    ],
+    "mature": true,
+    "rating": "R18",
+    "location": "闭店后的暖金咖啡馆",
+    "weather": "晴朗夕照",
+    "camera": "纵向全身三分之四视角",
+    "lighting": "拱窗夕阳与室内暖灯的柔和轮廓光",
+    "usage": [
+      "用户精选",
+      "Anima v20实机样张",
+      "成人向"
+    ],
+    "recommendedSize": "832×1216",
+    "prompt": "1girl, solo, adult, ayachi_nene, nene_r18, nene_witch_canonical, witch_hat, black_cape, criss_cross_halter, crop_top, strap_between_breasts, pink_bow, black_skirt, asymmetrical_legwear, striped_thighhighs, single_thighhigh, frilled_socks, midriff, white_hair, very_long_hair, low_twintails, purple_eyes, pink_hair_ribbons, ahoge, sitting_on_bar_stool, holding_one_coffee_cup, cafe, wooden_bar_counter, arched_window, golden_hour, warm_lighting, soft_rim_light, full_body, cinematic_composition, masterpiece, best_quality, score_7, <lora:ayachi_nene_v18_wd14:0.85>",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, multiple girls, extra person, split screen, comic, panel layout, generic witch dress, plain black dress, full length gown, simple witch costume, child, loli, underage, school_uniform, gym_uniform",
+    "audit": {
+      "reviewer": "user-selection-and-direct-vision",
+      "seed": 20260809,
+      "model": "anima-base-v1.0",
+      "lora": "L_NENE_V20_ANIMA",
+      "loraStrength": 0.85,
+      "image": "E:\\code\\2\\lora\\AI\\Reviews\\AnimaV20ProductionSmoke\\2026-08-09\\quality-space.png",
+      "result": "pass"
+    }
   }
 ]

@@ -13,8 +13,9 @@ test('desktop shell contracts and pure helpers', async () => {
   const mainSource = fs.readFileSync(path.join(root, 'desktop', 'main.ts'), 'utf8');
    const preloadSource = fs.readFileSync(path.join(root, 'desktop', 'preload.ts'), 'utf8');
   const companionSource = fs.readFileSync(path.join(root, 'src', 'views', 'CompanionView.vue'), 'utf8');
-  const companionCss = fs.readFileSync(path.join(root, 'src', 'assets', 'css', 'companion.css'), 'utf8');
-  const live2dSource = fs.readFileSync(path.join(root, 'src', 'composables', 'useLive2D.ts'), 'utf8');
+   const companionCss = fs.readFileSync(path.join(root, 'src', 'assets', 'css', 'companion.css'), 'utf8');
+   const live2dSource = fs.readFileSync(path.join(root, 'src', 'composables', 'useLive2D.ts'), 'utf8');
+   const live2dBrowserSource = fs.readFileSync(path.join(root, 'src', 'live2d', 'browserBackend.ts'), 'utf8');
   const serverSource = fs.readFileSync(path.join(root, 'server.js'), 'utf8');
   const packageJson = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
 
@@ -76,7 +77,7 @@ test('desktop shell contracts and pure helpers', async () => {
   assert.match(companionSource, /storage\.state\.settings\.live2dEnabled/);
   assert.match(companionSource, /setDesktopPerformanceMode/);
   assert.doesNotMatch(companionSource, /window\.location\.reload/);
-  assert.match(live2dSource, /ticker\.maxFPS = maxFps/);
+   assert.match(live2dSource + live2dBrowserSource, /ticker\.maxFPS = fps/);
   assert.match(live2dSource, /async function recover/);
   assert.match(live2dSource, /lifecycleToken/);
   assert.match(serverSource, /desktopProtocol:1/);

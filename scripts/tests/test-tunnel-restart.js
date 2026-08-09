@@ -20,21 +20,18 @@ var { EventEmitter } = require('node:events');
 
 function FakeChild() {
   EventEmitter.call(this);
-  this.pid = 99999;
+  // No real PID: cleanup must never signal an unrelated host process.
+  this.pid = null;
   this.unref = function () {};
 }
 FakeChild.prototype = Object.create(EventEmitter.prototype);
 FakeChild.prototype.constructor = FakeChild;
-var fakeProcess = new FakeChild();
-var spawned = 0;
-
 function fakeSpawn() {
-  spawned += 1;
-  return fakeProcess;
+  return new FakeChild();
 }
 
 function makeManager() {
-  spawned = 0;
+  var children = [];
   var dir = fs.mkdtempSync(path.join(os.tmpdir(), 'tunnel-test-'));
   var config = {
     DISABLE_TUNNEL: false,
@@ -48,70 +45,77 @@ function makeManager() {
   fs.writeFileSync(config.RUNTIME.tunnelLog, '');
   var manager = createTunnelManager({
     config: config,
-    spawn: fakeSpawn,
+    restartBaseMs:10,
+    restartMaxMs:20,
+    restartLimit:3,
+    pollIntervalMs:10,
+    spawn: function () {
+      var child = fakeSpawn();
+      children.push(child);
+      return child;
+    },
     onStateChange: function () {},
   });
-  return { manager: manager, dir: dir, config: config };
+  return { manager: manager, dir: dir, config: config, children: children };
+}
+
+function waitFor(predicate, timeoutMs) {
+  var deadline = Date.now() + (timeoutMs || 500);
+  return new Promise(function (resolve, reject) {
+    function check() {
+      if (predicate()) return resolve();
+      if (Date.now() >= deadline) return reject(new Error('condition timed out'));
+      setTimeout(check, 5);
+    }
+    check();
+  });
 }
 
 test('tunnel auto-restarts after cloudflared exits unexpectedly', function (t) {
-  t.after(function () { manager.stop(); fs.rmSync(dir, { recursive: true, force: true }); });
-  var { manager, dir } = makeManager();
+  var fixture = makeManager();
+  var manager = fixture.manager;
+  t.after(function () { manager.stop(); fs.rmSync(fixture.dir, { recursive: true, force: true }); });
   manager.start();
-  assert.strictEqual(spawned, 1, 'first spawn');
+  assert.strictEqual(fixture.children.length, 1, 'first spawn');
 
   // 触发进程退出（不清 stop 状态，模拟崩溃）
-  fakeProcess.emit('exit', 1);
-  assert.strictEqual(spawned, 1, 'no immediate respawn (scheduled, not synchronous)');
-
-  // 等第一次退避（5s）过去
-  return new Promise(function (resolve) {
-    setTimeout(function () {
-      assert.strictEqual(spawned, 2, 'auto respawned after backoff');
-      resolve();
-    }, 5600);
-  });
+  fixture.children[0].emit('exit', 1);
+  assert.strictEqual(fixture.children.length, 1, 'no immediate respawn (scheduled, not synchronous)');
+  return waitFor(function () { return fixture.children.length === 2; });
 });
 
 test('restart attempts reset after a registered connection', function (t) {
-  t.after(function () { manager.stop(); fs.rmSync(dir, { recursive: true, force: true }); });
-  var { manager, dir, config } = makeManager();
+  var fixture = makeManager();
+  var manager = fixture.manager;
+  var config = fixture.config;
+  t.after(function () { manager.stop(); fs.rmSync(fixture.dir, { recursive: true, force: true }); });
   manager.start();
   // 第一次崩溃 → 计划重连
-  fakeProcess.emit('exit', 1);
-  return new Promise(function (resolve) {
-    setTimeout(function () {
-      assert.strictEqual(spawned, 2, 'respawned once after failure');
-      resolve();
-    }, 5600);
-  }).then(function () {
+  fixture.children[0].emit('exit', 1);
+  return waitFor(function () { return fixture.children.length === 2; }).then(function () {
     // 注入日志让轮询以为连接成功 → 重连计数清零
     fs.writeFileSync(config.RUNTIME.tunnelLog,
       'https://abc-xyz.trycloudflare.com\nRegistered tunnel connection');
-    return new Promise(function (resolve) { setTimeout(resolve, 1200); });
+    return waitFor(function () { return manager.getUrl() === 'https://abc-xyz.trycloudflare.com'; });
   }).then(function () {
     // 第二次崩溃：计数已清零，仍应继续重连
-    fakeProcess.emit('exit', 0);
-    return new Promise(function (resolve) {
-      setTimeout(function () {
-        assert.strictEqual(spawned, 3, 'continues restarting after reset');
-        resolve();
-      }, 5600);
-    });
+    fixture.children[1].emit('exit', 0);
+    return waitFor(function () { return fixture.children.length === 3; });
   });
 });
 
 test('stop prevents further auto-restarts', function (t) {
-  var { manager, dir } = makeManager();
-  t.after(function () { manager.stop(); fs.rmSync(dir, { recursive: true, force: true }); });
+  var fixture = makeManager();
+  var manager = fixture.manager;
+  t.after(function () { manager.stop(); fs.rmSync(fixture.dir, { recursive: true, force: true }); });
   manager.start();
   manager.stop();
-  fakeProcess.emit('exit', 1);
-  var attemptsBefore = spawned;
+  var attemptsBefore = fixture.children.length;
+  fixture.children[0].emit('exit', 1);
   return new Promise(function (resolve) {
     setTimeout(function () {
-      assert.strictEqual(spawned, attemptsBefore, 'no respawn after manual stop');
+      assert.strictEqual(fixture.children.length, attemptsBefore, 'no respawn after manual stop');
       resolve();
-    }, 5600);
+    }, 50);
   });
 });

@@ -15,7 +15,7 @@ var fs = require('fs');
 var http = require('http');
 var os = require('os');
 var path = require('path');
-var createGateway = require(path.join(__dirname, '..', '..', 'server.js')).createGateway;
+var gatewayTestStack = require('./gateway-test-stack');
 var TrainingServiceError = require(path.join(
   __dirname,
   '..',
@@ -25,54 +25,6 @@ var TrainingServiceError = require(path.join(
 )).TrainingServiceError;
 
 var TOKEN = 'training-contract-token-0123456789abcdef';
-
-function createConfig(temporaryRoot) {
-  var repositoryRoot = path.join(__dirname, '..', '..');
-  var logsRoot = path.join(temporaryRoot, 'logs');
-  var stateRoot = path.join(temporaryRoot, 'state');
-  fs.mkdirSync(logsRoot, { recursive:true });
-  fs.mkdirSync(stateRoot, { recursive:true });
-
-  return {
-    ROOT_DIR:repositoryRoot,
-    AI_WORKSPACE_ROOT:path.resolve(repositoryRoot, '..', 'AI'),
-    RUNTIME_ROOT:temporaryRoot,
-    RUNTIME:{
-      root:temporaryRoot,
-      logs:logsRoot,
-      state:stateRoot,
-      config:path.join(stateRoot, 'config.json'),
-      tunnelLog:path.join(logsRoot, 'tunnel.log'),
-      tunnelPid:path.join(stateRoot, 'tunnel.pid'),
-      controlLog:path.join(logsRoot, 'control.log'),
-      gatewayLog:path.join(logsRoot, 'gateway.log')
-    },
-    PORT:3000,
-    HOST:'127.0.0.1',
-    TOKEN:TOKEN,
-    TOKEN_SOURCE:'test',
-    SD_HOST:'http://127.0.0.1:7860',
-    SD_API_AUTH:'',
-    TTS_HOST:'http://127.0.0.1:9880',
-    VOICE_PROFILES:{},
-    OLLAMA_HOST:'http://127.0.0.1:11434',
-    OLLAMA_MODEL:'',
-    OLLAMA_KEEP_ALIVE:'10m',
-    OLLAMA_NUM_PREDICT:300,
-    OLLAMA_NUM_CTX:4096,
-    TRANSLATION_PYTHON:'python',
-    TRANSLATION_SCRIPT:path.join(repositoryRoot, 'tools', 'translate-zh-ja.py'),
-    TRANSLATE_PORT:5310,
-    TRANSLATE_URL:'http://127.0.0.1:5310',
-    TRANSLATION_LOG:path.join(logsRoot, 'translation.log'),
-    LIVE2D_ROOT:path.join(repositoryRoot, 'assets', 'live2d'),
-    ASSETS_ROOT:path.join(repositoryRoot, 'assets'),
-    TOOLS_ROOT:path.join(repositoryRoot, 'tools'),
-    SCENE_SHOWCASE_DIR:'',
-    DISABLE_TUNNEL:true,
-    CLOUDFLARED_PATH:'cloudflared'
-  };
-}
 
 function job(id, status) {
   var character = id.indexOf('natsume') >= 0 ? 'natsume' : 'nene';
@@ -273,28 +225,7 @@ function createTrainingStub(previewFile) {
 }
 
 function createDependencies(training) {
-  return {
-    training:training,
-    ollama:{},
-    translation:{ close:function () {} },
-    tts:{},
-    live2d:{}
-  };
-}
-
-function listen(app) {
-  return new Promise(function (resolve, reject) {
-    var server = app.listen(0, '127.0.0.1');
-    server.once('error', reject);
-    server.once('listening', function () { resolve(server); });
-  });
-}
-
-function closeServer(server) {
-  return new Promise(function (resolve, reject) {
-    if (!server || !server.listening) return resolve();
-    server.close(function (error) { if (error) reject(error); else resolve(); });
-  });
+  return { training:training };
 }
 
 function request(port, options) {
@@ -365,15 +296,15 @@ async function main() {
   var previewFile = path.join(temporaryRoot, 'preview.jpg');
   fs.writeFileSync(previewFile, 'test-preview', 'utf8');
   var stub = createTrainingStub(previewFile);
-  var gateway = createGateway({
-    config:createConfig(temporaryRoot),
-    services:createDependencies(stub.service)
-  });
-  var server = null;
+  var stack = null;
 
   try {
-    server = await listen(gateway.app);
-    var port = server.address().port;
+    stack = await gatewayTestStack.start({
+      runtimeRoot:temporaryRoot,
+      services:createDependencies(stub.service),
+      token:TOKEN
+    });
+    var port = stack.address.port;
 
     var overview = await request(port, { path:'/api/training/overview' });
     assertSuccess(overview, 'training overview');
@@ -550,10 +481,9 @@ async function main() {
       'safe previews, start/stop, aliases, localOnly, error envelopes, and API 404'
     );
   } finally {
-    await closeServer(server);
-    gateway.close();
+    if (stack) await stack.close();
+    else safeRemoveTemporaryRoot(temporaryRoot);
     assert.strictEqual(stub.calls.close, 1, 'gateway close must close the training service');
-    safeRemoveTemporaryRoot(temporaryRoot);
   }
 }
 

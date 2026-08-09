@@ -8,9 +8,19 @@ export interface PromptPart {
   [key: string]: unknown
 }
 
+export type PromptEngine = 'sd' | 'anima'
+
 export interface ModelProfile {
   id?: string
   name?: string
+  engine?: PromptEngine
+  model_id?: string
+  tag_style?: 'underscore' | 'space'
+  lora_in_prompt?: boolean
+  lora_id?: string
+  lora_name?: string
+  lora_strength?: number
+  exact_tokens?: string[]
   match?: string[]
   quality_prefix?: string
   negative_prefix?: string
@@ -98,6 +108,55 @@ export function norm(text: string): string {
     .join(', ')
 }
 
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
+function formatAnimaToken(token: string, exactTokens: readonly string[] = []): string {
+  const scores: string[] = []
+  const exact: string[] = []
+  let protectedToken = token.replace(/\bscore_(\d+)\b/gi, (_match, value: string) => {
+    const marker = `ZZAICSSCORE${scores.length}ZZ`
+    scores.push(`score_${value}`)
+    return marker
+  })
+  ;[...new Set(exactTokens)]
+    .filter(value => value.trim())
+    .sort((a, b) => b.length - a.length)
+    .forEach(value => {
+      const marker = `ZZAICSEXACT${exact.length}ZZ`
+      const pattern = new RegExp(`(^|[^A-Za-z0-9_])(${escapeRegExp(value)})(?=$|[^A-Za-z0-9_])`, 'g')
+      protectedToken = protectedToken.replace(pattern, `$1${marker}`)
+      exact.push(value)
+    })
+  let formatted = protectedToken.replace(/_/g, ' ').replace(/\s+/g, ' ').trim()
+  scores.slice().reverse().forEach((score, reverseIndex) => {
+    const index = scores.length - reverseIndex - 1
+    formatted = formatted.replace(`ZZAICSSCORE${index}ZZ`, score)
+  })
+  exact.slice().reverse().forEach((value, reverseIndex) => {
+    const index = exact.length - reverseIndex - 1
+    formatted = formatted.replace(`ZZAICSEXACT${index}ZZ`, value)
+  })
+  return formatted
+}
+
+/** Format one prompt for the model family without changing the SD contract. */
+export function formatPromptForEngine(text: string, engine: PromptEngine = 'sd', exactTokens: readonly string[] = []): string {
+  const raw = String(text || '')
+  if (engine === 'sd') return norm(raw)
+  const clean = raw.replace(/<lora:[^>]+>/gi, '')
+  return splitBreaks(dedupeText(clean))
+    .map(section => tokenize(section).map(token => formatAnimaToken(token, exactTokens)).filter(Boolean).join(', '))
+    .filter(Boolean)
+    .join(' BREAK ')
+}
+
+export function formatPromptForProfile(text: string, profile: ModelProfile | null, fallbackEngine: PromptEngine = 'sd'): string {
+  const engine = profile?.engine || (profile?.tag_style === 'space' ? 'anima' : fallbackEngine)
+  return formatPromptForEngine(text, engine, profile?.exact_tokens || [])
+}
+
 export function normalizeKey(token: string): string {
   return String(token || '')
     .replace(/^\s*\[NEG\]\s*/i, '')
@@ -178,20 +237,27 @@ function normalizeModelName(name: string): string {
 }
 
 /** 按当前 checkpoint 名匹配 model_profiles；匹配不到时回退首个 profile（本站 LoRA 基于 WAI/Illustrious） */
-export function resolveModelProfile(profiles: ModelProfile[], modelName?: string): ModelProfile | null {
-  const list = Array.isArray(profiles) ? profiles : []
+export function resolveModelProfile(
+  profiles: ModelProfile[],
+  modelName?: string,
+  engine: PromptEngine = 'sd',
+): ModelProfile | null {
+  const all = Array.isArray(profiles) ? profiles : []
+  const list = all.filter(profile => engine === 'sd'
+    ? !profile.engine || profile.engine === 'sd'
+    : profile.engine === engine)
   if (!list.length) return null
   const target = normalizeModelName(modelName || '')
   if (target) {
     const hit = list.find(p =>
-      (p.match || []).some(m => {
+      [p.model_id, ...(p.match || [])].some(m => {
         const key = normalizeModelName(String(m))
         return key && (target.includes(key) || key.includes(target))
       }),
     )
     if (hit) return hit
   }
-  return list[0]
+  return engine === 'anima' ? null : list[0]
 }
 
 export function sceneRating(scene: unknown): 'R18' | 'R15' | 'ALL' {
@@ -343,22 +409,22 @@ function profileRatingTag(profile: ModelProfile | null, scene: unknown): string 
 }
 
 /** 质量前缀：模型 profile 优先，并按分级追加 rating 标签 */
-export function qualityPrefix(profile: ModelProfile | null, scene?: unknown): string {
-  const prefix = profile?.quality_prefix || 'masterpiece, best quality, very aesthetic, absurdres'
+export function qualityPrefix(profile: ModelProfile | null, scene?: unknown, engine: PromptEngine = 'sd'): string {
+  const prefix = profile ? String(profile.quality_prefix ?? '') : 'masterpiece, best quality, very aesthetic, absurdres'
   const rating = profileRatingTag(profile, scene)
-  return norm(rating ? mergeTokenText(prefix, rating) : prefix)
+  return formatPromptForEngine(rating ? mergeTokenText(prefix, rating) : prefix, engine, profile?.exact_tokens || [])
 }
 
 /** 负面前缀：按 profile 的 merge/replace 策略与场景负面合并 */
-export function modelNegativePrompt(profile: ModelProfile | null, baseNegative: string): string {
+export function modelNegativePrompt(profile: ModelProfile | null, baseNegative: string, engine: PromptEngine = 'sd'): string {
   const prefix = profile?.negative_prefix || ''
-  if (!prefix) return baseNegative || ''
-  return mergeNegativePrompt(
+  const merged = prefix ? mergeNegativePrompt(
     prefix,
     baseNegative || '',
     (profile?.negative_mode as 'merge' | 'replace') || 'merge',
     (profile?.negative_replace_scope as 'boilerplate' | 'all') || 'boilerplate',
-  )
+  ) : (baseNegative || '')
+  return engine === 'anima' ? formatPromptForEngine(merged, engine, profile?.exact_tokens || []) : merged
 }
 
 export function adaptNegative(
@@ -503,7 +569,7 @@ export function sceneSupportsCharacter(scene: PromptScene | null | undefined, ch
  */
 export function sceneTemplateText(
   scene: PromptScene | null | undefined,
-  opts: { char?: string; manualTags?: Set<string>; shot?: string | null } = {},
+  opts: { char?: string; manualTags?: Set<string>; shot?: string | null; engine?: PromptEngine; profile?: ModelProfile | null } = {},
 ): string {
   if (!scene?.prompt) return ''
   let template = String(scene.prompt)
@@ -524,7 +590,7 @@ export function sceneTemplateText(
     // The character line supplies the canonical identity; scenes remain solo regardless of old interaction tags.
     template = sanitizeNatsumeSoloTemplate(template)
   }
-  return filterFraming(norm(template), opts.shot)
+  return filterFraming(formatPromptForProfile(template, opts.profile || null, opts.engine || 'sd'), opts.shot)
 }
 
 // ── LoRA 权重策略 ─────────────────────────────────────────────────────────

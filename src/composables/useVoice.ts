@@ -1,7 +1,9 @@
 import { ref } from 'vue'
 import {
-  SentenceBuffer, extractSpokenDialogue, inferEmotion, isAbortError, responseError,
+  SentenceBuffer, extractSpokenDialogue, inferEmotion, isAbortError,
 } from '@/utils/stream'
+import { voiceApi } from '@/api/voiceApi'
+import { ApiClientError } from '@/api/client'
 
 export interface VoiceAvailability {
   online: boolean
@@ -36,10 +38,6 @@ interface QueuedClip extends SynthesizedClip {
   session: number
   /** 流式播放失败时的剩余重试次数（服务端句级缓存使重试不再重复烧 GPU） */
   retryLeft?: number
-}
-
-interface TranslationResponse {
-  translation?: string
 }
 
 interface AudioWithSource extends HTMLAudioElement {
@@ -81,11 +79,6 @@ function readVoiceAvailability(value: unknown): VoiceAvailability {
     activeVoice: typeof value.activeVoice === 'string' ? value.activeVoice : undefined,
     error: typeof value.error === 'string' ? value.error : undefined,
   }
-}
-
-function readTranslation(value: unknown): TranslationResponse {
-  if (!isRecord(value)) return {}
-  return { translation: typeof value.translation === 'string' ? value.translation : undefined }
 }
 
 function removeAudioSource(audio: AudioWithSource) {
@@ -133,9 +126,7 @@ export function useVoice(options: {
 
   async function refreshAvailability() {
     try {
-      const r = await fetch('/api/tts-status', { cache: 'no-store' })
-      if (!r.ok) throw new Error('语音状态接口不可用')
-      availability.value = readVoiceAvailability(await r.json())
+      availability.value = readVoiceAvailability(await voiceApi.getStatus())
     } catch (e) { availability.value = { online: false, voices: {}, error: errorMessage(e) } }
     return availability.value
   }
@@ -152,11 +143,7 @@ export function useVoice(options: {
     if (preparing && prepareKey === key) return preparing
     prepareKey = key
     onStatus(needsTranslation ? '正在预热声线与翻译…' : '正在预热角色声线…')
-    preparing = fetch('/api/voice/prepare', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ voice, translation: needsTranslation }),
-    }).then(async (r) => {
-      if (!r.ok) throw await responseError(r, '声线预热失败')
+    preparing = voiceApi.prepare({ voice, translation: needsTranslation }).then(() => {
       if (prepareKey !== key) return false
       availability.value.activeVoice = voice
       if (needsTranslation) availability.value.translation = { ...(availability.value.translation ?? {}), ready: true }
@@ -255,10 +242,12 @@ export function useVoice(options: {
     if (!meta.referenceEmotion) meta.referenceEmotion = rawEmotion
     let translated = '', translationFailed = false
     try {
-      const tr = await fetch('/api/translate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: cleaned }), signal })
-      if (tr.ok) { const d = readTranslation(await tr.json()); translated = String(d.translation || '').replace(/\n+/g, '。').trim() }
-      else translationFailed = true
-    } catch (e) { if (isAbortError(e)) throw e; translationFailed = true }
+      const result = await voiceApi.translate(cleaned, { signal })
+      translated = result.translation.replace(/\n+/g, '。').trim()
+    } catch (e) {
+      if (isAbortError(e) || (e instanceof ApiClientError && e.kind === 'aborted')) throw e
+      translationFailed = true
+    }
     if (translationFailed && !_warnedTranslation) { _warnedTranslation = true; onError('日文翻译不可用，本次改用中文发音。') }
     const emotionChanged = Boolean(firstReference && emotion !== firstReference)
     return {

@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <article class="page character-page" style="--page-max:1100px">
     <ArchivePageHero
       chapter="03"
@@ -31,6 +31,12 @@
     >
       <button class="btn btn-primary" type="button" @click="loadProfiles">重新读取</button>
     </ArchiveStatePanel>
+    <ArchiveStatePanel
+      v-else-if="!characters.length"
+      kind="empty"
+      title="角色档案目前为空"
+      message="本地角色资料已读取，但还没有可浏览的角色记录。"
+    />
     <template v-else>
       <!-- tablist 模式补全：aria-controls + roving tabindex + 方向键。
            原先只有 role/aria-selected，读屏会承诺方向键切换但按了没反应。 -->

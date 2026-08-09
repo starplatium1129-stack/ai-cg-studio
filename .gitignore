@@ -54,11 +54,13 @@ skills-lock.json
 # 涓存椂 UI 鎴浘锛圙emini 瑙嗚澶嶆牳鐢紝涓嶅叆搴擄級
 scripts/maintenance/ui-shots/
 
-# Tauri 桌面壳构建产物
+# Tauri generated artifacts
 desktop-tauri/src-tauri/target/
 desktop-tauri/src-tauri/resources/
 desktop-tauri/src-tauri/binaries/
 desktop-tauri/src-tauri/gen/
 desktop-tauri/web/
+desktop-tauri/native-live2d/target/
+desktop-tauri/native-live2d/*.png
 poc/**/target/
 poc/**/*.png

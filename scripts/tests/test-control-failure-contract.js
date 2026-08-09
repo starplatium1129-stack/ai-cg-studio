@@ -9,9 +9,9 @@ var http = require('http');
 var os = require('os');
 var path = require('path');
 var createControlRouter = require('../../routes/control').createControlRouter;
-var createGateway = require('../../server').createGateway;
 var createTtsService = require('../../services/tts-service').createTtsService;
 var runtimePaths = require('../runtime/runtime-paths');
+var gatewayTestStack = require('./gateway-test-stack');
 
 var projectRoot = path.resolve(__dirname, '..', '..');
 
@@ -67,6 +67,8 @@ function baseConfig(rootDir, runtime) {
     HOST:'127.0.0.1',
     TOKEN:'control-contract-token',
     SD_HOST:'http://127.0.0.1:7860',
+    COMFY_HOST:'http://127.0.0.1:8188',
+    SD_API_AUTH:'',
     TTS_HOST:'http://127.0.0.1:9880',
     OLLAMA_HOST:'http://127.0.0.1:11434',
     OLLAMA_MODEL:'',
@@ -75,7 +77,10 @@ function baseConfig(rootDir, runtime) {
     OLLAMA_NUM_CTX:4096,
     TRANSLATE_PORT:5310,
     TRANSLATE_URL:'http://127.0.0.1:5310',
+    TRANSLATION_PYTHON:path.join(runtime.root, 'fixture-python.exe'),
+    TRANSLATION_SCRIPT:path.join(runtime.root, 'fixture-translate.py'),
     TRANSLATION_LOG:path.join(runtime.logs, 'translate.log'),
+    SELF_HEALING_INTERVAL_MS:50,
     LIVE2D_ROOT:path.join(rootDir, 'assets', 'live2d'),
     ASSETS_ROOT:path.join(rootDir, 'assets'),
     TOOLS_ROOT:path.join(rootDir, 'tools'),
@@ -104,6 +109,8 @@ test('control-failure-contract: timeout, config rollback, voice weights, tunnel 
   var temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-control-failure-'));
   var controlRuntime = runtimePaths.createRuntimePaths(path.join(temporaryRoot, 'control'));
   var controlConfig = baseConfig(projectRoot, controlRuntime);
+  var controlProbeServer = http.createServer(function (req, res) { res.end('ok'); });
+  controlConfig.TTS_HOST = await listen(controlProbeServer);
   var failConfigWrite = false;
   var controlRouter = createControlRouter(controlConfig, function () {
     return { tunnelUrl:'', startTunnel:function () {}, stopTunnel:function () {} };
@@ -123,6 +130,8 @@ test('control-failure-contract: timeout, config rollback, voice weights, tunnel 
   controlApp.use(controlRouter);
   var controlServer = http.createServer(controlApp);
   var controlBase = await listen(controlServer);
+  var weightMock = null;
+  var tunnelStack = null;
 
   try {
     var startedVoice = await postJson(controlBase, '/api/service/voice', { action:'start' });
@@ -141,13 +150,11 @@ test('control-failure-contract: timeout, config rollback, voice weights, tunnel 
       'config write failure must return the standard error envelope');
     assert.strictEqual(controlConfig.SD_HOST, previousSdHost,
       'a failed config write must not leave the in-memory SD host partially updated');
-  } finally {
+    if (controlRouter.close) controlRouter.close();
     await close(controlServer);
-  }
 
-  var weightMock = createWeightMock();
-  var weightBase = await listen(weightMock.server);
-  try {
+    weightMock = createWeightMock();
+    var weightBase = await listen(weightMock.server);
     var tts = createTtsService({
       host:weightBase,
       profiles:{
@@ -169,45 +176,63 @@ test('control-failure-contract: timeout, config rollback, voice weights, tunnel 
     });
     assert.strictEqual(sovitsRequests.length, 2,
       'retrying a partial weight switch must reapply the SoVITS weight instead of trusting stale cache state');
-  } finally {
     await close(weightMock.server);
-  }
+    weightMock = null;
 
-  var tunnelRuntime = runtimePaths.createRuntimePaths(path.join(temporaryRoot, 'tunnel'));
-  var tunnelConfig = baseConfig(path.join(temporaryRoot, 'gateway-root'), tunnelRuntime);
-  tunnelConfig.DISABLE_TUNNEL = false;
-  tunnelConfig.CLOUDFLARED_PATH = path.join(temporaryRoot, 'cloudflared-test.exe');
-  fs.writeFileSync(tunnelConfig.CLOUDFLARED_PATH, '', 'utf8');
-  var tunnelChild = new events.EventEmitter();
-  tunnelChild.unref = function () {};
-  var gateway = createGateway({ config:tunnelConfig, spawn:function () { return tunnelChild; } });
-  var gatewayServer = http.createServer(gateway.app);
-  var gatewayBase = await listen(gatewayServer);
-  tunnelConfig.PORT = Number(new URL(gatewayBase).port);
-  try {
-    gateway.startTunnel();
-    fs.writeFileSync(tunnelRuntime.tunnelLog,
+    var tunnelChild = new events.EventEmitter();
+    tunnelChild.unref = function () {};
+    tunnelStack = await gatewayTestStack.start({
+      runtimeRoot:path.join(temporaryRoot, 'tunnel'),
+      spawn:function () { return tunnelChild; },
+      configureConfig:function (config) {
+        config.DISABLE_TUNNEL = false;
+        config.CLOUDFLARED_PATH = path.join(temporaryRoot, 'cloudflared-test.exe');
+        fs.writeFileSync(config.CLOUDFLARED_PATH, '', 'utf8');
+      }
+    });
+    tunnelStack.gateway.startTunnel();
+    fs.writeFileSync(tunnelStack.runtime.tunnelLog,
       'https://stable-test.trycloudflare.com\nRegistered tunnel connection\n', 'utf8');
     var readyTunnel = await waitFor(async function () {
-      var status = await getJson(gatewayBase, '/api/status');
+      var status = await getJson(tunnelStack.baseUrl, '/api/status');
       return status.json.tunnelStatus === 'active' ? 'active' : '';
     }, 'tunnel ready status');
     assert.strictEqual(readyTunnel, 'active');
 
     tunnelChild.emit('exit', 1);
     var stoppedTunnel = await waitFor(async function () {
-      var status = await getJson(gatewayBase, '/api/status');
+      var status = await getJson(tunnelStack.baseUrl, '/api/status');
       return status.json.tunnelStatus === 'waiting' ? 'cleared' : '';
     }, 'tunnel exit status cleanup');
     assert(stoppedTunnel, 'tunnel exit must remove the stale public URL from the real status route');
   } finally {
-    gateway.close();
-    await close(gatewayServer);
+    if (controlRouter.close) controlRouter.close();
+    await close(controlServer);
+    if (weightMock) await close(weightMock.server);
+    if (tunnelStack) await tunnelStack.close();
+    await close(controlProbeServer);
     fs.rmSync(temporaryRoot, { recursive:true, force:true });
   }
 
   console.log('Control failure contracts passed: timeout, config rollback, voice weights, tunnel exit');
 });
 
+test('gateway test stack preserves caller-owned runtime roots by default', async () => {
+  var temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-gateway-owned-root-'));
+  var runtimeRoot = path.join(temporaryRoot, 'runtime');
+  fs.mkdirSync(runtimeRoot, { recursive:true });
+  var marker = path.join(runtimeRoot, 'caller-owned.txt');
+  fs.writeFileSync(marker, 'keep\n', 'utf8');
+  var stack = null;
+  try {
+    stack = await gatewayTestStack.start({ runtimeRoot:runtimeRoot });
+    await stack.close();
+    stack = null;
+    assert.strictEqual(fs.readFileSync(marker, 'utf8'), 'keep\n');
+  } finally {
+    if (stack) await stack.close();
+    fs.rmSync(temporaryRoot, { recursive:true, force:true });
+  }
+});
+
 // 自愈看门狗单测随控制面失败契约一起跑（validate 已串接本文件）。
-require('./test-service-watchdog');

@@ -10,15 +10,6 @@
     "outDir": "services",
     "types": ["node"]
   },
-  "files": [
-    "services/control-operation.ts",
-    "services/service-watchdog.ts",
-    "services/serial-queue.ts",
-    "services/http-client.ts",
-    "services/tts-service.ts",
-    "services/ollama-service.ts",
-    "services/translation-service.ts",
-    "services/live2d-service.ts",
-    "services/training-service.ts"
-  ]
+  "include": ["services/**/*.ts"],
+  "exclude": ["services/**/*.js", "services/**/*.d.ts"]
 }
