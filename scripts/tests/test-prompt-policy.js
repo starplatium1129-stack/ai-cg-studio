@@ -269,4 +269,20 @@ const migratedLora = policy.resolveLoraSpecs(
 );
 assert.strictEqual(migratedLora[0].name, 'ayachi_nene_v18_wd14', 'legacy scene LoRA ids must resolve to the promoted model');
 
+// 单人引擎（Anima/Krea）场景净化：互动词与男性视角词必须被过滤，单人元素保留。
+const dirty = '(male arms embracing her from behind:1.55), one hand pulling the curtain closed, back_hug, holding_hands, kiss, cohabitation, 1girl, solo, ayachi_nene, night, window_light, silhouette, sleepwear';
+const solo = policy.sanitizeSoloTemplate(dirty);
+['male arms', 'back_hug', 'holding_hands', 'kiss', 'cohabitation', '1boy'].forEach(word => {
+  assert(!policy.tokenize(solo).some(t => t.includes(word.replace(/_/g, ' ')) || t.includes(word)), 'solo engine must drop ' + word);
+});
+assert(!/\([^)]*\)/.test(solo), 'solo engine must strip weighted-parenthesis interaction phrases');
+['1girl', 'solo', 'ayachi_nene', 'night', 'window_light', 'sleepwear'].forEach(word => {
+  assert(policy.tokenize(solo).some(t => t.includes(word)), 'solo engine must keep ' + word);
+});
+// SD 引擎不受影响：sceneTemplateText 在 sd 下保留互动词（WebUI 支持双人）。
+const sdScene = policy.sceneTemplateText({ prompt: dirty }, { char: 'nene', engine: 'sd' });
+assert(sdScene.includes('back_hug') || sdScene.includes('back hug'), 'SD engine must keep dual-interaction scene words');
+const animaScene = policy.sceneTemplateText({ prompt: dirty }, { char: 'nene', engine: 'anima' });
+assert(!animaScene.includes('back hug') && !animaScene.includes('male arms'), 'Anima engine must sanitize dual-interaction words');
+
 });

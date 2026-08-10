@@ -557,6 +557,35 @@ function sanitizeNatsumeSoloTemplate(template: string): string {
     .join(' BREAK ')
 }
 
+/** 双人互动词：只在有可见伴侣的场景成立，单人引擎（Anima/Krea）下必须过滤。 */
+const DUAL_INTERACTION_TOKENS = new Set([
+  'holding_hands', 'holding_arm', 'interlocked_fingers', 'kissing', 'kiss', 'neck_kiss',
+  'leaning_on_shoulder', 'lying_on_chest', 'sitting_on_lap', 'straddling',
+  'straddling_viewer', 'trapping_viewer', 'trapped_by_viewer', 'clinging_to_viewer',
+  'caught_by_viewer', 'close_face_to_face_distance', 'tense_close_contact',
+  'back_hug', 'embracing', 'embrace', 'cohabitation', 'hand_holding', 'hug', 'hugging',
+  'cuddle', 'cuddling', 'spooning', 'couple', 'dating', 'two_tone_body',
+])
+
+/**
+ * 单人引擎（Anima/Krea 无 LoRA 或单人 LoRA）下的场景净化：
+ * 过滤需要可见伴侣的互动词与男性视角词，避免单人出图被"身后手臂/拥抱"
+ * 之类的双人构图破坏。SD 引擎保留原样（WebUI 有完整双人支持）。
+ */
+export function sanitizeSoloTemplate(template: string): string {
+  return splitBreaks(template).map(section => tokenize(section)
+    .filter(token => {
+      const key = normalizeKey(token)
+      if (DUAL_INTERACTION_TOKENS.has(key)) return false
+      // 权重括号内的互动短语（如 (male arms embracing her from behind:1.55)）
+      if (/(?:male|man|boy|viewer|his|her partner|partner)/i.test(key)) return false
+      return !/^(?:1boy|1man|2girls|1boy1girl)$/i.test(key)
+    })
+    .join(', '))
+    .filter(Boolean)
+    .join(' BREAK ')
+}
+
 /** 场景是否支持该角色（避免把宁宁场景套到夏目身上） */
 export function sceneSupportsCharacter(scene: PromptScene | null | undefined, char: string): boolean {
   if (!scene) return false
@@ -595,6 +624,10 @@ export function sceneTemplateText(
   } else if (opts.char === 'natsume') {
     // The character line supplies the canonical identity; scenes remain solo regardless of old interaction tags.
     template = sanitizeNatsumeSoloTemplate(template)
+  }
+  // Anima / Krea 单人引擎：过滤双人互动词与男性视角词（SD 保留完整双人支持）。
+  if (opts.engine === 'anima' || opts.engine === 'krea2') {
+    template = sanitizeSoloTemplate(template)
   }
   return filterFraming(formatPromptForProfile(template, opts.profile || null, opts.engine || 'sd'), opts.shot)
 }
