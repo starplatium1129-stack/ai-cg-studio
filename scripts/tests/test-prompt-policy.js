@@ -147,16 +147,21 @@ assert.strictEqual(
 const presetProfiles = require('../../data/presets.json').model_profiles;
 const animaBase = presetProfiles.find(profile => profile.id === 'anima_base_v10');
 const animaAesthetic = presetProfiles.find(profile => profile.id === 'anima_aesthetic_v11');
+const neneContract = require('../../data/loras.json').find(lora => lora.id === 'L_NENE_V20_ANIMA').prompt_contract;
 assert(animaBase && animaAesthetic, 'Anima Base and Aesthetic profiles must be present in the production catalog');
+for (const profile of [animaBase, animaAesthetic]) {
+  assert.deepStrictEqual(profile.exact_tokens, ['best_quality'], 'model profiles keep only family-level exact tokens');
+}
 const exactV19 = policy.formatPromptForProfile(
   'ayachi_nene, nene_r18, nene_witch_canonical, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, warm_lighting',
-  animaBase,
+  Object.assign({}, animaBase, neneContract),
 );
 ['ayachi_nene', 'nene_r18', 'nene_witch_canonical', 'nene_school_uniform', 'white_hair', 'very_long_hair', 'low_twintails', 'purple_eyes'].forEach(token => {
   assert(exactV19.includes(token), 'v19 exact control token must not be rewritten: ' + token);
 });
 assert(exactV19.includes('warm lighting'), 'ordinary scene and lighting tags should still use spaces');
 assert.strictEqual(policy.resolveModelProfile(presetProfiles, 'anima-yume-v1.0', 'anima'), null, 'unknown Anima models must not fall back to Base');
+assert.strictEqual(policy.resolveModelProfile(presetProfiles, 'unknown-krea-model', 'krea2'), null, 'unknown Krea models must fail closed');
 assert(policy.qualityPrefix(animaBase, { rating:'ALL' }, 'anima').includes('score_7'), 'Anima Base must retain its score quality prefix');
 assert(policy.qualityPrefix(animaBase, { rating:'ALL' }, 'anima').includes('best_quality'), 'v19 Base must preserve the GPU-verified best_quality token');
 assert.strictEqual(policy.qualityPrefix(animaAesthetic, { rating:'ALL' }, 'anima'), 'safe', 'Anima Aesthetic must add only its rating tag when the quality prefix is intentionally empty');

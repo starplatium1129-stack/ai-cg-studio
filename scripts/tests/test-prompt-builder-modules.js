@@ -149,7 +149,7 @@ for (const [marker, message] of promptPipeline) {
 if (!view.includes('usePromptAssembly')) {
   fail('PromptBuilderView must consume the dedicated prompt assembly composable');
 }
-for (const marker of ['DrawEngine', 'historyGenerationFields', 'animaModelId', "engine: 'anima'"]) {
+for (const marker of ['DrawEngine', 'historyGenerationFields', 'animaModelId', 'engine: meta.engine']) {
   if (!view.includes(marker)) fail('director must wire engine-specific generation metadata: ' + marker);
 }
 for (const marker of ['buildAnimaRequest', 'metadataFromJob', 'onAnimaResult', 'cancelAnimaJob', '@submit="callGenerate()"']) {

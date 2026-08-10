@@ -114,3 +114,45 @@ test('anima derives the authorized preview from Natsume and blocks triad', async
   await expect(page.locator('.engine-switch button').nth(1)).toBeDisabled()
   expect(bodies).toHaveLength(1)
 })
+
+test('Krea 2 is a separate natural-language request with no LoRA or negative field', async ({ page, request }) => {
+  test.setTimeout(240000)
+  const bodies: Array<Record<string, unknown>> = []
+  await page.route('**/api/creative/status', async route => {
+    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({
+      ok: true,
+      online: true,
+      models: [{ id: 'krea2-turbo-fp8', label: 'Krea 2 Turbo', family: 'krea2', profileId: 'krea2_turbo_fp8', available: true, defaults: { steps: 8, cfg: 1, sampler: 'euler', scheduler: 'simple' } }],
+      loras: [],
+    }) })
+  })
+  page.on('request', browserRequest => {
+    if (browserRequest.method() === 'POST' && new URL(browserRequest.url()).pathname === '/api/creative/jobs') {
+      bodies.push(browserRequest.postDataJSON() as Record<string, unknown>)
+    }
+  })
+  const mockGateway = `http://127.0.0.1:${MOCK_PORTS.gateway}`
+  const mockComfy = `http://127.0.0.1:${MOCK_PORTS.translate + 1}`
+  await request.post(`${mockComfy}/__mock/reset`)
+  await request.post(`${mockComfy}/__mock/fault`, { data: { renderMs: 10 } })
+  await page.goto(`${mockGateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
+  await page.waitForTimeout(1800)
+  await page.locator('.engine-switch button').nth(2).click()
+  await expect(page.locator('.engine-switch button').nth(2)).toHaveClass(/active/)
+  await page.locator('#visualDescription').fill('A girl stands beside a rain-covered cafe window, warm interior light behind her.')
+  await page.locator('.anima-quick-panel > summary').click()
+  await page.locator('.anima-quick-panel .anima-primary').click()
+  await expect.poll(() => bodies.length, { timeout: 30000 }).toBe(1)
+  expect(bodies[0].loraId).toBeUndefined()
+  expect(bodies[0].negative).toBe('')
+  expect(bodies[0].modelId).toBe('krea2-turbo-fp8')
+})
+
+test('Krea 2 and Anima both block triad mode', async ({ page }) => {
+  await page.goto(`http://127.0.0.1:${MOCK_PORTS.gateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
+  await page.waitForTimeout(1200)
+  await page.locator('#stepChar .char-btn').filter({ hasText: '双人' }).click()
+  await expect(page.locator('.engine-switch button').nth(1)).toBeDisabled()
+  await expect(page.locator('.engine-switch button').nth(2)).toBeDisabled()
+  await expect(page.locator('.engine-switch button').nth(2)).toHaveAttribute('title', /Krea 2/)
+})

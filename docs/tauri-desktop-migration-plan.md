@@ -21,7 +21,7 @@ Tauri 2 Rust shell
 ```
 
 - Companion 和 Atelier 是两个独立窗口。Companion 可见启动时请求 Native；`--hidden`、隐藏窗口和用户显式关闭时不加载模型或继续渲染。Atelier/普通页面默认使用 browser Live2D，缺 bridge 自动回退。
-- Rust 壳负责窗口、托盘、单实例、深链、系统轮询、日志、数据迁移、sidecar 生命周期和 IPC；业务仍在 Node 网关，包括工具、服务自愈、TTS、翻译、训练、SD/Anima 和安全路由。
+- Rust 壳负责窗口、托盘、单实例、深链、系统轮询、日志、数据迁移、sidecar 生命周期和 IPC；业务仍在 Node 网关，包括工具、服务自愈、TTS、翻译、训练、SD/Anima/Krea 2 和安全路由。Krea 2 仍是网关 + ComfyUI 业务，不迁入 Rust。
 - `GatewaySupervisor` 负责 attach-or-spawn、健康检查、输出转发和受管进程自愈；只停止自己拥有的网关，不误杀外部启动的服务。
 - Native overlay 是独立线程透明 Win32 窗口，使用 DX12 + Cubism Native；它与 WebView 的舞台矩形通过物理像素布局契约同步。
 
@@ -75,7 +75,7 @@ Tauri 2 Rust shell
 - 不重写 Vue、Express、Live2D 浏览器 renderer 或业务协议，不把业务进程编排搬入 Rust。
 - 不恢复浏览器直通 ComfyUI、任意 workflow、任意路径或宽权限 IPC。
 - 不以 mock TTS、browser 页面、renderer-only selftest、虚拟 CSS viewport 或旧工程 smoke 冒充 D-10。
-- 不做 Live2D 贴图压缩/KTX2/WebP、Git LFS 历史重写、自动更新、视频生成或 Krea 2，除非用户另行授权并有独立方案。
+- Live2D 贴图压缩/KTX2/WebP、Git LFS 历史重写、自动更新和视频生成仍不在范围内。Krea 2 的 style-reference、Prompt Enhancer 和专用 LoRA 训练也不在本轮范围内，需独立验收。
 - 不为绕过发布门槛修改公共 overlay 契约；发现缺陷时记录最小复现、环境和证据，再按 Native 文档接入。
 
 ## 后续接入点

@@ -6,19 +6,24 @@ export interface AnimaOption {
   preview?: boolean
   validation?: string
   available?: boolean
+  family?: 'anima' | 'krea2'
+  profileId?: string
+  defaults?: Record<string, unknown>
+  capabilities?: { negative: boolean; lora: boolean; characterIdentity: boolean; experimental: boolean }
+  sizes?: string[]
 }
 
 export type AnimaPhase = 'idle' | 'submitting' | 'running' | 'cancelling' | 'succeeded' | 'failed' | 'cancelled'
 
 export interface AnimaJobMetadata {
-  engine: 'anima'
+  engine: 'anima' | 'krea2'
   id: string
   prompt: string
   negative: string
   profileId: string
   modelId: string
-  loraId: string
-  loraStrength: number
+  loraId: string | null
+  loraStrength: number | null
   width: number
   height: number
   steps: number
@@ -26,7 +31,7 @@ export interface AnimaJobMetadata {
   sampler: string
   scheduler: string
   seed: number
-  character: 'nene' | 'natsume'
+  character: 'nene' | 'natsume' | 'triad' | null
   preview?: boolean
   createdAt: number
   resultUrl: string | null
@@ -49,6 +54,7 @@ export interface AnimaGenerationState {
   modelId: string
   loraId: string
   loraStrength: number
+  family: 'anima' | 'krea2'
   width: number
   height: number
   steps: number

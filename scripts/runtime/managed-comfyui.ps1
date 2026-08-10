@@ -70,7 +70,7 @@ if ($managedProcess) { Write-Result $true 'starting' $true 'ComfyUI is still sta
 if (-not (Test-Path -LiteralPath $pythonPath -PathType Leaf) -or -not (Test-Path -LiteralPath $mainPath -PathType Leaf)) {
     Write-Result $false 'unavailable' $false 'Configured ComfyUI installation was not found.'; exit 1
 }
-$arguments = @('-u', ('"{0}"' -f $mainPath), '--listen', $uri.Host, '--port', $port)
+$arguments = @('-u', ('"{0}"' -f $mainPath), '--listen', $uri.Host, '--port', $port, '--disable-pinned-memory')
 $process = Start-Process -FilePath $pythonPath -ArgumentList $arguments -WorkingDirectory $comfyRoot -WindowStyle Hidden -RedirectStandardOutput $stdoutLog -RedirectStandardError $stderrLog -PassThru
 Set-Content -LiteralPath $pidFile -Value $process.Id -Encoding ASCII
 if (Wait-Ready) { Write-Result $true 'ready' $true 'Started ComfyUI and waited for /system_stats.' $process.Id; exit 0 }

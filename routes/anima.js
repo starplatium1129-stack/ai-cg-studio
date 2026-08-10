@@ -23,13 +23,15 @@ var OUTPUT_NODE_ID = '10';
 var OUTPUT_FILENAME_PREFIX = 'anima_app';
 
 var MODELS = Object.freeze({
-  'anima-base-v1.0': { file:'anima-base-v1.0.safetensors', label:'Anima Base v1.0' },
-  'anima-aesthetic-v1.1': { file:'anima-aesthetic-v1.1.safetensors', label:'Anima Aesthetic v1.1' }
+  'anima-base-v1.0': { file:'anima-base-v1.0.safetensors', label:'Anima Base v1.0', family:'anima', profileId:'anima_base_v10', steps:24, cfg:3, sampler:'res_multistep', scheduler:'simple', sizes:['832x1216','1024x1024','1216x832'] },
+  'anima-aesthetic-v1.1': { file:'anima-aesthetic-v1.1.safetensors', label:'Anima Aesthetic v1.1', family:'anima', profileId:'anima_aesthetic_v11', steps:24, cfg:3, sampler:'res_multistep', scheduler:'simple', sizes:['832x1216','1024x1024','1216x832'] },
+  'krea2-turbo-fp8': { file:'krea2_turbo_fp8_scaled.safetensors', label:'Krea 2 Turbo', family:'krea2', profileId:'krea2_turbo_fp8', steps:8, cfg:1, sampler:'euler', scheduler:'simple', sizes:['1024x1024','1024x1536','1536x1024'] }
 });
 
 var PROFILE_BY_MODEL = Object.freeze({
   'anima-base-v1.0':'anima_base_v10',
-  'anima-aesthetic-v1.1':'anima_aesthetic_v11'
+  'anima-aesthetic-v1.1':'anima_aesthetic_v11',
+  'krea2-turbo-fp8':'krea2_turbo_fp8'
 });
 
 var LORAS = Object.freeze({
@@ -101,7 +103,7 @@ function decodePathValue(value) {
   return decoded;
 }
 
-function validateInput(body) {
+function validateInput(body, expectedFamily) {
   if (!isPlainObject(body)) throw serviceError(400, 'INVALID_BODY', '请求体必须是 JSON 对象');
 
   Object.keys(body).forEach(function (key) {
@@ -110,7 +112,7 @@ function validateInput(body) {
     }
   });
 
-  var required = ['prompt', 'modelId', 'loraId', 'loraStrength', 'width', 'height', 'steps', 'cfg', 'character'];
+  var required = ['prompt', 'modelId', 'width', 'height'];
   required.forEach(function (key) {
     if (!hasOwn(body, key)) throw serviceError(400, 'MISSING_PARAMETER', '缺少参数：' + key);
   });
@@ -122,34 +124,44 @@ function validateInput(body) {
     throw serviceError(400, 'INVALID_PARAMETER', 'negative 需为不超过 ' + MAX_NEGATIVE_LENGTH + ' 字符的文本');
   }
   var model = MODELS[body.modelId];
-  if (!model) throw serviceError(400, 'UNKNOWN_MODEL', '未知 Anima 底模');
+  if (!model) throw serviceError(400, 'UNKNOWN_MODEL', '未知生成模型');
+  if (expectedFamily && model.family !== expectedFamily) throw serviceError(400, 'WRONG_ROUTE_FAMILY', '请求路径与模型 family 不匹配');
   var expectedProfile = PROFILE_BY_MODEL[body.modelId];
-  var lora = LORAS[body.loraId];
-  if (!lora) throw serviceError(400, 'UNKNOWN_LORA', '未知 Anima LoRA');
-  if (lora.compatibleModels.indexOf(body.modelId) === -1) {
-    throw serviceError(400, 'INCOMPATIBLE_MODEL_LORA', '底模与 LoRA 组合不受支持');
+  var lora = body.loraId ? LORAS[body.loraId] : null;
+  if (model.family === 'krea2') {
+    if (body.loraId || body.loraStrength !== undefined || (body.negative && String(body.negative).trim())) throw serviceError(400, 'KREA_UNSUPPORTED_PARAMETER', 'Krea 2 不接受 LoRA 或负向 Prompt');
+  } else {
+    if (!lora) throw serviceError(400, 'UNKNOWN_LORA', '未知 Anima LoRA');
+    if (lora.compatibleModels.indexOf(body.modelId) === -1) throw serviceError(400, 'INCOMPATIBLE_MODEL_LORA', '底模与 LoRA 组合不受支持');
+    var character = CHARACTERS[body.character];
+    if (!character || character.loraId !== body.loraId) throw serviceError(400, 'INCOMPATIBLE_CHARACTER', '角色与 LoRA 组合不受支持');
   }
-  var character = CHARACTERS[body.character];
-  if (!character || character.loraId !== body.loraId) {
-    throw serviceError(400, 'INCOMPATIBLE_CHARACTER', '角色与 LoRA 组合不受支持');
-  }
-
-  var loraStrength = validateNumber(body.loraStrength, 'loraStrength', lora.minStrength, lora.maxStrength, false);
+  var loraStrength = lora ? validateNumber(body.loraStrength, 'loraStrength', lora.minStrength, lora.maxStrength, false) : null;
   var width = validateNumber(body.width, 'width', 512, 1536, true);
   var height = validateNumber(body.height, 'height', 512, 1536, true);
-  if (width * height > 1_500_000) throw serviceError(400, 'INVALID_PARAMETER', '输出尺寸超过允许面积');
-  if (!((width === 832 && height === 1216) || (width === 1024 && height === 1024) || (width === 1216 && height === 832))) {
+  if (model.sizes.indexOf(width + 'x' + height) === -1) {
     throw serviceError(400, 'INVALID_PARAMETER', '不支持的输出尺寸');
   }
-  var steps = validateNumber(body.steps, 'steps', 1, 60, true);
-  var cfg = validateNumber(body.cfg, 'cfg', 0.5, 10, false);
+  if (model.family !== 'krea2' && width * height > 1_500_000) throw serviceError(400, 'INVALID_PARAMETER', '输出尺寸超过允许面积');
+  var steps;
+  var cfg;
+  if (model.family === 'krea2') {
+    if (body.steps !== undefined && body.steps !== 8) throw serviceError(400, 'INVALID_PARAMETER', 'Krea 2 steps 固定为 8');
+    if (body.cfg !== undefined && body.cfg !== 1) throw serviceError(400, 'INVALID_PARAMETER', 'Krea 2 CFG 固定为 1');
+    steps = 8;
+    cfg = 1;
+  } else {
+    steps = body.steps === undefined ? model.steps : validateNumber(body.steps, 'steps', 1, 60, true);
+    cfg = body.cfg === undefined ? model.cfg : validateNumber(body.cfg, 'cfg', 0.5, 10, false);
+  }
   var seed = body.seed === undefined
     ? crypto.randomInt(0, 2147483647)
     : validateNumber(body.seed, 'seed', 0, 9007199254740991, true);
 
   return {
     prompt:body.prompt.trim(),
-    negative:typeof body.negative === 'string' ? body.negative.trim() : '',
+    negative:model.family === 'krea2' ? '' : (typeof body.negative === 'string' ? body.negative.trim() : ''),
+    family:model.family,
     profileId:expectedProfile,
     modelId:body.modelId,
     loraId:body.loraId,
@@ -158,6 +170,8 @@ function validateInput(body) {
     height:height,
     steps:steps,
     cfg:cfg,
+    sampler:model.sampler,
+    scheduler:model.scheduler,
     seed:seed,
     character:body.character
   };
@@ -165,6 +179,17 @@ function validateInput(body) {
 
 function buildWorkflow(input) {
   var model = MODELS[input.modelId];
+  if (model.family === 'krea2') return {
+    '1': { class_type:'UNETLoader', inputs:{ unet_name:model.file, weight_dtype:'default' } },
+    '2': { class_type:'CLIPLoader', inputs:{ clip_name:'qwen3vl_4b_fp8_scaled.safetensors', type:'krea2' } },
+    '3': { class_type:'VAELoader', inputs:{ vae_name:'qwen_image_vae.safetensors' } },
+    '4': { class_type:'CLIPTextEncode', inputs:{ clip:['2', 0], text:input.prompt } },
+    '5': { class_type:'ConditioningZeroOut', inputs:{ conditioning:['4', 0] } },
+    '6': { class_type:'EmptyLatentImage', inputs:{ width:input.width, height:input.height, batch_size:1 } },
+    '7': { class_type:'KSampler', inputs:{ model:['1', 0], positive:['4', 0], negative:['5', 0], latent_image:['6', 0], seed:input.seed, steps:8, cfg:1, sampler_name:'euler', scheduler:'simple', denoise:1 } },
+    '8': { class_type:'VAEDecode', inputs:{ samples:['7', 0], vae:['3', 0] } },
+    '10': { class_type:'SaveImage', inputs:{ images:['8', 0], filename_prefix:'creative_app' } }
+  };
   var lora = LORAS[input.loraId];
   return {
     '1': { class_type:'UNETLoader', inputs:{ unet_name:model.file, weight_dtype:'default' } },
@@ -269,7 +294,7 @@ function requestOwner(req) {
 }
 
 function publicJob(job, routeBase) {
-  routeBase = routeBase || '/api/anima';
+  routeBase = routeBase || (job.input && job.input.family === 'krea2' ? '/api/creative' : '/api/anima');
   var result = {
     id:job.id,
     status:job.status,
@@ -558,7 +583,7 @@ function createAnimaService(config, options) {
          failJob(job, serviceError(502, 'COMFY_NO_IMAGE', 'ComfyUI 未返回图片'), 'COMFY_NO_IMAGE');
         return;
       }
-       job.result = await materializeResult(config, job, image, { outputPrefix:outputPrefix, mediaNamespace:mediaNamespace });
+       job.result = await materializeResult(config, job, image, { outputPrefix:job.input.family === 'krea2' ? 'creative_app' : outputPrefix, mediaNamespace:mediaNamespace });
        job.resultConsumed = false;
       job.status = 'succeeded';
       job.error = null;
@@ -615,11 +640,11 @@ function createAnimaService(config, options) {
       provider:provider,
       input:frozenInput,
       metadata:Object.freeze({
-        engine:engine, id:id, prompt:frozenInput.prompt, negative:frozenInput.negative,
+         engine:frozenInput.family || engine, id:id, prompt:frozenInput.prompt, negative:frozenInput.negative,
         profileId:frozenInput.profileId || '', modelId:frozenInput.modelId, loraId:frozenInput.loraId,
         loraStrength:frozenInput.loraStrength, width:frozenInput.width, height:frozenInput.height,
         steps:frozenInput.steps, cfg:frozenInput.cfg, sampler:frozenInput.sampler || 'res_multistep', scheduler:frozenInput.scheduler || 'simple',
-        seed:frozenInput.seed, character:frozenInput.character || 'nene', preview:Boolean(LORAS[frozenInput.loraId] && LORAS[frozenInput.loraId].preview), createdAt:createdAt, resultUrl:null,
+         seed:frozenInput.seed, character:frozenInput.character || null, preview:Boolean(LORAS[frozenInput.loraId] && LORAS[frozenInput.loraId].preview), createdAt:createdAt, resultUrl:null,
         provider:provider
       }),
       status:'queued',
@@ -703,9 +728,16 @@ function createAnimaService(config, options) {
   }
 
   function status() {
+    var modelRoot = path.resolve(config.AI_WORKSPACE_ROOT || path.resolve(config.ROOT_DIR, '..', 'AI'), 'ComfyUI', 'models');
+    function available(model) {
+      var encoder = model.family === 'krea2' ? 'qwen3vl_4b_fp8_scaled.safetensors' : 'qwen_3_06b_base.safetensors';
+      return fs.existsSync(path.join(modelRoot, 'diffusion_models', model.file))
+        && fs.existsSync(path.join(modelRoot, 'text_encoders', encoder))
+        && fs.existsSync(path.join(modelRoot, 'vae', 'qwen_image_vae.safetensors'));
+    }
     return {
       online:false,
-      models:Object.keys(MODELS).map(function (id) { return { id:id, label:MODELS[id].label }; }),
+        models:Object.keys(MODELS).map(function (id) { var model = MODELS[id]; return { id:id, label:model.label, family:model.family, profileId:model.profileId, available:available(model), defaults:{ steps:model.steps, cfg:model.cfg, sampler:model.sampler, scheduler:model.scheduler }, sizes:model.sizes, capabilities:{ negative:model.family !== 'krea2', lora:model.family === 'anima', characterIdentity:model.family === 'anima', experimental:model.family === 'krea2' } }; }),
       loras:Object.keys(LORAS).map(function (id) {
         var lora = LORAS[id];
         var file = path.resolve(loraRoot, lora.file);
@@ -748,7 +780,7 @@ function createAnimaService(config, options) {
     get:get,
     cancel:cancel,
     consumeResult:consumeResult,
-      publicJob:function (job) { return publicJob(job, routeBase); },
+      publicJob:function (job) { return publicJob(job, job.input && job.input.family === 'krea2' ? '/api/creative' : routeBase); },
     probe:probe,
     status:status,
     close:close,
@@ -761,23 +793,27 @@ function createAnimaRouter(config, dependencies) {
   var router = express.Router();
   var service = dependencies.anima || createAnimaService(config);
   var jobLimit = security.rateLimit({ capacity:12, refillMs:5000, label:'Anima 出图' });
+  function routeFamily(req) { return String(req.path || '').startsWith('/api/anima') ? 'anima' : 'creative'; }
+  function routeOwnsJob(req, job) { return Boolean(job) && (routeFamily(req) === 'anima' ? job.input.family === 'anima' : job.input.family === 'krea2'); }
 
-  router.get('/api/anima/status', function (req, res) {
+  router.get(['/api/anima/status', '/api/creative/status'], function (req, res) {
     service.probe().then(function (online) {
       var data = service.status();
       data.online = online;
+      if (routeFamily(req) === 'anima') data.models = data.models.filter(function (model) { return model.family === 'anima'; });
       res.setHeader('Cache-Control', 'no-store');
       envelope.ok(res, data);
     }).catch(function () {
       var data = service.status();
+      if (routeFamily(req) === 'anima') data.models = data.models.filter(function (model) { return model.family === 'anima'; });
       res.setHeader('Cache-Control', 'no-store');
       envelope.ok(res, data);
     });
   });
 
-  router.post('/api/anima/jobs', jobLimit, express.json({ limit:MAX_BODY }), async function (req, res) {
+  router.post(['/api/anima/jobs', '/api/creative/jobs'], jobLimit, express.json({ limit:MAX_BODY }), async function (req, res) {
     var input;
-    try { input = validateInput(req.body); } catch (error) {
+    try { input = validateInput(req.body, routeFamily(req) === 'anima' ? 'anima' : 'krea2'); } catch (error) {
       return envelope.fail(res, error.status || 400, error.message, { code:error.code });
     }
     var job;
@@ -796,9 +832,9 @@ function createAnimaRouter(config, dependencies) {
     return envelope.ok(res, { job:service.publicJob(job) });
   });
 
-  router.get('/api/anima/jobs/:id/result', function (req, res) {
+  router.get(['/api/anima/jobs/:id/result', '/api/creative/jobs/:id/result'], function (req, res) {
     var job = service.get(req.params.id, requestOwner(req));
-    if (!job) return envelope.fail(res, 404, 'Anima 任务不存在', { code:'JOB_NOT_FOUND' });
+    if (!routeOwnsJob(req, job)) return envelope.fail(res, 404, '生成任务不存在', { code:'JOB_NOT_FOUND' });
     if (job.resultConsumed) return envelope.fail(res, 404, '结果已消费或不存在', { code:'RESULT_NOT_FOUND' });
     if (job.status !== 'succeeded' || !job.result) {
       return envelope.fail(res, job.status === 'failed' ? 502 : 409,
@@ -828,16 +864,16 @@ function createAnimaRouter(config, dependencies) {
     }
   });
 
-  router.get('/api/anima/jobs/:id', function (req, res) {
+  router.get(['/api/anima/jobs/:id', '/api/creative/jobs/:id'], function (req, res) {
     var job = service.get(req.params.id, requestOwner(req));
-    if (!job) return envelope.fail(res, 404, 'Anima 任务不存在', { code:'JOB_NOT_FOUND' });
+    if (!routeOwnsJob(req, job)) return envelope.fail(res, 404, '生成任务不存在', { code:'JOB_NOT_FOUND' });
     res.setHeader('Cache-Control', 'no-store');
     return envelope.ok(res, { job:service.publicJob(job) });
   });
 
-  router.delete('/api/anima/jobs/:id', async function (req, res) {
+  router.delete(['/api/anima/jobs/:id', '/api/creative/jobs/:id'], async function (req, res) {
     var job = service.get(req.params.id, requestOwner(req));
-    if (!job) return envelope.fail(res, 404, 'Anima 任务不存在', { code:'JOB_NOT_FOUND' });
+    if (!routeOwnsJob(req, job)) return envelope.fail(res, 404, '生成任务不存在', { code:'JOB_NOT_FOUND' });
      var cancelled = await service.cancel(job);
      res.status(cancelled.status === 'cancelling' ? 202 : 200);
      return envelope.ok(res, { job:service.publicJob(cancelled) });

@@ -74,6 +74,10 @@
           <textarea class="story-input" v-model="pb.story"
             placeholder="一句话描述脑海里的画面…"
             @input="onStoryInput"></textarea>
+          <label class="visual-description-label" for="visualDescription">画面描述 · Visual description</label>
+          <textarea id="visualDescription" class="visual-description-input" v-model="pb.visualDescription"
+            placeholder="只写最终可见的角色、动作、环境和画面关系…"></textarea>
+          <p class="visual-description-hint">该字段会进入 Anima / Krea 2。故事、台词和心理活动不会自动进入任何模型 Prompt。</p>
           <div v-if="pb.activeScene" class="scene-context">
             <span class="scene-context-title">{{ pb.activeScene.title }}</span>
             <button class="scene-context-detach" type="button" @click="detachScene()">× 脱离</button>
@@ -343,6 +347,10 @@
               @click="setDrawEngine('anima')">
               Anima 引擎 <span class="engine-sub">ComfyUI · {{ pb.char === 'natsume' ? 'v19 E08 实验预览' : 'v20 LoRA' }}</span>
             </button>
+            <button type="button" class="engine-btn" :class="{ active: drawEngine === 'krea2' }"
+              :disabled="generationBusy || pb.char === 'triad'" :title="pb.char === 'triad' ? 'Krea 2 首版暂不支持双角色身份构图，请使用 SD 引擎' : undefined" @click="setDrawEngine('krea2')">
+              Krea 2 <span class="engine-sub">ComfyUI · 自然语言实验</span>
+            </button>
           </div>
 
           <GenerationOutputControls
@@ -359,7 +367,7 @@
             :queue-available="sdQueue.canEnqueue.value"
             @touch="pb.markParamTouched"
             @generate="callGenerate"
-             @cancel="drawEngine === 'anima' ? cancelAnimaJob() : sd.cancel()"
+             @cancel="drawEngine !== 'sd' ? cancelAnimaJob() : sd.cancel()"
             @enqueue="enqueueCurrent"
             @reuse-seed="reuseLastSeed"
             @reset="resetAll"
@@ -617,6 +625,7 @@ const animaState = ref<AnimaGenerationState>({
   phase: 'idle', online: false, checkMsg: 'Anima 状态检查中…', models: [], loras: [],
   prompt: '', negative: '', modelId: 'anima-base-v1.0', loraId: 'L_NENE_V20_ANIMA',
   loraStrength: 0.85, width: 832, height: 1216, steps: 24, cfg: 3,
+  family: 'anima',
   sampler: 'res_multistep', scheduler: 'simple', seed: null,
   job: null, result: null, statusText: '', errorMsg: '',
 })
@@ -711,15 +720,15 @@ const compareEl = ref<HTMLElement | null>(null)
 
 function resultSnapshot(url: string): ResultSnapshot {
   const metadata = animaState.value.result?.metadata
-  const isAnima = drawEngine.value === 'anima'
+  const isComfy = drawEngine.value !== 'sd'
   return {
     url,
-    seed: displayResultSeed.value ?? (isAnima ? metadata?.seed ?? null : (pb.sdParams.seedLock && pb.sdParams.seed >= 0 ? pb.sdParams.seed : null)),
-    size: isAnima ? `${metadata?.width ?? animaState.value.width}x${metadata?.height ?? animaState.value.height}` : sdSize.value,
-    sampler: isAnima ? (metadata?.sampler ?? animaState.value.sampler) : (pb.sdParams.sampler || sd.samplers.value[0] || '—'),
-    cfg: isAnima ? (metadata?.cfg ?? animaState.value.cfg) : pb.sdParams.cfg,
-    steps: isAnima ? (metadata?.steps ?? animaState.value.steps) : pb.sdParams.steps,
-    hires: isAnima ? '关' : (pb.sdParams.hiresFix ? `×${pb.sdParams.hiresScale ?? 1.5}` : '关'),
+    seed: displayResultSeed.value ?? (isComfy ? metadata?.seed ?? null : (pb.sdParams.seedLock && pb.sdParams.seed >= 0 ? pb.sdParams.seed : null)),
+    size: isComfy ? `${metadata?.width ?? animaState.value.width}x${metadata?.height ?? animaState.value.height}` : sdSize.value,
+    sampler: isComfy ? (metadata?.sampler ?? animaState.value.sampler) : (pb.sdParams.sampler || sd.samplers.value[0] || '—'),
+    cfg: isComfy ? (metadata?.cfg ?? animaState.value.cfg) : pb.sdParams.cfg,
+    steps: isComfy ? (metadata?.steps ?? animaState.value.steps) : pb.sdParams.steps,
+    hires: isComfy ? '关' : (pb.sdParams.hiresFix ? `×${pb.sdParams.hiresScale ?? 1.5}` : '关'),
     at: new Date().toLocaleTimeString(),
   }
 }
@@ -788,8 +797,8 @@ function clearAnimaResult() {
   if (previous) URL.revokeObjectURL(previous.url)
   patchAnimaState({ result: null, job: null })
 }
-const displayResultUrl = computed(() => drawEngine.value === 'anima' ? (animaState.value.result?.url ?? '') : sd.resultUrl.value)
-const displayResultSeed = computed(() => drawEngine.value === 'anima' ? animaState.value.result?.metadata.seed ?? null : sd.resultSeed.value)
+const displayResultUrl = computed(() => drawEngine.value !== 'sd' ? (animaState.value.result?.url ?? '') : sd.resultUrl.value)
+const displayResultSeed = computed(() => drawEngine.value !== 'sd' ? animaState.value.result?.metadata.seed ?? null : sd.resultSeed.value)
 
 // 新一轮生成开始时结果会被清空，完成后再写入新值；
 // 因此只在"有值且与上一张不同"时轮转快照（SD 与 Anima 结果共用）。
@@ -799,8 +808,8 @@ watch(displayResultUrl, (url, oldUrl) => {
   lastResult.value = resultSnapshot(url)
 })
 function setDrawEngine(v: DrawEngine) {
-  if (v === 'anima' && pb.char === 'triad') {
-    pb.flash('双人模式不支持 Anima，请使用 SD 引擎')
+  if (v !== 'sd' && pb.char === 'triad') {
+    pb.flash(v === 'krea2' ? 'Krea 2 首版暂不支持双角色身份构图，请使用 SD 引擎' : 'Anima 首版暂不支持双角色身份构图，请使用 SD 引擎')
     return
   }
   if (drawEngine.value === v) {
@@ -813,18 +822,19 @@ function setDrawEngine(v: DrawEngine) {
     return
   }
   drawEngine.value = v
-  if (v === 'anima') {
+  if (v !== 'sd') {
     syncAnimaCharacter(pb.char)
     void refreshAnimaBackend()
   }
   pb.flash(v === 'anima'
     ? (pb.char === 'natsume' ? '已切换到 Anima 实验预览（夏目 v19 E08，普通全身稳定性有限）' : '已切换到 Anima 引擎（ComfyUI + 宁宁 v20 LoRA）')
-    : '已切换到 SD 引擎（WebUI）')
+    : v === 'krea2' ? '已切换到 Krea 2（自然语言、无角色 LoRA，身份不保证）' : '已切换到 SD 引擎（WebUI）')
 }
 
 // Anima 模式下生成按钮的可用性取决于 ComfyUI 在线状态，而不是 SD WebUI。
 const engineOnline = computed(() => {
   if (drawEngine.value === 'anima') return pb.char !== 'triad' && Boolean(animaState.value.loraId) && animaState.value.online
+  if (drawEngine.value === 'krea2') return animaState.value.online && animaState.value.models.some(model => model.id === animaState.value.modelId && model.available !== false)
   return sd.online.value
 })
 const generationBusy = computed(() => sd.generating.value || ['submitting', 'running', 'cancelling'].includes(animaState.value.phase))
@@ -860,11 +870,11 @@ function captureJob(): Omit<SDQueueJob, 'id'> | null {
 }
 
 function historyGenerationFields(): Partial<HistoryEntry> {
-  if (drawEngine.value === 'anima') {
+  if (drawEngine.value !== 'sd') {
     const meta = animaState.value.result?.metadata || animaState.value.job
     if (!meta) return {}
     return {
-      engine: 'anima',
+      engine: meta.engine,
       profile: meta.profileId,
       model: meta.modelId,
       lora: meta.loraId,
@@ -919,23 +929,22 @@ interface AnimaRequest {
   negative: string
   profileId: string
   modelId: string
-  loraId: string
-  loraStrength: number
+  loraId: string | null
+  loraStrength: number | null
   width: number
   height: number
   steps: number
   cfg: number
   seed?: number
-  character: 'nene' | 'natsume'
+  character: 'nene' | 'natsume' | 'triad' | null
 }
 
-function animaRequestPayload(request: AnimaRequest): Omit<AnimaRequest, 'profileId'> {
+function animaRequestPayload(request: AnimaRequest): Omit<AnimaRequest, 'profileId' | 'loraId' | 'loraStrength'> & Partial<Pick<AnimaRequest, 'loraId' | 'loraStrength'>> {
   return {
     prompt: request.prompt,
     negative: request.negative,
     modelId: request.modelId,
-    loraId: request.loraId,
-    loraStrength: request.loraStrength,
+    ...(request.loraId ? { loraId: request.loraId, loraStrength: request.loraStrength } : {}),
     width: request.width,
     height: request.height,
     steps: request.steps,
@@ -954,43 +963,53 @@ function updateAnimaPromptState() {
 
 async function refreshAnimaBackend() {
   try {
-    const response = await fetch('/api/anima/status', { cache: 'no-store' })
+    const response = await fetch('/api/creative/status', { cache: 'no-store' })
     const data = await response.json() as AnimaStatusResponse
     if (!response.ok || data.ok !== true) throw new Error(data.error || `网关返回 ${response.status}`)
     const models = Array.isArray(data.models) ? data.models : []
     const loras = (Array.isArray(data.loras) ? data.loras : [])
       .filter(lora => lora.character === pb.char && lora.available !== false)
-    const modelId = models.some(model => model.id === animaState.value.modelId)
+    const targetFamily = drawEngine.value === 'krea2' ? 'krea2' : 'anima'
+    const familyModels = models.filter(model => model.family === targetFamily)
+    const familyLoras = targetFamily === 'krea2' ? [] : loras
+    const modelId = familyModels.some(model => model.id === animaState.value.modelId)
       ? animaState.value.modelId
-      : (models[0]?.id || '')
-    const loraId = loras.some(lora => lora.id === animaState.value.loraId)
+      : (familyModels[0]?.id || '')
+    const loraId = familyLoras.some(lora => lora.id === animaState.value.loraId)
       ? animaState.value.loraId
-      : (loras[0]?.id || '')
-     patchAnimaState({
+      : (familyLoras[0]?.id || '')
+    const selectedModel = models.find(model => model.id === modelId)
+    const familyLabel = targetFamily === 'krea2' ? 'Krea 2' : 'Anima'
+    patchAnimaState({
       online: data.online === true,
       checkMsg: data.online === true
-        ? `Anima 在线 · ${models.length} 个底模 · ${loras.length} 个 LoRA`
-        : 'Anima 离线（ComfyUI 未启动或网关不可用）',
-       models, loras, modelId, loraId,
-     })
-     syncAnimaCharacter(pb.char)
+        ? `${familyLabel} 在线 · ${familyModels.length} 个底模 · ${familyLoras.length} 个 LoRA`
+        : `${familyLabel} 离线（ComfyUI 未启动或网关不可用）`,
+      models, loras: familyLoras, modelId, loraId,
+        family: selectedModel?.family === 'krea2' ? 'krea2' : 'anima',
+        steps: Number(selectedModel?.defaults?.steps) || animaState.value.steps,
+        cfg: Number(selectedModel?.defaults?.cfg) || animaState.value.cfg,
+        sampler: String(selectedModel?.defaults?.sampler || animaState.value.sampler),
+        scheduler: String(selectedModel?.defaults?.scheduler || animaState.value.scheduler),
+    })
+    syncAnimaCharacter(pb.char)
   } catch (error) {
-    patchAnimaState({ online: false, checkMsg: 'Anima 离线（网关状态接口不可用）' })
+    patchAnimaState({ online: false, checkMsg: `${drawEngine.value === 'krea2' ? 'Krea 2' : 'Anima'} 离线（网关状态接口不可用）` })
   }
 }
 
 function buildAnimaRequest(): AnimaRequest | null {
   const profile = modelProfile.value
   if (pb.char === 'triad') {
-    pb.flash('双人模式不支持 Anima，请使用 SD 引擎')
+    pb.flash(animaState.value.family === 'krea2' ? 'Krea 2 首版暂不支持双角色身份构图，请使用 SD 引擎' : 'Anima 首版暂不支持双角色身份构图，请使用 SD 引擎')
     return null
   }
-  if (!profile || profile.engine !== 'anima' || profile.model_id !== animaState.value.modelId) {
-    pb.flash('Anima 当前底模没有已审核 profile，已拒绝生成')
+  if (!profile || profile.engine !== animaState.value.family || profile.model_id !== animaState.value.modelId) {
+    pb.flash('当前底模没有匹配的模型 profile，已拒绝生成')
     return null
   }
   const expectedLoraId = ANIMA_LORA_BY_CHARACTER[pb.char]
-  if (animaState.value.loraId !== expectedLoraId || !animaState.value.loras.some(lora => lora.id === expectedLoraId && lora.available !== false)) {
+  if (animaState.value.family !== 'krea2' && (animaState.value.loraId !== expectedLoraId || !animaState.value.loras.some(lora => lora.id === expectedLoraId && lora.available !== false))) {
     pb.flash('Anima 底模尚未从服务端白名单发现')
     return null
   }
@@ -1000,14 +1019,14 @@ function buildAnimaRequest(): AnimaRequest | null {
     negative: negativePrompt.value,
     profileId: profile.id || '',
     modelId: animaState.value.modelId,
-    loraId: animaState.value.loraId,
-    loraStrength: animaState.value.loraStrength,
+    loraId: animaState.value.family === 'krea2' ? null : animaState.value.loraId,
+    loraStrength: animaState.value.family === 'krea2' ? null : animaState.value.loraStrength,
     width: animaState.value.width,
     height: animaState.value.height,
     steps: animaState.value.steps,
     cfg: animaState.value.cfg,
     ...(animaState.value.seed == null ? {} : { seed: animaState.value.seed }),
-     character: pb.char,
+    character: animaState.value.family === 'krea2' ? null : pb.char,
   }
 }
 
@@ -1016,7 +1035,7 @@ function metadataFromJob(job: AnimaPublicJob, request: AnimaRequest): AnimaJobMe
   const metadata = supplied && supplied.prompt === request.prompt && supplied.negative === request.negative
     ? supplied
     : {
-        engine: 'anima' as const,
+        engine: animaState.value.family,
         id: job.id,
         prompt: request.prompt,
         negative: request.negative,
@@ -1032,7 +1051,7 @@ function metadataFromJob(job: AnimaPublicJob, request: AnimaRequest): AnimaJobMe
         scheduler: animaState.value.scheduler,
         seed: job.seed,
          character: request.character,
-         preview: request.character === 'natsume',
+        preview: request.character === 'natsume' || request.character === null,
         createdAt: Date.now(),
         resultUrl: job.resultUrl,
       }
@@ -1052,7 +1071,7 @@ async function pollAnimaJob(jobId: string, request: AnimaRequest, serial: number
   while (Date.now() < deadline && serial === animaRequestSerial) {
     await new Promise(resolve => setTimeout(resolve, 1000))
     if (serial !== animaRequestSerial) return
-    const response = await fetch('/api/anima/jobs/' + encodeURIComponent(jobId), { cache: 'no-store' })
+    const response = await fetch((animaState.value.family === 'krea2' ? '/api/creative/jobs/' : '/api/anima/jobs/') + encodeURIComponent(jobId), { cache: 'no-store' })
     if (serial !== animaRequestSerial) return
     if (!response.ok) {
       if (response.status >= 500) continue
@@ -1096,7 +1115,7 @@ async function generateAnima() {
   clearAnimaResult()
   patchAnimaState({ phase: 'submitting', statusText: '提交任务…', errorMsg: '' })
   try {
-    const response = await fetch('/api/anima/jobs', {
+    const response = await fetch(animaState.value.family === 'krea2' ? '/api/creative/jobs' : '/api/anima/jobs', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(animaRequestPayload(request)),
@@ -1122,7 +1141,7 @@ async function cancelAnimaJob() {
   if (!job || !['running', 'cancelling'].includes(animaState.value.phase)) return
   patchAnimaState({ phase: 'cancelling', statusText: '取消中…', errorMsg: '' })
   try {
-    const response = await fetch('/api/anima/jobs/' + encodeURIComponent(job.id), { method: 'DELETE' })
+    const response = await fetch((animaState.value.family === 'krea2' ? '/api/creative/jobs/' : '/api/anima/jobs/') + encodeURIComponent(job.id), { method: 'DELETE' })
     if (!response.ok) throw new Error(await readAnimaError(response))
     const data = await response.json() as { job?: AnimaPublicJob }
     if (data.job?.status === 'cancelled') patchAnimaState({ phase: 'cancelled', statusText: '任务已取消' })
@@ -1247,7 +1266,7 @@ const sdQueue = useSDQueue({
 })
 
 function enqueueCurrent() {
-  if (drawEngine.value === 'anima') { pb.flash('Anima 引擎暂不支持队列，直接点击生成即可'); return }
+  if (drawEngine.value !== 'sd') { pb.flash(`${drawEngine.value === 'krea2' ? 'Krea 2' : 'Anima'} 引擎暂不支持队列，直接点击生成即可`); return }
   const job = captureJob()
   if (!job) { pb.flash('请先选择场景或填写故事'); return }
   sdQueue.enqueue(job)
@@ -1255,8 +1274,8 @@ function enqueueCurrent() {
 
 async function callGenerate(opts: { disableLora?: boolean } = {}) {
   if (!livePrompt.value) { pb.flash('请先选择场景或填写故事'); return }
-  if (drawEngine.value === 'anima') {
-    if (opts.disableLora) { pb.flash('Anima 引擎固定使用 v20 LoRA，无法跳过') }
+  if (drawEngine.value !== 'sd') {
+    if (opts.disableLora && drawEngine.value === 'anima') { pb.flash('Anima 引擎固定使用角色 LoRA，无法跳过') }
     await generateAnima()
     return
   }
@@ -1323,9 +1342,9 @@ async function saveHistory() {
     let blob: Blob
     let prompt = livePrompt.value
     let negative = negativePrompt.value
-    if (drawEngine.value === 'anima') {
+    if (drawEngine.value !== 'sd') {
       const result = animaState.value.result
-      if (!result) { pb.flash('Anima 成片数据已失效，请重新生成'); return }
+      if (!result) { pb.flash('成片数据已失效，请重新生成'); return }
       blob = result.blob
       prompt = result.metadata.prompt
       negative = result.metadata.negative
@@ -1557,7 +1576,7 @@ onMounted(async () => {
     // 样张/场景抽屉的「调整后生成」：场景与词条已在上面载入，这里直接出图
     await nextTick()
     if (!engineOnline.value) {
-      pb.flash(`${drawEngine.value === 'anima' ? 'Anima' : 'SD WebUI'} 未连接，场景与词条已就位，可稍后生成`)
+       pb.flash(`${drawEngine.value === 'anima' ? 'Anima' : drawEngine.value === 'krea2' ? 'Krea 2' : 'SD WebUI'} 未连接，场景与词条已就位，可稍后生成`)
     } else if (livePrompt.value) {
       pb.flash('正在按调整后的场景生成')
       await callGenerate()
@@ -1571,14 +1590,14 @@ onUnmounted(() => {
   animaStatusTimer = null
   const activeJob = animaState.value.job
   if (activeJob && ['running', 'cancelling'].includes(animaState.value.phase)) {
-    void fetch('/api/anima/jobs/' + encodeURIComponent(activeJob.id), { method: 'DELETE' }).catch(() => {})
+     void fetch((animaState.value.family === 'krea2' ? '/api/creative/jobs/' : '/api/anima/jobs/') + encodeURIComponent(activeJob.id), { method: 'DELETE' }).catch(() => {})
   }
   const result = animaState.value.result
   if (result) URL.revokeObjectURL(result.url)
 })
 
 // Autosave draft
-watch([() => pb.story, () => pb.char, () => pb.sceneId, () => pb.selections, () => pb.manualTags, () => pb.colorMood], () => {
+watch([() => pb.story, () => pb.visualDescription, () => pb.char, () => pb.sceneId, () => pb.selections, () => pb.manualTags, () => pb.colorMood], () => {
   pb.saveDraft?.()
 }, { deep: true })
 
@@ -1589,13 +1608,13 @@ watch(() => pb.directorMode, mode => {
 })
 
 watch(() => pb.char, char => {
-  if (drawEngine.value === 'anima') {
+  if (drawEngine.value !== 'sd') {
     syncAnimaCharacter(char)
     void refreshAnimaBackend()
     if (char === 'triad') {
       setDrawEngine('sd')
-      pb.flash('双人模式不支持 Anima，已切回 SD')
-    } else if (char === 'natsume') {
+       pb.flash('Anima 与 Krea 2 首版暂不支持双角色身份构图，已切回 SD')
+     } else if (char === 'natsume' && drawEngine.value === 'anima') {
       pb.flash('已切换到夏目 Anima 实验预览（E08）')
     }
   }

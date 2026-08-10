@@ -121,6 +121,24 @@ test('Anima routes enforce application job and result boundaries over real HTTP'
     assert.ok(Array.isArray(status.json.models) && status.json.models.every(function (model) { return model.id; }));
     assert.ok(!status.json.models.some(function (model) { return model.id === 'anima-yume-v1.0'; }), 'unreviewed Yume must not be discoverable');
     assert.ok(status.json.loras.some(function (lora) { return lora.id === 'L_NENE_V20_ANIMA'; }));
+    assert.ok(status.json.models.every(function (model) { return model.family === 'anima'; }), 'Anima status must not expose Krea models');
+    var creativeStatus = await request(port, { path:'/api/creative/status' });
+    assert.ok(creativeStatus.json.models.some(function (model) { return model.id === 'krea2-turbo-fp8'; }), 'creative status must expose Krea');
+    var kreaOnAnima = await postJson(port, '/api/anima/jobs', { prompt:'x', modelId:'krea2-turbo-fp8', width:1024, height:1024 });
+    assert.strictEqual(kreaOnAnima.status, 400);
+    assert.strictEqual(kreaOnAnima.json.code, 'WRONG_ROUTE_FAMILY');
+    var animaOnCreative = await postJson(port, '/api/creative/jobs', validJob());
+    assert.strictEqual(animaOnCreative.status, 400);
+    assert.strictEqual(animaOnCreative.json.code, 'WRONG_ROUTE_FAMILY');
+    assert.strictEqual((await request(port, { path:'/api/creative/status' })).json.pending, 0, 'rejected cross-family submissions must not create jobs');
+    var creativeJob = await postJson(port, '/api/creative/jobs', { prompt:'A rainy cafe scene.', modelId:'krea2-turbo-fp8', width:1024, height:1536, seed:9001 });
+    assert.strictEqual(creativeJob.status, 202);
+    assert.strictEqual(creativeJob.json.job.metadata.steps, 8);
+    assert.strictEqual(creativeJob.json.job.metadata.cfg, 1);
+    assert.strictEqual(creativeJob.json.job.metadata.sampler, 'euler');
+    assert.strictEqual((await request(port, { path:'/api/anima/jobs/' + creativeJob.json.job.id })).status, 404, 'Anima route must not read Krea jobs');
+    assert.strictEqual((await request(port, { path:'/api/creative/jobs/' + creativeJob.json.job.id })).status, 200);
+    await request(port, { method:'DELETE', path:'/api/creative/jobs/' + creativeJob.json.job.id });
     assert.ok(!status.json.loras.some(function (lora) { return lora.id === 'L_NENE_V19_ANIMA'; }), 'superseded v19 must not remain selectable');
 
     var arbitraryWorkflow = await postJson(port, '/api/anima/jobs', { prompt:{ '1':{ class_type:'ReadFile', inputs:{ path:'C:/secret' } } } });
@@ -165,13 +183,14 @@ test('Anima routes enforce application job and result boundaries over real HTTP'
 
     var state = await mockState(comfy.port);
     var promptCalls = state.calls.filter(function (call) { return call.path === '/prompt'; });
-    assert.strictEqual(promptCalls.length, 1);
-    assert.ok(promptCalls[0].body && promptCalls[0].body.prompt);
-    assert.strictEqual(promptCalls[0].body.workflow, undefined);
-    assert.deepStrictEqual(Object.keys(promptCalls[0].body.prompt).sort(), ['1','10','2','3','4','5','6','7','8','9'], 'workflow must keep the fixed ten-node shape');
-    assert.strictEqual(promptCalls[0].body.prompt['7'].inputs.batch_size, 1);
-    assert.strictEqual(promptCalls[0].body.prompt['1'].class_type, 'UNETLoader');
-    assert.strictEqual(promptCalls[0].body.prompt['1'].inputs.unet_name, 'anima-base-v1.0.safetensors');
+    assert.strictEqual(promptCalls.length, 2);
+    var animaPromptCall = promptCalls.find(function (call) { return call.body.prompt['1'].inputs.unet_name === 'anima-base-v1.0.safetensors'; });
+    assert.ok(animaPromptCall && animaPromptCall.body && animaPromptCall.body.prompt);
+    assert.strictEqual(animaPromptCall.body.workflow, undefined);
+    assert.deepStrictEqual(Object.keys(animaPromptCall.body.prompt).sort(), ['1','10','2','3','4','5','6','7','8','9'], 'workflow must keep the fixed ten-node shape');
+    assert.strictEqual(animaPromptCall.body.prompt['7'].inputs.batch_size, 1);
+    assert.strictEqual(animaPromptCall.body.prompt['1'].class_type, 'UNETLoader');
+    assert.strictEqual(animaPromptCall.body.prompt['1'].inputs.unet_name, 'anima-base-v1.0.safetensors');
 
     var succeeded = await waitForJob(port, jobId, function (job) { return job && job.status === 'succeeded'; });
     assert.ok(succeeded.resultUrl && succeeded.resultUrl.indexOf('/api/anima/jobs/' + jobId + '/result') !== -1);
@@ -190,7 +209,7 @@ test('Anima routes enforce application job and result boundaries over real HTTP'
     await waitForJob(port, transientJob.json.job.id, function (job) { return job && job.status === 'succeeded'; });
     state = await mockState(comfy.port);
     promptCalls = state.calls.filter(function (call) { return call.path === '/prompt'; });
-    assert.strictEqual(promptCalls.length, 2, 'history polling failures must not resubmit the workflow');
+    assert.strictEqual(promptCalls.length, 3, 'history polling failures must not resubmit the workflow');
 
     await mockFault(comfy.port, { renderMs:5000 });
     state = await mockState(comfy.port);

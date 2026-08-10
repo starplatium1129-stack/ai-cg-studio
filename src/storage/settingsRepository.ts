@@ -7,7 +7,7 @@ import {
   TUNNEL_OFF_KEY,
 } from '../utils/storageKeys.ts'
 
-export type DrawEngine = 'sd' | 'anima'
+export type DrawEngine = 'sd' | 'anima' | 'krea2'
 export type Theme = 'dark' | 'light'
 export type ReasoningLevel = 'off' | 'low' | 'medium' | 'high'
 
@@ -26,7 +26,7 @@ export interface SettingDefinition<T> {
 export const DRAW_ENGINE_SETTING: SettingDefinition<DrawEngine> = {
   key: DRAW_ENGINE_KEY,
   parse(raw) {
-    return raw === 'sd' || raw === 'anima' ? raw : null
+    return raw === 'sd' || raw === 'anima' || raw === 'krea2' ? raw : null
   },
   serialize(value) {
     return value

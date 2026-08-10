@@ -32,6 +32,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-lora-catalog.js',
     'test-mood-tag.js',
     'test-prompt-builder-modules.js',
+    'test-prompt-compiler.js',
     'test-prompt-policy.js',
     'test-quick-create.js',
     'test-resource-scheduling.js',

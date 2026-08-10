@@ -8,7 +8,7 @@ export interface PromptPart {
   [key: string]: unknown
 }
 
-export type PromptEngine = 'sd' | 'anima'
+export type PromptEngine = 'sd' | 'anima' | 'krea2'
 
 export interface ModelProfile {
   id?: string
@@ -21,6 +21,7 @@ export interface ModelProfile {
   lora_name?: string
   lora_strength?: number
   exact_tokens?: string[]
+  exact_prefixes?: string[]
   match?: string[]
   quality_prefix?: string
   negative_prefix?: string
@@ -112,7 +113,7 @@ function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
 
-function formatAnimaToken(token: string, exactTokens: readonly string[] = []): string {
+function formatAnimaToken(token: string, exactTokens: readonly string[] = [], exactPrefixes: readonly string[] = []): string {
   const scores: string[] = []
   const exact: string[] = []
   let protectedToken = token.replace(/\bscore_(\d+)\b/gi, (_match, value: string) => {
@@ -120,7 +121,11 @@ function formatAnimaToken(token: string, exactTokens: readonly string[] = []): s
     scores.push(`score_${value}`)
     return marker
   })
-  ;[...new Set(exactTokens)]
+  const protectedExact = [...new Set(exactTokens)].concat(
+    tokenize(token).filter(value => /^(?:nene_|natsume_)[a-z0-9_]+$/i.test(value)),
+    tokenize(token).filter(value => exactPrefixes.some(prefix => value.toLowerCase().startsWith(prefix.toLowerCase()))),
+  )
+  ;[...new Set(protectedExact)]
     .filter(value => value.trim())
     .sort((a, b) => b.length - a.length)
     .forEach(value => {
@@ -142,19 +147,20 @@ function formatAnimaToken(token: string, exactTokens: readonly string[] = []): s
 }
 
 /** Format one prompt for the model family without changing the SD contract. */
-export function formatPromptForEngine(text: string, engine: PromptEngine = 'sd', exactTokens: readonly string[] = []): string {
+export function formatPromptForEngine(text: string, engine: PromptEngine = 'sd', exactTokens: readonly string[] = [], exactPrefixes: readonly string[] = []): string {
   const raw = String(text || '')
   if (engine === 'sd') return norm(raw)
+  if (engine === 'krea2') return raw.replace(/<lora:[^>]+>/gi, '').replace(/\bBREAK\b/gi, ', ').trim()
   const clean = raw.replace(/<lora:[^>]+>/gi, '')
   return splitBreaks(dedupeText(clean))
-    .map(section => tokenize(section).map(token => formatAnimaToken(token, exactTokens)).filter(Boolean).join(', '))
+     .map(section => tokenize(section).map(token => formatAnimaToken(token, exactTokens, exactPrefixes)).filter(Boolean).join(', '))
     .filter(Boolean)
     .join(' BREAK ')
 }
 
 export function formatPromptForProfile(text: string, profile: ModelProfile | null, fallbackEngine: PromptEngine = 'sd'): string {
   const engine = profile?.engine || (profile?.tag_style === 'space' ? 'anima' : fallbackEngine)
-  return formatPromptForEngine(text, engine, profile?.exact_tokens || [])
+  return formatPromptForEngine(text, engine, profile?.exact_tokens || [], profile?.exact_prefixes || [])
 }
 
 export function normalizeKey(token: string): string {
@@ -236,7 +242,7 @@ function normalizeModelName(name: string): string {
   return String(name || '').toLowerCase().replace(/\.(safetensors|ckpt)$/i, '').replace(/\s*\[[0-9a-f]+\]\s*$/i, '').trim()
 }
 
-/** 按当前 checkpoint 名匹配 model_profiles；匹配不到时回退首个 profile（本站 LoRA 基于 WAI/Illustrious） */
+/** 按当前模型名匹配 profile；只有 SD 保留本站历史默认 profile 回退。 */
 export function resolveModelProfile(
   profiles: ModelProfile[],
   modelName?: string,
@@ -257,7 +263,7 @@ export function resolveModelProfile(
     )
     if (hit) return hit
   }
-  return engine === 'anima' ? null : list[0]
+  return engine === 'sd' ? list[0] : null
 }
 
 export function sceneRating(scene: unknown): 'R18' | 'R15' | 'ALL' {
@@ -400,7 +406,7 @@ export function characterControlTokens(
   return [...new Set(controls)]
 }
 
-function profileRatingTag(profile: ModelProfile | null, scene: unknown): string {
+export function profileRatingTag(profile: ModelProfile | null, scene: unknown): string {
   if (!profile) return ''
   const rating = sceneRating(scene)
   if (rating === 'R18') return String(profile.rating_r18 || '')

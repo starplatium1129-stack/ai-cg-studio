@@ -32,6 +32,7 @@ export interface DraftSelections {
 export interface PromptBuilderDraft {
   updatedAt: number
   story?: string
+  visualDescription?: string
   char?: DraftCharKey
   sceneId?: string | null
   sceneTitle?: string | null
@@ -121,6 +122,7 @@ export function parsePromptBuilderDraft(value: unknown): PromptBuilderDraft | nu
   if (!isRecord(value)) return null
   const updatedAt = finiteNumber(value.updatedAt)
   const story = stringValue(value.story)
+  const visualDescription = stringValue(value.visualDescription) || ''
   const sceneId = nullableString(value.sceneId)
   if (!updatedAt || (!sceneId && !story)) return null
 
@@ -143,6 +145,7 @@ export function parsePromptBuilderDraft(value: unknown): PromptBuilderDraft | nu
   return {
     updatedAt,
     story,
+    visualDescription,
     char,
     sceneId,
     sceneTitle: nullableString(value.sceneTitle),
@@ -181,7 +184,7 @@ export function parseProjectOptions(value: unknown): ProjectOption[] {
 
 function parseModelProfile(value: unknown): ModelProfile | null {
   if (!isRecord(value)) return null
-  const engine = value.engine === 'sd' || value.engine === 'anima' ? value.engine : undefined
+  const engine = value.engine === 'sd' || value.engine === 'anima' || value.engine === 'krea2' ? value.engine : undefined
   const tagStyle = value.tag_style === 'underscore' || value.tag_style === 'space' ? value.tag_style : undefined
   const negativeMode = value.negative_mode === 'merge' || value.negative_mode === 'replace'
     ? value.negative_mode
@@ -201,6 +204,7 @@ function parseModelProfile(value: unknown): ModelProfile | null {
     lora_name: stringValue(value.lora_name),
     lora_strength: finiteNumber(value.lora_strength),
     exact_tokens: stringList(value.exact_tokens),
+    exact_prefixes: stringList(value.exact_prefixes),
     match: stringList(value.match),
     quality_prefix: stringValue(value.quality_prefix),
     negative_prefix: stringValue(value.negative_prefix),

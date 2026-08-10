@@ -19,7 +19,7 @@
 - 从场景直接进入导演工作台，调整故事、情绪、镜头、构图、光照与色彩
 - 自动组合 Positive / Negative Prompt，并按场景注入对应 LoRA
 - 连接 AUTOMATIC1111、Forge 或 ReForge，直接读取模型与采样配置并生成图片
-- SD/WAI 是当前生产出图路径；ComfyUI 只通过应用 API 提供 Anima 和 WebUI 离线时的 basic WAI fallback，不等价提供 hires.fix、detailer 或 ControlNet 能力
+- SD/WAI 是当前生产出图路径；ComfyUI 通过应用 API 提供 Anima、Krea 2 Turbo 实验自然语言出图和 WebUI 离线时的 basic WAI fallback。Krea 无角色 LoRA/negative，身份不保证；不等价提供 hires.fix、detailer 或 ControlNet 能力
 - 在当前 reForge 环境中自动增强双人构图：Regional Prompter 分离提示词区域，逐场景 OpenPose 图稳定站位，ADetailer 只在远景双人脸上保守启用
 - 在"角色房间"中连接本机 Ollama，与宁宁或夏目进行流式文字聊天；句子级语音流水线边生成、边翻译、边合成、顺序播放，Live2D 立绘随真实语音振幅对口型、随情感切换表情
 - 控制面板提供显存资源调度：绘图优先 / 聊天优先一键切换，语音、WebUI、Ollama 可单独启停

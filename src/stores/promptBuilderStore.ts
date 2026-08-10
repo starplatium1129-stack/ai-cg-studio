@@ -32,10 +32,10 @@ function historyIdSeq(now: number): number {
 }
 
 export type CharKey = 'nene' | 'natsume' | 'triad'
-export type DrawEngine = 'sd' | 'anima'
+export type DrawEngine = 'sd' | 'anima' | 'krea2'
 
 export interface Scene {
-  id: string; title: string; story?: string; prompt?: string; tags?: string[]
+  id: string; title: string; story?: string; prompt?: string; tags?: string[]; visualDescription?: string
   char?: string; category?: string; season?: string; series?: string
   rating?: string; mature?: boolean; lora?: string; timeOfDay?: string
   lighting?: string; camera?: string; negative?: string
@@ -45,7 +45,7 @@ export interface Scene {
 export interface HistoryEntry {
   id: number; timestamp: number; character: CharKey
   scene: string | null; sceneTitle: string | null
-  story: string; prompt: string; negative: string; seed: number
+  story: string; visualDescription?: string; prompt: string; negative: string; seed: number
   emotion: string[]; shot: string | null; lighting: string | null
   composition: string | null; colorMood: string | null
   manual_tags: string[]; lora: string | null
@@ -110,6 +110,7 @@ export const RECOMMENDED_TAGS = [
 export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   // ── Core director state ─────────────────────────────────────────────────
   const story     = ref('')
+  const visualDescription = ref('')
   const char      = ref<CharKey>('nene')
   const colorMood = ref<string | null>(null)
   const concise   = ref(false)
@@ -260,7 +261,8 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     sceneId.value       = scene.id
     sceneBaseStory.value = scene.story ?? ''
     story.value         = scene.story ?? story.value
-    if (scene.tags) manualTags.value = new Set(scene.tags.slice(0, 20))
+    // Search metadata is not prompt input. Visual prose must be explicit.
+    visualDescription.value = ''
     if (scene.char && scene.char !== 'both' && scene.char !== 'triad') {
       char.value = scene.char as CharKey
     }
@@ -278,7 +280,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   }
 
   function clearScene(opts: { keepStory?: boolean } = {}) {
-    sceneId.value = null; sceneBaseStory.value = ''; manualTags.value = new Set()
+    sceneId.value = null; sceneBaseStory.value = ''; visualDescription.value = ''; manualTags.value = new Set()
     selections.emotion = []; selections.shot = null; selections.lighting = null
     selections.composition = null; colorMood.value = null
     if (!opts.keepStory) story.value = ''
@@ -350,6 +352,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     return {
       updatedAt: Date.now(),
       story: story.value,
+      visualDescription: visualDescription.value,
       char: char.value,
       sceneId: sceneId.value,
       sceneTitle: activeScene.value?.title ?? null,
@@ -365,6 +368,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
 
   function applyDraft(d: PromptBuilderDraft) {
     if (typeof d.story === 'string') story.value = d.story
+    if (typeof d.visualDescription === 'string') visualDescription.value = d.visualDescription
     if (d.char) char.value = d.char
     if (d.sceneId !== undefined) sceneId.value = d.sceneId
     if (d.sceneBaseStory !== undefined) sceneBaseStory.value = d.sceneBaseStory
@@ -456,7 +460,8 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
         character: char.value,
         scene: sceneId.value,
         sceneTitle: activeScene.value?.title ?? null,
-        story: story.value,
+         story: story.value,
+         visualDescription: visualDescription.value,
         prompt: entry.prompt,
         negative: entry.negative ?? '',
         seed: entry.seed ?? lastSeed.value ?? -1,
@@ -520,7 +525,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   }
 
   return {
-    story, char, colorMood, concise, sceneId, sceneBaseStory,
+    story, visualDescription, char, colorMood, concise, sceneId, sceneBaseStory,
     selections, manualTags, projectId,
     scenes, curation, loraMeta, presets, modelProfiles, tags, characters, dataReady,
     history, projects,

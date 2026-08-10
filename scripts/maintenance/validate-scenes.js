@@ -318,7 +318,7 @@ for (const profile of modelProfiles) {
   if (!Array.isArray(profile.match) || !profile.match.length) errors.push(label + ': missing model match patterns');
   if (typeof profile.quality_prefix !== 'string'
     || typeof profile.negative_prefix !== 'string'
-    || !profile.negative_prefix.trim()) {
+    || (profile.engine !== 'krea2' && !profile.negative_prefix.trim())) {
     errors.push(label + ': invalid prompt prefixes');
   }
   if (!profile.sampler || !Number.isFinite(Number(profile.steps)) || !Number.isFinite(Number(profile.cfg))) errors.push(label + ': invalid generation defaults');

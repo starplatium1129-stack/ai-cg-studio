@@ -248,8 +248,8 @@ function createGateway(options) {
   }));
   app.use(sdProxy);
 
-  // ComfyUI 原生端点不再对浏览器暴露。Anima 只能通过 /api/anima/* 访问
-  // 服务端固定工作流；根 prompt/history/queue/view 等路径统一回 JSON 404。
+  // ComfyUI 原生端点不再对浏览器暴露。浏览器只能通过应用级 /api/anima/*
+  // 与 /api/creative/* 访问服务端固定工作流；根 prompt/history/queue/view 等路径统一回 JSON 404。
   app.use([
     '/sdapi', '/controlnet', '/adetailer', '/comfy',
     '/prompt', '/queue', '/history', '/object_info', '/interrupt', '/view'

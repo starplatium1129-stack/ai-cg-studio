@@ -262,6 +262,7 @@
       "anima-base-v1.0",
       "anima-aesthetic-v1.1"
     ],
+    "prompt_contract": { "exact_prefixes": ["nene_"], "exact_tokens": ["ayachi_nene", "white_hair", "very_long_hair", "low_twintails", "purple_eyes", "pink_hair_ribbons", "hair_ribbon", "hair_between_eyes", "nene_r18", "nene_witch_canonical", "nene_school_uniform", "nene_sailor_uniform", "nene_red_cardigan_uniform", "nene_blue_pajamas", "nene_green_sleepwear", "nene_bat_dress", "nene_black_dress"] },
     "test_scene": [
       "sc001",
       "sc010",
@@ -395,6 +396,7 @@
       "anima-base-v1.0",
       "anima-aesthetic-v1.1"
     ],
+    "prompt_contract": { "exact_prefixes": ["natsume_"], "exact_tokens": ["shiki_natsume", "very_long_black_hair", "golden_yellow_eyes", "two_red_hairclips", "mole_under_eye", "no_hair_ribbon", "natsume_r18", "natsume_cafe_uniform", "natsume_pink_cafe_uniform", "natsume_official_qipao", "natsume_maid_uniform", "natsume_winter_coat", "natsume_sleepwear"] },
     "test_scene": [
       "sc005",
       "sc018",

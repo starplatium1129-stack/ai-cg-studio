@@ -21,7 +21,7 @@ This is an unofficial, non-commercial fan project and is not affiliated with or 
 - A director workspace for story, character, mood, camera, composition, lighting, and color
 - Automatic Positive / Negative Prompt assembly and scene-aware LoRA injection
 - Direct generation through AUTOMATIC1111, Forge, or ReForge
-- SD/WAI remains the production generation path. ComfyUI is used behind the application API for Anima and basic WAI fallback only when WebUI is offline; it is not an equivalent hires.fix, detailer, or ControlNet backend.
+- SD/WAI remains the production generation path. ComfyUI is used behind the application API for Anima, experimental Krea 2 Turbo natural-language generation, and basic WAI fallback only when WebUI is offline; Krea has no character LoRA or negative prompt and identity is not guaranteed. It is not an equivalent hires.fix, detailer, or ControlNet backend.
 - Automatic dual-character composition enhancement on the configured reForge setup: Regional Prompter separates Nene and Natsume, scene-specific OpenPose maps stabilize placement, and conservative ADetailer repair is limited to distant dual faces. Single-character generation keeps the audited baseline unchanged.
 - An optional local character room backed by Ollama: stream a conversation with Nene or Natsume, with a sentence-level voice pipeline that translates and synthesizes each sentence as it streams, Live2D lip sync driven by real audio amplitude, emotion-matched expressions, and automatic Ollama unload after idle to free VRAM.
 - A VRAM scheduler in the control panel: one-click draw-first / chat-first modes (release before load), individual start/stop for voice, WebUI and Ollama, and no auto-start for the voice service by default.
