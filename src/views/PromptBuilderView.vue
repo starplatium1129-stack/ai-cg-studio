@@ -119,35 +119,14 @@
           </template>
 
           <template v-else>
-            <input v-model="popularSearch" class="popular-search" type="search"
-              placeholder="搜索角色或作品，如 raiden / Saber / Re:Zero" aria-label="搜索热门角色" />
-            <div class="popular-grid" role="group" aria-label="热门角色">
-              <button v-for="character in filteredPopularCharacters" :key="character.id"
-                type="button" class="popular-card"
-                :class="{ active: pb.subject.kind === 'popular' && pb.subject.characterId === character.id }"
-                :aria-pressed="pb.subject.kind === 'popular' && pb.subject.characterId === character.id"
-                @click="selectPopularCharacter(character)">
-                <span class="popular-card-initial" aria-hidden="true">{{ character.displayName.charAt(0) }}</span>
-                <span class="popular-card-name">{{ character.displayName }}</span>
-                <span class="popular-card-franchise">{{ character.franchise }}</span>
-              </button>
-            </div>
-            <div v-if="popularCharacter" class="popular-outfits">
-              <div class="popular-outfits-head">
-                <strong>{{ popularCharacter.displayName }} · {{ popularCharacter.originalName }}</strong>
-                <span class="popular-badge">{{ popularCharacter.recommendedEngine === 'krea2-turbo-fp8' ? '推荐 Krea 2' : '推荐 Anima Aesthetic' }}</span>
-                <span class="popular-nolora-badge">无需 LoRA</span>
-              </div>
-              <div class="outfit-chips" role="group" aria-label="官方服装">
-                <button v-for="outfit in popularCharacter.outfits" :key="outfit.id"
-                  type="button" class="outfit-chip"
-                  :class="{ active: popularOutfit?.id === outfit.id }"
-                  :aria-pressed="popularOutfit?.id === outfit.id"
-                  @click="selectPopularOutfit(outfit.id)">
-                  {{ outfit.name }}
-                </button>
-              </div>
-            </div>
+            <PopularCharacterPicker
+              v-model:search="popularSearch"
+              :characters="pb.popularCharacters"
+              :selected-character-id="pb.subject.kind === 'popular' ? pb.subject.characterId : ''"
+              :selected-outfit-id="pb.subject.kind === 'popular' ? pb.subject.outfitId : ''"
+              @select="selectPopularCharacter"
+              @select-outfit="selectPopularOutfit"
+            />
           </template>
         </div>
 
@@ -155,38 +134,19 @@
         <div class="panel step-panel" id="stepScene">
           <template v-if="pb.isPopular">
             <div class="panel-title">场景建议 · Blueprint<span class="scene-count-badge">{{ popularBlueprintPool.length }}</span></div>
-            <div class="blueprint-cats" role="group" aria-label="蓝图分类">
-              <button v-for="category in ['all', ...blueprintCategories]" :key="category"
-                type="button" class="blueprint-cat-btn" :class="{ active: popularCategory === category }"
-                :aria-pressed="popularCategory === category"
-                @click="popularCategory = category">{{ category === 'all' ? '全部' : category }}</button>
-            </div>
-            <div class="blueprint-reco-head">
-              <span v-if="!showAllBlueprints" class="blueprint-reco-note" role="status">推荐 {{ recommendedBlueprints.length }} 个场景</span>
-              <span v-else class="blueprint-reco-note" role="status">{{ filteredPopularBlueprints.length }} 个可选场景</span>
-              <button type="button" class="blueprint-reco-btn" @click="toggleBlueprintList">
-                {{ showAllBlueprints ? '收起 · 只看推荐' : '查看全部' }}
-              </button>
-              <button v-if="!showAllBlueprints" type="button" class="blueprint-reco-btn" @click="rotateBlueprintSet">换一批</button>
-            </div>
-            <div v-if="!pb.dataReady" class="scene-loading">正在加载热门角色场景…</div>
-            <div v-else-if="!filteredPopularBlueprints.length" class="scene-empty">没有符合条件的场景建议</div>
-            <div v-else class="blueprint-list">
-              <button v-for="blueprint in (showAllBlueprints ? filteredPopularBlueprints : recommendedBlueprints)"
-                :key="blueprint.id" type="button" class="blueprint-card"
-                :class="{ active: pb.subject.kind === 'popular' && pb.subject.blueprintId === blueprint.id }"
-                :data-adult="blueprint.adult ? 'true' : 'false'"
-                :aria-pressed="pb.subject.kind === 'popular' && pb.subject.blueprintId === blueprint.id"
-                @click="selectBlueprint(blueprint)">
-                <span class="blueprint-title">{{ blueprint.title }}<span v-if="blueprint.adult" class="scene-rating-tag">R18</span></span>
-                <span class="blueprint-desc">{{ blueprint.description }}</span>
-                <span class="blueprint-meta">
-                  <span>{{ blueprint.category }}</span>
-                  <span>{{ blueprint.location }}</span>
-                  <span>{{ blueprint.recommendedSize.replace('x', '×') }}</span>
-                </span>
-              </button>
-            </div>
+            <PopularBlueprintPicker
+              :pool="popularBlueprintPool"
+              :categories="blueprintCategories"
+              :recommended="recommendedBlueprints"
+              :filtered="filteredPopularBlueprints"
+              v-model:category="popularCategory"
+              v-model:show-all="showAllBlueprints"
+              :data-ready="pb.dataReady"
+              :selected-blueprint-id="pb.subject.kind === 'popular' ? pb.subject.blueprintId ?? '' : ''"
+              @select="selectBlueprint"
+              @rotate="rotateBlueprintSet"
+              @toggle="toggleBlueprintList"
+            />
           </template>
           <template v-else>
             <div class="panel-title">Scene · <span class="scene-count-badge">{{ availableScenes.length }}</span></div>
@@ -586,20 +546,12 @@
             <span>风格配方 · Style</span>
             <span class="decision-current">{{ recipeSummary }}</span>
           </summary>
-          <div class="recipe-list" role="group" aria-label="Krea 风格配方">
-            <button type="button" class="recipe-opt"
-              :class="{ selected: pb.kreaStyleId === null }"
-              :aria-pressed="pb.kreaStyleId === null"
-              @click="setKreaStyleRecipe(null)">自动</button>
-            <button v-for="recipe in styleRecipesForSubject" :key="recipe.id"
-              type="button" class="recipe-opt"
-              :class="{ selected: pb.kreaStyleId === recipe.id, adult: recipe.adult }"
-              :aria-pressed="pb.kreaStyleId === recipe.id"
-              @click="setKreaStyleRecipe(recipe.id)">
-              {{ recipe.name }}<span v-if="recipe.adult" class="scene-rating-tag">R18</span>
-            </button>
-          </div>
-          <p class="popular-tags-note">风格短语按官方散文段结构放在 Prompt 最前；「自动」按场景+引擎推荐。成人配方仅对成年角色可见。</p>
+          <PopularRecipePicker
+            :recipes="styleRecipesForSubject"
+            :selected-id="pb.kreaStyleId"
+            :summary="recipeSummary"
+            @select="setKreaStyleRecipe"
+          />
         </details>
 
       </div>
@@ -712,6 +664,11 @@ import {
   settingsRepository,
   type DrawEngine,
 } from '@/storage/settingsRepository'
+
+// 热门角色面板按需懒加载：仅在 isPopular 时渲染，避免常驻占用主 chunk。
+const PopularCharacterPicker = defineAsyncComponent(() => import('@/components/popular/PopularCharacterPicker.vue'))
+const PopularBlueprintPicker = defineAsyncComponent(() => import('@/components/popular/PopularBlueprintPicker.vue'))
+const PopularRecipePicker = defineAsyncComponent(() => import('@/components/popular/PopularRecipePicker.vue'))
 
 const router = useRouter()
 const route = useRoute()
@@ -856,20 +813,6 @@ const previousBlueprintIds = ref<string[] | null>(null)
 const popularCharacter = computed<PopularCharacter | null>(() => {
   if (pb.subject.kind !== 'popular') return null
   return findPopularCharacter(pb.popularCharacters, pb.subject.characterId)
-})
-const popularOutfit = computed(() => {
-  const character = popularCharacter.value
-  if (!character) return null
-  if (pb.subject.kind !== 'popular') return null
-  return findPopularOutfit(character, pb.subject.outfitId)
-})
-const filteredPopularCharacters = computed(() => {
-  const keyword = popularSearch.value.trim().toLowerCase()
-  if (!keyword) return pb.popularCharacters
-  return pb.popularCharacters.filter(character =>
-    [character.displayName, character.originalName, character.id, character.franchise, ...character.aliases]
-      .some(text => text.toLowerCase().includes(keyword)),
-  )
 })
 const popularBlueprintPool = computed(() =>
   eligibleBlueprints(pb.sceneBlueprints, popularCharacter.value, { adultEnabled: pb.showMatureScenes }),
@@ -2156,224 +2099,9 @@ watch(() => pb.sdModelName, (name) => {
   background: rgba(240, 98, 146, 0.16);
   color: var(--pb-active-text);
 }
-.popular-search {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 7px 10px;
-  border-radius: var(--r-sm);
-  border: 1px solid var(--border-strong);
-  background: var(--glass-fill);
-  color: inherit;
-  font-size: var(--fs-label-sm);
-  margin-bottom: 8px;
-}
-.popular-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
-  gap: 6px;
-  max-height: 240px;
-  overflow-y: auto;
-  margin-bottom: 8px;
-}
-.popular-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  padding: 8px 6px;
-  border-radius: var(--r-md);
-  border: 1px solid var(--border-soft);
-  background: var(--glass-fill);
-  color: inherit;
-  cursor: pointer;
-}
-.popular-card.active {
-  border-color: var(--pb-active);
-  background: rgba(240, 98, 146, 0.14);
-}
-.popular-card-initial {
-  width: 34px;
-  height: 34px;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--pb-active), var(--pb-active-grad));
-  color: #fff;
-  font-weight: 700;
-  font-size: var(--fs-body);
-  margin-bottom: 4px;
-}
-.popular-card-name {
-  font-size: var(--fs-label-sm);
-  line-height: 1.2;
-  text-align: center;
-}
-.popular-card-franchise {
-  font-size: var(--fs-mono-xs);
-  opacity: 0.55;
-  text-align: center;
-  line-height: 1.2;
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.popular-outfits {
-  border-top: 1px dashed var(--border-soft);
-  padding-top: 8px;
-}
-.popular-outfits-head {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-bottom: 6px;
-  font-size: var(--fs-label-sm);
-}
-.popular-badge,
-.popular-nolora-badge {
-  font-size: var(--fs-mono-xs);
-  padding: 2px 8px;
-  border-radius: var(--r-pill);
-  border: 1px solid var(--border-strong);
-}
-.popular-badge {
-  color: var(--pb-badge-blue);
-  border-color: rgba(128, 216, 255, 0.4);
-}
-.popular-nolora-badge {
-  color: var(--pb-badge-green);
-  border-color: rgba(197, 225, 165, 0.4);
-}
-.outfit-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-.outfit-chip {
-  padding: 4px 10px;
-  border-radius: var(--r-pill);
-  border: 1px solid var(--border-strong);
-  background: var(--glass-fill);
-  color: inherit;
-  font-size: var(--fs-label-sm);
-  cursor: pointer;
-}
-.outfit-chip.active {
-  border-color: var(--pb-active);
-  background: rgba(240, 98, 146, 0.16);
-  color: var(--pb-active-text);
-}
-
-.blueprint-cats {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  margin: 4px 0 8px;
-}
-.blueprint-cat-btn {
-  padding: 3px 10px;
-  border-radius: var(--r-pill);
-  border: 1px solid var(--border-strong);
-  background: var(--glass-fill);
-  color: inherit;
-  font-size: var(--fs-mono-sm);
-  cursor: pointer;
-}
-.blueprint-cat-btn.active {
-  border-color: var(--pb-active);
-  background: rgba(240, 98, 146, 0.16);
-}
-.blueprint-reco-head {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-bottom: 8px;
-}
-.blueprint-reco-note {
-  font-size: var(--fs-mono-sm);
-  opacity: 0.6;
-}
-.blueprint-reco-btn {
-  padding: 3px 10px;
-  border-radius: var(--r-sm);
-  border: 1px solid var(--border-strong);
-  background: var(--glass-fill);
-  color: inherit;
-  font-size: var(--fs-mono-sm);
-  cursor: pointer;
-}
-.blueprint-list {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.blueprint-card {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  text-align: left;
-  padding: 8px 10px;
-  border-radius: var(--r-md);
-  border: 1px solid var(--border-soft);
-  background: var(--glass-fill);
-  color: inherit;
-  cursor: pointer;
-}
-.blueprint-card.active {
-  border-color: var(--pb-active);
-  background: rgba(240, 98, 146, 0.12);
-}
-.blueprint-title {
-  font-size: var(--fs-label);
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.blueprint-desc {
-  font-size: var(--fs-mono-sm);
-  opacity: 0.7;
-  line-height: 1.4;
-}
-.blueprint-meta {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  font-size: var(--fs-mono-xs);
-  opacity: 0.5;
-}
 .popular-tags-note {
   font-size: var(--fs-mono-sm);
   opacity: 0.6;
-  margin: 8px 0;
-}
-
-/* ── Krea 风格配方 ───────────────────────────────────────────────────────── */
-.recipe-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-.recipe-opt {
-  padding: 4px 10px;
-  border-radius: var(--r-pill);
-  border: 1px solid var(--border-strong);
-  background: var(--glass-fill);
-  color: inherit;
-  font-size: var(--fs-label-sm);
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-}
-.recipe-opt.selected {
-  border-color: var(--pb-active);
-  background: rgba(240, 98, 146, 0.16);
-  color: var(--pb-active-text);
-}
-.recipe-opt.adult {
-  border-color: rgba(244, 67, 54, 0.4);
+  margin: var(--s-2) 0;
 }
 </style>
