@@ -93,6 +93,7 @@ export function usePopularPromptAssembly(
       lighting: pb.selections.lighting,
       composition: pb.selections.composition,
       adultEnabled: adultEnabled.value,
+      visualDescription: pb.visualDescription,
       style: resolvedStyle.value,
     })
   })

@@ -182,6 +182,10 @@ test('popular creator · Anima no-LoRA: loraId omitted, workflow has no LoraLoad
   await page.locator('.blueprint-card').first().click()
   await expect(page.locator('.blueprint-card.active')).toHaveCount(1)
 
+  // 画面描述框输入必须真正进入无 LoRA 请求（此前被 outfit.prose 硬编码吞掉）。
+  await page.locator('#visualDescription').fill('The girl gently holds a bouquet of flowers, petals drifting onto her shoulder.')
+  await expect(page.locator('#visualDescription')).toHaveValue(/bouquet/)
+
   // 进入热门模式应自动切到 Anima；SD 按钮被禁用。
   await expect(page.locator('.engine-switch button').nth(1)).toHaveClass(/active/)
   await expect(page.locator('.engine-switch button').nth(0)).toBeDisabled()
@@ -195,6 +199,7 @@ test('popular creator · Anima no-LoRA: loraId omitted, workflow has no LoraLoad
   expect(bodies[0].character).toBeNull()
   expect(bodies[0].modelId).toBe('anima-aesthetic-v1.1')
   expect(String(bodies[0].prompt)).toContain('raiden_shogun')
+  expect(String(bodies[0].prompt)).toContain('bouquet')
   expect(String(bodies[0].prompt)).not.toMatch(/nene_|natsume_|ayachi_nene|shiki_natsume|<lora:/i)
 
   await expect(page.locator('.result-image-wrap img.result-image')).toHaveCount(1, { timeout: 30000 })

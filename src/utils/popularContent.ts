@@ -365,6 +365,8 @@ export interface PopularPromptOptions {
   lighting?: string | null
   composition?: string | null
   adultEnabled?: boolean
+  /** 用户画面描述（视觉描述框）；优先于服装散文，保证用户输入真正进入无 LoRA 出图。 */
+  visualDescription?: string
   /** Krea 风格配方（已按资格解析）；成人配方在此再 fail-closed 一次。 */
   style?: ResolvedStyle | null
 }
@@ -451,6 +453,11 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   const style = options.style
   if (style?.adult && !adultGranted) return null
 
+  // 用户画面描述优先（视觉描述框输入真正进入无 LoRA 出图），
+  // 空时退回服装散文，保证服装信息不丢。
+  const userVisual = String(options.visualDescription || '').trim()
+  const visualDescription = userVisual || outfit.prose
+
   if (engine === 'krea2') {
     const plan = createPromptPlan({
       subjectProse: character.identityProse,
@@ -461,7 +468,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
       composition: compositionToken ? [compositionToken] : [],
       manual,
       negative: '',
-      visualDescription: outfit.prose,
+      visualDescription,
       style: style ? [style.lead] : [],
       medium: style?.medium ?? '',
     })
@@ -489,7 +496,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     manual,
     negative: (blueprint?.negativeTokens || []).join(', '),
     rating: rating || (adultGranted ? 'nsfw' : ''),
-    visualDescription: outfit.prose,
+    visualDescription,
     // Anima 保持 exact-token + prose 混合：风格短语只取 lead 放最前。
     style: style ? [style.lead] : [],
   })

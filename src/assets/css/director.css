@@ -309,6 +309,13 @@
   .pb .story-chip { padding: 4px 12px; background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-pill); cursor: pointer; font:inherit; font-size: var(--fs-label-sm); color: var(--text-secondary); transition: border-color var(--t-fast),color var(--t-fast),background var(--t-fast),transform var(--t-fast) var(--ease-out); }
   .pb .story-chip:hover { border-color: var(--accent); color: var(--accent); }
 
+  /* Visual description */
+  .pb .visual-description-label { display:block; margin-top:var(--s-4); margin-bottom:var(--s-2); font-size:var(--fs-label-sm); color:var(--text-secondary); }
+  .pb .visual-description-input { width:100%; min-height:88px; padding:var(--s-3); background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-lg); color:var(--text-primary); font-size:var(--fs-body); line-height:1.7; outline:none; transition:border-color var(--t-fast),box-shadow var(--t-fast); resize:vertical; font-family:var(--font-sans); box-sizing:border-box; }
+  .pb .visual-description-input:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
+  .pb .visual-description-input::placeholder { color: var(--text-muted); }
+  .pb .visual-description-hint { margin:var(--s-2) 0 0; color:var(--text-muted); font-size:var(--fs-mono-sm); line-height:1.5; }
+
   /* Character */
   .pb .char-row { display: flex; gap: var(--s-3); }
   /* 窄栏里禁止竖排:字号与内距收紧,强制单行 */

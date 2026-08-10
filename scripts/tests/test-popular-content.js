@@ -109,6 +109,18 @@ test('prompt compiler: Anima keeps identity anchors exact, no studio pollution, 
   assert.ok(anima.prompt.includes('flower field'), 'blueprint tokens must be synthesized');
   assert.ok(anima.prompt.includes('japanese_clothes') || anima.prompt.includes('kimono'), 'outfit tokens must be synthesized');
   assert.ok(anima.negative.length > 0, 'Anima no-LoRA workflow keeps negative tokens');
+
+  var visualAnima = popular.buildPopularPromptPlan({
+    character: raiden, outfit: outfit, blueprint: blueprint, engine: 'anima', profile: null, adultEnabled: true,
+    visualDescription: 'The girl gently holds a bouquet of flowers, petals drifting onto her shoulder.',
+  });
+  assert.ok(visualAnima.prompt.includes('bouquet'), 'user visual description must enter the no-LoRA prompt');
+  assert.ok(!visualAnima.prompt.includes('long braid'), 'user visual description must replace the outfit prose fallback');
+  var fallbackAnima = popular.buildPopularPromptPlan({
+    character: raiden, outfit: outfit, blueprint: blueprint, engine: 'anima', profile: null, adultEnabled: true,
+  });
+  assert.ok(fallbackAnima.prompt.includes('long braid'), 'empty visual description falls back to outfit prose');
+
   var animaText = [anima.prompt, anima.negative].join(' ');
   assert.ok(!/(?:ayachi_nene|shiki_natsume)/i.test(animaText), 'no studio character name');
   assert.ok(!/(?:nene_|natsume_)[a-z0-9_]+/i.test(animaText), 'no studio control tokens');
