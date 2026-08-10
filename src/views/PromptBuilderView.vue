@@ -704,7 +704,7 @@ const drawEngine = ref<DrawEngine>(storedDrawEngine ?? 'sd')
 const animaState = ref<AnimaGenerationState>({
   phase: 'idle', online: false, checkMsg: 'Anima 状态检查中…', models: [], loras: [],
   prompt: '', negative: '', modelId: 'anima-base-v1.0', loraId: 'L_NENE_V20B_ANIMA',
-  loraStrength: 0.85, width: 832, height: 1216, steps: 30, cfg: 1.8,
+  loraStrength: 0.85, width: 832, height: 1216, steps: 40, cfg: 4.5,
   family: 'anima',
   sampler: 'er_sde', scheduler: 'sgm_uniform', seed: null,
   job: null, result: null, statusText: '', errorMsg: '',
