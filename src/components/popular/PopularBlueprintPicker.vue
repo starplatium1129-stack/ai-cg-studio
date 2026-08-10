@@ -79,7 +79,7 @@ const emit = defineEmits<{
 }
 .blueprint-cat-btn.active {
   border-color: var(--pb-active);
-  background: rgba(240, 98, 146, 0.16);
+  background: color-mix(in srgb, var(--mood-love) 16%, transparent);
 }
 .blueprint-reco-head {
   display: flex;
@@ -120,7 +120,7 @@ const emit = defineEmits<{
 }
 .blueprint-card.active {
   border-color: var(--pb-active);
-  background: rgba(240, 98, 146, 0.12);
+  background: color-mix(in srgb, var(--mood-love) 12%, transparent);
 }
 .blueprint-title {
   font-size: var(--fs-label);

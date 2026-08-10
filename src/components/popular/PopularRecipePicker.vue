@@ -54,11 +54,11 @@ const emit = defineEmits<{
 }
 .recipe-opt.selected {
   border-color: var(--pb-active);
-  background: rgba(240, 98, 146, 0.16);
+  background: color-mix(in srgb, var(--mood-love) 16%, transparent);
   color: var(--pb-active-text);
 }
 .recipe-opt.adult {
-  border-color: rgba(244, 67, 54, 0.4);
+  border-color: color-mix(in srgb, var(--danger) 40%, transparent);
 }
 .popular-tags-note {
   font-size: var(--fs-mono-sm);

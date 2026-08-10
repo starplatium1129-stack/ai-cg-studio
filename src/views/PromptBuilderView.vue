@@ -2040,11 +2040,11 @@ watch(() => pb.sdModelName, (name) => {
 
 <style scoped>
 .pb {
-  --pb-active: #f06292;
-  --pb-active-text: #f8bbd0;
-  --pb-active-grad: #ab47bc;
-  --pb-badge-blue: #80d8ff;
-  --pb-badge-green: #c5e1a5;
+  --pb-active: var(--mood-love);
+  --pb-active-text: var(--mood-love-text);
+  --pb-active-grad: var(--mood-tension);
+  --pb-badge-blue: var(--info);
+  --pb-badge-green: var(--success);
 }
 .engine-switch {
   --engine-active-border: #f06292;

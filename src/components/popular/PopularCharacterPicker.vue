@@ -105,7 +105,7 @@ const selectedOutfit = computed<PopularOutfit | null>(() => {
 }
 .popular-card.active {
   border-color: var(--pb-active);
-  background: rgba(240, 98, 146, 0.14);
+  background: color-mix(in srgb, var(--mood-love) 14%, transparent);
 }
 .popular-card-initial {
   width: 34px;
@@ -155,11 +155,11 @@ const selectedOutfit = computed<PopularOutfit | null>(() => {
 }
 .popular-badge {
   color: var(--pb-badge-blue);
-  border-color: rgba(128, 216, 255, 0.4);
+  border-color: color-mix(in srgb, var(--info) 40%, transparent);
 }
 .popular-nolora-badge {
   color: var(--pb-badge-green);
-  border-color: rgba(197, 225, 165, 0.4);
+  border-color: color-mix(in srgb, var(--success) 40%, transparent);
 }
 .outfit-chips {
   display: flex;
@@ -177,7 +177,7 @@ const selectedOutfit = computed<PopularOutfit | null>(() => {
 }
 .outfit-chip.active {
   border-color: var(--pb-active);
-  background: rgba(240, 98, 146, 0.16);
+  background: color-mix(in srgb, var(--mood-love) 16%, transparent);
   color: var(--pb-active-text);
 }
 </style>

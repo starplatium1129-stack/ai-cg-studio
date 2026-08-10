@@ -4,7 +4,10 @@
       "id": "wai_illustrious_v17",
       "engine": "sd",
       "name": "WAI Illustrious v17",
-      "match": ["waiillustrioussdxl_v170", "wai illustrious v17"],
+      "match": [
+        "waiillustrioussdxl_v170",
+        "wai illustrious v17"
+      ],
       "quality_prefix": "masterpiece, best quality, amazing quality",
       "negative_prefix": "bad quality, worst quality, worst detail, sketch, censor",
       "negative_mode": "replace",
@@ -23,7 +26,11 @@
       "id": "noobai_xl_11",
       "engine": "sd",
       "name": "NoobAI XL 1.1",
-      "match": ["noobai-xl-v1.1", "noobai xl 1.1", "noobai_xl_v1.1"],
+      "match": [
+        "noobai-xl-v1.1",
+        "noobai xl 1.1",
+        "noobai_xl_v1.1"
+      ],
       "quality_prefix": "masterpiece, best quality, newest, absurdres, highres",
       "negative_prefix": "worst quality, old, early, low quality, lowres, signature, username, logo, bad hands, mutated hands, mammal, anthro, furry",
       "negative_mode": "replace",
@@ -42,10 +49,14 @@
       "engine": "anima",
       "model_id": "anima-base-v1.0",
       "name": "Anima Base v1.0",
-      "match": ["anima-base-v1.0"],
+      "match": [
+        "anima-base-v1.0"
+      ],
       "tag_style": "space",
       "lora_in_prompt": false,
-      "exact_tokens": ["best_quality"],
+      "exact_tokens": [
+        "best_quality"
+      ],
       "quality_prefix": "masterpiece, best_quality, score_7",
       "negative_prefix": "worst quality, low quality, score_1, score_2, score_3, artist name, blurry, jpeg artifacts, chromatic aberration",
       "negative_mode": "replace",
@@ -53,10 +64,10 @@
       "rating_all": "safe",
       "rating_r15": "sensitive",
       "rating_r18": "nsfw",
-      "sampler": "res_multistep",
-      "scheduler": "simple",
-      "steps": 24,
-      "cfg": 3,
+      "sampler": "er_sde",
+      "scheduler": "sgm_uniform",
+      "steps": 30,
+      "cfg": 4.5,
       "size": "832×1216"
     },
     {
@@ -64,10 +75,14 @@
       "engine": "anima",
       "model_id": "anima-aesthetic-v1.1",
       "name": "Anima Aesthetic v1.1",
-      "match": ["anima-aesthetic-v1.1"],
+      "match": [
+        "anima-aesthetic-v1.1"
+      ],
       "tag_style": "space",
       "lora_in_prompt": false,
-      "exact_tokens": ["best_quality"],
+      "exact_tokens": [
+        "best_quality"
+      ],
       "quality_prefix": "",
       "negative_prefix": "worst quality, low quality, artist name, blurry, jpeg artifacts, chromatic aberration",
       "negative_mode": "replace",
@@ -75,10 +90,10 @@
       "rating_all": "safe",
       "rating_r15": "sensitive",
       "rating_r18": "nsfw",
-      "sampler": "res_multistep",
-      "scheduler": "simple",
-      "steps": 24,
-      "cfg": 3,
+      "sampler": "er_sde",
+      "scheduler": "sgm_uniform",
+      "steps": 30,
+      "cfg": 4.5,
       "size": "832×1216"
     },
     {
@@ -86,7 +101,9 @@
       "engine": "krea2",
       "model_id": "krea2-turbo-fp8",
       "name": "Krea 2 Turbo",
-      "match": ["krea2-turbo-fp8"],
+      "match": [
+        "krea2-turbo-fp8"
+      ],
       "tag_style": "space",
       "quality_prefix": "",
       "negative_prefix": "",
@@ -95,8 +112,17 @@
       "steps": 8,
       "cfg": 1,
       "size": "1024×1024",
-      "sizes": ["1024×1024", "1024×1536", "1536×1024"],
-      "capabilities": { "negative": false, "lora": false, "characterIdentity": false, "experimental": true }
+      "sizes": [
+        "1024×1024",
+        "1024×1536",
+        "1536×1024"
+      ],
+      "capabilities": {
+        "negative": false,
+        "lora": false,
+        "characterIdentity": false,
+        "experimental": true
+      }
     }
   ],
   "presets": [
