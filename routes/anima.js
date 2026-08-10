@@ -51,12 +51,10 @@ var LORAS = Object.freeze({
     minStrength:0.65,
     maxStrength:1
   },
-  L_NAT_V19_ANIMA_PREVIEW: {
-    file:'shiki_natsume_v19_anima_preview.safetensors',
-    name:'shiki_natsume_v19_anima_preview',
+  L_NAT_V20_ANIMA: {
+    file:'shiki_natsume_v20_anima_scientific_e12.safetensors',
+    name:'shiki_natsume_v20_anima_scientific_e12',
     character:'natsume',
-    preview:true,
-    validation:'experimental_preview',
     compatibleModels:['anima-base-v1.0', 'anima-aesthetic-v1.1'],
     minStrength:0.65,
     maxStrength:1
@@ -65,7 +63,7 @@ var LORAS = Object.freeze({
 
 var CHARACTERS = Object.freeze({
   nene: { id:'nene', label:'绫地宁宁', loraId:'L_NENE_V20B_ANIMA' },
-  natsume: { id:'natsume', label:'四季夏目', loraId:'L_NAT_V19_ANIMA_PREVIEW', preview:true, validation:'experimental_preview' }
+  natsume: { id:'natsume', label:'四季夏目', loraId:'L_NAT_V20_ANIMA' }
 });
 
 var ALLOWED_INPUT_KEYS = new Set([

@@ -12,9 +12,9 @@ const root = path.resolve(__dirname, '..', '..');
 const catalog = parseLoraCatalog(JSON.parse(
   fs.readFileSync(path.join(root, 'data', 'loras.json'), 'utf8')
 ));
-assert.strictEqual(catalog.length, 5, 'LoRA catalog must expose production models plus the authorized Natsume Anima preview');
+assert.strictEqual(catalog.length, 5, 'LoRA catalog must expose production models plus the promoted Natsume Anima v20');
 assert(catalog.some(entry => entry.id === 'L_NENE_V20_ANIMA'), 'v20 Anima LoRA must be registered');
-assert(catalog.some(entry => entry.id === 'L_NAT_V19_ANIMA_PREVIEW' && entry.experimental), 'Natsume Anima preview must be marked experimental');
+assert(catalog.some(entry => entry.id === 'L_NAT_V20_ANIMA' && !entry.experimental), 'Natsume Anima v20 must be registered and no longer experimental');
 assert(catalog.every(entry => entry.baseModel), 'current base_model fields must reach the model shelf');
 assert(catalog.every(entry => entry.character), 'current character fields must reach the model shelf');
 assert(catalog.every(entry => entry.triggerWords.length), 'legacy trigger fields must normalize to trigger words');

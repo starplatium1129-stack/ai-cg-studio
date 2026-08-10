@@ -82,7 +82,7 @@ test('anima panel and main button share one parent-owned request metadata snapsh
   expect((bodies[0] as { character: string }).character).toBe('nene')
 })
 
-test('anima derives the authorized preview from Natsume and blocks triad', async ({ page, request }) => {
+test('anima derives the promoted Natsume v20 LoRA and blocks triad', async ({ page, request }) => {
   test.setTimeout(240000)
   const bodies: Array<Record<string, unknown>> = []
   page.on('request', browserRequest => {
@@ -98,13 +98,13 @@ test('anima derives the authorized preview from Natsume and blocks triad', async
   await page.waitForTimeout(2200)
   await page.locator('#stepChar .char-btn').filter({ hasText: '夏目' }).click()
   await page.locator('.engine-switch button').nth(1).click()
-  await expect(page.locator('.anima-preview-note')).toContainText('实验预览')
+  await expect(page.locator('.anima-preview-note')).toHaveCount(0)
   await page.locator('.story-input').fill('夏目在咖啡馆里端来一杯咖啡')
   await page.locator('.anima-quick-panel > summary').click()
   await page.locator('.anima-quick-panel .anima-primary').click()
   await expect.poll(() => bodies.length, { timeout: 30000 }).toBe(1)
   expect(bodies[0].character).toBe('natsume')
-  expect(bodies[0].loraId).toBe('L_NAT_V19_ANIMA_PREVIEW')
+  expect(bodies[0].loraId).toBe('L_NAT_V20_ANIMA')
   await expect(page.locator('.result-image-wrap img.result-image')).toHaveCount(1, { timeout: 30000 })
 
   await page.locator('#stepChar .char-btn').filter({ hasText: '宁宁' }).click()

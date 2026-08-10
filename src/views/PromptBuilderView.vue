@@ -388,7 +388,7 @@
             <button type="button" class="engine-btn" :class="{ active: drawEngine === 'anima' }"
               :disabled="generationBusy || (!pb.isPopular && pb.char === 'triad')" :title="(!pb.isPopular && pb.char === 'triad') ? '双人模式不支持 Anima，请使用 SD 引擎' : undefined"
               @click="setDrawEngine('anima')">
-              Anima 引擎 <span class="engine-sub">{{ pb.isPopular ? 'Aesthetic · 无需 LoRA' : (pb.char === 'natsume' ? 'v19 E08 实验预览' : 'v20 LoRA') }}</span>
+              Anima 引擎 <span class="engine-sub">{{ pb.isPopular ? 'Aesthetic · 无需 LoRA' : 'v20 LoRA' }}</span>
             </button>
             <button type="button" class="engine-btn" :class="{ active: drawEngine === 'krea2' }"
               :disabled="generationBusy || (!pb.isPopular && pb.char === 'triad')" :title="(!pb.isPopular && pb.char === 'triad') ? 'Krea 2 首版暂不支持双角色身份构图，请使用 SD 引擎' : undefined" @click="setDrawEngine('krea2')">
@@ -711,7 +711,7 @@ const animaState = ref<AnimaGenerationState>({
 })
 const ANIMA_LORA_BY_CHARACTER = {
   nene: 'L_NENE_V20B_ANIMA',
-  natsume: 'L_NAT_V19_ANIMA_PREVIEW',
+  natsume: 'L_NAT_V20_ANIMA',
 } as const
 let animaStatusTimer: ReturnType<typeof setInterval> | null = null
 let animaRequestSerial = 0
@@ -1071,7 +1071,7 @@ function setDrawEngine(v: DrawEngine) {
     void refreshAnimaBackend()
   }
   pb.flash(v === 'anima'
-    ? (pb.isPopular ? '已切换到 Anima Aesthetic（无 LoRA 热门角色模式）' : (pb.char === 'natsume' ? '已切换到 Anima 实验预览（夏目 v19 E08，普通全身稳定性有限）' : '已切换到 Anima 引擎（ComfyUI + 宁宁 v20 LoRA）'))
+    ? (pb.isPopular ? '已切换到 Anima Aesthetic（无 LoRA 热门角色模式）' : '已切换到 Anima 引擎（ComfyUI + 角色 LoRA）')
     : v === 'krea2' ? '已切换到 Krea 2（自然语言、无角色 LoRA，身份不保证）' : '已切换到 SD 引擎（WebUI）')
 }
 
@@ -1348,9 +1348,7 @@ function metadataFromJob(job: AnimaPublicJob, request: AnimaRequest): AnimaJobMe
         scheduler: animaState.value.scheduler,
          seed: job.seed,
          character: request.character,
-        // 仅夏目 Anima LoRA 是实验预览；热门角色无 LoRA 与 Krea 都不是 preview。
-        // 不要因 character===null 给 popular Anima 误标"实验预览"。
-        preview: request.character === 'natsume' && request.loraId === 'L_NAT_V19_ANIMA_PREVIEW',
+        preview: false,
         createdAt: Date.now(),
         resultUrl: job.resultUrl,
       }
@@ -2022,9 +2020,7 @@ watch(() => pb.char, char => {
     if (char === 'triad') {
       setDrawEngine('sd')
        pb.flash('Anima 与 Krea 2 首版暂不支持双角色身份构图，已切回 SD')
-     } else if (char === 'natsume' && drawEngine.value === 'anima') {
-      pb.flash('已切换到夏目 Anima 实验预览（E08）')
-    }
+     }
   }
 })
 

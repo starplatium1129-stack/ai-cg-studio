@@ -104,7 +104,7 @@ export function usePromptAssembly(
 
   const controlLoraIds = computed<Record<string, string>>(() =>
     engine.value === 'anima'
-      ? { nene: 'ayachi_nene_v20_anima', natsume: 'shiki_natsume_v19_anima_preview' }
+      ? { nene: 'ayachi_nene_v20_anima', natsume: 'shiki_natsume_v20_anima_scientific_e12' }
       : loraIdByChar.value,
   )
 

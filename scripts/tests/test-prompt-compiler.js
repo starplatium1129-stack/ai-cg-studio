@@ -119,7 +119,7 @@ test('Anima profiles do not bind one character and LoRA contracts own exact cont
     assert.deepStrictEqual(profile.exact_tokens, ['best_quality']);
   }
   const nene = loras.find(lora => lora.id === 'L_NENE_V20_ANIMA');
-  const natsume = loras.find(lora => lora.id === 'L_NAT_V19_ANIMA_PREVIEW');
+  const natsume = loras.find(lora => lora.id === 'L_NAT_V20_ANIMA');
   assert(nene.prompt_contract.exact_prefixes.includes('nene_'));
   assert(natsume.prompt_contract.exact_prefixes.includes('natsume_'));
   assert(!nene.prompt_contract.exact_prefixes.includes('natsume_'));

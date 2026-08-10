@@ -262,7 +262,30 @@
       "anima-base-v1.0",
       "anima-aesthetic-v1.1"
     ],
-    "prompt_contract": { "exact_prefixes": ["nene_"], "exact_tokens": ["ayachi_nene", "white_hair", "very_long_hair", "low_twintails", "purple_eyes", "pink_hair_ribbons", "hair_ribbon", "hair_between_eyes", "nene_r18", "nene_witch_canonical", "nene_school_uniform", "nene_sailor_uniform", "nene_red_cardigan_uniform", "nene_blue_pajamas", "nene_green_sleepwear", "nene_bat_dress", "nene_black_dress"] },
+    "prompt_contract": {
+      "exact_prefixes": [
+        "nene_"
+      ],
+      "exact_tokens": [
+        "ayachi_nene",
+        "white_hair",
+        "very_long_hair",
+        "low_twintails",
+        "purple_eyes",
+        "pink_hair_ribbons",
+        "hair_ribbon",
+        "hair_between_eyes",
+        "nene_r18",
+        "nene_witch_canonical",
+        "nene_school_uniform",
+        "nene_sailor_uniform",
+        "nene_red_cardigan_uniform",
+        "nene_blue_pajamas",
+        "nene_green_sleepwear",
+        "nene_bat_dress",
+        "nene_black_dress"
+      ]
+    },
     "test_scene": [
       "sc001",
       "sc010",
@@ -486,14 +509,11 @@
     }
   },
   {
-    "id": "L_NAT_V19_ANIMA_PREVIEW",
-    "name": "shiki_natsume_v19_anima_preview",
-    "version": "1.9.0-preview",
+    "id": "L_NAT_V20_ANIMA",
+    "name": "shiki_natsume_v20_anima_scientific_e12",
+    "version": "2.0.0",
     "trigger": "shiki_natsume",
     "character": "NATSUME_001",
-    "file": "shiki_natsume_v19_anima_preview.safetensors",
-    "experimental": true,
-    "preview_label": "实验预览模型",
     "strength": {
       "default": 0.85,
       "min": 0.65,
@@ -503,34 +523,89 @@
       "anima-base-v1.0",
       "anima-aesthetic-v1.1"
     ],
-    "prompt_contract": { "exact_prefixes": ["natsume_"], "exact_tokens": ["shiki_natsume", "very_long_black_hair", "golden_yellow_eyes", "two_red_hairclips", "mole_under_eye", "no_hair_ribbon", "natsume_r18", "natsume_cafe_uniform", "natsume_pink_cafe_uniform", "natsume_official_qipao", "natsume_maid_uniform", "natsume_winter_coat", "natsume_sleepwear"] },
+    "prompt_contract": {
+      "exact_prefixes": [
+        "natsume_"
+      ],
+      "exact_tokens": [
+        "shiki_natsume",
+        "very_long_black_hair",
+        "golden_yellow_eyes",
+        "two_red_hairclips",
+        "mole_under_eye",
+        "no_hair_ribbon",
+        "natsume_r18",
+        "natsume_cafe_uniform",
+        "natsume_pink_cafe_uniform",
+        "natsume_official_qipao",
+        "natsume_maid_uniform",
+        "natsume_winter_coat",
+        "natsume_sleepwear"
+      ]
+    },
     "test_scene": [
       "sc005",
       "sc018",
       "sc050"
     ],
-    "description": "四季夏目 Anima v19 E08（step 312）实验预览模型。仅供已授权的单角色 Anima 预览，不改变生产 SD/WAI v18；普通全身稳定性有限。",
+    "description": "四季夏目角色 LoRA v20（Anima）。沿用宁宁 v20B 训练方式：触发词独占身份（caption 移除静态身份标签）、光照/氛围标签前置、tag shuffle + 逐标签 dropout 0.1、1e-4 学习率、rank 32；45 张唯一视觉组按近重复组隔离训练/冻结验证集。生产选择 epoch 12，同 prompt 同 seed 盲评中 3/5 场景胜出（旗袍/睡衣/R18），R18 发型保持黑长直。",
+    "dataset": {
+      "images": 45,
+      "composition": {
+        "safe": 14,
+        "sensitive": 14,
+        "nsfw": 11,
+        "explicit": 6,
+        "train": 39,
+        "held_out_validation": 6
+      },
+      "resolution": 1024,
+      "strategy": "group-aware frozen split by review.dedupe_group; trigger-only identity captions (static identity tags removed), explicit lighting tags near front, tag shuffle + RANDOM dropout 0.1, keep_tags_count 4"
+    },
     "training": {
-      "selected_checkpoint": "E08 (step 312)",
+      "selected_checkpoint": "epoch 12 (step 468)",
+      "selected_epoch": 12,
+      "selected_step": 468,
+      "rejected_checkpoint": "epoch 24 overfit (cafe identity softening, qipao texture blur); epoch 20 heavier multi-finger risk; v19 preview retained only winter atmosphere edge case",
       "resumed_from": "anima-base-v1.0",
-      "config": "OneTrainer/training_configs/shiki_natsume_v19_anima_scientific.json"
+      "rank": 32,
+      "alpha": 32,
+      "batch_size": 1,
+      "transformer_learning_rate": 0.0001,
+      "text_encoder_learning_rate": 0,
+      "text_encoder_stop_epoch": 0,
+      "epochs_run": 24,
+      "timestep_distribution": "LOGIT_NORMAL",
+      "layer_filter": "attn1,attn2,ff",
+      "config": "OneTrainer/training_configs/shiki_natsume_v20_anima_scientific.json"
+    },
+    "recommended_weight": {
+      "portrait": 0.85,
+      "fullbody": 0.85,
+      "complex_scene": 0.82
     },
     "base_model": "anima-base-v1.0",
     "trainer": "OneTrainer",
     "validation": {
-      "status": "experimental_preview",
-      "evaluated_at": "2026-08-09",
-      "method": "13W/2T/3L product matrix; identity, cafe uniform, low light and R18 strong; ordinary fullbody hard gate failed; no production promotion",
-      "matrix": "AnimaNatsumeV19ProductMatrix/2026-08-09 · E08 step 312",
-      "evidence": "Reviews/AnimaNatsumeV19ProductMatrix/2026-08-09/manual-audit.json",
-      "metrics": {
-        "总矩阵": "13W/2T/3L",
-        "普通全身": "hard gate failed",
-        "生产结论": "rejected"
+      "status": "passed",
+      "evaluated_at": "2026-08-11",
+      "method": "same-prompt same-seed production ComfyUI comparison of v19 preview / v20 e12 / v20 e24 across 5 scenes (cafe/qipao/winter/sleep/r18) x 1 seed, vision-audited per cell",
+      "baseline": "production shiki_natsume_v19_anima_preview at 0.85",
+      "matrix": "V19 vs V20 E12 vs V20 E24 x 5 scenarios; identity, outfit, anatomy, lighting, completeness reviewed per cell",
+      "hard_gates": {
+        "mean_face_score": 8.5,
+        "signature_feature_presence_rate": 0.75,
+        "critical_identity_error": 0
       },
-      "known_limitation": "普通全身构图与身份稳定性有限；修正 prompt 后 fullbody+identity 仅 2/3。不得视为生产晋级。",
+      "evidence": "Reviews/NatsumeAnimaV20Audit/2026-08-11_e12_vs_v19/contact_sheets",
+      "metrics": {
+        "盲评胜场": "E12 3/5（qipao 9.56 / sleep 9.54 / r18 9.26）；E24 1/5（cafe 9.42）；V19 1/5（winter 9.56）",
+        "身份稳定": "R18 场景 E12 唯一稳定黑长直（v19/e24 均退化短发）；泪痣在三个版本均未稳定复现（V19 遗留限制）",
+        "安全与 R18 隔离": "R18 仅 explicit 前缀场景生效；safe 场景无成人泄漏"
+      },
+      "known_limitation": "泪痣（mole under eye）随触发词-only 策略未稳定复现，与 V19 同限制；雪夜冬装氛围 E12 仍略逊 V19。",
       "scores_recorded": true,
-      "selection_reason": "用户明确授权把审核未晋级的 E08 作为实验预览接入；独立 ID/file/SHA，不改变 manual-audit decision=rejected。"
+      "selection_reason": "epoch 12 在 5 场景盲评中 3/5 胜出且总分最高（身份/画质/光影均衡），R18 发型保持最稳；epoch 24 过度拟合（校服身份软化、旗袍纹理糊），v19 仅在冬装氛围单点胜出。"
     }
   }
 ]

@@ -66,7 +66,7 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
        <p class="anima-hint">{{ state.checkMsg }}</p>
        <p v-if="state.family === 'krea2'" class="anima-preview-note"><strong>Krea 2 实验</strong> · 纯自然语言、无角色 LoRA，身份不保证；Prompt Enhancer 未启用。</p>
         <p v-else-if="noLoraMode" class="anima-preview-note"><strong>无需 LoRA</strong> · 通用底模直出，不加载角色 LoRA，身份由词条锚定</p>
-        <p v-else-if="selectedLora?.preview" class="anima-preview-note"><strong>实验预览</strong> · 夏目 v19 E08 · 普通全身稳定性有限</p>
+        <p v-else-if="selectedLora?.preview" class="anima-preview-note"><strong>实验预览</strong> · 此 LoRA 为实验版</p>
 
        <div class="anima-row">
          <label>底模</label>
