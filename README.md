@@ -21,6 +21,7 @@ This is an unofficial, non-commercial fan project and is not affiliated with or 
 - A director workspace for story, character, mood, camera, composition, lighting, and color
 - Automatic Positive / Negative Prompt assembly and scene-aware LoRA injection
 - Direct generation through AUTOMATIC1111, Forge, or ReForge
+- SD/WAI remains the production generation path. ComfyUI is used behind the application API for Anima and basic WAI fallback only when WebUI is offline; it is not an equivalent hires.fix, detailer, or ControlNet backend.
 - Automatic dual-character composition enhancement on the configured reForge setup: Regional Prompter separates Nene and Natsume, scene-specific OpenPose maps stabilize placement, and conservative ADetailer repair is limited to distant dual faces. Single-character generation keeps the audited baseline unchanged.
 - An optional local character room backed by Ollama: stream a conversation with Nene or Natsume, with a sentence-level voice pipeline that translates and synthesizes each sentence as it streams, Live2D lip sync driven by real audio amplitude, emotion-matched expressions, and automatic Ollama unload after idle to free VRAM.
 - A VRAM scheduler in the control panel: one-click draw-first / chat-first modes (release before load), individual start/stop for voice, WebUI and Ollama, and no auto-start for the voice service by default.
@@ -29,7 +30,7 @@ This is an unofficial, non-commercial fan project and is not affiliated with or 
 - Scene-aware Japanese voice references for neutral, gentle, happy, shy, serious, and sad delivery; Chinese keeps the stable neutral reference
 - Local history, ratings, favorites, notes, projects, and image storage, with a versioned JSON backup and restore flow
 - Temporary token-protected links for trusted friends to use your local SD WebUI
-- An optional desktop Companion app (Electron): a frameless, transparent, always-on-top floating character window for the chat room, with tray menu, global hotkeys, clipboard awareness, quiet-hours reminders, and a separate Atelier workspace window; start it with `npm run desktop` after building
+- Desktop Companion: Tauri 2 is the current mainline but D-10 real installation validation is not complete; Electron remains the stable fallback. Use `npm run dev:tauri` for Tauri development, `npm run package:tauri` for the NSIS build, or `npm run desktop` for the Electron fallback. `npm run package:desktop` builds the Electron directory package.
 
 ## Recommended setup
 
@@ -45,6 +46,8 @@ This is an unofficial, non-commercial fan project and is not affiliated with or 
 Public sharing requires `cloudflared` at its standard Windows install path. Without it, the local site and SD connection still work.
 
 See [STARTUP.md](STARTUP.md) for full setup and troubleshooting instructions.
+
+For the current implementation, verification baseline, blockers, and maintained document index, see [docs/project-status.md](docs/project-status.md).
 
 ## Data and privacy
 
@@ -77,6 +80,7 @@ See [STARTUP.md](STARTUP.md) for full setup and troubleshooting instructions.
 ├── services/               # TypeScript runtime services (Ollama, TTS, HTTP client…)
 ├── desktop/                # Electron Companion shell (main, preload, gateway supervisor)
 ├── desktop-dist/           # Compiled Electron main-process output (tsconfig.desktop.json)
+├── desktop-tauri/          # Tauri 2 shell, Native Live2D overlay, sidecar and packaging
 ├── types/                  # Shared TypeScript type definitions
 ├── data/                   # Runtime JSON: scenes, characters, tags, presets
 ├── assets/                 # Static assets: character images, Live2D models, vendor SDKs
@@ -108,6 +112,7 @@ The frontend is a **Vue 3 SPA** built with Vite and TypeScript.
 The backend is an **Express server** (`server.js`) that:
 - Serves the Vite production build from `dist/`
 - Proxies SD WebUI API (`/sdapi`, `/controlnet`, `/adetailer`)
+- Uses the application generation APIs for Anima and basic WAI ComfyUI fallback; advanced hires/detailer/ControlNet capability remains WebUI-dependent
 - Provides chat (`/api/chat`), voice (`/api/tts`, `/api/translate`), and Live2D status APIs
 - Hosts static `data/`, `assets/`, `tools/`, and `docs/` directories
 

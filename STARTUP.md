@@ -42,10 +42,14 @@
 
 ## 可选：桌面 Companion 应用
 
-构建后可用 Electron 启动桌面 Companion（`npm run desktop`）：无边框透明置顶的角色悬浮窗，内置角色聊天、托盘菜单（置顶 / 鼠标穿透 / 开机启动 / 打开运行时与日志）、全局快捷键（Ctrl+Shift+Space 显隐、Ctrl+Shift+A 打开 Atelier 工作台、Ctrl+Shift+P 切换鼠标穿透）、剪贴板感知与安静时段提醒；带 `--hidden` 参数启动时只驻留托盘不显示窗口（适合开机自启）。
+Electron 是稳定回退路径。构建后执行 `npm run desktop` 启动桌面 Companion：无边框透明置顶的角色悬浮窗，内置角色聊天、托盘菜单（置顶 / 鼠标穿透 / 开机启动 / 打开运行时与日志）、全局快捷键（Ctrl+Shift+Space 显隐、Ctrl+Shift+A 打开 Atelier 工作台、Ctrl+Shift+P 切换鼠标穿透）、剪贴板感知与安静时段提醒；带 `--hidden` 参数启动时只驻留托盘不显示窗口（适合开机自启）。
 
 - Companion 会自动拉起（或接管已运行的）本地网关，Atelier 工作台是完整网站窗口。
-- 打包安装版（`npm run package:desktop`）中场景内容维护不可用（数据位于只读应用包内），场景编辑请使用源码模式。
+- `npm run package:desktop` 构建 Electron 目录包；其中场景内容维护不可用（数据位于只读应用包内），场景编辑请使用源码模式。
+- Tauri 2 开发执行 `npm run dev:tauri`，构建 NSIS 执行 `npm run package:tauri`。Tauri 是当前桌面主线，但 D-10 真实安装、DPI/多屏、真实 TTS 和完整产品稳定性验收仍未完成，不能视为正式发布版本。
+- Tauri packaged 模式保留维护契约：场景维护相关接口返回 `501 DESKTOP_MAINTENANCE_UNAVAILABLE`；展示集与 home-hero 写入不受该限制。
+
+出图方面，SD/WAI 是生产主路径；ComfyUI 只通过应用 API 提供 Anima 和 WebUI 离线时的 basic WAI fallback，hires.fix、detailer 与 ControlNet 仍依赖 WebUI。
 
 ## 可选：GPT-SoVITS 角色语音
 

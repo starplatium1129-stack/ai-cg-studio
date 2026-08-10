@@ -1,4 +1,4 @@
-﻿# 绫季绘境
+# 绫季绘境
 
 > 从故事出发，把想画的瞬间整理成可以直接生成的 Galgame 风格 CG。
 
@@ -19,6 +19,7 @@
 - 从场景直接进入导演工作台，调整故事、情绪、镜头、构图、光照与色彩
 - 自动组合 Positive / Negative Prompt，并按场景注入对应 LoRA
 - 连接 AUTOMATIC1111、Forge 或 ReForge，直接读取模型与采样配置并生成图片
+- SD/WAI 是当前生产出图路径；ComfyUI 只通过应用 API 提供 Anima 和 WebUI 离线时的 basic WAI fallback，不等价提供 hires.fix、detailer 或 ControlNet 能力
 - 在当前 reForge 环境中自动增强双人构图：Regional Prompter 分离提示词区域，逐场景 OpenPose 图稳定站位，ADetailer 只在远景双人脸上保守启用
 - 在"角色房间"中连接本机 Ollama，与宁宁或夏目进行流式文字聊天；句子级语音流水线边生成、边翻译、边合成、顺序播放，Live2D 立绘随真实语音振幅对口型、随情感切换表情
 - 控制面板提供显存资源调度：绘图优先 / 聊天优先一键切换，语音、WebUI、Ollama 可单独启停
@@ -27,7 +28,7 @@
 - 将作品、参数、评分、收藏和备注保存在当前浏览器的 IndexedDB 中，并用 JSON 文件完整备份或恢复
 - 在作品册中按原始横竖比例欣赏成图，点击进入近全屏观画
 - 通过带 Token 的临时链接，让朋友使用你电脑上的 SD WebUI 出图
-- 可选的桌面 Companion 应用（Electron）：无边框透明置顶的角色悬浮窗，内置聊天、托盘菜单、全局快捷键、剪贴板感知与安静时段提醒，并附带独立的 Atelier 工作台窗口；构建后执行 pm run desktop 启动
+- 桌面 Companion：Tauri 2 是当前主线，但 D-10 真实安装验收尚未完成；Electron 仍是稳定回退。Tauri 开发执行 `npm run dev:tauri`，构建 NSIS 执行 `npm run package:tauri`；Electron 回退执行 `npm run desktop`，`npm run package:desktop` 构建 Electron 目录包
 
 ## 最常用的启动方式
 
@@ -52,6 +53,8 @@
 首次运行会安装 Node.js 依赖。公网分享依赖本机安装的 `cloudflared`；没有安装时本地网站和 SD 连接仍可使用。
 
 完整说明与排错方法见 [STARTUP.md](STARTUP.md)。
+
+当前实现、验证基线、阻断项和维护文档索引见 [docs/project-status.md](docs/project-status.md)。
 
 ## 使用流程
 
@@ -83,6 +86,7 @@ Scene 是创作的起点，Prompt 是它面向 Stable Diffusion 的输出。
 - 生产模式：Express 直接 serve Vite 构建产物 `dist/`
 - 开发模式：Vite dev server（`:5173`）通过代理把 API 请求转发到 Express（`:3000`）
 - 提供聊天、语音、Live2D 状态、维护等 API 接口
+- 通过应用 API 提供 Anima 和 basic WAI ComfyUI fallback；hires/detailer/ControlNet 仍依赖 WebUI
 - 静态 serve `data/`、`assets/`、`tools/`、`docs/` 目录
 
 **数据**（运行时 fetch，不被 Vite 打包）：
@@ -117,6 +121,8 @@ Scene 是创作的起点，Prompt 是它面向 Stable Diffusion 的输出。
 │   └── assets/css/         #   设计系统 Token、组件样式
 ├── routes/                 # Express API 路由（chat / voice / live2d / maintenance）
 ├── services/               # TypeScript 运行时服务（Ollama、TTS、HTTP…）
+├── desktop/                # Electron Companion 稳定回退壳
+├── desktop-tauri/          # Tauri 2 壳、Native Live2D overlay、sidecar 与打包
 ├── types/                  # 共享 TypeScript 类型定义
 ├── data/                   # 运行时 JSON 数据（scenes / characters / tags…）
 ├── assets/                 # 静态资源（角色立绘、Live2D、vendor SDK）
@@ -142,7 +148,6 @@ Scene 是创作的起点，Prompt 是它面向 Stable Diffusion 的输出。
 npm run validate        # 完整校验：design lint + 构建 + 类型检查 + 场景/内容契约 + 所有脚本测试
 npm run test:e2e        # Playwright 浏览器冒烟测试
 npm run typecheck       # TypeScript 检查（app + runtime）
-npm run optimize-scenes # 批量规范化新增场景的标签/参数
 npm run classify-ratings # 对齐场景内容分级
 ```
 

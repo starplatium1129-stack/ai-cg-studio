@@ -19,12 +19,7 @@
 
 ## 文档归档（docs/）
 
-`docs/` 子目录存放已完成使命、不再入文档站导航的历史文档（保留原相对路径与内部互链）：
-
-- `AI-CG-Studio-项目介绍.pptx` — 一次性项目介绍演示文稿
-- `arknights-inspired-web-design.md` — 明日方舟视觉语言研究底稿（结论已蒸馏进设计系统）
-- `atelier-archive-design-system.md` — 早期平面设计规范（部分条目与现行 token 矛盾，已由 DESIGN.md 取代）
-- `desktop-companion-research.md` — 桌面 Companion 可行性研究（决策已全部落地并编码进 AGENTS.md）
+旧设计研究和 Companion 可行性稿已删除：其结论分别由 `DESIGN.md`、`AGENTS.md`、`docs/project-status.md` 和当前桌面文档承载。这里仍可能保留一次性脚本或演示资产，但不再把过期资料当作项目契约。
 
 ## 注意事项
 
