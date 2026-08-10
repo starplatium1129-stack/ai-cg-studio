@@ -40,11 +40,22 @@ var LORAS = Object.freeze({
     compatibleModels:['anima-base-v1.0', 'anima-aesthetic-v1.1'],
     minStrength:0.65,
     maxStrength:1
+  },
+  L_NAT_V19_ANIMA_PREVIEW: {
+    file:'shiki_natsume_v19_anima_preview.safetensors',
+    name:'shiki_natsume_v19_anima_preview',
+    character:'natsume',
+    preview:true,
+    validation:'experimental_preview',
+    compatibleModels:['anima-base-v1.0', 'anima-aesthetic-v1.1'],
+    minStrength:0.65,
+    maxStrength:1
   }
 });
 
 var CHARACTERS = Object.freeze({
-  nene: { id:'nene', label:'绫地宁宁', loraId:'L_NENE_V20_ANIMA' }
+  nene: { id:'nene', label:'绫地宁宁', loraId:'L_NENE_V20_ANIMA' },
+  natsume: { id:'natsume', label:'四季夏目', loraId:'L_NAT_V19_ANIMA_PREVIEW', preview:true, validation:'experimental_preview' }
 });
 
 var ALLOWED_INPUT_KEYS = new Set([
@@ -381,6 +392,7 @@ function createAnimaService(config, options) {
   var engine = options.engine || 'anima';
   var provider = options.provider || 'comfy';
   var routeBase = options.routeBase || '/api/anima';
+  var loraRoot = options.loraRoot || path.join(config.AI_WORKSPACE_ROOT || path.resolve(config.ROOT_DIR, '..', 'AI'), 'ComfyUI', 'models', 'loras');
   var jobTtlMs = Number(options.jobTtlMs) > 0 ? Number(options.jobTtlMs) : JOB_TTL_MS;
   var cancelPollIntervalMs = Number(options.cancelPollIntervalMs) > 0
     ? Number(options.cancelPollIntervalMs) : CANCEL_POLL_INTERVAL_MS;
@@ -569,6 +581,12 @@ function createAnimaService(config, options) {
   }
 
   async function submit(job) {
+    if (engine === 'anima' && LORAS[job.input.loraId] && LORAS[job.input.loraId].preview) {
+      var loraFile = path.resolve(loraRoot, LORAS[job.input.loraId].file);
+      if (loraFile.indexOf(path.resolve(loraRoot) + path.sep) !== 0 || !fs.existsSync(loraFile)) {
+        throw serviceError(503, 'ANIMA_LORA_UNAVAILABLE', '所选 Anima LoRA 文件不可用');
+      }
+    }
     var response = await requestComfyJson(config, 'POST', '/prompt', {
       prompt:buildWorkflowForJob(job.input),
       client_id:clientId
@@ -601,7 +619,7 @@ function createAnimaService(config, options) {
         profileId:frozenInput.profileId || '', modelId:frozenInput.modelId, loraId:frozenInput.loraId,
         loraStrength:frozenInput.loraStrength, width:frozenInput.width, height:frozenInput.height,
         steps:frozenInput.steps, cfg:frozenInput.cfg, sampler:frozenInput.sampler || 'res_multistep', scheduler:frozenInput.scheduler || 'simple',
-        seed:frozenInput.seed, character:frozenInput.character || 'nene', createdAt:createdAt, resultUrl:null,
+        seed:frozenInput.seed, character:frozenInput.character || 'nene', preview:Boolean(LORAS[frozenInput.loraId] && LORAS[frozenInput.loraId].preview), createdAt:createdAt, resultUrl:null,
         provider:provider
       }),
       status:'queued',
@@ -688,7 +706,11 @@ function createAnimaService(config, options) {
     return {
       online:false,
       models:Object.keys(MODELS).map(function (id) { return { id:id, label:MODELS[id].label }; }),
-      loras:Object.keys(LORAS).map(function (id) { return { id:id, name:LORAS[id].name, character:LORAS[id].character }; }),
+      loras:Object.keys(LORAS).map(function (id) {
+        var lora = LORAS[id];
+        var file = path.resolve(loraRoot, lora.file);
+        return { id:id, name:lora.name, character:lora.character, preview:Boolean(lora.preview), validation:lora.validation || 'production', available:!lora.preview || fs.existsSync(file) };
+      }),
       characters:Object.keys(CHARACTERS).map(function (id) { return CHARACTERS[id]; }),
       pending:pendingCount(),
       maxPending:MAX_PENDING

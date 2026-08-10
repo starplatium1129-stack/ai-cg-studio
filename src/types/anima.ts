@@ -3,6 +3,9 @@ export interface AnimaOption {
   label?: string
   name?: string
   character?: string
+  preview?: boolean
+  validation?: string
+  available?: boolean
 }
 
 export type AnimaPhase = 'idle' | 'submitting' | 'running' | 'cancelling' | 'succeeded' | 'failed' | 'cancelled'
@@ -23,7 +26,8 @@ export interface AnimaJobMetadata {
   sampler: string
   scheduler: string
   seed: number
-  character: 'nene'
+  character: 'nene' | 'natsume'
+  preview?: boolean
   createdAt: number
   resultUrl: string | null
 }

@@ -83,15 +83,15 @@ export function usePromptAssembly(
 
   const controlLoraIds = computed<Record<string, string>>(() =>
     engine.value === 'anima'
-      ? { nene: 'ayachi_nene_v20_anima' }
+      ? { nene: 'ayachi_nene_v20_anima', natsume: 'shiki_natsume_v19_anima_preview' }
       : loraIdByChar.value,
   )
 
   /** SD LoRA 按镜头动态定权；Anima 的 LoRA 由固定工作流加载，不进 Prompt。 */
   const loraSpecs = computed(() =>
     engine.value === 'anima'
-      ? (pb.char === 'nene' && modelProfile.value?.lora_name
-        ? [{ name:modelProfile.value.lora_name, weight:Number(modelProfile.value.lora_strength) || 0.85 }]
+      ? (pb.char !== 'triad' && modelProfile.value?.lora_name
+        ? [{ name:controlLoraIds.value[pb.char] || modelProfile.value.lora_name, weight:Number(modelProfile.value.lora_strength) || 0.85 }]
         : [])
       : resolveLoraSpecs(
           pb.char,

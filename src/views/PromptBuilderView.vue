@@ -339,9 +339,9 @@
               SD 引擎 <span class="engine-sub">WebUI · v18 LoRA</span>
             </button>
             <button type="button" class="engine-btn" :class="{ active: drawEngine === 'anima' }"
-              :disabled="generationBusy || pb.char !== 'nene'" :title="pb.char !== 'nene' ? 'Anima 当前只支持已审核的宁宁 v19' : undefined"
+              :disabled="generationBusy || pb.char === 'triad'" :title="pb.char === 'triad' ? '双人模式不支持 Anima，请使用 SD 引擎' : undefined"
               @click="setDrawEngine('anima')">
-              Anima 引擎 <span class="engine-sub">ComfyUI · v20 LoRA</span>
+              Anima 引擎 <span class="engine-sub">ComfyUI · {{ pb.char === 'natsume' ? 'v19 E08 实验预览' : 'v20 LoRA' }}</span>
             </button>
           </div>
 
@@ -620,6 +620,10 @@ const animaState = ref<AnimaGenerationState>({
   sampler: 'res_multistep', scheduler: 'simple', seed: null,
   job: null, result: null, statusText: '', errorMsg: '',
 })
+const ANIMA_LORA_BY_CHARACTER = {
+  nene: 'L_NENE_V20_ANIMA',
+  natsume: 'L_NAT_V19_ANIMA_PREVIEW',
+} as const
 let animaStatusTimer: ReturnType<typeof setInterval> | null = null
 let animaRequestSerial = 0
 
@@ -630,6 +634,16 @@ const animaModelId = computed({
 
 function patchAnimaState(patch: Partial<AnimaGenerationState>) {
   animaState.value = { ...animaState.value, ...patch }
+}
+
+function syncAnimaCharacter(character: 'nene' | 'natsume' | 'triad' = pb.char) {
+  if (character === 'triad') {
+    patchAnimaState({ loraId: '' })
+    return
+  }
+  const expected = ANIMA_LORA_BY_CHARACTER[character]
+  const available = animaState.value.loras.some(lora => lora.id === expected && lora.available !== false)
+  patchAnimaState({ loraId: available ? expected : '' })
 }
 
 // ── Derived（场景筛选 / 词条目录 / 摘要 / 显存提示）──────────────────────
@@ -785,8 +799,8 @@ watch(displayResultUrl, (url, oldUrl) => {
   lastResult.value = resultSnapshot(url)
 })
 function setDrawEngine(v: DrawEngine) {
-  if (v === 'anima' && pb.char !== 'nene') {
-    pb.flash('Anima 当前只支持已审核的宁宁 v19，已保留 SD 引擎')
+  if (v === 'anima' && pb.char === 'triad') {
+    pb.flash('双人模式不支持 Anima，请使用 SD 引擎')
     return
   }
   if (drawEngine.value === v) {
@@ -799,12 +813,18 @@ function setDrawEngine(v: DrawEngine) {
     return
   }
   drawEngine.value = v
-  pb.flash(v === 'anima' ? '已切换到 Anima 引擎（ComfyUI + v20 LoRA）' : '已切换到 SD 引擎（WebUI）')
+  if (v === 'anima') {
+    syncAnimaCharacter(pb.char)
+    void refreshAnimaBackend()
+  }
+  pb.flash(v === 'anima'
+    ? (pb.char === 'natsume' ? '已切换到 Anima 实验预览（夏目 v19 E08，普通全身稳定性有限）' : '已切换到 Anima 引擎（ComfyUI + 宁宁 v20 LoRA）')
+    : '已切换到 SD 引擎（WebUI）')
 }
 
 // Anima 模式下生成按钮的可用性取决于 ComfyUI 在线状态，而不是 SD WebUI。
 const engineOnline = computed(() => {
-  if (drawEngine.value === 'anima') return pb.char === 'nene' && animaState.value.online
+  if (drawEngine.value === 'anima') return pb.char !== 'triad' && Boolean(animaState.value.loraId) && animaState.value.online
   return sd.online.value
 })
 const generationBusy = computed(() => sd.generating.value || ['submitting', 'running', 'cancelling'].includes(animaState.value.phase))
@@ -850,6 +870,7 @@ function historyGenerationFields(): Partial<HistoryEntry> {
       lora: meta.loraId,
       loraId: meta.loraId,
       loraStrength: meta.loraStrength,
+      preview: meta.preview === true || meta.character === 'natsume',
       cfg: meta.cfg,
       steps: meta.steps,
       sampler: meta.sampler,
@@ -905,7 +926,7 @@ interface AnimaRequest {
   steps: number
   cfg: number
   seed?: number
-  character: 'nene'
+  character: 'nene' | 'natsume'
 }
 
 function animaRequestPayload(request: AnimaRequest): Omit<AnimaRequest, 'profileId'> {
@@ -937,20 +958,22 @@ async function refreshAnimaBackend() {
     const data = await response.json() as AnimaStatusResponse
     if (!response.ok || data.ok !== true) throw new Error(data.error || `网关返回 ${response.status}`)
     const models = Array.isArray(data.models) ? data.models : []
-    const loras = Array.isArray(data.loras) ? data.loras : []
+    const loras = (Array.isArray(data.loras) ? data.loras : [])
+      .filter(lora => lora.character === pb.char && lora.available !== false)
     const modelId = models.some(model => model.id === animaState.value.modelId)
       ? animaState.value.modelId
       : (models[0]?.id || '')
     const loraId = loras.some(lora => lora.id === animaState.value.loraId)
       ? animaState.value.loraId
       : (loras[0]?.id || '')
-    patchAnimaState({
+     patchAnimaState({
       online: data.online === true,
       checkMsg: data.online === true
         ? `Anima 在线 · ${models.length} 个底模 · ${loras.length} 个 LoRA`
         : 'Anima 离线（ComfyUI 未启动或网关不可用）',
-      models, loras, modelId, loraId,
-    })
+       models, loras, modelId, loraId,
+     })
+     syncAnimaCharacter(pb.char)
   } catch (error) {
     patchAnimaState({ online: false, checkMsg: 'Anima 离线（网关状态接口不可用）' })
   }
@@ -958,15 +981,16 @@ async function refreshAnimaBackend() {
 
 function buildAnimaRequest(): AnimaRequest | null {
   const profile = modelProfile.value
-  if (pb.char !== 'nene') {
-    pb.flash('Anima 当前只支持已审核的宁宁 v20')
+  if (pb.char === 'triad') {
+    pb.flash('双人模式不支持 Anima，请使用 SD 引擎')
     return null
   }
   if (!profile || profile.engine !== 'anima' || profile.model_id !== animaState.value.modelId) {
     pb.flash('Anima 当前底模没有已审核 profile，已拒绝生成')
     return null
   }
-  if (!animaState.value.loraId || !animaState.value.models.some(model => model.id === animaState.value.modelId)) {
+  const expectedLoraId = ANIMA_LORA_BY_CHARACTER[pb.char]
+  if (animaState.value.loraId !== expectedLoraId || !animaState.value.loras.some(lora => lora.id === expectedLoraId && lora.available !== false)) {
     pb.flash('Anima 底模尚未从服务端白名单发现')
     return null
   }
@@ -983,7 +1007,7 @@ function buildAnimaRequest(): AnimaRequest | null {
     steps: animaState.value.steps,
     cfg: animaState.value.cfg,
     ...(animaState.value.seed == null ? {} : { seed: animaState.value.seed }),
-    character: 'nene',
+     character: pb.char,
   }
 }
 
@@ -1007,7 +1031,8 @@ function metadataFromJob(job: AnimaPublicJob, request: AnimaRequest): AnimaJobMe
         sampler: animaState.value.sampler,
         scheduler: animaState.value.scheduler,
         seed: job.seed,
-        character: 'nene' as const,
+         character: request.character,
+         preview: request.character === 'natsume',
         createdAt: Date.now(),
         resultUrl: job.resultUrl,
       }
@@ -1363,13 +1388,13 @@ function applyQuickCreateSettings(settings: QuickCreateSettings | null) {
 
 function applyHistory(entry: HistoryEntry, keepAsVariant = false) {
   if (entry.character) pb.setChar(entry.character)
-  if (entry.engine === 'anima' && entry.character === 'nene') {
+  if (entry.engine === 'anima' && (entry.character === 'nene' || entry.character === 'natsume')) {
     const [width, height] = String(entry.size || '832x1216').replace('×', 'x').split('x').map(Number)
     clearAnimaResult()
     patchAnimaState({
       phase: 'idle', statusText: '', errorMsg: '',
       modelId: entry.model || 'anima-base-v1.0',
-      loraId: entry.loraId || animaState.value.loraId,
+      loraId: entry.loraId === ANIMA_LORA_BY_CHARACTER[entry.character] ? entry.loraId : ANIMA_LORA_BY_CHARACTER[entry.character],
       loraStrength: entry.loraStrength ?? animaState.value.loraStrength,
       width: Number.isInteger(width) ? width : animaState.value.width,
       height: Number.isInteger(height) ? height : animaState.value.height,
@@ -1458,6 +1483,7 @@ onMounted(async () => {
     sceneCollection.value = savedMode === 'pro' ? 'all' : 'core'
   }
   await pb.loadData()
+  await refreshAnimaBackend()
   await sd.checkStatus()
   // 拿到 WebUI 真实 checkpoint 后，再按对应 model profile 填参数
   pb.applyModelProfile(pb.sdModelName || sd.checkpoint.value)
@@ -1563,9 +1589,15 @@ watch(() => pb.directorMode, mode => {
 })
 
 watch(() => pb.char, char => {
-  if (drawEngine.value === 'anima' && char !== 'nene') {
-    setDrawEngine('sd')
-    pb.flash('夏目与双人模式暂不支持 Anima，已切回 SD')
+  if (drawEngine.value === 'anima') {
+    syncAnimaCharacter(char)
+    void refreshAnimaBackend()
+    if (char === 'triad') {
+      setDrawEngine('sd')
+      pb.flash('双人模式不支持 Anima，已切回 SD')
+    } else if (char === 'natsume') {
+      pb.flash('已切换到夏目 Anima 实验预览（E08）')
+    }
   }
 })
 

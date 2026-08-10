@@ -376,5 +376,52 @@
       "scores_recorded": true,
       "selection_reason": "epoch 8 是验证低谷附近第一个固定保存点，18 张生产矩阵零结构失败；epoch 12 已出现枪械手部重叠和单人裂变双人，后续验证损失持续回升。"
     }
+  },
+  {
+    "id": "L_NAT_V19_ANIMA_PREVIEW",
+    "name": "shiki_natsume_v19_anima_preview",
+    "version": "1.9.0-preview",
+    "trigger": "shiki_natsume",
+    "character": "NATSUME_001",
+    "file": "shiki_natsume_v19_anima_preview.safetensors",
+    "experimental": true,
+    "preview_label": "实验预览模型",
+    "strength": {
+      "default": 0.85,
+      "min": 0.65,
+      "max": 1
+    },
+    "compatible_models": [
+      "anima-base-v1.0",
+      "anima-aesthetic-v1.1"
+    ],
+    "test_scene": [
+      "sc005",
+      "sc018",
+      "sc050"
+    ],
+    "description": "四季夏目 Anima v19 E08（step 312）实验预览模型。仅供已授权的单角色 Anima 预览，不改变生产 SD/WAI v18；普通全身稳定性有限。",
+    "training": {
+      "selected_checkpoint": "E08 (step 312)",
+      "resumed_from": "anima-base-v1.0",
+      "config": "OneTrainer/training_configs/shiki_natsume_v19_anima_scientific.json"
+    },
+    "base_model": "anima-base-v1.0",
+    "trainer": "OneTrainer",
+    "validation": {
+      "status": "experimental_preview",
+      "evaluated_at": "2026-08-09",
+      "method": "13W/2T/3L product matrix; identity, cafe uniform, low light and R18 strong; ordinary fullbody hard gate failed; no production promotion",
+      "matrix": "AnimaNatsumeV19ProductMatrix/2026-08-09 · E08 step 312",
+      "evidence": "Reviews/AnimaNatsumeV19ProductMatrix/2026-08-09/manual-audit.json",
+      "metrics": {
+        "总矩阵": "13W/2T/3L",
+        "普通全身": "hard gate failed",
+        "生产结论": "rejected"
+      },
+      "known_limitation": "普通全身构图与身份稳定性有限；修正 prompt 后 fullbody+identity 仅 2/3。不得视为生产晋级。",
+      "scores_recorded": true,
+      "selection_reason": "用户明确授权把审核未晋级的 E08 作为实验预览接入；独立 ID/file/SHA，不改变 manual-audit decision=rejected。"
+    }
   }
 ]

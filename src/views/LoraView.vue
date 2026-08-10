@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <article class="page" style="--page-max:1100px">
     <WorkspaceArchiveBar
       chapter="10"
@@ -43,6 +43,7 @@
         <div class="lora-header">
           <span class="lora-name">{{ l.name }}</span>
           <span v-if="l.version" class="lora-version">v{{ l.version }}</span>
+          <span v-if="l.experimental" class="badge badge-warning">实验预览</span>
         </div>
         <div v-if="l.description" class="lora-desc">{{ l.description }}</div>
         <div class="lora-meta">
@@ -60,7 +61,7 @@
               <span class="lora-label">固定种子人工盲审</span>
               <strong>{{ l.evaluation.evaluatedAt || '已完成' }}</strong>
             </div>
-            <span class="badge badge-success">{{ l.evaluation.status === 'passed' ? '已通过' : l.evaluation.status }}</span>
+            <span class="badge" :class="l.experimental ? 'badge-warning' : 'badge-success'">{{ l.evaluation.status === 'passed' ? '已通过' : l.evaluation.status }}</span>
           </div>
           <div class="evaluation-metrics">
             <div v-for="metric in l.evaluation.metrics" :key="metric[0]">

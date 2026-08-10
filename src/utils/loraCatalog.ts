@@ -13,6 +13,8 @@ export interface LoraCatalogEntry {
   baseModel: string
   character: string
   triggerWords: string[]
+  experimental?: boolean
+  previewLabel?: string
   evaluation?: {
     status: string
     evaluatedAt: string
@@ -80,6 +82,8 @@ export function parseLoraCatalog(value: unknown): LoraCatalogEntry[] {
       baseModel: text(item.base_model) || text(training.base_model),
       character: text(item.character) || text(dataset.character),
       triggerWords: triggers.length ? triggers : (trigger ? [trigger] : []),
+      ...(item.experimental === true ? { experimental:true } : {}),
+      ...(text(item.preview_label) ? { previewLabel:text(item.preview_label) } : {}),
       ...(hasEvaluation ? { evaluation: {
         status: text(validation.status),
         evaluatedAt: text(validation.evaluated_at),

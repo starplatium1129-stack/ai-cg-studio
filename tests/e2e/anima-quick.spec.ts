@@ -81,3 +81,36 @@ test('anima panel and main button share one parent-owned request metadata snapsh
   expect((bodies[0] as { profileId?: string }).profileId).toBeUndefined()
   expect((bodies[0] as { character: string }).character).toBe('nene')
 })
+
+test('anima derives the authorized preview from Natsume and blocks triad', async ({ page, request }) => {
+  test.setTimeout(240000)
+  const bodies: Array<Record<string, unknown>> = []
+  page.on('request', browserRequest => {
+    if (browserRequest.method() === 'POST' && new URL(browserRequest.url()).pathname === '/api/anima/jobs') {
+      bodies.push(browserRequest.postDataJSON() as Record<string, unknown>)
+    }
+  })
+  const mockGateway = `http://127.0.0.1:${MOCK_PORTS.gateway}`
+  const mockComfy = `http://127.0.0.1:${MOCK_PORTS.translate + 1}`
+  await request.post(`${mockComfy}/__mock/reset`)
+  await request.post(`${mockComfy}/__mock/fault`, { data: { renderMs: 10 } })
+  await page.goto(`${mockGateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
+  await page.waitForTimeout(2200)
+  await page.locator('#stepChar .char-btn').filter({ hasText: '夏目' }).click()
+  await page.locator('.engine-switch button').nth(1).click()
+  await expect(page.locator('.anima-preview-note')).toContainText('实验预览')
+  await page.locator('.story-input').fill('夏目在咖啡馆里端来一杯咖啡')
+  await page.locator('.anima-quick-panel > summary').click()
+  await page.locator('.anima-quick-panel .anima-primary').click()
+  await expect.poll(() => bodies.length, { timeout: 30000 }).toBe(1)
+  expect(bodies[0].character).toBe('natsume')
+  expect(bodies[0].loraId).toBe('L_NAT_V19_ANIMA_PREVIEW')
+  await expect(page.locator('.result-image-wrap img.result-image')).toHaveCount(1, { timeout: 30000 })
+
+  await page.locator('#stepChar .char-btn').filter({ hasText: '宁宁' }).click()
+  await expect(page.locator('.engine-switch button').nth(1)).toBeEnabled()
+  await expect(page.locator('.anima-preview-note')).toHaveCount(0)
+  await page.locator('#stepChar .char-btn').filter({ hasText: '双人' }).click()
+  await expect(page.locator('.engine-switch button').nth(1)).toBeDisabled()
+  expect(bodies).toHaveLength(1)
+})

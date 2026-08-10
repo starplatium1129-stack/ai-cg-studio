@@ -54,6 +54,7 @@ export interface HistoryEntry {
   engine?: DrawEngine; profile?: string; model?: string
   provider?: 'comfy' | 'webui'
   loraId?: string | null; loraStrength?: number | null
+  preview?: boolean
   /** 成片真实像素；size 只是保存时下拉框的值，作品册排版以这两个为准 */
   width: number | null; height: number | null
   rating: Record<string, number>; favorite: boolean; notes: string

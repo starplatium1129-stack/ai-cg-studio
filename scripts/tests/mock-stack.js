@@ -37,6 +37,7 @@ function isolatedRuntime() {
 function buildConfig(runtime) {
   var config = loadGatewayConfig(ROOT_DIR, {
     AICS_RUNTIME_ROOT:runtime.root,
+    AI_WORKSPACE_ROOT:path.join(runtime.root, 'AI workspace'),
     AICS_DISABLE_LEGACY_RUNTIME_MIGRATION:'1',
     PORT:String(PORTS.gateway),
     HOST:'127.0.0.1',
@@ -79,6 +80,9 @@ function buildConfig(runtime) {
   // 指向不存在的路径，translation-service 会直接拒绝而不是拉起 python.exe
   config.TRANSLATION_PYTHON = path.join(runtime.root, 'no-such-python.exe');
   config.TRANSLATION_SCRIPT = path.join(runtime.root, 'no-such-script.py');
+  var previewLoraRoot = path.join(config.AI_WORKSPACE_ROOT, 'ComfyUI', 'models', 'loras');
+  fs.mkdirSync(previewLoraRoot, { recursive:true });
+  fs.writeFileSync(path.join(previewLoraRoot, 'shiki_natsume_v19_anima_preview.safetensors'), 'e2e-preview-fixture');
   return config;
 }
 

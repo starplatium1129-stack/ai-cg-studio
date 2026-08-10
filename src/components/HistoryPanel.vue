@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <section class="history-wrap" aria-label="作品历史">
     <div class="panel-title">历史 · History</div>
     <div v-if="!items.length" class="history-empty">还没有保存的作品。生成后点“保存快照”，我会把每一张都好好收着。</div>
@@ -12,8 +12,10 @@
         <div class="history-main">
           <div class="history-card-title">{{ item.sceneTitle || item.story || '未命名作品' }}</div>
           <p class="history-text">{{ item.prompt }}</p>
-          <div class="history-meta">
-            <span class="primary">seed {{ item.seed ?? -1 }}</span>
+           <div class="history-meta">
+             <span v-if="item.engine === 'anima' && item.preview" class="history-preview-badge">实验预览</span>
+             <span v-if="item.engine === 'anima'" class="history-engine">Anima · {{ item.character === 'natsume' ? '夏目' : '宁宁' }}</span>
+             <span class="primary">seed {{ item.seed ?? -1 }}</span>
             <span class="sep">·</span>
             <span>{{ item.size || '未记录尺寸' }}</span>
           </div>

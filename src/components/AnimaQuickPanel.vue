@@ -28,6 +28,7 @@ const size = computed({
 
 const busy = computed(() => ['submitting', 'running', 'cancelling'].includes(props.state.phase))
 const canSubmit = computed(() => props.state.online && !busy.value && !!props.state.prompt && !!props.state.modelId)
+const selectedLora = computed(() => props.state.loras.find(lora => lora.id === props.state.loraId) ?? null)
 function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) }) }
 </script>
 
@@ -38,7 +39,8 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
       <span class="anima-status" :class="state.online ? 'is-on' : 'is-off'">{{ state.online ? '● 在线' : '○ 离线' }}</span>
     </summary>
     <div class="anima-body">
-      <p class="anima-hint">{{ state.checkMsg }}</p>
+       <p class="anima-hint">{{ state.checkMsg }}</p>
+       <p v-if="selectedLora?.preview" class="anima-preview-note"><strong>实验预览</strong> · 夏目 v19 E08 · 普通全身稳定性有限</p>
 
       <div class="anima-row">
         <label>底模</label>
@@ -96,6 +98,7 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
 .anima-status.is-off { color: var(--danger-text); background: color-mix(in srgb, var(--danger) 12%, transparent) }
 .anima-body { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 8px }
 .anima-hint { font-size: var(--fs-label-xs); opacity: 0.65; margin: 0 }
+.anima-preview-note { margin: 0; color: var(--warning-text); font-size: var(--fs-label-xs); line-height: 1.45 }
 .anima-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap }
 .anima-row label, .anima-label { font-size: var(--fs-label-xs); opacity: 0.8; min-width: 44px }
 .anima-label { margin-top: 4px }

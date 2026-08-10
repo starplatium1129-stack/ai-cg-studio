@@ -80,3 +80,17 @@ E08 是唯一满足总胜负门槛的候选，但 ordinary fullbody 门槛失败
 
 - `promote-anima-natsume-v19-checkpoint.js` 因 `manual-audit.json.decision=rejected` 拒绝执行。
 - 不允许集成、不允许新增双 LoRA、不允许改变 nene 或 triad/shared 链路。
+
+## 用户授权的实验接入
+
+2026-08-10，用户明确授权把审核未晋级的 E08（step 312）作为现有 Anima 单角色引擎的实验预览模型接入。该接入不是生产晋级：`manual-audit.json` 的 `decision=rejected` 保持不变，ordinary fullbody hard gate 仍失败，生产 SD/WAI 仍使用 `L_NAT_V18_WD14`。
+
+- 独立实验 ID：`L_NAT_V19_ANIMA_PREVIEW`
+- 独立名称：`shiki_natsume_v19_anima_preview`
+- 独立文件：`shiki_natsume_v19_anima_preview.safetensors`
+- 文件 SHA-256：`389d3153ac05fbe0ea9bd74a9823e5cb8ee6fdc5ed0ecfd9e0b08ff9215036d2`
+- 默认 strength：`0.85`，允许范围 `0.65-1`
+- 适用范围：Anima 单角色夏目；宁宁继续 `L_NENE_V20_ANIMA`；triad/shared 继续禁用 Anima。
+- UI、状态、历史与 catalog 均标记为“实验预览”，并明确普通全身稳定性有限。
+
+该接入只复制并安全 staging 外部候选，不调用或削弱正式 promotion guard，也不将 validation 改为 passed。
