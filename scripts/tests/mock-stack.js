@@ -83,6 +83,17 @@ function buildConfig(runtime) {
   var previewLoraRoot = path.join(config.AI_WORKSPACE_ROOT, 'ComfyUI', 'models', 'loras');
   fs.mkdirSync(previewLoraRoot, { recursive:true });
   fs.writeFileSync(path.join(previewLoraRoot, 'shiki_natsume_v19_anima_preview.safetensors'), 'e2e-preview-fixture');
+  // Anima 无 LoRA 底模资源：让 /api/anima/status 报 anima-aesthetic 可用（engineOnline 依赖 available）。
+  var animaModelRoot = path.join(config.AI_WORKSPACE_ROOT, 'ComfyUI', 'models');
+  fs.mkdirSync(path.join(animaModelRoot, 'diffusion_models'), { recursive:true });
+  fs.mkdirSync(path.join(animaModelRoot, 'text_encoders'), { recursive:true });
+  fs.mkdirSync(path.join(animaModelRoot, 'vae'), { recursive:true });
+  fs.writeFileSync(path.join(animaModelRoot, 'diffusion_models', 'anima-aesthetic-v1.1.safetensors'), 'e2e-anima-fixture');
+  fs.writeFileSync(path.join(animaModelRoot, 'diffusion_models', 'anima-base-v1.0.safetensors'), 'e2e-anima-fixture');
+  fs.writeFileSync(path.join(animaModelRoot, 'diffusion_models', 'krea2_turbo_fp8_scaled.safetensors'), 'e2e-krea-fixture');
+  fs.writeFileSync(path.join(animaModelRoot, 'text_encoders', 'qwen_3_06b_base.safetensors'), 'e2e-anima-fixture');
+  fs.writeFileSync(path.join(animaModelRoot, 'text_encoders', 'qwen3vl_4b_fp8_scaled.safetensors'), 'e2e-krea-fixture');
+  fs.writeFileSync(path.join(animaModelRoot, 'vae', 'qwen_image_vae.safetensors'), 'e2e-anima-fixture');
   return config;
 }
 

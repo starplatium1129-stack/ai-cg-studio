@@ -11,15 +11,17 @@ AI-CG-Studio 是本地个人使用的 Galgame 风格 AI CG 创作台，包含角
 
 - 前端：Vue 3 + Vite + TypeScript + Pinia；路由视图懒加载。
 - 网关：Express；`routes/` 负责 HTTP API，`server/` 负责安全、配置、诊断和预压缩，`services/*.ts` 编译产物随仓库提交。
-- 数据：场景分片、角色、LoRA、预设和标签位于 `data/`；场景运行时只由 `sceneStore` 加载，`DATA_VERSION` 由内容派生。
+- 数据：场景分片、角色、LoRA、预设、标签、热门角色与通用蓝图位于 `data/`；场景运行时只由 `sceneStore` 加载，`DATA_VERSION` 由内容派生。
 - 存储：IndexedDB 由 `useKVStore`/`useImageStore` 封装；localStorage 键由 `src/utils/storageKeys.ts` 登记，备份和作品删除分别走统一入口。
 - 聊天：Ollama 与 OpenAI-compatible API 可配置；流式回复、归档、TTS、情绪、VAD/ASR 输入和 Live2D 舞台按所有权拆分。
-- 绘图：SD/WAI 仍是生产主路径；Anima 是受白名单保护的角色 LoRA 实验路径；Krea 2 Turbo 是无角色 LoRA 的通用自然语言实验路径，不宣称身份长期稳定。WAI 基础 txt2img 在 WebUI 在线时优先，WebUI 离线且 ComfyUI 在线时可使用固定核心节点 fallback。
+- 绘图：SD/WAI 仍是生产主路径；Anima 是受白名单保护的角色 LoRA 实验路径；Krea 2 Turbo 是无角色 LoRA 的通用自然语言实验路径，不宣称身份长期稳定。WAI 基础 txt2img 在 WebUI 在线时优先，WebUI 离线且 ComfyUI 在线时可使用固定核心节点 fallback。热门角色无 LoRA 模式（`anima-aesthetic-v1.1` 的 `noLora` capability）独立于工作室角色，只在绘图页来源切换为「热门角色」后出现，默认 Anima Aesthetic、可切 Krea 2。
 - 训练：训练参数覆盖、数据集枚举、配置副本、ETA 和日志均遵守 `AGENTS.md` 的白名单契约。
 - 桌面：Electron 仍是稳定回退路径；Tauri 2 Companion/Atelier 与 Native Live2D 已构建并通过代码级、release selftest 和有限真机验证，但正式发布验收仍受 D-10 阻断。
 
 ## 最近完成
 
+- **Krea 2 Prompt 校准为官方散文段结构（P2）**：`naturalDescription` 重构为「风格配方开头 → 主体身份+姿态 → 服装/材质 → 构图/镜头 → 环境 → 光照/色彩/情绪 → 后置媒介词」，identityProse/outfitProse/blueprint.promptProse 原样织入，删除 meta 短语（"A visual novel event CG featuring…"/"Scene details:"/"Composition and lighting:"）与逗号标签堆砌，风格语言恒置最前。新增 `src/config/kreaStyleRecipes.ts`（8 个通用配方 + 2 个独立显式 R18 配方，R18 仅 adult 角色+成熟开关可达，unknown/underage fail-closed），专家模式右栏可选配方（`kreaStyleId` 持久化进草稿/历史，缺省自动）；`data/scene-blueprints.json` 增可选 `kreaStyleHint`/`animaStyleHint`（配方 id 或自由短语），Anima 流行模式只取 lead 保 exact-token+prose 混合、不碰负面。测试：散文段落流断言、R18 门控 unit + 契约 + E2E。详见 `docs/krea-prompt-recipe.md`。
+- **热门角色无 LoRA 创作模式（P0/P1 闭环）**：绘图页新增与宁宁/夏目 LoRA 路径正交的「热门角色」来源。`data/popular-characters.json` 首批 18 位角色（含身份词/服装/成人资格 fail closed），`data/scene-blueprints.json` 24 条角色无关通用蓝图（含仅 adult 角色可见的成人蓝图）。服务端 `routes/anima.js` 只为 `anima-aesthetic-v1.1` 开启 `noLora` capability，`buildWorkflow` 新增无 LoraLoader 的九节点分支（正/负 CLIPTextEncode + KSampler res_multistep/simple），原 LoRA 十节点、Krea family 与 UNKNOWN_LORA/INCOMPATIBLE_CHARACTER 校验全部保持。前端 `buildAnimaRequest`/`engineOnline`/LoRA 显隐全部按 capability 门控，不靠 model id 猜；草稿与历史扩展 `subject/characterId/outfitId/blueprintId/noLora` 字段并向后兼容旧草稿（无新 localStorage 键）。
 - Tauri 壳 P0-P7 的代码与打包链已收口：双窗口、sidecar、迁移、托盘、IPC、日志、维护 501 契约、staging 和 release 打包均有测试。
 - Native Live2D 路径已接入 Companion：可见启动请求 native，`--hidden` 或显式关闭时不加载；Atelier/普通页面默认 browser，缺桥时自动回退。
 - Native renderer 已使用模型级 GPU 缓存、持久 upload buffer、destroy 释放和 surface 恢复；宁宁/夏目 release snapshot、动作、口型、情绪、hit-test 和 300 秒 renderer soak 通过。

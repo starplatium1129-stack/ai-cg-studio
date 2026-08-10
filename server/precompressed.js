@@ -21,7 +21,8 @@ var PUBLIC_DATA_FILES = [
   'scenes.json', 'scenes-index.json', 'scenes-core.json',
   'scenes-nene.json', 'scenes-natsume.json', 'scenes-shared.json',
   'curation.json', 'characters.json',
-  'loras.json', 'tags.json', 'presets.json'
+  'loras.json', 'tags.json', 'presets.json',
+  'popular-characters.json', 'scene-blueprints.json'
 ];
 
 function precompressed(rootDir) {

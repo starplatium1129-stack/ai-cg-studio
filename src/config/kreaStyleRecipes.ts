@@ -1,0 +1,134 @@
+// Krea 风格配方 —— 官方散文段结构的风格层（数据 + 纯函数，无 DOM）。
+//
+// 依据 Krea 2 官方配方（docs.krea.ai Turbo / github krea-2 prompting.md）：
+//   1. 风格语言放最前（"Add style language early"）；
+//   2. 每配方 = 前置风格短语 lead + 可选后置媒介词 medium；
+//   3. R18 配方独立、显式声明，只有 adultEligibility === 'adult' 且成熟内容
+//      开关同时开启时才可达，unknown / underage 永远不可达（fail closed）。
+//
+// 该模块只负责解析配方与资格判定，不关心引擎渲染；Krea 用 lead+medium 织入
+// 散文段，Anima 只取 lead 作风格短语前缀，渲染仍由 createPromptPlan +
+// renderPromptPlan 单一入口完成。
+
+export type RecipeEngine = 'krea2' | 'anima'
+
+export interface KreaStyleRecipe {
+  id: string
+  name: string
+  /** 前置风格短语（放正文最前）。 */
+  lead: string
+  /** 可选后置媒介词（放散文段末尾）。 */
+  medium?: string
+  /** 成人配方：仅 adult 角色 + 成熟内容开关同时放行。 */
+  adult: boolean
+}
+
+/** 资格判定只依赖角色的成人资格形状，避免与 popularContent 循环依赖。 */
+export interface StyleEligibility {
+  adultEligibility: 'adult' | 'unknown' | 'underage'
+}
+
+/** 蓝图 hint 只做结构性声明，交给本模块解析。 */
+export interface StyleBlueprintHint {
+  kreaStyleHint?: string
+  animaStyleHint?: string
+}
+
+/** 已解析可用的风格：lead 必填，medium/adult 可选。 */
+export interface ResolvedStyle {
+  lead: string
+  medium?: string
+  adult?: boolean
+}
+
+export const KREA_STYLE_RECIPES: readonly KreaStyleRecipe[] = Object.freeze([
+  { id: 'anime_key_visual', name: 'Anime 主视觉', lead: 'A vibrant anime key visual with clean line art and saturated colors', medium: 'anime key visual', adult: false },
+  { id: 'vn_event_cg', name: '视觉小说事件 CG', lead: 'A polished visual novel event CG with refined cel shading and crisp character work', medium: 'visual novel event CG', adult: false },
+  { id: 'cinematic_film_still', name: '电影感剧照', lead: 'A cinematic film still with dramatic depth and a carefully balanced frame', medium: 'film still', adult: false },
+  { id: 'soft_daily_illustration', name: '柔和日常插画', lead: 'A soft, warm daily-life illustration with gentle tones and an unhurried mood', medium: 'daily-life illustration', adult: false },
+  { id: 'fantasy_painting', name: '奇幻厚涂绘画', lead: 'A richly detailed fantasy painting with painterly brushwork and atmospheric depth', medium: 'fantasy painting', adult: false },
+  { id: 'anime_promo_art', name: 'Anime 宣传主图', lead: 'A striking anime promo art with bold dynamic composition and vivid color contrast', medium: 'anime promo art', adult: false },
+  { id: 'dreamy_pastel', name: '梦幻粉彩', lead: 'A dreamy pastel illustration bathed in soft diffused light', medium: 'dreamy pastel art', adult: false },
+  { id: 'moody_night_scene', name: '氛围夜景', lead: 'A moody night scene with deep shadows and a quiet atmospheric glow', medium: 'nocturne illustration', adult: false },
+  { id: 'r18_sensual_cg', name: '成人·私密光影', lead: 'A mature sensual illustration with intimate warm lighting and a soft-focus finish', medium: 'sophisticated mature illustration', adult: true },
+  { id: 'r18_elegant_boudoir', name: '成人·典雅闺阁', lead: 'An elegant mature boudoir scene rendered with tasteful restraint and warm candlelight', medium: 'refined adult illustration', adult: true },
+])
+
+/** 各引擎缺省配方：场景模式与「自动」时使用，蓝图 hint 优先于它。 */
+const ENGINE_DEFAULT: Readonly<Record<RecipeEngine, string>> = Object.freeze({
+  krea2: 'vn_event_cg',
+  anima: 'anime_key_visual',
+})
+
+export function defaultRecipeId(engine: RecipeEngine): string {
+  return ENGINE_DEFAULT[engine]
+}
+
+export function findStyleRecipe(
+  recipes: readonly KreaStyleRecipe[],
+  id: string | null | undefined,
+): KreaStyleRecipe | null {
+  if (!id) return null
+  return recipes.find(recipe => recipe.id === id) ?? null
+}
+
+/** 成人配方 fail closed：必须 adult 角色 + 成熟内容开关同时满足。 */
+export function recipeEligible(
+  recipe: KreaStyleRecipe,
+  character: StyleEligibility | null,
+  opts: { adultEnabled?: boolean } = {},
+): boolean {
+  if (!recipe.adult) return true
+  if (opts.adultEnabled !== true) return false
+  return character?.adultEligibility === 'adult'
+}
+
+/** 对指定角色可见的配方（unknown / underage 永远看不到成人配方）。 */
+export function eligibleStyleRecipes(
+  recipes: readonly KreaStyleRecipe[],
+  character: StyleEligibility | null,
+  opts: { adultEnabled?: boolean } = {},
+): KreaStyleRecipe[] {
+  return recipes.filter(recipe => recipeEligible(recipe, character, opts))
+}
+
+/** 按引擎取蓝图 hint（缺省字段可选，未声明返回 undefined）。 */
+export function styleHintForEngine(
+  blueprint: StyleBlueprintHint | null,
+  engine: RecipeEngine,
+): string | undefined {
+  return blueprint ? (engine === 'krea2' ? blueprint.kreaStyleHint : blueprint.animaStyleHint) : undefined
+}
+
+/**
+ * 解析最终风格：手选配方 > 蓝图 hint > 引擎缺省。
+ * - 手选 / hint 命中配方且资格不满足 → 返回 null（fail closed，绝不降级成成人词）。
+ * - 手选 id 无效 → 回落到引擎缺省。
+ * - hint 是自由风格短语（未命中配方）→ 直接作为前置短语，无媒介词、非成人。
+ * - 缺省配方总是合法非成人配方，保证场景模式与「自动」恒有风格开头。
+ */
+export function resolveStyleRecipe(
+  recipes: readonly KreaStyleRecipe[],
+  engine: RecipeEngine,
+  blueprint: StyleBlueprintHint | null,
+  selection: string | null,
+  character: StyleEligibility | null,
+  opts: { adultEnabled?: boolean } = {},
+): ResolvedStyle | null {
+  const hint = styleHintForEngine(blueprint, engine)
+  const requested = selection || hint || ENGINE_DEFAULT[engine]
+  const recipe = findStyleRecipe(recipes, requested)
+  if (recipe) {
+    if (!recipeEligible(recipe, character, opts)) return null
+    return { lead: recipe.lead, medium: recipe.medium, adult: recipe.adult || undefined }
+  }
+  if (selection) {
+    // 手选 id 无效：fail closed 回落到引擎缺省，不让未知 id 变成空 prompt 风格。
+    return resolveStyleRecipe(recipes, engine, null, null, character, opts)
+  }
+  if (hint) {
+    if (String(hint).trim()) return { lead: String(hint).trim(), adult: false }
+    return null
+  }
+  return null
+}

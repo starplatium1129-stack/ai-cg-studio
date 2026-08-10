@@ -16,7 +16,8 @@ function contentVersion() {
   [
     'scenes.json', 'scenes-index.json', 'scenes-core.json',
     'scenes-nene.json', 'scenes-natsume.json', 'scenes-shared.json',
-    'curation.json', 'characters.json', 'loras.json', 'tags.json', 'presets.json'
+    'curation.json', 'characters.json', 'loras.json', 'tags.json', 'presets.json',
+    'popular-characters.json', 'scene-blueprints.json'
   ].forEach(function (name) {
     hash.update(name + '=' + fs.readFileSync(path.join(ROOT, 'data', name), 'utf8').length + ';');
     hash.update(fs.readFileSync(path.join(ROOT, 'data', name)));
@@ -167,6 +168,78 @@ function validateSceneShards(data) {
   return errors;
 }
 
+function validatePopularContent() {
+  var errors = [];
+  try {
+    var popular = require('../../src/utils/popularContent.ts');
+    var recipes = require('../../src/config/kreaStyleRecipes.ts');
+    var characters = popular.parsePopularCharacters(readJson('data/popular-characters.json'));
+    var blueprints = popular.parseSceneBlueprints(readJson('data/scene-blueprints.json'));
+    if (characters.length < 1) errors.push('popular-characters.json must contain at least one character');
+    characters.forEach(function (character) {
+      var defaults = character.outfits.filter(function (outfit) { return outfit.default; });
+      if (defaults.length !== 1) errors.push(character.id + ' must have exactly one default outfit');
+      // 全字段污染扫描：identityProse/aliases/exactPrefixes/outfit prose+tokens 都覆盖。
+      popular.scanCharacterPollution(character).forEach(function (leak) {
+        errors.push('pollution: ' + leak);
+      });
+    });
+    if (blueprints.length < 20) errors.push('scene-blueprints.json must contain at least 20 blueprints');
+    var adultBlueprints = blueprints.filter(function (blueprint) { return blueprint.adult; });
+    if (adultBlueprints.length < 1) errors.push('scene-blueprints.json should keep at least one adult-only blueprint gated by adultEligibility');
+    var nonAdult = characters.filter(function (character) { return character.adultEligibility !== 'adult'; });
+    nonAdult.forEach(function (character) {
+      adultBlueprints.forEach(function (blueprint) {
+        if (popular.blueprintEligible(blueprint, character, { adultEnabled: true })) {
+          errors.push(character.id + ' must never reach adult blueprint ' + blueprint.id + ' (fail closed)');
+        }
+      });
+    });
+    (blueprints || []).forEach(function (blueprint) {
+      var text = JSON.stringify(blueprint);
+      if (popular.scanStudioTokenLeaks(text).length) {
+        errors.push('blueprint ' + blueprint.id + ' must not reference nene/natsume tokens');
+      }
+      if (/(?:official_cg|visual_audited)/i.test(text)) {
+        errors.push('blueprint ' + blueprint.id + ' must not leak retrieval metadata');
+      }
+      // kreaStyleHint / animaStyleHint：命中配方时，成人配方只允许挂在成人蓝图上
+      // （成人蓝图对非 adult 角色 fail closed，hint 随蓝图一起被拦下）。
+      ['kreaStyleHint', 'animaStyleHint'].forEach(function (key) {
+        var hint = blueprint[key];
+        if (typeof hint !== 'string' || !hint.trim()) return;
+        var recipe = recipes.findStyleRecipe(recipes.KREA_STYLE_RECIPES, hint);
+        if (recipe && recipe.adult && !blueprint.adult) {
+          errors.push('blueprint ' + blueprint.id + ' ' + key + ' references adult recipe ' + recipe.id + ' but the blueprint is not adult');
+        }
+      });
+    });
+    // 配方本体契约：至少 8 个通用配方 + 独立显式的成人配方；成人配方只对 adult
+    // 角色 + 成熟内容开关同时放行（unknown/underage 永远不可达）。
+    var allRecipes = recipes.KREA_STYLE_RECIPES;
+    var common = allRecipes.filter(function (recipe) { return !recipe.adult; });
+    var adultRecipes = allRecipes.filter(function (recipe) { return recipe.adult; });
+    if (common.length < 8) errors.push('kreaStyleRecipes must ship at least 8 common recipes, got ' + common.length);
+    if (adultRecipes.length < 1) errors.push('kreaStyleRecipes must ship explicit adult-only recipes');
+    allRecipes.forEach(function (recipe) {
+      if (!recipe.lead || !recipe.lead.trim()) errors.push('kreaStyleRecipes.' + recipe.id + ' must have a lead phrase');
+      if (/(?:ayachi_nene|shiki_natsume|nene_|natsume_)/i.test(recipe.lead + ' ' + (recipe.medium || ''))) {
+        errors.push('kreaStyleRecipes.' + recipe.id + ' must not reference studio LoRA tokens');
+      }
+    });
+    nonAdult.forEach(function (character) {
+      adultRecipes.forEach(function (recipe) {
+        if (recipes.recipeEligible(recipe, character, { adultEnabled: true })) {
+          errors.push(character.id + ' must never reach adult style recipe ' + recipe.id + ' (fail closed)');
+        }
+      });
+    });
+  } catch (error) {
+    errors.push('popular/scene-blueprints data failed to parse: ' + error.message);
+  }
+  return errors;
+}
+
 function main() {
   var data = {
     characters:readJson('data/characters.json'),
@@ -177,6 +250,7 @@ function main() {
     return fs.existsSync(path.resolve(ROOT, 'data', relative));
   });
   errors = errors.concat(validateSceneShards(data));
+  errors = errors.concat(validatePopularContent());
   errors = errors.concat(checkDataVersion());
   if (errors.length) {
     console.error(errors.map(function (error) { return '  - ' + error; }).join('\n'));

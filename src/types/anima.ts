@@ -9,7 +9,7 @@ export interface AnimaOption {
   family?: 'anima' | 'krea2'
   profileId?: string
   defaults?: Record<string, unknown>
-  capabilities?: { negative: boolean; lora: boolean; characterIdentity: boolean; experimental: boolean }
+  capabilities?: { negative: boolean; lora: boolean; noLora?: boolean; characterIdentity: boolean; experimental: boolean }
   sizes?: string[]
 }
 

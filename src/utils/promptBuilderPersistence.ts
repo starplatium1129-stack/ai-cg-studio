@@ -43,6 +43,14 @@ export interface PromptBuilderDraft {
   directorMode?: 'basic' | 'pro'
   sdParams?: Partial<SDParams>
   projectId?: string
+  /** 热门角色无 LoRA 创作模式（旧草稿缺省为 studio，向后兼容）。 */
+  subject?: 'studio' | 'popular'
+  characterId?: string
+  outfitId?: string
+  blueprintId?: string | null
+  noLora?: boolean
+  /** 热门角色 Krea 风格配方 id（null/缺省 = 自动按场景+引擎）。 */
+  kreaStyleId?: string | null
 }
 
 export interface ProjectOption {
@@ -124,7 +132,8 @@ export function parsePromptBuilderDraft(value: unknown): PromptBuilderDraft | nu
   const story = stringValue(value.story)
   const visualDescription = stringValue(value.visualDescription) || ''
   const sceneId = nullableString(value.sceneId)
-  if (!updatedAt || (!sceneId && !story)) return null
+  // 热门角色无 LoRA 草稿没有 sceneId/story（蓝图驱动场景），单独放行。
+  if (!updatedAt || ((!sceneId && !story) && value.subject !== 'popular')) return null
 
   const rawSelections = isRecord(value.selections) ? value.selections : null
   const selections = rawSelections
@@ -156,6 +165,12 @@ export function parsePromptBuilderDraft(value: unknown): PromptBuilderDraft | nu
     directorMode,
     sdParams: parseSDParams(value.sdParams),
     projectId: stringValue(value.projectId),
+    subject: value.subject === 'popular' ? 'popular' : 'studio',
+    characterId: stringValue(value.characterId),
+    outfitId: stringValue(value.outfitId),
+    blueprintId: nullableString(value.blueprintId),
+    noLora: typeof value.noLora === 'boolean' ? value.noLora : undefined,
+    kreaStyleId: nullableString(value.kreaStyleId),
   }
 }
 

@@ -1,0 +1,629 @@
+{
+  "version": 1,
+  "characters": [
+    {
+      "id": "raiden_shogun",
+      "displayName": "雷电将军",
+      "originalName": "Raiden Shogun",
+      "franchise": "Genshin Impact",
+      "aliases": ["raiden_shogun", "raiden ei", "ei", "baal", "genshin impact", "electro archon"],
+      "identityProse": "Raiden Shogun from Genshin Impact, also known as Raiden Ei, the Electro Archon. A serene and regal woman with long lavender hair in a braid, glowing violet eyes, and a calm expressionless gaze, wearing flowing purple Japanese-inspired robes.",
+      "identityTokens": ["raiden_shogun", "1girl", "solo", "long_hair", "braid", "purple_hair", "purple_eyes", "bangs", "genshin impact"],
+      "exactTokens": ["raiden_shogun"],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": ["anima-aesthetic-v1.1", "krea2-turbo-fp8"],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "shogun_robes",
+          "name": "将军神装",
+          "prose": "the Raiden Shogun's flowing purple Japanese robes, bare shoulders, thigh-highs and a long braid",
+          "tokens": ["japanese_clothes", "kimono", "purple_clothes", "bare_shoulders", "thighhighs", "armor", "long_sleeves"],
+          "default": true
+        },
+        {
+          "id": "modern_clothes",
+          "name": "现代便服",
+          "prose": "a simple modern outfit with a long dress and her signature long braid",
+          "tokens": ["modern_clothing", "dress", "long_sleeves", "hair_down"]
+        }
+      ]
+    },
+    {
+      "id": "sakurajima_mai",
+      "displayName": "樱岛麻衣",
+      "originalName": "Sakurajima Mai",
+      "franchise": "Rascal Does Not Dream of Bunny Girl Senpai",
+      "aliases": ["sakurajima_mai", "mai sakurajima", "mai-san", "bunny girl senpai"],
+      "identityProse": "Sakurajima Mai from Rascal Does Not Dream of Bunny Girl Senpai, an elegant actress with long black hair, an ahoge, soft purple eyes and a composed, slightly distant air.",
+      "identityTokens": ["sakurajima_mai", "1girl", "solo", "long_hair", "black_hair", "purple_eyes", "ahoge", "bangs"],
+      "exactTokens": ["sakurajima_mai"],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": ["anima-aesthetic-v1.1", "krea2-turbo-fp8"],
+      "adultEligibility": "underage",
+      "outfits": [
+        {
+          "id": "school_uniform",
+          "name": "校服",
+          "prose": "her navy school uniform with a blazer and pleated skirt",
+          "tokens": ["school_uniform", "blazer", "pleated_skirt", "grey_skirt", "kneehighs"],
+          "default": true
+        },
+        {
+          "id": "bunny_girl",
+          "name": "兔女郎",
+          "prose": "the iconic black bunny suit with bunny ears, a black leotard, fishnet stockings and a bow tie",
+          "tokens": ["bunny_suit", "black_bunny_suit", "bunny_ears", "black_leotard", "fishnets", "bow_tie", "thighhighs"]
+        },
+        {
+          "id": "street_clothes",
+          "name": "私服",
+          "prose": "a soft casual street outfit with a knit sweater and skirt",
+          "tokens": ["casual_clothes", "sweater", "skirt", "open_jacket"]
+        }
+      ]
+    },
+    {
+      "id": "tokisaki_kurumi",
+      "displayName": "时崎狂三",
+      "originalName": "Tokisaki Kurumi",
+      "franchise": "Date A Live",
+      "aliases": ["tokisaki_kurumi", "kurumi", "kurumi tokisaki", "date a live"],
+      "identityProse": "Tokisaki Kurumi from Date A Live, a mysterious girl with long dark hair in side twintails, two-tone red and gold eyes, and a pale elegant face, often dressed in black and crimson gothic attire.",
+      "identityTokens": ["tokisaki_kurumi", "1girl", "solo", "long_hair", "twintails", "black_hair", "red_eyes", "two_tone_eyes", "bangs"],
+      "exactTokens": ["tokisaki_kurumi"],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": ["anima-aesthetic-v1.1", "krea2-turbo-fp8"],
+      "adultEligibility": "underage",
+      "outfits": [
+        {
+          "id": "gothic_dress",
+          "name": "哥特洋装",
+          "prose": "her signature black and crimson gothic dress with frills and a high collar",
+          "tokens": ["gothic_lolita", "black_dress", "frills", "high_collar", "black_thighhighs", "hair_ornament"],
+          "default": true
+        },
+        {
+          "id": "school_uniform",
+          "name": "校服",
+          "prose": "her dark school uniform with a sailor collar and pleated skirt",
+          "tokens": ["school_uniform", "sailor_collar", "black_shirt", "pleated_skirt", "white_socks"]
+        },
+        {
+          "id": "casual",
+          "name": "私服",
+          "prose": "a casual black outfit with a choker and loose cardigan",
+          "tokens": ["casual_clothes", "choker", "cardigan", "black_clothes"]
+        }
+      ]
+    },
+    {
+      "id": "frieren",
+      "displayName": "芙莉莲",
+      "originalName": "Frieren",
+      "franchise": "Frieren: Beyond Journey's End",
+      "aliases": ["frieren", "sousou no frieren", "frieren the slayer", "elf mage"],
+      "identityProse": "Frieren from Frieren: Beyond Journey's End, a centuries-old elf mage with very long white hair, a single braided lock, green eyes and pointed ears, carrying an old-fashioned staff and a calm, wistful expression.",
+      "identityTokens": ["frieren", "1girl", "solo", "long_hair", "very_long_hair", "white_hair", "green_eyes", "elf", "pointy_ears", "braid"],
+      "exactTokens": ["frieren"],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": ["anima-aesthetic-v1.1", "krea2-turbo-fp8"],
+      "adultEligibility": "unknown",
+      "outfits": [
+        {
+          "id": "wizard_robe",
+          "name": "魔导师袍",
+          "prose": "her plain white robe with a deep hood and simple adventurer belt, staff in hand",
+          "tokens": ["robe", "white_robe", "hood", "belt", "long_sleeves", "staff"],
+          "default": true
+        },
+        {
+          "id": "travel_clothes",
+          "name": "旅行装",
+          "prose": "a practical traveler's cloak over simple clothes",
+          "tokens": ["cloak", "jacket", "pants", "traveling_clothes"]
+        },
+        {
+          "id": "casual",
+          "name": "便服",
+          "prose": "a soft casual dress she wears away from battle",
+          "tokens": ["casual_clothes", "dress", "cardigan"]
+        }
+      ]
+    },
+    {
+      "id": "artoria_pendragon",
+      "displayName": "Saber",
+      "originalName": "Artoria Pendragon",
+      "franchise": "Fate",
+      "aliases": ["artoria_pendragon", "saber", "artoria", "king arthur", "fate/stay night"],
+      "identityProse": "Saber, Artoria Pendragon from Fate/stay night, a regal knight with blonde hair tied in a neat bun, an ahoge, and clear green eyes, with a dignified and earnest bearing.",
+      "identityTokens": ["artoria_pendragon", "saber", "1girl", "solo", "blonde_hair", "bun", "ahoge", "green_eyes", "hair_bun"],
+      "exactTokens": ["artoria_pendragon"],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": ["anima-aesthetic-v1.1", "krea2-turbo-fp8"],
+      "adultEligibility": "underage",
+      "outfits": [
+        {
+          "id": "knight_dress",
+          "name": "骑士裙装",
+          "prose": "her iconic blue armored dress with a white underdress, blue cuirass and long white gloves",
+          "tokens": ["dress", "armor", "blue_dress", "white_gloves", "blue_armor", "bare_legs"],
+          "default": true
+        },
+        {
+          "id": "casual",
+          "name": "便服",
+          "prose": "a relaxed civilian outfit with a shirt and skirt",
+          "tokens": ["casual_clothes", "shirt", "skirt", "jacket"]
+        },
+        {
+          "id": "formal_dress",
+          "name": "礼服",
+          "prose": "an elegant white formal dress with long sleeves and fine embroidery",
+          "tokens": ["evening_gown", "white_dress", "long_sleeves", "dress"]
+        }
+      ]
+    },
+    {
+      "id": "hatsune_miku",
+      "displayName": "初音未来",
+      "originalName": "Hatsune Miku",
+      "franchise": "VOCALOID",
+      "aliases": ["hatsune_miku", "miku", "miku hatsune", "vocaloid"],
+      "identityProse": "Hatsune Miku, the VOCALOID virtual singer, a cheerful girl with long teal twin-tails, bright teal eyes, a hair ribbon and an energetic stage presence.",
+      "identityTokens": ["hatsune_miku", "1girl", "solo", "long_hair", "twin_tails", "teal_hair", "blue_hair", "teal_eyes", "hair_ribbon", "bangs"],
+      "exactTokens": ["hatsune_miku"],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": ["anima-aesthetic-v1.1", "krea2-turbo-fp8"],
+      "adultEligibility": "underage",
+      "outfits": [
+        {
+          "id": "v2_classic",
+          "name": "V2 经典",
+          "prose": "her classic sleeveless V2 outfit with a black necktie, short pleated skirt and white boots",
+          "tokens": ["sleeveless", "necktie", "short_sleeves", "pleated_skirt", "white_boots", "skin_tight"],
+          "default": true
+        },
+        {
+          "id": "stage",
+          "name": "舞台装",
+          "prose": "a sparkling concert stage outfit with light-up accents and flowing sleeves",
+          "tokens": ["stage_clothes", "sparkling_clothes", "lighting", "frills", "dress"]
+        },
+        {
+          "id": "street",
+          "name": "街头风",
+          "prose": "a street-style casual outfit with a cropped jacket and sneakers",
+          "tokens": ["casual_clothes", "cropped_jacket", "sneakers", "crop_top", "miniskirt"]
+        }
+      ]
+    },
+    {
+      "id": "yuzuriha_inori",
+      "displayName": "楪祈",
+      "originalName": "Yuzuriha Inori",
+      "franchise": "Guilty Crown",
+      "aliases": ["yuzuriha_inori", "inori", "inori yuzuriha", "guilty crown"],
+      "identityProse": "Yuzuriha Inori from Guilty Crown, a quiet and beautiful singer with long pink hair, an ahoge and bright red eyes, with a fragile, ethereal presence.",
+      "identityTokens": ["yuzuriha_inori", "1girl", "solo", "long_hair", "pink_hair", "red_eyes", "ahoge", "bangs"],
+      "exactTokens": ["yuzuriha_inori"],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": ["anima-aesthetic-v1.1", "krea2-turbo-fp8"],
+      "adultEligibility": "underage",
+      "outfits": [
+        {
+          "id": "funeral_parade",
+          "name": "葬仪社装",
+          "prose": "the white funeral parade combat outfit with a sleeveless top, black shorts, and a red ribbon",
+          "tokens": ["white_shirt", "sleeveless", "black_shorts", "red_ribbon", "thighhighs"],
+          "default": true
+        },
+        {
+          "id": "school_uniform",
+          "name": "校服",
+          "prose": "her white and blue school uniform with a ribbon",
+          "tokens": ["school_uniform", "white_shirt", "blue_skirt", "ribbon", "white_socks"]
+        },
+        {
+          "id": "red_dress",
+          "name": "红裙",
+          "prose": "a striking red dress with a layered skirt and long sleeves",
+          "tokens": ["red_dress", "dress", "long_sleeves", "layered_skirt"]
+        }
+      ]
+    },
+    {
+      "id": "yukinoshita_yukino",
+      "displayName": "雪之下雪乃",
+      "originalName": "Yukinoshita Yukino",
+      "franchise": "Oregairu",
+      "aliases": ["yukinoshita_yukino", "yukino", "yukino yukinoshita", "oregairu", "yahari ore no seishun"],
+      "identityProse": "Yukinoshita Yukino from Oregairu, a composed and sharp young woman with long straight black hair, cool blue eyes, an ahoge and a neatly tied hair ribbon.",
+      "identityTokens": ["yukinoshita_yukino", "1girl", "solo", "long_hair", "black_hair", "blue_eyes", "ahoge", "hair_ribbon", "bangs"],
+      "exactTokens": ["yukinoshita_yukino"],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": ["anima-aesthetic-v1.1", "krea2-turbo-fp8"],
+      "adultEligibility": "underage",
+      "outfits": [
+        {
+          "id": "school_uniform",
+          "name": "校服",
+          "prose": "her neat navy school uniform with a ribbon and pleated skirt",
+          "tokens": ["school_uniform", "blazer", "pleated_skirt", "navy_clothes", "ribbon"],
+          "default": true
+        },
+        {
+          "id": "casual",
+          "name": "私服",
+          "prose": "a chic casual outfit with a white shirt and long coat",
+          "tokens": ["casual_clothes", "white_shirt", "long_coat", "skirt"]
+        },
+        {
+          "id": "snow_dress",
+          "name": "雪夜礼服",
+          "prose": "a pure white dress like snow under winter lights",
+          "tokens": ["white_dress", "evening_gown", "long_sleeves", "dress"]
+        }
+      ]
+    },
+    {
+      "id": "elaina",
+      "displayName": "伊雷娜",
+      "originalName": "Elaina",
+      "franchise": "Wandering Witch",
+      "aliases": ["elaina", "elaina of the journey", "majo no tabitabi", "wandering witch"],
+      "identityProse": "Elaina from Wandering Witch, a young traveling witch with very long white hair, violet eyes and a small witch hat, always accompanied by her black staff and a composed, bookish smile.",
+      "identityTokens": ["elaina", "1girl", "solo", "long_hair", "very_long_hair", "white_hair", "purple_eyes", "witch_hat", "bangs"],
+      "exactTokens": ["elaina"],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": ["anima-aesthetic-v1.1", "krea2-turbo-fp8"],
+      "adultEligibility": "unknown",
+      "outfits": [
+        {
+          "id": "witch_dress",
+          "name": "魔女装",
+          "prose": "her black witch dress with a star brooch, frilled skirt and short staff",
+          "tokens": ["witch", "witch_hat", "black_dress", "frills", "brooch", "staff"],
+          "default": true
+        },
+        {
+          "id": "travel_clothes",
+          "name": "旅行装",
+          "prose": "a practical traveler's outfit with a long coat and boots",
+          "tokens": ["traveling_clothes", "long_coat", "boots", "pants"]
+        },
+        {
+          "id": "casual",
+          "name": "便服",
+          "prose": "a comfortable everyday dress in soft colors",
+          "tokens": ["casual_clothes", "dress", "cardigan"]
+        }
+      ]
+    },
+    {
+      "id": "misaka_mikoto",
+      "displayName": "御坂美琴",
+      "originalName": "Misaka Mikoto",
+      "franchise": "A Certain Scientific Railgun",
+      "aliases": ["misaka_mikoto", "mikoto", "mikoto misaka", "railgun", "railgun sis"],
+      "identityProse": "Misaka Mikoto from A Certain Scientific Railgun, an energetic middle-school student with short brown hair, brown eyes and a spark of electricity, with a determined and cheerful attitude.",
+      "identityTokens": ["misaka_mikoto", "1girl", "solo", "short_hair", "brown_hair", "brown_eyes", "bangs"],
+      "exactTokens": ["misaka_mikoto"],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": ["anima-aesthetic-v1.1", "krea2-turbo-fp8"],
+      "adultEligibility": "underage",
+      "outfits": [
+        {
+          "id": "tokiwadai_uniform",
+          "name": "常盘台校服",
+          "prose": "her Tokiwadai uniform, a white blouse with a green tie and pleated skirt",
+          "tokens": ["school_uniform", "white_shirt", "green_tie", "pleated_skirt", "black_thighhighs"],
+          "default": true
+        },
+        {
+          "id": "summer_clothes",
+          "name": "夏季私服",
+          "prose": "a light summer outfit with a thin top and shorts",
+          "tokens": ["summer_clothes", "tank_top", "shorts", "pink_clothes"]
+        },
+        {
+          "id": "casual",
+          "name": "便服",
+          "prose": "a casual outfit with a shirt and jeans",
+          "tokens": ["casual_clothes", "shirt", "jeans", "jacket"]
+        }
+      ]
+    },
+    {
+      "id": "makima",
+      "displayName": "玛奇玛",
+      "originalName": "Makima",
+      "franchise": "Chainsaw Man",
+      "aliases": ["makima", "chainsaw man", "control devil"],
+      "identityProse": "Makima from Chainsaw Man, a calm and unnerving woman with long red hair, red-brown eyes and a perpetual knowing smile, typically dressed in a white shirt with a black tie.",
+      "identityTokens": ["makima", "1girl", "solo", "long_hair", "red_hair", "red_eyes", "ahoge", "bangs", "smile"],
+      "exactTokens": ["makima"],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": ["anima-aesthetic-v1.1", "krea2-turbo-fp8"],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "work_suit",
+          "name": "公务套装",
+          "prose": "her office suit with a white blouse, black tie and black skirt",
+          "tokens": ["suit", "white_shirt", "black_tie", "black_skirt", "blazer"],
+          "default": true
+        },
+        {
+          "id": "casual",
+          "name": "私服",
+          "prose": "a relaxed casual outfit off the clock",
+          "tokens": ["casual_clothes", "shirt", "skirt", "open_jacket"]
+        },
+        {
+          "id": "overcoat",
+          "name": "风衣",
+          "prose": "her long black overcoat with a high collar",
+          "tokens": ["long_coat", "overcoat", "black_coat", "high_collar"]
+        }
+      ]
+    },
+    {
+      "id": "tohsaka_rin",
+      "displayName": "远坂凛",
+      "originalName": "Tohsaka Rin",
+      "franchise": "Fate/stay night",
+      "aliases": ["tohsaka_rin", "rin", "rin tohsaka", "fate/stay night"],
+      "identityProse": "Tohsaka Rin from Fate/stay night, a proud and clever mage with black hair in twin-tails, blue eyes and a hair ribbon, always with a sharp, confident look.",
+      "identityTokens": ["tohsaka_rin", "1girl", "solo", "twin_tails", "black_hair", "blue_eyes", "ahoge", "hair_ribbon", "bangs"],
+      "exactTokens": ["tohsaka_rin"],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": ["anima-aesthetic-v1.1", "krea2-turbo-fp8"],
+      "adultEligibility": "underage",
+      "outfits": [
+        {
+          "id": "school_uniform",
+          "name": "校服",
+          "prose": "her navy Homurahara school uniform with a ribbon",
+          "tokens": ["school_uniform", "blazer", "navy_clothes", "ribbon", "pleated_skirt", "black_thighhighs"],
+          "default": true
+        },
+        {
+          "id": "red_turtleneck",
+          "name": "红高领",
+          "prose": "her casual red turtleneck with a black skirt",
+          "tokens": ["turtleneck", "red_clothes", "black_skirt", "jacket"]
+        },
+        {
+          "id": "mage_battle",
+          "name": "魔术战斗",
+          "prose": "her mage combat outfit with glowing magic circuits and gems",
+          "tokens": ["magic_circuits", "jewelry", "dress", "glowing", "long_sleeves"]
+        }
+      ]
+    },
+    {
+      "id": "rem_rezero",
+      "displayName": "雷姆",
+      "originalName": "Rem",
+      "franchise": "Re:Zero",
+      "aliases": ["rem", "rem rezero", "re zero", "rem from re zero"],
+      "identityProse": "Rem from Re:Zero, a gentle and devoted demon maid with long blue hair, a single blue eye, a hairpin and a pair of pointed ears, dressed in a classic black and white maid uniform.",
+      "identityTokens": ["rem", "1girl", "solo", "long_hair", "blue_hair", "blue_eyes", "hairpin", "pointy_ears", "bangs"],
+      "exactTokens": ["rem"],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": ["anima-aesthetic-v1.1", "krea2-turbo-fp8"],
+      "adultEligibility": "unknown",
+      "outfits": [
+        {
+          "id": "maid_uniform",
+          "name": "女仆装",
+          "prose": "her classic black and white maid uniform with a frilled headdress and apron",
+          "tokens": ["maid", "maid_apron", "maid_headdress", "white_apron", "long_sleeves", "frills", "black_dress"],
+          "default": true
+        },
+        {
+          "id": "casual",
+          "name": "便服",
+          "prose": "a soft casual outfit off duty",
+          "tokens": ["casual_clothes", "sweater", "skirt"]
+        },
+        {
+          "id": "formal_dress",
+          "name": "礼服",
+          "prose": "an elegant formal dress for a special evening",
+          "tokens": ["evening_gown", "blue_dress", "long_sleeves", "dress"]
+        }
+      ]
+    },
+    {
+      "id": "emilia_rezero",
+      "displayName": "爱蜜莉雅",
+      "originalName": "Emilia",
+      "franchise": "Re:Zero",
+      "aliases": ["emilia", "emt", "emilia rezero", "re zero", "emilia from re zero"],
+      "identityProse": "Emilia from Re:Zero, a kind silver-haired elf with purple eyes, pointed ears and a hair ribbon, wearing a white and lilac dress that matches her gentle nature.",
+      "identityTokens": ["emilia", "1girl", "solo", "long_hair", "silver_hair", "purple_eyes", "elf", "pointy_ears", "hair_ribbon", "bangs"],
+      "exactTokens": ["emilia"],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": ["anima-aesthetic-v1.1", "krea2-turbo-fp8"],
+      "adultEligibility": "unknown",
+      "outfits": [
+        {
+          "id": "white_dress",
+          "name": "白色连衣裙",
+          "prose": "her signature white and lilac dress with a soft ribbon",
+          "tokens": ["white_dress", "lilac", "ribbon", "dress", "long_sleeves"],
+          "default": true
+        },
+        {
+          "id": "witch_dress",
+          "name": "魔女装",
+          "prose": "a dark witch-like dress worn in the capital",
+          "tokens": ["witch", "black_dress", "frills", "hat"]
+        },
+        {
+          "id": "casual",
+          "name": "便服",
+          "prose": "a comfortable casual outfit",
+          "tokens": ["casual_clothes", "dress", "cardigan"]
+        }
+      ]
+    },
+    {
+      "id": "roxy_migurdia",
+      "displayName": "洛琪希",
+      "originalName": "Roxy Migurdia",
+      "franchise": "Mushoku Tensei",
+      "aliases": ["roxy_migurdia", "roxy", "roxy migurdia", "mushoku tensei", "jobless reincarnation"],
+      "identityProse": "Roxy Migurdia from Mushoku Tensei, a small and dignified magic teacher with short pale-blue hair, blue eyes, a ribbon and a pointed witch hat, exuding an air of quiet mastery.",
+      "identityTokens": ["roxy_migurdia", "1girl", "solo", "short_hair", "blue_hair", "blue_eyes", "hair_ribbon", "bangs", "small_breasts"],
+      "exactTokens": ["roxy_migurdia"],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": ["anima-aesthetic-v1.1", "krea2-turbo-fp8"],
+      "adultEligibility": "underage",
+      "outfits": [
+        {
+          "id": "witch_outfit",
+          "name": "魔女服",
+          "prose": "her short witch outfit with a blue hat, white blouse and blue skirt",
+          "tokens": ["witch", "witch_hat", "white_shirt", "blue_skirt", "frills", "thighhighs"],
+          "default": true
+        },
+        {
+          "id": "casual",
+          "name": "便服",
+          "prose": "a relaxed casual dress in soft blue tones",
+          "tokens": ["casual_clothes", "dress", "blue_clothes"]
+        },
+        {
+          "id": "adventurer",
+          "name": "冒险装",
+          "prose": "a practical adventurer outfit with a cape and boots",
+          "tokens": ["adventurer", "cape", "boots", "pants", "belt"]
+        }
+      ]
+    },
+    {
+      "id": "illyasviel_von_einzbern",
+      "displayName": "伊莉雅丝菲尔",
+      "originalName": "Illyasviel von Einzbern",
+      "franchise": "Fate/stay night",
+      "aliases": ["illyasviel_von_einzbern", "illya", "ilys", "snow field", "fate/stay night"],
+      "identityProse": "Illyasviel von Einzbern from the Fate/stay night story, a small and cheerful-looking silver-haired girl with red eyes and a red hooded coat, at once playful and otherworldly.",
+      "identityTokens": ["illyasviel_von_einzbern", "1girl", "solo", "long_hair", "white_hair", "red_eyes", "ahoge", "bangs", "small_breasts"],
+      "exactTokens": ["illyasviel_von_einzbern"],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": ["anima-aesthetic-v1.1", "krea2-turbo-fp8"],
+      "adultEligibility": "underage",
+      "outfits": [
+        {
+          "id": "winter_coat",
+          "name": "Fate 本篇冬装",
+          "prose": "her red winter coat with a hood and fur trim from the Fuyuki winter story",
+          "tokens": ["coat", "red_coat", "fur_trim", "hood", "winter_clothes"],
+          "default": true
+        },
+        {
+          "id": "white_dress",
+          "name": "白色连衣裙",
+          "prose": "a pure white dress with a matching ribbon",
+          "tokens": ["white_dress", "ribbon", "dress", "long_sleeves"]
+        },
+        {
+          "id": "casual",
+          "name": "便服",
+          "prose": "a soft casual outfit",
+          "tokens": ["casual_clothes", "dress", "cardigan"]
+        }
+      ]
+    },
+    {
+      "id": "kitagawa_marin",
+      "displayName": "喜多川海梦",
+      "originalName": "Kitagawa Marin",
+      "franchise": "My Dress-Up Darling",
+      "aliases": ["kitagawa_marin", "marin", "marin kitagawa", "my dress-up darling", "sono bisque doll"],
+      "identityProse": "Kitagawa Marin from My Dress-Up Darling, a lively gyaru girl with long blonde hair, an ahoge, red-brown eyes and long lashes, always full of energy and love for cosplay.",
+      "identityTokens": ["kitagawa_marin", "1girl", "solo", "long_hair", "blonde_hair", "red_eyes", "ahoge", "eyelashes", "gyaru"],
+      "exactTokens": ["kitagawa_marin"],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": ["anima-aesthetic-v1.1", "krea2-turbo-fp8"],
+      "adultEligibility": "underage",
+      "outfits": [
+        {
+          "id": "school_uniform",
+          "name": "校服",
+          "prose": "her school uniform with an open blazer and a loose tie",
+          "tokens": ["school_uniform", "blazer", "open_jacket", "pleated_skirt", "loose_tie"],
+          "default": true
+        },
+        {
+          "id": "gal_casual",
+          "name": "日常辣妹",
+          "prose": "a bright gyaru street outfit with a cropped top and skirt",
+          "tokens": ["gyaru", "crop_top", "miniskirt", "sneakers", "casual_clothes"]
+        },
+        {
+          "id": "cosplay",
+          "name": "泛用 cosplay",
+          "prose": "a playful cosplay outfit with character accents and a wig",
+          "tokens": ["cosplay", "costume", "wig", "hair_ornament", "sailor_uniform"]
+        }
+      ]
+    },
+    {
+      "id": "kisara_engage_kiss",
+      "displayName": "木更",
+      "originalName": "Kisara",
+      "franchise": "Engage Kiss",
+      "aliases": ["kisara", "kisara engage kiss", "engage kiss", "kisara from engage kiss"],
+      "identityProse": "Kisara from Engage Kiss, a devoted and intense young woman with long dark-red hair, red eyes and an ahoge, whose feelings burn as fiercely as her crimson wardrobe.",
+      "identityTokens": ["kisara", "1girl", "solo", "long_hair", "red_hair", "red_eyes", "ahoge", "bangs"],
+      "exactTokens": ["kisara"],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": ["anima-aesthetic-v1.1", "krea2-turbo-fp8"],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "red_dress",
+          "name": "红色连衣裙",
+          "prose": "her striking red dress with a side slit and her crimson signature look",
+          "tokens": ["red_dress", "dress", "side_slit", "bare_legs"],
+          "default": true
+        },
+        {
+          "id": "casual",
+          "name": "便服",
+          "prose": "a modern casual outfit with a jacket and jeans",
+          "tokens": ["casual_clothes", "jacket", "jeans", "shirt"]
+        },
+        {
+          "id": "formal",
+          "name": "正装",
+          "prose": "a sleek formal blazer outfit",
+          "tokens": ["blazer", "skirt", "white_shirt", "formal"]
+        }
+      ]
+    }
+  ]
+}

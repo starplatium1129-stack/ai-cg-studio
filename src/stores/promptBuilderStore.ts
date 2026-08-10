@@ -17,6 +17,7 @@ import {
   type PromptPreset,
   type SDParams,
 } from '@/utils/promptBuilderPersistence'
+import type { DrawSubject, PopularCharacter, SceneBlueprint } from '@/utils/popularContent'
 
 // 与 useBackup.ts / GalleryView.vue 共用同一组键。改这里必须同步那两处。
 const HISTORY_STORAGE_KEY = 'aics_pb_history'
@@ -60,6 +61,14 @@ export interface HistoryEntry {
   rating: Record<string, number>; favorite: boolean; notes: string
   image_id: string; image_url: string; version: number
   parent_id: number | null; project: string; [k: string]: unknown
+  /** 热门角色无 LoRA 创作模式（旧历史缺省 studio，向后兼容）。 */
+  subject?: 'studio' | 'popular'
+  characterId?: string
+  outfitId?: string
+  blueprintId?: string | null
+  noLora?: boolean
+  /** 热门角色 Krea 风格配方 id（null = 自动按场景+引擎），旧历史缺省自动。 */
+  kreaStyleId?: string | null
 }
 
 export interface Selections {
@@ -112,6 +121,9 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   const story     = ref('')
   const visualDescription = ref('')
   const char      = ref<CharKey>('nene')
+  /** 热门角色无 LoRA 创作模式与工作室角色互斥；studio 路径继续用 char。 */
+  const subject   = ref<DrawSubject>({ kind: 'studio' })
+  const isPopular = computed(() => subject.value.kind === 'popular')
   const colorMood = ref<string | null>(null)
   const concise   = ref(false)
   const sceneId   = ref<string | null>(null)
@@ -128,6 +140,10 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   const modelProfiles = ref<ModelProfile[]>([])
   const tags         = ref<Array<{ en: string; cn: string; cat: string }>>([])
   const characters   = ref<Array<{ id: string; lora?: { name: string; weight: number }; traits?: Array<{ tag: string; label: string; icon?: string }>; [k: string]: unknown }>>([])
+  const popularCharacters = ref<PopularCharacter[]>([])
+  const sceneBlueprints = ref<SceneBlueprint[]>([])
+  /** 热门角色 Krea 风格配方（null = 自动按 blueprint+引擎取默认）。 */
+  const kreaStyleId = ref<string | null>(null)
   const dataReady    = ref(false)
 
   // ── Runtime history ─────────────────────────────────────────────────────
@@ -232,6 +248,17 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
 
   // ── Mutations ───────────────────────────────────────────────────────────
   function setChar(c: CharKey) { char.value = c }
+  function setStudioSubject() {
+    if (subject.value.kind === 'studio') return
+    subject.value = { kind: 'studio' }
+  }
+  function setPopularSubject(characterId: string, outfitId: string, blueprintId: string | null = null) {
+    subject.value = { kind: 'popular', characterId, outfitId, blueprintId }
+  }
+  function setPopularBlueprint(blueprintId: string | null) {
+    if (subject.value.kind !== 'popular') return
+    subject.value = { kind: 'popular', characterId: subject.value.characterId, outfitId: subject.value.outfitId, blueprintId }
+  }
   function setStory(t: string) { story.value = t }
   function toggleEmotion(id: string) {
     const i = selections.emotion.indexOf(id)
@@ -305,6 +332,8 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     characters.value = store.characters as typeof characters.value
     loraMeta.value = store.loras as typeof loraMeta.value
     tags.value = store.tags as typeof tags.value
+    popularCharacters.value = store.popularCharacters
+    sceneBlueprints.value = store.sceneBlueprints
 
     const catalog = parsePresetCatalog(store.presets)
     presets.value = catalog.presets
@@ -349,6 +378,16 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   let draftTimer: ReturnType<typeof setTimeout> | null = null
 
   function snapshotDraft(): PromptBuilderDraft {
+    const popular = subject.value.kind === 'popular'
+      ? {
+          subject: 'popular' as const,
+          characterId: subject.value.characterId,
+          outfitId: subject.value.outfitId,
+          blueprintId: subject.value.blueprintId,
+          noLora: true,
+          kreaStyleId: kreaStyleId.value,
+        }
+      : { subject: 'studio' as const, noLora: false }
     return {
       updatedAt: Date.now(),
       story: story.value,
@@ -363,6 +402,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
       directorMode: directorMode.value,
       sdParams: { ...sdParams },
       projectId: projectId.value,
+      ...popular,
     }
   }
 
@@ -383,6 +423,12 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     if (d.directorMode) directorMode.value = d.directorMode
     if (d.sdParams) Object.assign(sdParams, d.sdParams)
     if (typeof d.projectId === 'string') projectId.value = d.projectId
+    if (d.subject === 'popular' && d.characterId && d.outfitId) {
+      subject.value = { kind: 'popular', characterId: d.characterId, outfitId: d.outfitId, blueprintId: d.blueprintId ?? null }
+    } else {
+      subject.value = { kind: 'studio' }
+    }
+    if (typeof d.kreaStyleId === 'string' || d.kreaStyleId === null) kreaStyleId.value = d.kreaStyleId
   }
 
   function saveDraft() {
@@ -485,6 +531,12 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
         rating: {}, favorite: false, notes: '',
         image_id: imageId, image_url: '',
         version: 1, parent_id: null, project: projectId.value,
+        subject: subject.value.kind === 'popular' ? 'popular' : 'studio',
+        characterId: subject.value.kind === 'popular' ? subject.value.characterId : undefined,
+        outfitId: subject.value.kind === 'popular' ? subject.value.outfitId : undefined,
+        blueprintId: subject.value.kind === 'popular' ? subject.value.blueprintId : undefined,
+        noLora: subject.value.kind === 'popular',
+        kreaStyleId: subject.value.kind === 'popular' ? kreaStyleId.value : null,
       }
       const updated = [...history.value, historyEntry]
       history.value = updated
@@ -527,7 +579,9 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   return {
     story, visualDescription, char, colorMood, concise, sceneId, sceneBaseStory,
     selections, manualTags, projectId,
-    scenes, curation, loraMeta, presets, modelProfiles, tags, characters, dataReady,
+    subject, isPopular, kreaStyleId,
+    scenes, curation, loraMeta, presets, modelProfiles, tags, characters,
+    popularCharacters, sceneBlueprints, dataReady,
     history, projects,
     sdOnline, sdGenerating, sdProgress, sdResultUrl, sdStatus, sdError,
     sdModelName, sdAvailableModels, lastSeed, sdParams,
@@ -537,6 +591,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     activeScene, charPrompt, loraLine, emotionPrompt, filteredScenes,
     setChar, setStory, toggleEmotion, setShot, setLighting, setComposition,
     setColorMood, toggleManualTag, loadScene, clearScene, flash,
+    setStudioSubject, setPopularSubject, setPopularBlueprint,
     loadData, loadHistory, loadProjects,
     saveDraft, restoreDraft, snapshotDraft,
     commitHistoryEntry, removeHistoryEntry,

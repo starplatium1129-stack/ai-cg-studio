@@ -2,7 +2,11 @@
 import { computed } from 'vue'
 import type { AnimaGenerationState } from '@/types/anima'
 
-const props = defineProps<{ state: AnimaGenerationState }>()
+const props = defineProps<{
+  state: AnimaGenerationState
+  /** 热门角色无 LoRA 模式（由父级按 subject + capability 判定，面板不做模型 id 猜测）。 */
+  noLora?: boolean
+}>()
 const state = computed(() => props.state)
 const emit = defineEmits<{
   (event: 'update:state', patch: Partial<AnimaGenerationState>): void
@@ -46,6 +50,8 @@ const busy = computed(() => ['submitting', 'running', 'cancelling'].includes(pro
 const canSubmit = computed(() => props.state.online && !busy.value && !!props.state.prompt && !!props.state.modelId)
 const selectedLora = computed(() => props.state.loras.find(lora => lora.id === props.state.loraId) ?? null)
 const selectedModel = computed(() => props.state.models.find(model => model.id === props.state.modelId) ?? null)
+/** 热门角色无 LoRA：只在 popular subject + noLora capability 时隐藏 LoRA 选择。 */
+const noLoraMode = computed(() => props.noLora === true && selectedModel.value?.capabilities?.noLora === true)
 const availableSizes = computed(() => selectedModel.value?.sizes?.length ? selectedModel.value.sizes : ['832x1216', '1024x1024', '1216x832'])
 function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) }) }
 </script>
@@ -59,6 +65,7 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
     <div class="anima-body">
        <p class="anima-hint">{{ state.checkMsg }}</p>
        <p v-if="state.family === 'krea2'" class="anima-preview-note"><strong>Krea 2 实验</strong> · 纯自然语言、无角色 LoRA，身份不保证；Prompt Enhancer 未启用。</p>
+        <p v-else-if="noLoraMode" class="anima-preview-note"><strong>无需 LoRA</strong> · 通用底模直出，不加载角色 LoRA，身份由词条锚定</p>
         <p v-else-if="selectedLora?.preview" class="anima-preview-note"><strong>实验预览</strong> · 夏目 v19 E08 · 普通全身稳定性有限</p>
 
        <div class="anima-row">
@@ -67,7 +74,7 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
            <option v-for="m in state.models" :key="m.id" :value="m.id" :disabled="m.available === false">{{ m.label || m.id }}{{ m.available === false ? ' · 资源缺失' : '' }}</option>
         </select>
       </div>
-       <div v-if="state.family !== 'krea2'" class="anima-row">
+       <div v-if="state.family !== 'krea2' && !noLoraMode" class="anima-row">
         <label>LoRA</label>
         <select v-model="loraId" :disabled="busy">
           <option v-for="l in state.loras" :key="l.id" :value="l.id">{{ l.name || l.id }}</option>

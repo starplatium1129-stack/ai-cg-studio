@@ -34,6 +34,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-prompt-builder-modules.js',
     'test-prompt-compiler.js',
     'test-prompt-policy.js',
+    'test-popular-content.js',
     'test-quick-create.js',
     'test-resource-scheduling.js',
     'test-scene-ux.js',

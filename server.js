@@ -169,7 +169,8 @@ function createGateway(options) {
     'scenes.json', 'scenes-index.json', 'scenes-core.json',
     'scenes-nene.json', 'scenes-natsume.json', 'scenes-shared.json',
     'curation.json', 'characters.json',
-    'loras.json', 'tags.json', 'presets.json'
+    'loras.json', 'tags.json', 'presets.json',
+    'popular-characters.json', 'scene-blueprints.json'
   ];
   // 客户端统一经 sceneStore 带 ?v=DATA_VERSION 读取，版本号变即换 URL，
   // 因此这里可以放心给一年 immutable 缓存；改动 data/*.json 只需升版本号。

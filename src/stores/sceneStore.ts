@@ -1,5 +1,11 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import {
+  parsePopularCharacters,
+  parseSceneBlueprints,
+  type PopularCharacter,
+  type SceneBlueprint,
+} from '@/utils/popularContent.ts'
 
 /**
  * 共享数据的唯一加载口。
@@ -57,7 +63,7 @@ export interface TagMeta {
  * 改过 data/*.json 后 `npm run validate` 会提示这里该改成什么。
  * 以前是手动计数（曾到 15），现在由内容锁定，不会再出现"改数据忘升版本"。
  */
-export const DATA_VERSION = 3195644954
+export const DATA_VERSION = 501884775
 
 /** 带 response.ok 检查的 JSON 读取 —— 否则 HTML 错误页会被当数据解析 */
 async function loadJson<T>(file: string, fallback: T, version: number): Promise<T> {
@@ -105,6 +111,8 @@ export const useSceneStore = defineStore('scenes', () => {
   const tags = ref<TagMeta[]>([])
   const presets = ref<Record<string, unknown> | unknown[]>([])
   const index = ref<SceneIndex | null>(null)
+  const popularCharacters = ref<PopularCharacter[]>([])
+  const sceneBlueprints = ref<SceneBlueprint[]>([])
 
   const loading = ref(false)
   const error = ref<string | null>(null)
@@ -122,13 +130,17 @@ export const useSceneStore = defineStore('scenes', () => {
   async function loadMeta(force = false): Promise<void> {
     if (metaLoaded && !force) return
     const v = version.value
-    const [cu, ch, lo, tg, pr, ix] = await Promise.all([
+    const [cu, ch, lo, tg, pr, ix, pop, bp] = await Promise.all([
       loadJson<CurationData>('curation.json', {}, v).catch(() => ({} as CurationData)),
       loadJson<Array<Record<string, unknown>>>('characters.json', [], v).catch(() => []),
       loadJson<LoraMeta[]>('loras.json', [], v).catch(() => []),
       loadJson<TagMeta[]>('tags.json', [], v).catch(() => []),
       loadJson<Record<string, unknown> | unknown[]>('presets.json', [], v).catch(() => []),
       loadJson<SceneIndex | null>('scenes-index.json', null, v).catch(() => null),
+      loadJson('popular-characters.json', { characters: [] }, v)
+        .then(raw => parsePopularCharacters(raw)).catch(() => []),
+      loadJson('scene-blueprints.json', { blueprints: [] }, v)
+        .then(raw => parseSceneBlueprints(raw)).catch(() => []),
     ])
     curation.value = cu ?? {}
     characters.value = Array.isArray(ch) ? ch : []
@@ -136,6 +148,8 @@ export const useSceneStore = defineStore('scenes', () => {
     tags.value = Array.isArray(tg) ? tg : []
     presets.value = pr ?? []
     index.value = ix
+    popularCharacters.value = pop
+    sceneBlueprints.value = bp
     metaLoaded = true
   }
 
@@ -259,6 +273,7 @@ export const useSceneStore = defineStore('scenes', () => {
 
   return {
     scenes, curation, characters, loras, tags, presets, index,
+    popularCharacters, sceneBlueprints,
     loading, error, loaded, loadedShards, version,
     load, loadCharacter, loadCore, ensureCharacter, ensureCore, reload, byId, count,
   }
