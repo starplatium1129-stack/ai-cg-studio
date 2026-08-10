@@ -12,10 +12,26 @@
       "lighting": "golden backlight with a warm glow",
       "camera": "medium shot, eye level, shallow depth of field",
       "mood": "calm and wistful",
-      "sceneTags": ["flower_field", "backlighting", "golden_hour", "wind", "depth_of_field"],
-      "promptProse": "Standing in a vast blooming flower field on a hill at golden hour, the setting sun backlights the figure and traces glowing edges around hair and shoulders. A soft breeze lifts hair and skirt while petals drift through the warm air.",
-      "promptTokens": ["flower_field", "backlighting", "golden_hour", "wind", "depth_of_field", "day", "outdoors"],
-      "negativeTokens": ["worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, night"],
+      "sceneTags": [
+        "flower_field",
+        "backlighting",
+        "golden_hour",
+        "wind",
+        "depth_of_field"
+      ],
+      "promptProse": "Standing in a vast blooming flower field on a hill at golden hour, the setting sun backlights her and traces glowing edges around hair and shoulders. A soft breeze lifts hair and skirt while petals drift through the warm air.",
+      "promptTokens": [
+        "flower_field",
+        "backlighting",
+        "golden_hour",
+        "wind",
+        "depth_of_field",
+        "day",
+        "outdoors"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, night"
+      ],
       "recommendedSize": "832x1216",
       "adult": false,
       "kreaStyleHint": "cinematic_film_still",
@@ -32,10 +48,27 @@
       "lighting": "warm window light streaming through the windows",
       "camera": "medium shot with a slight high angle, soft focus",
       "mood": "quiet and nostalgic",
-      "sceneTags": ["classroom", "window", "desks", "school", "afternoon", "sunlight"],
+      "sceneTags": [
+        "classroom",
+        "window",
+        "desks",
+        "school",
+        "afternoon",
+        "sunlight"
+      ],
       "promptProse": "An empty classroom after school, warm late-afternoon sunlight streams through large windows and falls across rows of desks. Dust motes float in the light as a lone student stands by the window, gazing outside in quiet stillness.",
-      "promptTokens": ["classroom", "school", "window", "desk", "afternoon", "sunlight", "empty_room"],
-      "negativeTokens": ["worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, night, outdoors"],
+      "promptTokens": [
+        "classroom",
+        "school",
+        "window",
+        "desk",
+        "afternoon",
+        "sunlight",
+        "empty_room"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, night, outdoors"
+      ],
       "recommendedSize": "832x1216",
       "adult": false,
       "kreaStyleHint": "soft_daily_illustration",
@@ -52,10 +85,29 @@
       "lighting": "moody neon reflections in wet pavement",
       "camera": "wide shot with a cinematic one-point perspective",
       "mood": "melancholic and cinematic",
-      "sceneTags": ["train_station", "rain", "night", "neon_lights", "reflection", "umbrella", "platform"],
-      "promptProse": "A rainy night at a train station, wet platform glowing with neon signs reflected in puddles. A figure holds an umbrella at the edge of the platform, watching the train approach through the rain and haze.",
-      "promptTokens": ["train_station", "railway", "rain", "night", "neon_lights", "reflection", "umbrella", "city"],
-      "negativeTokens": ["worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, day, sunny"],
+      "sceneTags": [
+        "train_station",
+        "rain",
+        "night",
+        "neon_lights",
+        "reflection",
+        "umbrella",
+        "platform"
+      ],
+      "promptProse": "A rainy night at a train station, wet platform glowing with neon signs reflected in puddles. She holds an umbrella at the edge of the platform, watching the train approach through the rain and haze.",
+      "promptTokens": [
+        "train_station",
+        "railway",
+        "rain",
+        "night",
+        "neon_lights",
+        "reflection",
+        "umbrella",
+        "city"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, day, sunny"
+      ],
       "recommendedSize": "1216x832",
       "adult": false,
       "kreaStyleHint": "moody_night_scene",
@@ -72,10 +124,26 @@
       "lighting": "soft blue underwater light with gentle caustics",
       "camera": "low angle from below, wide shot",
       "mood": "wonder and solitude",
-      "sceneTags": ["aquarium", "fish", "underwater", "glass", "blue_light", "tunnel"],
-      "promptProse": "Inside an aquarium underwater tunnel, deep blue water and drifting fish pass overhead. Soft light ripples across a glass wall as a figure looks up at the school of fish, one hand pressed gently against the glass.",
-      "promptTokens": ["aquarium", "fish", "underwater", "glass", "blue_light", "water_reflection"],
-      "negativeTokens": ["worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, night"],
+      "sceneTags": [
+        "aquarium",
+        "fish",
+        "underwater",
+        "glass",
+        "blue_light",
+        "tunnel"
+      ],
+      "promptProse": "Inside an aquarium underwater tunnel, deep blue water and drifting fish pass overhead. Soft light ripples across a glass wall as she looks up at the school of fish, one hand pressed gently against the glass.",
+      "promptTokens": [
+        "aquarium",
+        "fish",
+        "underwater",
+        "glass",
+        "blue_light",
+        "water_reflection"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, night"
+      ],
       "recommendedSize": "1216x832",
       "adult": false
     },
@@ -90,10 +158,28 @@
       "lighting": "pale moonlight mixed with warm lantern light",
       "camera": "medium shot with a low angle framing the torii",
       "mood": "serene and mystical",
-      "sceneTags": ["shrine", "torii", "moonlight", "lantern", "night", "fox", "japanese_clothes"],
-      "promptProse": "At a mountain shrine under the full moon, a vermilion torii gate frames the scene and paper lanterns cast warm pools of light. Moonlight outlines the figure standing beneath the gate, the night air still and sacred.",
-      "promptTokens": ["shrine", "torii", "moonlight", "lantern", "night", "japanese_clothes", "mountains"],
-      "negativeTokens": ["worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, day, sunny"],
+      "sceneTags": [
+        "shrine",
+        "torii",
+        "moonlight",
+        "lantern",
+        "night",
+        "fox",
+        "japanese_clothes"
+      ],
+      "promptProse": "At a mountain shrine under the full moon, a vermilion torii gate frames the scene and paper lanterns cast warm pools of light. Moonlight outlines her standing beneath the gate, the night air still and sacred.",
+      "promptTokens": [
+        "shrine",
+        "torii",
+        "moonlight",
+        "lantern",
+        "night",
+        "japanese_clothes",
+        "mountains"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, day, sunny"
+      ],
       "recommendedSize": "832x1216",
       "adult": false,
       "kreaStyleHint": "fantasy_painting"
@@ -109,10 +195,28 @@
       "lighting": "warm candlelight with deep golden shadows",
       "camera": "wide shot emphasizing the grand hall",
       "mood": "solemn and grand",
-      "sceneTags": ["palace", "candle", "throne_room", "marble", "chandelier", "night", "evening_gown"],
-      "promptProse": "A vast palace hall lit by hundreds of candles, warm golden light flickering over marble floors and tall columns. A figure in formal attire walks slowly through the candlelight, the grand room echoing with quiet footsteps.",
-      "promptTokens": ["palace", "interior", "candle", "marble_columns", "chandelier", "night", "luxurious"],
-      "negativeTokens": ["worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, outdoors"],
+      "sceneTags": [
+        "palace",
+        "candle",
+        "throne_room",
+        "marble",
+        "chandelier",
+        "night",
+        "evening_gown"
+      ],
+      "promptProse": "A vast empty palace hall lit by hundreds of candles, warm golden light flickering over polished marble floors and tall columns. The grand room is completely empty, silent and echoing, with no one else present.",
+      "promptTokens": [
+        "palace",
+        "interior",
+        "candle",
+        "marble_columns",
+        "chandelier",
+        "night",
+        "luxurious"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, outdoors"
+      ],
       "recommendedSize": "1216x832",
       "adult": false
     },
@@ -127,10 +231,28 @@
       "lighting": "soft warm street lamps against falling snow",
       "camera": "medium shot, eye level, gentle snow bokeh",
       "mood": "cozy and quiet",
-      "sceneTags": ["snow", "night", "street", "street_lamp", "snowing", "winter", "scarf"],
-      "promptProse": "A quiet street in the snow at night, warm street lamps turning falling snow into drifting gold. A figure in a winter coat breathes a soft cloud of warmth and looks up into the quiet snowfall.",
-      "promptTokens": ["snow", "night", "street", "street_lamp", "snowing", "winter", "city"],
-      "negativeTokens": ["worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, day, rain"],
+      "sceneTags": [
+        "snow",
+        "night",
+        "street",
+        "street_lamp",
+        "snowing",
+        "winter",
+        "scarf"
+      ],
+      "promptProse": "A quiet street in the snow at night, warm street lamps turning falling snow into drifting gold. She in a winter coat breathes a soft cloud of warmth and looks up into the quiet snowfall.",
+      "promptTokens": [
+        "snow",
+        "night",
+        "street",
+        "street_lamp",
+        "snowing",
+        "winter",
+        "city"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, day, rain"
+      ],
       "recommendedSize": "832x1216",
       "adult": false
     },
@@ -145,10 +267,28 @@
       "lighting": "vivid neon glow reflected on wet pavement",
       "camera": "medium wide shot at street level",
       "mood": "energetic and lonely",
-      "sceneTags": ["city", "street", "neon_lights", "night", "rain", "wet_pavement"],
+      "sceneTags": [
+        "city",
+        "street",
+        "neon_lights",
+        "night",
+        "rain",
+        "wet_pavement"
+      ],
       "promptProse": "A neon-drenched city street at night after rain, the wet pavement mirroring countless colorful signs and storefront lights. Layers of glowing billboards recede into the distance with soft haze.",
-      "promptTokens": ["city", "street", "neon_lights", "night", "rain", "wet_pavement", "reflection", "buildings"],
-      "negativeTokens": ["worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, rural, day"],
+      "promptTokens": [
+        "city",
+        "street",
+        "neon_lights",
+        "night",
+        "rain",
+        "wet_pavement",
+        "reflection",
+        "buildings"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, rural, day"
+      ],
       "recommendedSize": "1216x832",
       "adult": false
     },
@@ -163,10 +303,27 @@
       "lighting": "soft magical glow from floating dust and windows",
       "camera": "medium shot with a low angle up the shelves",
       "mood": "curious and wondrous",
-      "sceneTags": ["library", "books", "magic", "sparkles", "tall_shelves", "glowing"],
-      "promptProse": "Inside a towering magical library, spiral shelves rise toward a vaulted ceiling and motes of light drift between the books. A figure reaches for a tome high on the shelf, awed by the endless sea of knowledge.",
-      "promptTokens": ["library", "books", "shelves", "magic", "sparkles", "glowing", "interior"],
-      "negativeTokens": ["worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, outdoors, night"],
+      "sceneTags": [
+        "library",
+        "books",
+        "magic",
+        "sparkles",
+        "tall_shelves",
+        "glowing"
+      ],
+      "promptProse": "Inside a towering magical library, spiral shelves rise toward a vaulted ceiling and motes of light drift between the books. She reaches for a tome high on the shelf, awed by the endless sea of knowledge.",
+      "promptTokens": [
+        "library",
+        "books",
+        "shelves",
+        "magic",
+        "sparkles",
+        "glowing",
+        "interior"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, outdoors, night"
+      ],
       "recommendedSize": "832x1216",
       "adult": false
     },
@@ -181,10 +338,29 @@
       "lighting": "cool starlight with scattered fireflies",
       "camera": "wide shot with the lake and stars reflected",
       "mood": "tranquil and dreamy",
-      "sceneTags": ["lake", "night", "stars", "milky_way", "reflection", "fireflies", "moon"],
-      "promptProse": "By a mountain lake at night, the Milky Way spills across the sky and mirrors in the still water. Fireflies drift along the shore as a figure sits on a stone at the water's edge, gazing up at the stars.",
-      "promptTokens": ["lake", "night", "stars", "milky_way", "reflection", "moonlight", "outdoors", "mountains"],
-      "negativeTokens": ["worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, day"],
+      "sceneTags": [
+        "lake",
+        "night",
+        "stars",
+        "milky_way",
+        "reflection",
+        "fireflies",
+        "moon"
+      ],
+      "promptProse": "By a mountain lake at night, the Milky Way spills across the sky and mirrors in the still water. Fireflies drift along the shore as she sits on a stone at the water's edge, gazing up at the stars.",
+      "promptTokens": [
+        "lake",
+        "night",
+        "stars",
+        "milky_way",
+        "reflection",
+        "moonlight",
+        "outdoors",
+        "mountains"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, day"
+      ],
       "recommendedSize": "1216x832",
       "adult": false,
       "kreaStyleHint": "dreamy_pastel"
@@ -200,10 +376,27 @@
       "lighting": "warm interior light against cool city night",
       "camera": "medium shot from the side, window reflection visible",
       "mood": "warm and contemplative",
-      "sceneTags": ["apartment", "window", "city_night", "night", "interior", "sofa"],
-      "promptProse": "In a modern high-rise apartment at night, warm interior light spills through a floor-to-ceiling window onto the glittering city below. A figure stands at the glass, city lights reflected faintly in the room.",
-      "promptTokens": ["apartment", "interior", "window", "city", "night", "sofa", "plant"],
-      "negativeTokens": ["worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, outdoors"],
+      "sceneTags": [
+        "apartment",
+        "window",
+        "city_night",
+        "night",
+        "interior",
+        "sofa"
+      ],
+      "promptProse": "In a modern high-rise apartment at night, warm interior light spills through a floor-to-ceiling window onto the glittering city below. She stands at the glass, city lights reflected faintly in the room.",
+      "promptTokens": [
+        "apartment",
+        "interior",
+        "window",
+        "city",
+        "night",
+        "sofa",
+        "plant"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, outdoors"
+      ],
       "recommendedSize": "832x1216",
       "adult": false
     },
@@ -218,10 +411,28 @@
       "lighting": "warm window light with soft rain reflections",
       "camera": "close-up of the figure by the window, shallow depth of field",
       "mood": "cozy and relaxed",
-      "sceneTags": ["cafe", "coffee", "window", "rain", "warm_light", "table", "interior"],
-      "promptProse": "In a corner cafe after the rain, water droplets cling to the window as warm afternoon light falls on a small table. A figure sits by the glass cradling a steaming cup of coffee, at ease and unhurried.",
-      "promptTokens": ["cafe", "coffee_shop", "interior", "window", "rain", "table", "cup"],
-      "negativeTokens": ["worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, night"],
+      "sceneTags": [
+        "cafe",
+        "coffee",
+        "window",
+        "rain",
+        "warm_light",
+        "table",
+        "interior"
+      ],
+      "promptProse": "In a corner cafe after the rain, water droplets cling to the window as warm afternoon light falls on a small table. She sits by the glass cradling a steaming cup of coffee, at ease and unhurried.",
+      "promptTokens": [
+        "cafe",
+        "coffee_shop",
+        "interior",
+        "window",
+        "rain",
+        "table",
+        "cup"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, night"
+      ],
       "recommendedSize": "832x1216",
       "adult": false
     },
@@ -236,10 +447,28 @@
       "lighting": "golden hour glow with a low sun over the sea",
       "camera": "medium shot, wide open beach behind",
       "mood": "free and gentle",
-      "sceneTags": ["beach", "sea", "sunset", "golden_hour", "waves", "outdoors", "summer"],
-      "promptProse": "On a beach at sunset, the tide line gleams gold as waves whisper up the sand. A figure walks barefoot along the water's edge, sea breeze catching loose hair against the burning low sun.",
-      "promptTokens": ["beach", "sea", "sunset", "golden_hour", "waves", "outdoors", "sand"],
-      "negativeTokens": ["worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, night, snow"],
+      "sceneTags": [
+        "beach",
+        "sea",
+        "sunset",
+        "golden_hour",
+        "waves",
+        "outdoors",
+        "summer"
+      ],
+      "promptProse": "On a beach at sunset, the tide line gleams gold as waves whisper up the sand. She walks barefoot along the water's edge, sea breeze catching loose hair against the burning low sun.",
+      "promptTokens": [
+        "beach",
+        "sea",
+        "sunset",
+        "golden_hour",
+        "waves",
+        "outdoors",
+        "sand"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, night, snow"
+      ],
       "recommendedSize": "1216x832",
       "adult": false
     },
@@ -254,10 +483,28 @@
       "lighting": "warm festival lanterns with drifting firework light",
       "camera": "medium shot with festival stalls blurred behind",
       "mood": "bright and lively",
-      "sceneTags": ["festival", "lantern", "night", "yukata", "fireworks", "stall", "summer"],
-      "promptProse": "At a summer festival, strings of paper lanterns glow above bustling night stalls. A figure in festive dress turns back beneath the lights, a folding fan in hand, as fireworks bloom high in the night sky.",
-      "promptTokens": ["festival", "lantern", "night", "fireworks", "stall", "summer", "japanese_clothes"],
-      "negativeTokens": ["worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, day, winter"],
+      "sceneTags": [
+        "festival",
+        "lantern",
+        "night",
+        "yukata",
+        "fireworks",
+        "stall",
+        "summer"
+      ],
+      "promptProse": "At a summer festival, strings of paper lanterns glow above bustling night stalls. She in festive dress turns back beneath the lights, a folding fan in hand, as fireworks bloom high in the night sky.",
+      "promptTokens": [
+        "festival",
+        "lantern",
+        "night",
+        "fireworks",
+        "stall",
+        "summer",
+        "japanese_clothes"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, day, winter"
+      ],
       "recommendedSize": "832x1216",
       "adult": false,
       "kreaStyleHint": "anime_promo_art"
@@ -273,10 +520,28 @@
       "lighting": "soft raking sunlight through tall windows",
       "camera": "close-up with a warm shallow focus",
       "mood": "focused and serene",
-      "sceneTags": ["library", "reading", "books", "sunlight", "afternoon", "desk", "window"],
-      "promptProse": "In a quiet library on a calm afternoon, light falls from tall windows in soft columns. A figure sits at a desk with a book, chin resting on one hand, occasionally glancing out the window at the bright day.",
-      "promptTokens": ["library", "books", "desk", "reading", "sunlight", "afternoon", "interior"],
-      "negativeTokens": ["worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, night, outdoors"],
+      "sceneTags": [
+        "library",
+        "reading",
+        "books",
+        "sunlight",
+        "afternoon",
+        "desk",
+        "window"
+      ],
+      "promptProse": "In a quiet library on a calm afternoon, light falls from tall windows in soft columns. She sits at a desk with a book, chin resting on one hand, occasionally glancing out the window at the bright day.",
+      "promptTokens": [
+        "library",
+        "books",
+        "desk",
+        "reading",
+        "sunlight",
+        "afternoon",
+        "interior"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, night, outdoors"
+      ],
       "recommendedSize": "832x1216",
       "adult": false
     },
@@ -291,10 +556,26 @@
       "lighting": "warm orange-pink dusk light with long shadows",
       "camera": "medium shot with the sky filling the frame",
       "mood": "bittersweet and hopeful",
-      "sceneTags": ["rooftop", "school", "sunset", "sky", "dusk", "after_school"],
-      "promptProse": "On the school rooftop at dusk, the sky burns orange and pink as the sun sinks below the city. A figure leans against the fence watching the horizon, the moment suspended between endings and beginnings.",
-      "promptTokens": ["rooftop", "school", "sunset", "dusk", "sky", "city"],
-      "negativeTokens": ["worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, night, indoors"],
+      "sceneTags": [
+        "rooftop",
+        "school",
+        "sunset",
+        "sky",
+        "dusk",
+        "after_school"
+      ],
+      "promptProse": "On the school rooftop at dusk, the sky burns orange and pink as the sun sinks below the city. She leans against the fence watching the horizon, the moment suspended between endings and beginnings.",
+      "promptTokens": [
+        "rooftop",
+        "school",
+        "sunset",
+        "dusk",
+        "sky",
+        "city"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, night, indoors"
+      ],
       "recommendedSize": "1216x832",
       "adult": false
     },
@@ -309,10 +590,28 @@
       "lighting": "volumetric god rays through ruined architecture",
       "camera": "wide shot with the ruins towering around",
       "mood": "mysterious and reverent",
-      "sceneTags": ["ruins", "ancient", "stone_columns", "vines", "god_rays", "forest", "day"],
-      "promptProse": "Deep in an overgrown forest, ancient stone ruins rise beneath a canopy broken by shafts of light. A figure stands among the fallen columns and vines, god rays illuminating dust and moss in a forgotten sanctum.",
-      "promptTokens": ["ruins", "ancient", "stone_columns", "vines", "god_rays", "forest", "day"],
-      "negativeTokens": ["worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, night, indoors"],
+      "sceneTags": [
+        "ruins",
+        "ancient",
+        "stone_columns",
+        "vines",
+        "god_rays",
+        "forest",
+        "day"
+      ],
+      "promptProse": "Deep in an overgrown forest, ancient stone ruins rise beneath a canopy broken by shafts of light. She stands among the fallen columns and vines, god rays illuminating dust and moss in a forgotten sanctum.",
+      "promptTokens": [
+        "ruins",
+        "ancient",
+        "stone_columns",
+        "vines",
+        "god_rays",
+        "forest",
+        "day"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, night, indoors"
+      ],
       "recommendedSize": "1216x832",
       "adult": false
     },
@@ -327,10 +626,28 @@
       "lighting": "cold starlight glinting off ice",
       "camera": "medium shot among frosted trees",
       "mood": "hushed and enchanted",
-      "sceneTags": ["forest", "snow", "night", "stars", "ice", "winter", "moonlight"],
-      "promptProse": "In a winter forest under the stars, snow blankets the ground and frost coats every branch with a soft blue shimmer. A figure stands in the drifts looking up through the trees at a clear, icy night sky.",
-      "promptTokens": ["forest", "snow", "night", "stars", "ice", "winter", "moonlight"],
-      "negativeTokens": ["worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, day, summer"],
+      "sceneTags": [
+        "forest",
+        "snow",
+        "night",
+        "stars",
+        "ice",
+        "winter",
+        "moonlight"
+      ],
+      "promptProse": "In a winter forest under the stars, snow blankets the ground and frost coats every branch with a soft blue shimmer. She stands in the drifts looking up through the trees at a clear, icy night sky.",
+      "promptTokens": [
+        "forest",
+        "snow",
+        "night",
+        "stars",
+        "ice",
+        "winter",
+        "moonlight"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, day, summer"
+      ],
       "recommendedSize": "832x1216",
       "adult": false
     },
@@ -345,10 +662,28 @@
       "lighting": "cool dawn light with warm horizon glow",
       "camera": "wide shot from inside the cave toward the sea",
       "mood": "calm and awakening",
-      "sceneTags": ["cave", "sea", "dawn", "sunrise", "water", "rocks", "morning"],
-      "promptProse": "In a sea cave at dawn, the tide shimmers across the entrance as morning light spills in from the open sea. A figure stands at the cave mouth, backlit by the rising sun over calm water.",
-      "promptTokens": ["cave", "sea", "dawn", "sunrise", "water", "rocks", "morning"],
-      "negativeTokens": ["worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, night"],
+      "sceneTags": [
+        "cave",
+        "sea",
+        "dawn",
+        "sunrise",
+        "water",
+        "rocks",
+        "morning"
+      ],
+      "promptProse": "In a sea cave at dawn, the tide shimmers across the entrance as morning light spills in from the open sea. She stands at the cave mouth, backlit by the rising sun over calm water.",
+      "promptTokens": [
+        "cave",
+        "sea",
+        "dawn",
+        "sunrise",
+        "water",
+        "rocks",
+        "morning"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, night"
+      ],
       "recommendedSize": "1216x832",
       "adult": false
     },
@@ -363,10 +698,26 @@
       "lighting": "warm afternoon light with passing landscape reflections",
       "camera": "close-up through the window glass",
       "mood": "languid and reflective",
-      "sceneTags": ["train", "window", "railway", "landscape", "afternoon", "interior"],
-      "promptProse": "Inside an old train on an afternoon ride, fields rush past the window and light flickers across the compartment. A figure rests a cheek against the cool glass, watching the landscape blur by.",
-      "promptTokens": ["train", "train_interior", "window", "railway", "afternoon", "landscape"],
-      "negativeTokens": ["worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, night"],
+      "sceneTags": [
+        "train",
+        "window",
+        "railway",
+        "landscape",
+        "afternoon",
+        "interior"
+      ],
+      "promptProse": "Inside an old train on an afternoon ride, fields rush past the window and light flickers across the compartment. She rests a cheek against the cool glass, watching the landscape blur by.",
+      "promptTokens": [
+        "train",
+        "train_interior",
+        "window",
+        "railway",
+        "afternoon",
+        "landscape"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, night"
+      ],
       "recommendedSize": "1216x832",
       "adult": false
     },
@@ -381,10 +732,29 @@
       "lighting": "bright spring sunlight with soft petals in the air",
       "camera": "medium shot with the stream and blossoms behind",
       "mood": "fresh and lighthearted",
-      "sceneTags": ["bridge", "spring", "petals", "river", "cherry_blossoms", "sunny", "park"],
-      "promptProse": "On a small wooden bridge in a spring park, pale petals drift across the stream while sunlight dapples the water. A figure stands at the center of the bridge, reaching out to catch a falling petal.",
-      "promptTokens": ["bridge", "spring", "petals", "river", "cherry_blossoms", "sunny", "park", "outdoors"],
-      "negativeTokens": ["worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, night, winter"],
+      "sceneTags": [
+        "bridge",
+        "spring",
+        "petals",
+        "river",
+        "cherry_blossoms",
+        "sunny",
+        "park"
+      ],
+      "promptProse": "On a small wooden bridge in a spring park, pale petals drift across the stream while sunlight dapples the water. She stands at the center of the bridge, reaching out to catch a falling petal.",
+      "promptTokens": [
+        "bridge",
+        "spring",
+        "petals",
+        "river",
+        "cherry_blossoms",
+        "sunny",
+        "park",
+        "outdoors"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, night, winter"
+      ],
       "recommendedSize": "832x1216",
       "adult": false
     },
@@ -399,10 +769,26 @@
       "lighting": "flickering warm candlelight with deep amber shadows",
       "camera": "medium close-up, intimate framing",
       "mood": "tender and intimate",
-      "sceneTags": ["bedroom", "candle", "night", "warm_light", "bed", "intimate"],
-      "promptProse": "In a dim bedroom lit only by candles, warm amber light flickers across the sheets and walls. A figure reclines by the headboard, candlelight tracing the curve of the face in soft intimacy.",
-      "promptTokens": ["bedroom", "candle", "night", "warm_light", "bed", "sheets"],
-      "negativeTokens": ["worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform"],
+      "sceneTags": [
+        "bedroom",
+        "candle",
+        "night",
+        "warm_light",
+        "bed",
+        "intimate"
+      ],
+      "promptProse": "In a dim bedroom lit only by candles, warm amber light flickers across the sheets and walls. She reclines by the headboard, candlelight tracing the curve of the face in soft intimacy.",
+      "promptTokens": [
+        "bedroom",
+        "candle",
+        "night",
+        "warm_light",
+        "bed",
+        "sheets"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform"
+      ],
       "recommendedSize": "832x1216",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
@@ -419,10 +805,26 @@
       "lighting": "bright backlit morning with soft rim light",
       "camera": "medium shot from the side, rim-lit silhouette",
       "mood": "soft and unhurried",
-      "sceneTags": ["bedroom", "bathrobe", "morning", "backlighting", "window", "rim_light"],
-      "promptProse": "In a bright bedroom at dawn, morning light pours through the window and rims the figure standing before it in a loosely tied bathrobe. The scene is unhurried, warm, and completely private.",
-      "promptTokens": ["bedroom", "bathrobe", "morning", "backlighting", "window", "rim_light"],
-      "negativeTokens": ["worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform"],
+      "sceneTags": [
+        "bedroom",
+        "bathrobe",
+        "morning",
+        "backlighting",
+        "window",
+        "rim_light"
+      ],
+      "promptProse": "In a bright bedroom at dawn, morning light pours through the window and rims her standing before it in a loosely tied bathrobe. The scene is unhurried, warm, and completely private.",
+      "promptTokens": [
+        "bedroom",
+        "bathrobe",
+        "morning",
+        "backlighting",
+        "window",
+        "rim_light"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform"
+      ],
       "recommendedSize": "832x1216",
       "adult": true,
       "kreaStyleHint": "r18_elegant_boudoir"
@@ -438,10 +840,25 @@
       "lighting": "low warm lamp light with soft shadows",
       "camera": "close-up mirrored composition",
       "mood": "charged and private",
-      "sceneTags": ["dressing_room", "mirror", "night", "lamp", "intimate", "clothes"],
-      "promptProse": "Late at night in a dim dressing room, a single warm lamp casts soft shadows as a figure adjusts clothing before a mirror, caught mid-motion in a private, charged moment.",
-      "promptTokens": ["dressing_room", "mirror", "night", "lamp", "intimate"],
-      "negativeTokens": ["worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform"],
+      "sceneTags": [
+        "dressing_room",
+        "mirror",
+        "night",
+        "lamp",
+        "intimate",
+        "clothes"
+      ],
+      "promptProse": "Late at night in a dim dressing room, a single warm lamp casts soft shadows as she adjusts clothing before a mirror, caught mid-motion in a private, charged moment.",
+      "promptTokens": [
+        "dressing_room",
+        "mirror",
+        "night",
+        "lamp",
+        "intimate"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform"
+      ],
       "recommendedSize": "832x1216",
       "adult": true
     }

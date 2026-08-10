@@ -564,7 +564,7 @@ const DUAL_INTERACTION_TOKENS = new Set([
   'straddling_viewer', 'trapping_viewer', 'trapped_by_viewer', 'clinging_to_viewer',
   'caught_by_viewer', 'close_face_to_face_distance', 'tense_close_contact',
   'back_hug', 'embracing', 'embrace', 'cohabitation', 'hand_holding', 'hug', 'hugging',
-  'cuddle', 'cuddling', 'spooning', 'couple', 'dating', 'two_tone_body',
+  'cuddle', 'cuddling', 'spooning', 'couple', 'dating', 'two_tone_body', 'pov',
 ])
 
 /**

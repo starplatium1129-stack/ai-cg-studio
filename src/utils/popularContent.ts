@@ -459,9 +459,15 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   const visualDescription = userVisual || outfit.prose
 
   if (engine === 'krea2') {
+    // Krea2 不接受负面词，只能正面约束：场景级"空荡/荒废/无人"描述比通用否定有效
+    // （宫殿验证：empty hall 生效；no guards 无效）。车站/街道等公共场所先验强，
+    // 必须明确 deserted/empty + 人群类别词。
+    const soloConstraint = blueprint?.promptProse
+      ? ` ${blueprint.promptProse} The whole scene is completely deserted and empty, with not a single other person anywhere in the frame — no commuters, no passersby, no bystanders, no crowd, no background figures at all.`
+      : undefined
     const plan = createPromptPlan({
       subjectProse: character.identityProse,
-      sceneProse: blueprint?.promptProse,
+      sceneProse: soloConstraint,
       emotion: blueprint ? [blueprint.mood] : [],
       camera: blueprint ? [blueprint.camera] : [],
       lighting: blueprint ? [blueprint.lighting] : [],
