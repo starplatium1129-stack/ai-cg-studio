@@ -30,9 +30,24 @@ const sentence = (value: string): string => { const text = clean(value); return 
 function proseToken(value: string): string {
   const token = value.replace(/^\(+|\)+$/g, '').replace(/<lora:[^>]+>/gi, '').replace(/:\s*-?\d+(?:\.\d+)?\s*$/g, '').trim()
   if (!token || /^(?:score_\d+|best_quality|masterpiece|amazing_quality|very_aesthetic|absurdres|safe|sensitive|nsfw|nene_r18|natsume_r18)$/i.test(token)) return ''
-  const readable = token.replace(/^ayachi_nene$/i, 'Nene').replace(/^shiki_natsume$/i, 'Natsume')
-    .replace(/^nene_(?:witch_canonical|school_uniform|sailor_uniform|red_cardigan_uniform|blue_pajamas|green_sleepwear|bat_dress|black_dress)$/i, '')
-    .replace(/^natsume_(?:cafe_uniform|pink_cafe_uniform|official_qipao|maid_uniform|winter_coat|sleepwear)$/i, '')
+  // 官方服装触发词在 Krea 散文流中映射为自然英文词组（文档:model-prompting-and-parameters-guide 排查点 2），
+  // 而非直接擦除——服装细节必须保留进散文。
+  const readable = token
+    .replace(/^ayachi_nene$/i, 'Nene').replace(/^shiki_natsume$/i, 'Natsume')
+    .replace(/^nene_witch_canonical$/i, 'witch costume')
+    .replace(/^nene_school_uniform$/i, 'navy school uniform')
+    .replace(/^nene_sailor_uniform$/i, 'sailor school uniform')
+    .replace(/^nene_red_cardigan_uniform$/i, 'school uniform with a red cardigan')
+    .replace(/^nene_blue_pajamas$/i, 'blue pajamas')
+    .replace(/^nene_green_sleepwear$/i, 'green sleepwear')
+    .replace(/^nene_bat_dress$/i, 'black bat-themed dress')
+    .replace(/^nene_black_dress$/i, 'black dress')
+    .replace(/^natsume_cafe_uniform$/i, 'cafe maid uniform')
+    .replace(/^natsume_pink_cafe_uniform$/i, 'pink cafe maid uniform')
+    .replace(/^natsume_official_qipao$/i, 'official qipao')
+    .replace(/^natsume_maid_uniform$/i, 'maid uniform')
+    .replace(/^natsume_winter_coat$/i, 'winter coat')
+    .replace(/^natsume_sleepwear$/i, 'sleepwear')
   if (!readable) return ''
   if (/^(?:nene|natsume)_/i.test(readable)) return ''
   return readable.replace(/_/g, ' ').replace(/\b1girl\b/gi, 'one girl').replace(/\bsolo\b/gi, 'alone')

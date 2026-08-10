@@ -448,7 +448,7 @@ test('anima no-LoRA route contract: validate + workflow have no LoraLoader and k
   assert.strictEqual(workflow['7'].inputs.sampler_name, 'er_sde');
   assert.strictEqual(workflow['7'].inputs.scheduler, 'sgm_uniform');
   assert.strictEqual(workflow['7'].inputs.steps, 30);
-  assert.strictEqual(workflow['7'].inputs.cfg, 4.5);
+  assert.strictEqual(workflow['7'].inputs.cfg, 1.8);
   assert.deepStrictEqual(workflow['7'].inputs.negative, ['5', 0]);
   assert.strictEqual(workflow['10'].class_type, 'SaveImage');
 

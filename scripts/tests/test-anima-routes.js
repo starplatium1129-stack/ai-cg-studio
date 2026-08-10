@@ -426,7 +426,7 @@ test('Anima no-LoRA mode submits an anima-aesthetic job without LoraLoader and a
     assert.strictEqual(graph['5'].inputs.text, 'worst quality, low quality');
     assert.strictEqual(graph['7'].inputs.sampler_name, 'er_sde');
     assert.strictEqual(graph['7'].inputs.scheduler, 'sgm_uniform');
-    assert.strictEqual(graph['7'].inputs.cfg, 4.5);
+    assert.strictEqual(graph['7'].inputs.cfg, 1.8);
     assert.strictEqual(graph['7'].inputs.steps, 30);
     assert.strictEqual(graph['10'].class_type, 'SaveImage');
 

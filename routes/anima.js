@@ -23,8 +23,8 @@ var OUTPUT_NODE_ID = '10';
 var OUTPUT_FILENAME_PREFIX = 'anima_app';
 
 var MODELS = Object.freeze({
-  'anima-base-v1.0': { file:'anima-base-v1.0.safetensors', label:'Anima Base v1.0', family:'anima', profileId:'anima_base_v10', steps:30, cfg:4.5, sampler:'er_sde', scheduler:'sgm_uniform', sizes:['832x1216','1024x1024','1216x832'] },
-  'anima-aesthetic-v1.1': { file:'anima-aesthetic-v1.1.safetensors', label:'Anima Aesthetic v1.1', family:'anima', profileId:'anima_aesthetic_v11', steps:30, cfg:4.5, sampler:'er_sde', scheduler:'sgm_uniform', sizes:['832x1216','1024x1024','1216x832'], noLora:true },
+  'anima-base-v1.0': { file:'anima-base-v1.0.safetensors', label:'Anima Base v1.0', family:'anima', profileId:'anima_base_v10', steps:30, cfg:1.8, sampler:'er_sde', scheduler:'sgm_uniform', sizes:['832x1216','1024x1024','1216x832'] },
+  'anima-aesthetic-v1.1': { file:'anima-aesthetic-v1.1.safetensors', label:'Anima Aesthetic v1.1', family:'anima', profileId:'anima_aesthetic_v11', steps:30, cfg:1.8, sampler:'er_sde', scheduler:'sgm_uniform', sizes:['832x1216','1024x1024','1216x832'], noLora:true },
   'krea2-turbo-fp8': { file:'krea2_turbo_fp8_scaled.safetensors', label:'Krea 2 Turbo', family:'krea2', profileId:'krea2_turbo_fp8', steps:8, cfg:1, sampler:'euler', scheduler:'simple', sizes:['1024x1024','1024x1536','1536x1024'], rebalance:{ preset:'standard', multiplier:1.1, normalizeTaps:false } }
 });
 

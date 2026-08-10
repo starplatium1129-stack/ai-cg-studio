@@ -38,11 +38,19 @@ test('prompt compiler keeps story and search metadata outside all model families
   assert(!krea.prompt.includes('natsume_cafe_uniform'));
   assert(!krea.prompt.includes(':1.4'));
   assert.strictEqual(krea.negative, '');
-  // Krea 官方散文段结构：无 meta 标签、无逗号标签堆砌、散文段原样织入。
   for (const value of [krea.prompt, anima.prompt]) {
     assert(!/(?:In this image|The image shows|Scene details:|Composition and lighting|A visual novel event CG featuring)/i.test(value), 'must not leak meta phrases');
   }
   assert(!/[a-z]+_[a-z]+/i.test(krea.prompt), 'krea prose must not carry raw danbooru tokens');
+  // 官方服装触发词映射为自然英文词组（docs/model-prompting-and-parameters-guide 排查点 2），不得被擦除。
+  const clothed = compiler.renderPromptPlan(compiler.createPromptPlan({
+    identity: 'ayachi_nene, nene_school_uniform, white_hair',
+    scenePrompt: 'natsume_cafe_uniform, warm_lighting',
+    manual: [],
+  }), 'krea2');
+  assert(clothed.prompt.includes('navy school uniform'), 'nene_school_uniform must map to readable navy school uniform');
+  assert(/cafe maid uniform/i.test(clothed.prompt), 'natsume_cafe_uniform must map to readable cafe maid uniform');
+  assert(!clothed.prompt.includes('nene_school_uniform'), 'raw trigger token must not leak into krea prose');
   assert(krea.prompt.includes('Nene stands beside a rain-covered cafe window.'), 'krea must weave visualDescription prose verbatim');
   assert(/warm lighting, cafe interior\./i.test(krea.prompt), 'krea must weave scene fragments as readable prose');
   assert.strictEqual(policy.formatPromptForEngine('natsume_r18, natsume_cafe_uniform, warm_lighting', 'anima'), 'natsume_r18, natsume_cafe_uniform, warm lighting');
