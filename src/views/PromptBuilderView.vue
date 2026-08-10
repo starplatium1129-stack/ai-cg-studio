@@ -829,6 +829,7 @@ function captureJob(): Omit<SDQueueJob, 'id'> | null {
     sampler: pb.sdParams.sampler,
     scheduler: pb.sdParams.scheduler || '',
     checkpoint: pb.sdModelName || sd.checkpoint.value || '',
+    lora: loraSpecs.value.map(spec => `${spec.name}:${spec.weight}`).join(', '),
     hiresFix: pb.sdParams.hiresFix,
     hiresScale: pb.sdParams.hiresScale,
     hiresUpscaler: pb.sdParams.hiresUpscaler,
@@ -859,6 +860,7 @@ function historyGenerationFields(): Partial<HistoryEntry> {
   const model = pb.sdModelName || sd.checkpoint.value || ''
   return {
     engine: 'sd',
+    provider: sd.provider.value || 'webui',
     profile: modelProfile.value?.id || '',
     model,
     lora: loraSpecs.value.map(spec => `${spec.name}:${spec.weight}`).join(', ') || null,
@@ -1167,6 +1169,7 @@ async function runJob(job: Omit<SDQueueJob, 'id'>, opts: { disableLora?: boolean
     denoising_strength: job.denoisingStrength,
     seed: job.seed,
     model: job.checkpoint || undefined,
+    lora: job.lora,
     alwayson_scripts: alwaysonScripts,
   })
 

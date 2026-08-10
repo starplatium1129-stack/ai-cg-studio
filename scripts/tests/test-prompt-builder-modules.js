@@ -229,8 +229,14 @@ for (const marker of ['faceDetailer', 'face_yolov8s.pt', 'hand_yolov8n.pt', 'bui
 }
 
 const sdGenerate = read('src/composables/useSDGenerate.ts');
-if (!sdGenerate.includes('buildTxt2ImgRequest') || !sdGenerate.includes('parseTxt2ImgResponse')) {
-  fail('SD composable must use the shared production request builder and response parser');
+if (!sdGenerate.includes('buildTxt2ImgRequest') || !sdGenerate.includes('/api/generation/jobs')) {
+  fail('SD composable must use the shared production request builder and application generation job API');
+}
+if (!sdGenerate.includes("accepted.job.provider === 'comfy' ? 'comfy' : 'webui'")) {
+  fail('SD provider state must fail safe to WebUI when the server response is missing or unknown');
+}
+if (!sdGenerate.includes("'SD WebUI 生成中…'") || !sdGenerate.includes("'ComfyUI 离线回退生成中…'")) {
+  fail('SD generation status text must distinguish WebUI primary from Comfy fallback');
 }
 for (const marker of ['pollInFlight', 'pollFailures', 'void pollProgress(token)', '进度读取失败']) {
   if (!sdGenerate.includes(marker)) fail('SD progress polling must retain ' + marker);

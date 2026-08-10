@@ -1,7 +1,6 @@
 import { ref, readonly, onUnmounted, getCurrentInstance } from 'vue'
 import {
   buildTxt2ImgRequest,
-  parseTxt2ImgResponse,
   type SDGenerateParams,
 } from '@/utils/sdRequest'
 import {
@@ -33,15 +32,26 @@ export function useSDGenerate() {
   const schedulers  = ref<string[]>([])
   const upscalers   = ref<string[]>([])
   const models      = ref<string[]>([])
+  const provider    = ref<'comfy' | 'webui' | ''>('')
 
   let pollTimer = 0
   let pollInFlight = false
   let pollFailures = 0
   let progressToken = 0
   let abortCtrl: AbortController | null = null
+  let activeJobId = ''
 
   async function checkStatus(): Promise<boolean> {
-    // 优先走网关聚合接口；失败则直接探测 /sdapi（本机代理）
+    const generation = await fetch('/api/generation/status', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null)
+    if (generation?.ok) {
+      online.value = generation.online === true
+      samplers.value = Array.isArray(generation.samplers) ? generation.samplers : []
+      schedulers.value = Array.isArray(generation.schedulers) ? generation.schedulers : []
+      models.value = generation.checkpoint ? [generation.checkpoint] : []
+      checkpoint.value = generation.checkpoint || ''
+      if (online.value) return true
+    }
+    // Comfy 不可用时保留旧 WebUI 状态探测作为兼容状态。
     try {
       const data = parseSDStatus(await mediaStatusApi.getSDStatus())
         online.value = data.online
@@ -108,7 +118,7 @@ export function useSDGenerate() {
     }
   }
 
-  function startPolling() {
+  function _startPolling() {
     stopPolling()
     pollFailures = 0
     const token = ++progressToken
@@ -125,17 +135,34 @@ export function useSDGenerate() {
     resultUrl.value  = ''
 
     abortCtrl = new AbortController()
-    startPolling()
+    stopPolling()
 
     try {
       const { payload } = buildTxt2ImgRequest(params)
 
       statusText.value = 'SD WebUI 生成中…'
 
-      const r = await fetch('/sdapi/v1/txt2img', {
+      const loraNames = params.lora ? (Array.isArray(params.lora) ? params.lora : String(params.lora).split(',')) : []
+      const loras = loraNames.map(raw => {
+        const match = String(raw).replace(/^<lora:/i, '').replace(/>$/, '').split(':')
+        const name = match[0].trim()
+        const id = name === 'ayachi_nene_v18_wd14' ? 'L_NENE_V18_WD14' : name === 'shiki_natsume_v18_wd14' ? 'L_NAT_V18_WD14' : ''
+        return id ? { id, strength: Number(match[1]) || params.lora_weight || 0.8 } : null
+      }).filter((x): x is { id: string; strength: number } => Boolean(x))
+      const modelId = String(params.model || '').includes('waiIllustriousSDXL_v170') ? 'waiIllustriousSDXL_v170' : undefined
+      const r = await fetch('/api/generation/jobs', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+          prompt: payload.prompt, negative: payload.negative_prompt, profile: '',
+          ...(modelId ? { modelId } : {}),
+          character: params.char || '', loras, width: payload.width, height: payload.height,
+          steps: payload.steps, cfg: payload.cfg_scale, seed: payload.seed,
+          sampler: payload.sampler_name, scheduler: String(payload.scheduler || params.scheduler || ''),
+          hiresFix: Boolean(params.hr_fix), hiresScale: params.hr_scale, hiresUpscaler: params.hr_upscaler,
+          hiresSteps: params.hr_second_pass_steps, denoisingStrength: params.denoising_strength,
+          faceDetailer: Boolean(params.alwayson_scripts?.ADetailer),
+        }),
         signal: abortCtrl.signal,
       })
 
@@ -144,17 +171,36 @@ export function useSDGenerate() {
         throw new Error(`SD 返回错误 ${r.status}: ${txt.slice(0, 120)}`)
       }
 
-      const rawResult: unknown = await r.json()
-      const result = parseTxt2ImgResponse(rawResult)
-      const dataUrl = /^data:/.test(result.image) ? result.image : `data:image/png;base64,${result.image}`
-      // atob + 逐字节循环在主线程同步解码，hi-res 大图会卡住页面数秒；
-      // fetch(dataUrl).blob() 走浏览器原生解码（异步），并保留 dataUrl 自带的真实 mime。
-      const blob = await fetch(dataUrl).then(x => x.blob())
+      const accepted = await r.json() as { ok?: boolean; job?: { id: string; provider?: 'comfy' | 'webui'; status?: string; resultUrl?: string | null; seed?: number; metadata?: { seed?: number }; error?: string }; error?: string }
+      if (!accepted.ok || !accepted.job?.id) throw new Error(accepted.error || '生成任务创建失败')
+      provider.value = accepted.job.provider === 'comfy' ? 'comfy' : 'webui'
+      activeJobId = accepted.job.id
+      let job = accepted.job
+      const deadline = Date.now() + 20 * 60 * 1000
+      while (Date.now() < deadline) {
+        if (abortCtrl.signal.aborted) throw new DOMException('aborted', 'AbortError')
+        if (job.status === 'failed') throw new Error(job.error || '生成失败')
+        if (job.status === 'cancelled') throw new DOMException('cancelled', 'AbortError')
+        if (job.status === 'succeeded' && job.resultUrl) break
+        await new Promise(resolve => setTimeout(resolve, 700))
+        const stateResponse = await fetch(`/api/generation/jobs/${encodeURIComponent(job.id)}`, { cache: 'no-store', signal: abortCtrl.signal })
+        if (!stateResponse.ok) throw new Error(`生成状态读取失败 ${stateResponse.status}`)
+        const state = await stateResponse.json() as { job?: typeof job }
+        if (!state.job) throw new Error('生成状态无效')
+        job = state.job
+        progress.value = job.status === 'running' ? Math.min(95, progress.value + 2) : (job.status === 'succeeded' ? 100 : progress.value)
+        statusText.value = provider.value === 'comfy' ? 'ComfyUI 离线回退生成中…' : 'SD WebUI 生成中…'
+      }
+      if (job.status !== 'succeeded' || !job.resultUrl) throw new Error('生成超时')
+      const resultResponse = await fetch(job.resultUrl, { cache: 'no-store', signal: abortCtrl.signal })
+      if (!resultResponse.ok || !String(resultResponse.headers.get('content-type') || '').startsWith('image/')) throw new Error('生成结果不是图片')
+      const blob = await resultResponse.blob()
+      if (!blob.size) throw new Error('生成结果为空')
       const url = URL.createObjectURL(blob)
       // 覆盖前先释放上一张，否则每出一张图泄漏一个 blob URL
       if (resultUrl.value && resultUrl.value !== url) URL.revokeObjectURL(resultUrl.value)
       resultUrl.value  = url
-      resultSeed.value = result.seed
+      resultSeed.value = job.metadata?.seed ?? job.seed ?? null
       statusText.value = '生成完成'
       return url
     } catch (e) {
@@ -166,15 +212,18 @@ export function useSDGenerate() {
       generating.value = false
       stopPolling()
       abortCtrl = null
+      activeJobId = ''
     }
   }
 
   function cancel() {
     if (!generating.value) return
     abortCtrl?.abort()
-    // 通知 WebUI 中断。故意不查 response.ok：本地 abort 已经生效，
-    // 这一发只是让 GPU 早点松手；失败了也没有可做的补救动作。
-    fetch('/sdapi/v1/interrupt', { method: 'POST' }).catch(() => {})
+    if (activeJobId) {
+      fetch(`/api/generation/jobs/${encodeURIComponent(activeJobId)}`, { method: 'DELETE' }).catch(() => {})
+    }
+    // Cancellation is owned by the application job route. Do not issue a
+    // global WebUI interrupt for a Comfy job.
   }
 
   function clearResult() {
@@ -204,7 +253,7 @@ export function useSDGenerate() {
     resultUrl: readonly(resultUrl), resultSeed: readonly(resultSeed),
     errorMsg: readonly(errorMsg), samplers: readonly(samplers),
     schedulers: readonly(schedulers), upscalers: readonly(upscalers),
-    models: readonly(models),
+    models: readonly(models), provider: readonly(provider),
     checkStatus, generate, cancel, clearResult, dispose,
   }
 }

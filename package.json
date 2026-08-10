@@ -38,6 +38,7 @@
     "test:ux": "node scripts/tests/test-scene-ux.js",
     "test:quick": "node scripts/tests/test-quick-create.js",
     "test:sd-errors": "node scripts/tests/test-sd-error.js",
+    "test:generation": "node scripts/tests/test-generation-routes.js",
     "test:backup": "node scripts/tests/test-data-backup.js",
     "test:storage-health": "node scripts/tests/test-storage-health.js",
     "test:security": "node scripts/tests/test-security.js && node scripts/tests/test-gateway-contract.js",

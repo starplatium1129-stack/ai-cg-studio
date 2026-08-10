@@ -257,10 +257,12 @@ function requestOwner(req) {
   return crypto.createHash('sha256').update(String(token)).digest('hex');
 }
 
-function publicJob(job) {
+function publicJob(job, routeBase) {
+  routeBase = routeBase || '/api/anima';
   var result = {
     id:job.id,
     status:job.status,
+    provider:job.provider || 'comfy',
     progress:job.status === 'succeeded' ? 1 : (job.status === 'running' ? 0.1 : 0),
     modelId:job.input.modelId,
     loraId:job.input.loraId,
@@ -268,9 +270,9 @@ function publicJob(job) {
     seed:job.input.seed,
     createdAt:job.createdAt,
     resultAvailable:Boolean(job.result && !job.resultConsumed),
-    resultUrl:job.result && !job.resultConsumed ? '/api/anima/jobs/' + encodeURIComponent(job.id) + '/result' : null,
+    resultUrl:job.result && !job.resultConsumed ? routeBase + '/jobs/' + encodeURIComponent(job.id) + '/result' : null,
     metadata:Object.assign({}, job.metadata, {
-      resultUrl:job.result && !job.resultConsumed ? '/api/anima/jobs/' + encodeURIComponent(job.id) + '/result' : null
+      resultUrl:job.result && !job.resultConsumed ? routeBase + '/jobs/' + encodeURIComponent(job.id) + '/result' : null
     }),
     error:job.error || null,
     code:job.errorCode || null
@@ -286,7 +288,7 @@ function imageMimeAndExtension(contentType, body) {
   return null;
 }
 
-function validateImageReference(image) {
+function validateImageReference(image, outputPrefix) {
   if (!isPlainObject(image)) throw serviceError(400, 'INVALID_RESULT', 'ComfyUI 图片描述无效');
   var type = String(image.type || 'output').toLowerCase();
   if (type !== 'output') throw serviceError(400, 'INVALID_RESULT', '只允许读取 output 图片');
@@ -304,17 +306,18 @@ function validateImageReference(image) {
   if (!/^[A-Za-z0-9][A-Za-z0-9._-]{0,180}\.(?:png|jpe?g|webp)$/i.test(filename)) {
     throw serviceError(400, 'INVALID_RESULT', '结果必须是图片文件');
   }
-  if (!new RegExp('^' + OUTPUT_FILENAME_PREFIX + '(?:[_.-]|$)', 'i').test(filename)) {
+  var prefix = outputPrefix || OUTPUT_FILENAME_PREFIX;
+  if (!new RegExp('^' + prefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?:[_.-]|$)', 'i').test(filename)) {
     throw serviceError(400, 'INVALID_RESULT', '结果文件名前缀不受支持');
   }
   return { filename:filename, subfolder:'', type:'output' };
 }
 
-function ensureMediaRoot(config) {
+function ensureMediaRoot(config, namespace) {
   var outputs = config.RUNTIME && config.RUNTIME.outputs
     ? config.RUNTIME.outputs
     : path.join(config.RUNTIME_ROOT || path.join(config.ROOT_DIR, 'runtime'), 'outputs');
-  var root = path.resolve(outputs, 'anima');
+  var root = path.resolve(outputs, namespace || 'anima');
   fs.mkdirSync(root, { recursive:true });
   return root;
 }
@@ -326,8 +329,8 @@ function safeMediaPath(root, file) {
   return resolved;
 }
 
-function cleanupMediaRoot(config) {
-  var root = ensureMediaRoot(config);
+function cleanupMediaRoot(config, namespace) {
+  var root = ensureMediaRoot(config, namespace);
   var entries = [];
   try { entries = fs.readdirSync(root); } catch (error) { return; }
   entries.forEach(function (name) {
@@ -341,8 +344,8 @@ function cleanupMediaRoot(config) {
   });
 }
 
-async function materializeResult(config, job, image) {
-  var reference = validateImageReference(image);
+async function materializeResult(config, job, image, options) {
+  var reference = validateImageReference(image, options.outputPrefix);
   var query = '?filename=' + encodeURIComponent(reference.filename) + '&type=output';
   var response = await requestComfy(config, 'GET', '/view' + query, null, 20000, MAX_IMAGE_BYTES);
   if (response.status < 200 || response.status >= 300) throw serviceError(502, 'COMFY_RESULT_ERROR', 'ComfyUI 图片读取失败');
@@ -351,7 +354,7 @@ async function materializeResult(config, job, image) {
     throw serviceError(502, 'INVALID_RESULT', 'ComfyUI 返回的结果不是受支持的图片');
   }
 
-  var root = ensureMediaRoot(config);
+  var root = ensureMediaRoot(config, options.mediaNamespace);
   var filename = job.id + '.' + info.extension;
   var target = safeMediaPath(root, filename);
   if (!target) throw serviceError(500, 'MEDIA_PATH_INVALID', '应用媒体路径无效');
@@ -371,6 +374,13 @@ async function materializeResult(config, job, image) {
 
 function createAnimaService(config, options) {
   options = options || {};
+  var buildWorkflowForJob = options.buildWorkflow || buildWorkflow;
+  var outputPrefix = options.outputPrefix || OUTPUT_FILENAME_PREFIX;
+  var outputNodeId = options.outputNodeId || OUTPUT_NODE_ID;
+  var mediaNamespace = options.mediaNamespace || 'anima';
+  var engine = options.engine || 'anima';
+  var provider = options.provider || 'comfy';
+  var routeBase = options.routeBase || '/api/anima';
   var jobTtlMs = Number(options.jobTtlMs) > 0 ? Number(options.jobTtlMs) : JOB_TTL_MS;
   var cancelPollIntervalMs = Number(options.cancelPollIntervalMs) > 0
     ? Number(options.cancelPollIntervalMs) : CANCEL_POLL_INTERVAL_MS;
@@ -380,7 +390,7 @@ function createAnimaService(config, options) {
   var clientId = 'aics-' + crypto.randomBytes(12).toString('hex');
   var closed = false;
 
-  cleanupMediaRoot(config);
+  cleanupMediaRoot(config, mediaNamespace);
 
   function pendingCount() {
     var count = 0;
@@ -529,14 +539,14 @@ function createAnimaService(config, options) {
         return;
       }
        var image = null;
-       var output = entry.outputs && entry.outputs[OUTPUT_NODE_ID];
+       var output = entry.outputs && entry.outputs[outputNodeId];
        var images = output && output.images;
        if (Array.isArray(images) && images.length) image = images[0];
        if (!image) {
          failJob(job, serviceError(502, 'COMFY_NO_IMAGE', 'ComfyUI 未返回图片'), 'COMFY_NO_IMAGE');
         return;
       }
-       job.result = await materializeResult(config, job, image);
+       job.result = await materializeResult(config, job, image, { outputPrefix:outputPrefix, mediaNamespace:mediaNamespace });
        job.resultConsumed = false;
       job.status = 'succeeded';
       job.error = null;
@@ -560,7 +570,7 @@ function createAnimaService(config, options) {
 
   async function submit(job) {
     var response = await requestComfyJson(config, 'POST', '/prompt', {
-      prompt:buildWorkflow(job.input),
+      prompt:buildWorkflowForJob(job.input),
       client_id:clientId
     }, 20000);
     var promptId = response && response.prompt_id;
@@ -584,13 +594,15 @@ function createAnimaService(config, options) {
     var job = {
       id:id,
       owner:owner,
+      provider:provider,
       input:frozenInput,
       metadata:Object.freeze({
-        engine:'anima', id:id, prompt:frozenInput.prompt, negative:frozenInput.negative,
+        engine:engine, id:id, prompt:frozenInput.prompt, negative:frozenInput.negative,
         profileId:frozenInput.profileId || '', modelId:frozenInput.modelId, loraId:frozenInput.loraId,
         loraStrength:frozenInput.loraStrength, width:frozenInput.width, height:frozenInput.height,
-        steps:frozenInput.steps, cfg:frozenInput.cfg, sampler:'res_multistep', scheduler:'simple',
-        seed:frozenInput.seed, character:'nene', createdAt:createdAt, resultUrl:null
+        steps:frozenInput.steps, cfg:frozenInput.cfg, sampler:frozenInput.sampler || 'res_multistep', scheduler:frozenInput.scheduler || 'simple',
+        seed:frozenInput.seed, character:frozenInput.character || 'nene', createdAt:createdAt, resultUrl:null,
+        provider:provider
       }),
       status:'queued',
       createdAt:createdAt,
@@ -705,7 +717,7 @@ function createAnimaService(config, options) {
       removeResult(job);
     });
     jobs.clear();
-    cleanupMediaRoot(config);
+    cleanupMediaRoot(config, mediaNamespace);
   }
 
   return {
@@ -714,7 +726,7 @@ function createAnimaService(config, options) {
     get:get,
     cancel:cancel,
     consumeResult:consumeResult,
-    publicJob:publicJob,
+      publicJob:function (job) { return publicJob(job, routeBase); },
     probe:probe,
     status:status,
     close:close,

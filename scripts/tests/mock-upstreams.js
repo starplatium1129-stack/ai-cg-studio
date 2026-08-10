@@ -157,6 +157,8 @@ function createSdMock() {
     var res = ctx.res;
     var faults = ctx.state.faults;
 
+    if (faults.offline) { res.writeHead(503); res.end(); return; }
+
     if (ctx.path === '/sdapi/v1/sd-models') {
       if (faults.offline) { res.writeHead(503); res.end(); return; }
       return sendJson(res, 200, [
@@ -165,7 +167,7 @@ function createSdMock() {
       ]);
     }
     if (ctx.path === '/sdapi/v1/samplers') {
-      return sendJson(res, 200, [{ name:'DPM++ 2M' }, { name:'Euler a' }, { name:'DPM++ SDE' }]);
+      return sendJson(res, 200, [{ name:'DPM++ 2M' }, { name:'DPM++ 2M Karras' }, { name:'Euler a' }, { name:'DPM++ SDE' }]);
     }
     if (ctx.path === '/sdapi/v1/schedulers') {
       return sendJson(res, 200, [{ name:'Karras', label:'Karras' }, { name:'Exponential', label:'Exponential' }]);
@@ -305,9 +307,18 @@ function createComfyMock() {
       }
       var renderMs = Math.max(0, Number(faults.renderMs) || 50);
       if (Date.now() - job.createdAt < renderMs) return sendJson(res, 200, {});
-       var image = faults.resultImage && typeof faults.resultImage === 'object'
-         ? faults.resultImage
-         : { filename:'anima_app_mock.png', subfolder:'', type:'output' };
+        var graph = job.body && job.body.prompt;
+        var prefix = 'anima_app';
+        if (graph && typeof graph === 'object') Object.keys(graph).some(function (id) {
+          var node = graph[id];
+          if (node && node.class_type === 'SaveImage' && node.inputs && typeof node.inputs.filename_prefix === 'string') {
+            prefix = node.inputs.filename_prefix; return true;
+          }
+          return false;
+        });
+        var image = faults.resultImage && typeof faults.resultImage === 'object'
+          ? faults.resultImage
+          : { filename:prefix + '_mock.png', subfolder:'', type:'output' };
        var outputNode = String(faults.resultNode || '10');
        return sendJson(res, 200, {
         [promptIdFromPath]: {

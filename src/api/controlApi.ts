@@ -15,7 +15,7 @@ export const CONTROL_API_TIMEOUTS = {
   action: 30_000,
 } as const
 
-export type ControlService = 'voice' | 'webui' | 'ollama'
+export type ControlService = 'voice' | 'webui' | 'comfy' | 'ollama'
 export type ControlServiceAction = 'start' | 'stop' | 'unload'
 
 export interface ControlCallOptions {
@@ -63,21 +63,25 @@ function isControlScripts(value: unknown): boolean {
     && typeof value.voiceStart === 'boolean'
     && typeof value.voiceStop === 'boolean'
     && typeof value.webui === 'boolean'
+    && typeof value.comfy === 'boolean'
 }
 
 function isControlStatus(value: ApiResponseObject): boolean {
   return typeof value.ok === 'boolean'
     && typeof value.running === 'boolean'
     && typeof value.sdOnline === 'boolean'
+    && typeof value.comfyOnline === 'boolean'
     && typeof value.ttsOnline === 'boolean'
     && typeof value.ollamaOnline === 'boolean'
     && Array.isArray(value.ollamaModels)
     && value.ollamaModels.every(model => typeof model === 'string')
     && typeof value.ollamaVram === 'number'
     && typeof value.webuiManaged === 'boolean'
+    && typeof value.comfyManaged === 'boolean'
     && typeof value.modeBusy === 'boolean'
     && (value.operation === null || isControlOperation(value.operation))
     && typeof value.sdHost === 'string'
+    && typeof value.comfyHost === 'string'
     && typeof value.ttsHost === 'string'
     && typeof value.ollamaHost === 'string'
     && typeof value.localLink === 'string'

@@ -24,6 +24,7 @@ export interface SDQueueJob {
   sampler: string
   scheduler: string
   checkpoint: string
+  lora?: string
   hiresFix: boolean
   hiresScale: number
   hiresUpscaler: string

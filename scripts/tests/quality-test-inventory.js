@@ -44,6 +44,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-storage-health.js',
     'test-storage-reliability.js',
     'test-storage-repositories.js',
+    'test-training-telemetry-polling.js',
     'test-training-ui-ownership.js',
     'test-vad-segmenter.js',
     'test-voice-baseline.js',
@@ -52,6 +53,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
   ]),
   contract: Object.freeze([
     'test-anima-routes.js',
+    'test-generation-routes.js',
     'test-chat.js',
     'test-control-failure-contract.js',
     'test-gateway-contract.js',

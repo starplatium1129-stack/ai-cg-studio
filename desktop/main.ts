@@ -621,6 +621,7 @@ async function start(): Promise<void> {
       AICS_APP_ROOT: paths.appRoot,
       AICS_ASSETS_ROOT: paths.assetsRoot,
       AICS_TOOLS_ROOT: paths.toolsRoot,
+      AICS_SCRIPTS_ROOT: app.isPackaged ? path.join(paths.unpackedRoot, 'scripts') : path.join(paths.appRoot, 'scripts'),
       AICS_RUNTIME_ROOT: paths.runtimeRoot,
       AI_WORKSPACE_ROOT: paths.aiWorkspaceRoot,
       // 仅打包模式注入：data 在只读 asar、维护脚本与 npm 均不可用，

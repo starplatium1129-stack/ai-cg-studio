@@ -118,6 +118,7 @@ function loadGatewayConfig(rootDir, env) {
     ROOT_DIR:appRoot,
     ASSETS_ROOT:assetsRoot,
     TOOLS_ROOT:toolsRoot,
+    SCRIPTS_ROOT:path.resolve(env.AICS_SCRIPTS_ROOT || path.join(appRoot, 'scripts')),
     // The sibling AI workspace contains the local LoRA and voice assets.  It
     // is only used by the local training API; the browser never supplies this
     // path.

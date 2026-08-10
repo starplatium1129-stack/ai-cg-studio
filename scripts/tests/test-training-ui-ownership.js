@@ -7,6 +7,8 @@ const path = require('node:path');
 
 const paramsPath = path.join(__dirname, '..', '..', 'src', 'composables', 'useTrainingParams.ts');
 const onboardingPath = path.join(__dirname, '..', '..', 'src', 'composables', 'useTrainingOnboarding.ts');
+const telemetryPath = path.join(__dirname, '..', '..', 'src', 'composables', 'useTrainingTelemetry.ts');
+const pollingPath = path.join(__dirname, '..', '..', 'src', 'composables', 'useTrainingPolling.ts');
 const viewPath = path.join(__dirname, '..', '..', 'src', 'views', 'TrainingView.vue');
 
 function fakeStorage(initial = {}, throws = false) {
@@ -41,7 +43,9 @@ function config(recommended = {}) {
 async function loadModules() {
   const params = await import(pathToFileUrl(paramsPath));
   const onboarding = await import(pathToFileUrl(onboardingPath));
-  return { params, onboarding };
+  const telemetry = await import(pathToFileUrl(telemetryPath));
+  const polling = await import(pathToFileUrl(pollingPath));
+  return { params, onboarding, telemetry, polling };
 }
 
 function pathToFileUrl(file) {
@@ -185,8 +189,14 @@ test('TrainingView wires ownership without retaining parameter or onboarding imp
   const view = fs.readFileSync(viewPath, 'utf8');
   assert.match(view, /useTrainingParams\(\{ loadJobConfig, showToast \}\)/);
   assert.match(view, /useTrainingOnboarding\(\)/);
+  assert.match(view, /useTrainingTelemetry\(\)/);
+  assert.match(view, /useTrainingPolling\(\{/);
   assert.doesNotMatch(view, /interface ParamDraft/);
   assert.doesNotMatch(view, /function paramsKey\(/);
   assert.doesNotMatch(view, /function ensureParams\(/);
   assert.doesNotMatch(view, /function dismissOnboarding\(/);
+  assert.doesNotMatch(view, /function sampleStep\(/);
+  assert.doesNotMatch(view, /function sampleLoss\(/);
+  assert.doesNotMatch(view, /function syncPolling\(/);
+  assert.doesNotMatch(view, /setInterval\(/);
 });

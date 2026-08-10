@@ -63,4 +63,5 @@ desktop-tauri/web/
 desktop-tauri/native-live2d/target/
 desktop-tauri/native-live2d/*.png
 poc/**/target/
+poc/**/src-tauri/gen/
 poc/**/*.png

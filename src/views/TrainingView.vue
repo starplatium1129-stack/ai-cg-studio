@@ -615,6 +615,8 @@ import { useToast } from '@/composables/useToast'
 import { useTrainingStore } from '@/stores/trainingStore'
 import { useTrainingOnboarding } from '@/composables/useTrainingOnboarding'
 import { useTrainingParams } from '@/composables/useTrainingParams'
+import { useTrainingPolling } from '@/composables/useTrainingPolling'
+import { useTrainingTelemetry } from '@/composables/useTrainingTelemetry'
 import {
   adultCount, adultPreviewUrl, categoryEntries, categoryLabel,
   characterName, datasetPreviewUrl, formatBytes, formatDate, formatLoss,
@@ -687,8 +689,6 @@ const loraSpecs = [
   { label: '损失权重', value: 'Min-SNR 5' },
 ]
 
-const lossHistory = ref<Partial<Record<TrainingJobId, number[]>>>({})
-const stepSamples = ref<Partial<Record<TrainingJobId, Array<{ t: number; step: number }>>>>({})
 const selectedDataset = ref<Partial<Record<TrainingJobId, string>>>({})
 
 function datasetKey(id: TrainingJobId): string {
@@ -712,74 +712,8 @@ function datasetOptionFor(job: TrainingJob): NonNullable<TrainingJob['datasetOpt
   return options.find((option) => option.id === id) ?? options[0] ?? null
 }
 
-/* ── ETA：滑动平均步速外推剩余时间 ── */
-function sampleStep(job: TrainingJob): void {
-  if (typeof job.progress.step !== 'number' || typeof job.progress.steps !== 'number') return
-  if (job.progress.steps <= 0) return
-  let samples = stepSamples.value[job.id]
-  if (!samples) {
-    samples = []
-    stepSamples.value[job.id] = samples
-  }
-  const last = samples[samples.length - 1]
-  if (last && job.progress.step === last.step) return
-  samples.push({ t: Date.now(), step: job.progress.step })
-  if (samples.length > 8) samples.shift()
-}
-
-function etaText(job: TrainingJob): string {
-  if (typeof job.progress.step !== 'number' || typeof job.progress.steps !== 'number') return ''
-  if (job.progress.steps <= 0 || job.progress.step <= 0) return ''
-  const samples = stepSamples.value[job.id]
-  if (!samples || samples.length < 2) return ''
-  const first = samples[0]
-  const last = samples[samples.length - 1]
-  const seconds = Math.max(1, (last.t - first.t) / 1000)
-  const rate = Math.max(0, (last.step - first.step) / seconds)
-  if (rate <= 0) return ''
-  const remaining = Math.round((job.progress.steps - job.progress.step) / rate)
-  if (remaining < 60) return '预计不足 1 分钟'
-  const hours = Math.floor(remaining / 3600)
-  const minutes = Math.round((remaining % 3600) / 60)
-  return hours > 0 ? `预计约 ${hours} 小时 ${minutes} 分` : `预计约 ${minutes} 分钟`
-}
-
-/* ── Loss 迷你趋势线 ── */
-function sampleLoss(job: TrainingJob): void {
-  if (typeof job.progress.loss !== 'number') return
-  let points = lossHistory.value[job.id]
-  if (!points) {
-    points = []
-    lossHistory.value[job.id] = points
-  }
-  if (points.length === 0 || points[points.length - 1] !== job.progress.loss) {
-    points.push(job.progress.loss)
-    if (points.length > 40) points.shift()
-  }
-}
-
-function lossPolyline(id: TrainingJobId): string {
-  const points = lossHistory.value[id] ?? []
-  if (points.length < 2) return ''
-  const width = 160
-  const height = 30
-  const min = Math.min(...points)
-  const max = Math.max(...points)
-  const span = Math.max(1e-9, max - min)
-  const stepX = width / (points.length - 1)
-  return points
-    .map((value, index) => {
-      const x = (index * stepX).toFixed(1)
-      const y = (height - 3 - ((value - min) / span) * (height - 6)).toFixed(1)
-      return `${x},${y}`
-    })
-    .join(' ')
-}
-
-function resetJobTelemetry(id: TrainingJobId): void {
-  lossHistory.value[id] = []
-  stepSamples.value[id] = []
-}
+const telemetry = useTrainingTelemetry()
+const { etaText, lossPolyline, resetJobTelemetry } = telemetry
 
 const activeKind = ref<TrainingKind>(route.query.kind === 'voice' ? 'voice' : 'lora')
 const { show: showToast } = useToast()
@@ -791,7 +725,6 @@ const { onboardingDismissed, dismissOnboarding } = useTrainingOnboarding()
 const logElement = ref<HTMLElement | null>(null)
 const mounted = ref(false)
 const stickToBottom = ref(true)
-let pollTimer: number | null = null
 let kindChangeToken = 0
 
 const kindTabs = useRovingTabs(
@@ -870,37 +803,24 @@ function selectFromEvent(event: Event): void {
   void store.loadLogs(id)
 }
 
-async function poll(): Promise<void> {
-  if (!mounted.value) return
-  if (!activeJob.value || !isActive(activeJob.value)) return
-  await store.refresh(true)
-  if (!mounted.value) return
-  if (!activeJob.value || !isActive(activeJob.value)) return
-  sampleStep(activeJob.value)
-  sampleLoss(activeJob.value)
-  await store.loadLogs(selectedJobId.value)
-}
-
-function stopPolling(): void {
-  if (pollTimer !== null) window.clearInterval(pollTimer)
-  pollTimer = null
-}
-
-function syncPolling(): void {
-  if (!mounted.value || !activeJob.value || !isActive(activeJob.value)) {
-    stopPolling()
-    return
-  }
-  if (pollTimer === null) {
-    pollTimer = window.setInterval(() => { void poll() }, 3000)
-  }
-}
+const polling = useTrainingPolling({
+  mounted,
+  activeJob,
+  selectedJobId,
+  isActive,
+  refresh,
+  loadLogs,
+  onJobProgress: (job) => {
+    telemetry.sampleStep(job)
+    telemetry.sampleLoss(job)
+  },
+})
 
 async function refreshOverview(): Promise<void> {
   await refresh()
   if (!mounted.value) return
   await loadLogs(selectedJobId.value)
-  syncPolling()
+  polling.sync()
 }
 
 function trackLogScroll(): void {
@@ -930,7 +850,7 @@ watch(
 
 watch(
   () => activeJob.value?.status,
-  () => syncPolling(),
+  () => polling.sync(),
   { immediate: true },
 )
 
@@ -957,7 +877,7 @@ watch(
   }
   await store.loadLogs(selectedJobId.value)
   if (!mounted.value) return
-  syncPolling()
+  polling.sync()
 }
 
 onMounted(() => {
@@ -967,7 +887,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   mounted.value = false
-  stopPolling()
+  polling.stop()
 })
 </script>
 

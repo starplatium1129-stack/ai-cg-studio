@@ -53,6 +53,7 @@ export function useControlActions(
     const natBase = last?.voices?.natsume || {}
     return {
       sdHost: status.sdHost.value.trim(),
+      comfyHost: status.comfyHost.value.trim(),
       ttsHost: status.ttsHost.value.trim(),
       voices: {
         nene: { ...neneBase, refAudioPath: status.voiceNeneRef.value.trim(), promptText: status.voiceNenePrompt.value.trim(), promptLang: 'ja', textLang: 'ja' },
@@ -82,7 +83,7 @@ export function useControlActions(
   }
 
   function isControlService(value: string): value is ControlService {
-    return value === 'voice' || value === 'webui' || value === 'ollama'
+    return value === 'voice' || value === 'webui' || value === 'comfy' || value === 'ollama'
   }
 
   function isControlServiceAction(value: string): value is ControlServiceAction {

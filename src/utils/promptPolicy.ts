@@ -1,4 +1,4 @@
-﻿// Prompt policy — 从重构前 tools/prompt-policy.js + prompt-builder/prompt.js 迁移
+// Prompt policy — 从重构前 tools/prompt-policy.js + prompt-builder/prompt.js 迁移
 // 负责：Danbooru 标签规范化、模型 profile 质量/负面前缀、LoRA 权重策略、
 //       framing 冲突消解、场景模板净化、结构健康报告
 

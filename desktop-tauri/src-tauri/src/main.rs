@@ -237,7 +237,7 @@ fn main() {
             )
             .port(configured_port)
             .node_path(sidecar_node)
-            .env(main_shared::gateway_env(&state.paths, is_packaged))
+            .env(main_shared::gateway_env(&state.paths, is_packaged, Some(&state.workspace_root.lock().unwrap())))
             .on_output(move |stream, text| {
                 let log = logger::FileLogger::new(&log_path);
                 log.debug(&format!("[gateway:{stream}] {}", text.trim()));

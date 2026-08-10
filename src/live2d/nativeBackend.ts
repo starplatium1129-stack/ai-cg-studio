@@ -1,4 +1,4 @@
-﻿/**
+/**
  * 原生渲染后端 —— Rust overlay 窗口 + Cubism Native（路径 B）。
  *
  * 前端经 window.aicsLive2dNative 桥与 Rust 通信：Rust 在透明 WS_EX_LAYERED

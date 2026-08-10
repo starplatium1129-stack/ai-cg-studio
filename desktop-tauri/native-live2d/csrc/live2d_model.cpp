@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Native Live2D runtime glue (C++).
  *
  * Wraps the official Cubism SDK for Native 5-r.5 framework classes behind a

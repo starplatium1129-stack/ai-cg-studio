@@ -19,6 +19,8 @@ interface WatchdogService {
   restart: () => Promise<{ ok: boolean; error?: string }>;
   /** 是否允许自动重启（受管状态）。 */
   shouldManage: () => boolean;
+  /** 网关重启后，已有 desired-managed latch 的服务仍可恢复；未登记服务不适用。 */
+  recoverOnStart?: () => boolean;
 }
 
 interface WatchdogOptions {
@@ -159,7 +161,7 @@ function createServiceWatchdog(options: WatchdogOptions) {
           continue;
         }
         // 曾经健康 → 现在掉线：触发自愈；从未健康则不动（等待手动启动）。
-        if (current.wasHealthy && !current.restarting) {
+        if ((current.wasHealthy || (current.attempt === 0 && service.recoverOnStart && service.recoverOnStart())) && !current.restarting) {
           if (options.onEvent) options.onEvent({ service: service.name, kind: 'down' });
           scheduleRestart(service, current);
         }

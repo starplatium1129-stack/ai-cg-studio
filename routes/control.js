@@ -171,6 +171,11 @@ function pingTts(urlStr, timeoutMs) {
         .catch(function () { return false; });
     });
 }
+function pingComfy(urlStr, timeoutMs) {
+  return requestLocalJson(urlStr, '/system_stats', null, timeoutMs || 2500)
+    .then(function (r) { return r.status >= 200 && r.status < 300; })
+    .catch(function () { return false; });
+}
 function pingOllamaDetail(urlStr, timeoutMs) {
   return requestLocalJson(urlStr, '/api/ps', null, timeoutMs || 3000)
     .then(function (r) {
@@ -205,12 +210,22 @@ function createControlRouter(config, gatewayRef, dependencies) {
   var voiceRoot = config.AI_WORKSPACE_ROOT || path.resolve(rootDir, '..', 'AI');
   var VOICE_START_SCRIPT = path.resolve(voiceRoot, 'Voice', 'Start-Voice.ps1');
   var VOICE_STOP_SCRIPT  = path.resolve(voiceRoot, 'Voice', 'Stop-Voice.ps1');
-  var WEBUI_MANAGER_SCRIPT = path.join(rootDir, 'scripts', 'runtime', 'managed-webui.ps1');
+  var scriptsRoot = config.SCRIPTS_ROOT || path.join(rootDir, 'scripts');
+  var WEBUI_MANAGER_SCRIPT = path.join(scriptsRoot, 'runtime', 'managed-webui.ps1');
+  var COMFY_MANAGER_SCRIPT = path.join(scriptsRoot, 'runtime', 'managed-comfyui.ps1');
+  var WEBUI_PACKAGE_ROOT = path.join(voiceRoot, 'Data', 'Packages', 'Stable Diffusion WebUI reForge');
+  var WEBUI_IMAGES_ROOT = path.join(voiceRoot, 'Data', 'Images');
+  var WEBUI_CONTROLNET_ROOT = path.join(voiceRoot, 'Data', 'Models', 'ControlNet');
+  var runtimeRoot = config.RUNTIME_ROOT || (config.RUNTIME && config.RUNTIME.root) || path.join(rootDir, 'runtime');
 
   var state = {
     operation: null,
     modeBusy: false,
     webuiManaged: false,
+    comfyManaged: false,
+    comfyOnline: false,
+    desiredWebui: false,
+    desiredComfy: false,
     ttsManaged: false,
     ollamaModels: [],
     ollamaVram: 0,
@@ -218,6 +233,25 @@ function createControlRouter(config, gatewayRef, dependencies) {
   };
   var ops = createOperationManager(state);
   var watchdog = null;
+  try {
+    var savedManaged = readJson(config.RUNTIME.config).managedServices || {};
+    state.desiredWebui = savedManaged.webui === true;
+    state.desiredComfy = savedManaged.comfy === true;
+  } catch (error) {}
+
+  function saveManagedDesired() {
+    var saved = readJson(config.RUNTIME.config);
+    saved.managedServices = { webui:!!state.desiredWebui, comfy:!!state.desiredComfy };
+    persistConfig(config.RUNTIME.config, saved);
+  }
+
+  function managedScriptArgs(service, action) {
+    if (service === 'webui') return [
+      '-Action', action, '-PackageRoot', WEBUI_PACKAGE_ROOT, '-RuntimeRoot', runtimeRoot,
+      '-WebuiHost', config.SD_HOST, '-ImagesRoot', WEBUI_IMAGES_ROOT, '-ControlNetRoot', WEBUI_CONTROLNET_ROOT
+    ];
+    return ['-Action', action, '-AIWorkspaceRoot', voiceRoot, '-RuntimeRoot', runtimeRoot, '-ComfyHost', config.COMFY_HOST];
+  }
 
   function controlLog(msg) {
     var line = '[' + new Date().toLocaleTimeString('zh-CN', { hour12:false }) + '] ' + msg;
@@ -307,7 +341,7 @@ function createControlRouter(config, gatewayRef, dependencies) {
   // managed-webui.ps1 -Action Status 单次实测 ~2.2 秒，而控制面板 3 秒轮询一次 →
   // 不缓存的话面板一开就永久重叠 spawn PowerShell。缓存 + in-flight 去重 + fresh=1 强制刷新。
   var WEBUI_STATUS_TTL = 15000;
-  var webuiStatusCache = { at:0, managed:false };
+  var webuiStatusCache = { at:0, managed:false, comfy:false };
   var webuiStatusInflight = null;
 
   function readWebuiManaged(force) {
@@ -317,7 +351,7 @@ function createControlRouter(config, gatewayRef, dependencies) {
     // 已有探测在飞就复用，避免并发轮询叠加 spawn
     if (webuiStatusInflight) return webuiStatusInflight;
 
-    webuiStatusInflight = runManagedScript(WEBUI_MANAGER_SCRIPT, ['-Action', 'Status'], 15000)
+    webuiStatusInflight = runManagedScript(WEBUI_MANAGER_SCRIPT, managedScriptArgs('webui', 'Status'), 15000)
       .then(function (status) {
         webuiStatusCache.at = Date.now();
         if (status.ok && status.message) {
@@ -339,43 +373,72 @@ function createControlRouter(config, gatewayRef, dependencies) {
     return webuiStatusInflight;
   }
 
+  function readComfyManaged(force) {
+    if (!fs.existsSync(COMFY_MANAGER_SCRIPT)) return Promise.resolve(state.comfyManaged);
+    var cacheFresh = Date.now() - webuiStatusCache.at < WEBUI_STATUS_TTL;
+    if (!force && cacheFresh) return Promise.resolve(webuiStatusCache.comfy);
+    return runManagedScript(COMFY_MANAGER_SCRIPT, managedScriptArgs('comfy', 'Status'), 15000)
+      .then(function (status) {
+        webuiStatusCache.at = Date.now();
+        if (status.ok && status.message) {
+          try { webuiStatusCache.comfy = !!JSON.parse(status.message).managed; }
+          catch (error) { controlLog('ComfyUI 状态脚本输出无法解析，沿用上一次结果'); }
+        }
+        return webuiStatusCache.comfy;
+      })
+      .catch(function (error) {
+        controlLog('ComfyUI 状态探测失败: ' + error.message);
+        return webuiStatusCache.comfy;
+      });
+  }
+
   async function refreshServiceStates(force) {
     if (typeof dependencies.refreshServiceStates === 'function') {
       var supplied = await dependencies.refreshServiceStates(force) || {};
       state.sdOnline = !!supplied.sdOnline;
+      state.comfyOnline = !!supplied.comfyOnline;
       state.ttsOnline = !!supplied.ttsOnline;
       state.ollamaOnline = !!supplied.ollamaOnline;
       state.ollamaModels = Array.isArray(supplied.ollamaModels) ? supplied.ollamaModels : [];
       state.ollamaVram = Number(supplied.ollamaVram) || 0;
       if (typeof supplied.webuiManaged === 'boolean') state.webuiManaged = supplied.webuiManaged;
+      if (typeof supplied.comfyManaged === 'boolean') state.comfyManaged = supplied.comfyManaged;
       return {
         sdOnline: state.sdOnline,
+        comfyOnline: state.comfyOnline,
         ttsOnline: state.ttsOnline,
         ollamaOnline: state.ollamaOnline,
         ollamaModels: state.ollamaModels,
         ollamaVram: state.ollamaVram,
-        webuiManaged: state.webuiManaged
+        webuiManaged: state.webuiManaged,
+        comfyManaged: state.comfyManaged
       };
     }
     var results = await Promise.all([
       pingSd(config.SD_HOST, 2500),
+      pingComfy(config.COMFY_HOST, 2500),
       pingTts(config.TTS_HOST, 2500),
       pingOllamaDetail(config.OLLAMA_HOST, 3000),
-      readWebuiManaged(!!force)
+      readWebuiManaged(!!force),
+      readComfyManaged(!!force)
     ]);
     state.sdOnline = results[0];
-    state.ttsOnline = results[1];
-    state.ollamaOnline = results[2].online;
-    state.ollamaModels = results[2].models;
-    state.ollamaVram = results[2].vram;
-    state.webuiManaged = results[3];
+    state.comfyOnline = results[1];
+    state.ttsOnline = results[2];
+    state.ollamaOnline = results[3].online;
+    state.ollamaModels = results[3].models;
+    state.ollamaVram = results[3].vram;
+    state.webuiManaged = results[4];
+    state.comfyManaged = results[5];
     return {
       sdOnline: state.sdOnline,
+      comfyOnline: state.comfyOnline,
       ttsOnline: state.ttsOnline,
       ollamaOnline: state.ollamaOnline,
       ollamaModels: state.ollamaModels,
       ollamaVram: state.ollamaVram,
-      webuiManaged: state.webuiManaged
+      webuiManaged: state.webuiManaged,
+      comfyManaged: state.comfyManaged
     };
   }
 
@@ -451,11 +514,13 @@ function createControlRouter(config, gatewayRef, dependencies) {
         ok: true,
         running: true,
         sdOnline: services.sdOnline,
+        comfyOnline: services.comfyOnline,
         ttsOnline: services.ttsOnline,
         ollamaOnline: services.ollamaOnline,
         ollamaModels: services.ollamaModels,
         ollamaVram: services.ollamaVram,
         webuiManaged: services.webuiManaged,
+        comfyManaged: services.comfyManaged,
         modeBusy: !!state.modeBusy,
         operation: state.operation,
         sdHost: config.SD_HOST,
@@ -475,7 +540,8 @@ function createControlRouter(config, gatewayRef, dependencies) {
         scripts: {
           voiceStart: fs.existsSync(VOICE_START_SCRIPT),
           voiceStop: fs.existsSync(VOICE_STOP_SCRIPT),
-          webui: fs.existsSync(WEBUI_MANAGER_SCRIPT)
+          webui: fs.existsSync(WEBUI_MANAGER_SCRIPT),
+          comfy: fs.existsSync(COMFY_MANAGER_SCRIPT)
         }
       });
     }).catch(function(e) {
@@ -489,8 +555,8 @@ function createControlRouter(config, gatewayRef, dependencies) {
         error:e.message || '服务状态探测失败',
         running:true,
         degraded:true,
-        sdOnline:false, ttsOnline:false, ollamaOnline:false,
-        ollamaModels:[], ollamaVram:0, webuiManaged:false,
+        sdOnline:false, comfyOnline:false, ttsOnline:false, ollamaOnline:false,
+        ollamaModels:[], ollamaVram:0, webuiManaged:false, comfyManaged:false,
         modeBusy:!!state.modeBusy,
         operation:state.operation,
         sdHost:config.SD_HOST, comfyHost:config.COMFY_HOST, ttsHost:config.TTS_HOST, ollamaHost:config.OLLAMA_HOST,
@@ -504,7 +570,7 @@ function createControlRouter(config, gatewayRef, dependencies) {
         scripts:{
           voiceStart:fs.existsSync(VOICE_START_SCRIPT),
           voiceStop:fs.existsSync(VOICE_STOP_SCRIPT),
-          webui:fs.existsSync(WEBUI_MANAGER_SCRIPT)
+          webui:fs.existsSync(WEBUI_MANAGER_SCRIPT), comfy:fs.existsSync(COMFY_MANAGER_SCRIPT)
         }
       });
     });
@@ -667,7 +733,7 @@ function createControlRouter(config, gatewayRef, dependencies) {
       action === 'start' ? '正在启动 SD WebUI' : '正在停止 SD WebUI',
       '正在验证绘图服务状态'
     ]);
-    runManagedScript(WEBUI_MANAGER_SCRIPT, ['-Action', action === 'start' ? 'Start' : 'Stop'], 90000).then(async function (result) {
+    runManagedScript(WEBUI_MANAGER_SCRIPT, managedScriptArgs('webui', action === 'start' ? 'Start' : 'Stop'), 120000).then(async function (result) {
       if (result.ok && result.message) {
         try {
           var parsed = JSON.parse(result.message);
@@ -689,6 +755,8 @@ function createControlRouter(config, gatewayRef, dependencies) {
           : '停止脚本已结束，但 WebUI API 仍可访问');
       }
       controlLog('WebUI ' + (action === 'start' ? '已启动' : '已停止'));
+      state.desiredWebui = action === 'start' && state.webuiManaged;
+      saveManagedDesired();
       ops.finish(operation, null, action === 'start' ? '绘图服务已就绪' : '绘图服务已停止');
     }).catch(function (error) {
       controlLog('WebUI ' + action + ' 失败: ' + error.message);
@@ -750,9 +818,11 @@ function createControlRouter(config, gatewayRef, dependencies) {
         if (!unload.ok) controlLog('Ollama 卸载提示: ' + (unload.error || unload.message || ''));
         ops.update(operation, 2);
         controlLog('模式切换：绘图优先 — 启动 WebUI');
-        var startWebui = await runManagedScript(WEBUI_MANAGER_SCRIPT, ['-Action', 'Start'], 90000);
+        var startWebui = await runManagedScript(WEBUI_MANAGER_SCRIPT, managedScriptArgs('webui', 'Start'), 120000);
         if (startWebui.ok) {
           try { state.webuiManaged = !!JSON.parse(startWebui.message || '{}').managed; } catch {}
+          state.desiredWebui = state.webuiManaged;
+          saveManagedDesired();
           controlLog('绘图优先模式就绪：显存已优先让给 WebUI');
         } else {
           throw new Error('WebUI 启动失败: ' + startWebui.error);
@@ -761,9 +831,11 @@ function createControlRouter(config, gatewayRef, dependencies) {
       } else {
         if (state.webuiManaged) {
           controlLog('模式切换：聊天优先 — 停止受管 WebUI 释放显存');
-          var stopWebui = await runManagedScript(WEBUI_MANAGER_SCRIPT, ['-Action', 'Stop'], 60000);
+          var stopWebui = await runManagedScript(WEBUI_MANAGER_SCRIPT, managedScriptArgs('webui', 'Stop'), 60000);
           if (stopWebui.ok) {
             try { state.webuiManaged = !!JSON.parse(stopWebui.message || '{}').managed; } catch {}
+            state.desiredWebui = false;
+            saveManagedDesired();
           } else {
             controlLog('停止 WebUI 时出现提示: ' + stopWebui.error);
           }
@@ -844,9 +916,11 @@ function createControlRouter(config, gatewayRef, dependencies) {
         voiceStart: VOICE_START_SCRIPT,
         voiceStop: VOICE_STOP_SCRIPT,
         webui: WEBUI_MANAGER_SCRIPT,
+        comfy: COMFY_MANAGER_SCRIPT,
         voiceStartExists: fs.existsSync(VOICE_START_SCRIPT),
         voiceStopExists: fs.existsSync(VOICE_STOP_SCRIPT),
-        webuiExists: fs.existsSync(WEBUI_MANAGER_SCRIPT)
+        webuiExists: fs.existsSync(WEBUI_MANAGER_SCRIPT),
+        comfyExists: fs.existsSync(COMFY_MANAGER_SCRIPT)
       },
       nodeVersion: process.version,
       platform: process.platform,
@@ -860,6 +934,26 @@ function createControlRouter(config, gatewayRef, dependencies) {
     intervalMs: Number(config.SELF_HEALING_INTERVAL_MS) || 5000,
     maxBackoffMs: 30000,
     services: [
+      {
+        name: 'webui',
+        probe: function () { return pingSd(config.SD_HOST, 2500); },
+        restart: function () {
+          return runManagedScript(WEBUI_MANAGER_SCRIPT, managedScriptArgs('webui', 'Start'), 120000)
+            .then(function (result) { return { ok:!!result.ok, error:result.error }; });
+        },
+        shouldManage: function () { return state.desiredWebui; },
+        recoverOnStart: function () { return state.desiredWebui; }
+      },
+      {
+        name: 'comfy',
+        probe: function () { return pingComfy(config.COMFY_HOST, 2500); },
+        restart: function () {
+          return runManagedScript(COMFY_MANAGER_SCRIPT, managedScriptArgs('comfy', 'Start'), 120000)
+            .then(function (result) { return { ok:!!result.ok, error:result.error }; });
+        },
+        shouldManage: function () { return state.desiredComfy; },
+        recoverOnStart: function () { return state.desiredComfy; }
+      },
       {
         name: 'tts',
         probe: function () { return pingTts(config.TTS_HOST, 2500); },
@@ -896,6 +990,43 @@ function createControlRouter(config, gatewayRef, dependencies) {
         + (event.error ? '：' + event.error : '')
         + (event.attempt ? '（第 ' + event.attempt + ' 次）' : ''));
     }
+  });
+
+  // POST /api/service/comfy
+  router.post('/api/service/comfy', localOnly, express.json({ limit:'2kb' }), function(req, res) {
+    var action = req.body && req.body.action;
+    if (!['start', 'stop'].includes(action)) return res.status(400).json({ ok:false, error:'action 必须是 start 或 stop' });
+    if (ops.rejectConflict(res)) return;
+    var operation = ops.begin('comfy-' + action, action === 'start' ? '启动 ComfyUI' : '停止 ComfyUI', [
+      action === 'start' ? '正在启动 ComfyUI' : '正在停止 ComfyUI',
+      '正在验证 ComfyUI /system_stats'
+    ]);
+    runManagedScript(COMFY_MANAGER_SCRIPT, managedScriptArgs('comfy', action === 'start' ? 'Start' : 'Stop'), 120000).then(async function (result) {
+      if (result.ok && result.message) {
+        try {
+          var parsed = JSON.parse(result.message);
+          state.comfyManaged = !!parsed.managed;
+          if (parsed.message) result.message = parsed.message;
+        } catch (error) {}
+      }
+      ops.update(operation, 1);
+      await refreshServiceStates(true);
+      var expected = action === 'start';
+      if (!result.ok && state.comfyOnline === expected) {
+        controlLog('ComfyUI 脚本返回提示，但目标状态已达成: ' + (result.error || '未知提示'));
+      } else if (!result.ok) throw new Error(result.error || 'ComfyUI 操作失败');
+      if (state.comfyOnline !== expected) throw new Error(action === 'start'
+        ? 'ComfyUI 启动脚本已结束，但 /system_stats 尚未就绪'
+        : 'ComfyUI 停止脚本已结束，但接口仍可访问');
+      state.desiredComfy = action === 'start' && state.comfyManaged;
+      saveManagedDesired();
+      controlLog('ComfyUI ' + (action === 'start' ? '已启动' : '已停止'));
+      ops.finish(operation, null, action === 'start' ? 'ComfyUI 已就绪' : 'ComfyUI 已停止');
+    }).catch(function (error) {
+      controlLog('ComfyUI ' + action + ' 失败: ' + error.message);
+      ops.finish(operation, error.message);
+    });
+    res.json({ ok:true, pending:true, operation:operation, message:'ComfyUI 正在' + (action === 'start' ? '启动' : '停止') });
   });
   watchdog.start();
 

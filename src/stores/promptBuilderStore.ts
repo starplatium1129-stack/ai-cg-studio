@@ -52,6 +52,7 @@ export interface HistoryEntry {
   cfg: number | string; steps: number | string; sampler: string
   scheduler: string; checkpoint: string; size: string
   engine?: DrawEngine; profile?: string; model?: string
+  provider?: 'comfy' | 'webui'
   loraId?: string | null; loraStrength?: number | null
   /** 成片真实像素；size 只是保存时下拉框的值，作品册排版以这两个为准 */
   width: number | null; height: number | null

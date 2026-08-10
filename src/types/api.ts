@@ -73,14 +73,17 @@ export interface ControlStatus {
   degraded?: boolean
   error?: string
   sdOnline: boolean
+  comfyOnline: boolean
   ttsOnline: boolean
   ollamaOnline: boolean
   ollamaModels: string[]
   ollamaVram: number
   webuiManaged: boolean
+  comfyManaged: boolean
   modeBusy: boolean
   operation: ControlOperationView | null
   sdHost: string
+  comfyHost: string
   ttsHost: string
   ollamaHost: string
   localLink: string
@@ -90,7 +93,7 @@ export interface ControlStatus {
   uptime: number
   autoStartVoice?: boolean
   voices: Partial<Record<'nene' | 'natsume', VoiceProfileView>>
-  scripts: { voiceStart: boolean; voiceStop: boolean; webui: boolean }
+  scripts: { voiceStart: boolean; voiceStop: boolean; webui: boolean; comfy: boolean }
   /** 前端构建状态：公网分享伺服 dist/，源码过期时 stale=true */
   webBuild?: ControlWebBuildStatus
   /** 服务自愈看门狗状态：restarting/attempt 表示正在自动拉起 */
@@ -135,6 +138,7 @@ export interface ControlShareLinkResult {
 
 export interface ControlConfigPayload {
   sdHost: string
+  comfyHost: string
   ttsHost: string
   voices: Partial<Record<'nene' | 'natsume', VoiceProfileView>>
 }

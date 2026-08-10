@@ -103,13 +103,18 @@ async function main() {
     assert.strictEqual(localStatus.status, 200, 'direct-local /api/status must still work');
 
     // ---- S-3: 上游 host 只接受本机 http ----
-    var ssrfHosts = ['http://169.254.169.254', 'http://evil.example.com:7860', 'https://127.0.0.1:7860'];
+    var ssrfHosts = ['http://169.254.169.254', 'http://evil.example.com:7860', 'https://127.0.0.1:7860', 'http://127.0.0.1:0'];
     for (var h = 0; h < ssrfHosts.length; h++) {
       var rejected = await postJson('/api/config', { sdHost:ssrfHosts[h] });
       assert.strictEqual(rejected.status, 400, ssrfHosts[h] + ' must be rejected with 400');
     }
     var accepted = await postJson('/api/config', { sdHost:stack.config.SD_HOST });
     assert.strictEqual(accepted.status, 200, 'loopback sdHost must be accepted');
+    var comfyAccepted = await postJson('/api/config', { comfyHost:'http://127.0.0.1:8189' });
+    assert.strictEqual(comfyAccepted.status, 200, 'loopback comfyHost must be accepted');
+    assert.strictEqual(comfyAccepted.json.comfyHost, 'http://127.0.0.1:8189');
+    var comfyRejected = await postJson('/api/config', { comfyHost:'http://169.254.169.254:8188' });
+    assert.strictEqual(comfyRejected.status, 400, 'non-loopback comfyHost must be rejected');
 
     // ---- S-4: 原始 token 不得出现在轮询接口里；Host 白名单生效 ----
     var status = await request({ path:'/api/status', headers:LOCAL });

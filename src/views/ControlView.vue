@@ -42,7 +42,7 @@
       <WorkspaceArchiveBar
         chapter="13"
         title="LOCAL CONTROL"
-        subtitle="GATEWAY · SD · VOICE · CHAT"
+         subtitle="GATEWAY · SD · COMFY · VOICE · CHAT"
         :status="serviceChecking || opBusy ? 'CHECKING SERVICES' : feedbackText.toUpperCase()"
         :state="serviceChecking || opBusy ? 'active' : (readyState === 'on' ? 'success' : 'warning')"
         shape="spark"
@@ -65,6 +65,10 @@
         <article class="status-tile" :class="{ attention: !sdOnline }" :data-state="sdOnline ? 'on' : 'off'">
           <small>SD WebUI</small>
           <strong>{{ sdOnline ? (webuiManaged ? '已连接 · 受控' : '已连接 · 手动') : '未连接' }}</strong>
+        </article>
+        <article class="status-tile" :class="{ attention: !comfyOnline }" :data-state="comfyOnline ? 'on' : 'off'">
+          <small>ComfyUI</small>
+          <strong>{{ comfyOnline ? (comfyManaged ? '已连接 · 受控' : '已连接 · 手动') : '未连接' }}</strong>
         </article>
         <article class="status-tile" :class="{ attention: !ttsOnline || ttsSelfHealing }" :data-state="ttsSelfHealing ? 'warn' : (ttsOnline ? 'on' : 'off')">
           <small>GPT-SoVITS</small>
@@ -146,6 +150,17 @@
           </div>
           <div class="service-row">
             <span class="service-row-name">
+              <span class="dot" :class="{ on: comfyOnline }"></span>
+              ComfyUI 绘图服务
+              <span class="service-row-meta">{{ comfyOnline ? (comfyManaged ? '受控' : '手动') : '未运行' }}</span>
+            </span>
+            <span class="service-row-actions">
+              <button class="btn btn-ghost btn-sm" type="button" :disabled="opBusy" @click="serviceAction('comfy','start')">启动</button>
+              <button class="btn btn-danger btn-sm" type="button" :disabled="opBusy" @click="confirmServiceAction('comfy','stop')">停止</button>
+            </span>
+          </div>
+          <div class="service-row">
+            <span class="service-row-name">
               <span class="dot" :class="{ on: ttsOnline }"></span>
               GPT-SoVITS 语音
               <span class="service-row-meta">{{ ttsOnline ? '在线' : '未运行' }}</span>
@@ -172,9 +187,10 @@
           打开控制面板时自动启动语音（显存紧张时不建议开启）
         </label>
         <p class="panel-foot">Ollama 闲置约 10 分钟会自动卸载；系统声音试听不依赖 GPT-SoVITS。</p>
-        <p v-if="!scripts.webui || !scripts.voiceStart" class="script-hint">
+         <p v-if="!scripts.webui || !scripts.comfy || !scripts.voiceStart" class="script-hint">
           部分脚本未找到：
-          <span v-if="!scripts.webui">managed-webui.ps1 </span>
+           <span v-if="!scripts.webui">managed-webui.ps1 </span>
+           <span v-if="!scripts.comfy">managed-comfyui.ps1 </span>
           <span v-if="!scripts.voiceStart">Start-Voice.ps1 </span>
           <span v-if="!scripts.voiceStop">Stop-Voice.ps1 </span>
         </p>
@@ -192,6 +208,13 @@
           <button class="btn btn-ghost" type="button" @click="saveConfig">保存全部并检测</button>
         </div>
         <p class="field-help">端口以启动日志为准；推荐参数：<code>--api --port 7860</code></p>
+
+        <label class="field-label" for="comfy-host">ComfyUI 地址</label>
+        <div class="field-row">
+          <input id="comfy-host" v-model="comfyHost" class="input input-mono" type="text" :title="comfyHost" placeholder="http://127.0.0.1:8188" spellcheck="false" @keydown.enter="saveConfig" />
+          <button class="btn btn-ghost" type="button" @click="saveConfig">保存全部并检测</button>
+        </div>
+        <p class="field-help">仅接受 loopback HTTP；本阶段不改变现有出图 provider。</p>
 
         <label class="field-label" for="tts-host">GPT-SoVITS API 地址</label>
         <div class="field-row">
@@ -340,9 +363,9 @@ const actions = useControlActions(status, { showToast })
 
 // 模板引用解构：状态域
 const {
-  tunnelActive, sdOnline, ttsOnline, ollamaOnline, webuiManaged, ollamaModels, ollamaVram,
+  tunnelActive, sdOnline, comfyOnline, ttsOnline, ollamaOnline, webuiManaged, comfyManaged, ollamaModels, ollamaVram,
   modeBusy, operation, selfHealing, serviceChecking, scripts,
-  sdHost, ttsHost, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice,
+  sdHost, comfyHost, ttsHost, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice,
   tunnelStatus, shareLink, localLink, uptime, actionBusy, mainBtnLabel, webBuild,
   feedbackClass, feedbackText, actionNote, logs, logBoxEl,
   opBusy, opStatusLabel, opProgress, ollamaBadgeText, ollamaMeta, voiceConfiguredCount,
@@ -378,6 +401,7 @@ function lineClass(line: string) { return status.lineClass(line) }
 
 const SERVICE_STOP_LABELS: Record<string, string> = {
   webui: 'SD WebUI 绘图服务',
+  comfy: 'ComfyUI 绘图服务',
   voice: 'GPT-SoVITS 语音服务',
 }
 

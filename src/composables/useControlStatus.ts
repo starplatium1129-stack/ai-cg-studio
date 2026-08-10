@@ -20,19 +20,22 @@ interface StatusHooks {
 export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
   const tunnelActive = ref(false)
   const sdOnline = ref(false)
+  const comfyOnline = ref(false)
   const ttsOnline = ref(false)
   const ollamaOnline = ref(false)
   const webuiManaged = ref(false)
+  const comfyManaged = ref(false)
   const ollamaModels = ref<string[]>([])
   const ollamaVram = ref(0)
   const modeBusy = ref(false)
   const operation = ref<ControlOperationView | null>(null)
   const selfHealing = ref<ControlStatus['selfHealing'] | null>(null)
   const serviceChecking = ref(false)
-  const scripts = ref({ voiceStart: true, voiceStop: true, webui: true })
+  const scripts = ref({ voiceStart: true, voiceStop: true, webui: true, comfy: true })
 
   // renderStatus 会按焦点状态回填的配置回显（不主动覆盖正在输入的字段）
   const sdHost = ref('http://127.0.0.1:7860')
+  const comfyHost = ref('http://127.0.0.1:8188')
   const ttsHost = ref('http://127.0.0.1:9880')
   const voiceNeneRef = ref('')
   const voiceNenePrompt = ref('')
@@ -125,9 +128,11 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
     lastStatus = data
     tunnelActive.value = !!(data.tunnelStatus === 'active' || data.shareLinkAvailable)
     sdOnline.value = !!data.sdOnline
+    comfyOnline.value = !!data.comfyOnline
     ttsOnline.value = !!data.ttsOnline
     ollamaOnline.value = !!data.ollamaOnline
     webuiManaged.value = !!data.webuiManaged
+    comfyManaged.value = !!data.comfyManaged
     ollamaModels.value = Array.isArray(data.ollamaModels) ? data.ollamaModels : []
     ollamaVram.value = Number(data.ollamaVram) || 0
     modeBusy.value = !!data.modeBusy
@@ -153,6 +158,7 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
     const ae = document.activeElement as HTMLElement | null
     const aeId = ae?.id || ''
     if (aeId !== 'sd-host' && data.sdHost) sdHost.value = data.sdHost
+    if (aeId !== 'comfy-host' && data.comfyHost) comfyHost.value = data.comfyHost
     if (aeId !== 'tts-host' && data.ttsHost) ttsHost.value = data.ttsHost
     const voices = data.voices || {}
     const nene = voices.nene || {}
@@ -275,9 +281,9 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
   }
 
   return {
-    tunnelActive, sdOnline, ttsOnline, ollamaOnline, webuiManaged, ollamaModels, ollamaVram, selfHealing,
+    tunnelActive, sdOnline, comfyOnline, ttsOnline, ollamaOnline, webuiManaged, comfyManaged, ollamaModels, ollamaVram, selfHealing,
     modeBusy, operation, serviceChecking, scripts,
-    sdHost, ttsHost, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice,
+    sdHost, comfyHost, ttsHost, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice,
     tunnelStatus, shareLink, localLink, uptime, actionBusy, mainBtnLabel, webBuild,
     feedbackClass, feedbackText, actionNote, logs, logBoxEl, logIndex,
     opBusy, opStatusLabel, opProgress, ollamaBadgeText, ollamaMeta, voiceConfiguredCount,

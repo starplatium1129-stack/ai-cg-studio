@@ -19,6 +19,8 @@ interface WatchdogService {
     }>;
     /** 是否允许自动重启（受管状态）。 */
     shouldManage: () => boolean;
+    /** 网关重启后，已有 desired-managed latch 的服务仍可恢复；未登记服务不适用。 */
+    recoverOnStart?: () => boolean;
 }
 interface WatchdogOptions {
     services: WatchdogService[];

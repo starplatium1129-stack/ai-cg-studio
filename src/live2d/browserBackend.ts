@@ -1,4 +1,4 @@
-﻿/**
+/**
  * 浏览器渲染后端 —— wl-live2d（Pixi + Cubism Web）。
  *
  * 从 useLive2D 原实现平移，行为零改动：动态 import 运行库、创建 app、

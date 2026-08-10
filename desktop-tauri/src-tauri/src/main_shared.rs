@@ -1,4 +1,4 @@
-﻿use tauri::{AppHandle, Emitter, Manager, WebviewUrl, WebviewWindowBuilder};
+use tauri::{AppHandle, Emitter, Manager, WebviewUrl, WebviewWindowBuilder};
 
 use crate::paths::DesktopPaths;
 use crate::state::AppState;
@@ -191,12 +191,14 @@ pub fn persist_window_bounds(app: &AppHandle) {
     }
 }
 
-pub fn gateway_env(paths: &DesktopPaths, is_packaged: bool) -> Vec<(String, String)> {
+pub fn gateway_env(paths: &DesktopPaths, is_packaged: bool, workspace_root: Option<&str>) -> Vec<(String, String)> {
     let mut env = vec![
         ("AICS_APP_ROOT".into(), paths.app_root.to_string_lossy().to_string()),
         ("AICS_ASSETS_ROOT".into(), paths.assets_root.to_string_lossy().to_string()),
         ("AICS_TOOLS_ROOT".into(), paths.tools_root.to_string_lossy().to_string()),
         ("AICS_RUNTIME_ROOT".into(), paths.runtime_root.to_string_lossy().to_string()),
+        ("AICS_SCRIPTS_ROOT".into(), paths.app_root.join("scripts").to_string_lossy().to_string()),
+        ("AI_WORKSPACE_ROOT".into(), workspace_root.map(String::from).or_else(|| std::env::var("AI_WORKSPACE_ROOT").ok()).unwrap_or_else(|| paths.app_root.parent().unwrap_or(&paths.app_root).join("AI").to_string_lossy().to_string())),
     ];
     if is_packaged {
         env.push(("AICS_DESKTOP_PACKAGED".into(), "1".into()));

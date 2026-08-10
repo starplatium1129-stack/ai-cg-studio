@@ -8,6 +8,7 @@ var fs = require('fs');
 var http = require('http');
 var os = require('os');
 var path = require('path');
+var childProcess = require('child_process');
 var createControlRouter = require('../../routes/control').createControlRouter;
 var createTtsService = require('../../services/tts-service').createTtsService;
 var runtimePaths = require('../runtime/runtime-paths');
@@ -231,6 +232,99 @@ test('gateway test stack preserves caller-owned runtime roots by default', async
     assert.strictEqual(fs.readFileSync(marker, 'utf8'), 'keep\n');
   } finally {
     if (stack) await stack.close();
+    fs.rmSync(temporaryRoot, { recursive:true, force:true });
+  }
+});
+
+test('control contract: ComfyUI start/stop uses managed ownership and shared operations', async () => {
+  var temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-comfy-control-'));
+  var runtime = runtimePaths.createRuntimePaths(path.join(temporaryRoot, 'control'));
+  var config = baseConfig(projectRoot, runtime);
+  config.AI_WORKSPACE_ROOT = path.join(temporaryRoot, 'AI workspace');
+  var comfyOnline = false;
+  var calls = [];
+  var router = createControlRouter(config, function () { return { tunnelUrl:'' }; }, {
+    runScriptAsync:async function (script, args) {
+      calls.push({ script:script, args:args });
+      if (path.basename(script) === 'managed-comfyui.ps1') {
+        var action = args[args.indexOf('-Action') + 1];
+        comfyOnline = action === 'Start';
+        return { ok:true, message:JSON.stringify({ ok:true, managed:comfyOnline, state:comfyOnline ? 'ready' : 'stopped', message:'mock comfy' }) };
+      }
+      return { ok:true, message:JSON.stringify({ managed:false }) };
+    },
+    refreshServiceStates:async function () {
+      return { sdOnline:false, comfyOnline:comfyOnline, ttsOnline:false, ollamaOnline:false, ollamaModels:[], ollamaVram:0, webuiManaged:false, comfyManaged:comfyOnline };
+    }
+  });
+  var app = express();
+  app.use(router);
+  var server = http.createServer(app);
+  var base = await listen(server);
+  try {
+    var start = await postJson(base, '/api/service/comfy', { action:'start' });
+    assert.strictEqual(start.status, 200);
+    assert.strictEqual(start.json.pending, true);
+    var ready = await waitFor(async function () {
+      var status = await getJson(base, '/api/status');
+      return status.json.operation && status.json.operation.status === 'completed' ? status.json : null;
+    }, 'mock ComfyUI start');
+    assert.strictEqual(ready.comfyOnline, true);
+    assert.strictEqual(ready.comfyManaged, true);
+    assert.ok(calls[0].args.includes('-AIWorkspaceRoot') && calls[0].args.includes('-RuntimeRoot'));
+    var stop = await postJson(base, '/api/service/comfy', { action:'stop' });
+    assert.strictEqual(stop.status, 200);
+    var stopped = await waitFor(async function () {
+      var status = await getJson(base, '/api/status');
+      return status.json.operation && status.json.operation.status === 'completed' ? status.json : null;
+    }, 'mock ComfyUI stop');
+    assert.strictEqual(stopped.comfyOnline, false);
+    assert.strictEqual(stopped.comfyManaged, false);
+    assert.strictEqual(JSON.parse(fs.readFileSync(runtime.config, 'utf8')).managedServices.comfy, false);
+  } finally {
+    if (router.close) router.close();
+    await close(server);
+    fs.rmSync(temporaryRoot, { recursive:true, force:true });
+  }
+});
+
+test('managed runtime scripts require injected paths and protect external ownership', () => {
+  var comfy = fs.readFileSync(path.join(projectRoot, 'scripts', 'runtime', 'managed-comfyui.ps1'), 'utf8');
+  var webui = fs.readFileSync(path.join(projectRoot, 'scripts', 'runtime', 'managed-webui.ps1'), 'utf8');
+  assert.ok(comfy.includes('$AIWorkspaceRoot') && comfy.includes('$RuntimeRoot') && comfy.includes('$ComfyHost'));
+  assert.ok(webui.includes('$PackageRoot') && webui.includes('$RuntimeRoot') && webui.includes('$WebuiHost'));
+  assert.ok(comfy.includes('Test-ManagedProcess') && comfy.includes('taskkill.exe /PID'));
+  assert.ok(webui.includes('Test-ManagedProcess') && webui.includes('taskkill.exe /PID'));
+  assert.ok(comfy.includes('/system_stats') && webui.includes('/sdapi/v1/sd-models'));
+});
+
+test('managed-comfyui script does not stop an external healthy process', async () => {
+  var temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-comfy-script-'));
+  var health = http.createServer(function (req, res) {
+    res.statusCode = req.url === '/system_stats' ? 200 : 404;
+    res.end('{}');
+  });
+  var base = await listen(health);
+  function invoke(action) {
+    return new Promise(function (resolve, reject) {
+      childProcess.execFile('powershell.exe', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File',
+        path.join(projectRoot, 'scripts', 'runtime', 'managed-comfyui.ps1'), '-Action', action,
+        '-AIWorkspaceRoot', path.join(temporaryRoot, 'workspace'), '-RuntimeRoot', path.join(temporaryRoot, 'runtime'), '-ComfyHost', base],
+        { windowsHide:true }, function (error, stdout, _stderr) {
+          if (error && !stdout) return reject(error);
+          resolve(JSON.parse(String(stdout).trim()));
+        });
+    });
+  }
+  try {
+    var status = await invoke('Status');
+    assert.strictEqual(status.state, 'external-running');
+    assert.strictEqual(status.managed, false);
+    var stopped = await invoke('Stop');
+    assert.strictEqual(stopped.state, 'external-or-stopped');
+    assert.strictEqual(stopped.managed, false);
+  } finally {
+    await close(health);
     fs.rmSync(temporaryRoot, { recursive:true, force:true });
   }
 });

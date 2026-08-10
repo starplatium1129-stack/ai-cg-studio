@@ -106,7 +106,7 @@ function createServiceWatchdog(options) {
                     continue;
                 }
                 // 曾经健康 → 现在掉线：触发自愈；从未健康则不动（等待手动启动）。
-                if (current.wasHealthy && !current.restarting) {
+                if ((current.wasHealthy || (current.attempt === 0 && service.recoverOnStart && service.recoverOnStart())) && !current.restarting) {
                     if (options.onEvent)
                         options.onEvent({ service: service.name, kind: 'down' });
                     scheduleRestart(service, current);

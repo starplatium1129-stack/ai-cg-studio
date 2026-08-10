@@ -269,7 +269,7 @@ test('control panel shows service status wall and scheduling controls', async ({
   // 显存调度与单服务启停
   await expect(page.getByRole('button', { name: /绘图优先/ })).toBeVisible();
   await expect(page.getByRole('button', { name: /聊天优先/ })).toBeVisible();
-  await expect(page.locator('.service-row')).toHaveCount(3);
+  await expect(page.locator('.service-row')).toHaveCount(4);
 
   expect(errors).toEqual([]);
 });
