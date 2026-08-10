@@ -2096,6 +2096,13 @@ watch(() => pb.sdModelName, (name) => {
 </script>
 
 <style scoped>
+.pb {
+  --pb-active: #f06292;
+  --pb-active-text: #f8bbd0;
+  --pb-active-grad: #ab47bc;
+  --pb-badge-blue: #80d8ff;
+  --pb-badge-green: #c5e1a5;
+}
 .engine-switch {
   --engine-active-border: #f06292;
   --engine-active-text: #f8bbd0;
@@ -2110,11 +2117,11 @@ watch(() => pb.sdModelName, (name) => {
   gap: 2px;
   align-items: flex-start;
   padding: 7px 14px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--r-md);
+  border: 1px solid var(--border-soft);
+  background: var(--glass-fill);
   color: inherit;
-  font-size: 13px;
+  font-size: var(--fs-label);
   cursor: pointer;
   transition: border-color 0.15s, background 0.15s;
 }
@@ -2124,7 +2131,7 @@ watch(() => pb.sdModelName, (name) => {
   color: var(--engine-active-text);
 }
 .engine-sub {
-  font-size: 11px;
+  font-size: var(--fs-mono-sm);
   opacity: 0.6;
 }
 
@@ -2137,27 +2144,27 @@ watch(() => pb.sdModelName, (name) => {
 }
 .char-source-btn {
   padding: 5px 12px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--r-pill);
+  border: 1px solid var(--border-strong);
+  background: var(--glass-fill);
   color: inherit;
-  font-size: 12px;
+  font-size: var(--fs-label-sm);
   cursor: pointer;
 }
 .char-source-btn.active {
-  border-color: #f06292;
+  border-color: var(--pb-active);
   background: rgba(240, 98, 146, 0.16);
-  color: #f8bbd0;
+  color: var(--pb-active-text);
 }
 .popular-search {
   width: 100%;
   box-sizing: border-box;
   padding: 7px 10px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(255, 255, 255, 0.06);
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--glass-fill);
   color: inherit;
-  font-size: 12px;
+  font-size: var(--fs-label-sm);
   margin-bottom: 8px;
 }
 .popular-grid {
@@ -2174,14 +2181,14 @@ watch(() => pb.sdModelName, (name) => {
   align-items: center;
   gap: 2px;
   padding: 8px 6px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.04);
+  border-radius: var(--r-md);
+  border: 1px solid var(--border-soft);
+  background: var(--glass-fill);
   color: inherit;
   cursor: pointer;
 }
 .popular-card.active {
-  border-color: #f06292;
+  border-color: var(--pb-active);
   background: rgba(240, 98, 146, 0.14);
 }
 .popular-card-initial {
@@ -2190,19 +2197,19 @@ watch(() => pb.sdModelName, (name) => {
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: linear-gradient(135deg, #f06292, #ab47bc);
+  background: linear-gradient(135deg, var(--pb-active), var(--pb-active-grad));
   color: #fff;
   font-weight: 700;
-  font-size: 15px;
+  font-size: var(--fs-body);
   margin-bottom: 4px;
 }
 .popular-card-name {
-  font-size: 12px;
+  font-size: var(--fs-label-sm);
   line-height: 1.2;
   text-align: center;
 }
 .popular-card-franchise {
-  font-size: 10px;
+  font-size: var(--fs-mono-xs);
   opacity: 0.55;
   text-align: center;
   line-height: 1.2;
@@ -2212,7 +2219,7 @@ watch(() => pb.sdModelName, (name) => {
   white-space: nowrap;
 }
 .popular-outfits {
-  border-top: 1px dashed rgba(255, 255, 255, 0.14);
+  border-top: 1px dashed var(--border-soft);
   padding-top: 8px;
 }
 .popular-outfits-head {
@@ -2221,21 +2228,21 @@ watch(() => pb.sdModelName, (name) => {
   gap: 8px;
   flex-wrap: wrap;
   margin-bottom: 6px;
-  font-size: 12px;
+  font-size: var(--fs-label-sm);
 }
 .popular-badge,
 .popular-nolora-badge {
-  font-size: 10px;
+  font-size: var(--fs-mono-xs);
   padding: 2px 8px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--r-pill);
+  border: 1px solid var(--border-strong);
 }
 .popular-badge {
-  color: #80d8ff;
+  color: var(--pb-badge-blue);
   border-color: rgba(128, 216, 255, 0.4);
 }
 .popular-nolora-badge {
-  color: #c5e1a5;
+  color: var(--pb-badge-green);
   border-color: rgba(197, 225, 165, 0.4);
 }
 .outfit-chips {
@@ -2245,17 +2252,17 @@ watch(() => pb.sdModelName, (name) => {
 }
 .outfit-chip {
   padding: 4px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--r-pill);
+  border: 1px solid var(--border-strong);
+  background: var(--glass-fill);
   color: inherit;
-  font-size: 12px;
+  font-size: var(--fs-label-sm);
   cursor: pointer;
 }
 .outfit-chip.active {
-  border-color: #f06292;
+  border-color: var(--pb-active);
   background: rgba(240, 98, 146, 0.16);
-  color: #f8bbd0;
+  color: var(--pb-active-text);
 }
 
 .blueprint-cats {
@@ -2266,15 +2273,15 @@ watch(() => pb.sdModelName, (name) => {
 }
 .blueprint-cat-btn {
   padding: 3px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--r-pill);
+  border: 1px solid var(--border-strong);
+  background: var(--glass-fill);
   color: inherit;
-  font-size: 11px;
+  font-size: var(--fs-mono-sm);
   cursor: pointer;
 }
 .blueprint-cat-btn.active {
-  border-color: #f06292;
+  border-color: var(--pb-active);
   background: rgba(240, 98, 146, 0.16);
 }
 .blueprint-reco-head {
@@ -2285,16 +2292,16 @@ watch(() => pb.sdModelName, (name) => {
   margin-bottom: 8px;
 }
 .blueprint-reco-note {
-  font-size: 11px;
+  font-size: var(--fs-mono-sm);
   opacity: 0.6;
 }
 .blueprint-reco-btn {
   padding: 3px 10px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--glass-fill);
   color: inherit;
-  font-size: 11px;
+  font-size: var(--fs-mono-sm);
   cursor: pointer;
 }
 .blueprint-list {
@@ -2308,25 +2315,25 @@ watch(() => pb.sdModelName, (name) => {
   gap: 3px;
   text-align: left;
   padding: 8px 10px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.04);
+  border-radius: var(--r-md);
+  border: 1px solid var(--border-soft);
+  background: var(--glass-fill);
   color: inherit;
   cursor: pointer;
 }
 .blueprint-card.active {
-  border-color: #f06292;
+  border-color: var(--pb-active);
   background: rgba(240, 98, 146, 0.12);
 }
 .blueprint-title {
-  font-size: 13px;
+  font-size: var(--fs-label);
   font-weight: 600;
   display: flex;
   align-items: center;
   gap: 6px;
 }
 .blueprint-desc {
-  font-size: 11px;
+  font-size: var(--fs-mono-sm);
   opacity: 0.7;
   line-height: 1.4;
 }
@@ -2334,11 +2341,11 @@ watch(() => pb.sdModelName, (name) => {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
-  font-size: 10px;
+  font-size: var(--fs-mono-xs);
   opacity: 0.5;
 }
 .popular-tags-note {
-  font-size: 11px;
+  font-size: var(--fs-mono-sm);
   opacity: 0.6;
   margin: 8px 0;
 }
@@ -2351,20 +2358,20 @@ watch(() => pb.sdModelName, (name) => {
 }
 .recipe-opt {
   padding: 4px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--r-pill);
+  border: 1px solid var(--border-strong);
+  background: var(--glass-fill);
   color: inherit;
-  font-size: 12px;
+  font-size: var(--fs-label-sm);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 5px;
 }
 .recipe-opt.selected {
-  border-color: #f06292;
+  border-color: var(--pb-active);
   background: rgba(240, 98, 146, 0.16);
-  color: #f8bbd0;
+  color: var(--pb-active-text);
 }
 .recipe-opt.adult {
   border-color: rgba(244, 67, 54, 0.4);
