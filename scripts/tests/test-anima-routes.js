@@ -75,7 +75,7 @@ function validJob(overrides) {
     prompt:'ayachi_nene, 1girl, solo, cafe',
     negative:'worst quality, low quality',
     modelId:'anima-base-v1.0',
-    loraId:'L_NENE_V20_ANIMA',
+    loraId:'L_NENE_V20B_ANIMA',
     loraStrength:0.85,
     width:832,
     height:1216,
@@ -381,6 +381,82 @@ test('Anima exposes and submits the authorized Natsume preview without crossing 
     var unknownPath = await postJson(port, '/api/anima/jobs', validJob({ character:'natsume', loraId:'C:\\secret\\preview.safetensors' }));
     assert.strictEqual(unknownPath.status, 400);
     assert.strictEqual(unknownPath.json.code, 'UNKNOWN_LORA');
+  } finally {
+    await stack.close();
+  }
+});
+
+test('Anima no-LoRA mode submits an anima-aesthetic job without LoraLoader and a negative encode', async function () {
+  var stack = await gatewayTestStack.start({
+    prefix:'aics-anima-nolora-',
+    token:'anima-nolora-token-0123456789abcdef01234',
+  });
+  var port = stack.address.port;
+  var comfy = stack.upstreams.comfy;
+  try {
+    var status = await request(port, { path:'/api/anima/status' });
+    assert.strictEqual(status.status, 200);
+    var aesthetic = status.json.models.find(function (model) { return model.id === 'anima-aesthetic-v1.1'; });
+    assert.ok(aesthetic, 'anima-aesthetic-v1.1 must be discoverable');
+    assert.strictEqual(aesthetic.capabilities.noLora, true, 'no-LoRA capability must be advertised for aesthetic');
+    assert.strictEqual(aesthetic.capabilities.characterIdentity, true, 'character identity capability stays a server fact');
+
+    var noLora = await postJson(port, '/api/anima/jobs', {
+      prompt:'raiden_shogun, 1girl, solo, flower field',
+      negative:'worst quality, low quality',
+      modelId:'anima-aesthetic-v1.1',
+      width:832,
+      height:1216,
+      seed:4242
+    });
+    assert.strictEqual(noLora.status, 202);
+    assert.ok(noLora.json.job.loraId == null, 'no-LoRA job must carry no loraId');
+    assert.ok(noLora.json.job.character == null, 'no-LoRA job must carry no character');
+    assert.strictEqual(noLora.json.job.metadata.profileId, 'anima_aesthetic_v11');
+    await waitForJob(port, noLora.json.job.id, function (job) { return job && job.status === 'succeeded'; });
+
+    var state = await mockState(comfy.port);
+    var promptCall = state.calls.filter(function (call) { return call.path === '/prompt'; }).pop();
+    var graph = promptCall.body.prompt;
+    assert.strictEqual(graph['1'].inputs.unet_name, 'anima-aesthetic-v1.1.safetensors');
+    var classes = Object.keys(graph).map(function (id) { return graph[id].class_type; });
+    assert.ok(!classes.includes('LoraLoader'), 'no-LoRA workflow must not load a LoRA');
+    assert.strictEqual(graph['2'].inputs.clip_name, 'qwen_3_06b_base.safetensors');
+    assert.strictEqual(graph['4'].inputs.text.indexOf('raiden_shogun') !== -1, true);
+    assert.strictEqual(graph['5'].inputs.text, 'worst quality, low quality');
+    assert.strictEqual(graph['7'].inputs.sampler_name, 'er_sde');
+    assert.strictEqual(graph['7'].inputs.scheduler, 'sgm_uniform');
+    assert.strictEqual(graph['7'].inputs.cfg, 4.5);
+    assert.strictEqual(graph['7'].inputs.steps, 30);
+    assert.strictEqual(graph['10'].class_type, 'SaveImage');
+
+    var loraOnNoLora = await postJson(port, '/api/anima/jobs', {
+      prompt:'x', modelId:'anima-aesthetic-v1.1', loraId:'L_NENE_V20B_ANIMA', loraStrength:0.85,
+      width:832, height:1216, character:'nene'
+    });
+    assert.strictEqual(loraOnNoLora.status, 202, 'aesthetic still accepts its authorized LoRA path');
+    var wrongChar = await postJson(port, '/api/anima/jobs', {
+      prompt:'x', modelId:'anima-aesthetic-v1.1', loraId:'L_NAT_V19_ANIMA_PREVIEW',
+      width:832, height:1216, character:'nene'
+    });
+    assert.strictEqual(wrongChar.status, 400);
+    assert.strictEqual(wrongChar.json.code, 'INCOMPATIBLE_CHARACTER');
+
+    // 无 LoRA 模式 fail closed：loraStrength 无 loraId、非空 character 都是自相矛盾参数。
+    var strengthNoLora = await postJson(port, '/api/anima/jobs', {
+      prompt:'x', modelId:'anima-aesthetic-v1.1', loraStrength:0.85, width:832, height:1216
+    });
+    assert.strictEqual(strengthNoLora.status, 400);
+    assert.strictEqual(strengthNoLora.json.code, 'INVALID_PARAMETER');
+    var characterNoLora = await postJson(port, '/api/anima/jobs', {
+      prompt:'x', modelId:'anima-aesthetic-v1.1', character:'nene', width:832, height:1216
+    });
+    assert.strictEqual(characterNoLora.status, 400);
+    assert.strictEqual(characterNoLora.json.code, 'INVALID_PARAMETER');
+    var nullCharacter = await postJson(port, '/api/anima/jobs', {
+      prompt:'x', modelId:'anima-aesthetic-v1.1', character:null, width:832, height:1216
+    });
+    assert.strictEqual(nullCharacter.status, 202, 'character=null must be accepted and ignored in no-LoRA mode');
   } finally {
     await stack.close();
   }

@@ -5,6 +5,18 @@ The source dataset remains immutable. Images are copied byte-for-byte, captions
 are normalized to Anima's official tag spelling, and validation is split by
 visual group so near-duplicate variants cannot cross the train/validation
 boundary.
+
+Anima caption policy (2026-08-10, researched against kohya-ss/sd-scripts
+anima_train_network.py dataset guide, civitai.com/articles/31972 and
+lilting.ch Anima LoRA experiments):
+
+- `ayachi_nene` alone owns identity. Static identity tags (white hair, purple
+  eyes, ...) are EXCLUDED from captions; Anima trigger-only training keeps the
+  face more faithful than tag-assisted captions.
+- Lighting/style tags are spelled explicitly near the front so background
+  lighting separates from identity instead of being absorbed by the trigger.
+- OneTrainer must run tag shuffling + per-tag dropout (keep_tags_count=4,
+  RANDOM 0.1) so the trigger never locks to a fixed tag sequence.
 """
 
 from __future__ import annotations
@@ -68,6 +80,34 @@ SUBJECT_TAGS = {
     "pov_hands",
 }
 
+# Identity belongs to the trigger word alone on Anima: static traits must NOT
+# appear in captions (both spellings covered, since WD14 emits underscores).
+# Only true constants live here; variant hairstyles like side_ponytail stay as
+# separable variables in the caption.
+IDENTITY_TAGS = {
+    "white_hair", "white hair",
+    "very_long_hair", "very long hair",
+    "low_twintails",
+    "purple_eyes", "purple eyes",
+    "ahoge",
+    "hair_ribbon",
+}
+
+# Lighting/style variables spelled out so they separate from identity and can
+# be shuffled/dropped during training (danbooru/WD14 spelling).
+LIGHTING_TAGS = {
+    "soft_lighting", "warm_lighting", "cold_lighting", "dramatic_lighting",
+    "dim_lighting", "natural_lighting", "moody_lighting", "candlelight",
+    "lamp_light", "moonlight", "sunlight", "light_rays", "backlighting",
+    "rim_light", "window_light", "neon_lighting", "streetlight",
+    "morning", "noon", "evening", "night", "sunset", "dawn",
+    "rain", "snow", "cloudy_sky", "starry_sky", "full_moon", "stars",
+    "glowing", "firefly",
+}
+
+KEEP_TAGS_COUNT = 4
+TAG_DROPOUT_PROBABILITY = 0.1
+
 
 def sha256(path: Path) -> str:
     digest = hashlib.sha256()
@@ -97,29 +137,26 @@ def anima_caption(entry: dict[str, Any]) -> str:
     original = tags(str(entry["caption"]))
     controls = [str(tag).lower() for tag in entry.get("tagging", {}).get("custom_control_tags", [])]
     subject = [tag for tag in original if tag in SUBJECT_TAGS]
-    identity = [
-        tag
-        for tag in original
-        if tag in {
-            "white_hair",
-            "very_long_hair",
-            "low_twintails",
-            "purple_eyes",
-            "ahoge",
-            "hair_ribbon",
-        }
-    ]
+    lighting = [tag for tag in original if tag in LIGHTING_TAGS]
 
     prefix = [safety_tag(entry, original)]
     if entry["r18"]:
         prefix.append("nene_r18")
-    prefix.extend(subject)
     prefix.append("ayachi_nene")
-    prefix.extend(tag for tag in controls if tag not in prefix)
-    prefix.extend(tag for tag in identity if tag not in prefix)
+    prefix.extend(controls)
+    prefix.extend(lighting)
+    prefix.extend(subject)
 
-    reserved = SAFETY_TAGS | SUBJECT_TAGS | {"ayachi_nene", "nene_r18"} | set(controls) | set(identity)
+    reserved = (
+        SAFETY_TAGS
+        | SUBJECT_TAGS
+        | {"ayachi_nene", "nene_r18"}
+        | set(controls)
+        | set(lighting)
+        | IDENTITY_TAGS
+    )
     general = [tag for tag in original if tag not in reserved]
+
     ordered = prefix + general
 
     normalized: list[str] = []
@@ -219,6 +256,7 @@ def build_dataset(source_manifest: Path, output: Path, holdout: set[str]) -> dic
                 "id": entry["id"],
                 "dedupe_group": group,
                 "partition": partition,
+                "full_body": bool(entry["review"].get("full_body")),
                 "source_file": str(source_image),
                 "file": str(target_image.relative_to(output)).replace("\\", "/"),
                 "sha256": actual_hash,
@@ -244,20 +282,35 @@ def build_dataset(source_manifest: Path, output: Path, holdout: set[str]) -> dic
             "reference": "https://huggingface.co/circlestone-labs/Anima",
             "ordinary_tag_spelling": "lowercase spaces; comma followed by one space",
             "preserved_lora_tokens": ["ayachi_nene", "nene_*"],
+            "identity_ownership": (
+                "ayachi_nene alone owns identity; static identity tags are "
+                "excluded from captions (Anima trigger-only finding)."
+            ),
+            "lighting_style_tags": (
+                "lighting/atmosphere tags are spelled explicitly near the "
+                "front so background lighting separates from identity."
+            ),
             "safety": {
                 "safe": "safe",
                 "non_explicit_suggestive": "sensitive",
                 "adult_nudity_or_exposure": "nsfw + nene_r18",
                 "explicit_act_or_genital": "explicit + nene_r18",
             },
-            "random_tag_shuffle": False,
-            "tag_dropout": 0,
+            "random_tag_shuffle": True,
+            "keep_tags_count": KEEP_TAGS_COUNT,
+            "tag_dropout": TAG_DROPOUT_PROBABILITY,
+            "tag_dropout_mode": "RANDOM",
         },
         "summary": {
             "entries": len(emitted),
             "independent_visual_groups": len(group_partitions),
             "train_visual_groups": sum(value == "train" for value in group_partitions.values()),
             "validation_visual_groups": sum(value == "validation" for value in group_partitions.values()),
+            "train_full_body_images": sum(
+                bool(entry["full_body"])
+                for entry in emitted
+                if entry["partition"].startswith("train")
+            ),
             "safety_labels": dict(sorted(safety_counts.items())),
             **dict(sorted(counts.items())),
         },
@@ -303,18 +356,21 @@ def concept_from(
     ):
         image[key] = False
     text = concept["text"]
-    text["enable_tag_shuffling"] = False
+    text["enable_tag_shuffling"] = True
     text["tag_delimiter"] = ","
-    text["keep_tags_count"] = 0
-    text["tag_dropout_enable"] = False
-    text["tag_dropout_probability"] = 0
+    text["keep_tags_count"] = KEEP_TAGS_COUNT
+    text["tag_dropout_enable"] = True
+    text["tag_dropout_mode"] = "RANDOM"
+    text["tag_dropout_probability"] = TAG_DROPOUT_PROBABILITY
+    text["tag_dropout_special_tags_mode"] = "NONE"
+    text["tag_dropout_special_tags"] = ""
     return concept
 
 
 def build_config(base_config: Path, dataset: Path, destination: Path) -> dict[str, Any]:
     config = json.loads(base_config.read_text(encoding="utf-8-sig"))
     template = config["concepts"][0]
-    run_name = "ayachi_nene_v20_anima_scientific_a"
+    run_name = "ayachi_nene_v20_anima_scientific_b"
     ai_root = base_config.parents[2]
     one_trainer = base_config.parents[1]
 
@@ -329,9 +385,9 @@ def build_config(base_config: Path, dataset: Path, destination: Path) -> dict[st
     config["output_dtype"] = "BFLOAT_16"
     config["clear_cache_before_training"] = True
     config["learning_rate_scheduler"] = "CONSTANT"
-    config["learning_rate"] = 0.00002
-    config["learning_rate_warmup_steps"] = 0
-    config["epochs"] = 36
+    config["learning_rate"] = 0.0001
+    config["learning_rate_warmup_steps"] = 100
+    config["epochs"] = 24
     config["batch_size"] = 1
     config["gradient_accumulation_steps"] = 1
     config["resolution"] = "1024"
@@ -348,7 +404,7 @@ def build_config(base_config: Path, dataset: Path, destination: Path) -> dict[st
     config["lora_alpha"] = 32
     config["lora_weight_dtype"] = "FLOAT_32"
     config["transformer"]["train"] = True
-    config["transformer"]["learning_rate"] = 0.00002
+    config["transformer"]["learning_rate"] = 0.0001
     config["text_encoder"]["train"] = False
     config["text_encoder"]["learning_rate"] = 0
     config["vae"]["train"] = False
@@ -402,7 +458,17 @@ def build_config(base_config: Path, dataset: Path, destination: Path) -> dict[st
 
     config["scientific_protocol"] = {
         "base_model": "circlestone-labs/Anima Base v1.0",
-        "official_starting_point": {"rank": 32, "learning_rate": 0.00002, "train_llm_adapter": False},
+        "community_starting_point": {
+            "rank": 32,
+            "learning_rate": 0.0001,
+            "epochs": 24,
+            "train_llm_adapter": False,
+            "rationale": (
+                "Anima character LoRA: ~1000-1500 steps at 1e-4 (civitai "
+                "31972; HF Anima #106/#119). 2e-5 was too low: only "
+                "background lighting was learned, identity underfit."
+            ),
+        },
         "dataset_manifest": str(dataset / "experiment-manifest.json"),
         "dataset_manifest_sha256": sha256(dataset / "experiment-manifest.json"),
         "trainer": "OneTrainer Anima LoRA; text encoder and Anima text conditioner frozen by AnimaLoRASetup",
@@ -434,12 +500,29 @@ def check(dataset: Path, config_path: Path) -> dict[str, Any]:
         if len(values) != 1:
             errors.append(f"group leakage: {group} -> {sorted(values)}")
 
-    if config.get("learning_rate") != 0.00002 or config.get("lora_rank") != 32:
-        errors.append("config does not use the official rank32 / 2e-5 starting point")
+    if config.get("learning_rate") != 0.0001 or config.get("lora_rank") != 32:
+        errors.append("config does not use the community rank32 / 1e-4 starting point")
     if config.get("text_encoder", {}).get("train") is not False:
         errors.append("text encoder must remain frozen")
     if config.get("output_model_destination", "").endswith("ayachi_nene_v19_anima.safetensors"):
         errors.append("config would overwrite the production v19 LoRA")
+
+    for concept in config.get("concepts", []):
+        text = concept.get("text", {})
+        if text.get("enable_tag_shuffling") is not True:
+            errors.append(f"concept {concept.get('name')}: tag shuffling must be enabled")
+        if text.get("tag_dropout_enable") is not True:
+            errors.append(f"concept {concept.get('name')}: tag dropout must be enabled")
+        if text.get("keep_tags_count", 0) < KEEP_TAGS_COUNT:
+            errors.append(
+                f"concept {concept.get('name')}: keep_tags_count must be >= {KEEP_TAGS_COUNT}"
+            )
+
+    for entry in manifest["entries"]:
+        caption_tags = {tag.strip() for tag in str(entry["caption"]).lower().split(",")}
+        leaked = sorted(tag for tag in IDENTITY_TAGS if tag in caption_tags)
+        if leaked:
+            errors.append(f"identity tags leaked into caption of {entry['id']}: {leaked}")
 
     return {
         "ok": not errors,

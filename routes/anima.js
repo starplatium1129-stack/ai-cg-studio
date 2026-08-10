@@ -23,9 +23,9 @@ var OUTPUT_NODE_ID = '10';
 var OUTPUT_FILENAME_PREFIX = 'anima_app';
 
 var MODELS = Object.freeze({
-  'anima-base-v1.0': { file:'anima-base-v1.0.safetensors', label:'Anima Base v1.0', family:'anima', profileId:'anima_base_v10', steps:24, cfg:3, sampler:'res_multistep', scheduler:'simple', sizes:['832x1216','1024x1024','1216x832'] },
-  'anima-aesthetic-v1.1': { file:'anima-aesthetic-v1.1.safetensors', label:'Anima Aesthetic v1.1', family:'anima', profileId:'anima_aesthetic_v11', steps:24, cfg:3, sampler:'res_multistep', scheduler:'simple', sizes:['832x1216','1024x1024','1216x832'] },
-  'krea2-turbo-fp8': { file:'krea2_turbo_fp8_scaled.safetensors', label:'Krea 2 Turbo', family:'krea2', profileId:'krea2_turbo_fp8', steps:8, cfg:1, sampler:'euler', scheduler:'simple', sizes:['1024x1024','1024x1536','1536x1024'] }
+  'anima-base-v1.0': { file:'anima-base-v1.0.safetensors', label:'Anima Base v1.0', family:'anima', profileId:'anima_base_v10', steps:30, cfg:4.5, sampler:'er_sde', scheduler:'sgm_uniform', sizes:['832x1216','1024x1024','1216x832'] },
+  'anima-aesthetic-v1.1': { file:'anima-aesthetic-v1.1.safetensors', label:'Anima Aesthetic v1.1', family:'anima', profileId:'anima_aesthetic_v11', steps:30, cfg:4.5, sampler:'er_sde', scheduler:'sgm_uniform', sizes:['832x1216','1024x1024','1216x832'], noLora:true },
+  'krea2-turbo-fp8': { file:'krea2_turbo_fp8_scaled.safetensors', label:'Krea 2 Turbo', family:'krea2', profileId:'krea2_turbo_fp8', steps:8, cfg:1, sampler:'euler', scheduler:'simple', sizes:['1024x1024','1024x1536','1536x1024'], rebalance:{ preset:'standard', multiplier:1.1, normalizeTaps:false } }
 });
 
 var PROFILE_BY_MODEL = Object.freeze({
@@ -38,6 +38,14 @@ var LORAS = Object.freeze({
   L_NENE_V20_ANIMA: {
     file:'ayachi_nene_v20_anima.safetensors',
     name:'ayachi_nene_v20_anima',
+    character:'nene',
+    compatibleModels:['anima-base-v1.0', 'anima-aesthetic-v1.1'],
+    minStrength:0.65,
+    maxStrength:1
+  },
+  L_NENE_V20B_ANIMA: {
+    file:'ayachi_nene_v20_anima_scientific_b_e16.safetensors',
+    name:'ayachi_nene_v20_anima_scientific_b_e16',
     character:'nene',
     compatibleModels:['anima-base-v1.0', 'anima-aesthetic-v1.1'],
     minStrength:0.65,
@@ -56,7 +64,7 @@ var LORAS = Object.freeze({
 });
 
 var CHARACTERS = Object.freeze({
-  nene: { id:'nene', label:'绫地宁宁', loraId:'L_NENE_V20_ANIMA' },
+  nene: { id:'nene', label:'绫地宁宁', loraId:'L_NENE_V20B_ANIMA' },
   natsume: { id:'natsume', label:'四季夏目', loraId:'L_NAT_V19_ANIMA_PREVIEW', preview:true, validation:'experimental_preview' }
 });
 
@@ -130,6 +138,18 @@ function validateInput(body, expectedFamily) {
   var lora = body.loraId ? LORAS[body.loraId] : null;
   if (model.family === 'krea2') {
     if (body.loraId || body.loraStrength !== undefined || (body.negative && String(body.negative).trim())) throw serviceError(400, 'KREA_UNSUPPORTED_PARAMETER', 'Krea 2 不接受 LoRA 或负向 Prompt');
+  } else if (model.noLora === true && !body.loraId) {
+    // 无 LoRA 创作模式：loraId/character 缺省或 character=null 即放行。
+    // 若调用方提供了 lora，则落到下面的原校验，UNKNOWN_LORA /
+    // INCOMPATIBLE_MODEL_LORA / INCOMPATIBLE_CHARACTER 全部保持生效。
+    // loraStrength 无 lora 时是自相矛盾参数，直接拒绝；非空 character 不当作
+    // 身份锁定元数据接受（fail closed，避免客户端绕过 LoRA 却声称角色身份）。
+    if (body.loraStrength !== undefined) {
+      throw serviceError(400, 'INVALID_PARAMETER', 'no-LoRA 模式不接受 loraStrength');
+    }
+    if (body.character !== undefined && body.character !== null) {
+      throw serviceError(400, 'INVALID_PARAMETER', 'no-LoRA 模式不接受角色身份字段');
+    }
   } else {
     if (!lora) throw serviceError(400, 'UNKNOWN_LORA', '未知 Anima LoRA');
     if (lora.compatibleModels.indexOf(body.modelId) === -1) throw serviceError(400, 'INCOMPATIBLE_MODEL_LORA', '底模与 LoRA 组合不受支持');
@@ -179,16 +199,53 @@ function validateInput(body, expectedFamily) {
 
 function buildWorkflow(input) {
   var model = MODELS[input.modelId];
-  if (model.family === 'krea2') return {
+  if (model.family === 'krea2') {
+    var rebalance = model.rebalance;
+    var workflow = {
+      '1': { class_type:'UNETLoader', inputs:{ unet_name:model.file, weight_dtype:'default' } },
+      '2': { class_type:'CLIPLoader', inputs:{ clip_name:'qwen3vl_4b_fp8_scaled.safetensors', type:'krea2' } },
+      '3': { class_type:'VAELoader', inputs:{ vae_name:'qwen_image_vae.safetensors' } },
+      '4': { class_type:'CLIPTextEncode', inputs:{ clip:['2', 0], text:input.prompt } },
+      '5': { class_type:'ConditioningZeroOut', inputs:{ conditioning:['4', 0] } },
+      '6': { class_type:'EmptyLatentImage', inputs:{ width:input.width, height:input.height, batch_size:1 } },
+      '8': { class_type:'VAEDecode', inputs:{ samples:['7', 0], vae:['3', 0] } },
+      '10': { class_type:'SaveImage', inputs:{ images:['8', 0], filename_prefix:'creative_app' } }
+    };
+    var positive = ['4', 0];
+    if (rebalance) {
+      workflow['11'] = { class_type:'ConditioningKrea2Rebalance', inputs:{
+        conditioning:['4', 0],
+        preset:rebalance.preset || 'standard',
+        multiplier:rebalance.multiplier || 1,
+        per_layer_weights:'1.0,1.0,1.0,1.0,1.0,1.0,1.0,2.5,5.0,1.1,4.0,1.0',
+        normalize_taps:Boolean(rebalance.normalizeTaps)
+      } };
+      positive = ['11', 0];
+    }
+    workflow['7'] = { class_type:'KSampler', inputs:{ model:['1', 0], positive:positive, negative:['5', 0], latent_image:['6', 0], seed:input.seed, steps:8, cfg:1, sampler_name:'euler', scheduler:'simple', denoise:1 } };
+    return workflow;
+  }
+  if (model.noLora === true && !input.loraId) return {
     '1': { class_type:'UNETLoader', inputs:{ unet_name:model.file, weight_dtype:'default' } },
-    '2': { class_type:'CLIPLoader', inputs:{ clip_name:'qwen3vl_4b_fp8_scaled.safetensors', type:'krea2' } },
+    '2': { class_type:'CLIPLoader', inputs:{ clip_name:'qwen_3_06b_base.safetensors', type:'qwen_image' } },
     '3': { class_type:'VAELoader', inputs:{ vae_name:'qwen_image_vae.safetensors' } },
     '4': { class_type:'CLIPTextEncode', inputs:{ clip:['2', 0], text:input.prompt } },
-    '5': { class_type:'ConditioningZeroOut', inputs:{ conditioning:['4', 0] } },
+    '5': { class_type:'CLIPTextEncode', inputs:{ clip:['2', 0], text:input.negative } },
     '6': { class_type:'EmptyLatentImage', inputs:{ width:input.width, height:input.height, batch_size:1 } },
-    '7': { class_type:'KSampler', inputs:{ model:['1', 0], positive:['4', 0], negative:['5', 0], latent_image:['6', 0], seed:input.seed, steps:8, cfg:1, sampler_name:'euler', scheduler:'simple', denoise:1 } },
+    '7': { class_type:'KSampler', inputs:{
+      model:['1', 0],
+      positive:['4', 0],
+      negative:['5', 0],
+      latent_image:['6', 0],
+      seed:input.seed,
+      steps:input.steps,
+      cfg:input.cfg,
+      sampler_name:input.sampler,
+      scheduler:input.scheduler,
+      denoise:1
+    } },
     '8': { class_type:'VAEDecode', inputs:{ samples:['7', 0], vae:['3', 0] } },
-    '10': { class_type:'SaveImage', inputs:{ images:['8', 0], filename_prefix:'creative_app' } }
+    '10': { class_type:'SaveImage', inputs:{ images:['8', 0], filename_prefix:OUTPUT_FILENAME_PREFIX } }
   };
   var lora = LORAS[input.loraId];
   return {
@@ -213,8 +270,8 @@ function buildWorkflow(input) {
       seed:input.seed,
       steps:input.steps,
       cfg:input.cfg,
-      sampler_name:'res_multistep',
-      scheduler:'simple',
+      sampler_name:input.sampler,
+      scheduler:input.scheduler,
       denoise:1
     } },
     '9': { class_type:'VAEDecode', inputs:{ samples:['8', 0], vae:['3', 0] } },
@@ -737,7 +794,7 @@ function createAnimaService(config, options) {
     }
     return {
       online:false,
-        models:Object.keys(MODELS).map(function (id) { var model = MODELS[id]; return { id:id, label:model.label, family:model.family, profileId:model.profileId, available:available(model), defaults:{ steps:model.steps, cfg:model.cfg, sampler:model.sampler, scheduler:model.scheduler }, sizes:model.sizes, capabilities:{ negative:model.family !== 'krea2', lora:model.family === 'anima', characterIdentity:model.family === 'anima', experimental:model.family === 'krea2' } }; }),
+        models:Object.keys(MODELS).map(function (id) { var model = MODELS[id]; return { id:id, label:model.label, family:model.family, profileId:model.profileId, available:available(model), defaults:{ steps:model.steps, cfg:model.cfg, sampler:model.sampler, scheduler:model.scheduler }, sizes:model.sizes, capabilities:{ negative:model.family !== 'krea2', lora:model.family === 'anima', noLora:model.noLora === true, characterIdentity:model.family === 'anima', experimental:model.family === 'krea2' || model.noLora === true } }; }),
       loras:Object.keys(LORAS).map(function (id) {
         var lora = LORAS[id];
         var file = path.resolve(loraRoot, lora.file);

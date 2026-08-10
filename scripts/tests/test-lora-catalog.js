@@ -12,7 +12,7 @@ const root = path.resolve(__dirname, '..', '..');
 const catalog = parseLoraCatalog(JSON.parse(
   fs.readFileSync(path.join(root, 'data', 'loras.json'), 'utf8')
 ));
-assert.strictEqual(catalog.length, 4, 'LoRA catalog must expose production models plus the authorized Natsume Anima preview');
+assert.strictEqual(catalog.length, 5, 'LoRA catalog must expose production models plus the authorized Natsume Anima preview');
 assert(catalog.some(entry => entry.id === 'L_NENE_V20_ANIMA'), 'v20 Anima LoRA must be registered');
 assert(catalog.some(entry => entry.id === 'L_NAT_V19_ANIMA_PREVIEW' && entry.experimental), 'Natsume Anima preview must be marked experimental');
 assert(catalog.every(entry => entry.baseModel), 'current base_model fields must reach the model shelf');

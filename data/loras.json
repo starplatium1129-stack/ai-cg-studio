@@ -379,6 +379,113 @@
     }
   },
   {
+    "id": "L_NENE_V20B_ANIMA",
+    "name": "ayachi_nene_v20_anima_scientific_b_e16",
+    "version": "2.1.0",
+    "trigger": "ayachi_nene",
+    "character": "NENE_001",
+    "strength": {
+      "default": 0.85,
+      "min": 0.65,
+      "max": 1
+    },
+    "compatible_models": [
+      "anima-base-v1.0",
+      "anima-aesthetic-v1.1"
+    ],
+    "prompt_contract": {
+      "exact_prefixes": [
+        "nene_"
+      ],
+      "exact_tokens": [
+        "ayachi_nene",
+        "white_hair",
+        "very_long_hair",
+        "low_twintails",
+        "purple_eyes",
+        "pink_hair_ribbons",
+        "hair_ribbon",
+        "hair_between_eyes",
+        "nene_r18",
+        "nene_witch_canonical",
+        "nene_school_uniform",
+        "nene_sailor_uniform",
+        "nene_red_cardigan_uniform",
+        "nene_blue_pajamas",
+        "nene_green_sleepwear",
+        "nene_bat_dress",
+        "nene_black_dress"
+      ]
+    },
+    "test_scene": [
+      "sc002",
+      "sc261",
+      "sc263",
+      "sc014",
+      "sc264",
+      "sc268"
+    ],
+    "description": "绫地宁宁角色 LoRA v20-b（Anima）。修复版 caption 策略（身份特征移交给触发词 ayachi_nene 独占、光照/氛围显式标签化、tag shuffle + 逐标签 dropout 0.1）配 1e-4 学习率重训；双组决赛（24s/CFG3 与 30s/CFG4.5/er_sde 官方参数）中 epoch 16 综合胜出，官方参数组 13:8 且零结构崩坏。",
+    "dataset": {
+      "images": 55,
+      "composition": {
+        "safe": 21,
+        "sensitive": 12,
+        "nsfw": 9,
+        "explicit": 13,
+        "train": 42,
+        "held_out_validation": 13
+      },
+      "resolution": 1024,
+      "strategy": "same group-aware frozen split as v20; captions rebuilt with identity-ownership policy (trigger-only identity, explicit lighting tags, tag shuffle + RANDOM dropout 0.1, keep_tags_count 4)"
+    },
+    "training": {
+      "selected_checkpoint": "epoch 16 (step 672)",
+      "selected_epoch": 16,
+      "selected_step": 672,
+      "rejected_checkpoint": "epoch 24 overfit (sc263 revolver multi-barrel collapse, color drift); epoch 20 riskier under standard params (multi-finger / fabric stacking artifacts)",
+      "resumed_from": "anima-base-v1.0",
+      "rank": 32,
+      "alpha": 32,
+      "batch_size": 1,
+      "transformer_learning_rate": 0.0001,
+      "text_encoder_learning_rate": 0,
+      "text_encoder_stop_epoch": 0,
+      "epochs_run": 24,
+      "timestep_distribution": "LOGIT_NORMAL",
+      "layer_filter": "attn1,attn2,ff",
+      "config": "OneTrainer/training_configs/ayachi_nene_v20_anima_scientific_b.json"
+    },
+    "recommended_weight": {
+      "portrait": 0.85,
+      "fullbody": 0.85,
+      "complex_scene": 0.82
+    },
+    "base_model": "anima-base-v1.0",
+    "trainer": "OneTrainer",
+    "validation": {
+      "status": "passed",
+      "evaluated_at": "2026-08-10",
+      "method": "two-round matrix: round 1 = 6 scenes x 3 seeds vs production v20a (vision-audited 108 cells); final = 7 extended scenes x 3 new seeds x 2 param sets (24s/CFG3 and 30s/CFG4.5/er_sde), 42 cells each, vision-audited per cell",
+      "baseline": "production ayachi_nene_v20_anima (v20-a epoch 8) at 0.85",
+      "matrix": "sc261/sc268/sc269/sc002/sc105/sc014/sc006 x seeds 20260812-14; e16 vs e20; official-params round decisive",
+      "hard_gates": {
+        "mean_face_score": 8.5,
+        "signature_feature_presence_rate": 0.75,
+        "critical_identity_error": 0
+      },
+      "evidence": "Reviews/AnimaV20bCheckpointAudit/2026-08-10_lr1e4_tagfix/ and Reviews/AnimaV20bFinal/2026-08-10_e16_vs_e20*/",
+      "metrics": {
+        "默认参数组 (24s/CFG3)": "e16 8 胜 / 13 负（e20 胜出）",
+        "官方参数组 (30s/CFG4.5/er_sde)": "e16 13 胜 / 8 负（e16 胜出，决定性）",
+        "过拟合观察": "e24 结构崩坏排除；e20 在官方参数组多次结构伪影（多指/布料堆叠）"
+      },
+      "known_limitation": "e16 在低参数 (24s/CFG3) 下身份绑定弱于 e20，建议生产走官方推荐参数 30s/CFG4.5/er_sde；sc105 某 cell 曾报腿部观感争议（复核为条纹袜视觉割裂，解剖正常）。",
+      "scores_recorded": true,
+      "selection_reason": "官方推荐参数组（更接近真实使用）e16 13:8 胜出且零结构崩坏；e20 在标准参数下出现过拟合伪影，真实使用风险高。"
+    }
+  },
+  {
     "id": "L_NAT_V19_ANIMA_PREVIEW",
     "name": "shiki_natsume_v19_anima_preview",
     "version": "1.9.0-preview",

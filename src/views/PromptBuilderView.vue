@@ -2,6 +2,7 @@
   <article
     class="pb"
     :data-character="pb.char"
+    :data-subject="pb.subject.kind"
     :data-director-mode="pb.directorMode"
     :class="{
       'focus-mode': pb.focusMode,
@@ -14,10 +15,10 @@
     <WorkspaceArchiveBar
       chapter="01"
       title="DIRECTOR CONSOLE"
-      :subtitle="pb.activeScene?.title || (pb.directorMode === 'basic' ? '场景模式' : '专家模式')"
-      :status="pb.directorMode === 'basic' ? 'SCENE MODE' : 'PRO MODE'"
-      :state="pb.directorMode === 'basic' ? 'success' : 'active'"
-      :shape="pb.directorMode === 'pro' ? 'spark' : 'frame'"
+      :subtitle="pb.isPopular ? popularCharacter?.displayName || '热门角色' : (pb.activeScene?.title || (pb.directorMode === 'basic' ? '场景模式' : '专家模式'))"
+      :status="pb.isPopular ? 'POPULAR · NO LORA' : (pb.directorMode === 'basic' ? 'SCENE MODE' : 'PRO MODE')"
+      :state="pb.isPopular ? 'active' : (pb.directorMode === 'basic' ? 'success' : 'active')"
+      :shape="pb.isPopular ? 'moon' : (pb.directorMode === 'pro' ? 'spark' : 'frame')"
     />
 
     <div class="pb-topline">
@@ -91,80 +92,158 @@
         <!-- Character -->
         <div class="panel step-panel" id="stepChar">
           <div class="panel-title">角色 · Character</div>
-          <div class="char-row">
-            <button v-for="c in charOptions" :key="c.id"
-              class="char-btn" type="button"
-              :class="{ active: pb.char === c.id }"
-              :aria-pressed="pb.char === c.id"
-              @click="pb.setChar(c.id)">
-              <ArchiveIcon :name="c.iconName" /> {{ c.label }}
-            </button>
+          <div class="char-source" role="group" aria-label="角色来源">
+            <button type="button" class="char-source-btn" :class="{ active: !pb.isPopular }"
+              :aria-pressed="!pb.isPopular" @click="selectPopularSource('studio')">工作室角色</button>
+            <button type="button" class="char-source-btn" :class="{ active: pb.isPopular }"
+              :aria-pressed="pb.isPopular" @click="selectPopularSource('popular')">热门角色 · 无需 LoRA</button>
           </div>
-          <div class="traits-row">
-            <button v-for="t in currentTraits" :key="t.tag"
-              class="trait-chip"
-              :class="{ active: pb.manualTags.has(t.tag) }"
-              type="button"
-              @click="pb.toggleManualTag(t.tag)">{{ t.icon }} {{ t.label }}</button>
-          </div>
+
+          <template v-if="!pb.isPopular">
+            <div class="char-row">
+              <button v-for="c in charOptions" :key="c.id"
+                class="char-btn" type="button"
+                :class="{ active: pb.char === c.id }"
+                :aria-pressed="pb.char === c.id"
+                @click="pb.setChar(c.id)">
+                <ArchiveIcon :name="c.iconName" /> {{ c.label }}
+              </button>
+            </div>
+            <div class="traits-row">
+              <button v-for="t in currentTraits" :key="t.tag"
+                class="trait-chip"
+                :class="{ active: pb.manualTags.has(t.tag) }"
+                type="button"
+                @click="pb.toggleManualTag(t.tag)">{{ t.icon }} {{ t.label }}</button>
+            </div>
+          </template>
+
+          <template v-else>
+            <input v-model="popularSearch" class="popular-search" type="search"
+              placeholder="搜索角色或作品，如 raiden / Saber / Re:Zero" aria-label="搜索热门角色" />
+            <div class="popular-grid" role="group" aria-label="热门角色">
+              <button v-for="character in filteredPopularCharacters" :key="character.id"
+                type="button" class="popular-card"
+                :class="{ active: pb.subject.kind === 'popular' && pb.subject.characterId === character.id }"
+                :aria-pressed="pb.subject.kind === 'popular' && pb.subject.characterId === character.id"
+                @click="selectPopularCharacter(character)">
+                <span class="popular-card-initial" aria-hidden="true">{{ character.displayName.charAt(0) }}</span>
+                <span class="popular-card-name">{{ character.displayName }}</span>
+                <span class="popular-card-franchise">{{ character.franchise }}</span>
+              </button>
+            </div>
+            <div v-if="popularCharacter" class="popular-outfits">
+              <div class="popular-outfits-head">
+                <strong>{{ popularCharacter.displayName }} · {{ popularCharacter.originalName }}</strong>
+                <span class="popular-badge">{{ popularCharacter.recommendedEngine === 'krea2-turbo-fp8' ? '推荐 Krea 2' : '推荐 Anima Aesthetic' }}</span>
+                <span class="popular-nolora-badge">无需 LoRA</span>
+              </div>
+              <div class="outfit-chips" role="group" aria-label="官方服装">
+                <button v-for="outfit in popularCharacter.outfits" :key="outfit.id"
+                  type="button" class="outfit-chip"
+                  :class="{ active: popularOutfit?.id === outfit.id }"
+                  :aria-pressed="popularOutfit?.id === outfit.id"
+                  @click="selectPopularOutfit(outfit.id)">
+                  {{ outfit.name }}
+                </button>
+              </div>
+            </div>
+          </template>
         </div>
 
         <!-- Scenes -->
         <div class="panel step-panel" id="stepScene">
-          <div class="panel-title">Scene · <span class="scene-count-badge">{{ availableScenes.length }}</span></div>
-          <div class="scene-scope" role="group" aria-label="场景库范围">
-            <button type="button" :class="{ active: sceneCollection === 'core' }"
-              :aria-pressed="sceneCollection === 'core'"
-              @click="setSceneCollection('core')">人设核心 {{ personaCoreCount }}</button>
-            <button type="button" :class="{ active: sceneCollection === 'curated' }"
-              :aria-pressed="sceneCollection === 'curated'"
-              @click="setSceneCollection('curated')">精选 {{ curatedCount }}</button>
-            <button type="button" :class="{ active: sceneCollection === 'all' }"
-              :aria-pressed="sceneCollection === 'all'"
-              @click="setSceneCollection('all')">完整库</button>
-          </div>
-          <div class="scene-search-wrap">
-            <input type="search" class="scene-search" v-model="pb.sceneSearch"
-              placeholder="试试：安静的夏目雨夜">
-            <button class="scene-search-clear" type="button" aria-label="清空"
-              @click="pb.sceneSearch = ''">×</button>
-          </div>
-          <div class="scene-filter-summary">
-            <span class="scene-result-count" role="status" aria-live="polite">
-              {{ availableScenes.length }} 个场景
-            </span>
-            <button class="scene-filter-reset" type="button" @click="pb.sceneSearch = ''; pb.sceneTheme = 'all'">重置筛选</button>
-          </div>
-          <div class="scene-filter-label advanced-decision">主题</div>
-          <div class="scene-cats advanced-decision">
-            <button v-for="t in SCENE_THEMES" :key="t.id"
-              class="scene-cat-btn" type="button"
-              :class="{ active: pb.sceneTheme === t.id }"
-              @click="pb.sceneTheme = t.id"><ArchiveIcon :name="t.iconName" /> {{ t.label }}</button>
-          </div>
-          <div class="scene-list">
-            <div v-if="!pb.dataReady" class="scene-loading">正在加载场景库…</div>
-            <div v-else-if="!availableScenes.length" class="scene-empty">未找到匹配场景</div>
-            <button v-for="scene in visibleScenes" :key="scene.id"
-              class="scene-card"
-              :class="{ active: pb.sceneId === scene.id }"
-              type="button"
-              @click="selectScene(scene)">
-              <div class="scene-card-title">
-                {{ scene.title }}
-                <span v-if="personaCoreIds.has(scene.id)" class="scene-core-mark">人设核心</span>
-              </div>
-              <div v-if="scene.story" class="scene-card-story">{{ scene.story }}</div>
-              <div class="scene-card-meta">
-                <span v-if="scene.category" class="scene-cat-tag">{{ scene.category }}</span>
-                <span v-if="scene.rating && scene.rating !== 'All'" class="scene-rating-tag">{{ scene.rating }}</span>
-              </div>
-            </button>
-            <button v-if="availableScenes.length > sceneLimit" class="btn btn-ghost scene-more"
-              type="button" @click="sceneLimit += 20">
-              显示更多 ({{ availableScenes.length - sceneLimit }} 个)
-            </button>
-          </div>
+          <template v-if="pb.isPopular">
+            <div class="panel-title">场景建议 · Blueprint<span class="scene-count-badge">{{ popularBlueprintPool.length }}</span></div>
+            <div class="blueprint-cats" role="group" aria-label="蓝图分类">
+              <button v-for="category in ['all', ...blueprintCategories]" :key="category"
+                type="button" class="blueprint-cat-btn" :class="{ active: popularCategory === category }"
+                :aria-pressed="popularCategory === category"
+                @click="popularCategory = category">{{ category === 'all' ? '全部' : category }}</button>
+            </div>
+            <div class="blueprint-reco-head">
+              <span v-if="!showAllBlueprints" class="blueprint-reco-note" role="status">推荐 {{ recommendedBlueprints.length }} 个场景</span>
+              <span v-else class="blueprint-reco-note" role="status">{{ filteredPopularBlueprints.length }} 个可选场景</span>
+              <button type="button" class="blueprint-reco-btn" @click="toggleBlueprintList">
+                {{ showAllBlueprints ? '收起 · 只看推荐' : '查看全部' }}
+              </button>
+              <button v-if="!showAllBlueprints" type="button" class="blueprint-reco-btn" @click="rotateBlueprintSet">换一批</button>
+            </div>
+            <div v-if="!pb.dataReady" class="scene-loading">正在加载热门角色场景…</div>
+            <div v-else-if="!filteredPopularBlueprints.length" class="scene-empty">没有符合条件的场景建议</div>
+            <div v-else class="blueprint-list">
+              <button v-for="blueprint in (showAllBlueprints ? filteredPopularBlueprints : recommendedBlueprints)"
+                :key="blueprint.id" type="button" class="blueprint-card"
+                :class="{ active: pb.subject.kind === 'popular' && pb.subject.blueprintId === blueprint.id }"
+                :data-adult="blueprint.adult ? 'true' : 'false'"
+                :aria-pressed="pb.subject.kind === 'popular' && pb.subject.blueprintId === blueprint.id"
+                @click="selectBlueprint(blueprint)">
+                <span class="blueprint-title">{{ blueprint.title }}<span v-if="blueprint.adult" class="scene-rating-tag">R18</span></span>
+                <span class="blueprint-desc">{{ blueprint.description }}</span>
+                <span class="blueprint-meta">
+                  <span>{{ blueprint.category }}</span>
+                  <span>{{ blueprint.location }}</span>
+                  <span>{{ blueprint.recommendedSize.replace('x', '×') }}</span>
+                </span>
+              </button>
+            </div>
+          </template>
+          <template v-else>
+            <div class="panel-title">Scene · <span class="scene-count-badge">{{ availableScenes.length }}</span></div>
+            <div class="scene-scope" role="group" aria-label="场景库范围">
+              <button type="button" :class="{ active: sceneCollection === 'core' }"
+                :aria-pressed="sceneCollection === 'core'"
+                @click="setSceneCollection('core')">人设核心 {{ personaCoreCount }}</button>
+              <button type="button" :class="{ active: sceneCollection === 'curated' }"
+                :aria-pressed="sceneCollection === 'curated'"
+                @click="setSceneCollection('curated')">精选 {{ curatedCount }}</button>
+              <button type="button" :class="{ active: sceneCollection === 'all' }"
+                :aria-pressed="sceneCollection === 'all'"
+                @click="setSceneCollection('all')">完整库</button>
+            </div>
+            <div class="scene-search-wrap">
+              <input type="search" class="scene-search" v-model="pb.sceneSearch"
+                placeholder="试试：安静的夏目雨夜">
+              <button class="scene-search-clear" type="button" aria-label="清空"
+                @click="pb.sceneSearch = ''">×</button>
+            </div>
+            <div class="scene-filter-summary">
+              <span class="scene-result-count" role="status" aria-live="polite">
+                {{ availableScenes.length }} 个场景
+              </span>
+              <button class="scene-filter-reset" type="button" @click="pb.sceneSearch = ''; pb.sceneTheme = 'all'">重置筛选</button>
+            </div>
+            <div class="scene-filter-label advanced-decision">主题</div>
+            <div class="scene-cats advanced-decision">
+              <button v-for="t in SCENE_THEMES" :key="t.id"
+                class="scene-cat-btn" type="button"
+                :class="{ active: pb.sceneTheme === t.id }"
+                @click="pb.sceneTheme = t.id"><ArchiveIcon :name="t.iconName" /> {{ t.label }}</button>
+            </div>
+            <div class="scene-list">
+              <div v-if="!pb.dataReady" class="scene-loading">正在加载场景库…</div>
+              <div v-else-if="!availableScenes.length" class="scene-empty">未找到匹配场景</div>
+              <button v-for="scene in visibleScenes" :key="scene.id"
+                class="scene-card"
+                :class="{ active: pb.sceneId === scene.id }"
+                type="button"
+                @click="selectScene(scene)">
+                <div class="scene-card-title">
+                  {{ scene.title }}
+                  <span v-if="personaCoreIds.has(scene.id)" class="scene-core-mark">人设核心</span>
+                </div>
+                <div v-if="scene.story" class="scene-card-story">{{ scene.story }}</div>
+                <div class="scene-card-meta">
+                  <span v-if="scene.category" class="scene-cat-tag">{{ scene.category }}</span>
+                  <span v-if="scene.rating && scene.rating !== 'All'" class="scene-rating-tag">{{ scene.rating }}</span>
+                </div>
+              </button>
+              <button v-if="availableScenes.length > sceneLimit" class="btn btn-ghost scene-more"
+                type="button" @click="sceneLimit += 20">
+                显示更多 ({{ availableScenes.length - sceneLimit }} 个)
+              </button>
+            </div>
+          </template>
         </div>
 
         <HistoryPanel class="advanced-decision"
@@ -258,7 +337,7 @@
               <button type="button" class="tag-remove" :aria-label="'移除词条 ' + tag" @click="pb.toggleManualTag(tag)">×</button>
             </span>
           </div>
-          <div class="outfit-presets" aria-label="v18 官方服装词包">
+          <div v-if="!pb.isPopular" class="outfit-presets" aria-label="v18 官方服装词包">
             <div class="outfit-presets-head">
               <strong>v18 官方服装词包</strong>
               <span>一键加入训练原词，也可以继续单独选 tag</span>
@@ -290,6 +369,7 @@
               </div>
             </div>
           </div>
+          <p v-else class="popular-tags-note">热门角色不加载宁宁/夏目 LoRA 控制词；下方词条可直接用于专家模式微调，成人蓝图仅对成年角色可见。</p>
           <div class="tag-browser">
             <input v-model="tagSearch" class="tag-input" type="search" placeholder="搜索中文或 Danbooru 词条" />
             <div class="tag-categories" role="group" aria-label="词条分类">
@@ -313,11 +393,11 @@
         </div>
 
         <PromptHealthPanel
-          :prompt="previewPrompt"
-          :model-name="modelProfile?.name"
-          :report="promptReport"
-          :art-violations="artViolations"
-          :lora-text="loraSpecs.map(s => s.name + ':' + s.weight).join(' · ')"
+          :prompt="previewPromptView"
+          :model-name="modelProfileView?.name"
+          :report="reportView"
+          :art-violations="artViolationsView"
+          :lora-text="pb.isPopular ? '' : loraSpecs.map(s => s.name + ':' + s.weight).join(' · ')"
           @copy="copyPrompt"
           @save="saveHistory"
         />
@@ -339,17 +419,20 @@
           <div class="panel-title">输出 Result</div>
 
           <div class="engine-switch" role="group" aria-label="出图引擎">
-            <button type="button" class="engine-btn" :class="{ active: drawEngine === 'sd' }" :disabled="generationBusy" @click="setDrawEngine('sd')">
-              SD 引擎 <span class="engine-sub">WebUI · v18 LoRA</span>
+            <button type="button" class="engine-btn" :class="{ active: drawEngine === 'sd' }"
+              :disabled="generationBusy || pb.isPopular"
+              :title="pb.isPopular ? '热门角色仅支持 Anima 无 LoRA 或 Krea 2' : undefined"
+              @click="setDrawEngine('sd')">
+              SD 引擎 <span class="engine-sub">{{ pb.isPopular ? '仅工作室角色' : 'WebUI · v18 LoRA' }}</span>
             </button>
             <button type="button" class="engine-btn" :class="{ active: drawEngine === 'anima' }"
-              :disabled="generationBusy || pb.char === 'triad'" :title="pb.char === 'triad' ? '双人模式不支持 Anima，请使用 SD 引擎' : undefined"
+              :disabled="generationBusy || (!pb.isPopular && pb.char === 'triad')" :title="(!pb.isPopular && pb.char === 'triad') ? '双人模式不支持 Anima，请使用 SD 引擎' : undefined"
               @click="setDrawEngine('anima')">
-              Anima 引擎 <span class="engine-sub">ComfyUI · {{ pb.char === 'natsume' ? 'v19 E08 实验预览' : 'v20 LoRA' }}</span>
+              Anima 引擎 <span class="engine-sub">{{ pb.isPopular ? 'Aesthetic · 无需 LoRA' : (pb.char === 'natsume' ? 'v19 E08 实验预览' : 'v20 LoRA') }}</span>
             </button>
             <button type="button" class="engine-btn" :class="{ active: drawEngine === 'krea2' }"
-              :disabled="generationBusy || pb.char === 'triad'" :title="pb.char === 'triad' ? 'Krea 2 首版暂不支持双角色身份构图，请使用 SD 引擎' : undefined" @click="setDrawEngine('krea2')">
-              Krea 2 <span class="engine-sub">ComfyUI · 自然语言实验</span>
+              :disabled="generationBusy || (!pb.isPopular && pb.char === 'triad')" :title="(!pb.isPopular && pb.char === 'triad') ? 'Krea 2 首版暂不支持双角色身份构图，请使用 SD 引擎' : undefined" @click="setDrawEngine('krea2')">
+              Krea 2 <span class="engine-sub">{{ pb.isPopular ? '自然语言 · 身份优先' : 'ComfyUI · 自然语言实验' }}</span>
             </button>
           </div>
 
@@ -364,7 +447,7 @@
              :generating="generationBusy"
             :online="engineOnline"
             :result-seed="displayResultSeed"
-            :queue-available="sdQueue.canEnqueue.value"
+            :queue-available="pb.isPopular ? false : sdQueue.canEnqueue.value"
             @touch="pb.markParamTouched"
             @generate="callGenerate"
              @cancel="drawEngine !== 'sd' ? cancelAnimaJob() : sd.cancel()"
@@ -401,6 +484,7 @@
 
         <AnimaQuickPanel
           :state="animaState"
+          :no-lora="animaNoLoraMode"
           @update:state="patchAnimaState"
           @submit="callGenerate()"
           @cancel="cancelAnimaJob"
@@ -496,6 +580,28 @@
           </div>
         </details>
 
+        <!-- Krea 风格配方（热门角色 · 专家模式可选；默认按 blueprint+引擎自动） -->
+        <details v-if="pb.isPopular" class="panel step-panel advanced-decision decision-fold" id="stepRecipe">
+          <summary class="panel-title decision-summary">
+            <span>风格配方 · Style</span>
+            <span class="decision-current">{{ recipeSummary }}</span>
+          </summary>
+          <div class="recipe-list" role="group" aria-label="Krea 风格配方">
+            <button type="button" class="recipe-opt"
+              :class="{ selected: pb.kreaStyleId === null }"
+              :aria-pressed="pb.kreaStyleId === null"
+              @click="setKreaStyleRecipe(null)">自动</button>
+            <button v-for="recipe in styleRecipesForSubject" :key="recipe.id"
+              type="button" class="recipe-opt"
+              :class="{ selected: pb.kreaStyleId === recipe.id, adult: recipe.adult }"
+              :aria-pressed="pb.kreaStyleId === recipe.id"
+              @click="setKreaStyleRecipe(recipe.id)">
+              {{ recipe.name }}<span v-if="recipe.adult" class="scene-rating-tag">R18</span>
+            </button>
+          </div>
+          <p class="popular-tags-note">风格短语按官方散文段结构放在 Prompt 最前；「自动」按场景+引擎推荐。成人配方仅对成年角色可见。</p>
+        </details>
+
       </div>
     </div>
 
@@ -547,6 +653,23 @@ import {
   type HistoryEntry,
   type Scene,
 } from '@/stores/promptBuilderStore'
+import { usePopularPromptAssembly } from '@/composables/usePopularPromptAssembly'
+import {
+  blueprintCategories as collectBlueprintCategories,
+  eligibleBlueprints,
+  findBlueprint as findPopularBlueprint,
+  findCharacter as findPopularCharacter,
+  findOutfit as findPopularOutfit,
+  inferBlueprintDecisions,
+  recommendBlueprints,
+  type PopularCharacter,
+  type SceneBlueprint,
+} from '@/utils/popularContent'
+import {
+  eligibleStyleRecipes,
+  findStyleRecipe,
+  KREA_STYLE_RECIPES,
+} from '@/config/kreaStyleRecipes'
 import type { AnimaGenerationState, AnimaJobMetadata, AnimaResult, AnimaOption } from '@/types/anima'
 import { useSDGenerate } from '@/composables/useSDGenerate'
 import { usePromptAssembly } from '@/composables/usePromptAssembly'
@@ -623,14 +746,14 @@ const storedDrawEngine = settingsRepository.get(DRAW_ENGINE_SETTING)
 const drawEngine = ref<DrawEngine>(storedDrawEngine ?? 'sd')
 const animaState = ref<AnimaGenerationState>({
   phase: 'idle', online: false, checkMsg: 'Anima 状态检查中…', models: [], loras: [],
-  prompt: '', negative: '', modelId: 'anima-base-v1.0', loraId: 'L_NENE_V20_ANIMA',
-  loraStrength: 0.85, width: 832, height: 1216, steps: 24, cfg: 3,
+  prompt: '', negative: '', modelId: 'anima-base-v1.0', loraId: 'L_NENE_V20B_ANIMA',
+  loraStrength: 0.85, width: 832, height: 1216, steps: 30, cfg: 4.5,
   family: 'anima',
-  sampler: 'res_multistep', scheduler: 'simple', seed: null,
+  sampler: 'er_sde', scheduler: 'sgm_uniform', seed: null,
   job: null, result: null, statusText: '', errorMsg: '',
 })
 const ANIMA_LORA_BY_CHARACTER = {
-  nene: 'L_NENE_V20_ANIMA',
+  nene: 'L_NENE_V20B_ANIMA',
   natsume: 'L_NAT_V19_ANIMA_PREVIEW',
 } as const
 let animaStatusTimer: ReturnType<typeof setInterval> | null = null
@@ -646,6 +769,11 @@ function patchAnimaState(patch: Partial<AnimaGenerationState>) {
 }
 
 function syncAnimaCharacter(character: 'nene' | 'natsume' | 'triad' = pb.char) {
+  if (pb.isPopular) {
+    // 热门角色：无 LoRA 模式，不依赖角色 LoRA 白名单。
+    patchAnimaState({ loraId: '' })
+    return
+  }
   if (character === 'triad') {
     patchAnimaState({ loraId: '' })
     return
@@ -700,7 +828,84 @@ const {
   artViolations,
   previewPrompt,
 } = usePromptAssembly(pb, sd.checkpoint, drawEngine, animaModelId)
-const livePrompt = positivePrompt
+
+// 热门角色无 LoRA：与工作室路径正交，绝不流经 pb.charPrompt / characterControlTokens。
+const popular = usePopularPromptAssembly(pb, drawEngine, animaModelId)
+const livePrompt = computed(() => pb.isPopular ? popular.positivePrompt.value : positivePrompt.value)
+const effectiveNegative = computed(() => pb.isPopular ? popular.negativePrompt.value : negativePrompt.value)
+const previewPromptView = computed(() => pb.isPopular ? popular.previewPrompt.value : previewPrompt.value)
+const modelProfileView = computed(() => pb.isPopular ? popular.profile.value : modelProfile.value)
+const reportView = computed(() => pb.isPopular ? popular.promptReport.value : promptReport.value)
+const artViolationsView = computed(() => pb.isPopular ? popular.artViolations.value : artViolations.value)
+
+/** 热门角色 Anima 无 LoRA：仅 popular subject + 选中底模的 noLora capability 时成立。 */
+const animaNoLoraMode = computed(() => {
+  if (!pb.isPopular) return false
+  if (animaState.value.family === 'krea2') return false
+  const selected = animaState.value.models.find(model => model.id === animaState.value.modelId)
+  return selected?.capabilities?.noLora === true
+})
+
+// ── 热门角色派生状态 ───────────────────────────────────────────────────────
+const popularSearch = ref('')
+const popularCategory = ref('all')
+const showAllBlueprints = ref(false)
+const blueprintCursor = ref(0)
+const previousBlueprintIds = ref<string[] | null>(null)
+
+const popularCharacter = computed<PopularCharacter | null>(() => {
+  if (pb.subject.kind !== 'popular') return null
+  return findPopularCharacter(pb.popularCharacters, pb.subject.characterId)
+})
+const popularOutfit = computed(() => {
+  const character = popularCharacter.value
+  if (!character) return null
+  if (pb.subject.kind !== 'popular') return null
+  return findPopularOutfit(character, pb.subject.outfitId)
+})
+const filteredPopularCharacters = computed(() => {
+  const keyword = popularSearch.value.trim().toLowerCase()
+  if (!keyword) return pb.popularCharacters
+  return pb.popularCharacters.filter(character =>
+    [character.displayName, character.originalName, character.id, character.franchise, ...character.aliases]
+      .some(text => text.toLowerCase().includes(keyword)),
+  )
+})
+const popularBlueprintPool = computed(() =>
+  eligibleBlueprints(pb.sceneBlueprints, popularCharacter.value, { adultEnabled: pb.showMatureScenes }),
+)
+const filteredPopularBlueprints = computed(() =>
+  eligibleBlueprints(pb.sceneBlueprints, popularCharacter.value, {
+    adultEnabled: pb.showMatureScenes,
+    category: popularCategory.value,
+  }),
+)
+const blueprintCategories = computed(() =>
+  collectBlueprintCategories(popularBlueprintPool.value.filter(blueprint => !blueprint.adult || (popularCharacter.value?.adultEligibility === 'adult' && pb.showMatureScenes))),
+)
+const recommendedBlueprints = computed(() => {
+  const pool = popularBlueprintPool.value
+  if (!pool.length) return []
+  if (pb.subject.kind !== 'popular') return pool.slice(0, 3)
+  const key = `${pb.subject.characterId}#${pb.subject.outfitId}`
+  return recommendBlueprints(pool, key, blueprintCursor.value, previousBlueprintIds.value, 3)
+})
+
+// ── Krea 风格配方（专家模式可选；默认按 blueprint+引擎自动）───────────────
+const styleRecipesForSubject = computed(() => {
+  const character = popularCharacter.value
+  if (!character) return []
+  return eligibleStyleRecipes(KREA_STYLE_RECIPES, character, { adultEnabled: pb.showMatureScenes })
+})
+const selectedStyleRecipe = computed(() => findStyleRecipe(KREA_STYLE_RECIPES, pb.kreaStyleId))
+const recipeSummary = computed(() => {
+  if (!pb.isPopular) return ''
+  if (pb.kreaStyleId === null) return '自动'
+  return selectedStyleRecipe.value?.name ?? '自动'
+})
+function setKreaStyleRecipe(id: string | null) {
+  pb.kreaStyleId = id
+}
 
 // ── 出图对比：记住上一张结果，生成新图后可并排大图对比 ──────────────
 interface ResultSnapshot {
@@ -774,6 +979,98 @@ function detachScene() {
   pb.flash('已脱离场景，仅保留故事')
 }
 
+// ── 热门角色无 LoRA 模式 ─────────────────────────────────────────────────
+function resetBlueprintRotation() {
+  blueprintCursor.value = 0
+  previousBlueprintIds.value = null
+  showAllBlueprints.value = false
+  popularCategory.value = 'all'
+}
+
+/** 按角色推荐引擎切 drawEngine；角色切回/切换后立即恢复正确的 model/lora 列表。 */
+function applyRecommendedEngine(character: PopularCharacter | null) {
+  const target = character?.recommendedEngine === 'krea2-turbo-fp8' ? 'krea2' : 'anima'
+  if (drawEngine.value !== target) setDrawEngine(target)
+}
+
+function selectPopularSource(source: 'studio' | 'popular') {
+  if (source === 'studio' && pb.isPopular) {
+    pb.clearScene({ keepStory: true })
+    pb.setStudioSubject()
+    // 立即恢复 nene/natsume 的 model/lora 白名单，不等 15s 状态轮询。
+    void refreshAnimaBackend()
+    pb.flash('已切回工作室角色（宁宁 / 夏目 LoRA 路径）')
+    return
+  }
+  if (source === 'popular' && !pb.isPopular) {
+    pb.clearScene({ keepStory: true })
+    // 进入热门模式：清空工作室场景，避免宁宁/夏目场景词泄漏。
+    pb.manualTags = new Set()
+    pb.visualDescription = ''
+    resetBlueprintRotation()
+    if (pb.popularCharacters.length) {
+      const first = pb.popularCharacters[0]
+      pb.setPopularSubject(first.id, first.outfits.find(o => o.default)?.id ?? first.outfits[0].id, null)
+      patchAnimaState({ modelId: first.recommendedEngine })
+      applyRecommendedEngine(first)
+    } else {
+      pb.setPopularSubject('', '')
+    }
+    void refreshAnimaBackend()
+    pb.flash('已切换到热门角色：默认 Anima Aesthetic 无 LoRA，可改 Krea 2')
+  }
+}
+
+function selectPopularCharacter(character: PopularCharacter) {
+  if (pb.subject.kind !== 'popular' || pb.subject.characterId === character.id) return
+  const outfitId = character.outfits.find(o => o.default)?.id ?? character.outfits[0].id
+  pb.setPopularSubject(character.id, outfitId, null)
+  pb.visualDescription = ''
+  resetBlueprintRotation()
+  // recommendedEngine 为 Krea 时直接切 krea2 引擎（当前数据全 aesthetic，仍保留分支防死字段）。
+  applyRecommendedEngine(character)
+  patchAnimaState({ modelId: character.recommendedEngine })
+  void refreshAnimaBackend()
+}
+
+function selectPopularOutfit(outfitId: string) {
+  if (pb.subject.kind !== 'popular') return
+  pb.setPopularSubject(pb.subject.characterId, outfitId, pb.subject.blueprintId)
+  resetBlueprintRotation()
+}
+
+function selectBlueprint(blueprint: SceneBlueprint) {
+  if (pb.subject.kind !== 'popular') return
+  pb.setPopularBlueprint(blueprint.id)
+  const decision = inferBlueprintDecisions(blueprint)
+  if (decision.shot) pb.setShot(decision.shot)
+  if (decision.lighting) pb.setLighting(decision.lighting)
+  pb.setComposition(decision.composition)
+  pb.setColorMood(decision.colorMood)
+  // 蓝图推荐尺寸必须收敛到当前底模白名单：Krea 已激活时 832x1216 会让
+  // 服务端 400 INVALID_PARAMETER。
+  let size = decision.size
+  const activeModel = animaState.value.models.find(model => model.id === animaState.value.modelId)
+  if (activeModel && Array.isArray(activeModel.sizes) && activeModel.sizes.length
+    && !activeModel.sizes.includes(size)) {
+    size = activeModel.sizes[0]
+  }
+  sdSize.value = size
+  const [width, height] = size.split('x').map(Number)
+  if (Number.isInteger(width) && Number.isInteger(height)) patchAnimaState({ width, height })
+  pb.visualDescription = blueprint.promptProse
+  pb.flash(`已选用场景「${blueprint.title}」，镜头/光照/尺寸已自动推断`)
+}
+
+function rotateBlueprintSet() {
+  previousBlueprintIds.value = recommendedBlueprints.value.map(blueprint => blueprint.id)
+  blueprintCursor.value += 1
+}
+
+function toggleBlueprintList() {
+  showAllBlueprints.value = !showAllBlueprints.value
+}
+
 function onStoryInput() {
   // Clear scene context if user edits story away from scene's default
   if (pb.sceneId && pb.story !== pb.sceneBaseStory) {
@@ -808,7 +1105,11 @@ watch(displayResultUrl, (url, oldUrl) => {
   lastResult.value = resultSnapshot(url)
 })
 function setDrawEngine(v: DrawEngine) {
-  if (v !== 'sd' && pb.char === 'triad') {
+  if (v === 'sd' && pb.isPopular) {
+    pb.flash('热门角色仅支持 Anima 无 LoRA 或 Krea 2，请保留 Comfy 引擎')
+    return
+  }
+  if (v !== 'sd' && pb.char === 'triad' && !pb.isPopular) {
     pb.flash(v === 'krea2' ? 'Krea 2 首版暂不支持双角色身份构图，请使用 SD 引擎' : 'Anima 首版暂不支持双角色身份构图，请使用 SD 引擎')
     return
   }
@@ -827,13 +1128,19 @@ function setDrawEngine(v: DrawEngine) {
     void refreshAnimaBackend()
   }
   pb.flash(v === 'anima'
-    ? (pb.char === 'natsume' ? '已切换到 Anima 实验预览（夏目 v19 E08，普通全身稳定性有限）' : '已切换到 Anima 引擎（ComfyUI + 宁宁 v20 LoRA）')
+    ? (pb.isPopular ? '已切换到 Anima Aesthetic（无 LoRA 热门角色模式）' : (pb.char === 'natsume' ? '已切换到 Anima 实验预览（夏目 v19 E08，普通全身稳定性有限）' : '已切换到 Anima 引擎（ComfyUI + 宁宁 v20 LoRA）'))
     : v === 'krea2' ? '已切换到 Krea 2（自然语言、无角色 LoRA，身份不保证）' : '已切换到 SD 引擎（WebUI）')
 }
 
 // Anima 模式下生成按钮的可用性取决于 ComfyUI 在线状态，而不是 SD WebUI。
 const engineOnline = computed(() => {
-  if (drawEngine.value === 'anima') return pb.char !== 'triad' && Boolean(animaState.value.loraId) && animaState.value.online
+  if (drawEngine.value === 'anima') {
+    if (pb.isPopular) {
+      return animaState.value.online
+        && animaState.value.models.some(model => model.id === animaState.value.modelId && model.available !== false)
+    }
+    return pb.char !== 'triad' && Boolean(animaState.value.loraId) && animaState.value.online
+  }
   if (drawEngine.value === 'krea2') return animaState.value.online && animaState.value.models.some(model => model.id === animaState.value.modelId && model.available !== false)
   return sd.online.value
 })
@@ -880,7 +1187,7 @@ function historyGenerationFields(): Partial<HistoryEntry> {
       lora: meta.loraId,
       loraId: meta.loraId,
       loraStrength: meta.loraStrength,
-      preview: meta.preview === true || meta.character === 'natsume',
+      preview: meta.preview === true,
       cfg: meta.cfg,
       steps: meta.steps,
       sampler: meta.sampler,
@@ -957,7 +1264,7 @@ function animaRequestPayload(request: AnimaRequest): Omit<AnimaRequest, 'profile
 function updateAnimaPromptState() {
   patchAnimaState({
     prompt: livePrompt.value,
-    negative: negativePrompt.value,
+    negative: effectiveNegative.value,
   })
 }
 
@@ -971,21 +1278,34 @@ async function refreshAnimaBackend() {
       .filter(lora => lora.character === pb.char && lora.available !== false)
     const targetFamily = drawEngine.value === 'krea2' ? 'krea2' : 'anima'
     const familyModels = models.filter(model => model.family === targetFamily)
-    const familyLoras = targetFamily === 'krea2' ? [] : loras
-    const modelId = familyModels.some(model => model.id === animaState.value.modelId)
+    const visibleModels = pb.isPopular
+      // 热门角色只暴露 no-LoRA 底模（Krea 家族天然无 LoRA）。
+      ? familyModels.filter(model => model.capabilities?.noLora === true || model.family === 'krea2')
+      : familyModels
+    const familyLoras = targetFamily === 'krea2' ? [] : (pb.isPopular ? [] : loras)
+    const modelId = visibleModels.some(model => model.id === animaState.value.modelId)
       ? animaState.value.modelId
-      : (familyModels[0]?.id || '')
+      : (visibleModels[0]?.id || '')
     const loraId = familyLoras.some(lora => lora.id === animaState.value.loraId)
       ? animaState.value.loraId
       : (familyLoras[0]?.id || '')
-    const selectedModel = models.find(model => model.id === modelId)
+    const selectedModel = visibleModels.find(model => model.id === modelId)
+    // 切到新 family 时若当前尺寸不在该底模支持范围内，落到该底模推荐尺寸。
+    // （Krea 与 Anima 尺寸白名单不同；否则请求会以 400 INVALID_PARAMETER 失败。）
+    let width = animaState.value.width
+    let height = animaState.value.height
+    if (selectedModel && Array.isArray(selectedModel.sizes) && selectedModel.sizes.length
+      && !selectedModel.sizes.includes(`${width}x${height}`)) {
+      const [nextWidth, nextHeight] = String(selectedModel.sizes[0]).split('x').map(Number)
+      if (Number.isInteger(nextWidth) && Number.isInteger(nextHeight)) { width = nextWidth; height = nextHeight }
+    }
     const familyLabel = targetFamily === 'krea2' ? 'Krea 2' : 'Anima'
     patchAnimaState({
       online: data.online === true,
       checkMsg: data.online === true
-        ? `${familyLabel} 在线 · ${familyModels.length} 个底模 · ${familyLoras.length} 个 LoRA`
+        ? `${familyLabel} 在线 · ${visibleModels.length} 个底模 · ${familyLoras.length} 个 LoRA`
         : `${familyLabel} 离线（ComfyUI 未启动或网关不可用）`,
-      models, loras: familyLoras, modelId, loraId,
+      models: visibleModels, loras: familyLoras, modelId, loraId, width, height,
         family: selectedModel?.family === 'krea2' ? 'krea2' : 'anima',
         steps: Number(selectedModel?.defaults?.steps) || animaState.value.steps,
         cfg: Number(selectedModel?.defaults?.cfg) || animaState.value.cfg,
@@ -999,6 +1319,9 @@ async function refreshAnimaBackend() {
 }
 
 function buildAnimaRequest(): AnimaRequest | null {
+  if (pb.isPopular) {
+    return buildPopularRequest()
+  }
   const profile = modelProfile.value
   if (pb.char === 'triad') {
     pb.flash(animaState.value.family === 'krea2' ? 'Krea 2 首版暂不支持双角色身份构图，请使用 SD 引擎' : 'Anima 首版暂不支持双角色身份构图，请使用 SD 引擎')
@@ -1016,7 +1339,7 @@ function buildAnimaRequest(): AnimaRequest | null {
   updateAnimaPromptState()
   return {
     prompt: livePrompt.value,
-    negative: negativePrompt.value,
+    negative: effectiveNegative.value,
     profileId: profile.id || '',
     modelId: animaState.value.modelId,
     loraId: animaState.value.family === 'krea2' ? null : animaState.value.loraId,
@@ -1027,6 +1350,37 @@ function buildAnimaRequest(): AnimaRequest | null {
     cfg: animaState.value.cfg,
     ...(animaState.value.seed == null ? {} : { seed: animaState.value.seed }),
     character: animaState.value.family === 'krea2' ? null : pb.char,
+  }
+}
+
+/** 热门角色无 LoRA 出图：Anima 只允许服务端声明的 noLora capability 底模；Krea 家族天然无 LoRA。 */
+function buildPopularRequest(): AnimaRequest | null {
+  const profile = popular.profile.value
+  if (!profile || profile.engine !== animaState.value.family || profile.model_id !== animaState.value.modelId) {
+    pb.flash('当前底模没有匹配的模型 profile，已拒绝生成')
+    return null
+  }
+  if (animaState.value.family === 'anima') {
+    const selectedModel = animaState.value.models.find(model => model.id === animaState.value.modelId)
+    if (!selectedModel || selectedModel.capabilities?.noLora !== true) {
+      pb.flash('当前底模不支持无 LoRA 热门角色创作')
+      return null
+    }
+  }
+  updateAnimaPromptState()
+  return {
+    prompt: livePrompt.value,
+    negative: effectiveNegative.value,
+    profileId: profile.id || '',
+    modelId: animaState.value.modelId,
+    loraId: null,
+    loraStrength: null,
+    width: animaState.value.width,
+    height: animaState.value.height,
+    steps: animaState.value.steps,
+    cfg: animaState.value.cfg,
+    ...(animaState.value.seed == null ? {} : { seed: animaState.value.seed }),
+    character: null,
   }
 }
 
@@ -1049,9 +1403,11 @@ function metadataFromJob(job: AnimaPublicJob, request: AnimaRequest): AnimaJobMe
         cfg: request.cfg,
         sampler: animaState.value.sampler,
         scheduler: animaState.value.scheduler,
-        seed: job.seed,
+         seed: job.seed,
          character: request.character,
-        preview: request.character === 'natsume' || request.character === null,
+        // 仅夏目 Anima LoRA 是实验预览；热门角色无 LoRA 与 Krea 都不是 preview。
+        // 不要因 character===null 给 popular Anima 误标"实验预览"。
+        preview: request.character === 'natsume' && request.loraId === 'L_NAT_V19_ANIMA_PREVIEW',
         createdAt: Date.now(),
         resultUrl: job.resultUrl,
       }
@@ -1273,9 +1629,13 @@ function enqueueCurrent() {
 }
 
 async function callGenerate(opts: { disableLora?: boolean } = {}) {
+  if (pb.isPopular && drawEngine.value === 'sd') {
+    pb.flash('热门角色仅支持 Anima 无 LoRA 或 Krea 2')
+    return
+  }
   if (!livePrompt.value) { pb.flash('请先选择场景或填写故事'); return }
   if (drawEngine.value !== 'sd') {
-    if (opts.disableLora && drawEngine.value === 'anima') { pb.flash('Anima 引擎固定使用角色 LoRA，无法跳过') }
+    if (opts.disableLora && drawEngine.value === 'anima' && !pb.isPopular) { pb.flash('Anima 引擎固定使用角色 LoRA，无法跳过') }
     await generateAnima()
     return
   }
@@ -1331,7 +1691,7 @@ async function runRecovery(id: SDRecoveryId) {
 }
 
 async function copyPrompt() {
-  try { await navigator.clipboard.writeText(previewPrompt.value); pb.flash('Prompt 已复制') }
+  try { await navigator.clipboard.writeText(previewPromptView.value); pb.flash('Prompt 已复制') }
   catch { pb.flash('复制失败，请手动选取') }
 }
 
@@ -1406,45 +1766,91 @@ function applyQuickCreateSettings(settings: QuickCreateSettings | null) {
 }
 
 function applyHistory(entry: HistoryEntry, keepAsVariant = false) {
-  if (entry.character) pb.setChar(entry.character)
-  if (entry.engine === 'anima' && (entry.character === 'nene' || entry.character === 'natsume')) {
-    const [width, height] = String(entry.size || '832x1216').replace('×', 'x').split('x').map(Number)
-    clearAnimaResult()
-    patchAnimaState({
-      phase: 'idle', statusText: '', errorMsg: '',
-      modelId: entry.model || 'anima-base-v1.0',
-      loraId: entry.loraId === ANIMA_LORA_BY_CHARACTER[entry.character] ? entry.loraId : ANIMA_LORA_BY_CHARACTER[entry.character],
-      loraStrength: entry.loraStrength ?? animaState.value.loraStrength,
-      width: Number.isInteger(width) ? width : animaState.value.width,
-      height: Number.isInteger(height) ? height : animaState.value.height,
-      steps: Number(entry.steps) || animaState.value.steps,
-      cfg: Number(entry.cfg) || animaState.value.cfg,
-      sampler: entry.sampler || animaState.value.sampler,
-      scheduler: entry.scheduler || animaState.value.scheduler,
-      seed: entry.seed >= 0 ? entry.seed : animaState.value.seed,
-    })
-    setDrawEngine('anima')
+  const popularEntry = entry.subject === 'popular' || (entry.noLora && entry.characterId)
+  if (popularEntry) {
+    const character = findPopularCharacter(pb.popularCharacters, entry.characterId || '')
+    const outfit = character ? findPopularOutfit(character, entry.outfitId || '') : null
+    if (character && outfit) {
+      pb.setPopularSubject(character.id, outfit.id, entry.blueprintId ?? null)
+      pb.kreaStyleId = typeof entry.kreaStyleId === 'string' ? entry.kreaStyleId : null
+      const blueprint = entry.blueprintId ? findPopularBlueprint(pb.sceneBlueprints, entry.blueprintId) : null
+      if (blueprint) {
+        const decision = inferBlueprintDecisions(blueprint)
+        if (decision.shot) pb.setShot(decision.shot)
+        if (decision.lighting) pb.setLighting(decision.lighting)
+        pb.setComposition(decision.composition)
+        pb.setColorMood(decision.colorMood)
+      }
+      resetBlueprintRotation()
+      const [width, height] = String(entry.size || '832x1216').replace('×', 'x').split('x').map(Number)
+      clearAnimaResult()
+      patchAnimaState({
+        phase: 'idle', statusText: '', errorMsg: '',
+        modelId: entry.model && animaState.value.models.some(model => model.id === entry.model)
+          ? entry.model
+          : 'anima-aesthetic-v1.1',
+        loraId: '', loraStrength: animaState.value.loraStrength,
+        width: Number.isInteger(width) ? width : animaState.value.width,
+        height: Number.isInteger(height) ? height : animaState.value.height,
+        steps: Number(entry.steps) || animaState.value.steps,
+        cfg: Number(entry.cfg) || animaState.value.cfg,
+        sampler: entry.sampler || animaState.value.sampler,
+        scheduler: entry.scheduler || animaState.value.scheduler,
+        seed: entry.seed >= 0 ? entry.seed : animaState.value.seed,
+      })
+      setDrawEngine(entry.engine === 'krea2' ? 'krea2' : 'anima')
+      void refreshAnimaBackend()
+    } else {
+      pb.setStudioSubject()
+      setDrawEngine('sd')
+    }
   } else {
-    // 旧历史没有 engine 字段，必须按既有 SD 契约恢复。
-    setDrawEngine('sd')
+    if (entry.character) pb.setChar(entry.character)
+    if (entry.engine === 'anima' && (entry.character === 'nene' || entry.character === 'natsume')) {
+      const [width, height] = String(entry.size || '832x1216').replace('×', 'x').split('x').map(Number)
+      clearAnimaResult()
+      patchAnimaState({
+        phase: 'idle', statusText: '', errorMsg: '',
+        modelId: entry.model || 'anima-base-v1.0',
+        loraId: entry.loraId === ANIMA_LORA_BY_CHARACTER[entry.character] ? entry.loraId : ANIMA_LORA_BY_CHARACTER[entry.character],
+        loraStrength: entry.loraStrength ?? animaState.value.loraStrength,
+        width: Number.isInteger(width) ? width : animaState.value.width,
+        height: Number.isInteger(height) ? height : animaState.value.height,
+        steps: Number(entry.steps) || animaState.value.steps,
+        cfg: Number(entry.cfg) || animaState.value.cfg,
+        sampler: entry.sampler || animaState.value.sampler,
+        scheduler: entry.scheduler || animaState.value.scheduler,
+        seed: entry.seed >= 0 ? entry.seed : animaState.value.seed,
+      })
+      setDrawEngine('anima')
+    } else {
+      // 旧历史没有 engine 字段，必须按既有 SD 契约恢复。
+      setDrawEngine('sd')
+    }
   }
-  const restoredContext = restoreHistorySceneStory(entry, pb.scenes)
-  if (restoredContext.scene) pb.loadScene(restoredContext.scene)
-  else pb.clearScene({ keepStory: true })
-  // loadScene seeds the scene story; restore the historical user story last.
-  pb.setStory(restoredContext.story)
-  pb.selections.emotion.splice(0, pb.selections.emotion.length, ...(entry.emotion || []))
-  pb.setShot(entry.shot || null)
-  pb.setLighting(entry.lighting || null)
-  pb.setComposition(entry.composition || null)
-  pb.setColorMood(entry.colorMood || null)
-  pb.manualTags = new Set(entry.manual_tags || [])
+  if (!popularEntry) {
+    const restoredContext = restoreHistorySceneStory(entry, pb.scenes)
+    if (restoredContext.scene) pb.loadScene(restoredContext.scene)
+    else pb.clearScene({ keepStory: true })
+    // loadScene seeds the scene story; restore the historical user story last.
+    pb.setStory(restoredContext.story)
+    pb.selections.emotion.splice(0, pb.selections.emotion.length, ...(entry.emotion || []))
+    pb.setShot(entry.shot || null)
+    pb.setLighting(entry.lighting || null)
+    pb.setComposition(entry.composition || null)
+    pb.setColorMood(entry.colorMood || null)
+    pb.manualTags = new Set(entry.manual_tags || [])
+  } else {
+    pb.setStory(entry.story || '')
+    pb.manualTags = new Set((entry.manual_tags || []).filter(tag => !/(?:ayachi_nene|shiki_natsume|nene_|natsume_)/i.test(tag)))
+    pb.visualDescription = entry.visualDescription ?? ''
+  }
   if (entry.seed >= 0) { pb.sdParams.seed = entry.seed; pb.sdParams.seedLock = true }
   pb.sdParams.cfg = Number(entry.cfg) || pb.sdParams.cfg
   pb.sdParams.steps = Number(entry.steps) || pb.sdParams.steps
   if (entry.sampler) pb.sdParams.sampler = entry.sampler
   if (entry.scheduler) pb.sdParams.scheduler = entry.scheduler
-  if (entry.model && entry.engine !== 'anima') pb.sdModelName = entry.model
+  if (entry.model && entry.engine !== 'anima' && !popularEntry) pb.sdModelName = entry.model
   if (entry.negative) { pb.sdParams.negative = true; pb.sdParams.negativeCustom = entry.negative }
   if (entry.size) sdSize.value = entry.size.replace('×', 'x')
   if (keepAsVariant) pb.flash('已复制为新变体草稿')
@@ -1466,7 +1872,12 @@ async function deleteHistory(entry: HistoryEntry) {
 /** 「清空并重来」：会清空故事、场景关联、全部词条与导演决策，先确认再执行 */
 function resetAll() {
   if (!confirm('清空当前故事、场景与全部词条，重新开始？此操作不可撤销。')) return
+  if (pb.isPopular) {
+    pb.setStudioSubject()
+    pb.manualTags = new Set()
+  }
   pb.clearScene()
+  resetBlueprintRotation()
   pb.flash('已清空，可以开始新的一幅')
 }
 
@@ -1561,6 +1972,32 @@ onMounted(async () => {
   // 推荐尺寸同步到出图选择
   if (pb.lastRecommendedSize) sdSize.value = pb.lastRecommendedSize
 
+  // 热门角色草稿恢复：同步无 LoRA 底模与蓝图尺寸/导演决策，并立即刷新 backend，
+  // 让面板的 model/lora 列表立刻收敛到热门角色（不等 15s 轮询）。
+  if (pb.isPopular && pb.subject.kind === 'popular') {
+    const recommendedEngine = popularCharacter.value?.recommendedEngine === 'krea2-turbo-fp8' ? 'krea2-turbo-fp8' : 'anima-aesthetic-v1.1'
+    if (animaState.value.models.some(model => model.id === recommendedEngine)) {
+      patchAnimaState({ modelId: recommendedEngine })
+    }
+    if (pb.subject.blueprintId) {
+      const restoredBlueprint = findPopularBlueprint(pb.sceneBlueprints, pb.subject.blueprintId)
+      if (restoredBlueprint) {
+        const decision = inferBlueprintDecisions(restoredBlueprint)
+        let restoredSize = decision.size
+        const activeModel = animaState.value.models.find(model => model.id === animaState.value.modelId)
+        if (activeModel && Array.isArray(activeModel.sizes) && activeModel.sizes.length
+          && !activeModel.sizes.includes(restoredSize)) {
+          restoredSize = activeModel.sizes[0]
+        }
+        sdSize.value = restoredSize
+        const [blueprintWidth, blueprintHeight] = restoredSize.split('x').map(Number)
+        if (Number.isInteger(blueprintWidth) && Number.isInteger(blueprintHeight)) patchAnimaState({ width: blueprintWidth, height: blueprintHeight })
+      }
+    }
+    applyRecommendedEngine(popularCharacter.value)
+    void refreshAnimaBackend()
+  }
+
   if (q.quick === '1') {
     const savedQuick = readQuickCreate()
     applyQuickCreateSettings(savedQuick)
@@ -1597,17 +2034,45 @@ onUnmounted(() => {
 })
 
 // Autosave draft
-watch([() => pb.story, () => pb.visualDescription, () => pb.char, () => pb.sceneId, () => pb.selections, () => pb.manualTags, () => pb.colorMood], () => {
+watch([() => pb.story, () => pb.visualDescription, () => pb.char, () => pb.sceneId, () => pb.selections, () => pb.manualTags, () => pb.colorMood, () => pb.subject, () => pb.kreaStyleId], () => {
   pb.saveDraft?.()
 }, { deep: true })
 
-watch([livePrompt, negativePrompt], () => updateAnimaPromptState(), { immediate: true })
+watch([livePrompt, effectiveNegative], () => updateAnimaPromptState(), { immediate: true })
 
 watch(() => pb.directorMode, mode => {
   localStorage.setItem(DIRECTOR_MODE_KEY, mode)
 })
 
+// 热门角色恢复草稿/历史后保证引擎不是 SD（SD 已对热门角色禁用）。
+watch(() => pb.subject, subject => {
+  if (subject.kind === 'popular' && drawEngine.value === 'sd') {
+    setDrawEngine('anima')
+  }
+})
+
+// 角色变化 / 成熟内容开关变化后，若当前 category 已无合格蓝图（如"成人"），
+// 自动回到"全部"并触发推荐重算，避免空面板。
+watch([popularBlueprintPool, () => pb.showMatureScenes, () => pb.isPopular], () => {
+  const categories = blueprintCategories.value
+  if (popularCategory.value !== 'all' && !categories.includes(popularCategory.value)) {
+    popularCategory.value = 'all'
+  }
+})
+
+// 角色 / 成熟内容开关变化后，已选的成人风格配方若不满足资格必须立即清空，
+// 避免下一次生成把成人风格词注入非成人角色（fail closed）。
+watch([() => (pb.subject.kind === 'popular' ? pb.subject.characterId : null), () => pb.showMatureScenes], () => {
+  if (pb.subject.kind !== 'popular' || !pb.kreaStyleId) return
+  const recipe = findStyleRecipe(KREA_STYLE_RECIPES, pb.kreaStyleId)
+  const character = popularCharacter.value
+  if (recipe?.adult && (!character || character.adultEligibility !== 'adult' || !pb.showMatureScenes)) {
+    pb.kreaStyleId = null
+  }
+})
+
 watch(() => pb.char, char => {
+  if (pb.isPopular) return
   if (drawEngine.value !== 'sd') {
     syncAnimaCharacter(char)
     void refreshAnimaBackend()
@@ -1661,5 +2126,247 @@ watch(() => pb.sdModelName, (name) => {
 .engine-sub {
   font-size: 11px;
   opacity: 0.6;
+}
+
+/* ── 热门角色无 LoRA 创作模式 ─────────────────────────────────────────── */
+.char-source {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+.char-source-btn {
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.05);
+  color: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.char-source-btn.active {
+  border-color: #f06292;
+  background: rgba(240, 98, 146, 0.16);
+  color: #f8bbd0;
+}
+.popular-search {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 7px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  color: inherit;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+.popular-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 6px;
+  max-height: 240px;
+  overflow-y: auto;
+  margin-bottom: 8px;
+}
+.popular-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 6px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: inherit;
+  cursor: pointer;
+}
+.popular-card.active {
+  border-color: #f06292;
+  background: rgba(240, 98, 146, 0.14);
+}
+.popular-card-initial {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f06292, #ab47bc);
+  color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+.popular-card-name {
+  font-size: 12px;
+  line-height: 1.2;
+  text-align: center;
+}
+.popular-card-franchise {
+  font-size: 10px;
+  opacity: 0.55;
+  text-align: center;
+  line-height: 1.2;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.popular-outfits {
+  border-top: 1px dashed rgba(255, 255, 255, 0.14);
+  padding-top: 8px;
+}
+.popular-outfits-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+  font-size: 12px;
+}
+.popular-badge,
+.popular-nolora-badge {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.popular-badge {
+  color: #80d8ff;
+  border-color: rgba(128, 216, 255, 0.4);
+}
+.popular-nolora-badge {
+  color: #c5e1a5;
+  border-color: rgba(197, 225, 165, 0.4);
+}
+.outfit-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.outfit-chip {
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.05);
+  color: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.outfit-chip.active {
+  border-color: #f06292;
+  background: rgba(240, 98, 146, 0.16);
+  color: #f8bbd0;
+}
+
+.blueprint-cats {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin: 4px 0 8px;
+}
+.blueprint-cat-btn {
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.05);
+  color: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+.blueprint-cat-btn.active {
+  border-color: #f06292;
+  background: rgba(240, 98, 146, 0.16);
+}
+.blueprint-reco-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.blueprint-reco-note {
+  font-size: 11px;
+  opacity: 0.6;
+}
+.blueprint-reco-btn {
+  padding: 3px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.05);
+  color: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+.blueprint-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.blueprint-card {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  text-align: left;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: inherit;
+  cursor: pointer;
+}
+.blueprint-card.active {
+  border-color: #f06292;
+  background: rgba(240, 98, 146, 0.12);
+}
+.blueprint-title {
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.blueprint-desc {
+  font-size: 11px;
+  opacity: 0.7;
+  line-height: 1.4;
+}
+.blueprint-meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 10px;
+  opacity: 0.5;
+}
+.popular-tags-note {
+  font-size: 11px;
+  opacity: 0.6;
+  margin: 8px 0;
+}
+
+/* ── Krea 风格配方 ───────────────────────────────────────────────────────── */
+.recipe-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.recipe-opt {
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.05);
+  color: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.recipe-opt.selected {
+  border-color: #f06292;
+  background: rgba(240, 98, 146, 0.16);
+  color: #f8bbd0;
+}
+.recipe-opt.adult {
+  border-color: rgba(244, 67, 54, 0.4);
 }
 </style>

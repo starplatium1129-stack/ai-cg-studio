@@ -30,7 +30,7 @@ test('prompt compiler keeps story and search metadata outside all model families
   assert(anima.prompt.includes('natsume_cafe_uniform'));
   assert(anima.prompt.includes('warm lighting'));
   assert(!anima.prompt.includes('<lora:'));
-  assert(anima.prompt.includes('A visual novel event CG'));
+  assert(!anima.prompt.includes('A visual novel event CG'), 'anima prose tail must not use meta phrases');
   assert(!krea.prompt.includes('masterpiece'));
   assert(!krea.prompt.includes('score_'));
   assert(!krea.prompt.includes('Identity is not guaranteed'));
@@ -38,9 +38,30 @@ test('prompt compiler keeps story and search metadata outside all model families
   assert(!krea.prompt.includes('natsume_cafe_uniform'));
   assert(!krea.prompt.includes(':1.4'));
   assert.strictEqual(krea.negative, '');
-  assert(krea.prompt.includes('Composition and lighting'));
+  // Krea 官方散文段结构：无 meta 标签、无逗号标签堆砌、散文段原样织入。
+  for (const value of [krea.prompt, anima.prompt]) {
+    assert(!/(?:In this image|The image shows|Scene details:|Composition and lighting|A visual novel event CG featuring)/i.test(value), 'must not leak meta phrases');
+  }
+  assert(!/[a-z]+_[a-z]+/i.test(krea.prompt), 'krea prose must not carry raw danbooru tokens');
+  assert(krea.prompt.includes('Nene stands beside a rain-covered cafe window.'), 'krea must weave visualDescription prose verbatim');
+  assert(/warm lighting, cafe interior\./i.test(krea.prompt), 'krea must weave scene fragments as readable prose');
   assert.strictEqual(policy.formatPromptForEngine('natsume_r18, natsume_cafe_uniform, warm_lighting', 'anima'), 'natsume_r18, natsume_cafe_uniform, warm lighting');
   assert.strictEqual(policy.formatPromptForEngine('nene_school_uniform, natsume_cafe_uniform', 'anima', [], ['nene_', 'natsume_']), 'nene_school_uniform, natsume_cafe_uniform');
+});
+
+test('prompt compiler: Krea style recipe lead goes first and medium closes the paragraph', () => {
+  const input = {
+    identity: 'a girl with long hair',
+    scenePrompt: 'a quiet cafe interior',
+    visualDescription: 'she wears a navy dress',
+    style: ['A polished visual novel event CG with refined cel shading'],
+    medium: 'visual novel event CG',
+  };
+  const krea = compiler.renderPromptPlan(compiler.createPromptPlan(input), 'krea2');
+  assert(krea.prompt.startsWith('A polished visual novel event CG with refined cel shading.'),
+    'style language must come first');
+  assert(/visual novel event CG\.$/i.test(krea.prompt), 'medium must close the paragraph');
+  assert(!/[a-z]+_[a-z]+/i.test(krea.prompt), 'no raw tokens even with style phrases');
 });
 
 test('creative catalog rejects Krea LoRA/negative and emits the official Krea core workflow', () => {
@@ -58,7 +79,7 @@ test('creative catalog rejects Krea LoRA/negative and emits the official Krea co
   assert.throws(() => animaRoute.validateInput({ prompt: 'x', negative: 'bad anatomy', modelId: 'krea2-turbo-fp8', width: 1024, height: 1024 }), /Krea/);
   const workflow = animaRoute.buildWorkflow(input);
   const classes = Object.values(workflow).map(node => node.class_type);
-  assert.deepStrictEqual(classes, ['UNETLoader', 'CLIPLoader', 'VAELoader', 'CLIPTextEncode', 'ConditioningZeroOut', 'EmptyLatentImage', 'KSampler', 'VAEDecode', 'SaveImage']);
+  assert.deepStrictEqual(classes, ['UNETLoader', 'CLIPLoader', 'VAELoader', 'CLIPTextEncode', 'ConditioningZeroOut', 'EmptyLatentImage', 'KSampler', 'VAEDecode', 'SaveImage', 'ConditioningKrea2Rebalance']);
   assert.strictEqual(workflow['2'].inputs.type, 'krea2');
   assert.strictEqual(workflow['7'].inputs.steps, 8);
   assert.strictEqual(workflow['7'].inputs.cfg, 1);

@@ -3,6 +3,33 @@
 > 当前汇总：2026-08-10
 > 本文保留已完成实验的可审计结论，不把实验结果改写成稳定发布承诺。复现参数见 `anima-reproduction-protocol.md`。
 
+## 宁宁 v20-b 晋级（2026-08-10）
+
+### 动机与数据
+
+v20-a 用户反馈"背景光影感强但人物还原弱"，调研结论（kohya anima_train_network 指南、HF Anima discussion #60/#106/#119、Civitai 31972、lilting 系列实测）：LR 2e-5 过低 + caption 身份特征与背景/光照标签固定共现，导致身份欠拟合、画风被触发词吸收。修复后重训：
+
+- 数据集：`V20_Anima_Scientific_v2` 快照（55 张，20 训练组 / 5 验证组，与 v20-a 同源同划分）。
+- caption 策略（prepare_nene_anima_v20.py）：身份特征标签全部移除，`ayachi_nene` 独占身份（Anima trigger-only 实测结论）；光照/氛围标签显式前置（soft lighting/moonlight/night 等 32 个）；OneTrainer 开 tag shuffle + keep_tags_count=4 + RANDOM dropout 0.1。
+- 超参：rank/alpha 32/32、LR **1e-4**（warmup 100）、24 epochs / 1008 steps、batch 1、LOGIT_NORMAL、text encoder 冻结。config `ayachi_nene_v20_anima_scientific_b.json`。
+- 训练 46 分钟，每 4 epoch 保存。
+
+### 评审（两级矩阵）
+
+1. **初赛**（6 场景 sc260-265 × 3 seed × 6 候选 = 108 张，24s/CFG3 生产参数）：总评 v20a 75 分、b_e16 70、b_e20 63、b_e08 62、b_e12 59、b_e24 49（过拟合排除，sc263 枪械加特林崩坏/色漂）。
+2. **决赛**（7 扩展场景 sc261/sc268/sc269/sc002/sc105/sc014/sc006 × 新 3 seed × e16/e20 × 双参数组 = 84 张）：
+   - 默认参数组（24s/CFG3）：e20 13:8；
+   - **官方参数组（30s/CFG4.5/er_sde/sgm_uniform）：e16 13:8 胜出**，且 e20 在标准参数下多次结构伪影（sc268 布料堆叠、sc014 多指、sc002 发带结块），e16 零结构崩坏。
+   - 解读：e16/e20 处于同一条过拟合梯度；官方推荐参数（Anima 模型卡：30-50 steps、CFG 4-5、er_sde 为默认）更接近真实使用，e16 为健康收敛点。
+
+### 晋级结论
+
+- 晋级 checkpoint：**epoch 16 / step 672**（b_e16）。
+- 生产 ID：`L_NENE_V20B_ANIMA`；文件 `ayachi_nene_v20_anima_scientific_b_e16.safetensors`（SHA-256 `0a1dd84fb0e57a8ccd1627d2d52afd1809c2d03d6f24f87c3e442e872dd683a5`）。
+- 默认 strength：0.85。routes/anima.js `CHARACTERS.nene.loraId` 已切换；`L_NENE_V20_ANIMA`（v20-a）保留为回退条目。
+- 已知限制：e16 在低参数（24s/CFG3）下身份绑定弱于 e20，生产建议走官方推荐参数 30s/CFG4.5/er_sde；sc105 某 cell 腿部观感争议（复核为条纹袜视觉割裂，解剖正常）。
+- 证据目录：`E:/code/2/lora/AI/Reviews/AnimaV20bCheckpointAudit/2026-08-10_lr1e4_tagfix/`、`E:/code/2/lora/AI/Reviews/AnimaV20bFinal/2026-08-10_e16_vs_e20/`、`..._30s_cfg45_ersde/`。
+
 ## 宁宁 v19 checkpoint 审核
 
 原 v19 训练使用 55 张图、25 个视觉组、rank/alpha 16/16、LR `1e-4`、batch 1、45 epochs；只记录了 training loss，没有真实 validation curve。最终 epoch 45 被确认过拟合，不能继续作为生产选择。
