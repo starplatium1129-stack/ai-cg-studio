@@ -28,7 +28,10 @@ test('popular data: 18 characters, unique ids, exactly one default outfit per ch
     assert.ok(character.supportedEngines.includes('anima-aesthetic-v1.1'), character.id + ' must support Anima Aesthetic');
     assert.ok(character.supportedEngines.includes('krea2-turbo-fp8'), character.id + ' must support Krea 2');
   });
-  var adults = characters.filter(function (character) { return character.adultEligibility === 'adult'; });
+    assert.strictEqual(popular.findCharacter(characters, 'rem_rezero').exactTokens[0], 'rem_(re_zero)', 'rem must use the disambiguated Danbooru tag');
+  assert.strictEqual(popular.findCharacter(characters, 'emilia_rezero').exactTokens[0], 'emilia_(re_zero)', 'emilia must use the disambiguated Danbooru tag');
+  assert.strictEqual(popular.findCharacter(characters, 'kisara_engage_kiss').exactTokens[0], 'kisara_(engage_kiss)', 'kisara must use the disambiguated Danbooru tag');
+var adults = characters.filter(function (character) { return character.adultEligibility === 'adult'; });
   var nonAdults = characters.filter(function (character) { return character.adultEligibility !== 'adult'; });
   assert.ok(adults.length >= 1, 'at least one clearly-adult character must be available for adult blueprints');
   assert.ok(nonAdults.length > adults.length, 'conservative fail-closed majority is expected');
