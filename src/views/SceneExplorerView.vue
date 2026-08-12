@@ -143,7 +143,7 @@
             </div>
             <div v-if="personalReason(s2)" class="ex-curation">{{ personalReason(s2) }}</div>
             <div class="ex-actions">
-              <RouterLink :to="'/prompt-builder?scene=' + encodeURIComponent(s2.id)" class="btn btn-primary"><ArchiveIcon name="spark" /> 开始绘制</RouterLink>
+              <RouterLink :to="'/prompt-builder?scene=' + encodeURIComponent(s2.id)" class="btn btn-primary scene-draw-action"><ArchiveIcon name="spark" /> 开始绘制</RouterLink>
               <button class="btn btn-ghost scene-hide-action" type="button" @click.stop="toggleHidden(s2.id)">
                 {{ hiddenIds.has(s2.id) ? '↩ 恢复' : '隐藏' }}
               </button>
@@ -751,6 +751,19 @@ onMounted(() => { init() })
 .ex-curation { margin:0 0 var(--s-2); color:var(--text-secondary); font-size:var(--fs-label-sm); line-height:1.55; }
 .ex-actions { display:flex; gap:var(--s-2); margin-top:var(--s-1); }
 .ex-actions .btn { flex:1; justify-content:center; font-weight:700; }
+.ex-actions .scene-draw-action {
+  border-color:color-mix(in srgb,var(--accent) 44%,var(--border-soft));
+  background:var(--accent-soft);
+  color:var(--accent);
+  box-shadow:none;
+}
+.ex-actions .scene-draw-action:hover,
+.ex-actions .scene-draw-action:focus-visible {
+  border-color:var(--accent);
+  background:var(--accent);
+  color:var(--text-inverse);
+  box-shadow:var(--glow-sm);
+}
 .ex-actions .scene-hide-action { flex:0 0 auto; font-weight:600; }
 .ex-more { display:grid; gap:var(--s-2); margin-top:var(--s-2); max-height:0; opacity:0; overflow:hidden; transition:max-height var(--t-base) var(--ease-out),opacity var(--t-fast); }
 :deep(.sc:hover) .ex-more, :deep(.sc:focus-within) .ex-more { max-height:160px; opacity:1; }

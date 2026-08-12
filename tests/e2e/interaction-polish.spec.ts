@@ -65,6 +65,12 @@ test('gallery empty content uses the shared archive state panel', async ({ page 
   await expect(state.getByRole('link', { name: '开始绘制' })).toBeVisible()
 })
 
+test('scene cards keep drawing actions subordinate until interaction', async ({ page }) => {
+  await page.goto('/scene-explorer')
+
+  await expect(page.locator('.scene-grid').getByRole('link', { name: '开始绘制' }).first()).toHaveClass(/scene-draw-action/)
+})
+
 test('global motion feedback is suppressed when reduced motion is requested', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.goto('/')
