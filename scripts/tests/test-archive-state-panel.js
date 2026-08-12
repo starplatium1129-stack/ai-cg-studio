@@ -19,9 +19,13 @@ test('archive state language contract', () => {
   assert(panel.includes("filtered:'search'"), 'filtered state must use a search icon');
   assert(panel.includes("filtered:'NO FILTER MATCH'"), 'filtered state must have a distinct default code');
   assert(panel.includes(':data-kind="kind"'), 'state kind must be exposed for styling and tests');
+  assert(panel.includes(':aria-busy="kind === \'loading\' ? \'true\' : undefined"'), 'loading states must expose aria-busy');
   assert(panel.includes("props.kind === 'loading' ? 'status'"), 'loading must remain a status announcement');
   assert(panel.includes("props.kind === 'error' ? 'alert'"), 'errors must remain alerts');
   assert(panel.includes('compact?: boolean') && panel.includes('.archive-state-panel.compact'), 'compact state contract must be supported');
+  assert(panel.includes('[data-kind="loading"] { --state-accent:var(--archive-blue); }'), 'loading must keep the archive accent');
+  assert(panel.includes('[data-kind="error"] { --state-accent:var(--danger-text); }'), 'errors must use the danger accent');
+  assert(panel.includes('[data-kind="success"] { --state-accent:var(--success-text); }'), 'success must use the success accent');
 
   assert(scene.includes('v-else-if="paged.length === 0"') && scene.includes('kind="filtered"'), 'scene filter misses must be filtered');
   assert(gallery.includes('v-else-if="!visible.length"') && gallery.includes('kind="filtered"'), 'gallery filter misses must be filtered');
