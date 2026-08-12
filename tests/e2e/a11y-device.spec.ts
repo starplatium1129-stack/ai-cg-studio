@@ -330,6 +330,14 @@ test('control layout keeps its navigation usable without horizontal scroll', asy
   if (narrow) {
     await expect(page.locator('.control-mobile-nav')).toBeVisible();
     await expect(page.locator('.control-rail')).toBeHidden();
+    const firstStatus = await page.locator('.status-wall .status-tile').evaluateAll((tiles) =>
+      [...tiles].sort((left, right) => {
+        const leftRect = left.getBoundingClientRect();
+        const rightRect = right.getBoundingClientRect();
+        return leftRect.top - rightRect.top || leftRect.left - rightRect.left;
+      })[0]?.classList.contains('primary'),
+    );
+    expect(firstStatus).toBe(true);
   } else {
     await expect(page.locator('.control-mobile-nav')).toBeHidden();
     await expect(page.locator('.control-rail')).toBeVisible();

@@ -829,6 +829,8 @@ details[open] .chevron { transform: rotate(90deg); }
   .control-intro { grid-template-columns: 1fr; }
   .control-count { display: none; }
   .status-wall { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .status-tile.primary { order: -1; }
+  .status-tile.attention { order: 0; }
   .control-work-grid { grid-template-columns: 1fr; }
   .resource-panel .mode-grid, .service-config-panel .voice-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
@@ -841,7 +843,5 @@ details[open] .chevron { transform: rotate(90deg); }
   .service-row-actions .btn { flex: 1; }
   .toolbar-note { display: none; }
   .control-toolbar { border-radius: var(--r-xl); }
-  .status-tile.primary { order: -1; }
-  .status-tile.attention { order: 0; }
 }
 </style>
