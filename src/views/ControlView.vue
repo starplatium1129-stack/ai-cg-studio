@@ -507,7 +507,7 @@ onUnmounted(() => { status.stopPolling() })
 .control-intro::before { content: ''; position: absolute; top: -1px; left: var(--s-4); width: 42px; height: var(--line-hairline); background: var(--archive-cyan); }
 .control-title {
   margin: 0; color: var(--text-primary); font-family: var(--font-display);
-  font-size: clamp(1.85rem, 3.2vw, 3rem); font-weight: 760; letter-spacing: -.03em; line-height: 1.1;
+  font-size: clamp(1.35rem, 2vw, 1.55rem); font-weight: 750; letter-spacing: -.02em; line-height: 1.2;
 }
 .control-subtitle {
   max-width: 640px; margin: var(--s-3) 0 0; color: var(--text-secondary);

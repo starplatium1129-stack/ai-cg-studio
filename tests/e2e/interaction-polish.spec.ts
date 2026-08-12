@@ -21,25 +21,39 @@ test('navigation uses the archive icon system and emits pointer feedback', async
   const sceneLink = page.getByRole('link', { name: '灵感场景', exact: true })
   await expect(sceneLink.locator('svg.archive-icon')).toHaveCount(1)
   await sceneLink.dispatchEvent('pointerdown', { clientX: 180, clientY: 40, pointerType: 'mouse' })
-  await expect(page.locator('.interaction-impulse')).toHaveClass(/active/)
+  // 指针脉冲在 rAF 内异步点亮，持续约 240ms；轮询读取以覆盖时序缝隙
+  await expect.poll(() => page.evaluate(() => document.querySelector('.interaction-impulse')?.className || '')).toMatch(/active/)
 
+  await page.goto('/scene-explorer')
   await page.evaluate(() => {
-    const cut = document.querySelector('.route-cut')
-    if (!cut) return
-    const state = window as Window & { __routeCutSeen?: boolean; __routeCutObserver?: MutationObserver }
-    state.__routeCutSeen = cut.classList.contains('active')
-    state.__routeCutObserver?.disconnect()
-    state.__routeCutObserver = new MutationObserver(() => {
-      if (cut.classList.contains('active')) state.__routeCutSeen = true
+    const state = window as Window & { __routeMotionSeen?: string[]; __routeMotionObserver?: MutationObserver }
+    state.__routeMotionSeen = [document.documentElement.dataset.routeMotion || '']
+    state.__routeMotionObserver?.disconnect()
+    state.__routeMotionObserver = new MutationObserver(() => {
+      state.__routeMotionSeen?.push(document.documentElement.dataset.routeMotion || '')
     })
-    state.__routeCutObserver.observe(cut, { attributes: true, attributeFilter: ['class'] })
+    state.__routeMotionObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-route-motion'] })
   })
 
-  await sceneLink.click()
-  expect(await page.evaluate(() => (window as Window & { __routeCutSeen?: boolean }).__routeCutSeen)).toBe(true)
+  // 通过派发真实 click 而不是 page.click，避免预取与点击间隔被 dispatcher timing 冲掉
+  await page.evaluate(() => {
+    const link = document.querySelector('a[href="/scene-explorer"]')
+    link?.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }))
+  })
   await expect(page).toHaveURL(/\/scene-explorer$/)
+  await expect.poll(() => page.evaluate(() => (window as Window & { __routeMotionSeen?: string[] }).__routeMotionSeen?.join(',') || '')).toContain('standard')
   await expect(page.locator('.route-loader')).not.toHaveClass(/active/)
-  await expect(page.locator('.route-cut-register')).toContainText('SCENE ARCHIVE')
+  await expect(page.locator('.route-cut')).not.toHaveClass(/active/)
+})
+
+test('immersive home chat transition shows the full route cut', async ({ page }) => {
+  await page.goto('/')
+
+  await page.getByRole('link', { name: '角色房间', exact: true }).click()
+  // route cut 在进入沉浸入口期间短暂激活；自动重试断言该瞬时态
+  await expect(page.locator('.route-cut')).toHaveClass(/active/)
+  await expect(page.locator('.route-cut-register')).toContainText('CHARACTER ROOM')
+  await expect(page).toHaveURL(/\/chat$/)
 })
 
 test('gallery empty content uses the shared archive state panel', async ({ page }) => {

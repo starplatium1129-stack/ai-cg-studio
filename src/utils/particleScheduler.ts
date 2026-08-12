@@ -42,9 +42,10 @@ function bindVisibility(): void {
 export function registerParticleFrame(frame: ParticleFrame, fps = 30): () => void {
   bindVisibility()
   const id = ++nextId
-  const nativeRefresh = fps <= 0 || fps >= 55
-  const requestedFps = Math.max(12, fps)
-  particles.set(id, { frame, interval: nativeRefresh ? 0 : 1000 / requestedFps, nextAt: 0 })
+  // fps <= 0 走原生刷新率；fps > 0 均视为节流请求（60fps hero 在 165Hz 屏上
+  // 会被限制到 60fps，45/30fps 氛围层同理）。
+  const interval = fps <= 0 ? 0 : 1000 / Math.max(12, fps)
+  particles.set(id, { frame, interval, nextAt: 0 })
   schedule()
   return () => {
     particles.delete(id)

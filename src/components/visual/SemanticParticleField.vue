@@ -332,7 +332,9 @@ function startLoop() {
   if (stopScheduledFrame || !visible || document.hidden || reduceMotion.value) return
   lastFrame = 0
   lastPhysicsFrame = 0
-  const fps = props.density === 'hero' ? 0 : props.density === 'ambient' ? 45 : 30
+  // Roadmap §P2：Hero 粒子封顶 60fps，背景/氛围层 30/45fps，避免高刷屏下
+  // 物理模拟与绘制按原生 120/165Hz 翻倍消耗。
+  const fps = props.density === 'hero' ? 60 : props.density === 'ambient' ? 45 : 30
   stopScheduledFrame = registerParticleFrame(renderFrame, fps)
 }
 

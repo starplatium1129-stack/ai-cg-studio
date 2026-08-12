@@ -36,8 +36,9 @@
   --accent-soft:    rgba(244, 166, 215, 0.15);
   --accent-glow:    rgba(223, 168, 255, 0.34);
   --accent-violet:  #bba7ff;
-  --archive-blue:   #18bde8;
-  --archive-blue-soft: rgba(24, 189, 232, 0.14);
+  --archive-blue:   #24c9f0;
+  --archive-blue-soft: rgba(36, 201, 240, 0.14);
+  --archive-cyan-glow: rgba(121, 231, 242, 0.34); /* 档案 scan line / 签名光 */
   --nene-violet:    #b895ff;
   --natsume-amber:  #f2bb68;
   --editorial-gold: #d7b56d;
@@ -57,11 +58,11 @@
   --line-hairline:       1px;
 
   --nav-bg: rgba(25, 18, 48, 0.72);
-  --glass-highlight: rgba(255, 255, 255, 0.09);
-  --glass-fill: rgba(43, 35, 70, 0.58);
-  --glass-fill-strong: rgba(49, 40, 78, 0.74);
-  --glass-edge: rgba(236, 226, 255, 0.22);
-  --glass-specular: rgba(255, 255, 255, 0.18);
+  --glass-highlight: rgba(255, 255, 255, 0.10);
+  --glass-fill: rgba(43, 35, 70, 0.55);
+  --glass-fill-strong: rgba(49, 40, 78, 0.78);
+  --glass-edge: rgba(236, 226, 255, 0.26);
+  --glass-specular: rgba(255, 255, 255, 0.22);
   --glass-shadow: 0 18px 48px rgba(5, 3, 18, 0.22);
 
   /* ---- Functional ---- */
@@ -247,8 +248,9 @@
   --accent-soft:    rgba(160, 68, 114, 0.10);
   --accent-glow:    rgba(160, 68, 114, 0.18);
   --accent-violet:  #5f4499;
-  --archive-blue:   #166f91;
-  --archive-blue-soft: rgba(22, 111, 145, 0.10);
+  --archive-blue:   #1a7fa5;
+  --archive-blue-soft: rgba(26, 127, 165, 0.10);
+  --archive-cyan-glow: rgba(62, 178, 205, 0.22); /* 档案 scan line / 签名光 */
   /* 角色品牌色:浅纸上当文字/描边用,必须压深到 AA */
   --nene-violet:    #5a3d9e;
   --natsume-amber:  #7a5210;
@@ -605,7 +607,9 @@ body > *:has(+ .footer),
 .theme-toggle-icon { display:grid; place-items:center; pointer-events:none; font-size:var(--fs-body-lg); }
 .nav-menu-toggle .archive-icon { width:1em; height:1em; }
 
-/* ---- Page header ---- */
+/* ---- Page header ----
+   层级：首页品牌标题 > 档案页标题 > 工具页标题。
+   .page-header 采用归档页中宽字级；工具页用 .page-header--compact 覆盖。 */
 .page-header {
   padding: var(--s-8) 0 var(--s-6);
   text-align: center;
@@ -624,6 +628,26 @@ body > *:has(+ .footer),
   color: var(--text-secondary); font-size: var(--fs-title-xs);
   max-width: 600px; margin: 0 auto;
 }
+/* 工具页紧凑标题（训练台 / 控制面板 / 模型 / 场景管理 / Prompt Builder） */
+.page-header--compact {
+  padding: 0 0 var(--s-4);
+  text-align: left;
+  border-bottom: 0;
+  margin-bottom: var(--s-4);
+}
+.page-header--compact h1,
+.page-header--compact .title {
+  font-size: clamp(1.35rem, 2vw, 1.55rem);
+  font-weight: 750;
+  letter-spacing: -.02em;
+  line-height: 1.2;
+  margin-bottom: var(--s-2);
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: var(--text-primary);
+}
+.page-header--compact .subtitle { font-size: var(--fs-body-sm); margin: 0; max-width: 620px; }
 
 /* ============================================================
    Shared atelier chrome (kickers, back link, toolbars, empty)

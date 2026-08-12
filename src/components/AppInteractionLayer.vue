@@ -55,7 +55,7 @@ const SCENE_DATA_ROUTES = new Set([
   '/scene-explorer', '/prompt-builder', '/showcase', '/gallery', '/character', '/style',
 ])
 const IMMERSIVE_ROUTE_CUTS = new Set([
-  '/', '/scene-explorer', '/chat', '/showcase', '/gallery', '/character', '/style', '/scenario', '/color-script',
+  '/', '/chat',
 ])
 
 const ROUTE_LABELS: Record<string, [string, string]> = {
@@ -185,8 +185,8 @@ onMounted(() => {
         routeLoading.value = true
       }, ROUTE_LOADER_DELAY_MS)
     }
+    // route cut 只由"进入"沉浸入口触发；从沉浸页离开进入工具页时按标准过渡，避免全屏了场喧宾夺主
     const routeUsesCut = IMMERSIVE_ROUTE_CUTS.has(to.path)
-      || IMMERSIVE_ROUTE_CUTS.has(router.currentRoute.value.path)
     if (reducedMotion.value) delete document.documentElement.dataset.routeMotion
     else document.documentElement.dataset.routeMotion = routeUsesCut ? 'cut' : 'standard'
     routeCutActive.value = IMMERSIVE_ROUTE_CUTS.has(to.path) && !reducedMotion.value
@@ -233,7 +233,7 @@ onUnmounted(() => {
 .route-loader.active i { animation:route-loader-run .82s var(--ease-out) infinite; }
 .interaction-impulse { position:fixed; z-index:var(--z-toast); left:var(--impulse-x); top:var(--impulse-y); width:12px; height:12px; border:1px solid var(--archive-blue); border-radius:50%; opacity:0; transform:translate3d(-50%,-50%,0) scale(.2); pointer-events:none; will-change:transform,opacity; }
 .interaction-impulse::before { content:""; position:absolute; top:50%; left:50%; width:92px; height:1px; background:linear-gradient(90deg,transparent,var(--archive-cyan),var(--accent),transparent); opacity:0; transform:translate3d(-50%,-50%,0) scaleX(.16); transform-origin:center; }
-.interaction-impulse::after { content:""; position:absolute; top:50%; left:50%; width:4px; height:4px; border-radius:50%; background:var(--archive-cyan); box-shadow:0 0 10px color-mix(in srgb,var(--archive-cyan) 72%,transparent); opacity:0; transform:translate3d(-50%,-50%,0) scale(.4); }
+.interaction-impulse::after { content:""; position:absolute; top:50%; left:50%; width:4px; height:4px; border-radius:50%; background:var(--archive-cyan); box-shadow:0 0 10px var(--archive-cyan-glow); opacity:0; transform:translate3d(-50%,-50%,0) scale(.4); }
 .interaction-impulse.active { animation:interaction-impulse var(--motion-control) var(--ease-out) both; }
 .interaction-impulse.active::before { animation:interaction-scan var(--motion-control) var(--ease-out) .02s both; }
 .interaction-impulse.active::after { animation:interaction-core var(--motion-press) var(--ease-out) both; }
@@ -258,5 +258,7 @@ onUnmounted(() => {
 @keyframes route-cut-line { from{transform:scaleX(0)} to{transform:scaleX(1)} }
 @keyframes route-cut-line-reverse { from{transform:scaleX(0)} to{transform:scaleX(1)} }
 @keyframes route-cut-register { from{opacity:0;transform:translateX(18px)} to{opacity:1;transform:none} }
+/* 触屏不触发指针脉冲/悬停动效：与 RouteAtmosphere 的 coarse 收口一致 */
+@media (pointer: coarse) { .interaction-impulse { display:none; } }
 @media(prefers-reduced-motion:reduce){.route-loader,.interaction-impulse,.route-cut{display:none}}
 </style>

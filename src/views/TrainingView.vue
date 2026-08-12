@@ -906,7 +906,8 @@ onUnmounted(() => {
 }
 
 .training-hero .subtitle { margin-bottom: 0; }
-.training-hero .title { font-size: clamp(2rem, 3vw, 3.25rem); font-weight: 800; letter-spacing: -.04em; line-height: 1.06; }
+/* 工具页三级标题：档案页与首页下方最小档位，避免仪表盘感 */
+.training-hero .title { font-size: clamp(1.35rem, 2vw, 1.55rem); font-weight: 750; letter-spacing: -.02em; line-height: 1.2; }
 
 .hero-status {
   position: relative; display: flex;
