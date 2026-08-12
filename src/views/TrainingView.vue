@@ -10,7 +10,6 @@
     />
     <header class="training-hero">
       <div>
-        <div class="page-kicker">Character training workbench</div>
         <h1 class="title">角色训练台</h1>
         <p class="subtitle">
           集约管理宁宁与夏目的 LoRA 训练、语音合成、数据集核验与训练日志。

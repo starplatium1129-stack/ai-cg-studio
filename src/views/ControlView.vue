@@ -49,7 +49,6 @@
       />
       <header class="control-intro">
         <div>
-          <div class="gallery-kicker">Local control room</div>
           <h1 class="control-title">控制面板</h1>
           <p class="control-subtitle">绘图、语音与对话服务均集中于本机管理。随时查阅运行状态与安全连接。</p>
         </div>

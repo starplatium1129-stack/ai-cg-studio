@@ -8,7 +8,6 @@
       :state="loading ? 'active' : (loras.length ? 'success' : 'warning')"
       shape="frame"
     />
-    <div class="page-kicker">Model shelf</div>
     <div class="lora-title-row">
       <div>
         <h1 class="title">模型</h1>
