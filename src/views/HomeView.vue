@@ -22,17 +22,6 @@
           <div class="continue-hint" v-if="continueHint">
             <strong>{{ continueHint }}</strong>
           </div>
-          <div class="chain">
-            <div class="chain-step" data-step="01"><span class="ic"><ArchiveIcon name="spark" /></span> 故事 <span class="en">Story</span></div>
-            <span class="chain-arrow">→</span>
-            <div class="chain-step" data-step="02"><span class="ic"><ArchiveIcon name="character" /></span> 角色 <span class="en">Character</span></div>
-            <span class="chain-arrow">→</span>
-            <div class="chain-step" data-step="03"><span class="ic"><ArchiveIcon name="scene" /></span> 场景 <span class="en">Scene</span></div>
-            <span class="chain-arrow">→</span>
-            <div class="chain-step" data-step="04"><span class="ic"><ArchiveIcon name="palette" /></span> 绘制 <span class="en">Draw</span></div>
-            <span class="chain-arrow">→</span>
-            <div class="chain-step final" data-step="05"><span class="ic"><ArchiveIcon name="gallery" /></span> 画面 <span class="en">Image</span></div>
-          </div>
         </div>
         <aside ref="heroOrbitEl" class="hero-orbit" aria-label="宁宁与夏目的角色视觉">
         <div ref="heroWmEl" class="hero-watermark" aria-hidden="true">ATELIER</div>
@@ -493,16 +482,6 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-/* ---------- Story → Scene → Prompt → Image chain ---------- */
-.chain { display:flex; align-items:center; gap:0; max-width:100%; margin:var(--s-5) 0; overflow:visible; }
-.chain::-webkit-scrollbar { display:none; }
-.chain-step { display:flex; flex:1 1 0; min-width:0; align-items:center; justify-content:center; gap:6px; padding:7px 0; border-bottom:1px solid var(--border-soft); color:var(--text-secondary); font-size:var(--fs-body-sm); font-weight:650; white-space:nowrap; }
-.chain-step::before { content:attr(data-step); margin-right:2px; color:var(--editorial-gold); font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.08em; }
-.chain-step .ic { color:var(--accent-violet); font-size:.92rem; }
-.chain-step .en { font-size:var(--fs-mono-xs); color:var(--text-muted); font-weight:400; }
-.chain-step.final { border-color:var(--editorial-gold); color:var(--text-primary); }
-.chain-arrow { flex:0 1 clamp(12px,2vw,28px); height:1px; margin:0 4px; overflow:hidden; background:linear-gradient(90deg,var(--border-soft),var(--editorial-gold),var(--border-soft)); color:transparent; }
-
 /* ---------- Hero ---------- */
 .home-hero { position:relative; padding:var(--s-8) 0 var(--s-6); display:grid; grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr); grid-template-rows:auto auto; gap:var(--s-5) var(--s-6); align-items:end; }
 .home-page .hero-copy { animation:homeCopyIn .58s var(--ease-out) .04s both; }
@@ -678,9 +657,6 @@ onUnmounted(() => {
 }
 
 /* ---------- Responsive ---------- */
-@media (min-width:769px) and (max-width:1400px) {
-  .chain-step .en { display:none; }
-}
 @media (max-width:768px) {
   .home-hero { grid-template-columns:minmax(0,1fr); gap:var(--s-5); }
   .hero-copy,.hero-strip,.hero-orbit { grid-column:1; grid-row:auto; min-width:0; width:100%; max-width:100%; }
@@ -688,7 +664,6 @@ onUnmounted(() => {
   .hero-orbit { order:2; min-height:360px; }
   .hero-strip { order:3; }
   .home-page .chibi-strip { order:4; }
-  .chain-step .en { display:none; }
 }
 @media (max-width:480px) {
   .home-hero { padding-top:var(--s-6); }
