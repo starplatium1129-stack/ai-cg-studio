@@ -84,6 +84,13 @@ emotionRuntime 参数 hack 照旧），原生路径只发意图（口型电平�
 物理坐标；暂用 `window.screenX/Y × dpr` 兜底（DPR=1 时精确，DPR>1 时是
 近似值，Rust 桥就绪后替换）。
 
+> ⚠️ 更正（2026-08-14，以本块为准）：最终契约为 **Companion-local 物理坐标**——
+> overlay 矩形以 Companion 窗口左上角为原点（0,0）的物理像素；`useLive2D` 对原生
+> 后端调用 `computeOverlayRect` 时 `windowBounds` 固定传 `{x:0,y:0}`，屏幕绝对
+> 原点由 Rust 侧实时 `GetWindowRect(HWND)` 换算（窗口可拖动/缩放，前端不追）；
+> `windowBoundsFromScreen`/桌面 bounds 注入仅保留为浏览器后端路径与未注入兜底。
+> 详见 `live2d-native-runtime.md`。
+
 **渲染生命周期建议**（给 Rust 侧）：`setFrame visible=false` 时暂停渲染循环并
 隐藏 HWND；模型仅由 `setCharacter` 创建，同一角色重复调用应复用实例；
 `destroy` 幂等。
@@ -119,6 +126,12 @@ Rust 侧 `clear_model_state` 与单测 `destroy_clears_model_state_but_keeps_thr
    （`onHitTest` 的回传 areas 可空数组，前端此时回退 DOM 分区需 Rust 转发
    原始点击坐标——契约预留 `onHitTest(areas)` 之外不强制）。
 
+> ⚠️ 更正（2026-08-14，以本块为准）：上述 crate 调研结论已被实际实现取代——
+> `sena-nana/live2d-rs` 曾被验证为 404，**不得再引用**；最终采用官方 Cubism
+> SDK for Native（5-r.5）+ C++ glue + Rust FFI，由私有 crate `live2d-native`
+> （`desktop-tauri/native-live2d`，Cargo 依赖路径 `../native-live2d`）承载；
+> `Veykril/cubism-rs` 仅作旧版 4-r.5.1 绑定参考。
+
 ## 6. 待 Rust 侧接入后的前端动作
 
 - `window.aicsLive2dNative` 注入后，`?live2dBackend=native` 或
@@ -134,12 +147,12 @@ Rust 侧 `clear_model_state` 与单测 `destroy_clears_model_state_but_keeps_thr
 
 ## 8. 遗留与待办（2026-08-08 交接）
 
-- **提交**：本批前端侧交付（`src/live2d/`、`src/types/live2dNative.ts`、
+- **提交** ✅（2026-08-14）：本批前端侧交付（`src/live2d/`、`src/types/live2dNative.ts`、
   `src/utils/live2dOverlayLayout.ts`、`docs/live2d-native-overlay-plan.md`、
   `scripts/tests/test-live2d-backend.js`、`scripts/tests/measure-live2d-memory.js`、
   及 `useLive2D.ts`/`ChatCharacterStage.vue`/`tsconfig.app.json`/`package.json`/
-  `test-chat.js`/`studio.spec.ts` 的修改）**尚未提交**；工作区内还有他人未提交的
-  desktop-tauri 迁移与 server.js 改动，提交前需确认归属与范围。
+  `test-chat.js`/`studio.spec.ts` 的修改）已提交（`2a1e49b`、`b09de8e`）；后续
+  批次改动另行记录，提交前仍需确认归属与范围。
 - **全量兜底**：已完成定向验证（typecheck / build / Live2D E2E 7/7 / 相关单测
   65 用例全绿）；尚未跑 `npm run validate` 全量（按质量门槛小改可不跑，
   但提交前建议跑一次）。

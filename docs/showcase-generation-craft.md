@@ -34,7 +34,7 @@ masterpiece, best_quality, score_7
 
 ## 3. 光照：通透感与壁纸适合度
 
-- **氛围词组**（每种光线决策给一组，不是 1 个词）：`backlight, rim_light, volumetric_lighting, deep_depth_of_field`（黄金/逆光时加 `golden_hour, warm_lighting`；月光加 `moonlight, night, cool_lighting`）。实现在 `popularContent.ts` 的 `AMBIENCE_TOKENS`。
+- **氛围词组**（每种光线决策给一组，不是 1 个词）：`backlight, rim_light, volumetric_lighting, deep_depth_of_field`（黄金/逆光时加 `golden_hour, warm_lighting`；月光加 `moonlight, night, cool_lighting`）。实现在 `src/utils/popularContent.ts` 的 `AMBIENCE_TOKENS`。
 - **壁纸适合度**：明亮通透（中高调）、主体突出、背景有实体层次、不压抑。**夜景死黑 + 强对比 = 不合格壁纸**（sc016 篝火第一版 65-72 分）；月光漫射 + 环境柔光修复后合格（"silver moonlight washing over the trees, the whole scene glowing softly with ambient light"）。
 - **光照推断坑**：`sceneTags` 里的 `night` 会抢掉 `candlelight` 的匹配（烛光卧室被推断成月光）→ `LIGHTING_TO_ID` 加 `candle/candlelight/lamp → lantern`，长 key 优先匹配。
 
@@ -51,7 +51,7 @@ masterpiece, best_quality, score_7
 - **Krea2 有 NSFW 审查**：无论 prompt/lead 怎么强化（explicit lead、裸体 prose、衣服落地引导），9/9 全部输出穿好衣服的 SFW。**R18 只能走 Anima**。
 - **Anima 裸体词强化**：重复 + 具体词：`nude, nude, completely_naked, fully_nude, no_clothes, naked_body, bare_chest, exposed_breasts, nipples, pussy, spread_legs`。单 `nude` 不够（出穿着和服）。
 - **校服角色顽固**：`kisara` 的校服先验极强——负面压制服词（`school uniform, sailor collar, grey jacket`）后短词直接解决（23.2 分）。
-- **多格分屏是系统性的**：`raiden_shogun:candlelight_evening:anima` 4 个不同 seed 全部多格 → 换 prompt 或弃用该 key 的 anima 版（krea2 版定稿）。负向加 `split image, multiple panels, comic strip, multiple girls, second person`（`popularContent.ts` 已加）。
+- **多格分屏是系统性的**：`raiden_shogun:candlelight_evening:anima` 4 个不同 seed 全部多格 → 换 prompt 或弃用该 key 的 anima 版（krea2 版定稿）。负向加 `split image, multiple panels, comic strip, multiple girls, second person`（`src/utils/popularContent.ts` 已加）。
 - **r18 token 提升渲染质感**：`nene_r18 / natsume_r18` 显著提升皮肤泛光、发丝逆光通透、暗部暖反弹光（93 vs 89），且内容安全（日常场景出穿衣图）。**全场景注入**（不只 R18 场景）。
 - **蓝图级 NSFW**：成人蓝图的 `nsfwTokens`（标签流）+ `nsfwProse`（Krea/Anima caption）fail-closed 注入，非 adult 角色绝不进 prompt。
 

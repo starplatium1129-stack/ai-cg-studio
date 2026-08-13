@@ -1,5 +1,9 @@
 # Model and ComfyUI Expansion Roadmap
 
+> Status: production tranche implemented (verified 2026-08-14). Later phases 1-5 below remain
+> deferred — the current machine lacks the required models/detector dependencies, consistent
+> with AGENTS.md "明确暂缓". Do not start them until the hardware/dependency conditions exist.
+
 ## Verified local baseline
 
 - GPU: RTX 4070 Ti SUPER, 16 GB VRAM; RAM: 32 GB.

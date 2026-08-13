@@ -59,7 +59,7 @@ ChatCharacterStage / useLive2D
 
 - `cargo test --locked --manifest-path desktop-tauri/src-tauri/Cargo.toml`：13/13。
 - `npm run test:live2d-native:release`：3/3 snapshot，exit 0；真实加载宁宁/夏目并覆盖动作、口型、情绪、hit-test 和 PNG。
-- `node scripts/tests/test-live2d-backend.js`：21/21；`node scripts/tests/test-live2d-native-contract.js`：3/3。
+- `node scripts/tests/test-live2d-backend.js`：24/24；`node scripts/tests/test-live2d-native-contract.js`：5/5。
 - renderer release soak 命令使用 800x800、165 FPS、300 秒、每 60 秒切角；约 47,960 帧、4 次切换、`render_fps=164.3`。预热后无静态资源随帧创建，Working Set/private/GPU 首末差在阈值内，最终资源释放通过。
 - 可见 Companion 人工回归覆盖 cold start、窗口 move/resize、透明区域穿透、Live2D 关闭/恢复、宁宁/夏目 hit-test、重复动作 busy 和隐藏；当前环境中窗口保持 ready。
 
@@ -100,7 +100,7 @@ ChatCharacterStage / useLive2D
 - **窗口 bounds 注入收尾**：`desktopWindowBounds` 提升为模块级窗口状态（Companion 单窗口），`windowBoundsFromScreen` 优先返回注入 bounds、未注入时回退 `screenX × dpr`；删除 useLive2D 函数内的重复声明，`layout()` 在 bounds 注入前暂停原生 overlay（不猜首帧）。`test-live2d-native-contract.js` 的 `setDesktopWindowBounds`/`desktopWindowBounds = null` 断言保持成立。
 - **setOutfit 夏目分支还原**：恢复"夏目只有咖啡店制服、无 Expressions、不得调用 expression"的既有契约（工作区残留版本错误调用 `model.expression(target.expression)`，类型不通过且违反角色契约）。
 - **desktop/main.ts 还原**：`AICS_DESKTOP_PACKAGED` 恢复为仅 `app.isPackaged` 注入（dev 模式 `electron .` 不注入），维护路由 501 契约与 test-gateway-contract 锚点不变。
-- **训练脚本修正**：`prepare_nene_anima_v20.py` 保留 08-13"统一训练、不分区隔离 r18"决策（train/validation 两分区），但恢复 `safety_tag` 按真实内容分级（safe/sensitive/nsfw/explicit，遵守 anima-reproduction-protocol）与 R18 样张的 `nene_r18` 评级词。
+- **训练脚本修正**：`prepare_nene_anima_v20.py` 保留 08-13"统一训练、不分区隔离 r18"决策（train/validation 两分区），但恢复 `safety_tag` 按真实内容分级（safe/sensitive/nsfw/explicit，遵守 `anima-training-record.md` 的长期协议节，原 `anima-reproduction-protocol.md` 于 2026-08-14 并入）与 R18 样张的 `nene_r18` 评级词。
 - **视觉基线还原**：`design-system.css` 圆角/阴影 token 与 `companion.css` 身份卡样式还原到 DESIGN.md §Shapes（8–24px 阶梯）基线——工作区残留版本把圆角收到 4–16px、阴影减半，与 08-01 已提交的"博客式二次元圆润感"决策和 DESIGN.md 冲突且注释未同步。
 - **实验残留清理**：删除 `test-grok-46.js`（含明文 API key），移除仅为该脚本添加的 `@ai-sdk/openai`、`ai`、`jsonc-parser` 依赖（package.json / package-lock.json 还原）。
 - **E2E 漂移修复（6be3a95「受控路线」遗留）**：已提交的绘图页"系统自动选择引擎路线"（basic 模式默认 Anima + V20B，engine-switch/baseModel/SD 参数 pro-only）使 studio/flows/anima-quick 十余个用例红：

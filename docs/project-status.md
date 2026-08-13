@@ -29,17 +29,17 @@ AI-CG-Studio 是本地个人使用的 Galgame 风格 AI CG 创作台，包含角
 - Native renderer 已使用模型级 GPU 缓存、持久 upload buffer、destroy 释放和 surface 恢复；宁宁/夏目 release snapshot、动作、口型、情绪、hit-test 和 300 秒 renderer soak 通过。
 - ComfyUI 原始接口已从浏览器封闭为应用级 Anima/WAI/Krea 2 job API；固定 workflow、模型/LoRA/参数白名单、路径 containment、取消、TTL 和结果 MIME 校验均由服务端控制。
 - API Client、Storage Repository、训练台拆分、状态语言、工作台窄屏层级、动效减法和样式 token 门禁已签收；不再保留这些工作的 round 报告。
-- 宁宁 Anima v20 已完成科学训练、checkpoint 选择、18 行人工矩阵和生产 smoke，正式 catalog 使用 `L_NENE_V20_ANIMA`。
+- 宁宁 Anima v20-b 已完成科学训练、checkpoint 选择、18 行人工矩阵和生产 smoke，正式 catalog 使用 `L_NENE_V20B_ANIMA`；`L_NENE_V20_ANIMA`（v20-a）保留为回退条目。
 - 夏目 Anima v20 epoch 12 已通过五场景同 prompt/seed 人工矩阵并晋级，生产 ID `L_NAT_V20_ANIMA`；生产 SD/WAI 仍使用 v18。
 - Krea 2 Turbo 已接入独立 `krea2` family：纯自然语言、8 steps/CFG 1、`euler/simple`、无角色 LoRA、无 negative、Prompt Enhancer 关闭；单 seed 真实 smoke 有限 PASS，不代表身份稳定或生产就绪。
 
 ## Anima 当前模型状态
 
-详见 `anima-training-record.md` 与 `anima-reproduction-protocol.md`。
+详见 `anima-training-record.md`（含长期协议，原 `anima-reproduction-protocol.md` 已并入）。
 
 | 角色/用途 | 当前结论 |
 |---|---|
-| 宁宁 Anima | v20 epoch 8 / step 336 晋级，生产 ID `L_NENE_V20_ANIMA`，默认 strength `0.85` |
+| 宁宁 Anima | v20-b epoch 16 / step 672 晋级，生产 ID `L_NENE_V20B_ANIMA`，默认 strength `0.85`；v20-a（epoch 8）保留为回退 |
 | 夏目 Anima | v20 epoch 12 晋级，生产 ID `L_NAT_V20_ANIMA`，默认 strength `0.85`；泪痣仍非稳定特征 |
 | triad/shared Anima | 禁用，继续使用 SD/WAI |
 | Anima engine | experimental；不得据有限矩阵宣称全引擎稳定发布 |
@@ -98,6 +98,5 @@ AI-CG-Studio 是本地个人使用的 Galgame 风格 AI CG 创作台，包含角
 - `live2d-native-overlay-plan.md`：Native overlay IPC/布局契约，Rust 接入依据。
 - `live2d-native-runtime.md`：当前 Native renderer、overlay、性能和限制。
 - `tauri-desktop-migration-plan.md`：Tauri 壳当前架构、发布边界和 D-10 条件。
-- `anima-training-record.md`：Anima v19/v20 训练、审核、晋级和 preview 结果。
-- `anima-reproduction-protocol.md`：可复现实验的数据划分、caption、超参数和硬门槛。
+- `anima-training-record.md`：Anima v19/v20 训练、审核、晋级和 preview 结果，含长期协议（数据划分、caption、超参、硬门槛；原 `anima-reproduction-protocol.md` 已并入）。
 - `visual-architecture-roadmap.md`、`companion-voice-roadmap.md`、`video-generation-roadmap.md`：仍在维护的路线图。

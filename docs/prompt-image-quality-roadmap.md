@@ -100,10 +100,53 @@
 
 另外，现有试验脚本存在需要在正式采用前修正的风险：
 
-- `short-prompt-batch.js` 会对全部单角色场景注入角色 R18 token，不能作为通用安全场景的正式策略；
+- `short-prompt-batch.js` 的 rating 处理按场景门控（`short-prompt-builder.js` 仅对 R18/mature 场景注入 nsfw token），但未按安全场景正式审核，不能作为通用安全场景的正式策略；
 - 试验统一使用 `832x1216`，无法回答横图质量问题；
 - Prompt 变体与 seed 选择同时变化时，无法隔离真正的增益来源；
 - 缺少身份、服装、手部、构图、叙事等分维度审核记录。
+
+### 2.4 2026-08-13 修复方案落地与执行记录（原 `quality-outage-fix-plan.md` 并入）
+
+代码侧 P0 已完成，不把需要 GPU、训练数据和人工逐张审核的工作伪报为完成。
+
+**已落地**：
+
+1. Anima 参数契约抽到 `server/anima-generation-contract.js`：
+   - 服务端默认固定 `24 / 3.0 / res_multistep / simple`；
+   - 手工修复预设固定 `30 / 4.5 / res_multistep / simple`；
+   - API 输入白名单、steps/CFG/seed 范围与角色-LoRA绑定由路由和维护脚本共享；
+   - `L_NENE_V20B_ANIMA` 强制绑定 `character=nene_b`。
+2. 新增 `scripts/maintenance/quality-prompt-contract.js`：
+   - 检查角色完整锚点、质量词、评级词、LoRA 质量控制词；
+   - 检查场景实体 2-4 个、动作/情绪最多 2 个；
+   - 检查 Anima `@artist` 格式和 `@muririn, @kobuichi`；
+   - safe prompt 出现显式成人词时直接失败；
+   - 提供五维人工审核模板及"三张全部 >=90 才合格"的选片规则。
+3. `scene-fix.js`：
+   - 固定 3 seed，不再支持 20-seed 抽奖；
+   - 宁宁默认 V20B + `nene_b`；
+   - 必须显式传 `--steps 30 --cfg 4.5`；
+   - prompt 不满足结构门槛时拒绝生成；
+   - 生成 `review.json`，只有三张五维评分全部 >=90 才写 `selection.json`。
+4. 短 prompt 工具链：
+   - `short-prompt-builder.js` 输出结构健康报告；
+   - `short-prompt-batch.js` 固定 3 seed，并在整批生成前完成全量预检；任一场景失败则整批停止，不产生部分结果；
+   - `sc300-repro-verify.js`、`manual-short-prompt-pilot.js` 从 20/5 seed 收口到 3 seed。
+5. 热门角色/画师候选：
+   - `generate-showcase-candidates.js` 为每条候选记录附加 `promptHealth`；
+   - 保留既有 attempt prompt 和生成历史，不用新规则篡改历史记录。
+6. 补充落地（2026-08-13）：292 个单角色场景已切换到 `short-prompt-builder.js` 的 sc300 同构短 Prompt，静态全量预检 `292/292` 通过且全部落在 `22-26 token`；宁宁单角色候选改用 `L_NENE_V20B_ANIMA`（`characterId=nene` 表示展示角色，提交 Anima API 时单独用 `generationCharacter=nene_b`）；夏目保持 `L_NAT_V20_ANIMA`，6 个双人场景保持既有 WAI 双 LoRA 路径；复杂场景仅在数据已有 `animaCaption` 时追加一行导演描述。定向验证 43/43 通过（质量 Prompt 契约、showcase 候选契约、Prompt corpus、Anima 真实 HTTP 路由），未运行 E2E 与真实 GPU 生成。
+
+**安全决策**：`nene_r18 / natsume_r18` 当前同时承载旧 LoRA 的渲染质量先验，因此短期仍可作为质量控制词进入日常图；内容评级仍由 `safe / nsfw` 与显式内容词决定。safe 场景禁止显式成人词，避免把"全场景注入 R18 token"错误实现为"全场景注入成人内容"。（注：08-13 已定论「R18 tag 隔离是错误设计」，下次重训统一训练后此 hack 应移除。）
+
+**尚未执行**（需要新模型产物、GPU 时间和用户逐张亲审，必须独立执行并记录真实证据）：
+
+- 训练侧统一重训（含 safe prompt 泄漏测试硬门槛）；
+- 去掉生成侧 `nene_r18 / natsume_r18` 质量 hack；
+- 真实 GPU 批量生成和五维人工审核；
+- ">=90 分比例 >70%"最终验收。
+
+**验证方式**：每次修改后运行 `npm run validate`；批量生成场景必须用五维打分（光影/背景/角色/氛围/完成度）+ 用户亲审；训练侧重训后必须通过 safe prompt 泄漏测试。
 
 ## 3. 证据分级：官方、社区和本项目实测
 

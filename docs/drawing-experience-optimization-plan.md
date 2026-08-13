@@ -2,7 +2,8 @@
 
 > **目标角色**：个人日常使用  
 > **核心目标**：在保留三种底模 + 三种提示词方式灵活性的前提下，让使用体验更简单、直观、好记忆  
-> **执行者**：另一个人（我只输出方案）
+> **执行者**：另一个人（我只输出方案）  
+> **状态（2026-08-14 审计更新）**：方案稿，尚未执行（0% 实现）。其中「三提示词方式切换」已被 `src/utils/drawingRoute.ts` 的 `ManagedPromptFormat`（danbooru/anima-tags/natural-language）与 `recommendDrawingRoute` 部分覆盖（当前是引擎级切换，无本方案要求的最近设置记忆/一键套用）；记忆面板、参数快照、Ctrl+H 历史、草稿仍为待办。若要落地，先对照 `visual-architecture-roadmap.md` 的窄屏层级与状态组件统一规划，避免重复实现。
 
 ---
 

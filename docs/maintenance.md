@@ -11,8 +11,8 @@
 | 添加一个新场景 | 打开本机网站 → 更多 → 场景管理 → 新增场景 → 填写表单 → 保存到项目 |
 | 修改某个场景的文字/标签 | 打开场景管理 → 搜索场景 → 点"编辑" → 改完后保存到项目 |
 | 替换某张样张图片 | 打开场景管理 → 样张管理 → 搜索场景 → 选择新样张 |
-| 修改网站整体的颜色/风格 | 打开 `css/design-system.css`，改 `:root` 下的 `--xxx` token 值 |
-| 修改设计 token 后检查遗漏 | 改完 `css/design-system.css` 后运行 `npm run lint:colors` |
+| 修改网站整体的颜色/风格 | 打开 `src/assets/css/design-system.css`，改 `:root` 下的 `--xxx` token 值 |
+| 修改设计 token 后检查遗漏 | 改完 `src/assets/css/design-system.css` 后运行 `npm run lint:colors` |
 | 新建一个页面 | 复制 `docs/page-template.html` → 重命名 → 按注释替换 → 在 `tools/nav.js` 加导航条目 |
 | 导航栏里加/删/改链接 | 编辑 `tools/nav.js` 中的 PRIMARY_NAV 或 SECONDARY_NAV 数组 |
 | 添加一个新的 tag 标签 | 打开场景管理 → Tag 管理 → 新增 Tag → 保存到项目 |
@@ -112,7 +112,7 @@ GPU 串行队列源文件是 `services/serial-queue.ts`（emit 为同目录 `.js
 
 上游 HTTP 客户端源文件是 `services/http-client.ts`（emit 为同目录 `.js`）。Ollama、TTS、翻译与路由共用它处理超时、中止、JSON/二进制读取与 `UpstreamError`。修改后运行 `npm run build:runtime` 与 `npm run test:http-client`。
 
-TTS 服务源文件是 `services/tts-service.ts`（emit 为同目录 `.js`）。负责声线校验、参考音频/权重切换与 GPT-SoVITS 串行合成。修改后运行 `npm run build:runtime`、`npm run test:voice-profile-contract` 与 `npm run test:chat`。
+TTS 服务源文件是 `services/tts-service.ts`（emit 为同目录 `.js`）。负责声线校验、参考音频/权重切换与 GPT-SoVITS 串行合成。修改后运行 `npm run build:runtime`、`npm run test:voice-profile` 与 `npm run test:chat`。
 
 Ollama 服务源文件是 `services/ollama-service.ts`（emit 为同目录 `.js`）。负责模型列表、keep_alive 切换与 NDJSON 流式对话。修改后运行 `npm run build:runtime`、`npm run test:chat` 与 `npm run test:resource-scheduling`。
 

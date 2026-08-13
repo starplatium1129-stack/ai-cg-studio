@@ -70,7 +70,7 @@ MiniMax H3 的能力上限更高：本地 Base 支持 T2V、首/尾帧和原生 
   - `SaveVideo`
 - 输出固定为 H.264 MP4；仅接受 `output` 类型、`aics_video` 前缀、无子目录的视频结果。
 - 结果转存到 `runtime/outputs/video/`，支持 HTTP Range，浏览器不直接读取 ComfyUI output 目录。
-- 并发上限为 2，单任务超时 45 分钟；取消使用 prompt-id 定向取消，不调用全局 interrupt。
+- 提交限流为容量 3 的令牌桶（`routes/video.js` 的 `rateLimit({capacity:3, refillMs:60000})`；本机直连请求经 `security.rateLimit` 的 `isDirectLocalRequest` 直接放行，个人本地使用下不生效），单任务超时 45 分钟；取消使用 prompt-id 定向取消，不调用全局 interrupt。
 
 ### 当前所需权重
 

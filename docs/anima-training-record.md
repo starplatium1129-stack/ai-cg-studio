@@ -1,7 +1,7 @@
 # Anima 训练与晋级记录
 
-> 当前汇总：2026-08-10
-> 本文保留已完成实验的可审计结论，不把实验结果改写成稳定发布承诺。复现参数见 `anima-reproduction-protocol.md`。
+> 当前汇总：2026-08-14
+> 本文保留已完成实验的可审计结论，不把实验结果改写成稳定发布承诺。复现参数见本文末尾「长期协议」节（原 `anima-reproduction-protocol.md` 于 2026-08-14 并入）。
 
 ## 宁宁 v20-b 晋级（2026-08-10）
 
@@ -26,9 +26,10 @@ v20-a 用户反馈"背景光影感强但人物还原弱"，调研结论（kohya 
 
 - 晋级 checkpoint：**epoch 16 / step 672**（b_e16）。
 - 生产 ID：`L_NENE_V20B_ANIMA`；文件 `ayachi_nene_v20_anima_scientific_b_e16.safetensors`（SHA-256 `0a1dd84fb0e57a8ccd1627d2d52afd1809c2d03d6f24f87c3e442e872dd683a5`）。
-- 默认 strength：0.85。routes/anima.js `CHARACTERS.nene.loraId` 已切换；`L_NENE_V20_ANIMA`（v20-a）保留为回退条目。
+- 默认 strength：0.85。生产一键路由经 `src/utils/drawingRoute.ts` 把 nene 映射到 `L_NENE_V20B_ANIMA`/`generationCharacter='nene_b'`；`routes/anima.js` 的 `CHARACTERS.nene` 默认仍是 v20-a，V20B 绑定在独立 `nene_b` 条目（保留 A/B 对比通道）。`L_NENE_V20_ANIMA`（v20-a）保留为回退条目。
 - 已知限制：e16 在低参数（24s/CFG3）下身份绑定弱于 e20，生产建议走官方推荐参数 30s/CFG4.5/er_sde；sc105 某 cell 腿部观感争议（复核为条纹袜视觉割裂，解剖正常）。
 - 证据目录：`E:/code/2/lora/AI/Reviews/AnimaV20bCheckpointAudit/2026-08-10_lr1e4_tagfix/`、`E:/code/2/lora/AI/Reviews/AnimaV20bFinal/2026-08-10_e16_vs_e20/`、`..._30s_cfg45_ersde/`。
+  - ⚠️ 2026-08-14 漂移审计：以上证据目录与 `AnimaPromptAB`、`AnimaNatsumeV19PreviewSmoke` 等当前未在 AI 工作区 `E:/code/2/lora/AI/Reviews` 找到（现存 Anima 相关目录仅 `AnimaUnifiedSweep`），若已归档/迁移请更新路径。
 
 ## 宁宁 v19 checkpoint 审核
 
@@ -81,7 +82,7 @@ Baseline A 使用 Anima Base v1.0、Transformer LoRA only、rank/alpha 32/32、c
 - quality-space：把 `best_quality` 转为空格后胸饰退化为普通金属环，拒绝。
 - 最终 profile 保留 `ayachi_nene`、`nene_r18`、`nene_witch_canonical`、`best_quality` 等 exact underscore controls；普通场景词使用空格。
 - 修正后的 `profile.png` 与通过的 `warm-space.png` 字节完全一致，SHA-256：`7F33ACCA16EA29ABDFF6933BA69D33715A6217B866961B8A0B132DE4E5F3B8AF`。
-- 证据目录：`E:/code/2/lora/AI/Reviews/AnimaPromptAB/2026-08-09_v19_exact_tokens/`。
+- 证据目录：`E:/code/2/lora/AI/Reviews/AnimaPromptAB/2026-08-09_v19_exact_tokens/`（漂移审计 2026-08-14：目录当前未在 AI 工作区找到，若已归档请更新）。
 
 ## 夏目 v19 正式审核
 
@@ -124,7 +125,7 @@ Baseline A 使用 Anima Base v1.0、Transformer LoRA only、rank/alpha 32/32、c
 - compatible models：Anima Base v1.0、Anima Aesthetic v1.1。
 - 适用：夏目单角色；宁宁固定 v20；triad/shared 继续禁用 Anima。
 - 文件缺失时拒绝提交，不回退到宁宁或 SD；UI、状态、历史和 catalog 明确标注实验预览与普通全身限制。
-- smoke 目录：`E:/code/2/lora/AI/Reviews/AnimaNatsumeV19PreviewSmoke/2026-08-10`，含夏目身份/咖啡服与普通全身固定 seed 证据。
+- smoke 目录：`E:/code/2/lora/AI/Reviews/AnimaNatsumeV19PreviewSmoke/2026-08-10`，含夏目身份/咖啡服与普通全身固定 seed 证据（漂移审计 2026-08-14：目录当前未在 AI 工作区找到，若已归档请更新）。
 
 ## 训练设计决策：R18 tag 隔离是错误设计（2026-08-13）
 
@@ -180,4 +181,30 @@ Baseline A 使用 Anima Base v1.0、Transformer LoRA only、rank/alpha 32/32、c
 - 端到端 fixture（60 张合成图、39 视觉组、5 holdout 组）全流程通过：`built: true`、`check ok`、`errors: []`；训练 50 / 验证 10。
 - caption 契约抽样：R18 → `nsfw, natsume_r18, shiki_natsume, soft lighting, 1girl, solo, natsume_cafe_uniform, cafe, breasts`（评级词保留、身份标签移除、光照前置、控制词下划线）；SAFE → `safe, shiki_natsume, night, 1girl, solo, natsume_official_qipao, lantern light`（无 r18 泄漏）。
 - 真实数据待命：拿到 AI 工作区真实 45 张源 manifest 后运行 `python scripts/training/prepare_natsume_anima_v20.py --source-manifest <真实 manifest> --output-dataset <目标> --base-config <OneTrainer 模板> --output-config <目标> --evidence-root <审核目录>`。
+
+## 长期协议（原 `anima-reproduction-protocol.md`，2026-08-14 并入）
+
+> 适用：宁宁 v20 与夏目 v19/20 scientific 系列。本文是训练/审核的长期协议，不是任务分派稿。各实验的具体数据划分、caption、超参和 SHA 以上文对应章节为准（宁宁 v20 见「宁宁 v20 晋级」与「宁宁 v20-b 晋级」，夏目见「夏目 v19 正式审核」与「夏目 v20 unified 训练配置」）。
+
+### 共同合同
+
+- 使用 Anima Base v1.0；不训练 LLM adapter。OneTrainer 的 Anima setup 冻结 Qwen text encoder 与 Anima conditioner，只训练 Transformer LoRA 层。
+- 普通 tag 使用小写、空格和逗号后单空格；安全标签按 Anima 约定。`ayachi_nene`、`nene_r18`、`nene_*`、`shiki_natsume`、`natsume_r18` 等角色/服装控制词按已审核的 underscore exact-token 合同保留，不把所有控制词盲目转换为空格。
+- safe、sensitive、nsfw、explicit 必须按真实内容标注；不得把内衣、裸露、暗示内容标为 safe。R18 只在请求条件下激活。
+- 数据源逐字节复制并以 SHA-256 固定；划分单位是 visual/dedupe group，不是单张图片。近重复成员不得跨 train/validation。
+- 固定 seed 的生产矩阵必须同时检查身份、脸/呆毛/发饰、服装控制、手腿和人体结构、双人串位、构图、光照、场景叙事、安全泄漏与 seed 多样性。机器 loss、CLIP、hash 或自动标签不能替代逐图人工审核。
+- 只允许预注册的一组初始超参。若需要新实验，必须只改变一个变量，保留旧生产文件并重新执行同等矩阵。
+
+### 生产矩阵与证据
+
+- 证据目录位于 AI 工作区，不把模型权重、WAV、截图或 contact sheet 提交仓库；仓库只保留协议、结果、路径、SHA、判定和复现入口。
+- ⚠️ 漂移审计 2026-08-14：旧协议中列出的 `AnimaV20CheckpointAudit`、`AnimaV20ProductionSmoke`、`AnimaV19CheckpointAudit`、`AnimaV19VisualMatrix`、`AnimaNatsumeV19ProductMatrix`、`AnimaNatsumeV19OrdinaryFullbodyAB`、`AnimaNatsumeV19PreviewSmoke` 等证据目录当前均未在 AI 工作区 `E:/code/2/lora/AI/Reviews` 找到（现存 Anima 相关目录仅 `AnimaUnifiedSweep`）；若证据已归档/迁移请更新上文对应章节的路径，否则后续按协议复查将无法定位证据。
+
+### 可复现入口
+
+- 宁宁/通用 promotion：`scripts/maintenance/promote-anima-v20-checkpoint.js`、`scripts/maintenance/promote-anima-checkpoint.js`。
+- 宁宁数据准备：`scripts/training/prepare_nene_anima_v20.py`。
+- 夏目数据准备：`scripts/training/prepare_natsume_anima_v19.py`、`scripts/training/prepare_natsume_anima_v20.py`。
+- 夏目矩阵：`scripts/tests/evaluate-anima-natsume-v19-checkpoints.js`、`scripts/maintenance/measure-anima-natsume-v19-matrix.py`、`scripts/maintenance/promote-anima-natsume-v19-checkpoint.js`。
+- 夏目 preview staging：`scripts/maintenance/stage-anima-natsume-v19-preview.js`，源/目标 SHA 固定且重复运行幂等。
 
