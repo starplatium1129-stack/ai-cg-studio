@@ -163,3 +163,21 @@ Baseline A 使用 Anima Base v1.0、Transformer LoRA only、rank/alpha 32/32、c
 
 **建议**：下次重训时保留 v20B LoRA，建议生产路径统一走 Aesthetic v1.1 底模。
 
+## 夏目 v20 unified 训练配置（2026-08-14）
+
+> 与宁宁 v20 unified（`ayachi_nene_v20_anima_scientific_unified`，另一半正在审核）同协议的夏目重训配置，落地 08-13"统一训练、不隔离质量先验"决策。
+
+### 交付
+
+- `scripts/training/prepare_natsume_anima_v20.py`：源 manifest 派生（官方事件/源文件名 stem + 字节 SHA-256 + 感知哈希并组）→ 统一 train/validation 两分区 → caption 归一化 → OneTrainer 配置 → `--check` 自校验。
+- 保持夏目 v19 的视觉组派生与 holdout 契约：`official_5013 / official_5014 / official_5018 / stand_v12_02 / cg_v12_04` 五组冻结验证。
+- 与宁宁 unified 对齐的协议：`shiki_natsume` 触发词独占身份（静态身份标签从 caption 移除）、光照/氛围标签前置、`natsume_r18` 保留为评级词（不再按 r18 分区隔离）、tag shuffle + RANDOM dropout 0.1（keep_tags_count 4）、1e-4 / rank 32 / alpha 32 / 24 epochs / 1024 / LOGIT_NORMAL / attn-mlp。
+- run 命名：`shiki_natsume_v20_anima_scientific_unified`；production_guard 明确不覆盖 `L_NAT_V20_ANIMA`（`shiki_natsume_v20_anima_scientific_e12`）。
+- 已知决策沿用：泪痣（mole under eye）随触发词-only 策略难以稳定复现（v19/v20 同限制），不在 caption 中强制注入；生成侧仍走 Aesthetic v1.1 底模加载（跨底模加载记录 2026-08-13）。
+
+### 验证
+
+- 端到端 fixture（60 张合成图、39 视觉组、5 holdout 组）全流程通过：`built: true`、`check ok`、`errors: []`；训练 50 / 验证 10。
+- caption 契约抽样：R18 → `nsfw, natsume_r18, shiki_natsume, soft lighting, 1girl, solo, natsume_cafe_uniform, cafe, breasts`（评级词保留、身份标签移除、光照前置、控制词下划线）；SAFE → `safe, shiki_natsume, night, 1girl, solo, natsume_official_qipao, lantern light`（无 r18 泄漏）。
+- 真实数据待命：拿到 AI 工作区真实 45 张源 manifest 后运行 `python scripts/training/prepare_natsume_anima_v20.py --source-manifest <真实 manifest> --output-dataset <目标> --base-config <OneTrainer 模板> --output-config <目标> --evidence-root <审核目录>`。
+
