@@ -163,8 +163,6 @@
               <div class="message-avatar"><span v-if="msg.role === 'user'">你</span><ArchiveIcon v-else :name="currentCharacter.id === 'natsume' ? 'natsume' : 'nene'" /></div>
               <div class="message-body">
                 <div class="message-bubble">{{ msg.content }}</div>
-                <img v-if="msg.image" class="message-image" :src="msg.image.url"
-                  :alt="msg.image.prompt" loading="lazy" referrerpolicy="no-referrer" />
                 <div class="message-meta">
                   <span v-if="msg.stopped" class="message-note">已停止</span>
                   <button v-if="msg.role === 'user' && msg.mid" class="msg-memory-btn" type="button"
@@ -199,10 +197,6 @@
               placeholder="轻声对她说点什么吧……" aria-label="聊天输入"
               @keydown.enter.exact.prevent="handleSend"
               @input="onInputChange"></textarea>
-            <button class="btn btn-ghost img-btn" type="button"
-              :disabled="imageBusy || busy || !chatReady"
-              :title="imageBusy ? '正在生成图片…' : '用当前输入生成图片（本地 gemini-3.1-flash-image）'"
-              @click="generateImage">{{ imageBusy ? '生成中…' : '🎨 生成图片' }}</button>
             <button class="btn btn-ghost stop-btn" type="button"
               v-show="busy || voiceActive"
               :title="busy ? '停止生成回复' : '停止语音播放'"
@@ -367,7 +361,6 @@ const {
   handleSend,
   useStarter,
   onInputChange,
-  appendImageMessage,
   prepareRoom,
   stopEverything,
   switchCharacter,
@@ -436,37 +429,6 @@ const speechSessionActive = computed(() => speechSession.isSessionActive())
 function commitSpeechText(text: string): void {
   inputText.value = text
   if (speechConfig.value.autoSend && chatReady.value && !busy.value) handleSend()
-}
-
-/** 聊天生成图片：本地 gemini-3.1-flash-image，结果作为用户图片消息入会话。 */
-const imageBusy = ref(false)
-async function generateImage(): Promise<void> {
-  if (imageBusy.value || busy.value || !chatReady.value) return
-  const prompt = inputText.value.trim()
-  if (!prompt) {
-    setError('先在输入框写下想画的内容，再点「生成图片」。', 'warning')
-    return
-  }
-  imageBusy.value = true
-  try {
-    setError('正在生成图片，约需 30~90 秒…', 'info', 0)
-    const res = await fetch('/api/chat-image', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt }),
-    })
-    const data = await res.json().catch(() => null)
-    if (!res.ok || !data || !data.ok || !data.url) {
-      throw new Error((data && data.error) || `HTTP ${res.status}`)
-    }
-    appendImageMessage(prompt, data.url)
-    inputText.value = ''
-    setError('图片已生成', 'info', 2000)
-  } catch (error) {
-    setError('图片生成失败：' + (error instanceof Error ? error.message : String(error)), 'warning')
-  } finally {
-    imageBusy.value = false
-  }
 }
 
 function onSpeechText(text: string, source: VoiceTextSource): void {
@@ -552,21 +514,3 @@ function onSpeechSessionEnd(): void {
 
 onBeforeUnmount(() => speechRelease())
 </script>
-
-<style>
-/* 聊天生成图片消息（ChatView 专属；不放入全局 chat.css 避免与并行改动冲突） */
-.chat-page .message-image {
-  display: block;
-  max-width: min(340px, 100%);
-  margin-top: 8px;
-  border: 1px solid var(--border-soft);
-  border-radius: var(--r-md);
-  background: var(--surface-2);
-}
-
-/* 生成图片按钮：输入行内，窄屏不换行挤压 */
-.chat-page .img-btn {
-  flex: 0 0 auto;
-  white-space: nowrap;
-}
-</style>

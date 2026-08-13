@@ -313,22 +313,6 @@ export function useChatConversation(options: ChatConversationOptions) {
     options.storage.setDraft(options.activeChar.value, text)
   }
 
-  /** 追加一条带生成图片的用户消息（不走 LLM 回合，直接持久化）。 */
-  function appendImageMessage(prompt: string, url: string) {
-    const characterId = options.activeChar.value
-    const messages = options.storage.messages(characterId)
-    messages.push({
-      role: 'user',
-      content: prompt,
-      mid: createMessageId(),
-      stopped: true,
-      image: { url, prompt },
-    })
-    options.storage.trim(characterId)
-    options.storage.save()
-    options.scrollBottom()
-  }
-
   function onInputChange() {
     clearTimeout(draftTimer)
     const characterId = options.activeChar.value
@@ -350,7 +334,6 @@ export function useChatConversation(options: ChatConversationOptions) {
     sendMessage,
     useStarter,
     onInputChange,
-    appendImageMessage,
     destroy,
   }
 }
