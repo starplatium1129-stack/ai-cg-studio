@@ -65,16 +65,27 @@ function collectRuntimeErrors(page: Page) {
  * 出图参数（CFG / seed / 采样器）折在 <details> 里，默认收起。
  * 用点 summary 的真实路径打开，而不是 evaluate 改 open —— 后者会绕过
  * "这个折叠区到底点不点得开"这件事。
+ * 受控路线（6be3a95）：basic 模式系统自动选引擎，SD 参数面板只在
+ * 专家模式 + SD 引擎下渲染，因此打开前先切到专家模式与 SD 引擎。
  */
 async function openGenerationSettings(page: Page) {
   const panel = page.locator('details.generation-settings');
   if (!await panel.isVisible()) {
     await page.getByRole('button', { name: '专家模式', exact: true }).click();
+    // 受控路线默认 Anima；SD 断言需要显式切回 SD 引擎
+    await page.locator('.engine-switch button').first().click();
     await expect(panel).toBeVisible();
   }
   if (await panel.evaluate(node => (node as HTMLDetailsElement).open)) return;
   await panel.locator('summary').click();
   await expect(panel.locator('.controls-grid')).toBeVisible();
+}
+
+/** 切到专家模式 + SD 引擎（受控路线下 SD 出图流程的前置） */
+async function switchToSdEngine(page: Page) {
+  await page.getByRole('button', { name: '专家模式', exact: true }).click();
+  await page.locator('.engine-switch button').first().click();
+  await expect(page.locator('.api-status .badge')).toHaveText(/SD 已连接/);
 }
 
 /**
@@ -113,10 +124,12 @@ test('flow 1 · 出图：选场景 → 生成 → 成片入册，参数如实送
   await fault(request, MOCK.sd, { renderMs: 2500 });
   await page.goto('/prompt-builder?scene=sc001');
 
-  // /api/sd-status 走的是网关聚合接口，能拿到 mock 的模型列表就说明真穿过去了
-  await expect(page.locator('.api-status .badge')).toHaveText(/SD 已连接/);
+  // 受控路线：basic 模式系统自动选 Anima 高质量路线，SD 流程需进专家模式切引擎。
+  // 先断言受控路线卡与折叠参数面板存在，再切 SD 引擎走 SD 出图断言。
+  await expect(page.locator('.managed-route-card')).toBeVisible();
   await expect(page.locator('details.generation-settings')).toBeHidden();
   await expect(page.getByRole('button', { name: '生成图片' })).toHaveCount(1);
+  await switchToSdEngine(page);
   await openGenerationSettings(page);
   await expect(page.locator('.preview-output')).toContainText('lora');
 
@@ -166,7 +179,7 @@ test('flow 1a · 切换场景：中文字幕跟随第二个场景更新', async 
 test('flow 1b · 出图失败：CUDA OOM 分类成可执行的降负载重试', async ({ page, request }) => {
   await fault(request, MOCK.sd, { oom: true });
   await page.goto('/prompt-builder?scene=sc001');
-  await expect(page.locator('.api-status .badge')).toHaveText(/SD 已连接/);
+  await switchToSdEngine(page);
 
   await openGenerationSettings(page);
   await page.locator('.sd-inline-options select').first().selectOption('1216x832');
@@ -191,7 +204,7 @@ test('flow 1b · 出图失败：CUDA OOM 分类成可执行的降负载重试', 
 
 test('flow 1c · 出图队列：串行执行、自动入册', async ({ page, request }) => {
   await page.goto('/prompt-builder?scene=sc001');
-  await expect(page.locator('.api-status .badge')).toHaveText(/SD 已连接/);
+  await switchToSdEngine(page);
 
   await page.getByRole('button', { name: '加入队列' }).click();
   await page.getByRole('button', { name: '加入队列' }).click();
@@ -217,6 +230,8 @@ test('flow Anima · 应用 job 经过真网关和假 ComfyUI 出图', async ({ p
   await fault(request, MOCK.comfy, { renderMs: 10, historyTransient: 2 });
   await page.goto('/prompt-builder');
   await page.getByRole('button', { name: '夏目', exact: true }).click();
+  // 受控路线下引擎切换只在专家模式渲染
+  await page.getByRole('button', { name: '专家模式', exact: true }).click();
   await page.locator('.engine-switch button').nth(1).click();
   await expect(page.locator('#baseModel')).toHaveValue(/anima/, { timeout: 10_000 });
   await page.locator('.story-input').fill('夏目在咖啡馆里对我微笑');
@@ -469,7 +484,7 @@ test('flow 3e · 情绪标签协议：标签剥离不进展示/历史，显式�
 test('flow 4 · 备份：导出含图片的备份 → 覆盖恢复回同一份历史', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   await page.goto('/prompt-builder?scene=sc001');
-  await expect(page.locator('.api-status .badge')).toHaveText(/SD 已连接/);
+  await switchToSdEngine(page);
 
   // 先造一条真实历史（出图 + 保存快照），这样备份里才有 IndexedDB 图片
   await page.getByRole('button', { name: '生成图片' }).click();
@@ -628,7 +643,9 @@ test('flow 6 · 深链：?scene 决定角色，?mood 与场景推断共存', asy
   await expect(page.locator('.char-btn.active')).toContainText('夏目');
   await expect(page.locator('.scene-context-title')).not.toHaveText('');
   await expect(page.locator('.mood-card.active')).toHaveCount(1);
-  await expect(page.locator('.preview-output')).toContainText('lora');
+  // 受控路线：basic 默认 Anima 格式，preview 是角色 exact-token（underscore）
+  // 而非 SD 的 <lora:...>；shiki_natsume 是夏目的角色控制词
+  await expect(page.locator('.preview-output')).toContainText('shiki_natsume');
   // 场景推断出的镜头/光照/构图至少落一项，否则"智能预填"等于没接
   await expect(page.locator('.col-right .option.selected')).not.toHaveCount(0);
 
@@ -663,7 +680,7 @@ test('flow 6c · 深链：?resume=1 恢复上次草稿', async ({ page }) => {
 
 test('flow 6d · 深链：?regen=<id> 复原历史参数与 seed', async ({ page }) => {
   await page.goto('/prompt-builder?scene=sc001');
-  await expect(page.locator('.api-status .badge')).toHaveText(/SD 已连接/);
+  await switchToSdEngine(page);
   await openGenerationSettings(page);
   await toggle(page, '.ctrl-seed input[type="checkbox"]', true);
   await page.locator('.ctrl-seed input[type="number"]').fill('777');
@@ -735,17 +752,24 @@ test('flow 6f · 快速出图：复用最近成功参数并自动提交一次生
   const generated = await callsTo(request, MOCK.sd, '/sdapi/v1/txt2img');
   const comfyGenerated = (await calls(request, MOCK.comfy)).filter(call => call.path === '/prompt');
   expect(generated.length + comfyGenerated.length).toBe(1);
+  // 受控路线：basic 模式宁宁单人自动走 Anima 高质量路线（V20B LoRA），
+  // SD quick 参数不再适用于该路线；若走 SD（双人/专家模式）则按原契约断言。
   if (generated.length) {
     expect(generated[0].body).toMatchObject({ width: 896, height: 1152, sampler_name: 'Euler a', scheduler: 'Karras', cfg_scale: 6, steps: 22 });
   } else {
     const graph = comfyGenerated[0].body?.prompt as Record<string, any>;
     const latent = Object.values(graph).find((node: any) => node?.class_type === 'EmptyLatentImage') as any;
-    expect(latent?.inputs).toMatchObject({ width: 896, height: 1152 });
+    expect(latent?.inputs).toMatchObject({ width: 832, height: 1216 });
+    const loraLoader = Object.values(graph).find((node: any) => node?.class_type === 'LoraLoader') as any;
+    expect(loraLoader?.inputs?.lora_name).toContain('ayachi_nene_v20_anima_scientific_b_e16');
   }
+  // 受控路线 Anima 出图不写 SD 专属 quick 参数（aics_sd_last_success_v1 只记录 SD 成功参数）
   const savedAt = await page.evaluate(() => {
     const saved = JSON.parse(localStorage.getItem('aics_sd_last_success_v1') || '{}');
     return Number(saved.savedAt);
   });
-  expect(savedAt).toBeGreaterThan(1);
+  if (generated.length) {
+    expect(savedAt).toBeGreaterThan(1);
+  }
   expect(errors).toEqual([]);
 });

@@ -27,6 +27,7 @@ var maintenanceRuntime = require('./maintenance');
 var BUILD_SOURCE_GLOBS = ['index.html', 'vite.config.ts', 'src', 'public'];
 var WEB_BUILD_LOCK = null;
 var WEB_BUILD_TIMEOUT_MS = 10 * 60 * 1000;
+var WEBUI_START_TIMEOUT_MS = 6 * 60 * 1000;
 
 function newestSourceMtime(rootDir) {
   var newest = 0;
@@ -733,7 +734,15 @@ function createControlRouter(config, gatewayRef, dependencies) {
       action === 'start' ? '正在启动 SD WebUI' : '正在停止 SD WebUI',
       '正在验证绘图服务状态'
     ]);
-    runManagedScript(WEBUI_MANAGER_SCRIPT, managedScriptArgs('webui', action === 'start' ? 'Start' : 'Stop'), 120000).then(async function (result) {
+    if (action === 'stop') {
+      state.desiredWebui = false;
+      saveManagedDesired();
+    }
+    runManagedScript(
+      WEBUI_MANAGER_SCRIPT,
+      managedScriptArgs('webui', action === 'start' ? 'Start' : 'Stop'),
+      action === 'start' ? WEBUI_START_TIMEOUT_MS : 120000
+    ).then(async function (result) {
       if (result.ok && result.message) {
         try {
           var parsed = JSON.parse(result.message);
@@ -818,7 +827,7 @@ function createControlRouter(config, gatewayRef, dependencies) {
         if (!unload.ok) controlLog('Ollama 卸载提示: ' + (unload.error || unload.message || ''));
         ops.update(operation, 2);
         controlLog('模式切换：绘图优先 — 启动 WebUI');
-        var startWebui = await runManagedScript(WEBUI_MANAGER_SCRIPT, managedScriptArgs('webui', 'Start'), 120000);
+        var startWebui = await runManagedScript(WEBUI_MANAGER_SCRIPT, managedScriptArgs('webui', 'Start'), WEBUI_START_TIMEOUT_MS);
         if (startWebui.ok) {
           try { state.webuiManaged = !!JSON.parse(startWebui.message || '{}').managed; } catch {}
           state.desiredWebui = state.webuiManaged;
@@ -938,7 +947,7 @@ function createControlRouter(config, gatewayRef, dependencies) {
         name: 'webui',
         probe: function () { return pingSd(config.SD_HOST, 2500); },
         restart: function () {
-          return runManagedScript(WEBUI_MANAGER_SCRIPT, managedScriptArgs('webui', 'Start'), 120000)
+          return runManagedScript(WEBUI_MANAGER_SCRIPT, managedScriptArgs('webui', 'Start'), WEBUI_START_TIMEOUT_MS)
             .then(function (result) { return { ok:!!result.ok, error:result.error }; });
         },
         shouldManage: function () { return state.desiredWebui; },
@@ -1001,6 +1010,10 @@ function createControlRouter(config, gatewayRef, dependencies) {
       action === 'start' ? '正在启动 ComfyUI' : '正在停止 ComfyUI',
       '正在验证 ComfyUI /system_stats'
     ]);
+    if (action === 'stop') {
+      state.desiredComfy = false;
+      saveManagedDesired();
+    }
     runManagedScript(COMFY_MANAGER_SCRIPT, managedScriptArgs('comfy', action === 'start' ? 'Start' : 'Stop'), 120000).then(async function (result) {
       if (result.ok && result.message) {
         try {

@@ -932,6 +932,17 @@ extern "system" fn overlay_wnd_proc(
     }
 }
 
+/// 渲染线程退出时向前端广播 stopped（带原因）。前端据此显示"渲染已停止"
+/// 并可重试；正常 destroy 命令不退出线程，不触发本事件。
+fn emit_stopped(app: Option<&AppHandle>, reason: &str) {
+    if let Some(app) = app {
+        let _ = app.emit(
+            "aics:live2d:stopped",
+            serde_json::json!({ "reason": reason }),
+        );
+    }
+}
+
 /// 渲染线程：消息循环（非阻塞）+ 命令处理 + 帧渲染。
 fn overlay_window_thread(
     state: Arc<Live2DOverlayState>,
@@ -952,8 +963,10 @@ fn overlay_window_thread(
         }
     }
     let Some(hwnd) = create_overlay_window() else {
-        eprintln!("[live2d] create_overlay_window failed");
+        let reason = "create overlay window failed";
+        eprintln!("[live2d] {reason}");
         reset_runtime_state(&state);
+        emit_stopped(app.as_ref(), reason);
         return;
     };
     unsafe {
@@ -976,6 +989,7 @@ fn overlay_window_thread(
                 DestroyWindow(hwnd);
             }
             reset_runtime_state(&state);
+            emit_stopped(app.as_ref(), &format!("render context init failed: {e}"));
             return;
         }
     };
@@ -995,6 +1009,9 @@ fn overlay_window_thread(
     let mut last_frame = Instant::now();
     let mut last_z_order_sync = Instant::now() - Duration::from_secs(1);
     let mut running = true;
+    // 线程退出原因：None 表示 WM_QUIT 正常退出（窗口销毁，如进程退出），
+    // 此时前端通常已不在；其余错误路径必须带原因广播，前端才能显示重试。
+    let mut stopped_reason: Option<String> = None;
     while running {
         unsafe {
             let mut msg = std::mem::zeroed::<MSG>();
@@ -1012,6 +1029,7 @@ fn overlay_window_thread(
                 Ok(cmd) => handle_command(&state, &mut ctx, &assets_root, app.as_ref(), hwnd, cmd),
                 Err(TryRecvError::Empty) => break,
                 Err(TryRecvError::Disconnected) => {
+                    stopped_reason = Some("renderer command channel disconnected".into());
                     running = false;
                     break;
                 }
@@ -1066,6 +1084,7 @@ fn overlay_window_thread(
                 Ok(false) => {}
                 Err(e) => {
                     eprintln!("[live2d] render frame: {e}");
+                    stopped_reason = Some(format!("render frame failed: {e}"));
                     running = false;
                 }
             }
@@ -1078,6 +1097,9 @@ fn overlay_window_thread(
         DestroyWindow(hwnd);
     }
     reset_runtime_state(&state);
+    if let Some(reason) = stopped_reason {
+        emit_stopped(app.as_ref(), &reason);
+    }
 }
 
 fn handle_command(

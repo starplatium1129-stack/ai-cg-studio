@@ -78,6 +78,33 @@ ChatCharacterStage / useLive2D
 4. 30 分钟 soak 是发布前可选强化；当前固定 Windows Native gate 是 300 秒，不应加入无 GPU 的默认 `validate`。
 5. 后续接入只使用 `src/types/live2dNative.ts`、`live2d-native-overlay-plan.md` 和公开 backend API；不得把参数级 hack、源项目 WAV 或未验证 motion/expression 当作新能力。
 
+## 2026-08-13 壳侧：渲染线程 stopped 事件与进程级 DPI awareness
+
+- `live2d_overlay.rs` 新增 `emit_stopped`：渲染线程任何异常退出路径（窗口创建失败、render context 初始化失败、render frame 错误、命令通道断开）都会广播 `aics:live2d:stopped`（payload `{reason}`）并清理 ready/attached/starting 状态，前端据此显示"渲染已停止"并可重试重新拉起线程；正常 `destroy` 命令不退出线程，不触发本事件。
+- `main.rs` 在 `tauri::Builder::default()` 之前（进程最早期、任何窗口创建前）设置 per-monitor v2 DPI awareness，失败回退 system-aware——覆盖 Companion WebView 窗口创建时机，不再只依赖 overlay 线程内的设置。
+- `shim.rs` 新增 `onStopped` 订阅；`src/types/live2dNative.ts` 契约新增 `onStopped(listener)`。
+- `nativeBackend.ts` 新增 `NATIVE_RENDER_STOPPED` 错误名与 `errorListeners`：`onStopped` 事件转发为 `onModelError`（`error.name = NATIVE_RENDER_STOPPED`），`useLive2D` 识别该错误名后显示"Live2D 渲染已停止"（degraded + retryable），与"动作/换装失败但模型仍显示"的退化路径区分；destroy 时清理。
+- 验证：`cargo test --locked --manifest-path desktop-tauri/src-tauri/Cargo.toml` 15/15（含本批 stopped 补丁的编译证据，08-13 竞态补丁此前缺编译验证，本次已补齐）；`test-live2d-backend.js` + `test-live2d-native-contract.js` 27/27；`test-chat.js` 通过。
+- 环境备注：本机 Rust 工具链实际位于 `C:\Users\Administrator\.cargo\bin`（PATH 未含）；`cargo test` 需要 `src-tauri/binaries/node-x86_64-pc-windows-msvc.exe`（externalBin sidecar，gitignore）与 `src-tauri/resources/`（`node scripts/maintenance/desktop-stage-resources.js` 生成，gitignore）就位；`npm_execpath` 指向 pnpm 时会破坏暂存脚本的 npm ci，需 `Remove-Item Env:npm_execpath` 后用内置 npm-cli.js。
+- 仍未处理的发布风险（需真机/多屏环境）：真实 monitor work area、多屏混合 DPI、Tauri command origin 校验（capabilities 已限 Companion 窗口 + 127.0.0.1）、`destroy` 长期复用 vs 完整退出线程的契约统一（当前实现为长期复用：释放模型、保留线程，前端 destroy 后可重新 setCharacter）。
+
+## 2026-08-13 接手收尾：工作区遗留改动盘点与修复
+
+- **窗口 bounds 注入收尾**：`desktopWindowBounds` 提升为模块级窗口状态（Companion 单窗口），`windowBoundsFromScreen` 优先返回注入 bounds、未注入时回退 `screenX × dpr`；删除 useLive2D 函数内的重复声明，`layout()` 在 bounds 注入前暂停原生 overlay（不猜首帧）。`test-live2d-native-contract.js` 的 `setDesktopWindowBounds`/`desktopWindowBounds = null` 断言保持成立。
+- **setOutfit 夏目分支还原**：恢复"夏目只有咖啡店制服、无 Expressions、不得调用 expression"的既有契约（工作区残留版本错误调用 `model.expression(target.expression)`，类型不通过且违反角色契约）。
+- **desktop/main.ts 还原**：`AICS_DESKTOP_PACKAGED` 恢复为仅 `app.isPackaged` 注入（dev 模式 `electron .` 不注入），维护路由 501 契约与 test-gateway-contract 锚点不变。
+- **训练脚本修正**：`prepare_nene_anima_v20.py` 保留 08-13"统一训练、不分区隔离 r18"决策（train/validation 两分区），但恢复 `safety_tag` 按真实内容分级（safe/sensitive/nsfw/explicit，遵守 anima-reproduction-protocol）与 R18 样张的 `nene_r18` 评级词。
+- **视觉基线还原**：`design-system.css` 圆角/阴影 token 与 `companion.css` 身份卡样式还原到 DESIGN.md §Shapes（8–24px 阶梯）基线——工作区残留版本把圆角收到 4–16px、阴影减半，与 08-01 已提交的"博客式二次元圆润感"决策和 DESIGN.md 冲突且注释未同步。
+- **实验残留清理**：删除 `test-grok-46.js`（含明文 API key），移除仅为该脚本添加的 `@ai-sdk/openai`、`ai`、`jsonc-parser` 依赖（package.json / package-lock.json 还原）。
+- **E2E 漂移修复（6be3a95「受控路线」遗留）**：已提交的绘图页"系统自动选择引擎路线"（basic 模式默认 Anima + V20B，engine-switch/baseModel/SD 参数 pro-only）使 studio/flows/anima-quick 十余个用例红：
+  - `mock-stack.js` 补 V20B LoRA fixture（`ayachi_nene_v20_anima_scientific_b_e16.safetensors`），否则 Anima 引擎在测试环境 offline、badge 恒 offline；
+  - flows.spec.ts：`openGenerationSettings`/新增 `switchToSdEngine` helper 先切专家模式 + SD 引擎；flow-1/1b/1c/4/6d 前置切引擎；flow Anima 先切专家模式；flow-6/6f 断言适配受控路线（Anima exact-token、comfy latent 832×1216 + V20B LoRA、SD quick key 不被 Anima 污染）；
+  - studio.spec.ts：basic 断言 `#baseModel` 隐藏 + `.managed-route-card` 可见，专家模式切 SD 后再断言 `<lora:`/`[NEG]`；
+  - anima-quick.spec.ts：全部用例在点 engine-switch 前切专家模式；请求角色断言 `nene` → `nene_b`（V20B 变体，6be3a95 预期行为）。
+- **多根组件修复（route-view class 丢失）**：GalleryView/SceneExplorerView 的根级 `<Teleport>` 使组件多根，Vue 不向多根组件继承 fallthrough attrs，`AppLayout` 注入的 `route-view` class 丢失 → `#main .route-view` 不可见、repeated-navigation 用例失败。把 Teleport 移入根 `<article>` 内（仍渲染到 body，行为不变），恢复单根；ShowcaseView 原本就是单根，不受影响。验证：interaction-polish.spec.ts 7/7。
+- **导航动效测试逻辑修复**：interaction-polish「archive icon」用例在 `goto('/scene-explorer')` 后 dispatch click 到同路径链接——vue-router 判定 duplicated 导航不执行 beforeEach，`data-route-motion` 永不更新。改为从首页直接 SPA 导航（探测证实：首页导航 seen=["","standard",""]，同页重复导航 seen=[""]）。验证：interaction-polish.spec.ts 7/7。
+- 验证：`typecheck:app`、`typecheck`、`tsconfig.desktop.json --noEmit`、`npm run build`（bundle 预算绿）全通过；live2d/chat/prompt-compiler/showcase-candidate/control-failure 等 72 单测全绿；E2E studio + flows 16/16、anima-quick 15/15、interaction-polish 7/7、**全量 226/226 通过**。
+
 ## 2026-08-13 启动竞态修复
 
 - `live2d_overlay.rs` 新增 `starting` 原子门控；并发 `ensure_overlay()` 只允许一个 Win32 overlay/render thread 进入启动流程。

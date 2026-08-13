@@ -287,13 +287,33 @@ test('原生后端：onMotionFailed 转发 busy 拒绝（同一互动播放中�
   assert.equal(failures.length, 1, '退订后不再回传');
 });
 
+test('原生后端：渲染线程 stopped 转发 onModelError（带 reason，可重试）', async () => {
+  const bridge = createStubBridge();
+  const backend = createNativeLive2DBackend(() => bridge);
+  const session = await backend.connect({ selector: '#host', modelUrl: '/nene.moc3', canvasWidth: 420, canvasHeight: 610, character: 'nene' });
+
+  const errors = [];
+  session.onModelError((error) => errors.push(error));
+  assert(bridge._stoppedListeners.length > 0, '连接期应订阅 onStopped');
+  bridge._stoppedListeners.forEach((listener) => listener({ reason: 'render frame failed: surface error' }));
+  assert.equal(errors.length, 1);
+  assert.equal(errors[0].name, 'NATIVE_RENDER_STOPPED');
+  assert.match(errors[0].message, /渲染线程已停止/);
+  assert.match(errors[0].message, /surface error/);
+
+  // 销毁后 stopped 事件不再派发
+  session.destroy();
+  bridge._stoppedListeners.forEach((listener) => listener({ reason: 'late' }));
+  assert.equal(errors.length, 1, '销毁后不再派发');
+});
+
 test('原生后端：销毁时 off 全部订阅并调用 bridge.destroy', async () => {
   const bridge = createStubBridge();
   const backend = createNativeLive2DBackend(() => bridge);
   const session = await backend.connect({ selector: '#host', modelUrl: '/nene.moc3', canvasWidth: 420, canvasHeight: 610, character: 'nene' });
   assert.equal(bridge._offCalls.length, 0, '连接阶段不应有 off');
   session.destroy();
-  assert.equal(bridge._offCalls.length, 3, '未注册 onModelLoaded 时应逐个 off 三个连接期订阅');
+  assert.equal(bridge._offCalls.length, 4, '未注册 onModelLoaded 时应逐个 off 四个连接期订阅');
   assert.equal(bridge.calls.destroy.length, 1);
   assert.equal(bridge._readyListeners.length, 0, '销毁后事件不再派发');
 });
@@ -303,7 +323,7 @@ test('原生后端：销毁时 off 全部订阅并调用 bridge.destroy', async 
 test('Live2DNativeBridge 契约：命令与事件方法齐全', () => {
   const bridge = createStubBridge();
   const commands = ['setCharacter', 'setFrame', 'setMaxFps', 'playMotion', 'setExpression', 'setMouthLevel', 'setEmotion', 'setGaze', 'hitTest', 'destroy'];
-  const events = ['onReady', 'onMotionStarted', 'onMotionFailed', 'onHitTest', 'onEntranceFinished', 'off'];
+  const events = ['onReady', 'onMotionStarted', 'onMotionFailed', 'onHitTest', 'onEntranceFinished', 'onStopped', 'off'];
   for (const name of commands) {
     assert.equal(typeof bridge[name], 'function', `缺失命令 ${name}`);
   }
@@ -334,6 +354,7 @@ function createStubBridge() {
     motionFailed: [],
     hitTest: [],
     entranceFinished: [],
+    stopped: [],
   };
   let nextId = 1;
   const offCalls = [];
@@ -343,6 +364,7 @@ function createStubBridge() {
     _readyListeners: listeners.ready,
     _hitTestListeners: listeners.hitTest,
     _motionFailedListeners: listeners.motionFailed,
+    _stoppedListeners: listeners.stopped,
     _offCalls: offCalls,
 
     async setCharacter(modelPath, options) { calls.setCharacter.push([modelPath, options]); return { ok: true }; },
@@ -361,6 +383,7 @@ function createStubBridge() {
     onMotionFailed(listener) { listeners.motionFailed.push(listener); return nextId++; },
     onHitTest(listener) { listeners.hitTest.push(listener); return nextId++; },
     onEntranceFinished(listener) { listeners.entranceFinished.push(listener); return nextId++; },
+    onStopped(listener) { listeners.stopped.push(listener); return nextId++; },
     off(id) {
       offCalls.push(id);
       listeners.ready.splice(0, listeners.ready.length);
@@ -368,6 +391,7 @@ function createStubBridge() {
       listeners.motionFailed.splice(0, listeners.motionFailed.length);
       listeners.hitTest.splice(0, listeners.hitTest.length);
       listeners.entranceFinished.splice(0, listeners.entranceFinished.length);
+      listeners.stopped.splice(0, listeners.stopped.length);
     },
   };
   return bridge;

@@ -24,7 +24,6 @@ test('navigation uses the archive icon system and emits pointer feedback', async
   // 指针脉冲在 rAF 内异步点亮，持续约 240ms；轮询读取以覆盖时序缝隙
   await expect.poll(() => page.evaluate(() => document.querySelector('.interaction-impulse')?.className || '')).toMatch(/active/)
 
-  await page.goto('/scene-explorer')
   await page.evaluate(() => {
     const state = window as Window & { __routeMotionSeen?: string[]; __routeMotionObserver?: MutationObserver }
     state.__routeMotionSeen = [document.documentElement.dataset.routeMotion || '']
@@ -35,7 +34,8 @@ test('navigation uses the archive icon system and emits pointer feedback', async
     state.__routeMotionObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-route-motion'] })
   })
 
-  // 通过派发真实 click 而不是 page.click，避免预取与点击间隔被 dispatcher timing 冲掉
+  // 从首页 SPA 导航进 /scene-explorer（不能在目标页再点同路径链接：
+  // vue-router 会判定 duplicated 导航而不执行 beforeEach，data-route-motion 不会更新）
   await page.evaluate(() => {
     const link = document.querySelector('a[href="/scene-explorer"]')
     link?.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }))

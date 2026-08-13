@@ -15,13 +15,14 @@ AI-CG-Studio 是本地个人使用的 Galgame 风格 AI CG 创作台，包含角
 - 存储：IndexedDB 由 `useKVStore`/`useImageStore` 封装；localStorage 键由 `src/utils/storageKeys.ts` 登记，备份和作品删除分别走统一入口。
 - 聊天：Ollama 与 OpenAI-compatible API 可配置；流式回复、归档、TTS、情绪、VAD/ASR 输入和 Live2D 舞台按所有权拆分。角色 Prompt 由服务端分层组装，并支持本机用户档案与用户手动固定的跨会话事实召回。
 - 绘图：场景模式是一键流程，只需选择预设场景与底模；镜头、光照、构图、Prompt 和模型参数自动确定。WAI v17 普通兼容请求仍为 Comfy-first；自动 hires 则优先 WebUI Anime6B，仅 Comfy 可用时退到 nearest-exact Latent，再不可用时保持审计直出。当前应用生产 preset 中 Anima Base/Aesthetic 使用 24 steps / CFG 3 / `res_multistep` / `simple` 的模型原生标签流；30 steps / CFG 4.5 仅保留为历史对照实验参数。Krea 2 Turbo 使用 3~5 句纯英文自然语言且无负面。
+- 视频：新增 `/video-studio` 本地 AI 视频工作台。当前以 Wan 2.2 TI2V 5B 为首个固定配方和快速预演路线，前端只暴露镜头描述、画幅、3/5 秒、镜头运动与主体运动；Seed/负向词默认折叠。`routes/video.js` 负责资源扫描、白名单校验、固定 ComfyUI 工作流、长任务轮询/定向取消、视频安全转存与 Range 播放。MiniMax H3 作为“本地 768p + 原生立体声音频”的高上限最终成片路线进入模型目录；Wan 14B、HunyuanVideo 1.5、LTX-2.3 同样保持待适配。本机当前 ComfyUI 节点已支持，Wan/H3 权重尚未安装，未执行真实 GPU 出片。
 - 训练：训练参数覆盖、数据集枚举、配置副本、ETA 和日志均遵守 `AGENTS.md` 的白名单契约。
 - 桌面：Electron 仍是稳定回退路径；Tauri 2 Companion/Atelier 与 Native Live2D 已构建并通过代码级、release selftest 和有限真机验证，但正式发布验收仍受 D-10 阻断。
 
 ## 最近完成
 
 - **角色 Prompt 分层与轻量长期记忆**：新增 `server/chat-character-prompts.js`，无动态上下文时宁宁/夏目基础 Prompt 哈希保持不变；`aics_user_profile_v1` 保存称呼/关系/备注，`aics_chat_memories_v1` 保存用户主动固定、可编辑删除的事实。召回按角色隔离，使用 CJK bigram + ASCII 词匹配，最多 4 条/1000 字，动态内容在服务端再次白名单校验并标注为不可信事实。未引入 Artemis 的断链 Qdrant/mem0/Headroom 或未接入行为引擎。
-- **四底模一键 Prompt 编译**：WAI 保留官方质量/rating 前缀与场景 LoRA 权重；Anima Base 仅 score/LoRA 契约词保留下划线，Aesthetic 去掉全部质量/score；Krea 将 298 场景确定性分成主体、服装、动作、表情、环境和镜头/光照，输出 3~5 句英文散文。基础模式没有画师设置；专家模式新增 12 位白名单热门画师、最多混合 2 位，并分别渲染成 WAI Danbooru tag、Anima `@artist` 和 Krea 自然语言。三引擎共用唯一生成按钮和自动参数摘要。
+- **四底模一键 Prompt 编译**：WAI 保留官方质量/rating 前缀与场景 LoRA 权重；Anima Base 仅 score/LoRA 契约词保留下划线，Aesthetic 去掉全部质量/score；Krea 将 298 场景确定性分成主体、服装、动作、表情、环境和镜头/光照，输出 3~5 句英文散文。基础模式没有画师设置；专家模式提供 20 位热门画师、最多混合 2 位，并分别渲染成 WAI Danbooru tag、Anima `@artist` 和 Krea 自然语言；Muririn / Kobuichi 标注为项目实测，另 6 位新增项标注为待验证。三引擎共用唯一生成按钮和自动参数摘要。
 - **热门角色无 LoRA 创作模式（P0/P1 闭环）**：绘图页新增与宁宁/夏目 LoRA 路径正交的「热门角色」来源。`data/popular-characters.json` 首批 18 位角色（含身份词/服装/成人资格 fail closed），`data/scene-blueprints.json` 24 条角色无关通用蓝图（含仅 adult 角色可见的成人蓝图）。服务端 `routes/anima.js` 只为 `anima-aesthetic-v1.1` 开启 `noLora` capability，`buildWorkflow` 新增无 LoraLoader 的九节点分支（正/负 CLIPTextEncode + KSampler res_multistep/simple），原 LoRA 十节点、Krea family 与 UNKNOWN_LORA/INCOMPATIBLE_CHARACTER 校验全部保持。前端 `buildAnimaRequest`/`engineOnline`/LoRA 显隐全部按 capability 门控，不靠 model id 猜；草稿与历史扩展 `subject/characterId/outfitId/blueprintId/noLora` 字段并向后兼容旧草稿（无新 localStorage 键）。
 - Tauri 壳 P0-P7 的代码与打包链已收口：双窗口、sidecar、迁移、托盘、IPC、日志、维护 501 契约、staging 和 release 打包均有测试。
 - Native Live2D 路径已接入 Companion：可见启动请求 native，`--hidden` 或显式关闭时不加载；Atelier/普通页面默认 browser，缺桥时自动回退。

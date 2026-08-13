@@ -39,7 +39,7 @@
 - **格式**：单一逗号标签流，Danbooru 下划线。
 - **官方质量前缀**：`masterpiece, best quality, amazing quality` —— 必须**原样保留空格**、且全 Prompt 只出现一次（`src/utils/promptPolicy.ts` 的 `qualityPrefix` 对 SD 不再 norm 回下划线）。
 - **Rating**：`general` / `sensitive` / `nsfw`（按场景分级）出现且只出现一次。
-- **基础模式无手动画师层**：基础模式只选择场景与底模；风格、镜头、光照、构图和参数由场景与模型 profile 自动确定。专家模式可从 12 位白名单画师中最多混合 2 位。
+- **基础模式无手动画师层**：基础模式只选择场景与底模；风格、镜头、光照、构图和参数由场景与模型 profile 自动确定。专家模式可从 20 位白名单画师中最多混合 2 位。
 - **标准范例**：
   ```text
   masterpiece, best quality, amazing quality, general, 1girl, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, looking_back, smile, classroom_window, afternoon, clear_sky, medium_shot, window_light, <lora:ayachi_nene_v18_wd14:0.8>
@@ -109,7 +109,8 @@
 - WAI / Illustrious：使用规范 Danbooru tag，例如 `kantoku`、`mika_pikazo`。
 - Anima Base / Aesthetic：按官方协议使用 `@artist name`，例如 `@kantoku`、`@mika pikazo`。
 - Krea 2：转为英文自然语言风格短语，不注入 `@` 或下划线 tag。
-- 当前白名单：Kantoku、Shirabi、BUNBUN/abec、Morikura En、Anmi、Rella、Mika Pikazo、Nardack、Fuzichoco、HxxG、SWAV、so-bin。
+- 当前目录：Kantoku、Shirabi、BUNBUN/abec、Morikura En、Anmi、Rella、Mika Pikazo、Nardack、Fuzichoco、HxxG、SWAV、so-bin、Muririn、Kobuichi、Yoneyama Mai、Hiten、LAM、Tiv、lack、ASK。
+- Muririn / Kobuichi 已有本项目 Anima V20B 实图依据；Yoneyama Mai、Hiten、LAM、Tiv、lack、ASK 已核对规范画师标签，并以“待验证”状态进入专家候选，完成本机实图复核后再升级为稳定项。
 - 最多两位且默认关闭；强画师风格可能改变角色脸型、上色和服装细节，因此只放在专家模式。
 
 ---

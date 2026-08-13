@@ -74,13 +74,21 @@ test('prompt compiler renders curated artist styles in each model-native syntax'
 
 test('artist style catalog is unique, allowlisted, limited, and model-native', () => {
   const ids = artistCatalog.ARTIST_STYLE_OPTIONS.map(option => option.id);
-  assert.strictEqual(ids.length, 12);
+  assert.strictEqual(ids.length, 20);
   assert.strictEqual(new Set(ids).size, ids.length);
   assert.deepStrictEqual(artistStyles.normalizeArtistStyleIds(['kantoku', 'rella', 'swav', 'unknown']), ['kantoku', 'rella']);
   assert.deepStrictEqual(artistStyles.artistTagsForEngine(['mika_pikazo', 'so-bin'], 'sd'), ['mika_pikazo', 'so-bin']);
   assert.deepStrictEqual(artistStyles.artistTagsForEngine(['mika_pikazo', 'so-bin'], 'anima'), ['@mika pikazo', '@so-bin']);
-  assert.strictEqual(artistStyles.artistStyleProse(['bunbun', 'rella']), 'with visual styling inspired by BUNBUN and Rella');
+  assert.deepStrictEqual(artistStyles.artistTagsForEngine(['muririn', 'kobuichi'], 'anima'), ['@muririn', '@kobuichi']);
+  assert.deepStrictEqual(artistStyles.artistTagsForEngine(['hiten_(hitenkei)', 'ask_(askzy)'], 'anima'), ['@hiten', '@ask']);
+  assert.strictEqual(artistStyles.artistStyleProse(['bunbun', 'rella']), 'with visual styling inspired by Bunbun and Rella');
+  assert.strictEqual(artistStyles.artistStyleProse(['yoneyama_mai', 'lack']), 'with visual styling inspired by Yoneyama Mai and Lack');
   assert.deepStrictEqual(ids.filter(id => artistStyles.normalizeArtistStyleIds([id]).length !== 1), []);
+  assert.deepStrictEqual(
+    artistCatalog.ARTIST_STYLE_OPTIONS.filter(option => option.verification === 'project').map(option => option.id),
+    ['muririn', 'kobuichi'],
+  );
+  assert.strictEqual(artistCatalog.ARTIST_STYLE_OPTIONS.filter(option => option.verification === 'tag').length, 6);
 });
 
 test('Krea official style LoRA is allowlisted and family-scoped', () => {

@@ -101,6 +101,20 @@ fn register_shortcuts(app: &AppHandle) {
 
 
 fn main() {
+    // 进程最早期 DPI awareness：必须在任何窗口创建之前设置，否则 Win32 会
+    // 按系统 DPI 缩放窗口坐标。overlay 线程内的设置只覆盖自身创建时机，而
+    // Companion WebView 窗口在此前已由 wry 创建；进程级 per-monitor v2 让
+    // 所有窗口（含 overlay）统一使用物理像素坐标，避免 125/150% DPI 错位。
+    // Tauri/wry 若已设置则幂等；失败静默（overlay 线程仍有回退逻辑）。
+    unsafe {
+        use windows_sys::Win32::UI::HiDpi::{
+            SetProcessDpiAwareness, SetProcessDpiAwarenessContext,
+            DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2, PROCESS_PER_MONITOR_DPI_AWARE,
+        };
+        if SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2) == 0 {
+            let _ = SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
+        }
+    }
     let app = tauri::Builder::default()
         .plugin(tauri_plugin_notification::init())
         .plugin(tauri_plugin_global_shortcut::Builder::new().build())

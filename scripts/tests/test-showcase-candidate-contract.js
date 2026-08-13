@@ -41,27 +41,31 @@ const studioStoreSource = fs.readFileSync(
   'utf8',
 );
 
-test('batch plan is complete: 61 legacy + 800 grid = 861', () => {
+test('batch plan expands consistently with the curated artist catalog', () => {
   const plan = gen.planAllBatches(20260812);
-  assert.strictEqual(plan.length, 861, `expected 861 planned jobs, got ${plan.length}`);
+  const artistCount = artistCatalog.ARTIST_STYLE_OPTIONS.length;
+  const artistVariants = artistCount + 1;
+  const expectedAttempt1 = 800 + artistVariants * 3;
+  const expectedTotal = expectedAttempt1 + 14 + 6 + 2;
+  assert.strictEqual(plan.length, expectedTotal, `expected ${expectedTotal} planned jobs, got ${plan.length}`);
   const attempt1 = plan.filter(item => item.attempt === 1);
   const attempt2 = plan.filter(item => item.attempt === 2);
   const attempt3 = plan.filter(item => item.attempt === 3);
   const attempt4 = plan.filter(item => item.attempt === 4);
-  assert.strictEqual(attempt1.length, 839, 'attempt-1 covers all 61 legacy + 800 grid keys');
+  assert.strictEqual(attempt1.length, expectedAttempt1, 'attempt-1 covers all catalog-derived legacy and grid keys');
   assert.strictEqual(attempt2.length, 14);
   assert.strictEqual(attempt3.length, 6);
   assert.strictEqual(attempt4.length, 2);
   const legacy1 = attempt1.filter(item => item.batch !== 'popular-grid' && item.batch !== 'artist-grid');
   const counts = legacy1.reduce((acc, item) => { acc[item.batch] = (acc[item.batch] || 0) + 1; return acc; }, {});
-  assert.deepStrictEqual(counts, { artist: 13, popular: 18, 'latest-lora': 8 });
+  assert.deepStrictEqual(counts, { artist: artistVariants, popular: 18, 'latest-lora': 8 });
   const gridCounts = plan.reduce((acc, item) => { acc[item.batch] = (acc[item.batch] || 0) + 1; return acc; }, {});
   assert.strictEqual(gridCounts['popular-grid'], 774, 'popular-grid must plan 774 (fail-closed 双引擎矩阵)');
-  assert.strictEqual(gridCounts['artist-grid'], 26, 'artist-grid must plan 26 (13 × 双引擎)');
+  assert.strictEqual(gridCounts['artist-grid'], artistVariants * 2, 'artist-grid must plan every artist + baseline across two engines');
   const recordIds = new Set(plan.map(item => item.recordId));
   assert.strictEqual(recordIds.size, plan.length, 'recordIds must be unique');
   const keys = new Set(plan.map(item => item.key));
-  assert.strictEqual(keys.size, 839, '839 distinct candidate keys across all batches');
+  assert.strictEqual(keys.size, expectedAttempt1, 'attempt-1 key count must match the catalog-derived plan');
   assert.ok(plan.every(item => item.promptHealth && typeof item.promptHealth.ok === 'boolean'),
     'every candidate must carry an auditable prompt health report');
 });
@@ -368,7 +372,7 @@ test('CLI attempt filter: --attempt 3 selects only the six attempt-3 candidates'
   // No attempt-1/2 is selected when --attempt 3 is applied.
   assert.ok(all3.every(item => item.attempt === 3 && !item.supersedes.includes('attempt-3')));
   const empty = gen.filterPlanned(plan, {});
-  assert.strictEqual(empty.length, 861, 'no filter returns the whole plan');
+  assert.strictEqual(empty.length, plan.length, 'no filter returns the whole plan');
 });
 
 test('CLI attempt filter: --attempt 4 selects exactly the two attempt-4 candidates', () => {
@@ -392,12 +396,12 @@ test('CLI attempt filter: --attempt 4 selects exactly the two attempt-4 candidat
   assert.ok(mixed.every(item => item.attempt === 1 || item.attempt === 4));
 });
 
-test('artist batch: 12 curated artists + 1 no-artist baseline, one artist tag each', () => {
-  assert.strictEqual(artistCatalog.ARTIST_STYLE_OPTIONS.length, 12, 'exactly 12 artists in catalog');
+test('artist batch: 20 curated artists + 1 no-artist baseline, one artist tag each', () => {
+  assert.strictEqual(artistCatalog.ARTIST_STYLE_OPTIONS.length, 20, 'exactly 20 artists in catalog');
   const artist = gen.artistBatch(20260812);
-  assert.strictEqual(artist.length, 13);
+  assert.strictEqual(artist.length, 21);
   const withTags = artist.filter(item => item.artistId);
-  assert.strictEqual(withTags.length, 12);
+  assert.strictEqual(withTags.length, 20);
   const baseline = artist.find(item => !item.artistId);
   assert.ok(baseline, 'must include a no-artist baseline');
   // 同 seed / 同 WAI 参数，仅画师 tag 不同。
@@ -407,13 +411,13 @@ test('artist batch: 12 curated artists + 1 no-artist baseline, one artist tag ea
   for (const item of withTags) {
     const option = artistCatalog.ARTIST_STYLE_OPTIONS.find(o => o.id === item.artistId);
     assert.ok(option, `unknown artist ${item.artistId}`);
-    assert.ok(/^[a-z0-9_-]+$/.test(option.waiTag), `WAI tag must be a plain Danbooru tag: ${option.waiTag}`);
+    assert.ok(/^[a-z0-9_() -]+$/.test(option.waiTag), `WAI tag must be a safe canonical Danbooru tag: ${option.waiTag}`);
     assert.ok(/^@.+/.test(option.animaTag), `Anima tag must start with @: ${option.animaTag}`);
     assert.ok(item.prompt.includes(option.waiTag), `prompt must embed WAI tag ${option.waiTag}`);
     assert.strictEqual(item.prompt, `${basePrompt}, ${option.waiTag}`,
       'only the artist tag may differ between variants');
     // Anima tag syntax derived from the same catalog (space-form @artist).
-    assert.deepStrictEqual(artistStyles.artistTagsForEngine([option.id], 'anima'), [`@${option.id.replace(/_/g, ' ')}`]);
+    assert.deepStrictEqual(artistStyles.artistTagsForEngine([option.id], 'anima'), [option.animaTag]);
   }
   // Neutral subject must never leak studio LoRA anchors.
   for (const item of artist) {

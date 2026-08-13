@@ -114,20 +114,20 @@
         </template>
       </div>
     </section>
-  </article>
 
-  <!-- 沉浸查看器 -->
-  <Teleport to="body">
-    <div
-      v-show="viewerIndex >= 0"
-      class="art-viewer"
-      :class="{ open: viewerIndex >= 0, 'info-open': infoOpen }"
-      role="dialog"
-      aria-modal="true"
-      :aria-hidden="viewerIndex >= 0 ? 'false' : 'true'"
-      aria-label="作品观赏模式"
-      ref="viewerEl"
-    >
+    <!-- 沉浸查看器（Teleport 渲染到 body；放在根元素内保持单根，
+         否则多根组件不会继承 AppLayout 注入的 route-view class） -->
+    <Teleport to="body">
+      <div
+        v-show="viewerIndex >= 0"
+        class="art-viewer"
+        :class="{ open: viewerIndex >= 0, 'info-open': infoOpen }"
+        role="dialog"
+        aria-modal="true"
+        :aria-hidden="viewerIndex >= 0 ? 'false' : 'true'"
+        aria-label="作品观赏模式"
+        ref="viewerEl"
+      >
       <section class="viewer-stage" @click.self="infoOpen = false">
         <button class="viewer-close viewer-close-on-art" type="button" aria-label="关闭" @click="closeViewer" ref="closeBtn">×</button>
         <button class="viewer-nav viewer-prev" type="button" aria-label="上一幅" :disabled="viewerIndex <= 0" @click="step(-1)">‹</button>
@@ -172,6 +172,7 @@
       </aside>
     </div>
   </Teleport>
+  </article>
 
 </template>
 

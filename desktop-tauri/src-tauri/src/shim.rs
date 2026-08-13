@@ -153,6 +153,7 @@ pub const COMPANION_SHIM_JS: &str = r#"
     onMotionFailed: (cb) => on('aics:live2d:motion-failed', cb),
     onHitTest: (cb) => on('aics:live2d:hit-test', cb),
     onEntranceFinished: (cb) => on('aics:live2d:entrance-finished', cb),
+    onStopped: (cb) => on('aics:live2d:stopped', cb),
     off: (id) => off(id),
   }
 })()

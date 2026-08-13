@@ -139,8 +139,10 @@ emotionRuntime 参数 hack 照旧），原生路径只发意图（口型电平�
 - **Rust 侧接入**：桥按 `src/types/live2dNative.ts` 实现并注入
   `window.aicsLive2dNative` 后，`?live2dBackend=native` 或
   `data-live2d-backend="native"` 即启用原生路径，前端无需再改。
-- **窗口 bounds 替换**：`windowBoundsFromScreen` 目前用
-  `window.screenX/Y × dpr` 兜底（DPR>1 是近似值），Rust 桥就绪后应改由桥注入
-  物理像素窗口 bounds。
+- ~~**窗口 bounds 替换**~~ ✅ 已完成（2026-08-13 接手收尾）：CompanionView
+  经 `desktopState.bounds`（IPC）读取窗口物理像素 bounds，通过
+  `ChatCharacterStage.setDesktopWindowBounds` → `useLive2D.setDesktopWindowBounds`
+  写入模块级状态；`windowBoundsFromScreen` 保留为未注入时的兜底，原生 overlay
+  布局（`layout()`）在 bounds 注入前暂停，不再用 `screenX × dpr` 猜首帧。
 - **内存收益验收**：Rust overlay 完成后跑 `measure-live2d-memory.js` 与
   本批基线（JS heap ~30MB）对比。

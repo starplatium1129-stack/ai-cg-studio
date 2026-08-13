@@ -20,6 +20,12 @@ import {
 } from './types.ts'
 import type { Live2DMotionPriority, Live2DNativeBridge } from '@/types/live2dNative'
 
+/**
+ * 原生渲染线程停止错误名。useLive2D 依此区分"渲染线程退出"与普通模型
+ * 错误：前者 overlay 不可用，应显示错误并可重试重新拉起线程。
+ */
+export const NATIVE_RENDER_STOPPED = 'NATIVE_RENDER_STOPPED'
+
 export type NativeBridgeProvider = () => Live2DNativeBridge | null | undefined
 
 function defaultBridgeProvider(): Live2DNativeBridge | null | undefined {
@@ -57,6 +63,7 @@ export function createNativeLive2DBackend(provider: NativeBridgeProvider = defau
       const hitTestListeners = new Set<(areas: string[]) => void>()
       const motionStartedListeners = new Set<() => void>()
       const motionFailedListeners = new Set<(info: { group: string; index?: number; reason: string }) => void>()
+      const errorListeners = new Set<(error: Error) => void>()
 
       const pushFrame = () => {
         void Promise.resolve(bridge.setFrame({ rect: lastRect, visible: lastVisible, opacity: 1 })).catch(() => {})
@@ -91,6 +98,14 @@ export function createNativeLive2DBackend(provider: NativeBridgeProvider = defau
       subscriptions.push(bridge.onMotionFailed((info) => {
         if (destroyed) return
         for (const listener of motionFailedListeners) listener(info)
+      }))
+      // 渲染线程停止（异常退出/通道断开/窗口销毁）：overlay 与模型不可用，
+      // 转发给 useLive2D 的错误回调；重试会重新拉起线程（ensure_overlay）。
+      subscriptions.push(bridge.onStopped((info) => {
+        if (destroyed) return
+        const error = new Error(`原生渲染线程已停止：${info?.reason ?? '未知原因'}`)
+        error.name = NATIVE_RENDER_STOPPED
+        for (const listener of errorListeners) listener(error)
       }))
 
       const handle: Live2DModelHandle = {
@@ -128,9 +143,8 @@ export function createNativeLive2DBackend(provider: NativeBridgeProvider = defau
           // registered afterward, so command success is the durable ready signal.
           if (!destroyed) callback(handle)
         },
-        onModelError(_callback) {
-          // 桥没有独立错误事件：加载失败已由 connect 的 setCharacter 结果反映；
-          // 运行期错误走 onMotionFailed / onEntranceFinished 之外的退化提示。
+        onModelError(callback) {
+          errorListeners.add(callback)
         },
         setPaused(paused) {
           lastVisible = !paused
@@ -172,6 +186,7 @@ export function createNativeLive2DBackend(provider: NativeBridgeProvider = defau
           hitTestListeners.clear()
           motionStartedListeners.clear()
           motionFailedListeners.clear()
+          errorListeners.clear()
           for (const id of subscriptions) bridge.off(id)
           subscriptions.length = 0
           void bridge.destroy().catch(() => { /* 析构期忽略 */ })

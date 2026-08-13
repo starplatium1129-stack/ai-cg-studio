@@ -169,23 +169,25 @@
         加载更多（剩余 {{ filtered.length - visible }}）
       </button>
     </div>
-  </article>
 
-  <Teleport to="body">
-    <div v-show="drawerScene" ref="drawerEl" class="story-drawer" role="dialog" aria-modal="true" aria-label="场景故事"
-      :class="{ open: !!drawerScene }" @click.self="drawerScene = null">
-      <div class="story-card" v-if="drawerScene">
-        <h3><ArchiveIcon name="cherry" /> {{ drawerScene.title }}</h3>
-        <div class="story-meta">{{ charName(drawerScene) }} · {{ seasonLabel(drawerScene.season) }} · {{ timeLabel(drawerScene.timeOfDay) }} · {{ drawerScene.emotion }}</div>
-        <div class="story-body">{{ drawerScene.story || '' }}</div>
-        <div class="story-actions">
-          <a class="btn btn-primary" :href="quickCreateUrl(drawerScene.id)"><ArchiveIcon name="lightning" /> 快速出图</a>
-          <RouterLink class="btn btn-ghost" :to="'/prompt-builder?scene=' + encodeURIComponent(drawerScene.id) + '&step=4&generate=1'"><ArchiveIcon name="clap" /> 调整后生成</RouterLink>
-          <button class="btn btn-ghost" type="button" @click="drawerScene = null">关闭</button>
+    <!-- 故事抽屉（Teleport 渲染到 body；放在根元素内保持单根，
+         否则多根组件不会继承 AppLayout 注入的 route-view class） -->
+    <Teleport to="body">
+      <div v-show="drawerScene" ref="drawerEl" class="story-drawer" role="dialog" aria-modal="true" aria-label="场景故事"
+        :class="{ open: !!drawerScene }" @click.self="drawerScene = null">
+        <div class="story-card" v-if="drawerScene">
+          <h3><ArchiveIcon name="cherry" /> {{ drawerScene.title }}</h3>
+          <div class="story-meta">{{ charName(drawerScene) }} · {{ seasonLabel(drawerScene.season) }} · {{ timeLabel(drawerScene.timeOfDay) }} · {{ drawerScene.emotion }}</div>
+          <div class="story-body">{{ drawerScene.story || '' }}</div>
+          <div class="story-actions">
+            <a class="btn btn-primary" :href="quickCreateUrl(drawerScene.id)"><ArchiveIcon name="lightning" /> 快速出图</a>
+            <RouterLink class="btn btn-ghost" :to="'/prompt-builder?scene=' + encodeURIComponent(drawerScene.id) + '&step=4&generate=1'"><ArchiveIcon name="clap" /> 调整后生成</RouterLink>
+            <button class="btn btn-ghost" type="button" @click="drawerScene = null">关闭</button>
+          </div>
         </div>
       </div>
-    </div>
-  </Teleport>
+    </Teleport>
+  </article>
 </template>
 
 <script setup lang="ts">

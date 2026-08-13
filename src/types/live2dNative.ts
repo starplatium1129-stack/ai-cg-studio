@@ -66,6 +66,8 @@ export interface Live2DNativeEvents {
   onHitTest(listener: (areas: Live2DHitArea[]) => void): number
   /** 入场动作结束（前端恢复常规状态提示） */
   onEntranceFinished(listener: () => void): number
+  /** 渲染线程停止（异常退出/通道断开/窗口销毁；前端显示错误并允许重试） */
+  onStopped(listener: (info: { reason: string }) => void): number
   off(subscriptionId: number): void
 }
 

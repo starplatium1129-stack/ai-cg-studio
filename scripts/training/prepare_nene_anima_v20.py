@@ -128,7 +128,7 @@ def normalize_tag(tag: str) -> str:
 
 
 def safety_tag(entry: dict[str, Any], original: list[str]) -> str:
-    if entry["r18"]:
+    if entry.get("r18"):
         return "explicit" if EXPLICIT_TAGS.intersection(original) else "nsfw"
     return "sensitive" if SENSITIVE_TAGS.intersection(original) else "safe"
 
@@ -140,7 +140,9 @@ def anima_caption(entry: dict[str, Any]) -> str:
     lighting = [tag for tag in original if tag in LIGHTING_TAGS]
 
     prefix = [safety_tag(entry, original)]
-    if entry["r18"]:
+    # 评级词：R18 样张保留 nene_r18（exact-token 合同），但不再按 r18
+    # 分区隔离训练（2026-08-13 决策：统一训练，不隔离质量先验）。
+    if entry.get("r18"):
         prefix.append("nene_r18")
     prefix.append("ayachi_nene")
     prefix.extend(controls)
@@ -170,10 +172,10 @@ def anima_caption(entry: dict[str, Any]) -> str:
 
 
 def output_partition(entry: dict[str, Any], holdout: set[str]) -> str:
-    group = str(entry["review"]["dedupe_group"])
+    group = str(entry.get("dedupe_group", ""))
     if group in holdout:
-        return "validation_r18" if entry["r18"] else "validation_safe"
-    return "train_r18" if entry["r18"] else "train_safe"
+        return "validation"
+    return "train"
 
 
 def load_manifest(path: Path) -> dict[str, Any]:
@@ -187,7 +189,7 @@ def validate_split(entries: list[dict[str, Any]], holdout: set[str]) -> None:
     groups: dict[str, set[str]] = defaultdict(set)
     controls_by_group: dict[str, set[str]] = defaultdict(set)
     for entry in entries:
-        group = str(entry["review"]["dedupe_group"])
+        group = str(entry.get("dedupe_group", ""))
         groups[group].add(output_partition(entry, holdout).split("_", 1)[0])
         controls_by_group[group].update(entry.get("tagging", {}).get("custom_control_tags", []))
 
@@ -220,7 +222,7 @@ def build_dataset(source_manifest: Path, output: Path, holdout: set[str]) -> dic
 
     if output.exists():
         shutil.rmtree(output)
-    for partition in ("train_safe", "train_r18", "validation_safe", "validation_r18"):
+    for partition in ("train", "validation"):
         (output / partition).mkdir(parents=True, exist_ok=True)
 
     emitted: list[dict[str, Any]] = []
@@ -231,7 +233,7 @@ def build_dataset(source_manifest: Path, output: Path, holdout: set[str]) -> dic
         source_image = source_root / str(entry["file"])
         if source_image.suffix.lower() not in IMAGE_SUFFIXES or not source_image.is_file():
             raise RuntimeError(f"missing source image: {source_image}")
-        expected_hash = str(entry["export_sha256"])
+        expected_hash = str(entry["sha256"])
         actual_hash = sha256(source_image)
         if actual_hash != expected_hash:
             raise RuntimeError(f"source hash mismatch: {source_image}")
@@ -247,7 +249,7 @@ def build_dataset(source_manifest: Path, output: Path, holdout: set[str]) -> dic
         if sha256(target_image) != actual_hash:
             raise RuntimeError(f"copy changed image bytes: {target_image}")
 
-        group = str(entry["review"]["dedupe_group"])
+        group = str(entry.get("dedupe_group", ""))
         group_partitions[group] = partition.split("_", 1)[0]
         counts[partition] += 1
         safety_counts[emitted_safety] += 1
@@ -256,12 +258,12 @@ def build_dataset(source_manifest: Path, output: Path, holdout: set[str]) -> dic
                 "id": entry["id"],
                 "dedupe_group": group,
                 "partition": partition,
-                "full_body": bool(entry["review"].get("full_body")),
+                "full_body": bool(entry.get("full_body")),
                 "source_file": str(source_image),
                 "file": str(target_image.relative_to(output)).replace("\\", "/"),
                 "sha256": actual_hash,
-                "r18": bool(entry["r18"]),
-                "original_caption": entry["caption"],
+                "r18": bool(entry.get("r18", False)),
+                "original_caption": entry.get("caption", ""),
                 "caption": caption,
             }
         )
@@ -272,7 +274,7 @@ def build_dataset(source_manifest: Path, output: Path, holdout: set[str]) -> dic
         "source_manifest": str(source_manifest),
         "source_manifest_sha256": sha256(source_manifest),
         "split_policy": {
-            "unit": "review.dedupe_group",
+            "unit": "dedupe_group",
             "seed": 20260809,
             "holdout_groups": sorted(holdout),
             "group_partitions": dict(sorted(group_partitions.items())),
@@ -370,7 +372,7 @@ def concept_from(
 def build_config(base_config: Path, dataset: Path, destination: Path) -> dict[str, Any]:
     config = json.loads(base_config.read_text(encoding="utf-8-sig"))
     template = config["concepts"][0]
-    run_name = "ayachi_nene_v20_anima_scientific_b"
+    run_name = "ayachi_nene_v20_anima_scientific_unified"
     ai_root = base_config.parents[2]
     one_trainer = base_config.parents[1]
 
@@ -415,21 +417,13 @@ def build_config(base_config: Path, dataset: Path, destination: Path) -> dict[st
     config["optimizer"]["weight_decay"] = 0.01
     config["optimizer"]["stochastic_rounding"] = True
     config["concepts"] = [
-        concept_from(template, "nene_v20_train_safe", dataset / "train_safe", "STANDARD", 2026080901),
-        concept_from(template, "nene_v20_train_r18", dataset / "train_r18", "STANDARD", 2026080902),
+        concept_from(template, "nene_v20_train", dataset / "train", "STANDARD", 2026080901),
         concept_from(
             template,
-            "nene_v20_validation_safe",
-            dataset / "validation_safe",
+            "nene_v20_validation",
+            dataset / "validation",
             "VALIDATION",
-            2026080903,
-        ),
-        concept_from(
-            template,
-            "nene_v20_validation_r18",
-            dataset / "validation_r18",
-            "VALIDATION",
-            2026080904,
+            2026080902,
         ),
     ]
 
@@ -439,7 +433,7 @@ def build_config(base_config: Path, dataset: Path, destination: Path) -> dict[st
         f"{positive_prefix}, safe, 1girl, ayachi_nene, white hair, very long hair, low twintails, purple eyes, ahoge, hair ribbon, portrait, upper body, looking at viewer, simple background",
         f"{positive_prefix}, safe, 1girl, ayachi_nene, nene_school_uniform, white hair, very long hair, low twintails, purple eyes, full body, standing, city street",
         f"{positive_prefix}, safe, 1girl, ayachi_nene, nene_witch_canonical, white hair, purple eyes, full body, dynamic pose, moonlit forest",
-        f"{positive_prefix}, explicit, nene_r18, 1girl, ayachi_nene, white hair, purple eyes, solo, full body, simple background",
+        f"{positive_prefix}, safe, 1girl, ayachi_nene, nene_witch_canonical, white hair, purple eyes, full body, dynamic pose, moonlit forest",
     )
     for sample, prompt in zip(config["samples"], sample_prompts):
         sample["prompt"] = prompt

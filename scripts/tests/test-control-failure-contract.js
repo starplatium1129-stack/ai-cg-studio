@@ -242,12 +242,16 @@ test('control contract: ComfyUI start/stop uses managed ownership and shared ope
   var config = baseConfig(projectRoot, runtime);
   config.AI_WORKSPACE_ROOT = path.join(temporaryRoot, 'AI workspace');
   var comfyOnline = false;
+  var desiredComfyDuringStop = null;
   var calls = [];
   var router = createControlRouter(config, function () { return { tunnelUrl:'' }; }, {
     runScriptAsync:async function (script, args) {
       calls.push({ script:script, args:args });
       if (path.basename(script) === 'managed-comfyui.ps1') {
         var action = args[args.indexOf('-Action') + 1];
+        if (action === 'Stop') {
+          desiredComfyDuringStop = JSON.parse(fs.readFileSync(runtime.config, 'utf8')).managedServices.comfy;
+        }
         comfyOnline = action === 'Start';
         return { ok:true, message:JSON.stringify({ ok:true, managed:comfyOnline, state:comfyOnline ? 'ready' : 'stopped', message:'mock comfy' }) };
       }
@@ -280,6 +284,7 @@ test('control contract: ComfyUI start/stop uses managed ownership and shared ope
     }, 'mock ComfyUI stop');
     assert.strictEqual(stopped.comfyOnline, false);
     assert.strictEqual(stopped.comfyManaged, false);
+    assert.strictEqual(desiredComfyDuringStop, false, 'explicit stop must disable watchdog recovery before terminating ComfyUI');
     assert.strictEqual(JSON.parse(fs.readFileSync(runtime.config, 'utf8')).managedServices.comfy, false);
   } finally {
     if (router.close) router.close();
@@ -296,6 +301,12 @@ test('managed runtime scripts require injected paths and protect external owners
   assert.ok(comfy.includes('Test-ManagedProcess') && comfy.includes('taskkill.exe /PID'));
   assert.ok(webui.includes('Test-ManagedProcess') && webui.includes('taskkill.exe /PID'));
   assert.ok(comfy.includes('/system_stats') && webui.includes('/sdapi/v1/sd-models'));
+  assert.ok(webui.includes("'--nowebui'") && webui.includes("'--skip-load-model-at-start'"),
+    'managed WebUI must expose its API before lazily loading the large checkpoint');
+  assert.ok(webui.includes('--(?:api|nowebui)'),
+    'managed WebUI ownership detection must accept API-only background mode');
+  assert.ok(webui.includes('Wait-Ready([int]$seconds = 300)'),
+    'managed WebUI must allow a real WAI cold load to finish before timing out');
 });
 
 test('managed-comfyui script does not stop an external healthy process', async () => {

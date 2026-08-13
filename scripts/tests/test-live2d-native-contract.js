@@ -23,6 +23,7 @@ test('Native Companion owns the overlay and Atelier stays browser-only', () => {
   assert.match(shim, /TAURI_API_UNAVAILABLE/)
   assert.match(shim, /entry\.cancelled/)
   assert.match(shim, /return id/)
+  assert.match(shim, /onStopped: \(cb\) => on\('aics:live2d:stopped', cb\)/)
   assert.match(main, /arg == "--hidden"/)
   assert.match(main, /create_companion_window\(&handle, &url, shim, show_on_start\)/)
 })
@@ -39,6 +40,11 @@ test('Native IPC payload and render ownership contracts stay aligned', () => {
   assert.doesNotMatch(overlay, /index\.unwrap_or\(0\)/)
   assert.match(overlay, /if character == "natsume" \{\s*-0\.5 \* level/)
   assert.match(overlay, /ctx\.advance_motion\(dt, app\.as_ref\(\)\)/)
+  // 渲染线程退出必须广播 stopped（带 reason），前端才知 overlay 不可用并可重试。
+  assert.match(overlay, /"aics:live2d:stopped"/)
+  assert.match(overlay, /fn emit_stopped\(app: Option<&AppHandle>, reason: &str\)/)
+  assert.match(overlay, /stopped_reason = Some\(format!\("render frame failed: \{e\}"\)\)/)
+  assert.match(overlay, /emit_stopped\(app\.as_ref\(\), &reason\)/)
   // overlay 位于透明 Companion WebView 下方，禁止用 SetWindowRgn 给控件挖洞：
   // Win32 region 同时裁剪 DComp 画面，会在角色身上留下矩形缺口。
   assert.doesNotMatch(overlay, /SetWindowRgn/)
@@ -77,6 +83,10 @@ test('Native IPC payload and render ownership contracts stay aligned', () => {
   assert.match(mainShared, /aics:visibility/, 'window visibility must be emitted by the shell')
   assert.match(mainShared, /aics:window-bounds/)
   assert.match(main, /format!\("\{\}\/companion", url\.trim_end_matches\('\/'\)\)/)
+  // 进程最早期 DPI awareness：必须在任何窗口创建前设置，覆盖 Companion WebView。
+  assert.ok(main.indexOf('SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2)')
+    < main.indexOf('tauri::Builder::default()'),
+    'DPI awareness 必须在 Builder 构建（窗口创建）之前设置')
   assert.match(bridge, /on_battery_power\(\)/)
   assert.doesNotMatch(main, /app\.manage\(state\.paths\.clone\(\)\)/)
 })

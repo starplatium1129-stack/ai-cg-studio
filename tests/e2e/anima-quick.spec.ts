@@ -22,6 +22,8 @@ test('anima engine: main generate shows result in main frame through mock ComfyU
   await page.goto(`${mockGateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
   await page.waitForTimeout(2000)
 
+  // 受控路线：引擎切换只在专家模式渲染
+  await page.getByRole('button', { name: '专家模式', exact: true }).click()
   const animaEngine = page.locator('.engine-switch button').nth(1)
   await expect(animaEngine).toBeEnabled({ timeout: 30000 })
   await animaEngine.click()
@@ -67,8 +69,8 @@ test('anima expert parameters and unified button share one parent-owned request 
   await request.post(`${mockComfy}/__mock/fault`, { data: { renderMs: 10 } })
   await page.goto(`${mockGateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
   await page.waitForTimeout(1800)
-  await page.locator('.engine-switch button').nth(1).click()
   await page.getByRole('button', { name: '专家模式', exact: true }).click()
+  await page.locator('.engine-switch button').nth(1).click()
   await page.locator('.anima-quick-panel > summary').click()
   await page.locator('.story-input').fill('宁宁在咖啡馆里穿着魔女服，对我微笑')
   await page.locator('.anima-quick-panel .anima-seed').fill('424242')
@@ -82,7 +84,8 @@ test('anima expert parameters and unified button share one parent-owned request 
   await expect.poll(() => bodies.length, { timeout: 30000 }).toBe(2)
   expect(bodies[0]).toEqual(bodies[1])
   expect((bodies[0] as { profileId?: string }).profileId).toBeUndefined()
-  expect((bodies[0] as { character: string }).character).toBe('nene')
+  // 受控路线（6be3a95）：宁宁默认 LoRA 为 V20B，请求角色为 nene_b 变体
+  expect((bodies[0] as { character: string }).character).toBe('nene_b')
 })
 
 test('anima derives the promoted Natsume v20 LoRA and blocks triad', async ({ page, request }) => {
@@ -100,6 +103,7 @@ test('anima derives the promoted Natsume v20 LoRA and blocks triad', async ({ pa
   await page.goto(`${mockGateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
   await page.waitForTimeout(2200)
   await page.locator('#stepChar .char-btn').filter({ hasText: '夏目' }).click()
+  await page.getByRole('button', { name: '专家模式', exact: true }).click()
   await page.locator('.engine-switch button').nth(1).click()
   await expect(page.locator('.anima-preview-note')).toHaveCount(0)
   await page.locator('.story-input').fill('夏目在咖啡馆里端来一杯咖啡')
@@ -139,6 +143,7 @@ test('Krea 2 is a separate natural-language request with no LoRA or negative fie
   await request.post(`${mockComfy}/__mock/fault`, { data: { renderMs: 10 } })
   await page.goto(`${mockGateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
   await page.waitForTimeout(1800)
+  await page.getByRole('button', { name: '专家模式', exact: true }).click()
   await page.locator('.engine-switch button').nth(2).click()
   await expect(page.locator('.engine-switch button').nth(2)).toHaveClass(/active/)
   await page.locator('#visualDescription').fill('A girl stands beside a rain-covered cafe window, warm interior light behind her.')
@@ -152,6 +157,7 @@ test('Krea 2 is a separate natural-language request with no LoRA or negative fie
 test('Krea 2 and Anima both block triad mode', async ({ page }) => {
   await page.goto(`http://127.0.0.1:${MOCK_PORTS.gateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
   await page.waitForTimeout(1200)
+  await page.getByRole('button', { name: '专家模式', exact: true }).click()
   await page.locator('#stepChar .char-btn').filter({ hasText: '双人' }).click()
   await expect(page.locator('.engine-switch button').nth(1)).toBeDisabled()
   await expect(page.locator('.engine-switch button').nth(2)).toBeDisabled()
@@ -187,7 +193,8 @@ test('popular creator · Anima no-LoRA: loraId omitted, workflow has no LoraLoad
   await page.locator('#visualDescription').fill('The girl gently holds a bouquet of flowers, petals drifting onto her shoulder.')
   await expect(page.locator('#visualDescription')).toHaveValue(/bouquet/)
 
-  // 进入热门模式应自动切到 Anima；SD 按钮被禁用。
+  // 进入热门模式应自动切到 Anima；SD 按钮被禁用（引擎切换在专家模式渲染）。
+  await page.getByRole('button', { name: '专家模式', exact: true }).click()
   await expect(page.locator('.engine-switch button').nth(1)).toHaveClass(/active/)
   await expect(page.locator('.engine-switch button').nth(0)).toBeDisabled()
 
@@ -234,6 +241,7 @@ test('popular creator · Krea 2 request has no negative and no LoRA', async ({ p
   await page.locator('.char-source-btn').filter({ hasText: '热门角色' }).click()
   await page.locator('.popular-card').filter({ hasText: '雷电将军' }).click()
   await page.locator('.blueprint-card').first().click()
+  await page.getByRole('button', { name: '专家模式', exact: true }).click()
   await page.locator('.engine-switch button').nth(2).click()
   await expect(page.locator('.engine-switch button').nth(2)).toHaveClass(/active/)
 
@@ -268,6 +276,7 @@ test('popular creator · Krea style is inferred automatically from the selected 
   await page.locator('.popular-card').filter({ hasText: '雷电将军' }).click()
   await page.locator('.blueprint-reco-btn').filter({ hasText: '查看全部' }).click()
   await page.locator('.blueprint-card').filter({ hasText: '花海逆光' }).first().click()
+  await page.getByRole('button', { name: '专家模式', exact: true }).click()
   await page.locator('.engine-switch button').nth(2).click()
   await expect(page.locator('.engine-switch button').nth(2)).toHaveClass(/active/)
 
@@ -342,6 +351,7 @@ test('popular creator · draft round-trips subject/outfit/blueprint through relo
   await expect(page.locator('.popular-card.active')).toContainText('雷电将军')
   await expect(page.locator('.outfit-chip.active')).toHaveCount(1)
   await expect(page.locator('.blueprint-card.active')).toHaveCount(1)
+  await page.getByRole('button', { name: '专家模式', exact: true }).click()
   await expect(page.locator('.engine-switch button').nth(1)).toHaveClass(/active/)
 })
 
@@ -383,6 +393,7 @@ test('popular creator · select blueprint after Krea is active clamps size to Kr
   await page.locator('.char-source-btn').filter({ hasText: '热门角色' }).click()
   await page.locator('.popular-card').filter({ hasText: '雷电将军' }).click()
   // 先切 Krea，再选场景：blueprint 推荐尺寸必须收敛到 Krea 白名单，不能 400。
+  await page.getByRole('button', { name: '专家模式', exact: true }).click()
   await page.locator('.engine-switch button').nth(2).click()
   await expect(page.locator('.engine-switch button').nth(2)).toHaveClass(/active/)
   await page.locator('.blueprint-card').first().click()
@@ -427,8 +438,9 @@ test('popular creator · switching back to studio immediately restores the nene 
   await expect(genBtn).toBeEnabled({ timeout: 30000 })
   await genBtn.click()
   await expect.poll(() => bodies.length, { timeout: 30000 }).toBe(1)
-  expect(bodies[0].character).toBe('nene')
-  expect(bodies[0].loraId).toBe('L_NENE_V20_ANIMA')
+  // 受控路线（6be3a95）：宁宁默认 LoRA 已升级为 V20B，请求角色为 nene_b 变体
+  expect(bodies[0].character).toBe('nene_b')
+  expect(bodies[0].loraId).toBe('L_NENE_V20B_ANIMA')
   await expect(page.locator('.result-image-wrap img.result-image')).toHaveCount(1, { timeout: 30000 })
 })
 

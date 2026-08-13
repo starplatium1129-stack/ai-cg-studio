@@ -33,7 +33,7 @@ function Test-ManagedProcess($processInfo) {
     if (-not $processInfo -or -not $processInfo.CommandLine) { return $false }
     return $processInfo.CommandLine -match [Regex]::Escape($pythonPath) -and
         $processInfo.CommandLine -match [Regex]::Escape($launchPath) -and
-        $processInfo.CommandLine -match '(?i)(?:^|\s)--api(?:\s|$)' -and
+        $processInfo.CommandLine -match '(?i)(?:^|\s)--(?:api|nowebui)(?:\s|$)' -and
         $processInfo.CommandLine -match ('(?i)(?:^|\s)--port\s+' + $port + '(?:\s|$)')
 }
 function Get-ManagedProcess {
@@ -51,7 +51,7 @@ function Test-WebUIApi {
         return $response.StatusCode -ge 200 -and $response.StatusCode -lt 300
     } catch { return $false }
 }
-function Wait-Ready([int]$seconds = 90) {
+function Wait-Ready([int]$seconds = 300) {
     $deadline = (Get-Date).AddSeconds($seconds)
     do { if (Test-WebUIApi) { return $true }; Start-Sleep -Milliseconds 500 } while ((Get-Date) -lt $deadline)
     return $false
@@ -78,7 +78,8 @@ if ($managedProcess) { Write-Result $true 'starting' $true 'WebUI is still start
 if (-not (Test-Path -LiteralPath $pythonPath -PathType Leaf) -or -not (Test-Path -LiteralPath $launchPath -PathType Leaf)) {
     Write-Result $false 'unavailable' $false 'Configured Stability Matrix reForge installation was not found.'; exit 1
 }
-$arguments = @('-u', ('"{0}"' -f $launchPath), '--cuda-malloc', '--cuda-stream', '--skip-install', '--api', '--port', $port,
+$arguments = @('-u', ('"{0}"' -f $launchPath), '--cuda-malloc', '--cuda-stream', '--skip-install',
+    '--nowebui', '--skip-load-model-at-start', '--port', $port,
     '--controlnet-dir', ('"{0}"' -f $controlNetPath), '--gradio-allowed-path', ('"{0}"' -f $imagesPath))
 $process = Start-Process -FilePath $pythonPath -ArgumentList $arguments -WorkingDirectory $packageRoot -WindowStyle Hidden -RedirectStandardOutput $stdoutLog -RedirectStandardError $stderrLog -PassThru
 Set-Content -LiteralPath $pidFile -Value $process.Id -Encoding ASCII

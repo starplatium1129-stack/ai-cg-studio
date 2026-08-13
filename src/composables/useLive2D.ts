@@ -10,6 +10,7 @@ import { createLive2dNativeAdapter } from '@/utils/live2dNativeAdapter'
 import { gazeFromClientPoint, gazeSettled, stepGaze } from '@/utils/live2dGaze'
 import { createBlinkScheduler } from '@/utils/blinkScheduler'
 import { selectLive2DBackend } from '@/live2d/createBackend'
+import { NATIVE_RENDER_STOPPED } from '@/live2d/nativeBackend'
 import type {
   Live2DBackendKind,
   Live2DModelHandle,
@@ -129,10 +130,18 @@ function readLive2DCatalog(value: unknown): Live2DCatalog {
   return { models }
 }
 
+/**
+ * 桌面窗口物理像素 bounds（IPC 注入）。Companion 单窗口，属全局窗口状态：
+ * CompanionView 经 ChatCharacterStage.setDesktopWindowBounds 写入，原生
+ * overlay 布局据此换算，避免用 screenX/devicePixelRatio 猜测造成错位。
+ */
+let desktopWindowBounds: { x: number; y: number; width: number; height: number } | null = null
+
 function windowBoundsFromScreen(): { x: number; y: number } {
-  // WebView2 无边框窗口：screenX/screenY 是 CSS 像素（物理 ÷ DPR），
-  // 这里换算回屏幕物理像素供 overlay 定位（DPR=1 时与窗口坐标一致）。
-  // 注：Rust 桥就绪后应改为使用桥注入的窗口 bounds（更精确）。
+  // 兜底：screenX/screenY 是 CSS 像素（物理 ÷ DPR），换算回屏幕物理像素
+  // 供 overlay 定位（DPR=1 时与窗口坐标一致）。桌面端由注入的
+  // desktopWindowBounds 覆盖，此路径只作非桌面/未注入时的退化。
+  if (desktopWindowBounds) return desktopWindowBounds
   const dpr = window.devicePixelRatio || 1
   return { x: Math.round((window.screenX || 0) * dpr), y: Math.round((window.screenY || 0) * dpr) }
 }
@@ -188,7 +197,6 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   const emotionCurrent: Record<string, number> = {}
   let lastParamFrame = 0
   let maxFps = 60
-  let desktopWindowBounds: { x: number; y: number; width: number; height: number } | null = null
   let nativeOverlayReady = false
   let nativeLayoutFrame = 0
   let nativeLayoutAttempts = 0
@@ -398,6 +406,12 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
         })
         session.onModelError((e: Error) => {
           const detail = errorMessage(e)
+          // 原生渲染线程停止：overlay 已销毁，模型不可用，必须提示并允许
+          // 重试重新拉起线程（与"动作/换装失败但模型仍显示"的退化不同）。
+          if (e.name === NATIVE_RENDER_STOPPED) {
+            setState('degraded', 'Live2D 渲染已停止', detail, true)
+            return
+          }
           // wl-live2d 复用这一个回调报告初始载入和之后的 outfit/motion
           // 错误。后者不代表已经显示的模型失效，不能因此切回静态立绘。
           if (ready.value && loadedCharacter.value === char) {
@@ -1008,7 +1022,8 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   }
 
   async function setOutfit(id: string): Promise<boolean> {
-    // 夏目当前只有源模型自带的咖啡店制服，没有可切换衣装。
+    // 夏目当前只有源模型自带的咖啡店制服，没有可切换衣装；模型无
+    // Expressions，不得调用 expression（衣装参数由作者 motion 所有）。
     if (character.value === 'natsume') {
       const target = findNatsumeOutfit(id)
       outfit.value = target.id

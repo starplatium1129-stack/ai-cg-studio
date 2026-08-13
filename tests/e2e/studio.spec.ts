@@ -131,13 +131,18 @@ test('director separates a focused scene mode from the expert tag workflow', asy
   expect(basicColumns.left).toBeGreaterThanOrEqual(320);
   expect(basicColumns.center).toBeGreaterThan(basicColumns.left * 1.75);
   expect(basicColumns.right).toBe(0);
-  await expect(page.locator('#baseModel')).toBeVisible();
+  // 受控路线：basic 模式由系统自动选择引擎，底模选择器只在专家模式出现
+  await expect(page.locator('#baseModel')).toBeHidden();
+  await expect(page.locator('.managed-route-card')).toBeVisible();
   await expect(page.getByRole('button', { name: '生成图片' })).toHaveCount(1);
 
   // 选一张场景后，提示词应实时生成，并带出结构健康统计
   await page.locator('.scene-list button.scene-card').first().click();
   await page.getByRole('button', { name: '专家模式', exact: true }).click();
   await expect(page.locator('.pb')).toHaveAttribute('data-director-mode', 'pro');
+  // 专家模式放开引擎选择；SD 格式断言（<lora: / [NEG]）需显式切回 SD 引擎
+  await page.locator('.engine-switch button').first().click();
+  await expect(page.locator('#baseModel')).toBeVisible();
   await expect(page.locator('#stepTags')).toBeVisible();
   await expect(page.locator('.col-center > #stepTags')).toHaveCount(1);
   await expect(page.locator('#stepCamera')).not.toHaveAttribute('open', '');
@@ -179,7 +184,7 @@ test('director expert artist tags use model-native syntax and stay out of scene 
   await page.getByRole('button', { name: /专家模式/ }).click();
   const mobilePicker = page.getByTestId('artist-style-picker');
   await mobilePicker.locator('summary').click();
-  await expect(mobilePicker.locator('[data-artist-style-id]')).toHaveCount(12);
+  await expect(mobilePicker.locator('[data-artist-style-id]')).toHaveCount(20);
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
   expect(overflow).toBeLessThanOrEqual(1);
 });
@@ -192,6 +197,8 @@ test('director restores state from a scene deep link', async ({ page }) => {
   await expect(page.locator('.pb')).toHaveAttribute('data-character', /nene|natsume|triad/);
   await expect(page.locator('.scene-context-title')).toBeVisible();
   await page.getByRole('button', { name: '专家模式', exact: true }).click();
+  // 受控路线下 basic 自动走 Anima；SD LoRA 断言需在专家模式切回 SD 引擎
+  await page.locator('.engine-switch button').first().click();
   await expect(page.locator('.preview-output')).toContainText('lora');
 
   expect(errors).toEqual([]);
