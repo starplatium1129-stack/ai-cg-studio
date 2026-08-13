@@ -151,3 +151,15 @@ Baseline A 使用 Anima Base v1.0、Transformer LoRA only、rank/alpha 32/32、c
 - **safe prompt 泄漏测试**：safe prompt 出图必须 0 成人泄漏（当前 v20 的 12/12 无泄漏是在隔离前提下测得，去掉隔离后必须重新验证）。
 - 若泄漏测试失败，说明模型未学会 rating 解耦，优先调整 caption 策略（rating 词强化）而不是回到隔离。
 - 其余门槛（身份/服装 canonical/结构崩坏）沿用既有晋级协议。
+
+### LoRA 跨底模加载记录（2026-08-13）
+
+**现象**：v20 LoRA（`ayachi_nene_v20_anima_scientific_b_e16`）在 Anima Aesthetic v1.1 底模上加载后，渲染质量显著优于 Base v1.0。
+
+**解释**：
+- `anima-aesthetic-v1.1` 是从 `anima-base-v1.0` 精调而来，共享**同一个 Qwen text encoder、同一个 VAE、同一 latent 空间**。
+- LoRA 学的是"增量残差"（身份+服装契约），与底模的整体画质/光影正交。
+- 结果：Aesthetic 提供更好的底座质量 + LoRA 提供精确的角色/服装控制 = 双赢。
+
+**建议**：下次重训时保留 v20B LoRA，建议生产路径统一走 Aesthetic v1.1 底模。
+
