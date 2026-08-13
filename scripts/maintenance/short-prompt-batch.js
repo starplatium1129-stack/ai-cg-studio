@@ -1,21 +1,18 @@
-// 短 prompt 批量生成器：场景库 × 5 seed（sc300 手工链路）。
-// 用法: node scripts/maintenance/short-prompt-batch.js [--scenes sc001,sc002] [--base N] [--dry]
-// 输出: AI/Reviews/ShortPromptBatch/<sceneId>_<seed>.png + picks.json
+// 短 prompt 批量生成器：场景库 × 固定 3 seed（sc300 手工链路）。
+// 用法: node scripts/maintenance/short-prompt-batch.js [--scenes sc001,sc002] [--dry]
+// 合格标准由 review.json 五维人工评分决定，三张必须全部 >=90。
 const fs = require('fs');
 const path = require('path');
 const { buildShortPrompt } = require('./short-prompt-builder.js');
+const generationContract = require('../../server/anima-generation-contract.js');
+const promptContract = require('./quality-prompt-contract.js');
 
 const OUT = 'E:/code/2/lora/AI/Reviews/ShortPromptBatch';
 const GATEWAY = 'http://127.0.0.1:3000';
-// 20-seed 采样（sc300 手工挑 seed 执行化：密度决定 93+ 天花板）。
-const SEEDS = [];
-for (let i = 0; i < 20; i += 1) SEEDS.push(20260809 + i * 997);
-const R18_TOKEN = { nene: 'nene_r18', natsume: 'natsume_r18' };
-const CHAR_IDS = { sc001: 'nene', sc003: 'nene', sc006: 'nene', sc021: 'nene', sc036: 'nene', sc044: 'nene', sc075: 'nene', sc141: 'nene', sc252: 'nene', sc005: 'natsume', sc016: 'natsume', sc031: 'natsume' };
-const LORAS = { nene: 'L_NENE_V20_ANIMA', natsume: 'L_NAT_V20_ANIMA' };
-const PROFILE_BY_CHAR = { nene: 'anima_base_v10', natsume: 'anima_base_v10' };
+const SEEDS = [20260809, 20261806, 20262803];
+const LORAS = { nene: 'L_NENE_V20B_ANIMA', natsume: 'L_NAT_V20_ANIMA' };
+const CHARACTERS = { nene: 'nene_b', natsume: 'natsume' };
 const MODEL_BY_CHAR = { nene: 'anima-base-v1.0', natsume: 'anima-base-v1.0' };
-const R18_LORA = { nene: 'L_NENE_V20_ANIMA', natsume: 'L_NAT_V20_ANIMA' };
 
 const NEGATIVE = 'worst quality, low quality, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, split image, multiple panels, comic strip, second person, multiple girls';
 
@@ -66,41 +63,51 @@ async function submit(body) {
 
 async function main() {
   const sceneFilter = splitList(argument('--scenes'));
-  const base = Number(argument('--base', '0')) || 0;
   const dry = process.argv.includes('--dry');
   const scenes = readScenes();
   const targets = sceneFilter.length ? scenes.filter(s => sceneFilter.includes(String(s.id))) : scenes;
-  fs.mkdirSync(OUT, { recursive: true });
-  const picksPath = path.join(OUT, 'picks.json');
-  const picks = fs.existsSync(picksPath) ? JSON.parse(fs.readFileSync(picksPath, 'utf8')) : [];
-  let generated = 0;
-  for (const scene of targets) {
+  const planned = targets.map(scene => {
     const id = String(scene.id);
-    const charId = scene._char === 'shared' ? null : scene._char;
+    const characterId = scene._char === 'shared' ? null : scene._char;
+    if (!characterId) return { scene, id, characterId, built: null };
+    return { scene, id, characterId, built: buildShortPrompt(scene, characterId) };
+  });
+  const invalid = planned.filter(item => item.characterId && !item.built.health.ok);
+  if (invalid.length) {
+    throw new Error([
+      `prompt preflight failed for ${invalid.length} scene(s); no images generated`,
+      ...invalid.slice(0, 20).map(item => `${item.id}: ${item.built.health.errors.join('；')}`),
+      invalid.length > 20 ? `... and ${invalid.length - 20} more` : '',
+    ].filter(Boolean).join('\n'));
+  }
+  fs.mkdirSync(OUT, { recursive: true });
+  let generated = 0;
+  for (const item of planned) {
+    const { id, characterId: charId, built } = item;
     if (!charId) { console.log(`[skip] ${id}: shared scene, not covered`); continue; }
-    const built = buildShortPrompt(scene, charId);
-    const rating = String(scene.rating || 'all');
-    const r18 = rating === 'r18';
-    // r18 token 全场景注入（sc300 复现验证：显著提升渲染质感且内容安全）。
-    const prompt = [
-      ...built.prompt.split(', '),
-      R18_TOKEN[charId],
-      ...(r18 ? ['nude', 'naked', 'no_clothes', 'breasts', 'nipples'] : []),
-    ].filter((t, i, arr) => arr.indexOf(t) === i).join(', ');
+    const prompt = built.prompt;
     const loraId = LORAS[charId];
+    const sceneDir = path.join(OUT, id);
+    fs.mkdirSync(sceneDir, { recursive: true });
+    fs.writeFileSync(path.join(sceneDir, 'prompt.txt'), `${prompt}\n`, 'utf8');
+    const reviewPath = path.join(sceneDir, 'review.json');
+    if (!fs.existsSync(reviewPath)) {
+      fs.writeFileSync(reviewPath, `${JSON.stringify(promptContract.buildSeedReview(SEEDS), null, 2)}\n`, 'utf8');
+    }
     for (let i = 0; i < SEEDS.length; i += 1) {
-      if (i < base) continue;
       const seed = SEEDS[i];
-      const file = path.join(OUT, `${id}_${seed}.png`);
+      const file = path.join(sceneDir, `${id}_${seed}.png`);
       if (fs.existsSync(file)) { console.log(`[exists] ${id} seed ${seed}`); continue; }
       const body = {
         prompt, modelId: MODEL_BY_CHAR[charId],
         width: 832, height: 1216,
-        seed, steps: 24, cfg: 3.0,
+        seed,
+        steps: generationContract.MANUAL_REPAIR_PRESET.steps,
+        cfg: generationContract.MANUAL_REPAIR_PRESET.cfg,
         negative: NEGATIVE,
-        loraId, loraStrength: 0.85, character: charId,
+        loraId, loraStrength: 0.85, character: CHARACTERS[charId],
       };
-      console.log(`[generate] ${id} seed ${seed}${r18 ? ' (R18)' : ''}`);
+      console.log(`[generate] ${id} seed ${seed}`);
       if (dry) continue;
       const result = await submit(body);
       if (!result.ok) { console.log(`[failed] ${id} seed ${seed}: ${result.error}`); continue; }
@@ -109,7 +116,12 @@ async function main() {
       console.log(`[ok] ${id} seed ${seed} (${result.buffer.length} bytes)`);
     }
   }
-  console.log(JSON.stringify({ output: OUT, generated }, null, 2));
+  console.log(JSON.stringify({
+    output: OUT,
+    seeds: SEEDS,
+    planned: planned.filter(item => item.characterId).length,
+    generated,
+  }, null, 2));
 }
 
 main().catch(err => { console.error(err); process.exit(1); });

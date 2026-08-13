@@ -62,6 +62,8 @@ test('batch plan is complete: 61 legacy + 800 grid = 861', () => {
   assert.strictEqual(recordIds.size, plan.length, 'recordIds must be unique');
   const keys = new Set(plan.map(item => item.key));
   assert.strictEqual(keys.size, 839, '839 distinct candidate keys across all batches');
+  assert.ok(plan.every(item => item.promptHealth && typeof item.promptHealth.ok === 'boolean'),
+    'every candidate must carry an auditable prompt health report');
 });
 
 test('review overrides: exact 14 keys, deterministic seed offsets, supersedes/reviewReason', () => {
@@ -496,6 +498,54 @@ test('scene candidate audit can reuse an earlier attempt seed without overwritin
   assert.strictEqual(candidate.seed, sceneGen.stableSeed('sc001', 1));
 });
 
+test('single-character scene candidates use the audited short prompt and correct Anima binding', () => {
+  const scenes = require('../../data/scenes.json');
+  const singles = scenes.filter(item => item.char === 'nene' || item.char === 'natsume');
+  const candidates = sceneGen.planScenes(singles, 1);
+  assert.strictEqual(candidates.length, 292);
+  for (const candidate of candidates) {
+    const tagLine = candidate.prompt.split('\n')[0];
+    assert.strictEqual(candidate.engine, 'anima', `${candidate.sceneId} engine`);
+    assert.strictEqual(candidate.promptHealth.ok, true,
+      `${candidate.sceneId}: ${candidate.promptHealth.errors.join('; ')}`);
+    assert.ok(candidate.promptHealth.tokenCount >= 22 && candidate.promptHealth.tokenCount <= 26,
+      `${candidate.sceneId} token budget`);
+    assert.ok(candidate.promptHealth.entityCount >= 2 && candidate.promptHealth.entityCount <= 4,
+      `${candidate.sceneId} entity quota`);
+    assert.ok(candidate.promptHealth.actionEmotionCount <= 2,
+      `${candidate.sceneId} action/emotion quota`);
+    assert.ok(tagLine.includes('masterpiece, best_quality, score_7'),
+      `${candidate.sceneId} quality suffix`);
+    assert.ok(tagLine.includes('@muririn, @kobuichi'),
+      `${candidate.sceneId} house artist format`);
+    const expectedRating = String(candidate.rating).toUpperCase() === 'R18' ? 'nsfw' : 'safe';
+    assert.ok(tagLine.split(', ').includes(expectedRating), `${candidate.sceneId} rating token`);
+    assert.ok(!(tagLine.includes(', safe') && tagLine.includes(', nsfw')),
+      `${candidate.sceneId} safe/nsfw conflict`);
+  }
+
+  const nene = candidates.find(item => item.characterId === 'nene');
+  assert.strictEqual(nene.loraId, 'L_NENE_V20B_ANIMA');
+  assert.strictEqual(nene.generationCharacter, 'nene_b');
+  assert.strictEqual(sceneGen.buildSubmissionBody(nene).character, 'nene_b');
+
+  const natsume = candidates.find(item => item.characterId === 'natsume');
+  assert.strictEqual(natsume.loraId, 'L_NAT_V20_ANIMA');
+  assert.strictEqual(natsume.generationCharacter, 'natsume');
+  assert.strictEqual(sceneGen.buildSubmissionBody(natsume).character, 'natsume');
+});
+
+test('dual-character scene candidates keep the existing WAI dual-LoRA path', () => {
+  const scenes = require('../../data/scenes.json');
+  const dualScenes = scenes.filter(item => item.char === 'triad');
+  const candidates = sceneGen.planScenes(dualScenes, 1);
+  assert.strictEqual(candidates.length, 6);
+  assert.ok(candidates.every(item => item.engine === 'sd'));
+  assert.ok(candidates.every(item => item.characterId === 'triad'));
+  assert.ok(candidates.every(item => item.loras.length === 2));
+  assert.ok(candidates.every(item => item.prompt.includes('<lora:')));
+});
+
 test('scene candidate baseline mode changes only positive prompt direction', () => {
   const scene = require('../../data/scenes.json').find(item => item.id === 'sc001');
   const current = sceneGen.buildAnimaCandidate(scene, 5, 5);
@@ -517,6 +567,24 @@ test('scene candidate baseline mode changes only positive prompt direction', () 
   assert.strictEqual(compared.seed, 123);
   assert.strictEqual(compared.baselineRecordId, baseline.recordId);
   assert.strictEqual(compared.comparison, 'prompt-direction-only');
+});
+
+test('scene baseline mode restores the baseline LoRA character binding', () => {
+  const scene = require('../../data/scenes.json').find(item => item.id === 'sc001');
+  const current = sceneGen.buildAnimaCandidate(scene, 5, 5);
+  const baseline = {
+    status: 'succeeded', recordId: 'scene:sc001@attempt-1', attempt: 1,
+    engine: 'anima', profileId: 'anima_base_v10', modelId: 'anima-base-v1.0',
+    checkpoint: animaConst.MODELS['anima-base-v1.0'].file,
+    loraId: 'L_NENE_V20_ANIMA', loraFile: animaConst.LORAS.L_NENE_V20_ANIMA.file,
+    loraStrength: 0.85, width: 832, height: 1216,
+    steps: 24, cfg: 3, sampler: 'res_multistep', scheduler: 'simple',
+    seed: 123, prompt: 'old exact tag stream', negative: 'old exact negative',
+  };
+  const compared = sceneGen.applyBaselineContract(current, baseline);
+  assert.strictEqual(compared.characterId, 'nene');
+  assert.strictEqual(compared.generationCharacter, 'nene');
+  assert.strictEqual(sceneGen.buildSubmissionBody(compared).character, 'nene');
 });
 
 test('resume + atomic manifest behaviour', () => {

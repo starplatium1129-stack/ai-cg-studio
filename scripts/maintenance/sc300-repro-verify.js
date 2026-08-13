@@ -1,4 +1,4 @@
-// sc300 复现验证：精简场景词（cafe 级）+ r18 token + 20 seed 采样。
+// sc300 复现验证：精简场景词（cafe 级）+ r18 质量控制词 + 固定 3 seed。
 // 用法: node scripts/maintenance/sc300-repro-verify.js
 // 输出: AI/Reviews/Sc300Repro/<key>_<seed>.png
 const fs = require('fs');
@@ -8,8 +8,7 @@ const OUT = 'E:/code/2/lora/AI/Reviews/Sc300Repro';
 const GATEWAY = 'http://127.0.0.1:3000';
 const NEGATIVE = 'worst quality, low quality, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy';
 
-const SEEDS = [];
-for (let i = 0; i < 20; i += 1) SEEDS.push(20260809 + i * 997);
+const SEEDS = [20260809, 20261806, 20262803];
 
 const ANCHORS = 'ayachi_nene, 1girl, solo, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons';
 

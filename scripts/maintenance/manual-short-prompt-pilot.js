@@ -3,7 +3,6 @@
 // 输出: AI/Reviews/ShortPromptPilot/<key>_<seed>.png + picks.json
 const fs = require('fs');
 const path = require('path');
-const crypto = require('crypto');
 
 const OUT = 'E:/code/2/lora/AI/Reviews/ShortPromptPilot';
 const GATEWAY = 'http://127.0.0.1:3000';
@@ -13,7 +12,7 @@ function argument(name, fallback = '') {
   return index >= 0 && process.argv[index + 1] ? process.argv[index + 1] : fallback;
 }
 
-const SEEDS = [20260809, 20260818, 20260819, 20260820, 20260821];
+const SEEDS = [20260809, 20261806, 20262803];
 
 // 短标签 prompt（sc300 结构：角色锚点 + 核心场景词 + 质量词），每 key 一个候选。
 const PILOTS = [
@@ -108,8 +107,6 @@ async function main() {
   const base = Number(argument('--base', '0')) || 0;
   const dry = process.argv.includes('--dry');
   fs.mkdirSync(OUT, { recursive: true });
-  const picksPath = path.join(OUT, 'picks.json');
-  const picks = fs.existsSync(picksPath) ? JSON.parse(fs.readFileSync(picksPath, 'utf8')) : [];
   const results = [];
   for (const pilot of PILOTS) {
     for (let i = 0; i < SEEDS.length; i += 1) {

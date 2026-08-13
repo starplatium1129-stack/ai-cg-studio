@@ -4,10 +4,10 @@
 /**
  * Generate a fresh, isolated candidate for every current preset scene.
  *
- * Single-character scenes reuse the production Anima Base prompt path and the
- * current production LoRA mapping. The six dual-character scenes reuse the
- * production WAI dual-LoRA path because the Anima route intentionally supports
- * only one character LoRA. Nothing is written into SceneShowcase.
+ * Single-character scenes use the audited sc300-style short prompt contract.
+ * The six dual-character scenes reuse the production WAI dual-LoRA path because
+ * the Anima route intentionally supports only one character LoRA. Nothing is
+ * written into SceneShowcase.
  */
 
 const crypto = require('crypto');
@@ -20,6 +20,8 @@ const sceneInference = require('../../src/utils/sceneInference.ts');
 const promptConstants = require('../../src/config/promptConstants.ts');
 const generationConstants = require('../../routes/generation.js').constants;
 const animaConstants = require('../../routes/anima.js').constants;
+const animaGenerationContract = require('../../server/anima-generation-contract.js');
+const { buildShortPrompt } = require('./short-prompt-builder.js');
 
 const scenes = require('../../data/scenes.json');
 const presets = require('../../data/presets.json');
@@ -35,16 +37,10 @@ const ANIMA_PROFILE_ID = 'anima_base_v10';
 const WAI_MODEL_ID = 'waiIllustriousSDXL_v170';
 const WAI_PROFILE_ID = 'wai_illustrious_v17';
 const CHAR_PROMPT = Object.freeze({
-  nene: '1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons',
-  natsume: '1girl, solo, shiki_natsume, very_long_black_hair, golden_yellow_eyes, two_red_hairclips, mole_under_eye, no_hair_ribbon',
   triad: '2girls',
 });
-const SUBJECT_PROSE = Object.freeze({
-  nene: 'Ayachi Nene is the only prominent character, a young adult woman with white hair, purple eyes, an ahoge, and pink hair ribbons',
-  natsume: 'Shiki Natsume is the only prominent character, a young adult woman with black hair, golden-yellow eyes, two red hairclips, and a small mole beneath one eye',
-});
 const ANIMA_LORA_BY_CHARACTER = Object.freeze({
-  nene: 'L_NENE_V20_ANIMA',
+  nene: 'L_NENE_V20B_ANIMA',
   natsume: 'L_NAT_V20_ANIMA',
 });
 const WAI_LORA_BY_CHARACTER = Object.freeze({
@@ -91,24 +87,6 @@ function loraById(id) {
 }
 function optionPrompt(options, id) {
   return (options.find(item => item.id === id) || {}).prompt || '';
-}
-function contextFor(scene) {
-  return {
-    title: scene.title,
-    category: scene.category,
-    tags: scene.tags,
-    location: typeof scene.location === 'string' ? scene.location : undefined,
-    time: typeof scene.time === 'string' ? scene.time : undefined,
-    timeOfDay: scene.timeOfDay,
-    weather: typeof scene.weather === 'string' ? scene.weather : undefined,
-    camera: scene.camera,
-    lighting: scene.lighting,
-    emotion: typeof scene.emotion === 'string' ? scene.emotion : undefined,
-    rating: scene.rating,
-    recommendedSize: typeof scene.recommendedSize === 'string' ? scene.recommendedSize : undefined,
-    usage: Array.isArray(scene.usage) ? scene.usage.filter(item => typeof item === 'string') : undefined,
-    animaCaption: typeof scene.animaCaption === 'string' ? scene.animaCaption : undefined,
-  };
 }
 function nearestAnimaSize(scene) {
   const desired = sceneInference.sceneRecommendedSize(scene);
@@ -157,27 +135,18 @@ function buildAnimaCandidate(scene, attempt, seedAttempt = attempt) {
   if (!loraId) throw new Error(`scene ${scene.id} has unsupported Anima character ${characterId}`);
   const profile = animaProfileFor(loraId);
   const directives = inferredDirectives(scene);
-  const controls = promptPolicy.characterControlTokens(scene, characterId, { [characterId]: loraId });
-  const scenePrompt = promptPolicy.sceneTemplateText(scene, {
-    char: characterId,
-    shot: directives.shot,
-    engine: 'anima',
-    profile,
-  });
-  const plan = promptCompiler.createPromptPlan({
-    profile,
-    identity: CHAR_PROMPT[characterId],
-    controls,
-    scenePrompt,
-    camera: directives.cameraPrompt ? [directives.cameraPrompt] : [],
-    lighting: directives.lightingPrompt ? [directives.lightingPrompt] : [],
-    composition: directives.compositionPrompt ? [directives.compositionPrompt] : [],
-    negative: scene.negative || '',
-    rating: promptPolicy.profileRatingTag(profile, scene),
-    subjectProse: SUBJECT_PROSE[characterId],
-    scene: contextFor(scene),
-  });
-  const rendered = promptCompiler.renderPromptPlan(plan, 'anima', profile);
+  const built = buildShortPrompt(scene, characterId);
+  if (!built.health.ok) {
+    throw new Error(`scene ${scene.id} short prompt failed: ${built.health.errors.join('; ')}`);
+  }
+  const directorCaption = typeof scene.animaCaption === 'string'
+    ? scene.animaCaption.trim()
+    : '';
+  const prompt = directorCaption
+    ? `${built.prompt}\n${directorCaption}`
+    : built.prompt;
+  const generationCharacter = animaGenerationContract.requiredCharacterForLora(loraId);
+  if (!generationCharacter) throw new Error(`scene ${scene.id} has unsupported Anima LoRA ${loraId}`);
   var negative = promptPolicy.assembleNegative(profile, scene, 'anima', {
     shot: directives.shot,
     character: characterId,
@@ -197,12 +166,19 @@ function buildAnimaCandidate(scene, attempt, seedAttempt = attempt) {
     batch: 'scene', key: `scene:${scene.id}`, recordId: `scene:${scene.id}@attempt-${attempt}`,
     sceneId: scene.id, title: scene.title, category: scene.category, story: scene.story,
     characterId, rating: scene.rating, attempt,
+    generationCharacter,
     engine: 'anima', profileId: profile.id, modelId: ANIMA_MODEL_ID,
     checkpoint: animaConstants.MODELS[ANIMA_MODEL_ID].file,
     loraId, loraFile: animaConstants.LORAS[loraId].file, loraStrength: weight,
-    width, height, steps: 24, cfg: 3.0, sampler: 'res_multistep', scheduler: 'simple',
-    seed: stableSeed(scene.id, seedAttempt), prompt: rendered.prompt, negative,
+    width, height,
+    steps: animaGenerationContract.ANIMA_DEFAULTS.steps,
+    cfg: animaGenerationContract.ANIMA_DEFAULTS.cfg,
+    sampler: animaGenerationContract.ANIMA_DEFAULTS.sampler,
+    scheduler: animaGenerationContract.ANIMA_DEFAULTS.scheduler,
+    seed: stableSeed(scene.id, seedAttempt), prompt, negative,
     seedAttempt,
+    promptHealth: built.health,
+    animaCaption: directorCaption,
     sourcePrompt: scene.prompt || '', sourceNegative: scene.negative || '',
     inferred: directives,
   };
@@ -269,6 +245,9 @@ function applyBaselineContract(candidate, baseline) {
   }
   const direction = String(candidate.prompt || '').split('\n').slice(1).join('\n').trim();
   const prompt = direction ? `${baseline.prompt}\n${direction}` : String(baseline.prompt || '');
+  const baselineGenerationCharacter = baseline.generationCharacter
+    || animaGenerationContract.requiredCharacterForLora(baseline.loraId)
+    || candidate.generationCharacter;
   return Object.assign({}, candidate, {
     profileId: baseline.profileId,
     modelId: baseline.modelId,
@@ -286,6 +265,9 @@ function applyBaselineContract(candidate, baseline) {
     seed: baseline.seed,
     seedAttempt: baseline.attempt,
     prompt,
+    promptHealth: candidate.promptHealth,
+    animaCaption: candidate.animaCaption,
+    generationCharacter: baselineGenerationCharacter,
     negative: baseline.negative,
     baselineRecordId: baseline.recordId,
     comparison: 'prompt-direction-only',
@@ -303,9 +285,8 @@ async function gatewayJson(base, pathname, options) {
   try { data = await response.json(); } catch (error) { /* keep null */ }
   return { response, data };
 }
-async function submitCandidate(base, candidate) {
+function buildSubmissionBody(candidate) {
   const anima = candidate.engine === 'anima';
-  const route = anima ? '/api/anima/jobs' : '/api/generation/jobs';
   const body = {
     prompt: candidate.prompt, negative: candidate.negative,
     modelId: candidate.modelId, width: candidate.width, height: candidate.height,
@@ -314,7 +295,7 @@ async function submitCandidate(base, candidate) {
   if (anima) {
     body.loraId = candidate.loraId;
     body.loraStrength = candidate.loraStrength;
-    body.character = candidate.characterId;
+    body.character = candidate.generationCharacter;
   } else {
     body.profile = candidate.profileId;
     body.character = candidate.characterId;
@@ -323,6 +304,12 @@ async function submitCandidate(base, candidate) {
     body.scheduler = '';
     body.hiresFix = false;
   }
+  return body;
+}
+async function submitCandidate(base, candidate) {
+  const anima = candidate.engine === 'anima';
+  const route = anima ? '/api/anima/jobs' : '/api/generation/jobs';
+  const body = buildSubmissionBody(candidate);
   const submitted = await gatewayJson(base, route, {
     method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
   });
@@ -436,7 +423,8 @@ module.exports = {
   buildDualCandidate,
   planScenes,
   applyBaselineContract,
+  buildSubmissionBody,
   nearestAnimaSize,
   stableSeed,
-  constants: { DEFAULT_OUTPUT, ANIMA_MODEL_ID, ANIMA_PROFILE_ID, CHAR_PROMPT, SUBJECT_PROSE, ANIMA_LORA_BY_CHARACTER },
+  constants: { DEFAULT_OUTPUT, ANIMA_MODEL_ID, ANIMA_PROFILE_ID, CHAR_PROMPT, ANIMA_LORA_BY_CHARACTER },
 };

@@ -56,6 +56,7 @@ const popularContent = require('../../src/utils/popularContent.ts');
 const artistCatalog = require('../../src/config/artistStyleCatalog.ts');
 const { artistStyleProse, artistTagsForEngine } = require('../../src/config/artistStyles.ts');
 const kreaRecipes = require('../../src/config/kreaStyleRecipes.ts');
+const qualityPromptContract = require('./quality-prompt-contract.js');
 
 const genConst = require('../../routes/generation.js').constants;
 const animaConst = require('../../routes/anima.js').constants;
@@ -920,7 +921,9 @@ function planAllBatches(seedBase) {
   }));
   const withTwo = base.concat(reviewOverrideJobs(base));
   const withThree = withTwo.concat(reviewAttemptThreeJobs(base));
-  return withThree.concat(reviewAttemptFourJobs(base));
+  return withThree.concat(reviewAttemptFourJobs(base)).map(candidate => Object.assign({}, candidate, {
+    promptHealth: qualityPromptContract.inspectCandidatePrompt(candidate),
+  }));
 }
 
 /**

@@ -1,7 +1,7 @@
 // 短标签 prompt 构建器（sc300 手工链路执行化）：
-// 规则 = LoRA exact_tokens 全锚点 + canonical 服装词 + 核心场景词（≤10）
-//       + 氛围词 + 质量词。供批量 5-seed 生成使用。
-const fs = require('fs');
+// 角色完整锚点 + 1 套服装 + 克制场景实体 + 单一动作/情绪
+// + 显式评级 + LoRA 质量控制词 + Anima 画师词 + 氛围 + 三质量词。
+const promptContract = require('./quality-prompt-contract.js');
 
 const CHAR_PROMPT = {
   nene: ['ayachi_nene', '1girl', 'solo', 'white_hair', 'very_long_hair', 'low_twintails', 'purple_eyes', 'ahoge', 'pink_hair_ribbons'],
@@ -30,6 +30,23 @@ const CANONICAL_OUTFIT = {
   ],
 };
 
+const OUTFIT_DETAILS = {
+  nene_school_uniform: ['blazer', 'yellow_bowtie', 'plaid_skirt', 'black_thighhighs'],
+  nene_sailor_uniform: ['grey_sailor_collar', 'black_shirt', 'sailor_shirt'],
+  nene_red_cardigan_uniform: ['cardigan', 'white_shirt', 'pleated_skirt', 'black_skirt'],
+  nene_witch_canonical: ['witch_hat', 'black_cape', 'criss-cross_halter', 'crop_top'],
+  nene_blue_pajamas: ['pajamas', 'cat_print', 'long_sleeves'],
+  nene_green_sleepwear: ['nightgown', 'polka_dot', 'short_sleeves'],
+  nene_bat_dress: ['black_dress', 'bat_hair_ornament', 'garter_straps'],
+  nene_black_dress: ['black_dress', 'garter_straps', 'thighhighs'],
+  natsume_cafe_uniform: ['white_shirt', 'suspender_skirt', 'brown_skirt', 'purple_ribbon'],
+  natsume_pink_cafe_uniform: ['pink_shirt', 'pink_skirt', 'white_apron', 'frills'],
+  natsume_official_qipao: ['china_dress', 'red_dress', 'floral_print', 'side_slit'],
+  natsume_maid_uniform: ['maid', 'white_apron', 'maid_headdress', 'frills'],
+  natsume_winter_coat: ['coat', 'fur_trim', 'hair_flower'],
+  natsume_sleepwear: ['blue_shirt', 'pillow', 'on_bed'],
+};
+
 // tag 类别权重：越靠前越核心（0 = 必保留）
 const PRIORITY = {
   hair_ribbon: 0, ahoge: 0, mole_under_eye: 0, two_red_hairclips: 0, no_hair_ribbon: 0,
@@ -49,22 +66,69 @@ const PRIORITY = {
 
 const AMBIENCE = {
   window: 'window_light, soft_lighting',
-  golden: 'golden_hour, backlight, rim_light, volumetric_lighting',
-  back: 'backlit, rim_light, volumetric_lighting',
-  moon: 'moonlight, night, cool_lighting',
-  lantern: 'lantern_light, warm_lighting, volumetric_lighting',
+  golden: 'golden_hour, rim_light',
+  back: 'backlit, rim_light',
+  moon: 'moonlight, cool_lighting',
+  lantern: 'lantern_light, warm_lighting',
   overcast: 'overcast, soft_diffused_light',
+  day: 'soft_lighting, rim_light',
 };
 
 const LIGHT_KW = [
   [/window|窗/, 'window'], [/golden hour|golden|逆光|夕|sunset|dusk/, 'golden'],
   [/backlight|backlit|rim/, 'back'], [/moon|月|夜/, 'moon'], [/lantern|烛|candle|灯/, 'lantern'],
+  [/campfire|bonfire|firelight|篝火|火光/, 'lantern'],
 ];
 
 function pickLighting(lighting) {
   const hay = String(lighting || '').toLowerCase();
   for (const [re, key] of LIGHT_KW) if (re.test(hay)) return key;
   return '';
+}
+
+function fallbackLighting(scene) {
+  const time = normalizeKey([scene.timeOfDay, scene.time, ...(scene.tags || [])].filter(Boolean).join(' '));
+  if (/night|midnight|moon|夜/.test(time)) return 'moon';
+  if (/sunset|dusk|evening|golden|夕|傍晚/.test(time)) return 'golden';
+  if (/rain|overcast|cloud|雨|阴|曇/.test(time)) return 'overcast';
+  return 'day';
+}
+
+function structuredSceneTokens(scene) {
+  const locationMap = {
+    教室: 'classroom',
+    天台: 'rooftop',
+    卧室: 'bedroom',
+    咖啡店: 'cafe',
+    图书馆: 'library',
+    神社: 'shrine',
+    海边: 'beach',
+    室内场景: 'indoor',
+  };
+  const weatherMap = {
+    晴: 'clear_sky',
+    雨: 'rain',
+    雪: 'snow',
+    阴: 'overcast',
+  };
+  return [
+    scene.timeOfDay,
+    locationMap[String(scene.location || '').trim()],
+    weatherMap[String(scene.weather || '').trim()],
+  ].filter(Boolean);
+}
+
+function sourceTokens(scene) {
+  const prompt = String(scene.prompt || '')
+    .replace(/<lora:[^>]+>/gi, '')
+    .split(',')
+    .map(token => token.trim())
+    .filter(Boolean);
+  return [
+    ...structuredSceneTokens(scene),
+    ...(Array.isArray(scene.tags) ? scene.tags : []),
+    ...prompt,
+  ];
 }
 
 function canonicalFor(characterId, tags) {
@@ -74,66 +138,123 @@ function canonicalFor(characterId, tags) {
   return '';
 }
 
-const CATEGORY = {
-  emotion: /^(?:smile|gentle_smile|shy_smile|smiling|blush|heavy_blush|shy|panicked|open_mouth|happy|in_love|pouting|laughing|tears|closed_eyes|grinning|content|calm)$/,
-  pose: /^(?:standing|sitting|walking|leaning|lying|looking_back|over_shoulder|turning|kneeling|crouching|running|holding_|one_hand_|both_hands|adjusting_|playing|reading|writing|drinking|eating|sleeping|reaching)/,
-  place: /^(?:classroom|classroom_window|cafe|bedroom|street|shrine|beach|library|park|rooftop|kitchen|train|station|river|festival|garden|forest|lake|sea|window|door|kotatsu|veranda|balcony|pool|onsen|bath|hallway|corridor|stage|auditorium|rooftop_garden|gym|bathroom|kitchen_corner|museum|aquarium|greenhouse|temple|pagoda|bridge|tunnel|cliff|valley|cave|campfire|hotel|mansion|courtyard|alley|intersection|shopping|dormitory|office|class|study|store|bakery|convenience|arcade|movie|theater|park_bench)/,
-  weather: /^(?:snow|snowfall|rain|rainy|clear_sky|cloudy|overcast|night|afternoon|morning|day|evening|dusk|dawn|sunset|summer|winter|spring|autumn|wind|clouds|sunshine|storm|fog|mist|season)/,
-  prop: /^(?:gift|game_controller|papers|glass|cup|phone|book|umbrella|flower|bouquet|sword|staff|wand|broom|bag|backpack|hat|scarf|muffler|gloves|camera|photo|frame|charm|talisman|plush|cat|dog|food|cake|sweets|coffee|tea|juice|balloon|lantern|fireworks|sparkler|shopping_bag)/,
-  camera: /^(?:medium_shot|upper_body|close_up|full_body|three_quarter_view|over_the_shoulder|side_view|low_angle|high_angle|from_below|from_above|looking_down)/,
-};
+const CATEGORY_LIMITS = Object.freeze({
+  emotion: 1,
+  action: 1,
+  place: 2,
+  weather: 1,
+  prop: 1,
+  entity: 2,
+});
 
-const CATEGORY_LIMITS = { emotion: 1, pose: 1, place: 2, weather: 1, prop: 1, camera: 0 };
-
-function categoryOf(key) {
-  for (const name of Object.keys(CATEGORY)) {
-    if (CATEGORY[name].test(key)) return name;
-  }
-  return '';
-}
+const SOURCE_METADATA = new Set([
+  'official_cg', 'visual_audited',
+  'nene', 'natsume', 'visual_novel_event_cg',
+]);
+const MIN_TOKEN_COUNT = 22;
+const MAX_TOKEN_COUNT = 26;
 
 function buildShortPrompt(scene, characterId) {
   const anchors = CHAR_PROMPT[characterId] || [];
-  const tags = Array.isArray(scene.tags) ? scene.tags : [];
+  const tags = sourceTokens(scene);
   const canonical = canonicalFor(characterId, tags);
   const skip = new Set(anchors.map(normalizeKey));
   const sceneTokens = [];
+  const structuralSupport = [];
   for (const tag of tags) {
     const key = normalizeKey(tag);
     if (skip.has(key)) continue;
     if (/^(?:2girls|1girl|solo)$/.test(key)) continue;
     if (key.startsWith('nene_') || key.startsWith('natsume_')) continue;
+    if (promptContract.isStructuralToken(key, characterId)) {
+      structuralSupport.push(tag);
+      continue;
+    }
     sceneTokens.push({ key, tag, priority: PRIORITY[key] !== undefined ? PRIORITY[key] : 5 });
   }
   sceneTokens.sort((a, b) => a.priority - b.priority);
+  const lighting = pickLighting([
+    scene.lighting,
+    scene.time,
+    scene.timeOfDay,
+    ...tags.filter(tag => /light|lighting|moon|sun|dusk|dawn|night|candle|lantern|fire|光|灯|月|夕|夜/i.test(String(tag))),
+  ].filter(Boolean).join(' ')) || fallbackLighting(scene);
+  const ambience = AMBIENCE[lighting] || '';
+  const isAdult = String(scene.rating || '').toUpperCase() === 'R18' || scene.mature === true;
+  const ratingToken = isAdult ? 'nsfw' : 'safe';
+  // canonical 词负责锁定服装，最多两个细节词保留辨识度，避免服装词挤占场景预算。
+  const outfit = canonical ? [canonical, ...(OUTFIT_DETAILS[canonical] || []).slice(0, 2)] : [];
+  const fixedTokens = [...new Set([
+    ...anchors,
+    ...outfit,
+    promptContract.QUALITY_CONTROL_TOKEN[characterId],
+    ratingToken,
+    ...promptContract.REQUIRED_ARTISTS,
+    ...(ambience ? ambience.split(', ') : []),
+    ...promptContract.QUALITY_TOKENS,
+  ].filter(Boolean))];
+  const sceneBudget = Math.max(0, MAX_TOKEN_COUNT - fixedTokens.length);
   const picked = [];
   const seen = new Set();
   const counts = {};
+  let entityCount = 0;
+  let actionEmotionCount = 0;
   // 类别配额：保证地点/天气/道具不被表情词挤掉（sc021 教训）。
   for (const item of sceneTokens) {
-    if (picked.length >= 6) break;
+    if (picked.length >= sceneBudget) break;
     const key = normalizeKey(item.tag);
-    if (seen.has(key)) continue;
-    const category = categoryOf(key);
-    if (category && counts[category] >= CATEGORY_LIMITS[category]) continue;
+    if (seen.has(key) || SOURCE_METADATA.has(key)) continue;
+    let category = promptContract.categoryOf(key);
+    if (!category) category = 'entity';
+    if (counts[category] >= CATEGORY_LIMITS[category]) continue;
+    const isEntity = category === 'place' || category === 'weather'
+      || category === 'prop' || category === 'entity';
+    const isActionEmotion = category === 'action' || category === 'emotion';
+    if (isEntity && entityCount >= 4) continue;
+    if (isActionEmotion && actionEmotionCount >= 2) continue;
     seen.add(key);
-    if (category) counts[category] = (counts[category] || 0) + 1;
+    counts[category] = (counts[category] || 0) + 1;
+    if (isEntity) entityCount += 1;
+    if (isActionEmotion) actionEmotionCount += 1;
     picked.push(item.tag);
   }
-  const lighting = pickLighting(scene.lighting);
-  const ambience = AMBIENCE[lighting] || '';
-  const quality = ['masterpiece', 'best_quality', 'score_7'];
-  const tokens = [
+  const support = [];
+  const occupied = new Set([...fixedTokens, ...picked].map(normalizeKey));
+  for (const tag of structuralSupport) {
+    if (fixedTokens.length + picked.length + support.length >= MIN_TOKEN_COUNT) break;
+    const key = normalizeKey(tag);
+    if (!key || occupied.has(key) || SOURCE_METADATA.has(key)) continue;
+    occupied.add(key);
+    support.push(tag);
+  }
+  const prompt = [
     ...anchors,
-    ...(canonical ? [canonical] : []),
+    ...outfit,
     ...picked,
+    ...support,
+    promptContract.QUALITY_CONTROL_TOKEN[characterId],
+    ratingToken,
+    ...promptContract.REQUIRED_ARTISTS,
     ...(ambience ? ambience.split(', ') : []),
-  ];
-  return { prompt: [...new Set(tokens)].join(', '), quality };
+    ...promptContract.QUALITY_TOKENS,
+  ].filter(Boolean).join(', ');
+  const health = promptContract.inspectShortPrompt(prompt, {
+    character: characterId,
+    rating: isAdult ? 'R18' : 'ALL',
+  });
+  return { prompt, health };
 }
 
 function normalizeKey(value) {
   return String(value || '').trim().toLowerCase().replace(/[\s\-]+/g, '_');
 }
 
-module.exports = { buildShortPrompt, CHAR_PROMPT, CANONICAL_OUTFIT };
+module.exports = {
+  buildShortPrompt,
+  CHAR_PROMPT,
+  CANONICAL_OUTFIT,
+  OUTFIT_DETAILS,
+  CATEGORY_LIMITS,
+  MIN_TOKEN_COUNT,
+  MAX_TOKEN_COUNT,
+};

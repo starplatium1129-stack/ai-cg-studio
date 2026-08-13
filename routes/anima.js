@@ -8,6 +8,7 @@ var https = require('https');
 var path = require('path');
 var security = require('../server/security');
 var envelope = require('../server/http-envelope');
+var generationContract = require('../server/anima-generation-contract');
 
 var MAX_BODY = '64kb';
 var MAX_PENDING = 4;
@@ -23,9 +24,9 @@ var OUTPUT_NODE_ID = '10';
 var OUTPUT_FILENAME_PREFIX = 'anima_app';
 
 var MODELS = Object.freeze({
-  'anima-base-v1.0': { file:'anima-base-v1.0.safetensors', label:'Anima Base v1.0', family:'anima', profileId:'anima_base_v10', steps:24, cfg:3.0, sampler:'res_multistep', scheduler:'simple', sizes:['832x1216','960x1536','1024x1024','1216x832'] },
-  'anima-aesthetic-v1.1': { file:'anima-aesthetic-v1.1.safetensors', label:'Anima Aesthetic v1.1', family:'anima', profileId:'anima_aesthetic_v11', steps:24, cfg:3.0, sampler:'res_multistep', scheduler:'simple', sizes:['832x1216','1024x1024','1216x832'], noLora:true },
-  'krea2-turbo-fp8': { file:'krea2_turbo_fp8_scaled.safetensors', label:'Krea 2 Turbo', family:'krea2', profileId:'krea2_turbo_fp8', steps:8, cfg:1, sampler:'euler', scheduler:'simple', sizes:['1024x1024','1024x1536','1536x1024'], rebalance:{ preset:'standard', multiplier:1.1, normalizeTaps:false } }
+  'anima-base-v1.0': { file:'anima-base-v1.0.safetensors', label:'Anima Base v1.0', family:'anima', profileId:'anima_base_v10', steps:generationContract.ANIMA_DEFAULTS.steps, cfg:generationContract.ANIMA_DEFAULTS.cfg, sampler:generationContract.ANIMA_DEFAULTS.sampler, scheduler:generationContract.ANIMA_DEFAULTS.scheduler, sizes:['832x1216','960x1536','1024x1024','1216x832'] },
+  'anima-aesthetic-v1.1': { file:'anima-aesthetic-v1.1.safetensors', label:'Anima Aesthetic v1.1', family:'anima', profileId:'anima_aesthetic_v11', steps:generationContract.ANIMA_DEFAULTS.steps, cfg:generationContract.ANIMA_DEFAULTS.cfg, sampler:generationContract.ANIMA_DEFAULTS.sampler, scheduler:generationContract.ANIMA_DEFAULTS.scheduler, sizes:['832x1216','1024x1024','1216x832'], noLora:true },
+  'krea2-turbo-fp8': { file:'krea2_turbo_fp8_scaled.safetensors', label:'Krea 2 Turbo', family:'krea2', profileId:'krea2_turbo_fp8', steps:generationContract.KREA_DEFAULTS.steps, cfg:generationContract.KREA_DEFAULTS.cfg, sampler:generationContract.KREA_DEFAULTS.sampler, scheduler:generationContract.KREA_DEFAULTS.scheduler, sizes:['1024x1024','1024x1536','1536x1024'], rebalance:{ preset:'standard', multiplier:1.1, normalizeTaps:false } }
 });
 
 var PROFILE_BY_MODEL = Object.freeze({
@@ -76,10 +77,7 @@ var CHARACTERS = Object.freeze({
   nene_b: { id:'nene_b', label:'绫地宁宁（V20B）', loraId:'L_NENE_V20B_ANIMA' }
 });
 
-var ALLOWED_INPUT_KEYS = new Set([
-  'prompt', 'negative', 'modelId', 'loraId', 'loraStrength',
-  'width', 'height', 'steps', 'cfg', 'seed', 'character', 'styleLoraId'
-]);
+var ALLOWED_INPUT_KEYS = new Set(generationContract.ALLOWED_INPUT_KEYS);
 
 function serviceError(status, code, message, detail) {
   var error = new Error(message);
@@ -206,12 +204,30 @@ function validateInput(body, expectedFamily) {
     steps = 8;
     cfg = 1;
   } else {
-    steps = body.steps === undefined ? model.steps : validateNumber(body.steps, 'steps', 1, 60, true);
-    cfg = body.cfg === undefined ? model.cfg : validateNumber(body.cfg, 'cfg', 0.5, 10, false);
+    steps = body.steps === undefined ? model.steps : validateNumber(
+      body.steps,
+      'steps',
+      generationContract.PARAMETER_LIMITS.steps.min,
+      generationContract.PARAMETER_LIMITS.steps.max,
+      generationContract.PARAMETER_LIMITS.steps.integer
+    );
+    cfg = body.cfg === undefined ? model.cfg : validateNumber(
+      body.cfg,
+      'cfg',
+      generationContract.PARAMETER_LIMITS.cfg.min,
+      generationContract.PARAMETER_LIMITS.cfg.max,
+      generationContract.PARAMETER_LIMITS.cfg.integer
+    );
   }
   var seed = body.seed === undefined
     ? crypto.randomInt(0, 2147483647)
-    : validateNumber(body.seed, 'seed', 0, 9007199254740991, true);
+    : validateNumber(
+      body.seed,
+      'seed',
+      generationContract.PARAMETER_LIMITS.seed.min,
+      generationContract.PARAMETER_LIMITS.seed.max,
+      generationContract.PARAMETER_LIMITS.seed.integer
+    );
 
   return {
     prompt:model.family === 'krea2' && body.styleLoraId
@@ -991,5 +1007,10 @@ module.exports = {
   validateInput:validateInput,
   buildWorkflow:buildWorkflow,
   validateImageReference:validateImageReference,
-  constants:{ MODELS:MODELS, LORAS:LORAS, KREA_STYLE_LORAS:KREA_STYLE_LORAS }
+  constants:{
+    MODELS:MODELS,
+    LORAS:LORAS,
+    KREA_STYLE_LORAS:KREA_STYLE_LORAS,
+    generationContract:generationContract
+  }
 };
