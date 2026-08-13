@@ -273,6 +273,7 @@ export function useCharacterRoomSession() {
     sendMessage,
     useStarter,
     onInputChange,
+    appendImageMessage,
     destroy: destroyConversation,
     stopEverything: stopConversation,
   } = useChatConversation({
@@ -557,6 +558,7 @@ export function useCharacterRoomSession() {
     handleSend,
     useStarter,
     onInputChange,
+    appendImageMessage,
     prepareRoom,
     stopEverything,
     switchCharacter,

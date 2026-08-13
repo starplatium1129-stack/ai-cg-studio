@@ -26,6 +26,8 @@ export interface ChatMessage {
   content: string
   mid: string
   stopped: boolean
+  /** 聊天生成图片（用户消息携带；历史消息无此字段，向后兼容） */
+  image?: { url: string; prompt: string }
 }
 
 export interface ChatState {
