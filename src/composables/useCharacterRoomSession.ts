@@ -18,6 +18,7 @@ interface CharacterStageHandle {
   setDesktopWindowBounds?: (bounds: { x: number; y: number; width: number; height: number }) => void
   setDesktopPerformanceMode?: (onBatteryPower: boolean) => void
   setGlobalPointer?: (screenX: number, screenY: number, bounds: { x: number; y: number; width: number; height: number }) => void
+  releasePointerFocus?: () => void
 }
 
 export function useCharacterRoomSession() {

@@ -77,3 +77,12 @@ ChatCharacterStage / useLive2D
 3. 夏目 `ParamMouthForm3` 的真实 TTS 桌面回归仍待环境恢复；离线映射 contract 已通过，不得据此宣称真实音频已验收。
 4. 30 分钟 soak 是发布前可选强化；当前固定 Windows Native gate 是 300 秒，不应加入无 GPU 的默认 `validate`。
 5. 后续接入只使用 `src/types/live2dNative.ts`、`live2d-native-overlay-plan.md` 和公开 backend API；不得把参数级 hack、源项目 WAV 或未验证 motion/expression 当作新能力。
+
+
+## 2026-08-13 Companion 陪伴表现与凝视平滑
+
+- 前端新增纯 TS `companionPresence.ts`，把可见性、勿扰/安静时段、聆听、思考、说话、输入中与主动提醒归一为确定性 presence；只驱动舞台光和状态提示，不新增 LLM/TTS 调用，也不触发未验证 motion/expression。
+- `CompanionView` 将 presence 下发到 `ChatCharacterStage`，输入聚焦显示“在听你说”，回复中/工具调用显示思考，TTS 播放显示说话，主动提醒显示 reaching-out；reduced-motion 只保留短淡变。
+- `useLive2D` 的窗口内与全局鼠标不再逐事件直写 focus/bridge，而是只更新凝视 target，由单一 RAF 以指数响应平滑追随；窗口外凝视钳制为 `0.82`，DOM 离开且无全局接管或窗口隐藏时自然回中。
+- `nativeBackend.ts` 对 `setGaze` 增加 latest-wins 背压：桥调用未完成时只保留最新目标，避免高刷新鼠标输入积压 Tauri command。Rust overlay 无需新增参数、动作或 IPC，只继续接收现有 `setGaze(x, y)` 意图。
+- 验证：Companion/Live2D/Native contract 定向单测 42/42，`npm run typecheck:app`、`npm run build` 通过；浏览器实测 1280×720 与 768×900 均无横向滚动，状态提示与左侧角色切换、右侧 Live2D 状态不重叠。

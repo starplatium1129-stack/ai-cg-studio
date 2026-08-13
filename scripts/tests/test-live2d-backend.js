@@ -27,6 +27,12 @@ const {
 const {
   NATIVE_BACKEND_UNAVAILABLE,
 } = require('../../src/live2d/types.ts');
+const {
+  clampGaze,
+  gazeFromClientPoint,
+  gazeSettled,
+  stepGaze,
+} = require('../../src/utils/live2dGaze.ts');
 
 // ---------- overlay 布局纯函数 ----------
 
@@ -221,6 +227,37 @@ test('原生后端：意图通道（口型/情绪/凝视）与 overlay 帧', asy
 
   session.setPaused(false);
   assert.equal(bridge.calls.setFrame[2][0].visible, true, '恢复 → overlay 显示');
+});
+
+test('凝视轨迹：坐标归一化、边界钳制与连续回中', () => {
+  assert.deepEqual(gazeFromClientPoint(75, 25, { left: 0, top: 0, width: 100, height: 100 }), { x: 0.5, y: 0.5 });
+  assert.deepEqual(gazeFromClientPoint(500, -200, { left: 0, top: 0, width: 100, height: 100 }, 0.82), { x: 0.82, y: 0.82 });
+  assert.equal(clampGaze(-2), -1);
+  const first = stepGaze({ x: 0, y: 0 }, { x: 1, y: -1 }, 1 / 60, 12);
+  assert(first.x > 0 && first.x < 1);
+  assert(first.y < 0 && first.y > -1);
+  const returning = stepGaze(first, { x: 0, y: 0 }, 1 / 60, 6);
+  assert(Math.abs(returning.x) < Math.abs(first.x));
+  assert.equal(gazeSettled({ x: 0.001, y: -0.001 }, { x: 0, y: 0 }), true);
+});
+
+test('原生后端：高频凝视 latest-wins，桥繁忙时只保留最新目标', async () => {
+  const bridge = createStubBridge();
+  const releases = [];
+  bridge.setGaze = (x, y) => {
+    bridge.calls.setGaze.push([x, y]);
+    return new Promise(resolve => releases.push(resolve));
+  };
+  const backend = createNativeLive2DBackend(() => bridge);
+  const session = await backend.connect({ selector: '#host', modelUrl: '/nene.moc3', canvasWidth: 420, canvasHeight: 610, character: 'nene' });
+  session.sendGaze(0.1, 0.1);
+  session.sendGaze(0.2, 0.2);
+  session.sendGaze(0.7, -0.4);
+  assert.deepEqual(bridge.calls.setGaze, [[0.1, 0.1]], '首个请求未完成时不堆积桥调用');
+  releases.shift()();
+  await new Promise(resolve => setImmediate(resolve));
+  assert.deepEqual(bridge.calls.setGaze, [[0.1, 0.1], [0.7, -0.4]], '完成后只发送最新目标');
+  releases.shift()();
 });
 
 test('原生后端：原生 HitArea 事件回传（作者分区命中）', async () => {

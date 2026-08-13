@@ -824,6 +824,31 @@ html.companion-mode:not(.companion-desktop) body {
   background: radial-gradient(ellipse at center bottom, color-mix(in srgb, var(--character-accent) 32%, transparent), transparent 66%);
   filter: blur(24px);
   opacity: .72;
+  transform: scale(.98);
+  transform-origin: 50% 82%;
+  transition: opacity 240ms var(--ease-out), transform 280ms var(--ease-out), filter 280ms var(--ease-out);
+}
+
+.companion-page[data-presence="attentive"] .portrait-stage::before,
+.companion-page[data-presence="listening"] .portrait-stage::before {
+  opacity: .88;
+  transform: scale(1.015);
+}
+
+.companion-page[data-presence="thinking"] .portrait-stage::before {
+  opacity: .82;
+  transform: scale(1.01) translateY(-2px);
+}
+
+.companion-page[data-presence="speaking"] .portrait-stage::before {
+  opacity: 1;
+  filter: blur(20px) saturate(1.16);
+  transform: scale(1.035);
+}
+
+.companion-page[data-presence="quiet"] .portrait-stage::before {
+  opacity: .48;
+  transform: scale(.97);
 }
 
 .companion-page .portrait-stage::after {
@@ -847,6 +872,64 @@ html.companion-mode:not(.companion-desktop) body {
 
 .companion-page .live2d-host {
   z-index: var(--z-raised);
+}
+
+.companion-page .portrait-stage[data-presence="attentive"] .live2d-host,
+.companion-page .portrait-stage[data-presence="listening"] .live2d-host,
+.companion-page .portrait-stage[data-presence="thinking"] .live2d-host,
+.companion-page .portrait-stage[data-presence="speaking"] .live2d-host {
+  filter: drop-shadow(0 22px 28px color-mix(in srgb, var(--character-accent) 20%, transparent));
+}
+
+.companion-page .live2d-host,
+.companion-page .portrait-main {
+  transition: opacity var(--t-base), filter 260ms var(--ease-out);
+}
+
+.companion-page .companion-presence-cue {
+  position: absolute;
+  z-index: var(--z-overlay);
+  top: 118px;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 27px;
+  padding: 4px 10px;
+  border: 1px solid var(--companion-edge);
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--art-scrim) 54%, transparent);
+  color: var(--companion-ink-soft);
+  box-shadow: var(--shadow-md), inset 0 1px 0 var(--companion-highlight);
+  backdrop-filter: blur(14px) saturate(125%);
+  font-size: var(--fs-label-xs);
+  pointer-events: none;
+  transform: translateX(-50%);
+  transition: opacity 180ms var(--ease-out), transform 220ms var(--ease-out), border-color 180ms ease;
+}
+
+.companion-page .companion-presence-cue i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--character-accent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--character-accent) 64%, transparent);
+}
+
+.companion-page .companion-presence-cue[data-state="available"],
+.companion-page .companion-presence-cue[data-state="quiet"] {
+  opacity: .68;
+  transform: translateX(-50%) translateY(-2px) scale(.97);
+}
+
+.companion-page .companion-presence-cue[data-state="reaching-out"],
+.companion-page .companion-presence-cue[data-state="attentive"],
+.companion-page .companion-presence-cue[data-state="listening"],
+.companion-page .companion-presence-cue[data-state="thinking"],
+.companion-page .companion-presence-cue[data-state="speaking"] {
+  border-color: color-mix(in srgb, var(--character-accent) 56%, var(--companion-edge));
+  color: var(--companion-ink);
+  transform: translateX(-50%) translateY(0) scale(1);
 }
 
 .companion-page .room-signal {
@@ -1094,6 +1177,14 @@ html.companion-mode:not(.companion-desktop) body {
     max-width: 160px;
   }
 
+  .companion-page .companion-presence-cue {
+    top: 106px;
+    max-width: 44vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   .companion-page .portrait-main {
     width: min(92%, 560px);
     max-height: 84%;
@@ -1120,6 +1211,13 @@ html.companion-mode:not(.companion-desktop) body {
 @media (prefers-reduced-motion: reduce) {
   .companion-ambience i {
     animation: none !important;
+  }
+
+  .companion-page .portrait-stage::before,
+  .companion-page .live2d-host,
+  .companion-page .portrait-main,
+  .companion-page .companion-presence-cue {
+    transition: opacity 160ms ease, border-color 160ms ease;
   }
 }
 
@@ -1375,6 +1473,11 @@ html.companion-desktop.companion-ui-hidden .companion-conversation {
   opacity: 0;
   pointer-events: none;
   transform: translateY(10px);
+}
+
+html.companion-desktop.companion-ui-hidden .companion-presence-cue {
+  opacity: .32;
+  transform: translateX(-50%) translateY(-3px) scale(.96);
 }
 
 html.companion-desktop.companion-ui-hidden .companion-toolbar {

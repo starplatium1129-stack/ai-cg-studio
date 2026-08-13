@@ -24,6 +24,7 @@
       :class="[{ speaking, 'live2d-ready': live2d.ready.value && live2d.loadedCharacter.value === activeId }, `emotion-${emotion}`]"
       :data-character="activeId"
       :data-emotion="emotion"
+      :data-presence="presence || undefined"
       :data-mouth-level="mouthLevel.toFixed(3)"
       :data-audio-peak="audioPeak.toFixed(3)"
       role="tabpanel"
@@ -156,6 +157,7 @@ const props = defineProps<{
   chatStatusText: string
   statusKind: string
   autoLoad: boolean
+  presence?: string
   outfit: string
   /**
    * 渲染后端：'auto' 时按 html dataset `data-live2d-backend` 或 URL
@@ -295,6 +297,10 @@ function setGlobalPointer(
   live2d.setGlobalPointer(screenX, screenY, windowBounds)
 }
 
+function releasePointerFocus() {
+  live2d.releasePointerFocus()
+}
+
 function setDesktopPerformanceMode(onBatteryPower: boolean) {
   // 原生后端：电池 30fps，接电恢复 165fps；browser 后端维持 60fps 上限。
   const native = live2d.backendKind.value === 'native'
@@ -413,5 +419,6 @@ defineExpose({
   setDesktopWindowBounds,
   setDesktopPerformanceMode,
   setGlobalPointer,
+  releasePointerFocus,
 })
 </script>

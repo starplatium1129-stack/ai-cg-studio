@@ -6,6 +6,7 @@ const {
   isInQuietHours,
   DEFAULT_COMPANION_CONFIG,
 } = require('../../src/utils/companionBehavior.ts');
+const { resolveCompanionPresence } = require('../../src/utils/companionPresence.ts');
 
 function minutesAgo(minutes, from = Date.now()) {
   return from - minutes * 60_000;
@@ -176,4 +177,25 @@ test('事件播报：安静时段与勿扰抑制，勿扰关闭后事件仍可�
   assert.equal(behavior.noteEvent('sd-done', 'b', busy), null, '勿扰中不播报');
   behavior.setConfig({ dnd: false });
   assert.ok(behavior.noteEvent('sd-done', 'c', busy), '关闭勿扰后事件正常');
+});
+
+test('陪伴状态：安静优先，语音与会话状态按用户感知排序', () => {
+  const base = {
+    visible: true,
+    dnd: false,
+    quietHours: false,
+    speaking: false,
+    listening: false,
+    thinking: false,
+    composing: false,
+    hasReminder: false,
+  };
+  assert.equal(resolveCompanionPresence(base).kind, 'available');
+  assert.equal(resolveCompanionPresence({ ...base, hasReminder: true }).kind, 'reaching-out');
+  assert.equal(resolveCompanionPresence({ ...base, composing: true, hasReminder: true }).kind, 'attentive');
+  assert.equal(resolveCompanionPresence({ ...base, thinking: true, composing: true }).kind, 'thinking');
+  assert.equal(resolveCompanionPresence({ ...base, listening: true, thinking: true }).kind, 'listening');
+  assert.equal(resolveCompanionPresence({ ...base, speaking: true, listening: true }).kind, 'speaking');
+  assert.equal(resolveCompanionPresence({ ...base, visible: false, speaking: true }).kind, 'quiet');
+  assert.equal(resolveCompanionPresence({ ...base, dnd: true, speaking: true }).kind, 'quiet');
 });

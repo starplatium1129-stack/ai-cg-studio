@@ -4,6 +4,7 @@
     :data-character="activeChar"
     :data-power-mode="desktopBridge ? (onBatteryPower ? 'efficiency' : 'quality') : undefined"
     :data-ui-hidden="uiHidden || undefined"
+    :data-presence="presence.kind"
   >
     <div class="companion-ambience" aria-hidden="true">
       <i></i><i></i><i></i>
@@ -83,12 +84,22 @@
         :chat-status-text="chatStatusText"
         :status-kind="statusKind"
         :auto-load="companionAutoLoad"
+        :presence="presence.kind"
         :backend="desktopBridge ? 'native' : 'browser'"
         :outfit="storage.live2dOutfit(activeChar)"
         @select="switchCharacter"
         @live2d-enabled="handleLive2dPreference"
         @outfit-changed="storage.setLive2dOutfit(activeChar, $event)"
       />
+      <div
+        class="companion-presence-cue"
+        :data-state="presence.kind"
+        role="status"
+        aria-live="polite"
+      >
+        <i aria-hidden="true"></i>
+        <span>{{ presence.label }}</span>
+      </div>
 
       <section class="companion-conversation" aria-label="简洁对话">
         <div v-if="behaviorEnabled && pendingReminders.length" class="companion-reminders" role="log" aria-label="角色主动问候">
@@ -170,6 +181,8 @@
             maxlength="1200"
             placeholder="对她说点什么……"
             aria-label="桌宠聊天输入"
+            @focus="composerFocused = true"
+            @blur="composerFocused = false"
             @keydown.enter.exact.prevent="handleSend"
             @input="onInputChange"
           ></textarea>
@@ -305,6 +318,7 @@ import SpeechInputSettings from '@/components/SpeechInputSettings.vue'
 import { imgCount } from '@/composables/useImageStore'
 import { pickCompanionLine } from '@/config/characters'
 import { pickEnvironmentGreeting } from '@/utils/environmentContext'
+import { resolveCompanionPresence } from '@/utils/companionPresence'
 import { importLocalImages } from '@/utils/desktopImport'
 import type { ImportSourceFile } from '@/utils/desktopImportCore'
 import { createCompanionBehavior, normalizeCompanionConfig, type CompanionReminder } from '@/utils/companionBehavior'
@@ -413,6 +427,7 @@ const speechSettingsOpen = ref(false)
 const speechSession = createSpeechSession()
 const speechNotice = ref('')
 const documentHidden = ref(typeof document !== 'undefined' && document.hidden)
+const composerFocused = ref(false)
 const {
   state: speechState,
   errorMessage: speechError,
@@ -430,6 +445,16 @@ const speechReady = computed(() => isSpeechInputReady(speechConfig.value) && spe
 const speechBusy = computed(() => ['acquiring', 'capturing', 'recognizing'].includes(speechState.value))
 const speechSessionActive = computed(() => speechSession.isSessionActive())
 const pageVisible = computed(() => !documentHidden.value && desktopWindowVisible.value)
+const presence = computed(() => resolveCompanionPresence({
+  visible: pageVisible.value,
+  dnd: dnd.value,
+  quietHours: inQuietHours.value,
+  speaking: isSpeaking.value,
+  listening: speechState.value === 'capturing',
+  thinking: busy.value || Boolean(thinkingActivity.value) || Boolean(toolActivity.value),
+  composing: composerFocused.value || Boolean(inputText.value.trim()),
+  hasReminder: pendingReminders.value.length > 0,
+}))
 const speechButtonDisabled = computed(() => busy.value || !chatReady.value || !pageVisible.value
   || speechState.value === 'recognizing')
 const speechButtonText = computed(() => {
@@ -922,6 +947,7 @@ function setDesktopVisibility(visible: boolean) {
     speechHeldByKeyboard = false
     speechHeldByPointer = false
     speechCancel()
+    characterStageRef.value?.releasePointerFocus?.()
   }
   if (desktopWindowVisible.value === visible) return
   desktopWindowVisible.value = visible

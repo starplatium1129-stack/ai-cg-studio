@@ -7,6 +7,7 @@ import {
 } from '@/config/characters'
 import type { EmotionRuntime } from '@/utils/emotionRuntime'
 import { createLive2dNativeAdapter } from '@/utils/live2dNativeAdapter'
+import { gazeFromClientPoint, gazeSettled, stepGaze } from '@/utils/live2dGaze'
 import { createBlinkScheduler } from '@/utils/blinkScheduler'
 import { selectLive2DBackend } from '@/live2d/createBackend'
 import type {
@@ -166,6 +167,9 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   let pointerGazeCurrentX = 0
   let pointerGazeCurrentY = 0
   let pointerGazeActive = false
+  let pointerGazeFrame = 0
+  let pointerGazeLastFrame = 0
+  let pointerGazeFocusKind = 'idle'
   let activeInteraction = ''
   let interactionTimer = 0
   let leaveTimer = 0
@@ -555,8 +559,6 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
         }
       } else {
         // Keep a parameter fallback for runtimes without the native focus API.
-        pointerGazeCurrentX += (pointerGazeX - pointerGazeCurrentX) * Math.min(1, dt * 7)
-        pointerGazeCurrentY += (pointerGazeY - pointerGazeCurrentY) * Math.min(1, dt * 7)
         if (pointerGazeActive || Math.abs(pointerGazeCurrentX) > 0.01 || Math.abs(pointerGazeCurrentY) > 0.01) {
           targets.ParamEyeBallX = pointerGazeCurrentX
           targets.ParamEyeBallY = pointerGazeCurrentY
@@ -597,35 +599,72 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     pointerGazeHandler = (event) => {
       const rect = stageEl?.getBoundingClientRect()
       if (!rect?.width || !rect.height) return
-      pointerGazeX = Math.max(-1, Math.min(1, ((event.clientX - rect.left) / rect.width - 0.5) * 2))
-      pointerGazeY = Math.max(-1, Math.min(1, ((event.clientY - rect.top) / rect.height - 0.5) * -2))
+      const target = gazeFromClientPoint(event.clientX, event.clientY, rect)
+      pointerGazeX = target.x
+      pointerGazeY = target.y
       pointerGazeActive = true
-      const point = worldPoint(event)
       const focus = model?.focus
-      const nativeFocus = Boolean(point && focus)
-      if (point && focus) focus.call(model, point.x, point.y)
-      // 原生后端：凝视意图经桥送达 Rust（Cubism Native 驱动作者眼/头参数）
-      if (session?.sendGaze) session.sendGaze(pointerGazeX, pointerGazeY)
-      if (stageEl) {
-        stageEl.dataset.pointerFocus = nativeFocus ? 'native' : 'fallback'
-        stageEl.dataset.pointerGazeX = pointerGazeX.toFixed(3)
-        stageEl.dataset.pointerGazeY = pointerGazeY.toFixed(3)
-      }
+      pointerGazeFocusKind = focus ? 'native' : 'fallback'
+      schedulePointerGaze()
     }
-    pointerGazeLeaveHandler = () => {
-      pointerGazeActive = false
-      pointerGazeX = 0
-      pointerGazeY = 0
-      const focus = model?.focus
-      if (focus) {
-        const screen = session?.getScreenSize() ?? { width: 420, height: 610 }
-        focus.call(model, screen.width / 2, screen.height / 2)
-      }
-      if (session?.sendGaze) session.sendGaze(0, 0)
-      if (stageEl) stageEl.dataset.pointerFocus = 'idle'
-    }
+    pointerGazeLeaveHandler = releasePointerFocus
     stageEl.addEventListener('mousemove', pointerGazeHandler)
     stageEl.addEventListener('mouseleave', pointerGazeLeaveHandler)
+  }
+
+  function schedulePointerGaze() {
+    if (pointerGazeFrame || !ready.value || !model) return
+    pointerGazeLastFrame = performance.now()
+    pointerGazeFrame = window.requestAnimationFrame(runPointerGazeFrame)
+  }
+
+  function runPointerGazeFrame(now: number) {
+    pointerGazeFrame = 0
+    if (!ready.value || !model || destroyed.value) return
+    const dt = Math.max(1 / 240, Math.min(0.05, (now - pointerGazeLastFrame) / 1000))
+    pointerGazeLastFrame = now
+    const next = stepGaze(
+      { x: pointerGazeCurrentX, y: pointerGazeCurrentY },
+      { x: pointerGazeX, y: pointerGazeY },
+      dt,
+      pointerGazeActive ? 12 : 6,
+    )
+    pointerGazeCurrentX = next.x
+    pointerGazeCurrentY = next.y
+    const focus = model.focus
+    if (focus) {
+      const screen = session?.getScreenSize() ?? { width: 420, height: 610 }
+      focus.call(
+        model,
+        (pointerGazeCurrentX + 1) * 0.5 * screen.width,
+        (1 - pointerGazeCurrentY) * 0.5 * screen.height,
+      )
+    }
+    session?.sendGaze?.(pointerGazeCurrentX, pointerGazeCurrentY)
+    if (stageEl) {
+      stageEl.dataset.pointerFocus = pointerGazeActive ? pointerGazeFocusKind : 'idle'
+      stageEl.dataset.pointerGazeX = pointerGazeCurrentX.toFixed(3)
+      stageEl.dataset.pointerGazeY = pointerGazeCurrentY.toFixed(3)
+    }
+    const settled = gazeSettled(
+      { x: pointerGazeCurrentX, y: pointerGazeCurrentY },
+      { x: pointerGazeX, y: pointerGazeY },
+    )
+    if (settled) {
+      pointerGazeCurrentX = pointerGazeX
+      pointerGazeCurrentY = pointerGazeY
+      return
+    }
+    pointerGazeFrame = window.requestAnimationFrame(runPointerGazeFrame)
+  }
+
+  function releasePointerFocus() {
+    pointerGazeActive = false
+    pointerGazeX = 0
+    pointerGazeY = 0
+    pointerGazeFocusKind = 'idle'
+    if (stageEl) stageEl.dataset.pointerFocus = 'idle'
+    schedulePointerGaze()
   }
 
   function worldPoint(event: MouseEvent) {
@@ -651,24 +690,12 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     // 无边框窗口的 bounds 即内容区在屏幕上的位置：clientX = 屏幕坐标 − bounds
     const clientX = screenX - windowBounds.x
     const clientY = screenY - windowBounds.y
-    pointerGazeX = Math.max(-1, Math.min(1, ((clientX - rect.left) / rect.width - 0.5) * 2))
-    pointerGazeY = Math.max(-1, Math.min(1, ((clientY - rect.top) / rect.height - 0.5) * -2))
+    const target = gazeFromClientPoint(clientX, clientY, rect, 0.82)
+    pointerGazeX = target.x
+    pointerGazeY = target.y
     pointerGazeActive = true
-    const focus = model?.focus
-    if (focus) {
-      const canvas = session?.canvasElement?.() as HTMLCanvasElement | null
-      const canvasRect = canvas?.getBoundingClientRect() ?? rect
-      const screen = session?.getScreenSize() ?? { width: 420, height: 610 }
-      focus.call(model,
-        Math.max(0, Math.min(screen.width, (clientX - canvasRect.left) / canvasRect.width * screen.width)),
-        Math.max(0, Math.min(screen.height, (clientY - canvasRect.top) / canvasRect.height * screen.height)))
-    }
-    if (session?.sendGaze) session.sendGaze(pointerGazeX, pointerGazeY)
-    if (stageEl) {
-      stageEl.dataset.pointerFocus = 'global'
-      stageEl.dataset.pointerGazeX = pointerGazeX.toFixed(3)
-      stageEl.dataset.pointerGazeY = pointerGazeY.toFixed(3)
-    }
+    pointerGazeFocusKind = 'global'
+    schedulePointerGaze()
   }
 
   function interactionFromStagePosition(event: MouseEvent): Live2DInteraction | null {
@@ -1009,6 +1036,9 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     clearTimeout(interactionTimer); interactionTimer = 0; activeInteraction = ''
     clearTimeout(leaveTimer); leaveTimer = 0
     stopNativeEmotionClock()
+    if (pointerGazeFrame) window.cancelAnimationFrame(pointerGazeFrame)
+    pointerGazeFrame = 0
+    pointerGazeLastFrame = 0
     entranceUntil = 0
     // Stop Pixi before clearing model state. Otherwise an authored motion can
     // tick once during character switching and read arrays already released by
@@ -1034,6 +1064,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     pointerGazeX = 0
     pointerGazeY = 0
     pointerGazeActive = false
+    pointerGazeFocusKind = 'idle'
     desktopWindowBounds = null
     if (hostEl) hostEl.innerHTML = ''
   }
@@ -1057,6 +1088,6 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     backendKind, backendFallback,
     init, enable, disable, setCharacter, setMouth, setAudioLevel, setOutfit, setSpeaking,
     attachEmotionRuntime, setPaused, setMaxFps, recover, layout, retry, destroy,
-    setGlobalPointer, setDesktopWindowBounds, syncNativeEmotion: sendNativeEmotionIntent,
+    setGlobalPointer, releasePointerFocus, setDesktopWindowBounds, syncNativeEmotion: sendNativeEmotionIntent,
   }
 }

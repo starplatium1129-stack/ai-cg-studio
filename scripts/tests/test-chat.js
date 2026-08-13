@@ -258,7 +258,7 @@ async function run() {
   assert(html.includes('ChatApiSettings'), 'chat API settings must have independent component ownership');
   assert(roomSession.includes('useChatProvider') && chatProvider.includes('refreshChatStatus') && chatProvider.includes('saveApiSettings'), 'chat provider settings and status must have composable ownership');
   assert(
-    /defineExpose\(\{[\s\S]*setSpeaking,[\s\S]*setMouth,[\s\S]*setAudioLevel,[\s\S]*setEmotion,[\s\S]*setUserMessage,?\s*(?:setDesktopVisible,?\s*)?(?:setDesktopWindowBounds,?\s*)?(?:setDesktopPerformanceMode,?\s*)?(?:setGlobalPointer,?\s*)?\}\)/.test(characterStageComponent)
+    /defineExpose\(\{[\s\S]*setSpeaking,[\s\S]*setMouth,[\s\S]*setAudioLevel,[\s\S]*setEmotion,[\s\S]*setUserMessage,?\s*(?:setDesktopVisible,?\s*)?(?:setDesktopWindowBounds,?\s*)?(?:setDesktopPerformanceMode,?\s*)?(?:setGlobalPointer,?\s*)?(?:releasePointerFocus,?\s*)?\}\)/.test(characterStageComponent)
       && characterStageComponent.includes("emit('live2dEnabled'")
       && characterStageComponent.includes("emit('outfitChanged'"),
     'the character stage must expose only voice animation controls and persist Live2D preferences'

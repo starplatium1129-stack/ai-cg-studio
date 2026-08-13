@@ -52,6 +52,8 @@ export function createNativeLive2DBackend(provider: NativeBridgeProvider = defau
       let destroyed = false
       let lastRect: { x: number; y: number; width: number; height: number } = { x: 0, y: 0, width: 0, height: 0 }
       let lastVisible = false
+      let gazeInFlight = false
+      let queuedGaze: { x: number; y: number } | null = null
       let lastPassthrough: { x: number; y: number; width: number; height: number }[] = []
       const hitTestListeners = new Set<(areas: string[]) => void>()
       const motionStartedListeners = new Set<() => void>()
@@ -59,6 +61,23 @@ export function createNativeLive2DBackend(provider: NativeBridgeProvider = defau
 
       const pushFrame = () => {
         bridge.setFrame({ rect: lastRect, visible: lastVisible, opacity: 1, passthrough: lastPassthrough })
+      }
+
+      const pushGaze = (x: number, y: number) => {
+        if (destroyed) return
+        if (gazeInFlight) {
+          queuedGaze = { x, y }
+          return
+        }
+        gazeInFlight = true
+        void Promise.resolve(bridge.setGaze(x, y))
+          .catch(() => {})
+          .finally(() => {
+            gazeInFlight = false
+            const next = queuedGaze
+            queuedGaze = null
+            if (next) pushGaze(next.x, next.y)
+          })
       }
 
       const subscriptions: number[] = []
@@ -147,10 +166,11 @@ export function createNativeLive2DBackend(provider: NativeBridgeProvider = defau
           bridge.setEmotion(name, Math.max(0, Math.min(1, intensity)))
         },
         sendGaze(x, y) {
-          bridge.setGaze(Math.max(-1, Math.min(1, x)), Math.max(-1, Math.min(1, y)))
+          pushGaze(Math.max(-1, Math.min(1, x)), Math.max(-1, Math.min(1, y)))
         },
         destroy() {
           destroyed = true
+          queuedGaze = null
           hitTestListeners.clear()
           motionStartedListeners.clear()
           motionFailedListeners.clear()
