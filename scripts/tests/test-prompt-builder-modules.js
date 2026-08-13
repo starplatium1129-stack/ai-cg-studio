@@ -51,6 +51,7 @@ const modules = [
   ['src/components/PromptHealthPanel.vue', ['PromptReport', 'prompt-health-warnings', 'artViolations']],
   ['src/components/GenerationQueuePanel.vue', ['SDQueueJob', 'sd-queue-list', "emit('remove'"]],
   ['src/components/GenerationParamsPanel.vue', ['params: SDParams', "'reuse-seed'", 'samplerOptions']],
+  ['src/components/ManagedDrawingRouteCard.vue', ['managed-route-card', "reuse: [id: number]", 'route.promptFormat']],
   ['src/components/GenerationOutputControls.vue', ['params: SDParams', 'generation-output-controls', 'queueAvailable', 'engine: DrawEngine']],
   ['src/components/SDRecoveryPanel.vue', ['SDErrorReport', "emit('recover'"]],
 ];
@@ -133,6 +134,7 @@ if (!/nene:\s*'1girl, solo/.test(storeSource) || !/natsume:\s*'1girl, solo/.test
 // ── 2. 导演台视图必须真正接线这些能力 ────────────────────────────────────
 const view = read('src/views/PromptBuilderView.vue');
 const promptAssembly = read('src/composables/usePromptAssembly.ts');
+const drawingRoute = read('src/utils/drawingRoute.ts');
 const animaPanel = read('src/components/AnimaQuickPanel.vue');
 const sdGenerateSource = read('src/composables/useSDGenerate.ts');
 if (storeSource.includes('kreaStyleId') || storeSource.includes('artistInfluences') || !storeSource.includes('styleLoraId: entry.styleLoraId ?? null')) {
@@ -169,6 +171,15 @@ for (const [marker, message] of promptPipeline) {
 }
 if (!view.includes('usePromptAssembly')) {
   fail('PromptBuilderView must consume the dedicated prompt assembly composable');
+}
+for (const marker of ['recommendDrawingRoute', 'managedRoute', 'applyManagedRoute', 'reuseSuccessfulRecipe', 'ManagedDrawingRouteCard']) {
+  if (!view.includes(marker)) fail('scene mode must consume the managed drawing route: ' + marker);
+}
+for (const marker of ['L_NENE_V20B_ANIMA', "engine: 'sd'", "engine: 'anima'", "engine: 'krea2'"]) {
+  if (!drawingRoute.includes(marker)) fail('drawing route must pin the validated engine contract: ' + marker);
+}
+if (view.includes('prompt-style-switch') || view.includes('aics_parameter_memory_v1')) {
+  fail('prompt syntax and detached parameter memory must not be exposed as independent scene-mode choices');
 }
 for (const marker of ['DrawEngine', 'historyGenerationFields', 'animaModelId', 'engine: meta.engine']) {
   if (!view.includes(marker)) fail('director must wire engine-specific generation metadata: ' + marker);

@@ -65,6 +65,15 @@
             @click="setDirectorMode('pro')">专家模式</button>
         </div>
       </div>
+      <ManagedDrawingRouteCard v-if="managedRoute"
+        :route="managedRoute"
+        :history="pb.history"
+        :subject="pb.subject"
+        :expert="pb.directorMode === 'pro'"
+        :busy="generationBusy"
+        @apply="applyManagedRoute"
+        @reuse="reuseSuccessfulRecipe"
+      />
     </div>
 
     <div class="director-workspace">
@@ -387,7 +396,7 @@
         <div class="result-frame step-panel" id="stepResult">
           <div class="panel-title">输出 Result</div>
 
-          <div class="engine-switch" role="group" aria-label="出图引擎">
+          <div v-if="pb.directorMode === 'pro'" class="engine-switch" role="group" aria-label="出图引擎">
             <button type="button" class="engine-btn" :class="{ active: drawEngine === 'sd' }"
               :disabled="generationBusy || pb.isPopular"
               :title="pb.isPopular ? '热门角色仅支持 Anima 无 LoRA 或 Krea 2' : undefined"
@@ -405,7 +414,7 @@
             </button>
           </div>
 
-          <div class="base-model-picker">
+          <div v-if="pb.directorMode === 'pro'" class="base-model-picker">
             <label for="baseModel">底模</label>
             <select v-if="drawEngine === 'sd'" id="baseModel" v-model="pb.sdModelName" :disabled="generationBusy">
               <option value="">使用 WebUI 当前模型</option>
@@ -654,6 +663,7 @@ const SDRecoveryPanel = defineAsyncComponent(() => import('@/components/SDRecove
 const AnimaQuickPanel = defineAsyncComponent(() => import('@/components/AnimaQuickPanel.vue'))
 const ArtistStylePicker = defineAsyncComponent(() => import('@/components/ArtistStylePicker.vue'))
 const HistoryPanel = defineAsyncComponent(() => import('@/components/HistoryPanel.vue'))
+const ManagedDrawingRouteCard = defineAsyncComponent(() => import('@/components/ManagedDrawingRouteCard.vue'))
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import { readHiddenScenes, rememberRecent, recordSceneUsage } from '@/utils/sceneUX'
@@ -670,6 +680,7 @@ import {
   type DrawEngine,
 } from '@/storage/settingsRepository'
 import { ApiClientError, apiClient } from '@/api/client'
+import type { DrawingRouteRecommendation } from '@/utils/drawingRoute'
 
 // 热门角色面板按需懒加载：仅在 isPopular 时渲染，避免常驻占用主 chunk。
 const PopularCharacterPicker = defineAsyncComponent(() => import('@/components/popular/PopularCharacterPicker.vue'))
@@ -706,17 +717,21 @@ const DIRECTOR_MODE_KEY = 'aics_pb_director_mode'
 
 const storedDrawEngine = settingsRepository.get(DRAW_ENGINE_SETTING)
 const drawEngine = ref<DrawEngine>(storedDrawEngine ?? 'sd')
-  const animaState = ref<AnimaGenerationState>({
+const animaState = ref<AnimaGenerationState>({
   phase: 'idle', online: false, checkMsg: 'Anima 状态检查中…', models: [], loras: [], styleLoras: [], styleLoraId: '',
-  prompt: '', negative: '', modelId: 'anima-base-v1.0', loraId: 'L_NENE_V20_ANIMA',
+  prompt: '', negative: '', modelId: 'anima-base-v1.0', loraId: 'L_NENE_V20B_ANIMA',
   loraStrength: 0.85, width: 832, height: 1216, steps: 24, cfg: 3.0,
   family: 'anima',
   sampler: 'res_multistep', scheduler: 'simple', seed: null,
   job: null, result: null, statusText: '', errorMsg: '',
 })
 const ANIMA_LORA_BY_CHARACTER = {
-  nene: 'L_NENE_V20_ANIMA',
+  nene: 'L_NENE_V20B_ANIMA',
   natsume: 'L_NAT_V20_ANIMA',
+} as const
+const ANIMA_CHARACTER_BY_CHARACTER = {
+  nene: 'nene_b',
+  natsume: 'natsume',
 } as const
 let animaStatusTimer: ReturnType<typeof setInterval> | null = null
 let animaRequestSerial = 0
@@ -855,6 +870,17 @@ const popularCharacter = computed<PopularCharacter | null>(() => {
   if (pb.subject.kind !== 'popular') return null
   return findPopularCharacter(pb.popularCharacters, pb.subject.characterId)
 })
+const managedRoute = ref<DrawingRouteRecommendation | null>(null)
+async function refreshManagedRoute(): Promise<DrawingRouteRecommendation> {
+  const { recommendDrawingRoute } = await import('@/utils/drawingRoute')
+  const route = recommendDrawingRoute({
+    subjectKind: pb.isPopular ? 'popular' : 'studio',
+    character: pb.char,
+    recommendedModelId: popularCharacter.value?.recommendedEngine,
+  })
+  managedRoute.value = route
+  return route
+}
 const popularBlueprintPool = computed(() =>
   eligibleBlueprints(pb.sceneBlueprints, popularCharacter.value, { adultEnabled: pb.showMatureScenes }),
 )
@@ -924,6 +950,7 @@ function setDirectorMode(mode: 'basic' | 'pro') {
   pb.directorMode = mode
   sceneCollection.value = mode === 'basic' ? 'core' : 'all'
   sceneLimit.value = 20
+  syncManagedRoute()
 }
 
 function setSceneCollection(collection: 'core' | 'curated' | 'all') {
@@ -944,6 +971,43 @@ function applyRecommendedSize(size: string) {
   if (Number.isInteger(width) && Number.isInteger(height)) patchAnimaState({ width, height })
 }
 
+async function applyManagedRoute(options: { silent?: boolean } = {}): Promise<void> {
+  const route = await refreshManagedRoute()
+  if (generationBusy.value) return
+  const selectedModel = route.engine === 'sd'
+    ? pb.sdModelName || sd.checkpoint.value
+    : animaState.value.modelId
+  const alreadyApplied = drawEngine.value === route.engine
+    && selectedModel.includes(route.modelId)
+    && (route.engine === 'sd' || route.engine === 'krea2' || animaState.value.loraId === route.loraId)
+  if (alreadyApplied) return
+  if (route.engine !== drawEngine.value) setDrawEngine(route.engine)
+  if (route.engine === 'sd') {
+    const model = sd.models.value.find(item => item.includes(route.modelId))
+    if (model) {
+      pb.sdModelName = model
+      pb.applyModelProfile(model, { applySize: false })
+    }
+    applyRecommendedSize(pb.lastRecommendedSize)
+  } else {
+    if (animaState.value.modelId !== route.modelId) applyAnimaModel(route.modelId)
+    patchAnimaState({ loraId: route.loraId, styleLoraId: '' })
+    await refreshAnimaBackend()
+  }
+  if (!options.silent) pb.flash(`已采用${route.title}`)
+}
+
+function syncManagedRoute() {
+  void (pb.directorMode === 'basic' ? applyManagedRoute({ silent: true }) : refreshManagedRoute())
+}
+
+function reuseSuccessfulRecipe(id: number) {
+  const entry = pb.history.find(item => item.id === id)
+  if (!entry) return
+  applyHistory(entry, true)
+  if (pb.directorMode === 'basic') pb.flash('已复用这张成功成片的参数，可直接生成新变体')
+}
+
 function selectScene(scene: Scene) {
   pb.loadScene(scene)
   pb.applyModelProfile(pb.sdModelName || sd.checkpoint.value, { applySize: false })
@@ -953,6 +1017,7 @@ function selectScene(scene: Scene) {
   rememberRecent(scene)
   recordSceneUsage(scene)
   sceneLimit.value = 20
+  syncManagedRoute()
 }
 
 function detachScene() {
@@ -981,6 +1046,7 @@ function selectPopularSource(source: 'studio' | 'popular') {
     pb.setStudioSubject()
     // 立即恢复 nene/natsume 的 model/lora 白名单，不等 15s 状态轮询。
     void refreshAnimaBackend()
+    syncManagedRoute()
     pb.flash('已切回工作室角色（宁宁 / 夏目 LoRA 路径）')
     return
   }
@@ -999,6 +1065,7 @@ function selectPopularSource(source: 'studio' | 'popular') {
       pb.setPopularSubject('', '')
     }
     void refreshAnimaBackend()
+    syncManagedRoute()
     pb.flash('已切换到热门角色：默认 Anima Aesthetic 无 LoRA，可改 Krea 2')
   }
 }
@@ -1012,7 +1079,8 @@ function selectPopularCharacter(character: PopularCharacter) {
   // recommendedEngine 为 Krea 时直接切 krea2 引擎（当前数据全 aesthetic，仍保留分支防死字段）。
   applyRecommendedEngine(character)
   patchAnimaState({ modelId: character.recommendedEngine })
-  void refreshAnimaBackend()
+  syncManagedRoute()
+  if (pb.directorMode === 'pro') void refreshAnimaBackend()
 }
 
 function selectPopularOutfit(outfitId: string) {
@@ -1266,7 +1334,7 @@ interface AnimaRequest {
   steps: number
   cfg: number
   seed?: number
-  character: 'nene' | 'natsume' | 'triad' | null
+  character: 'nene' | 'nene_b' | 'natsume' | 'triad' | null
   styleLoraId?: string
 }
 
@@ -1382,7 +1450,7 @@ function buildAnimaRequest(): AnimaRequest | null {
     steps: animaState.value.steps,
     cfg: animaState.value.cfg,
     ...(animaState.value.seed == null ? {} : { seed: animaState.value.seed }),
-    character: animaState.value.family === 'krea2' ? null : pb.char,
+    character: animaState.value.family === 'krea2' ? null : ANIMA_CHARACTER_BY_CHARACTER[pb.char],
   }
 }
 
@@ -1678,6 +1746,9 @@ function enqueueCurrent() {
 }
 
 async function callGenerate(opts: { disableLora?: boolean } = {}) {
+  if (pb.directorMode === 'basic') {
+    await applyManagedRoute({ silent: true })
+  }
   if (pb.isPopular && drawEngine.value === 'sd') {
     pb.flash('热门角色仅支持 Anima 无 LoRA 或 Krea 2')
     return
@@ -2026,6 +2097,8 @@ onMounted(async () => {
   if (!handledDeepLink) pb.restoreDraft()
   // 推荐尺寸同步到出图选择
   if (pb.lastRecommendedSize) sdSize.value = pb.lastRecommendedSize
+  if (pb.directorMode === 'basic') await applyManagedRoute({ silent: true })
+  else await refreshManagedRoute()
 
   // 热门角色草稿恢复：同步无 LoRA 底模与蓝图尺寸/导演决策，并立即刷新 backend，
   // 让面板的 model/lora 列表立刻收敛到热门角色（不等 15s 轮询）。
@@ -2108,6 +2181,7 @@ watch(() => pb.subject, subject => {
   if (subject.kind === 'popular' && drawEngine.value === 'sd') {
     setDrawEngine('anima')
   }
+  syncManagedRoute()
 })
 
 // 角色变化 / 成熟内容开关变化后，若当前 category 已无合格蓝图（如"成人"），
@@ -2121,14 +2195,17 @@ watch([popularBlueprintPool, () => pb.showMatureScenes, () => pb.isPopular], () 
 
 watch(() => pb.char, char => {
   if (pb.isPopular) return
-  if (drawEngine.value !== 'sd') {
+  if (pb.directorMode === 'basic') {
+    syncManagedRoute()
+  } else if (drawEngine.value !== 'sd') {
+    void refreshManagedRoute()
     syncAnimaCharacter(char)
     void refreshAnimaBackend()
     if (char === 'triad') {
       setDrawEngine('sd')
        pb.flash('Anima 与 Krea 2 首版暂不支持双角色身份构图，已切回 SD')
      }
-  }
+  } else void refreshManagedRoute()
 })
 
 watch([() => pb.char, () => pb.sceneSearch, () => pb.sceneTheme, sceneCollection], () => {

@@ -69,7 +69,7 @@ function sceneContext(scene: PromptBuilderStore['activeScene']) {
  * queued generation without letting the view duplicate policy decisions.
  *
  * Studio 组装只面向工作室角色。画师风格只在专家模式显式选择时进入模型原生位置；Anima 的精确
- * token 契约从视图传入的服务端 LoRA id（L_NENE_V20_ANIMA / L_NAT_V20_ANIMA）解析。
+ * token 契约从视图传入的服务端 LoRA id（宁宁当前稳定版 V20B / 夏目 V20）解析。
  */
 export function usePromptAssembly(
   pb: PromptBuilderStore,

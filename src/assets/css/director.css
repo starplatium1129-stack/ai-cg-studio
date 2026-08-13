@@ -502,6 +502,51 @@
     box-shadow:inset 0 1px 0 var(--glass-highlight),var(--shadow-sm);
   }
   .pb .director-auto-summary { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--text-muted); font-size:var(--fs-mono-sm); }
+  .pb .managed-route-card {
+    display:grid; gap:var(--s-3); padding:var(--s-4);
+    border:1px solid color-mix(in srgb,var(--success) 34%,var(--border-soft));
+    border-radius:var(--r-lg);
+    background:linear-gradient(135deg,color-mix(in srgb,var(--success) 8%,var(--bg-surface)),var(--bg-surface));
+  }
+  .pb .managed-route-card.experimental {
+    border-color:color-mix(in srgb,var(--warning) 38%,var(--border-soft));
+    background:linear-gradient(135deg,color-mix(in srgb,var(--warning) 8%,var(--bg-surface)),var(--bg-surface));
+  }
+  .pb .managed-route-main { display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); }
+  .pb .managed-route-copy { display:grid; gap:2px; min-width:0; }
+  .pb .managed-route-copy strong { color:var(--text-primary); font-size:var(--fs-body); }
+  .pb .managed-route-copy > span:last-child { color:var(--text-secondary); font-size:var(--fs-label); }
+  .pb .managed-route-kicker {
+    color:var(--success); font:700 var(--fs-mono-xs) var(--font-mono);
+    letter-spacing:.08em; text-transform:uppercase;
+  }
+  .pb .managed-route-card.experimental .managed-route-kicker { color:var(--warning-text); }
+  .pb .managed-route-apply {
+    flex:0 0 auto; min-height:32px; padding:0 var(--s-3);
+    border:1px solid var(--border-soft); border-radius:var(--r-md);
+    background:var(--bg-elevated); color:var(--text-primary); cursor:pointer;
+    transition:transform 140ms var(--ease-out),border-color 160ms var(--ease-out),background 160ms var(--ease-out);
+  }
+  .pb .managed-route-apply:active { transform:scale(.97); }
+  .pb .managed-route-apply:disabled { opacity:.55; cursor:not-allowed; }
+  .pb .managed-route-facts { display:flex; flex-wrap:wrap; gap:var(--s-2); }
+  .pb .managed-route-facts span {
+    padding:2px var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-pill);
+    color:var(--text-muted); font:600 var(--fs-mono-xs) var(--font-mono);
+  }
+  .pb .managed-route-reasons {
+    display:grid; gap:3px; margin:0; padding-left:18px;
+    color:var(--text-secondary); font-size:var(--fs-label-sm); line-height:1.5;
+  }
+  .pb .successful-recipes { display:flex; align-items:center; gap:var(--s-2); flex-wrap:wrap; }
+  .pb .successful-recipes > span { color:var(--text-muted); font-size:var(--fs-label-sm); }
+  .pb .successful-recipes button {
+    min-height:28px; padding:0 var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-pill);
+    background:transparent; color:var(--text-secondary); cursor:pointer;
+    transition:transform 140ms var(--ease-out),border-color 160ms var(--ease-out),color 160ms var(--ease-out);
+  }
+  .pb .successful-recipes button:active { transform:scale(.97); }
+  .pb .successful-recipes button:disabled { opacity:.55; cursor:not-allowed; }
   .pb[data-director-mode="basic"] .advanced-decision { display:none; }
   .pb[data-director-mode="basic"] .scene-tag.raw { display:none; }
   .pb .decision-summary {
@@ -529,6 +574,15 @@
     min-height:30px; padding:0 var(--s-2); border:0; border-radius:var(--r-sm);
     background:transparent; color:var(--text-muted); cursor:pointer;
     font:650 var(--fs-mono-xs) var(--font-sans);
+  }
+  @media (hover:hover) and (pointer:fine) {
+    .pb .managed-route-apply:hover,
+    .pb .successful-recipes button:hover { border-color:var(--accent); color:var(--accent); }
+  }
+  @media (max-width:720px) {
+    .pb .director-mode-head, .pb .managed-route-main { align-items:stretch; flex-direction:column; }
+    .pb .director-mode-switch { align-self:flex-start; }
+    .pb .managed-route-apply { width:100%; }
   }
   .pb .scene-scope button:hover { color:var(--text-primary); }
   .pb .scene-scope button.active { background:var(--accent-soft); color:var(--accent); box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 38%,transparent); }
