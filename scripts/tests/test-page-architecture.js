@@ -93,6 +93,9 @@ for (const file of vueFiles) {
 
 // ── 4. 热页面共享 atelier chrome ─────────────────────────────────────────
 // 返回入口 + kicker 排版原语，保持各页顶部信息结构一致。
+// 工作台页面（控制台 / 模型架 / 训练台）自第八轮起使用 WorkspaceArchiveBar
+// 承载档案编号与机读状态，不再重复输出同义英文 Kicker（见
+// docs/visual-architecture-roadmap.md「第六轮：工作台标签去重」）。
 const chromeViews = [
   ['src/views/PromptBuilderView.vue', /\bpb-kicker\b/],
   ['src/views/ChatView.vue', /\bpage-kicker\b/],
@@ -100,10 +103,10 @@ const chromeViews = [
   ['src/views/ShowcaseView.vue', /\bpage-kicker\b/],
   ['src/views/SceneExplorerView.vue', /\bpage-kicker\b/],
   ['src/views/SceneManagerView.vue', /\bpage-kicker\b/],
-  ['src/views/ControlView.vue', /\bgallery-kicker\b/],
+  ['src/views/ControlView.vue', /\bWorkspaceArchiveBar\b/],
   ['src/views/CharacterView.vue', /\bpage-kicker\b/],
   ['src/views/ColorScriptView.vue', /\bpage-kicker\b/],
-  ['src/views/LoraView.vue', /\bpage-kicker\b/],
+  ['src/views/LoraView.vue', /\bWorkspaceArchiveBar\b/],
   ['src/views/StyleView.vue', /\bpage-kicker\b/],
 ];
 for (const [rel, kickerRe] of chromeViews) {

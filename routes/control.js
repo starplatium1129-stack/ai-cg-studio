@@ -16,6 +16,7 @@ var cp      = require('child_process');
 var security = require('../server/security');
 var diagnostics = require('../server/diagnostics');
 var envelope = require('../server/http-envelope');
+var processTree = require('../server/process-tree');
 var localOnly = security.localOnly;
 var createOperationManager = require('../services/control-operation').createOperationManager;
 var createServiceWatchdog = require('../services/service-watchdog').createServiceWatchdog;
@@ -271,21 +272,11 @@ function createControlRouter(config, gatewayRef, dependencies) {
   // 于是隧道一开，所有公网请求都被判成「本机」，控制面板的启停/改 host 全部敞开。
 
   /**
-   * 连子孙一起终止。
+   * 连子孙一起终止（server/process-tree.js 唯一实现）。
    * Windows 上 child.kill() 只杀 powershell.exe 本体，它启动的
    * SD WebUI / GPT-SoVITS 会变成孤儿继续占着显存 —— server.js 里
    * 停隧道时早就知道要用 taskkill /T /F，这条路径漏了。
    */
-  function killProcessTree(child) {
-    if (!child || !child.pid) return;
-    if (process.platform === 'win32') {
-      try {
-        cp.execFileSync('taskkill', ['/pid', String(child.pid), '/T', '/F'], { stdio:'ignore' });
-        return;
-      } catch (error) { /* 进程可能已退出，回退到 kill */ }
-    }
-    try { child.kill(); } catch (error) {}
-  }
 
   function runScriptAsync(scriptPath, args, timeoutMs) {
     return new Promise(function (resolve) {
@@ -315,7 +306,7 @@ function createControlRouter(config, gatewayRef, dependencies) {
     var timer = setTimeout(function () {
       // child.kill() 在 Windows 上只终止 powershell.exe 本体，
       // 会把它启动的 SD WebUI / GPT-SoVITS 孤立掉。整棵树一起收。
-      killProcessTree(child);
+      processTree.killProcessTree(child);
       done({ ok:false, error:'操作超时（' + Math.round((timeoutMs || 60000) / 1000) + ' 秒）' });
     }, timeoutMs || 60000);
     // 输出加上限：脚本多话时不要把字符串撑到无穷大

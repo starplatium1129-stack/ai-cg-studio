@@ -641,8 +641,7 @@ body:has(.chat-page) .sakura-fall {
   opacity: .6;
 }
 
-.chat-page .live2d-interaction-hint,
-.companion-page .live2d-interaction-hint {
+.chat-page .live2d-interaction-hint {
   position: absolute;
   z-index: 8;
   left: 50%;

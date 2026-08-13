@@ -373,9 +373,11 @@ test('view source sentinels: popular copy/preview, studio refresh, preview badge
   assert.ok(/setStudioSubject\(\)[\s\S]{0,200}refreshAnimaBackend\(\)/.test(view), 'studio switch must refresh backend immediately');
 
   // Finding 6：metadata preview 已随夏目 v20 晋级停用（不再有任何 preview LoRA）。
+  // 请求元数据构建归 useAnimaSession（第十二轮），哨兵随之迁移。
+  var sessionSource = fs.readFileSync(path.join(root, 'src', 'composables', 'useAnimaSession.ts'), 'utf8');
   assert.ok(!/preview:\s*request\.character\s*===\s*'natsume'\s*\|\|\s*request\.character\s*===\s*null/.test(view),
     'preview must not be implied by character===null');
-  assert.ok(/preview:\s*false/.test(view), 'preview must be retired after Natsume v20 promotion');
+  assert.ok(/preview:\s*false/.test(sessionSource), 'preview must be retired after Natsume v20 promotion');
   assert.ok(/historyGenerationFields[\s\S]*?preview:\s*meta\.preview\s*===\s*true/.test(view),
     'history preview must be driven by the real preview flag, not character fallback');
   assert.ok(!/preview:\s*meta\.preview\s*===\s*true\s*\|\|\s*meta\.character\s*===\s*'natsume'/.test(view),

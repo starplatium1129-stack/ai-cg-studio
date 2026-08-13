@@ -10,6 +10,7 @@
 
 var fs = require('fs');
 var cp = require('child_process');
+var processTree = require('./process-tree');
 
 function createTunnelManager(options) {
   options = options || {};
@@ -46,12 +47,7 @@ var restartAttempts = 0;
 
   function killPids(pids) {
     pids.forEach(function (pid) {
-      if (process.platform === 'win32') {
-        try { cp.execFileSync('taskkill', ['/pid', String(pid), '/T', '/F'], { stdio:'ignore' }); }
-        catch (error) { try { process.kill(pid); } catch (e) {} }
-      } else {
-        try { process.kill(pid); } catch (error) {}
-      }
+      processTree.killPid(pid);
     });
   }
 

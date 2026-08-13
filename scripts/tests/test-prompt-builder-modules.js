@@ -187,8 +187,17 @@ for (const marker of ['DrawEngine', 'historyGenerationFields', 'animaModelId', '
 if (view.includes('styleLoraId: animaState.value.styleLoraId')) {
   fail('one-click requests must not submit a hidden Style LoRA selection');
 }
-for (const marker of ['buildAnimaRequest', 'metadataFromJob', 'onAnimaResult', 'cancelAnimaJob', '@generate="callGenerate"', 'cancelGeneration']) {
+// Anima 生成生命周期自第十一轮起归 useAnimaSession 组合函数所有：
+// 视图保留 prompt 组装与结果协调，会话状态机/轮询/取消在组合函数内。
+const animaSessionSource = read('src/composables/useAnimaSession.ts');
+for (const marker of ['buildAnimaRequest', 'onAnimaResult', 'cancelAnimaJob', '@generate="callGenerate"', 'cancelGeneration']) {
   if (!view.includes(marker)) fail('Anima generation must be parent-owned and metadata-driven: ' + marker);
+}
+for (const marker of ['metadataFromJob', 'pollJob', 'generate', 'cancel', 'dispose', 'animaRequestPayload']) {
+  if (!animaSessionSource.includes(marker)) fail('Anima session composable must own ' + marker);
+}
+if (!view.includes('useAnimaSession')) {
+  fail('PromptBuilderView must consume the dedicated Anima session composable');
 }
 for (const forbidden of ['animaPanelRef', 'syncAnimaPanelState', 'restoreAnimaPanelState', 'querySelectorAll']) {
   if (view.includes(forbidden)) fail('PromptBuilderView must not read Anima controls through DOM: ' + forbidden);
@@ -206,8 +215,11 @@ if (sceneLoad < 0 || storyRestore < sceneLoad) fail('history restore must load t
 if (view.includes("else if (entry.engine === 'sd')")) {
   fail('legacy history without an engine field must restore through the SD path');
 }
-for (const marker of ['animaRequestSerial += 1', "method: 'DELETE'"]) {
-  if (!view.includes(marker)) fail('leaving the director must stop Anima polling and cancel the owned job: ' + marker);
+for (const marker of ['requestSerial += 1', "method: 'DELETE'"]) {
+  if (!animaSessionSource.includes(marker)) fail('leaving the director must stop Anima polling and cancel the owned job: ' + marker);
+}
+if (view.includes('animaRequestSerial') || view.includes('animaStatusRequest') || view.includes('animaJobRequest')) {
+  fail('Anima session request serials and controllers must live in the session composable');
 }
 if (view.includes("from '@/utils/promptPolicy'")) {
   fail('prompt policy composition must stay owned by usePromptAssembly');
@@ -267,8 +279,12 @@ for (const marker of ['faceDetailer', 'face_yolov8s.pt', 'hand_yolov8n.pt', 'bui
 }
 
 const sdGenerate = read('src/composables/useSDGenerate.ts');
-if (!sdGenerate.includes('buildTxt2ImgRequest') || !sdGenerate.includes('/api/generation/jobs')) {
-  fail('SD composable must use the shared production request builder and application generation job API');
+const generationApiSource = read('src/api/generationApi.ts');
+if (!sdGenerate.includes('buildTxt2ImgRequest') || !sdGenerate.includes('generationApi')) {
+  fail('SD composable must use the shared production request builder and the application generation API module');
+}
+if (!generationApiSource.includes('/api/generation/jobs')) {
+  fail('generation API module must own the application generation job endpoints');
 }
 if (!sdGenerate.includes("accepted.job.provider === 'comfy' ? 'comfy' : 'webui'")) {
   fail('SD provider state must fail safe to WebUI when the server response is missing or unknown');

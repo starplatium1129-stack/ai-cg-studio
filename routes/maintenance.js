@@ -5,6 +5,7 @@ var path = require('path');
 var cp = require('child_process');
 var express = require('express');
 var envelope = require('../server/http-envelope');
+var processTree = require('../server/process-tree');
 
 function readJson(source) {
   return JSON.parse(fs.readFileSync(source, 'utf8'));
@@ -154,17 +155,6 @@ function desktopMaintenanceUnavailable(req, res) {
   return envelope.fail(res, 501, DESKTOP_MAINTENANCE_UNAVAILABLE, { code:'DESKTOP_MAINTENANCE_UNAVAILABLE' });
 }
 
-function killProcessTree(child) {
-  if (!child || !child.pid) return;
-  if (process.platform === 'win32') {
-    try {
-      cp.execFileSync('taskkill', ['/pid', String(child.pid), '/T', '/F'], { stdio:'ignore' });
-      return;
-    } catch (error) { /* 进程可能已退出，回退到 kill */ }
-  }
-  try { child.kill(); } catch (error) {}
-}
-
 /**
  * 网关在跑的子进程登记表：/api/maintenance/run 与场景保存校验链可能耗时
  * 数分钟，网关退出时必须连树回收，否则脚本会继续写文件直到自然结束。
@@ -180,7 +170,7 @@ function trackChild(child) {
 }
 
 function killActiveChildren() {
-  activeChildren.forEach(function (child) { killProcessTree(child); });
+  activeChildren.forEach(function (child) { processTree.killProcessTree(child); });
   activeChildren.clear();
 }
 
@@ -230,7 +220,7 @@ function createMaintenanceRouter(cfg) {
       settled = true;
       // 脚本可能又 spawn 了子进程（如 validate 链），只 kill 本体会让它们
       // 变孤儿继续写文件；连树一起收。
-      killProcessTree(child);
+      processTree.killProcessTree(child);
       reject(new Error(path.basename(script) + ' 执行超时（' + Math.round((timeoutMs || 120000) / 1000) + ' 秒）'));
     }, timeoutMs || 120000);
 
@@ -591,7 +581,8 @@ module.exports = {
   // 子进程登记/回收共享给 control.js（build-web 的构建进程也要在网关退出时回收）
   trackChild:trackChild,
   killActiveChildren:killActiveChildren,
-  killProcessTree:killProcessTree,
+  // 进程树终止由 server/process-tree.js 统一实现（P3 收口）
+  killProcessTree:processTree.killProcessTree,
   isDesktopPackagedMode:isDesktopPackagedMode,
   _test:{
     decodeJpegDataUrl:decodeJpegDataUrl,

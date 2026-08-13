@@ -6,9 +6,11 @@ const path = require('path');
 const DEFAULT_BUDGETS = Object.freeze({
   // PromptBuilder carries the three server-backed engines and their history
   // controls. Heavy expert controls (including artist tags) stay async. Its route
-  // chunk is about 130 KiB; 132 KiB leaves modest room for
-  // feature maintenance without turning this into a blanket route increase.
-  routeJavaScript: 132 * 1024,
+  // chunk is about 133 KiB; the unified /api/generation client module
+  // (src/api/generationApi.ts, roadmap "统一前端 API 层") rides in this chunk
+  // through useSDGenerate. 133 KiB leaves modest room for feature maintenance
+  // without turning this into a blanket route increase.
+  routeJavaScript: 133 * 1024,
   routeCss: 100 * 1024,
   // wl-live2d 懒加载块：pixi.js + pixi-live2d-display + cubism4 core 全内联，
   // 大小由依赖决定，这里监控防止未来升级/引入新依赖把它撑得更大。

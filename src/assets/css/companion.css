@@ -226,6 +226,31 @@ html.companion-mode body {
   transition: opacity var(--t-base);
 }
 
+/* 互动提示：与角色房间同一视觉语言；曾误放在 chat.css 里，
+   冷启动 /companion 时不会随 chat 路由块加载，样式时有时无。 */
+.companion-page .live2d-interaction-hint {
+  position: absolute;
+  z-index: 8;
+  left: 50%;
+  bottom: var(--s-3);
+  translate: -50% 0;
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0;
+  padding: 5px 10px;
+  border: 1px solid color-mix(in srgb, var(--character-accent) 20%, var(--glass-edge));
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--bg-deep) 74%, transparent);
+  color: var(--text-secondary);
+  font: 600 var(--fs-mono-xs) var(--font-mono);
+  line-height: 1.45;
+  pointer-events: none;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 24px rgb(0 0 0 / .24);
+}
+
 .companion-page .live2d-host > * {
   position: absolute !important;
   right: auto !important;

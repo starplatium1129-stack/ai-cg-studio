@@ -104,7 +104,11 @@ const ROUTES_WITH_SAKURA = new Set([
   '/chat',
 ])
 const routeHasOwnParticle = computed(() => ROUTES_WITH_OWN_PARTICLES.has(route.path))
-const showRouteIndex = computed(() => !routeHasOwnParticle.value)
+// 右下角水印与密集工作台面板实测碰撞（控制台 / 场景管理 / 视频台），且这些页
+// 的 WorkspaceArchiveBar 已承载档案编号与机读上下文，水印重复且遮挡内容。
+// 导演台（水印锚点 particle-narrative 断言 '01'）与无碰撞的训练台/模型架保留。
+const ROUTES_WITHOUT_ROUTE_INDEX = new Set(['/control', '/scene-manager', '/video-studio'])
+const showRouteIndex = computed(() => !routeHasOwnParticle.value && !ROUTES_WITHOUT_ROUTE_INDEX.has(route.path))
 const showSakura = computed(() => ROUTES_WITH_SAKURA.has(route.path))
 const signalState = ref<ParticleSignalState>('idle')
 const signalShape = ref<ParticleShapeId | null>(null)

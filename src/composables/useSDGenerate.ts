@@ -9,6 +9,7 @@ import {
   parseSDStatus,
 } from '@/utils/sdStatus'
 import { mediaStatusApi } from '@/api/mediaStatusApi'
+import { generationApi } from '@/api/generationApi'
 export type { SDGenerateParams } from '@/utils/sdRequest'
 
 function isAbortError(error: unknown): boolean {
@@ -43,8 +44,10 @@ export function useSDGenerate() {
   let activeJobId = ''
 
   async function checkStatus(): Promise<boolean> {
-    const generation = await fetch('/api/generation/status', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null)
-    if (generation?.ok) {
+    // 应用生成路由统一走 /api/generation/status（含 Comfy 探测与白名单资源检查）。
+    // 网关给出明确结论（含 offline）时直接采用，只有请求失败才落到旧 WebUI 探测。
+    const generation = await generationApi.getStatus().catch(() => null)
+    if (generation) {
       online.value = generation.online === true
       samplers.value = Array.isArray(generation.samplers) ? generation.samplers : []
       schedulers.value = Array.isArray(generation.schedulers) ? generation.schedulers : []
@@ -155,29 +158,17 @@ export function useSDGenerate() {
       }).filter((x): x is { id: string; strength: number } => Boolean(x))
       lastLoras.value = loras
       const modelId = String(params.model || '').includes('waiIllustriousSDXL_v170') ? 'waiIllustriousSDXL_v170' : undefined
-      const r = await fetch('/api/generation/jobs', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          prompt: payload.prompt, negative: payload.negative_prompt, profile: '',
-          ...(modelId ? { modelId } : {}),
-          character: params.char || '', loras, width: payload.width, height: payload.height,
-          steps: payload.steps, cfg: payload.cfg_scale, seed: payload.seed,
-          sampler: payload.sampler_name, scheduler: String(payload.scheduler || params.scheduler || ''),
-          hiresFix: Boolean(params.hr_fix), hiresScale: params.hr_scale, hiresUpscaler: params.hr_upscaler,
-          hiresSteps: params.hr_second_pass_steps, denoisingStrength: params.denoising_strength,
-          faceDetailer: Boolean(params.alwayson_scripts?.ADetailer),
-        }),
-        signal: abortCtrl.signal,
-      })
+      const accepted = await generationApi.createJob({
+        prompt: payload.prompt, negative: payload.negative_prompt, profile: '',
+        ...(modelId ? { modelId } : {}),
+        character: params.char || '', loras, width: payload.width, height: payload.height,
+        steps: payload.steps, cfg: payload.cfg_scale, seed: payload.seed,
+        sampler: payload.sampler_name, scheduler: String(payload.scheduler || params.scheduler || ''),
+        hiresFix: Boolean(params.hr_fix), hiresScale: params.hr_scale, hiresUpscaler: params.hr_upscaler,
+        hiresSteps: params.hr_second_pass_steps, denoisingStrength: params.denoising_strength,
+        faceDetailer: Boolean(params.alwayson_scripts?.ADetailer),
+      }, { signal: abortCtrl.signal })
 
-      if (!r.ok) {
-        const txt = await r.text().catch(() => '')
-        throw new Error(`SD 返回错误 ${r.status}: ${txt.slice(0, 120)}`)
-      }
-
-      const accepted = await r.json() as { ok?: boolean; job?: { id: string; provider?: 'comfy' | 'webui'; status?: string; resultUrl?: string | null; seed?: number; metadata?: { seed?: number }; error?: string }; error?: string }
-      if (!accepted.ok || !accepted.job?.id) throw new Error(accepted.error || '生成任务创建失败')
       provider.value = accepted.job.provider === 'comfy' ? 'comfy' : 'webui'
       activeJobId = accepted.job.id
       let job = accepted.job
@@ -188,9 +179,7 @@ export function useSDGenerate() {
         if (job.status === 'cancelled') throw new DOMException('cancelled', 'AbortError')
         if (job.status === 'succeeded' && job.resultUrl) break
         await new Promise(resolve => setTimeout(resolve, 700))
-        const stateResponse = await fetch(`/api/generation/jobs/${encodeURIComponent(job.id)}`, { cache: 'no-store', signal: abortCtrl.signal })
-        if (!stateResponse.ok) throw new Error(`生成状态读取失败 ${stateResponse.status}`)
-        const state = await stateResponse.json() as { job?: typeof job }
+        const state = await generationApi.getJob(job.id, { signal: abortCtrl.signal })
         if (!state.job) throw new Error('生成状态无效')
         job = state.job
         progress.value = job.status === 'running' ? Math.min(95, progress.value + 2) : (job.status === 'succeeded' ? 100 : progress.value)
@@ -225,7 +214,7 @@ export function useSDGenerate() {
     if (!generating.value) return
     abortCtrl?.abort()
     if (activeJobId) {
-      fetch(`/api/generation/jobs/${encodeURIComponent(activeJobId)}`, { method: 'DELETE' }).catch(() => {})
+      void generationApi.deleteJob(activeJobId).catch(() => {})
     }
     // Cancellation is owned by the application job route. Do not issue a
     // global WebUI interrupt for a Comfy job.

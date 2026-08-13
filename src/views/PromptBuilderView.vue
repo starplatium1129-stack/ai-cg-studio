@@ -615,7 +615,7 @@
 <script setup lang="ts">
 // 导演台专属样式（91.6KB）随本路由块加载，不再进全局包
 import '@/assets/css/director.css'
-import { ref, computed, nextTick, onMounted, onUnmounted, watch, defineAsyncComponent } from 'vue'
+import { ref, computed, nextTick, onMounted, watch, defineAsyncComponent } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import {
   usePromptBuilderStore,
@@ -635,7 +635,8 @@ import {
   type PopularCharacter,
   type SceneBlueprint,
 } from '@/utils/popularContent'
-import type { AnimaGenerationState, AnimaJobMetadata, AnimaResult, AnimaOption } from '@/types/anima'
+import type { AnimaResult } from '@/types/anima'
+import { useAnimaSession, closestSupportedSize, ANIMA_LORA_BY_CHARACTER, ANIMA_CHARACTER_BY_CHARACTER, type AnimaRequest } from '@/composables/useAnimaSession'
 import { useSDGenerate } from '@/composables/useSDGenerate'
 import { usePromptAssembly } from '@/composables/usePromptAssembly'
 import { EMOTION, SHOT, LIGHTING, COMPOSITION, COLOR_MOODS, SCENE_THEMES } from '@/config/promptConstants'
@@ -679,7 +680,6 @@ import {
   settingsRepository,
   type DrawEngine,
 } from '@/storage/settingsRepository'
-import { ApiClientError, apiClient } from '@/api/client'
 import type { DrawingRouteRecommendation } from '@/utils/drawingRoute'
 
 // 热门角色面板按需懒加载：仅在 isPopular 时渲染，避免常驻占用主 chunk。
@@ -717,83 +717,30 @@ const DIRECTOR_MODE_KEY = 'aics_pb_director_mode'
 
 const storedDrawEngine = settingsRepository.get(DRAW_ENGINE_SETTING)
 const drawEngine = ref<DrawEngine>(storedDrawEngine ?? 'sd')
-const animaState = ref<AnimaGenerationState>({
-  phase: 'idle', online: false, checkMsg: 'Anima 状态检查中…', models: [], loras: [], styleLoras: [], styleLoraId: '',
-  prompt: '', negative: '', modelId: 'anima-base-v1.0', loraId: 'L_NENE_V20B_ANIMA',
-  loraStrength: 0.85, width: 832, height: 1216, steps: 24, cfg: 3.0,
-  family: 'anima',
-  sampler: 'res_multistep', scheduler: 'simple', seed: null,
-  job: null, result: null, statusText: '', errorMsg: '',
+const animaSession = useAnimaSession({
+  getCharacter: () => pb.char,
+  isPopular: () => pb.isPopular,
+  getFamily: () => drawEngine.value === 'krea2' ? 'krea2' : 'anima',
+  getRequest: () => buildAnimaRequest(),
+  onResult: result => onAnimaResult(result),
+  flash: message => pb.flash(message),
+  preferredSize: () => pb.lastRecommendedSize,
 })
-const ANIMA_LORA_BY_CHARACTER = {
-  nene: 'L_NENE_V20B_ANIMA',
-  natsume: 'L_NAT_V20_ANIMA',
-} as const
-const ANIMA_CHARACTER_BY_CHARACTER = {
-  nene: 'nene_b',
-  natsume: 'natsume',
-} as const
-let animaStatusTimer: ReturnType<typeof setInterval> | null = null
-let animaRequestSerial = 0
-let animaStatusRequest: AbortController | null = null
-let animaJobRequest: AbortController | null = null
-
-const animaModelId = computed({
-  get: () => animaState.value.modelId,
-  set: value => applyAnimaModel(value),
-})
-
-function patchAnimaState(patch: Partial<AnimaGenerationState>) {
-  animaState.value = { ...animaState.value, ...patch }
-}
-
-function closestSupportedSize(model: AnimaOption | undefined, desired: string): string {
-  const sizes = model?.sizes || []
-  if (!sizes.length || sizes.includes(desired)) return desired
-  const [desiredWidth, desiredHeight] = desired.split('x').map(Number)
-  if (!desiredWidth || !desiredHeight) return sizes[0]
-  const desiredRatio = desiredWidth / desiredHeight
-  return [...sizes].sort((left, right) => {
-    const [leftWidth, leftHeight] = left.split('x').map(Number)
-    const [rightWidth, rightHeight] = right.split('x').map(Number)
-    return Math.abs(leftWidth / leftHeight - desiredRatio) - Math.abs(rightWidth / rightHeight - desiredRatio)
-  })[0]
-}
-
-function applyAnimaModel(modelId: string) {
-  const model = animaState.value.models.find(item => item.id === modelId)
-  const size = closestSupportedSize(model, pb.lastRecommendedSize || `${animaState.value.width}x${animaState.value.height}`)
-  const [width, height] = size.split('x').map(Number)
-  patchAnimaState({
-    modelId,
-    family: model?.family === 'krea2' ? 'krea2' : 'anima',
-    steps: Number(model?.defaults?.steps) || animaState.value.steps,
-    cfg: Number(model?.defaults?.cfg) || animaState.value.cfg,
-    sampler: String(model?.defaults?.sampler || animaState.value.sampler),
-    scheduler: String(model?.defaults?.scheduler || animaState.value.scheduler),
-    styleLoraId: '',
-    ...(Number.isInteger(width) && Number.isInteger(height) ? { width, height } : {}),
-  })
-  syncAnimaCharacter(pb.char)
-}
+const {
+  state: animaState,
+  patchState: patchAnimaState,
+  modelId: animaModelId,
+  refreshBackend: refreshAnimaBackend,
+  syncCharacter: syncAnimaCharacter,
+  applyModel,
+  generate: generateAnima,
+  cancel: cancelAnimaJob,
+  clearResult: clearAnimaResult,
+  startStatusPolling,
+} = animaSession
 
 function selectAnimaModel(event: Event) {
-  applyAnimaModel((event.target as HTMLSelectElement).value)
-}
-
-function syncAnimaCharacter(character: 'nene' | 'natsume' | 'triad' = pb.char) {
-  if (pb.isPopular) {
-    // 热门角色：无 LoRA 模式，不依赖角色 LoRA 白名单。
-    patchAnimaState({ loraId: '' })
-    return
-  }
-  if (character === 'triad') {
-    patchAnimaState({ loraId: '' })
-    return
-  }
-  const expected = ANIMA_LORA_BY_CHARACTER[character]
-  const available = animaState.value.loras.some(lora => lora.id === expected && lora.available !== false)
-  patchAnimaState({ loraId: available ? expected : '' })
+  applyModel((event.target as HTMLSelectElement).value)
 }
 
 // ── Derived（场景筛选 / 词条目录 / 摘要 / 显存提示）──────────────────────
@@ -990,7 +937,7 @@ async function applyManagedRoute(options: { silent?: boolean } = {}): Promise<vo
     }
     applyRecommendedSize(pb.lastRecommendedSize)
   } else {
-    if (animaState.value.modelId !== route.modelId) applyAnimaModel(route.modelId)
+    if (animaState.value.modelId !== route.modelId) applyModel(route.modelId)
     patchAnimaState({ loraId: route.loraId, styleLoraId: '' })
     await refreshAnimaBackend()
   }
@@ -1127,16 +1074,9 @@ const sdErrorReport = ref<SDErrorReport | null>(null)
 function dismissError() { sdErrorReport.value = null }
 
 // 引擎统一结果：Anima 结果带不可变 job metadata，历史不再读取当前面板状态。
-function onAnimaResult(result: AnimaResult) {
-  const previous = animaState.value.result
-  if (previous && previous.url !== result.url) URL.revokeObjectURL(previous.url)
-  patchAnimaState({ result, job: result.metadata, phase: 'succeeded', statusText: '生成完成', errorMsg: '' })
+// 会话（useAnimaSession）已写入 result/job/phase；这里只做跨引擎互斥协调。
+function onAnimaResult(_result: AnimaResult) {
   sd.clearResult()
-}
-function clearAnimaResult() {
-  const previous = animaState.value.result
-  if (previous) URL.revokeObjectURL(previous.url)
-  patchAnimaState({ result: null, job: null })
 }
 function clearDisplayedResult() {
   if (drawEngine.value === 'sd') sd.clearResult()
@@ -1302,121 +1242,11 @@ function historyGenerationFields(): Partial<HistoryEntry> {
   }
 }
 
-interface AnimaPublicJob {
-  id: string
-  status: 'queued' | AnimaGenerationState['phase']
-  seed: number
-  resultAvailable: boolean
-  resultUrl: string | null
-  metadata?: AnimaJobMetadata
-  error: string | null
-  code: string | null
-}
-
-interface AnimaStatusResponse {
-  ok?: boolean
-  online?: boolean
-  models?: AnimaOption[]
-  loras?: AnimaOption[]
-  styleLoras?: AnimaGenerationState['styleLoras']
-  error?: string
-}
-
-interface AnimaRequest {
-  prompt: string
-  negative: string
-  profileId: string
-  modelId: string
-  loraId: string | null
-  loraStrength: number | null
-  width: number
-  height: number
-  steps: number
-  cfg: number
-  seed?: number
-  character: 'nene' | 'nene_b' | 'natsume' | 'triad' | null
-  styleLoraId?: string
-}
-
-function animaRequestPayload(request: AnimaRequest): Omit<AnimaRequest, 'profileId' | 'loraId' | 'loraStrength'> & Partial<Pick<AnimaRequest, 'loraId' | 'loraStrength'>> {
-  return {
-    prompt: request.prompt,
-    negative: request.negative,
-    modelId: request.modelId,
-    ...(request.loraId ? { loraId: request.loraId, loraStrength: request.loraStrength } : {}),
-    ...(request.styleLoraId ? { styleLoraId: request.styleLoraId } : {}),
-    width: request.width,
-    height: request.height,
-    steps: request.steps,
-    cfg: request.cfg,
-    ...(request.seed === undefined ? {} : { seed: request.seed }),
-    character: request.character,
-  }
-}
-
 function updateAnimaPromptState() {
   patchAnimaState({
     prompt: livePrompt.value,
     negative: effectiveNegative.value,
   })
-}
-
-async function refreshAnimaBackend() {
-  animaStatusRequest?.abort()
-  const controller = new AbortController()
-  animaStatusRequest = controller
-  try {
-    const data = await apiClient.request<AnimaStatusResponse>('/api/creative/status', {
-      cache: 'no-store', signal: controller.signal, timeoutMs: 10_000,
-      validate: value => value.ok === true,
-    })
-    const models = Array.isArray(data.models) ? data.models : []
-    const loras = (Array.isArray(data.loras) ? data.loras : [])
-      .filter(lora => lora.character === pb.char)
-    const styleLoras = drawEngine.value === 'krea2' ? (data.styleLoras || []) : []
-    const targetFamily = drawEngine.value === 'krea2' ? 'krea2' : 'anima'
-    const familyModels = models.filter(model => model.family === targetFamily)
-    const visibleModels = pb.isPopular
-      // 热门角色只暴露 no-LoRA 底模（Krea 家族天然无 LoRA）。
-      ? familyModels.filter(model => model.capabilities?.noLora === true || model.family === 'krea2')
-      : familyModels
-    const familyLoras = targetFamily === 'krea2' ? [] : (pb.isPopular ? [] : loras)
-    const modelId = visibleModels.some(model => model.id === animaState.value.modelId)
-      ? animaState.value.modelId
-      : (visibleModels[0]?.id || '')
-    const loraId = familyLoras.some(lora => lora.id === animaState.value.loraId)
-      ? animaState.value.loraId
-      : (familyLoras[0]?.id || '')
-    const selectedModel = visibleModels.find(model => model.id === modelId)
-    // 切到新 family 时若当前尺寸不在该底模支持范围内，落到该底模推荐尺寸。
-    // （Krea 与 Anima 尺寸白名单不同；否则请求会以 400 INVALID_PARAMETER 失败。）
-    let width = animaState.value.width
-    let height = animaState.value.height
-    if (selectedModel && Array.isArray(selectedModel.sizes) && selectedModel.sizes.length
-      && !selectedModel.sizes.includes(`${width}x${height}`)) {
-      const [nextWidth, nextHeight] = String(selectedModel.sizes[0]).split('x').map(Number)
-      if (Number.isInteger(nextWidth) && Number.isInteger(nextHeight)) { width = nextWidth; height = nextHeight }
-    }
-    const familyLabel = targetFamily === 'krea2' ? 'Krea 2' : 'Anima'
-    patchAnimaState({
-      online: data.online === true,
-      checkMsg: data.online === true
-        ? `${familyLabel} 在线 · ${visibleModels.length} 个底模 · ${familyLoras.length} 个 LoRA`
-        : `${familyLabel} 离线（ComfyUI 未启动或网关不可用）`,
-      models: visibleModels, loras: familyLoras, styleLoras, styleLoraId: '', modelId, loraId, width, height,
-        family: selectedModel?.family === 'krea2' ? 'krea2' : 'anima',
-        steps: Number(selectedModel?.defaults?.steps) || animaState.value.steps,
-        cfg: Number(selectedModel?.defaults?.cfg) || animaState.value.cfg,
-        sampler: String(selectedModel?.defaults?.sampler || animaState.value.sampler),
-        scheduler: String(selectedModel?.defaults?.scheduler || animaState.value.scheduler),
-    })
-    syncAnimaCharacter(pb.char)
-  } catch (error) {
-    if (error instanceof ApiClientError && error.kind === 'aborted') return
-    patchAnimaState({ online: false, checkMsg: `${drawEngine.value === 'krea2' ? 'Krea 2' : 'Anima'} 离线（网关状态接口不可用）` })
-  } finally {
-    if (animaStatusRequest === controller) animaStatusRequest = null
-  }
 }
 
 function buildAnimaRequest(): AnimaRequest | null {
@@ -1482,144 +1312,6 @@ function buildPopularRequest(): AnimaRequest | null {
     cfg: animaState.value.cfg,
     ...(animaState.value.seed == null ? {} : { seed: animaState.value.seed }),
     character: null,
-  }
-}
-
-function metadataFromJob(job: AnimaPublicJob, request: AnimaRequest): AnimaJobMetadata {
-  const supplied = job.metadata
-  const metadata = supplied && supplied.prompt === request.prompt && supplied.negative === request.negative
-    ? supplied
-    : {
-        engine: animaState.value.family,
-        id: job.id,
-        prompt: request.prompt,
-        negative: request.negative,
-        profileId: request.profileId,
-        modelId: request.modelId,
-        loraId: request.loraId,
-         loraStrength: request.loraStrength,
-         styleLoraId: request.styleLoraId ?? null,
-         width: request.width,
-        height: request.height,
-        steps: request.steps,
-        cfg: request.cfg,
-        sampler: animaState.value.sampler,
-        scheduler: animaState.value.scheduler,
-         seed: job.seed,
-         character: request.character,
-        preview: false,
-        createdAt: Date.now(),
-        resultUrl: job.resultUrl,
-      }
-  return Object.freeze({ ...metadata, resultUrl: job.resultUrl || metadata.resultUrl || null }) as AnimaJobMetadata
-}
-
-async function fetchAnimaImage(url: string, signal: AbortSignal): Promise<Blob> {
-  const controller = new AbortController()
-  const onAbort = () => controller.abort()
-  signal.addEventListener('abort', onAbort, { once: true })
-  const timeout = window.setTimeout(() => controller.abort(), 30_000)
-  try {
-    const response = await fetch(url, { cache: 'no-store', signal: controller.signal })
-    const contentType = String(response.headers.get('content-type') || '')
-    if (!response.ok) throw new Error(`图片读取失败（HTTP ${response.status}）`)
-    if (!contentType.startsWith('image/')) throw new Error('网关返回的结果不是图片')
-    const blob = await response.blob()
-    if (!blob.size) throw new Error('生成结果为空')
-    return blob
-  } catch (error) {
-    if (controller.signal.aborted) throw new Error(signal.aborted ? '请求已取消' : '图片读取超时（30 秒）')
-    throw error
-  } finally {
-    clearTimeout(timeout)
-    signal.removeEventListener('abort', onAbort)
-  }
-}
-
-async function pollAnimaJob(jobId: string, request: AnimaRequest, serial: number, signal: AbortSignal): Promise<void> {
-  const deadline = Date.now() + 10 * 60 * 1000
-  while (Date.now() < deadline && serial === animaRequestSerial) {
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    if (serial !== animaRequestSerial) return
-    let data: { ok?: boolean; job?: AnimaPublicJob; error?: string }
-    try {
-      data = await apiClient.request((animaState.value.family === 'krea2' ? '/api/creative/jobs/' : '/api/anima/jobs/') + encodeURIComponent(jobId), {
-        cache: 'no-store', signal, timeoutMs: 15_000,
-      })
-    } catch (error) {
-      if (error instanceof ApiClientError && error.kind === 'http' && error.status >= 500) continue
-      throw error
-    }
-    if (serial !== animaRequestSerial) return
-    const job = data.job
-    if (data.ok !== true || !job) throw new Error(data.error || 'Anima 状态无效')
-    if (job.metadata) patchAnimaState({ job: metadataFromJob(job, request) })
-    if (job.status === 'cancelling') {
-      patchAnimaState({ phase: 'cancelling', statusText: '取消中…' })
-      continue
-    }
-    if (job.status === 'cancelled') {
-      patchAnimaState({ phase: 'cancelled', statusText: '任务已取消', errorMsg: '' })
-      return
-    }
-    if (job.status === 'failed') throw new Error(job.error || 'Anima 生成失败')
-    if (job.status !== 'succeeded' || !job.resultAvailable || !job.resultUrl) continue
-
-    const blob = await fetchAnimaImage(job.resultUrl, signal)
-    if (serial !== animaRequestSerial) return
-    const metadata = metadataFromJob(job, request)
-    onAnimaResult({ url: URL.createObjectURL(blob), blob, metadata })
-    return
-  }
-  if (serial === animaRequestSerial) throw new Error('Anima 生成超时')
-}
-
-async function generateAnima() {
-  if (['submitting', 'running', 'cancelling'].includes(animaState.value.phase)) return
-  const request = buildAnimaRequest()
-  if (!request) return
-  if (!animaState.value.online) { pb.flash('Anima ComfyUI 当前未连接'); return }
-  const serial = ++animaRequestSerial
-  animaJobRequest?.abort()
-  const controller = new AbortController()
-  animaJobRequest = controller
-  clearAnimaResult()
-  patchAnimaState({ phase: 'submitting', statusText: '提交任务…', errorMsg: '' })
-  try {
-    const data = await apiClient.request<{ ok?: boolean; job?: AnimaPublicJob; error?: string }>(animaState.value.family === 'krea2' ? '/api/creative/jobs' : '/api/anima/jobs', {
-      method: 'POST',
-      body: animaRequestPayload(request),
-      signal: controller.signal,
-      timeoutMs: 30_000,
-    })
-    if (data.ok !== true || !data.job?.id) throw new Error(data.error || 'Anima 任务创建失败')
-    const metadata = metadataFromJob(data.job, request)
-    patchAnimaState({ phase: 'running', statusText: '生成中…', job: metadata })
-    await pollAnimaJob(data.job.id, request, serial, controller.signal)
-  } catch (error) {
-    if (serial !== animaRequestSerial) return
-    if (error instanceof ApiClientError && error.kind === 'aborted') return
-    patchAnimaState({ phase: 'failed', statusText: '生成失败', errorMsg: error instanceof Error ? error.message : String(error) })
-  } finally {
-    if (animaJobRequest === controller) animaJobRequest = null
-  }
-}
-
-async function cancelAnimaJob() {
-  const job = animaState.value.job
-  if (!job && animaState.value.phase === 'submitting') {
-    pb.flash('任务正在登记，取得任务编号后即可安全取消')
-    return
-  }
-  if (!job || !['running', 'cancelling'].includes(animaState.value.phase)) return
-  patchAnimaState({ phase: 'cancelling', statusText: '取消中…', errorMsg: '' })
-  try {
-    const data = await apiClient.request<{ job?: AnimaPublicJob }>((animaState.value.family === 'krea2' ? '/api/creative/jobs/' : '/api/anima/jobs/') + encodeURIComponent(job.id), {
-      method: 'DELETE', timeoutMs: 15_000,
-    })
-    if (data.job?.status === 'cancelled') patchAnimaState({ phase: 'cancelled', statusText: '任务已取消' })
-  } catch (error) {
-    patchAnimaState({ phase: 'failed', statusText: '取消失败', errorMsg: error instanceof Error ? error.message : String(error) })
   }
 }
 
@@ -2032,7 +1724,9 @@ function toggleOutfitBundle(tags: string[]) {
 // ── Lifecycle ─────────────────────────────────────────────────────────────
 onMounted(async () => {
   void refreshAnimaBackend()
-  animaStatusTimer = setInterval(() => { void refreshAnimaBackend() }, 15000)
+  // Anima 后端只在引擎激活时轮询：SD 引擎下每 15s 打一次 /api/creative/status
+  // 会让网关反复探测 ComfyUI（2.5s 超时 + 磁盘资源检查），纯属浪费。
+  if (drawEngine.value !== 'sd') startStatusPolling()
   const savedMode = localStorage.getItem(DIRECTOR_MODE_KEY)
   if (savedMode === 'pro' || savedMode === 'basic') {
     pb.directorMode = savedMode
@@ -2148,22 +1842,8 @@ onMounted(async () => {
     }
   }
 })
-
-onUnmounted(() => {
-  animaRequestSerial += 1
-  animaStatusRequest?.abort()
-  animaStatusRequest = null
-  animaJobRequest?.abort()
-  animaJobRequest = null
-  if (animaStatusTimer) clearInterval(animaStatusTimer)
-  animaStatusTimer = null
-  const activeJob = animaState.value.job
-  if (activeJob && ['running', 'cancelling'].includes(animaState.value.phase)) {
-     void fetch((animaState.value.family === 'krea2' ? '/api/creative/jobs/' : '/api/anima/jobs/') + encodeURIComponent(activeJob.id), { method: 'DELETE' }).catch(() => {})
-  }
-  const result = animaState.value.result
-  if (result) URL.revokeObjectURL(result.url)
-})
+// 离开导演台时的 Anima 会话清理（轮询停止、在途任务取消、结果 URL 释放）
+// 由 useAnimaSession 的自动 onUnmounted(dispose) 承担。
 
 // Autosave draft
 watch([() => pb.story, () => pb.visualDescription, () => pb.char, () => pb.sceneId, () => pb.selections, () => pb.manualTags, () => pb.artistStyleIds, () => pb.colorMood, () => pb.subject], () => {
@@ -2218,6 +1898,13 @@ watch(() => pb.sdModelName, (name) => {
   const profile = pb.applyModelProfile(name || sd.checkpoint.value, { applySize: !sceneSize })
   const targetSize = sceneSize || String(profile?.size || '').replace('×', 'x')
   if (targetSize) applyRecommendedSize(targetSize)
+})
+
+// Anima 状态轮询跟随激活引擎：SD 引擎下停止，切到 Anima/Krea 恢复。
+// 切换动作本身会触发一次 refreshAnimaBackend，这里只管理周期轮询。
+watch(() => drawEngine.value, engine => {
+  if (engine === 'sd') animaSession.stopStatusPolling()
+  else animaSession.startStatusPolling()
 })
 </script>
 

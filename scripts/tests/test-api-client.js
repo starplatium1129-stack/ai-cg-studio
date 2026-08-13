@@ -25,6 +25,7 @@ const {
 const { CHAT_API_TIMEOUTS, createChatApi } = require('../../src/api/chatApi.ts');
 const { VOICE_API_TIMEOUTS, createVoiceApi } = require('../../src/api/voiceApi.ts');
 const { MEDIA_STATUS_API_TIMEOUT, createMediaStatusApi } = require('../../src/api/mediaStatusApi.ts');
+const { GENERATION_API_TIMEOUTS, createGenerationApi } = require('../../src/api/generationApi.ts');
 const { useControlActions } = require('../../src/composables/useControlActions.ts');
 const { useControlStatus } = require('../../src/composables/useControlStatus.ts');
 
@@ -160,6 +161,60 @@ test('phase 2 timeout baselines keep status short and prepare/translate at least
   assert.ok(VOICE_API_TIMEOUTS.prepare >= 190_000);
   assert.ok(VOICE_API_TIMEOUTS.translate >= 190_000);
   assert.ok(MEDIA_STATUS_API_TIMEOUT <= 10_000);
+});
+
+test('generation API owns the application generation job endpoints with envelope validation', async () => {
+  const calls = [];
+  const client = createApiClient(async (url, init) => {
+    calls.push({ url: String(url), init });
+    if (calls.length === 1) {
+      return jsonResponse({ ok: true, online: true, checkpoint: 'wai', samplers: ['Euler a'], schedulers: [], capabilities: { hiresUpscalers: ['Auto'] } });
+    }
+    if (calls.length === 2) {
+      return jsonResponse({ ok: true, job: { id: 'job-1', status: 'queued', provider: 'comfy' } }, 202);
+    }
+    if (calls.length === 3) {
+      return jsonResponse({ ok: true, job: { id: 'job-1', status: 'succeeded', provider: 'comfy', resultUrl: '/r.png' } });
+    }
+    return jsonResponse({ ok: true, job: { id: 'job-1', status: 'cancelled', provider: 'comfy' } });
+  });
+  const api = createGenerationApi(client);
+
+  const status = await api.getStatus();
+  assert.equal(status.online, true);
+  assert.equal(calls[0].init.method, undefined);
+  assert.equal(calls[0].url, '/api/generation/status');
+
+  const created = await api.createJob({ prompt: '1girl', steps: 28, cfg: 5.5 });
+  assert.equal(created.job.id, 'job-1');
+  assert.equal(calls[1].init.method, 'POST');
+  assert.equal(calls[1].url, '/api/generation/jobs');
+  assert.deepEqual(JSON.parse(calls[1].init.body), { prompt: '1girl', steps: 28, cfg: 5.5 });
+
+  const polled = await api.getJob('job-1');
+  assert.equal(polled.job.status, 'succeeded');
+  assert.equal(calls[2].url, '/api/generation/jobs/job-1');
+
+  await api.deleteJob('job-1');
+  assert.equal(calls[3].init.method, 'DELETE');
+  assert.equal(calls[3].url, '/api/generation/jobs/job-1');
+});
+
+test('generation API rejects malformed status and job envelopes', async () => {
+  const badStatus = createGenerationApi(createApiClient(async () => jsonResponse({ ok: true, online: true })));
+  await assert.rejects(badStatus.getStatus(), error => error instanceof ApiClientError && error.kind === 'invalid-response');
+
+  const badJob = createGenerationApi(createApiClient(async () => jsonResponse({ ok: true, job: { status: 'queued' } }, 202)));
+  await assert.rejects(badJob.createJob({ prompt: 'x' }), error => error instanceof ApiClientError && error.kind === 'invalid-response');
+
+  const failedJob = createGenerationApi(createApiClient(async () => jsonResponse({ ok: false, error: '资源不可用', code: 'COMFY_RESOURCES_UNAVAILABLE' }, 503)));
+  await assert.rejects(failedJob.createJob({ prompt: 'x' }), error => error instanceof ApiClientError && error.kind === 'http' && error.status === 503 && error.code === 'COMFY_RESOURCES_UNAVAILABLE');
+});
+
+test('generation API timeout baselines keep status/job probes short and creation generous', () => {
+  assert.ok(GENERATION_API_TIMEOUTS.status <= 15_000);
+  assert.ok(GENERATION_API_TIMEOUTS.job <= 15_000);
+  assert.ok(GENERATION_API_TIMEOUTS.create >= 60_000);
 });
 
 test('translate caller abort maps to aborted and passes the caller signal through', async () => {

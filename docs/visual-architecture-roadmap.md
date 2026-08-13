@@ -217,3 +217,49 @@ useTrainingOnboarding()
 ### 第十轮：首页首屏信息减法
 
 - 首页 Hero 移除非交互的五步流程链，首屏只保留工作室身份、品牌标题、简短文案和“继续创作 / 先看成片”两个入口；完整创作入口仍紧随首屏，不让说明性流程与主 CTA 争夺注意力。
+
+### 第十一轮：生成 API 层收口与导演台状态所有权清理
+
+- `src/api/generationApi.ts` 落地：`/api/generation/*`（status / jobs 创建·轮询·取消）统一走 `client.ts` 信封契约（超时、AbortSignal、envelope 校验），`useSDGenerate` 移除全部裸 fetch；二进制结果下载（`/jobs/:id/result`）保留原生 fetch——client 只处理 JSON 信封。附带收益：`classifySDError` 现在能读到真实 HTTP status（400/404/503 分类比旧的“状态码嵌在消息文本里”更准）。
+- `promptBuilderStore` 删除 11 个零引用死状态（`sdOnline/sdGenerating/sdProgress/sdResultUrl/sdStatus/sdError/sdAvailableModels/voiceOnline/voiceMode/voiceCaption/voiceCustom`）：生成生命周期归 `useSDGenerate` 与 Anima 会话，配音状态归 `VoiceStudio.vue`/`useVoice`，store 只保留跨引擎的 `sdModelName` 与 `lastSeed`（导演台路由块 +113 字节，预算 132→133 KiB 并注明原因）。
+- 测试修复（HEAD 已漂移两处）：`test-page-architecture.js` 工作台 kicker 断言改为 `WorkspaceArchiveBar` 契约（第六轮去重后控制台/模型架不再输出同义英文 Kicker）；`chat.css` 中 `.companion-page .live2d-interaction-hint` 迁至 `companion.css`——原先冷启动 `/companion` 时该提示样式依赖 chat 路由块残留，时有时无。
+- `test-api-client.js` 新增 generationApi 用例（端点/方法/URL 编码/envelope 校验/超时基线）。
+- 验证：typecheck:app、build、路由预算 132.0/133.0 KiB、相关单测全绿、studio + flows E2E 53/53。
+
+### 剩余（未启动）
+
+- 网关公共设施收口（P3）：Windows 进程树结束、上游健康探测、静态资源策略、统一错误处理抽取。
+
+### 第十二轮：Anima 生成会话抽取（useGenerationSession 落地）
+
+- 新增 `src/composables/useAnimaSession.ts`：Anima / Krea 2 引擎的完整生成会话——后端发现与 15s 状态轮询、任务提交、轮询、取消、结果持有与卸载清理（`requestSerial` 失效 + DELETE 在途任务 + blob URL 释放，自动挂 `onUnmounted(dispose)`）。注入式边界：`getCharacter/isPopular/getFamily/getRequest/onResult/flash/preferredSize`，`client` 可注入便于单测。
+- `PromptBuilderView.vue` 删除约 300 行会话代码，改为消费会话组合函数（`state/patchState/modelId/refreshBackend/syncCharacter/applyModel/generate/cancel/clearResult/startStatusPolling` 别名保持视图与模板零改动）；视图保留 prompt 组装（`buildAnimaRequest`）与跨引擎互斥（`onAnimaResult → sd.clearResult()`）。
+- 成功态归会话所有：`pollJob` 命中 succeeded 时由会话写 `result/job/phase/statusText` 并释放旧结果 URL，视图回调只做 SD 互斥——此前成功态写在视图回调里，所有权颠倒。
+- 测试：新增 `scripts/tests/test-anima-session.js`（10 用例：尺寸收敛 / 载荷白名单 / 白名单与家族收敛 / 热门 no-LoRA / 离线守卫 / 完整提交-轮询-结果生命周期 / krea2 路由 / cancel DELETE / dispose 失效与取消 / syncCharacter），`URL.createObjectURL` 与结果下载用桩，已入 unit 清单；`test-popular-content.js` 的 `preview: false` 哨兵随元数据构建迁移到会话源码。
+- 验证：typecheck / lint / build（PromptBuilderView 132.5/133.0 KiB）/ unit 全绿 / E2E——`anima-quick + flows + studio` 66/68，两个失败用例（`anima engine: main generate shows result`、`flow Anima · 应用 job 经过真网关和假 ComfyUI 出图`）经 `git stash` 在干净 HEAD 上复现同样失败，确认为**既有套件并行干扰**（两个 spec 共享 mock-stack 的假 ComfyUI，`__mock/reset` 互相清掉在途 job），与本轮改动无关；两文件串行 `--workers=1` 38/38 全绿。
+- 协作提示：`anima-quick.spec.ts` 与 `flows.spec.ts` 并行跑会互相干扰（共享 mock ComfyUI 上游），定向回归请串行或分开跑。
+
+### 第十三轮：网关进程树收口（P3 第一项）+ UI 视觉审计首轮
+
+- **进程树终止统一实现**：新增 `server/process-tree.js`（`killProcessTree(child)` / `killPid(pid)`，taskkill /T /F + 回退）。`routes/control.js`、`routes/maintenance.js` 的逐字重复实现删除（maintenance 继续经 module.exports 转发给 control 共用），`server/tunnel.js` 的 killPids 改用 `killPid`。services/*.ts 侧保持内联（跨 TS/JS 类型桥收益不成比例），记为剩余项。
+- **视觉审计流水线**：capture.spec.ts 补入 `/training` 页；新增 `scripts/tests/probe-ui-audit.js`（DOM 侧客观复核：故事框覆盖物/文本阴影、场景列表滚动容器、各工作台页水印碰撞面积，需要网关 + 系统 Edge）。
+- **审计结论（gemini 视觉初筛 + DOM 测量终审）**：
+  - 导演台故事框“文字重影”为**截帧伪影**——`?scene=sc001` 下 textShadow none、无绝对定位覆盖物（value 128 字正常）；实为 characterGlassSweep 扫光动画经过文本框的一帧。
+  - 场景列表底部“硬截断”为设计内滚动（clientHeight 442 < scrollHeight 764，overflow-y auto），非缺陷。
+  - **右下角 route-index 水印与密集面板实测碰撞**：/control（2804px²）、/scene-manager（5364px²）、/video-studio（4374px²）——已按第六轮“工作台标签去重”原则在这些页隐藏水印（WorkspaceArchiveBar 已承载档案编号）；导演台保留（particle-narrative 锚点 '01'），/training、/lora 实测无碰撞维持现状。
+- 验证：typecheck / lint / build（132.5/133.0 KiB）/ unit 332/332 / 网关契约（gateway 10、control-failure 5、maintenance 4、tunnel+token 4）/ E2E particle-narrative + interaction-polish + a11y-device 71/71 / studio+flows 53/53。
+
+### 剩余（未启动）
+
+- 网关公共设施收口（P3）剩余：services/*.ts 内联 taskkill（translation/training）迁移到 process-tree（评估：跨 TS/JS 类型桥成本 > 10 行去重收益，维持现状）、上游健康探测与代理配置进一步收敛。
+
+### 第十四轮：Anima 轮询按引擎门控（运行效率）+ 视觉审计第二轮（light 主题）
+
+- **状态轮询门控**：导演台 Anima 后端 15s 轮询改为仅激活引擎时运行——SD 引擎下 `stopStatusPolling()`，切到 Anima/Krea 恢复（切换动作本身已触发一次 `refreshAnimaBackend`）。收益：默认 SD 模式下不再每 15s 让网关探测 ComfyUI（`/system_stats` 2.5s 超时 + 每次请求的磁盘资源检查）。引擎按钮不显示非激活引擎状态，UI 无感知。
+- **视觉审计第二轮（light 主题工作台页）**：capture 新截图经 gemini 初筛 + probe-ui-audit DOM 终审，结论：
+  - **全部对比度指控为误报**：修正 probe 的颜色解析（`rgb()` 十进制误读为 hex、`color(srgb …)` 未解析、半透明背景未合成）后，status-tile 5.99、panel-kicker 6.65、表头 6.48、日志占位 14 —— 全部满足 WCAG AA（4.5+）。视觉模型把玻璃半透明背景误读为"浅底浅字"。
+  - 训练日志占位符"文字被横线穿过"为误报（DOM 无覆盖物）。
+  - 场景管理"右侧竖排日文水纹裁切"为误报（DOM 中不存在该元素）。
+  - 流水线结论：视觉初筛 + DOM 测量终审有效（第十三轮水印碰撞为真、本轮四项为假），probe-ui-audit 已并入 light 主题对比度测量，可复用。
+- 验证：typecheck / lint / build（132.5/133.0 KiB）/ unit 332/332 / E2E flows+studio 53/53、anima-quick 15/15（串行）。
+

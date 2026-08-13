@@ -154,14 +154,9 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   const projects = ref<ProjectOption[]>([])
 
   // ── SD state ────────────────────────────────────────────────────────────
-  const sdOnline      = ref(false)
-  const sdGenerating  = ref(false)
-  const sdProgress    = ref(0)
-  const sdResultUrl   = ref('')
-  const sdStatus      = ref('')
-  const sdError       = ref('')
+  // 生成生命周期状态（online/generating/progress/result/error）由 useSDGenerate
+  // 与 Anima 会话组合函数拥有，store 只保留跨引擎的底模选择与种子记忆。
   const sdModelName   = ref('')
-  const sdAvailableModels = ref<string[]>([])
   const lastSeed      = ref<number | null>(null)
 
   // ── SD params (synced from UI) ──────────────────────────────────────────
@@ -183,10 +178,8 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   }
 
   // ── Voice state ─────────────────────────────────────────────────────────
-  const voiceOnline   = ref(false)
-  const voiceMode     = ref<'caption' | 'story' | 'custom'>('caption')
-  const voiceCaption  = ref('')
-  const voiceCustom   = ref('')
+  // 配音状态（online/mode/caption/custom）由 VoiceStudio.vue 与 useVoice 拥有，
+  // 这里不再重复存放，避免两份状态漂移。
 
   // ── UI state ────────────────────────────────────────────────────────────
   const focusMode     = ref(false)
@@ -591,9 +584,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     scenes, curation, loraMeta, presets, modelProfiles, tags, characters,
     popularCharacters, sceneBlueprints, dataReady,
     history, projects,
-    sdOnline, sdGenerating, sdProgress, sdResultUrl, sdStatus, sdError,
-    sdModelName, sdAvailableModels, lastSeed, sdParams,
-    voiceOnline, voiceMode, voiceCaption, voiceCustom,
+    sdModelName, lastSeed, sdParams,
     focusMode, directorMode, sceneSearch, sceneTheme, sceneLibMode,
     currentStep, showMatureScenes, activeTab, toastMsg, lastRecommendedSize,
     activeScene, charPrompt, loraLine, emotionPrompt, filteredScenes,
