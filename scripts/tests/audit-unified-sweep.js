@@ -32,6 +32,14 @@ var ROOT = path.resolve(__dirname, '..', '..');
 var AI_ROOT = path.resolve(ROOT, '..', 'AI');
 var DEFAULT_MANIFEST = path.join(AI_ROOT, 'Reviews', 'AnimaUnifiedSweep', '2026-08-13_24s_cfg3', 'manifest.json');
 
+// 角色身份锚点：审核「身份特征还原」维度的判定基准（expectFor 使用）。
+// --character natsume 切换为夏目；不传默认宁宁（向后兼容）。
+var CHARACTER_EXPECT = {
+  nene: '绫地宁宁（ayachi_nene，白发/紫瞳/呆毛/粉色发带，宁宁）',
+  natsume: '四季夏目（shiki_natsume，黑色长直发/金黄瞳/红色发夹/泪痣，夏目）',
+};
+var character = ''; // 由 main() 从 --character 解析（模块级，expectFor 使用）
+
 var AUDIT_PROMPT = inspect.TASKS.audit;
 var MODEL = inspect.DEFAULT_MODEL;
 
@@ -85,30 +93,43 @@ function httpJson(urlPath, body, timeoutMs) {
   });
 }
 
+/** 冷却感知重试：429 model_cooldown 时按 reset_seconds 等待后重试；
+ *  5xx/超时也重试。最多 maxAttempts 次，最后一次失败原样抛出。 */
+async function withCooldownRetry(fn, maxAttempts) {
+  var attempts = maxAttempts || 5;
+  for (var attempt = 0; attempt < attempts; attempt++) {
+    try {
+      return await fn();
+    } catch (e) {
+      var message = String((e && e.message) || e);
+      var cooldown = message.match(/reset_seconds"?\s*[:=]\s*"?(\d+)/);
+      var waitSeconds = cooldown ? Number(cooldown[1]) + 5 : (/HTTP 5\d\d/.test(message) || /timeout/.test(message) || /ECONN|EPIPE|ETIMEDOUT/.test(message) ? 3 : 0);
+      if (attempt >= attempts - 1 || waitSeconds <= 0) throw e;
+      process.stderr.write('[冷却等待 ' + waitSeconds + 's] ' + message.slice(0, 100) + '\n');
+      await new Promise(function (r) { setTimeout(r, waitSeconds * 1000); });
+    }
+  }
+}
+
 async function auditImage(imagePath, expectText, prompt) {
   var content = [
     { type:'text', text: (prompt || AUDIT_PROMPT) + '\n【预期内容】' + expectText + '\n审核时先判断画面是否符合预期（人物、服装、姿势、构图、环境），不符合预期本身也要作为问题列出。\n\n图片文件：' + imagePath },
     { type:'image_url', image_url:{ url: inspect.imageUrl(imagePath) } },
   ];
-  var lastErr = null;
-  for (var attempt = 0; attempt < 2; attempt++) {
-    if (attempt > 0) await new Promise(function (r) { setTimeout(r, 2000); });
-    try {
-      var j = await httpJson('/chat/completions', {
+  try {
+    var j = await withCooldownRetry(function () {
+      return httpJson('/chat/completions', {
         model: MODEL,
         messages:[{ role:'user', content:content }],
         max_tokens: 4000,
       }, 180000);
-      var text = j.choices && j.choices[0] && j.choices[0].message
-        ? String(j.choices[0].message.content) : JSON.stringify(j).slice(0, 800);
-      return { ok:true, content:text };
-    } catch (e) {
-      lastErr = e;
-      var retriable = /HTTP 5\d\d/.test(e.message) || /timeout/.test(e.message) || /ECONN|EPIPE|ETIMEDOUT/.test(e.message);
-      if (!retriable) break;
-    }
+    });
+    var text = j.choices && j.choices[0] && j.choices[0].message
+      ? String(j.choices[0].message.content) : JSON.stringify(j).slice(0, 800);
+    return { ok:true, content:text };
+  } catch (e) {
+    return { ok:false, content:null, error:e.message };
   }
-  return { ok:false, content:null, error:lastErr.message };
 }
 
 /** group 快筛：一次请求合并审多张（quick 阶段专用），输出按图片 N 分行。 */
@@ -120,25 +141,20 @@ async function auditGroup(images, prompt) {
     content.push({ type:'text', text: '图片 ' + (index + 1) + ': ' + item.expect });
     content.push({ type:'image_url', image_url:{ url: inspect.imageUrl(item.imagePath) } });
   });
-  var lastErr = null;
-  for (var attempt = 0; attempt < 2; attempt++) {
-    if (attempt > 0) await new Promise(function (r) { setTimeout(r, 2000); });
-    try {
-      var j = await httpJson('/chat/completions', {
+  try {
+    var j = await withCooldownRetry(function () {
+      return httpJson('/chat/completions', {
         model: MODEL,
         messages:[{ role:'user', content:content }],
         max_tokens: 4000,
       }, 180000);
-      var text = j.choices && j.choices[0] && j.choices[0].message
-        ? String(j.choices[0].message.content) : JSON.stringify(j).slice(0, 800);
-      return { ok:true, content:text };
-    } catch (e) {
-      lastErr = e;
-      var retriable = /HTTP 5\d\d/.test(e.message) || /timeout/.test(e.message) || /ECONN|EPIPE|ETIMEDOUT/.test(e.message);
-      if (!retriable) break;
-    }
+    });
+    var text = j.choices && j.choices[0] && j.choices[0].message
+      ? String(j.choices[0].message.content) : JSON.stringify(j).slice(0, 800);
+    return { ok:true, content:text };
+  } catch (e) {
+    return { ok:false, content:null, error:e.message };
   }
-  return { ok:false, content:null, error:lastErr.message };
 }
 
 /** 从 group 回复中按行提取「图片 N：结论」；解析失败的行记为 parse-fail。 */
@@ -158,8 +174,10 @@ function parseGroupVerdicts(content, count) {
 }
 
 function parseVerdict(content) {
-  var m = content.match(/结论\s*[：:]\s*\*{0,2}(通过|需复核|不通过)/);
-  var score = content.match(/总分\s*[：:]\s*(\d+)\s*\/\s*80/);
+  // 归一化 Claude 风格（"## 结论" 独立标题行）为冒号风格
+  var text = String(content || '').replace(/^#+\s*结论\s*$/gm, '结论：');
+  var m = text.match(/\*{0,2}\s*结论\s*\*{0,2}\s*[：:]\s*\*{0,2}\s*(通过|需复核|不通过)/);
+  var score = text.match(/总分\s*[：:]\s*(\d+)\s*\/\s*80/);
   return {
     verdict: m ? m[1] : 'parse-fail',
     score: score ? Number(score[1]) : null,
@@ -170,7 +188,7 @@ function expectFor(scene, record) {
   var parts = ['场景：' + (scene.title || record.sceneId)];
   if (record.mature) parts.push('R18 成人内容');
   else parts.push('safe 非成人');
-  parts.push('角色：绫地宁宁（ayachi_nene，白发/紫瞳/呆毛/粉色发带，宁宁）');
+  parts.push('角色：' + (CHARACTER_EXPECT[character] || CHARACTER_EXPECT.nene));
   return parts.join('；');
 }
 
@@ -180,6 +198,12 @@ async function main() {
   var outDirIndex = args.indexOf('--out-dir');
   var outDir = outDirIndex >= 0 ? args[outDirIndex + 1] : path.join(path.dirname(manifestFile), 'audit');
   var resume = args.includes('--resume');
+  var characterIndex = args.indexOf('--character');
+  character = characterIndex >= 0 ? String(args[characterIndex + 1] || '') : '';
+  if (character && !CHARACTER_EXPECT[character]) {
+    console.error('[错误] --character 只支持 nene 或 natsume，收到: ' + character);
+    process.exit(2);
+  }
   var stageIndex = args.indexOf('--stage');
   var stage = stageIndex >= 0 ? args[stageIndex + 1] : 'both';
   if (!['both', 'quick', 'full'].includes(stage)) {
