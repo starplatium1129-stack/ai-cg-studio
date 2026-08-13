@@ -1,14 +1,26 @@
 #!/usr/bin/env node
 'use strict';
 
-/* audit-unified-sweep.js — 对 Anima unified sweep 生成的实图逐张执行八维严格审核并汇总。
+/* audit-unified-sweep.js — 对 Anima unified sweep 生成的实图执行两阶段审核并汇总。
  *
- * 读取评估 manifest（evaluate-anima-unified.js 产物），对每张图调用本地视觉模型
- * （复用 image-inspect.js 的 audit 预设与请求逻辑），解析结论/总分，按候选汇总
- * 通过/需复核/不通过 计数与平均分，输出 JSON + Markdown 报告。
+ * 两阶段设计（优化审核效率）：
+ *   quick  硬伤快筛：轻量 prompt + group 批量（一次请求审多张），只判
+ *          「通过/需复核/不通过」，快速淘汰明显不合格的图。
+ *   full   完整八维精审：只对 quick 阶段「通过」和「需复核」的图执行
+ *          （--stage full 或 --stage quick 可单独跑；默认两阶段串行）。
+ *
+ * 读取评估 manifest（evaluate-anima-unified.js 产物），调用本地视觉模型
+ * （复用 image-inspect.js 的 audit 预设与请求逻辑），解析结论/总分，按候选
+ * 汇总通过/需复核/不通过 计数与平均分，输出 JSON + Markdown 报告。
  *
  * 用法：
  *   node scripts/tests/audit-unified-sweep.js [manifest.json] [--out-dir <dir>] [--resume]
+ *       [--stage quick|full] [--batch <n>] [--concurrency <n>]
+ *
+ *   --stage quick     只跑硬伤快筛（group 批量，最快）
+ *   --stage full      只跑完整八维（配合 --resume 接着 quick 结果）
+ *   --batch <n>       quick 阶段一次请求合并审 n 张（默认 6）
+ *   --concurrency <n> 视觉 API 并发请求数（默认 3）
  */
 
 var fs = require('fs');
@@ -22,6 +34,18 @@ var DEFAULT_MANIFEST = path.join(AI_ROOT, 'Reviews', 'AnimaUnifiedSweep', '2026-
 
 var AUDIT_PROMPT = inspect.TASKS.audit;
 var MODEL = inspect.DEFAULT_MODEL;
+
+// quick 快筛：只判硬伤，轻量输出，一次可审多张（group 模式）。
+var QUICK_PROMPT =
+  '你是资深二次元 AI 绘画项目主审。下面会给出多张图片，请逐张快速判断是否存在【硬伤】：\n' +
+  '  a. 手指/手掌结构崩坏、明显粘连或数量错误；\n' +
+  '  b. 五官崩坏、错位或表情僵硬失真；\n' +
+  '  c. 肢体缺失、比例严重错误、姿势扭曲僵硬或透视错误；\n' +
+  '  d. 服装穿模、错乱或与角色设定冲突；\n' +
+  '  e. 双人图两人特征/服装互相串位（双人图必查）；\n' +
+  '  f. 明显伪影、异物悬浮、水印或乱码文字。\n' +
+  '无任何硬伤 ⇒ 结论「通过」；有硬伤但轻微（可修复、不影响主体）⇒「需复核」；硬伤明显或致命 ⇒「不通过」。\n' +
+  '【输出格式】严格按每张图一行：图片 N：结论 + 一句话理由（硬伤需给出具体位置）。不要展开长篇分析。';
 
 function readJson(file) { return JSON.parse(fs.readFileSync(file, 'utf8')); }
 
@@ -61,9 +85,9 @@ function httpJson(urlPath, body, timeoutMs) {
   });
 }
 
-async function auditImage(imagePath, expectText) {
+async function auditImage(imagePath, expectText, prompt) {
   var content = [
-    { type:'text', text: AUDIT_PROMPT + '\n【预期内容】' + expectText + '\n审核时先判断画面是否符合预期（人物、服装、姿势、构图、环境），不符合预期本身也要作为问题列出。\n\n图片文件：' + imagePath },
+    { type:'text', text: (prompt || AUDIT_PROMPT) + '\n【预期内容】' + expectText + '\n审核时先判断画面是否符合预期（人物、服装、姿势、构图、环境），不符合预期本身也要作为问题列出。\n\n图片文件：' + imagePath },
     { type:'image_url', image_url:{ url: inspect.imageUrl(imagePath) } },
   ];
   var lastErr = null;
@@ -85,6 +109,52 @@ async function auditImage(imagePath, expectText) {
     }
   }
   return { ok:false, content:null, error:lastErr.message };
+}
+
+/** group 快筛：一次请求合并审多张（quick 阶段专用），输出按图片 N 分行。 */
+async function auditGroup(images, prompt) {
+  var content = [
+    { type:'text', text: (prompt || QUICK_PROMPT) + '\n\n本次共 ' + images.length + ' 张图片，严格按下面给出的图片编号逐一判断，不要遗漏任何一张。' },
+  ];
+  images.forEach(function (item, index) {
+    content.push({ type:'text', text: '图片 ' + (index + 1) + ': ' + item.expect });
+    content.push({ type:'image_url', image_url:{ url: inspect.imageUrl(item.imagePath) } });
+  });
+  var lastErr = null;
+  for (var attempt = 0; attempt < 2; attempt++) {
+    if (attempt > 0) await new Promise(function (r) { setTimeout(r, 2000); });
+    try {
+      var j = await httpJson('/chat/completions', {
+        model: MODEL,
+        messages:[{ role:'user', content:content }],
+        max_tokens: 4000,
+      }, 180000);
+      var text = j.choices && j.choices[0] && j.choices[0].message
+        ? String(j.choices[0].message.content) : JSON.stringify(j).slice(0, 800);
+      return { ok:true, content:text };
+    } catch (e) {
+      lastErr = e;
+      var retriable = /HTTP 5\d\d/.test(e.message) || /timeout/.test(e.message) || /ECONN|EPIPE|ETIMEDOUT/.test(e.message);
+      if (!retriable) break;
+    }
+  }
+  return { ok:false, content:null, error:lastErr.message };
+}
+
+/** 从 group 回复中按行提取「图片 N：结论」；解析失败的行记为 parse-fail。 */
+function parseGroupVerdicts(content, count) {
+  var verdicts = [];
+  var lines = String(content || '').split('\n');
+  for (var i = 1; i <= count; i++) {
+    var re = new RegExp('图片\\s*' + i + '\\s*[:：]', 'i');
+    var line = lines.find(function (l) { return re.test(l); });
+    if (!line) { verdicts.push({ verdict: 'parse-fail', score: null }); continue; }
+    var m = line.match(/[:：]\s*(通过|需复核|不通过)/);
+    var v = m && m[1] ? m[1] : 'parse-fail';
+    if (v !== '通过' && v !== '需复核' && v !== '不通过') v = 'parse-fail';
+    verdicts.push({ verdict: v, score: null });
+  }
+  return verdicts;
 }
 
 function parseVerdict(content) {
@@ -110,6 +180,24 @@ async function main() {
   var outDirIndex = args.indexOf('--out-dir');
   var outDir = outDirIndex >= 0 ? args[outDirIndex + 1] : path.join(path.dirname(manifestFile), 'audit');
   var resume = args.includes('--resume');
+  var stageIndex = args.indexOf('--stage');
+  var stage = stageIndex >= 0 ? args[stageIndex + 1] : 'both';
+  if (!['both', 'quick', 'full'].includes(stage)) {
+    console.error('--stage 只支持 quick|full|both（默认 both）');
+    process.exit(2);
+  }
+  var batchIndex = args.indexOf('--batch');
+  var batchSize = batchIndex >= 0 ? Number(args[batchIndex + 1]) : 6;
+  if (!Number.isInteger(batchSize) || batchSize < 1 || batchSize > 20) {
+    console.error('--batch 必须是 1..20 的整数（默认 6）');
+    process.exit(2);
+  }
+  var concIndex = args.indexOf('--concurrency');
+  var concurrency = concIndex >= 0 ? Number(args[concIndex + 1]) : 3;
+  if (!Number.isInteger(concurrency) || concurrency < 1 || concurrency > 16) {
+    console.error('--concurrency 必须是 1..16 的整数（默认 3）');
+    process.exit(2);
+  }
 
   if (!fs.existsSync(manifestFile)) {
     console.error('[错误] manifest 不存在: ' + manifestFile);
@@ -118,40 +206,145 @@ async function main() {
   var manifest = readJson(manifestFile);
   var scenes = new Map(manifest.scenes.map(function (s) { return [s.id, s]; }));
   var records = manifest.records.filter(function (r) { return r.status === 'succeeded'; });
-  console.log('审核对象: ' + records.length + ' 张（' + manifest.paramGroup + '）');
+  console.log('审核对象: ' + records.length + ' 张（' + manifest.paramGroup + '），stage=' + stage + '，batch=' + (stage === 'full' ? 1 : batchSize) + '，并发=' + concurrency);
 
   fs.mkdirSync(outDir, { recursive:true });
   var reportFile = path.join(outDir, 'audit-report.json');
-  var report = resume && fs.existsSync(reportFile) ? readJson(reportFile) : { manifest:manifestFile, paramGroup:manifest.paramGroup, results:[] };
+  var report = resume && fs.existsSync(reportFile) ? readJson(reportFile) : { manifest:manifestFile, paramGroup:manifest.paramGroup, stage:stage, results:[] };
 
-  for (var i = 0; i < records.length; i++) {
-    var r = records[i];
-    var existing = report.results.find(function (x) {
+  function findResult(r) {
+    return report.results.find(function (x) {
       return x.candidate === r.candidate && x.sceneId === r.sceneId && x.seed === r.seed;
     });
-    if (existing) continue;
-    var imagePath = path.join(path.dirname(manifestFile), r.image);
-    if (!fs.existsSync(imagePath)) {
-      console.error('[缺失] ' + imagePath);
-      continue;
+  }
+
+  // ---- quick 阶段：group 批量硬伤快筛 ----
+  if (stage === 'both' || stage === 'quick') {
+    var quickTodo = records.filter(function (r) {
+      var existing = findResult(r);
+      return !existing || existing.quickVerdict === undefined;
+    });
+    console.log('[quick] 待快筛: ' + quickTodo.length + ' 张（每批 ' + batchSize + ' 张合并一次请求）');
+
+    var quickBatches = [];
+    for (var qi = 0; qi < quickTodo.length; qi += batchSize) {
+      quickBatches.push(quickTodo.slice(qi, qi + batchSize));
     }
-    var scene = scenes.get(r.sceneId) || { title:r.sceneTitle || r.sceneId };
-    process.stderr.write('[' + (i + 1) + '/' + records.length + '] ' + r.candidate + ' ' + r.sceneId + ' seed-' + r.seed + ' → ' + MODEL + '\n');
-    var res = await auditImage(imagePath, expectFor(scene, r));
-    if (!res.ok) {
-      console.error('[失败] ' + r.candidate + ' ' + r.sceneId + ' seed-' + r.seed + ': ' + res.error);
-      report.results.push({
-        candidate:r.candidate, epoch:r.epoch, sceneId:r.sceneId, sceneTitle:scene.title, mature:r.mature, seed:r.seed,
-        image:r.image, ok:false, error:res.error, verdict:null, score:null, content:null,
-      });
-    } else {
-      var parsed = parseVerdict(res.content);
-      report.results.push({
-        candidate:r.candidate, epoch:r.epoch, sceneId:r.sceneId, sceneTitle:scene.title, mature:r.mature, seed:r.seed,
-        image:r.image, ok:true, error:null, verdict:parsed.verdict, score:parsed.score, content:res.content,
-      });
+    // worker 只负责 API 调用；结果由主线程按序写回，避免并发写同一 report 文件。
+    async function quickCall(items) {
+      return auditGroup(items, QUICK_PROMPT);
     }
-    writeJson(reportFile, report);
+    var quickNext = 0;
+    async function quickWorker() {
+      var results = [];
+      while (true) {
+        var bi = quickNext;
+        quickNext += 1;
+        if (bi >= quickBatches.length) return results;
+        var batch = quickBatches[bi];
+        var items = batch.map(function (r) {
+          var scene = scenes.get(r.sceneId) || { title:r.sceneTitle || r.sceneId };
+          return {
+            imagePath: path.join(path.dirname(manifestFile), r.image),
+            expect: expectFor(scene, r),
+          };
+        });
+        process.stderr.write('[quick ' + (bi + 1) + '/' + quickBatches.length + '] 批 ' + batch.map(function (r) { return r.candidate + ':' + r.sceneId + ':s' + r.seed; }).join(' ') + '\n');
+        var res = await quickCall(items);
+        results.push({ index: bi, batch: batch, res: res });
+      }
+    }
+    var quickWorkers = [];
+    for (var qw = 0; qw < Math.min(concurrency, quickBatches.length || 1); qw += 1) quickWorkers.push(quickWorker());
+    var quickCollected = (await Promise.all(quickWorkers)).flat();
+    quickCollected.sort(function (a, b) { return a.index - b.index; });
+    quickCollected.forEach(function (item) {
+      var batch = item.batch;
+      var res = item.res;
+      var verdicts = res.ok ? parseGroupVerdicts(res.content, batch.length) : [];
+      for (var vi = 0; vi < batch.length; vi++) {
+        var r = batch[vi];
+        var scene = scenes.get(r.sceneId) || { title:r.sceneTitle || r.sceneId };
+        var existing = findResult(r);
+        var entry = existing || {
+          candidate:r.candidate, epoch:r.epoch, sceneId:r.sceneId, sceneTitle:scene.title, mature:r.mature, seed:r.seed,
+          image:r.image, ok:null, error:null, verdict:null, score:null, content:null,
+        };
+        if (res.ok) {
+          entry.quickVerdict = verdicts[vi].verdict;
+          entry.quickContent = res.content;
+        } else {
+          entry.quickError = res.error;
+        }
+        if (!existing) report.results.push(entry);
+      }
+      writeJson(reportFile, report);
+    });
+    var quickCounts = {};
+    report.results.forEach(function (x) {
+      if (!x.quickVerdict) return;
+      quickCounts[x.quickVerdict] = (quickCounts[x.quickVerdict] || 0) + 1;
+    });
+    console.log('[quick] 完成: ' + JSON.stringify(quickCounts));
+  }
+
+  // ---- full 阶段：只对 quick 通过/需复核（或 quick 未跑时全部）做完整八维 ----
+  if (stage === 'both' || stage === 'full') {
+    var fullTodo = records.filter(function (r) {
+      var existing = findResult(r);
+      if (existing && existing.ok && existing.verdict) return false; // 已精审
+      if (stage === 'both') {
+        // quick 已判不通过的直接跳过（硬伤确认，无需精审浪费时间）
+        if (existing && existing.quickVerdict === '不通过') return false;
+        if (existing && existing.quickError) return true; // quick 失败仍补精审
+        if (existing && existing.quickVerdict === 'parse-fail') return true;
+      }
+      return true;
+    });
+    console.log('[full] 待精审: ' + fullTodo.length + ' 张（完整八维，逐张）');
+
+    var fullNext = 0;
+    async function fullWorker() {
+      var results = [];
+      while (true) {
+        var fi = fullNext;
+        fullNext += 1;
+        if (fi >= fullTodo.length) return results;
+        var r = fullTodo[fi];
+        var scene = scenes.get(r.sceneId) || { title:r.sceneTitle || r.sceneId };
+        var imagePath = path.join(path.dirname(manifestFile), r.image);
+        if (!fs.existsSync(imagePath)) {
+          console.error('[缺失] ' + imagePath);
+          continue;
+        }
+        process.stderr.write('[full ' + (fi + 1) + '/' + fullTodo.length + '] ' + r.candidate + ' ' + r.sceneId + ' seed-' + r.seed + ' → ' + MODEL + '\n');
+        var res = await auditImage(imagePath, expectFor(scene, r), AUDIT_PROMPT);
+        results.push({ index: fi, record: r, res: res });
+      }
+    }
+    var fullWorkers = [];
+    for (var fw = 0; fw < Math.min(concurrency, fullTodo.length || 1); fw += 1) fullWorkers.push(fullWorker());
+    var fullCollected = (await Promise.all(fullWorkers)).flat();
+    fullCollected.sort(function (a, b) { return a.index - b.index; });
+    fullCollected.forEach(function (item) {
+      var r = item.record;
+      var res = item.res;
+      var scene = scenes.get(r.sceneId) || { title:r.sceneTitle || r.sceneId };
+      var existing = findResult(r);
+      var entry = existing || {
+        candidate:r.candidate, epoch:r.epoch, sceneId:r.sceneId, sceneTitle:scene.title, mature:r.mature, seed:r.seed,
+        image:r.image, ok:null, error:null, verdict:null, score:null, content:null,
+      };
+      if (res.ok) {
+        var parsed = parseVerdict(res.content);
+        entry.ok = true; entry.error = null;
+        entry.verdict = parsed.verdict; entry.score = parsed.score; entry.content = res.content;
+      } else {
+        entry.ok = false; entry.error = res.error;
+      }
+      if (!existing) report.results.push(entry);
+      writeJson(reportFile, report);
+    });
   }
 
   // 汇总
@@ -159,16 +352,21 @@ async function main() {
   report.results.forEach(function (x) {
     if (!byCandidate[x.candidate]) byCandidate[x.candidate] = { epoch:x.epoch, pass:0, review:0, reject:0, fail:0, scores:[] };
     var b = byCandidate[x.candidate];
-    if (!x.ok) b.fail += 1;
-    else if (x.verdict === '通过') b.pass += 1;
-    else if (x.verdict === '需复核') b.review += 1;
-    else if (x.verdict === '不通过') b.reject += 1;
-    else b.fail += 1;
+    if (x.ok) {
+      if (x.verdict === '通过') b.pass += 1;
+      else if (x.verdict === '需复核') b.review += 1;
+      else if (x.verdict === '不通过') b.reject += 1;
+      else b.fail += 1; // 未知判定视为失败
+    } else if (x.quickVerdict === '不通过') {
+      b.reject += 1; // 快筛淘汰（未走精审），不是请求失败
+    } else {
+      b.fail += 1; // 请求失败 / quick 失败
+    }
     if (x.score !== null) b.scores.push(x.score);
   });
   var order = Object.keys(byCandidate).sort(function (a, b) { return byCandidate[a].epoch - byCandidate[b].epoch; });
 
-  var md = '# Anima Unified Sweep 审核汇总\n\n- manifest: `' + manifestFile + '`\n- 参数组: ' + manifest.paramGroup + '\n- 审核模型: ' + MODEL + '\n\n';
+  var md = '# Anima Unified Sweep 审核汇总\n\n- manifest: `' + manifestFile + '`\n- 参数组: ' + manifest.paramGroup + '\n- 审核模型: ' + MODEL + '\n- 阶段: ' + stage + '\n\n';
   md += '## 各候选汇总（通过 / 需复核 / 不通过 / 失败，平均分满分 80）\n\n';
   md += '| 候选 | epoch | 通过 | 需复核 | 不通过 | 失败 | 平均分 |\n|---|---|---|---|---|---|---|\n';
   order.forEach(function (id) {
@@ -179,9 +377,13 @@ async function main() {
   md += '\n## 逐张明细\n\n';
   report.results.forEach(function (x) {
     md += '### ' + x.candidate + ' · ' + x.sceneId + ' · seed-' + x.seed + (x.mature ? '（R18）' : '') + '\n\n';
-    md += '- 结论：' + (x.ok ? (x.verdict + (x.score !== null ? '（' + x.score + '/80）' : '')) : '请求失败') + '\n';
+    if (x.quickVerdict) md += '- 快筛：' + x.quickVerdict + (x.quickError ? '（错误：' + x.quickError + '）' : '') + '\n';
+    var verdictLine = x.ok
+      ? (x.verdict + (x.score !== null ? '（' + x.score + '/80）' : ''))
+      : (x.quickVerdict === '不通过' ? '快筛不通过（未精审）' : '请求失败');
+    md += '- 结论：' + verdictLine + '\n';
     if (x.ok) md += '\n' + x.content + '\n';
-    else md += '- 错误：' + x.error + '\n';
+    else if (x.quickVerdict !== '不通过') md += '- 错误：' + x.error + '\n';
   });
   var mdFile = path.join(outDir, 'audit-report.md');
   fs.writeFileSync(mdFile, md, 'utf8');

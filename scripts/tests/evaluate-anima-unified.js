@@ -8,7 +8,12 @@
  * parameter group (24s/CFG3/res_multistep/simple) and the official group
  * (30s/CFG4.5/er_sde/sgm_uniform) via --params.
  *
- * Usage: node scripts/tests/evaluate-anima-unified.js [--dry-run] [--params default|official]
+ * Usage: node scripts/tests/evaluate-anima-unified.js [--dry-run] [--params default|official] [--concurrency <n>]
+ *
+ * --concurrency <n>  并发提交窗口（默认 4）：ComfyUI /prompt 入队即返回，
+ *                    GPU 队列自行串行执行；窗口内同时提交多张，避免逐张
+ *                    等完成再提交的串行往返浪费。断点续跑天然支持（manifest
+ *                    已成功记录且图片在盘上会自动跳过）。
  */
 
 var crypto = require('crypto');
@@ -26,6 +31,9 @@ var WIDTH = 1216;
 var HEIGHT = 832;
 var LORA_STRENGTH = 0.85;
 var CLIENT_ID = 'aics-anima-unified-' + crypto.randomUUID();
+// 并发提交窗口：ComfyUI /prompt 入队后立即返回 prompt_id，GPU 队列自行排队，
+// 无需逐张等待完成再提交下一张。默认 4 个 in-flight，避免队列无界增长。
+var CONCURRENCY = 4;
 
 var PARAM_GROUPS = {
   default: { label:'24s_cfg3', steps:24, cfg:3, sampler:'res_multistep', scheduler:'simple' },
@@ -47,6 +55,14 @@ function paramsGroup() {
   var group = PARAM_GROUPS[value];
   if (!group) throw new Error('Unknown --params group: ' + value + ' (default|official)');
   return group;
+}
+
+function concurrencyFromArgs() {
+  var raw = process.argv.find(function (a) { return a.startsWith('--concurrency='); });
+  var value = raw ? raw.split('=')[1] : (process.argv.includes('--concurrency') ? process.argv[process.argv.indexOf('--concurrency') + 1] : String(CONCURRENCY));
+  var n = Number(value);
+  if (!Number.isInteger(n) || n < 1 || n > 32) throw new Error('--concurrency must be an integer 1..32, got: ' + value);
+  return n;
 }
 
 function assert(condition, message) {
@@ -232,6 +248,12 @@ async function main() {
 
   fs.mkdirSync(outputRoot, { recursive:true });
   var total = 0;
+  var concurrency = concurrencyFromArgs();
+
+  // 先收集所有待生成任务（跳过已成功且图片在盘上的记录），
+  // 再用并发窗口提交：ComfyUI 入队即返回，GPU 队列自行串行执行，
+  // 避免"提交→等完成→下载→再提交"的串行往返浪费。
+  var pending = [];
   for (var candidateIndex = 0; candidateIndex < candidates.length; candidateIndex += 1) {
     var candidate = candidates[candidateIndex];
     for (var sceneIndex = 0; sceneIndex < scenes.length; sceneIndex += 1) {
@@ -242,52 +264,73 @@ async function main() {
           return item.candidate === candidate.id && item.sceneId === scene.id && item.seed === seed && item.status === 'succeeded';
         });
         if (existing && fs.existsSync(path.join(outputRoot, existing.image))) continue;
-
-        var workflow = workflowFor(scene, candidate, seed, group);
-        var startedAt = new Date().toISOString();
-        var submitted = await requestJson('/prompt', {
-          method:'POST',
-          headers:{ 'Content-Type':'application/json' },
-          body:JSON.stringify({ prompt:workflow, client_id:CLIENT_ID }),
-        });
-        assert(submitted && submitted.prompt_id, 'ComfyUI did not return prompt_id');
-        var image = await waitFor(submitted.prompt_id);
-        var body = await requestImage(image);
-        var relative = path.join('images', scene.id, 'seed-' + seed + '-' + candidate.id + '.png');
-        var outputFile = path.join(outputRoot, relative);
-        fs.mkdirSync(path.dirname(outputFile), { recursive:true });
-        fs.writeFileSync(outputFile, body);
-
-        manifest.records = manifest.records.filter(function (item) {
-          return !(item.candidate === candidate.id && item.sceneId === scene.id && item.seed === seed);
-        });
-        manifest.records.push({
-          candidate:candidate.id,
-          epoch:candidate.epoch,
-          step:candidate.step,
-          loraFile:candidate.file,
-          loraSha256:candidate.sha256,
-          sceneId:scene.id,
-          sceneTitle:scene.title,
-          mature:scene.mature,
-          seed:seed,
-          image:relative.replace(/\\/g, '/'),
-          bytes:body.length,
-          sha256:sha256(body),
-          promptId:submitted.prompt_id,
-          startedAt:startedAt,
-          finishedAt:new Date().toISOString(),
-          status:'succeeded',
-        });
-        manifest.records.sort(function (a, b) {
-          return a.sceneId.localeCompare(b.sceneId) || a.seed - b.seed || a.epoch - b.epoch;
-        });
-        writeJson(manifestFile, manifest);
-        total += 1;
-        console.log(group.label + ' ' + candidate.id + ' ' + scene.id + ' ' + seed + ': ' + outputFile);
+        pending.push({ candidate:candidate, scene:scene, seed:seed });
       }
     }
   }
+  console.log('待生成: ' + pending.length + ' 张，并发窗口: ' + concurrency);
+
+  var next = 0;
+  async function runOne() {
+    while (true) {
+      var index = next;
+      next += 1;
+      if (index >= pending.length) return;
+      var job = pending[index];
+      var candidate = job.candidate;
+      var scene = job.scene;
+      var seed = job.seed;
+      var workflow = workflowFor(scene, candidate, seed, group);
+      var startedAt = new Date().toISOString();
+      var submitted = await requestJson('/prompt', {
+        method:'POST',
+        headers:{ 'Content-Type':'application/json' },
+        body:JSON.stringify({ prompt:workflow, client_id:CLIENT_ID }),
+      });
+      assert(submitted && submitted.prompt_id, 'ComfyUI did not return prompt_id');
+      var image = await waitFor(submitted.prompt_id);
+      var body = await requestImage(image);
+      var relative = path.join('images', scene.id, 'seed-' + seed + '-' + candidate.id + '.png');
+      var outputFile = path.join(outputRoot, relative);
+      fs.mkdirSync(path.dirname(outputFile), { recursive:true });
+      fs.writeFileSync(outputFile, body);
+
+      manifest.records = manifest.records.filter(function (item) {
+        return !(item.candidate === candidate.id && item.sceneId === scene.id && item.seed === seed);
+      });
+      manifest.records.push({
+        candidate:candidate.id,
+        epoch:candidate.epoch,
+        step:candidate.step,
+        loraFile:candidate.file,
+        loraSha256:candidate.sha256,
+        sceneId:scene.id,
+        sceneTitle:scene.title,
+        mature:scene.mature,
+        seed:seed,
+        image:relative.replace(/\\/g, '/'),
+        bytes:body.length,
+        sha256:sha256(body),
+        promptId:submitted.prompt_id,
+        startedAt:startedAt,
+        finishedAt:new Date().toISOString(),
+        status:'succeeded',
+      });
+      manifest.records.sort(function (a, b) {
+        return a.sceneId.localeCompare(b.sceneId) || a.seed - b.seed || a.epoch - b.epoch;
+      });
+      writeJson(manifestFile, manifest);
+      total += 1;
+      console.log(group.label + ' ' + candidate.id + ' ' + scene.id + ' ' + seed + ': ' + outputFile);
+    }
+  }
+
+  var workers = [];
+  for (var w = 0; w < Math.min(concurrency, pending.length || 1); w += 1) {
+    workers.push(runOne());
+  }
+  await Promise.all(workers);
+
   manifest.finishedAt = new Date().toISOString();
   writeJson(manifestFile, manifest);
   console.log('Unified sweep done (' + total + ' new). Manifest: ' + manifestFile);
