@@ -4,7 +4,7 @@
 
 import { createPromptPlan, renderPromptPlan, type PromptPlan } from './promptCompiler.ts'
 import {
-  modelNegativePrompt,
+  assembleNegative,
   profileRatingTag,
   type ModelProfile,
 } from './promptPolicy.ts'
@@ -57,6 +57,10 @@ export interface SceneBlueprint {
   kreaStyleHint?: string
   /** 可选：Anima 风格配方 id 或自由风格短语。 */
   animaStyleHint?: string
+  /** 可选：成人蓝图专属 NSFW 内容标签；只在 adult 角色 + adultEnabled 同时放行时注入。 */
+  nsfwTokens?: string[]
+  /** 可选：成人蓝图专属 NSFW 内容散文（Krea 与 Anima caption 使用）；fail-closed 同标签。 */
+  nsfwProse?: string
 }
 
 export type DrawSubject =
@@ -184,6 +188,8 @@ export function parseSceneBlueprint(value: unknown): SceneBlueprint | null {
     adult: value.adult === true,
     kreaStyleHint: stringValue(value.kreaStyleHint),
     animaStyleHint: stringValue(value.animaStyleHint),
+    nsfwTokens: stringList(value.nsfwTokens),
+    nsfwProse: stringValue(value.nsfwProse),
   }
 }
 
@@ -318,7 +324,7 @@ const LIGHTING_TO_ID: Record<string, string> = {
   golden: 'golden', 'golden hour': 'golden', sunset: 'golden', dusk: 'golden',
   window: 'window', 'window light': 'window', backlight: 'back', backlit: 'back',
   'rim light': 'back', moonlight: 'moon', moon: 'moon', night: 'moon',
-  lantern: 'lantern', overcast: 'overcast',
+  lantern: 'lantern', candlelight: 'lantern', candle: 'lantern', lamp: 'lantern', overcast: 'overcast',
 }
 const MOOD_TO_COLOR: Record<string, string> = {
   warm: 'warmth', cozy: 'warmth', tender: 'warmth',
@@ -365,10 +371,12 @@ export interface PopularPromptOptions {
   lighting?: string | null
   composition?: string | null
   adultEnabled?: boolean
-  /** 用户画面描述（视觉描述框）；优先于服装散文，保证用户输入真正进入无 LoRA 出图。 */
+  /** 用户补充的画面描述；只追加，不得替换角色服装。 */
   visualDescription?: string
   /** Krea 风格配方（已按资格解析）；成人配方在此再 fail-closed 一次。 */
   style?: ResolvedStyle | null
+  artistTags?: string[]
+  artistProse?: string
 }
 
 export interface PopularPromptResult {
@@ -386,6 +394,18 @@ const SHOT_TOKENS: Record<string, string> = {
 const LIGHTING_TOKENS: Record<string, string> = {
   golden: 'golden_hour', window: 'window_light', back: 'backlit',
   moon: 'moonlight', lantern: 'lantern_light', overcast: 'overcast',
+}
+/**
+ * 氛围词强化（壁纸级第一）：每种光线决策除主光照 token 外追加一组通透感
+ * 标签——逆光/轮廓光/体积光/景深是参考图（sc300 标杆）与平庸平涂的最大分水岭。
+ */
+const AMBIENCE_TOKENS: Record<string, string[]> = {
+  golden: ['golden_hour', 'backlight', 'rim_light', 'volumetric_lighting', 'deep_depth_of_field', 'warm_lighting'],
+  back: ['backlit', 'rim_light', 'volumetric_lighting', 'silhouette', 'deep_depth_of_field'],
+  window: ['window_light', 'soft_lighting', 'sunlight', 'volumetric_lighting', 'shadows'],
+  moon: ['moonlight', 'night', 'cool_lighting', 'stars', 'deep_depth_of_field'],
+  lantern: ['lantern_light', 'candlelight', 'warm_lighting', 'volumetric_lighting', 'shadows'],
+  overcast: ['overcast', 'soft_diffused_light', 'cloudy', 'hazy'],
 }
 const COMPOSITION_TOKENS: Record<string, string> = {
   center: 'centered_composition', rule3: 'rule_of_thirds',
@@ -437,6 +457,13 @@ export function scanCharacterPollution(character: PopularCharacter): string[] {
   return leaks
 }
 
+function identityWithoutOutfit(prose: string): string {
+  return prose
+    .replace(/,\s*wearing\b[^.]*\.?$/i, '.')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
 export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPromptResult | null {
   const { character, outfit, blueprint, engine } = options
   const profile = options.profile ?? null
@@ -447,36 +474,41 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
 
   const manual = sanitizePopularManual(options.manual || [])
   const shotToken = options.shot ? SHOT_TOKENS[options.shot] : ''
-  const lightingToken = options.lighting ? LIGHTING_TOKENS[options.lighting] : ''
+  const lightingKey = options.lighting ?? ''
+  const lightingToken = lightingKey ? LIGHTING_TOKENS[lightingKey] : ''
+  const lightingTokens = lightingKey
+    ? [...new Set([lightingToken, ...(AMBIENCE_TOKENS[lightingKey] || [])])].filter(Boolean)
+    : []
   const compositionToken = options.composition ? COMPOSITION_TOKENS[options.composition] : ''
   // 成人配方与成人蓝图同一把 fail-closed 锁：资格不满足绝不进入渲染层。
   const style = options.style
   if (style?.adult && !adultGranted) return null
 
-  // 用户画面描述优先（视觉描述框输入真正进入无 LoRA 出图），
-  // 空时退回服装散文，保证服装信息不丢。
+  // 用户描述是额外画面指令，服装由独立字段稳定保留。
   const userVisual = String(options.visualDescription || '').trim()
-  const visualDescription = userVisual || outfit.prose
+  // 成人内容只在 fail-closed 放行时注入：Anima 标签进 controls，散文拼接场景。
+  const nsfwTokens = adultGranted ? (blueprint?.nsfwTokens || []) : []
+  const nsfwProse = adultGranted ? String(blueprint?.nsfwProse || '').trim() : ''
+  const sceneProse = [
+    blueprint?.promptProse,
+    ...(nsfwProse ? [nsfwProse] : []),
+  ].filter(Boolean).join(' ')
 
   if (engine === 'krea2') {
-    // Krea2 不接受负面词，只能正面约束：场景级"空荡/荒废/无人"描述比通用否定有效
-    // （宫殿验证：empty hall 生效；no guards 无效）。车站/街道等公共场所先验强，
-    // 必须明确 deserted/empty + 人群类别词。
-    const soloConstraint = blueprint?.promptProse
-      ? ` ${blueprint.promptProse} The whole scene is completely deserted and empty, with not a single other person anywhere in the frame — no commuters, no passersby, no bystanders, no crowd, no background figures at all.`
-      : undefined
     const plan = createPromptPlan({
-      subjectProse: character.identityProse,
-      sceneProse: soloConstraint,
+      subjectProse: identityWithoutOutfit(character.identityProse),
+      outfitProse: outfit.prose,
+      sceneProse,
       emotion: blueprint ? [blueprint.mood] : [],
       camera: blueprint ? [blueprint.camera] : [],
       lighting: blueprint ? [blueprint.lighting] : [],
       composition: compositionToken ? [compositionToken] : [],
       manual,
       negative: '',
-      visualDescription,
+      visualDescription: userVisual,
       style: style ? [style.lead] : [],
       medium: style?.medium ?? '',
+      artistProse: options.artistProse,
     })
     const rendered = renderPromptPlan(plan, 'krea2', profile)
     return { plan, prompt: rendered.prompt, negative: '', adult }
@@ -484,39 +516,49 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
 
   const identityTokens = character.identityTokens
   const exactControls = [...new Set([
-    ...identityTokens,
     ...outfit.tokens,
     ...(character.exactTokens || []),
+    ...nsfwTokens,
   ])]
   const rating = profileRatingTag(profile, { rating: adultGranted ? 'R18' : 'ALL' })
   const plan = createPromptPlan({
     profile,
     identity: identityTokens.join(', '),
     controls: exactControls,
+    artists: options.artistTags,
+    exactTokens: character.exactTokens,
     scenePrompt: (blueprint?.promptTokens || []).join(', '),
-    sceneProse: blueprint?.promptProse,
     emotion: [],
     camera: shotToken ? [shotToken] : [],
-    lighting: lightingToken ? [lightingToken] : [],
+    lighting: lightingTokens.length ? lightingTokens : [],
     composition: compositionToken ? [compositionToken] : [],
     manual,
     negative: (blueprint?.negativeTokens || []).join(', '),
     rating: rating || (adultGranted ? 'nsfw' : ''),
-    visualDescription,
-    // Anima 保持 exact-token + prose 混合：风格短语只取 lead 放最前。
-    style: style ? [style.lead] : [],
+    visualDescription: userVisual,
+    subjectProse: identityWithoutOutfit(character.identityProse),
+    outfitProse: outfit.prose,
+    sceneProse,
+    // Anima 只接收模型原生短标签；Krea 的自然语言 lead 不进入标签流。
+    style: style?.sd ? style.sd.split(',').map(token => token.trim()).filter(Boolean) : [],
   })
   const rendered = renderPromptPlan(plan, 'anima', profile)
   // renderPromptPlan 对 anima 恒返回空 negative，但无 LoRA 工作流含负向 encode 节点，
   // 因此负向词由调用方按下发：先按 profile negative_mode 合并 negative_prefix，
   // 再保留 blueprint 的非样板负向词（样板词由 replace 策略替换）。
-  const negative = renderNegative((blueprint?.negativeTokens || []).join(', '), profile)
-  return { plan, prompt: rendered.prompt, negative, adult }
-}
-
-function renderNegative(baseNegative: string, profile: ModelProfile | null): string {
-  if (!baseNegative) return ''
-  // modelNegativePrompt 会按 profile 的 negative_mode / negative_replace_scope
-  // 合并 negative_prefix，并保留 base 中非样板的语义负向词。
-  return modelNegativePrompt(profile, baseNegative, 'anima')
+  const negative = assembleNegative(
+    profile,
+    {
+      negative: (blueprint?.negativeTokens || []).join(', '),
+      rating: adultGranted ? 'R18' : 'All',
+    },
+    'anima',
+    { shot: options.shot, character: character.id },
+  )
+  // 与场景生成器同款多格/重复主体压制；单人场景追加第二人压制（壁纸级第一）。
+  const panelSuppress = 'split image, split screen, split panel, two panels, diptych, triptych, comic strip, multiple frames, panel borders, frame borders, double exposure, double image, duplicated subject, duplicated body, multiple girls, second person, two people'
+  const finalNegative = negative
+    ? `${negative}, ${panelSuppress}`
+    : panelSuppress
+  return { plan, prompt: rendered.prompt, negative: finalNegative, adult }
 }

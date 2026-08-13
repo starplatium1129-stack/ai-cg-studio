@@ -10,7 +10,7 @@
 // 散文段，Anima 只取 lead 作风格短语前缀，渲染仍由 createPromptPlan +
 // renderPromptPlan 单一入口完成。
 
-export type RecipeEngine = 'krea2' | 'anima'
+export type RecipeEngine = 'sd' | 'krea2' | 'anima'
 
 export interface KreaStyleRecipe {
   id: string
@@ -19,6 +19,8 @@ export interface KreaStyleRecipe {
   lead: string
   /** 可选后置媒介词（放散文段末尾）。 */
   medium?: string
+  /** Concise model-native fragments. Legacy lead remains the Krea prose source. */
+  sd?: string
   /** 成人配方：仅 adult 角色 + 成熟内容开关同时放行。 */
   adult: boolean
 }
@@ -38,24 +40,34 @@ export interface StyleBlueprintHint {
 export interface ResolvedStyle {
   lead: string
   medium?: string
+  sd?: string
   adult?: boolean
 }
 
 export const KREA_STYLE_RECIPES: readonly KreaStyleRecipe[] = Object.freeze([
-  { id: 'anime_key_visual', name: 'Anime 主视觉', lead: 'A vibrant anime key visual with clean line art and saturated colors', medium: 'anime key visual', adult: false },
-  { id: 'vn_event_cg', name: '视觉小说事件 CG', lead: 'A polished visual novel event CG with refined cel shading and crisp character work', medium: 'visual novel event CG', adult: false },
-  { id: 'cinematic_film_still', name: '电影感剧照', lead: 'A cinematic film still with dramatic depth and a carefully balanced frame', medium: 'film still', adult: false },
-  { id: 'soft_daily_illustration', name: '柔和日常插画', lead: 'A soft, warm daily-life illustration with gentle tones and an unhurried mood', medium: 'daily-life illustration', adult: false },
-  { id: 'fantasy_painting', name: '奇幻厚涂绘画', lead: 'A richly detailed fantasy painting with painterly brushwork and atmospheric depth', medium: 'fantasy painting', adult: false },
-  { id: 'anime_promo_art', name: 'Anime 宣传主图', lead: 'A striking anime promo art with bold dynamic composition and vivid color contrast', medium: 'anime promo art', adult: false },
-  { id: 'dreamy_pastel', name: '梦幻粉彩', lead: 'A dreamy pastel illustration bathed in soft diffused light', medium: 'dreamy pastel art', adult: false },
-  { id: 'moody_night_scene', name: '氛围夜景', lead: 'A moody night scene with deep shadows and a quiet atmospheric glow', medium: 'nocturne illustration', adult: false },
-  { id: 'r18_sensual_cg', name: '成人·私密光影', lead: 'A mature sensual illustration with intimate warm lighting and a soft-focus finish', medium: 'sophisticated mature illustration', adult: true },
-  { id: 'r18_elegant_boudoir', name: '成人·典雅闺阁', lead: 'An elegant mature boudoir scene rendered with tasteful restraint and warm candlelight', medium: 'refined adult illustration', adult: true },
+  { id: 'anime_key_visual', name: 'Anime 主视觉', lead: 'A vibrant anime key visual with clean line art and saturated colors', sd: 'anime key visual, clean lineart, saturated colors', medium: 'anime key visual', adult: false },
+  { id: 'vn_event_cg', name: '视觉小说事件 CG', lead: 'A polished visual novel event CG with refined cel shading and crisp character work', sd: 'visual novel event CG, refined cel shading, crisp character work', medium: 'visual novel event CG', adult: false },
+  { id: 'light_novel_cover', name: '轻小说封面', lead: 'A polished light novel cover illustration with a clear character-forward composition', sd: 'light novel cover, character-focused composition, polished illustration', medium: 'light novel cover illustration', adult: false },
+  { id: 'cinematic_film_still', name: '电影感剧照', lead: 'A cinematic film still with dramatic depth and a carefully balanced frame', sd: 'cinematic lighting, dramatic depth, balanced composition', medium: 'film still', adult: false },
+  { id: 'soft_daily_illustration', name: '柔和日常插画', lead: 'A soft, warm daily-life illustration with gentle tones and an unhurried mood', sd: 'soft daily illustration, warm gentle tones', medium: 'daily-life illustration', adult: false },
+  { id: 'fantasy_painting', name: '奇幻厚涂绘画', lead: 'A richly detailed fantasy painting with painterly brushwork and atmospheric depth', sd: 'fantasy painting, painterly brushwork, atmospheric depth', medium: 'fantasy painting', adult: false },
+  { id: 'anime_promo_art', name: 'Anime 宣传主图', lead: 'A striking anime promo art with bold dynamic composition and vivid color contrast', sd: 'anime promo art, dynamic composition, vivid colors', medium: 'anime promo art', adult: false },
+  { id: 'dreamy_pastel', name: '梦幻粉彩', lead: 'A dreamy pastel illustration bathed in soft diffused light', sd: 'dreamy pastel, soft diffused light', medium: 'dreamy pastel art', adult: false },
+  { id: 'moody_night_scene', name: '氛围夜景', lead: 'A moody night scene with deep shadows and a quiet atmospheric glow', sd: 'moody night scene, deep shadows, atmospheric glow', medium: 'nocturne illustration', adult: false },
+  { id: 'cel_1990s', name: '1990s 赛璐璐动画', lead: 'A 1990s cel anime illustration with bold outlines and nostalgic flat colors', sd: '1990s cel anime, bold outlines, nostalgic flat colors', medium: 'retro cel anime illustration', adult: false },
+  { id: 'shoujo_manga', name: '少女漫画', lead: 'A delicate shoujo manga illustration with expressive eyes and airy romantic framing', sd: 'shoujo manga, expressive eyes, romantic framing', medium: 'shoujo manga illustration', adult: false },
+  { id: 'soft_watercolor', name: '柔和水彩', lead: 'A soft watercolor illustration with translucent washes and paper texture', sd: 'soft watercolor, translucent washes, paper texture', medium: 'watercolor illustration', adult: false },
+  { id: 'ink_wash_darkbrush', name: '水墨·暗刷', lead: 'An ink wash and dark brush illustration with expressive monochrome texture', sd: 'ink wash, dark brush, monochrome texture', medium: 'ink wash illustration', adult: false },
+  { id: 'neon_abstract', name: '霓虹抽象', lead: 'A neon abstract artwork with luminous gradients and energetic graphic shapes', sd: 'neon abstract, luminous gradients, graphic shapes', medium: 'neon abstract artwork', adult: false },
+  { id: 'rainy_window', name: '雨窗氛围', lead: 'A rainy-window atmosphere with diffused reflections and intimate quiet light', sd: 'rainy window, diffused reflections, intimate light', medium: 'rainy-window illustration', adult: false },
+  { id: 'vintage_tarot', name: '复古塔罗海报', lead: 'A vintage tarot poster with ornate symbolism, aged print texture, and restrained colors', sd: 'vintage tarot, ornate symbolism, aged print texture', medium: 'vintage tarot poster', adult: false },
+  { id: 'r18_sensual_cg', name: '成人·私密光影', lead: 'An explicit nude illustration: a completely naked mature woman with her bare breasts and nipples clearly visible, intimate warm lighting and a soft-focus finish', medium: 'sophisticated mature illustration', adult: true },
+  { id: 'r18_elegant_boudoir', name: '成人·典雅闺阁', lead: 'An explicit nude boudoir scene: a fully naked mature woman, bare breasts fully exposed, rendered with tasteful restraint and warm candlelight', medium: 'refined adult illustration', adult: true },
 ])
 
 /** 各引擎缺省配方：场景模式与「自动」时使用，蓝图 hint 优先于它。 */
 const ENGINE_DEFAULT: Readonly<Record<RecipeEngine, string>> = Object.freeze({
+  sd: 'anime_key_visual',
   krea2: 'vn_event_cg',
   anima: 'anime_key_visual',
 })
@@ -120,7 +132,7 @@ export function resolveStyleRecipe(
   const recipe = findStyleRecipe(recipes, requested)
   if (recipe) {
     if (!recipeEligible(recipe, character, opts)) return null
-    return { lead: recipe.lead, medium: recipe.medium, adult: recipe.adult || undefined }
+    return { lead: recipe.lead, medium: recipe.medium, sd: recipe.sd, adult: recipe.adult || undefined }
   }
   if (selection) {
     // 手选 id 无效：fail closed 回落到引擎缺省，不让未知 id 变成空 prompt 风格。

@@ -23,8 +23,8 @@ var OUTPUT_NODE_ID = '10';
 var OUTPUT_FILENAME_PREFIX = 'anima_app';
 
 var MODELS = Object.freeze({
-  'anima-base-v1.0': { file:'anima-base-v1.0.safetensors', label:'Anima Base v1.0', family:'anima', profileId:'anima_base_v10', steps:40, cfg:4.5, sampler:'er_sde', scheduler:'sgm_uniform', sizes:['832x1216','1024x1024','1216x832'] },
-  'anima-aesthetic-v1.1': { file:'anima-aesthetic-v1.1.safetensors', label:'Anima Aesthetic v1.1', family:'anima', profileId:'anima_aesthetic_v11', steps:40, cfg:4.5, sampler:'er_sde', scheduler:'sgm_uniform', sizes:['832x1216','1024x1024','1216x832'], noLora:true },
+  'anima-base-v1.0': { file:'anima-base-v1.0.safetensors', label:'Anima Base v1.0', family:'anima', profileId:'anima_base_v10', steps:24, cfg:3.0, sampler:'res_multistep', scheduler:'simple', sizes:['832x1216','960x1536','1024x1024','1216x832'] },
+  'anima-aesthetic-v1.1': { file:'anima-aesthetic-v1.1.safetensors', label:'Anima Aesthetic v1.1', family:'anima', profileId:'anima_aesthetic_v11', steps:24, cfg:3.0, sampler:'res_multistep', scheduler:'simple', sizes:['832x1216','1024x1024','1216x832'], noLora:true },
   'krea2-turbo-fp8': { file:'krea2_turbo_fp8_scaled.safetensors', label:'Krea 2 Turbo', family:'krea2', profileId:'krea2_turbo_fp8', steps:8, cfg:1, sampler:'euler', scheduler:'simple', sizes:['1024x1024','1024x1536','1536x1024'], rebalance:{ preset:'standard', multiplier:1.1, normalizeTaps:false } }
 });
 
@@ -52,8 +52,8 @@ var LORAS = Object.freeze({
     maxStrength:1
   },
   L_NAT_V20_ANIMA: {
-    file:'shiki_natsume_v20_anima_scientific_e12.safetensors',
-    name:'shiki_natsume_v20_anima_scientific_e12',
+    file:'shiki_natsume_v20_anima.safetensors',
+    name:'shiki_natsume_v20_anima',
     character:'natsume',
     compatibleModels:['anima-base-v1.0', 'anima-aesthetic-v1.1'],
     minStrength:0.65,
@@ -61,14 +61,24 @@ var LORAS = Object.freeze({
   }
 });
 
+var KREA_STYLE_LORAS = Object.freeze({
+  darkbrush:{ file:'krea2_darkbrush.safetensors', trigger:'monochrome ink wash style' }, dotmatrix:{ file:'krea2_dotmatrix.safetensors', trigger:'monochrome stippling style' },
+  kidsdrawing:{ file:'krea2_kidsdrawing.safetensors', trigger:'naive expressive sketch style' }, neondrip:{ file:'krea2_neondrip.safetensors', trigger:'textured abstract style' },
+  rainywindow:{ file:'krea2_rainywindow.safetensors', trigger:'rainy window style' }, retroanime:{ file:'krea2_retroanime.safetensors', trigger:'purple retro anime style' },
+  softwatercolor:{ file:'krea2_softwatercolor.safetensors', trigger:'art deco watercolor style' }, sunsetblur:{ file:'krea2_sunsetblur.safetensors', trigger:'ethereal motion blur style' },
+  vintagetarot:{ file:'krea2_vintagetarot.safetensors', trigger:'vintage tarot style' }
+});
+
 var CHARACTERS = Object.freeze({
-  nene: { id:'nene', label:'绫地宁宁', loraId:'L_NENE_V20B_ANIMA' },
-  natsume: { id:'natsume', label:'四季夏目', loraId:'L_NAT_V20_ANIMA' }
+  nene: { id:'nene', label:'绫地宁宁', loraId:'L_NENE_V20_ANIMA' },
+  natsume: { id:'natsume', label:'四季夏目', loraId:'L_NAT_V20_ANIMA' },
+  // V20B（scientific_b）变体绑定：attempt-5 等历史样张用 0.82 强度产出，保留 A/B 对比通道。
+  nene_b: { id:'nene_b', label:'绫地宁宁（V20B）', loraId:'L_NENE_V20B_ANIMA' }
 });
 
 var ALLOWED_INPUT_KEYS = new Set([
   'prompt', 'negative', 'modelId', 'loraId', 'loraStrength',
-  'width', 'height', 'steps', 'cfg', 'seed', 'character'
+  'width', 'height', 'steps', 'cfg', 'seed', 'character', 'styleLoraId'
 ]);
 
 function serviceError(status, code, message, detail) {
@@ -108,6 +118,31 @@ function decodePathValue(value) {
   }
   return decoded;
 }
+function modelRoot(config) {
+  return path.resolve(config.AI_WORKSPACE_ROOT || path.resolve(config.ROOT_DIR, '..', 'AI'), 'ComfyUI', 'models');
+}
+function resourceExists(root, kind, file) {
+  var base = path.resolve(root, kind);
+  var target = path.resolve(base, file);
+  if (target.indexOf(base + path.sep) !== 0) return false;
+  try { return fs.statSync(target).isFile(); } catch (error) { return false; }
+}
+function requiredResources(config, input, loraRoot) {
+  var root = modelRoot(config);
+  var model = MODELS[input.modelId];
+  var encoder = model.family === 'krea2' ? 'qwen3vl_4b_fp8_scaled.safetensors' : 'qwen_3_06b_base.safetensors';
+  if (!resourceExists(root, 'diffusion_models', model.file)) throw serviceError(503, 'ANIMA_MODEL_UNAVAILABLE', '所选生成底模资源不可用');
+  if (!resourceExists(root, 'text_encoders', encoder)) throw serviceError(503, 'ANIMA_ENCODER_UNAVAILABLE', '所选底模的文本编码器资源不可用');
+  if (!resourceExists(root, 'vae', 'qwen_image_vae.safetensors')) throw serviceError(503, 'ANIMA_VAE_UNAVAILABLE', '所选底模的 VAE 资源不可用');
+  if (input.loraId) {
+    var lora = LORAS[input.loraId];
+    if (!lora || !resourceExists(loraRoot, '', lora.file)) throw serviceError(503, 'ANIMA_LORA_UNAVAILABLE', '所选 Anima LoRA 文件不可用');
+  }
+  if (input.styleLoraId) {
+    var styleLora = KREA_STYLE_LORAS[input.styleLoraId];
+    if (!styleLora || !resourceExists(loraRoot, '', styleLora.file)) throw serviceError(503, 'KREA_STYLE_LORA_UNAVAILABLE', '所选 Krea 2 Style LoRA 文件不可用');
+  }
+}
 
 function validateInput(body, expectedFamily) {
   if (!isPlainObject(body)) throw serviceError(400, 'INVALID_BODY', '请求体必须是 JSON 对象');
@@ -134,8 +169,10 @@ function validateInput(body, expectedFamily) {
   if (expectedFamily && model.family !== expectedFamily) throw serviceError(400, 'WRONG_ROUTE_FAMILY', '请求路径与模型 family 不匹配');
   var expectedProfile = PROFILE_BY_MODEL[body.modelId];
   var lora = body.loraId ? LORAS[body.loraId] : null;
+  if (model.family !== 'krea2' && body.styleLoraId !== undefined) throw serviceError(400, 'WRONG_ROUTE_FAMILY', 'Style LoRA 仅适用于 Krea 2');
   if (model.family === 'krea2') {
-    if (body.loraId || body.loraStrength !== undefined || (body.negative && String(body.negative).trim())) throw serviceError(400, 'KREA_UNSUPPORTED_PARAMETER', 'Krea 2 不接受 LoRA 或负向 Prompt');
+    if (body.loraId || body.loraStrength !== undefined || (body.negative && String(body.negative).trim())) throw serviceError(400, 'KREA_UNSUPPORTED_PARAMETER', 'Krea 2 不接受角色 LoRA 或负向 Prompt');
+    if (body.styleLoraId !== undefined && !KREA_STYLE_LORAS[body.styleLoraId]) throw serviceError(400, 'UNKNOWN_STYLE_LORA', '未知 Krea 2 官方 Style LoRA');
   } else if (model.noLora === true && !body.loraId) {
     // 无 LoRA 创作模式：loraId/character 缺省或 character=null 即放行。
     // 若调用方提供了 lora，则落到下面的原校验，UNKNOWN_LORA /
@@ -177,7 +214,9 @@ function validateInput(body, expectedFamily) {
     : validateNumber(body.seed, 'seed', 0, 9007199254740991, true);
 
   return {
-    prompt:body.prompt.trim(),
+    prompt:model.family === 'krea2' && body.styleLoraId
+      ? body.prompt.trim() + ', ' + KREA_STYLE_LORAS[body.styleLoraId].trigger
+      : body.prompt.trim(),
     negative:model.family === 'krea2' ? '' : (typeof body.negative === 'string' ? body.negative.trim() : ''),
     family:model.family,
     profileId:expectedProfile,
@@ -191,7 +230,8 @@ function validateInput(body, expectedFamily) {
     sampler:model.sampler,
     scheduler:model.scheduler,
     seed:seed,
-    character:body.character
+    character:body.character,
+    styleLoraId:model.family === 'krea2' ? (body.styleLoraId || null) : null
   };
 }
 
@@ -220,7 +260,13 @@ function buildWorkflow(input) {
       } };
       positive = ['11', 0];
     }
-    workflow['7'] = { class_type:'KSampler', inputs:{ model:['1', 0], positive:positive, negative:['5', 0], latent_image:['6', 0], seed:input.seed, steps:8, cfg:1, sampler_name:'euler', scheduler:'simple', denoise:1 } };
+     var kreaModel = ['1', 0];
+     if (input.styleLoraId) {
+       var styleLora = KREA_STYLE_LORAS[input.styleLoraId];
+       workflow['12'] = { class_type:'LoraLoaderModelOnly', inputs:{ model:kreaModel, lora_name:styleLora.file, strength_model:1 } };
+       kreaModel = ['12', 0];
+     }
+     workflow['7'] = { class_type:'KSampler', inputs:{ model:kreaModel, positive:positive, negative:['5', 0], latent_image:['6', 0], seed:input.seed, steps:8, cfg:1, sampler_name:'euler', scheduler:'simple', denoise:1 } };
     return workflow;
   }
   if (model.noLora === true && !input.loraId) return {
@@ -473,6 +519,7 @@ function createAnimaService(config, options) {
   var provider = options.provider || 'comfy';
   var routeBase = options.routeBase || '/api/anima';
   var loraRoot = options.loraRoot || path.join(config.AI_WORKSPACE_ROOT || path.resolve(config.ROOT_DIR, '..', 'AI'), 'ComfyUI', 'models', 'loras');
+  var validateResources = options.validateResources || function (input) { requiredResources(config, input, loraRoot); };
   var jobTtlMs = Number(options.jobTtlMs) > 0 ? Number(options.jobTtlMs) : JOB_TTL_MS;
   var cancelPollIntervalMs = Number(options.cancelPollIntervalMs) > 0
     ? Number(options.cancelPollIntervalMs) : CANCEL_POLL_INTERVAL_MS;
@@ -661,12 +708,7 @@ function createAnimaService(config, options) {
   }
 
   async function submit(job) {
-    if (engine === 'anima' && LORAS[job.input.loraId] && LORAS[job.input.loraId].preview) {
-      var loraFile = path.resolve(loraRoot, LORAS[job.input.loraId].file);
-      if (loraFile.indexOf(path.resolve(loraRoot) + path.sep) !== 0 || !fs.existsSync(loraFile)) {
-        throw serviceError(503, 'ANIMA_LORA_UNAVAILABLE', '所选 Anima LoRA 文件不可用');
-      }
-    }
+    validateResources(job.input);
     var response = await requestComfyJson(config, 'POST', '/prompt', {
       prompt:buildWorkflowForJob(job.input),
       client_id:clientId
@@ -689,6 +731,9 @@ function createAnimaService(config, options) {
     var id = crypto.randomBytes(18).toString('hex');
     var createdAt = Date.now();
     var frozenInput = Object.freeze(Object.assign({}, input));
+    var metadataLoras = frozenInput.loras
+      ? Object.freeze(frozenInput.loras.map(function (lora) { return Object.freeze({ id:lora.id, strength:lora.strength }); }))
+      : Object.freeze(frozenInput.loraId ? [Object.freeze({ id:frozenInput.loraId, strength:frozenInput.loraStrength })] : []);
     var job = {
       id:id,
       owner:owner,
@@ -697,7 +742,9 @@ function createAnimaService(config, options) {
       metadata:Object.freeze({
          engine:frozenInput.family || engine, id:id, prompt:frozenInput.prompt, negative:frozenInput.negative,
         profileId:frozenInput.profileId || '', modelId:frozenInput.modelId, loraId:frozenInput.loraId,
-        loraStrength:frozenInput.loraStrength, width:frozenInput.width, height:frozenInput.height,
+          loras:metadataLoras, loraStrength:frozenInput.loraStrength, styleLoraId:frozenInput.styleLoraId || null, width:frozenInput.width, height:frozenInput.height,
+         hiresFix:Boolean(frozenInput.hiresFix), hiresScale:frozenInput.hiresScale, hiresUpscaler:frozenInput.hiresUpscaler,
+         hiresSteps:frozenInput.hiresSteps, denoisingStrength:frozenInput.denoisingStrength, faceDetailer:Boolean(frozenInput.faceDetailer),
         steps:frozenInput.steps, cfg:frozenInput.cfg, sampler:frozenInput.sampler || 'res_multistep', scheduler:frozenInput.scheduler || 'simple',
          seed:frozenInput.seed, character:frozenInput.character || null, preview:Boolean(LORAS[frozenInput.loraId] && LORAS[frozenInput.loraId].preview), createdAt:createdAt, resultUrl:null,
         provider:provider
@@ -783,21 +830,21 @@ function createAnimaService(config, options) {
   }
 
   function status() {
-    var modelRoot = path.resolve(config.AI_WORKSPACE_ROOT || path.resolve(config.ROOT_DIR, '..', 'AI'), 'ComfyUI', 'models');
+    var modelRootPath = modelRoot(config);
     function available(model) {
       var encoder = model.family === 'krea2' ? 'qwen3vl_4b_fp8_scaled.safetensors' : 'qwen_3_06b_base.safetensors';
-      return fs.existsSync(path.join(modelRoot, 'diffusion_models', model.file))
-        && fs.existsSync(path.join(modelRoot, 'text_encoders', encoder))
-        && fs.existsSync(path.join(modelRoot, 'vae', 'qwen_image_vae.safetensors'));
+       return resourceExists(modelRootPath, 'diffusion_models', model.file)
+         && resourceExists(modelRootPath, 'text_encoders', encoder)
+         && resourceExists(modelRootPath, 'vae', 'qwen_image_vae.safetensors');
     }
     return {
       online:false,
         models:Object.keys(MODELS).map(function (id) { var model = MODELS[id]; return { id:id, label:model.label, family:model.family, profileId:model.profileId, available:available(model), defaults:{ steps:model.steps, cfg:model.cfg, sampler:model.sampler, scheduler:model.scheduler }, sizes:model.sizes, capabilities:{ negative:model.family !== 'krea2', lora:model.family === 'anima', noLora:model.noLora === true, characterIdentity:model.family === 'anima', experimental:model.family === 'krea2' || model.noLora === true } }; }),
       loras:Object.keys(LORAS).map(function (id) {
         var lora = LORAS[id];
-        var file = path.resolve(loraRoot, lora.file);
-        return { id:id, name:lora.name, character:lora.character, preview:Boolean(lora.preview), validation:lora.validation || 'production', available:!lora.preview || fs.existsSync(file) };
+        return { id:id, name:lora.name, character:lora.character, preview:Boolean(lora.preview), validation:lora.validation || 'production', available:resourceExists(loraRoot, '', lora.file) };
       }),
+      styleLoras:Object.keys(KREA_STYLE_LORAS).map(function (id) { var style = KREA_STYLE_LORAS[id]; return { id:id, trigger:style.trigger, recommendedStrength:1, available:resourceExists(loraRoot, '', style.file) }; }),
       characters:Object.keys(CHARACTERS).map(function (id) { return CHARACTERS[id]; }),
       pending:pendingCount(),
       maxPending:MAX_PENDING
@@ -839,7 +886,7 @@ function createAnimaService(config, options) {
     probe:probe,
     status:status,
     close:close,
-     constants:{ MODELS:MODELS, LORAS:LORAS, MAX_PENDING:MAX_PENDING, JOB_TTL_MS:jobTtlMs, CANCEL_TIMEOUT_MS:cancelTimeoutMs }
+      constants:{ MODELS:MODELS, LORAS:LORAS, KREA_STYLE_LORAS:KREA_STYLE_LORAS, MAX_PENDING:MAX_PENDING, JOB_TTL_MS:jobTtlMs, CANCEL_TIMEOUT_MS:cancelTimeoutMs }
   };
 }
 
@@ -854,13 +901,14 @@ function createAnimaRouter(config, dependencies) {
   router.get(['/api/anima/status', '/api/creative/status'], function (req, res) {
     service.probe().then(function (online) {
       var data = service.status();
-      data.online = online;
       if (routeFamily(req) === 'anima') data.models = data.models.filter(function (model) { return model.family === 'anima'; });
+      data.online = online && data.models.some(function (model) { return model.available === true; });
       res.setHeader('Cache-Control', 'no-store');
       envelope.ok(res, data);
     }).catch(function () {
-      var data = service.status();
-      if (routeFamily(req) === 'anima') data.models = data.models.filter(function (model) { return model.family === 'anima'; });
+       var data = service.status();
+       if (routeFamily(req) === 'anima') data.models = data.models.filter(function (model) { return model.family === 'anima'; });
+       data.online = false;
       res.setHeader('Cache-Control', 'no-store');
       envelope.ok(res, data);
     });
@@ -879,7 +927,7 @@ function createAnimaRouter(config, dependencies) {
       if (job) {
         service.cancel(job);
       }
-      return envelope.fail(res, error.status >= 500 ? 502 : (error.status || 502),
+      return envelope.fail(res, error.status === 503 ? 503 : (error.status >= 500 ? 502 : (error.status || 502)),
         error.status >= 500 ? 'ComfyUI 暂不可用' : error.message || 'Anima 提交失败',
         { code:error.code || 'ANIMA_SUBMIT_FAILED' });
     }
@@ -942,5 +990,6 @@ module.exports = {
   createAnimaService:createAnimaService,
   validateInput:validateInput,
   buildWorkflow:buildWorkflow,
-  validateImageReference:validateImageReference
+  validateImageReference:validateImageReference,
+  constants:{ MODELS:MODELS, LORAS:LORAS, KREA_STYLE_LORAS:KREA_STYLE_LORAS }
 };

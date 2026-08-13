@@ -792,7 +792,23 @@
       "recommendedSize": "832x1216",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
-      "animaStyleHint": "r18_elegant_boudoir"
+      "animaStyleHint": "r18_elegant_boudoir",
+      "nsfwTokens": [
+        "nude",
+        "nude",
+        "completely_naked",
+        "fully_nude",
+        "no_clothes",
+        "naked_body",
+        "bare_chest",
+        "exposed_breasts",
+        "nipples",
+        "pussy",
+        "spread_legs",
+        "lying_on_bed",
+        "topless"
+      ],
+      "nsfwProse": "Her clothes have been removed and lie on the floor. A naked woman lies on the bed with her bare breasts exposed and her legs parted, her fully nude body lit by warm candlelight. Her thighs are apart and her naked breasts and nipples are clearly visible, with nothing covering her bare skin."
     },
     {
       "id": "morning_bathrobe",
@@ -827,7 +843,23 @@
       ],
       "recommendedSize": "832x1216",
       "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir"
+      "kreaStyleHint": "r18_elegant_boudoir",
+      "nsfwTokens": [
+        "nude",
+        "nude",
+        "completely_naked",
+        "fully_nude",
+        "no_clothes",
+        "naked_body",
+        "bare_chest",
+        "exposed_breasts",
+        "nipples",
+        "topless",
+        "standing_nude",
+        "bathrobe_off"
+      ],
+      "nsfwProse": "The bathrobe slips from her shoulders and falls away, leaving her completely naked in the bright morning light. Her bare breasts and nipples are fully exposed, her nude body backlit by the window, with nothing left to cover her.",
+      "animaStyleHint": "r18_elegant_boudoir"
     },
     {
       "id": "late_night_dressing",
@@ -860,7 +892,24 @@
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform"
       ],
       "recommendedSize": "832x1216",
-      "adult": true
+      "adult": true,
+      "nsfwTokens": [
+        "nude",
+        "nude",
+        "completely_naked",
+        "fully_nude",
+        "no_clothes",
+        "naked_body",
+        "bare_chest",
+        "exposed_breasts",
+        "nipples",
+        "topless",
+        "bare_back",
+        "undressing"
+      ],
+      "nsfwProse": "She undresses by the mirror, her clothes falling to the floor until she stands completely naked. Her bare back and naked breasts are fully exposed in the warm lamp light, her nude body reflected in the glass.",
+      "animaStyleHint": "r18_sensual_cg",
+      "kreaStyleHint": "r18_sensual_cg"
     }
   ]
 }

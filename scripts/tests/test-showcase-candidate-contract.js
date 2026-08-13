@@ -1,0 +1,565 @@
+'use strict';
+
+/**
+ * Contract sentinels for the showcase-candidate generation pipeline
+ * (scripts/maintenance/generate-showcase-candidates.js).
+ *
+ * Pins, without touching the network:
+ *   - complete batch plan (13 artist / 18 popular / 8 latest-lora = 39
+ *     attempt-1 + 14 review-override attempt-2 + 6 attempt-3 + 2 attempt-4 = 61)
+ *   - artist-tag syntax for both WAI and Anima
+ *   - 18-character popular coverage with default outfits and no adult content
+ *     for non-adult characters
+ *   - production latest-LoRA ids / files / strength / checkpoint
+ *   - attempt-2/3/4 record chains (supersedes / reviewReason / seeds)
+ *   - attempt-4 = the 2026-08-12 corrected 四季夏目 mole side: character's own
+ *     right eye (viewer-left cheek), 960x1536 coverage, fresh seeds; the
+ *     attempt-2/3 "left-eye mole" rules are pinned as HISTORICAL MISJUDGEMENTS
+ *     whose prompts stay verbatim to match the already-generated history
+ *   - --attempt CLI filter semantics
+ *   - resume + atomic-manifest behaviour
+ *   - hard refusal to write into the public SceneShowcase directory
+ */
+
+const assert = require('assert');
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
+const { test } = require('node:test');
+
+const gen = require('../../scripts/maintenance/generate-showcase-candidates.js');
+const sceneGen = require('../../scripts/maintenance/generate-scene-showcase-candidates.js');
+const popularData = require('../../data/popular-characters.json');
+const artistCatalog = require('../../src/config/artistStyleCatalog.ts');
+const artistStyles = require('../../src/config/artistStyles.ts');
+const genConst = require('../../routes/generation.js').constants;
+const animaConst = require('../../routes/anima.js').constants;
+const loraData = require('../../data/loras.json');
+
+const studioStoreSource = fs.readFileSync(
+  path.join(__dirname, '..', '..', 'src', 'stores', 'promptBuilderStore.ts'),
+  'utf8',
+);
+
+test('batch plan is complete: 61 legacy + 800 grid = 861', () => {
+  const plan = gen.planAllBatches(20260812);
+  assert.strictEqual(plan.length, 861, `expected 861 planned jobs, got ${plan.length}`);
+  const attempt1 = plan.filter(item => item.attempt === 1);
+  const attempt2 = plan.filter(item => item.attempt === 2);
+  const attempt3 = plan.filter(item => item.attempt === 3);
+  const attempt4 = plan.filter(item => item.attempt === 4);
+  assert.strictEqual(attempt1.length, 839, 'attempt-1 covers all 61 legacy + 800 grid keys');
+  assert.strictEqual(attempt2.length, 14);
+  assert.strictEqual(attempt3.length, 6);
+  assert.strictEqual(attempt4.length, 2);
+  const legacy1 = attempt1.filter(item => item.batch !== 'popular-grid' && item.batch !== 'artist-grid');
+  const counts = legacy1.reduce((acc, item) => { acc[item.batch] = (acc[item.batch] || 0) + 1; return acc; }, {});
+  assert.deepStrictEqual(counts, { artist: 13, popular: 18, 'latest-lora': 8 });
+  const gridCounts = plan.reduce((acc, item) => { acc[item.batch] = (acc[item.batch] || 0) + 1; return acc; }, {});
+  assert.strictEqual(gridCounts['popular-grid'], 774, 'popular-grid must plan 774 (fail-closed 双引擎矩阵)');
+  assert.strictEqual(gridCounts['artist-grid'], 26, 'artist-grid must plan 26 (13 × 双引擎)');
+  const recordIds = new Set(plan.map(item => item.recordId));
+  assert.strictEqual(recordIds.size, plan.length, 'recordIds must be unique');
+  const keys = new Set(plan.map(item => item.key));
+  assert.strictEqual(keys.size, 839, '839 distinct candidate keys across all batches');
+});
+
+test('review overrides: exact 14 keys, deterministic seed offsets, supersedes/reviewReason', () => {
+  const plan = gen.planAllBatches(20260812);
+  const expectedKeys = Object.keys(gen.REVIEW_OVERRIDES).sort();
+  assert.deepStrictEqual(expectedKeys, [
+    'artist:bunbun', 'artist:nardack',
+    'popular:emilia_rezero', 'popular:hatsune_miku', 'popular:misaka_mikoto',
+    'popular:sakurajima_mai', 'popular:tokisaki_kurumi', 'popular:yukinoshita_yukino',
+    'popular:yuzuriha_inori',
+    'latest-lora:nene:sd:closeup', 'latest-lora:nene:sd:fullbody',
+    'latest-lora:natsume:sd:fullbody', 'latest-lora:natsume:anima:closeup',
+    'latest-lora:natsume:anima:fullbody',
+  ].sort(), 'REVIEW_OVERRIDES must cover exactly the reviewed keys');
+  for (const key of expectedKeys) {
+    const base = plan.find(item => item.key === key && item.attempt === 1);
+    const second = plan.find(item => item.key === key && item.attempt === 2);
+    assert.ok(base, `missing attempt-1 for ${key}`);
+    assert.ok(second, `missing attempt-2 for ${key}`);
+    const override = gen.REVIEW_OVERRIDES[key];
+    assert.strictEqual(second.recordId, `${key}@attempt-2`);
+    assert.strictEqual(second.supersedes, `${key}@attempt-1`);
+    assert.ok(second.reviewReason, `${key} must carry a reviewReason`);
+    const expectedSeed = (base.seed + (Number(override.seedOffset) || 0)) % 2147483647;
+    assert.strictEqual(second.seed, expectedSeed, `${key} seed offset`);
+    assert.strictEqual(second.checkpoint, base.checkpoint, `${key} engine/checkpoint unchanged`);
+    assert.strictEqual(second.loraId, base.loraId, `${key} LoRA selection unchanged`);
+    assert.strictEqual(second.width, base.width, `${key} size unchanged`);
+    assert.strictEqual(second.height, base.height, `${key} size unchanged`);
+    assert.strictEqual(gen.imageRelFor(second), `images/${second.batch}/${second.key.replace(/[:\/\\]/g, '_')}_attempt-2.png`, `${key} attempt-2 file name`);
+    assert.strictEqual(gen.imageRelFor(base), `images/${base.batch}/${base.key.replace(/[:\/\\]/g, '_')}.png`, `${key} attempt-1 file name must not change`);
+  }
+});
+
+test('WAI weighted artist tags survive the formatter verbatim (no artist: prefix)', () => {
+  const bunbun = gen.buildArtistPrompt('bunbun', { artistTag: '(bunbun:1.2)', negativeAppend: ['malformed buttons', 'clothing fasteners'] });
+  assert.ok(bunbun.prompt.endsWith(', (bunbun:1.2)'), `weighted WAI tag must end the prompt raw: ${bunbun.prompt}`);
+  assert.ok(bunbun.prompt.includes('(bunbun:1.2)'));
+  assert.ok(!bunbun.prompt.includes('artist:'), 'no SD artist: prefix syntax may be used');
+  assert.ok(bunbun.negative.includes('malformed buttons') && bunbun.negative.includes('clothing fasteners'));
+  const nardack = gen.buildArtistPrompt('nardack', { artistTag: '(nardack:1.1)', negativeAppend: ['abnormal light spot on neck', 'broken bag strap'] });
+  assert.ok(nardack.prompt.endsWith(', (nardack:1.1)'), `weighted nardack tag must survive: ${nardack.prompt}`);
+  assert.ok(nardack.negative.includes('abnormal light spot on neck'));
+  // Attempt-1 keeps the raw unweighted tag (contract unchanged).
+  const base = gen.buildArtistPrompt('bunbun');
+  assert.ok(base.prompt.endsWith(', bunbun'), `attempt-1 keeps raw tag: ${base.prompt}`);
+});
+
+test('attempt-2 popular prompts apply Anima space-contract reinforcement + negative', () => {
+  const plan = gen.planAllBatches(20260812);
+  const emilia = plan.find(item => item.recordId === 'popular:emilia_rezero@attempt-2');
+  assert.ok(emilia.prompt.includes('white dress, lilac dress, purple flower ornament, brooch, long sleeves'), emilia.prompt);
+  assert.ok(emilia.negative.includes('casual dress, blue dress'), emilia.negative);
+  assert.ok(!/(ayachi_nene|shiki_natsume|nene_|natsume_)/i.test(emilia.prompt), 'no studio LoRA anchor leak');
+  const miku = plan.find(item => item.recordId === 'popular:hatsune_miku@attempt-2');
+  assert.ok(miku.prompt.includes('black pleated skirt') && miku.prompt.includes('detached black sleeves'));
+  assert.ok(miku.negative.includes('short sleeves') && miku.negative.includes('red bow'));
+  const kurumi = plan.find(item => item.recordId === 'popular:tokisaki_kurumi@attempt-2');
+  assert.ok(kurumi.prompt.includes('left eye golden clock-face pupil') && kurumi.prompt.includes('heterochromia'));
+  assert.ok(kurumi.negative.includes('both red eyes') && kurumi.negative.includes('plain black dress'));
+  const inori = plan.find(item => item.recordId === 'popular:yuzuriha_inori@attempt-2');
+  assert.ok(inori.prompt.includes('red dress') && inori.prompt.includes('layered skirt'), `inori red-dress reinforcement: ${inori.prompt}`);
+  assert.ok(inori.negative.includes('white sleeveless shirt') && inori.negative.includes('casual shorts'));
+  assert.strictEqual(inori.outfitId, 'funeral_parade', 'inori keeps the JSON default outfit');
+});
+
+test('attempt-2 latest-lora: camera framing override and mole-side reinforcement', () => {
+  // HISTORICAL MISJUDGEMENT (2026-08-12): the anima closeup mole-side assertions
+  // below pin the incorrect "mole under left eye" attempt-2 prompt VERBATIM -
+  // the record must keep matching the already-generated history. The corrected
+  // right-eye (viewer-left) contract is asserted by the attempt-4 test.
+  const plan = gen.planAllBatches(20260812);
+  const neneCloseup = plan.find(item => item.recordId === 'latest-lora:nene:sd:closeup@attempt-2');
+  assert.ok(neneCloseup.prompt.includes('bust') && !neneCloseup.prompt.includes('close_up'), `closeup must switch to bust framing: ${neneCloseup.prompt}`);
+  assert.ok(neneCloseup.negative.includes('extreme close-up') && neneCloseup.negative.includes('cropped head'));
+  const neneFull = plan.find(item => item.recordId === 'latest-lora:nene:sd:fullbody@attempt-2');
+  assert.ok(neneFull.prompt.includes('standing') && neneFull.prompt.includes('full_body'));
+  assert.ok(neneFull.negative.includes('cowboy shot') && neneFull.negative.includes('kneeling'));
+  const natFull = plan.find(item => item.recordId === 'latest-lora:natsume:sd:fullbody@attempt-2');
+  assert.ok(natFull.prompt.includes('two red hairclips') && natFull.prompt.includes('shoes'));
+  assert.ok(natFull.negative.includes('cropped feet') && natFull.negative.includes('missing hairclips'));
+  const natCloseup = plan.find(item => item.recordId === 'latest-lora:natsume:anima:closeup@attempt-2');
+  assert.ok(natCloseup.prompt.includes('mole under left eye') && !natCloseup.prompt.includes('mole_under_left_eye'), `left-eye mole must be space-form: ${natCloseup.prompt}`);
+  assert.ok(natCloseup.negative.includes('mole under right eye'));
+  const natFullAnima = plan.find(item => item.recordId === 'latest-lora:natsume:anima:fullbody@attempt-2');
+  assert.ok(natFullAnima.negative.includes('hair ribbon') && natFullAnima.negative.includes('hairband'));
+  const baseSeed = plan.find(item => item.key === 'latest-lora:natsume:anima:fullbody' && item.attempt === 1).seed;
+  assert.strictEqual(natFullAnima.seed, baseSeed, 'natsume anima fullbody keeps attempt-1 seed (negative-only fix)');
+});
+
+test('attempt-3 overrides: exactly 6 keys, record chain, fresh seeds, image names', () => {
+  const plan = gen.planAllBatches(20260812);
+  const expectedKeys = Object.keys(gen.ATTEMPT_3_OVERRIDES).sort();
+  assert.deepStrictEqual(expectedKeys, [
+    'artist:so-bin',
+    'popular:makima',
+    'latest-lora:nene:sd:fullbody',
+    'latest-lora:natsume:sd:closeup',
+    'latest-lora:natsume:sd:fullbody',
+    'latest-lora:natsume:anima:closeup',
+  ].sort(), 'ATTEMPT_3_OVERRIDES must cover exactly the six re-reviewed keys');
+  for (const key of expectedKeys) {
+    const base = plan.find(item => item.key === key && item.attempt === 1);
+    const third = plan.find(item => item.key === key && item.attempt === 3);
+    assert.ok(base, `missing attempt-1 for ${key}`);
+    assert.ok(third, `missing attempt-3 for ${key}`);
+    const hasAttemptTwo = Boolean(plan.find(item => item.key === key && item.attempt === 2));
+    const override = gen.ATTEMPT_3_OVERRIDES[key];
+    assert.strictEqual(third.recordId, `${key}@attempt-3`);
+    assert.strictEqual(third.supersedes, `${key}@attempt-${hasAttemptTwo ? 2 : 1}`,
+      `${key} supersedes must point at attempt-2 when present, otherwise attempt-1`);
+    assert.ok(third.reviewReason, `${key} must carry a reviewReason`);
+    const expectedSeed = (base.seed + (Number(override.seedOffset) || 0)) % 2147483647;
+    assert.strictEqual(third.seed, expectedSeed, `${key} seed offset`);
+    assert.notStrictEqual(third.seed, base.seed, `${key} must change seed from attempt-1`);
+    const attemptTwo = plan.find(item => item.key === key && item.attempt === 2);
+    if (attemptTwo) assert.notStrictEqual(third.seed, attemptTwo.seed, `${key} must change seed from attempt-2`);
+    assert.strictEqual(third.checkpoint, base.checkpoint, `${key} engine/checkpoint unchanged`);
+    assert.strictEqual(third.loraId, base.loraId, `${key} LoRA selection unchanged`);
+    assert.strictEqual(third.width, base.width, `${key} size unchanged`);
+    assert.strictEqual(third.height, base.height, `${key} size unchanged`);
+    if (key === 'latest-lora:nene:sd:fullbody') {
+      assert.strictEqual(third.width, 832, `${key} must keep 832x1216`);
+      assert.strictEqual(third.height, 1216, `${key} must keep 832x1216`);
+    }
+    assert.strictEqual(gen.imageRelFor(third), `images/${third.batch}/${third.key.replace(/[:\/\\]/g, '_')}_attempt-3.png`, `${key} attempt-3 file name`);
+    assert.strictEqual(gen.imageRelFor(base), `images/${base.batch}/${base.key.replace(/[:\/\\]/g, '_')}.png`, `${key} attempt-1 file name must not change`);
+  }
+  assert.deepStrictEqual([...plan].filter(item => item.attempt === 3).map(item => item.recordId).sort(),
+    expectedKeys.map(key => `${key}@attempt-3`).sort(), 'exactly the six attempt-3 records are planned');
+});
+
+test('attempt-3 so-bin: WAI raw weighted tag, style reinforcement, day city kept', () => {
+  const plan = gen.planAllBatches(20260812);
+  const sobin = plan.find(item => item.recordId === 'artist:so-bin@attempt-3');
+  assert.ok(sobin.prompt.includes('(so-bin:1.3)'), `weighted WAI tag must appear raw: ${sobin.prompt}`);
+  assert.ok(!sobin.prompt.includes('artist:'), 'no SD artist: prefix syntax may be used');
+  assert.ok(!/<lora:/i.test(sobin.prompt), 'no non-existent LoRA may be introduced');
+  for (const token of ['dramatic dark shadows', 'heavy painterly brushwork', 'dark fantasy oil-paint texture']) {
+    assert.ok(sobin.prompt.includes(token), `so-bin missing style token ${token}`);
+  }
+  // White shirt + open jacket + daytime city street must survive.
+  assert.ok(sobin.prompt.includes('white_shirt') && sobin.prompt.includes('open_jacket'));
+  assert.ok(sobin.prompt.includes('city_street') && sobin.prompt.includes('day'));
+  assert.ok(!/night|dark scene|moon/i.test(sobin.prompt), 'scene must not be turned into night');
+  assert.ok(sobin.negative.includes('night'), 'night stays guarded in negative');
+  assert.strictEqual(sobin.engine, 'sd');
+  assert.strictEqual(sobin.modelId, gen.constants.WAI_MODEL_ID, 'so-bin stays on the WAI model, no LoRA');
+});
+
+test('attempt-3 makima: ringed eyes + back braid + suit trousers, suppressors', () => {
+  const plan = gen.planAllBatches(20260812);
+  const makima = plan.find(item => item.recordId === 'popular:makima@attempt-3');
+  for (const token of ['golden eyes', 'ringed eyes', 'concentric circles in eyes', 'single long back braid', 'black suit trousers']) {
+    assert.ok(makima.prompt.includes(token), `makima prompt missing ${token}`);
+  }
+  for (const token of ['solid red eyes', 'loose untied hair', 'pleated skirt', 'ahoge']) {
+    assert.ok(makima.negative.includes(token), `makima negative missing ${token}`);
+  }
+  assert.strictEqual(makima.engine, 'anima');
+  assert.ok(makima.sampler === 'res_multistep' && makima.scheduler === 'simple', 'Anima sampler/scheduler contract');
+});
+
+test('attempt-3 latest-lora: fullbody framing + mole/hairclip sentinels per engine', () => {
+  // HISTORICAL MISJUDGEMENT (2026-08-12): the three natsume mole-side blocks
+  // below ("mole under left eye / mole on left cheek") pin the incorrect
+  // attempt-3 prompts VERBATIM so they keep matching the generated history.
+  // The corrected right-eye (viewer-left) contract is asserted by the
+  // attempt-4 test.
+  const plan = gen.planAllBatches(20260812);
+  const neneFull = plan.find(item => item.recordId === 'latest-lora:nene:sd:fullbody@attempt-3');
+  for (const token of ['full body', 'standing', 'feet', 'shoes', 'full length portrait']) {
+    assert.ok(neneFull.prompt.includes(token), `nene fullbody prompt missing ${token}`);
+  }
+  for (const token of ['cropped legs', 'cowboy shot', 'thigh cut-off', 'missing feet', 'cropped feet']) {
+    assert.ok(neneFull.negative.includes(token), `nene fullbody negative missing ${token}`);
+  }
+  assert.strictEqual(neneFull.engine, 'sd');
+  assert.strictEqual(neneFull.width, 832);
+  assert.strictEqual(neneFull.height, 1216);
+
+  const natSdCloseup = plan.find(item => item.recordId === 'latest-lora:natsume:sd:closeup@attempt-3');
+  for (const token of ['mole under left eye', 'mole on left cheek', 'two red hairclips']) {
+    assert.ok(natSdCloseup.prompt.includes(token), `natsume sd closeup prompt missing ${token}`);
+  }
+  assert.ok(natSdCloseup.negative.includes('mole under right eye') && natSdCloseup.negative.includes('mole on right cheek'));
+
+  const natSdFull = plan.find(item => item.recordId === 'latest-lora:natsume:sd:fullbody@attempt-3');
+  for (const token of ['mole under left eye', 'mole on left cheek', 'two red hairclips', 'full body', 'standing', 'shoes']) {
+    assert.ok(natSdFull.prompt.includes(token), `natsume sd fullbody prompt missing ${token}`);
+  }
+  for (const token of ['mole under right eye', 'mole on right cheek', 'missing mole', 'missing hairclips', 'kneeling', 'sitting', 'cropped feet']) {
+    assert.ok(natSdFull.negative.includes(token), `natsume sd fullbody negative missing ${token}`);
+  }
+
+  const natAnimaCloseup = plan.find(item => item.recordId === 'latest-lora:natsume:anima:closeup@attempt-3');
+  for (const token of ['mole under left eye', 'mole on left cheek', 'two red hairclips']) {
+    assert.ok(natAnimaCloseup.prompt.includes(token), `natsume anima closeup prompt missing ${token}`);
+  }
+  assert.ok(!natAnimaCloseup.prompt.includes('mole_under_left_eye'), 'Anima closeup mole must stay space-form');
+  assert.ok(natAnimaCloseup.negative.includes('mole under right eye') && natAnimaCloseup.negative.includes('mole on right cheek'));
+  assert.strictEqual(natAnimaCloseup.engine, 'anima');
+  assert.ok(natAnimaCloseup.sampler === 'res_multistep' && natAnimaCloseup.scheduler === 'simple', 'Anima sampler/scheduler contract');
+});
+
+test('attempt-4: exactly two natsume fullbody keys, corrected right-eye mole contract, size, chain, fresh seeds', () => {
+  const plan = gen.planAllBatches(20260812);
+  const expectedKeys = Object.keys(gen.ATTEMPT_4_OVERRIDES).sort();
+  assert.deepStrictEqual(expectedKeys, [
+    'latest-lora:natsume:anima:fullbody',
+    'latest-lora:natsume:sd:fullbody',
+  ].sort(), 'ATTEMPT_4_OVERRIDES must cover exactly the two still-failing natsume fullbody keys');
+
+  const expectedChain = new Map([
+    ['latest-lora:natsume:sd:fullbody', 'latest-lora:natsume:sd:fullbody@attempt-3'],
+    ['latest-lora:natsume:anima:fullbody', 'latest-lora:natsume:anima:fullbody@attempt-2'],
+  ]);
+  for (const key of expectedKeys) {
+    const fourth = plan.find(item => item.key === key && item.attempt === 4);
+    assert.ok(fourth, `missing attempt-4 for ${key}`);
+    const override = gen.ATTEMPT_4_OVERRIDES[key];
+    assert.strictEqual(fourth.recordId, `${key}@attempt-4`);
+    assert.strictEqual(fourth.supersedes, expectedChain.get(key),
+      `${key} supersedes must point at the key's latest prior attempt`);
+    assert.ok(fourth.reviewReason && fourth.reviewReason.includes('历史误判'),
+      `${key} reviewReason must document the 2026-08-12 correction`);
+    // Corrected positive contract: character's OWN right-eye mole + viewer-left
+    // cheek disambiguation, two red hairclips, full qipao standing with shoes,
+    // and no white/extra hair ribbon (no_hair_ribbon already sits on the line).
+    assert.ok(fourth.prompt.includes('mole under right eye'), `${key} must pin the character's own right-eye mole`);
+    assert.ok(fourth.prompt.includes('viewer-left cheek beauty mark'), `${key} must disambiguate the mirror with viewer-left cheek`);
+    assert.ok(fourth.prompt.includes('two red hairclips'), `${key} must keep two red hairclips`);
+    assert.ok(!fourth.prompt.includes('mole under left eye'), `${key} must drop the historical left-eye mole from the positive`);
+    assert.ok(fourth.prompt.includes('full body') && fourth.prompt.includes('standing') && fourth.prompt.includes('shoes'),
+      `${key} must keep full-body standing with shoes`);
+    // Wrong-side / missing-feature negatives.
+    for (const token of [
+      'mole under left eye', 'mole on left cheek', 'beauty mark on right cheek',
+      'mole on both cheeks', 'moles under both eyes', 'missing mole',
+      'missing hairclips', 'single hairclip', 'hair ribbon', 'white ribbon', 'hairband',
+      'kneeling', 'sitting', 'cropped feet',
+    ]) {
+      assert.ok(fourth.negative.includes(token), `${key} negative missing suppressor "${token}"`);
+    }
+    // attempt-4 size override: 960x1536, 64-aligned, area 1,474,560 under the
+    // Anima 1.5M cap; Base accepts it (anima-base-v1.0 whitelists 960x1536),
+    // Aesthetic does not (its sizes stay unchanged).
+    assert.strictEqual(fourth.width, 960, `${key} width must be 960`);
+    assert.strictEqual(fourth.height, 1536, `${key} height must be 1536`);
+    assert.strictEqual(fourth.width % 64, 0, `${key} width must stay 64-aligned`);
+    assert.strictEqual(fourth.height % 64, 0, `${key} height must stay 64-aligned`);
+    assert.ok(fourth.width * fourth.height < 1500000, `${key} area must stay under the Anima 1.5M cap`);
+    // Engine / checkpoint / LoRA / framing unchanged from the attempt-1 base.
+    const base = plan.find(item => item.key === key && item.attempt === 1);
+    assert.ok(base, `missing attempt-1 for ${key}`);
+    assert.strictEqual(fourth.checkpoint, base.checkpoint, `${key} engine/checkpoint unchanged`);
+    assert.strictEqual(fourth.loraId, base.loraId, `${key} LoRA selection unchanged`);
+    assert.strictEqual(fourth.prompt.includes(fourth.engine === 'sd' ? 'full_body' : 'full body'), true, `${key} full-body framing token`);
+    // Fresh seed vs every prior attempt for this key.
+    const priorSeeds = plan.filter(item => item.key === key && item.attempt < 4).map(item => item.seed);
+    assert.ok(priorSeeds.length >= 2, `${key} must have prior attempts to supersede`);
+    assert.ok(!priorSeeds.includes(fourth.seed), `${key} seed must be fresh vs prior attempts (${priorSeeds.join(',')})`);
+    assert.strictEqual(fourth.seed, (base.seed + (Number(override.seedOffset) || 0)) % 2147483647, `${key} seed offset`);
+    // File names: attempt-4 written beside prior attempts, attempt-1 untouched.
+    const engineKey = key.endsWith(':sd:fullbody') ? 'sd' : 'anima';
+    assert.strictEqual(gen.imageRelFor(fourth), `images/latest-lora/latest-lora_natsume_${engineKey}_fullbody_attempt-4.png`, `${key} attempt-4 file name`);
+    assert.strictEqual(gen.imageRelFor(base), `images/latest-lora/latest-lora_natsume_${engineKey}_fullbody.png`, `${key} attempt-1 file name must not change`);
+  }
+
+  const sd = plan.find(item => item.recordId === 'latest-lora:natsume:sd:fullbody@attempt-4');
+  assert.strictEqual(sd.engine, 'sd');
+  assert.ok(sd.prompt.includes('<lora:'), `${sd.key} WAI raw-tag / LoRA contract must be preserved`);
+  assert.ok(sd.prompt.includes('shiki_natsume_v18_wd14'), `${sd.key} LoRA name must stay the production v18 id`);
+
+  const anima = plan.find(item => item.recordId === 'latest-lora:natsume:anima:fullbody@attempt-4');
+  assert.strictEqual(anima.engine, 'anima');
+  assert.ok(anima.sampler === 'res_multistep' && anima.scheduler === 'simple', 'Anima sampler/scheduler contract');
+  assert.ok(anima.prompt.includes('score_7'), 'Anima must keep the score_7 quality contract');
+  assert.ok(!anima.prompt.includes('mole_under_right_eye'), 'Anima mole reinforcement must stay space-form');
+  assert.ok(anima.negative.includes('mole under left eye'), 'Anima wrong-side negative must stay space-form');
+
+  // Exactly the two attempt-4 records are planned.
+  assert.deepStrictEqual(plan.filter(item => item.attempt === 4).map(item => item.recordId).sort(),
+    expectedKeys.map(key => `${key}@attempt-4`).sort(), 'exactly the two attempt-4 records are planned');
+});
+
+test('CLI attempt filter: --attempt 3 selects only the six attempt-3 candidates', () => {
+  const plan = gen.planAllBatches(20260812);
+  const all3 = gen.filterPlanned(plan, { attempts: [3] });
+  assert.strictEqual(all3.length, 6);
+  assert.ok(all3.every(item => item.attempt === 3));
+  const keys = Object.keys(gen.ATTEMPT_3_OVERRIDES);
+  const keysPlus3 = gen.filterPlanned(plan, { keys, attempts: [3] });
+  assert.strictEqual(keysPlus3.length, 6);
+  assert.deepStrictEqual(keysPlus3.map(item => item.recordId).sort(), keys.map(key => `${key}@attempt-3`).sort());
+  // --keys without --attempt still includes every attempt for those keys.
+  const keysAll = gen.filterPlanned(plan, { keys: ['artist:so-bin', 'popular:makima'] });
+  assert.strictEqual(keysAll.length, 4, 'so-bin/makima have attempt-1 + attempt-3 each');
+  assert.ok(keysAll.some(item => item.attempt === 1) && keysAll.some(item => item.attempt === 3));
+  const keysChain = gen.filterPlanned(plan, { keys: ['latest-lora:nene:sd:fullbody'] });
+  assert.strictEqual(keysChain.length, 3, 'nene sd fullbody has attempt-1/2/3');
+  // No attempt-1/2 is selected when --attempt 3 is applied.
+  assert.ok(all3.every(item => item.attempt === 3 && !item.supersedes.includes('attempt-3')));
+  const empty = gen.filterPlanned(plan, {});
+  assert.strictEqual(empty.length, 861, 'no filter returns the whole plan');
+});
+
+test('CLI attempt filter: --attempt 4 selects exactly the two attempt-4 candidates', () => {
+  const plan = gen.planAllBatches(20260812);
+  const all4 = gen.filterPlanned(plan, { attempts: [4] });
+  assert.strictEqual(all4.length, 2);
+  assert.ok(all4.every(item => item.attempt === 4));
+  const keys = Object.keys(gen.ATTEMPT_4_OVERRIDES);
+  const keysPlus4 = gen.filterPlanned(plan, { keys, attempts: [4] });
+  assert.strictEqual(keysPlus4.length, 2);
+  assert.deepStrictEqual(keysPlus4.map(item => item.recordId).sort(), keys.map(key => `${key}@attempt-4`).sort());
+  // --keys without --attempt still includes every attempt for those keys.
+  const animaChain = gen.filterPlanned(plan, { keys: ['latest-lora:natsume:anima:fullbody'] });
+  assert.strictEqual(animaChain.length, 3, 'natsume anima fullbody has attempt-1/2/4');
+  assert.deepStrictEqual(animaChain.map(item => item.attempt).sort(), [1, 2, 4], 'anima fullbody chain = attempt-1/2/4');
+  const sdChain = gen.filterPlanned(plan, { keys: ['latest-lora:natsume:sd:fullbody'] });
+  assert.strictEqual(sdChain.length, 4, 'natsume sd fullbody has attempt-1/2/3/4');
+  // A combined filter selects only attempt-4 records for the attempt-4 keys.
+  const mixed = gen.filterPlanned(plan, { keys, attempts: [1, 4] });
+  assert.strictEqual(mixed.length, 4, 'attempt-1 + attempt-4 for the two keys');
+  assert.ok(mixed.every(item => item.attempt === 1 || item.attempt === 4));
+});
+
+test('artist batch: 12 curated artists + 1 no-artist baseline, one artist tag each', () => {
+  assert.strictEqual(artistCatalog.ARTIST_STYLE_OPTIONS.length, 12, 'exactly 12 artists in catalog');
+  const artist = gen.artistBatch(20260812);
+  assert.strictEqual(artist.length, 13);
+  const withTags = artist.filter(item => item.artistId);
+  assert.strictEqual(withTags.length, 12);
+  const baseline = artist.find(item => !item.artistId);
+  assert.ok(baseline, 'must include a no-artist baseline');
+  // 同 seed / 同 WAI 参数，仅画师 tag 不同。
+  assert.ok(new Set(artist.map(item => item.seed)).size === 1, 'all artist variants share one seed');
+  assert.ok(new Set(artist.map(item => `${item.steps}|${item.cfg}|${item.sampler}|${item.width}x${item.height}`)).size === 1, 'all artist variants share WAI params');
+  const basePrompt = baseline.prompt;
+  for (const item of withTags) {
+    const option = artistCatalog.ARTIST_STYLE_OPTIONS.find(o => o.id === item.artistId);
+    assert.ok(option, `unknown artist ${item.artistId}`);
+    assert.ok(/^[a-z0-9_-]+$/.test(option.waiTag), `WAI tag must be a plain Danbooru tag: ${option.waiTag}`);
+    assert.ok(/^@.+/.test(option.animaTag), `Anima tag must start with @: ${option.animaTag}`);
+    assert.ok(item.prompt.includes(option.waiTag), `prompt must embed WAI tag ${option.waiTag}`);
+    assert.strictEqual(item.prompt, `${basePrompt}, ${option.waiTag}`,
+      'only the artist tag may differ between variants');
+    // Anima tag syntax derived from the same catalog (space-form @artist).
+    assert.deepStrictEqual(artistStyles.artistTagsForEngine([option.id], 'anima'), [`@${option.id.replace(/_/g, ' ')}`]);
+  }
+  // Neutral subject must never leak studio LoRA anchors.
+  for (const item of artist) {
+    assert.ok(!/(ayachi_nene|shiki_natsume|nene_|natsume_)/i.test(item.prompt), `artist prompt leaked studio anchor: ${item.prompt}`);
+  }
+});
+
+test('popular batch covers all 18 characters with default outfit and safe blueprint', () => {
+  const characters = popularData.characters || popularData;
+  assert.strictEqual(characters.length, 18);
+  const popular = gen.popularBatch(20260812);
+  assert.strictEqual(popular.length, 18);
+  const ids = new Set(popular.map(item => item.subject));
+  assert.strictEqual(ids.size, 18, 'all 18 characters must be present');
+  for (const character of characters) {
+    const item = popular.find(entry => entry.subject === character.id);
+    assert.ok(item, `missing ${character.id}`);
+    assert.strictEqual(item.engine, 'anima');
+    assert.strictEqual(item.modelId, gen.constants.ANIMA_AESTHETIC_ID, 'popular goes through no-LoRA Anima Aesthetic');
+    assert.strictEqual(item.loraId, '', 'popular must not load a character LoRA');
+    // Anima carries a model-native negative (unlike Krea); the production
+    // assembleNegative pipeline must supply the Aesthetic profile prefix.
+    assert.ok(item.negative && item.negative.includes('artist name') && item.negative.includes('worst quality'),
+      `${character.id} must carry the Anima Aesthetic negative contract`);
+    assert.ok(item.negative.includes('chromatic aberration'), `${character.id} negative must include profile boilerplate`);
+    assert.strictEqual(item.prompt, item.prompt.replace(/(ayachi_nene|shiki_natsume|nene_|natsume_)/gi, ''),
+      `${character.id} prompt leaked studio LoRA anchor`);
+    const defaultOutfit = character.outfits.find(outfit => outfit.default) || character.outfits[0];
+    assert.strictEqual(item.outfitId, defaultOutfit.id, `${character.id} must use its default outfit`);
+    if (character.adultEligibility !== 'adult') {
+      assert.ok(!/(nsfw|nude|explicit)/i.test(item.prompt), `${character.id} non-adult character must stay safe`);
+    }
+    assert.strictEqual(item.sceneId, gen.constants.POPULAR_BLUEPRINT_ID, `${character.id} must use the fixed identity blueprint`);
+  }
+});
+
+test('latest-lora batch: production ids/files/strength/checkpoint for SD v18 + Anima v20', () => {
+  const lora = gen.latestLoraBatch(20260812);
+  assert.strictEqual(lora.length, 8);
+  const expected = new Map([
+    ['latest-lora:nene:sd:closeup', ['L_NENE_V18_WD14', genConst.LORAS.L_NENE_V18_WD14.file, genConst.CHECKPOINT]],
+    ['latest-lora:nene:sd:fullbody', ['L_NENE_V18_WD14', genConst.LORAS.L_NENE_V18_WD14.file, genConst.CHECKPOINT]],
+    ['latest-lora:natsume:sd:closeup', ['L_NAT_V18_WD14', genConst.LORAS.L_NAT_V18_WD14.file, genConst.CHECKPOINT]],
+    ['latest-lora:natsume:sd:fullbody', ['L_NAT_V18_WD14', genConst.LORAS.L_NAT_V18_WD14.file, genConst.CHECKPOINT]],
+    ['latest-lora:nene:anima:closeup', ['L_NENE_V20_ANIMA', animaConst.LORAS.L_NENE_V20_ANIMA.file, animaConst.MODELS['anima-base-v1.0'].file]],
+    ['latest-lora:nene:anima:fullbody', ['L_NENE_V20_ANIMA', animaConst.LORAS.L_NENE_V20_ANIMA.file, animaConst.MODELS['anima-base-v1.0'].file]],
+    ['latest-lora:natsume:anima:closeup', ['L_NAT_V20_ANIMA', animaConst.LORAS.L_NAT_V20_ANIMA.file, animaConst.MODELS['anima-base-v1.0'].file]],
+    ['latest-lora:natsume:anima:fullbody', ['L_NAT_V20_ANIMA', animaConst.LORAS.L_NAT_V20_ANIMA.file, animaConst.MODELS['anima-base-v1.0'].file]],
+  ]);
+  for (const item of lora) {
+    const [loraId, file, checkpoint] = expected.get(item.key);
+    assert.ok(expected.has(item.key), `unexpected key ${item.key}`);
+    assert.strictEqual(item.loraId, loraId);
+    assert.strictEqual(item.loraFile, file);
+    assert.strictEqual(item.loraStrength, 0.85);
+    assert.strictEqual(item.checkpoint, checkpoint);
+    const meta = (loraData || []).find(entry => entry.id === loraId);
+    assert.ok(meta, `loras.json must describe ${loraId}`);
+    assert.strictEqual(meta.strength.default, 0.85, `${loraId} default strength must stay 0.85`);
+    assert.ok(item.prompt.includes(item.engine === 'sd' ? `<lora:${meta.name}:0.85>` : 'ayachi_nene') || item.prompt.includes('shiki_natsume'),
+      `${item.key} must embed its identity anchor`);
+    if (item.engine === 'sd') {
+      assert.ok(item.prompt.includes('<lora:'), `${item.key} SD prompt must carry the LoRA tag`);
+    }
+  }
+});
+
+test('studio char prompt constants mirror promptBuilderStore.ts (drift guard)', () => {
+  const { STUDIO_CHAR_PROMPT } = gen.constants;
+  const lines = studioStoreSource.split('\n').map(line => line.trim());
+  for (const value of Object.values(STUDIO_CHAR_PROMPT)) {
+    assert.ok(lines.some(line => line.includes(`'${value}'`)),
+      `generation script char prompt drifted from the store: ${value}`);
+  }
+});
+
+test('scene candidate audit can reuse an earlier attempt seed without overwriting its record', () => {
+  const scene = require('../../data/scenes.json').find(item => item.id === 'sc001');
+  const candidate = sceneGen.buildAnimaCandidate(scene, 5, 1);
+  assert.strictEqual(candidate.recordId, 'scene:sc001@attempt-5');
+  assert.strictEqual(candidate.seedAttempt, 1);
+  assert.strictEqual(candidate.seed, sceneGen.stableSeed('sc001', 1));
+});
+
+test('scene candidate baseline mode changes only positive prompt direction', () => {
+  const scene = require('../../data/scenes.json').find(item => item.id === 'sc001');
+  const current = sceneGen.buildAnimaCandidate(scene, 5, 5);
+  const baseline = {
+    status: 'succeeded', recordId: 'scene:sc001@attempt-1', attempt: 1,
+    engine: 'anima', profileId: 'old-profile', modelId: 'old-model', checkpoint: 'old-checkpoint',
+    loraId: 'old-lora', loraFile: 'old-lora-file', loraStrength: 0.82,
+    width: 832, height: 1216, steps: 24, cfg: 3.0, sampler: 'res_multistep', scheduler: 'simple',
+    seed: 123, prompt: 'old exact tag stream', negative: 'old exact negative',
+  };
+  const compared = sceneGen.applyBaselineContract(current, baseline);
+  const direction = current.prompt.split('\n').slice(1).join('\n').trim();
+  assert.ok(compared.prompt.startsWith('old exact tag stream\n'));
+  assert.ok(direction.length > 0, 'current scene must supply one short director caption');
+  assert.strictEqual(compared.prompt, `old exact tag stream\n${direction}`);
+  assert.ok(compared.prompt.includes(scene.animaCaption));
+  assert.strictEqual(compared.negative, baseline.negative);
+  assert.strictEqual(compared.loraStrength, 0.82);
+  assert.strictEqual(compared.seed, 123);
+  assert.strictEqual(compared.baselineRecordId, baseline.recordId);
+  assert.strictEqual(compared.comparison, 'prompt-direction-only');
+});
+
+test('resume + atomic manifest behaviour', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'aics-candidate-test-'));
+  try {
+    const image = path.join(root, 'ok.png');
+    fs.writeFileSync(image, Buffer.alloc(2048, 7));
+    const record = { status: 'succeeded', image: 'ok.png', key: 'artist:kantoku' };
+    assert.strictEqual(gen.shouldReuse(record, image, false), true, 'valid succeeded image must be reusable');
+    assert.strictEqual(gen.shouldReuse(record, image, true), false, '--force must regenerate');
+    assert.strictEqual(gen.shouldReuse({ ...record, status: 'failed' }, image, false), false, 'failed records must not reuse');
+    assert.strictEqual(gen.shouldReuse({ ...record, image: '' }, image, false), false, 'records without image must not reuse');
+    fs.writeFileSync(image, Buffer.alloc(10));
+    assert.strictEqual(gen.shouldReuse(record, image, false), false, 'tiny/empty files must not be reused');
+
+    const manifestPath = path.join(root, 'generation-manifest.json');
+    gen.writeJsonAtomic(manifestPath, [record]);
+    assert.ok(fs.existsSync(manifestPath), 'manifest must exist after atomic write');
+    assert.deepStrictEqual(JSON.parse(fs.readFileSync(manifestPath, 'utf8')), [record]);
+    const leftovers = fs.readdirSync(root).filter(name => name.endsWith('.tmp'));
+    assert.deepStrictEqual(leftovers, [], 'no .tmp file may be left behind');
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('refuses to write into the public SceneShowcase directory', () => {
+  const showcase = path.resolve(path.join(__dirname, '..', '..', '..', 'AI', 'SceneShowcase'));
+  const liveDir = path.join(showcase, '2026-07-22_v14');
+  assert.throws(() => gen.assertNotShowcase(liveDir), /SceneShowcase/);
+  assert.throws(() => gen.assertNotShowcase(showcase), /SceneShowcase/);
+  assert.throws(() => gen.assertNotShowcase(path.join(liveDir, '..', '2026-07-22_v14', 'nested')), /SceneShowcase/);
+  const safe = gen.assertNotShowcase(gen.constants.DEFAULT_OUTPUT);
+  assert.strictEqual(safe, path.resolve(gen.constants.DEFAULT_OUTPUT), 'review output dir must be allowed');
+});
+
+test('mechanical image inspection: PNG/JPEG magic + dimensions', () => {
+  const png = Buffer.from([
+    137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13, 73, 72, 68, 82,
+    0, 0, 4, 0, 0, 0, 5, 32, 0, 0, 0, 0, 0, 0, 0,
+  ]);
+  const info = gen.imageInfo(png);
+  assert.deepStrictEqual({ mime: info.mime, width: info.width, height: info.height }, { mime: 'image/png', width: 1024, height: 1312 });
+  assert.strictEqual(gen.imageInfo(Buffer.from([0, 1, 2, 3, 4])), null, 'garbage must not look like an image');
+  assert.strictEqual(gen.imageInfo(Buffer.alloc(0)), null);
+});
