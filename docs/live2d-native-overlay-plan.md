@@ -88,6 +88,13 @@ emotionRuntime 参数 hack 照旧），原生路径只发意图（口型电平�
 隐藏 HWND；模型仅由 `setCharacter` 创建，同一角色重复调用应复用实例；
 `destroy` 幂等。
 
+**destroy 契约（2026-08-14 正式化）**：`destroy` = 释放模型与 GPU 资源、隐藏
+overlay，但**保留渲染线程与窗口**（长期复用）。前端 destroy 后可重新
+`setCharacter` 直接复用 wgpu 上下文，不重建线程；线程退出路径（窗口销毁/
+通道断开/致命渲染错误）才广播 `aics:live2d:stopped`，destroy 不触发该事件。
+Rust 侧 `clear_model_state` 与单测 `destroy_clears_model_state_but_keeps_thread_for_reuse`
+锁定该语义。
+
 ## 5. crate 调研结论（运行时选型支持）
 
 | 维度 | cubism-rs（Veykril） | live2d-rs（sena-nana） | live2d-cubism-core-sys（裸 FFI） |

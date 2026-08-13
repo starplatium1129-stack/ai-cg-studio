@@ -91,6 +91,49 @@ test('Native IPC payload and render ownership contracts stay aligned', () => {
   assert.doesNotMatch(main, /app\.manage\(state\.paths\.clone\(\)\)/)
 })
 
+test('Native IPC command inventory stays consistent across build manifest, invoke handler and capabilities', () => {
+  const buildRs = read('desktop-tauri/src-tauri/build.rs')
+  const main = read('desktop-tauri/src-tauri/src/main.rs')
+  const capabilities = read('desktop-tauri/src-tauri/capabilities/companion-live2d.json')
+
+  const commands = [
+    'set_character', 'set_frame', 'play_motion', 'set_expression', 'set_mouth_level',
+    'set_max_fps', 'set_emotion', 'set_gaze', 'hit_test', 'destroy', 'get_state',
+  ]
+  // build.rs app_manifest 必须登记全部命令（Tauri 2 capability 依赖 manifest）。
+  for (const name of commands) {
+    assert.ok(buildRs.includes(`"aics_live2d_${name}"`), `build.rs 缺少 aics_live2d_${name}`)
+  }
+  // invoke_handler 必须与 manifest 一一对应（遗漏 = 运行时命令不可达）。
+  for (const name of commands) {
+    assert.ok(main.includes(`live2d_overlay::aics_live2d_${name}`), `invoke_handler 缺少 aics_live2d_${name}`)
+  }
+  // capabilities 权限名用连字符（Tauri permission id 规范），与命令一一对应；
+  // 只允许 Companion 窗口 + 本机回环来源。
+  for (const name of commands) {
+    const permission = `allow-aics-live2d-${name.replace(/_/g, '-')}`
+    assert.ok(capabilities.includes(permission), `capabilities 缺少 ${permission}`)
+  }
+  assert.deepStrictEqual(JSON.parse(capabilities).windows, ['companion'])
+  const urls = JSON.parse(capabilities).remote.urls
+  assert.ok(urls.length === 1 && urls[0].startsWith('http://127.0.0.1:'), 'live2d 命令只允许本机回环来源')
+})
+
+test('Native destroy keeps the overlay thread alive for reuse (long-lived contract)', () => {
+  const overlay = read('desktop-tauri/src-tauri/src/live2d_overlay.rs')
+
+  // destroy 契约：释放模型与资源，但保留渲染线程/窗口，前端可重新 setCharacter。
+  assert.match(overlay, /fn clear_model_state\(state: &Live2DOverlayState\)/)
+  assert.match(overlay, /destroy 契约 = 释放模型与资源、隐藏 overlay，但渲染线程与窗口长期/)
+  assert.match(overlay, /OverlayCommand::Destroy \{ reply \} => \{[\s\S]{0,900}?clear_model_state\(state\)/)
+  // destroy 不得触发 stopped 事件（那是线程退出路径的专属）。
+  assert.doesNotMatch(overlay, /OverlayCommand::Destroy \{ reply \} => \{[\s\S]{0,900}?emit_stopped/)
+  // SetCharacter 复用同一清理函数：重复加载前先清模型态。
+  assert.match(overlay, /OverlayCommand::SetCharacter \{ character, reply \} => \{\s*clear_model_state\(state\)/)
+  // 单元测试锁定契约：清模型态但保留 window_ready/renderer_attached/cmd_tx。
+  assert.match(overlay, /fn destroy_clears_model_state_but_keeps_thread_for_reuse\(\)/)
+})
+
 test('Native frontend lifecycle forwards reset, bounds, FPS and emotion ticks', () => {
   const live2d = read('src/composables/useLive2D.ts')
   const backend = read('src/live2d/nativeBackend.ts')

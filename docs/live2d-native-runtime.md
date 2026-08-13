@@ -1,6 +1,6 @@
 # Live2D 原生运行时
 
-> 更新：2026-08-10
+> 更新：2026-08-14
 > 范围：Tauri 2 Native overlay、Cubism Native renderer、前端双后端接入和当前发布限制。
 
 ## 当前结论
@@ -77,6 +77,13 @@ ChatCharacterStage / useLive2D
 3. 夏目 `ParamMouthForm3` 的真实 TTS 桌面回归仍待环境恢复；离线映射 contract 已通过，不得据此宣称真实音频已验收。
 4. 30 分钟 soak 是发布前可选强化；当前固定 Windows Native gate 是 300 秒，不应加入无 GPU 的默认 `validate`。
 5. 后续接入只使用 `src/types/live2dNative.ts`、`live2d-native-overlay-plan.md` 和公开 backend API；不得把参数级 hack、源项目 WAV 或未验证 motion/expression 当作新能力。
+
+## 2026-08-14 契约收尾：destroy 长期复用正式化 + IPC 命令清单锚点
+
+- **destroy 契约统一**：`clear_model_state` 提取为 SetCharacter 前置与 Destroy 共用的"清模型状态"函数；Destroy 只清模型级状态（model_ready/character/model_bounds/口型诊断），**保留** window_ready/renderer_attached/cmd_tx——渲染线程与窗口长期复用，前端 destroy 后重新 `setCharacter` 直接复用 wgpu 上下文，不重建线程；线程退出路径（窗口销毁/通道断开/致命错误）才广播 `aics:live2d:stopped`，destroy 不触发。Rust 单测 `destroy_clears_model_state_but_keeps_thread_for_reuse` 锁定该契约。
+- **Tauri command origin 校验**：契约测试新增「Native IPC command inventory」——11 个 `aics_live2d_*` 命令在 build.rs app_manifest / main.rs invoke_handler / capabilities 权限三处必须一一对应（防漂移），且 capabilities 只允许 Companion 窗口 + `http://127.0.0.1:*` 本机回环来源。
+- 验证：`cargo test --locked` 16/16（新增 destroy 契约单测）、`test-live2d-native-contract.js` + `test-live2d-backend.js` 29/29、unit 全量 319/319、test-chat.js 通过。
+- 仍未处理的发布风险（需真机/多屏环境）：真实 monitor work area、多屏混合 DPI。
 
 ## 2026-08-13 壳侧：渲染线程 stopped 事件与进程级 DPI awareness
 

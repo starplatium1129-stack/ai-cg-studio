@@ -106,6 +106,17 @@ fn reset_mouth_diagnostics(state: &Live2DOverlayState) {
         .store(0.0f32.to_bits(), Ordering::SeqCst);
 }
 
+/// 清空"已加载模型"状态（setCharacter 前置与 destroy 共用）。
+/// 只动模型级状态，保留 window_ready/renderer_attached/cmd_tx：
+/// destroy 契约 = 释放模型与资源、隐藏 overlay，但渲染线程与窗口长期
+/// 复用，后续 setCharacter 可直接重新加载（避免重建 wgpu 上下文）。
+fn clear_model_state(state: &Live2DOverlayState) {
+    state.model_ready.store(false, Ordering::SeqCst);
+    *state.character.lock().unwrap() = None;
+    *state.model_bounds.lock().unwrap() = None;
+    reset_mouth_diagnostics(state);
+}
+
 fn try_begin_startup(state: &Live2DOverlayState) -> bool {
     if state.window_ready.load(Ordering::SeqCst)
         || state.renderer_attached.load(Ordering::SeqCst)
@@ -1112,11 +1123,8 @@ fn handle_command(
 ) {
     match cmd {
         OverlayCommand::SetCharacter { character, reply } => {
-            state.model_ready.store(false, Ordering::SeqCst);
-            *state.character.lock().unwrap() = None;
-            *state.model_bounds.lock().unwrap() = None;
+            clear_model_state(state);
             ctx.mouth_level = 0.0;
-            reset_mouth_diagnostics(state);
             state.visible.store(false, Ordering::SeqCst);
             unsafe {
                 ShowWindow(hwnd, SW_HIDE);
@@ -1257,10 +1265,10 @@ fn handle_command(
             ctx.motion_last_indices.clear();
             ctx.active_motion = None;
             ctx.mouth_level = 0.0;
-            state.model_ready.store(false, Ordering::SeqCst);
-            *state.character.lock().unwrap() = None;
-            *state.model_bounds.lock().unwrap() = None;
-            reset_mouth_diagnostics(state);
+            // destroy 契约：只清模型级状态，保留渲染线程与窗口（长期复用）。
+            // 前端 destroy 后仍可 setCharacter 重新加载；线程退出路径
+            // （窗口销毁/通道断开/致命错误）才广播 aics:live2d:stopped。
+            clear_model_state(state);
             let _ = reply.send(());
         }
     }
@@ -1839,8 +1847,9 @@ pub fn aics_live2d_destroy(app: AppHandle) -> Result<(), String> {
 #[cfg(test)]
 mod tests {
     use super::{
-        followed_overlay_rect, mouth_value_for, reset_runtime_state, try_begin_startup,
-        would_reject_interaction, ActiveMotion, Live2DOverlayState, MotionPhase, OverlayRect,
+        clear_model_state, followed_overlay_rect, mouth_value_for, reset_runtime_state,
+        try_begin_startup, would_reject_interaction, ActiveMotion, Live2DOverlayState,
+        MotionPhase, OverlayRect,
     };
     use live2d_native::model;
 
@@ -1908,5 +1917,37 @@ mod tests {
         assert!(!state.visible.load(std::sync::atomic::Ordering::SeqCst));
         assert!(state.hwnd.lock().unwrap().is_none());
         assert!(state.cmd_tx.lock().unwrap().is_none());
+    }
+
+    #[test]
+    fn destroy_clears_model_state_but_keeps_thread_for_reuse() {
+        let state = Live2DOverlayState::default();
+        // 模拟运行中的渲染线程：窗口与通道就绪、模型已加载。
+        state.window_ready.store(true, std::sync::atomic::Ordering::SeqCst);
+        state.renderer_attached.store(true, std::sync::atomic::Ordering::SeqCst);
+        state.starting.store(false, std::sync::atomic::Ordering::SeqCst);
+        let (tx, _rx) = std::sync::mpsc::channel::<super::OverlayCommand>();
+        *state.cmd_tx.lock().unwrap() = Some(tx);
+        *state.character.lock().unwrap() = Some("nene".to_string());
+        state.model_ready.store(true, std::sync::atomic::Ordering::SeqCst);
+        *state.model_bounds.lock().unwrap() = Some(OverlayRect { x: 1, y: 2, width: 3, height: 4 });
+        state
+            .last_mouth_level
+            .store(0.8f32.to_bits(), std::sync::atomic::Ordering::SeqCst);
+
+        clear_model_state(&state);
+
+        // 模型级状态清空：destroy 契约（释放模型、可重新 setCharacter）。
+        assert!(!state.model_ready.load(std::sync::atomic::Ordering::SeqCst));
+        assert!(state.character.lock().unwrap().is_none());
+        assert!(state.model_bounds.lock().unwrap().is_none());
+        assert_eq!(
+            f32::from_bits(state.last_mouth_level.load(std::sync::atomic::Ordering::SeqCst)),
+            0.0
+        );
+        // 线程与窗口保持：长期复用，不触发 stopped/重建。
+        assert!(state.window_ready.load(std::sync::atomic::Ordering::SeqCst));
+        assert!(state.renderer_attached.load(std::sync::atomic::Ordering::SeqCst));
+        assert!(state.cmd_tx.lock().unwrap().is_some());
     }
 }
