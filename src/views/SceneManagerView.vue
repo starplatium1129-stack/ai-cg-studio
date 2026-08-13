@@ -92,8 +92,16 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-if="loading"><td colspan="8" class="table-msg">⏳ 正在加载数据…</td></tr>
-              <tr v-else-if="!filtered.length"><td colspan="8" class="table-msg">暂无匹配场景</td></tr>
+              <tr v-if="loading" class="table-state-row">
+                <td colspan="8">
+                  <ArchiveStatePanel compact kind="loading" title="正在读取场景记录" message="同步本机场景、标签与维护状态。" />
+                </td>
+              </tr>
+              <tr v-else-if="!filtered.length" class="table-state-row">
+                <td colspan="8">
+                  <ArchiveStatePanel compact kind="filtered" title="没有匹配的场景" message="调整筛选条件，或新建一条场景记录。" />
+                </td>
+              </tr>
               <template v-else>
                 <tr v-for="s in paged" :key="s.id">
                   <td><code class="id-code">{{ s.id }}</code></td>
@@ -137,7 +145,11 @@
           <table>
             <thead><tr><th>ID</th><th>分类</th><th>英文</th><th>中文</th><th>权重</th><th>使用</th><th>操作</th></tr></thead>
             <tbody>
-              <tr v-if="!filteredTags.length"><td colspan="7" class="table-msg">暂无匹配标签</td></tr>
+              <tr v-if="!filteredTags.length" class="table-state-row">
+                <td colspan="7">
+                  <ArchiveStatePanel compact kind="filtered" title="没有匹配的标签" message="调整筛选条件，或新建一个标签。" />
+                </td>
+              </tr>
               <tr v-for="t in pagedTags" :key="t.id">
                 <td><code class="id-code">{{ t.id }}</code></td>
                 <td>{{ t.cat }}</td>
@@ -235,7 +247,13 @@
           <span class="list-meta">{{ dupResult }}</span>
         </div>
         <p class="note">按关键词分组，同一关键词命中 3 个以上场景会列出，便于合并或下架冗余场景。</p>
-        <div v-if="!dupGroups.length" class="table-msg">{{ dupChecked ? '未发现明显重复' : '尚未检测' }}</div>
+        <ArchiveStatePanel
+          v-if="!dupGroups.length"
+          compact
+          :kind="dupChecked ? 'success' : 'empty'"
+          :title="dupChecked ? '未发现明显重复' : '尚未开始检测'"
+          :message="dupChecked ? '当前场景库没有命中三条以上的重复关键词。' : '按关键词分组，快速定位可合并或下架的冗余场景。'"
+        />
         <div v-for="g in dupGroups" :key="g.keyword" class="dup-group">
           <h4>「{{ g.keyword }}」· {{ g.scenes.length }} 个场景</h4>
           <div v-for="s in g.scenes" :key="s.id" class="dup-item">
@@ -346,6 +364,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
+import { onBeforeRouteLeave } from 'vue-router'
 import { ApiClientError } from '../api/client.ts'
 import { maintenanceApi } from '../api/maintenanceApi.ts'
 import { useSceneStore } from '@/stores/sceneStore'
@@ -765,6 +784,10 @@ function onBeforeUnload(e: BeforeUnloadEvent) {
   if (!dirty.value) return
   e.preventDefault(); e.returnValue = ''
 }
+onBeforeRouteLeave(() => {
+  if (!dirty.value) return true
+  return confirm('场景修改尚未保存到项目，仍要离开吗？')
+})
 onMounted(() => {
   window.addEventListener('beforeunload', onBeforeUnload)
   if (window.companionDesktop) {
@@ -844,7 +867,8 @@ tr:hover td { background:var(--bg-elevated); }
 .tier-review { background:var(--bg-elevated); color:var(--text-secondary); }
 .story-preview { max-width:260px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--text-secondary); font-size:var(--fs-label-sm); }
 .action-btns { display:flex; gap:var(--s-1); white-space:nowrap; }
-.table-msg { padding:var(--s-6); color:var(--text-muted); text-align:center; }
+.table-state-row > td { padding:0; }
+.table-state-row .archive-state-panel { border:0; border-radius:0; box-shadow:none; }
 .list-meta { margin-left:auto; color:var(--text-muted); font-size:var(--fs-label-sm); }
 .pagination { display:flex; align-items:center; justify-content:center; gap:var(--s-3); margin-top:var(--s-3); }
 

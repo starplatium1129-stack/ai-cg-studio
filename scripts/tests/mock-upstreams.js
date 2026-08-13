@@ -162,7 +162,7 @@ function createSdMock() {
     if (ctx.path === '/sdapi/v1/sd-models') {
       if (faults.offline) { res.writeHead(503); res.end(); return; }
       return sendJson(res, 200, [
-        { title:'waiNSFWIllustrious_v140.safetensors [abc123]', model_name:'waiNSFWIllustrious_v140' },
+        { title:'waiIllustriousSDXL_v170.safetensors [abc123]', model_name:'waiIllustriousSDXL_v170' },
         { title:'animagineXL_v31.safetensors [def456]', model_name:'animagineXL_v31' }
       ]);
     }
@@ -176,7 +176,7 @@ function createSdMock() {
       return sendJson(res, 200, [{ name:'R-ESRGAN 4x+ Anime6B' }, { name:'Latent' }]);
     }
     if (ctx.path === '/sdapi/v1/options') {
-      return sendJson(res, 200, { sd_model_checkpoint:'waiNSFWIllustrious_v140.safetensors [abc123]' });
+      return sendJson(res, 200, { sd_model_checkpoint:'waiIllustriousSDXL_v170.safetensors [abc123]' });
     }
     if (ctx.path === '/sdapi/v1/progress') {
       return sendJson(res, 200, { progress:0.42, state:{ job_count:1 }, current_image:null });

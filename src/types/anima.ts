@@ -13,6 +13,13 @@ export interface AnimaOption {
   sizes?: string[]
 }
 
+export interface KreaStyleLoraOption {
+  id: string
+  trigger: string
+  recommendedStrength: number
+  available: boolean
+}
+
 export type AnimaPhase = 'idle' | 'submitting' | 'running' | 'cancelling' | 'succeeded' | 'failed' | 'cancelled'
 
 export interface AnimaJobMetadata {
@@ -24,6 +31,8 @@ export interface AnimaJobMetadata {
   modelId: string
   loraId: string | null
   loraStrength: number | null
+  loras?: Array<{ id: string; strength: number }>
+  styleLoraId?: string | null
   width: number
   height: number
   steps: number
@@ -49,6 +58,8 @@ export interface AnimaGenerationState {
   checkMsg: string
   models: AnimaOption[]
   loras: AnimaOption[]
+  styleLoras: KreaStyleLoraOption[]
+  styleLoraId: string
   prompt: string
   negative: string
   modelId: string

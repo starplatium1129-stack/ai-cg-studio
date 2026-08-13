@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-set-live2d-enabled"
+description = "Enables the set_live2d_enabled command without any pre-configured scope."
+commands.allow = ["set_live2d_enabled"]
+
+[[permission]]
+identifier = "deny-set-live2d-enabled"
+description = "Denies the set_live2d_enabled command without any pre-configured scope."
+commands.deny = ["set_live2d_enabled"]

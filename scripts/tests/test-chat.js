@@ -222,6 +222,9 @@ async function run() {
   var characterConfig = fs.readFileSync(path.join(root, 'src', 'config', 'characters.ts'), 'utf8');
   var chatProvider = fs.readFileSync(path.join(root, 'src', 'composables', 'useChatProvider.ts'), 'utf8');
   var chatConversation = fs.readFileSync(path.join(root, 'src', 'composables', 'useChatConversation.ts'), 'utf8');
+  var userProfilePanel = fs.readFileSync(path.join(root, 'src', 'components', 'ChatUserProfilePanel.vue'), 'utf8');
+  var memoryPanel = fs.readFileSync(path.join(root, 'src', 'components', 'ChatMemoryPanel.vue'), 'utf8');
+  var characterPrompts = fs.readFileSync(path.join(root, 'server', 'chat-character-prompts.js'), 'utf8');
   var securitySource = fs.readFileSync(path.join(root, 'server', 'security.js'), 'utf8');
   var voiceRoute = fs.readFileSync(path.join(root, 'routes', 'voice.js'), 'utf8');
   var chatRouteSource = fs.readFileSync(path.join(root, 'routes', 'chat.js'), 'utf8');
@@ -256,6 +259,11 @@ async function run() {
     'chat conversation composable must stream from the gateway'
   );
   assert(html.includes('ChatApiSettings'), 'chat API settings must have independent component ownership');
+  assert(html.includes('ChatUserProfilePanel') && userProfilePanel.includes('CHAT_RELATIONSHIPS'), 'user profile editing must have independent component ownership');
+  assert(html.includes('ChatMemoryPanel') && memoryPanel.includes('LONG-TERM MEMORY') && html.includes('messageRemembered'), 'manual long-term memory must have independent UI ownership');
+  assert(chatConversation.includes('userProfile: hasChatUserProfile') && roomSession.includes('loadChatUserProfile'), 'the validated local user profile must reach every chat request');
+  assert(chatConversation.includes('memories: options.recallMemories') && roomSession.includes('recallChatFacts'), 'recalled user-confirmed facts must reach the chat request');
+  assert(chatRouteSource.includes("require('../server/chat-character-prompts')") && characterPrompts.includes('buildCharacterPrompt'), 'server prompt layering must have independent ownership');
   assert(roomSession.includes('useChatProvider') && chatProvider.includes('refreshChatStatus') && chatProvider.includes('saveApiSettings'), 'chat provider settings and status must have composable ownership');
   assert(
     /defineExpose\(\{[\s\S]*setSpeaking,[\s\S]*setMouth,[\s\S]*setAudioLevel,[\s\S]*setEmotion,[\s\S]*setUserMessage,?\s*(?:setDesktopVisible,?\s*)?(?:setDesktopWindowBounds,?\s*)?(?:setDesktopPerformanceMode,?\s*)?(?:setGlobalPointer,?\s*)?(?:releasePointerFocus,?\s*)?\}\)/.test(characterStageComponent)
@@ -458,6 +466,7 @@ async function run() {
   assert(wavView.getUint32(4, true) === 40 && wavView.getUint32(40, true) === 4, 'WAV sizes must be repaired');
 
   var chatRoute = require('../../routes/chat');
+  var crypto = require('crypto');
   assert(chatRoute.validateChatBody({
     character:'nene',
     messages:[{ role:'user', content:'你好' }]
@@ -514,6 +523,24 @@ async function run() {
   assert(chatRoute.chatCharacterPrompt('nene').includes('这是私人本地角色扮演'), 'character prompts must identify the private local context');
   assert(chatRoute.chatCharacterPrompt('natsume').includes('不输出政策声明或机械拒绝'), 'character prompts must stay in character for sensitive adult topics');
   assert(!chatRoute.chatCharacterPrompt('nene').includes('未成年人性内容'), 'character prompts must not contain generic content-review boilerplate');
+  assert(crypto.createHash('sha256').update(chatRoute.chatCharacterPrompt('nene')).digest('hex') === '39001ea39f6a3f64e9cb70d43e24575df997ee7bff31b09c35dfb359ed93bb5c', 'Nene base prompt must remain byte-for-byte stable');
+  assert(crypto.createHash('sha256').update(chatRoute.chatCharacterPrompt('natsume')).digest('hex') === 'd404be246def4b4b03df275eaa3882a6a9ce091ff1309a130811f35414fc3275', 'Natsume base prompt must remain byte-for-byte stable');
+  var profiledPrompt = chatRoute.chatCharacterPrompt('nene', { userProfile:{ callName:'小林', relationship:'confidant', note:'夜间工作，希望先听我说完。' } });
+  assert(profiledPrompt.includes('【用户档案（用户自述') && profiledPrompt.includes('• 希望称呼：小林') && profiledPrompt.includes('• 关系定位：知己'), 'profile facts must be layered into the prompt');
+  assert(profiledPrompt.indexOf('【用户档案') < profiledPrompt.indexOf('【对话判断与表达控制】'), 'untrusted profile facts must precede final behavior rules');
+  var profiledValidation = chatRoute.validateChatBody({
+    character:'natsume',
+    userProfile:{ callName:'阿澈', relationship:'lover', note:'喜欢苦咖啡。' },
+    messages:[{ role:'user', content:'你好' }]
+  });
+  assert(profiledValidation.value.messages[0].content.includes('• 希望称呼：阿澈'), 'validated user profile must reach the system prompt');
+  assert(chatRoute.validateChatBody({ character:'nene', userProfile:{ relationship:'invalid' }, messages:[{ role:'user', content:'x' }] }).error, 'unknown relationship must fail closed');
+  assert(chatRoute.validateChatBody({ character:'nene', userProfile:{ callName:'x'.repeat(41) }, messages:[{ role:'user', content:'x' }] }).error, 'overlong profile fields must be rejected');
+  var memoryValidation = chatRoute.validateChatBody({
+    character:'nene', memories:['用户每周五晚上会玩 MMORPG。'], messages:[{ role:'user', content:'周五做什么？' }]
+  });
+  assert(memoryValidation.value.messages[0].content.includes('【长期记忆（用户确认过的本机事实') && memoryValidation.value.messages[0].content.includes('用户每周五晚上会玩 MMORPG。'), 'validated memory facts must reach the system prompt');
+  assert(chatRoute.validateChatBody({ character:'nene', memories:['1','2','3','4','5'], messages:[{ role:'user', content:'x' }] }).error, 'memory injection count must be bounded');
 
   var live2dService = require('../../services/live2d-service').createLive2dService({
     rootDir:path.join(root, 'assets', 'live2d'),

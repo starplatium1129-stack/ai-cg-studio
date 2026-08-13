@@ -1,0 +1,22 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "companion-live2d",
+  "description": "Native Live2D commands exposed only to the Companion loopback page.",
+  "windows": ["companion"],
+  "remote": {
+    "urls": ["http://127.0.0.1:*/*"]
+  },
+  "permissions": [
+    "allow-aics-live2d-set-character",
+    "allow-aics-live2d-set-frame",
+    "allow-aics-live2d-play-motion",
+    "allow-aics-live2d-set-expression",
+    "allow-aics-live2d-set-mouth-level",
+    "allow-aics-live2d-set-max-fps",
+    "allow-aics-live2d-set-emotion",
+    "allow-aics-live2d-set-gaze",
+    "allow-aics-live2d-hit-test",
+    "allow-aics-live2d-destroy",
+    "allow-aics-live2d-get-state"
+  ]
+}

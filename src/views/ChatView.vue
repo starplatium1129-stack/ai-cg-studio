@@ -17,13 +17,15 @@
       </div>
       <div class="chat-actions">
         <button class="btn btn-ghost" type="button" @click="clearCharacterConversation">新对话</button>
-        <button class="btn btn-ghost" type="button" @click="clearAllMemory">清除全部记忆</button>
+        <button class="btn btn-ghost" type="button" @click="clearAllMemory">清除聊天记忆</button>
         <button
           class="btn btn-ghost"
           type="button"
           :aria-expanded="archiveOpen ? 'true' : 'false'"
           @click="archiveOpen = !archiveOpen"
         >记忆归档</button>
+        <button class="btn btn-ghost" type="button" :aria-expanded="memoryOpen" @click="memoryOpen = !memoryOpen">长期记忆</button>
+        <button class="btn btn-ghost" type="button" :aria-expanded="profileOpen" @click="profileOpen = !profileOpen">我的档案</button>
       </div>
     </header>
 
@@ -33,6 +35,22 @@
       :active-char="activeChar"
       @close="archiveOpen = false"
       @notice="(message, kind) => setError(message, kind || 'info', 4500)"
+    />
+
+    <ChatUserProfilePanel
+      v-if="profileOpen"
+      :profile="userProfile"
+      @save="onUserProfileSave"
+      @close="profileOpen = false"
+    />
+
+    <ChatMemoryPanel
+      v-if="memoryOpen"
+      :items="currentMemories"
+      :character-name="currentCharacter.name"
+      @update="updateMemory"
+      @delete="deleteMemory"
+      @close="memoryOpen = false"
     />
 
     <section class="chat-layout" aria-label="角色聊天">
@@ -147,6 +165,10 @@
                 <div class="message-bubble">{{ msg.content }}</div>
                 <div class="message-meta">
                   <span v-if="msg.stopped" class="message-note">已停止</span>
+                  <button v-if="msg.role === 'user' && msg.mid" class="msg-memory-btn" type="button"
+                    :disabled="messageRemembered(msg.mid)" @click="rememberMessage(msg)">
+                    {{ messageRemembered(msg.mid) ? '已记住' : '记住' }}
+                  </button>
                   <button v-if="msg.role === 'assistant' && msg.mid && voice.hasAudio(msg.mid)"
                     class="msg-voice-btn" type="button"
                     :class="{ playing: playingMid === msg.mid }"
@@ -237,11 +259,11 @@
                 <span class="speech-session-dot" aria-hidden="true"></span>听候唤醒
               </span>
               <span v-if="speechNotice" class="speech-notice" role="status">{{ speechNotice }}</span>
-              <button class="speech-config-btn" type="button" title="语音输入设置" aria-label="语音输入设置"
-                @click="speechSettingsOpen = !speechSettingsOpen">
-                设置
-              </button>
             </template>
+            <button class="speech-config-btn" type="button" title="语音输入设置" aria-label="语音输入设置"
+              @click="speechSettingsOpen = !speechSettingsOpen">
+              语音输入设置
+            </button>
             <span class="keyboard-hint">Enter 发送 · Shift+Enter 换行</span>
           </div>
 
@@ -261,12 +283,15 @@ import { useCharacterRoomSession } from '@/composables/useCharacterRoomSession'
 import ChatApiSettings from '@/components/ChatApiSettings.vue'
 import ChatCharacterStage from '@/components/ChatCharacterStage.vue'
 import ChatArchivePanel from '@/components/ChatArchivePanel.vue'
+import ChatUserProfilePanel from '@/components/ChatUserProfilePanel.vue'
+import ChatMemoryPanel from '@/components/ChatMemoryPanel.vue'
 import SpeechInputSettings from '@/components/SpeechInputSettings.vue'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useVoiceInput, type VoiceTextSource, type VoiceInputState } from '@/composables/useVoiceInput'
 import { isSpeechInputReady, loadSpeechInputConfig } from '@/utils/speechInputConfig'
 import { createSpeechSession } from '@/utils/speechSession'
+import type { ChatUserProfile } from '@/utils/chatUserProfile'
 
 const {
   chatListRef,
@@ -311,6 +336,13 @@ const {
   toolActivity,
   thinkingActivity,
   reasoning,
+  userProfile,
+  updateUserProfile,
+  currentMemories,
+  rememberMessage,
+  updateMemory,
+  deleteMemory,
+  messageRemembered,
   onReasoningChange,
   webSearchEnabled,
   setupTitle,
@@ -337,6 +369,14 @@ const {
   onAutoVoiceChange,
   replayLast,
 } = useCharacterRoomSession()
+
+const profileOpen = ref(false)
+const memoryOpen = ref(false)
+
+function onUserProfileSave(profile: ChatUserProfile) {
+  updateUserProfile(profile)
+  profileOpen.value = false
+}
 
 const speechConfig = ref(loadSpeechInputConfig())
 const speechSettingsOpen = ref(false)

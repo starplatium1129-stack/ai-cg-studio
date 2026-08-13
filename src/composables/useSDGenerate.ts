@@ -27,6 +27,7 @@ export function useSDGenerate() {
   const statusText  = ref('')
   const resultUrl   = ref('')
   const resultSeed  = ref<number | null>(null)
+  const lastLoras = ref<Array<{ id: string; strength: number }>>([])
   const errorMsg    = ref('')
   const samplers    = ref<string[]>([])
   const schedulers  = ref<string[]>([])
@@ -47,9 +48,12 @@ export function useSDGenerate() {
       online.value = generation.online === true
       samplers.value = Array.isArray(generation.samplers) ? generation.samplers : []
       schedulers.value = Array.isArray(generation.schedulers) ? generation.schedulers : []
+      upscalers.value = Array.isArray(generation.capabilities?.hiresUpscalers) ? generation.capabilities.hiresUpscalers : []
       models.value = generation.checkpoint ? [generation.checkpoint] : []
       checkpoint.value = generation.checkpoint || ''
-      if (online.value) return true
+      // 应用生成路由只允许 WAI v17；它已响应时不得再用任意 WebUI checkpoint
+      // 覆盖状态，否则界面所选底模与实际服务端执行会不一致。
+      return online.value
     }
     // Comfy 不可用时保留旧 WebUI 状态探测作为兼容状态。
     try {
@@ -149,6 +153,7 @@ export function useSDGenerate() {
         const id = name === 'ayachi_nene_v18_wd14' ? 'L_NENE_V18_WD14' : name === 'shiki_natsume_v18_wd14' ? 'L_NAT_V18_WD14' : ''
         return id ? { id, strength: Number(match[1]) || params.lora_weight || 0.8 } : null
       }).filter((x): x is { id: string; strength: number } => Boolean(x))
+      lastLoras.value = loras
       const modelId = String(params.model || '').includes('waiIllustriousSDXL_v170') ? 'waiIllustriousSDXL_v170' : undefined
       const r = await fetch('/api/generation/jobs', {
         method: 'POST',
@@ -189,7 +194,7 @@ export function useSDGenerate() {
         if (!state.job) throw new Error('生成状态无效')
         job = state.job
         progress.value = job.status === 'running' ? Math.min(95, progress.value + 2) : (job.status === 'succeeded' ? 100 : progress.value)
-        statusText.value = provider.value === 'comfy' ? 'ComfyUI 离线回退生成中…' : 'SD WebUI 生成中…'
+        statusText.value = provider.value === 'comfy' ? 'ComfyUI 生成中…' : 'SD WebUI 生成中…'
       }
       if (job.status !== 'succeeded' || !job.resultUrl) throw new Error('生成超时')
       const resultResponse = await fetch(job.resultUrl, { cache: 'no-store', signal: abortCtrl.signal })
@@ -254,6 +259,7 @@ export function useSDGenerate() {
     errorMsg: readonly(errorMsg), samplers: readonly(samplers),
     schedulers: readonly(schedulers), upscalers: readonly(upscalers),
     models: readonly(models), provider: readonly(provider),
+    lastLoras: readonly(lastLoras),
     checkStatus, generate, cancel, clearResult, dispose,
   }
 }

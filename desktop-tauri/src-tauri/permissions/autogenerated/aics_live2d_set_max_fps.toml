@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-aics-live2d-set-max-fps"
+description = "Enables the aics_live2d_set_max_fps command without any pre-configured scope."
+commands.allow = ["aics_live2d_set_max_fps"]
+
+[[permission]]
+identifier = "deny-aics-live2d-set-max-fps"
+description = "Denies the aics_live2d_set_max_fps command without any pre-configured scope."
+commands.deny = ["aics_live2d_set_max_fps"]

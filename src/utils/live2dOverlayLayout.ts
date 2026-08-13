@@ -1,7 +1,8 @@
 /**
  * Live2D overlay 布局换算 —— 纯函数，无 DOM 依赖。
  *
- * 契约：overlay 矩形一律为屏幕物理像素（与 SetWindowPos 一致）。
+ * 契约：该纯函数支持屏幕或窗口本地物理像素；Native Companion 传入 0,0
+ * 原点得到窗口本地矩形，Rust 再用实时 HWND 位置换算为屏幕坐标。
  * 输入是 WebView2 内的 CSS 像素矩形（getBoundingClientRect 结果），
  * 换算关系：
  *

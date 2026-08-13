@@ -12,12 +12,6 @@
           <option v-for="v in [20,28,30,35,40,50]" :key="v" :value="v">{{ v }}</option>
         </select>
       </div>
-      <div class="ctrl ctrl-full"><label>SD 模型</label>
-        <select v-model="modelName" title="出图底模，不同模型风格差异大。">
-          <option value="">使用 WebUI 当前模型</option>
-          <option v-for="model in models" :key="model" :value="model">{{ model }}</option>
-        </select>
-      </div>
       <div class="ctrl"><label>Sampler</label>
         <select v-model="params.sampler" title="采样器：决定去噪方式与画面质感。" @change="touch('sampler')">
           <option v-for="sampler in samplerOptions" :key="sampler">{{ sampler }}</option>
@@ -61,23 +55,16 @@ import type { SDParams } from '@/utils/promptBuilderPersistence'
 
 const props = defineProps<{
   params: SDParams
-  modelName: string
-  models: readonly string[]
   samplers: readonly string[]
   schedulers: readonly string[]
   resultSeed: number | null
 }>()
 
 const emit = defineEmits<{
-  'update:modelName': [value: string]
   touch: [key: keyof SDParams]
   'reuse-seed': []
 }>()
 
-const modelName = computed({
-  get: () => props.modelName,
-  set: value => emit('update:modelName', value),
-})
 const samplerOptions = computed(() =>
   props.samplers.length ? props.samplers : ['Euler a', 'Euler', 'DPM++ 2M', 'DPM++ 2M SDE'],
 )

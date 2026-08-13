@@ -1,3 +1,44 @@
 fn main() {
-    tauri_build::build()
+    tauri_build::try_build(
+        tauri_build::Attributes::new().app_manifest(
+            tauri_build::AppManifest::new().commands(&[
+                "get_state",
+                "hide",
+                "quit",
+                "set_ignore_mouse_events_cmd",
+                "toggle_ignore_mouse_events",
+                "toggle_always_on_top",
+                "set_live2d_enabled",
+                "get_settings",
+                "set_autostart",
+                "is_packaged",
+                "get_workspace",
+                "set_workspace",
+                "notify",
+                "open_atelier",
+                "window_minimize",
+                "window_maximize_toggle",
+                "window_close",
+                "get_window_state",
+                "set_progress",
+                "open_workspace",
+                "open_runtime",
+                "open_log",
+                "pick_files",
+                "save_image",
+                "aics_live2d_set_character",
+                "aics_live2d_set_frame",
+                "aics_live2d_play_motion",
+                "aics_live2d_set_expression",
+                "aics_live2d_set_mouth_level",
+                "aics_live2d_set_max_fps",
+                "aics_live2d_set_emotion",
+                "aics_live2d_set_gaze",
+                "aics_live2d_hit_test",
+                "aics_live2d_destroy",
+                "aics_live2d_get_state",
+            ]),
+        ),
+    )
+    .expect("failed to build Tauri command manifest")
 }

@@ -2,10 +2,31 @@
 
 const assert = require('assert');
 const core = require('../../src/utils/chatStorageCore.ts');
+const profile = require('../../src/utils/chatUserProfile.ts');
+const memory = require('../../src/utils/chatMemory.ts');
 
 const { test } = require('node:test');
 
 test("Chat storage tests passed: migration, durable local configuration, and damaged recovery", () => {
+const normalizedProfile = profile.normalizeChatUserProfile({ callName:'  小林\n先生  ', relationship:'confidant', note:' 夜间工作。 ' });
+assert.deepStrictEqual(normalizedProfile, { callName:'小林 先生', relationship:'confidant', note:'夜间工作。' });
+assert.strictEqual(profile.hasChatUserProfile(normalizedProfile), true);
+assert.strictEqual(profile.hasChatUserProfile(profile.EMPTY_CHAT_USER_PROFILE), false);
+const memoryState = memory.emptyChatMemoryState();
+const firstFact = memory.rememberChatFact(memoryState, 'nene', '我每周五晚上会玩 MMORPG。', 'user-1');
+assert(firstFact, 'manual user fact must be stored');
+memory.rememberChatFact(memoryState, 'nene', '我每周五晚上会玩 MMORPG。', 'user-1');
+memory.rememberChatFact(memoryState, 'nene', '我更喜欢安静地听完再给建议。', 'user-2');
+memory.rememberChatFact(memoryState, 'natsume', '我喜欢苦咖啡。', 'user-3');
+assert.strictEqual(memoryState.byCharacter.nene.length, 2, 'manual memory must deduplicate by text');
+assert.strictEqual(memoryState.byCharacter.natsume.length, 1, 'memory must stay isolated per character');
+assert.strictEqual(memory.isChatFactRemembered(memoryState, 'nene', 'user-1'), true);
+const recalled = memory.recallChatFacts(memoryState, 'nene', '周五要不要一起玩网游？', 1, 240);
+assert.deepStrictEqual(recalled, ['我每周五晚上会玩 MMORPG。'], 'CJK bigram and ASCII terms must recall the relevant fact');
+assert.deepStrictEqual(memory.recallChatFacts(memoryState, 'nene', '今天天气怎么样？', 4, 1000), [], 'unrelated facts must not be injected into every chat request');
+assert.strictEqual(memory.editChatFact(memoryState, 'nene', firstFact.id, '我每周六晚上会玩 MMORPG。'), true);
+assert.strictEqual(memory.removeChatFact(memoryState, 'nene', firstFact.id), true);
+assert.strictEqual(memoryState.byCharacter.nene.length, 1);
 const options = {
   characterIds:['nene', 'natsume'],
   maxMessages:2,

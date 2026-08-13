@@ -11,6 +11,10 @@ async function post(base, body, token) {
 
 async function run() {
   var valid = generation.validateInput({ prompt:'1girl, solo', negative:'bad', loras:[{ id:'L_NENE_V18_WD14', strength:0.85 }], width:832, height:1216, steps:28, cfg:5.5, seed:12, sampler:'DPM++ 2M', scheduler:'Karras' });
+  var dual = generation.validateInput({ prompt:'2girls', loras:[{ id:'L_NENE_V18_WD14', strength:0.52 }, { id:'L_NAT_V18_WD14', strength:0.62 }], width:832, height:1216 });
+  assert.deepEqual(dual.loras.map(function (item) { return item.strength; }), [0.52, 0.62]);
+  assert.throws(function () { generation.validateInput({ prompt:'x', loras:[{ id:'L_NENE_V18_WD14', strength:0.52 }], width:832, height:1216 }); }, /超出允许范围/);
+  assert.throws(function () { generation.validateInput({ prompt:'x', loras:[{ id:'L_NENE_V18_WD14', strength:0.52 }, { id:'L_NENE_V18_WD14', strength:0.52 }], width:832, height:1216 }); }, /不得重复/);
   var requestBody = { prompt:'1girl, solo, <lora:ayachi_nene_v18_wd14:0.85>', negative:'bad', loras:[{ id:'L_NENE_V18_WD14', strength:0.85 }], width:832, height:1216, steps:28, cfg:5.5, seed:12, sampler:'DPM++ 2M', scheduler:'Karras' };
   var graph = generation.buildWorkflow(valid);
   assert.equal(graph['1'].class_type, 'CheckpointLoaderSimple');
@@ -19,24 +23,49 @@ async function run() {
   var tagged = generation.validateInput({ prompt:'1girl, <lora:ayachi_nene_v18_wd14:0.85>', negative:'bad', loras:[{ id:'L_NENE_V18_WD14', strength:0.85 }], width:832, height:1216, steps:28, cfg:5.5, seed:12, sampler:'DPM++ 2M' });
   var taggedGraph = generation.buildWorkflow(tagged);
   assert.equal(taggedGraph['4'].inputs.text.includes('<lora:'), false, 'Comfy CLIP text must not contain LoRA syntax');
+  var hiresGraph = generation.buildWorkflow(generation.validateInput({ prompt:'x', width:1024, height:1024, hiresFix:true, hiresUpscaler:'Latent', hiresScale:1.5, hiresSteps:20, denoisingStrength:0.4 }));
+  assert.equal(hiresGraph['11'].class_type, 'LatentUpscaleBy');
+  assert.equal(hiresGraph['11'].inputs.upscale_method, 'nearest-exact');
+  assert.equal(hiresGraph['12'].class_type, 'KSampler');
+  var autoHiresGraph = generation.buildWorkflow(generation.validateInput({ prompt:'x', width:1024, height:1024, hiresFix:true, hiresUpscaler:'Auto', hiresScale:1.5, hiresSteps:20, denoisingStrength:0.4 }));
+  assert.equal(autoHiresGraph['11'].inputs.upscale_method, 'nearest-exact', 'Comfy resolves Auto hires to nearest-exact latent');
   assert.throws(function () { generation.validateInput({ prompt:'x', workflow:{}, width:832, height:1216 }); }, /不支持的参数/);
   assert.throws(function () { generation.validateInput({ prompt:'x', loras:[{ id:'bad', strength:0.8 }], width:832, height:1216 }); }, /未知 WAI LoRA/);
   assert.throws(function () { generation.validateInput({ prompt:'x', modelId:'other', width:832, height:1216 }); }, /未知 WAI checkpoint/);
+  assert.equal(generation.isWaiCheckpoint('waiIllustriousSDXL_v170.safetensors [abc123]'), true);
+  assert.equal(generation.isWaiCheckpoint('waiIllustriousSDXL_v171.safetensors [abc123]'), false);
+  assert.equal(generation.isWaiCheckpoint('waiIllustriousSDXL_v170-extra.safetensors [abc123]'), false);
+  assert.equal(generation.isWaiCheckpoint('waiIllustriousSDXL_v170.safetensors (abc123)'), true);
 
-  var stack = await gatewayStack.start();
-  try {
-    var base = stack.baseUrl;
-    var webuiResponse = await post(base, requestBody);
-    assert.equal(webuiResponse.status, 202);
-    var webuiJob = (await json(webuiResponse)).job;
-    assert.equal(webuiJob.provider, 'webui');
-    await new Promise(function (resolve) { setTimeout(resolve, 100); });
-    var webuiCalls = await json(await fetch(stack.upstreams.sd.url + '/__mock/state'));
-    var webuiPayload = webuiCalls.calls.find(function (call) { return call.path === '/sdapi/v1/txt2img'; }).body;
-    assert.match(webuiPayload.prompt, /<lora:ayachi_nene_v18_wd14:0.85>/);
-    var webuiSamplerFallback = await post(base, Object.assign({}, requestBody, { sampler:'DPM++ SDE' }));
-    assert.equal((await json(webuiSamplerFallback)).job.provider, 'webui');
-    await fetch(stack.upstreams.sd.url + '/__mock/fault', { method:'POST', headers:{ 'content-type':'application/json' }, body:JSON.stringify({ offline:true }) });
+   var stack = await gatewayStack.start({ prepare:function (context) {
+     var checkpointRoot = require('path').join(context.config.AI_WORKSPACE_ROOT, 'ComfyUI', 'models', 'checkpoints');
+     var loraRoot = require('path').join(context.config.AI_WORKSPACE_ROOT, 'ComfyUI', 'models', 'loras');
+     require('fs').mkdirSync(checkpointRoot, { recursive:true });
+     require('fs').mkdirSync(loraRoot, { recursive:true });
+     require('fs').writeFileSync(require('path').join(checkpointRoot, generation.constants.CHECKPOINT), 'checkpoint');
+     require('fs').writeFileSync(require('path').join(loraRoot, generation.constants.LORAS.L_NENE_V18_WD14.file), 'nene');
+     require('fs').writeFileSync(require('path').join(loraRoot, generation.constants.LORAS.L_NAT_V18_WD14.file), 'natsume');
+   } });
+   try {
+     var base = stack.baseUrl;
+      var status = await json(await fetch(base + '/api/generation/status'));
+      assert.equal(status.capabilities.hiresUpscalers.includes('Auto'), true);
+      var webuiResponse = await post(base, requestBody);
+     assert.equal(webuiResponse.status, 202);
+     var webuiJob = (await json(webuiResponse)).job;
+      assert.equal(webuiJob.provider, 'comfy', 'Comfy is preferred for compatible WAI requests');
+      assert.deepEqual(webuiJob.metadata.loras, [{ id:'L_NENE_V18_WD14', strength:0.85 }]);
+      var autoWebuiResponse = await post(base, Object.assign({}, requestBody, { hiresFix:true, hiresUpscaler:'Auto', hiresScale:1.5, hiresSteps:20, denoisingStrength:0.4 }));
+      assert.equal(autoWebuiResponse.status, 202);
+      var autoWebuiJob = (await json(autoWebuiResponse)).job;
+      assert.equal(autoWebuiJob.provider, 'webui', 'Auto hires prefers Anime6B when WebUI provides it');
+      assert.equal(autoWebuiJob.metadata.hiresUpscaler, 'R-ESRGAN 4x+ Anime6B');
+      var autoWebuiCalls = await json(await fetch(stack.upstreams.sd.url + '/__mock/state'));
+      var autoPayload = autoWebuiCalls.calls.filter(function (call) { return call.path === '/sdapi/v1/txt2img'; }).at(-1).body;
+      assert.equal(autoPayload.hr_upscaler, 'R-ESRGAN 4x+ Anime6B');
+     var webuiSamplerFallback = await post(base, Object.assign({}, requestBody, { sampler:'DPM++ SDE' }));
+      assert.equal(webuiSamplerFallback.status, 202, 'Comfy-first routing must not reject a Comfy-compatible request because WebUI lacks the sampler');
+     await fetch(stack.upstreams.sd.url + '/__mock/fault', { method:'POST', headers:{ 'content-type':'application/json' }, body:JSON.stringify({ offline:true }) });
 
     var comfyResponse = await post(base, requestBody);
     assert.equal(comfyResponse.status, 202);
@@ -50,29 +79,31 @@ async function run() {
     assert.equal((await fetch(base + '/view')).status, 404);
     assert.ok([401, 404].includes((await fetch(base + '/api/generation/jobs/' + comfyJob.id, { headers:{ 'x-token':'wrong-token', 'x-forwarded-for':'203.0.113.10' } })).status));
 
-    var detailerOffline = await post(base, Object.assign({}, requestBody, { faceDetailer:true }));
-    assert.equal(detailerOffline.status, 503);
-    assert.equal((await json(detailerOffline)).code, 'WEBUI_REQUIRED_OFFLINE');
-    var hiresOffline = await post(base, Object.assign({}, requestBody, { hiresFix:true }));
-    assert.equal(hiresOffline.status, 503);
-    assert.equal((await json(hiresOffline)).code, 'WEBUI_REQUIRED_OFFLINE');
+     var detailerOffline = await post(base, Object.assign({}, requestBody, { faceDetailer:true }));
+     assert.equal(detailerOffline.status, 503);
+     assert.equal((await json(detailerOffline)).code, 'WEBUI_RESOURCES_UNAVAILABLE');
+    var hiresOffline = await post(base, Object.assign({}, requestBody, { hiresFix:true, hiresUpscaler:'Auto', hiresScale:1.5, hiresSteps:20, denoisingStrength:0.4 }));
+     assert.equal(hiresOffline.status, 202, 'native latent hires remains available when WebUI is offline');
+      var hiresOfflineJob = (await json(hiresOffline)).job;
+      assert.equal(hiresOfflineJob.metadata.hiresUpscaler, 'Latent (nearest-exact)');
 
     var capabilityFallback = await post(base, Object.assign({}, requestBody, { sampler:'DPM++ SDE' }));
     assert.equal(capabilityFallback.status, 503);
     assert.equal((await json(capabilityFallback)).code, 'COMFY_CAPABILITY_UNAVAILABLE');
 
-    await fetch(stack.upstreams.comfy.url + '/__mock/fault', { method:'POST', headers:{ 'content-type':'application/json' }, body:JSON.stringify({ executionError:'after prompt id' }) });
-    var failureResponse = await post(base, requestBody);
+     await fetch(stack.upstreams.comfy.url + '/__mock/fault', { method:'POST', headers:{ 'content-type':'application/json' }, body:JSON.stringify({ executionError:'after prompt id' }) });
+     var sdCallsBeforeComfyFailure = (await json(await fetch(stack.upstreams.sd.url + '/__mock/state'))).calls.filter(function (call) { return call.path === '/sdapi/v1/txt2img'; }).length;
+     var failureResponse = await post(base, requestBody);
     assert.equal(failureResponse.status, 202);
     var failureJob = (await json(failureResponse)).job;
     await new Promise(function (resolve) { setTimeout(resolve, 150); });
     var failed = await json(await fetch(base + '/api/generation/jobs/' + failureJob.id));
     assert.equal(failed.job.provider, 'comfy');
     assert.equal(failed.job.status, 'failed');
-    var calls = await json(await fetch(stack.upstreams.comfy.url + '/__mock/state'));
-    assert.equal(calls.calls.filter(function (call) { return call.path === '/prompt'; }).length, 2);
-    var finalSdCalls = await json(await fetch(stack.upstreams.sd.url + '/__mock/state'));
-    assert.equal(finalSdCalls.calls.filter(function (call) { return call.path === '/sdapi/v1/txt2img'; }).length, 2, 'Comfy post-submit failure must not retry WebUI');
+     var calls = await json(await fetch(stack.upstreams.comfy.url + '/__mock/state'));
+      assert.equal(calls.calls.filter(function (call) { return call.path === '/prompt'; }).length, 4);
+     var finalSdCalls = await json(await fetch(stack.upstreams.sd.url + '/__mock/state'));
+      assert.equal(finalSdCalls.calls.filter(function (call) { return call.path === '/sdapi/v1/txt2img'; }).length, sdCallsBeforeComfyFailure, 'Comfy post-submit failure must not retry WebUI');
   } finally {
     await stack.close();
   }

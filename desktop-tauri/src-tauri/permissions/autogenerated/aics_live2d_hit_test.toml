@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-aics-live2d-hit-test"
+description = "Enables the aics_live2d_hit_test command without any pre-configured scope."
+commands.allow = ["aics_live2d_hit_test"]
+
+[[permission]]
+identifier = "deny-aics-live2d-hit-test"
+description = "Denies the aics_live2d_hit_test command without any pre-configured scope."
+commands.deny = ["aics_live2d_hit_test"]

@@ -7,12 +7,15 @@ const policy = require('../../src/utils/promptPolicy.ts');
 const animaRoute = require('../../routes/anima.js');
 const presets = require('../../data/presets.json');
 const loras = require('../../data/loras.json');
+const artistStyles = require('../../src/config/artistStyles.ts');
+const artistCatalog = require('../../src/config/artistStyleCatalog.ts');
 
 test('prompt compiler keeps story and search metadata outside all model families', () => {
   const input = {
     story: '这是故事，不可见的心理活动，以及“台词”',
     identity: '1girl, ayachi_nene, white_hair',
     controls: ['natsume_r18', 'natsume_cafe_uniform'],
+    exactTokens: ['natsume_r18', 'natsume_cafe_uniform'],
     scenePrompt: 'warm_lighting, cafe interior',
     visualDescription: 'Nene stands beside a rain-covered cafe window.',
     manual: [],
@@ -52,12 +55,45 @@ test('prompt compiler keeps story and search metadata outside all model families
   assert(/cafe maid uniform/i.test(clothed.prompt), 'natsume_cafe_uniform must map to readable cafe maid uniform');
   assert(!clothed.prompt.includes('nene_school_uniform'), 'raw trigger token must not leak into krea prose');
   assert(krea.prompt.includes('Nene stands beside a rain-covered cafe window.'), 'krea must weave visualDescription prose verbatim');
-  assert(/warm lighting, cafe interior\./i.test(krea.prompt), 'krea must weave scene fragments as readable prose');
+  assert(/warm lighting/i.test(krea.prompt) && /inside a cafe/i.test(krea.prompt), 'krea must weave scene fragments as readable prose');
   assert.strictEqual(policy.formatPromptForEngine('natsume_r18, natsume_cafe_uniform, warm_lighting', 'anima'), 'natsume_r18, natsume_cafe_uniform, warm lighting');
   assert.strictEqual(policy.formatPromptForEngine('nene_school_uniform, natsume_cafe_uniform', 'anima', [], ['nene_', 'natsume_']), 'nene_school_uniform, natsume_cafe_uniform');
 });
 
-test('prompt compiler: Krea style recipe lead goes first and medium closes the paragraph', () => {
+test('prompt compiler renders curated artist styles in each model-native syntax', () => {
+  const sd = compiler.renderPromptPlan(compiler.createPromptPlan({ identity:'1girl', artists:['kantoku', 'rella'] }), 'sd');
+  assert.ok(sd.prompt.includes('kantoku') && sd.prompt.includes('rella'));
+  const anima = compiler.renderPromptPlan(compiler.createPromptPlan({ identity:'1girl', artists:['@kantoku', '@mika pikazo'] }), 'anima');
+  assert.ok(anima.prompt.includes('@kantoku') && anima.prompt.includes('@mika pikazo'));
+  const krea = compiler.renderPromptPlan(compiler.createPromptPlan({
+    identity:'1girl', style:['A polished anime key visual'], artistProse:'with visual styling inspired by Kantoku and Rella',
+  }), 'krea2');
+  assert.ok(krea.prompt.startsWith('A polished anime key visual, with visual styling inspired by Kantoku and Rella.'));
+  assert.ok(!krea.prompt.includes('@kantoku') && !krea.prompt.includes('mika_pikazo'));
+});
+
+test('artist style catalog is unique, allowlisted, limited, and model-native', () => {
+  const ids = artistCatalog.ARTIST_STYLE_OPTIONS.map(option => option.id);
+  assert.strictEqual(ids.length, 12);
+  assert.strictEqual(new Set(ids).size, ids.length);
+  assert.deepStrictEqual(artistStyles.normalizeArtistStyleIds(['kantoku', 'rella', 'swav', 'unknown']), ['kantoku', 'rella']);
+  assert.deepStrictEqual(artistStyles.artistTagsForEngine(['mika_pikazo', 'so-bin'], 'sd'), ['mika_pikazo', 'so-bin']);
+  assert.deepStrictEqual(artistStyles.artistTagsForEngine(['mika_pikazo', 'so-bin'], 'anima'), ['@mika pikazo', '@so-bin']);
+  assert.strictEqual(artistStyles.artistStyleProse(['bunbun', 'rella']), 'with visual styling inspired by BUNBUN and Rella');
+  assert.deepStrictEqual(ids.filter(id => artistStyles.normalizeArtistStyleIds([id]).length !== 1), []);
+});
+
+test('Krea official style LoRA is allowlisted and family-scoped', () => {
+  const input = animaRoute.validateInput({ prompt: 'a rainy cafe', modelId: 'krea2-turbo-fp8', width: 1024, height: 1024, styleLoraId: 'rainywindow' }, 'krea2');
+  const graph = animaRoute.buildWorkflow(input);
+  assert.strictEqual(graph['12'].class_type, 'LoraLoaderModelOnly');
+  assert.strictEqual(graph['12'].inputs.lora_name, 'krea2_rainywindow.safetensors');
+  assert.strictEqual(graph['12'].inputs.strength_model, 1);
+  assert.throws(() => animaRoute.validateInput({ prompt: 'x', modelId: 'anima-base-v1.0', loraId: 'L_NENE_V20_ANIMA', loraStrength: 0.85, width: 832, height: 1216, character: 'nene', styleLoraId: 'rainywindow' }, 'anima'), /Style LoRA/);
+  assert.throws(() => animaRoute.validateInput({ prompt: 'x', modelId: 'krea2-turbo-fp8', width: 1024, height: 1024, styleLoraId: 'not-approved' }, 'krea2'), /未知 Krea/);
+});
+
+test('prompt compiler: Krea style leads the automatic 3-5 sentence description', () => {
   const input = {
     identity: 'a girl with long hair',
     scenePrompt: 'a quiet cafe interior',
@@ -68,8 +104,102 @@ test('prompt compiler: Krea style recipe lead goes first and medium closes the p
   const krea = compiler.renderPromptPlan(compiler.createPromptPlan(input), 'krea2');
   assert(krea.prompt.startsWith('A polished visual novel event CG with refined cel shading.'),
     'style language must come first');
-  assert(/visual novel event CG\.$/i.test(krea.prompt), 'medium must close the paragraph');
+  const sentences = krea.prompt.split(/(?<=\.)\s/).filter(Boolean);
+  assert.ok(sentences.length >= 3 && sentences.length <= 5, `Krea must stay concise, got ${sentences.length} sentences`);
+  assert.strictEqual((krea.prompt.match(/visual novel event CG/gi) || []).length, 1, 'medium must not duplicate the style lead');
   assert(!/[a-z]+_[a-z]+/i.test(krea.prompt), 'no raw tokens even with style phrases');
+});
+
+test('prompt compiler renders Anima style exactly once while SD keeps style tags', () => {
+  const plan = compiler.createPromptPlan({ identity: '1girl', style: ['cel shaded anime', 'cel shaded anime'] });
+  const anima = compiler.renderPromptPlan(plan, 'anima').prompt;
+  const sd = compiler.renderPromptPlan(plan, 'sd').prompt;
+  assert.strictEqual((anima.match(/cel shaded anime/gi) || []).length, 1);
+  assert.strictEqual((sd.match(/cel shaded anime/gi) || []).length, 1);
+});
+
+test('Anima keeps exact LoRA tags and adds one short visual-directing sentence', () => {
+  const profile = { quality_prefix: 'masterpiece, best_quality, score_7', exact_tokens: [], exact_prefixes: ['nene_'] };
+  const plan = compiler.createPromptPlan({
+    profile,
+    identity: '1girl, solo, ayachi_nene, white_hair, purple_eyes',
+    controls: ['nene_school_uniform'],
+    scenePrompt: 'holding_papers, waiting, classroom_window, classroom, afternoon, window_light, medium_shot',
+    rating: 'safe',
+    subjectProse: 'Ayachi Nene is the only prominent character, a young adult woman with white hair and purple eyes',
+    scene: { title: '不可进入提示词的标题', location: '教室', timeOfDay: 'afternoon', weather: '晴' },
+  });
+  const prompt = compiler.renderPromptPlan(plan, 'anima', profile).prompt;
+  const [tags, prose] = prompt.split('\n');
+  assert.ok(tags.includes('nene_school_uniform'), 'exact LoRA control must remain in the native tag stream');
+  assert.ok(tags.includes('holding papers') && tags.includes('classroom window'));
+  assert.ok(/holding (?:a stack of )?papers/.test(prose) && prose.includes('inside a classroom'));
+  assert.strictEqual(prose.split(/(?<=\.)\s/).filter(Boolean).length, 1, 'automatic studio Anima direction must stay at one sentence');
+  assert.ok(!prompt.includes('不可进入提示词的标题'));
+  assert.ok(!/[\u3400-\u9fff]/.test(prose), 'automatic prose must not leak untranslated scene metadata');
+});
+
+test('structured Chinese scene fields reach Anima and Krea without leaking Chinese metadata', () => {
+  const plan = compiler.createPromptPlan({
+    identity: '1girl, ayachi_nene',
+    scenePrompt: 'sitting_on_bar_stool, holding_one_coffee_cup, cafe, golden_hour, full_body',
+    subjectProse: 'Ayachi Nene is the only prominent character',
+    scene: {
+      location: '闭店后的暖金咖啡馆', weather: '晴朗夕照', camera: '纵向全身三分之四视角',
+      lighting: '拱窗夕阳与室内暖灯的柔和轮廓光',
+    },
+  });
+  const anima = compiler.renderPromptPlan(plan, 'anima').prompt.split('\n')[1];
+  const krea = compiler.renderPromptPlan(plan, 'krea2').prompt;
+  for (const prompt of [anima, krea]) {
+    assert.match(prompt, /cafe/i);
+    assert.match(prompt, /full-body wide shot/i);
+    assert.match(prompt, /three-quarter view/i);
+    assert.match(prompt, /golden-hour light/i);
+    assert.match(prompt, /warm lighting/i);
+    assert.match(prompt, /rim light/i);
+    assert(!/[\u3400-\u9fff]/.test(prompt), 'structured Chinese fields must be translated, not copied');
+  }
+});
+
+test('automatic Anima caption keeps prop relationships ahead of generic poses', () => {
+  const prompt = compiler.renderPromptPlan(compiler.createPromptPlan({
+    identity: '1girl, ayachi_nene',
+    scenePrompt: 'standing, looking_at_viewer, holding_one_coffee_cup',
+    subjectProse: 'Ayachi Nene is the only prominent character',
+    scene: { location: '咖啡馆' },
+  }), 'anima').prompt.split('\n')[1];
+  assert.match(prompt, /holding one coffee cup/i);
+  assert.match(prompt, /looking toward the viewer/i);
+  assert.doesNotMatch(prompt, /She is standing/i);
+});
+
+test('Anima action prose keeps composite hand, prop, and wrapper relationships', () => {
+  const rendered = compiler.renderPromptPlan(compiler.createPromptPlan({
+    subjectProse: 'Ayachi Nene is the only prominent character',
+    scenePrompt: [
+      'one_hand_adjusting_hair_ribbon',
+      'holding_papers_in_other_arm',
+      'carrying_sandals_in_one_hand',
+      'holding_one_clearly_wrapped_sweet_with_visible_folded_paper_wrapper_in_both_cupped_hands_toward_viewer',
+    ].join(', '),
+  }), 'anima').prompt;
+  assert.ok(rendered.includes('using one hand to adjust her pink hair ribbon'));
+  assert.ok(rendered.includes('holding lecture papers securely in her other arm'));
+  assert.ok(rendered.includes('carrying her sandals visibly in one hand'));
+  assert.ok(rendered.includes('folded paper wrapper fully visible'));
+});
+
+test('Anima studio scene caption overrides automatic prose without repeating identity', () => {
+  const prompt = compiler.renderPromptPlan(compiler.createPromptPlan({
+    identity: '1girl, ayachi_nene, white_hair',
+    subjectProse: 'Ayachi Nene is the only prominent character with white hair',
+    scenePrompt: 'classroom, holding_papers',
+    scene: { animaCaption: 'Ayachi Nene points at one open exam paper while seated behind a classroom desk' },
+  }), 'anima').prompt;
+  const prose = prompt.split('\n')[1];
+  assert.strictEqual(prose, 'Ayachi Nene points at one open exam paper while seated behind a classroom desk.');
+  assert.strictEqual((prose.match(/white hair/gi) || []).length, 0);
 });
 
 test('creative catalog rejects Krea LoRA/negative and emits the official Krea core workflow', () => {
@@ -107,16 +237,18 @@ test('Anima rating and controls remain aligned without safe/R18 contradiction', 
   assert(adult.prompt.includes('nene_r18'));
 });
 
-test('Anima profiles do not bind one character and LoRA contracts own exact controls', () => {
+test('Anima profiles do not bind one character and LoRA contracts own exact controls from the selected service LoRA id', () => {
   const assemblySource = fs.readFileSync(path.join(__dirname, '../../src/composables/usePromptAssembly.ts'), 'utf8');
-  assert(assemblySource.includes("const selectedLoraId = pb.char === 'triad' ? '' : controlLoraIds.value[pb.char]"));
+  assert(assemblySource.includes('selectedLoraId.value'), 'assembly must resolve the contract from the selected service LoRA id');
+  assert(assemblySource.includes("pb.char === 'triad' ? '' : String(selectedLoraId.value || '')"));
   assert(!assemblySource.includes('Object.values(controlLoraIds.value)'));
   const animaProfiles = presets.model_profiles.filter(profile => profile.engine === 'anima');
   for (const profile of animaProfiles) {
     assert.strictEqual(profile.lora_id, undefined);
     assert.strictEqual(profile.lora_name, undefined);
     assert.strictEqual(profile.lora_strength, undefined);
-    assert.deepStrictEqual(profile.exact_tokens, ['best_quality']);
+    assert.deepStrictEqual(profile.exact_tokens, [], 'profile must not carry family-level exact tokens');
+    assert.strictEqual(profile.steps, 24, 'Anima profiles must default to the validated 24 steps');
   }
   const nene = loras.find(lora => lora.id === 'L_NENE_V20_ANIMA');
   const natsume = loras.find(lora => lora.id === 'L_NAT_V20_ANIMA');
@@ -124,4 +256,17 @@ test('Anima profiles do not bind one character and LoRA contracts own exact cont
   assert(natsume.prompt_contract.exact_prefixes.includes('natsume_'));
   assert(!nene.prompt_contract.exact_prefixes.includes('natsume_'));
   assert(!natsume.prompt_contract.exact_prefixes.includes('nene_'));
+});
+
+test('WAI profile owns the adaptive automatic hires preset', () => {
+  const wai = presets.model_profiles.find(profile => profile.id === 'wai_illustrious_v17');
+  assert.ok(wai);
+  assert.strictEqual(wai.steps, 30);
+  assert.strictEqual(wai.cfg, 6);
+  assert.strictEqual(wai.sampler, 'Euler a');
+  assert.strictEqual(wai.hires_fix, true);
+  assert.strictEqual(wai.hires_upscaler, 'Auto');
+  assert.strictEqual(wai.hires_scale, 1.5);
+  assert.strictEqual(wai.hires_steps, 20);
+  assert.strictEqual(wai.hires_denoising_strength, 0.4);
 });

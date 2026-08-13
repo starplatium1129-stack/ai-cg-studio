@@ -18,6 +18,7 @@ import {
   type SDParams,
 } from '@/utils/promptBuilderPersistence'
 import type { DrawSubject, PopularCharacter, SceneBlueprint } from '@/utils/popularContent'
+import { normalizeArtistStyleIds } from '@/config/artistStyles'
 
 // 与 useBackup.ts / GalleryView.vue 共用同一组键。改这里必须同步那两处。
 const HISTORY_STORAGE_KEY = 'aics_pb_history'
@@ -55,6 +56,7 @@ export interface HistoryEntry {
   engine?: DrawEngine; profile?: string; model?: string
   provider?: 'comfy' | 'webui'
   loraId?: string | null; loraStrength?: number | null
+  loras?: ReadonlyArray<{ id: string; strength: number }>
   preview?: boolean
   /** 成片真实像素；size 只是保存时下拉框的值，作品册排版以这两个为准 */
   width: number | null; height: number | null
@@ -67,8 +69,10 @@ export interface HistoryEntry {
   outfitId?: string
   blueprintId?: string | null
   noLora?: boolean
-  /** 热门角色 Krea 风格配方 id（null = 自动按场景+引擎），旧历史缺省自动。 */
-  kreaStyleId?: string | null
+  /** 生成时实际使用的 Krea Style LoRA id；旧历史缺省无 Style LoRA。 */
+  styleLoraId?: string | null
+  /** 专家模式选中的模型原生画师风格 id，最多两位。 */
+  artistStyleIds?: string[]
 }
 
 export interface Selections {
@@ -130,6 +134,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   const sceneBaseStory = ref('')
   const selections = reactive<Selections>({ emotion: [], shot: null, lighting: null, composition: null })
   const manualTags = ref<Set<string>>(new Set())
+  const artistStyleIds = ref<string[]>([])
   const projectId  = ref('')
 
   // ── Loaded data ─────────────────────────────────────────────────────────
@@ -142,8 +147,6 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   const characters   = ref<Array<{ id: string; lora?: { name: string; weight: number }; traits?: Array<{ tag: string; label: string; icon?: string }>; [k: string]: unknown }>>([])
   const popularCharacters = ref<PopularCharacter[]>([])
   const sceneBlueprints = ref<SceneBlueprint[]>([])
-  /** 热门角色 Krea 风格配方（null = 自动按 blueprint+引擎取默认）。 */
-  const kreaStyleId = ref<string | null>(null)
   const dataReady    = ref(false)
 
   // ── Runtime history ─────────────────────────────────────────────────────
@@ -167,7 +170,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   const sdParams = reactive<SDParams>({
     cfg: 6, steps: 30, sampler: 'Euler a', scheduler: '',
     size: '2:3', hiresFix: false, hiresScale: 1.5,
-    hiresUpscaler: 'R-ESRGAN 4x+ Anime6B', hiresSteps: 30, hiresDenoise: 0.5,
+     hiresUpscaler: 'Auto', hiresSteps: 20, hiresDenoise: 0.4,
     faceDetailer: true,
     seedLock: false, seed: -1, quality: true, tail: true, negative: true,
     negativeCustom: '',
@@ -283,6 +286,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     manualTags.value = next
     if (replaced.length) flash(`已用「${tag}」替换同组「${replaced.join('、')}」`)
   }
+  function setArtistStyleIds(ids: string[]) { artistStyleIds.value = normalizeArtistStyleIds(ids) }
 
   function loadScene(scene: Scene) {
     sceneId.value       = scene.id
@@ -293,16 +297,17 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     if (scene.char && scene.char !== 'both' && scene.char !== 'triad') {
       char.value = scene.char as CharKey
     }
-    // 智能推断：自动预填导演决策（仅当用户尚未手动选择时）
-    const lighting = sceneLighting(scene)
-    if (lighting && !selections.lighting) selections.lighting = lighting
-    const shot = sceneShot(scene)
-    if (shot && !selections.shot) selections.shot = shot
-    const mood = sceneColorMood(scene)
-    if (mood && !colorMood.value) colorMood.value = mood
-    const comp = sceneComposition(scene)
-    if (comp && !selections.composition) selections.composition = comp
-    // 推荐尺寸（提供给视图书写）
+    // 选场景是一次完整的导演决策复位：旧镜头/光照/构图/情调/情绪/手动词条/
+    // 自定义负面/被触摸参数全部清空，再写入本场景的智能推断（含 null）。
+    selections.emotion = []
+    selections.shot = sceneShot(scene)
+    selections.lighting = sceneLighting(scene)
+    selections.composition = sceneComposition(scene)
+    colorMood.value = sceneColorMood(scene)
+    manualTags.value = new Set()
+    sdParams.negativeCustom = ''
+    sdParamsTouched.value = new Set()
+    // 推荐尺寸（优先场景显式字段，供视图书写）
     lastRecommendedSize.value = sceneRecommendedSize(scene)
   }
 
@@ -348,7 +353,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
    * 按当前 checkpoint 匹配 model profile，并把推荐参数填入出图设置。
    * 用户手动改过的项不覆盖（sdParamsTouched）。
    */
-  function applyModelProfile(modelName?: string): ModelProfile | null {
+  function applyModelProfile(modelName?: string, options: { applySize?: boolean } = {}): ModelProfile | null {
     const profile = resolveModelProfile(modelProfiles.value, modelName || sdModelName.value)
     if (!profile) return null
     const touched = sdParamsTouched.value
@@ -361,12 +366,13 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     if (!touched.has('scheduler') && profile.scheduler !== undefined) sdParams.scheduler = profile.scheduler || ''
     set('steps', Number(profile.steps) || undefined)
     set('cfg', Number(profile.cfg) || undefined)
+    set('hiresFix', profile.hires_fix)
     set('hiresScale', Number(profile.hires_scale) || undefined)
     set('hiresUpscaler', profile.hires_upscaler)
     set('hiresSteps', Number(profile.hires_steps) || undefined)
     set('hiresDenoise', Number(profile.hires_denoising_strength) || undefined)
     // profile 推荐尺寸（如 1024×1344）转成 WxH
-    if (!touched.has('size') && profile.size) {
+    if (options.applySize !== false && !touched.has('size') && profile.size) {
       const m = String(profile.size).match(/(\d+)\s*[×x]\s*(\d+)/)
       if (m) lastRecommendedSize.value = `${m[1]}x${m[2]}`
     }
@@ -378,14 +384,13 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   let draftTimer: ReturnType<typeof setTimeout> | null = null
 
   function snapshotDraft(): PromptBuilderDraft {
-    const popular = subject.value.kind === 'popular'
+    const subjectSnapshot = subject.value.kind === 'popular'
       ? {
           subject: 'popular' as const,
           characterId: subject.value.characterId,
           outfitId: subject.value.outfitId,
           blueprintId: subject.value.blueprintId,
           noLora: true,
-          kreaStyleId: kreaStyleId.value,
         }
       : { subject: 'studio' as const, noLora: false }
     return {
@@ -398,11 +403,12 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
       selections: { emotion: [...selections.emotion], shot: selections.shot, lighting: selections.lighting, composition: selections.composition },
       colorMood: colorMood.value,
       manualTags: [...manualTags.value],
+      artistStyleIds: [...artistStyleIds.value],
       sceneBaseStory: sceneBaseStory.value,
       directorMode: directorMode.value,
       sdParams: { ...sdParams },
       projectId: projectId.value,
-      ...popular,
+      ...subjectSnapshot,
     }
   }
 
@@ -420,6 +426,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     }
     if (typeof d.colorMood === 'string' || d.colorMood === null) colorMood.value = d.colorMood
     if (d.manualTags) manualTags.value = new Set(d.manualTags)
+    artistStyleIds.value = normalizeArtistStyleIds(d.artistStyleIds)
     if (d.directorMode) directorMode.value = d.directorMode
     if (d.sdParams) Object.assign(sdParams, d.sdParams)
     if (typeof d.projectId === 'string') projectId.value = d.projectId
@@ -428,7 +435,6 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     } else {
       subject.value = { kind: 'studio' }
     }
-    if (typeof d.kreaStyleId === 'string' || d.kreaStyleId === null) kreaStyleId.value = d.kreaStyleId
   }
 
   function saveDraft() {
@@ -525,8 +531,9 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
         engine: entry.engine ?? 'sd',
         profile: entry.profile ?? '',
         model: entry.model ?? sdModelName.value,
-        loraId: entry.loraId ?? null,
-        loraStrength: entry.loraStrength ?? null,
+         loraId: entry.loraId ?? null,
+         loraStrength: entry.loraStrength ?? null,
+          loras: Object.freeze((entry.loras ?? []).map(lora => Object.freeze({ id:lora.id, strength:lora.strength }))),
         width: measured.width, height: measured.height,
         rating: {}, favorite: false, notes: '',
         image_id: imageId, image_url: '',
@@ -534,9 +541,10 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
         subject: subject.value.kind === 'popular' ? 'popular' : 'studio',
         characterId: subject.value.kind === 'popular' ? subject.value.characterId : undefined,
         outfitId: subject.value.kind === 'popular' ? subject.value.outfitId : undefined,
-        blueprintId: subject.value.kind === 'popular' ? subject.value.blueprintId : undefined,
-        noLora: subject.value.kind === 'popular',
-        kreaStyleId: subject.value.kind === 'popular' ? kreaStyleId.value : null,
+         blueprintId: subject.value.kind === 'popular' ? subject.value.blueprintId : undefined,
+         noLora: subject.value.kind === 'popular',
+          styleLoraId: entry.styleLoraId ?? null,
+          artistStyleIds: normalizeArtistStyleIds(entry.artistStyleIds ?? (directorMode.value === 'pro' ? artistStyleIds.value : [])),
       }
       const updated = [...history.value, historyEntry]
       history.value = updated
@@ -578,8 +586,8 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
 
   return {
     story, visualDescription, char, colorMood, concise, sceneId, sceneBaseStory,
-    selections, manualTags, projectId,
-    subject, isPopular, kreaStyleId,
+    selections, manualTags, artistStyleIds, projectId,
+    subject, isPopular,
     scenes, curation, loraMeta, presets, modelProfiles, tags, characters,
     popularCharacters, sceneBlueprints, dataReady,
     history, projects,
@@ -590,7 +598,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     currentStep, showMatureScenes, activeTab, toastMsg, lastRecommendedSize,
     activeScene, charPrompt, loraLine, emotionPrompt, filteredScenes,
     setChar, setStory, toggleEmotion, setShot, setLighting, setComposition,
-    setColorMood, toggleManualTag, loadScene, clearScene, flash,
+    setColorMood, toggleManualTag, setArtistStyleIds, loadScene, clearScene, flash,
     setStudioSubject, setPopularSubject, setPopularBlueprint,
     loadData, loadHistory, loadProjects,
     saveDraft, restoreDraft, snapshotDraft,

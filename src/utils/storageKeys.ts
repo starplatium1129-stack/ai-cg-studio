@@ -18,6 +18,8 @@ export const THEME_KEY = 'aics_theme'
 export const INTERFACE_SOUND_KEY = 'aics_interface_sound_v1'
 export const TUNNEL_OFF_KEY = 'aics_tunnel_off'
 export const CHAT_THINKING_KEY = 'aics_chat_thinking_v1'
+export const CHAT_USER_PROFILE_KEY = 'aics_user_profile_v1'
+export const CHAT_MEMORY_KEY = 'aics_chat_memories_v1'
 export const GUEST_GUIDE_DISMISSED_KEY = 'aics_guest_guide_dismissed'
 
 /**
@@ -43,6 +45,8 @@ export const LIVE_LOCAL_KEYS = [
   'aics_chat_api_drafts',
   'aics_chat_archive_v1',
   CHAT_THINKING_KEY,
+  CHAT_USER_PROFILE_KEY,
+  CHAT_MEMORY_KEY,
   COMPANION_LIVE2D_KEY,
   COMPANION_BEHAVIOR_KEY,
   SPEECH_INPUT_KEY,

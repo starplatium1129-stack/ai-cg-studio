@@ -68,6 +68,10 @@ function collectRuntimeErrors(page: Page) {
  */
 async function openGenerationSettings(page: Page) {
   const panel = page.locator('details.generation-settings');
+  if (!await panel.isVisible()) {
+    await page.getByRole('button', { name: '专家模式', exact: true }).click();
+    await expect(panel).toBeVisible();
+  }
   if (await panel.evaluate(node => (node as HTMLDetailsElement).open)) return;
   await panel.locator('summary').click();
   await expect(panel.locator('.controls-grid')).toBeVisible();
@@ -111,11 +115,13 @@ test('flow 1 · 出图：选场景 → 生成 → 成片入册，参数如实送
 
   // /api/sd-status 走的是网关聚合接口，能拿到 mock 的模型列表就说明真穿过去了
   await expect(page.locator('.api-status .badge')).toHaveText(/SD 已连接/);
+  await expect(page.locator('details.generation-settings')).toBeHidden();
+  await expect(page.getByRole('button', { name: '生成图片' })).toHaveCount(1);
+  await openGenerationSettings(page);
   await expect(page.locator('.preview-output')).toContainText('lora');
 
   // 固定尺寸与 seed，好让断言不依赖推荐值
   await page.locator('.sd-inline-options select').first().selectOption('896x1344');
-  await openGenerationSettings(page);
   await toggle(page, '.ctrl-seed input[type="checkbox"]', true);
   await page.locator('.ctrl-seed input[type="number"]').fill('4242');
 
@@ -162,7 +168,8 @@ test('flow 1b · 出图失败：CUDA OOM 分类成可执行的降负载重试', 
   await page.goto('/prompt-builder?scene=sc001');
   await expect(page.locator('.api-status .badge')).toHaveText(/SD 已连接/);
 
-  await page.locator('.sd-inline-options select').first().selectOption('1216x1664');
+  await openGenerationSettings(page);
+  await page.locator('.sd-inline-options select').first().selectOption('1216x832');
   await toggle(page, page.getByRole('checkbox', { name: 'hires.fix', exact: true }), true);
   await page.getByRole('button', { name: '生成图片' }).click();
 
@@ -209,12 +216,12 @@ test('flow Anima · 应用 job 经过真网关和假 ComfyUI 出图', async ({ p
 
   await fault(request, MOCK.comfy, { renderMs: 10, historyTransient: 2 });
   await page.goto('/prompt-builder');
+  await page.getByRole('button', { name: '夏目', exact: true }).click();
   await page.locator('.engine-switch button').nth(1).click();
-  await expect(page.locator('.anima-status.is-on')).toBeVisible({ timeout: 10_000 });
-  await expect(page.locator('#stepResult .btn-primary').first()).toBeEnabled({ timeout: 10_000 });
-
-  await page.locator('.story-input').fill('宁宁在咖啡馆里穿着魔女服，对我微笑');
-  await page.locator('#stepResult .btn-primary').first().click();
+  await expect(page.locator('#baseModel')).toHaveValue(/anima/, { timeout: 10_000 });
+  await page.locator('.story-input').fill('夏目在咖啡馆里对我微笑');
+  await expect(page.getByTestId('anima-generate')).toBeEnabled({ timeout: 10_000 });
+  await page.getByTestId('anima-generate').click();
   await expect(page.locator('.result-image-wrap img.result-image')).toBeVisible({ timeout: 20_000 });
 
   expect(directComfyRequests).toEqual([]);
@@ -330,6 +337,40 @@ test('flow 3 · 聊天：流式回复逐字到达，system prompt 由网关注�
   await expect(page.locator('.message.user .message-bubble')).toHaveText('今天有点累');
 
   expect(errors).toEqual([]);
+});
+
+test('flow 3a · 用户档案与手动长期记忆进入后续 system prompt', async ({ page, request }) => {
+  await page.goto('/chat');
+  await useLocalChat(page);
+  await toggle(page, page.getByRole('checkbox', { name: /实时配音/ }), false);
+
+  await page.getByRole('button', { name: '我的档案' }).click();
+  await page.getByLabel('希望她怎样称呼你').fill('小林');
+  await page.getByLabel('关系定位').selectOption('confidant');
+  await page.getByLabel('希望她记住的背景').fill('我习惯夜间工作，希望先听我说完。');
+  await page.getByRole('button', { name: '保存档案' }).click();
+
+  await page.locator('.chat-input').fill('我每周五晚上会玩 MMORPG。');
+  await page.locator('.send-btn').click();
+  await expect(page.locator('.message.assistant .message-bubble').last()).toContainText('今天也辛苦了', { timeout: 15_000 });
+  await page.locator('.message.user .msg-memory-btn').first().click();
+  await expect(page.locator('.message.user .msg-memory-btn').first()).toHaveText('已记住');
+
+  await page.locator('.chat-input').fill('周五晚上做什么好？');
+  await page.locator('.send-btn').click();
+  await expect(page.locator('.message.assistant .message-bubble').last()).toContainText('今天也辛苦了', { timeout: 15_000 });
+
+  const calls = await callsTo(request, MOCK.ollama, '/api/chat');
+  expect(calls).toHaveLength(2);
+  const secondMessages = calls[1].body?.messages as Array<{ role: string; content: string }>;
+  expect(secondMessages[0].content).toContain('• 希望称呼：小林');
+  expect(secondMessages[0].content).toContain('• 关系定位：知己');
+  expect(secondMessages[0].content).toContain('我每周五晚上会玩 MMORPG。');
+  expect(secondMessages[0].content.indexOf('【长期记忆')).toBeLessThan(secondMessages[0].content.indexOf('【对话判断与表达控制】'));
+
+  await page.reload();
+  await page.getByRole('button', { name: '长期记忆' }).click();
+  await expect(page.getByLabel(/编辑记忆/)).toHaveValue('我每周五晚上会玩 MMORPG。');
 });
 
 test('flow 3b · 聊天配音：开启实时配音后逐句走翻译 + TTS', async ({ page, request }) => {
@@ -652,6 +693,12 @@ test('flow 6d · 深链：?regen=<id> 复原历史参数与 seed', async ({ page
   await expect(page.locator('.ctrl-seed input[type="number"]')).toHaveValue('777');
   await expect(page.locator('.ctrl-seed input[type="checkbox"]')).toBeChecked();
   await expect(page.locator('.scene-context-title')).not.toHaveText('');
+
+  // 兼容旧作品册链接：即使同时带 scene，也必须优先恢复历史快照。
+  await page.goto(`/prompt-builder?scene=sc005&regen=${entryId}`);
+  await openGenerationSettings(page);
+  await expect(page.locator('.ctrl-seed input[type="number"]')).toHaveValue('777');
+  await expect(page.locator('.scene-context-title')).toContainText('放学后的等待');
 });
 
 test('flow 6e · 深链：未知场景 id 不得让导演台崩在半途', async ({ page }) => {

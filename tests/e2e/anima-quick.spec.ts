@@ -22,15 +22,17 @@ test('anima engine: main generate shows result in main frame through mock ComfyU
   await page.goto(`${mockGateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
   await page.waitForTimeout(2000)
 
-  await page.locator('.engine-switch button').nth(1).click()
-  await page.waitForTimeout(1500)
+  const animaEngine = page.locator('.engine-switch button').nth(1)
+  await expect(animaEngine).toBeEnabled({ timeout: 30000 })
+  await animaEngine.click()
+  await expect(page.locator('#baseModel')).toHaveValue(/anima/, { timeout: 30000 })
+  await expect(page.locator('.api-status .badge')).toContainText('Anima 已连接', { timeout: 30000 })
+
+  await page.locator('.story-input').fill('宁宁在咖啡馆里穿着魔女服，对我微笑')
 
   const genBtn = page.locator('#stepResult .btn-primary').first()
   await expect(genBtn).toBeEnabled({ timeout: 30000 })
   console.log('GEN_BTN_ENABLED: true')
-
-  await page.locator('.story-input').fill('宁宁在咖啡馆里穿着魔女服，对我微笑')
-  await page.waitForTimeout(1500)
   await genBtn.click()
 
   let imgFound = false
@@ -50,7 +52,7 @@ test('anima engine: main generate shows result in main frame through mock ComfyU
   expect(errors).toEqual([])
 })
 
-test('anima panel and main button share one parent-owned request metadata snapshot', async ({ page, request }) => {
+test('anima expert parameters and unified button share one parent-owned request metadata snapshot', async ({ page, request }) => {
   test.setTimeout(240000)
   const bodies: unknown[] = []
   page.on('request', browserRequest => {
@@ -66,16 +68,17 @@ test('anima panel and main button share one parent-owned request metadata snapsh
   await page.goto(`${mockGateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
   await page.waitForTimeout(1800)
   await page.locator('.engine-switch button').nth(1).click()
+  await page.getByRole('button', { name: '专家模式', exact: true }).click()
   await page.locator('.anima-quick-panel > summary').click()
   await page.locator('.story-input').fill('宁宁在咖啡馆里穿着魔女服，对我微笑')
   await page.locator('.anima-quick-panel .anima-seed').fill('424242')
   await page.waitForTimeout(600)
 
-  await page.locator('.anima-quick-panel .anima-primary').click()
+  await page.getByTestId('anima-generate').click()
   await expect.poll(() => bodies.length, { timeout: 30000 }).toBe(1)
   await expect(page.locator('.result-image-wrap img.result-image')).toHaveCount(1, { timeout: 30000 })
 
-  await page.locator('#stepResult .btn-primary').first().click()
+  await page.getByTestId('anima-generate').click()
   await expect.poll(() => bodies.length, { timeout: 30000 }).toBe(2)
   expect(bodies[0]).toEqual(bodies[1])
   expect((bodies[0] as { profileId?: string }).profileId).toBeUndefined()
@@ -100,8 +103,7 @@ test('anima derives the promoted Natsume v20 LoRA and blocks triad', async ({ pa
   await page.locator('.engine-switch button').nth(1).click()
   await expect(page.locator('.anima-preview-note')).toHaveCount(0)
   await page.locator('.story-input').fill('夏目在咖啡馆里端来一杯咖啡')
-  await page.locator('.anima-quick-panel > summary').click()
-  await page.locator('.anima-quick-panel .anima-primary').click()
+  await page.getByTestId('anima-generate').click()
   await expect.poll(() => bodies.length, { timeout: 30000 }).toBe(1)
   expect(bodies[0].character).toBe('natsume')
   expect(bodies[0].loraId).toBe('L_NAT_V20_ANIMA')
@@ -122,7 +124,7 @@ test('Krea 2 is a separate natural-language request with no LoRA or negative fie
     await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({
       ok: true,
       online: true,
-      models: [{ id: 'krea2-turbo-fp8', label: 'Krea 2 Turbo', family: 'krea2', profileId: 'krea2_turbo_fp8', available: true, defaults: { steps: 8, cfg: 1, sampler: 'euler', scheduler: 'simple' } }],
+      models: [{ id: 'krea2-turbo-fp8', label: 'Krea 2 Turbo', family: 'krea2', profileId: 'krea2_turbo_fp8', available: true, sizes: ['1024x1024', '1024x1536', '1536x1024'], defaults: { steps: 8, cfg: 1, sampler: 'euler', scheduler: 'simple' } }],
       loras: [],
     }) })
   })
@@ -140,8 +142,7 @@ test('Krea 2 is a separate natural-language request with no LoRA or negative fie
   await page.locator('.engine-switch button').nth(2).click()
   await expect(page.locator('.engine-switch button').nth(2)).toHaveClass(/active/)
   await page.locator('#visualDescription').fill('A girl stands beside a rain-covered cafe window, warm interior light behind her.')
-  await page.locator('.anima-quick-panel > summary').click()
-  await page.locator('.anima-quick-panel .anima-primary').click()
+  await page.getByTestId('anima-generate').click()
   await expect.poll(() => bodies.length, { timeout: 30000 }).toBe(1)
   expect(bodies[0].loraId).toBeUndefined()
   expect(bodies[0].negative).toBe('')
@@ -212,7 +213,7 @@ test('popular creator · Anima no-LoRA: loraId omitted, workflow has no LoraLoad
   expect(classes).not.toContain('LoraLoader')
   expect(graph!['2'].inputs?.clip_name).toBe('qwen_3_06b_base.safetensors')
   expect(String(graph!['5'].inputs?.text)).toContain('worst quality')
-  expect(graph!['7'].inputs?.sampler_name).toBe('er_sde')
+  expect(graph!['7'].inputs?.sampler_name).toBe('res_multistep')
 })
 
 test('popular creator · Krea 2 request has no negative and no LoRA', async ({ page, request }) => {
@@ -248,7 +249,7 @@ test('popular creator · Krea 2 request has no negative and no LoRA', async ({ p
   await expect(page.locator('.result-image-wrap img.result-image')).toHaveCount(1, { timeout: 30000 })
 })
 
-test('popular creator · Krea style recipe selection in expert mode lands in the request prompt', async ({ page, request }) => {
+test('popular creator · Krea style is inferred automatically from the selected blueprint', async ({ page, request }) => {
   test.setTimeout(240000)
   const bodies: Array<Record<string, unknown>> = []
   page.on('request', browserRequest => {
@@ -265,37 +266,36 @@ test('popular creator · Krea style recipe selection in expert mode lands in the
 
   await page.locator('.char-source-btn').filter({ hasText: '热门角色' }).click()
   await page.locator('.popular-card').filter({ hasText: '雷电将军' }).click()
-  await page.locator('.blueprint-card').first().click()
+  await page.locator('.blueprint-reco-btn').filter({ hasText: '查看全部' }).click()
+  await page.locator('.blueprint-card').filter({ hasText: '花海逆光' }).first().click()
   await page.locator('.engine-switch button').nth(2).click()
   await expect(page.locator('.engine-switch button').nth(2)).toHaveClass(/active/)
 
-  // 配方面板只出现在专家模式；手选「梦幻粉彩」覆盖蓝图 hint（花海 hint 是电影感剧照）。
   await page.getByRole('button', { name: '专家模式', exact: true }).click()
-  await page.locator('#stepRecipe summary').click()
-  await page.locator('#stepRecipe .recipe-opt').filter({ hasText: '梦幻粉彩' }).click()
-  await expect(page.locator('#stepRecipe .recipe-opt.selected')).toContainText('梦幻粉彩')
+  await expect(page.locator('#stepRecipe')).toHaveCount(0)
+  await expect(page.getByText(/画师影响|Style LoRA/)).toHaveCount(0)
 
   const genBtn = page.getByRole('button', { name: '生成图片' })
   await expect(genBtn).toBeEnabled({ timeout: 30000 })
   await genBtn.click()
   await expect.poll(() => bodies.length, { timeout: 30000 }).toBe(1)
   const prompt = String(bodies[0].prompt)
-  expect(prompt).toContain('A dreamy pastel illustration bathed in soft diffused light')
-  expect(prompt).toMatch(/dreamy pastel art\.$/i)
+  expect(prompt).toContain('A cinematic film still')
+  expect(prompt.split(/(?<=\.)\s/).length).toBeGreaterThanOrEqual(3)
+  expect(prompt.split(/(?<=\.)\s/).length).toBeLessThanOrEqual(5)
+  expect(bodies[0].styleLoraId).toBeUndefined()
   expect(prompt).not.toMatch(/nene_|natsume_|ayachi_nene|shiki_natsume|<lora:/i)
   await expect(page.locator('.result-image-wrap img.result-image')).toHaveCount(1, { timeout: 30000 })
 })
 
-test('popular creator · adult style recipes are invisible to underage characters', async ({ page }) => {
+test('popular creator · manual style controls stay absent for underage characters', async ({ page }) => {
   await page.goto(`http://127.0.0.1:${MOCK_PORTS.gateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
   await page.waitForTimeout(2000)
   await page.locator('.char-source-btn').filter({ hasText: '热门角色' }).click()
   await page.locator('.popular-card').filter({ hasText: '樱岛麻衣' }).click()
   await page.getByRole('button', { name: '专家模式', exact: true }).click()
-  await page.locator('#stepRecipe summary').click()
-  await expect(page.locator('#stepRecipe .recipe-opt.adult')).toHaveCount(0)
-  await expect(page.locator('#stepRecipe .recipe-opt .scene-rating-tag')).toHaveCount(0)
-  await expect(page.locator('#stepRecipe .recipe-opt')).toHaveCount(9)
+  await expect(page.locator('#stepRecipe')).toHaveCount(0)
+  await expect(page.getByText(/画师影响|Style LoRA/)).toHaveCount(0)
 })
 
 test('popular creator · adult gate cannot be bypassed for underage characters', async ({ page }) => {
@@ -312,8 +312,8 @@ test('popular creator · adult gate cannot be bypassed for underage characters',
 
   // 成人筛选分类对非成人角色不可达：选一张普通蓝图，预览不得含显式词。
   await page.locator('.blueprint-card').first().click()
-  await expect(page.locator('.preview-output')).not.toContainText('nsfw')
-  await expect(page.locator('.preview-output')).not.toContainText('nude')
+  const positive = await page.locator('.preview-output').innerText().then(text => text.split('[NEG]')[0])
+  expect(positive).not.toMatch(/\b(?:nsfw|nude)\b/i)
 })
 
 test('popular creator · draft round-trips subject/outfit/blueprint through reload', async ({ page }) => {
@@ -428,7 +428,7 @@ test('popular creator · switching back to studio immediately restores the nene 
   await genBtn.click()
   await expect.poll(() => bodies.length, { timeout: 30000 }).toBe(1)
   expect(bodies[0].character).toBe('nene')
-  expect(bodies[0].loraId).toBe('L_NENE_V20B_ANIMA')
+  expect(bodies[0].loraId).toBe('L_NENE_V20_ANIMA')
   await expect(page.locator('.result-image-wrap img.result-image')).toHaveCount(1, { timeout: 30000 })
 })
 
@@ -447,6 +447,6 @@ test('popular creator · adult blueprint is cleared and unreachable when switchi
   await page.locator('.popular-card').filter({ hasText: '樱岛麻衣' }).click()
   await expect(page.locator('.blueprint-card[data-adult="true"]')).toHaveCount(0)
   await expect(page.locator('.blueprint-card.active')).toHaveCount(0)
-  await expect(page.locator('.preview-output')).not.toContainText('nsfw')
-  await expect(page.locator('.preview-output')).not.toContainText('nude')
+  const positive = await page.locator('.preview-output').innerText().then(text => text.split('[NEG]')[0])
+  expect(positive).not.toMatch(/\b(?:nsfw|nude)\b/i)
 })

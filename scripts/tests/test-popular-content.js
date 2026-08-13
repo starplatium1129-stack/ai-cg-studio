@@ -118,11 +118,13 @@ test('prompt compiler: Anima keeps identity anchors exact, no studio pollution, 
     visualDescription: 'The girl gently holds a bouquet of flowers, petals drifting onto her shoulder.',
   });
   assert.ok(visualAnima.prompt.includes('bouquet'), 'user visual description must enter the no-LoRA prompt');
-  assert.ok(!visualAnima.prompt.includes('long braid'), 'user visual description must replace the outfit prose fallback');
+  assert.ok(visualAnima.prompt.includes('japanese_clothes') || visualAnima.prompt.includes('kimono'),
+    'user visual description must not replace the selected outfit');
   var fallbackAnima = popular.buildPopularPromptPlan({
     character: raiden, outfit: outfit, blueprint: blueprint, engine: 'anima', profile: null, adultEnabled: true,
   });
-  assert.ok(fallbackAnima.prompt.includes('long braid'), 'empty visual description falls back to outfit prose');
+  assert.ok(fallbackAnima.prompt.includes('japanese_clothes') || fallbackAnima.prompt.includes('kimono'),
+    'empty visual description still keeps the selected outfit tokens');
 
   var animaText = [anima.prompt, anima.negative].join(' ');
   assert.ok(!/(?:ayachi_nene|shiki_natsume)/i.test(animaText), 'no studio character name');
@@ -140,6 +142,8 @@ test('prompt compiler: Anima keeps identity anchors exact, no studio pollution, 
   assert.ok(!/(?:ayachi_nene|shiki_natsume|nene_|natsume_)/i.test(kreaText), 'krea no studio pollution');
   assert.ok(!/<lora:/i.test(kreaText), 'krea no lora syntax');
   assert.ok(!/official_cg|visual_audited/i.test(kreaText), 'krea no retrieval metadata');
+  assert.strictEqual((kreaText.match(/flowing purple Japanese robes/gi) || []).length, 1, 'selected outfit must appear exactly once');
+  assert.ok(!/completely deserted|not a single other person|no commuters/i.test(kreaText), 'Krea must not force every public scene to be deserted');
 });
 
 test('prompt compiler: manual expert tags are sanitized against studio control tokens', function () {
@@ -200,12 +204,13 @@ test('krea style recipes: resolution is engine-default -> blueprint hint -> sele
   assert.strictEqual(auto.lead, 'A polished visual novel event CG with refined cel shading and crisp character work');
   var animaAuto = recipes.resolveStyleRecipe(recipes.KREA_STYLE_RECIPES, 'anima', null, null, raiden, { adultEnabled: true });
   assert.ok(animaAuto.lead.indexOf('anime key visual') !== -1, 'anima default must be the key visual recipe');
-  // 解析层照常返回 medium，但 Anima 组装只取 lead（medium 不进 token 流）。
+  // 解析层照常返回自然语言 lead；Anima 组装改取同配方的模型原生短标签。
   var animaBuilt = popular.buildPopularPromptPlan({
     character: raiden, outfit: raiden.outfits[0], blueprint: null, engine: 'anima', profile: null, adultEnabled: true, style: animaAuto,
   });
-  assert.ok(animaBuilt.prompt.indexOf('anime key visual') !== -1, 'anima must prepend the style lead');
+  assert.ok(animaBuilt.prompt.indexOf('anime key visual') !== -1, 'anima must include the model-native style tags');
   assert.ok(!/anime key visual\.$/i.test(animaBuilt.prompt), 'anima must not append the style medium');
+  assert.ok(animaBuilt.prompt.includes('Raiden Shogun from Genshin Impact'), 'Anima must receive the popular character identity prose');
 
   // 蓝图 hint（配方 id）优先于缺省。
   var hinted = recipes.resolveStyleRecipe(recipes.KREA_STYLE_RECIPES, 'krea2', flower, null, raiden, { adultEnabled: true });
@@ -232,7 +237,7 @@ test('krea style recipes: resolution is engine-default -> blueprint hint -> sele
   assert.strictEqual(freeHint.adult, false, 'free phrase hints are never adult');
 });
 
-test('krea prose: official paragraph flow, style first, medium last, no meta phrases, no tag stuffing', function () {
+test('krea prose: automatic style first, 3-5 visual sentences, no meta phrases or tag stuffing', function () {
   var raiden = popular.findCharacter(characters, 'raiden_shogun');
   var outfit = raiden.outfits.find(function (item) { return item.default; }) || raiden.outfits[0];
   var blueprint = blueprints.find(function (item) { return item.id === 'flower_field_backlight'; });
@@ -247,8 +252,6 @@ test('krea prose: official paragraph flow, style first, medium last, no meta phr
 
   // 风格配方开头。
   assert.ok(text.startsWith('A cinematic film still'), 'style lead must open the Krea prompt');
-  // 后置媒介词收尾。
-  assert.ok(/film still\.$/i.test(text), 'style medium must close the Krea prompt');
   // 无 meta 短语 / 无检索元数据 / 无工作室污染。
   assert.ok(!/(?:In this image|The image shows|Scene details:|Composition and lighting|A visual novel event CG featuring)/i.test(text));
   assert.ok(!/official_cg|visual_audited/i.test(text));
@@ -256,7 +259,7 @@ test('krea prose: official paragraph flow, style first, medium last, no meta phr
   // 无逗号标签堆砌：不出现下划线 token，也不出现连续逗号标签。
   assert.ok(!/[a-z]+_[a-z]+/i.test(text), 'krea prose must not carry raw danbooru tokens');
   assert.ok(!/,\s*\w+,\s*\w+,\s*\w+,\s*$/.test(text), 'krea prose must not end with a comma-stuffed list');
-  // identityProse / outfitProse / promptProse 原样织入，未被逗号切碎。
+  // identityProse / outfitProse / promptProse 作为自然语言织入，未退化成标签流。
   assert.ok(text.includes('Raiden Shogun from Genshin Impact, also known as Raiden Ei, the Electro Archon'),
     'identityProse must be woven verbatim');
   assert.ok(/the Raiden Shogun's flowing purple Japanese robes, bare shoulders, thigh-highs and a long braid/i.test(text),
@@ -265,6 +268,7 @@ test('krea prose: official paragraph flow, style first, medium last, no meta phr
     'blueprint promptProse must be woven verbatim');
   // 散文句子必须以句号收束。
   var sentences = text.split(/(?<=\.)\s/);
+  assert.ok(sentences.length >= 3 && sentences.length <= 5, 'Krea prompt must contain 3-5 concise visual sentences');
   sentences.forEach(function (sentenceText) {
     assert.ok(/\.$/.test(sentenceText.trim()), 'each prose sentence must end with a period');
   });
@@ -288,7 +292,7 @@ test('krea prose: adult recipe fails closed inside buildPopularPromptPlan for in
   });
   assert.ok(legit, 'adult character + mature switch must build with an adult style');
   assert.ok(/mature sensual content/i.test(legit.prompt), 'adult style lead must reach the prompt');
-  assert.ok(/mature art\.$/i.test(legit.prompt), 'adult style medium must close the prompt');
+  assert.ok(legit.prompt.split(/(?<=\.)\s/).length <= 5, 'adult Krea prompt must remain concise');
 });
 
 test('blueprint hints: kreaStyleHint/animaStyleHint parse into the model and stay on valid blueprints', function () {
@@ -322,6 +326,24 @@ test('prompt compiler: Anima negative merges profile negative_prefix per negativ
   });
   assert.ok(krea);
   assert.strictEqual(krea.negative, '', 'Krea negative must always be empty regardless of profile prefix');
+});
+
+test('curated artist styles use native Anima tags and Krea prose', function () {
+  var raiden = popular.findCharacter(characters, 'raiden_shogun');
+  var outfit = raiden.outfits[0];
+  var blueprint = blueprints.find(function (item) { return item.id === 'flower_field_backlight'; });
+  var anima = popular.buildPopularPromptPlan({
+    character: raiden, outfit: outfit, blueprint: blueprint, engine: 'anima', profile: { engine:'anima' },
+    artistTags: ['@kantoku', '@mika pikazo'], artistProse: 'with visual styling inspired by Kantoku and Mika Pikazo',
+  });
+  assert.ok(anima.prompt.includes('@kantoku') && anima.prompt.includes('@mika pikazo'));
+  var krea = popular.buildPopularPromptPlan({
+    character: raiden, outfit: outfit, blueprint: blueprint, engine: 'krea2', profile: { engine:'krea2' },
+    style: { lead:'A polished visual novel event CG', medium:'visual novel event CG' },
+    artistTags: [], artistProse: 'with visual styling inspired by Kantoku and Mika Pikazo',
+  });
+  assert.ok(krea.prompt.startsWith('A polished visual novel event CG, with visual styling inspired by Kantoku and Mika Pikazo.'));
+  assert.ok(!krea.prompt.includes('@kantoku'));
 });
 
 test('prompt compiler: restored adult blueprint fails closed for ineligible characters', function () {
@@ -366,7 +388,14 @@ test('view source sentinels: popular copy/preview, studio refresh, preview badge
     'recommended engine must be applied on character/source selection');
 
   // Finding 2：蓝图尺寸必须收敛到当前底模 sizes。
-  assert.ok(/activeModel\.sizes\.includes\(size\)/.test(view), 'selectBlueprint must clamp to active model sizes');
+  assert.ok(view.includes('closestSupportedSize(activeModel, normalized)') && view.includes('applyRecommendedSize(decision.size)'),
+    'selectBlueprint must clamp to the nearest active-model size');
+
+  assert.ok(view.includes('<GenerationOutputControls') && view.includes(':engine="drawEngine"'),
+    'all engines must share the persistent generation control');
+  assert.ok(!view.includes('GenerationStylePanel') && !view.includes('artistInfluences')
+      && view.includes('ArtistStylePicker') && view.includes("pb.directorMode === 'pro'"),
+    'one-click mode must hide artist setup while expert mode exposes curated tags');
 
   // Finding 4：AnimaQuickPanel 用显式 noLora prop，不靠 model id 猜。
   assert.ok(panel.includes('noLora?: boolean'), 'panel must accept an explicit noLora prop');
@@ -384,8 +413,10 @@ test('persistence round-trip: popular subject/outfit/blueprint/noLora survive pa
     characterId: 'raiden_shogun',
     outfitId: 'shogun_robes',
     blueprintId: 'flower_field_backlight',
-    noLora: true,
-    kreaStyleId: 'cinematic_film_still',
+     noLora: true,
+     kreaStyleId: 'legacy-style-ignored',
+     artistInfluences: ['legacy artist ignored'],
+     artistStyleIds: ['kantoku', 'rella', 'unknown-third'],
   };
   var parsed = persistence.parsePromptBuilderDraft(draft);
   assert.ok(parsed, 'draft must parse');
@@ -394,12 +425,16 @@ test('persistence round-trip: popular subject/outfit/blueprint/noLora survive pa
   assert.strictEqual(parsed.outfitId, 'shogun_robes');
   assert.strictEqual(parsed.blueprintId, 'flower_field_backlight');
   assert.strictEqual(parsed.noLora, true);
-  assert.strictEqual(parsed.kreaStyleId, 'cinematic_film_still');
+   assert.strictEqual(parsed.kreaStyleId, undefined, 'manual style state is not restored');
+    assert.strictEqual(parsed.artistInfluences, undefined, 'manual artist state is not restored');
+    assert.deepStrictEqual(parsed.artistStyleIds, ['kantoku', 'rella'], 'curated artist ids restore with whitelist and two-item limit');
 
   var serialized = JSON.parse(JSON.stringify(parsed));
   assert.strictEqual(serialized.subject, 'popular');
   assert.strictEqual(serialized.characterId, 'raiden_shogun');
-  assert.strictEqual(serialized.kreaStyleId, 'cinematic_film_still');
+    assert.strictEqual(serialized.kreaStyleId, undefined);
+    assert.strictEqual(serialized.artistInfluences, undefined);
+    assert.deepStrictEqual(serialized.artistStyleIds, ['kantoku', 'rella']);
 
   // 热门角色草稿没有 story/sceneId 也能恢复（蓝图驱动场景）。
   var storyless = {
@@ -413,7 +448,7 @@ test('persistence round-trip: popular subject/outfit/blueprint/noLora survive pa
   var parsedStoryless = persistence.parsePromptBuilderDraft(storyless);
   assert.ok(parsedStoryless, 'storyless popular draft must restore');
   assert.strictEqual(parsedStoryless.subject, 'popular');
-  assert.strictEqual(parsedStoryless.kreaStyleId, undefined, 'missing kreaStyleId stays undefined (auto)');
+  assert.strictEqual(parsedStoryless.kreaStyleId, undefined);
 
   var legacy = persistence.parsePromptBuilderDraft({ updatedAt: 1, sceneId: 'sc001', story: 'old' });
   assert.ok(legacy, 'legacy draft must parse');
@@ -444,19 +479,19 @@ test('anima no-LoRA route contract: validate + workflow have no LoraLoader and k
   assert.strictEqual(workflow['2'].inputs.type, 'qwen_image');
   assert.strictEqual(workflow['2'].inputs.clip_name, 'qwen_3_06b_base.safetensors');
   assert.strictEqual(workflow['5'].inputs.text, 'worst quality, low quality', 'negative encode must receive the negative');
-  assert.strictEqual(workflow['7'].inputs.sampler_name, 'er_sde');
-  assert.strictEqual(workflow['7'].inputs.scheduler, 'sgm_uniform');
-  assert.strictEqual(workflow['7'].inputs.steps, 40);
-  assert.strictEqual(workflow['7'].inputs.cfg, 4.5);
+  assert.strictEqual(workflow['7'].inputs.sampler_name, 'res_multistep');
+  assert.strictEqual(workflow['7'].inputs.scheduler, 'simple');
+  assert.strictEqual(workflow['7'].inputs.steps, 24);
+  assert.strictEqual(workflow['7'].inputs.cfg, 3.0);
   assert.deepStrictEqual(workflow['7'].inputs.negative, ['5', 0]);
   assert.strictEqual(workflow['10'].class_type, 'SaveImage');
 
   // 无 LoRA 模式仍保持原有 lora 校验：提供 lora 时走原路径。
   var withLora = animaRoute.validateInput({
     prompt: 'x', negative: 'n', modelId: 'anima-aesthetic-v1.1',
-    loraId: 'L_NENE_V20B_ANIMA', loraStrength: 0.85, width: 832, height: 1216, character: 'nene',
+    loraId: 'L_NENE_V20_ANIMA', loraStrength: 0.85, width: 832, height: 1216, character: 'nene',
   });
-  assert.strictEqual(withLora.loraId, 'L_NENE_V20B_ANIMA');
+  assert.strictEqual(withLora.loraId, 'L_NENE_V20_ANIMA');
   assert.throws(function () {
     animaRoute.validateInput({ prompt: 'x', modelId: 'anima-aesthetic-v1.1', loraId: 'unknown', width: 832, height: 1216 });
   }, function (error) { return error && error.code === 'UNKNOWN_LORA'; });

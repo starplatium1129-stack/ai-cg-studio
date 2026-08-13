@@ -31,7 +31,7 @@ ChatCharacterStage / useLive2D
 - 公开意图包括 character、frame/bounds、motion、expression、mouth level、emotion、gaze、hit-test、visibility、max FPS、snapshot 和 destroy；事件包括 ready、motion started/failed、hit-test、entrance finished 和 visibility。
 - `src/types/live2dNative.ts` 与 `docs/live2d-native-overlay-plan.md` 是 IPC 公共契约；新增命令沿用 typed command/reply，不暴露任意路径、参数或执行能力。
 - overlay 矩形一律使用屏幕物理像素。CSS rect、窗口原点和 DPR/视口实测比例的换算集中在 `src/utils/live2dOverlayLayout.ts`。
-- Win32 `SetWindowRgn` 的 region 坐标必须相对 overlay 左上角；模型区域减去 WebView 控件穿透孔后再提交。空交互区域必须提交真正的空 region，不能用 `NULL` 恢复完整窗口区域。
+- Native overlay 固定在透明 Companion WebView 下方并使用 `WS_EX_TRANSPARENT`；`setFrame` 只传 Companion-local 物理矩形，Rust 每帧用实时 HWND 位置跟随，避免首次旧 bounds 和拖动事件延迟。WebView 舞台将归一化点击坐标经 IPC 送到 Cubism HitArea。禁止恢复 `SetWindowRgn` 控件挖洞方案：Win32 region 会同时裁剪 DirectComposition 可见画面，在角色头发、手部和脚部留下矩形缺口。
 - Native 状态查询是只读的；未初始化查询不得创建窗口、加载模型或启动渲染线程。重复 connect/destroy 必须清理 listener 和 motion 订阅。
 - 动作组不固定使用变体索引 0；同一动作正在播放时返回 busy，前端显示“动作进行中”而不强制重启。
 
@@ -78,6 +78,12 @@ ChatCharacterStage / useLive2D
 4. 30 分钟 soak 是发布前可选强化；当前固定 Windows Native gate 是 300 秒，不应加入无 GPU 的默认 `validate`。
 5. 后续接入只使用 `src/types/live2dNative.ts`、`live2d-native-overlay-plan.md` 和公开 backend API；不得把参数级 hack、源项目 WAV 或未验证 motion/expression 当作新能力。
 
+## 2026-08-13 启动竞态修复
+
+- `live2d_overlay.rs` 新增 `starting` 原子门控；并发 `ensure_overlay()` 只允许一个 Win32 overlay/render thread 进入启动流程。
+- `window_ready` 延迟到 `RenderContext` 成功建立后设置；窗口创建、renderer 初始化、命令通道断开、致命 render error 与消息循环退出统一销毁 HWND 并清理 ready/attached/starting/channel/model 状态，后续调用可重新启动。
+- JS/源码契约验证：`test-live2d-native-contract.js` 3/3、`test-live2d-backend.js` 21/21。当前机器没有 `cargo`/`rustfmt`，因此本次 Rust 增量尚未重新执行 `cargo fmt` 与 `cargo test --locked`；上方历史 13/13 不能冒充本次补丁的 Rust 编译证据。
+- 仍未处理的发布风险：真实 monitor work area、多屏混合 DPI、进程最早期 DPI awareness、renderer stopped/error 前端事件、Tauri command origin 校验，以及 `destroy` 是长期复用还是完整退出线程的契约统一。
 
 ## 2026-08-13 Companion 陪伴表现与凝视平滑
 

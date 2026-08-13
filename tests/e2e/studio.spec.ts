@@ -32,8 +32,8 @@ async function mockShowcase(page: Page) {
   await page.route('**/scene-showcase/manifest.json', route => route.fulfill({
     contentType: 'application/json',
     body: JSON.stringify({
-      sceneCount: 1,
-      counts: { All: 1, R15: 0, R18: 0 },
+      sceneCount: 2,
+      counts: { All: 2, R15: 0, R18: 0 },
       entries: [{
         id: 'e2e-showcase',
         title: '测试样张',
@@ -42,10 +42,20 @@ async function mockShowcase(page: Page) {
         char: 'nene',
         rating: 'All',
         attempt: 1,
+      }, {
+        id: 'e2e-popular',
+        title: '热门角色测试样张',
+        story: '用于验证跨类型筛选复位。',
+        category: '热门角色',
+        char: 'popular-test',
+        displayName: '测试角色',
+        type: 'popular',
+        rating: 'All',
+        attempt: 1,
       }],
     }),
   }));
-  await page.route(/\/scene-showcase\/(?:thumbs|images)\/e2e-showcase\.jpg(?:\?.*)?$/, route => route.fulfill({
+  await page.route(/\/scene-showcase\/(?:thumbs|images)\/e2e-(?:showcase|popular)\.jpg(?:\?.*)?$/, route => route.fulfill({
     contentType: 'image/png',
     body: SHOWCASE_PIXEL,
   }));
@@ -110,15 +120,19 @@ test('director separates a focused scene mode from the expert tag workflow', asy
   await expect(page.locator('#projectSelect')).toHaveCount(0);
   await expect(page.locator('.voice-studio')).toBeVisible();
   const shellWidth = await page.locator('.pb').evaluate(element => element.getBoundingClientRect().width);
-  expect(shellWidth).toBeGreaterThanOrEqual(1800);
+  const viewportWidth = await page.evaluate(() => window.innerWidth);
+  expect(shellWidth).toBeGreaterThanOrEqual(1000);
   expect(shellWidth).toBeLessThanOrEqual(1880);
+  expect(shellWidth).toBeLessThanOrEqual(viewportWidth);
   const basicColumns = await page.locator('.director-workspace').evaluate(element => {
     const [left, center, right] = Array.from(element.children).map(child => child.getBoundingClientRect().width);
     return { left, center, right };
   });
   expect(basicColumns.left).toBeGreaterThanOrEqual(320);
-  expect(basicColumns.center).toBeGreaterThan(900);
-  expect(basicColumns.right).toBeGreaterThanOrEqual(300);
+  expect(basicColumns.center).toBeGreaterThan(basicColumns.left * 1.75);
+  expect(basicColumns.right).toBe(0);
+  await expect(page.locator('#baseModel')).toBeVisible();
+  await expect(page.getByRole('button', { name: '生成图片' })).toHaveCount(1);
 
   // 选一张场景后，提示词应实时生成，并带出结构健康统计
   await page.locator('.scene-list button.scene-card').first().click();
@@ -145,6 +159,31 @@ test('director separates a focused scene mode from the expert tag workflow', asy
   expect(errors).toEqual([]);
 });
 
+test('director expert artist tags use model-native syntax and stay out of scene mode', async ({ page }) => {
+  await page.goto('/prompt-builder');
+  await expect(page.getByTestId('artist-style-picker')).toHaveCount(0);
+  await page.getByRole('button', { name: /专家模式/ }).click();
+  const picker = page.getByTestId('artist-style-picker');
+  await expect(picker).toBeVisible();
+  await picker.locator('summary').click();
+  await picker.locator('[data-artist-style-id="kantoku"]').click();
+  await expect(page.locator('.preview-output')).toContainText('kantoku');
+  await page.getByRole('button', { name: /Anima 引擎/ }).click();
+  await expect(page.locator('.preview-output')).toContainText('@kantoku');
+  await page.getByRole('button', { name: /Krea 2/ }).click();
+  await expect(page.locator('.preview-output')).toContainText('visual styling inspired by Kantoku');
+  await page.getByRole('button', { name: /场景模式/ }).click();
+  await expect(page.getByTestId('artist-style-picker')).toHaveCount(0);
+  await expect(page.locator('.preview-output')).not.toContainText(/kantoku/i);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.getByRole('button', { name: /专家模式/ }).click();
+  const mobilePicker = page.getByTestId('artist-style-picker');
+  await mobilePicker.locator('summary').click();
+  await expect(mobilePicker.locator('[data-artist-style-id]')).toHaveCount(12);
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+  expect(overflow).toBeLessThanOrEqual(1);
+});
+
 test('director restores state from a scene deep link', async ({ page }) => {
   const errors = collectRuntimeErrors(page);
   await page.goto('/prompt-builder?scene=sc001');
@@ -152,6 +191,7 @@ test('director restores state from a scene deep link', async ({ page }) => {
   // 深链必须把场景真正装进导演台
   await expect(page.locator('.pb')).toHaveAttribute('data-character', /nene|natsume|triad/);
   await expect(page.locator('.scene-context-title')).toBeVisible();
+  await page.getByRole('button', { name: '专家模式', exact: true }).click();
   await expect(page.locator('.preview-output')).toContainText('lora');
 
   expect(errors).toEqual([]);
@@ -173,6 +213,23 @@ test('scene manager loads project data and opens the editor without dirtying sta
   await expect(page.locator('.modal-card')).toBeHidden();
 
   expect(errors).toEqual([]);
+});
+
+test('scene manager protects unsaved changes during internal navigation', async ({ page }) => {
+  await page.goto('/scene-manager');
+  await page.getByRole('button', { name: /新增场景/ }).click();
+  await page.getByLabel('标题 *').fill('未保存场景');
+  await page.getByLabel('故事 *').fill('用于验证站内离开保护。');
+  await page.getByRole('button', { name: '保存', exact: true }).click();
+  await expect(page.getByRole('button', { name: /保存到项目/ })).toBeEnabled();
+
+  page.once('dialog', dialog => dialog.dismiss());
+  await page.getByRole('link', { name: '灵感场景' }).click();
+  await expect(page).toHaveURL(/\/scene-manager$/);
+
+  page.once('dialog', dialog => dialog.accept());
+  await page.getByRole('link', { name: '灵感场景' }).click();
+  await expect(page).toHaveURL(/\/scene-explorer$/);
 });
 
 test('scene manager exposes tag, showcase and duplicate tooling', async ({ page }) => {
@@ -253,6 +310,14 @@ test('showcase renders one frosted toolbar and a side-by-side viewer', async ({ 
   expect(boxes).not.toBeNull();
   expect(boxes!.artRight).toBeLessThanOrEqual(boxes!.copyLeft + 2);
 
+  await page.getByRole('button', { name: '关闭大图' }).click();
+  await page.getByRole('button', { name: '热门角色', exact: true }).click();
+  await page.locator('#showcasePopularChar').selectOption('popular-test');
+  await expect(page.locator('.sample')).toHaveCount(1);
+  await page.getByRole('button', { name: '场景', exact: true }).click();
+  await expect(page.getByRole('button', { name: '全部角色', exact: true })).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('.sample')).toHaveCount(1);
+
   expect(errors).toEqual([]);
 });
 
@@ -262,7 +327,7 @@ test('control panel shows service status wall and scheduling controls', async ({
 
   await expect(page.locator('.control-rail')).toBeVisible();
   await expect(page.locator('.control-rail-link')).toHaveCount(5);
-  await expect(page.locator('.gallery-kicker')).toContainText('Local control room');
+  await expect(page.locator('.control-rail-brand')).toContainText('Local control room');
   await expect(page.locator('.control-title')).toBeVisible();
   await expect(page.locator('.status-tile').first()).toBeVisible();
   await expect(page.getByRole('button', { name: /检测所有服务/ })).toBeVisible();
@@ -553,6 +618,9 @@ test('speech input: hold-talk entry hidden until ASR endpoint configured', async
   // 未配置 ASR 端点：按住说话入口不出现
   await expect(page.locator('.chat-input')).toBeVisible();
   await expect(page.locator('.hold-talk-btn')).toHaveCount(0);
+  await page.getByRole('button', { name: '语音输入设置' }).click();
+  await expect(page.locator('.speech-settings')).toBeVisible();
+  await page.getByRole('button', { name: '关闭' }).click();
 
   // 配置启用 + http 端点后出现
   await page.evaluate(() => {

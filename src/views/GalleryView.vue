@@ -156,8 +156,8 @@
           <div class="viewer-prompt">{{ current.prompt || '未保存 Prompt' }}</div>
         </details>
         <div class="viewer-actions">
-          <RouterLink class="btn btn-primary" :to="`/prompt-builder?scene=${encodeURIComponent(current.scene || '')}&regen=${encodeURIComponent(current.id || '')}`">重新生成</RouterLink>
-          <RouterLink class="btn btn-ghost" :to="`/prompt-builder?scene=${encodeURIComponent(current.scene || '')}&variant=${encodeURIComponent(current.id || '')}`">生成变体</RouterLink>
+          <RouterLink class="btn btn-primary" :to="`/prompt-builder?regen=${encodeURIComponent(current.id || '')}`">重新生成</RouterLink>
+          <RouterLink class="btn btn-ghost" :to="`/prompt-builder?variant=${encodeURIComponent(current.id || '')}`">生成变体</RouterLink>
           <button class="btn btn-ghost" type="button" @click="downloadCurrent">下载原图</button>
           <button class="btn btn-ghost" type="button" @click="copyPrompt">复制 Prompt</button>
           <button v-if="pendingDeleteId !== current.id" class="btn btn-ghost btn-danger" type="button"

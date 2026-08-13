@@ -37,6 +37,9 @@
       <img class="portrait-main" :src="character.image" :alt="character.name" />
       <div ref="live2dHostRef" class="live2d-host" aria-hidden="true"></div>
       <div class="voice-halo" aria-hidden="true"></div>
+      <div v-if="live2d.interactionHint.value" class="live2d-interaction-hint" aria-live="polite">
+        {{ live2d.interactionHint.value }}
+      </div>
       <button
         class="avatar-status"
         type="button"
@@ -67,9 +70,6 @@
       </div>
       <p class="character-caption">{{ character.caption }}</p>
       <p class="character-description" :title="character.description">{{ character.description }}</p>
-      <div v-if="live2d.interactionHint.value" class="live2d-interaction-hint">
-        {{ live2d.interactionHint.value }}
-      </div>
       <div
         v-if="live2d.ready.value"
         class="live2d-wardrobe"
@@ -158,6 +158,7 @@ const props = defineProps<{
   statusKind: string
   autoLoad: boolean
   presence?: string
+  desktopWindowBounds?: { x: number; y: number; width: number; height: number } | null
   outfit: string
   /**
    * 渲染后端：'auto' 时按 html dataset `data-live2d-backend` 或 URL
@@ -369,6 +370,10 @@ watch(() => props.autoLoad, (enabled) => {
     await live2d.enable()
   })()
 })
+
+watch(() => props.desktopWindowBounds, (bounds) => {
+  if (bounds) live2d.setDesktopWindowBounds(bounds)
+}, { immediate: true })
 
 function resolvedBackendKind(): Live2DBackendKind {
   if (props.backend && props.backend !== 'auto') return props.backend

@@ -251,7 +251,10 @@ fn main() -> Result<(), String> {
                     .unwrap_or("nene");
                 drop(active.take());
                 renderer.release_model_resources();
-                renderer.device.poll(wgpu::Maintain::Wait);
+                renderer
+                    .device
+                    .poll(wgpu::PollType::wait_indefinitely())
+                    .expect("switch cleanup device poll failed");
                 if !renderer.model_resources_released() {
                     return Err("renderer retained model resources after switch".to_string());
                 }
@@ -269,7 +272,10 @@ fn main() -> Result<(), String> {
                 all_switches_stable = false;
                 switch_stable_frames = 0;
                 next_switch = Some(switch_at + Duration::from_secs(config.switch_every_seconds));
-                renderer.device.poll(wgpu::Maintain::Wait);
+                renderer
+                    .device
+                    .poll(wgpu::PollType::wait_indefinitely())
+                    .expect("switch device poll failed");
                 println!(
                     "L2D_SOAK_SWITCH count={} character={next_name}",
                     model_switches
@@ -320,7 +326,10 @@ fn main() -> Result<(), String> {
             None,
         );
         renderer.queue.submit(std::iter::once(encoder.finish()));
-        renderer.device.poll(wgpu::Maintain::Wait);
+        renderer
+            .device
+            .poll(wgpu::PollType::wait_indefinitely())
+            .expect("frame device poll failed");
         min_draw_calls = min_draw_calls.min(renderer.stats().draw_calls);
         min_total_vertices = min_total_vertices.min(renderer.stats().total_vertices);
         frame_times_us.push(frame_started.elapsed().as_micros() as u64);
@@ -368,7 +377,10 @@ fn main() -> Result<(), String> {
     let render_elapsed_s = (elapsed_s - model_load_time.as_secs_f64()).max(0.001);
     drop(active.take());
     renderer.release_model_resources();
-    renderer.device.poll(wgpu::Maintain::Wait);
+    renderer
+        .device
+        .poll(wgpu::PollType::wait_indefinitely())
+        .expect("final cleanup device poll failed");
     if !renderer.model_resources_released() {
         return Err("renderer retained model resources after final destroy".to_string());
     }

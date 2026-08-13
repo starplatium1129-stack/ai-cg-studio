@@ -86,6 +86,7 @@
         :auto-load="companionAutoLoad"
         :presence="presence.kind"
         :backend="desktopBridge ? 'native' : 'browser'"
+        :desktop-window-bounds="desktopWindowBounds"
         :outfit="storage.live2dOutfit(activeChar)"
         @select="switchCharacter"
         @live2d-enabled="handleLive2dPreference"
@@ -375,6 +376,7 @@ const alwaysOnTop = ref(false)
 const ignoreMouseEvents = ref(false)
 const onBatteryPower = ref(false)
 const desktopWindowVisible = ref(!desktopBridge)
+const desktopWindowBounds = ref<{ x: number; y: number; width: number; height: number } | null>(null)
 const desktopLive2dOverride = ref(readDesktopLive2dOverride())
 const companionAutoLoad = computed(() => desktopBridge
   ? desktopWindowVisible.value && desktopLive2dOverride.value !== false
@@ -1019,6 +1021,7 @@ onMounted(async () => {
     visibilitySubscription = desktopBridge.onVisibilityChanged(setDesktopVisibility)
     if (desktopBridge.onWindowBoundsChanged) {
       windowBoundsSubscription = desktopBridge.onWindowBoundsChanged(bounds => {
+        desktopWindowBounds.value = bounds
         characterStageRef.value?.setDesktopWindowBounds?.(bounds)
       })
     }
@@ -1052,7 +1055,7 @@ onMounted(async () => {
       }
       setDesktopVisibility(desktopState.visible)
       setDesktopPowerMode(desktopState.onBatteryPower)
-      if (desktopState.bounds) characterStageRef.value?.setDesktopWindowBounds?.(desktopState.bounds)
+      if (desktopState.bounds) desktopWindowBounds.value = desktopState.bounds
     } else {
       // IPC 失败时按页面可见性兜底，保证可见窗口里的 Live2D 仍能按需加载
       setDesktopVisibility(!document.hidden)

@@ -39,8 +39,8 @@ fn vs_main(@location(0) pos: vec2<f32>, @location(1) uv: vec2<f32>) -> VsOut {
     return out;
 }
 
-// Standard drawable: texture is premultiplied by Live2D's export pipeline;
-// output premultiplied color directly (matches the official GLES2 shader).
+// The asset loader supplies straight-alpha PNG/WebP bytes. Convert them to
+// premultiplied output here because the pipelines use premultiplied blending.
 fn shade_standard(in: VsOut, masked: bool) -> vec4<f32> {
     let tex = textureSample(color_tex, color_sampler, in.uv);
     let opacity = u.misc.x;
@@ -52,9 +52,11 @@ fn shade_standard(in: VsOut, masked: bool) -> vec4<f32> {
             mask_a = 1.0 - mask_a;
         }
     }
-    let rgb = tex.rgb * multiply.rgb + u.screen_color.rgb * tex.a;
+    let multiplied = tex.rgb * multiply.rgb;
+    let screened = multiplied + u.screen_color.rgb - multiplied * u.screen_color.rgb;
     let a = tex.a * opacity * multiply.a * mask_a;
-    return vec4<f32>(rgb * opacity, a);
+    let rgb = screened * a;
+    return vec4<f32>(rgb, a);
 }
 
 @fragment
@@ -67,20 +69,14 @@ fn fs_masked(in: VsOut) -> @location(0) vec4<f32> {
     return shade_standard(in, true);
 }
 
-// Multiply blend mode: the reference renderer adds (1 - a) back to each
-// channel so premultiplied colors multiply like straight colors.
-fn multiply_adjust(p: vec4<f32>) -> vec4<f32> {
-    return vec4<f32>(p.r + (1.0 - p.a), p.g + (1.0 - p.a), p.b + (1.0 - p.a), p.a);
-}
-
 @fragment
 fn fs_multiply(in: VsOut) -> @location(0) vec4<f32> {
-    return multiply_adjust(shade_standard(in, false));
+    return shade_standard(in, false);
 }
 
 @fragment
 fn fs_multiply_masked(in: VsOut) -> @location(0) vec4<f32> {
-    return multiply_adjust(shade_standard(in, true));
+    return shade_standard(in, true);
 }
 
 // Mask channel render: white color, alpha from texture. The official renderer

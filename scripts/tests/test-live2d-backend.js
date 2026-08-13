@@ -175,10 +175,7 @@ test('原生后端：会话回传模型句柄，motion/expression 委托桥', as
 
   let loaded = null;
   session.onModelLoaded((handle) => { loaded = handle; });
-  assert(bridge._readyListeners.length > 0, '应订阅 onReady');
-  bridge._readyListeners.forEach((listener) => listener());
-
-  assert(loaded, 'onReady 后应回传模型句柄');
+  assert(loaded, 'setCharacter 成功后应立即回传模型句柄');
   await loaded.motion('TapHead', undefined, 3);
   assert.equal(bridge.calls.playMotion[0][0], 'TapHead');
   assert.equal(bridge.calls.playMotion[0][2], 'force', 'FORCE 数值 3 应映射为 force');
@@ -218,7 +215,6 @@ test('原生后端：意图通道（口型/情绪/凝视）与 overlay 帧', asy
     rect: { x: 100, y: 80, width: 300, height: 480 },
     visible: true,
     opacity: 1,
-    passthrough: [],
   });
 
   session.setPaused(true);

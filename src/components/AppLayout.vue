@@ -12,9 +12,7 @@
                切到其他页再回来不重新从 IndexedDB 读图，秒开。
                其余页面按需重建（各自 onMounted 拉最新数据）。 -->
           <KeepAlive :include="['GalleryView']">
-            <div class="route-view" :key="route.path">
-              <component :is="Component" />
-            </div>
+            <component :is="Component" :key="route.path" class="route-view" />
           </KeepAlive>
         </Transition>
       </RouterView>

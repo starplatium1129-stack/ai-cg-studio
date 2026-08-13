@@ -20,44 +20,43 @@
 渲染唯一入口：`createPromptPlan` + `renderPromptPlan`（`src/utils/promptCompiler.ts`），
 热门角色无 LoRA 路径经 `buildPopularPromptPlan`（`src/utils/popularContent.ts`）喂入。
 
-### Krea 散文段（`naturalDescription`）
+### Krea 散文段（`buildStructuredKreaDescription`）
 
 官方段 → 本地实现：
 
 | 官方段 | 本地来源 |
 |---|---|
 | 风格配方（最前） | `plan.style`（配方 lead；来自 `src/config/kreaStyleRecipes.ts`） |
-| 主体身份+姿态 | `character.identityProse`（原样织入，禁止逗号切碎） |
-| 服装/材质 | `outfit.prose`（原样织入） |
+| 主体身份 | 工作室角色确定性英文身份句，或 `character.identityProse` |
+| 服装/材质 | 工作室 LoRA 官方服装词包映射，或热门角色 `outfit.prose` |
 | 构图/镜头 | `plan.camera` + `plan.composition`（织成自然取景句） |
 | 环境背景 | `blueprint.promptProse`（原样织入） |
 | 光照/色彩/情绪 | `plan.lighting` + `plan.emotion`（织成自然氛围句） |
-| 后置媒介词 | `plan.medium`（配方 medium，收尾） |
+| 整体媒介 | 已并入最前方风格句，避免重复媒介尾句挤占 3~5 句预算 |
 
 约束：无 meta 短语；无下划线 token（不落原始 Danbooru 标签）；identityProse/outfitProse/promptProse
 整段保留；`<lora:>` 一律剥离；不进入故事/台词/心理活动。
 
 ### Krea 风格配方（`src/config/kreaStyleRecipes.ts`）
 
-- 每配方 = 前置风格短语 `lead` + 可选后置媒介词 `medium`。
+- 每配方保留前置风格短语 `lead`、模型原生短标签 `sd` 与可选媒介元数据 `medium`；Krea 主流程只需自动解析后的前置风格句。
 - ≥8 个通用配方 + 独立显式的 R18 配方（id 以 `r18_` 开头，`adult: true`）。
-- 解析顺序：**手选 > 蓝图 hint > 引擎缺省**（`resolveStyleRecipe`）。
+- 主流程解析顺序：**蓝图 hint > 引擎缺省**（`resolveStyleRecipe` 的手选参数固定传 `null`）。
 - **R18 fail-closed**：`recipeEligible` 要求 `adultEligibility === 'adult'` 且成熟内容开关开启；
   unknown/underage 永远不可达。`buildPopularPromptPlan` 对 `style.adult` 再兜底拒绝一次。
 - 蓝图可选字段：`kreaStyleHint` / `animaStyleHint`（`data/scene-blueprints.json`）——可以是配方 id 或自由风格短语；
   成人配方 hint 只允许挂在成人蓝图上（`validate-content-contracts.js` 校验）。
-- Anima 流行模式同样受益：只取 `lead` 作风格短语前缀，保持 exact-token + prose 混合结构，不碰 Anima 负面。
+- Anima 热门角色模式取配方 `sd` 的模型原生短标签，不把 Krea 自然语言 `lead` 混进标签流。
 
-### 持久化与 UI
+### UI
 
-- `kreaStyleId`（null = 自动）写入草稿（`aics_pb_last_draft`）与历史条目，旧数据缺省自动，向后兼容。
-- 专家模式右栏 `#stepRecipe` 可选配方；场景模式用默认。配方随角色/成熟开关切换自动清除非资格项。
+- 场景模式不提供手选风格、画师或 Style LoRA；蓝图/场景自动决定风格。专家模式可额外选择最多两位白名单画师，Krea 将其转换为英文自然语言风格短语。
+- 草稿与历史不再写入或恢复旧 `kreaStyleId`/`artistInfluences`；新 `artistStyleIds` 白名单选择可恢复。
 - 蓝图 hint 参与 `DATA_VERSION`（`data/*.json` 内容哈希派生）。
 
 ## 验证
 
-- `scripts/tests/test-popular-content.js`：散文段落流（风格前置/无 meta/无标签堆砌/原样织入）、R18 门控 fail-closed、
-  配方解析顺序、hint 解析、persistence round-trip。
-- `scripts/tests/test-prompt-compiler.js`：渲染层散文段 + 风格 lead 在前 / medium 收尾。
+- `scripts/tests/test-popular-content.js`：3~5 句散文流（风格前置/无 meta/无标签堆砌）、服装只出现一次、R18 门控 fail-closed、自动 hint 与草稿忽略旧手选字段。
+- `scripts/tests/test-prompt-compiler.js`：渲染层散文段、风格 lead 在前，以及 WAI/Anima/Krea 三套画师语法。
 - `scripts/maintenance/validate-content-contracts.js`：配方契约 + 蓝图 hint 成人约束，随 `DATA_VERSION`。
-- E2E `tests/e2e/anima-quick.spec.ts`：专家模式选配方 → 请求体含配方短语；R18 配方对 underage 不可见。
+- `scripts/tests/test-prompt-corpus.js`：298 场景 Krea 全部为 3~5 句纯英文，无下划线、质量词、LoRA、权重或负面。

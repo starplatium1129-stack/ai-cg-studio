@@ -7,15 +7,14 @@
  *
  * - 通道命名：Tauri command 前缀 `aics_live2d_*`；Rust → 前端事件统一经
  *   `aics:live2d:*`。浏览器后端（wl-live2d）不涉及本契约。
- * - 坐标系：overlay 矩形一律为屏幕物理像素（与 SetWindowPos 一致）。
- *   前端换算见 src/utils/live2dOverlayLayout.ts（CSS 矩形 × devicePixelRatio
- *   + 窗口屏幕原点）。
+ * - 坐标系：setFrame 的 overlay 矩形为 Companion-local 物理像素；Rust 使用
+ *   Companion HWND 的实时屏幕位置换算后 SetWindowPos，避免拖动事件滞后。
  * - 情绪/口型只传"意图"（名称与强度），参数级写入由 Cubism Native 按作者
  *   工程执行；blinkScheduler / MOUTH_PARAMS / emotionRuntime 参数 hack 在
  *   原生后端全部退役（浏览器端保留）。
  */
 
-/** overlay 矩形（屏幕物理像素） */
+/** overlay 矩形（Companion-local 物理像素） */
 export interface Live2DOverlayRect {
   x: number
   y: number
@@ -36,21 +35,19 @@ export interface Live2DNativeCommands {
     rect: Live2DOverlayRect
     visible: boolean
     opacity?: number
-    /** 屏幕物理像素中的 WebView 控件穿透区域。 */
-    passthrough?: Live2DOverlayRect[]
-  }): void
+  }): Promise<void>
   /** 设置原生渲染循环的目标帧率。 */
-  setMaxFps(fps: number): void
+  setMaxFps(fps: number): Promise<void>
   /** 播放动作组（Rust 用 Cubism MotionPriority 语义，FORCE 打断 idle） */
   playMotion(group: string, index?: number, priority?: Live2DMotionPriority): Promise<{ ok: boolean; error?: string }>
   /** 应用 Expression（宁宁衣装；夏目无 Expressions 由 Rust 拒绝） */
   setExpression(name: string): Promise<{ ok: boolean; error?: string }>
   /** 口型意图 0..1（Rust 映射到作者 lip-sync 参数） */
-  setMouthLevel(level: number): void
+  setMouthLevel(level: number): Promise<void>
   /** 情绪意图（name 见 ChatEmotion；intensity 0..1） */
-  setEmotion(name: string, intensity: number): void
+  setEmotion(name: string, intensity: number): Promise<void>
   /** 目光凝视意图（归一化 -1..1，基于舞台中心） */
-  setGaze(x: number, y: number): void
+  setGaze(x: number, y: number): Promise<void>
   /** 归一化坐标（0..1，overlay 相对）上的 Cubism 原生 HitArea 查询 */
   hitTest(x: number, y: number): Promise<{ areas: Live2DHitArea[] }>
   /** 释放模型并销毁 overlay */

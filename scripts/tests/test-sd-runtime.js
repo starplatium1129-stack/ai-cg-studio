@@ -139,8 +139,8 @@ function testProfilesAndCapabilities() {
   assert.strictEqual(unknown.id, 'actual', 'unknown checkpoints must fall back to the primary profile');
   assert.strictEqual(
     policy.qualityPrefix(null, { rating: 'All' }),
-    'masterpiece, best_quality, very_aesthetic, absurdres',
-    'with no profile at all the generic anime prefix is used'
+    'masterpiece, best quality, very aesthetic, absurdres',
+    'with no profile at all the generic anime prefix is used verbatim (official spaces)'
   );
   assert.strictEqual(
     policy.modelNegativePrompt(null, 'scene-neg'),

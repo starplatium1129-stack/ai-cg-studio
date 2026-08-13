@@ -1,4 +1,5 @@
 import type { ModelProfile } from './promptPolicy'
+import { normalizeArtistStyleIds } from '../config/artistStyles.ts'
 
 export type DraftCharKey = 'nene' | 'natsume' | 'triad'
 
@@ -39,6 +40,7 @@ export interface PromptBuilderDraft {
   selections?: Partial<DraftSelections>
   colorMood?: string | null
   manualTags?: string[]
+  artistStyleIds?: string[]
   sceneBaseStory?: string
   directorMode?: 'basic' | 'pro'
   sdParams?: Partial<SDParams>
@@ -49,8 +51,6 @@ export interface PromptBuilderDraft {
   outfitId?: string
   blueprintId?: string | null
   noLora?: boolean
-  /** 热门角色 Krea 风格配方 id（null/缺省 = 自动按场景+引擎）。 */
-  kreaStyleId?: string | null
 }
 
 export interface ProjectOption {
@@ -161,6 +161,7 @@ export function parsePromptBuilderDraft(value: unknown): PromptBuilderDraft | nu
     selections,
     colorMood: nullableString(value.colorMood),
     manualTags: stringList(value.manualTags),
+    artistStyleIds: normalizeArtistStyleIds(value.artistStyleIds),
     sceneBaseStory: stringValue(value.sceneBaseStory),
     directorMode,
     sdParams: parseSDParams(value.sdParams),
@@ -170,7 +171,6 @@ export function parsePromptBuilderDraft(value: unknown): PromptBuilderDraft | nu
     outfitId: stringValue(value.outfitId),
     blueprintId: nullableString(value.blueprintId),
     noLora: typeof value.noLora === 'boolean' ? value.noLora : undefined,
-    kreaStyleId: nullableString(value.kreaStyleId),
   }
 }
 
@@ -233,6 +233,7 @@ function parseModelProfile(value: unknown): ModelProfile | null {
     steps: finiteNumber(value.steps),
     cfg: finiteNumber(value.cfg),
     size: stringValue(value.size),
+    hires_fix: typeof value.hires_fix === 'boolean' ? value.hires_fix : undefined,
     hires_steps: finiteNumber(value.hires_steps),
     hires_scale: finiteNumber(value.hires_scale),
     hires_upscaler: stringValue(value.hires_upscaler),

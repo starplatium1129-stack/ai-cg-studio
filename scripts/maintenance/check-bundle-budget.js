@@ -4,7 +4,11 @@ const fs = require('fs');
 const path = require('path');
 
 const DEFAULT_BUDGETS = Object.freeze({
-  routeJavaScript: 128 * 1024,
+  // PromptBuilder carries the three server-backed engines and their history
+  // controls. Heavy expert controls (including artist tags) stay async. Its route
+  // chunk is about 130 KiB; 132 KiB leaves modest room for
+  // feature maintenance without turning this into a blanket route increase.
+  routeJavaScript: 132 * 1024,
   routeCss: 100 * 1024,
   // wl-live2d 懒加载块：pixi.js + pixi-live2d-display + cubism4 core 全内联，
   // 大小由依赖决定，这里监控防止未来升级/引入新依赖把它撑得更大。
@@ -14,7 +18,10 @@ const DEFAULT_BUDGETS = Object.freeze({
 function routeEntries(manifest) {
   return Object.entries(manifest)
     .map(([key, entry]) => ({ key, ...entry }))
-    .filter(entry => entry.isDynamicEntry === true && /^src\/views\/.+\.vue$/.test(entry.src || entry.key));
+    .filter(entry => entry.isDynamicEntry === true && (
+      /^src\/views\/.+\.vue$/.test(entry.src || entry.key)
+      || (!entry.src && /View$/.test(entry.name || ''))
+    ));
 }
 
 function lazyChunks(manifest) {
@@ -27,7 +34,7 @@ function evaluateManifest(manifest, sizeOf, budgets = DEFAULT_BUDGETS) {
   const routes = routeEntries(manifest).map(entry => {
     const cssFiles = [...new Set(entry.css || [])];
     return {
-      route: path.basename(entry.src || entry.key, '.vue'),
+      route: entry.name || path.basename(entry.src || entry.key, '.vue'),
       file: entry.file,
       javascript: sizeOf(entry.file),
       css: cssFiles.reduce((total, file) => total + sizeOf(file), 0),

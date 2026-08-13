@@ -189,6 +189,9 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   let lastParamFrame = 0
   let maxFps = 60
   let desktopWindowBounds: { x: number; y: number; width: number; height: number } | null = null
+  let nativeOverlayReady = false
+  let nativeLayoutFrame = 0
+  let nativeLayoutAttempts = 0
   let nativeEmotionFrame = 0
   let nativeEmotionLastFrame = 0
 
@@ -342,12 +345,12 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
           })
         } catch (e) {
           const message = errorMessage(e)
-          // 原生后端不可用：回退浏览器后端再试一次；仍失败才判加载失败
-          if (backendKind.value === 'native' && backend?.kind === 'native' && message.includes('NATIVE_BACKEND_UNAVAILABLE')) {
+          // 原生 IPC、GPU 或模型初始化任一步失败，都回退浏览器后端再试一次。
+          if (backendKind.value === 'native' && backend?.kind === 'native') {
             const selection = selectLive2DBackend('browser')
             backend = selection.backend
             backendKind.value = 'browser'
-            backendFallback.value = '原生 Live2D 桥不可用，已回退到浏览器渲染'
+            backendFallback.value = `原生 Live2D 初始化失败，已回退到浏览器渲染：${message}`
             if (hostEl) hostEl.dataset.backend = 'browser-fallback'
             console.warn('[live2d]', backendFallback.value)
             try {
@@ -386,7 +389,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
           if (destroyed.value || char !== character.value) { finish(false); return }
           model = m; loadedCharacter.value = char; ready.value = true
           mouthValue.value = 0; mouthHooked = false
-          bindMouthOverride(); bindContextEvents(); bindInteractionEvents(); fit(); layout()
+          bindMouthOverride(); bindContextEvents(); bindInteractionEvents(); fit(); scheduleNativeLayout()
           setVisible(true); setPaused(document.hidden); setState('ready', 'Live2D 已连接')
           startNativeEmotionClock()
           if (!nativeCapability?.entranceNative) playEntrance()
@@ -811,8 +814,8 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     interactionHint.value = character.value === 'natsume'
       ? '移动鼠标可跟随视线；点击头部、手、胸前、裙子、腿或脚可互动'
       : '移动鼠标可跟随视线；点击呆毛、头部、脸、身体、两侧或裙摆可互动'
-    // 原生后端：点击由 overlay 窗口捕获，Rust 做 Cubism 原生 HitArea 命中后
-    // 经 onNativeHitTest 回传，不再绑定 DOM click（overlay 会截走鼠标）。
+    // 原生 overlay 位于透明 WebView 下方且不接收鼠标。舞台 DOM 保持完整交互，
+    // 点击坐标归一化后交给 Rust 做 Cubism 原生 HitArea 命中。
     if (session?.capability.hitTestNative) {
       nativeHitTestUnsubscribe = session.onNativeHitTest?.((areas) => {
         const interaction = interactionFromHitAreas(areas)
@@ -825,6 +828,16 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
           interactionHint.value = '这个动作正在进行中'
         }
       }) ?? null
+      pointerClickHandler = (event) => {
+        if ((event.target as HTMLElement | null)?.closest('button, a, input, select, textarea')) return
+        const rect = stageEl?.getBoundingClientRect()
+        if (!rect?.width || !rect.height) return
+        model?.hitTest(
+          Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width)),
+          Math.max(0, Math.min(1, (event.clientY - rect.top) / rect.height)),
+        )
+      }
+      stageEl.addEventListener('click', pointerClickHandler)
       return
     }
     pointerClickHandler = (event) => {
@@ -856,10 +869,18 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   }
 
   function layout() {
-    if (!ready.value || document.hidden || !hostEl) return
+    if (!ready.value || !hostEl) return
     if (session?.capability.parameterOverride === false) {
       // 原生后端：计算舞台 DOM 矩形 → 屏幕物理像素 → 下发 overlay 帧
       if (!stageEl || !session.updateOverlay) return
+      // Companion 首次加载时模型可能早于 desktop getState 完成。禁止用
+      // screenX/devicePixelRatio 猜首帧，否则会缓存旧窗口尺寸的错误 offset，
+      // 直到用户拖动窗口触发 bounds 事件才恢复。
+      if (!desktopWindowBounds) {
+        nativeOverlayReady = false
+        session.setPaused(true)
+        return
+      }
       try {
         const rect = stageEl.getBoundingClientRect()
         if (!rect.width || !rect.height) return
@@ -878,28 +899,18 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
         const overlayRect = computeOverlayRect({
           stageRect: rect,
           dpr: scale,
-          windowBounds: bounds,
+          // Native 契约使用 Companion-local 物理坐标；屏幕绝对原点由 Rust
+          // 实时 GetWindowRect 获取，不能使用可能滞后的 desktop bounds x/y。
+          windowBounds: { x: 0, y: 0, width: bounds.width, height: bounds.height },
         })
-        const passthrough = Array.from(document.querySelectorAll<HTMLElement>(
-          'button, a, input, select, textarea, [role="button"], [tabindex]',
-        )).map((element) => {
-          // 只挖与 overlay 重叠且真正可交互的控件：输入框/发送按钮等对话
-          // 控件位于 portrait-stage 之外，但视觉上可能落在模型 region 内
-          //（全身立绘占满舞台），必须一并从 region 挖洞，否则点击被吞。
-          const control = element.getBoundingClientRect()
-          if (!control.width || !control.height) return null
-          if (control.right < rect.left || control.left > rect.right
-            || control.bottom < rect.top || control.top > rect.bottom) return null
-          return computeOverlayRect({
-            stageRect: control,
-            dpr: scale,
-            windowBounds: bounds,
-          })
-        }).filter((value): value is typeof overlayRect => Boolean(value))
-        session.updateOverlay(overlayRect, true, passthrough)
+        nativeOverlayReady = true
+        session.updateOverlay(overlayRect, true)
+        session.setPaused(false)
+        startNativeEmotionClock()
       } catch {}
       return
     }
+    if (document.hidden) return
     try {
       const wrapper = hostEl.firstElementChild as HTMLElement | null
       if (!wrapper) return
@@ -911,6 +922,22 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
       session?.setStageScale(scale > 0 ? scale : 1)
       fit()
     } catch {}
+  }
+
+  function scheduleNativeLayout(reset = true) {
+    if (reset) nativeLayoutAttempts = 0
+    if (nativeLayoutFrame) return
+    const tick = () => {
+      nativeLayoutFrame = 0
+      if (destroyed.value || session?.capability.parameterOverride !== false) return
+      layout()
+      if (nativeOverlayReady || nativeLayoutAttempts >= 120) return
+      nativeLayoutAttempts += 1
+      nativeLayoutFrame = window.requestAnimationFrame(tick)
+    }
+    // 先同步测量：WebView 初次显示但尚未激活时 document.hidden 可能为 true，
+    // requestAnimationFrame 也可能暂停；Native overlay 仍必须先拿到正确 frame。
+    tick()
   }
 
   /**
@@ -941,15 +968,23 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   function setPaused(paused: boolean) {
     if (!session) return
     // 减少动态效果：渲染一帧把立绘摆正，然后停住，不做待机循环
-    const shouldPause = paused || prefersReducedMotion()
+    const waitingForNativeBounds = session?.capability.parameterOverride === false && !nativeOverlayReady
+    const shouldPause = paused || prefersReducedMotion() || waitingForNativeBounds
     session.setPaused(shouldPause)
     if (shouldPause) stopNativeEmotionClock()
     else startNativeEmotionClock()
   }
 
   function setDesktopWindowBounds(bounds: { x: number; y: number; width: number; height: number }) {
+    const previous = desktopWindowBounds
     desktopWindowBounds = bounds
-    layout()
+    const nativeSession = session?.capability.parameterOverride === false
+    const sizeChanged = !previous || previous.width !== bounds.width || previous.height !== bounds.height
+    // 纯窗口移动由 Rust 每帧读取 Companion HWND 并保持本地 offset；这里若再用
+    // 事件队列里的旧绝对坐标 setFrame，会与 Rust 跟随竞争并造成拖动抖动/跳位。
+    if (nativeSession && nativeOverlayReady && !sizeChanged) return
+    nativeOverlayReady = false
+    scheduleNativeLayout()
   }
 
   async function recover() {
@@ -1036,6 +1071,9 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     clearTimeout(interactionTimer); interactionTimer = 0; activeInteraction = ''
     clearTimeout(leaveTimer); leaveTimer = 0
     stopNativeEmotionClock()
+    if (nativeLayoutFrame) window.cancelAnimationFrame(nativeLayoutFrame)
+    nativeLayoutFrame = 0
+    nativeLayoutAttempts = 0
     if (pointerGazeFrame) window.cancelAnimationFrame(pointerGazeFrame)
     pointerGazeFrame = 0
     pointerGazeLastFrame = 0
@@ -1065,13 +1103,14 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     pointerGazeY = 0
     pointerGazeActive = false
     pointerGazeFocusKind = 'idle'
-    desktopWindowBounds = null
+    nativeOverlayReady = false
     if (hostEl) hostEl.innerHTML = ''
   }
 
   function destroy() {
     lifecycleToken += 1
     destroyed.value = true; enabled.value = false; destroyRuntime()
+    desktopWindowBounds = null
     resizeObserver?.disconnect()
     if (onResize) window.removeEventListener('resize', onResize)
     if (visibilityHandler) { document.removeEventListener('visibilitychange', visibilityHandler); visibilityHandler = null }

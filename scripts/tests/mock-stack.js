@@ -82,7 +82,8 @@ function buildConfig(runtime) {
   config.TRANSLATION_SCRIPT = path.join(runtime.root, 'no-such-script.py');
   var previewLoraRoot = path.join(config.AI_WORKSPACE_ROOT, 'ComfyUI', 'models', 'loras');
   fs.mkdirSync(previewLoraRoot, { recursive:true });
-  fs.writeFileSync(path.join(previewLoraRoot, 'shiki_natsume_v20_anima_scientific_e12.safetensors'), 'e2e-natsume-v20-fixture');
+  fs.writeFileSync(path.join(previewLoraRoot, 'ayachi_nene_v20_anima.safetensors'), 'e2e-nene-v20-fixture');
+  fs.writeFileSync(path.join(previewLoraRoot, 'shiki_natsume_v20_anima.safetensors'), 'e2e-natsume-v20-fixture');
   // Anima 无 LoRA 底模资源：让 /api/anima/status 报 anima-aesthetic 可用（engineOnline 依赖 available）。
   var animaModelRoot = path.join(config.AI_WORKSPACE_ROOT, 'ComfyUI', 'models');
   fs.mkdirSync(path.join(animaModelRoot, 'diffusion_models'), { recursive:true });

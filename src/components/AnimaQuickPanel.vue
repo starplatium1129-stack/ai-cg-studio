@@ -10,29 +10,10 @@ const props = defineProps<{
 const state = computed(() => props.state)
 const emit = defineEmits<{
   (event: 'update:state', patch: Partial<AnimaGenerationState>): void
-  (event: 'submit'): void
-  (event: 'cancel'): void
 }>()
 
 function patch(patch: Partial<AnimaGenerationState>) { emit('update:state', patch) }
 
-const modelId = computed({
-  get: () => props.state.modelId,
-  set: value => {
-    const model = props.state.models.find(item => item.id === value)
-    const [width, height] = String(model?.sizes?.[0] || '').split('x').map(Number)
-    patch({
-      modelId: value,
-      family: model?.family === 'krea2' ? 'krea2' : 'anima',
-      steps: Number(model?.defaults?.steps) || props.state.steps,
-      cfg: Number(model?.defaults?.cfg) || props.state.cfg,
-      sampler: String(model?.defaults?.sampler || props.state.sampler),
-      scheduler: String(model?.defaults?.scheduler || props.state.scheduler),
-      loraId: model?.family === 'krea2' ? '' : props.state.loraId,
-      ...(Number.isInteger(width) && Number.isInteger(height) ? { width, height } : {}),
-    })
-  },
-})
 const loraId = computed({ get: () => props.state.loraId, set: value => patch({ loraId: value }) })
 const loraStrength = computed({ get: () => props.state.loraStrength, set: value => patch({ loraStrength: value }) })
 const seed = computed({ get: () => props.state.seed ?? '', set: value => patch({ seed: value === '' ? null : Number(value) }) })
@@ -47,9 +28,8 @@ const size = computed({
 })
 
 const busy = computed(() => ['submitting', 'running', 'cancelling'].includes(props.state.phase))
-const canSubmit = computed(() => props.state.online && !busy.value && !!props.state.prompt && !!props.state.modelId)
-const selectedLora = computed(() => props.state.loras.find(lora => lora.id === props.state.loraId) ?? null)
 const selectedModel = computed(() => props.state.models.find(model => model.id === props.state.modelId) ?? null)
+const selectedLora = computed(() => props.state.loras.find(lora => lora.id === props.state.loraId) ?? null)
 /** 热门角色无 LoRA：只在 popular subject + noLora capability 时隐藏 LoRA 选择。 */
 const noLoraMode = computed(() => props.noLora === true && selectedModel.value?.capabilities?.noLora === true)
 const availableSizes = computed(() => selectedModel.value?.sizes?.length ? selectedModel.value.sizes : ['832x1216', '1024x1024', '1216x832'])
@@ -68,12 +48,6 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
         <p v-else-if="noLoraMode" class="anima-preview-note"><strong>无需 LoRA</strong> · 通用底模直出，不加载角色 LoRA，身份由词条锚定</p>
         <p v-else-if="selectedLora?.preview" class="anima-preview-note"><strong>实验预览</strong> · 此 LoRA 为实验版</p>
 
-       <div class="anima-row">
-         <label>底模</label>
-        <select v-model="modelId" :disabled="busy">
-           <option v-for="m in state.models" :key="m.id" :value="m.id" :disabled="m.available === false">{{ m.label || m.id }}{{ m.available === false ? ' · 资源缺失' : '' }}</option>
-        </select>
-      </div>
        <div v-if="state.family !== 'krea2' && !noLoraMode" class="anima-row">
         <label>LoRA</label>
         <select v-model="loraId" :disabled="busy">
@@ -81,8 +55,7 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
         </select>
         <span class="anima-inline">强度</span>
         <input v-model.number="loraStrength" type="number" min="0.65" max="1" step="0.05" class="anima-num" :disabled="busy" />
-      </div>
-
+       </div>
       <label class="anima-label">正向提示词</label>
       <textarea :value="state.prompt" rows="4" class="anima-textarea" readonly></textarea>
 
@@ -105,11 +78,7 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
         </select>
       </div>
 
-      <div class="anima-actions">
-        <button type="button" class="anima-btn anima-primary" :disabled="!canSubmit" @click="emit('submit')">
-           {{ busy ? '生成中…' : state.family === 'krea2' ? 'Krea 2 出图' : 'Anima 出图' }}
-        </button>
-        <button v-if="busy" type="button" class="anima-btn" @click="emit('cancel')">取消当前任务</button>
+      <div class="anima-actions" aria-live="polite">
         <span v-if="state.statusText" class="anima-status-text">{{ state.statusText }}</span>
         <span v-if="state.errorMsg" class="anima-error">{{ state.errorMsg }}</span>
       </div>

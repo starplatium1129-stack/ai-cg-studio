@@ -81,6 +81,17 @@ pub fn save_window_bounds(file_path: &Path, bounds: &WindowBounds) {
     );
 }
 
+/// Convert Tauri's physical client-area measurements to Electron-compatible DIP values.
+pub fn physical_to_logical_bounds(bounds: &WindowBounds, scale_factor: f64) -> WindowBounds {
+    let scale_factor = if scale_factor.is_finite() && scale_factor > 0.0 { scale_factor } else { 1.0 };
+    WindowBounds {
+        x: (bounds.x as f64 / scale_factor).round() as i64,
+        y: (bounds.y as f64 / scale_factor).round() as i64,
+        width: (bounds.width as f64 / scale_factor).round() as i64,
+        height: (bounds.height as f64 / scale_factor).round() as i64,
+    }
+}
+
 pub fn load_companion_preferences(file_path: &Path) -> CompanionPreferences {
     let Ok(raw) = fs::read_to_string(file_path) else {
         return CompanionPreferences::default();
@@ -217,5 +228,22 @@ mod tests {
         // 不存在目录拒绝
         assert!(!save_ai_workspace(&file, "Z:/definitely/not/a/dir"));
         let _ = std::fs::remove_dir_all(&tmp);
+    }
+
+    #[test]
+    fn physical_bounds_convert_to_logical_dips() {
+        let physical = WindowBounds { x: -1500, y: 75, width: 1200, height: 900 };
+        let logical = physical_to_logical_bounds(&physical, 1.5);
+        assert_eq!(logical.x, -1000);
+        assert_eq!(logical.y, 50);
+        assert_eq!(logical.width, 800);
+        assert_eq!(logical.height, 600);
+    }
+
+    #[test]
+    fn invalid_scale_factor_is_treated_as_one() {
+        let bounds = WindowBounds { x: 10, y: 20, width: 30, height: 40 };
+        assert_eq!(physical_to_logical_bounds(&bounds, 0.0).width, 30);
+        assert_eq!(physical_to_logical_bounds(&bounds, f64::NAN).height, 40);
     }
 }

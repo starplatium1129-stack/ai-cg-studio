@@ -101,11 +101,10 @@ export interface Live2DStageSession {
   getCanvasSize(): { width: number; height: number }
   /** 浏览器：缩放 wrapper（translateX(-50%) scale）；原生：无（尺寸由 overlay 帧决定） */
   setStageScale(scale: number): void
-  /** 原生专属：下发 overlay 矩形（屏幕物理像素）与可见性，Rust 据此 SetWindowPos */
+  /** 原生专属：下发 Companion-local 物理像素矩形，Rust 用实时 HWND 位置 SetWindowPos */
   updateOverlay?(
     rect: { x: number; y: number; width: number; height: number },
     visible: boolean,
-    passthrough?: { x: number; y: number; width: number; height: number }[],
   ): void
   /** 浏览器：取 canvas 元素（webglcontextlost/restored 绑定）；原生：null */
   canvasElement(): HTMLElement | null

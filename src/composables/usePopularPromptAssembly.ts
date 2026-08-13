@@ -18,6 +18,7 @@ import {
   resolveModelProfile,
   type PromptEngine,
 } from '@/utils/promptPolicy.ts'
+import { artistStyleProse, artistTagsForEngine } from '@/config/artistStyles.ts'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 
@@ -62,8 +63,9 @@ export function usePopularPromptAssembly(
   })
 
   const adultEnabled = computed(() => pb.showMatureScenes)
+  const activeArtistStyleIds = computed(() => pb.directorMode === 'pro' ? pb.artistStyleIds : [])
 
-  /** 最终风格：手选配方 > 蓝图 hint > 引擎缺省；成人配方在此 fail-closed。 */
+  /** 风格由蓝图 hint 或引擎默认值自动确定；成人配方在此 fail-closed。 */
   const resolvedStyle = computed<ResolvedStyle | null>(() => {
     const subject = pb.subject
     if (subject.kind !== 'popular' || !character.value) return null
@@ -72,7 +74,7 @@ export function usePopularPromptAssembly(
       KREA_STYLE_RECIPES,
       targetEngine,
       blueprint.value,
-      pb.kreaStyleId,
+      null,
       character.value,
       { adultEnabled: adultEnabled.value },
     )
@@ -95,6 +97,8 @@ export function usePopularPromptAssembly(
       adultEnabled: adultEnabled.value,
       visualDescription: pb.visualDescription,
       style: resolvedStyle.value,
+      artistTags: artistTagsForEngine(activeArtistStyleIds.value, engine.value),
+      artistProse: artistStyleProse(activeArtistStyleIds.value),
     })
   })
 

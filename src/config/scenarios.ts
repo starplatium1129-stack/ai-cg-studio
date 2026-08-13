@@ -34,7 +34,7 @@ export const SCENARIO_RES_MAP = {
   'Tall':      { dim:'768×1344',  vram:'~12GB', reason:'竖版插画·人物主体/海报感' },
   'Close-up':  { dim:'832×1216',  vram:'~10GB', reason:'近景特写·表情/情绪/亲密感' },
   'Portrait':  { dim:'832×1216',  vram:'~10GB', reason:'半身肖像·人物聚焦·柔美感' },
-  'Mobile':    { dim:'720×1280',  vram:'~8GB',  reason:'手机竖屏壁纸' },
+  'Mobile':    { dim:'768×1280',  vram:'~8GB',  reason:'手机竖屏壁纸' },
 } as const
 
 export const SCENARIO_CHARACTERS = ['nene', 'natsume'] as const

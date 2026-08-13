@@ -32,13 +32,23 @@
           <button class="scene-search-clear" type="button" aria-label="清空" @click="searchQuery=''">×</button>
         </div>
         <div class="filter-group">
-          <button v-for="opt in SCOPE_OPTS" :key="opt.v" class="filter-pill" :class="{active:scope===opt.v}" type="button" @click="scope=opt.v">{{ opt.l }}</button>
+          <button v-for="opt in SCOPE_OPTS" :key="opt.v" class="filter-pill" :class="{active:scope===opt.v}" type="button" :aria-pressed="scope===opt.v" @click="scope=opt.v">{{ opt.l }}</button>
         </div>
         <div class="filter-group">
-          <button v-for="opt in CHAR_OPTS" :key="opt.v" class="filter-pill" :class="{active:charFilter===opt.v}" type="button" @click="charFilter=opt.v">{{ opt.l }}</button>
+          <button v-for="opt in TYPE_OPTS" :key="opt.v" class="filter-pill" :class="{active:typeFilter===opt.v}" type="button" :aria-pressed="typeFilter===opt.v" @click="typeFilter=opt.v">{{ opt.l }}</button>
         </div>
         <div class="filter-group">
-          <button v-for="opt in RATING_OPTS" :key="opt.v" class="filter-pill" :class="{active:ratingFilter===opt.v}" type="button" @click="ratingFilter=opt.v">{{ opt.l }}</button>
+          <template v-if="typeFilter === 'popular' && popularCharOpts.length">
+            <label class="sr-only" for="showcasePopularChar">热门角色</label>
+            <select id="showcasePopularChar" class="filter-select" v-model="charFilter">
+              <option value="all">全部热门角色</option>
+              <option v-for="opt in popularCharOpts" :key="opt.v" :value="opt.v">{{ opt.l }}</option>
+            </select>
+          </template>
+          <button v-for="opt in charOpts" :key="opt.v" class="filter-pill" :class="{active:charFilter===opt.v}" type="button" :aria-pressed="charFilter===opt.v" @click="charFilter=opt.v">{{ opt.l }}</button>
+        </div>
+        <div class="filter-group">
+          <button v-for="opt in RATING_OPTS" :key="opt.v" class="filter-pill" :class="{active:ratingFilter===opt.v}" type="button" :aria-pressed="ratingFilter===opt.v" @click="ratingFilter=opt.v">{{ opt.l }}</button>
         </div>
         <span class="result-meta" id="resultMeta">
           显示 <strong>{{ paged.length }}</strong> / {{ filtered.length }} 个匹配样张 · R18 默认模糊
@@ -88,6 +98,7 @@
           <span class="sample-shade"></span>
           <span class="sample-badges">
             <span v-if="featured.has(entry.id)" class="sample-badge">精选</span>
+            <span v-else-if="entry.type !== 'scene'" class="sample-badge sample-badge-type">{{ typeLabel(entry.type) }}</span>
             <span v-else></span>
             <span class="sample-badge" :class="'rating-' + entry.rating">{{ ratingLabel(entry.rating) }}</span>
           </span>
@@ -132,9 +143,22 @@
               <span>{{ currentEntry.category }}</span>
               <span>✓ {{ currentEntry.attempt }} 次通过</span>
             </div>
+            <div v-if="currentEntry.meta" class="viewer-meta viewer-meta-gen">
+              <span v-if="currentEntry.meta.engine">引擎 {{ currentEntry.meta.engine }}</span>
+              <span v-if="currentEntry.meta.checkpoint">Checkpoint {{ currentEntry.meta.checkpoint }}</span>
+              <span v-if="currentEntry.meta.model">模型 {{ currentEntry.meta.model }}</span>
+              <span v-if="currentEntry.meta.loraId">LoRA {{ currentEntry.meta.loraId }}<template v-if="currentEntry.meta.loraVersion"> · v{{ currentEntry.meta.loraVersion }}</template></span>
+              <span v-if="currentEntry.meta.seed !== undefined">Seed {{ currentEntry.meta.seed }}</span>
+            </div>
             <div class="viewer-story">{{ currentEntry.story }}</div>
             <div class="viewer-actions">
-              <RouterLink class="btn btn-primary" :to="'/prompt-builder?scene=' + encodeURIComponent(currentEntry.id) + '&step=4&generate=1'"><ArchiveIcon name="spark" /> 画这个场景</RouterLink>
+              <RouterLink v-if="currentEntry.type === 'scene'" class="btn btn-primary" :to="'/prompt-builder?scene=' + encodeURIComponent(currentEntry.id) + '&step=4&generate=1'"><ArchiveIcon name="spark" /> 画这个场景</RouterLink>
+              <p v-else class="viewer-popular-note" :data-entry-type="currentEntry.type">
+                <template v-if="currentEntry.type === 'popular'">热门角色样张 · 生成版本见上方，可在导演台「热门角色 · 无需 LoRA」模式继续创作（暂未提供直达深链，请到导演台选择角色）。</template>
+                <template v-else-if="currentEntry.type === 'artist'">画师风格样张 · 记录画师 tag 与生成参数（见上方元数据），经人工复核后收录。</template>
+                <template v-else-if="currentEntry.type === 'lora'">LoRA 样张 · 记录 LoRA / 引擎 / 模型与生成参数（见上方元数据），经人工复核后收录。</template>
+                <template v-else>审核样张 · 生成参数见上方元数据，经人工复核后收录。</template>
+              </p>
               <button class="btn btn-ghost" type="button" @click="move(-1)">← 上一张</button>
               <button class="btn btn-ghost" type="button" @click="move(1)">下一张 →</button>
             </div>
@@ -153,8 +177,8 @@ import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import {
   parseShowcaseManifest,
-  type ShowcaseCharacter,
   type ShowcaseEntry,
+  type ShowcaseEntryType,
   type ShowcaseRating,
 } from '@/utils/showcaseManifest'
 
@@ -163,9 +187,11 @@ useScrollReveal()
 
 const PAGE_SIZE = 24
 const SCOPE_OPTS = [{ v:'all', l:'全部' }, { v:'featured', l:'精选' }] as const
+const TYPE_OPTS = [{ v:'all', l:'全部类型' }, { v:'scene', l:'场景' }, { v:'artist', l:'画师' }, { v:'popular', l:'热门角色' }, { v:'lora', l:'LoRA' }] as const
 const CHAR_OPTS  = [{ v:'all', l:'全部角色' }, { v:'nene', l:'宁宁' }, { v:'natsume', l:'夏目' }, { v:'triad', l:'双人' }] as const
 const RATING_OPTS= [{ v:'all', l:'全部分级' }, { v:'All', l:'全年龄' }, { v:'R15', l:'R15' }, { v:'R18', l:'R18' }] as const
 const LABELS: Record<string,string> = { nene:'绫地宁宁', natsume:'四季夏目', triad:'宁宁×夏目', All:'全年龄', R15:'R15', R18:'R18' }
+const TYPE_LABELS: Record<string,string> = { scene:'场景样张', artist:'画师风格', popular:'热门角色', lora:'LoRA 样张' }
 
 const entries   = ref<ShowcaseEntry[]>([])
 const featured  = ref(new Set<string>())
@@ -175,7 +201,8 @@ const unavailable = ref(false)
 const manifestLoading = ref(true)
 const searchQuery = ref('')
 const scope       = ref<'all' | 'featured'>('all')
-const charFilter  = ref<'all' | ShowcaseCharacter>('all')
+const typeFilter  = ref<'all' | ShowcaseEntryType>('all')
+const charFilter  = ref<string>('all')
 const ratingFilter= ref<'all' | ShowcaseRating>('all')
 const visibleCount= ref(PAGE_SIZE)
 const currentId   = ref('')
@@ -196,24 +223,52 @@ const manifestController = new AbortController()
 let unmounted = false
 
 // Reset visible count whenever filters change
-watch([searchQuery, scope, charFilter, ratingFilter], () => { visibleCount.value = PAGE_SIZE })
+watch([searchQuery, scope, typeFilter, charFilter, ratingFilter], () => { visibleCount.value = PAGE_SIZE })
+watch(typeFilter, () => { charFilter.value = 'all' })
 
 function norm(s: string) { return String(s||'').trim().toLocaleLowerCase('zh-CN') }
 function ratingLabel(v: string) { return LABELS[v] || v || '未分级' }
-function charLabel(v: string) { return LABELS[v] || v || '角色' }
-function thumbSrc(entry: ShowcaseEntry) { return `/scene-showcase/thumbs/${encodeURIComponent(entry.id)}.jpg?cv=${imgVersion}` }
-function imgSrc(entry: ShowcaseEntry)   { return `/scene-showcase/images/${encodeURIComponent(entry.id)}.jpg?cv=${imgVersion}&v=${viewerVersion.value}` }
+function typeLabel(v: string) { return TYPE_LABELS[v] || '场景' }
+function charLabel(v: string) {
+  if (LABELS[v]) return LABELS[v]
+  if (v) {
+    const hit = entries.value.find(entry => entry.char === v && entry.displayName)
+    if (hit?.displayName) return hit.displayName
+  }
+  return v || '角色'
+}
+function thumbSrc(entry: ShowcaseEntry) {
+  return entry.thumb ? `/scene-showcase/${entry.thumb}?cv=${imgVersion}` : `/scene-showcase/thumbs/${encodeURIComponent(entry.id)}.jpg?cv=${imgVersion}`
+}
+function imgSrc(entry: ShowcaseEntry) {
+  return entry.image ? `/scene-showcase/${entry.image}?cv=${imgVersion}&v=${viewerVersion.value}` : `/scene-showcase/images/${encodeURIComponent(entry.id)}.jpg?cv=${imgVersion}&v=${viewerVersion.value}`
+}
 function markThumbError(entry: ShowcaseEntry) {
   brokenThumbs.value = new Set([...brokenThumbs.value, entry.id])
 }
+
+/** 角色筛选选项：固定工作室角色。热门角色不补成 pills（18 个按钮在窄屏会横向溢出），
+ *  类型为 popular 时改用下拉列出（popularCharOpts）；搜索词仍覆盖全部条目。 */
+const charOpts = computed<{ v: string; l: string }[]>(() => [...CHAR_OPTS])
+const popularCharOpts = computed<{ v: string; l: string }[]>(() => {
+  const seen = new Set<string>()
+  const options: { v: string; l: string }[] = []
+  for (const entry of entries.value) {
+    if (entry.type !== 'popular' || seen.has(entry.char)) continue
+    seen.add(entry.char)
+    options.push({ v: entry.char, l: charLabel(entry.char) })
+  }
+  return options.sort((a, b) => a.l.localeCompare(b.l, 'zh-CN'))
+})
 
 const filtered = computed(() => {
   const term = norm(searchQuery.value)
   return entries.value.filter(e => {
     if (scope.value === 'featured' && !featured.value.has(e.id)) return false
+    if (typeFilter.value !== 'all' && e.type !== typeFilter.value) return false
     if (charFilter.value !== 'all' && e.char !== charFilter.value) return false
     if (ratingFilter.value !== 'all' && e.rating !== ratingFilter.value) return false
-    return !term || norm([e.id, e.title, e.story, e.category, charLabel(e.char), ratingLabel(e.rating)].join(' ')).includes(term)
+    return !term || norm([e.id, e.title, e.story, e.category, e.displayName || '', charLabel(e.char), ratingLabel(e.rating), typeLabel(e.type)].join(' ')).includes(term)
   })
 })
 const paged = computed(() => filtered.value.slice(0, visibleCount.value))
@@ -257,7 +312,7 @@ function openRandom() {
   if (!src.length) return
   currentId.value = src[Math.floor(Math.random() * src.length)].id
 }
-function resetFilters() { searchQuery.value = ''; scope.value = 'all'; charFilter.value = 'all'; ratingFilter.value = 'all' }
+function resetFilters() { searchQuery.value = ''; scope.value = 'all'; typeFilter.value = 'all'; charFilter.value = 'all'; ratingFilter.value = 'all' }
 
 function onKey(e: KeyboardEvent) {
   if (!currentEntry.value) return
@@ -283,7 +338,7 @@ onMounted(async () => {
     entries.value = parsed.entries
     featured.value = new Set([...(curation.signatureSceneIds ?? []), ...(curation.curatedSceneIds ?? [])])
     stats.value = {
-      total: String(parsed.sceneCount),
+      total: String(parsed.entries.length),
       safe: String(parsed.counts.All),
       r15: String(parsed.counts.R15)
     }
@@ -335,6 +390,8 @@ onUnmounted(() => {
 .filter-group { display:flex; gap:var(--s-1); flex-wrap:wrap; }
 .filter-pill { padding:5px 12px; border:1px solid var(--border-soft); border-radius:var(--r-terminal); background:transparent; color:var(--text-secondary); cursor:pointer; font:500 var(--fs-label-sm) var(--font-sans); transition:border-color var(--t-fast),color var(--t-fast),background var(--t-fast),transform var(--t-fast) var(--ease-out); }
 .filter-pill.active,.filter-pill:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
+.filter-select { max-width:100%; padding:5px 12px; border:1px solid var(--border-soft); border-radius:var(--r-terminal); background:var(--bg-deep); color:var(--text-secondary); font:500 var(--fs-label-sm) var(--font-sans); outline:none; }
+.filter-select:focus { border-color:var(--accent); color:var(--text-primary); }
 .result-meta { margin-left:auto; color:var(--text-muted); font-size:var(--fs-label-sm); white-space:nowrap; }
 :deep(.result-meta strong) { color:var(--accent); }
 
@@ -361,6 +418,7 @@ onUnmounted(() => {
 .sample-badges { position:absolute; inset:var(--s-3) var(--s-3) auto; display:flex; justify-content:space-between; gap:var(--s-2); pointer-events:none; }
 .sample-badge { padding:var(--s-1) var(--s-2); border:1px solid var(--on-art-line); border-radius:var(--r-pill); background:var(--art-scrim); color:var(--on-art-primary); backdrop-filter:blur(12px); font-size:var(--fs-mono-sm); font-weight:700; }
 .sample-badge.rating-R18 { background:color-mix(in srgb,var(--danger) 52%,var(--art-scrim)); }
+.sample-badge.sample-badge-type { background:color-mix(in srgb,var(--accent) 46%,var(--art-scrim)); border-color:color-mix(in srgb,var(--accent) 60%,var(--on-art-line)); }
 .sample-caption { position:absolute; z-index:var(--z-base); inset:auto 0 0; display:block; padding:48px var(--s-3) var(--s-3); pointer-events:none; }
 .sample-kicker { display:flex; justify-content:space-between; gap:var(--s-2); margin-bottom:var(--s-1); color:var(--on-art-secondary); font-size:var(--fs-mono-xs); }
 .sample-title { display:block; color:var(--on-art-primary); font-size:var(--fs-body); line-height:1.35; text-shadow:0 2px 14px var(--art-backdrop); }
@@ -386,6 +444,7 @@ onUnmounted(() => {
 @media(max-width:760px) {
   .search-row { flex-direction:column; align-items:stretch; }
   .toolbar-shell { position:relative; top:auto; }
+  .result-meta { white-space:normal; }
   .showcase-grid { columns:2 150px; column-gap:var(--s-3); }
   .sample { margin-bottom:var(--s-3); border-radius:var(--r-dossier); }
 }
@@ -446,11 +505,14 @@ onUnmounted(() => {
 }
 .showcase-viewer .viewer-meta { display: flex; gap: var(--s-2); flex-wrap: wrap; margin-bottom: var(--s-4); }
 .showcase-viewer .viewer-meta span {
+  max-width: 100%; overflow-wrap:anywhere;
   padding: var(--s-1) var(--s-2); border-radius: var(--r-pill);
   background: color-mix(in srgb, var(--on-art-line) 16%, transparent);
   color: var(--on-art-primary);
   font: 700 var(--fs-mono-sm) var(--font-mono);
 }
+.showcase-viewer .viewer-meta-gen { margin-top: calc(var(--s-4) * -0.4); }
+.showcase-viewer .viewer-popular-note { margin: 0; color: var(--on-art-secondary); font-size: var(--fs-body-sm); line-height: 1.7; }
 .showcase-viewer .viewer-story {
   color: var(--on-art-secondary); font-size: var(--fs-body-sm);
   line-height: 1.8; margin-bottom: var(--s-5);

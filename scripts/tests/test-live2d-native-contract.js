@@ -19,6 +19,8 @@ test('Native Companion owns the overlay and Atelier stays browser-only', () => {
   assert.match(companion, /:backend="desktopBridge \? 'native' : 'browser'"/)
   assert.ok(shim.includes("location.pathname.replace(/\\/+$/, '')"))
   assert.match(shim, /if \(enableNativeLive2D\) window\.aicsLive2dNative/)
+  assert.match(shim, /const waitForTauri = \(\) => new Promise/)
+  assert.match(shim, /TAURI_API_UNAVAILABLE/)
   assert.match(shim, /entry\.cancelled/)
   assert.match(shim, /return id/)
   assert.match(main, /arg == "--hidden"/)
@@ -37,12 +39,19 @@ test('Native IPC payload and render ownership contracts stay aligned', () => {
   assert.doesNotMatch(overlay, /index\.unwrap_or\(0\)/)
   assert.match(overlay, /if character == "natsume" \{\s*-0\.5 \* level/)
   assert.match(overlay, /ctx\.advance_motion\(dt, app\.as_ref\(\)\)/)
-  // 跨线程穿透必须走系统级 SetWindowRgn 剪裁；HTTRANSPARENT 只对同线程窗口
-  // 生效（微软 WM_NCHITTEST 文档），overlay 与 WebView2 不同线程，禁止回退。
-  assert.match(overlay, /SetWindowRgn/)
-  assert.doesNotMatch(overlay, /return HTTRANSPARENT/)
-  assert.match(overlay, /relative_to_window\(bounds, window_rect\)/)
-  assert.doesNotMatch(overlay, /SetWindowRgn\(hwnd,\s*std::ptr::null_mut\(\)/)
+  // overlay 位于透明 Companion WebView 下方，禁止用 SetWindowRgn 给控件挖洞：
+  // Win32 region 同时裁剪 DComp 画面，会在角色身上留下矩形缺口。
+  assert.doesNotMatch(overlay, /SetWindowRgn/)
+  assert.match(overlay, /WS_EX_TRANSPARENT/)
+  assert.match(overlay, /get_webview_window\("companion"\)/)
+  assert.match(overlay, /last_z_order_sync\.elapsed\(\) >= Duration::from_millis\(250\)/)
+  assert.match(overlay, /GetWindowRect\(companion, &mut companion_rect\)/)
+  assert.match(overlay, /followed_overlay_rect/)
+  assert.match(overlay, /SWP_NOACTIVATE \| SWP_NOSIZE/)
+  assert.doesNotMatch(overlay, /OverlayCommand::HitTest \{ x, y, reply \}[\s\S]{0,300}?app\.emit\("aics:live2d:hit-test"/)
+  assert.ok(overlay.indexOf('ShowWindow(hwnd, SW_SHOWNA);', overlay.indexOf('if visible {'))
+    < overlay.indexOf('SetWindowPos(', overlay.indexOf('if visible {')),
+  '首次显示必须发生在 z-order 定位前，避免 ShowWindow 把 overlay 提到 WebView 上方')
   // set_character 必须真异步：模型加载在渲染线程，主线程不得 block_on。
   assert.match(overlay, /pub async fn aics_live2d_set_character/)
   assert.match(overlay, /rx\s*\.await\s*\.map_err/)
@@ -56,7 +65,7 @@ test('Native IPC payload and render ownership contracts stay aligned', () => {
   const stateCommand = overlay.match(/pub fn aics_live2d_get_state[\s\S]*?\n}\n\n#\[tauri::command\]/)?.[0] || ''
   assert.match(stateCommand, /try_state::<Arc<Live2DOverlayState>>/)
   assert.doesNotMatch(stateCommand, /ensure_overlay/)
-  for (const field of ['active', 'rect', 'visible', 'frameCount', 'targetFps', 'character', 'ready', 'windowReady', 'rendererAttached', 'modelBounds', 'passthroughCount', 'mouthLevel', 'mouthMappedValue']) {
+  for (const field of ['active', 'rect', 'visible', 'frameCount', 'targetFps', 'character', 'ready', 'windowReady', 'rendererAttached', 'modelBounds', 'mouthLevel', 'mouthMappedValue']) {
     assert.ok(stateCommand.includes(`"${field}"`), `Native diagnostic state must expose ${field}`)
   }
   assert.ok((overlay.match(/release_model_resources\(\)/g) || []).length >= 2,
@@ -79,8 +88,20 @@ test('Native frontend lifecycle forwards reset, bounds, FPS and emotion ticks', 
 
   assert.match(live2d, /session\?\.sendMouthLevel\?\.\(0\)/)
   assert.match(live2d, /requestAnimationFrame\(nativeEmotionTick\)/)
-  assert.match(live2d, /session\.updateOverlay\(overlayRect, true, passthrough\)/)
+  assert.match(live2d, /session\.updateOverlay\(overlayRect, true\)/)
+  assert.match(live2d, /windowBounds: \{ x: 0, y: 0, width: bounds\.width, height: bounds\.height \}/)
+  assert.match(live2d, /model\?\.hitTest\(/)
+  assert.match(live2d, /nativeSession && nativeOverlayReady && !sizeChanged/)
+  assert.match(live2d, /function scheduleNativeLayout/)
+  assert.match(live2d, /if \(document\.hidden\) return/)
+  assert.match(live2d, /tick\(\)/)
+  assert.match(live2d, /session\.setPaused\(false\)/)
   assert.match(live2d, /setDesktopWindowBounds/)
+  assert.match(live2d, /destroyed\.value = true; enabled\.value = false; destroyRuntime\(\)\s+desktopWindowBounds = null/)
+  const companionView = read('src/views/CompanionView.vue')
+  const characterStage = read('src/components/ChatCharacterStage.vue')
+  assert.match(companionView, /:desktop-window-bounds="desktopWindowBounds"/)
+  assert.match(characterStage, /watch\(\(\) => props\.desktopWindowBounds/)
   // 原生接电目标 165fps，不允许默认 60 或 120 上限覆盖。
   assert.match(live2d, /isNative \? 165 : 120/)
   assert.match(backend, /Math\.min\(165,/)
@@ -89,8 +110,9 @@ test('Native frontend lifecycle forwards reset, bounds, FPS and emotion ticks', 
   // 加载状态必须在 connect 之前显示。
   assert.ok(live2d.indexOf("setState('loading', 'Live2D 加载中…')") < live2d.indexOf('await backend!.connect('), 'loading 必须在 connect 之前设置')
   assert.match(live2d, /onMotionFailed/)
-  assert.match(backend, /subscriptions\.push\(subscriptionId\)/)
+  assert.match(backend, /if \(!destroyed\) callback\(handle\)/)
   assert.match(backend, /bridge\.setMaxFps/)
-  assert.match(nativeTypes, /passthrough\?: Live2DOverlayRect\[\]/)
+  assert.match(live2d, /原生 Live2D 初始化失败，已回退到浏览器渲染/)
+  assert.doesNotMatch(nativeTypes, /passthrough/)
   assert.match(nativeTypes, /setMaxFps\(fps: number\)/)
 })

@@ -150,7 +150,7 @@ const animaAesthetic = presetProfiles.find(profile => profile.id === 'anima_aest
 const neneContract = require('../../data/loras.json').find(lora => lora.id === 'L_NENE_V20_ANIMA').prompt_contract;
 assert(animaBase && animaAesthetic, 'Anima Base and Aesthetic profiles must be present in the production catalog');
 for (const profile of [animaBase, animaAesthetic]) {
-  assert.deepStrictEqual(profile.exact_tokens, ['best_quality'], 'model profiles keep only family-level exact tokens');
+  assert.deepStrictEqual(profile.exact_tokens, [], 'model profiles keep no family-level exact tokens; LoRA contracts own them');
 }
 const exactV19 = policy.formatPromptForProfile(
   'ayachi_nene, nene_r18, nene_witch_canonical, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, warm_lighting',
@@ -163,7 +163,7 @@ assert(exactV19.includes('warm lighting'), 'ordinary scene and lighting tags sho
 assert.strictEqual(policy.resolveModelProfile(presetProfiles, 'anima-yume-v1.0', 'anima'), null, 'unknown Anima models must not fall back to Base');
 assert.strictEqual(policy.resolveModelProfile(presetProfiles, 'unknown-krea-model', 'krea2'), null, 'unknown Krea models must fail closed');
 assert(policy.qualityPrefix(animaBase, { rating:'ALL' }, 'anima').includes('score_7'), 'Anima Base must retain its score quality prefix');
-assert(policy.qualityPrefix(animaBase, { rating:'ALL' }, 'anima').includes('best_quality'), 'v19 Base must preserve the GPU-verified best_quality token');
+assert(policy.qualityPrefix(animaBase, { rating:'ALL' }, 'anima').includes('best quality'), 'Anima Base must keep best quality with official spaces');
 assert.strictEqual(policy.qualityPrefix(animaAesthetic, { rating:'ALL' }, 'anima'), 'safe', 'Anima Aesthetic must add only its rating tag when the quality prefix is intentionally empty');
 for (const profile of [animaBase, animaAesthetic]) {
   const negative = policy.modelNegativePrompt(profile, 'bad anatomy, crowd', 'anima');
@@ -183,11 +183,11 @@ assert.strictEqual(
 const natsumeSoloTemplate = policy.sceneTemplateText({
   prompt:'1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, holding_hands, straddling_viewer, (POV male hand around her waist:1.5), cafe, warm_lighting',
 }, { char:'natsume' });
-['cafe', 'warm_lighting'].forEach(token => {
-  assert(policy.tokenize(natsumeSoloTemplate).includes(token), 'Natsume solo scenes must retain non-interaction direction');
+['cafe', 'warm_lighting', 'holding_hands', 'straddling_viewer'].forEach(token => {
+  assert(policy.tokenize(natsumeSoloTemplate).includes(token), 'Natsume solo scenes must retain direction and viewer interactions ' + token);
 });
-['1girl', 'solo', 'shiki_natsume', 'black_hair', 'long_hair', 'yellow_eyes', 'mole_under_eye', 'hairclip', 'holding_hands', 'straddling_viewer', 'male'].forEach(token => {
-  assert(!natsumeSoloTemplate.includes(token), 'Natsume solo scenes must remove redundant identity and partner constraint ' + token);
+['1girl', 'solo', 'shiki_natsume', 'black_hair', 'long_hair', 'yellow_eyes', 'mole_under_eye', 'hairclip', 'male'].forEach(token => {
+  assert(!natsumeSoloTemplate.includes(token), 'Natsume solo scenes must remove redundant identity and explicit male subject ' + token);
 });
 
 assert.deepStrictEqual(
@@ -269,20 +269,22 @@ const migratedLora = policy.resolveLoraSpecs(
 );
 assert.strictEqual(migratedLora[0].name, 'ayachi_nene_v18_wd14', 'legacy scene LoRA ids must resolve to the promoted model');
 
-// 单人引擎（Anima/Krea）场景净化：互动词与男性视角词必须被过滤，单人元素保留。
-const dirty = '(male arms embracing her from behind:1.55), one hand pulling the curtain closed, back_hug, holding_hands, kiss, cohabitation, 1girl, solo, ayachi_nene, night, window_light, silhouette, sleepwear';
+// 单人引擎（Anima/Krea）场景净化：只删明确可见的额外主体/人数词；
+// POV、望向镜头、牵手、浪漫氛围与中心互动动作全部保留。
+const dirty = '(male arms embracing her from behind:1.55), one hand pulling the curtain closed, back_hug, holding_hands, kiss, cohabitation, 1girl, solo, ayachi_nene, night, window_light, silhouette, sleepwear, 2girls, 1boy';
 const solo = policy.sanitizeSoloTemplate(dirty);
-['male arms', 'back_hug', 'holding_hands', 'kiss', 'cohabitation', '1boy'].forEach(word => {
-  assert(!policy.tokenize(solo).some(t => t.includes(word.replace(/_/g, ' ')) || t.includes(word)), 'solo engine must drop ' + word);
+['male', '1boy', '2girls'].forEach(word => {
+  assert(!policy.tokenize(solo).some(t => t.includes(word.replace(/_/g, ' ')) || t.includes(word)), 'solo engine must drop explicit visible extra-subject/count token ' + word);
 });
-assert(!/\([^)]*\)/.test(solo), 'solo engine must strip weighted-parenthesis interaction phrases');
-['1girl', 'solo', 'ayachi_nene', 'night', 'window_light', 'sleepwear'].forEach(word => {
-  assert(policy.tokenize(solo).some(t => t.includes(word)), 'solo engine must keep ' + word);
+assert(!/\([^)]*\)/.test(solo), 'solo engine must strip weighted-parenthesis phrases that name an extra subject');
+['1girl', 'solo', 'ayachi_nene', 'night', 'window_light', 'sleepwear', 'back_hug', 'holding_hands', 'kiss', 'cohabitation', 'silhouette'].forEach(word => {
+  assert(policy.tokenize(solo).some(t => t.includes(word)), 'solo engine must preserve ' + word);
 });
 // SD 引擎不受影响：sceneTemplateText 在 sd 下保留互动词（WebUI 支持双人）。
 const sdScene = policy.sceneTemplateText({ prompt: dirty }, { char: 'nene', engine: 'sd' });
 assert(sdScene.includes('back_hug') || sdScene.includes('back hug'), 'SD engine must keep dual-interaction scene words');
 const animaScene = policy.sceneTemplateText({ prompt: dirty }, { char: 'nene', engine: 'anima' });
-assert(!animaScene.includes('back hug') && !animaScene.includes('male arms'), 'Anima engine must sanitize dual-interaction words');
+assert(!animaScene.includes('male arms'), 'Anima engine must drop explicit male-subject phrases');
+assert(animaScene.includes('back hug') || animaScene.includes('back_hug'), 'Anima engine must preserve central interactions');
 
 });

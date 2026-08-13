@@ -1,4 +1,4 @@
-﻿.chat-page {
+.chat-page {
   position: relative;
   width: 100%;
   max-width: 1280px;
@@ -18,7 +18,7 @@
 }
 
 .chat-page .chat-title {
-  font: 600 1.9rem/1.25 var(--font-serif);
+  font: 750 clamp(1.5rem, 2.2vw, 1.9rem)/1.25 var(--font-serif);
   letter-spacing: .035em;
 }
 
@@ -89,7 +89,7 @@
   border: 1px solid var(--border-soft);
   border-radius: var(--r-terminal) var(--r-xl) var(--r-terminal) var(--r-xl);
   background: var(--bg-surface);
-  box-shadow: inset 0 1px 0 var(--glass-highlight), var(--shadow-sm);
+  box-shadow: var(--shadow-glass-sm);
 }
 
 .chat-page .character-card::before,
@@ -175,6 +175,8 @@
   background:
     linear-gradient(90deg, color-mix(in srgb, var(--on-art-line) 22%, transparent) 1px, transparent 1px) 0 0 / 32px 32px,
     linear-gradient(color-mix(in srgb, var(--on-art-line) 22%, transparent) 1px, transparent 1px) 0 0 / 32px 32px,
+    radial-gradient(circle at 22% 68%, color-mix(in srgb, var(--character-accent) 14%, transparent), transparent 42%),
+    radial-gradient(circle at 78% 30%, color-mix(in srgb, var(--character-accent) 10%, transparent), transparent 38%),
     radial-gradient(circle at 50% 25%, color-mix(in srgb, var(--character-accent) 18%, transparent), transparent 55%),
     var(--stage-violet);
 }
@@ -210,6 +212,8 @@
   background:
     linear-gradient(90deg, color-mix(in srgb, var(--on-art-line) 18%, transparent) 1px, transparent 1px) 0 0 / 32px 32px,
     linear-gradient(color-mix(in srgb, var(--on-art-line) 18%, transparent) 1px, transparent 1px) 0 0 / 32px 32px,
+    radial-gradient(circle at 26% 66%, color-mix(in srgb, var(--natsume-amber) 15%, transparent), transparent 44%),
+    radial-gradient(circle at 74% 28%, color-mix(in srgb, rgba(255, 220, 155, .10), transparent), transparent 38%),
     radial-gradient(circle at 50% 23%, color-mix(in srgb, var(--natsume-amber) 18%, transparent), transparent 54%),
     var(--stage-amber);
 }
@@ -384,7 +388,8 @@ body:has(.chat-page) .sakura-fall {
   font: 650 var(--fs-mono-sm) var(--font-sans);
   text-overflow: ellipsis;
   white-space: nowrap;
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: var(--shadow-glass-sm);
 }
 
 .chat-page .avatar-status[data-state="idle"] {
@@ -425,17 +430,17 @@ body:has(.chat-page) .sakura-fall {
   gap: 3px;
   min-width: min(240px, calc(100% - 40px));
   padding: 10px 14px;
-  border: 1px solid color-mix(in srgb, var(--character-accent) 48%, var(--glass-edge));
+  border: 1px solid color-mix(in srgb, var(--character-accent) 44%, var(--glass-edge));
   border-radius: var(--r-lg);
   background:
-    linear-gradient(135deg, color-mix(in srgb, var(--character-accent) 27%, transparent), transparent 72%),
-    color-mix(in srgb, var(--bg-deep) 92%, var(--character-accent));
+    linear-gradient(135deg, color-mix(in srgb, var(--character-accent) 24%, transparent), transparent 72%),
+    var(--glass-fill-strong);
   color: var(--text-primary);
   cursor: pointer;
   text-align: left;
   transform: translateX(-50%);
-  box-shadow: 0 12px 32px rgba(10, 5, 24, .24), inset 0 1px 0 var(--glass-highlight);
-  backdrop-filter: blur(18px);
+  box-shadow: var(--shadow-glass-md);
+  backdrop-filter: blur(18px) saturate(145%);
   transition: border-color 180ms ease, transform 180ms var(--ease-out), background 180ms ease;
 }
 
@@ -636,12 +641,18 @@ body:has(.chat-page) .sakura-fall {
   opacity: .6;
 }
 
-.chat-page .live2d-interaction-hint {
+.chat-page .live2d-interaction-hint,
+.companion-page .live2d-interaction-hint {
+  position: absolute;
+  z-index: 8;
+  left: 50%;
+  bottom: var(--s-3);
+  translate: -50% 0;
   display: inline-flex;
   align-items: center;
   width: fit-content;
   max-width: 100%;
-  margin-top: var(--s-2);
+  margin: 0;
   padding: 5px 10px;
   border: 1px solid color-mix(in srgb, var(--character-accent) 20%, var(--glass-edge));
   border-radius: var(--r-pill);
@@ -651,6 +662,7 @@ body:has(.chat-page) .sakura-fall {
   line-height: 1.45;
   pointer-events: none;
   backdrop-filter: blur(12px);
+  box-shadow: 0 8px 24px rgb(0 0 0 / .24);
 }
 @keyframes live2d-response {
   0%, 100% { filter: none; }
@@ -660,9 +672,9 @@ body:has(.chat-page) .sakura-fall {
 .chat-page .character-info {
   flex-shrink: 0;
   padding: var(--s-3) var(--s-4);
-  border-top: 1px solid var(--border-soft);
+  border-top: 1px solid color-mix(in srgb, var(--character-accent) 16%, var(--border-soft));
   background:
-    linear-gradient(120deg, color-mix(in srgb, var(--character-accent) 5%, transparent), transparent 58%),
+    linear-gradient(120deg, color-mix(in srgb, var(--character-accent) 7%, transparent), transparent 58%),
     var(--bg-surface);
 }
 
@@ -1270,7 +1282,8 @@ body:has(.chat-page) .sakura-fall {
   font-size: var(--fs-mono-sm);
 }
 
-.chat-page .msg-voice-btn {
+.chat-page .msg-voice-btn,
+.chat-page .msg-memory-btn {
   padding: 2px 9px;
   border: 1px solid var(--border-soft);
   border-radius: var(--r-pill);
@@ -1283,16 +1296,20 @@ body:has(.chat-page) .sakura-fall {
 }
 
 .chat-page .message:hover .msg-voice-btn,
+.chat-page .message:hover .msg-memory-btn,
 .chat-page .msg-voice-btn:focus-visible,
+.chat-page .msg-memory-btn:focus-visible,
 .chat-page .msg-voice-btn.playing {
   opacity: 1;
 }
 
 .chat-page .msg-voice-btn:hover,
-.chat-page .msg-voice-btn.playing {
+.chat-page .msg-voice-btn.playing,
+.chat-page .msg-memory-btn:hover:not(:disabled) {
   border-color: var(--accent);
   color: var(--accent);
 }
+.chat-page .msg-memory-btn:disabled { cursor: default; opacity: .72; }
 
 .chat-page .chat-composer {
   padding: var(--s-3);

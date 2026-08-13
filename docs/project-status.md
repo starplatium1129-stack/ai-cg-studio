@@ -1,6 +1,6 @@
 # AI-CG-Studio 当前状态
 
-> 更新：2026-08-10
+> 更新：2026-08-11
 > 用途：唯一的项目级当前状态入口。历史轮次、执行者分工和逐步交接稿不再作为维护文档。
 
 ## 项目定位
@@ -13,14 +13,15 @@ AI-CG-Studio 是本地个人使用的 Galgame 风格 AI CG 创作台，包含角
 - 网关：Express；`routes/` 负责 HTTP API，`server/` 负责安全、配置、诊断和预压缩，`services/*.ts` 编译产物随仓库提交。
 - 数据：场景分片、角色、LoRA、预设、标签、热门角色与通用蓝图位于 `data/`；场景运行时只由 `sceneStore` 加载，`DATA_VERSION` 由内容派生。
 - 存储：IndexedDB 由 `useKVStore`/`useImageStore` 封装；localStorage 键由 `src/utils/storageKeys.ts` 登记，备份和作品删除分别走统一入口。
-- 聊天：Ollama 与 OpenAI-compatible API 可配置；流式回复、归档、TTS、情绪、VAD/ASR 输入和 Live2D 舞台按所有权拆分。
-- 绘图：SD/WAI 仍是生产主路径；Anima 是受白名单保护的角色 LoRA 实验路径；Krea 2 Turbo 是无角色 LoRA 的通用自然语言实验路径，不宣称身份长期稳定。WAI 基础 txt2img 在 WebUI 在线时优先，WebUI 离线且 ComfyUI 在线时可使用固定核心节点 fallback。热门角色无 LoRA 模式（`anima-aesthetic-v1.1` 的 `noLora` capability）独立于工作室角色，只在绘图页来源切换为「热门角色」后出现，默认 Anima Aesthetic、可切 Krea 2。
+- 聊天：Ollama 与 OpenAI-compatible API 可配置；流式回复、归档、TTS、情绪、VAD/ASR 输入和 Live2D 舞台按所有权拆分。角色 Prompt 由服务端分层组装，并支持本机用户档案与用户手动固定的跨会话事实召回。
+- 绘图：场景模式是一键流程，只需选择预设场景与底模；镜头、光照、构图、Prompt 和模型参数自动确定。WAI v17 普通兼容请求仍为 Comfy-first；自动 hires 则优先 WebUI Anime6B，仅 Comfy 可用时退到 nearest-exact Latent，再不可用时保持审计直出。当前应用生产 preset 中 Anima Base/Aesthetic 使用 24 steps / CFG 3 / `res_multistep` / `simple` 的模型原生标签流；30 steps / CFG 4.5 仅保留为历史对照实验参数。Krea 2 Turbo 使用 3~5 句纯英文自然语言且无负面。
 - 训练：训练参数覆盖、数据集枚举、配置副本、ETA 和日志均遵守 `AGENTS.md` 的白名单契约。
 - 桌面：Electron 仍是稳定回退路径；Tauri 2 Companion/Atelier 与 Native Live2D 已构建并通过代码级、release selftest 和有限真机验证，但正式发布验收仍受 D-10 阻断。
 
 ## 最近完成
 
-- **Krea 2 Prompt 校准为官方散文段结构（P2）**：`naturalDescription` 重构为「风格配方开头 → 主体身份+姿态 → 服装/材质 → 构图/镜头 → 环境 → 光照/色彩/情绪 → 后置媒介词」，identityProse/outfitProse/blueprint.promptProse 原样织入，删除 meta 短语（"A visual novel event CG featuring…"/"Scene details:"/"Composition and lighting:"）与逗号标签堆砌，风格语言恒置最前。新增 `src/config/kreaStyleRecipes.ts`（8 个通用配方 + 2 个独立显式 R18 配方，R18 仅 adult 角色+成熟开关可达，unknown/underage fail-closed），专家模式右栏可选配方（`kreaStyleId` 持久化进草稿/历史，缺省自动）；`data/scene-blueprints.json` 增可选 `kreaStyleHint`/`animaStyleHint`（配方 id 或自由短语），Anima 流行模式只取 lead 保 exact-token+prose 混合、不碰负面。测试：散文段落流断言、R18 门控 unit + 契约 + E2E。详见 `docs/krea-prompt-recipe.md`。
+- **角色 Prompt 分层与轻量长期记忆**：新增 `server/chat-character-prompts.js`，无动态上下文时宁宁/夏目基础 Prompt 哈希保持不变；`aics_user_profile_v1` 保存称呼/关系/备注，`aics_chat_memories_v1` 保存用户主动固定、可编辑删除的事实。召回按角色隔离，使用 CJK bigram + ASCII 词匹配，最多 4 条/1000 字，动态内容在服务端再次白名单校验并标注为不可信事实。未引入 Artemis 的断链 Qdrant/mem0/Headroom 或未接入行为引擎。
+- **四底模一键 Prompt 编译**：WAI 保留官方质量/rating 前缀与场景 LoRA 权重；Anima Base 仅 score/LoRA 契约词保留下划线，Aesthetic 去掉全部质量/score；Krea 将 298 场景确定性分成主体、服装、动作、表情、环境和镜头/光照，输出 3~5 句英文散文。基础模式没有画师设置；专家模式新增 12 位白名单热门画师、最多混合 2 位，并分别渲染成 WAI Danbooru tag、Anima `@artist` 和 Krea 自然语言。三引擎共用唯一生成按钮和自动参数摘要。
 - **热门角色无 LoRA 创作模式（P0/P1 闭环）**：绘图页新增与宁宁/夏目 LoRA 路径正交的「热门角色」来源。`data/popular-characters.json` 首批 18 位角色（含身份词/服装/成人资格 fail closed），`data/scene-blueprints.json` 24 条角色无关通用蓝图（含仅 adult 角色可见的成人蓝图）。服务端 `routes/anima.js` 只为 `anima-aesthetic-v1.1` 开启 `noLora` capability，`buildWorkflow` 新增无 LoraLoader 的九节点分支（正/负 CLIPTextEncode + KSampler res_multistep/simple），原 LoRA 十节点、Krea family 与 UNKNOWN_LORA/INCOMPATIBLE_CHARACTER 校验全部保持。前端 `buildAnimaRequest`/`engineOnline`/LoRA 显隐全部按 capability 门控，不靠 model id 猜；草稿与历史扩展 `subject/characterId/outfitId/blueprintId/noLora` 字段并向后兼容旧草稿（无新 localStorage 键）。
 - Tauri 壳 P0-P7 的代码与打包链已收口：双窗口、sidecar、迁移、托盘、IPC、日志、维护 501 契约、staging 和 release 打包均有测试。
 - Native Live2D 路径已接入 Companion：可见启动请求 native，`--hidden` 或显式关闭时不加载；Atelier/普通页面默认 browser，缺桥时自动回退。
@@ -28,7 +29,7 @@ AI-CG-Studio 是本地个人使用的 Galgame 风格 AI CG 创作台，包含角
 - ComfyUI 原始接口已从浏览器封闭为应用级 Anima/WAI/Krea 2 job API；固定 workflow、模型/LoRA/参数白名单、路径 containment、取消、TTL 和结果 MIME 校验均由服务端控制。
 - API Client、Storage Repository、训练台拆分、状态语言、工作台窄屏层级、动效减法和样式 token 门禁已签收；不再保留这些工作的 round 报告。
 - 宁宁 Anima v20 已完成科学训练、checkpoint 选择、18 行人工矩阵和生产 smoke，正式 catalog 使用 `L_NENE_V20_ANIMA`。
-- 夏目 v19 E08 未通过正式晋级，但按用户授权作为明确标注的单角色实验预览接入；生产 SD/WAI 仍使用 v18。
+- 夏目 Anima v20 epoch 12 已通过五场景同 prompt/seed 人工矩阵并晋级，生产 ID `L_NAT_V20_ANIMA`；生产 SD/WAI 仍使用 v18。
 - Krea 2 Turbo 已接入独立 `krea2` family：纯自然语言、8 steps/CFG 1、`euler/simple`、无角色 LoRA、无 negative、Prompt Enhancer 关闭；单 seed 真实 smoke 有限 PASS，不代表身份稳定或生产就绪。
 
 ## Anima 当前模型状态
@@ -38,17 +39,17 @@ AI-CG-Studio 是本地个人使用的 Galgame 风格 AI CG 创作台，包含角
 | 角色/用途 | 当前结论 |
 |---|---|
 | 宁宁 Anima | v20 epoch 8 / step 336 晋级，生产 ID `L_NENE_V20_ANIMA`，默认 strength `0.85` |
-| 夏目 Anima | v19 E08 / step 312 正式晋级拒绝；实验预览 ID `L_NAT_V19_ANIMA_PREVIEW`，普通全身稳定性有限 |
+| 夏目 Anima | v20 epoch 12 晋级，生产 ID `L_NAT_V20_ANIMA`，默认 strength `0.85`；泪痣仍非稳定特征 |
 | triad/shared Anima | 禁用，继续使用 SD/WAI |
 | Anima engine | experimental；不得据有限矩阵宣称全引擎稳定发布 |
 | Krea 2 Turbo | 独立 `krea2` family；通用自然语言实验，身份不保证，当前仅有限真实 smoke |
 
 ## Comfy/WAI 能力边界
 
-- WebUI 在线时 WAI 基础生成优先走既有 WebUI/reForge；Comfy fallback 只在 WebUI 明确离线且 ComfyUI 在线时启用。
-- Comfy fallback 仅支持固定核心节点图、已允许的 checkpoint/LoRA 和基础 txt2img。浏览器不传 workflow、`class_type`、路径或任意节点输入。
-- hires fix、ADetailer/face-hand detailer 仍依赖 WebUI；WebUI 离线时明确返回 `WEBUI_REQUIRED_OFFLINE`，不能静默降级。
-- Comfy 真实 smoke 可用但手指融合、身份细节和服装特征弱于 WebUI；因此不能把 fallback 提升为生产主路径。
+- WAI 兼容请求优先走固定 ComfyUI 图；只有 Comfy 不可用或请求超出其白名单能力时才回退 WebUI/reForge。
+- Comfy 路径只接受已允许的 WAI checkpoint/角色 LoRA、基础 txt2img 与受限 latent hires；浏览器不传 workflow、`class_type`、路径或任意节点输入。
+- WAI 默认 `Auto` hires 为 1.5x / 20 steps / denoise 0.4：WebUI 解析为 `R-ESRGAN 4x+ Anime6B`，Comfy 解析为 nearest-exact Latent；ADetailer/face-hand detailer 仍只在 WebUI 可用且直出高分辨率时启用。
+- WAI Comfy 真实 latent-hires 样张已通过人工复核；身份与肢体质量仍由逐图审核兜底，不据单图宣称所有场景稳定。
 - Krea 2 当前只使用 Turbo 推理权重；无角色 LoRA、无 negative、Prompt Enhancer 关闭。视频生成仍不启动。
 - 后续若扩展能力，必须先有固定服务端契约、真实 GPU 证据和逐图人工审核。
 

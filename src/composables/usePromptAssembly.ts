@@ -4,17 +4,15 @@ import {
   usePromptBuilderStore,
 } from '@/stores/promptBuilderStore'
 import {
-  adaptNegative,
   analyzeParts,
   applyFraming,
+  assembleNegative,
   characterControlTokens,
   checkArtDirection,
   dedupeParts,
   enrichDualPrompt,
   formatPromptForProfile,
   loraSpecText,
-  mergeTokenText,
-  modelNegativePrompt,
   normalizeKey,
   qualityPrefix,
   resolveLoraSpecs,
@@ -31,19 +29,54 @@ import {
 } from '@/utils/promptPolicy'
 import { COLOR_MOODS, LIGHTING, SHOT, COMPOSITION } from '@/config/promptConstants'
 import { createPromptPlan, renderPromptPlan } from '@/utils/promptCompiler'
+import { artistStyleProse, artistTagsForEngine } from '@/config/artistStyles'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
+
+function studioSubjectProse(character: string): string {
+  if (character === 'nene') {
+    return 'Ayachi Nene is the only prominent character, a young adult woman with white hair, purple eyes, an ahoge, and pink hair ribbons'
+  }
+  if (character === 'natsume') {
+    return 'Shiki Natsume is the only prominent character, a young adult woman with black hair, golden-yellow eyes, two red hairclips, and a small mole beneath one eye'
+  }
+  return ''
+}
+
+function sceneContext(scene: PromptBuilderStore['activeScene']) {
+  if (!scene) return null
+  return {
+    title: scene.title,
+    category: scene.category,
+    tags: scene.tags,
+    location: typeof scene.location === 'string' ? scene.location : undefined,
+    time: typeof scene.time === 'string' ? scene.time : undefined,
+    timeOfDay: scene.timeOfDay,
+    weather: typeof scene.weather === 'string' ? scene.weather : undefined,
+    camera: scene.camera,
+    lighting: scene.lighting,
+    emotion: typeof scene.emotion === 'string' ? scene.emotion : undefined,
+    rating: scene.rating,
+    recommendedSize: typeof scene.recommendedSize === 'string' ? scene.recommendedSize : undefined,
+    usage: Array.isArray(scene.usage) ? scene.usage.filter((item): item is string => typeof item === 'string') : undefined,
+    animaCaption: typeof scene.animaCaption === 'string' ? scene.animaCaption : undefined,
+  }
+}
 
 /**
  * Director prompt composition has no UI or SD lifecycle ownership. Keeping it
  * here makes the generated prompt reusable by preview, direct generation, and
  * queued generation without letting the view duplicate policy decisions.
+ *
+ * Studio 组装只面向工作室角色。画师风格只在专家模式显式选择时进入模型原生位置；Anima 的精确
+ * token 契约从视图传入的服务端 LoRA id（L_NENE_V20_ANIMA / L_NAT_V20_ANIMA）解析。
  */
 export function usePromptAssembly(
   pb: PromptBuilderStore,
   checkpoint: Readonly<Ref<string>>,
   engine: Readonly<Ref<PromptEngine>>,
   modelName: Readonly<Ref<string>>,
+  selectedLoraId: Readonly<Ref<string>>,
 ) {
   /** 当前引擎 + 模型对应的 profile，禁止跨引擎回退规则。 */
   const modelProfile = computed(() => {
@@ -53,11 +86,13 @@ export function usePromptAssembly(
       engine.value,
     )
     if (!base || engine.value !== 'anima') return base
-    const selectedLoraId = pb.char === 'triad' ? '' : controlLoraIds.value[pb.char]
-    const contract = selectedLoraId ? pb.loraMeta.flatMap(meta => {
+    const selected = pb.char === 'triad' ? '' : String(selectedLoraId.value || '')
+    const contract = selected ? pb.loraMeta.flatMap(meta => {
       const name = String(meta.name || '')
-      const selected = name === selectedLoraId || name.includes(selectedLoraId)
-      if (!selected) return []
+      const metaId = String(meta.id || '')
+      const selectedMeta = metaId === selected || name === selected
+        || metaId.includes(selected) || name.includes(selected)
+      if (!selectedMeta) return []
       const promptContract = meta.prompt_contract
       if (!promptContract || typeof promptContract !== 'object') return []
       const value = promptContract as { exact_tokens?: unknown; exact_prefixes?: unknown }
@@ -102,17 +137,19 @@ export function usePromptAssembly(
     return result
   })
 
-  const controlLoraIds = computed<Record<string, string>>(() =>
-    engine.value === 'anima'
-      ? { nene: 'ayachi_nene_v20_anima', natsume: 'shiki_natsume_v20_anima_scientific_e12' }
-      : loraIdByChar.value,
-  )
+  /** Anima 只认视图传入的服务端 LoRA id；SD 用 characters.json 的正式模型名。 */
+  const controlLoraIds = computed<Record<string, string>>(() => {
+    if (engine.value !== 'anima') return loraIdByChar.value
+    const selected = String(selectedLoraId.value || '')
+    if (pb.char === 'triad' || !selected) return {}
+    return { [pb.char]: selected }
+  })
 
-  /** SD LoRA 按镜头动态定权；Anima 的 LoRA 由固定工作流加载，不进 Prompt。 */
+  /** SD LoRA 按场景显式 <lora:name:weight> 解析；Anima 的 LoRA 由固定工作流加载，不进 Prompt。 */
   const loraSpecs = computed(() =>
     engine.value === 'anima'
       ? (pb.char !== 'triad' && controlLoraIds.value[pb.char]
-        ? [{ name:controlLoraIds.value[pb.char], weight:Number(pb.loraMeta.find(meta => meta.name === controlLoraIds.value[pb.char])?.strength?.default) || 0.85 }]
+        ? [{ name: controlLoraIds.value[pb.char], weight: Number(pb.loraMeta.find(meta => meta.id === controlLoraIds.value[pb.char] || meta.name === controlLoraIds.value[pb.char])?.strength?.default) || 0.85 }]
         : [])
       : resolveLoraSpecs(
           pb.char,
@@ -124,6 +161,9 @@ export function usePromptAssembly(
   )
 
   const format = (text: string) => formatPromptForProfile(text, modelProfile.value, engine.value)
+  const activeArtistStyleIds = computed(() => pb.directorMode === 'pro' ? pb.artistStyleIds : [])
+  const artistTags = computed(() => artistTagsForEngine(activeArtistStyleIds.value, engine.value))
+  const artistProse = computed(() => artistStyleProse(activeArtistStyleIds.value))
 
   /** 分块 parts：同序同类输出，供预览、健康检查与 SD 请求共用。 */
   const promptParts = computed<PromptPart[]>(() => {
@@ -152,6 +192,7 @@ export function usePromptAssembly(
       const identityTags = [...controlTags, ...traitTags]
       parts.push({ cls: 'c', text: format(identityTags.length ? `${charLine}, ${identityTags.join(', ')}` : charLine) })
     }
+    if (artistTags.value.length) parts.push({ cls: 't', text: artistTags.value.join(', ') })
 
     // 3) 双人：无场景模板时补构图增强
     if (pb.char === 'triad' && !sceneTemplate) {
@@ -231,7 +272,9 @@ export function usePromptAssembly(
     profile: modelProfile.value,
     identity: pb.charPrompt,
     controls: characterControlTokens(effectiveScene.value, pb.char, controlLoraIds.value),
-    scenePrompt: sceneTemplateText(effectiveScene.value, { char: pb.char, shot: pb.selections.shot, engine: 'sd', profile: modelProfile.value }),
+    artists: artistTags.value,
+    artistProse: artistProse.value,
+    scenePrompt: sceneTemplateText(effectiveScene.value, { char: pb.char, shot: pb.selections.shot, engine: engine.value, profile: modelProfile.value }),
     emotion: pb.emotionPrompt ? [pb.emotionPrompt] : [],
     camera: pb.selections.shot ? [SHOT.find(item => item.id === pb.selections.shot)?.prompt || ''] : [],
     lighting: pb.selections.lighting ? [LIGHTING.find(item => item.id === pb.selections.lighting)?.prompt || ''] : [],
@@ -240,27 +283,32 @@ export function usePromptAssembly(
     negative: effectiveScene.value?.negative || NEGATIVE_DEFAULT,
     rating: profileRatingTag(modelProfile.value, effectiveScene.value) || sceneRating(effectiveScene.value).toLowerCase(),
     visualDescription: pb.visualDescription,
+    subjectProse: studioSubjectProse(pb.char),
+    scene: sceneContext(effectiveScene.value),
   }))
 
-  const positivePrompt = computed(() => engine.value === 'sd' ? formatPromptForProfile(
-    sanitizePrompt(promptParts.value.filter(part => part.cls !== 'n').map(part => part.text).join(', ')),
-    modelProfile.value,
-    engine.value,
-  ) : renderPromptPlan(structuredPlan.value, engine.value, modelProfile.value).prompt)
-
-  const negativePrompt = computed(() => {
-    if (engine.value === 'krea2' || !pb.sdParams.negative) return ''
-    const scene = effectiveScene.value
-    // 场景自带负面优先，其次全站默认；再叠加 model profile 策略。
-    const sceneNegativeBase = scene?.negative || NEGATIVE_DEFAULT
-    const custom = String(pb.sdParams.negativeCustom || '').trim()
-    const withProfile = modelNegativePrompt(modelProfile.value, sceneNegativeBase, engine.value)
-    const merged = custom ? mergeTokenText(custom, withProfile) : withProfile
-    const adapted = adaptNegative(merged, scene, { shot: pb.selections.shot, character: pb.char })
-    return engine.value === 'anima'
-      ? formatPromptForProfile(adapted, modelProfile.value, engine.value)
-      : adapted
+  /**
+   * WAI（SD）：质量前缀官方空格原样保留一次，rating 一次，单一标签流。
+   * 各 part 已按 Danbooru 契约 norm 过，只在这里去重，不再整体 norm 回下划线。
+   */
+  const positivePrompt = computed(() => {
+    if (engine.value !== 'sd') {
+      return renderPromptPlan(structuredPlan.value, engine.value, modelProfile.value).prompt
+    }
+    return sanitizePrompt(
+      promptParts.value.filter(part => part.cls !== 'n').map(part => part.text).join(', '),
+    )
   })
+
+  /** 模型原生负面统一装配：官方前缀 + 手/解剖/文字保护 + 场景排除 + rating 安全。 */
+  const negativePrompt = computed(() =>
+    assembleNegative(modelProfile.value, effectiveScene.value, engine.value, {
+      shot: pb.selections.shot,
+      character: pb.char,
+      custom: pb.sdParams.negativeCustom,
+      sdNegativeEnabled: pb.sdParams.negative,
+    }),
+  )
 
   const promptReport = computed(() => {
     const parts = [...promptParts.value]

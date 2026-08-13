@@ -35,6 +35,7 @@ export interface ModelProfile {
   steps?: number
   cfg?: number
   size?: string
+  hires_fix?: boolean
   hires_steps?: number
   hires_scale?: number
   hires_upscaler?: string
@@ -57,6 +58,7 @@ export interface PromptScene {
   category?: string
   rating?: string
   mature?: boolean
+  negative?: string
 }
 
 const NEGATIVE_BOILERPLATE = new Set([
@@ -361,7 +363,9 @@ export function characterControlTokens(
   const includesNene = character === 'nene' || character === 'triad'
   const includesNatsume = character === 'natsume' || character === 'triad'
   const neneSupportsControls = /ayachi_nene_v(?:18|19|[2-9]\d)/i.test(activeLoras.nene || '')
+    || /^L_NENE_V(?:18|19|20)/i.test(activeLoras.nene || '')
   const natsumeSupportsControls = /shiki_natsume_v(?:17|18|19|[2-9]\d)/i.test(activeLoras.natsume || '')
+    || /^L_NAT_V(?:17|18|19|20)/i.test(activeLoras.natsume || '')
 
   if (includesNene && neneSupportsControls) {
     if (sceneRating(scene) === 'R18') controls.push('nene_r18')
@@ -414,11 +418,14 @@ export function profileRatingTag(profile: ModelProfile | null, scene: unknown): 
   return String(profile.rating_all || '')
 }
 
-/** 质量前缀：模型 profile 优先，并按分级追加 rating 标签 */
+/** 质量前缀：模型 profile 优先，并按分级追加 rating 标签。
+ *  WAI 官方前缀必须原样保留空格（masterpiece, best quality, amazing quality），
+ *  只有 Anima/Krea 才走家族格式化。 */
 export function qualityPrefix(profile: ModelProfile | null, scene?: unknown, engine: PromptEngine = 'sd'): string {
   const prefix = profile ? String(profile.quality_prefix ?? '') : 'masterpiece, best quality, very aesthetic, absurdres'
   const rating = profileRatingTag(profile, scene)
-  return formatPromptForEngine(rating ? mergeTokenText(prefix, rating) : prefix, engine, profile?.exact_tokens || [])
+  const merged = rating ? mergeTokenText(prefix, rating) : prefix
+  return engine === 'sd' ? merged : formatPromptForEngine(merged, engine, profile?.exact_tokens || [])
 }
 
 /** 负面前缀：按 profile 的 merge/replace 策略与场景负面合并 */
@@ -451,6 +458,36 @@ export function adaptNegative(
     : rating === 'R15' ? ['nude', 'explicit'] : ['nsfw', 'nude', 'explicit']
   required.forEach(tag => tokens.push(tag))
   return dedupeSegment(tokens.join(', '), new Set())
+}
+
+/** 紧凑手部/解剖/文字保护词：任何 profile 负面都必须带上，防止场景无负面时裸奔。 */
+export const NEGATIVE_PROTECTION = 'bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, text, watermark, logo, signature'
+
+/**
+ * 模型原生负面统一装配（App 与 corpus 测试共用）：
+ *   官方前缀 + 场景非样板排除词（generic boilerplate 由 replace 策略移除）
+ *   + 紧凑手/解剖/文字保护 + rating 安全。
+ * Krea 恒空；Anima 负面独立于 SD 负面开关；Aesthetic 额外剥掉 score 词。
+ */
+export function assembleNegative(
+  profile: ModelProfile | null,
+  scene: PromptScene | null | undefined,
+  engine: PromptEngine,
+  context: { shot?: string | null; character?: string | null; custom?: string; sdNegativeEnabled?: boolean } = {},
+): string {
+  if (engine === 'krea2') return ''
+  if (engine === 'sd' && context.sdNegativeEnabled === false) return ''
+  const profileNegative = modelNegativePrompt(profile, scene?.negative || '', engine)
+  const custom = engine === 'sd' ? String(context.custom || '').trim() : ''
+  const merged = custom
+    ? mergeTokenText(custom, mergeTokenText(NEGATIVE_PROTECTION, profileNegative))
+    : mergeTokenText(NEGATIVE_PROTECTION, profileNegative)
+  const adapted = adaptNegative(merged, scene, { shot: context.shot, character: context.character })
+  const formatted = engine === 'anima' ? formatPromptForProfile(adapted, profile, engine) : adapted
+  if (profile?.strip_quality_tokens === true) {
+    return tokenize(formatted).filter(token => !/^score_\d+$/i.test(normalizeKey(token))).join(', ')
+  }
+  return formatted
 }
 
 // ── Framing（镜头冲突消解） ────────────────────────────────────────────────
@@ -537,49 +574,52 @@ const NATSUME_IDENTITY_TOKENS = new Set([
   'hairclip', 'two_red_hairclips', 'two_red_hairclips_only', 'no_hair_ribbon',
 ])
 
-const NATSUME_PARTNER_TOKENS = new Set([
-  'holding_hands', 'holding_arm', 'interlocked_fingers', 'kissing', 'kiss', 'neck_kiss',
-  'leaning_on_shoulder', 'lying_on_chest', 'sitting_on_lap', 'straddling',
-  'straddling_viewer', 'trapping_viewer', 'trapped_by_viewer', 'clinging_to_viewer',
-  'caught_by_viewer', 'close_face_to_face_distance', 'tense_close_contact',
+/**
+ * 单人引擎净化只删除「画面里明摆着第二个可见主体」的词：
+ * 明确的男性主体、双人/多人计数词、以及指向第三方个体的词。
+ * POV / 望向镜头 / 牵手 / 浪漫氛围 / 互动动作全部保留 —— 它们是
+ * 面向 viewer 或对单主体成立的内容，不是画面中多出来的可见人物。
+ */
+const SOLO_EXTRA_SUBJECT_TOKENS = new Set([
+  '1boy', '1man', '1woman', '1boy1girl', '1girl1boy', '1man1woman',
+  '2boys', '2girls', '2people', 'two_girls', 'three_girls',
+  'multiple_girls', 'multiple_boys', 'multiple_people',
+  'boy', 'man', 'male', 'men', 'boys', 'males', 'guy', 'guys',
+  'another_girl', 'other_girl', 'second_girl', 'another_person', 'other_person',
+  'background_girl', 'background_character', 'background_person', 'second_character',
 ])
+
+/** 明确的男性主体标记（含下划线前缀/后缀词，如 male_arms / man_s_hands）。 */
+const SOLO_MALE_SUBJECT_RE = /(?:^|_)(?:male|man|men|boy|boys|guy|guys)(?:_|$)/i
+
+function isExtraSoloSubjectToken(key: string): boolean {
+  if (SOLO_EXTRA_SUBJECT_TOKENS.has(key)) return true
+  return SOLO_MALE_SUBJECT_RE.test(key)
+}
 
 function sanitizeNatsumeSoloTemplate(template: string): string {
   return splitBreaks(template).map(section => tokenize(section)
     .filter(token => {
       const key = normalizeKey(token)
-      if (NATSUME_IDENTITY_TOKENS.has(key) || NATSUME_PARTNER_TOKENS.has(key)) return false
-      // Keep camera POVs, but remove phrases that require a visible partner.
-      return !/(?:^|_)(?:male|man|boy|viewer)(?:_|$)/.test(key) && !/^(?:1boy|1man)$/.test(key)
+      // 身份锚点由 charPrompt 行提供，模板里重复的删掉即可；互动词保留。
+      if (NATSUME_IDENTITY_TOKENS.has(key)) return false
+      return !isExtraSoloSubjectToken(key)
     })
     .join(', '))
     .filter(Boolean)
     .join(' BREAK ')
 }
 
-/** 双人互动词：只在有可见伴侣的场景成立，单人引擎（Anima/Krea）下必须过滤。 */
-const DUAL_INTERACTION_TOKENS = new Set([
-  'holding_hands', 'holding_arm', 'interlocked_fingers', 'kissing', 'kiss', 'neck_kiss',
-  'leaning_on_shoulder', 'lying_on_chest', 'sitting_on_lap', 'straddling',
-  'straddling_viewer', 'trapping_viewer', 'trapped_by_viewer', 'clinging_to_viewer',
-  'caught_by_viewer', 'close_face_to_face_distance', 'tense_close_contact',
-  'back_hug', 'embracing', 'embrace', 'cohabitation', 'hand_holding', 'hug', 'hugging',
-  'cuddle', 'cuddling', 'spooning', 'couple', 'dating', 'two_tone_body', 'pov',
-])
-
 /**
- * 单人引擎（Anima/Krea 无 LoRA 或单人 LoRA）下的场景净化：
- * 过滤需要可见伴侣的互动词与男性视角词，避免单人出图被"身后手臂/拥抱"
- * 之类的双人构图破坏。SD 引擎保留原样（WebUI 有完整双人支持）。
+ * 单人引擎（Anima/Krea）场景净化：只删除明确可见的额外主体/人数词。
+ * POV、望向镜头、牵手、浪漫氛围与中心互动/动作全部保留（viewer 相关，
+ * 不产生画面中第二个可见人物）。SD 引擎保留原样（WebUI 有完整双人支持）。
  */
 export function sanitizeSoloTemplate(template: string): string {
   return splitBreaks(template).map(section => tokenize(section)
     .filter(token => {
       const key = normalizeKey(token)
-      if (DUAL_INTERACTION_TOKENS.has(key)) return false
-      // 权重括号内的互动短语（如 (male arms embracing her from behind:1.55)）
-      if (/(?:male|man|boy|viewer|his|her partner|partner)/i.test(key)) return false
-      return !/^(?:1boy|1man|2girls|1boy1girl)$/i.test(key)
+      return !isExtraSoloSubjectToken(key)
     })
     .join(', '))
     .filter(Boolean)
@@ -636,9 +676,38 @@ export function sceneTemplateText(
 
 export interface LoraSpec { name: string; weight: number }
 
+export interface SceneLoraRef { name: string; weight: number | null }
+
 /**
- * LoRA 权重按镜头动态解析（重构前的关键质量逻辑）：
- * 场景显式权重 > 双人 0.62 > 复杂场景 complex_scene > 全身 fullbody > 特写 portrait > strength.default
+ * WAI LoRA 解析器：在场景模板剥离之前读取显式 <lora:name:weight>，
+ * 返回原始 name 与作者写的权重（无权重时为 null）。
+ */
+export function parseScenePromptLoras(scene: PromptScene | null | undefined): SceneLoraRef[] {
+  const text = String(scene?.prompt || '')
+  const refs: SceneLoraRef[] = []
+  const re = /<lora:([^>:]+)(?::([\d.]+))?>/gi
+  let match
+  while ((match = re.exec(text))) {
+    const name = String(match[1] || '').trim()
+    if (!name) continue
+    const weight = match[2] === undefined ? null : Number(match[2])
+    refs.push({ name, weight: weight !== null && Number.isFinite(weight) ? weight : null })
+  }
+  return refs
+}
+
+/** 历史版本号迁移到 characters.json 的正式模型名。 */
+function canonicalLoraName(name: string, fallbackByChar: Record<string, string>): string {
+  if (/^ayachi_nene_v\d+/i.test(name) && fallbackByChar.nene) return fallbackByChar.nene
+  if (/^shiki_natsume_v\d+/i.test(name) && fallbackByChar.natsume) return fallbackByChar.natsume
+  return name
+}
+
+/**
+ * LoRA 权重解析：
+ * 场景模板里的显式 <lora:name:weight> 优先（保留作者权重）；没有时才回退到
+ * scene.lora / fallbackByChar 并按镜头动态解析（双人 0.62 / 复杂 0.7 /
+ * 全身 0.75 / 特写 0.85 / 默认）。
  */
 export function resolveLoraSpecs(
   character: string,
@@ -647,16 +716,20 @@ export function resolveLoraSpecs(
   fallbackByChar: Record<string, string>,
   context: { shot?: string | null; manualTags?: Set<string> } = {},
 ): LoraSpec[] {
-  const raw = scene?.lora ? scene.lora : (fallbackByChar[character] || '')
-  const refs = String(raw).split(',').map(value => {
-    const clean = value.trim().replace(/^<lora:/i, '').replace(/>$/, '')
-    const parts = clean.split(':')
-    let name = (parts[0] || '').trim()
-    // 场景库存保留历史版本号时，运行时统一迁移到 characters.json 的正式模型。
-    if (/^ayachi_nene_v\d+/i.test(name) && fallbackByChar.nene) name = fallbackByChar.nene
-    if (/^shiki_natsume_v\d+/i.test(name) && fallbackByChar.natsume) name = fallbackByChar.natsume
-    return { name, explicit: Number(parts[1]) }
-  }).filter(item => item.name)
+  const promptRefs = parseScenePromptLoras(scene).map(ref => ({
+    name: canonicalLoraName(ref.name, fallbackByChar),
+    explicit: ref.weight,
+  }))
+  const refs = promptRefs.length
+    ? promptRefs
+    : String(scene?.lora ? scene.lora : (fallbackByChar[character] || ''))
+        .split(',')
+        .map(value => {
+          const clean = value.trim().replace(/^<lora:/i, '').replace(/>$/, '')
+          const parts = clean.split(':')
+          return { name: canonicalLoraName((parts[0] || '').trim(), fallbackByChar), explicit: Number(parts[1]) }
+        })
+        .filter(item => item.name)
   if (!refs.length) return []
 
   const dual = character === 'triad' || refs.length > 1
@@ -670,7 +743,7 @@ export function resolveLoraSpecs(
     const recommended = meta?.recommended_weight || {}
     let base = Number(meta?.strength?.default)
     if (!Number.isFinite(base)) base = 0.8
-    const weight = Number.isFinite(ref.explicit)
+    const weight = typeof ref.explicit === 'number' && ref.explicit > 0
       ? ref.explicit
       : dual ? 0.62
       : complex ? (Number(recommended.complex_scene) || 0.7)

@@ -28,6 +28,12 @@ const manifest = {
     isDynamicEntry: true,
     src: 'src/views/ChatView.vue',
   },
+  '_PromptBuilderView.js': {
+    file: '_app/PromptBuilderView.js',
+    name: 'PromptBuilderView',
+    css: ['_app/PromptBuilderView.css'],
+    isDynamicEntry: true,
+  },
 };
 const sizes = new Map([
   ['_app/HomeView.js', 40 * 1024],
@@ -35,12 +41,15 @@ const sizes = new Map([
   ['_app/ChatView.js', 80 * 1024],
   ['_app/shared.css', 4 * 1024],
   ['_app/ChatView.css', 30 * 1024],
+  ['_app/PromptBuilderView.js', 120 * 1024],
+  ['_app/PromptBuilderView.css', 50 * 1024],
 ]);
 
-assert.strictEqual(routeEntries(manifest).length, 2, 'only lazy view entries belong to route budgets');
+assert.strictEqual(routeEntries(manifest).length, 3, 'named facade-free view chunks must still belong to route budgets');
 const passing = evaluateManifest(manifest, file => sizes.get(file));
 assert.deepStrictEqual(passing.violations, []);
 assert.strictEqual(passing.routes.find(route => route.route === 'ChatView').css, 34 * 1024);
+assert.strictEqual(passing.routes.find(route => route.route === 'PromptBuilderView').javascript, 120 * 1024);
 
 const failing = evaluateManifest(
   manifest,

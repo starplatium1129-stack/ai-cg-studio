@@ -182,7 +182,7 @@ pub fn new_device() -> Result<(Arc<wgpu::Device>, Arc<wgpu::Queue>), String> {
         force_fallback_adapter: false,
         compatible_surface: None,
     }))
-    .ok_or("no adapter available")?;
+    .map_err(|e| format!("no adapter available: {e}"))?;
     let adapter_info = adapter.get_info();
     if cfg!(target_os = "windows") && adapter_info.backend != wgpu::Backend::Dx12 {
         return Err(format!(
@@ -199,9 +199,10 @@ pub fn new_device() -> Result<(Arc<wgpu::Device>, Arc<wgpu::Queue>), String> {
             label: Some("live2d-native"),
             required_features: wgpu::Features::empty(),
             required_limits: wgpu::Limits::default(),
+            experimental_features: wgpu::ExperimentalFeatures::disabled(),
             memory_hints: wgpu::MemoryHints::default(),
+            trace: wgpu::Trace::Off,
         },
-        None,
     ))
     .map_err(|e| format!("no device: {e}"))?;
     Ok((Arc::new(device), Arc::new(queue)))
@@ -258,16 +259,16 @@ impl Renderer {
             push_constant_ranges: &[],
         });
 
-        // Repeat wrapping matches the reference ayagami renderer; mask
-        // coordinates may leave [0,1] for off-screen vertices.
+        // Mask coordinates outside the render target must sample the edge,
+        // not wrap into another part of the mask atlas.
         let sampler = device.create_sampler(&wgpu::SamplerDescriptor {
             label: Some("live2d-sampler"),
             mag_filter: wgpu::FilterMode::Linear,
             min_filter: wgpu::FilterMode::Linear,
             mipmap_filter: wgpu::FilterMode::Nearest,
-            address_mode_u: wgpu::AddressMode::Repeat,
-            address_mode_v: wgpu::AddressMode::Repeat,
-            address_mode_w: wgpu::AddressMode::Repeat,
+            address_mode_u: wgpu::AddressMode::ClampToEdge,
+            address_mode_v: wgpu::AddressMode::ClampToEdge,
+            address_mode_w: wgpu::AddressMode::ClampToEdge,
             ..Default::default()
         });
 
@@ -442,7 +443,9 @@ impl Renderer {
             slice.map_async(wgpu::MapMode::Write, move |result| {
                 let _ = tx.send(result);
             });
-            self.device.poll(wgpu::Maintain::Wait);
+            self.device
+                .poll(wgpu::PollType::wait_indefinitely())
+                .expect("texture upload device poll failed");
             rx.recv()
                 .expect("texture upload map channel")
                 .expect("texture upload map failed");
@@ -480,7 +483,9 @@ impl Renderer {
             size,
         );
         self.queue.submit(std::iter::once(encoder.finish()));
-        self.device.poll(wgpu::Maintain::Wait);
+        self.device
+            .poll(wgpu::PollType::wait_indefinitely())
+            .expect("texture copy device poll failed");
         let view = texture.create_view(&wgpu::TextureViewDescriptor::default());
         Texture {
             width,
@@ -566,7 +571,9 @@ impl Renderer {
         slice.map_async(wgpu::MapMode::Read, move |result| {
             let _ = tx.send(result);
         });
-        self.device.poll(wgpu::Maintain::Wait);
+        self.device
+            .poll(wgpu::PollType::wait_indefinitely())
+            .expect("readback device poll failed");
         rx.recv()
             .expect("map channel")
             .expect("map readback failed");
@@ -835,6 +842,7 @@ impl Renderer {
                 color_attachments: &[Some(wgpu::RenderPassColorAttachment {
                     view: &gpu.view,
                     resolve_target: None,
+                    depth_slice: None,
                     ops: wgpu::Operations {
                         load: wgpu::LoadOp::Clear(wgpu::Color::TRANSPARENT),
                         store: wgpu::StoreOp::Store,
@@ -874,6 +882,7 @@ impl Renderer {
                 color_attachments: &[Some(wgpu::RenderPassColorAttachment {
                     view: &target_view,
                     resolve_target: None,
+                    depth_slice: None,
                     ops: wgpu::Operations {
                         load: wgpu::LoadOp::Clear(wgpu::Color::TRANSPARENT),
                         store: wgpu::StoreOp::Store,
@@ -1047,6 +1056,7 @@ impl Renderer {
                 color_attachments: &[Some(wgpu::RenderPassColorAttachment {
                     view: &mask_view,
                     resolve_target: None,
+                    depth_slice: None,
                     ops: wgpu::Operations {
                         load: wgpu::LoadOp::Clear(wgpu::Color::TRANSPARENT),
                         store: wgpu::StoreOp::Store,
@@ -1114,7 +1124,9 @@ impl Renderer {
         slice.map_async(wgpu::MapMode::Read, move |result| {
             let _ = tx.send(result);
         });
-        self.device.poll(wgpu::Maintain::Wait);
+        self.device
+            .poll(wgpu::PollType::wait_indefinitely())
+            .expect("mask readback device poll failed");
         rx.recv()
             .expect("map channel")
             .expect("map readback failed");
@@ -1646,8 +1658,8 @@ fn blend_state(kind: BlendKind, premultiplied: bool) -> wgpu::BlendState {
                 BlendFactor::One,
             ),
             BlendKind::Multiply => (
-                BlendFactor::Zero,
-                BlendFactor::Src,
+                BlendFactor::Dst,
+                BlendFactor::OneMinusSrcAlpha,
                 BlendFactor::Zero,
                 BlendFactor::One,
             ),

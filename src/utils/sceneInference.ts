@@ -1,87 +1,158 @@
 // 场景智能推断：从迁移前 pb_sceneinfer.js + pb_composition.js 移植
-// 选场景时自动预填光照/镜头/构图/色彩情调/推荐尺寸
+// 选场景时自动预填光照/镜头/构图/色彩情调/推荐尺寸。
+// 标签使用精确规范化匹配；中文只解析专门的 camera / lighting 结构化字段，
+// 绝不扫描故事或检索标签，避免叙事文本里的宽泛词误改导演决策。
 
-const SCENE_LIGHT_HINT: Record<string, string[]> = {
-  golden: ['夕阳', '黄昏', '落日', '魔法时刻', 'golden hour', '夕陽 Golden Hour'],
-  window: ['窗', '窗边', '窗光', 'window light'],
-  back: ['逆光', '背光', 'backlight'],
-  moon: ['月', '月光', '夜', 'moonlight'],
-  lantern: ['灯', '灯笼', '灯笼光'],
-  overcast: ['阴天', '多云', 'overcast'],
+export const SHOT_IDS = ['close', 'medium', 'wide', 'pov', 'low', 'high', 'side', 'turn', 'over', 'detail'] as const
+export type ShotId = typeof SHOT_IDS[number]
+
+export const LIGHTING_IDS = ['golden', 'window', 'back', 'moon', 'lantern', 'overcast'] as const
+export type LightingId = typeof LIGHTING_IDS[number]
+
+export const MOOD_IDS = ['joy', 'love', 'calm', 'sad', 'tension', 'warmth'] as const
+export type MoodId = typeof MOOD_IDS[number]
+
+export const COMPOSITION_IDS = ['center', 'rule3', 'left', 'right', 'foreground', 'frame', 'bywindow'] as const
+export type CompositionId = typeof COMPOSITION_IDS[number]
+
+/** 归一化标签：小写、去权重括号、空格/连字符转下划线。 */
+export function normalizeTag(value: string): string {
+  return String(value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/^\(+/, '')
+    .replace(/\)+$/, '')
+    .replace(/:\s*-?\d+(?:\.\d+)?\s*$/, '')
+    .replace(/[\s-]+/g, '_')
+    .replace(/_+/g, '_')
 }
 
-const CAMERA_TO_SHOT_BY_TAG: Record<string, string> = {
-  closeup: 'close', 'close-up': 'close', close_up: 'close', 'medium_shot': 'medium', half_body: 'medium', bust: 'medium',
-  wide_shot: 'wide', full_body: 'wide', pov: 'pov', high_angle: 'high', from_above: 'high', from_below: 'low',
-  side_view: 'side', looking_back: 'turn', turn_back: 'turn', selfie: 'over', macro: 'detail',
+/** 精确规范化标签 → 镜头。镜头语义与 promptPolicy resolveFramingMode 对齐。 */
+const TAG_TO_SHOT: Record<string, ShotId> = {
+  close_up: 'close', closeup: 'close', bust: 'close', portrait: 'close', face_focus: 'close',
+  medium_shot: 'medium', half_body: 'medium', upper_body: 'medium', cowboy_shot: 'medium', waist_up: 'medium',
+  wide_shot: 'wide', full_body: 'wide', long_shot: 'wide', full_body_shot: 'wide', establishing_shot: 'wide',
+  pov: 'pov', first_person: 'pov', pov_shot: 'pov',
+  high_angle: 'high', from_above: 'high', overhead: 'high', bird_eye_view: 'high',
+  low_angle: 'low', from_below: 'low', worm_eye_view: 'low',
+  side_view: 'side', side_profile: 'side',
+  looking_back: 'turn', turn_back: 'turn', turned_back: 'turn',
+  selfie: 'over',
+  macro: 'detail', close_up_detail: 'detail', extreme_close_up: 'detail',
 }
 
-const MOOD_BY_KEYWORD: Record<string, string[]> = {
-  joy: ['快乐', '开心', '笑', '阳光'],
-  love: ['恋爱', '喜欢', '心动', '吻', '约'],
-  calm: ['平静', '安静', '睡', '午后'],
-  sad: ['忧伤', '哭', '泪', '离别'],
-  tension: ['神秘', '夜', '魔法', '梦境'],
-  warmth: ['温馨', '暖', '家', '围巾', '火锅'],
+/** 镜头优先级：出现多个镜头标签时按此顺序取第一个命中的（取景类优先于姿态类）。 */
+const SHOT_PRIORITY: readonly ShotId[] = ['pov', 'detail', 'close', 'medium', 'wide', 'high', 'low', 'side', 'turn', 'over']
+
+function explicitCameraShot(value: unknown): ShotId | null {
+  const text = String(value ?? '').trim().toLowerCase()
+  if (!text) return null
+  const normalized = normalizeTag(text)
+  if (SHOT_IDS.includes(normalized as ShotId)) return normalized as ShotId
+  if (/主观|第一人称|男友视角|\bpov\b/.test(text)) return 'pov'
+  if (/手部|局部|细节/.test(text)) return 'detail'
+  if (/近景|特写|面部/.test(text)) return 'close'
+  if (/半身|中景|上半身/.test(text)) return 'medium'
+  if (/全身|远景|全景/.test(text)) return 'wide'
+  if (/俯视|俯瞰/.test(text)) return 'high'
+  if (/仰视|微仰/.test(text)) return 'low'
+  if (/侧面|侧方|侧身|侧脸/.test(text)) return 'side'
+  if (/回眸|回头/.test(text)) return 'turn'
+  return null
 }
 
-export function sceneLighting(scene: { tags?: string[]; lighting?: string }): string | null {
-  const tags = (scene.tags || []).map(t => String(t).toLowerCase())
-  for (const [id, hints] of Object.entries(SCENE_LIGHT_HINT)) {
-    if (hints.some(h => tags.includes(h.toLowerCase()))) return id
-  }
-  if (scene.lighting) {
-    const lit = String(scene.lighting).toLowerCase()
-    for (const [id, hints] of Object.entries(SCENE_LIGHT_HINT)) {
-      if (hints.some(h => lit.includes(h.toLowerCase()))) return id
-    }
+/** 精确规范化标签 → 光照。 */
+const TAG_TO_LIGHTING: Record<string, LightingId> = {
+  golden_hour: 'golden', golden_hour_lighting: 'golden', golden_light: 'golden',
+  window_light: 'window', window: 'window',
+  backlit: 'back', backlight: 'back', backlighting: 'back', rim_light: 'back',
+  moonlight: 'moon', moon: 'moon',
+  lantern_light: 'lantern', lantern: 'lantern',
+  overcast: 'overcast', cloudy: 'overcast', overcast_sky: 'overcast',
+}
+
+function explicitLighting(value: unknown): LightingId | null {
+  const text = String(value ?? '').trim().toLowerCase()
+  if (!text) return null
+  const normalized = normalizeTag(text)
+  if (LIGHTING_IDS.includes(normalized as LightingId)) return normalized as LightingId
+  if (/黄金|夕阳|黄昏|落日|夕照/.test(text)) return 'golden'
+  if (/窗光|侧窗|百叶窗|落地窗/.test(text)) return 'window'
+  if (/逆光|背光/.test(text)) return 'back'
+  if (/月光|明月/.test(text)) return 'moon'
+  if (/灯笼|纸灯/.test(text)) return 'lantern'
+  if (/阴天|阴雨|漫射|薄雾/.test(text)) return 'overcast'
+  return null
+}
+
+/** 精确规范化标签 → 色彩情调。不做中文子串扫描，只在明确情调标签上命中。 */
+const TAG_TO_MOOD: Record<string, MoodId> = {
+  smile: 'joy', smiling: 'joy', laughing: 'joy', bright: 'joy', sunny: 'joy', sparkles: 'joy',
+  blush: 'love', in_love: 'love', heart: 'love', love_letter: 'love',
+  sleeping: 'calm', peaceful: 'calm', relaxed: 'calm', serene: 'calm',
+  rain: 'sad', rainy: 'sad', crying: 'sad', tears: 'sad', tears_in_eyes: 'sad', overcast: 'sad',
+  mist: 'tension', fog: 'tension', storm: 'tension', night_sky: 'tension', neon_lighting: 'tension',
+  candlelight: 'warmth', fireplace: 'warmth', warm_lighting: 'warmth', lantern_light: 'warmth',
+}
+
+/** 情调优先级：情绪信号强于氛围词，出现多个标签时按此顺序取第一个。 */
+const MOOD_PRIORITY: readonly MoodId[] = ['love', 'sad', 'warmth', 'joy', 'tension', 'calm']
+
+export function sceneLighting(scene: { tags?: string[]; lighting?: unknown } | null): LightingId | null {
+  const explicit = explicitLighting(scene?.lighting)
+  if (explicit) return explicit
+  const tags = (scene?.tags || []).map(normalizeTag)
+  for (const tag of tags) {
+    const hit = TAG_TO_LIGHTING[tag]
+    if (hit) return hit
   }
   return null
 }
 
-export function sceneShot(scene: { tags?: string[]; camera?: string }): string | null {
-  const tags = (scene.tags || []).map(t => String(t).toLowerCase())
-  for (const t of tags) {
-    for (const [shotId, keys] of Object.entries(CAMERA_TO_SHOT_BY_TAG)) {
-      if (t.includes(keys)) return shotId
-    }
-  }
-  if (scene.camera) {
-    const cam = String(scene.camera).toLowerCase()
-    for (const [shotId, key] of Object.entries(CAMERA_TO_SHOT_BY_TAG)) {
-      if (cam.replace(/\s+/g, '_').includes(key)) return shotId
-    }
+export function sceneShot(scene: { tags?: string[]; camera?: unknown } | null): ShotId | null {
+  const explicit = explicitCameraShot(scene?.camera)
+  if (explicit) return explicit
+  const tags = (scene?.tags || []).map(normalizeTag)
+  for (const shotId of SHOT_PRIORITY) {
+    const matched = tags.find(tag => TAG_TO_SHOT[tag] === shotId)
+    if (matched) return shotId
   }
   return null
 }
 
-export function sceneColorMood(scene: { tags?: string[]; story?: string }): string | null {
-  const hay = ((scene.tags || []).concat(scene.story ? [scene.story] : [])).join(' ').toLowerCase()
-  for (const [id, keys] of Object.entries(MOOD_BY_KEYWORD)) {
-    if (keys.some(k => hay.includes(k.toLowerCase()))) return id
+export function sceneColorMood(scene: { tags?: string[]; colorMood?: unknown } | null): MoodId | null {
+  const explicit = String(scene?.colorMood ?? '') as MoodId
+  if (MOOD_IDS.includes(explicit)) return explicit
+  const tags = (scene?.tags || []).map(normalizeTag)
+  for (const moodId of MOOD_PRIORITY) {
+    if (tags.some(tag => TAG_TO_MOOD[tag] === moodId)) return moodId
   }
   return null
 }
 
-export function sceneComposition(_scene: unknown): string | null {
-  // 默认给三分法，避免空白
-  return 'rule3'
+export function sceneComposition(scene: unknown): CompositionId | null {
+  const raw = (scene as { composition?: unknown } | null)?.composition
+  if (typeof raw === 'string') {
+    const candidate = normalizeTag(raw) as CompositionId
+    if (COMPOSITION_IDS.includes(candidate)) return candidate
+  }
+  return null
 }
 
-/**
- * 画幅标签只认整个标签，不做子串匹配。
- * 原来用 includes('wide') 判横图，把镜头标签 wide_shot（广角/远景，说的是
- * 取景范围，不是画幅）也算成横图 —— 全库 50 个场景带 wide_shot，选中它们
- * 就会被悄悄改成 1344×768。真正表示横幅的标签是 landscape（26 个官方 CG 横幅）。
- */
 const PORTRAIT_TAGS = new Set(['vertical', 'portrait', '竖图', '手机壁纸', '手机'])
 const LANDSCAPE_TAGS = new Set(['landscape', 'wide', 'widescreen', 'panorama', '横图', '横幅'])
 const SQUARE_TAGS = new Set(['square', '方图'])
 
-export function sceneRecommendedSize(scene: { tags?: string[] }): string {
-  const tags = (scene.tags || []).map(t => String(t).trim().toLowerCase())
-  if (tags.some(t => PORTRAIT_TAGS.has(t))) return '768x1344'
-  if (tags.some(t => LANDSCAPE_TAGS.has(t))) return '1344x768'
-  if (tags.some(t => SQUARE_TAGS.has(t))) return '896x896'
+/**
+ * 画幅优先读场景显式 recommendedSize 字段；没有时才按精确标签判断。
+ * 标签只认整个标签，不做子串匹配（wide_shot 是取景范围不是画幅）。
+ */
+export function sceneRecommendedSize(scene: { tags?: string[]; recommendedSize?: unknown }): string {
+  const explicit = String(scene?.recommendedSize ?? '').replace(/×/g, 'x').trim()
+  if (/^\d{2,4}x\d{2,4}$/.test(explicit)) return explicit
+  const tags = (scene?.tags || []).map(normalizeTag)
+  if (tags.some(tag => PORTRAIT_TAGS.has(tag))) return '768x1344'
+  if (tags.some(tag => LANDSCAPE_TAGS.has(tag))) return '1344x768'
+  if (tags.some(tag => SQUARE_TAGS.has(tag))) return '896x896'
   return '832x1216'
 }

@@ -126,6 +126,8 @@ def main() -> None:
     parser.add_argument("--audit", type=Path, required=True)
     parser.add_argument("--attempt", type=int, default=1)
     parser.add_argument("--output-subdir", default="manual_sheets")
+    parser.add_argument("--exclude-marker", default="")
+    parser.add_argument("--include-marker", default="")
     args = parser.parse_args()
 
     scenes = load_json(args.scenes)
@@ -134,6 +136,10 @@ def main() -> None:
     manifest = []
     available = []
     for scene in scenes:
+        if args.include_marker and not (args.audit / "images" / scene["id"] / args.include_marker).exists():
+            continue
+        if args.exclude_marker and (args.audit / "images" / scene["id"] / args.exclude_marker).exists():
+            continue
         candidate = args.audit / "images" / scene["id"] / f"attempt-{args.attempt}.png"
         if candidate.exists():
             available.append((scene, candidate))

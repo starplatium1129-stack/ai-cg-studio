@@ -1,39 +1,35 @@
-//! 路径 B 壳侧：透明 overlay 窗口（WS_EX_LAYERED）+ aics_live2d_* IPC 命令。
+//! 路径 B 壳侧：DirectComposition 透明 overlay 窗口 + aics_live2d_* IPC 命令。
 //!
 //! 契约：src/types/live2dNative.ts + docs/live2d-native-overlay-plan.md。
 //! 渲染线程持 wgpu surface（绑定 overlay HWND）+ live2d-native crate 的
 //! Model/Renderer；模型只由 setCharacter 创建，动作/表情/口型/情绪/凝视以
 //! 意图命令经 channel 交给渲染线程执行（参数级写入由 Cubism Native 完成）。
-//! overlay 接收点击（HTCLIENT），WM_LBUTTONDOWN 转归一化坐标 → 渲染线程
-//! 用 Cubism HitArea 命中 → `aics:live2d:hit-test` 事件回传（前端改绑
-//! onNativeHitTest，DOM 分区只在原生不可用时兜底）。
+//! overlay 位于透明 Companion WebView 下方且不接收鼠标；WebView 舞台把归一化
+//! 点击坐标经 IPC 送到 Cubism HitArea，避免 Win32 window region 裁掉可见模型。
 
 use std::collections::HashMap;
 use std::sync::atomic::{AtomicBool, AtomicU32, AtomicU64, Ordering};
 use std::sync::mpsc::{channel, Receiver, Sender, TryRecvError};
-use std::sync::{Arc, Mutex};
+use std::sync::{Arc, Mutex, OnceLock};
 use std::thread;
 use std::time::{Duration, Instant};
 
 use tauri::{AppHandle, Emitter, Manager};
-use windows_sys::Win32::Foundation::{HWND, LPARAM, LRESULT, WPARAM};
-use windows_sys::Win32::Graphics::Gdi::{
-    CombineRgn, CreateRectRgn, DeleteObject, SetWindowRgn, RGN_OR,
-};
+use windows_sys::Win32::Foundation::{HWND, LPARAM, LRESULT, RECT, WPARAM};
 use windows_sys::Win32::System::LibraryLoader::GetModuleHandleW;
 use windows_sys::Win32::UI::WindowsAndMessaging::{
-    CreateWindowExW, DefWindowProcW, DispatchMessageW, GetWindowLongPtrW, PeekMessageW,
-    PostQuitMessage, RegisterClassExW, SetLayeredWindowAttributes, SetWindowLongPtrW, SetWindowPos,
-    ShowWindow, TranslateMessage, CS_HREDRAW, CS_VREDRAW, CW_USEDEFAULT, GWLP_USERDATA, HTCLIENT,
-    LWA_ALPHA, MSG, PM_REMOVE, SWP_NOACTIVATE, SWP_NOZORDER, SW_HIDE, SW_SHOWNA, WINDOW_EX_STYLE,
-    WINDOW_STYLE, WM_DESTROY, WM_LBUTTONDOWN, WM_NCHITTEST, WNDCLASSEXW, WS_EX_LAYERED,
-    WS_EX_NOACTIVATE, WS_EX_TOOLWINDOW, WS_POPUP,
+    CreateWindowExW, DefWindowProcW, DestroyWindow, DispatchMessageW, GetWindowRect, PeekMessageW,
+    PostQuitMessage, RegisterClassExW, SetWindowLongPtrW, SetWindowPos, ShowWindow, TranslateMessage,
+    CS_HREDRAW, CS_VREDRAW, CW_USEDEFAULT, GWLP_USERDATA, MSG, PM_REMOVE, SWP_NOACTIVATE,
+    SWP_NOSIZE, SW_HIDE, SW_SHOWNA, WINDOW_EX_STYLE, WINDOW_STYLE, WM_DESTROY,
+    WNDCLASSEXW, WS_EX_NOACTIVATE,
+    WS_EX_NOREDIRECTIONBITMAP, WS_EX_TOOLWINDOW, WS_EX_TRANSPARENT, WS_POPUP,
 };
 
 use live2d_native::model::{self, Model, ViewTransform};
 use live2d_native::renderer::{self, Renderer};
 
-/// overlay 矩形（屏幕物理像素，与 SetWindowPos 一致）。
+/// overlay 矩形。IPC 输入为 Companion-local 物理像素，state/render 内为屏幕物理像素。
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq, serde::Deserialize, serde::Serialize)]
 pub struct OverlayRect {
     pub x: i32,
@@ -48,10 +44,14 @@ pub struct Live2DOverlayState {
     pub opacity: AtomicU32,
     /// HWND 以 isize 存储（HWND = *mut c_void 非 Send）。
     pub hwnd: Mutex<Option<isize>>,
+    pub companion_hwnd: Mutex<Option<isize>>,
+    pub companion_offset: Mutex<Option<(i32, i32)>>,
     /// 窗口线程消息循环就绪标记。
     pub window_ready: AtomicBool,
     /// 渲染线程就绪标记：true 后 setCharacter 等命令不再返回 not-attached。
     pub renderer_attached: AtomicBool,
+    /// overlay/render thread 启动门控，避免并发 ensure_overlay 重复启动。
+    pub starting: AtomicBool,
     /// 渲染线程的命令通道。
     pub cmd_tx: Mutex<Option<Sender<OverlayCommand>>>,
     /// 当前加载的角色（口型参数映射等）。
@@ -60,9 +60,7 @@ pub struct Live2DOverlayState {
     pub frame_count: AtomicU64,
     /// 最近一次 hit-test 结果（selftest 断言用；app=None 时无事件可发）。
     pub hit_test_result: Mutex<Option<Vec<String>>>,
-    /// WebView 控件穿透区域（屏幕物理像素）。
-    pub passthrough: Mutex<Vec<OverlayRect>>,
-    /// 模型可见内容的大致屏幕矩形，透明区域不吞 WebView 点击。
+    /// 模型可见内容的大致屏幕矩形，仅用于诊断。
     pub model_bounds: Mutex<Option<OverlayRect>>,
     /// 原生渲染循环目标帧率。
     pub target_fps: AtomicU32,
@@ -81,13 +79,15 @@ impl Default for Live2DOverlayState {
             visible: AtomicBool::new(false),
             opacity: AtomicU32::new(255),
             hwnd: Mutex::new(None),
+            companion_hwnd: Mutex::new(None),
+            companion_offset: Mutex::new(None),
             window_ready: AtomicBool::new(false),
             renderer_attached: AtomicBool::new(false),
+            starting: AtomicBool::new(false),
             cmd_tx: Mutex::new(None),
             character: Mutex::new(None),
             frame_count: AtomicU64::new(0),
             hit_test_result: Mutex::new(None),
-            passthrough: Mutex::new(Vec::new()),
             model_bounds: Mutex::new(None),
             target_fps: AtomicU32::new(165),
             model_ready: AtomicBool::new(false),
@@ -104,6 +104,48 @@ fn reset_mouth_diagnostics(state: &Live2DOverlayState) {
     state
         .last_mapped_mouth_value
         .store(0.0f32.to_bits(), Ordering::SeqCst);
+}
+
+fn try_begin_startup(state: &Live2DOverlayState) -> bool {
+    if state.window_ready.load(Ordering::SeqCst)
+        || state.renderer_attached.load(Ordering::SeqCst)
+    {
+        return false;
+    }
+    state
+        .starting
+        .compare_exchange(false, true, Ordering::SeqCst, Ordering::SeqCst)
+        .is_ok()
+}
+
+fn reset_runtime_state(state: &Live2DOverlayState) {
+    *state.cmd_tx.lock().unwrap() = None;
+    *state.hwnd.lock().unwrap() = None;
+    *state.companion_hwnd.lock().unwrap() = None;
+    *state.companion_offset.lock().unwrap() = None;
+    state.window_ready.store(false, Ordering::SeqCst);
+    state.renderer_attached.store(false, Ordering::SeqCst);
+    state.starting.store(false, Ordering::SeqCst);
+    state.visible.store(false, Ordering::SeqCst);
+    state.model_ready.store(false, Ordering::SeqCst);
+    *state.character.lock().unwrap() = None;
+    *state.model_bounds.lock().unwrap() = None;
+    reset_mouth_diagnostics(state);
+}
+
+static OVERLAY_STATE_INIT: OnceLock<Mutex<()>> = OnceLock::new();
+
+fn followed_overlay_rect(
+    current: OverlayRect,
+    companion_x: i32,
+    companion_y: i32,
+    offset: (i32, i32),
+) -> OverlayRect {
+    OverlayRect {
+        x: companion_x + offset.0,
+        y: companion_y + offset.1,
+        ..current
+    }
 }
 
 // ---------------- 命令 ----------------
@@ -286,6 +328,7 @@ struct RenderContext {
     queue: wgpu::Queue,
     surface: Option<wgpu::Surface<'static>>,
     surface_format: wgpu::TextureFormat,
+    surface_alpha_mode: wgpu::CompositeAlphaMode,
     renderer: Option<Renderer>,
     model: Option<Model>,
     textures: Vec<renderer::Texture>,
@@ -301,7 +344,6 @@ struct RenderContext {
     active_motion: Option<ActiveMotion>,
     ready_emitted: bool,
     last_rect: OverlayRect,
-    last_region_key: Option<(OverlayRect, Vec<OverlayRect>)>,
 }
 
 impl RenderContext {
@@ -309,14 +351,21 @@ impl RenderContext {
         let instance = wgpu::Instance::new(&wgpu::InstanceDescriptor {
             backends: wgpu::Backends::DX12,
             flags: Default::default(),
-            backend_options: Default::default(),
+            memory_budget_thresholds: Default::default(),
+            backend_options: wgpu::BackendOptions {
+                dx12: wgpu::Dx12BackendOptions {
+                    presentation_system: wgpu_types::Dx12SwapchainKind::DxgiFromVisual,
+                    ..Default::default()
+                },
+                ..Default::default()
+            },
         });
         let adapter = pollster::block_on(instance.request_adapter(&wgpu::RequestAdapterOptions {
             power_preference: wgpu::PowerPreference::HighPerformance,
             compatible_surface: None,
             force_fallback_adapter: false,
         }))
-        .ok_or("no adapter")?;
+        .map_err(|e| format!("no adapter: {e}"))?;
         eprintln!(
             "[live2d] adapter: {:?} backend={:?}",
             adapter.get_info().name,
@@ -327,9 +376,10 @@ impl RenderContext {
                 label: Some("live2d-overlay"),
                 required_features: wgpu::Features::empty(),
                 required_limits: wgpu::Limits::default(),
+                experimental_features: wgpu::ExperimentalFeatures::disabled(),
                 memory_hints: wgpu::MemoryHints::default(),
+                trace: wgpu::Trace::Off,
             },
-            None,
         ))
         .map_err(|e| format!("no device: {e}"))?;
         Ok(Self {
@@ -339,6 +389,7 @@ impl RenderContext {
             queue,
             surface: None,
             surface_format: wgpu::TextureFormat::Rgba8UnormSrgb,
+            surface_alpha_mode: wgpu::CompositeAlphaMode::PreMultiplied,
             renderer: None,
             model: None,
             textures: Vec::new(),
@@ -354,7 +405,6 @@ impl RenderContext {
             active_motion: None,
             ready_emitted: false,
             last_rect: OverlayRect::default(),
-            last_region_key: None,
         })
     }
 
@@ -384,7 +434,17 @@ impl RenderContext {
             .find(|f| f.is_srgb())
             .or_else(|| caps.formats.first().copied())
             .ok_or("surface has no formats")?;
+        if !caps
+            .alpha_modes
+            .contains(&wgpu::CompositeAlphaMode::PreMultiplied)
+        {
+            return Err(format!(
+                "surface does not advertise premultiplied alpha: {:?}",
+                caps.alpha_modes
+            ));
+        }
         self.surface_format = format;
+        self.surface_alpha_mode = wgpu::CompositeAlphaMode::PreMultiplied;
         self.surface = Some(surface);
         self.renderer = Some(Renderer::new(
             Arc::new(self.device.clone()),
@@ -404,7 +464,7 @@ impl RenderContext {
                     width: width.max(1),
                     height: height.max(1),
                     present_mode: wgpu::PresentMode::AutoVsync,
-                    alpha_mode: wgpu::CompositeAlphaMode::Auto,
+                    alpha_mode: self.surface_alpha_mode,
                     view_formats: vec![],
                     desired_maximum_frame_latency: 2,
                 },
@@ -603,8 +663,8 @@ impl RenderContext {
         let by = (min_y.min(max_y)).floor().max(0.0) as i32;
         let bw = ((max_x - min_x).abs().ceil() as u32).max(1);
         let bh = ((max_y - min_y).abs().ceil() as u32).max(1);
-        // 模型可见内容必须钳制在 overlay 矩形内：动画顶点可能瞬时溢出，
-        // 若 region 覆盖到 WebView 控件区域会吞掉按钮/输入框点击。
+        // 诊断边界钳制在 overlay 内；输入事件由上层 WebView 转发，不再用它
+        // 裁剪窗口可见区域。
         let clamp_x = (rect.x + bx).clamp(rect.x, rect.x + rect.width as i32);
         let clamp_y = (rect.y + by).clamp(rect.y, rect.y + rect.height as i32);
         let clamp_w = bw.min((rect.x + rect.width as i32 - clamp_x).max(1) as u32);
@@ -615,12 +675,6 @@ impl RenderContext {
             width: clamp_w,
             height: clamp_h,
         });
-        // model 借用到此结束；更新穿透区域需要 &mut self。
-        {
-            let passthrough = state.passthrough.lock().unwrap().clone();
-            let bounds = *state.model_bounds.lock().unwrap();
-            self.update_window_region(hwnd, rect, bounds, &passthrough);
-        }
         let model = self.model.as_ref().ok_or("no model")?;
         let renderer = self.renderer.as_mut().ok_or("no renderer")?;
         let encoder = renderer.draw_frame(
@@ -681,61 +735,6 @@ impl RenderContext {
     /// 空列表 = 模型未加载。
     fn hit_area_ids(&self) -> Vec<String> {
         self.hit_area_names.clone()
-    }
-
-    /// 交互区域：模型内容矩形扣除 WebView 控件矩形（按钮等），返回不重叠
-    /// 的矩形列表。SetWindowRgn 区域外的点系统级穿透到下层 WebView2 窗口，
-    /// 与线程无关（微软 WM_NCHITTEST/SetWindowRgn 语义）。
-    fn update_window_region(
-        &mut self,
-        hwnd: HWND,
-        window_rect: OverlayRect,
-        model_bounds: Option<OverlayRect>,
-        passthrough: &[OverlayRect],
-    ) {
-        let Some(bounds) = model_bounds else {
-            self.last_region_key = None;
-            return;
-        };
-        // IPC 矩形统一是屏幕物理坐标，但 SetWindowRgn 要求相对窗口左上角。
-        // 先转换为 overlay-local，窗口移动时 region 形状保持不变。
-        let bounds = relative_to_window(bounds, window_rect);
-        let holes: Vec<OverlayRect> = passthrough
-            .iter()
-            .copied()
-            .map(|rect| relative_to_window(rect, window_rect))
-            .collect();
-        if self
-            .last_region_key
-            .as_ref()
-            .map(|(b, h)| *b == bounds && h == &holes)
-            .unwrap_or(false)
-        {
-            return;
-        }
-        let rects = subtract_rects(bounds, &holes);
-        unsafe {
-            // 空 combined region 表示窗口没有可命中区域；NULL 则会恢复完整窗口，
-            // 与“全部穿透”的期望正好相反。
-            let combined = CreateRectRgn(0, 0, 0, 0);
-            if combined.is_null() {
-                return;
-            }
-            for r in rects {
-                let region = CreateRectRgn(r.x, r.y, r.x + r.width as i32, r.y + r.height as i32);
-                if region.is_null() {
-                    continue;
-                }
-                CombineRgn(combined, combined, region, RGN_OR);
-                DeleteObject(region);
-            }
-            // SetWindowRgn 成功后窗口拥有该区域，系统负责释放，不得再 DeleteObject。
-            if SetWindowRgn(hwnd, combined, 1) == 0 {
-                DeleteObject(combined);
-            } else {
-                self.last_region_key = Some((bounds, holes));
-            }
-        }
     }
 
     fn next_motion_index(&mut self, group: &str, requested: Option<i64>) -> Result<i32, String> {
@@ -864,72 +863,6 @@ impl RenderContext {
     }
 }
 
-fn relative_to_window(rect: OverlayRect, window_rect: OverlayRect) -> OverlayRect {
-    OverlayRect {
-        x: rect.x - window_rect.x,
-        y: rect.y - window_rect.y,
-        width: rect.width,
-        height: rect.height,
-    }
-}
-
-/// 把 outer 矩形按 holes 列表逐孔切分，返回不重叠且不覆盖任何 hole 的
-/// 矩形集合（面积和 = outer 面积 − holes 与 outer 交集面积）。纯函数，供
-/// SetWindowRgn 区域构建与单元测试使用。
-fn subtract_rects(outer: OverlayRect, holes: &[OverlayRect]) -> Vec<OverlayRect> {
-    let mut rects = vec![outer];
-    for hole in holes {
-        let mut next: Vec<OverlayRect> = Vec::new();
-        for rect in rects {
-            let ix = rect.x.max(hole.x);
-            let iy = rect.y.max(hole.y);
-            let ix2 = (rect.x + rect.width as i32).min(hole.x + hole.width as i32);
-            let iy2 = (rect.y + rect.height as i32).min(hole.y + hole.height as i32);
-            if ix >= ix2 || iy >= iy2 {
-                next.push(rect);
-                continue;
-            }
-            if ix - rect.x > 0 {
-                next.push(OverlayRect {
-                    x: rect.x,
-                    y: rect.y,
-                    width: (ix - rect.x) as u32,
-                    height: rect.height,
-                });
-            }
-            if rect.x + rect.width as i32 - ix2 > 0 {
-                next.push(OverlayRect {
-                    x: ix2,
-                    y: rect.y,
-                    width: (rect.x + rect.width as i32 - ix2) as u32,
-                    height: rect.height,
-                });
-            }
-            if iy - rect.y > 0 {
-                next.push(OverlayRect {
-                    x: ix,
-                    y: rect.y,
-                    width: (ix2 - ix) as u32,
-                    height: (iy - rect.y) as u32,
-                });
-            }
-            if rect.y + rect.height as i32 - iy2 > 0 {
-                next.push(OverlayRect {
-                    x: ix,
-                    y: iy2,
-                    width: (ix2 - ix) as u32,
-                    height: (rect.y + rect.height as i32 - iy2) as u32,
-                });
-            }
-        }
-        rects = next;
-    }
-    rects
-        .into_iter()
-        .filter(|rect| rect.width > 0 && rect.height > 0)
-        .collect()
-}
-
 fn create_overlay_window() -> Option<HWND> {
     unsafe {
         let class_name = "aics_live2d_overlay\0".encode_utf16().collect::<Vec<u16>>();
@@ -957,7 +890,8 @@ fn create_overlay_window() -> Option<HWND> {
             }
         }
         let hwnd = CreateWindowExW(
-            (WS_EX_LAYERED | WS_EX_TOOLWINDOW | WS_EX_NOACTIVATE) as WINDOW_EX_STYLE,
+            (WS_EX_NOREDIRECTIONBITMAP | WS_EX_TOOLWINDOW | WS_EX_NOACTIVATE | WS_EX_TRANSPARENT)
+                as WINDOW_EX_STYLE,
             class_name.as_ptr(),
             window_title.as_ptr(),
             WS_POPUP as WINDOW_STYLE,
@@ -988,30 +922,6 @@ extern "system" fn overlay_wnd_proc(
 ) -> LRESULT {
     unsafe {
         match msg {
-            WM_NCHITTEST => {
-                // 穿透不在这里做：overlay 与 WebView2 分属不同线程，HTTRANSPARENT
-                // 只对同线程窗口转发（微软 WM_NCHITTEST 文档），跨线程点击会丢失。
-                // 系统级穿透由 SetWindowRgn 剪裁窗口区域实现：区域外的点不落在
-                // overlay 上，鼠标自然命中下层 WebView2 窗口。到达这里的点都是
-                // 模型交互区域，直接收为 HTCLIENT。
-                return HTCLIENT as LRESULT;
-            }
-            WM_LBUTTONDOWN => {
-                // 点击 → 归一化坐标 → 异步 hit test → `aics:live2d:hit-test`
-                let state_ptr = GetWindowLongPtrW(hwnd, GWLP_USERDATA);
-                if state_ptr != 0 {
-                    let state = &*(state_ptr as *const Live2DOverlayState);
-                    if let Some(tx) = state.cmd_tx.lock().unwrap().clone() {
-                        let rect = *state.rect.lock().unwrap();
-                        if rect.width > 0 && rect.height > 0 {
-                            let x = (lparam & 0xFFFF) as i32 as f32 / rect.width as f32;
-                            let y = ((lparam >> 16) & 0xFFFF) as i32 as f32 / rect.height as f32;
-                            let _ = tx.send(OverlayCommand::HitTestAsync { x, y });
-                        }
-                    }
-                }
-                return 0;
-            }
             WM_DESTROY => {
                 PostQuitMessage(0);
                 return 0;
@@ -1043,6 +953,7 @@ fn overlay_window_thread(
     }
     let Some(hwnd) = create_overlay_window() else {
         eprintln!("[live2d] create_overlay_window failed");
+        reset_runtime_state(&state);
         return;
     };
     unsafe {
@@ -1053,7 +964,6 @@ fn overlay_window_thread(
         );
     }
     *state.hwnd.lock().unwrap() = Some(hwnd as isize);
-    state.window_ready.store(true, Ordering::SeqCst);
 
     let (tx, rx): (Sender<OverlayCommand>, Receiver<OverlayCommand>) = channel();
     *state.cmd_tx.lock().unwrap() = Some(tx);
@@ -1062,10 +972,16 @@ fn overlay_window_thread(
         Ok(ctx) => ctx,
         Err(e) => {
             eprintln!("[live2d] render context init failed: {e}");
+            unsafe {
+                DestroyWindow(hwnd);
+            }
+            reset_runtime_state(&state);
             return;
         }
     };
     state.renderer_attached.store(true, Ordering::SeqCst);
+    state.window_ready.store(true, Ordering::SeqCst);
+    state.starting.store(false, Ordering::SeqCst);
 
     // 目标帧率：默认 165（vsync 由 surface present 决定，165Hz 屏即 165fps），
     // 可用 L2D_TARGET_FPS 覆盖；前端也可通过 setMaxFps 动态调整。
@@ -1077,6 +993,7 @@ fn overlay_window_thread(
     state.target_fps.store(initial_fps as u32, Ordering::SeqCst);
 
     let mut last_frame = Instant::now();
+    let mut last_z_order_sync = Instant::now() - Duration::from_secs(1);
     let mut running = true;
     while running {
         unsafe {
@@ -1101,7 +1018,42 @@ fn overlay_window_thread(
             }
         }
         if running && state.visible.load(Ordering::SeqCst) {
-            let rect = *state.rect.lock().unwrap();
+            let mut rect = *state.rect.lock().unwrap();
+            if let (Some(companion), Some(offset)) = (
+                *state.companion_hwnd.lock().unwrap(),
+                *state.companion_offset.lock().unwrap(),
+            ) {
+                let companion = companion as HWND;
+                let mut companion_rect = unsafe { std::mem::zeroed::<RECT>() };
+                if unsafe { GetWindowRect(companion, &mut companion_rect) } != 0 {
+                    let followed = followed_overlay_rect(
+                        rect,
+                        companion_rect.left,
+                        companion_rect.top,
+                        offset,
+                    );
+                    let moved = followed.x != rect.x || followed.y != rect.y;
+                    let sync_z_order = last_z_order_sync.elapsed() >= Duration::from_millis(250);
+                    if moved || sync_z_order {
+                        unsafe {
+                            SetWindowPos(
+                                hwnd,
+                                companion,
+                                followed.x,
+                                followed.y,
+                                0,
+                                0,
+                                SWP_NOACTIVATE | SWP_NOSIZE,
+                            );
+                        }
+                        if moved {
+                            *state.rect.lock().unwrap() = followed;
+                            rect = followed;
+                        }
+                        last_z_order_sync = Instant::now();
+                    }
+                }
+            }
             let now = Instant::now();
             let dt = (now - last_frame).as_secs_f32().min(0.1);
             last_frame = now;
@@ -1114,9 +1066,7 @@ fn overlay_window_thread(
                 Ok(false) => {}
                 Err(e) => {
                     eprintln!("[live2d] render frame: {e}");
-                    if e == "surface out of memory" {
-                        running = false;
-                    }
+                    running = false;
                 }
             }
         }
@@ -1124,10 +1074,10 @@ fn overlay_window_thread(
         thread::sleep(Duration::from_micros((1_000_000 / target_fps).max(1)));
     }
 
-    *state.hwnd.lock().unwrap() = None;
-    state.window_ready.store(false, Ordering::SeqCst);
-    state.renderer_attached.store(false, Ordering::SeqCst);
-    *state.cmd_tx.lock().unwrap() = None;
+    unsafe {
+        DestroyWindow(hwnd);
+    }
+    reset_runtime_state(&state);
 }
 
 fn handle_command(
@@ -1248,9 +1198,6 @@ fn handle_command(
             let rect = *state.rect.lock().unwrap();
             let areas = ctx.hit_test(rect, x, y);
             *state.hit_test_result.lock().unwrap() = Some(areas.clone());
-            if let Some(app) = app {
-                let _ = app.emit("aics:live2d:hit-test", areas.clone());
-            }
             let _ = reply.send(Ok(areas));
         }
         OverlayCommand::Snapshot { path, reply } => {
@@ -1304,6 +1251,7 @@ fn handle_command(
 /// 供 LIVE2D_SELFTEST=1 环境变量驱动，验证窗口/wgpu/模型/渲染循环全链路。
 pub fn selftest(assets_root: std::path::PathBuf) -> Result<(), String> {
     let state = Arc::new(Live2DOverlayState::default());
+    state.starting.store(true, Ordering::SeqCst);
     let handle = state.clone();
     thread::spawn(move || overlay_window_thread(handle, assets_root, None));
     let deadline = Instant::now() + Duration::from_secs(15);
@@ -1501,21 +1449,22 @@ pub fn selftest(assets_root: std::path::PathBuf) -> Result<(), String> {
     Ok(())
 }
 pub fn ensure_overlay(app: &AppHandle, assets_root: std::path::PathBuf) -> Arc<Live2DOverlayState> {
-    if let Some(state) = app.try_state::<Arc<Live2DOverlayState>>() {
-        let state = state.inner().clone();
-        if !state.window_ready.load(Ordering::SeqCst) {
-            let handle = state.clone();
-            let assets = assets_root.clone();
-            let app2 = app.clone();
-            thread::spawn(move || overlay_window_thread(handle, assets, Some(app2)));
-        }
-        return state;
+    let _init_guard = OVERLAY_STATE_INIT
+        .get_or_init(|| Mutex::new(()))
+        .lock()
+        .unwrap();
+    let state = if let Some(state) = app.try_state::<Arc<Live2DOverlayState>>() {
+        state.inner().clone()
+    } else {
+        let state = Arc::new(Live2DOverlayState::default());
+        app.manage(state.clone());
+        state
+    };
+    if try_begin_startup(&state) {
+        let handle = state.clone();
+        let app2 = app.clone();
+        thread::spawn(move || overlay_window_thread(handle, assets_root, Some(app2)));
     }
-    let state = Arc::new(Live2DOverlayState::default());
-    let handle = state.clone();
-    let app2 = app.clone();
-    thread::spawn(move || overlay_window_thread(handle, assets_root, Some(app2)));
-    app.manage(state.clone());
     state
 }
 
@@ -1529,10 +1478,9 @@ fn overlay_assets_root(app: &AppHandle) -> std::path::PathBuf {
 /// setFrame：定位 + 显隐 + 透明度（屏幕物理像素）。
 pub fn apply_frame(
     app: &AppHandle,
-    rect: OverlayRect,
+    local_rect: OverlayRect,
     visible: bool,
     opacity: Option<u32>,
-    passthrough: Vec<OverlayRect>,
 ) -> Result<(), String> {
     let assets_root = overlay_assets_root(app);
     let state = ensure_overlay(app, assets_root);
@@ -1543,27 +1491,57 @@ pub fn apply_frame(
     let Some(hwnd) = state.hwnd.lock().unwrap().clone().map(|h| h as HWND) else {
         return Err("overlay window not ready".to_string());
     };
+    let companion_hwnd = app
+        .get_webview_window("companion")
+        .and_then(|window| window.hwnd().ok())
+        .map(|handle| handle.0 as HWND)
+        .unwrap_or(std::ptr::null_mut());
+    *state.companion_hwnd.lock().unwrap() = (!companion_hwnd.is_null())
+        .then_some(companion_hwnd as isize);
+    let (rect, companion_offset) = if companion_hwnd.is_null() {
+        (local_rect, None)
+    } else {
+        let mut companion_rect = unsafe { std::mem::zeroed::<RECT>() };
+        if unsafe { GetWindowRect(companion_hwnd, &mut companion_rect) } != 0 {
+            (
+                followed_overlay_rect(
+                    local_rect,
+                    companion_rect.left,
+                    companion_rect.top,
+                    (local_rect.x, local_rect.y),
+                ),
+                Some((local_rect.x, local_rect.y)),
+            )
+        } else {
+            (local_rect, None)
+        }
+    };
+    *state.companion_offset.lock().unwrap() = companion_offset;
     *state.rect.lock().unwrap() = rect;
-    *state.passthrough.lock().unwrap() = passthrough;
     state.visible.store(visible, Ordering::SeqCst);
     if !visible {
         *state.model_bounds.lock().unwrap() = None;
     }
     let alpha = opacity.unwrap_or(255).min(255);
     state.opacity.store(alpha, Ordering::SeqCst);
+    // Per-pixel alpha is supplied by the premultiplied DComp surface. A global
+    // frame alpha would require multiplying every renderer output, which is
+    // outside the allowed overlay files; retain the value for API/state
+    // compatibility but intentionally do not apply it with layered-window APIs.
     unsafe {
-        SetLayeredWindowAttributes(hwnd, 0, alpha as u8, LWA_ALPHA);
         if visible {
+            // 首次 ShowWindow 会改变 top-level z-order；必须先显示，再把 overlay
+            // 放到 Companion 之后，否则透明模型窗口仍会吞掉 WebView 点击。
+            ShowWindow(hwnd, SW_SHOWNA);
             SetWindowPos(
                 hwnd,
-                std::ptr::null_mut(),
+                companion_hwnd,
                 rect.x,
                 rect.y,
                 rect.width as i32,
                 rect.height as i32,
-                SWP_NOACTIVATE | SWP_NOZORDER,
+                SWP_NOACTIVATE,
             );
-            ShowWindow(hwnd, SW_SHOWNA);
         } else {
             ShowWindow(hwnd, SW_HIDE);
         }
@@ -1654,7 +1632,6 @@ pub fn aics_live2d_set_frame(
     rect: serde_json::Value,
     visible: bool,
     opacity: Option<f64>,
-    passthrough: Option<Vec<OverlayRect>>,
 ) -> Result<(), String> {
     let obj = rect.as_object().ok_or("rect must be an object")?;
     let x = obj.get("x").and_then(|v| v.as_i64()).ok_or("rect.x")? as i32;
@@ -1677,7 +1654,6 @@ pub fn aics_live2d_set_frame(
         },
         visible,
         opacity.map(|o| (o.clamp(0.0, 1.0) * 255.0) as u32),
-        passthrough.unwrap_or_default(),
     )
 }
 
@@ -1695,8 +1671,8 @@ pub fn aics_live2d_get_state(app: AppHandle) -> Result<serde_json::Value, String
             "ready": false,
             "windowReady": false,
             "rendererAttached": false,
+            "starting": false,
             "modelBounds": null,
-            "passthroughCount": 0,
             "mouthLevel": 0.0,
             "mouthMappedValue": 0.0,
         }));
@@ -1711,9 +1687,9 @@ pub fn aics_live2d_get_state(app: AppHandle) -> Result<serde_json::Value, String
         "ready": state.model_ready.load(Ordering::SeqCst),
         "windowReady": state.window_ready.load(Ordering::SeqCst),
         "rendererAttached": state.renderer_attached.load(Ordering::SeqCst),
+        "starting": state.starting.load(Ordering::SeqCst),
         "character": state.character.lock().unwrap().clone(),
         "modelBounds": *state.model_bounds.lock().unwrap(),
-        "passthroughCount": state.passthrough.lock().unwrap().len(),
         "mouthLevel": f32::from_bits(state.last_mouth_level.load(Ordering::SeqCst)),
         "mouthMappedValue": f32::from_bits(state.last_mapped_mouth_value.load(Ordering::SeqCst)),
     }))
@@ -1841,8 +1817,8 @@ pub fn aics_live2d_destroy(app: AppHandle) -> Result<(), String> {
 #[cfg(test)]
 mod tests {
     use super::{
-        mouth_value_for, relative_to_window, subtract_rects, would_reject_interaction,
-        ActiveMotion, MotionPhase, OverlayRect,
+        followed_overlay_rect, mouth_value_for, reset_runtime_state, try_begin_startup,
+        would_reject_interaction, ActiveMotion, Live2DOverlayState, MotionPhase, OverlayRect,
     };
     use live2d_native::model;
 
@@ -1854,86 +1830,10 @@ mod tests {
     }
 
     #[test]
-    fn subtract_rects_preserves_area_and_cuts_holes() {
-        let outer = OverlayRect {
-            x: 0,
-            y: 0,
-            width: 100,
-            height: 100,
-        };
-        let holes = [OverlayRect {
-            x: 20,
-            y: 20,
-            width: 10,
-            height: 10,
-        }];
-        let rects = subtract_rects(outer, &holes);
-        let area: i64 = rects.iter().map(|r| r.width as i64 * r.height as i64).sum();
-        assert_eq!(area, 100 * 100 - 10 * 10);
-        for rect in &rects {
-            assert!(rect.width > 0 && rect.height > 0);
-        }
-    }
-
-    #[test]
-    fn subtract_rects_ignores_disjoint_holes() {
-        let outer = OverlayRect {
-            x: 0,
-            y: 0,
-            width: 50,
-            height: 50,
-        };
-        let holes = [OverlayRect {
-            x: 200,
-            y: 200,
-            width: 10,
-            height: 10,
-        }];
-        let rects = subtract_rects(outer, &holes);
-        assert_eq!(rects.len(), 1);
-        assert_eq!(rects[0].width * rects[0].height, 50 * 50);
-    }
-
-    #[test]
-    fn window_region_coordinates_are_relative_and_stable_after_move() {
-        let first_window = OverlayRect {
-            x: 600,
-            y: 400,
-            width: 900,
-            height: 800,
-        };
-        let moved_window = OverlayRect {
-            x: 120,
-            y: 80,
-            width: 900,
-            height: 800,
-        };
-        let first_bounds = OverlayRect {
-            x: 640,
-            y: 430,
-            width: 500,
-            height: 700,
-        };
-        let moved_bounds = OverlayRect {
-            x: 160,
-            y: 110,
-            width: 500,
-            height: 700,
-        };
-
-        let first_local = relative_to_window(first_bounds, first_window);
-        let moved_local = relative_to_window(moved_bounds, moved_window);
-
-        assert_eq!(
-            first_local,
-            OverlayRect {
-                x: 40,
-                y: 30,
-                width: 500,
-                height: 700
-            }
-        );
-        assert_eq!(first_local, moved_local);
+    fn overlay_follows_companion_without_changing_size() {
+        let current = OverlayRect { x: 120, y: 80, width: 300, height: 480 };
+        let moved = followed_overlay_rect(current, 700, 400, (12, 24));
+        assert_eq!(moved, OverlayRect { x: 712, y: 424, width: 300, height: 480 });
     }
 
     #[test]
@@ -1956,5 +1856,35 @@ mod tests {
             !would_reject_interaction(Some(&idle), "TapHead"),
             "idle 可被点击打断"
         );
+    }
+
+    #[test]
+    fn startup_gate_allows_one_starter_and_restarts_after_cleanup() {
+        let state = Live2DOverlayState::default();
+        assert!(try_begin_startup(&state));
+        assert!(!try_begin_startup(&state));
+
+        state.window_ready.store(true, std::sync::atomic::Ordering::SeqCst);
+        state.starting.store(false, std::sync::atomic::Ordering::SeqCst);
+        assert!(!try_begin_startup(&state));
+
+        reset_runtime_state(&state);
+        assert!(try_begin_startup(&state));
+    }
+
+    #[test]
+    fn runtime_reset_clears_all_ready_and_starting_flags() {
+        let state = Live2DOverlayState::default();
+        state.window_ready.store(true, std::sync::atomic::Ordering::SeqCst);
+        state.renderer_attached.store(true, std::sync::atomic::Ordering::SeqCst);
+        state.starting.store(true, std::sync::atomic::Ordering::SeqCst);
+        state.visible.store(true, std::sync::atomic::Ordering::SeqCst);
+        reset_runtime_state(&state);
+        assert!(!state.window_ready.load(std::sync::atomic::Ordering::SeqCst));
+        assert!(!state.renderer_attached.load(std::sync::atomic::Ordering::SeqCst));
+        assert!(!state.starting.load(std::sync::atomic::Ordering::SeqCst));
+        assert!(!state.visible.load(std::sync::atomic::Ordering::SeqCst));
+        assert!(state.hwnd.lock().unwrap().is_none());
+        assert!(state.cmd_tx.lock().unwrap().is_none());
     }
 }

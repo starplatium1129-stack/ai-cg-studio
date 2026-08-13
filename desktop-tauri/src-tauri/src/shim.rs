@@ -1,10 +1,16 @@
 pub const COMPANION_SHIM_JS: &str = r#"
 ;(() => {
   if (window.companionDesktop) return
-  const initBridge = () => {
-    if (!window.__TAURI__) return false
-    const invoke = window.__TAURI__.core.invoke
-    const listen = window.__TAURI__.event.listen
+  const waitForTauri = () => new Promise((resolve, reject) => {
+    if (window.__TAURI__) { resolve(window.__TAURI__); return }
+    const started = Date.now()
+    const timer = setInterval(() => {
+      if (window.__TAURI__) { clearInterval(timer); resolve(window.__TAURI__); return }
+      if (Date.now() - started >= 6000) { clearInterval(timer); reject(new Error('TAURI_API_UNAVAILABLE')) }
+    }, 25)
+  })
+  const invoke = (...args) => waitForTauri().then((api) => api.core.invoke(...args))
+  const listen = (...args) => waitForTauri().then((api) => api.event.listen(...args))
     const enableNativeLive2D = location.pathname.replace(/\/+$/, '') === '/companion'
     let nextId = 0
     const subs = new Map()
@@ -29,7 +35,7 @@ pub const COMPANION_SHIM_JS: &str = r#"
       subs.delete(id)
     }
     const reportError = (where, e) => {
-      try { window.__TAURI__.event.emit('aics:shim-diagnose', String(where) + ': ' + String(e && e.message || e)) } catch {}
+      waitForTauri().then((api) => api.event.emit('aics:shim-diagnose', String(where) + ': ' + String(e && e.message || e))).catch(() => {})
     }
     // 启动自检：invoke 链路是否可用
     invoke('get_state').then(() => { console.log('[desktop] invoke ok') }).catch((e) => reportError('invoke self-check', e))
@@ -117,7 +123,6 @@ pub const COMPANION_SHIM_JS: &str = r#"
       rect: frame.rect,
       visible: frame.visible,
       opacity: frame.opacity != null ? frame.opacity : null,
-      passthrough: frame.passthrough || [],
     }),
     setMaxFps: (fps) => invoke('aics_live2d_set_max_fps', { fps }),
     playMotion: (group, index, priority) => invoke('aics_live2d_play_motion', { group, index: index != null ? index : null, priority: priority != null ? priority : null }),
@@ -149,13 +154,6 @@ pub const COMPANION_SHIM_JS: &str = r#"
     onHitTest: (cb) => on('aics:live2d:hit-test', cb),
     onEntranceFinished: (cb) => on('aics:live2d:entrance-finished', cb),
     off: (id) => off(id),
-  }
-    return true
-  }
-  // initialization_script 先于 withGlobalTauri 注入 __TAURI__，轮询等待
-  if (!initBridge()) {
-    const timer = setInterval(() => { if (initBridge()) clearInterval(timer) }, 100)
-    setTimeout(() => clearInterval(timer), 6000)
   }
 })()
 "#;

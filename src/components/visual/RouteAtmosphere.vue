@@ -28,9 +28,9 @@
   </div>
   <!-- 樱花花雨是独立前景层：不继承氛围层的 opacity:0.2 压制，
        飘在内容之上（pointer-events:none），参考站同款"前景花雨" -->
-  <div v-if="showSakura" class="sakura-fall" aria-hidden="true">
+  <div v-if="showSakura" class="sakura-fall" :class="{ 'is-coarse': coarsePointer }" aria-hidden="true">
     <span
-      v-for="(leaf, index) in sakuraLeaves"
+      v-for="(leaf, index) in visibleSakuraLeaves"
       :key="index"
       :style="{
         '--sakura-left': leaf.left + '%',
@@ -221,6 +221,7 @@ const sakuraLeaves: SakuraLeaf[] = Array.from({ length: 16 }, (_, index) => {
     spin: (index % 2 ? 1 : -1) * (240 + (index % 3) * 120),
   }
 })
+const visibleSakuraLeaves = computed(() => coarsePointer.value ? sakuraLeaves.slice(0, 8) : sakuraLeaves)
 
 function onSignal(event: Event) {
   const detail = (event as CustomEvent<ParticleSignalDetail>).detail
@@ -401,6 +402,7 @@ onUnmounted(() => {
 @media (pointer: coarse) {
   .sakura-fall span { filter:none; box-shadow:none !important; will-change:auto; }
 }
+.sakura-fall.is-coarse span { filter:none; box-shadow:none !important; will-change:auto; }
 @media (prefers-reduced-motion: reduce) {
   .route-atmosphere { transition:none; opacity:.1; }
   .route-scan { display:none; }

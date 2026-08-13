@@ -10,6 +10,7 @@ import {
   streamErrorMessage,
 } from '@/utils/stream'
 import { extractMoodTag } from '@/utils/moodTag'
+import { hasChatUserProfile, type ChatUserProfile } from '@/utils/chatUserProfile'
 
 type ChatStorage = ReturnType<typeof useChatStorage>
 type VoiceController = ReturnType<typeof useVoice>
@@ -33,6 +34,8 @@ interface ChatConversationOptions {
   companionTools: Ref<boolean>
   /** 模型推理强度（off/low/medium/high，用户可调；仅 API 模式生效） */
   reasoning: Ref<'off' | 'low' | 'medium' | 'high'>
+  userProfile: Ref<ChatUserProfile>
+  recallMemories: (character: string, query: string) => string[]
   setBusy: (value: boolean) => void
   onError: (message: string, kind?: string, timeout?: number) => void
   /** 流式回复文本驱动情绪（无配音时替代 TTS 情绪通道）；情绪变化才回调 */
@@ -110,7 +113,7 @@ export function useChatConversation(options: ChatConversationOptions) {
     }
     const messages = options.storage.messages(characterId)
     replyAnnouncement.value = ''
-    messages.push({ role: 'user', content: text, mid: '', stopped: false })
+    messages.push({ role: 'user', content: text, mid: createMessageId(), stopped: false })
     options.storage.trim(characterId)
     const assistant = { role: 'assistant' as const, content: '', mid: createMessageId(), stopped: false }
     messages.push(assistant)
@@ -167,6 +170,8 @@ export function useChatConversation(options: ChatConversationOptions) {
             webSearch: options.chatProvider.value === 'api' && options.webSearchEnabled.value,
             companionTools: toolsEnabled || undefined,
             reasoning: options.reasoning.value,
+            userProfile: hasChatUserProfile(options.userProfile.value) ? options.userProfile.value : undefined,
+            memories: options.recallMemories(characterId, text),
             messages: [
               ...messages.slice(0, -1).map(message => ({ role: message.role, content: message.content })),
               // 文本轮（回到 DeepSeek 等）不带图片消息：纯文本模型收到

@@ -12,15 +12,19 @@
       "negative_prefix": "bad quality, worst quality, worst detail, sketch, censor",
       "negative_mode": "replace",
       "negative_replace_scope": "boilerplate",
+      "rating_all": "general",
+      "rating_r15": "sensitive",
+      "rating_r18": "nsfw",
       "sampler": "Euler a",
       "scheduler": "",
       "steps": 30,
       "cfg": 6,
       "size": "1024×1344",
-      "hires_steps": 30,
+      "hires_fix": true,
+      "hires_steps": 20,
       "hires_scale": 1.5,
-      "hires_upscaler": "R-ESRGAN 4x+ Anime6B",
-      "hires_denoising_strength": 0.5
+      "hires_upscaler": "Auto",
+      "hires_denoising_strength": 0.4
     },
     {
       "id": "noobai_xl_11",
@@ -42,7 +46,8 @@
       "scheduler": "",
       "steps": 28,
       "cfg": 5.5,
-      "size": "832×1216"
+      "size": "832×1216",
+      "hires_fix": false
     },
     {
       "id": "anima_base_v10",
@@ -54,20 +59,18 @@
       ],
       "tag_style": "space",
       "lora_in_prompt": false,
-      "exact_tokens": [
-        "best_quality"
-      ],
-      "quality_prefix": "masterpiece, best_quality, score_7",
+      "exact_tokens": [],
+      "quality_prefix": "masterpiece, best quality, score_7",
       "negative_prefix": "worst quality, low quality, score_1, score_2, score_3, artist name, blurry, jpeg artifacts, chromatic aberration",
       "negative_mode": "replace",
       "negative_replace_scope": "boilerplate",
       "rating_all": "safe",
       "rating_r15": "sensitive",
       "rating_r18": "nsfw",
-      "sampler": "er_sde",
-      "scheduler": "sgm_uniform",
-      "steps": 40,
-      "cfg": 4.5,
+      "sampler": "res_multistep",
+      "scheduler": "simple",
+      "steps": 24,
+      "cfg": 3,
       "size": "832×1216"
     },
     {
@@ -80,20 +83,19 @@
       ],
       "tag_style": "space",
       "lora_in_prompt": false,
-      "exact_tokens": [
-        "best_quality"
-      ],
+      "exact_tokens": [],
       "quality_prefix": "",
+      "strip_quality_tokens": true,
       "negative_prefix": "worst quality, low quality, artist name, blurry, jpeg artifacts, chromatic aberration",
       "negative_mode": "replace",
       "negative_replace_scope": "boilerplate",
       "rating_all": "safe",
       "rating_r15": "sensitive",
       "rating_r18": "nsfw",
-      "sampler": "er_sde",
-      "scheduler": "sgm_uniform",
-      "steps": 40,
-      "cfg": 4.5,
+      "sampler": "res_multistep",
+      "scheduler": "simple",
+      "steps": 24,
+      "cfg": 3,
       "size": "832×1216"
     },
     {

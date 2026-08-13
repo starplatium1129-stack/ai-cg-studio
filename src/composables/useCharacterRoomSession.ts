@@ -2,11 +2,23 @@ import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { CHARACTERS } from '@/config/characters'
 import { useChatConversation } from '@/composables/useChatConversation'
-import { useChatStorage } from '@/composables/useChatStorage'
+import { useChatStorage, type ChatMessage } from '@/composables/useChatStorage'
 import { useChatProvider } from '@/composables/useChatProvider'
 import { useVoice } from '@/composables/useVoice'
 import { controlApi } from '@/api/controlApi'
 import { settingsRepository, CHAT_THINKING_SETTING, type ReasoningLevel } from '@/storage/settingsRepository'
+import { loadChatUserProfile, saveChatUserProfile, type ChatUserProfile } from '@/utils/chatUserProfile'
+import {
+  editChatFact,
+  emptyChatMemoryState,
+  isChatFactRemembered,
+  loadChatMemoryState,
+  recallChatFacts,
+  rememberChatFact,
+  removeChatFact,
+  saveChatMemoryState,
+  type ChatMemoryCharacter,
+} from '@/utils/chatMemory'
 
 interface CharacterStageHandle {
   setSpeaking: (value: boolean) => void
@@ -42,6 +54,8 @@ export function useCharacterRoomSession() {
   const preparingRoom = ref(false)
   const roomSetupText = ref('一键切到聊天优先：释放受管绘图显存，并启动角色语音服务。')
   const archiveOpen = ref(false)
+  const userProfile = ref(loadChatUserProfile())
+  const chatMemory = ref(loadChatMemoryState())
 
   let statusTimer = 0
   let errorTimer = 0
@@ -204,6 +218,53 @@ export function useCharacterRoomSession() {
     settingsRepository.set(CHAT_THINKING_SETTING, level)
   }
 
+  function updateUserProfile(profile: ChatUserProfile) {
+    try {
+      userProfile.value = saveChatUserProfile(profile)
+      setError('用户档案已保存', 'info', 3000)
+    } catch {
+      setError('用户档案保存失败，请检查浏览器存储空间。', 'warning')
+    }
+  }
+
+  function memoryCharacter(value = activeChar.value): ChatMemoryCharacter {
+    return value === 'natsume' ? 'natsume' : 'nene'
+  }
+
+  const currentMemories = computed(() => chatMemory.value.byCharacter[memoryCharacter()])
+
+  function persistChatMemory() {
+    try {
+      saveChatMemoryState(chatMemory.value)
+    } catch {
+      setError('长期记忆保存失败，请检查浏览器存储空间。', 'warning')
+    }
+  }
+
+  function rememberMessage(message: ChatMessage) {
+    if (message.role !== 'user') return
+    const item = rememberChatFact(chatMemory.value, memoryCharacter(), message.content, message.mid)
+    if (!item) return
+    persistChatMemory()
+    setError('已加入长期记忆', 'info', 2500)
+  }
+
+  function updateMemory(id: string, text: string) {
+    if (!editChatFact(chatMemory.value, memoryCharacter(), id, text)) return
+    persistChatMemory()
+    setError('长期记忆已更新', 'info', 2500)
+  }
+
+  function deleteMemory(id: string) {
+    if (!removeChatFact(chatMemory.value, memoryCharacter(), id)) return
+    persistChatMemory()
+    setError('已删除长期记忆', 'info', 2500)
+  }
+
+  function messageRemembered(mid: string) {
+    return isChatFactRemembered(chatMemory.value, memoryCharacter(), mid)
+  }
+
   const {
     inputText,
     streamingMid,
@@ -230,6 +291,8 @@ export function useCharacterRoomSession() {
     useHostConfig,
     companionTools,
     reasoning,
+    userProfile,
+    recallMemories: (character, query) => recallChatFacts(chatMemory.value, memoryCharacter(character), query),
     setBusy,
     onError: setError,
     onStreamEmotion: (emotion) => {
@@ -353,12 +416,18 @@ export function useCharacterRoomSession() {
   }
 
   function clearAllMemory() {
+    const archiveCounts = storage.archiveCount()
     const hasMemory = Object.values(storage.state.histories).some(items => items.length > 0)
+      || Object.values(chatMemory.value.byCharacter).some(items => items.length > 0)
+      || Object.values(archiveCounts).some(count => count > 0)
     if (!hasMemory) return
-    if (!confirm('清除宁宁和夏目的全部本地对话记忆？此操作无法撤销。')) return
+    if (!confirm('清除宁宁和夏目的全部本地对话、归档与长期记忆？此操作无法撤销。')) return
     if (busy.value) abortCurrentRequest(true)
     voice.stop({ preserveMessageAudio: false, silent: true })
     storage.clear()
+    storage.clearArchive()
+    chatMemory.value = emptyChatMemoryState()
+    persistChatMemory()
     setError('全部本地聊天记忆已清除。', 'info', 3000)
   }
 
@@ -430,6 +499,13 @@ export function useCharacterRoomSession() {
     thinkingActivity,
     reasoning,
     onReasoningChange,
+    userProfile,
+    updateUserProfile,
+    currentMemories,
+    rememberMessage,
+    updateMemory,
+    deleteMemory,
+    messageRemembered,
     voiceStatusText,
     voiceCapabilityState,
     voiceCapabilityText,

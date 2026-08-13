@@ -19,6 +19,7 @@ var createControlRouter = require('./routes/control').createControlRouter;
 var createTrainingRouter = require('./routes/training').createTrainingRouter;
 var createAnimaRouter = require('./routes/anima').createAnimaRouter;
 var createGenerationRouter = require('./routes/generation').createGenerationRouter;
+var showcaseAssets = require('./server/showcase-assets');
 
 var ONE_DAY = 24 * 60 * 60 * 1000;
 var ONE_WEEK = 7 * ONE_DAY;
@@ -191,9 +192,9 @@ function createGateway(options) {
   // 用户会误以为"网站还是以前的"。
   app.use('/scene-showcase', function (req, res, next) {
     if (!config.SCENE_SHOWCASE_DIR) return res.status(404).end();
-    var relative = req.path.replace(/\\/g, '/');
-    var allowed = /^\/(?:manifest\.json|00-cover\.jpg|README\.txt|home\/nene\.jpg|home\/natsume\.jpg|images\/sc\d{3}\.(?:jpg|png|webp)|thumbs\/sc\d{3}\.(?:jpg|png|webp)|sheets\/[a-z0-9_-]+\/[a-z0-9_.-]+\.jpg)$/i;
-    if (!allowed.test(relative)) return res.status(404).end();
+    // 白名单同时约束了 images|thumbs 下的 scNNN / artist_ / pc_ / lora_ 文件
+    // 与穿越字符/绝对 URL/query-hash，见 server/showcase-assets.js。
+    if (!showcaseAssets.isShowcaseAssetPath(req.path)) return res.status(404).end();
     res.setHeader('Cache-Control', 'no-cache');
     next();
   }, config.SCENE_SHOWCASE_DIR

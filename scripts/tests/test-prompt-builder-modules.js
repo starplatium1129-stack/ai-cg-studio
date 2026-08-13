@@ -40,7 +40,7 @@ const modules = [
   ['src/utils/sdRequest.ts', ['buildTxt2ImgRequest', 'parseTxt2ImgResponse', 'DEFAULT_SD_NEGATIVE']],
   ['src/composables/useSDGenerate.ts', ['checkStatus', 'generate', 'cancel']],
   ['src/composables/useSDQueue.ts', ['useSDQueue', 'SD_QUEUE_LIMIT']],
-  ['src/composables/usePromptAssembly.ts', ['usePromptAssembly', 'qualityPrefix', 'modelNegativePrompt', 'resolveLoraSpecs', 'applyFraming', 'analyzeParts']],
+  ['src/composables/usePromptAssembly.ts', ['usePromptAssembly', 'qualityPrefix', 'assembleNegative', 'resolveLoraSpecs', 'applyFraming', 'analyzeParts']],
   ['src/composables/useBackup.ts', ['exportBackup', 'restore', 'healthCheck', 'cleanOrphanImages']],
   ['src/composables/useVoice.ts', ['startTurn', 'append', 'finishTurn']],
   ['src/composables/useImageStore.ts', ['imgPut', 'imgGet', 'imgDeleteMany']],
@@ -51,7 +51,7 @@ const modules = [
   ['src/components/PromptHealthPanel.vue', ['PromptReport', 'prompt-health-warnings', 'artViolations']],
   ['src/components/GenerationQueuePanel.vue', ['SDQueueJob', 'sd-queue-list', "emit('remove'"]],
   ['src/components/GenerationParamsPanel.vue', ['params: SDParams', "'reuse-seed'", 'samplerOptions']],
-  ['src/components/GenerationOutputControls.vue', ['params: SDParams', 'generation-output-controls', 'queueAvailable']],
+  ['src/components/GenerationOutputControls.vue', ['params: SDParams', 'generation-output-controls', 'queueAvailable', 'engine: DrawEngine']],
   ['src/components/SDRecoveryPanel.vue', ['SDErrorReport', "emit('recover'"]],
 ];
 
@@ -102,6 +102,11 @@ assert.strictEqual(parsedAnima.tag_style, 'space', 'Anima tag style must survive
 assert.strictEqual(parsedAnima.lora_in_prompt, false, 'Anima must not inject A1111 LoRA syntax');
 assert.strictEqual(parsedAnima.lora_strength, 0.85, 'Anima LoRA strength must normalize as a number');
 assert.deepStrictEqual(parsedAnima.exact_tokens, ['ayachi_nene', 'nene_school_uniform'], 'v19 exact token list must survive persistence parsing');
+const parsedWai = persistence.parsePresetCatalog({
+  model_profiles:[{ id:'wai', engine:'sd', hires_fix:true, hires_scale:1.5, hires_steps:20, hires_denoising_strength:0.4 }],
+}).modelProfiles[0];
+assert.strictEqual(parsedWai.hires_fix, true, 'WAI automatic hires flag must survive persistence parsing');
+assert.strictEqual(parsedWai.hires_denoising_strength, 0.4, 'WAI hires denoise must survive persistence parsing');
 const restoredContext = persistence.restoreHistorySceneStory(
   { scene:'scene-cafe', story:'用户自定义：宁宁在雨后收起伞。' },
   [{ id:'scene-cafe', title:'咖啡馆' }],
@@ -129,15 +134,31 @@ if (!/nene:\s*'1girl, solo/.test(storeSource) || !/natsume:\s*'1girl, solo/.test
 const view = read('src/views/PromptBuilderView.vue');
 const promptAssembly = read('src/composables/usePromptAssembly.ts');
 const animaPanel = read('src/components/AnimaQuickPanel.vue');
+const sdGenerateSource = read('src/composables/useSDGenerate.ts');
+if (storeSource.includes('kreaStyleId') || storeSource.includes('artistInfluences') || !storeSource.includes('styleLoraId: entry.styleLoraId ?? null')) {
+  fail('history must retain generated metadata without restoring manual style or artist controls');
+}
+if (!sdGenerateSource.includes('L_NENE_V18_WD14') || !view.includes('loras[0]?.id')) {
+  fail('WAI history must preserve structured canonical LoRA ids and weights');
+}
 if (/\bany\b/.test(view)) fail('PromptBuilderView must keep deep links, scenes, and history explicitly typed');
 if (/\bany\b/.test(promptAssembly)) fail('prompt assembly must keep its store and policy boundary explicitly typed');
+if (!view.includes('<GenerationOutputControls') || !view.includes(':engine="drawEngine"') || !view.includes("drawEngine !== 'sd' && pb.directorMode === 'pro'")) {
+  fail('all engines must share generation controls while detailed Anima parameters stay expert-only');
+}
+if (view.includes('GenerationStylePanel') || view.includes('artistInfluences') || view.includes('kreaStyleId')) {
+  fail('director must not restore the removed free-form artist/style channels');
+}
+if (!view.includes('ArtistStylePicker') || !view.includes("pb.directorMode === 'pro'")) {
+  fail('curated artist tags must stay scoped to expert mode');
+}
 if (/entry\.char\b/.test(view) || !view.includes('entry.character')) {
   fail('history deep links must restore the canonical character field');
 }
 
 const promptPipeline = [
   ['qualityPrefix', 'quality prefix must come from the model profile, not a hardcoded string'],
-  ['modelNegativePrompt', 'negative prompt must apply the model profile merge/replace策略'],
+  ['assembleNegative', 'negative prompt must apply the model profile merge/replace策略'],
   ['resolveLoraSpecs', 'LoRA weight must be resolved per framing'],
   ['applyFraming', 'framing conflicts must be resolved at composition time'],
   ['sceneTemplateText', 'scene templates must be sanitized before use'],
@@ -152,15 +173,21 @@ if (!view.includes('usePromptAssembly')) {
 for (const marker of ['DrawEngine', 'historyGenerationFields', 'animaModelId', 'engine: meta.engine']) {
   if (!view.includes(marker)) fail('director must wire engine-specific generation metadata: ' + marker);
 }
-for (const marker of ['buildAnimaRequest', 'metadataFromJob', 'onAnimaResult', 'cancelAnimaJob', '@submit="callGenerate()"']) {
+if (view.includes('styleLoraId: animaState.value.styleLoraId')) {
+  fail('one-click requests must not submit a hidden Style LoRA selection');
+}
+for (const marker of ['buildAnimaRequest', 'metadataFromJob', 'onAnimaResult', 'cancelAnimaJob', '@generate="callGenerate"', 'cancelGeneration']) {
   if (!view.includes(marker)) fail('Anima generation must be parent-owned and metadata-driven: ' + marker);
 }
 for (const forbidden of ['animaPanelRef', 'syncAnimaPanelState', 'restoreAnimaPanelState', 'querySelectorAll']) {
   if (view.includes(forbidden)) fail('PromptBuilderView must not read Anima controls through DOM: ' + forbidden);
 }
 if (animaPanel.includes("fetch('/api/anima/jobs'")) fail('AnimaQuickPanel must not own the generation HTTP lifecycle');
-for (const marker of ['update:state', "emit('submit')", "emit('cancel')", 'readonly']) {
+for (const marker of ['update:state', 'readonly']) {
   if (!animaPanel.includes(marker)) fail('AnimaQuickPanel must remain a typed presentational control surface: ' + marker);
+}
+if (animaPanel.includes("emit('submit')") || animaPanel.includes("emit('cancel')") || animaPanel.includes('Style LoRA')) {
+  fail('AnimaQuickPanel must not own generation actions or manual Krea style setup');
 }
 const sceneLoad = view.indexOf('if (restoredContext.scene) pb.loadScene(restoredContext.scene)');
 const storyRestore = view.indexOf('pb.setStory(restoredContext.story)');
@@ -235,8 +262,8 @@ if (!sdGenerate.includes('buildTxt2ImgRequest') || !sdGenerate.includes('/api/ge
 if (!sdGenerate.includes("accepted.job.provider === 'comfy' ? 'comfy' : 'webui'")) {
   fail('SD provider state must fail safe to WebUI when the server response is missing or unknown');
 }
-if (!sdGenerate.includes("'SD WebUI 生成中…'") || !sdGenerate.includes("'ComfyUI 离线回退生成中…'")) {
-  fail('SD generation status text must distinguish WebUI primary from Comfy fallback');
+if (!sdGenerate.includes("'SD WebUI 生成中…'") || !sdGenerate.includes("'ComfyUI 生成中…'")) {
+  fail('SD generation status text must distinguish the Comfy-first and WebUI providers');
 }
 for (const marker of ['pollInFlight', 'pollFailures', 'void pollProgress(token)', '进度读取失败']) {
   if (!sdGenerate.includes(marker)) fail('SD progress polling must retain ' + marker);

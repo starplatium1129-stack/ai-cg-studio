@@ -75,7 +75,7 @@ function validJob(overrides) {
     prompt:'ayachi_nene, 1girl, solo, cafe',
     negative:'worst quality, low quality',
     modelId:'anima-base-v1.0',
-    loraId:'L_NENE_V20B_ANIMA',
+    loraId:'L_NENE_V20_ANIMA',
     loraStrength:0.85,
     width:832,
     height:1216,
@@ -86,11 +86,30 @@ function validJob(overrides) {
   }, overrides || {});
 }
 
+function prepareComfyResources(context) {
+  var root = path.join(context.config.AI_WORKSPACE_ROOT, 'ComfyUI', 'models');
+  [
+    ['diffusion_models', 'anima-base-v1.0.safetensors'],
+    ['diffusion_models', 'anima-aesthetic-v1.1.safetensors'],
+    ['diffusion_models', 'krea2_turbo_fp8_scaled.safetensors'],
+    ['text_encoders', 'qwen_3_06b_base.safetensors'],
+    ['text_encoders', 'qwen3vl_4b_fp8_scaled.safetensors'],
+    ['vae', 'qwen_image_vae.safetensors'],
+    ['loras', 'ayachi_nene_v20_anima.safetensors'],
+    ['loras', 'shiki_natsume_v20_anima.safetensors']
+  ].forEach(function (item) {
+    var directory = path.join(root, item[0]);
+    fs.mkdirSync(directory, { recursive:true });
+    fs.writeFileSync(path.join(directory, item[1]), 'authorized-fixture');
+  });
+}
+
 test('Anima routes enforce application job and result boundaries over real HTTP', async function () {
   var stack = await gatewayTestStack.start({
     prefix:'aics-anima-route-',
     token:'anima-contract-token-0123456789abcdef0123456789',
     prepare:function (context) {
+      prepareComfyResources(context);
       fs.mkdirSync(path.join(context.runtime.outputs, 'anima'), { recursive:true });
       fs.writeFileSync(path.join(context.runtime.outputs, 'anima', 'orphan-startup.png'), 'orphan');
     }
@@ -124,6 +143,9 @@ test('Anima routes enforce application job and result boundaries over real HTTP'
     assert.ok(status.json.models.every(function (model) { return model.family === 'anima'; }), 'Anima status must not expose Krea models');
     var creativeStatus = await request(port, { path:'/api/creative/status' });
     assert.ok(creativeStatus.json.models.some(function (model) { return model.id === 'krea2-turbo-fp8'; }), 'creative status must expose Krea');
+    var unavailableStyle = await postJson(port, '/api/creative/jobs', { prompt:'A rainy cafe scene.', modelId:'krea2-turbo-fp8', width:1024, height:1024, styleLoraId:'rainywindow' });
+    assert.strictEqual(unavailableStyle.status, 503, 'unavailable Krea Style LoRA must remain a resource error');
+    assert.strictEqual(unavailableStyle.json.code, 'KREA_STYLE_LORA_UNAVAILABLE');
     var kreaOnAnima = await postJson(port, '/api/anima/jobs', { prompt:'x', modelId:'krea2-turbo-fp8', width:1024, height:1024 });
     assert.strictEqual(kreaOnAnima.status, 400);
     assert.strictEqual(kreaOnAnima.json.code, 'WRONG_ROUTE_FAMILY');
@@ -309,11 +331,11 @@ test('Anima routes enforce application job and result boundaries over real HTTP'
     await stack.close();
   }
 });
-
 test('Anima runtime TTL removes an unconsumed result file', async function () {
   var stack = await gatewayTestStack.start({
     prefix:'aics-anima-ttl-',
     token:'anima-ttl-token-0123456789abcdef0123456789',
+    prepare:prepareComfyResources,
     createServices:function (context) {
       return {
         anima:createAnimaService(context.config, { jobTtlMs:1000, cancelPollIntervalMs:10 })
@@ -342,9 +364,10 @@ test('Anima exposes and submits the promoted Natsume v20 LoRA without crossing c
     prefix:'aics-anima-natsume-v20-',
     token:'anima-natsume-v20-token-0123456789abcdef012345',
     prepare:function (context) {
+      prepareComfyResources(context);
       var loraRoot = path.join(context.config.AI_WORKSPACE_ROOT, 'ComfyUI', 'models', 'loras');
       fs.mkdirSync(loraRoot, { recursive:true });
-      fs.writeFileSync(path.join(loraRoot, 'shiki_natsume_v20_anima_scientific_e12.safetensors'), 'authorized-natsume-v20-fixture');
+      fs.writeFileSync(path.join(loraRoot, 'shiki_natsume_v20_anima.safetensors'), 'authorized-natsume-v20-fixture');
     }
   });
   var port = stack.address.port;
@@ -367,7 +390,7 @@ test('Anima exposes and submits the promoted Natsume v20 LoRA without crossing c
     await waitForJob(port, natsumeJob.json.job.id, function (job) { return job && job.status === 'succeeded'; });
     var state = await mockState(comfy.port);
     var promptCall = state.calls.filter(function (call) { return call.path === '/prompt'; }).pop();
-    assert.strictEqual(promptCall.body.prompt['4'].inputs.lora_name, 'shiki_natsume_v20_anima_scientific_e12.safetensors');
+    assert.strictEqual(promptCall.body.prompt['4'].inputs.lora_name, 'shiki_natsume_v20_anima.safetensors');
 
     var neneJob = await postJson(port, '/api/anima/jobs', validJob({ loraId:'L_NAT_V20_ANIMA' }));
     assert.strictEqual(neneJob.status, 400);
@@ -390,6 +413,7 @@ test('Anima no-LoRA mode submits an anima-aesthetic job without LoraLoader and a
   var stack = await gatewayTestStack.start({
     prefix:'aics-anima-nolora-',
     token:'anima-nolora-token-0123456789abcdef01234',
+    prepare:prepareComfyResources,
   });
   var port = stack.address.port;
   var comfy = stack.upstreams.comfy;
@@ -424,14 +448,14 @@ test('Anima no-LoRA mode submits an anima-aesthetic job without LoraLoader and a
     assert.strictEqual(graph['2'].inputs.clip_name, 'qwen_3_06b_base.safetensors');
     assert.strictEqual(graph['4'].inputs.text.indexOf('raiden_shogun') !== -1, true);
     assert.strictEqual(graph['5'].inputs.text, 'worst quality, low quality');
-    assert.strictEqual(graph['7'].inputs.sampler_name, 'er_sde');
-    assert.strictEqual(graph['7'].inputs.scheduler, 'sgm_uniform');
-    assert.strictEqual(graph['7'].inputs.cfg, 4.5);
-    assert.strictEqual(graph['7'].inputs.steps, 40);
+    assert.strictEqual(graph['7'].inputs.sampler_name, 'res_multistep');
+    assert.strictEqual(graph['7'].inputs.scheduler, 'simple');
+    assert.strictEqual(graph['7'].inputs.cfg, 3.0);
+    assert.strictEqual(graph['7'].inputs.steps, 24);
     assert.strictEqual(graph['10'].class_type, 'SaveImage');
 
     var loraOnNoLora = await postJson(port, '/api/anima/jobs', {
-      prompt:'x', modelId:'anima-aesthetic-v1.1', loraId:'L_NENE_V20B_ANIMA', loraStrength:0.85,
+      prompt:'x', modelId:'anima-aesthetic-v1.1', loraId:'L_NENE_V20_ANIMA', loraStrength:0.85,
       width:832, height:1216, character:'nene'
     });
     assert.strictEqual(loraOnNoLora.status, 202, 'aesthetic still accepts its authorized LoRA path');
@@ -466,6 +490,7 @@ test('Anima cancellation failure releases the pending slot after a bounded timeo
   var stack = await gatewayTestStack.start({
     prefix:'aics-anima-cancel-timeout-',
     token:'anima-cancel-token-0123456789abcdef012345',
+    prepare:prepareComfyResources,
     createServices:function (context) {
       return {
         anima:createAnimaService(context.config, { cancelPollIntervalMs:10, cancelTimeoutMs:100 })
@@ -484,6 +509,39 @@ test('Anima cancellation failure releases the pending slot after a bounded timeo
     assert.strictEqual(failed.code, 'ANIMA_CANCEL_FAILED');
     var status = await request(port, { path:'/api/anima/status' });
     assert.strictEqual(status.json.pending, 0, 'failed cancellation must not occupy MAX_PENDING forever');
+  } finally {
+    await stack.close();
+  }
+});
+
+test('Anima size contract: anima-base-v1.0 accepts 960x1536, anima-aesthetic-v1.1 rejects it', async function () {
+  var stack = await gatewayTestStack.start({
+    prefix:'aics-anima-960x1536-',
+    token:'anima-960x1536-token-0123456789abcdef012345',
+    prepare:prepareComfyResources,
+  });
+  var port = stack.address.port;
+  try {
+    // 960x1536 (area 1,474,560) is whitelisted for anima-base-v1.0 only; used by
+    // the latest-lora natsume fullbody attempt-4 candidates (WAI + Anima share
+    // the same size so the two routes can be compared).
+    var baseJob = await postJson(port, '/api/anima/jobs', validJob({ width:960, height:1536, seed:9601 }));
+    assert.strictEqual(baseJob.status, 202, 'anima-base-v1.0 must accept 960x1536');
+    assert.strictEqual(baseJob.json.job.metadata.width, 960);
+    assert.strictEqual(baseJob.json.job.metadata.height, 1536);
+    await waitForJob(port, baseJob.json.job.id, function (job) { return job && job.status === 'succeeded'; });
+
+    // anima-aesthetic-v1.1 keeps its original sizes list: 960x1536 must fail closed.
+    var aesthetic = await postJson(port, '/api/anima/jobs', {
+      prompt:'raiden_shogun, 1girl, solo, flower field',
+      negative:'worst quality, low quality',
+      modelId:'anima-aesthetic-v1.1',
+      width:960,
+      height:1536,
+      seed:9602
+    });
+    assert.strictEqual(aesthetic.status, 400, 'anima-aesthetic-v1.1 must reject 960x1536');
+    assert.strictEqual(aesthetic.json.code, 'INVALID_PARAMETER');
   } finally {
     await stack.close();
   }

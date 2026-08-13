@@ -6,7 +6,7 @@
     :data-director-mode="pb.directorMode"
     :class="{
       'focus-mode': pb.focusMode,
-      'step-4': Boolean(displayResultUrl || sd.generating.value),
+      'step-4': Boolean(displayResultUrl || generationBusy),
       'has-result': Boolean(displayResultUrl),
     }"
   >
@@ -25,7 +25,7 @@
       <div class="pb-header">
         <div class="pb-kicker">Nene &amp; Natsume Private Atelier</div>
         <h1 class="pb-title">开始绘制</h1>
-        <p class="pb-sub">挑选触动心灵的场景，凝定情绪、镜头与光效；提示词与模型参数将静候呈献，只需轻点出图。</p>
+        <p class="pb-sub">挑选触动心灵的场景，其余交由工作坊推断；需要微调时随时切换到专家模式。</p>
       </div>
       <div class="pb-top-actions">
         <button class="focus-mode-btn" type="button"
@@ -36,9 +36,12 @@
           <span class="focus-mode-label">{{ pb.focusMode ? '退出专注' : '专注成片' }}</span>
         </button>
         <div class="api-status">
-          <span class="badge" :class="sd.online.value ? 'badge-online' : 'badge-offline'">
-            {{ sd.online.value ? '✓ SD 已连接' : '正在连接 SD…' }}
-          </span>
+          <button class="badge" :class="engineOnline ? 'badge-online' : 'badge-offline'" type="button"
+            :title="engineOnline ? '点击重新检测' : `${engineStatusText}；点击重新检测`"
+            @click="recheckEngineConnection">
+            {{ engineOnline ? `✓ ${drawEngineLabel} 已连接` : engineStatusText }}
+          </button>
+          <RouterLink v-if="!engineOnline" class="api-recovery-link" to="/control">控制面板</RouterLink>
         </div>
 
         <PromptDataTools @flash="pb.flash" />
@@ -222,16 +225,16 @@
             v-show="!displayResultUrl"
           class="stage-placeholder"
           :class="{
-            'is-generating': sd.generating.value,
-            'is-error': !!sd.errorMsg.value,
-            'is-paused': sd.statusText.value === '已停止',
+            'is-generating': generationBusy,
+            'is-error': !!generationError,
+            'is-paused': generationStopped,
           }"
           aria-label="成片监看区"
         >
           <div class="stage-chrome">
             <span>CANVAS</span>
             <span class="stage-ready">
-              {{ sd.generating.value ? 'RENDERING' : (sd.errorMsg.value ? 'ATTENTION' : (sd.statusText.value === '已停止' ? 'PAUSED' : 'READY')) }}
+              {{ generationBusy ? 'RENDERING' : (generationError ? 'ATTENTION' : (generationStopped ? 'PAUSED' : 'READY')) }}
             </span>
           </div>
           <div class="stage-corners" aria-hidden="true">
@@ -242,19 +245,19 @@
           <img class="stage-muse natsume" :src="stageMuseUrl.natsume" alt="" aria-hidden="true" decoding="async">
           <div class="stage-message">
             <!-- 生成中：呼吸 + 进度，缓解等待焦虑 -->
-            <div v-if="sd.generating.value" class="stage-generating-copy">
+            <div v-if="generationBusy" class="stage-generating-copy">
               <div class="stage-generating-title">正在绘制这一张</div>
-              <div class="stage-generating-sub">{{ sd.statusText.value || '模型正在推理…' }} {{ sd.progress.value }}%</div>
-              <div class="stage-progress-ring"><i :style="{ '--progress': sd.progress.value + '%' }"></i></div>
+              <div class="stage-generating-sub">{{ generationStatusText || '模型正在推理…' }}<template v-if="drawEngine === 'sd'"> {{ sd.progress.value }}%</template></div>
+              <div class="stage-progress-ring"><i :style="{ '--progress': (drawEngine === 'sd' ? sd.progress.value : 35) + '%' }"></i></div>
             </div>
-            <div v-else-if="sd.errorMsg.value" class="stage-idle">
+            <div v-else-if="generationError" class="stage-idle">
               <div class="stage-placeholder-title">这一张没有完成</div>
-              <div class="stage-placeholder-copy">{{ sd.errorMsg.value }}</div>
+              <div class="stage-placeholder-copy">{{ generationError }}</div>
               <div class="stage-quick-actions">
                 <button class="btn btn-primary" type="button" @click="callGenerate()">重新生成</button>
               </div>
             </div>
-            <div v-else-if="sd.statusText.value === '已停止'" class="stage-idle">
+            <div v-else-if="generationStopped" class="stage-idle">
               <div class="stage-placeholder-title">生成已停止</div>
               <div class="stage-placeholder-copy">当前画布已安全暂停，可以调整内容后重新生成。</div>
               <div class="stage-quick-actions">
@@ -265,7 +268,7 @@
               <div class="stage-placeholder-title">心动成片将在此处呈现</div>
               <div class="stage-quick-actions">
                 <button class="btn btn-ghost" type="button"
-                  @click="pb.sceneSearch = ''">
+                  @click="router.push('/scene-explorer')">
                   探索灵感场景
                 </button>
               </div>
@@ -284,7 +287,7 @@
             <button class="btn btn-ghost" type="button" :disabled="!prevResult" @click="compareOpen = true">
               与上一张对比
             </button>
-            <button class="btn btn-ghost" type="button" @click="sd.clearResult()">清除</button>
+            <button class="btn btn-ghost" type="button" @click="clearDisplayedResult">清除</button>
           </div>
         </div>
 
@@ -353,6 +356,7 @@
         </div>
 
         <PromptHealthPanel
+          class="advanced-decision"
           :prompt="previewPromptView"
           :model-name="modelProfileView?.name"
           :report="reportView"
@@ -362,11 +366,16 @@
           @save="saveHistory"
         />
 
+        <ArtistStylePicker
+          v-if="pb.directorMode === 'pro'"
+          :selected="pb.artistStyleIds"
+          :engine="drawEngine"
+          @update:selected="pb.setArtistStyleIds"
+        />
+
         <!-- SD params -->
-        <GenerationParamsPanel
+        <GenerationParamsPanel v-if="drawEngine === 'sd' && pb.directorMode === 'pro'"
           :params="pb.sdParams"
-          v-model:model-name="pb.sdModelName"
-          :models="sd.models.value"
           :samplers="sd.samplers.value"
           :schedulers="sd.schedulers.value"
           :result-seed="displayResultSeed"
@@ -396,7 +405,23 @@
             </button>
           </div>
 
+          <div class="base-model-picker">
+            <label for="baseModel">底模</label>
+            <select v-if="drawEngine === 'sd'" id="baseModel" v-model="pb.sdModelName" :disabled="generationBusy">
+              <option value="">使用 WebUI 当前模型</option>
+              <option v-for="model in sd.models.value" :key="model" :value="model">{{ model }}</option>
+            </select>
+            <select v-else id="baseModel" :value="animaState.modelId" :disabled="generationBusy" @change="selectAnimaModel">
+              <option v-for="model in animaState.models" :key="model.id" :value="model.id" :disabled="model.available === false">
+                {{ model.label || model.id }}{{ model.available === false ? ' · 资源缺失' : '' }}
+              </option>
+            </select>
+          </div>
+
           <GenerationOutputControls
+            :engine="drawEngine"
+            :expert="pb.directorMode === 'pro'"
+            :preset-summary="generationPresetSummary"
             :params="pb.sdParams"
             v-model:size="sdSize"
             :vram-hint="vramHint"
@@ -407,10 +432,10 @@
              :generating="generationBusy"
             :online="engineOnline"
             :result-seed="displayResultSeed"
-            :queue-available="pb.isPopular ? false : sdQueue.canEnqueue.value"
+             :queue-available="pb.isPopular ? false : sdQueue.canEnqueue.value"
             @touch="pb.markParamTouched"
             @generate="callGenerate"
-             @cancel="drawEngine !== 'sd' ? cancelAnimaJob() : sd.cancel()"
+            @cancel="cancelGeneration"
             @enqueue="enqueueCurrent"
             @reuse-seed="reuseLastSeed"
             @reset="resetAll"
@@ -423,7 +448,7 @@
           </div>
 
           <SDRecoveryPanel :report="sdErrorReport" @recover="runRecovery" @dismiss="dismissError" />
-          <GenerationQueuePanel
+          <GenerationQueuePanel v-if="drawEngine === 'sd'"
             :total="sdQueue.total.value"
             :paused="sdQueue.paused.value"
             :active-job="sdQueue.activeJob.value"
@@ -442,12 +467,10 @@
           />
         </div>
 
-        <AnimaQuickPanel
+        <AnimaQuickPanel v-if="drawEngine !== 'sd' && pb.directorMode === 'pro'"
           :state="animaState"
           :no-lora="animaNoLoraMode"
           @update:state="patchAnimaState"
-          @submit="callGenerate()"
-          @cancel="cancelAnimaJob"
         />
       </div>
 
@@ -455,7 +478,7 @@
       <div class="director-col col-right">
 
         <!-- Emotion -->
-        <details class="panel step-panel decision-fold" id="stepEmotion" :open="pb.directorMode === 'basic'">
+        <details class="panel step-panel advanced-decision decision-fold" id="stepEmotion">
           <summary class="panel-title decision-summary">
             <span>情绪 · Emotion</span>
             <span class="decision-current">{{ emotionSummary }}</span>
@@ -523,7 +546,7 @@
         </details>
 
         <!-- Color Mood -->
-        <details class="panel step-panel decision-fold" id="stepMood" :open="pb.directorMode === 'basic'">
+        <details class="panel step-panel advanced-decision decision-fold" id="stepMood">
           <summary class="panel-title decision-summary">
             <span>色彩情调 · Mood</span>
             <span class="decision-current">{{ moodSummary }}</span>
@@ -538,20 +561,6 @@
               <span class="mood-desc">{{ m.desc }}</span>
             </button>
           </div>
-        </details>
-
-        <!-- Krea 风格配方（热门角色 · 专家模式可选；默认按 blueprint+引擎自动） -->
-        <details v-if="pb.isPopular" class="panel step-panel advanced-decision decision-fold" id="stepRecipe">
-          <summary class="panel-title decision-summary">
-            <span>风格配方 · Style</span>
-            <span class="decision-current">{{ recipeSummary }}</span>
-          </summary>
-          <PopularRecipePicker
-            :recipes="styleRecipesForSubject"
-            :selected-id="pb.kreaStyleId"
-            :summary="recipeSummary"
-            @select="setKreaStyleRecipe"
-          />
         </details>
 
       </div>
@@ -617,11 +626,6 @@ import {
   type PopularCharacter,
   type SceneBlueprint,
 } from '@/utils/popularContent'
-import {
-  eligibleStyleRecipes,
-  findStyleRecipe,
-  KREA_STYLE_RECIPES,
-} from '@/config/kreaStyleRecipes'
 import type { AnimaGenerationState, AnimaJobMetadata, AnimaResult, AnimaOption } from '@/types/anima'
 import { useSDGenerate } from '@/composables/useSDGenerate'
 import { usePromptAssembly } from '@/composables/usePromptAssembly'
@@ -648,6 +652,7 @@ const GenerationParamsPanel = defineAsyncComponent(() => import('@/components/Ge
 const GenerationOutputControls = defineAsyncComponent(() => import('@/components/GenerationOutputControls.vue'))
 const SDRecoveryPanel = defineAsyncComponent(() => import('@/components/SDRecoveryPanel.vue'))
 const AnimaQuickPanel = defineAsyncComponent(() => import('@/components/AnimaQuickPanel.vue'))
+const ArtistStylePicker = defineAsyncComponent(() => import('@/components/ArtistStylePicker.vue'))
 const HistoryPanel = defineAsyncComponent(() => import('@/components/HistoryPanel.vue'))
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
@@ -664,11 +669,11 @@ import {
   settingsRepository,
   type DrawEngine,
 } from '@/storage/settingsRepository'
+import { ApiClientError, apiClient } from '@/api/client'
 
 // 热门角色面板按需懒加载：仅在 isPopular 时渲染，避免常驻占用主 chunk。
 const PopularCharacterPicker = defineAsyncComponent(() => import('@/components/popular/PopularCharacterPicker.vue'))
 const PopularBlueprintPicker = defineAsyncComponent(() => import('@/components/popular/PopularBlueprintPicker.vue'))
-const PopularRecipePicker = defineAsyncComponent(() => import('@/components/popular/PopularRecipePicker.vue'))
 
 const router = useRouter()
 const route = useRoute()
@@ -701,28 +706,64 @@ const DIRECTOR_MODE_KEY = 'aics_pb_director_mode'
 
 const storedDrawEngine = settingsRepository.get(DRAW_ENGINE_SETTING)
 const drawEngine = ref<DrawEngine>(storedDrawEngine ?? 'sd')
-const animaState = ref<AnimaGenerationState>({
-  phase: 'idle', online: false, checkMsg: 'Anima 状态检查中…', models: [], loras: [],
-  prompt: '', negative: '', modelId: 'anima-base-v1.0', loraId: 'L_NENE_V20B_ANIMA',
-  loraStrength: 0.85, width: 832, height: 1216, steps: 40, cfg: 4.5,
+  const animaState = ref<AnimaGenerationState>({
+  phase: 'idle', online: false, checkMsg: 'Anima 状态检查中…', models: [], loras: [], styleLoras: [], styleLoraId: '',
+  prompt: '', negative: '', modelId: 'anima-base-v1.0', loraId: 'L_NENE_V20_ANIMA',
+  loraStrength: 0.85, width: 832, height: 1216, steps: 24, cfg: 3.0,
   family: 'anima',
-  sampler: 'er_sde', scheduler: 'sgm_uniform', seed: null,
+  sampler: 'res_multistep', scheduler: 'simple', seed: null,
   job: null, result: null, statusText: '', errorMsg: '',
 })
 const ANIMA_LORA_BY_CHARACTER = {
-  nene: 'L_NENE_V20B_ANIMA',
+  nene: 'L_NENE_V20_ANIMA',
   natsume: 'L_NAT_V20_ANIMA',
 } as const
 let animaStatusTimer: ReturnType<typeof setInterval> | null = null
 let animaRequestSerial = 0
+let animaStatusRequest: AbortController | null = null
+let animaJobRequest: AbortController | null = null
 
 const animaModelId = computed({
   get: () => animaState.value.modelId,
-  set: value => patchAnimaState({ modelId: value }),
+  set: value => applyAnimaModel(value),
 })
 
 function patchAnimaState(patch: Partial<AnimaGenerationState>) {
   animaState.value = { ...animaState.value, ...patch }
+}
+
+function closestSupportedSize(model: AnimaOption | undefined, desired: string): string {
+  const sizes = model?.sizes || []
+  if (!sizes.length || sizes.includes(desired)) return desired
+  const [desiredWidth, desiredHeight] = desired.split('x').map(Number)
+  if (!desiredWidth || !desiredHeight) return sizes[0]
+  const desiredRatio = desiredWidth / desiredHeight
+  return [...sizes].sort((left, right) => {
+    const [leftWidth, leftHeight] = left.split('x').map(Number)
+    const [rightWidth, rightHeight] = right.split('x').map(Number)
+    return Math.abs(leftWidth / leftHeight - desiredRatio) - Math.abs(rightWidth / rightHeight - desiredRatio)
+  })[0]
+}
+
+function applyAnimaModel(modelId: string) {
+  const model = animaState.value.models.find(item => item.id === modelId)
+  const size = closestSupportedSize(model, pb.lastRecommendedSize || `${animaState.value.width}x${animaState.value.height}`)
+  const [width, height] = size.split('x').map(Number)
+  patchAnimaState({
+    modelId,
+    family: model?.family === 'krea2' ? 'krea2' : 'anima',
+    steps: Number(model?.defaults?.steps) || animaState.value.steps,
+    cfg: Number(model?.defaults?.cfg) || animaState.value.cfg,
+    sampler: String(model?.defaults?.sampler || animaState.value.sampler),
+    scheduler: String(model?.defaults?.scheduler || animaState.value.scheduler),
+    styleLoraId: '',
+    ...(Number.isInteger(width) && Number.isInteger(height) ? { width, height } : {}),
+  })
+  syncAnimaCharacter(pb.char)
+}
+
+function selectAnimaModel(event: Event) {
+  applyAnimaModel((event.target as HTMLSelectElement).value)
 }
 
 function syncAnimaCharacter(character: 'nene' | 'natsume' | 'triad' = pb.char) {
@@ -784,7 +825,7 @@ const {
   promptReport,
   artViolations,
   previewPrompt,
-} = usePromptAssembly(pb, sd.checkpoint, drawEngine, animaModelId)
+} = usePromptAssembly(pb, sd.checkpoint, drawEngine, animaModelId, computed(() => animaState.value.loraId))
 
 // 热门角色无 LoRA：与工作室路径正交，绝不流经 pb.charPrompt / characterControlTokens。
 const popular = usePopularPromptAssembly(pb, drawEngine, animaModelId)
@@ -834,26 +875,11 @@ const recommendedBlueprints = computed(() => {
   return recommendBlueprints(pool, key, blueprintCursor.value, previousBlueprintIds.value, 3)
 })
 
-// ── Krea 风格配方（专家模式可选；默认按 blueprint+引擎自动）───────────────
-const styleRecipesForSubject = computed(() => {
-  const character = popularCharacter.value
-  if (!character) return []
-  return eligibleStyleRecipes(KREA_STYLE_RECIPES, character, { adultEnabled: pb.showMatureScenes })
-})
-const selectedStyleRecipe = computed(() => findStyleRecipe(KREA_STYLE_RECIPES, pb.kreaStyleId))
-const recipeSummary = computed(() => {
-  if (!pb.isPopular) return ''
-  if (pb.kreaStyleId === null) return '自动'
-  return selectedStyleRecipe.value?.name ?? '自动'
-})
-function setKreaStyleRecipe(id: string | null) {
-  pb.kreaStyleId = id
-}
-
 // ── 出图对比：记住上一张结果，生成新图后可并排大图对比 ──────────────
 interface ResultSnapshot {
   url: string
   seed: number | null
+  styleLoraId: string | null
   size: string
   sampler: string
   cfg: number
@@ -872,6 +898,7 @@ function resultSnapshot(url: string): ResultSnapshot {
   return {
     url,
     seed: displayResultSeed.value ?? (isComfy ? metadata?.seed ?? null : (pb.sdParams.seedLock && pb.sdParams.seed >= 0 ? pb.sdParams.seed : null)),
+    styleLoraId: isComfy ? ((metadata?.styleLoraId ?? animaState.value.styleLoraId) || null) : null,
     size: isComfy ? `${metadata?.width ?? animaState.value.width}x${metadata?.height ?? animaState.value.height}` : sdSize.value,
     sampler: isComfy ? (metadata?.sampler ?? animaState.value.sampler) : (pb.sdParams.sampler || sd.samplers.value[0] || '—'),
     cfg: isComfy ? (metadata?.cfg ?? animaState.value.cfg) : pb.sdParams.cfg,
@@ -908,8 +935,20 @@ function setSceneCollection(collection: 'core' | 'curated' | 'all') {
   sceneLimit.value = 20
 }
 
+function applyRecommendedSize(size: string) {
+  const normalized = size.replace('×', 'x')
+  sdSize.value = normalized
+  const activeModel = animaState.value.models.find(model => model.id === animaState.value.modelId)
+  const supported = closestSupportedSize(activeModel, normalized)
+  const [width, height] = supported.split('x').map(Number)
+  if (Number.isInteger(width) && Number.isInteger(height)) patchAnimaState({ width, height })
+}
+
 function selectScene(scene: Scene) {
   pb.loadScene(scene)
+  pb.applyModelProfile(pb.sdModelName || sd.checkpoint.value, { applySize: false })
+  applyRecommendedSize(pb.lastRecommendedSize)
+  patchAnimaState({ styleLoraId: '' })
   voiceStudioRef.value?.setSuggestedCaption?.(scene.story ?? '')
   rememberRecent(scene)
   recordSceneUsage(scene)
@@ -979,6 +1018,7 @@ function selectPopularCharacter(character: PopularCharacter) {
 function selectPopularOutfit(outfitId: string) {
   if (pb.subject.kind !== 'popular') return
   pb.setPopularSubject(pb.subject.characterId, outfitId, pb.subject.blueprintId)
+  patchAnimaState({ styleLoraId: '' })
   resetBlueprintRotation()
 }
 
@@ -992,16 +1032,9 @@ function selectBlueprint(blueprint: SceneBlueprint) {
   pb.setColorMood(decision.colorMood)
   // 蓝图推荐尺寸必须收敛到当前底模白名单：Krea 已激活时 832x1216 会让
   // 服务端 400 INVALID_PARAMETER。
-  let size = decision.size
-  const activeModel = animaState.value.models.find(model => model.id === animaState.value.modelId)
-  if (activeModel && Array.isArray(activeModel.sizes) && activeModel.sizes.length
-    && !activeModel.sizes.includes(size)) {
-    size = activeModel.sizes[0]
-  }
-  sdSize.value = size
-  const [width, height] = size.split('x').map(Number)
-  if (Number.isInteger(width) && Number.isInteger(height)) patchAnimaState({ width, height })
-  pb.visualDescription = blueprint.promptProse
+  applyRecommendedSize(decision.size)
+  patchAnimaState({ styleLoraId: '' })
+  pb.visualDescription = ''
   pb.flash(`已选用场景「${blueprint.title}」，镜头/光照/尺寸已自动推断`)
 }
 
@@ -1037,6 +1070,10 @@ function clearAnimaResult() {
   if (previous) URL.revokeObjectURL(previous.url)
   patchAnimaState({ result: null, job: null })
 }
+function clearDisplayedResult() {
+  if (drawEngine.value === 'sd') sd.clearResult()
+  else clearAnimaResult()
+}
 const displayResultUrl = computed(() => drawEngine.value !== 'sd' ? (animaState.value.result?.url ?? '') : sd.resultUrl.value)
 const displayResultSeed = computed(() => drawEngine.value !== 'sd' ? animaState.value.result?.metadata.seed ?? null : sd.resultSeed.value)
 
@@ -1066,6 +1103,7 @@ function setDrawEngine(v: DrawEngine) {
     return
   }
   drawEngine.value = v
+  patchAnimaState({ styleLoraId: '' })
   if (v !== 'sd') {
     syncAnimaCharacter(pb.char)
     void refreshAnimaBackend()
@@ -1083,11 +1121,49 @@ const engineOnline = computed(() => {
         && animaState.value.models.some(model => model.id === animaState.value.modelId && model.available !== false)
     }
     return pb.char !== 'triad' && Boolean(animaState.value.loraId) && animaState.value.online
+      && animaState.value.models.some(model => model.id === animaState.value.modelId && model.available !== false)
+      && animaState.value.loras.some(lora => lora.id === animaState.value.loraId && lora.available !== false)
   }
-  if (drawEngine.value === 'krea2') return animaState.value.online && animaState.value.models.some(model => model.id === animaState.value.modelId && model.available !== false)
+  if (drawEngine.value === 'krea2') return animaState.value.online
+    && animaState.value.models.some(model => model.id === animaState.value.modelId && model.available !== false)
   return sd.online.value
 })
 const generationBusy = computed(() => sd.generating.value || ['submitting', 'running', 'cancelling'].includes(animaState.value.phase))
+const drawEngineLabel = computed(() => drawEngine.value === 'sd' ? 'SD' : drawEngine.value === 'anima' ? 'Anima' : 'Krea 2')
+const generationStatusText = computed(() => drawEngine.value === 'sd' ? sd.statusText.value : animaState.value.statusText)
+const generationError = computed(() => drawEngine.value === 'sd' ? sd.errorMsg.value : animaState.value.errorMsg)
+const generationStopped = computed(() => drawEngine.value === 'sd'
+  ? sd.statusText.value === '已停止'
+  : animaState.value.phase === 'cancelled')
+const engineStatusText = computed(() => {
+  if (drawEngine.value === 'sd') return 'SD 未连接'
+  return animaState.value.checkMsg || `${drawEngineLabel.value} 未连接`
+})
+
+async function recheckEngineConnection() {
+  if (drawEngine.value === 'sd') {
+    const ok = await sd.checkStatus()
+    pb.flash(ok ? 'SD 已重新连接' : 'SD 仍未连接，请检查控制面板')
+    return
+  }
+  await refreshAnimaBackend()
+  pb.flash(animaState.value.checkMsg)
+}
+const generationPresetSummary = computed(() => {
+  if (drawEngine.value === 'sd') {
+    const upscaler = pb.sdParams.hiresUpscaler === 'Auto' ? 'Auto Anime6B/Latent' : pb.sdParams.hiresUpscaler
+    const hires = pb.sdParams.hiresFix
+      ? ` · Hires ${upscaler} ${pb.sdParams.hiresScale}× / ${pb.sdParams.hiresSteps} steps / ${pb.sdParams.hiresDenoise}`
+      : ''
+    return `${pb.sdParams.steps} steps · CFG ${pb.sdParams.cfg} · ${pb.sdParams.sampler || '自动采样'} · ${sdSize.value}${hires}`
+  }
+  return `${animaState.value.steps} steps · CFG ${animaState.value.cfg} · ${animaState.value.sampler} / ${animaState.value.scheduler} · ${animaState.value.width}×${animaState.value.height}`
+})
+
+function cancelGeneration() {
+  if (drawEngine.value === 'sd') sd.cancel()
+  else void cancelAnimaJob()
+}
 
 /** 把当前导演台状态快照成一个队列任务 */
 function captureJob(): Omit<SDQueueJob, 'id'> | null {
@@ -1130,6 +1206,8 @@ function historyGenerationFields(): Partial<HistoryEntry> {
       lora: meta.loraId,
       loraId: meta.loraId,
       loraStrength: meta.loraStrength,
+      loras: meta.loras,
+      styleLoraId: meta.styleLoraId ?? null,
       preview: meta.preview === true,
       cfg: meta.cfg,
       steps: meta.steps,
@@ -1139,14 +1217,15 @@ function historyGenerationFields(): Partial<HistoryEntry> {
     }
   }
   const model = pb.sdModelName || sd.checkpoint.value || ''
+  const loras = sd.lastLoras.value
   return {
     engine: 'sd',
     provider: sd.provider.value || 'webui',
     profile: modelProfile.value?.id || '',
     model,
-    lora: loraSpecs.value.map(spec => `${spec.name}:${spec.weight}`).join(', ') || null,
-    loraId: loraSpecs.value[0]?.name || null,
-    loraStrength: loraSpecs.value[0]?.weight ?? null,
+    loraId: loras[0]?.id || null,
+    loraStrength: loras[0]?.strength ?? null,
+    loras,
     cfg: pb.sdParams.cfg,
     steps: pb.sdParams.steps,
     sampler: pb.sdParams.sampler,
@@ -1171,6 +1250,7 @@ interface AnimaStatusResponse {
   online?: boolean
   models?: AnimaOption[]
   loras?: AnimaOption[]
+  styleLoras?: AnimaGenerationState['styleLoras']
   error?: string
 }
 
@@ -1187,6 +1267,7 @@ interface AnimaRequest {
   cfg: number
   seed?: number
   character: 'nene' | 'natsume' | 'triad' | null
+  styleLoraId?: string
 }
 
 function animaRequestPayload(request: AnimaRequest): Omit<AnimaRequest, 'profileId' | 'loraId' | 'loraStrength'> & Partial<Pick<AnimaRequest, 'loraId' | 'loraStrength'>> {
@@ -1195,6 +1276,7 @@ function animaRequestPayload(request: AnimaRequest): Omit<AnimaRequest, 'profile
     negative: request.negative,
     modelId: request.modelId,
     ...(request.loraId ? { loraId: request.loraId, loraStrength: request.loraStrength } : {}),
+    ...(request.styleLoraId ? { styleLoraId: request.styleLoraId } : {}),
     width: request.width,
     height: request.height,
     steps: request.steps,
@@ -1212,13 +1294,18 @@ function updateAnimaPromptState() {
 }
 
 async function refreshAnimaBackend() {
+  animaStatusRequest?.abort()
+  const controller = new AbortController()
+  animaStatusRequest = controller
   try {
-    const response = await fetch('/api/creative/status', { cache: 'no-store' })
-    const data = await response.json() as AnimaStatusResponse
-    if (!response.ok || data.ok !== true) throw new Error(data.error || `网关返回 ${response.status}`)
+    const data = await apiClient.request<AnimaStatusResponse>('/api/creative/status', {
+      cache: 'no-store', signal: controller.signal, timeoutMs: 10_000,
+      validate: value => value.ok === true,
+    })
     const models = Array.isArray(data.models) ? data.models : []
     const loras = (Array.isArray(data.loras) ? data.loras : [])
-      .filter(lora => lora.character === pb.char && lora.available !== false)
+      .filter(lora => lora.character === pb.char)
+    const styleLoras = drawEngine.value === 'krea2' ? (data.styleLoras || []) : []
     const targetFamily = drawEngine.value === 'krea2' ? 'krea2' : 'anima'
     const familyModels = models.filter(model => model.family === targetFamily)
     const visibleModels = pb.isPopular
@@ -1248,7 +1335,7 @@ async function refreshAnimaBackend() {
       checkMsg: data.online === true
         ? `${familyLabel} 在线 · ${visibleModels.length} 个底模 · ${familyLoras.length} 个 LoRA`
         : `${familyLabel} 离线（ComfyUI 未启动或网关不可用）`,
-      models: visibleModels, loras: familyLoras, modelId, loraId, width, height,
+      models: visibleModels, loras: familyLoras, styleLoras, styleLoraId: '', modelId, loraId, width, height,
         family: selectedModel?.family === 'krea2' ? 'krea2' : 'anima',
         steps: Number(selectedModel?.defaults?.steps) || animaState.value.steps,
         cfg: Number(selectedModel?.defaults?.cfg) || animaState.value.cfg,
@@ -1257,7 +1344,10 @@ async function refreshAnimaBackend() {
     })
     syncAnimaCharacter(pb.char)
   } catch (error) {
+    if (error instanceof ApiClientError && error.kind === 'aborted') return
     patchAnimaState({ online: false, checkMsg: `${drawEngine.value === 'krea2' ? 'Krea 2' : 'Anima'} 离线（网关状态接口不可用）` })
+  } finally {
+    if (animaStatusRequest === controller) animaStatusRequest = null
   }
 }
 
@@ -1339,8 +1429,9 @@ function metadataFromJob(job: AnimaPublicJob, request: AnimaRequest): AnimaJobMe
         profileId: request.profileId,
         modelId: request.modelId,
         loraId: request.loraId,
-        loraStrength: request.loraStrength,
-        width: request.width,
+         loraStrength: request.loraStrength,
+         styleLoraId: request.styleLoraId ?? null,
+         width: request.width,
         height: request.height,
         steps: request.steps,
         cfg: request.cfg,
@@ -1355,26 +1446,42 @@ function metadataFromJob(job: AnimaPublicJob, request: AnimaRequest): AnimaJobMe
   return Object.freeze({ ...metadata, resultUrl: job.resultUrl || metadata.resultUrl || null }) as AnimaJobMetadata
 }
 
-async function readAnimaError(response: Response): Promise<string> {
+async function fetchAnimaImage(url: string, signal: AbortSignal): Promise<Blob> {
+  const controller = new AbortController()
+  const onAbort = () => controller.abort()
+  signal.addEventListener('abort', onAbort, { once: true })
+  const timeout = window.setTimeout(() => controller.abort(), 30_000)
   try {
-    const data = await response.json() as { error?: string }
-    if (data.error) return data.error
-  } catch { /* use the HTTP status below */ }
-  return `网关返回 ${response.status}`
+    const response = await fetch(url, { cache: 'no-store', signal: controller.signal })
+    const contentType = String(response.headers.get('content-type') || '')
+    if (!response.ok) throw new Error(`图片读取失败（HTTP ${response.status}）`)
+    if (!contentType.startsWith('image/')) throw new Error('网关返回的结果不是图片')
+    const blob = await response.blob()
+    if (!blob.size) throw new Error('生成结果为空')
+    return blob
+  } catch (error) {
+    if (controller.signal.aborted) throw new Error(signal.aborted ? '请求已取消' : '图片读取超时（30 秒）')
+    throw error
+  } finally {
+    clearTimeout(timeout)
+    signal.removeEventListener('abort', onAbort)
+  }
 }
 
-async function pollAnimaJob(jobId: string, request: AnimaRequest, serial: number): Promise<void> {
+async function pollAnimaJob(jobId: string, request: AnimaRequest, serial: number, signal: AbortSignal): Promise<void> {
   const deadline = Date.now() + 10 * 60 * 1000
   while (Date.now() < deadline && serial === animaRequestSerial) {
     await new Promise(resolve => setTimeout(resolve, 1000))
     if (serial !== animaRequestSerial) return
-    const response = await fetch((animaState.value.family === 'krea2' ? '/api/creative/jobs/' : '/api/anima/jobs/') + encodeURIComponent(jobId), { cache: 'no-store' })
-    if (serial !== animaRequestSerial) return
-    if (!response.ok) {
-      if (response.status >= 500) continue
-      throw new Error(await readAnimaError(response))
+    let data: { ok?: boolean; job?: AnimaPublicJob; error?: string }
+    try {
+      data = await apiClient.request((animaState.value.family === 'krea2' ? '/api/creative/jobs/' : '/api/anima/jobs/') + encodeURIComponent(jobId), {
+        cache: 'no-store', signal, timeoutMs: 15_000,
+      })
+    } catch (error) {
+      if (error instanceof ApiClientError && error.kind === 'http' && error.status >= 500) continue
+      throw error
     }
-    const data = await response.json() as { ok?: boolean; job?: AnimaPublicJob; error?: string }
     if (serial !== animaRequestSerial) return
     const job = data.job
     if (data.ok !== true || !job) throw new Error(data.error || 'Anima 状态无效')
@@ -1390,12 +1497,8 @@ async function pollAnimaJob(jobId: string, request: AnimaRequest, serial: number
     if (job.status === 'failed') throw new Error(job.error || 'Anima 生成失败')
     if (job.status !== 'succeeded' || !job.resultAvailable || !job.resultUrl) continue
 
-    const resultResponse = await fetch(job.resultUrl, { cache: 'no-store' })
-    const contentType = String(resultResponse.headers.get('content-type') || '')
-    if (!resultResponse.ok || !contentType.startsWith('image/')) throw new Error(await readAnimaError(resultResponse))
-    const blob = await resultResponse.blob()
+    const blob = await fetchAnimaImage(job.resultUrl, signal)
     if (serial !== animaRequestSerial) return
-    if (!blob.size) throw new Error('Anima 返回了空图片')
     const metadata = metadataFromJob(job, request)
     onAnimaResult({ url: URL.createObjectURL(blob), blob, metadata })
     return
@@ -1409,23 +1512,28 @@ async function generateAnima() {
   if (!request) return
   if (!animaState.value.online) { pb.flash('Anima ComfyUI 当前未连接'); return }
   const serial = ++animaRequestSerial
+  animaJobRequest?.abort()
+  const controller = new AbortController()
+  animaJobRequest = controller
   clearAnimaResult()
   patchAnimaState({ phase: 'submitting', statusText: '提交任务…', errorMsg: '' })
   try {
-    const response = await fetch(animaState.value.family === 'krea2' ? '/api/creative/jobs' : '/api/anima/jobs', {
+    const data = await apiClient.request<{ ok?: boolean; job?: AnimaPublicJob; error?: string }>(animaState.value.family === 'krea2' ? '/api/creative/jobs' : '/api/anima/jobs', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(animaRequestPayload(request)),
+      body: animaRequestPayload(request),
+      signal: controller.signal,
+      timeoutMs: 30_000,
     })
-    if (!response.ok) throw new Error(await readAnimaError(response))
-    const data = await response.json() as { ok?: boolean; job?: AnimaPublicJob; error?: string }
     if (data.ok !== true || !data.job?.id) throw new Error(data.error || 'Anima 任务创建失败')
     const metadata = metadataFromJob(data.job, request)
     patchAnimaState({ phase: 'running', statusText: '生成中…', job: metadata })
-    await pollAnimaJob(data.job.id, request, serial)
+    await pollAnimaJob(data.job.id, request, serial, controller.signal)
   } catch (error) {
     if (serial !== animaRequestSerial) return
+    if (error instanceof ApiClientError && error.kind === 'aborted') return
     patchAnimaState({ phase: 'failed', statusText: '生成失败', errorMsg: error instanceof Error ? error.message : String(error) })
+  } finally {
+    if (animaJobRequest === controller) animaJobRequest = null
   }
 }
 
@@ -1438,9 +1546,9 @@ async function cancelAnimaJob() {
   if (!job || !['running', 'cancelling'].includes(animaState.value.phase)) return
   patchAnimaState({ phase: 'cancelling', statusText: '取消中…', errorMsg: '' })
   try {
-    const response = await fetch((animaState.value.family === 'krea2' ? '/api/creative/jobs/' : '/api/anima/jobs/') + encodeURIComponent(job.id), { method: 'DELETE' })
-    if (!response.ok) throw new Error(await readAnimaError(response))
-    const data = await response.json() as { job?: AnimaPublicJob }
+    const data = await apiClient.request<{ job?: AnimaPublicJob }>((animaState.value.family === 'krea2' ? '/api/creative/jobs/' : '/api/anima/jobs/') + encodeURIComponent(job.id), {
+      method: 'DELETE', timeoutMs: 15_000,
+    })
     if (data.job?.status === 'cancelled') patchAnimaState({ phase: 'cancelled', statusText: '任务已取消' })
   } catch (error) {
     patchAnimaState({ phase: 'failed', statusText: '取消失败', errorMsg: error instanceof Error ? error.message : String(error) })
@@ -1713,7 +1821,6 @@ function applyHistory(entry: HistoryEntry, keepAsVariant = false) {
     const outfit = character ? findPopularOutfit(character, entry.outfitId || '') : null
     if (character && outfit) {
       pb.setPopularSubject(character.id, outfit.id, entry.blueprintId ?? null)
-      pb.kreaStyleId = typeof entry.kreaStyleId === 'string' ? entry.kreaStyleId : null
       const blueprint = entry.blueprintId ? findPopularBlueprint(pb.sceneBlueprints, entry.blueprintId) : null
       if (blueprint) {
         const decision = inferBlueprintDecisions(blueprint)
@@ -1730,8 +1837,9 @@ function applyHistory(entry: HistoryEntry, keepAsVariant = false) {
         modelId: entry.model && animaState.value.models.some(model => model.id === entry.model)
           ? entry.model
           : 'anima-aesthetic-v1.1',
-        loraId: '', loraStrength: animaState.value.loraStrength,
-        width: Number.isInteger(width) ? width : animaState.value.width,
+         loraId: '', loraStrength: animaState.value.loraStrength,
+         styleLoraId: '',
+         width: Number.isInteger(width) ? width : animaState.value.width,
         height: Number.isInteger(height) ? height : animaState.value.height,
         steps: Number(entry.steps) || animaState.value.steps,
         cfg: Number(entry.cfg) || animaState.value.cfg,
@@ -1747,15 +1855,16 @@ function applyHistory(entry: HistoryEntry, keepAsVariant = false) {
     }
   } else {
     if (entry.character) pb.setChar(entry.character)
-    if (entry.engine === 'anima' && (entry.character === 'nene' || entry.character === 'natsume')) {
+    if ((entry.engine === 'anima' || entry.engine === 'krea2') && (entry.character === 'nene' || entry.character === 'natsume')) {
       const [width, height] = String(entry.size || '832x1216').replace('×', 'x').split('x').map(Number)
       clearAnimaResult()
       patchAnimaState({
         phase: 'idle', statusText: '', errorMsg: '',
         modelId: entry.model || 'anima-base-v1.0',
-        loraId: entry.loraId === ANIMA_LORA_BY_CHARACTER[entry.character] ? entry.loraId : ANIMA_LORA_BY_CHARACTER[entry.character],
-        loraStrength: entry.loraStrength ?? animaState.value.loraStrength,
-        width: Number.isInteger(width) ? width : animaState.value.width,
+         loraId: entry.loraId === ANIMA_LORA_BY_CHARACTER[entry.character] ? entry.loraId : ANIMA_LORA_BY_CHARACTER[entry.character],
+         loraStrength: entry.loraStrength ?? animaState.value.loraStrength,
+         styleLoraId: '',
+         width: Number.isInteger(width) ? width : animaState.value.width,
         height: Number.isInteger(height) ? height : animaState.value.height,
         steps: Number(entry.steps) || animaState.value.steps,
         cfg: Number(entry.cfg) || animaState.value.cfg,
@@ -1763,7 +1872,7 @@ function applyHistory(entry: HistoryEntry, keepAsVariant = false) {
         scheduler: entry.scheduler || animaState.value.scheduler,
         seed: entry.seed >= 0 ? entry.seed : animaState.value.seed,
       })
-      setDrawEngine('anima')
+       setDrawEngine(entry.engine)
     } else {
       // 旧历史没有 engine 字段，必须按既有 SD 契约恢复。
       setDrawEngine('sd')
@@ -1786,13 +1895,17 @@ function applyHistory(entry: HistoryEntry, keepAsVariant = false) {
     pb.manualTags = new Set((entry.manual_tags || []).filter(tag => !/(?:ayachi_nene|shiki_natsume|nene_|natsume_)/i.test(tag)))
     pb.visualDescription = entry.visualDescription ?? ''
   }
+  pb.setArtistStyleIds(entry.artistStyleIds || [])
   if (entry.seed >= 0) { pb.sdParams.seed = entry.seed; pb.sdParams.seedLock = true }
   pb.sdParams.cfg = Number(entry.cfg) || pb.sdParams.cfg
   pb.sdParams.steps = Number(entry.steps) || pb.sdParams.steps
   if (entry.sampler) pb.sdParams.sampler = entry.sampler
   if (entry.scheduler) pb.sdParams.scheduler = entry.scheduler
-  if (entry.model && entry.engine !== 'anima' && !popularEntry) pb.sdModelName = entry.model
-  if (entry.negative) { pb.sdParams.negative = true; pb.sdParams.negativeCustom = entry.negative }
+  if (entry.model && entry.engine !== 'anima' && entry.engine !== 'krea2' && !popularEntry) pb.sdModelName = entry.model
+  if (entry.negative) { pb.sdParams.negative = true }
+  // 历史成片负面是"当时场景+当时 profile"的快照，不得写回 negativeCustom ——
+  // 否则会作为自定义负面跨场景/跨 profile 泄漏。恢复时由当前场景+profile
+  // 重新生成模型原生负面。
   if (entry.size) sdSize.value = entry.size.replace('×', 'x')
   if (keepAsVariant) pb.flash('已复制为新变体草稿')
   else pb.flash('已恢复历史参数')
@@ -1817,6 +1930,7 @@ function resetAll() {
     pb.setStudioSubject()
     pb.manualTags = new Set()
   }
+  pb.setArtistStyleIds([])
   pb.clearScene()
   resetBlueprintRotation()
   pb.flash('已清空，可以开始新的一幅')
@@ -1893,16 +2007,16 @@ onMounted(async () => {
   if (typeof q.mood === 'string' && COLOR_MOODS.some(m => m.id === q.mood)) {
     pb.setColorMood(q.mood); handledDeepLink = true
   }
-  if (typeof q.scene === 'string') {
-    const sc = pb.scenes.find(s => s.id === q.scene)
-    if (sc) { selectScene(sc); handledDeepLink = true }
-  } else if (typeof q.regen === 'string' || typeof q.variant === 'string') {
-    const targetId = q.regen ? Number(q.regen) : NaN
-    const entry = targetId ? pb.history.find(h => h.id === targetId) : null
+  if (typeof q.regen === 'string' || typeof q.variant === 'string') {
+    const targetId = Number(typeof q.regen === 'string' ? q.regen : q.variant)
+    const entry = Number.isFinite(targetId) ? pb.history.find(h => h.id === targetId) : null
     if (entry) {
-      applyHistory(entry, q.variant === '1')
+      applyHistory(entry, typeof q.variant === 'string')
       handledDeepLink = true
     }
+  } else if (typeof q.scene === 'string') {
+    const sc = pb.scenes.find(s => s.id === q.scene)
+    if (sc) { selectScene(sc); handledDeepLink = true }
   } else if (q.resume === '1') {
     handledDeepLink = pb.restoreDraft()
   } else if (q.quick === '1' && !pb.story) {
@@ -1964,6 +2078,10 @@ onMounted(async () => {
 
 onUnmounted(() => {
   animaRequestSerial += 1
+  animaStatusRequest?.abort()
+  animaStatusRequest = null
+  animaJobRequest?.abort()
+  animaJobRequest = null
   if (animaStatusTimer) clearInterval(animaStatusTimer)
   animaStatusTimer = null
   const activeJob = animaState.value.job
@@ -1975,7 +2093,7 @@ onUnmounted(() => {
 })
 
 // Autosave draft
-watch([() => pb.story, () => pb.visualDescription, () => pb.char, () => pb.sceneId, () => pb.selections, () => pb.manualTags, () => pb.colorMood, () => pb.subject, () => pb.kreaStyleId], () => {
+watch([() => pb.story, () => pb.visualDescription, () => pb.char, () => pb.sceneId, () => pb.selections, () => pb.manualTags, () => pb.artistStyleIds, () => pb.colorMood, () => pb.subject], () => {
   pb.saveDraft?.()
 }, { deep: true })
 
@@ -2001,17 +2119,6 @@ watch([popularBlueprintPool, () => pb.showMatureScenes, () => pb.isPopular], () 
   }
 })
 
-// 角色 / 成熟内容开关变化后，已选的成人风格配方若不满足资格必须立即清空，
-// 避免下一次生成把成人风格词注入非成人角色（fail closed）。
-watch([() => (pb.subject.kind === 'popular' ? pb.subject.characterId : null), () => pb.showMatureScenes], () => {
-  if (pb.subject.kind !== 'popular' || !pb.kreaStyleId) return
-  const recipe = findStyleRecipe(KREA_STYLE_RECIPES, pb.kreaStyleId)
-  const character = popularCharacter.value
-  if (recipe?.adult && (!character || character.adultEligibility !== 'adult' || !pb.showMatureScenes)) {
-    pb.kreaStyleId = null
-  }
-})
-
 watch(() => pb.char, char => {
   if (pb.isPopular) return
   if (drawEngine.value !== 'sd') {
@@ -2030,7 +2137,10 @@ watch([() => pb.char, () => pb.sceneSearch, () => pb.sceneTheme, sceneCollection
 
 // 切换 SD 模型时重新套用对应 profile 的推荐参数
 watch(() => pb.sdModelName, (name) => {
-  pb.applyModelProfile(name || sd.checkpoint.value)
+  const sceneSize = pb.activeScene ? pb.lastRecommendedSize : ''
+  const profile = pb.applyModelProfile(name || sd.checkpoint.value, { applySize: !sceneSize })
+  const targetSize = sceneSize || String(profile?.size || '').replace('×', 'x')
+  if (targetSize) applyRecommendedSize(targetSize)
 })
 </script>
 
@@ -2072,6 +2182,28 @@ watch(() => pb.sdModelName, (name) => {
 .engine-sub {
   font-size: var(--fs-mono-sm);
   opacity: 0.6;
+}
+.base-model-picker {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-md);
+  background: var(--bg-deep);
+}
+.base-model-picker label { color: var(--text-muted); font-size: var(--fs-label-xs); font-weight: 700; }
+.base-model-picker select {
+  width: 100%;
+  min-width: 0;
+  padding: 7px 9px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-sm);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  font-size: var(--fs-label-sm);
 }
 
 /* ── 热门角色无 LoRA 创作模式 ─────────────────────────────────────────── */

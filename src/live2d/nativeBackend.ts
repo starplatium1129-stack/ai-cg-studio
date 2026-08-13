@@ -54,13 +54,12 @@ export function createNativeLive2DBackend(provider: NativeBridgeProvider = defau
       let lastVisible = false
       let gazeInFlight = false
       let queuedGaze: { x: number; y: number } | null = null
-      let lastPassthrough: { x: number; y: number; width: number; height: number }[] = []
       const hitTestListeners = new Set<(areas: string[]) => void>()
       const motionStartedListeners = new Set<() => void>()
       const motionFailedListeners = new Set<(info: { group: string; index?: number; reason: string }) => void>()
 
       const pushFrame = () => {
-        bridge.setFrame({ rect: lastRect, visible: lastVisible, opacity: 1, passthrough: lastPassthrough })
+        void Promise.resolve(bridge.setFrame({ rect: lastRect, visible: lastVisible, opacity: 1 })).catch(() => {})
       }
 
       const pushGaze = (x: number, y: number) => {
@@ -124,10 +123,10 @@ export function createNativeLive2DBackend(provider: NativeBridgeProvider = defau
         kind: 'native',
         capability: NATIVE_CAPABILITY,
         onModelLoaded(callback) {
-          const subscriptionId = bridge.onReady(() => {
-            if (!destroyed) callback(handle)
-          })
-          subscriptions.push(subscriptionId)
+          // setCharacter resolves only after the render thread loaded the model.
+          // A ready event emitted during that command is not replayed to listeners
+          // registered afterward, so command success is the durable ready signal.
+          if (!destroyed) callback(handle)
         },
         onModelError(_callback) {
           // 桥没有独立错误事件：加载失败已由 connect 的 setCharacter 结果反映；
@@ -139,15 +138,14 @@ export function createNativeLive2DBackend(provider: NativeBridgeProvider = defau
         },
         setMaxFps(fps) {
           // 原生渲染线程接电目标 165fps；上限放行到 165，不被浏览器 120 限制。
-          bridge.setMaxFps(Math.max(24, Math.min(165, Math.round(fps) || 60)))
+          void Promise.resolve(bridge.setMaxFps(Math.max(24, Math.min(165, Math.round(fps) || 60)))).catch(() => {})
         },
         getScreenSize() { return { width: options.canvasWidth, height: options.canvasHeight } },
         getCanvasSize() { return { width: options.canvasWidth, height: options.canvasHeight } },
         setStageScale() { /* overlay 尺寸由 live2dOverlayLayout 计算后经 updateOverlay 下发 */ },
-        updateOverlay(rect, visible, passthrough = []) {
+        updateOverlay(rect, visible) {
           lastRect = rect
           lastVisible = visible
-          lastPassthrough = passthrough
           pushFrame()
         },
         canvasElement() { return null },
@@ -160,10 +158,10 @@ export function createNativeLive2DBackend(provider: NativeBridgeProvider = defau
           return () => { motionFailedListeners.delete(callback) }
         },
         sendMouthLevel(level) {
-          bridge.setMouthLevel(Math.max(0, Math.min(1, level)))
+          void Promise.resolve(bridge.setMouthLevel(Math.max(0, Math.min(1, level)))).catch(() => {})
         },
         sendEmotion(name, intensity) {
-          bridge.setEmotion(name, Math.max(0, Math.min(1, intensity)))
+          void Promise.resolve(bridge.setEmotion(name, Math.max(0, Math.min(1, intensity)))).catch(() => {})
         },
         sendGaze(x, y) {
           pushGaze(Math.max(-1, Math.min(1, x)), Math.max(-1, Math.min(1, y)))

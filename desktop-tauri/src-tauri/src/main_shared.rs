@@ -2,7 +2,9 @@ use tauri::{AppHandle, Emitter, Manager, WebviewUrl, WebviewWindowBuilder};
 
 use crate::paths::DesktopPaths;
 use crate::state::AppState;
-use crate::window_state::{clamp_window_bounds, load_window_bounds, save_window_bounds, WindowBounds};
+use crate::window_state::{
+    clamp_window_bounds, load_window_bounds, physical_to_logical_bounds, save_window_bounds, WindowBounds,
+};
 
 /// 规范化 Atelier 目标路径（与 deepLink.ts normalizeAtelierPath 同规则，容忍尾斜杠）
 pub fn normalize_atelier_path(value: Option<&str>) -> String {
@@ -21,14 +23,24 @@ pub fn normalize_atelier_path(value: Option<&str>) -> String {
 
 pub fn companion_bounds(state: &AppState) -> WindowBounds {
     let saved = load_window_bounds(&state.paths.companion_window_file, None);
-    let area = primary_work_area();
+    // 2818x2188 is the known companion file produced while the old implementation
+    // persisted physical pixels. Reset only this companion file; Atelier may be a
+    // legitimately large window and must retain its Electron-compatible state.
+    let saved = if saved.width == 2818 && saved.height == 2188 {
+        let fallback = WindowBounds { x: 24, y: 80, width: 540, height: 760 };
+        save_window_bounds(&state.paths.companion_window_file, &fallback);
+        fallback
+    } else {
+        saved
+    };
+    let area = primary_work_area_logical();
     clamp_window_bounds(&saved, area, None)
 }
 
 pub fn atelier_bounds(state: &AppState) -> WindowBounds {
     let fallback = WindowBounds { x: 120, y: 72, width: 1440, height: 960 };
     let saved = load_window_bounds(&state.paths.atelier_window_file, Some(&fallback));
-    let area = primary_work_area();
+    let area = primary_work_area_logical();
     clamp_window_bounds(&saved, area, Some((1024, 720)))
 }
 
@@ -162,9 +174,15 @@ pub fn create_companion_window(app: &AppHandle, gateway_url: &str, shim: &str, s
 }
 
 fn webview_bounds(w: &tauri::WebviewWindow) -> Option<WindowBounds> {
-    let p = w.outer_position().ok()?;
-    let s = w.outer_size().ok()?;
+    let p = w.inner_position().ok()?;
+    let s = w.inner_size().ok()?;
     Some(WindowBounds { x: p.x as i64, y: p.y as i64, width: s.width as i64, height: s.height as i64 })
+}
+
+fn persisted_webview_bounds(w: &tauri::WebviewWindow) -> Option<WindowBounds> {
+    let physical = webview_bounds(w)?;
+    let scale_factor = w.scale_factor().ok()?;
+    Some(physical_to_logical_bounds(&physical, scale_factor))
 }
 
 pub fn companion_window_bounds(app: &AppHandle) -> Option<WindowBounds> {
@@ -175,20 +193,33 @@ pub fn persist_window_bounds(app: &AppHandle) {
     let state = app.state::<AppState>();
     if let Some(w) = app.get_webview_window("companion") {
         if let Some(bounds) = webview_bounds(&w) {
-            save_window_bounds(&state.paths.companion_window_file, &bounds);
+            if let Some(logical_bounds) = persisted_webview_bounds(&w) {
+                save_window_bounds(&state.paths.companion_window_file, &logical_bounds);
+            }
             let _ = w.emit("aics:window-bounds", bounds);
         }
     }
     if let Some(w) = app.get_webview_window("atelier") {
-        if let Ok(p) = w.outer_position() {
-            if let Ok(s) = w.outer_size() {
-                save_window_bounds(
-                    &state.paths.atelier_window_file,
-                    &WindowBounds { x: p.x as i64, y: p.y as i64, width: s.width as i64, height: s.height as i64 },
-                );
-            }
+        if let Some(bounds) = persisted_webview_bounds(&w) {
+            save_window_bounds(&state.paths.atelier_window_file, &bounds);
         }
     }
+}
+
+pub fn primary_work_area_logical() -> (i64, i64, i64, i64) {
+    let physical = primary_work_area();
+    let dpi = unsafe { windows_sys::Win32::UI::HiDpi::GetDpiForSystem() } as f64;
+    let scale_factor = if dpi > 0.0 { dpi / 96.0 } else { 1.0 };
+    let logical = physical_to_logical_bounds(
+        &WindowBounds {
+            x: physical.0,
+            y: physical.1,
+            width: physical.2,
+            height: physical.3,
+        },
+        scale_factor,
+    );
+    (logical.x, logical.y, logical.width, logical.height)
 }
 
 pub fn gateway_env(paths: &DesktopPaths, is_packaged: bool, workspace_root: Option<&str>) -> Vec<(String, String)> {
