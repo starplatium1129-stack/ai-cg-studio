@@ -66,6 +66,7 @@ interface RouteAtmosphereMeta {
 const ROUTE_META: Record<string, RouteAtmosphereMeta> = {
   '/': { code: '00', label: 'ATELIER HOME', shape: 'atelier' },
   '/prompt-builder': { code: '01', label: 'DIRECTOR CONSOLE', shape: 'frame' },
+  '/video-studio': { code: '14', label: 'MOTION STUDIO', shape: 'frame' },
   '/scene-explorer': { code: '02', label: 'SCENE ARCHIVE', shape: 'mountain' },
   '/character': { code: '03', label: 'IDENTITY FILE', shape: 'moon' },
   '/style': { code: '04', label: 'VISUAL GRAMMAR', shape: 'spark' },

@@ -1,7 +1,7 @@
 <template>
   <section class="workspace-archive-bar" :data-state="state" :data-shape="shape" :aria-label="`${title}状态`">
     <div class="workspace-code" aria-hidden="true">
-      <span>{{ chapter }}</span><small>/ 13</small>
+      <span>{{ chapter }}</span><small>/ 14</small>
     </div>
     <div class="workspace-copy">
       <strong>{{ title }}</strong>

@@ -121,6 +121,7 @@ let worksLoaded = false
 const PAGES: PageItem[] = [
   { id: 'home', label: '首页', icon: 'spark', path: '/', keywords: '首页 home 绫季绘境' },
   { id: 'director', label: '开始绘制', icon: 'spark', path: '/prompt-builder', keywords: '绘制 导演台 prompt 出图' },
+  { id: 'video', label: 'AI 视频创作', icon: 'play', path: '/video-studio', keywords: '视频 动画 本地模型 wan comfyui' },
   { id: 'scene', label: '灵感场景', icon: 'scene', path: '/scene-explorer', keywords: '场景 灵感 库' },
   { id: 'chat', label: '角色房间', icon: 'chat', path: '/chat', keywords: '聊天 角色 宁宁 夏目' },
   { id: 'showcase', label: '效果样张', icon: 'image', path: '/showcase', keywords: '样张 展示 定稿' },
@@ -137,6 +138,7 @@ const PAGES: PageItem[] = [
 
 const ACTIONS: SearchItem[] = [
   { id: 'draw', label: '开始一幅新的绘制', icon: 'spark', path: '/prompt-builder', keywords: '绘制 开始' },
+  { id: 'video-create', label: '开始一段 AI 视频', icon: 'play', path: '/video-studio', keywords: '视频 动画 开始' },
   { id: 'browse', label: '逛一逛灵感场景', icon: 'scene', path: '/scene-explorer', keywords: '场景 逛' },
   { id: 'works', label: '打开作品册', icon: 'gallery', path: '/gallery', keywords: '作品' },
 ]

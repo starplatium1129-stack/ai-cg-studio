@@ -52,7 +52,7 @@ const ROUTE_STANDARD_SETTLE_MS = 120
 const ROUTE_LOADER_DELAY_MS = 120
 const prefetchedPaths = new Set<string>()
 const SCENE_DATA_ROUTES = new Set([
-  '/scene-explorer', '/prompt-builder', '/showcase', '/gallery', '/character', '/style',
+  '/scene-explorer', '/prompt-builder', '/video-studio', '/showcase', '/gallery', '/character', '/style',
 ])
 const IMMERSIVE_ROUTE_CUTS = new Set([
   '/', '/chat',
@@ -62,6 +62,7 @@ const ROUTE_LABELS: Record<string, [string, string]> = {
   '/': ['00', 'ATELIER HOME'],
   '/scene-explorer': ['02', 'SCENE ARCHIVE'],
   '/prompt-builder': ['01', 'DIRECTOR CONSOLE'],
+  '/video-studio': ['14', 'MOTION STUDIO'],
   '/chat': ['09', 'CHARACTER ROOM'],
   '/showcase': ['05', 'APPROVED WORKS'],
   '/gallery': ['06', 'PRIVATE COLLECTION'],

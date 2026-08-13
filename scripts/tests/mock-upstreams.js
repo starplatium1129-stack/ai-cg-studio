@@ -44,6 +44,16 @@ function silentWav(sampleCount) {
 /** 1×1 PNG。前端只把它转成 blob URL 塞进 <img>，内容无关紧要。 */
 var PNG_1X1 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk' +
   'YPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
+/** Minimal ISO BMFF-shaped payload: enough for gateway signature/range tests. */
+var MP4_MINIMAL = Buffer.concat([
+  Buffer.from([0, 0, 0, 20]),
+  Buffer.from('ftyp', 'ascii'),
+  Buffer.from('isom', 'ascii'),
+  Buffer.from([0, 0, 2, 0]),
+  Buffer.from('isom', 'ascii'),
+  Buffer.from([0, 0, 0, 8]),
+  Buffer.from('free', 'ascii'),
+]);
 
 function readBody(req, limitBytes) {
   return new Promise(function (resolve, reject) {
@@ -309,17 +319,26 @@ function createComfyMock() {
       if (Date.now() - job.createdAt < renderMs) return sendJson(res, 200, {});
         var graph = job.body && job.body.prompt;
         var prefix = 'anima_app';
+        var mediaKind = 'image';
+        var outputNode = String(faults.resultNode || '10');
         if (graph && typeof graph === 'object') Object.keys(graph).some(function (id) {
           var node = graph[id];
           if (node && node.class_type === 'SaveImage' && node.inputs && typeof node.inputs.filename_prefix === 'string') {
-            prefix = node.inputs.filename_prefix; return true;
+            prefix = node.inputs.filename_prefix;
+            outputNode = String(faults.resultNode || id);
+            return true;
+          }
+          if (node && node.class_type === 'SaveVideo' && node.inputs && typeof node.inputs.filename_prefix === 'string') {
+            prefix = node.inputs.filename_prefix;
+            mediaKind = 'video';
+            outputNode = String(faults.resultNode || id);
+            return true;
           }
           return false;
         });
         var image = faults.resultImage && typeof faults.resultImage === 'object'
           ? faults.resultImage
-          : { filename:prefix + '_mock.png', subfolder:'', type:'output' };
-       var outputNode = String(faults.resultNode || '10');
+          : { filename:prefix + (mediaKind === 'video' ? '_mock.mp4' : '_mock.png'), subfolder:'', type:'output' };
        return sendJson(res, 200, {
         [promptIdFromPath]: {
           status:{ status_str:'success' },
@@ -330,6 +349,15 @@ function createComfyMock() {
 
     if (ctx.path === '/view') {
       if (faults.viewStatus) return sendJson(res, Number(faults.viewStatus), { error:'mock view failure' });
+      var requestedUrl = new URL(ctx.req.url, 'http://127.0.0.1');
+      if (/\.mp4$/i.test(requestedUrl.searchParams.get('filename') || '')) {
+        res.writeHead(200, {
+          'Content-Type':'video/mp4',
+          'Content-Length':MP4_MINIMAL.length,
+          'Cache-Control':'no-store'
+        });
+        return res.end(MP4_MINIMAL);
+      }
       var imageBody = Buffer.from(PNG_1X1, 'base64');
       res.writeHead(200, {
         'Content-Type':'image/png',

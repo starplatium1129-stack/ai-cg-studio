@@ -126,14 +126,20 @@
           <span class="d">{{ sceneLibraryCopy }}</span>
           <span class="go">→ 打开</span>
         </RouterLink>
+        <RouterLink to="/video-studio" class="tool-card card-create card-level-2">
+          <span class="tool-index" aria-hidden="true">03 / MOTION</span>
+          <span class="ic"><ArchiveIcon name="play" /></span><span class="t">AI 视频创作</span>
+          <span class="d">用简单的镜头意图驱动本地视频模型，工作流与复杂参数由工作室接管。</span>
+          <span class="go">→ 开始创作</span>
+        </RouterLink>
         <RouterLink to="/chat" class="tool-card card-create card-level-2">
-          <span class="tool-index" aria-hidden="true">03 / ROOM</span>
+          <span class="tool-index" aria-hidden="true">04 / ROOM</span>
           <span class="ic"><ArchiveIcon name="chat" /></span><span class="t">角色房间</span>
           <span class="d">与宁宁或夏目静享片刻独白，全流程本地语音温情陪伴。</span>
           <span class="go">→ 进入房间</span>
         </RouterLink>
         <RouterLink to="/showcase" class="tool-card card-create card-level-2">
-          <span class="tool-index" aria-hidden="true">04 / ARCHIVE</span>
+          <span class="tool-index" aria-hidden="true">05 / ARCHIVE</span>
           <span class="ic"><ArchiveIcon name="image" /></span><span class="t">效果样张</span>
           <span class="d">经人工细致复核的定稿画册，凝结帧帧动人的画面叙事。</span>
           <span class="go">→ 浏览</span>

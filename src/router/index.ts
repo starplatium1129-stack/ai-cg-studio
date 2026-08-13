@@ -35,6 +35,7 @@ const router = createRouter({
         { path: '',                name: 'home',          component: () => import('@/views/HomeView.vue') },
         { path: 'scene-explorer', name: 'scene',         component: () => import('@/views/SceneExplorerView.vue') },
         { path: 'prompt-builder', name: 'director',      component: () => import('@/views/PromptBuilderView.vue') },
+        { path: 'video-studio',  name: 'video',         component: () => import('@/views/VideoStudioView.vue') },
         { path: 'chat',           name: 'chat',          component: () => import('@/views/ChatView.vue') },
         { path: 'showcase',       name: 'showcase',      component: () => import('@/views/ShowcaseView.vue') },
         { path: 'gallery',        name: 'gallery',       component: () => import('@/views/GalleryView.vue') },

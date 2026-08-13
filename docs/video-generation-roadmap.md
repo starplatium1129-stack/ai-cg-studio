@@ -1,84 +1,139 @@
-# 视频生成接入路线（MiniMax H3 × ComfyUI）
+# 本地 AI 视频创作路线
 
-> 记录日期：2026-08-04
-> 对标：MiniMax H3（2026-07-31 发布，08-03 开源）与 ComfyUI 原生工作流（docs.comfy.org/tutorials/video/minimax/minimax-h3）
-> 产品前提：本地个人使用为主；视频生成是新增能力，不改变现有出图/配音/聊天链路。
-> 状态：全部阶段暂缓。经批准后按 P0 → P3 顺序逐阶段启动，每阶段独立验收、不串阶段。
+> 更新日期：2026-08-13
+> 产品定位：个人本地创作；ComfyUI 负责执行，应用负责稳定、低门槛的创作体验。
+> 当前状态：P1 已落地；真实 GPU 出片与 I2V 暂缓。
 
 ## 结论
 
-H3 是通用全模态生成模型（文本/图像/视频/音频统一理解，输出带原生立体声的视频，最高 15s / 2K）。ComfyUI ≥ 0.30.0 原生支持，量化剪枝后（int8 convrot + nvfp4 AWQ text encoder）最小组合约 42.5GB，官方声称 12GB 显存（RTX 3060）+ 64GB 系统 RAM 动态卸载可跑，本机原生画布为短边 768px（2K 需官方 API 的 Regenerate pass，不在本地范围内）。
+视频页不复刻 ComfyUI 节点画布，也不绑定某一个快速迭代中的模型。应用维持一套稳定的创作契约：
 
-接入路径确定为 **ComfyUI 网关适配器**：新增 `/comfyui` 白名单代理 + `routes/video.js` 服务（工作流模板化组装、任务队列、产物转存）+ 前端 `VideoStudio` 面板。不做 MiniMax 官方 API（付费、云端、与本地个人使用定位冲突）。
+1. 用户选择创作方式：文字成片、图片动起来、首尾帧过渡。
+2. 用户描述主体、动作、环境、光线和镜头意图。
+3. 应用按本机资源和质量档选择一个经过验证的模型配方。
+4. 服务端组装固定 ComfyUI API 工作流，浏览器不能提交任意节点图。
+5. 结果转存到应用运行时目录，由应用提供队列、预览、取消和下载。
 
-## 外部依赖（不在仓库内，先手动装好）
+这使模型升级成为“新增/升级配方”，而不是每次重做页面。
 
-| 项 | 要求 | 说明 |
-|---|---|---|
-| ComfyUI | ≥ 0.30.0 | H3 原生节点，无需自定义节点；模板库自带 T2V / I2V / R2V 三套工作流 |
-| 权重 | 4 个文件 ≈ 42.5GB | 来源 `Comfy-Org/MiniMax-H3`（HF） |
-| 硬件 | 12GB 显存 + 64GB RAM | 3060 可跑（官方声称，动态卸载）；速度待实测 |
-| 可选加速 | SageAttention + KJNodes | 约 2x 速度，质量损失极小；`Patch Sage Attention KJ` 接在 UNETLoader 与 BasicGuider 之间 |
+## 当前模型目录
 
-权重落位（官方目录约定）：
+| 模型 | 产品定位 | 当前状态 |
+| --- | --- | --- |
+| Wan 2.2 TI2V 5B | 16GB 显存机器的快速预演与默认短片路线 | T2V 适配已完成，权重待安装与真实 GPU 验证 |
+| MiniMax H3 | 本地 768p、原生立体声音频的高上限最终成片路线 | 官方 ComfyUI 模板已存在，适配器与本机重型模型实测待完成 |
+| Wan 2.2 14B | 更高质量 T2V / I2V / 首尾帧 | 待本机资源、耗时和工作流验证 |
+| HunyuanVideo 1.5 | 720p 与超分质量路线 | 待本机资源、耗时和工作流验证 |
+| LTX-2.3 | 快速预演、音视频和首尾帧扩展 | 待官方子图 API 适配 |
 
-```
+当前默认选择 Wan 2.2 TI2V 5B，原因是官方 ComfyUI 模板原生支持 T2V/I2V，且 5B 路线更符合本机 RTX 4070 Ti SUPER 16GB 的第一阶段稳定性目标。模型效果、速度和显存结论必须在权重安装后通过真实 GPU 出片记录，不在代码交付阶段提前宣称。
+
+MiniMax H3 的能力上限更高：本地 Base 支持 T2V、首/尾帧和原生 32kHz 立体声音频，输出最长 15 秒；但本地开源链路默认是 768p，完整 2K 依赖尚未开源的 Regenerate 模块或官方 API。Comfy-Org 的最小量化组合约 42.5GB（约 21GB diffusion model + 15.7GB text encoder + 5.2GB video VAE + 0.6GB audio VAE），因此产品定位为“Wan 快速预演 → H3 最终成片”，不把 H3 设为每次生成的默认模型。
+
+## 已落地：P1 · 文字成片最小闭环
+
+### 前端
+
+- 新增 `/video-studio` 独立页面，并接入主导航、首页和全局搜索。
+- 创作方式使用意图级入口；当前仅“文字成片”可用，I2V/首尾帧明确标记后续接入。
+- 场景模式默认只开放：
+  - 镜头描述
+  - 横屏 / 竖屏 / 方形
+  - 3 秒 / 5 秒
+  - 镜头运动
+  - 主体运动
+- Seed 与负向描述收进高级设置。
+- 本机环境区同时显示：
+  - ComfyUI 是否在线
+  - 配方是否完成适配
+  - 模型权重是否齐备
+  - 精确缺失文件清单
+- 支持任务轮询、取消、MP4 预览、下载与五项人工检查提醒。
+
+### 服务端
+
+- 新增 `routes/video.js`，路由为：
+  - `GET /api/video/status`
+  - `POST /api/video/jobs`
+  - `GET /api/video/jobs/:id`
+  - `DELETE /api/video/jobs/:id`
+  - `GET /api/video/jobs/:id/result`
+- 请求只接受白名单字段，不接受工作流 JSON、节点名、文件路径或任意 ComfyUI 参数。
+- 当前固定工作流使用原生节点：
+  - `UNETLoader`
+  - `CLIPLoader`
+  - `VAELoader`
+  - `Wan22ImageToVideoLatent`
+  - `KSampler`
+  - `VAEDecode`
+  - `CreateVideo`
+  - `SaveVideo`
+- 输出固定为 H.264 MP4；仅接受 `output` 类型、`aics_video` 前缀、无子目录的视频结果。
+- 结果转存到 `runtime/outputs/video/`，支持 HTTP Range，浏览器不直接读取 ComfyUI output 目录。
+- 并发上限为 2，单任务超时 45 分钟；取消使用 prompt-id 定向取消，不调用全局 interrupt。
+
+### 当前所需权重
+
+```text
 ComfyUI/models/
-├── diffusion_models/ minimax_h3_fl2va_pruned_int8_convrot.safetensors   # ~21GB，T2V + 首尾帧 I2V
-├── text_encoders/    qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors        # ~15.7GB
-└── vae/              minimax_h3_video_vae_fp16.safetensors               # ~5.2GB
-                      minimax_h3_audio_vae_fp32.safetensors               # ~0.6GB
+├── diffusion_models/
+│   └── wan2.2_ti2v_5B_fp16.safetensors
+├── text_encoders/
+│   └── umt5_xxl_fp8_e4m3fn_scaled.safetensors
+└── vae/
+    └── wan2.2_vae.safetensors
 ```
 
-R2V（参考生视频）另需 `minimax_h3_ref2va_pruned_int8_convrot.safetensors`（~21GB，选装）。
+本机 2026-08-13 只读检查结果：ComfyUI 0.31 已具备上述工作流需要的全部原生节点，但三个权重文件尚未安装，因此页面会显示“节点已支持，权重待安装”，生成按钮保持禁用。
 
-规格约束（写入服务端参数校验）：短边 768px 上限 768×1344、宽高取 32 倍数；24fps；时长吸附 17k+5 帧网格（≈0.7s/块）；音频为模型原生生成，无需叠加现有 TTS。
+## 验证
 
-## 分阶段计划
+- `test-video-routes.js` 使用真实 Express 网关与模拟 ComfyUI，覆盖：
+  - 未知字段与非法参数 400
+  - 未适配模型拒绝
+  - 权重缺失 503 与精确清单
+  - 固定 Wan 工作流节点和参数
+  - 视频结果路径/格式安全校验
+  - 任务完成与 MP4 Range 读取
+- `npm run typecheck:app`
+- `npm run build`
+- 页面浏览器截图自查
 
-### P0：环境搭建与可行性验证（纯手动，无代码）
+本阶段不运行 E2E，不启动真实 GPU 出片。
 
-- 安装 ComfyUI ≥ 0.30.0，下载 4 个权重（共 42.5GB）按上表落位。
-- 模板库加载官方 "MiniMax H3 T2V" 工作流，跑一条 5s / 768p（推荐 832×480）记录：总耗时、峰值 VRAM/RAM、输出质量。
-- 可选：装 SageAttention + KJNodes 对比速度。
-- 验收：本机 3060 单条生成时间可接受（目标 ≤ 15 分钟/条）才继续 P1；超时则降级为「仅 API 方案」或暂停。
-- 同时确认：Community License 条款（商用免费但需显示 "MiniMax H3" 标识；年营收 >$20M 需书面授权；适用地域排除欧盟/英国/韩国/美国——国内个人使用不受影响）。
+## 后续阶段
 
-### P1：网关白名单代理 + 最小 T2V 服务
+### P2 · 图生视频
 
-- `server.js` 新增 `COMFY_PROXY_ALLOWLIST`（仿照 `SD_PROXY_ALLOWLIST`，server.js:28）：
-  - `POST /comfyui/prompt`、`GET /comfyui/history/{id}`、`GET /comfyui/view`、`GET /comfyui/object_info`
-- **安全约束（硬性）**：ComfyUI `/prompt` 接受任意工作流图 = 任意代码执行风险，**禁止裸透传**。只能由服务端按内置模板组装 API 格式 prompt 后提交；白名单外路径 JSON 404；沿用 `tokenAuth` + `hostGuard` + rateLimit + 统一错误信封。
-- 新增 `routes/video.js`：
-  - 内置 T2V 工作流模板（取自 `Comfy-Org/workflow_templates` 的 `video_minimax_h3_t2v.json` 核心节点）。
-  - 参数白名单契约（仿训练台）：`prompt / width / height / length / seed`；未知 key、非数字、越界一律 400。
-  - 任务队列 + 状态轮询（仿 training 任务模型），完成后从 `/view` 拉取 mp4 转存 `runtime/media/`，经 `/video-media` 静态服务回放（不直接暴露 ComfyUI output 目录）。
-- 验收：`test-video-routes.js` 进 validate（断言真实 HTTP 路由输出：白名单/越界 400/未启动 502/产物转存）；`typecheck` + `build` 通过。
+- 从作品册选择图片作为首帧，不要求用户手动找文件路径。
+- 服务端负责将受信任的作品转存/上传到 ComfyUI input。
+- 同一页面继续复用镜头、运动、时长和队列。
+- 首先适配 Wan 2.2 TI2V 5B I2V；通过身份稳定性审核后再开放。
 
-### P2：VideoStudio 前端面板
+### P3 · 首尾帧与质量路线
 
-- 新视图（独立路由或并入绘图页侧栏，待定）：T2V 表单（prompt 可复用现有场景/词条组装逻辑 + 时长/分辨率/比例）。
-- 队列面板：提交、进度轮询、完成通知、`<video>` 预览。
-- 历史：IndexedDB 扩展（仿 `useImageStore`），视频元数据 + 产物引用。
-- 长任务提示：3060 单条分钟级，必须有明确进度与失败恢复路径。
-- 验收：定向 E2E（提交→轮询→预览 mock 链路）+ 视觉回归自查。
+- 首尾帧过渡：作品册选择开始/结束两张图。
+- 增加 Wan 2.2 14B、HunyuanVideo 1.5、LTX-2.3 配方。
+- 模型选择默认隐藏在“执行路线”中；场景模式由应用推荐，专家模式才允许手选。
+- 每个配方都必须记录：
+  - 固定场景和 seed
+  - 总耗时
+  - 峰值 VRAM / RAM
+  - 身份稳定性
+  - 肢体连续性
+  - 背景闪烁
+  - 镜头遵循
 
-### P3：I2V 图生视频（+ R2V 选装）
+### P4 · 视频作品册与后处理
 
-- I2V：`first_frame`/`last_frame` 输入复用现有出图链路（GalleryView/绘图页产物上传 → ComfyUI `/upload/image`），一个工作流覆盖 T2V/I2V。
-- R2V：参考图/视频/音频驱动（锁角色/风格/动作/运镜/音色），需要 ref2va 权重 + 更多输入材料，作为选装阶段。
-- 验收：图生视频 round-trip E2E。
+- IndexedDB 仅保存元数据和引用；大视频继续放运行时媒体目录。
+- 增加封面帧、收藏、重用配方、磁盘占用和清理策略。
+- 再评估补帧、超分、配音/原生音频与视频延长。
 
-## 待验证问题（P0 必须回答）
+## 明确不做
 
-1. 3060 实测单条生成时间与稳定性（官方声称 vs 实测；动态卸载时 CPU 内存带宽是否成瓶颈）。
-2. 分钟级任务的网关轮询策略与 `proxyTimeout`（现 SD 代理为 20 分钟，视频任务应放宽）。
-3. 产物文件体积与磁盘增长策略（几秒 768p mp4 的典型大小；是否需要清理/配额）。
-4. `runtime/media/` 是否纳入备份与清理范围（当前备份体系只覆盖 localStorage/IndexedDB）。
-
-## 不做（本阶段）
-
-- MiniMax 官方 API（付费云端；2K 完整工作流依赖它，但本地定位优先，P0 测速后再定）。
-- 直接暴露 ComfyUI 本体（不映射 `/comfyui` 以外的任意路径，不提供 ComfyUI Web UI 代理）。
-- 把 H3 的音频接入现有配音链路（视频自带立体声，与 GPT-SoVITS 角色配音互不干预）。
-- 任何不经过服务端模板组装的用户自定义工作流提交。
+- 不开放任意 ComfyUI workflow 上传或浏览器直连 `/prompt`。
+- 不提供节点画布。
+- 不因模型“热门”就标记为本机可用。
+- 不在真实 GPU 验证前承诺生成耗时、显存占用或质量等级。
+- 不把视频原生音频与现有 GPT-SoVITS 配音链路强行合并。

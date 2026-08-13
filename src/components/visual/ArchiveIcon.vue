@@ -57,6 +57,7 @@ export type ArchiveIconName =
   | 'clap' | 'snowflake' | 'cherry' | 'autumnleaf'
   // ── 工具 ──────────────────────────────────────────────────────
   | 'star' | 'download' | 'upload' | 'broom' | 'health' | 'wardrobe'
+  | 'play'
 
 const props = defineProps<{ name: ArchiveIconName }>()
 

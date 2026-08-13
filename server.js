@@ -19,6 +19,7 @@ var createControlRouter = require('./routes/control').createControlRouter;
 var createTrainingRouter = require('./routes/training').createTrainingRouter;
 var createAnimaRouter = require('./routes/anima').createAnimaRouter;
 var createGenerationRouter = require('./routes/generation').createGenerationRouter;
+var createVideoRouter = require('./routes/video').createVideoRouter;
 var showcaseAssets = require('./server/showcase-assets');
 
 var ONE_DAY = 24 * 60 * 60 * 1000;
@@ -77,6 +78,7 @@ function createGateway(options) {
   var training = createTrainingRouter(config, options.services);
   var anima = createAnimaRouter(config, options.services);
   var generation = createGenerationRouter(config, options.services);
+  var video = createVideoRouter(config, options.services);
   var desktopTools = require('./routes/desktop-tools').createDesktopToolsRouter({ security: security });
 
   // 控制面板路由需要访问 gateway 对象（tunnelUrl、startTunnel/stopTunnel）
@@ -99,6 +101,7 @@ function createGateway(options) {
   app.use(training.router);
   app.use(anima.router);
   app.use(generation.router);
+  app.use(video.router);
   app.use(desktopTools);
 
   app.get('/api/health', function (req, res) {
@@ -299,6 +302,7 @@ function createGateway(options) {
     training.close();
     if (anima && typeof anima.close === 'function') anima.close();
     if (generation && typeof generation.close === 'function') generation.close();
+    if (video && typeof video.close === 'function') video.close();
     if (maintenance && typeof maintenance.close === 'function') maintenance.close();
     if (control && typeof control.close === 'function') control.close();
     if (tunnelManager) tunnelManager.stop();

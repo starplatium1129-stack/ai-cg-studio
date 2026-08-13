@@ -73,6 +73,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-training-routes.js',
     'test-training-service.js',
     'test-tunnel-restart.js',
+    'test-video-routes.js',
   ]),
   desktop: Object.freeze([
     'test-companion-tools.js',
