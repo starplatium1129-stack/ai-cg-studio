@@ -1,19 +1,19 @@
-﻿<template>
+<template>
   <article class="page" style="--page-max: 1100px;">
     <section class="pop-hero">
       <div class="pop-hero-copy">
-        <div class="page-kicker">Popular scene library / 鐑棬瑙掕壊鍦烘櫙搴?/div>
-        <h1 class="title">瑙掕壊鍦烘櫙</h1>
-        <p class="subtitle">18 浣嶇儹闂ㄨ鑹茬殑鍏ㄩ儴鍦烘櫙钃濆浘锛屾瘡涓€骞曞潎宸查璁鹃暅澶淬€佸厜绾夸笌鍙欎簨姘涘洿锛涙垚浜哄満鏅嫭绔嬫爣娉紝鍙竴閿洿杈剧粯鍥鹃〉銆?/p>
+        <div class="page-kicker">Popular scene library / 热门角色场景库</div>
+        <h1 class="title">角色场景</h1>
+        <p class="subtitle">18 位热门角色的全部场景蓝图，每一幕均已预设镜头、光线与叙事氛围；成人场景独立标注，可一键直达绘图页。</p>
       </div>
-      <div class="pop-hero-stat" aria-label="鍦烘櫙缁熻">
-        <strong>{{ totalScenes }}</strong><span>鍦烘櫙钃濆浘</span>
-        <strong class="adult">{{ adultCount }}</strong><span>鎴愪汉鍦烘櫙</span>
+      <div class="pop-hero-stat" aria-label="场景统计">
+        <strong>{{ totalScenes }}</strong><span>场景蓝图</span>
+        <strong class="adult">{{ adultCount }}</strong><span>成人场景</span>
       </div>
     </section>
 
-    <!-- 瑙掕壊閫夋嫨鏉?-->
-    <div class="pop-char-strip" role="group" aria-label="閫夋嫨鐑棬瑙掕壊">
+    <!-- 角色选择条 -->
+    <div class="pop-char-strip" role="group" aria-label="选择热门角色">
       <button
         v-for="character in characters" :key="character.id" type="button"
         class="pop-char-btn" :class="{ active: selectedId === character.id }"
@@ -24,36 +24,36 @@
       </button>
     </div>
 
-    <ArchiveStatePanel v-if="loading" kind="loading" title="姝ｅ湪璇诲彇瑙掕壊鍦烘櫙" message="姝ｅ湪杞藉叆鐑棬瑙掕壊妗ｆ涓庡満鏅摑鍥俱€? />
-    <ArchiveStatePanel v-else-if="loadError" kind="error" title="瑙掕壊鍦烘櫙璇诲彇澶辫触" :message="loadError">
-      <button class="btn btn-primary" type="button" @click="init">閲嶆柊璇诲彇</button>
+    <ArchiveStatePanel v-if="loading" kind="loading" title="正在读取角色场景" message="正在载入热门角色档案与场景蓝图。" />
+    <ArchiveStatePanel v-else-if="loadError" kind="error" title="角色场景读取失败" :message="loadError">
+      <button class="btn btn-primary" type="button" @click="init">重新读取</button>
     </ArchiveStatePanel>
 
     <template v-else>
-      <!-- 宸ュ叿鏍忥細鎼滅储 + 鍒嗙被 + 鎴愪汉寮€鍏?-->
+      <!-- 工具栏：搜索 + 分类 + 成人开关 -->
       <div class="pop-toolbar">
         <div class="pop-toolbar-primary">
-          <label class="sr-only" for="popularSceneSearch">鎼滅储鍦烘櫙</label>
+          <label class="sr-only" for="popularSceneSearch">搜索场景</label>
           <input v-model="query" type="search" id="popularSceneSearch" class="pop-search"
-            placeholder="鎼滅储鍦烘櫙鏍囬銆佹弿杩般€佸湴鐐规垨姘涘洿锛堝锛氭荡銆侀粦涓濄€佹湀鍏夛級" />
-          <span class="pop-count" role="status">宸叉樉绀?<strong>{{ filtered.length }}</strong> / {{ pool.length }} 涓満鏅?/span>
+            placeholder="搜索场景标题、描述、地点或氛围（如：浴、黑丝、月光）" />
+          <span class="pop-count" role="status">已显示 <strong>{{ filtered.length }}</strong> / {{ pool.length }} 个场景</span>
         </div>
-        <div class="pop-cats" role="group" aria-label="鍦烘櫙鍒嗙被">
+        <div class="pop-cats" role="group" aria-label="场景分类">
           <button v-for="cat in categories" :key="cat.id" type="button" class="pop-cat"
             :class="{ active: category === cat.id }" :aria-pressed="category === cat.id"
             @click="category = cat.id">{{ cat.label }}<em>{{ cat.count }}</em></button>
         </div>
         <div class="pop-toolbar-meta">
-          <ToggleSwitch v-model="showMature" class="mature-toggle"><span>鏄剧ず鎴愪汉鍐呭 <em>({{ adultCount }})</em></span></ToggleSwitch>
+          <ToggleSwitch v-model="showMature" class="mature-toggle"><span>显示成人内容 <em>({{ adultCount }})</em></span></ToggleSwitch>
         </div>
       </div>
 
       <div v-if="filtered.length === 0" class="pop-empty">
-        <p>娌℃湁绗﹀悎褰撳墠鏉′欢鐨勫満鏅紝鎹釜鍏抽敭璇嶆垨鍒嗙被璇曡瘯銆?/p>
-        <button class="btn btn-ghost" type="button" @click="resetFilters">閲嶇疆绛涢€?/button>
+        <p>没有符合当前条件的场景，换个关键词或分类试试。</p>
+        <button class="btn btn-ghost" type="button" @click="resetFilters">重置筛选</button>
       </div>
 
-      <!-- 鍦烘櫙鍗＄墖缃戞牸 -->
+      <!-- 场景卡片网格 -->
       <div class="pop-grid">
         <article v-for="blueprint in filtered" :key="blueprint.id" class="pop-card"
           :class="{ adult: blueprint.adult }" :data-blueprint-id="blueprint.id">
@@ -66,17 +66,18 @@
             <span>{{ blueprint.category }}</span>
             <span>{{ blueprint.location }}</span>
             <span>{{ timeLabel(blueprint.timeOfDay) }}</span>
-            <span>{{ blueprint.recommendedSize.replace('x', '脳') }}</span>
+            <span>{{ blueprint.recommendedSize.replace('x', '×') }}</span>
           </div>
           <div class="pop-decision">
-            <span>闀滃ご <strong>{{ shotLabel(blueprint) }}</strong></span>
-            <span>鍏夌嚎 <strong>{{ lightLabel(blueprint) }}</strong></span>
-            <span>鑹茶皟 <strong>{{ moodLabel(blueprint) }}</strong></span>
-            <span v-if="blueprint.adult" class="pop-artist">鐢诲笀 <strong>{{ artistLabel(blueprint) }}</strong></span>
+            <span>镜头 <strong>{{ shotLabel(blueprint) }}</strong></span>
+            <span>光线 <strong>{{ lightLabel(blueprint) }}</strong></span>
+            <span>色调 <strong>{{ moodLabel(blueprint) }}</strong></span>
+            <span v-if="blueprint.adult" class="pop-artist">画师 <strong>{{ artistLabel(blueprint) }}</strong></span>
           </div>
           <footer class="pop-card-actions">
             <RouterLink class="btn btn-primary pop-draw-action" :to="drawUrl(blueprint)">
-              <ArchiveIcon name="spark" /> 寮€濮嬬粯鍒?            </RouterLink>
+              <ArchiveIcon name="spark" /> 开始绘制
+            </RouterLink>
           </footer>
         </article>
       </div>
@@ -105,13 +106,13 @@ const loadError = ref('')
 const query = ref('')
 const selectedId = ref('')
 const category = ref('all')
-/** 鏈満榛樿灞曠ず鎴愪汉鍐呭锛堜笌鐏垫劅鍦烘櫙椤典竴鑷达級锛涢潪鏈満鐜榛樿闅愯棌銆?*/
+/** 本机默认展示成人内容（与灵感场景页一致）；非本机环境默认隐藏。 */
 const showMature = ref(/^(localhost|127\.0\.0\.1|\[::1\])$/.test(window.location.hostname))
 
 const characters = computed<PopularCharacter[]>(() => sceneStore.popularCharacters)
 const allBlueprints = computed<SceneBlueprint[]>(() => sceneStore.sceneBlueprints)
 
-/** 褰撳墠瑙掕壊鐨勫叏閮ㄨ摑鍥撅紙瑙掕壊涓撳睘 + 閫氱敤鎴愪汉钃濆浘锛岃祫鏍兼寜鎴愮啛寮€鍏虫敹鏁涳級銆?*/
+/** 当前角色的全部蓝图（角色专属 + 通用成人蓝图，资格按成熟开关收敛）。 */
 const pool = computed<SceneBlueprint[]>(() => {
   const character = characters.value.find(item => item.id === selectedId.value) ?? null
   return allBlueprints.value.filter(bp =>
@@ -129,12 +130,12 @@ const categories = computed(() => {
   const counts = new Map<string, number>()
   counts.set('all', pool.value.length)
   for (const bp of pool.value) {
-    const key = bp.adult ? '鎴愪汉' : bp.category
+    const key = bp.adult ? '成人' : bp.category
     counts.set(key, (counts.get(key) || 0) + 1)
   }
-  const order = ['鍏ㄩ儴', '鐜颁唬鏃ュ父', '娓╅Θ鏃ュ父', '鍜岄濂囧够', '濂囧够', '鎴愪汉']
+  const order = ['全部', '现代日常', '温馨日常', '和风奇幻', '奇幻', '成人']
   return [...counts.entries()]
-    .map(([label, count]) => ({ id: label === '鍏ㄩ儴' ? 'all' : label, label, count }))
+    .map(([label, count]) => ({ id: label === '全部' ? 'all' : label, label, count }))
     .sort((a, b) => {
       const ia = order.indexOf(a.label)
       const ib = order.indexOf(b.label)
@@ -145,7 +146,7 @@ const categories = computed(() => {
 const filtered = computed(() => {
   const q = query.value.trim().toLowerCase()
   return pool.value.filter(bp => {
-    if (category.value !== 'all' && (bp.adult ? '鎴愪汉' : bp.category) !== category.value) return false
+    if (category.value !== 'all' && (bp.adult ? '成人' : bp.category) !== category.value) return false
     if (!q) return true
     return [bp.title, bp.description, bp.location, bp.promptProse, bp.category, bp.mood]
       .filter(Boolean)
@@ -154,15 +155,15 @@ const filtered = computed(() => {
 })
 
 const SHOT_LABELS: Record<string, string> = {
-  close: '鐗瑰啓', medium: '鍗婅韩', wide: '鍏ㄦ櫙', pov: '绗竴浜虹О',
-  high: '淇', low: '浠拌', side: '渚ч潰', turn: '鍥炵湼', over: '鑷媿', detail: '缁嗚妭',
+  close: '特写', medium: '半身', wide: '全景', pov: '第一人称',
+  high: '俯视', low: '仰视', side: '侧面', turn: '回眸', over: '自拍', detail: '细节',
 }
 const LIGHT_LABELS: Record<string, string> = {
-  golden: '榛勯噾鍏?, window: '绐楀厜', back: '閫嗗厜', moon: '鏈堝厜',
-  lantern: '鐏鍏?, overcast: '闃村ぉ鍏?,
+  golden: '黄金光', window: '窗光', back: '逆光', moon: '月光',
+  lantern: '灯笼光', overcast: '阴天光',
 }
 const MOOD_LABELS: Record<string, string> = {
-  warmth: '鏆栬壊', calm: '骞抽潤', tension: '寮犲姏', sad: '蹇ч儊', joy: '娆㈠揩',
+  warmth: '暖色', calm: '平静', tension: '张力', sad: '忧郁', joy: '欢快',
 }
 
 function decision(blueprint: SceneBlueprint) {
@@ -170,21 +171,21 @@ function decision(blueprint: SceneBlueprint) {
 }
 function shotLabel(blueprint: SceneBlueprint): string {
   const shot = decision(blueprint).shot
-  return shot ? (SHOT_LABELS[shot] || shot) : '鑷姩'
+  return shot ? (SHOT_LABELS[shot] || shot) : '自动'
 }
 function lightLabel(blueprint: SceneBlueprint): string {
   const lighting = decision(blueprint).lighting
-  return lighting ? (LIGHT_LABELS[lighting] || lighting) : '鑷姩'
+  return lighting ? (LIGHT_LABELS[lighting] || lighting) : '自动'
 }
 function moodLabel(blueprint: SceneBlueprint): string {
   const mood = decision(blueprint).colorMood
-  return mood ? (MOOD_LABELS[mood] || mood) : '鑷姩'
+  return mood ? (MOOD_LABELS[mood] || mood) : '自动'
 }
 function artistLabel(blueprint: SceneBlueprint): string {
   return blueprint.adultArtistHint?.replace(/^@/, '') ?? ''
 }
 function timeLabel(value: string): string {
-  return ({ morning: '娓呮櫒', afternoon: '鍗堝悗', sunset: '榛勬槒', evening: '鍌嶆櫄', night: '澶滄櫄', late_night: '娣卞', day: '鐧藉ぉ', noon: '涓崍' } as Record<string, string>)[value] || value || ''
+  return ({ morning: '清晨', afternoon: '午后', sunset: '黄昏', evening: '傍晚', night: '夜晚', late_night: '深夜', day: '白天', noon: '中午' } as Record<string, string>)[value] || value || ''
 }
 
 function selectCharacter(id: string) {
@@ -203,7 +204,8 @@ async function init() {
   loading.value = true
   loadError.value = ''
   try {
-    // 鍏冩暟鎹紙鍚儹闂ㄨ鑹?+ 鍦烘櫙钃濆浘锛夐殢 core 鍔犺浇涓€璧峰氨浣嶏紝涓嶆媺鍏ㄩ噺瀹佸畞/澶忕洰鍒嗙墖銆?    await sceneStore.ensureCore()
+    // 元数据（含热门角色 + 场景蓝图）随 core 加载一起就位，不拉全量宁宁/夏目分片。
+    await sceneStore.ensureCore()
     if (sceneStore.error) throw new Error(sceneStore.error)
     const charParam = typeof route.query.character === 'string' ? route.query.character : ''
     const fallback = characters.value[0]?.id ?? ''
@@ -396,7 +398,7 @@ onMounted(() => { void init() })
 }
 .pop-desc { margin: 0; color: var(--text-secondary); font-size: var(--fs-label-sm); line-height: 1.55; }
 .pop-meta { display: flex; flex-wrap: wrap; gap: var(--s-1); color: var(--text-muted); font-size: var(--fs-mono-xs); }
-.pop-meta span + span::before { content: '路'; margin-right: var(--s-1); color: var(--border-strong); }
+.pop-meta span + span::before { content: ' · '; margin-right: var(--s-1); color: var(--border-strong); }
 .pop-decision {
   display: flex;
   flex-wrap: wrap;
@@ -409,7 +411,7 @@ onMounted(() => { void init() })
   font-size: var(--fs-mono-sm);
 }
 .pop-decision strong { color: var(--text-primary); font-weight: 650; }
-.pop-decision span + span::before { content: '路'; margin-right: var(--s-2); color: var(--border-strong); }
+.pop-decision span + span::before { content: ' · '; margin-right: var(--s-2); color: var(--border-strong); }
 .pop-artist strong { color: var(--accent); }
 .pop-card-actions { margin-top: auto; }
 .pop-draw-action {

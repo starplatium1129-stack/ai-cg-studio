@@ -279,9 +279,9 @@ function buildWorkflow(input) {
     return workflow;
   }
 
-  var isHires = input.hiresFix === true && input.hiresScale > 1.0;
-  var upWidth = isHires ? Math.round((input.width * input.hiresScale) / 8) * 8 : input.width;
-  var upHeight = isHires ? Math.round((input.height * input.hiresScale) / 8) * 8 : input.height;
+  var _isHires = input.hiresFix === true && input.hiresScale > 1.0;
+  var _upWidth = _isHires ? Math.round((input.width * input.hiresScale) / 8) * 8 : input.width;
+  var _upHeight = _isHires ? Math.round((input.height * input.hiresScale) / 8) * 8 : input.height;
 
   if (model.noLora === true && !input.loraId) {
     var noLoraWf = {

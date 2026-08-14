@@ -1171,11 +1171,12 @@ body.overlay-open { overflow: hidden; }
   border-radius: var(--r-2xl);
   background: var(--bg-elevated);
   box-shadow: var(--shadow-lg);
-  animation: modal-card-in .28s var(--ease-out) .05s both;
+  transform-origin: center;
+  animation: modal-card-in .26s var(--ease-out) .04s both;
 }
 @keyframes modal-card-in {
-  from { opacity: 0; transform: translateY(12px) scale(.975); }
-  to { opacity: 1; transform: none; }
+  from { opacity: 0; transform: translateY(12px) scale(.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 .modal-card-wide { width: min(880px, 100%); }
 .modal-head {
@@ -1690,3 +1691,19 @@ html.theme-fade .sakura-fall {
 :where(.subtitle, .hero-sub, .hint, .note, .page-subtitle, .chat-subtitle, .gallery-subtitle) {
   max-width: 62ch;
 }
+
+/* ── 平滑折叠展开过渡（CSS Grid 0fr → 1fr，避免 JS 高度测量与重排突兀感） ── */
+.anim-collapse-grid {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 220ms var(--ease-out);
+}
+.anim-collapse-grid.open,
+.anim-collapse-grid[data-open="true"] {
+  grid-template-rows: 1fr;
+}
+.anim-collapse-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+

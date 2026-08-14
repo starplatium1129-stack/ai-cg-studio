@@ -778,10 +778,11 @@
   .pb .decision-summary::after {
     content:'›'; flex:0 0 auto; margin-left:auto; color:var(--text-muted);
     font-size:var(--fs-body-lg); line-height:1; transform:rotate(90deg);
-    transition:transform var(--t-fast),color var(--t-fast);
+    transition:transform var(--t-fast) var(--ease-out),color var(--t-fast);
   }
   .pb .decision-fold[open] > .decision-summary { margin-bottom:var(--s-3); }
   .pb .decision-fold[open] > .decision-summary::after { color:var(--accent); transform:rotate(-90deg); }
+  .pb .decision-fold[open] > :not(summary) { animation: fade-in 0.22s var(--ease-out); }
   .pb .decision-current {
     min-width:0; margin-left:auto; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
     color:var(--text-muted); font:500 var(--fs-mono-xs) var(--font-mono); letter-spacing:0;

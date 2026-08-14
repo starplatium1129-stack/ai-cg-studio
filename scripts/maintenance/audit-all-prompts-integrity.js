@@ -36,7 +36,7 @@ for (const char of characters) {
       // 必须包含角色核心特征、不泄露未定义占位、不含中文元数据
       const hasChinese = /[\u4e00-\u9fa5]/.test(animaPlan.prompt);
       const hasNsfwIfAdult = !isAdult || animaPlan.prompt.includes('nude') || animaPlan.prompt.includes('naked') || animaPlan.prompt.includes('exposed_breasts');
-      const noOutfitLeakInAdult = !isAdult || !animaPlan.prompt.includes(outfit.tokens[0]);
+      const _noOutfitLeakInAdult = !isAdult || !animaPlan.prompt.includes(outfit.tokens[0]);
 
       if (!hasChinese && hasNsfwIfAdult) {
         passChecks++;

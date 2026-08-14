@@ -20,10 +20,10 @@ function buildAnimaCaption(scene) {
   const tags = scene.tags || [];
   const location = scene.location || '';
   const time = scene.time || scene.timeOfDay || '';
-  const weather = scene.weather || '';
+  const _weather = scene.weather || '';
   const camera = scene.camera || '';
   const lighting = scene.lighting || '';
-  const emotion = scene.emotion || '';
+  const _emotion = scene.emotion || '';
   const story = scene.story || '';
   const title = scene.title || '';
   const text = `${title} ${story} ${location} ${tags.join(' ')}`;

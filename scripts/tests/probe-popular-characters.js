@@ -35,7 +35,7 @@ function writeJson(file, value) {
   fs.renameSync(temporary, file);
 }
 function sha256(value) { return crypto.createHash('sha256').update(value).digest('hex'); }
-function sha256File(file) { return sha256(fs.readFileSync(file)); }
+function _sha256File(file) { return sha256(fs.readFileSync(file)); }
 
 function comfyUrl(pathname) {
   var base = new URL(COMFY);

@@ -1,11 +1,11 @@
 # 绫季绘境视觉与架构改进路线
 
-> 记录日期：2026-08-02
+> 记录日期：2026-08-02（状态补充：2026-08-15）
 > 产品前提：个人本地使用为主，偶尔分享给可信访客；不按公开 SaaS 或多人社区设计。
 
 ## 结论
 
-当前 `Vue 3 + Vite + Pinia + Express + IndexedDB` 架构适合本项目，不进行 React、Nuxt、Electron 或 Tauri 重写。
+当前 Web 侧 `Vue 3 + Vite + Pinia + Express + IndexedDB` 架构适合本项目，不进行 Web 端的 React 或 Nuxt 重写；桌面端 Companion / Atelier 壳已在 `desktop-tauri/` 建立独立的 Tauri 2 原生轻量容器（见 `docs/tauri-desktop-migration-plan.md`）。
 
 下一阶段的核心不是增加更多粉色、樱花、粒子和卡片，而是：
 
@@ -149,8 +149,8 @@ useTrainingOnboarding()
 
 ## 不建议启动
 
-- React 或 Nuxt 迁移。
-- 为了桌面外观立即引入 Electron/Tauri。
+- Web 端 React 或 Nuxt 迁移。
+- 纯粹为了桌面外观盲目重写 Web 主界面（Tauri 仅作为 Companion/Atelier 原生桌面壳）。
 - 云数据库、账号系统或多租户体系。
 - 继续堆叠全局装饰和路由过场。
 - 未取得作者资源前伪造 Live2D 动作、换装或情绪 Expression。

@@ -412,7 +412,7 @@
     ],
     "animaCaption": "A medium shot in a dark private laboratory shows her removing a biometric sensor by hand before monitors displaying heart-rate graphs.",
     "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, blushing, eye_contact, vulnerable_expression, adult, sensor_headset, holding_biometric_sensor_in_one_hand, heart_rate_monitor, heart_rate_graphs_on_large_monitors, screen_glow, restrained_expression, blush, laboratory, night, medium_shot, screen_light, shy, serious, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, extreme_close_up, headshot, hands_out_of_frame, missing_sensor, abstract_background",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, extreme_close_up, headshot, hands_out_of_frame, missing_sensor, abstract_background, nsfw, nude, explicit",
     "storyJa": "【夏目・大人のクロスオーバーAUのヒステリシス校正・】深夜、個室研究室は監視画面の冷たい光だけが照らしていた。大人の夏目さんは、システムが意図的に低い心拍数と本当の感情を同時に大画面に映し出すまで、ストレステストの最後のラウンドを完了することを主張しました。彼女が黙ってセンサーを外すと、泣きぼくろはすでに赤くなっていた。――「機械だって、たまには判定を間違えるものよ。さっきのデータを保存するつもりなら……せめて先に、暗号化の強度を確認させて。」",
     "rating": "All"
   },
@@ -552,7 +552,7 @@
     ],
     "animaCaption": "A full-body wide view shows her standing on misty stone steps at a Kyoto temple, holding one small omamori charm in one hand.",
     "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, shrine, standing, temple, autumn, kyoto_temple, stone_steps, holding_omamori, one_small_omamori_charm_in_one_hand, casual_travel_outfit, morning_mist, side_glance, morning, clear_sky, full_body, wide_shot, morning_light, soft_lighting, diffused_light, calm, relaxed, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, kneeling, seiza, sitting_on_steps, holding_food, food_bowl, extra_feet",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, kneeling, seiza, sitting_on_steps, holding_food, food_bowl, extra_feet, nsfw, nude, explicit",
     "storyJa": "【夏目・古神殿の前の暗黙の願い】大学の研修旅行の早朝、夏目は京都の古刹の前で、長い黒髪を霧に濡らしながら真剣に手を合わせた。目を開けると、あなたが石段の下で待っていたことに気づき、何事もなかったかのようにあなたの手に警備員を置きました。あなたが彼女に何を懇願したのかと尋ねると、彼女はわずかに顔を向きました。――「願い事は口にしたら意味がないでしょ。このお守りは、ついでに買っただけ……せめて旅行が終わるまでは、なくさないで。」",
     "rating": "All"
   },
@@ -839,7 +839,7 @@
     ],
     "animaCaption": "In a dark movie theater side view, one viewer hand enters from the lower foreground and interlocks fingers with one of her hands; no companion is visible.",
     "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, blush, night, casual_clothes, holding_hands, one_viewer_hand_entering_from_lower_foreground_and_interlocking_fingers_with_her_hand_while_no_second_person_is_visible, pov_hand, interlocked_fingers, foreground_viewer_arm, movie_theater, profile, screen_light, subtle_blush, dark_interior, clear_sky, moonlight, shy, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, holding_own_hands, hands_clasped_at_chest, second_person, visible_companion, male, extra_foreground_hand",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, holding_own_hands, hands_clasped_at_chest, second_person, visible_companion, male, extra_foreground_hand, nsfw, nude, explicit",
     "storyJa": "【夏目・映画が終わる前のヤシの木】暗い劇場の中、怖いシーンが出てきた瞬間、夏目はそっと手を触れ、一瞬ためらった後、ただ指を組みました。あなたが手を振り返したとき、彼女の体は硬直しましたが、彼女は再び離れませんでした。画面の仄かな光で、気を配るふりをする彼女の横顔が浮かび上がった――「ここが暗くて、飲み物を取り違えないようにしただけ。映画が終わるまでは黙っていて……それから、先に手を離すのも禁止。」",
     "rating": "All"
   },
@@ -888,7 +888,7 @@
     ],
     "animaCaption": "On a laundromat bench, she rests her sleepy head on one cropped companion shoulder at the frame edge, with rows of tumble dryers behind.",
     "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, leaning, looking_away, casual_clothes, adult, laundromat, sitting_on_bench, leaning_on_shoulder, one_cropped_companion_shoulder_at_frame_edge, dryer, rows_of_tumble_dryers_in_background, sleepy, winter, afternoon, clear_sky, medium_shot, window_light, soft_lighting, diffused_light, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, second_full_person, visible_companion_face, floating_head, unsupported_lean, empty_laundromat",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, second_full_person, visible_companion_face, floating_head, unsupported_lean, empty_laundromat, nsfw, nude, explicit",
     "storyJa": "【夏目・乾燥終了10分前】冬の午後、セルフサービスのランドリールームに残るのは、ドラムが回る低い音だけだ。夏目はベンチに座ってカウントダウンを見守った。眠くなってくると無意識にあなたの肩にもたれかかってきました。目が覚めて自分の姿勢に気づいた後、彼女はすぐには正座せず、回転する衣服に目を移しただけでした。――「あと十分だから、動くほうが面倒。しばらくそのままでいて……肩がつらくなったら、早めに言って。」",
     "rating": "All"
   },
@@ -1418,7 +1418,7 @@
     ],
     "animaCaption": "A side-view medium shot shows her leaning close to a giant aquarium window, one hand touching the glass as she looks up at fish.",
     "prompt": "1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip, leaning, looking_back, aquarium, leaning_against, looking_away, large_glass_tank, blue_lighting, looking_up, one_hand_touching_aquarium_glass, profile, water_reflections, reserved_smile, afternoon, clear_sky, medium_shot, smile, happy, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, close_up, face_crop, hands_out_of_frame, missing_aquarium_glass",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, close_up, face_crop, hands_out_of_frame, missing_aquarium_glass, nsfw, nude, explicit",
     "storyJa": "【夏目・青い光の中で忘却のひととき】水族館の巨大なガラスのカーテンウォールの前で、夏目は周囲の環境を忘れることなく頭を上げて泳ぐ魚の群れを追いかけます。青い波紋が彼女の黒髪と目の下の泣きぼくろに広がった。彼女が正気に戻るまでに、あなたは彼女に二度電話しました。彼女はそっとガラスに寄りかかったが、口調はまだ穏やかだった――「魚のほうが誰かさんより静かなのは確か。でも……あなたがここにいても邪魔ではないから、もう少し付き合って。」",
     "rating": "All"
   },
@@ -3035,7 +3035,7 @@
     ],
     "animaCaption": "A full-body wide view shows her standing on a moonlit rooftop edge above a neon city, with both feet visible and energy particles swirling around.",
     "prompt": "1girl, shiki_natsume, mole_under_eye, tactical_gear, black_outfit, rooftop, moonlight, night_sky, serious, glowing_eyes, action_pose, standing_on_rooftop_edge, both_feet_visible, swirling_energy_particles, dynamic_shadows, cityscape_background, bokeh, rim_light, wide_shot, full_body, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, nsfw, nude, explicit, close_up, portrait, cowboy_shot, cropped_legs, out_of_frame_feet, missing_energy_effects",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, close_up, portrait, cowboy_shot, cropped_legs, out_of_frame_feet, missing_energy_effects, nsfw, nude, explicit",
     "storyJa": "【夏目・Astralエージェント】カフェのメイドという仮の姿を解き、今夜の夏目はAstralに所属する精鋭エージェントとして任務に立つ。黒い戦闘服に身を包み、月明かりに照らされた高層ビルの屋上から街のネオンを見下ろしていた。夜風が黒髪を揺らし、黄色い瞳は冷静に標的を捉えている。周囲には、抑え込まれた異能の気配がかすかに波打っていた。",
     "rating": "All"
   },
@@ -6367,7 +6367,7 @@
     ],
     "animaCaption": "In a waist-up cafe view, she presents one pastry in a folded opaque kraft-paper pouch with both cupped hands, backed by wooden racks of white cups.",
     "prompt": "visual_novel_event_cg, cinematic_16:9_clockwise_dutch_angle, waist_up_close_shot, 1girl, solo, shiki_natsume, natsume_maid_uniform, black_hair_in_short_maid_updo, golden_yellow_eyes, mole_under_eye, tiny_pastel_hairclips, dark_gray_cafe_maid_dress, white_ruffled_apron_and_collar, gold_bow, holding_one_pastry_in_folded_opaque_brown_kraft_paper_pouch_in_both_cupped_hands_toward_viewer, gentle_smile, warm_wooden_cafe, wall_racks_filled_with_white_cups, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit, plastic_bag, transparent_plastic, cellophane_wrapper, glassine_wrapper, baking_cup, cupcake_liner, clear_container",
+    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, plastic_bag, transparent_plastic, cellophane_wrapper, glassine_wrapper, baking_cup, cupcake_liner, clear_container, nsfw, nude, explicit",
     "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
     "rating": "All",
     "officialCgCandidate": "ocs14",
