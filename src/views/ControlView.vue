@@ -50,7 +50,7 @@
       <header class="control-intro">
         <div>
           <h1 class="control-title">控制面板</h1>
-          <p class="control-subtitle">绘图、语音与对话服务均集中于本机管理。随时查阅运行状态与安全连接。</p>
+          <p class="control-subtitle">绘图引擎、语音合成与智能对话等核心服务全流程本机运行。随时查阅运行状态与本地连接。</p>
         </div>
         <div class="control-count">{{ readyLabel }}</div>
       </header>

@@ -78,12 +78,12 @@
         <div class="panel step-panel" id="stepStory">
           <div class="panel-title">故事 · Story</div>
           <textarea class="story-input" v-model="pb.story"
-            placeholder="一句话描述脑海里的画面…"
+            placeholder="写下一句触动心弦的画面，或是脑海中浮现的相遇瞬间…"
             @input="onStoryInput"></textarea>
           <label class="visual-description-label" for="visualDescription">画面描述 · Visual description</label>
           <textarea id="visualDescription" class="visual-description-input" v-model="pb.visualDescription"
-            placeholder="只写最终可见的角色、动作、环境和画面关系…"></textarea>
-          <p class="visual-description-hint">该字段会进入 Anima / Krea 2。故事、台词和心理活动不会自动进入任何模型 Prompt。</p>
+            placeholder="细描角色的神态姿态、服饰光影与环境细节（将由引擎深度解析）…"></textarea>
+          <p class="visual-description-hint">该描述将直接传递给生成引擎；故事台词与心理独白由工坊为您智能转化。</p>
           <div v-if="pb.activeScene" class="scene-context">
             <span class="scene-context-title">{{ pb.activeScene.title }}</span>
             <button class="scene-context-detach" type="button" @click="detachScene()">× 脱离</button>

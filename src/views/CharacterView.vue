@@ -10,7 +10,7 @@
     >
       <div class="page-kicker">Character routes</div>
       <h1 class="title">角色档案</h1>
-      <p class="subtitle">视觉特征、性格轨迹与专属模型——记录她们在工坊中的完整灵动设定。</p>
+      <p class="subtitle">视觉特征、性格轨迹与专属模型——珍藏她们在绘境工坊中的每一缕灵动设定。</p>
       <template #meta>
         <span class="archive-status">LOCAL PROFILE</span>
         <span class="archive-status">{{ characters.length || '—' }} SUBJECTS</span>
@@ -27,15 +27,15 @@
       v-else-if="loadError"
       kind="error"
       title="角色档案读取失败"
-      message="本地角色资料暂时读不到，请稍后重试。"
+      message="本地角色资料暂时无法读取，请稍后重试。"
     >
       <button class="btn btn-primary" type="button" @click="loadProfiles">重新读取</button>
     </ArchiveStatePanel>
     <ArchiveStatePanel
       v-else-if="!characters.length"
       kind="empty"
-      title="角色档案目前为空"
-      message="本地角色资料已读取，但还没有可浏览的角色记录。"
+      title="角色档案暂未收录"
+      message="本地角色资料已就绪，当前暂无可浏览的角色记录。"
     />
     <template v-else>
       <!-- tablist 模式补全：aria-controls + roving tabindex + 方向键。

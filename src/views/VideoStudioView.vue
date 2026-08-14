@@ -14,7 +14,7 @@
         <div class="page-kicker">Local AI Video</div>
         <h1 class="page-title">AI 视频创作</h1>
         <p class="page-subtitle">
-          先描述一个镜头，工作室自动选择稳定的本地工作流。模型与节点留在执行层，不把 ComfyUI 的复杂度搬到这里。
+          描述一段动态镜头的叙事意图，工坊将自动调度稳定的本地视频工作流。复杂参数与推理链路尽归后台，留给您最纯粹的导演视界。
         </p>
       </div>
       <button class="btn btn-ghost" type="button" :disabled="statusLoading" @click="loadStatus">

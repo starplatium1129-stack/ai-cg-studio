@@ -10,15 +10,14 @@
     >
       <div class="page-kicker">Color script</div>
       <h1 class="title">色彩情绪</h1>
-      <p class="subtitle">告诉它今天是什么心情，它把颜色和光都替你想好。</p>
+      <p class="subtitle">诉说今日的心境与情绪，为画面的每一缕光色与阴影谱写专属基调。</p>
     </ArchivePageHero>
 
     <div class="info-callout" data-reveal>
-      <strong>◎ 设计理念</strong> | 色相与情绪绑定（暖黄＝温馨、粉色＝羞怯、蓝紫＝忧伤神秘）。美术规范第 1.2 节：克制为主，避免糖水色。
-      选一个情绪，系统会自动生成色彩语言、光照理由与提示词标签。
+      <strong>◎ 色彩美学</strong> | 色相与情绪深度共鸣（暖金之温馨、樱粉之悸动、幽蓝之静谧深邃）。选择一抹情绪，工坊将自动推演出对应的色彩语言、光影理由与提示词标签。
     </div>
 
-    <p class="emphasis-plain mb-3">今天的情绪色板</p>
+    <p class="emphasis-plain mb-3">今日心境色板 · Mood Palette</p>
     <div class="mood-grid stagger-container" data-reveal data-reveal-delay="1">
       <button
         v-for="m in MOODS" :key="m.id"

@@ -12,7 +12,7 @@
       <div class="showcase-copy">
         <div class="page-kicker">Approved Scene Gallery</div>
         <h1>定稿样张 · Verified Showcase</h1>
-        <p>每一幅均为当前模型组合真实生成、经人工细致复核后收录的定稿样张。先观成片，再觅心动。</p>
+        <p>每一幅皆由当前前沿模型组合实机生成、并经人工细致复核甄选。先赏定稿成片，再赴心动创作。</p>
         <div class="hero-actions">
           <button class="btn btn-ghost" type="button" :disabled="!entries.length" @click="openRandom">↻ 随机翻一张</button>
           <RouterLink class="btn btn-ghost" to="/scene-explorer">去灵感场景</RouterLink>

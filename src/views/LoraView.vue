@@ -11,7 +11,7 @@
     <div class="lora-title-row">
       <div>
         <h1 class="title">模型</h1>
-        <p class="subtitle">模型奠定角色的面容精细度与人设气质。出图时智能自动调度，在此呈现模型特征与推荐权重。</p>
+        <p class="subtitle">专属模型凝结着角色的容颜细节与神态气质。出图时由工坊智能调度，在此浏览核心特征与最佳推荐权重。</p>
       </div>
       <RouterLink class="btn btn-primary" to="/training?kind=lora">打开训练台</RouterLink>
     </div>
@@ -25,15 +25,15 @@
       v-else-if="loadError"
       kind="error"
       title="模型目录读取失败"
-      message="本地模型档案暂时读不到，请稍后重试。"
+      message="本地模型档案暂时无法读取，请稍后重试。"
     >
       <button class="btn btn-primary" type="button" @click="loadCatalog">重新读取</button>
     </ArchiveStatePanel>
     <ArchiveStatePanel
       v-else-if="!loras.length"
       kind="empty"
-      title="模型目录还是空的"
-      message="完成一次 LoRA 训练或导入模型后，资料会出现在这里。"
+      title="模型目录暂未收录"
+      message="完成一次 LoRA 训练或导入模型后，专属角色与画风档案将在此静候取用。"
     >
       <RouterLink class="btn btn-primary" to="/training?kind=lora">前往训练台</RouterLink>
     </ArchiveStatePanel>

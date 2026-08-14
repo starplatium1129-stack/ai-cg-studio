@@ -13,7 +13,7 @@
         <div class="curation-intro">
           <span class="curation-kicker">Nene × Natsume</span>
           <h2>从角色的心情，走进场景</h2>
-          <p>选择下面的主题，点云会从一段情绪重新组成下一幅场景标记。</p>
+          <p>点选以下心境主题，粒子流将由情绪意象重新聚合成专属的场景标记。</p>
         </div>
       </div>
       <SemanticParticleField

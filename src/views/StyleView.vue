@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <article class="page style-page" style="--page-max:1000px">
     <a class="nav-back" href="/" @click.prevent="$router.push('/')">← 回首页</a>
     <ArchivePageHero
@@ -11,11 +11,11 @@
     >
       <div class="page-kicker">Art direction</div>
       <h1 class="title">画风</h1>
-      <p class="subtitle">色板决定画面情绪与氛围温度。在此探寻专属美学与色彩剧本。</p>
+      <p class="subtitle">色调与光感决定画面的情绪温度。在此探索专属的艺术笔触与色彩剧本。</p>
     </ArchivePageHero>
 
     <div class="section-title" data-reveal>色彩氛围 · Color Moods</div>
-    <p class="note mb-3" data-reveal>选择倾心的色板，将带着对应的色彩脚本直接开启画面绘制。</p>
+    <p class="note mb-3" data-reveal>选择一抹倾心的色调，即可携同专属色彩脚本直接步入绘制工坊。</p>
 
     <div class="mood-grid mood-grid-lg stagger-container" data-reveal data-reveal-delay="1">
       <RouterLink

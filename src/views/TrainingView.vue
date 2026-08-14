@@ -12,8 +12,7 @@
       <div>
         <h1 class="title">角色训练台</h1>
         <p class="subtitle">
-          集约管理宁宁与夏目的 LoRA 训练、语音合成、数据集核验与训练日志。
-          所有训练任务均只在本机安全执行，并保持严格单任务调度。
+          全流程管理宁宁与夏目的专属 LoRA 炼制、角色原声拟真、数据集质检与实时监控。全链路均于本机安全执行，并由工坊严格调度。
         </p>
       </div>
       <div class="hero-status" :data-ready="workspaceReady ? 'true' : 'false'">

@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <article class="page" style="--page-max:1100px">
     <ArchivePageHero
       chapter="08"
@@ -14,7 +14,7 @@
     </ArchivePageHero>
 
     <div class="info-callout" data-reveal>
-      <strong>◎ 设计理念</strong> | 每一幕均为独立而完整的叙事画面。切换右上角角色后，全分幕的提示词将在宁宁与夏目之间灵动转换。
+      <strong>◎ 叙事美学</strong> | 每一幕皆为独立而连贯的动态叙事画面。切换右上角角色后，全分幕的镜头与构图意象将在宁宁与夏目之间灵动流转。
       当前灵感场景共有 <strong>{{ sceneCount }}</strong> 个。
     </div>
 
