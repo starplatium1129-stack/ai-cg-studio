@@ -45,7 +45,7 @@ function baseOptions(overrides = {}) {
     getFamily: () => 'anima',
     getRequest: () => ({
       prompt: '1girl', negative: 'bad', profileId: 'wai_v17', modelId: 'anima-aesthetic-v1.1',
-      loraId: 'L_NENE_V20B_ANIMA', loraStrength: 0.85, width: 832, height: 1216,
+      loraId: 'L_NENE_V21_ANIMA', loraStrength: 0.85, width: 832, height: 1216,
       steps: 24, cfg: 3, character: 'nene_b',
     }),
     onResult: () => {},
@@ -63,8 +63,8 @@ function statusPayload(overrides = {}) {
       { id: 'krea2-turbo-fp8', family: 'krea2', available: true, sizes: ['1024x1024'] },
     ],
     loras: [
-      { id: 'L_NENE_V20B_ANIMA', character: 'nene', available: true },
-      { id: 'L_NAT_V20_ANIMA', character: 'natsume', available: true },
+      { id: 'L_NENE_V21_ANIMA', character: 'nene', available: true },
+      { id: 'L_NAT_V21_ANIMA', character: 'natsume', available: true },
     ],
     styleLoras: [],
     ...overrides,
@@ -99,9 +99,9 @@ test('refreshBackend 收敛 model/lora 白名单、尺寸与默认参数', async
   const state = session.state.value;
   assert.equal(state.online, true);
   assert.deepEqual(state.models.map(m => m.id), ['anima-aesthetic-v1.1']);
-  assert.deepEqual(state.loras.map(l => l.id), ['L_NENE_V20B_ANIMA']);
+  assert.deepEqual(state.loras.map(l => l.id), ['L_NENE_V21_ANIMA']);
   assert.equal(state.modelId, 'anima-aesthetic-v1.1');
-  assert.equal(state.loraId, 'L_NENE_V20B_ANIMA');
+  assert.equal(state.loraId, 'L_NENE_V21_ANIMA');
   assert.equal(state.steps, 24);
   assert.equal(state.cfg, 3);
   assert.match(state.checkMsg, /Anima 在线/);
@@ -238,16 +238,16 @@ test('dispose 使在途任务失效并取消运行中的 job、停止轮询', as
 
 test('syncCharacter：triad 与热门角色清空 LoRA，普通角色按白名单收敛', async () => {
   const session = useAnimaSession({ ...baseOptions({}) });
-  session.patchState({ loras: [{ id: 'L_NENE_V20B_ANIMA', character: 'nene', available: true }] });
+  session.patchState({ loras: [{ id: 'L_NENE_V21_ANIMA', character: 'nene', available: true }] });
   session.syncCharacter('nene');
-  assert.equal(session.state.value.loraId, 'L_NENE_V20B_ANIMA');
+  assert.equal(session.state.value.loraId, 'L_NENE_V21_ANIMA');
   session.syncCharacter('triad');
   assert.equal(session.state.value.loraId, '');
   session.syncCharacter('natsume');
   assert.equal(session.state.value.loraId, '');
 
   const popular = useAnimaSession({ ...baseOptions({ isPopular: () => true }) });
-  popular.patchState({ loras: [{ id: 'L_NENE_V20B_ANIMA', character: 'nene', available: true }] });
+  popular.patchState({ loras: [{ id: 'L_NENE_V21_ANIMA', character: 'nene', available: true }] });
   popular.syncCharacter('nene');
   assert.equal(popular.state.value.loraId, '');
 });

@@ -752,7 +752,7 @@ test('flow 6f · 快速出图：复用最近成功参数并自动提交一次生
   const generated = await callsTo(request, MOCK.sd, '/sdapi/v1/txt2img');
   const comfyGenerated = (await calls(request, MOCK.comfy)).filter(call => call.path === '/prompt');
   expect(generated.length + comfyGenerated.length).toBe(1);
-  // 受控路线：basic 模式宁宁单人自动走 Anima 高质量路线（V20B LoRA），
+  // 受控路线：basic 模式宁宁单人自动走 Anima 高质量路线（V21 unified e16 LoRA），
   // SD quick 参数不再适用于该路线；若走 SD（双人/专家模式）则按原契约断言。
   if (generated.length) {
     expect(generated[0].body).toMatchObject({ width: 896, height: 1152, sampler_name: 'Euler a', scheduler: 'Karras', cfg_scale: 6, steps: 22 });
@@ -761,7 +761,7 @@ test('flow 6f · 快速出图：复用最近成功参数并自动提交一次生
     const latent = Object.values(graph).find((node: any) => node?.class_type === 'EmptyLatentImage') as any;
     expect(latent?.inputs).toMatchObject({ width: 832, height: 1216 });
     const loraLoader = Object.values(graph).find((node: any) => node?.class_type === 'LoraLoader') as any;
-    expect(loraLoader?.inputs?.lora_name).toContain('ayachi_nene_v20_anima_scientific_b_e16');
+    expect(loraLoader?.inputs?.lora_name).toContain('ayachi_nene_v21_anima');
   }
   // 受控路线 Anima 出图不写 SD 专属 quick 参数（aics_sd_last_success_v1 只记录 SD 成功参数）
   const savedAt = await page.evaluate(() => {

@@ -96,7 +96,7 @@ test('SCENE_INPAINT_CONFIG covers exactly scene:sc037, scene:sc280 and scene:sc2
   for (const cfg of [sc037, sc280, sc214]) {
     assert.strictEqual(cfg.engine, 'anima');
     assert.strictEqual(cfg.unet, animaConst.MODELS['anima-base-v1.0'].file, 'Anima base checkpoint must stay production');
-    assert.strictEqual(cfg.lora.file, animaConst.LORAS.L_NAT_V20_ANIMA.file, 'production natsume v20 Anima LoRA');
+    assert.strictEqual(cfg.lora.file, animaConst.LORAS.L_NAT_V21_ANIMA.file, 'production natsume v21 Anima LoRA');
     assert.strictEqual(cfg.lora.strength, 0.85);
     assert.strictEqual(cfg.sampler, 'res_multistep', 'Anima sampler contract');
     assert.strictEqual(cfg.scheduler, 'simple', 'Anima scheduler contract');

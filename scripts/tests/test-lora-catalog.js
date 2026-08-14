@@ -12,11 +12,12 @@ const root = path.resolve(__dirname, '..', '..');
 const catalog = parseLoraCatalog(JSON.parse(
   fs.readFileSync(path.join(root, 'data', 'loras.json'), 'utf8')
 ));
-assert.strictEqual(catalog.length, 7, 'LoRA catalog must expose production models plus the promoted Natsume Anima v21');
-assert(catalog.some(entry => entry.id === 'L_NENE_V20_ANIMA'), 'v20 Anima LoRA must be registered');
+assert.strictEqual(catalog.length, 4, 'LoRA catalog must expose SD v18 pair plus the promoted Natsume/Nene Anima v21 unified pair');
+assert(catalog.some(entry => entry.id === 'L_NENE_V18_WD14'), 'Nene SD v18 LoRA must be registered');
+assert(catalog.some(entry => entry.id === 'L_NAT_V18_WD14'), 'Natsume SD v18 LoRA must be registered');
 assert(catalog.some(entry => entry.id === 'L_NENE_V21_ANIMA' && !entry.experimental), 'Nene unified v21 Anima LoRA must be registered and not experimental');
-assert(catalog.some(entry => entry.id === 'L_NAT_V20_ANIMA' && !entry.experimental), 'Natsume Anima v20 must be registered and no longer experimental');
 assert(catalog.some(entry => entry.id === 'L_NAT_V21_ANIMA' && !entry.experimental), 'Natsume unified v21 Anima LoRA must be registered and not experimental');
+assert(!catalog.some(entry => /_V20|V19|V18_ANIMA/.test(entry.id)), 'superseded v19/v20 Anima LoRAs must not remain in the catalog');
 assert(catalog.every(entry => entry.baseModel), 'current base_model fields must reach the model shelf');
 assert(catalog.every(entry => entry.character), 'current character fields must reach the model shelf');
 assert(catalog.every(entry => entry.triggerWords.length), 'legacy trigger fields must normalize to trigger words');

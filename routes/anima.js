@@ -36,41 +36,17 @@ var PROFILE_BY_MODEL = Object.freeze({
 });
 
 var LORAS = Object.freeze({
-  L_NENE_V20_ANIMA: {
-    file:'ayachi_nene_v20_anima.safetensors',
-    name:'ayachi_nene_v20_anima',
-    character:'nene',
-    compatibleModels:['anima-base-v1.0', 'anima-aesthetic-v1.1'],
-    minStrength:0.65,
-    maxStrength:1
-  },
-  L_NENE_V20B_ANIMA: {
-    file:'ayachi_nene_v20_anima_scientific_b_e16.safetensors',
-    name:'ayachi_nene_v20_anima_scientific_b_e16',
-    character:'nene',
-    compatibleModels:['anima-base-v1.0', 'anima-aesthetic-v1.1'],
-    minStrength:0.65,
-    maxStrength:1
-  },
   L_NENE_V21_ANIMA: {
-    file:'ayachi_nene_v20_anima_unified_e16.safetensors',
-    name:'ayachi_nene_v20_anima_unified_e16',
+    file:'ayachi_nene_v21_anima.safetensors',
+    name:'ayachi_nene_v21_anima',
     character:'nene',
-    compatibleModels:['anima-base-v1.0', 'anima-aesthetic-v1.1'],
-    minStrength:0.65,
-    maxStrength:1
-  },
-  L_NAT_V20_ANIMA: {
-    file:'shiki_natsume_v20_anima.safetensors',
-    name:'shiki_natsume_v20_anima',
-    character:'natsume',
     compatibleModels:['anima-base-v1.0', 'anima-aesthetic-v1.1'],
     minStrength:0.65,
     maxStrength:1
   },
   L_NAT_V21_ANIMA: {
-    file:'shiki_natsume_v20_anima_unified_e16.safetensors',
-    name:'shiki_natsume_v20_anima_unified_e16',
+    file:'shiki_natsume_v21_anima.safetensors',
+    name:'shiki_natsume_v21_anima',
     character:'natsume',
     compatibleModels:['anima-base-v1.0', 'anima-aesthetic-v1.1'],
     minStrength:0.65,
@@ -88,9 +64,7 @@ var KREA_STYLE_LORAS = Object.freeze({
 
 var CHARACTERS = Object.freeze({
   nene: { id:'nene', label:'绫地宁宁', loraId:'L_NENE_V21_ANIMA' },
-  natsume: { id:'natsume', label:'四季夏目', loraId:'L_NAT_V20_ANIMA' },
-  // V20B（scientific_b）变体绑定：attempt-5 等历史样张用 0.82 强度产出，保留 A/B 对比通道。
-  nene_b: { id:'nene_b', label:'绫地宁宁（V20B）', loraId:'L_NENE_V20B_ANIMA' }
+  natsume: { id:'natsume', label:'四季夏目', loraId:'L_NAT_V21_ANIMA' }
 });
 
 var ALLOWED_INPUT_KEYS = new Set(generationContract.ALLOWED_INPUT_KEYS);

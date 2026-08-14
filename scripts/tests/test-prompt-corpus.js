@@ -64,7 +64,7 @@ function profileOf(id) {
 /** 镜像 usePromptAssembly.modelProfile：把选中 LoRA 的 prompt_contract 并入 profile。 */
 function animaProfile(profile, scene) {
   const char = charOf(scene)
-  const loraId = char === 'nene' ? 'L_NENE_V20_ANIMA' : char === 'natsume' ? 'L_NAT_V20_ANIMA' : ''
+  const loraId = char === 'nene' ? 'L_NENE_V21_ANIMA' : char === 'natsume' ? 'L_NAT_V21_ANIMA' : ''
   const contract = loras.find(lora => lora.id === loraId)?.prompt_contract
   if (!contract) return profile
   return Object.assign({}, profile, {
@@ -75,7 +75,7 @@ function animaProfile(profile, scene) {
 
 function contractExactTokens(scene) {
   const char = charOf(scene)
-  const loraId = char === 'nene' ? 'L_NENE_V20_ANIMA' : char === 'natsume' ? 'L_NAT_V20_ANIMA' : ''
+  const loraId = char === 'nene' ? 'L_NENE_V21_ANIMA' : char === 'natsume' ? 'L_NAT_V21_ANIMA' : ''
   const contract = loras.find(lora => lora.id === loraId)?.prompt_contract
   return new Set((contract?.exact_tokens || []).map(token => String(token).toLowerCase()))
 }
@@ -87,7 +87,7 @@ function planFor(scene, profile, engine) {
   const lighting = infer.sceneLighting(scene)
   const composition = infer.sceneComposition(scene)
   const activeLoras = engine === 'anima'
-    ? (char === 'nene' ? { nene:'L_NENE_V20_ANIMA' } : char === 'natsume' ? { natsume:'L_NAT_V20_ANIMA' } : {})
+    ? (char === 'nene' ? { nene:'L_NENE_V21_ANIMA' } : char === 'natsume' ? { natsume:'L_NAT_V21_ANIMA' } : {})
     : FALLBACK_LORA
   return compiler.createPromptPlan({
     profile: effective,

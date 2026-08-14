@@ -44,7 +44,7 @@ var CANDIDATES = [
   { id:'u_e04', epoch:4, step:168, file:'ayachi_nene_v20_anima_unified_e04.safetensors' },
   { id:'u_e08', epoch:8, step:336, file:'ayachi_nene_v20_anima_unified_e08.safetensors' },
   { id:'u_e12', epoch:12, step:504, file:'ayachi_nene_v20_anima_unified_e12.safetensors' },
-  { id:'u_e16', epoch:16, step:672, file:'ayachi_nene_v20_anima_unified_e16.safetensors' },
+  { id:'u_e16', epoch:16, step:672, file:'ayachi_nene_v21_anima.safetensors' },
   { id:'u_e20', epoch:20, step:840, file:'ayachi_nene_v20_anima_unified_e20.safetensors' },
   { id:'u_e24', epoch:24, step:1008, file:'ayachi_nene_v20_anima_unified_e24.safetensors' },
 ];

@@ -273,3 +273,12 @@ Baseline A 使用 Anima Base v1.0、Transformer LoRA only、rank/alpha 32/32、c
 - **e04 保留为回退候选**（仅 official 参数组领先：Aesthetic + 30s/CFG4.5 下 63.3；24s 生产参数下 51.0 且复杂低光全挂）。若后续生产切换官方参数组，可重评 e04。
 - **默认出图底模切换**：studio 单角色路线由 `anima-base-v1.0` 切为 `anima-aesthetic-v1.1`（跨底模加载记录 2026-08-13：Aesthetic 底座出图质量显著优于 Base；用户确认 Base 定位为训练底座）。
 - 已知限制：泪痣（mole under eye）随触发词-only 策略未稳定复现（V19/V20/V21 同限制）；「通过」占比偏低（双组 2-5/21），unified 24 epochs 候选的整体完成度低于宁宁 unified。
+
+## 生产文件改名（2026-08-14）
+
+为避免「统一（unified）e16」与旧版 V20/V20B 歧义，两个晋级文件已重命名为 V21 生产名：
+
+- `ayachi_nene_v20_anima_unified_e16.safetensors` → `ayachi_nene_v21_anima.safetensors`
+- `shiki_natsume_v20_anima_unified_e16.safetensors` → `shiki_natsume_v21_anima.safetensors`
+
+生产 ID 不变（`L_NENE_V21_ANIMA` / `L_NAT_V21_ANIMA`）；`routes/anima.js`、`data/loras.json`、`test-anima-routes.js`、inpaint 候选脚本、evaluate 脚本的 u_e16 行、mock-stack fixture 与 flows.spec 断言已同步为新文件名。上文的 u_e12 等回退候选文件（`*_unified_e04/e08/e12/e20/e24.safetensors`）未参与生产注册，未改名，仅存于评估目录。

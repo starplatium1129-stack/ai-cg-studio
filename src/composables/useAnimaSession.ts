@@ -48,7 +48,7 @@ export interface AnimaRequest {
   steps: number
   cfg: number
   seed?: number
-  character: 'nene' | 'nene_b' | 'natsume' | 'triad' | null
+  character: 'nene' | 'natsume' | 'triad' | null
   styleLoraId?: string
   hiresFix?: boolean
   hiresScale?: number
@@ -72,7 +72,7 @@ export interface AnimaSessionOptions {
 
 const INITIAL_STATE: AnimaGenerationState = {
   phase: 'idle', online: false, checkMsg: 'Anima 状态检查中…', models: [], loras: [], styleLoras: [], styleLoraId: '',
-  prompt: '', negative: '', modelId: 'anima-aesthetic-v1.1', loraId: 'L_NENE_V20B_ANIMA',
+  prompt: '', negative: '', modelId: 'anima-aesthetic-v1.1', loraId: 'L_NENE_V21_ANIMA',
   loraStrength: 0.85, width: 832, height: 1216, steps: 24, cfg: 3.0,
   family: 'anima',
   sampler: 'res_multistep', scheduler: 'simple', seed: null,
@@ -81,12 +81,12 @@ const INITIAL_STATE: AnimaGenerationState = {
 }
 
 export const ANIMA_LORA_BY_CHARACTER = {
-  nene: 'L_NENE_V20B_ANIMA',
-  natsume: 'L_NAT_V20_ANIMA',
+  nene: 'L_NENE_V21_ANIMA',
+  natsume: 'L_NAT_V21_ANIMA',
 } as const
 
 export const ANIMA_CHARACTER_BY_CHARACTER = {
-  nene: 'nene_b',
+  nene: 'nene',
   natsume: 'natsume',
 } as const
 

@@ -90,7 +90,7 @@ test('INPAINT_CONFIG covers exactly the two natsume fullbody keys', () => {
   assert.strictEqual(sd.checkpoint, genConst.CHECKPOINT, 'WAI checkpoint must stay production');
   assert.strictEqual(sd.lora.file, genConst.LORAS.L_NAT_V18_WD14.file, 'WAI v18 LoRA must stay production');
   assert.strictEqual(sd.lora.strength, 0.85);
-  assert.strictEqual(anima.lora.file, animaConst.LORAS.L_NAT_V20_ANIMA.file, 'Anima v20 LoRA must stay production');
+  assert.strictEqual(anima.lora.file, animaConst.LORAS.L_NAT_V21_ANIMA.file, 'Anima v21 LoRA must stay production');
   assert.strictEqual(anima.lora.strength, 0.85);
   assert.strictEqual(anima.unet, animaConst.MODELS['anima-base-v1.0'].file, 'Anima base checkpoint');
   assert.ok(sd.sampler && sd.scheduler && sd.steps && sd.cfg, 'WAI sampler params present');

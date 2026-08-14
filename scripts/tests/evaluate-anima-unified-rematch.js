@@ -32,7 +32,7 @@ var CONCURRENCY = 4;
 
 var CANDIDATES = [
   { id:'u_e12', epoch:12, step:504, file:'ayachi_nene_v20_anima_unified_e12.safetensors' },
-  { id:'u_e16', epoch:16, step:672, file:'ayachi_nene_v20_anima_unified_e16.safetensors' },
+  { id:'u_e16', epoch:16, step:672, file:'ayachi_nene_v21_anima.safetensors' },
 ];
 var SEEDS_A = [20260816, 20260817, 20260818, 20260819];
 var SEEDS_B = [20260816, 20260817, 20260818, 20260819, 20260820, 20260821];

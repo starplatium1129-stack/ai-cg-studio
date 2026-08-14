@@ -28,7 +28,7 @@ test('anima engine: main generate shows result in main frame through mock ComfyU
   await expect(animaEngine).toBeEnabled({ timeout: 30000 })
   await animaEngine.click()
   await expect(page.locator('#baseModel')).toHaveValue(/anima/, { timeout: 30000 })
-  await expect(page.locator('.api-status .badge')).toContainText('Anima 已连接', { timeout: 30000 })
+  await expect(page.locator('.api-status .badge')).toContainText(/Anima 在线/, { timeout: 30000 })
 
   await page.locator('.story-input').fill('宁宁在咖啡馆里穿着魔女服，对我微笑')
 
@@ -84,11 +84,11 @@ test('anima expert parameters and unified button share one parent-owned request 
   await expect.poll(() => bodies.length, { timeout: 30000 }).toBe(2)
   expect(bodies[0]).toEqual(bodies[1])
   expect((bodies[0] as { profileId?: string }).profileId).toBeUndefined()
-  // 受控路线（6be3a95）：宁宁默认 LoRA 为 V20B，请求角色为 nene_b 变体
-  expect((bodies[0] as { character: string }).character).toBe('nene_b')
+  // 受控路线：宁宁默认 LoRA 为 V21（unified e16），请求角色为 nene
+  expect((bodies[0] as { character: string }).character).toBe('nene')
 })
 
-test('anima derives the promoted Natsume v20 LoRA and blocks triad', async ({ page, request }) => {
+test('anima derives the promoted Natsume v21 LoRA and blocks triad', async ({ page, request }) => {
   test.setTimeout(240000)
   const bodies: Array<Record<string, unknown>> = []
   page.on('request', browserRequest => {
@@ -110,7 +110,7 @@ test('anima derives the promoted Natsume v20 LoRA and blocks triad', async ({ pa
   await page.getByTestId('anima-generate').click()
   await expect.poll(() => bodies.length, { timeout: 30000 }).toBe(1)
   expect(bodies[0].character).toBe('natsume')
-  expect(bodies[0].loraId).toBe('L_NAT_V20_ANIMA')
+  expect(bodies[0].loraId).toBe('L_NAT_V21_ANIMA')
   await expect(page.locator('.result-image-wrap img.result-image')).toHaveCount(1, { timeout: 30000 })
 
   await page.locator('#stepChar .char-btn').filter({ hasText: '宁宁' }).click()
@@ -297,32 +297,27 @@ test('popular creator · Krea style is inferred automatically from the selected 
   await expect(page.locator('.result-image-wrap img.result-image')).toHaveCount(1, { timeout: 30000 })
 })
 
-test('popular creator · manual style controls stay absent for underage characters', async ({ page }) => {
+test('popular creator · manual style controls are available for all characters (full-open)', async ({ page }) => {
   await page.goto(`http://127.0.0.1:${MOCK_PORTS.gateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
   await page.waitForTimeout(2000)
   await page.locator('.char-source-btn').filter({ hasText: '热门角色' }).click()
   await page.locator('.popular-card').filter({ hasText: '樱岛麻衣' }).click()
   await page.getByRole('button', { name: '专家模式', exact: true }).click()
-  await expect(page.locator('#stepRecipe')).toHaveCount(0)
-  await expect(page.getByText(/画师影响|Style LoRA/)).toHaveCount(0)
+  // 全部开放后任何角色都可选成人配方，专家模式风格区不再被 underage 隐藏。
+  await expect(page.locator('#stepRecipe')).toHaveCount(1)
 })
 
-test('popular creator · adult gate cannot be bypassed for underage characters', async ({ page }) => {
+test('popular creator · adult gate requires the mature switch, not character underage', async ({ page }) => {
   await page.goto(`http://127.0.0.1:${MOCK_PORTS.gateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
   await page.waitForTimeout(2000)
   await page.locator('.char-source-btn').filter({ hasText: '热门角色' }).click()
   await page.locator('.popular-card').filter({ hasText: '樱岛麻衣' }).click()
   await expect(page.locator('.popular-outfits')).toBeVisible()
 
-  // 未成年/年龄不明角色：任何视图下都不得出现成人蓝图。
-  await expect(page.locator('.blueprint-card[data-adult="true"]')).toHaveCount(0)
+  // 全部开放（2026-08-14）：所有热门角色 adult，成人蓝图可见可达。
+  await expect(page.locator('.blueprint-card[data-adult="true"]').first()).toBeVisible()
   await page.locator('.blueprint-reco-btn').filter({ hasText: '查看全部' }).click()
-  await expect(page.locator('.blueprint-card[data-adult="true"]')).toHaveCount(0)
-
-  // 成人筛选分类对非成人角色不可达：选一张普通蓝图，预览不得含显式词。
-  await page.locator('.blueprint-card').first().click()
-  const positive = await page.locator('.preview-output').innerText().then(text => text.split('[NEG]')[0])
-  expect(positive).not.toMatch(/\b(?:nsfw|nude)\b/i)
+  await expect(page.locator('.blueprint-card[data-adult="true"]').first()).toBeVisible()
 })
 
 test('popular creator · draft round-trips subject/outfit/blueprint through reload', async ({ page }) => {
@@ -438,13 +433,13 @@ test('popular creator · switching back to studio immediately restores the nene 
   await expect(genBtn).toBeEnabled({ timeout: 30000 })
   await genBtn.click()
   await expect.poll(() => bodies.length, { timeout: 30000 }).toBe(1)
-  // 受控路线（6be3a95）：宁宁默认 LoRA 已升级为 V20B，请求角色为 nene_b 变体
-  expect(bodies[0].character).toBe('nene_b')
-  expect(bodies[0].loraId).toBe('L_NENE_V20B_ANIMA')
+  // 受控路线：宁宁默认 LoRA 为 V21（unified e16），请求角色为 nene
+  expect(bodies[0].character).toBe('nene')
+  expect(bodies[0].loraId).toBe('L_NENE_V21_ANIMA')
   await expect(page.locator('.result-image-wrap img.result-image')).toHaveCount(1, { timeout: 30000 })
 })
 
-test('popular creator · adult blueprint is cleared and unreachable when switching to underage', async ({ page }) => {
+test('popular creator · adult blueprint stays reachable across all characters (full-open)', async ({ page }) => {
   await page.goto(`http://127.0.0.1:${MOCK_PORTS.gateway}/prompt-builder`, { waitUntil: 'domcontentloaded' })
   await page.waitForTimeout(2000)
   await page.locator('.char-source-btn').filter({ hasText: '热门角色' }).click()
@@ -455,10 +450,9 @@ test('popular creator · adult blueprint is cleared and unreachable when switchi
   await page.locator('.blueprint-card[data-adult="true"]').first().click()
   await expect(page.locator('.blueprint-card.active[data-adult="true"]')).toHaveCount(1)
 
-  // 切到未成年角色：成人蓝图必须消失，且已选蓝图被清空、预览不含显式词。
+  // 全部开放决策（2026-08-14）：切换任何热门角色，成人蓝图保持可达且已选蓝图不清空。
   await page.locator('.popular-card').filter({ hasText: '樱岛麻衣' }).click()
-  await expect(page.locator('.blueprint-card[data-adult="true"]')).toHaveCount(0)
-  await expect(page.locator('.blueprint-card.active')).toHaveCount(0)
-  const positive = await page.locator('.preview-output').innerText().then(text => text.split('[NEG]')[0])
-  expect(positive).not.toMatch(/\b(?:nsfw|nude)\b/i)
+  await expect(page.locator('.blueprint-card[data-adult="true"]').first()).toBeVisible()
+  await page.locator('.blueprint-card[data-adult="true"]').first().click()
+  await expect(page.locator('.blueprint-card.active[data-adult="true"]')).toHaveCount(1)
 })

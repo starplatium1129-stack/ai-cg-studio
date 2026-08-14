@@ -27,29 +27,6 @@
       "hires_denoising_strength": 0.4
     },
     {
-      "id": "noobai_xl_11",
-      "engine": "sd",
-      "name": "NoobAI XL 1.1",
-      "match": [
-        "noobai-xl-v1.1",
-        "noobai xl 1.1",
-        "noobai_xl_v1.1"
-      ],
-      "quality_prefix": "masterpiece, best quality, newest, absurdres, highres",
-      "negative_prefix": "worst quality, old, early, low quality, lowres, signature, username, logo, bad hands, mutated hands, mammal, anthro, furry",
-      "negative_mode": "replace",
-      "negative_replace_scope": "boilerplate",
-      "rating_all": "safe",
-      "rating_r15": "sensitive",
-      "rating_r18": "nsfw",
-      "sampler": "Euler a",
-      "scheduler": "",
-      "steps": 28,
-      "cfg": 5.5,
-      "size": "832×1216",
-      "hires_fix": false
-    },
-    {
       "id": "anima_base_v10",
       "engine": "anima",
       "model_id": "anima-base-v1.0",

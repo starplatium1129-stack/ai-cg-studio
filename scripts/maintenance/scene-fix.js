@@ -5,7 +5,7 @@
  * 单场景高质量修复工具：
  * - sc300 同构短 prompt，生成前强制结构健康检查
  * - 固定 3 seed；三张经五维人工评分后全部 >= 90 才算合格
- * - 宁宁默认 V20B，并强制使用 nene_b 服务端绑定
+ * - 宁宁默认 V21（unified e16），绑定 character=nene
  * - 手工修复必须显式传 --steps 30 --cfg 4.5
  *
  * 生成：
@@ -97,7 +97,7 @@ function resolveRepairConfig(sceneCharacter, options = {}) {
   const requiredCharacter = generationContract.requiredCharacterForLora(loraId);
   if (!requiredCharacter) throw new Error(`不支持的 Anima LoRA：${loraId}`);
   const belongsToScene = sceneCharacter === 'nene'
-    ? (requiredCharacter === 'nene' || requiredCharacter === 'nene_b')
+    ? requiredCharacter === 'nene'
     : requiredCharacter === sceneCharacter;
   if (!belongsToScene) throw new Error(`场景角色 ${sceneCharacter} 不能使用 ${loraId}`);
   if (options.character && options.character !== requiredCharacter) {

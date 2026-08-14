@@ -13,7 +13,7 @@ export interface DrawingRouteRecommendation {
   engine: ManagedDrawEngine
   modelId: string
   loraId: string
-  generationCharacter: 'nene' | 'nene_b' | 'natsume' | null
+  generationCharacter: 'nene' | 'natsume' | null
   promptFormat: ManagedPromptFormat
   title: string
   summary: string

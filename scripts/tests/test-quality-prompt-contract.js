@@ -37,10 +37,10 @@ test('shared Anima defaults and parameter whitelist stay aligned with the route'
   assert.strictEqual(anima.constants.MODELS['anima-base-v1.0'].cfg, 3);
 });
 
-test('V20B always resolves to nene_b and scene repair defaults to the v21 binding', () => {
+test('V21 always resolves to nene and scene repair defaults to the v21 binding', () => {
   assert.strictEqual(
-    generationContract.requiredCharacterForLora('L_NENE_V20B_ANIMA'),
-    'nene_b',
+    generationContract.requiredCharacterForLora('L_NENE_V21_ANIMA'),
+    'nene',
   );
   const config = sceneFix.resolveRepairConfig('nene');
   assert.deepStrictEqual(config, {
@@ -51,10 +51,10 @@ test('V20B always resolves to nene_b and scene repair defaults to the v21 bindin
   });
   assert.throws(
     () => sceneFix.resolveRepairConfig('nene', {
-      loraId: 'L_NENE_V20B_ANIMA',
-      character: 'nene',
+      loraId: 'L_NAT_V21_ANIMA',
+      character: 'natsume',
     }),
-    /nene_b/,
+    /nene/,
   );
 });
 

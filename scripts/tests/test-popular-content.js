@@ -519,7 +519,7 @@ test('anima no-LoRA route contract: validate + workflow have no LoraLoader and k
   }, function (error) { return error && error.code === 'UNKNOWN_LORA'; });
   assert.throws(function () {
     animaRoute.validateInput({
-      prompt: 'x', modelId: 'anima-aesthetic-v1.1', loraId: 'L_NAT_V20_ANIMA', width: 832, height: 1216, character: 'nene',
+      prompt: 'x', modelId: 'anima-aesthetic-v1.1', loraId: 'L_NAT_V21_ANIMA', width: 832, height: 1216, character: 'nene',
     });
   }, function (error) { return error && error.code === 'INCOMPATIBLE_CHARACTER'; });
   assert.throws(function () {

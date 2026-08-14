@@ -100,7 +100,7 @@ test('Krea official style LoRA is allowlisted and family-scoped', () => {
   assert.strictEqual(graph['12'].class_type, 'LoraLoaderModelOnly');
   assert.strictEqual(graph['12'].inputs.lora_name, 'krea2_rainywindow.safetensors');
   assert.strictEqual(graph['12'].inputs.strength_model, 1);
-  assert.throws(() => animaRoute.validateInput({ prompt: 'x', modelId: 'anima-base-v1.0', loraId: 'L_NENE_V20_ANIMA', loraStrength: 0.85, width: 832, height: 1216, character: 'nene', styleLoraId: 'rainywindow' }, 'anima'), /Style LoRA/);
+  assert.throws(() => animaRoute.validateInput({ prompt: 'x', modelId: 'anima-base-v1.0', loraId: 'L_NENE_V21_ANIMA', loraStrength: 0.85, width: 832, height: 1216, character: 'nene', styleLoraId: 'rainywindow' }, 'anima'), /Style LoRA/);
   assert.throws(() => animaRoute.validateInput({ prompt: 'x', modelId: 'krea2-turbo-fp8', width: 1024, height: 1024, styleLoraId: 'not-approved' }, 'krea2'), /未知 Krea/);
 });
 
@@ -224,7 +224,7 @@ test('creative catalog rejects Krea LoRA/negative and emits the official Krea co
   }
   assert.throws(() => animaRoute.validateInput({ prompt: 'x', modelId: 'krea2-turbo-fp8', width: 1024, height: 1024, steps: 7 }), /steps/);
   assert.throws(() => animaRoute.validateInput({ prompt: 'x', modelId: 'krea2-turbo-fp8', width: 1024, height: 1024, cfg: 3 }), /CFG/);
-  assert.throws(() => animaRoute.validateInput({ prompt: 'x', modelId: 'krea2-turbo-fp8', width: 1024, height: 1024, loraId: 'L_NENE_V20_ANIMA' }), /Krea/);
+  assert.throws(() => animaRoute.validateInput({ prompt: 'x', modelId: 'krea2-turbo-fp8', width: 1024, height: 1024, loraId: 'L_NENE_V21_ANIMA' }), /Krea/);
   assert.throws(() => animaRoute.validateInput({ prompt: 'x', negative: 'bad anatomy', modelId: 'krea2-turbo-fp8', width: 1024, height: 1024 }), /Krea/);
   const workflow = animaRoute.buildWorkflow(input);
   const classes = Object.values(workflow).map(node => node.class_type);
@@ -261,8 +261,8 @@ test('Anima profiles do not bind one character and LoRA contracts own exact cont
     assert.deepStrictEqual(profile.exact_tokens, [], 'profile must not carry family-level exact tokens');
     assert.strictEqual(profile.steps, 24, 'Anima profiles must default to the validated 24 steps');
   }
-  const nene = loras.find(lora => lora.id === 'L_NENE_V20_ANIMA');
-  const natsume = loras.find(lora => lora.id === 'L_NAT_V20_ANIMA');
+  const nene = loras.find(lora => lora.id === 'L_NENE_V21_ANIMA');
+  const natsume = loras.find(lora => lora.id === 'L_NAT_V21_ANIMA');
   assert(nene.prompt_contract.exact_prefixes.includes('nene_'));
   assert(natsume.prompt_contract.exact_prefixes.includes('natsume_'));
   assert(!nene.prompt_contract.exact_prefixes.includes('natsume_'));

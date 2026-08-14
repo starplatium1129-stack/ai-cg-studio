@@ -175,7 +175,7 @@ const INPAINT_CONFIG = Object.freeze({
     unet: 'anima-base-v1.0.safetensors',
     clip: 'qwen_3_06b_base.safetensors',
     vae: 'qwen_image_vae.safetensors',
-    lora: { file: 'shiki_natsume_v20_anima.safetensors', strength: 0.85 },
+    lora: { file: 'shiki_natsume_v21_anima.safetensors', strength: 0.85 },
     steps: 24,
     cfg: 3.0,
     sampler: 'res_multistep',

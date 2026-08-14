@@ -46,9 +46,12 @@ test('batch plan expands consistently with the curated artist catalog', () => {
   const plan = gen.planAllBatches(20260812);
   const artistCount = artistCatalog.ARTIST_STYLE_OPTIONS.length;
   const artistVariants = artistCount + 1;
-  const expectedAttempt1 = artistVariants + 18 + 8 + 126 + artistVariants * 2;
-  // 明细：artistVariants 张画师 + 18 popular（角色专属场景）+ 8 latest-lora
-  //       + 126 popular-grid（18 角色×3 专属场景×2 引擎；3 个成人蓝图仅 3 个 adult 角色可见 = 3×3×2）
+  // 全部开放后 18 角色全部 adult：每角色 3 原型 + 1 角色成人 + 3 通用成人 = 7 场景 × 2 引擎。
+  const popularGrid = 18 * 7 * 2;
+  const expectedAttempt1 = artistVariants + 18 + 8 + popularGrid + artistVariants * 2;
+  // 明细：artistVariants 张画师（21 画师 + no-artist，含 3 个重点画师追加轮）
+  //       + 18 popular（角色专属场景）+ 8 latest-lora（nene/natsume × sd/anima × closeup/fullbody）
+  //       + popularGrid popular-grid（18 角色 × 7 场景 × 2 引擎，全部 adult 开放）
   //       + artistVariants×2 artist-grid
   const expectedTotal = expectedAttempt1 + 14 + 6 + 2;
   assert.strictEqual(plan.length, expectedTotal, `expected ${expectedTotal} planned jobs, got ${plan.length}`);
@@ -64,7 +67,7 @@ test('batch plan expands consistently with the curated artist catalog', () => {
   const counts = legacy1.reduce((acc, item) => { acc[item.batch] = (acc[item.batch] || 0) + 1; return acc; }, {});
   assert.deepStrictEqual(counts, { artist: artistVariants, popular: 18, 'latest-lora': 8 });
   const gridCounts = plan.reduce((acc, item) => { acc[item.batch] = (acc[item.batch] || 0) + 1; return acc; }, {});
-  assert.strictEqual(gridCounts['popular-grid'], 126, 'popular-grid must plan 126 (18 characters x 3 prototype scenes x 2 engines + adult-eligible extras)');
+  assert.strictEqual(gridCounts['popular-grid'], popularGrid, 'popular-grid must plan 252 (18 characters x 7 scenes x 2 engines after full adult open)');
   assert.strictEqual(gridCounts['artist-grid'], artistVariants * 2, 'artist-grid must plan every artist + baseline across two engines');
   const recordIds = new Set(plan.map(item => item.recordId));
   assert.strictEqual(recordIds.size, plan.length, 'recordIds must be unique');
@@ -587,7 +590,7 @@ test('scene baseline mode restores the baseline LoRA character binding', () => {
     status: 'succeeded', recordId: 'scene:sc001@attempt-1', attempt: 1,
     engine: 'anima', profileId: 'anima_base_v10', modelId: 'anima-base-v1.0',
     checkpoint: animaConst.MODELS['anima-base-v1.0'].file,
-    loraId: 'L_NENE_V20_ANIMA', loraFile: animaConst.LORAS.L_NENE_V20_ANIMA.file,
+    loraId: 'L_NENE_V21_ANIMA', loraFile: animaConst.LORAS.L_NENE_V21_ANIMA.file,
     loraStrength: 0.85, width: 832, height: 1216,
     steps: 24, cfg: 3, sampler: 'res_multistep', scheduler: 'simple',
     seed: 123, prompt: 'old exact tag stream', negative: 'old exact negative',

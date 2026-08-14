@@ -147,7 +147,7 @@ assert.strictEqual(
 const presetProfiles = require('../../data/presets.json').model_profiles;
 const animaBase = presetProfiles.find(profile => profile.id === 'anima_base_v10');
 const animaAesthetic = presetProfiles.find(profile => profile.id === 'anima_aesthetic_v11');
-const neneContract = require('../../data/loras.json').find(lora => lora.id === 'L_NENE_V20_ANIMA').prompt_contract;
+const neneContract = require('../../data/loras.json').find(lora => lora.id === 'L_NENE_V21_ANIMA').prompt_contract;
 assert(animaBase && animaAesthetic, 'Anima Base and Aesthetic profiles must be present in the production catalog');
 for (const profile of [animaBase, animaAesthetic]) {
   assert.deepStrictEqual(profile.exact_tokens, [], 'model profiles keep no family-level exact tokens; LoRA contracts own them');
@@ -256,7 +256,7 @@ assert.deepStrictEqual(
 const v19Controls = policy.characterControlTokens(
   { prompt:'ayachi_nene, nene_school_uniform', rating:'R18', mature:true },
   'nene',
-  { nene:'ayachi_nene_v20_anima' },
+  { nene:'ayachi_nene_v21_anima' },
 );
 ['nene_r18', 'nene_school_uniform', 'school_uniform', 'blazer', 'yellow_bowtie', 'plaid_skirt'].forEach(token => {
   assert(v19Controls.includes(token), 'v19 control bundle must retain exact token ' + token);

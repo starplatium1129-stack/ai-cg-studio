@@ -579,7 +579,7 @@ function copyPrompt() {
     .catch(() => showToast('复制失败，请手动选取'))
 }
 
-/** 下载当前作品的原图文件（优先 HD blob，回落缩略图） */
+/** 下载当前作品的原图文件（优先 IndexedDB 原图 blob，回落查看器/缩略图 URL） */
 async function downloadCurrent() {
   const item = current.value
   if (!item) return
@@ -597,7 +597,16 @@ async function downloadCurrent() {
       }
     } catch { /* 落到浏览器下载兜底 */ }
   }
-  const url = cardUrls[item.id] || thumbUrls[item.id] || viewerUrl.value
+  // 浏览器路径：卡片原图 URL 可能因懒加载未就绪，主动从 IndexedDB 取原图 blob。
+  // 只有原图缺失时才回落缩略图，避免「下载原图拿到缩略图」。
+  let url = cardUrls[item.id] || viewerUrl.value || ''
+  if (!url && item.image_id) {
+    try {
+      const blob = await imgGet(String(item.image_id))
+      if (blob) url = URL.createObjectURL(blob)
+    } catch { /* 落到缩略图兜底 */ }
+  }
+  if (!url) url = thumbUrls[item.id] || ''
   if (!url) return
   const a = document.createElement('a')
   a.href = url

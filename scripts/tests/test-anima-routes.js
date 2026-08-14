@@ -95,9 +95,8 @@ function prepareComfyResources(context) {
     ['text_encoders', 'qwen_3_06b_base.safetensors'],
     ['text_encoders', 'qwen3-vl-4b-heretic_fp8_e4m3fn.safetensors'],
     ['vae', 'qwen_image_vae.safetensors'],
-    ['loras', 'ayachi_nene_v20_anima.safetensors'],
-    ['loras', 'ayachi_nene_v20_anima_unified_e16.safetensors'],
-    ['loras', 'shiki_natsume_v20_anima.safetensors']
+    ['loras', 'ayachi_nene_v21_anima.safetensors'],
+    ['loras', 'shiki_natsume_v21_anima.safetensors']
   ].forEach(function (item) {
     var directory = path.join(root, item[0]);
     fs.mkdirSync(directory, { recursive:true });
@@ -140,7 +139,7 @@ test('Anima routes enforce application job and result boundaries over real HTTP'
     assert.strictEqual(status.json.online, true);
     assert.ok(Array.isArray(status.json.models) && status.json.models.every(function (model) { return model.id; }));
     assert.ok(!status.json.models.some(function (model) { return model.id === 'anima-yume-v1.0'; }), 'unreviewed Yume must not be discoverable');
-    assert.ok(status.json.loras.some(function (lora) { return lora.id === 'L_NENE_V20_ANIMA'; }));
+    assert.ok(status.json.loras.some(function (lora) { return lora.id === 'L_NENE_V21_ANIMA'; }));
     assert.ok(status.json.models.every(function (model) { return model.family === 'anima'; }), 'Anima status must not expose Krea models');
     var creativeStatus = await request(port, { path:'/api/creative/status' });
     assert.ok(creativeStatus.json.models.some(function (model) { return model.id === 'krea2-turbo-fp8'; }), 'creative status must expose Krea');
@@ -366,9 +365,6 @@ test('Anima exposes and submits the promoted Natsume v20 LoRA without crossing c
     token:'anima-natsume-v20-token-0123456789abcdef012345',
     prepare:function (context) {
       prepareComfyResources(context);
-      var loraRoot = path.join(context.config.AI_WORKSPACE_ROOT, 'ComfyUI', 'models', 'loras');
-      fs.mkdirSync(loraRoot, { recursive:true });
-      fs.writeFileSync(path.join(loraRoot, 'shiki_natsume_v20_anima.safetensors'), 'authorized-natsume-v20-fixture');
     }
   });
   var port = stack.address.port;
@@ -376,30 +372,31 @@ test('Anima exposes and submits the promoted Natsume v20 LoRA without crossing c
   try {
     var status = await request(port, { path:'/api/anima/status' });
     assert.strictEqual(status.status, 200);
-    var natsume = status.json.loras.find(function (lora) { return lora.id === 'L_NAT_V20_ANIMA'; });
-    assert.ok(natsume && natsume.available && !natsume.preview, 'natsume v20 must be discoverable and no longer experimental');
+    var natsume = status.json.loras.find(function (lora) { return lora.id === 'L_NAT_V21_ANIMA'; });
+    assert.ok(natsume && natsume.available && !natsume.preview, 'natsume v21 must be discoverable and no longer experimental');
     assert.ok(!status.json.loras.some(function (lora) { return lora.id === 'L_NAT_V19_ANIMA_PREVIEW'; }), 'superseded preview must not remain selectable');
+    assert.ok(!status.json.loras.some(function (lora) { return lora.id === 'L_NAT_V20_ANIMA'; }), 'superseded natsume v20 must not remain selectable');
     assert.ok(status.json.characters.some(function (character) { return character.id === 'natsume' && !character.preview; }));
 
     var natsumeJob = await postJson(port, '/api/anima/jobs', validJob({
       prompt:'shiki_natsume, 1girl, solo, natsume_cafe_uniform',
-      loraId:'L_NAT_V20_ANIMA', character:'natsume'
+      loraId:'L_NAT_V21_ANIMA', character:'natsume'
     }));
     assert.strictEqual(natsumeJob.status, 202);
     assert.strictEqual(natsumeJob.json.job.character, 'natsume');
-    assert.strictEqual(natsumeJob.json.job.loraId, 'L_NAT_V20_ANIMA');
+    assert.strictEqual(natsumeJob.json.job.loraId, 'L_NAT_V21_ANIMA');
     await waitForJob(port, natsumeJob.json.job.id, function (job) { return job && job.status === 'succeeded'; });
     var state = await mockState(comfy.port);
     var promptCall = state.calls.filter(function (call) { return call.path === '/prompt'; }).pop();
-    assert.strictEqual(promptCall.body.prompt['4'].inputs.lora_name, 'shiki_natsume_v20_anima.safetensors');
+    assert.strictEqual(promptCall.body.prompt['4'].inputs.lora_name, 'shiki_natsume_v21_anima.safetensors');
 
-    var neneJob = await postJson(port, '/api/anima/jobs', validJob({ loraId:'L_NAT_V20_ANIMA' }));
+    var neneJob = await postJson(port, '/api/anima/jobs', validJob({ loraId:'L_NAT_V21_ANIMA' }));
     assert.strictEqual(neneJob.status, 400);
     assert.strictEqual(neneJob.json.code, 'INCOMPATIBLE_CHARACTER');
     var natsumeNene = await postJson(port, '/api/anima/jobs', validJob({ character:'natsume' }));
     assert.strictEqual(natsumeNene.status, 400);
     assert.strictEqual(natsumeNene.json.code, 'INCOMPATIBLE_CHARACTER');
-    var triad = await postJson(port, '/api/anima/jobs', validJob({ character:'triad', loraId:'L_NAT_V20_ANIMA' }));
+    var triad = await postJson(port, '/api/anima/jobs', validJob({ character:'triad', loraId:'L_NAT_V21_ANIMA' }));
     assert.strictEqual(triad.status, 400);
     assert.strictEqual(triad.json.code, 'INCOMPATIBLE_CHARACTER');
     var unknownPath = await postJson(port, '/api/anima/jobs', validJob({ character:'natsume', loraId:'C:\\secret\\preview.safetensors' }));
@@ -461,7 +458,7 @@ test('Anima no-LoRA mode submits an anima-aesthetic job without LoraLoader and a
     });
     assert.strictEqual(loraOnNoLora.status, 202, 'aesthetic still accepts its authorized LoRA path');
     var wrongChar = await postJson(port, '/api/anima/jobs', {
-      prompt:'x', modelId:'anima-aesthetic-v1.1', loraId:'L_NAT_V20_ANIMA',
+      prompt:'x', modelId:'anima-aesthetic-v1.1', loraId:'L_NAT_V21_ANIMA',
       width:832, height:1216, character:'nene'
     });
     assert.strictEqual(wrongChar.status, 400);
