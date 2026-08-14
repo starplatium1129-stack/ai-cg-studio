@@ -12,10 +12,10 @@
         <div class="history-main">
           <div class="history-card-title">{{ item.sceneTitle || item.story || '未命名作品' }}</div>
           <p class="history-text">{{ item.prompt }}</p>
-           <div class="history-meta">
-             <span v-if="item.engine === 'anima' && item.preview" class="history-preview-badge">实验预览</span>
-             <span v-if="item.engine === 'anima'" class="history-engine">Anima · {{ item.character === 'natsume' ? '夏目' : '宁宁' }}</span>
-             <span class="primary">seed {{ item.seed ?? -1 }}</span>
+          <div class="history-meta">
+            <span v-if="item.engine === 'anima' && item.preview" class="history-preview-badge">实验预览</span>
+            <span v-if="item.engine === 'anima' || item.engine === 'krea2'" class="history-engine">{{ engineSummary(item) }}</span>
+            <span class="primary">seed {{ item.seed ?? -1 }}</span>
             <span class="sep">·</span>
             <span>{{ item.size || '未记录尺寸' }}</span>
           </div>
@@ -41,9 +41,11 @@ import { computed, onBeforeUnmount, reactive, watch } from 'vue'
 import { imgGet } from '@/composables/useImageStore'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import type { HistoryEntry } from '@/stores/promptBuilderStore'
+import { useSceneStore } from '@/stores/sceneStore'
 
 // 与 config/characters.ts 共用 Express 服务的同一份立绘 URL，避免 Vite 打包副本
 const placeholderUrl = '/assets/characters/nene-official.webp'
+const sceneStore = useSceneStore()
 
 const props = defineProps<{ history: HistoryEntry[] }>()
 defineEmits<{
@@ -55,6 +57,16 @@ defineEmits<{
 const thumbs = reactive<Record<number, string>>({})
 const objectUrls = new Map<number, string>()
 const items = computed(() => props.history.slice().sort((a, b) => b.timestamp - a.timestamp).slice(0, 12))
+
+function engineSummary(item: HistoryEntry): string {
+  const engineName = item.engine === 'krea2' ? 'Krea 2' : 'Anima'
+  if (item.subject === 'popular' || item.characterId) {
+    const popChar = sceneStore.popularCharacters.find(c => c.id === (item.characterId || item.character))
+    return `${engineName} · ${popChar?.displayName || '热门角色'}`
+  }
+  const charLabel = item.character === 'natsume' ? '夏目' : item.character === 'triad' ? '宁宁与夏目' : '宁宁'
+  return `${engineName} · ${charLabel}`
+}
 
 function averageRating(item: HistoryEntry): number {
   const values = Object.values(item.rating || {}).map(Number).filter(n => Number.isFinite(n) && n > 0)

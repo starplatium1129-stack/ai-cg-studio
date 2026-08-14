@@ -79,13 +79,13 @@
                   @click="pendingDeleteId = null">取消</button>
               </template>
               <button v-else class="artwork-tool" type="button"
-                :aria-label="`删除作品：${sceneTitle(item.scene)}`"
+                :aria-label="`删除作品：${sceneTitle(item.scene, item)}`"
                 @click="pendingDeleteId = item.id">删除</button>
             </div>
             <button
               class="artwork-button"
               type="button"
-              :aria-label="`欣赏作品：${sceneTitle(item.scene)}`"
+              :aria-label="`欣赏作品：${sceneTitle(item.scene, item)}`"
               @click="openViewer(indexOf(item))"
             >
               <div class="artwork-media" :style="{ '--art-ratio': String(ratioOf(item)) }">
@@ -93,7 +93,7 @@
                   v-if="cardUrls[item.id] || thumbUrls[item.id]"
                   class="artwork-image"
                   :src="cardUrls[item.id] || thumbUrls[item.id]"
-                  :alt="sceneTitle(item.scene)"
+                  :alt="sceneTitle(item.scene, item)"
                   loading="lazy"
                   decoding="async"
                   referrerpolicy="no-referrer"
@@ -103,7 +103,7 @@
                 <div v-else class="artwork-skeleton" aria-hidden="true"></div>
                 <div class="artwork-caption">
                   <span>
-                    <span class="artwork-name">{{ sceneTitle(item.scene) }}</span>
+                    <span class="artwork-name">{{ sceneTitle(item.scene, item) }}</span>
                     <span class="artwork-date">{{ formatDate(stamp(item)) }}</span>
                   </span>
                   <span class="artwork-mark"><ArchiveIcon v-if="item.favorite" name="love" /><span v-else aria-hidden="true">＋</span></span>
@@ -131,7 +131,7 @@
       <section class="viewer-stage" @click.self="infoOpen = false">
         <button class="viewer-close viewer-close-on-art" type="button" aria-label="关闭" @click="closeViewer" ref="closeBtn">×</button>
         <button class="viewer-nav viewer-prev" type="button" aria-label="上一幅" :disabled="viewerIndex <= 0" @click="step(-1)">‹</button>
-        <img v-if="viewerUrl" class="viewer-image" :src="viewerUrl" :alt="current ? sceneTitle(current.scene) : ''" decoding="async" />
+        <img v-if="viewerUrl" class="viewer-image" :src="viewerUrl" :alt="current ? sceneTitle(current.scene, current) : ''" decoding="async" />
         <div v-else class="viewer-fallback">✦</div>
         <button class="viewer-nav viewer-next" type="button" aria-label="下一幅" :disabled="viewerIndex >= visible.length - 1" @click="step(1)">›</button>
         <button class="viewer-info-toggle" type="button" aria-label="作品信息" @click="infoOpen = !infoOpen">i</button>
@@ -140,9 +140,9 @@
 
       <aside class="viewer-info" v-if="current">
         <div class="viewer-kicker">Artwork {{ viewerIndex + 1 }}</div>
-        <h2 class="viewer-title">{{ sceneTitle(current.scene) }}</h2>
+        <h2 class="viewer-title">{{ sceneTitle(current.scene, current) }}</h2>
         <div class="viewer-meta">
-          {{ characterName(current.character) }} · {{ formatDate(stamp(current)) }} · v{{ current.version || 1 }}
+          {{ characterName(current.character, current) }} · {{ formatDate(stamp(current)) }} · v{{ current.version || 1 }}
         </div>
         <div class="viewer-story viewer-story-on-art">{{ current.story || '这幅作品还没有附加文字。' }}</div>
         <div class="viewer-facts">
@@ -287,9 +287,16 @@ const facts = computed(() => {
 
 /* ---------- 工具函数 ---------- */
 function sceneFor(id: string | null | undefined) { return scenes.value.find(s => s.id === id) }
-function sceneTitle(id: string | null | undefined) {
+function sceneTitle(id: string | null | undefined, item?: ArtworkRecord) {
+  if (item?.sceneTitle) return item.sceneTitle
   const title = sceneFor(id)?.title
-  return typeof title === 'string' ? title : (id || '未命名作品')
+  if (typeof title === 'string' && title) return title
+  if (item?.subject === 'popular' || item?.characterId) {
+    const popChar = sceneStore.popularCharacters.find(c => c.id === (item.characterId || item.character))
+    if (popChar) return `${popChar.displayName} 创作`
+  }
+  if (item?.story) return item.story.slice(0, 20)
+  return id || '未命名作品'
 }
 function loraName(id: string | null | undefined) {
   if (!id) return '—'
@@ -301,9 +308,16 @@ function modelName(value: string | undefined) {
   const name = String(value).split(/[\\/]/).pop()!.replace(/\s*\[[a-f0-9]+\]\s*$/i, '')
   return name.length > 42 ? name.slice(0, 39) + '…' : name
 }
-function characterName(v: string | undefined) {
-  return v === 'nene' ? '绫地宁宁' : v === 'natsume' ? '四季夏目'
-    : v === 'triad' || v === 'both' ? '宁宁与夏目' : v || '—'
+function characterName(v: string | undefined, item?: ArtworkRecord) {
+  if (v === 'nene') return '绫地宁宁'
+  if (v === 'natsume') return '四季夏目'
+  if (v === 'triad' || v === 'both') return '宁宁与夏目'
+  const popId = item?.characterId || v
+  if (popId) {
+    const popChar = sceneStore.popularCharacters.find(c => c.id === popId)
+    if (popChar) return popChar.displayName
+  }
+  return v || '—'
 }
 /** 时间戳兜底：老记录可能把 timestamp 存成字符串，或干脆没有 */
 function stamp(item: ArtworkRecord): number { return artworkTimestamp(item) }

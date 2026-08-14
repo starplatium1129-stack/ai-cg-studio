@@ -499,14 +499,24 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
       // Date.now() 同毫秒内「队列自动入册 + 手动保存」并发会撞 id，
       // removeHistoryEntry 可能误删另一条；加模块级序号保证唯一。
       const id = historyIdSeq(now)
+      const currentSubject = subject.value
+      const isPopular = currentSubject.kind === 'popular'
+      const popChar = isPopular ? popularCharacters.value.find(c => c.id === currentSubject.characterId) : null
+      const popBlueprint = isPopular && currentSubject.blueprintId
+        ? sceneBlueprints.value.find(b => b.id === currentSubject.blueprintId)
+        : null
+      const resolvedSceneTitle = isPopular
+        ? (popBlueprint?.title || (popChar ? `${popChar.displayName} 创作` : '热门角色作品'))
+        : (activeScene.value?.title ?? (story.value ? story.value.slice(0, 20) : null))
+
       const historyEntry: HistoryEntry = {
         id,
         timestamp: now,
-        character: char.value,
-        scene: sceneId.value,
-        sceneTitle: activeScene.value?.title ?? null,
-         story: story.value,
-         visualDescription: visualDescription.value,
+        character: isPopular ? ((currentSubject.characterId as unknown as CharKey) || char.value) : char.value,
+        scene: isPopular ? (currentSubject.blueprintId ?? null) : sceneId.value,
+        sceneTitle: resolvedSceneTitle,
+        story: story.value,
+        visualDescription: visualDescription.value,
         prompt: entry.prompt,
         negative: entry.negative ?? '',
         seed: entry.seed ?? lastSeed.value ?? -1,
@@ -524,20 +534,20 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
         engine: entry.engine ?? 'sd',
         profile: entry.profile ?? '',
         model: entry.model ?? sdModelName.value,
-         loraId: entry.loraId ?? null,
-         loraStrength: entry.loraStrength ?? null,
-          loras: Object.freeze((entry.loras ?? []).map(lora => Object.freeze({ id:lora.id, strength:lora.strength }))),
+        loraId: entry.loraId ?? null,
+        loraStrength: entry.loraStrength ?? null,
+        loras: Object.freeze((entry.loras ?? []).map(lora => Object.freeze({ id:lora.id, strength:lora.strength }))),
         width: measured.width, height: measured.height,
         rating: {}, favorite: false, notes: '',
         image_id: imageId, image_url: '',
         version: 1, parent_id: null, project: projectId.value,
-        subject: subject.value.kind === 'popular' ? 'popular' : 'studio',
-        characterId: subject.value.kind === 'popular' ? subject.value.characterId : undefined,
-        outfitId: subject.value.kind === 'popular' ? subject.value.outfitId : undefined,
-         blueprintId: subject.value.kind === 'popular' ? subject.value.blueprintId : undefined,
-         noLora: subject.value.kind === 'popular',
-          styleLoraId: entry.styleLoraId ?? null,
-          artistStyleIds: normalizeArtistStyleIds(entry.artistStyleIds ?? (directorMode.value === 'pro' ? artistStyleIds.value : [])),
+        subject: isPopular ? 'popular' : 'studio',
+        characterId: isPopular ? currentSubject.characterId : undefined,
+        outfitId: isPopular ? currentSubject.outfitId : undefined,
+        blueprintId: isPopular ? currentSubject.blueprintId : undefined,
+        noLora: isPopular,
+        styleLoraId: entry.styleLoraId ?? null,
+        artistStyleIds: normalizeArtistStyleIds(entry.artistStyleIds ?? (directorMode.value === 'pro' ? artistStyleIds.value : [])),
       }
       const updated = [...history.value, historyEntry]
       history.value = updated
