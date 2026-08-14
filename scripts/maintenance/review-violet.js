@@ -6,7 +6,7 @@ const SHOTS = 'E:/code/2/lora/AI-CG-Studio/scripts/maintenance/ui-shots';
 const files = ['01-home-violet.png', '02-prompt-builder-violet.png', '05-showcase-violet.png', '03-chat-violet.png'];
 
 const body = JSON.stringify({
-  model: 'gemini-3.6-flash-high',
+  model: 'gemini-3.7-flash-high',
   messages: [{
     role: 'user',
     content: [

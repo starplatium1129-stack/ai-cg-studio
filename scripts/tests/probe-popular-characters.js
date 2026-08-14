@@ -135,15 +135,20 @@ async function main() {
     return;
   }
 
-  // 构建任务：角色 × 引擎
+  // 构建任务：角色 × 引擎（带角色原型场景，2026-08-14 蓝图体系）
+  var blueprintData = require('../../data/scene-blueprints.json');
+  var blueprints = popular.parseSceneBlueprints(blueprintData);
   var pending = [];
   characters.forEach(function (character, index) {
     var outfit = popular.defaultOutfit(character);
+    var blueprint = blueprints.find(function (bp) { return bp.characterId === character.id; })
+      || blueprints.find(function (bp) { return !bp.characterId; })
+      || null;
     engines.forEach(function (engine) {
       var built = popular.buildPopularPromptPlan({
         character: character,
         outfit: outfit,
-        blueprint: null,
+        blueprint: blueprint,
         engine: engine,
         profile: null,
         adultEnabled: true,

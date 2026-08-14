@@ -4,7 +4,7 @@ const http = require('http');
 const shot = 'E:/code/2/lora/AI-CG-Studio/scripts/maintenance/ui-shots/02-prompt-builder-emotions.png';
 
 const body = JSON.stringify({
-  model: 'gemini-3.6-flash-high',
+  model: 'gemini-3.7-flash-high',
   messages: [{
     role: 'user',
     content: [

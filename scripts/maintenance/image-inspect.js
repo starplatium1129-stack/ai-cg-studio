@@ -3,7 +3,7 @@
  * image-inspect.js — 通用识图脚本（本地视觉模型）
  *
  * 通过本地 CLIProxyAPI（OpenAI 兼容 /v1/chat/completions）调用视觉模型识别本地图片，
- * 等价于 opencode 配置中的 vision / gemini-vision agent（gemini-3.6-flash-high）。
+ * 等价于 opencode 配置中的 vision / gemini-vision agent（gemini-3.7-flash-high）。
  * 零第三方依赖，只使用 Node 内置模块。
  *
  * 用法：
@@ -12,7 +12,7 @@
  * 选项：
  *   -t, --task <describe|audit|ocr|score>  任务预设（默认 describe）
  *   -p, --prompt "<文本>"                   自定义提示词（覆盖任务预设）
- *   -m, --model <模型名>                    视觉模型（默认 gemini-3.6-flash-high）
+ *   -m, --model <模型名>                    视觉模型（默认 gemini-3.7-flash-high）
  *       --mode <each|group>                 each=逐张独立请求（默认）；group=多图合并一次请求
  *   -o, --out <文件>                        结果写入 Markdown 文件
  *       --json                              stdout 只输出 JSON 结果
@@ -30,7 +30,7 @@ const http = require('http');
 
 const DEFAULT_BASE_URL = process.env.VISION_BASE_URL || 'http://127.0.0.1:8317/v1';
 const DEFAULT_API_KEY = process.env.VISION_API_KEY || 'sk-local-proxy-key-2024';
-const DEFAULT_MODEL = process.env.VISION_MODEL || 'gemini-3.6-flash-high';
+const DEFAULT_MODEL = process.env.VISION_MODEL || 'gemini-3.7-flash-high';
 const MAX_IMAGE_BYTES = 15 * 1024 * 1024; // base64 后 ≈20MB，对齐 opencode attachment 上限
 
 const IMAGE_EXT = new Set(['.png', '.jpg', '.jpeg', '.webp', '.gif', '.bmp']);

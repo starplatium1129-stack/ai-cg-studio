@@ -1769,6 +1769,17 @@ onMounted(async () => {
   if (isCharKey(q.char)) {
     pb.setChar(q.char); handledDeepLink = true
   }
+  if (typeof q.popular === 'string' && !pb.isPopular) {
+    // 热门角色深链：进入热门模式并选中指定角色（原型场景由导演台选择）。
+    selectPopularSource('popular')
+    const target = findPopularCharacter(pb.popularCharacters, q.popular)
+    if (target) {
+      pb.setPopularSubject(target.id, target.outfits.find(o => o.default)?.id ?? target.outfits[0].id, null)
+      patchAnimaState({ modelId: target.recommendedEngine })
+      applyRecommendedEngine(target)
+    }
+    handledDeepLink = true
+  }
   if (typeof q.mood === 'string' && COLOR_MOODS.some(m => m.id === q.mood)) {
     pb.setColorMood(q.mood); handledDeepLink = true
   }

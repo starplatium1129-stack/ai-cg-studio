@@ -77,9 +77,13 @@
             <span v-for="(t,i) in current.tags" :key="t" class="tag-chip" :class="tagClass(i)">{{ t }}</span>
           </div>
           <div class="character-actions" aria-label="角色快捷操作">
-            <RouterLink class="btn btn-primary" :to="`/chat?character=${encodeURIComponent(current.id)}`">进入她的房间</RouterLink>
-            <RouterLink class="btn btn-ghost" :to="`/prompt-builder?char=${encodeURIComponent(current.id)}`">以她开始绘制</RouterLink>
-            <RouterLink class="btn btn-ghost" :to="`/scene-explorer?character=${encodeURIComponent(current.id)}`">看核心场景</RouterLink>
+            <RouterLink v-if="!isPopular" class="btn btn-primary" :to="`/chat?character=${encodeURIComponent(current.id)}`">进入她的房间</RouterLink>
+            <RouterLink class="btn btn-primary" :to="isPopular
+              ? `/prompt-builder?popular=${encodeURIComponent(current.id)}`
+              : `/prompt-builder?char=${encodeURIComponent(current.id)}`">以她开始绘制</RouterLink>
+            <RouterLink class="btn btn-ghost" :to="isPopular
+              ? `/prompt-builder?popular=${encodeURIComponent(current.id)}`
+              : `/scene-explorer?character=${encodeURIComponent(current.id)}`">{{ isPopular ? '看原型场景' : '看核心场景' }}</RouterLink>
           </div>
           <!-- 简介被 CSS 截断（max-height），展开是真的在露出内容，
            所以必须是可聚焦控件并汇报 aria-expanded；原先只有 @click -->
@@ -113,7 +117,9 @@
         </div>
         <div class="recommend-grid">
           <RouterLink v-for="s in recommendations" :key="s.id" class="card-direct"
-            :to="'/prompt-builder?scene='+encodeURIComponent(s.id)">
+            :to="isPopular && current
+              ? `/prompt-builder?popular=${encodeURIComponent(current.id)}`
+              : '/prompt-builder?scene='+encodeURIComponent(s.id)">
             <div class="cg-title">{{ s.title }}</div>
             <div v-if="recommendationReason(s.id)" class="cg-reason">{{ recommendationReason(s.id) }}</div>
             <div class="cg-story">{{ s.story }}</div>
@@ -169,8 +175,21 @@ const hasIdentity = computed(() => {
   const id = current.value?.identity || {}
   return id.role || id.age || id.occupation || id.faction
 })
+const isPopular = computed(() => current.value?.type === 'popular')
 const recommendations = computed(() => {
   if (!current.value) return []
+  if (current.value.type === 'popular') {
+    // 热门角色：人设核心场景 = 该角色的原型场景（scene-blueprints 按 characterId）
+    return sceneStore.sceneBlueprints
+      .filter(bp => bp.characterId === current.value?.id)
+      .slice(0, 6)
+      .map(bp => ({
+        id: bp.id,
+        title: bp.title,
+        story: bp.description,
+        char: current.value?.id ?? '',
+      }))
+  }
   const core = sceneStore.curation.personaCoreSceneIds
   const ids = Array.isArray(core) && core.length ? core : current.value.lora?.recommended_scene
   if (!Array.isArray(ids)) return []

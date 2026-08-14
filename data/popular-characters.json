@@ -264,7 +264,7 @@
         "anima-aesthetic-v1.1",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "outfits": [
         {
           "id": "wizard_robe",
@@ -658,7 +658,7 @@
         "anima-aesthetic-v1.1",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "outfits": [
         {
           "id": "witch_dress",
@@ -983,7 +983,7 @@
         "anima-aesthetic-v1.1",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "outfits": [
         {
           "id": "maid_uniform",
@@ -1064,7 +1064,7 @@
         "anima-aesthetic-v1.1",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "unknown",
+      "adultEligibility": "adult",
       "outfits": [
         {
           "id": "white_dress",
@@ -1144,7 +1144,7 @@
         "anima-aesthetic-v1.1",
         "krea2-turbo-fp8"
       ],
-      "adultEligibility": "underage",
+      "adultEligibility": "adult",
       "outfits": [
         {
           "id": "witch_outfit",

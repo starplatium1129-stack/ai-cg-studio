@@ -98,7 +98,7 @@ function fmt(report) {
   var byCandidate = summarize(report);
   var order = Object.keys(byCandidate).sort(function (a, b) { return byCandidate[a].epoch - byCandidate[b].epoch; });
   var md = '## ' + path.basename(path.dirname(report.manifest || '')) || report.manifest;
-  md += '\n\n参数组：' + report.paramGroup + ' ｜ 审核模型：' + (report.auditModel || 'gemini-3.6-flash-high') + '\n\n';
+  md += '\n\n参数组：' + report.paramGroup + ' ｜ 审核模型：' + (report.auditModel || 'gemini-3.7-flash-high') + '\n\n';
   order.forEach(function (id) {
     var b = byCandidate[id];
     md += '### ' + id + '（epoch ' + b.epoch + '）· 通过 ' + b.pass + ' / 需复核 ' + b.review + ' / 不通过 ' + b.reject + (b.quickReject ? '（其中快筛淘汰 ' + b.quickReject + '）' : '') + '\n\n';

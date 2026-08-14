@@ -28,7 +28,7 @@
 ## 图片审核
 
 - 使用当前模型的视觉能力或本地图片查看工具逐张检查图片。
-- 主模型无法直接查看图片时，使用 `image-inspect` 技能（`scripts/maintenance/image-inspect.js`，本地 CLIProxyAPI + gemini-3.6-flash-high）逐张识别，作为兜底视觉通道；脚本结论仍需按本清单复核。
+- 主模型无法直接查看图片时，使用 `image-inspect` 技能（`scripts/maintenance/image-inspect.js`，本地 CLIProxyAPI + gemini-3.7-flash-high）逐张识别，作为兜底视觉通道；脚本结论仍需按本清单复核。
 - 不调用 `vision.js`、千问 VL 或旧的 `Codex-vision-skill`。
 - 场景样张、模型对比图和训练素材不能只按文件名、标签或自动评分判断。
 - 审核维度（与 `image-inspect -t audit` 八维一致）：身份特征还原、脸部与神态、服装、肢体结构与姿势、构图、背景与细节、光影与氛围、完成度与叙事；双人图必查特征串位。

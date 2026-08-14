@@ -7,7 +7,7 @@ const files = fs.readdirSync(SHOTS).filter(f => f.endsWith('.png')).sort();
 
 // 本地 CLIProxyAPI 转发 Gemini，走 OpenAI 兼容接口
 const body = JSON.stringify({
-  model: 'gemini-3.6-flash-high',
+  model: 'gemini-3.7-flash-high',
   messages: [{
     role: 'user',
     content: [

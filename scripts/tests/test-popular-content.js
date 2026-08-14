@@ -191,10 +191,13 @@ test('krea style recipes: adult recipes fail closed for unknown/underage and wit
   var adultChar = characters.find(function (character) { return character.adultEligibility === 'adult'; });
   var underage = characters.find(function (character) { return character.adultEligibility === 'underage'; });
   var unknown = characters.find(function (character) { return character.adultEligibility === 'unknown'; });
+  assert.ok(adultChar, 'at least one adult-eligible character must exist');
+  assert.ok(underage, 'at least one underage character must exist (fail-closed baseline)');
   assert.strictEqual(recipes.recipeEligible(adult, adultChar, { adultEnabled: true }), true);
   assert.strictEqual(recipes.recipeEligible(adult, adultChar, { adultEnabled: false }), false,
     'adult recipe must require the mature-content switch');
-  [underage, unknown].forEach(function (character) {
+  // unknown 分类已全部按「全部开放」升为 adult；仍保留契约语义，数据中无该分类时跳过。
+  [underage, unknown].filter(Boolean).forEach(function (character) {
     assert.strictEqual(recipes.recipeEligible(adult, character, { adultEnabled: true }), false,
       character.id + ' must never be eligible for an adult recipe');
     assert.ok(recipes.eligibleStyleRecipes(recipes.KREA_STYLE_RECIPES, character, { adultEnabled: true })
