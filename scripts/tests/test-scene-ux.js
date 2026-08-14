@@ -50,12 +50,10 @@ assert(sceneUx.searchScore(titleMatch, '雨夜', rankConfig) > sceneUx.searchSco
   'title matches must rank above story-only matches');
 
 const preferenceNow = Date.UTC(2026, 6, 22);
-const highRating = { face:5, expression:5, composition:5, hands:5, atmosphere:5 };
-const lowRating = { face:1, expression:1, composition:1, hands:1, atmosphere:1 };
 const profile = sceneUx.buildPreferenceProfile([
-  { scene:'sc002', character:'nene', timestamp:preferenceNow - 1000, favorite:true, rating:highRating },
-  { scene:'sc002', character:'nene', timestamp:preferenceNow - 2000, favorite:false, rating:highRating },
-  { scene:'sc046', character:'natsume', timestamp:preferenceNow - 3000, favorite:false, rating:lowRating }
+  { scene:'sc002', character:'nene', timestamp:preferenceNow - 1000, favorite:true },
+  { scene:'sc002', character:'nene', timestamp:preferenceNow - 2000, favorite:false },
+  { scene:'sc046', character:'natsume', timestamp:preferenceNow - 3000, favorite:false }
 ], preferenceNow);
 const damagedProfile = sceneUx.buildPreferenceProfile([
   null,
@@ -67,7 +65,7 @@ assert.deepStrictEqual(damagedProfile.scenes, {}, 'invalid scene ids must not cr
 assert.deepStrictEqual(damagedProfile.characters, {}, 'invalid character ids must not create synthetic preference keys');
 const preferredScene = scenes.find((scene) => scene.id === 'sc002');
 const weakScene = scenes.find((scene) => scene.id === 'sc046');
-assert(sceneUx.personalScore(preferredScene, profile) > sceneUx.personalScore(weakScene, profile), 'high-rated favorites must receive a stronger personal score');
+assert(sceneUx.personalScore(preferredScene, profile) > sceneUx.personalScore(weakScene, profile), 'favorite scenes must receive a stronger personal score');
 assert(sceneUx.isPersonalFavorite(preferredScene, profile), 'history favorites must be available to scene filters');
 assert(sceneUx.personalReason(preferredScene, profile).includes('收藏'), 'personal recommendation must explain why a scene is promoted');
 

@@ -25,7 +25,7 @@
 - 控制面板提供显存资源调度：绘图优先 / 聊天优先一键切换，语音、WebUI、Ollama 可单独启停
 - 查看生成进度、停止任务、固定 Seed、使用 hires.fix、顺序排队
 - 中文阅读文本与配音稿彼此独立：画面保持中文，角色默认说日文，也可切换中文演绎
-- 将作品、参数、评分、收藏和备注保存在当前浏览器的 IndexedDB 中，并用 JSON 文件完整备份或恢复
+- 将作品、参数、收藏和备注保存在当前浏览器的 IndexedDB 中，并用 JSON 文件完整备份或恢复
 - 在作品册中按原始横竖比例欣赏成图，点击进入近全屏观画
 - 通过带 Token 的临时链接，让朋友使用你电脑上的 SD WebUI 出图
 - 桌面 Companion：Tauri 2 是当前主线，但 D-10 真实安装验收尚未完成；Electron 仍是稳定回退。Tauri 开发执行 `npm run dev:tauri`，构建 NSIS 执行 `npm run package:tauri`；Electron 回退执行 `npm run desktop`，`npm run package:desktop` 构建 Electron 目录包
@@ -67,7 +67,7 @@
   ↓
 生成 Prompt → 调用 SD WebUI 出图
   ↓
-评分、收藏、重新生成或做变体
+收藏、重新生成或做变体
 ```
 
 Scene 是创作的起点，Prompt 是它面向 Stable Diffusion 的输出。

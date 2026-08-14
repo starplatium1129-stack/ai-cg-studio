@@ -956,8 +956,6 @@
     min-width: 70px; display: inline-flex; align-items: center; justify-content: flex-end; gap: var(--s-2);
     color: var(--text-muted); font-size: var(--fs-label-xs); white-space: nowrap;
   }
-  .pb .history-rating .star { color: var(--border-strong); font-size: var(--fs-label); }
-  .pb .history-rating.rated .star { color: var(--mood-joy-text); }
   .pb .history-rating .favorite { color: var(--accent); }
   .pb .history-actions {
     display: inline-flex; flex-shrink: 0; overflow: hidden;

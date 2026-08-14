@@ -20,9 +20,8 @@
             <span>{{ item.size || '未记录尺寸' }}</span>
           </div>
           <div class="history-side">
-            <span class="history-rating" :class="{ rated: averageRating(item) > 0 }">
-              <span :class="item.favorite ? 'favorite' : 'star'"><ArchiveIcon :name="item.favorite ? 'love' : 'star'" /></span>
-              {{ averageRating(item) ? averageRating(item).toFixed(1) : '未评分' }}
+            <span v-if="item.favorite" class="history-rating favorite">
+              <ArchiveIcon name="love" />
             </span>
             <div class="history-actions" aria-label="历史操作">
               <button class="history-action primary" type="button" @click="$emit('resume', item)">继续</button>
@@ -66,12 +65,6 @@ function engineSummary(item: HistoryEntry): string {
   }
   const charLabel = item.character === 'natsume' ? '夏目' : item.character === 'triad' ? '宁宁与夏目' : '宁宁'
   return `${engineName} · ${charLabel}`
-}
-
-function averageRating(item: HistoryEntry): number {
-  const values = Object.values(item.rating || {}).map(Number).filter(n => Number.isFinite(n) && n > 0)
-  if (!values.length) return 0
-  return values.reduce((sum, n) => sum + n, 0) / values.length
 }
 
 async function ensureThumb(item: HistoryEntry) {

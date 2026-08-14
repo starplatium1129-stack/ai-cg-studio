@@ -11,15 +11,15 @@ export interface SceneUXConfig {
 }
 
 export interface PreferenceProfile {
-  entries: number; ratedEntries: number; favorites: number
+  entries: number; favorites: number
   scenes: Record<string, SceneStats>
   characters: Record<string, SceneStats>
   generatedAt: number
 }
 
 interface SceneStats {
-  uses: number; favorites: number; ratingTotal: number
-  rated: number; lastUsed: number; averageRating: number
+  uses: number; favorites: number
+  lastUsed: number
 }
 
 const RECENT_KEY = 'aics_recent_scenes'
@@ -248,12 +248,6 @@ export function searchScore(scene: Record<string, unknown>, query: string, confi
   return score
 }
 
-function ratingAverage(rating: unknown): number {
-  if (!isRecord(rating)) return 0
-  const vals = ['face','expression','composition','hands','atmosphere'].map(k => Number(rating[k])).filter(v => v > 0 && v <= 5)
-  return vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : 0
-}
-
 function normalizeChar(v: string): string {
   if (v === 'ayachi_nene') return 'nene'
   if (v === 'shiki_natsume') return 'natsume'
@@ -262,17 +256,15 @@ function normalizeChar(v: string): string {
 }
 
 function ensureStats(container: Record<string, SceneStats>, key: string): SceneStats {
-  if (!container[key]) container[key] = { uses: 0, favorites: 0, ratingTotal: 0, rated: 0, lastUsed: 0, averageRating: 0 }
+  if (!container[key]) container[key] = { uses: 0, favorites: 0, lastUsed: 0 }
   return container[key]
 }
 
 export function buildPreferenceProfile(history: unknown[], now?: number): PreferenceProfile {
-  const profile: PreferenceProfile = { entries: 0, ratedEntries: 0, favorites: 0, scenes: {}, characters: {}, generatedAt: now ?? Date.now() }
+  const profile: PreferenceProfile = { entries: 0, favorites: 0, scenes: {}, characters: {}, generatedAt: now ?? Date.now() }
   ;(Array.isArray(history) ? history : []).forEach((entry) => {
     if (!isRecord(entry)) return
     profile.entries++
-    const averageRating = ratingAverage(entry.rating)
-    if (averageRating) profile.ratedEntries++
     if (entry.favorite) profile.favorites++
     const sceneId = stringValue(entry.scene)
     const characterId = normalizeChar(stringValue(entry.character))
@@ -283,18 +275,15 @@ export function buildPreferenceProfile(history: unknown[], now?: number): Prefer
     targets.forEach(s => {
       s.uses++
       if (entry.favorite) s.favorites++
-      if (averageRating) { s.ratingTotal += averageRating; s.rated++ }
       s.lastUsed = Math.max(s.lastUsed, Number(entry.timestamp ?? entry.id) || 0)
     })
   })
-  ;[profile.scenes, profile.characters].forEach(map => Object.values(map).forEach(s => { s.averageRating = s.rated ? s.ratingTotal / s.rated : 0 }))
   return profile
 }
 
 function statsScore(stats: SceneStats | undefined, now: number): number {
   if (!stats) return 0
   let score = Math.min(stats.uses, 6) * 2 + Math.min(stats.favorites, 3) * 12
-  if (stats.rated) score += (stats.averageRating - 3) * 8
   if (stats.lastUsed) {
     const days = Math.max(0, (now - stats.lastUsed) / 86400000)
     score += days <= 7 ? 4 : days <= 30 ? 2 : days <= 90 ? 1 : 0
@@ -313,11 +302,10 @@ export function personalReason(scene: { id: string; char?: string }, profile: Pr
   const ss = profile.scenes?.[scene.id]
   if (ss) {
     if (ss.favorites) return '你收藏过这个场景'
-    if (ss.averageRating >= 4) return `你曾给出 ${ss.averageRating.toFixed(1)} 分`
     if (ss.uses >= 2) return `你已经创作过 ${ss.uses} 次`
   }
   const cs = profile.characters?.[normalizeChar(scene.char ?? '')]
-  if (cs && cs.uses >= 3 && (cs.averageRating >= 3.8 || cs.favorites)) {
+  if (cs && cs.uses >= 3 && cs.favorites) {
     return `符合你常画的${characterLabel(scene.char ?? '')}偏好`
   }
   return ''

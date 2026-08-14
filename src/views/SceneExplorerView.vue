@@ -512,7 +512,7 @@ const intentHtml = computed(() => {
   const understood = a.intents?.length
     ? `已理解为：<strong>${escapeHtml(a.intents.join(' · '))}</strong>。`
     : (q ? '正在搜索标题、故事、情绪、地点和视觉标签。' : '可以直接描述想画的完整句子。')
-  const personal = profile.value.entries ? ` 已结合本机${profile.value.entries}条创作记录排序。` : ' 完成作品评分后，推荐会逐渐贴近你的偏好。'
+  const personal = profile.value.entries ? ` 已结合本机${profile.value.entries}条创作记录排序。` : ' 还没有创作记录，先画几张，推荐会更懂你。'
   return exp + understood + personal
 })
 

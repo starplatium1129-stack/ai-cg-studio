@@ -270,15 +270,8 @@ function resetGalleryFilters() {
 const facts = computed(() => {
   if (!current.value) return []
   const i = current.value
-  const rating = i.rating || {}
-  const scores = ['face', 'expression', 'composition', 'hands', 'atmosphere']
-    .map(k => Number(rating[k]) || 0).filter(Boolean)
-  const avg = scores.length
-    ? (scores.reduce((s, v) => s + v, 0) / scores.length).toFixed(1) + ' / 5'
-    : '未评分'
   return [
     { label: '尺寸', value: i.size || '' },
-    { label: '评分', value: avg },
     { label: 'LoRA', value: loraName(i.lora) },
     { label: '模型', value: modelName(i.checkpoint) },
     { label: 'Seed', value: i.seed == null ? '' : String(i.seed) },

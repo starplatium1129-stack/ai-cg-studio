@@ -632,7 +632,7 @@
 <script setup lang="ts">
 // 导演台专属样式（91.6KB）随本路由块加载，不再进全局包
 import '@/assets/css/director.css'
-import { ref, computed, nextTick, onMounted, watch, defineAsyncComponent } from 'vue'
+import { ref, computed, nextTick, onMounted, onBeforeUnmount, watch, defineAsyncComponent } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import {
   usePromptBuilderStore,
@@ -883,11 +883,55 @@ const lastResult = ref<ResultSnapshot | null>(null)
 const compareOpen = ref(false)
 const compareEl = ref<HTMLElement | null>(null)
 
-function resultSnapshot(url: string): ResultSnapshot {
+/**
+ * 引擎出新图时会 revoke 上一张的 blob URL（useSDGenerate / useAnimaSession），
+ * 快照若直接存引擎 URL，「上一张」必然裂图。这里在轮转前把 blob 克隆成
+ * 独立 URL 保活；被替换的克隆延迟到对比弹层关闭后再释放。
+ */
+const compareCloneUrls = new Set<string>()
+const comparePendingRelease = new Set<string>()
+let compareSnapshotToken = 0
+
+async function persistCompareUrl(url: string): Promise<string> {
+  if (!url.startsWith('blob:')) return url
+  try {
+    const blob = await (await fetch(url)).blob()
+    if (!blob.size) return url
+    const cloned = URL.createObjectURL(blob)
+    compareCloneUrls.add(cloned)
+    return cloned
+  } catch {
+    return url
+  }
+}
+
+function flushCompareRelease() {
+  comparePendingRelease.forEach(url => {
+    compareCloneUrls.delete(url)
+    URL.revokeObjectURL(url)
+  })
+  comparePendingRelease.clear()
+}
+
+function releaseCompareSnapshot(snap: ResultSnapshot | null) {
+  if (!snap || !compareCloneUrls.has(snap.url)) return
+  // 对比弹层打开时上一张可能正被引用，延迟到关闭时统一释放；
+  // 弹层未打开则立即释放，避免长时间生成时内存持续增长。
+  if (compareOpen.value) {
+    comparePendingRelease.add(snap.url)
+    if (comparePendingRelease.size > 8) flushCompareRelease()
+  } else {
+    compareCloneUrls.delete(snap.url)
+    URL.revokeObjectURL(snap.url)
+  }
+}
+
+async function resultSnapshot(url: string): Promise<ResultSnapshot> {
+  const persistentUrl = await persistCompareUrl(url)
   const metadata = animaState.value.result?.metadata
   const isComfy = drawEngine.value !== 'sd'
   return {
-    url,
+    url: persistentUrl,
     seed: displayResultSeed.value ?? (isComfy ? metadata?.seed ?? null : (pb.sdParams.seedLock && pb.sdParams.seed >= 0 ? pb.sdParams.seed : null)),
     styleLoraId: isComfy ? ((metadata?.styleLoraId ?? animaState.value.styleLoraId) || null) : null,
     size: isComfy ? `${metadata?.width ?? animaState.value.width}x${metadata?.height ?? animaState.value.height}` : sdSize.value,
@@ -901,13 +945,22 @@ function resultSnapshot(url: string): ResultSnapshot {
 
 // 新一轮生成开始时结果会被清空，完成后再写入新值；
 // 因此只在"有值且与上一张不同"时轮转快照（SD 与 Anima 结果共用，定义见引擎区块）。
+// 快照异步克隆 blob：连续出图时以 token 丢弃过期快照，避免旧图覆盖新图。
+// （watch 本身放在 displayResultUrl 定义之后，见引擎区块。）
 
 function closeCompare() {
   compareOpen.value = false
+  flushCompareRelease()
 }
 
 useFocusTrap(compareEl, () => compareOpen.value, {
   onEscape: closeCompare,
+})
+
+onBeforeUnmount(() => {
+  compareCloneUrls.forEach(url => URL.revokeObjectURL(url))
+  compareCloneUrls.clear()
+  comparePendingRelease.clear()
 })
 
 // ── Actions ───────────────────────────────────────────────────────────────
@@ -1105,11 +1158,21 @@ const displayResultSeed = computed(() => drawEngine.value !== 'sd' ? animaState.
 
 // 新一轮生成开始时结果会被清空，完成后再写入新值；
 // 因此只在"有值且与上一张不同"时轮转快照（SD 与 Anima 结果共用）。
+// 快照 blob 克隆保活与 token 防乱序见上方「出图对比」区块。
 watch(displayResultUrl, (url, oldUrl) => {
   if (!url || url === oldUrl) return
+  releaseCompareSnapshot(prevResult.value)
   if (lastResult.value) prevResult.value = lastResult.value
-  lastResult.value = resultSnapshot(url)
+  const token = ++compareSnapshotToken
+  void resultSnapshot(url).then(snap => {
+    if (token !== compareSnapshotToken) {
+      releaseCompareSnapshot(snap)
+      return
+    }
+    lastResult.value = snap
+  })
 })
+
 function setDrawEngine(v: DrawEngine) {
   if (v === 'sd' && pb.isPopular) {
     pb.flash('热门角色仅支持 Anima 无 LoRA 或 Krea 2，请保留 Comfy 引擎')

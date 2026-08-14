@@ -39,11 +39,6 @@
         <span v-for="t in tags" :key="t" class="sc-tag">{{ t }}</span>
       </div>
       <div class="sc-meta">
-        <span class="sc-meta-l">
-          <span v-if="rating > 0" class="sc-stars">
-            <ArchiveIcon v-for="i in 5" :key="i" class="sc-star" :class="{ on: i <= Math.round(rating) }" name="star" />
-          </span>
-        </span>
         <span class="sc-meta-r">{{ metaText }}</span>
       </div>
       <slot name="body" :scene="scene" />
@@ -53,7 +48,6 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 
 export interface SceneCardScene {
   [key: string]: unknown
@@ -75,14 +69,12 @@ const props = withDefaults(defineProps<{
   mode?: 'grid' | 'strip' | 'recent'
   clickable?: boolean
   suppressTags?: boolean
-  rating?: number
   meta?: string
   imgVersion?: string | number
 }>(), {
   mode: 'grid',
   clickable: undefined,
   suppressTags: false,
-  rating: 0,
 })
 
 const emit = defineEmits<{ pick: [scene: SceneCardScene] }>()
