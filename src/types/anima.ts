@@ -76,6 +76,9 @@ export interface AnimaGenerationState {
   sampler: string
   scheduler: string
   seed: number | null
+  hiresFix?: boolean
+  hiresScale?: number
+  hiresDenoise?: number
   job: AnimaJobMetadata | null
   result: AnimaResult | null
   statusText: string

@@ -286,14 +286,15 @@
           <img class="result-image" :src="displayResultUrl" alt="生成的图片" />
           <div class="result-image-actions">
             <button
-              v-if="drawEngine === 'anima'"
+              v-if="displayResultUrl && (drawEngine === 'anima' || drawEngine === 'sd')"
               class="btn btn-ghost btn-hires-action"
               type="button"
               :disabled="generationBusy"
-              title="使用 Anima 潜空间超分放大 2x (4K 级精修)"
-              @click="upscaleAnimaCurrent"
+              title="使用 2x 潜空间超分放大 (4K 级精修)"
+              @click="upscaleCurrentResult"
             >
-              ✨ 高清放大 2x (4K)
+              <ArchiveIcon name="spark" />
+              <span>高清放大 2x (4K)</span>
             </button>
             <button class="btn btn-ghost" type="button" @click="saveResult">保存快照</button>
             <button class="btn btn-ghost" type="button" :disabled="!prevResult" @click="compareOpen = true">
@@ -448,10 +449,14 @@
             :base-resolution-risk="baseResolutionRisk"
             :base-resolution-hint="baseResolutionHint"
             :can-use-face-detailer="canUseFaceDetailer"
-             :generating="generationBusy"
+            :generating="generationBusy"
             :online="engineOnline"
             :result-seed="displayResultSeed"
-             :queue-available="pb.isPopular ? false : sdQueue.canEnqueue.value"
+            :has-result="Boolean(displayResultUrl)"
+            :anima-hires-fix="Boolean(animaState.hiresFix)"
+            :queue-available="pb.isPopular ? false : sdQueue.canEnqueue.value"
+            @update:anima-hires-fix="patchAnimaState({ hiresFix: $event })"
+            @upscale-current="upscaleCurrentResult"
             @touch="pb.markParamTouched"
             @generate="callGenerate"
             @cancel="cancelGeneration"
@@ -1291,6 +1296,9 @@ function buildAnimaRequest(): AnimaRequest | null {
     cfg: animaState.value.cfg,
     ...(animaState.value.seed == null ? {} : { seed: animaState.value.seed }),
     character: animaState.value.family === 'krea2' ? null : ANIMA_CHARACTER_BY_CHARACTER[pb.char],
+    hiresFix: Boolean(animaState.value.hiresFix),
+    hiresScale: animaState.value.hiresScale,
+    hiresDenoise: animaState.value.hiresDenoise,
   }
 }
 
@@ -1322,6 +1330,9 @@ function buildPopularRequest(): AnimaRequest | null {
     cfg: animaState.value.cfg,
     ...(animaState.value.seed == null ? {} : { seed: animaState.value.seed }),
     character: null,
+    hiresFix: Boolean(animaState.value.hiresFix),
+    hiresScale: animaState.value.hiresScale,
+    hiresDenoise: animaState.value.hiresDenoise,
   }
 }
 
@@ -1557,18 +1568,35 @@ async function saveHistory() {
 
 function saveResult() { saveHistory() }
 
-async function upscaleAnimaCurrent() {
-  if (drawEngine.value !== 'anima') return
-  const currentResult = animaState.value.result
-  const baseSeed = currentResult?.metadata?.seed ?? animaState.value.seed
-  if (baseSeed == null || baseSeed < 0) {
-    pb.flash('当前图片缺少 Seed 信息，无法执行精准超分')
+async function upscaleCurrentResult() {
+  if (drawEngine.value === 'anima') {
+    const currentResult = animaState.value.result
+    const baseSeed = currentResult?.metadata?.seed ?? animaState.value.seed
+    if (baseSeed == null || baseSeed < 0) {
+      pb.flash('当前图片缺少 Seed 信息，无法执行精准超分')
+      return
+    }
+    // 锁定当前图的 seed 进行 2.0x 潜空间重绘放大
+    patchAnimaState({ seed: baseSeed })
+    pb.flash('✨ 正在使用当前 Seed 执行 2x 高清超分精修…')
+    await generateAnima({ hiresFix: true, hiresScale: 2.0, hiresDenoise: 0.35 })
     return
   }
-  // 锁定当前图的 seed 进行 2.0x 潜空间重绘放大
-  patchAnimaState({ seed: baseSeed })
-  pb.flash('✨ 正在使用当前 Seed 执行 2x 高清超分精修…')
-  await generateAnima({ hiresFix: true, hiresScale: 2.0, hiresDenoise: 0.35 })
+  if (drawEngine.value === 'sd') {
+    const seed = displayResultSeed.value ?? pb.lastSeed
+    if (seed != null && seed >= 0) {
+      pb.sdParams.seed = seed
+      pb.sdParams.seedLock = true
+    }
+    pb.sdParams.hiresFix = true
+    pb.sdParams.hiresScale = 2.0
+    pb.sdParams.hiresDenoise = 0.35
+    pb.markParamTouched('hiresFix')
+    pb.markParamTouched('hiresScale')
+    pb.markParamTouched('hiresDenoise')
+    pb.flash('✨ 正在使用当前 Seed 执行 SD 2x 高清修复…')
+    await callGenerate()
+  }
 }
 
 function reuseLastSeed() {

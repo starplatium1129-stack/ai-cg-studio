@@ -22,7 +22,10 @@
       <!-- 灵感混搭黄金预设：一键应用顶级画师组合 -->
       <div class="artist-presets-section">
         <div class="artist-presets-head">
-          <span>✨ 热门灵感混搭预设（一键应用）</span>
+          <span class="artist-presets-head-title">
+            <ArchiveIcon name="spark" class="artist-header-icon" />
+            <span>灵感画风混搭预设（一键应用）</span>
+          </span>
         </div>
         <div class="artist-presets-row">
           <button
@@ -34,7 +37,10 @@
             :title="`${combo.tagline} · ${combo.mood}`"
             @click="applyCombo(combo.artistIds)"
           >
-            <span class="combo-label">{{ combo.label }}</span>
+            <div class="combo-top">
+              <ArchiveIcon :name="combo.icon || 'spark'" class="combo-icon" />
+              <span class="combo-label">{{ combo.label }}</span>
+            </div>
             <small class="combo-tagline">{{ combo.tagline }}</small>
           </button>
         </div>
@@ -51,7 +57,8 @@
             :class="{ active: currentCategory === cat.id }"
             @click="currentCategory = cat.id"
           >
-            {{ cat.label }}
+            <ArchiveIcon :name="cat.icon" class="cat-icon" />
+            <span>{{ cat.label }}</span>
           </button>
         </div>
 
@@ -102,6 +109,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import {
   type ArtistStyleEngine,
   type ArtistStyleVerification,
@@ -319,7 +327,39 @@ function applyCombo(artistIds: readonly string[]) {
   padding-bottom: 2px;
   scrollbar-width: thin;
 }
+.artist-presets-head-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.artist-header-icon {
+  width: 14px;
+  height: 14px;
+  color: var(--accent);
+}
+.combo-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.combo-icon {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+  color: currentColor;
+  opacity: 0.85;
+}
+.cat-icon {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  color: currentColor;
+  opacity: 0.85;
+}
 .artist-cat-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   flex: 0 0 auto;
   min-height: 28px;
   padding: 0 var(--s-3);

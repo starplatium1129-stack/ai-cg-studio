@@ -1,3 +1,5 @@
+import type { ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
+
 // Curated artist tags verified against the current Danbooru artist records and
 // the Illustrious/Anima model tag indexes. WAI consumes canonical Danbooru tags;
 // Anima's official prompt contract requires a leading @ and spaces.
@@ -21,26 +23,27 @@ export interface ArtistStyleOption {
 export interface ArtistComboPreset {
   id: string
   label: string
+  icon?: ArchiveIconName
   artistIds: [string, string] | [string]
   tagline: string
   mood: string
 }
 
 export const ARTIST_COMBO_PRESETS: readonly ArtistComboPreset[] = Object.freeze([
-  { id: 'cinematic_pure', label: '🎬 电影通透感', artistIds: ['yoneyama_mai', 'kantoku'], tagline: '米山舞 × 监督', mood: '电影级流动光影与清透甜美五官' },
-  { id: 'witch_journey', label: '🧹 空灵魔女旅行', artistIds: ['azuuru', 'rella'], tagline: 'Azure × Rella', mood: '清澈透明感、水润发丝与星夜旅行氛围' },
-  { id: 'pure_galgame', label: '🌸 极致水灵少女', artistIds: ['hiten_(hitenkei)', 'tiv'], tagline: 'Hiten × Tiv', mood: '柔光日系空气感与微风发丝' },
-  { id: 'starry_dream', label: '🌌 梦幻星夜微光', artistIds: ['rella', 'anmi'], tagline: 'Rella × Anmi', mood: '夜景星斑与清甜水润粉彩折射' },
-  { id: 'noble_lady', label: '👑 清冷贵气千金', artistIds: ['ask_(askzy)', 'kantoku'], tagline: 'ASK × 监督', mood: '丝滑上色与克制的高级质感' },
-  { id: 'trend_cyber', label: '⚡ 潮流先锋霓虹', artistIds: ['lam_(ramdayo)', 'mika_pikazo'], tagline: 'LAM × Mika Pikazo', mood: '极高饱和前卫撞色与锐利图形' },
+  { id: 'cinematic_pure', label: '电影通透感', icon: 'wideshot', artistIds: ['yoneyama_mai', 'kantoku'], tagline: '米山舞 × 监督', mood: '电影级流动光影与清透甜美五官' },
+  { id: 'witch_journey', label: '空灵魔女旅行', icon: 'wand', artistIds: ['azuuru', 'rella'], tagline: 'Azure × Rella', mood: '清澈透明感、水润发丝与星夜旅行氛围' },
+  { id: 'pure_galgame', label: '极致水灵少女', icon: 'flower', artistIds: ['hiten_(hitenkei)', 'tiv'], tagline: 'Hiten × Tiv', mood: '柔光日系空气感与微风发丝' },
+  { id: 'starry_dream', label: '梦幻星夜微光', icon: 'moonlight', artistIds: ['rella', 'anmi'], tagline: 'Rella × Anmi', mood: '夜景星斑与清甜水润粉彩折射' },
+  { id: 'noble_lady', label: '清冷贵气千金', icon: 'detail', artistIds: ['ask_(askzy)', 'kantoku'], tagline: 'ASK × 监督', mood: '丝滑上色与克制的高级质感' },
+  { id: 'trend_cyber', label: '潮流先锋霓虹', icon: 'lightning', artistIds: ['lam_(ramdayo)', 'mika_pikazo'], tagline: 'LAM × Mika Pikazo', mood: '极高饱和前卫撞色与锐利图形' },
 ])
 
-export const ARTIST_CATEGORIES = [
-  { id: 'all', label: '全部' },
-  { id: 'cinematic', label: '🎬 电影光影' },
-  { id: 'pure', label: '🌸 清透少女' },
-  { id: 'trend', label: '⚡ 潮流先锋' },
-  { id: 'grand', label: '🏰 华丽厚涂' },
+export const ARTIST_CATEGORIES: ReadonlyArray<{ id: 'all' | ArtistCategory; label: string; icon: ArchiveIconName }> = [
+  { id: 'all', label: '全部', icon: 'palette' },
+  { id: 'cinematic', label: '电影光影', icon: 'wideshot' },
+  { id: 'pure', label: '清透少女', icon: 'flower' },
+  { id: 'trend', label: '潮流先锋', icon: 'lightning' },
+  { id: 'grand', label: '华丽厚涂', icon: 'manager' },
 ] as const
 
 const ARTIST_STYLE_IDS = new Set(

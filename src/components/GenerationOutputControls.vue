@@ -28,7 +28,8 @@
       <span v-if="baseResolutionRisk" class="sd-base-resolution-hint advanced-decision" :class="baseResolutionRisk">{{ baseResolutionHint }}</span>
       <label class="hires-label advanced-decision">
         <span class="switch"><input type="checkbox" v-model="params.hiresFix"><span class="slider"></span></span>
-        hires.fix
+        <ArchiveIcon name="spark" class="control-icon-inline" />
+        <span>hires.fix</span>
       </label>
       <label v-if="canUseFaceDetailer" class="hires-label advanced-decision">
         <span class="switch"><input type="checkbox" v-model="params.faceDetailer" @change="touch('faceDetailer')"><span class="slider"></span></span>
@@ -51,6 +52,15 @@
       </details>
     </div>
 
+    <!-- Anima 专属快捷高清修复开关 -->
+    <div v-else-if="engine === 'anima' && expert" class="sd-inline-options">
+      <label class="hires-label advanced-decision">
+        <span class="switch"><input type="checkbox" :checked="Boolean(animaHiresFix)" @change="$emit('update:animaHiresFix', !animaHiresFix)"><span class="slider"></span></span>
+        <ArchiveIcon name="spark" class="control-icon-inline" />
+        <span>高清放大修复 (Hires.fix 2x)</span>
+      </label>
+    </div>
+
     <div v-if="presetSummary" class="generation-auto-summary">
       <span>自动参数</span>
       <strong>{{ presetSummary }}</strong>
@@ -61,6 +71,17 @@
         {{ generating ? '生成中…' : '生成图片' }}
       </button>
       <button v-if="generating" class="btn btn-ghost" type="button" @click="$emit('cancel')">停止生成</button>
+      <button
+        v-if="hasResult && (engine === 'anima' || engine === 'sd')"
+        class="btn btn-ghost btn-hires-action-quick"
+        type="button"
+        :disabled="generating"
+        title="使用当前 Seed 锁定并执行 2x 潜空间高清放大精修 (4K)"
+        @click="$emit('upscale-current')"
+      >
+        <ArchiveIcon name="spark" class="control-icon-inline" />
+        <span>高清放大 2x (4K)</span>
+      </button>
       <button v-if="engine === 'sd'" class="btn btn-ghost" type="button" :disabled="!queueAvailable" @click="$emit('enqueue')">加入队列</button>
       <button v-if="engine === 'sd' && expert" class="btn btn-ghost" type="button" :disabled="resultSeed == null" @click="$emit('reuse-seed')">
         锁定这个 seed 微调
@@ -74,6 +95,7 @@
 import { computed } from 'vue'
 import type { DrawEngine } from '@/storage/settingsRepository'
 import type { SDParams } from '@/utils/promptBuilderPersistence'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 
 const props = defineProps<{
   engine: DrawEngine
@@ -90,13 +112,17 @@ const props = defineProps<{
   online: boolean
   resultSeed: number | null
   queueAvailable: boolean
+  hasResult?: boolean
+  animaHiresFix?: boolean
 }>()
 
 const emit = defineEmits<{
   'update:size': [value: string]
+  'update:animaHiresFix': [value: boolean]
   touch: [key: keyof SDParams]
   generate: []
   cancel: []
+  'upscale-current': []
   enqueue: []
   'reuse-seed': []
   reset: []
@@ -123,5 +149,20 @@ function touch(key: keyof SDParams) { emit('touch', key) }
   color: var(--text-muted);
   font-size: var(--fs-label-xs);
 }
-.generation-auto-summary strong { color: var(--text-secondary); font-weight: 650; text-align: right; }
+.control-icon-inline {
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  vertical-align: -2px;
+  color: var(--accent);
+}
+.btn-hires-action-quick {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 30%, var(--border-soft));
+  background: color-mix(in srgb, var(--accent-soft) 30%, transparent);
+}
+.btn-hires-action-quick:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
 </style>

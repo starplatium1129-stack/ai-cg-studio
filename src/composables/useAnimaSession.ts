@@ -76,6 +76,7 @@ const INITIAL_STATE: AnimaGenerationState = {
   loraStrength: 0.85, width: 832, height: 1216, steps: 24, cfg: 3.0,
   family: 'anima',
   sampler: 'res_multistep', scheduler: 'simple', seed: null,
+  hiresFix: false, hiresScale: 2.0, hiresDenoise: 0.35,
   job: null, result: null, statusText: '', errorMsg: '',
 }
 

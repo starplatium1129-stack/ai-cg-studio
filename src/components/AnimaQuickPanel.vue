@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { AnimaGenerationState } from '@/types/anima'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 
 const props = defineProps<{
   state: AnimaGenerationState
@@ -19,6 +20,9 @@ const loraStrength = computed({ get: () => props.state.loraStrength, set: value 
 const seed = computed({ get: () => props.state.seed ?? '', set: value => patch({ seed: value === '' ? null : Number(value) }) })
 const steps = computed({ get: () => props.state.steps, set: value => patch({ steps: value }) })
 const cfg = computed({ get: () => props.state.cfg, set: value => patch({ cfg: value }) })
+const hiresFix = computed({ get: () => Boolean(props.state.hiresFix), set: value => patch({ hiresFix: value }) })
+const hiresScale = computed({ get: () => props.state.hiresScale || 2.0, set: value => patch({ hiresScale: value }) })
+const hiresDenoise = computed({ get: () => props.state.hiresDenoise || 0.35, set: value => patch({ hiresDenoise: value }) })
 const size = computed({
   get: () => `${props.state.width}x${props.state.height}`,
   set: value => {
@@ -78,6 +82,24 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
         </select>
       </div>
 
+      <!-- Anima 高清修复控制 -->
+      <div v-if="state.family === 'anima'" class="anima-row anima-hires-row">
+        <label class="anima-hires-toggle">
+          <input v-model="hiresFix" type="checkbox" :disabled="busy" />
+          <ArchiveIcon name="spark" class="anima-hires-icon" />
+          <span>高清放大修复 (Hires.fix 2x)</span>
+        </label>
+        <template v-if="hiresFix">
+          <span class="anima-inline">倍率</span>
+          <select v-model.number="hiresScale" class="anima-num" :disabled="busy">
+            <option :value="1.5">1.5×</option>
+            <option :value="2.0">2.0× (4K)</option>
+          </select>
+          <span class="anima-inline">重绘幅度</span>
+          <input v-model.number="hiresDenoise" type="number" min="0.15" max="0.6" step="0.05" class="anima-num" :disabled="busy" />
+        </template>
+      </div>
+
       <div class="anima-actions" aria-live="polite">
         <span v-if="state.statusText" class="anima-status-text">{{ state.statusText }}</span>
         <span v-if="state.errorMsg" class="anima-error">{{ state.errorMsg }}</span>
@@ -95,6 +117,10 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
 .anima-hint { font-size: var(--fs-label-xs); opacity: 0.65; margin: 0 }
 .anima-preview-note { margin: 0; color: var(--warning-text); font-size: var(--fs-label-xs); line-height: 1.45 }
 .anima-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap }
+.anima-hires-row { padding-top: 6px; border-top: 1px dashed var(--border-soft); margin-top: 2px }
+.anima-hires-toggle { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-size: var(--fs-label-xs); font-weight: 600; color: var(--accent) }
+.anima-hires-toggle input { cursor: pointer; accent-color: var(--accent) }
+.anima-hires-icon { width: 14px; height: 14px; color: var(--accent); flex-shrink: 0 }
 .anima-row label, .anima-label { font-size: var(--fs-label-xs); opacity: 0.8; min-width: 44px }
 .anima-label { margin-top: 4px }
 .anima-row select, .anima-num { background: var(--bg-deep); color: inherit; border: 1px solid var(--border-soft); border-radius: var(--r-sm); padding: 4px 8px; font-size: var(--fs-label-xs) }
