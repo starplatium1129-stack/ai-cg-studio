@@ -257,3 +257,19 @@ Baseline A 使用 Anima Base v1.0、Transformer LoRA only、rank/alpha 32/32、c
 - **e12 保留为回退候选**（整体稳定性更优：决赛不通过 8/21 vs e16 12/21；手部/肢体为 unified 通病，e12 其他维度不跟着崩）。若后续生产暴露 e16 复杂场景崩坏率问题，可切回 e12 或按 e12 权重策略出图。
 - 已知限制：e16 肢体结构均分 5.9（三候选最低）、发饰错位 ×8、复杂/极端角度场景崩坏率高于 e12；手部是 unified 普遍短板（8/11/11）。生产建议 Aesthetic v1.1 + 官方参数 30s/CFG4.5/er_sde + strength 0.85。
 - 数据文件变更：`data/loras.json` 新增 `L_NENE_V21_ANIMA` 条目（含两级矩阵/加赛/用户亲审完整 validation 记录），`DATA_VERSION` 同步升至内容锁定值。
+
+## 夏目 v20 unified 晋级（2026-08-14）
+
+### 评审流程（镜像宁宁 unified 协议）
+
+- **初赛 default 组**（Base + 24s/CFG3，126 张 = 6 候选 × 7 场景 × 3 seed）：u_e16 均分第一（53.7）；e04 51.0 / e24 49.0 / e12 47.7 / e20 45.0 / e08 41.0。目录 `Reviews/AnimaNatsumeUnifiedSweep/2026-08-14_24s_cfg3/`。
+- **初赛 official 组**（Aesthetic + 官方参数 30s/CFG4.5/er_sde，126 张）：u_e04 均分第一（63.3）；e24 53.3 / e08 51.5 / e20 46.3 / e12 44.8 / e16 44.3。目录 `2026-08-14_30s_cfg45_ersde_aesthetic/`。
+- **决赛**（Base + 24s/CFG3，e16 vs e04 全场景 42 张）：u_e16 49.7 vs u_e04 43.7，e16 胜出；身份近景 60 分、复杂低光通过 2/3（覆盖 v19 hard gate 场景）。目录 `2026-08-14_final_e16_vs_e04/`。
+- 审核模型：gemini-3.6-flash-high（与宁宁 unified 同模型，判定可比）；`audit-unified-sweep.js --character natsume`。
+
+### 最终晋级
+
+- **晋级候选：u_e16（epoch 16 / step 624）**，生产 ID `L_NAT_V21_ANIMA`，文件 `shiki_natsume_v20_anima_unified_e16.safetensors`；`server/anima-generation-contract.js`、`src/utils/drawingRoute.ts`、`data/loras.json` 已切换 natsume 默认绑定，`L_NAT_V20_ANIMA`（v20 e12）保留为回退条目。
+- **e04 保留为回退候选**（仅 official 参数组领先：Aesthetic + 30s/CFG4.5 下 63.3；24s 生产参数下 51.0 且复杂低光全挂）。若后续生产切换官方参数组，可重评 e04。
+- **默认出图底模切换**：studio 单角色路线由 `anima-base-v1.0` 切为 `anima-aesthetic-v1.1`（跨底模加载记录 2026-08-13：Aesthetic 底座出图质量显著优于 Base；用户确认 Base 定位为训练底座）。
+- 已知限制：泪痣（mole under eye）随触发词-only 策略未稳定复现（V19/V20/V21 同限制）；「通过」占比偏低（双组 2-5/21），unified 24 epochs 候选的整体完成度低于宁宁 unified。

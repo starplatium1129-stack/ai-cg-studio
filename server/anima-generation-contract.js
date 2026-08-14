@@ -35,7 +35,7 @@ const ALLOWED_INPUT_KEYS = Object.freeze([
 const CHARACTER_LORA_BINDINGS = Object.freeze({
   nene: 'L_NENE_V21_ANIMA',
   nene_b: 'L_NENE_V20B_ANIMA',
-  natsume: 'L_NAT_V20_ANIMA',
+  natsume: 'L_NAT_V21_ANIMA',
 });
 
 function requiredCharacterForLora(loraId) {

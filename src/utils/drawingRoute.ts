@@ -28,9 +28,9 @@ const STUDIO_LORA = Object.freeze({
     label: '宁宁 V20B',
   }),
   natsume: Object.freeze({
-    loraId: 'L_NAT_V20_ANIMA',
+    loraId: 'L_NAT_V21_ANIMA',
     generationCharacter: 'natsume' as const,
-    label: '夏目 V20',
+    label: '夏目 V21',
   }),
 })
 
@@ -96,14 +96,15 @@ export function recommendDrawingRoute(input: DrawingRouteInput): DrawingRouteRec
   return {
     id: 'studio-single',
     engine: 'anima',
-    modelId: 'anima-base-v1.0',
+    modelId: 'anima-aesthetic-v1.1',
     loraId: studio.loraId,
     generationCharacter: studio.generationCharacter,
     promptFormat: 'anima-tags',
     title: '角色高质量路线',
-    summary: `Anima Base · ${studio.label} · 模型原生标签`,
+    summary: `Anima Aesthetic · ${studio.label} · 模型原生标签`,
     reasons: [
       '优先使用当前角色已验证的高质量 LoRA',
+      'Aesthetic v1.1 底座出图质量显著优于 Base（跨底模加载记录 2026-08-13）',
       '底模、Prompt 结构和稳定参数自动保持一致',
     ],
     experimental: false,

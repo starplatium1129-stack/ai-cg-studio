@@ -609,6 +609,110 @@
     }
   },
   {
+    "id": "L_NAT_V21_ANIMA",
+    "name": "shiki_natsume_v20_anima_unified_e16",
+    "version": "2.1.0",
+    "trigger": "shiki_natsume",
+    "character": "NATSUME_001",
+    "strength": {
+      "default": 0.85,
+      "min": 0.65,
+      "max": 1
+    },
+    "compatible_models": [
+      "anima-base-v1.0",
+      "anima-aesthetic-v1.1"
+    ],
+    "prompt_contract": {
+      "exact_prefixes": [
+        "natsume_"
+      ],
+      "exact_tokens": [
+        "shiki_natsume",
+        "very_long_black_hair",
+        "golden_yellow_eyes",
+        "two_red_hairclips",
+        "mole_under_eye",
+        "no_hair_ribbon",
+        "natsume_r18",
+        "natsume_cafe_uniform",
+        "natsume_pink_cafe_uniform",
+        "natsume_official_qipao",
+        "natsume_maid_uniform",
+        "natsume_winter_coat",
+        "natsume_sleepwear"
+      ]
+    },
+    "test_scene": [
+      "cafe_uniform",
+      "official_qipao",
+      "identity_closeup",
+      "ordinary_fullbody",
+      "complex_lowlight",
+      "r18_fullbody",
+      "r18_intimate"
+    ],
+    "description": "四季夏目角色 LoRA v21（Anima unified）。落实 08-13「统一训练、不隔离质量先验」决策：R18 样张保留 natsume_r18 评级词但不做渲染隔离，所有样张共享统一高质量学习信号。两级实图矩阵 + 决赛 + 用户亲审：初赛 126 张（6 候选×7 场景×3 seed，Base+24s/CFG3）e16 均分第一（53.7）；official 组 126 张（Aesthetic+官方参数 30s/CFG4.5/er_sde）e04 均分第一（63.3）；决赛 42 张（Base+24s/CFG3，e16 vs e04 全场景）e16 胜出（身份近景 60 分、复杂低光通过 2/3，强项覆盖 v19 hard gate），用户终审 e16 晋级（e04 保留为回退）。生产默认 Aesthetic v1.1 底模。",
+    "dataset": {
+      "images": 45,
+      "composition": {
+        "safe": 14,
+        "sensitive": 14,
+        "nsfw": 11,
+        "explicit": 6,
+        "train": 39,
+        "held_out_validation": 6
+      },
+      "resolution": 1024,
+      "strategy": "V17_WD14_Curated source manifest; unified training (no r18 quality isolation); trigger-only shiki_natsume identity captions, explicit lighting tags near front, tag shuffle + RANDOM dropout 0.1, keep_tags_count 4; frozen holdout official_5013/5014/5018/stand_v12_02/cg_v12_04"
+    },
+    "training": {
+      "selected_checkpoint": "epoch 16 (step 624)",
+      "selected_epoch": 16,
+      "selected_step": 624,
+      "rejected_checkpoint": "e04 仅在 official 参数组（Aesthetic+30s/CFG4.5）领先（63.3），24s 生产参数下 51.0 且复杂低光全挂；e08 24s 均分最低（41.0）；e12 双组均居中（47.7/44.8）",
+      "resumed_from": "anima-base-v1.0",
+      "rank": 32,
+      "alpha": 32,
+      "batch_size": 1,
+      "transformer_learning_rate": 0.0001,
+      "text_encoder_learning_rate": 0,
+      "text_encoder_stop_epoch": 0,
+      "epochs_run": 24,
+      "timestep_distribution": "LOGIT_NORMAL",
+      "layer_filter": "attn1,attn2,ff",
+      "config": "OneTrainer/training_configs/shiki_natsume_v20_anima_scientific_unified.json"
+    },
+    "recommended_weight": {
+      "portrait": 0.85,
+      "fullbody": 0.85,
+      "complex_scene": 0.82
+    },
+    "base_model": "anima-base-v1.0",
+    "trainer": "OneTrainer",
+    "validation": {
+      "status": "passed",
+      "evaluated_at": "2026-08-14",
+      "method": "unified sweep (mirror of Nene unified protocol): 6 candidates x 7 scenes x 3 seeds dual param groups (Base+24s/CFG3, Aesthetic+30s/CFG4.5/er_sde) then final e16 vs e04 42-image full-scene duel, gemini-3.6-flash-high vision audit per cell",
+      "baseline": "production shiki_natsume_v20_anima_scientific_e12 at 0.85",
+      "matrix": "dual-group sweep 252 images + final duel 42 images; identity, outfit, anatomy, lighting, completeness audited per cell",
+      "hard_gates": {
+        "mean_face_score": 8.5,
+        "signature_feature_presence_rate": 0.75,
+        "critical_identity_error": 0
+      },
+      "evidence": "Reviews/AnimaNatsumeUnifiedSweep/2026-08-14_24s_cfg3/audit-gemini, 2026-08-14_30s_cfg45_ersde_aesthetic/audit-gemini, 2026-08-14_final_e16_vs_e04/audit-gemini",
+      "metrics": {
+        "初赛24s": "e16 53.7 第一（e04 51.0 / e24 49.0 / e12 47.7 / e20 45.0 / e08 41.0）",
+        "初赛official": "e04 63.3 第一（e24 53.3 / e08 51.5 / e20 46.3 / e12 44.8 / e16 44.3）",
+        "决赛24s": "e16 49.7 vs e04 43.7；身份近景 60 分、复杂低光通过 2/3"
+      },
+      "known_limitation": "泪痣（mole under eye）随触发词-only 策略未稳定复现，与 V19/V20 同限制。",
+      "scores_recorded": true,
+      "selection_reason": "用户终审 e16：24s/CFG3 生产参数下初赛第一 + 决赛胜出，强项覆盖 v19 hard gate 场景（身份近景/复杂低光）；e04 仅 official 参数组领先，保留为回退。"
+    }
+  },
+  {
     "id": "L_NENE_V21_ANIMA",
     "name": "ayachi_nene_v20_anima_unified_e16",
     "version": "2.2.0",

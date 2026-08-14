@@ -19,7 +19,7 @@ test('studio single-character routes prefer validated Anima LoRAs', () => {
     },
     {
       engine: 'anima',
-      modelId: 'anima-base-v1.0',
+      modelId: 'anima-aesthetic-v1.1',
       loraId: 'L_NENE_V20B_ANIMA',
       generationCharacter: 'nene_b',
       promptFormat: 'anima-tags',
@@ -27,8 +27,9 @@ test('studio single-character routes prefer validated Anima LoRAs', () => {
   );
 
   const natsume = recommendDrawingRoute({ subjectKind: 'studio', character: 'natsume' });
-  assert.strictEqual(natsume.loraId, 'L_NAT_V20_ANIMA');
+  assert.strictEqual(natsume.loraId, 'L_NAT_V21_ANIMA');
   assert.strictEqual(natsume.generationCharacter, 'natsume');
+  assert.strictEqual(natsume.modelId, 'anima-aesthetic-v1.1');
 });
 
 test('studio dual-character route remains on the proven SD dual-LoRA path', () => {
