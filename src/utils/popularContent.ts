@@ -380,6 +380,7 @@ export interface PopularPromptOptions {
   engine: 'anima' | 'krea2'
   profile?: ModelProfile | null
   manual?: string[]
+  emotion?: string[]
   shot?: string | null
   lighting?: string | null
   composition?: string | null
@@ -509,6 +510,8 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     blueprint?.promptProse,
   ].filter(Boolean).join(' ')
 
+  const emotionTokens = options.emotion || []
+
   if (engine === 'krea2') {
     // 成人蓝图：outfitProse 置空（Krea 模板会拼成 "subject, wearing {outfitProse}"，
     // 穿衣服描述会压过显式词导致拒绝出裸）；脱衣叙述由 nsfwProse 前置承载。
@@ -519,7 +522,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
       subjectProse: identityWithoutOutfit(character.identityProse),
       outfitProse,
       sceneProse,
-      emotion: [],
+      emotion: emotionTokens,
       camera: [],
       lighting: [],
       composition: compositionToken ? [compositionToken] : [],
@@ -551,7 +554,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     artists: effectiveArtists,
     exactTokens: character.exactTokens,
     scenePrompt: (blueprint?.promptTokens || []).join(', '),
-    emotion: [],
+    emotion: emotionTokens,
     camera: shotToken ? [shotToken] : [],
     lighting: lightingTokens.length ? lightingTokens : [],
     composition: compositionToken ? [compositionToken] : [],

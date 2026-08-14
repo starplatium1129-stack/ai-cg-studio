@@ -294,13 +294,19 @@
         </div>
 
         <div class="panel step-panel advanced-decision expert-tag-panel" id="stepTags">
-          <div class="panel-title">词条工作台 · Tags</div>
-          <div class="manual-tags">
+          <div class="panel-title expert-tags-header">
+            <span>词条工作台 · Tags <small class="expert-tag-count" v-if="pb.manualTags.size">已激活 {{ pb.manualTags.size }} 个</small></span>
+            <button v-if="pb.manualTags.size" type="button" class="btn btn-ghost btn-xs clear-tags-btn" @click="pb.manualTags = new Set()">清空词条</button>
+          </div>
+          <div class="manual-tags" :class="{ empty: !pb.manualTags.size }">
             <span v-for="tag in pb.manualTags" :key="tag" class="manual-tag" :title="tagMeaning(tag)">
               <span class="manual-tag-en">{{ tag }}</span>
               <span v-if="tagLabel(tag)" class="manual-tag-cn">{{ tagLabel(tag) }}</span>
               <button type="button" class="tag-remove" :aria-label="'移除词条 ' + tag" @click="pb.toggleManualTag(tag)">×</button>
             </span>
+            <p v-if="!pb.manualTags.size" class="manual-tags-empty-hint">
+              暂未激活微调词条。可在下方按分类点选预设、选择官方服装包，或直接搜索/输入 Danbooru 标签回车添加。
+            </p>
           </div>
           <div v-if="!pb.isPopular" class="outfit-presets" aria-label="v18 官方服装词包">
             <div class="outfit-presets-head">
@@ -364,6 +370,7 @@
           :report="reportView"
           :art-violations="artViolationsView"
           :lora-text="pb.isPopular ? '' : loraSpecs.map(s => s.name + ':' + s.weight).join(' · ')"
+          :open="pb.directorMode === 'pro'"
           @copy="copyPrompt"
           @save="saveHistory"
         />

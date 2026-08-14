@@ -91,6 +91,7 @@ export function usePopularPromptAssembly(
       engine: engine.value,
       profile: profile.value,
       manual: [...pb.manualTags],
+      emotion: pb.emotionPrompt ? [pb.emotionPrompt] : [],
       shot: pb.selections.shot,
       lighting: pb.selections.lighting,
       composition: pb.selections.composition,
