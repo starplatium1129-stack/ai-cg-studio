@@ -107,11 +107,27 @@ export function usePromptAssembly(
       : base
   })
 
-  /** 场景必须支持当前角色，否则不套用场景模板。 */
+  /** 场景必须支持当前角色，否则不套用场景模板；若手动勾选了 R18 词条或门控词，自动提升为 R18 评级以解除负面拦截。 */
   const effectiveScene = computed(() => {
+    const isManualR18 = [...pb.manualTags].some(tag =>
+      /^(?:nene_r18|natsume_r18|nude|completely_nude|naked|topless|nipples|bare_breasts|pussy|vaginal|penis|sex|uncensored|nsfw)$/i.test(tag),
+    )
     const scene = pb.activeScene
-    if (!scene) return null
-    return sceneSupportsCharacter(scene, pb.char) ? scene : null
+    if (!scene) {
+      return isManualR18
+        ? { id: 'custom_r18', title: '自定义 R18', rating: 'R18', mature: true, prompt: '', tags: [], negative: '' }
+        : null
+    }
+    const supported = sceneSupportsCharacter(scene, pb.char) ? scene : null
+    if (!supported) {
+      return isManualR18
+        ? { id: 'custom_r18', title: '自定义 R18', rating: 'R18', mature: true, prompt: '', tags: [], negative: '' }
+        : null
+    }
+    if (isManualR18 && supported.rating !== 'R18') {
+      return { ...supported, rating: 'R18', mature: true }
+    }
+    return supported
   })
 
   const currentTraits = computed(() => {
