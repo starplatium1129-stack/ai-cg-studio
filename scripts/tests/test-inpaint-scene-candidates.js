@@ -100,8 +100,8 @@ test('SCENE_INPAINT_CONFIG covers exactly scene:sc037, scene:sc280 and scene:sc2
     assert.strictEqual(cfg.lora.strength, 0.85);
     assert.strictEqual(cfg.sampler, 'res_multistep', 'Anima sampler contract');
     assert.strictEqual(cfg.scheduler, 'simple', 'Anima scheduler contract');
-    assert.strictEqual(cfg.steps, 24);
-    assert.strictEqual(cfg.cfg, 3.0);
+    assert.strictEqual(cfg.steps, 30);
+    assert.strictEqual(cfg.cfg, 4.5);
   }
 });
 

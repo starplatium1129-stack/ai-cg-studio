@@ -1,8 +1,8 @@
 'use strict';
 
 const ANIMA_DEFAULTS = Object.freeze({
-  steps: 24,
-  cfg: 3.0,
+  steps: 30,
+  cfg: 4.5,
   sampler: 'res_multistep',
   scheduler: 'simple',
 });

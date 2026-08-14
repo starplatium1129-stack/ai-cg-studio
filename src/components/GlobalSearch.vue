@@ -1,7 +1,7 @@
 <template>
   <Teleport to="body">
     <div v-if="open" class="global-search" @pointerdown.self="close">
-      <div ref="panelEl" class="gs-panel" role="dialog" aria-modal="true" aria-label="全局搜索">
+      <div ref="panelEl" class="gs-panel" :data-trigger="triggerSource" role="dialog" aria-modal="true" aria-label="全局搜索">
         <div class="gs-input-row">
           <ArchiveIcon name="search" class="gs-search-icon" />
           <input
@@ -18,7 +18,7 @@
           <kbd class="gs-esc">ESC</kbd>
         </div>
 
-        <div class="gs-results" role="listbox" aria-label="搜索结果">
+        <div ref="resultsEl" class="gs-results" role="listbox" aria-label="搜索结果">
           <template v-if="!query.trim()">
             <section v-if="filteredActions.length" class="gs-group">
               <h4 class="gs-group-title">快捷操作</h4>
@@ -114,15 +114,19 @@ const query = ref('')
 const activeIndex = ref(0)
 const inputEl = ref<HTMLInputElement | null>(null)
 const panelEl = ref<HTMLElement | null>(null)
+const resultsEl = ref<HTMLElement | null>(null)
 const scenes = ref<SceneItem[]>([])
 const works = ref<WorkItem[]>([])
 let worksLoaded = false
+const triggerSource = ref<'keyboard' | 'pointer'>('keyboard')
+let previousActiveElement: HTMLElement | null = null
 
 const PAGES: PageItem[] = [
   { id: 'home', label: '首页', icon: 'spark', path: '/', keywords: '首页 home 绫季绘境' },
   { id: 'director', label: '开始绘制', icon: 'spark', path: '/prompt-builder', keywords: '绘制 导演台 prompt 出图' },
   { id: 'video', label: 'AI 视频创作', icon: 'play', path: '/video-studio', keywords: '视频 动画 本地模型 wan comfyui' },
   { id: 'scene', label: '灵感场景', icon: 'scene', path: '/scene-explorer', keywords: '场景 灵感 库' },
+  { id: 'popular-scenes', label: '热门角色场景', icon: 'scene', path: '/popular-scenes', keywords: '热门 角色 蓝图 雷电将军 芙莉莲' },
   { id: 'chat', label: '角色房间', icon: 'chat', path: '/chat', keywords: '聊天 角色 宁宁 夏目' },
   { id: 'showcase', label: '效果样张', icon: 'image', path: '/showcase', keywords: '样张 展示 定稿' },
   { id: 'gallery', label: '作品册', icon: 'gallery', path: '/gallery', keywords: '作品 图库 收藏' },
@@ -140,6 +144,7 @@ const ACTIONS: SearchItem[] = [
   { id: 'draw', label: '开始一幅新的绘制', icon: 'spark', path: '/prompt-builder', keywords: '绘制 开始' },
   { id: 'video-create', label: '开始一段 AI 视频', icon: 'play', path: '/video-studio', keywords: '视频 动画 开始' },
   { id: 'browse', label: '逛一逛灵感场景', icon: 'scene', path: '/scene-explorer', keywords: '场景 逛' },
+  { id: 'popular', label: '浏览热门角色蓝图', icon: 'scene', path: '/popular-scenes', keywords: '热门 角色 蓝图' },
   { id: 'works', label: '打开作品册', icon: 'gallery', path: '/gallery', keywords: '作品' },
 ]
 
@@ -175,9 +180,15 @@ function move(step: number) {
   const total = flat.value.length
   if (!total) return
   activeIndex.value = (activeIndex.value + step + total) % total
+  void nextTick(() => {
+    const activeRow = resultsEl.value?.querySelector('.gs-row.active') as HTMLElement | null
+    activeRow?.scrollIntoView({ block: 'nearest' })
+  })
 }
 
-function openPanel() {
+function openPanel(source: 'keyboard' | 'pointer' = 'keyboard') {
+  previousActiveElement = document.activeElement as HTMLElement | null
+  triggerSource.value = source
   open.value = true
   query.value = ''
   activeIndex.value = 0
@@ -187,12 +198,27 @@ function openPanel() {
 
 function close() {
   open.value = false
+  if (previousActiveElement && typeof previousActiveElement.focus === 'function') {
+    void nextTick(() => {
+      previousActiveElement?.focus()
+      previousActiveElement = null
+    })
+  }
 }
 
 function onKeydown(event: KeyboardEvent) {
+  const target = event.target as HTMLElement | null
+  const isInput = /^(INPUT|TEXTAREA|SELECT)$/.test(target?.tagName || '') || target?.isContentEditable === true
+
   if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
     event.preventDefault()
-    openPanel()
+    if (open.value) { close() } else { openPanel('keyboard') }
+    return
+  }
+
+  if (event.key === '/' && !isInput && !open.value) {
+    event.preventDefault()
+    openPanel('keyboard')
   }
 }
 
@@ -204,7 +230,7 @@ async function loadWorks() {
     const raw = await kvGet<unknown[]>(HISTORY_KEY)
     const list = Array.isArray(raw) ? raw.slice(0, 300) : []
     works.value = list
-      .filter((r): r is Record<string, unknown> => !!r && typeof r === 'object')
+      .filter((r): r is Record<string, unknown> => !r && typeof r === 'object')
       .map((entry) => {
         const title = String(entry.sceneTitle || entry.title || entry.scene || '未命名作品')
         const time = typeof entry.timestamp === 'number'
@@ -274,6 +300,9 @@ onUnmounted(() => {
   overflow: hidden;
   animation: gs-in .22s var(--ease-out) both;
 }
+.gs-panel[data-trigger="keyboard"] {
+  animation: none;
+}
 @keyframes gs-in { from { opacity: 0; transform: translateY(-10px) scale(.99); } to { opacity: 1; transform: none; } }
 .gs-input-row {
   display: flex; align-items: center; gap: var(--s-3);
@@ -314,3 +343,4 @@ onUnmounted(() => {
 .gs-empty { padding: var(--s-6) var(--s-4); color: var(--text-muted); text-align: center; font-size: var(--fs-body-sm); }
 @media (prefers-reduced-motion: reduce) { .gs-panel { animation: none; } }
 </style>
+

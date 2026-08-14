@@ -59,7 +59,7 @@ function statusPayload(overrides = {}) {
   return {
     ok: true, online: true,
     models: [
-      { id: 'anima-aesthetic-v1.1', family: 'anima', available: true, sizes: ['832x1216', '1024x1536'], defaults: { steps: 24, cfg: 3, sampler: 'res_multistep', scheduler: 'simple' } },
+      { id: 'anima-aesthetic-v1.1', family: 'anima', available: true, sizes: ['832x1216', '1024x1536'], defaults: { steps: 30, cfg: 4.5, sampler: 'res_multistep', scheduler: 'simple' } },
       { id: 'krea2-turbo-fp8', family: 'krea2', available: true, sizes: ['1024x1024'] },
     ],
     loras: [
@@ -102,8 +102,8 @@ test('refreshBackend 收敛 model/lora 白名单、尺寸与默认参数', async
   assert.deepEqual(state.loras.map(l => l.id), ['L_NENE_V21_ANIMA']);
   assert.equal(state.modelId, 'anima-aesthetic-v1.1');
   assert.equal(state.loraId, 'L_NENE_V21_ANIMA');
-  assert.equal(state.steps, 24);
-  assert.equal(state.cfg, 3);
+  assert.equal(state.steps, 30);
+  assert.equal(state.cfg, 4.5);
   assert.match(state.checkMsg, /Anima 在线/);
 });
 

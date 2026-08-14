@@ -46,8 +46,8 @@
       "rating_r18": "nsfw",
       "sampler": "res_multistep",
       "scheduler": "simple",
-      "steps": 24,
-      "cfg": 3,
+      "steps": 30,
+      "cfg": 4.5,
       "size": "832×1216"
     },
     {
@@ -71,8 +71,8 @@
       "rating_r18": "nsfw",
       "sampler": "res_multistep",
       "scheduler": "simple",
-      "steps": 24,
-      "cfg": 3,
+      "steps": 30,
+      "cfg": 4.5,
       "size": "832×1216"
     },
     {

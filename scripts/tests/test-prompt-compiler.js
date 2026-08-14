@@ -261,7 +261,7 @@ test('Anima profiles do not bind one character and LoRA contracts own exact cont
     assert.strictEqual(profile.lora_name, undefined);
     assert.strictEqual(profile.lora_strength, undefined);
     assert.deepStrictEqual(profile.exact_tokens, [], 'profile must not carry family-level exact tokens');
-    assert.strictEqual(profile.steps, 24, 'Anima profiles must default to the validated 24 steps');
+    assert.strictEqual(profile.steps, 30, 'Anima profiles must default to the validated 30 steps');
   }
   const nene = loras.find(lora => lora.id === 'L_NENE_V21_ANIMA');
   const natsume = loras.find(lora => lora.id === 'L_NAT_V21_ANIMA');

@@ -10,6 +10,7 @@ export interface PersistedChatMessage {
   content: string
   mid: string
   stopped: boolean
+  recalledMemories?: string[]
 }
 
 export interface PersistedChatState {
@@ -69,12 +70,18 @@ function normalizeMessages(
   return value
     .filter((message): message is Record<string, unknown> =>
       isRecord(message) && (message.role === 'user' || message.role === 'assistant'))
-    .map(message => ({
-      role: message.role as 'user' | 'assistant',
-      content: text(message.content, 1200),
-      mid: text(message.mid, 160) || text(message.id, 160) || createMessageId(),
-      stopped: message.stopped === true,
-    }))
+    .map(message => {
+      const recalled = Array.isArray(message.recalledMemories)
+        ? message.recalledMemories.map(m => text(m, 240)).filter(Boolean).slice(0, 6)
+        : undefined
+      return {
+        role: message.role as 'user' | 'assistant',
+        content: text(message.content, 1200),
+        mid: text(message.mid, 160) || text(message.id, 160) || createMessageId(),
+        stopped: message.stopped === true,
+        ...(recalled && recalled.length > 0 ? { recalledMemories: recalled } : {}),
+      }
+    })
     .filter(message => message.content)
     .slice(-maxMessages)
 }

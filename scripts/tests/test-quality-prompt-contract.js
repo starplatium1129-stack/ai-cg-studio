@@ -26,15 +26,15 @@ test('shared Anima defaults and parameter whitelist stay aligned with the route'
   const routeContract = anima.constants.generationContract;
   assert.strictEqual(routeContract, generationContract);
   assert.deepStrictEqual(generationContract.ANIMA_DEFAULTS, {
-    steps: 24, cfg: 3, sampler: 'res_multistep', scheduler: 'simple',
+    steps: 30, cfg: 4.5, sampler: 'res_multistep', scheduler: 'simple',
   });
   assert.deepStrictEqual(generationContract.MANUAL_REPAIR_PRESET, {
     steps: 30, cfg: 4.5, sampler: 'res_multistep', scheduler: 'simple',
   });
   assert.ok(generationContract.ALLOWED_INPUT_KEYS.includes('steps'));
   assert.ok(!generationContract.ALLOWED_INPUT_KEYS.includes('sampler'));
-  assert.strictEqual(anima.constants.MODELS['anima-base-v1.0'].steps, 24);
-  assert.strictEqual(anima.constants.MODELS['anima-base-v1.0'].cfg, 3);
+  assert.strictEqual(anima.constants.MODELS['anima-base-v1.0'].steps, 30);
+  assert.strictEqual(anima.constants.MODELS['anima-base-v1.0'].cfg, 4.5);
 });
 
 test('V21 always resolves to nene and scene repair defaults to the v21 binding', () => {

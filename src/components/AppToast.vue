@@ -2,23 +2,32 @@
   <Teleport to="body">
     <!-- 只在容器上声明一次 live region。子项再挂 role="status" 会造成
          嵌套 live region，读屏可能重复播报或整条丢掉。 -->
-    <div class="toast-stack" aria-live="polite" aria-atomic="false">
+    <div
+      class="toast-stack"
+      aria-live="polite"
+      aria-atomic="false"
+      @mouseenter="pauseAll"
+      @mouseleave="resumeAll"
+    >
       <TransitionGroup :css="false" @enter="onToastEnter" @leave="onToastLeave">
         <div
           v-for="t in toasts"
           :key="t.id"
           class="toast-item"
           :class="`toast-${t.type}`"
+          @pointerdown="onPointerDown($event, t.id)"
+          @pointermove="onPointerMove($event)"
+          @pointerup="onPointerUp($event, t.id)"
+          @pointercancel="onPointerCancel($event)"
         >
           <span class="toast-icon" aria-hidden="true"><ArchiveIcon :name="icons[t.type]" /></span>
           <span class="toast-msg">{{ t.msg }}</span>
-          <!-- 关闭动作挂在按钮本身，而不是外层 div：
-               原先 div 才是 @click 的宿主，但它不可聚焦 -->
+          <!-- 关闭动作挂在按钮本身，而不是外层 div -->
           <button
             class="toast-close"
             type="button"
             :aria-label="`关闭提示：${t.msg}`"
-            @click="dismiss(t.id)"
+            @click.stop="dismiss(t.id)"
           ><ArchiveIcon name="close" /></button>
         </div>
       </TransitionGroup>
@@ -31,13 +40,74 @@ import { animateMini } from 'motion'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import { useToast, type ToastType } from '@/composables/useToast'
 
-const { toasts, dismiss } = useToast()
+const { toasts, dismiss, pauseAll, resumeAll } = useToast()
 
 const icons: Record<ToastType, ArchiveIconName> = {
   info: 'info',
   success: 'success',
   error: 'error',
   warning: 'warning',
+}
+
+interface DragSession {
+  id: number
+  startY: number
+  lastY: number
+  lastTime: number
+  el: HTMLElement
+}
+
+let activeDrag: DragSession | null = null
+
+function onPointerDown(e: PointerEvent, id: number) {
+  const el = e.currentTarget as HTMLElement
+  activeDrag = {
+    id,
+    startY: e.clientY,
+    lastY: e.clientY,
+    lastTime: performance.now(),
+    el,
+  }
+  el.setPointerCapture(e.pointerId)
+}
+
+function onPointerMove(e: PointerEvent) {
+  if (!activeDrag) return
+  const now = performance.now()
+  activeDrag.lastY = e.clientY
+  activeDrag.lastTime = now
+  const deltaY = Math.max(0, e.clientY - activeDrag.startY) // 仅允许向下滑出
+  activeDrag.el.style.transform = `translateY(${deltaY}px)`
+  activeDrag.el.style.opacity = String(Math.max(0.2, 1 - deltaY / 120))
+}
+
+function onPointerUp(e: PointerEvent, id: number) {
+  if (!activeDrag) return
+  const now = performance.now()
+  const deltaY = e.clientY - activeDrag.startY
+  const elapsed = Math.max(1, now - activeDrag.lastTime)
+  const velocity = Math.abs(e.clientY - activeDrag.lastY) / elapsed // px/ms
+  const el = activeDrag.el
+  activeDrag = null
+
+  // 向下滑动超过 32px 或滑动速度超过 0.12 px/ms 则顺势消除
+  if (deltaY > 32 || velocity > 0.12) {
+    void animateMini(el, { opacity: 0, transform: `translateY(${deltaY + 24}px)` }, { duration: 0.14 }).then(() => {
+      dismiss(id)
+    })
+  } else {
+    // 弹性回正
+    el.style.transform = ''
+    el.style.opacity = ''
+  }
+}
+
+function onPointerCancel(e: PointerEvent) {
+  if (activeDrag) {
+    activeDrag.el.style.transform = ''
+    activeDrag.el.style.opacity = ''
+    activeDrag = null
+  }
 }
 
 // toast 进出走 spring：多个 toast 连续弹出时可互相打断、从当前值续走，
@@ -94,13 +164,18 @@ function onToastLeave(el: Element, done: () => void) {
   font-weight: 600;
   color: var(--text-primary);
   pointer-events: auto;
-  cursor: default;
+  cursor: grab;
+  user-select: none;
+  touch-action: pan-y;
   max-width: min(460px, 90vw);
   white-space: pre-wrap;
   word-break: break-word;
-  transition: transform var(--t-fast), opacity var(--t-fast);
+  transition: box-shadow var(--t-fast);
 }
-.toast-item:hover { opacity: .88; }
+.toast-item:active { cursor: grabbing; }
+.toast-item:hover {
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--border-soft));
+}
 
 .toast-icon { display:grid; place-items:center; font-size: 1em; flex-shrink: 0; }
 .toast-msg  { flex: 1; }
@@ -117,5 +192,4 @@ function onToastLeave(el: Element, done: () => void) {
 .toast-info    .toast-icon { color: var(--accent); }
 
 /* TransitionGroup 进出由 motion spring 接管，这里只留布局稳定类 */
-.toast-move { transition: transform var(--t-base) var(--ease-out); }
 </style>

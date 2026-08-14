@@ -148,7 +148,7 @@
           <div v-if="!currentMessages.length" class="chat-empty">
             <span class="chat-empty-kicker">{{ currentCharacter.roomCode }}</span>
             <div class="icon"><ArchiveIcon :name="currentCharacter.id === 'natsume' ? 'natsume' : 'nene'" /></div>
-            <div>{{ currentCharacter.greeting }}</div>
+            <div class="chat-empty-greeting">{{ personalizedGreeting }}</div>
             <div class="chat-starters" aria-label="对话开场建议">
               <button v-for="s in currentCharacter.starters" :key="s" type="button"
                 @click="useStarter(s)">{{ s }}</button>
@@ -162,12 +162,20 @@
               :data-mid="msg.mid">
               <div class="message-avatar"><span v-if="msg.role === 'user'">你</span><ArchiveIcon v-else :name="currentCharacter.id === 'natsume' ? 'natsume' : 'nene'" /></div>
               <div class="message-body">
-                <div class="message-bubble">{{ msg.content }}</div>
+                <div class="message-bubble">
+                  {{ msg.content }}
+                  <div v-if="msg.role === 'assistant' && msg.recalledMemories?.length" class="msg-recalled-box">
+                    <span class="msg-recalled-label" :title="msg.recalledMemories.map(m => '• ' + m).join('\n')">
+                      <ArchiveIcon name="love" class="recalled-icon" /> 她记得 ({{ msg.recalledMemories.length }})
+                    </span>
+                  </div>
+                </div>
                 <div class="message-meta">
                   <span v-if="msg.stopped" class="message-note">已停止</span>
                   <button v-if="msg.role === 'user' && msg.mid" class="msg-memory-btn" type="button"
+                    :class="{ remembered: messageRemembered(msg.mid) }"
                     :disabled="messageRemembered(msg.mid)" @click="rememberMessage(msg)">
-                    {{ messageRemembered(msg.mid) ? '已记住' : '记住' }}
+                    {{ messageRemembered(msg.mid) ? '✓ 已记住' : '📌 钉住记忆' }}
                   </button>
                   <button v-if="msg.role === 'assistant' && msg.mid && voice.hasAudio(msg.mid)"
                     class="msg-voice-btn" type="button"
@@ -372,6 +380,17 @@ const {
 
 const profileOpen = ref(false)
 const memoryOpen = ref(false)
+
+const personalizedGreeting = computed(() => {
+  const char = currentCharacter.value
+  const base = char.greeting
+  const name = userProfile.value?.callName?.trim()
+  if (!name) return base
+  if (char.id === 'natsume') {
+    return `${name}，你来了。${base}`
+  }
+  return `${name}，欢迎回来～ ${base}`
+})
 
 function onUserProfileSave(profile: ChatUserProfile) {
   updateUserProfile(profile)

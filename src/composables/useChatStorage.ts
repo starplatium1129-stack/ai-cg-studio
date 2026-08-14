@@ -26,6 +26,7 @@ export interface ChatMessage {
   content: string
   mid: string
   stopped: boolean
+  recalledMemories?: string[]
 }
 
 export interface ChatState {

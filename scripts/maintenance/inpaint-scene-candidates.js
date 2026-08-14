@@ -92,8 +92,8 @@ const SCENE_INPAINT_CONFIG = Object.freeze({
     clip: 'qwen_3_06b_base.safetensors',
     vae: 'qwen_image_vae.safetensors',
     lora: { file: 'shiki_natsume_v21_anima.safetensors', strength: 0.85 },
-    steps: 24,
-    cfg: 3.0,
+    steps: 30,
+    cfg: 4.5,
     sampler: 'res_multistep',
     scheduler: 'simple',
     ops: [
@@ -119,8 +119,8 @@ const SCENE_INPAINT_CONFIG = Object.freeze({
     clip: 'qwen_3_06b_base.safetensors',
     vae: 'qwen_image_vae.safetensors',
     lora: { file: 'shiki_natsume_v21_anima.safetensors', strength: 0.85 },
-    steps: 24,
-    cfg: 3.0,
+    steps: 30,
+    cfg: 4.5,
     sampler: 'res_multistep',
     scheduler: 'simple',
     ops: [
@@ -178,8 +178,8 @@ const SCENE_INPAINT_CONFIG = Object.freeze({
     clip: 'qwen_3_06b_base.safetensors',
     vae: 'qwen_image_vae.safetensors',
     lora: { file: 'shiki_natsume_v21_anima.safetensors', strength: 0.85 },
-    steps: 24,
-    cfg: 3.0,
+    steps: 30,
+    cfg: 4.5,
     sampler: 'res_multistep',
     scheduler: 'simple',
     ops: [

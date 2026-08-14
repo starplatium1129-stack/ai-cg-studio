@@ -104,9 +104,14 @@ export interface EmotionRuntimeConfig {
   }
 }
 
+export interface PushEmotionOptions {
+  holdSeconds?: number
+  holdTurns?: number
+}
+
 export interface EmotionRuntime {
   activate(): Promise<void>
-  pushEmotion(emotion: string): void
+  pushEmotion(emotion: string, options?: PushEmotionOptions): void
   onUserMessage(): void
   setSpeaking(value: boolean): void
   setAudioLevel(level: number, peak?: number): void
@@ -319,7 +324,7 @@ export function createEmotionRuntime(config: EmotionRuntimeConfig): EmotionRunti
       }).finally(() => { soullinkLoading = null })
       return soullinkLoading
     },
-    pushEmotion(emotion: string) {
+    pushEmotion(emotion: string, options?: PushEmotionOptions) {
       if (emotion === 'neutral') {
         nudge('neutral')
         pushSoullinkEmotion('neutral')
@@ -329,6 +334,11 @@ export function createEmotionRuntime(config: EmotionRuntimeConfig): EmotionRunti
       const next = emotion in emotionVAD ? emotion as ChatEmotion : 'neutral'
       last = next
       nudge(next)
+      if (options?.holdSeconds !== undefined && options.holdSeconds > 0) {
+        holdSeconds = Math.max(holdSeconds, options.holdSeconds)
+      } else if (options?.holdTurns !== undefined && options.holdTurns > 0) {
+        holdSeconds = Math.max(holdSeconds, options.holdTurns * 12)
+      }
       pushSoullinkEmotion(next)
     },
     onUserMessage() {

@@ -21,7 +21,7 @@
       :id="tabs.panelId(activeId)"
       ref="stageRef"
       class="portrait-stage"
-      :class="[{ speaking, 'live2d-ready': live2d.ready.value && live2d.loadedCharacter.value === activeId }, `emotion-${emotion}`]"
+      :class="[{ speaking, 'live2d-ready': live2d.ready.value && live2d.loadedCharacter.value === activeId, 'touch-pulse': touchResonanceActive }, `emotion-${emotion}`]"
       :data-character="activeId"
       :data-emotion="emotion"
       :data-presence="presence || undefined"
@@ -215,6 +215,17 @@ const natsumeRuntime = createEmotionRuntime(NATSUME_RUNTIME_CONFIG)
 function activeRuntime() {
   return props.activeId === 'natsume' ? natsumeRuntime : neneRuntime
 }
+
+const touchResonanceActive = ref(false)
+let touchTimer: ReturnType<typeof setTimeout> | undefined
+
+watch(live2d.interactionHint, (hint) => {
+  if (hint && hint !== '这个动作正在进行中' && hint !== '动作没有启动，请重试') {
+    touchResonanceActive.value = true
+    if (touchTimer) clearTimeout(touchTimer)
+    touchTimer = setTimeout(() => { touchResonanceActive.value = false }, 1400)
+  }
+})
 
 const activeIdRef = computed(() => props.activeId)
 const tabs = useRovingTabs(

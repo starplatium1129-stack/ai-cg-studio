@@ -86,3 +86,50 @@ masterpiece, best_quality, score_7
 - `/api/anima/jobs` 不接受 sampler/scheduler → 只传 steps/cfg。
 - V20B 需要 `nene_b` 绑定，直接传 V20B + character=nene 报 INCOMPATIBLE_CHARACTER。
 - 工作区图片生成物及时清理（两天生成了 2000+ 张，最终保留的不足 200 张）。
+
+---
+
+## 9. 2026-08-14 全场景替换（anima-aesthetic-v1.1 + 原有提示词 + @rella）实测结论
+
+> 本轮把 `data/scenes.json` 全部 298 个场景用「原有 `prompt` 字段（去 `<lora:>` 后 Anima 格式化）+ 统一 `anima-aesthetic-v1.1` 底模（单人挂 v21 LoRA，triad 走 no-LoRA 模式）+ 句尾追加 `@rella`」重出，审核后发布为 `AI/SceneShowcase/2026-08-14_v16`（v15 保留为备份）。
+> 配套工具：`scripts/maintenance/generate-scene-showcase-anima11.js`（批量出图）、`audit-scene-showcase-run.js`（批量审核编排）、`build-scene-manual-review.js`（审核决策→manual-review）、`publish-scene-showcase-anima11.js`（原子替换发布）。
+
+### 9.1 提示词结论（用户决策口径）
+
+- **原有提示词直出可行**：长标签流 + `@rella` 句尾（画师 tag 必须在 Anima `@` 格式，见 §2），身份还原稳定。
+- **单人场景出双人是最大系统性缺陷**：互动叙事（拥抱/对视/亲密）的 solo 场景，Anima 低 CFG 下会自动补画男主或第二女性。修复=提示词注入 `(single girl only:1.4), (one person only:1.4), no second person, no other person, no bystanders`（1.4 不够时 1.6~2.0 + 负面加 `male, man, boy, couple, two people`），13 张全部修复（最顽固 3 张在权重 2.0 轮通过）。
+- **sc052 例外**：其原有提示词本身就写了「Nene and one partial dark-haired male…」双人构图，属于原有提示词内容，不是缺陷。
+- **手部硬伤与乱码文字**是剩余顽固项：约 115/298 首轮因手部崩坏判失败，30 步/CFG 4.5 后降为 44，5 轮后剩 5 张（sc102/sc114/sc240/sc265/sc266）由用户终审接受最佳尝试。
+- **不要为个别场景单设参数**（用户明确意见）：修复一律走提示词优化 + 统一 30/4.5，hires 不作为常规手段（本轮仅 1 张冒烟验证，未入批）。
+
+### 9.2 评判标准（本轮口径，用户提出下次重新设计）
+
+- 视觉初审：`image-inspect.js -t audit`（gemini-3.7-flash-high 八维）逐张独立；
+- 硬伤分类只判四类：① 肢体/手部严重级崩坏（明显崩坏/畸变/缺指/多指/塌陷/穿模/断裂/融化）；② 乱码文字；③ 单人场景出第二人；④ 脸部畸变；轻微/稍显/交代不清一律通过；
+- 人工终审逐条复核摘要，机器误判双向纠正（本轮约 20+ 张）；
+- 教训：关键词分类器第一版过严（154 张失败），用户目检校准后同批图片实际合格率约 85%+ → **下次先让用户抽样目检定调，再批量执行**。
+
+### 9.3 流程踩坑
+
+- **生成脚本并发写同一 manifest 会互相覆盖**：两个 `generate-scene-showcase-anima11.js` 同时跑时，后结束者用自己启动时的快照整体写回，把另一进程新写入的记录抹掉（本轮 sc287@attempt-3 记录丢失即此因）。**生成任务必须串行**。
+- 429 `ANIMA_QUEUE_FULL`：`/api/anima/jobs` 服务端 MAX_PENDING=4，两个生成脚本并发（3+2）必撞队列；串行 + 单脚本 concurrency≤3 安全。
+- 同 recordId 失败记录重跑会自动重试（`previous.status !== 'succeeded'`），断点续跑安全。
+- 发布原子切换：`publish-scene-showcase-anima11.js` 复制源目录→替换全部场景 images/thumbs→清理不在 data 的旧 sc 文件→刷新 home 主视觉与 `home-hero.json`→verifyTarget→rename 切换（旧目录先改名备份，成功后删）。
+- 网关在启动时解析 `SCENE_SHOWCASE_DIR`，**发布后必须重启网关**才生效；重启用 `runtime/state/gateway_token` 作 TOKEN 环境变量（AGENTS.md 契约），端口 3000 进程先杀。
+- 本轮产物：`AI/Reviews/SceneShowcaseRefresh/2026-08-14_v16-anima11-rella/`（generation-manifest.json 526 条记录、audit-results.json、decisions.json、manual-review.json、run-*.log）。
+
+### 9.4 全局默认参数变更（2026-08-14 用户决策：第二轮参数转正）
+
+- **Anima 全局默认出图参数由 24 步 / CFG 3.0 改为 30 步 / CFG 4.5**（第二轮样张验证更稳：同 prompt 下 24/3.0=92 分 vs 30/4.5=96 分，硬伤失败率一轮从 154 张降到 44 张）。
+- 改动落点：`server/anima-generation-contract.js` 的 `ANIMA_DEFAULTS`（`routes/anima.js` 两个 anima 模型默认值引用它）、`data/presets.json` 的 `anima_base_v10`/`anima_aesthetic_v11` profile、`src/composables/useAnimaSession.ts` 会话默认、`scripts/maintenance/inpaint-scene-candidates.js` 修复配置；同步更新 `test-anima-routes.js`/`test-anima-session.js`/`test-popular-content.js`/`test-quality-prompt-contract.js`/`test-prompt-compiler.js`/`test-inpaint-scene-candidates.js` 断言。
+- 双人场景允许单独设置参数/其他手段（本轮双人修复用的 CFG 5.5/6.0 + 单人强化词即属此类）；API 的 steps/cfg 覆盖与提示词强化机制保持不变。
+- 样张 `2026-08-14_v16` 大部分已是 30/4.5 产物；少量 best 尝试用了 5.5/6.0（双人场景属合法单独参数；sc107/sc083/sc125/sc140/sc225/sc028/sc032/sc084 为非默认参数，是否重出由用户决定）。
+- 已知遗留：`regress-anima-prompt-tags.js` 仍提交已迁移的 `L_NENE_V20_ANIMA`，会报 UNKNOWN_LORA（与参数变更无关，未顺手改动）。
+
+### 9.5 审核标准最终裁定（2026-08-14 用户定稿，下次执行以此为准）
+
+- **总体标准：整体观感达到「壁纸级」即可通过**，不逐张死磕局部瑕疵。
+- **AI 绘图有小瑕疵是正常的**（手部细节、背景简化、轻微伪影等），除非是明显影响整体观感的硬伤，否则接受。
+- **必须修的只有一类：单人场景出现双人**（提示词层面修复，见 §9.1）。
+- 修复手段只允许两类：**提示词优化** 或 **参数调整**；不做无上限的多轮重试（本轮教训：首轮 154 张"失败"中，按用户目检口径实际绝大多数可用，只有双人问题需要修；5 轮重生成属于过度投入）。
+- 机器审核（image-inspect 八维）只作**初筛参考**，最终以用户目检抽样 + 壁纸级整体观感为准；初次批量前先让用户抽样定调。

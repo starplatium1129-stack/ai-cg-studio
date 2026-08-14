@@ -83,3 +83,27 @@ Tauri 2 Rust shell
 1. 环境满足时使用同一 D-10 harness 和冻结安装包；任何打包输入变化都必须生成新的 SHA 并废弃旧证据。
 2. 真实 Companion 麦克风/ASR、GPT-SoVITS 和 Native/TTS 回归需要独占设备与服务时间窗。
 3. 125/150% DPI 和多屏必须使用真实 Windows 显示设置，不用浏览器模拟替代。
+
+## 2026-08-14 个人使用豁免与执行记录
+
+> 用户决策（2026-08-14）：桌面端仅为个人本地使用，不发布给外部用户。以下两项 D-10 门槛按此豁免/降级；其余门槛不变。
+
+**豁免项 A — 125/150% DPI 与真实第二屏矩阵**：本机长期为远程会话 + 虚拟显示环境，真实物理屏矩阵验收无法执行（用户确认做不到）。替代证据为：本机 100% 缩放下 overlay 对齐 + Native renderer 稳定性（`live2d-native-runtime.md`）；远程会话下的 DPI 行为不视为有效验收证据，也不作为退役阻塞。若未来改为外部发布，此项恢复为硬门槛。
+
+**豁免项 B — self-hosted Windows workflow**：个人使用场景下无外部 CI 托管；由「本机等价命令 + 日志存档」（scripts/tests/ 与 desktop.log、gateway logs）替代全绿 workflow 证据。若未来对外发布，恢复为硬门槛。
+
+**执行记录（本轮完成项，均为免 GPU 项）**：
+- [x] 2026-08-14 全盘核查：本机从未成功安装过 AI-CG-Studio（注册表/Program Files/开始菜单/uninstaller 均无），D-10「未执行安装」状态确认。
+- [x] 2026-08-14 网页端 → 桌面端资源同步完成（`npm run build` + `npm run prepare:tauri`，漂移 495→0，暂存 116.5 MB）；打包输入已变化，旧冻结 SHA 作废。
+- [x] 2026-08-14 新安装包生成并冻结：`desktop-tauri/src-tauri/target/release/bundle/nsis/AI-CG-Studio_1.5.0_x64-setup.exe`，121.1 MB，SHA-256 `B2D71E2544BD2B0A8B8E2E15D391E763043819AA6431532551902AEB0099E0EF`（`--no-sign`，本机个人使用）。旧 SHA `ee9277f9…`（1.5.0 冻结包）作废。
+- [x] 2026-08-14 提权静默安装（UAC 已确认，exit 0）：注册表条目 + 完整文件布局（`gateway/` 资源、`node.exe` sidecar、主 exe、`uninstall.exe`）；安装目录为 `%TEMP%\opencode\aics-installed`——NSIS 复用并行会话先前安装的注册表 InstallLocation（覆盖安装路径本身通过；干净 Program Files 安装需无残留环境）。已装 `gateway/dist/index.html` 与新鲜构建哈希一致。
+- [x] 2026-08-14 首次迁移与幂等：8/07 dev 首次迁移已完成（`.tauri-migrated` + 日志「migrated electron data: companion-window.json, companion-preferences.json, desktop-gateway…」）；安装版运行无重复迁移（标记幂等生效）；`gateway_token` 复用（文件 mtime 未变，64 位）。
+- [x] 2026-08-14 `--hidden` 冷启动（`PORT=3123` 隔离验收，不触碰在用网关）：进程存活、无可见窗口渲染；打包 sidecar node 拉起自带网关；`/api/health` 200（`desktopProtocol:1`）；SPA 200；`POST /api/maintenance/scenes|run` 均 501 `DESKTOP_MAINTENANCE_UNAVAILABLE`；`GET /api/maintenance/home-hero` 200（不受限，符合契约）；`desktop.log` 确认 `packaged=true` + sidecar 路径。
+- [x] 2026-08-14 卸载与清理：`uninstall.exe /S`（提权）exit 0；安装目录与注册表条目清除；用户数据目录（Roaming）保留（符合「卸载不删用户数据」契约）。
+- [ ] 可见冷启动 + 正常退出（托盘/quit IPC）+ 300s 安装产品 soak：待 GPU 空闲窗口执行（用户出图期间不做 Companion 渲染与 TTS）。
+- [ ] 真实 TTS 双角色口型/归零：待 GPT-SoVITS(9880) 恢复与 GPU 空闲窗口执行。
+- [ ] Electron 退役判据更新（见下节）。
+
+**本轮观察（记录不修复，P1 评估）**：强制终止（taskkill）应用进程后，其自带的 sidecar 网关进程成为孤儿（不随父进程退出），需手动终止。正常退出路径（托盘菜单/quit IPC）会走 GatewaySupervisor 清理，预期不出现该问题；建议 P1 评估 sidecar 的父进程死亡处理（Job Object 或父 PID 轮询）。
+
+**Electron 退役判据（个人使用版）**：Electron 双轨保留至——① 豁免后剩余 D-10 项全绿（安装/迁移/冷启动/隐藏/退出/卸载/清理、真实 TTS 双角色口型与归零、300s 安装产品 soak）；② 打包版日常使用 2-4 周无回归；③ 未发生需回滚 Electron 的阻断问题。三者齐备后 Electron 降级为纯回滚通道（不主动删除），Tauri 标记「完全替代」。

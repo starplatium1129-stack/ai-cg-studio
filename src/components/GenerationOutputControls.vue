@@ -90,6 +90,7 @@
         <span>高清放大 2x (4K)</span>
       </button>
       <button v-if="engine === 'sd'" class="btn btn-ghost" type="button" :disabled="!queueAvailable" @click="$emit('enqueue')">加入队列</button>
+      <button v-if="engine === 'sd'" class="btn btn-ghost" type="button" :disabled="!queueAvailable" title="一键将 3 组不同 Seed 候选变体加入队列" @click="$emit('enqueue-variants')">3 组候选</button>
       <button v-if="engine === 'sd' && expert" class="btn btn-ghost" type="button" :disabled="resultSeed == null" @click="$emit('reuse-seed')">
         锁定这个 seed 微调
       </button>
@@ -132,6 +133,7 @@ const emit = defineEmits<{
   cancel: []
   'upscale-current': []
   enqueue: []
+  'enqueue-variants': []
   'reuse-seed': []
   reset: []
 }>()

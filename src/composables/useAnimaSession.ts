@@ -73,7 +73,7 @@ export interface AnimaSessionOptions {
 const INITIAL_STATE: AnimaGenerationState = {
   phase: 'idle', online: false, checkMsg: 'Anima 状态检查中…', models: [], loras: [], styleLoras: [], styleLoraId: '',
   prompt: '', negative: '', modelId: 'anima-aesthetic-v1.1', loraId: 'L_NENE_V21_ANIMA',
-  loraStrength: 0.85, width: 832, height: 1216, steps: 24, cfg: 3.0,
+  loraStrength: 0.85, width: 832, height: 1216, steps: 30, cfg: 4.5,
   family: 'anima',
   sampler: 'res_multistep', scheduler: 'simple', seed: null,
   hiresFix: false, hiresScale: 2.0, hiresDenoise: 0.35,

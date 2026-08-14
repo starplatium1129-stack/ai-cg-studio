@@ -312,7 +312,7 @@
             <button v-if="pb.manualTags.size" type="button" class="btn btn-ghost btn-xs clear-tags-btn" @click="pb.manualTags = new Set()">清空词条</button>
           </div>
           <div class="manual-tags" :class="{ empty: !pb.manualTags.size }">
-            <span v-for="tag in pb.manualTags" :key="tag" class="manual-tag" :title="tagMeaning(tag)">
+            <span v-for="tag in pb.manualTags" :key="tag" class="manual-tag" :data-weight-tier="tagWeightTier(tag)" :title="tagMeaning(tag)">
               <span class="manual-tag-en">{{ tag }}</span>
               <span v-if="tagLabel(tag)" class="manual-tag-cn">{{ tagLabel(tag) }}</span>
               <button type="button" class="tag-remove" :aria-label="'移除词条 ' + tag" @click="pb.toggleManualTag(tag)">×</button>
@@ -463,6 +463,7 @@
             @generate="callGenerate"
             @cancel="cancelGeneration"
             @enqueue="enqueueCurrent"
+            @enqueue-variants="enqueue3Variants"
             @reuse-seed="reuseLastSeed"
             @reset="resetAll"
           />
@@ -1524,6 +1525,23 @@ function enqueueCurrent() {
   sdQueue.enqueue(job)
 }
 
+/** 一键发起 3 个不同 Seed 的候选变体入队（Midjourney / Forge 候选挑优机制） */
+function enqueue3Variants() {
+  if (drawEngine.value !== 'sd') { pb.flash(`${drawEngine.value === 'krea2' ? 'Krea 2' : 'Anima'} 引擎暂不支持批量队列`); return }
+  const baseJob = captureJob()
+  if (!baseJob) { pb.flash('请先选择场景或填写故事'); return }
+  const baseSeed = baseJob.seed >= 0 ? baseJob.seed : Math.floor(Math.random() * 900000000)
+  for (let i = 0; i < 3; i++) {
+    const jobVariant = {
+      ...baseJob,
+      title: `${baseJob.title} (候选 ${i + 1}/3)`,
+      seed: baseSeed + i * 1000 + (i > 0 ? Math.floor(Math.random() * 100) : 0),
+    }
+    sdQueue.enqueue(jobVariant)
+  }
+  pb.flash('✨ 已将 3 组不同 Seed 候选加入出图队列')
+}
+
 async function callGenerate(opts: { disableLora?: boolean } = {}) {
   if (pb.directorMode === 'basic') {
     await applyManagedRoute({ silent: true })
@@ -1829,6 +1847,20 @@ function tagLabel(tag: string): string {
   return meaning === '未收录释义' ? '' : meaning
 }
 
+/** 词条权重色彩热力等级（NovelAI 视觉分级：强增强、增强、弱化、标准） */
+function tagWeightTier(tag: string): 'strong-boost' | 'boost' | 'reduce' | 'normal' {
+  const match = tag.match(/:\s*([0-9.]+)\s*\)/)
+  if (match) {
+    const val = parseFloat(match[1])
+    if (val >= 1.25) return 'strong-boost'
+    if (val > 1.05) return 'boost'
+    if (val < 0.95) return 'reduce'
+  }
+  if (/^(\({1,3}|\{{1,3})/.test(tag)) return 'boost'
+  if (/^\[{1,3}/.test(tag)) return 'reduce'
+  return 'normal'
+}
+
 function toggleOutfitBundle(tags: string[]) {
   const next = new Set(pb.manualTags)
   const selected = tags.every(tag => next.has(tag))
@@ -1912,11 +1944,15 @@ onMounted(async () => {
   if (typeof q.mood === 'string' && COLOR_MOODS.some(m => m.id === q.mood)) {
     pb.setColorMood(q.mood); handledDeepLink = true
   }
-  if (typeof q.regen === 'string' || typeof q.variant === 'string') {
-    const targetId = Number(typeof q.regen === 'string' ? q.regen : q.variant)
+  if (typeof q.remix === 'string' || typeof q.regen === 'string' || typeof q.variant === 'string') {
+    const targetId = Number(typeof q.remix === 'string' ? q.remix : (typeof q.regen === 'string' ? q.regen : q.variant))
     const entry = Number.isFinite(targetId) ? pb.history.find(h => h.id === targetId) : null
     if (entry) {
-      applyHistory(entry, typeof q.variant === 'string')
+      applyHistory(entry, typeof q.variant === 'string' || typeof q.remix === 'string')
+      if (typeof q.remix === 'string') {
+        setDirectorMode('pro')
+        pb.flash('✨ 已载入作品参数与配方，可自由调整细节')
+      }
       handledDeepLink = true
     }
   } else if (typeof q.scene === 'string') {

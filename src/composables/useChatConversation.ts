@@ -115,7 +115,14 @@ export function useChatConversation(options: ChatConversationOptions) {
     replyAnnouncement.value = ''
     messages.push({ role: 'user', content: text, mid: createMessageId(), stopped: false })
     options.storage.trim(characterId)
-    const assistant = { role: 'assistant' as const, content: '', mid: createMessageId(), stopped: false }
+    const recalledList = options.recallMemories(characterId, text)
+    const assistant = {
+      role: 'assistant' as const,
+      content: '',
+      mid: createMessageId(),
+      stopped: false,
+      ...(recalledList && recalledList.length > 0 ? { recalledMemories: recalledList } : {}),
+    }
     messages.push(assistant)
     options.storage.save()
     inputText.value = ''

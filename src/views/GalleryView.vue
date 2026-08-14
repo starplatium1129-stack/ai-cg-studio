@@ -70,7 +70,7 @@
             :class="{ 'artwork-pending': pendingDeleteId === item.id }"
             :style="{ '--art-ratio': ratioOf(item) }"
           >
-            <!-- 删除按钮必须是 .artwork-button 的兄弟节点：button 不能嵌 button -->
+            <!-- 快捷工具条 -->
             <div class="artwork-tools">
               <template v-if="pendingDeleteId === item.id">
                 <button class="artwork-tool danger" type="button" :disabled="deleting"
@@ -78,9 +78,12 @@
                 <button class="artwork-tool" type="button" :disabled="deleting"
                   @click="pendingDeleteId = null">取消</button>
               </template>
-              <button v-else class="artwork-tool" type="button"
-                :aria-label="`删除作品：${sceneTitle(item.scene, item)}`"
-                @click="pendingDeleteId = item.id">删除</button>
+              <template v-else>
+                <RouterLink class="artwork-tool" :to="`/prompt-builder?remix=${encodeURIComponent(item.id || '')}`" title="以此作品配方回填创作台">Remix</RouterLink>
+                <button class="artwork-tool" type="button"
+                  :aria-label="`删除作品：${sceneTitle(item.scene, item)}`"
+                  @click="pendingDeleteId = item.id">删除</button>
+              </template>
             </div>
             <button
               class="artwork-button"
@@ -131,9 +134,22 @@
       <section class="viewer-stage" @click.self="infoOpen = false">
         <button class="viewer-close viewer-close-on-art" type="button" aria-label="关闭" @click="closeViewer" ref="closeBtn">×</button>
         <button class="viewer-nav viewer-prev" type="button" aria-label="上一幅" :disabled="viewerIndex <= 0" @click="step(-1)">‹</button>
-        <img v-if="viewerUrl" class="viewer-image" :src="viewerUrl" :alt="current ? sceneTitle(current.scene, current) : ''" decoding="async" />
+        <template v-if="compareMode && hasComparableImage && viewerUrl">
+          <div class="viewer-compare-host">
+            <ImageCompareSlider
+              :before-src="parentImageUrl || thumbUrls[current!.id]"
+              :after-src="viewerUrl"
+              :before-label="parentImageUrl ? '父版本 (原图)' : '缩略预览'"
+              after-label="当前原片"
+            />
+          </div>
+        </template>
+        <img v-else-if="viewerUrl" class="viewer-image" :src="viewerUrl" :alt="current ? sceneTitle(current.scene, current) : ''" decoding="async" />
         <div v-else class="viewer-fallback">✦</div>
         <button class="viewer-nav viewer-next" type="button" aria-label="下一幅" :disabled="viewerIndex >= visible.length - 1" @click="step(1)">›</button>
+        <button v-if="hasComparableImage && viewerUrl" class="viewer-compare-toggle" :class="{ active: compareMode }" type="button" :title="compareMode ? '退出对比' : '开启对比滑块'" @click="compareMode = !compareMode">
+          <ArchiveIcon name="spark" /> 对比
+        </button>
         <button class="viewer-info-toggle" type="button" aria-label="作品信息" @click="infoOpen = !infoOpen">i</button>
         <div class="viewer-position">{{ viewerIndex + 1 }} / {{ visible.length }}</div>
       </section>
@@ -156,8 +172,8 @@
           <div class="viewer-prompt">{{ current.prompt || '未保存 Prompt' }}</div>
         </details>
         <div class="viewer-actions">
-          <RouterLink class="btn btn-primary" :to="`/prompt-builder?regen=${encodeURIComponent(current.id || '')}`">重新生成</RouterLink>
-          <RouterLink class="btn btn-ghost" :to="`/prompt-builder?variant=${encodeURIComponent(current.id || '')}`">生成变体</RouterLink>
+          <RouterLink class="btn btn-primary" :to="`/prompt-builder?remix=${encodeURIComponent(current.id || '')}`">✨ Remix 配方</RouterLink>
+          <RouterLink class="btn btn-ghost" :to="`/prompt-builder?regen=${encodeURIComponent(current.id || '')}`">原参重跑</RouterLink>
           <button class="btn btn-ghost" type="button" @click="downloadCurrent">下载原图</button>
           <button class="btn btn-ghost" type="button" @click="copyPrompt">复制 Prompt</button>
           <button v-if="pendingDeleteId !== current.id" class="btn btn-ghost btn-danger" type="button"
@@ -187,10 +203,12 @@ import { useToast } from '@/composables/useToast'
 import ArchivePageHero from '@/components/visual/ArchivePageHero.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import ImageCompareSlider from '@/components/visual/ImageCompareSlider.vue'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import { jpegThumbDataUrl, thumbKey } from '@/utils/imageThumb'
 import type { Scene, LoraMeta } from '@/stores/sceneStore'
 import { artworkTimestamp, parseArtworkRecords, type ArtworkRecord } from '@/types/artwork'
+import { formatA1111Parameters, injectPngMetadata } from '@/utils/pngMetadata'
 
 const sceneStore = useSceneStore()
 useScrollReveal()
@@ -219,6 +237,7 @@ const galleryLoading = ref(true)
 const galleryError = ref('')
 const viewerIndex = ref(-1)
 const infoOpen = ref(false)
+const compareMode = ref(false)
 const viewerUrl = ref('')
 const cardUrls = reactive<Record<string, string>>({})
 /** 缩略图缓存（KV dataURL），比 HD blob 快读先显示 */
@@ -260,6 +279,23 @@ const groups = computed(() => {
     ;(buckets[key] = buckets[key] || []).push(item)
   })
   return order.filter(k => buckets[k]?.length).map(k => ({ key: k, items: buckets[k] }))
+})
+
+const parentArtwork = computed(() => {
+  const pId = current.value?.parent_id
+  if (!pId) return null
+  return history.value.find(h => String(h.id) === String(pId)) || null
+})
+
+const parentImageUrl = computed(() => {
+  if (!parentArtwork.value) return ''
+  const pId = parentArtwork.value.id
+  return cardUrls[pId] || thumbUrls[pId] || ''
+})
+
+const hasComparableImage = computed(() => {
+  if (!current.value) return false
+  return Boolean(parentImageUrl.value || thumbUrls[current.value.id])
 })
 
 function resetGalleryFilters() {
@@ -504,12 +540,14 @@ function openViewer(index: number) {
   if (!item) return
   viewerIndex.value = index
   infoOpen.value = false
+  compareMode.value = false
   void hydrateViewer(item)
 }
 function closeViewer() {
   viewerLoadToken += 1
   viewerIndex.value = -1
   infoOpen.value = false
+  compareMode.value = false
   releaseViewerUrl()
   viewerUrl.value = ''
 }
@@ -572,34 +610,59 @@ function copyPrompt() {
     .catch(() => showToast('复制失败，请手动选取'))
 }
 
-/** 下载当前作品的原图文件（优先 IndexedDB 原图 blob，回落查看器/缩略图 URL） */
+/** 下载当前作品的原图文件（优先 IndexedDB 原图 blob，注入 Civitai 级元数据） */
 async function downloadCurrent() {
   const item = current.value
   if (!item) return
   const name = (sceneTitle(item.scene) || 'artwork').replace(/[\\/:*?"<>|]/g, '_')
   const fileName = `${name}-${item.seed ?? item.id}.png`
-  // 桌面版：原生保存对话框，可自由选择保存位置
-  if (window.companionDesktop) {
+
+  const metaText = formatA1111Parameters({
+    prompt: item.prompt ? String(item.prompt) : undefined,
+    negative: item.negative ? String(item.negative) : undefined,
+    steps: item.steps ? Number(item.steps) : undefined,
+    sampler: item.sampler ? String(item.sampler) : undefined,
+    cfg: item.cfg ? Number(item.cfg) : undefined,
+    seed: item.seed !== undefined && item.seed !== null ? item.seed : undefined,
+    size: item.size ? String(item.size) : undefined,
+    model: item.model ? String(item.model) : undefined,
+    character: item.character ? String(item.character) : undefined,
+  })
+
+  let rawBlob: Blob | null = null
+  if (item.image_id || item.id) {
     try {
-      const blob = await imgGet(String(item.image_id || item.id))
-      if (blob) {
-        const data = new Uint8Array(await blob.arrayBuffer())
-        const result = await window.companionDesktop.saveImage({ data, name: fileName })
-        if (result.saved) showToast(`已保存到 ${result.filePath || '所选位置'}`)
-        return
-      }
+      rawBlob = await imgGet(String(item.image_id || item.id))
+    } catch { /* fallback below */ }
+  }
+
+  let finalBuffer: Uint8Array | null = null
+  if (rawBlob) {
+    try {
+      const buffer = await rawBlob.arrayBuffer()
+      finalBuffer = injectPngMetadata(buffer, metaText)
+    } catch {
+      finalBuffer = new Uint8Array(await rawBlob.arrayBuffer())
+    }
+  }
+
+  // 桌面版：原生保存对话框，可自由选择保存位置
+  if (window.companionDesktop && finalBuffer) {
+    try {
+      const result = await window.companionDesktop.saveImage({ data: finalBuffer, name: fileName })
+      if (result.saved) showToast(`已保存到 ${result.filePath || '所选位置'}`)
+      return
     } catch { /* 落到浏览器下载兜底 */ }
   }
-  // 浏览器路径：卡片原图 URL 可能因懒加载未就绪，主动从 IndexedDB 取原图 blob。
-  // 只有原图缺失时才回落缩略图，避免「下载原图拿到缩略图」。
-  let url = cardUrls[item.id] || viewerUrl.value || ''
-  if (!url && item.image_id) {
-    try {
-      const blob = await imgGet(String(item.image_id))
-      if (blob) url = URL.createObjectURL(blob)
-    } catch { /* 落到缩略图兜底 */ }
+
+  let url = ''
+  if (finalBuffer) {
+    const pngBlob = new Blob([new Uint8Array(finalBuffer.buffer as ArrayBuffer)], { type: 'image/png' })
+    url = URL.createObjectURL(pngBlob)
+  } else {
+    url = cardUrls[item.id] || viewerUrl.value || thumbUrls[item.id] || ''
   }
-  if (!url) url = thumbUrls[item.id] || ''
+
   if (!url) return
   const a = document.createElement('a')
   a.href = url
@@ -607,6 +670,7 @@ async function downloadCurrent() {
   document.body.appendChild(a)
   a.click()
   a.remove()
+  if (finalBuffer) setTimeout(() => URL.revokeObjectURL(url), 2000)
 }
 
 /* ---------- 键盘 ---------- */
@@ -763,6 +827,19 @@ watch(visible, () => { hydrateThumbs(); hydrateCards() })
 <style>
 /* 非 scoped：Teleport 到 body 的查看器 */
 .art-viewer { position:fixed; inset:0; z-index:var(--z-overlay); display:none; grid-template-columns:minmax(0,1fr) minmax(290px,360px); background:var(--art-backdrop); color:var(--on-art-primary); }
+.viewer-compare-host { width:100%; height:calc(100vh - 120px); max-width:min(90vw, 1200px); display:flex; align-items:center; justify-content:center; }
+.viewer-compare-toggle {
+  position:absolute; z-index:var(--z-raised); top:18px; right:64px;
+  display:inline-flex; align-items:center; gap:4px;
+  padding:6px 12px; border-radius:var(--r-pill);
+  border:1px solid var(--on-art-line); background:var(--art-scrim);
+  color:var(--on-art-primary); cursor:pointer; font:600 var(--fs-label-xs) var(--font-mono);
+  -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
+  transition:background var(--t-fast), border-color var(--t-fast);
+}
+.viewer-compare-toggle:hover, .viewer-compare-toggle.active {
+  border-color:var(--accent); background:color-mix(in srgb,var(--accent) 30%,var(--art-scrim)); color:var(--on-art-primary);
+}
 .art-viewer.open { display:grid; }
 .viewer-stage { position:relative; min-width:0; display:grid; place-items:center; padding:clamp(46px,5vw,76px) clamp(48px,6vw,92px); overflow:hidden; }
 .viewer-image { display:block; max-width:100%; max-height:calc(100vh - 92px); width:auto; height:auto; object-fit:contain; filter:drop-shadow(0 24px 56px var(--art-backdrop)); animation:galleryImageIn .35s ease; }

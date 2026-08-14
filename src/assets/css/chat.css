@@ -362,6 +362,15 @@ body:has(.chat-page) .sakura-fall {
   opacity: .9;
 }
 
+.chat-page .portrait-stage.touch-pulse .voice-halo {
+  animation: touch-resonance 1.2s var(--ease-out) forwards;
+  opacity: .95;
+}
+@keyframes touch-resonance {
+  0% { transform: translateX(-50%) scale(0.85); opacity: .95; filter: drop-shadow(0 0 16px var(--halo-accent, var(--character-accent))); }
+  100% { transform: translateX(-50%) scale(1.25); opacity: 0; filter: none; }
+}
+
 /* TTS 情绪 → 光环色（情绪不触碰服装 expression，纯 CSS 通道） */
 .chat-page .portrait-stage.emotion-shy .voice-halo     { --halo-accent: var(--mood-love); }
 .chat-page .portrait-stage.emotion-happy .voice-halo   { --halo-accent: var(--mood-joy); }
@@ -1261,6 +1270,30 @@ body:has(.chat-page) .sakura-fall {
   vertical-align: -2px;
 }
 
+.chat-page .msg-recalled-box {
+  margin-top: 6px;
+  padding-top: 4px;
+  border-top: 1px dashed color-mix(in srgb, var(--archive-cyan) 35%, transparent);
+}
+
+.chat-page .msg-recalled-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 7px;
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--archive-blue-soft) 40%, var(--bg-surface));
+  color: var(--archive-cyan);
+  font: 600 var(--fs-label-xs) var(--font-mono);
+  letter-spacing: .02em;
+  cursor: help;
+}
+
+.chat-page .recalled-icon {
+  font-size: 0.85em;
+  color: var(--mood-love-text);
+}
+
 /* TTS 播放当前句：角色气泡柔和高亮 */
 .chat-page .message.speaking .message-bubble {
   border-color: color-mix(in srgb, var(--character-accent) 45%, var(--border-soft));
@@ -1309,6 +1342,12 @@ body:has(.chat-page) .sakura-fall {
   color: var(--accent);
 }
 .chat-page .msg-memory-btn:disabled { cursor: default; opacity: .72; }
+.chat-page .msg-memory-btn.remembered {
+  border-color: color-mix(in srgb, var(--archive-cyan) 45%, var(--border-soft));
+  color: var(--archive-cyan);
+  background: var(--archive-blue-soft);
+  opacity: .85;
+}
 
 .chat-page .chat-composer {
   padding: var(--s-3);

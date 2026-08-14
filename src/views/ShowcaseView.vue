@@ -153,12 +153,7 @@
             <div class="viewer-story">{{ currentEntry.story }}</div>
             <div class="viewer-actions">
               <RouterLink v-if="currentEntry.type === 'scene'" class="btn btn-primary" :to="'/prompt-builder?scene=' + encodeURIComponent(currentEntry.id) + '&step=4&generate=1'"><ArchiveIcon name="spark" /> 画这个场景</RouterLink>
-              <p v-else class="viewer-popular-note" :data-entry-type="currentEntry.type">
-                <template v-if="currentEntry.type === 'popular'">热门角色样张 · 生成版本见上方，可在导演台「热门角色 · 无需 LoRA」模式继续创作（暂未提供直达深链，请到导演台选择角色）。</template>
-                <template v-else-if="currentEntry.type === 'artist'">画师风格样张 · 记录画师 tag 与生成参数（见上方元数据），经人工复核后收录。</template>
-                <template v-else-if="currentEntry.type === 'lora'">LoRA 样张 · 记录 LoRA / 引擎 / 模型与生成参数（见上方元数据），经人工复核后收录。</template>
-                <template v-else>审核样张 · 生成参数见上方元数据，经人工复核后收录。</template>
-              </p>
+              <RouterLink v-else class="btn btn-primary" :to="'/prompt-builder'"><ArchiveIcon name="spark" /> ✨ 去导演台创作</RouterLink>
               <button class="btn btn-ghost" type="button" @click="move(-1)">← 上一张</button>
               <button class="btn btn-ghost" type="button" @click="move(1)">下一张 →</button>
             </div>
