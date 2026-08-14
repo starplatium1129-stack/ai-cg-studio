@@ -39,6 +39,22 @@ const THEMES = ['light', 'dark'];
 test.beforeAll(() => { fs.mkdirSync(OUT, { recursive: true }); });
 
 for (const theme of THEMES) {
+  test(`capture ${theme} director-4k`, async ({ page }) => {
+    await page.setViewportSize({ width: 3840, height: 2160 });
+    await page.addInitScript(value => {
+      try { localStorage.setItem('aics_theme', value as string); } catch { /* ignore */ }
+    }, theme);
+    await page.goto('/prompt-builder');
+    await page.evaluate(value => {
+      document.documentElement.setAttribute('data-theme', value as string);
+    }, theme);
+    await page.waitForTimeout(2000);
+    await page.screenshot({
+      path: path.join(OUT, `${theme}-director-4k.png`),
+      fullPage: false,
+    });
+  });
+
   for (const [name, url] of PAGES) {
     test(`capture ${theme} ${name}`, async ({ page }) => {
       // 先落主题再导航，避免首帧闪一次默认配色
