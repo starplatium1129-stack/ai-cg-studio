@@ -12,8 +12,8 @@
 |---|---|---|---|
 | 架构 | 12B DiT（从零训练）+ Qwen3-VL-4B 编码器 | 2B Flow-Matching + Qwen-3 0.6B 标签编码器 | SDXL 1.0 U-Net + CLIP（Danbooru 特调） |
 | 提示词形态 | 100% 英文自然语言散文（3~5 句） | 空格分隔标签流 + 可选 1 句方向 caption | Danbooru 下划线标签流 |
-| 质量词 | **禁用**（把输出拉向 generic AI gloss） | Base：`masterpiece, best quality, score_7`；Aesthetic：**全部去掉** | `masterpiece, best quality, amazing quality`（官方模板） |
-| 权重语法 `(tag:1.2)` | 无效（被当字面文本） | 不适用（标签流） | 有效（A1111 语法） |
+| 质量词 | **禁用**（把输出拉向 generic AI gloss） | Base：`masterpiece, best quality, score_7`；Aesthetic：**全部去掉** | `masterpiece, best quality, amazing quality`（官方模板）；⚠️ **score_9 系是 Pony 体系，WAI 不认** |
+| 权重语法 `(tag:1.2)` | 无效（被当字面文本） | 有效但需高值（`(chibi:2)`） | 有效（A1111 语法）；标签内含括号须转义 `\(...\)` |
 | 负面词 | 恒空（ConditioningZeroOut） | 官方前缀 + 手/解剖/文字保护 + rating 安全 | 官方前缀 + 保护 + rating 安全 |
 | CFG / Steps | 8 步 / CFG 1（固定） | 24 步 / CFG 3（生产）；官方对照 30/4.5 | 30 步 / CFG 6 + Auto hires 1.5× |
 | 角色身份 | 角色名+系列+外貌散文（内置知识） | 触发词 token（LoRA）或 身份/服装散文（无 LoRA） | Danbooru 角色 tag + 特征标签 + LoRA |
@@ -103,11 +103,41 @@
 
 **评分标签争议（⚪🟡）**：score 词只适用 Anima 家族，不适用 Pony/SDXL/Illustrious/NoobAI（Raininosi 在 WAI-ANIMA 澄清）；官方推荐 score_7，但 WAI-ANIMA 用户多人反馈"不加 score 更少 AI 味"。→ 按 checkpoint 取舍：Base 留 score_7（官方），Aesthetic 去 score（官方 + 项目已实现）。
 
+### 2.6 Anima 提示词规范速查表（可直接照抄）
+
+**① 正向模板（Base/Aesthetic）**
+```
+masterpiece, best quality, score_7, safe,
+1girl,
+<角色标签：空格小写，变体括号，如 nene (casual)>
+<作品/项目名>
+@<画师（必须@）>
+<发型> hair, <瞳色> eyes, <服装>, <配饰>,
+<动作/表情/构图 tag...>,
+<环境/场景 tag...>.
+<1–2 句自然语言补充分镜/氛围>
+```
+> Aesthetic 版：删掉 score_7（官方建议正负都不用 score）；Base 保留。
+
+**② 负面（官方最短版，可作起点）**
+```
+worst quality, low quality, score_1, score_2, score_3, artist name, blurry, jpeg artifacts, chromatic aberration
+```
+按需追加（社区实证）：`solid background, deviant art`。**别照搬 Illustrious 的 bad-hands 超长列表**；结构引导放正面。
+
+**③ 标签格式**：一律**空格+小写**（仅 score 用下划线）；画师**必须 @**；角色变体括号 `hatsune miku (racing)` / `(adult)` / `(append)`；Danbooru/Gelbooru 不一致时用 Gelbooru。
+
+**④ 角色写法**：单角色 = 角色标签 + 外观（发/瞳/服/配饰）；**多角色逐人 [名字+外观] + 布局**；锁死 = 角色 LoRA + 显式外观 tag；歧义查 Anima 专用角色表 / animadex.net。⚠️ 项目 exactTokens 消歧括号按官方应空格（`rem (re zero)`，待 A/B）。
+
+**⑤ 权重/参数**：权重语法有效且**数值要高**（`(chibi:2)`；角色/画师区 `:2.0` 起步）；Base/Aesthetic 30–50 steps、CFG 4–5；Turbo CFG 1、8–12 steps；采样器 er_sde（默认）→ euler_a（柔和）→ dpmpp_2m_sde_gpu（多样）→ euler（创造）；Forge Shift 默认 ~3、标签多调到 10–24；分辨率 512²–1536²。**项目生产当前 24 步/CFG 3 为实机收敛值**（比官方保守，A/B 验证过）。
+
+**⑥ LoRA（宁宁/夏目）**：底模必须 anima-base-v1.0（Base，勿在 merge 上训）；训练 LR 2e-5、rank 16–32、**冻结 LLM adapter**；打标 `newest, safe` 前缀 + 角色/作品/画师 + 外观 + 一句 NL；推理强度 0.7–0.9（项目 0.85）；遗忘 = LR 过高或训了 adapter。
+
 ---
 
 ## 3. WAI Illustrious SDXL v17（Danbooru 标签流）
 
-> 外部调研进行中（子代理 72db3d95）；以下先给官方契约（项目已核实）与本地映射。
+> 外部调研（子代理 72db3d95）：Illustrious 官方卡原文 + WAI 官方卡（CivitAI 827184 存档）+ NoobAI/AIDXL/SeaArt 官方指南 + WAI 讨论区 289 条，全部直接抓取核对；以下先给官方契约与本地映射。
 
 ### 3.1 官方契约（LyliaEngine/waiIllustriousSDXL_v170，已核实）
 - 官方正层模板：`,masterpiece,best quality,amazing quality,`（**空格原样保留**、仅出现一次；`promptPolicy.ts` 对 SD 不再 norm 回下划线）。
@@ -124,12 +154,50 @@
   masterpiece, best quality, amazing quality, general, 1girl, solo, ayachi_nene, nene_school_uniform, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, school_uniform, looking_back, smile, classroom_window, afternoon, clear_sky, medium_shot, window_light, <lora:ayachi_nene_v18_wd14:0.8>
   ```
 
-### 3.3 待外部调研回填
-- [ ] Illustrious-XL 官方提示词指南细节（onoma 模型卡）
-- [ ] score_9/score_8_up 评分标签的社区共识与在 WAI 上的有效性
-- [ ] 权重语法 `(tag:1.2)` 在 Illustrious 上的社区经验
-- [ ] 角色 LoRA 权重区间与多 LoRA 叠加的社区共识
-- [ ] CFG 6 vs 7 的标签遵循度社区对比
+### 3.3 外部调研结论（2026-08-14，官方卡原文抓取 + NoobAI/AIDXL/SeaArt 指南 + WAI 讨论区交叉验证）
+
+> 置信度：🟢官方 / 🔵带图实验 / 🟡社区 / ⚪未确认。**项目 WAI v17 前缀与官方卡逐字一致**（正向 `masterpiece, best quality, amazing quality,` / 负向 `bad quality, worst quality, worst detail, sketch, censor,`）——可冻结为基准。
+
+**官方参数（🟢 WAI 官方卡，CivitAI 827184）**：Steps 15–30、CFG 5–7、Euler a、原生分辨率 >1024²（示例 1024×1344）、Hires 1.5× R-ESRGAN 4x+ Anime6B denoise 0.35–0.5。官方显式告诫**别堆太多质量/美学标签、负面别过长（会糊）**。
+
+**Illustrious 本体（🟢 OnomaAIResearch early-release-v0）**：训练于 Danbooru2023；质量标签分级 worst/bad/average/good/best/masterpiece；Euler a、Steps 20–28、CFG 5–7.5；**构图标签（close-up/cowboy shot 等）勿叠**。
+
+**⚠️ score_9/score_8_up 是 Pony 体系，纯 Illustrious/WAI 不认**（WAI 讨论区确认）——不要用（区别于 Anima 的 score_7）。
+
+**采样推荐（🟢🟡 跨来源合成）**：Steps 25–30、CFG 5–6.5（精细化 4.5–5）、Euler a（DPM++ 2M Karras 高步数备选）；负面短清单在 CFG 4.5–7 有效；v17 偏 2.5D，回二次元负面加 `realistic, 3d`。
+
+**标签规范（🟢 NoobAI/AIDXL/SeaArt 官方）**：`,` 分隔标签流、下划线转空格、**标签内含括号必须转义 `\(...\)`**（WebUI 权重冲突）、**顺序=重要度**（主体→角色名(系列)→系列→画师→特征→服装→场景→风格→质量，质量可前置）；画师标签**裸写不加 `by`**（AIDXL 例外）。
+
+**LoRA（🟢 AIDXL 官方 + 🟡 社区）**：权重 0.6–0.9、多 LoRA ~0.8、同时 ≤3–4 个、统一训练底模；**有角色 LoRA 后删掉重复特征加固标签，只补换装**（身份与服装解耦）。
+
+**角色身份（🟢 SeaArt 官方）**：四档识别策略 + 「Danbooru >100 图可裸出，否则 LoRA」判据；锁角色 = 发色+发型+瞳色+标志服；角色名(系列名) 消歧（`ayachi nene` 已天然无歧义）。
+
+**待实机验证后写死（⚪ 社区共识，无官方数值）**：LoRA 权重区间、CFG 下限 4.5–5、强化负面清单（realistic/3d）。
+
+### 3.4 SD/WAI 提示词规范速查表（可直接照抄，基准 WAI v17.0）
+
+> ☑=官方已验证 / ◐=社区共识。**注意：与 Anima 的差异点——SD 系权重语法有效、负面可比 Anima 稍长但仍宜短、score_9 禁用。**
+
+**① 质量前缀（置首，官方）**
+```
+masterpiece, best quality, amazing quality,
+```
+上限 3–5 个质量词；**勿堆** ultra-detailed/4k/HDR（官方告诫会糊）。二次元锁定变体（NoobAI 流派）：`masterpiece, best quality, newest, absurdres, highres, safe,`。
+
+**② 评分标签**：纯 Illustrious/WAI **禁用 score_9/score_8_up**（Pony 体系，浪费 token）。
+
+**③ 负面词**
+- 官方精简版：`bad quality, worst quality, worst detail, sketch, censor,`
+- 强化版（仍控制 ≤10–15 个）：`bad quality, worst quality, worst detail, sketch, censor, lowres, bad anatomy, bad hands, extra digits, jpeg artifacts, watermark, text, blurry, realistic, 3d, nsfw`
+- v17 偏 2.5D：回二次元加 `realistic, 3d`；白斑加 `lens flare, particles, dust`；红瞳乱入加 `heart pupil`。
+
+**④ 标签格式**：`,` 分隔标签流；下划线→空格（`blue_hair`→`blue hair`）；**标签内含括号必须转义**（`rem (re zero)`，WebUI 写作 `rem \(re zero\)`）；顺序=重要度：`<1girl/1boy> → <角色名(系列)> → <系列> → <画师> → <特征> → <服装> → <场景/动作> → <风格> → <质量>`；>77 token 自动分包、遵循度骤降，用 `BREAK` 手动分块且不跨块重复概念。
+
+**⑤ 角色写法**：`角色名 (系列名)` + 系列标签；Danbooru >100 图可裸出否则 LoRA（SeaArt 判据）；锁身份 = 发色+发型+瞳色+标志服，身份锚与场景词分开放；**有角色 LoRA 后删重复特征加固标签、只补换装**；画师标签裸写不加 `by`，放中段、最多 2 位（项目白名单）。
+
+**⑥ 权重**：`(tag:1.2)` 有效；核心特征 `(role:1.1–1.2)`；风格标签 `(anime coloring, anime screencap:1.2–1.3)`；质量词可 `(amazing quality:1.3–1.5)`；角色 LoRA 0.6–0.9、多 LoRA 0.8、同时 ≤3–4 个、统一训练底模。
+
+**⑦ 参数（WAI 官方区间）**：Steps 25–30（官方 15–30，复杂 50+）/ CFG 5–6.5（官方 5–7，精细化 4.5–5）/ Euler a / 原生分辨率 >1024²（1024×1344）/ Hires 1.5× steps 20 R-ESRGAN 4x+ Anime6B denoise 0.35–0.5；官方推荐 forge-neo。
 
 ---
 
@@ -185,6 +253,8 @@
 | TuZZiL/ComfyUI-ConditioningKrea2Rebalance README | rebalance 预设语义 | 已验证（本机实图） |
 | circlestone-labs/Anima 模型卡 | Anima 定位/格式 | 已验证 |
 | LyliaEngine/waiIllustriousSDXL_v170 模型页 | WAI 官方正/负面模板 | 已验证 |
+| OnomaAIResearch/Illustrious-xl-early-release-v0 卡 | Illustrious 本体指南 | 已验证 |
+| NoobAI-XL 1.1 卡（Laxhar）+ AIDXL README + SeaArt 官方指南 | 标签规范/顺序/转义/LoRA/角色判据 | 已验证 |
+| civarchive.com WAI 卡存档 + WAI 讨论区高赞 | 参数/score 澄清/负面 | 已验证/社区 |
 | anima-training-record.md（本项目） | Anima Prompt A/B 实机 | 已验证 |
 | PTT AI_Art / CivArchive / HF discussions | 社区经验 | 社区经验 |
-| OnomaAIResearch/Illustrious-XL 文档 | Illustrious 指南 | 待子代理回填 |
