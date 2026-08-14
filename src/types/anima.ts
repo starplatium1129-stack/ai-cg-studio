@@ -42,6 +42,9 @@ export interface AnimaJobMetadata {
   seed: number
   character: 'nene' | 'nene_b' | 'natsume' | 'triad' | null
   preview?: boolean
+  hiresFix?: boolean
+  hiresScale?: number
+  hiresDenoise?: number
   createdAt: number
   resultUrl: string | null
 }

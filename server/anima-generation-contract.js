@@ -30,6 +30,7 @@ const PARAMETER_LIMITS = Object.freeze({
 const ALLOWED_INPUT_KEYS = Object.freeze([
   'prompt', 'negative', 'modelId', 'loraId', 'loraStrength',
   'width', 'height', 'steps', 'cfg', 'seed', 'character', 'styleLoraId',
+  'hiresFix', 'hiresScale', 'hiresDenoise', 'hiresSteps',
 ]);
 
 const CHARACTER_LORA_BINDINGS = Object.freeze({

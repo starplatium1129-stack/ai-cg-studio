@@ -525,4 +525,28 @@ test('anima no-LoRA route contract: validate + workflow have no LoraLoader and k
   assert.throws(function () {
     animaRoute.validateInput({ prompt: 'x', modelId: 'anima-base-v1.0', width: 832, height: 1216 });
   }, function (error) { return error && error.code === 'UNKNOWN_LORA'; }, 'non-noLora anima model must still require a LoRA');
+
+  // Hires.fix workflow validation
+  var hiresInput = animaRoute.validateInput({
+    prompt: 'raiden_shogun, 1girl',
+    negative: 'worst quality',
+    modelId: 'anima-aesthetic-v1.1',
+    width: 832,
+    height: 1216,
+    seed: 42,
+    hiresFix: true,
+    hiresScale: 2.0,
+    hiresDenoise: 0.35,
+  });
+  assert.strictEqual(hiresInput.hiresFix, true);
+  assert.strictEqual(hiresInput.hiresScale, 2.0);
+  assert.strictEqual(hiresInput.hiresDenoise, 0.35);
+  var hiresWf = animaRoute.buildWorkflow(hiresInput);
+  assert.ok(hiresWf['11'], 'hires workflow must contain LatentUpscaleBy');
+  assert.strictEqual(hiresWf['11'].class_type, 'LatentUpscaleBy');
+  assert.strictEqual(hiresWf['11'].inputs.scale_by, 2.0);
+  assert.ok(hiresWf['12'], 'hires workflow must contain 2nd KSampler');
+  assert.strictEqual(hiresWf['12'].class_type, 'KSampler');
+  assert.strictEqual(hiresWf['12'].inputs.denoise, 0.35);
+  assert.deepStrictEqual(hiresWf['8'].inputs.samples, ['12', 0]);
 });

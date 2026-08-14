@@ -263,7 +263,10 @@ function validateInput(body, expectedFamily) {
     scheduler:model.scheduler,
     seed:seed,
     character:body.character,
-    styleLoraId:model.family === 'krea2' ? (body.styleLoraId || null) : null
+    styleLoraId:model.family === 'krea2' ? (body.styleLoraId || null) : null,
+    hiresFix:Boolean(body.hiresFix),
+    hiresScale:body.hiresFix ? validateNumber(body.hiresScale || 2.0, 'hiresScale', 1.1, 3.0, false) : 1.0,
+    hiresDenoise:body.hiresFix ? validateNumber(body.hiresDenoise || 0.35, 'hiresDenoise', 0.1, 0.7, false) : 0.35,
   };
 }
 
@@ -301,30 +304,55 @@ function buildWorkflow(input) {
      workflow['7'] = { class_type:'KSampler', inputs:{ model:kreaModel, positive:positive, negative:['5', 0], latent_image:['6', 0], seed:input.seed, steps:8, cfg:1, sampler_name:'euler', scheduler:'simple', denoise:1 } };
     return workflow;
   }
-  if (model.noLora === true && !input.loraId) return {
-    '1': { class_type:'UNETLoader', inputs:{ unet_name:model.file, weight_dtype:'default' } },
-    '2': { class_type:'CLIPLoader', inputs:{ clip_name:'qwen_3_06b_base.safetensors', type:'qwen_image' } },
-    '3': { class_type:'VAELoader', inputs:{ vae_name:'qwen_image_vae.safetensors' } },
-    '4': { class_type:'CLIPTextEncode', inputs:{ clip:['2', 0], text:input.prompt } },
-    '5': { class_type:'CLIPTextEncode', inputs:{ clip:['2', 0], text:input.negative } },
-    '6': { class_type:'EmptyLatentImage', inputs:{ width:input.width, height:input.height, batch_size:1 } },
-    '7': { class_type:'KSampler', inputs:{
-      model:['1', 0],
-      positive:['4', 0],
-      negative:['5', 0],
-      latent_image:['6', 0],
-      seed:input.seed,
-      steps:input.steps,
-      cfg:input.cfg,
-      sampler_name:input.sampler,
-      scheduler:input.scheduler,
-      denoise:1
-    } },
-    '8': { class_type:'VAEDecode', inputs:{ samples:['7', 0], vae:['3', 0] } },
-    '10': { class_type:'SaveImage', inputs:{ images:['8', 0], filename_prefix:OUTPUT_FILENAME_PREFIX } }
-  };
+
+  var isHires = input.hiresFix === true && input.hiresScale > 1.0;
+  var upWidth = isHires ? Math.round((input.width * input.hiresScale) / 8) * 8 : input.width;
+  var upHeight = isHires ? Math.round((input.height * input.hiresScale) / 8) * 8 : input.height;
+
+  if (model.noLora === true && !input.loraId) {
+    var noLoraWf = {
+      '1': { class_type:'UNETLoader', inputs:{ unet_name:model.file, weight_dtype:'default' } },
+      '2': { class_type:'CLIPLoader', inputs:{ clip_name:'qwen_3_06b_base.safetensors', type:'qwen_image' } },
+      '3': { class_type:'VAELoader', inputs:{ vae_name:'qwen_image_vae.safetensors' } },
+      '4': { class_type:'CLIPTextEncode', inputs:{ clip:['2', 0], text:input.prompt } },
+      '5': { class_type:'CLIPTextEncode', inputs:{ clip:['2', 0], text:input.negative } },
+      '6': { class_type:'EmptyLatentImage', inputs:{ width:input.width, height:input.height, batch_size:1 } },
+      '7': { class_type:'KSampler', inputs:{
+        model:['1', 0],
+        positive:['4', 0],
+        negative:['5', 0],
+        latent_image:['6', 0],
+        seed:input.seed,
+        steps:input.steps,
+        cfg:input.cfg,
+        sampler_name:input.sampler,
+        scheduler:input.scheduler,
+        denoise:1
+      } },
+      '8': { class_type:'VAEDecode', inputs:{ samples:['7', 0], vae:['3', 0] } },
+      '10': { class_type:'SaveImage', inputs:{ images:['8', 0], filename_prefix:OUTPUT_FILENAME_PREFIX } }
+    };
+    if (isHires) {
+      noLoraWf['11'] = { class_type:'LatentUpscaleBy', inputs:{ samples:['7', 0], upscale_method:'bicubic', scale_by:input.hiresScale } };
+      noLoraWf['12'] = { class_type:'KSampler', inputs:{
+        model:['1', 0],
+        positive:['4', 0],
+        negative:['5', 0],
+        latent_image:['11', 0],
+        seed:input.seed + 1,
+        steps:Math.max(12, Math.round(input.steps * 0.6)),
+        cfg:input.cfg,
+        sampler_name:input.sampler,
+        scheduler:input.scheduler,
+        denoise:input.hiresDenoise || 0.35
+      } };
+      noLoraWf['8'].inputs.samples = ['12', 0];
+    }
+    return noLoraWf;
+  }
+
   var lora = LORAS[input.loraId];
-  return {
+  var loraWf = {
     '1': { class_type:'UNETLoader', inputs:{ unet_name:model.file, weight_dtype:'default' } },
     '2': { class_type:'CLIPLoader', inputs:{ clip_name:'qwen_3_06b_base.safetensors', type:'qwen_image' } },
     '3': { class_type:'VAELoader', inputs:{ vae_name:'qwen_image_vae.safetensors' } },
@@ -351,8 +379,25 @@ function buildWorkflow(input) {
       denoise:1
     } },
     '9': { class_type:'VAEDecode', inputs:{ samples:['8', 0], vae:['3', 0] } },
-     '10': { class_type:'SaveImage', inputs:{ images:['9', 0], filename_prefix:OUTPUT_FILENAME_PREFIX } }
+    '10': { class_type:'SaveImage', inputs:{ images:['9', 0], filename_prefix:OUTPUT_FILENAME_PREFIX } }
   };
+  if (isHires) {
+    loraWf['11'] = { class_type:'LatentUpscaleBy', inputs:{ samples:['8', 0], upscale_method:'bicubic', scale_by:input.hiresScale } };
+    loraWf['12'] = { class_type:'KSampler', inputs:{
+      model:['4', 0],
+      positive:['5', 0],
+      negative:['6', 0],
+      latent_image:['11', 0],
+      seed:input.seed + 1,
+      steps:Math.max(12, Math.round(input.steps * 0.6)),
+      cfg:input.cfg,
+      sampler_name:input.sampler,
+      scheduler:input.scheduler,
+      denoise:input.hiresDenoise || 0.35
+    } };
+    loraWf['9'].inputs.samples = ['12', 0];
+  }
+  return loraWf;
 }
 
 function requestComfy(config, method, pathname, body, timeoutMs, maxBytes) {

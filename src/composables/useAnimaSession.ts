@@ -50,6 +50,9 @@ export interface AnimaRequest {
   seed?: number
   character: 'nene' | 'nene_b' | 'natsume' | 'triad' | null
   styleLoraId?: string
+  hiresFix?: boolean
+  hiresScale?: number
+  hiresDenoise?: number
 }
 
 export interface AnimaSessionOptions {
@@ -107,6 +110,11 @@ export function animaRequestPayload(
     cfg: request.cfg,
     ...(request.seed === undefined ? {} : { seed: request.seed }),
     character: request.character,
+    ...(request.hiresFix ? {
+      hiresFix: true,
+      hiresScale: request.hiresScale || 2.0,
+      hiresDenoise: request.hiresDenoise || 0.35,
+    } : {}),
   }
 }
 
@@ -272,6 +280,9 @@ export function useAnimaSession(options: AnimaSessionOptions) {
           seed: job.seed,
           character: request.character,
           preview: false,
+          hiresFix: Boolean(request.hiresFix),
+          hiresScale: request.hiresScale,
+          hiresDenoise: request.hiresDenoise,
           createdAt: Date.now(),
           resultUrl: job.resultUrl,
         }
@@ -349,10 +360,11 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     patchState({ result: null, job: null })
   }
 
-  async function generate(): Promise<void> {
+  async function generate(overrides: Partial<AnimaRequest> = {}): Promise<void> {
     if (['submitting', 'running', 'cancelling'].includes(state.value.phase)) return
-    const request = options.getRequest()
-    if (!request) return
+    const baseRequest = options.getRequest()
+    if (!baseRequest) return
+    const request: AnimaRequest = { ...baseRequest, ...overrides }
     if (!state.value.online) { options.flash('Anima ComfyUI 当前未连接'); return }
     const serial = ++requestSerial
     jobRequest?.abort()

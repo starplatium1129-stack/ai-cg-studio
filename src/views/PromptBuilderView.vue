@@ -285,6 +285,16 @@
           </div>
           <img class="result-image" :src="displayResultUrl" alt="生成的图片" />
           <div class="result-image-actions">
+            <button
+              v-if="drawEngine === 'anima'"
+              class="btn btn-ghost btn-hires-action"
+              type="button"
+              :disabled="generationBusy"
+              title="使用 Anima 潜空间超分放大 2x (4K 级精修)"
+              @click="upscaleAnimaCurrent"
+            >
+              ✨ 高清放大 2x (4K)
+            </button>
             <button class="btn btn-ghost" type="button" @click="saveResult">保存快照</button>
             <button class="btn btn-ghost" type="button" :disabled="!prevResult" @click="compareOpen = true">
               与上一张对比
@@ -1546,6 +1556,20 @@ async function saveHistory() {
 }
 
 function saveResult() { saveHistory() }
+
+async function upscaleAnimaCurrent() {
+  if (drawEngine.value !== 'anima') return
+  const currentResult = animaState.value.result
+  const baseSeed = currentResult?.metadata?.seed ?? animaState.value.seed
+  if (baseSeed == null || baseSeed < 0) {
+    pb.flash('当前图片缺少 Seed 信息，无法执行精准超分')
+    return
+  }
+  // 锁定当前图的 seed 进行 2.0x 潜空间重绘放大
+  patchAnimaState({ seed: baseSeed })
+  pb.flash('✨ 正在使用当前 Seed 执行 2x 高清超分精修…')
+  await generateAnima({ hiresFix: true, hiresScale: 2.0, hiresDenoise: 0.35 })
+}
 
 function reuseLastSeed() {
   const seed = displayResultSeed.value ?? pb.lastSeed

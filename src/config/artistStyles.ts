@@ -28,7 +28,7 @@ export interface ArtistComboPreset {
 
 export const ARTIST_COMBO_PRESETS: readonly ArtistComboPreset[] = Object.freeze([
   { id: 'cinematic_pure', label: '🎬 电影通透感', artistIds: ['yoneyama_mai', 'kantoku'], tagline: '米山舞 × 监督', mood: '电影级流动光影与清透甜美五官' },
-  { id: 'witch_journey', label: '🧹 空灵魔女旅行', artistIds: ['azure_(azure_cpt)', 'rella'], tagline: 'Azure × Rella', mood: '清澈透明感、水润发丝与星夜旅行氛围' },
+  { id: 'witch_journey', label: '🧹 空灵魔女旅行', artistIds: ['azuuru', 'rella'], tagline: 'Azuuru × Rella', mood: '清澈透明感、水润发丝与星夜旅行氛围' },
   { id: 'pure_galgame', label: '🌸 极致水灵少女', artistIds: ['hiten_(hitenkei)', 'tiv'], tagline: 'Hiten × Tiv', mood: '柔光日系空气感与微风发丝' },
   { id: 'starry_dream', label: '🌌 梦幻星夜微光', artistIds: ['rella', 'anmi'], tagline: 'Rella × Anmi', mood: '夜景星斑与清甜水润粉彩折射' },
   { id: 'noble_lady', label: '👑 清冷贵气千金', artistIds: ['ask_(askzy)', 'kantoku'], tagline: 'ASK × 监督', mood: '丝滑上色与克制的高级质感' },
@@ -44,7 +44,7 @@ export const ARTIST_CATEGORIES = [
 ] as const
 
 const ARTIST_STYLE_IDS = new Set(
-  'kantoku shirabi bunbun morikura_en anmi rella mika_pikazo nardack fuzichoco hxxg swav so-bin muririn kobuichi yoneyama_mai hiten_(hitenkei) lam_(ramdayo) tiv lack ask_(askzy) azure_(azure_cpt)'.split(' '),
+  'kantoku shirabi bunbun morikura_en anmi rella mika_pikazo nardack fuzichoco hxxg swav so-bin muririn kobuichi yoneyama_mai hiten_(hitenkei) lam_(ramdayo) tiv lack ask_(askzy) azuuru'.split(' '),
 )
 
 function artistDisplayName(id: string): string {
