@@ -59,6 +59,8 @@ export interface SceneBlueprint {
   kreaStyleHint?: string
   /** 可选：Anima 风格配方 id 或自由风格短语。 */
   animaStyleHint?: string
+  /** 可选：成人蓝图专属画师提示（如 @anmi, @kousaki 等）；双引擎自动映射。 */
+  adultArtistHint?: string
   /** 可选：成人蓝图专属 NSFW 内容标签；只在 adult 角色 + adultEnabled 同时放行时注入。 */
   nsfwTokens?: string[]
   /** 可选：成人蓝图专属 NSFW 内容散文（Krea 与 Anima caption 使用）；fail-closed 同标签。 */
@@ -191,6 +193,7 @@ export function parseSceneBlueprint(value: unknown): SceneBlueprint | null {
     adult: value.adult === true,
     kreaStyleHint: stringValue(value.kreaStyleHint),
     animaStyleHint: stringValue(value.animaStyleHint),
+    adultArtistHint: stringValue(value.adultArtistHint),
     nsfwTokens: stringList(value.nsfwTokens),
     nsfwProse: stringValue(value.nsfwProse),
   }
@@ -510,6 +513,8 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     // 成人蓝图：outfitProse 置空（Krea 模板会拼成 "subject, wearing {outfitProse}"，
     // 穿衣服描述会压过显式词导致拒绝出裸）；脱衣叙述由 nsfwProse 前置承载。
     const outfitProse = adultGranted ? '' : outfit.prose
+    const effectiveArtistProse = options.artistProse
+      || (adultGranted && blueprint?.adultArtistHint ? `with visual styling inspired by ${blueprint.adultArtistHint.replace(/^@/, '').replace(/\s*\(.+\)$/, '').trim()}` : undefined)
     const plan = createPromptPlan({
       subjectProse: identityWithoutOutfit(character.identityProse),
       outfitProse,
@@ -523,7 +528,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
       visualDescription: userVisual,
       style: style ? [style.lead] : [],
       medium: style?.medium ?? '',
-      artistProse: options.artistProse,
+      artistProse: effectiveArtistProse,
     })
     const rendered = renderPromptPlan(plan, 'krea2', profile)
     return { plan, prompt: rendered.prompt, negative: '', adult }
