@@ -47,7 +47,7 @@ export const ARTIST_CATEGORIES: ReadonlyArray<{ id: 'all' | ArtistCategory; labe
 ] as const
 
 const ARTIST_STYLE_IDS = new Set(
-  'kantoku shirabi bunbun morikura_en anmi rella mika_pikazo nardack fuzichoco hxxg swav so-bin muririn kobuichi yoneyama_mai hiten_(hitenkei) lam_(ramdayo) tiv lack ask_(askzy) azuuru'.split(' '),
+  'kantoku shirabi bunbun morikura_en anmi rella mika_pikazo nardack fuzichoco hxxg swav so-bin muririn kobuichi yoneyama_mai hiten_(hitenkei) lam_(ramdayo) tiv lack ask_(askzy) azuuru paryi hisasi suimya tsunako atdan jazz_jack kousaki_rui xinzoruo'.split(' '),
 )
 
 const ARTIST_STYLE_ALIASES: Record<string, string> = {
@@ -77,7 +77,9 @@ export function normalizeArtistStyleIds(value: unknown, limit = 2): string[] {
 export function artistTagsForEngine(ids: readonly string[], engine: ArtistStyleEngine): string[] {
   if (engine === 'krea2') return []
   return normalizeArtistStyleIds(ids).map(id => engine === 'anima'
-    ? `@${id.replace(/_\(.+$/, '').replace(/_/g, ' ')}`
+    // Anima 官方空格消歧规则：`lam_(ramdayo)` → `@lam (ramdayo)`，保留括号消歧名，
+    // 与 Kohaku/Illustrious 生态（`ask (askzy)`）一致；主名 `@lam` 在 Danbooru 是弱 tag。
+    ? `@${id.replace(/_/g, ' ')}`
     : id)
 }
 

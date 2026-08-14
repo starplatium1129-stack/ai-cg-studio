@@ -46,12 +46,19 @@ test('batch plan expands consistently with the curated artist catalog', () => {
   const plan = gen.planAllBatches(20260812);
   const artistCount = artistCatalog.ARTIST_STYLE_OPTIONS.length;
   const artistVariants = artistCount + 1;
-  // 全部开放后 18 角色全部 adult：每角色 3 原型 + 1 角色成人 + 3 通用成人 = 7 场景 × 2 引擎。
-  const popularGrid = 18 * 7 * 2;
+  // 2026-08-15 扩容后角色场景数不再均匀（12 角色 10 场景 + 6 角色 9 场景，另有
+  // 3 条通用成人蓝图），grid 按每角色实际拥有数 + 通用数逐角色派生，避免硬编码漂移。
+  const perCharScenes = sceneBlueprints.reduce((acc, bp) => {
+    if (bp.characterId) acc[bp.characterId] = (acc[bp.characterId] || 0) + 1;
+    return acc;
+  }, {});
+  const genericSceneCount = sceneBlueprints.filter(bp => !bp.characterId).length;
+  const popularGrid = Object.values(perCharScenes)
+    .reduce((sum, owned) => sum + (owned + genericSceneCount), 0) * 2;
   const expectedAttempt1 = artistVariants + 18 + 8 + popularGrid + artistVariants * 2;
-  // 明细：artistVariants 张画师（21 画师 + no-artist，含 3 个重点画师追加轮）
+  // 明细：artistVariants 张画师（29 画师 + no-artist，含 3 个重点画师追加轮）
   //       + 18 popular（角色专属场景）+ 8 latest-lora（nene/natsume × sd/anima × closeup/fullbody）
-  //       + popularGrid popular-grid（18 角色 × 7 场景 × 2 引擎，全部 adult 开放）
+  //       + popularGrid popular-grid（18 角色 × 各自场景 + 3 通用 × 2 引擎，全部 adult 开放）
   //       + artistVariants×2 artist-grid
   const expectedTotal = expectedAttempt1 + 14 + 6 + 2;
   assert.strictEqual(plan.length, expectedTotal, `expected ${expectedTotal} planned jobs, got ${plan.length}`);
@@ -67,7 +74,8 @@ test('batch plan expands consistently with the curated artist catalog', () => {
   const counts = legacy1.reduce((acc, item) => { acc[item.batch] = (acc[item.batch] || 0) + 1; return acc; }, {});
   assert.deepStrictEqual(counts, { artist: artistVariants, popular: 18, 'latest-lora': 8 });
   const gridCounts = plan.reduce((acc, item) => { acc[item.batch] = (acc[item.batch] || 0) + 1; return acc; }, {});
-  assert.strictEqual(gridCounts['popular-grid'], popularGrid, 'popular-grid must plan 252 (18 characters x 7 scenes x 2 engines after full adult open)');
+  assert.strictEqual(gridCounts['popular-grid'], popularGrid,
+    `popular-grid must plan ${popularGrid} (per-character scenes + ${genericSceneCount} generic x 2 engines, data-derived)`);
   assert.strictEqual(gridCounts['artist-grid'], artistVariants * 2, 'artist-grid must plan every artist + baseline across two engines');
   const recordIds = new Set(plan.map(item => item.recordId));
   assert.strictEqual(recordIds.size, plan.length, 'recordIds must be unique');
@@ -405,7 +413,7 @@ test('CLI attempt filter: --attempt 4 selects exactly the two attempt-4 candidat
 
 test('artist batch: curated artists + 1 no-artist baseline, one artist tag each', () => {
   const artistCount = artistCatalog.ARTIST_STYLE_OPTIONS.length;
-  assert.strictEqual(artistCount, 21, 'exactly 21 artists in catalog');
+  assert.strictEqual(artistCount, 29, 'exactly 29 artists in catalog (2026-08-15: +tsunako/atdan/jazz_jack/kousaki_rui/xinzoruo)');
   const artist = gen.artistBatch(20260812);
   assert.strictEqual(artist.length, artistCount + 1);
   const withTags = artist.filter(item => item.artistId);

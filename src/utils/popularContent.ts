@@ -516,8 +516,10 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     // 成人蓝图：outfitProse 置空（Krea 模板会拼成 "subject, wearing {outfitProse}"，
     // 穿衣服描述会压过显式词导致拒绝出裸）；脱衣叙述由 nsfwProse 前置承载。
     const outfitProse = adultGranted ? '' : outfit.prose
+    // Krea 是自然语言模型：hint 转散文时必须把下划线画师名（如 @jazz_jack）还原为空格，
+    // 并去掉括号注释（如 @hiten (hitenkei) → hiten），否则散文里会混入下划线 token。
     const effectiveArtistProse = options.artistProse
-      || (adultGranted && blueprint?.adultArtistHint ? `with visual styling inspired by ${blueprint.adultArtistHint.replace(/^@/, '').replace(/\s*\(.+\)$/, '').trim()}` : undefined)
+      || (adultGranted && blueprint?.adultArtistHint ? `with visual styling inspired by ${blueprint.adultArtistHint.replace(/^@/, '').replace(/\s*\(.+\)$/, '').replace(/_/g, ' ').trim()}` : undefined)
     const plan = createPromptPlan({
       subjectProse: identityWithoutOutfit(character.identityProse),
       outfitProse,

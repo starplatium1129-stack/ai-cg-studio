@@ -235,7 +235,7 @@ masterpiece, best quality, amazing quality,
 - Krea 2 候选**不得**含画师 tag、score、`<lora:>` 语法。
 
 ### 6.2 行动项
-1. **Krea 2 散文**：按 §1.2 结构重写/校验所有 `promptProse`（每角色 3 原型 + 1 成人共 4 场景 × 18 角色 + 3 通用成人）；检查无玄学词、裸体词前置、服装「已脱下」。
+1. **Krea 2 散文**：按 §1.2 结构重写/校验所有 `promptProse`（2026-08-15 扩容后每角色 6 原型（含 3 日常感）+ 3 成人共 9 场景 × 18 角色 + 3 通用成人）；检查无玄学词、裸体词前置、服装「已脱下」。
 2. **Anima 标签**：校验各角色 `identityTokens`/`exactTokens`/`outfit.tokens` 的空格/下划线规范（通用标签空格、锚点 token 下划线）；`@artist` 画师格式。
    - ⚠️ **待 A/B**：exactTokens 的 Danbooru 消歧括号当前是下划线（`rem_(re_zero)`），Anima 官方规则是空格（`rem (re zero)`）。先出 A/B 图确认空格形式在 Anima 上还原度不降，再决定是否批量改 18 角色（影响 `test-popular-content.js` 的 exactTokens 断言）。
 3. **SD 标签**：校验 WAI 路径质量前缀原样（`masterpiece, best quality, amazing quality` 带空格）、rating 词（general/sensitive/nsfw）、场景 token 22-26 个、实体词 2-4、氛围词 ≥2。

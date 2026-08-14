@@ -9,24 +9,32 @@ export const ARTIST_STYLE_OPTIONS: readonly ArtistStyleOption[] = Object.freeze(
   // 清透少女与顶级 Galgame
   { id: 'kantoku', name: 'Kantoku', cnName: '监督', waiTag: 'kantoku', animaTag: '@kantoku', description: '清透日系美少女、柔和暖阳与干净线条', category: 'pure', verification: 'curated', keywords: ['格子裙', '变态王子', '阳光', '清纯', 'galgame'] },
   { id: 'azuuru', name: 'Azure', cnName: 'あずーる', waiTag: 'azuuru', animaTag: '@azuuru', description: '《魔女之旅》原案、空灵水彩发丝与通透旅行感', category: 'pure', verification: 'tag', keywords: ['魔女之旅', '伊蕾娜', '伊雷娜', 'elaina', 'azure', 'azuuru', '旅行', '魔女', '水彩', '通透'] },
-  { id: 'hiten_(hitenkei)', name: 'Hiten', cnName: 'Hiten', waiTag: 'hiten_(hitenkei)', animaTag: '@hiten', description: '柔光日系、精致五官与清澈治愈空气感', category: 'pure', verification: 'tag', keywords: ['空气感', '柔光', '精致', '唯美', '清纯'] },
+  { id: 'hiten_(hitenkei)', name: 'Hiten', cnName: 'Hiten', waiTag: 'hiten_(hitenkei)', animaTag: '@hiten (hitenkei)', description: '柔光日系、精致五官与清澈治愈空气感', category: 'pure', verification: 'tag', keywords: ['空气感', '柔光', '精致', '唯美', '清纯'] },
   { id: 'tiv', name: 'Tiv', cnName: 'Tiv', waiTag: 'tiv', animaTag: '@tiv', description: '轻小说封面感、细腻环境光与微风发丝', category: 'pure', verification: 'tag', keywords: ['政宗君', '微风', '轻小说', '回眸'] },
   { id: 'anmi', name: 'Anmi', cnName: 'Anmi', waiTag: 'anmi', animaTag: '@anmi', description: '轻盈马卡龙粉彩、水润水彩质感与优雅体态', category: 'pure', verification: 'curated', keywords: ['粉彩', '水彩', '优雅', '泳装', '透明感'] },
+  { id: 'tsunako', name: 'Tsunako', cnName: 'Tsunako', waiTag: 'tsunako', animaTag: '@tsunako', description: '《约会大作战》原案、可爱活力少女与明亮配色', category: 'pure', verification: 'tag', keywords: ['约会大作战', '狂三', '木更', '可爱', '少女'] },
+  { id: 'atdan', name: 'Atdan', cnName: 'Atdan', waiTag: 'atdan', animaTag: '@atdan', description: '成人向清纯少女系、细腻肤色与娇羞神情', category: 'pure', verification: 'curated', keywords: ['成人向', '清纯', '娇羞', '少女'] },
+  { id: 'jazz_jack', name: 'Jazz Jack', cnName: 'Jazz Jack', waiTag: 'jazz_jack', animaTag: '@jazz jack', description: '清爽少女系、利落线条与元气活力感', category: 'pure', verification: 'curated', keywords: ['清爽', '元气', '少女', '舰娘'] },
   { id: 'morikura_en', name: 'Morikura En', cnName: '森仓圆', waiTag: 'morikura_en', animaTag: '@morikura en', description: '明亮商业角色插画、日常自然光与元气感', category: 'pure', verification: 'curated', keywords: ['绊爱', '日常', '元气', '商业插画'] },
+  { id: 'paryi', name: 'Paryi', cnName: '帕里', waiTag: 'paryi', animaTag: '@paryi', description: '超人气美少女插画、柔顺发丝与明亮水灵少女感', category: 'pure', verification: 'curated', keywords: ['发之神技', '美少女', '发丝', '水灵', '清透'] },
+  { id: 'hisasi', name: 'Hisasi', cnName: 'Hisasi', waiTag: 'hisasi', animaTag: '@hisasi', description: '老牌成人向、柔润上色与甜腻娇羞氛围', category: 'pure', verification: 'curated', keywords: ['成人向', '柔润', '娇羞', '甜腻'] },
+  { id: 'suimya', name: 'Suimya', cnName: 'Suimya', waiTag: 'suimya', animaTag: '@suimya', description: '软色情氛围系、湿润光泽与慵懒私密感', category: 'pure', verification: 'curated', keywords: ['氛围', '湿润', '私密', '慵懒'] },
   { id: 'muririn', name: 'Muririn', cnName: '梦璃凛', waiTag: 'muririn', animaTag: '@muririn', description: '柚子社柔亮赛璐璐、圆润脸型与水灵透明感', category: 'pure', verification: 'project', keywords: ['柚子社', '宁宁', '夏目', '赛璐珞'] },
   { id: 'kobuichi', name: 'Kobuichi', cnName: '小舞一', waiTag: 'kobuichi', animaTag: '@kobuichi', description: '柚子社利落原画、清晰轮廓与鲜亮配色', category: 'pure', verification: 'project', keywords: ['柚子社', '原画', '鲜亮', '轮廓'] },
 
   // 潮流先锋与高饱和
-  { id: 'lam_(ramdayo)', name: 'LAM', cnName: 'LAM', waiTag: 'lam_(ramdayo)', animaTag: '@lam', description: '极高饱和霓虹、硬朗潮流眼妆与前卫图形', category: 'trend', verification: 'tag', keywords: ['赛博', '霓虹', '眼妆', '潮流', '撞色'] },
+  { id: 'lam_(ramdayo)', name: 'LAM', cnName: 'LAM', waiTag: 'lam_(ramdayo)', animaTag: '@lam (ramdayo)', description: '极高饱和霓虹、硬朗潮流眼妆与前卫图形', category: 'trend', verification: 'tag', keywords: ['赛博', '霓虹', '眼妆', '潮流', '撞色'] },
   { id: 'mika_pikazo', name: 'Mika Pikazo', cnName: 'Mika Pikazo', waiTag: 'mika_pikazo', animaTag: '@mika pikazo', description: '高饱和流行波普色、大胆几何撞色与活力', category: 'trend', verification: 'curated', keywords: ['辉夜月', '撞色', '活力', '波普'] },
   { id: 'bunbun', name: 'BUNBUN / abec', cnName: 'abec', waiTag: 'bunbun', animaTag: '@bunbun', description: '动态游戏主视觉、清晰服装设计与动作张力', category: 'trend', verification: 'curated', keywords: ['刀剑神域', '动态', '动作', '帅气'] },
 
   // 华丽厚涂与大片级主视觉
   { id: 'shirabi', name: 'Shirabi', cnName: '白身成', waiTag: 'shirabi', animaTag: '@shirabi', description: '利落厚重线条、鲜明轮廓与戏剧性主视觉', category: 'grand', verification: 'curated', keywords: ['86', '龙王的工作', '大片', '戏剧光'] },
-  { id: 'ask_(askzy)', name: 'ASK', cnName: 'ASK', waiTag: 'ask_(askzy)', animaTag: '@ask', description: '清冷贵气、丝滑平滑上色与克制高级感', category: 'grand', verification: 'tag', keywords: ['清冷', '贵气', '高级感', '礼服', '丝滑'] },
+  { id: 'ask_(askzy)', name: 'ASK', cnName: 'ASK', waiTag: 'ask_(askzy)', animaTag: '@ask (askzy)', description: '清冷贵气、丝滑平滑上色与克制高级感', category: 'grand', verification: 'tag', keywords: ['清冷', '贵气', '高级感', '礼服', '丝滑'] },
   { id: 'hxxg', name: 'HxxG', cnName: '刃天', waiTag: 'hxxg', animaTag: '@hxxg', description: '大动态广角透视、炫彩特效逆光与空间深邃感', category: 'grand', verification: 'curated', keywords: ['黑岩射手', '透视', '广角', '特效'] },
   { id: 'nardack', name: 'Nardack', cnName: 'Nardack', waiTag: 'nardack', animaTag: '@nardack', description: '宝石色奇幻、华丽服装与璀璨发光细节', category: 'grand', verification: 'curated', keywords: ['宝石', '华丽', '奇幻', '发光'] },
   { id: 'fuzichoco', name: 'Fuzichoco', cnName: '藤原', waiTag: 'fuzichoco', animaTag: '@fuzichoco', description: '和风幻想世界、繁复多层水彩与装饰细节', category: 'grand', verification: 'curated', keywords: ['和风', '繁复', '金箔', '水彩'] },
   { id: 'lack', name: 'lack', cnName: 'lack', waiTag: 'lack', animaTag: '@lack', description: '浓郁幻想厚涂、成熟厚重色彩与史诗氛围', category: 'grand', verification: 'tag', keywords: ['fgo', '厚涂', '成熟', '暗黑'] },
   { id: 'so-bin', name: 'so-bin', cnName: 'so-bin', waiTag: 'so-bin', animaTag: '@so-bin', description: '暗黑哥特油画厚涂、厚重织物与沉稳史诗感', category: 'grand', verification: 'curated', keywords: ['overlord', '哥特', '油画', '厚重'] },
+  { id: 'kousaki_rui', name: 'Kousaki', cnName: '光崎', waiTag: 'kousaki_rui', animaTag: '@kousaki rui', description: 'FGO 主视觉感、精致优雅上色与端庄华美氛围', category: 'grand', verification: 'tag', keywords: ['fgo', '优雅', '精致', '端庄', '华丽'] },
+  { id: 'xinzoruo', name: 'Xinzoruo', cnName: 'Xinzoruo', waiTag: 'xinzoruo', animaTag: '@xinzoruo', description: '成人向魅惑暗系、深邃光影与危险氛围', category: 'grand', verification: 'curated', keywords: ['成人向', '魅惑', '暗色', '光影'] },
 ])
