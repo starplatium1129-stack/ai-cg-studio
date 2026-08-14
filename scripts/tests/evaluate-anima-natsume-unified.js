@@ -229,11 +229,14 @@ async function main() {
   var only = null;
   if (onlyRaw) only = onlyRaw.split('=')[1].split(',').map(function (s) { return s.trim(); }).filter(Boolean);
   else if (process.argv.includes('--only')) only = process.argv[process.argv.indexOf('--only') + 1].split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+  var outRootRaw = process.argv.find(function (a) { return a.startsWith('--out-root='); });
+  var outRoot = outRootRaw ? outRootRaw.split('=')[1] : null;
+  if (!outRoot && process.argv.includes('--out-root')) outRoot = process.argv[process.argv.indexOf('--out-root') + 1];
 
   var scenes = buildScenes();
   var candidates = checkedCandidates().filter(function (c) { return !only || only.includes(c.id); });
   var modelTag = modelId === 'anima-aesthetic-v1.1' ? '_aesthetic' : '';
-  var outputRoot = path.join(AI_ROOT, 'Reviews', 'AnimaNatsumeUnifiedSweep', '2026-08-14_' + group.label + modelTag);
+  var outputRoot = outRoot || path.join(AI_ROOT, 'Reviews', 'AnimaNatsumeUnifiedSweep', '2026-08-14_' + group.label + modelTag);
   var manifestFile = path.join(outputRoot, 'manifest.json');
   var manifest = fs.existsSync(manifestFile) ? readJson(manifestFile) : {
     version:1,
