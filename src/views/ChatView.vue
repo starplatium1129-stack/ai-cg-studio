@@ -181,11 +181,11 @@
         </div>
 
         <div v-if="toolActivity" class="chat-tool-indicator" role="status">
-          🔧 {{ toolActivity }}
+          <ArchiveIcon name="gear" /> {{ toolActivity }}
         </div>
 
         <div v-if="thinkingActivity" class="chat-tool-indicator" role="status">
-          💭 思考中…
+          <ArchiveIcon name="spark" /> 思考中…
         </div>
 
         <SpeechInputSettings v-if="speechSettingsOpen" class="speech-settings-host"

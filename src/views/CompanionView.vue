@@ -167,11 +167,11 @@
         </div>
 
         <div v-if="toolActivity" class="companion-tool-indicator" role="status">
-          🔧 {{ toolActivity }}
+          <ArchiveIcon name="gear" /> {{ toolActivity }}
         </div>
 
         <div v-if="thinkingActivity" class="companion-tool-indicator" role="status">
-          💭 思考中…
+          <ArchiveIcon name="spark" /> 思考中…
         </div>
 
         <div class="companion-composer">
@@ -252,7 +252,7 @@
         <footer class="companion-status" :data-state="statusKind">
           <span>{{ chatStatusText }}</span>
           <span v-if="voiceStatusText" class="companion-voice-status">{{ voiceStatusText }}</span>
-          <span v-if="inQuietHours" class="companion-quiet-hours-hint" :title="quietHoursText">🌙 安静时段</span>
+          <span v-if="inQuietHours" class="companion-quiet-hours-hint" :title="quietHoursText"><ArchiveIcon name="moon" /> 安静时段</span>
           <span
             v-if="desktopBridge"
             class="companion-runtime-mode"
@@ -311,6 +311,7 @@
 <script setup lang="ts">
 import '@/assets/css/companion.css'
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { controlApi } from '../api/controlApi.ts'
 import { trainingApi } from '../api/trainingApi.ts'
 import { useCharacterRoomSession } from '@/composables/useCharacterRoomSession'

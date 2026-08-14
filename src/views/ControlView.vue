@@ -131,7 +131,7 @@
             <span class="mode-desc">停止语音、卸载 Ollama，把显存让给 WebUI 出图。</span>
           </button>
           <button class="mode-card" type="button" :disabled="opBusy || modeBusy" @click="switchMode('chat')">
-            <span class="mode-title">☕ 聊天优先</span>            <span class="mode-desc">停止受管 WebUI，启动语音，专注角色房间。</span>
+            <span class="mode-title"><ArchiveIcon name="coffee" /> 聊天优先</span>            <span class="mode-desc">停止受管 WebUI，启动语音，专注角色房间。</span>
           </button>
         </div>
 
@@ -335,6 +335,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted } from 'vue'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import AppSoundToggle from '@/components/AppSoundToggle.vue'
 import AppThemeToggle from '@/components/AppThemeToggle.vue'
 import RouteAtmosphere from '@/components/visual/RouteAtmosphere.vue'
