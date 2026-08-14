@@ -110,7 +110,7 @@ const KREA_IDENTITY_KEYS = new Set([
 ])
 const KREA_ENVIRONMENT_RE = /(?:^|_)(?:background|classroom|clubroom|cafe|coffee|beach|ocean|sea|forest|street|station|bedroom|bathroom|shrine|park|garden|rooftop|city|library|kitchen|palace|ruins|bridge|river|theater|cinema|safehouse|hotel|balcony|pool|tatami|office|elevator|train|vehicle|apartment|living_room|studio|gallery|store|shop|festival|bookshelf|blackboard|desk|window|wall|rack|indoors|outdoors|interior)(?:_|$)/
 const KREA_OUTFIT_RE = /(?:^|_)(?:clothes|clothing|outfit|uniform|shirt|blouse|skirt|dress|apron|lingerie|underwear|panties|bra|bikini|swimsuit|pantyhose|thighhighs|stockings|coat|sweater|cardigan|pajamas|sleepwear|nightgown|towel|yukata|kimono|qipao|cheongsam|robe|jacket|blazer|collar|sleeves|gloves|boots|shoes|bow|ribbon|maid|serafuku|tactical_gear|office_lady)(?:_|$)/
-const KREA_BODY_DETAIL_RE = /^(?:nude|naked|bare_|cleavage|sideboob|no_bra|no_panties|wet_skin|wet_clothes|see_through|translucent|unbuttoned|unzipped|open_shirt|off_shoulder|high_slit|midriff|collarbone)/
+const KREA_BODY_DETAIL_RE = /^(?:nude|naked|bare_|cleavage|sideboob|no_bra|no_panties|wet_skin|wet_hair|wet_clothes|see_through|translucent|unbuttoned|unzipped|open_shirt|off_shoulder|high_slit|midriff|collarbone|nipples|legs_apart|spread_legs|parted_lips|closed_eyes|half_closed_eyes|averting_gaze|blushing|deep_blush|heavy_blush|hugging_pillow)/
 const KREA_ACTION_RE = /^(?:holding|carrying|standing|sitting|lying|waiting|leaning|kneeling|straddling|clinging|swimming|walking|running|reaching|undressing|looking|turning|adjusting|one_hand|both_hands|propped|cross_legged|legs_apart|skirt_lift|neck_kiss|eye_contact|close_distance)/
 const KREA_MOOD_RE = /(?:^|_)(?:smile|blush|shy|happy|calm|relaxed|serious|sad|melancholic|nervous|expectant|panicked|embarrassed|tears|tearful|teary|tsundere|sensual|intimate|romantic|seductive|passionate|expressionless|in_love|soft_eyes|bright_eyes|red_ears|heavy_breathing)(?:_|$)/
 
@@ -140,6 +140,7 @@ function isEnvironmentKey(key: string): boolean {
 
 const ACTION_REWRITES: Readonly<Record<string, string>> = Object.freeze({
   smile: 'smiling', gentle_smile: 'wearing a gentle smile', blush: 'blushing softly',
+  blushing: 'with flushed cheeks', deep_blush: 'deeply blushing', heavy_blush: 'with bright rosy blushing cheeks',
   looking_at_viewer: 'looking toward the viewer', looking_back: 'looking back over her shoulder',
   holding_papers: 'holding a stack of papers', holding_hands: 'holding the viewer\'s hand',
   one_hand_adjusting_hair_ribbon: 'using one hand to adjust her pink hair ribbon',
@@ -150,11 +151,19 @@ const ACTION_REWRITES: Readonly<Record<string, string>> = Object.freeze({
   in_love: 'showing quiet affection', eye_contact: 'maintaining direct eye contact',
   tears: 'with tears in her eyes', crying: 'crying', sleeping: 'sleeping peacefully',
   sitting_on_counter: 'sitting on a counter', sitting_on_lap: 'sitting on the viewer\'s lap',
-  sitting_on_bed: 'sitting on a bed', sitting_on_desk: 'sitting on a desk',
-  lying_on_bed: 'lying on a bed', legs_apart: 'with her legs apart',
+  sitting_on_bed: 'sitting gracefully in bed', sitting_on_desk: 'sitting on a desk',
+  lying_on_bed: 'lying softly in bed', lying_on_side: 'reclining gracefully on her side',
+  lying_on_back: 'lying gracefully on her back', legs_apart: 'with her legs parted gently',
+  kneeling: 'kneeling softly', hugging_pillow: 'hugging a soft white pillow',
   straddling_viewer: 'straddling the viewer', clinging_to_viewer: 'clinging to the viewer',
   hair_blowing: 'with her hair moving in the breeze', windblown_hair: 'with her hair moving in the breeze',
-  bare_back: 'with her back bare', bare_legs: 'with her legs bare', bare_shoulders: 'with her shoulders bare',
+  wet_hair: 'with glistening wet hair', wet_skin: 'with translucent glistening skin',
+  wet_clothes: 'with clinging wet fabric', bare_back: 'with her smooth bare back',
+  bare_legs: 'with her slender bare legs', bare_shoulders: 'with her delicate bare shoulders',
+  bare_chest: 'with her soft bare chest', exposed_breasts: 'with her supple bare breasts',
+  nipples: 'with delicate pink nipples', collarbone: 'with a slender delicate collarbone',
+  parted_lips: 'with softly parted lips', closed_eyes: 'with eyes closed in serenity',
+  half_closed_eyes: 'with drowsy half-closed eyes', averting_gaze: 'shyly averting her gaze',
   tears_in_eyes: 'with tears in her eyes', teary_eyes: 'with tearful eyes',
 })
 
