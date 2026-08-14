@@ -33,10 +33,12 @@
         "candlelight",
         "purple",
         "dark",
-        "lightning"
+        "lightning",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -72,10 +74,12 @@
         "torii",
         "purple",
         "dark_background",
-        "silhouette"
+        "silhouette",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, day"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, day, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -109,10 +113,12 @@
         "twilight",
         "lantern",
         "red_and_white",
-        "outdoors"
+        "outdoors",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -146,10 +152,12 @@
         "reading",
         "school",
         "indoor",
-        "daylight"
+        "daylight",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, night"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, night, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -183,10 +191,12 @@
         "evening",
         "sky",
         "outdoors",
-        "long_hair"
+        "long_hair",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "1216x832"
     },
@@ -220,10 +230,12 @@
         "neon_lights",
         "urban",
         "outdoors",
-        "evening"
+        "evening",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, day"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, day, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -257,10 +269,12 @@
         "golden",
         "gothic",
         "long_dress",
-        "dark"
+        "dark",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, school, bright, cheerful, day"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, school, bright, cheerful, day, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -294,10 +308,12 @@
         "gun",
         "moonlight",
         "dark",
-        "outdoors"
+        "outdoors",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, bright, cheerful, day"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, bright, cheerful, day, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "1216x832"
     },
@@ -332,10 +348,12 @@
         "clock",
         "debris",
         "dark",
-        "desolate"
+        "desolate",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, bright, cheerful"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, bright, cheerful, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "1216x832"
     },
@@ -369,10 +387,12 @@
         "glowing",
         "ancient",
         "interior",
-        "fantasy"
+        "fantasy",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, school"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, school, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -407,10 +427,12 @@
         "wind",
         "dusk",
         "outdoors",
-        "fantasy"
+        "fantasy",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, school"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, school, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "1216x832"
     },
@@ -444,10 +466,12 @@
         "daylight",
         "grass",
         "fantasy",
-        "sad"
+        "sad",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -482,10 +506,12 @@
         "blue_dress",
         "armor",
         "mysterious",
-        "outdoors"
+        "outdoors",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, school, casual, bright"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, school, casual, bright, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -520,10 +546,12 @@
         "medieval",
         "dignified",
         "interior",
-        "fantasy"
+        "fantasy",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, school, casual"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, school, casual, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -558,10 +586,12 @@
         "dusk",
         "war",
         "epic",
-        "outdoors"
+        "outdoors",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, school, casual"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, school, casual, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "1216x832"
     },
@@ -596,10 +626,12 @@
         "glowsticks",
         "hologram",
         "performance",
-        "night"
+        "night",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, empty_room, day"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, empty_room, day, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "1216x832"
     },
@@ -632,10 +664,12 @@
         "recording",
         "headphones",
         "interior",
-        "warm_light"
+        "warm_light",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, outdoors"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, outdoors, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -669,10 +703,12 @@
         "japanese",
         "crowd",
         "outdoors",
-        "warm_light"
+        "warm_light",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, empty, day"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, empty, day, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -705,10 +741,12 @@
         "spotlight",
         "performance",
         "night",
-        "dark"
+        "dark",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, cheerful, day"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, cheerful, day, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -743,10 +781,12 @@
         "overgrown",
         "gray",
         "desolate",
-        "dystopia"
+        "dystopia",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, cheerful, bright, school"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, cheerful, bright, school, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "1216x832"
     },
@@ -779,10 +819,12 @@
         "wind",
         "ruins",
         "outdoors",
-        "quiet"
+        "quiet",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, cheerful, bright"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, cheerful, bright, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "1216x832"
     },
@@ -816,10 +858,12 @@
         "school",
         "afternoon",
         "indoor",
-        "quiet"
+        "quiet",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, night"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, night, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -853,10 +897,12 @@
         "winter",
         "street_lamp",
         "snowing",
-        "outdoors"
+        "outdoors",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, summer"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, summer, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -889,10 +935,12 @@
         "sunlight",
         "school",
         "afternoon",
-        "indoor"
+        "indoor",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, night"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, night, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -927,10 +975,12 @@
         "witch_hat",
         "outdoors",
         "travel",
-        "fantasy"
+        "fantasy",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, indoors"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, indoors, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "1216x832"
     },
@@ -965,10 +1015,12 @@
         "starry_sky",
         "witch",
         "fantasy",
-        "outdoors"
+        "outdoors",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -1003,10 +1055,12 @@
         "travel",
         "fantasy",
         "day",
-        "outdoors"
+        "outdoors",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -1039,10 +1093,12 @@
         "school_uniform",
         "evening",
         "outdoors",
-        "urban"
+        "urban",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, medieval"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, medieval, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -1075,10 +1131,12 @@
         "school_uniform",
         "day",
         "outdoors",
-        "urban"
+        "urban",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -1113,10 +1171,12 @@
         "night",
         "blue_light",
         "battle",
-        "city"
+        "city",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, day"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, day, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "1216x832"
     },
@@ -1149,10 +1209,12 @@
         "screen",
         "dark",
         "intimate",
-        "indoor"
+        "indoor",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, bright, cheerful"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, bright, cheerful, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -1185,10 +1247,12 @@
         "white_suit",
         "window",
         "indoor",
-        "professional"
+        "professional",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, cheerful"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, cheerful, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -1222,10 +1286,12 @@
         "city",
         "dark",
         "ominous",
-        "outdoors"
+        "outdoors",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, bright, cheerful, day"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, bright, cheerful, day, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -1259,10 +1325,12 @@
         "candlelight",
         "interior",
         "magic",
-        "night"
+        "night",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, sci-fi, beach"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, sci-fi, beach, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -1293,10 +1361,12 @@
         "twin_tails",
         "afternoon",
         "fence",
-        "outdoors"
+        "outdoors",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, fantasy, sci-fi"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, fantasy, sci-fi, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -1329,10 +1399,12 @@
         "action",
         "evening",
         "motion",
-        "outdoors"
+        "outdoors",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, sci-fi, beach"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, sci-fi, beach, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "1216x832"
     },
@@ -1365,10 +1437,12 @@
         "castle",
         "daylight",
         "fantasy",
-        "interior"
+        "interior",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, school"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, school, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -1401,10 +1475,12 @@
         "maid",
         "flowers",
         "fantasy",
-        "outdoors"
+        "outdoors",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, school"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, school, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -1439,10 +1515,12 @@
         "sad",
         "warm_light",
         "interior",
-        "blue"
+        "blue",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, cheerful"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, cheerful, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -1477,10 +1555,12 @@
         "white",
         "frost",
         "fantasy",
-        "outdoors"
+        "outdoors",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, desert, summer"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, desert, summer, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "1216x832"
     },
@@ -1515,10 +1595,12 @@
         "white_dress",
         "kingdom",
         "fantasy",
-        "dignified"
+        "dignified",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, desert"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, desert, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -1552,10 +1634,12 @@
         "white_dress",
         "daylight",
         "fantasy",
-        "outdoors"
+        "outdoors",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, night"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, night, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -1588,10 +1672,12 @@
         "witch_hat",
         "magic_school",
         "interior",
-        "fantasy"
+        "fantasy",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -1626,10 +1712,12 @@
         "plains",
         "dusk",
         "fantasy",
-        "outdoors"
+        "outdoors",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, city"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, city, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "1216x832"
     },
@@ -1661,10 +1749,12 @@
         "daylight",
         "fantasy",
         "outdoors",
-        "home"
+        "home",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, city"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, city, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -1697,10 +1787,12 @@
         "window",
         "candlelight",
         "forest",
-        "gothic"
+        "gothic",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, beach, school"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, beach, school, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -1731,10 +1823,12 @@
         "night",
         "castle",
         "purple_dress",
-        "outdoors"
+        "outdoors",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, beach, school"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, beach, school, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -1767,10 +1861,12 @@
         "giant",
         "dark",
         "ominous",
-        "outdoors"
+        "outdoors",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, cheerful, day, school"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, cheerful, day, school, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "1216x832"
     },
@@ -1803,10 +1899,12 @@
         "scissors",
         "crafting",
         "indoor",
-        "bright"
+        "bright",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, dark, sad"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, dark, sad, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -1839,10 +1937,12 @@
         "crowd",
         "camera",
         "booth",
-        "bright"
+        "bright",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, dark, night"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, dark, night, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -1874,10 +1974,12 @@
         "summer",
         "smile",
         "outdoors",
-        "bright"
+        "bright",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, dark, winter"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, dark, winter, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -1912,10 +2014,12 @@
         "demonic",
         "neon",
         "action",
-        "dystopia"
+        "dystopia",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, fantasy, cheerful"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, fantasy, cheerful, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "1216x832"
     },
@@ -1946,10 +2050,12 @@
         "white_shirt",
         "indoor",
         "daily",
-        "bright"
+        "bright",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, fantasy, night"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, fantasy, night, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -1980,10 +2086,12 @@
         "corridor",
         "daylight",
         "hair_ornament",
-        "indoor"
+        "indoor",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, fantasy, night"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, fantasy, night, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216"
     },
@@ -2018,10 +2126,12 @@
         "silk",
         "kimono",
         "intimate",
-        "night"
+        "night",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, modern, neon"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, modern, neon, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216",
       "adult": true,
@@ -2069,10 +2179,12 @@
         "bed",
         "warm_light",
         "night",
-        "intimate"
+        "intimate",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, fantasy, magic"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, fantasy, magic, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216",
       "adult": true,
@@ -2123,10 +2235,12 @@
         "clock",
         "golden",
         "gothic",
-        "intimate"
+        "intimate",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, bright, cheerful, day"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, bright, cheerful, day, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216",
       "adult": true,
@@ -2178,10 +2292,12 @@
         "white_robe",
         "fantasy",
         "night",
-        "intimate"
+        "intimate",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, modern, sci-fi"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, modern, sci-fi, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216",
       "adult": true,
@@ -2231,10 +2347,12 @@
         "candlelight",
         "blue_dress",
         "night",
-        "intimate"
+        "intimate",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, casual, bright"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, casual, bright, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216",
       "adult": true,
@@ -2284,10 +2402,12 @@
         "concert",
         "warm_light",
         "night",
-        "intimate"
+        "intimate",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, day, outdoor"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, day, outdoor, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216",
       "adult": true,
@@ -2336,10 +2456,12 @@
         "white_dress",
         "night",
         "cold_light",
-        "intimate"
+        "intimate",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, bright, cheerful"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, bright, cheerful, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216",
       "adult": true,
@@ -2387,10 +2509,12 @@
         "yukata",
         "lamp",
         "night",
-        "intimate"
+        "intimate",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, fantasy, magic"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, fantasy, magic, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216",
       "adult": true,
@@ -2440,10 +2564,12 @@
         "robe",
         "witch",
         "night",
-        "intimate"
+        "intimate",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, modern, sci-fi"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, modern, sci-fi, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216",
       "adult": true,
@@ -2491,10 +2617,12 @@
         "uniform",
         "desk_lamp",
         "night",
-        "intimate"
+        "intimate",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, fantasy, magic, bright"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, fantasy, magic, bright, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216",
       "adult": true,
@@ -2544,10 +2672,12 @@
         "suit",
         "desk",
         "intimate",
-        "dominant"
+        "dominant",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, cheerful, bright"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, cheerful, bright, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216",
       "adult": true,
@@ -2596,10 +2726,12 @@
         "red_dress",
         "chandelier",
         "night",
-        "intimate"
+        "intimate",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, bright, cheerful"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, bright, cheerful, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216",
       "adult": true,
@@ -2648,10 +2780,12 @@
         "bedroom",
         "candlelight",
         "night",
-        "intimate"
+        "intimate",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, modern, sci-fi"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, modern, sci-fi, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216",
       "adult": true,
@@ -2702,10 +2836,12 @@
         "moonlight",
         "candlelight",
         "night",
-        "intimate"
+        "intimate",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, modern, sci-fi, desert"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, modern, sci-fi, desert, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216",
       "adult": true,
@@ -2755,10 +2891,12 @@
         "lamp",
         "robe",
         "night",
-        "intimate"
+        "intimate",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, modern, sci-fi"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, modern, sci-fi, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216",
       "adult": true,
@@ -2808,10 +2946,12 @@
         "purple_dress",
         "snow",
         "night",
-        "intimate"
+        "intimate",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, modern, sci-fi, beach"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, modern, sci-fi, beach, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216",
       "adult": true,
@@ -2857,10 +2997,12 @@
         "mirror",
         "cosplay",
         "bright",
-        "intimate"
+        "intimate",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, dark, sad"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, dark, sad, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216",
       "adult": true,
@@ -2908,10 +3050,12 @@
         "white_shirt",
         "lamp",
         "night",
-        "intimate"
+        "intimate",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, medieval, fantasy, bright"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, medieval, fantasy, bright, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216",
       "adult": true,
@@ -2959,10 +3103,12 @@
         "night",
         "warm_light",
         "bed",
-        "sheets"
+        "sheets",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216",
       "adult": true,
@@ -3010,10 +3156,12 @@
         "morning",
         "backlighting",
         "window",
-        "rim_light"
+        "rim_light",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216",
       "adult": true,
@@ -3059,10 +3207,12 @@
         "mirror",
         "night",
         "lamp",
-        "intimate"
+        "intimate",
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, dark shadowed face, flat lighting, extra characters"
       ],
       "recommendedSize": "832x1216",
       "adult": true,

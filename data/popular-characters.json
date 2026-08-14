@@ -14,7 +14,7 @@
         "genshin impact",
         "electro archon"
       ],
-      "identityProse": "Raiden Shogun from Genshin Impact, also known as Raiden Ei, the Electro Archon. A regal woman with very long purple braided hair in a single long braid, glowing purple eyes, and a distinct beauty mole beneath her right eye, wearing a golden hairpin with purple flower and tassel.",
+      "identityProse": "Raiden Shogun from Genshin Impact, also known as Raiden Ei, the Electro Archon, a serene and regal woman with long lavender hair in a braid, glowing violet eyes, and a calm expressionless gaze, wearing the Raiden Shogun's flowing purple Japanese robes, bare shoulders, thigh-highs and a long braid",
       "identityTokens": [
         "raiden_shogun",
         "raiden_ei",
@@ -93,7 +93,7 @@
         "mai-san",
         "bunny girl senpai"
       ],
-      "identityProse": "Sakurajima Mai from Rascal Does Not Dream of Bunny Girl Senpai, an elegant actress with long straight black hair, soft purple-grey eyes, a delicate beauty mark, and her iconic white rabbit-shaped hair clip pinned on the side of her hair.",
+      "identityProse": "Sakurajima Mai from Rascal Does Not Dream of Bunny Girl Senpai, an elegant actress with long black hair, soft brown eyes and a composed, slightly distant air",
       "identityTokens": [
         "sakurajima_mai",
         "1girl",
@@ -101,6 +101,7 @@
         "long_black_hair",
         "straight_hair",
         "purple_eyes",
+        "brown_eyes",
         "bangs",
         "ahoge",
         "rabbit_hair_ornament",
@@ -182,7 +183,7 @@
         "kurumi tokisaki",
         "date a live"
       ],
-      "identityProse": "Tokisaki Kurumi from Date A Live, a mysterious spirit girl with uneven long black twintails, heterochromia with a red right eye and a golden clockwork left eye.",
+      "identityProse": "Tokisaki Kurumi from Date A Live, a mysterious girl with long dark hair in side twintails, two-tone red and gold eyes, and a pale elegant face, often dressed in black and crimson gothic attire",
       "identityTokens": [
         "tokisaki_kurumi",
         "1girl",
@@ -194,6 +195,7 @@
         "clock_eye",
         "yellow_left_eye",
         "bangs",
+        "gothic_hair_ornament",
         "date_a_live"
       ],
       "exactTokens": [
@@ -263,7 +265,7 @@
         "frieren the slayer",
         "elf mage"
       ],
-      "identityProse": "Frieren from Frieren: Beyond Journey's End, a centuries-old elf mage with very long white hair in low twin braids, violet eyes, pointed elven ears, gold earrings, carrying her wooden magical staff.",
+      "identityProse": "Frieren from Frieren: Beyond Journey's End, a centuries-old elf mage with very long white hair in low twin braids, violet eyes and pointed ears, carrying an old-fashioned staff and a calm, wistful expression",
       "identityTokens": [
         "frieren",
         "1girl",
@@ -344,17 +346,20 @@
         "king arthur",
         "fate/stay night"
       ],
-      "identityProse": "Saber, Artoria Pendragon from Fate/stay night, a regal knight with blonde hair tied in a neat bun, an ahoge, and clear green eyes, with a dignified and earnest bearing.",
+      "identityProse": "Saber, Artoria Pendragon from Fate/stay night, a regal knight with blonde hair tied in an intricate braided bun, an ahoge, and clear emerald-green eyes, carrying Excalibur with an earnest, dignified bearing",
       "identityTokens": [
         "artoria_pendragon",
-        "saber",
+        "saber_(fate)",
         "1girl",
         "solo",
         "blonde_hair",
-        "bun",
+        "braided_bun",
+        "hair_bun",
+        "blue_hair_ribbon",
         "ahoge",
         "green_eyes",
-        "hair_bun"
+        "holding_sword",
+        "fate/stay_night"
       ],
       "exactTokens": [
         "artoria_pendragon"
@@ -422,18 +427,20 @@
         "miku hatsune",
         "vocaloid"
       ],
-      "identityProse": "Hatsune Miku, the VOCALOID virtual singer, a cheerful girl with long teal twin-tails, bright teal eyes, a hair ribbon and an energetic stage presence.",
+      "identityProse": "Hatsune Miku, the VOCALOID virtual singer, a cheerful girl with iconic long teal twin-tails, bright turquoise eyes, black square hair ribbons, red 01 shoulder tattoo, and a vibrant stage presence",
       "identityTokens": [
         "hatsune_miku",
         "1girl",
         "solo",
-        "long_hair",
-        "twin_tails",
+        "very_long_hair",
+        "twintails",
         "teal_hair",
-        "blue_hair",
         "teal_eyes",
+        "black_hairband",
         "hair_ribbon",
-        "bangs"
+        "01_shoulder_tattoo",
+        "headset",
+        "vocaloid"
       ],
       "exactTokens": [
         "hatsune_miku"
@@ -503,18 +510,20 @@
         "inori yuzuriha",
         "guilty crown"
       ],
-      "identityProse": "Yuzuriha Inori from Guilty Crown, a quiet and beautiful singer with long pink hair, an ahoge and bright red eyes, with a fragile, ethereal presence.",
+      "identityProse": "Yuzuriha Inori from Guilty Crown, a delicate singer with long pink and orange-gradient twin-tails, bright crimson eyes, red hair clips, and a fragile, ethereal presence",
       "identityTokens": [
         "yuzuriha_inori",
         "1girl",
         "solo",
-        "long_hair",
+        "gradient_hair",
         "pink_hair",
-        "red_eyes",
-        "ahoge",
-        "bangs",
+        "orange_hair",
         "twintails",
-        "hairclip"
+        "red_eyes",
+        "red_hair_clips",
+        "hair_ornament",
+        "ahoge",
+        "guilty_crown"
       ],
       "exactTokens": [
         "yuzuriha_inori"
@@ -583,17 +592,19 @@
         "oregairu",
         "yahari ore no seishun"
       ],
-      "identityProse": "Yukinoshita Yukino from Oregairu, a composed and sharp young woman with long straight black hair, cool blue eyes, an ahoge and a neatly tied hair ribbon.",
+      "identityProse": "Yukinoshita Yukino from Oregairu, a sharp and elegant young woman with long straight black hair, cool blue eyes, an ahoge, and neat red hair ribbons on her side locks",
       "identityTokens": [
         "yukinoshita_yukino",
         "1girl",
         "solo",
-        "long_hair",
-        "black_hair",
+        "long_black_hair",
+        "straight_hair",
         "blue_eyes",
         "ahoge",
-        "hair_ribbon",
-        "bangs"
+        "red_hair_ribbons",
+        "side_locks",
+        "beauty_mark",
+        "oregairu"
       ],
       "exactTokens": [
         "yukinoshita_yukino"
@@ -660,17 +671,19 @@
         "majo no tabitabi",
         "wandering witch"
       ],
-      "identityProse": "Elaina from Wandering Witch, a young traveling witch with very long ash-gray hair, violet eyes and a black witch hat, always accompanied by her broom and a composed, bookish smile.",
+      "identityProse": "Elaina from Wandering Witch: The Journey of Elaina, an inquisitive traveling witch with very long ash-gray hair, violet eyes, a black witch hat with gold buckle, carrying her wooden broom with a confident smile",
       "identityTokens": [
-        "elaina",
+        "elaina_(majo_no_tabitabi)",
         "1girl",
         "solo",
-        "long_hair",
-        "very_long_hair",
-        "gray_hair",
+        "long_grey_hair",
+        "ash_hair",
         "purple_eyes",
         "witch_hat",
-        "bangs"
+        "gold_buckle",
+        "holding_broom",
+        "wooden_broom",
+        "majo_no_tabitabi"
       ],
       "exactTokens": [
         "elaina"
@@ -738,16 +751,18 @@
         "railgun",
         "railgun sis"
       ],
-      "identityProse": "Misaka Mikoto from A Certain Scientific Railgun, an energetic middle-school student with short brown hair, brown eyes and a spark of electricity, with a determined and cheerful attitude.",
+      "identityProse": "Misaka Mikoto from A Certain Scientific Railgun, an energetic Tokiwadai student with short chestnut brown hair, warm brown eyes, white flower hair clip, and crackling blue-white electrical sparks",
       "identityTokens": [
         "misaka_mikoto",
         "1girl",
         "solo",
-        "short_hair",
-        "brown_hair",
+        "short_brown_hair",
         "brown_eyes",
-        "bangs",
-        "hair_ornament"
+        "hair_clip",
+        "flower_hair_clip",
+        "sparks",
+        "electricity",
+        "toaru_kagaku_no_railgun"
       ],
       "exactTokens": [
         "misaka_mikoto"
@@ -813,19 +828,18 @@
         "chainsaw man",
         "control devil"
       ],
-      "identityProse": "Makima from Chainsaw Man, a calm and unnerving woman with long light-pink hair, red eyes and a perpetual knowing smile, typically dressed in a white shirt with a black tie; her true form as the Control Devil bears crimson hair, a single braid and golden ring eyes.",
+      "identityProse": "Makima from Chainsaw Man, a calm Public Safety leader with long salmon-pink hair braided into a low loose braid, golden concentric-ring eyes, and an unreadable, magnetic smile",
       "identityTokens": [
-        "makima",
+        "makima_(chainsaw_man)",
         "1girl",
         "solo",
-        "long_hair",
-        "hair_braid",
-        "light_pink_hair",
-        "red_eyes",
-        "ahoge",
-        "bangs",
-        "smile",
-        "hair_flower"
+        "pink_hair",
+        "single_braid",
+        "long_braid",
+        "yellow_eyes",
+        "ringed_eyes",
+        "concentric_circles",
+        "chainsaw_man"
       ],
       "exactTokens": [
         "makima"
@@ -906,17 +920,17 @@
         "rin tohsaka",
         "fate/stay night"
       ],
-      "identityProse": "Tohsaka Rin from Fate/stay night, a proud and clever mage with black hair in twin-tails, blue eyes and a hair ribbon, always with a sharp, confident look.",
+      "identityProse": "Tohsaka Rin from Fate/stay night, a proud and brilliant mage with long dark-brown hair in twin-tails tied with large black ribbons, clear aqua-blue eyes, and a confident, spirited expression",
       "identityTokens": [
         "tohsaka_rin",
         "1girl",
         "solo",
-        "twin_tails",
-        "black_hair",
+        "long_brown_hair",
+        "twintails",
+        "black_hair_ribbons",
         "blue_eyes",
         "ahoge",
-        "hair_ribbon",
-        "bangs"
+        "fate/stay_night"
       ],
       "exactTokens": [
         "tohsaka_rin"
@@ -985,17 +999,19 @@
         "re zero",
         "rem from re zero"
       ],
-      "identityProse": "Rem from Re:Zero, a gentle and devoted demon maid with short aqua-blue hair falling over her right eye, one visible blue eye, a small hair ornament and a hair ribbon, dressed in a classic black and white maid uniform.",
+      "identityProse": "Rem from Re:Zero, a devoted demon maid with short sky-blue hair parted over her right eye, one visible bright blue eye, a pink flower hair clip and white lace ribbon, and gentle features",
       "identityTokens": [
         "rem_(re_zero)",
         "1girl",
         "solo",
-        "short_hair",
+        "short_blue_hair",
         "blue_hair",
-        "blue_eyes",
         "hair_over_one_eye",
-        "hair_ornament",
-        "hair_ribbon"
+        "blue_eyes",
+        "flower_hair_clip",
+        "hair_ribbon",
+        "maid_headdress",
+        "re:zero"
       ],
       "exactTokens": [
         "rem_(re_zero)"
@@ -1064,19 +1080,19 @@
         "re zero",
         "emilia from re zero"
       ],
-      "identityProse": "Emilia from Re:Zero, a kind silver-haired elf with purple eyes, pointed ears and a hair ribbon, wearing a white and lilac dress that matches her gentle nature.",
+      "identityProse": "Emilia from Re:Zero, a gentle half-elf with long silver hair, pointed elven ears, purple-blue eyes with snowflake pupils, wearing a white flower hairpin and purple hair ribbons",
       "identityTokens": [
         "emilia_(re_zero)",
         "1girl",
         "solo",
-        "long_hair",
-        "silver_hair",
+        "long_silver_hair",
+        "white_hair",
         "purple_eyes",
         "elf",
         "pointy_ears",
-        "hair_ribbon",
-        "bangs",
-        "single_horn"
+        "hair_flower",
+        "purple_hair_ribbon",
+        "re:zero"
       ],
       "exactTokens": [
         "emilia_(re_zero)"
@@ -1143,20 +1159,18 @@
         "mushoku tensei",
         "jobless reincarnation"
       ],
-      "identityProse": "Roxy Migurdia from Mushoku Tensei, a small and dignified magic teacher with very long pale-blue hair in twin braids, blue eyes and a black pointed witch hat, exuding an air of quiet mastery.",
+      "identityProse": "Roxy Migurdia from Mushoku Tensei, a Migurd magic teacher with long pale-blue hair tied into twin braids, blue eyes, a mole on her left collarbone, carrying a curved wooden staff",
       "identityTokens": [
         "roxy_migurdia",
         "1girl",
         "solo",
-        "long_hair",
-        "very_long_hair",
-        "blue_hair",
-        "blue_eyes",
-        "braid",
+        "long_blue_hair",
         "twin_braids",
-        "bangs",
-        "pale_skin",
-        "small_breasts"
+        "blue_eyes",
+        "mole_on_collarbone",
+        "holding_staff",
+        "wooden_staff",
+        "mushoku_tensei"
       ],
       "exactTokens": [
         "roxy_migurdia"
@@ -1225,17 +1239,16 @@
         "snow field",
         "fate/stay night"
       ],
-      "identityProse": "Illyasviel von Einzbern from the Fate/stay night story, a small and cheerful-looking silver-haired girl with red eyes and a red hooded coat, at once playful and otherworldly.",
+      "identityProse": "Illyasviel von Einzbern from Fate/stay night, a petite homunculus girl with long snowy-white hair, bright ruby-red eyes, fine features, carrying an air of playful innocence and profound magic power",
       "identityTokens": [
         "illyasviel_von_einzbern",
         "1girl",
         "solo",
-        "long_hair",
-        "white_hair",
+        "long_white_hair",
+        "straight_hair",
         "red_eyes",
-        "ahoge",
-        "bangs",
-        "small_breasts"
+        "ruby_eyes",
+        "fate/stay_night"
       ],
       "exactTokens": [
         "illyasviel_von_einzbern"
@@ -1302,17 +1315,19 @@
         "my dress-up darling",
         "sono bisque doll"
       ],
-      "identityProse": "Kitagawa Marin from My Dress-Up Darling, a lively gyaru girl with long blonde hair, bright blue eyes and long lashes, always full of energy and love for cosplay.",
+      "identityProse": "Kitagawa Marin from My Dress-Up Darling, a glamorous and bubbly high school gyaru with long blonde hair with pink dip-dyed tips, bright dark-pink contact lenses, long painted nails and silver ear piercings",
       "identityTokens": [
         "kitagawa_marin",
         "1girl",
         "solo",
-        "long_hair",
-        "blonde_hair",
-        "blue_eyes",
-        "ahoge",
-        "eyelashes",
-        "gyaru"
+        "long_blonde_hair",
+        "gradient_hair",
+        "pink_hair_tips",
+        "pink_eyes",
+        "earrings",
+        "piercing",
+        "painted_nails",
+        "sono_bisque_doll_wa_koi_wo_suru"
       ],
       "exactTokens": [
         "kitagawa_marin"
@@ -1393,19 +1408,19 @@
         "engage kiss",
         "kisara from engage kiss"
       ],
-      "identityProse": "Kisara from Engage Kiss, a demon girl disguised as a high school student, with long pink hair, red eyes, an ahoge and strands of hair falling between her eyes, a black hair ribbon in her hair, and a bandage on her right thigh.",
+      "identityProse": "Kisara from Engage Kiss, an A-class demon girl with very long pastel-pink hair, vibrant crimson eyes, an ahoge, center-parted bangs, a black hair ribbon, and an adhesive bandage on her right thigh",
       "identityTokens": [
         "kisara_(engage_kiss)",
         "1girl",
         "solo",
-        "long_hair",
-        "pink_hair",
+        "long_pink_hair",
+        "very_long_hair",
         "red_eyes",
+        "crimson_eyes",
         "ahoge",
-        "bangs",
-        "hair_between_eyes",
-        "hair_ornament",
-        "hair_ribbon"
+        "black_hair_ribbon",
+        "thigh_bandage",
+        "engage_kiss"
       ],
       "exactTokens": [
         "kisara_(engage_kiss)"
