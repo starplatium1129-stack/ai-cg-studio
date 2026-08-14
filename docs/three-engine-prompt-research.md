@@ -76,11 +76,32 @@
 ### 2.4 负面装配顺序（统一入口 `assembleNegative`）
 官方前缀 → 场景非样板排除词（replace/boilerplate 策略移除 generic）→ 紧凑手/解剖/文字保护（`bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, text, watermark, logo, signature`）→ rating 安全（R18 加 `child/loli/underage`，其余加 `nsfw/nude/explicit`）。
 
-### 2.5 待外部调研回填
-- [ ] score 标签（score_7 等）在 Anima 上的官方/社区验证
-- [ ] 负面词长度与 CFG 敏感性的社区经验
-- [ ] 角色歧义消解（`rem_(re_zero)`）在 Anima 上是否有效
-- [ ] 官方推荐的 steps/CFG/sampler 组合与社区差异
+### 2.5 外部调研结论（2026-08-14，官方模型卡 + HF 讨论 #96/#112 + lilting/PTT/Reddit/CivArchive 交叉验证）
+
+> 置信度：🟢官方 / 🔵带图实验 / 🟡社区 / ⚪未确认。**项目现有契约与官方推荐完全吻合**（前缀、负面、空格、Aesthetic 去 score、LoRA 训练参数均一致）——以下补充官方细节与社区经验。
+
+**官方规则（🟢 模型卡，作者 tdrussell）**
+- 训练数据 = Danbooru tags + 自然语言 + 两者混合 → 三种写法都支持且可任意混合；纯自然语言**至少两句、越详细越好**，可先点名角色再描述长相。
+- 标签一律**小写 + 空格**（tokenizer 不做下划线转换，下划线=普通字符）；**唯一例外 score 标签用下划线**（`score_7`）。Danbooru/Gelbooru 不一致时优先 Gelbooru。
+- 推荐正面前缀 `masterpiece, best quality, score_7, safe`；推荐负面 `worst quality, low quality, score_1, score_2, score_3, artist name, blurry, jpeg artifacts, chromatic aberration`（**与项目 presets.json 完全一致**）。
+- 标签顺序：`[quality/meta/year/safety] [1girl/1boy...] [character] [series] [artist] [general tags]`，节内乱序无妨。
+- **权重语法有效但数值要高**：官方示例 `(chibi:2)`；SDXL 习惯的 1.1–1.3 在 Anima 上几乎无感（社区：体型类 tag 要 `:2`–`:3` 才相当于 SDXL `:1.3`）。
+- 画师**必须 `@` 前缀**（`@big chungus`），否则效果极弱；可 `@anime coloring` 这类描述。
+- 质量词组合全兼容（人工评分词 / score 美学词 / 都不用 / 都用均可）；Aesthetic 版官方建议**正负都不放 score**（"can push it too hard into slop territory"）。
+- 采样：Base/Aesthetic 30–50 steps、CFG 4–5、512²–1536²；Turbo CFG 1、8–12 steps。采样器偏好 er_sde（默认）> euler_a（柔和）> dpmpp_2m_sde_gpu（多样）> euler（创造）。写实/油画质感用 beta57 scheduler。
+- 标签 dropout：训练时随机 dropout → 不用写全每个相关 tag。
+
+**负面词实证（🔵 lilting.ch）**：官方负面就是短，**不要照搬 Illustrious 的 bad-hands 超长列表**；结构性引导放正面而非负面。社区补充项：白屏跑偏加 `solid background`、负面加 `deviant art`（一例，未充分复现）、NSFW 加 `(shaved pussy)` 正面词而非负面。
+
+**CFG / Shift（🔵🟡）**：CFG 过高会 burn（Anima 比 Illustrious 敏感）；社区 Comfy 常用 CFG 4。Forge Neo 的 **Shift 参数**（DiT 特有）：默认 ~3，标签越多/怕风格漂移调到 **10–24**。
+
+**角色一致性（🟢🟡）**：单角色 Base 会漂、精调 checkpoint 更稳；锁死 = 角色 LoRA + 显式外观 tag。**括号歧义消解语义有效但用空格**：`(re zero)` 而非 `(re_zero)`（与空格规则一致）。双人/多人图**必须逐人点名 + 外观 + 布局**，否则特征串位。角色 tag 查 Anima 专用表（BetaDoggo/danbooru-tag-list 或 animadex.net）。项目热门角色 exactTokens 目前是 `rem_(re_zero)` 下划线形式——**按 Anima 空格规则应改 `rem (re zero)`**（待 A/B 验证后落地）。
+
+**画师混搭（🟢 #112 作者亲答 + 🟡 Reddit 94 分帖）**：与 SDXL 行为不同、更易漂移但属正常（"CLIP 偶然产物，不值得换回 CLIP"）；画师区独立成块 `Mixed style of following artists: (@artist1, @artist2:2.0)` 权重 `:2.0` 起步；少用 masterpiece/score（毁特定画师风格）；长 prompt 掩盖遗忘、越稳。**LLM adapter 是"mini trainable text encoder"，训 LoRA 必须冻结**（llm_adapter_lr=0），遗忘主因 = 训了 adapter 或 LR 过高；LLM 对首 token 权重极高，**超长 prompt 的末尾 tag=加噪声**，遵循官方 tag 顺序。
+
+**LoRA 训练（🟢 #112 + 🟡 社区）**：Base 上训练（merge checkpoint 会写坏兼容性 missing keys）；LR 2e-5、rank 16–32、冻结 adapter（**与项目宁宁/夏目 v20 实测完全一致**）；打标 `newest, safe` 前缀 + 角色/作品/画师 + 外观 + 一句自然语言，tag 训练者 tag 生、NL 训练者 NL 生；推理强度 0.7–0.9 起步。**项目额外实测**：underscore exact token（`ayachi_nene`/`nene_r18`/`best_quality`）必须保留，普通场景词转空格（v19 A/B：胸饰退化为金属环即拒绝）。
+
+**评分标签争议（⚪🟡）**：score 词只适用 Anima 家族，不适用 Pony/SDXL/Illustrious/NoobAI（Raininosi 在 WAI-ANIMA 澄清）；官方推荐 score_7，但 WAI-ANIMA 用户多人反馈"不加 score 更少 AI 味"。→ 按 checkpoint 取舍：Base 留 score_7（官方），Aesthetic 去 score（官方 + 项目已实现）。
 
 ---
 
@@ -148,6 +169,7 @@
 ### 6.2 行动项
 1. **Krea 2 散文**：按 §1.2 结构重写/校验所有 `promptProse`（每角色 3 原型 + 1 成人共 4 场景 × 18 角色 + 3 通用成人）；检查无玄学词、裸体词前置、服装「已脱下」。
 2. **Anima 标签**：校验各角色 `identityTokens`/`exactTokens`/`outfit.tokens` 的空格/下划线规范（通用标签空格、锚点 token 下划线）；`@artist` 画师格式。
+   - ⚠️ **待 A/B**：exactTokens 的 Danbooru 消歧括号当前是下划线（`rem_(re_zero)`），Anima 官方规则是空格（`rem (re zero)`）。先出 A/B 图确认空格形式在 Anima 上还原度不降，再决定是否批量改 18 角色（影响 `test-popular-content.js` 的 exactTokens 断言）。
 3. **SD 标签**：校验 WAI 路径质量前缀原样（`masterpiece, best quality, amazing quality` 带空格）、rating 词（general/sensitive/nsfw）、场景 token 22-26 个、实体词 2-4、氛围词 ≥2。
 4. **A/B 验证**：用 `generate-scene-showcase-candidates.js` 按引擎出候选，`image-inspect -t audit` 8 维审核，人工终审定稿。
 5. **回填**：本文件 §2.5 / §3.3 待外部调研项，子代理返回后合入对应章节。
