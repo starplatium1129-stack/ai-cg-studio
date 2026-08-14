@@ -12,13 +12,12 @@
       <span class="speech-storage-note"><i aria-hidden="true"></i>配置保存在本机浏览器</span>
     </div>
 
-    <label class="speech-toggle-row">
-      <input type="checkbox" v-model="draft.enabled" />
+    <ToggleSwitch v-model="draft.enabled" class="speech-toggle-row" label="启用语音输入">
       <span class="speech-toggle-copy">
         <strong>启用语音输入</strong>
         <small>聊天输入框旁显示“按住说话”按钮</small>
       </span>
-    </label>
+    </ToggleSwitch>
 
     <div class="speech-settings-grid">
       <label class="speech-field">
@@ -47,21 +46,19 @@
       </label>
     </div>
 
-    <label class="speech-toggle-row speech-toggle-row-sub">
-      <input type="checkbox" v-model="draft.autoSend" />
+    <ToggleSwitch v-model="draft.autoSend" class="speech-toggle-row speech-toggle-row-sub" label="识别后直接发送">
       <span class="speech-toggle-copy">
         <strong>识别后直接发送</strong>
         <small>不勾选时先填入输入框，确认后再发送</small>
       </span>
-    </label>
+    </ToggleSwitch>
 
-    <label class="speech-toggle-row speech-toggle-row-sub">
-      <input type="checkbox" v-model="draft.wakeEnabled" />
+    <ToggleSwitch v-model="draft.wakeEnabled" class="speech-toggle-row speech-toggle-row-sub" label="唤醒词连续对话">
       <span class="speech-toggle-copy">
         <strong>唤醒词连续对话</strong>
         <small>空闲时自动监听，说出唤醒词即可对话，说结束词退出</small>
       </span>
-    </label>
+    </ToggleSwitch>
 
     <div v-if="draft.wakeEnabled" class="speech-settings-grid speech-settings-grid-words">
       <label class="speech-field">
@@ -95,6 +92,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import {
   DEFAULT_SPEECH_INPUT_CONFIG,
   isSpeechInputReady,
@@ -220,7 +218,6 @@ function save(): void {
   border-radius: var(--r-md);
   cursor: pointer;
 }
-.speech-toggle-row input { accent-color: var(--accent); margin-top: 3px; }
 .speech-toggle-copy strong { display: block; font-size: var(--fs-label-sm); color: var(--text-primary); }
 .speech-toggle-copy small { display: block; font-size: var(--fs-label-xs); color: var(--text-muted); margin-top: 2px; }
 .speech-toggle-row-sub { margin-top: var(--s-3); }

@@ -27,13 +27,15 @@
       <span class="sd-vram-hint advanced-decision" :class="vramLevel">{{ vramHint }}</span>
       <span v-if="baseResolutionRisk" class="sd-base-resolution-hint advanced-decision" :class="baseResolutionRisk">{{ baseResolutionHint }}</span>
       <label class="hires-label advanced-decision">
-        <span class="switch"><input type="checkbox" v-model="params.hiresFix"><span class="slider"></span></span>
-        <ArchiveIcon name="spark" class="control-icon-inline" />
-        <span>hires.fix</span>
+        <ToggleSwitch v-model="params.hiresFix" label="hires.fix">
+          <ArchiveIcon name="spark" class="control-icon-inline" />
+          <span>hires.fix</span>
+        </ToggleSwitch>
       </label>
       <label v-if="canUseFaceDetailer" class="hires-label advanced-decision">
-        <span class="switch"><input type="checkbox" v-model="params.faceDetailer" @change="touch('faceDetailer')"><span class="slider"></span></span>
-        面部与手部修复
+        <ToggleSwitch v-model="params.faceDetailer" label="面部与手部修复" @change="touch('faceDetailer')">
+          <span>面部与手部修复</span>
+        </ToggleSwitch>
       </label>
       <details v-if="params.hiresFix" class="sd-advanced-options advanced-decision">
         <summary>高级设置</summary>
@@ -55,9 +57,14 @@
     <!-- Anima 专属快捷高清修复开关 -->
     <div v-else-if="engine === 'anima' && expert" class="sd-inline-options">
       <label class="hires-label advanced-decision">
-        <span class="switch"><input type="checkbox" :checked="Boolean(animaHiresFix)" @change="$emit('update:animaHiresFix', !animaHiresFix)"><span class="slider"></span></span>
-        <ArchiveIcon name="spark" class="control-icon-inline" />
-        <span>高清放大修复 (Hires.fix 2x)</span>
+        <ToggleSwitch
+          :model-value="Boolean(animaHiresFix)"
+          label="高清放大修复"
+          @update:model-value="$emit('update:animaHiresFix', $event)"
+        >
+          <ArchiveIcon name="spark" class="control-icon-inline" />
+          <span>高清放大修复 (Hires.fix 2x)</span>
+        </ToggleSwitch>
       </label>
     </div>
 
@@ -96,6 +103,7 @@ import { computed } from 'vue'
 import type { DrawEngine } from '@/storage/settingsRepository'
 import type { SDParams } from '@/utils/promptBuilderPersistence'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 
 const props = defineProps<{
   engine: DrawEngine

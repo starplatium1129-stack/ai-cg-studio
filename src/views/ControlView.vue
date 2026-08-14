@@ -181,10 +181,9 @@
           </div>
         </div>
 
-        <label class="autostart-row">
-          <input type="checkbox" v-model="autoStartVoice" @change="saveAutoStartVoice" />
-          打开控制面板时自动启动语音（显存紧张时不建议开启）
-        </label>
+        <ToggleSwitch v-model="autoStartVoice" class="autostart-row" @change="saveAutoStartVoice">
+          <span>打开控制面板时自动启动语音（显存紧张时不建议开启）</span>
+        </ToggleSwitch>
         <p class="panel-foot">Ollama 闲置约 10 分钟会自动卸载；系统声音试听不依赖 GPT-SoVITS。</p>
          <p v-if="!scripts.webui || !scripts.comfy || !scripts.voiceStart" class="script-hint">
           部分脚本未找到：
@@ -336,6 +335,7 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import AppSoundToggle from '@/components/AppSoundToggle.vue'
 import AppThemeToggle from '@/components/AppThemeToggle.vue'
 import RouteAtmosphere from '@/components/visual/RouteAtmosphere.vue'
@@ -664,7 +664,6 @@ onUnmounted(() => { status.stopPolling() })
   border: 1px dashed var(--border-soft); border-radius: var(--r-lg);
   color: var(--text-muted); font-size: var(--fs-label-xs); line-height: 1.55; cursor: pointer;
 }
-.autostart-row input { accent-color: var(--accent); margin-top: 2px; }
 .script-hint { margin-top: var(--s-2); color: var(--warning-text); font-size: var(--fs-label-xs); line-height: 1.5; }
 
 .field-label {

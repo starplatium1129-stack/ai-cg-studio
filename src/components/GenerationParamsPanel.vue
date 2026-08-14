@@ -24,17 +24,15 @@
         </select>
       </div>
       <div class="ctrl toggle-row">
-        <label class="switch"><input type="checkbox" v-model="params.quality"><span class="slider"></span></label>
+        <ToggleSwitch v-model="params.quality" label="质量前缀" />
         <label title="由模型 profile 注入的质量前缀，无需手写。">质量前缀</label>
       </div>
       <div class="ctrl toggle-row">
-        <label class="switch"><input type="checkbox" v-model="params.negative"><span class="slider"></span></label>
+        <ToggleSwitch v-model="params.negative" label="负面" />
         <label title="负面提示词，防止常见缺陷。">负面</label>
       </div>
       <div class="ctrl ctrl-seed">
-        <label class="seed-lock-label">
-          <input type="checkbox" v-model="params.seedLock"> 锁定 seed
-        </label>
+        <ToggleSwitch v-model="params.seedLock" class="seed-lock-label" label="锁定 seed"><span>锁定 seed</span></ToggleSwitch>
         <div class="seed-input-wrap">
           <input type="number" v-model.number="params.seed" min="-1" step="1" placeholder="-1">
           <button class="btn btn-ghost btn-mini" type="button" :disabled="resultSeed == null" @click="$emit('reuse-seed')">复用</button>
@@ -51,6 +49,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import type { SDParams } from '@/utils/promptBuilderPersistence'
 
 const props = defineProps<{

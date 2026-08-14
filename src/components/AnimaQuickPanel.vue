@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import type { AnimaGenerationState } from '@/types/anima'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 
 const props = defineProps<{
   state: AnimaGenerationState
@@ -84,11 +85,10 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
 
       <!-- Anima 高清修复控制 -->
       <div v-if="state.family === 'anima'" class="anima-row anima-hires-row">
-        <label class="anima-hires-toggle">
-          <input v-model="hiresFix" type="checkbox" :disabled="busy" />
+        <ToggleSwitch v-model="hiresFix" :disabled="busy" label="高清放大修复" class="anima-hires-toggle">
           <ArchiveIcon name="spark" class="anima-hires-icon" />
           <span>高清放大修复 (Hires.fix 2x)</span>
-        </label>
+        </ToggleSwitch>
         <template v-if="hiresFix">
           <span class="anima-inline">倍率</span>
           <select v-model.number="hiresScale" class="anima-num" :disabled="busy">
@@ -118,8 +118,7 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
 .anima-preview-note { margin: 0; color: var(--warning-text); font-size: var(--fs-label-xs); line-height: 1.45 }
 .anima-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap }
 .anima-hires-row { padding-top: 6px; border-top: 1px dashed var(--border-soft); margin-top: 2px }
-.anima-hires-toggle { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-size: var(--fs-label-xs); font-weight: 600; color: var(--accent) }
-.anima-hires-toggle input { cursor: pointer; accent-color: var(--accent) }
+.anima-hires-toggle { font-size: var(--fs-label-xs); font-weight: 600; color: var(--accent) }
 .anima-hires-icon { width: 14px; height: 14px; color: var(--accent); flex-shrink: 0 }
 .anima-row label, .anima-label { font-size: var(--fs-label-xs); opacity: 0.8; min-width: 44px }
 .anima-label { margin-top: 4px }

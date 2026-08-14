@@ -90,8 +90,8 @@
           <label class="scene-filter-field">排序<select v-model="sortBy"><option value="smart">智能推荐</option><option value="used">最近常用</option><option value="curated">主理人精选</option><option value="favorite">我的收藏</option><option value="newest">最新加入</option><option value="title">名称A-Z</option></select></label>
         </div>
         <div class="scene-filter-meta">
-          <label class="mature-toggle"><input type="checkbox" v-model="showMature" @change="onMatureChange" /> 显示成人内容 <span>({{ matureCount }})</span></label>
-          <label class="mature-toggle"><input type="checkbox" v-model="showHidden" /> 管理已隐藏 <span>({{ hiddenCount }})</span></label>
+          <ToggleSwitch v-model="showMature" class="mature-toggle" @change="onMatureChange"><span>显示成人内容 <em>({{ matureCount }})</em></span></ToggleSwitch>
+          <ToggleSwitch v-model="showHidden" class="mature-toggle"><span>管理已隐藏 <em>({{ hiddenCount }})</em></span></ToggleSwitch>
           <button class="scene-reset" type="button" @click="resetFilters">重置全部筛选</button>
         </div>
       </div>
@@ -210,6 +210,7 @@ import { useFocusTrap } from '@/composables/useFocusTrap'
 import { useSceneStore, type Scene, type CurationData } from '@/stores/sceneStore'
 import { quickCreateUrl } from '@/utils/quickCreate'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
+import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 
 interface ExplorerScene extends Scene {
   title?: string
@@ -740,7 +741,7 @@ onMounted(() => { init() })
 .scene-more-filters .scene-facet-grid { padding:0 var(--s-3) var(--s-3); grid-template-columns:repeat(4,minmax(0,1fr)); }
 .scene-filter-meta { display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); flex-wrap:wrap; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); }
 .mature-toggle { display:inline-flex; align-items:center; gap:var(--s-2); color:var(--text-secondary); cursor:pointer; font-size:var(--fs-body-sm); }
-.mature-toggle input { accent-color:var(--accent); width:17px; height:17px; }
+.mature-toggle em { font-style:normal; opacity:.6; }
 .scene-count { color:var(--text-secondary); font-size:var(--fs-label); }
 :deep(.scene-count strong) { color:var(--accent); }
 .scene-reset { border:0; background:transparent; color:var(--text-muted); cursor:pointer; font:600 var(--fs-label-sm) var(--font-sans); }
