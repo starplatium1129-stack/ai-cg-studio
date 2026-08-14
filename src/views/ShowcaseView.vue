@@ -174,6 +174,7 @@ import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { useSceneStore } from '@/stores/sceneStore'
 import ArchivePageHero from '@/components/visual/ArchivePageHero.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import {
   parseShowcaseManifest,
