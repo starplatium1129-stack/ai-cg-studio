@@ -30,6 +30,7 @@ const { test } = require('node:test');
 const gen = require('../../scripts/maintenance/generate-showcase-candidates.js');
 const sceneGen = require('../../scripts/maintenance/generate-scene-showcase-candidates.js');
 const popularData = require('../../data/popular-characters.json');
+const sceneBlueprints = require('../../data/scene-blueprints.json').blueprints;
 const artistCatalog = require('../../src/config/artistStyleCatalog.ts');
 const artistStyles = require('../../src/config/artistStyles.ts');
 const genConst = require('../../routes/generation.js').constants;
@@ -45,7 +46,10 @@ test('batch plan expands consistently with the curated artist catalog', () => {
   const plan = gen.planAllBatches(20260812);
   const artistCount = artistCatalog.ARTIST_STYLE_OPTIONS.length;
   const artistVariants = artistCount + 1;
-  const expectedAttempt1 = 800 + artistVariants * 3;
+  const expectedAttempt1 = artistVariants + 18 + 8 + 126 + artistVariants * 2;
+  // 明细：artistVariants 张画师 + 18 popular（角色专属场景）+ 8 latest-lora
+  //       + 126 popular-grid（18 角色×3 专属场景×2 引擎；3 个成人蓝图仅 3 个 adult 角色可见 = 3×3×2）
+  //       + artistVariants×2 artist-grid
   const expectedTotal = expectedAttempt1 + 14 + 6 + 2;
   assert.strictEqual(plan.length, expectedTotal, `expected ${expectedTotal} planned jobs, got ${plan.length}`);
   const attempt1 = plan.filter(item => item.attempt === 1);
@@ -60,7 +64,7 @@ test('batch plan expands consistently with the curated artist catalog', () => {
   const counts = legacy1.reduce((acc, item) => { acc[item.batch] = (acc[item.batch] || 0) + 1; return acc; }, {});
   assert.deepStrictEqual(counts, { artist: artistVariants, popular: 18, 'latest-lora': 8 });
   const gridCounts = plan.reduce((acc, item) => { acc[item.batch] = (acc[item.batch] || 0) + 1; return acc; }, {});
-  assert.strictEqual(gridCounts['popular-grid'], 774, 'popular-grid must plan 774 (fail-closed 双引擎矩阵)');
+  assert.strictEqual(gridCounts['popular-grid'], 126, 'popular-grid must plan 126 (18 characters x 3 prototype scenes x 2 engines + adult-eligible extras)');
   assert.strictEqual(gridCounts['artist-grid'], artistVariants * 2, 'artist-grid must plan every artist + baseline across two engines');
   const recordIds = new Set(plan.map(item => item.recordId));
   assert.strictEqual(recordIds.size, plan.length, 'recordIds must be unique');
@@ -450,7 +454,9 @@ test('popular batch covers all 18 characters with default outfit and safe bluepr
     if (character.adultEligibility !== 'adult') {
       assert.ok(!/(nsfw|nude|explicit)/i.test(item.prompt), `${character.id} non-adult character must stay safe`);
     }
-    assert.strictEqual(item.sceneId, gen.constants.POPULAR_BLUEPRINT_ID, `${character.id} must use the fixed identity blueprint`);
+    const scene = sceneBlueprints.find(blueprint => blueprint.id === item.sceneId);
+    assert.ok(scene && scene.characterId === character.id,
+      `${character.id} must use its own prototype scene, got ${item.sceneId}`);
   }
 });
 
@@ -529,9 +535,9 @@ test('single-character scene candidates use the audited short prompt and correct
   }
 
   const nene = candidates.find(item => item.characterId === 'nene');
-  assert.strictEqual(nene.loraId, 'L_NENE_V20B_ANIMA');
-  assert.strictEqual(nene.generationCharacter, 'nene_b');
-  assert.strictEqual(sceneGen.buildSubmissionBody(nene).character, 'nene_b');
+  assert.strictEqual(nene.loraId, 'L_NENE_V21_ANIMA');
+  assert.strictEqual(nene.generationCharacter, 'nene');
+  assert.strictEqual(sceneGen.buildSubmissionBody(nene).character, 'nene');
 
   const natsume = candidates.find(item => item.characterId === 'natsume');
   assert.strictEqual(natsume.loraId, 'L_NAT_V20_ANIMA');

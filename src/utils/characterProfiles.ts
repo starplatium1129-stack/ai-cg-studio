@@ -23,6 +23,8 @@ export interface CharacterProfile {
   icon: string
   source: string
   alias: string[]
+  /** heroine（站内角色，进角色空间）/ popular（热门出图角色，仅档案）。 */
+  type?: string
   voice: string
   tags: string[]
   bg_story: string
@@ -97,6 +99,7 @@ export function parseCharacterProfiles(value: unknown): CharacterProfile[] {
     return [{
       id,
       name,
+      type: optionalString(item.type),
       icon: optionalString(item.icon) ?? '',
       source: optionalString(item.source) ?? '',
       alias: stringList(item.alias),

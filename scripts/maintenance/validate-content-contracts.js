@@ -68,9 +68,12 @@ function validateContent(data, fileExists) {
     else if (!fileExists(character.portrait.image)) errors.push(label + '.portrait.image does not exist: ' + character.portrait.image);
     if (!character.visual_dna || !character.visual_dna.signature) errors.push(label + '.visual_dna.signature is required');
     if (!Array.isArray(character.traits) || character.traits.length < 3) errors.push(label + '.traits must contain identity anchors');
-    if (!character.lora || typeof character.lora.name !== 'string') errors.push(label + '.lora.name is required');
-    else characterLoras.add(character.lora.name);
-    if (!(Number(character.lora && character.lora.weight) > 0 && Number(character.lora.weight) <= 2)) errors.push(label + '.lora.weight must be in (0, 2]');
+    // 热门角色（type=popular）无 LoRA：仅 heroine 强制 lora.name/weight。
+    if (character.type !== 'popular') {
+      if (!character.lora || typeof character.lora.name !== 'string') errors.push(label + '.lora.name is required');
+      else characterLoras.add(character.lora.name);
+      if (!(Number(character.lora && character.lora.weight) > 0 && Number(character.lora.weight) <= 2)) errors.push(label + '.lora.weight must be in (0, 2]');
+    }
   });
 
   var loraIds = new Set();

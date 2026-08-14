@@ -197,11 +197,11 @@ function checkedCandidates() {
   });
 }
 
-function workflowFor(scene, candidate, seed, group) {
+function workflowFor(scene, candidate, seed, group, modelId) {
   var workflow = animaRoute.buildWorkflow({
     prompt:scene.prompt,
     negative:scene.negative,
-    modelId:'anima-base-v1.0',
+    modelId:modelId,
     loraId:'L_NENE_V20_ANIMA',
     loraStrength:LORA_STRENGTH,
     width:WIDTH,
@@ -222,15 +222,29 @@ function workflowFor(scene, candidate, seed, group) {
 
 async function main() {
   var group = paramsGroup();
+  var modelId = 'anima-base-v1.0';
+  var modelRaw = process.argv.find(function (a) { return a.startsWith('--model='); });
+  if (modelRaw) modelId = modelRaw.split('=')[1];
+  else if (process.argv.includes('--model')) modelId = process.argv[process.argv.indexOf('--model') + 1];
+  if (!['anima-base-v1.0', 'anima-aesthetic-v1.1'].includes(modelId)) {
+    throw new Error('Unknown --model: ' + modelId + ' (anima-base-v1.0|anima-aesthetic-v1.1)');
+  }
+  var onlyRaw = process.argv.find(function (a) { return a.startsWith('--only='); });
+  var only = null;
+  if (onlyRaw) only = onlyRaw.split('=')[1].split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+  else if (process.argv.includes('--only')) only = process.argv[process.argv.indexOf('--only') + 1].split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+
   var scenes = buildScenes();
-  var candidates = checkedCandidates();
-  var outputRoot = path.join(AI_ROOT, 'Reviews', 'AnimaUnifiedSweep', '2026-08-13_' + group.label);
+  var candidates = checkedCandidates().filter(function (c) { return !only || only.includes(c.id); });
+  var modelTag = modelId === 'anima-aesthetic-v1.1' ? '_aesthetic' : '';
+  var outputRoot = path.join(AI_ROOT, 'Reviews', 'AnimaUnifiedSweep', '2026-08-13_' + group.label + modelTag);
   var manifestFile = path.join(outputRoot, 'manifest.json');
   var manifest = fs.existsSync(manifestFile) ? readJson(manifestFile) : {
     version:1,
-    purpose:'Unified sweep: ayachi_nene_v20_anima_scientific_unified epochs 4..24 on the extended scene matrix',
+    purpose:'Unified sweep: ayachi_nene_v20_anima_scientific_unified epochs on the extended scene matrix',
     comfy:COMFY,
     paramGroup:group.label,
+    modelId:modelId,
     settings:{ width:WIDTH, height:HEIGHT, steps:group.steps, cfg:group.cfg, sampler:group.sampler, scheduler:group.scheduler, loraStrength:LORA_STRENGTH, seeds:SEEDS },
     scenes:scenes,
     candidates:candidates,
@@ -280,7 +294,7 @@ async function main() {
       var candidate = job.candidate;
       var scene = job.scene;
       var seed = job.seed;
-      var workflow = workflowFor(scene, candidate, seed, group);
+      var workflow = workflowFor(scene, candidate, seed, group, modelId);
       var startedAt = new Date().toISOString();
       var submitted = await requestJson('/prompt', {
         method:'POST',

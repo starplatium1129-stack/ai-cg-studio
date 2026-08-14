@@ -1,774 +1,2003 @@
 {
-  "version": 1,
+  "version": 2,
   "blueprints": [
     {
-      "id": "flower_field_backlight",
-      "title": "花海逆光",
-      "category": "户外",
-      "description": "站在盛开花丛中，黄昏逆光勾勒发丝与轮廓。",
-      "location": "山丘上的花田",
-      "action": "微风吹动头发与裙摆，回眸看镜头",
-      "timeOfDay": "黄昏",
-      "lighting": "golden backlight with a warm glow",
-      "camera": "medium shot, eye level, shallow depth of field",
-      "mood": "calm and wistful",
+      "id": "raiden_shogun_tenshukaku",
+      "title": "天守阁内廷",
+      "category": "和风奇幻",
+      "characterId": "raiden_shogun",
+      "description": "稻妻天守阁内廷，屏风烛火与紫电微光。",
+      "location": "稻妻天守阁内廷",
+      "action": "端坐于屏风前，膝上横放梦想一心",
+      "timeOfDay": "夜晚",
+      "lighting": "昏暗烛火与紫电微光交织",
+      "camera": "medium shot, eye level, symmetrical composition",
+      "mood": "庄严肃穆",
       "sceneTags": [
-        "flower_field",
-        "backlighting",
-        "golden_hour",
-        "wind",
-        "depth_of_field"
+        "inazuma",
+        "tenshukaku",
+        "shoji",
+        "tatami",
+        "throne_room",
+        "candlelight",
+        "purple",
+        "lightning_motif"
       ],
-      "promptProse": "Standing in a vast blooming flower field on a hill at golden hour, the setting sun backlights her and traces glowing edges around hair and shoulders. A soft breeze lifts hair and skirt while petals drift through the warm air.",
+      "promptProse": "Inside the Raiden Shogun's Tenshukaku throne hall in Inazuma, screens and tatami glow under dim candlelight while faint purple lightning crackles in the dark, the Electro Archon seated in serene authority.",
       "promptTokens": [
-        "flower_field",
-        "backlighting",
-        "golden_hour",
+        "inazuma",
+        "tenshukaku",
+        "palace_interior",
+        "shoji",
+        "tatami",
+        "candlelight",
+        "purple",
+        "dark",
+        "lightning"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school"
+      ],
+      "recommendedSize": "832x1216"
+    },
+    {
+      "id": "raiden_shogun_thunder_night",
+      "title": "雷暴之夜",
+      "category": "和风奇幻",
+      "characterId": "raiden_shogun",
+      "description": "暴雨中的鸟居前，紫电环绕雷电神。",
+      "location": "稻妻雨夜街道",
+      "action": "立于雷雨中的鸟居前，紫电环绕周身",
+      "timeOfDay": "夜晚",
+      "lighting": "暴雨中的紫电闪光",
+      "camera": "wide shot, dramatic low angle",
+      "mood": "压迫威严",
+      "sceneTags": [
+        "inazuma",
+        "storm",
+        "lightning",
+        "rain",
+        "torii",
+        "night",
+        "purple_sky",
+        "dark"
+      ],
+      "promptProse": "A storm rages over Inazuma at night, rain lashing a torii gate as purple lightning forks across the sky and silhouettes the Shogun standing unflinching in the downpour.",
+      "promptTokens": [
+        "inazuma",
+        "storm",
+        "lightning",
+        "rain",
+        "night",
+        "torii",
+        "purple",
+        "dark_background",
+        "silhouette"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, day"
+      ],
+      "recommendedSize": "832x1216"
+    },
+    {
+      "id": "raiden_shogun_narukami_shrine",
+      "title": "鸣神神社",
+      "category": "和风奇幻",
+      "characterId": "raiden_shogun",
+      "description": "红白鸟居与樱花之间，神社夕照。",
+      "location": "稻妻鸣神神社",
+      "action": "站在红白鸟居与樱花之间回望",
+      "timeOfDay": "黄昏",
+      "lighting": "夕照与雷元素微光",
+      "camera": "medium shot, sakura framing",
+      "mood": "静谧神性",
+      "sceneTags": [
+        "inazuma",
+        "shrine",
+        "torii",
+        "sakura",
+        "red_white",
+        "twilight",
+        "lightning_motif"
+      ],
+      "promptProse": "At Narukami Shrine in Inazuma, vermilion torii and falling sakura petals frame the Shogun at dusk, shrine lanterns glowing while faint static crackles in the air.",
+      "promptTokens": [
+        "inazuma",
+        "shrine",
+        "torii",
+        "sakura",
+        "twilight",
+        "lantern",
+        "red_and_white",
+        "outdoors"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school"
+      ],
+      "recommendedSize": "832x1216"
+    },
+    {
+      "id": "sakurajima_mai_library",
+      "title": "图书馆兔女郎",
+      "category": "现代校园",
+      "characterId": "sakurajima_mai",
+      "description": "兔女郎装学姐在图书馆阅读的名场面。",
+      "location": "学校图书馆",
+      "action": "穿着兔女郎装坐在书架间看书",
+      "timeOfDay": "白天",
+      "lighting": "窗外自然光",
+      "camera": "medium shot, shallow depth of field",
+      "mood": "冷静沉静",
+      "sceneTags": [
+        "library",
+        "bookshelf",
+        "bunny_suit",
+        "black",
+        "reading",
+        "school",
+        "day"
+      ],
+      "promptProse": "Sakurajima Mai sits in a school library wearing her signature black bunny suit, calmly reading a book between tall shelves as daylight streams through the windows.",
+      "promptTokens": [
+        "library",
+        "bookshelf",
+        "bunny_suit",
+        "black_clothes",
+        "reading",
+        "school",
+        "indoor",
+        "daylight"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, night"
+      ],
+      "recommendedSize": "832x1216"
+    },
+    {
+      "id": "sakurajima_mai_rooftop",
+      "title": "学校天台",
+      "category": "现代校园",
+      "characterId": "sakurajima_mai",
+      "description": "放学后天台看夕阳，橘粉暮色。",
+      "location": "学校天台",
+      "action": "倚着围栏看夕阳",
+      "timeOfDay": "黄昏",
+      "lighting": "橘粉色夕照",
+      "camera": "medium shot, sky filling frame",
+      "mood": "宁静成熟",
+      "sceneTags": [
+        "school",
+        "rooftop",
+        "sunset",
+        "fence",
+        "after_school",
+        "sky",
+        "evening"
+      ],
+      "promptProse": "On the school rooftop at sunset, Sakurajima Mai leans against the fence watching the orange-pink sky, her long black hair moving gently in the wind.",
+      "promptTokens": [
+        "school",
+        "rooftop",
+        "fence",
+        "sunset",
+        "evening",
+        "sky",
+        "outdoors",
+        "long_hair"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic"
+      ],
+      "recommendedSize": "1216x832"
+    },
+    {
+      "id": "sakurajima_mai_city_night",
+      "title": "城市夜景钟楼",
+      "category": "现代都市",
+      "characterId": "sakurajima_mai",
+      "description": "剧场版名场面：钟楼前的城市之夜。",
+      "location": "东京夜景街头",
+      "action": "站在灯火通明的钟楼前",
+      "timeOfDay": "夜晚",
+      "lighting": "城市霓虹与路灯",
+      "camera": "medium wide shot",
+      "mood": "温柔深情",
+      "sceneTags": [
+        "city",
+        "night",
+        "street",
+        "clock_tower",
+        "lights",
+        "outdoors",
+        "urban"
+      ],
+      "promptProse": "At night in the city, Sakurajima Mai stands before a glowing clock tower, warm streetlights and distant city lights wrapping the scene in a gentle, memorable glow.",
+      "promptTokens": [
+        "city",
+        "night",
+        "street",
+        "clock_tower",
+        "neon_lights",
+        "urban",
+        "outdoors",
+        "evening"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, day"
+      ],
+      "recommendedSize": "832x1216"
+    },
+    {
+      "id": "tokisaki_kurumi_moon_clocktower",
+      "title": "月下钟楼",
+      "category": "哥特暗黑",
+      "characterId": "tokisaki_kurumi",
+      "description": "钟楼顶端，刻刻帝的金色表盘旋转。",
+      "location": "月夜钟楼",
+      "action": "立于钟楼顶端，身后金色时钟表盘旋转",
+      "timeOfDay": "夜晚",
+      "lighting": "冷月与金色时钟光",
+      "camera": "low angle, dramatic",
+      "mood": "危险优雅",
+      "sceneTags": [
+        "clock_tower",
+        "moonlight",
+        "night",
+        "clock",
+        "golden",
+        "gothic",
+        "long_dress"
+      ],
+      "promptProse": "Tokisaki Kurumi stands atop a moonlit clock tower, the giant golden face of Zafkiel spinning behind her as pale moonlight and clockwork glow frame her gothic silhouette.",
+      "promptTokens": [
+        "clock_tower",
+        "moonlight",
+        "night",
+        "clock",
+        "golden",
+        "gothic",
+        "long_dress",
+        "dark"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, school, bright, cheerful, day"
+      ],
+      "recommendedSize": "832x1216"
+    },
+    {
+      "id": "tokisaki_kurumi_night_rooftop",
+      "title": "黑夜天台",
+      "category": "哥特暗黑",
+      "characterId": "tokisaki_kurumi",
+      "description": "持双燧发枪立于城市天台边缘。",
+      "location": "城市屋顶",
+      "action": "持双燧发枪站在天台边缘",
+      "timeOfDay": "夜晚",
+      "lighting": "城市灯光与冷月",
+      "camera": "medium shot",
+      "mood": "冷酷决绝",
+      "sceneTags": [
+        "rooftop",
+        "night",
+        "city",
+        "musket",
+        "gun",
+        "moon",
+        "dark"
+      ],
+      "promptProse": "On a rooftop above the night city, Tokisaki Kurumi holds her twin flintlock muskets at her sides, moonlight catching her mismatched clockwork eyes as the city glitters below.",
+      "promptTokens": [
+        "rooftop",
+        "night",
+        "city",
+        "musket",
+        "gun",
+        "moonlight",
+        "dark",
+        "outdoors"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, bright, cheerful, day"
+      ],
+      "recommendedSize": "1216x832"
+    },
+    {
+      "id": "tokisaki_kurumi_frozen_ruins",
+      "title": "时间停止的废墟",
+      "category": "哥特暗黑",
+      "characterId": "tokisaki_kurumi",
+      "description": "静止时间中的破碎都市，时钟浮空。",
+      "location": "破碎的都市废墟",
+      "action": "行走在静止时间中的废墟街道",
+      "timeOfDay": "夜晚",
+      "lighting": "冷光与悬浮尘埃",
+      "camera": "wide shot",
+      "mood": "寂灭美学",
+      "sceneTags": [
+        "ruins",
+        "city",
+        "night",
+        "frozen",
+        "clock",
+        "time",
+        "debris",
+        "dark"
+      ],
+      "promptProse": "In a city frozen by stopped time, Tokisaki Kurumi walks through broken streets where floating dust and debris hang motionless in the cold air, clock faces glowing in the dark.",
+      "promptTokens": [
+        "ruins",
+        "city",
+        "night",
+        "frozen_time",
+        "clock",
+        "debris",
+        "dark",
+        "desolate"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, bright, cheerful"
+      ],
+      "recommendedSize": "1216x832"
+    },
+    {
+      "id": "frieren_magic_library",
+      "title": "魔法书研究",
+      "category": "奇幻",
+      "characterId": "frieren",
+      "description": "古籍与魔法阵光芒中的静谧研读。",
+      "location": "魔法图书馆",
+      "action": "在古籍与魔法阵光芒中研读",
+      "timeOfDay": "白天",
+      "lighting": "暖光与魔法微光",
+      "camera": "medium shot",
+      "mood": "静谧求知",
+      "sceneTags": [
+        "library",
+        "books",
+        "magic",
+        "spellbook",
+        "glow",
+        "fantasy",
+        "ancient"
+      ],
+      "promptProse": "Frieren studies an ancient grimoire in a grand magical library, faint spell-light drifting between the pages and shelves as dust motes hang in the warm air.",
+      "promptTokens": [
+        "library",
+        "books",
+        "magic",
+        "spellbook",
+        "glowing",
+        "ancient",
+        "interior",
+        "fantasy"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, school"
+      ],
+      "recommendedSize": "832x1216"
+    },
+    {
+      "id": "frieren_journey_field",
+      "title": "旷野旅途",
+      "category": "奇幻",
+      "characterId": "frieren",
+      "description": "金色夕照下披风飞扬的旅行。",
+      "location": "中世纪旷野",
+      "action": "披风在风中飘扬，独行于荒原",
+      "timeOfDay": "黄昏",
+      "lighting": "金色夕照",
+      "camera": "wide shot, windblown cape",
+      "mood": "旅途怀思",
+      "sceneTags": [
+        "field",
+        "plains",
+        "travel",
+        "cape",
         "wind",
-        "depth_of_field",
+        "dusk",
+        "fantasy",
+        "outdoors"
+      ],
+      "promptProse": "Frieren crosses a vast windswept plain at dusk, her white cape streaming behind her, the long road of her journey stretching toward the golden horizon.",
+      "promptTokens": [
+        "field",
+        "plains",
+        "travel",
+        "cape",
+        "wind",
+        "dusk",
+        "outdoors",
+        "fantasy"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, school"
+      ],
+      "recommendedSize": "1216x832"
+    },
+    {
+      "id": "frieren_graveyard",
+      "title": "墓地回忆",
+      "category": "奇幻",
+      "characterId": "frieren",
+      "description": "白花丛中的勇者之墓，怀念故人。",
+      "location": "勇者之墓",
+      "action": "在白色花丛与十字墓碑前驻足",
+      "timeOfDay": "白天",
+      "lighting": "柔和天光",
+      "camera": "medium shot",
+      "mood": "温柔感伤",
+      "sceneTags": [
+        "graveyard",
+        "tombstone",
+        "white_flowers",
+        "memorial",
+        "daylight",
+        "grass",
+        "fantasy"
+      ],
+      "promptProse": "Frieren stands quietly before a weathered gravestone in a field of white flowers, remembering her departed companions, soft daylight warming the gentle sorrow of the scene.",
+      "promptTokens": [
+        "graveyard",
+        "tombstone",
+        "white_flowers",
+        "memorial",
+        "daylight",
+        "grass",
+        "fantasy",
+        "sad"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi"
+      ],
+      "recommendedSize": "832x1216"
+    },
+    {
+      "id": "artoria_moonlit_city",
+      "title": "月下都市现身",
+      "category": "现代奇幻",
+      "characterId": "artoria_pendragon",
+      "description": "冬木市月夜，路灯下的骑士王。",
+      "location": "月夜城市街头",
+      "action": "立于路灯下，月光勾勒身影",
+      "timeOfDay": "夜晚",
+      "lighting": "月光与路灯",
+      "camera": "medium shot, rim light",
+      "mood": "庄严神秘",
+      "sceneTags": [
+        "city",
+        "night",
+        "moonlight",
+        "street_lamp",
+        "armor",
+        "dress",
+        "blue",
+        "mysterious"
+      ],
+      "promptProse": "Saber materializes on a moonlit city street, her blue dress and armor catching the pale glow of the full moon beneath a single streetlamp, dignified and alert.",
+      "promptTokens": [
+        "city",
+        "night",
+        "moonlight",
+        "street_lamp",
+        "blue_dress",
+        "armor",
+        "mysterious",
+        "outdoors"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, school, casual, bright"
+      ],
+      "recommendedSize": "832x1216"
+    },
+    {
+      "id": "artoria_throne_room",
+      "title": "王座回忆",
+      "category": "中世纪奇幻",
+      "characterId": "artoria_pendragon",
+      "description": "卡美洛王座厅，骑士王的孤高。",
+      "location": "不列颠王城王座厅",
+      "action": "端坐王座，圆桌骑士的回忆浮现",
+      "timeOfDay": "白天",
+      "lighting": "高窗斜光",
+      "camera": "wide shot, symmetrical",
+      "mood": "孤高庄严",
+      "sceneTags": [
+        "throne_room",
+        "castle",
+        "knight",
+        "round_table",
+        "sword",
+        "stone",
+        "medieval",
+        "dignified"
+      ],
+      "promptProse": "In the throne hall of Camelot, Saber sits upon the king's throne as shafts of light fall through tall windows onto stone columns, the weight of her kingship carved into the silence.",
+      "promptTokens": [
+        "throne_room",
+        "castle",
+        "stone_columns",
+        "sword",
+        "medieval",
+        "dignified",
+        "interior",
+        "fantasy"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, school, casual"
+      ],
+      "recommendedSize": "832x1216"
+    },
+    {
+      "id": "artoria_final_battle",
+      "title": "最终决战",
+      "category": "中世纪奇幻",
+      "characterId": "artoria_pendragon",
+      "description": "黄昏战场高举誓约胜利之剑。",
+      "location": "荒野战场",
+      "action": "高举誓约胜利之剑，金光四溢",
+      "timeOfDay": "黄昏",
+      "lighting": "金光与战云",
+      "camera": "dramatic wide shot",
+      "mood": "史诗凛然",
+      "sceneTags": [
+        "battlefield",
+        "sword",
+        "golden_light",
+        "excalibur",
+        "cape",
+        "dusk",
+        "war",
+        "epic"
+      ],
+      "promptProse": "On a twilight battlefield, Saber raises Excalibur high as golden light erupts around the blade, her cape snapping in the wind before the final charge.",
+      "promptTokens": [
+        "battlefield",
+        "sword",
+        "golden_light",
+        "excalibur",
+        "dusk",
+        "war",
+        "epic",
+        "outdoors"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, school, casual"
+      ],
+      "recommendedSize": "1216x832"
+    },
+    {
+      "id": "hatsune_miku_concert",
+      "title": "演唱会舞台",
+      "category": "舞台演出",
+      "characterId": "hatsune_miku",
+      "description": "聚光灯与荧光棒海洋中的歌姬。",
+      "location": "巨蛋演唱会",
+      "action": "在聚光灯与荧光棒海洋中歌唱",
+      "timeOfDay": "夜晚",
+      "lighting": "舞台灯光与全息投影",
+      "camera": "wide shot from the crowd",
+      "mood": "元气闪耀",
+      "sceneTags": [
+        "concert",
+        "stage",
+        "spotlight",
+        "microphone",
+        "glowstick",
+        "hologram",
+        "crowd",
+        "performance"
+      ],
+      "promptProse": "Hatsune Miku performs on a massive concert stage, spotlights and holographic effects swirling around her as a sea of glowsticks waves in the dark crowd.",
+      "promptTokens": [
+        "concert",
+        "stage",
+        "spotlight",
+        "microphone",
+        "glowsticks",
+        "hologram",
+        "performance",
+        "night"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, empty_room, day"
+      ],
+      "recommendedSize": "1216x832"
+    },
+    {
+      "id": "hatsune_miku_studio",
+      "title": "录音棚",
+      "category": "音乐日常",
+      "characterId": "hatsune_miku",
+      "description": "麦克风前的轻唱，音符环绕。",
+      "location": "录音室",
+      "action": "对着麦克风轻唱，音符环绕",
+      "timeOfDay": "白天",
+      "lighting": "暖色录音室灯光",
+      "camera": "medium shot",
+      "mood": "专注可爱",
+      "sceneTags": [
+        "studio",
+        "microphone",
+        "music_notes",
+        "recording",
+        "headphones",
+        "interior",
+        "warm"
+      ],
+      "promptProse": "Hatsune Miku sings softly into a studio microphone, floating music notes drifting around her as warm recording-room lights frame the cozy session.",
+      "promptTokens": [
+        "studio",
+        "microphone",
+        "music_notes",
+        "recording",
+        "headphones",
+        "interior",
+        "warm_light"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, outdoors"
+      ],
+      "recommendedSize": "832x1216"
+    },
+    {
+      "id": "hatsune_miku_street_festival",
+      "title": "街头庆典",
+      "category": "都市日常",
+      "characterId": "hatsune_miku",
+      "description": "灯笼与人群间的夜间庆典漫步。",
+      "location": "日本街头庆典",
+      "action": "在灯笼与人群间漫步",
+      "timeOfDay": "夜晚",
+      "lighting": "暖色灯笼光",
+      "camera": "medium shot",
+      "mood": "活泼明亮",
+      "sceneTags": [
+        "street",
+        "festival",
+        "lantern",
+        "night",
+        "japan",
+        "crowd",
+        "twin_tails"
+      ],
+      "promptProse": "Hatsune Miku strolls through a lively night festival street, strings of paper lanterns glowing warmly above her as music floats through the crowd.",
+      "promptTokens": [
+        "street",
+        "festival",
+        "lantern",
+        "night",
+        "japanese",
+        "crowd",
+        "outdoors",
+        "warm_light"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, empty, day"
+      ],
+      "recommendedSize": "832x1216"
+    },
+    {
+      "id": "yuzuriha_inori_stage",
+      "title": "歌姬舞台",
+      "category": "末世演出",
+      "characterId": "yuzuriha_inori",
+      "description": "废墟都市中的红色歌姬。",
+      "location": "废墟中的演唱会",
+      "action": "红色歌姬装立于聚光灯下歌唱",
+      "timeOfDay": "夜晚",
+      "lighting": "舞台红光",
+      "camera": "medium shot",
+      "mood": "空灵决绝",
+      "sceneTags": [
+        "stage",
+        "red_dress",
+        "singing",
+        "spotlight",
+        "performance",
+        "night",
+        "void"
+      ],
+      "promptProse": "Inori stands on a stage in the ruined city, her red singer's outfit vivid under a single spotlight, singing to the darkness with an ethereal, resigned grace.",
+      "promptTokens": [
+        "stage",
+        "red_dress",
+        "singing",
+        "spotlight",
+        "performance",
+        "night",
+        "dark"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, cheerful, day"
+      ],
+      "recommendedSize": "832x1216"
+    },
+    {
+      "id": "yuzuriha_inori_ruined_city",
+      "title": "末世废都",
+      "category": "末世科幻",
+      "characterId": "yuzuriha_inori",
+      "description": "崩塌楼宇与藤蔓间的 2039 东京。",
+      "location": "被占领的东京废墟",
+      "action": "站在崩塌楼宇间的街道",
+      "timeOfDay": "白天",
+      "lighting": "灰暗天光",
+      "camera": "wide shot",
+      "mood": "苍凉末世",
+      "sceneTags": [
+        "ruins",
+        "city",
+        "apocalypse",
+        "debris",
+        "overgrown",
+        "gray",
+        "desolate",
+        "dystopia"
+      ],
+      "promptProse": "Inori stands in the ruined streets of a post-apocalyptic Tokyo, broken buildings and creeping vines surrounding her under a pale gray sky.",
+      "promptTokens": [
+        "ruins",
+        "city",
+        "apocalypse",
+        "debris",
+        "overgrown",
+        "gray",
+        "desolate",
+        "dystopia"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, cheerful, bright, school"
+      ],
+      "recommendedSize": "1216x832"
+    },
+    {
+      "id": "yuzuriha_inori_rooftop",
+      "title": "屋顶对话",
+      "category": "末世科幻",
+      "characterId": "yuzuriha_inori",
+      "description": "废都天台边缘，暮色里的双马尾。",
+      "location": "废都天台",
+      "action": "坐在天台边缘，风拂过双马尾",
+      "timeOfDay": "黄昏",
+      "lighting": "橙灰暮色",
+      "camera": "medium shot",
+      "mood": "安静脆弱",
+      "sceneTags": [
+        "rooftop",
+        "dusk",
+        "city",
+        "wind",
+        "twintails",
+        "silhouette",
+        "ruins"
+      ],
+      "promptProse": "Inori sits at the edge of a rooftop above the ruined city at dusk, wind lifting her twintails as the orange-gray sky stretches to the horizon.",
+      "promptTokens": [
+        "rooftop",
+        "dusk",
+        "city",
+        "wind",
+        "ruins",
+        "outdoors",
+        "quiet"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, cheerful, bright"
+      ],
+      "recommendedSize": "1216x832"
+    },
+    {
+      "id": "yukinoshita_yukino_clubroom",
+      "title": "侍奉部教室",
+      "category": "现代校园",
+      "characterId": "yukinoshita_yukino",
+      "description": "旧教室里的茶与书，清冷午后。",
+      "location": "侍奉部活动室",
+      "action": "在旧教室中读书，茶香袅袅",
+      "timeOfDay": "午后",
+      "lighting": "斜窗暖光",
+      "camera": "medium shot",
+      "mood": "清冷专注",
+      "sceneTags": [
+        "classroom",
+        "desk",
+        "tea",
+        "reading",
+        "school",
+        "afternoon",
+        "indoor"
+      ],
+      "promptProse": "Yukinoshita Yukino sits reading in the quiet Service Club classroom, a cup of tea steaming on the old desk as afternoon light slants through the windows.",
+      "promptTokens": [
+        "classroom",
+        "desk",
+        "tea",
+        "reading",
+        "school",
+        "afternoon",
+        "indoor",
+        "quiet"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, night"
+      ],
+      "recommendedSize": "832x1216"
+    },
+    {
+      "id": "yukinoshita_yukino_winter_street",
+      "title": "冬季街头",
+      "category": "现代日常",
+      "characterId": "yukinoshita_yukino",
+      "description": "雪夜路灯下的围巾与呵气。",
+      "location": "飘雪的冬夜街道",
+      "action": "围巾在风中轻扬，呵气成雾",
+      "timeOfDay": "夜晚",
+      "lighting": "暖色路灯照雪",
+      "camera": "medium shot",
+      "mood": "清冷温柔",
+      "sceneTags": [
+        "snow",
+        "night",
+        "street",
+        "scarf",
+        "winter",
+        "street_lamp",
+        "snowing"
+      ],
+      "promptProse": "Yukinoshita Yukino walks a snowy night street, her scarf fluttering as she breathes a soft cloud of warmth under the golden glow of a streetlamp.",
+      "promptTokens": [
+        "snow",
+        "night",
+        "street",
+        "scarf",
+        "winter",
+        "street_lamp",
+        "snowing",
+        "outdoors"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, summer"
+      ],
+      "recommendedSize": "832x1216"
+    },
+    {
+      "id": "yukinoshita_yukino_library",
+      "title": "图书馆午后",
+      "category": "现代校园",
+      "characterId": "yukinoshita_yukino",
+      "description": "高窗斜光里倚窗读书。",
+      "location": "学校图书馆",
+      "action": "倚窗读书，光尘浮动",
+      "timeOfDay": "午后",
+      "lighting": "高窗斜光",
+      "camera": "close-up",
+      "mood": "宁静自持",
+      "sceneTags": [
+        "library",
+        "reading",
+        "window",
+        "sunlight",
+        "school",
+        "afternoon",
+        "book"
+      ],
+      "promptProse": "Yukinoshita Yukino reads by a tall library window in the afternoon, dust motes floating in the warm columns of sunlight around her.",
+      "promptTokens": [
+        "library",
+        "reading",
+        "window",
+        "sunlight",
+        "school",
+        "afternoon",
+        "indoor"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, night"
+      ],
+      "recommendedSize": "832x1216"
+    },
+    {
+      "id": "elaina_cloud_flying",
+      "title": "云端飞行",
+      "category": "魔法旅行",
+      "characterId": "elaina",
+      "description": "扫帚与云海，灰之魔女的旅途。",
+      "location": "高空云海",
+      "action": "跨坐扫帚在云间飞行",
+      "timeOfDay": "白天",
+      "lighting": "明亮天光",
+      "camera": "wide shot",
+      "mood": "轻盈自由",
+      "sceneTags": [
+        "broom",
+        "flying",
+        "sky",
+        "clouds",
+        "witch_hat",
+        "outdoors",
+        "travel",
+        "fantasy"
+      ],
+      "promptProse": "Elaina soars across a bright sea of clouds on her broom, black witch hat and cape streaming in the wind as she travels to yet another distant land.",
+      "promptTokens": [
+        "broom",
+        "flying",
+        "sky",
+        "clouds",
+        "witch_hat",
+        "outdoors",
+        "travel",
+        "fantasy"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, indoors"
+      ],
+      "recommendedSize": "1216x832"
+    },
+    {
+      "id": "elaina_night_magic",
+      "title": "夜间魔法星夜",
+      "category": "魔法旅行",
+      "characterId": "elaina",
+      "description": "篝火与魔法书，星光洒落。",
+      "location": "星空下的营地",
+      "action": "篝火旁翻开魔法书，星光洒落",
+      "timeOfDay": "夜晚",
+      "lighting": "篝火与星光",
+      "camera": "medium shot",
+      "mood": "静谧灵异",
+      "sceneTags": [
+        "night",
+        "stars",
+        "campfire",
+        "spellbook",
+        "starry_sky",
+        "witch",
+        "fantasy",
+        "outdoors"
+      ],
+      "promptProse": "At a night camp under a brilliant starry sky, Elaina opens her spellbook by the fire, candlelight and starlight mingling over the pages of the magical world.",
+      "promptTokens": [
+        "night",
+        "stars",
+        "campfire",
+        "spellbook",
+        "starry_sky",
+        "witch",
+        "fantasy",
+        "outdoors"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi"
+      ],
+      "recommendedSize": "832x1216"
+    },
+    {
+      "id": "elaina_market_town",
+      "title": "异国小镇市集",
+      "category": "魔法旅行",
+      "characterId": "elaina",
+      "description": "异世界市集间的驻足张望。",
+      "location": "异世界小镇市集",
+      "action": "在热闹市集间驻足张望",
+      "timeOfDay": "白天",
+      "lighting": "明亮日光",
+      "camera": "medium shot",
+      "mood": "好奇俏皮",
+      "sceneTags": [
+        "market",
+        "town",
+        "stall",
+        "crowd",
+        "travel",
+        "fantasy",
+        "day",
+        "outdoors"
+      ],
+      "promptProse": "Elaina wanders through a bustling market in a foreign fantasy town, stalls of strange wares and colorful crowds surrounding her curious, elegant figure.",
+      "promptTokens": [
+        "market",
+        "town",
+        "stall",
+        "crowd",
+        "travel",
+        "fantasy",
         "day",
         "outdoors"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, night"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi"
       ],
-      "recommendedSize": "832x1216",
-      "adult": false,
-      "kreaStyleHint": "cinematic_film_still",
-      "animaStyleHint": "anime_key_visual"
+      "recommendedSize": "832x1216"
     },
     {
-      "id": "empty_classroom_after_school",
-      "title": "放学空教室",
-      "category": "日常",
-      "description": "斜阳落进无人的教室，光影安静地铺在课桌上。",
-      "location": "学校教室",
-      "action": "靠窗站着望向窗外",
+      "id": "misaka_mikoto_overpass",
+      "title": "学园都市天桥",
+      "category": "学园都市",
+      "characterId": "misaka_mikoto",
+      "description": "天桥俯瞰电车轨道，夕照英气。",
+      "location": "天桥与电车轨道",
+      "action": "站在天桥上俯瞰轨道",
       "timeOfDay": "傍晚",
-      "lighting": "warm window light streaming through the windows",
-      "camera": "medium shot with a slight high angle, soft focus",
-      "mood": "quiet and nostalgic",
+      "lighting": "夕照与都市光",
+      "camera": "medium shot",
+      "mood": "英气日常",
       "sceneTags": [
-        "classroom",
-        "window",
-        "desks",
-        "school",
-        "afternoon",
-        "sunlight"
-      ],
-      "promptProse": "An empty classroom after school, warm late-afternoon sunlight streams through large windows and falls across rows of desks. Dust motes float in the light as a lone student stands by the window, gazing outside in quiet stillness.",
-      "promptTokens": [
-        "classroom",
-        "school",
-        "window",
-        "desk",
-        "afternoon",
-        "sunlight",
-        "empty_room"
-      ],
-      "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, night, outdoors"
-      ],
-      "recommendedSize": "832x1216",
-      "adult": false,
-      "kreaStyleHint": "soft_daily_illustration",
-      "animaStyleHint": "soft_daily_illustration"
-    },
-    {
-      "id": "rainy_station_night",
-      "title": "雨夜车站",
-      "category": "电影感",
-      "description": "雨夜车站的霓虹倒影，雨幕与灯光交织。",
-      "location": "地铁站台",
-      "action": "撑着伞站在月台边缘等待",
-      "timeOfDay": "夜晚",
-      "lighting": "moody neon reflections in wet pavement",
-      "camera": "wide shot with a cinematic one-point perspective",
-      "mood": "melancholic and cinematic",
-      "sceneTags": [
-        "train_station",
-        "rain",
-        "night",
-        "neon_lights",
-        "reflection",
-        "umbrella",
-        "platform"
-      ],
-      "promptProse": "A rainy night at a train station, wet platform glowing with neon signs reflected in puddles. She holds an umbrella at the edge of the platform, watching the train approach through the rain and haze.",
-      "promptTokens": [
-        "train_station",
+        "overpass",
         "railway",
-        "rain",
-        "night",
-        "neon_lights",
-        "reflection",
-        "umbrella",
-        "city"
+        "city",
+        "school_uniform",
+        "evening",
+        "outdoors",
+        "academy_city"
+      ],
+      "promptProse": "Misaka Mikoto stands on an overpass above the Academy City rail lines at dusk, her Tokiwadai uniform neat as the evening city hums below.",
+      "promptTokens": [
+        "overpass",
+        "railway",
+        "city",
+        "school_uniform",
+        "evening",
+        "outdoors",
+        "urban"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, day, sunny"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, medieval"
       ],
-      "recommendedSize": "1216x832",
-      "adult": false,
-      "kreaStyleHint": "moody_night_scene",
-      "animaStyleHint": "moody_night_scene"
+      "recommendedSize": "832x1216"
     },
     {
-      "id": "aquarium_tunnel",
-      "title": "水族馆隧道",
-      "category": "电影感",
-      "description": "头顶是深蓝的水体与游动的鱼，玻璃映出身影。",
-      "location": "水族馆海底隧道",
-      "action": "仰头看鱼群游过，指尖轻触玻璃",
+      "id": "misaka_mikoto_street",
+      "title": "街头便利店",
+      "category": "学园都市",
+      "characterId": "misaka_mikoto",
+      "description": "自动售货机前的元气日常。",
+      "location": "便利店门口",
+      "action": "从自动售货机取饮料",
       "timeOfDay": "白天",
-      "lighting": "soft blue underwater light with gentle caustics",
-      "camera": "low angle from below, wide shot",
-      "mood": "wonder and solitude",
+      "lighting": "明亮日光",
+      "camera": "medium shot",
+      "mood": "元气日常",
       "sceneTags": [
-        "aquarium",
-        "fish",
-        "underwater",
-        "glass",
+        "convenience_store",
+        "vending_machine",
+        "street",
+        "school_uniform",
+        "day",
+        "outdoors",
+        "urban"
+      ],
+      "promptProse": "Misaka Mikoto grabs a drink from a vending machine outside a convenience store, her quick, confident movements brightening an ordinary Academy City afternoon.",
+      "promptTokens": [
+        "convenience_store",
+        "vending_machine",
+        "street",
+        "school_uniform",
+        "day",
+        "outdoors",
+        "urban"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic"
+      ],
+      "recommendedSize": "832x1216"
+    },
+    {
+      "id": "misaka_mikoto_electric_battle",
+      "title": "电光战场",
+      "category": "学园都市",
+      "characterId": "misaka_mikoto",
+      "description": "指尖弹出的硬币化作蓝白电光。",
+      "location": "都市空地夜空",
+      "action": "指尖弹出硬币，电光贯穿夜空",
+      "timeOfDay": "夜晚",
+      "lighting": "蓝白电光",
+      "camera": "dynamic action shot",
+      "mood": "热血激昂",
+      "sceneTags": [
+        "electricity",
+        "sparks",
+        "coin",
+        "railgun",
+        "night",
         "blue_light",
-        "tunnel"
+        "battle",
+        "city"
       ],
-      "promptProse": "Inside an aquarium underwater tunnel, deep blue water and drifting fish pass overhead. Soft light ripples across a glass wall as she looks up at the school of fish, one hand pressed gently against the glass.",
+      "promptProse": "Misaka Mikoto flicks a coin into the air as blue-white lightning tears across the night sky, the signature Railgun shot blazing through the Academy City dark.",
       "promptTokens": [
-        "aquarium",
-        "fish",
-        "underwater",
-        "glass",
+        "electricity",
+        "sparks",
+        "coin",
+        "railgun",
+        "night",
         "blue_light",
-        "water_reflection"
-      ],
-      "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, night"
-      ],
-      "recommendedSize": "1216x832",
-      "adult": false
-    },
-    {
-      "id": "moonlit_shrine",
-      "title": "月下神社",
-      "category": "奇幻",
-      "description": "月光下的朱红鸟居，灯笼微明，安静得像另一个世界。",
-      "location": "山间神社",
-      "action": "站在鸟居下回望",
-      "timeOfDay": "夜晚",
-      "lighting": "pale moonlight mixed with warm lantern light",
-      "camera": "medium shot with a low angle framing the torii",
-      "mood": "serene and mystical",
-      "sceneTags": [
-        "shrine",
-        "torii",
-        "moonlight",
-        "lantern",
-        "night",
-        "fox",
-        "japanese_clothes"
-      ],
-      "promptProse": "At a mountain shrine under the full moon, a vermilion torii gate frames the scene and paper lanterns cast warm pools of light. Moonlight outlines her standing beneath the gate, the night air still and sacred.",
-      "promptTokens": [
-        "shrine",
-        "torii",
-        "moonlight",
-        "lantern",
-        "night",
-        "japanese_clothes",
-        "mountains"
-      ],
-      "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, day, sunny"
-      ],
-      "recommendedSize": "832x1216",
-      "adult": false,
-      "kreaStyleHint": "fantasy_painting"
-    },
-    {
-      "id": "candlelit_palace",
-      "title": "烛光宫殿",
-      "category": "奇幻",
-      "description": "无数烛火在殿堂中摇曳，金红光辉铺满大理石。",
-      "location": "宫殿大厅",
-      "action": "提着裙摆缓步走过烛光",
-      "timeOfDay": "夜晚",
-      "lighting": "warm candlelight with deep golden shadows",
-      "camera": "wide shot emphasizing the grand hall",
-      "mood": "solemn and grand",
-      "sceneTags": [
-        "palace",
-        "candle",
-        "throne_room",
-        "marble",
-        "chandelier",
-        "night",
-        "evening_gown"
-      ],
-      "promptProse": "A vast empty palace hall lit by hundreds of candles, warm golden light flickering over polished marble floors and tall columns. The grand room is completely empty, silent and echoing, with no one else present.",
-      "promptTokens": [
-        "palace",
-        "interior",
-        "candle",
-        "marble_columns",
-        "chandelier",
-        "night",
-        "luxurious"
-      ],
-      "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, outdoors"
-      ],
-      "recommendedSize": "1216x832",
-      "adult": false
-    },
-    {
-      "id": "snowy_night_street",
-      "title": "雪夜街道",
-      "category": "日常",
-      "description": "安静落雪的街道，路灯把雪花照成金色。",
-      "location": "积雪的住宅街道",
-      "action": "呵气暖手，仰头看雪",
-      "timeOfDay": "夜晚",
-      "lighting": "soft warm street lamps against falling snow",
-      "camera": "medium shot, eye level, gentle snow bokeh",
-      "mood": "cozy and quiet",
-      "sceneTags": [
-        "snow",
-        "night",
-        "street",
-        "street_lamp",
-        "snowing",
-        "winter",
-        "scarf"
-      ],
-      "promptProse": "A quiet street in the snow at night, warm street lamps turning falling snow into drifting gold. She in a winter coat breathes a soft cloud of warmth and looks up into the quiet snowfall.",
-      "promptTokens": [
-        "snow",
-        "night",
-        "street",
-        "street_lamp",
-        "snowing",
-        "winter",
+        "battle",
         "city"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, day, rain"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, day"
       ],
-      "recommendedSize": "832x1216",
-      "adult": false
+      "recommendedSize": "1216x832"
     },
     {
-      "id": "neon_city_dusk",
-      "title": "霓虹都市",
-      "category": "电影感",
-      "description": "雨夜霓虹街道，湿漉漉的地面倒映着缤纷灯光。",
-      "location": "都市雨夜街道",
-      "action": "站在霓虹灯牌下的湿漉街道上",
+      "id": "makima_cinema",
+      "title": "电影院约会",
+      "category": "现代都市",
+      "characterId": "makima",
+      "description": "荧幕冷光下的暧昧掌控。",
+      "location": "电影院",
+      "action": "并肩而坐，荧幕光映在脸上",
       "timeOfDay": "夜晚",
-      "lighting": "vivid neon glow reflected on wet pavement",
-      "camera": "medium wide shot at street level",
-      "mood": "energetic and lonely",
+      "lighting": "荧幕冷光",
+      "camera": "close-up",
+      "mood": "暧昧掌控",
       "sceneTags": [
-        "city",
-        "street",
-        "neon_lights",
-        "night",
-        "rain",
-        "wet_pavement"
-      ],
-      "promptProse": "A neon-drenched city street at night after rain, the wet pavement mirroring countless colorful signs and storefront lights. Layers of glowing billboards recede into the distance with soft haze.",
-      "promptTokens": [
-        "city",
-        "street",
-        "neon_lights",
-        "night",
-        "rain",
-        "wet_pavement",
-        "reflection",
-        "buildings"
-      ],
-      "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, rural, day"
-      ],
-      "recommendedSize": "1216x832",
-      "adult": false
-    },
-    {
-      "id": "magic_library",
-      "title": "魔法图书馆",
-      "category": "奇幻",
-      "description": "层叠书架直通穹顶，书页间浮着细碎的星屑。",
-      "location": "魔法图书馆",
-      "action": "从高处书架上抽出一本书",
-      "timeOfDay": "白天",
-      "lighting": "soft magical glow from floating dust and windows",
-      "camera": "medium shot with a low angle up the shelves",
-      "mood": "curious and wondrous",
-      "sceneTags": [
-        "library",
-        "books",
-        "magic",
-        "sparkles",
-        "tall_shelves",
-        "glowing"
-      ],
-      "promptProse": "Inside a towering magical library, spiral shelves rise toward a vaulted ceiling and motes of light drift between the books. She reaches for a tome high on the shelf, awed by the endless sea of knowledge.",
-      "promptTokens": [
-        "library",
-        "books",
-        "shelves",
-        "magic",
-        "sparkles",
-        "glowing",
-        "interior"
-      ],
-      "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, outdoors, night"
-      ],
-      "recommendedSize": "832x1216",
-      "adult": false
-    },
-    {
-      "id": "starlit_lakeside",
-      "title": "星空湖畔",
-      "category": "户外",
-      "description": "银河倒映在湖面，萤火与星光共舞。",
-      "location": "山间湖边",
-      "action": "坐在湖边石头上仰望银河",
-      "timeOfDay": "夜晚",
-      "lighting": "cool starlight with scattered fireflies",
-      "camera": "wide shot with the lake and stars reflected",
-      "mood": "tranquil and dreamy",
-      "sceneTags": [
-        "lake",
-        "night",
-        "stars",
-        "milky_way",
-        "reflection",
-        "fireflies",
-        "moon"
-      ],
-      "promptProse": "By a mountain lake at night, the Milky Way spills across the sky and mirrors in the still water. Fireflies drift along the shore as she sits on a stone at the water's edge, gazing up at the stars.",
-      "promptTokens": [
-        "lake",
-        "night",
-        "stars",
-        "milky_way",
-        "reflection",
-        "moonlight",
-        "outdoors",
-        "mountains"
-      ],
-      "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, day"
-      ],
-      "recommendedSize": "1216x832",
-      "adult": false,
-      "kreaStyleHint": "dreamy_pastel"
-    },
-    {
-      "id": "modern_apartment_night",
-      "title": "现代公寓夜景",
-      "category": "日常",
-      "description": "落地窗前俯瞰城市灯火，室内暖光与夜色交叠。",
-      "location": "高层公寓客厅",
-      "action": "站在落地窗前看夜景",
-      "timeOfDay": "夜晚",
-      "lighting": "warm interior light against cool city night",
-      "camera": "medium shot from the side, window reflection visible",
-      "mood": "warm and contemplative",
-      "sceneTags": [
-        "apartment",
-        "window",
-        "city_night",
-        "night",
-        "interior",
-        "sofa"
-      ],
-      "promptProse": "In a modern high-rise apartment at night, warm interior light spills through a floor-to-ceiling window onto the glittering city below. She stands at the glass, city lights reflected faintly in the room.",
-      "promptTokens": [
-        "apartment",
-        "interior",
-        "window",
-        "city",
-        "night",
-        "sofa",
-        "plant"
-      ],
-      "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, outdoors"
-      ],
-      "recommendedSize": "832x1216",
-      "adult": false
-    },
-    {
-      "id": "cafe_corner",
-      "title": "街角咖啡店",
-      "category": "日常",
-      "description": "雨后的街角咖啡馆，玻璃上挂着水珠，暖光里一杯热咖啡。",
-      "location": "街角咖啡店",
-      "action": "坐在窗边捧着热咖啡",
-      "timeOfDay": "午后",
-      "lighting": "warm window light with soft rain reflections",
-      "camera": "close-up of the figure by the window, shallow depth of field",
-      "mood": "cozy and relaxed",
-      "sceneTags": [
-        "cafe",
-        "coffee",
-        "window",
-        "rain",
-        "warm_light",
-        "table",
-        "interior"
-      ],
-      "promptProse": "In a corner cafe after the rain, water droplets cling to the window as warm afternoon light falls on a small table. She sits by the glass cradling a steaming cup of coffee, at ease and unhurried.",
-      "promptTokens": [
-        "cafe",
-        "coffee_shop",
-        "interior",
-        "window",
-        "rain",
-        "table",
-        "cup"
-      ],
-      "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, night"
-      ],
-      "recommendedSize": "832x1216",
-      "adult": false
-    },
-    {
-      "id": "beach_sunset",
-      "title": "海风夕阳",
-      "category": "户外",
-      "description": "潮水染成金色，海风把头发吹散，浪声里只说给黄昏。",
-      "location": "海边沙滩",
-      "action": "赤脚在浪线边缘行走",
-      "timeOfDay": "黄昏",
-      "lighting": "golden hour glow with a low sun over the sea",
-      "camera": "medium shot, wide open beach behind",
-      "mood": "free and gentle",
-      "sceneTags": [
-        "beach",
-        "sea",
-        "sunset",
-        "golden_hour",
-        "waves",
-        "outdoors",
-        "summer"
-      ],
-      "promptProse": "On a beach at sunset, the tide line gleams gold as waves whisper up the sand. She walks barefoot along the water's edge, sea breeze catching loose hair against the burning low sun.",
-      "promptTokens": [
-        "beach",
-        "sea",
-        "sunset",
-        "golden_hour",
-        "waves",
-        "outdoors",
-        "sand"
-      ],
-      "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, night, snow"
-      ],
-      "recommendedSize": "1216x832",
-      "adult": false
-    },
-    {
-      "id": "summer_festival",
-      "title": "夏日祭典",
-      "category": "日常",
-      "description": "灯笼连成线，夜市人声与光影流动，烟火在头顶炸开。",
-      "location": "夏日祭典夜市",
-      "action": "站在灯火下回望，指尖捏着团扇",
-      "timeOfDay": "夜晚",
-      "lighting": "warm festival lanterns with drifting firework light",
-      "camera": "medium shot with festival stalls blurred behind",
-      "mood": "bright and lively",
-      "sceneTags": [
-        "festival",
-        "lantern",
-        "night",
-        "yukata",
-        "fireworks",
-        "stall",
-        "summer"
-      ],
-      "promptProse": "At a summer festival, strings of paper lanterns glow above bustling night stalls. She in festive dress turns back beneath the lights, a folding fan in hand, as fireworks bloom high in the night sky.",
-      "promptTokens": [
-        "festival",
-        "lantern",
-        "night",
-        "fireworks",
-        "stall",
-        "summer",
-        "japanese_clothes"
-      ],
-      "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, day, winter"
-      ],
-      "recommendedSize": "832x1216",
-      "adult": false,
-      "kreaStyleHint": "anime_promo_art"
-    },
-    {
-      "id": "library_quiet_afternoon",
-      "title": "图书馆安静午后",
-      "category": "日常",
-      "description": "光线从高窗落下，尘埃在光束里安静浮动。",
-      "location": "学校图书馆",
-      "action": "托腮看书，偶尔望向窗外",
-      "timeOfDay": "午后",
-      "lighting": "soft raking sunlight through tall windows",
-      "camera": "close-up with a warm shallow focus",
-      "mood": "focused and serene",
-      "sceneTags": [
-        "library",
-        "reading",
-        "books",
-        "sunlight",
-        "afternoon",
-        "desk",
-        "window"
-      ],
-      "promptProse": "In a quiet library on a calm afternoon, light falls from tall windows in soft columns. She sits at a desk with a book, chin resting on one hand, occasionally glancing out the window at the bright day.",
-      "promptTokens": [
-        "library",
-        "books",
-        "desk",
-        "reading",
-        "sunlight",
-        "afternoon",
-        "interior"
-      ],
-      "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, night, outdoors"
-      ],
-      "recommendedSize": "832x1216",
-      "adult": false
-    },
-    {
-      "id": "rooftop_dusk",
-      "title": "天台日落",
-      "category": "电影感",
-      "description": "放学后的天台，天空烧成橘粉，风里只剩告白前的心跳。",
-      "location": "学校天台",
-      "action": "靠在铁丝网上看落日",
-      "timeOfDay": "黄昏",
-      "lighting": "warm orange-pink dusk light with long shadows",
-      "camera": "medium shot with the sky filling the frame",
-      "mood": "bittersweet and hopeful",
-      "sceneTags": [
-        "rooftop",
-        "school",
-        "sunset",
-        "sky",
-        "dusk",
-        "after_school"
-      ],
-      "promptProse": "On the school rooftop at dusk, the sky burns orange and pink as the sun sinks below the city. She leans against the fence watching the horizon, the moment suspended between endings and beginnings.",
-      "promptTokens": [
-        "rooftop",
-        "school",
-        "sunset",
-        "dusk",
-        "sky",
+        "cinema",
+        "movie_theater",
+        "seats",
+        "screen",
+        "dark",
+        "intimate",
         "city"
       ],
-      "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, night, indoors"
-      ],
-      "recommendedSize": "1216x832",
-      "adult": false
-    },
-    {
-      "id": "ancient_ruins",
-      "title": "古代遗迹",
-      "category": "奇幻",
-      "description": "崩塌的石柱与藤蔓间，一线天光穿透旧日辉煌。",
-      "location": "丛林深处的遗迹",
-      "action": "站在断裂的石柱之间",
-      "timeOfDay": "白天",
-      "lighting": "volumetric god rays through ruined architecture",
-      "camera": "wide shot with the ruins towering around",
-      "mood": "mysterious and reverent",
-      "sceneTags": [
-        "ruins",
-        "ancient",
-        "stone_columns",
-        "vines",
-        "god_rays",
-        "forest",
-        "day"
-      ],
-      "promptProse": "Deep in an overgrown forest, ancient stone ruins rise beneath a canopy broken by shafts of light. She stands among the fallen columns and vines, god rays illuminating dust and moss in a forgotten sanctum.",
+      "promptProse": "Makima sits beside a viewer in a dark cinema, the pale light of the screen playing across her serene face as she watches with an unreadable smile.",
       "promptTokens": [
-        "ruins",
-        "ancient",
-        "stone_columns",
-        "vines",
-        "god_rays",
-        "forest",
-        "day"
+        "cinema",
+        "movie_theater",
+        "seats",
+        "screen",
+        "dark",
+        "intimate",
+        "indoor"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, night, indoors"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, bright, cheerful"
       ],
-      "recommendedSize": "1216x832",
-      "adult": false
+      "recommendedSize": "832x1216"
     },
     {
-      "id": "snowy_forest",
-      "title": "星夜森林",
-      "category": "奇幻",
-      "description": "雪林在星光下泛着幽蓝，枝叶挂满冰晶。",
-      "location": "冬夜森林",
-      "action": "在雪地里抬头望向林间星空",
+      "id": "makima_office",
+      "title": "公安办公室",
+      "category": "现代都市",
+      "characterId": "makima",
+      "description": "白西装后的冷静掌控。",
+      "location": "公安对魔特异课办公室",
+      "action": "坐在办公桌后，手边放着文件",
+      "timeOfDay": "白天",
+      "lighting": "窗边冷光",
+      "camera": "medium shot",
+      "mood": "冷静掌控",
+      "sceneTags": [
+        "office",
+        "desk",
+        "documents",
+        "white_suit",
+        "window",
+        "indoor",
+        "professional"
+      ],
+      "promptProse": "Makima sits behind her desk in the Public Safety office, pale light from the window falling across her white suit as she calmly reviews case documents.",
+      "promptTokens": [
+        "office",
+        "desk",
+        "documents",
+        "white_suit",
+        "window",
+        "indoor",
+        "professional"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, cheerful"
+      ],
+      "recommendedSize": "832x1216"
+    },
+    {
+      "id": "makima_dominion_night",
+      "title": "支配之夜",
+      "category": "现代都市",
+      "characterId": "makima",
+      "description": "雨夜撑伞，恶魔气息弥漫。",
+      "location": "雨夜都市街头",
+      "action": "撑伞立于雨中，恶魔气息弥漫",
       "timeOfDay": "夜晚",
-      "lighting": "cold starlight glinting off ice",
-      "camera": "medium shot among frosted trees",
-      "mood": "hushed and enchanted",
+      "lighting": "冷雨与街灯",
+      "camera": "medium shot",
+      "mood": "危险压迫",
       "sceneTags": [
-        "forest",
-        "snow",
+        "rain",
         "night",
-        "stars",
-        "ice",
-        "winter",
-        "moonlight"
+        "street",
+        "umbrella",
+        "city",
+        "dark",
+        "ominous"
       ],
-      "promptProse": "In a winter forest under the stars, snow blankets the ground and frost coats every branch with a soft blue shimmer. She stands in the drifts looking up through the trees at a clear, icy night sky.",
+      "promptProse": "Makima stands in the rain on a night city street, umbrella held high as an ominous presence coils around her, streetlights dimming under her silent command.",
       "promptTokens": [
-        "forest",
-        "snow",
+        "rain",
         "night",
-        "stars",
-        "ice",
-        "winter",
-        "moonlight"
-      ],
-      "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, day, summer"
-      ],
-      "recommendedSize": "832x1216",
-      "adult": false
-    },
-    {
-      "id": "sea_cave_dawn",
-      "title": "海蚀洞晨光",
-      "category": "户外",
-      "description": "潮水漫过洞口，晨光从海面一路铺进洞穴。",
-      "location": "海边海蚀洞",
-      "action": "站在洞口回望初升的太阳",
-      "timeOfDay": "清晨",
-      "lighting": "cool dawn light with warm horizon glow",
-      "camera": "wide shot from inside the cave toward the sea",
-      "mood": "calm and awakening",
-      "sceneTags": [
-        "cave",
-        "sea",
-        "dawn",
-        "sunrise",
-        "water",
-        "rocks",
-        "morning"
-      ],
-      "promptProse": "In a sea cave at dawn, the tide shimmers across the entrance as morning light spills in from the open sea. She stands at the cave mouth, backlit by the rising sun over calm water.",
-      "promptTokens": [
-        "cave",
-        "sea",
-        "dawn",
-        "sunrise",
-        "water",
-        "rocks",
-        "morning"
-      ],
-      "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, night"
-      ],
-      "recommendedSize": "1216x832",
-      "adult": false
-    },
-    {
-      "id": "old_train_window",
-      "title": "旧列车窗外",
-      "category": "电影感",
-      "description": "绿皮车窗外田野飞驰，玻璃上映着安静的脸。",
-      "location": "行驶中的老式列车",
-      "action": "侧头靠在车窗上看风景",
-      "timeOfDay": "午后",
-      "lighting": "warm afternoon light with passing landscape reflections",
-      "camera": "close-up through the window glass",
-      "mood": "languid and reflective",
-      "sceneTags": [
-        "train",
-        "window",
-        "railway",
-        "landscape",
-        "afternoon",
-        "interior"
-      ],
-      "promptProse": "Inside an old train on an afternoon ride, fields rush past the window and light flickers across the compartment. She rests a cheek against the cool glass, watching the landscape blur by.",
-      "promptTokens": [
-        "train",
-        "train_interior",
-        "window",
-        "railway",
-        "afternoon",
-        "landscape"
-      ],
-      "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, night"
-      ],
-      "recommendedSize": "1216x832",
-      "adult": false
-    },
-    {
-      "id": "spring_bridge",
-      "title": "春日桥畔",
-      "category": "户外",
-      "description": "花瓣飘过木桥，溪水映着新绿与阳光。",
-      "location": "公园小桥",
-      "action": "站在桥中央伸手接花瓣",
-      "timeOfDay": "白天",
-      "lighting": "bright spring sunlight with soft petals in the air",
-      "camera": "medium shot with the stream and blossoms behind",
-      "mood": "fresh and lighthearted",
-      "sceneTags": [
-        "bridge",
-        "spring",
-        "petals",
-        "river",
-        "cherry_blossoms",
-        "sunny",
-        "park"
-      ],
-      "promptProse": "On a small wooden bridge in a spring park, pale petals drift across the stream while sunlight dapples the water. She stands at the center of the bridge, reaching out to catch a falling petal.",
-      "promptTokens": [
-        "bridge",
-        "spring",
-        "petals",
-        "river",
-        "cherry_blossoms",
-        "sunny",
-        "park",
+        "street",
+        "umbrella",
+        "city",
+        "dark",
+        "ominous",
         "outdoors"
       ],
       "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, night, winter"
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, bright, cheerful, day"
       ],
-      "recommendedSize": "832x1216",
-      "adult": false
+      "recommendedSize": "832x1216"
+    },
+    {
+      "id": "tohsaka_rin_mansion",
+      "title": "远坂宅邸工坊",
+      "category": "现代魔术",
+      "characterId": "tohsaka_rin",
+      "description": "宝石与魔术阵间的严谨研习。",
+      "location": "远坂家魔术工坊",
+      "action": "在宝石与魔术阵前研习",
+      "timeOfDay": "夜晚",
+      "lighting": "烛光与魔术光",
+      "camera": "medium shot",
+      "mood": "严谨神秘",
+      "sceneTags": [
+        "mansion",
+        "workshop",
+        "gems",
+        "magic_circle",
+        "candlelight",
+        "interior",
+        "magic"
+      ],
+      "promptProse": "Tohsaka Rin studies in her family's magic workshop at night, gems and a faint magic circle glowing around her as candles cast sharp, focused light.",
+      "promptTokens": [
+        "mansion",
+        "workshop",
+        "gems",
+        "magic_circle",
+        "candlelight",
+        "interior",
+        "magic",
+        "night"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, sci-fi, beach"
+      ],
+      "recommendedSize": "832x1216"
+    },
+    {
+      "id": "tohsaka_rin_rooftop",
+      "title": "学校天台",
+      "category": "现代魔术",
+      "characterId": "tohsaka_rin",
+      "description": "抱臂俯瞰校园的傲然身姿。",
+      "location": "学校天台",
+      "action": "双手抱臂俯瞰校园",
+      "timeOfDay": "午后",
+      "lighting": "明亮日光",
+      "camera": "medium shot",
+      "mood": "傲然自信",
+      "sceneTags": [
+        "school",
+        "rooftop",
+        "twin_tails",
+        "afternoon",
+        "fence",
+        "outdoors"
+      ],
+      "promptProse": "Tohsaka Rin stands with her arms crossed on the school rooftop, black twintails and red ribbons catching the bright afternoon light as she surveys the campus.",
+      "promptTokens": [
+        "school",
+        "rooftop",
+        "twin_tails",
+        "afternoon",
+        "fence",
+        "outdoors"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, fantasy, sci-fi"
+      ],
+      "recommendedSize": "832x1216"
+    },
+    {
+      "id": "tohsaka_rin_chase",
+      "title": "都市追逐",
+      "category": "现代魔术",
+      "characterId": "tohsaka_rin",
+      "description": "冬木市街巷间的凌厉追击。",
+      "location": "冬木市街巷",
+      "action": "在街巷间跃动追击",
+      "timeOfDay": "傍晚",
+      "lighting": "夕照长影",
+      "camera": "dynamic action shot",
+      "mood": "凌厉果断",
+      "sceneTags": [
+        "city",
+        "street",
+        "chase",
+        "action",
+        "evening",
+        "twin_tails",
+        "motion"
+      ],
+      "promptProse": "Tohsaka Rin sprints through the alleys of Fuyuki at dusk, her red jacket flaring as she leaps between rooftops in a sharp, practiced pursuit.",
+      "promptTokens": [
+        "city",
+        "street",
+        "chase",
+        "action",
+        "evening",
+        "motion",
+        "outdoors"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, sci-fi, beach"
+      ],
+      "recommendedSize": "1216x832"
+    },
+    {
+      "id": "rem_rezero_mansion",
+      "title": "宅邸女仆日常",
+      "category": "奇幻",
+      "characterId": "rem_rezero",
+      "description": "罗兹瓦尔宅邸走廊间的勤恳身影。",
+      "location": "罗兹瓦尔宅邸",
+      "action": "在走廊与庭院间忙碌",
+      "timeOfDay": "白天",
+      "lighting": "明亮日光",
+      "camera": "medium shot",
+      "mood": "温柔勤恳",
+      "sceneTags": [
+        "maid",
+        "mansion",
+        "corridor",
+        "castle",
+        "daylight",
+        "fantasy",
+        "interior"
+      ],
+      "promptProse": "Rem works through her duties in the Roswaal mansion, black-and-white maid uniform neat as she moves along the bright corridors of the great estate.",
+      "promptTokens": [
+        "maid",
+        "mansion",
+        "corridor",
+        "castle",
+        "daylight",
+        "fantasy",
+        "interior"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, school"
+      ],
+      "recommendedSize": "832x1216"
+    },
+    {
+      "id": "rem_rezero_moon_garden",
+      "title": "月光庭院",
+      "category": "奇幻",
+      "characterId": "rem_rezero",
+      "description": "月光下的花丛与女仆。",
+      "location": "宅邸花园",
+      "action": "在月光下整理花丛",
+      "timeOfDay": "夜晚",
+      "lighting": "清冷月光",
+      "camera": "medium shot",
+      "mood": "宁静深情",
+      "sceneTags": [
+        "garden",
+        "moonlight",
+        "night",
+        "maid",
+        "flowers",
+        "mansion",
+        "fantasy"
+      ],
+      "promptProse": "Rem tends the garden by moonlight, silver light washing over her maid uniform and the quiet flowers of the mansion grounds in the still night.",
+      "promptTokens": [
+        "garden",
+        "moonlight",
+        "night",
+        "maid",
+        "flowers",
+        "fantasy",
+        "outdoors"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, school"
+      ],
+      "recommendedSize": "832x1216"
+    },
+    {
+      "id": "rem_rezero_rain_night",
+      "title": "雨夜告白",
+      "category": "奇幻",
+      "characterId": "rem_rezero",
+      "description": "雨窗边的深情回望。",
+      "location": "雨夜的宅邸窗边",
+      "action": "在窗边回望，雨声如诉",
+      "timeOfDay": "夜晚",
+      "lighting": "暖灯与冷雨",
+      "camera": "close-up",
+      "mood": "深情脆弱",
+      "sceneTags": [
+        "rain",
+        "night",
+        "window",
+        "maid",
+        "tears",
+        "sad",
+        "warm_light",
+        "interior"
+      ],
+      "promptProse": "Rem stands by a rain-streaked window in the mansion at night, warm lamplight against the cold glass, her eyes holding a quiet, devoted sorrow.",
+      "promptTokens": [
+        "rain",
+        "night",
+        "window",
+        "maid",
+        "sad",
+        "warm_light",
+        "interior",
+        "blue"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, cheerful"
+      ],
+      "recommendedSize": "832x1216"
+    },
+    {
+      "id": "emilia_rezero_snow_forest",
+      "title": "艾利欧尔雪林",
+      "category": "奇幻",
+      "characterId": "emilia_rezero",
+      "description": "冰晶雪林中的银发精灵。",
+      "location": "艾利欧尔冰雪森林",
+      "action": "在雪与冰晶间驻足",
+      "timeOfDay": "白天",
+      "lighting": "冷冽雪光",
+      "camera": "wide shot",
+      "mood": "清冷圣洁",
+      "sceneTags": [
+        "snow",
+        "forest",
+        "ice",
+        "winter",
+        "white",
+        "frost",
+        "fantasy",
+        "outdoors"
+      ],
+      "promptProse": "Emilia walks through the frozen Elior Forest, snow and ice crystals glittering around her silver hair and white robes under the cold, clear light.",
+      "promptTokens": [
+        "snow",
+        "forest",
+        "ice",
+        "winter",
+        "white",
+        "frost",
+        "fantasy",
+        "outdoors"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, desert, summer"
+      ],
+      "recommendedSize": "1216x832"
+    },
+    {
+      "id": "emilia_rezero_court",
+      "title": "王选宫廷",
+      "category": "奇幻",
+      "characterId": "emilia_rezero",
+      "description": "卢格尼卡王城的庄严礼服。",
+      "location": "卢格尼卡王城",
+      "action": "在庄严宫廷中身着礼服",
+      "timeOfDay": "白天",
+      "lighting": "高窗圣光",
+      "camera": "wide shot",
+      "mood": "端庄凛然",
+      "sceneTags": [
+        "palace",
+        "court",
+        "royal",
+        "ceremony",
+        "white_dress",
+        "kingdom",
+        "fantasy",
+        "dignified"
+      ],
+      "promptProse": "Emilia stands in the royal court of Lugunica for the Royal Selection, her white dress and single horn catching the solemn light of the great hall.",
+      "promptTokens": [
+        "palace",
+        "court",
+        "royal",
+        "ceremony",
+        "white_dress",
+        "kingdom",
+        "fantasy",
+        "dignified"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, desert"
+      ],
+      "recommendedSize": "832x1216"
+    },
+    {
+      "id": "emilia_rezero_garden",
+      "title": "宅邸花园",
+      "category": "奇幻",
+      "characterId": "emilia_rezero",
+      "description": "与契约精灵帕克在花间小憩。",
+      "location": "罗兹瓦尔宅邸花园",
+      "action": "与契约精灵帕克在花间小憩",
+      "timeOfDay": "白天",
+      "lighting": "柔暖日光",
+      "camera": "medium shot",
+      "mood": "纯真温柔",
+      "sceneTags": [
+        "garden",
+        "flowers",
+        "cat",
+        "puck",
+        "white_dress",
+        "daylight",
+        "fantasy",
+        "outdoors"
+      ],
+      "promptProse": "Emilia rests in the mansion garden with her contract spirit Puck, white dress bright under the sun as flowers sway around the gentle pair.",
+      "promptTokens": [
+        "garden",
+        "flowers",
+        "cat",
+        "white_dress",
+        "daylight",
+        "fantasy",
+        "outdoors"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, night"
+      ],
+      "recommendedSize": "832x1216"
+    },
+    {
+      "id": "roxy_migurdia_academy",
+      "title": "魔法学院图书馆",
+      "category": "奇幻",
+      "characterId": "roxy_migurdia",
+      "description": "书架间查找典籍的魔导师。",
+      "location": "魔法学院",
+      "action": "在书架间查找魔法典籍",
+      "timeOfDay": "白天",
+      "lighting": "窗边暖光",
+      "camera": "medium shot",
+      "mood": "认真专注",
+      "sceneTags": [
+        "library",
+        "academy",
+        "books",
+        "witch_hat",
+        "magic_school",
+        "interior",
+        "fantasy"
+      ],
+      "promptProse": "Roxy searches the academy library for rare spellbooks, her blue twin braids and pointed witch hat familiar sights among the towering shelves.",
+      "promptTokens": [
+        "library",
+        "academy",
+        "books",
+        "witch_hat",
+        "magic_school",
+        "interior",
+        "fantasy"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi"
+      ],
+      "recommendedSize": "832x1216"
+    },
+    {
+      "id": "roxy_migurdia_wilderness",
+      "title": "荒野旅行",
+      "category": "奇幻",
+      "characterId": "roxy_migurdia",
+      "description": "握杖独行于金色荒野。",
+      "location": "异世界荒野",
+      "action": "握法杖独行于荒野",
+      "timeOfDay": "黄昏",
+      "lighting": "金色夕照",
+      "camera": "wide shot",
+      "mood": "坚韧孤旅",
+      "sceneTags": [
+        "wilderness",
+        "travel",
+        "staff",
+        "witch_hat",
+        "plains",
+        "dusk",
+        "fantasy",
+        "outdoors"
+      ],
+      "promptProse": "Roxy crosses a wild plain at dusk, staff in hand and cape stirring in the wind, the lone traveler of a fantasy world undeterred by the long road.",
+      "promptTokens": [
+        "wilderness",
+        "travel",
+        "staff",
+        "witch_hat",
+        "plains",
+        "dusk",
+        "fantasy",
+        "outdoors"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, city"
+      ],
+      "recommendedSize": "1216x832"
+    },
+    {
+      "id": "roxy_migurdia_village",
+      "title": "故乡村落",
+      "category": "奇幻",
+      "characterId": "roxy_migurdia",
+      "description": "米格路德族村落草原的怀乡。",
+      "location": "米格路德族村落",
+      "action": "在村落草原间回望",
+      "timeOfDay": "白天",
+      "lighting": "明亮日光",
+      "camera": "medium shot",
+      "mood": "淡泊怀乡",
+      "sceneTags": [
+        "village",
+        "grassland",
+        "tribe",
+        "daylight",
+        "fantasy",
+        "outdoors",
+        "home"
+      ],
+      "promptProse": "Roxy returns to her Migurd homeland village, pale blue skin and braids familiar against the open grassland and simple homes of her people.",
+      "promptTokens": [
+        "village",
+        "grassland",
+        "daylight",
+        "fantasy",
+        "outdoors",
+        "home"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, city"
+      ],
+      "recommendedSize": "832x1216"
+    },
+    {
+      "id": "illyasviel_einzbern_castle",
+      "title": "爱因兹贝伦城堡",
+      "category": "现代魔术",
+      "characterId": "illyasviel_von_einzbern",
+      "description": "雪林古堡窗前的银发少女。",
+      "location": "雪林中的古堡",
+      "action": "立于古堡窗前",
+      "timeOfDay": "夜晚",
+      "lighting": "冷月与烛光",
+      "camera": "wide shot",
+      "mood": "孤寂神秘",
+      "sceneTags": [
+        "castle",
+        "snow",
+        "night",
+        "window",
+        "candlelight",
+        "forest",
+        "gothic"
+      ],
+      "promptProse": "Illyasviel stands at the window of the Einzbern castle in the snowy forest, moonlight and candlelight flickering across her silver hair in the cold night.",
+      "promptTokens": [
+        "castle",
+        "snow",
+        "night",
+        "window",
+        "candlelight",
+        "forest",
+        "gothic"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, beach, school"
+      ],
+      "recommendedSize": "832x1216"
+    },
+    {
+      "id": "illyasviel_moon_garden",
+      "title": "月夜庭院",
+      "category": "现代魔术",
+      "characterId": "illyasviel_von_einzbern",
+      "description": "月光庭院里天真与幽暗并存。",
+      "location": "城堡庭院",
+      "action": "在月光下的庭院漫步",
+      "timeOfDay": "夜晚",
+      "lighting": "清冷月光",
+      "camera": "medium shot",
+      "mood": "天真与幽暗",
+      "sceneTags": [
+        "garden",
+        "moonlight",
+        "night",
+        "castle",
+        "purple_dress",
+        "outdoors"
+      ],
+      "promptProse": "Illyasviel wanders the moonlit garden of the Einzbern estate, her purple dress vivid under the cold moon as shadows gather at the edge of the light.",
+      "promptTokens": [
+        "garden",
+        "moonlight",
+        "night",
+        "castle",
+        "purple_dress",
+        "outdoors"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, beach, school"
+      ],
+      "recommendedSize": "832x1216"
+    },
+    {
+      "id": "illyasviel_grail_war",
+      "title": "圣杯战争",
+      "category": "现代魔术",
+      "characterId": "illyasviel_von_einzbern",
+      "description": "与 Berserker 一同现身的压迫。",
+      "location": "冬木市夜晚街头",
+      "action": "与 Berserker 一同现身",
+      "timeOfDay": "夜晚",
+      "lighting": "战火与月色",
+      "camera": "dramatic wide shot",
+      "mood": "压迫反转",
+      "sceneTags": [
+        "night",
+        "city",
+        "battle",
+        "giant",
+        "berserker",
+        "dark",
+        "ominous"
+      ],
+      "promptProse": "Illyasviel appears on the night streets of Fuyuki with Berserker looming behind her, her small silhouette at odds with the towering menace she commands.",
+      "promptTokens": [
+        "night",
+        "city",
+        "battle",
+        "giant",
+        "dark",
+        "ominous",
+        "outdoors"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, cheerful, day, school"
+      ],
+      "recommendedSize": "1216x832"
+    },
+    {
+      "id": "kitagawa_marin_sewing_room",
+      "title": "制衣工房",
+      "category": "现代日常",
+      "characterId": "kitagawa_marin",
+      "description": "缝纫机前的热情制衣。",
+      "location": "家中手作工房",
+      "action": "在缝纫机前量体裁衣",
+      "timeOfDay": "白天",
+      "lighting": "明亮室内光",
+      "camera": "medium shot",
+      "mood": "热情专注",
+      "sceneTags": [
+        "sewing_machine",
+        "fabric",
+        "measuring_tape",
+        "scissors",
+        "crafting",
+        "indoor",
+        "bright"
+      ],
+      "promptProse": "Kitagawa Marin works at her sewing machine in the home workroom, fabric and measuring tape scattered around as she pours her passion into a new cosplay.",
+      "promptTokens": [
+        "sewing_machine",
+        "fabric",
+        "measuring_tape",
+        "scissors",
+        "crafting",
+        "indoor",
+        "bright"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, dark, sad"
+      ],
+      "recommendedSize": "832x1216"
+    },
+    {
+      "id": "kitagawa_marin_convention",
+      "title": "漫展会场",
+      "category": "现代日常",
+      "characterId": "kitagawa_marin",
+      "description": "cos 服下的元气合影。",
+      "location": "同人展会",
+      "action": "身着 cos 服在展位前合影",
+      "timeOfDay": "白天",
+      "lighting": "会场灯光",
+      "camera": "medium shot",
+      "mood": "元气闪耀",
+      "sceneTags": [
+        "convention",
+        "cosplay",
+        "event_hall",
+        "crowd",
+        "camera",
+        "booth",
+        "bright"
+      ],
+      "promptProse": "Kitagawa Marin poses at her convention booth in full cosplay, cameras flashing as the lively crowd celebrates another day of her beloved hobby.",
+      "promptTokens": [
+        "convention",
+        "cosplay",
+        "event_hall",
+        "crowd",
+        "camera",
+        "booth",
+        "bright"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, dark, night"
+      ],
+      "recommendedSize": "832x1216"
+    },
+    {
+      "id": "kitagawa_marin_amusement_park",
+      "title": "游乐园夏日",
+      "category": "现代日常",
+      "characterId": "kitagawa_marin",
+      "description": "摩天轮前的灿烂比心。",
+      "location": "游乐园",
+      "action": "在游乐设施前开心比心",
+      "timeOfDay": "白天",
+      "lighting": "明亮夏日光",
+      "camera": "medium shot",
+      "mood": "欢乐活力",
+      "sceneTags": [
+        "amusement_park",
+        "ferris_wheel",
+        "summer",
+        "smile",
+        "outdoors",
+        "bright",
+        "fun"
+      ],
+      "promptProse": "Kitagawa Marin grins and flashes a peace sign in front of the ferris wheel at a sunlit amusement park, her bright energy filling the summer air.",
+      "promptTokens": [
+        "amusement_park",
+        "ferris_wheel",
+        "summer",
+        "smile",
+        "outdoors",
+        "bright"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, dark, winter"
+      ],
+      "recommendedSize": "832x1216"
+    },
+    {
+      "id": "kisara_battle_night",
+      "title": "都市恶魔战斗",
+      "category": "近未来",
+      "characterId": "kisara_engage_kiss",
+      "description": "霓虹都市上空的恶魔化战斗。",
+      "location": "Baylong City 夜晚",
+      "action": "恶魔化形态在都市上空战斗",
+      "timeOfDay": "夜晚",
+      "lighting": "霓虹与火光",
+      "camera": "dynamic action shot",
+      "mood": "炽烈危险",
+      "sceneTags": [
+        "city",
+        "night",
+        "battle",
+        "horns",
+        "demonic_form",
+        "neon",
+        "action",
+        "dystopia"
+      ],
+      "promptProse": "Kisara fights above the neon streets of Baylong City in her demonic form, red horns and white battle outfit blazing against the night skyline.",
+      "promptTokens": [
+        "city",
+        "night",
+        "battle",
+        "horns",
+        "demonic",
+        "neon",
+        "action",
+        "dystopia"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, fantasy, cheerful"
+      ],
+      "recommendedSize": "1216x832"
+    },
+    {
+      "id": "kisara_home_daily",
+      "title": "居家日常",
+      "category": "近未来",
+      "characterId": "kisara_engage_kiss",
+      "description": "白衬衫沙发上的傲娇温柔。",
+      "location": "公寓客厅",
+      "action": "穿着居家白衬衫在沙发上",
+      "timeOfDay": "白天",
+      "lighting": "明亮室内光",
+      "camera": "medium shot",
+      "mood": "傲娇温柔",
+      "sceneTags": [
+        "apartment",
+        "sofa",
+        "white_shirt",
+        "indoor",
+        "daily",
+        "bright"
+      ],
+      "promptProse": "Kisara lounges on the sofa in a loose white shirt at home, her pink hair loose as she turns away with a pout that barely hides a smile.",
+      "promptTokens": [
+        "apartment",
+        "sofa",
+        "white_shirt",
+        "indoor",
+        "daily",
+        "bright"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, fantasy, night"
+      ],
+      "recommendedSize": "832x1216"
+    },
+    {
+      "id": "kisara_school",
+      "title": "学校日常",
+      "category": "近未来",
+      "characterId": "kisara_engage_kiss",
+      "description": "走廊转身的活泼娇嗔。",
+      "location": "校园",
+      "action": "穿着校服在走廊转身",
+      "timeOfDay": "白天",
+      "lighting": "明亮日光",
+      "camera": "medium shot",
+      "mood": "活泼娇嗔",
+      "sceneTags": [
+        "school",
+        "uniform",
+        "corridor",
+        "daylight",
+        "hair_ornament",
+        "indoor"
+      ],
+      "promptProse": "Kisara turns in the school corridor in her uniform, pink hair and hair ornament bright under the daylight, a familiar teasing glint in her eyes.",
+      "promptTokens": [
+        "school",
+        "uniform",
+        "corridor",
+        "daylight",
+        "hair_ornament",
+        "indoor"
+      ],
+      "negativeTokens": [
+        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, fantasy, night"
+      ],
+      "recommendedSize": "832x1216"
     },
     {
       "id": "candlelight_evening",
       "title": "烛光卧室",
       "category": "成人",
-      "description": "烛火在床头明灭，暖光把轮廓染成蜜色。",
+      "description": "烛火明灭的卧室，暖光描出蜜色轮廓。",
       "location": "夜晚的卧室",
       "action": "倚在床头，烛光映亮侧脸",
       "timeOfDay": "夜晚",
-      "lighting": "flickering warm candlelight with deep amber shadows",
+      "lighting": "摇曳烛光与琥珀色深影",
       "camera": "medium close-up, intimate framing",
-      "mood": "tender and intimate",
+      "mood": "温柔亲密",
       "sceneTags": [
         "bedroom",
         "candle",
@@ -777,7 +2006,7 @@
         "bed",
         "intimate"
       ],
-      "promptProse": "In a dim bedroom lit only by candles, warm amber light flickers across the sheets and walls. She reclines by the headboard, candlelight tracing the curve of the face in soft intimacy.",
+      "promptProse": "In a dim bedroom lit only by candles, warm amber light flickers across the sheets and walls, tracing her profile in soft intimacy.",
       "promptTokens": [
         "bedroom",
         "candle",
@@ -795,7 +2024,6 @@
       "animaStyleHint": "r18_elegant_boudoir",
       "nsfwTokens": [
         "nude",
-        "nude",
         "completely_naked",
         "fully_nude",
         "no_clothes",
@@ -808,19 +2036,19 @@
         "lying_on_bed",
         "topless"
       ],
-      "nsfwProse": "Her clothes have been removed and lie on the floor. A naked woman lies on the bed with her bare breasts exposed and her legs parted, her fully nude body lit by warm candlelight. Her thighs are apart and her naked breasts and nipples are clearly visible, with nothing covering her bare skin."
+      "nsfwProse": "Her clothes have been removed and lie on the floor. A naked woman lies on the bed with her bare breasts exposed and her legs parted, her fully nude body lit by warm candlelight."
     },
     {
       "id": "morning_bathrobe",
       "title": "浴袍晨光",
       "category": "成人",
-      "description": "清晨的逆光里，浴袍松松挽着，光在肩线上流动。",
+      "description": "清晨逆光里松挽的浴袍与肩线。",
       "location": "清晨的卧室窗边",
       "action": "站在窗边，晨光勾勒轮廓",
       "timeOfDay": "清晨",
-      "lighting": "bright backlit morning with soft rim light",
+      "lighting": "明亮逆光与柔和轮廓光",
       "camera": "medium shot from the side, rim-lit silhouette",
-      "mood": "soft and unhurried",
+      "mood": "柔软从容",
       "sceneTags": [
         "bedroom",
         "bathrobe",
@@ -829,7 +2057,7 @@
         "window",
         "rim_light"
       ],
-      "promptProse": "In a bright bedroom at dawn, morning light pours through the window and rims her standing before it in a loosely tied bathrobe. The scene is unhurried, warm, and completely private.",
+      "promptProse": "In a bright bedroom at dawn, morning light pours through the window and rims her standing before it in a loosely tied bathrobe, unhurried and private.",
       "promptTokens": [
         "bedroom",
         "bathrobe",
@@ -844,8 +2072,8 @@
       "recommendedSize": "832x1216",
       "adult": true,
       "kreaStyleHint": "r18_elegant_boudoir",
+      "animaStyleHint": "r18_elegant_boudoir",
       "nsfwTokens": [
-        "nude",
         "nude",
         "completely_naked",
         "fully_nude",
@@ -858,20 +2086,19 @@
         "standing_nude",
         "bathrobe_off"
       ],
-      "nsfwProse": "The bathrobe slips from her shoulders and falls away, leaving her completely naked in the bright morning light. Her bare breasts and nipples are fully exposed, her nude body backlit by the window, with nothing left to cover her.",
-      "animaStyleHint": "r18_elegant_boudoir"
+      "nsfwProse": "The bathrobe slips from her shoulders and falls away, leaving her completely naked in the bright morning light, her bare breasts and nipples fully exposed."
     },
     {
       "id": "late_night_dressing",
       "title": "深夜更衣",
       "category": "成人",
-      "description": "深夜的镜子前，动作刚进行到一半，暧昧藏在灯光里。",
+      "description": "镜前进行到一半的更衣，暧昧在灯影里。",
       "location": "深夜的更衣室",
       "action": "在镜前整理衣领，光线暧昧",
       "timeOfDay": "深夜",
-      "lighting": "low warm lamp light with soft shadows",
+      "lighting": "低暖台灯与软影",
       "camera": "close-up mirrored composition",
-      "mood": "charged and private",
+      "mood": "紧张私密",
       "sceneTags": [
         "dressing_room",
         "mirror",
@@ -893,8 +2120,9 @@
       ],
       "recommendedSize": "832x1216",
       "adult": true,
+      "kreaStyleHint": "r18_sensual_cg",
+      "animaStyleHint": "r18_sensual_cg",
       "nsfwTokens": [
-        "nude",
         "nude",
         "completely_naked",
         "fully_nude",
@@ -907,9 +2135,7 @@
         "bare_back",
         "undressing"
       ],
-      "nsfwProse": "She undresses by the mirror, her clothes falling to the floor until she stands completely naked. Her bare back and naked breasts are fully exposed in the warm lamp light, her nude body reflected in the glass.",
-      "animaStyleHint": "r18_sensual_cg",
-      "kreaStyleHint": "r18_sensual_cg"
+      "nsfwProse": "She undresses by the mirror, her clothes falling to the floor until she stands completely naked, her bare back and naked breasts reflected in the warm lamp light."
     }
   ]
 }

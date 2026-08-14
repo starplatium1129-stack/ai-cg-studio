@@ -317,12 +317,11 @@ async function main() {
     var fullTodo = records.filter(function (r) {
       var existing = findResult(r);
       if (existing && existing.ok && existing.verdict) return false; // 已精审
-      if (stage === 'both') {
-        // quick 已判不通过的直接跳过（硬伤确认，无需精审浪费时间）
-        if (existing && existing.quickVerdict === '不通过') return false;
-        if (existing && existing.quickError) return true; // quick 失败仍补精审
-        if (existing && existing.quickVerdict === 'parse-fail') return true;
-      }
+      // quick 已判不通过的直接跳过（硬伤确认，无需精审浪费时间）；
+      // both 与 full --resume 都生效（修复：full resume 曾重审 quick 淘汰图）
+      if (existing && existing.quickVerdict === '不通过') return false;
+      if (existing && existing.quickError) return true; // quick 失败仍补精审
+      if (existing && existing.quickVerdict === 'parse-fail') return true;
       return true;
     });
     console.log('[full] 待精审: ' + fullTodo.length + ' 张（完整八维，逐张）');

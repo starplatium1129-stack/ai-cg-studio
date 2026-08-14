@@ -41,6 +41,8 @@ export interface SceneBlueprint {
   title: string
   category: string
   description: string
+  /** 归属角色：角色原型场景蓝图必须携带；通用蓝图可为空。 */
+  characterId?: string
   location: string
   action: string
   timeOfDay: string
@@ -174,6 +176,7 @@ export function parseSceneBlueprint(value: unknown): SceneBlueprint | null {
     title: requiredString(value, 'title'),
     category: requiredString(value, 'category'),
     description: requiredString(value, 'description'),
+    characterId: stringValue(value.characterId) || undefined,
     location: requiredString(value, 'location'),
     action: requiredString(value, 'action'),
     timeOfDay: requiredString(value, 'timeOfDay'),
@@ -244,6 +247,7 @@ export function eligibleBlueprints(
 ): SceneBlueprint[] {
   return blueprints.filter(blueprint =>
     blueprintEligible(blueprint, character, opts)
+    && (!blueprint.characterId || character == null || blueprint.characterId === character.id)
     && (!opts.category || opts.category === 'all' || blueprint.category === opts.category),
   )
 }
@@ -300,13 +304,19 @@ export function recommendBlueprints(
   cursor: number,
   previousIds: string[] | null,
   count = 3,
+  characterId?: string | null,
 ): SceneBlueprint[] {
-  if (list.length <= count) return list
+  // 角色感知：传入 characterId 时只从该角色的原型场景中轮转；缺省保持全量行为。
+  const pool = characterId
+    ? list.filter(blueprint => blueprint.characterId === characterId)
+    : list
+  if (pool.length === 0) return []
+  if (pool.length <= count) return pool
   let attempt = cursor
-  let picked = rotateBlueprints(list, key, attempt).slice(0, count)
+  let picked = rotateBlueprints(pool, key, attempt).slice(0, count)
   while (sameIds(picked, previousIds) && attempt < cursor + 8) {
     attempt += 1
-    picked = rotateBlueprints(list, key, attempt).slice(0, count)
+    picked = rotateBlueprints(pool, key, attempt).slice(0, count)
   }
   return picked
 }

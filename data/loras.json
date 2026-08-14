@@ -607,5 +607,112 @@
       "scores_recorded": true,
       "selection_reason": "epoch 12 在 5 场景盲评中 3/5 胜出且总分最高（身份/画质/光影均衡），R18 发型保持最稳；epoch 24 过度拟合（校服身份软化、旗袍纹理糊），v19 仅在冬装氛围单点胜出。"
     }
+  },
+  {
+    "id": "L_NENE_V21_ANIMA",
+    "name": "ayachi_nene_v20_anima_unified_e16",
+    "version": "2.2.0",
+    "trigger": "ayachi_nene",
+    "character": "NENE_001",
+    "strength": {
+      "default": 0.85,
+      "min": 0.65,
+      "max": 1
+    },
+    "compatible_models": [
+      "anima-base-v1.0",
+      "anima-aesthetic-v1.1"
+    ],
+    "prompt_contract": {
+      "exact_prefixes": [
+        "nene_"
+      ],
+      "exact_tokens": [
+        "ayachi_nene",
+        "white_hair",
+        "very_long_hair",
+        "low_twintails",
+        "purple_eyes",
+        "pink_hair_ribbons",
+        "hair_ribbon",
+        "hair_between_eyes",
+        "nene_r18",
+        "nene_witch_canonical",
+        "nene_school_uniform",
+        "nene_sailor_uniform",
+        "nene_red_cardigan_uniform",
+        "nene_blue_pajamas",
+        "nene_green_sleepwear",
+        "nene_bat_dress",
+        "nene_black_dress"
+      ]
+    },
+    "test_scene": [
+      "sc105",
+      "sc300",
+      "sc002",
+      "sc261",
+      "sc014",
+      "sc006"
+    ],
+    "description": "绫地宁宁角色 LoRA v21（Anima unified）。落实 08-13「统一训练、不隔离质量先验」决策：R18 样张不再挂渲染隔离 tag，所有样张共享统一高质量学习信号，评级交给 explicit/safe 词。两级实图矩阵 + 加赛 + 用户亲审：初赛 126 张（6 候选×7 场景×3 seed，Base+24s/CFG3）e12 平均分最高；决赛 63 张（Aesthetic+官方参数 30s/CFG4.5/er_sde）e12 不通过最少；加赛（魔女服 sc105/sc300 + 脸部特写，28 张）e16 脸部神态与魔女服场景两尺度均优于 e12，用户亲审改判 e16 晋级（e12 保留为回退）。生产建议 Aesthetic v1.1 底模 + 官方参数。",
+    "dataset": {
+      "images": 55,
+      "composition": {
+        "safe": 21,
+        "sensitive": 12,
+        "nsfw": 9,
+        "explicit": 13,
+        "train": 42,
+        "held_out_validation": 13
+      },
+      "resolution": 1024,
+      "strategy": "V20_Anima_Scientific_v2 snapshot; unified training (no r18 quality isolation); identity-ownership captions (trigger-only ayachi_nene, explicit lighting tags, tag shuffle + RANDOM dropout 0.1, keep_tags_count 4)"
+    },
+    "training": {
+      "selected_checkpoint": "epoch 16 (step 672)",
+      "selected_epoch": 16,
+      "selected_step": 672,
+      "rejected_checkpoint": "epoch 24 overfit tendency; epoch 20 highest render scores but most hard failures (pose/ribbon/hands); e12 overall stability best but face/witch weaker (kept as fallback)",
+      "resumed_from": "anima-base-v1.0",
+      "rank": 32,
+      "alpha": 32,
+      "batch_size": 1,
+      "transformer_learning_rate": 0.0001,
+      "text_encoder_learning_rate": 0,
+      "text_encoder_stop_epoch": 0,
+      "epochs_run": 24,
+      "timestep_distribution": "LOGIT_NORMAL",
+      "layer_filter": "attn1,attn2,ff",
+      "config": "OneTrainer/training_configs/ayachi_nene_v20_anima_scientific_unified.json"
+    },
+    "recommended_weight": {
+      "portrait": 0.85,
+      "fullbody": 0.85,
+      "complex_scene": 0.82
+    },
+    "base_model": "anima-base-v1.0",
+    "trainer": "OneTrainer",
+    "validation": {
+      "status": "passed",
+      "evaluated_at": "2026-08-14",
+      "method": "two-round matrix + user-selected rematch: round 1 = 6 candidates x 7 scenes x 3 seeds (126 cells, Base v1.0 + 24s/CFG3); final = 3 candidates x 7 scenes x 3 seeds (63 cells, Aesthetic v1.1 + official 30s/CFG4.5/er_sde); rematch = e12 vs e16 on witch scenes (sc105/sc300) + face close-up (28 cells), vision-audited via image-inspect eight-dimension strict audit",
+      "baseline": "production ayachi_nene_v20_anima (v20-a epoch 8) and v20-b epoch 16",
+      "matrix": "sc261/sc268/sc269/sc002/sc105/sc014/sc006 x seeds 20260812-14; rematch sc105/sc300/face01 x seeds 20260816-21",
+      "hard_gates": {
+        "mean_face_score": 8.5,
+        "signature_feature_presence_rate": 0.75,
+        "critical_identity_error": 0
+      },
+      "evidence": "Reviews/AnimaUnifiedSweep/2026-08-13_24s_cfg3/ and .../2026-08-13_30s_cfg45_ersde_aesthetic/ and .../2026-08-14_rematch_e12_vs_e16/",
+      "metrics": {
+        "初赛 (Base+24s/CFG3)": "e12 平均分 58.8/80 最高；e4/e8 欠拟合；e16 两极分化；e20/e24 稳定回落",
+        "决赛 (Aesthetic+官方参数)": "e12 不通过 8/21 最少；e16 不通过 12/21；e20 不通过 13/21（画质均分 8.0 最高但硬伤最多）",
+        "加赛 (用户亲审)": "脸部神态 e16 7.8 > e12 7.6；魔女服 sc105 两尺度 e16 均优于 e12；用户亲审改判 e16 晋级"
+      },
+      "known_limitation": "手部为 unified LoRA 普遍短板（e12/e16/e20 手部不通过 8/11/11）；e16 肢体结构均分 5.9 全场最低、发饰错位 ×8，复杂/极端角度场景崩坏率高于 e12（e12 保留为回退候选）；生产建议 Aesthetic v1.1 + 官方参数 30s/CFG4.5/er_sde。",
+      "scores_recorded": true,
+      "selection_reason": "用户亲审：e16 脸部神态与魔女服场景显著优于 e12（两个独立审核尺度验证），审美权重偏向脸/魔女服，改判 e16 晋级；e12 整体稳定性更优，保留为回退。"
+    }
   }
 ]

@@ -63,7 +63,13 @@
             "hair_down"
           ]
         }
-      ]
+      ],
+      "canon": {
+        "world": "奇幻和风（提瓦特·雷电神）",
+        "era": "前现代和风",
+        "formNotes": "真身=雷电影（人偶之身）；雷电元素=紫色电光；武器=梦想一心",
+        "research": "2026-08-14 调研"
+      }
     },
     {
       "id": "sakurajima_mai",
@@ -76,14 +82,14 @@
         "mai-san",
         "bunny girl senpai"
       ],
-      "identityProse": "Sakurajima Mai from Rascal Does Not Dream of Bunny Girl Senpai, an elegant actress with long black hair, an ahoge, soft purple eyes and a composed, slightly distant air.",
+      "identityProse": "Sakurajima Mai from Rascal Does Not Dream of Bunny Girl Senpai, an elegant actress with long black hair, soft brown eyes and a composed, slightly distant air.",
       "identityTokens": [
         "sakurajima_mai",
         "1girl",
         "solo",
         "long_hair",
         "black_hair",
-        "purple_eyes",
+        "brown_eyes",
         "ahoge",
         "bangs"
       ],
@@ -136,7 +142,13 @@
             "open_jacket"
           ]
         }
-      ]
+      ],
+      "canon": {
+        "world": "现代校园（青春猪头少年）",
+        "era": "当代",
+        "formNotes": "兔女郎装为名场面造型；瞳色为棕色（已修正）",
+        "research": "2026-08-14 调研"
+      }
     },
     {
       "id": "tokisaki_kurumi",
@@ -159,7 +171,8 @@
         "black_hair",
         "red_eyes",
         "two_tone_eyes",
-        "bangs"
+        "bangs",
+        "golden_eyes"
       ],
       "exactTokens": [
         "tokisaki_kurumi"
@@ -209,7 +222,13 @@
             "black_clothes"
           ]
         }
-      ]
+      ],
+      "canon": {
+        "world": "现代超能力（约会大作战）",
+        "era": "当代",
+        "formNotes": "左金时钟瞳/右红瞳异色；不对称双马尾；刻刻帝+双燧发枪",
+        "research": "2026-08-14 调研"
+      }
     },
     {
       "id": "frieren",
@@ -222,7 +241,7 @@
         "frieren the slayer",
         "elf mage"
       ],
-      "identityProse": "Frieren from Frieren: Beyond Journey's End, a centuries-old elf mage with very long white hair, a single braided lock, green eyes and pointed ears, carrying an old-fashioned staff and a calm, wistful expression.",
+      "identityProse": "Frieren from Frieren: Beyond Journey's End, a centuries-old elf mage with very long white hair in low twin braids, violet eyes and pointed ears, carrying an old-fashioned staff and a calm, wistful expression.",
       "identityTokens": [
         "frieren",
         "1girl",
@@ -230,10 +249,11 @@
         "long_hair",
         "very_long_hair",
         "white_hair",
-        "green_eyes",
+        "purple_eyes",
         "elf",
         "pointy_ears",
-        "braid"
+        "braid",
+        "twin_braids"
       ],
       "exactTokens": [
         "frieren"
@@ -281,7 +301,13 @@
             "cardigan"
           ]
         }
-      ]
+      ],
+      "canon": {
+        "world": "古典奇幻（葬送的芙莉莲）",
+        "era": "中世纪风",
+        "formNotes": "精灵长寿者；低双马尾；紫眼（已修正）",
+        "research": "2026-08-14 调研"
+      }
     },
     {
       "id": "artoria_pendragon",
@@ -354,7 +380,13 @@
             "dress"
           ]
         }
-      ]
+      ],
+      "canon": {
+        "world": "现代奇幻（Fate）",
+        "era": "当代+中世纪英灵",
+        "formNotes": "金发绿眼呆毛；蓝白铠裙；圣剑 Excalibur",
+        "research": "2026-08-14 调研"
+      }
     },
     {
       "id": "hatsune_miku",
@@ -429,7 +461,13 @@
             "miniskirt"
           ]
         }
-      ]
+      ],
+      "canon": {
+        "world": "虚拟歌姬（VOCALOID）",
+        "era": "无固定",
+        "formNotes": "青绿超长双马尾；经典舞台装=无袖深色上衣+领带+臂套；全场景灵活",
+        "research": "2026-08-14 调研"
+      }
     },
     {
       "id": "yuzuriha_inori",
@@ -451,7 +489,9 @@
         "pink_hair",
         "red_eyes",
         "ahoge",
-        "bangs"
+        "bangs",
+        "twintails",
+        "hairclip"
       ],
       "exactTokens": [
         "yuzuriha_inori"
@@ -500,7 +540,13 @@
             "layered_skirt"
           ]
         }
-      ]
+      ],
+      "canon": {
+        "world": "近未来末世（罪恶王冠）",
+        "era": "2039",
+        "formNotes": "下双马尾+红发夹；歌姬红装/白裙/虚空剑；主剧情 2039",
+        "research": "2026-08-14 调研"
+      }
     },
     {
       "id": "yukinoshita_yukino",
@@ -572,7 +618,13 @@
             "dress"
           ]
         }
-      ]
+      ],
+      "canon": {
+        "world": "现代校园（春物）",
+        "era": "当代",
+        "formNotes": "黑长直蓝眼；侍奉部；清冷气质",
+        "research": "2026-08-14 调研"
+      }
     },
     {
       "id": "elaina",
@@ -585,14 +637,14 @@
         "majo no tabitabi",
         "wandering witch"
       ],
-      "identityProse": "Elaina from Wandering Witch, a young traveling witch with very long white hair, violet eyes and a small witch hat, always accompanied by her black staff and a composed, bookish smile.",
+      "identityProse": "Elaina from Wandering Witch, a young traveling witch with very long ash-gray hair, violet eyes and a black witch hat, always accompanied by her broom and a composed, bookish smile.",
       "identityTokens": [
         "elaina",
         "1girl",
         "solo",
         "long_hair",
         "very_long_hair",
-        "white_hair",
+        "gray_hair",
         "purple_eyes",
         "witch_hat",
         "bangs"
@@ -643,7 +695,13 @@
             "cardigan"
           ]
         }
-      ]
+      ],
+      "canon": {
+        "world": "魔法旅行（魔女之旅）",
+        "era": "魔法世界",
+        "formNotes": "灰银发（已修正）；黑魔女帽+扫帚；灰之魔女",
+        "research": "2026-08-14 调研"
+      }
     },
     {
       "id": "misaka_mikoto",
@@ -665,7 +723,8 @@
         "short_hair",
         "brown_hair",
         "brown_eyes",
-        "bangs"
+        "bangs",
+        "hair_ornament"
       ],
       "exactTokens": [
         "misaka_mikoto"
@@ -681,13 +740,13 @@
         {
           "id": "tokiwadai_uniform",
           "name": "常盘台校服",
-          "prose": "her Tokiwadai uniform, a white blouse with a green tie and pleated skirt",
+          "prose": "her Tokiwadai uniform, a white blouse with a light-brown sweater vest and a beige pleated skirt",
           "tokens": [
             "school_uniform",
             "white_shirt",
-            "green_tie",
+            "sweater_vest",
             "pleated_skirt",
-            "black_thighhighs"
+            "beige_skirt"
           ],
           "default": true
         },
@@ -713,7 +772,13 @@
             "jacket"
           ]
         }
-      ]
+      ],
+      "canon": {
+        "world": "学园都市（超电磁炮）",
+        "era": "近未来",
+        "formNotes": "茶发棕眼齐刘海；常盘台水手服；超电磁炮=硬币电光",
+        "research": "2026-08-14 调研"
+      }
     },
     {
       "id": "makima",
@@ -725,19 +790,19 @@
         "chainsaw man",
         "control devil"
       ],
-      "identityProse": "Makima from Chainsaw Man, a calm and unnerving woman with long red hair in a distinctive braid, red eyes with concentric ring pupils and a perpetual knowing smile, typically dressed in a white shirt with a black tie.",
+      "identityProse": "Makima from Chainsaw Man, a calm and unnerving woman with long light-pink hair, red eyes and a perpetual knowing smile, typically dressed in a white shirt with a black tie; her true form as the Control Devil bears crimson hair, a single braid and golden ring eyes.",
       "identityTokens": [
         "makima",
         "1girl",
         "solo",
         "long_hair",
         "hair_braid",
-        "red_hair",
+        "light_pink_hair",
         "red_eyes",
-        "ring_eyes",
         "ahoge",
         "bangs",
-        "smile"
+        "smile",
+        "hair_flower"
       ],
       "exactTokens": [
         "makima"
@@ -784,8 +849,28 @@
             "black_coat",
             "high_collar"
           ]
+        },
+        {
+          "id": "devil_true_form",
+          "name": "支配恶魔真身",
+          "prose": "her true form as the Control Devil: crimson hair in a single braid with golden concentric ring eyes and a menacing aura",
+          "tokens": [
+            "red_hair",
+            "braid",
+            "single_braid",
+            "ring_eyes",
+            "golden_eyes",
+            "smirk",
+            "dark_aura"
+          ]
         }
-      ]
+      ],
+      "canon": {
+        "world": "现代暗黑（电锯人）",
+        "era": "当代",
+        "formNotes": "日常=淡粉发+正常红瞳+白西装；支配恶魔真身=红发+圈圈眼+麻花辫（独立 outfit）；不用剑",
+        "research": "2026-08-14 调研"
+      }
     },
     {
       "id": "tohsaka_rin",
@@ -858,7 +943,13 @@
             "long_sleeves"
           ]
         }
-      ]
+      ],
+      "canon": {
+        "world": "现代魔术（Fate）",
+        "era": "当代",
+        "formNotes": "黑发双马尾红丝带蓝眼；宝石魔术；傲娇",
+        "research": "2026-08-14 调研"
+      }
     },
     {
       "id": "rem_rezero",
@@ -930,7 +1021,13 @@
             "dress"
           ]
         }
-      ]
+      ],
+      "canon": {
+        "world": "奇幻（Re:Zero）",
+        "era": "中世纪风",
+        "formNotes": "蓝发蓝眼（官方立绘为准）；隐藏鬼角；黑白色女仆装；晨星流星锤",
+        "research": "2026-08-14 调研"
+      }
     },
     {
       "id": "emilia_rezero",
@@ -955,7 +1052,8 @@
         "elf",
         "pointy_ears",
         "hair_ribbon",
-        "bangs"
+        "bangs",
+        "single_horn"
       ],
       "exactTokens": [
         "emilia_(re_zero)"
@@ -1002,7 +1100,13 @@
             "cardigan"
           ]
         }
-      ]
+      ],
+      "canon": {
+        "world": "奇幻（Re:Zero）",
+        "era": "中世纪风",
+        "formNotes": "银发紫瞳半精灵；独角外露；契约精灵帕克；冰雪系",
+        "research": "2026-08-14 调研"
+      }
     },
     {
       "id": "roxy_migurdia",
@@ -1078,7 +1182,13 @@
             "belt"
           ]
         }
-      ]
+      ],
+      "canon": {
+        "world": "异世界奇幻（无职转生）",
+        "era": "中世纪风",
+        "formNotes": "浅蓝发双辫+浅蓝肤；矮个；蓝袍白围裙+尖顶魔女帽",
+        "research": "2026-08-14 调研"
+      }
     },
     {
       "id": "illyasviel_von_einzbern",
@@ -1149,7 +1259,13 @@
             "cardigan"
           ]
         }
-      ]
+      ],
+      "canon": {
+        "world": "现代魔术（Fate）",
+        "era": "当代",
+        "formNotes": "银发红眼幼态；紫裙；爱因兹贝伦古堡",
+        "research": "2026-08-14 调研"
+      }
     },
     {
       "id": "kitagawa_marin",
@@ -1163,14 +1279,14 @@
         "my dress-up darling",
         "sono bisque doll"
       ],
-      "identityProse": "Kitagawa Marin from My Dress-Up Darling, a lively gyaru girl with long blonde hair, an ahoge, red-brown eyes and long lashes, always full of energy and love for cosplay.",
+      "identityProse": "Kitagawa Marin from My Dress-Up Darling, a lively gyaru girl with long blonde hair, bright blue eyes and long lashes, always full of energy and love for cosplay.",
       "identityTokens": [
         "kitagawa_marin",
         "1girl",
         "solo",
         "long_hair",
         "blonde_hair",
-        "red_eyes",
+        "blue_eyes",
         "ahoge",
         "eyelashes",
         "gyaru"
@@ -1222,8 +1338,26 @@
             "hair_ornament",
             "sailor_uniform"
           ]
+        },
+        {
+          "id": "gothic_lolita",
+          "name": "哥特洛丽塔 cos",
+          "prose": "her handmade gothic lolita cosplay with black frilled dress, lace and a hair bow",
+          "tokens": [
+            "gothic_lolita",
+            "black_dress",
+            "frilled_dress",
+            "lace",
+            "hair_bow"
+          ]
         }
-      ]
+      ],
+      "canon": {
+        "world": "现代日常（更衣人偶）",
+        "era": "当代",
+        "formNotes": "金发蓝眼（已修正）；辣妹妆；缝纫/cosplay 核心",
+        "research": "2026-08-14 调研"
+      }
     },
     {
       "id": "kisara_engage_kiss",
@@ -1303,7 +1437,13 @@
             "shirt"
           ]
         }
-      ]
+      ],
+      "canon": {
+        "world": "近未来（Engage Kiss）",
+        "era": "近未来",
+        "formNotes": "粉发红眼；恶魔形态=红角+白发+白色战衣；勿与天童木更混淆",
+        "research": "2026-08-14 调研"
+      }
     }
   ]
 }

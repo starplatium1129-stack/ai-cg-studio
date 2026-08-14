@@ -40,7 +40,7 @@ const CHAR_PROMPT = Object.freeze({
   triad: '2girls',
 });
 const ANIMA_LORA_BY_CHARACTER = Object.freeze({
-  nene: 'L_NENE_V20B_ANIMA',
+  nene: 'L_NENE_V21_ANIMA',
   natsume: 'L_NAT_V20_ANIMA',
 });
 const WAI_LORA_BY_CHARACTER = Object.freeze({

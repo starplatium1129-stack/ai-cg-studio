@@ -149,7 +149,10 @@ const current = ref<CharacterProfile | null>(null)
 const bgExpanded = ref(false)
 useScrollReveal()
 
-const characterIds = computed<string[]>(() => characters.value.map(c => String(c.id)))
+// 角色空间只展示 heroine（宁宁/夏目）；type=popular 的热门出图角色档案不进入切换列表。
+const characterIds = computed<string[]>(() =>
+  characters.value.filter(c => String(c.type ?? 'heroine') !== 'popular').map(c => String(c.id)),
+)
 function selectCharacter(id: string) {
   const found = characters.value.find(c => String(c.id) === id)
   if (found) { current.value = found; bgExpanded.value = false }

@@ -85,7 +85,7 @@ const WAI_CHECKPOINT = genConst.CHECKPOINT;
 const ANIMA_BASE_ID = 'anima-base-v1.0';
 const ANIMA_AESTHETIC_ID = 'anima-aesthetic-v1.1';
 const KREA_MODEL_ID = 'krea2-turbo-fp8';
-const POPULAR_BLUEPRINT_ID = 'flower_field_backlight';
+const POPULAR_BLUEPRINT_ID = ''; // 已废弃：popular 批次按角色取专属原型场景（2026-08-14）
 const DEFAULT_LORA_STRENGTH = 0.85;
 
 // Studio identity line mirror of src/stores/promptBuilderStore.ts CHAR_PROMPT.
@@ -590,17 +590,23 @@ function artistBatch(seedBase) {
   });
 }
 
+/** 角色的默认原型场景：专属场景第一个；缺失时回退通用蓝图。 */
+function characterDefaultBlueprint(blueprints, characterId) {
+  const owned = blueprints.filter(bp => bp.characterId === characterId);
+  if (owned.length) return owned[0];
+  return blueprints.find(bp => !bp.characterId) || blueprints[0];
+}
+
 function popularBatch(seedBase) {
   const characters = popularContent.parsePopularCharacters(popularData);
   const blueprints = popularContent.parseSceneBlueprints(blueprintData);
-  const blueprint = popularContent.findBlueprint(blueprints, POPULAR_BLUEPRINT_ID);
-  if (!blueprint) throw new Error(`blueprint ${POPULAR_BLUEPRINT_ID} missing`);
   const profile = resolveModelProfile(presets.model_profiles, ANIMA_AESTHETIC_ID, 'anima');
   if (!profile) throw new Error('anima_aesthetic_v11 profile missing');
-  const size = blueprint.recommendedSize.match(/(\d+)\s*[x×]\s*(\d+)/i);
   return characters.map(character => {
+    const blueprint = characterDefaultBlueprint(blueprints, character.id);
     const { prompt, negative, outfit } = buildPopularPrompt(character, blueprint, profile);
     const model = animaConst.MODELS[ANIMA_AESTHETIC_ID];
+    const size = blueprint.recommendedSize.match(/(\d+)\s*[x×]\s*(\d+)/i);
     return {
       batch: 'popular',
       key: `popular:${character.id}`,
@@ -697,7 +703,8 @@ function rebuildWithOverride(base, override) {
     const characters = popularContent.parsePopularCharacters(popularData);
     const blueprints = popularContent.parseSceneBlueprints(blueprintData);
     const character = popularContent.findCharacter(characters, base.subject);
-    const blueprint = popularContent.findBlueprint(blueprints, base.sceneId);
+    const blueprint = popularContent.findBlueprint(blueprints, base.sceneId)
+      || characterDefaultBlueprint(blueprints, base.subject);
     const profile = resolveModelProfile(presets.model_profiles, ANIMA_AESTHETIC_ID, 'anima');
     const { prompt, negative } = buildPopularPrompt(character, blueprint, profile, override);
     return Object.assign({}, base, { prompt, negative });
@@ -802,7 +809,9 @@ function popularGridBatch(seedBase) {
   if (!animaProfile || !krea) throw new Error('anima_aesthetic_v11 / krea2_turbo_fp8 profile missing');
   const records = [];
   for (const character of characters) {
-    for (const blueprint of blueprints) {
+    // 角色感知：只枚举该角色的专属原型场景 + 通用成人蓝图（fail-closed）。
+    const eligible = popularContent.eligibleBlueprints(blueprints, character, { adultEnabled: true });
+    for (const blueprint of eligible) {
       for (const engine of ['anima', 'krea2']) {
         const profile = engine === 'anima' ? animaProfile : krea;
         const decisions = popularContent.inferBlueprintDecisions(blueprint);

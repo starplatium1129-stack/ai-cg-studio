@@ -208,3 +208,52 @@ Baseline A 使用 Anima Base v1.0、Transformer LoRA only、rank/alpha 32/32、c
 - 夏目矩阵：`scripts/tests/evaluate-anima-natsume-v19-checkpoints.js`、`scripts/maintenance/measure-anima-natsume-v19-matrix.py`、`scripts/maintenance/promote-anima-natsume-v19-checkpoint.js`。
 - 夏目 preview staging：`scripts/maintenance/stage-anima-natsume-v19-preview.js`，源/目标 SHA 固定且重复运行幂等。
 
+
+## 宁宁 v20 unified 训练审核与晋级（2026-08-14）
+
+> 覆盖 `ayachi_nene_v20_anima_scientific_unified`（2026-08-13 训练，24 epochs / 1008 steps，LR 1e-4 / rank 32 / alpha 32，数据集 `V20_Anima_Scientific_v2`，落实 08-13「统一训练、不隔离质量先验」决策）。本结论基于两级真实 ComfyUI 矩阵 + 八维严格视觉审核（`image-inspect -t audit` 机制）。
+
+### 初赛（Base v1.0 + 24s/CFG3，6 候选 × 7 场景 × 3 seed = 126 张）
+
+| 候选 | 通过 | 需复核 | 不通过 | 平均分(/80) |
+|---|---|---|---|---|
+| e4 | 10 | 3 | 8 | 47.0 |
+| e8 | 11 | 1 | 9 | 47.3 |
+| **e12** | 7 | 4 | 10 | **58.8** |
+| e16 | 4 | 6 | 11 | 58.0 |
+| e20 | 7 | 4 | 10 | 57.2 |
+| e24 | 6 | 6 | 9 | 56.3 |
+
+- e4/e8 为欠拟合期（通过多但平均分垫底）；e16 两极分化（平均分高、通过最少、不通过最多）；复杂/魔女道具场景（sc268/sc105）后期系统性崩坏，与训练样本「魔女装 e20 漂移」互相印证。
+
+### 决赛（Aesthetic v1.1 + 官方参数 30s/CFG4.5/er_sde/sgm_uniform，e12/e16/e20 × 7 场景 × 3 seed = 63 张）
+
+| 候选 | 通过 | 需复核 | 不通过 | 平均分(/80) |
+|---|---|---|---|---|
+| **u_e12** | 8 | 5 | **8** | 51.0 |
+| u_e16 | 4 | 5 | 12 | 70.5 |
+| u_e20 | 7 | 1 | 13 | 48.0 |
+
+- **晋级：u_e12（epoch 12 / step 504）**，两个组合下均为最优；Aesthetic v1.1 底模 + 官方参数下不通过 10→8，进一步改善。
+- 生产组合建议：**Aesthetic v1.1 底模 + 30s/CFG4.5/er_sde/sgm_uniform + LoRA strength 0.85**（与 08-13「跨底模加载记录」结论一致；注意决赛同时更换底模与参数，底模单独贡献未做严格 A/B，但组合效果显著优于 Base+默认参数）。
+- 文件：`ayachi_nene_v20_anima_unified_e12.safetensors`（SHA-256 `5b21edf37d6f6e23177674d4fd447984009f8e0fff52da5fd5c29b948bfa72ab`，即 `AI/ComfyUI/models/loras/ayachi_nene_v20_anima_unified_e12.safetensors`）。
+- 生产 ID：待用户确认（候选 `L_NENE_V21_ANIMA`），确认后走 `promote-anima-v20-checkpoint.js` 晋级并切换 `routes/anima.js`。
+- 已知限制：审核期间视觉代理认证抖动（503 auth_unavailable / 400 地区限制），最终 63/63 全覆盖（1 张由 claude-sonnet-4-6 补审）；手部仍是主要硬伤源；e12 不通过 8 张集中在复杂道具/极端角度场景，简单场景全过。
+- 证据目录：`E:/code/2/lora/AI/Reviews/AnimaUnifiedSweep/2026-08-13_24s_cfg3/`（初赛，126 张 + manifest + audit-report）、`.../2026-08-13_30s_cfg45_ersde_aesthetic/`（决赛，63 张 + manifest + audit-report）。
+- 可复现入口：`scripts/tests/evaluate-anima-unified.js`（生成，支持 `--params`/`--model`/`--only`/`--concurrency`）、`scripts/tests/audit-unified-sweep.js`（审核，quick 批量快筛 + full 八维精审 + `--resume`/`--stage`/`--concurrency`）、`scripts/tests/repair-audit-parses.js`（parse-fail 离线重解析）。
+
+### 决赛逐维度结论（为什么是 e12）
+
+- **e12**：脸部神态 8.5 / 光影 8.1 / 身份 8.0（10 分制，精审均分）；背景伪影 ×2、构图 ×1（三候选最少）；不通过 8 张原因高度集中于手/腿/姿势结构（各 ×8），问题单一可修；不通过集中在 sc105/sc269 复杂场景，日常场景全过。
+- **e16**：肢体结构均分 5.9 全场最低；手部 11/12 不通过；新增发带不对称等标志元素错误（头发发饰 ×8）；不通过散在 6 场景，问题面广。
+- **e20**：画质上限全场第一（身份 8.6 / 光影 8.6 / 构图 8.4 / 总均分 8.0），但硬伤最多（不通过 13：姿势 ×12 / 发饰 ×12 / 手 ×11 / 腿 ×11）——"画得最美但最不稳"，过拟合后期形态。
+- 三候选手部不通过 8/11/11：**手部是 unified LoRA 普遍短板**，e12 胜在其他维度不跟着崩，生产可预期"重绘手部"类修复。
+
+### 加赛与改判（2026-08-14，用户亲审）
+
+- 用户对「e12 晋级」提出异议（脸与魔女服），加赛 28 张（Aesthetic + 官方参数，e12 vs e16）：魔女服 sc105/sc300 × 4 seed + 脸部特写 face01 × 6 seed，目录 `Reviews/AnimaUnifiedSweep/2026-08-14_rematch_e12_vs_e16/`。
+- 加赛数据（Claude 视觉审核，尺度与 Gemini 不同但轮内可比）：脸部神态 e16 7.8 > e12 7.6；魔女服 sc105 两轮尺度（Gemini 决赛 / Claude 加赛）e16 均优于 e12。
+- **最终晋级：u_e16（epoch 16 / step 672）**，生产 ID `L_NENE_V21_ANIMA`，文件 `ayachi_nene_v20_anima_unified_e16.safetensors`（SHA-256 `3a5fe2e772f027f6248db865e67f38aee50e1bfcd633200ebb3f0818b774b6b4`）；`routes/anima.js`、`server/anima-generation-contract.js`、`data/loras.json`、`generate-scene-showcase-candidates.js` 已切换 nene 默认绑定，`L_NENE_V20_ANIMA`/`L_NENE_V20B_ANIMA` 保留为回退条目（nene_b 通道不变）。
+- **e12 保留为回退候选**（整体稳定性更优：决赛不通过 8/21 vs e16 12/21；手部/肢体为 unified 通病，e12 其他维度不跟着崩）。若后续生产暴露 e16 复杂场景崩坏率问题，可切回 e12 或按 e12 权重策略出图。
+- 已知限制：e16 肢体结构均分 5.9（三候选最低）、发饰错位 ×8、复杂/极端角度场景崩坏率高于 e12；手部是 unified 普遍短板（8/11/11）。生产建议 Aesthetic v1.1 + 官方参数 30s/CFG4.5/er_sde + strength 0.85。
+- 数据文件变更：`data/loras.json` 新增 `L_NENE_V21_ANIMA` 条目（含两级矩阵/加赛/用户亲审完整 validation 记录），`DATA_VERSION` 同步升至内容锁定值。

@@ -75,7 +75,7 @@ function validJob(overrides) {
     prompt:'ayachi_nene, 1girl, solo, cafe',
     negative:'worst quality, low quality',
     modelId:'anima-base-v1.0',
-    loraId:'L_NENE_V20_ANIMA',
+    loraId:'L_NENE_V21_ANIMA',
     loraStrength:0.85,
     width:832,
     height:1216,
@@ -96,6 +96,7 @@ function prepareComfyResources(context) {
     ['text_encoders', 'qwen3vl_4b_fp8_scaled.safetensors'],
     ['vae', 'qwen_image_vae.safetensors'],
     ['loras', 'ayachi_nene_v20_anima.safetensors'],
+    ['loras', 'ayachi_nene_v20_anima_unified_e16.safetensors'],
     ['loras', 'shiki_natsume_v20_anima.safetensors']
   ].forEach(function (item) {
     var directory = path.join(root, item[0]);
@@ -455,7 +456,7 @@ test('Anima no-LoRA mode submits an anima-aesthetic job without LoraLoader and a
     assert.strictEqual(graph['10'].class_type, 'SaveImage');
 
     var loraOnNoLora = await postJson(port, '/api/anima/jobs', {
-      prompt:'x', modelId:'anima-aesthetic-v1.1', loraId:'L_NENE_V20_ANIMA', loraStrength:0.85,
+      prompt:'x', modelId:'anima-aesthetic-v1.1', loraId:'L_NENE_V21_ANIMA', loraStrength:0.85,
       width:832, height:1216, character:'nene'
     });
     assert.strictEqual(loraOnNoLora.status, 202, 'aesthetic still accepts its authorized LoRA path');

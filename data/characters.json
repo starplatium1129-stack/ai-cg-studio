@@ -315,5 +315,1515 @@
         "icon": "✦"
       }
     ]
+  },
+  {
+    "id": "raiden_shogun",
+    "name": "雷电将军",
+    "alias": [
+      "Raiden Shogun",
+      "雷電将軍",
+      "雷电影"
+    ],
+    "type": "popular",
+    "icon": "⚡",
+    "portrait": {
+      "image": "../assets/characters/popular-raiden_shogun.png",
+      "alt": "雷电将军 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "深紫长直发 · 单边长辫",
+      "hair_color": "深紫",
+      "eyes": "紫红色",
+      "hairstyle": "单边长辫 · 长刘海 · 额头雷纹",
+      "uniform": "稻妻和服振袖铠 / 白色羽织",
+      "expression": "威严沉静 · 近无感情的人偶君主",
+      "style": "serene thunder archon",
+      "signature": "深紫长辫、紫瞳与额前雷纹"
+    },
+    "personality": [
+      "威严沉静",
+      "贯彻永恒的秩序",
+      "寡言",
+      "战斗凌厉",
+      "日常清冷克制"
+    ],
+    "likes": [
+      "稻妻的安宁",
+      "雷雨中的寂静",
+      "天守阁的屏风",
+      "永恒的理想"
+    ],
+    "classic_cg": {
+      "title": "万雷之下",
+      "description": "稻妻天守阁外雷暴骤起，她拔刀而立，紫电环绕，为「永恒」降下裁决。"
+    },
+    "identity": {
+      "role": "雷电之神（稻妻的统治者）",
+      "age": "神（外貌年轻）",
+      "occupation": "稻妻幕府将军",
+      "faction": "稻妻 / 幕府"
+    },
+    "tags": [
+      "深紫长辫",
+      "紫瞳",
+      "雷纹",
+      "和服振袖",
+      "雷元素"
+    ],
+    "bg_story": "雷电将军是《原神》中稻妻的雷电之神，理念为「永恒」。真身为雷电影，其人偶之身运行着将军的意志。故事发生在稻妻——和风岛国文明，幕府、神社与雷电信仰。场景应突出和风神性、雷雨与神社，而非现代都市。",
+    "palette": [
+      "雷紫",
+      "樱粉",
+      "白"
+    ],
+    "weather": [
+      "雷暴之夜",
+      "神社夕照",
+      "雨夜"
+    ],
+    "speech": "serene and taciturn; speaks of eternity; decisive in battle; unreadable in daily life",
+    "source": "miHoYo《原神 / Genshin Impact》",
+    "traits": [
+      {
+        "tag": "purple_hair",
+        "label": "紫发",
+        "icon": "⚡"
+      },
+      {
+        "tag": "single_braid",
+        "label": "单边辫",
+        "icon": "〰"
+      },
+      {
+        "tag": "purple_eyes",
+        "label": "紫瞳",
+        "icon": "◉"
+      }
+    ]
+  },
+  {
+    "id": "sakurajima_mai",
+    "name": "樱岛麻衣",
+    "alias": [
+      "Sakurajima Mai",
+      "桜島麻衣"
+    ],
+    "type": "popular",
+    "icon": "🎬",
+    "portrait": {
+      "image": "../assets/characters/popular-sakurajima_mai.png",
+      "alt": "樱岛麻衣 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "黑色长直发",
+      "hair_color": "黑",
+      "eyes": "棕色",
+      "hairstyle": "中分长直发",
+      "uniform": "峰岸高中制服 / 黑色兔女郎装",
+      "expression": "冷静沉稳 · 成熟御姐",
+      "style": "composed actress senpai",
+      "signature": "黑长直、棕瞳与兔女郎名场面"
+    },
+    "personality": [
+      "冷静沉稳",
+      "成熟御姐系",
+      "毒舌但温柔",
+      "自尊心强",
+      "重视重要的人"
+    ],
+    "likes": [
+      "图书馆的安静",
+      "天台的风",
+      "重要的约会",
+      "兔女郎装的自由"
+    ],
+    "classic_cg": {
+      "title": "图书馆的兔女郎",
+      "description": "她穿着兔女郎装在图书馆里安静阅读——全校只有你「看见」她的瞬间。"
+    },
+    "identity": {
+      "role": "当红女演员（思春期症候群）",
+      "age": "高中三年级",
+      "occupation": "女演员 / 学生",
+      "faction": "峰岸高中"
+    },
+    "tags": [
+      "黑长直",
+      "棕瞳",
+      "兔女郎装",
+      "女演员",
+      "成熟气质"
+    ],
+    "bg_story": "樱岛麻衣是《青春猪头少年》的女主角，知名女演员，因思春期症候群逐渐被人遗忘。她冷静成熟、略带毒舌却温柔体贴。兔女郎装是贯穿全作的名场面造型。场景应偏现代校园、城市夜景与图书馆。",
+    "palette": [
+      "黑",
+      "兔白",
+      "绯红"
+    ],
+    "weather": [
+      "图书馆午后",
+      "天台夕照",
+      "城市夜景"
+    ],
+    "speech": "composed and mature; sharp but warm; speaks her mind; protective of loved ones",
+    "source": "鴨志田一《青春猪头少年不会梦到兔女郎学姐 / Seishun Buta Yarou》",
+    "traits": [
+      {
+        "tag": "black_hair",
+        "label": "黑发",
+        "icon": "◆"
+      },
+      {
+        "tag": "long_hair",
+        "label": "长发",
+        "icon": "〰"
+      },
+      {
+        "tag": "brown_eyes",
+        "label": "棕瞳",
+        "icon": "◉"
+      }
+    ]
+  },
+  {
+    "id": "tokisaki_kurumi",
+    "name": "时崎狂三",
+    "alias": [
+      "Tokisaki Kurumi",
+      "時崎狂三"
+    ],
+    "type": "popular",
+    "icon": "⏰",
+    "portrait": {
+      "image": "../assets/characters/popular-tokisaki_kurumi.png",
+      "alt": "时崎狂三 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "黑色长双马尾（一长一短）",
+      "hair_color": "黑",
+      "eyes": "异色瞳：左金时钟瞳 / 右红瞳",
+      "hairstyle": "不对称双马尾 · 刘海遮左眼",
+      "uniform": "红黑哥特洛丽塔灵装",
+      "expression": "优雅温柔 · 腹黑危险",
+      "style": "elegant dangerous gothic",
+      "signature": "左金时钟瞳右红瞳与黑红哥特装"
+    },
+    "personality": [
+      "表面优雅温柔",
+      "腹黑病娇",
+      "冷静果决",
+      "为达目的不惜代价",
+      "隐藏坚定"
+    ],
+    "likes": [
+      "月夜",
+      "时钟与齿轮",
+      "与时间博弈",
+      "危险的美学"
+    ],
+    "classic_cg": {
+      "title": "月下钟楼",
+      "description": "刻刻帝的巨大金色表盘在月下旋转，她持双燧发枪立于钟楼顶端，回眸一笑。"
+    },
+    "identity": {
+      "role": "时之精灵（最凶的精灵）",
+      "age": "精灵（外貌 17 岁左右）",
+      "occupation": "精灵 / 转学生",
+      "faction": "精灵（Ratatoskr 追迹对象）"
+    },
+    "tags": [
+      "黑长直",
+      "不对称双马尾",
+      "时钟瞳",
+      "哥特洛丽塔",
+      "燧发枪"
+    ],
+    "bg_story": "时崎狂三是《约会大作战》中被称为「最凶的精灵」的存在。左眼为金色时钟瞳（刻刻帝），右眼为红色。灵装为红黑哥特洛丽塔，武器是双燧发枪与背后巨大时钟。场景应偏哥特暗黑、月夜钟楼与时间主题。",
+    "palette": [
+      "夜黑",
+      "血红",
+      "时钟金"
+    ],
+    "weather": [
+      "月夜",
+      "钟楼黄昏",
+      "时间静止"
+    ],
+    "speech": "elegant and soft-spoken with a dangerous edge; dramatic; obsessed with time",
+    "source": "橘公司《约会大作战 / Date A Live》",
+    "traits": [
+      {
+        "tag": "twintails",
+        "label": "双马尾",
+        "icon": "〰"
+      },
+      {
+        "tag": "heterochromia",
+        "label": "异色瞳",
+        "icon": "◉"
+      },
+      {
+        "tag": "clock_eyes",
+        "label": "时钟瞳",
+        "icon": "⏰"
+      }
+    ]
+  },
+  {
+    "id": "frieren",
+    "name": "芙莉莲",
+    "alias": [
+      "Frieren",
+      "フリーレン"
+    ],
+    "type": "popular",
+    "icon": "🪄",
+    "portrait": {
+      "image": "../assets/characters/popular-frieren.png",
+      "alt": "芙莉莲 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "银白极长发 · 低双马尾",
+      "hair_color": "银白",
+      "eyes": "淡紫",
+      "hairstyle": "低双马尾 · 齐刘海",
+      "uniform": "白色魔导斗篷 / 浅色裙装",
+      "expression": "温和缄默 · 长寿者的疏离感",
+      "style": "wistful elf mage",
+      "signature": "银白低双马尾、紫瞳与精灵长耳"
+    },
+    "personality": [
+      "温和缄默",
+      "理性",
+      "对时间流逝淡然",
+      "怀念故人",
+      "偶尔慵懒"
+    ],
+    "likes": [
+      "魔法书",
+      "旅途",
+      "安静的回忆",
+      "古老的魔法"
+    ],
+    "classic_cg": {
+      "title": "勇者之墓",
+      "description": "白花丛生的墓前，她静静站立——对精灵而言，十年只是一瞬，怀念却是一生。"
+    },
+    "identity": {
+      "role": "精灵魔法使（葬送的芙莉莲）",
+      "age": "精灵（长寿，外貌年轻）",
+      "occupation": "魔法使 / 旅人",
+      "faction": "勇者一行（过去）"
+    },
+    "tags": [
+      "银白长发",
+      "低双马尾",
+      "紫瞳",
+      "精灵耳",
+      "魔导袍"
+    ],
+    "bg_story": "芙莉莲是《葬送的芙莉莲》的主角，击败魔王的勇者队伍中的精灵魔法使。寿命绵长的她以「人类的时间」重新认识旅途与怀念。场景应偏古典奇幻、旅途与魔法书。",
+    "palette": [
+      "银白",
+      "奶油白",
+      "魔法紫"
+    ],
+    "weather": [
+      "旷野黄昏",
+      "雪原",
+      "魔法图书馆"
+    ],
+    "speech": "gentle and wistful; long silences; quietly nostalgic; focused on magic",
+    "source": "山田钟人《葬送的芙莉莲 / Sousou no Frieren》",
+    "traits": [
+      {
+        "tag": "white_hair",
+        "label": "银白发",
+        "icon": "✦"
+      },
+      {
+        "tag": "twin_braids",
+        "label": "低双马尾",
+        "icon": "〰"
+      },
+      {
+        "tag": "elf_ears",
+        "label": "精灵耳",
+        "icon": "♢"
+      }
+    ]
+  },
+  {
+    "id": "artoria_pendragon",
+    "name": "Saber",
+    "alias": [
+      "Artoria Pendragon",
+      "阿尔托莉雅·潘德拉贡",
+      "セイバー"
+    ],
+    "type": "popular",
+    "icon": "⚔️",
+    "portrait": {
+      "image": "../assets/characters/popular-artoria_pendragon.png",
+      "alt": "Saber 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "金发 · 低盘发",
+      "hair_color": "金",
+      "eyes": "绿",
+      "hairstyle": "骑士盘发 · 呆毛",
+      "uniform": "蓝白铠裙（礼服+甲胄）",
+      "expression": "冷峻自律 · 庄严骑士王",
+      "style": "dignified knight king",
+      "signature": "金发绿眼、呆毛与蓝白铠裙"
+    },
+    "personality": [
+      "冷峻自律",
+      "骑士道",
+      "使命感极强",
+      "庄严正直",
+      "克制"
+    ],
+    "likes": [
+      "骑士的荣誉",
+      "剑术",
+      "王的责任",
+      "（隐藏的）美食"
+    ],
+    "classic_cg": {
+      "title": "月下现身",
+      "description": "冬木市月夜，路灯下她自光芒中现身，蓝白铠裙与誓约胜利之剑在月色中泛光。"
+    },
+    "identity": {
+      "role": "不列颠骑士王（英灵 Saber）",
+      "age": "英灵（生前 15 岁即位）",
+      "occupation": "Servant（剑之骑士）",
+      "faction": "卫宫士郎契约"
+    },
+    "tags": [
+      "金发",
+      "绿眼",
+      "呆毛",
+      "蓝白铠裙",
+      "圣剑"
+    ],
+    "bg_story": "Saber 即阿尔托莉雅·潘德拉贡，不列颠传说中的亚瑟王，以 Servant 身份现于现代冬木市。庄严肃穆的骑士王气质与蓝白铠裙是核心识别。场景可兼容现代都市月下与中世纪王座两种语境。",
+    "palette": [
+      "骑士蓝",
+      "白",
+      "圣剑金"
+    ],
+    "weather": [
+      "月夜",
+      "王座厅斜光",
+      "决战黄昏"
+    ],
+    "speech": "solemn and just; speaks of duty and honor; restrained; decisive in battle",
+    "source": "TYPE-MOON《Fate/stay night》",
+    "traits": [
+      {
+        "tag": "blonde_hair",
+        "label": "金发",
+        "icon": "✦"
+      },
+      {
+        "tag": "ahoge",
+        "label": "呆毛",
+        "icon": "〰"
+      },
+      {
+        "tag": "green_eyes",
+        "label": "绿眼",
+        "icon": "◉"
+      }
+    ]
+  },
+  {
+    "id": "hatsune_miku",
+    "name": "初音未来",
+    "alias": [
+      "Hatsune Miku",
+      "初音ミク"
+    ],
+    "type": "popular",
+    "icon": "🎤",
+    "portrait": {
+      "image": "../assets/characters/popular-hatsune_miku.png",
+      "alt": "初音未来 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "蓝绿超长双马尾",
+      "hair_color": "蓝绿（青绿）",
+      "eyes": "蓝绿",
+      "hairstyle": "超长双马尾 · 发梢微翘",
+      "uniform": "经典舞台装（无袖深色上衣+领带+臂套）",
+      "expression": "元气活泼 · 虚拟歌姬",
+      "style": "cheerful virtual diva",
+      "signature": "蓝绿超长双马尾与经典舞台装"
+    },
+    "personality": [
+      "元气活泼",
+      "天真可爱",
+      "充满未来感",
+      "可演绎多种气质",
+      "舞台上的闪耀"
+    ],
+    "likes": [
+      "演唱会",
+      "音乐",
+      "与粉丝的共鸣",
+      "新歌"
+    ],
+    "classic_cg": {
+      "title": "荧光棒之海",
+      "description": "巨蛋舞台中央，聚光灯与全息投影环绕，荧光棒的海洋随她的歌声起伏。"
+    },
+    "identity": {
+      "role": "虚拟歌姬（VOCALOID 2 首个角色）",
+      "age": "16 岁（设定）",
+      "occupation": "虚拟歌手",
+      "faction": "Crypton Future Media"
+    },
+    "tags": [
+      "蓝绿双马尾",
+      "虚拟歌姬",
+      "舞台装",
+      "领带",
+      "臂套"
+    ],
+    "bg_story": "初音未来是 Crypton Future Media 开发的 VOCALOID 虚拟歌姬，2007 年出道。无固定世界观，由庞大创作生态共同塑造，可自由放置于任何场景；演唱会舞台与音乐元素是核心意象。",
+    "palette": [
+      "未来青",
+      "白",
+      "霓虹粉"
+    ],
+    "weather": [
+      "舞台灯光",
+      "录音室暖光",
+      "街头庆典"
+    ],
+    "speech": "cheerful and bright; sings freely; playful; adaptable to any mood",
+    "source": "Crypton Future Media《VOCALOID》",
+    "traits": [
+      {
+        "tag": "twin_tails",
+        "label": "双马尾",
+        "icon": "〰"
+      },
+      {
+        "tag": "turquoise_hair",
+        "label": "青绿发",
+        "icon": "✦"
+      },
+      {
+        "tag": "teal_eyes",
+        "label": "青瞳",
+        "icon": "◉"
+      }
+    ]
+  },
+  {
+    "id": "yuzuriha_inori",
+    "name": "楪祈",
+    "alias": [
+      "Inori Yuzuriha",
+      "楪いのり"
+    ],
+    "type": "popular",
+    "icon": "🎵",
+    "portrait": {
+      "image": "../assets/characters/popular-yuzuriha_inori.png",
+      "alt": "楪祈 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "粉色长发 · 下双马尾",
+      "hair_color": "粉",
+      "eyes": "红",
+      "hairstyle": "下双马尾 · 红色发夹",
+      "uniform": "红色歌姬战斗服 / 白裙",
+      "expression": "三无歌姬 · 空灵",
+      "style": "ethereal void singer",
+      "signature": "粉发下双马尾、红瞳与红发夹"
+    },
+    "personality": [
+      "三无",
+      "安静",
+      "对男主忠诚",
+      "献身",
+      "隐藏的坚强"
+    ],
+    "likes": [
+      "歌唱",
+      "与集的羁绊",
+      "安静的角落"
+    ],
+    "classic_cg": {
+      "title": "废墟舞台",
+      "description": "被占领的东京废墟中，她立于聚光灯下歌唱，红色歌姬装在末世里格外鲜明。"
+    },
+    "identity": {
+      "role": "网络歌姬 / 葬仪社成员",
+      "age": "约 15 岁（克隆体）",
+      "occupation": "歌手（EGOIST）/ 葬仪社",
+      "faction": "葬仪社（Guilty Crown）"
+    },
+    "tags": [
+      "粉发",
+      "下双马尾",
+      "红瞳",
+      "红发夹",
+      "歌姬"
+    ],
+    "bg_story": "楪祈是《罪恶王冠》的女主角，网络歌姬 EGOIST 主唱兼葬仪社成员，也是樱满真名的容器。2039 年的末世东京，歌姬的歌声与虚空之剑并存。场景应偏末世废都、舞台与屋顶。",
+    "palette": [
+      "樱粉",
+      "歌姬红",
+      "末世灰"
+    ],
+    "weather": [
+      "舞台红光",
+      "废都阴天",
+      "屋顶黄昏"
+    ],
+    "speech": "quiet and ethereal; expresses through song; devoted; resigned yet strong",
+    "source": "Production I.G《罪恶王冠 / Guilty Crown》",
+    "traits": [
+      {
+        "tag": "pink_hair",
+        "label": "粉发",
+        "icon": "✦"
+      },
+      {
+        "tag": "twintails",
+        "label": "双马尾",
+        "icon": "〰"
+      },
+      {
+        "tag": "red_eyes",
+        "label": "红瞳",
+        "icon": "◉"
+      }
+    ]
+  },
+  {
+    "id": "yukinoshita_yukino",
+    "name": "雪之下雪乃",
+    "alias": [
+      "Yukinoshita Yukino",
+      "雪ノ下雪乃"
+    ],
+    "type": "popular",
+    "icon": "📖",
+    "portrait": {
+      "image": "../assets/characters/popular-yukinoshita_yukino.png",
+      "alt": "雪之下雪乃 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "黑色长直发（黑长直）",
+      "hair_color": "黑",
+      "eyes": "蓝",
+      "hairstyle": "黑长直 · 后颈束起 · 刘海遮额",
+      "uniform": "总武高校服 / 冬季外套围巾",
+      "expression": "清冷高冷 · 冰山美人",
+      "style": "cool black-haired beauty",
+      "signature": "黑长直、蓝瞳与清冷气质"
+    },
+    "personality": [
+      "冰山美人",
+      "高冷毒舌",
+      "理性独立",
+      "认真负责",
+      "外冷内热"
+    ],
+    "likes": [
+      "读书",
+      "茶",
+      "安静",
+      "独自解决问题"
+    ],
+    "classic_cg": {
+      "title": "侍奉部的午后",
+      "description": "旧教室里，她安静地读书，一杯茶在手边冒热气——侍奉部的日常。"
+    },
+    "identity": {
+      "role": "侍奉部副部长",
+      "age": "高中二年级",
+      "occupation": "学生",
+      "faction": "总武高中侍奉部"
+    },
+    "tags": [
+      "黑长直",
+      "蓝瞳",
+      "清冷",
+      "侍奉部",
+      "书"
+    ],
+    "bg_story": "雪之下雪乃是《春物》的女主角之一，侍奉部副部长。黑长直与清冷毒舌之下是认真与温柔。场景应偏现代校园、冬季街头与图书馆。",
+    "palette": [
+      "夜黑",
+      "冰山蓝",
+      "茶褐"
+    ],
+    "weather": [
+      "雪夜",
+      "图书馆午后",
+      "侍奉部窗光"
+    ],
+    "speech": "sharp and rational; terse; secretly warm; reads people precisely",
+    "source": "渡航《我的青春恋爱物语果然有问题 / Oregairu》",
+    "traits": [
+      {
+        "tag": "black_hair",
+        "label": "黑发",
+        "icon": "◆"
+      },
+      {
+        "tag": "very_long_hair",
+        "label": "超长发",
+        "icon": "〰"
+      },
+      {
+        "tag": "blue_eyes",
+        "label": "蓝瞳",
+        "icon": "◉"
+      }
+    ]
+  },
+  {
+    "id": "elaina",
+    "name": "伊雷娜",
+    "alias": [
+      "Elaina",
+      "イレイナ"
+    ],
+    "type": "popular",
+    "icon": "🧹",
+    "portrait": {
+      "image": "../assets/characters/popular-elaina.png",
+      "alt": "伊雷娜 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "灰银长发",
+      "hair_color": "灰银",
+      "eyes": "紫",
+      "hairstyle": "中长直发 · 齐刘海",
+      "uniform": "黑色魔女装 · 尖顶魔女帽",
+      "expression": "聪慧自信 · 略带自恋",
+      "style": "elegant traveling witch",
+      "signature": "灰银发、紫瞳与黑魔女帽"
+    },
+    "personality": [
+      "聪慧自信",
+      "略带自恋",
+      "毒舌",
+      "表面优雅实则狡猾",
+      "热爱旅行"
+    ],
+    "likes": [
+      "飞行",
+      "异国见闻",
+      "魔法书",
+      "旅途小憩"
+    ],
+    "classic_cg": {
+      "title": "云端飞行",
+      "description": "她跨坐扫帚穿行云海，黑帽与斗篷在风中猎猎——灰之魔女的旅途永无终点。"
+    },
+    "identity": {
+      "role": "旅行魔女（灰之魔女）",
+      "age": "约 18 岁（魔女）",
+      "occupation": "旅人 / 魔女",
+      "faction": "无（独自旅行）"
+    },
+    "tags": [
+      "灰银发",
+      "紫瞳",
+      "魔女帽",
+      "黑色魔女装",
+      "扫帚"
+    ],
+    "bg_story": "伊雷娜是《魔女之旅》的主角，天才魔女「灰之魔女」。以单元式旅行见闻游历各国，聪慧自信略带自恋。场景应偏魔法旅行、云端飞行与异国小镇。",
+    "palette": [
+      "灰银",
+      "魔女黑",
+      "旅行紫"
+    ],
+    "weather": [
+      "云海晴空",
+      "星夜营地",
+      "异国市集"
+    ],
+    "speech": "self-assured and witty; dramatic flair; loves travel; occasionally scheming",
+    "source": "白石定规《魔女之旅 / Majo no Tabitabi》",
+    "traits": [
+      {
+        "tag": "gray_hair",
+        "label": "灰银发",
+        "icon": "✦"
+      },
+      {
+        "tag": "witch_hat",
+        "label": "魔女帽",
+        "icon": "▲"
+      },
+      {
+        "tag": "purple_eyes",
+        "label": "紫瞳",
+        "icon": "◉"
+      }
+    ]
+  },
+  {
+    "id": "misaka_mikoto",
+    "name": "御坂美琴",
+    "alias": [
+      "Misaka Mikoto",
+      "御坂美琴"
+    ],
+    "type": "popular",
+    "icon": "⚡",
+    "portrait": {
+      "image": "../assets/characters/popular-misaka_mikoto.png",
+      "alt": "御坂美琴 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "茶色及肩短发",
+      "hair_color": "茶色（栗色）",
+      "eyes": "棕色",
+      "hairstyle": "及肩短发 · 齐刘海 · 签名发夹",
+      "uniform": "常盘台制服（白衬衫+浅棕背心+卡其百褶裙）",
+      "expression": "热血正义 · 不服输",
+      "style": "energetic railgun ace",
+      "signature": "茶色短发、棕瞳与额前电光"
+    },
+    "personality": [
+      "热血正义",
+      "不服输",
+      "倔强傲娇",
+      "运动系",
+      "守护弱者"
+    ],
+    "likes": [
+      "学园都市的日常",
+      "自动售货机",
+      "（隐藏的）蛙太周边"
+    ],
+    "classic_cg": {
+      "title": "超电磁炮",
+      "description": "夜空下，她指尖弹出一枚硬币，蓝白色电光贯穿夜幕——学园都市最强电击使。"
+    },
+    "identity": {
+      "role": "学园都市 LV5 超能力者（第三位）",
+      "age": "14 岁（初中二年级）",
+      "occupation": "常盘台中学学生",
+      "faction": "常盘台中学"
+    },
+    "tags": [
+      "茶色短发",
+      "棕瞳",
+      "常盘台制服",
+      "电击使",
+      "发夹"
+    ],
+    "bg_story": "御坂美琴是《某科学的超电磁炮》的主角，学园都市 7 名 LV5 超能力者之一（第三位），能力为电击使（Electromaster），招牌技超电磁炮以街机硬币为弹。常盘台制服为白衬衫+浅棕背心+卡其百褶裙（非水手服）。",
+    "palette": [
+      "电光蓝",
+      "茶棕",
+      "常盘台卡其"
+    ],
+    "weather": [
+      "学园都市晴日",
+      "电光夜空",
+      "放学街道"
+    ],
+    "speech": "energetic and righteous; fiery but kind; protective; sparks when provoked",
+    "source": "鎌池和馬《魔法禁书目录》/ 冬川基《某科学的超电磁炮 / A Certain Scientific Railgun》",
+    "traits": [
+      {
+        "tag": "short_hair",
+        "label": "短发",
+        "icon": "✂"
+      },
+      {
+        "tag": "brown_hair",
+        "label": "茶发",
+        "icon": "✦"
+      },
+      {
+        "tag": "brown_eyes",
+        "label": "棕瞳",
+        "icon": "◉"
+      }
+    ]
+  },
+  {
+    "id": "makima",
+    "name": "玛奇玛",
+    "alias": [
+      "Makima",
+      "マキマ"
+    ],
+    "type": "popular",
+    "icon": "🖤",
+    "portrait": {
+      "image": "../assets/characters/popular-makima.png",
+      "alt": "玛奇玛 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "淡粉长发（日常）/ 红发麻花辫（真身）",
+      "hair_color": "淡粉（日常）/ 红（真身）",
+      "eyes": "红（日常正常瞳孔）/ 金圈圈眼（真身）",
+      "hairstyle": "长发 · 红色发饰（日常）",
+      "uniform": "白色西装 / 黑裤",
+      "expression": "冷静掌控 · 高深莫测",
+      "style": "calm unnerving dominator",
+      "signature": "淡粉长发、红瞳与白西装；真身为红发圈圈眼"
+    },
+    "personality": [
+      "冷静掌控",
+      "高深莫测",
+      "支配欲强",
+      "表面温柔",
+      "危险"
+    ],
+    "likes": [
+      "电影",
+      "狗（和人的关系）",
+      "支配的乐趣"
+    ],
+    "classic_cg": {
+      "title": "电影院",
+      "description": "荧幕冷光映在她脸上，她并肩而坐，微笑里藏着支配一切的从容。"
+    },
+    "identity": {
+      "role": "支配之恶魔（公安对魔特异课）",
+      "age": "成年（恶魔）",
+      "occupation": "公安对魔特异课负责人",
+      "faction": "公安 / 支配之恶魔"
+    },
+    "tags": [
+      "淡粉长发",
+      "红瞳",
+      "白西装",
+      "红发饰",
+      "支配"
+    ],
+    "bg_story": "玛奇玛是《电锯人》中的支配之恶魔，公安对魔特异课负责人。日常形态为淡粉长发与正常红瞳，真身为红发+圈圈眼+麻花辫（见独立变体）。场景应偏现代都市、电影院与办公室，避免阳光田园。",
+    "palette": [
+      "淡粉",
+      "西装白",
+      "支配红"
+    ],
+    "weather": [
+      "电影院",
+      "雨夜都市",
+      "办公室冷光"
+    ],
+    "speech": "calm and serene with a predatory undertone; speaks softly; always in control",
+    "source": "藤本タツキ《电锯人 / Chainsaw Man》",
+    "traits": [
+      {
+        "tag": "light_pink_hair",
+        "label": "淡粉发",
+        "icon": "✦"
+      },
+      {
+        "tag": "red_eyes",
+        "label": "红瞳",
+        "icon": "◉"
+      },
+      {
+        "tag": "white_suit",
+        "label": "白西装",
+        "icon": "▣"
+      }
+    ]
+  },
+  {
+    "id": "tohsaka_rin",
+    "name": "远坂凛",
+    "alias": [
+      "Tohsaka Rin",
+      "遠坂凛"
+    ],
+    "type": "popular",
+    "icon": "💎",
+    "portrait": {
+      "image": "../assets/characters/popular-tohsaka_rin.png",
+      "alt": "远坂凛 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "黑色双马尾",
+      "hair_color": "黑",
+      "eyes": "蓝",
+      "hairstyle": "高双马尾 · 红色蝴蝶结发带",
+      "uniform": "红黑配色制服 / 红色外套",
+      "expression": "傲娇自信 · 外冷内热",
+      "style": "proud tsundere mage",
+      "signature": "黑发双马尾、红丝带与蓝瞳"
+    },
+    "personality": [
+      "傲娇",
+      "聪明好胜",
+      "外冷内热",
+      "认真有计划",
+      "重情重义"
+    ],
+    "likes": [
+      "宝石魔术",
+      "远坂家的名誉",
+      "学校天台",
+      "（勉强承认的）搭档"
+    ],
+    "classic_cg": {
+      "title": "宝石工坊",
+      "description": "远坂宅的深夜工坊，宝石与魔术阵在烛光中泛光，她专注研习的身影一丝不苟。"
+    },
+    "identity": {
+      "role": "魔术师（远坂家当主）",
+      "age": "高中二年级",
+      "occupation": "学生 / 魔术师",
+      "faction": "冬木市远坂家"
+    },
+    "tags": [
+      "黑发双马尾",
+      "红丝带",
+      "蓝瞳",
+      "宝石魔术",
+      "傲娇"
+    ],
+    "bg_story": "远坂凛是《Fate/stay night》的女主角之一，冬木市魔术世家远坂家的当主。黑发双马尾与红丝带是标志，宝石魔术与傲娇性格深入人心。场景应偏现代校园、都市与魔术工坊。",
+    "palette": [
+      "红",
+      "黑",
+      "宝石蓝"
+    ],
+    "weather": [
+      "学校天台",
+      "工坊烛光",
+      "冬木黄昏"
+    ],
+    "speech": "proud and sharp; tsundere; strategic; secretly caring",
+    "source": "TYPE-MOON《Fate/stay night》",
+    "traits": [
+      {
+        "tag": "twin_tails",
+        "label": "双马尾",
+        "icon": "〰"
+      },
+      {
+        "tag": "black_hair",
+        "label": "黑发",
+        "icon": "◆"
+      },
+      {
+        "tag": "blue_eyes",
+        "label": "蓝瞳",
+        "icon": "◉"
+      }
+    ]
+  },
+  {
+    "id": "rem_rezero",
+    "name": "雷姆",
+    "alias": [
+      "Rem",
+      "レム"
+    ],
+    "type": "popular",
+    "icon": "🪄",
+    "portrait": {
+      "image": "../assets/characters/popular-rem_rezero.png",
+      "alt": "雷姆 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "蓝色短发（遮住右眼）",
+      "hair_color": "蓝",
+      "eyes": "蓝",
+      "hairstyle": "齐颈短发 · 发鬓 · 遮眼",
+      "uniform": "黑白女仆装",
+      "expression": "倔强忠诚 · 温柔与果断并存",
+      "style": "devoted oni maid",
+      "signature": "蓝发蓝眼、隐藏独角与女仆装"
+    },
+    "personality": [
+      "倔强忠诚",
+      "温柔",
+      "杀伐果断",
+      "自我牺牲倾向",
+      "崇拜姐姐拉姆"
+    ],
+    "likes": [
+      "侍奉",
+      "宅邸的日常",
+      "重要的人",
+      "（隐藏的）自卑"
+    ],
+    "classic_cg": {
+      "title": "月光庭院",
+      "description": "罗兹瓦尔宅的月下庭院，她静静整理花丛——女仆的温柔藏在夜色里。"
+    },
+    "identity": {
+      "role": "鬼族女仆（罗兹瓦尔宅）",
+      "age": "17 岁（鬼族）",
+      "occupation": "女仆",
+      "faction": "罗兹瓦尔宅邸"
+    },
+    "tags": [
+      "蓝发",
+      "蓝瞳",
+      "女仆装",
+      "鬼族",
+      "独角"
+    ],
+    "bg_story": "雷姆是《Re:Zero》中罗兹瓦尔宅邸的鬼族女仆，蓝发蓝眼（官方立绘），隐藏单角。黑白色女仆装与晨星流星锤是标志。场景应偏奇幻宅邸、月光与雨夜。",
+    "palette": [
+      "女仆黑",
+      "雷姆蓝",
+      "白"
+    ],
+    "weather": [
+      "宅邸晴日",
+      "月光庭院",
+      "雨夜"
+    ],
+    "speech": "loyal and devoted; gentle yet fierce; self-sacrificing; formal maid speech",
+    "source": "長月達平《Re:从零开始的异世界生活 / Re:Zero》",
+    "traits": [
+      {
+        "tag": "blue_hair",
+        "label": "蓝发",
+        "icon": "✦"
+      },
+      {
+        "tag": "blue_eyes",
+        "label": "蓝瞳",
+        "icon": "◉"
+      },
+      {
+        "tag": "maid",
+        "label": "女仆",
+        "icon": "♠"
+      }
+    ]
+  },
+  {
+    "id": "emilia_rezero",
+    "name": "爱蜜莉雅",
+    "alias": [
+      "Emilia",
+      "エミリア"
+    ],
+    "type": "popular",
+    "icon": "❄️",
+    "portrait": {
+      "image": "../assets/characters/popular-emilia_rezero.png",
+      "alt": "爱蜜莉雅 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "银色长直发 · 侧卷",
+      "hair_color": "银",
+      "eyes": "淡紫",
+      "hairstyle": "长直发 · 两侧卷发 · 呆毛",
+      "uniform": "白裙红饰（王选礼服）",
+      "expression": "纯洁善良 · 天然认真",
+      "style": "pure silver half-elf",
+      "signature": "银发紫瞳、独角与白裙"
+    },
+    "personality": [
+      "纯洁善良",
+      "天真认真",
+      "略带笨拙",
+      "坚韧",
+      "温柔"
+    ],
+    "likes": [
+      "雪",
+      "契约精灵帕克",
+      "重要的人",
+      "王选的使命"
+    ],
+    "classic_cg": {
+      "title": "冰雪森林",
+      "description": "艾利欧尔冰雪森林，银发半精灵与契约精灵帕克在冰晶与雪光中驻足。"
+    },
+    "identity": {
+      "role": "半精灵（王选候选人）",
+      "age": "约 114 岁（外貌年轻）",
+      "occupation": "王选候选人",
+      "faction": "卢格尼卡王国"
+    },
+    "tags": [
+      "银发",
+      "紫瞳",
+      "独角",
+      "半精灵",
+      "白裙"
+    ],
+    "bg_story": "爱蜜莉雅是《Re:Zero》的女主角，银发半精灵王选候选人，契约精灵为帕克。冰雪系与纯洁气质是核心。场景应偏冰雪森林、王城宫廷与宅邸花园。",
+    "palette": [
+      "银白",
+      "冰雪蓝",
+      "王室红"
+    ],
+    "weather": [
+      "雪林",
+      "王城晨光",
+      "花园晴日"
+    ],
+    "speech": "pure and earnest; kind; sometimes clumsy; resolute in her ideals",
+    "source": "長月達平《Re:从零开始的异世界生活 / Re:Zero》",
+    "traits": [
+      {
+        "tag": "silver_hair",
+        "label": "银发",
+        "icon": "✦"
+      },
+      {
+        "tag": "single_horn",
+        "label": "独角",
+        "icon": "▲"
+      },
+      {
+        "tag": "purple_eyes",
+        "label": "紫瞳",
+        "icon": "◉"
+      }
+    ]
+  },
+  {
+    "id": "roxy_migurdia",
+    "name": "洛琪希",
+    "alias": [
+      "Roxy Migurdia",
+      "ロキシー・ミグルディア"
+    ],
+    "type": "popular",
+    "icon": "🎓",
+    "portrait": {
+      "image": "../assets/characters/popular-roxy_migurdia.png",
+      "alt": "洛琪希 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "浅蓝长发双辫",
+      "hair_color": "浅蓝",
+      "eyes": "浅蓝",
+      "hairstyle": "长双辫 · 长刘海",
+      "uniform": "蓝袍白围裙 + 尖顶魔女帽",
+      "expression": "内向认真 · 努力型",
+      "style": "earnest migurd mage",
+      "signature": "浅蓝发双辫、浅蓝肤与尖顶魔女帽"
+    },
+    "personality": [
+      "内向认真",
+      "努力型",
+      "温柔端庄",
+      "天然呆",
+      "对魔法执着"
+    ],
+    "likes": [
+      "魔法研究",
+      "读书",
+      "独处",
+      "学生（和鲁迪）"
+    ],
+    "classic_cg": {
+      "title": "学院图书馆",
+      "description": "魔法学院的图书馆，她在书架间查找典籍，尖顶魔女帽与蓝袍是熟悉的风景。"
+    },
+    "identity": {
+      "role": "魔导师（水圣级）",
+      "age": "米格路德族（数百岁，外貌年轻）",
+      "occupation": "魔导师 / 教师",
+      "faction": "米里斯魔法学院"
+    },
+    "tags": [
+      "浅蓝发",
+      "双辫",
+      "蓝肤",
+      "魔女帽",
+      "蓝袍"
+    ],
+    "bg_story": "洛琪希是《无职转生》中主角的魔法启蒙导师，米格路德族（蓝发蓝肤、矮个）。蓝袍白围裙与尖顶魔女帽是标志。场景应偏魔法学院、荒野旅行与故乡村落。",
+    "palette": [
+      "水蓝",
+      "魔女深蓝",
+      "白"
+    ],
+    "weather": [
+      "学院窗光",
+      "荒野黄昏",
+      "村落晴日"
+    ],
+    "speech": "earnest and diligent; soft-spoken; devoted to magic; quietly confident",
+    "source": "理不尽な孫の手《无职转生 / Mushoku Tensei》",
+    "traits": [
+      {
+        "tag": "blue_hair",
+        "label": "蓝发",
+        "icon": "✦"
+      },
+      {
+        "tag": "twin_braids",
+        "label": "双辫",
+        "icon": "〰"
+      },
+      {
+        "tag": "witch_hat",
+        "label": "魔女帽",
+        "icon": "▲"
+      }
+    ]
+  },
+  {
+    "id": "illyasviel_von_einzbern",
+    "name": "伊莉雅丝菲尔",
+    "alias": [
+      "Illyasviel von Einzbern",
+      "イリヤスフィール・フォン・アインツベルン"
+    ],
+    "type": "popular",
+    "icon": "🏰",
+    "portrait": {
+      "image": "../assets/characters/popular-illyasviel_von_einzbern.png",
+      "alt": "伊莉雅丝菲尔 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "银白长直发",
+      "hair_color": "银白",
+      "eyes": "红",
+      "hairstyle": "长直发 · 鬓发",
+      "uniform": "紫色无袖短裙",
+      "expression": "天真烂漫 · 隐藏冷酷",
+      "style": "innocent homunculus girl",
+      "signature": "银发红瞳与紫色裙装"
+    },
+    "personality": [
+      "天真烂漫",
+      "孩子气",
+      "黏人",
+      "隐藏的冷酷",
+      "渴望爱"
+    ],
+    "likes": [
+      "士郎",
+      "雪",
+      "城堡的庭院",
+      "撒娇"
+    ],
+    "classic_cg": {
+      "title": "雪林古堡",
+      "description": "爱因兹贝伦城堡的窗边，雪林之外月光冷冽，银发少女的身影既纯真又孤寂。"
+    },
+    "identity": {
+      "role": "人造人（爱因兹贝伦家）",
+      "age": "约 18 岁（外貌幼态）",
+      "occupation": "Master（圣杯战争）",
+      "faction": "爱因兹贝伦家"
+    },
+    "tags": [
+      "银发",
+      "红瞳",
+      "紫裙",
+      "人造人",
+      "古堡"
+    ],
+    "bg_story": "伊莉雅丝菲尔是《Fate/stay night》中爱因兹贝伦家制造的人造人，银发红瞳、幼态外貌。天真烂漫与隐藏的冷酷并存。场景应偏古堡、雪林与月夜庭院。",
+    "palette": [
+      "银白",
+      "爱因兹贝伦紫",
+      "雪蓝"
+    ],
+    "weather": [
+      "雪林之夜",
+      "城堡烛光",
+      "月夜庭院"
+    ],
+    "speech": "playful and childlike; possessive of loved ones; flashes of coldness",
+    "source": "TYPE-MOON《Fate/stay night》",
+    "traits": [
+      {
+        "tag": "white_hair",
+        "label": "银白发",
+        "icon": "✦"
+      },
+      {
+        "tag": "red_eyes",
+        "label": "红瞳",
+        "icon": "◉"
+      },
+      {
+        "tag": "purple_dress",
+        "label": "紫裙",
+        "icon": "▣"
+      }
+    ]
+  },
+  {
+    "id": "kitagawa_marin",
+    "name": "喜多川海梦",
+    "alias": [
+      "Kitagawa Marin",
+      "喜多川海夢"
+    ],
+    "type": "popular",
+    "icon": "🧵",
+    "portrait": {
+      "image": "../assets/characters/popular-kitagawa_marin.png",
+      "alt": "喜多川海梦 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "金色长发（高马尾/双马尾）",
+      "hair_color": "金",
+      "eyes": "蓝",
+      "hairstyle": "长发 · 常扎高马尾",
+      "uniform": "西装校服 / 辣妹私服",
+      "expression": "元气辣妹 · 下垂眼",
+      "style": "energetic gyaru cosplayer",
+      "signature": "金发蓝眼与辣妹妆"
+    },
+    "personality": [
+      "开朗外向",
+      "元气",
+      "直率可爱",
+      "对 cosplay 狂热",
+      "动手能力强"
+    ],
+    "likes": [
+      "cosplay",
+      "缝纫制衣",
+      "漫展",
+      "游乐园"
+    ],
+    "classic_cg": {
+      "title": "制衣工房",
+      "description": "家里的手作工房，缝纫机前她专注量体裁衣——为下一套 cos 倾注全部热情。"
+    },
+    "identity": {
+      "role": "cosplayer（辣妹高中生）",
+      "age": "高中一年级",
+      "occupation": "学生 / cosplayer",
+      "faction": "（原作学校）"
+    },
+    "tags": [
+      "金发",
+      "蓝眼",
+      "辣妹",
+      "cosplayer",
+      "制衣"
+    ],
+    "bg_story": "喜多川海梦是《更衣人偶坠入爱河》的女主角，元气辣妹 cosplayer。金发蓝眼与下垂眼妆是标志。场景应偏制衣工房、漫展、游乐园等明亮日常。",
+    "palette": [
+      "亮金",
+      "海梦粉",
+      "元气蓝"
+    ],
+    "weather": [
+      "工房晴日",
+      "漫展灯光",
+      "游乐园夏日"
+    ],
+    "speech": "loud and cheerful; passionate about cosplay; direct; openly affectionate",
+    "source": "福田晋一《更衣人偶坠入爱河 / My Dress-Up Darling》",
+    "traits": [
+      {
+        "tag": "blonde_hair",
+        "label": "金发",
+        "icon": "✦"
+      },
+      {
+        "tag": "blue_eyes",
+        "label": "蓝瞳",
+        "icon": "◉"
+      },
+      {
+        "tag": "gyaru",
+        "label": "辣妹",
+        "icon": "✧"
+      }
+    ]
+  },
+  {
+    "id": "kisara_engage_kiss",
+    "name": "木更",
+    "alias": [
+      "Kisara",
+      "キサラ"
+    ],
+    "type": "popular",
+    "icon": "🔥",
+    "portrait": {
+      "image": "../assets/characters/popular-kisara_engage_kiss.png",
+      "alt": "木更 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "粉樱长发",
+      "hair_color": "粉",
+      "eyes": "红（酒红）",
+      "hairstyle": "长发 · 头侧发饰 · 厚刘海",
+      "uniform": "校服 / 白色系便服",
+      "expression": "傲娇病娇 · 独占欲强",
+      "style": "possessive demon girl",
+      "signature": "粉发红瞳、发饰与傲娇气质"
+    },
+    "personality": [
+      "傲娇",
+      "病娇",
+      "独占欲强",
+      "吃醋",
+      "深情"
+    ],
+    "likes": [
+      "重要的人",
+      "同居日常",
+      "（代价是）记忆"
+    ],
+    "classic_cg": {
+      "title": "都市恶魔战",
+      "description": "Baylong City 的霓虹夜空，她恶魔化形态红角显现，白色战衣在火光中炽烈。"
+    },
+    "identity": {
+      "role": "恶魔少女（伪装高中生）",
+      "age": "外貌 17 岁（恶魔）",
+      "occupation": "学生 / 契约恶魔",
+      "faction": "（Baylong City）"
+    },
+    "tags": [
+      "粉发",
+      "红瞳",
+      "发饰",
+      "恶魔",
+      "傲娇"
+    ],
+    "bg_story": "木更是《Engage Kiss》的女主角，与男主签订契约的恶魔少女，粉发红瞳。恶魔形态为红角+白发+白色战衣。场景应偏近未来都市、战斗与居家日常。",
+    "palette": [
+      "樱粉",
+      "酒红",
+      "契约白"
+    ],
+    "weather": [
+      "都市霓虹夜",
+      "公寓窗光",
+      "校园晴日"
+    ],
+    "speech": "pouty and possessive; fierce love; teasing; tragic devotion underneath",
+    "source": "丸戸史明《Engage Kiss / 契约之吻》",
+    "traits": [
+      {
+        "tag": "pink_hair",
+        "label": "粉发",
+        "icon": "✦"
+      },
+      {
+        "tag": "red_eyes",
+        "label": "红瞳",
+        "icon": "◉"
+      },
+      {
+        "tag": "hair_ornament",
+        "label": "发饰",
+        "icon": "✧"
+      }
+    ]
   }
 ]
