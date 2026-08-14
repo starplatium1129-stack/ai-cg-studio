@@ -1996,8 +1996,8 @@ watch(() => drawEngine.value, engine => {
   --pb-badge-green: var(--success);
 }
 .engine-switch {
-  --engine-active-border: #f06292;
-  --engine-active-text: #f8bbd0;
+  --engine-active-border: var(--mood-love);
+  --engine-active-text: var(--mood-love-text);
   display: flex;
   gap: 8px;
   margin: 4px 0 10px;
@@ -2019,7 +2019,7 @@ watch(() => drawEngine.value, engine => {
 }
 .engine-btn.active {
   border-color: var(--engine-active-border);
-  background: rgba(240, 98, 146, 0.14);
+  background: color-mix(in srgb, var(--mood-love) 14%, transparent);
   color: var(--engine-active-text);
 }
 .engine-sub {
@@ -2077,7 +2077,7 @@ watch(() => drawEngine.value, engine => {
 }
 .char-source-btn.active {
   border-color: var(--pb-active);
-  background: rgba(240, 98, 146, 0.16);
+  background: color-mix(in srgb, var(--mood-love) 16%, transparent);
   color: var(--pb-active-text);
 }
 .popular-tags-note {

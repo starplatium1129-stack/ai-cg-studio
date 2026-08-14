@@ -359,7 +359,7 @@ onUnmounted(() => {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(ellipse at 50% 45%, transparent 58%, rgba(8, 5, 20, 0.46) 100%);
+  background: radial-gradient(ellipse at 50% 45%, transparent 58%, color-mix(in srgb, var(--bg-deep) 46%, transparent) 100%);
   z-index: 1;
 }
 .route-atmosphere::after {

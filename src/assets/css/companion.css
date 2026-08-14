@@ -248,7 +248,7 @@ html.companion-mode body {
   line-height: 1.45;
   pointer-events: none;
   backdrop-filter: blur(12px);
-  box-shadow: 0 8px 24px rgb(0 0 0 / .24);
+  box-shadow: var(--shadow-md);
 }
 
 .companion-page .live2d-host > * {
@@ -892,7 +892,7 @@ html.companion-mode:not(.companion-desktop) body {
   bottom: -1%;
   width: min(78%, 650px);
   max-height: 93%;
-  filter: drop-shadow(0 26px 30px rgba(9, 5, 21, .34)) drop-shadow(0 0 22px color-mix(in srgb, var(--character-accent) 18%, transparent));
+  filter: drop-shadow(0 26px 30px color-mix(in srgb, var(--bg-deep) 34%, transparent)) drop-shadow(0 0 22px color-mix(in srgb, var(--character-accent) 18%, transparent));
 }
 
 .companion-page .live2d-host {
@@ -1047,7 +1047,7 @@ html.companion-mode:not(.companion-desktop) body {
   color: var(--companion-ink);
   font-size: var(--fs-body-sm);
   line-height: 1.6;
-  text-shadow: 0 1px 10px rgba(8, 4, 20, .3);
+  text-shadow: 0 1px 10px color-mix(in srgb, var(--bg-deep) 30%, transparent);
 }
 
 .companion-page .companion-bubble.user {
@@ -1362,14 +1362,14 @@ html.companion-mode:not(.companion-desktop) body {
 
 .companion-page .companion-reminder-bubble[data-event-kind="training-completed"],
 .companion-page .companion-reminder-bubble[data-event-kind="service-back"] {
-  border-color: color-mix(in srgb, #7ddc8f 55%, var(--border-soft));
-  background: color-mix(in srgb, #7ddc8f 9%, var(--bg-surface));
+  border-color: color-mix(in srgb, var(--success) 55%, var(--border-soft));
+  background: color-mix(in srgb, var(--success) 9%, var(--bg-surface));
 }
 
 .companion-page .companion-reminder-bubble[data-event-kind="training-failed"],
 .companion-page .companion-reminder-bubble[data-event-kind="service-down"] {
-  border-color: color-mix(in srgb, #ff9d9d 55%, var(--border-soft));
-  background: color-mix(in srgb, #ff9d9d 9%, var(--bg-surface));
+  border-color: color-mix(in srgb, var(--danger) 55%, var(--border-soft));
+  background: color-mix(in srgb, var(--danger) 9%, var(--bg-surface));
 }
 
 /* Companion local image import button */

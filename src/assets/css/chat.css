@@ -213,15 +213,15 @@
     linear-gradient(90deg, color-mix(in srgb, var(--on-art-line) 18%, transparent) 1px, transparent 1px) 0 0 / 32px 32px,
     linear-gradient(color-mix(in srgb, var(--on-art-line) 18%, transparent) 1px, transparent 1px) 0 0 / 32px 32px,
     radial-gradient(circle at 26% 66%, color-mix(in srgb, var(--natsume-amber) 15%, transparent), transparent 44%),
-    radial-gradient(circle at 74% 28%, color-mix(in srgb, rgba(255, 220, 155, .10), transparent), transparent 38%),
+    radial-gradient(circle at 74% 28%, color-mix(in srgb, var(--natsume-amber) 10%, transparent), transparent 38%),
     radial-gradient(circle at 50% 23%, color-mix(in srgb, var(--natsume-amber) 18%, transparent), transparent 54%),
     var(--stage-amber);
 }
 
 .chat-page .portrait-stage[data-character="natsume"]::after {
   background:
-    linear-gradient(90deg, transparent 0 24%, rgba(255, 220, 155, .12) 24% 24.4%, transparent 24.4% 75.6%, rgba(255, 220, 155, .12) 75.6% 76%, transparent 76%),
-    linear-gradient(180deg, transparent 0 27%, rgba(255, 220, 155, .1) 27% 27.3%, transparent 27.3% 63%, rgba(255, 220, 155, .08) 63% 63.3%, transparent 63.3%);
+    linear-gradient(90deg, transparent 0 24%, color-mix(in srgb, var(--natsume-amber) 12%, transparent) 24% 24.4%, transparent 24.4% 75.6%, color-mix(in srgb, var(--natsume-amber) 12%, transparent) 75.6% 76%, transparent 76%),
+    linear-gradient(180deg, transparent 0 27%, color-mix(in srgb, var(--natsume-amber) 10%, transparent) 27% 27.3%, transparent 27.3% 63%, color-mix(in srgb, var(--natsume-amber) 8%, transparent) 63% 63.3%, transparent 63.3%);
   opacity: .85;
 }
 
@@ -291,7 +291,7 @@ body:has(.chat-page) .sakura-fall {
   max-height: 94%;
   object-fit: contain;
   object-position: center bottom;
-  filter: drop-shadow(0 22px 26px rgba(20, 12, 40, .16));
+  filter: drop-shadow(0 22px 26px color-mix(in srgb, var(--bg-deep) 16%, transparent));
   transform: translateX(-50%);
   transition: filter .3s ease, opacity .25s ease;
 }
@@ -661,7 +661,7 @@ body:has(.chat-page) .sakura-fall {
   line-height: 1.45;
   pointer-events: none;
   backdrop-filter: blur(12px);
-  box-shadow: 0 8px 24px rgb(0 0 0 / .24);
+  box-shadow: var(--shadow-md);
 }
 @keyframes live2d-response {
   0%, 100% { filter: none; }

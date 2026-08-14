@@ -262,7 +262,7 @@ onMounted(() => { void loadProfiles() })
 .portrait-image {
   position:absolute; z-index:var(--z-base); bottom:0; left:50%;
   transform:translateX(-50%); max-height:100%; object-fit:contain;
-  filter:drop-shadow(0 22px 34px rgba(8,5,18,.42));
+  filter:drop-shadow(0 22px 34px color-mix(in srgb,var(--bg-deep) 42%,transparent));
   animation:portraitRise .55s var(--ease-out) both;
 }
 @keyframes portraitRise {

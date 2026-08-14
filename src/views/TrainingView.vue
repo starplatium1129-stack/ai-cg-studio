@@ -1479,7 +1479,7 @@ onUnmounted(() => {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: linear-gradient(90deg, transparent, color-mix(in srgb, #fff 22%, transparent), transparent);
+  background: linear-gradient(90deg, transparent, var(--glass-specular), transparent);
   transform: translateX(-100%);
   animation: meter-shine 1.8s var(--ease-out) infinite;
 }
