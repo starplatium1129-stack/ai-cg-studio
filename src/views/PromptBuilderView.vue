@@ -1681,7 +1681,7 @@ function applyHistory(entry: HistoryEntry, keepAsVariant = false) {
       clearAnimaResult()
       patchAnimaState({
         phase: 'idle', statusText: '', errorMsg: '',
-        modelId: entry.model || 'anima-base-v1.0',
+        modelId: entry.model || 'anima-aesthetic-v1.1',
          loraId: entry.loraId === ANIMA_LORA_BY_CHARACTER[entry.character] ? entry.loraId : ANIMA_LORA_BY_CHARACTER[entry.character],
          loraStrength: entry.loraStrength ?? animaState.value.loraStrength,
          styleLoraId: '',
@@ -1892,6 +1892,16 @@ onMounted(async () => {
   if (q.quick === '1') {
     const savedQuick = readQuickCreate()
     applyQuickCreateSettings(savedQuick)
+    // 快速出图深链：Anima 引擎必须收敛到受控路线推荐的底模（工作室角色 → Aesthetic v1.1），
+    // pro 模式不会走 applyManagedRoute，这里显式对齐，避免落到 anima-base-v1.0。
+    if (drawEngine.value !== 'sd' && !pb.isPopular) {
+      const route = await refreshManagedRoute()
+      if ((route.engine === 'anima' || route.engine === 'krea2')
+        && animaState.value.modelId !== route.modelId
+        && animaState.value.models.some(model => model.id === route.modelId)) {
+        patchAnimaState({ modelId: route.modelId })
+      }
+    }
     await nextTick()
     if (!engineOnline.value) {
       pb.flash('快速出图未启动：SD WebUI 当前未连接，Prompt 已保留')
