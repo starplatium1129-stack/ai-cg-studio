@@ -1,6 +1,6 @@
 # AI-CG-Studio 项目协作指南
 
-> 当前状态基线：2026-07-28。本文只记录仍然有效的约束、架构和待办；已完成的迁移与历史审计不再保留。
+> 当前状态基线：2026-08-14。本文只记录仍然有效的约束、架构和待办；已完成的迁移与历史审计不再保留（历史记录见 git log 与 `docs/`）。
 
 ## ⚠️ 最高优先级：遇难先搜，禁止盲目试错（所有协作者必须遵守）
 
@@ -15,6 +15,7 @@
 - 网站以本地个人使用为主。
 - 控制面板桌面端保留常驻侧栏与收束的内容宽度；窄屏退化为顶部导航和单列，不能产生横向滚动。
 - R18 内容默认开启，缩略图/样张继续使用模糊遮罩；不要擅自改成默认关闭或删除成人内容。
+- **热门角色成人资格已「全部开放」（2026-08-14 用户决策）**：`data/popular-characters.json` 18 个角色全部 `adultEligibility: 'adult'`；fail-closed 契约保留——`adultEnabled=false` 开关与 unknown/underage 分类仍拒绝成人内容（`blueprintEligible`/`recipeEligible` 双重把关），不得把任何角色改回 underage。
 - 绘图页保留两种工作模式：
   - 场景模式：紧凑、低认知负担，自动推断镜头/光照/构图；出图参数默认折叠，但生成、队列、配音不能被隐藏。
   - 专家模式：开放完整场景、词条和 Prompt 结构；大型选项区默认折叠，避免页面拥挤。
@@ -48,6 +49,16 @@
 - 数据：场景运行时数据通过 `sceneStore` 单例加载；不要重新添加散落的 `/data/*.json` fetch。
 - 图片与历史：IndexedDB，封装在 `useKVStore`、`useImageStore`、`useBackup`。
 - `docs/*.html` 仍使用 `tools/nav.js`、`theme.js`、`local-status.js`；这些是文档站运行时，不属于已删除的应用控制器。
+
+### Krea 2 生成链路约束（2026-08-14 实机验证，改前必读）
+
+- 文本编码器用 **Heretic 未审查版**（`qwen3-vl-4b-heretic_fp8_e4m3fn.safetensors`，替换官方 `qwen3vl_4b_fp8_scaled.safetensors`）；官方版带 RLHF 审查对齐，会拒绝出裸。
+- `ConditioningKrea2Rebalance`（`routes/anima.js` Krea 分支）**必须保持 `preset:'standard'`、`multiplier:1.1`、`normalize_taps:false`**：
+  - `normalize_taps:true` 会导致 conditioning 崩溃（全图色散/栅格化/五官崩坏，8 组实测全崩）；
+  - aggressive 预设（mult 4.0 压审查层过狠）实测导致拒绝出裸；standard 是用户实机验证的可用组合。
+- Krea 2 成人提示词组装（`buildPopularPromptPlan`）三条铁律：**裸体词（nsfwProse）前置**、**outfitProse 置空**（Krea 模板会拼 "subject, wearing {outfit}"，穿衣服描述压过显式词）、**identityProse 剥离句尾 `wearing/dressed in` 服装描述**（`identityWithoutOutfit` 已内置，勿回退）。
+- Krea 2 是自然语言模型：禁 `(tag:1.2)` 权重语法、禁下划线 token、禁 score/质量词、负面恒空；写法规范见 `docs/krea2-prompt-writing-guide.md` 与 `docs/three-engine-prompt-research.md`。
+- NSFW 生产优先 Anima 引擎（本机多轮实测稳定）；Krea 2 定位创意探索与快速样张。
 
 ### 训练台参数契约（白名单覆盖）
 
@@ -99,7 +110,7 @@
 
 ## 质量门槛
 
-- 小改先跑相关测试，不需要每次都跑完整套。**默认禁止无脑全量 92 用例**（多 worker 全量会把本机跑卡），按下面的规模分级走。
+- 小改先跑相关测试，不需要每次都跑完整套。**默认禁止无脑全量用例**（多 worker 全量会把本机跑卡），按下面的规模分级走。
 - 修改 `src/`：
   1. `npm run typecheck:app`
   2. `npm run build`
@@ -133,87 +144,10 @@
 
 ## 当前待办
 
-### 已完成：P1 · 四维全站审计（2026-07-31）
-
-功能完整性 / 词条搭配 / 性能 / UX 四维审计（详见会话报告），已落地：
-
-1. 性能：`/data/*.json` 由 no-cache 改为 `immutable`（客户端 `?v=DATA_VERSION` 版本化），`precompressed.js` 同步缓存策略并补 `/data` 白名单（此前可被预压产物绕过）；`DATA_VERSION` 改为数据内容 sha1 派生并接入 `validate-content-contracts.js` 强制校验（改 data 忘升版本会红）；HomeView 最近创作裸 `<a>` → RouterLink；GalleryView 图片串行加载改 4 并发分块。
-2. 功能完整性：剧本数据抽到 `src/config/scenarios.ts`，`?scenario=` 深链生效（质量行不搬，前缀由 profile 决定）；`?generate=1`（样张/抽屉"调整后生成"）真正触发生成；`/scenario`、`/color-script` 补入导航"更多"（此前零入口/单入口）；useBackup 备份白名单死键 `aics_sd_settings_v1` 换活键 `aics_sd_last_success_v1`；删除 SceneExplorerView 无写入者的 `aics_pending_scene` 死分支。
-3. 词条搭配（以 WAI0731 官方模型页为权威基准）：确认 WAI v17 profile 质量/负面前缀与官方完全一致；`analyzeParts` 健康检查新增质量词堆叠（>5 个）、服装族系冲突、时段冲突、天气冲突告警（test-prompt-policy.js 覆盖）。
-4. UX：`再来一次`改"清空并重来"+确认（原按钮会静默清空故事/场景/全部词条）；删除历史/新对话/清空对话补确认；GalleryView 复制 Prompt 有反馈、删除先持久化后改界面（失败回滚+提示）；Showcase 加载中不再闪现错误空状态；训练参数越界改为钳制到边界+提示（原静默拒收）；LoraView/CharacterView 加载失败区分空态并给重试；Showcase 查看器关闭按钮补 aria-label。
-5. 基建修复：`test-style-debt.js` 检查器 bug（三元表达式字符串被误判为对象键，基线代码即误报）与 `test-character-profiles.js`、`test-chat.js` 断言更新到新契约；home 性能预算测试把 woff2 请求排除出计数（CJK 字体固有 50+ 子集，体积仍由 transferBytes 上限约束）。
-6. 验证：`npm run validate` 全绿、`npm run build` 通过、92 个关键 Playwright 用例全绿。
-
-### 已完成：四维审计遗留（2026-07-31）
-
-- 破坏性/UX 确认：SceneManagerView 编辑弹窗脏关闭确认、TrainingView/ControlView 停止确认、GenerationParamsPanel 参数 tooltip、故事脱离场景 toast。
-- 词条收尾：docs 质量词统一为规范前缀、删冗余 Quality 分类（DATA_VERSION 重算）、词条目录级互斥（服装/时段/天气）。
-- 工程卫生：删死端点（`/api/backup`、`/api/showcase-status`、`/api/tunnel-status`、`stopManagedServices`）、`/control` 入导航、a11y 小项、ControlView 保存交互。
-
-### 已完成：P1 · v18 核心样张审核（2026-07-31）
-
-1. 用 `generate-v18-core-showcase.js` 为 30 个核心场景生成可审计候选集（固定 `waiIllustriousSDXL_v170` 检查、确定性 seed、独立目录 `AI/Reviews/SceneAudits/2026-07-30_v18_core`）。
-2. 用 `build-scene-manual-audit-sheets.py` 生成 6 份分批审核表。
-3. 30 个场景全部按"图片审核"约束通过复核并记录到 `manual-review.json`。
-4. 用 `update-v18-core-showcase.py` 将定稿样张同步进线上展示集（大图/缩略图/manifest/分页 sheets），`DATA_VERSION` 升到 15，展示页定向 E2E（`flows.spec.ts`）与 `npm run validate` 全绿。
-
-若后续 v18 全量 297 场景样张需要整体重出，可复用同一套生成→审核→落盘链路。
-
-### 已完成：项目健康度优化（2026-07-31）
-
-- 拆分大视图（ControlView/SceneManagerView/TrainingView/PromptBuilderView）、文档漂移修正、测试体系 node:test 迁移、仓库卫生、JS lint、字体自托管、LICENSE。
-
-### 已完成：P2 · 全维度升 A 计划（2026-08-01）
-
-1. **服务自愈** ✅：新增 `services/service-watchdog.ts`，为 GPT-SoVITS 与翻译进程增加崩溃检测（探测失败 + 指数退避，30s 封顶）与自动拉起；只对"曾在线且受管"的服务生效，未启动过的一律不动。`/api/status` 暴露 `selfHealing`，控制面板语音卡在自愈中显示"自愈中…"。验收：`test-service-watchdog.js` 覆盖掉线重启/退避/失败重试/停止清理，随 `test-control-failure-contract.js` 进 validate。
-2. **聊天记忆归档** ✅：trim 溢出的旧消息自动进入 `aics_chat_archive_v1`（按 mid 去重、每角色上限 5000 条）；角色房间新增"记忆归档"面板，支持 JSON / Markdown 导出、导入合并、归档并入当前对话、清空；备份白名单覆盖聊天历史与归档。验收：`test-chat-storage.js` 覆盖 trim→归档→导出→导入→并回 round-trip。
-3. **备份体系统一** ✅：`src/utils/storageKeys.ts` 成为 localStorage 键唯一登记处（13 个精确活键 + 训练动态前缀 + 3 个死键）；备份导出收集全部活键并清理死键，恢复只写白名单内键。验收：`test-data-backup.js` 覆盖活键收集/死键清理/恢复白名单。
-4. **字体瘦身** ✅：Noto Sans SC 500 权重移除（5→4），残留 `font-weight:500` 全部并入 600；构建产物 woff2 文件数 498→400（约 -20%）。验收：首页 e2e 断言不再请求 500 字重，`test-bundle-budget.js` 全绿。
-5. **全局 CSS 拆分评估** ✅（书面结论）：主 CSS（index chunk）由约 655KB 降至 556.9KB raw / 227.8KB gzip（约 -15%，达成 ≥8% 验收）；页面专属规则此前已随路由拆分（director/chat 等），继续把 HomeView/ShowcaseView 独有规则移出全局预计收益 <2% 且视觉回归风险高，结论为维持现状。
-6. **scenes.json 分片** ✅：新增 `scenes-nene/natsume/shared/core/index.json`，`build-scenes.js` 写入并 `--check` 校验；`validate-content-contracts.js` 核对分片并集/索引/核心子集并纳入 `DATA_VERSION`；场景库默认只拉 index+shared+core（约 61KB vs 920KB，约 -93%），切角色按需拉分片，全库才拉全量；`/data` 白名单与预压缩同步放行新文件。
-7. **访客引导** ✅：`GuestGuide.vue` 在非本机或 `?guest=1` 时对首访者展示一次性导览（角色是谁 / 能做什么 / 如何开启聊天配音），关闭后写入 `aics_guest_guide_dismissed`，不增加常驻 UI。验收：`studio.spec.ts` 新增访客路径用例，`a11y-device.spec.ts` 无回归。
-
-验证：`npm run validate` 全绿、`npm run build` 通过、全量 189 个 Playwright 用例通过（`--workers=3`）。
-
-### 已完成：角色房间与 Live2D 收尾（2026-08-02）
-
-1. **角色比例实机校准**：新增 `CharacterConfig.live2dLayout`；宁宁底部基线下移，夏目独立缩放避免头发与鞋底在平板/手机裁切。桌面 `1440×960`、窄桌面 `1280×800`、平板 `768×1024`、手机 `390×844` 均检查无横向滚动、无裁切，双角色底部基线一致。
-2. **日系二次元房间视觉收尾**：聊天舞台改用 `--stage-violet`/`--stage-amber`，角色卡标记、选中 Tab、房间铭牌和樱花前景按角色收敛；顶部副标题弱化供应商术语，窄屏补底部呼吸空间，浅色主题修正衣橱徽章与快捷键提示对比度。
-3. **真实 TTS 情绪回归**：启动本机 GPT-SoVITS，宁宁/夏目各生成 `neutral/gentle/happy/shy/serious/sad` 六条真实日语音频，全部通过 WAV 质量门槛；新增 `regress-voice-emotions.js` 与 `regress-chat-voice-live.mjs`，真实 `/api/tts` 播放路径验证口型、RMS/peak、情绪切换和 neutral 平滑淡出。
-4. **SoulLink 原生动画适配**：新增 `live2dNativeAdapter.ts`，`RuntimeSnapshot.nativeAnimation` 现在经过角色级、失败关闭的白名单 adapter；参数抑制、优先级、token 去重、过期模型和定时释放均有纯测试覆盖。当前宁宁五个 Expression 仍仅作衣装，夏目无 Expressions，未把任何未验证的 Tap/Idle/Start/Leave 动作冒充情绪动作。
-
-验证：`npm run typecheck:app`、`npm run build`、`node --test scripts/tests/test-emotion-runtime.js`、Live2D 定向 E2E 2/2、真实 TTS 12/12 音频质量回归、真实浏览器配音路径 12/12 均通过。
-
-### 已完成：Live2D 双后端抽象层（2026-08-08）
-
-路径 B（Rust overlay 原生渲染）的前端侧交付，与 Tauri 迁移、Rust wgpu 实现并行：
-
-1. **后端抽象** ✅：`src/live2d/types.ts`（`Live2DStageBackend`/`Live2DStageSession`/`Live2DModelHandle`/`Live2DCapability`）+ `browserBackend.ts`（wl-live2d 平移封装，行为零改动）+ `nativeBackend.ts`（桥驱动）+ `createBackend.ts`（native 无桥自动回退 browser，`data-backend="browser-fallback"`）。`useLive2D` 按 capability 分派：浏览器路径保留全部 hack 逻辑，原生路径只发意图（`sendMouthLevel`/`sendEmotion`/`sendGaze`/`updateOverlay`）。
-2. **IPC 契约** ✅：`src/types/live2dNative.ts`（`window.aicsLive2dNative` 命令/事件），`docs/live2d-native-overlay-plan.md`（能力矩阵、桌面端退役清单、坐标系约定、crate 调研结论：首选 live2d-rs v5，cubism-rs 4-r.5.1 为回退）。
-3. **布局换算** ✅：`src/utils/live2dOverlayLayout.ts` 纯函数（CSS 矩形 × DPR + 窗口原点 → 屏幕物理像素，多屏钳制）。
-4. **组件接线** ✅：`ChatCharacterStage` 新增 `backend` prop（'auto' 默认解析 html dataset / URL query）。
-5. **测试** ✅：`test-live2d-backend.js`（20 用例：布局/回退/原生会话契约/桥形状校验）入 validate 链；`test-chat.js` 源码哨兵改为合并检查 useLive2D + browserBackend；studio.spec.ts 新增默认后端标记与 native 回退 2 用例。
-6. **验收工具** ✅：`scripts/tests/measure-live2d-memory.js`（Playwright + CDP，实测 Live2D 就绪后 JS heap ~30MB，进程级回退 PowerShell WorkingSet）。
-
-验证：typecheck:app、build、Live2D 定向 E2E 7/7（含既有 blink/entrance/Leave/竞态 5 用例）、chat/emotion/blink/page-architecture/style-debt/character-profiles/live2d-backend/live2d-service 相关单测全绿。
-
-### 已完成：桌面 Companion 日志诊断与陪伴行为（2026-08-03）
-
-1. **日志诊断** ✅：新增 `desktop/logger.ts`（同步文件日志，512KB 轮转 ×3，写失败静默降级）；`desktop/main.ts` 记录启动/网关/窗口/退出生命周期，网关子进程 stdout/stderr 经 `GatewaySupervisor.onOutput` 转发进日志；托盘新增"查看日志文件"，preload/IPC 暴露 `openLog()`。
-2. **陪伴行为** ✅：新增 `src/utils/companionBehavior.ts`（纯 TS 状态机）：idle 无操作提醒、安静时段（默认 23:00-8:00，跨天判断）、提醒冷却、常驻气泡队列（FIFO + 容量上限 + 手动关闭）与勿扰优先级（勿扰期不产出/不出队，队列保留，关闭后恢复）。不调用 LLM、不自动出声，台词来自 `characters.ts` 的 `COMPANION_LINES`（确定性轮转）。配置持久化在 `aics_companion_behavior_v1`（storageKeys 已登记）。
-3. **CompanionView 集成** ✅：勿扰开关按钮、安静时段角标、提醒气泡区（可关闭）、窗口重新可见且离开超阈值时入队"回来"问候；活动监听（pointerdown/keydown/wheel）重置 idle 计时。
-4. **测试** ✅：`test-companion-behavior.js`（12 用例）与 logger 轮转用例并入 validate；桌面 Companion E2E 增加勿扰开关断言。
-5. **既有漂移修复**：d55d1e0 把 server.js 静态服务切到 `config.ASSETS_ROOT/TOOLS_ROOT` 但 `test-control-failure-contract.js`/`test-training-routes.js` 的 baseConfig 未同步（HEAD 下 validate 就红），补齐字段；`test-chat.js` 断言适配 ChatCharacterStage 多行 `defineExpose` 与新增桌面控制方法。
-
-验证：`npm run validate` 全绿、`npm run typecheck` 通过、`npm run build` 通过、桌面 Companion 定向 E2E 通过。
-
-### 待办
-
-视觉与架构下一阶段路线已记录在 `docs/visual-architecture-roadmap.md`。执行顺序为视觉减法与标题层级 → 动效和移动端持续动画收口 → 训练/控制/绘图窄屏层级 → 状态组件统一 → API client 与存储 Repository → 按所有权拆分大型模块；不做框架重写。
-
-桌宠语音与演出增强（吸收 ZcChat2 精华）分阶段计划已记录在 `docs/companion-voice-roadmap.md`。P0（长按说话最小闭环）、P1（会话状态机/唤醒词连续对话）、P2（LLM 情绪标签协议 `[mood=xxx]` → `src/utils/moodTag.ts`，标签剥离不进展示/历史/配音、协议主导时文本启发式让位）均已完成：`vadSegmenter.ts`、`speechSession.ts`、`voiceApi.ts`、`speechInputConfig.ts`（`aics_speech_input_v1` 已登记 storageKeys）、`useVoiceInput.ts`、`SpeechInputSettings.vue`、ChatView 集成；`test-vad-segmenter.js`/`test-speech-session.js`/`test-mood-tag.js` 进 validate。CompanionView 的自动监听/热键集成待其未提交改动落地后进行。后续阶段（P3 演出数据驱动 → P4 自定义角色资产包）仍暂缓，每阶段独立验收，不串阶段。
-
-Live2D 方面仍只有在取得模型作者提供的、明确标注为情绪用途的原生 motion/expression 后，才增加非空 SoulLink native allowlist。
+- 视觉与架构下一阶段路线已记录在 `docs/visual-architecture-roadmap.md`。执行顺序为视觉减法与标题层级 → 动效和移动端持续动画收口 → 训练/控制/绘图窄屏层级 → 状态组件统一 → API client 与存储 Repository → 按所有权拆分大型模块；不做框架重写。
+- 桌宠语音与演出增强（吸收 ZcChat2 精华）分阶段计划已记录在 `docs/companion-voice-roadmap.md`。P0/P1/P2（长按说话、会话状态机/唤醒词、`[mood=xxx]` 情绪标签协议）已完成；剩余：CompanionView 的自动监听/热键集成（待其未提交改动落地后进行）、P3 演出数据驱动、P4 自定义角色资产包——仍暂缓，每阶段独立验收，不串阶段。
+- 提示词三引擎（Krea 2 / Anima / WAI-Illustrious）调研基线见 `docs/three-engine-prompt-research.md`，供精细化配置人员使用；**待办：热门角色 exactTokens 的括号消歧按 Anima 官方空格规则改 `rem (re zero)` 形式（当前为 `rem_(re_zero)`），先 A/B 验证还原度不降再批量改**（影响 `test-popular-content.js` 断言）。
+- Live2D 方面仍只有在取得模型作者提供的、明确标注为情绪用途的原生 motion/expression 后，才增加非空 SoulLink native allowlist。
 
 暂缓（已评估有结论，条件具备再动）：
 
