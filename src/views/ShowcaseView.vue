@@ -14,7 +14,7 @@
         <h1>定稿样张 · Verified Showcase</h1>
         <p>每一幅皆由当前前沿模型组合实机生成、并经人工细致复核甄选。先赏定稿成片，再赴心动创作。</p>
         <div class="hero-actions">
-          <button class="btn btn-ghost" type="button" :disabled="!entries.length" @click="openRandom">↻ 随机翻一张</button>
+          <button class="btn btn-ghost" type="button" :disabled="!entries.length" @click="openRandom"><ArchiveIcon name="refresh" /> 随机翻一张</button>
           <RouterLink class="btn btn-ghost" to="/scene-explorer">去灵感场景</RouterLink>
         </div>
         <div class="hero-stats">

@@ -94,7 +94,7 @@
 
       <div class="control-toolbar sticky-toolbar">
         <button class="gallery-filter" type="button" :disabled="serviceChecking || opBusy" @click="pollStatus(true)">
-          <span :class="{ spin: serviceChecking }">⟳</span> 检测所有服务
+          <ArchiveIcon name="refresh" :class="{ spin: serviceChecking }" /> 检测所有服务
         </button>
         <span class="toolbar-note">操作只影响本机进程；网站网关始终在运行</span>
       </div>
