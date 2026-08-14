@@ -669,20 +669,13 @@
     transition:border-color var(--t-fast),background var(--t-fast),transform var(--t-fast);
   }
   .pb .director-card:hover { border-color:color-mix(in srgb,var(--accent) 24%,var(--border-soft)); }
-  .pb .director-mode-bar {
-    display:grid; gap:var(--s-2); padding:6px 14px;
+  .pb .director-mode-switch {
+    display:inline-flex; padding:2px;
     border:1px solid var(--border-soft); border-radius:var(--r-pill);
-    background:color-mix(in srgb, var(--bg-surface) 92%, transparent);
-    box-shadow:inset 0 1px 0 var(--glass-highlight);
-    backdrop-filter:blur(16px);
+    background:var(--bg-deep); flex-shrink:0;
   }
-  .pb > .director-mode-bar { margin:0 0 var(--s-3); }
-  .pb .director-mode-head { display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); }
-  .pb .director-mode-title { color:var(--text-primary); font-size:var(--fs-label-sm); font-weight:720; white-space:nowrap; }
-  .pb .director-mode-switch { display:inline-flex; padding:2px; border:1px solid var(--border-soft); border-radius:var(--r-pill); background:var(--bg-deep); flex-shrink:0; }
-  /* 唯一定义:原先 :729/:730 又重复声明了 transition 与 active 表面 */
   .pb .director-mode-option {
-    min-height:26px; padding:0 12px; border:0; border-radius:var(--r-pill);
+    min-height:28px; padding:0 12px; border:0; border-radius:var(--r-pill);
     background:transparent; color:var(--text-muted); cursor:pointer; font:650 var(--fs-mono-xs) var(--font-sans);
     transition:background var(--t-base) var(--ease-out),color var(--t-base) var(--ease-out),
                box-shadow var(--t-base) var(--ease-out),transform var(--t-base) var(--ease-out);
@@ -693,9 +686,9 @@
     color:var(--accent);
     box-shadow:inset 0 1px 0 var(--glass-highlight),var(--shadow-sm);
   }
-  .pb .director-auto-summary { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--text-muted); font-size:var(--fs-mono-sm); }
+  .pb-managed-route-banner { margin-bottom: var(--s-3); }
   .pb .managed-route-card {
-    display:grid; gap:var(--s-3); padding:var(--s-4);
+    display:grid; gap:var(--s-2); padding:var(--s-3) var(--s-4);
     border:1px solid color-mix(in srgb,var(--success) 34%,var(--border-soft));
     border-radius:var(--r-lg);
     background:linear-gradient(135deg,color-mix(in srgb,var(--success) 8%,var(--bg-surface)),var(--bg-surface));
@@ -1379,7 +1372,7 @@
     backdrop-filter:blur(22px) saturate(165%) contrast(1.04);
     box-shadow:inset 0 1px 0 var(--glass-highlight),inset 0 -1px 0 color-mix(in srgb,var(--accent) 8%,transparent),var(--shadow-sm);
   }
-  .pb .utility-popover, .pb .director-mode-bar, .pb-backup-card {
+  .pb .utility-popover, .pb-backup-card, .pb-managed-route-banner {
     background:
       linear-gradient(125deg,var(--glass-specular),transparent 28%,transparent 72%,color-mix(in srgb,var(--accent) 9%,transparent)),
       var(--glass-fill-strong);
@@ -1408,14 +1401,14 @@
   @keyframes characterGlassSweep { 0% { opacity:0; transform:translateX(-22%) rotate(-4deg); } 42% { opacity:.26; } 100% { opacity:0; transform:translateX(22%) rotate(-4deg); } }
   @media (max-width:768px) {
     .pb .focus-mode-btn, .pb .utility-trigger, .pb .api-status .badge, .pb .stage-chrome { -webkit-backdrop-filter:blur(16px) saturate(145%); backdrop-filter:blur(16px) saturate(145%); }
-    .pb .utility-popover, .pb .director-mode-bar, .pb-backup-card { -webkit-backdrop-filter:blur(20px) saturate(145%); backdrop-filter:blur(20px) saturate(145%); }
+    .pb .utility-popover, .pb-backup-card, .pb-managed-route-banner { -webkit-backdrop-filter:blur(20px) saturate(145%); backdrop-filter:blur(20px) saturate(145%); }
     .pb .stage-chrome { left:12px; right:12px; top:12px; }
   }
   @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
-    .pb .focus-mode-btn, .pb .utility-trigger, .pb .api-status .badge, .pb .stage-chrome, .pb .utility-popover, .pb .director-mode-bar, .pb-backup-card { background:var(--bg-surface); }
+    .pb .focus-mode-btn, .pb .utility-trigger, .pb .api-status .badge, .pb .stage-chrome, .pb .utility-popover, .pb-backup-card, .pb-managed-route-banner { background:var(--bg-surface); }
   }
 @media (prefers-reduced-transparency: reduce) {
-    .pb .focus-mode-btn, .pb .utility-trigger, .pb .api-status .badge, .pb .stage-chrome, .pb .utility-popover, .pb .director-mode-bar, .pb-backup-card { -webkit-backdrop-filter:none !important; backdrop-filter:none !important; background:var(--bg-surface); }
+    .pb .focus-mode-btn, .pb .utility-trigger, .pb .api-status .badge, .pb .stage-chrome, .pb .utility-popover, .pb-backup-card, .pb-managed-route-banner { -webkit-backdrop-filter:none !important; backdrop-filter:none !important; background:var(--bg-surface); }
 }
 
 /* Hover 位移只属于精确指针；触屏保留颜色/边框反馈，不粘住卡片位置。 */

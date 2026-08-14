@@ -25,9 +25,19 @@
       <div class="pb-header">
         <div class="pb-kicker">Nene &amp; Natsume Private Atelier</div>
         <h1 class="pb-title">开始绘制</h1>
-        <p class="pb-sub">挑选触动心灵的场景，其余交由工作坊推断；需要微调时随时切换到专家模式。</p>
+        <p class="pb-sub">{{ modeDescription }}</p>
       </div>
       <div class="pb-top-actions">
+        <div class="director-mode-switch" role="group" aria-label="切换绘图工作模式">
+          <button class="director-mode-option" type="button"
+            :class="{ active: pb.directorMode === 'basic' }"
+            :aria-pressed="pb.directorMode === 'basic'"
+            @click="setDirectorMode('basic')">场景模式</button>
+          <button class="director-mode-option" type="button"
+            :class="{ active: pb.directorMode === 'pro' }"
+            :aria-pressed="pb.directorMode === 'pro'"
+            @click="setDirectorMode('pro')">专家模式</button>
+        </div>
         <button class="focus-mode-btn" type="button"
           :aria-label="pb.focusMode ? '退出专注成片模式' : '进入专注成片模式'"
           :aria-pressed="pb.focusMode"
@@ -48,33 +58,16 @@
       </div>
     </div>
 
-    <div class="director-mode-bar" aria-label="绘图工作模式">
-      <div class="director-mode-head">
-        <div>
-          <div class="director-mode-title">{{ pb.directorMode === 'basic' ? '场景模式' : '专家模式' }}</div>
-          <div class="director-auto-summary">{{ modeDescription }}</div>
-        </div>
-        <div class="director-mode-switch" role="group" aria-label="切换绘图工作模式">
-          <button class="director-mode-option" type="button"
-            :class="{ active: pb.directorMode === 'basic' }"
-            :aria-pressed="pb.directorMode === 'basic'"
-            @click="setDirectorMode('basic')">场景模式</button>
-          <button class="director-mode-option" type="button"
-            :class="{ active: pb.directorMode === 'pro' }"
-            :aria-pressed="pb.directorMode === 'pro'"
-            @click="setDirectorMode('pro')">专家模式</button>
-        </div>
-      </div>
-      <ManagedDrawingRouteCard v-if="managedRoute"
-        :route="managedRoute"
-        :history="pb.history"
-        :subject="pb.subject"
-        :expert="pb.directorMode === 'pro'"
-        :busy="generationBusy"
-        @apply="applyManagedRoute"
-        @reuse="reuseSuccessfulRecipe"
-      />
-    </div>
+    <ManagedDrawingRouteCard v-if="managedRoute"
+      class="pb-managed-route-banner"
+      :route="managedRoute"
+      :history="pb.history"
+      :subject="pb.subject"
+      :expert="pb.directorMode === 'pro'"
+      :busy="generationBusy"
+      @apply="applyManagedRoute"
+      @reuse="reuseSuccessfulRecipe"
+    />
 
     <div class="director-workspace">
 
