@@ -99,9 +99,15 @@
           <div class="panel-title">角色 · Character</div>
           <div class="char-source" role="group" aria-label="角色来源">
             <button type="button" class="char-source-btn" :class="{ active: !pb.isPopular }"
-              :aria-pressed="!pb.isPopular" @click="selectPopularSource('studio')">工作室角色</button>
+              :aria-pressed="!pb.isPopular" @click="selectPopularSource('studio')">
+              <ArchiveIcon name="character" class="char-source-icon" />
+              <span>工作室角色</span>
+            </button>
             <button type="button" class="char-source-btn" :class="{ active: pb.isPopular }"
-              :aria-pressed="pb.isPopular" @click="selectPopularSource('popular')">热门角色 · 无需 LoRA</button>
+              :aria-pressed="pb.isPopular" @click="selectPopularSource('popular')">
+              <ArchiveIcon name="spark" class="char-source-icon" />
+              <span>热门角色 · 无需 LoRA</span>
+            </button>
           </div>
 
           <template v-if="!pb.isPopular">
@@ -2041,6 +2047,9 @@ watch(() => drawEngine.value, engine => {
   flex-wrap: wrap;
 }
 .char-source-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   padding: 5px 12px;
   border-radius: var(--r-pill);
   border: 1px solid var(--border-strong);
@@ -2048,6 +2057,13 @@ watch(() => drawEngine.value, engine => {
   color: inherit;
   font-size: var(--fs-label-sm);
   cursor: pointer;
+}
+.char-source-icon {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+  color: currentColor;
+  opacity: 0.85;
 }
 .char-source-btn.active {
   border-color: var(--pb-active);
