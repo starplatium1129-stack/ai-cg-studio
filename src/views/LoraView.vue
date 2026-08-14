@@ -139,7 +139,16 @@ onMounted(() => { void loadCatalog() })
     linear-gradient(145deg,color-mix(in srgb,var(--archive-blue) 7%,transparent),transparent 32%),
     var(--bg-surface);
   box-shadow:var(--shadow-glass-sm);
+  transition: transform var(--t-base) var(--ease-out), border-color var(--t-base), box-shadow var(--t-base);
 }
+@media (hover: hover) and (pointer: fine) {
+  .lora-card:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--archive-blue) 46%, var(--border-soft));
+    box-shadow: var(--shadow-md);
+  }
+}
+@media (prefers-reduced-motion: reduce) { .lora-card { transition: none; } }
 .lora-card::before {
   content:"";
   position:absolute;

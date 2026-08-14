@@ -263,3 +263,18 @@ useTrainingOnboarding()
   - 流水线结论：视觉初筛 + DOM 测量终审有效（第十三轮水印碰撞为真、本轮四项为假），probe-ui-audit 已并入 light 主题对比度测量，可复用。
 - 验证：typecheck / lint / build（132.5/133.0 KiB）/ unit 332/332 / E2E flows+studio 53/53、anima-quick 15/15（串行）。
 
+### 第十五轮：图片呈现核查（A）+ 微交互收口（B）
+
+- **A 方向核查结论（已有，无需新增）**：blur-up 渐变入场与 R18 揭示过渡在全站主要图片点均已实现——SceneCard（`.sc-thumb` blur 6px→0）、Showcase（`.sample-image` blur 7px→0 + R18 hover 揭示）、Gallery（`galleryImageIn` 0.35s + 查看器 zoom-in）、Character（`portraitRise`）、Home（`archive-image-in`、hero 过渡）；PopularCharacterPicker 无位图头像。本轮不再重复建设。
+- **B 方向落地三项**：
+  - **训练进度条统一为 div 模式**：TrainingView 两处动态进度从原生 `<progress>`（伪元素 width transition 在 Chromium 不生效、进度跳变）改为 design-system 的 `.meter/.meter-fill`（`--fill` + width 过渡，与 ControlView 同模式），并加进度流光 `meter-shine`（reduced-motion 关闭）；保留 `role="progressbar"` + aria-valuenow。语音数据集 `split-track` 比例条为固定值，维持原生。
+  - **LoraView 模型卡 hover 统一**：补 `transition` + hover 抬升（-3px）+ 档案蓝描边亮起 + `shadow-md`，与作品册 `.artwork` 同一交互语言；`@media (hover:hover)` 与 reduced-motion 收口。
+  - **GuestGuide 入场动画**：遮罩淡入 + 卡片上浮（0.34s 延迟入场），reduced-motion 关闭——此前是硬开硬关。
+- 验证：typecheck / lint / build（132.5/133.0 KiB）/ unit 332/332 / E2E a11y-device+interaction-polish 67/67（四设备）、定向 training workbench + guest guide 5/5 / 样式债与字面量预算通过。
+
+### 第十六轮：弹层入场动画统一（B 收尾）
+
+- **`.overlay` / `.modal-card` 统一入场动画**：design-system 弹层体系入口补 `overlay-in`（遮罩 0.22s 淡入）+ `modal-card-in`（卡片 0.28s 上浮缩放、0.05s 延迟叠在遮罩后），所有使用全局弹层类的调用点自动获得入场动画——SceneManagerView 编辑弹窗（此前硬开硬关）、未来新增弹层同理；`[hidden]`、reduced-motion 通配收口不受影响；PromptDataTools（pb-backup-overlay 自带过渡）、Gallery/Showcase 查看器、GlobalSearch（gs-in）、GuestGuide（第十五轮）各自已有动画，不重复。
+- **B 方向收尾核查**：表单 focus ring 全站已统一（design-system 全局 `:focus-visible` + `.input/.select/.textarea` ring + TrainingView param-field / SceneManagerView search/import 各自 ring）；卡片 hover 全站已统一（Gallery/SceneCard/Showcase/Home/LoraView（第十五轮）/SceneManager tool&image 卡抬升 2px/3px，TrainingView job-card 为状态卡不可点，维持现状）；确认框为原生 `confirm()`（替换自定义组件需多调用点迁移 + focus trap，收益中风险中，**评估维持现状**）；ETA/百分比为轮询文本（数值滚动动画收益低，**评估维持现状**）。
+- 验证：typecheck / lint / build（132.5/133.0 KiB）/ unit 332/332 / E2E studio+flows 53/53、SceneManager 弹窗定向 7/7 / DOM 测量确认 overlay-in + modal-card-in 生效、动画后 opacity 1 且卡片居中。
+

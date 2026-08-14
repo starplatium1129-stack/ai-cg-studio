@@ -332,15 +332,16 @@
                   <span>{{ job.progress.stage || '待开始' }}</span>
                   <strong>{{ formatPercent(job.progress.percent) }}</strong>
                 </div>
-                <progress
+                <div
                   class="meter meter-lg"
                   role="progressbar"
                   :aria-label="`${job.label}训练进度`"
-                  :value="job.progress.percent"
-                  max="100"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  :aria-valuenow="job.progress.percent"
                 >
-                  {{ formatPercent(job.progress.percent) }}
-                </progress>
+                  <span class="meter-fill" :style="{ '--fill': job.progress.percent + '%' }"></span>
+                </div>
                 <div class="progress-meta">
                   <span v-if="job.progress.epochs">
                     Epoch {{ job.progress.epoch ?? 0 }}/{{ job.progress.epochs }}
@@ -495,15 +496,16 @@
                   <span>{{ job.progress.stage || '待开始' }}</span>
                   <strong>{{ formatPercent(job.progress.percent) }}</strong>
                 </div>
-                <progress
+                <div
                   class="meter meter-lg"
                   role="progressbar"
                   :aria-label="`${job.label}训练进度`"
-                  :value="job.progress.percent"
-                  max="100"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  :aria-valuenow="job.progress.percent"
                 >
-                  {{ formatPercent(job.progress.percent) }}
-                </progress>
+                  <span class="meter-fill" :style="{ '--fill': job.progress.percent + '%' }"></span>
+                </div>
                 <p class="voice-progress-message">
                   {{ job.progress.message || `${datasetFor(job)?.version ?? '语音数据'} 已等待训练` }}
                 </p>
@@ -1469,28 +1471,21 @@ onUnmounted(() => {
   overflow-wrap: anywhere;
 }
 
-.meter {
-  display: block;
-  width: 100%;
-  padding: 0;
-  border: 0;
-  appearance: none;
-  -webkit-appearance: none;
+/* 动态进度条统一走 design-system 的 .meter/.meter-fill（--fill + width 过渡）：
+   原生 <progress> 的伪元素 width transition 在 Chromium 不生效，进度跳变。 */
+.meter-lg { height: 10px; }
+.meter-lg .meter-fill { position: relative; overflow: hidden; border-radius: inherit; }
+.meter-lg .meter-fill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, #fff 22%, transparent), transparent);
+  transform: translateX(-100%);
+  animation: meter-shine 1.8s var(--ease-out) infinite;
 }
-.meter::-webkit-progress-bar {
-  border-radius: var(--r-pill);
-  background: color-mix(in srgb, var(--text-muted) 18%, transparent);
-}
-.meter::-webkit-progress-value {
-  border-radius: var(--r-pill);
-  background: linear-gradient(90deg, var(--accent), var(--accent-violet));
-  transition: width var(--t-base) var(--ease-out);
-}
-.meter::-moz-progress-bar {
-  border-radius: var(--r-pill);
-  background: linear-gradient(90deg, var(--accent), var(--accent-violet));
-  transition: width var(--t-base) var(--ease-out);
-}
+@keyframes meter-shine { 60% { transform: translateX(100%); } 100% { transform: translateX(100%); } }
+@media (prefers-reduced-motion: reduce) { .meter-lg .meter-fill::after { animation: none; } }
 
 .job-actions {
   display: flex; justify-content: flex-end; gap: var(--s-2);

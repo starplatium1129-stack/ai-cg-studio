@@ -68,6 +68,7 @@ function dismiss() {
   padding: var(--s-5);
   background: color-mix(in srgb, var(--bg-deep) 72%, transparent);
   backdrop-filter: blur(10px);
+  animation: guest-guide-in .3s var(--ease-out) both;
 }
 .guest-guide-card {
   width: min(520px, 100%);
@@ -78,6 +79,15 @@ function dismiss() {
   border-radius: var(--r-xl);
   background: var(--bg-surface);
   box-shadow: var(--shadow-lg);
+  animation: guest-guide-card-in .34s var(--ease-out) .06s both;
+}
+@keyframes guest-guide-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes guest-guide-card-in {
+  from { opacity: 0; transform: translateY(10px) scale(.98); }
+  to { opacity: 1; transform: none; }
 }
 .guest-guide-kicker {
   color: var(--accent);
@@ -89,7 +99,8 @@ function dismiss() {
 .guest-guide-body ul { margin: 0; padding-left: var(--s-4); display: grid; gap: var(--s-2); color: var(--text-secondary); }
 .guest-guide-body strong { color: var(--text-primary); }
 @media (prefers-reduced-motion: reduce) {
-  .guest-guide { backdrop-filter: none; }
+  .guest-guide { backdrop-filter: none; animation: none; }
+  .guest-guide-card { animation: none; }
 }
 @media (max-width: 600px) {
   .guest-guide-card { padding: var(--s-4); }

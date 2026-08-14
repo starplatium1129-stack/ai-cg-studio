@@ -1107,8 +1107,10 @@ body.overlay-open { overflow: hidden; }
   padding: var(--s-4);
   background: var(--art-backdrop);
   -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  animation: overlay-in .22s var(--ease-out) both;
 }
 .overlay[hidden] { display: none; }
+@keyframes overlay-in { from { opacity: 0; } to { opacity: 1; } }
 .modal-card {
   width: min(560px, 100%);
   max-height: min(84vh, 720px);
@@ -1118,6 +1120,11 @@ body.overlay-open { overflow: hidden; }
   border-radius: var(--r-2xl);
   background: var(--bg-elevated);
   box-shadow: var(--shadow-lg);
+  animation: modal-card-in .28s var(--ease-out) .05s both;
+}
+@keyframes modal-card-in {
+  from { opacity: 0; transform: translateY(12px) scale(.975); }
+  to { opacity: 1; transform: none; }
 }
 .modal-card-wide { width: min(880px, 100%); }
 .modal-head {
