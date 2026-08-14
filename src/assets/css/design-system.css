@@ -181,6 +181,8 @@
   --t-fast: 150ms;
   --t-base: 240ms;
   --t-slow: 300ms;
+  --spring-bounce: cubic-bezier(.34, 1.56, .64, 1); /* 果冻微弹 */
+  --spring-soft:   cubic-bezier(.16, 1, .3, 1);    /* 丝滑阻尼 */
   --ease-out: cubic-bezier(.23, 1, .32, 1);   /* 进入/即时反馈：快速响应，柔和落位 */
   --ease-in-out: cubic-bezier(.77, 0, .175, 1); /* 屏内移动/形变 */
   --ease-drawer: cubic-bezier(.32, .72, 0, 1);  /* 抽屉与大面积浮层 */
