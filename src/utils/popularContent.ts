@@ -468,8 +468,9 @@ export function scanCharacterPollution(character: PopularCharacter): string[] {
 }
 
 function identityWithoutOutfit(prose: string): string {
+  // 剥离句尾的服装描述（", wearing X." / ", dressed in X."），供 Krea 自然语言路径使用。
   return prose
-    .replace(/,\s*wearing\b[^.]*\.?$/i, '.')
+    .replace(/,\s*(?:wearing|dressed in)\b[^.]*\.?$/i, '.')
     .replace(/\s+/g, ' ')
     .trim()
 }
@@ -500,14 +501,18 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   const nsfwTokens = adultGranted ? (blueprint?.nsfwTokens || []) : []
   const nsfwProse = adultGranted ? String(blueprint?.nsfwProse || '').trim() : ''
   const sceneProse = [
-    blueprint?.promptProse,
+    // 成人场景：裸体叙述前置，避免被服装散文压过（Krea 2 自然语言模型对句首描述权重最高）。
     ...(nsfwProse ? [nsfwProse] : []),
+    blueprint?.promptProse,
   ].filter(Boolean).join(' ')
 
   if (engine === 'krea2') {
+    // 成人蓝图：outfitProse 置空（Krea 模板会拼成 "subject, wearing {outfitProse}"，
+    // 穿衣服描述会压过显式词导致拒绝出裸）；脱衣叙述由 nsfwProse 前置承载。
+    const outfitProse = adultGranted ? '' : outfit.prose
     const plan = createPromptPlan({
       subjectProse: identityWithoutOutfit(character.identityProse),
-      outfitProse: outfit.prose,
+      outfitProse,
       sceneProse,
       emotion: blueprint ? [blueprint.mood] : [],
       camera: blueprint ? [blueprint.camera] : [],
