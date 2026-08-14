@@ -400,12 +400,13 @@ test('CLI attempt filter: --attempt 4 selects exactly the two attempt-4 candidat
   assert.ok(mixed.every(item => item.attempt === 1 || item.attempt === 4));
 });
 
-test('artist batch: 20 curated artists + 1 no-artist baseline, one artist tag each', () => {
-  assert.strictEqual(artistCatalog.ARTIST_STYLE_OPTIONS.length, 20, 'exactly 20 artists in catalog');
+test('artist batch: curated artists + 1 no-artist baseline, one artist tag each', () => {
+  const artistCount = artistCatalog.ARTIST_STYLE_OPTIONS.length;
+  assert.strictEqual(artistCount, 21, 'exactly 21 artists in catalog');
   const artist = gen.artistBatch(20260812);
-  assert.strictEqual(artist.length, 21);
+  assert.strictEqual(artist.length, artistCount + 1);
   const withTags = artist.filter(item => item.artistId);
-  assert.strictEqual(withTags.length, 20);
+  assert.strictEqual(withTags.length, artistCount);
   const baseline = artist.find(item => !item.artistId);
   assert.ok(baseline, 'must include a no-artist baseline');
   // 同 seed / 同 WAI 参数，仅画师 tag 不同。
