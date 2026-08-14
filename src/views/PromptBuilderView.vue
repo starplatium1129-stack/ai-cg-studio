@@ -245,9 +245,7 @@
               {{ generationBusy ? 'RENDERING' : (generationError ? 'ATTENTION' : (generationStopped ? 'PAUSED' : 'READY')) }}
             </span>
           </div>
-          <div class="stage-corners" aria-hidden="true">
-            <i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i>
-          </div>
+          <CornerFrame />
           <i class="stage-magic-ring" aria-hidden="true"></i>
           <img class="stage-muse nene" :src="stageMuseUrl.nene" alt="" aria-hidden="true" decoding="async">
           <img class="stage-muse natsume" :src="stageMuseUrl.natsume" alt="" aria-hidden="true" decoding="async">
@@ -286,9 +284,7 @@
 
         <!-- Result image -->
         <div v-if="displayResultUrl" class="result-image-wrap archive-canvas">
-          <div class="stage-corners" aria-hidden="true">
-            <i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i>
-          </div>
+          <CornerFrame variant="ghost" />
           <img class="result-image" :src="displayResultUrl" alt="生成的图片" />
           <div class="result-image-actions">
             <button
@@ -687,6 +683,7 @@ const ArtistStylePicker = defineAsyncComponent(() => import('@/components/Artist
 const HistoryPanel = defineAsyncComponent(() => import('@/components/HistoryPanel.vue'))
 const ManagedDrawingRouteCard = defineAsyncComponent(() => import('@/components/ManagedDrawingRouteCard.vue'))
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
+import CornerFrame from '@/components/visual/CornerFrame.vue'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import { readHiddenScenes, rememberRecent, recordSceneUsage } from '@/utils/sceneUX'
 import { tagMeaning } from '@/utils/tagMeaning'
