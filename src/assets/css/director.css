@@ -177,7 +177,7 @@
      Director — 宽屏工作台 (Scene-first, Prompt-last)
      左侧=剧本与素材，右侧=导演决策、监看与大画幅成品
      ============================================================ */
-  .pb { max-width: min(94vw, 1920px); margin: 0 auto; padding: var(--s-3) var(--s-5) var(--s-7); }
+  .pb { max-width: 1780px; width: 100%; margin: 0 auto; padding: var(--s-3) var(--s-5) var(--s-7); }
   .pb .nav-back { display: inline-flex; align-items: center; gap: var(--s-2); color: var(--text-secondary); font-size: var(--fs-label); margin-bottom: var(--s-2); text-decoration: none; }
   .pb .nav-back:hover { color: var(--accent); }
   .pb-topline { display:flex; align-items:center; justify-content:space-between; gap:var(--s-4); margin-bottom:var(--s-3); }
@@ -216,9 +216,9 @@
   /* ---- 宽屏 & 4K 旗舰工作台 ---- */
   .pb .director-workspace {
     display:grid;
-    grid-template-columns:clamp(280px, 18vw, 340px) minmax(560px, 1.45fr) clamp(280px, 18vw, 340px);
+    grid-template-columns:340px minmax(560px, 1fr) 340px;
     grid-template-areas:"story stage decisions";
-    gap:clamp(16px, 1.3vw, 24px);
+    gap:20px;
     align-items:start;
     animation:pbWorkspaceIn .38s var(--ease-out) both;
   }
@@ -226,7 +226,7 @@
   .pb .director-workspace > .col-center { animation:directorStageIn .56s var(--ease-out) .1s both; }
   .pb .director-workspace > .col-right { animation:directorRailIn .48s var(--ease-out) .16s both; }
   .pb[data-director-mode="basic"] .director-workspace {
-    grid-template-columns:clamp(360px, 25vw, 460px) minmax(640px, 1fr);
+    grid-template-columns:340px minmax(640px, 1fr);
     grid-template-areas:"story stage";
   }
   .pb[data-director-mode="basic"] .col-left {
@@ -261,10 +261,6 @@
   .pb .stage-placeholder::before { content:''; position:absolute; inset:0; z-index:var(--z-stage-backdrop); background:radial-gradient(circle at 50% 42%,color-mix(in srgb,var(--accent) 14%,transparent),transparent 32%),radial-gradient(circle at 14% 88%,rgba(242,187,104,.08),transparent 26%); pointer-events:none; }
 
   @media (min-width: 2560px) {
-    .pb {
-      max-width: min(92vw, 2040px);
-      padding: var(--s-3) clamp(20px, 2vw, 48px) var(--s-7);
-    }
     .pb .stage-placeholder {
       min-height: clamp(420px, 48vh, 580px);
       max-height: 620px;
@@ -365,7 +361,7 @@
   .pb.focus-mode .footer { display:none !important; }
   .pb.focus-mode .api-status, .pb.focus-mode .utility-menu,
   .pb.focus-mode .col-center > .monitor, .pb.focus-mode .col-center > .generation-settings { display:none !important; }
-  .pb.focus-mode { max-width:1480px; padding-top:var(--s-3); padding-bottom:0; }
+  .pb.focus-mode { padding-top:var(--s-3); padding-bottom:0; }
   .pb.focus-mode .pb-topline { align-items:center; justify-content:flex-end; margin-bottom:var(--s-3); }
   .pb.focus-mode .director-workspace { grid-template-columns:minmax(0,1fr); grid-template-areas:"stage"; }
   .pb.focus-mode .col-center { width:100%; margin-inline:auto; }
