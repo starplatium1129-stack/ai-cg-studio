@@ -26,7 +26,7 @@ var OUTPUT_FILENAME_PREFIX = 'anima_app';
 var MODELS = Object.freeze({
   'anima-base-v1.0': { file:'anima-base-v1.0.safetensors', label:'Anima Base v1.0', family:'anima', profileId:'anima_base_v10', steps:generationContract.ANIMA_DEFAULTS.steps, cfg:generationContract.ANIMA_DEFAULTS.cfg, sampler:generationContract.ANIMA_DEFAULTS.sampler, scheduler:generationContract.ANIMA_DEFAULTS.scheduler, sizes:['832x1216','960x1536','1024x1024','1216x832'] },
   'anima-aesthetic-v1.1': { file:'anima-aesthetic-v1.1.safetensors', label:'Anima Aesthetic v1.1', family:'anima', profileId:'anima_aesthetic_v11', steps:generationContract.ANIMA_DEFAULTS.steps, cfg:generationContract.ANIMA_DEFAULTS.cfg, sampler:generationContract.ANIMA_DEFAULTS.sampler, scheduler:generationContract.ANIMA_DEFAULTS.scheduler, sizes:['832x1216','1024x1024','1216x832'], noLora:true },
-  'krea2-turbo-fp8': { file:'krea2_turbo_fp8_scaled.safetensors', label:'Krea 2 Turbo', family:'krea2', profileId:'krea2_turbo_fp8', steps:generationContract.KREA_DEFAULTS.steps, cfg:generationContract.KREA_DEFAULTS.cfg, sampler:generationContract.KREA_DEFAULTS.sampler, scheduler:generationContract.KREA_DEFAULTS.scheduler, sizes:['1024x1024','1024x1536','1536x1024'], rebalance:{ preset:'standard', multiplier:1.1, normalizeTaps:false } }
+  'krea2-turbo-fp8': { file:'krea2_turbo_fp8_scaled.safetensors', label:'Krea 2 Turbo', family:'krea2', profileId:'krea2_turbo_fp8', steps:generationContract.KREA_DEFAULTS.steps, cfg:generationContract.KREA_DEFAULTS.cfg, sampler:generationContract.KREA_DEFAULTS.sampler, scheduler:generationContract.KREA_DEFAULTS.scheduler, sizes:['1024x1024','1024x1536','1536x1024'], rebalance:{ preset:'aggressive', multiplier:1.0, normalizeTaps:true } }
 });
 
 var PROFILE_BY_MODEL = Object.freeze({
@@ -144,7 +144,7 @@ function resourceExists(root, kind, file) {
 function requiredResources(config, input, loraRoot) {
   var root = modelRoot(config);
   var model = MODELS[input.modelId];
-  var encoder = model.family === 'krea2' ? 'qwen3vl_4b_fp8_scaled.safetensors' : 'qwen_3_06b_base.safetensors';
+  var encoder = model.family === 'krea2' ? 'qwen3-vl-4b-heretic_fp8_e4m3fn.safetensors' : 'qwen_3_06b_base.safetensors';
   if (!resourceExists(root, 'diffusion_models', model.file)) throw serviceError(503, 'ANIMA_MODEL_UNAVAILABLE', '所选生成底模资源不可用');
   if (!resourceExists(root, 'text_encoders', encoder)) throw serviceError(503, 'ANIMA_ENCODER_UNAVAILABLE', '所选底模的文本编码器资源不可用');
   if (!resourceExists(root, 'vae', 'qwen_image_vae.safetensors')) throw serviceError(503, 'ANIMA_VAE_UNAVAILABLE', '所选底模的 VAE 资源不可用');
@@ -273,7 +273,7 @@ function buildWorkflow(input) {
     var rebalance = model.rebalance;
     var workflow = {
       '1': { class_type:'UNETLoader', inputs:{ unet_name:model.file, weight_dtype:'default' } },
-      '2': { class_type:'CLIPLoader', inputs:{ clip_name:'qwen3vl_4b_fp8_scaled.safetensors', type:'krea2' } },
+      '2': { class_type:'CLIPLoader', inputs:{ clip_name:'qwen3-vl-4b-heretic_fp8_e4m3fn.safetensors', type:'krea2' } },
       '3': { class_type:'VAELoader', inputs:{ vae_name:'qwen_image_vae.safetensors' } },
       '4': { class_type:'CLIPTextEncode', inputs:{ clip:['2', 0], text:input.prompt } },
       '5': { class_type:'ConditioningZeroOut', inputs:{ conditioning:['4', 0] } },
@@ -864,7 +864,7 @@ function createAnimaService(config, options) {
   function status() {
     var modelRootPath = modelRoot(config);
     function available(model) {
-      var encoder = model.family === 'krea2' ? 'qwen3vl_4b_fp8_scaled.safetensors' : 'qwen_3_06b_base.safetensors';
+      var encoder = model.family === 'krea2' ? 'qwen3-vl-4b-heretic_fp8_e4m3fn.safetensors' : 'qwen_3_06b_base.safetensors';
        return resourceExists(modelRootPath, 'diffusion_models', model.file)
          && resourceExists(modelRootPath, 'text_encoders', encoder)
          && resourceExists(modelRootPath, 'vae', 'qwen_image_vae.safetensors');

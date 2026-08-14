@@ -94,7 +94,7 @@ function buildConfig(runtime) {
   fs.writeFileSync(path.join(animaModelRoot, 'diffusion_models', 'anima-base-v1.0.safetensors'), 'e2e-anima-fixture');
   fs.writeFileSync(path.join(animaModelRoot, 'diffusion_models', 'krea2_turbo_fp8_scaled.safetensors'), 'e2e-krea-fixture');
   fs.writeFileSync(path.join(animaModelRoot, 'text_encoders', 'qwen_3_06b_base.safetensors'), 'e2e-anima-fixture');
-  fs.writeFileSync(path.join(animaModelRoot, 'text_encoders', 'qwen3vl_4b_fp8_scaled.safetensors'), 'e2e-krea-fixture');
+  fs.writeFileSync(path.join(animaModelRoot, 'text_encoders', 'qwen3-vl-4b-heretic_fp8_e4m3fn.safetensors'), 'e2e-krea-fixture');
   fs.writeFileSync(path.join(animaModelRoot, 'vae', 'qwen_image_vae.safetensors'), 'e2e-anima-fixture');
   return config;
 }

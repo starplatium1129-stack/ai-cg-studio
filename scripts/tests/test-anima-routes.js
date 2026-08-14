@@ -93,7 +93,7 @@ function prepareComfyResources(context) {
     ['diffusion_models', 'anima-aesthetic-v1.1.safetensors'],
     ['diffusion_models', 'krea2_turbo_fp8_scaled.safetensors'],
     ['text_encoders', 'qwen_3_06b_base.safetensors'],
-    ['text_encoders', 'qwen3vl_4b_fp8_scaled.safetensors'],
+    ['text_encoders', 'qwen3-vl-4b-heretic_fp8_e4m3fn.safetensors'],
     ['vae', 'qwen_image_vae.safetensors'],
     ['loras', 'ayachi_nene_v20_anima.safetensors'],
     ['loras', 'ayachi_nene_v20_anima_unified_e16.safetensors'],

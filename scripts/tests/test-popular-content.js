@@ -34,7 +34,9 @@ test('popular data: 18 characters, unique ids, exactly one default outfit per ch
 var adults = characters.filter(function (character) { return character.adultEligibility === 'adult'; });
   var nonAdults = characters.filter(function (character) { return character.adultEligibility !== 'adult'; });
   assert.ok(adults.length >= 1, 'at least one clearly-adult character must be available for adult blueprints');
-  assert.ok(nonAdults.length > adults.length, 'conservative fail-closed majority is expected');
+  // 2026-08-14 用户决策「全部开放」：18 角色全部 adultEligibility=adult；
+  // fail-closed 语义（adultEnabled=false、unknown/underage 分类）由下方合成对象用例继续保证。
+  assert.strictEqual(nonAdults.length, 0, 'all popular characters are adult-eligible after the full-open decision');
 });
 
 test('popular data: all character fields never leak nene/natsume anchors', function () {
@@ -55,8 +57,8 @@ test('popular data: all character fields never leak nene/natsume anchors', funct
   assert.deepStrictEqual(popular.scanCharacterPollution(synthetic), ['raiden_shogun.outfit.shogun_robes: studio control prefix']);
 });
 
-test('blueprints: 18 characters x 3 prototype scenes + 3 adult generic, adult blueprints fail closed for non-adults', function () {
-  assert.strictEqual(blueprints.length, 57, 'expected 54 character scenes + 3 adult scenes, got ' + blueprints.length);
+test('blueprints: 18 characters x (3 prototype + 1 adult) + 3 adult generic, adult blueprints fail closed for non-adults', function () {
+  assert.strictEqual(blueprints.length, 75, 'expected 72 character scenes + 3 adult scenes, got ' + blueprints.length);
   var ids = new Set(blueprints.map(function (blueprint) { return blueprint.id; }));
   assert.strictEqual(ids.size, blueprints.length, 'blueprint ids must be unique');
   var byCharacter = {};
@@ -68,12 +70,17 @@ test('blueprints: 18 characters x 3 prototype scenes + 3 adult generic, adult bl
     assert.ok(blueprint.promptTokens.length > 0, blueprint.id + ' needs prompt tokens');
     if (blueprint.characterId) byCharacter[blueprint.characterId] = (byCharacter[blueprint.characterId] || 0) + 1;
   });
-  // 每个角色恰好 3 个原型场景；通用蓝图（成人 3 个）无 characterId。
+  // 每个角色恰好 4 个场景：3 个原型 + 1 个人设化成人场景；通用蓝图（成人 3 个）无 characterId。
   Object.entries(byCharacter).forEach(function (entry) {
-    assert.strictEqual(entry[1], 3, entry[0] + ' must own exactly 3 prototype scenes');
+    assert.strictEqual(entry[1], 4, entry[0] + ' must own exactly 4 scenes (3 prototype + 1 adult)');
   });
   assert.strictEqual(blueprints.filter(function (blueprint) { return !blueprint.characterId; }).length, 3,
     'only the three adult generic blueprints may lack a characterId');
+  // 每个角色恰有 1 个带 characterId 的成人场景。
+  Object.entries(byCharacter).forEach(function (entry) {
+    var adultOwned = blueprints.filter(function (blueprint) { return blueprint.characterId === entry[0] && blueprint.adult; });
+    assert.strictEqual(adultOwned.length, 1, entry[0] + ' must own exactly 1 character-specific adult scene');
+  });
 
   var adultBlueprints = blueprints.filter(function (blueprint) { return blueprint.adult; });
   assert.ok(adultBlueprints.length >= 1, 'adult-only blueprints must exist');
@@ -189,15 +196,16 @@ test('krea style recipes: adult recipes fail closed for unknown/underage and wit
   var adult = recipes.KREA_STYLE_RECIPES.filter(function (recipe) { return recipe.adult; })[0];
   assert.ok(adult);
   var adultChar = characters.find(function (character) { return character.adultEligibility === 'adult'; });
-  var underage = characters.find(function (character) { return character.adultEligibility === 'underage'; });
-  var unknown = characters.find(function (character) { return character.adultEligibility === 'unknown'; });
   assert.ok(adultChar, 'at least one adult-eligible character must exist');
-  assert.ok(underage, 'at least one underage character must exist (fail-closed baseline)');
+  // 数据已按「全部开放」升为 adult；用合成 underage/unknown 对象保持 fail-closed 契约。
+  var ineligible = [
+    { id: 'synthetic-underage', adultEligibility: 'underage' },
+    { id: 'synthetic-unknown', adultEligibility: 'unknown' },
+  ];
   assert.strictEqual(recipes.recipeEligible(adult, adultChar, { adultEnabled: true }), true);
   assert.strictEqual(recipes.recipeEligible(adult, adultChar, { adultEnabled: false }), false,
     'adult recipe must require the mature-content switch');
-  // unknown 分类已全部按「全部开放」升为 adult；仍保留契约语义，数据中无该分类时跳过。
-  [underage, unknown].filter(Boolean).forEach(function (character) {
+  ineligible.forEach(function (character) {
     assert.strictEqual(recipes.recipeEligible(adult, character, { adultEnabled: true }), false,
       character.id + ' must never be eligible for an adult recipe');
     assert.ok(recipes.eligibleStyleRecipes(recipes.KREA_STYLE_RECIPES, character, { adultEnabled: true })
@@ -236,8 +244,8 @@ test('krea style recipes: resolution is engine-default -> blueprint hint -> sele
   // 成人蓝图 hint → 成人配方，仅对 adult 角色可达。
   var adultStyle = recipes.resolveStyleRecipe(recipes.KREA_STYLE_RECIPES, 'krea2', adultBp, null, raiden, { adultEnabled: true });
   assert.strictEqual(adultStyle.adult, true, 'adult blueprint hint must resolve to an adult recipe');
-  var underage = popular.findCharacter(characters, 'sakurajima_mai');
-  assert.strictEqual(recipes.resolveStyleRecipe(recipes.KREA_STYLE_RECIPES, 'krea2', adultBp, null, underage, { adultEnabled: true }), null,
+  var ineligible = { id: 'synthetic-underage', adultEligibility: 'underage' };
+  assert.strictEqual(recipes.resolveStyleRecipe(recipes.KREA_STYLE_RECIPES, 'krea2', adultBp, null, ineligible, { adultEnabled: true }), null,
     'underage character must fail closed on an adult recipe hint');
   assert.strictEqual(recipes.resolveStyleRecipe(recipes.KREA_STYLE_RECIPES, 'krea2', adultBp, null, raiden, { adultEnabled: false }), null,
     'adult recipe must fail closed when the mature switch is off');
@@ -286,13 +294,14 @@ test('krea prose: automatic style first, 3-5 visual sentences, no meta phrases o
 });
 
 test('krea prose: adult recipe fails closed inside buildPopularPromptPlan for ineligible characters', function () {
-  var mai = popular.findCharacter(characters, 'sakurajima_mai');
+  var ineligible = JSON.parse(JSON.stringify(characters[0]));
+  ineligible.adultEligibility = 'underage';
   var adultBp = blueprints.find(function (blueprint) { return blueprint.adult; });
-  var adultStyle = recipes.resolveStyleRecipe(recipes.KREA_STYLE_RECIPES, 'krea2', adultBp, null, mai, { adultEnabled: true });
+  var adultStyle = recipes.resolveStyleRecipe(recipes.KREA_STYLE_RECIPES, 'krea2', adultBp, null, ineligible, { adultEnabled: true });
   assert.strictEqual(adultStyle, null, 'underage must never resolve an adult style');
   // 即便调用方绕过解析直接传 adult 配方，build 层也要再 fail-closed 一次。
   var sneaked = popular.buildPopularPromptPlan({
-    character: mai, outfit: mai.outfits[0], blueprint: adultBp, engine: 'krea2',
+    character: ineligible, outfit: ineligible.outfits[0], blueprint: adultBp, engine: 'krea2',
     profile: null, adultEnabled: true, style: { lead: 'mature sensual content', adult: true },
   });
   assert.strictEqual(sneaked, null, 'build layer must reject an adult style for an ineligible character');
@@ -357,12 +366,13 @@ test('curated artist styles use native Anima tags and Krea prose', function () {
 });
 
 test('prompt compiler: restored adult blueprint fails closed for ineligible characters', function () {
-  var mai = popular.findCharacter(characters, 'sakurajima_mai');
+  var ineligible = JSON.parse(JSON.stringify(characters[0]));
+  ineligible.adultEligibility = 'underage';
   var adultBlueprint = blueprints.find(function (item) { return item.adult; });
   assert.ok(adultBlueprint);
   // 无论 manualTags / profile 是否携带显式词，组装必须整体拒绝。
   var rejected = popular.buildPopularPromptPlan({
-    character: mai, outfit: mai.outfits[0], blueprint: adultBlueprint, engine: 'anima', profile: null, adultEnabled: true,
+    character: ineligible, outfit: ineligible.outfits[0], blueprint: adultBlueprint, engine: 'anima', profile: null, adultEnabled: true,
   });
   assert.strictEqual(rejected, null, 'underage character must never assemble an adult blueprint');
   assert.ok(!adultBlueprint.promptTokens.join(' ').match(/nsfw|nude|explicit/i), 'adult blueprint should not smuggle explicit tokens via assembly');
