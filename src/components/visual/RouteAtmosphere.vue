@@ -317,7 +317,8 @@ onUnmounted(() => {
   height: 58vw;
   max-width: 820px;
   max-height: 820px;
-  background: radial-gradient(circle, var(--character-aura, var(--accent-glow)) 0%, transparent 68%);
+  /* 2026-08-15 rella 化：未设置角色光环时，主光球回落为青蓝星辉 */
+  background: radial-gradient(circle, var(--character-aura, var(--rella-glow-cyan)) 0%, transparent 68%);
   animation: aurora-float-1 14s ease-in-out infinite alternate;
 }
 .aurora-orb-2 {
@@ -327,7 +328,7 @@ onUnmounted(() => {
   height: 62vw;
   max-width: 880px;
   max-height: 880px;
-  background: radial-gradient(circle, var(--character-aura-secondary, var(--accent-violet)) 0%, transparent 70%);
+  background: radial-gradient(circle, var(--character-aura-secondary, var(--rella-glow-violet)) 0%, transparent 70%);
   animation: aurora-float-2 18s ease-in-out infinite alternate;
 }
 .aurora-orb-3 {

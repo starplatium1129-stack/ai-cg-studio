@@ -44,6 +44,21 @@
   --editorial-gold: #d7b56d;
   --editorial-gold-soft: rgba(215, 181, 109, 0.12);
 
+  /* ---- Rella 夜空氛围（2026-08-15 设计升级：梦幻夜景辉光 / 空灵星辉） ----
+     只做背景/辉光/渐变层，不做文字色；对比度仍由既有文字 token 承担。
+     夜空蓝紫 + 青蓝辉光 + 星辉白，樱花粉仅作点缀（与 rella 画面中的
+     蓝紫夜空 + 粉紫渐变一致）。 */
+  --rella-night:       #0d1430;  /* 最深夜空 */
+  --rella-night-soft:  #1b2448;  /* 夜空过渡层 */
+  --rella-night-glass: rgba(13, 20, 48, 0.62); /* 夜空玻璃卡 */
+  --rella-star:        #cfe4ff;  /* 星辉白蓝 */
+  --rella-cyan:        #7fd8ff;  /* 辉光青蓝 */
+  --rella-violet:      #8f7bff;  /* 空灵紫 */
+  --rella-glow-cyan:   rgba(127, 216, 255, 0.20);  /* 青蓝辉光层 */
+  --rella-glow-violet: rgba(143, 123, 255, 0.22);  /* 紫辉光层 */
+  --rella-glow-pink:   rgba(244, 166, 215, 0.14);  /* 粉辉光点缀层 */
+  --stage-rella: linear-gradient(160deg, #232d5e 0%, #171e42 46%, #0d1230 100%);
+
   /* ---- Archive & Technical Semantics (Arknights-inspired) ---- */
   --archive-paper:       #f2f5f3;
   --archive-ink:         #11181d;
@@ -298,6 +313,8 @@
   /* 立绘舞台底的浅色版:画册纸上的淡紫/淡琥珀,而不是暗房 */
   --stage-violet: linear-gradient(155deg, #f8effa 0%, #eadcf2 50%, #d3c1df 100%);
   --stage-amber:  linear-gradient(155deg, #fff8eb 0%, #f1e3c5 50%, #ddc99c 100%);
+  /* rella 舞台浅色版:淡蓝紫晨纸,不是深夜空 */
+  --stage-rella: linear-gradient(160deg, #eef3fc 0%, #e3e9f7 46%, #d5ddf1 100%);
 }
 
 /* 浅纸上的背景光斑:深色主题是氛围,浅纸上是脏渍 —— 压到几乎看不见 */
@@ -309,6 +326,9 @@
   opacity: .22;
   background: radial-gradient(circle, color-mix(in srgb, var(--accent) 10%, transparent) 0, transparent 70%);
 }
+/* rella 星野层同理:浅纸上只留极淡的星点剪影 */
+[data-theme="light"] .starfield { opacity: .3; }
+[data-theme="light"] .starfield::before { opacity: .18; }
 
 /* Same-origin page changes use a short optical dissolve where supported. */
 @view-transition { navigation: auto; }
@@ -340,9 +360,11 @@ body {
   background-image:
     radial-gradient(circle at 1px 1px, color-mix(in srgb, var(--border-strong) 26%, transparent) 1px, transparent 0),
     linear-gradient(118deg, color-mix(in srgb, white 2%, transparent), transparent 34%),
-    radial-gradient(circle at 12% 18%, color-mix(in srgb, var(--accent) 6%, transparent), transparent 26rem),
-    radial-gradient(circle at 88% 30%, color-mix(in srgb, var(--archive-blue) 7%, transparent), transparent 30rem);
-  background-size: 24px 24px, auto, auto, auto;
+    /* 2026-08-15 rella 化：页面底色从"粉紫为主"转向"蓝紫夜空 + 青蓝辉光"，粉紫退为点缀 */
+    radial-gradient(circle at 12% 18%, color-mix(in srgb, var(--rella-violet) 10%, transparent), transparent 26rem),
+    radial-gradient(circle at 88% 30%, color-mix(in srgb, var(--rella-cyan) 9%, transparent), transparent 30rem),
+    radial-gradient(circle at 55% 96%, color-mix(in srgb, var(--accent) 4%, transparent), transparent 24rem);
+  background-size: 24px 24px, auto, auto, auto, auto;
 }
 
 body::before, body::after {
@@ -351,18 +373,20 @@ body::before, body::after {
 }
 body::before {
   width: 42rem; height: 42rem; top: -24rem; right: -16rem;
-  background: radial-gradient(circle, color-mix(in srgb, var(--nene-violet) 18%, transparent) 0, transparent 70%);
+  /* rella 化：主光斑从粉紫转向夜空蓝紫辉光 */
+  background: radial-gradient(circle, color-mix(in srgb, var(--rella-violet) 20%, transparent) 0, transparent 70%);
 }
 body::after {
   width: 34rem; height: 34rem; bottom: -22rem; left: -14rem;
-  background: radial-gradient(circle, color-mix(in srgb, var(--natsume-amber) 12%, transparent) 0, transparent 72%);
+  /* rella 化：次光斑从琥珀转向青蓝星辉（保留暖色仅作品牌点缀时使用 --natsume-amber 低强度） */
+  background: radial-gradient(circle, color-mix(in srgb, var(--rella-cyan) 15%, transparent) 0, transparent 72%);
 }
 /* 氛围光斑只在艺术向页面缓慢浮动；工作台保持静止，避免抢画面 */
-body:has(.home-page, .chat-page, .gallery-page, .showcase-page)::before {
+body:has(.home-page, .chat-page, .gallery-page, .showcase-page, .scene-atlas, .pop-hero)::before {
   opacity: .72;
   animation: float-orb 18s ease-in-out infinite alternate;
 }
-body:has(.home-page, .chat-page, .gallery-page, .showcase-page)::after {
+body:has(.home-page, .chat-page, .gallery-page, .showcase-page, .scene-atlas, .pop-hero)::after {
   opacity: .62;
   animation: float-orb 22s ease-in-out infinite alternate-reverse;
 }
@@ -404,9 +428,10 @@ body:has(.home-page, .chat-page, .gallery-page, .showcase-page)::after {
 body:has(.pb, .training-page) .kana-watermark { opacity: 0; }
 @media (max-width: 640px) { .kana-watermark { opacity: 0; } }
 
-/* ---- 博客式星光层：散落的柔光星点缓慢上浮呼吸（与樱花雨错开节奏），
-   DOM 在 AppLayout，z-below 浮在背景之上内容之下。reduced-motion 由全局
-   动画降级兜底。 */
+/* ---- 星野层：rella 化（2026-08-15） ----
+   两层结构：① 细碎星点（多档大小、白蓝紫三色，缓慢上浮呼吸）；
+   ② 大柔光 bokeh 光斑（rella 画面标志性的梦幻光斑，超慢漂移）。
+   DOM 在 AppLayout，z-below 浮在背景之上内容之下；reduced-motion 由全局降级兜底。 */
 .starfield {
   position: fixed;
   inset: 0;
@@ -414,18 +439,39 @@ body:has(.pb, .training-page) .kana-watermark { opacity: 0; }
   pointer-events: none;
   user-select: none;
   background-image:
-    radial-gradient(1.5px 1.5px at 12% 24%, color-mix(in srgb, var(--accent) 50%, transparent), transparent 100%),
-    radial-gradient(1px 1px at 29% 68%, color-mix(in srgb, var(--accent-violet) 55%, transparent), transparent 100%),
-    radial-gradient(2px 2px at 46% 14%, color-mix(in srgb, var(--mood-love-text) 40%, transparent), transparent 100%),
-    radial-gradient(1.5px 1.5px at 64% 46%, color-mix(in srgb, var(--accent) 45%, transparent), transparent 100%),
-    radial-gradient(1px 1px at 79% 78%, color-mix(in srgb, var(--accent-violet) 50%, transparent), transparent 100%),
-    radial-gradient(2px 2px at 90% 30%, color-mix(in srgb, var(--mood-love-text) 35%, transparent), transparent 100%),
-    radial-gradient(1px 1px at 38% 90%, color-mix(in srgb, var(--accent) 42%, transparent), transparent 100%);
+    /* 光斑层（bokeh） */
+    radial-gradient(7rem 7rem at 8% 22%, var(--rella-glow-cyan), transparent 62%),
+    radial-gradient(5.5rem 5.5rem at 72% 16%, var(--rella-glow-violet), transparent 60%),
+    radial-gradient(4.5rem 4.5rem at 40% 78%, var(--rella-glow-pink), transparent 58%),
+    radial-gradient(6rem 6rem at 92% 62%, var(--rella-glow-cyan), transparent 64%),
+    /* 星点层 */
+    radial-gradient(1.5px 1.5px at 12% 24%, color-mix(in srgb, var(--rella-star) 55%, transparent), transparent 100%),
+    radial-gradient(1px 1px at 29% 68%, color-mix(in srgb, var(--rella-violet) 60%, transparent), transparent 100%),
+    radial-gradient(2px 2px at 46% 14%, color-mix(in srgb, var(--rella-cyan) 50%, transparent), transparent 100%),
+    radial-gradient(1.5px 1.5px at 64% 46%, color-mix(in srgb, var(--rella-star) 50%, transparent), transparent 100%),
+    radial-gradient(1px 1px at 79% 78%, color-mix(in srgb, var(--rella-violet) 55%, transparent), transparent 100%),
+    radial-gradient(2px 2px at 90% 30%, color-mix(in srgb, var(--rella-cyan) 45%, transparent), transparent 100%),
+    radial-gradient(1.5px 1.5px at 38% 90%, color-mix(in srgb, var(--rella-star) 48%, transparent), transparent 100%),
+    radial-gradient(1px 1px at 57% 38%, color-mix(in srgb, var(--accent) 38%, transparent), transparent 100%);
   animation: starfield-float 16s ease-in-out infinite alternate;
 }
 @keyframes starfield-float {
-  from { opacity: .45; transform: translateY(0); }
-  to   { opacity: .75; transform: translateY(-12px); }
+  from { opacity: .4; transform: translateY(0); }
+  to   { opacity: .72; transform: translateY(-14px); }
+}
+/* 光斑层独立呼吸：与星点错开节奏（双背景动画需要拆层，光斑用单独伪层实现） */
+.starfield::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(9rem 9rem at 58% 88%, color-mix(in srgb, var(--rella-violet) 9%, transparent), transparent 60%),
+    radial-gradient(7rem 7rem at 18% 58%, color-mix(in srgb, var(--rella-cyan) 7%, transparent), transparent 62%);
+  animation: bokeh-drift 26s ease-in-out infinite alternate;
+}
+@keyframes bokeh-drift {
+  from { opacity: .35; transform: translate3d(0, 0, 0) scale(1); }
+  to   { opacity: .6; transform: translate3d(-1.5rem, 1rem, 0) scale(1.06); }
 }
 
 a { color: var(--accent); text-decoration: none; transition: color var(--t-fast); }
@@ -461,6 +507,9 @@ body > *:has(+ .footer),
   position: sticky; top: 0; z-index: var(--z-nav);
   isolation:isolate;
   background:
+    /* 2026-08-15 rella 化：玻璃底上叠一层极淡青蓝星辉，夜航般的微光 */
+    radial-gradient(28rem 10rem at 82% -40%, color-mix(in srgb, var(--rella-cyan) 7%, transparent), transparent 68%),
+    radial-gradient(20rem 8rem at 12% -60%, color-mix(in srgb, var(--rella-violet) 8%, transparent), transparent 66%),
     linear-gradient(110deg, var(--glass-specular), transparent 26%, transparent 72%, color-mix(in srgb,var(--accent) 7%,transparent)),
     var(--nav-bg);
   -webkit-backdrop-filter: blur(26px) saturate(155%) contrast(1.03);
@@ -909,7 +958,7 @@ pre code { background: none; padding: 0; color: var(--text-primary); }
   background:linear-gradient(90deg,transparent,var(--glass-specular),transparent);
   pointer-events:none;
 }
-.card-create:hover { border-color: var(--accent); box-shadow: var(--shadow-md); }
+.card-create:hover { border-color: var(--accent); box-shadow: var(--shadow-md), 0 0 18px color-mix(in srgb, var(--rella-cyan) 12%, transparent); }
 .card-direct {
   position:relative;
   background: linear-gradient(135deg, var(--accent-soft), var(--bg-surface));
@@ -926,7 +975,7 @@ pre code { background: none; padding: 0; color: var(--text-primary); }
   background: linear-gradient(225deg, var(--bg-base) 0 50%, transparent 50%);
   pointer-events:none;
 }
-.card-direct:hover { box-shadow: var(--shadow-lg); }
+.card-direct:hover { box-shadow: var(--shadow-lg), 0 0 22px color-mix(in srgb, var(--rella-violet) 16%, transparent); }
 
 /* shadow 阶梯修饰 — 与三级叠加使用 */
 .card-level-1 { box-shadow: var(--shadow-sm); }

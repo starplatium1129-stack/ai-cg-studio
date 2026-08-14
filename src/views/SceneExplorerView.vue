@@ -624,7 +624,7 @@ onMounted(() => { init() })
 .page { --page-max: 1100px; }
 .subtitle { margin-bottom:0; }
 
-.scene-atlas { position:relative; overflow:hidden; display:grid; grid-template-columns:minmax(0,.9fr) minmax(340px,1.1fr); gap:var(--s-5); margin-bottom:var(--s-5); padding:var(--s-5); border:1px solid var(--border-soft); border-radius:var(--r-xl); background:linear-gradient(120deg,var(--archive-blue-soft),transparent 58%),linear-gradient(145deg,var(--glass-highlight),transparent 28%),var(--bg-surface); box-shadow:var(--shadow-glass-sm); }
+.scene-atlas { position:relative; overflow:hidden; display:grid; grid-template-columns:minmax(0,.9fr) minmax(340px,1.1fr); gap:var(--s-5); margin-bottom:var(--s-5); padding:var(--s-5); border:1px solid var(--border-soft); border-radius:var(--r-xl); background:linear-gradient(120deg,var(--rella-glow-violet),transparent 58%),linear-gradient(145deg,var(--glass-highlight),transparent 28%),linear-gradient(160deg,color-mix(in srgb,var(--rella-night-soft) 55%,transparent),transparent 70%),var(--bg-surface); box-shadow:var(--shadow-glass-sm); }
 .scene-atlas::before { content:"SCENE"; position:absolute; left:-.04em; bottom:-.22em; color:color-mix(in srgb,var(--text-primary) 4%,transparent); font:800 clamp(4rem,10vw,8rem) var(--font-mono); letter-spacing:-.08em; pointer-events:none; }
 .scene-atlas-copy { position:relative; z-index:var(--z-raised); display:flex; flex-direction:column; justify-content:center; min-width:0; }
 .scene-atlas-register { display:grid; grid-template-columns:auto auto 1fr; align-items:center; gap:var(--s-3); margin-bottom:var(--s-5); color:var(--text-muted); font:650 var(--fs-mono-xs) var(--font-mono); letter-spacing:.12em; text-transform:uppercase; }
