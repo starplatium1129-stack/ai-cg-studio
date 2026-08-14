@@ -531,16 +531,19 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
 
   const identityTokens = character.identityTokens
   const exactControls = [...new Set([
-    ...outfit.tokens,
+    ...(adultGranted ? [] : outfit.tokens),
     ...(character.exactTokens || []),
     ...nsfwTokens,
   ])]
+  const effectiveArtists = (options.artistTags && options.artistTags.length)
+    ? options.artistTags
+    : (adultGranted && blueprint?.adultArtistHint ? [blueprint.adultArtistHint] : undefined)
   const rating = profileRatingTag(profile, { rating: adultGranted ? 'R18' : 'ALL' })
   const plan = createPromptPlan({
     profile,
     identity: identityTokens.join(', '),
     controls: exactControls,
-    artists: options.artistTags,
+    artists: effectiveArtists,
     exactTokens: character.exactTokens,
     scenePrompt: (blueprint?.promptTokens || []).join(', '),
     emotion: [],

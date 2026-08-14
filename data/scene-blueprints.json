@@ -2160,32 +2160,32 @@
       "location": "稻妻天守阁内寝",
       "action": "和服半褪倚在榻上，雷光映身",
       "timeOfDay": "夜晚",
-      "lighting": "雷光微闪与昏暖烛火",
-      "camera": "intimate close-up, low angle",
-      "mood": "慵懒掌控",
+      "lighting": "warm candlelight and soft purple ambient rim glow",
+      "camera": "intimate medium shot, upper body focus",
+      "mood": "高贵羞赧与冷艳私密",
       "sceneTags": [
-        "inazuma",
-        "tenshukaku",
         "tatami",
+        "bedroom",
         "candlelight",
-        "purple",
+        "silk_cushion",
+        "discarded_kimono",
+        "purple_glow",
         "intimate",
         "night"
       ],
-      "promptProse": "In the private inner chamber of Tenshukaku, dim candlelight flickers across tatami and silk bedding as faint purple lightning glows outside the shoji screens, the Shogun reclining alone in the tranquil room.",
+      "promptProse": "Inside the secluded private chamber of Tenshukaku bathed in warm amber candlelight and subtle violet lightning glow, Raiden Shogun reclines gracefully on luxurious silk tatami cushions with no other people present, her discarded purple kimono and golden hairpin resting on the floor beside her.",
       "promptTokens": [
-        "inazuma",
-        "tenshukaku",
-        "tatami",
+        "tatami_room",
         "candlelight",
-        "purple",
-        "silk",
-        "kimono",
+        "silk_cushions",
+        "japanese_bedroom",
+        "warm_lighting",
+        "purple_ambient_light",
         "intimate",
-        "night",
         "volumetric_lighting",
         "depth_of_field",
-        "clean_face"
+        "clean_face",
+        "delicate_collarbone"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, modern, neon, dark shadowed face, flat lighting, extra characters"
@@ -2197,17 +2197,18 @@
       "nsfwTokens": [
         "nude",
         "completely_naked",
-        "fully_nude",
-        "no_clothes",
-        "naked_body",
+        "bare_shoulders",
         "bare_chest",
         "exposed_breasts",
         "nipples",
-        "kimono_off",
-        "topless",
-        "thighhighs"
+        "soft_skin",
+        "blushing",
+        "parted_lips",
+        "lying_on_side",
+        "medium_shot"
       ],
-      "nsfwProse": "Fully naked on the silk cushions with her purple kimono discarded on the floor, her bare breasts and nipples are exposed to the warm candlelight as she watches calmly with parted legs."
+      "nsfwProse": "Completely nude with her intricate purple kimono discarded beside her on the tatami, Raiden Shogun reclines softly on silk cushions, her bare breasts, slender waist and delicate collarbone glowing under warm candlelight as she looks at the viewer with a rare blushing, vulnerable gaze.",
+      "adultArtistHint": "@kousaki (kousaki r)"
     },
     {
       "id": "sakurajima_mai_r18_hotel",
@@ -2218,28 +2219,31 @@
       "location": "夜晚的酒店房间",
       "action": "兔女郎装半褪坐在床边",
       "timeOfDay": "夜晚",
-      "lighting": "暖黄床头灯",
-      "camera": "intimate medium close-up",
-      "mood": "羞怯撩人",
+      "lighting": "warm bedside lamplight and soft window moonlight",
+      "camera": "intimate medium shot, side view",
+      "mood": "羞怯温存与深情诱惑",
       "sceneTags": [
         "hotel_room",
-        "bunny_suit",
         "bed",
-        "warm_light",
+        "soft_sheets",
+        "discarded_bunny_suit",
+        "warm_lamp",
         "night",
         "intimate"
       ],
-      "promptProse": "In a private hotel room at night, Sakurajima Mai sits alone on the edge of the bed under the warm bedside lamp casting soft shadows across the sheets.",
+      "promptProse": "Inside a private hotel room at night, Sakurajima Mai relaxes softly against white silk pillows in bed with no other people present, her discarded bunny suit and white rabbit hair clip placed gently on the bedside nightstand under warm lamp light.",
       "promptTokens": [
         "hotel_room",
-        "bunny_suit",
-        "bed",
-        "warm_light",
+        "white_bedsheets",
+        "pillows",
+        "warm_lighting",
+        "bedside_lamp",
         "night",
         "intimate",
         "volumetric_lighting",
         "depth_of_field",
-        "clean_face"
+        "clean_face",
+        "delicate_collarbone"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, fantasy, magic, dark shadowed face, flat lighting, extra characters"
@@ -2251,18 +2255,19 @@
       "nsfwTokens": [
         "nude",
         "completely_naked",
-        "fully_nude",
-        "no_clothes",
-        "naked_body",
+        "bare_shoulders",
         "bare_chest",
         "exposed_breasts",
         "nipples",
-        "bunny_suit_off",
-        "topless",
-        "black_thighhighs",
-        "spread_legs"
+        "soft_skin",
+        "blushing",
+        "shy_smile",
+        "parted_lips",
+        "lying_in_bed",
+        "medium_shot"
       ],
-      "nsfwProse": "Completely naked except for sheer black thigh-highs with her bunny suit discarded on the carpet, her bare breasts and nipples are fully exposed in the warm lamplight as she rests with parted thighs."
+      "nsfwProse": "Completely nude with her black bunny suit discarded on the nightstand, Sakurajima Mai lies gracefully in bed hugging a soft white sheet, her bare breasts and delicate collarbone bathed in warm bedside lamplight as she turns with flushed cheeks and a tender, alluring smile.",
+      "adultArtistHint": "@anmi"
     },
     {
       "id": "tokisaki_kurumi_r18_clocktower",
@@ -2273,30 +2278,30 @@
       "location": "月夜钟塔内殿",
       "action": "哥特裙半褪倚在金色时钟前",
       "timeOfDay": "夜晚",
-      "lighting": "冷月与金色钟面光",
-      "camera": "intimate low angle",
-      "mood": "危险诱惑",
+      "lighting": "silver moonlight and glowing amber clock face",
+      "camera": "intimate medium close-up, low angle",
+      "mood": "危险魅惑与极致反差",
       "sceneTags": [
         "clock_tower",
         "moonlight",
+        "gears",
+        "discarded_corset",
         "night",
-        "clock",
-        "golden",
-        "gothic",
         "intimate"
       ],
-      "promptProse": "Inside the moonlit clock tower chamber, Tokisaki Kurumi leans back against the giant golden clock face, clockwork gears and Roman numerals casting intricate amber shadows across the floor.",
+      "promptProse": "Inside the quiet moonlit clock tower inner sanctum, Tokisaki Kurumi leans back against soft velvet cushions before the giant turning golden clock face, intricate gears casting warm amber shadows across the stone floor with no other people present.",
       "promptTokens": [
         "clock_tower",
+        "giant_clock",
+        "golden_gears",
         "moonlight",
+        "velvet_cushions",
         "night",
-        "clock",
-        "golden",
-        "gothic",
         "intimate",
         "volumetric_lighting",
         "depth_of_field",
-        "clean_face"
+        "clean_face",
+        "delicate_collarbone"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, bright, cheerful, day, dark shadowed face, flat lighting, extra characters"
@@ -2308,17 +2313,19 @@
       "nsfwTokens": [
         "nude",
         "completely_naked",
-        "fully_nude",
-        "no_clothes",
-        "naked_body",
+        "bare_shoulders",
         "bare_chest",
         "exposed_breasts",
         "nipples",
-        "gothic_dress_off",
-        "topless",
-        "spread_legs"
+        "soft_skin",
+        "blushing",
+        "seductive_smirk",
+        "parted_lips",
+        "reclining",
+        "medium_shot"
       ],
-      "nsfwProse": "Fully naked against the glowing golden clock face with her gothic dress pooled on the floor, her bare breasts and parted thighs are illuminated by the cool moonlight and warm clockwork glow."
+      "nsfwProse": "Completely nude with her crimson astral dress discarded beside her, Tokisaki Kurumi reclines gracefully against velvet cushions, her bare breasts and mismatched golden clock eye glowing in the moonlight as she offers a tantalizing, breathless smirk.",
+      "adultArtistHint": "@tsunako"
     },
     {
       "id": "frieren_r18_inn_bath",
@@ -2329,32 +2336,31 @@
       "location": "中世纪旅店房间",
       "action": "浴后白袍半褪坐在床边",
       "timeOfDay": "夜晚",
-      "lighting": "壁炉暖光",
-      "camera": "intimate medium shot",
-      "mood": "淡然从容",
+      "lighting": "warm fireplace glow and soft steam",
+      "camera": "intimate medium shot, eye level",
+      "mood": "纯真慵懒与朦胧水汽",
       "sceneTags": [
-        "inn",
-        "bedroom",
+        "inn_room",
+        "wooden_tub",
+        "steam",
+        "towel",
         "fireplace",
-        "bath",
-        "white_robe",
-        "fantasy",
-        "night",
-        "intimate"
+        "intimate",
+        "night"
       ],
-      "promptProse": "In a rustic fantasy inn room warmed by an amber stone fireplace, Frieren sits alone on the wooden bed in the quiet evening as steam slowly rises from the wooden tub nearby.",
+      "promptProse": "Inside a rustic fantasy inn room after a soothing hot bath, Frieren sits comfortably on the edge of the wooden bed with gentle steam rising in the cozy room, her white mage robe draped over a wooden chair beside her with no other people present.",
       "promptTokens": [
-        "inn",
-        "bedroom",
+        "inn_room",
         "fireplace",
-        "bath",
-        "white_robe",
-        "fantasy",
-        "night",
+        "warm_glow",
+        "steam",
+        "wooden_bed",
+        "cozy",
         "intimate",
         "volumetric_lighting",
         "depth_of_field",
-        "clean_face"
+        "clean_face",
+        "delicate_collarbone"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, modern, sci-fi, dark shadowed face, flat lighting, extra characters"
@@ -2366,17 +2372,18 @@
       "nsfwTokens": [
         "nude",
         "completely_naked",
-        "fully_nude",
-        "no_clothes",
-        "naked_body",
+        "bare_shoulders",
         "bare_chest",
         "exposed_breasts",
         "nipples",
-        "robe_off",
-        "topless",
-        "bare_back"
+        "wet_skin",
+        "blushing",
+        "drowsy_expression",
+        "sitting_in_bed",
+        "medium_shot"
       ],
-      "nsfwProse": "Completely naked by the warm hearth with her white robe removed and placed on the chair, her bare breasts and pointed elven ears catch the glowing firelight as she looks up calmly."
+      "nsfwProse": "Completely nude with only a soft white towel loosely resting on her lap, Frieren sits relaxed on the wooden bed with glistening moist skin, her small bare breasts and pointed elf ears illuminated by the warm fireplace glow as she looks up with sleepy, flushed violet eyes.",
+      "adultArtistHint": "@anmi"
     },
     {
       "id": "artoria_r18_royal_chamber",
@@ -2387,30 +2394,31 @@
       "location": "王城寝宫",
       "action": "蓝白裙装半褪立于床前",
       "timeOfDay": "夜晚",
-      "lighting": "烛火与冷月",
-      "camera": "intimate medium close-up",
-      "mood": "庄严温柔",
+      "lighting": "warm fireplace and silver moonlight through arched window",
+      "camera": "intimate medium shot, side angle",
+      "mood": "卸甲后的温柔与圣洁反差",
       "sceneTags": [
-        "castle",
-        "royal",
-        "bedroom",
-        "candlelight",
-        "blue_dress",
-        "night",
-        "intimate"
+        "royal_bedchamber",
+        "canopy_bed",
+        "discarded_armor",
+        "fireplace",
+        "moonlight",
+        "intimate",
+        "night"
       ],
-      "promptProse": "In the private royal bedchamber of the castle, Saber stands alone beside the draped four-poster bed as flickering candlelight and cool moonlight mingle across the stone chamber.",
+      "promptProse": "Inside the private royal bedchamber of Camelot, Saber Artoria Pendragon rests on a luxurious canopy bed, her heavy silver armor and blue dress unbuckled and neatly placed on an armor stand beside her with no other people present.",
       "promptTokens": [
-        "castle",
-        "royal",
-        "bedroom",
-        "candlelight",
-        "blue_dress",
-        "night",
+        "royal_bedchamber",
+        "canopy_bed",
+        "fireplace",
+        "arched_window",
+        "moonlight",
+        "silk_sheets",
         "intimate",
         "volumetric_lighting",
         "depth_of_field",
-        "clean_face"
+        "clean_face",
+        "delicate_collarbone"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, casual, bright, dark shadowed face, flat lighting, extra characters"
@@ -2422,17 +2430,18 @@
       "nsfwTokens": [
         "nude",
         "completely_naked",
-        "fully_nude",
-        "no_clothes",
-        "naked_body",
+        "bare_shoulders",
         "bare_chest",
         "exposed_breasts",
         "nipples",
-        "dress_off",
-        "topless",
-        "armor_removed"
+        "soft_skin",
+        "blushing",
+        "gentle_expression",
+        "lying_in_bed",
+        "medium_shot"
       ],
-      "nsfwProse": "Fully naked in the soft candlelight with her royal dress and armor set aside on the bench, her bare breasts and toned body stand exposed with composed, quiet dignity."
+      "nsfwProse": "Completely nude with her silver armor and blue dress removed, Saber lies softly on silk sheets, her supple bare breasts and slender knightly body illuminated in warm firelight and cool moonlight as she looks at the viewer with blushing, earnest emerald eyes.",
+      "adultArtistHint": "@kousaki (kousaki r)"
     },
     {
       "id": "hatsune_miku_r18_backstage",
@@ -2443,30 +2452,29 @@
       "location": "演唱会后台更衣室",
       "action": "演出服半褪坐在化妆台前",
       "timeOfDay": "夜晚",
-      "lighting": "化妆镜灯暖光",
-      "camera": "intimate mirrored composition",
-      "mood": "活泼慵懒",
+      "lighting": "soft dressing room mirror bulb lights",
+      "camera": "intimate medium close-up",
+      "mood": "演出后的甜蜜与娇羞",
       "sceneTags": [
-        "backstage",
         "dressing_room",
-        "makeup_mirror",
-        "concert",
-        "warm_light",
-        "night",
+        "mirror",
+        "vanity",
+        "discarded_costume",
+        "warm_bulbs",
         "intimate"
       ],
-      "promptProse": "Backstage in a private dressing room after the concert, Hatsune Miku sits alone at the illuminated vanity mirror, rows of warm lightbulbs reflecting softly across the room.",
+      "promptProse": "Inside the quiet backstage dressing room after an exhilarating concert, Hatsune Miku relaxes on a plush sofa, her concert stage outfit and detached sleeves resting on the vanity table beside her with no other people present.",
       "promptTokens": [
-        "backstage",
         "dressing_room",
-        "makeup_mirror",
-        "concert",
-        "warm_light",
-        "night",
+        "vanity_mirror",
+        "warm_light_bulbs",
+        "plush_sofa",
+        "backstage",
         "intimate",
         "volumetric_lighting",
         "depth_of_field",
-        "clean_face"
+        "clean_face",
+        "delicate_collarbone"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, day, outdoor, dark shadowed face, flat lighting, extra characters"
@@ -2478,18 +2486,18 @@
       "nsfwTokens": [
         "nude",
         "completely_naked",
-        "fully_nude",
-        "no_clothes",
-        "naked_body",
+        "bare_shoulders",
         "bare_chest",
         "exposed_breasts",
         "nipples",
-        "stage_outfit_off",
-        "topless",
-        "black_stockings",
-        "thighhighs"
+        "glistening_skin",
+        "blushing",
+        "sweet_smile",
+        "sitting_on_sofa",
+        "medium_shot"
       ],
-      "nsfwProse": "Completely naked except for sheer black thigh-highs with her concert outfit removed and placed on the rack, her bare breasts and nipples are clearly visible in the bright mirror lights."
+      "nsfwProse": "Completely nude with her stage costume draped over the sofa, Hatsune Miku sits comfortably with her flowing teal twin-tails framing her bare breasts and delicate waist, warm vanity mirror lights giving her flushed skin a radiant, dewy glow as she smiles sweetly.",
+      "adultArtistHint": "@rella"
     },
     {
       "id": "yuzuriha_inori_r18_atelier",
@@ -2500,28 +2508,29 @@
       "location": "私人工作室",
       "action": "白色礼裙半褪倚在窗前",
       "timeOfDay": "夜晚",
-      "lighting": "窗外冷光与室内暖灯",
-      "camera": "intimate medium shot",
-      "mood": "空灵静谧",
+      "lighting": "ethereal cyan holographic light and warm amber backlight",
+      "camera": "intimate upper body portrait",
+      "mood": "空灵脆弱与极致唯美",
       "sceneTags": [
-        "studio",
-        "window",
-        "white_dress",
+        "glass_atelier",
+        "hologram",
+        "floating_particles",
+        "discarded_dress",
         "night",
-        "cold_light",
         "intimate"
       ],
-      "promptProse": "Inside a secluded private room at night, Yuzuriha Inori stands quietly by the window with cool blue city lights and a warm interior lamp casting gentle contrasting light across the space.",
+      "promptProse": "Inside a private glass atelier overlooking the illuminated city, Yuzuriha Inori rests on a minimalist lounge chair surrounded by softly floating holographic light particles with no other people present.",
       "promptTokens": [
-        "studio",
-        "window",
-        "white_dress",
-        "night",
-        "cold_light",
+        "glass_room",
+        "city_night_view",
+        "holographic_glow",
+        "floating_particles",
+        "modern_interior",
         "intimate",
         "volumetric_lighting",
         "depth_of_field",
-        "clean_face"
+        "clean_face",
+        "delicate_collarbone"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, bright, cheerful, dark shadowed face, flat lighting, extra characters"
@@ -2533,17 +2542,18 @@
       "nsfwTokens": [
         "nude",
         "completely_naked",
-        "fully_nude",
-        "no_clothes",
-        "naked_body",
+        "bare_shoulders",
         "bare_chest",
         "exposed_breasts",
         "nipples",
-        "dress_off",
-        "topless",
-        "bare_back"
+        "translucent_skin",
+        "blushing",
+        "ethereal_expression",
+        "reclining",
+        "medium_shot"
       ],
-      "nsfwProse": "Completely naked in the quiet room with her dress slipped down and left on the floor, her bare breasts and nipples are exposed in the soft window glow as she gazes out calmly."
+      "nsfwProse": "Completely nude with her red combat dress discarded nearby, Yuzuriha Inori reclines gracefully in soft ambient light, her slender bare breasts, delicate collarbone and pink-orange hair illuminated by gentle holographic glow as her crimson eyes gaze with fragile tenderness.",
+      "adultArtistHint": "@anmi"
     },
     {
       "id": "yukinoshita_yukino_r18_room",
@@ -2554,28 +2564,31 @@
       "location": "和式卧室",
       "action": "浴衣半褪侧坐榻榻米",
       "timeOfDay": "深夜",
-      "lighting": "柔和的纸灯暖光",
-      "camera": "intimate close-up",
-      "mood": "羞涩克制",
+      "lighting": "warm andon lantern glow on tatami",
+      "camera": "intimate medium shot, side view",
+      "mood": "冰山融化的极致羞涩与柔情",
       "sceneTags": [
-        "japanese_room",
         "tatami",
-        "yukata",
-        "lamp",
-        "night",
-        "intimate"
-      ],
-      "promptProse": "Late at night in a quiet traditional Japanese room, Yukinoshita Yukino sits alone on the clean tatami mats under the warm, gentle amber light of a paper andon lamp.",
-      "promptTokens": [
-        "japanese_room",
-        "tatami",
-        "yukata",
-        "lamp",
-        "night",
+        "japanese_bedroom",
+        "futon",
+        "andon_lamp",
+        "discarded_uniform",
         "intimate",
+        "night"
+      ],
+      "promptProse": "Inside a quiet traditional Japanese tatami room at night, Yukinoshita Yukino sits softly on a clean white futon with no other people present, her school blazer and red ribbon placed neatly on a low wooden dresser beside the warm paper lantern.",
+      "promptTokens": [
+        "japanese_bedroom",
+        "tatami",
+        "white_futon",
+        "paper_lantern",
+        "soft_warm_light",
+        "intimate",
+        "night",
         "volumetric_lighting",
         "depth_of_field",
-        "clean_face"
+        "clean_face",
+        "delicate_collarbone"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, fantasy, magic, dark shadowed face, flat lighting, extra characters"
@@ -2587,17 +2600,18 @@
       "nsfwTokens": [
         "nude",
         "completely_naked",
-        "fully_nude",
-        "no_clothes",
-        "naked_body",
+        "bare_shoulders",
         "bare_chest",
         "exposed_breasts",
         "nipples",
-        "yukata_off",
-        "topless",
-        "spread_legs"
+        "fair_skin",
+        "deep_blush",
+        "averting_gaze",
+        "sitting_in_futon",
+        "medium_shot"
       ],
-      "nsfwProse": "Fully naked on the tatami mats with her yukata folded away beside her, her bare breasts and parted thighs are warmly lit as she averts her gaze with a delicate blush."
+      "nsfwProse": "Completely nude with her school uniform neatly folded beside the futon, Yukinoshita Yukino sits with her knees drawn up on white sheets, her fair bare breasts and slender collarbone glowing in warm lantern light as she looks down with deeply blushing cheeks and a rare, tender vulnerability.",
+      "adultArtistHint": "@tiv"
     },
     {
       "id": "elaina_r18_inn_room",
@@ -2608,30 +2622,30 @@
       "location": "魔法旅店房间",
       "action": "法袍半褪坐在床边看书",
       "timeOfDay": "夜晚",
-      "lighting": "烛台暖光",
-      "camera": "intimate medium shot",
-      "mood": "从容优雅",
+      "lighting": "warm magic lantern and window moonlight",
+      "camera": "intimate medium shot, upper body focus",
+      "mood": "俏皮自恋与娇羞反差",
       "sceneTags": [
-        "inn",
-        "bedroom",
-        "candlelight",
-        "robe",
-        "witch",
+        "witch_inn",
+        "magic_lantern",
+        "canopy_bed",
+        "discarded_witch_robe",
         "night",
         "intimate"
       ],
-      "promptProse": "In a cozy fantasy inn room at night, Elaina sits on the wooden bed with an open book resting on the nightstand beside a softly flickering candle.",
+      "promptProse": "Inside a charming fantasy inn room on her travels, Elaina rests comfortably on a soft bed with no other people present, her black witch hat and traveler robe resting on a wooden chair under warm lantern light.",
       "promptTokens": [
-        "inn",
-        "bedroom",
-        "candlelight",
-        "robe",
-        "witch",
+        "fantasy_inn",
+        "magic_lantern",
+        "canopy_bed",
+        "wooden_room",
+        "warm_lighting",
         "night",
         "intimate",
         "volumetric_lighting",
         "depth_of_field",
-        "clean_face"
+        "clean_face",
+        "delicate_collarbone"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, modern, sci-fi, dark shadowed face, flat lighting, extra characters"
@@ -2643,17 +2657,18 @@
       "nsfwTokens": [
         "nude",
         "completely_naked",
-        "fully_nude",
-        "no_clothes",
-        "naked_body",
+        "bare_shoulders",
         "bare_chest",
         "exposed_breasts",
         "nipples",
-        "robe_off",
-        "topless",
-        "witch_hat"
+        "soft_skin",
+        "blushing",
+        "playful_smirk",
+        "lying_in_bed",
+        "medium_shot"
       ],
-      "nsfwProse": "Completely naked on the white bedsheets with her dark witch robe removed and hung on the post, her bare breasts and nipples are exposed in the candlelight as she offers a composed, knowing smile."
+      "nsfwProse": "Completely nude with her witch hat placed on the nightstand, Elaina lies across soft pillows with her long ash hair framing her bare breasts and delicate shoulders, offering a playful yet deeply blushing smile in warm lantern light.",
+      "adultArtistHint": "@anmi"
     },
     {
       "id": "misaka_mikoto_r18_dorm",
@@ -2664,28 +2679,30 @@
       "location": "夜晚的宿舍",
       "action": "校服半褪坐在床边",
       "timeOfDay": "深夜",
-      "lighting": "台灯暖光",
-      "camera": "intimate close-up",
-      "mood": "逞强害羞",
+      "lighting": "soft desk lamp and faint blue electric sparks",
+      "camera": "intimate medium close-up",
+      "mood": "傲娇心跳与纯情羞赧",
       "sceneTags": [
-        "dormitory",
-        "bedroom",
-        "uniform",
+        "dorm_room",
+        "bed",
         "desk_lamp",
+        "discarded_school_uniform",
         "night",
         "intimate"
       ],
-      "promptProse": "Late at night in her Tokiwadai dormitory room, Misaka Mikoto sits alone on the edge of the bed under the warm golden light of a small bedside reading lamp.",
+      "promptProse": "Inside her Tokiwadai dormitory room late at night, Misaka Mikoto sits on her bed with no other people present, her school uniform and vest placed on the study chair under the warm glow of her desk lamp.",
       "promptTokens": [
-        "dormitory",
-        "bedroom",
-        "uniform",
+        "dorm_room",
+        "student_bedroom",
         "desk_lamp",
+        "warm_glow",
+        "bed",
         "night",
         "intimate",
         "volumetric_lighting",
         "depth_of_field",
-        "clean_face"
+        "clean_face",
+        "delicate_collarbone"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, fantasy, magic, bright, dark shadowed face, flat lighting, extra characters"
@@ -2697,17 +2714,18 @@
       "nsfwTokens": [
         "nude",
         "completely_naked",
-        "fully_nude",
-        "no_clothes",
-        "naked_body",
+        "bare_shoulders",
         "bare_chest",
         "exposed_breasts",
         "nipples",
-        "uniform_off",
-        "topless",
-        "white_underwear_off"
+        "fair_skin",
+        "heavy_blush",
+        "pouting_expression",
+        "sitting_in_bed",
+        "medium_shot"
       ],
-      "nsfwProse": "Fully naked on the bed with her school uniform and skirt placed on the desk chair, her bare breasts and nipples are revealed in the lamplight as she turns her blushing face away flustered."
+      "nsfwProse": "Completely nude with her uniform removed and Gekota plush nearby, Misaka Mikoto sits in bed holding a sheet to her waist, her toned bare breasts and delicate collarbone illuminated by soft lamplight as tiny blue sparks dance with her racing heartbeat and bright blushing face.",
+      "adultArtistHint": "@hiten (hitenkei)"
     },
     {
       "id": "makima_r18_office",
@@ -2718,30 +2736,30 @@
       "location": "深夜的办公室",
       "action": "西装裙半褪坐在办公桌沿",
       "timeOfDay": "深夜",
-      "lighting": "落地窗城市灯光",
-      "camera": "intimate low angle",
-      "mood": "掌控一切",
+      "lighting": "warm floor lamp and panoramic high-rise night skyline",
+      "camera": "intimate medium shot, low angle",
+      "mood": "支配者的从容与致命性感",
       "sceneTags": [
-        "office",
-        "city_view",
-        "night",
-        "suit",
-        "desk",
-        "intimate",
-        "dominant"
+        "luxury_office",
+        "leather_couch",
+        "city_night_view",
+        "discarded_suit",
+        "warm_lamp",
+        "intimate"
       ],
-      "promptProse": "Late at night in the high-rise executive office with city lights glowing through floor-to-ceiling glass windows, Makima sits alone on the edge of the polished wooden desk.",
+      "promptProse": "Inside her private high-rise office overlooking the glowing Tokyo skyline at midnight, Makima relaxes gracefully on a plush black leather sofa with no other people present, her white buttoned shirt and black tie unfastened and placed over the armrest.",
       "promptTokens": [
-        "office",
-        "city_view",
-        "night",
-        "suit",
-        "desk",
+        "luxury_office",
+        "leather_sofa",
+        "city_lights",
+        "night_skyline",
+        "floor_lamp",
+        "warm_lighting",
         "intimate",
-        "dominant",
         "volumetric_lighting",
         "depth_of_field",
-        "clean_face"
+        "clean_face",
+        "delicate_collarbone"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, cheerful, bright, dark shadowed face, flat lighting, extra characters"
@@ -2753,18 +2771,18 @@
       "nsfwTokens": [
         "nude",
         "completely_naked",
-        "fully_nude",
-        "no_clothes",
-        "naked_body",
+        "bare_shoulders",
         "bare_chest",
         "exposed_breasts",
         "nipples",
-        "suit_off",
-        "topless",
-        "black_stockings",
-        "spread_legs"
+        "pale_skin",
+        "enigmatic_smile",
+        "ringed_eyes",
+        "reclining_on_sofa",
+        "medium_shot"
       ],
-      "nsfwProse": "Fully naked on the edge of the mahogany desk with her white blouse and black skirt removed, her bare breasts and parted thighs are exposed as glittering night city lights outline her figure."
+      "nsfwProse": "Completely nude with her formal suit discarded on the sofa, Makima reclines back with her salmon braid resting across her full bare breasts, her golden concentric-ring eyes glowing in warm amber lamplight as she offers a calm, hypnotic and intoxicating smile.",
+      "adultArtistHint": "@kousaki (kousaki r)"
     },
     {
       "id": "tohsaka_rin_r18_mansion",
@@ -2775,28 +2793,32 @@
       "location": "远坂宅邸卧室",
       "action": "红色洋装半褪坐在床上",
       "timeOfDay": "夜晚",
-      "lighting": "暖黄吊灯",
-      "camera": "intimate medium close-up",
-      "mood": "傲娇慌张",
+      "lighting": "warm glowing fireplace and candlelight",
+      "camera": "intimate medium shot, three-quarter view",
+      "mood": "傲娇大小姐的心跳解除",
       "sceneTags": [
-        "mansion",
-        "bedroom",
-        "red_dress",
-        "chandelier",
-        "night",
-        "intimate"
-      ],
-      "promptProse": "In the private bedroom of the Tohsaka estate at night, Rin sits alone on the antique European bed under the warm amber glow of a crystal chandelier casting soft shadows.",
-      "promptTokens": [
-        "mansion",
-        "bedroom",
-        "red_dress",
-        "chandelier",
-        "night",
+        "mansion_bedroom",
+        "canopy_bed",
+        "fireplace",
+        "discarded_red_sweater",
+        "candlelight",
         "intimate",
+        "night"
+      ],
+      "promptProse": "Inside the opulent master bedroom of the Tohsaka residence, Tohsaka Rin relaxes in bed with no other people present, her red turtleneck sweater and black pleated skirt folded over a nearby antique chair before the warm fireplace.",
+      "promptTokens": [
+        "mansion_bedroom",
+        "fireplace",
+        "candlelight",
+        "antique_furniture",
+        "canopy_bed",
+        "warm_glow",
+        "intimate",
+        "night",
         "volumetric_lighting",
         "depth_of_field",
-        "clean_face"
+        "clean_face",
+        "delicate_collarbone"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, bright, cheerful, dark shadowed face, flat lighting, extra characters"
@@ -2808,18 +2830,18 @@
       "nsfwTokens": [
         "nude",
         "completely_naked",
-        "fully_nude",
-        "no_clothes",
-        "naked_body",
+        "bare_shoulders",
         "bare_chest",
         "exposed_breasts",
         "nipples",
-        "dress_off",
-        "topless",
-        "black_stockings",
-        "thighhighs"
+        "fair_skin",
+        "deep_blush",
+        "tsundere_expression",
+        "lying_in_bed",
+        "medium_shot"
       ],
-      "nsfwProse": "Fully naked on the bed except for black thigh-highs with her red outfit discarded on the chair, her bare breasts and nipples are illuminated in the warm light as she looks away with a flustered blush."
+      "nsfwProse": "Completely nude with her red sweater and black ribbons removed, Tohsaka Rin lies softly against burgundy pillows, her shapely bare breasts and slender waist bathed in flickering firelight as her aqua-blue eyes look up with a flustered, tsundere blush.",
+      "adultArtistHint": "@kousaki (kousaki r)"
     },
     {
       "id": "rem_rezero_r18_chamber",
@@ -2830,28 +2852,30 @@
       "location": "罗兹瓦尔宅邸房间",
       "action": "女仆装半褪跪坐床边",
       "timeOfDay": "夜晚",
-      "lighting": "烛火与暖灯",
-      "camera": "intimate low angle",
-      "mood": "忠诚温柔",
+      "lighting": "warm candlelight and soft moonbeams",
+      "camera": "intimate medium shot, front view",
+      "mood": "无限奉献与温柔心意",
       "sceneTags": [
-        "mansion",
-        "maid",
-        "bedroom",
+        "maid_bedroom",
+        "bed",
         "candlelight",
-        "night",
-        "intimate"
-      ],
-      "promptProse": "In a quiet guest chamber of the Roswaal estate at night, Rem kneels peacefully on the soft bedside rug beside warm flickering candlelight.",
-      "promptTokens": [
-        "mansion",
-        "maid",
-        "bedroom",
-        "candlelight",
-        "night",
+        "discarded_maid_outfit",
         "intimate",
+        "night"
+      ],
+      "promptProse": "Inside her cozy maid quarters in the Roswaal mansion, Rem sits gently on the white bed with no other people present, her classic black and white maid dress placed neatly on the wooden chair beside warm candles.",
+      "promptTokens": [
+        "mansion_room",
+        "white_bed",
+        "candlelight",
+        "warm_lighting",
+        "soft_sheets",
+        "intimate",
+        "night",
         "volumetric_lighting",
         "depth_of_field",
-        "clean_face"
+        "clean_face",
+        "delicate_collarbone"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, modern, sci-fi, dark shadowed face, flat lighting, extra characters"
@@ -2863,18 +2887,18 @@
       "nsfwTokens": [
         "nude",
         "completely_naked",
-        "fully_nude",
-        "no_clothes",
-        "naked_body",
+        "bare_shoulders",
         "bare_chest",
         "exposed_breasts",
         "nipples",
-        "maid_outfit_off",
-        "topless",
-        "white_thighhighs",
-        "spread_legs"
+        "soft_skin",
+        "loving_blush",
+        "gentle_smile",
+        "sitting_in_bed",
+        "medium_shot"
       ],
-      "nsfwProse": "Fully naked on the soft rug with her maid uniform unfastened and placed aside, her bare breasts and nipples are exposed in the gentle candlelight as she looks up with tender, devoted affection."
+      "nsfwProse": "Completely nude with her maid uniform removed, Rem sits in bed hugging a white pillow to her waist, her soft bare breasts and pink hair flower illuminated by warm candlelight as she looks at the viewer with an expression of pure, unconditional devotion and soft blushing cheeks.",
+      "adultArtistHint": "@anmi"
     },
     {
       "id": "emilia_rezero_r18_bedroom",
@@ -2885,30 +2909,32 @@
       "location": "王城寝宫",
       "action": "白礼裙半褪坐在床边",
       "timeOfDay": "夜晚",
-      "lighting": "月光与烛火",
-      "camera": "intimate medium shot",
-      "mood": "纯净羞怯",
+      "lighting": "soft magical crystal lantern and pale moonlight",
+      "camera": "intimate medium shot, eye level",
+      "mood": "圣洁无瑕与纯真羞赧",
       "sceneTags": [
-        "palace",
-        "bedroom",
-        "white_dress",
+        "royal_bedroom",
+        "crystal_lamp",
+        "canopy_bed",
+        "discarded_lilac_dress",
         "moonlight",
-        "candlelight",
-        "night",
-        "intimate"
-      ],
-      "promptProse": "Inside the royal guest bedchamber at night, Emilia sits alone on the grand four-poster bed as pale silver moonlight and warm candlelight illuminate the ornate room.",
-      "promptTokens": [
-        "palace",
-        "bedroom",
-        "white_dress",
-        "moonlight",
-        "candlelight",
-        "night",
         "intimate",
+        "night"
+      ],
+      "promptProse": "Inside her grand royal bedroom in the mansion, Emilia relaxes on a lavish white canopy bed with no other people present, her white and lilac dress resting over a silk settee under the gentle glow of a magical crystal lamp.",
+      "promptTokens": [
+        "royal_bedroom",
+        "canopy_bed",
+        "crystal_lantern",
+        "magical_glow",
+        "silk_sheets",
+        "moonlight",
+        "intimate",
+        "night",
         "volumetric_lighting",
         "depth_of_field",
-        "clean_face"
+        "clean_face",
+        "delicate_collarbone"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, modern, sci-fi, desert, dark shadowed face, flat lighting, extra characters"
@@ -2920,17 +2946,18 @@
       "nsfwTokens": [
         "nude",
         "completely_naked",
-        "fully_nude",
-        "no_clothes",
-        "naked_body",
+        "bare_shoulders",
         "bare_chest",
         "exposed_breasts",
         "nipples",
-        "dress_off",
-        "topless",
-        "bare_back"
+        "fair_skin",
+        "innocent_blush",
+        "parted_lips",
+        "lying_in_bed",
+        "medium_shot"
       ],
-      "nsfwProse": "Fully naked on the soft white bedsheets with her white dress slipped off and resting on the footboard, her bare breasts and nipples are revealed in the gentle light as she shyly holds a pillow close."
+      "nsfwProse": "Completely nude with her lilac dress discarded, Emilia lies gracefully amidst white silk sheets, her beautiful bare breasts and silver hair glowing softly in pale crystal light as her purple-blue eyes shine with innocent wonder and blushing sweetness.",
+      "adultArtistHint": "@anmi"
     },
     {
       "id": "roxy_migurdia_r18_teacher",
@@ -2941,30 +2968,32 @@
       "location": "魔法学院教师宿舍",
       "action": "法袍半褪坐在书桌前",
       "timeOfDay": "夜晚",
-      "lighting": "书桌台灯暖光",
-      "camera": "intimate medium close-up",
-      "mood": "认真羞涩",
+      "lighting": "warm oil lamp and soft fireplace glow",
+      "camera": "intimate medium shot, side view",
+      "mood": "小巧玲珑与成熟教师反差",
       "sceneTags": [
-        "academy",
-        "teacher_room",
-        "desk",
-        "lamp",
-        "robe",
-        "night",
-        "intimate"
-      ],
-      "promptProse": "Inside her private teacher's quarters at the magic academy at night, Roxy sits alone at her wooden study desk under the warm glow of a desk lamp.",
-      "promptTokens": [
-        "academy",
-        "teacher_room",
-        "desk",
-        "lamp",
-        "robe",
-        "night",
+        "magic_study",
+        "bed",
+        "oil_lamp",
+        "discarded_robe",
+        "grimoire",
         "intimate",
+        "night"
+      ],
+      "promptProse": "Inside her cozy wooden study bedroom filled with ancient grimoires, Roxy Migurdia relaxes on her bed with no other people present, her pointed witch hat and teacher robe placed over the wooden study desk beside a glowing oil lamp.",
+      "promptTokens": [
+        "wooden_bedroom",
+        "magic_study",
+        "oil_lamp",
+        "warm_glow",
+        "bookshelves",
+        "bed",
+        "intimate",
+        "night",
         "volumetric_lighting",
         "depth_of_field",
-        "clean_face"
+        "clean_face",
+        "delicate_collarbone"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, modern, sci-fi, dark shadowed face, flat lighting, extra characters"
@@ -2976,17 +3005,18 @@
       "nsfwTokens": [
         "nude",
         "completely_naked",
-        "fully_nude",
-        "no_clothes",
-        "naked_body",
+        "bare_shoulders",
         "bare_chest",
         "exposed_breasts",
         "nipples",
-        "robe_off",
-        "topless",
-        "witch_hat"
+        "petite_frame",
+        "blushing",
+        "shy_smile",
+        "lying_on_side",
+        "medium_shot"
       ],
-      "nsfwProse": "Fully naked on the wooden chair with her wizard robe and hat resting on the coat stand, her bare breasts and nipples are illuminated in the warm lamplight as she glances up with a flustered expression."
+      "nsfwProse": "Completely nude with her blue robe discarded on the desk, Roxy reclines comfortably on her side in bed, her small delicate bare breasts and twin blue braids glowing in warm oil lamplight as she offers a shy, endearing smile.",
+      "adultArtistHint": "@anmi"
     },
     {
       "id": "illyasviel_r18_castle",
@@ -2997,30 +3027,30 @@
       "location": "冬夜古堡寝房",
       "action": "紫礼裙半褪坐在壁炉前",
       "timeOfDay": "夜晚",
-      "lighting": "壁炉火光",
-      "camera": "intimate medium shot",
-      "mood": "天真狡黠",
+      "lighting": "warm roaring fireplace and snowy window moonbeams",
+      "camera": "intimate medium shot, high angle",
+      "mood": "纯白无暇与梦幻温存",
       "sceneTags": [
-        "castle",
-        "bedroom",
+        "castle_bedroom",
+        "fur_rug",
         "fireplace",
-        "purple_dress",
-        "snow",
-        "night",
-        "intimate"
+        "discarded_coat",
+        "snowy_window",
+        "intimate",
+        "night"
       ],
-      "promptProse": "On a quiet winter night inside the castle bedchamber, Illyasviel sits alone on a plush velvet rug before a crackling stone fireplace, golden embers warming the room.",
+      "promptProse": "Inside the grand stone bedroom of the Einzbern castle on a snowy winter night, Illyasviel rests by the roaring stone fireplace on a plush white fur rug with no other people present, her red coat and scarf set aside.",
       "promptTokens": [
-        "castle",
-        "bedroom",
+        "castle_room",
         "fireplace",
-        "purple_dress",
-        "snow",
-        "night",
+        "fur_rug",
+        "snowy_night",
+        "warm_firelight",
         "intimate",
         "volumetric_lighting",
         "depth_of_field",
-        "clean_face"
+        "clean_face",
+        "delicate_collarbone"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, modern, sci-fi, beach, dark shadowed face, flat lighting, extra characters"
@@ -3032,17 +3062,18 @@
       "nsfwTokens": [
         "nude",
         "completely_naked",
-        "fully_nude",
-        "no_clothes",
-        "naked_body",
+        "bare_shoulders",
         "bare_chest",
         "exposed_breasts",
         "nipples",
-        "dress_off",
-        "topless",
-        "bare_back"
+        "snowy_skin",
+        "cute_blush",
+        "playful_smile",
+        "sitting_on_rug",
+        "medium_shot"
       ],
-      "nsfwProse": "Fully naked on the velvet rug with her purple winter dress placed neatly aside, her bare breasts and petite form catch the dancing firelight as she smiles softly into the warmth."
+      "nsfwProse": "Completely nude with her warm winter coat discarded, Illyasviel sits comfortably on the soft white fur rug before the fireplace, her delicate snowy body and long white hair bathed in golden firelight as she smiles with playful innocence and rosy cheeks.",
+      "adultArtistHint": "@anmi"
     },
     {
       "id": "kitagawa_marin_r18_fitting",
@@ -3053,26 +3084,28 @@
       "location": "展会更衣室",
       "action": "cos 装半褪站在镜前",
       "timeOfDay": "白天",
-      "lighting": "更衣室顶灯",
-      "camera": "intimate mirrored composition",
-      "mood": "兴奋雀跃",
+      "lighting": "bright warm dressing room mirror lights",
+      "camera": "intimate medium close-up, front view",
+      "mood": "火辣开朗与心跳娇羞",
       "sceneTags": [
-        "dressing_room",
+        "fitting_room",
+        "curtain",
         "mirror",
-        "cosplay",
-        "bright",
+        "discarded_cosplay",
+        "warm_lighting",
         "intimate"
       ],
-      "promptProse": "Inside a private convention fitting room with closed curtains, Kitagawa Marin stands alone before a tall dressing mirror under bright, clean vanity lights.",
+      "promptProse": "Inside a private boutique fitting room with velvet curtains drawn, Kitagawa Marin stands before the full-length mirror with no other people present, her unbuttoned school shirt and cosplay pieces resting on the stool beside her.",
       "promptTokens": [
-        "dressing_room",
-        "mirror",
-        "cosplay",
-        "bright",
+        "fitting_room",
+        "dressing_mirror",
+        "warm_lighting",
+        "velvet_curtain",
         "intimate",
         "volumetric_lighting",
         "depth_of_field",
-        "clean_face"
+        "clean_face",
+        "delicate_collarbone"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, dark, sad, dark shadowed face, flat lighting, extra characters"
@@ -3084,17 +3117,18 @@
       "nsfwTokens": [
         "nude",
         "completely_naked",
-        "fully_nude",
-        "no_clothes",
-        "naked_body",
+        "bare_shoulders",
         "bare_chest",
         "exposed_breasts",
         "nipples",
-        "cosplay_off",
-        "topless",
-        "thighhighs"
+        "glamorous_curves",
+        "excited_blush",
+        "winking_smile",
+        "standing_in_room",
+        "medium_shot"
       ],
-      "nsfwProse": "Fully naked before the full-length mirror with her cosplay outfit removed and placed on the clothing rack, her bare breasts and nipples are reflected in the clear glass as she strikes a confident, playful pose."
+      "nsfwProse": "Completely nude with her clothes piled on the dressing stool, Kitagawa Marin poses with one hand on her hip in front of the warm mirror lights, her curvaceous bare breasts, pink contact lenses, and dip-dyed blonde hair radiating irresistible confidence and blushing excitement.",
+      "adultArtistHint": "@tiv"
     },
     {
       "id": "kisara_r18_apartment",
@@ -3105,28 +3139,30 @@
       "location": "公寓卧室",
       "action": "白衬衫半褪坐在床边",
       "timeOfDay": "深夜",
-      "lighting": "暖色台灯",
-      "camera": "intimate close-up",
-      "mood": "傲娇暧昧",
+      "lighting": "soft room lamp and blue moonlight through balcony",
+      "camera": "intimate medium shot, front angle",
+      "mood": "恶魔契约与炽热独占欲",
       "sceneTags": [
-        "apartment",
-        "bedroom",
-        "white_shirt",
-        "lamp",
-        "night",
-        "intimate"
-      ],
-      "promptProse": "Late at night in the private apartment bedroom, Kisara sits alone on the bed beside a warm bedside lamp casting soft golden shadows across the wall.",
-      "promptTokens": [
-        "apartment",
-        "bedroom",
-        "white_shirt",
-        "lamp",
-        "night",
+        "apartment_bedroom",
+        "bed",
+        "balcony",
+        "discarded_uniform",
+        "warm_lamp",
         "intimate",
+        "night"
+      ],
+      "promptProse": "Inside her cozy modern apartment bedroom late at night, Kisara rests on the soft bed with no other people present, her school uniform and black hair ribbon set neatly on the bedside table under soft ambient lighting.",
+      "promptTokens": [
+        "apartment_room",
+        "bed",
+        "night_balcony",
+        "warm_lamp",
+        "intimate",
+        "night",
         "volumetric_lighting",
         "depth_of_field",
-        "clean_face"
+        "clean_face",
+        "delicate_collarbone"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, medieval, fantasy, bright, dark shadowed face, flat lighting, extra characters"
@@ -3138,18 +3174,18 @@
       "nsfwTokens": [
         "nude",
         "completely_naked",
-        "fully_nude",
-        "no_clothes",
-        "naked_body",
+        "bare_shoulders",
         "bare_chest",
         "exposed_breasts",
         "nipples",
-        "shirt_off",
-        "topless",
-        "no_panties",
-        "spread_legs"
+        "fair_skin",
+        "intense_blush",
+        "adoring_smile",
+        "lying_in_bed",
+        "medium_shot"
       ],
-      "nsfwProse": "Fully naked on the bed with her oversized white shirt unbuttoned and discarded on the floor, her bare breasts and parted thighs are exposed in the warm lamplight as she looks back with a teasing gaze."
+      "nsfwProse": "Completely nude with her uniform discarded on the bed, Kisara lies back against white pillows with her long pastel pink hair flowing across her bare breasts, her vivid crimson eyes glowing with loving obsession and a deeply flushed, adoring smile.",
+      "adultArtistHint": "@tsunako"
     },
     {
       "id": "candlelight_evening",
