@@ -1888,13 +1888,24 @@ onMounted(async () => {
     pb.setChar(q.char); handledDeepLink = true
   }
   if (typeof q.popular === 'string' && !pb.isPopular) {
-    // 热门角色深链：进入热门模式并选中指定角色（原型场景由导演台选择）。
+    // 热门角色深链：进入热门模式并选中指定角色；?blueprint= 可预选场景蓝图
+    // （角色场景库页面「开始绘制」直达）。
     selectPopularSource('popular')
     const target = findPopularCharacter(pb.popularCharacters, q.popular)
     if (target) {
-      pb.setPopularSubject(target.id, target.outfits.find(o => o.default)?.id ?? target.outfits[0].id, null)
+      const blueprintId = typeof q.blueprint === 'string' && q.blueprint ? q.blueprint : null
+      pb.setPopularSubject(target.id, target.outfits.find(o => o.default)?.id ?? target.outfits[0].id, blueprintId)
       patchAnimaState({ modelId: target.recommendedEngine })
       applyRecommendedEngine(target)
+      if (blueprintId) {
+        const blueprint = findPopularBlueprint(pb.sceneBlueprints, blueprintId)
+        if (blueprint) {
+          // 与点击卡片同一路径：应用镜头/光照/构图/色调/尺寸推断，并展开全部列表
+          // 保证预选场景卡片可见高亮（可能不在推荐 3 个里）。
+          selectBlueprint(blueprint)
+          showAllBlueprints.value = true
+        }
+      }
     }
     handledDeepLink = true
   }
@@ -2054,6 +2065,19 @@ watch(() => drawEngine.value, engine => {
   --pb-active-grad: var(--mood-tension);
   --pb-badge-blue: var(--info);
   --pb-badge-green: var(--success);
+  /* 2026-08-15 rella 化：导演台静态夜空衬底（工作台不浮动，只留静谧辉光） */
+  position: relative;
+  isolation: isolate;
+}
+.pb::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-below);
+  pointer-events: none;
+  background:
+    radial-gradient(30rem 20rem at 92% -6%, var(--rella-glow-cyan), transparent 64%),
+    radial-gradient(26rem 18rem at -4% 88%, var(--rella-glow-violet), transparent 62%);
 }
 .engine-switch {
   --engine-active-border: var(--mood-love);

@@ -303,8 +303,8 @@ test('popular creator · manual style controls are available for all characters 
   await page.locator('.char-source-btn').filter({ hasText: '热门角色' }).click()
   await page.locator('.popular-card').filter({ hasText: '樱岛麻衣' }).click()
   await page.getByRole('button', { name: '专家模式', exact: true }).click()
-  // 全部开放后任何角色都可选成人配方，专家模式风格区不再被 underage 隐藏。
-  await expect(page.locator('#stepRecipe')).toHaveCount(1)
+  // 全部开放后任何角色都可选成人配方，专家模式风格区（ArtistStylePicker）不被 underage 隐藏。
+  await expect(page.locator('[data-testid="artist-style-picker"]')).toHaveCount(1)
 })
 
 test('popular creator · adult gate requires the mature switch, not character underage', async ({ page }) => {
@@ -315,7 +315,7 @@ test('popular creator · adult gate requires the mature switch, not character un
   await expect(page.locator('.popular-outfits')).toBeVisible()
 
   // 全部开放（2026-08-14）：所有热门角色 adult，成人蓝图可见可达。
-  await expect(page.locator('.blueprint-card[data-adult="true"]').first()).toBeVisible()
+  // 推荐轮换（换一批）与角色池大小相关，断言放在「查看全部」下保持数据无关。
   await page.locator('.blueprint-reco-btn').filter({ hasText: '查看全部' }).click()
   await expect(page.locator('.blueprint-card[data-adult="true"]').first()).toBeVisible()
 })
@@ -359,8 +359,9 @@ test('popular creator · copy copies the popular-aware prompt', async ({ page, c
   await page.locator('.blueprint-card').first().click()
 
   // #promptMonitor 是 advanced-decision，basic 模式 display:none，先切专家模式。
+  // 注意：专家模式下面板默认展开（:open=pro），再点 summary 会把它关闭，因此直接点复制按钮。
   await page.getByRole('button', { name: '专家模式', exact: true }).click()
-  await page.locator('#promptMonitor summary').click()
+  await expect(page.locator('#promptMonitor .preview-actions .btn-primary')).toBeVisible()
   await page.locator('#promptMonitor .preview-actions .btn-primary').click()
   const clipboard = await page.evaluate(() => navigator.clipboard.readText())
   // 复制的必须是 popular prompt：身份锚 + 蓝图词 + [NEG] 负向，且无宁宁/夏目 LoRA 痕迹。
@@ -451,8 +452,33 @@ test('popular creator · adult blueprint stays reachable across all characters (
   await expect(page.locator('.blueprint-card.active[data-adult="true"]')).toHaveCount(1)
 
   // 全部开放决策（2026-08-14）：切换任何热门角色，成人蓝图保持可达且已选蓝图不清空。
+  // 切换角色会回到「只看推荐」，推荐轮换随角色池大小变化，在「查看全部」下断言保持数据无关。
   await page.locator('.popular-card').filter({ hasText: '樱岛麻衣' }).click()
+  await page.locator('.blueprint-reco-btn').filter({ hasText: '查看全部' }).click()
   await expect(page.locator('.blueprint-card[data-adult="true"]').first()).toBeVisible()
   await page.locator('.blueprint-card[data-adult="true"]').first().click()
+  await expect(page.locator('.blueprint-card.active[data-adult="true"]')).toHaveCount(1)
+})
+
+test('popular creator · scene library page deep-links character and blueprint into the director', async ({ page }) => {
+  await page.goto(`http://127.0.0.1:${MOCK_PORTS.gateway}/popular-scenes`, { waitUntil: 'domcontentloaded' })
+  await page.waitForTimeout(2500)
+  // 角色场景库：18 角色可选，卡片带 R18 标注。
+  await expect(page.locator('.pop-char-btn')).toHaveCount(18)
+  await page.locator('.pop-char-btn').filter({ hasText: '雷电将军' }).click()
+  await page.locator('.pop-card').filter({ hasText: '花海逆光' }).first()
+    .getByRole('link', { name: '开始绘制' }).click()
+  // 深链：绘图页应预选角色 + 展开全部列表 + 激活目标蓝图。
+  await page.waitForTimeout(3000)
+  await expect(page.locator('.popular-card.active')).toContainText('雷电将军')
+  await expect(page.locator('.blueprint-reco-note')).toContainText(/个可选场景/)
+  await expect(page.locator('.blueprint-card.active')).toContainText('花海逆光')
+  // 成人场景在角色场景库中带 R18 标记，且绘图页展开后可见。
+  await page.goto(`http://127.0.0.1:${MOCK_PORTS.gateway}/popular-scenes`, { waitUntil: 'domcontentloaded' })
+  await page.waitForTimeout(2500)
+  await page.locator('.pop-char-btn').filter({ hasText: '樱岛麻衣' }).click()
+  await expect(page.locator('.pop-card.adult').first()).toBeVisible()
+  await page.locator('.pop-card.adult').first().getByRole('link', { name: '开始绘制' }).click()
+  await page.waitForTimeout(3000)
   await expect(page.locator('.blueprint-card.active[data-adult="true"]')).toHaveCount(1)
 })

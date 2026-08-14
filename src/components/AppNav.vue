@@ -78,6 +78,7 @@ interface NavItem {
 
 const primaryNav: NavItem[] = [
   { id: 'scene',    label: '灵感场景', to: '/scene-explorer', icon: 'scene' },
+  { id: 'popular-scenes', label: '角色场景', to: '/popular-scenes', icon: 'star' },
   { id: 'director', label: '开始绘制', to: '/prompt-builder', icon: 'spark' },
   { id: 'video',    label: '视频创作', to: '/video-studio',   icon: 'play' },
   { id: 'chat',     label: '角色房间', to: '/chat',           icon: 'chat' },

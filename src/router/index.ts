@@ -34,6 +34,7 @@ const router = createRouter({
       children: [
         { path: '',                name: 'home',          component: () => import('@/views/HomeView.vue') },
         { path: 'scene-explorer', name: 'scene',         component: () => import('@/views/SceneExplorerView.vue') },
+        { path: 'popular-scenes', name: 'popular-scenes', component: () => import('@/views/PopularSceneExplorerView.vue') },
         { path: 'prompt-builder', name: 'director',      component: () => import('@/views/PromptBuilderView.vue') },
         { path: 'video-studio',  name: 'video',         component: () => import('@/views/VideoStudioView.vue') },
         { path: 'chat',           name: 'chat',          component: () => import('@/views/ChatView.vue') },
