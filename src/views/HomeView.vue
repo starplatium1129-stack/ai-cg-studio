@@ -263,7 +263,7 @@ const DRAFT_KEY = 'aics_pb_last_draft'
 const sceneCountCopy = ref('场景加载中')
 const sceneLibraryCopy = ref('招牌灵感瞬间，已悉数备好镜头与光影基调。')
 const continueIconName = ref<ArchiveIconName>('spark')
-const continueLink = ref({ to: '/prompt-builder', icon: '✨', label: '开始绘制' })
+const continueLink = ref({ to: '/prompt-builder', icon: '✦', label: '开始绘制' })
 const continueHint = ref('')
 type HomeScene = Scene & { title?: string; mature?: boolean }
 

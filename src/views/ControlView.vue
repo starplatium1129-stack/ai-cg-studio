@@ -24,11 +24,11 @@
           <span><strong>本机控制室</strong><small>Local control room</small></span>
         </RouterLink>
         <nav class="control-rail-nav" aria-label="控制区">
-          <a class="control-rail-link" href="#control-overview"><span aria-hidden="true">◌</span>概览状态</a>
-          <a class="control-rail-link" href="#control-resources"><span aria-hidden="true">◒</span>显存调度</a>
-          <a class="control-rail-link" href="#control-services"><span aria-hidden="true">◫</span>本机服务</a>
-          <a class="control-rail-link" href="#control-share"><span aria-hidden="true">↗</span>公网分享</a>
-          <a class="control-rail-link" href="#control-logs"><span aria-hidden="true">≡</span>运行日志</a>
+          <a class="control-rail-link" href="#control-overview"><ArchiveIcon name="eye" /><span>概览状态</span></a>
+          <a class="control-rail-link" href="#control-resources"><ArchiveIcon name="model" /><span>显存调度</span></a>
+          <a class="control-rail-link" href="#control-services"><ArchiveIcon name="gear" /><span>本机服务</span></a>
+          <a class="control-rail-link" href="#control-share"><ArchiveIcon name="upload" /><span>公网分享</span></a>
+          <a class="control-rail-link" href="#control-logs"><ArchiveIcon name="book" /><span>运行日志</span></a>
         </nav>
         <div class="control-rail-foot">
           <RouterLink class="nav-local-home" to="/">← 回绘境</RouterLink>
@@ -458,7 +458,7 @@ onUnmounted(() => { status.stopPolling() })
   font: 650 var(--fs-label-sm) var(--font-sans); text-decoration: none;
   transition: color var(--t-fast), background var(--t-fast), border-color var(--t-fast), transform var(--t-fast);
 }
-.control-rail-link span { width: 13px; color: var(--accent); font: 700 var(--fs-body-sm) var(--font-mono); }
+.control-rail-link .archive-icon { width: 15px; height: 15px; flex: none; color: var(--accent); }
 .control-rail-link:hover, .control-rail-link:focus-visible {
   color: var(--text-primary); border-color: color-mix(in srgb, var(--accent) 22%, var(--border-soft));
   background: color-mix(in srgb, var(--accent-soft) 54%, transparent);

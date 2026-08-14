@@ -1584,7 +1584,7 @@ async function upscaleCurrentResult() {
     }
     // 锁定当前图的 seed 进行 2.0x 潜空间重绘放大
     patchAnimaState({ seed: baseSeed })
-    pb.flash('✨ 正在使用当前 Seed 执行 2x 高清超分精修…')
+    pb.flash('正在使用当前 Seed 执行 2x 高清超分精修…')
     await generateAnima({ hiresFix: true, hiresScale: 2.0, hiresDenoise: 0.35 })
     return
   }
@@ -1600,7 +1600,7 @@ async function upscaleCurrentResult() {
     pb.markParamTouched('hiresFix')
     pb.markParamTouched('hiresScale')
     pb.markParamTouched('hiresDenoise')
-    pb.flash('✨ 正在使用当前 Seed 执行 SD 2x 高清修复…')
+    pb.flash('正在使用当前 Seed 执行 SD 2x 高清修复…')
     await callGenerate()
   }
 }

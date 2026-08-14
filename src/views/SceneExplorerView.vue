@@ -262,12 +262,12 @@ const PARTICLE_SHAPES: Record<string, ParticleShapeId> = {
   fanwork: 'spark',
 }
 const DEFAULT_RAILS = [
-  { character:'nene',    icon:'🌙', title:'宁宁的月光秘密', subtitle:'图书馆 · 樱色 · 魔女', query:'nene library' },
-  { character:'natsume', icon:'☕', title:'夏目的夜灯关心', subtitle:'咖啡馆 · 雨夜 · 琥珀', query:'natsume cafe'  },
-  { character:'shared',  icon:'🌅', title:'夏日远行',       subtitle:'海风 · 黄昏 · 纪念',   query:'beach sunset' },
+  { character:'nene',    icon:'moonlight', title:'宁宁的月光秘密', subtitle:'图书馆 · 樱色 · 魔女', query:'nene library' },
+  { character:'natsume', icon:'coffee',    title:'夏目的夜灯关心', subtitle:'咖啡馆 · 雨夜 · 琥珀', query:'natsume cafe'  },
+  { character:'shared',  icon:'goldenhour', title:'夏日远行',       subtitle:'海风 · 黄昏 · 纪念',   query:'beach sunset' },
 ]
 
-/** curation.json 的 moodRails 仍是 emoji；渲染时映射到手绘图标，避免改数据升版本 */
+/** moodRails 数据兼容两类来源：服务端 curation.json 的 emoji 旧值 → 映射到手绘图标；本地 ArchiveIconName 直接透传 */
 function railIconName(icon: string | undefined): ArchiveIconName {
   switch (icon) {
     case '🌙': return 'moonlight'
@@ -279,7 +279,11 @@ function railIconName(icon: string | undefined): ArchiveIconName {
     case '📖': return 'book'
     case '🎬': return 'clap'
     case '✿': return 'flower'
-    default: return 'spark'
+    default:
+      // 已是手绘图标名（本地 DEFAULT_RAILS）时原样使用；未知值回退 spark
+      return (icon && ['moonlight','coffee','goldenhour','cherry','autumnleaf','love','book','clap','flower','spark','sun','star','leaf','wand'].includes(icon))
+        ? icon as ArchiveIconName
+        : 'spark'
   }
 }
 

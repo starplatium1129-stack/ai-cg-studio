@@ -1,12 +1,12 @@
 import type { ArtistStyleOption } from './artistStyles.ts'
 
 export const ARTIST_STYLE_OPTIONS: readonly ArtistStyleOption[] = Object.freeze([
-  // 🎬 电影光影与通透氛围
+  // 电影光影与通透氛围
   { id: 'yoneyama_mai', name: 'Yoneyama Mai', cnName: '米山舞', waiTag: 'yoneyama_mai', animaTag: '@yoneyama mai', description: '电影感调色、松弛流动线条与强情绪光影', category: 'cinematic', verification: 'tag', keywords: ['电影感', '光影', '动态', '去塑料感', 'eva', '神仙画风'] },
   { id: 'rella', name: 'Rella', cnName: 'Rella', waiTag: 'rella', animaTag: '@rella', description: '梦幻夜景辉光、空灵色彩与电影照明', category: 'cinematic', verification: 'curated', keywords: ['星空', '夜景', '梦幻', '水下', '光斑'] },
   { id: 'swav', name: 'SWAV', cnName: 'SWAV', waiTag: 'swav', animaTag: '@swav', description: '高冲击力幻想海报、魔法光照与纵深', category: 'cinematic', verification: 'curated', keywords: ['纵深', '魔法光', '海报', '空间感'] },
   
-  // 🌸 清透少女与顶级 Galgame
+  // 清透少女与顶级 Galgame
   { id: 'kantoku', name: 'Kantoku', cnName: '监督', waiTag: 'kantoku', animaTag: '@kantoku', description: '清透日系美少女、柔和暖阳与干净线条', category: 'pure', verification: 'curated', keywords: ['格子裙', '变态王子', '阳光', '清纯', 'galgame'] },
   { id: 'azuuru', name: 'Azure', cnName: 'あずーる', waiTag: 'azuuru', animaTag: '@azuuru', description: '《魔女之旅》原案、空灵水彩发丝与通透旅行感', category: 'pure', verification: 'tag', keywords: ['魔女之旅', '伊蕾娜', '伊雷娜', 'elaina', 'azure', 'azuuru', '旅行', '魔女', '水彩', '通透'] },
   { id: 'hiten_(hitenkei)', name: 'Hiten', cnName: 'Hiten', waiTag: 'hiten_(hitenkei)', animaTag: '@hiten', description: '柔光日系、精致五官与清澈治愈空气感', category: 'pure', verification: 'tag', keywords: ['空气感', '柔光', '精致', '唯美', '清纯'] },
@@ -16,12 +16,12 @@ export const ARTIST_STYLE_OPTIONS: readonly ArtistStyleOption[] = Object.freeze(
   { id: 'muririn', name: 'Muririn', cnName: '梦璃凛', waiTag: 'muririn', animaTag: '@muririn', description: '柚子社柔亮赛璐璐、圆润脸型与水灵透明感', category: 'pure', verification: 'project', keywords: ['柚子社', '宁宁', '夏目', '赛璐珞'] },
   { id: 'kobuichi', name: 'Kobuichi', cnName: '小舞一', waiTag: 'kobuichi', animaTag: '@kobuichi', description: '柚子社利落原画、清晰轮廓与鲜亮配色', category: 'pure', verification: 'project', keywords: ['柚子社', '原画', '鲜亮', '轮廓'] },
 
-  // ⚡ 潮流先锋与高饱和
+  // 潮流先锋与高饱和
   { id: 'lam_(ramdayo)', name: 'LAM', cnName: 'LAM', waiTag: 'lam_(ramdayo)', animaTag: '@lam', description: '极高饱和霓虹、硬朗潮流眼妆与前卫图形', category: 'trend', verification: 'tag', keywords: ['赛博', '霓虹', '眼妆', '潮流', '撞色'] },
   { id: 'mika_pikazo', name: 'Mika Pikazo', cnName: 'Mika Pikazo', waiTag: 'mika_pikazo', animaTag: '@mika pikazo', description: '高饱和流行波普色、大胆几何撞色与活力', category: 'trend', verification: 'curated', keywords: ['辉夜月', '撞色', '活力', '波普'] },
   { id: 'bunbun', name: 'BUNBUN / abec', cnName: 'abec', waiTag: 'bunbun', animaTag: '@bunbun', description: '动态游戏主视觉、清晰服装设计与动作张力', category: 'trend', verification: 'curated', keywords: ['刀剑神域', '动态', '动作', '帅气'] },
 
-  // 🏰 华丽厚涂与大片级主视觉
+  // 华丽厚涂与大片级主视觉
   { id: 'shirabi', name: 'Shirabi', cnName: '白身成', waiTag: 'shirabi', animaTag: '@shirabi', description: '利落厚重线条、鲜明轮廓与戏剧性主视觉', category: 'grand', verification: 'curated', keywords: ['86', '龙王的工作', '大片', '戏剧光'] },
   { id: 'ask_(askzy)', name: 'ASK', cnName: 'ASK', waiTag: 'ask_(askzy)', animaTag: '@ask', description: '清冷贵气、丝滑平滑上色与克制高级感', category: 'grand', verification: 'tag', keywords: ['清冷', '贵气', '高级感', '礼服', '丝滑'] },
   { id: 'hxxg', name: 'HxxG', cnName: '刃天', waiTag: 'hxxg', animaTag: '@hxxg', description: '大动态广角透视、炫彩特效逆光与空间深邃感', category: 'grand', verification: 'curated', keywords: ['黑岩射手', '透视', '广角', '特效'] },

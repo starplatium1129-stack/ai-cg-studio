@@ -136,13 +136,11 @@ const selectedOutfit = computed<PopularOutfit | null>(() => {
 }
 .popular-card-initial {
   position: relative;
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   display: grid;
   place-items: center;
-  border-radius: 50%;
-  background: linear-gradient(135deg, color-mix(in srgb, var(--pb-active) 78%, white 8%), var(--pb-active-grad));
-  color: var(--text-inverse);
+  color: var(--pb-active);
   margin-bottom: var(--s-1);
 }
 .initial-ring {
@@ -150,7 +148,7 @@ const selectedOutfit = computed<PopularOutfit | null>(() => {
   inset: 0;
   width: 100%;
   height: 100%;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--pb-active);
 }
 .initial-ring-dupe {
   animation: initial-ink 1.4s ease-in-out infinite alternate;
@@ -164,6 +162,7 @@ const selectedOutfit = computed<PopularOutfit | null>(() => {
   z-index: 1;
   font-weight: 700;
   font-size: var(--fs-body);
+  color: var(--pb-active);
 }
 .popular-card-name {
   font-size: var(--fs-label-sm);
