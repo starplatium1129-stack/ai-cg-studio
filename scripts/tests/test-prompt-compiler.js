@@ -77,6 +77,7 @@ test('artist style catalog is unique, allowlisted, limited, and model-native', (
   assert.strictEqual(ids.length, 21);
   assert.strictEqual(new Set(ids).size, ids.length);
   assert.deepStrictEqual(artistStyles.normalizeArtistStyleIds(['kantoku', 'rella', 'swav', 'unknown']), ['kantoku', 'rella']);
+  assert.deepStrictEqual(artistStyles.normalizeArtistStyleIds(['azure', 'rella']), ['azuuru', 'rella']);
   assert.deepStrictEqual(artistStyles.artistTagsForEngine(['mika_pikazo', 'so-bin'], 'sd'), ['mika_pikazo', 'so-bin']);
   assert.deepStrictEqual(artistStyles.artistTagsForEngine(['mika_pikazo', 'so-bin'], 'anima'), ['@mika pikazo', '@so-bin']);
   assert.deepStrictEqual(artistStyles.artistTagsForEngine(['muririn', 'kobuichi'], 'anima'), ['@muririn', '@kobuichi']);
@@ -84,7 +85,7 @@ test('artist style catalog is unique, allowlisted, limited, and model-native', (
   assert.deepStrictEqual(artistStyles.artistTagsForEngine(['azuuru'], 'anima'), ['@azuuru']);
   assert.strictEqual(artistStyles.artistStyleProse(['bunbun', 'rella']), 'with visual styling inspired by Bunbun and Rella');
   assert.strictEqual(artistStyles.artistStyleProse(['yoneyama_mai', 'lack']), 'with visual styling inspired by Yoneyama Mai and Lack');
-  assert.strictEqual(artistStyles.artistStyleProse(['azuuru', 'rella']), 'with visual styling inspired by Azuuru and Rella');
+  assert.strictEqual(artistStyles.artistStyleProse(['azuuru', 'rella']), 'with visual styling inspired by Azure and Rella');
   assert.deepStrictEqual(ids.filter(id => artistStyles.normalizeArtistStyleIds([id]).length !== 1), []);
   assert.deepStrictEqual(
     artistCatalog.ARTIST_STYLE_OPTIONS.filter(option => option.verification === 'project').map(option => option.id),

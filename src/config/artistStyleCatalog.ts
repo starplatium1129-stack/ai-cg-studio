@@ -8,7 +8,7 @@ export const ARTIST_STYLE_OPTIONS: readonly ArtistStyleOption[] = Object.freeze(
   
   // 🌸 清透少女与顶级 Galgame
   { id: 'kantoku', name: 'Kantoku', cnName: '监督', waiTag: 'kantoku', animaTag: '@kantoku', description: '清透日系美少女、柔和暖阳与干净线条', category: 'pure', verification: 'curated', keywords: ['格子裙', '变态王子', '阳光', '清纯', 'galgame'] },
-  { id: 'azuuru', name: 'Azuuru', cnName: 'あずーる', waiTag: 'azuuru', animaTag: '@azuuru', description: '《魔女之旅》原案、空灵水彩发丝与通透旅行感', category: 'pure', verification: 'tag', keywords: ['魔女之旅', '伊蕾娜', '伊雷娜', 'elaina', 'azure', '旅行', '魔女', '水彩', '通透'] },
+  { id: 'azuuru', name: 'Azure', cnName: 'あずーる', waiTag: 'azuuru', animaTag: '@azuuru', description: '《魔女之旅》原案、空灵水彩发丝与通透旅行感', category: 'pure', verification: 'tag', keywords: ['魔女之旅', '伊蕾娜', '伊雷娜', 'elaina', 'azure', 'azuuru', '旅行', '魔女', '水彩', '通透'] },
   { id: 'hiten_(hitenkei)', name: 'Hiten', cnName: 'Hiten', waiTag: 'hiten_(hitenkei)', animaTag: '@hiten', description: '柔光日系、精致五官与清澈治愈空气感', category: 'pure', verification: 'tag', keywords: ['空气感', '柔光', '精致', '唯美', '清纯'] },
   { id: 'tiv', name: 'Tiv', cnName: 'Tiv', waiTag: 'tiv', animaTag: '@tiv', description: '轻小说封面感、细腻环境光与微风发丝', category: 'pure', verification: 'tag', keywords: ['政宗君', '微风', '轻小说', '回眸'] },
   { id: 'anmi', name: 'Anmi', cnName: 'Anmi', waiTag: 'anmi', animaTag: '@anmi', description: '轻盈马卡龙粉彩、水润水彩质感与优雅体态', category: 'pure', verification: 'curated', keywords: ['粉彩', '水彩', '优雅', '泳装', '透明感'] },
