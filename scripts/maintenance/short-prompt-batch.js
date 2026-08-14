@@ -10,9 +10,9 @@ const promptContract = require('./quality-prompt-contract.js');
 const OUT = 'E:/code/2/lora/AI/Reviews/ShortPromptBatch';
 const GATEWAY = 'http://127.0.0.1:3000';
 const SEEDS = [20260809, 20261806, 20262803];
-const LORAS = { nene: 'L_NENE_V20B_ANIMA', natsume: 'L_NAT_V20_ANIMA' };
-const CHARACTERS = { nene: 'nene_b', natsume: 'natsume' };
-const MODEL_BY_CHAR = { nene: 'anima-base-v1.0', natsume: 'anima-base-v1.0' };
+const LORAS = { nene: 'L_NENE_V21_ANIMA', natsume: 'L_NAT_V21_ANIMA' };
+const CHARACTERS = { nene: 'nene', natsume: 'natsume' };
+const MODEL_BY_CHAR = { nene: 'anima-aesthetic-v1.1', natsume: 'anima-aesthetic-v1.1' };
 
 const NEGATIVE = 'worst quality, low quality, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, split image, multiple panels, comic strip, second person, multiple girls';
 

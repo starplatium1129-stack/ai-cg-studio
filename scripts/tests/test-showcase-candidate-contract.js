@@ -460,7 +460,7 @@ test('popular batch covers all 18 characters with default outfit and safe bluepr
   }
 });
 
-test('latest-lora batch: production ids/files/strength/checkpoint for SD v18 + Anima v20', () => {
+test('latest-lora batch: production ids/files/strength/checkpoint for SD v18 + Anima v21', () => {
   const lora = gen.latestLoraBatch(20260812);
   assert.strictEqual(lora.length, 8);
   const expected = new Map([
@@ -468,10 +468,10 @@ test('latest-lora batch: production ids/files/strength/checkpoint for SD v18 + A
     ['latest-lora:nene:sd:fullbody', ['L_NENE_V18_WD14', genConst.LORAS.L_NENE_V18_WD14.file, genConst.CHECKPOINT]],
     ['latest-lora:natsume:sd:closeup', ['L_NAT_V18_WD14', genConst.LORAS.L_NAT_V18_WD14.file, genConst.CHECKPOINT]],
     ['latest-lora:natsume:sd:fullbody', ['L_NAT_V18_WD14', genConst.LORAS.L_NAT_V18_WD14.file, genConst.CHECKPOINT]],
-    ['latest-lora:nene:anima:closeup', ['L_NENE_V20_ANIMA', animaConst.LORAS.L_NENE_V20_ANIMA.file, animaConst.MODELS['anima-base-v1.0'].file]],
-    ['latest-lora:nene:anima:fullbody', ['L_NENE_V20_ANIMA', animaConst.LORAS.L_NENE_V20_ANIMA.file, animaConst.MODELS['anima-base-v1.0'].file]],
-    ['latest-lora:natsume:anima:closeup', ['L_NAT_V20_ANIMA', animaConst.LORAS.L_NAT_V20_ANIMA.file, animaConst.MODELS['anima-base-v1.0'].file]],
-    ['latest-lora:natsume:anima:fullbody', ['L_NAT_V20_ANIMA', animaConst.LORAS.L_NAT_V20_ANIMA.file, animaConst.MODELS['anima-base-v1.0'].file]],
+    ['latest-lora:nene:anima:closeup', ['L_NENE_V21_ANIMA', animaConst.LORAS.L_NENE_V21_ANIMA.file, animaConst.MODELS['anima-aesthetic-v1.1'].file]],
+    ['latest-lora:nene:anima:fullbody', ['L_NENE_V21_ANIMA', animaConst.LORAS.L_NENE_V21_ANIMA.file, animaConst.MODELS['anima-aesthetic-v1.1'].file]],
+    ['latest-lora:natsume:anima:closeup', ['L_NAT_V21_ANIMA', animaConst.LORAS.L_NAT_V21_ANIMA.file, animaConst.MODELS['anima-aesthetic-v1.1'].file]],
+    ['latest-lora:natsume:anima:fullbody', ['L_NAT_V21_ANIMA', animaConst.LORAS.L_NAT_V21_ANIMA.file, animaConst.MODELS['anima-aesthetic-v1.1'].file]],
   ]);
   for (const item of lora) {
     const [loraId, file, checkpoint] = expected.get(item.key);
@@ -540,7 +540,7 @@ test('single-character scene candidates use the audited short prompt and correct
   assert.strictEqual(sceneGen.buildSubmissionBody(nene).character, 'nene');
 
   const natsume = candidates.find(item => item.characterId === 'natsume');
-  assert.strictEqual(natsume.loraId, 'L_NAT_V20_ANIMA');
+  assert.strictEqual(natsume.loraId, 'L_NAT_V21_ANIMA');
   assert.strictEqual(natsume.generationCharacter, 'natsume');
   assert.strictEqual(sceneGen.buildSubmissionBody(natsume).character, 'natsume');
 });

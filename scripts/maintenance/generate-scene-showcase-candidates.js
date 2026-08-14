@@ -41,7 +41,7 @@ const CHAR_PROMPT = Object.freeze({
 });
 const ANIMA_LORA_BY_CHARACTER = Object.freeze({
   nene: 'L_NENE_V21_ANIMA',
-  natsume: 'L_NAT_V20_ANIMA',
+  natsume: 'L_NAT_V21_ANIMA',
 });
 const WAI_LORA_BY_CHARACTER = Object.freeze({
   nene: 'L_NENE_V18_WD14',

@@ -636,12 +636,12 @@ function popularBatch(seedBase) {
 
 function latestLoraBatch(seedBase) {
   const charConfigs = [
-    { characterId: 'nene', label: '绫地宁宁', sdLoraId: 'L_NENE_V18_WD14', animaLoraId: 'L_NENE_V20_ANIMA' },
-    { characterId: 'natsume', label: '四季夏目', sdLoraId: 'L_NAT_V18_WD14', animaLoraId: 'L_NAT_V20_ANIMA' },
+    { characterId: 'nene', label: '绫地宁宁', sdLoraId: 'L_NENE_V18_WD14', animaLoraId: 'L_NENE_V21_ANIMA' },
+    { characterId: 'natsume', label: '四季夏目', sdLoraId: 'L_NAT_V18_WD14', animaLoraId: 'L_NAT_V21_ANIMA' },
   ];
   const engineSpecs = [
     ['sd', 'wai', WAI_MODEL_ID, genConst.CHECKPOINT, 30, 6, 'Euler a', 'normal'],
-    ['anima', 'anima', ANIMA_BASE_ID, animaConst.MODELS[ANIMA_BASE_ID].file, 24, 3.0, 'res_multistep', 'simple'],
+    ['anima', 'anima', ANIMA_AESTHETIC_ID, animaConst.MODELS[ANIMA_AESTHETIC_ID].file, 24, 3.0, 'res_multistep', 'simple'],
   ];
   const loraFileFor = (loraId) => {
     const genLora = genConst.LORAS[loraId];

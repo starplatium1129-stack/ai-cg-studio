@@ -34,14 +34,14 @@ const SEED_COUNT = 3;
 
 const REPAIR_MODELS = Object.freeze({
   nene: Object.freeze({
-    loraId: 'L_NENE_V20B_ANIMA',
+    loraId: 'L_NENE_V21_ANIMA',
     loraStrength: 0.85,
-    modelId: 'anima-base-v1.0',
+    modelId: 'anima-aesthetic-v1.1',
   }),
   natsume: Object.freeze({
-    loraId: 'L_NAT_V20_ANIMA',
+    loraId: 'L_NAT_V21_ANIMA',
     loraStrength: 0.85,
-    modelId: 'anima-base-v1.0',
+    modelId: 'anima-aesthetic-v1.1',
   }),
 });
 

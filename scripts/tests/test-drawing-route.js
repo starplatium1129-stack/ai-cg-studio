@@ -20,8 +20,8 @@ test('studio single-character routes prefer validated Anima LoRAs', () => {
     {
       engine: 'anima',
       modelId: 'anima-aesthetic-v1.1',
-      loraId: 'L_NENE_V20B_ANIMA',
-      generationCharacter: 'nene_b',
+      loraId: 'L_NENE_V21_ANIMA',
+      generationCharacter: 'nene',
       promptFormat: 'anima-tags',
     },
   );

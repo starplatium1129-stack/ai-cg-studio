@@ -175,7 +175,7 @@ if (!view.includes('usePromptAssembly')) {
 for (const marker of ['recommendDrawingRoute', 'managedRoute', 'applyManagedRoute', 'reuseSuccessfulRecipe', 'ManagedDrawingRouteCard']) {
   if (!view.includes(marker)) fail('scene mode must consume the managed drawing route: ' + marker);
 }
-for (const marker of ['L_NENE_V20B_ANIMA', "engine: 'sd'", "engine: 'anima'", "engine: 'krea2'"]) {
+for (const marker of ['L_NENE_V21_ANIMA', "engine: 'sd'", "engine: 'anima'", "engine: 'krea2'"]) {
   if (!drawingRoute.includes(marker)) fail('drawing route must pin the validated engine contract: ' + marker);
 }
 if (view.includes('prompt-style-switch') || view.includes('aics_parameter_memory_v1')) {

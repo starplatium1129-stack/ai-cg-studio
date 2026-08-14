@@ -67,6 +67,14 @@ var LORAS = Object.freeze({
     compatibleModels:['anima-base-v1.0', 'anima-aesthetic-v1.1'],
     minStrength:0.65,
     maxStrength:1
+  },
+  L_NAT_V21_ANIMA: {
+    file:'shiki_natsume_v20_anima_unified_e16.safetensors',
+    name:'shiki_natsume_v20_anima_unified_e16',
+    character:'natsume',
+    compatibleModels:['anima-base-v1.0', 'anima-aesthetic-v1.1'],
+    minStrength:0.65,
+    maxStrength:1
   }
 });
 

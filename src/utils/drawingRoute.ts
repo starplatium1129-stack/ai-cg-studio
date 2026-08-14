@@ -23,9 +23,9 @@ export interface DrawingRouteRecommendation {
 
 const STUDIO_LORA = Object.freeze({
   nene: Object.freeze({
-    loraId: 'L_NENE_V20B_ANIMA',
-    generationCharacter: 'nene_b' as const,
-    label: '宁宁 V20B',
+    loraId: 'L_NENE_V21_ANIMA',
+    generationCharacter: 'nene' as const,
+    label: '宁宁 V21',
   }),
   natsume: Object.freeze({
     loraId: 'L_NAT_V21_ANIMA',

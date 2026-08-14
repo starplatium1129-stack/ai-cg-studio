@@ -61,7 +61,7 @@ async function main() {
         width: 832, height: 1216,
         seed, steps: 24, cfg: 3.0,
         negative: NEGATIVE,
-        loraId: 'L_NENE_V20_ANIMA', loraStrength: 0.85, character: 'nene',
+        loraId: 'L_NENE_V21_ANIMA', loraStrength: 0.85, character: 'nene',
       };
       console.log(`[generate] ${pilot.key} seed ${seed}`);
       const result = await submit(body);
