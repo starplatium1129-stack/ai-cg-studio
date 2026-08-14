@@ -4,15 +4,44 @@
 
 export type ArtistStyleEngine = 'sd' | 'anima' | 'krea2'
 export type ArtistStyleVerification = 'project' | 'curated' | 'tag'
+export type ArtistCategory = 'cinematic' | 'pure' | 'trend' | 'grand'
 
 export interface ArtistStyleOption {
   id: string
   name: string
+  cnName?: string
   waiTag: string
   animaTag: string
   description: string
   verification: ArtistStyleVerification
+  category?: ArtistCategory
+  keywords?: string[]
 }
+
+export interface ArtistComboPreset {
+  id: string
+  label: string
+  artistIds: [string, string] | [string]
+  tagline: string
+  mood: string
+}
+
+export const ARTIST_COMBO_PRESETS: readonly ArtistComboPreset[] = Object.freeze([
+  { id: 'cinematic_pure', label: '🎬 电影通透感', artistIds: ['yoneyama_mai', 'kantoku'], tagline: '米山舞 × 监督', mood: '电影级流动光影与清透甜美五官' },
+  { id: 'pure_galgame', label: '🌸 极致水灵少女', artistIds: ['hiten_(hitenkei)', 'tiv'], tagline: 'Hiten × Tiv', mood: '柔光日系空气感与微风发丝' },
+  { id: 'starry_dream', label: '🌌 梦幻星夜微光', artistIds: ['rella', 'anmi'], tagline: 'Rella × Anmi', mood: '夜景星斑与清甜水润粉彩折射' },
+  { id: 'noble_lady', label: '👑 清冷贵气千金', artistIds: ['ask_(askzy)', 'kantoku'], tagline: 'ASK × 监督', mood: '丝滑上色与克制的高级质感' },
+  { id: 'trend_cyber', label: '⚡ 潮流先锋霓虹', artistIds: ['lam_(ramdayo)', 'mika_pikazo'], tagline: 'LAM × Mika Pikazo', mood: '极高饱和前卫撞色与锐利图形' },
+  { id: 'epic_grand', label: '🏰 史诗主视觉厚涂', artistIds: ['shirabi', 'hxxg'], tagline: '白身成 × 刃天', mood: '大动态透视与戏剧性主画幅' },
+])
+
+export const ARTIST_CATEGORIES = [
+  { id: 'all', label: '全部' },
+  { id: 'cinematic', label: '🎬 电影光影' },
+  { id: 'pure', label: '🌸 清透少女' },
+  { id: 'trend', label: '⚡ 潮流先锋' },
+  { id: 'grand', label: '🏰 华丽厚涂' },
+] as const
 
 const ARTIST_STYLE_IDS = new Set(
   'kantoku shirabi bunbun morikura_en anmi rella mika_pikazo nardack fuzichoco hxxg swav so-bin muririn kobuichi yoneyama_mai hiten_(hitenkei) lam_(ramdayo) tiv lack ask_(askzy)'.split(' '),

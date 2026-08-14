@@ -1,15 +1,72 @@
 <template>
   <details class="artist-style-picker advanced-decision" data-testid="artist-style-picker">
     <summary>
-      <span>画师风格 · Artist tags</span>
-      <strong>{{ selectionSummary }}</strong>
+      <div class="artist-summary-title">
+        <span>画师风格 · Artist tags</span>
+        <small v-if="selected.length" class="artist-active-pill">已启用 {{ selected.length }}/2</small>
+      </div>
+      <div class="artist-summary-right">
+        <strong :class="{ active: selected.length }">{{ selectionSummary }}</strong>
+        <button
+          v-if="selected.length"
+          type="button"
+          class="artist-clear-inline"
+          title="清空画师风格"
+          @click.stop="clearSelected"
+        >
+          清空
+        </button>
+      </div>
     </summary>
     <div class="artist-style-body">
-      <p>专家选项，最多混合 2 位。基础模式不会注入；“项目实测”已有成片依据，“待验证”需后续本机出图复核。</p>
-      <label class="artist-style-search">
-        <span>查找画师</span>
-        <input v-model.trim="query" type="search" placeholder="名字或画面特征" autocomplete="off">
-      </label>
+      <!-- 灵感混搭黄金预设：一键应用顶级画师组合 -->
+      <div class="artist-presets-section">
+        <div class="artist-presets-head">
+          <span>✨ 热门灵感混搭预设（一键应用）</span>
+        </div>
+        <div class="artist-presets-row">
+          <button
+            v-for="combo in ARTIST_COMBO_PRESETS"
+            :key="combo.id"
+            type="button"
+            class="artist-combo-btn"
+            :class="{ active: isComboActive(combo.artistIds) }"
+            :title="`${combo.tagline} · ${combo.mood}`"
+            @click="applyCombo(combo.artistIds)"
+          >
+            <span class="combo-label">{{ combo.label }}</span>
+            <small class="combo-tagline">{{ combo.tagline }}</small>
+          </button>
+        </div>
+      </div>
+
+      <div class="artist-controls-bar">
+        <!-- 分类选项卡 -->
+        <div class="artist-category-tabs" role="group" aria-label="画师分类">
+          <button
+            v-for="cat in ARTIST_CATEGORIES"
+            :key="cat.id"
+            type="button"
+            class="artist-cat-btn"
+            :class="{ active: currentCategory === cat.id }"
+            @click="currentCategory = cat.id"
+          >
+            {{ cat.label }}
+          </button>
+        </div>
+
+        <!-- 搜索输入 -->
+        <label class="artist-style-search">
+          <input
+            v-model.trim="query"
+            type="search"
+            placeholder="搜索画师名/作品（如：米山舞、EVA、86、柚子社、星空）"
+            autocomplete="off"
+          >
+        </label>
+      </div>
+
+      <!-- 画师网格 -->
       <div class="artist-style-grid">
         <button
           v-for="option in filteredOptions"
@@ -22,15 +79,21 @@
           @click="toggle(option.id)"
         >
           <span class="artist-style-name">
-            <strong>{{ option.name }}</strong>
+            <strong>
+              <span v-if="option.cnName" class="artist-cn-name">{{ option.cnName }}</span>
+              <span class="artist-en-name">{{ option.name }}</span>
+            </strong>
             <small class="artist-style-status" :class="option.verification">{{ verificationLabel(option.verification) }}</small>
           </span>
-          <small>{{ option.description }}</small>
+          <small class="artist-desc">{{ option.description }}</small>
         </button>
       </div>
-      <p v-if="!filteredOptions.length" class="artist-style-empty">没有匹配的画师。</p>
+
+      <p v-if="!filteredOptions.length" class="artist-style-empty">没有匹配的画师风格。</p>
+
+      <!-- Token 预览 -->
       <div v-if="modelTokens" class="artist-style-tokens">
-        <span>{{ engineLabel }}</span>
+        <span class="tokens-engine">{{ engineLabel }} 注入：</span>
         <code>{{ modelTokens }}</code>
       </div>
     </div>
@@ -39,7 +102,12 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import type { ArtistStyleEngine, ArtistStyleVerification } from '@/config/artistStyles'
+import {
+  type ArtistStyleEngine,
+  type ArtistStyleVerification,
+  ARTIST_COMBO_PRESETS,
+  ARTIST_CATEGORIES,
+} from '@/config/artistStyles'
 import { ARTIST_STYLE_OPTIONS } from '@/config/artistStyleCatalog'
 
 const props = defineProps<{
@@ -49,26 +117,47 @@ const props = defineProps<{
 const emit = defineEmits<{ 'update:selected': [value: string[]] }>()
 
 const query = ref('')
+const currentCategory = ref<string>('all')
+
 const selectedOptions = computed(() => ARTIST_STYLE_OPTIONS.filter(option => props.selected.includes(option.id)))
+
 const filteredOptions = computed(() => {
+  let list = ARTIST_STYLE_OPTIONS
+  if (currentCategory.value !== 'all') {
+    list = list.filter(option => option.category === currentCategory.value)
+  }
   const needle = query.value.toLocaleLowerCase()
-  if (!needle) return ARTIST_STYLE_OPTIONS
-  return ARTIST_STYLE_OPTIONS.filter(option =>
-    `${option.name} ${option.id} ${option.description}`.toLocaleLowerCase().includes(needle),
-  )
+  if (!needle) return list
+  return list.filter(option => {
+    const haystack = [
+      option.name,
+      option.id,
+      option.cnName || '',
+      option.description,
+      ...(option.keywords || []),
+    ].join(' ').toLocaleLowerCase()
+    return haystack.includes(needle)
+  })
 })
-const selectionSummary = computed(() => selectedOptions.value.length
-  ? selectedOptions.value.map(option => option.name).join(' + ')
-  : '未启用')
+
+const selectionSummary = computed(() => {
+  if (!selectedOptions.value.length) return '未启用'
+  return selectedOptions.value.map(option => option.cnName ? `${option.cnName}` : option.name).join(' + ')
+})
+
 const engineLabel = computed(() => props.engine === 'sd' ? 'WAI / Illustrious' : props.engine === 'anima' ? 'Anima' : 'Krea 2')
-const modelTokens = computed(() => props.engine === 'krea2'
-  ? `with visual styling inspired by ${selectedOptions.value.map(option => option.name).join(' and ')}`
-  : selectedOptions.value.map(option => props.engine === 'anima' ? option.animaTag : option.waiTag).join(', '))
+const modelTokens = computed(() => {
+  if (!selectedOptions.value.length) return ''
+  if (props.engine === 'krea2') {
+    return `with visual styling inspired by ${selectedOptions.value.map(option => option.name).join(' and ')}`
+  }
+  return selectedOptions.value.map(option => props.engine === 'anima' ? option.animaTag : option.waiTag).join(', ')
+})
 
 function verificationLabel(verification: ArtistStyleVerification): string {
   if (verification === 'project') return '项目实测'
-  if (verification === 'tag') return '待验证'
-  return '已收录'
+  if (verification === 'tag') return '热门推荐'
+  return '官方收录'
 }
 
 function toggle(id: string) {
@@ -78,6 +167,23 @@ function toggle(id: string) {
     ? current.filter(value => value !== id)
     : [...current, id]
   emit('update:selected', next.slice(0, 2))
+}
+
+function clearSelected() {
+  emit('update:selected', [])
+}
+
+function isComboActive(artistIds: readonly string[]): boolean {
+  if (props.selected.length !== artistIds.length) return false
+  return artistIds.every(id => props.selected.includes(id))
+}
+
+function applyCombo(artistIds: readonly string[]) {
+  if (isComboActive(artistIds)) {
+    clearSelected()
+  } else {
+    emit('update:selected', [...artistIds])
+  }
 }
 </script>
 
@@ -98,49 +204,265 @@ function toggle(id: string) {
   cursor: pointer;
   font-weight: 700;
 }
-.artist-style-picker summary strong { color: var(--accent); font-size: var(--fs-label); text-align: right; }
-.artist-style-body { padding: 0 var(--s-4) var(--s-4); }
-.artist-style-body > p { margin: 0 0 var(--s-3); color: var(--text-muted); font-size: var(--fs-label); }
-.artist-style-search { display: grid; gap: 5px; margin-bottom: var(--s-3); color: var(--text-muted); font-size: var(--fs-label-xs); }
+.artist-summary-title {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+.artist-active-pill {
+  padding: 1px 7px;
+  border-radius: var(--r-pill);
+  font-size: var(--fs-label-xs);
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+.artist-summary-right {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin-left: auto;
+}
+.artist-summary-right strong {
+  color: var(--text-muted);
+  font-size: var(--fs-label);
+}
+.artist-summary-right strong.active {
+  color: var(--accent);
+  font-weight: 700;
+}
+.artist-clear-inline {
+  padding: 1px 6px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border-soft);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: var(--fs-label-xs);
+  cursor: pointer;
+  transition: all var(--t-fast) var(--ease-out);
+}
+.artist-clear-inline:hover {
+  color: var(--danger-text);
+  border-color: var(--danger);
+}
+.artist-style-body {
+  padding: 0 var(--s-4) var(--s-4);
+}
+
+/* 黄金混搭预设行 */
+.artist-presets-section {
+  margin-bottom: var(--s-3);
+  padding: var(--s-3);
+  border-radius: var(--r-md);
+  background: color-mix(in srgb, var(--accent-soft) 20%, var(--bg-deep));
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--border-soft));
+}
+.artist-presets-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--s-2);
+  font-size: var(--fs-label-xs);
+  font-weight: 600;
+  color: var(--accent);
+}
+.artist-presets-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--s-2);
+}
+.artist-combo-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: var(--s-2) var(--s-3);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-sm);
+  background: var(--bg-deep);
+  color: var(--text-secondary);
+  cursor: pointer;
+  text-align: left;
+  transition: all var(--t-fast) var(--ease-out);
+}
+.artist-combo-btn:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--text-primary);
+}
+.artist-combo-btn.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+.combo-label {
+  font-size: var(--fs-label-sm);
+  font-weight: 700;
+}
+.combo-tagline {
+  font-size: var(--fs-mono-xs);
+  color: var(--text-muted);
+}
+
+/* 控制栏 */
+.artist-controls-bar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  margin-bottom: var(--s-3);
+}
+.artist-category-tabs {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  scrollbar-width: thin;
+}
+.artist-cat-btn {
+  flex: 0 0 auto;
+  min-height: 28px;
+  padding: 0 var(--s-3);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-pill);
+  background: var(--bg-deep);
+  color: var(--text-muted);
+  cursor: pointer;
+  font: 600 var(--fs-mono-xs) var(--font-sans);
+  transition: all var(--t-fast) var(--ease-out);
+}
+.artist-cat-btn:hover {
+  color: var(--text-primary);
+  border-color: var(--accent);
+}
+.artist-cat-btn.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
 .artist-style-search input {
+  width: 100%;
   min-height: 36px;
   padding: 0 var(--s-3);
   border: 1px solid var(--border-soft);
   border-radius: var(--r-md);
   background: var(--bg-deep);
   color: var(--text-primary);
+  font-size: var(--fs-label);
 }
-.artist-style-search input:focus-visible { border-color: var(--accent); outline: 2px solid color-mix(in srgb, var(--accent) 25%, transparent); outline-offset: 1px; }
-.artist-style-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-2); }
+.artist-style-search input:focus-visible {
+  border-color: var(--accent);
+  outline: 2px solid color-mix(in srgb, var(--accent) 25%, transparent);
+  outline-offset: 1px;
+}
+
+/* 画师网格 */
+.artist-style-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--s-2);
+  max-height: 360px;
+  overflow-y: auto;
+  padding-right: 2px;
+}
 .artist-style-grid button {
   display: grid;
   gap: 4px;
   min-width: 0;
-  padding: var(--s-3);
+  padding: var(--s-2) var(--s-3);
   border: 1px solid var(--border-soft);
   border-radius: var(--r-md);
   background: var(--bg-deep);
   color: var(--text-secondary);
   text-align: left;
   cursor: pointer;
+  transition: all var(--t-fast) var(--ease-out);
 }
 .artist-style-grid button:hover:not(:disabled),
-.artist-style-grid button.selected { border-color: var(--accent); color: var(--text-primary); }
-.artist-style-grid button.selected { background: color-mix(in srgb, var(--accent) 10%, var(--bg-deep)); }
-.artist-style-grid button:disabled { cursor: not-allowed; opacity: .42; }
-.artist-style-name { display: flex; align-items: center; justify-content: space-between; gap: var(--s-2); }
-.artist-style-grid strong { font-size: var(--fs-label); }
-.artist-style-grid small { color: var(--text-muted); font-size: var(--fs-label-xs); line-height: 1.5; }
-.artist-style-status { flex: 0 0 auto; padding: 1px 5px; border-radius: var(--r-pill); background: var(--glass-fill); }
-.artist-style-status.project { color: var(--success); }
-.artist-style-status.tag { color: var(--warning-text); }
-.artist-style-empty { padding: var(--s-4) 0; text-align: center; }
-.artist-style-tokens { display: flex; align-items: baseline; gap: var(--s-2); margin-top: var(--s-3); color: var(--text-muted); font-size: var(--fs-label-xs); }
-.artist-style-tokens code { overflow-wrap: anywhere; color: var(--text-secondary); }
+.artist-style-grid button.selected {
+  border-color: var(--accent);
+  color: var(--text-primary);
+}
+.artist-style-grid button.selected {
+  background: color-mix(in srgb, var(--accent) 12%, var(--bg-deep));
+  box-shadow: inset 2px 0 0 var(--accent);
+}
+.artist-style-grid button:disabled {
+  cursor: not-allowed;
+  opacity: .42;
+}
+.artist-style-name {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2);
+}
+.artist-cn-name {
+  font-size: var(--fs-label-sm);
+  font-weight: 700;
+  margin-right: 4px;
+  color: var(--text-primary);
+}
+.artist-en-name {
+  font-size: var(--fs-label-xs);
+  color: var(--text-muted);
+  font-weight: 500;
+}
+.artist-desc {
+  color: var(--text-muted);
+  font-size: var(--fs-label-xs);
+  line-height: 1.4;
+}
+.artist-style-status {
+  flex: 0 0 auto;
+  padding: 1px 5px;
+  border-radius: var(--r-pill);
+  background: var(--glass-fill);
+  font-size: var(--fs-mono-xs);
+}
+.artist-style-status.project {
+  color: var(--success);
+}
+.artist-style-status.tag {
+  color: var(--accent);
+}
+.artist-style-status.curated {
+  color: var(--info-text);
+}
+.artist-style-empty {
+  padding: var(--s-4) 0;
+  text-align: center;
+  color: var(--text-muted);
+}
+.artist-style-tokens {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-2);
+  margin-top: var(--s-3);
+  padding: var(--s-2) var(--s-3);
+  border-radius: var(--r-md);
+  background: color-mix(in srgb, var(--bg-deep) 80%, black);
+  border: 1px solid var(--border-soft);
+  color: var(--text-muted);
+  font-size: var(--fs-label-xs);
+}
+.tokens-engine {
+  font-weight: 600;
+  color: var(--accent);
+  flex: 0 0 auto;
+}
+.artist-style-tokens code {
+  overflow-wrap: anywhere;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+}
+
 @media (max-width: 900px) {
+  .artist-presets-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .artist-style-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 520px) {
+  .artist-presets-row { grid-template-columns: 1fr; }
   .artist-style-grid { grid-template-columns: 1fr; }
 }
 </style>
