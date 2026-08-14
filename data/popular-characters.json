@@ -80,7 +80,8 @@
         "era": "前现代和风",
         "formNotes": "真身=雷电影（人偶之身）；雷电元素=紫色电光；武器=梦想一心",
         "research": "2026-08-14 调研"
-      }
+      },
+      "animeStudio": "genshin impact, official anime art, miHoYo style"
     },
     {
       "id": "sakurajima_mai",
@@ -170,7 +171,8 @@
         "era": "当代",
         "formNotes": "兔女郎装为名场面造型；瞳色为棕色（已修正）",
         "research": "2026-08-14 调研"
-      }
+      },
+      "animeStudio": "cloverworks, official anime screencap, anime coloring"
     },
     {
       "id": "tokisaki_kurumi",
@@ -252,7 +254,8 @@
         "era": "当代",
         "formNotes": "左金时钟瞳/右红瞳异色；不对称双马尾；刻刻帝+双燧发枪",
         "research": "2026-08-14 调研"
-      }
+      },
+      "animeStudio": "tsunako, official anime screencap, anime coloring"
     },
     {
       "id": "frieren",
@@ -332,7 +335,8 @@
         "era": "中世纪风",
         "formNotes": "精灵长寿者；低双马尾；紫眼（已修正）",
         "research": "2026-08-14 调研"
-      }
+      },
+      "animeStudio": "madhouse, official anime screencap, anime coloring"
     },
     {
       "id": "artoria_pendragon",
@@ -414,7 +418,8 @@
         "era": "当代+中世纪英灵",
         "formNotes": "金发绿眼呆毛；蓝白铠裙；圣剑 Excalibur",
         "research": "2026-08-14 调研"
-      }
+      },
+      "animeStudio": "ufotable, type-moon, cinematic anime screenshot, emiya-san chi no kyou no gohan"
     },
     {
       "id": "hatsune_miku",
@@ -497,7 +502,8 @@
         "era": "无固定",
         "formNotes": "青绿超长双马尾；经典舞台装=无袖深色上衣+领带+臂套；全场景灵活",
         "research": "2026-08-14 调研"
-      }
+      },
+      "animeStudio": "rella, official vocaloid art, vibrant concert lighting"
     },
     {
       "id": "yuzuriha_inori",
@@ -578,7 +584,8 @@
         "era": "2039",
         "formNotes": "下双马尾+红发夹；歌姬红装/白裙/虚空剑；主剧情 2039",
         "research": "2026-08-14 调研"
-      }
+      },
+      "animeStudio": "production i.g, redjuice, official anime screencap"
     },
     {
       "id": "yukinoshita_yukino",
@@ -658,7 +665,8 @@
         "era": "当代",
         "formNotes": "黑长直蓝眼；侍奉部；清冷气质",
         "research": "2026-08-14 调研"
-      }
+      },
+      "animeStudio": "feel. (studio), official anime screencap, anime coloring"
     },
     {
       "id": "elaina",
@@ -737,7 +745,8 @@
         "era": "魔法世界",
         "formNotes": "灰银发（已修正）；黑魔女帽+扫帚；灰之魔女",
         "research": "2026-08-14 调研"
-      }
+      },
+      "animeStudio": "c2c, official anime screencap, anime coloring"
     },
     {
       "id": "misaka_mikoto",
@@ -816,7 +825,8 @@
         "era": "近未来",
         "formNotes": "茶发棕眼齐刘海；常盘台水手服；超电磁炮=硬币电光",
         "research": "2026-08-14 调研"
-      }
+      },
+      "animeStudio": "j.c.staff, official anime screencap, anime coloring"
     },
     {
       "id": "makima",
@@ -907,7 +917,8 @@
         "era": "当代",
         "formNotes": "日常=淡粉发+正常红瞳+白西装；支配恶魔真身=红发+圈圈眼+麻花辫（独立 outfit）；不用剑",
         "research": "2026-08-14 调研"
-      }
+      },
+      "animeStudio": "mappa, official anime screencap, anime coloring"
     },
     {
       "id": "tohsaka_rin",
@@ -986,7 +997,8 @@
         "era": "当代",
         "formNotes": "黑发双马尾红丝带蓝眼；宝石魔术；傲娇",
         "research": "2026-08-14 调研"
-      }
+      },
+      "animeStudio": "ufotable, type-moon, cinematic anime screenshot"
     },
     {
       "id": "rem_rezero",
@@ -1066,7 +1078,8 @@
         "era": "中世纪风",
         "formNotes": "蓝发蓝眼（官方立绘为准）；隐藏鬼角；黑白色女仆装；晨星流星锤",
         "research": "2026-08-14 调研"
-      }
+      },
+      "animeStudio": "white fox, official anime screencap, anime coloring"
     },
     {
       "id": "emilia_rezero",
@@ -1145,7 +1158,8 @@
         "era": "中世纪风",
         "formNotes": "银发紫瞳半精灵；独角外露；契约精灵帕克；冰雪系",
         "research": "2026-08-14 调研"
-      }
+      },
+      "animeStudio": "white fox, official anime screencap, anime coloring"
     },
     {
       "id": "roxy_migurdia",
@@ -1225,7 +1239,8 @@
         "era": "中世纪风",
         "formNotes": "浅蓝发双辫+浅蓝肤；矮个；蓝袍白围裙+尖顶魔女帽",
         "research": "2026-08-14 调研"
-      }
+      },
+      "animeStudio": "studio bind, official anime screencap, anime coloring"
     },
     {
       "id": "illyasviel_von_einzbern",
@@ -1301,7 +1316,8 @@
         "era": "当代",
         "formNotes": "银发红眼幼态；紫裙；爱因兹贝伦古堡",
         "research": "2026-08-14 调研"
-      }
+      },
+      "animeStudio": "silver link, ufotable, official anime screencap"
     },
     {
       "id": "kitagawa_marin",
@@ -1395,7 +1411,8 @@
         "era": "当代",
         "formNotes": "金发蓝眼（已修正）；辣妹妆；缝纫/cosplay 核心",
         "research": "2026-08-14 调研"
-      }
+      },
+      "animeStudio": "cloverworks, official anime screencap, anime coloring"
     },
     {
       "id": "kisara_engage_kiss",
@@ -1481,7 +1498,8 @@
         "era": "近未来",
         "formNotes": "粉发红眼；恶魔形态=红角+白发+白色战衣；勿与天童木更混淆",
         "research": "2026-08-14 调研"
-      }
+      },
+      "animeStudio": "a-1 pictures, tsunako, official anime screencap"
     }
   ]
 }

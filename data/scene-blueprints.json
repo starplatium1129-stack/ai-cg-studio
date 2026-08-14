@@ -35,7 +35,8 @@
         "dark",
         "lightning",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters"
@@ -76,7 +77,8 @@
         "dark_background",
         "silhouette",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, day, dark shadowed face, flat lighting, extra characters"
@@ -115,7 +117,8 @@
         "red_and_white",
         "outdoors",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters"
@@ -154,7 +157,8 @@
         "indoor",
         "daylight",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, night, dark shadowed face, flat lighting, extra characters"
@@ -193,7 +197,8 @@
         "outdoors",
         "long_hair",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, dark shadowed face, flat lighting, extra characters"
@@ -232,7 +237,8 @@
         "outdoors",
         "evening",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, day, dark shadowed face, flat lighting, extra characters"
@@ -271,7 +277,8 @@
         "long_dress",
         "dark",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, school, bright, cheerful, day, dark shadowed face, flat lighting, extra characters"
@@ -310,7 +317,8 @@
         "dark",
         "outdoors",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, bright, cheerful, day, dark shadowed face, flat lighting, extra characters"
@@ -350,7 +358,8 @@
         "dark",
         "desolate",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, bright, cheerful, dark shadowed face, flat lighting, extra characters"
@@ -389,7 +398,8 @@
         "interior",
         "fantasy",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, school, dark shadowed face, flat lighting, extra characters"
@@ -429,7 +439,8 @@
         "outdoors",
         "fantasy",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, school, dark shadowed face, flat lighting, extra characters"
@@ -468,7 +479,8 @@
         "fantasy",
         "sad",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, dark shadowed face, flat lighting, extra characters"
@@ -508,7 +520,8 @@
         "mysterious",
         "outdoors",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, school, casual, bright, dark shadowed face, flat lighting, extra characters"
@@ -548,7 +561,8 @@
         "interior",
         "fantasy",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, school, casual, dark shadowed face, flat lighting, extra characters"
@@ -588,7 +602,8 @@
         "epic",
         "outdoors",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, school, casual, dark shadowed face, flat lighting, extra characters"
@@ -628,7 +643,8 @@
         "performance",
         "night",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, empty_room, day, dark shadowed face, flat lighting, extra characters"
@@ -666,7 +682,8 @@
         "interior",
         "warm_light",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, outdoors, dark shadowed face, flat lighting, extra characters"
@@ -705,7 +722,8 @@
         "outdoors",
         "warm_light",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, empty, day, dark shadowed face, flat lighting, extra characters"
@@ -743,7 +761,8 @@
         "night",
         "dark",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, cheerful, day, dark shadowed face, flat lighting, extra characters"
@@ -783,7 +802,8 @@
         "desolate",
         "dystopia",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, cheerful, bright, school, dark shadowed face, flat lighting, extra characters"
@@ -821,7 +841,8 @@
         "outdoors",
         "quiet",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, cheerful, bright, dark shadowed face, flat lighting, extra characters"
@@ -860,7 +881,8 @@
         "indoor",
         "quiet",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, night, dark shadowed face, flat lighting, extra characters"
@@ -899,7 +921,8 @@
         "snowing",
         "outdoors",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, summer, dark shadowed face, flat lighting, extra characters"
@@ -937,7 +960,8 @@
         "afternoon",
         "indoor",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, night, dark shadowed face, flat lighting, extra characters"
@@ -977,7 +1001,8 @@
         "travel",
         "fantasy",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, indoors, dark shadowed face, flat lighting, extra characters"
@@ -1017,7 +1042,8 @@
         "fantasy",
         "outdoors",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, dark shadowed face, flat lighting, extra characters"
@@ -1057,7 +1083,8 @@
         "day",
         "outdoors",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, dark shadowed face, flat lighting, extra characters"
@@ -1095,7 +1122,8 @@
         "outdoors",
         "urban",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, medieval, dark shadowed face, flat lighting, extra characters"
@@ -1133,7 +1161,8 @@
         "outdoors",
         "urban",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, dark shadowed face, flat lighting, extra characters"
@@ -1173,7 +1202,8 @@
         "battle",
         "city",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, day, dark shadowed face, flat lighting, extra characters"
@@ -1211,7 +1241,8 @@
         "intimate",
         "indoor",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, bright, cheerful, dark shadowed face, flat lighting, extra characters"
@@ -1249,7 +1280,8 @@
         "indoor",
         "professional",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, cheerful, dark shadowed face, flat lighting, extra characters"
@@ -1288,7 +1320,8 @@
         "ominous",
         "outdoors",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, bright, cheerful, day, dark shadowed face, flat lighting, extra characters"
@@ -1327,7 +1360,8 @@
         "magic",
         "night",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, sci-fi, beach, dark shadowed face, flat lighting, extra characters"
@@ -1363,7 +1397,8 @@
         "fence",
         "outdoors",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, fantasy, sci-fi, dark shadowed face, flat lighting, extra characters"
@@ -1401,7 +1436,8 @@
         "motion",
         "outdoors",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, sci-fi, beach, dark shadowed face, flat lighting, extra characters"
@@ -1439,7 +1475,8 @@
         "fantasy",
         "interior",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, school, dark shadowed face, flat lighting, extra characters"
@@ -1477,7 +1514,8 @@
         "fantasy",
         "outdoors",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, school, dark shadowed face, flat lighting, extra characters"
@@ -1517,7 +1555,8 @@
         "interior",
         "blue",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, cheerful, dark shadowed face, flat lighting, extra characters"
@@ -1557,7 +1596,8 @@
         "fantasy",
         "outdoors",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, desert, summer, dark shadowed face, flat lighting, extra characters"
@@ -1597,7 +1637,8 @@
         "fantasy",
         "dignified",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, desert, dark shadowed face, flat lighting, extra characters"
@@ -1636,7 +1677,8 @@
         "fantasy",
         "outdoors",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, night, dark shadowed face, flat lighting, extra characters"
@@ -1674,7 +1716,8 @@
         "interior",
         "fantasy",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, dark shadowed face, flat lighting, extra characters"
@@ -1714,7 +1757,8 @@
         "fantasy",
         "outdoors",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, city, dark shadowed face, flat lighting, extra characters"
@@ -1751,7 +1795,8 @@
         "outdoors",
         "home",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, city, dark shadowed face, flat lighting, extra characters"
@@ -1789,7 +1834,8 @@
         "forest",
         "gothic",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, beach, school, dark shadowed face, flat lighting, extra characters"
@@ -1825,7 +1871,8 @@
         "purple_dress",
         "outdoors",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, beach, school, dark shadowed face, flat lighting, extra characters"
@@ -1863,7 +1910,8 @@
         "ominous",
         "outdoors",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, cheerful, day, school, dark shadowed face, flat lighting, extra characters"
@@ -1901,7 +1949,8 @@
         "indoor",
         "bright",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, dark, sad, dark shadowed face, flat lighting, extra characters"
@@ -1939,7 +1988,8 @@
         "booth",
         "bright",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, dark, night, dark shadowed face, flat lighting, extra characters"
@@ -1976,7 +2026,8 @@
         "outdoors",
         "bright",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, dark, winter, dark shadowed face, flat lighting, extra characters"
@@ -2016,7 +2067,8 @@
         "action",
         "dystopia",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, fantasy, cheerful, dark shadowed face, flat lighting, extra characters"
@@ -2052,7 +2104,8 @@
         "daily",
         "bright",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, fantasy, night, dark shadowed face, flat lighting, extra characters"
@@ -2088,7 +2141,8 @@
         "hair_ornament",
         "indoor",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, fantasy, night, dark shadowed face, flat lighting, extra characters"
@@ -2128,7 +2182,8 @@
         "intimate",
         "night",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, modern, neon, dark shadowed face, flat lighting, extra characters"
@@ -2181,7 +2236,8 @@
         "night",
         "intimate",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, fantasy, magic, dark shadowed face, flat lighting, extra characters"
@@ -2237,7 +2293,8 @@
         "gothic",
         "intimate",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, bright, cheerful, day, dark shadowed face, flat lighting, extra characters"
@@ -2294,7 +2351,8 @@
         "night",
         "intimate",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, modern, sci-fi, dark shadowed face, flat lighting, extra characters"
@@ -2349,7 +2407,8 @@
         "night",
         "intimate",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, casual, bright, dark shadowed face, flat lighting, extra characters"
@@ -2404,7 +2463,8 @@
         "night",
         "intimate",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, day, outdoor, dark shadowed face, flat lighting, extra characters"
@@ -2458,7 +2518,8 @@
         "cold_light",
         "intimate",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, bright, cheerful, dark shadowed face, flat lighting, extra characters"
@@ -2511,7 +2572,8 @@
         "night",
         "intimate",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, fantasy, magic, dark shadowed face, flat lighting, extra characters"
@@ -2566,7 +2628,8 @@
         "night",
         "intimate",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, modern, sci-fi, dark shadowed face, flat lighting, extra characters"
@@ -2619,7 +2682,8 @@
         "night",
         "intimate",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, fantasy, magic, bright, dark shadowed face, flat lighting, extra characters"
@@ -2674,7 +2738,8 @@
         "intimate",
         "dominant",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, cheerful, bright, dark shadowed face, flat lighting, extra characters"
@@ -2728,7 +2793,8 @@
         "night",
         "intimate",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, bright, cheerful, dark shadowed face, flat lighting, extra characters"
@@ -2782,7 +2848,8 @@
         "night",
         "intimate",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, modern, sci-fi, dark shadowed face, flat lighting, extra characters"
@@ -2838,7 +2905,8 @@
         "night",
         "intimate",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, modern, sci-fi, desert, dark shadowed face, flat lighting, extra characters"
@@ -2893,7 +2961,8 @@
         "night",
         "intimate",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, modern, sci-fi, dark shadowed face, flat lighting, extra characters"
@@ -2948,7 +3017,8 @@
         "night",
         "intimate",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, modern, sci-fi, beach, dark shadowed face, flat lighting, extra characters"
@@ -2999,7 +3069,8 @@
         "bright",
         "intimate",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, dark, sad, dark shadowed face, flat lighting, extra characters"
@@ -3052,7 +3123,8 @@
         "night",
         "intimate",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, medieval, fantasy, bright, dark shadowed face, flat lighting, extra characters"
@@ -3105,7 +3177,8 @@
         "bed",
         "sheets",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, dark shadowed face, flat lighting, extra characters"
@@ -3158,7 +3231,8 @@
         "window",
         "rim_light",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, dark shadowed face, flat lighting, extra characters"
@@ -3209,7 +3283,8 @@
         "lamp",
         "intimate",
         "volumetric_lighting",
-        "depth_of_field"
+        "depth_of_field",
+        "clean_face"
       ],
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, dark shadowed face, flat lighting, extra characters"
