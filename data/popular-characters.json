@@ -14,17 +14,23 @@
         "genshin impact",
         "electro archon"
       ],
-      "identityProse": "Raiden Shogun from Genshin Impact, also known as Raiden Ei, the Electro Archon. A serene and regal woman with long lavender hair in a braid, glowing violet eyes, and a calm expressionless gaze, wearing flowing purple Japanese-inspired robes.",
+      "identityProse": "Raiden Shogun from Genshin Impact, also known as Raiden Ei, the Electro Archon. A regal woman with very long purple braided hair in a single long braid, glowing purple eyes, and a distinct beauty mole beneath her right eye, wearing a golden hairpin with purple flower and tassel.",
       "identityTokens": [
         "raiden_shogun",
+        "raiden_ei",
         "1girl",
         "solo",
-        "long_hair",
+        "long_purple_hair",
         "braid",
-        "purple_hair",
-        "purple_eyes",
+        "single_braid",
+        "glowing_purple_eyes",
         "bangs",
-        "genshin impact"
+        "mole_under_eye",
+        "mole_under_right_eye",
+        "golden_hairpin",
+        "hair_flower",
+        "tassel",
+        "genshin_impact"
       ],
       "exactTokens": [
         "raiden_shogun"
@@ -40,14 +46,19 @@
         {
           "id": "shogun_robes",
           "name": "将军神装",
-          "prose": "the Raiden Shogun's flowing purple Japanese robes, bare shoulders, thigh-highs and a long braid",
+          "prose": "the Raiden Shogun's flowing purple Japanese robes, bare shoulders, thigh-highs and a long braid with gold trim, pauldron, black fingerless gloves, obi, and sash",
           "tokens": [
             "japanese_clothes",
             "kimono",
             "purple_clothes",
+            "gold_trim",
+            "pauldron",
+            "black_fingerless_gloves",
+            "obi",
+            "sash",
             "bare_shoulders",
-            "thighhighs",
-            "armor",
+            "black_thighhighs",
+            "detached_sleeves",
             "long_sleeves"
           ],
           "default": true
@@ -55,12 +66,12 @@
         {
           "id": "modern_clothes",
           "name": "现代便服",
-          "prose": "a simple modern outfit with a long dress and her signature long braid",
+          "prose": "a refined modern purple dress and her signature long single braid",
           "tokens": [
             "modern_clothing",
             "dress",
-            "long_sleeves",
-            "hair_down"
+            "purple_dress",
+            "long_sleeves"
           ]
         }
       ],
@@ -82,16 +93,19 @@
         "mai-san",
         "bunny girl senpai"
       ],
-      "identityProse": "Sakurajima Mai from Rascal Does Not Dream of Bunny Girl Senpai, an elegant actress with long black hair, soft brown eyes and a composed, slightly distant air.",
+      "identityProse": "Sakurajima Mai from Rascal Does Not Dream of Bunny Girl Senpai, an elegant actress with long straight black hair, soft purple-grey eyes, a delicate beauty mark, and her iconic white rabbit-shaped hair clip pinned on the side of her hair.",
       "identityTokens": [
         "sakurajima_mai",
         "1girl",
         "solo",
-        "long_hair",
-        "black_hair",
-        "brown_eyes",
+        "long_black_hair",
+        "straight_hair",
+        "purple_eyes",
+        "bangs",
         "ahoge",
-        "bangs"
+        "rabbit_hair_ornament",
+        "hair_clip",
+        "beauty_mark"
       ],
       "exactTokens": [
         "sakurajima_mai"
@@ -107,13 +121,20 @@
         {
           "id": "school_uniform",
           "name": "校服",
-          "prose": "her navy school uniform with a blazer and pleated skirt",
+          "prose": "the Minegahara High School uniform with a brown blazer, beige knit sweater vest, red necktie, white collared shirt, grey pleated skirt and black pantyhose",
           "tokens": [
             "school_uniform",
             "blazer",
+            "brown_blazer",
+            "sweater_vest",
+            "beige_vest",
+            "white_shirt",
+            "collared_shirt",
+            "red_necktie",
             "pleated_skirt",
             "grey_skirt",
-            "kneehighs"
+            "black_pantyhose",
+            "loafers"
           ],
           "default": true
         },
@@ -161,18 +182,19 @@
         "kurumi tokisaki",
         "date a live"
       ],
-      "identityProse": "Tokisaki Kurumi from Date A Live, a mysterious girl with long dark hair in side twintails, two-tone red and gold eyes, and a pale elegant face, often dressed in black and crimson gothic attire.",
+      "identityProse": "Tokisaki Kurumi from Date A Live, a mysterious spirit girl with uneven long black twintails, heterochromia with a red right eye and a golden clockwork left eye.",
       "identityTokens": [
         "tokisaki_kurumi",
         "1girl",
         "solo",
-        "long_hair",
-        "twintails",
-        "black_hair",
-        "red_eyes",
-        "two_tone_eyes",
+        "long_black_hair",
+        "uneven_twintails",
+        "heterochromia",
+        "red_right_eye",
+        "clock_eye",
+        "yellow_left_eye",
         "bangs",
-        "golden_eyes"
+        "date_a_live"
       ],
       "exactTokens": [
         "tokisaki_kurumi"
@@ -241,19 +263,20 @@
         "frieren the slayer",
         "elf mage"
       ],
-      "identityProse": "Frieren from Frieren: Beyond Journey's End, a centuries-old elf mage with very long white hair in low twin braids, violet eyes and pointed ears, carrying an old-fashioned staff and a calm, wistful expression.",
+      "identityProse": "Frieren from Frieren: Beyond Journey's End, a centuries-old elf mage with very long white hair in low twin braids, violet eyes, pointed elven ears, gold earrings, carrying her wooden magical staff.",
       "identityTokens": [
         "frieren",
         "1girl",
         "solo",
-        "long_hair",
+        "long_white_hair",
         "very_long_hair",
-        "white_hair",
+        "twin_braids",
         "purple_eyes",
         "elf",
         "pointy_ears",
-        "braid",
-        "twin_braids"
+        "gold_earrings",
+        "holding_staff",
+        "staff_of_frieren"
       ],
       "exactTokens": [
         "frieren"
