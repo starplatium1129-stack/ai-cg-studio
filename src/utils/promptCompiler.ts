@@ -110,7 +110,7 @@ const KREA_IDENTITY_KEYS = new Set([
 ])
 const KREA_ENVIRONMENT_RE = /(?:^|_)(?:background|classroom|clubroom|cafe|coffee|beach|ocean|sea|forest|street|station|bedroom|bathroom|shrine|park|garden|rooftop|city|library|kitchen|palace|ruins|bridge|river|theater|cinema|safehouse|hotel|balcony|pool|tatami|office|elevator|train|vehicle|apartment|living_room|studio|gallery|store|shop|festival|bookshelf|blackboard|desk|window|wall|rack|indoors|outdoors|interior)(?:_|$)/
 const KREA_OUTFIT_RE = /(?:^|_)(?:clothes|clothing|outfit|uniform|shirt|blouse|skirt|dress|apron|lingerie|underwear|panties|bra|bikini|swimsuit|pantyhose|thighhighs|stockings|coat|sweater|cardigan|pajamas|sleepwear|nightgown|towel|yukata|kimono|qipao|cheongsam|robe|jacket|blazer|collar|sleeves|gloves|boots|shoes|bow|ribbon|maid|serafuku|tactical_gear|office_lady)(?:_|$)/
-const KREA_BODY_DETAIL_RE = /^(?:nude|naked|fully_nude|bare_|cleavage|sideboob|underboob|no_bra|no_panties|panties_aside|pulling_down_panties|unbuttoned|unzipped|open_shirt|off_shoulder|high_slit|midriff|collarbone|navel|slender_thighs|nipples|areola|pussy|cameltoe|breasts_out|topless|bottomless|lifted_skirt|legs_apart|spread_legs|parted_lips|open_mouth|ahegao|closed_eyes|half_closed_eyes|averting_gaze|blushing|deep_blush|heavy_blush|heavy_breathing|drooling|wet_skin|wet_hair|wet_clothes|see_through|translucent|hugging_pillow)/
+const KREA_BODY_DETAIL_RE = /^(?:nude|naked|fully_nude|bare_|cleavage|sideboob|underboob|no_bra|no_panties|panties_aside|pulling_down_panties|unbuttoned|unzipped|open_shirt|off_shoulder|high_slit|midriff|collarbone|navel|slender_thighs|nipples|areola|pussy|cameltoe|breasts_out|topless|bottomless|lifted_skirt|legs_apart|spread_legs|parted_lips|open_mouth|ahegao|closed_eyes|half_closed_eyes|averting_gaze|blushing|deep_blush|heavy_blush|heavy_breathing|drooling|wet_skin|wet_hair|wet_clothes|sweat|sweaty_skin|see_through|translucent|hugging_pillow|sex|intercourse|vaginal|anal|oral|fellatio|blowjob|deepthroat|cunnilingus|paizuri|titfuck|handjob|fingering|masturbation|female_masturbation|missionary|doggystyle|cowgirl_position|mating_press|spooning|grinding|penetration|cum|cum_on_face|cum_in_mouth|cum_on_breasts|cum_on_body|internal_cumshot|creampie|excessive_cum|after_sex|panty_pull|skirt_lift|grabbed_breasts|groping)/
 const KREA_ACTION_RE = /^(?:holding|carrying|standing|sitting|lying|waiting|leaning|kneeling|straddling|clinging|swimming|walking|running|reaching|undressing|looking|turning|adjusting|one_hand|both_hands|propped|cross_legged|legs_apart|skirt_lift|neck_kiss|eye_contact|close_distance)/
 const KREA_MOOD_RE = /(?:^|_)(?:smile|blush|shy|happy|calm|relaxed|serious|sad|melancholic|nervous|expectant|panicked|embarrassed|tears|tearful|teary|tsundere|sensual|intimate|romantic|seductive|passionate|expressionless|in_love|soft_eyes|bright_eyes|red_ears|heavy_breathing)(?:_|$)/
 
@@ -177,7 +177,44 @@ const ACTION_REWRITES: Readonly<Record<string, string>> = Object.freeze({
   closed_eyes: 'with eyes closed in serenity', half_closed_eyes: 'with drowsy half-closed eyes',
   averting_gaze: 'shyly averting her gaze', heavy_breathing: 'breathing heavily with flushed cheeks',
   drooling: 'with a tiny glistening drop at the corner of her lips',
-  tears_in_eyes: 'with tears in her eyes', teary_eyes: 'with tearful eyes',
+  // ── Explicit Sex & Erotic Actions ──
+  sex: 'engaged in intimate lovemaking',
+  intercourse: 'engaged in passionate intercourse',
+  vaginal: 'during vaginal intercourse',
+  anal: 'during anal intercourse',
+  oral: 'performing oral pleasure',
+  fellatio: 'performing fellatio with her lips softly wrapped around him',
+  blowjob: 'giving a passionate blowjob with saliva glistening on her lips',
+  deepthroat: 'engaged in deepthroat with tears in her flushed eyes',
+  cunnilingus: 'receiving oral pleasure with arched back and trembling thighs',
+  paizuri: 'performing a breast slip paizuri with her soft cleavage tightly pressed',
+  titfuck: 'performing paizuri with breasts pressed around him',
+  handjob: 'stroking gently with her delicate hand',
+  fingering: 'touching herself intimately with glistening fingertips',
+  masturbation: 'pleasuring herself intimately with arched back',
+  female_masturbation: 'pleasuring herself intimately with flushed cheeks',
+  missionary: 'in missionary position with legs spread softly',
+  doggystyle: 'on all fours from behind in doggystyle position',
+  cowgirl_position: 'riding on top in cowgirl position with bouncing breasts',
+  mating_press: 'in a passionate mating press position with legs pressed back',
+  spooning: 'in a cozy side-by-side spooning embrace',
+  grinding: 'grinding her hips intimately with flushed cheeks',
+  penetration: 'during intimate penetration',
+  cum: 'with glistening white love liquid',
+  cum_on_face: 'with splashes of white liquid across her blushing cheeks',
+  cum_in_mouth: 'with white liquid inside her softly open mouth',
+  cum_on_breasts: 'with white liquid splashed across her bare breasts',
+  cum_on_body: 'with glistening white liquid on her smooth skin',
+  internal_cumshot: 'with white liquid overflowing from her intimate entrance',
+  creampie: 'with glistening white liquid slowly overflowing from within her',
+  excessive_cum: 'with abundant glistening white liquid coating her thighs',
+  sweat: 'with glistening beads of sweat',
+  sweaty_skin: 'with dewy glistening sweaty skin',
+  after_sex: 'resting peacefully in bed after passionate lovemaking',
+  panty_pull: 'delicately pulling her panties aside with one finger',
+  skirt_lift: 'lifting her skirt with both hands revealing her bare thighs',
+  grabbed_breasts: 'with hands gently fondling her soft bare breasts',
+  groping: 'being caressed intimately across her soft curves',
 })
 
 function actionPhrase(value: string): string {
