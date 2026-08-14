@@ -24,6 +24,19 @@
         <input ref="backupFileEl" class="sr-only" type="file" accept="application/json" @change="onBackupFilePicked" />
       </div>
       <div class="utility-divider"></div>
+      <div class="utility-label">创作蓝图</div>
+      <div class="utility-actions">
+        <button class="btn btn-ghost wide" type="button" @click="exportBlueprint"
+          title="将当前导演台的所有场景、故事、提示词与出图参数导出为独立 Blueprint JSON">
+          <ArchiveIcon name="spark" /> 导出当前蓝图 JSON
+        </button>
+        <button class="btn btn-ghost wide" type="button" @click="pickBlueprintFile"
+          title="从 Blueprint JSON 导入并回填导演台配置">
+          <ArchiveIcon name="upload" /> 导入蓝图配置
+        </button>
+        <input ref="blueprintFileEl" class="sr-only" type="file" accept="application/json" @change="onBlueprintFilePicked" />
+      </div>
+      <div class="utility-divider"></div>
       <div class="utility-label">存储维护</div>
       <div class="utility-actions">
         <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.healthCheck()"><ArchiveIcon name="health" /> 存储体检</button>
@@ -68,11 +81,19 @@ import { useBackup, type BackupSummary } from '@/composables/useBackup'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 
-const emit = defineEmits<{ flash: [message: string] }>()
+const props = defineProps<{
+  blueprintData?: Record<string, unknown>
+}>()
+
+const emit = defineEmits<{
+  flash: [message: string]
+  loadBlueprint: [data: Record<string, unknown>]
+}>()
 
 const backup = useBackup((message) => emit('flash', message))
 const backupCardEl = ref<HTMLElement | null>(null)
 const backupFileEl = ref<HTMLInputElement | null>(null)
+const blueprintFileEl = ref<HTMLInputElement | null>(null)
 const utilityEl = ref<HTMLDetailsElement | null>(null)
 const pendingSummary = ref<BackupSummary | null>(null)
 
@@ -95,6 +116,53 @@ useFocusTrap(backupCardEl, () => backup.pending.value !== null, {
 
 function pickBackupFile() {
   backupFileEl.value?.click()
+}
+
+function pickBlueprintFile() {
+  blueprintFileEl.value?.click()
+}
+
+function exportBlueprint() {
+  if (!props.blueprintData) {
+    emit('flash', '当前没有可导出的蓝图数据')
+    return
+  }
+  const payload = {
+    schema: 'aics-director-blueprint-v1',
+    exportedAt: Date.now(),
+    ...props.blueprintData,
+  }
+  const json = JSON.stringify(payload, null, 2)
+  const blob = new Blob([json], { type: 'application/json;charset=utf-8' })
+  const url = URL.createObjectURL(blob)
+  const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 16)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `aics-blueprint-${stamp}.json`
+  a.click()
+  URL.revokeObjectURL(url)
+  emit('flash', '✨ 蓝图 JSON 已导出')
+  if (utilityEl.value) utilityEl.value.open = false
+}
+
+async function onBlueprintFilePicked(event: Event) {
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  if (!file) return
+  try {
+    const text = await file.text()
+    const parsed = JSON.parse(text)
+    if (parsed && typeof parsed === 'object') {
+      emit('loadBlueprint', parsed as Record<string, unknown>)
+      emit('flash', '✨ 蓝图配置已成功载入')
+    } else {
+      emit('flash', '无效的蓝图文件格式')
+    }
+  } catch {
+    emit('flash', '读取蓝图 JSON 失败')
+  }
+  input.value = ''
+  if (utilityEl.value) utilityEl.value.open = false
 }
 
 function discard() {

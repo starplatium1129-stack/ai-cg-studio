@@ -54,7 +54,11 @@
           <RouterLink v-if="!engineOnline" class="api-recovery-link" to="/control">控制面板</RouterLink>
         </div>
 
-        <PromptDataTools @flash="pb.flash" />
+        <PromptDataTools
+          :blueprint-data="currentBlueprintData"
+          @flash="pb.flash"
+          @load-blueprint="handleLoadBlueprint"
+        />
       </div>
     </div>
 
@@ -988,6 +992,41 @@ function applyRecommendedSize(size: string) {
   const supported = closestSupportedSize(activeModel, normalized)
   const [width, height] = supported.split('x').map(Number)
   if (Number.isInteger(width) && Number.isInteger(height)) patchAnimaState({ width, height })
+}
+
+const currentBlueprintData = computed(() => ({
+  char: pb.char,
+  sceneId: pb.sceneId,
+  story: pb.story,
+  manualTags: Array.from(pb.manualTags),
+  drawEngine: drawEngine.value,
+  sdParams: { ...pb.sdParams },
+  size: sdSize.value,
+}))
+
+function handleLoadBlueprint(data: Record<string, unknown>) {
+  if (data.char && (data.char === 'nene' || data.char === 'natsume' || data.char === 'triad')) {
+    pb.setChar(data.char)
+  }
+  if (typeof data.sceneId === 'string' && data.sceneId) {
+    const sc = pb.scenes.find(s => s.id === data.sceneId)
+    if (sc) selectScene(sc)
+  }
+  if (typeof data.story === 'string') {
+    pb.story = data.story
+  }
+  if (Array.isArray(data.manualTags)) {
+    pb.manualTags = new Set(data.manualTags.map(String))
+  }
+  if (typeof data.drawEngine === 'string' && (data.drawEngine === 'anima' || data.drawEngine === 'sd' || data.drawEngine === 'krea2')) {
+    setDrawEngine(data.drawEngine as DrawEngine)
+  }
+  if (data.sdParams && typeof data.sdParams === 'object') {
+    Object.assign(pb.sdParams, data.sdParams)
+  }
+  if (typeof data.size === 'string' && data.size) {
+    sdSize.value = data.size
+  }
 }
 
 async function applyManagedRoute(options: { silent?: boolean } = {}): Promise<void> {
