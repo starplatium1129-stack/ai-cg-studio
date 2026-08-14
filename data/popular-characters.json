@@ -392,13 +392,16 @@
         },
         {
           "id": "casual",
-          "name": "便服",
-          "prose": "a relaxed civilian outfit with a shirt and skirt",
+          "name": "卫宫家便服",
+          "prose": "a cozy dark blue knit cardigan over a crisp white collared shirt and skirt, her signature casual look from Today's Menu for the Emiya Family",
           "tokens": [
             "casual_clothes",
-            "shirt",
+            "cardigan",
+            "blue_cardigan",
+            "white_shirt",
+            "collared_shirt",
             "skirt",
-            "jacket"
+            "blue_skirt"
           ]
         },
         {
