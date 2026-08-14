@@ -6,6 +6,12 @@
     :style="atmosphereStyle"
     aria-hidden="true"
   >
+    <div class="route-aurora" aria-hidden="true">
+      <i class="aurora-orb-1"></i>
+      <i class="aurora-orb-2"></i>
+      <i class="aurora-orb-3"></i>
+    </div>
+    <div class="route-vignette" aria-hidden="true"></div>
     <SemanticParticleField
       v-if="!routeHasOwnParticle"
       class="route-atmosphere-field"
@@ -26,7 +32,7 @@
       <small>LOCAL ARCHIVE</small>
     </div>
   </div>
-  <!-- 樱花花雨是独立前景层：不继承氛围层的 opacity:0.2 压制，
+  <!-- 樱花花雨是独立前景层：不继承氛围层的压制，
        飘在内容之上（pointer-events:none），参考站同款"前景花雨" -->
   <div v-if="showSakura" class="sakura-fall" :class="{ 'is-coarse': coarsePointer }" aria-hidden="true">
     <span
@@ -94,6 +100,7 @@ const ROUTES_WITH_OWN_PARTICLES = new Set([
 ])
 const ROUTES_WITH_SAKURA = new Set([
   '/',
+  '/prompt-builder',
   '/scene-explorer',
   '/character',
   '/style',
@@ -285,8 +292,75 @@ onUnmounted(() => {
   inset: 58px 0 0;
   overflow: hidden;
   pointer-events: none;
-  opacity: .2;
+  opacity: .72;
   transition: opacity var(--motion-atmosphere) var(--ease-out);
+}
+.route-aurora {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.route-aurora i {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(85px);
+  opacity: 0.38;
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+.aurora-orb-1 {
+  top: -10%;
+  left: 12%;
+  width: 58vw;
+  height: 58vw;
+  max-width: 820px;
+  max-height: 820px;
+  background: radial-gradient(circle, var(--character-aura, var(--accent-glow)) 0%, transparent 68%);
+  animation: aurora-float-1 14s ease-in-out infinite alternate;
+}
+.aurora-orb-2 {
+  bottom: 2%;
+  right: -6%;
+  width: 62vw;
+  height: 62vw;
+  max-width: 880px;
+  max-height: 880px;
+  background: radial-gradient(circle, var(--character-aura-secondary, var(--accent-violet)) 0%, transparent 70%);
+  animation: aurora-float-2 18s ease-in-out infinite alternate;
+}
+.aurora-orb-3 {
+  top: 36%;
+  left: 42%;
+  width: 48vw;
+  height: 48vw;
+  max-width: 680px;
+  max-height: 680px;
+  background: radial-gradient(circle, color-mix(in srgb, var(--editorial-gold) 22%, transparent) 0%, transparent 70%);
+  animation: aurora-float-3 22s ease-in-out infinite alternate;
+}
+@keyframes aurora-float-1 {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(4vw, 3vh, 0) scale(1.06); }
+  100% { transform: translate3d(-3vw, 6vh, 0) scale(0.96); }
+}
+@keyframes aurora-float-2 {
+  0% { transform: translate3d(0, 0, 0) scale(0.96); }
+  50% { transform: translate3d(-5vw, -4vh, 0) scale(1.08); }
+  100% { transform: translate3d(3vw, -2vh, 0) scale(1); }
+}
+@keyframes aurora-float-3 {
+  0% { transform: translate3d(0, 0, 0) scale(1.04); }
+  50% { transform: translate3d(-3vw, 5vh, 0) scale(0.94); }
+  100% { transform: translate3d(4vw, -3vh, 0) scale(1.06); }
+}
+.route-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 45%, transparent 58%, rgba(8, 5, 20, 0.46) 100%);
+  z-index: 1;
 }
 .route-atmosphere::after {
   content: "";
@@ -298,6 +372,7 @@ onUnmounted(() => {
   background-size: 120px 120px;
   -webkit-mask-image: radial-gradient(circle at 76% 42%, #000, transparent 66%);
   mask-image: radial-gradient(circle at 76% 42%, #000, transparent 66%);
+  z-index: 2;
 }
 .route-atmosphere-field {
   position: absolute;
@@ -308,10 +383,11 @@ onUnmounted(() => {
   transition: transform var(--motion-atmosphere) var(--ease-out);
   -webkit-mask-image: radial-gradient(ellipse at 55% 44%, #000 0 34%, transparent 74%);
   mask-image: radial-gradient(ellipse at 55% 44%, #000 0 34%, transparent 74%);
+  z-index: 3;
 }
-.route-atmosphere[data-signal="active"] { opacity: .42; }
-.route-atmosphere[data-signal="success"] { opacity: .3; }
-.route-atmosphere[data-signal="warning"] { opacity: .34; }
+.route-atmosphere[data-signal="active"] { opacity: .88; }
+.route-atmosphere[data-signal="success"] { opacity: .78; }
+.route-atmosphere[data-signal="warning"] { opacity: .82; }
 .route-scan {
   position: absolute;
   top: 0;
@@ -321,6 +397,7 @@ onUnmounted(() => {
   opacity: 0;
   background: linear-gradient(90deg,transparent,color-mix(in srgb,var(--archive-blue) 12%,transparent),transparent);
   transform: skewX(-12deg);
+  z-index: 4;
 }
 /* 樱花下落：独立前景层（fixed），纯 transform 动画 GPU 合成；
    飘在内容之上但 pointer-events:none，不挡任何交互 */

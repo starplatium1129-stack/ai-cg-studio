@@ -1,7 +1,7 @@
 <template>
   <article
     class="pb"
-    :data-character="pb.char"
+    :data-character="pb.subject.kind === 'popular' ? pb.subject.characterId : pb.char"
     :data-subject="pb.subject.kind"
     :data-director-mode="pb.directorMode"
     :class="{
