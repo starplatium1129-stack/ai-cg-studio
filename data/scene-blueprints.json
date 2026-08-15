@@ -9550,21 +9550,23 @@
       "characterId": "kaltsit_arknights",
       "description": "私人舱室，褪去白袍之后。",
       "location": "罗德岛私人舱室",
-      "action": "披着睡袍坐在床边",
+      "action": "披着睡袍站在窗前，回眸凝视",
       "timeOfDay": "夜晚",
       "lighting": "dim warm lamp",
       "camera": "intimate medium shot",
       "mood": "卸下防备",
       "sceneTags": [
-        "bedroom",
+        "cabin",
+        "window",
         "robe",
         "night",
         "lamp",
         "intimate"
       ],
-      "promptProse": "In her private cabin at night, Kal'tsit sits on the edge of the bed in a loose robe with no other people present, warm lamplight softening the usual sharpness of her face.",
+      "promptProse": "In her private cabin at night, Kal'tsit stands by the window in a loose emerald silk robe with no other people present, composed as a single unbroken full-frame scene, warm lamplight softening the usual sharpness of her face.",
       "promptTokens": [
-        "bedroom",
+        "cabin",
+        "window",
         "robe",
         "night",
         "lamp",
@@ -9573,7 +9575,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin, inset image, picture in picture, portrait insert, multiple panels, storyboard, montage, collage, duplicated character",
       "recommendedSize": "832x1216",
       "outfitId": "midnight_emerald_silk_robe",
       "adult": true,
@@ -9592,7 +9594,7 @@
         "intimate",
         "medium_shot"
       ],
-      "nsfwProse": "In her private cabin at night, Kal'tsit sits on the edge of the bed in a loose robe with no other people present, warm lamplight softening the usual sharpness of her face.",
+      "nsfwProse": "In her private cabin at night, completely nude Kal'tsit stands by the window wearing only a loose emerald silk robe slipping off one shoulder, with no other people present, composed as a single unbroken full-frame scene, warm lamplight softening the usual sharpness of her face.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18"
     },
@@ -9721,7 +9723,7 @@
         "lying",
         "quiet"
       ],
-      "promptProse": "In her moonlit cabin, Kal'tsit lies on her side with no other people present, silver light pooling on the sheets as she waits with calm patience, her expression unreadable in the dark.",
+      "promptProse": "In her moonlit cabin, Kal'tsit lies on her side with no other people present, composed as a single unbroken full-frame scene, silver light pooling on the sheets as she waits with calm patience, her expression unreadable in the dark.",
       "promptTokens": [
         "bedroom",
         "moonlight",
@@ -9732,7 +9734,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin, inset image, picture in picture, portrait insert, multiple panels, storyboard, montage, collage, duplicated character",
       "recommendedSize": "832x1216",
       "outfitId": "midnight_emerald_silk_robe",
       "adult": true,
@@ -9751,7 +9753,7 @@
         "intimate",
         "medium_shot"
       ],
-      "nsfwProse": "In her moonlit cabin, Kal'tsit lies on her side with no other people present, silver light pooling on the sheets as she waits with calm patience, her expression unreadable in the dark.",
+      "nsfwProse": "In her moonlit cabin, Kal'tsit lies on her side with no other people present, composed as a single unbroken full-frame scene, silver light pooling on the sheets as she waits with calm patience, her expression unreadable in the dark.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18"
     },
@@ -14468,7 +14470,7 @@
         "blanket",
         "soft_light"
       ],
-      "promptProse": "In the pale morning light, Suzuran stirs on her futon with no other people present, clutching the blanket to her chest as she blinks sleepily at the viewer, ears drooping.",
+      "promptProse": "In the pale morning light, Suzuran stirs on her futon with no other people present, composed as a single unbroken full-frame scene, clutching the blanket to her chest as she blinks sleepily at the viewer, ears drooping.",
       "promptTokens": [
         "futon",
         "morning",
@@ -14479,7 +14481,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin, inset image, picture in picture, portrait insert, multiple panels, storyboard, montage, collage, duplicated character",
       "recommendedSize": "832x1216",
       "outfitId": "snow_clearing",
       "adult": true,
@@ -14498,7 +14500,7 @@
         "intimate",
         "medium_shot"
       ],
-      "nsfwProse": "In the pale morning light, Suzuran stirs on her futon with no other people present, clutching the blanket to her chest as she blinks sleepily at the viewer, ears drooping.",
+      "nsfwProse": "In the pale morning light, Suzuran stirs on her futon with no other people present, composed as a single unbroken full-frame scene, clutching the blanket to her chest as she blinks sleepily at the viewer, ears drooping.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18"
     },

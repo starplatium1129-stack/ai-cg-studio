@@ -98,6 +98,20 @@ function stringList(value: unknown): string[] {
   return Array.isArray(value) ? value.filter((item): item is string => typeof item === 'string') : []
 }
 
+/**
+ * 负面词列表解析：兼容字符串与数组两种数据格式。
+ * scene-blueprints.json 的 negativeTokens 历史格式为逗号分隔字符串
+ * （"worst quality, low quality, ..."），stringList 对字符串返回 [] 会静默丢词
+ * （2026-08-15 发现：336 个场景的场景级负面定制从未生效）。
+ */
+function negativeStringList(value: unknown): string[] {
+  if (Array.isArray(value)) return value.filter((item): item is string => typeof item === 'string')
+  if (typeof value === 'string' && value.trim()) {
+    return value.split(',').map(item => item.trim()).filter(Boolean)
+  }
+  return []
+}
+
 function requiredString(record: Record<string, unknown>, key: string): string {
   const value = stringValue(record[key])
   if (!value) throw new Error(`popular data: ${key} must be a non-empty string`)
@@ -193,7 +207,7 @@ export function parseSceneBlueprint(value: unknown): SceneBlueprint | null {
     sceneTags: stringList(value.sceneTags),
     promptProse: requiredString(value, 'promptProse'),
     promptTokens: requiredStringList(value, 'promptTokens'),
-    negativeTokens: stringList(value.negativeTokens),
+    negativeTokens: negativeStringList(value.negativeTokens),
     recommendedSize: requiredString(value, 'recommendedSize'),
     adult: value.adult === true,
     kreaStyleHint: stringValue(value.kreaStyleHint),
