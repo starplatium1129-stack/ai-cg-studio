@@ -1,6 +1,8 @@
 use std::io::{Read, Write};
 use std::net::TcpStream;
 use std::process::{Child, Command, Stdio};
+#[cfg(windows)]
+use std::os::windows::process::CommandExt;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant};
@@ -225,6 +227,12 @@ impl GatewaySupervisor {
         for (key, value) in &self.env {
             command.env(key, value);
         }
+
+        // Windows：GUI 应用（windows_subsystem=windows）派生控制台子进程时，
+        // 不带 CREATE_NO_WINDOW 会为 node.exe 新建一个可见的控制台窗口（打开应用即弹窗）。
+        // 该标志让网关在后台无窗口运行；stdout/stderr 仍经 pipe 回传日志。
+        #[cfg(windows)]
+        command.creation_flags(0x0800_0000); // CREATE_NO_WINDOW
 
         let mut child = command.spawn().map_err(|e| format!("spawn gateway: {e}"))?;
 
