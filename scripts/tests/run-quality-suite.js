@@ -8,7 +8,6 @@ const SUITE_TIMEOUT_MS = Object.freeze({
   check: 180_000,
   unit: 300_000,
   contract: 180_000,
-  desktop: 300_000,
 });
 
 function applyResult(result, label) {
@@ -24,7 +23,7 @@ function applyResult(result, label) {
 
 const suiteName = process.argv[2];
 if (!Object.hasOwn(QUALITY_TEST_SUITES, suiteName)) {
-  console.error(`usage: node ${path.basename(__filename)} <check|unit|contract|desktop>`);
+  console.error(`usage: node ${path.basename(__filename)} <check|unit|contract>`);
   process.exitCode = 2;
 } else if (suiteName === 'unit') {
   const files = QUALITY_TEST_SUITES.unit.map((file) => path.join(root, 'scripts', 'tests', file));

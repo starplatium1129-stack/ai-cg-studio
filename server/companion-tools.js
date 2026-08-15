@@ -5,8 +5,8 @@
  *
  * 网关在对话请求启用 companionTools 时，把这些 function schema 附加到
  * 上游 LLM 请求；流式响应中的 tool_calls 增量由 chat.js 解析为
- * `{ type:'tool-call', ... }` NDJSON 事件，由渲染端经桌面 IPC 执行
- * （desktop/toolRunner.ts）。路径全部限制在 AI 工作区内。
+ * `{ type:'tool-call', ... }` NDJSON 事件，由渲染端经桌面桥执行
+ * （routes/desktop-tools.js，Tauri 壳走 /api/desktop-tools）。路径全部限制在 AI 工作区内。
  */
 
 var TOOL_DEFINITIONS = [

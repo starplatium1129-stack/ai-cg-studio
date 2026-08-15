@@ -157,7 +157,7 @@ function loadGatewayConfig(rootDir, env) {
     LIVE2D_ROOT:path.join(assetsRoot, 'live2d'),
     SCENE_SHOWCASE_DIR:resolveSceneShowcaseDir(appRoot, env.SCENE_SHOWCASE_DIR, workspaceRoot),
     DISABLE_TUNNEL:env.DISABLE_TUNNEL === '1',
-    // 桌面打包模式（desktop/main.ts 仅在 app.isPackaged 时注入）：
+    // 桌面打包模式（Tauri 壳仅在打包模式注入，见 main_shared.rs gateway_env）：
     // 场景内容维护链路（scenes/run/build-web）返回 501，展示类不受限。
     DESKTOP_PACKAGED:env.AICS_DESKTOP_PACKAGED === '1',
     CLOUDFLARED_PATH:env.CLOUDFLARED_PATH || 'C:\\Program Files (x86)\\cloudflared\\cloudflared.exe'

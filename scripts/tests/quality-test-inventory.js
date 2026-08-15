@@ -62,6 +62,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
   ]),
   contract: Object.freeze([
     'test-anima-routes.js',
+    'test-desktop-tools-route.js',
     'test-generation-routes.js',
     'test-chat.js',
     'test-control-failure-contract.js',
@@ -75,11 +76,6 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-training-service.js',
     'test-tunnel-restart.js',
     'test-video-routes.js',
-  ]),
-  desktop: Object.freeze([
-    'test-companion-tools.js',
-    'test-deep-link.js',
-    'test-desktop.js',
   ]),
 });
 

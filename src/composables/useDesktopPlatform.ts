@@ -1,11 +1,11 @@
 /**
  * 跨端桌面与系统环境自适应适配器
- * 统一处理 Electron / Tauri 2 / 现代 Web 浏览器的平台特征、原生能力与生命周期
+ * 统一处理 Tauri 2（桌面壳，Electron 版已退役删除）与现代 Web 浏览器的平台特征、原生能力与生命周期
  */
 
 import { ref, computed } from 'vue'
 
-export type DesktopRuntimeKind = 'electron' | 'tauri' | 'web'
+export type DesktopRuntimeKind = 'tauri' | 'web'
 
 export interface PlatformCapabilities {
   runtime: DesktopRuntimeKind
@@ -17,13 +17,18 @@ export interface PlatformCapabilities {
 }
 
 export function useDesktopPlatform() {
-  const isElectron = Boolean(typeof window !== 'undefined' && (window as unknown as { companionDesktop?: unknown }).companionDesktop)
+  // Tauri 壳的 shim 注入 window.companionDesktop（与旧 Electron preload 同名同契约）；
+  // 两者并存时以 Tauri 运行时为准。
+  const hasDesktopBridge = Boolean(
+    typeof window !== 'undefined' && (window as unknown as { companionDesktop?: unknown }).companionDesktop
+  )
   const isTauri = Boolean(
     typeof window !== 'undefined' &&
-    ((window as unknown as { __TAURI_INTERNALS__?: unknown }).__TAURI_INTERNALS__ || (window as unknown as { __TAURI__?: unknown }).__TAURI__)
+    (((window as unknown as { __TAURI_INTERNALS__?: unknown }).__TAURI_INTERNALS__ ||
+      (window as unknown as { __TAURI__?: unknown }).__TAURI__) || hasDesktopBridge)
   )
 
-  const runtimeKind = ref<DesktopRuntimeKind>(isElectron ? 'electron' : isTauri ? 'tauri' : 'web')
+  const runtimeKind = ref<DesktopRuntimeKind>(isTauri ? 'tauri' : 'web')
 
   const capabilities = computed<PlatformCapabilities>(() => ({
     runtime: runtimeKind.value,

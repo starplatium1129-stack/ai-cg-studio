@@ -28,7 +28,7 @@
 - 将作品、参数、收藏和备注保存在当前浏览器的 IndexedDB 中，并用 JSON 文件完整备份或恢复
 - 在作品册中按原始横竖比例欣赏成图，点击进入近全屏观画
 - 通过带 Token 的临时链接，让朋友使用你电脑上的 SD WebUI 出图
-- 桌面 Companion：Tauri 2 是当前主线，但 D-10 真实安装验收尚未完成；Electron 仍是稳定回退。Tauri 开发执行 `npm run dev:tauri`，构建 NSIS 执行 `npm run package:tauri`；Electron 回退执行 `npm run desktop`，`npm run package:desktop` 构建 Electron 目录包
+- 桌面 Companion：Tauri 2 是桌面壳（Companion + Atelier 双窗口、托盘、深链、Native Live2D overlay）。开发执行 `npm run dev:tauri`，构建 NSIS 执行 `npm run package:tauri`；Electron 回退版已退役（存档见 `desktop-electron-legacy` tag）
 
 ## 最常用的启动方式
 

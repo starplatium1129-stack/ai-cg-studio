@@ -140,9 +140,9 @@ function maintenanceLocalOnly(req, res, next) {
 }
 
 /**
- * 打包模式（Electron 安装版）判定：data 位于只读 asar、维护脚本未打包、
- * npm/系统 node 也读不了 asar 内文件 —— 内容维护链路整体不可用。
- * 标志由 desktop/main.ts 仅在 app.isPackaged 时注入（config.DESKTOP_PACKAGED）。
+ * 打包模式（Tauri 安装版）判定：data 位于只读应用包、维护脚本未打包、
+ * npm/系统 node 也读不了包内文件 —— 内容维护链路整体不可用。
+ * 标志由 Tauri 壳仅在打包模式注入（main_shared.rs gateway_env → config.DESKTOP_PACKAGED）。
  */
 function isDesktopPackagedMode(cfg) {
   return Boolean(cfg && cfg.DESKTOP_PACKAGED);

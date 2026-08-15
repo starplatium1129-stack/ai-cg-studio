@@ -99,7 +99,7 @@ ChatCharacterStage / useLive2D
 
 - **窗口 bounds 注入收尾**：`desktopWindowBounds` 提升为模块级窗口状态（Companion 单窗口），`windowBoundsFromScreen` 优先返回注入 bounds、未注入时回退 `screenX × dpr`；删除 useLive2D 函数内的重复声明，`layout()` 在 bounds 注入前暂停原生 overlay（不猜首帧）。`test-live2d-native-contract.js` 的 `setDesktopWindowBounds`/`desktopWindowBounds = null` 断言保持成立。
 - **setOutfit 夏目分支还原**：恢复"夏目只有咖啡店制服、无 Expressions、不得调用 expression"的既有契约（工作区残留版本错误调用 `model.expression(target.expression)`，类型不通过且违反角色契约）。
-- **desktop/main.ts 还原**：`AICS_DESKTOP_PACKAGED` 恢复为仅 `app.isPackaged` 注入（dev 模式 `electron .` 不注入），维护路由 501 契约与 test-gateway-contract 锚点不变。
+- **AICS_DESKTOP_PACKAGED 注入口径**：`AICS_DESKTOP_PACKAGED` 仅由 Tauri 壳打包模式注入（`main_shared.rs` gateway_env；dev 模式不注入），维护路由 501 契约与 test-gateway-contract 锚点不变。
 - **训练脚本修正**：`prepare_nene_anima_v20.py` 保留 08-13"统一训练、不分区隔离 r18"决策（train/validation 两分区），但恢复 `safety_tag` 按真实内容分级（safe/sensitive/nsfw/explicit，遵守 `anima-training-record.md` 的长期协议节，原 `anima-reproduction-protocol.md` 于 2026-08-14 并入）与 R18 样张的 `nene_r18` 评级词。
 - **视觉基线还原**：`design-system.css` 圆角/阴影 token 与 `companion.css` 身份卡样式还原到 DESIGN.md §Shapes（8–24px 阶梯）基线——工作区残留版本把圆角收到 4–16px、阴影减半，与 08-01 已提交的"博客式二次元圆润感"决策和 DESIGN.md 冲突且注释未同步。
 - **实验残留清理**：删除 `test-grok-46.js`（含明文 API key），移除仅为该脚本添加的 `@ai-sdk/openai`、`ai`、`jsonc-parser` 依赖（package.json / package-lock.json 还原）。
@@ -110,7 +110,7 @@ ChatCharacterStage / useLive2D
   - anima-quick.spec.ts：全部用例在点 engine-switch 前切专家模式；请求角色断言 `nene` → `nene_b`（V20B 变体，6be3a95 预期行为）。
 - **多根组件修复（route-view class 丢失）**：GalleryView/SceneExplorerView 的根级 `<Teleport>` 使组件多根，Vue 不向多根组件继承 fallthrough attrs，`AppLayout` 注入的 `route-view` class 丢失 → `#main .route-view` 不可见、repeated-navigation 用例失败。把 Teleport 移入根 `<article>` 内（仍渲染到 body，行为不变），恢复单根；ShowcaseView 原本就是单根，不受影响。验证：interaction-polish.spec.ts 7/7。
 - **导航动效测试逻辑修复**：interaction-polish「archive icon」用例在 `goto('/scene-explorer')` 后 dispatch click 到同路径链接——vue-router 判定 duplicated 导航不执行 beforeEach，`data-route-motion` 永不更新。改为从首页直接 SPA 导航（探测证实：首页导航 seen=["","standard",""]，同页重复导航 seen=[""]）。验证：interaction-polish.spec.ts 7/7。
-- 验证：`typecheck:app`、`typecheck`、`tsconfig.desktop.json --noEmit`、`npm run build`（bundle 预算绿）全通过；live2d/chat/prompt-compiler/showcase-candidate/control-failure 等 72 单测全绿；E2E studio + flows 16/16、anima-quick 15/15、interaction-polish 7/7、**全量 226/226 通过**。
+- 验证：`typecheck:app`、`typecheck`、`npm run build`（bundle 预算绿）全通过；live2d/chat/prompt-compiler/showcase-candidate/control-failure 等 72 单测全绿；E2E studio + flows 16/16、anima-quick 15/15、interaction-polish 7/7、**全量 226/226 通过**。
 
 ## 2026-08-13 启动竞态修复
 

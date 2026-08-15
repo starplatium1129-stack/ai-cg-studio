@@ -239,3 +239,34 @@ pub fn gateway_env(paths: &DesktopPaths, is_packaged: bool, workspace_root: Opti
     }
     env
 }
+
+#[cfg(test)]
+mod tests {
+    use super::normalize_atelier_path;
+
+    // 由已退役 Electron 版 desktop/deepLink.ts 的 test-deep-link.js 移植：
+    // 归一化是 aics:// 深链的核心契约（main.rs 深链回调先剥 aics:// 再归一化）。
+
+    #[test]
+    fn normalizes_single_segment_routes() {
+        assert_eq!(normalize_atelier_path(Some("/gallery")), "/gallery");
+        assert_eq!(normalize_atelier_path(Some("/training")), "/training");
+        assert_eq!(normalize_atelier_path(Some("/chat")), "/chat");
+        assert_eq!(normalize_atelier_path(Some("/scene-explorer")), "/scene-explorer");
+    }
+
+    #[test]
+    fn tolerates_trailing_slash_and_keeps_case() {
+        assert_eq!(normalize_atelier_path(Some("/gallery/")), "/gallery");
+        assert_eq!(normalize_atelier_path(Some("/UPPER-1")), "/UPPER-1");
+    }
+
+    #[test]
+    fn rejects_invalid_targets_with_root_fallback() {
+        assert_eq!(normalize_atelier_path(Some("/")), "/");
+        assert_eq!(normalize_atelier_path(Some("gallery")), "/");
+        assert_eq!(normalize_atelier_path(Some("/a/b")), "/");
+        assert_eq!(normalize_atelier_path(Some("/bad path")), "/");
+        assert_eq!(normalize_atelier_path(None), "/");
+    }
+}

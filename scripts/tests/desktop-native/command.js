@@ -13,7 +13,6 @@ const PACKAGING_INPUTS = [
   'vite.config.ts',
   'tsconfig.json',
   'tsconfig.app.json',
-  'tsconfig.desktop.json',
   'tsconfig.runtime.json',
   'src',
   'public',

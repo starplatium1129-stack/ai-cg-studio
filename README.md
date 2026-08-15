@@ -30,7 +30,7 @@ This is an unofficial, non-commercial fan project and is not affiliated with or 
 - Scene-aware Japanese voice references for neutral, gentle, happy, shy, serious, and sad delivery; Chinese keeps the stable neutral reference
 - Local history, ratings, favorites, notes, projects, and image storage, with a versioned JSON backup and restore flow
 - Temporary token-protected links for trusted friends to use your local SD WebUI
-- Desktop Companion: Tauri 2 is the current mainline but D-10 real installation validation is not complete; Electron remains the stable fallback. Use `npm run dev:tauri` for Tauri development, `npm run package:tauri` for the NSIS build, or `npm run desktop` for the Electron fallback. `npm run package:desktop` builds the Electron directory package.
+- Desktop Companion: Tauri 2 is the desktop shell. Use `npm run dev:tauri` for development, `npm run package:tauri` for the NSIS build. The Electron fallback was retired (see `desktop-electron-legacy` tag).
 
 ## Recommended setup
 
@@ -78,8 +78,6 @@ For the current implementation, verification baseline, blockers, and maintained 
 │   └── assets/css/         #   Design system tokens, component styles
 ├── routes/                 # Express API routes (chat, voice, live2d, maintenance)
 ├── services/               # TypeScript runtime services (Ollama, TTS, HTTP client…)
-├── desktop/                # Electron Companion shell (main, preload, gateway supervisor)
-├── desktop-dist/           # Compiled Electron main-process output (tsconfig.desktop.json)
 ├── desktop-tauri/          # Tauri 2 shell, Native Live2D overlay, sidecar and packaging
 ├── types/                  # Shared TypeScript type definitions
 ├── data/                   # Runtime JSON: scenes, characters, tags, presets

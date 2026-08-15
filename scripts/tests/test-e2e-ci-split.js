@@ -41,8 +41,7 @@ assert(!/studio\.spec\.ts|flows\.spec\.ts|a11y-device\.spec\.ts/.test(nightlyRun
 assert.match(quality, /pull_request:/);
 assert.match(quality, /npm run test:e2e:critical:run/);
 assert(!/npm run test:e2e\s*$/.test(quality), 'PR workflow must not run the full E2E suite');
-assert.match(quality, /windows-latest/);
-assert.match(quality, /npm run validate:desktop/);
+assert.doesNotMatch(quality, /windows-latest/, 'Windows desktop gates live in windows-native.yml');
 assert.doesNotMatch(quality, /npm run test:live2d-native/);
 assert.doesNotMatch(quality, /npm run test:live\b|regress-anima|ComfyUI/i);
 

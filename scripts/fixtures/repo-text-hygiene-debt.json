@@ -15,8 +15,6 @@
     { "path": "desktop-tauri/src-tauri/Cargo.toml", "sha256": "49814f07186f28e0ee88893f0686edb372c7075c987281b05e3eb2632a37d403" },
     { "path": "desktop-tauri/src-tauri/src/live2d_overlay.rs", "sha256": "1a0a83b1fd84033dae10275e8f27187ffa855841dd61552b160623b403628956" },
     { "path": "desktop-tauri/src-tauri/src/live2d_overlay.rs", "sha256": "becdf719608e46e1c6be8c322821d7b10fab47ef1ab9b5c9a09f26e76268d83a" },
-    { "path": "desktop/main.ts", "sha256": "6fec95d6ca2a71437de2442bf5540aff3168c85c795556c70cea5b13c66f8d21" },
-    { "path": "desktop/preload.ts", "sha256": "898b498dd023a9b99d67380684f9453a92cc4bffc7638e3f3802ba4688d3c8fb" },
     { "path": "docs/art-direction.html", "sha256": "e8d0af249845b408ec3fcfcc39118049613ab435fd9ec6f6c7225bc49eb1842f" },
     { "path": "docs/getting-started.html", "sha256": "b51bce67d5978f89efe540dfe36c8766f652ae2f543a0d26bdce37c78000bc75" },
     { "path": "docs/index.html", "sha256": "96eaf7c378f2328a491d6d203930888f9410c6b4a43b1b4fc2ab2764154b2af2" },

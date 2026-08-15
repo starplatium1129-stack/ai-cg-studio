@@ -1,6 +1,8 @@
 # 桌面端更新机制调研（2026-08-14）
 
 > 起因：用户询问「卸载旧版 / 以后能否增量更新」。本文只记录调研结论与建议路线，不改变现有发布门槛（见 `tauri-desktop-migration-plan.md` 的 D-10 矩阵）。自动更新此前在计划文档中标注「不在范围内」，本文给出分阶段建议，是否执行由用户拍板。
+>
+> 更新（2026-08-15）：Electron 版已按用户决策退役并删除（存档 tag `desktop-electron-legacy`）。下文 Electron 相关条目（二、三 B）仅作历史知识参考，不再作为可执行路线。
 
 ## 一、卸载旧版的事实核查
 
@@ -14,7 +16,7 @@
 ## 二、现状：两侧都没有更新基础设施
 
 - Tauri 2：`desktop-tauri/src-tauri/Cargo.toml` 无 `tauri-plugin-updater`；`tauri.conf.json` 无 `plugins.updater` 配置。
-- Electron（回退路径）：`package.json` 的 electron-builder `build` 无 `publish` 配置，无 electron-updater。
+- Electron（已退役，2026-08-15 删除）：历史 electron-builder `build` 无 `publish` 配置，无 electron-updater。
 - 当前唯一更新方式：重新打包 + 重装（`npm run package:tauri`），且受 D-10 门槛约束（打包输入变化后旧 SHA 证据作废，需新的真机安装验收）。
 
 ## 三、三个可选路线
@@ -26,7 +28,7 @@
 - 代价：**每次全量下载安装包**。本项目打包资源约 116.5 MB（live2d 贴图 + node_modules 是主体），整包估计 150-200 MB 级。
 - 参考：[Tauri Updater 官方文档](https://tauri.app/plugin/updater/)、[tauri-plugin-updater GitHub](https://github.com/tauri-apps/tauri-plugin-updater)、真实接入实例 [onyx PR #9002（updater + 签名）](https://github.com/onyx-dot-app/onyx/pull/9002)。
 
-### B. Electron 回退路径真差分（有现成实现，维护成本高）
+### B. Electron 回退路径真差分（已随 Electron 退役，仅知识参考）
 
 - electron-updater 对 NSIS target 支持 blockmap 差分下载，是**真正的增量更新**（只拉变更块）。
 - 参考：[electron-builder Differential Downloads](https://deepwiki.com/electron-userland/electron-builder/6.4-differential-downloads)、[blockmap 机制讨论](https://stackoverflow.com/questions/59106765/how-is-an-electron-builder-nsis-block-map-generated-can-it-be-controlled)。
@@ -55,7 +57,7 @@
 
 1. **P0（近期）**：接入 Tauri 官方 updater（路线 A），更新源先放本机/LAN 静态目录；实现「启动检查 + 手动检查按钮 + 一键下载安装」。全量下载体量可接受则到此为止。**必须等 D-10 安装产品验收通过后真机验证**；打包输入变化时按门槛重新冻结 SHA 证据。
 2. **P1（若全量体量不可接受）**：做路线 C 内容级增量（zip + SHA-256 + 原子替换），先解决写入权限与安全模型复核，再实现。
-3. **不做**：自研二进制 diff（成本/收益不成比例，等 upstream #11863）；恢复 Electron 主发布通道仅为差分更新（路线 B 仅作回退知识储备）。
+3. **不做**：自研二进制 diff（成本/收益不成比例，等 upstream #11863）；Electron 已退役，路线 B 仅作知识参考。
 
 ## 六、待办
 

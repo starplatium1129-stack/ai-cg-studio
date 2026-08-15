@@ -32,7 +32,7 @@ test('quality gates cover every deterministic test exactly once', () => {
   assert.ok(QUALITY_TEST_SUITES.unit.includes('test-mood-tag.js'));
   assert.ok(QUALITY_TEST_SUITES.unit.includes('test-service-watchdog.js'));
   assert.ok(QUALITY_TEST_SUITES.contract.includes('test-tunnel-restart.js'));
-  assert.ok(QUALITY_TEST_SUITES.desktop.includes('test-desktop.js'));
+  assert.ok(QUALITY_TEST_SUITES.contract.includes('test-desktop-tools-route.js'));
 
   for (const file of discovered) {
     assert.doesNotMatch(read(`scripts/tests/${file}`), /require\(['"]\.\/test-[^'"\)]+['"]\)/,
@@ -52,8 +52,6 @@ test('quality workflows keep default, desktop, and live lanes separated', () => 
   assert.equal(scripts.validate, 'npm run check && npm run test:unit && npm run test:contract');
   assert.match(scripts['test:check'], /^node scripts\/tests\/test-quality-gates\.js && /);
   assert.match(scripts.check, /npm run test:check/);
-  assert.match(scripts['validate:desktop'], /^npm run test:desktop$/);
-  assert.match(scripts['test:desktop'], /run-quality-suite\.js desktop/);
   assert.doesNotMatch(scripts.validate, /test:live2d-native|test:live|test:e2e/);
   assert.doesNotMatch(scripts.validate, /build:desktop/);
   assert.match(scripts['test:live'], /regress-anima-prompt-tags\.js/);
@@ -63,8 +61,7 @@ test('quality workflows keep default, desktop, and live lanes separated', () => 
   assert.doesNotMatch(scripts['build:tauri'], /prepare:tauri/);
   assert.doesNotMatch(scripts['package:tauri'], /prepare:tauri/);
 
-  assert.match(quality, /windows-latest/);
-  assert.match(quality, /npm run validate:desktop/);
+  assert.match(quality, /npm run check/);
   const checkStep = quality.indexOf('run: npm run check');
   const unitStep = quality.indexOf('run: npm run test:unit');
   const contractStep = quality.indexOf('run: npm run test:contract');

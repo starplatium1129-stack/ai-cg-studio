@@ -119,3 +119,19 @@ Tauri 2 Rust shell
 **本轮观察（记录不修复，P1 评估）**：强制终止（taskkill）应用进程后，其自带的 sidecar 网关进程成为孤儿（不随父进程退出），需手动终止。正常退出路径（托盘菜单/quit IPC）会走 GatewaySupervisor 清理，预期不出现该问题；建议 P1 评估 sidecar 的父进程死亡处理（Job Object 或父 PID 轮询）。
 
 **Electron 退役判据（个人使用版）**：Electron 双轨保留至——① 豁免后剩余 D-10 项全绿（安装/迁移/冷启动/隐藏/退出/卸载/清理、真实 TTS 双角色口型与归零、300s 安装产品 soak）；② 打包版日常使用 2-4 周无回归；③ 未发生需回滚 Electron 的阻断问题。三者齐备后 Electron 降级为纯回滚通道（不主动删除），Tauri 标记「完全替代」。
+
+## 2026-08-15 Electron 退役执行记录（用户决策）
+
+> 用户决策：不再需要 Electron 版，也不会再碰它。执行完整删除（非「降级为回滚通道」），但先打存档 tag 保留回滚能力。
+
+- [x] 存档：git tag `desktop-electron-legacy`（指向 HEAD，含完整 desktop/ 源码与 electron-builder 配置）。
+- [x] 删除：`desktop/`（7 个 TS 源文件）、`desktop-dist/`（构建产物）、`tsconfig.desktop.json`。
+- [x] package.json：移除 `main` 字段、`desktop`/`desktop:dev`/`build:desktop`/`package:desktop`/`package:desktop:installer`/`test:desktop`/`validate:desktop` 脚本、`electron`/`electron-builder` devDeps、electron-builder `build` 配置块（含 asar/protocols/nsis）。`test:desktop:native` 与 `test:desktop-staging` 保留（二者是 Tauri 侧验收）。
+- [x] 测试迁移（保覆盖不裸删）：
+  - `test-companion-tools.js`（Electron toolRunner 安全测试）→ 移植为 `scripts/tests/test-desktop-tools-route.js`（直接测 `routes/desktop-tools.js`，即 Tauri 壳的 /api/desktop-tools 网关路径；新增 HTTP 装配断言：本机可用、代理头 403、缺工具名 400），入 contract 套件。
+  - `test-deep-link.js`（Electron deepLink）→ 深链归一化契约移植为 `main_shared.rs` 的 `#[cfg(test)] mod tests`（3 个用例：单段路由/尾斜杠与大小写/非法回退）。
+  - `test-desktop.js` 删除（仅测 Electron 主进程模块）。
+- [x] CI/质量门：`quality.yml` 移除 windows-desktop job（`npm run validate:desktop`）；`test-quality-gates.js`、`quality-test-inventory.js`、`run-quality-suite.js` 同步去掉 desktop 套件；`desktop-native/command.js` PACKAGING_INPUTS 移除 `tsconfig.desktop.json`（Tauri 打包指纹输入表）。
+- [x] 文档同步：README.md / README_zh.md / STARTUP.md / `docs/desktop-update-research.md`（Electron 条目标记已退役）/ `docs/live2d-native-runtime.md` / AGENTS.md（备份 `runtime/AGENTS.md.bak-electron-retire`）；`server/config.js`、`routes/maintenance.js`、`server/companion-tools.js` 注释中的 desktop/main.ts 引用改为 Tauri 壳。
+- [x] 验证：`npm run test:contract`（含新 test-desktop-tools-route.js）、`test-quality-gates`、`cargo test --locked`（含新深链用例）、`npm run typecheck:app` + `npm run build`。
+- 遗留说明：`routes/desktop-tools.js` 头注释仍保留「从 desktop/toolRunner.ts 下沉」的历史说明；真实 TTS 双角色口型/归零验收仍待 GPT-SoVITS 恢复后执行（与 Electron 无关，属 Tauri 侧 D-10 剩余项）。
