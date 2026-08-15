@@ -1562,6 +1562,32 @@
             "ice_cream",
             "beach"
           ]
+        },
+        {
+          "id": "liberte_echec",
+          "name": "自由//失效（街头滑板）",
+          "prose": "a black off-shoulder top with a black and red plaid pleated skirt, a loose black jacket worn off her shoulders, a tiny golden crown hair accessory and a skateboard",
+          "tokens": [
+            "off_shoulder",
+            "black_clothes",
+            "pleated_skirt",
+            "jacket",
+            "crown",
+            "skateboard"
+          ]
+        },
+        {
+          "id": "prelude_to_transcendence",
+          "name": "超然序曲（音律礼服）",
+          "prose": "a black and gold gothic rock tailcoat jacket with gold epaulets and chains over a black lace shirt, tight leather pants and high heel boots",
+          "tokens": [
+            "tailcoat",
+            "black_clothes",
+            "gold_trim",
+            "lace_shirt",
+            "leather_pants",
+            "high_heels"
+          ]
         }
       ],
       "canon": {
@@ -1610,7 +1636,7 @@
       "adultEligibility": "adult",
       "outfits": [
         {
-          "id": "doctor_coat",
+          "id": "standard",
           "name": "罗德岛医师服",
           "prose": "her green and white medical coat with a high collar and matching trousers",
           "tokens": [
@@ -1633,6 +1659,31 @@
             "gold_trim",
             "hair_up",
             "cello"
+          ]
+        },
+        {
+          "id": "remains",
+          "name": "残余（决战常服）",
+          "prose": "a dark grey tactical cropped jacket over a black work vest, cargo pants and military boots, her hair in a side ponytail",
+          "tokens": [
+            "tactical",
+            "jacket",
+            "black_clothes",
+            "grey_clothes",
+            "cargo_pants",
+            "side_ponytail"
+          ]
+        },
+        {
+          "id": "walker",
+          "name": "遗尘漫步（学者行装）",
+          "prose": "a grey-green hooded scholar cloak over a long robe, a brass astrolabe at her waist and a scholar staff",
+          "tokens": [
+            "cloak",
+            "hood",
+            "robe",
+            "scholar",
+            "staff"
           ]
         }
       ],
@@ -1686,7 +1737,7 @@
       "adultEligibility": "adult",
       "outfits": [
         {
-          "id": "lungmen_uniform",
+          "id": "standard",
           "name": "龙门近卫局制服",
           "prose": "her black and blue Lungmen Guard uniform with a long coat, gold trim and twin swords at her waist",
           "tokens": [
@@ -1710,6 +1761,31 @@
             "gold_trim",
             "black_pantyhose",
             "high_heels"
+          ]
+        },
+        {
+          "id": "holungday",
+          "name": "假日威龙（海滩装）",
+          "prose": "a white crop halter top with light blue denim shorts, a red shirt tied at her waist, sunglasses and a high-pressure water gun",
+          "tokens": [
+            "crop_top",
+            "white_clothes",
+            "denim_shorts",
+            "sunglasses",
+            "water_gun"
+          ]
+        },
+        {
+          "id": "wanderer",
+          "name": "赤刃明霄（游侠行装）",
+          "prose": "a dark green and crimson traveller robe with a grey cape, a jade belt pendant, holding the crimson sword Chi Xiao",
+          "tokens": [
+            "robe",
+            "chinese_clothes",
+            "cape",
+            "green_clothes",
+            "red_clothes",
+            "sword"
           ]
         }
       ],
@@ -1757,7 +1833,7 @@
       "adultEligibility": "adult",
       "outfits": [
         {
-          "id": "researcher_dress",
+          "id": "standard",
           "name": "研究员裙装",
           "prose": "her white dress with black trim, black ribbon and black thighhighs",
           "tokens": [
@@ -1778,6 +1854,18 @@
             "white_clothes",
             "straw_hat",
             "swim_ring"
+          ]
+        },
+        {
+          "id": "picnic",
+          "name": "远行前的野餐",
+          "prose": "a retro dark green and cream country dress with a wool shawl, a beret and a picnic basket",
+          "tokens": [
+            "dress",
+            "green_clothes",
+            "cream_clothes",
+            "beret",
+            "picnic"
           ]
         }
       ],
@@ -1828,7 +1916,7 @@
       "adultEligibility": "adult",
       "outfits": [
         {
-          "id": "laterano_uniform",
+          "id": "standard",
           "name": "拉特兰制服",
           "prose": "her blue and white Laterano tactical uniform with gold trim and a short cape",
           "tokens": [
@@ -1901,7 +1989,7 @@
       "adultEligibility": "adult",
       "outfits": [
         {
-          "id": "ink_qipao",
+          "id": "standard",
           "name": "水墨旗袍",
           "prose": "her white and black ink-wash qipao with cloud motifs and a long black coat",
           "tokens": [
@@ -1972,7 +2060,7 @@
       "adultEligibility": "adult",
       "outfits": [
         {
-          "id": "heavy_armor",
+          "id": "standard",
           "name": "重型装甲",
           "prose": "her heavy black power armor with glowing red seams and a large warhammer",
           "tokens": [
@@ -1994,6 +2082,30 @@
             "flower",
             "beach",
             "parasol"
+          ]
+        },
+        {
+          "id": "obsidian",
+          "name": "黑曜石（晚礼服）",
+          "prose": "a black off-shoulder evening gown with black lace trim, a deep red ruby brooch and obsidian feather ornaments, black high heels, gold chains on her horns",
+          "tokens": [
+            "evening_gown",
+            "black_dress",
+            "lace",
+            "brooch",
+            "high_heels"
+          ]
+        },
+        {
+          "id": "gravel",
+          "name": "砾瓦（废土工装）",
+          "prose": "a dark grey high-neck bodysuit with a beige and grey multi-pocket tactical jacket, a red scarf, cargo pants and heavy boots",
+          "tokens": [
+            "tactical",
+            "jacket",
+            "red_scarf",
+            "cargo_pants",
+            "bodysuit"
           ]
         }
       ],
@@ -2041,7 +2153,7 @@
       "adultEligibility": "adult",
       "outfits": [
         {
-          "id": "mechanic_workwear",
+          "id": "standard",
           "name": "机械师工装",
           "prose": "her green and yellow mechanic workwear with a red hairband and tool belt",
           "tokens": [
@@ -2112,7 +2224,7 @@
       "adultEligibility": "adult",
       "outfits": [
         {
-          "id": "apprentice",
+          "id": "standard",
           "name": "理发师学徒工装",
           "prose": "a white shirt with a yellow ascot scarf, a dark suspender pinafore dress, a black pleated skirt, asymmetric thighhighs and a hairdresser tool pouch with scissors",
           "tokens": [
@@ -2136,6 +2248,18 @@
             "white_clothes",
             "lace",
             "maid_headdress"
+          ]
+        },
+        {
+          "id": "greenhouse_tea",
+          "name": "花房茶话会（三丽鸥联动）",
+          "prose": "a cream pink and mint lolita tea dress with frills, pink ribbon hairbows and Mary Jane shoes, in a greenhouse tea party setting",
+          "tokens": [
+            "lolita",
+            "dress",
+            "frills",
+            "ribbon",
+            "mary_janes"
           ]
         }
       ],
@@ -2183,7 +2307,7 @@
       "adultEligibility": "adult",
       "outfits": [
         {
-          "id": "abyss_suit",
+          "id": "standard",
           "name": "深海猎人作战服",
           "prose": "her black one-piece combat suit with white accents, gloves and thigh-high boots",
           "tokens": [
@@ -2205,6 +2329,18 @@
             "white_clothes",
             "sunglasses",
             "surfboard"
+          ]
+        },
+        {
+          "id": "sublimation",
+          "name": "升华（神官礼服）",
+          "prose": "a pure white backless divine priestess gown with gold hollow ornaments and a sacred ritual staff",
+          "tokens": [
+            "white_dress",
+            "gown",
+            "gold_trim",
+            "backless",
+            "staff"
           ]
         }
       ],
@@ -2255,7 +2391,7 @@
       "adultEligibility": "adult",
       "outfits": [
         {
-          "id": "bartender",
+          "id": "standard",
           "name": "调酒师装",
           "prose": "a black crop top with an asymmetrical grey hooded jacket, black hotpants, a tactical belt with a cocktail shaker pouch and a black choker, holding her giant scythe",
           "tokens": [
@@ -2331,7 +2467,7 @@
       "adultEligibility": "adult",
       "outfits": [
         {
-          "id": "penguin_logistics",
+          "id": "standard",
           "name": "企鹅物流制服",
           "prose": "her black and white Penguin Logistics uniform with a blue inner shirt, jacket and small wings",
           "tokens": [
@@ -2354,6 +2490,18 @@
             "baseball_cap",
             "shorts",
             "food"
+          ]
+        },
+        {
+          "id": "midnight_courier",
+          "name": "午夜邮差（夜行装）",
+          "prose": "a black hooded techwear coat with fluorescent yellow reflective stripes, a waterproof messenger bag and dark tactical boots",
+          "tokens": [
+            "hoodie",
+            "black_clothes",
+            "reflective",
+            "messenger_bag",
+            "tactical"
           ]
         }
       ],
@@ -2402,7 +2550,7 @@
       "adultEligibility": "adult",
       "outfits": [
         {
-          "id": "fox_kimono",
+          "id": "standard",
           "name": "白狐和服",
           "prose": "her white and gold kimono-style dress with a ribbon and fox motifs",
           "tokens": [
@@ -2426,6 +2574,18 @@
             "hair_ornament",
             "snow",
             "torii"
+          ]
+        },
+        {
+          "id": "wasteland_bloom",
+          "name": "弃土花开（废土探索）",
+          "prose": "a moss green and khaki explorer coat with a bucket hat, a heavy backpack and hiking boots, her nine tails poking out from behind",
+          "tokens": [
+            "explorer",
+            "khaki",
+            "green_clothes",
+            "backpack",
+            "hiking_boots"
           ]
         }
       ],
@@ -2478,7 +2638,7 @@
       "adultEligibility": "adult",
       "outfits": [
         {
-          "id": "endfield_uniform",
+          "id": "standard",
           "name": "终末地制服",
           "prose": "her white and teal Endfield tactical jacket over a high-neck top with straps, pouches and dark trousers",
           "tokens": [
@@ -2554,7 +2714,7 @@
       "adultEligibility": "adult",
       "outfits": [
         {
-          "id": "tactical_coat",
+          "id": "standard",
           "name": "战术特勤服",
           "prose": "a dark grey and industrial-white cropped tactical coat with yellow warning stripes over a black high-neck crop top, black shorts, thigh straps and combat boots",
           "tokens": [

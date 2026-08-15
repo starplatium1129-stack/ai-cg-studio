@@ -9214,7 +9214,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "standard",
+      "outfitId": "colorful_wonderland",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -9320,7 +9320,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "standard",
+      "outfitId": "prelude_to_transcendence",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -9373,7 +9373,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "doctor_coat"
+      "outfitId": "standard"
     },
     {
       "id": "kaltsit_arknights_mon3tr_shadow",
@@ -9407,7 +9407,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "doctor_coat"
+      "outfitId": "standard"
     },
     {
       "id": "kaltsit_arknights_desert_recon",
@@ -9441,7 +9441,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "doctor_coat"
+      "outfitId": "walker"
     },
     {
       "id": "kaltsit_arknights_tea_corner",
@@ -9475,7 +9475,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "doctor_coat"
+      "outfitId": "standard"
     },
     {
       "id": "kaltsit_arknights_training_supervise",
@@ -9507,7 +9507,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "doctor_coat"
+      "outfitId": "standard"
     },
     {
       "id": "kaltsit_arknights_archive_ledger",
@@ -9541,7 +9541,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "doctor_coat"
+      "outfitId": "standard"
     },
     {
       "id": "kaltsit_arknights_r18_cabin_robe",
@@ -9575,7 +9575,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "doctor_coat",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -9628,7 +9628,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "doctor_coat",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -9681,7 +9681,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "doctor_coat",
+      "outfitId": "evening_gown",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -9734,7 +9734,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "doctor_coat",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -9787,7 +9787,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "lungmen_uniform"
+      "outfitId": "standard"
     },
     {
       "id": "chen_arknights_night_market",
@@ -9821,7 +9821,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "lungmen_uniform"
+      "outfitId": "standard"
     },
     {
       "id": "chen_arknights_rooftop_dusk",
@@ -9855,7 +9855,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "lungmen_uniform"
+      "outfitId": "wanderer"
     },
     {
       "id": "chen_arknights_hotpot_night",
@@ -9889,7 +9889,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "lungmen_uniform"
+      "outfitId": "standard"
     },
     {
       "id": "chen_arknights_sword_honing",
@@ -9923,7 +9923,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "lungmen_uniform"
+      "outfitId": "standard"
     },
     {
       "id": "chen_arknights_rain_station",
@@ -9957,7 +9957,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "lungmen_uniform"
+      "outfitId": "standard"
     },
     {
       "id": "chen_arknights_r18_apartment",
@@ -9991,7 +9991,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "lungmen_uniform",
+      "outfitId": "ageless_afterglow",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -10044,7 +10044,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "lungmen_uniform",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -10097,7 +10097,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "lungmen_uniform",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -10150,7 +10150,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "lungmen_uniform",
+      "outfitId": "ageless_afterglow",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -10203,7 +10203,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "researcher_dress"
+      "outfitId": "standard"
     },
     {
       "id": "eyjafjalla_arknights_craters_edge",
@@ -10237,7 +10237,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "researcher_dress"
+      "outfitId": "standard"
     },
     {
       "id": "eyjafjalla_arknights_library_study",
@@ -10271,7 +10271,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "researcher_dress"
+      "outfitId": "standard"
     },
     {
       "id": "eyjafjalla_arknights_dorm_tea",
@@ -10305,7 +10305,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "researcher_dress"
+      "outfitId": "standard"
     },
     {
       "id": "eyjafjalla_arknights_hot_spring_research",
@@ -10339,7 +10339,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "researcher_dress"
+      "outfitId": "summer_flower"
     },
     {
       "id": "eyjafjalla_arknights_astronomy_deck",
@@ -10373,7 +10373,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "researcher_dress"
+      "outfitId": "standard"
     },
     {
       "id": "eyjafjalla_arknights_r18_lab_night",
@@ -10407,7 +10407,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "researcher_dress",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -10460,7 +10460,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "researcher_dress",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -10513,7 +10513,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "researcher_dress",
+      "outfitId": "summer_flower",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -10566,7 +10566,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "researcher_dress",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -10622,7 +10622,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "laterano_uniform"
+      "outfitId": "standard"
     },
     {
       "id": "lemuen_arknights_halo_street",
@@ -10657,7 +10657,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "laterano_uniform"
+      "outfitId": "standard"
     },
     {
       "id": "lemuen_arknights_cliff_sunset",
@@ -10694,7 +10694,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "laterano_uniform"
+      "outfitId": "standard"
     },
     {
       "id": "lemuen_arknights_sweets_shop",
@@ -10731,7 +10731,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "laterano_uniform"
+      "outfitId": "standard"
     },
     {
       "id": "lemuen_arknights_training_range",
@@ -10768,7 +10768,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "laterano_uniform"
+      "outfitId": "standard"
     },
     {
       "id": "lemuen_arknights_garden_bench",
@@ -10803,7 +10803,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "laterano_uniform"
+      "outfitId": "standard"
     },
     {
       "id": "lemuen_arknights_r18_church_night",
@@ -10838,7 +10838,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "laterano_uniform",
+      "outfitId": "twilight_requiem",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -10891,7 +10891,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "laterano_uniform",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -10944,7 +10944,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "laterano_uniform",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -10998,7 +10998,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "laterano_uniform",
+      "outfitId": "twilight_requiem",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -11051,7 +11051,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "ink_qipao"
+      "outfitId": "standard"
     },
     {
       "id": "dusk_arknights_painting_studio",
@@ -11085,7 +11085,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "ink_qipao"
+      "outfitId": "standard"
     },
     {
       "id": "dusk_arknights_mountain_mist",
@@ -11119,7 +11119,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "ink_qipao"
+      "outfitId": "standard"
     },
     {
       "id": "dusk_arknights_tea_and_ink",
@@ -11153,7 +11153,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "ink_qipao"
+      "outfitId": "standard"
     },
     {
       "id": "dusk_arknights_rain_courtyard",
@@ -11187,7 +11187,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "ink_qipao"
+      "outfitId": "standard"
     },
     {
       "id": "dusk_arknights_lantern_festival",
@@ -11259,7 +11259,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "ink_qipao",
+      "outfitId": "dying_dust",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -11319,7 +11319,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "ink_qipao",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -11375,7 +11375,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "ink_qipao",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -11433,7 +11433,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "ink_qipao",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -11490,7 +11490,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "heavy_armor"
+      "outfitId": "standard"
     },
     {
       "id": "mudrock_arknights_snowfield_march",
@@ -11526,7 +11526,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "heavy_armor"
+      "outfitId": "standard"
     },
     {
       "id": "mudrock_arknights_ruins_shelter",
@@ -11562,7 +11562,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "heavy_armor"
+      "outfitId": "standard"
     },
     {
       "id": "mudrock_arknights_flower_field",
@@ -11598,7 +11598,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "heavy_armor"
+      "outfitId": "standard"
     },
     {
       "id": "mudrock_arknights_canteen_lunch",
@@ -11638,7 +11638,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "heavy_armor"
+      "outfitId": "gravel"
     },
     {
       "id": "mudrock_arknights_training_dummy",
@@ -11672,7 +11672,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "heavy_armor"
+      "outfitId": "standard"
     },
     {
       "id": "mudrock_arknights_r18_cabin_quiet",
@@ -11707,7 +11707,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "heavy_armor",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -11766,7 +11766,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "heavy_armor",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -11826,7 +11826,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "heavy_armor",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -11885,7 +11885,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "heavy_armor",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -11944,7 +11944,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "mechanic_workwear"
+      "outfitId": "forgemaster"
     },
     {
       "id": "eunectes_arknights_mudland_excavation",
@@ -11979,7 +11979,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "mechanic_workwear"
+      "outfitId": "standard"
     },
     {
       "id": "eunectes_arknights_river_swim",
@@ -12015,7 +12015,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "mechanic_workwear"
+      "outfitId": "standard"
     },
     {
       "id": "eunectes_arknights_canteen_big",
@@ -12050,7 +12050,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "mechanic_workwear"
+      "outfitId": "standard"
     },
     {
       "id": "eunectes_arknights_wrench_pose",
@@ -12085,7 +12085,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "mechanic_workwear"
+      "outfitId": "forgemaster"
     },
     {
       "id": "eunectes_arknights_stars_deck",
@@ -12120,7 +12120,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "mechanic_workwear"
+      "outfitId": "standard"
     },
     {
       "id": "eunectes_arknights_r18_garage_night",
@@ -12154,7 +12154,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "mechanic_workwear",
+      "outfitId": "forgemaster",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -12209,7 +12209,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "mechanic_workwear",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -12263,7 +12263,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "mechanic_workwear",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -12317,7 +12317,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "mechanic_workwear",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -12374,7 +12374,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "apprentice"
+      "outfitId": "standard"
     },
     {
       "id": "goldenglow_arknights_flower_room",
@@ -12408,7 +12408,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "apprentice"
+      "outfitId": "standard"
     },
     {
       "id": "goldenglow_arknights_meadow_book",
@@ -12444,7 +12444,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "apprentice"
+      "outfitId": "standard"
     },
     {
       "id": "goldenglow_arknights_rain_window",
@@ -12480,7 +12480,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "apprentice"
+      "outfitId": "standard"
     },
     {
       "id": "goldenglow_arknights_dusk_street",
@@ -12518,7 +12518,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "apprentice"
+      "outfitId": "standard"
     },
     {
       "id": "goldenglow_arknights_starlight_terrace",
@@ -12552,7 +12552,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "apprentice"
+      "outfitId": "standard"
     },
     {
       "id": "goldenglow_arknights_r18_library_close",
@@ -12588,7 +12588,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "apprentice",
+      "outfitId": "maiden_of_night",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -12641,7 +12641,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "apprentice",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -12696,7 +12696,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "apprentice",
+      "outfitId": "maiden_of_night",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -12749,7 +12749,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "apprentice",
+      "outfitId": "greenhouse_tea",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -12802,7 +12802,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "abyss_suit"
+      "outfitId": "standard"
     },
     {
       "id": "skadi_arknights_abyss_shore",
@@ -12836,7 +12836,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "abyss_suit"
+      "outfitId": "standard"
     },
     {
       "id": "skadi_arknights_ship_deck_night",
@@ -12870,7 +12870,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "abyss_suit"
+      "outfitId": "standard"
     },
     {
       "id": "skadi_arknights_reef_rest",
@@ -12904,7 +12904,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "abyss_suit"
+      "outfitId": "standard"
     },
     {
       "id": "skadi_arknights_tavern_corner",
@@ -12938,7 +12938,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "abyss_suit"
+      "outfitId": "standard"
     },
     {
       "id": "skadi_arknights_cabin_window",
@@ -12972,7 +12972,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "abyss_suit"
+      "outfitId": "standard"
     },
     {
       "id": "skadi_arknights_r18_cabin_rope",
@@ -13006,7 +13006,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "abyss_suit",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -13059,7 +13059,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "abyss_suit",
+      "outfitId": "waverider",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -13112,7 +13112,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "abyss_suit",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -13165,7 +13165,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "abyss_suit",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -13222,7 +13222,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "bartender"
+      "outfitId": "standard"
     },
     {
       "id": "quillpen_arknights_street_delivery",
@@ -13261,7 +13261,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "bartender"
+      "outfitId": "standard"
     },
     {
       "id": "quillpen_arknights_rooftop_pigeon",
@@ -13336,7 +13336,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "bartender"
+      "outfitId": "standard"
     },
     {
       "id": "quillpen_arknights_letter_desk",
@@ -13373,7 +13373,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "bartender"
+      "outfitId": "standard"
     },
     {
       "id": "quillpen_arknights_feather_shop",
@@ -13411,7 +13411,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "bartender"
+      "outfitId": "standard"
     },
     {
       "id": "quillpen_arknights_r18_dorm_night",
@@ -13450,7 +13450,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "bartender",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -13505,7 +13505,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "bartender",
+      "outfitId": "summer_flower_fa210",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -13561,7 +13561,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "bartender",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -13618,7 +13618,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "bartender",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -13674,7 +13674,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "penguin_logistics"
+      "outfitId": "standard"
     },
     {
       "id": "exusiai_arknights_bar_counter",
@@ -13711,7 +13711,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "penguin_logistics"
+      "outfitId": "standard"
     },
     {
       "id": "exusiai_arknights_skyline_roof",
@@ -13748,7 +13748,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "penguin_logistics"
+      "outfitId": "standard"
     },
     {
       "id": "exusiai_arknights_package_run",
@@ -13785,7 +13785,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "penguin_logistics"
+      "outfitId": "city_rider"
     },
     {
       "id": "exusiai_arknights_wing_rest",
@@ -13822,7 +13822,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "penguin_logistics"
+      "outfitId": "standard"
     },
     {
       "id": "exusiai_arknights_halo_street_evening",
@@ -13859,7 +13859,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "penguin_logistics"
+      "outfitId": "standard"
     },
     {
       "id": "exusiai_arknights_r18_apartment_couch",
@@ -13895,7 +13895,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "penguin_logistics",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -13951,7 +13951,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "penguin_logistics",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -14006,7 +14006,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "penguin_logistics",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -14062,7 +14062,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "penguin_logistics",
+      "outfitId": "midnight_courier",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -14115,7 +14115,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "fox_kimono"
+      "outfitId": "standard"
     },
     {
       "id": "suzuran_arknights_library_fox",
@@ -14149,7 +14149,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "fox_kimono"
+      "outfitId": "standard"
     },
     {
       "id": "suzuran_arknights_snow_visit",
@@ -14217,7 +14217,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "fox_kimono"
+      "outfitId": "standard"
     },
     {
       "id": "suzuran_arknights_tea_pouring",
@@ -14251,7 +14251,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "fox_kimono"
+      "outfitId": "standard"
     },
     {
       "id": "suzuran_arknights_fox_den_night",
@@ -14285,7 +14285,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "fox_kimono"
+      "outfitId": "standard"
     },
     {
       "id": "suzuran_arknights_r18_kimono_slip",
@@ -14319,7 +14319,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "fox_kimono",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -14372,7 +14372,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "fox_kimono",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -14425,7 +14425,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "fox_kimono",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -14478,7 +14478,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "fox_kimono",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -14531,7 +14531,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "endfield_uniform"
+      "outfitId": "standard"
     },
     {
       "id": "perlica_arknights_talos_wasteland",
@@ -14565,7 +14565,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "endfield_uniform"
+      "outfitId": "wasteland_explorer"
     },
     {
       "id": "perlica_arknights_research_deck",
@@ -14599,7 +14599,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "endfield_uniform"
+      "outfitId": "standard"
     },
     {
       "id": "perlica_arknights_canteen_routine",
@@ -14633,7 +14633,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "endfield_uniform"
+      "outfitId": "standard"
     },
     {
       "id": "perlica_arknights_data_archive",
@@ -14667,7 +14667,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "endfield_uniform"
+      "outfitId": "standard"
     },
     {
       "id": "perlica_arknights_greenhouse_facility",
@@ -14701,7 +14701,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "endfield_uniform"
+      "outfitId": "standard"
     },
     {
       "id": "perlica_arknights_r18_quarters_terminal",
@@ -14735,7 +14735,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "endfield_uniform",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -14788,7 +14788,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "endfield_uniform",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -14841,7 +14841,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "endfield_uniform",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -14894,7 +14894,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "endfield_uniform",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -14947,7 +14947,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "tactical_coat"
+      "outfitId": "standard"
     },
     {
       "id": "laevatain_arknights_lava_forge",
@@ -14981,7 +14981,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "tactical_coat"
+      "outfitId": "standard"
     },
     {
       "id": "laevatain_arknights_icecream_break",
@@ -15015,7 +15015,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "tactical_coat"
+      "outfitId": "standard"
     },
     {
       "id": "laevatain_arknights_sword_rest",
@@ -15049,7 +15049,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "tactical_coat"
+      "outfitId": "standard"
     },
     {
       "id": "laevatain_arknights_ship_corridor",
@@ -15083,7 +15083,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "tactical_coat"
+      "outfitId": "standard"
     },
     {
       "id": "laevatain_arknights_canteen_hotpot",
@@ -15117,7 +15117,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "tactical_coat"
+      "outfitId": "standard"
     },
     {
       "id": "laevatain_arknights_r18_quarters_flame",
@@ -15151,7 +15151,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "tactical_coat",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -15204,7 +15204,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "tactical_coat",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -15257,7 +15257,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "tactical_coat",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -15310,7 +15310,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "tactical_coat",
+      "outfitId": "standard",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
