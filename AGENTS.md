@@ -144,8 +144,8 @@
 
 ## 当前待办
 
-- 视觉与架构下一阶段路线已记录在 `docs/visual-architecture-roadmap.md`。执行顺序为视觉减法与标题层级 → 动效和移动端持续动画收口 → 训练/控制/绘图窄屏层级 → 状态组件统一 → API client 与存储 Repository → 按所有权拆分大型模块；不做框架重写。
-- 桌宠语音与演出增强（吸收 ZcChat2 精华）分阶段计划已记录在 `docs/companion-voice-roadmap.md`。P0/P1/P2（长按说话、会话状态机/唤醒词、`[mood=xxx]` 情绪标签协议）已完成；剩余：CompanionView 的自动监听/热键集成（待其未提交改动落地后进行）、P3 演出数据驱动、P4 自定义角色资产包——仍暂缓，每阶段独立验收，不串阶段。
+- 视觉与架构路线（`docs/visual-architecture-roadmap.md`）：第一至十六轮及 API Client（`src/api/`）、存储 Repository（`src/storage/`）、训练台拆分（`useTraining*`）已全部完成；剩余仅网关公共设施收口（P3）残项——`services/*.ts` 内联 taskkill 迁移（已评估维持现状）、上游健康探测与代理配置进一步收敛。2026-08-15 已按路线图状态逐项打勾核对。
+- 桌宠语音与演出增强（吸收 ZcChat2 精华）分阶段计划已记录在 `docs/companion-voice-roadmap.md`。P0/P1/P2（长按说话、会话状态机/唤醒词、`[mood=xxx]` 情绪标签协议）及 CompanionView 自动监听/热键接入、竞态复审已完成（2026-08-09）；剩余：P3 演出数据驱动、P4 自定义角色资产包——仍暂缓，每阶段独立验收，不串阶段。
 - 提示词三引擎（Krea 2 / Anima / WAI-Illustrious）调研基线见 `docs/three-engine-prompt-research.md`，供精细化配置人员使用；**待办：热门角色 exactTokens 的括号消歧按 Anima 官方空格规则改 `rem (re zero)` 形式（当前为 `rem_(re_zero)`），先 A/B 验证还原度不降再批量改**（影响 `test-popular-content.js` 断言）。
 - Live2D 方面仍只有在取得模型作者提供的、明确标注为情绪用途的原生 motion/expression 后，才增加非空 SoulLink native allowlist。
 

@@ -3,6 +3,28 @@
 > 记录日期：2026-08-02（状态补充：2026-08-15）
 > 产品前提：个人本地使用为主，偶尔分享给可信访客；不按公开 SaaS 或多人社区设计。
 
+## 完成状态（2026-08-15 核对）
+
+- ✅ 第一轮 桌面端氛围分层
+- ✅ 第二轮 标题与工作台主次
+- ✅ 第三轮 绘图页基础模式与标题层级
+- ✅ 第四轮 状态面板语义统一
+- ✅ 第五轮 首页主视觉减法
+- ✅ 第六轮 工作台标签去重
+- ✅ 第七轮 控制台窄屏优先级
+- ✅ 第八轮 模型页层级校准
+- ✅ 第九轮 场景卡操作层级
+- ✅ 第十轮 首页首屏信息减法
+- ✅ 第十一轮 生成 API 层收口（`generationApi` + `promptBuilderStore` 死状态清理）
+- ✅ 第十二轮 Anima 生成会话抽取（`useAnimaSession`）
+- ✅ 第十三轮 网关进程树收口（`process-tree.js`）+ 视觉审计首轮
+- ✅ 第十四轮 Anima 轮询按引擎门控 + 视觉审计第二轮（light 主题）
+- ✅ 第十五轮 图片呈现核查（A）+ 微交互收口（B）
+- ✅ 第十六轮 弹层入场动画统一（B 收尾）
+- ✅ API Client（`src/api/`）、存储 Repository（`src/storage/`）、训练台拆分（`useTraining*`）
+- ⏳ 剩余：网关公共设施收口（P3）残项——`services/*.ts` 内联 taskkill 迁移（已评估维持现状）、上游健康探测与代理配置进一步收敛；`artworkRepository` 之外的历史删除入口统一属已签收项，无需再启动。
+
+
 ## 结论
 
 当前 Web 侧 `Vue 3 + Vite + Pinia + Express + IndexedDB` 架构适合本项目，不进行 Web 端的 React 或 Nuxt 重写；桌面端 Companion / Atelier 壳已在 `desktop-tauri/` 建立独立的 Tauri 2 原生轻量容器（见 `docs/tauri-desktop-migration-plan.md`）。
