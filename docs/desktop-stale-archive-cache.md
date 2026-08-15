@@ -51,7 +51,17 @@
 
 ## 经验 / 后续注意
 
-- **排查缓存类问题要扫 `Cache_Data` 的 `data_*` 索引文件**，URL 只存在索引里，f_ 文件只有 body（初版扫描 f_ 漏掉了全部条目）。
-- WebView2 磁盘缓存**跨进程持久化**，「全新进程」不等于「全新缓存」；immutable + 一年 max-age 的条目只有主动清除才失效。
+- **排查缓存类问题要扫 `Cache_Data` 的 `data_*` 索引文件**，URL 只存在索引里，f_ 文件只有 body（初版扫描 f_ 漏掉了全部条目）。磁盘缓存格式有公开文档：<https://forensics.wiki/chrome_disk_cache_format/>（`data_0..3` 索引 + `f_*` 条目文件）。
+- WebView2 磁盘缓存**跨进程持久化**，「全新进程」不等于「全新缓存」；immutable + 一年 max-age 的条目只有主动清除才失效。「WebView2 缓存不更新/如何清除」是常见问题，官方有大量现成答案（Microsoft Q&A / WebView2Feedback repo），应直接搜索而非本地反复试错。
 - 若再遇「桌面端与网页端数据不一致」，先执行：杀 `ai-cg-studio-desktop`/aics 的 `msedgewebview2`/3123 的 node → 改名 `EBWebView\Default\Cache` → 重开。
-- 顺带观察：sidecar 以控制台模式启动会弹 node.exe 黑窗（用户已注意到）；如需隐藏需在 `gateway.rs` spawn 时加 `CREATE_NO_WINDOW`（Rust 壳改动，需完整打包，暂缓）。
+- 顺带观察：sidecar 以控制台模式启动会弹 node.exe 黑窗（用户已注意到）；已由 `CREATE_NO_WINDOW`（commit b289c8d）修复并重新打包。
+
+## 排查过程教训（违反「遇难先搜」，2026-08-15 补记）
+
+本次排查违反了 AGENTS.md 最高优先级「遇难先搜，禁止盲目试错」：连续 2 次假设无效后没有停下搜索，而是继续本地试错了 6+ 轮（磁盘缓存→残留 WebView 进程→.br 产物→页面指纹→版本号→索引解析），期间还多次打扰用户配合验证。事后搜索确认，**两个关键机制都是公开已知的，本可在第 2 轮后就查到**：
+
+1. **WebView2/Chromium immutable 缓存跨进程持久化、只有清除才失效**——「WebView2 cache not updating / clear cache」是高频问题，Microsoft Q&A 与 WebView2Feedback 有大量现成答案（如 <https://learn.microsoft.com/en-gb/answers/questions/2288697/how-to-clear-web-view-cache>、<https://github.com/MicrosoftEdge/WebView2Feedback/discussions/3923>）。
+2. **Chromium 磁盘缓存格式：URL 在 `data_*` 索引、响应体在 `f_*` 条目**——公开文档 <https://forensics.wiki/chrome_disk_cache_format/> 与源码 `net/disk_cache/disk_format.h`（<https://chromium.googlesource.com/chromium/src/+/refs/tags/122.0.6261.4/net/disk_cache/blockfile/disk_format.h>）。初版扫描只搜 f_ 文件导致「缓存里什么都没有」的误判，绕了一大圈。
+
+**正确的快速路径（先搜再动）**：现象是「同网关、浏览器正常、桌面端旧、重启无效」→ 第 1 轮验证服务器数据（curl 各编码）→ 第 2 轮验证进程/页面状态（PrintWindow）→ **第 3 轮起就该搜索「WebView2 缓存不更新」并直接检查/清除磁盘缓存**，而不是继续猜「残留进程/版本号/指纹」。
+
