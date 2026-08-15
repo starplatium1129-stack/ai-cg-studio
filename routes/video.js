@@ -179,6 +179,16 @@ var H3_MOTION = Object.freeze({
   expressive:'The subject\'s action is more expressive while body structure and identity stay consistent.',
 });
 
+// H3 官方 base-en.txt 要求 [Shot 1] 开头声明整体风格与初始构图（4.1）；
+// 本项目出图链路全是二次元风格，默认 2D-animated, cinematic。
+var H3_STYLE = '2D-animated, cinematic';
+
+// 官方 4.6/4.7：soundscape 用 1-4 句具体声音；music 写乐器/速度/节奏/动态，
+// 禁止抽象情绪词（"fits the mood" 之类）或解释配乐的情绪功能。
+// 无音频输入时用下面这组具体化的默认模板。
+var H3_SOUNDSCAPE = 'Quiet ambient room tone with subtle movement sounds — soft fabric rustle and gentle breathing; no dialogue, no voiceover.';
+var H3_MUSIC = 'Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.';
+
 var ALLOWED_INPUT_KEYS = new Set([
   'prompt', 'negative', 'modelId', 'aspectRatio', 'duration',
   'camera', 'motion', 'seed', 'image', 'quality',
@@ -380,28 +390,32 @@ function validateInput(body, config) {
   var isI2va = isH3 && Boolean(image);
 
   return Object.freeze({
-    // H3 按官方三段式组装（MiniMax-AI/MiniMax-H3 h3-prompt-writing skill）：
-    // T2VA 直接三段式；I2VA 先写 <Picture 1> 首帧指令行（空一行）再进三段式。
+    // H3 按官方三段式组装（MiniMax-AI/MiniMax-H3 h3-prompt-writing skill，
+    // references/base-en.txt）：
+    // - I2VA 首行 <Picture 1> 引用指令（逐字按官方模板），空一行再进三段式；
+    // - [Shot 1] 开头声明整体风格（官方 4.1）；
+    // - 镜头/运动写成自然句（官方 4.3）；
+    // - soundscape/music 写具体声音与器乐节奏，不用抽象情绪词（官方 4.6/4.7）。
     prompt:isH3 ? (isI2va ? [
       'For the target video, at 0.00 seconds into the target video, <Picture 1> (from [Shot 1]) is fully referenced.',
       '',
-      'integrated_multimodal_description: [Shot 1] Preserve the subject, clothing, hairstyle, and scene from <Picture 1>, then ' + body.prompt.trim(),
+      'integrated_multimodal_description: [Shot 1] ' + H3_STYLE + ' — preserve the subject, clothing, hairstyle, and scene from <Picture 1>, then ' + body.prompt.trim(),
       H3_CAMERA[body.camera],
       H3_MOTION[body.motion],
       'Character identity, clothing, lighting, and scene structure remain consistent from start to finish.',
       '',
-      'overall_soundscape: Gentle ambient sound matching the scene, with subtle movement sounds; no dialogue, no voiceover.',
+      'overall_soundscape: ' + H3_SOUNDSCAPE,
       '',
-      'non_diegetic_music: A soft background score at a moderate tempo that fits the mood, gently rising and fading at the ends.',
+      'non_diegetic_music: ' + H3_MUSIC,
     ].join('\n') : [
-      'integrated_multimodal_description: [Shot 1] ' + body.prompt.trim(),
+      'integrated_multimodal_description: [Shot 1] ' + H3_STYLE + ', ' + body.prompt.trim(),
       H3_CAMERA[body.camera],
       H3_MOTION[body.motion],
       'Character identity, clothing, lighting, and scene structure remain consistent from start to finish.',
       '',
-      'overall_soundscape: Gentle ambient sound matching the scene, with subtle movement sounds; no dialogue, no voiceover.',
+      'overall_soundscape: ' + H3_SOUNDSCAPE,
       '',
-      'non_diegetic_music: A soft background score at a moderate tempo that fits the mood, gently rising and fading at the ends.',
+      'non_diegetic_music: ' + H3_MUSIC,
     ].join('\n')) : [
       body.prompt.trim(),
       CAMERA[body.camera],

@@ -135,8 +135,10 @@ async function run() {
     /^For the target video, at 0\.00 seconds into the target video, <Picture 1> \(from \[Shot 1\]\) is fully referenced\./,
     'I2VA prompt must open with the official first-frame instruction');
   assert.match(h3I2vInput.prompt,
-    /Preserve the subject, clothing, hairstyle, and scene from <Picture 1>/);
+    /preserve the subject, clothing, hairstyle, and scene from <Picture 1>/);
+  assert.match(h3I2vInput.prompt, /\b2D-animated, cinematic\b/, 'H3 prompt must open [Shot 1] with a style anchor (official 4.1)');
   assert.match(h3I2vInput.prompt, /^overall_soundscape:/m);
+  assert.doesNotMatch(h3I2vInput.prompt, /fits the mood/, 'H3 music must not use abstract mood words (official 4.7)');
   assert.equal(h3I2vInput.image, 'aics_video_input_abcdef0123456789.png');
   assert.throws(function () {
     video.validateInput(validBody({ modelId:'minimax-h3', image:'../evil.png' }));
