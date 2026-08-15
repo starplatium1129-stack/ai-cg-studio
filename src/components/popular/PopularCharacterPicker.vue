@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import type { PopularCharacter, PopularOutfit } from '@/utils/popularContent'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 
@@ -16,13 +16,39 @@ const emit = defineEmits<{
   'select-outfit': [outfitId: string]
 }>()
 
+/** 2026-08-15：33 角色分组布局——作品筛选条 + franchise 分区网格 */
+const activeFranchise = ref('all')
+
 const keyword = computed(() => props.search.trim().toLowerCase())
 const filteredCharacters = computed(() => {
-  if (!keyword.value) return props.characters
-  return props.characters.filter(character =>
-    [character.displayName, character.originalName, character.id, character.franchise, ...character.aliases]
-      .some(text => text.toLowerCase().includes(keyword.value)),
-  )
+  const base = !keyword.value
+    ? props.characters
+    : props.characters.filter(character =>
+        [character.displayName, character.originalName, character.id, character.franchise, ...character.aliases]
+          .some(text => text.toLowerCase().includes(keyword.value)),
+      )
+  if (keyword.value || activeFranchise.value === 'all') return base
+  return base.filter(character => character.franchise === activeFranchise.value)
+})
+
+const franchises = computed(() => {
+  const seen = new Map<string, number>()
+  for (const character of props.characters) {
+    seen.set(character.franchise, (seen.get(character.franchise) ?? 0) + 1)
+  }
+  return [...seen.entries()].map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, 'zh-CN'))
+})
+
+/** 按作品分组的角色列表；搜索命中时保持原样（已按关键词过滤） */
+const groupedCharacters = computed(() => {
+  if (keyword.value || activeFranchise.value !== 'all') return null
+  const groups: { franchise: string; characters: PopularCharacter[] }[] = []
+  for (const franchise of franchises.value) {
+    const members = filteredCharacters.value.filter(c => c.franchise === franchise.name)
+    if (members.length) groups.push({ franchise: franchise.name, characters: members })
+  }
+  return groups
 })
 
 const selectedCharacter = computed<PopularCharacter | null>(() =>
@@ -42,7 +68,41 @@ const selectedOutfit = computed<PopularOutfit | null>(() => {
       <input v-model="props.search" class="popular-search" type="search"
         placeholder="搜索角色或作品，如 raiden / Saber / Re:Zero" aria-label="搜索热门角色" />
     </div>
-    <div class="popular-grid" role="group" aria-label="热门角色">
+    <div v-if="!keyword" class="popular-franchises" role="group" aria-label="按作品筛选">
+      <button type="button" class="franchise-chip" :class="{ active: activeFranchise === 'all' }"
+        :aria-pressed="activeFranchise === 'all'" @click="activeFranchise = 'all'">
+        全部 <span class="franchise-count">{{ characters.length }}</span>
+      </button>
+      <button v-for="franchise in franchises" :key="franchise.name" type="button"
+        class="franchise-chip" :class="{ active: activeFranchise === franchise.name }"
+        :aria-pressed="activeFranchise === franchise.name" @click="activeFranchise = franchise.name">
+        {{ franchise.name }} <span class="franchise-count">{{ franchise.count }}</span>
+      </button>
+    </div>
+    <div v-if="groupedCharacters" class="popular-groups" role="group" aria-label="热门角色">
+      <section v-for="group in groupedCharacters" :key="group.franchise" class="popular-group">
+        <h4 class="popular-group-head">{{ group.franchise }}<span class="popular-group-count">{{ group.characters.length }}</span></h4>
+        <div class="popular-grid">
+          <button v-for="character in group.characters" :key="character.id"
+            type="button" class="popular-card"
+            :class="{ active: character.id === props.selectedCharacterId }"
+            :aria-pressed="character.id === props.selectedCharacterId"
+            @click="emit('select', character)">
+            <span class="popular-card-initial" aria-hidden="true">
+              <svg class="initial-ring" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2.7 C 17.4 2.4 21.6 6.7 21.3 12 C 21 17.3 17 21.5 11.9 21.3 C 6.8 21 2.7 17 2.9 12 C 3.1 7.1 6.9 3 12 2.7 Z" />
+                <path class="initial-ring-dupe" d="M12 2.7 C 17.4 2.4 21.6 6.7 21.3 12 C 21 17.3 17 21.5 11.9 21.3 C 6.8 21 2.7 17 2.9 12 C 3.1 7.1 6.9 3 12 2.7 Z" opacity="0.55" stroke-width="1.1" transform="translate(0.55 0.45) rotate(1.2 12 12)" />
+                <circle cx="21.3" cy="12" r="0.5" fill="currentColor" stroke="none" />
+                <circle cx="12" cy="2.7" r="0.5" fill="currentColor" stroke="none" />
+              </svg>
+              <span class="initial-text">{{ character.displayName.charAt(0) }}</span>
+            </span>
+            <span class="popular-card-name">{{ character.displayName }}</span>
+          </button>
+        </div>
+      </section>
+    </div>
+    <div v-else class="popular-grid" role="group" aria-label="热门角色">
       <button v-for="character in filteredCharacters" :key="character.id"
         type="button" class="popular-card"
         :class="{ active: character.id === props.selectedCharacterId }"
@@ -109,6 +169,66 @@ const selectedOutfit = computed<PopularOutfit | null>(() => {
   background: var(--glass-fill);
   color: inherit;
   font-size: var(--fs-label-sm);
+}
+.popular-franchises {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 6px;
+  margin-bottom: var(--s-2);
+  padding-bottom: 2px;
+  scrollbar-width: thin;
+}
+.franchise-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+  white-space: nowrap;
+  padding: 3px 10px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--border-strong);
+  background: var(--glass-fill);
+  color: inherit;
+  font-size: var(--fs-label-sm);
+  cursor: pointer;
+  transition: border-color var(--t-fast), color var(--t-fast), background var(--t-fast);
+}
+.franchise-chip.active {
+  border-color: var(--pb-active);
+  background: color-mix(in srgb, var(--mood-love) 14%, transparent);
+  color: var(--pb-active-text);
+}
+.franchise-count {
+  font-size: var(--fs-mono-xs);
+  opacity: 0.6;
+}
+.popular-groups {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: var(--s-2);
+  padding-right: 4px;
+}
+.popular-group {
+  margin-bottom: var(--s-2);
+}
+.popular-group:last-child {
+  margin-bottom: 0;
+}
+.popular-group-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 6px;
+  font-size: var(--fs-label-sm);
+  font-weight: 700;
+  color: var(--text-secondary);
+  letter-spacing: 0.04em;
+}
+.popular-group-count {
+  font-size: var(--fs-mono-xs);
+  opacity: 0.5;
+  font-weight: 500;
 }
 .popular-grid {
   display: grid;
