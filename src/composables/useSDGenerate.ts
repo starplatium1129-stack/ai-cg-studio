@@ -28,6 +28,8 @@ export function useSDGenerate() {
   const statusText  = ref('')
   const resultUrl   = ref('')
   const resultSeed  = ref<number | null>(null)
+  /** 当前结果图实际提交生成时使用的正向提示词（出视频/存历史按图取词，不随面板改动漂移）。 */
+  const resultPrompt = ref('')
   const lastLoras = ref<Array<{ id: string; strength: number }>>([])
   const errorMsg    = ref('')
   const samplers    = ref<string[]>([])
@@ -195,6 +197,7 @@ export function useSDGenerate() {
       if (resultUrl.value && resultUrl.value !== url) URL.revokeObjectURL(resultUrl.value)
       resultUrl.value  = url
       resultSeed.value = job.metadata?.seed ?? job.seed ?? null
+      resultPrompt.value = payload.prompt
       statusText.value = '生成完成'
       return url
     } catch (e) {
@@ -222,7 +225,7 @@ export function useSDGenerate() {
 
   function clearResult() {
     if (resultUrl.value) { URL.revokeObjectURL(resultUrl.value); resultUrl.value = '' }
-    resultSeed.value = null; errorMsg.value = ''; statusText.value = ''; progress.value = 0
+    resultSeed.value = null; resultPrompt.value = ''; errorMsg.value = ''; statusText.value = ''; progress.value = 0
   }
 
   /**
@@ -244,7 +247,7 @@ export function useSDGenerate() {
     online: readonly(online), checkpoint: readonly(checkpoint),
     generating: readonly(generating),
     progress: readonly(progress), statusText: readonly(statusText),
-    resultUrl: readonly(resultUrl), resultSeed: readonly(resultSeed),
+    resultUrl: readonly(resultUrl), resultSeed: readonly(resultSeed), resultPrompt: readonly(resultPrompt),
     errorMsg: readonly(errorMsg), samplers: readonly(samplers),
     schedulers: readonly(schedulers), upscalers: readonly(upscalers),
     models: readonly(models), provider: readonly(provider),

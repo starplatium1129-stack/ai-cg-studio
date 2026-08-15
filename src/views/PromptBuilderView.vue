@@ -1687,6 +1687,8 @@ async function saveHistory() {
         return
       }
       blob = await response.blob()
+      // 按图取词：SD 结果记录的是提交时实际使用的提示词，面板后续修改不漂移。
+      prompt = sd.resultPrompt.value || prompt
     }
     // 空 blob 会入册成一条打不开的记录，宁可报错
     if (!blob.size) { pb.flash('成片数据已失效，请重新生成'); return }
@@ -1706,8 +1708,9 @@ async function saveHistory() {
 /**
  * 「出视频」：把当前成片作为首帧带到视频页（薄封装；桥接逻辑在
  * useVideoBridge 独立 chunk，动态 import 不膨胀本路由块）。
- * 上下文：prompt（实际出图提示词，视频提示词首选源，跟随词条/角色/场景修改实时更新）
- * + story（场景描述，fallback）+ blueprintId（场景预设）。
+ * 上下文：prompt（**该图实际生成时使用的提示词**，Anima 取结果 metadata、
+ * SD 取提交时记录，不随面板后续修改漂移）+ story（场景描述，fallback）
+ * + blueprintId（场景预设）。
  */
 async function goToVideo() {
   const url = displayResultUrl.value
@@ -1717,11 +1720,18 @@ async function goToVideo() {
     return
   }
   const subject = pb.subject
+  // 按图取词：优先该图实际生成时使用的提示词，面板实时组装值只作兜底。
+  let usedPrompt = livePrompt.value || ''
+  if (drawEngine.value !== 'sd') {
+    usedPrompt = animaState.value.result?.metadata.prompt || usedPrompt
+  } else {
+    usedPrompt = sd.resultPrompt.value || usedPrompt
+  }
   const { bridgeToVideo } = await import('@/composables/useVideoBridge')
   await bridgeToVideo({
     displayUrl: url,
     animaBlob: drawEngine.value !== 'sd' ? animaState.value.result?.blob ?? null : null,
-    prompt: livePrompt.value || '',
+    prompt: usedPrompt,
     story: pb.story || '',
     blueprintId: subject.kind === 'popular' ? (subject.blueprintId ?? null) : pb.sceneId,
     characterId: subject.kind === 'popular' ? subject.characterId : '',
