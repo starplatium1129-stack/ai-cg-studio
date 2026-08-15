@@ -18,7 +18,7 @@ test('popular data: 33 characters, unique ids, exactly one default outfit per ch
   var ids = new Set(characters.map(function (character) { return character.id; }));
   assert.strictEqual(ids.size, 33, 'character ids must be unique');
   characters.forEach(function (character) {
-    assert.ok(character.outfits.length >= 2 && character.outfits.length <= 5, character.id + ' must have 2-5 outfits (Mudrock carries 5 researched skins)');
+    assert.ok(character.outfits.length >= 2 && character.outfits.length <= 8, character.id + ' must have 2-8 outfits (researched official skins + derived casual wear)');
     var defaults = character.outfits.filter(function (outfit) { return outfit.default; });
     assert.strictEqual(defaults.length, 1, character.id + ' must have exactly one default outfit');
     var outfitIds = new Set(character.outfits.map(function (outfit) { return outfit.id; }));

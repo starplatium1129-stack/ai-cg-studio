@@ -1588,6 +1588,36 @@
             "leather_pants",
             "high_heels"
           ]
+        },
+        {
+          "id": "ice_cream_cafe_casual",
+          "name": "香草融意甜品店日常便服",
+          "prose": "甜酷兼备的都市休闲街头便服。上身穿一件宽松落肩浅燕麦灰短袖连帽卫衣，内搭一件紧身黑色抹胸短背心，露出纤细小腹与锁骨；下身着炭黑色高腰百褶短裙与双排金属扣皮带。双腿穿不对称深灰色过膝堆堆袜与复古黑白拼色厚底滑板鞋，头戴标志性黑色细皮质发带，发梢随意搭在肩头。挎着一个简约黑色斜挎皮包，手中握着插有华夫脆筒与樱桃的双球冰淇淋",
+          "tokens": [
+            "casual_clothes",
+            "shirt",
+            "jeans"
+          ]
+        },
+        {
+          "id": "lava_silk_loungewear",
+          "name": "熔温夜曲丝绸慵懒睡袍",
+          "prose": "极具质感与私密慵懒气息的丝绸家居服。身穿一件香槟粉与暗红镶边的纯黑真丝吊带睡裙（短款极简修身剪裁，胸口与裙边拼接精致黑色睫毛蕾丝花边），外罩一件宽松轻薄的半透明真丝晨袍/开衫，袖口宽大，随意滑落在白皙单肩。酒红色长发完全散开如瀑布般披散在肩背，未戴头带与手套，头顶萨卡兹角在柔和床头灯光下反射温润光泽，赤着双足或穿着柔软",
+          "tokens": [
+            "casual_clothes",
+            "shirt",
+            "jeans"
+          ]
+        },
+        {
+          "id": "crimson_velvet_evening_gown",
+          "name": "深红曜影高定露背晚礼服",
+          "prose": "兼具危险诱惑与孤高贵气的暗黑高定礼服。一袭酒红与墨黑渐变的重磅丝绒修身长裙，采用深V露背设计与高开叉剪裁，裙摆内衬暗金刺绣纹样，走动间若隐若现露出白皙大长腿与黑曜石般的萨卡兹腿部矿石结晶。颈间佩戴一条纤细黑金锁骨链，手臂套着及肘黑色半透明蕾丝晚宴长手套，双角末端精心缠绕纤细金丝装饰。酒红长发盘成慵懒精致的法式低盘发，脚",
+          "tokens": [
+            "casual_clothes",
+            "shirt",
+            "jeans"
+          ]
         }
       ],
       "canon": {
@@ -1684,6 +1714,54 @@
             "robe",
             "scholar",
             "staff"
+          ]
+        },
+        {
+          "id": "rhodes_island_lounge_knit",
+          "name": "罗德岛日常慵懒高领毛衣便服",
+          "prose": "上身穿着一件质感柔软厚实的浅米灰/燕麦色宽松粗针织高领毛衣（Oatmeal chunky knit oversized turtleneck sweater），宽大的高领自然堆叠于颈项，宽松的落肩长袖微微遮盖手背；内搭舒适的无袖纯棉打底背心；下身穿着深墨绿色垂坠感棉麻宽松阔腿休闲裤（Emerald green wide",
+          "tokens": [
+            "chunky",
+            "knit",
+            "oversized",
+            "turtleneck",
+            "sweater）",
+            "green",
+            "wide-leg",
+            "linen",
+            "lounge",
+            "pants）"
+          ]
+        },
+        {
+          "id": "midnight_emerald_silk_robe",
+          "name": "深夜研读·墨绿真丝睡袍与吊带裙",
+          "prose": "外披一件具有流光垂坠质感的深墨绿色长款真丝晨袍（Emerald green silk dressing gown/robe），衣襟与宽大翻领处点缀着若隐若现的暗金色极细织纹，腰间系有同色系光泽丝绸系带；内穿一袭剪裁极简的纯黑真丝挂脖细吊带睡裙（Black satin slip nightdress），背部为深V大面积露",
+          "tokens": [
+            "green",
+            "silk",
+            "dressing",
+            "gown/robe）",
+            "satin",
+            "slip",
+            "nightdress）"
+          ]
+        },
+        {
+          "id": "victorian_traveler_coat",
+          "name": "维多利亚博物学者古典旅行大衣",
+          "prose": "身着一袭质感挺括的深墨绿厚呢双排扣长款旅行大衣（Forest green heavyweight wool greatcoat），翻领采用深棕色天鹅绒拼接设计，肩部带有可拆卸式防雨短披肩（Shoulder capelet）；内搭古典白色荷叶边立领衬衫与深红缎带领结（Ruffled stand-collar blouse",
+          "tokens": [
+            "green",
+            "heavyweight",
+            "wool",
+            "greatcoat）",
+            "capelet）",
+            "stand-collar",
+            "blouse",
+            "with",
+            "burgundy",
+            "ribbon"
           ]
         }
       ],
@@ -1787,6 +1865,36 @@
             "red_clothes",
             "sword"
           ]
+        },
+        {
+          "id": "street_gourmet_casual",
+          "name": "龙门夜市街头休闲装",
+          "prose": "融合90年代复古港风与现代都市机能的帅气便装。 (black tactical crossbody sling bag)",
+          "tokens": [
+            "casual_clothes",
+            "shirt",
+            "jeans"
+          ]
+        },
+        {
+          "id": "morning_kendo_robe",
+          "name": "清晨道场练功服",
+          "prose": "极简典雅的新中式与东方剑道风格结合的练功服。 (dark teal wide-leg pleated martial arts hakama pants)",
+          "tokens": [
+            "casual_clothes",
+            "shirt",
+            "jeans"
+          ]
+        },
+        {
+          "id": "lgd_detective_undercover",
+          "name": "近卫局便衣潜伏风衣",
+          "prose": "经典冷硬派都市便衣刑警装束 (polished black oxford leather shoes)",
+          "tokens": [
+            "casual_clothes",
+            "shirt",
+            "jeans"
+          ]
         }
       ],
       "canon": {
@@ -1867,6 +1975,57 @@
             "beret",
             "picnic"
           ]
+        },
+        {
+          "id": "cozy_sheep_fleece_loungewear",
+          "name": "【温软梦乡】羊羔绒暖绒居家睡衣",
+          "prose": "极具包裹感与治愈感的暖冬羊羔绒居家睡衣套装（fluffy oversized sherpa fleece loungewear & sheep pajamas）。长发松散披落，一对小巧的弯曲羊角从蓬松发丝间探出；身穿一件超大码米白拼浅驼色厚实羊羔绒连帽拉链开衫（oversized cream sherpa hoodie",
+          "tokens": [
+            "oversized",
+            "sherpa",
+            "fleece",
+            "loungewear",
+            "sheep",
+            "pajamas）",
+            "cream",
+            "sherpa",
+            "hoodie",
+            "cardigan）"
+          ]
+        },
+        {
+          "id": "siesta_hotspring_yukata",
+          "name": "【汐斯塔之憩】地热温泉和风浴衣",
+          "prose": "典雅温婉的夏日温泉度假和风棉麻浴衣（traditional Japanese onsen yukata / floral hot spring robe）。茶褐色长发挽成温婉的侧后方低发髻，点缀着一朵汐斯塔特产的淡粉色小花发饰与木质发簪（wooden hairpin with floral ornament），露出白皙",
+          "tokens": [
+            "onsen",
+            "yukata",
+            "floral",
+            "hot",
+            "spring",
+            "robe）",
+            "hairpin",
+            "with",
+            "floral",
+            "ornament）"
+          ]
+        },
+        {
+          "id": "leithanien_volcanology_lab_coat",
+          "name": "【学者之思】莱塔尼亚地质研究白大褂",
+          "prose": "知性专注且不失少女温婉的实验室学者日常装（intellectual volcanologist lab coat & academic attire）。蓬松的低扎双马尾随性垂落，左耳佩戴着小巧精致的银色微型助听器（mini silver hearing aid），鼻梁上架着一副纤细的金丝半框阅读眼镜（gold half",
+          "tokens": [
+            "volcanologist",
+            "lab",
+            "coat",
+            "academic",
+            "attire）",
+            "silver",
+            "hearing",
+            "aid）",
+            "half-rim",
+            "glasses）"
+          ]
         }
       ],
       "canon": {
@@ -1938,6 +2097,57 @@
             "blue_clothes",
             "wheelchair",
             "night_sky"
+          ]
+        },
+        {
+          "id": "baking_apron_loungewear",
+          "name": "苹果派烘焙日恬静甜点师便服",
+          "prose": "充满生活烟火气的居家温婉烘焙装束。上身内穿一件柔软贴身的米白色罗纹高领打底针织衫（cream white ribbed knit sweater），外罩一条浅亚麻色耐磨围裙（beige linen baking apron），围裙胸口绣有精致的小苹果徽标与双侧实用大插袋；长袖利落地挽至小臂中间，双手常戴着隔热棉布烘焙手",
+          "tokens": [
+            "white",
+            "ribbed",
+            "knit",
+            "sweater）",
+            "linen",
+            "baking",
+            "apron）",
+            "yellow",
+            "fleece",
+            "lap"
+          ]
+        },
+        {
+          "id": "rehab_cozy_knitwear",
+          "name": "温室休养录罗德岛医疗康复针织便服",
+          "prose": "专为疗养与室内散步设计的舒适温婉便服。外穿一件宽松慵懒的浅鼠尾草绿/象牙白粗针麻花开衫毛衣（oversized chunky sage green knit cardigan），落肩大袖口设计尽显柔美；内搭一件垂坠感极佳的淡香槟色真丝吊带打底衫（champagne silk camisole），领口微露纤细锁骨，颈间松",
+          "tokens": [
+            "chunky",
+            "sage",
+            "green",
+            "knit",
+            "cardigan）",
+            "silk",
+            "camisole）",
+            "drape",
+            "lounge",
+            "trousers）"
+          ]
+        },
+        {
+          "id": "silk_lace_morning_robe",
+          "name": "午后私语真丝蕾丝晨袍与私密居家长裙",
+          "prose": "极富柔美典雅魅力的私密寝居服饰。内穿一件光泽细腻的珍珠白/淡香槟色真丝长款吊带睡裙（pearl white silk slip nightdress），领口与下摆点缀精致细腻的法式睫毛蕾丝花边；外披一件垂坠半透的香槟金色雪纺蕾丝长款晨袍开衫（translucent lace chiffon morning robe），",
+          "tokens": [
+            "white",
+            "silk",
+            "slip",
+            "nightdress）",
+            "lace",
+            "chiffon",
+            "morning",
+            "robe）",
+            "pastel",
+            "knit"
           ]
         }
       ],
@@ -2014,6 +2224,36 @@
             "black_pantyhose",
             "high_heels",
             "smoking_pipe"
+          ]
+        },
+        {
+          "id": "atelier_slouchy_loungewear",
+          "name": "画斋幽梦",
+          "prose": "极度宽松随性的画师宅家便服。上身穿一件oversized落肩水墨灰连帽卫衣/宽松大T恤，正面印有呆萌手绘小自在（墨魉）Q版涂鸦与泼墨字样，袖口与下摆略微泛白并沾有点滴青绿与朱砂颜料痕迹；下身穿着舒适的宽松纯棉浅灰居家平角短裤，展现修长白皙的双腿；长发用一根长毛笔随手盘成略显凌乱的丸子头，脸颊两侧垂落些许碎发，鼻梁上架着 (slouchy oversized hoodie with cute ink monster graphic, loose cotton loungewear shorts, messy hair bun held with a calligraphy brush, gold-r)",
+          "tokens": [
+            "casual_clothes",
+            "shirt",
+            "jeans"
+          ]
+        },
+        {
+          "id": "ink_silk_nightdress",
+          "name": "墨染云纱",
+          "prose": "极具古典韵味的奢华真丝居家睡袍套组。内穿一件深墨绿与珠光白双色渐变的丝绸细吊带睡裙（silk camisole nightdress），V领处滚有精巧细密的黑色水墨花瓣蕾丝，裙身侧边带有若隐若现的高开叉剪裁；外搭一件半透明墨色与雾白薄纱宽袖晨袍（sheer chiffon robe），衣摆如轻烟流水般拖曳于地面；墨黑泛 (luxurious emerald and pearl-white gradient silk slip nightdress, sheer gossamer wide-sleeved robe, delicate lace trim, high side slit, loose)",
+          "tokens": [
+            "casual_clothes",
+            "shirt",
+            "jeans"
+          ]
+        },
+        {
+          "id": "neo_cyber_ink_techwear",
+          "name": "街头墨客",
+          "prose": "现代潮流解构风水墨机能服（Techwear）。内着黑色工字无袖露脐高领运动背心，外搭一件带有青碧色反光线条与水墨飞白印花的轻量机能连帽防风夹克（采用单肩滑落的松垮穿法）；下着高腰黑色多口袋机能工装束脚裤，配有磁吸战术扣带与印有符文水墨的青色织带；脚踏厚底高帮国潮机能运动鞋；右手佩戴黑色数位板两指防误触手套，左手腕戴智能",
+          "tokens": [
+            "casual_clothes",
+            "shirt",
+            "jeans"
           ]
         }
       ],
@@ -2120,6 +2360,37 @@
             "brooch",
             "high_heels"
           ]
+        },
+        {
+          "id": "clay_artisan_apron",
+          "name": "陶艺工坊泥塑工装",
+          "prose": "泥岩在罗德岛手工坊或温室捏制泥塑时的专注工匠装扮。内穿一件透气柔软的米白色亚麻长袖衬衫，双袖挽至手肘露出白皙小臂；外罩一件深卡其色或灰褐色耐磨厚帆布双肩交叉背带工作围裙（Apron），围裙前胸与腰部配有多个皮革插袋，插着木质雕刻刀、毛刷与泥塑工具；围裙与修长指尖上沾有少许浅灰与淡黄色的细腻陶土痕迹；下身搭配宽松舒适的深",
+          "tokens": [
+            "casual_clothes",
+            "shirt",
+            "jeans"
+          ]
+        },
+        {
+          "id": "rhodes_oversized_hoodie",
+          "name": "罗德岛大号连帽卫衣",
+          "prose": "泥岩在舰内休息或走廊漫步时的超宽松慵懒便服。上身穿着一件宽大松垮的炭灰色罗德岛主题宽松连帽卫衣（Oversized Pullover Hoodie），版型宽松长及大腿中部，衣摆巧妙遮掩了曼妙身形，落肩超长袖筒垂过指尖（萌袖效果）；胸前印有低调的罗德岛几何暗纹徽标；下身搭配一条藏在卫衣下摆中的黑色贴身运动短裤，露出修长白",
+          "tokens": [
+            "casual_clothes",
+            "shirt",
+            "jeans"
+          ]
+        },
+        {
+          "id": "cozy_winter_knit_coat",
+          "name": "暖冬高领粗针织毛衣与羊绒大衣",
+          "prose": "泥岩在严冬或寒冷地区外勤休假时的优雅暖冬装扮。上身穿着一件质感厚实柔软的米白色高领粗麻花毛线衣（Chunky Cable-knit Turtleneck Sweater），高领温暖包裹着白皙修长的颈部，修身剪裁勾勒出优雅饱满的线条；外披一件敞开的深驼色或炭灰色长款羊毛呢大衣（Long wool coat），垂感极佳；脖",
+          "tokens": [
+            "wool",
+            "coat）",
+            "cashmere",
+            "scarf）"
+          ]
         }
       ],
       "canon": {
@@ -2188,6 +2459,57 @@
             "gloves",
             "hammer",
             "workwear"
+          ]
+        },
+        {
+          "id": "slumber_blueprint_loungewear",
+          "name": "蓝图微憩 / 工坊夜间休闲居家服",
+          "prose": "极致舒适松弛的工坊夜间居家服（relaxed cozy oversized loungewear）。身着一件大号宽松落肩浅灰色连帽卫衣（slouchy off-shoulder oversized hoodie），领口自然偏向一侧露出白皙健美的锁骨与黑色细吊带；下身搭配舒适的黑色贴身平角家居短裤（black loung",
+          "tokens": [
+            "cozy",
+            "oversized",
+            "loungewear）",
+            "off-shoulder",
+            "oversized",
+            "hoodie）",
+            "lounge",
+            "knit",
+            "leg",
+            "warmers）"
+          ]
+        },
+        {
+          "id": "rainforest_safari_explorer",
+          "name": "林间搜猎 / 阿卡胡拉丛林勘探轻装",
+          "prose": "专为穿越热带密林与攀爬机械残骸设计的户外机能探险装（rainforest safari utility gear）。内着橄榄绿透气运动抹胸，外搭一件卡其色耐磨防撕裂短袖敞开工装衬衫（open khaki utility short-sleeve shirt），腰间系有快拆登山安全带与金属攀岩扣（climbing har",
+          "tokens": [
+            "safari",
+            "utility",
+            "gear）",
+            "khaki",
+            "utility",
+            "short-sleeve",
+            "shirt）",
+            "harness",
+            "carabiners）",
+            "holster）"
+          ]
+        },
+        {
+          "id": "gala_night_evening_dress",
+          "name": "盛宴夜影 / 庆典之夜",
+          "prose": "高雅华贵的晚宴高开衩长礼服（luxury high-slit evening gown）。采用深墨绿色与暗夜黑高级缎面拼接面料（deep emerald green and satin black），单肩斜切露肩设计（asymmetrical one-shoulder neckline），胸前配有精致的金属镂空锁扣与垂",
+          "tokens": [
+            "high-slit",
+            "evening",
+            "gown）",
+            "emerald",
+            "green",
+            "and",
+            "satin",
+            "black）",
+            "one-shoulder",
+            "neckline）"
           ]
         }
       ],
@@ -2274,6 +2596,57 @@
             "ribbon",
             "mary_janes"
           ]
+        },
+        {
+          "id": "cozy_afternoon_knit_casual",
+          "name": "温暖午后·针织毛衣便服",
+          "prose": "温柔慵懒的秋日休闲针织私服（Cozy autumn casual knit sweater outfit）。粉色蓬松双低马尾（pink twintails）自然垂在肩头，头顶露出一对微微下折的粉色折耳猫耳（pink folded cat ears），斜戴一顶深棕色复古毛呢贝雷帽（brown wool beret）。上身",
+          "tokens": [
+            "autumn",
+            "casual",
+            "knit",
+            "sweater",
+            "outfit）",
+            "twintails）自然垂在肩头",
+            "folded",
+            "cat",
+            "ears）",
+            "wool"
+          ]
+        },
+        {
+          "id": "static_paw_cozy_cat_pajamas",
+          "name": "静电防线·小猫绒绒睡衣",
+          "prose": "极具软萌治愈感的居家猫咪珊瑚绒睡衣（Pastel pink and white fluffy cat-ear fleece pajamas / loungewear）。身穿一件超大号粉白拼色珊瑚绒连帽居家卫衣/睡袍，连帽上带有逼真的猫耳造型帽兜，刚好温和包裹住真实的粉色折耳；袖口肥大呈萌袖设计，胸前带有金黄色闪电与软萌",
+          "tokens": [
+            "pink",
+            "and",
+            "white",
+            "fluffy",
+            "cat-ear",
+            "fleece",
+            "pajamas",
+            "loungewear）",
+            "golden",
+            "static"
+          ]
+        },
+        {
+          "id": "salon_dreamer_work_apron",
+          "name": "梦想剪刀手·理发沙龙工装",
+          "prose": "专业兼具甜美的复古理发沙龙店长工作装（Vintage hair salon stylist work apron outfit）。粉色长发用可爱的猫爪发圈利落高高扎起（high twin ponytails），便于干练工作同时露出清秀的面庞与粉色折耳猫耳（folded cat ears）。内穿一件整洁贴身的浅粉白细条纹",
+          "tokens": [
+            "hair",
+            "salon",
+            "stylist",
+            "work",
+            "apron",
+            "outfit）",
+            "twin",
+            "ponytails）",
+            "cat",
+            "ears）"
+          ]
         }
       ],
       "canon": {
@@ -2355,6 +2728,57 @@
             "backless",
             "staff"
           ]
+        },
+        {
+          "id": "cozy_orca_loungewear",
+          "name": "鲸梦独语·连帽卫衣居家服",
+          "prose": "极具反差萌与舒适感的罗德岛室内休息便服。上身穿着一件特大号（Oversized）炭灰色连帽卫衣（oversized dark charcoal hoodie），卫衣前胸印有可爱抽象的白色虎鲸剪影，超长袖口完全盖住手背仅露出指尖；下身着黑色纯棉短裤（black cotton lounge shorts），展现修长白皙的双",
+          "tokens": [
+            "dark",
+            "charcoal",
+            "hoodie）",
+            "cotton",
+            "lounge",
+            "shorts）",
+            "plush",
+            "slippers）",
+            "orca",
+            "body"
+          ]
+        },
+        {
+          "id": "quiet_barista_uniform",
+          "name": "静谧午后·咖啡店围裙便服",
+          "prose": "斯卡蒂在罗德岛后勤甲板咖啡角帮忙时的温雅便服。内穿一件修身剪裁的纯白色长袖衬衫（crisp white button-up collared shirt），袖管整齐利落地挽至小臂；外系一件墨黑色帆布半身系带围裙（dark black canvas waist apron），围裙右侧前袋插着一支红色圆珠笔与便签本；下身搭",
+          "tokens": [
+            "white",
+            "button-up",
+            "collared",
+            "shirt）",
+            "black",
+            "canvas",
+            "waist",
+            "apron）",
+            "charcoal",
+            "tailored"
+          ]
+        },
+        {
+          "id": "oceanic_symphony_gown",
+          "name": "海潮绝响·音律交响晚礼服",
+          "prose": "专为大型交响乐盛典打造的高定阿戈尔风情礼服。身穿一袭墨黑色与深海蔚蓝渐变的丝绒抹胸高开叉长礼服裙（midnight blue and black gradient velvet strapless slit gown），裙摆右侧高开叉展现修长白皙的长腿，裙身刺绣有泛着微光的银丝海浪暗纹；左肩披挂单侧半透明深红色薄纱拖尾",
+          "tokens": [
+            "blue",
+            "and",
+            "black",
+            "gradient",
+            "velvet",
+            "strapless",
+            "slit",
+            "gown）",
+            "crimson",
+            "chiffon"
+          ]
         }
       ],
       "canon": {
@@ -2429,6 +2853,57 @@
             "straw_hat",
             "sunglasses",
             "cocktail"
+          ]
+        },
+        {
+          "id": "sleepy_oversized_loungewear",
+          "name": "迷糊小憩慵懒大号连帽卫衣居家睡衣",
+          "prose": "极度宽松的落肩大号淡粉紫色连帽长款卫衣（oversized dusty pink/lilac pullover hoodie），过长袖管完全盖过手掌仅露指尖（sleeves past fingers/mengkawaii sleeves），露出白皙双腿；下身内穿柔软纯白棉质睡裤（white cotton lounge ",
+          "tokens": [
+            "dusty",
+            "pink/lilac",
+            "pullover",
+            "hoodie）",
+            "past",
+            "fingers/mengkawaii",
+            "sleeves）",
+            "cotton",
+            "lounge",
+            "pink"
+          ]
+        },
+        {
+          "id": "classic_bartender_apron",
+          "name": "午夜特调经典调酒师工装围裙制服",
+          "prose": "专业优雅的深棕色双肩背带工装帆布半身长围裙（dark brown barista apron with leather harness straps），内搭利落合身的纯白短袖立领衬衫（crisp white short-sleeve collared shirt），领口系一条深红色细丝带领结（crimson ribbo",
+          "tokens": [
+            "brown",
+            "barista",
+            "apron",
+            "with",
+            "leather",
+            "harness",
+            "straps）",
+            "white",
+            "short-sleeve",
+            "collared"
+          ]
+        },
+        {
+          "id": "dossoles_tropical_casual",
+          "name": "多索雷斯假日热带海滨街头漫步便服",
+          "prose": "热带度假风格的白色一字领荷叶边露肩短上衣（white off-shoulder ruffled crop top），露出清凉锁骨与平坦小腹；下搭高腰浅蓝色水洗毛边牛仔短裤（high-waisted distressed light denim shorts），腰系细编织棕色皮带（woven brown leather ",
+          "tokens": [
+            "off-shoulder",
+            "ruffled",
+            "crop",
+            "top）",
+            "distressed",
+            "light",
+            "denim",
+            "shorts）",
+            "brown",
+            "leather"
           ]
         }
       ],
@@ -2516,6 +2991,57 @@
             "messenger_bag",
             "tactical"
           ]
+        },
+        {
+          "id": "lazy_dorm_oversized_loungewear",
+          "name": "罗德岛宿舍慵懒开黑居家服",
+          "prose": "极度舒适惬意、无拘无束的宿舍室内居家服。身穿一件极大号浅灰色棉质落肩圆领卫衣（Extra-oversized heather grey crewneck sweatshirt），宽松下摆垂落盖至大腿中部，呈现慵懒可爱的‘下衣失踪’视觉效果；内穿极短透气棉质打底平角裤；腿上穿着一双松垮堆叠的红白细条纹加厚珊瑚绒过膝袜（S",
+          "tokens": [
+            "heather",
+            "grey",
+            "crewneck",
+            "sweatshirt）",
+            "red-and-white",
+            "striped",
+            "fluffy",
+            "knee-high",
+            "socks）",
+            "penguin"
+          ]
+        },
+        {
+          "id": "apple_pie_bakery_patissiere",
+          "name": "甜心烘焙师·苹果派围裙装",
+          "prose": "充满温馨生活气息与甜蜜香气的居家烘焙便服。内穿一件质地柔软亲肤的米白色粗针宽松圆领毛衣（Cream-colored loose knit sweater），下身穿浅卡其色百褶短裙（Beige pleated mini skirt）与咖啡色棉质连裤袜（Brown cotton tights）；外罩一件亚麻本色复古挂脖烘焙",
+          "tokens": [
+            "loose",
+            "knit",
+            "sweater）",
+            "pleated",
+            "mini",
+            "skirt）与咖啡色棉质连裤袜（Brown",
+            "cotton",
+            "tights）",
+            "bakery",
+            "apron）"
+          ]
+        },
+        {
+          "id": "lungmen_streetwear_skater",
+          "name": "龙门街头机能滑板潮服",
+          "prose": "极具动感与现代街潮范的机能运动便服。上身穿一件鲜艳红白拼色的大号连帽卫衣（Oversized red and white colorblock hoodie），外搭半透明轻量防风机能工装马甲（Translucent techwear utility vest），胸前挂着运动无线头戴式耳机（Over-ear wirele",
+          "tokens": [
+            "red",
+            "and",
+            "white",
+            "colorblock",
+            "hoodie）",
+            "techwear",
+            "utility",
+            "vest）",
+            "wireless",
+            "crossbody"
+          ]
         }
       ],
       "canon": {
@@ -2600,6 +3126,57 @@
             "backpack",
             "hiking_boots"
           ]
+        },
+        {
+          "id": "cozy_fluffy_pajamas",
+          "name": "【小憩时光】软绵绵小狐狸居家睡衣",
+          "prose": "蓬松柔软的珊瑚绒连帽居家睡袍与宽松短裤套装（pastel fleece loungewear / fluffy hoodie pajama set）。整体配色为治愈的奶白、浅鹅黄与蜜桃粉（cream white, pastel butter yellow, and soft peach pink）；上身穿着极其宽大柔软",
+          "tokens": [
+            "fleece",
+            "loungewear",
+            "fluffy",
+            "hoodie",
+            "pajama",
+            "set）",
+            "white",
+            "pastel",
+            "butter",
+            "yellow"
+          ]
+        },
+        {
+          "id": "greenhouse_florist_smock",
+          "name": "【初绽之息】阳光温室花艺师便服",
+          "prose": "自然清新的森系田园围裙连衣裙（cottagecore pinafore dress / floral gardener smock）。身穿亚麻质感浅咖啡色/燕麦色的工装连体交叉背带围裙（linen pinafore apron），内搭象牙白泡泡袖棉麻衬衫（ivory puff-sleeve blouse）；围裙前方配有",
+          "tokens": [
+            "pinafore",
+            "dress",
+            "floral",
+            "gardener",
+            "smock）",
+            "pinafore",
+            "apron）",
+            "puff-sleeve",
+            "blouse）",
+            "brass"
+          ]
+        },
+        {
+          "id": "higashi_summer_yukata",
+          "name": "【夏日微风】东国夏日祭轻风浴衣",
+          "prose": "清新温婉的日式夏日祭典棉麻浴衣（Japanese summer festival yukata / pastel floral kimono）。主色调为淡雅的薄荷浅青、淡粉与米白（pale mint green, pastel pink, and ivory）；浴衣布面印有精致的游动红色金鱼纹（swimming gol",
+          "tokens": [
+            "summer",
+            "festival",
+            "yukata",
+            "pastel",
+            "floral",
+            "kimono）",
+            "mint",
+            "green",
+            "pastel",
+            "pink"
+          ]
         }
       ],
       "canon": {
@@ -2675,6 +3252,57 @@
             "cargo_pants",
             "backpack",
             "hiking_boots"
+          ]
+        },
+        {
+          "id": "supervisor_lounge_knitwear",
+          "name": "中枢静谧时光",
+          "prose": "监督在结束繁重开拓管理工作后换上的慵懒温和日常便服（cozy oversized knit sweater, loungewear）。上身穿着一件质感柔软厚实的米白色微落肩大版型针织毛衣（oversized chunky cream white knit sweater），领口微敞露出优美的锁骨与修长颈线；下身搭配深灰",
+          "tokens": [
+            "oversized",
+            "knit",
+            "sweater",
+            "loungewear）",
+            "chunky",
+            "cream",
+            "white",
+            "knit",
+            "sweater）",
+            "high-waist"
+          ]
+        },
+        {
+          "id": "endfield_techwear_street",
+          "name": "都市机能风尚",
+          "prose": "现代赛博机能街头风便装（cyberpunk techwear casual street style）。上身穿着黑白拼接短款皮革机车夹克（cropped techwear biker jacket），内搭紧身炭灰色工装抹胸露脐背心（cropped ribbed tank top），微露紧致马甲线；下身搭配科技青蓝色线条",
+          "tokens": [
+            "techwear",
+            "casual",
+            "street",
+            "style）",
+            "techwear",
+            "biker",
+            "jacket）",
+            "ribbed",
+            "tank",
+            "top）"
+          ]
+        },
+        {
+          "id": "sub_zero_frostfield_parka",
+          "name": "极地破风巡航",
+          "prose": "针对塔罗斯-II极地风雪特化的保暖重工装（heavy insulated arctic field parka, winter combat gear）。外穿一件厚实抗撕裂的冰川白与青灰撞色长款防风羽绒派克大衣（oversized white hooded down parka），连帽边沿镶有一圈蓬松柔软的雪白绒毛（f",
+          "tokens": [
+            "insulated",
+            "arctic",
+            "field",
+            "parka",
+            "winter",
+            "combat",
+            "gear）",
+            "white",
+            "hooded",
+            "down"
           ]
         }
       ],
@@ -2753,6 +3381,57 @@
             "glowing",
             "greatsword",
             "embers"
+          ]
+        },
+        {
+          "id": "cozy_dorm_loungewear",
+          "name": "极简落肩·休息舱私服",
+          "prose": "专为干员私人生活舱设计的极简慵懒居家便服。上身套着一件超大版型（Oversized）的炭灰色落肩连帽卫衣（oversized drop-shoulder hoodie），衣长恰好遮盖臀部，下摆后侧留有宽松开口供黑色恶魔尾巴自在摆动（tail slot at back）；内搭柔软纯棉打底短裤（soft cotton lo",
+          "tokens": [
+            "drop-shoulder",
+            "hoodie）",
+            "slot",
+            "back）",
+            "cotton",
+            "lounge",
+            "shorts）",
+            "over-knee",
+            "cotton",
+            "socks）"
+          ]
+        },
+        {
+          "id": "street_cafe_sweet",
+          "name": "绯红甜意·街头机能便服",
+          "prose": "专为日常街区休闲与光顾甜品店设计的轻机能便服。上身内穿黑色挂脖露脐紧身吊带背心（black halter crop top），外搭一件微敞开的深灰色轻薄落肩机能短外套（cropped sheer techwear jacket），利落勾勒腰部线条；下身着侧边配有金属工装搭扣与暗红内衬微开衩的黑色高腰百褶短裙（high-",
+          "tokens": [
+            "halter",
+            "crop",
+            "top）",
+            "sheer",
+            "techwear",
+            "jacket）",
+            "pleated",
+            "utility",
+            "miniskirt）",
+            "cutout"
+          ]
+        },
+        {
+          "id": "obsidian_formal_gown",
+          "name": "黑曜夜华·萨卡兹晚礼服",
+          "prose": "剪裁极具视觉张力的深黑与炽红渐变高定晚礼服。深V挂脖露背长裙（halter neck deep plunge evening gown with open back），后背大面积镂空设计不仅凸显优美的蝴蝶骨与背部曲线，更完美适配尾椎延伸而出的黑色修长恶魔尾（tail emerging seamlessly from o",
+          "tokens": [
+            "neck",
+            "deep",
+            "plunge",
+            "evening",
+            "gown",
+            "with",
+            "open",
+            "back）",
+            "emerging",
+            "seamlessly"
           ]
         }
       ],
