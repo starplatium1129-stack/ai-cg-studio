@@ -302,6 +302,17 @@
               <ArchiveIcon name="spark" />
               <span>高清放大 2x (4K)</span>
             </button>
+            <button
+              v-if="displayResultUrl && (drawEngine === 'anima' || drawEngine === 'sd')"
+              class="btn btn-ghost btn-video-action"
+              type="button"
+              :disabled="generationBusy"
+              title="将当前成片作为首帧，到视频页生成短片（场景预设自动转视频提示词）"
+              @click="goToVideo"
+            >
+              <ArchiveIcon name="play" />
+              <span>出视频</span>
+            </button>
             <button class="btn btn-ghost" type="button" @click="saveResult">保存快照</button>
             <button class="btn btn-ghost" type="button" :disabled="!prevResult" @click="compareOpen = true">
               与上一张对比
@@ -1689,6 +1700,32 @@ async function saveHistory() {
   } catch (e) { pb.flash('保存失败'); console.warn(e) }
 }
 
+/**
+ * 「出视频」：把当前成片作为首帧带到视频页（薄封装；桥接逻辑在
+ * useVideoBridge 独立 chunk，动态 import 不膨胀本路由块）。
+ * 上下文：story（用户描述，视频提示词首选源）+ blueprintId（场景预设）。
+ */
+async function goToVideo() {
+  const url = displayResultUrl.value
+  if (!url) { pb.flash('暂无可转视频的成片'); return }
+  if (drawEngine.value !== 'sd' && !animaState.value.result) {
+    pb.flash('成片数据已失效，请重新生成')
+    return
+  }
+  const subject = pb.subject
+  const { bridgeToVideo } = await import('@/composables/useVideoBridge')
+  await bridgeToVideo({
+    displayUrl: url,
+    animaBlob: drawEngine.value !== 'sd' ? animaState.value.result?.blob ?? null : null,
+    story: pb.story || '',
+    blueprintId: subject.kind === 'popular' ? (subject.blueprintId ?? null) : pb.sceneId,
+    characterId: subject.kind === 'popular' ? subject.characterId : '',
+    sceneId: pb.sceneId,
+    flash: message => pb.flash(message),
+    push: path => router.push(path),
+  })
+}
+
 function saveResult() { saveHistory() }
 
 async function upscaleCurrentResult() {
@@ -2243,5 +2280,17 @@ watch(() => drawEngine.value, engine => {
   font-size: var(--fs-mono-sm);
   opacity: 0.6;
   margin: var(--s-2) 0;
+}
+.btn-video-action {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 30%, var(--border-soft));
+  background: color-mix(in srgb, var(--accent-soft) 30%, transparent);
+}
+.btn-video-action:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+.btn-video-action .archive-icon {
+  width: 1rem;
 }
 </style>

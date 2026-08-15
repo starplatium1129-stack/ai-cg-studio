@@ -45,6 +45,24 @@
 
     <div class="video-workspace">
       <div class="video-creation-column">
+        <section v-if="selectedMode === 'image'" class="video-panel video-first-frame-panel">
+          <div class="video-panel-heading video-panel-heading--compact">
+            <div>
+              <span class="video-step">00 · 首帧</span>
+              <h2>视频从这里开始</h2>
+            </div>
+            <button v-if="videoImageUrl" class="btn btn-ghost" type="button" @click="clearFirstFrame">移除</button>
+          </div>
+          <img v-if="videoImageUrl" class="video-first-frame" :src="videoImageUrl" alt="视频首帧" />
+          <p v-else class="video-queue-empty">
+            <ArchiveIcon name="image" />
+            <span>在绘图页生成图片后点击「出视频」即可带到这里；图片将作为首帧，自动锁定角色与场景。</span>
+          </p>
+          <p v-if="videoImageUrl" class="video-install-note">
+            生成时后端会自动附加官方 I2VA 首帧指令（&lt;Picture 1&gt;）；画幅默认「跟随原图」，按首帧比例自动匹配画布，避免拉伸变形。
+          </p>
+        </section>
+
         <section class="video-panel video-brief-panel">
           <div class="video-panel-heading">
             <div>
@@ -92,7 +110,7 @@
               >
                 <span class="aspect-glyph" :data-aspect="item.id"></span>
                 <strong>{{ item.label }}</strong>
-                <small>{{ item.size }}</small>
+                <small>{{ aspectSize(item.id) }}</small>
               </button>
             </div>
           </div>
@@ -110,6 +128,27 @@
                 <option v-for="item in motionOptions" :key="item.id" :value="item.id">{{ item.label }}</option>
               </select>
             </label>
+          </div>
+
+          <div class="video-quality-row">
+            <span class="field-label">画质档位</span>
+            <div class="video-quality-grid" role="group" aria-label="选择视频画质档位">
+              <button
+                v-for="item in status?.qualities || []"
+                :key="item.id"
+                type="button"
+                :class="{ active: quality === item.id }"
+                :aria-pressed="quality === item.id"
+                @click="quality = item.id"
+              >
+                <strong>{{ item.label }}</strong>
+                <small>{{ item.summary }}</small>
+                <em>{{ item.sizes[aspectRatio] }}</em>
+              </button>
+            </div>
+            <p class="video-duration-note">
+              快速档适合试镜找方向；标准档是 16GB 官方常规画布；精细档是上限档，时间明显变长。
+            </p>
           </div>
 
           <div class="video-duration-row">
@@ -182,7 +221,7 @@
               <li v-for="file in activeModel.missing" :key="file"><code>{{ file }}</code></li>
             </ul>
             <p v-if="activeModel.missing.length && activeModel.executable" class="video-install-note">
-              ComfyUI 节点已支持；安装以上三个权重后即可启用生成按钮。
+              ComfyUI 节点已支持；安装以上权重后即可启用生成按钮。
             </p>
             <p v-else-if="activeModel.missing.length" class="video-install-note">
               以上是该路线的最小模型组合；应用配方与真实 GPU 验证完成前保持不可生成。
@@ -288,23 +327,39 @@ import {
   createVideoJob,
   fetchVideoJob,
   fetchVideoStatus,
+  uploadVideoImage,
   type VideoDefaults,
   type VideoJob,
   type VideoMode,
   type VideoStatusResponse,
 } from '@/api/videoApi'
+import { imgGet } from '@/composables/useImageStore'
+import { VIDEO_CTX_KEY, type VideoCtxPayload } from '@/composables/useVideoBridge'
+import { useSceneStore } from '@/stores/sceneStore'
 
 const modes: Array<{ id: VideoMode; label: string; description: string; ready: boolean; icon: ArchiveIconName }> = [
   { id: 'text', label: '文字成片', description: '一句镜头描述直接生成短片', ready: true, icon: 'play' },
-  { id: 'image', label: '图片动起来', description: '从作品册选择首帧并保持角色', ready: false, icon: 'image' },
+  { id: 'image', label: '图片动起来', description: '绘图页「出视频」自动带入首帧，锁定角色与场景', ready: true, icon: 'image' },
   { id: 'first-last-frame', label: '首尾帧过渡', description: '锁定开始与结束画面', ready: false, icon: 'gallery' },
 ]
 
-const aspectOptions = [
-  { id: 'landscape' as const, label: '横屏', size: '832 × 480' },
-  { id: 'portrait' as const, label: '竖屏', size: '480 × 832' },
-  { id: 'square' as const, label: '方形', size: '640 × 640' },
-]
+const aspectOptions = computed(() => {
+  const base: Array<{ id: VideoDefaults['aspectRatio']; label: string }> = [
+    { id: 'landscape', label: '横屏' },
+    { id: 'portrait', label: '竖屏' },
+    { id: 'square', label: '方形' },
+  ]
+  if (selectedMode.value === 'image') {
+    base.push({ id: 'original', label: '跟随原图' })
+  }
+  return base
+})
+const activeQuality = computed(() =>
+  status.value?.qualities.find(item => item.id === quality.value) ?? null)
+const aspectSize = computed(() => (id: string) => {
+  if (id === 'original') return '自动匹配'
+  return activeQuality.value?.sizes[id] ?? ''
+})
 const cameraOptions: Array<{ id: VideoDefaults['camera']; label: string }> = [
   { id: 'still', label: '固定镜头 · 最稳' },
   { id: 'push', label: '缓慢推进' },
@@ -324,6 +379,7 @@ const prompt = ref('')
 const negative = ref('')
 const selectedModelId = ref('wan2.2-ti2v-5b')
 const aspectRatio = ref<VideoDefaults['aspectRatio']>('landscape')
+const quality = ref<VideoDefaults['quality']>('standard')
 const duration = ref<VideoDefaults['duration']>(3)
 const camera = ref<VideoDefaults['camera']>('still')
 const motion = ref<VideoDefaults['motion']>('subtle')
@@ -336,6 +392,12 @@ const cancelling = ref(false)
 const job = ref<VideoJob | null>(null)
 let pollTimer = 0
 let disposed = false
+
+// ── 图片动起来（I2VA）状态：首帧来自绘图页「出视频」的跨页上下文 ────────────
+const sceneStore = useSceneStore()
+const videoImageId = ref('')
+const videoImageUrl = ref('')
+const uploadingImage = ref(false)
 
 const activeModel = computed(() => status.value?.models.find(model => model.id === selectedModelId.value) || null)
 const environmentState = computed(() => {
@@ -370,7 +432,7 @@ const parsedSeed = computed(() => {
 const jobActive = computed(() => job.value?.status === 'queued'
   || job.value?.status === 'running'
   || job.value?.status === 'cancelling')
-const canGenerate = computed(() => selectedMode.value === 'text'
+const canGenerate = computed(() => (selectedMode.value === 'text' || (selectedMode.value === 'image' && videoImageId.value))
   && prompt.value.trim().length >= 8
   && prompt.value.length <= 1200
   && parsedSeed.value !== null
@@ -382,6 +444,7 @@ const submitTitle = computed(() => {
   if (jobActive.value) return '已有视频正在生成'
   if (!status.value?.online) return '先启动 ComfyUI'
   if (!activeModel.value?.available) return '先安装本地视频权重'
+  if (selectedMode.value === 'image' && !videoImageId.value) return '先带入一张首帧图'
   if (prompt.value.trim().length < 8) return '写下一个完整的镜头'
   if (parsedSeed.value === null) return 'Seed 格式不正确'
   return `${duration.value} 秒 · ${activeModel.value.label} · 本地生成`
@@ -423,10 +486,84 @@ async function loadStatus() {
   }
 }
 
+// ── 绘图页「出视频」跨页上下文（一次性消费）───────────────────────────────
+function consumeVideoCtx() {
+  let raw: string | null = null
+  try { raw = sessionStorage.getItem(VIDEO_CTX_KEY) } catch { return }
+  if (!raw) return
+  try { sessionStorage.removeItem(VIDEO_CTX_KEY) } catch { /* 忽略 */ }
+  let ctx: VideoCtxPayload
+  try { ctx = JSON.parse(raw) as VideoCtxPayload } catch { return }
+  if (!ctx || typeof ctx.imageId !== 'string' || !ctx.imageId) return
+  void applyVideoCtx(ctx)
+}
+
+async function applyVideoCtx(ctx: VideoCtxPayload) {
+  try {
+    const blob = await imgGet(ctx.imageId)
+    if (blob) {
+      if (videoImageUrl.value) URL.revokeObjectURL(videoImageUrl.value)
+      videoImageUrl.value = URL.createObjectURL(blob)
+      videoImageId.value = ctx.imageId
+    }
+  } catch { /* 图失效则不挂预览，上下文其余部分照常 */ }
+  selectedMode.value = 'image'
+  // 首帧比例跟随原图，避免固定画幅拉伸（如 832x1216 出图 → 480x832 画布会变形）。
+  aspectRatio.value = 'original'
+  const composed = composeVideoPrompt(ctx)
+  if (composed && composed.trim().length >= 4) prompt.value = composed
+}
+
+/**
+ * 场景预设 → 视频提示词（确定性组装，不做 tag 翻译）：
+ * 1. 用户出图时写的 story（意图最忠实）直接作为视频主描述；
+ * 2. story 为空时，用场景预设的结构化字段：description（场景）+ action（动作）+ lighting（光线）；
+ * 3. I2VA 首帧图已在后端按官方规范锁定角色/服装/场景（<Picture 1> 指令），
+ *    这里只需补动作语义，身份描述不重复。
+ */
+function composeVideoPrompt(ctx: VideoCtxPayload): string {
+  const story = (ctx.story || '').trim()
+  if (story) return story
+  if (ctx.blueprintId) {
+    const bp = sceneStore.sceneBlueprints.find(item => item.id === ctx.blueprintId)
+    if (bp) {
+      return [bp.description, bp.action, bp.lighting].filter(Boolean).join('，')
+    }
+  }
+  return ''
+}
+
+function clearFirstFrame() {
+  if (videoImageUrl.value) URL.revokeObjectURL(videoImageUrl.value)
+  videoImageUrl.value = ''
+  videoImageId.value = ''
+}
+
+function blobToBase64(blob: Blob): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => {
+      const result = typeof reader.result === 'string' ? reader.result : ''
+      const comma = result.indexOf(',')
+      resolve(comma >= 0 ? result.slice(comma + 1) : result)
+    }
+    reader.onerror = () => reject(reader.error ?? new Error('图片编码失败'))
+    reader.readAsDataURL(blob)
+  })
+}
+
 async function submitVideo() {
   if (!canGenerate.value) return
   submitting.value = true
   try {
+    let image: string | undefined
+    if (selectedMode.value === 'image') {
+      const blob = videoImageId.value ? await imgGet(videoImageId.value) : null
+      if (!blob) throw new Error('首帧图片读取失败，请重新带入')
+      uploadingImage.value = true
+      const upload = await uploadVideoImage(await blobToBase64(blob))
+      image = upload.name
+    }
     const response = await createVideoJob({
       prompt: prompt.value.trim(),
       negative: negative.value.trim() || undefined,
@@ -436,6 +573,8 @@ async function submitVideo() {
       camera: camera.value,
       motion: motion.value,
       seed: typeof parsedSeed.value === 'number' ? parsedSeed.value : undefined,
+      quality: quality.value,
+      image,
     })
     job.value = response.job
     schedulePoll()
@@ -443,6 +582,7 @@ async function submitVideo() {
     statusError.value = error instanceof Error ? error.message : '视频任务提交失败'
     await loadStatus()
   } finally {
+    uploadingImage.value = false
     submitting.value = false
   }
 }
@@ -476,10 +616,14 @@ function formatTime(timestamp: number) {
   return new Intl.DateTimeFormat('zh-CN', { hour: '2-digit', minute: '2-digit' }).format(timestamp)
 }
 
-onMounted(() => { void loadStatus() })
+onMounted(() => {
+  void loadStatus()
+  consumeVideoCtx()
+})
 onBeforeUnmount(() => {
   disposed = true
   window.clearTimeout(pollTimer)
+  if (videoImageUrl.value) URL.revokeObjectURL(videoImageUrl.value)
 })
 </script>
 
@@ -548,6 +692,16 @@ onBeforeUnmount(() => {
 .video-prompt { min-height:190px; font-size:var(--fs-title-xs); line-height:1.8; }
 .video-prompt-guidance { display:flex; flex-wrap:wrap; gap:var(--s-2); margin-top:var(--s-3); }
 .video-prompt-guidance span { padding:3px var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-pill); color:var(--text-muted); font-size:var(--fs-label-xs); }
+.video-first-frame-panel .video-panel-heading { align-items:center; }
+.video-first-frame {
+  display:block;
+  width:100%;
+  max-height:min(46vh,420px);
+  object-fit:contain;
+  border:1px solid var(--border-soft);
+  border-radius:var(--r-lg);
+  background:var(--bg-deep);
+}
 .video-choice-group { display:grid; gap:var(--s-2); }
 .video-choice-grid { display:grid; gap:var(--s-2); }
 .video-choice-grid--three { grid-template-columns:repeat(3,minmax(0,1fr)); }
@@ -568,6 +722,19 @@ onBeforeUnmount(() => {
 .aspect-glyph[data-aspect="square"] { width:25px; height:25px; }
 .video-choice-pair { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--s-3); margin-top:var(--s-4); }
 .video-duration-row { display:grid; grid-template-columns:auto auto minmax(0,1fr); align-items:center; gap:var(--s-3); margin-top:var(--s-4); }
+.video-quality-row { display:grid; gap:var(--s-2); margin-top:var(--s-4); }
+.video-quality-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--s-2); }
+.video-quality-grid button {
+  display:grid; gap:4px; min-height:66px; padding:var(--s-2) var(--s-3);
+  border:1px solid var(--border-soft); border-radius:var(--r-md);
+  background:var(--bg-deep); color:var(--text-secondary); text-align:left; cursor:pointer;
+  transition:border-color var(--motion-hover),background var(--motion-hover),transform var(--motion-press) var(--ease-out);
+}
+.video-quality-grid button:active { transform:scale(.98); }
+.video-quality-grid button.active { border-color:var(--accent); background:var(--accent-soft); color:var(--text-primary); }
+.video-quality-grid strong { font-size:var(--fs-body-sm); }
+.video-quality-grid small { color:var(--text-muted); font-size:var(--fs-label-xs); line-height:1.4; }
+.video-quality-grid em { color:var(--accent); font:600 var(--fs-mono-xs) var(--font-mono); font-style:normal; }
 .video-segmented { display:inline-flex; padding:3px; border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-deep); }
 .video-segmented button { min-height:32px; padding:0 var(--s-3); border:0; border-radius:var(--r-sm); background:transparent; color:var(--text-muted); cursor:pointer; }
 .video-segmented button.active { background:var(--accent); color:var(--text-inverse); }
@@ -634,7 +801,7 @@ onBeforeUnmount(() => {
 @media (max-width:760px) {
   .video-studio { width:min(100% - 24px,var(--page-max)); }
   .video-header,.video-submit-panel { grid-template-columns:1fr; align-items:start; }
-  .video-mode-strip,.video-choice-grid--three,.video-side-column,.video-advanced-grid { grid-template-columns:1fr; }
+  .video-mode-strip,.video-choice-grid--three,.video-side-column,.video-advanced-grid,.video-quality-grid { grid-template-columns:1fr; }
   .video-mode-card { min-height:70px; }
   .video-choice-pair { grid-template-columns:1fr; }
   .video-duration-row { grid-template-columns:1fr; align-items:start; }

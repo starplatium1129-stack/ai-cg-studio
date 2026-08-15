@@ -8,9 +8,10 @@ const DEFAULT_BUDGETS = Object.freeze({
   // controls. Heavy expert controls (including artist tags) stay async. Its route
   // chunk is about 136 KiB; the unified /api/generation client module
   // (src/api/generationApi.ts, roadmap "统一前端 API 层") rides in this chunk
-  // through useSDGenerate. 140 KiB leaves modest room for feature maintenance
-  // without turning this into a blanket route increase.
-  routeJavaScript: 140 * 1024,
+  // through useSDGenerate. 2026-08-15「出视频」跨页联动只在此保留薄调用壳
+  // （桥接逻辑已拆独立 chunk useVideoBridge，动态 import），故预算 140 → 145 KiB
+  // 留出该调用面余量；监控仍是硬上限，不允许无脑膨胀。
+  routeJavaScript: 145 * 1024,
   routeCss: 112 * 1024,
   // wl-live2d 懒加载块：pixi.js + pixi-live2d-display + cubism4 core 全内联，
   // 大小由依赖决定，这里监控防止未来升级/引入新依赖把它撑得更大。

@@ -14,6 +14,8 @@ var MAX_PENDING = 2;
 var MAX_PROMPT_LENGTH = 4000;
 var MAX_NEGATIVE_LENGTH = 2000;
 var MAX_VIDEO_BYTES = 256 * 1024 * 1024;
+var MAX_IMAGE_BYTES = 20 * 1024 * 1024;
+var IMAGE_INPUT_PREFIX = 'aics_video_input_';
 var JOB_TIMEOUT_MS = 45 * 60 * 1000;
 var JOB_TTL_MS = 2 * 60 * 60 * 1000;
 var POLL_INTERVAL_MS = 1000;
@@ -47,14 +49,15 @@ var MODEL_CATALOG = Object.freeze([
     label:'MiniMax H3',
     family:'minimax-h3',
     tier:'高上限成片',
-    summary:'本地 768p 原生立体声音频，适合最终成片；模型更重、速度待实测。',
-    executable:false,
+    summary:'本地 768p 原生立体声音频与口型，画质上限最高；16GB 显存建议从 3 秒短片起步。',
+    executable:true,
     modes:['text', 'image', 'first-last-frame'],
     requirements:[
       ['diffusion_models', 'minimax_h3_fl2va_pruned_int8_convrot.safetensors'],
       ['text_encoders', 'qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors'],
       ['vae', 'minimax_h3_video_vae_fp16.safetensors'],
       ['vae', 'minimax_h3_audio_vae_fp32.safetensors'],
+      ['loras', 'minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors'],
     ],
   },
   {
@@ -100,10 +103,50 @@ var ASPECTS = Object.freeze({
   square:{ width:640, height:640, label:'方形 1:1' },
 });
 
+// 画质档位（16GB 显存实测区间 0.2—0.5MP；h3lite 部署矩阵与官方 ResolutionSelector
+// 对齐：0.4MP 是官方常规画布，0.5MP 是 16GB 探索上限，720p(≈0.9MP) 需大显存或超分）。
+// 所有尺寸均为 32 倍数、短边 ≤768、面积 ≤768×1344。
+var QUALITIES = Object.freeze({
+  fast:Object.freeze({
+    label:'快速',
+    summary:'约 1—2 分钟/条 · 试镜与找方向',
+    sizes:Object.freeze({
+      landscape:Object.freeze({ width:608, height:352 }),
+      portrait:Object.freeze({ width:352, height:608 }),
+      square:Object.freeze({ width:448, height:448 }),
+    }),
+  }),
+  standard:Object.freeze({
+    label:'标准',
+    summary:'约 2.5—4.5 分钟/条 · 日常主力（官方常规画布）',
+    sizes:Object.freeze({
+      landscape:Object.freeze({ width:832, height:480 }),
+      portrait:Object.freeze({ width:480, height:832 }),
+      square:Object.freeze({ width:640, height:640 }),
+    }),
+  }),
+  fine:Object.freeze({
+    label:'精细',
+    summary:'约 3.5—6 分钟/条 · 16GB 上限档',
+    sizes:Object.freeze({
+      landscape:Object.freeze({ width:960, height:544 }),
+      portrait:Object.freeze({ width:544, height:960 }),
+      square:Object.freeze({ width:768, height:768 }),
+    }),
+  }),
+});
+
 var DURATIONS = Object.freeze({
   3:{ seconds:3, frames:73 },
   5:{ seconds:5, frames:121 },
 });
+
+// MiniMax H3 按 24fps 换算帧数后向上对齐到 17k+5 网格（模型训练网格，
+// 与官方模板 ComfyMathExpression 一致：count + (5 - count % 17) % 17）。
+function h3FrameCount(seconds) {
+  var count = Math.max(5, Math.round(seconds * 24));
+  return count + (5 - (count % 17)) % 17;
+}
 
 var CAMERA = Object.freeze({
   still:'固定镜头，画面稳定，仅保留自然的微小运动。',
@@ -119,9 +162,26 @@ var MOTION = Object.freeze({
   expressive:'主体动作更有表现力，但肢体结构和身份始终保持一致。',
 });
 
+// H3 是自然语言模型：镜头/主体运动按官方提示词规范
+// （MiniMax-AI/MiniMax-H3 h3-prompt-writing skill，base-en.txt）写成英文自然句——
+// 镜头运动 = 运动类型 + 幅度 + 速度，写进镜头描述而不是堆叠标签。
+var H3_CAMERA = Object.freeze({
+  still:'The camera holds a static shot.',
+  push:'The camera pushes in at a slow, steady pace.',
+  pull:'The camera pulls out at a slow, steady pace.',
+  pan:'The camera pans steadily to the side, without abrupt zooms.',
+  orbit:'The camera arcs around the subject with restrained motion, keeping the composition stable.',
+});
+
+var H3_MOTION = Object.freeze({
+  subtle:'The subject moves only subtly: breathing, blinking, hair and clothing swaying.',
+  natural:'The subject performs one clear, natural, continuous action, avoiding repetition or abrupt changes.',
+  expressive:'The subject\'s action is more expressive while body structure and identity stay consistent.',
+});
+
 var ALLOWED_INPUT_KEYS = new Set([
   'prompt', 'negative', 'modelId', 'aspectRatio', 'duration',
-  'camera', 'motion', 'seed',
+  'camera', 'motion', 'seed', 'image', 'quality',
 ]);
 
 function serviceError(status, code, message, detail) {
@@ -148,6 +208,90 @@ function modelRoot(config) {
   );
 }
 
+// 首帧图片写入 ComfyUI/input，由 LoadImage 节点按文件名读取。
+function imageInputRoot(config) {
+  return path.resolve(
+    config.AI_WORKSPACE_ROOT || path.resolve(config.ROOT_DIR, '..', 'AI'),
+    'ComfyUI',
+    'input'
+  );
+}
+
+function imageInputAvailable(config, name) {
+  if (typeof name !== 'string' || !IMAGE_INPUT_PATTERN.test(name)) return false;
+  var target = path.resolve(imageInputRoot(config), name);
+  try { return fs.statSync(target).isFile(); } catch (error) { return false; }
+}
+
+var IMAGE_INPUT_PATTERN = /^aics_video_input_[a-f0-9]{16,40}\.(png|jpg|jpeg|webp)$/i;
+
+// 魔数识别：只信任解码后的真实格式，不信任客户端声称的 type。
+function sniffImageExtension(buffer) {
+  if (buffer.length >= 8 && buffer[0] === 0x89 && buffer[1] === 0x50
+    && buffer[2] === 0x4e && buffer[3] === 0x47) return 'png';
+  if (buffer.length >= 3 && buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff) return 'jpg';
+  if (buffer.length >= 12 && buffer.toString('ascii', 0, 4) === 'RIFF'
+    && buffer.toString('ascii', 8, 12) === 'WEBP') return 'webp';
+  return null;
+}
+
+// 只读文件头取真实像素尺寸（PNG IHDR / JPEG SOF / WebP VP8*），不整图解码。
+function readImageSize(file) {
+  var buffer = fs.readFileSync(file);
+  if (buffer.length >= 24 && buffer[0] === 0x89 && buffer[1] === 0x50
+    && buffer[2] === 0x4e && buffer[3] === 0x47) {
+    return { width:buffer.readUInt32BE(16), height:buffer.readUInt32BE(20) };
+  }
+  if (buffer.length >= 4 && buffer[0] === 0xff && buffer[1] === 0xd8) {
+    var offset = 2;
+    while (offset + 9 < buffer.length) {
+      if (buffer[offset] !== 0xff) { offset += 1; continue; }
+      var marker = buffer[offset + 1];
+      if (marker === 0xd8 || (marker >= 0xd0 && marker <= 0xd7) || marker === 0x01) { offset += 2; continue; }
+      var length = buffer.readUInt16BE(offset + 2);
+      if (marker >= 0xc0 && marker <= 0xcf && marker !== 0xc4 && marker !== 0xc8 && marker !== 0xcc) {
+        return { height:buffer.readUInt16BE(offset + 5), width:buffer.readUInt16BE(offset + 7) };
+      }
+      offset += 2 + length;
+    }
+  }
+  if (buffer.length >= 30 && buffer.toString('ascii', 0, 4) === 'RIFF'
+    && buffer.toString('ascii', 8, 12) === 'WEBP') {
+    var chunk = buffer.toString('ascii', 12, 16);
+    if (chunk === 'VP8 ' && buffer.length >= 30) {
+      return { width:buffer.readUInt16LE(26) & 0x3fff, height:buffer.readUInt16LE(28) & 0x3fff };
+    }
+    if (chunk === 'VP8L' && buffer.length >= 25) {
+      var bits = buffer.readUInt32LE(21);
+      return { width:(bits & 0x3fff) + 1, height:((bits >>> 14) & 0x3fff) + 1 };
+    }
+    if (chunk === 'VP8X' && buffer.length >= 30) {
+      return { width:buffer.readUIntLE(24, 3) + 1, height:buffer.readUIntLE(27, 3) + 1 };
+    }
+  }
+  return null;
+}
+
+// 按原图比例 + 档位目标面积计算 H3 画布：32 对齐、短边 ≤768、面积 ≤768×1344。
+// 比例收敛到 0.5—2 防极端画幅；对齐后比例偏差 ≤~3%，肉眼无感。
+function fitCanvasToRatio(width, height, quality) {
+  var ratio = Math.min(2, Math.max(0.5, width / height));
+  var targetArea = quality.sizes.landscape.width * quality.sizes.landscape.height;
+  var canvasW = Math.max(32, Math.round(Math.sqrt(targetArea * ratio) / 32) * 32);
+  var canvasH = Math.max(32, Math.round(Math.sqrt(targetArea / ratio) / 32) * 32);
+  if (Math.min(canvasW, canvasH) > 768) {
+    var edgeScale = 768 / Math.min(canvasW, canvasH);
+    canvasW = Math.max(32, Math.round(canvasW * edgeScale / 32) * 32);
+    canvasH = Math.max(32, Math.round(canvasH * edgeScale / 32) * 32);
+  }
+  if (canvasW * canvasH > 768 * 1344) {
+    var areaScale = Math.sqrt((768 * 1344) / (canvasW * canvasH));
+    canvasW = Math.max(32, Math.round(canvasW * areaScale / 32) * 32);
+    canvasH = Math.max(32, Math.round(canvasH * areaScale / 32) * 32);
+  }
+  return { width:canvasW, height:canvasH };
+}
+
 function resourceAvailable(root, kind, file) {
   var base = path.resolve(root, kind);
   var target = path.resolve(base, file);
@@ -169,7 +313,7 @@ function modelAvailability(config, model) {
   };
 }
 
-function validateInput(body) {
+function validateInput(body, config) {
   if (!isPlainObject(body)) throw serviceError(400, 'INVALID_BODY', '请求体必须是 JSON 对象');
   Object.keys(body).forEach(function (key) {
     if (!ALLOWED_INPUT_KEYS.has(key)) {
@@ -189,8 +333,37 @@ function validateInput(body) {
   var model = MODEL_BY_ID[body.modelId];
   if (!model) throw serviceError(400, 'UNKNOWN_MODEL', '未知视频模型');
   if (!model.executable) throw serviceError(409, 'MODEL_ADAPTER_UNAVAILABLE', '该模型仍在适配与实测阶段');
-  var aspect = ASPECTS[body.aspectRatio];
-  if (!aspect) throw serviceError(400, 'INVALID_PARAMETER', '不支持的画面比例');
+  var quality = body.quality === undefined || body.quality === null || body.quality === ''
+    ? 'standard'
+    : body.quality;
+  if (typeof quality !== 'string' || !QUALITIES[quality]) {
+    throw serviceError(400, 'INVALID_PARAMETER', '不支持的画质档位');
+  }
+  var image = body.image;
+  if (image !== undefined && image !== null && image !== '') {
+    // 只接受本服务上传接口写入的受控文件名，杜绝任意路径/文件名注入。
+    if (typeof image !== 'string' || !IMAGE_INPUT_PATTERN.test(image)) {
+      throw serviceError(400, 'INVALID_PARAMETER', '图片引用格式不受支持');
+    }
+    if (config && !imageInputAvailable(config, image)) {
+      throw serviceError(400, 'INVALID_PARAMETER', '图片文件不存在或已过期');
+    }
+  }
+  var aspect;
+  if (body.aspectRatio === 'original') {
+    // 跟随首帧图比例：读图片真实尺寸 → 按档位面积 + 原图比例计算画布（等比例无变形）。
+    if (!image) throw serviceError(400, 'INVALID_PARAMETER', '跟随原图比例需要先上传首帧图');
+    if (!config) throw serviceError(400, 'INVALID_PARAMETER', '缺少图片文件上下文');
+    if (!imageInputAvailable(config, image)) throw serviceError(400, 'INVALID_PARAMETER', '图片文件不存在或已过期');
+    var imageSize = readImageSize(path.resolve(imageInputRoot(config), image));
+    if (!imageSize || !(imageSize.width > 0) || !(imageSize.height > 0)) {
+      throw serviceError(400, 'INVALID_PARAMETER', '无法解析首帧图尺寸');
+    }
+    aspect = fitCanvasToRatio(imageSize.width, imageSize.height, QUALITIES[quality]);
+  } else {
+    aspect = QUALITIES[quality].sizes[body.aspectRatio];
+    if (!aspect) throw serviceError(400, 'INVALID_PARAMETER', '不支持的画面比例');
+  }
   var duration = DURATIONS[body.duration];
   if (!duration) throw serviceError(400, 'INVALID_PARAMETER', '时长只支持 3 秒或 5 秒');
   if (!CAMERA[body.camera]) throw serviceError(400, 'INVALID_PARAMETER', '不支持的镜头运动');
@@ -203,31 +376,149 @@ function validateInput(body) {
     throw serviceError(400, 'INVALID_PARAMETER', 'seed 需为 0—2147483647 的整数');
   }
 
+  var isH3 = model.family === 'minimax-h3';
+  var isI2va = isH3 && Boolean(image);
+
   return Object.freeze({
-    prompt:[
+    // H3 按官方三段式组装（MiniMax-AI/MiniMax-H3 h3-prompt-writing skill）：
+    // T2VA 直接三段式；I2VA 先写 <Picture 1> 首帧指令行（空一行）再进三段式。
+    prompt:isH3 ? (isI2va ? [
+      'For the target video, at 0.00 seconds into the target video, <Picture 1> (from [Shot 1]) is fully referenced.',
+      '',
+      'integrated_multimodal_description: [Shot 1] Preserve the subject, clothing, hairstyle, and scene from <Picture 1>, then ' + body.prompt.trim(),
+      H3_CAMERA[body.camera],
+      H3_MOTION[body.motion],
+      'Character identity, clothing, lighting, and scene structure remain consistent from start to finish.',
+      '',
+      'overall_soundscape: Gentle ambient sound matching the scene, with subtle movement sounds; no dialogue, no voiceover.',
+      '',
+      'non_diegetic_music: A soft background score at a moderate tempo that fits the mood, gently rising and fading at the ends.',
+    ].join('\n') : [
+      'integrated_multimodal_description: [Shot 1] ' + body.prompt.trim(),
+      H3_CAMERA[body.camera],
+      H3_MOTION[body.motion],
+      'Character identity, clothing, lighting, and scene structure remain consistent from start to finish.',
+      '',
+      'overall_soundscape: Gentle ambient sound matching the scene, with subtle movement sounds; no dialogue, no voiceover.',
+      '',
+      'non_diegetic_music: A soft background score at a moderate tempo that fits the mood, gently rising and fading at the ends.',
+    ].join('\n')) : [
       body.prompt.trim(),
       CAMERA[body.camera],
       MOTION[body.motion],
       '动作从开始到结束保持连续，角色身份、服装、光照和场景结构一致。',
     ].join('\n'),
     originalPrompt:body.prompt.trim(),
-    negative:[WAN_NEGATIVE, String(body.negative || '').trim()].filter(Boolean).join('，'),
+    // H3 是自然语言模型：负向词会污染语义，保持空；Wan 仍走中文负面清单。
+    negative:isH3 ? '' : [WAN_NEGATIVE, String(body.negative || '').trim()].filter(Boolean).join('，'),
     modelId:model.id,
     aspectRatio:body.aspectRatio,
+    quality:quality,
     width:aspect.width,
     height:aspect.height,
     duration:duration.seconds,
-    frames:duration.frames,
+    frames:isH3 ? h3FrameCount(duration.seconds) : duration.frames,
     fps:24,
     camera:body.camera,
     motion:body.motion,
     seed:seed,
-    steps:20,
+    image:image || null,
+    steps:isH3 ? 8 : 20,
     cfg:5,
   });
 }
 
 function buildWorkflow(input) {
+  if (input.modelId === 'minimax-h3') return buildH3Workflow(input);
+  return buildWanWorkflow(input);
+}
+
+// MiniMax H3 原生工作流（lightx2v Turbo 版，官方 ModelTC 推荐 T2VA 图）。
+// 节点图与官方模板
+// （ModelTC/Minimax-H3-Turbo example_workflows/video_minimax_h3_t2v_lightx2v_turbo.json）
+// 保持一致，全部为 ComfyUI 核心节点：
+// UNETLoader → LoraLoaderModelOnly（Turbo LoRA，strength 1.0）→
+// MiniMaxH3SigmaShift（shift_video 12 / shift_audio 3）→
+// BasicGuider + BasicScheduler(simple, 8 步) + KSamplerSelect(euler) +
+// SamplerCustomAdvanced + VAEDecode + VAEDecodeAudio + CreateVideo + SaveVideo。
+// 20 步 → 8 步蒸馏采样（官方推荐 8 或 4 步）。SaveVideo 固定在节点 11，
+// 与任务结果读取（outputs['11'].videos）契约一致。
+function buildH3Workflow(input) {
+  var graph = {
+    '1': { class_type:'UNETLoader', inputs:{
+      unet_name:'minimax_h3_fl2va_pruned_int8_convrot.safetensors',
+      weight_dtype:'default',
+    } },
+    '2': { class_type:'CLIPLoader', inputs:{
+      clip_name:'qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors',
+      type:'minimax',
+      device:'default',
+    } },
+    '3': { class_type:'VAELoader', inputs:{ vae_name:'minimax_h3_video_vae_fp16.safetensors' } },
+    '4': { class_type:'VAELoader', inputs:{ vae_name:'minimax_h3_audio_vae_fp32.safetensors' } },
+    '5': { class_type:'MiniMaxH3ImageToVideo', inputs:{
+      clip:['2', 0],
+      vae:['3', 0],
+      prompt:input.prompt,
+      width:input.width,
+      height:input.height,
+      length:input.frames,
+    } },
+    '15': { class_type:'LoraLoaderModelOnly', inputs:{
+      model:['1', 0],
+      lora_name:'minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors',
+      strength_model:1,
+    } },
+    '16': { class_type:'MiniMaxH3SigmaShift', inputs:{
+      model:['15', 0],
+      shift_video:12,
+      shift_audio:3,
+    } },
+    '6': { class_type:'RandomNoise', inputs:{ noise_seed:input.seed } },
+    '7': { class_type:'KSamplerSelect', inputs:{ sampler_name:'euler' } },
+    '8': { class_type:'BasicScheduler', inputs:{
+      model:['16', 0],
+      scheduler:'simple',
+      steps:input.steps,
+      denoise:1,
+    } },
+    '9': { class_type:'BasicGuider', inputs:{
+      model:['16', 0],
+      conditioning:['5', 0],
+    } },
+    '10': { class_type:'SamplerCustomAdvanced', inputs:{
+      noise:['6', 0],
+      guider:['9', 0],
+      sampler:['7', 0],
+      sigmas:['8', 0],
+      latent_image:['5', 1],
+    } },
+    '12': { class_type:'VAEDecode', inputs:{ samples:['10', 0], vae:['3', 0] } },
+    '13': { class_type:'VAEDecodeAudio', inputs:{ samples:['10', 0], vae:['4', 0] } },
+    '14': { class_type:'CreateVideo', inputs:{
+      images:['12', 0],
+      audio:['13', 0],
+      fps:input.fps,
+      bit_depth:8,
+    } },
+    '11': { class_type:'SaveVideo', inputs:{
+      video:['14', 0],
+      filename_prefix:OUTPUT_FILENAME_PREFIX,
+      // 官方模板值：format/codec 用 'auto'。SaveVideo 的 codec 是 COMFY_DYNAMICCOMBO_V3，
+      // 真实执行不接受对象结构（2026-08-15 实测 execution_error: missing 'codec'）。
+      format:'auto',
+      codec:'auto',
+    } },
+  };
+  // I2VA：首帧图经 LoadImage 读入 ComfyUI/input，作为 <Picture 1> 几何锚点。
+  if (input.image) {
+    graph['17'] = { class_type:'LoadImage', inputs:{ image:input.image } };
+    graph['5'].inputs.first_frame = ['17', 0];
+  }
+  return graph;
+}
+
+function buildWanWorkflow(input) {
   return {
     '1': { class_type:'UNETLoader', inputs:{
       unet_name:'wan2.2_ti2v_5B_fp16.safetensors',
@@ -266,8 +557,9 @@ function buildWorkflow(input) {
     '11': { class_type:'SaveVideo', inputs:{
       video:['10', 0],
       filename_prefix:OUTPUT_FILENAME_PREFIX,
-      format:'mp4',
-      codec:{ codec:'h264', encoding:{ encoding:'re-encode', crf:20 } },
+      // 同 H3：format/codec 用官方模板的 'auto'（动态 combo 不接受对象值）。
+      format:'auto',
+      codec:'auto',
     } },
   };
 }
@@ -379,6 +671,23 @@ function cleanupMediaRoot(config) {
   });
 }
 
+// 启动时清理由本服务写入的孤儿首帧图（网关重启后无活动任务引用它们）。
+function cleanupImageInput(config) {
+  var root = imageInputRoot(config);
+  var entries = [];
+  try { entries = fs.readdirSync(root); } catch (error) { return; }
+  entries.forEach(function (name) {
+    if (!IMAGE_INPUT_PATTERN.test(name)) return;
+    try { fs.unlinkSync(path.resolve(root, name)); } catch (error) {}
+  });
+}
+
+// 任务生命周期结束时删除其专属首帧图（文件名唯一、只被本 job 引用）。
+function removeInputImage(config, name) {
+  if (!IMAGE_INPUT_PATTERN.test(String(name || ''))) return;
+  try { fs.unlinkSync(path.resolve(imageInputRoot(config), name)); } catch (error) {}
+}
+
 function decodePathValue(value) {
   var decoded = String(value || '');
   for (var i = 0; i < 3; i += 1) {
@@ -462,6 +771,7 @@ function createVideoService(config, dependencies) {
   var pollIntervalMs = dependencies.pollIntervalMs || POLL_INTERVAL_MS;
 
   cleanupMediaRoot(config);
+  cleanupImageInput(config);
 
   function pendingCount() {
     var count = 0;
@@ -498,6 +808,7 @@ function createVideoService(config, dependencies) {
     if (job.result && job.result.path) {
       try { fs.unlinkSync(job.result.path); } catch (error) {}
     }
+    if (job.input && job.input.image) removeInputImage(config, job.input.image);
     jobs.delete(job.id);
   }
 
@@ -721,25 +1032,74 @@ function createVideoRouter(config, dependencies) {
         }),
       });
     });
+    var qualities = Object.keys(QUALITIES).map(function (id) {
+      var quality = QUALITIES[id];
+      return {
+        id:id,
+        label:quality.label,
+        summary:quality.summary,
+        sizes:Object.keys(quality.sizes).reduce(function (sizes, aspectId) {
+          sizes[aspectId] = quality.sizes[aspectId].width + ' × ' + quality.sizes[aspectId].height;
+          return sizes;
+        }, {}),
+      };
+    });
     res.setHeader('Cache-Control', 'no-store');
     envelope.ok(res, {
       online:online,
       pending:service.pendingCount(),
       maxPending:MAX_PENDING,
       models:models,
+      qualities:qualities,
       defaults:{
         modelId:'wan2.2-ti2v-5b',
         aspectRatio:'landscape',
         duration:3,
         camera:'still',
         motion:'subtle',
+        quality:'standard',
       },
     });
   });
 
+  // 首帧图上传：base64 JSON → 魔数校验 → 写入 ComfyUI/input（受控文件名）。
+  // 浏览器把 IndexedDB 图片 blob 转 base64 传来即可，后续 jobs 用返回的 name。
+  router.post('/api/video/images', jobLimit, express.json({ limit:'28mb' }), function (req, res) {
+    var body = req.body;
+    var data = body && body.data;
+    if (typeof data !== 'string' || !data) {
+      return envelope.fail(res, 400, '缺少图片数据', { code:'INVALID_IMAGE' });
+    }
+    var buffer;
+    try { buffer = Buffer.from(data, 'base64'); } catch (error) {
+      return envelope.fail(res, 400, '图片数据编码无效', { code:'INVALID_IMAGE' });
+    }
+    if (buffer.length < 16 || buffer.length > MAX_IMAGE_BYTES) {
+      return envelope.fail(res, 400, '图片大小需在 16B—20MB 之间', { code:'INVALID_IMAGE' });
+    }
+    var ext = sniffImageExtension(buffer);
+    if (!ext) {
+      return envelope.fail(res, 400, '仅支持 PNG / JPEG / WebP 图片', { code:'INVALID_IMAGE' });
+    }
+    var name = IMAGE_INPUT_PREFIX + crypto.randomBytes(8).toString('hex') + '.' + ext;
+    var root = imageInputRoot(config);
+    var resolvedRoot = path.resolve(root);
+    var target = path.resolve(root, name);
+    if (target.indexOf(resolvedRoot + path.sep) !== 0) {
+      return envelope.fail(res, 500, '图片存储路径无效', { code:'IMAGE_STORAGE_INVALID' });
+    }
+    try {
+      fs.mkdirSync(resolvedRoot, { recursive:true });
+      fs.writeFileSync(target, buffer, { flag:'wx' });
+    } catch (error) {
+      return envelope.fail(res, 500, '图片写入失败', { code:'IMAGE_WRITE_FAILED' });
+    }
+    envelope.ok(res, { name:name, bytes:buffer.length });
+  });
+
   router.post('/api/video/jobs', jobLimit, express.json({ limit:MAX_BODY }), async function (req, res) {
     var input;
-    try { input = validateInput(req.body); } catch (error) {
+    try { input = validateInput(req.body, config); } catch (error) {
       return envelope.fail(res, error.status || 400, error.message, {
         code:error.code,
         detail:error.detail,
@@ -798,6 +1158,7 @@ module.exports = {
   constants:{
     MODEL_CATALOG:MODEL_CATALOG,
     ASPECTS:ASPECTS,
+    QUALITIES:QUALITIES,
     DURATIONS:DURATIONS,
     OUTPUT_NODE_ID:OUTPUT_NODE_ID,
     OUTPUT_FILENAME_PREFIX:OUTPUT_FILENAME_PREFIX,

@@ -2,6 +2,14 @@ import { apiClient } from './client'
 
 export type VideoMode = 'text' | 'image' | 'first-last-frame'
 export type VideoJobStatus = 'queued' | 'running' | 'cancelling' | 'succeeded' | 'failed' | 'cancelled'
+export type VideoQuality = 'fast' | 'standard' | 'fine'
+
+export interface VideoQualityOption {
+  id: VideoQuality
+  label: string
+  summary: string
+  sizes: Record<string, string>
+}
 
 export interface VideoModelStatus {
   id: string
@@ -19,10 +27,11 @@ export interface VideoModelStatus {
 
 export interface VideoDefaults {
   modelId: string
-  aspectRatio: 'landscape' | 'portrait' | 'square'
+  aspectRatio: 'landscape' | 'portrait' | 'square' | 'original'
   duration: 3 | 5
   camera: 'still' | 'push' | 'pull' | 'pan' | 'orbit'
   motion: 'subtle' | 'natural' | 'expressive'
+  quality: VideoQuality
 }
 
 export interface VideoStatusResponse {
@@ -31,6 +40,7 @@ export interface VideoStatusResponse {
   pending: number
   maxPending: number
   models: VideoModelStatus[]
+  qualities: VideoQualityOption[]
   defaults: VideoDefaults
 }
 
@@ -67,6 +77,16 @@ export interface CreateVideoJobInput {
   camera: VideoDefaults['camera']
   motion: VideoDefaults['motion']
   seed?: number
+  /** 首帧图：POST /api/video/images 返回的受控文件名（I2VA 模式）。 */
+  image?: string
+  /** 画质档位：fast 0.2MP / standard 0.4MP（默认）/ fine 0.5MP。 */
+  quality?: VideoQuality
+}
+
+export interface VideoImageUploadResponse {
+  ok: true
+  name: string
+  bytes: number
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -87,6 +107,7 @@ function isVideoStatusResponse(value: Record<string, unknown>): boolean {
     && typeof value.online === 'boolean'
     && typeof value.pending === 'number'
     && Array.isArray(value.models)
+    && Array.isArray(value.qualities)
     && isRecord(value.defaults)
 }
 
@@ -110,6 +131,18 @@ export function createVideoJob(input: CreateVideoJobInput, signal?: AbortSignal)
     signal,
     timeoutMs: 30_000,
     validate: isVideoJobResponse,
+  })
+}
+
+/** 首帧图上传：base64 图片数据 → 网关校验后写入 ComfyUI/input，返回受控文件名。 */
+export function uploadVideoImage(data: string, signal?: AbortSignal): Promise<VideoImageUploadResponse> {
+  return apiClient.request<VideoImageUploadResponse>('/api/video/images', {
+    method: 'POST',
+    body: { data },
+    signal,
+    timeoutMs: 60_000,
+    validate: (value: Record<string, unknown>) =>
+      value.ok === true && typeof value.name === 'string' && typeof value.bytes === 'number',
   })
 }
 

@@ -1,8 +1,8 @@
 # 本地 AI 视频创作路线
 
-> 更新日期：2026-08-13
+> 更新日期：2026-08-15
 > 产品定位：个人本地创作；ComfyUI 负责执行，应用负责稳定、低门槛的创作体验。
-> 当前状态：✅ P1 已落地（文字成片最小闭环，代码与契约测试完成）；真实 GPU 出片（权重安装）与 I2V/首尾帧暂缓。
+> 当前状态：✅ P1 已落地（文字成片最小闭环）；✅ MiniMax H3 T2V 适配器已完成并通过真实 ComfyUI 结构验证（2026-08-15）；真实 GPU 出片（权重安装）与 I2V/首尾帧暂缓。
 
 ## 结论
 
@@ -21,7 +21,7 @@
 | 模型 | 产品定位 | 当前状态 |
 | --- | --- | --- |
 | Wan 2.2 TI2V 5B | 16GB 显存机器的快速预演与默认短片路线 | T2V 适配已完成，权重待安装与真实 GPU 验证 |
-| MiniMax H3 | 本地 768p、原生立体声音频的高上限最终成片路线 | 官方 ComfyUI 模板已存在，适配器与本机重型模型实测待完成 |
+| MiniMax H3 | 本地 768p、原生立体声音频的高上限最终成片路线 | T2V 适配完成（2026-08-15），权重待安装与真实 GPU 实测 |
 | Wan 2.2 14B | 更高质量 T2V / I2V / 首尾帧 | 待本机资源、耗时和工作流验证 |
 | HunyuanVideo 1.5 | 720p 与超分质量路线 | 待本机资源、耗时和工作流验证 |
 | LTX-2.3 | 快速预演、音视频和首尾帧扩展 | 待官方子图 API 适配 |
@@ -101,7 +101,55 @@ ComfyUI/models/
 
 本阶段不运行 E2E，不启动真实 GPU 出片。
 
-## 后续阶段
+## MiniMax H3 T2V 适配完成（2026-08-15）
+
+### 选型结论（16GB 显存，RTX 4070 Ti SUPER）
+
+- 模型组合采用 Comfy-Org 官方最小量化组合 + **lightx2v 官方 Turbo 蒸馏 LoRA**（总量约 43GB）：
+  - `diffusion_models/minimax_h3_fl2va_pruned_int8_convrot.safetensors`（INT8 剪枝，约 21GB）
+  - `text_encoders/qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors`（NVFP4-AWQ，约 15.7GB）
+  - `vae/minimax_h3_video_vae_fp16.safetensors`（约 5.2GB）+ `vae/minimax_h3_audio_vae_fp32.safetensors`（约 0.6GB）
+  - `loras/minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors`（lightx2v/Minimax-h3-Turbo，8 步蒸馏，替代原生 20 步）
+- 40 系（Ada）不支持 NVFP4 扩散主干的硬件加速，因此扩散模型选 INT8 而非 NVFP4 版；文本编码器 NVFP4-AWQ 无此限制。
+- 下载脚本：`node scripts/maintenance/download-minimax-h3.js`（默认 HF 直连；`--mirror` 走 hf-mirror.com；`--models-root` 可覆盖目录；已存在文件自动跳过）。
+
+### 服务端适配
+
+- `routes/video.js`：`buildWorkflow` 按 `modelId` 分支，新增 `buildH3Workflow`，节点图与官方 Turbo 模板（ModelTC/Minimax-H3-Turbo `video_minimax_h3_t2v_lightx2v_turbo.json`）一致，全部为 ComfyUI 核心节点：
+  - `UNETLoader`（INT8 剪枝）+ `CLIPLoader`（type `minimax`）+ 视频/音频双 `VAELoader`
+  - **`LoraLoaderModelOnly`**（Turbo LoRA，strength 1.0）→ **`MiniMaxH3SigmaShift`**（shift_video 12 / shift_audio 3）
+  - `MiniMaxH3ImageToVideo` → `BasicGuider`（flow matching，无 cfg）+ `KSamplerSelect(euler)` + `BasicScheduler(simple, 8 步)` + `SamplerCustomAdvanced` + `RandomNoise`
+  - `VAEDecode` + `VAEDecodeAudio` → `CreateVideo`（fps 24）→ `SaveVideo`（固定节点 11，H.264 MP4，复用结果契约）
+- 分辨率按**画质档位**选择（`quality` 参数，默认 standard；16GB 实测区间 0.2—0.5MP，对齐 h3lite 部署矩阵与官方 ResolutionSelector）：
+  - `fast` 608×352 / 352×608 / 448×448（0.2MP）——试镜找方向，约 1—2 分钟/条
+  - `standard` 832×480 / 480×832 / 640×640（0.4MP）——**日常主力**（官方常规画布），约 2.5—4.5 分钟/条
+  - `fine` 960×544 / 544×960 / 768×768（0.5MP）——16GB 上限档，约 3.5—6 分钟/条
+  - 720p（≈0.9MP）在 16GB 上无社区实证，低显存出 720p 的正确路径是低档生成 + 视频超分（P4 计划）。
+- **`aspectRatio: 'original'`（跟随原图比例，I2VA 专属）**：服务端读首帧图真实像素（PNG IHDR / JPEG SOF / WebP VP8* 只读文件头），按原图比例 + 档位面积计算画布（`fitCanvasToRatio`：32 对齐、短边 ≤768、面积 ≤768×1344、比例收敛 0.5—2）。解决 832×1216 出图被 480×832 画布拉伸变形的问题（如 standard 档 → 512×768）。绘图页「出视频」带入首帧时自动选中该画幅。
+- 蒸馏采样 8 步（官方推荐 8 或 4 步），相对原生 20 步约 2.5 倍提速。
+- 帧数按官方公式对齐 17k+5 网格：3 秒 → 73 帧、5 秒 → 124 帧（`h3FrameCount`）。
+- H3 是自然语言模型：负向词置空（不再拼 Wan 中文负面清单）；提示词按**官方三段式**组装（MiniMax-AI/MiniMax-H3 h3-prompt-writing skill）：
+  - `integrated_multimodal_description: [Shot 1] ...`（主线：画面 + 镜头/主体运动英文自然句 + 一致性约束）
+  - `overall_soundscape: ...`（全片环境音，无对白）
+  - `non_diegetic_music: ...`（观众可听的轻柔配乐）
+  - 官方 skill 已沉淀在 `.agents/skills/h3-prompt-writing/`（含 base-en.txt 与 ref-en.txt 参考文件，Ref2VA 六段式供 I2V/首尾帧模式接入时使用）。
+- 分辨率沿用应用画幅（832×480 / 480×832 / 640×640，均为 32 倍数，短边 ≤768 画布规则内）。
+
+### 验证
+
+- `test-video-routes.js` 新增 H3 断言：帧数网格、无负面词、Turbo 工作流节点图（LoRA/SigmaShift/euler/8 步）、缺失文件清单（含 lora）、mock 全流程 202 → succeeded。
+- 对运行中的真实 ComfyUI（8188）验证：H3 全部节点（含 `LoraLoaderModelOnly`、`MiniMaxH3SigmaShift`）存在（`/object_info`）；提交 Turbo 工作流得到 400 `value_not_in_list`，错误仅指向缺失权重——结构已通过官方 validation，装好权重即可出片。
+- 真实 GPU 出片（耗时/显存/质量/音频）待权重安装后按 P3 配方表记录。
+
+### 疑难留档：SaveVideo codec 动态 combo（2026-08-15）
+
+- **现象**：真实 ComfyUI 执行 H3 工作流报 `SaveVideo.execute() missing 1 required positional argument: 'codec'`（node_id 11），而 `/prompt` validation 与 mock 测试全部通过。
+- **根因**：`SaveVideo.codec` 是 `COMFY_DYNAMICCOMBO_V3` 动态下拉；API 提交对象结构 `{codec:'h264', encoding:{...}}` 在真实执行时被丢弃（validation 不校验动态 combo 值）；官方模板（`video_minimax_h3_t2v.json`）SaveVideo 的 widgets 就是 `format:'auto' + codec:'auto'`。
+- **修复**：`buildH3Workflow` 与 `buildWanWorkflow` 的 SaveVideo 一律改用 `format:'auto', codec:'auto'`（官方模板值），输出由 ComfyUI 按内容自动定（H3 为 mp4）。
+- **验证**：测试断言更新（format/codec = 'auto'）后全绿；真实 ComfyUI 队列中 SaveVideo 以 auto/auto 执行不再报错。
+- **教训**：mock ComfyUI 不执行真实节点——**凡涉及动态 combo / 自定义节点参数的工作流改动，必须在真实 ComfyUI 上跑一次到执行阶段**，不能只信 validation 与 mock。
+
+### 后续阶段
 
 ### P2 · 图生视频
 
@@ -109,6 +157,29 @@ ComfyUI/models/
 - 服务端负责将受信任的作品转存/上传到 ComfyUI input。
 - 同一页面继续复用镜头、运动、时长和队列。
 - 首先适配 Wan 2.2 TI2V 5B I2V；通过身份稳定性审核后再开放。
+
+**P2 前端已落地（2026-08-15）**：
+
+- 绘图页结果卡片新增「出视频」按钮：当前成片 blob → IndexedDB（imgPut）→ 上下文（imageId + story + blueprintId/sceneId + characterId）写 sessionStorage → 跳转视频页。图片本体不跨页传（sessionStorage 容量限制），只传 id。
+- 跨页桥接在独立 `src/composables/useVideoBridge.ts`（动态 import 独立 chunk，PromptBuilder 路由块只留薄调用壳；bundle 预算 140→145 KiB 为此调整并注释理由）。
+- 视频页启用「图片动起来」模式：自动读取跨页上下文（一次性消费），预览首帧图、自动预填提示词、提交时 base64 上传首帧后走 I2VA 工作流。
+- **场景预设 → 视频提示词转换方案（确定性组装，不做 tag 翻译）**：
+  1. 用户出图时写的 `story` 直接作为视频主描述（用户意图最忠实）；
+  2. story 为空时用场景预设结构化字段：`description`（场景）+ `action`（动作）+ `lighting`（光线）；
+  3. 身份/服装不重复描述——I2VA 首帧图已锁定，后端自动附加官方 `<Picture 1>` 首帧指令；
+  4. 不做 `promptTokens`（SD tag）→ 自然语言"翻译"：tag 是碎片化标签，转译会引入错误语义；prose/story 本就是自然语言，复用质量最高。
+  - 预填提示词始终可编辑；后续可增强「本地 LLM 按官方 skill 规范精修」为可选按钮。
+
+**P2 后端已落地（2026-08-15，H3 I2VA 先行）**：
+
+- `POST /api/video/images`：base64 图片上传（≤20MB，魔数校验只认 PNG/JPEG/WebP），写入 `ComfyUI/input/aics_video_input_<hex>.<ext>` 受控文件名，返回 name。
+- `validateInput` 支持 `image` 参数：只接受本服务上传接口的受控文件名（正则 + 文件存在性双重校验），杜绝任意路径注入；`config` 为可选第二参数（无 config 时跳过存在性检查，测试友好）。
+- `buildH3Workflow` I2VA 分支：`LoadImage`（节点 17）→ `MiniMaxH3ImageToVideo.first_frame`。
+- 提示词按官方 base-en.txt I2VA 规范：首行 `For the target video, at 0.00 seconds into the target video, <Picture 1> (from [Shot 1]) is fully referenced.` + 空行 + 三段式（`integrated_multimodal_description` 以 "Preserve the subject, clothing, hairstyle, and scene from <Picture 1>, then …" 开头）。
+- 生命周期：job 结束（成功/失败/取消/TTL）删除其专属首帧图；网关启动清理孤儿 input 文件。
+- 测试：上传端点（非法数据 400 / 合法 200）、image 参数校验、I2VA 节点图、mock 全流程 202 → succeeded。
+
+**P2 前端待做**：绘图页出图结果卡片加「出视频」按钮（携带 IndexedDB 图片 id + 场景/角色上下文 → 视频页 image 模式）；视频页启用图片模式（预览、自动组装提示词、上传+提交）。
 
 ### P3 · 首尾帧与质量路线
 
