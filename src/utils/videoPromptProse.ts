@@ -72,18 +72,5 @@ export function tagsToVideoProse(prompt: string): string {
   const head = subject
     ? `${subject}${looks.length ? ' with ' + looks.join(' and ') : ''}`
     : looks.length ? `a figure with ${looks.join(' and ')}` : ''
-  const joined = [head, ...kept].filter(Boolean).join(', ')
-
-  // 视频页提示词上限 1200 字符（VideoStudioView canGenerate）：热门 R18 的
-  // 长词条流转换后可能超限，按词条边界截断（主体/外观在前，保证头部完整）。
-  const MAX_LENGTH = 1200
-  if (joined.length <= MAX_LENGTH) return joined
-  const parts = joined.split(', ')
-  let acc = ''
-  for (const part of parts) {
-    const next = acc ? `${acc}, ${part}` : part
-    if (next.length > MAX_LENGTH) break
-    acc = next
-  }
-  return acc
+  return [head, ...kept].filter(Boolean).join(', ')
 }

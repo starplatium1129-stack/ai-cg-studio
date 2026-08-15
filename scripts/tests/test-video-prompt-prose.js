@@ -30,10 +30,9 @@ test('no subject tag still produces a figure head when looks exist', () => {
   assert.ok(out.startsWith('a figure with long hair and red eyes'), out);
 });
 
-test('over-long tag stream is truncated to the 1200-char video limit at tag boundaries', () => {
+test('long tag stream passes through in full (server limit is 4000, not truncated here)', () => {
   const manyTags = Array.from({ length: 400 }, (_, i) => `tag_${i % 50}`).join(', ');
   const out = tagsToVideoProse('1girl, red hair, ' + manyTags);
-  assert.ok(out.length <= 1200, 'length ' + out.length);
+  assert.ok(out.length > 1200, 'must NOT truncate at the old 1200 UI limit, got ' + out.length);
   assert.ok(out.startsWith('a girl with red hair'), 'head kept, got: ' + out.slice(0, 40));
-  assert.ok(!out.endsWith(','), 'no trailing comma');
 });

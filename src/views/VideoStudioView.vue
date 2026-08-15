@@ -70,13 +70,13 @@
               <h2>你想看到什么发生？</h2>
             </div>
             <span class="video-count" :data-warning="prompt.length > 900 || undefined">
-              {{ prompt.length }} / 1200
+              {{ prompt.length }} / 4000
             </span>
           </div>
           <textarea
             v-model="prompt"
             class="textarea video-prompt"
-            maxlength="1200"
+            maxlength="4000"
             rows="7"
             placeholder="例如：黄昏的电车站，少女回头看向镜头，风吹起发丝和裙摆，镜头缓慢推进，暖色逆光，动作自然连续。"
           ></textarea>
@@ -434,7 +434,7 @@ const jobActive = computed(() => job.value?.status === 'queued'
   || job.value?.status === 'cancelling')
 const canGenerate = computed(() => (selectedMode.value === 'text' || (selectedMode.value === 'image' && videoImageId.value))
   && prompt.value.trim().length >= 8
-  && prompt.value.length <= 1200
+  && prompt.value.length <= 4000
   && parsedSeed.value !== null
   && status.value?.online === true
   && activeModel.value?.available === true
