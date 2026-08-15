@@ -38,23 +38,61 @@
       message="本地角色资料已就绪，当前暂无可浏览的角色记录。"
     />
     <template v-else>
-      <!-- tablist 模式补全：aria-controls + roving tabindex + 方向键。
-           原先只有 role/aria-selected，读屏会承诺方向键切换但按了没反应。 -->
-      <div class="character-tabs" role="tablist" aria-label="选择角色" data-reveal @keydown="tabs.onKeydown">
-        <button v-for="c in characters" :key="c.id" class="character-tab"
-          :class="{ active: current?.id === c.id }" type="button" role="tab"
-          :id="tabs.tabId(c.id)"
-          :aria-controls="tabs.panelId(c.id)"
-          :aria-selected="current?.id === c.id"
-          :tabindex="tabs.tabIndex(c.id)"
-          @click="selectCharacter(c.id)"><ArchiveIcon :name="c.id === 'natsume' ? 'natsume' : 'nene'" /> {{ c.name }}</button>
+      <!-- 2026-08-15：35 角色全量浏览——作品筛选条 + 分区网格 + 搜索；选中后下方展示档案 -->
+      <div class="character-browse" data-reveal>
+        <div class="cb-search-wrap">
+          <ArchiveIcon name="search" class="cb-search-icon" />
+          <input v-model="search" class="cb-search" type="search"
+            placeholder="搜索角色名或作品，如 宁宁 / Surtr / Fate" aria-label="搜索角色" />
+        </div>
+        <div v-if="!search.trim()" class="cb-franchises" role="group" aria-label="按作品筛选">
+          <button type="button" class="cb-franchise" :class="{ active: activeFranchise === '' }"
+            :aria-pressed="activeFranchise === ''" @click="activeFranchise = ''">
+            全部 <span class="cb-count">{{ characters.length }}</span>
+          </button>
+          <button v-for="f in franchises" :key="f.source" type="button"
+            class="cb-franchise" :class="{ active: activeFranchise === f.source }"
+            :aria-pressed="activeFranchise === f.source" @click="activeFranchise = f.source">
+            {{ f.label }} <span class="cb-count">{{ f.count }}</span>
+          </button>
+        </div>
+
+        <div v-if="grouped" class="cb-groups" role="group" aria-label="角色">
+          <section v-for="group in grouped" :key="group.source" class="cb-group">
+            <h4 class="cb-group-head">{{ group.label }}<span class="cb-group-count">{{ group.members.length }}</span></h4>
+            <div class="cb-grid">
+              <button v-for="c in group.members" :key="c.id" type="button" class="cb-card"
+                :class="{ active: current?.id === c.id }"
+                :aria-pressed="current?.id === c.id" @click="selectCharacter(c.id)">
+                <span class="cb-avatar">
+                  <img v-if="c.portrait?.image" :src="c.portrait.image" :alt="c.name" loading="lazy" decoding="async" />
+                  <span v-else class="cb-avatar-fallback">{{ c.name.charAt(0) }}</span>
+                </span>
+                <span class="cb-name">{{ c.name }}</span>
+                <span class="cb-original">{{ c.alias?.[0] || c.source }}</span>
+              </button>
+            </div>
+          </section>
+        </div>
+        <div v-else class="cb-grid" role="group" aria-label="角色">
+          <button v-for="c in filtered" :key="c.id" type="button" class="cb-card"
+            :class="{ active: current?.id === c.id }"
+            :aria-pressed="current?.id === c.id" @click="selectCharacter(c.id)">
+            <span class="cb-avatar">
+              <img v-if="c.portrait?.image" :src="c.portrait.image" :alt="c.name" loading="lazy" decoding="async" />
+              <span v-else class="cb-avatar-fallback">{{ c.name.charAt(0) }}</span>
+            </span>
+            <span class="cb-name">{{ c.name }}</span>
+            <span class="cb-original">{{ franchiseLabel(c.source) }}</span>
+          </button>
+        </div>
+        <div v-if="!filtered.length" class="cb-empty">
+          <p>没有匹配的角色，换个关键词或作品试试。</p>
+          <button class="btn btn-ghost" type="button" @click="search = ''; activeFranchise = ''">重置筛选</button>
+        </div>
       </div>
 
-      <section v-if="current" class="character-hero card-direct card-level-3" data-reveal data-reveal-delay="1"
-        role="tabpanel"
-        :id="tabs.panelId(current.id)"
-        :aria-labelledby="tabs.tabId(current.id)"
-        tabindex="0">
+      <section v-if="current" class="character-hero card-direct card-level-3" data-reveal data-reveal-delay="1">
         <div class="portrait" :class="{ natsume: current.id === 'natsume' }">
           <img v-if="current.portrait?.image" class="portrait-image"
             :src="current.portrait.image" :alt="current.portrait.alt || current.name"
@@ -134,7 +172,6 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useSceneStore } from '@/stores/sceneStore'
-import { useRovingTabs } from '@/composables/useRovingTabs'
 import ArchivePageHero from '@/components/visual/ArchivePageHero.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -155,21 +192,60 @@ const current = ref<CharacterProfile | null>(null)
 const bgExpanded = ref(false)
 useScrollReveal()
 
-// 角色空间只展示 heroine（宁宁/夏目）；type=popular 的热门出图角色档案不进入切换列表。
-const characterIds = computed<string[]>(() =>
-  characters.value.filter(c => String(c.type ?? 'heroine') !== 'popular').map(c => String(c.id)),
-)
+// 2026-08-15：全量 35 角色浏览——作品筛选 + 搜索 + 分组网格（heroine 与 popular 同台）。
+const search = ref('')
+const activeFranchise = ref('')
+
+/** 作品展示名：Arknights 系与《作品》格式提取简称，其余原样 */
+function franchiseLabel(source: string): string {
+  const s = String(source || '')
+  if (s === 'Arknights') return '明日方舟'
+  if (s === 'Arknights: Endfield') return '明日方舟：终末地'
+  const bracket = s.match(/《([^》]+)》/)
+  if (bracket) {
+    const parts = bracket[1].split('/').map(p => p.trim()).filter(Boolean)
+    return parts[parts.length - 1] || bracket[1]
+  }
+  return s
+}
+
+const keyword = computed(() => search.value.trim().toLowerCase())
+const filtered = computed(() => {
+  const base = characters.value.filter(c => {
+    if (activeFranchise.value && c.source !== activeFranchise.value) return false
+    if (!keyword.value) return true
+    return [c.name, ...(c.alias || []), String(c.source || '')]
+      .some(text => text.toLowerCase().includes(keyword.value))
+  })
+  return base
+})
+
+const franchises = computed(() => {
+  const seen = new Map<string, number>()
+  for (const c of characters.value) {
+    seen.set(c.source, (seen.get(c.source) ?? 0) + 1)
+  }
+  return [...seen.entries()]
+    .map(([source, count]) => ({ source, label: franchiseLabel(source), count }))
+    .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label, 'zh-CN'))
+})
+
+/** 无搜索时按作品分组；搜索/筛选时平铺 */
+const grouped = computed(() => {
+  if (keyword.value || activeFranchise.value) return null
+  const groups: { source: string; label: string; members: CharacterProfile[] }[] = []
+  for (const f of franchises.value) {
+    const members = characters.value.filter(c => c.source === f.source)
+    if (members.length) groups.push({ source: f.source, label: f.label, members })
+  }
+  return groups
+})
+
 function selectCharacter(id: string) {
   const found = characters.value.find(c => String(c.id) === id)
   if (found) { current.value = found; bgExpanded.value = false }
 }
 function tagClass(index: unknown) { return 'm' + (Number(index) % 6) }
-const tabs = useRovingTabs(
-  characterIds,
-  () => String(current.value?.id ?? ''),
-  selectCharacter,
-  { prefix: 'character' },
-)
 
 const hasIdentity = computed(() => {
   const id = current.value?.identity || {}
@@ -231,10 +307,32 @@ onMounted(() => { void loadProfiles() })
 
 <style scoped>
 .archive-status { padding:4px 9px; border:1px solid var(--border-soft); color:var(--text-muted); font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.1em; }
-.character-tabs { position:relative; display:flex; gap:var(--s-2); margin-bottom:var(--s-5); padding-left:var(--s-4); }
-.character-tabs::before { content:""; position:absolute; left:0; top:0; bottom:0; width:2px; background:linear-gradient(180deg,var(--archive-blue),var(--accent),transparent); }
-.character-tab { padding:var(--s-2) var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-pill); background:var(--bg-surface); color:var(--text-secondary); cursor:pointer; font:600 var(--fs-body-sm) var(--font-sans); transition:border-color var(--t-fast),color var(--t-fast),background var(--t-fast),transform var(--t-fast) var(--ease-out); }
-.character-tab.active,.character-tab:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
+/* 2026-08-15：全量角色浏览区——作品筛选 + 分组网格卡片 */
+.character-browse { margin-bottom: var(--s-6); }
+.cb-search-wrap { position: relative; margin-bottom: var(--s-3); }
+.cb-search-icon { position: absolute; left: 12px; top: 50%; width: 15px; height: 15px; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; }
+.cb-search { width: 100%; padding: var(--s-3) var(--s-4) var(--s-3) 38px; background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-lg); color: var(--text-primary); font-size: var(--fs-body); outline: none; }
+.cb-search:focus { border-color: var(--accent); }
+.cb-franchises { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-bottom: var(--s-4); }
+.cb-franchise { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border: 1px solid var(--border-soft); border-radius: var(--r-pill); background: var(--bg-surface); color: var(--text-secondary); font-size: var(--fs-label-sm); font-weight: 600; cursor: pointer; transition: border-color var(--t-fast), color var(--t-fast), background var(--t-fast); }
+.cb-franchise:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); }
+.cb-franchise.active { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+.cb-count { font: 650 var(--fs-mono-xs) var(--font-mono); opacity: .7; }
+.cb-groups { display: grid; gap: var(--s-5); }
+.cb-group-head { display: flex; align-items: baseline; gap: var(--s-2); margin: 0 0 var(--s-2); font-size: var(--fs-title-xs); color: var(--text-secondary); }
+.cb-group-count { font: 650 var(--fs-mono-xs) var(--font-mono); color: var(--accent); }
+.cb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: var(--s-2); }
+.cb-card { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: var(--s-3) var(--s-2) var(--s-2); border: 1px solid var(--border-soft); border-radius: var(--r-lg); background: var(--bg-surface); color: var(--text-secondary); cursor: pointer; transition: border-color var(--t-fast), background var(--t-fast), color var(--t-fast), transform var(--t-fast) var(--ease-out); }
+.cb-card:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); transform: translateY(-1px); }
+.cb-card.active { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, var(--bg-surface)); }
+.cb-avatar { position: relative; width: 64px; height: 64px; border-radius: 50%; overflow: hidden; border: 1px solid var(--border-soft); background: var(--bg-deep); display: grid; place-items: center; }
+.cb-card.active .cb-avatar { border-color: var(--accent); }
+.cb-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.cb-avatar-fallback { font-size: var(--fs-title-sm); font-weight: 800; color: var(--text-muted); }
+.cb-name { font-size: var(--fs-label-sm); font-weight: 700; color: var(--text-primary); text-align: center; line-height: 1.3; }
+.cb-original { font-size: var(--fs-mono-xs); color: var(--text-muted); max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cb-empty { padding: var(--s-5); text-align: center; color: var(--text-muted); border: 1px dashed var(--border-soft); border-radius: var(--r-lg); }
+.cb-empty .btn { margin-top: var(--s-3); }
 .character-hero { position:relative; overflow:hidden; display:grid; grid-template-columns:320px 1fr; gap:var(--s-6); padding:var(--s-6); }
 .character-hero::before { content:""; position:absolute; top:-1px; left:var(--s-6); width:42px; height:1px; background:var(--archive-blue); opacity:.86; }
 /* 立绘按"画框里的展品"处理：底光 + 顶部渐隐 + 轻微入场位移，

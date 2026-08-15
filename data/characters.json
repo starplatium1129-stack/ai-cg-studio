@@ -1894,7 +1894,11 @@
         "label": "标志",
         "icon": "♠"
       }
-    ]
+    ],
+    "portrait": {
+      "image": "../assets/characters/popular-chen_arknights.png",
+      "alt": "陈热门角色立绘"
+    }
   },
   {
     "id": "dusk_arknights",
@@ -1963,7 +1967,11 @@
         "label": "标志",
         "icon": "♠"
       }
-    ]
+    ],
+    "portrait": {
+      "image": "../assets/characters/popular-dusk_arknights.png",
+      "alt": "夕热门角色立绘"
+    }
   },
   {
     "id": "eunectes_arknights",
@@ -2034,7 +2042,11 @@
         "label": "标志",
         "icon": "♠"
       }
-    ]
+    ],
+    "portrait": {
+      "image": "../assets/characters/popular-eunectes_arknights.png",
+      "alt": "森蚺热门角色立绘"
+    }
   },
   {
     "id": "exusiai_arknights",
@@ -2103,7 +2115,11 @@
         "label": "标志",
         "icon": "♠"
       }
-    ]
+    ],
+    "portrait": {
+      "image": "../assets/characters/popular-exusiai_arknights.png",
+      "alt": "能天使热门角色立绘"
+    }
   },
   {
     "id": "eyjafjalla_arknights",
@@ -2173,7 +2189,11 @@
         "label": "标志",
         "icon": "♠"
       }
-    ]
+    ],
+    "portrait": {
+      "image": "../assets/characters/popular-eyjafjalla_arknights.png",
+      "alt": "艾雅法拉热门角色立绘"
+    }
   },
   {
     "id": "goldenglow_arknights",
@@ -2243,7 +2263,11 @@
         "label": "标志",
         "icon": "♠"
       }
-    ]
+    ],
+    "portrait": {
+      "image": "../assets/characters/popular-goldenglow_arknights.png",
+      "alt": "澄闪热门角色立绘"
+    }
   },
   {
     "id": "kaltsit_arknights",
@@ -2312,7 +2336,11 @@
         "label": "标志",
         "icon": "♠"
       }
-    ]
+    ],
+    "portrait": {
+      "image": "../assets/characters/popular-kaltsit_arknights.png",
+      "alt": "凯尔希热门角色立绘"
+    }
   },
   {
     "id": "laevatain_arknights",
@@ -2379,7 +2407,11 @@
         "label": "标志",
         "icon": "♠"
       }
-    ]
+    ],
+    "portrait": {
+      "image": "../assets/characters/popular-laevatain_arknights.png",
+      "alt": "莱万汀热门角色立绘"
+    }
   },
   {
     "id": "lemuen_arknights",
@@ -2448,7 +2480,11 @@
         "label": "标志",
         "icon": "♠"
       }
-    ]
+    ],
+    "portrait": {
+      "image": "../assets/characters/popular-lemuen_arknights.png",
+      "alt": "蕾缪安热门角色立绘"
+    }
   },
   {
     "id": "mudrock_arknights",
@@ -2517,7 +2553,11 @@
         "label": "标志",
         "icon": "♠"
       }
-    ]
+    ],
+    "portrait": {
+      "image": "../assets/characters/popular-mudrock_arknights.png",
+      "alt": "泥岩热门角色立绘"
+    }
   },
   {
     "id": "perlica_arknights",
@@ -2584,7 +2624,11 @@
         "label": "标志",
         "icon": "♠"
       }
-    ]
+    ],
+    "portrait": {
+      "image": "../assets/characters/popular-perlica_arknights.png",
+      "alt": "佩丽卡热门角色立绘"
+    }
   },
   {
     "id": "quillpen_arknights",
@@ -2654,7 +2698,11 @@
         "label": "标志",
         "icon": "♠"
       }
-    ]
+    ],
+    "portrait": {
+      "image": "../assets/characters/popular-quillpen_arknights.png",
+      "alt": "羽毛笔热门角色立绘"
+    }
   },
   {
     "id": "skadi_arknights",
@@ -2724,7 +2772,11 @@
         "label": "标志",
         "icon": "♠"
       }
-    ]
+    ],
+    "portrait": {
+      "image": "../assets/characters/popular-skadi_arknights.png",
+      "alt": "斯卡蒂热门角色立绘"
+    }
   },
   {
     "id": "surtr_arknights",
@@ -2792,7 +2844,11 @@
         "label": "标志",
         "icon": "♠"
       }
-    ]
+    ],
+    "portrait": {
+      "image": "../assets/characters/popular-surtr_arknights.png",
+      "alt": "史尔特尔热门角色立绘"
+    }
   },
   {
     "id": "suzuran_arknights",
@@ -2861,6 +2917,10 @@
         "label": "标志",
         "icon": "♠"
       }
-    ]
+    ],
+    "portrait": {
+      "image": "../assets/characters/popular-suzuran_arknights.png",
+      "alt": "铃兰热门角色立绘"
+    }
   }
 ]

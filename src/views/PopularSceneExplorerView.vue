@@ -12,10 +12,21 @@
       </div>
     </section>
 
-    <!-- 角色选择条 -->
+    <!-- 2026-08-15：作品筛选条 + 角色横排（按作品收敛，33 个不再一滚到底） -->
+    <div class="pop-franchise-strip" role="group" aria-label="按作品筛选角色">
+      <button type="button" class="pop-franchise" :class="{ active: activeFranchise === '' }"
+        :aria-pressed="activeFranchise === ''" @click="activeFranchise = ''">
+        全部 <span class="pop-franchise-count">{{ characters.length }}</span>
+      </button>
+      <button v-for="f in franchises" :key="f.name" type="button"
+        class="pop-franchise" :class="{ active: activeFranchise === f.name }"
+        :aria-pressed="activeFranchise === f.name" @click="pickFranchise(f.name)">
+        {{ f.label }} <span class="pop-franchise-count">{{ f.count }}</span>
+      </button>
+    </div>
     <div class="pop-char-strip" role="group" aria-label="选择热门角色">
       <button
-        v-for="character in characters" :key="character.id" type="button"
+        v-for="character in stripCharacters" :key="character.id" type="button"
         class="pop-char-btn" :class="{ active: selectedId === character.id }"
         :aria-pressed="selectedId === character.id"
         @click="selectCharacter(character.id)">
@@ -125,6 +136,35 @@ const showMature = ref(/^(localhost|127\.0\.0\.1|\[::1\])$/.test(window.location
 const characters = computed<PopularCharacter[]>(() => sceneStore.popularCharacters)
 const allBlueprints = computed<SceneBlueprint[]>(() => sceneStore.sceneBlueprints)
 
+// 2026-08-15：角色选择条按作品筛选——先选作品，横排只显示该作品角色（33 个不再一滚到底）。
+const activeFranchise = ref('')
+
+const franchiseLabel = (name: string): string => {
+  if (name === 'Arknights') return '明日方舟'
+  if (name === 'Arknights: Endfield') return '明日方舟：终末地'
+  const bracket = String(name || '').match(/《([^》]+)》/)
+  if (bracket) {
+    const parts = bracket[1].split('/').map(p => p.trim()).filter(Boolean)
+    return parts[parts.length - 1] || bracket[1]
+  }
+  return String(name || '')
+}
+
+const franchises = computed(() => {
+  const seen = new Map<string, number>()
+  for (const c of characters.value) seen.set(c.franchise, (seen.get(c.franchise) ?? 0) + 1)
+  return [...seen.entries()]
+    .map(([name, count]) => ({ name, label: franchiseLabel(name), count }))
+    .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label, 'zh-CN'))
+})
+
+/** 角色条：按作品筛选后的角色；「全部」时仍全量横排 */
+const stripCharacters = computed(() =>
+  activeFranchise.value
+    ? characters.value.filter(c => c.franchise === activeFranchise.value)
+    : characters.value,
+)
+
 /** 当前角色的全部蓝图（资格按成熟开关收敛）。 */
 const pool = computed<SceneBlueprint[]>(() => {
   const character = characters.value.find(item => item.id === selectedId.value) ?? null
@@ -204,6 +244,12 @@ function timeLabel(value: string): string {
 function selectCharacter(id: string) {
   selectedId.value = id
   category.value = 'all'
+}
+function pickFranchise(name: string) {
+  activeFranchise.value = name
+  category.value = 'all'
+  const first = stripCharacters.value[0]
+  if (first) selectedId.value = first.id
 }
 function drawUrl(blueprint: SceneBlueprint): string {
   return `/prompt-builder?popular=${encodeURIComponent(selectedId.value)}&blueprint=${encodeURIComponent(blueprint.id)}`
@@ -308,6 +354,18 @@ onMounted(() => { void init() })
 .pop-hero-stat strong { font-size: var(--fs-title-sm); color: var(--accent); line-height: 1; }
 .pop-hero-stat strong.adult { color: var(--danger-text); }
 .pop-hero-stat span { grid-column: 2; }
+
+.pop-franchise-strip { display: flex; flex-wrap: wrap; gap: var(--s-2); padding: var(--s-2) 0; }
+.pop-franchise {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 12px; border: 1px solid var(--border-soft); border-radius: var(--r-pill);
+  background: var(--bg-elevated); color: var(--text-secondary);
+  font-size: var(--fs-label-sm); font-weight: 600; cursor: pointer;
+  transition: border-color var(--t-fast), color var(--t-fast), background var(--t-fast);
+}
+.pop-franchise:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); }
+.pop-franchise.active { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+.pop-franchise-count { font: 650 var(--fs-mono-xs) var(--font-mono); opacity: .7; }
 
 .pop-char-strip {
   display: flex;
