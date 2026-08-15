@@ -9550,7 +9550,7 @@
       "characterId": "kaltsit_arknights",
       "description": "深夜舱室，窗畔的丝绒礼服，侧身回眸。",
       "location": "罗德岛私人舱室",
-      "action": "侧身立于落地窗前，深V礼服装半掩，回眸凝视",
+      "action": "侧背立于落地窗前，回眸凝视",
       "timeOfDay": "夜晚",
       "lighting": "dim warm lamp",
       "camera": "intimate medium shot",
@@ -9560,23 +9560,27 @@
         "window",
         "evening_gown",
         "velvet",
+        "open_back",
         "night",
         "moonlight",
         "intimate",
-        "side_view"
+        "from_behind",
+        "looking_back"
       ],
-      "promptProse": "In her private cabin late at night, Kal'tsit stands in profile by the floor-to-ceiling window in an elegant black velvet evening gown with gold and emerald embroidery, her hair up, no other people present, composed as a single unbroken full-frame scene, cool moonlight and warm lamplight tracing the gown's silhouette in a quiet, artistic atmosphere.",
+      "promptProse": "In her private cabin late at night, Kal'tsit stands with her back half-turned to the floor-to-ceiling window, glancing back over her shoulder in an elegant black velvet evening gown with gold and emerald embroidery, its back cut low, her hair up, no other people present, composed as a single unbroken full-frame scene, cool moonlight tracing the elegant line of her bare back in a quiet, artistic atmosphere.",
       "promptTokens": [
         "cabin",
         "floor_to_ceiling_window",
         "evening_gown",
         "velvet",
         "gold_trim",
+        "open_back",
         "hair_up",
         "night",
         "moonlight",
         "intimate",
-        "side_view",
+        "from_behind",
+        "looking_back",
         "volumetric_lighting",
         "depth_of_field",
         "clean_face"
@@ -9600,7 +9604,7 @@
         "intimate",
         "medium_shot"
       ],
-      "nsfwProse": "In her private cabin late at night, Kal'tsit stands in profile by the floor-to-ceiling window in an elegant black velvet evening gown with gold and emerald embroidery, its deep V neckline and one loose shoulder strap slipping to reveal the side of her bare chest, no other people present, composed as a single unbroken full-frame scene, moonlight and warm lamplight tracing her collarbone and the soft curve of her breast in a hushed, artistic mood.",
+      "nsfwProse": "In her private cabin late at night, Kal'tsit stands with her back half-turned to the floor-to-ceiling window, glancing back over her shoulder, wearing an elegant black velvet evening gown with gold and emerald embroidery whose open back reveals the graceful curve of her spine while its deep V neckline shows the soft curve of her bare breast from the side, no other people present, composed as a single unbroken full-frame scene, moonlight and warm lamplight tracing her bare back and collarbone in a hushed, artistic mood.",
       "adultArtistHint": "@anmi",
       "sampleRating": "R18"
     },
