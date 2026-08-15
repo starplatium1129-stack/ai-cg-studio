@@ -7,7 +7,7 @@
  *   → routes/anima.js buildWorkflow（Heretic 未审查编码器 + aggressive rebalance 预设）
  *   → 本地 ComfyUI /prompt → 下载图片到独立输出目录。
  *
- * 覆盖：3 个角色人设化 NSFW 场景 + 1 个通用成人场景 + 1 个对照组（同角色普通原型场景，确认无 nsfw 注入）。
+ * 覆盖：3 个角色人设化 NSFW 场景 + 1 个对照组（同角色普通原型场景，确认无 nsfw 注入）。
  *
  * 用法：node scripts/tests/probe-nsfw-scenes.js [--dry-run] [--seed N] [--only <sceneId>]
  */
@@ -28,12 +28,11 @@ var SEED_BASE = 20260814;
 var KREA_SIZE = [1024, 1536];
 
 // 验证矩阵：角色人设化成人场景（从 CHAR_ADULT_SCENES 全集中挑选代表）+
-// 通用成人场景 + 对照组（普通原型场景，断言 nsfw 不注入）。
+// 对照组（普通原型场景，断言 nsfw 不注入）。
 var CASES = [
   { label:'rem_maid_serving', characterId:'rem_rezero', sceneId:'rem_rezero_r18_chamber' },
   { label:'makima_office_night', characterId:'makima', sceneId:'makima_r18_office' },
   { label:'frieren_inn_bath', characterId:'frieren', sceneId:'frieren_r18_inn_bath' },
-  { label:'generic_candlelight', characterId:'raiden_shogun', sceneId:'candlelight_evening' },
   { label:'control_rem_mansion', characterId:'rem_rezero', sceneId:'rem_rezero_mansion' },
 ];
 

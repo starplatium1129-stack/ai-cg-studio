@@ -1,14 +1,14 @@
 {
   "version": 1,
-  "total": 298,
+  "total": 302,
   "shards": {
     "nene": {
       "file": "scenes-nene.json",
-      "count": 150
+      "count": 152
     },
     "natsume": {
       "file": "scenes-natsume.json",
-      "count": 142
+      "count": 144
     },
     "shared": {
       "file": "scenes-shared.json",
@@ -329,6 +329,10 @@
     "sc297",
     "sc298",
     "sc299",
-    "sc300"
+    "sc300",
+    "sc301",
+    "sc302",
+    "sc303",
+    "sc304"
   ]
 }

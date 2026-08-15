@@ -268,7 +268,7 @@
         "frieren the slayer",
         "elf mage"
       ],
-      "identityProse": "Frieren from Frieren: Beyond Journey's End, a centuries-old elf mage with very long white hair in low twin braids, violet eyes and pointed ears, carrying an old-fashioned staff and a calm, wistful expression",
+      "identityProse": "Frieren from Frieren: Beyond Journey's End, a centuries-old elf mage with very long white hair in low twin braids, violet eyes and pointed ears, with a calm, wistful expression",
       "identityTokens": [
         "frieren",
         "1girl",
@@ -279,9 +279,7 @@
         "purple_eyes",
         "elf",
         "pointy_ears",
-        "gold_earrings",
-        "holding_staff",
-        "staff_of_frieren"
+        "gold_earrings"
       ],
       "exactTokens": [
         "frieren"
@@ -340,7 +338,7 @@
     },
     {
       "id": "artoria_pendragon",
-      "displayName": "Saber",
+      "displayName": "阿尔托莉雅",
       "originalName": "Artoria Pendragon",
       "franchise": "Fate",
       "aliases": [
@@ -350,7 +348,7 @@
         "king arthur",
         "fate/stay night"
       ],
-      "identityProse": "Saber, Artoria Pendragon from Fate/stay night, a regal knight with blonde hair tied in an intricate braided bun, an ahoge, and clear emerald-green eyes, carrying Excalibur with an earnest, dignified bearing",
+      "identityProse": "Saber, Artoria Pendragon from Fate/stay night, a regal knight with blonde hair tied in an intricate braided bun, an ahoge, and clear emerald-green eyes, with an earnest, dignified bearing",
       "identityTokens": [
         "artoria_pendragon",
         "saber_(fate)",
@@ -362,7 +360,6 @@
         "blue_hair_ribbon",
         "ahoge",
         "green_eyes",
-        "holding_sword",
         "fate/stay_night"
       ],
       "exactTokens": [
@@ -386,7 +383,8 @@
             "blue_dress",
             "white_gloves",
             "blue_armor",
-            "bare_legs"
+            "bare_legs",
+            "sword"
           ],
           "default": true
         },
@@ -396,12 +394,11 @@
           "prose": "a cozy dark blue knit cardigan over a crisp white collared shirt and skirt, her signature casual look from Today's Menu for the Emiya Family",
           "tokens": [
             "casual_clothes",
-            "cardigan",
-            "blue_cardigan",
             "white_shirt",
             "collared_shirt",
+            "blue_skirt",
             "skirt",
-            "blue_skirt"
+            "long_sleeves"
           ]
         },
         {
@@ -682,7 +679,7 @@
         "majo no tabitabi",
         "wandering witch"
       ],
-      "identityProse": "Elaina from Wandering Witch: The Journey of Elaina, an inquisitive traveling witch with very long ash-gray hair, violet eyes, a black witch hat with gold buckle, carrying her wooden broom with a confident smile",
+      "identityProse": "Elaina from Wandering Witch: The Journey of Elaina, an inquisitive traveling witch with very long ash-gray hair, violet eyes, a black witch hat with gold buckle, with a confident smile",
       "identityTokens": [
         "elaina_(majo_no_tabitabi)",
         "1girl",
@@ -692,8 +689,6 @@
         "purple_eyes",
         "witch_hat",
         "gold_buckle",
-        "holding_broom",
-        "wooden_broom",
         "majo_no_tabitabi"
       ],
       "exactTokens": [
@@ -1176,7 +1171,7 @@
         "mushoku tensei",
         "jobless reincarnation"
       ],
-      "identityProse": "Roxy Migurdia from Mushoku Tensei, a Migurd magic teacher with long pale-blue hair tied into twin braids, blue eyes, a mole on her left collarbone, carrying a curved wooden staff",
+      "identityProse": "Roxy Migurdia from Mushoku Tensei, a Migurd magic teacher with long pale-blue hair tied into twin braids, blue eyes, a mole on her left collarbone",
       "identityTokens": [
         "roxy_migurdia",
         "1girl",
@@ -1185,8 +1180,6 @@
         "twin_braids",
         "blue_eyes",
         "mole_on_collarbone",
-        "holding_staff",
-        "wooden_staff",
         "mushoku_tensei"
       ],
       "exactTokens": [
@@ -1210,7 +1203,8 @@
             "white_shirt",
             "blue_skirt",
             "frills",
-            "thighhighs"
+            "thighhighs",
+            "wooden_staff"
           ],
           "default": true
         },

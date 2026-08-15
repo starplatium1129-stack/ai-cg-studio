@@ -133,16 +133,12 @@ var CHAR_ADULT_SCENES = [
   { id:'kisara_r18_apartment', title:'契约者的深夜', category:'成人', characterId:'kisara_engage_kiss', description:'公寓深夜，白衬衫半褪的木更。', location:'公寓卧室', action:'白衬衫半褪坐在床边', timeOfDay:'深夜', lighting:'暖色台灯', camera:'intimate close-up', mood:'傲娇暧昧', sceneTags:['apartment','bedroom','white_shirt','lamp','night','intimate'], promptProse:'Late at night in the apartment, Kisara sits on the bed with her oversized white shirt half unbuttoned, the warm lamp light catching her pink hair as she glances sideways with a teasing pout.', promptTokens:['apartment','bedroom','white_shirt','lamp','night','intimate'], negativeTokens:['worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, medieval, fantasy, bright'], recommendedSize:'832x1216', adult:true, kreaStyleHint:'r18_sensual_cg', animaStyleHint:'r18_sensual_cg', nsfwTokens:['nude','completely_naked','fully_nude','no_clothes','naked_body','bare_chest','exposed_breasts','nipples','shirt_off','topless','no_panties','spread_legs'], nsfwProse:'The white shirt falls open and away, her fully naked body exposed in the warm lamplight, bare breasts and parted thighs visible as she keeps her teasing gaze.' },
 ];
 
-// 通用成人场景（不带 characterId：任何 adult 角色可用，fail-closed 由 adultEligibility 把关）
-var ADULT_SCENES = [
-  { id:'candlelight_evening', title:'烛光卧室', category:'成人', description:'烛火明灭的卧室，暖光描出蜜色轮廓。', location:'夜晚的卧室', action:'倚在床头，烛光映亮侧脸', timeOfDay:'夜晚', lighting:'摇曳烛光与琥珀色深影', camera:'medium close-up, intimate framing', mood:'温柔亲密', sceneTags:['bedroom','candle','night','warm_light','bed','intimate'], promptProse:'In a dim bedroom lit only by candles, warm amber light flickers across the sheets and walls, tracing her profile in soft intimacy.', promptTokens:['bedroom','candle','night','warm_light','bed','sheets'], negativeTokens:['worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform'], recommendedSize:'832x1216', adult:true, kreaStyleHint:'r18_sensual_cg', animaStyleHint:'r18_elegant_boudoir', nsfwTokens:['nude','completely_naked','fully_nude','no_clothes','naked_body','bare_chest','exposed_breasts','nipples','pussy','spread_legs','lying_on_bed','topless'], nsfwProse:'Her clothes have been removed and lie on the floor. A naked woman lies on the bed with her bare breasts exposed and her legs parted, her fully nude body lit by warm candlelight.' },
-  { id:'morning_bathrobe', title:'浴袍晨光', category:'成人', description:'清晨逆光里松挽的浴袍与肩线。', location:'清晨的卧室窗边', action:'站在窗边，晨光勾勒轮廓', timeOfDay:'清晨', lighting:'明亮逆光与柔和轮廓光', camera:'medium shot from the side, rim-lit silhouette', mood:'柔软从容', sceneTags:['bedroom','bathrobe','morning','backlighting','window','rim_light'], promptProse:'In a bright bedroom at dawn, morning light pours through the window and rims her standing before it in a loosely tied bathrobe, unhurried and private.', promptTokens:['bedroom','bathrobe','morning','backlighting','window','rim_light'], negativeTokens:['worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform'], recommendedSize:'832x1216', adult:true, kreaStyleHint:'r18_elegant_boudoir', animaStyleHint:'r18_elegant_boudoir', nsfwTokens:['nude','completely_naked','fully_nude','no_clothes','naked_body','bare_chest','exposed_breasts','nipples','topless','standing_nude','bathrobe_off'], nsfwProse:'The bathrobe slips from her shoulders and falls away, leaving her completely naked in the bright morning light, her bare breasts and nipples fully exposed.' },
-  { id:'late_night_dressing', title:'深夜更衣', category:'成人', description:'镜前进行到一半的更衣，暧昧在灯影里。', location:'深夜的更衣室', action:'在镜前整理衣领，光线暧昧', timeOfDay:'深夜', lighting:'低暖台灯与软影', camera:'close-up mirrored composition', mood:'紧张私密', sceneTags:['dressing_room','mirror','night','lamp','intimate','clothes'], promptProse:'Late at night in a dim dressing room, a single warm lamp casts soft shadows as she adjusts clothing before a mirror, caught mid-motion in a private, charged moment.', promptTokens:['dressing_room','mirror','night','lamp','intimate'], negativeTokens:['worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform'], recommendedSize:'832x1216', adult:true, kreaStyleHint:'r18_sensual_cg', animaStyleHint:'r18_sensual_cg', nsfwTokens:['nude','completely_naked','fully_nude','no_clothes','naked_body','bare_chest','exposed_breasts','nipples','topless','bare_back','undressing'], nsfwProse:'She undresses by the mirror, her clothes falling to the floor until she stands completely naked, her bare back and naked breasts reflected in the warm lamp light.' },
-];
+// 通用成人场景已于 2026-08-15 删除（用户决策：当初临时加的），
+// 全部成人场景均带 characterId 归属角色，fail-closed 由 adultEligibility 把关。
 
 function main() {
   var ids = new Set();
-  [SCENES, CHAR_ADULT_SCENES, ADULT_SCENES].forEach(function (group) {
+  [SCENES, CHAR_ADULT_SCENES].forEach(function (group) {
     group.forEach(function (s) {
       if (ids.has(s.id)) throw new Error('duplicated scene id: ' + s.id);
       ids.add(s.id);
@@ -175,11 +171,11 @@ function main() {
   });
 
   if (process.argv.includes('--check')) {
-    console.log('check ok: ' + SCENES.length + ' character scenes + ' + CHAR_ADULT_SCENES.length + ' character adult scenes + ' + ADULT_SCENES.length + ' adult scenes, ' + Object.keys(perCharacter).length + ' characters');
+    console.log('check ok: ' + SCENES.length + ' character scenes + ' + CHAR_ADULT_SCENES.length + ' character adult scenes, ' + Object.keys(perCharacter).length + ' characters');
     return;
   }
   fs.mkdirSync(path.dirname(OUT), { recursive: true });
-  var all = SCENES.concat(CHAR_ADULT_SCENES, ADULT_SCENES);
+  var all = SCENES.concat(CHAR_ADULT_SCENES);
   fs.writeFileSync(OUT, JSON.stringify({ version: 2, blueprints: all }, null, 2) + '\n', 'utf8');
   console.log('written: ' + OUT + ' (' + all.length + ' scenes)');
 }

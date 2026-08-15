@@ -41,7 +41,7 @@ export interface SceneBlueprint {
   title: string
   category: string
   description: string
-  /** 归属角色：角色原型场景蓝图必须携带；通用蓝图可为空。 */
+  /** 归属角色：全部蓝图必须携带（2026-08-15 通用蓝图已删除）。 */
   characterId?: string
   location: string
   action: string
@@ -61,10 +61,15 @@ export interface SceneBlueprint {
   animaStyleHint?: string
   /** 可选：成人蓝图专属画师提示（如 @anmi, @kousaki 等）；双引擎自动映射。 */
   adultArtistHint?: string
+  /** 可选：样张视觉定级（2026-08-15 用户裁定，R18/R15/All）。
+   *  只决定样张展示（模糊/徽章），生成门禁仍由 adult 控制。 */
+  sampleRating?: string
   /** 可选：成人蓝图专属 NSFW 内容标签；只在 adult 角色 + adultEnabled 同时放行时注入。 */
   nsfwTokens?: string[]
   /** 可选：成人蓝图专属 NSFW 内容散文（Krea 与 Anima caption 使用）；fail-closed 同标签。 */
   nsfwProse?: string
+  /** 可选：本场景应使用的角色服装 id（角色 outfits 之一）；缺省时用 defaultOutfit。 */
+  outfitId?: string
 }
 
 export type DrawSubject =
@@ -194,8 +199,10 @@ export function parseSceneBlueprint(value: unknown): SceneBlueprint | null {
     kreaStyleHint: stringValue(value.kreaStyleHint),
     animaStyleHint: stringValue(value.animaStyleHint),
     adultArtistHint: stringValue(value.adultArtistHint),
+    sampleRating: stringValue(value.sampleRating),
     nsfwTokens: stringList(value.nsfwTokens),
     nsfwProse: stringValue(value.nsfwProse),
+    outfitId: stringValue(value.outfitId),
   }
 }
 
@@ -250,7 +257,7 @@ export function eligibleBlueprints(
 ): SceneBlueprint[] {
   return blueprints.filter(blueprint =>
     blueprintEligible(blueprint, character, opts)
-    && (!blueprint.characterId || character == null || blueprint.characterId === character.id)
+    && (character == null || blueprint.characterId === character.id)
     && (!opts.category || opts.category === 'all' || blueprint.category === opts.category),
   )
 }

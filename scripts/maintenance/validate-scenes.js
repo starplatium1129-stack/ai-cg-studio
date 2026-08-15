@@ -15,6 +15,8 @@ const {
   scenePositiveKeys,
   tokenKey
 } = require('../runtime/prompt-policy');
+// 2026-08-15 样张视觉定级的人工评级覆盖：非 mature 场景也信任人工评级，不做 tag 反推交叉检查。
+const MANUAL_SCENE_RATINGS = require('../runtime/manual-scene-ratings.js');
 
 const dataDir = path.join(__dirname, '..', '..', 'data');
 const characterSource = path.join(dataDir, 'characters.json');
@@ -114,8 +116,8 @@ if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
   if (typeof scene.rating === 'string' && scene.mature !== (scene.rating === 'R18')) {
     errors.push(label + ': mature must match R18 rating');
   }
-  // 信任手工标记的成熟评级，不过问 tag 是否匹配
-  if (!scene.mature) {
+  // 信任手工标记的成熟评级，不过问 tag 是否匹配；人工定级表（MANUAL_SCENE_RATINGS）同样豁免。
+  if (!scene.mature && !Object.prototype.hasOwnProperty.call(MANUAL_SCENE_RATINGS, scene.id)) {
     const expectedRating = ratingFor(scene);
     if (scene.rating !== expectedRating) errors.push(label + ': rating should be ' + expectedRating + ', found ' + scene.rating);
   }
@@ -162,15 +164,14 @@ if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
     if (scene.rating === 'All' && !negativeTokens.includes('nsfw')) {
       errors.push(label + ': All scene must exclude nsfw');
     }
-    if (scene.rating === 'R15') {
-      if (negativeTokens.includes('nsfw')) errors.push(label + ': R15 negative must not block nsfw wholesale');
-      for (const token of ['nude', 'explicit']) {
-        if (!negativeTokens.includes(token)) errors.push(label + ': R15 negative prompt missing ' + token);
-      }
-    }
-    if (scene.rating === 'R18') {
+    // 2026-08-15 用户裁定：裸体压制只在 All 评级保留；R15 与 R18 同待遇——
+    // 负面不得出现 nsfw/nude/explicit（会与生成意图冲突），并须带未成年保护。
+    if (scene.rating === 'R15' || scene.rating === 'R18') {
       for (const token of ['nsfw', 'nude', 'explicit']) {
-        if (negativeTokens.includes(token)) errors.push(label + ': R18 negative conflicts with positive intent: ' + token);
+        if (negativeTokens.includes(token)) errors.push(label + ': ' + scene.rating + ' negative conflicts with positive intent: ' + token);
+      }
+      for (const token of ['child', 'loli', 'underage']) {
+        if (!negativeTokens.includes(token)) errors.push(label + ': ' + scene.rating + ' negative prompt missing ' + token);
       }
     }
     const overlap = [...scenePositiveKeys(scene)].filter((token) => negativeTokens.includes(token));

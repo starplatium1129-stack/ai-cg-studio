@@ -117,7 +117,7 @@
 
 ## 四、 Negative 装配（profile 原生，统一入口 `assembleNegative`）
 
-- **顺序**：官方前缀 → 场景非样板排除词（generic boilerplate 由 `replace/boilerplate` 策略移除）→ **紧凑手/解剖/文字保护**（`bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, text, watermark, logo, signature`）→ rating 安全（R18 加 `child/loli/underage`，其余加 `nsfw/nude/explicit`）。
+- **顺序**：官方前缀 → 场景非样板排除词（generic boilerplate 由 `replace/boilerplate` 策略移除）→ **紧凑手/解剖/文字保护**（`bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, text, watermark, logo, signature`）→ rating 安全（2026-08-15 用户裁定：**只有 All 加 `nsfw/nude/explicit`**；R15 与 R18 同待遇——剥离 `nsfw/nude/naked/explicit`、加 `child/loli/underage`，评级变化不改变出图画面的裸体语义）。
 - **Krea 恒空**；Anima 负面**独立于 SD 负面开关**（basic 模式同样生效）；只有 SD 受「启用负面」开关控制。
 - 历史成片负面是「当时场景+当时 profile」的快照，**不会写回自定义负面**（`negativeCustom`），恢复历史后由当前场景+profile 重新生成，避免跨 profile 泄漏。
 - **WAI 负面前缀**：`bad quality, worst quality, worst detail, sketch, censor`。

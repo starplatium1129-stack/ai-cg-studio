@@ -83,7 +83,9 @@ function nearestAnimaSize(blueprint) {
   })[0];
 }
 function buildCandidate(character, blueprint, profile, attempt, seedAttempt = attempt) {
-  const outfit = popularContent.defaultOutfit(character);
+  // 蓝图指定服装（outfitId）优先；缺失时回退默认服装。
+  const outfit = (blueprint.outfitId && popularContent.findOutfit(character, blueprint.outfitId))
+    || popularContent.defaultOutfit(character);
   const decisions = popularContent.inferBlueprintDecisions(blueprint);
   const adult = Boolean(blueprint.adult);
   const result = popularContent.buildPopularPromptPlan({
@@ -100,13 +102,18 @@ function buildCandidate(character, blueprint, profile, attempt, seedAttempt = at
     artistTags: artistTagsForEngine([ARTIST_TAG], 'anima'),
   });
   if (!result) throw new Error(`popular prompt build failed for ${character.id} / ${blueprint.id}`);
+  // 单人主体强化：压制主画面第二人（背景路人可接受，不强压 bystanders）。
+  const soloGuard = '(single girl only:1.4), (one person only:1.4), no second person, no other person';
+  const prompt = result.prompt.includes('\n')
+    ? result.prompt.replace('\n', `, ${soloGuard}\n`)
+    : `${result.prompt}, ${soloGuard}`;
   const [width, height] = nearestAnimaSize(blueprint).split('x').map(Number);
   return {
     batch: 'popular', key: `popular:${character.id}:${blueprint.id}`,
     recordId: `popular:${character.id}:${blueprint.id}@attempt-${attempt}`,
     characterId: character.id, blueprintId: blueprint.id, blueprintTitle: blueprint.title,
     displayName: `${character.displayName} / ${blueprint.title}${adult ? ' (R18)' : ''}`,
-    adult,
+    adult, outfitId: outfit.id,
     engine: 'anima', profileId: profile.id, modelId: ANIMA_MODEL_ID,
     checkpoint: animaConstants.MODELS[ANIMA_MODEL_ID].file,
     artistTag: '@' + ARTIST_TAG,
@@ -117,7 +124,7 @@ function buildCandidate(character, blueprint, profile, attempt, seedAttempt = at
     scheduler: animaGenerationContract.ANIMA_DEFAULTS.scheduler,
     seed: stableSeed(character.id, blueprint.id, seedAttempt),
     attempt,
-    prompt: result.prompt, negative: result.negative,
+    prompt, negative: result.negative,
     inferred: decisions,
   };
 }
@@ -157,9 +164,16 @@ function buildSubmissionBody(candidate) {
 }
 async function submitCandidate(base, candidate) {
   const route = '/api/anima/jobs';
-  const submitted = await gatewayJson(base, route, {
-    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(buildSubmissionBody(candidate)),
-  });
+  let submitted = null;
+  // 429 队列满：退避重试（网关 MAX_PENDING=4，并发脚本撞队列时自愈）。
+  for (let retry = 0; retry < 5; retry += 1) {
+    submitted = await gatewayJson(base, route, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(buildSubmissionBody(candidate)),
+    });
+    const busy = submitted.response && submitted.response.status === 429;
+    if (!busy) break;
+    await new Promise(resolve => setTimeout(resolve, 5000 * (retry + 1)));
+  }
   if (!submitted.response || submitted.response.status !== 202 || submitted.data?.ok !== true || !submitted.data.job?.id) {
     const status = submitted.response ? submitted.response.status : 'network';
     return { ok: false, error: `submission failed (${status}): ${submitted.error || JSON.stringify(submitted.data)}` };

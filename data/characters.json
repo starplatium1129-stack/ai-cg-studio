@@ -327,7 +327,7 @@
     "type": "popular",
     "icon": "⚡",
     "portrait": {
-      "image": "../assets/characters/popular-raiden_shogun.png",
+      "image": "../assets/characters/popular-raiden_shogun.png?v=2",
       "alt": "雷电将军 样张立绘"
     },
     "visual_dna": {
@@ -411,7 +411,7 @@
     "type": "popular",
     "icon": "🎬",
     "portrait": {
-      "image": "../assets/characters/popular-sakurajima_mai.png",
+      "image": "../assets/characters/popular-sakurajima_mai.png?v=2",
       "alt": "樱岛麻衣 样张立绘"
     },
     "visual_dna": {
@@ -495,7 +495,7 @@
     "type": "popular",
     "icon": "⏰",
     "portrait": {
-      "image": "../assets/characters/popular-tokisaki_kurumi.png",
+      "image": "../assets/characters/popular-tokisaki_kurumi.png?v=2",
       "alt": "时崎狂三 样张立绘"
     },
     "visual_dna": {
@@ -579,7 +579,7 @@
     "type": "popular",
     "icon": "🪄",
     "portrait": {
-      "image": "../assets/characters/popular-frieren.png",
+      "image": "../assets/characters/popular-frieren.png?v=2",
       "alt": "芙莉莲 样张立绘"
     },
     "visual_dna": {
@@ -655,7 +655,7 @@
   },
   {
     "id": "artoria_pendragon",
-    "name": "Saber",
+    "name": "阿尔托莉雅",
     "alias": [
       "Artoria Pendragon",
       "阿尔托莉雅·潘德拉贡",
@@ -664,7 +664,7 @@
     "type": "popular",
     "icon": "⚔️",
     "portrait": {
-      "image": "../assets/characters/popular-artoria_pendragon.png",
+      "image": "../assets/characters/popular-artoria_pendragon.png?v=2",
       "alt": "Saber 样张立绘"
     },
     "visual_dna": {
@@ -748,7 +748,7 @@
     "type": "popular",
     "icon": "🎤",
     "portrait": {
-      "image": "../assets/characters/popular-hatsune_miku.png",
+      "image": "../assets/characters/popular-hatsune_miku.png?v=2",
       "alt": "初音未来 样张立绘"
     },
     "visual_dna": {
@@ -832,7 +832,7 @@
     "type": "popular",
     "icon": "🎵",
     "portrait": {
-      "image": "../assets/characters/popular-yuzuriha_inori.png",
+      "image": "../assets/characters/popular-yuzuriha_inori.png?v=2",
       "alt": "楪祈 样张立绘"
     },
     "visual_dna": {
@@ -915,7 +915,7 @@
     "type": "popular",
     "icon": "📖",
     "portrait": {
-      "image": "../assets/characters/popular-yukinoshita_yukino.png",
+      "image": "../assets/characters/popular-yukinoshita_yukino.png?v=2",
       "alt": "雪之下雪乃 样张立绘"
     },
     "visual_dna": {
@@ -999,7 +999,7 @@
     "type": "popular",
     "icon": "🧹",
     "portrait": {
-      "image": "../assets/characters/popular-elaina.png",
+      "image": "../assets/characters/popular-elaina.png?v=2",
       "alt": "伊雷娜 样张立绘"
     },
     "visual_dna": {
@@ -1083,7 +1083,7 @@
     "type": "popular",
     "icon": "⚡",
     "portrait": {
-      "image": "../assets/characters/popular-misaka_mikoto.png",
+      "image": "../assets/characters/popular-misaka_mikoto.png?v=2",
       "alt": "御坂美琴 样张立绘"
     },
     "visual_dna": {
@@ -1166,7 +1166,7 @@
     "type": "popular",
     "icon": "🖤",
     "portrait": {
-      "image": "../assets/characters/popular-makima.png",
+      "image": "../assets/characters/popular-makima.png?v=2",
       "alt": "玛奇玛 样张立绘"
     },
     "visual_dna": {
@@ -1249,7 +1249,7 @@
     "type": "popular",
     "icon": "💎",
     "portrait": {
-      "image": "../assets/characters/popular-tohsaka_rin.png",
+      "image": "../assets/characters/popular-tohsaka_rin.png?v=2",
       "alt": "远坂凛 样张立绘"
     },
     "visual_dna": {
@@ -1333,7 +1333,7 @@
     "type": "popular",
     "icon": "🪄",
     "portrait": {
-      "image": "../assets/characters/popular-rem_rezero.png",
+      "image": "../assets/characters/popular-rem_rezero.png?v=2",
       "alt": "雷姆 样张立绘"
     },
     "visual_dna": {
@@ -1417,7 +1417,7 @@
     "type": "popular",
     "icon": "❄️",
     "portrait": {
-      "image": "../assets/characters/popular-emilia_rezero.png",
+      "image": "../assets/characters/popular-emilia_rezero.png?v=2",
       "alt": "爱蜜莉雅 样张立绘"
     },
     "visual_dna": {
@@ -1501,7 +1501,7 @@
     "type": "popular",
     "icon": "🎓",
     "portrait": {
-      "image": "../assets/characters/popular-roxy_migurdia.png",
+      "image": "../assets/characters/popular-roxy_migurdia.png?v=2",
       "alt": "洛琪希 样张立绘"
     },
     "visual_dna": {
@@ -1585,7 +1585,7 @@
     "type": "popular",
     "icon": "🏰",
     "portrait": {
-      "image": "../assets/characters/popular-illyasviel_von_einzbern.png",
+      "image": "../assets/characters/popular-illyasviel_von_einzbern.png?v=2",
       "alt": "伊莉雅丝菲尔 样张立绘"
     },
     "visual_dna": {
@@ -1669,7 +1669,7 @@
     "type": "popular",
     "icon": "🧵",
     "portrait": {
-      "image": "../assets/characters/popular-kitagawa_marin.png",
+      "image": "../assets/characters/popular-kitagawa_marin.png?v=2",
       "alt": "喜多川海梦 样张立绘"
     },
     "visual_dna": {
@@ -1753,7 +1753,7 @@
     "type": "popular",
     "icon": "🔥",
     "portrait": {
-      "image": "../assets/characters/popular-kisara_engage_kiss.png",
+      "image": "../assets/characters/popular-kisara_engage_kiss.png?v=2",
       "alt": "木更 样张立绘"
     },
     "visual_dna": {

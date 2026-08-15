@@ -74,33 +74,26 @@
             </RouterLink>
           </div>
         </div>
-        <!-- Q 版小剧场：解包素材精选（assets/chibi），点击看大图 -->
-        <div class="chibi-strip" aria-labelledby="chibiLabel">
-          <div class="strip-label" id="chibiLabel">
-            <span class="dot"></span> Q 版小剧场 · <span>解包 SD 日常</span>
+        <!-- 热门角色：样张立绘横条，点击进入该角色的场景库 -->
+        <div v-if="popularCharacters.length" class="pop-strip" aria-labelledby="popStripLabel">
+          <div class="strip-label" id="popStripLabel">
+            <span class="dot"></span> 热门角色 · <span>{{ popularCharacters.length }} 位角色样张</span>
           </div>
-          <div class="chibi-scroll">
-            <button
-              v-for="(c, index) in chibiList"
+          <div class="pop-scroll">
+            <RouterLink
+              v-for="c in popularCharacters"
               :key="c.id"
-              class="chibi-card"
-              :class="index % 2 ? 'tilt-right' : 'tilt-left'"
-              type="button"
-              :aria-label="`查看大图：${c.label}`"
-              @click="openChibi(c)"
+              class="pop-card-mini"
+              :to="`/popular-scenes?character=${encodeURIComponent(c.id)}`"
             >
-              <img :src="c.thumb" :alt="c.label" loading="lazy" decoding="async" />
-              <span class="chibi-cap">
-                <span class="chibi-cap-text">{{ c.label }}</span>
-                <span class="chibi-stamp">{{ c.tag }}</span>
+              <img :src="portraitSrc(c.id)" :alt="c.displayName" loading="lazy" decoding="async" />
+              <span class="pop-cap">
+                <span class="pop-cap-name">{{ c.displayName }}</span>
+                <span class="pop-cap-franchise">{{ c.franchise }}</span>
               </span>
-            </button>
+            </RouterLink>
           </div>
         </div>
-        <dialog ref="chibiDialogEl" class="chibi-dialog" @click.self="closeChibi">
-          <img v-if="chibiLarge" :src="chibiLarge" alt="" class="chibi-large" />
-          <button class="chibi-dialog-close" type="button" aria-label="关闭" @click="closeChibi">×</button>
-        </dialog>
       </div>
     </section>
 
@@ -242,7 +235,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, reactive, nextTick } from 'vue'
+import { ref, computed, onMounted, onUnmounted, reactive, nextTick } from 'vue'
 import { maintenanceApi } from '../api/maintenanceApi.ts'
 import SceneCard from '@/components/SceneCard.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
@@ -284,24 +277,10 @@ const heroWmEl = ref<HTMLElement | null>(null)
 const stripEl = ref<HTMLElement | null>(null)
 let heroScrollFrame = 0
 
-// ── Q 版小剧场（解包 SD 素材，见 scripts/maintenance/chibi-import.py） ──
-// 选图标准：中景构图、头部完整、背景干净（避免特写裁切与英文贴纸）
-const CHIBI = [
-  { id: 'nene-study',   thumb: '/assets/chibi/nene-study.webp',   large: '/assets/chibi/nene-study-full.webp',   label: '自习时的心跳', tag: 'NENE' },
-  { id: 'natsume-coffee', thumb: '/assets/chibi/natsume-coffee.webp', large: '/assets/chibi/natsume-coffee-full.webp', label: '咖啡时间', tag: 'NATSUME' },
-  { id: 'nene-night',   thumb: '/assets/chibi/nene-night.webp',   large: '/assets/chibi/nene-night-full.webp',   label: '睡衣时光', tag: 'NENE' },
-  { id: 'natsume-feed', thumb: '/assets/chibi/natsume-feed.webp', large: '/assets/chibi/natsume-feed-full.webp', label: '喂食日常', tag: 'NATSUME' },
-] as const
-const chibiList = ref(CHIBI)
-const chibiDialogEl = ref<HTMLDialogElement | null>(null)
-const chibiLarge = ref('')
-function openChibi(c: { large: string }) {
-  chibiLarge.value = c.large
-  chibiDialogEl.value?.showModal()
-}
-function closeChibi() {
-  chibiDialogEl.value?.close()
-  chibiLarge.value = ''
+// ── 热门角色：样张立绘横条（立绘来自展示库发布 assets/characters/popular-<id>.png） ──
+const popularCharacters = computed(() => sceneStore.popularCharacters)
+function portraitSrc(id: string): string {
+  return `/assets/characters/popular-${id}.png?v=2`
 }
 
 /** 横条只在真正可滚动时显示右缘渐隐，避免宽屏误遮最后一张卡 */
@@ -380,6 +359,24 @@ function initContinueDraft() {
   return true
 }
 
+/**
+ * 首页横条以日期为种子做确定性轮换：每天从「招牌 + 精选」池里换一窗展示，
+ * 与横条文案「今天可以从这里开始」一致，且不改变 curation 的层级语义。
+ */
+function pickFeatured(ids: string[], scenes: HomeScene[], count: number): HomeScene[] {
+  const pool = ids
+    .map(id => scenes.find(scene => scene.id === id))
+    .filter((scene): scene is HomeScene => Boolean(scene && !scene.mature))
+  if (!pool.length) return []
+  const dayKey = new Date().toISOString().slice(0, 10)
+  let seed = 0
+  for (let i = 0; i < dayKey.length; i += 1) seed = (seed * 31 + dayKey.charCodeAt(i)) >>> 0
+  const start = seed % pool.length
+  const out: HomeScene[] = []
+  for (let i = 0; i < count && out.length < count; i += 1) out.push(pool[(start + i) % pool.length])
+  return out
+}
+
 async function loadSceneHighlights() {
   try {
     await sceneStore.load()
@@ -391,12 +388,7 @@ async function loadSceneHighlights() {
     sceneCountCopy.value = `${ids.length} 个精选场景`
     sceneLibraryCopy.value = `${ids.length} 个招牌与精选，完整库共 ${scenes.length} 个。`
 
-    const picks = ids
-      .map(id => scenes.find(scene => scene.id === id))
-      .filter((scene): scene is HomeScene => Boolean(scene && !scene.mature))
-      .slice(0, 6)
-
-    featuredScenes.value = picks
+    featuredScenes.value = pickFeatured(ids, scenes, 6)
 
     // 最近用过的场景
     const recent = readRecent(localStorage)
@@ -538,8 +530,8 @@ onUnmounted(() => {
 .strip-scroll::-webkit-scrollbar { height:4px; }
 .strip-scroll::-webkit-scrollbar-thumb { background:var(--border-soft); border-radius:var(--r-pill); }
 
-/* Q 版小剧场：解包 SD 卡横条（玻璃卡语言与 hero-strip 同源） */
-.home-page .chibi-strip {
+/* 热门角色：样张立绘横条（玻璃卡语言与 hero-strip 同源） */
+.home-page .pop-strip {
   grid-column:1 / -1;
   margin-top: var(--s-3);
   padding: var(--s-3) var(--s-4);
@@ -549,69 +541,50 @@ onUnmounted(() => {
   overflow: hidden;
   animation: homeStripIn .62s var(--ease-out) .32s both;
 }
-.chibi-scroll {
+.pop-scroll {
   display:flex; gap:var(--s-3); overflow-x:auto;
   scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch;
   padding:2px var(--s-2) var(--s-2) 0; scrollbar-width:thin;
 }
-.chibi-scroll::-webkit-scrollbar { height:4px; }
-.chibi-scroll::-webkit-scrollbar-thumb { background:var(--border-soft); border-radius:var(--r-pill); }
-.chibi-card {
-  flex:0 0 auto; position:relative; width:min(288px,62vw);
-  padding:8px 8px 6px;
+.pop-scroll::-webkit-scrollbar { height:4px; }
+.pop-scroll::-webkit-scrollbar-thumb { background:var(--border-soft); border-radius:var(--r-pill); }
+.pop-card-mini {
+  flex:0 0 auto; position:relative; width:132px;
+  padding:6px 6px 4px;
   border:1px solid var(--border-soft);
   border-radius: var(--r-lg);
   background: color-mix(in srgb, var(--bg-elevated) 86%, transparent);
   box-shadow: var(--shadow-glass-sm);
-  cursor:pointer; text-align:left;
   scroll-snap-align:start;
-  display:grid; gap:6px;
+  /* 普通块流：img 的 width:100% 直接绑定卡片内容宽度。
+     （grid 的 auto 轨道会被部分图片的内在尺寸撑大导致溢出，已实测复现） */
+  display:block;
+  overflow:hidden;
+  min-width:0;
+  text-decoration:none;
   transition: transform var(--t-fast) var(--ease-out), box-shadow var(--t-fast), border-color var(--t-fast);
 }
-/* 拍立得错落感：奇偶交替微倾斜，hover 归正放大 */
-.chibi-card.tilt-left  { transform: rotate(-1.8deg); }
-.chibi-card.tilt-right { transform: rotate(1.6deg); }
-.chibi-card:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); box-shadow: 0 16px 34px -16px color-mix(in srgb, var(--accent) 45%, transparent), var(--shadow-glass-md); }
-.chibi-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.chibi-card img {
-  display:block; width:100%; aspect-ratio:5/3; object-fit:cover;
+.pop-card-mini:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); box-shadow: 0 16px 34px -16px color-mix(in srgb, var(--accent) 45%, transparent), var(--shadow-glass-md); }
+.pop-card-mini:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.pop-card-mini img {
+  display:block; width:100%; height:auto; aspect-ratio:3/4; object-fit:cover; object-position:center top;
   border-radius: var(--r-md);
   filter: saturate(.94); transition: filter var(--t-base), transform var(--t-base) var(--ease-out);
 }
-.chibi-card:hover img { filter: saturate(1.06); }
-.chibi-cap {
-  display:flex; align-items:center; justify-content:space-between; gap:var(--s-2);
+.pop-card-mini:hover img { filter: saturate(1.06); }
+.pop-cap {
+  display:flex; flex-direction:column; gap:1px;
+  margin-top:6px;
   padding: 0 2px 2px;
 }
-.chibi-cap-text {
-  font-size: var(--fs-label-sm); font-weight:600; color: var(--text-secondary);
+.pop-cap-name {
+  font-size: var(--fs-label-sm); font-weight:600; color: var(--text-primary);
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
-/* 印章式小徽章：斜贴角色色（NENE 紫 / NATSUME 琥珀） */
-.chibi-stamp {
-  flex:none;
-  padding:1px 8px; border-radius: var(--r-sm);
-  font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.1em;
-  transform: rotate(-3deg);
-  color: var(--text-inverse);
+.pop-cap-franchise {
+  font: 600 var(--fs-mono-xs) var(--font-mono); color: var(--text-muted);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
-.chibi-card:nth-child(odd) .chibi-stamp { background: linear-gradient(135deg, var(--nene-violet), color-mix(in srgb, var(--nene-violet) 60%, var(--accent-violet))); }
-.chibi-card:nth-child(even) .chibi-stamp { background: linear-gradient(135deg, var(--natsume-amber), color-mix(in srgb, var(--natsume-amber) 55%, var(--mood-warmth))); }
-.chibi-dialog {
-  border:0; padding:var(--s-2); border-radius:var(--r-2xl);
-  background: color-mix(in srgb, var(--bg-elevated) 92%, transparent);
-  box-shadow: var(--shadow-lg), 0 0 0 1px var(--border-soft);
-  max-width:min(960px,92vw);
-}
-.chibi-dialog::backdrop { background: color-mix(in srgb, var(--bg-deep) 72%, transparent); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
-.chibi-large { display:block; max-width:100%; max-height:82vh; border-radius:var(--r-xl); }
-.chibi-dialog-close {
-  position:absolute; top:var(--s-2); right:var(--s-2);
-  width:36px; height:36px; border:1px solid var(--border-soft); border-radius:50%;
-  background:var(--bg-deep); color:var(--text-secondary);
-  font-size:var(--fs-body-lg); cursor:pointer; line-height:1;
-}
-.chibi-dialog-close:hover { color:var(--accent); border-color:var(--accent); }
 .continue-hint { min-height:20px; margin-top:var(--s-2); color:var(--text-muted); font-size:var(--fs-label-sm); }
 .continue-hint strong { color:var(--accent); }
 
@@ -656,7 +629,7 @@ onUnmounted(() => {
 .recent-grid .recent-empty-state { grid-column:1 / -1; margin-top:0; }
 
 @media (hover: hover) and (pointer: fine) {
-  .chibi-card:hover { transform:rotate(0) translateY(-3px) scale(1.02); }
+  .pop-card-mini:hover { transform:translateY(-3px) scale(1.02); }
   .tool-card:hover { transform:translateY(-2px); }
   .tool-card:hover .go { transform:translateX(3px); }
   .recent-card:hover { transform:translateY(-2px); }
@@ -669,7 +642,7 @@ onUnmounted(() => {
   .hero-copy { order:1; }
   .hero-orbit { order:2; min-height:360px; }
   .hero-strip { order:3; }
-  .home-page .chibi-strip { order:4; }
+  .home-page .pop-strip { order:4; }
 }
 @media (max-width:480px) {
   .home-hero { padding-top:var(--s-6); }

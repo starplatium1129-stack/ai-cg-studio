@@ -68,7 +68,8 @@ assert(policy.tokenize(selectiveNegative).includes('bad quality'), 'model negati
 const r15 = policy.adaptNegative('bad hands, nsfw, nude, explicit, cropped', { rating:'R15' }, { shot:'close', character:'nene' });
 assert(!policy.tokenize(r15).includes('nsfw'), 'R15 must not be blocked by nsfw');
 assert(!policy.tokenize(r15).includes('cropped'), 'close-up must not negatively block cropping');
-assert(policy.tokenize(r15).includes('nude') && policy.tokenize(r15).includes('explicit'), 'R15 must still block explicit content');
+assert(!policy.tokenize(r15).includes('nude') && !policy.tokenize(r15).includes('explicit'), 'R15 must not block explicit content (2026-08-15 用户裁定：R15+ 与 R18 同待遇)');
+['child','loli','underage'].forEach(tag => assert(policy.tokenize(r15).includes(tag), 'R15 must exclude ' + tag));
 
 const r18 = policy.adaptNegative('bad hands, nsfw, nude, explicit', { rating:'R18', mature:true }, { character:'nene' });
 ['child','loli','underage'].forEach(tag => assert(policy.tokenize(r18).includes(tag), 'R18 must exclude ' + tag));

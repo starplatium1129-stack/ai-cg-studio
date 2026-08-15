@@ -41,7 +41,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "shogun_robes"
     },
     {
       "id": "raiden_shogun_thunder_night",
@@ -83,7 +84,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, day, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "shogun_robes"
     },
     {
       "id": "raiden_shogun_narukami_shrine",
@@ -123,7 +125,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "shogun_robes"
     },
     {
       "id": "raiden_shogun_r18_chamber",
@@ -182,7 +185,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude with her intricate purple kimono discarded beside her on the tatami, Raiden Shogun reclines softly on silk cushions, her bare breasts, slender waist and delicate collarbone glowing under warm candlelight as she looks at the viewer with a rare blushing, vulnerable gaze.",
-      "adultArtistHint": "@kousaki rui"
+      "adultArtistHint": "@kousaki rui",
+      "outfitId": "shogun_robes",
+      "sampleRating": "R18"
     },
     {
       "id": "raiden_shogun_flower_field",
@@ -225,7 +230,8 @@
       ],
       "recommendedSize": "1216x832",
       "kreaStyleHint": "cinematic_film_still",
-      "animaStyleHint": "cinematic_film_still"
+      "animaStyleHint": "cinematic_film_still",
+      "outfitId": "modern_clothes"
     },
     {
       "id": "raiden_shogun_convenience",
@@ -262,7 +268,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, medieval, palace, battlefield, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "modern_clothes"
     },
     {
       "id": "raiden_shogun_cafe",
@@ -303,7 +310,8 @@
       ],
       "recommendedSize": "832x1216",
       "kreaStyleHint": "soft_daily_illustration",
-      "animaStyleHint": "soft_daily_illustration"
+      "animaStyleHint": "soft_daily_illustration",
+      "outfitId": "modern_clothes"
     },
     {
       "id": "raiden_shogun_r18_bath",
@@ -362,7 +370,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude and soaking in the warm stone bath, Raiden Shogun rests her arms on the smooth edge with her bare breasts and glistening shoulders rising above the steaming water, rivulets tracing her pale skin in the violet lantern light as she gazes forward with calm, softened eyes.",
-      "adultArtistHint": "@tiv"
+      "adultArtistHint": "@tiv",
+      "outfitId": "shogun_robes",
+      "sampleRating": "R18"
     },
     {
       "id": "raiden_shogun_r18_study",
@@ -420,7 +430,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude with her purple kimono slipping off her shoulders onto the tatami, Raiden Shogun reclines against a pile of silk cushions by the low desk, her bare breasts and slender waist catching the warm lantern glow as her long braid pools beside her and she looks up with drowsy, vulnerable eyes.",
-      "adultArtistHint": "@anmi"
+      "adultArtistHint": "@anmi",
+      "outfitId": "shogun_robes",
+      "sampleRating": "R18"
     },
     {
       "id": "raiden_shogun_r18_ashiyu",
@@ -480,7 +492,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude with her kimono pooled at her waist, Raiden Shogun sits by the warm wooden foot bath with her bare feet soaking in the steaming water, her bare breasts and delicate collarbone glowing in the lantern light as she watches with calm, softened eyes.",
-      "adultArtistHint": "@kousaki rui"
+      "adultArtistHint": "@kousaki rui",
+      "outfitId": "shogun_robes",
+      "sampleRating": "R18"
     },
     {
       "id": "sakurajima_mai_library",
@@ -520,7 +534,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, night, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "bunny_girl"
     },
     {
       "id": "sakurajima_mai_rooftop",
@@ -560,7 +575,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "1216x832"
+      "recommendedSize": "1216x832",
+      "outfitId": "school_uniform"
     },
     {
       "id": "sakurajima_mai_city_night",
@@ -600,7 +616,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, day, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "street_clothes"
     },
     {
       "id": "sakurajima_mai_r18_hotel",
@@ -659,7 +676,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude with her black bunny suit discarded on the nightstand, Sakurajima Mai lies gracefully in bed hugging a soft white sheet, her bare breasts and delicate collarbone bathed in warm bedside lamplight as she turns with flushed cheeks and a tender, alluring smile.",
-      "adultArtistHint": "@anmi"
+      "adultArtistHint": "@anmi",
+      "outfitId": "bunny_girl",
+      "sampleRating": "R18"
     },
     {
       "id": "sakurajima_mai_supermarket",
@@ -700,7 +719,8 @@
       ],
       "recommendedSize": "832x1216",
       "kreaStyleHint": "soft_daily_illustration",
-      "animaStyleHint": "soft_daily_illustration"
+      "animaStyleHint": "soft_daily_illustration",
+      "outfitId": "street_clothes"
     },
     {
       "id": "sakurajima_mai_kitchen_morning",
@@ -741,7 +761,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, night, stage, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "street_clothes"
     },
     {
       "id": "sakurajima_mai_bookstore",
@@ -778,7 +799,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, night, stage, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "street_clothes"
     },
     {
       "id": "sakurajima_mai_r18_bathroom_mirror",
@@ -834,7 +856,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude and still damp from the bath, Sakurajima Mai stands before the steamed mirror with her bare breasts and slender shoulders beaded with moisture, her long black hair clinging to her skin as she meets her own reflection with a soft, flushed expression.",
-      "adultArtistHint": "@atdan"
+      "adultArtistHint": "@atdan",
+      "outfitId": "street_clothes",
+      "sampleRating": "R18"
     },
     {
       "id": "sakurajima_mai_r18_morning_bed",
@@ -890,7 +914,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude under the rumpled sheets, Sakurajima Mai lies half-awake in the pale morning light with the blanket slipping to reveal her bare breasts and slender waist, her sleepy eyes and soft smile carrying an unguarded tenderness.",
-      "adultArtistHint": "@kousaki rui"
+      "adultArtistHint": "@kousaki rui",
+      "outfitId": "street_clothes",
+      "sampleRating": "R18"
     },
     {
       "id": "sakurajima_mai_r18_pantyhose",
@@ -950,7 +976,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude except for her sheer black pantyhose, Sakurajima Mai reclines on the sofa with her long stockinged leg raised, the arch of her foot and curled toes catching the warm lamplight as she watches with a soft, teasing smile.",
-      "adultArtistHint": "@kousaki rui"
+      "adultArtistHint": "@kousaki rui",
+      "outfitId": "bunny_girl",
+      "sampleRating": "R18"
     },
     {
       "id": "tokisaki_kurumi_moon_clocktower",
@@ -990,7 +1018,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, school, bright, cheerful, day, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "gothic_dress"
     },
     {
       "id": "tokisaki_kurumi_night_rooftop",
@@ -1030,7 +1059,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, bright, cheerful, day, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "1216x832"
+      "recommendedSize": "1216x832",
+      "outfitId": "gothic_dress"
     },
     {
       "id": "tokisaki_kurumi_frozen_ruins",
@@ -1071,7 +1101,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, bright, cheerful, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "1216x832"
+      "recommendedSize": "1216x832",
+      "outfitId": "gothic_dress"
     },
     {
       "id": "tokisaki_kurumi_r18_clocktower",
@@ -1129,7 +1160,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude with her crimson astral dress discarded beside her, Tokisaki Kurumi reclines gracefully against velvet cushions, her bare breasts and mismatched golden clock eye glowing in the moonlight as she offers a tantalizing, breathless smirk.",
-      "adultArtistHint": "@tsunako"
+      "adultArtistHint": "@tsunako",
+      "outfitId": "gothic_dress",
+      "sampleRating": "R18"
     },
     {
       "id": "tokisaki_kurumi_cat_cafe",
@@ -1170,7 +1203,8 @@
       ],
       "recommendedSize": "832x1216",
       "kreaStyleHint": "soft_daily_illustration",
-      "animaStyleHint": "soft_daily_illustration"
+      "animaStyleHint": "soft_daily_illustration",
+      "outfitId": "casual"
     },
     {
       "id": "tokisaki_kurumi_ramen_night",
@@ -1209,7 +1243,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, battlefield, gothic, day, bright, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "casual"
     },
     {
       "id": "tokisaki_kurumi_old_bookstore",
@@ -1248,7 +1283,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, battlefield, gothic, night, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "casual"
     },
     {
       "id": "tokisaki_kurumi_r18_canopy_night",
@@ -1306,7 +1342,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude among the crimson sheets, Tokisaki Kurumi lounges against the pillows with her bare breasts and pale elegant body glowing in the red candlelight, her mismatched golden clock eye shining as she parts her lips in a breathless, teasing smile.",
-      "adultArtistHint": "@tsunako"
+      "adultArtistHint": "@tsunako",
+      "outfitId": "gothic_dress",
+      "sampleRating": "R18"
     },
     {
       "id": "tokisaki_kurumi_r18_bath_moon",
@@ -1362,7 +1400,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude and submerged to her collarbone in the dark bathwater, Tokisaki Kurumi leans back with her bare shoulders glistening, wet strands of black hair framing her pale face as she watches with a slow, unnerving smile.",
-      "adultArtistHint": "@xinzoruo"
+      "adultArtistHint": "@xinzoruo",
+      "outfitId": "casual",
+      "sampleRating": "R18"
     },
     {
       "id": "tokisaki_kurumi_r18_armpit",
@@ -1421,7 +1461,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude with both arms stretched overhead, Tokisaki Kurumi arches her back on the crimson sheets, her bare breasts lifted and her smooth underarms exposed to the cold moonlight as she parts her lips in a teasing, breathless smile.",
-      "adultArtistHint": "@tsunako"
+      "adultArtistHint": "@tsunako",
+      "outfitId": "casual",
+      "sampleRating": "R18"
     },
     {
       "id": "frieren_magic_library",
@@ -1461,7 +1503,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, school, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "wizard_robe"
     },
     {
       "id": "frieren_journey_field",
@@ -1502,7 +1545,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, school, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "1216x832"
+      "recommendedSize": "1216x832",
+      "outfitId": "travel_clothes"
     },
     {
       "id": "frieren_graveyard",
@@ -1542,7 +1586,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "travel_clothes"
     },
     {
       "id": "frieren_r18_inn_bath",
@@ -1600,7 +1645,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude with only a soft white towel loosely resting on her lap, Frieren sits relaxed on the wooden bed with glistening moist skin, her small bare breasts and pointed elf ears illuminated by the warm fireplace glow as she looks up with sleepy, flushed violet eyes.",
-      "adultArtistHint": "@anmi"
+      "adultArtistHint": "@anmi",
+      "outfitId": "casual",
+      "sampleRating": "R18"
     },
     {
       "id": "frieren_city_cafe",
@@ -1640,7 +1687,8 @@
       ],
       "recommendedSize": "832x1216",
       "kreaStyleHint": "soft_daily_illustration",
-      "animaStyleHint": "soft_daily_illustration"
+      "animaStyleHint": "soft_daily_illustration",
+      "outfitId": "casual"
     },
     {
       "id": "frieren_supermarket_tasting",
@@ -1676,7 +1724,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, fantasy, forest, night, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "casual"
     },
     {
       "id": "frieren_park_bench",
@@ -1713,7 +1762,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, fantasy, forest, night, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "1216x832"
+      "recommendedSize": "1216x832",
+      "outfitId": "casual"
     },
     {
       "id": "frieren_r18_fireplace_night",
@@ -1769,7 +1819,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude with her robe draped over the chair, Frieren sits on the soft fur rug by the fire with her knees drawn up, her small bare breasts and pale elf skin glowing warmly in the firelight as her violet eyes hold a sleepy, unguarded softness.",
-      "adultArtistHint": "@kousaki rui"
+      "adultArtistHint": "@kousaki rui",
+      "outfitId": "casual",
+      "sampleRating": "R18"
     },
     {
       "id": "frieren_r18_mage_tower",
@@ -1827,7 +1879,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude with her white robe slipping down her back, Frieren reclines against the tall-backed chair by the desk, her bare breasts and slender frame caught between candle glow and starlight as she turns her head with a languid, knowing gaze.",
-      "adultArtistHint": "@atdan"
+      "adultArtistHint": "@atdan",
+      "outfitId": "wizard_robe",
+      "sampleRating": "R18"
     },
     {
       "id": "frieren_r18_elf_ears",
@@ -1885,7 +1939,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude in the warm firelight, Frieren touches the tip of her pointed elf ear with one slender finger, her bare breasts rising gently as her violet eyes grow half-lidded and a faint blush spreads across her pale cheeks.",
-      "adultArtistHint": "@anmi"
+      "adultArtistHint": "@anmi",
+      "outfitId": "casual",
+      "sampleRating": "R18"
     },
     {
       "id": "frieren_r18_morning_inn",
@@ -1939,7 +1995,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude in the soft morning light, Frieren sits at the edge of the bed with her bare breasts and pointed elf ears glowing warmly, her long white hair loose around her shoulders as she rubs her sleepy violet eyes.",
-      "adultArtistHint": "@hiten (hitenkei)"
+      "adultArtistHint": "@hiten (hitenkei)",
+      "outfitId": "casual",
+      "sampleRating": "R18"
     },
     {
       "id": "artoria_moonlit_city",
@@ -1980,7 +2038,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, school, casual, bright, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "knight_dress"
     },
     {
       "id": "artoria_emiya_dining",
@@ -2023,7 +2082,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, armor, battlefield, swords, fighting, harsh shadows, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "casual"
     },
     {
       "id": "artoria_final_battle",
@@ -2064,7 +2124,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, school, casual, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "1216x832"
+      "recommendedSize": "1216x832",
+      "outfitId": "knight_dress"
     },
     {
       "id": "artoria_r18_royal_chamber",
@@ -2122,7 +2183,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude with her silver armor and blue dress removed, Saber lies softly on silk sheets, her supple bare breasts and slender knightly body illuminated in warm firelight and cool moonlight as she looks at the viewer with blushing, earnest emerald eyes.",
-      "adultArtistHint": "@kousaki rui"
+      "adultArtistHint": "@kousaki rui",
+      "outfitId": "knight_dress",
+      "sampleRating": "R18"
     },
     {
       "id": "artoria_burger_shop",
@@ -2161,7 +2224,8 @@
       ],
       "recommendedSize": "832x1216",
       "kreaStyleHint": "soft_daily_illustration",
-      "animaStyleHint": "soft_daily_illustration"
+      "animaStyleHint": "soft_daily_illustration",
+      "outfitId": "casual"
     },
     {
       "id": "artoria_laundromat",
@@ -2196,7 +2260,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, battlefield, medieval, armor, sword, day, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "casual"
     },
     {
       "id": "artoria_autumn_park",
@@ -2232,7 +2297,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, battlefield, medieval, armor, sword, night, winter, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "1216x832"
+      "recommendedSize": "1216x832",
+      "outfitId": "casual"
     },
     {
       "id": "artoria_r18_castle_bath",
@@ -2288,7 +2354,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude and soaking in the stone bath, Saber rests her arms along the rim with her bare breasts and wet shoulders gleaming in the torchlight, her damp blonde hair tucked back as her emerald eyes soften with quiet warmth.",
-      "adultArtistHint": "@kousaki rui"
+      "adultArtistHint": "@kousaki rui",
+      "outfitId": "casual",
+      "sampleRating": "R18"
     },
     {
       "id": "artoria_r18_apartment_morning",
@@ -2342,7 +2410,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude and fresh from sleep, Saber sits at the edge of the bed stretching in the bright morning sun, her bare breasts and athletic body limned by warm light as she turns with a serene, gentle smile.",
-      "adultArtistHint": "@jazz_jack"
+      "adultArtistHint": "@jazz_jack",
+      "outfitId": "casual",
+      "sampleRating": "R18"
     },
     {
       "id": "artoria_r18_nape",
@@ -2399,7 +2469,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude with her blonde hair let down, Saber stands before the fireplace turned slightly away, her smooth bare back and the delicate nape of her neck glowing in the firelight as she glances back with blushing, earnest eyes.",
-      "adultArtistHint": "@jazz jack"
+      "adultArtistHint": "@jazz jack",
+      "outfitId": "casual",
+      "sampleRating": "All"
     },
     {
       "id": "hatsune_miku_concert",
@@ -2440,7 +2512,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, empty_room, day, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "1216x832"
+      "recommendedSize": "1216x832",
+      "outfitId": "stage"
     },
     {
       "id": "hatsune_miku_studio",
@@ -2479,7 +2552,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, outdoors, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "v2_classic"
     },
     {
       "id": "hatsune_miku_street_festival",
@@ -2519,7 +2593,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, empty, day, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "street"
     },
     {
       "id": "hatsune_miku_r18_backstage",
@@ -2575,7 +2650,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude with her stage costume draped over the sofa, Hatsune Miku sits comfortably with her flowing teal twin-tails framing her bare breasts and delicate waist, warm vanity mirror lights giving her flushed skin a radiant, dewy glow as she smiles sweetly.",
-      "adultArtistHint": "@rella"
+      "adultArtistHint": "@rella",
+      "outfitId": "stage",
+      "sampleRating": "R18"
     },
     {
       "id": "hatsune_miku_record_store",
@@ -2616,7 +2693,8 @@
       ],
       "recommendedSize": "832x1216",
       "kreaStyleHint": "anime_key_visual",
-      "animaStyleHint": "anime_key_visual"
+      "animaStyleHint": "anime_key_visual",
+      "outfitId": "street"
     },
     {
       "id": "hatsune_miku_convenience_night",
@@ -2651,7 +2729,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, stage, concert, crowd, day, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "street"
     },
     {
       "id": "hatsune_miku_morning_jog",
@@ -2688,7 +2767,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, stage, concert, crowd, night, indoor, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "1216x832"
+      "recommendedSize": "1216x832",
+      "outfitId": "street"
     },
     {
       "id": "hatsune_miku_r18_studio_night",
@@ -2744,7 +2824,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude with her stage costume draped over the sofa back, Hatsune Miku lies across the leather cushions with her teal twin tails splaying around her bare breasts, soft console lights tracing her flushed skin as she smiles drowsily.",
-      "adultArtistHint": "@rella"
+      "adultArtistHint": "@rella",
+      "outfitId": "v2_classic",
+      "sampleRating": "R18"
     },
     {
       "id": "hatsune_miku_r18_morning_room",
@@ -2798,7 +2880,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude in the fresh morning light, Hatsune Miku kneels on the bed stretching with her arms overhead, her bare breasts lifted and her ribbons of teal hair falling around her as she blushes and smiles sweetly at the viewer.",
-      "adultArtistHint": "@jazz_jack"
+      "adultArtistHint": "@jazz_jack",
+      "outfitId": "v2_classic",
+      "sampleRating": "R18"
     },
     {
       "id": "hatsune_miku_r18_barefoot_sofa",
@@ -2858,7 +2942,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude with her bare feet stretched out on the leather sofa, Hatsune Miku arches her toes and lifts her leg as her teal twin tails spill across the cushions, her bare breasts rising gently in the dim light with a drowsy, sweet smile.",
-      "adultArtistHint": "@rella"
+      "adultArtistHint": "@rella",
+      "outfitId": "street",
+      "sampleRating": "R18"
     },
     {
       "id": "yuzuriha_inori_stage",
@@ -2897,7 +2983,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, cheerful, day, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "funeral_parade"
     },
     {
       "id": "yuzuriha_inori_ruined_city",
@@ -2938,7 +3025,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, cheerful, bright, school, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "1216x832"
+      "recommendedSize": "1216x832",
+      "outfitId": "funeral_parade"
     },
     {
       "id": "yuzuriha_inori_rooftop",
@@ -2977,7 +3065,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, cheerful, bright, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "1216x832"
+      "recommendedSize": "1216x832",
+      "outfitId": "funeral_parade"
     },
     {
       "id": "yuzuriha_inori_r18_atelier",
@@ -3033,7 +3122,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude with her red combat dress discarded nearby, Yuzuriha Inori reclines gracefully in soft ambient light, her slender bare breasts, delicate collarbone and pink-orange hair illuminated by gentle holographic glow as her crimson eyes gaze with fragile tenderness.",
-      "adultArtistHint": "@anmi"
+      "adultArtistHint": "@anmi",
+      "outfitId": "red_dress",
+      "sampleRating": "R15"
     },
     {
       "id": "yuzuriha_inori_flower_shop",
@@ -3072,7 +3163,8 @@
       ],
       "recommendedSize": "832x1216",
       "kreaStyleHint": "soft_daily_illustration",
-      "animaStyleHint": "soft_daily_illustration"
+      "animaStyleHint": "soft_daily_illustration",
+      "outfitId": "funeral_parade"
     },
     {
       "id": "yuzuriha_inori_kitchen_baking",
@@ -3111,7 +3203,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, ruins, apocalypse, stage, night, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "funeral_parade"
     },
     {
       "id": "yuzuriha_inori_subway_evening",
@@ -3148,7 +3241,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, ruins, apocalypse, stage, day, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "funeral_parade"
     },
     {
       "id": "yuzuriha_inori_r18_bath_steam",
@@ -3204,7 +3298,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude and still glistening with moisture, Yuzuriha Inori sits on the tub edge with her bare breasts and slender collarbone beaded with droplets, her pink-orange hair damp against her shoulders as her crimson eyes rest on the viewer with fragile tenderness.",
-      "adultArtistHint": "@anmi"
+      "adultArtistHint": "@anmi",
+      "outfitId": "funeral_parade",
+      "sampleRating": "R18"
     },
     {
       "id": "yuzuriha_inori_r18_sofa_night",
@@ -3260,7 +3356,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude and curled on the dark sofa, Yuzuriha Inori hugs a cushion against her chest with her bare breasts and slim legs caught in the faint city glow, her quiet gaze carrying a fragile, trusting intimacy.",
-      "adultArtistHint": "@jazz_jack"
+      "adultArtistHint": "@jazz_jack",
+      "outfitId": "funeral_parade",
+      "sampleRating": "R18"
     },
     {
       "id": "yuzuriha_inori_r18_navel",
@@ -3317,7 +3415,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude in the pale morning light, Yuzuriha Inori kneels on the bed with one hand resting on her stomach, her bare breasts and delicate navel catching the sunlight as her crimson eyes gaze with fragile, quiet tenderness.",
-      "adultArtistHint": "@anmi"
+      "adultArtistHint": "@anmi",
+      "outfitId": "funeral_parade",
+      "sampleRating": "R18"
     },
     {
       "id": "yukinoshita_yukino_clubroom",
@@ -3357,7 +3457,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, night, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "school_uniform"
     },
     {
       "id": "yukinoshita_yukino_winter_street",
@@ -3397,7 +3498,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, summer, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "casual"
     },
     {
       "id": "yukinoshita_yukino_library",
@@ -3436,7 +3538,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, night, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "school_uniform"
     },
     {
       "id": "yukinoshita_yukino_r18_room",
@@ -3494,7 +3597,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude with her school uniform neatly folded beside the futon, Yukinoshita Yukino sits with her knees drawn up on white sheets, her fair bare breasts and slender collarbone glowing in warm lantern light as she looks down with deeply blushing cheeks and a rare, tender vulnerability.",
-      "adultArtistHint": "@tiv"
+      "adultArtistHint": "@tiv",
+      "outfitId": "casual",
+      "sampleRating": "R18"
     },
     {
       "id": "yukinoshita_yukino_family_restaurant",
@@ -3533,7 +3638,8 @@
       ],
       "recommendedSize": "832x1216",
       "kreaStyleHint": "moody_night_scene",
-      "animaStyleHint": "moody_night_scene"
+      "animaStyleHint": "moody_night_scene",
+      "outfitId": "casual"
     },
     {
       "id": "yukinoshita_yukino_coffee_morning",
@@ -3570,7 +3676,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, snow, night, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "casual"
     },
     {
       "id": "yukinoshita_yukino_kotatsu_winter",
@@ -3609,7 +3716,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, summer, school, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "casual"
     },
     {
       "id": "yukinoshita_yukino_r18_bath_warm",
@@ -3665,7 +3773,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude in the warm bathwater, Yukinoshita Yukino leans back with her bare shoulders and chest rising above the surface, steam curling around her damp black hair as her cool blue eyes hold a rare, melted softness.",
-      "adultArtistHint": "@atdan"
+      "adultArtistHint": "@atdan",
+      "outfitId": "casual",
+      "sampleRating": "R18"
     },
     {
       "id": "yukinoshita_yukino_r18_library_closed",
@@ -3721,7 +3831,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude among the dark bookshelves, Yukinoshita Yukino leans back against a bookcase with her bare breasts and straight black hair catching the dim aisle light, her eyes half-lidded and cheeks flushed in the quiet, heady stillness.",
-      "adultArtistHint": "@hiten (hitenkei)"
+      "adultArtistHint": "@hiten (hitenkei)",
+      "outfitId": "school_uniform",
+      "sampleRating": "R18"
     },
     {
       "id": "yukinoshita_yukino_r18_footbath",
@@ -3780,7 +3892,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude with her black pantyhose slipped down to her ankles, Yukinoshita Yukino rests her bare feet in the warm wooden foot bath, steam curling around her fair skin and bare breasts as she looks away with deeply flushed cheeks.",
-      "adultArtistHint": "@hiten (hitenkei)"
+      "adultArtistHint": "@hiten (hitenkei)",
+      "outfitId": "casual",
+      "sampleRating": "R18"
     },
     {
       "id": "elaina_cloud_flying",
@@ -3821,7 +3935,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, indoors, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "1216x832"
+      "recommendedSize": "1216x832",
+      "outfitId": "witch_dress"
     },
     {
       "id": "elaina_night_magic",
@@ -3862,7 +3977,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "witch_dress"
     },
     {
       "id": "elaina_market_town",
@@ -3903,7 +4019,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "travel_clothes"
     },
     {
       "id": "elaina_r18_inn_room",
@@ -3960,7 +4077,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude with her witch hat placed on the nightstand, Elaina lies across soft pillows with her long ash hair framing her bare breasts and delicate shoulders, offering a playful yet deeply blushing smile in warm lantern light.",
-      "adultArtistHint": "@anmi"
+      "adultArtistHint": "@anmi",
+      "outfitId": "witch_dress",
+      "sampleRating": "R18"
     },
     {
       "id": "elaina_dessert_cafe",
@@ -3999,7 +4118,8 @@
       ],
       "recommendedSize": "832x1216",
       "kreaStyleHint": "dreamy_pastel",
-      "animaStyleHint": "dreamy_pastel"
+      "animaStyleHint": "dreamy_pastel",
+      "outfitId": "casual"
     },
     {
       "id": "elaina_rainy_bookstore",
@@ -4038,7 +4158,8 @@
       ],
       "recommendedSize": "832x1216",
       "kreaStyleHint": "rainy_window",
-      "animaStyleHint": "rainy_window"
+      "animaStyleHint": "rainy_window",
+      "outfitId": "casual"
     },
     {
       "id": "elaina_rooftop_garden",
@@ -4075,7 +4196,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, fantasy, broom, night, indoor, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "1216x832"
+      "recommendedSize": "1216x832",
+      "outfitId": "casual"
     },
     {
       "id": "elaina_r18_hot_spring",
@@ -4131,7 +4253,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude in the open-air hot spring, Elaina rests her arms on the rock edge with her bare breasts and pale shoulders steaming in the cool dusk air, her ash-grey hair wet at the tips as she turns with a flustered, pleased smile.",
-      "adultArtistHint": "@anmi"
+      "adultArtistHint": "@anmi",
+      "outfitId": "casual",
+      "sampleRating": "R18"
     },
     {
       "id": "elaina_r18_starry_tower",
@@ -4187,7 +4311,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude on the window seat beneath the stars, Elaina leans back against the cushion with her bare breasts and long ash-grey hair glowing in the starlight, offering a smug yet deeply blushing smile as candle flames flicker beside her.",
-      "adultArtistHint": "@kousaki rui"
+      "adultArtistHint": "@kousaki rui",
+      "outfitId": "travel_clothes",
+      "sampleRating": "R18"
     },
     {
       "id": "elaina_r18_black_thighhighs",
@@ -4248,7 +4374,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude except for her black thighhighs and witch hat, Elaina sits on the inn bed with her stockinged legs crossed, the arch of her foot and curled toes catching the lantern glow as she tips her hat brim with a smug, blushing smile.",
-      "adultArtistHint": "@tiv"
+      "adultArtistHint": "@tiv",
+      "outfitId": "casual",
+      "sampleRating": "R18"
     },
     {
       "id": "elaina_r18_suitcase_morning",
@@ -4302,7 +4430,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude in the soft morning light, Elaina sits on the floor beside her open suitcase with her bare breasts and long ash-grey hair glowing warmly, a folded shirt draped across her lap that she has not bothered to put on as she smiles with sleepy self-satisfaction.",
-      "adultArtistHint": "@hiten (hitenkei)"
+      "adultArtistHint": "@hiten (hitenkei)",
+      "outfitId": "travel_clothes",
+      "sampleRating": "R18"
     },
     {
       "id": "misaka_mikoto_overpass",
@@ -4341,7 +4471,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, medieval, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "tokiwadai_uniform"
     },
     {
       "id": "misaka_mikoto_street",
@@ -4380,7 +4511,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "tokiwadai_uniform"
     },
     {
       "id": "misaka_mikoto_electric_battle",
@@ -4421,7 +4553,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, day, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "1216x832"
+      "recommendedSize": "1216x832",
+      "outfitId": "tokiwadai_uniform"
     },
     {
       "id": "misaka_mikoto_r18_dorm",
@@ -4478,7 +4611,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude with her uniform removed and Gekota plush nearby, Misaka Mikoto sits in bed holding a sheet to her waist, her toned bare breasts and delicate collarbone illuminated by soft lamplight as tiny blue sparks dance with her racing heartbeat and bright blushing face.",
-      "adultArtistHint": "@hiten (hitenkei)"
+      "adultArtistHint": "@hiten (hitenkei)",
+      "outfitId": "casual",
+      "sampleRating": "R18"
     },
     {
       "id": "misaka_mikoto_arcade",
@@ -4517,7 +4652,8 @@
       ],
       "recommendedSize": "832x1216",
       "kreaStyleHint": "anime_promo_art",
-      "animaStyleHint": "anime_promo_art"
+      "animaStyleHint": "anime_promo_art",
+      "outfitId": "casual"
     },
     {
       "id": "misaka_mikoto_summer_festival",
@@ -4554,7 +4690,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, battle, day, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "summer_clothes"
     },
     {
       "id": "misaka_mikoto_living_room",
@@ -4591,7 +4728,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, magic, battle, school, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "casual"
     },
     {
       "id": "misaka_mikoto_r18_shower",
@@ -4647,7 +4785,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude under the warm spray, Misaka Mikoto stands in the shower with water streaming over her bare breasts and toned body, her chestnut hair plastered to her face as tiny blue sparks crackle faintly with her flustered blush.",
-      "adultArtistHint": "@jazz_jack"
+      "adultArtistHint": "@jazz_jack",
+      "outfitId": "casual",
+      "sampleRating": "R18"
     },
     {
       "id": "misaka_mikoto_r18_rooftop_moon",
@@ -4703,7 +4843,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude on the moonlit rooftop, Misaka Mikoto sits with her knees pulled up and arms wrapped around her legs, her bare breasts and flushed face glowing in the silver light as she refuses to meet the viewer eyes.",
-      "adultArtistHint": "@anmi"
+      "adultArtistHint": "@anmi",
+      "outfitId": "casual",
+      "sampleRating": "R18"
     },
     {
       "id": "misaka_mikoto_r18_thighs",
@@ -4759,7 +4901,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude on the moonlit rooftop, Misaka Mikoto sits with her smooth thighs pressed together and one hand over her chest, her bare breasts and slender legs glowing in the silver light as she refuses to meet the viewer eyes.",
-      "adultArtistHint": "@jazz jack"
+      "adultArtistHint": "@jazz jack",
+      "outfitId": "casual",
+      "sampleRating": "R18"
     },
     {
       "id": "makima_cinema",
@@ -4798,7 +4942,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, bright, cheerful, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "work_suit"
     },
     {
       "id": "makima_office",
@@ -4837,7 +4982,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, cheerful, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "work_suit"
     },
     {
       "id": "makima_dominion_night",
@@ -4877,7 +5023,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, bright, cheerful, day, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "work_suit"
     },
     {
       "id": "makima_r18_office",
@@ -4934,7 +5081,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude with her formal suit discarded on the sofa, Makima reclines back with her salmon braid resting across her full bare breasts, her golden concentric-ring eyes glowing in warm amber lamplight as she offers a calm, hypnotic and intoxicating smile.",
-      "adultArtistHint": "@kousaki rui"
+      "adultArtistHint": "@kousaki rui",
+      "outfitId": "work_suit",
+      "sampleRating": "R18"
     },
     {
       "id": "makima_dog_park",
@@ -4975,7 +5124,8 @@
       ],
       "recommendedSize": "1216x832",
       "kreaStyleHint": "soft_daily_illustration",
-      "animaStyleHint": "soft_daily_illustration"
+      "animaStyleHint": "soft_daily_illustration",
+      "outfitId": "casual"
     },
     {
       "id": "makima_supermarket",
@@ -5010,7 +5160,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, devil, dark, night, rain, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "casual"
     },
     {
       "id": "makima_home_dinner",
@@ -5047,7 +5198,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, devil, dark, day, office, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "casual"
     },
     {
       "id": "makima_r18_apartment_bath",
@@ -5103,7 +5255,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude in the warm bathwater, Makima rests her arms along the tub rim with her bare breasts and pale shoulders gleaming above the surface, her salmon braid draped over one shoulder as her golden ringed eyes watch with a calm, knowing smile.",
-      "adultArtistHint": "@kousaki rui"
+      "adultArtistHint": "@kousaki rui",
+      "outfitId": "casual",
+      "sampleRating": "R18"
     },
     {
       "id": "makima_r18_bathrobe_morning",
@@ -5159,7 +5313,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude with her bathrobe slipping open, Makima sits back on the leather sofa in the bright morning light, her full bare breasts and confident posture fully exposed as she tilts her head with a soft, amused smile.",
-      "adultArtistHint": "@xinzoruo"
+      "adultArtistHint": "@xinzoruo",
+      "outfitId": "casual",
+      "sampleRating": "R18"
     },
     {
       "id": "makima_r18_collar_leash",
@@ -5217,7 +5373,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude except for the black leather collar and leash around her neck, Makima kneels on the rug with her bare breasts and pale body bathed in lamplight, her golden ringed eyes watching with a calm, knowing smile as the leash trails across the floor.",
-      "adultArtistHint": "@xinzoruo"
+      "adultArtistHint": "@xinzoruo",
+      "outfitId": "work_suit",
+      "sampleRating": "R18"
     },
     {
       "id": "tohsaka_rin_mansion",
@@ -5257,7 +5415,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, sci-fi, beach, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "red_turtleneck"
     },
     {
       "id": "tohsaka_rin_rooftop",
@@ -5294,7 +5453,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, fantasy, sci-fi, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "school_uniform"
     },
     {
       "id": "tohsaka_rin_chase",
@@ -5333,7 +5493,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, sci-fi, beach, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "1216x832"
+      "recommendedSize": "1216x832",
+      "outfitId": "red_turtleneck"
     },
     {
       "id": "tohsaka_rin_r18_mansion",
@@ -5392,7 +5553,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude with her red sweater and black ribbons removed, Tohsaka Rin lies softly against burgundy pillows, her shapely bare breasts and slender waist bathed in flickering firelight as her aqua-blue eyes look up with a flustered, tsundere blush.",
-      "adultArtistHint": "@kousaki rui"
+      "adultArtistHint": "@kousaki rui",
+      "outfitId": "red_turtleneck",
+      "sampleRating": "R18"
     },
     {
       "id": "tohsaka_rin_jewelry_store",
@@ -5431,7 +5594,8 @@
       ],
       "recommendedSize": "832x1216",
       "kreaStyleHint": "light_novel_cover",
-      "animaStyleHint": "light_novel_cover"
+      "animaStyleHint": "light_novel_cover",
+      "outfitId": "red_turtleneck"
     },
     {
       "id": "tohsaka_rin_cafeteria",
@@ -5468,7 +5632,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, magic, medieval, battle, night, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "school_uniform"
     },
     {
       "id": "tohsaka_rin_shopping_street",
@@ -5505,7 +5670,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, magic, medieval, battle, night, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "1216x832"
+      "recommendedSize": "1216x832",
+      "outfitId": "red_turtleneck"
     },
     {
       "id": "tohsaka_rin_r18_gem_bath",
@@ -5561,7 +5727,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude in the warm bathwater, Tohsaka Rin rests her arms on the tub rim with her bare breasts and flushed shoulders above the surface, a few gemstones glittering on the ledge as her aqua eyes glare adorably at the viewer.",
-      "adultArtistHint": "@kousaki rui"
+      "adultArtistHint": "@kousaki rui",
+      "outfitId": "red_turtleneck",
+      "sampleRating": "R18"
     },
     {
       "id": "tohsaka_rin_r18_rooftop_sunset",
@@ -5617,7 +5785,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude against the rooftop railing in the golden sunset, Tohsaka Rin turns with her bare breasts and long twin tails backlit by warm light, her face deeply flushed as she fumbles to cover herself with one arm.",
-      "adultArtistHint": "@atdan"
+      "adultArtistHint": "@atdan",
+      "outfitId": "school_uniform",
+      "sampleRating": "R18"
     },
     {
       "id": "tohsaka_rin_r18_black_thighhighs",
@@ -5678,7 +5848,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude except for her black thighhighs, Tohsaka Rin sits on the window sill with her stockinged legs crossed, the arch of her foot and curled toes catching the moonlight as her aqua eyes glare adorably with a deep tsundere blush.",
-      "adultArtistHint": "@kousaki rui"
+      "adultArtistHint": "@kousaki rui",
+      "outfitId": "red_turtleneck",
+      "sampleRating": "R18"
     },
     {
       "id": "tohsaka_rin_r18_study_night",
@@ -5734,7 +5906,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude with her twin tails spilling across the desk, Tohsaka Rin leans over her magic research with her bare breasts brushing the spellbook, gemstones glittering in the lamplight as she turns with a flustered, defensive blush.",
-      "adultArtistHint": "@tiv"
+      "adultArtistHint": "@tiv",
+      "outfitId": "red_turtleneck",
+      "sampleRating": "R18"
     },
     {
       "id": "rem_rezero_mansion",
@@ -5773,7 +5947,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, school, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "maid_uniform"
     },
     {
       "id": "rem_rezero_moon_garden",
@@ -5812,7 +5987,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, school, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "maid_uniform"
     },
     {
       "id": "rem_rezero_rain_night",
@@ -5853,7 +6029,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, cheerful, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "casual"
     },
     {
       "id": "rem_rezero_r18_chamber",
@@ -5910,7 +6087,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude with her maid uniform removed, Rem sits in bed hugging a white pillow to her waist, her soft bare breasts and pink hair flower illuminated by warm candlelight as she looks at the viewer with an expression of pure, unconditional devotion and soft blushing cheeks.",
-      "adultArtistHint": "@anmi"
+      "adultArtistHint": "@anmi",
+      "outfitId": "maid_uniform",
+      "sampleRating": "R18"
     },
     {
       "id": "rem_rezero_maid_cafe",
@@ -5949,7 +6128,8 @@
       ],
       "recommendedSize": "832x1216",
       "kreaStyleHint": "soft_daily_illustration",
-      "animaStyleHint": "soft_daily_illustration"
+      "animaStyleHint": "soft_daily_illustration",
+      "outfitId": "maid_uniform"
     },
     {
       "id": "rem_rezero_bakery",
@@ -5984,7 +6164,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, castle, magic, night, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "casual"
     },
     {
       "id": "rem_rezero_bookstore",
@@ -6021,7 +6202,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, castle, magic, night, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "casual"
     },
     {
       "id": "rem_rezero_r18_mansion_bath",
@@ -6077,7 +6259,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude in the warm bathwater, Rem rests her arms on the pool edge with her bare breasts and damp blue hair gleaming in the candlelight, her pink flower clip set aside as she gazes up with devoted, blushing eyes.",
-      "adultArtistHint": "@anmi"
+      "adultArtistHint": "@anmi",
+      "outfitId": "casual",
+      "sampleRating": "R18"
     },
     {
       "id": "rem_rezero_r18_garden_moon",
@@ -6133,7 +6317,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude among the moonlit roses, Rem sits on the cool stone bench with her bare breasts and pale skin glowing softly, her blue eyes shining with devoted tenderness as she smiles with a deep, loving blush.",
-      "adultArtistHint": "@kousaki rui"
+      "adultArtistHint": "@kousaki rui",
+      "outfitId": "maid_uniform",
+      "sampleRating": "R18"
     },
     {
       "id": "rem_rezero_r18_white_thighhighs",
@@ -6194,7 +6380,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude except for her white thighhighs, Rem sits on the bed with her stockinged feet crossed at the ankle, her bare breasts rising softly as she offers her soles toward the viewer with devoted, blushing eyes.",
-      "adultArtistHint": "@anmi"
+      "adultArtistHint": "@anmi",
+      "outfitId": "maid_uniform",
+      "sampleRating": "R18"
     },
     {
       "id": "emilia_rezero_snow_forest",
@@ -6235,7 +6423,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, desert, summer, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "1216x832"
+      "recommendedSize": "1216x832",
+      "outfitId": "white_dress"
     },
     {
       "id": "emilia_rezero_court",
@@ -6276,7 +6465,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, desert, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "white_dress"
     },
     {
       "id": "emilia_rezero_garden",
@@ -6316,7 +6506,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, night, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "white_dress"
     },
     {
       "id": "emilia_rezero_r18_bedroom",
@@ -6375,7 +6566,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude with her lilac dress discarded, Emilia lies gracefully amidst white silk sheets, her beautiful bare breasts and silver hair glowing softly in pale crystal light as her purple-blue eyes shine with innocent wonder and blushing sweetness.",
-      "adultArtistHint": "@anmi"
+      "adultArtistHint": "@anmi",
+      "outfitId": "white_dress",
+      "sampleRating": "R18"
     },
     {
       "id": "emilia_rezero_dessert_cafe",
@@ -6414,7 +6607,8 @@
       ],
       "recommendedSize": "832x1216",
       "kreaStyleHint": "dreamy_pastel",
-      "animaStyleHint": "dreamy_pastel"
+      "animaStyleHint": "dreamy_pastel",
+      "outfitId": "casual"
     },
     {
       "id": "emilia_rezero_flower_bouquet",
@@ -6451,7 +6645,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, palace, magic, night, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "casual"
     },
     {
       "id": "emilia_rezero_seaside_dusk",
@@ -6490,7 +6685,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, palace, magic, snow, night, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "1216x832"
+      "recommendedSize": "1216x832",
+      "outfitId": "casual"
     },
     {
       "id": "emilia_rezero_r18_snow_spring",
@@ -6546,7 +6742,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude in the steaming hot spring, Emilia rests her arms on the snowy rock edge with her bare breasts and silver hair glowing in the pale winter light, her snowflake-pupiled eyes lowered with innocent shyness as she blushes.",
-      "adultArtistHint": "@anmi"
+      "adultArtistHint": "@anmi",
+      "outfitId": "casual",
+      "sampleRating": "R18"
     },
     {
       "id": "emilia_rezero_r18_morning_light",
@@ -6600,7 +6798,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude in the soft dawn light, Emilia sits on the bed rubbing her sleepy eyes with her bare breasts and silver hair glowing gently, her flushed face brightening into a pure, trusting smile.",
-      "adultArtistHint": "@atdan"
+      "adultArtistHint": "@atdan",
+      "outfitId": "white_dress",
+      "sampleRating": "R18"
     },
     {
       "id": "emilia_rezero_r18_white_thighhighs",
@@ -6661,7 +6861,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude except for her white thighhighs, Emilia sits on the window seat with her stockinged legs crossed at the ankle, her bare breasts and silver hair glowing in the pale moonlight as she looks down with innocent, blushing shyness.",
-      "adultArtistHint": "@tiv"
+      "adultArtistHint": "@tiv",
+      "outfitId": "white_dress",
+      "sampleRating": "R18"
     },
     {
       "id": "emilia_rezero_r18_night_story",
@@ -6715,7 +6917,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude in the candlelit bed, Emilia lies on her side reading a storybook with her bare breasts pressed softly into the pillow, her silver hair spilling across the sheets as her snowflake-pupiled eyes shine with gentle wonder.",
-      "adultArtistHint": "@anmi"
+      "adultArtistHint": "@anmi",
+      "outfitId": "casual",
+      "sampleRating": "R18"
     },
     {
       "id": "roxy_migurdia_academy",
@@ -6754,7 +6958,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "witch_outfit"
     },
     {
       "id": "roxy_migurdia_wilderness",
@@ -6795,7 +7000,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, city, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "1216x832"
+      "recommendedSize": "1216x832",
+      "outfitId": "adventurer"
     },
     {
       "id": "roxy_migurdia_village",
@@ -6833,7 +7039,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, city, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "adventurer"
     },
     {
       "id": "roxy_migurdia_r18_teacher",
@@ -6892,7 +7099,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude with her blue robe discarded on the desk, Roxy reclines comfortably on her side in bed, her small delicate bare breasts and twin blue braids glowing in warm oil lamplight as she offers a shy, endearing smile.",
-      "adultArtistHint": "@anmi"
+      "adultArtistHint": "@anmi",
+      "outfitId": "witch_outfit",
+      "sampleRating": "R18"
     },
     {
       "id": "roxy_migurdia_modern_library",
@@ -6931,7 +7140,8 @@
       ],
       "recommendedSize": "832x1216",
       "kreaStyleHint": "soft_daily_illustration",
-      "animaStyleHint": "soft_daily_illustration"
+      "animaStyleHint": "soft_daily_illustration",
+      "outfitId": "casual"
     },
     {
       "id": "roxy_migurdia_home_kitchen",
@@ -6968,7 +7178,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, magic_school, wilderness, night, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "casual"
     },
     {
       "id": "roxy_migurdia_hotspring_inn",
@@ -7005,7 +7216,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, magic_school, wilderness, night, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "casual"
     },
     {
       "id": "roxy_migurdia_r18_academy_bath",
@@ -7061,7 +7273,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude in the warm bathwater, Roxy rests her small arms on the pool edge with her petite bare breasts and pale blue skin glistening, her twin braids pinned up as she looks up with a shy, flustered smile.",
-      "adultArtistHint": "@anmi"
+      "adultArtistHint": "@anmi",
+      "outfitId": "casual",
+      "sampleRating": "R18"
     },
     {
       "id": "roxy_migurdia_r18_desk_night",
@@ -7117,7 +7331,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude with her robe draped over the chair, Roxy reclines back against the desk edge with her small bare breasts and soft frame lit by the oil lamp, her blue eyes half-lidded as she offers a shy, tender smile.",
-      "adultArtistHint": "@jazz_jack"
+      "adultArtistHint": "@jazz_jack",
+      "outfitId": "casual",
+      "sampleRating": "R18"
     },
     {
       "id": "roxy_migurdia_r18_white_socks",
@@ -7178,7 +7394,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude except for her white thighhighs, Roxy sits at the study desk with her small stockinged feet resting on the chair rail, her petite bare breasts and twin blue braids glowing in the oil lamplight as she offers a shy, flustered smile.",
-      "adultArtistHint": "@tiv"
+      "adultArtistHint": "@tiv",
+      "outfitId": "casual",
+      "sampleRating": "R18"
     },
     {
       "id": "roxy_migurdia_r18_morning_grimoire",
@@ -7233,7 +7451,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude in the morning light, Roxy lies on her stomach across the bed with an open grimoire before her, her petite bare breasts pressed into the pillow and twin blue braids spilling forward as she reads with quiet, scholarly focus.",
-      "adultArtistHint": "@kousaki rui"
+      "adultArtistHint": "@kousaki rui",
+      "outfitId": "witch_outfit",
+      "sampleRating": "R18"
     },
     {
       "id": "illyasviel_einzbern_castle",
@@ -7272,7 +7492,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, beach, school, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "winter_coat"
     },
     {
       "id": "illyasviel_moon_garden",
@@ -7309,7 +7530,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, sci-fi, beach, school, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "white_dress"
     },
     {
       "id": "illyasviel_grail_war",
@@ -7348,7 +7570,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, cheerful, day, school, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "1216x832"
+      "recommendedSize": "1216x832",
+      "outfitId": "winter_coat"
     },
     {
       "id": "illyasviel_r18_castle",
@@ -7405,7 +7628,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude with her warm winter coat discarded, Illyasviel sits comfortably on the soft white fur rug before the fireplace, her delicate snowy body and long white hair bathed in golden firelight as she smiles with playful innocence and rosy cheeks.",
-      "adultArtistHint": "@anmi"
+      "adultArtistHint": "@anmi",
+      "outfitId": "winter_coat",
+      "sampleRating": "R18"
     },
     {
       "id": "illyasviel_von_einzbern_ice_cream",
@@ -7442,7 +7667,8 @@
       ],
       "recommendedSize": "832x1216",
       "kreaStyleHint": "dreamy_pastel",
-      "animaStyleHint": "dreamy_pastel"
+      "animaStyleHint": "dreamy_pastel",
+      "outfitId": "casual"
     },
     {
       "id": "illyasviel_von_einzbern_toy_store",
@@ -7479,7 +7705,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, castle, snow, gothic, night, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "casual"
     },
     {
       "id": "illyasviel_von_einzbern_carousel",
@@ -7513,7 +7740,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, castle, snow, gothic, night, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "1216x832"
+      "recommendedSize": "1216x832",
+      "outfitId": "casual"
     },
     {
       "id": "illyasviel_von_einzbern_r18_bathtub",
@@ -7571,7 +7799,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude in the round copper tub with foam clinging to her skin, Illyasviel rests her delicate bare shoulders above the water, her long white hair spilling over the rim as she giggles with rosy cheeks and playful eyes.",
-      "adultArtistHint": "@anmi"
+      "adultArtistHint": "@anmi",
+      "outfitId": "casual",
+      "sampleRating": "R18"
     },
     {
       "id": "illyasviel_von_einzbern_r18_snowy_window",
@@ -7627,7 +7857,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude with the blanket draped across her lap, Illyasviel sits on the window sill with her bare chest and snowy white skin warmed by firelight, her ruby eyes soft and playful as snow falls behind the glass.",
-      "adultArtistHint": "@tiv"
+      "adultArtistHint": "@tiv",
+      "outfitId": "winter_coat",
+      "sampleRating": "R18"
     },
     {
       "id": "illyasviel_von_einzbern_r18_white_thighhighs",
@@ -7688,7 +7920,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude except for her white thighhighs, Illyasviel sits by the fireplace stretching her stockinged legs toward the flames, wiggling her toes with a giggle as her delicate bare chest and long white hair glow in the warm firelight.",
-      "adultArtistHint": "@anmi"
+      "adultArtistHint": "@anmi",
+      "outfitId": "casual",
+      "sampleRating": "R15"
     },
     {
       "id": "illyasviel_von_einzbern_r18_morning_plush",
@@ -7743,7 +7977,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude in the pale dawn light, Illyasviel hugs a big plush bear to her chest with her delicate bare shoulders rising from the blanket, her ruby eyes still sleepy as she smiles with innocent warmth.",
-      "adultArtistHint": "@tiv"
+      "adultArtistHint": "@tiv",
+      "outfitId": "casual",
+      "sampleRating": "R15"
     },
     {
       "id": "kitagawa_marin_sewing_room",
@@ -7782,7 +8018,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, dark, sad, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "gal_casual"
     },
     {
       "id": "kitagawa_marin_convention",
@@ -7821,7 +8058,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, dark, night, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "cosplay"
     },
     {
       "id": "kitagawa_marin_amusement_park",
@@ -7859,7 +8097,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, fantasy, dark, winter, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "gal_casual"
     },
     {
       "id": "kitagawa_marin_r18_fitting",
@@ -7914,7 +8153,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude with her clothes piled on the dressing stool, Kitagawa Marin poses with one hand on her hip in front of the warm mirror lights, her curvaceous bare breasts, pink contact lenses, and dip-dyed blonde hair radiating irresistible confidence and blushing excitement.",
-      "adultArtistHint": "@tiv"
+      "adultArtistHint": "@tiv",
+      "outfitId": "cosplay",
+      "sampleRating": "R18"
     },
     {
       "id": "kitagawa_marin_bubble_tea",
@@ -7953,7 +8194,8 @@
       ],
       "recommendedSize": "832x1216",
       "kreaStyleHint": "anime_promo_art",
-      "animaStyleHint": "anime_promo_art"
+      "animaStyleHint": "anime_promo_art",
+      "outfitId": "gal_casual"
     },
     {
       "id": "kitagawa_marin_home_pajama",
@@ -7992,7 +8234,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, cosplay, sewing, convention, day, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "gal_casual"
     },
     {
       "id": "kitagawa_marin_gyaru_street",
@@ -8031,7 +8274,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, cosplay, sewing, convention, day, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "1216x832"
+      "recommendedSize": "1216x832",
+      "outfitId": "gal_casual"
     },
     {
       "id": "kitagawa_marin_r18_hotel_window",
@@ -8085,7 +8329,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude before the night city view, Kitagawa Marin presses one hand against the cool glass with her curvaceous bare breasts and dip-dyed blonde hair backlit by warm light, turning with an excited, blushing smile.",
-      "adultArtistHint": "@tiv"
+      "adultArtistHint": "@tiv",
+      "outfitId": "gal_casual",
+      "sampleRating": "R18"
     },
     {
       "id": "kitagawa_marin_r18_bubble_bath",
@@ -8141,7 +8387,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude in the bubble bath with foam clinging to her bare breasts, Kitagawa Marin leans back with her long blonde hair spread on the water, her pink contact lenses sparkling as she winks with a confident, blushing grin.",
-      "adultArtistHint": "@atdan"
+      "adultArtistHint": "@atdan",
+      "outfitId": "gal_casual",
+      "sampleRating": "R18"
     },
     {
       "id": "kitagawa_marin_r18_toes",
@@ -8164,7 +8412,7 @@
         "night",
         "intimate"
       ],
-      "promptProse": "In her cozy bedroom at night, Kitagawa Marin lounges on the bed with no other people present, warm lamp light glowing over the rumpled duvet.",
+      "promptProse": "In her cozy bedroom at night, Kitagawa Marin lounges on the bed with no other people present, warm lamp light glowing over the rumpled duvet. Her feet are drawn naturally with five toes on each foot and elegant pink toenail polish, no deformities.",
       "promptTokens": [
         "bedroom",
         "bed",
@@ -8196,14 +8444,14 @@
         "winking_smile",
         "foot_focus",
         "toes",
-        "spread_toes",
         "painted_toenails",
-        "sole_focus",
         "leg_up",
         "medium_shot"
       ],
       "nsfwProse": "Completely nude on the rumpled duvet with her leg lifted high, Kitagawa Marin shows off her freshly painted pink toenails, her bare breasts and arched foot glowing in the warm lamp light as her toes curl playfully and she winks with a blush.",
-      "adultArtistHint": "@atdan"
+      "adultArtistHint": "@atdan",
+      "outfitId": "gal_casual",
+      "sampleRating": "R15"
     },
     {
       "id": "kisara_battle_night",
@@ -8244,7 +8492,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, fantasy, cheerful, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "1216x832"
+      "recommendedSize": "1216x832",
+      "outfitId": "demon_dress"
     },
     {
       "id": "kisara_home_daily",
@@ -8281,7 +8530,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, fantasy, night, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "casual"
     },
     {
       "id": "kisara_school",
@@ -8318,7 +8568,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, fantasy, night, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "school_uniform"
     },
     {
       "id": "kisara_r18_apartment",
@@ -8375,7 +8626,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude with her uniform discarded on the bed, Kisara lies back against white pillows with her long pastel pink hair flowing across her bare breasts, her vivid crimson eyes glowing with loving obsession and a deeply flushed, adoring smile.",
-      "adultArtistHint": "@tsunako"
+      "adultArtistHint": "@tsunako",
+      "outfitId": "demon_dress",
+      "sampleRating": "R18"
     },
     {
       "id": "kisara_engage_kiss_convenience",
@@ -8410,7 +8663,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, fantasy, battle, day, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "casual"
     },
     {
       "id": "kisara_engage_kiss_rooftop_laundry",
@@ -8447,7 +8701,8 @@
       ],
       "recommendedSize": "832x1216",
       "kreaStyleHint": "soft_daily_illustration",
-      "animaStyleHint": "soft_daily_illustration"
+      "animaStyleHint": "soft_daily_illustration",
+      "outfitId": "casual"
     },
     {
       "id": "kisara_engage_kiss_arcade",
@@ -8484,7 +8739,8 @@
       "negativeTokens": [
         "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, medieval, fantasy, battle, night, dark shadowed face, flat lighting, extra characters"
       ],
-      "recommendedSize": "832x1216"
+      "recommendedSize": "832x1216",
+      "outfitId": "casual"
     },
     {
       "id": "kisara_engage_kiss_r18_bathroom_night",
@@ -8540,7 +8796,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude under the warm water, Kisara stands with water streaming over her bare breasts and long pink hair plastered to her skin, her crimson eyes burning with loving intensity as she smiles with flushed cheeks.",
-      "adultArtistHint": "@tsunako"
+      "adultArtistHint": "@tsunako",
+      "outfitId": "casual",
+      "sampleRating": "R18"
     },
     {
       "id": "kisara_engage_kiss_r18_balcony_moon",
@@ -8596,7 +8854,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude on the night balcony, Kisara rests her elbows on the railing with her bare breasts and slender body silvered by moonlight, her crimson eyes fixed on the viewer with adoring, possessive warmth.",
-      "adultArtistHint": "@xinzoruo"
+      "adultArtistHint": "@xinzoruo",
+      "outfitId": "casual",
+      "sampleRating": "R18"
     },
     {
       "id": "kisara_engage_kiss_r18_thigh_bandage",
@@ -8655,166 +8915,9 @@
         "medium_shot"
       ],
       "nsfwProse": "Completely nude with her long pink hair spread across the pillow, Kisara lifts her leg to show the adhesive bandage on her bare thigh, her full breasts and possessive crimson eyes glowing in the lamplight as she smiles with adoring intensity.",
-      "adultArtistHint": "@tsunako"
-    },
-    {
-      "id": "candlelight_evening",
-      "title": "烛光卧室",
-      "category": "成人",
-      "description": "烛火明灭的卧室，暖光描出蜜色轮廓。",
-      "location": "夜晚的卧室",
-      "action": "倚在床头，烛光映亮侧脸",
-      "timeOfDay": "夜晚",
-      "lighting": "摇曳烛光与琥珀色深影",
-      "camera": "medium close-up, intimate framing",
-      "mood": "温柔亲密",
-      "sceneTags": [
-        "bedroom",
-        "candle",
-        "night",
-        "warm_light",
-        "bed",
-        "intimate"
-      ],
-      "promptProse": "In a dimly lit private bedroom at night, warm amber candlelight flickers across white satin bedsheets and wooden headboard in peaceful, intimate seclusion.",
-      "promptTokens": [
-        "bedroom",
-        "candle",
-        "night",
-        "warm_light",
-        "bed",
-        "sheets",
-        "volumetric_lighting",
-        "depth_of_field",
-        "clean_face"
-      ],
-      "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, dark shadowed face, flat lighting, extra characters"
-      ],
-      "recommendedSize": "832x1216",
-      "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
-      "animaStyleHint": "r18_elegant_boudoir",
-      "nsfwTokens": [
-        "nude",
-        "completely_naked",
-        "fully_nude",
-        "no_clothes",
-        "naked_body",
-        "bare_chest",
-        "exposed_breasts",
-        "nipples",
-        "pussy",
-        "spread_legs",
-        "lying_on_bed",
-        "topless"
-      ],
-      "nsfwProse": "Fully naked on the satin bedsheets with all clothing removed and placed on the floor, a woman rests with bare breasts and exposed nipples bathed in the soft glow of flickering candles."
-    },
-    {
-      "id": "morning_bathrobe",
-      "title": "浴袍晨光",
-      "category": "成人",
-      "description": "清晨逆光里松挽的浴袍与肩线。",
-      "location": "清晨的卧室窗边",
-      "action": "站在窗边，晨光勾勒轮廓",
-      "timeOfDay": "清晨",
-      "lighting": "明亮逆光与柔和轮廓光",
-      "camera": "medium shot from the side, rim-lit silhouette",
-      "mood": "柔软从容",
-      "sceneTags": [
-        "bedroom",
-        "bathrobe",
-        "morning",
-        "backlighting",
-        "window",
-        "rim_light"
-      ],
-      "promptProse": "In a bright sunlit bedroom at dawn, gentle morning light pours through sheer curtains onto the polished wooden floor in tranquil, unhurried seclusion.",
-      "promptTokens": [
-        "bedroom",
-        "bathrobe",
-        "morning",
-        "backlighting",
-        "window",
-        "rim_light",
-        "volumetric_lighting",
-        "depth_of_field",
-        "clean_face"
-      ],
-      "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, dark shadowed face, flat lighting, extra characters"
-      ],
-      "recommendedSize": "832x1216",
-      "adult": true,
-      "kreaStyleHint": "r18_elegant_boudoir",
-      "animaStyleHint": "r18_elegant_boudoir",
-      "nsfwTokens": [
-        "nude",
-        "completely_naked",
-        "fully_nude",
-        "no_clothes",
-        "naked_body",
-        "bare_chest",
-        "exposed_breasts",
-        "nipples",
-        "topless",
-        "standing_nude",
-        "bathrobe_off"
-      ],
-      "nsfwProse": "Completely naked in the bright morning sunlight with the bathrobe slipped from her shoulders and resting on the floor, her bare breasts and nipples are fully exposed in the radiant dawn light."
-    },
-    {
-      "id": "late_night_dressing",
-      "title": "深夜更衣",
-      "category": "成人",
-      "description": "镜前进行到一半的更衣，暧昧在灯影里。",
-      "location": "深夜的更衣室",
-      "action": "在镜前整理衣领，光线暧昧",
-      "timeOfDay": "深夜",
-      "lighting": "低暖台灯与软影",
-      "camera": "close-up mirrored composition",
-      "mood": "紧张私密",
-      "sceneTags": [
-        "dressing_room",
-        "mirror",
-        "night",
-        "lamp",
-        "intimate",
-        "clothes"
-      ],
-      "promptProse": "Late at night in a private dressing room, a single warm brass vanity lamp casts soft shadows across the dressing table and mirror in quiet solitude.",
-      "promptTokens": [
-        "dressing_room",
-        "mirror",
-        "night",
-        "lamp",
-        "intimate",
-        "volumetric_lighting",
-        "depth_of_field",
-        "clean_face"
-      ],
-      "negativeTokens": [
-        "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, child, loli, underage, school uniform, dark shadowed face, flat lighting, extra characters"
-      ],
-      "recommendedSize": "832x1216",
-      "adult": true,
-      "kreaStyleHint": "r18_sensual_cg",
-      "animaStyleHint": "r18_sensual_cg",
-      "nsfwTokens": [
-        "nude",
-        "completely_naked",
-        "fully_nude",
-        "no_clothes",
-        "naked_body",
-        "bare_chest",
-        "exposed_breasts",
-        "nipples",
-        "topless",
-        "bare_back",
-        "undressing"
-      ],
-      "nsfwProse": "Fully naked before the vanity mirror with all garments discarded on the floor, her bare back, exposed breasts, and natural curves are reflected in the warm, focused lamplight."
+      "adultArtistHint": "@tsunako",
+      "outfitId": "demon_dress",
+      "sampleRating": "R18"
     }
   ]
 }

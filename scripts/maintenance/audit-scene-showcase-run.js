@@ -36,11 +36,13 @@ function argument(name, fallback = '') {
 function splitList(value) {
   return String(value || '').split(',').map(item => item.trim()).filter(Boolean);
 }
-function runInspect(imageFile, timeoutMs) {
+function runInspect(imageFile, timeoutMs, prompt) {
   return new Promise(resolve => {
+    const args = [path.join(ROOT, 'scripts', 'maintenance', 'image-inspect.js'), imageFile, '-t', 'audit', '--json'];
+    if (prompt) args.push('-p', prompt);
     const child = spawn(
       process.execPath,
-      [path.join(ROOT, 'scripts', 'maintenance', 'image-inspect.js'), imageFile, '-t', 'audit', '--json'],
+      args,
       { windowsHide: true, stdio: ['ignore', 'pipe', 'pipe'] },
     );
     let stdout = '';
@@ -74,6 +76,7 @@ async function main() {
   const latestOnly = process.argv.includes('--latest-attempt');
   const ids = splitList(argument('--ids'));
   const timeoutMs = Math.max(60000, Number(argument('--timeout', '240000')) || 240000);
+  const auditPrompt = argument('--prompt', '');
 
   const records = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
   let selected = records.filter(record => record.status === 'succeeded');
@@ -109,7 +112,7 @@ async function main() {
         continue;
       }
       console.log(`[audit] ${record.recordId} ${imageFile}`);
-      const outcome = await runInspect(imageFile, timeoutMs);
+      const outcome = await runInspect(imageFile, timeoutMs, auditPrompt);
       results[record.recordId] = outcome.ok
         ? { ok: true, verdict: classify(outcome.result), summary: summarize(outcome.result), inspectedAt: new Date().toISOString() }
         : { ok: false, error: outcome.error, file: imageFile };
@@ -126,7 +129,7 @@ function classify(result) {
   if (!result || !result.content) return 'unknown';
   const text = String(result.content);
   if (text.includes('不通过')) return 'fail';
-  if (text.includes('需复核')) return 'review';
+  if (text.includes('需复核') || text.includes('需注意')) return 'review';
   return 'pass';
 }
 function summarize(result) {

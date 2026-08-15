@@ -55,8 +55,8 @@ const DEFAULT_FROM = path.join(
   'generation-manifest.json',
 );
 const DEFAULT_SHOWCASE_ROOT = path.join(AI_ROOT, 'SceneShowcase');
-const DEFAULT_TARGET = '2026-08-14_v16';
-const DEFAULT_SOURCE = '2026-08-12_v15';
+const DEFAULT_TARGET = '2026-08-15_v22';
+const DEFAULT_SOURCE = '2026-08-15_v22';
 
 const IMAGE_BOX = '1800x2400';
 const IMAGE_QUALITY = 94;

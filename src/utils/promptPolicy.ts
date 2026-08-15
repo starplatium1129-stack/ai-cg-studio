@@ -447,15 +447,16 @@ export function adaptNegative(
 ): string {
   const rating = sceneRating(scene)
   const remove = new Set<string>()
-  if (rating === 'R18') ['nsfw', 'nude', 'naked', 'explicit'].forEach(tag => remove.add(tag))
-  if (rating === 'R15') remove.add('nsfw')
+  // 2026-08-15 用户裁定：裸体压制负面只在 All 评级加；R15 及以上（含 R18）都不堵露点，
+  // 避免同一场景因评级变化导致出图画面明显不同（词条差异会真实改变画面）。
+  if (rating !== 'ALL') ['nsfw', 'nude', 'naked', 'explicit'].forEach(tag => remove.add(tag))
   if (context.shot === 'close' || context.shot === 'detail') remove.add('cropped')
   if (context.character === 'triad') remove.add('duplicate')
 
   const tokens = tokenize(text).filter(token => !remove.has(normalizeKey(token)))
-  const required = rating === 'R18'
-    ? ['child', 'loli', 'underage']
-    : rating === 'R15' ? ['nude', 'explicit'] : ['nsfw', 'nude', 'explicit']
+  const required = rating === 'ALL'
+    ? ['nsfw', 'nude', 'explicit']
+    : ['child', 'loli', 'underage']
   required.forEach(tag => tokens.push(tag))
   return dedupeSegment(tokens.join(', '), new Set())
 }

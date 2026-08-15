@@ -259,19 +259,19 @@
       "close_up",
       "pov"
     ],
-    "mature": true,
+    "mature": false,
     "location": "新婚卧室大床",
     "weather": "室内温暖",
     "camera": "主观近景特写",
     "lighting": "昏暗床头灯与柔和暖光",
     "usage": [
       "核心协议",
-      "成人向"
+      "R15"
     ],
     "prompt": "natsume_r18, nene_r18, 2girls, two adult women only, POV_from_viewer_lying_on_messy_bed, adult, naked, bedroom, late_night, warm_dim_bedside_light, viewer_hands_visible_in_foreground, both_women_focused_on_viewer_not_each_other, extreme_intimacy, sweat, messy_hair, close_up, clearly_different_faces, (ayachi_nene_straddling_viewer_on_the_left, white_hair, very_long_low_twintails, purple_eyes, ahoge, pink_hair_ribbons, interlocking_fingers_with_viewer_left_hand, heavy_blush, passionate_look, open_mouth) BREAK (shiki_natsume_leaning_over_viewer_from_the_right, black_hair, long_hair, yellow_eyes, two_red_hairclips, mole_under_eye, embracing_viewer_from_behind, kissing_viewer_neck, closed_eyes, heavy_blush), <lora:ayachi_nene_v18_wd14:0.52>, <lora:shiki_natsume_v18_wd14:0.52>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform, girls kissing each other, women embracing each other, pink ribbon on black-haired woman, mole on white-haired woman, identical twins, extra girl, 3girls, male, man, boy, 1boy",
     "storyJa": "【寧々＆夏目・大人のアフターストーリー・二人のヒロインによる至福の修羅フィールド】薬物と感情の同調率が200％を超えるという極限の制約の中、二人の少女は普段の拘束を完全に放棄した。ベッドの上の服は全部なくなり、シーツもぐちゃぐちゃになっていました。寧々はあなたにまたがり、顔は汗と赤面で覆われ、両手はあなたの手でしっかりと握り締められ、必死にあなたの温もりを求めています。夏目が後ろからしがみつき、首筋に熱い唇を噛みつきます。ここは病的な愛と汗と肉体が詰まった至福のブラックホール――「柊史、店長……私たちの心の防壁は、とっくに消えてる。だから今夜は、ずっとそばにいて。」",
-    "rating": "R18",
+    "rating": "R15",
     "recommendedSize": "1344×896",
     "auditRevision": "dual-regional-2026-07-23",
     "animaCaption": "In a close-up framing inside the warm cafe with polished wooden tables, she reaches forward and gently clasps the viewer's hand, as cool silver moonlight bathes the surroundings."
@@ -319,7 +319,7 @@
       "intense_blush",
       "close_up"
     ],
-    "mature": true,
+    "mature": false,
     "location": "秘密绝对领域",
     "weather": "炙热",
     "camera": "近景特写",
@@ -327,12 +327,12 @@
     "usage": [
       "核心协议",
       "绝对独占",
-      "成人向"
+      "R15"
     ],
     "prompt": "natsume_r18, nene_r18, 2girls, two adult women only, adult, POV_from_viewer_lying_between_them, private_bedroom, late_night, messy_bed_and_scattered_clothes, warm_dim_ambient_light, one_viewer_hand_visible_at_center, both_women_focused_on_offscreen_viewer_not_each_other, no_contact_between_women, extreme_intimacy, heavy_blush, sweat, messy_hair, close_up, clearly_different_faces, (ayachi_nene_on_the_left, white_hair, very_long_low_twintails, purple_eyes, ahoge, pink_hair_ribbons, unbuttoned_pink_shirt, both_hands_wrapped_around_one_viewer_hand, open_mouth, passionate_look) BREAK (shiki_natsume_on_the_right, black_hair, long_hair, yellow_eyes, two_red_hairclips, mole_under_eye, dark_off_shoulder_pajamas, one_arm_extending_out_of_frame_around_viewer_shoulder, face_turned_toward_offscreen_viewer_neck, closed_eyes, intense_blush), <lora:ayachi_nene_v18_wd14:0.52>, <lora:shiki_natsume_v18_wd14:0.52>",
     "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage, school_uniform, gym_uniform, girls kissing each other, women embracing each other, pink ribbon on black-haired woman, mole on white-haired woman, identical twins, extra girl, 3girls, male, man, boy, 1boy",
     "storyJa": "【寧々＆夏目・大人のAfter Story・心がほどける夜】誰にも邪魔されない部屋で、三人は長い一日の終わりを迎えていた。寧々はあなたの左手を握り、安心したように肩を寄せている。夏目も反対側からそっと寄りかかり、いつもの強がりを忘れた穏やかな表情を見せた。魔法と異能、二つの世界を隔てていた壁はもうない。窓の外で夜が静かに更けていくなか、三人の呼吸だけが同じ速さへ重なっていった。",
-    "rating": "R18",
+    "rating": "R15",
     "recommendedSize": "1344×896",
     "auditRevision": "dual-regional-2026-07-23",
     "animaCaption": "In a close-up framing in a private bedroom on soft bedding, she looks forward toward the viewer with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."

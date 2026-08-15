@@ -57,9 +57,22 @@
       <div class="pop-grid">
         <article v-for="blueprint in filtered" :key="blueprint.id" class="pop-card"
           :class="{ adult: blueprint.adult }" :data-blueprint-id="blueprint.id">
+          <!-- 样张缩略图：与灵感场景一致的真实样张预览；仅角色专属蓝图有样张 -->
+          <RouterLink v-if="thumbSrc(blueprint)" class="pop-thumb" :to="drawUrl(blueprint)"
+            :aria-label="`预览「${blueprint.title}」样张`">
+            <span class="pop-thumb-skeleton" :class="{ visible: !thumbState[thumbSrc(blueprint)] && !thumbFailed[thumbSrc(blueprint)] }" aria-hidden="true"></span>
+            <img :src="thumbSrc(blueprint)" alt="" loading="lazy" decoding="async"
+              :class="{
+                'pop-thumb-r18': sampleRatingOf(blueprint) === 'R18',
+                'pop-thumb-missing': thumbFailed[thumbSrc(blueprint)],
+                'pop-thumb-ready': thumbState[thumbSrc(blueprint)],
+              }"
+              @load="onThumbLoad(thumbSrc(blueprint))" @error="onThumbError(thumbSrc(blueprint))" />
+            <span v-if="sampleRatingOf(blueprint) === 'R18'" class="pop-thumb-hint">R18 · 悬停预览</span>
+          </RouterLink>
           <header class="pop-card-head">
             <h3>{{ blueprint.title }}</h3>
-            <span v-if="blueprint.adult" class="pop-rating">R18</span>
+            <span v-if="sampleRatingOf(blueprint) !== 'All'" class="pop-rating" :class="'rating-' + sampleRatingOf(blueprint)">{{ sampleRatingOf(blueprint) }}</span>
           </header>
           <p class="pop-desc">{{ blueprint.description }}</p>
           <div class="pop-meta">
@@ -112,17 +125,17 @@ const showMature = ref(/^(localhost|127\.0\.0\.1|\[::1\])$/.test(window.location
 const characters = computed<PopularCharacter[]>(() => sceneStore.popularCharacters)
 const allBlueprints = computed<SceneBlueprint[]>(() => sceneStore.sceneBlueprints)
 
-/** 当前角色的全部蓝图（角色专属 + 通用成人蓝图，资格按成熟开关收敛）。 */
+/** 当前角色的全部蓝图（资格按成熟开关收敛）。 */
 const pool = computed<SceneBlueprint[]>(() => {
   const character = characters.value.find(item => item.id === selectedId.value) ?? null
   return allBlueprints.value.filter(bp =>
-    (bp.characterId === selectedId.value || !bp.characterId)
+    bp.characterId === selectedId.value
     && (!bp.adult || (showMature.value && character?.adultEligibility === 'adult')),
   )
 })
 
 const totalScenes = computed(() => characters.value.length
-  ? allBlueprints.value.filter(bp => bp.characterId || true).length
+  ? allBlueprints.value.length
   : 0)
 const adultCount = computed(() => pool.value.filter(bp => bp.adult).length)
 
@@ -198,6 +211,25 @@ function drawUrl(blueprint: SceneBlueprint): string {
 function resetFilters() {
   query.value = ''
   category.value = 'all'
+}
+
+/** 样张视觉定级：缺省按成人蓝图推导（R18/All）；2026-08-15 起样张实际画面定级优先。 */
+function sampleRatingOf(blueprint: SceneBlueprint): string {
+  return blueprint.sampleRating || (blueprint.adult ? 'R18' : 'All')
+}
+
+/** 样张缩略图：与灵感场景一致，路径为展示库样张 `pc_<角色>_<蓝图>`；通用成人蓝图无样张。 */
+const thumbState = ref<Record<string, boolean>>({})
+const thumbFailed = ref<Record<string, boolean>>({})
+function thumbSrc(blueprint: SceneBlueprint): string {
+  if (!blueprint.characterId || !selectedId.value) return ''
+  return `/scene-showcase/thumbs/pc_${selectedId.value}_${blueprint.id}.jpg`
+}
+function onThumbLoad(src: string) {
+  thumbState.value = { ...thumbState.value, [src]: true }
+}
+function onThumbError(src: string) {
+  thumbFailed.value = { ...thumbFailed.value, [src]: true }
 }
 
 async function init() {
@@ -386,6 +418,56 @@ onMounted(() => { void init() })
 }
 .pop-card:hover { transform: translateY(-2px); border-color: var(--accent); box-shadow: var(--shadow-sm); }
 .pop-card.adult { border-color: color-mix(in srgb, var(--danger-text) 45%, var(--border-soft)); }
+
+/* ---- 样张缩略图区（与灵感场景 SceneCard 视觉语言一致） ---- */
+.pop-thumb {
+  position: relative;
+  display: block;
+  aspect-ratio: 16/10;
+  overflow: hidden;
+  margin: calc(-1 * var(--s-4)) calc(-1 * var(--s-4)) var(--s-2);
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+  background: linear-gradient(145deg, color-mix(in srgb, var(--bg-deep) 72%, var(--bg-elevated)), var(--bg-elevated));
+  text-decoration: none;
+}
+.pop-thumb img {
+  position: absolute; inset: 0; z-index: var(--z-sc-media, 0);
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center 22%;
+  opacity: 0; filter: blur(6px);
+  transition: opacity .28s var(--ease-out), filter .5s var(--ease-out), transform var(--t-base) var(--ease-out);
+}
+.pop-thumb img.pop-thumb-ready { opacity: 1; filter: blur(0); }
+.pop-thumb img.pop-thumb-missing { display: none; }
+.pop-thumb-skeleton {
+  position: absolute; inset: 0; z-index: var(--z-sc-media, 0); opacity: 0;
+  background: linear-gradient(105deg, var(--bg-deep) 18%, var(--bg-elevated) 42%, var(--bg-deep) 68%);
+  background-size: 220% 100%;
+  transition: opacity var(--t-fast);
+}
+.pop-thumb-skeleton.visible { opacity: 1; animation: archive-skeleton-shimmer 1.3s linear infinite; }
+/* R18 样张默认模糊，悬停/聚焦揭示，与灵感场景一致。 */
+.pop-thumb img.pop-thumb-r18,
+.pop-thumb img.pop-thumb-r18.pop-thumb-ready { filter: blur(16px) saturate(.85); transform: scale(1.08); }
+.pop-card:hover .pop-thumb img.pop-thumb-r18,
+.pop-card:focus-within .pop-thumb img.pop-thumb-r18,
+.pop-card:hover .pop-thumb img.pop-thumb-r18.pop-thumb-ready,
+.pop-card:focus-within .pop-thumb img.pop-thumb-r18.pop-thumb-ready { filter: blur(0) saturate(1); transform: scale(1.08); }
+.pop-thumb-hint {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  padding: var(--s-2) var(--s-3);
+  border: 1px solid var(--on-art-line); border-radius: var(--r-pill);
+  background: var(--art-scrim); color: var(--on-art-primary);
+  font: 700 var(--fs-mono-xs) var(--font-mono); letter-spacing: .08em;
+  backdrop-filter: blur(10px); box-shadow: var(--shadow-sm);
+  pointer-events: none; opacity: 1; transition: opacity var(--t-fast);
+}
+.pop-card:hover .pop-thumb-hint, .pop-card:focus-within .pop-thumb-hint { opacity: 0; }
+@media (hover: hover) and (pointer: fine) {
+  .pop-card:hover .pop-thumb img { transform: scale(1.03); }
+  .pop-card:hover .pop-thumb img.pop-thumb-r18,
+  .pop-card:hover .pop-thumb img.pop-thumb-r18.pop-thumb-ready { transform: scale(1.03); }
+}
 .pop-card-head { display: flex; align-items: center; justify-content: space-between; gap: var(--s-2); }
 .pop-card-head h3 { margin: 0; font-size: var(--fs-title-xs); }
 .pop-rating {
@@ -396,6 +478,11 @@ onMounted(() => { void init() })
   color: var(--danger-text);
   font: 800 var(--fs-mono-sm) var(--font-mono);
 }
+.pop-rating.rating-R15 {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--border-soft));
+  color: var(--accent);
+}
+.pop-rating.rating-All { display: none; }
 .pop-desc { margin: 0; color: var(--text-secondary); font-size: var(--fs-label-sm); line-height: 1.55; }
 .pop-meta { display: flex; flex-wrap: wrap; gap: var(--s-1); color: var(--text-muted); font-size: var(--fs-mono-xs); }
 .pop-meta span + span::before { content: ' · '; margin-right: var(--s-1); color: var(--border-strong); }

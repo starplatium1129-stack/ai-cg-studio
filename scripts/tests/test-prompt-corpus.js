@@ -113,8 +113,9 @@ function planFor(scene, profile, engine) {
   })
 }
 
-test('corpus: all 298 scenes infer only valid shot/lighting/mood/composition ids and orientations', () => {
-  assert.strictEqual(scenes.length, 298, 'corpus must cover the full scene library');
+test('corpus: all 302 scenes infer only valid shot/lighting/mood/composition ids and orientations', () => {
+  // 2026-08-15 新增 4 个真正露点的 R18 场景（sc301-sc304）
+  assert.strictEqual(scenes.length, 302, 'corpus must cover the full scene library');
   const shotIds = new Set(infer.SHOT_IDS)
   const lightingIds = new Set(infer.LIGHTING_IDS)
   const moodIds = new Set(infer.MOOD_IDS)

@@ -48,6 +48,48 @@ const additions = [
     prompt: '1girl, solo, shiki_natsume, natsume_r18, black_hair, long_hair, yellow_eyes, mole_under_eye, adult, nude, outdoor_bath, wet_hair, bare_shoulders, upper_body, steam, moonlight, night, mountain_view, side_view, calm_expression, soft_shadows, medium_shot, sensual, <lora:shiki_natsume_v18_wd14:0.65>',
     negative: STANDARD_NEGATIVE + ', school_uniform, gym_uniform, child, loli, underage, crowd, daylight, harsh_lighting',
     storyJa: '【大人のAfter Story・夏目・月下の露天風呂での小休戦】旅の最終夜、露天風呂の外には虫の声と遠い山風だけが残っていた。夏目は濡れた黒髪を背中へ払って湯の縁にもたれ、月を見上げている。普段は鋭い眼差しも、湯気の中では少しずつほどけていった。あなたの足音に気づいても振り返らず、隣の場所だけを空けて言う。――「今回の休暇は、あなたの勝ちでいい。ここに座りなさい。でも、この静けさを騒がしくするのは許さないから。」'
+  },
+  // ── 2026-08-15 新增：样张必须真正露点的 R18 场景（用户裁定：原先多为 R15 级别，补真正 R18；
+  //    第二次修订：连下体一并露出，prompt 带 pussy/spread_legs/legs_up，正面暴露构图）──
+  {
+    id: 'sc301', title: '晨光里的坦诚', category: '亲密/After_Story',
+    story: '【成年 After Story · 宁宁 · 晨光里的坦诚】清晨的卧室还笼着淡金色的光。宁宁仰躺在床上，把双腿抬起、缓缓分开，全裸的身体被晨光勾勒得毫无保留——白嫩的双乳与腿间最私密的地方都清晰可见。她红着脸，努力稳住声音——「说好了，只准看宁宁一个人……连这里，也只准给宁宁喜欢的人看。」',
+    char: 'nene', character: ['nene'], lora: 'ayachi_nene_v18_wd14', emotion: '害羞而信任', season: '不限', time: '清晨', timeOfDay: 'morning',
+    tags: ['adult', 'naked', 'completely_naked', 'no_clothes', 'pussy', 'spread_legs', 'legs_up', 'lying_on_back', 'bare_breasts', 'nipples', 'bare_shoulders', 'fair_skin', 'morning_light', 'bedroom', 'bed', 'soft_shadows', 'heavy_blush', 'looking_at_viewer', 'medium_shot', 'sensual'],
+    rating: 'R18', mature: true, location: '清晨的卧室床沿', weather: '室内暖光', camera: '平视中近景', lighting: '清晨窗光与柔和漫反射', usage: ['成人向', '壁纸级'],
+    prompt: '1girl, adult, ayachi_nene, nene_r18, white_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, naked, completely_naked, no_clothes, pussy, spread_legs, legs_up, lying_on_back, bare_breasts, nipples, bare_shoulders, fair_skin, morning_light, bedroom, bed, soft_shadows, heavy_blush, looking_at_viewer, medium_shot, sensual, <lora:ayachi_nene_v18_wd14:0.85>',
+    negative: STANDARD_NEGATIVE + ', school_uniform, gym_uniform, child, loli, underage, night, dark',
+    storyJa: '【大人のAfter Story・寧々・朝の光の中の素直さ】朝の寝室には、まだ淡い金色の光が満ちていた。寧々は仰向けに寝転び、両脚を上げてゆっくりと開き、裸の体を朝の光にさらけ出している。白い胸も、脚の付け根の一番秘かな場所も、はっきりと見えている。彼女は顔を赤らめながら、必死に声を落ち着けて言った。「約束して、寧々だけを見て……ここも、寧々が好きな人にだけ見せるんだから。」'
+  },
+  {
+    id: 'sc302', title: '深夜镜前的完整坦诚', category: '亲密/After_Story',
+    story: '【成年 After Story · 宁宁 · 深夜镜前的完整坦诚】更衣室只剩一盏暖灯。宁宁在镜前站定，把最后一件衣物褪去，正面完全朝向镜面，把自己从头到脚毫无保留地照给镜中人看——白皙的胸口、腰线，连腿间最隐秘的地方都清晰映在镜里。她抿了抿嘴，声音又轻又软——「成年之后的宁宁，连这里也好好长大了……你要看清楚，宁宁只给你一个人看。」',
+    char: 'nene', character: ['nene'], lora: 'ayachi_nene_v18_wd14', emotion: '羞涩笃定', season: '不限', time: '深夜', timeOfDay: 'late_night',
+    tags: ['adult', 'naked', 'completely_naked', 'no_clothes', 'pussy', 'standing', 'front_view', 'mirror', 'bare_breasts', 'nipples', 'navel', 'bare_shoulders', 'fair_skin', 'night', 'lamp', 'soft_light', 'heavy_blush', 'medium_shot', 'sensual'],
+    rating: 'R18', mature: true, location: '深夜的更衣室镜前', weather: '室内恒温', camera: '侧面中景', lighting: '暖色台灯与镜面反光', usage: ['成人向', '壁纸级'],
+    prompt: '1girl, adult, ayachi_nene, nene_r18, white_hair, low_twintails, purple_eyes, ahoge, hair_ribbon, naked, completely_naked, no_clothes, pussy, standing, front_view, mirror, bare_breasts, nipples, navel, bare_shoulders, fair_skin, night, lamp, soft_light, heavy_blush, medium_shot, sensual, <lora:ayachi_nene_v18_wd14:0.85>',
+    negative: STANDARD_NEGATIVE + ', school_uniform, gym_uniform, child, loli, underage, day, bright',
+    storyJa: '【大人のAfter Story・寧々・深夜の鏡の前の素直さ】更衣室には、暖かなランプが一つだけ灯っていた。寧々は鏡の前に立ち、最後の一枚を脱ぎ捨てると、正面から鏡に向き直った。白い胸も、腰の線も、脚の付け根の一番秘かな場所も、鏡の中にはっきりと映っている。彼女は唇を結び、小さく柔らかな声で言った。「大人になった寧々は、ここもちゃんと成長してるの……よく見てね。寧々はあなたにだけ見せるんだから。」'
+  },
+  {
+    id: 'sc303', title: '暴雨夜的绝对坦诚', category: '亲密/After_Story',
+    story: '【成年 After Story · 夏目 · 暴雨夜的绝对坦诚】暴雨砸在窗上，卧室里只剩急促的呼吸。夏目仰躺在凌乱的床铺上，双腿抬起、缓缓分开，台灯把她的身体照得毫无保留——胸口与腿间最私密的地方都清晰可见。她望着你，声音沙哑又笃定——「看清楚了。今晚，夏目连最后的地方都交给你。」',
+    char: 'natsume', character: ['natsume'], lora: 'shiki_natsume_v18_wd14', emotion: '克制而笃定', season: '不限', time: '深夜', timeOfDay: 'late_night',
+    tags: ['adult', 'naked', 'completely_naked', 'no_clothes', 'pussy', 'spread_legs', 'legs_up', 'lying_on_back', 'bare_breasts', 'nipples', 'heavy_blush', 'sweat', 'messy_hair', 'intense_look', 'bedroom', 'bed', 'night', 'rain', 'shadows', 'medium_shot', 'sensual'],
+    rating: 'R18', mature: true, location: '暴雨夜的凌乱卧室', weather: '狂风暴雨', camera: '特写', lighting: '台灯强光与暗影', usage: ['成人向', '壁纸级'],
+    prompt: '1girl, adult, shiki_natsume, natsume_r18, mole_under_eye, naked, completely_naked, no_clothes, pussy, spread_legs, legs_up, lying_on_back, bare_breasts, nipples, heavy_blush, sweat, messy_hair, intense_look, bedroom, bed, night, rain, shadows, medium_shot, sensual, <lora:shiki_natsume_v18_wd14:0.85>',
+    negative: STANDARD_NEGATIVE + ', school_uniform, gym_uniform, child, loli, underage, day, bright, crowd',
+    storyJa: '【大人のAfter Story・夏目・豪雨の夜の素直さ】窓に激しい雨が叩きつけられ、寝室には荒い呼吸だけが残っていた。夏目は乱れたベッドの上に仰向けに寝転び、両脚を上げてゆっくりと開き、裸の体をランプの光に晒している。胸も、脚の付け根の一番秘かな場所も、はっきりと見える。彼女はあなたを見つめ、掠れた声で言った。「よく見て。今夜、夏目は最後の場所まであなたに預けるわ。」'
+  },
+  {
+    id: 'sc304', title: '月光窗前的完整姿态', category: '亲密/After_Story',
+    story: '【成年 After Story · 夏目 · 月光窗前的完整姿态】夜深人静，夏目站在落地窗前，正面朝向月光，睡袍顺着身体滑落。银白光线里，从胸口到腰线、再到腿间最私密的地方，全都毫无遮挡地浸在月色中。她没有回避，声音带着笑意——「看够之前，不许移开眼睛。今晚的月色，连最后的地方都分给你一个人。」',
+    char: 'natsume', character: ['natsume'], lora: 'shiki_natsume_v18_wd14', emotion: '从容坦荡', season: '不限', time: '夜晚', timeOfDay: 'night',
+    tags: ['adult', 'naked', 'completely_naked', 'no_clothes', 'pussy', 'standing', 'front_view', 'window', 'moonlight', 'night', 'bare_breasts', 'nipples', 'navel', 'bare_shoulders', 'fair_skin', 'mole_under_eye', 'long_hair', 'calm_expression', 'medium_shot', 'sensual'],
+    rating: 'R18', mature: true, location: '月光下的落地窗前', weather: '晴朗月夜', camera: '平视中景', lighting: '清冷月光与室内微光', usage: ['成人向', '壁纸级'],
+    prompt: '1girl, adult, shiki_natsume, natsume_r18, mole_under_eye, black_hair, long_hair, naked, completely_naked, no_clothes, pussy, standing, front_view, window, moonlight, night, bare_breasts, nipples, navel, bare_shoulders, fair_skin, calm_expression, medium_shot, sensual, <lora:shiki_natsume_v18_wd14:0.85>',
+    negative: STANDARD_NEGATIVE + ', school_uniform, gym_uniform, child, loli, underage, day, bright, rain',
+    storyJa: '【大人のAfter Story・夏目・月明かりの窓辺の姿】夜も更け、夏目は窓辺に立っていた。月の光が彼女の輪郭を照らしている。ガウンを解いてそのまま滑り落とし、正面から月明かりに晒す。胸も、腰も、脚の付け根の一番秘かな場所も、銀色の光の中に何の隠しもなく浮かんでいる。彼女は目をそらさず、笑みを含んだ声で言った。「見飽きるまで、目を離さないで。今夜の月明かりは、最後の場所まであなたにだけ分けてあげる。」'
   }
 ];
 
@@ -67,8 +109,15 @@ function normalizeUsage(scene, rating) {
 
 function normalizeNegative(scene, rating) {
   const values = String(scene.negative || '').split(',').map((value) => value.trim()).filter(Boolean);
-  if (rating !== 'R18') return values.join(', ');
-  const blocked = new Set(['nsfw', 'nude', 'explicit']);
+  // 2026-08-15 用户裁定：裸体压制只在 All 评级保留；R15 与 R18 一样剥离并补未成年保护。
+  if (rating === 'All') {
+    const seen = new Set(values.map((value) => value.toLowerCase()));
+    for (const token of ['nsfw', 'nude', 'explicit']) {
+      if (!seen.has(token)) values.push(token);
+    }
+    return values.join(', ');
+  }
+  const blocked = new Set(['nsfw', 'nude', 'naked', 'explicit']);
   const normalized = values.filter((value) => !blocked.has(value.toLowerCase()));
   const seen = new Set(normalized.map((value) => value.toLowerCase()));
   ['child', 'loli', 'underage'].forEach((value) => {
@@ -76,6 +125,14 @@ function normalizeNegative(scene, rating) {
   });
   return normalized.join(', ');
 }
+
+/**
+ * 2026-08-15 样张视觉定级的人工降级表（用户裁定：多数标 R18 的样张实际顶多 R15），
+ * 与 validate-scenes.js 共用（scripts/runtime/manual-scene-ratings.js）。
+ * 评级以样张实际画面为准（露点/性行为=R18，半裸/内衣/强暗示=R15，否则 All），
+ * 覆盖 ratingFor 的 tag 推导与 R18 强制保留逻辑；只列入降级项。
+ */
+const MANUAL_RATINGS = require('../runtime/manual-scene-ratings.js');
 
 const scenes = loadSceneShards().scenes;
 const ids = new Set(scenes.map((scene) => scene.id));
@@ -87,7 +144,8 @@ for (const scene of scenes) {
   // 信任场景已有的成熟标记：凡 mature:true / rating:R18 的保留不动
   // 只有被自动归为 All/R15 的才按 tag 重新计算，防止手动设定被覆盖
   const force = scene.mature === true || scene.rating === 'R18';
-  const rating = force ? 'R18' : ratingFor(scene);
+  const manual = MANUAL_RATINGS[scene.id];
+  const rating = manual || (force ? 'R18' : ratingFor(scene));
   const next = { rating, mature: rating === 'R18', category: categoryFor(scene, rating), usage: normalizeUsage(scene, rating), negative: normalizeNegative(scene, rating) };
   if (scene.rating !== next.rating || scene.mature !== next.mature || scene.category !== next.category || JSON.stringify(scene.usage) !== JSON.stringify(next.usage) || scene.negative !== next.negative) changed += 1;
   Object.assign(scene, next);

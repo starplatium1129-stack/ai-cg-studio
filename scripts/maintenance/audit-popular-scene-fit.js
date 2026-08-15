@@ -131,8 +131,6 @@ var CHARACTER_PROFILES = {
   },
 };
 
-var ADULT_BLUEPRINTS = ['candlelight_evening', 'morning_bathrobe', 'late_night_dressing'];
-
 function main() {
   var characters = readJson(path.join(ROOT, 'data', 'popular-characters.json')).characters;
   var rawBlueprints = readJson(path.join(ROOT, 'data', 'scene-blueprints.json'));
@@ -176,11 +174,6 @@ function main() {
     md.push('- 依据：' + profile.note);
     md.push('');
   });
-
-  // 成人场景标注
-  md.push('## 成人场景（不受原型限制，按 adultEligibility 放行）', '');
-  md.push(ADULT_BLUEPRINTS.map(function (id) { return '- ' + (bpById[id] ? bpById[id].title : id); }).join('\n'));
-  md.push('');
 
   var out = process.argv[process.argv.indexOf('--out') + 1] || path.join(ROOT, 'docs', 'popular-scene-fit-audit.md');
   fs.mkdirSync(path.dirname(out), { recursive: true });

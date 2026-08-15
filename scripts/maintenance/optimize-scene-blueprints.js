@@ -283,20 +283,6 @@ const PROSE_OPTIMIZATIONS = {
     promptProse: "Late at night in the private apartment bedroom, Kisara sits alone on the bed beside a warm bedside lamp casting soft golden shadows across the wall.",
     nsfwProse: "Fully naked on the bed with her oversized white shirt unbuttoned and discarded on the floor, her bare breasts and parted thighs are exposed in the warm lamplight as she looks back with a teasing gaze.",
   },
-
-  // --- 19. 通用成人蓝图 ---
-  candlelight_evening: {
-    promptProse: "In a dimly lit private bedroom at night, warm amber candlelight flickers across white satin bedsheets and wooden headboard in peaceful, intimate seclusion.",
-    nsfwProse: "Fully naked on the satin bedsheets with all clothing removed and placed on the floor, a woman rests with bare breasts and exposed nipples bathed in the soft glow of flickering candles.",
-  },
-  morning_bathrobe: {
-    promptProse: "In a bright sunlit bedroom at dawn, gentle morning light pours through sheer curtains onto the polished wooden floor in tranquil, unhurried seclusion.",
-    nsfwProse: "Completely naked in the bright morning sunlight with the bathrobe slipped from her shoulders and resting on the floor, her bare breasts and nipples are fully exposed in the radiant dawn light.",
-  },
-  late_night_dressing: {
-    promptProse: "Late at night in a private dressing room, a single warm brass vanity lamp casts soft shadows across the dressing table and mirror in quiet solitude.",
-    nsfwProse: "Fully naked before the vanity mirror with all garments discarded on the floor, her bare back, exposed breasts, and natural curves are reflected in the warm, focused lamplight.",
-  },
 };
 
 let modifiedCount = 0;

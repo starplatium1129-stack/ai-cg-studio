@@ -250,7 +250,9 @@ function main() {
     scenes:readJson('data/scenes.json')
   };
   var errors = validateContent(data, function (relative) {
-    return fs.existsSync(path.resolve(ROOT, 'data', relative));
+    // 样张/立绘 URL 允许携带缓存版本串（如 popular-*.png?v=2），存在性检查需剥离。
+    var pathOnly = String(relative).replace(/\?.*$/, '');
+    return fs.existsSync(path.resolve(ROOT, 'data', pathOnly));
   });
   errors = errors.concat(validateSceneShards(data));
   errors = errors.concat(validatePopularContent());
