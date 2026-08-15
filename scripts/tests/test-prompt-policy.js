@@ -161,8 +161,11 @@ const exactV19 = policy.formatPromptForProfile(
   assert(exactV19.includes(token), 'v19 exact control token must not be rewritten: ' + token);
 });
 assert(exactV19.includes('warm lighting'), 'ordinary scene and lighting tags should still use spaces');
-assert.strictEqual(policy.resolveModelProfile(presetProfiles, 'anima-yume-v1.0', 'anima'), null, 'unknown Anima models must not fall back to Base');
 assert.strictEqual(policy.resolveModelProfile(presetProfiles, 'unknown-krea-model', 'krea2'), null, 'unknown Krea models must fail closed');
+assert.strictEqual(policy.resolveModelProfile(presetProfiles, 'anima-yume-v2.0', 'anima'), null, 'unlisted Anima models must fail closed');
+const yumeProfile = policy.resolveModelProfile(presetProfiles, 'anima-yume-v1.0', 'anima');
+assert(yumeProfile && yumeProfile.id === 'anima_yume_v10', 'AnimaYume (reviewed 2026-08-15) must resolve to its own profile, not fall back to Base');
+assert.strictEqual(yumeProfile.quality_prefix, 'masterpiece, best quality, score_7', 'Yume keeps the Base-quality prefix');
 assert(policy.qualityPrefix(animaBase, { rating:'ALL' }, 'anima').includes('score_7'), 'Anima Base must retain its score quality prefix');
 assert(policy.qualityPrefix(animaBase, { rating:'ALL' }, 'anima').includes('best quality'), 'Anima Base must keep best quality with official spaces');
 assert.strictEqual(policy.qualityPrefix(animaAesthetic, { rating:'ALL' }, 'anima'), 'safe', 'Anima Aesthetic must add only its rating tag when the quality prefix is intentionally empty');

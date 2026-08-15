@@ -91,6 +91,7 @@ function prepareComfyResources(context) {
   [
     ['diffusion_models', 'anima-base-v1.0.safetensors'],
     ['diffusion_models', 'anima-aesthetic-v1.1.safetensors'],
+    ['diffusion_models', 'AnimaYume_v10_final_base.safetensors'],
     ['diffusion_models', 'krea2_turbo_fp8_scaled.safetensors'],
     ['text_encoders', 'qwen_3_06b_base.safetensors'],
     ['text_encoders', 'qwen3-vl-4b-heretic_fp8_e4m3fn.safetensors'],
@@ -138,7 +139,11 @@ test('Anima routes enforce application job and result boundaries over real HTTP'
     assert.strictEqual(status.json.ok, true);
     assert.strictEqual(status.json.online, true);
     assert.ok(Array.isArray(status.json.models) && status.json.models.every(function (model) { return model.id; }));
-    assert.ok(!status.json.models.some(function (model) { return model.id === 'anima-yume-v1.0'; }), 'unreviewed Yume must not be discoverable');
+    var yumeInStatus = status.json.models.find(function (model) { return model.id === 'anima-yume-v1.0'; });
+    assert.ok(yumeInStatus, 'AnimaYume must be discoverable after review sign-off');
+    assert.strictEqual(yumeInStatus.family, 'anima');
+    assert.strictEqual(yumeInStatus.available, true, 'Yume fixture must mark the model available');
+    assert.strictEqual(yumeInStatus.capabilities.noLora, true, 'Yume keeps no-LoRA creative mode');
     assert.ok(status.json.loras.some(function (lora) { return lora.id === 'L_NENE_V21_ANIMA'; }));
     assert.ok(status.json.models.every(function (model) { return model.family === 'anima'; }), 'Anima status must not expose Krea models');
     var creativeStatus = await request(port, { path:'/api/creative/status' });
@@ -177,9 +182,18 @@ test('Anima routes enforce application job and result boundaries over real HTTP'
     var browserProfile = await postJson(port, '/api/anima/jobs', validJob({ profileId:'anima_base_v10' }));
     assert.strictEqual(browserProfile.status, 400, 'profile metadata must be derived by the server, not accepted from the browser');
     assert.strictEqual(browserProfile.json.code, 'UNKNOWN_PARAMETER');
-    var unreviewedYume = await postJson(port, '/api/anima/jobs', validJob({ modelId:'anima-yume-v1.0' }));
-    assert.strictEqual(unreviewedYume.status, 400, 'unreviewed Yume must not be accepted as Base');
-    assert.strictEqual(unreviewedYume.json.code, 'UNKNOWN_MODEL');
+    // 2026-08-15 用户决策：AnimaYume 正式接入（无 LoRA 创作模式 + 显式 LoRA 兼容两条路径都要通）。
+    var yumeBare = await postJson(port, '/api/anima/jobs', validJob({ modelId:'anima-yume-v1.0', loraId:null, loraStrength:undefined, character:null }));
+    assert.strictEqual(yumeBare.status, 202, 'AnimaYume no-LoRA mode must be accepted after review sign-off');
+    assert.strictEqual(yumeBare.json.job.metadata.profileId, 'anima_yume_v10');
+    var yumeWithLora = await postJson(port, '/api/anima/jobs', validJob({ modelId:'anima-yume-v1.0' }));
+    assert.strictEqual(yumeWithLora.status, 202, 'AnimaYume must accept declared-compatible character LoRA');
+    assert.strictEqual(yumeWithLora.json.job.metadata.loraId, 'L_NENE_V21_ANIMA');
+    var unknownYume = await postJson(port, '/api/anima/jobs', validJob({ modelId:'anima-yume-v2.0' }));
+    assert.strictEqual(unknownYume.status, 400, 'unknown models must stay rejected');
+    assert.strictEqual(unknownYume.json.code, 'UNKNOWN_MODEL');
+    var yumeBareJobId = yumeBare.json.job.id;
+    var yumeLoraJobId = yumeWithLora.json.job.id;
 
     var unknownLora = await postJson(port, '/api/anima/jobs', validJob({ loraId:'ayachi_nene_v18_wd14' }));
     assert.strictEqual(unknownLora.status, 400);
@@ -205,7 +219,9 @@ test('Anima routes enforce application job and result boundaries over real HTTP'
 
     var state = await mockState(comfy.port);
     var promptCalls = state.calls.filter(function (call) { return call.path === '/prompt'; });
-    assert.strictEqual(promptCalls.length, 2);
+    assert.strictEqual(promptCalls.length, 4, 'base + krea + two Yume jobs must each reach Comfy once');
+    var yumePromptCalls = promptCalls.filter(function (call) { return call.body.prompt['1'].inputs.unet_name === 'AnimaYume_v10_final_base.safetensors'; });
+    assert.strictEqual(yumePromptCalls.length, 2, 'both Yume jobs (bare and with LoRA) must load the Yume checkpoint');
     var animaPromptCall = promptCalls.find(function (call) { return call.body.prompt['1'].inputs.unet_name === 'anima-base-v1.0.safetensors'; });
     assert.ok(animaPromptCall && animaPromptCall.body && animaPromptCall.body.prompt);
     assert.strictEqual(animaPromptCall.body.workflow, undefined);
@@ -220,6 +236,13 @@ test('Anima routes enforce application job and result boundaries over real HTTP'
     assert.strictEqual(result.status, 200);
     assert.strictEqual(result.headers['content-type'], 'image/png');
     assert.strictEqual(result.body[0], 137);
+    // Yume jobs also complete; consume their results so the runtime output dir drains.
+    for (var i = 0; i < [yumeBareJobId, yumeLoraJobId].length; i += 1) {
+      var yumeJob = await waitForJob(port, [yumeBareJobId, yumeLoraJobId][i], function (job) { return job && job.status === 'succeeded'; });
+      assert.ok(yumeJob.resultUrl);
+      var yumeResult = await request(port, { path:yumeJob.resultUrl });
+      assert.strictEqual(yumeResult.status, 200);
+    }
     await new Promise(function (resolve) { setTimeout(resolve, 20); });
     assert.strictEqual(fs.readdirSync(path.join(runtime.outputs, 'anima')).length, 0, 'normal result consumption must remove the runtime file');
     var consumedAgain = await request(port, { path:succeeded.resultUrl });
@@ -231,7 +254,7 @@ test('Anima routes enforce application job and result boundaries over real HTTP'
     await waitForJob(port, transientJob.json.job.id, function (job) { return job && job.status === 'succeeded'; });
     state = await mockState(comfy.port);
     promptCalls = state.calls.filter(function (call) { return call.path === '/prompt'; });
-    assert.strictEqual(promptCalls.length, 3, 'history polling failures must not resubmit the workflow');
+    assert.strictEqual(promptCalls.length, 5, 'history polling failures must not resubmit the workflow (base + krea + 2 Yume + transient)');
 
     await mockFault(comfy.port, { renderMs:5000 });
     state = await mockState(comfy.port);
