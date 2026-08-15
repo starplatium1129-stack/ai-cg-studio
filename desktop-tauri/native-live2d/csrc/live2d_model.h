@@ -76,6 +76,8 @@ void l2d_model_set_parameter(l2d_model* m, const char* id, float value, float we
 float l2d_model_get_parameter(l2d_model* m, const char* id);
 void l2d_model_set_part_opacity(l2d_model* m, const char* id, float opacity);
 float l2d_model_get_part_opacity(l2d_model* m, const char* id);
+/* Reset natsume overlay/outfit parameters to author defaults (see cpp). */
+void l2d_model_reset_overlay_params(l2d_model* m);
 
 /* Runtime control. */
 void l2d_model_set_eye_blink_enabled(l2d_model* m, int enabled);

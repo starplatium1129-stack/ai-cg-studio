@@ -262,11 +262,33 @@ async function runMaintenanceChecks() {
 function readHomeHeroManifest() {
     var fallback = { version:1, entries:{} };
     if (!SCENE_SHOWCASE_DIR) return fallback;
-    var source = path.join(SCENE_SHOWCASE_DIR, 'home-hero.json');
+    // 当前版本目录可能还没有 home-hero.json（发布流程先建目录后写 home 立绘；
+    // 2026-08-15 实机：v20/v21 缺 home-hero.json，首页回退旧立绘）。
+    // 从当前版本向旧版本回退，取最近一份完整 manifest。
+    var showcaseRoot = path.dirname(SCENE_SHOWCASE_DIR);
+    var currentName = path.basename(SCENE_SHOWCASE_DIR);
+    var candidates = [];
     try {
-      var data = readJson(source);
-      return data && data.entries && typeof data.entries === 'object' ? data : fallback;
+      candidates = fs.readdirSync(showcaseRoot, { withFileTypes:true })
+        .filter(function (entry) {
+          return entry.isDirectory()
+            && !entry.name.startsWith('.')
+            && fs.existsSync(path.join(showcaseRoot, entry.name, 'manifest.json'));
+        })
+        .map(function (entry) { return path.join(showcaseRoot, entry.name); })
+        .sort(function (a, b) { return path.basename(b).localeCompare(path.basename(a), 'zh-CN'); });
     } catch (e) { return fallback; }
+    var ownIndex = candidates.findIndex(function (dir) { return path.basename(dir) === currentName; });
+    var ordered = ownIndex >= 0 ? candidates.slice(ownIndex) : candidates;
+    for (var i = 0; i < ordered.length; i++) {
+      var source = path.join(ordered[i], 'home-hero.json');
+      if (!fs.existsSync(source)) continue;
+      try {
+        var data = readJson(source);
+        if (data && data.entries && typeof data.entries === 'object') return data;
+      } catch (e) { /* try older version */ }
+    }
+    return fallback;
   }
 
   // GET 必须公开：公网访客也要拿到运行时首页立绘配置（只含图片路径，

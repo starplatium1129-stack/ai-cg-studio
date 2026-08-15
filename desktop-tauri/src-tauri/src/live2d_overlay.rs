@@ -870,6 +870,14 @@ impl RenderContext {
                 let _ = app.emit("aics:live2d:entrance-finished", ());
             }
         }
+        // 夏目互动/登场动作结束后复位叠层与换装参数：Tap* 驱动它们而 Idle
+        // 不覆盖，不复位则叠层残留（2026-08-15 实机缺陷，见
+        // docs/live2d-natsume-overlay-research.md）。
+        if self.character.as_deref() == Some("natsume") {
+            if let Some(model) = self.model.as_mut() {
+                model.reset_overlay_params();
+            }
+        }
         self.start_idle_motion(app);
     }
 }

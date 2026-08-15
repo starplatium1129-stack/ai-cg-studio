@@ -15,56 +15,81 @@
         <h1>与{{ currentCharacter.name }}相伴</h1>
       </div>
       <div class="companion-toolbar-actions">
-        <label class="companion-voice-toggle" title="实时配音">
-          <input type="checkbox" v-model="autoVoice" @change="onAutoVoiceChange" />
-          <span aria-hidden="true"></span>
-          <strong>{{ autoVoice ? '声音开启' : '声音关闭' }}</strong>
-        </label>
         <button
-          v-if="behaviorEnabled"
-          class="companion-dnd-toggle"
           type="button"
-          :aria-pressed="dnd"
-          :title="dnd ? '关闭勿扰：恢复角色主动问候' : '开启勿扰：暂停角色主动问候（安静时段自动生效）'"
-          @click="toggleDnd"
-        >{{ dnd ? '勿扰中' : '勿扰' }}</button>
-        <input
-          ref="importInputRef"
-          class="sr-only"
-          type="file"
-          accept="image/*"
-          multiple
-          aria-label="导入本地图片到作品册"
-          @change="onImportInputChange"
-        />
-        <button type="button" class="companion-import-btn" title="导入本地图片到作品册" @click="importInputRef?.click()">导图</button>
-        <button
-          v-if="desktopBridge"
-          class="companion-immersive-btn"
-          type="button"
-          title="沉浸模式：只保留角色与对话（Esc 退出）"
-          @click="enterImmersive"
-        >沉浸</button>
-        <div v-if="desktopBridge" class="companion-window-actions" aria-label="桌面窗口控制">
-          <button type="button" title="切换窗口置顶" :aria-pressed="alwaysOnTop" @click="togglePin">
-            {{ alwaysOnTop ? '取消置顶' : '置顶' }}
-          </button>
-          <button
-            type="button"
-            :title="ignoreMouseEvents ? '恢复窗口交互（Ctrl+Shift+P）' : '开启鼠标穿透（Ctrl+Shift+P）'"
-            :aria-pressed="ignoreMouseEvents"
-            @click="toggleMouseEvents"
-          >{{ ignoreMouseEvents ? '恢复交互' : '穿透' }}</button>
-          <button type="button" title="打开完整工作台（Ctrl+Shift+A）" @click="desktopBridge.openAtelier()">Atelier</button>
-          <button type="button" title="隐藏 Companion（Ctrl+Shift+Space）" @click="desktopBridge.hide">隐藏</button>
+          class="companion-settings-btn"
+          aria-label="设置"
+          :aria-expanded="settingsOpen"
+          @click="settingsOpen = !settingsOpen"
+        ><ArchiveIcon name="gear" /><span>设置</span></button>
+        <div v-if="settingsOpen" class="companion-settings-popover" role="dialog" aria-label="桌宠设置" @pointerdown.stop>
+          <div class="companion-pop-group">
+            <strong>陪伴</strong>
+            <label class="companion-pop-item" title="实时配音">
+              <input type="checkbox" v-model="autoVoice" @change="onAutoVoiceChange" />
+              <span>实时配音：{{ autoVoice ? '开' : '关' }}</span>
+            </label>
+            <button v-if="behaviorEnabled" type="button" class="companion-pop-item" :aria-pressed="dnd" @click="toggleDnd">
+              {{ dnd ? '关闭勿扰（恢复主动问候）' : '开启勿扰（暂停主动问候）' }}
+            </button>
+            <button type="button" class="companion-pop-item" @click="importInputRef?.click()">导入图片到作品册</button>
+          </div>
+          <input
+            ref="importInputRef"
+            class="sr-only"
+            type="file"
+            accept="image/*"
+            multiple
+            aria-label="导入本地图片到作品册"
+            @change="onImportInputChange"
+          />
+          <div v-if="desktopBridge" class="companion-pop-group">
+            <strong>窗口</strong>
+            <button type="button" class="companion-pop-item" :aria-pressed="alwaysOnTop" @click="togglePin">
+              {{ alwaysOnTop ? '取消置顶' : '置顶窗口' }}
+            </button>
+            <button
+              type="button"
+              class="companion-pop-item"
+              :title="ignoreMouseEvents ? '恢复窗口交互（Ctrl+Shift+P）' : '开启鼠标穿透（Ctrl+Shift+P）'"
+              :aria-pressed="ignoreMouseEvents"
+              @click="toggleMouseEvents"
+            >{{ ignoreMouseEvents ? '恢复窗口交互' : '鼠标穿透' }}</button>
+            <button type="button" class="companion-pop-item" title="隐藏 Companion（Ctrl+Shift+Space）" @click="desktopBridge.hide">隐藏 Companion</button>
+            <button type="button" class="companion-pop-item" title="沉浸模式：只保留角色与对话（Esc 退出）" @click="enterImmersive">沉浸模式</button>
+          </div>
+          <div class="companion-pop-group">
+            <strong>工作台</strong>
+            <button type="button" class="companion-pop-item" title="打开完整工作台（Ctrl+Shift+A）" @click="desktopBridge ? desktopBridge.openAtelier() : undefined">打开完整工作台</button>
+            <button type="button" class="companion-pop-item" @click="desktopBridge ? desktopBridge.openAtelier('/chat') : undefined">完整房间（聊天）</button>
+            <RouterLink v-if="!desktopBridge" class="companion-pop-item" to="/chat">完整房间（聊天）</RouterLink>
+          </div>
+          <div v-if="desktopBridge" class="companion-pop-group">
+            <strong>诊断</strong>
+            <span
+              class="companion-pop-item"
+              :title="onBatteryPower ? '检测到电池供电，Live2D 自动降至 30 FPS' : '接电运行，Native Live2D 目标 165 FPS'"
+            >{{ onBatteryPower ? 'Live2D 30 FPS（电池）' : 'Live2D 165 FPS（接电）' }}</span>
+            <button
+              type="button"
+              class="companion-pop-item"
+              :data-state="workspaceExists ? 'ok' : 'missing'"
+              :title="workspaceTooltip"
+              @click="workspaceOpen = !workspaceOpen"
+            >{{ workspaceExists ? 'AI 工作区 ✓' : 'AI 工作区 ✗' }}</button>
+            <label class="companion-pop-item" title="音量">
+              <span>音量</span>
+              <input
+                type="range"
+                v-model.number="volume"
+                min="0"
+                max="100"
+                aria-label="桌宠音量"
+                @input="onVolumeChange"
+              />
+            </label>
+          </div>
         </div>
-        <button
-          v-if="desktopBridge"
-          class="companion-room-link"
-          type="button"
-          @click="desktopBridge.openAtelier('/chat')"
-        >完整房间</button>
-        <RouterLink v-else class="companion-room-link" to="/chat">完整房间</RouterLink>
       </div>
     </header>
 
@@ -150,28 +175,23 @@
 
         <div
           v-if="!chatReady || voiceCapabilityState === 'offline' || preparingRoom"
-          class="companion-setup"
+          class="companion-setup-inline"
           :data-state="preparingRoom ? 'active' : 'warning'"
-        >          <div>
-            <strong>{{ setupTitle }}</strong>
-            <span>{{ setupDescription }}</span>
-          </div>
+        >
+          <ArchiveIcon name="gear" />
+          <span>{{ setupTitle }}</span>
           <button
             v-if="chatProvider === 'local' || (chatReady && voiceCapabilityState === 'offline')"
-            class="btn btn-primary"
+            class="companion-setup-action"
             type="button"
             :disabled="preparingRoom"
             @click="prepareRoom"
           >{{ preparingRoom ? '准备中…' : '准备环境' }}</button>
-          <RouterLink v-else class="btn btn-primary" to="/chat">前往配置</RouterLink>
+          <RouterLink v-else class="companion-setup-action" to="/chat">前往配置</RouterLink>
         </div>
 
-        <div v-if="toolActivity" class="companion-tool-indicator" role="status">
-          <ArchiveIcon name="gear" /> {{ toolActivity }}
-        </div>
-
-        <div v-if="thinkingActivity" class="companion-tool-indicator" role="status">
-          <ArchiveIcon name="spark" /> 思考中…
+        <div v-if="toolActivity || thinkingActivity" class="companion-tool-indicator" role="status">
+          <ArchiveIcon :name="toolActivity ? 'gear' : 'spark'" /> {{ toolActivity || '思考中…' }}
         </div>
 
         <div class="companion-composer">
@@ -241,6 +261,11 @@
                @click="speechSettingsOpen = true"
              >语音设置</button>
            </div>
+           <div class="companion-composer-meta" aria-live="polite">
+             <span class="companion-chat-status">{{ chatStatusText }}</span>
+             <span v-if="voiceStatusText" class="companion-voice-status">{{ voiceStatusText }}</span>
+             <span v-if="inQuietHours" class="companion-quiet-hours-hint" :title="quietHoursText"><ArchiveIcon name="moon" /> 安静时段</span>
+           </div>
          </div>
 
         <SpeechInputSettings
@@ -249,37 +274,6 @@
           @close="speechSettingsOpen = false"
         />
 
-        <footer class="companion-status" :data-state="statusKind">
-          <span>{{ chatStatusText }}</span>
-          <span v-if="voiceStatusText" class="companion-voice-status">{{ voiceStatusText }}</span>
-          <span v-if="inQuietHours" class="companion-quiet-hours-hint" :title="quietHoursText"><ArchiveIcon name="moon" /> 安静时段</span>
-          <span
-            v-if="desktopBridge"
-            class="companion-runtime-mode"
-            :title="onBatteryPower ? '检测到电池供电，Live2D 自动降至 30 FPS' : '接电运行，Native Live2D 目标 165 FPS'"
-          >{{ onBatteryPower ? '30 FPS' : '165 FPS' }}</span>
-          <span
-            v-if="desktopBridge"
-            class="companion-workspace-state"
-            :data-state="workspaceExists ? 'ok' : 'missing'"
-            :title="workspaceTooltip"
-            role="button"
-            tabindex="0"
-            @click="workspaceOpen = !workspaceOpen"
-            @keydown.enter="workspaceOpen = !workspaceOpen"
-          >{{ workspaceExists ? '工作区 ✓' : '工作区 ✗' }}</span>
-          <label title="音量">
-            <span>音量</span>
-            <input
-              type="range"
-              v-model.number="volume"
-              min="0"
-              max="100"
-              aria-label="桌宠音量"
-              @input="onVolumeChange"
-            />
-          </label>
-        </footer>
         <div class="companion-error" role="status" aria-live="polite" :data-kind="chatErrorKind">
           {{ chatError }}
         </div>
@@ -394,6 +388,7 @@ const quietHoursText = computed(() => {
 })
 const eventDetector = createCompanionEventDetector()
 const importInputRef = ref<HTMLInputElement>()
+const settingsOpen = ref(false)
 const workspaceOpen = ref(false)
 const workspaceInput = ref('')
 const workspaceExists = ref(false)
@@ -535,6 +530,10 @@ function onWindowKeydown(event: KeyboardEvent) {
     exitImmersive()
     return
   }
+  if (event.key === 'Escape' && settingsOpen.value) {
+    settingsOpen.value = false
+    return
+  }
   if (event.key !== ' ' || event.repeat || event.ctrlKey || event.altKey || event.metaKey || event.shiftKey) return
   const target = event.target
   if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement
@@ -635,6 +634,14 @@ function onDocumentVisibilityChange() {
   documentHidden.value = document.hidden
   if (!pageVisible.value) speechCancel()
   reconcileAutoListen()
+}
+
+/** 点击齿轮弹层外部时关闭设置弹层（弹层内已 @pointerdown.stop）。 */
+function onDocPointerDown(event: PointerEvent) {
+  if (!settingsOpen.value) return
+  const target = event.target
+  if (target instanceof Element && target.closest('.companion-settings-popover, .companion-settings-btn')) return
+  settingsOpen.value = false
 }
 
 function onPointerMove(event: PointerEvent) {
@@ -1002,6 +1009,7 @@ onMounted(async () => {
   behaviorTimer = window.setInterval(runBehaviorTick, 30_000) as unknown as number
   eventPollTimer = window.setInterval(() => { void pollCompanionEvents() }, 30_000) as unknown as number
   window.addEventListener('pointerdown', noteActivity, { passive: true })
+  window.addEventListener('pointerdown', onDocPointerDown, { passive: true })
   window.addEventListener('keydown', onWindowKeydown, { passive: false })
   window.addEventListener('keyup', onWindowKeyup, { passive: false })
   document.addEventListener('visibilitychange', onDocumentVisibilityChange)
@@ -1072,6 +1080,7 @@ onUnmounted(() => {
   clearTimeout(clipboardCardTimer)
   if (clipboardCard.value?.previewUrl) URL.revokeObjectURL(clipboardCard.value.previewUrl)
   window.removeEventListener('pointerdown', noteActivity)
+  window.removeEventListener('pointerdown', onDocPointerDown)
   window.removeEventListener('keydown', onWindowKeydown)
   window.removeEventListener('keyup', onWindowKeyup)
   document.removeEventListener('visibilitychange', onDocumentVisibilityChange)

@@ -57,8 +57,12 @@ pub fn clamp_window_bounds(
     let (min_width, min_height) = min_size.unwrap_or((360, 480));
     let width = (bounds.width.min(area_w)).max(min_width.min(area_w));
     let height = (bounds.height.min(area_h)).max(min_height.min(area_h));
-    let x = (bounds.x.max(area_x - width + 80)).min(area_x + area_w - 80);
-    let y = (bounds.y.max(area_y)).min(area_y + area_h - 80);
+    // 完全收进工作区（2026-08-15：旧实现允许"只留 80px"，配合坏状态文件
+    // 会把窗口夹在屏幕外；统一要求窗口整体可见）
+    let max_x = (area_x + area_w - width).max(area_x);
+    let max_y = (area_y + area_h - height).max(area_y);
+    let x = (bounds.x.max(area_x)).min(max_x);
+    let y = (bounds.y.max(area_y)).min(max_y);
     WindowBounds { x, y, width, height }
 }
 
@@ -75,6 +79,13 @@ pub fn save_json_atomic(file_path: &Path, value: &serde_json::Value) {
 }
 
 pub fn save_window_bounds(file_path: &Path, bounds: &WindowBounds) {
+    // 拒绝异常状态（2026-08-15 实机：远程会话中窗口被最小化/虚拟屏切换后
+    // 保存了 -18286 坐标与 158x26 尺寸，下次启动窗口在屏幕外不可见）。
+    if bounds.width < 40 || bounds.height < 40
+        || bounds.x < -10_000 || bounds.y < -10_000
+        || bounds.x > 100_000 || bounds.y > 100_000 {
+        return;
+    }
     save_json_atomic(
         file_path,
         &serde_json::json!({ "x": bounds.x, "y": bounds.y, "width": bounds.width, "height": bounds.height }),
@@ -194,9 +205,11 @@ mod tests {
         );
         assert_eq!(clamped.width, 1920);
         assert_eq!(clamped.height, 1080);
-        // 允许部分出屏但至少留 80px 可抓取（与 Electron clampWindowBounds 一致）
-        assert!(clamped.x + clamped.width > 80);
-        assert!(clamped.y + clamped.height > 80);
+        // 窗口整体收进工作区（2026-08-15 起，替代旧的"至少留 80px"语义）
+        assert!(clamped.x >= 0);
+        assert!(clamped.y >= 0);
+        assert!(clamped.x + clamped.width <= 1920);
+        assert!(clamped.y + clamped.height <= 1080);
         // 正常工作区内的窗口位置保留
         let clamped2 = clamp_window_bounds(
             &WindowBounds { x: 100, y: 100, width: 540, height: 760 },
@@ -215,6 +228,24 @@ mod tests {
         fs::write(&file, "{corrupt").unwrap();
         let loaded = load_window_bounds(&file, None);
         assert_eq!(loaded.x, DEFAULT_BOUNDS.x);
+        let _ = std::fs::remove_dir_all(&tmp);
+    }
+
+    #[test]
+    fn save_rejects_offscreen_minimized_bounds() {
+        // 2026-08-15 实机坏状态：远程会话最小化后保存 -18286 坐标与 158x26 尺寸
+        let tmp = std::env::temp_dir().join(format!("aics-ws-test4-{}", std::process::id()));
+        let file = tmp.join("window.json");
+        fs::create_dir_all(&tmp).unwrap();
+        let bad = WindowBounds { x: -18286, y: -18286, width: 158, height: 26 };
+        save_window_bounds(&file, &bad);
+        assert!(!file.exists(), "offscreen/minimized bounds must not be persisted");
+        let ok = WindowBounds { x: 24, y: 80, width: 540, height: 760 };
+        save_window_bounds(&file, &ok);
+        assert!(file.exists());
+        let loaded = load_window_bounds(&file, None);
+        assert_eq!(loaded.x, 24);
+        assert_eq!(loaded.width, 540);
         let _ = std::fs::remove_dir_all(&tmp);
     }
 

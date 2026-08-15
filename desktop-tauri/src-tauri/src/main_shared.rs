@@ -57,6 +57,9 @@ pub fn primary_work_area() -> (i64, i64, i64, i64) {
 pub fn show_companion(app: &AppHandle, focus: bool) {
     let Some(w) = app.get_webview_window("companion") else { return };
     let was_visible = w.is_visible().unwrap_or(false);
+    // 最小化状态下 show() 不解除最小化（2026-08-15 实机：窗口被最小化后
+    // 托盘"显示 Companion"无效，窗口留在屏幕外）。先 unminimize 再 show。
+    let _ = w.unminimize();
     if focus {
         let _ = w.show();
         let _ = w.set_focus();

@@ -100,6 +100,21 @@ const LEAVE_PLAY_MS = 5_000
 
 const POINTER_FOCUS_PARAMS = ['ParamAngleX', 'ParamAngleY', 'ParamEyeBallX', 'ParamEyeBallY']
 
+// 夏目互动（Tap*）动作驱动、但 Idle 组完全未覆盖的参数（2026-08-15 从
+// motions/Tap*.motion3.json 与 Idle*.motion3.json 曲线差集提取）：
+// 互动动作把这些参数拉高（作者叠层/换装部件临时显隐），动作结束后 idle
+// 不带回默认值 → 叠层残留（"衣服重复显示/四只手"，官方 Notes on Pose
+// Switching 场景）。互动结束必须显式写回默认值（0），随后交还 idle。
+// 依据：docs/live2d-natsume-overlay-research.md。
+const NATSUME_OVERLAY_RESET_PARAMS = [
+  'Param18',
+  'Param38', 'Param39', 'Param40', 'Param41', 'Param42', 'Param43', 'Param44', 'Param45',
+  'Param46', 'Param47', 'Param48', 'Param49', 'Param50', 'Param51', 'Param52', 'Param53',
+  'Param54', 'Param55', 'Param56', 'Param57', 'Param58', 'Param59', 'Param60', 'Param61',
+  'Param62', 'Param63',
+  'ParamMouthForm5', 'ParamMouthForm6', 'ParamMouthForm7', 'ParamMouthForm8', 'ParamMouthForm9', 'ParamMouthForm10',
+] as const
+
 function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error)
 }
@@ -775,13 +790,28 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     activeInteraction = interaction.group
     clearTimeout(interactionTimer)
     interactionTimer = window.setTimeout(() => {
-      if (activeInteraction === interaction.group) activeInteraction = ''
+      if (activeInteraction === interaction.group) {
+        activeInteraction = ''
+        resetNatsumeOverlayParams()
+      }
     }, interaction.duration + 600)
     interactionHint.value = interaction.hint
     setState('ready', 'Live2D 已连接')
     stageEl?.classList.remove('live2d-reacting')
     void stageEl?.offsetWidth
     stageEl?.classList.add('live2d-reacting')
+  }
+
+  /**
+   * 夏目互动动作结束后复位叠层/换装参数（见 NATSUME_OVERLAY_RESET_PARAMS）。
+   * 浏览器端参数由前端写（parameterOverride）；原生端由 Rust 在 motion
+   * 结束后经 C++ 复位，前端不重复写。幂等：参数已是默认值（0）时写 0 无副作用。
+   */
+  function resetNatsumeOverlayParams() {
+    if (character.value !== 'natsume' || !model || session?.capability.parameterOverride === false) return
+    for (const id of NATSUME_OVERLAY_RESET_PARAMS) {
+      try { model.setParameterValueById(id, 0, 1) } catch { /* 参数缺失忽略 */ }
+    }
   }
 
   function interactionFailed(interaction: Live2DInteraction) {

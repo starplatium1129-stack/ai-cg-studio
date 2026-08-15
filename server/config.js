@@ -88,7 +88,12 @@ function resolveSceneShowcaseDir(rootDir, configured, workspaceRoot) {
   try {
     return fs.readdirSync(root, { withFileTypes:true })
       .filter(function (entry) {
-        return entry.isDirectory() && fs.existsSync(path.join(root, entry.name, 'manifest.json'));
+        // 排除隐藏目录与构建中目录（.building-<pid>）：2026-08-15 实机
+        // .2026-08-15_v21.building-518872 被当成最新版本，导致 home-hero
+        // 读到空 manifest，首页回退旧立绘。
+        return entry.isDirectory()
+          && !entry.name.startsWith('.')
+          && fs.existsSync(path.join(root, entry.name, 'manifest.json'));
       })
       .map(function (entry) { return path.join(root, entry.name); })
       .sort(function (a, b) {

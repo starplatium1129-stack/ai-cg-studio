@@ -464,7 +464,13 @@ test('desktop companion keeps the chat loop in a compact standalone layout', asy
   await expect(page.locator('.companion-bubble')).toContainText('今天也在这里陪着你');
   await expect(page.locator('.character-tab')).toHaveCount(2);
   await expect(page.locator('.live2d-enable-cta')).toContainText('加载绫地宁宁动态立绘');
-  await expect(page.locator('.companion-room-link')).toHaveAttribute('href', '/chat');
+  // 完整房间入口已收敛进设置弹层（2026-08-15 布局改造）
+  await page.locator('.companion-settings-btn').click();
+  await expect(page.locator('.companion-settings-popover')).toBeVisible();
+  const roomLink = page.locator('.companion-settings-popover a', { hasText: '完整房间' });
+  await expect(roomLink).toHaveAttribute('href', '/chat');
+  await page.keyboard.press('Escape');
+  await expect(page.locator('.companion-settings-popover')).toHaveCount(0);
   const overflow = await page.evaluate(() => ({
     viewport: window.innerWidth,
     document: document.documentElement.scrollWidth,
@@ -565,7 +571,9 @@ test('desktop companion keeps the chat loop in a compact standalone layout', asy
   await expect(page.locator('.companion-reminder-bubble p')).toHaveText(/。/);
   await page.locator('.companion-reminder-bubble button').click();
   await expect(page.locator('.companion-reminder-bubble')).toHaveCount(0);
-  const dndButton = page.locator('.companion-dnd-toggle');
+  const dndButton = page.locator('.companion-settings-popover button[aria-pressed]', { hasText: '勿扰' });
+  await page.locator('.companion-settings-btn').click();
+  await expect(page.locator('.companion-settings-popover')).toBeVisible();
   await expect(dndButton).toHaveCount(1);
   await expect(dndButton).toHaveAttribute('aria-pressed', 'false');
   await dndButton.click();
@@ -573,18 +581,19 @@ test('desktop companion keeps the chat loop in a compact standalone layout', asy
   await expect(page.locator('.companion-reminders')).toHaveCount(0);
   await dndButton.click();
   await expect(dndButton).toHaveAttribute('aria-pressed', 'false');
-  await expect(page.locator('.companion-dnd-toggle')).toBeVisible();
+  await expect(dndButton).toBeVisible();
   // 穿透模式下悬停可交互元素会自动请求恢复交互（避免"点不到恢复按钮"卡死）；
   // 悬停穿透切换按钮本身不恢复（避免刚穿透又立刻恢复的死循环）
-  const mouseToggleButton = page.locator('.companion-window-actions button').nth(1);
+  const mouseToggleButton = page.locator('.companion-settings-popover button', { hasText: /鼠标穿透|恢复窗口交互/ });
   await mouseToggleButton.click();
   await expect(mouseToggleButton).toHaveAttribute('aria-pressed', 'true');
-  await expect(mouseToggleButton).toHaveText('恢复交互');
+  await expect(mouseToggleButton).toHaveText('恢复窗口交互');
   const mouseCallsBefore = await page.evaluate(() => (window as any).__ignoreMouseCalls.length);
   await page.waitForTimeout(500); // 越过点击后的 400ms 抑制窗口
-  // 悬停"置顶"按钮（穿透切换按钮以外的可交互元素）→ 触发自动恢复
+  // 悬停"置顶窗口"按钮（穿透切换按钮以外的可交互元素）→ 触发自动恢复
   await page.evaluate(() => {
-    const button = document.querySelectorAll('.companion-window-actions button')[0] as HTMLElement;
+    const button = Array.from(document.querySelectorAll('.companion-settings-popover button'))
+      .find(el => el.textContent?.includes('置顶窗口')) as HTMLElement;
     const rect = button.getBoundingClientRect();
     const event = new PointerEvent('pointermove', {
       bubbles: true,
@@ -595,6 +604,8 @@ test('desktop companion keeps the chat loop in a compact standalone layout', asy
   });
   await expect.poll(() => page.evaluate(() => (window as any).__ignoreMouseCalls.length)).toBeGreaterThan(mouseCallsBefore);
   await expect(mouseToggleButton).toHaveAttribute('aria-pressed', 'false');
+  await page.keyboard.press('Escape');
+  await expect(page.locator('.companion-settings-popover')).toHaveCount(0);
   expect(errors).toEqual([]);
 });
 

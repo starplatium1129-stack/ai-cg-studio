@@ -357,6 +357,37 @@ float l2d_model_get_parameter(l2d_model* m, const char* id)
     return m->model->GetParameterValue(m->model->GetParameterIndex(paramId));
 }
 
+/*
+ * Reset natsume overlay/outfit parameters to author defaults after an
+ * interaction motion finishes (2026-08-15 fix). Tap* motions drive these
+ * parameters (author overlay parts temporarily shown), Idle motions never
+ * cover them, so without reset the overlay stays visible (official
+ * "Notes on Pose Switching" clothing-double-display scenario). Whitelist
+ * derived from the Tap and Idle motion3.json curve difference set.
+ */
+void l2d_model_reset_overlay_params(l2d_model* m)
+{
+    if (!m || !m->model) { return; }
+    static const char* overlayParams[] = {
+        "Param18",
+        "Param38", "Param39", "Param40", "Param41", "Param42", "Param43", "Param44", "Param45",
+        "Param46", "Param47", "Param48", "Param49", "Param50", "Param51", "Param52", "Param53",
+        "Param54", "Param55", "Param56", "Param57", "Param58", "Param59", "Param60", "Param61",
+        "Param62", "Param63",
+        "ParamMouthForm5", "ParamMouthForm6", "ParamMouthForm7", "ParamMouthForm8",
+        "ParamMouthForm9", "ParamMouthForm10"
+    };
+    for (csmUint32 i = 0; i < sizeof(overlayParams) / sizeof(overlayParams[0]); ++i)
+    {
+        CubismIdHandle paramId = CubismFramework::GetIdManager()->GetId(overlayParams[i]);
+        csmInt32 index = m->model->GetParameterIndex(paramId);
+        if (index >= 0)
+        {
+            m->model->SetParameterValue(index, m->model->GetParameterDefaultValue(index));
+        }
+    }
+}
+
 void l2d_model_set_part_opacity(l2d_model* m, const char* id, float opacity)
 {
     if (!m || !id || !m->model) { return; }

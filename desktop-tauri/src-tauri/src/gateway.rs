@@ -273,10 +273,38 @@ impl GatewaySupervisor {
         self.stopping.store(false, Ordering::Relaxed);
     }
 
+    /// 同步停止自有网关（应用退出路径使用，等价于 stop() 但非 async）。
+    /// 实测 app.exit(0) 不触发 managed state 的 Drop（2026-08-15），
+    /// 退出清理必须由调用方在 ExitRequested 放行前显式执行。
+    pub fn stop_sync(&self) {
+        self.stopping.store(true, Ordering::Relaxed);
+        let child = self.child.lock().unwrap().take();
+        if let Some(mut child) = child {
+            self.owned.store(false, Ordering::Relaxed);
+            let _ = child.kill();
+            let _ = child.wait();
+        }
+        self.stopping.store(false, Ordering::Relaxed);
+    }
+
     /// 健康检查失败/退出时的重启入口：指数退避由调用方（main）调度
     #[allow(dead_code)]
     pub fn was_owned(&self) -> bool {
         self.owned.load(Ordering::Relaxed)
+    }
+}
+
+/// 应用退出（含托盘 quit → app.exit）时清理自己拥有的网关子进程。
+/// 之前缺失该清理：sidecar node 成为孤儿进程继续占用端口（2026-08-15 实机复现）。
+/// attach 模式（owned=false）不触碰外部网关。kill 后 wait 回收句柄。
+impl Drop for GatewaySupervisor {
+    fn drop(&mut self) {
+        if self.owned.load(Ordering::Relaxed) {
+            if let Some(mut child) = self.child.lock().unwrap().take() {
+                let _ = child.kill();
+                let _ = child.wait();
+            }
+        }
     }
 }
 

@@ -188,6 +188,11 @@ impl Model {
         unsafe { ffi::l2d_model_set_part_opacity(self.ptr, id.as_ptr(), opacity) }
     }
 
+    /// 复位夏目叠层/换装参数到作者默认值（互动动作结束后调用，见 C++ 侧注释）。
+    pub fn reset_overlay_params(&mut self) {
+        unsafe { ffi::l2d_model_reset_overlay_params(self.ptr) }
+    }
+
     pub fn get_part_opacity(&self, id: &str) -> f32 {
         let id = ffi::CStringGuard::new(id);
         unsafe { ffi::l2d_model_get_part_opacity(self.ptr, id.as_ptr()) }

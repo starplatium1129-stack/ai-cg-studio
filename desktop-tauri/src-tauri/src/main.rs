@@ -365,6 +365,10 @@ fn main() {
                 let state = app_handle.state::<AppState>();
                 if !state.quitting.load(Ordering::Relaxed) {
                     api.prevent_exit();
+                } else if let Some(supervisor) = app_handle.try_state::<gateway::GatewaySupervisor>() {
+                    // 显式退出：先停掉自有的 sidecar 网关，避免 node 孤儿进程
+                    // 继续占用端口（Drop 不触发，实测见 gateway.rs stop_sync 注释）
+                    supervisor.stop_sync();
                 }
             }
             RunEvent::WindowEvent { label, event: win_event, .. } => match win_event {
