@@ -2320,13 +2320,14 @@
         {
           "id": "gravel",
           "name": "砾瓦（日常工装）",
-          "prose": "a dark grey high-neck bodysuit with a beige and grey multi-pocket tactical jacket, a red scarf, cargo pants and heavy boots",
+          "prose": "a dark grey high-neck bodysuit under a relaxed beige work jacket with an open collar and a red scarf, comfortable cargo trousers and sturdy boots",
           "tokens": [
-            "tactical",
+            "work_clothes",
             "jacket",
             "red_scarf",
             "cargo_pants",
-            "bodysuit"
+            "bodysuit",
+            "high_collar"
           ]
         },
         {

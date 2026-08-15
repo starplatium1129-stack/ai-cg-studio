@@ -11661,7 +11661,7 @@
         "training_ground",
         "standing"
       ],
-      "promptProse": "In the Rhodes Island training facility at dawn, Mudrock stands immovable resting on her massive industrial warhammer with no other people present, cool morning light outlining her imposing olive-green armor as faint earthy Originium sparks settle on the floor.",
+      "promptProse": "In the Rhodes Island training facility at dawn, Mudrock stands immovable resting on her massive industrial warhammer with no other people present, cool morning light outlining her unsealed black bodysuit with heavy armor plates half-removed, her long silver-white hair loose and black horns visible as faint earthy Originium sparks settle on the floor.",
       "promptTokens": [
         "training",
         "warhammer",
@@ -11674,7 +11674,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "standard"
+      "outfitId": "elite2"
     },
     {
       "id": "mudrock_arknights_r18_cabin_quiet",
