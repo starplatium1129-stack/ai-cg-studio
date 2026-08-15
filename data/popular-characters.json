@@ -2307,14 +2307,16 @@
         {
           "id": "elite2",
           "name": "卸甲破壳态（连体服）",
-          "prose": "her black high-neck bodysuit with heavy armor plates half-removed, long silver-white hair loose and her black Sarkaz horns visible",
+          "prose": "her black high-neck bodysuit with heavy armor plates removed and set aside beside her, only a few shoulder pauldrons and forearm gauntlets still worn, long silver-white hair loose and her black Sarkaz horns visible",
           "tokens": [
             "bodysuit",
             "black_clothes",
             "high_collar",
             "armor",
             "silver_hair",
-            "horns"
+            "horns",
+            "shoulder_armor",
+            "gauntlets"
           ]
         },
         {
@@ -2758,16 +2760,18 @@
         "quillpen",
         "arknights"
       ],
-      "identityProse": "Quillpen from Arknights, a sleepy Liberi bartender with silver-white hair fading to coral pink at the tips, a tall feather ahoge, drowsy vermilion eyes, wearing a black crop top with an asymmetrical grey jacket and black hotpants, wielding a giant black mechanical scythe made by her brother Tequila",
+      "identityProse": "Quillpen from Arknights, a sleepy Liberi bartender with silver-white hair fading to coral pink at the tips reaching past her shoulders, a tall feather ahoge, drowsy half-lidded vermilion eyes, small feathered wings on the sides of her head, wearing a black crop top with an asymmetrical grey jacket and black hotpants, wielding a giant black mechanical scythe made by her brother Tequila",
       "identityTokens": [
         "quillpen",
         "1girl",
         "solo",
         "white_hair",
-        "short_hair",
+        "medium_hair",
         "hair_gradient",
         "ahoge",
+        "winged_ears",
         "red_eyes",
+        "sleepy",
         "black_clothes",
         "grey_clothes",
         "crop_top",
