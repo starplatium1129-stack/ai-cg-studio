@@ -1172,6 +1172,9 @@ function selectBlueprint(blueprint: SceneBlueprint) {
   applyRecommendedSize(decision.size)
   patchAnimaState({ styleLoraId: '' })
   pb.visualDescription = ''
+  // 场景故事跟随所选蓝图（与工作室 selectScene → loadScene 写 story 对齐）：
+  // 否则从工作室切热门后 story 框会残留上一个场景的故事。
+  pb.setStory(blueprint.description)
   pb.flash(`已选用场景「${blueprint.title}」，镜头/光照/尺寸已自动推断`)
 }
 
