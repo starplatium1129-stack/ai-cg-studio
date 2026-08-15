@@ -116,8 +116,8 @@
       </article>
     </div>
 
-    <div v-show="paged.length < filtered.length" class="load-wrap">
-      <button class="btn btn-ghost load-more" type="button" @click="visibleCount += PAGE_SIZE">加载更多</button>
+    <div ref="loadSentinel" v-show="paged.length < filtered.length" class="load-wrap">
+      <button class="btn btn-ghost load-more" type="button" @click="loadMore">加载更多（剩余 {{ filtered.length - paged.length }}）</button>
     </div>
 
     <!-- 查看器 dialog -->
@@ -201,6 +201,10 @@ const typeFilter  = ref<'all' | ShowcaseEntryType>('all')
 const charFilter  = ref<string>('all')
 const ratingFilter= ref<'all' | ShowcaseRating>('all')
 const visibleCount= ref(PAGE_SIZE)
+/** 无限滚动哨兵：划到底自动加载下一页，按钮保留作键盘/兜底入口 */
+const loadSentinel = ref<HTMLElement | null>(null)
+let sentinelObserver: IntersectionObserver | null = null
+function loadMore() { visibleCount.value += PAGE_SIZE }
 const currentId   = ref('')
 const dialogEl    = ref<HTMLDialogElement | null>(null)
 const brokenThumbs = ref(new Set<string>())
@@ -344,9 +348,21 @@ onMounted(async () => {
     manifestLoading.value = false
     unavailable.value = true
   }
+  // 无限滚动：哨兵进入视口（提前 600px 预载）即自动追加一页，直到全部加载完
+  if ('IntersectionObserver' in window) {
+    sentinelObserver = new IntersectionObserver(
+      (entries) => {
+        if (entries.some(e => e.isIntersecting) && visibleCount.value < filtered.value.length) loadMore()
+      },
+      { rootMargin: '600px 0px' }
+    )
+    if (loadSentinel.value) sentinelObserver.observe(loadSentinel.value)
+  }
 })
 onUnmounted(() => {
   unmounted = true
+  sentinelObserver?.disconnect()
+  sentinelObserver = null
   manifestController.abort()
   document.removeEventListener('keydown', onKey)
   if (dialogEl.value?.open) dialogEl.value.close()
@@ -391,8 +407,10 @@ onUnmounted(() => {
 .result-meta { margin-left:auto; color:var(--text-muted); font-size:var(--fs-label-sm); white-space:nowrap; }
 :deep(.result-meta strong) { color:var(--accent); }
 
-.showcase-grid { columns:4 260px; column-gap:var(--s-4); }
-.sample { display:inline-block; width:100%; margin:0 0 var(--s-4); overflow:hidden; break-inside:avoid; position:relative; border:1px solid var(--border-soft); border-radius:var(--r-dossier); background:var(--bg-surface); box-shadow:var(--shadow-sm); transition:transform var(--t-fast),border-color var(--t-fast),box-shadow var(--t-fast); animation:showcaseSampleIn .48s var(--ease-out) both; }
+/* 2026-08-15：多列（columns）改为 Grid —— columns 先填满一列再换列（从上到下），
+   Grid 按行填充，样张按 1-2-3-4 从左到右排列，符合阅读直觉。 */
+.showcase-grid { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:var(--s-4); align-items:start; }
+.sample { overflow:hidden; position:relative; border:1px solid var(--border-soft); border-radius:var(--r-dossier); background:var(--bg-surface); box-shadow:var(--shadow-sm); transition:transform var(--t-fast),border-color var(--t-fast),box-shadow var(--t-fast); animation:showcaseSampleIn .48s var(--ease-out) both; }
 .sample::before { content:""; position:absolute; z-index:var(--z-raised); top:-1px; left:var(--s-3); width:28px; height:1px; background:var(--archive-blue); opacity:.86; pointer-events:none; }
 .sample:nth-child(2) { animation-delay:.04s; }
 .sample:nth-child(3) { animation-delay:.08s; }
@@ -436,13 +454,13 @@ onUnmounted(() => {
 .load-wrap { display:flex; justify-content:center; margin:var(--s-6) 0; }
 .load-more { min-width:190px; }
 
-@media(max-width:1000px) { .showcase-grid { columns:3 230px; } }
+@media(max-width:1000px) { .showcase-grid { grid-template-columns:repeat(3, minmax(0,1fr)); } }
 @media(max-width:760px) {
   .search-row { flex-direction:column; align-items:stretch; }
   .toolbar-shell { position:relative; top:auto; }
   .result-meta { white-space:normal; }
-  .showcase-grid { columns:2 150px; column-gap:var(--s-3); }
-  .sample { margin-bottom:var(--s-3); border-radius:var(--r-dossier); }
+  .showcase-grid { grid-template-columns:repeat(2, minmax(0,1fr)); gap:var(--s-3); }
+  .sample { border-radius:var(--r-dossier); }
 }
 @media(prefers-reduced-motion:reduce) { .sample,.sample-image,.sample-sensitive { transition:none; animation:none; } }
 </style>
