@@ -220,12 +220,6 @@ var CHARACTER_PROFILES = {
     clash: ['empty_classroom_after_school', 'modern_apartment_night', 'cafe_corner', 'spring_bridge', 'flower_field_backlight'],
     note: '冰原/熔炉/舰内契合；现代校园日常违和',
   },
-  rossi_arknights: {
-    world: '塔罗斯-II（村落·小红帽）',
-    fit: ['rossi_arknights_village_morning', 'rossi_arknights_wolf_forest', 'rossi_arknights_grandma_cottage', 'rossi_arknights_wildflower_meadow', 'rossi_arknights_rain_pond', 'rossi_arknights_night_lantern'],
-    clash: ['empty_classroom_after_school', 'modern_apartment_night', 'neon_city_dusk', 'aquarium_tunnel', 'old_train_window', 'rainy_station_night'],
-    note: '村落/森林/小屋契合；现代都市霓虹违和',
-  },
 };
 
 function main() {
