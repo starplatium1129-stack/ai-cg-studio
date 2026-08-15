@@ -129,6 +129,103 @@ var CHARACTER_PROFILES = {
     clash: ['candlelit_palace', 'ancient_ruins', 'magic_library', 'snowy_forest', 'moonlit_shrine', 'sea_cave_dawn', 'starlit_lakeside'],
     note: '现代校园+都市契合；奇幻类违和',
   },
+  // 2026-08-15：方舟 / 终末地 16 角色（与现有热门角色同等待遇）
+  surtr_arknights: {
+    world: '泰拉（罗德岛·火山剑士）',
+    fit: ['surtr_arknights_dorm_window', 'surtr_arknights_snowfield', 'surtr_arknights_volcano_ruins', 'surtr_arknights_rhodes_canteen', 'surtr_arknights_training_ground', 'surtr_arknights_archive_reading'],
+    clash: ['empty_classroom_after_school', 'modern_apartment_night', 'cafe_corner', 'aquarium_tunnel', 'beach_sunset', 'spring_bridge', 'library_quiet_afternoon'],
+    note: '泰拉近未来奇幻：雪原/火山/罗德岛舰内契合；现代校园与纯都市日常违和',
+  },
+  kaltsit_arknights: {
+    world: '泰拉（罗德岛·医师）',
+    fit: ['kaltsit_arknights_medical_wing', 'kaltsit_arknights_mon3tr_shadow', 'kaltsit_arknights_desert_recon', 'kaltsit_arknights_tea_corner', 'kaltsit_arknights_training_supervise', 'kaltsit_arknights_archive_ledger'],
+    clash: ['empty_classroom_after_school', 'cafe_corner', 'beach_sunset', 'spring_bridge', 'neon_city_dusk', 'old_train_window'],
+    note: '罗德岛医疗系契合舰内/荒漠考察；现代校园与游乐系违和',
+  },
+  chen_arknights: {
+    world: '泰拉（龙门近卫局）',
+    fit: ['chen_arknights_lungmen_patrol', 'chen_arknights_night_market', 'chen_arknights_rooftop_dusk', 'chen_arknights_hotpot_night', 'chen_arknights_sword_honing', 'chen_arknights_rain_station'],
+    clash: ['empty_classroom_after_school', 'candlelit_palace', 'ancient_ruins', 'magic_library', 'snowy_forest', 'moonlit_shrine', 'sea_cave_dawn'],
+    note: '龙门都市/夜市/天台契合；异世界奇幻类违和',
+  },
+  eyjafjalla_arknights: {
+    world: '泰拉（罗德岛·火山学者）',
+    fit: ['eyjafjalla_arknights_volcano_lab', 'eyjafjalla_arknights_craters_edge', 'eyjafjalla_arknights_library_study', 'eyjafjalla_arknights_dorm_tea', 'eyjafjalla_arknights_hot_spring_research', 'eyjafjalla_arknights_astronomy_deck'],
+    clash: ['empty_classroom_after_school', 'modern_apartment_night', 'cafe_corner', 'neon_city_dusk', 'rainy_station_night'],
+    note: '实验室/火山/图书馆契合；现代都市校园违和',
+  },
+  lemuen_arknights: {
+    world: '泰拉（拉特兰·萨科塔）',
+    fit: ['lemuen_arknights_laterano_church', 'lemuen_arknights_halo_street', 'lemuen_arknights_cliff_sunset', 'lemuen_arknights_sweets_shop', 'lemuen_arknights_training_range', 'lemuen_arknights_garden_bench'],
+    clash: ['empty_classroom_after_school', 'modern_apartment_night', 'neon_city_dusk', 'rainy_station_night', 'aquarium_tunnel', 'beach_sunset'],
+    note: '拉特兰欧式城镇/教堂契合；现代都市霓虹违和',
+  },
+  dusk_arknights: {
+    world: '泰拉（岁家·水墨画师）',
+    fit: ['dusk_arknights_ink_garden', 'dusk_arknights_painting_studio', 'dusk_arknights_mountain_mist', 'dusk_arknights_tea_and_ink', 'dusk_arknights_rain_courtyard', 'dusk_arknights_lantern_festival'],
+    clash: ['empty_classroom_after_school', 'modern_apartment_night', 'cafe_corner', 'neon_city_dusk', 'aquarium_tunnel', 'beach_sunset', 'old_train_window'],
+    note: '古风庭院/山水/灯会契合；现代都市校园违和',
+  },
+  mudrock_arknights: {
+    world: '泰拉（萨卡兹·重甲战士）',
+    fit: ['mudrock_arknights_armor_workshop', 'mudrock_arknights_snowfield_march', 'mudrock_arknights_ruins_shelter', 'mudrock_arknights_flower_field', 'mudrock_arknights_canteen_lunch', 'mudrock_arknights_training_dummy'],
+    clash: ['empty_classroom_after_school', 'modern_apartment_night', 'cafe_corner', 'neon_city_dusk', 'aquarium_tunnel', 'beach_sunset', 'spring_bridge'],
+    note: '战场/雪原/工坊契合；现代都市校园违和',
+  },
+  eunectes_arknights: {
+    world: '泰拉（罗德岛·机械师）',
+    fit: ['eunectes_arknights_mech_garage', 'eunectes_arknights_mudland_excavation', 'eunectes_arknights_river_swim', 'eunectes_arknights_canteen_big', 'eunectes_arknights_wrench_pose', 'eunectes_arknights_stars_deck'],
+    clash: ['empty_classroom_after_school', 'candlelit_palace', 'magic_library', 'moonlit_shrine', 'library_quiet_afternoon'],
+    note: '工坊/荒野/河湾契合；奇幻宫廷与文静场景违和',
+  },
+  goldenglow_arknights: {
+    world: '泰拉（罗德岛·图书管理员）',
+    fit: ['goldenglow_arknights_library_desk', 'goldenglow_arknights_flower_room', 'goldenglow_arknights_meadow_book', 'goldenglow_arknights_rain_window', 'goldenglow_arknights_dusk_street', 'goldenglow_arknights_starlight_terrace'],
+    clash: ['candlelit_palace', 'ancient_ruins', 'moonlit_shrine', 'sea_cave_dawn', 'neon_city_dusk', 'old_train_window'],
+    note: '图书馆/花房/原野契合；奇幻宫廷遗迹违和',
+  },
+  skadi_arknights: {
+    world: '泰拉（深海猎人）',
+    fit: ['skadi_arknights_harbor_dawn', 'skadi_arknights_abyss_shore', 'skadi_arknights_ship_deck_night', 'skadi_arknights_reef_rest', 'skadi_arknights_tavern_corner', 'skadi_arknights_cabin_window'],
+    clash: ['empty_classroom_after_school', 'candlelit_palace', 'magic_library', 'moonlit_shrine', 'spring_bridge', 'flower_field_backlight'],
+    note: '海港/海岸/甲板契合；奇幻宫廷与校园违和',
+  },
+  quillpen_arknights: {
+    world: '泰拉（罗德岛·信使）',
+    fit: ['quillpen_arknights_post_office', 'quillpen_arknights_street_delivery', 'quillpen_arknights_rooftop_pigeon', 'quillpen_arknights_rain_delivery', 'quillpen_arknights_letter_desk', 'quillpen_arknights_feather_shop'],
+    clash: ['candlelit_palace', 'ancient_ruins', 'magic_library', 'moonlit_shrine', 'sea_cave_dawn'],
+    note: '邮局/街道/天台契合；奇幻宫廷遗迹违和',
+  },
+  exusiai_arknights: {
+    world: '泰拉（企鹅物流·萨科塔）',
+    fit: ['exusiai_arknights_penguin_office', 'exusiai_arknights_bar_counter', 'exusiai_arknights_skyline_roof', 'exusiai_arknights_package_run', 'exusiai_arknights_wing_rest', 'exusiai_arknights_halo_street_evening'],
+    clash: ['empty_classroom_after_school', 'candlelit_palace', 'magic_library', 'moonlit_shrine', 'snowy_forest'],
+    note: '龙门都市/酒馆/天台契合；奇幻宫廷与校园违和',
+  },
+  suzuran_arknights: {
+    world: '泰拉（罗德岛·白狐）',
+    fit: ['suzuran_arknights_fox_garden', 'suzuran_arknights_library_fox', 'suzuran_arknights_snow_visit', 'suzuran_arknights_wildflower_field', 'suzuran_arknights_tea_pouring', 'suzuran_arknights_fox_den_night'],
+    clash: ['modern_apartment_night', 'neon_city_dusk', 'aquarium_tunnel', 'old_train_window', 'rainy_station_night'],
+    note: '庭院/花田/雪景契合；现代都市霓虹违和',
+  },
+  perlica_arknights: {
+    world: '塔罗斯-II（终末地工业）',
+    fit: ['perlica_arknights_endfield_lab', 'perlica_arknights_talos_wasteland', 'perlica_arknights_research_deck', 'perlica_arknights_canteen_routine', 'perlica_arknights_data_archive', 'perlica_arknights_greenhouse_facility'],
+    clash: ['empty_classroom_after_school', 'candlelit_palace', 'magic_library', 'moonlit_shrine', 'beach_sunset', 'spring_bridge'],
+    note: '终末地科研舰/塔罗斯荒原契合；校园与奇幻宫廷违和',
+  },
+  laevatain_arknights: {
+    world: '塔罗斯-II（罗德岛·萨卡兹剑士）',
+    fit: ['laevatain_arknights_icefield_march', 'laevatain_arknights_lava_forge', 'laevatain_arknights_icecream_break', 'laevatain_arknights_sword_rest', 'laevatain_arknights_ship_corridor', 'laevatain_arknights_canteen_hotpot'],
+    clash: ['empty_classroom_after_school', 'modern_apartment_night', 'cafe_corner', 'spring_bridge', 'flower_field_backlight'],
+    note: '冰原/熔炉/舰内契合；现代校园日常违和',
+  },
+  rossi_arknights: {
+    world: '塔罗斯-II（村落·小红帽）',
+    fit: ['rossi_arknights_village_morning', 'rossi_arknights_wolf_forest', 'rossi_arknights_grandma_cottage', 'rossi_arknights_wildflower_meadow', 'rossi_arknights_rain_pond', 'rossi_arknights_night_lantern'],
+    clash: ['empty_classroom_after_school', 'modern_apartment_night', 'neon_city_dusk', 'aquarium_tunnel', 'old_train_window', 'rainy_station_night'],
+    note: '村落/森林/小屋契合；现代都市霓虹违和',
+  },
 };
 
 function main() {
@@ -175,7 +272,10 @@ function main() {
     md.push('');
   });
 
-  var out = process.argv[process.argv.indexOf('--out') + 1] || path.join(ROOT, 'docs', 'popular-scene-fit-audit.md');
+  var outArgIndex = process.argv.indexOf('--out');
+  var out = outArgIndex >= 0
+    ? process.argv[outArgIndex + 1]
+    : path.join(ROOT, 'docs', 'popular-scene-fit-audit.md');
   fs.mkdirSync(path.dirname(out), { recursive: true });
   fs.writeFileSync(out, md.join('\n'), 'utf8');
   console.log('written: ' + out);

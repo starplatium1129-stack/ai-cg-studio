@@ -13,10 +13,10 @@ var blueprintData = require('../../data/scene-blueprints.json');
 var characters = popular.parsePopularCharacters(characterData);
 var blueprints = popular.parseSceneBlueprints(blueprintData);
 
-test('popular data: 18 characters, unique ids, exactly one default outfit per character', function () {
-  assert.strictEqual(characters.length, 18, 'must ship exactly 18 characters');
+test('popular data: 34 characters, unique ids, exactly one default outfit per character', function () {
+  assert.strictEqual(characters.length, 34, 'must ship exactly 34 characters');
   var ids = new Set(characters.map(function (character) { return character.id; }));
-  assert.strictEqual(ids.size, 18, 'character ids must be unique');
+  assert.strictEqual(ids.size, 34, 'character ids must be unique');
   characters.forEach(function (character) {
     assert.ok(character.outfits.length >= 2 && character.outfits.length <= 4, character.id + ' must have 2-4 outfits');
     var defaults = character.outfits.filter(function (outfit) { return outfit.default; });
@@ -57,11 +57,9 @@ test('popular data: all character fields never leak nene/natsume anchors', funct
   assert.deepStrictEqual(popular.scanCharacterPollution(synthetic), ['raiden_shogun.outfit.shogun_robes: studio control prefix']);
 });
 
-test('blueprints: 18 characters x (6-7 prototype + 3-4 adult), all owned by a character, adult blueprints fail closed for non-adults', function () {
-  // 2026-08-15 扩容：每角色新增 3 日常感原型 + 2 成人；再追加「性癖向 + 补全」成人场景
-  // （12 角色各 +1，伊雷娜/伊莉雅/洛琪希各 +2，芙莉莲/爱蜜莉雅/远坂凛各 +2）。
-  // 2026-08-15 用户决策：3 条通用成人蓝图（candlelight_evening/morning_bathrobe/late_night_dressing）已删除。
-  assert.strictEqual(blueprints.length, 186, 'expected 186 character scenes, got ' + blueprints.length);
+test('blueprints: 34 characters x (6 prototype + 4 adult), all owned by a character, adult blueprints fail closed for non-adults', function () {
+  // 2026-08-15 扩容：新增 16 位方舟/终末地热门角色，各配 6 原型 + 4 成人场景（34 角色 = 28x10 + 6x11）。
+  assert.strictEqual(blueprints.length, 346, 'expected 346 character scenes, got ' + blueprints.length);
   var ids = new Set(blueprints.map(function (blueprint) { return blueprint.id; }));
   assert.strictEqual(ids.size, blueprints.length, 'blueprint ids must be unique');
   var byCharacter = {};
@@ -80,7 +78,7 @@ test('blueprints: 18 characters x (6-7 prototype + 3-4 adult), all owned by a ch
     assert.ok(entry[1] === 10 || entry[1] === 11, entry[0] + ' must own 10 or 11 scenes, got ' + entry[1]);
     sceneDist[entry[1]] = (sceneDist[entry[1]] || 0) + 1;
   });
-  assert.deepStrictEqual(sceneDist, { 10: 12, 11: 6 }, 'scene distribution must be 12x10 + 6x11');
+  assert.deepStrictEqual(sceneDist, { 10: 28, 11: 6 }, 'scene distribution must be 28x10 + 6x11');
   assert.strictEqual(blueprints.filter(function (blueprint) { return !blueprint.characterId; }).length, 0,
     'every blueprint must belong to a character (generic blueprints were removed)');
   // 每角色 4 或 5 个带 characterId 的成人场景。
@@ -91,7 +89,7 @@ test('blueprints: 18 characters x (6-7 prototype + 3-4 adult), all owned by a ch
       entry[0] + ' must own 4 or 5 character-specific adult scenes, got ' + adultOwned.length);
     adultDist[adultOwned.length] = (adultDist[adultOwned.length] || 0) + 1;
   });
-  assert.deepStrictEqual(adultDist, { 4: 12, 5: 6 }, 'adult distribution must be 12x4 + 6x5');
+  assert.deepStrictEqual(adultDist, { 4: 28, 5: 6 }, 'adult distribution must be 28x4 + 6x5');
 
   var adultBlueprints = blueprints.filter(function (blueprint) { return blueprint.adult; });
   assert.ok(adultBlueprints.length >= 1, 'adult-only blueprints must exist');

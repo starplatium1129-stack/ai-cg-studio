@@ -1497,6 +1497,1113 @@
         "research": "2026-08-14 调研"
       },
       "animeStudio": "a-1 pictures, tsunako, official anime screencap"
+    },
+    {
+      "id": "surtr_arknights",
+      "displayName": "史尔特尔",
+      "originalName": "Surtr",
+      "franchise": "Arknights",
+      "aliases": [
+        "surtr",
+        "surtur",
+        "arknights",
+        "laevatein"
+      ],
+      "identityProse": "Surtr from Arknights, a melancholic swordswoman with long white hair, red eyes, a black headband, wearing a black skintight bodysuit under a white jacket, carrying the greatsword Laevatein",
+      "identityTokens": [
+        "surtr_(arknights)",
+        "1girl",
+        "solo",
+        "white_hair",
+        "red_eyes",
+        "long_hair",
+        "headband",
+        "black_skintight",
+        "white_jacket",
+        "sword",
+        "arknights"
+      ],
+      "exactTokens": [
+        "surtr_(arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "standard",
+          "name": "罗德岛作战服",
+          "prose": "her black skintight bodysuit with a white open jacket, black headband and knee-high boots",
+          "tokens": [
+            "black_skintight",
+            "white_jacket",
+            "headband",
+            "kneehigh_boots",
+            "black_clothes"
+          ],
+          "default": true
+        },
+        {
+          "id": "casual",
+          "name": "便服",
+          "prose": "a simple white sweater, black jeans and a red scarf",
+          "tokens": [
+            "sweater",
+            "white_clothes",
+            "jeans",
+            "red_scarf"
+          ]
+        }
+      ],
+      "canon": {
+        "world": "泰拉（罗德岛）",
+        "era": "近未来奇幻",
+        "formNotes": "白发红瞳；大剑莱瓦汀；气质慵懒忧郁",
+        "research": "2026-08-15 调研（Danbooru surtr_(arknights) 5266 posts）"
+      },
+      "animeStudio": "arknights, hypergryph, official anime art"
+    },
+    {
+      "id": "kaltsit_arknights",
+      "displayName": "凯尔希",
+      "originalName": "Kal'tsit",
+      "franchise": "Arknights",
+      "aliases": [
+        "kaltsit",
+        "kal'tsit",
+        "arknights",
+        "mon3tr"
+      ],
+      "identityProse": "Kal'tsit from Arknights, the stern Chief Medical Officer of Rhodes Island, with short silver-white hair, green eyes, a green and white medical coat with a high collar, and a teardrop crystal earring on one ear, accompanied by her construct Mon3tr",
+      "identityTokens": [
+        "kal'tsit",
+        "1girl",
+        "solo",
+        "silver_hair",
+        "white_hair",
+        "short_hair",
+        "green_eyes",
+        "green_clothes",
+        "white_clothes",
+        "coat",
+        "high_collar",
+        "earring",
+        "arknights"
+      ],
+      "exactTokens": [
+        "kal'tsit"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "doctor_coat",
+          "name": "罗德岛医师服",
+          "prose": "her green and white medical coat with a high collar and matching trousers",
+          "tokens": [
+            "green_clothes",
+            "white_clothes",
+            "coat",
+            "high_collar",
+            "long_sleeves"
+          ],
+          "default": true
+        },
+        {
+          "id": "casual",
+          "name": "便服",
+          "prose": "a green knit cardigan over a white shirt with black trousers",
+          "tokens": [
+            "cardigan",
+            "green_clothes",
+            "white_shirt",
+            "black_pants"
+          ]
+        }
+      ],
+      "canon": {
+        "world": "泰拉（罗德岛）",
+        "era": "近未来奇幻",
+        "formNotes": "银白短发绿瞳；绿白医师袍；Mon3tr 召唤物；Danbooru 本体 tag 缺失（仅衍生变体），以视觉词为主",
+        "research": "2026-08-15 调研（Danbooru 本体 tag 缺失，衍生 kal'tsit_esperanta 407 posts）"
+      },
+      "animeStudio": "arknights, hypergryph, official anime art"
+    },
+    {
+      "id": "chen_arknights",
+      "displayName": "陈",
+      "originalName": "Ch'en",
+      "franchise": "Arknights",
+      "aliases": [
+        "ch'en",
+        "chen",
+        "arknights",
+        "lungmen"
+      ],
+      "identityProse": "Ch'en from Arknights, a disciplined Lungmen Guard Department officer with long blue hair in a low ponytail, golden eyes, small horns, wearing a black and blue officer uniform with a long coat, carrying twin swords",
+      "identityTokens": [
+        "ch'en_(arknights)",
+        "1girl",
+        "solo",
+        "blue_hair",
+        "long_hair",
+        "low_twintails",
+        "golden_eyes",
+        "horns",
+        "black_clothes",
+        "blue_clothes",
+        "military_uniform",
+        "coat",
+        "twin_swords",
+        "arknights"
+      ],
+      "exactTokens": [
+        "ch'en_(arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "lungmen_uniform",
+          "name": "龙门近卫局制服",
+          "prose": "her black and blue Lungmen Guard uniform with a long coat, gold trim and twin swords at her waist",
+          "tokens": [
+            "military_uniform",
+            "black_clothes",
+            "blue_clothes",
+            "coat",
+            "gold_trim",
+            "sword"
+          ],
+          "default": true
+        },
+        {
+          "id": "casual",
+          "name": "便服",
+          "prose": "a black leather jacket over a white shirt with dark jeans",
+          "tokens": [
+            "leather_jacket",
+            "black_clothes",
+            "white_shirt",
+            "jeans"
+          ]
+        }
+      ],
+      "canon": {
+        "world": "泰拉（龙门近卫局）",
+        "era": "近未来奇幻",
+        "formNotes": "蓝发金瞳小龙角；近卫局制服；赤霄双剑",
+        "research": "2026-08-15 调研（Danbooru ch'en_(arknights) 4467 posts）"
+      },
+      "animeStudio": "arknights, hypergryph, official anime art"
+    },
+    {
+      "id": "eyjafjalla_arknights",
+      "displayName": "艾雅法拉",
+      "originalName": "Eyjafjalla",
+      "franchise": "Arknights",
+      "aliases": [
+        "eyjafjalla",
+        "eyja",
+        "arknights"
+      ],
+      "identityProse": "Eyjafjalla from Arknights, a young Cautus researcher with long pink hair styled in twintails, red eyes, small ram horns, wearing a white dress with black accents and black thighhighs",
+      "identityTokens": [
+        "eyjafjalla_(arknights)",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "long_hair",
+        "twintails",
+        "red_eyes",
+        "horns",
+        "white_dress",
+        "black_thighhighs",
+        "arknights"
+      ],
+      "exactTokens": [
+        "eyjafjalla_(arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "researcher_dress",
+          "name": "研究员裙装",
+          "prose": "her white dress with black trim, black ribbon and black thighhighs",
+          "tokens": [
+            "white_dress",
+            "black_trim",
+            "ribbon",
+            "black_thighhighs"
+          ],
+          "default": true
+        },
+        {
+          "id": "rhodes_uniform",
+          "name": "罗德岛制服",
+          "prose": "her black and white Rhodes Island uniform with a grey jacket and dark skirt",
+          "tokens": [
+            "uniform",
+            "black_clothes",
+            "white_clothes",
+            "grey_jacket",
+            "dark_skirt"
+          ]
+        }
+      ],
+      "canon": {
+        "world": "泰拉（罗德岛）",
+        "era": "近未来奇幻",
+        "formNotes": "粉发红瞳羊角；火山学家",
+        "research": "2026-08-15 调研（Danbooru eyjafjalla_(arknights) 2237 posts）"
+      },
+      "animeStudio": "arknights, hypergryph, official anime art"
+    },
+    {
+      "id": "lemuen_arknights",
+      "displayName": "蕾缪安",
+      "originalName": "Lemuen",
+      "franchise": "Arknights",
+      "aliases": [
+        "lemuen",
+        "arknights",
+        "laterano"
+      ],
+      "identityProse": "Lemuen from Arknights, a Laterano Sankta agent with long silver-white hair, blue eyes, a floating golden halo above her head, small white wings, wearing a blue and white tactical uniform",
+      "identityTokens": [
+        "lemuen_(arknights)",
+        "1girl",
+        "solo",
+        "white_hair",
+        "silver_hair",
+        "long_hair",
+        "blue_eyes",
+        "halo",
+        "wings",
+        "blue_clothes",
+        "white_clothes",
+        "military_uniform",
+        "arknights"
+      ],
+      "exactTokens": [
+        "lemuen_(arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "laterano_uniform",
+          "name": "拉特兰制服",
+          "prose": "her blue and white Laterano tactical uniform with gold trim and a short cape",
+          "tokens": [
+            "military_uniform",
+            "blue_clothes",
+            "white_clothes",
+            "gold_trim",
+            "cape"
+          ],
+          "default": true
+        },
+        {
+          "id": "casual",
+          "name": "便服",
+          "prose": "a light blue hoodie with white shorts and sneakers",
+          "tokens": [
+            "hoodie",
+            "blue_clothes",
+            "white_shorts",
+            "sneakers"
+          ]
+        }
+      ],
+      "canon": {
+        "world": "泰拉（拉特兰）",
+        "era": "近未来奇幻",
+        "formNotes": "银白长发蓝瞳；萨科塔光环+小翅膀；蓝白战术服",
+        "research": "2026-08-15 调研（Danbooru lemuen_(arknights) 1554 posts）"
+      },
+      "animeStudio": "arknights, hypergryph, official anime art"
+    },
+    {
+      "id": "dusk_arknights",
+      "displayName": "夕",
+      "originalName": "Dusk",
+      "franchise": "Arknights",
+      "aliases": [
+        "dusk",
+        "xi",
+        "arknights",
+        "sui"
+      ],
+      "identityProse": "Dusk from Arknights, a reclusive painter among the Sui siblings, with very long black hair, red eyes, wearing a white and black ink-wash qipao with cloud patterns and a long coat, holding a giant calligraphy brush",
+      "identityTokens": [
+        "dusk_(arknights)",
+        "1girl",
+        "solo",
+        "black_hair",
+        "very_long_hair",
+        "red_eyes",
+        "white_clothes",
+        "black_clothes",
+        "qipao",
+        "ink_wash",
+        "chinese_clothes",
+        "arknights"
+      ],
+      "exactTokens": [
+        "dusk_(arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "ink_qipao",
+          "name": "水墨旗袍",
+          "prose": "her white and black ink-wash qipao with cloud motifs and a long black coat",
+          "tokens": [
+            "qipao",
+            "white_clothes",
+            "black_clothes",
+            "ink_wash",
+            "chinese_clothes",
+            "cloud_pattern"
+          ],
+          "default": true
+        },
+        {
+          "id": "casual",
+          "name": "便服",
+          "prose": "a black modern dress with white floral embroidery and a small ink brush in her hair",
+          "tokens": [
+            "black_dress",
+            "white_embroidery",
+            "hair_ornament"
+          ]
+        }
+      ],
+      "canon": {
+        "world": "泰拉（岁兽一脉）",
+        "era": "近未来奇幻",
+        "formNotes": "黑长直红瞳；水墨画师；白底黑纹旗袍",
+        "research": "2026-08-15 调研（Danbooru dusk_(arknights) 4097 posts）"
+      },
+      "animeStudio": "arknights, hypergryph, official anime art"
+    },
+    {
+      "id": "mudrock_arknights",
+      "displayName": "泥岩",
+      "originalName": "Mudrock",
+      "franchise": "Arknights",
+      "aliases": [
+        "mudrock",
+        "arknights"
+      ],
+      "identityProse": "Mudrock from Arknights, a gentle giant Sarkaz warrior with short silver hair, red eyes, wearing heavy black power armor with glowing seams, helmet often removed",
+      "identityTokens": [
+        "mudrock_(arknights)",
+        "1girl",
+        "solo",
+        "silver_hair",
+        "short_hair",
+        "red_eyes",
+        "power_armor",
+        "armor",
+        "black_armor",
+        "arknights"
+      ],
+      "exactTokens": [
+        "mudrock_(arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "heavy_armor",
+          "name": "重型装甲",
+          "prose": "her heavy black power armor with glowing red seams and a large warhammer",
+          "tokens": [
+            "power_armor",
+            "armor",
+            "black_armor",
+            "glowing",
+            "hammer"
+          ],
+          "default": true
+        },
+        {
+          "id": "casual",
+          "name": "日常便服",
+          "prose": "a black hooded jacket and cargo pants with her silver hair loose",
+          "tokens": [
+            "hoodie",
+            "black_clothes",
+            "cargo_pants"
+          ]
+        }
+      ],
+      "canon": {
+        "world": "泰拉（泥岩小队）",
+        "era": "近未来奇幻",
+        "formNotes": "银发红瞳萨卡兹；重甲+大锤；外冷内柔",
+        "research": "2026-08-15 调研（Danbooru mudrock_(arknights) 4238 posts）"
+      },
+      "animeStudio": "arknights, hypergryph, official anime art"
+    },
+    {
+      "id": "eunectes_arknights",
+      "displayName": "森蚺",
+      "originalName": "Eunectes",
+      "franchise": "Arknights",
+      "aliases": [
+        "eunectes",
+        "arknights"
+      ],
+      "identityProse": "Eunectes from Arknights, a cheerful mechanic with long dark green hair, golden eyes, tanned skin, small horns, wearing a green and yellow work outfit with a red hairband",
+      "identityTokens": [
+        "eunectes_(arknights)",
+        "1girl",
+        "solo",
+        "green_hair",
+        "long_hair",
+        "golden_eyes",
+        "tanned_skin",
+        "horns",
+        "green_clothes",
+        "yellow_clothes",
+        "work_clothes",
+        "hairband",
+        "arknights"
+      ],
+      "exactTokens": [
+        "eunectes_(arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "mechanic_workwear",
+          "name": "机械师工装",
+          "prose": "her green and yellow mechanic workwear with a red hairband and tool belt",
+          "tokens": [
+            "work_clothes",
+            "green_clothes",
+            "yellow_clothes",
+            "hairband",
+            "tool_belt"
+          ],
+          "default": true
+        },
+        {
+          "id": "swimsuit",
+          "name": "泳装",
+          "prose": "a green and yellow two-piece swimsuit with a red hairband",
+          "tokens": [
+            "swimsuit",
+            "green_clothes",
+            "yellow_clothes",
+            "two_piece_swimsuit",
+            "hairband"
+          ]
+        }
+      ],
+      "canon": {
+        "world": "泰拉（罗德岛）",
+        "era": "近未来奇幻",
+        "formNotes": "深绿长发金瞳健康肤色；机甲工程痴",
+        "research": "2026-08-15 调研（Danbooru eunectes_(arknights) 1138 posts）"
+      },
+      "animeStudio": "arknights, hypergryph, official anime art"
+    },
+    {
+      "id": "goldenglow_arknights",
+      "displayName": "澄闪",
+      "originalName": "Goldenglow",
+      "franchise": "Arknights",
+      "aliases": [
+        "goldenglow",
+        "arknights"
+      ],
+      "identityProse": "Goldenglow from Arknights, a gentle librarian with long golden hair in twintails, blue eyes, wearing a white and yellow dress with a golden accessory and black thighhighs",
+      "identityTokens": [
+        "goldenglow_(arknights)",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "golden_hair",
+        "long_hair",
+        "twintails",
+        "blue_eyes",
+        "white_dress",
+        "yellow_clothes",
+        "black_thighhighs",
+        "arknights"
+      ],
+      "exactTokens": [
+        "goldenglow_(arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "librarian_dress",
+          "name": "图书管理员裙装",
+          "prose": "her white and yellow dress with golden trim and black thighhighs",
+          "tokens": [
+            "white_dress",
+            "yellow_clothes",
+            "gold_trim",
+            "black_thighhighs"
+          ],
+          "default": true
+        },
+        {
+          "id": "winter_coat",
+          "name": "冬装大衣",
+          "prose": "a warm beige winter coat over a yellow sweater with a scarf",
+          "tokens": [
+            "winter_coat",
+            "beige_clothes",
+            "yellow_sweater",
+            "scarf"
+          ]
+        }
+      ],
+      "canon": {
+        "world": "泰拉（罗德岛）",
+        "era": "近未来奇幻",
+        "formNotes": "金发蓝瞳双马尾；温婉图书管理员",
+        "research": "2026-08-15 调研（Danbooru goldenglow_(arknights) 2586 posts）"
+      },
+      "animeStudio": "arknights, hypergryph, official anime art"
+    },
+    {
+      "id": "skadi_arknights",
+      "displayName": "斯卡蒂",
+      "originalName": "Skadi",
+      "franchise": "Arknights",
+      "aliases": [
+        "skadi",
+        "arknights",
+        "abyss hunter"
+      ],
+      "identityProse": "Skadi from Arknights, an Abyss Hunter with very long white hair, red eyes, wearing a black one-piece swimsuit-like combat suit with white accents, carrying a huge claymore",
+      "identityTokens": [
+        "skadi_(arknights)",
+        "1girl",
+        "solo",
+        "white_hair",
+        "very_long_hair",
+        "red_eyes",
+        "black_swimsuit",
+        "black_clothes",
+        "claymore",
+        "arknights"
+      ],
+      "exactTokens": [
+        "skadi_(arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "abyss_suit",
+          "name": "深海猎人作战服",
+          "prose": "her black one-piece combat suit with white accents, gloves and thigh-high boots",
+          "tokens": [
+            "black_swimsuit",
+            "black_clothes",
+            "gloves",
+            "thighhigh_boots",
+            "white_trim"
+          ],
+          "default": true
+        },
+        {
+          "id": "evening_gown",
+          "name": "晚礼服",
+          "prose": "a flowing black evening gown with white trim and her long white hair loose",
+          "tokens": [
+            "evening_gown",
+            "black_dress",
+            "white_trim",
+            "long_hair"
+          ]
+        }
+      ],
+      "canon": {
+        "world": "泰拉（深海猎人）",
+        "era": "近未来奇幻",
+        "formNotes": "白发红瞳；黑色连体作战服+大剑",
+        "research": "2026-08-15 调研（Danbooru skadi_(arknights) 6856 posts）"
+      },
+      "animeStudio": "arknights, hypergryph, official anime art"
+    },
+    {
+      "id": "quillpen_arknights",
+      "displayName": "羽毛笔",
+      "originalName": "Quillpen",
+      "franchise": "Arknights",
+      "aliases": [
+        "quillpen",
+        "arknights"
+      ],
+      "identityProse": "Quillpen from Arknights, a quiet postal courier with short white hair, blue eyes, a feather-shaped quill accessory, wearing a blue and white uniform with a cloak",
+      "identityTokens": [
+        "quillpen",
+        "1girl",
+        "solo",
+        "white_hair",
+        "short_hair",
+        "blue_eyes",
+        "feather",
+        "blue_clothes",
+        "white_clothes",
+        "uniform",
+        "cape",
+        "arknights"
+      ],
+      "exactTokens": [
+        "quillpen"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "courier_uniform",
+          "name": "信使制服",
+          "prose": "her blue and white courier uniform with a short cloak and feather quill accessory",
+          "tokens": [
+            "uniform",
+            "blue_clothes",
+            "white_clothes",
+            "cape",
+            "feather"
+          ],
+          "default": true
+        },
+        {
+          "id": "casual",
+          "name": "便服",
+          "prose": "a white blouse with a blue cardigan and a feather brooch",
+          "tokens": [
+            "white_blouse",
+            "blue_cardigan",
+            "brooch"
+          ]
+        }
+      ],
+      "canon": {
+        "world": "泰拉（罗德岛）",
+        "era": "近未来奇幻",
+        "formNotes": "白色短发蓝瞳；羽毛笔信使；Danbooru 无词条（quillpen 0 posts），以视觉词为主",
+        "research": "2026-08-15 调研（Danbooru quillpen 0 posts，视觉词兜底）"
+      },
+      "animeStudio": "arknights, hypergryph, official anime art"
+    },
+    {
+      "id": "exusiai_arknights",
+      "displayName": "能天使",
+      "originalName": "Exusiai",
+      "franchise": "Arknights",
+      "aliases": [
+        "exusiai",
+        "arknights",
+        "penguin logistics"
+      ],
+      "identityProse": "Exusiai from Arknights, a cheerful Sankta courier of Penguin Logistics with short white hair, blue eyes, a floating golden halo and small wings, wearing a black and white penguin logistics uniform with a blue inner shirt",
+      "identityTokens": [
+        "exusiai_(arknights)",
+        "1girl",
+        "solo",
+        "white_hair",
+        "short_hair",
+        "blue_eyes",
+        "halo",
+        "wings",
+        "black_clothes",
+        "white_clothes",
+        "blue_shirt",
+        "jacket",
+        "arknights"
+      ],
+      "exactTokens": [
+        "exusiai_(arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "penguin_logistics",
+          "name": "企鹅物流制服",
+          "prose": "her black and white Penguin Logistics uniform with a blue inner shirt, jacket and small wings",
+          "tokens": [
+            "jacket",
+            "black_clothes",
+            "white_clothes",
+            "blue_shirt",
+            "uniform"
+          ],
+          "default": true
+        },
+        {
+          "id": "casual",
+          "name": "便服",
+          "prose": "a white t-shirt with a black bomber jacket, blue jeans and her halo and wings",
+          "tokens": [
+            "white_shirt",
+            "bomber_jacket",
+            "black_clothes",
+            "jeans",
+            "halo",
+            "wings"
+          ]
+        }
+      ],
+      "canon": {
+        "world": "泰拉（企鹅物流）",
+        "era": "近未来奇幻",
+        "formNotes": "白发蓝瞳光环小翅膀；企鹅物流黑白制服；活泼乐天",
+        "research": "2026-08-15 调研（Danbooru exusiai_(arknights) 5612 posts）"
+      },
+      "animeStudio": "arknights, hypergryph, official anime art"
+    },
+    {
+      "id": "suzuran_arknights",
+      "displayName": "铃兰",
+      "originalName": "Suzuran",
+      "franchise": "Arknights",
+      "aliases": [
+        "suzuran",
+        "arknights"
+      ],
+      "identityProse": "Suzuran from Arknights, a gentle young Vulpo with very long white hair, golden eyes, fox ears and nine fluffy tails, wearing a white and gold kimono-style dress",
+      "identityTokens": [
+        "suzuran_(arknights)",
+        "1girl",
+        "solo",
+        "white_hair",
+        "very_long_hair",
+        "golden_eyes",
+        "fox_ears",
+        "fox_tail",
+        "nine_tails",
+        "white_clothes",
+        "gold_trim",
+        "kimono",
+        "arknights"
+      ],
+      "exactTokens": [
+        "suzuran_(arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "fox_kimono",
+          "name": "白狐和服",
+          "prose": "her white and gold kimono-style dress with a ribbon and fox motifs",
+          "tokens": [
+            "kimono",
+            "white_clothes",
+            "gold_trim",
+            "ribbon",
+            "fox_motif"
+          ],
+          "default": true
+        },
+        {
+          "id": "winter_coat",
+          "name": "冬装大衣",
+          "prose": "a white winter coat with a fur collar, golden ribbon and her nine tails",
+          "tokens": [
+            "winter_coat",
+            "white_clothes",
+            "fur_collar",
+            "golden_ribbon",
+            "fox_tail"
+          ]
+        }
+      ],
+      "canon": {
+        "world": "泰拉（罗德岛）",
+        "era": "近未来奇幻",
+        "formNotes": "白发金瞳狐耳九尾；白金色和服；治愈系",
+        "research": "2026-08-15 调研（Danbooru suzuran_(arknights) 6749 posts）"
+      },
+      "animeStudio": "arknights, hypergryph, official anime art"
+    },
+    {
+      "id": "perlica_arknights",
+      "displayName": "佩丽卡",
+      "originalName": "Perlica",
+      "franchise": "Arknights: Endfield",
+      "aliases": [
+        "perlica",
+        "arknights endfield",
+        "endfield"
+      ],
+      "identityProse": "Perlica from Arknights: Endfield, a composed Endfield Industries operator with short white hair with blue-green highlights, green eyes, fluffy animal ears, wearing a white and teal tactical jacket over a high-neck top with straps and pouches",
+      "identityTokens": [
+        "perlica_(arknights)",
+        "1girl",
+        "solo",
+        "white_hair",
+        "short_hair",
+        "green_eyes",
+        "hair_highlights",
+        "animal_ears",
+        "white_clothes",
+        "teal_clothes",
+        "tactical",
+        "jacket",
+        "arknights"
+      ],
+      "exactTokens": [
+        "perlica_(arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "endfield_uniform",
+          "name": "终末地制服",
+          "prose": "her white and teal Endfield tactical jacket over a high-neck top with straps, pouches and dark trousers",
+          "tokens": [
+            "white_clothes",
+            "teal_clothes",
+            "jacket",
+            "tactical",
+            "high_collar",
+            "straps",
+            "dark_pants"
+          ],
+          "default": true
+        },
+        {
+          "id": "casual",
+          "name": "便服",
+          "prose": "a white jacket over a teal shirt with dark trousers and her white hair with blue-green highlights",
+          "tokens": [
+            "white_jacket",
+            "teal_shirt",
+            "dark_pants"
+          ]
+        }
+      ],
+      "canon": {
+        "world": "塔罗斯-II（终末地工业）",
+        "era": "近未来科幻",
+        "formNotes": "白色短发蓝绿挑染、绿瞳、毛茸耳；白青战术制服；2026-08-15 Anima 实测还原 7.5/10",
+        "research": "2026-08-15 调研（Danbooru perlica_(arknights) 2446 posts + 本机实测）"
+      },
+      "animeStudio": "arknights endfield, hypergryph, official anime art"
+    },
+    {
+      "id": "laevatain_arknights",
+      "displayName": "莱万汀",
+      "originalName": "Laevatain",
+      "franchise": "Arknights: Endfield",
+      "aliases": [
+        "laevatain",
+        "arknights endfield",
+        "endfield"
+      ],
+      "identityProse": "Laevatain from Arknights: Endfield, a fierce Sarkaz swordsman with long crimson hair, red eyes, curved black horns and a thin devil tail, wearing a black gothic combat dress with lava-like red glow accents and a mechanical arm guard, wielding a huge greatsword wreathed in molten flame",
+      "identityTokens": [
+        "laevatain_(arknights)",
+        "1girl",
+        "solo",
+        "red_hair",
+        "long_hair",
+        "red_eyes",
+        "horns",
+        "devil_tail",
+        "black_clothes",
+        "gothic",
+        "mechanical_arm",
+        "sword",
+        "greatsword",
+        "arknights"
+      ],
+      "exactTokens": [
+        "laevatain_(arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "gothic_combat",
+          "name": "熔岩战装",
+          "prose": "her black gothic combat dress with lava-red glow lining, one mechanical arm guard and black high heels",
+          "tokens": [
+            "black_clothes",
+            "gothic",
+            "mechanical_arm",
+            "red_glow",
+            "high_heels"
+          ],
+          "default": true
+        },
+        {
+          "id": "casual",
+          "name": "便服",
+          "prose": "a black turtleneck sweater with a red jacket, dark jeans and her horns and tail visible",
+          "tokens": [
+            "turtleneck",
+            "black_clothes",
+            "red_jacket",
+            "jeans"
+          ]
+        }
+      ],
+      "canon": {
+        "world": "塔罗斯-II（罗德岛·终末地）",
+        "era": "近未来科幻",
+        "formNotes": "红发红瞳萨卡兹；黑角+恶魔尾；黑红熔岩机能装+大剑；爱吃冰淇淋",
+        "research": "2026-08-15 调研（Danbooru laevatain_(arknights) 937 posts；官方立绘视觉确认）"
+      },
+      "animeStudio": "arknights endfield, hypergryph, official anime art"
+    },
+    {
+      "id": "rossi_arknights",
+      "displayName": "洛茜",
+      "originalName": "Rossi",
+      "franchise": "Arknights: Endfield",
+      "aliases": [
+        "rossi",
+        "arknights endfield",
+        "endfield"
+      ],
+      "identityProse": "Rossi from Arknights: Endfield, a young girl who is the sister of Wulfgard, wearing a red hooded capelet over a white dress, with wolf ears and a fluffy wolf tail, carrying a small basket",
+      "identityTokens": [
+        "rossi_(arknights)",
+        "1girl",
+        "solo",
+        "red_cape",
+        "hood",
+        "white_dress",
+        "wolf_ears",
+        "wolf_tail",
+        "capelet",
+        "young",
+        "arknights"
+      ],
+      "exactTokens": [
+        "rossi_(arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-aesthetic-v1.1",
+      "supportedEngines": [
+        "anima-aesthetic-v1.1",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "red_hood",
+          "name": "小红帽装",
+          "prose": "her red hooded capelet over a white dress with a ribbon and a small basket",
+          "tokens": [
+            "red_cape",
+            "hood",
+            "white_dress",
+            "ribbon",
+            "capelet"
+          ],
+          "default": true
+        },
+        {
+          "id": "casual",
+          "name": "便服",
+          "prose": "a red sweater with a white skirt, wolf ears and tail visible",
+          "tokens": [
+            "red_sweater",
+            "white_skirt"
+          ]
+        }
+      ],
+      "canon": {
+        "world": "塔罗斯-II（沃夫加德之妹）",
+        "era": "近未来科幻",
+        "formNotes": "小红帽原型；沃夫加德的妹妹（狼族）；萝莉体型；发色以模型锚点为准",
+        "research": "2026-08-15 调研（Danbooru rossi_(arknights) 2035 posts）"
+      },
+      "animeStudio": "arknights endfield, hypergryph, official anime art"
     }
   ]
 }
