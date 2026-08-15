@@ -157,6 +157,17 @@
 
 `src/` 业务实现中的显式 `any` 已清零，新增代码不得回退；`vite-env.d.ts` 的 Vue 通配模块声明不计入业务类型债。
 
+## 桌面部署（2026-08-15 起）
+
+- **前端/数据改动优先走快速部署（用户决策 2026-08-15）**：一条命令完成 build + 复制 + 重启，不要再每次跑完整打包安装：
+  ```
+  powershell -ExecutionPolicy Bypass -File scripts/maintenance/deploy-desktop-quick.ps1
+  ```
+  它会把 `dist/`、`data/`、`assets/` 复制进已安装目录（`C:\Program Files\AI-CG-Studio\gateway\`）并重启应用（非管理员自动 UAC 自提升；`-SkipBuild` 跳过构建、`-NoRestart` 只复制）。
+- **只有 Rust 壳（desktop-tauri）或后端 `server.js`/`services` 改动**才需要完整打包：`npm run build` → `npm run build:tauri` → `npm run package:tauri` → 静默安装（`setup.exe /S`）→ 清理旧 sidecar（3123）。
+- **脚本编码约束**：`*.ps1` 必须保持纯 ASCII（PowerShell 5.1 对 UTF-8 无 BOM 的中文按 ANSI 解析会语法崩溃；本次曾踩坑）；如需中文说明要么用 ASCII 要么写回 UTF-8 BOM，且每次 edit 工具改写后都要复查。
+- 部署前检查 3123 无残留占用；`dev` 网关（:3000）的 showcase 目录配置与 sidecar（:3123）是两套，改 showcase 后要确认 sidecar 侧 `SCENE_SHOWCASE_DIR` 指向 `E:\code\2\lora\AI\SceneShowcase`。
+
 ## 当前待办
 
 - 视觉与架构路线（`docs/visual-architecture-roadmap.md`）：第一至十六轮及 API Client（`src/api/`）、存储 Repository（`src/storage/`）、训练台拆分（`useTraining*`）已全部完成；剩余仅网关公共设施收口（P3）残项——`services/*.ts` 内联 taskkill 迁移（已评估维持现状）、上游健康探测与代理配置进一步收敛。2026-08-15 已按路线图状态逐项打勾核对。
