@@ -156,7 +156,7 @@
         <div class="recommend-grid">
           <RouterLink v-for="s in recommendations" :key="s.id" class="card-direct"
             :to="isPopular && current
-              ? `/prompt-builder?popular=${encodeURIComponent(current.id)}`
+              ? `/prompt-builder?popular=${encodeURIComponent(current.id)}&blueprint=${encodeURIComponent(s.id)}`
               : '/prompt-builder?scene='+encodeURIComponent(s.id)">
             <div class="cg-title">{{ s.title }}</div>
             <div v-if="recommendationReason(s.id)" class="cg-reason">{{ recommendationReason(s.id) }}</div>
