@@ -35,6 +35,16 @@
 - 审核维度（与 `image-inspect -t audit` 八维一致）：身份特征还原、脸部与神态、服装、肢体结构与姿势、构图、背景与细节、光影与氛围、完成度与叙事；双人图必查特征串位。
 - 审核从严：硬伤（手/脸/肢体崩坏、穿模、串位、伪影异物）必须判「不通过」，问题须给出位置与修复方向，不得含糊；脚本结论只是初筛，以人工终审为准。
 - **批量审核与批量出图必须并行执行（2026-08-15 用户决策）**：多图审核（image-inspect 批量）用 4-6 并发；批量出图脚本用 `--concurrency 3`（如 generate-popular-showcase-anima11.js）。禁止串行逐张跑——串行 335 张约 2 小时，并行约 15 分钟。并行脚本必须支持断点续跑与进度落盘（参考 `runtime/person-count-audit.js` 的并发池模式：每张完成即写结果、每 N 张落盘 JSON），中断不丢已审/已生成结果。
+- **审核判定必须防漏判（2026-08-15 教训）**：`audit-showcase-rella.js` 的 `parseVerdict` 有两个已修 bug——① `concl.includes('通过')` 会误匹配「**不**通过」，必须先判 `/不通过/` 再判 `/通过/`；② vision 有时结论写「通过」但详情描述分身/双人/分镜，必须用正则扫详情（分身/双人/复制/分镜/拼贴等词，且上下文无「无/非/仅」否定）强制 fail。**修改任何审核判定逻辑后，必须用已知的漏判案例回归**（如「结论不通过但被判 pass」的历史记录）。
+- **单人场景人物数量专项核查**：单人场景样张发布前，除常规审核外须做一次「画面人物数」核查（参考 `runtime/person-count-audit.js`：逐张问「几个完整可见人物」）；背景路人/镜像倒影/雕像剪影可接受，**分身/复制体/多格分镜拼贴一律不合格**。
+
+## 热门角色数据维护规范（2026-08-15 起）
+
+- **改数据先对照权威源**：`data/popular-characters.json` / `data/scene-blueprints.json` 的任何服装、身份、场景描述修改，必须先读 `E:\code\2\lora\AI\Research\character-arknights\*.json`（调研权威产出）核对官方设定；禁止凭记忆改（本轮 12 个角色 standard 配错、史尔特尔被误改成「红披风」都是没对照权威源的教训）。
+- **prompt 语言约束**：Anima/Krea 是英文模型——outfit/identity/场景 prose 必须纯英文自然语言，禁止中文设计说明混入；tokens 必须干净（无括号、逗号残渣，如 `sweater), green` 这类损坏 token 会污染提示词）。批量转录后必须脚本复查（CJK 正则 + 残渣正则）。
+- **场景-服装一致性**：blueprint 的 `promptProse`/`nsfwProse` 不得与 `outfitId` 服装类型矛盾（如夜市场景写 "her uniform" 但配休闲装 → 模型画成战术装）。改场景时 `promptProse`、`nsfwProse`、`sceneTags`、`promptTokens` 四处必须同步。
+- **R18 场景室内化偏好（2026-08-15 用户决策）**：成人场景放在室内——城市公共空间（天台/屋顶/后巷/露台/街道）一律室内化；私密天然场所（温泉/海浴/庭院浴池/河湾）可保留室外。室内化时 nsfwProse 必须同步改（成人场景裸体叙述前置，漏改会继续画出室外）。
+- **发布前检查角色覆盖**：`publish-popular-showcase.js` 会**删除源目录全部旧 pc_* 重建**——多批次合并发布时必须合并所有角色的 manifest（参考 `runtime/merge-publish-data.js`：v18 旧角色 + 新角色合并且按 key 取最新 attempt），dry-run 核对 typeCounts 与角色数，否则旧角色样张被静默删除。发布用 `--from <generation-manifest-merged.json>` + `--source <旧版本> --target <新版本> --apply --force`。
 
 ## 当前架构
 
