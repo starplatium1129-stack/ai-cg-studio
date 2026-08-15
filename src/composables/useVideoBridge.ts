@@ -11,6 +11,9 @@ export const VIDEO_CTX_KEY = 'aics_video_ctx'
 /** 视频页一次性消费的跨页上下文（sessionStorage 载荷）。 */
 export interface VideoCtxPayload {
   imageId: string
+  /** 最近一次实际出图的完整提示词（视频提示词首选源，跟随用户对词条/角色/场景的修改）。 */
+  prompt: string
+  /** 用户出图时写的场景描述（prompt 为空时的次选源）。 */
   story: string
   blueprintId: string | null
   characterId: string
@@ -22,7 +25,9 @@ export interface VideoBridgeTarget {
   displayUrl: string
   /** anima/krea 结果 blob（非 sd 引擎直用；null 时走 fetch displayUrl）。 */
   animaBlob: Blob | null
-  /** 用户出图时写的场景描述：视频提示词首选源。 */
+  /** 最近一次实际出图的完整提示词：视频提示词首选源，跟随出图修改实时更新。 */
+  prompt: string
+  /** 用户出图时写的场景描述：视频提示词次选源。 */
   story: string
   /** 场景预设 id（热门角色 = blueprintId，工作室 = sceneId）。 */
   blueprintId: string | null
@@ -54,6 +59,7 @@ export async function bridgeToVideo(target: VideoBridgeTarget): Promise<boolean>
     try {
       sessionStorage.setItem(VIDEO_CTX_KEY, JSON.stringify({
         imageId,
+        prompt: target.prompt,
         story: target.story,
         blueprintId: target.blueprintId,
         characterId: target.characterId,

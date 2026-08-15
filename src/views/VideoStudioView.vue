@@ -515,13 +515,16 @@ async function applyVideoCtx(ctx: VideoCtxPayload) {
 }
 
 /**
- * 场景预设 → 视频提示词（确定性组装，不做 tag 翻译）：
- * 1. 用户出图时写的 story（意图最忠实）直接作为视频主描述；
- * 2. story 为空时，用场景预设的结构化字段：description（场景）+ action（动作）+ lighting（光线）；
- * 3. I2VA 首帧图已在后端按官方规范锁定角色/服装/场景（<Picture 1> 指令），
- *    这里只需补动作语义，身份描述不重复。
+ * 跨页上下文 → 视频提示词（确定性组装，不做 tag 翻译）：
+ * 1. 实际出图提示词（ctx.prompt，跟随用户对词条/角色/场景的最新修改）直接作为视频主描述；
+ * 2. prompt 为空时回退用户写的 story；
+ * 3. story 为空时，用场景预设的结构化字段：description（场景）+ action（动作）+ lighting（光线）；
+ * 4. I2VA 首帧图已在后端按官方规范锁定角色/服装/场景（<Picture 1> 指令），
+ *    身份描述如与画面冲突可在文本框手动删减，这里只做搬运不做裁剪。
  */
 function composeVideoPrompt(ctx: VideoCtxPayload): string {
+  const prompt = (ctx.prompt || '').trim()
+  if (prompt) return prompt
   const story = (ctx.story || '').trim()
   if (story) return story
   if (ctx.blueprintId) {

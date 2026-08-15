@@ -1703,7 +1703,8 @@ async function saveHistory() {
 /**
  * 「出视频」：把当前成片作为首帧带到视频页（薄封装；桥接逻辑在
  * useVideoBridge 独立 chunk，动态 import 不膨胀本路由块）。
- * 上下文：story（用户描述，视频提示词首选源）+ blueprintId（场景预设）。
+ * 上下文：prompt（实际出图提示词，视频提示词首选源，跟随词条/角色/场景修改实时更新）
+ * + story（场景描述，fallback）+ blueprintId（场景预设）。
  */
 async function goToVideo() {
   const url = displayResultUrl.value
@@ -1717,6 +1718,7 @@ async function goToVideo() {
   await bridgeToVideo({
     displayUrl: url,
     animaBlob: drawEngine.value !== 'sd' ? animaState.value.result?.blob ?? null : null,
+    prompt: livePrompt.value || '',
     story: pb.story || '',
     blueprintId: subject.kind === 'popular' ? (subject.blueprintId ?? null) : pb.sceneId,
     characterId: subject.kind === 'popular' ? subject.characterId : '',
