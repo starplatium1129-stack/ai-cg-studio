@@ -29,3 +29,11 @@ test('no subject tag still produces a figure head when looks exist', () => {
   const out = tagsToVideoProse('long hair, red eyes, black dress, night city, neon');
   assert.ok(out.startsWith('a figure with long hair and red eyes'), out);
 });
+
+test('over-long tag stream is truncated to the 1200-char video limit at tag boundaries', () => {
+  const manyTags = Array.from({ length: 400 }, (_, i) => `tag_${i % 50}`).join(', ');
+  const out = tagsToVideoProse('1girl, red hair, ' + manyTags);
+  assert.ok(out.length <= 1200, 'length ' + out.length);
+  assert.ok(out.startsWith('a girl with red hair'), 'head kept, got: ' + out.slice(0, 40));
+  assert.ok(!out.endsWith(','), 'no trailing comma');
+});
