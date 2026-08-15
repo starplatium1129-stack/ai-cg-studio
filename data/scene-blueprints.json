@@ -8949,7 +8949,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "standard"
     },
@@ -8985,7 +8985,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "standard"
     },
@@ -9021,7 +9021,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "standard"
     },
@@ -9055,7 +9055,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "standard"
     },
@@ -9089,7 +9089,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "standard"
     },
@@ -9123,7 +9123,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "standard"
     },
@@ -9157,7 +9157,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "standard",
       "adult": true,
@@ -9210,7 +9210,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "standard",
       "adult": true,
@@ -9263,7 +9263,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "standard",
       "adult": true,
@@ -9316,7 +9316,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "standard",
       "adult": true,
@@ -9369,7 +9369,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "doctor_coat"
     },
@@ -9403,7 +9403,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "doctor_coat"
     },
@@ -9437,7 +9437,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "doctor_coat"
     },
@@ -9471,7 +9471,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "doctor_coat"
     },
@@ -9503,7 +9503,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "doctor_coat"
     },
@@ -9537,7 +9537,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "doctor_coat"
     },
@@ -9571,7 +9571,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "doctor_coat",
       "adult": true,
@@ -9624,7 +9624,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "doctor_coat",
       "adult": true,
@@ -9677,7 +9677,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "doctor_coat",
       "adult": true,
@@ -9730,7 +9730,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "doctor_coat",
       "adult": true,
@@ -9783,7 +9783,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "lungmen_uniform"
     },
@@ -9817,7 +9817,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "lungmen_uniform"
     },
@@ -9851,7 +9851,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "lungmen_uniform"
     },
@@ -9885,7 +9885,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "lungmen_uniform"
     },
@@ -9919,7 +9919,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "lungmen_uniform"
     },
@@ -9953,7 +9953,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "lungmen_uniform"
     },
@@ -9987,7 +9987,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "lungmen_uniform",
       "adult": true,
@@ -10040,7 +10040,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "lungmen_uniform",
       "adult": true,
@@ -10093,7 +10093,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "lungmen_uniform",
       "adult": true,
@@ -10146,7 +10146,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "lungmen_uniform",
       "adult": true,
@@ -10199,7 +10199,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "researcher_dress"
     },
@@ -10233,7 +10233,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "researcher_dress"
     },
@@ -10267,7 +10267,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "researcher_dress"
     },
@@ -10301,7 +10301,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "researcher_dress"
     },
@@ -10335,7 +10335,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "researcher_dress"
     },
@@ -10369,7 +10369,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "researcher_dress"
     },
@@ -10403,7 +10403,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "researcher_dress",
       "adult": true,
@@ -10456,7 +10456,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "researcher_dress",
       "adult": true,
@@ -10509,7 +10509,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "researcher_dress",
       "adult": true,
@@ -10562,7 +10562,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "researcher_dress",
       "adult": true,
@@ -10615,7 +10615,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "laterano_uniform"
     },
@@ -10649,7 +10649,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "laterano_uniform"
     },
@@ -10683,7 +10683,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "laterano_uniform"
     },
@@ -10717,7 +10717,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "laterano_uniform"
     },
@@ -10751,7 +10751,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "laterano_uniform"
     },
@@ -10785,7 +10785,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "laterano_uniform"
     },
@@ -10819,7 +10819,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "laterano_uniform",
       "adult": true,
@@ -10872,7 +10872,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "laterano_uniform",
       "adult": true,
@@ -10925,7 +10925,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "laterano_uniform",
       "adult": true,
@@ -10978,7 +10978,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "laterano_uniform",
       "adult": true,
@@ -11031,7 +11031,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "ink_qipao"
     },
@@ -11065,7 +11065,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "ink_qipao"
     },
@@ -11099,7 +11099,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "ink_qipao"
     },
@@ -11133,7 +11133,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "ink_qipao"
     },
@@ -11167,7 +11167,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "ink_qipao"
     },
@@ -11201,7 +11201,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "ink_qipao"
     },
@@ -11235,7 +11235,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "ink_qipao",
       "adult": true,
@@ -11288,7 +11288,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "ink_qipao",
       "adult": true,
@@ -11341,7 +11341,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "ink_qipao",
       "adult": true,
@@ -11394,7 +11394,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "ink_qipao",
       "adult": true,
@@ -11447,7 +11447,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "heavy_armor"
     },
@@ -11481,7 +11481,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "heavy_armor"
     },
@@ -11515,7 +11515,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "heavy_armor"
     },
@@ -11549,7 +11549,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "heavy_armor"
     },
@@ -11583,7 +11583,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "heavy_armor"
     },
@@ -11617,7 +11617,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "heavy_armor"
     },
@@ -11651,7 +11651,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "heavy_armor",
       "adult": true,
@@ -11704,7 +11704,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "heavy_armor",
       "adult": true,
@@ -11757,7 +11757,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "heavy_armor",
       "adult": true,
@@ -11810,7 +11810,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "heavy_armor",
       "adult": true,
@@ -11863,7 +11863,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "mechanic_workwear"
     },
@@ -11897,7 +11897,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "mechanic_workwear"
     },
@@ -11931,7 +11931,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "mechanic_workwear"
     },
@@ -11965,7 +11965,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "mechanic_workwear"
     },
@@ -11999,7 +11999,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "mechanic_workwear"
     },
@@ -12033,7 +12033,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "mechanic_workwear"
     },
@@ -12067,7 +12067,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "mechanic_workwear",
       "adult": true,
@@ -12120,7 +12120,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "mechanic_workwear",
       "adult": true,
@@ -12173,7 +12173,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "mechanic_workwear",
       "adult": true,
@@ -12226,7 +12226,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "mechanic_workwear",
       "adult": true,
@@ -12279,7 +12279,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "librarian_dress"
     },
@@ -12313,7 +12313,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "librarian_dress"
     },
@@ -12347,7 +12347,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "librarian_dress"
     },
@@ -12381,7 +12381,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "librarian_dress"
     },
@@ -12415,7 +12415,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "librarian_dress"
     },
@@ -12449,7 +12449,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "librarian_dress"
     },
@@ -12483,7 +12483,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "librarian_dress",
       "adult": true,
@@ -12536,7 +12536,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "librarian_dress",
       "adult": true,
@@ -12589,7 +12589,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "librarian_dress",
       "adult": true,
@@ -12642,7 +12642,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "librarian_dress",
       "adult": true,
@@ -12695,7 +12695,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "abyss_suit"
     },
@@ -12729,7 +12729,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "abyss_suit"
     },
@@ -12763,7 +12763,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "abyss_suit"
     },
@@ -12797,7 +12797,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "abyss_suit"
     },
@@ -12831,7 +12831,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "abyss_suit"
     },
@@ -12865,7 +12865,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "abyss_suit"
     },
@@ -12899,7 +12899,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "abyss_suit",
       "adult": true,
@@ -12952,7 +12952,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "abyss_suit",
       "adult": true,
@@ -13005,7 +13005,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "abyss_suit",
       "adult": true,
@@ -13058,7 +13058,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "abyss_suit",
       "adult": true,
@@ -13111,7 +13111,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "courier_uniform"
     },
@@ -13145,7 +13145,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "courier_uniform"
     },
@@ -13179,7 +13179,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "courier_uniform"
     },
@@ -13213,7 +13213,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "courier_uniform"
     },
@@ -13247,7 +13247,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "courier_uniform"
     },
@@ -13281,7 +13281,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "courier_uniform"
     },
@@ -13315,7 +13315,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "courier_uniform",
       "adult": true,
@@ -13368,7 +13368,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "courier_uniform",
       "adult": true,
@@ -13421,7 +13421,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "courier_uniform",
       "adult": true,
@@ -13474,7 +13474,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "courier_uniform",
       "adult": true,
@@ -13527,7 +13527,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "penguin_logistics"
     },
@@ -13561,7 +13561,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "penguin_logistics"
     },
@@ -13595,7 +13595,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "penguin_logistics"
     },
@@ -13629,7 +13629,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "penguin_logistics"
     },
@@ -13663,7 +13663,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "penguin_logistics"
     },
@@ -13697,7 +13697,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "penguin_logistics"
     },
@@ -13731,7 +13731,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "penguin_logistics",
       "adult": true,
@@ -13784,7 +13784,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "penguin_logistics",
       "adult": true,
@@ -13837,7 +13837,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "penguin_logistics",
       "adult": true,
@@ -13890,7 +13890,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "penguin_logistics",
       "adult": true,
@@ -13943,7 +13943,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "fox_kimono"
     },
@@ -13977,7 +13977,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "fox_kimono"
     },
@@ -14011,7 +14011,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "fox_kimono"
     },
@@ -14045,7 +14045,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "fox_kimono"
     },
@@ -14079,7 +14079,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "fox_kimono"
     },
@@ -14113,7 +14113,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "fox_kimono"
     },
@@ -14147,7 +14147,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "fox_kimono",
       "adult": true,
@@ -14200,7 +14200,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "fox_kimono",
       "adult": true,
@@ -14253,7 +14253,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "fox_kimono",
       "adult": true,
@@ -14306,7 +14306,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "fox_kimono",
       "adult": true,
@@ -14359,7 +14359,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "endfield_uniform"
     },
@@ -14393,7 +14393,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "endfield_uniform"
     },
@@ -14427,7 +14427,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "endfield_uniform"
     },
@@ -14461,7 +14461,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "endfield_uniform"
     },
@@ -14495,7 +14495,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "endfield_uniform"
     },
@@ -14529,7 +14529,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "endfield_uniform"
     },
@@ -14563,7 +14563,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "endfield_uniform",
       "adult": true,
@@ -14616,7 +14616,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "endfield_uniform",
       "adult": true,
@@ -14669,7 +14669,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "endfield_uniform",
       "adult": true,
@@ -14722,7 +14722,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "endfield_uniform",
       "adult": true,
@@ -14775,7 +14775,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "gothic_combat"
     },
@@ -14809,7 +14809,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "gothic_combat"
     },
@@ -14843,7 +14843,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "gothic_combat"
     },
@@ -14877,7 +14877,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "gothic_combat"
     },
@@ -14911,7 +14911,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "gothic_combat"
     },
@@ -14945,7 +14945,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "gothic_combat"
     },
@@ -14979,7 +14979,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "gothic_combat",
       "adult": true,
@@ -15032,7 +15032,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "gothic_combat",
       "adult": true,
@@ -15085,7 +15085,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "gothic_combat",
       "adult": true,
@@ -15138,7 +15138,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "gothic_combat",
       "adult": true,
@@ -15191,7 +15191,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "red_hood"
     },
@@ -15225,7 +15225,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "red_hood"
     },
@@ -15259,7 +15259,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "red_hood"
     },
@@ -15293,7 +15293,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "red_hood"
     },
@@ -15327,7 +15327,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "red_hood"
     },
@@ -15361,7 +15361,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "red_hood"
     },
@@ -15395,7 +15395,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "red_hood",
       "adult": true,
@@ -15448,7 +15448,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "red_hood",
       "adult": true,
@@ -15501,7 +15501,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "red_hood",
       "adult": true,
@@ -15554,7 +15554,7 @@
         "depth_of_field",
         "clean_face"
       ],
-      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage",
+      "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
       "outfitId": "red_hood",
       "adult": true,

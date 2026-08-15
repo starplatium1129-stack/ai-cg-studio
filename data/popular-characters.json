@@ -1518,7 +1518,7 @@
         "red_eyes",
         "long_hair",
         "headband",
-        "black_skintight",
+        "skintight",
         "white_jacket",
         "sword",
         "arknights"
@@ -1539,7 +1539,7 @@
           "name": "罗德岛作战服",
           "prose": "her black skintight bodysuit with a white open jacket, black headband and knee-high boots",
           "tokens": [
-            "black_skintight",
+            "skintight",
             "white_jacket",
             "headband",
             "kneehigh_boots",
@@ -1656,7 +1656,7 @@
         "solo",
         "blue_hair",
         "long_hair",
-        "low_twintails",
+        "low_ponytail",
         "golden_eyes",
         "horns",
         "black_clothes",
@@ -1664,7 +1664,8 @@
         "military_uniform",
         "coat",
         "twin_swords",
-        "arknights"
+        "arknights",
+        "dragon_horns"
       ],
       "exactTokens": [
         "ch'en_(arknights)"
@@ -2005,7 +2006,7 @@
         "horns",
         "green_clothes",
         "yellow_clothes",
-        "work_clothes",
+        "overalls",
         "hairband",
         "arknights"
       ],
@@ -2025,7 +2026,7 @@
           "name": "机械师工装",
           "prose": "her green and yellow mechanic workwear with a red hairband and tool belt",
           "tokens": [
-            "work_clothes",
+            "overalls",
             "green_clothes",
             "yellow_clothes",
             "hairband",
@@ -2418,7 +2419,7 @@
         "hair_highlights",
         "animal_ears",
         "white_clothes",
-        "teal_clothes",
+        "teal_jacket",
         "tactical",
         "jacket",
         "arknights"
@@ -2440,7 +2441,7 @@
           "prose": "her white and teal Endfield tactical jacket over a high-neck top with straps, pouches and dark trousers",
           "tokens": [
             "white_clothes",
-            "teal_clothes",
+            "teal_jacket",
             "jacket",
             "tactical",
             "high_collar",
@@ -2549,7 +2550,7 @@
         "arknights endfield",
         "endfield"
       ],
-      "identityProse": "Rossi from Arknights: Endfield, a young girl who is the sister of Wulfgard, wearing a red hooded capelet over a white dress, with wolf ears and a fluffy wolf tail, carrying a small basket",
+      "identityProse": "Rossi from Arknights: Endfield, a young girl who is the sister of Wulfgard, wearing a red hooded capelet over a white dress, with wolf ears poking out from under her red hood and a fluffy wolf tail, carrying a small basket",
       "identityTokens": [
         "rossi_(arknights)",
         "1girl",
@@ -2561,7 +2562,9 @@
         "wolf_tail",
         "capelet",
         "young",
-        "arknights"
+        "arknights",
+        "lupo",
+        "hood_up"
       ],
       "exactTokens": [
         "rossi_(arknights)"
