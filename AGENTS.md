@@ -155,6 +155,8 @@
 
 当前门槛覆盖真实应用 CSS、Vue SFC、运行时构建、场景契约、安全路由、存储、Prompt、SD、聊天、配音和 Playwright 流程。
 
+- **截图验证一律采用应用内截图（2026-08-15 用户指示）**：需要截图确认 UI/布局/回归时，只截应用窗口或页面本身，**禁止全屏截屏**——全屏会混入其他页面与窗口内容，干扰视觉判断与审核结论。落地方式：浏览器/Playwright 用 `page.screenshot()`（E2E 截图见 `tests/e2e/capture.spec.ts`，产物在 `.review-shots/`）；桌面 Companion 窗口用窗口级截取（PrintWindow），不用屏幕截屏。
+
 - **本地 `npm run check` 的 repo-hygiene 红灯排障（2026-08-15 留档）**：现象=`test-repo-hygiene.js` 报几十条换行违规。根因=某些工具把文件改写成了与 `.gitattributes` 不符的换行（`*.ps1 eol=crlf` 被改成 LF；`* eol=lf` 文件里混入 CRLF），而 `core.autocrlf=true` 让 `git status` 显示 clean、掩盖了漂移；真实违规只有 worktree 目标（index 目标会被 `loadDebtFromGitRef('HEAD')` 自动豁免，勿用「仅 fixture」扫描误判）。修复=按 `.gitattributes` 恢复 eol（ps1→CRLF、css→LF），`git add` 刷新 stat 后 status 归 clean。排查命令：`node scripts/tests/test-repo-hygiene.js` 看违规明细；`git hash-object <file>` 对比 index blob。
 
 `src/` 业务实现中的显式 `any` 已清零，新增代码不得回退；`vite-env.d.ts` 的 Vue 通配模块声明不计入业务类型债。
