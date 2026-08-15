@@ -672,6 +672,7 @@ import type { AnimaResult } from '@/types/anima'
 import { useAnimaSession, closestSupportedSize, ANIMA_LORA_BY_CHARACTER, ANIMA_CHARACTER_BY_CHARACTER, type AnimaRequest } from '@/composables/useAnimaSession'
 import { useSDGenerate } from '@/composables/useSDGenerate'
 import { usePromptAssembly } from '@/composables/usePromptAssembly'
+import { tagsToVideoProse } from '@/utils/videoPromptProse'
 import { EMOTION, SHOT, LIGHTING, COMPOSITION, COLOR_MOODS, SCENE_THEMES } from '@/config/promptConstants'
 import { useSDQueue, type SDQueueJob } from '@/composables/useSDQueue'
 import { classifySDError, SAFE_SAMPLING, LIGHT_LOAD, type SDErrorReport, type SDRecoveryId } from '@/utils/sdError'
@@ -1731,7 +1732,8 @@ async function goToVideo() {
   await bridgeToVideo({
     displayUrl: url,
     animaBlob: drawEngine.value !== 'sd' ? animaState.value.result?.blob ?? null : null,
-    prompt: usedPrompt,
+    // 词条流 → 自然语言（H3 是自然语言模型；已像自然语言的提示词原样保留）。
+    prompt: tagsToVideoProse(usedPrompt),
     story: pb.story || '',
     blueprintId: subject.kind === 'popular' ? (subject.blueprintId ?? null) : pb.sceneId,
     characterId: subject.kind === 'popular' ? subject.characterId : '',
