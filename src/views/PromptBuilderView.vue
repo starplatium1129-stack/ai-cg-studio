@@ -1962,28 +1962,14 @@ function toggleOutfitBundle(tags: string[]) {
   pb.manualTags = next
 }
 
-// ── Lifecycle ─────────────────────────────────────────────────────────────
-onMounted(async () => {
-  void refreshAnimaBackend()
-  // Anima 后端只在引擎激活时轮询：SD 引擎下每 15s 打一次 /api/creative/status
-  // 会让网关反复探测 ComfyUI（2.5s 超时 + 磁盘资源检查），纯属浪费。
-  if (drawEngine.value !== 'sd') startStatusPolling()
-  const savedMode = localStorage.getItem(DIRECTOR_MODE_KEY)
-  if (savedMode === 'pro' || savedMode === 'basic') {
-    pb.directorMode = savedMode
-    sceneCollection.value = savedMode === 'pro' ? 'all' : 'core'
-  }
-  await pb.loadData()
-  await refreshAnimaBackend()
-  await sd.checkStatus()
-  // 拿到 WebUI 真实 checkpoint 后，再按对应 model profile 填参数
-  pb.applyModelProfile(pb.sdModelName || sd.checkpoint.value)
-  // 历史载入（IndexedDB）
-  await pb.loadHistory()
-
-  // 深链参数恢复（?scene / ?char / ?mood / ?scenario / ?regen / ?resume / ?quick / ?variant / ?generate）
-  const q = route.query
-  let handledDeepLink = false
+/**
+ * 深链参数应用（?scene / ?popular&blueprint / ?char / ?mood / ?scenario / ?regen / ?resume / ?quick）。
+ * onMounted 与 watch(route.query) 共用：组件复用 / 后退恢复（bfcache）时组件不会重挂载、
+ * onMounted 不重跑，URL 变了状态却不更新——由 watch 按「URL 与当前选中不一致」条件重放，
+ * 保证「点场景卡片后提示词跟随新场景」。
+ */
+function applyDeepLink(q: Record<string, unknown>): boolean {
+  let handled = false
   const scenarioId = typeof q.scenario === 'string' ? q.scenario : ''
   if (scenarioId) {
     // 剧本模式分幕 → 导演台：第一幕的语义词条落成手动词条，
@@ -2004,14 +1990,16 @@ onMounted(async () => {
       const dim = SCENARIO_RES_MAP[act.res]?.dim
       if (dim) sdSize.value = dim.replace('×', 'x')
       pb.flash(`已载入剧本《${scenario.name}》第一幕 ${act.title}，可调整后生成`)
-      handledDeepLink = true
+      handled = true
     }
   }
   if (isCharKey(q.char)) {
-    pb.setChar(q.char); handledDeepLink = true
+    pb.setChar(q.char); handled = true
   }
-  if (typeof q.popular === 'string' && !pb.isPopular) {
-    // 热门角色深链：进入热门模式并选中指定角色；?blueprint= 可预选场景蓝图
+  // 热门角色深链：不带 !pb.isPopular 前置条件——已在热门模式时二次进入
+  // （换角色/换场景）也必须重新应用，否则「点击场景还是上一个」。
+  if (typeof q.popular === 'string') {
+    // 进入热门模式并选中指定角色；?blueprint= 可预选场景蓝图
     // （角色场景库页面「开始绘制」直达）。
     selectPopularSource('popular')
     const target = findPopularCharacter(pb.popularCharacters, q.popular)
@@ -2030,10 +2018,10 @@ onMounted(async () => {
         }
       }
     }
-    handledDeepLink = true
+    handled = true
   }
   if (typeof q.mood === 'string' && COLOR_MOODS.some(m => m.id === q.mood)) {
-    pb.setColorMood(q.mood); handledDeepLink = true
+    pb.setColorMood(q.mood); handled = true
   }
   if (typeof q.remix === 'string' || typeof q.regen === 'string' || typeof q.variant === 'string') {
     const targetId = Number(typeof q.remix === 'string' ? q.remix : (typeof q.regen === 'string' ? q.regen : q.variant))
@@ -2044,17 +2032,63 @@ onMounted(async () => {
         setDirectorMode('pro')
         pb.flash('✨ 已载入作品参数与配方，可自由调整细节')
       }
-      handledDeepLink = true
+      handled = true
     }
   } else if (typeof q.scene === 'string') {
     const sc = pb.scenes.find(s => s.id === q.scene)
-    if (sc) { selectScene(sc); handledDeepLink = true }
+    if (sc) { selectScene(sc); handled = true }
   } else if (q.resume === '1') {
-    handledDeepLink = pb.restoreDraft()
+    handled = pb.restoreDraft()
   } else if (q.quick === '1' && !pb.story) {
     pb.setStory('用一张画面来讲今天想画的故事')
-    handledDeepLink = true
+    handled = true
   }
+  return handled
+}
+
+/** URL 场景参数与当前选中不一致时才需要重放深链（避免覆盖用户手动编辑的状态）。 */
+function deepLinkNeeded(q: Record<string, unknown>): boolean {
+  if (typeof q.popular === 'string') {
+    const blueprint = typeof q.blueprint === 'string' && q.blueprint ? q.blueprint : null
+    return pb.subject.kind !== 'popular'
+      || pb.subject.characterId !== q.popular
+      || pb.subject.blueprintId !== blueprint
+  }
+  if (typeof q.scene === 'string') return pb.sceneId !== q.scene
+  return false
+}
+
+// 组件复用 / 后退恢复（bfcache）时 onMounted 不重跑：URL 场景参数变化但组件还是旧实例，
+// 这里按「状态与 URL 不一致」重放深链，让场景与提示词跟随新选择。
+watch(() => route.query, (q) => {
+  if (!deepLinkNeeded(q)) return
+  if (applyDeepLink(q) && !generationBusy.value) {
+    if (pb.directorMode === 'basic') void applyManagedRoute({ silent: true })
+    else void refreshManagedRoute()
+  }
+})
+
+// ── Lifecycle ─────────────────────────────────────────────────────────────
+onMounted(async () => {
+  void refreshAnimaBackend()
+  // Anima 后端只在引擎激活时轮询：SD 引擎下每 15s 打一次 /api/creative/status
+  // 会让网关反复探测 ComfyUI（2.5s 超时 + 磁盘资源检查），纯属浪费。
+  if (drawEngine.value !== 'sd') startStatusPolling()
+  const savedMode = localStorage.getItem(DIRECTOR_MODE_KEY)
+  if (savedMode === 'pro' || savedMode === 'basic') {
+    pb.directorMode = savedMode
+    sceneCollection.value = savedMode === 'pro' ? 'all' : 'core'
+  }
+  await pb.loadData()
+  await refreshAnimaBackend()
+  await sd.checkStatus()
+  // 拿到 WebUI 真实 checkpoint 后，再按对应 model profile 填参数
+  pb.applyModelProfile(pb.sdModelName || sd.checkpoint.value)
+  // 历史载入（IndexedDB）
+  await pb.loadHistory()
+
+  // 深链参数恢复（?scene / ?char / ?mood / ?scenario / ?regen / ?resume / ?quick / ?variant / ?generate）
+  const handledDeepLink = applyDeepLink(route.query)
   if (!handledDeepLink) pb.restoreDraft()
   // 推荐尺寸同步到出图选择
   if (pb.lastRecommendedSize) sdSize.value = pb.lastRecommendedSize
@@ -2087,7 +2121,7 @@ onMounted(async () => {
     void refreshAnimaBackend()
   }
 
-  if (q.quick === '1') {
+  if (route.query.quick === '1') {
     const savedQuick = readQuickCreate()
     applyQuickCreateSettings(savedQuick)
     // 快速出图深链：Anima 引擎必须收敛到受控路线推荐的底模（工作室角色 → Aesthetic v1.1），
@@ -2108,7 +2142,7 @@ onMounted(async () => {
       pb.flash(reused ? `正在快速出图 · ${reused}` : '正在使用当前推荐参数快速出图')
       await callGenerate()
     }
-  } else if (q.generate === '1') {
+  } else if (route.query.generate === '1') {
     // 样张/场景抽屉的「调整后生成」：场景与词条已在上面载入，这里直接出图
     await nextTick()
     if (!engineOnline.value) {

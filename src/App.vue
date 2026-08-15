@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { kvInit, kvGet, kvSet } from '@/composables/useKVStore'
 import { imgGet } from '@/composables/useImageStore'
 import { blobThumbDataUrl, thumbKey } from '@/utils/imageThumb'
@@ -22,6 +22,7 @@ import DesktopTitleBar from '@/components/DesktopTitleBar.vue'
 // 与 GalleryView 的 HISTORY_KEY 保持一致
 const HISTORY_KEY = 'aics_pb_history'
 const route = useRoute()
+const router = useRouter()
 const isCompanion = computed(() => route.path === '/companion')
 
 interface ThumbWarmEntry { image_id?: string }
@@ -67,7 +68,23 @@ async function warmGalleryThumbs() {
   scheduleNext()
 }
 
-onMounted(() => { if (!isCompanion.value) void warmGalleryThumbs() })
+onMounted(() => {
+  if (!isCompanion.value) void warmGalleryThumbs()
+  // bfcache（Chromium 后退/前进缓存）恢复时，Vue Router 内部路由可能与地址栏
+  // 不同步：组件不重挂载、onMounted 深链不执行，导致「点击场景/卡片后页面
+  // 还是上一个场景的提示词」。恢复时用地址栏重建路由，触发正确的组件挂载。
+  const onPageShow = (event: PageTransitionEvent) => {
+    if (!event.persisted) return
+    const address = window.location.pathname + window.location.search + window.location.hash
+    if (router.currentRoute.value.fullPath !== address) {
+      void router.replace(address)
+    }
+  }
+  window.addEventListener('pageshow', onPageShow)
+  onUnmounted(() => {
+    window.removeEventListener('pageshow', onPageShow)
+  })
+})
 onUnmounted(() => {
   warmStopped = true
   if (typeof window.cancelIdleCallback === 'function') window.cancelIdleCallback(warmHandle)
