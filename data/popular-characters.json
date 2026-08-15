@@ -1509,18 +1509,21 @@
         "arknights",
         "laevatein"
       ],
-      "identityProse": "Surtr from Arknights, a melancholic swordswoman with long white hair, red eyes, a black headband, wearing a black skintight bodysuit under a white jacket, carrying the greatsword Laevatein",
+      "identityProse": "Surtr from Arknights, a lone Sarkaz swordswoman with wine-red long hair in a side low ponytail with a black headband, amber-orange eyes, black-red curved horns, wearing a black high-neck cropped top with a black-and-white techwear jacket, black shorts and thigh straps, carrying the giant molten greatsword Laevateinn",
       "identityTokens": [
         "surtr_(arknights)",
         "1girl",
         "solo",
-        "white_hair",
-        "red_eyes",
+        "red_hair",
         "long_hair",
-        "headband",
-        "skintight",
-        "white_jacket",
-        "sword",
+        "side_ponytail",
+        "hairband",
+        "amber_eyes",
+        "horns",
+        "black_clothes",
+        "white_clothes",
+        "jacket",
+        "greatsword",
         "arknights"
       ],
       "exactTokens": [
@@ -1548,14 +1551,16 @@
           "default": true
         },
         {
-          "id": "casual",
-          "name": "便服",
-          "prose": "a simple white sweater, black jeans and a red scarf",
+          "id": "colorful_wonderland",
+          "name": "缤纷奇境（泳装）",
+          "prose": "a black and white two-piece bikini with a translucent black beach cover-up, sunglasses and a giant multi-scoop ice cream cone",
           "tokens": [
-            "sweater",
+            "bikini",
+            "black_clothes",
             "white_clothes",
-            "jeans",
-            "red_scarf"
+            "sunglasses",
+            "ice_cream",
+            "beach"
           ]
         }
       ],
@@ -1578,19 +1583,18 @@
         "arknights",
         "mon3tr"
       ],
-      "identityProse": "Kal'tsit from Arknights, the stern Chief Medical Officer of Rhodes Island, with short silver-white hair, green eyes, a green and white medical coat with a high collar, and a teardrop crystal earring on one ear, accompanied by her construct Mon3tr",
+      "identityProse": "Kal'tsit from Arknights, the stern Chief Medical Officer of Rhodes Island with pale mint-green short hair and twin side braids, lynx ears with black tufts, emerald green eyes, emerald crystal drop earrings, wearing a green and white lab coat over a black halter dress with a backless cut, accompanied by her construct Mon3tr",
       "identityTokens": [
         "kal'tsit",
         "1girl",
         "solo",
-        "silver_hair",
-        "white_hair",
+        "light_green_hair",
         "short_hair",
+        "cat_ears",
         "green_eyes",
         "green_clothes",
         "white_clothes",
         "coat",
-        "high_collar",
         "earring",
         "arknights"
       ],
@@ -1619,14 +1623,16 @@
           "default": true
         },
         {
-          "id": "casual",
-          "name": "便服",
-          "prose": "a green knit cardigan over a white shirt with black trousers",
+          "id": "evening_gown",
+          "name": "不觅浪尘（音律礼服）",
+          "prose": "an elegant black velvet evening gown with gold and emerald embroidery, her hair up, holding a black cello",
           "tokens": [
-            "cardigan",
-            "green_clothes",
-            "white_shirt",
-            "black_pants"
+            "evening_gown",
+            "black_dress",
+            "velvet",
+            "gold_trim",
+            "hair_up",
+            "cello"
           ]
         }
       ],
@@ -1649,23 +1655,24 @@
         "arknights",
         "lungmen"
       ],
-      "identityProse": "Ch'en from Arknights, a disciplined Lungmen Guard Department officer with long blue hair in a low ponytail, golden eyes, small horns, wearing a black and blue officer uniform with a long coat, carrying twin swords",
+      "identityProse": "Ch'en from Arknights, a Lungmen Guard Department officer with dark teal-blue hair in low twintails tied with red cords, amber-gold eyes, red-brown branching dragon horns, a long teal dragon tail, wearing a black and blue officer uniform with a long coat, carrying the crimson-sheathed sword Chi Xiao",
       "identityTokens": [
         "ch'en_(arknights)",
         "1girl",
         "solo",
-        "blue_hair",
+        "teal_hair",
         "long_hair",
-        "low_ponytail",
-        "golden_eyes",
+        "low_twintails",
+        "hair_ribbon",
+        "amber_eyes",
         "horns",
+        "tail",
         "black_clothes",
         "blue_clothes",
         "military_uniform",
         "coat",
-        "twin_swords",
-        "arknights",
-        "dragon_horns"
+        "sword",
+        "arknights"
       ],
       "exactTokens": [
         "ch'en_(arknights)"
@@ -1693,14 +1700,16 @@
           "default": true
         },
         {
-          "id": "casual",
-          "name": "便服",
-          "prose": "a black leather jacket over a white shirt with dark jeans",
+          "id": "ageless_afterglow",
+          "name": "岁红霞（旗袍）",
+          "prose": "a high-slit dark green and crimson qipao with gold dragon embroidery, a translucent green capelet, black pantyhose and high heels",
           "tokens": [
-            "leather_jacket",
-            "black_clothes",
-            "white_shirt",
-            "jeans"
+            "qipao",
+            "green_clothes",
+            "red_clothes",
+            "gold_trim",
+            "black_pantyhose",
+            "high_heels"
           ]
         }
       ],
@@ -1722,18 +1731,18 @@
         "eyja",
         "arknights"
       ],
-      "identityProse": "Eyjafjalla from Arknights, a young Cautus researcher with long pink hair styled in twintails, red eyes, small ram horns, wearing a white dress with black accents and black thighhighs",
+      "identityProse": "Eyjafjalla from Arknights, a Cautus volcano researcher with light ash-brown wavy hair in low twintails, small warm brown ram horns, ruby red eyes, wearing a dark grey volcano research coat over a white frilled dress with black thighhighs",
       "identityTokens": [
         "eyjafjalla_(arknights)",
         "1girl",
         "solo",
-        "pink_hair",
-        "long_hair",
+        "light_brown_hair",
         "twintails",
         "red_eyes",
         "horns",
         "white_dress",
         "black_thighhighs",
+        "coat",
         "arknights"
       ],
       "exactTokens": [
@@ -1760,15 +1769,15 @@
           "default": true
         },
         {
-          "id": "rhodes_uniform",
-          "name": "罗德岛制服",
-          "prose": "her black and white Rhodes Island uniform with a grey jacket and dark skirt",
+          "id": "summer_flower",
+          "name": "夏卉（泳装）",
+          "prose": "a pink and white bikini with a straw sun hat and a swimming ring shaped like a small lamb",
           "tokens": [
-            "uniform",
-            "black_clothes",
+            "bikini",
+            "pink_clothes",
             "white_clothes",
-            "grey_jacket",
-            "dark_skirt"
+            "straw_hat",
+            "swim_ring"
           ]
         }
       ],
@@ -1790,20 +1799,21 @@
         "arknights",
         "laterano"
       ],
-      "identityProse": "Lemuen from Arknights, a Laterano Sankta agent with long silver-white hair, blue eyes, a floating golden halo above her head, small white wings, wearing a blue and white tactical uniform",
+      "identityProse": "Lemuen from Arknights, a Laterano Sankta advisor with warm ginger-brown wavy hair with a side braid, amber-gold eyes, a floating golden halo and small translucent wings at her lower back, wearing a dark tailored overcoat over a white shirt and black tie, seated in a custom high-tech mechanical wheelchair, wielding a long sniper rifle",
       "identityTokens": [
         "lemuen_(arknights)",
         "1girl",
         "solo",
-        "white_hair",
-        "silver_hair",
+        "ginger_hair",
         "long_hair",
-        "blue_eyes",
+        "amber_eyes",
         "halo",
         "wings",
-        "blue_clothes",
-        "white_clothes",
-        "military_uniform",
+        "dark_clothes",
+        "coat",
+        "tie",
+        "wheelchair",
+        "sniper_rifle",
         "arknights"
       ],
       "exactTokens": [
@@ -1831,14 +1841,15 @@
           "default": true
         },
         {
-          "id": "casual",
-          "name": "便服",
-          "prose": "a light blue hoodie with white shorts and sneakers",
+          "id": "twilight_requiem",
+          "name": "暮星安魂曲（礼服）",
+          "prose": "a black and deep-blue starlit evening gown with a classical instrument-style wheelchair and a case-shaped rifle",
           "tokens": [
-            "hoodie",
+            "evening_gown",
+            "black_dress",
             "blue_clothes",
-            "white_shorts",
-            "sneakers"
+            "wheelchair",
+            "night_sky"
           ]
         }
       ],
@@ -1861,19 +1872,21 @@
         "arknights",
         "sui"
       ],
-      "identityProse": "Dusk from Arknights, a reclusive painter among the Sui siblings, with very long black hair, red eyes, wearing a white and black ink-wash qipao with cloud patterns and a long coat, holding a giant calligraphy brush",
+      "identityProse": "Dusk from Arknights, a reclusive painter among the Sui siblings, with very long black hair fading to teal-green ink gradient, teal-green eyes with red eyeshadow, teal jade dragon horns and a long ink-wash dragon tail, wearing a black and white ink-wash qipao dress with translucent sleeves, holding a giant calligraphy brush",
       "identityTokens": [
         "dusk_(arknights)",
         "1girl",
         "solo",
         "black_hair",
         "very_long_hair",
-        "red_eyes",
-        "white_clothes",
-        "black_clothes",
+        "green_eyes",
+        "horns",
+        "tail",
         "qipao",
         "ink_wash",
         "chinese_clothes",
+        "white_clothes",
+        "black_clothes",
         "arknights"
       ],
       "exactTokens": [
@@ -1902,13 +1915,17 @@
           "default": true
         },
         {
-          "id": "casual",
-          "name": "便服",
-          "prose": "a black modern dress with white floral embroidery and a small ink brush in her hair",
+          "id": "dying_dust",
+          "name": "染尘烟（新春旗袍）",
+          "prose": "a black and gold high-slit short qipao with a black fur-trimmed capelet, black pantyhose, black heels and a long thin smoking pipe",
           "tokens": [
-            "black_dress",
-            "white_embroidery",
-            "hair_ornament"
+            "qipao",
+            "black_clothes",
+            "gold_trim",
+            "fur_trim",
+            "black_pantyhose",
+            "high_heels",
+            "smoking_pipe"
           ]
         }
       ],
@@ -1929,17 +1946,18 @@
         "mudrock",
         "arknights"
       ],
-      "identityProse": "Mudrock from Arknights, a gentle giant Sarkaz warrior with short silver hair, red eyes, wearing heavy black power armor with glowing seams, helmet often removed",
+      "identityProse": "Mudrock from Arknights, a gentle Sarkaz warrior with long silver-white hair, crimson eyes, curved black horns, wearing heavy olive-green power armor with a sealed helmet, and beneath it a dark high-neck bodysuit, carrying a huge engineering warhammer",
       "identityTokens": [
         "mudrock_(arknights)",
         "1girl",
         "solo",
         "silver_hair",
-        "short_hair",
+        "long_hair",
         "red_eyes",
+        "horns",
         "power_armor",
         "armor",
-        "black_armor",
+        "hammer",
         "arknights"
       ],
       "exactTokens": [
@@ -1967,13 +1985,15 @@
           "default": true
         },
         {
-          "id": "casual",
-          "name": "日常便服",
-          "prose": "a black hooded jacket and cargo pants with her silver hair loose",
+          "id": "silent_night",
+          "name": "静谧午夜（泳装）",
+          "prose": "a black bikini with a translucent black beach cover-up, a small yellow frangipani flower on her horn and a parasol hammer",
           "tokens": [
-            "hoodie",
+            "bikini",
             "black_clothes",
-            "cargo_pants"
+            "flower",
+            "beach",
+            "parasol"
           ]
         }
       ],
@@ -1994,7 +2014,7 @@
         "eunectes",
         "arknights"
       ],
-      "identityProse": "Eunectes from Arknights, a cheerful mechanic with long dark green hair, golden eyes, tanned skin, small horns, wearing a green and yellow work outfit with a red hairband",
+      "identityProse": "Eunectes from Arknights, a cheerful Sarkaz mechanic with long dark green hair, golden slit-pupil eyes, a massive dark green anaconda snake tail, wearing a cool halter crop top and tactical vest with leather hotpants and goggles on her head, building her giant mech Big Ugly",
       "identityTokens": [
         "eunectes_(arknights)",
         "1girl",
@@ -2002,12 +2022,11 @@
         "green_hair",
         "long_hair",
         "golden_eyes",
-        "tanned_skin",
-        "horns",
-        "green_clothes",
-        "yellow_clothes",
-        "overalls",
-        "hairband",
+        "tail",
+        "goggles",
+        "crop_top",
+        "hotpants",
+        "tactical",
         "arknights"
       ],
       "exactTokens": [
@@ -2035,15 +2054,15 @@
           "default": true
         },
         {
-          "id": "swimsuit",
-          "name": "泳装",
-          "prose": "a green and yellow two-piece swimsuit with a red hairband",
+          "id": "forgemaster",
+          "name": "熔锻铸匠（工装）",
+          "prose": "a black fire-resistant top with rolled-down coveralls tied at her waist, heat-resistant gloves and a heavy forging hammer",
           "tokens": [
-            "swimsuit",
-            "green_clothes",
-            "yellow_clothes",
-            "two_piece_swimsuit",
-            "hairband"
+            "coveralls",
+            "black_clothes",
+            "gloves",
+            "hammer",
+            "workwear"
           ]
         }
       ],
@@ -2064,19 +2083,21 @@
         "goldenglow",
         "arknights"
       ],
-      "identityProse": "Goldenglow from Arknights, a gentle librarian with long golden hair in twintails, blue eyes, wearing a white and yellow dress with a golden accessory and black thighhighs",
+      "identityProse": "Goldenglow from Arknights, a gentle Victorian apprentice hairdresser with long pale pink hair in low twintails, teal-blue eyes, pink folded cat ears and a fluffy pink cat tail, wearing a white shirt with a yellow ascot scarf, a dark suspender pinafore dress and a pleated skirt",
       "identityTokens": [
         "goldenglow_(arknights)",
         "1girl",
         "solo",
-        "blonde_hair",
-        "golden_hair",
+        "pink_hair",
         "long_hair",
         "twintails",
         "blue_eyes",
-        "white_dress",
-        "yellow_clothes",
-        "black_thighhighs",
+        "cat_ears",
+        "cat_tail",
+        "white_shirt",
+        "scarf",
+        "black_clothes",
+        "pleated_skirt",
         "arknights"
       ],
       "exactTokens": [
@@ -2091,26 +2112,30 @@
       "adultEligibility": "adult",
       "outfits": [
         {
-          "id": "librarian_dress",
-          "name": "图书管理员裙装",
-          "prose": "her white and yellow dress with golden trim and black thighhighs",
+          "id": "apprentice",
+          "name": "理发师学徒工装",
+          "prose": "a white shirt with a yellow ascot scarf, a dark suspender pinafore dress, a black pleated skirt, asymmetric thighhighs and a hairdresser tool pouch with scissors",
           "tokens": [
-            "white_dress",
-            "yellow_clothes",
-            "gold_trim",
-            "black_thighhighs"
+            "white_shirt",
+            "scarf",
+            "pinafore_dress",
+            "black_clothes",
+            "pleated_skirt",
+            "thighhighs",
+            "scissors"
           ],
           "default": true
         },
         {
-          "id": "winter_coat",
-          "name": "冬装大衣",
-          "prose": "a warm beige winter coat over a yellow sweater with a scarf",
+          "id": "maiden_of_night",
+          "name": "喜夜侍者（女仆装）",
+          "prose": "a black and white Victorian gothic maid dress with lace frills and a maid headband, holding a silver serving tray",
           "tokens": [
-            "winter_coat",
-            "beige_clothes",
-            "yellow_sweater",
-            "scarf"
+            "maid",
+            "black_dress",
+            "white_clothes",
+            "lace",
+            "maid_headdress"
           ]
         }
       ],
@@ -2132,7 +2157,7 @@
         "arknights",
         "abyss hunter"
       ],
-      "identityProse": "Skadi from Arknights, an Abyss Hunter with very long white hair, red eyes, wearing a black one-piece swimsuit-like combat suit with white accents, carrying a huge claymore",
+      "identityProse": "Skadi from Arknights, an Abyss Hunter with very long ankle-length silver-white hair, crimson eyes, wearing a black high-cut bodysuit with a short black coat and a wide-brimmed hunter hat, carrying a huge greatsword in a black guitar case",
       "identityTokens": [
         "skadi_(arknights)",
         "1girl",
@@ -2141,7 +2166,8 @@
         "very_long_hair",
         "red_eyes",
         "black_swimsuit",
-        "black_clothes",
+        "coat",
+        "wide_brimmed_hat",
         "claymore",
         "arknights"
       ],
@@ -2170,14 +2196,15 @@
           "default": true
         },
         {
-          "id": "evening_gown",
-          "name": "晚礼服",
-          "prose": "a flowing black evening gown with white trim and her long white hair loose",
+          "id": "waverider",
+          "name": "驭浪（泳装）",
+          "prose": "a red two-piece bikini with a translucent white cover-up, sunglasses and a killer-whale inflatable surfboard",
           "tokens": [
-            "evening_gown",
-            "black_dress",
-            "white_trim",
-            "long_hair"
+            "bikini",
+            "red_clothes",
+            "white_clothes",
+            "sunglasses",
+            "surfboard"
           ]
         }
       ],
@@ -2198,19 +2225,22 @@
         "quillpen",
         "arknights"
       ],
-      "identityProse": "Quillpen from Arknights, a quiet postal courier with short white hair, blue eyes, a feather-shaped quill accessory, wearing a blue and white uniform with a cloak",
+      "identityProse": "Quillpen from Arknights, a sleepy Liberi bartender with silver-white hair fading to coral pink at the tips, a tall feather ahoge, drowsy vermilion eyes, wearing a black crop top with an asymmetrical grey jacket and black hotpants, wielding a giant black mechanical scythe made by her brother Tequila",
       "identityTokens": [
         "quillpen",
         "1girl",
         "solo",
         "white_hair",
         "short_hair",
-        "blue_eyes",
-        "feather",
-        "blue_clothes",
-        "white_clothes",
-        "uniform",
-        "cape",
+        "hair_gradient",
+        "ahoge",
+        "red_eyes",
+        "black_clothes",
+        "grey_clothes",
+        "crop_top",
+        "jacket",
+        "hotpants",
+        "scythe",
         "arknights"
       ],
       "exactTokens": [
@@ -2225,26 +2255,31 @@
       "adultEligibility": "adult",
       "outfits": [
         {
-          "id": "courier_uniform",
-          "name": "信使制服",
-          "prose": "her blue and white courier uniform with a short cloak and feather quill accessory",
+          "id": "bartender",
+          "name": "调酒师装",
+          "prose": "a black crop top with an asymmetrical grey hooded jacket, black hotpants, a tactical belt with a cocktail shaker pouch and a black choker, holding her giant scythe",
           "tokens": [
-            "uniform",
-            "blue_clothes",
-            "white_clothes",
-            "cape",
-            "feather"
+            "crop_top",
+            "black_clothes",
+            "grey_clothes",
+            "jacket",
+            "hotpants",
+            "choker",
+            "scythe"
           ],
           "default": true
         },
         {
-          "id": "casual",
-          "name": "便服",
-          "prose": "a white blouse with a blue cardigan and a feather brooch",
+          "id": "summer_flower_fa210",
+          "name": "夏卉（泳装）",
+          "prose": "a pink and white bikini with a translucent white cover-up, a floral straw hat and sunglasses, holding a tropical cocktail",
           "tokens": [
-            "white_blouse",
-            "blue_cardigan",
-            "brooch"
+            "bikini",
+            "pink_clothes",
+            "white_clothes",
+            "straw_hat",
+            "sunglasses",
+            "cocktail"
           ]
         }
       ],
@@ -2266,20 +2301,22 @@
         "arknights",
         "penguin logistics"
       ],
-      "identityProse": "Exusiai from Arknights, a cheerful Sankta courier of Penguin Logistics with short white hair, blue eyes, a floating golden halo and small wings, wearing a black and white penguin logistics uniform with a blue inner shirt",
+      "identityProse": "Exusiai from Arknights, a cheerful Sankta courier of Penguin Logistics with short orange-red hair, red-brown eyes, a floating golden halo and small translucent wings, wearing a light grey-white hooded jacket over a black fitted shirt, black shorts and black thighhighs, carrying a Vector submachine gun",
       "identityTokens": [
         "exusiai_(arknights)",
         "1girl",
         "solo",
-        "white_hair",
+        "red_hair",
         "short_hair",
-        "blue_eyes",
+        "red_eyes",
         "halo",
         "wings",
+        "white_jacket",
         "black_clothes",
-        "white_clothes",
-        "blue_shirt",
-        "jacket",
+        "black_shirt",
+        "shorts",
+        "thighhighs",
+        "gun",
         "arknights"
       ],
       "exactTokens": [
@@ -2307,16 +2344,16 @@
           "default": true
         },
         {
-          "id": "casual",
-          "name": "便服",
-          "prose": "a white t-shirt with a black bomber jacket, blue jeans and her halo and wings",
+          "id": "city_rider",
+          "name": "城市骑手（KFC联动）",
+          "prose": "a red and white delivery rider jacket with a baseball cap, white t-shirt, black shorts and red-striped socks, holding a fried chicken box",
           "tokens": [
-            "white_shirt",
-            "bomber_jacket",
-            "black_clothes",
-            "jeans",
-            "halo",
-            "wings"
+            "delivery_uniform",
+            "red_clothes",
+            "white_clothes",
+            "baseball_cap",
+            "shorts",
+            "food"
           ]
         }
       ],
@@ -2337,20 +2374,20 @@
         "suzuran",
         "arknights"
       ],
-      "identityProse": "Suzuran from Arknights, a gentle young Vulpo with very long white hair, golden eyes, fox ears and nine fluffy tails, wearing a white and gold kimono-style dress",
+      "identityProse": "Suzuran from Arknights, a gentle Vulpo girl with long pale gold hair, light blue eyes, golden fox ears and nine fluffy fox tails, wearing a white haori jacket over a dark pleated skirt with white over-knee socks, holding a golden lily-of-the-valley staff",
       "identityTokens": [
         "suzuran_(arknights)",
         "1girl",
         "solo",
-        "white_hair",
-        "very_long_hair",
-        "golden_eyes",
+        "blonde_hair",
+        "long_hair",
+        "blue_eyes",
         "fox_ears",
         "fox_tail",
         "nine_tails",
         "white_clothes",
-        "gold_trim",
         "kimono",
+        "pleated_skirt",
         "arknights"
       ],
       "exactTokens": [
@@ -2378,15 +2415,17 @@
           "default": true
         },
         {
-          "id": "winter_coat",
-          "name": "冬装大衣",
-          "prose": "a white winter coat with a fur collar, golden ribbon and her nine tails",
+          "id": "snow_clearing",
+          "name": "雪霁（冬装和服）",
+          "prose": "a thick white and powder-blue winter kimono with fur trim, a floral hairpin and a wooden staff with shrine bells, standing before a torii gate in snow",
           "tokens": [
-            "winter_coat",
+            "kimono",
             "white_clothes",
-            "fur_collar",
-            "golden_ribbon",
-            "fox_tail"
+            "blue_clothes",
+            "fur_trim",
+            "hair_ornament",
+            "snow",
+            "torii"
           ]
         }
       ],
@@ -2408,20 +2447,23 @@
         "arknights endfield",
         "endfield"
       ],
-      "identityProse": "Perlica from Arknights: Endfield, a composed Endfield Industries operator with short white hair with blue-green highlights, green eyes, fluffy animal ears, wearing a white and teal tactical jacket over a high-neck top with straps and pouches",
+      "identityProse": "Perlica from Arknights: Endfield, a composed Endfield Industries supervisor with platinum short hair with soft cyan gradient tips, light blue eyes, feline cat ears and a cat tail, mechanical hair clips, wearing a white and teal tactical jacket over a high-neck top with a black pleated skirt and thighhighs",
       "identityTokens": [
         "perlica_(arknights)",
         "1girl",
         "solo",
         "white_hair",
         "short_hair",
-        "green_eyes",
+        "blue_eyes",
         "hair_highlights",
-        "animal_ears",
+        "cat_ears",
+        "cat_tail",
         "white_clothes",
         "teal_jacket",
         "tactical",
         "jacket",
+        "pleated_skirt",
+        "thighhighs",
         "arknights"
       ],
       "exactTokens": [
@@ -2451,13 +2493,15 @@
           "default": true
         },
         {
-          "id": "casual",
-          "name": "便服",
-          "prose": "a white jacket over a teal shirt with dark trousers and her white hair with blue-green highlights",
+          "id": "wasteland_explorer",
+          "name": "荒野探索装",
+          "prose": "a khaki hooded explorer coat with cargo pants, a heavy backpack and hiking boots",
           "tokens": [
-            "white_jacket",
-            "teal_shirt",
-            "dark_pants"
+            "hoodie",
+            "khaki",
+            "cargo_pants",
+            "backpack",
+            "hiking_boots"
           ]
         }
       ],
@@ -2479,7 +2523,7 @@
         "arknights endfield",
         "endfield"
       ],
-      "identityProse": "Laevatain from Arknights: Endfield, a fierce Sarkaz swordsman with long crimson hair, red eyes, curved black horns and a thin devil tail, wearing a black gothic combat dress with lava-like red glow accents and a mechanical arm guard, wielding a huge greatsword wreathed in molten flame",
+      "identityProse": "Laevatain from Arknights: Endfield, a fierce Sarkaz swordsman with long crimson wavy hair, red eyes, curved black horns and a black devil tail, wearing a dark grey and industrial-white cropped tactical coat with yellow warning stripes over a black high-neck crop top and black shorts with thigh straps, wielding a huge molten greatsword",
       "identityTokens": [
         "laevatain_(arknights)",
         "1girl",
@@ -2490,9 +2534,11 @@
         "horns",
         "devil_tail",
         "black_clothes",
-        "gothic",
-        "mechanical_arm",
-        "sword",
+        "white_clothes",
+        "tactical",
+        "jacket",
+        "crop_top",
+        "shorts",
         "greatsword",
         "arknights"
       ],
@@ -2508,27 +2554,32 @@
       "adultEligibility": "adult",
       "outfits": [
         {
-          "id": "gothic_combat",
-          "name": "熔岩战装",
-          "prose": "her black gothic combat dress with lava-red glow lining, one mechanical arm guard and black high heels",
+          "id": "tactical_coat",
+          "name": "战术特勤服",
+          "prose": "a dark grey and industrial-white cropped tactical coat with yellow warning stripes over a black high-neck crop top, black shorts, thigh straps and combat boots",
           "tokens": [
+            "tactical",
+            "jacket",
+            "crop_top",
             "black_clothes",
-            "gothic",
-            "mechanical_arm",
-            "red_glow",
-            "high_heels"
+            "white_clothes",
+            "shorts",
+            "combat_boots",
+            "greatsword"
           ],
           "default": true
         },
         {
-          "id": "casual",
-          "name": "便服",
-          "prose": "a black turtleneck sweater with a red jacket, dark jeans and her horns and tail visible",
+          "id": "ignition",
+          "name": "熔火姿态",
+          "prose": "her tactical outfit fully ignited with molten flame aura, the greatsword core vents open and spraying heat particles",
           "tokens": [
-            "turtleneck",
-            "black_clothes",
-            "red_jacket",
-            "jeans"
+            "tactical",
+            "jacket",
+            "flame",
+            "glowing",
+            "greatsword",
+            "embers"
           ]
         }
       ],
