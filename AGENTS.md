@@ -45,6 +45,8 @@
 - **场景-服装一致性**：blueprint 的 `promptProse`/`nsfwProse` 不得与 `outfitId` 服装类型矛盾（如夜市场景写 "her uniform" 但配休闲装 → 模型画成战术装）。改场景时 `promptProse`、`nsfwProse`、`sceneTags`、`promptTokens` 四处必须同步。
 - **R18 场景室内化偏好（2026-08-15 用户决策）**：成人场景放在室内——城市公共空间（天台/屋顶/后巷/露台/街道）一律室内化；私密天然场所（温泉/海浴/庭院浴池/河湾）可保留室外。室内化时 nsfwProse 必须同步改（成人场景裸体叙述前置，漏改会继续画出室外）。
 - **发布前检查角色覆盖**：`publish-popular-showcase.js` 会**删除源目录全部旧 pc_* 重建**——多批次合并发布时必须合并所有角色的 manifest（参考 `runtime/merge-publish-data.js`：v18 旧角色 + 新角色合并且按 key 取最新 attempt），dry-run 核对 typeCounts 与角色数，否则旧角色样张被静默删除。发布用 `--from <generation-manifest-merged.json>` + `--source <旧版本> --target <新版本> --apply --force`。
+- **数据格式一致性**：`scene-blueprints.json` 的 `negativeTokens` 历史为逗号分隔字符串——解析器必须用 `negativeStringList`（兼容字符串/数组，`stringList` 对字符串返回 `[]` 会静默丢词，2026-08-15 实锤 336 场景负面定制从未生效）。新增字段注意解析器与数据格式匹配，改后跑 `test-popular-content.js`。
+- **顽固场景止损（2026-08-15 教训）**：同一场景连续重出（≥5 次，含换 seed/强化负面/场景简化）仍出分身/双人时，**标记暂缓发布**（audit 保持 fail，从 showcase 剔除），不要无限重试烧 GPU；记录场景 id 与已试措施，留给后续换引擎/换构图再战（例：`kaltsit_arknights_r18_cabin_robe` 6 连败）。
 
 ## 当前架构
 
