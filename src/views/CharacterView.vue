@@ -347,7 +347,10 @@ onMounted(() => { void loadProfiles() })
 /* 立绘按"画框里的展品"处理：底光 + 顶部渐隐 + 轻微入场位移，
    与作品册的画框语言保持一致。
    2026-08-15 用户反馈：框高度改为自适应图片（图片铺满宽度，高度按比例，
-   框随图收缩，消除固定 min-height 造成的顶部留白）。 */
+   框随图收缩，消除固定 min-height 造成的顶部留白）。
+   2026-08-15 二次修复：grid 行高会被右侧内容撑高，.portrait 默认 stretch
+   拉伸到行高，立绘贴底后框内顶部留大片空白——加 align-self:start 让框
+   高度只跟随立绘本身，不再随行拉伸。 */
 .portrait {
   position:relative;
   border-radius:var(--r-stage);
@@ -359,6 +362,7 @@ onMounted(() => { void loadProfiles() })
     var(--stage-violet);
   box-shadow:inset 0 1px 0 var(--on-art-line), var(--shadow-lg);
   min-height:0;
+  align-self:start;
   display:flex;
   flex-direction:column;
   justify-content:flex-end;
