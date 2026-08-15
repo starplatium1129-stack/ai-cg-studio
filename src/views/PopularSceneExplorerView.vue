@@ -144,8 +144,13 @@ const franchiseLabel = (name: string): string => {
   if (name === 'Arknights: Endfield') return '明日方舟：终末地'
   const bracket = String(name || '').match(/《([^》]+)》/)
   if (bracket) {
-    const parts = bracket[1].split('/').map(p => p.trim()).filter(Boolean)
-    return parts[parts.length - 1] || bracket[1]
+    const inner = bracket[1]
+    const parts = inner.split('/').map(p => p.trim()).filter(Boolean)
+    const han = parts.find(p => /[\u4e00-\u9fff]/.test(p) && !/[\u3040-\u30ff]/.test(p))
+    if (han) return han
+    const cjk = parts.find(p => /[\u4e00-\u9fff]/.test(p))
+    if (cjk) return cjk
+    return inner
   }
   return String(name || '')
 }
