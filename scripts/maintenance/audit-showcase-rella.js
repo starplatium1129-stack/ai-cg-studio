@@ -59,13 +59,22 @@ function parseVerdict(output) {
   const identity = lines.find(l => l.startsWith('角色身份'));
   let verdict = 'review';
   if (concl) {
-    if (concl.includes('通过')) verdict = 'pass';
-    else if (concl.includes('不通过')) verdict = 'fail';
+    // 「不通过」必须先判（includes('通过') 会误匹配「不通过」）
+    if (/不通过/.test(concl)) verdict = 'fail';
+    else if (/通过/.test(concl)) verdict = 'pass';
     else verdict = 'review';
   }
   // 身份不符 → 强制 fail
   if (identity && (identity.includes('：否') || identity.includes(':否') || identity.includes('身份：否'))) {
     verdict = 'fail';
+  }
+  // 严重多人/分身/分镜错误 → 强制 fail（防结论漏判：vision 有时结论写「通过」但详情描述分身）
+  const multiPattern = /(双人错误|分身错误|复制分身|出现两个|同时存在.{0,10}两个|严重.{0,6}(双人|分身|多人)|两个完整.{0,4}(人物|角色)|多余人物|画面.{0,6}两个|分镜|双格|拼贴|上下两格|双分镜)/i;
+  const multi = text.match(multiPattern);
+  if (multi) {
+    const ctx = text.slice(Math.max(0, multi.index - 30), multi.index + 50);
+    const negated = /(无|非|不是|不构成|未|仅|只有|不算|没有)/.test(ctx);
+    if (!negated) verdict = 'fail';
   }
   return { verdict, summary: text.slice(0, 1200), identityLine: identity || '' };
 }

@@ -103,7 +103,10 @@ function buildCandidate(character, blueprint, profile, attempt, seedAttempt = at
   });
   if (!result) throw new Error(`popular prompt build failed for ${character.id} / ${blueprint.id}`);
   // 单人主体强化：压制主画面第二人（背景路人可接受，不强压 bystanders）。
-  const soloGuard = '(single girl only:1.4), (one person only:1.4), no second person, no other person';
+  // R18 场景双人/分身高发：额外加强 solo/1girl 权重与无路人压制（2026-08-15 用户反馈）。
+  const soloGuard = adult
+    ? '(solo:1.5), (1girl:1.4), (single girl only:1.6), (one person only:1.6), (no second person:1.3), no other person, no bystanders, no background people'
+    : '(single girl only:1.4), (one person only:1.4), no second person, no other person';
   const prompt = result.prompt.includes('\n')
     ? result.prompt.replace('\n', `, ${soloGuard}\n`)
     : `${result.prompt}, ${soloGuard}`;

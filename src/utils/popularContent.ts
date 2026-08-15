@@ -591,7 +591,9 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     { shot: options.shot, character: character.id },
   )
   // 与场景生成器同款多格/重复主体压制；单人场景追加第二人压制（壁纸级第一）。
-  const panelSuppress = 'split image, split screen, split panel, two panels, diptych, triptych, comic strip, multiple frames, panel borders, frame borders, double exposure, double image, duplicated subject, duplicated body, multiple girls, second person, two people'
+  // 2026-08-15 增强：补 duplicate/extra person/1boy/2boys/crowd（R18 双人分身问题）；
+  // 不加 mirror/reflection，避免误伤合法镜面/倒影场景（如浴室镜）。
+  const panelSuppress = 'split image, split screen, split panel, two panels, diptych, triptych, comic strip, multiple frames, panel borders, frame borders, double exposure, double image, duplicated subject, duplicated body, multiple girls, second person, two people, duplicate, duplicated person, extra person, 1boy, 2boys, crowd, bystanders'
   const finalNegative = negative
     ? `${negative}, ${panelSuppress}`
     : panelSuppress
