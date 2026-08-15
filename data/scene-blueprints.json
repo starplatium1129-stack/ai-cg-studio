@@ -11490,7 +11490,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "standard"
+      "outfitId": "elite2"
     },
     {
       "id": "mudrock_arknights_snowfield_march",
@@ -11562,7 +11562,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "standard"
+      "outfitId": "elite2"
     },
     {
       "id": "mudrock_arknights_flower_field",
@@ -11598,7 +11598,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "standard"
+      "outfitId": "gravel"
     },
     {
       "id": "mudrock_arknights_canteen_lunch",
@@ -11707,7 +11707,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "standard",
+      "outfitId": "elite2",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -11766,7 +11766,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "standard",
+      "outfitId": "elite2",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -11826,7 +11826,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "standard",
+      "outfitId": "elite2",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",
@@ -11885,7 +11885,7 @@
       ],
       "negativeTokens": "worst quality, low quality, lowres, blurry, jpeg artifacts, watermark, text, extra fingers, mutated hands, bad anatomy, modern, neon, school, dark shadowed face, flat lighting, extra characters, child, loli, underage, 2girls, multiple girls, clone, twin",
       "recommendedSize": "832x1216",
-      "outfitId": "standard",
+      "outfitId": "elite2",
       "adult": true,
       "kreaStyleHint": "r18_sensual_cg",
       "animaStyleHint": "r18_sensual_cg",

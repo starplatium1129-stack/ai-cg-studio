@@ -2061,16 +2061,41 @@
       "outfits": [
         {
           "id": "standard",
-          "name": "重型装甲",
-          "prose": "her heavy black power armor with glowing red seams and a large warhammer",
+          "name": "重型装甲（战斗态）",
+          "prose": "her heavy olive-green sealed power armor with a hazmat helmet and a huge engineering warhammer",
           "tokens": [
             "power_armor",
             "armor",
-            "black_armor",
-            "glowing",
+            "olive",
+            "helmet",
             "hammer"
           ],
           "default": true
+        },
+        {
+          "id": "elite2",
+          "name": "卸甲破壳态（连体服）",
+          "prose": "her black high-neck bodysuit with heavy armor plates half-removed, long silver-white hair loose and her black Sarkaz horns visible",
+          "tokens": [
+            "bodysuit",
+            "black_clothes",
+            "high_collar",
+            "armor",
+            "silver_hair",
+            "horns"
+          ]
+        },
+        {
+          "id": "gravel",
+          "name": "砾瓦（日常工装）",
+          "prose": "a dark grey high-neck bodysuit with a beige and grey multi-pocket tactical jacket, a red scarf, cargo pants and heavy boots",
+          "tokens": [
+            "tactical",
+            "jacket",
+            "red_scarf",
+            "cargo_pants",
+            "bodysuit"
+          ]
         },
         {
           "id": "silent_night",
@@ -2082,30 +2107,6 @@
             "flower",
             "beach",
             "parasol"
-          ]
-        },
-        {
-          "id": "obsidian",
-          "name": "黑曜石（晚礼服）",
-          "prose": "a black off-shoulder evening gown with black lace trim, a deep red ruby brooch and obsidian feather ornaments, black high heels, gold chains on her horns",
-          "tokens": [
-            "evening_gown",
-            "black_dress",
-            "lace",
-            "brooch",
-            "high_heels"
-          ]
-        },
-        {
-          "id": "gravel",
-          "name": "砾瓦（废土工装）",
-          "prose": "a dark grey high-neck bodysuit with a beige and grey multi-pocket tactical jacket, a red scarf, cargo pants and heavy boots",
-          "tokens": [
-            "tactical",
-            "jacket",
-            "red_scarf",
-            "cargo_pants",
-            "bodysuit"
           ]
         }
       ],
