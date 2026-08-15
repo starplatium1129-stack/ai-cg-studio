@@ -2108,6 +2108,18 @@
             "beach",
             "parasol"
           ]
+        },
+        {
+          "id": "obsidian",
+          "name": "黑曜石（晚礼服）",
+          "prose": "a black off-shoulder evening gown with black lace trim, a deep red ruby brooch and obsidian feather ornaments, black high heels, gold chains on her horns",
+          "tokens": [
+            "evening_gown",
+            "black_dress",
+            "lace",
+            "brooch",
+            "high_heels"
+          ]
         }
       ],
       "canon": {
