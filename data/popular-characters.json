@@ -1509,7 +1509,7 @@
         "arknights",
         "laevatein"
       ],
-      "identityProse": "Surtr from Arknights, a lone Sarkaz swordswoman with wine-red long hair in a side low ponytail with a black headband, amber-orange eyes, black-red curved horns, wearing a black high-neck cropped top with a black-and-white techwear jacket, black shorts and thigh straps, carrying the giant molten greatsword Laevateinn",
+      "identityProse": "Surtr from Arknights, a lone Sarkaz swordswoman with wine-red long hair in a side low ponytail with a black headband, amber-orange eyes, black-red curved horns, wearing a black sleeveless cropped turtleneck with a black-and-white techwear jacket, black high-waisted shorts and thigh straps, carrying the giant molten greatsword Laevateinn",
       "identityTokens": [
         "surtr_(arknights)",
         "1girl",
@@ -1523,6 +1523,7 @@
         "black_clothes",
         "white_clothes",
         "jacket",
+        "techwear",
         "greatsword",
         "arknights"
       ],
@@ -1540,13 +1541,18 @@
         {
           "id": "standard",
           "name": "罗德岛作战服",
-          "prose": "her black skintight bodysuit with a white open jacket, black headband and knee-high boots",
+          "prose": "her black sleeveless cropped turtleneck with a black-and-white techwear jacket with red lining, black high-waisted shorts, thigh holster, asymmetrical black thigh-high socks, combat boots, fingerless gloves and a black headband",
           "tokens": [
-            "skintight",
-            "white_jacket",
-            "headband",
-            "kneehigh_boots",
-            "black_clothes"
+            "black_clothes",
+            "white_clothes",
+            "techwear",
+            "jacket",
+            "crop_top",
+            "shorts",
+            "thighhighs",
+            "combat_boots",
+            "fingerless_gloves",
+            "headband"
           ],
           "default": true
         },
@@ -1650,7 +1656,7 @@
         "arknights",
         "mon3tr"
       ],
-      "identityProse": "Kal'tsit from Arknights, the stern Chief Medical Officer of Rhodes Island with pale mint-green short hair and twin side braids, lynx ears with black tufts, emerald green eyes, emerald crystal drop earrings, wearing a green and white lab coat over a black halter dress with a backless cut, accompanied by her construct Mon3tr",
+      "identityProse": "Kal'tsit from Arknights, the stern Chief Medical Officer of Rhodes Island with pale mint-green short hair and twin side braids, lynx ears with black tufts, emerald green eyes, emerald crystal drop earrings, wearing a white lab coat over a black halterneck backless dress with a green utility belt and emerald earrings",
       "identityTokens": [
         "kal'tsit",
         "1girl",
@@ -1679,13 +1685,16 @@
         {
           "id": "standard",
           "name": "罗德岛医师服",
-          "prose": "her green and white medical coat with a high collar and matching trousers",
+          "prose": "her white lab coat with pale green trim and a translucent hem over a black halterneck backless dress, a green tech utility belt and long emerald crystal drop earrings",
           "tokens": [
-            "green_clothes",
+            "lab_coat",
             "white_clothes",
-            "coat",
-            "high_collar",
-            "long_sleeves"
+            "green_clothes",
+            "halter_top",
+            "backless_dress",
+            "dress",
+            "utility_belt",
+            "earrings"
           ],
           "default": true
         },
@@ -1787,7 +1796,7 @@
         "arknights",
         "lungmen"
       ],
-      "identityProse": "Ch'en from Arknights, a Lungmen Guard Department officer with dark teal-blue hair in low twintails tied with red cords, amber-gold eyes, red-brown branching dragon horns, a long teal dragon tail, wearing a black and blue officer uniform with a long coat, carrying the crimson-sheathed sword Chi Xiao",
+      "identityProse": "Ch'en from Arknights, a Lungmen Guard Department officer with dark teal-blue hair in low twintails tied with red cords, amber-gold eyes, red-brown branching dragon horns, a long teal dragon tail, wearing a blue-and-black stand-collar tactical jacket over a white shirt with a black tie and a black pleated skirt, carrying the crimson-sheathed sword Chi Xiao",
       "identityTokens": [
         "ch'en_(arknights)",
         "1girl",
@@ -1820,14 +1829,18 @@
         {
           "id": "standard",
           "name": "龙门近卫局制服",
-          "prose": "her black and blue Lungmen Guard uniform with a long coat, gold trim and twin swords at her waist",
+          "prose": "her blue-and-black short-sleeve stand-collar tactical jacket over a white shirt with a black tie, a black pleated skirt, knee-high socks and combat boots, twin swords at her back",
           "tokens": [
-            "military_uniform",
-            "black_clothes",
-            "blue_clothes",
-            "coat",
-            "gold_trim",
-            "sword"
+            "jacket",
+            "short_sleeves",
+            "stand_collar",
+            "white_shirt",
+            "necktie",
+            "pleated_skirt",
+            "kneehighs",
+            "combat_boots",
+            "twin_swords",
+            "military_uniform"
           ],
           "default": true
         },
@@ -1925,7 +1938,7 @@
         "eyja",
         "arknights"
       ],
-      "identityProse": "Eyjafjalla from Arknights, a Cautus volcano researcher with light ash-brown wavy hair in low twintails, small warm brown ram horns, ruby red eyes, wearing a dark grey volcano research coat over a white frilled dress with black thighhighs",
+      "identityProse": "Eyjafjalla from Arknights, a Cautus volcano researcher with light ash-brown wavy hair in low twintails, small warm brown ram horns, ruby red eyes, wearing a dark grey hooded research coat over a white frilled blouse and black pleated skirt with black thighhighs",
       "identityTokens": [
         "eyjafjalla_(arknights)",
         "1girl",
@@ -1953,12 +1966,16 @@
         {
           "id": "standard",
           "name": "研究员裙装",
-          "prose": "her white dress with black trim, black ribbon and black thighhighs",
+          "prose": "her dark grey hooded volcano research coat over a white frilled blouse with a black pleated skirt, black thighhighs and black boots",
           "tokens": [
-            "white_dress",
-            "black_trim",
-            "ribbon",
-            "black_thighhighs"
+            "coat",
+            "hooded",
+            "frills",
+            "white_shirt",
+            "pleated_skirt",
+            "thighhighs",
+            "boots",
+            "black_clothes"
           ],
           "default": true
         },
@@ -2042,7 +2059,7 @@
         "arknights",
         "laterano"
       ],
-      "identityProse": "Lemuen from Arknights, a Laterano Sankta advisor with warm ginger-brown wavy hair with a side braid, amber-gold eyes, a floating golden halo and small translucent wings at her lower back, wearing a dark tailored overcoat over a white shirt and black tie, seated in a custom high-tech mechanical wheelchair, wielding a long sniper rifle",
+      "identityProse": "Lemuen from Arknights, a Laterano Sankta advisor with warm ginger-brown wavy hair with a side braid, amber-gold eyes, a floating golden halo and small translucent wings at her lower back, wearing a slate dark tailored overcoat over a white collared shirt with a black necktie, seated in her high-tech wheelchair",
       "identityTokens": [
         "lemuen_(arknights)",
         "1girl",
@@ -2073,13 +2090,16 @@
         {
           "id": "standard",
           "name": "拉特兰制服",
-          "prose": "her blue and white Laterano tactical uniform with gold trim and a short cape",
+          "prose": "her slate dark tailored long overcoat with a white collared shirt, a black necktie, dark trousers and a warm lap blanket, seated in her high-tech wheelchair",
           "tokens": [
-            "military_uniform",
-            "blue_clothes",
-            "white_clothes",
-            "gold_trim",
-            "cape"
+            "overcoat",
+            "coat",
+            "white_shirt",
+            "necktie",
+            "trousers",
+            "lap_blanket",
+            "wheelchair",
+            "dark_clothes"
           ],
           "default": true
         },
@@ -2153,7 +2173,7 @@
         "arknights",
         "sui"
       ],
-      "identityProse": "Dusk from Arknights, a reclusive painter among the Sui siblings, with very long black hair fading to teal-green ink gradient, teal-green eyes with red eyeshadow, teal jade dragon horns and a long ink-wash dragon tail, wearing a black and white ink-wash qipao dress with translucent sleeves, holding a giant calligraphy brush",
+      "identityProse": "Dusk from Arknights, a reclusive painter among the Sui siblings, with very long black hair fading to teal-green ink gradient, teal-green eyes with red eyeshadow, teal jade dragon horns and a long ink-wash dragon tail, wearing an ink-black high-slit qipao with a sheer black-and-white gradient wide-sleeve robe, barefoot",
       "identityTokens": [
         "dusk_(arknights)",
         "1girl",
@@ -2184,14 +2204,17 @@
         {
           "id": "standard",
           "name": "水墨旗袍",
-          "prose": "her white and black ink-wash qipao with cloud motifs and a long black coat",
+          "prose": "her ink-black high-slit qipao with dark teal cloud motifs, overlaid with a sheer black-and-white gradient wide-sleeve robe, barefoot",
           "tokens": [
             "qipao",
-            "white_clothes",
-            "black_clothes",
+            "high_slit",
             "ink_wash",
             "chinese_clothes",
-            "cloud_pattern"
+            "sheer_clothes",
+            "wide_sleeves",
+            "barefoot",
+            "black_clothes",
+            "white_clothes"
           ],
           "default": true
         },
@@ -2411,7 +2434,7 @@
         "eunectes",
         "arknights"
       ],
-      "identityProse": "Eunectes from Arknights, a cheerful Sarkaz mechanic with long dark green hair, golden slit-pupil eyes, a massive dark green anaconda snake tail, wearing a cool halter crop top and tactical vest with leather hotpants and goggles on her head, building her giant mech Big Ugly",
+      "identityProse": "Eunectes from Arknights, a cheerful Sarkaz mechanic with long dark green hair, golden slit-pupil eyes, a massive dark green anaconda snake tail, wearing a dark green halter crop top with a sleeveless tactical vest, leather hotpants and a single thigh-high sock with a leg harness",
       "identityTokens": [
         "eunectes_(arknights)",
         "1girl",
@@ -2440,13 +2463,17 @@
         {
           "id": "standard",
           "name": "机械师工装",
-          "prose": "her green and yellow mechanic workwear with a red hairband and tool belt",
+          "prose": "her dark green halter crop top with a grey-green sleeveless tactical vest, leather hotpants, a single thigh-high sock with a leg harness and heavy work boots",
           "tokens": [
-            "overalls",
+            "halter_top",
+            "crop_top",
+            "vest",
+            "hotpants",
+            "thighhighs",
+            "harness",
+            "boots",
             "green_clothes",
-            "yellow_clothes",
-            "hairband",
-            "tool_belt"
+            "black_clothes"
           ],
           "default": true
         },
@@ -2642,7 +2669,7 @@
         "arknights",
         "abyss hunter"
       ],
-      "identityProse": "Skadi from Arknights, an Abyss Hunter with very long ankle-length silver-white hair, crimson eyes, wearing a black high-cut bodysuit with a short black coat and a wide-brimmed hunter hat, carrying a huge greatsword in a black guitar case",
+      "identityProse": "Skadi from Arknights, an Abyss Hunter with very long ankle-length silver-white hair, crimson eyes, wearing a black high-cut bodysuit with red accents and a short black coat with a wide-brimmed hunter hat, carrying a huge greatsword in a black guitar case",
       "identityTokens": [
         "skadi_(arknights)",
         "1girl",
@@ -2670,13 +2697,15 @@
         {
           "id": "standard",
           "name": "深海猎人作战服",
-          "prose": "her black one-piece combat suit with white accents, gloves and thigh-high boots",
+          "prose": "her black high-cut sleeveless bodysuit with red accents, a black cropped jacket with red lining, a black wide-brimmed hunter hat and black thigh-high boots",
           "tokens": [
-            "black_swimsuit",
+            "bodysuit",
             "black_clothes",
-            "gloves",
-            "thighhigh_boots",
-            "white_trim"
+            "red_clothes",
+            "jacket",
+            "wide_brimmed_hat",
+            "thighhighs",
+            "high_boots"
           ],
           "default": true
         },
@@ -2906,13 +2935,16 @@
         {
           "id": "standard",
           "name": "企鹅物流制服",
-          "prose": "her black and white Penguin Logistics uniform with a blue inner shirt, jacket and small wings",
+          "prose": "her light grey-white hooded windbreaker with black colorblock trim over a black fitted shirt, black shorts, black thighhighs and black-and-white tactical sneakers",
           "tokens": [
-            "jacket",
+            "white_jacket",
+            "hoodie",
+            "black_shirt",
+            "shorts",
+            "thighhighs",
+            "sneakers",
             "black_clothes",
-            "white_clothes",
-            "blue_shirt",
-            "uniform"
+            "white_clothes"
           ],
           "default": true
         },
@@ -2997,7 +3029,7 @@
         "suzuran",
         "arknights"
       ],
-      "identityProse": "Suzuran from Arknights, a gentle Vulpo girl with long pale gold hair, light blue eyes, golden fox ears and nine fluffy fox tails, wearing a white haori jacket over a dark pleated skirt with white over-knee socks, holding a golden lily-of-the-valley staff",
+      "identityProse": "Suzuran from Arknights, a gentle Vulpo girl with long pale gold hair, light blue eyes, golden fox ears and nine fluffy fox tails, wearing a white haori jacket with dark green trim over a dark pleated skirt with white over-knee socks, holding a staff",
       "identityTokens": [
         "suzuran_(arknights)",
         "1girl",
@@ -3027,13 +3059,14 @@
         {
           "id": "standard",
           "name": "白狐和服",
-          "prose": "her white and gold kimono-style dress with a ribbon and fox motifs",
+          "prose": "her white haori jacket with dark green trim and a knotted cord over a dark pleated skirt, white over-knee socks and brown lace-up boots",
           "tokens": [
+            "haori",
             "kimono",
             "white_clothes",
-            "gold_trim",
-            "ribbon",
-            "fox_motif"
+            "pleated_skirt",
+            "over_knee_socks",
+            "boots"
           ],
           "default": true
         },
@@ -3118,7 +3151,7 @@
         "arknights endfield",
         "endfield"
       ],
-      "identityProse": "Perlica from Arknights: Endfield, a composed Endfield Industries supervisor with platinum short hair with soft cyan gradient tips, light blue eyes, feline cat ears and a cat tail, mechanical hair clips, wearing a white and teal tactical jacket over a high-neck top with a black pleated skirt and thighhighs",
+      "identityProse": "Perlica from Arknights: Endfield, a composed Endfield Industries supervisor with platinum short hair with soft cyan gradient tips, light blue eyes, feline cat ears and a cat tail, mechanical hair clips, wearing a white and charcoal tactical jacket with cyan accents over a black pleated skirt with black thighhighs",
       "identityTokens": [
         "perlica_(arknights)",
         "1girl",
@@ -3151,15 +3184,17 @@
         {
           "id": "standard",
           "name": "终末地制服",
-          "prose": "her white and teal Endfield tactical jacket over a high-neck top with straps, pouches and dark trousers",
+          "prose": "her white and charcoal Endfield supervisor tactical jacket with cyan line accents over a black pleated skirt, black thighhighs, tactical boots and a utility belt, mechanical hair clips",
           "tokens": [
             "white_clothes",
             "teal_jacket",
-            "jacket",
             "tactical",
-            "high_collar",
-            "straps",
-            "dark_pants"
+            "jacket",
+            "pleated_skirt",
+            "thighhighs",
+            "combat_boots",
+            "utility_belt",
+            "black_clothes"
           ],
           "default": true
         },
@@ -3264,7 +3299,7 @@
         {
           "id": "standard",
           "name": "战术特勤服",
-          "prose": "a dark grey and industrial-white cropped tactical coat with yellow warning stripes over a black high-neck crop top, black shorts, thigh straps and combat boots",
+          "prose": "a dark grey and industrial-white cropped tactical coat with yellow warning stripes over a black high-neck crop top, black shorts, thigh straps and high combat boots",
           "tokens": [
             "tactical",
             "jacket",
@@ -3273,6 +3308,7 @@
             "white_clothes",
             "shorts",
             "combat_boots",
+            "thigh_straps",
             "greatsword"
           ],
           "default": true
