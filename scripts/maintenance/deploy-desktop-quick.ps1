@@ -41,10 +41,15 @@ if ($appProcs -or $sidecar) {
   Start-Sleep -Seconds 2
 }
 
-Write-Host '[3/4] Copying dist/data/assets...' -ForegroundColor Cyan
+# Copy order matters (regression 2026-08-15): data must land BEFORE dist.
+# The client requests /data/*.json with ?v=DATA_VERSION; if a new dist (new
+# version number) ever serves against the old data, WebView2 caches the stale
+# body under the new URL with an immutable one-year header and never refreshes.
+# data-first guarantees a version number only ever points at matching content.
+Write-Host '[3/4] Copying data/dist/assets...' -ForegroundColor Cyan
 $map = @(
-  @{ src = 'dist';   dst = 'dist' },
   @{ src = 'data';   dst = 'data' },
+  @{ src = 'dist';   dst = 'dist' },
   @{ src = 'assets'; dst = 'assets' }
 )
 foreach ($item in $map) {
@@ -53,6 +58,19 @@ foreach ($item in $map) {
   if (Test-Path $src) {
     Copy-Item -Path (Join-Path $src '*') -Destination $dst -Recurse -Force
     Write-Host "  copied $($item.src) -> gateway/$($item.dst)" -ForegroundColor DarkGray
+  }
+}
+
+# Defense in depth: clear WebView2 HTTP caches (Cache / Code Cache / GPUCache).
+# Even with data-first ordering, an immutable entry cached in a previous
+# broken window would keep shadowing the new data; caches are performance-only
+# and contain no user data (IndexedDB / Local Storage are untouched).
+$webviewBase = Join-Path $env:LOCALAPPDATA 'com.aics.studio\EBWebView\Default'
+foreach ($cacheDir in @('Cache', 'Code Cache', 'GPUCache')) {
+  $target = Join-Path $webviewBase $cacheDir
+  if (Test-Path $target) {
+    Remove-Item $target -Recurse -Force -ErrorAction SilentlyContinue
+    Write-Host "  cleared WebView2 $cacheDir" -ForegroundColor DarkGray
   }
 }
 
