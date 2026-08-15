@@ -210,14 +210,18 @@ function franchiseLabel(source: string): string {
 }
 
 const keyword = computed(() => search.value.trim().toLowerCase())
+/** 搜索优先于作品筛选：有关键词时全量匹配，无关键词时按作品收敛 */
 const filtered = computed(() => {
-  const base = characters.value.filter(c => {
-    if (activeFranchise.value && c.source !== activeFranchise.value) return false
-    if (!keyword.value) return true
-    return [c.name, ...(c.alias || []), String(c.source || '')]
-      .some(text => text.toLowerCase().includes(keyword.value))
-  })
-  return base
+  if (keyword.value) {
+    return characters.value.filter(c =>
+      [c.name, ...(c.alias || []), String(c.source || '')]
+        .some(text => text.toLowerCase().includes(keyword.value)),
+    )
+  }
+  if (activeFranchise.value) {
+    return characters.value.filter(c => c.source === activeFranchise.value)
+  }
+  return characters.value
 })
 
 const franchises = computed(() => {

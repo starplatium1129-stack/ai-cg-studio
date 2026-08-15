@@ -56,3 +56,30 @@ test('archive pages remain static and overflow-free on reduced-motion phones', a
     expect(Math.max(widths.document, widths.body)).toBeLessThanOrEqual(widths.viewport + 1)
   }
 })
+
+test('character archive browses all characters grouped by franchise and shows details', async ({ page }) => {
+  await page.goto('/character')
+
+  // 全部 35 角色卡片 + 作品分组头
+  await expect(page.locator('.cb-card')).toHaveCount(35)
+  await expect(page.locator('.cb-group').first()).toBeVisible()
+  expect(await page.locator('.cb-franchise').count()).toBeGreaterThan(3)
+
+  // 点击角色 → 档案详情出现
+  await page.locator('.cb-card').filter({ hasText: '凯尔希' }).click()
+  await expect(page.locator('.character-name')).toContainText('凯尔希')
+  await expect(page.locator('.character-hero')).toBeVisible()
+
+  // 作品筛选：明日方舟 13 角色收敛，详情区跟随
+  await page.locator('.cb-franchise').filter({ hasText: /^明日方舟\s/ }).click()
+  const arkCards = await page.locator('.cb-card').count()
+  expect(arkCards).toBeGreaterThanOrEqual(13)
+  expect(arkCards).toBeLessThan(35)
+
+  // 搜索平铺（Fate 3 角色经 source 命中）
+  await page.locator('.cb-search').fill('Fate')
+  await expect(page.locator('.cb-card')).toHaveCount(3)
+  await page.locator('.cb-search').fill('')
+  await page.locator('.cb-franchise').filter({ hasText: '全部' }).click()
+  await expect(page.locator('.cb-card')).toHaveCount(35)
+})
