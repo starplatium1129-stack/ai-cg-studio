@@ -332,10 +332,10 @@ function startLoop() {
   if (stopScheduledFrame || !visible || document.hidden || reduceMotion.value) return
   lastFrame = 0
   lastPhysicsFrame = 0
-  // Roadmap §P2：Hero 粒子封顶 60fps，背景/氛围层 30/45fps，避免高刷屏下
-  // 物理模拟与绘制按原生 120/165Hz 翻倍消耗。
-  const fps = props.density === 'hero' ? 60 : props.density === 'ambient' ? 45 : 30
-  stopScheduledFrame = registerParticleFrame(renderFrame, fps)
+  // 2026-08-15（用户决策：性能充裕，放开帧率）：不再按密度节流（60/45/30fps），
+  // 走 registerParticleFrame 的 fps<=0 原生模式——每个 rAF 都渲染，跑满显示器刷新率。
+  // 物理模拟按 elapsed 时间步进（上限 32ms），高刷下不会变速；slowFrames 自愈仍保护低端机。
+  stopScheduledFrame = registerParticleFrame(renderFrame, 0)
 }
 
 function stopLoop() {

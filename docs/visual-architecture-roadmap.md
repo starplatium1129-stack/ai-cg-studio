@@ -109,7 +109,7 @@
 - 全屏 route cut 只用于少数特殊入口。
 - 手机端樱花降到 6 至 8 片，并去掉模糊和阴影。
 - 触屏设备不触发桌面 hover 抬升和图片位移。
-- Hero 粒子上限固定为 60fps，背景粒子维持 30/45fps。
+- ~~Hero 粒子上限固定为 60fps，背景粒子维持 30/45fps。~~ **2026-08-15 用户决策推翻**：机器性能充裕，粒子全部改走原生刷新率（`registerParticleFrame(..., 0)`，每个 rAF 渲染、跑满显示器刷新率）；物理模拟按 elapsed 时间步进，高刷不变速，slowFrames 自愈仍保护低端机。同日移除首页 Hero 粒子场（角色立绘完全遮挡，纯空耗 GPU），可见用途保留：SceneExplorer 交互粒子场、ArchivePageHero、RouteAtmosphere 页面氛围。
 
 ## 架构优先级
 

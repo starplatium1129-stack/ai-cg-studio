@@ -25,13 +25,8 @@
         </div>
         <aside ref="heroOrbitEl" class="hero-orbit" aria-label="宁宁与夏目的角色视觉">
         <div ref="heroWmEl" class="hero-watermark" aria-hidden="true">ATELIER</div>
-        <SemanticParticleField
-          class="hero-particles"
-          shape="atelier"
-          density="ambient"
-          label="粒子组成的绘境工作室双轨标记"
-          caption="ARCHIVE / 01"
-        />
+        <!-- 2026-08-15：Hero 粒子场已移除——角色立绘（同层后绘制、52%+52% 拼满）完全盖住粒子，
+             右下角 caption 亦不可见，保留纯属空耗 GPU。 -->
         <!-- width/height 是内在尺寸（实测 1024×1344），用来预留版位避免布局抖动；
              CSS 仍然控制显示尺寸。这两张是首屏 LCP 候选，故不 lazy 且给高优先级。 -->
         <picture>
@@ -239,7 +234,6 @@ import { ref, computed, onMounted, onUnmounted, reactive, nextTick } from 'vue'
 import { maintenanceApi } from '../api/maintenanceApi.ts'
 import SceneCard from '@/components/SceneCard.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
-import SemanticParticleField from '@/components/visual/SemanticParticleField.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import { kvInit, kvGet, kvSet } from '@/composables/useKVStore'
 import { imgGet } from '@/composables/useImageStore'
@@ -503,7 +497,6 @@ onUnmounted(() => {
 .hero-orbit { grid-column:2; grid-row:1; min-width:0; min-height:380px; position:relative; isolation:isolate; border:1px solid color-mix(in srgb,var(--editorial-gold) 38%,var(--border-soft)); border-radius:2px var(--r-xl) 2px var(--r-xl); overflow:hidden; background:linear-gradient(90deg,color-mix(in srgb,var(--on-art-line) 42%,transparent) 1px,transparent 1px) 0 0/32px 32px,linear-gradient(color-mix(in srgb,var(--on-art-line) 42%,transparent) 1px,transparent 1px) 0 0/32px 32px,linear-gradient(135deg,var(--accent-glow),transparent 42%),var(--stage-rella); box-shadow:inset 0 1px 0 var(--on-art-line),var(--shadow-lg); }
 .hero-orbit::before { content:""; position:absolute; z-index:var(--z-raised); inset:0; pointer-events:none; background:linear-gradient(115deg,var(--on-art-sheen),transparent 18%,transparent 70%,var(--on-art-wash)); mix-blend-mode:soft-light; opacity:.48; }
 .hero-orbit::after { content:""; position:absolute; z-index:var(--z-base); inset:0; pointer-events:none; box-shadow:inset 0 0 72px color-mix(in srgb,var(--art-backdrop) 34%,transparent); }
-.hero-particles { position:absolute; z-index:var(--z-base); inset:0; min-height:100%; opacity:.26; }
 .hero-watermark { position:absolute; z-index:var(--z-base); top:var(--s-4); left:var(--s-4); color:var(--on-art-wash); font:800 clamp(2rem,5vw,4.5rem) var(--font-mono); letter-spacing:-.07em; writing-mode:vertical-rl; pointer-events:none; opacity:.32; will-change:transform; }
 .hero-character { position:absolute; z-index:var(--z-base); bottom:0; width:72%; height:94%; object-fit:contain; object-position:center bottom; filter:drop-shadow(0 24px 28px color-mix(in srgb,var(--bg-deep) 36%,transparent)); transition:transform .6s var(--ease-out),filter .6s ease; }
 /* 双人分割：原来两张各占 54% + 斜切，宽屏下右侧人物会被容器边缘切掉。
@@ -665,5 +658,4 @@ onUnmounted(() => {
   .home-page .hero-copy, .home-page .hero-orbit, .home-page .hero-strip { animation:none; }
   .tool-card,.recent-card { transition:none; }
 }
-@media (prefers-reduced-transparency:reduce) { .hero-particles { mix-blend-mode:normal; opacity:.3; } }
 </style>
