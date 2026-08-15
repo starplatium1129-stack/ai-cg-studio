@@ -196,15 +196,20 @@ useScrollReveal()
 const search = ref('')
 const activeFranchise = ref('')
 
-/** 作品展示名：Arknights 系与《作品》格式提取简称，其余原样 */
+/** 作品展示名：优先纯汉字段（无假名），其次含 CJK 段，无 CJK 时保留整段（Fate/stay night 的斜杠是作品名一部分） */
 function franchiseLabel(source: string): string {
   const s = String(source || '')
   if (s === 'Arknights') return '明日方舟'
   if (s === 'Arknights: Endfield') return '明日方舟：终末地'
   const bracket = s.match(/《([^》]+)》/)
   if (bracket) {
-    const parts = bracket[1].split('/').map(p => p.trim()).filter(Boolean)
-    return parts[parts.length - 1] || bracket[1]
+    const inner = bracket[1]
+    const parts = inner.split('/').map(p => p.trim()).filter(Boolean)
+    const han = parts.find(p => /[\u4e00-\u9fff]/.test(p) && !/[\u3040-\u30ff]/.test(p))
+    if (han) return han
+    const cjk = parts.find(p => /[\u4e00-\u9fff]/.test(p))
+    if (cjk) return cjk
+    return inner
   }
   return s
 }
@@ -340,15 +345,24 @@ onMounted(() => { void loadProfiles() })
 .character-hero { position:relative; overflow:hidden; display:grid; grid-template-columns:320px 1fr; gap:var(--s-6); padding:var(--s-6); }
 .character-hero::before { content:""; position:absolute; top:-1px; left:var(--s-6); width:42px; height:1px; background:var(--archive-blue); opacity:.86; }
 /* 立绘按"画框里的展品"处理：底光 + 顶部渐隐 + 轻微入场位移，
-   与作品册的画框语言保持一致 */
+   与作品册的画框语言保持一致。
+   2026-08-15 用户反馈：框高度改为自适应图片（图片铺满宽度，高度按比例，
+   框随图收缩，消除固定 min-height 造成的顶部留白）。 */
 .portrait {
-  position:relative; min-height:520px; border-radius:var(--r-stage);
-  overflow:hidden; isolation:isolate;
+  position:relative;
+  border-radius:var(--r-stage);
+  overflow:hidden;
+  isolation:isolate;
   border:1px solid var(--on-art-line);
   background:
     radial-gradient(circle at 50% 22%, color-mix(in srgb,var(--nene-violet) 22%,transparent), transparent 58%),
     var(--stage-violet);
   box-shadow:inset 0 1px 0 var(--on-art-line), var(--shadow-lg);
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  align-items:center;
 }
 .portrait.natsume {
   background:
@@ -362,14 +376,18 @@ onMounted(() => { void loadProfiles() })
   background:radial-gradient(ellipse at center bottom, color-mix(in srgb,var(--accent) 26%,transparent), transparent 68%);
 }
 .portrait-image {
-  position:absolute; z-index:var(--z-base); bottom:0; left:50%;
-  transform:translateX(-50%); max-height:100%; object-fit:contain;
+  position:relative;
+  width:100%;
+  height:auto;
+  max-height:calc(100vh - 360px);
+  object-fit:contain;
+  display:block;
   filter:drop-shadow(0 22px 34px color-mix(in srgb,var(--bg-deep) 42%,transparent));
   animation:portraitRise .55s var(--ease-out) both;
 }
 @keyframes portraitRise {
-  from { opacity:0; transform:translateX(-50%) translateY(12px); }
-  to   { opacity:1; transform:translateX(-50%) translateY(0); }
+  from { opacity:0; transform:translateY(12px); }
+  to   { opacity:1; transform:translateY(0); }
 }
 @media (prefers-reduced-motion:reduce) { .portrait-image { animation:none; } }
 .portrait-badge,.portrait-source {
@@ -430,5 +448,5 @@ onMounted(() => { void loadProfiles() })
 .cg-title { margin-bottom:var(--s-1); font-size:var(--fs-title-xs); font-weight:800; }
 .cg-reason { margin-bottom:var(--s-2); color:var(--accent); font-size:var(--fs-label-sm); line-height:1.55; }
 .cg-story { color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:1.65; }
-@media(max-width:700px){.character-hero{grid-template-columns:1fr}.portrait{min-height:380px}.detail-grid{grid-template-columns:1fr}.recommend-head{align-items:flex-start;flex-direction:column}.character-actions .btn{flex:1 1 100%}}
+@media(max-width:700px){.character-hero{grid-template-columns:1fr}.portrait{min-height:0}.detail-grid{grid-template-columns:1fr}.recommend-head{align-items:flex-start;flex-direction:column}.character-actions .btn{flex:1 1 100%}}
 </style>
