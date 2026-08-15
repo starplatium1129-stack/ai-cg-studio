@@ -114,6 +114,7 @@ Tauri 2 Rust shell
 - [ ] 2026-08-15 正常退出人工验收：托盘菜单「退出 Companion」由用户在真实桌面点击；验证应用退出 + 网关进程随退清理（修复后预期）。注：远程会话下通知区工具栏零尺寸（Todesk 渲染问题），托盘 UI 自动化不可行，故改人工验收。
 - [ ] 真实 TTS 双角色口型/归零：待 GPT-SoVITS(9880) 恢复与 GPU 空闲窗口执行。
 - [ ] Electron 退役判据更新（见下节）。
+- [x] 2026-08-15 标题栏最小化修复（用户实测：Atelier 最小化按钮点击无反应）：根因 `bridge.rs::window_minimize` 误操作 `companion` 窗口（`window_maximize_toggle`/`window_close` 均正确操作 `atelier`）。已改为与二者一致（`get_webview_window("atelier")` + `is_visible` 门控），备份 `runtime/bridge.rs.bak-20260815`，待重新打包验证。
 
 **本轮观察（记录不修复，P1 评估）**：强制终止（taskkill）应用进程后，其自带的 sidecar 网关进程成为孤儿（不随父进程退出），需手动终止。正常退出路径（托盘菜单/quit IPC）会走 GatewaySupervisor 清理，预期不出现该问题；建议 P1 评估 sidecar 的父进程死亡处理（Job Object 或父 PID 轮询）。
 

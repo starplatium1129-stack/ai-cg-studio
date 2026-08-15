@@ -167,8 +167,13 @@ pub fn open_atelier(app: AppHandle, state: State<AppState>, pathname: Option<Str
 
 #[tauri::command]
 pub fn window_minimize(app: AppHandle) {
-    if let Some(w) = companion(&app) {
-        let _ = w.minimize();
+    // 2026-08-15 修复：标题栏最小化按钮位于 Atelier 窗口（DesktopTitleBar 在
+    // /companion 路由隐藏），此前误操作 companion 窗口导致点击无反应。
+    // 与 window_maximize_toggle / window_close 保持一致，统一操作 atelier。
+    if let Some(w) = app.get_webview_window("atelier") {
+        if w.is_visible().unwrap_or(false) {
+            let _ = w.minimize();
+        }
     }
 }
 
