@@ -74,6 +74,8 @@ const canvasAvailable = ref(true)
 let portraitCloud: PortraitCloud | null = null
 /** 剪影调色板（深色已提亮），与 portraitCloud 同步更新。 */
 let portraitPaints: string[] = []
+/** 半调点阵：每个调色板色的网点半径（剪影模式统一点径，见 setShape）。 */
+let portraitRadii: number[] = []
 let portraitToken = 0
 
 /** 主题可读性：人物原色可能过暗（黑裙/深发在深色主题不可见），提亮到最低亮度。 */
@@ -130,10 +132,13 @@ function preferredCount(): number {
   if (props.density === 'backdrop') count = compact ? 220 : 380
   else if (compact || (memory !== undefined && memory <= 4)) count = 520
   else count = props.density === 'ambient' ? 780 : 1380
-  // 角色剪影要「成像」需要明显更高的点密度（轮廓+人物细节）；
-  // 物理与绘制都是 O(n) 且无粒子间相互作用，2000 点仍在预算内，
-  // slowFrames 自愈降档继续兜底低端机。
-  if (portraitCloud) count = Math.max(count, props.density === 'hero' ? 2000 : 1500)
+  // 角色剪影点阵密度：对标 Arknights-FlowingPoints 的 ~4px 点距（点径 3px +
+  // 1px 缝）——ambient 3200 / hero 4200 在常见 hero 尺寸下点距约 3.8-4.5px，
+  // 配合统一点径 0.75×点距呈现规整硬朗的点阵成像。物理与绘制均为 O(n)，
+  // 慢帧自愈降档继续兜底。
+  if (portraitCloud) {
+    count = Math.max(count, compact ? 1600 : props.density === 'hero' ? 4200 : 3200)
+  }
   return Math.round(count * qualityScale)
 }
 
@@ -173,9 +178,16 @@ function targetPosition(point: ParticlePoint): { x: number; y: number } {
 function setShape(animate = true) {
   if (!width || !height) return
   const count = Math.max(props.density === 'backdrop' ? 80 : 120, preferredCount())
-  const shape = portraitCloud
-    ? samplePortraitPoints(portraitCloud, count, width / Math.max(1, height))
-    : createParticleShape(props.shape, count)
+  let shape: ParticlePoint[]
+  if (portraitCloud) {
+    const sample = samplePortraitPoints(portraitCloud, count, width, height)
+    shape = sample.points
+    // 统一点径 = 0.75×点距（对标 Arknights-FlowingPoints 的 3px 点 + 1px 缝）：
+    // 点径恒定才有规整点阵质感；明暗层次全部交给调色板颜色表达。
+    portraitRadii = portraitPaints.map(() => sample.spacing * 0.75)
+  } else {
+    shape = createParticleShape(props.shape, count)
+  }
   if (!shape.length) return
   const previous = particles.slice().sort((a, b) => {
     const rowA = Math.round(a.y / Math.max(1, height) * 18)
@@ -199,7 +211,8 @@ function setShape(animate = true) {
       paint: point.paint ?? point.tone,
       phase: current?.phase ?? Math.random() * Math.PI * 2,
       depth: current?.depth ?? 0.55 + Math.random() * 0.45,
-      size: current?.size ?? 0.88 + Math.random() * 0.24,
+      // 剪影模式收窄粒子尺寸抖动：点阵更均匀，成像更"实"
+      size: current?.size ?? (portraitCloud ? 0.94 + Math.random() * 0.12 : 0.88 + Math.random() * 0.24),
     }
   })
 
@@ -227,7 +240,8 @@ function simulateParticles(now: number): boolean {
   let moving = pointerActive || pulseActive || !recoveryReady
 
   for (const particle of particles) {
-    const spring = pointerActive ? 0.024 : recoveryReady ? 0.054 : 0
+    // 剪影模式回弹弹簧更强：被扰散后更"脆"地复位成像
+    const spring = pointerActive ? 0.024 : recoveryReady ? (portraitCloud ? 0.075 : 0.054) : 0
     particle.velocityX += (particle.targetX - particle.x) * spring * step
     particle.velocityY += (particle.targetY - particle.y) * spring * step
 
@@ -291,7 +305,10 @@ function draw(now = performance.now()) {
     ? paints.map(() => new Path2D())
     : [new Path2D(), new Path2D(), new Path2D()]
   const signalEnergy = props.signal === 'active' ? 1.35 : props.signal === 'warning' ? 1.15 : props.signal === 'success' ? 1.08 : 1
-  const driftAmount = reduceMotion.value ? 0 : (props.density === 'backdrop' ? 0.8 : props.density === 'ambient' ? 1.7 : 2.8) * signalEnergy
+  // 剪影模式漂移近零：待机"呼吸"保留但不再糊掉画面（抽象形状保持原漂移幅度）
+  const driftAmount = reduceMotion.value ? 0
+    : paints ? 0.3 * signalEnergy
+      : (props.density === 'backdrop' ? 0.8 : props.density === 'ambient' ? 1.7 : 2.8) * signalEnergy
   const pulseAge = now - pulseStartedAt
   const pulseActive = pulseAge >= 0 && pulseAge < 520
   const highlights = pointerActive || pulseActive ? new Path2D() : null
@@ -305,14 +322,15 @@ function draw(now = performance.now()) {
     const x = particle.x + driftX
     const y = particle.y + driftY
     const energyScale = (props.signal === 'active' ? 1.16 : props.signal === 'warning' ? 1.08 : 1) * particle.size
-    const baseRadius = paints
-      ? 1.02
-      : particle.tone === 2 ? 1.55 : particle.tone === 1 ? 1.05 : 0.78
-    const radius = baseRadius * energyScale
     const pathIndex = paints
       ? Math.min(paths.length - 1, Math.max(0, particle.paint))
       : particle.tone
     const path = paths[pathIndex]
+    // 半调网点：半径随调色板明暗调制（暗部大网点补实、亮部小网点透气）
+    const baseRadius = paints
+      ? (portraitRadii[pathIndex] || 1.02)
+      : particle.tone === 2 ? 1.55 : particle.tone === 1 ? 1.05 : 0.78
+    const radius = baseRadius * energyScale
     path.moveTo(x + radius, y)
     path.arc(x, y, radius, 0, Math.PI * 2)
 
@@ -348,7 +366,7 @@ function draw(now = performance.now()) {
     }
   }
   if (paints) {
-    ctx.globalAlpha = .82
+    ctx.globalAlpha = .88
     paints.forEach((color, index) => {
       ctx.fillStyle = color
       ctx.fill(paths[index])
@@ -411,25 +429,23 @@ function resize() {
   const rect = host.value.getBoundingClientRect()
   width = Math.max(1, Math.round(rect.width))
   height = Math.max(1, Math.round(rect.height))
-  const dprLimit = props.density === 'hero' ? 1.5 : props.density === 'ambient' ? 1.35 : 1.2
+  // 剪影模式按 HiDPI 全分辨率渲染：小网点在高分屏上边缘锐利（模糊感来源之一
+  // 就是 dpr 上限偏低把网点糊掉）；抽象形状维持原上限。
+  const dprLimit = portraitCloud
+    ? 2
+    : props.density === 'hero' ? 1.5 : props.density === 'ambient' ? 1.35 : 1.2
   dpr = Math.min(window.devicePixelRatio || 1, dprLimit)
   canvas.value.width = Math.round(width * dpr)
   canvas.value.height = Math.round(height * dpr)
   canvas.value.style.width = `${width}px`
   canvas.value.style.height = `${height}px`
   try {
-    // desynchronized：让合成器直取 canvas 位图（低延迟呈现，GPU 合成路径），
-    // 不支持的环境会直接抛错/忽略，走 catch 里的普通上下文兜底。
-    context = canvas.value.getContext('2d', { desynchronized: true })
+    // 2026-08-16 回退 desynchronized 实验：部分 GPU/WebView2 的 overlay 路径
+    // 会让 desynchronized 画布整块渲染成纯黑（灵感场景/效果样张页实锤）；
+    // 参考实现（Arknights-FlowingPoints）也用普通 2d 上下文。
+    context = canvas.value.getContext('2d')
   } catch {
     context = null
-  }
-  if (!context) {
-    try {
-      context = canvas.value.getContext('2d')
-    } catch {
-      context = null
-    }
   }
   canvasAvailable.value = context !== null
   if (!context) {
@@ -490,6 +506,7 @@ async function applyPortrait(id: string) {
   if (!id) {
     portraitCloud = null
     portraitPaints = []
+    portraitRadii = []
     setShape(true)
     return
   }
@@ -497,6 +514,8 @@ async function applyPortrait(id: string) {
   if (token !== portraitToken) return
   portraitCloud = cloud
   portraitPaints = cloud ? cloud.palette.map(legibleColor) : []
+  // 网点半径在 setShape 里按「点距 × 明暗」自适应计算（依赖粒子数与场域尺寸）
+  portraitRadii = portraitPaints.map(() => 1)
   setShape(true)
 }
 

@@ -57,3 +57,26 @@
 - **前端**：`src/utils/particlePortrait.ts` 按需懒加载点云 → `SemanticParticleField` 新增 `portraitId` prop，点云就位后粒子以现有弹簧动画平滑重组为人物剪影；粒子按角色真实主色成像（深色自动提亮到亮度 0.34 保证可见）；剪影模式粒子数下限 ambient 1500 / hero 2000；无点云/加载失败自动回落 `characterParticleTheme` 抽象形状。
 - **质量验证**：点云渲染图视觉评分 8.5/10（雷姆：上部蓝发、中部黑白女仆装，一眼可辨）；实机截图复核两页 hero 均成像清晰。
 - **新增角色流程**：放好 `popular-<id>.png` → 跑一次生成脚本（单角色参数）即可；前端零改动。
+
+### 7.1 点阵 v2：均匀覆盖网格 + 运行时等距点阵（2026-08-16 二次迭代）
+
+初版「加权采样点云」疏密不均（轮廓×5 的重复采样在人物内部产生空洞），成像被评
+"离散有孔洞"。按参考实现 **BlackCoder0/Arknights-FlowingPoints**（GitHub，已用
+api.github.com 验证存在）重做：
+
+- **参考关键参数**：`particleSize 3px + margin 1px`（点径/点距 = 0.75，**统一点
+  径**，明暗只换色不换大小）；`samplingStep 5` 均匀网格采样 alpha>128；普通
+  `getContext('2d')`。
+- **数据格式 v2**：`{ id, aspect, palette[8], grid: { w, h, cells } }`，cells 为
+  行拼接字符画（'.'=背景，'0'-'7'=调色板序号），源宽 140px，单角色 ~36KB。
+- **前端**：`samplePortraitPoints` 按场域实际像素重建等距点阵（正方形单元、点距
+  处处相等、任意屏幕尺寸无各向异性），统一点径 0.75×点距；密度 ambient 3200 /
+  hero 4200 / 窄屏 1600；剪影场 dpr 上限 2、漂移近零（0.3）、回弹弹簧 0.075。
+- **效果**：雷姆点阵成像相符度 9.5/10（"规整饱满无穿孔，符合明日方舟官网方块
+  点阵剪影风格"），165fps 满帧。
+
+### 7.2 desynchronized canvas 黑屏回归（教训）
+
+`getContext('2d', { desynchronized: true })` 在部分 GPU/WebView2 的 overlay 路径
+会让画布整块渲染成**纯黑**（灵感场景/效果样张页实锤）。已回退为普通 2d 上下
+文——未经真机全环境验证的"合成器直取"优化不要上生产。

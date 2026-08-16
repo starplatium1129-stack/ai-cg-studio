@@ -20,17 +20,16 @@ SemanticParticleField 的 portraitId 直接重组为「角色剪影」。
 
 产物格式（见 src/utils/particlePortrait.ts 的 PortraitCloud）：
     { "id": "...", "aspect": <bbox宽/高>, "palette": ["#rrggbb", ...],
-      "points": [x,y,c, ...] }
-    x/y 量化到 0..1000（相对人物包围盒）；c = 调色板序号（k-means 提取的
-    人物真实主色，蓝发/黑白女仆装等按色块成像）。
+      "grid": { "w": int, "h": int, "cells": "行拼接的字符画" } }
+    cells 每字符一个网格：'.'=背景（无人物），'0'..'7'=调色板序号。
+    前端按场域实际尺寸重建等距点阵（明日方舟官网式均匀点阵 + 半调网点），
+    点距恒定、明暗靠网点大小/颜色表达——加权采样会疏密不均产生空洞，故废弃。
 
-采样策略：
-    rembg(alpha_matting) 抠人物 → 降到 160px 宽 → 包围盒裁剪 →
-    k-means 主色调色板 + 轮廓权重 5 / 结构线（亮度梯度）权重 3 /
-    内部按亮度加权 → 确定性加权采样 2400 点 → 按行带排序输出。
+管线：
+    rembg(alpha_matting) 抠人物 → 140px 宽覆盖网格 + k-means 8 主色量化 →
+    行拼接字符画输出。
 """
 import json
-import random
 import sys
 from pathlib import Path
 
@@ -41,19 +40,13 @@ from rembg import remove, new_session
 ROOT = Path(__file__).resolve().parents[2]
 CHAR_DIR = ROOT / "assets" / "characters"
 OUT_DIR = ROOT / "assets" / "particles"
-POINT_BUDGET = 2400
-PALETTE_SIZE = 6
+# 覆盖网格源宽：前端点阵通常 ≤ ~90×220，140px 源网格足够无混叠采样
+SOURCE_WIDTH = 140
+PALETTE_SIZE = 8
 ALPHA_OPAQUE = 60
-OUTLINE_WEIGHT = 5.0
-STRUCTURE_WEIGHT = 3.0
-INTERIOR_BASE = 0.5
 
 # 工作室角色立绘文件名与角色 id 的对应（热门角色固定 popular-<id>.png）
 STUDIO_PORTRAITS = {"nene": "nene-official.webp", "natsume": "natsume-official.webp"}
-
-
-def luminance(rgb: np.ndarray) -> np.ndarray:
-    return (0.2126 * rgb[..., 0] + 0.7152 * rgb[..., 1] + 0.0722 * rgb[..., 2]) / 255.0
 
 
 def kmeans_palette(rgb: np.ndarray, mask: np.ndarray, k: int, seed: str) -> list[tuple[int, int, int]]:
@@ -75,23 +68,24 @@ def kmeans_palette(rgb: np.ndarray, mask: np.ndarray, k: int, seed: str) -> list
     return [tuple(int(round(v)) for v in centers[i]) for i in ranked]
 
 
-def candidates_from_image(image: Image.Image) -> tuple[list[tuple[float, float, int]], float, list[str]] | None:
-    """返回 ([(x01, y01, 调色板序号), ...], bbox 宽高比, 调色板)；抠不出人物返回 None。"""
+def grid_from_image(image: Image.Image) -> tuple[str, int, int, float, list[str]] | None:
+    """返回 (cells 字符画, 网格宽, 网格高, bbox 宽高比, 调色板)；抠不出人物返回 None。
+
+    覆盖网格（均匀、无加权）：'.'=背景，'0'..'7'=最近调色板。前端在运行时按
+    场域实际尺寸对该网格做最近邻采样重建等距点阵——点距均匀才不会出空洞。"""
     cut = remove(image.convert("RGBA"), session=SESSION, alpha_matting=True)
-    # 限宽采样：160px 平衡轮廓细节与点云噪声（前端按粒子预算二次采样）
     w0, h0 = cut.size
-    scale = 160.0 / w0
-    small = cut.resize((160, max(1, round(h0 * scale))), Image.LANCZOS)
+    scale = SOURCE_WIDTH / w0
+    small = cut.resize((SOURCE_WIDTH, max(1, round(h0 * scale))), Image.LANCZOS)
     arr = np.array(small)
     alpha = arr[..., 3]
     mask = alpha > ALPHA_OPAQUE
     if mask.sum() < 220:  # ~2% 以下认为抠图失败
         return None
     rgb = arr[..., :3]
-    lum = luminance(rgb.astype(float))
 
     # 主色：k-means 提取人物真实配色（蓝发/黑白女仆装等按色块成像）
-    palette_rgb = kmeans_palette(rgb, mask, PALETTE_SIZE, image.filename if hasattr(image, "filename") else "seed")
+    palette_rgb = kmeans_palette(rgb, mask, PALETTE_SIZE, char_id_seed(image))
     # 每像素最近的调色板色
     flat = rgb[mask].astype(float)
     dists = ((flat[:, None, :] - np.array(palette_rgb, dtype=float)[None, :, :]) ** 2).sum(axis=2)
@@ -107,70 +101,43 @@ def candidates_from_image(image: Image.Image) -> tuple[list[tuple[float, float, 
     y1 = min(mask.shape[0] - 1, y1 + 1)
     x1 = min(mask.shape[1] - 1, x1 + 1)
 
-    # 轮廓：不透明且四邻存在透明
-    padded = np.pad(mask, 1, constant_values=False)
-    neighbors = padded[:-2, 1:-1] | padded[2:, 1:-1] | padded[1:-1, :-2] | padded[1:-1, 2:]
-    outline = mask & ~neighbors
-
-    # 内部结构线：亮度梯度（Sobel 近似）——眼眶/领口/围裙边等线条加权
-    gy, gx = np.gradient(lum)
-    grad = np.sqrt(gx * gx + gy * gy)
-    structure = mask & (grad > 0.16) & ~outline
-
-    candidates: list[tuple[float, float, int]] = []
+    rows: list[str] = []
     for y in range(y0, y1 + 1):
-        for x in range(x0, x1 + 1):
-            if not mask[y, x]:
-                continue
-            if outline[y, x]:
-                weight = OUTLINE_WEIGHT
-            elif structure[y, x]:
-                weight = STRUCTURE_WEIGHT
-            else:
-                weight = INTERIOR_BASE + lum[y, x] * 0.85
-            wx = int(round(weight * 4))  # 权重 → 重复份数（0.25 粒度）
-            if wx <= 0:
-                continue
-            for _ in range(wx):
-                candidates.append((
-                    (x - x0) / max(1, x1 - x0),
-                    (y - y0) / max(1, y1 - y0),
-                    int(color_index[y, x]),
-                ))
-    if len(candidates) < 120:
-        return None
+        rows.append("".join(
+            "." if color_index[y, x] < 0 else str(color_index[y, x])
+            for x in range(x0, x1 + 1)
+        ))
     aspect = (x1 - x0) / max(1, y1 - y0)
     palette = ["#%02x%02x%02x" % c for c in palette_rgb]
-    return candidates, aspect, palette
+    return "".join(rows), (x1 - x0 + 1), (y1 - y0 + 1), aspect, palette
+
+
+def char_id_seed(image: Image.Image) -> str:
+    return getattr(image, "filename", "") or "seed"
 
 
 def build_one(char_id: str, source: Path) -> bool:
     image = Image.open(source)
-    result = candidates_from_image(image)
+    result = grid_from_image(image)
     if result is None:
         print(f"[skip] {char_id}: 抠图失败或人物过小（{source.name}）")
         return False
-    candidates, aspect, palette = result
-
-    rng = random.Random(char_id)
-    rng.shuffle(candidates)
-    picked = candidates[:POINT_BUDGET]
-    if len(picked) < 90:
-        print(f"[skip] {char_id}: 有效点不足（{len(picked)}）")
+    cells, grid_w, grid_h, aspect, palette = result
+    if cells.count(".") == len(cells) or len(cells) - cells.count(".") < 90:
+        print(f"[skip] {char_id}: 有效网格不足")
         return False
-    # 加权采样不足预算时按权重随机补齐（同一候选可重复，密度表达仍按权重分布）
-    rng2 = random.Random(char_id + "topup")
-    while len(picked) < POINT_BUDGET and candidates:
-        picked.append(candidates[rng2.randrange(len(candidates))])
-
-    points: list[int] = []
-    for x, y, color in sorted(picked, key=lambda p: (round(p[1] * 18), p[0])):
-        points.extend((round(x * 1000), round(y * 1000), color))
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     out = OUT_DIR / f"p_{char_id}.json"
-    out.write_text(json.dumps({"id": char_id, "aspect": round(aspect, 4), "palette": palette, "points": points}, separators=(",", ":")), encoding="utf-8")
-    print(f"[ok] {char_id}: {len(picked)} 点 {len(palette)} 色 → {out.relative_to(ROOT)} ({out.stat().st_size // 1024}KB)")
+    payload = {
+        "id": char_id,
+        "aspect": round(aspect, 4),
+        "palette": palette,
+        "grid": {"w": int(grid_w), "h": int(grid_h), "cells": cells},
+    }
+    out.write_text(json.dumps(payload, separators=(",", ":")), encoding="utf-8")
+    filled = len(cells) - cells.count(".")
+    print(f"[ok] {char_id}: 网格 {grid_w}x{grid_h}（人物 {filled} 格）{len(palette)} 色 → {out.relative_to(ROOT)} ({out.stat().st_size // 1024}KB)")
     return True
 
 

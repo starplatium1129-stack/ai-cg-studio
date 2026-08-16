@@ -352,7 +352,8 @@ onMounted(() => { void init() })
 .pop-hero-copy .subtitle { color: var(--text-secondary); line-height: 1.7; margin: 0; }
 .pop-hero-field {
   min-width: 0;
-  min-height: 240px;
+  /* 剪影点阵需要足够高度承载人物细节（脸部/服装结构） */
+  min-height: 330px;
   border-left: 1px solid color-mix(in srgb, var(--border-soft) 72%, transparent);
 }
 .pop-hero-stat {
