@@ -34,8 +34,10 @@ const CHARACTERS = {
 };
 
 // 每个角色 3 张参考图：脸特写 / 半身 / 全身氛围
+// face 特写必须显式排除伤痕/血迹/瑕疵——2026-08-17 曾因特写 prompt 缺少
+// clean-face 约束，Anima 画出血刀疤版 face 卡，Ref2VA 把角色全部锚坏。
 const REF_SHOTS = [
-  { label: 'face', prompt: 'face close-up portrait, looking at viewer, detailed beautiful eyes, soft gentle smile', size: [832, 1216] },
+  { label: 'face', prompt: 'face close-up portrait, looking at viewer, detailed beautiful eyes, soft gentle smile, clean skin, no scars, no blood, no blemishes, long hair clearly visible', size: [832, 1216] },
   { label: 'half', prompt: 'upper body portrait, natural standing pose, clear outfit and hairstyle', size: [832, 1216] },
   { label: 'full', prompt: 'full body shot, standing in a night city street with soft bokeh lights, dreamy atmosphere', size: [1216, 832] },
 ];
@@ -86,7 +88,7 @@ async function stageRefs() {
       const uploadRes = await fetch(BASE + '/api/video/images', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ data: buffer.toString('base64') }),
+        body: JSON.stringify({ data: buffer.toString('base64'), kind: 'reference' }),
       });
       const upload = await uploadRes.json();
       if (uploadRes.status !== 200 || !upload.name) throw new Error('参考图上传失败');
@@ -135,13 +137,20 @@ async function stageGenerate() {
   const scriptPath = path.join(OUT_DIR, 'script.json');
   const refs = JSON.parse(fs.readFileSync(refsPath, 'utf8'));
   const script = JSON.parse(fs.readFileSync(scriptPath, 'utf8'));
-  const neneRefs = refs.cards.nene.map(i => i.name);
-  const natsumeRefs = refs.cards.natsume.map(i => i.name);
-
+  const neneRefs = refs.cards.nene || [];
+  const natsumeRefs = refs.cards.natsume || [];
+  // 每角色只取 1 张 face 主卡作 Ref2VA 参考：<Picture N> 标签与参考图槽位严格
+  // 1:1 对齐（宁宁→<Picture 1>、夏目→<Picture 2>）。此前传 3+3 张时 prompt 只
+  // 引用 <Picture 1>/<Picture 2>，两个标签都指向宁宁的图，夏目被锚成白发
+  // （2026-08-17 实锤：双角色镜头全错位）。
+  const faceName = (items) => {
+    const face = items.find((i) => i.label === 'face');
+    return (face || items[0]).name;
+  };
   const castRefs = (cast) => {
-    if (cast === '1') return neneRefs;
-    if (cast === '2') return natsumeRefs;
-    if (cast === '12') return [...neneRefs, ...natsumeRefs];
+    if (cast === '1') return [faceName(neneRefs)];
+    if (cast === '2') return [faceName(natsumeRefs)];
+    if (cast === '12') return [faceName(neneRefs), faceName(natsumeRefs)];
     return undefined;
   };
 
