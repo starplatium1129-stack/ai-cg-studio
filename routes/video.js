@@ -658,7 +658,9 @@ function validateInput(body, config) {
     dialogueLine,
     hasReferences
       ? 'Character identity anchors: ' + references.map(function (_, i) { return '<Picture ' + (i + 1) + '>'; }).join(', ')
-        + ' - each <Picture N> is a distinct character: keep every character\'s face, hairstyle, outfit and identity consistent with their own picture, and never swap or merge characters.'
+        + (references.length === 1
+          ? ' - the shot contains exactly one character: <Picture 1>. No other people, no reflections, no duplicate or mirrored copies.'
+          : ' - each <Picture N> is a distinct character: keep every character\'s face, hairstyle, outfit and identity consistent with their own picture, and never swap or merge characters.')
       : null,
     'Character identity, clothing, lighting, and scene structure remain consistent from start to finish.',
   ].filter(function (line) { return line !== null; });
