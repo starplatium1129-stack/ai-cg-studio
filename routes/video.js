@@ -658,7 +658,7 @@ function validateInput(body, config) {
     dialogueLine,
     hasReferences
       ? 'Character identity anchors: ' + references.map(function (_, i) { return '<Picture ' + (i + 1) + '>'; }).join(', ')
-        + ' - keep the face, outfit and identity of each referenced character consistent with these pictures throughout the shot.'
+        + ' - each <Picture N> is a distinct character: keep every character\'s face, hairstyle, outfit and identity consistent with their own picture, and never swap or merge characters.'
       : null,
     'Character identity, clothing, lighting, and scene structure remain consistent from start to finish.',
   ].filter(function (line) { return line !== null; });
@@ -1690,6 +1690,14 @@ function createBatchService(config, videoService, dependencies) {
         shot.status = 'succeeded';
         var next = batch.shots[shot.index]; // index 从 1 开始 → 数组下一项
         if (batch.linkLastFrame && next && next.status === 'pending') {
+          // 带参考图（Ref2VA 角色卡）的镜头不做尾帧衔接：上一镜末帧作为 Hybrid
+          // 首帧会以像素锚定覆盖 <Picture N> 参考，导致角色切换镜头被前一角色
+          // 污染（2026-08-17 实锤：宁宁末帧喂给夏目读信镜头，夏目被画成白发）。
+          // 参考卡镜头保持纯 Ref2VA，身份由 <Picture N> 专属锚定。
+          if (next.input && next.input.references && next.input.references.length) {
+            finalizeStatus(batch);
+            return;
+          }
           var name = await extractLastFrame(shot);
           if (name) {
             if (next.input.image) next.input.lastFrame = name;
