@@ -581,7 +581,7 @@ async function onReferencePicked(cardIndex: number, event: Event) {
     const dataUrl = await readBlobAsDataURL(file)
     const comma = dataUrl.indexOf(',')
     if (comma < 0) throw new Error('图片编码失败')
-    const upload = await uploadVideoImage(dataUrl.slice(comma + 1))
+    const upload = await uploadVideoImage(dataUrl.slice(comma + 1), 'reference')
     card.images.push({ name: upload.name, url: URL.createObjectURL(file) })
     batchError.value = ''
   } catch (error) {

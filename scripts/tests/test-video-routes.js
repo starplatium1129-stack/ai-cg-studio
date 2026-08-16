@@ -375,22 +375,22 @@ async function run() {
     // ref_image_N autogrow 槽 + <Picture N> 身份声明注入。
     var t8Ref = video.buildWorkflow(video.validateInput(validBody({
       modelId:'minimax-h3',
-      references:['aics_video_input_abcdef0123456789.png', 'aics_video_input_0123456789abcdef.png'],
+      references:['aics_video_ref_abcdef0123456789.png', 'aics_video_ref_0123456789abcdef.png'],
     })));
-    assert.equal(t8Ref['5'].inputs.task_type, 'ref2va');
-    assert.deepEqual(t8Ref['5'].inputs.ref_image_1, ['21', 0]);
-    assert.deepEqual(t8Ref['5'].inputs.ref_image_2, ['22', 0]);
+    assert.equal(t8Ref['5'].inputs.task_type, 'Ref2VA');
+    assert.deepEqual(t8Ref['5'].inputs['ref_images.ref_image_0'], ['21', 0]);
+    assert.deepEqual(t8Ref['5'].inputs['ref_images.ref_image_1'], ['22', 0]);
     assert.equal(t8Ref['21'].class_type, 'LoadImage');
-    assert.equal(t8Ref['21'].inputs.image, 'aics_video_input_abcdef0123456789.png');
+    assert.equal(t8Ref['21'].inputs.image, 'aics_video_ref_abcdef0123456789.png');
     assert.match(t8Ref['5'].inputs.prompt, /<Picture 1>/);
     assert.match(t8Ref['5'].inputs.prompt, /<Picture 2>/);
     var t8Hybrid = video.buildWorkflow(video.validateInput(validBody({
       modelId:'minimax-h3',
       image:'aics_video_input_abcdef0123456789.png',
-      references:['aics_video_input_0123456789abcdef.png'],
+      references:['aics_video_ref_0123456789abcdef.png'],
     })));
-    assert.equal(t8Hybrid['5'].inputs.task_type, 'hybrid');
-    assert.deepEqual(t8Hybrid['5'].inputs.ref_image_1, ['21', 0]);
+    assert.equal(t8Hybrid['5'].inputs.task_type, 'Hybrid');
+    assert.deepEqual(t8Hybrid['5'].inputs['ref_images.ref_image_0'], ['21', 0]);
     assert.throws(function () {
       video.validateInput(validBody({
         modelId:'minimax-h3', references:['bad name.png'],
@@ -398,7 +398,7 @@ async function run() {
     }, /格式不受支持/);
     assert.throws(function () {
       video.validateInput(validBody({
-        modelId:'wan2.2-ti2v-5b', references:['aics_video_input_abcdef0123456789.png'],
+        modelId:'wan2.2-ti2v-5b', references:['aics_video_ref_abcdef0123456789.png'],
       }));
     }, /仅支持 MiniMax H3/);
   } finally {

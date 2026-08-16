@@ -146,11 +146,12 @@ export function createVideoJob(input: CreateVideoJobInput, signal?: AbortSignal)
   })
 }
 
-/** 首帧图上传：base64 图片数据 → 网关校验后写入 ComfyUI/input，返回受控文件名。 */
-export function uploadVideoImage(data: string, signal?: AbortSignal): Promise<VideoImageUploadResponse> {
+/** 首帧图/参考图上传：base64 图片数据 → 网关校验后写入 ComfyUI/input，返回受控文件名。
+ *  kind:'reference' 用独立前缀（跨任务资产，网关重启不清理）。 */
+export function uploadVideoImage(data: string, kind?: 'reference', signal?: AbortSignal): Promise<VideoImageUploadResponse> {
   return apiClient.request<VideoImageUploadResponse>('/api/video/images', {
     method: 'POST',
-    body: { data },
+    body: kind ? { data, kind } : { data },
     signal,
     timeoutMs: 60_000,
     validate: (value: Record<string, unknown>) =>

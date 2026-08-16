@@ -18,6 +18,9 @@ var MAX_NEGATIVE_LENGTH = 2000;
 var MAX_VIDEO_BYTES = 256 * 1024 * 1024;
 var MAX_IMAGE_BYTES = 20 * 1024 * 1024;
 var IMAGE_INPUT_PREFIX = 'aics_video_input_';
+// 参考图（Ref2VA 角色卡）独立前缀：网关启动清理只删首帧孤儿（aics_video_input_），
+// 参考图是跨任务长期资产，不能被启动清理误删（2026-08-17 短片流水线实锤）。
+var IMAGE_REF_PREFIX = 'aics_video_ref_';
 var JOB_TIMEOUT_MS = 45 * 60 * 1000;
 var JOB_TTL_MS = 2 * 60 * 60 * 1000;
 // 分镜批量（P5）：单批镜头数、请求体上限、对白长度、批量记录 TTL。
@@ -369,12 +372,14 @@ function imageInputRoot(config) {
 }
 
 function imageInputAvailable(config, name) {
-  if (typeof name !== 'string' || !IMAGE_INPUT_PATTERN.test(name)) return false;
+  if (typeof name !== 'string') return false;
+  if (!IMAGE_INPUT_PATTERN.test(name) && !IMAGE_REF_PATTERN.test(name)) return false;
   var target = path.resolve(imageInputRoot(config), name);
   try { return fs.statSync(target).isFile(); } catch (error) { return false; }
 }
 
 var IMAGE_INPUT_PATTERN = /^aics_video_input_[a-f0-9]{16,40}\.(png|jpg|jpeg|webp)$/i;
+var IMAGE_REF_PATTERN = /^aics_video_ref_[a-f0-9]{16,40}\.(png|jpg|jpeg|webp)$/i;
 
 // 魔数识别：只信任解码后的真实格式，不信任客户端声称的 type。
 function sniffImageExtension(buffer) {
@@ -530,7 +535,7 @@ function validateInput(body, config) {
     }
     for (var refIndex = 0; refIndex < references.length; refIndex += 1) {
       var refName = references[refIndex];
-      if (typeof refName !== 'string' || !IMAGE_INPUT_PATTERN.test(refName)) {
+      if (typeof refName !== 'string' || !IMAGE_REF_PATTERN.test(refName)) {
         throw serviceError(400, 'INVALID_PARAMETER', '参考图引用格式不受支持');
       }
       if (config && !imageInputAvailable(config, refName)) {
@@ -719,11 +724,11 @@ function buildWorkflow(input) {
 // BasicGuider + SamplerCustomAdvanced → MiniMaxH3AVDecodeT8 → CreateVideo → SaveVideo。
 // 输出契约不变（SaveVideo 节点 11、aics_video 前缀）。真机实测 2.5× 提速。
 function buildH3T8Workflow(input) {
-  // Ref2VA / Hybrid：有参考图（角色卡）时按 T8 resolve_task_type 语义选择；
-  // 参考图 + 首/尾帧 → hybrid（参考身份 + 关键帧构图），仅参考 → ref2va。
+  // Ref2VA / Hybrid：有参考图（角色卡）时按 T8 枚举（大写）传参；
+  // 参考图 + 首/尾帧 → Hybrid（参考身份 + 关键帧构图），仅参考 → Ref2VA。
   var hasReferences = Array.isArray(input.references) && input.references.length > 0;
   var taskType = hasReferences
-    ? (input.image || input.lastFrame ? 'hybrid' : 'ref2va')
+    ? (input.image || input.lastFrame ? 'Hybrid' : 'Ref2VA')
     : input.image && input.lastFrame ? 'FL2VA'
       : input.image ? 'I2VA'
         : input.lastFrame ? 'L2VA'
@@ -804,13 +809,17 @@ function buildH3T8Workflow(input) {
     graph['18'] = { class_type:'LoadImage', inputs:{ image:input.lastFrame } };
     graph['5'].inputs.last_frame = ['18', 0];
   }
-  // 参考图（Ref2VA 角色卡）：T8 ref_images autogrow 槽 ref_image_1..N，
-  // 每张一个 LoadImage（节点 21 起），提示词用 <Picture N> 标签引用。
+  // 参考图（Ref2VA 角色卡）：T8 ref_images autogrow 槽。
+  // ComfyUI v0.30 expression API 的动态输入槽名 = Autogrow id 前缀点 + 模板名，
+  // 即 ref_images.ref_image_0..N（序号从 0 起，见 _io.py finalize_prefix 展开）。
+  // 裸 ref_image_N 会被当成普通 kwarg 交给 execute → TypeError
+  // （2026-08-17 短片流水线实锤：9 镜批量全败）。节点 21 起每张一个 LoadImage，
+  // 提示词用 <Picture N> 标签（排序后第 N 张）。
   if (hasReferences) {
     input.references.forEach(function (refName, refIndex) {
       var nodeId = String(21 + refIndex);
       graph[nodeId] = { class_type:'LoadImage', inputs:{ image:refName } };
-      graph['5'].inputs['ref_image_' + (refIndex + 1)] = [nodeId, 0];
+      graph['5'].inputs['ref_images.ref_image_' + refIndex] = [nodeId, 0];
     });
   }
   return graph;
@@ -1061,6 +1070,7 @@ function cleanupMediaRoot(config) {
 }
 
 // 启动时清理由本服务写入的孤儿首帧图（网关重启后无活动任务引用它们）。
+// 只清 aics_video_input_ 前缀；aics_video_ref_（参考卡）是跨任务资产，保留。
 function cleanupImageInput(config) {
   var root = imageInputRoot(config);
   var entries = [];
@@ -1938,8 +1948,9 @@ function createVideoRouter(config, dependencies) {
     });
   });
 
-  // 首帧图上传：base64 JSON → 魔数校验 → 写入 ComfyUI/input（受控文件名）。
-  // 浏览器把 IndexedDB 图片 blob 转 base64 传来即可，后续 jobs 用返回的 name。
+  // 首帧图/参考图上传：base64 JSON → 魔数校验 → 写入 ComfyUI/input（受控文件名）。
+  // kind:'reference' 用 aics_video_ref_ 前缀（跨任务资产，启动清理保留）；
+  // 缺省 aics_video_input_（首帧，任务结束/网关重启时清理）。
   router.post('/api/video/images', jobLimit, express.json({ limit:'28mb' }), function (req, res) {
     var body = req.body;
     var data = body && body.data;
@@ -1957,7 +1968,9 @@ function createVideoRouter(config, dependencies) {
     if (!ext) {
       return envelope.fail(res, 400, '仅支持 PNG / JPEG / WebP 图片', { code:'INVALID_IMAGE' });
     }
-    var name = IMAGE_INPUT_PREFIX + crypto.randomBytes(8).toString('hex') + '.' + ext;
+    var isReference = body.kind === 'reference';
+    var prefix = isReference ? IMAGE_REF_PREFIX : IMAGE_INPUT_PREFIX;
+    var name = prefix + crypto.randomBytes(8).toString('hex') + '.' + ext;
     var root = imageInputRoot(config);
     var resolvedRoot = path.resolve(root);
     var target = path.resolve(root, name);
