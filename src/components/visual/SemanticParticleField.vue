@@ -77,8 +77,11 @@ let darkTheme = true
 
 /** 角色形象点云：null = 用抽象形状。异步加载由 token 防竞态。 */
 let portraitCloud: PortraitCloud | null = null
-/** 剪影调色板（深色已提亮），与 portraitCloud 同步更新。 */
+/** 剪影调色板（深色已提亮——深色主题暗部 screen 下不可见，提亮保证可读），与 portraitCloud 同步更新。 */
 let portraitPaints: string[] = []
+/** 原始调色板（未提亮）：浅色主题直接用原图颜色（暗部在浅底上天然清晰），
+    颜色与深色主题一致还原原图（2026-08-16 用户反馈「浅色模式颜色不对」）。 */
+let portraitRaw: string[] = []
 /** 半调点阵：每个调色板色的网点半径（剪影模式统一点径，见 setShape）。 */
 let portraitRadii: number[] = []
 let portraitToken = 0
@@ -352,24 +355,29 @@ function draw() {
   // 剪影模式按人物调色板分批填充 + 统一点径；抽象形状沿用三档 tone
   // 颜色与三档点径（页面识别色 + 层次感）。动效全站统一：静止成像、
   // 无漂移、无指针高光、慢回流物理。
-  const paints = portraitCloud && portraitPaints.length ? portraitPaints : null
+  // 绘制调色板：深色主题用提亮版（暗部 screen 下不可见，提亮保证可读）；
+  // 浅色主题用原始色（暗部在浅底上天然清晰，颜色还原原图——2026-08-16
+  // 用户反馈「浅色模式颜色不对」后改为原始色）。
+  const paints = portraitCloud && portraitPaints.length
+    ? (darkTheme ? portraitPaints : (portraitRaw.length ? portraitRaw : portraitPaints))
+    : null
   const paths = paints
     ? paints.map(() => new Path2D())
     : [new Path2D(), new Path2D(), new Path2D()]
   // 运动拖尾（对齐参考实现的残影流光）：粒子位移超过阈值时连一条
   // 上一帧→当前帧线段；静止粒子不入路径——空闲观感不变，交互涟漪带出流光。
   const tailPaths = paths.map(() => new Path2D())
-  // 深色衬底（优化点 ① + 2026-08-16 亮色主题反馈）：亮度 >0.62 的亮色在浅底上
-  // 会「隐形」，垫深色半透明衬点恢复辨识度；中亮以下不垫（0.38 阈值实测连成
-  // 灰雾覆盖大半画布、脸部发黑，已回退）。
-  const underFlags = paints ? paints.map((color) => shouldUnderlay(color)) : null
-  const underPaths = underFlags && underFlags.some(Boolean)
-    ? underFlags.map((light) => (light ? new Path2D() : null))
+  // 极亮色右下偏移阴影（2026-08-16 用户反馈「白发区还要更白」）：
+  // 亮度 >0.72 的白/近白点在浅底上隐形，描边方案让白点视觉 70% 是灰边
+  // （白发区仍偏深灰）；改为「浮雕式」——点右下方 0.5px 处垫一枚浅灰圆
+  // （半径 ×1.15），点本体保持纯白无灰边，界定来自阴影、白色感保留。
+  const shadowFlags = paints ? paints.map((color) => shouldUnderlay(color)) : null
+  const shadowPaths = shadowFlags && shadowFlags.some(Boolean)
+    ? shadowFlags.map((light) => (light ? new Path2D() : null))
     : null
-  // 衬点颜色：深色主题用近黑（screen 下≈不可见，仅防立绘自带浅色区隐形）；
-  // 浅色主题用中深灰——纯黑衬点叠加在肤色等中亮点上会把脸部压成黑灰雾
-  // （2026-08-16 双模型实测），中深灰在浅底上仍提供轮廓、又不至于发黑。
-  const underColor = darkTheme ? '#0c0e14' : '#3a3f4a'
+  // 阴影颜色：深色主题用近黑（screen 下≈不可见，无副作用）；浅色主题用
+  // 中深灰 #565b68（合成 ~0.6 vs 底 0.95，够界定又不压暗点本体）。
+  const underColor = darkTheme ? '#0c0e14' : '#565b68'
   const energyScale = props.signal === 'active' ? 1.16 : props.signal === 'warning' ? 1.08 : 1
 
   for (const particle of particles) {
@@ -390,11 +398,12 @@ function draw() {
       tailPaths[pathIndex].moveTo(particle.prevX, particle.prevY)
       tailPaths[pathIndex].lineTo(particle.x, particle.y)
     }
-    if (underPaths) {
-      const under = underPaths[pathIndex]
-      if (under) {
-        under.moveTo(particle.x + radius * 1.8, particle.y)
-        under.arc(particle.x, particle.y, radius * 1.8, 0, Math.PI * 2)
+    if (shadowPaths) {
+      const shadow = shadowPaths[pathIndex]
+      if (shadow) {
+        // 阴影圆：右下偏移 0.5px、半径 ×1.15（比点本体略大，露一圈阴影边）
+        shadow.moveTo(particle.x + 0.5 + radius * 1.15, particle.y + 0.6)
+        shadow.arc(particle.x + 0.5, particle.y + 0.6, radius * 1.15, 0, Math.PI * 2)
       }
     }
     path.moveTo(particle.x + radius, particle.y)
@@ -404,13 +413,14 @@ function draw() {
   ctx.lineCap = 'round'
   if (paints) {
     ctx.globalCompositeOperation = darkTheme ? 'screen' : 'source-over'
-    if (underPaths) {
+    // 极亮色阴影圆：先画阴影后主点（阴影在点下方，露出右下弧边界定）。
+    // 深色主题 screen 下近黑阴影≈不可见，无副作用。
+    // alpha 0.42：0.5 实测阴影圆偏重、密集白发区显脏（干净度降）。
+    if (shadowPaths) {
       ctx.globalCompositeOperation = 'source-over'
-      // 衬底强度 0.5：只覆盖 >0.62 的真亮色；1.5×/0.45 实测整体变「灰蒙偏脏」
-      // （vision 双轮对比），1.8×/0.5 时「偏向整洁」，取后者。
-      ctx.globalAlpha = .5
+      ctx.globalAlpha = .42
       ctx.fillStyle = underColor
-      underPaths.forEach((path) => { if (path) ctx.fill(path) })
+      shadowPaths.forEach((path) => { if (path) ctx.fill(path) })
       ctx.globalCompositeOperation = darkTheme ? 'screen' : 'source-over'
     }
     // 浅色主题拖尾先垫深色衬线：亮色流光在浅底上同样会「隐形」，交互时
@@ -428,8 +438,9 @@ function draw() {
       ctx.stroke(tailPaths[index])
     })
     // 图片点阵：深色主题 screen 混合（暗部隐入底色、亮部发光，与档案风融合）；
-    // 浅色主题正常混合，主点透明度 0.86（暗部实画保持层次，亮部由衬点托底）。
-    ctx.globalAlpha = darkTheme ? .88 : .86
+    // 浅色主题正常混合、主点透明度 0.95（几乎不透明：颜色还原原图，与深色
+    // 主题一致——0.86 时与浅底混合 14% 会把颜色漂白）。
+    ctx.globalAlpha = darkTheme ? .88 : .95
     paints.forEach((color, index) => {
       ctx.fillStyle = color
       ctx.fill(paths[index])
@@ -584,6 +595,7 @@ async function applyPortrait(id: string) {
   if (!id) {
     portraitCloud = null
     portraitPaints = []
+    portraitRaw = []
     portraitRadii = []
     portraitActive.value = false
     setShape(true)
@@ -593,6 +605,7 @@ async function applyPortrait(id: string) {
   if (token !== portraitToken) return
   portraitCloud = cloud
   portraitPaints = cloud ? cloud.palette.map(legibleColor) : []
+  portraitRaw = cloud ? cloud.palette.slice() : []
   // 网点半径在 setShape 里按「点距 × 明暗」自适应计算（依赖粒子数与场域尺寸）
   portraitRadii = portraitPaints.map(() => 1)
   portraitActive.value = cloud !== null
