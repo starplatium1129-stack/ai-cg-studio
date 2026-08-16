@@ -213,6 +213,13 @@ impl Model {
         unsafe { ffi::l2d_model_reset_overlay_params(self.ptr) }
     }
 
+    /// 每帧守卫：非互动/非登场期间把叠层参数强制写回隐藏态（Idle 动作
+    /// Idle_6 会把 Param36/37 拉出隐藏态导致静止时叠层显示发灰，见
+    /// docs/live2d-native-runtime.md；C++ 侧与 reset 共用隐藏态表）。
+    pub fn force_overlay_hidden(&mut self) {
+        unsafe { ffi::l2d_model_force_overlay_hidden(self.ptr) }
+    }
+
     pub fn get_part_opacity(&self, id: &str) -> f32 {
         let id = ffi::CStringGuard::new(id);
         unsafe { ffi::l2d_model_get_part_opacity(self.ptr, id.as_ptr()) }

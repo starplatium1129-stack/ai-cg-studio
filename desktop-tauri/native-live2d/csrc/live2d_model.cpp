@@ -365,15 +365,18 @@ float l2d_model_get_parameter(l2d_model* m, const char* id)
  * "Notes on Pose Switching" clothing-double-display scenario). Whitelist
  * derived from the Tap and Idle motion3.json curve difference set.
  */
-void l2d_model_reset_overlay_params(l2d_model* m)
+/*
+ * Overlay/outfit parameter hidden-state table (2026-08-16). Natsume author
+ * motions (Tap group / Start group / Idle_6) drive these params to show
+ * temporary overlay parts; hidden state differs per param (verified via
+ * idle snapshots): most default -1 (hidden), Param18/44-51/56/57/62 default
+ * 0. Writing 0 to the -1 group lands in the "visible" range and leaves the
+ * overlay half-transparent (ghosting). Values must match the frontend
+ * NATSUME_RESET_PARAMS exactly.
+ */
+static void apply_overlay_hidden(l2d_model* m)
 {
     if (!m || !m->model) { return; }
-    // Hidden-state values grouped by moc3 parameter defaults (verified via
-    // idle parameter snapshots 2026-08-16): most overlay params default to
-    // -1 (hidden); writing 0 lands in the "visible" range and leaves the
-    // overlay half-transparent (ghosting). Param18/44-51/56/57/62 default 0.
-    // Write explicit hidden values instead of GetParameterDefaultValue so
-    // native matches the frontend NATSUME_RESET_PARAMS exactly.
     static const struct { const char* id; float value; } overlayParams[] = {
         { "Param18", 0.0f },
         { "Param44", 0.0f }, { "Param45", 0.0f }, { "Param46", 0.0f },
@@ -399,6 +402,16 @@ void l2d_model_reset_overlay_params(l2d_model* m)
             m->model->SetParameterValue(index, overlayParams[i].value);
         }
     }
+}
+
+void l2d_model_reset_overlay_params(l2d_model* m)
+{
+    apply_overlay_hidden(m);
+}
+
+void l2d_model_force_overlay_hidden(l2d_model* m)
+{
+    apply_overlay_hidden(m);
 }
 
 void l2d_model_set_part_opacity(l2d_model* m, const char* id, float opacity)

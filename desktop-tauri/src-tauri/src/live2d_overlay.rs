@@ -750,6 +750,18 @@ impl RenderContext {
                 }
             }
         }
+        // 叠层参数每帧守卫（2026-08-16 静止发灰修复）：Idle 动作 Idle_6 把
+        // Param36/37 拉出隐藏态（到 5+），静止时叠层显示 → 眼睛/全身发灰；
+        // 点击互动（Tap 动作/复位）拉回隐藏态 → 恢复，回 Idle 又灰。非互动
+        // 非登场期间每帧强制写回隐藏态（0/-1 分组，与 reset_overlay_params
+        // 同表）——叠层只允许在互动/登场动作播放时显示。
+        let interaction_playing = matches!(
+            &self.active_motion,
+            Some(m) if m.phase == MotionPhase::Interaction || m.phase == MotionPhase::Entrance
+        );
+        if character == "natsume" && !interaction_playing {
+            model.force_overlay_hidden();
+        }
     }
 
     fn render_frame(

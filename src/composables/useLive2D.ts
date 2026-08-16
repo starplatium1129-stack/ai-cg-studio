@@ -584,6 +584,17 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
         if (stageEl) stageEl.dataset.blink = blinkValue.toFixed(3)
       }
       if (stageEl) stageEl.dataset.entrance = inEntrance ? '1' : '0'
+      // 叠层参数守卫（2026-08-16 静止发灰修复）：Idle 动作 Idle_6 会把
+      // Param36/37 拉出隐藏态（到 5+），静止时叠层显示 → 眼睛/全身发灰；
+      // 互动（Tap）或登场（Start）播放期间让动作曲线驱动叠层（设计行为），
+      // 其余时间每帧写回隐藏态（0/-1 分组，与 resetNatsumeOverlayParams
+      // 同表）——与 native 端 force_overlay_hidden 行为一致。
+      const interactionPlaying = activeInteraction !== ''
+      if (!inEntrance && !interactionPlaying && character.value === 'natsume') {
+        for (const { id, value } of NATSUME_RESET_PARAMS) {
+          try { model.setParameterValueById(id, value, 1) } catch { /* 参数缺失忽略 */ }
+        }
+      }
       if (!emotionRuntime) return
       emotionRuntime.update(dt)
       if (stageEl) stageEl.dataset.emotionIntensity = emotionRuntime.intensity().toFixed(3)
