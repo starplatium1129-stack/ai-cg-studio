@@ -370,10 +370,10 @@ void l2d_model_reset_overlay_params(l2d_model* m)
     if (!m || !m->model) { return; }
     static const char* overlayParams[] = {
         "Param18",
-        "Param38", "Param39", "Param40", "Param41", "Param42", "Param43", "Param44", "Param45",
+        "Param37", "Param38", "Param39", "Param40", "Param41", "Param42", "Param43", "Param44", "Param45",
         "Param46", "Param47", "Param48", "Param49", "Param50", "Param51", "Param52", "Param53",
         "Param54", "Param55", "Param56", "Param57", "Param58", "Param59", "Param60", "Param61",
-        "Param62", "Param63",
+        "Param62", "Param63", "Param64",
         "ParamMouthForm5", "ParamMouthForm6", "ParamMouthForm7", "ParamMouthForm8",
         "ParamMouthForm9", "ParamMouthForm10"
     };

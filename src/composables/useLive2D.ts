@@ -100,20 +100,32 @@ const LEAVE_PLAY_MS = 5_000
 
 const POINTER_FOCUS_PARAMS = ['ParamAngleX', 'ParamAngleY', 'ParamEyeBallX', 'ParamEyeBallY']
 
-// 夏目互动（Tap*）动作驱动、但 Idle 组完全未覆盖的参数（2026-08-15 从
-// motions/Tap*.motion3.json 与 Idle*.motion3.json 曲线差集提取）：
-// 互动动作把这些参数拉高（作者叠层/换装部件临时显隐），动作结束后 idle
-// 不带回默认值 → 叠层残留（"衣服重复显示/四只手"，官方 Notes on Pose
-// Switching 场景）。互动结束必须显式写回默认值（0），随后交还 idle。
-// 依据：docs/live2d-natsume-overlay-research.md。
-const NATSUME_OVERLAY_RESET_PARAMS = [
-  'Param18',
-  'Param38', 'Param39', 'Param40', 'Param41', 'Param42', 'Param43', 'Param44', 'Param45',
-  'Param46', 'Param47', 'Param48', 'Param49', 'Param50', 'Param51', 'Param52', 'Param53',
-  'Param54', 'Param55', 'Param56', 'Param57', 'Param58', 'Param59', 'Param60', 'Param61',
-  'Param62', 'Param63',
-  'ParamMouthForm5', 'ParamMouthForm6', 'ParamMouthForm7', 'ParamMouthForm8', 'ParamMouthForm9', 'ParamMouthForm10',
-] as const
+// 夏目互动（Tap*）/登场（Start*）动作驱动、但 Idle 组完全未覆盖的参数
+// （2026-08-15 从 motions/Tap*.motion3.json 与 Idle*.motion3.json 曲线差集
+// 提取）：互动/登场动作把这些参数拉高（作者叠层/换装部件临时显隐），动作
+// 结束后 idle 不带回默认值 → 叠层残留（"衣服重复显示/四只手"，官方 Notes on
+// Pose Switching 场景）。动作结束必须显式写回隐藏态。
+// 隐藏态按 moc3 默认值分组（2026-08-16 idle 采样实证）：多数叠层参数默认
+// -1（隐藏），写 0 会落在"显示区间"导致叠层半透明残留（重影灰眼，用户
+// 反馈）；Param18/44-51/56/57/62 默认 0。Param37/Param64 为 2026-08-16
+// 补充（Tap 驱动但此前不在清单）。
+// 依据：docs/live2d-natsume-overlay-research.md、docs/live2d-native-runtime.md。
+const NATSUME_RESET_PARAMS: ReadonlyArray<{ id: string; value: number }> = [
+  { id: 'Param18', value: 0 },
+  { id: 'Param44', value: 0 }, { id: 'Param45', value: 0 }, { id: 'Param46', value: 0 },
+  { id: 'Param47', value: 0 }, { id: 'Param48', value: 0 }, { id: 'Param49', value: 0 },
+  { id: 'Param50', value: 0 }, { id: 'Param51', value: 0 }, { id: 'Param56', value: 0 },
+  { id: 'Param57', value: 0 }, { id: 'Param62', value: 0 },
+  { id: 'Param37', value: -1 }, { id: 'Param38', value: -1 }, { id: 'Param39', value: -1 },
+  { id: 'Param40', value: -1 }, { id: 'Param41', value: -1 }, { id: 'Param42', value: -1 },
+  { id: 'Param43', value: -1 }, { id: 'Param52', value: -1 }, { id: 'Param53', value: -1 },
+  { id: 'Param54', value: -1 }, { id: 'Param55', value: -1 }, { id: 'Param58', value: -1 },
+  { id: 'Param59', value: -1 }, { id: 'Param60', value: -1 }, { id: 'Param61', value: -1 },
+  { id: 'Param63', value: -1 }, { id: 'Param64', value: -1 },
+  { id: 'ParamMouthForm5', value: 0 }, { id: 'ParamMouthForm6', value: 0 },
+  { id: 'ParamMouthForm7', value: 0 }, { id: 'ParamMouthForm8', value: 0 },
+  { id: 'ParamMouthForm9', value: 0 }, { id: 'ParamMouthForm10', value: 0 },
+]
 
 function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error)
@@ -475,6 +487,10 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
       void started.then((ok: boolean) => {
         if (ok) {
           entranceUntil = performance.now() + ENTRANCE_MAX_MS
+          // 登场动作结束（含最长 fadeOut）后复位叠层参数：Start* 变体也会
+          // 驱动叠层显隐，结束后 idle 不带回（2026-08-16 实测 Start_1 等
+          // 把 Param38 等从 0 拉高，结束后残留 → 半透明重影）。
+          window.setTimeout(() => resetNatsumeOverlayParams(), ENTRANCE_MAX_MS + 400)
           return
         }
         window.setTimeout(tryStart, 250)
@@ -810,14 +826,16 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   }
 
   /**
-   * 夏目互动动作结束后复位叠层/换装参数（见 NATSUME_OVERLAY_RESET_PARAMS）。
+   * 夏目互动/登场动作结束后复位叠层/换装参数（见 NATSUME_RESET_PARAMS）。
    * 浏览器端参数由前端写（parameterOverride）；原生端由 Rust 在 motion
-   * 结束后经 C++ 复位，前端不重复写。幂等：参数已是默认值（0）时写 0 无副作用。
+   * 结束后经 C++ 复位，前端不重复写。幂等：参数已是隐藏态时重复写无副作用。
+   * 复位值按隐藏态分组（0 / -1，2026-08-16 实证），统一写 0 会让 -1 组的
+   * 参数落在"显示区间"，叠层半透明残留成重影。
    */
   function resetNatsumeOverlayParams() {
     if (character.value !== 'natsume' || !model || session?.capability.parameterOverride === false) return
-    for (const id of NATSUME_OVERLAY_RESET_PARAMS) {
-      try { model.setParameterValueById(id, 0, 1) } catch { /* 参数缺失忽略 */ }
+    for (const { id, value } of NATSUME_RESET_PARAMS) {
+      try { model.setParameterValueById(id, value, 1) } catch { /* 参数缺失忽略 */ }
     }
   }
 
