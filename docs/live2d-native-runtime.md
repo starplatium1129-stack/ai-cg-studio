@@ -211,3 +211,60 @@ ChatCharacterStage / useLive2D
 - **"点击后正常"的循环现象 = 状态相关（动作 vs idle 参数差异），不是静态渲染 bug**——先按状态切分复现（idle/tap/结束后三段），再查参数曲线，比直接怀疑渲染器快得多。
 - **浏览器端正常不代表 native 正常**：浏览器有参数级 hack（blinkScheduler 覆写），native 只传意图——"双端行为差异"先查两端各自的前置覆写逻辑，再查渲染器。
 - **drawable 索引映射用浏览器 coreModel 实证**（`getDrawableIds`/`getDrawableBlendMode`/`getDrawableMaskCounts`），别猜。
+
+### 追加修复（6809c9f）——C++ 显式隐藏态 + 切换角色点击失效
+
+1. **C++ 复位不再依赖 `GetParameterDefaultValue`**（其值未经验证），改与前端 `NATSUME_RESET_PARAMS` 一致的显式隐藏态分组（0/-1），native 与浏览器复位行为完全一致。
+2. **切换角色后互动点击无反馈**：`bindInteractionEvents` 守卫 `if (pointerClickHandler) return`——角色切换重建 session 后订阅重建被跳过，新 session 的 `onNativeHitTest` 无人接收 → 点击无任何反馈。改为**幂等重建**（先解绑旧 click 监听与 native 订阅再完整重建）。
+3. **C++ 注释必须纯 ASCII**：中文注释在 GBK 代码页（cl.exe 936）下编译失败（C4819/语法错），新注释一律英文。
+
+### 追加修复（172e2fa）——静止几秒后眼睛发灰
+
+**根因**：**Idle_6 待机动作驱动 Param36/37 离开隐藏态**（拉到 5+）→ 静止时 Idle 轮换到 Idle_6 → 叠层显示 → 灰；互动拉回隐藏态恢复，回 Idle 又灰。
+**修复**：**叠层参数每帧守卫**——非互动/非登场期间强制写回隐藏态（`force_overlay_hidden`，C++ 与 reset 共用隐藏态表；前端 `applyParameters` 同步，`activeInteraction` 为空且非登场时每帧写回）。**叠层只允许在互动/登场动作播放时显示**。
+**教训**：**Idle 组也要查曲线**——不只是 Tap/Start 驱动叠层，待机动作同样可能（Idle_6 是 5.13s 的变体，轮换到它就灰）。
+
+### 追加修复（7865a51）——互动后长时间发灰（最终闭环）
+
+**根因**：TapSkirt 等互动后 **Param36 残留 -0.49**（moc3 默认 0）驱动"上半脸阴影层"（眼睛发白灰影）；Param36 不在此前任何守卫清单（只覆盖 18/37-64）。
+**定位方法（可复用的完整链路）**：
+1. **离线渲染复现**：`cargo run --example render_frame -- --dir assets/live2d/natsume --motion-group TapSkirt --motion-index 2 --frames 480` 复现灰影（native 渲染器离线渲染与运行时同源）；
+2. **--no-mask 排除 mask**；drawable opacity/visible dump 对比排除层状态；
+3. **L2D_RESET_ALL=1 全参数重置 + 刷新一帧 → 灰影消失**（参数驱动实锤）；
+4. **C++ 打印"当前值≠默认值"参数 diff**（`GetParameterId(i)->GetString().GetRawString()`，注意 API 返回类型）→ 残留清单：Param36=-0.49（默认 0）、Param59/60=-0.51（默认 -1，已在守卫）、其余为姿态/物理参数（Idle 覆盖）；
+5. **physics3.json 输出清单核对**：Param36 非物理输出（物理输出仅 Qunzi/HairSide/Guodongyan/Param21-30 等）→ 纯动作残留。
+**修复**：Param36（隐藏态 0）补入前端 `NATSUME_RESET_PARAMS` 与 C++ `apply_overlay_hidden`。
+
+## 新模型接入检查清单（2026-08-16 经验沉淀）
+
+> 目标：新模型一次接入成功，避免逐轮踩坑。全部步骤离线/浏览器可做，不需要反复打包。
+
+**0. 模型初筛（10 分钟，决定适配工作量）**
+- 解包 `model3.json` + `motions/*.motion3.json`：
+  - **Idle 组干净度**：Idle 动作是否带 ParamEyeLOpen/Open2 闭眼曲线（解析曲线 min/max 与时间占比）——带闭眼曲线 → 必须眨眼覆写；
+  - **Idle 组是否驱动叠层参数**（Param36-64 等非姿态参数）→ 必须叠层守卫；
+  - 叠层参数数量与隐藏态分布 → 决定复位清单工作量。
+
+**1. 参数隐藏态实证（30 分钟）**
+- 浏览器加载模型（/chat 启用），dump 全部参数当前值（live2dcubismcore `_parameterIds`/`_parameterValues`，或 C++ `GetParameterValue` + `GetParameterDefaultValue`）；
+- **记录"无动作时的参数值"= 各参数隐藏态**（moc3 默认值），按 -1/0 分组；
+- 确认眨眼参数组（`model3.json` Groups.EyeBlink）与前端 `BLINK_PARAMS`/`blink_params_for` 对齐。
+
+**2. 动作曲线差集（30 分钟）**
+- 解析全部 motion3：**Tap/Start 驱动、Idle 不覆盖、且末尾值 ≠ 隐藏态**的参数 = 复位/守卫清单；
+- 特别注意：**Param36 类"漏网"参数**（驱动了但不在直觉清单里）、各 Tap 变体独有参数（如 TapFoot_1 驱动 Param64）；
+- PartOpacity 曲线检查：是否有"恒非 1"或"从 0 拉高"的层。
+
+**3. 双端接线（1 小时）**
+- 眨眼覆写（native `BlinkState` + 前端 `blinkScheduler`，参数组按角色）；
+- 叠层守卫（native `force_overlay_hidden` + 前端 `applyParameters`，非互动/非登场每帧写回）；
+- 复位清单（前端 `NATSUME_RESET_PARAMS` + C++ `apply_overlay_hidden` 同一隐藏态表）；
+- 互动事件幂等重建（切换角色不丢订阅）。
+
+**4. 验证（30 分钟，离线优先）**
+- 离线：`render_frame.rs` 渲染 Idle 帧 + 各 Tap 结束帧 + `L2D_AFTER_IDLE`（动作后接 Idle）→ 检查眼睛/叠层；
+- 浏览器：静止 60s 参数采样（叠层恒隐藏、眼睛恒 1.0）+ 各互动后采样；
+- native：打包后按"静止 → 互动 → 结束 → 静止"循环人工检查。
+
+**5. 留档**
+- 现象→根因→修复→验证写入本文档；隐藏态表/守卫清单如有变化同步前端与 C++ 两处。
