@@ -502,7 +502,11 @@ const progressWarning = computed<{ level: 'warn' | 'danger'; text: string } | nu
   }
   return null
 })
-const t8State = computed(() => status.value?.t8 ?? null)
+/** T8 双时钟是 H3 专属路径：仅选中 minimax-h3 时展示徽章（Wan 走原生工作流，与 T8 无关）。 */
+const t8State = computed(() => {
+  if (selectedModelId.value !== 'minimax-h3') return null
+  return status.value?.t8 ?? null
+})
 const canGenerate = computed(() => {
   const mode = selectedMode.value
   // 分镜模式走 ShotListEditor 自己的提交链路，不进单任务生成。
