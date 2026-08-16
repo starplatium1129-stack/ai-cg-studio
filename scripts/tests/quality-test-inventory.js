@@ -15,6 +15,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-anima-session.js',
     'test-api-client.js',
     'test-archive-state-panel.js',
+    'test-batch-draw.js',
     'test-blink-scheduler.js',
     'test-character-profiles.js',
     'test-chat-storage.js',

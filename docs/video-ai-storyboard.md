@@ -5,6 +5,27 @@
 > 服务端新文件 `routes/video-ai.js`（不碰 `routes/video.js`），前端改动
 > 集中在 `ShotListEditor.vue` + `src/api/videoApi.ts`。
 
+## 绘图页批量出图 → 历史加入分镜（2026-08-17 追加）
+
+多场景批量出图，让"出图 → 挑图 → 攒分镜"一条龙：
+
+1. 绘图页点「批量出图 · 多场景」→ 面板多选场景蓝图 + 引擎（SD/Anima）+ 每场景 1/3 张；
+2. `useBatchDraw`（`src/composables/useBatchDraw.ts`）串行逐张执行：
+   - SD 走 `runJob` 同路径（复用现有参数/细节器/入册逻辑），
+   - Anima 直接 `POST /api/anima/jobs` + 轮询 + fetchImage（`animaRequestPayload` 复用）；
+   - 每张自动 `commitHistoryEntry` 入册历史（prompt 为该场景 prose + 角色锚点）；
+3. 结果在「历史」面板挑选：每张历史图新增「加入分镜」按钮
+   （`HistoryPanel` emit to-shots → `handleHistoryToShots`：IndexedDB 取 blob +
+   条目 prompt → `tagsToVideoProse` → `appendShotsCtx`）；
+4. 攒齐后「去分镜短片」→ AI 整理 → 批量生成。
+
+要点：
+- 批量 prompt = `场景 prose + 角色锚点`（热门角色 identityProse / 工作室 CHAR_PROMPT tag），
+  不经过完整词条流——批量是快速选图场景，精修仍走单张出图；
+- 3 候选 = baseSeed + variant*1000（锁定可复现）；
+- 单张失败不打断整批；取消 = 当前张完成后停止；
+- Anima 批量固定 `/api/anima/jobs`（Krea 2 不批量，与 3 组候选限制一致）。
+
 ## 用法
 
 1. 绘图页出图 →「加入分镜」→「去分镜短片」；

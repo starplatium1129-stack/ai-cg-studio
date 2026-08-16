@@ -25,6 +25,7 @@
             </span>
             <div class="history-actions" aria-label="历史操作">
               <button class="history-action primary" type="button" @click="$emit('resume', item)">继续</button>
+              <button class="history-action" type="button" title="把这张图加入分镜短片待带入列表" @click="$emit('to-shots', item)">加入分镜</button>
               <button class="history-action" type="button" @click="$emit('duplicate', item)">复制</button>
               <button class="history-action delete" type="button" aria-label="删除历史" @click="$emit('delete', item)">×</button>
             </div>
@@ -51,6 +52,7 @@ defineEmits<{
   resume: [entry: HistoryEntry]
   duplicate: [entry: HistoryEntry]
   delete: [entry: HistoryEntry]
+  'to-shots': [entry: HistoryEntry]
 }>()
 
 const thumbs = reactive<Record<number, string>>({})
