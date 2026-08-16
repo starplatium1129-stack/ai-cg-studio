@@ -11,11 +11,11 @@ import type { ParticlePoint } from './particleShapes'
  */
 export interface PortraitCloud {
   id: string
-  /** 抠图后包围盒的宽高比（w/h）。 */
+  /** 图片宽高比（w/h）。 */
   aspect: number
-  /** k-means 提取的人物主色（按占比降序）。 */
+  /** k-means 主色（按占比降序，最多 36 色支持 base36 索引）。 */
   palette: string[]
-  /** 覆盖网格：'.'=背景，'0'..(palette.length-1)=调色板序号，按行拼接。 */
+  /** 覆盖网格：'.'=透明，其余为 base36 调色板序号（0-9a-v），按行拼接。 */
   grid: {
     w: number
     h: number
@@ -113,10 +113,10 @@ export function samplePortraitPoints(
     for (let col = 0; col < cols; col += 1) {
       const xNorm = (col + 0.5) / cols
       const gx = Math.min(gw - 1, Math.floor(xNorm * gw))
-      const cell = cells.charCodeAt(rowBase + gx)
-      if (cell === 46 /* '.' */) continue
-      const paint = cell - 48 /* '0' */
-      if (paint < 0 || paint >= cloud.palette.length) continue
+      const cell = cells[rowBase + gx]
+      if (cell === '.') continue
+      const paint = parseInt(cell, 36)
+      if (Number.isNaN(paint) || paint >= cloud.palette.length) continue
       points.push({
         x: 0.5 + (xNorm - 0.5) * boxW,
         y: 0.5 + (yNorm - 0.5) * boxH,
@@ -138,8 +138,8 @@ function estimateCoverage(cloud: PortraitCloud): number {
   const { cells } = cloud.grid
   let filled = 0
   for (let index = 0; index < cells.length; index += 1) {
-    if (cells.charCodeAt(index) !== 46) filled += 1
+    if (cells[index] !== '.') filled += 1
   }
   const ratio = filled / Math.max(1, cells.length)
-  return Math.min(0.95, Math.max(0.25, ratio))
+  return Math.min(0.98, Math.max(0.25, ratio))
 }
