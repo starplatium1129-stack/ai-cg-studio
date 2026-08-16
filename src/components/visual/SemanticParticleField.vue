@@ -20,7 +20,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, watch } from 'vue'
 import { createParticleShape, type ParticlePoint, type ParticleShapeId } from '@/utils/particleShapes'
-import { loadPortraitCloud, samplePortraitPoints, type PortraitCloud } from '@/utils/particlePortrait'
+import { loadPortraitCloud, samplePortraitPoints, shouldUnderlay, type PortraitCloud } from '@/utils/particlePortrait'
 import { registerParticleFrame } from '@/utils/particleScheduler'
 
 const props = withDefaults(defineProps<{
@@ -85,6 +85,19 @@ let portraitToken = 0
 /** 图片点阵激活标记（模板用，隐藏画布中央的装饰菱形标记）。 */
 const portraitActive = ref(false)
 
+/** 逸散/浮动粒子（优化点 ③）：缓慢漂移、闪烁淡出的发光碎屑，打破纯静态点阵
+    的呆板感；hero/ambient 密度启用，backdrop 不启用（保持省电与静止背景）。 */
+interface AmbientParticle {
+  x: number
+  y: number
+  vx: number
+  vy: number
+  phase: number
+  size: number
+  paint: number
+}
+let ambient: AmbientParticle[] = []
+
 /** 主题可读性：人物原色可能过暗（黑裙/深发在深色主题不可见），提亮到最低亮度。 */
 function legibleColor(hex: string): string {
   const value = hex.trim()
@@ -124,6 +137,7 @@ let pointerY = -10000
 let pointerActive = false
 let lastFrame = 0
 let lastPhysicsFrame = 0
+let lastAmbientFrame = 0
 let slowFrames = 0
 let qualityScale = 1
 
@@ -170,8 +184,10 @@ function schedulePaletteRead() {
 }
 
 function targetPosition(point: ParticlePoint): { x: number; y: number } {
-  const paddingX = Math.max(22, width * 0.08)
-  const paddingY = Math.max(20, height * 0.08)
+  // 剪影模式边距收窄（4%）：配合点云内容盒 1.02，人物实际占屏约 94%，
+  // 消除「人物显小、留白过多」；抽象形状维持 8% 经典边距。
+  const paddingX = portraitCloud ? Math.max(10, width * 0.04) : Math.max(22, width * 0.08)
+  const paddingY = portraitCloud ? Math.max(10, height * 0.04) : Math.max(20, height * 0.08)
   return {
     x: paddingX + point.x * Math.max(1, width - paddingX * 2),
     y: paddingY + point.y * Math.max(1, height - paddingY * 2),
@@ -233,6 +249,50 @@ function setShape(animate = true) {
     draw()
   } else {
     startLoop()
+  }
+  ensureAmbient()
+}
+
+/**
+ * 逸散粒子：hero/ambient 密度各 40/24 颗，随机方向缓慢漂移 + 正弦闪烁；
+ * backdrop 与 reduced-motion 不启用（保持静止背景与省电）。
+ */
+function ensureAmbient() {
+  if (reduceMotion.value || props.density === 'backdrop' || !width || !height) {
+    ambient = []
+    return
+  }
+  const target = props.density === 'hero' ? 40 : 24
+  const paints = portraitCloud && portraitPaints.length ? portraitPaints : null
+  while (ambient.length < target) {
+    const angle = Math.random() * Math.PI * 2
+    const speed = 0.06 + Math.random() * 0.16
+    ambient.push({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      phase: Math.random() * Math.PI * 2,
+      size: 0.7 + Math.random() * 1.1,
+      paint: paints ? Math.floor(Math.random() * paints.length) : (Math.random() < 0.25 ? 2 : 0),
+    })
+  }
+}
+
+function updateAmbient(step: number) {
+  const margin = 24
+  for (const dot of ambient) {
+    dot.x += dot.vx * step
+    dot.y += dot.vy * step
+    dot.phase += 0.035 * step
+    if (dot.x < -margin || dot.x > width + margin || dot.y < -margin || dot.y > height + margin) {
+      dot.x = Math.random() * width
+      dot.y = Math.random() * height
+      const angle = Math.random() * Math.PI * 2
+      const speed = 0.06 + Math.random() * 0.16
+      dot.vx = Math.cos(angle) * speed
+      dot.vy = Math.sin(angle) * speed
+    }
   }
 }
 
@@ -299,6 +359,17 @@ function draw() {
   // 运动拖尾（对齐参考实现的残影流光）：粒子位移超过阈值时连一条
   // 上一帧→当前帧线段；静止粒子不入路径——空闲观感不变，交互涟漪带出流光。
   const tailPaths = paths.map(() => new Path2D())
+  // 深色衬底（优化点 ① + 2026-08-16 亮色主题反馈）：亮度 >0.62 的亮色在浅底上
+  // 会「隐形」，垫深色半透明衬点恢复辨识度；中亮以下不垫（0.38 阈值实测连成
+  // 灰雾覆盖大半画布、脸部发黑，已回退）。
+  const underFlags = paints ? paints.map((color) => shouldUnderlay(color)) : null
+  const underPaths = underFlags && underFlags.some(Boolean)
+    ? underFlags.map((light) => (light ? new Path2D() : null))
+    : null
+  // 衬点颜色：深色主题用近黑（screen 下≈不可见，仅防立绘自带浅色区隐形）；
+  // 浅色主题用中深灰——纯黑衬点叠加在肤色等中亮点上会把脸部压成黑灰雾
+  // （2026-08-16 双模型实测），中深灰在浅底上仍提供轮廓、又不至于发黑。
+  const underColor = darkTheme ? '#0c0e14' : '#3a3f4a'
   const energyScale = props.signal === 'active' ? 1.16 : props.signal === 'warning' ? 1.08 : 1
 
   for (const particle of particles) {
@@ -319,6 +390,13 @@ function draw() {
       tailPaths[pathIndex].moveTo(particle.prevX, particle.prevY)
       tailPaths[pathIndex].lineTo(particle.x, particle.y)
     }
+    if (underPaths) {
+      const under = underPaths[pathIndex]
+      if (under) {
+        under.moveTo(particle.x + radius * 1.8, particle.y)
+        under.arc(particle.x, particle.y, radius * 1.8, 0, Math.PI * 2)
+      }
+    }
     path.moveTo(particle.x + radius, particle.y)
     path.arc(particle.x, particle.y, radius, 0, Math.PI * 2)
   }
@@ -326,6 +404,23 @@ function draw() {
   ctx.lineCap = 'round'
   if (paints) {
     ctx.globalCompositeOperation = darkTheme ? 'screen' : 'source-over'
+    if (underPaths) {
+      ctx.globalCompositeOperation = 'source-over'
+      // 衬底强度 0.5：只覆盖 >0.62 的真亮色；1.5×/0.45 实测整体变「灰蒙偏脏」
+      // （vision 双轮对比），1.8×/0.5 时「偏向整洁」，取后者。
+      ctx.globalAlpha = .5
+      ctx.fillStyle = underColor
+      underPaths.forEach((path) => { if (path) ctx.fill(path) })
+      ctx.globalCompositeOperation = darkTheme ? 'screen' : 'source-over'
+    }
+    // 浅色主题拖尾先垫深色衬线：亮色流光在浅底上同样会「隐形」，交互时
+    // 涟漪残影要保持可见；深色主题 screen 下亮色自带发光，无需衬线。
+    if (!darkTheme) {
+      ctx.globalAlpha = .3
+      ctx.strokeStyle = underColor
+      ctx.lineWidth = 2.4
+      tailPaths.forEach((path) => ctx.stroke(path))
+    }
     paints.forEach((color, index) => {
       ctx.globalAlpha = .32
       ctx.strokeStyle = color
@@ -333,8 +428,8 @@ function draw() {
       ctx.stroke(tailPaths[index])
     })
     // 图片点阵：深色主题 screen 混合（暗部隐入底色、亮部发光，与档案风融合）；
-    // 浅色主题正常混合但整体透明度略降（暗部粒子在浅底上的硬度收敛 10-15%）
-    ctx.globalAlpha = darkTheme ? .88 : .76
+    // 浅色主题正常混合，主点透明度 0.86（暗部实画保持层次，亮部由衬点托底）。
+    ctx.globalAlpha = darkTheme ? .88 : .86
     paints.forEach((color, index) => {
       ctx.fillStyle = color
       ctx.fill(paths[index])
@@ -359,6 +454,23 @@ function draw() {
     ctx.fillStyle = palette.accent
     ctx.fill(paths[2])
   }
+  // 逸散发光碎屑（优化点 ③）：缓慢漂移 + 正弦闪烁；主粒子静止时它们仍微微
+  // 浮动，给点阵加呼吸感（backdrop 不生成，reduced-motion 不生成）。
+  if (ambient.length) {
+    for (const dot of ambient) {
+      const pulse = 0.5 + 0.5 * Math.sin(dot.phase)
+      const color = paints
+        ? paints[dot.paint % paints.length]
+        : (dot.paint === 2 ? palette.accent : palette.primary)
+      // 无衬点：浅色主题下亮色碎屑自然淡出（与深色主题下暗色碎屑淡出对称），
+      // 垫衬点实测变成背景上的「屏幕灰尘/噪点」（2026-08-16 vision 三轮）。
+      ctx.globalAlpha = (0.14 + 0.24 * pulse) * energyScale
+      ctx.fillStyle = color
+      ctx.beginPath()
+      ctx.arc(dot.x, dot.y, dot.size, 0, Math.PI * 2)
+      ctx.fill()
+    }
+  }
   ctx.globalAlpha = 1
 }
 
@@ -375,6 +487,9 @@ function renderFrame(now: number) {
   }
   lastFrame = now
   const moving = simulateParticles(now)
+  const ambientElapsed = lastAmbientFrame ? Math.min(48, Math.max(1, now - lastAmbientFrame)) : 16.67
+  lastAmbientFrame = now
+  updateAmbient(ambientElapsed / 16.67)
   draw()
   if (!moving && props.density === 'backdrop') stopLoop()
 }
@@ -394,6 +509,7 @@ function stopLoop() {
   stopScheduledFrame = null
   lastFrame = 0
   lastPhysicsFrame = 0
+  lastAmbientFrame = 0
 }
 
 function resize() {

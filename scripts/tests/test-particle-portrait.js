@@ -6,7 +6,7 @@
 
 const { test } = require('node:test');
 const assert = require('assert');
-const { samplePortraitPoints } = require('../../src/utils/particlePortrait.ts');
+const { samplePortraitPoints, shouldUnderlay } = require('../../src/utils/particlePortrait.ts');
 
 const PALETTE = Array.from({ length: 20 }, (_, index) => `#${index.toString(16).padStart(2, '0')}0000`)
 
@@ -41,6 +41,8 @@ test('整图点云：外圈主色被剔除，内部剪影保留', () => {
   assert.ok(sample.points.every((point) => point.paint === 11),
     '背景色(10)格子必须被剔除，只留内部(11)')
   assert.ok(sample.points.length < 100 * 0.9, '剔除后点数应明显少于整图')
+  // 2026-08-16 内容盒放大（0.96 → 1.02）：人物占屏约 94%，消除留白过多
+  assert.ok(sample.boxW > 0.96 && sample.boxW <= 1.02, '内容盒放大到 1.02 以撑满场域')
 })
 
 test('抠图素材（外圈透明）：跳过剔除，内部全部保留', () => {
@@ -72,4 +74,15 @@ test('多色杂底（外圈主色 >3 个）：保守跳过，不误伤', () => {
   assert.ok(sample.points.length > 0)
   assert.ok(sample.points.some((point) => point.paint === 11),
     '背景色过多时不得剔除，内部点必须存在')
+})
+
+test('shouldUnderlay 深色衬底只给极亮色（>0.72，2026-08-16 亮色主题反馈）', () => {
+  assert.equal(shouldUnderlay('#f8f8f8'), true, '近白需要衬底')
+  assert.equal(shouldUnderlay('#e8e8e8'), true, '亮度 0.91 垫')
+  assert.equal(shouldUnderlay('#c8c8c8'), true, '亮度 0.78 垫')
+  assert.equal(shouldUnderlay('#b6b6b6'), false, '亮度 0.71 不垫（0.62 阈值实测白发区连成灰雾）')
+  assert.equal(shouldUnderlay('#999999'), false, '中亮不垫')
+  assert.equal(shouldUnderlay('#666666'), false)
+  assert.equal(shouldUnderlay('#404040'), false, '暗色不垫')
+  assert.equal(shouldUnderlay('not-a-color'), false, '非法颜色不垫')
 })

@@ -36,6 +36,23 @@ export interface PortraitSample {
 const cloudCache = new Map<string, PortraitCloud | null>()
 const pendingLoads = new Map<string, Promise<PortraitCloud | null>>()
 
+/**
+ * 网点是否需要深色衬底（2026-08-16 用户反馈：浅色主题下亮色点阵看不清）：
+ * 亮度 >0.72 的极亮色（白/近白）在浅色背景上「隐形」，绘制时先垫深色半透明
+ * 衬点恢复辨识度；0.62-0.72 的中亮色裸奔（与浅底仍有 0.25 左右对比，垫了反而
+ * 让白发等密集亮色区连成灰雾——0.62 阈值实测白发角色头发/脸部发灰）。判定输入
+ * 应为**提亮后**的实际绘制色。
+ */
+export function shouldUnderlay(hex: string): boolean {
+  const match = /^#?([0-9a-f]{6})$/i.exec(hex.trim())
+  if (!match) return false
+  const r = parseInt(match[1].slice(0, 2), 16) / 255
+  const g = parseInt(match[1].slice(2, 4), 16) / 255
+  const b = parseInt(match[1].slice(4, 6), 16) / 255
+  const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b
+  return lum > 0.72
+}
+
 export function portraitCloudUrl(id: string): string {
   return `/assets/particles/p_${encodeURIComponent(id)}.json`
 }
@@ -123,14 +140,16 @@ export function samplePortraitPoints(
   }
   const fieldAspect = fieldWidth / fieldHeight
   const charAspect = cloud.aspect > 0 ? cloud.aspect : 1
+  // 2026-08-16：内容盒 0.96 → 1.02（配合前端剪影模式 4% 边距，实际占屏约 94%，
+  // 比原来的 80% 大 ~16%）——角色页留白过多、人物显小的问题来自双 8% 边距叠乘。
   let boxW: number
   let boxH: number
   if (charAspect >= fieldAspect) {
-    boxW = 0.96
-    boxH = 0.96 * (fieldAspect / charAspect)
+    boxW = 1.02
+    boxH = 1.02 * (fieldAspect / charAspect)
   } else {
-    boxH = 0.96
-    boxW = 0.96 * (charAspect / fieldAspect)
+    boxH = 1.02
+    boxW = 1.02 * (charAspect / fieldAspect)
   }
 
   const boxPxW = Math.max(8, boxW * fieldWidth)
