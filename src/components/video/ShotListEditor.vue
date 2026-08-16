@@ -79,16 +79,16 @@
             <span class="video-step">02 · 分镜清单</span>
             <h2>{{ shots.length }} 个镜头 · 建议 1–2 分钟片拆 8–15 镜</h2>
           </div>
-          <div class="shot-toolbar">
-            <select v-model="sceneFillId" class="select" aria-label="从场景蓝图快速填充镜头描述">
-              <option value="">场景蓝图 → 填入空镜头</option>
-              <option v-for="blueprint in sceneBlueprints" :key="blueprint.id" :value="blueprint.id">
-                {{ blueprint.title }}
-              </option>
-            </select>
-            <button class="btn btn-ghost" type="button" @click="addShot">＋ 添加镜头</button>
-            <button class="btn btn-ghost" type="button" :disabled="!shots.length" @click="clearShots">清空</button>
-          </div>
+        </div>
+        <div class="shot-toolbar">
+          <select v-model="sceneFillId" class="select" aria-label="从场景蓝图快速填充镜头描述">
+            <option value="">场景蓝图 → 填入空镜头</option>
+            <option v-for="blueprint in sceneBlueprints" :key="blueprint.id" :value="blueprint.id">
+              {{ blueprint.title }}
+            </option>
+          </select>
+          <button class="btn btn-ghost" type="button" @click="addShot">＋ 添加镜头</button>
+          <button class="btn btn-ghost" type="button" :disabled="!shots.length" @click="clearShots">清空</button>
         </div>
 
         <article v-for="(shot, index) in shots" :key="index" class="shot-row">
@@ -106,7 +106,10 @@
 
           <div class="shot-fields">
             <label class="field shot-field-prompt">
-              <span class="field-label">画面描述</span>
+              <span class="shot-field-head">
+                <span class="field-label">画面描述</span>
+                <span class="shot-count" :data-warning="shot.prompt.length > 900 || undefined">{{ shot.prompt.length }} / 4000</span>
+              </span>
               <textarea
                 v-model="shot.prompt"
                 class="textarea"
@@ -115,7 +118,6 @@
                 :disabled="batchActive"
                 placeholder="写清：主体动作、环境、光线、镜头意图；身份细节交给角色锚点。"
               ></textarea>
-              <span class="shot-count" :data-warning="shot.prompt.length > 900 || undefined">{{ shot.prompt.length }} / 4000</span>
             </label>
 
             <label class="field shot-field-dialogue">
@@ -608,13 +610,54 @@ onBeforeUnmount(() => {
 <style scoped>
 .shot-editor { display: grid; gap: var(--s-4); }
 .shot-blocked { color: var(--text-secondary); line-height: 1.7; }
-.shot-toolbar { display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; }
+
+/* ── 面板视觉（组件自包含：video-* 类名在 VideoStudioView 是 scoped 的，
+   全局 CSS 没有定义，不能跨组件复用——2026-08-16 截图审查发现面板无边框）── */
+.video-panel {
+  position: relative;
+  padding: clamp(18px, 2.4vw, 28px);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-xl);
+  background: color-mix(in srgb, var(--bg-surface) 90%, transparent);
+  box-shadow: var(--shadow-glass-sm);
+}
+.video-panel::before {
+  position: absolute; top: -1px; left: var(--s-5); width: 44px; height: 1px;
+  background: linear-gradient(90deg, var(--archive-cyan), transparent); content: "";
+}
+.video-panel-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s-4); margin-bottom: var(--s-4); }
+.video-panel-heading h2 { margin: 4px 0 0; font-size: var(--fs-title-sm); }
+.video-step { color: var(--accent); font: 700 var(--fs-mono-xs) var(--font-mono); letter-spacing: .12em; text-transform: uppercase; }
+.video-choice-group { display: grid; gap: var(--s-2); }
+.video-quality-row { display: grid; gap: var(--s-2); margin-top: var(--s-4); }
+.video-quality-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-2); }
+.video-quality-grid button {
+  display: grid; gap: 4px; min-height: 66px; padding: var(--s-2) var(--s-3);
+  border: 1px solid var(--border-soft); border-radius: var(--r-md);
+  background: var(--bg-deep); color: var(--text-secondary); text-align: left; cursor: pointer;
+  transition: border-color var(--motion-hover), background var(--motion-hover), transform var(--motion-press) var(--ease-out);
+}
+.video-quality-grid button:active { transform: scale(.98); }
+.video-quality-grid button.active { border-color: var(--accent); background: var(--accent-soft); color: var(--text-primary); }
+.video-quality-grid strong { font-size: var(--fs-body-sm); }
+.video-quality-grid small { color: var(--text-muted); font-size: var(--fs-label-xs); line-height: 1.4; }
+.video-quality-grid em { color: var(--accent); font: 600 var(--fs-mono-xs) var(--font-mono); font-style: normal; }
+.video-segmented { display: inline-flex; flex-wrap: wrap; padding: 3px; border: 1px solid var(--border-soft); border-radius: var(--r-md); background: var(--bg-deep); }
+.video-segmented button { min-height: 32px; padding: 0 var(--s-3); border: 0; border-radius: var(--r-sm); background: transparent; color: var(--text-muted); cursor: pointer; }
+.video-segmented button.active { background: var(--accent); color: var(--text-inverse); }
+.video-install-note { margin: 0 0 var(--s-3); color: var(--text-muted); font-size: var(--fs-label-xs); line-height: 1.55; }
+.video-progress { height: 3px; margin: var(--s-3) 0; overflow: hidden; border-radius: var(--r-pill); background: var(--bg-deep); }
+.video-progress i { display: block; height: 100%; background: linear-gradient(90deg, var(--archive-cyan), var(--accent)); transition: width .4s ease; }
+
+.shot-toolbar { display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; margin-bottom: var(--s-3); }
+.shot-toolbar .select { width: auto; max-width: 300px; flex: 0 1 auto; }
 .shot-toggle { display: flex; align-items: flex-start; gap: var(--s-3); margin-top: var(--s-4); padding: var(--s-3); border: 1px solid var(--border-soft); border-radius: var(--r-md); background: var(--bg-deep); cursor: pointer; }
 .shot-toggle input { margin-top: 4px; accent-color: var(--accent); }
 .shot-toggle strong, .shot-toggle small { display: block; }
 .shot-toggle small { margin-top: 3px; color: var(--text-muted); font-size: var(--fs-label-xs); line-height: 1.5; }
 .shot-identity-field { display: grid; gap: var(--s-2); margin-top: var(--s-4); }
-.shot-identity-row { display: grid; grid-template-columns: minmax(0, 1fr) 220px; gap: var(--s-2); }
+.shot-identity-row { display: grid; grid-template-columns: minmax(0, 1fr) 220px; gap: var(--s-2); align-items: start; }
+.shot-identity-row .select { align-self: start; }
 .shot-row { display: grid; gap: var(--s-3); padding: var(--s-4) 0; border-top: 1px solid var(--border-soft); }
 .shot-row:first-of-type { border-top: 0; padding-top: 0; }
 .shot-row-head { display: flex; align-items: center; gap: var(--s-3); }
@@ -628,8 +671,9 @@ onBeforeUnmount(() => {
 .shot-row-actions button { min-width: 30px; height: 30px; border: 1px solid var(--border-soft); border-radius: var(--r-sm); background: var(--bg-deep); color: var(--text-secondary); cursor: pointer; }
 .shot-row-actions button:disabled { opacity: .4; cursor: not-allowed; }
 .shot-fields { display: grid; gap: var(--s-3); }
-.shot-field-prompt { position: relative; }
-.shot-count { position: absolute; right: var(--s-2); top: 34px; color: var(--text-muted); font: 600 var(--fs-mono-xs) var(--font-mono); }
+.shot-field-prompt { display: grid; gap: var(--s-2); }
+.shot-field-head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-2); }
+.shot-count { color: var(--text-muted); font: 600 var(--fs-mono-xs) var(--font-mono); }
 .shot-count[data-warning="true"] { color: var(--warning-text); }
 .shot-selects { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--s-2); }
 .shot-frame-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2); }
