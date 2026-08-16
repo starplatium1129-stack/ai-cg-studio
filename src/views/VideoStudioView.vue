@@ -43,6 +43,12 @@
       </button>
     </section>
 
+    <div v-if="t8State" class="video-t8-bar" :data-state="t8State.available ? 'fast' : 'slow'" role="status">
+      <span class="video-t8-dot"></span>
+      {{ t8State.reason }}
+      <span v-if="!t8State.available" class="video-t8-hint">任务会自动重新探测，无需重启</span>
+    </div>
+
     <div class="video-workspace">
       <div class="video-creation-column">
         <ShotListEditor v-if="selectedMode === 'shots'" :status="status" />
@@ -750,6 +756,22 @@ onBeforeUnmount(() => {
 .video-header .page-subtitle { max-width:760px; }
 .video-header .archive-icon { width:1rem; }
 .video-mode-strip { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:var(--s-3); margin-bottom:var(--s-5); }
+.video-t8-bar {
+  display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-2);
+  margin:-var(--s-3) 0 var(--s-4);
+  padding:var(--s-2) var(--s-3);
+  border:1px solid var(--border-soft);
+  border-radius:var(--r-md);
+  font-size:var(--fs-label-xs);
+  line-height:1.5;
+}
+.video-t8-bar[data-state="fast"] { background:color-mix(in srgb,var(--success) 8%,transparent); color:var(--success-text); border-color:color-mix(in srgb,var(--success) 30%,var(--border-soft)); }
+.video-t8-bar[data-state="slow"] { background:color-mix(in srgb,var(--warning) 10%,transparent); color:var(--warning-text); border-color:color-mix(in srgb,var(--warning) 35%,var(--border-soft)); }
+.video-t8-dot { width:8px; height:8px; border-radius:50%; background:currentColor; }
+.video-t8-hint { color:var(--text-muted); }
+.video-t8-badge { padding:3px var(--s-2); border-radius:var(--r-pill); font:700 var(--fs-mono-xs) var(--font-mono); white-space:nowrap; }
+.video-t8-badge[data-state="fast"] { background:color-mix(in srgb,var(--success) 14%,transparent); color:var(--success-text); }
+.video-t8-badge[data-state="slow"] { background:color-mix(in srgb,var(--warning) 14%,transparent); color:var(--warning-text); }
 .video-mode-card {
   display:grid;
   grid-template-columns:auto minmax(0,1fr) auto;
@@ -899,9 +921,6 @@ onBeforeUnmount(() => {
 .video-inline-message.error { background:color-mix(in srgb,var(--danger) 10%,transparent); color:var(--danger-text); }
 .video-inline-message.warning { background:color-mix(in srgb,var(--warning) 12%,transparent); color:var(--warning-text); }
 .video-job-eta { margin:2px 0 0; color:var(--text-muted); font: 600 var(--fs-mono-xs) var(--font-mono); }
-.video-t8-badge { padding:3px var(--s-2); border-radius:var(--r-pill); font:700 var(--fs-mono-xs) var(--font-mono); white-space:nowrap; }
-.video-t8-badge[data-state="fast"] { background:color-mix(in srgb,var(--success) 14%,transparent); color:var(--success-text); }
-.video-t8-badge[data-state="slow"] { background:color-mix(in srgb,var(--warning) 14%,transparent); color:var(--warning-text); }
 .video-result-panel { margin-top:var(--s-5); }
 .video-player { display:block; width:100%; max-height:min(72vh,760px); border-radius:var(--r-lg); background:var(--bg-deep); }
 .video-review-checklist { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:var(--s-2); margin-top:var(--s-3); }
