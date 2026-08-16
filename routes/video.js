@@ -1590,7 +1590,11 @@ function createBatchService(config, videoService, dependencies) {
     });
     fs.writeFileSync(listPath, lines.join('\n') + '\n');
     var target = path.join(root, 'batch_' + batch.id + '.mp4');
+    // 2026-08-16 真机实测：H3 输出画布可能与请求画布有 ±几像素漂移（如 832×480 →
+    // 832×509），逐镜拼接必须 scale+pad 归一化到批量画布，否则成片分辨率逐段漂移。
+    var canvas = batch.shots[0].input;
     var args = ['-y', '-f', 'concat', '-safe', '0', '-i', listPath,
+      '-vf', 'scale=' + canvas.width + ':' + canvas.height + ':force_original_aspect_ratio=decrease,pad=' + canvas.width + ':' + canvas.height + ':(ow-iw)/2:(oh-ih)/2,setsar=1',
       '-c:v', 'libx264', '-preset', 'medium', '-crf', '19', '-pix_fmt', 'yuv420p',
       '-c:a', 'aac', '-b:a', '192k', target];
     try {
@@ -1599,6 +1603,7 @@ function createBatchService(config, videoService, dependencies) {
       // 部分镜头可能无音轨导致音频编码失败：去掉音频轨重试（纯视频拼接）。
       console.warn('[video] 带音轨拼接失败，回退纯视频拼接：' + error.message);
       await runFfmpeg(['-y', '-f', 'concat', '-safe', '0', '-i', listPath,
+        '-vf', 'scale=' + canvas.width + ':' + canvas.height + ':force_original_aspect_ratio=decrease,pad=' + canvas.width + ':' + canvas.height + ':(ow-iw)/2:(oh-ih)/2,setsar=1',
         '-c:v', 'libx264', '-preset', 'medium', '-crf', '19', '-pix_fmt', 'yuv420p',
         '-an', target]);
     } finally {

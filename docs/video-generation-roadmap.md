@@ -250,3 +250,67 @@ ComfyUI/models/
 - 不因模型“热门”就标记为本机可用。
 - 不在真实 GPU 验证前承诺生成耗时、显存占用或质量等级。
 - 不把视频原生音频与现有 GPT-SoVITS 配音链路强行合并。
+
+## ✅ 已落地：P5–P8 · 剧情短片工作流（2026-08-16，用户指示本会话接管视频链路）
+
+> 调研基线：`docs/narrative-short-film-workflow.md`。行业共识流水线 = 剧本 → 分镜表 →
+> 角色/场景资产 → 逐镜头图生视频 → 配音音效 → 剪辑合成；本项目缺的「分镜管理 +
+> 批量编排 + 跨镜一致性 + 合成」已在此次全部实现。
+
+### 新能力总览
+
+| 能力 | 实现 | 验证 |
+| --- | --- | --- |
+| 分镜批量生成 | `POST /api/video/batches`（1–30 镜，逐镜串行，单镜失败不打断，单镜重抽） | mock 全流程 + **真实 GPU 端到端**（2 镜批量 ✅） |
+| 首尾帧衔接 | linkLastFrame：服务端 ffmpeg 抽上一镜尾帧 → 下一镜 FL2VA `last_frame` / I2VA 续接 | **真实 GPU FL2VA 收敛验证 ✅**（输出末帧与输入尾帧身份/构图精准一致，视觉模型复核） |
+| H3 对白 | `dialogue` 字段 → 官方 4.4 `(S1) + <d>[语言] 原文</d>` 组装 | 真实 GPU 对白成片 ✅（AAC 音频 mean -23.8dB，非静音） |
+| 景别 | `shotSize`（wide/medium/closeup）→ 官方 4.1 英文构图句 | 单元断言 |
+| 成片拼接 | `POST /api/video/batches/:id/concat`：ffmpeg concat + scale/pad 归一化到批量画布 | mock + 真实拼接（待端到端批处理完确认） |
+| 前端 | 视频页新增「分镜短片」模式：分镜表格、批量提交/进度轮询、单镜预览/重抽、整片拼接下载 | Playwright UI 冒烟 + 视觉模型截图复核 ✅ |
+
+### 真实 GPU 出片记录（2026-08-16，RTX 4070 Ti SUPER 16GB，standard 档 832×480，5 秒）
+
+| 任务 | 耗时 | 产物 |
+| --- | --- | --- |
+| T2VA（seed 42，雨夜天台少女回头） | ~228s | h264 832×480 + AAC 32kHz 立体声，5.17s，561KB |
+| FL2VA（首帧 + 尾帧，seed 7，拔刀镜头） | ~230s | 同上规格 523KB；末帧收敛到尾帧参考 ✅ |
+| 对白 T2VA（seed 8，台词「雨，什么时候才停呢。」） | ~220s | 同上规格 505KB；音频含语音能量 |
+
+产物与抽帧在 `runtime/review/`（不入库）。模型已安装权重：H3 五件套 + Wan 2.2 TI2V 5B 三件套
+（后者 2026-08-16 经 hf-mirror 下载，~55–60MB/s，约 5 分钟；注意 umt5 在
+`Comfy-Org/Wan_2.2_ComfyUI_Repackaged` 的 `split_files/text_encoders/` 下）。
+
+### 接口契约（`routes/video.js`）
+
+- 单任务新增字段：`dialogue`（≤300 字符，仅 H3）、`lastFrame`（受控文件名，仅
+  first-last-frame 模式模型）、`shotSize`（仅 H3）。白名单/错误信封/限流契约不变。
+- 批量端点：`POST /api/video/batches`（body ≤1mb，整批统一 modelId/aspectRatio/quality，
+  逐镜复用 validateInput 同源校验）、`GET/DELETE /api/video/batches/:id`、
+  `POST .../shots/:index/retry`、`POST .../concat`、`GET .../result`（Range 流式）。
+- 编排：逐镜串行（尊重 MAX_PENDING 与 16GB 显存）；批量任务 TTL 24h（首镜结果需留到
+  批处理完）；衔接抽取的受控图片随任务生命周期删除，网关启动清理孤儿文件。
+- 提交前按当前图模式**重组提示词**（`recomposeInput`，seed 显式传回）——衔接改写
+  image/lastFrame 后必须重装官方参考图指令（I2VA/FL2VA/L2VA 各不相同）。
+
+### 疑难留档（2026-08-16）
+
+1. **衔接后提示词不跟随输入模式**：现象=镜 2/3 拿到衔接图但提示词仍是 T2V 版（无
+   `<Picture 1>` 指令）；根因=validateInput 在批量创建时组装提示词、衔接在提交前改写
+   输入；修复=kick 前 recomposeInput 按当前 image/lastFrame 重组（seed 传回保确定性）；
+   验证=批量测试断言镜 2 I2VA 指令、镜 3 FL2VA 指令 + 节点接线全绿。
+2. **真实 GPU 验证脚本二进制损坏**：现象=ffprobe 报 `delta scale ... is invalid`；
+   根因=下载脚本把 MP4 当 utf8 字符串拼接再 latin1 还原（二进制被替换字符破坏）；
+   修复=chunks 按 Buffer 累积；教训=凡拉取二进制产物必须 Buffer.concat，禁止字符串中转。
+3. **H3 输出画布可能漂移**：现象=损坏文件头误报 832×509（修复后实测仍为 832×480，
+   但为防个别镜头 ±几像素漂移）；修复=concat 统一 scale+pad 到批量画布
+   （`scale=W:H:force_original_aspect_ratio=decrease,pad=...`）；验证=mock concat 断言。
+4. **FL2VA 真实执行确认**：本地 `MiniMaxH3ImageToVideo` 原生支持 `first_frame` +
+   `last_frame`（object_info 与 `nodes_minimax_h3.py` 双重确认），工作流 LoadImage 18 号
+   节点接线后真机出片成功，末帧收敛参考图。
+
+### 遗留观察
+
+- H3 对白内容（语音清晰度/口型）需人工试听复核（本会话无法听音）。
+- 本地无 Context-IR/Ref2VA：多角色同框、长对白的质量上限依赖提示词规范，后续可评估
+  官方 API Ref2VA 作为进阶路线。
+- 视频作品册（P4）与字幕（P8 可选）未做，留待后续。

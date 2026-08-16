@@ -31,7 +31,7 @@
         type="button"
         :class="{ active: selectedMode === mode.id }"
         :aria-pressed="selectedMode === mode.id"
-        :disabled="!mode.ready"
+        :disabled="mode.id === 'shots' ? !shotsModeReady : !mode.ready"
         @click="selectedMode = mode.id"
       >
         <span class="video-mode-icon"><ArchiveIcon :name="mode.icon" /></span>
@@ -39,12 +39,14 @@
           <strong>{{ mode.label }}</strong>
           <small>{{ mode.description }}</small>
         </span>
-        <em>{{ mode.ready ? '可用' : '后续接入' }}</em>
+        <em>{{ mode.id === 'shots' ? (shotsModeReady ? '可用' : '待装权重') : (mode.ready ? '可用' : '后续接入') }}</em>
       </button>
     </section>
 
     <div class="video-workspace">
       <div class="video-creation-column">
+        <ShotListEditor v-if="selectedMode === 'shots'" :status="status" />
+        <template v-else>
         <section v-if="selectedMode === 'image'" class="video-panel video-first-frame-panel">
           <div class="video-panel-heading video-panel-heading--compact">
             <div>
@@ -198,6 +200,7 @@
             {{ submitting ? '正在提交…' : '生成视频' }}
           </button>
         </section>
+        </template>
       </div>
 
       <aside class="video-side-column">
@@ -322,6 +325,7 @@
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
+import ShotListEditor from '@/components/video/ShotListEditor.vue'
 import {
   cancelVideoJob,
   createVideoJob,
@@ -337,11 +341,18 @@ import { imgGet } from '@/composables/useImageStore'
 import { VIDEO_CTX_KEY, type VideoCtxPayload } from '@/composables/useVideoBridge'
 import { useSceneStore } from '@/stores/sceneStore'
 
-const modes: Array<{ id: VideoMode; label: string; description: string; ready: boolean; icon: ArchiveIconName }> = [
+type StudioMode = VideoMode | 'shots'
+
+const modes: Array<{ id: StudioMode; label: string; description: string; ready: boolean; icon: ArchiveIconName }> = [
   { id: 'text', label: '文字成片', description: '一句镜头描述直接生成短片', ready: true, icon: 'play' },
   { id: 'image', label: '图片动起来', description: '绘图页「出视频」自动带入首帧，锁定角色与场景', ready: true, icon: 'image' },
   { id: 'first-last-frame', label: '首尾帧过渡', description: '锁定开始与结束画面', ready: false, icon: 'gallery' },
+  { id: 'shots', label: '分镜短片', description: '多镜头批量生成 · 自动尾帧衔接 · 整片拼接', ready: false, icon: 'gallery' },
 ]
+
+// 分镜模式门槛：MiniMax H3 权重就绪（支持 FL2VA 衔接与原生对白）。
+const shotsModeReady = computed(() =>
+  status.value?.models.some((model) => model.id === 'minimax-h3' && model.available) === true)
 
 const aspectOptions = computed(() => {
   const base: Array<{ id: VideoDefaults['aspectRatio']; label: string }> = [
@@ -374,7 +385,7 @@ const motionOptions: Array<{ id: VideoDefaults['motion']; label: string }> = [
 ]
 const durationOptions: Array<VideoDefaults['duration']> = [3, 5]
 
-const selectedMode = ref<VideoMode>('text')
+const selectedMode = ref<StudioMode>('text')
 const prompt = ref('')
 const negative = ref('')
 const selectedModelId = ref('wan2.2-ti2v-5b')
@@ -432,21 +443,26 @@ const parsedSeed = computed(() => {
 const jobActive = computed(() => job.value?.status === 'queued'
   || job.value?.status === 'running'
   || job.value?.status === 'cancelling')
-const canGenerate = computed(() => (selectedMode.value === 'text' || (selectedMode.value === 'image' && videoImageId.value))
-  && prompt.value.trim().length >= 8
-  && prompt.value.length <= 4000
-  && parsedSeed.value !== null
-  && status.value?.online === true
-  && activeModel.value?.available === true
-  && activeModel.value?.modes?.includes(selectedMode.value) === true
-  && !submitting.value
-  && !jobActive.value)
+const canGenerate = computed(() => {
+  const mode = selectedMode.value
+  // 分镜模式走 ShotListEditor 自己的提交链路，不进单任务生成。
+  if (mode !== 'text' && !(mode === 'image' && videoImageId.value)) return false
+  return prompt.value.trim().length >= 8
+    && prompt.value.length <= 4000
+    && parsedSeed.value !== null
+    && status.value?.online === true
+    && activeModel.value?.available === true
+    && activeModel.value?.modes?.includes(mode) === true
+    && !submitting.value
+    && !jobActive.value
+})
 const submitTitle = computed(() => {
   if (jobActive.value) return '已有视频正在生成'
   if (!status.value?.online) return '先启动 ComfyUI'
   if (!activeModel.value?.available) return '先安装本地视频权重'
   if (selectedMode.value === 'image' && !videoImageId.value) return '先带入一张首帧图'
-  if (activeModel.value && !activeModel.value.modes?.includes(selectedMode.value)) {
+  if (activeModel.value && selectedMode.value !== 'shots'
+    && !activeModel.value.modes?.includes(selectedMode.value as VideoMode)) {
     return selectedMode.value === 'image' ? '当前模型不支持首帧，请在模型目录选择 MiniMax H3' : '当前模型不支持该创作方式'
   }
   if (prompt.value.trim().length < 8) return '写下一个完整的镜头'
@@ -673,7 +689,7 @@ onBeforeUnmount(() => {
 }
 .video-header .page-subtitle { max-width:760px; }
 .video-header .archive-icon { width:1rem; }
-.video-mode-strip { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--s-3); margin-bottom:var(--s-5); }
+.video-mode-strip { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:var(--s-3); margin-bottom:var(--s-5); }
 .video-mode-card {
   display:grid;
   grid-template-columns:auto minmax(0,1fr) auto;
@@ -824,6 +840,7 @@ onBeforeUnmount(() => {
 @keyframes video-progress { from{transform:translateX(-110%)} to{transform:translateX(300%)} }
 @media (prefers-reduced-motion:reduce) { .video-progress i { animation:none; width:100%; } }
 @media (max-width:1050px) {
+  .video-mode-strip { grid-template-columns:repeat(2,minmax(0,1fr)); }
   .video-workspace { grid-template-columns:1fr; }
   .video-side-column { position:static; grid-template-columns:repeat(2,minmax(0,1fr)); }
   .video-queue-panel { grid-column:1 / -1; }
