@@ -10,12 +10,13 @@
           <strong class="adult">{{ adultCount }}</strong><span>成人场景</span>
         </div>
       </div>
-      <!-- 2026-08-16：hero 粒子场——形状与主色跟随当前角色（characterParticleTheme），
-           切角色时粒子重新组合成她的轮廓；点击可激起脉冲。 -->
+      <!-- 2026-08-16：hero 粒子场——粒子直接重组为当前角色的剪影（离线 rembg 点云，
+           assets/particles/p_<id>.json）；无点云时回落 characterParticleTheme 抽象形状。 -->
       <SemanticParticleField
         class="pop-hero-field"
         :shape="particleTheme.shape"
-        :label="`${selectedCharacter?.displayName || '热门角色'}的专属粒子轮廓`"
+        :portrait-id="selectedId"
+        :label="`${selectedCharacter?.displayName || '热门角色'}的人物剪影粒子`"
         :caption="`SCENES ${String(totalScenes).padStart(2, '0')}`"
         density="ambient"
         :style="{ '--archive-blue': particleTheme.accent, '--character-aura': particleTheme.aura }"

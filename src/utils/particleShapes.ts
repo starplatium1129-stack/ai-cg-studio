@@ -13,6 +13,8 @@ export interface ParticlePoint {
   x: number
   y: number
   tone: 0 | 1 | 2
+  /** 角色剪影模式的调色板序号（particlePortrait），抽象形状不使用。 */
+  paint?: number
 }
 
 interface MutablePoint {

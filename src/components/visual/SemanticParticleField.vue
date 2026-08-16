@@ -21,6 +21,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, watch } from 'vue'
 import { createParticleShape, type ParticlePoint, type ParticleShapeId } from '@/utils/particleShapes'
+import { loadPortraitCloud, samplePortraitPoints, type PortraitCloud } from '@/utils/particlePortrait'
 import { registerParticleFrame } from '@/utils/particleScheduler'
 
 const props = withDefaults(defineProps<{
@@ -32,6 +33,8 @@ const props = withDefaults(defineProps<{
   bare?: boolean
   decorative?: boolean
   signal?: 'idle' | 'active' | 'success' | 'warning'
+  /** 角色形象粒子：提供且有预生成点云时，粒子重组为该角色的剪影（缺省回落 shape）。 */
+  portraitId?: string
 }>(), {
   caption: '',
   density: 'hero',
@@ -39,6 +42,7 @@ const props = withDefaults(defineProps<{
   bare: false,
   decorative: false,
   signal: 'idle',
+  portraitId: '',
 })
 
 interface RuntimeParticle {
@@ -49,6 +53,7 @@ interface RuntimeParticle {
   targetX: number
   targetY: number
   tone: 0 | 1 | 2
+  paint: number
   phase: number
   depth: number
   size: number
@@ -64,6 +69,33 @@ const host = ref<HTMLElement | null>(null)
 const canvas = ref<HTMLCanvasElement | null>(null)
 const reduceMotion = ref(false)
 const canvasAvailable = ref(true)
+
+/** 角色形象点云：null = 用抽象形状。异步加载由 token 防竞态。 */
+let portraitCloud: PortraitCloud | null = null
+/** 剪影调色板（深色已提亮），与 portraitCloud 同步更新。 */
+let portraitPaints: string[] = []
+let portraitToken = 0
+
+/** 主题可读性：人物原色可能过暗（黑裙/深发在深色主题不可见），提亮到最低亮度。 */
+function legibleColor(hex: string): string {
+  const value = hex.trim()
+  const match = /^#?([0-9a-f]{6})$/i.exec(value)
+  if (!match) return value
+  const full = match[1]
+  let r = parseInt(full.slice(0, 2), 16) / 255
+  let g = parseInt(full.slice(2, 4), 16) / 255
+  let b = parseInt(full.slice(4, 6), 16) / 255
+  const MIN = 0.34
+  const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b
+  if (lum < MIN) {
+    const lift = (MIN - lum) / Math.max(1e-6, 1 - lum)
+    r += (1 - r) * lift
+    g += (1 - g) * lift
+    b += (1 - b) * lift
+  }
+  const to255 = (c: number) => Math.round(Math.min(1, Math.max(0, c)) * 255)
+  return `#${[to255(r), to255(g), to255(b)].map(v => v.toString(16).padStart(2, '0')).join('')}`
+}
 
 let context: CanvasRenderingContext2D | null = null
 let resizeObserver: ResizeObserver | null = null
@@ -94,9 +126,15 @@ function preferredCount(): number {
   if (reduceMotion.value) return 420
   const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory
   const compact = window.matchMedia('(max-width: 760px)').matches
-  if (props.density === 'backdrop') return Math.round((compact ? 220 : 380) * qualityScale)
-  if (compact || (memory !== undefined && memory <= 4)) return Math.round(520 * qualityScale)
-  return Math.round((props.density === 'ambient' ? 780 : 1380) * qualityScale)
+  let count: number
+  if (props.density === 'backdrop') count = compact ? 220 : 380
+  else if (compact || (memory !== undefined && memory <= 4)) count = 520
+  else count = props.density === 'ambient' ? 780 : 1380
+  // 角色剪影要「成像」需要明显更高的点密度（轮廓+人物细节）；
+  // 物理与绘制都是 O(n) 且无粒子间相互作用，2000 点仍在预算内，
+  // slowFrames 自愈降档继续兜底低端机。
+  if (portraitCloud) count = Math.max(count, props.density === 'hero' ? 2000 : 1500)
+  return Math.round(count * qualityScale)
 }
 
 function readPalette() {
@@ -135,7 +173,10 @@ function targetPosition(point: ParticlePoint): { x: number; y: number } {
 function setShape(animate = true) {
   if (!width || !height) return
   const count = Math.max(props.density === 'backdrop' ? 80 : 120, preferredCount())
-  const shape = createParticleShape(props.shape, count)
+  const shape = portraitCloud
+    ? samplePortraitPoints(portraitCloud, count, width / Math.max(1, height))
+    : createParticleShape(props.shape, count)
+  if (!shape.length) return
   const previous = particles.slice().sort((a, b) => {
     const rowA = Math.round(a.y / Math.max(1, height) * 18)
     const rowB = Math.round(b.y / Math.max(1, height) * 18)
@@ -155,6 +196,7 @@ function setShape(animate = true) {
       targetX: target.x,
       targetY: target.y,
       tone: point.tone,
+      paint: point.paint ?? point.tone,
       phase: current?.phase ?? Math.random() * Math.PI * 2,
       depth: current?.depth ?? 0.55 + Math.random() * 0.45,
       size: current?.size ?? 0.88 + Math.random() * 0.24,
@@ -241,8 +283,13 @@ function simulateParticles(now: number): boolean {
 
 function draw(now = performance.now()) {
   if (!context || !canvas.value) return
-  context.clearRect(0, 0, width, height)
-  const paths = [new Path2D(), new Path2D(), new Path2D()]
+  const ctx = context
+  ctx.clearRect(0, 0, width, height)
+  // 剪影模式按人物调色板分批填充；抽象形状沿用三档 tone
+  const paints = portraitCloud && portraitPaints.length ? portraitPaints : null
+  const paths = paints
+    ? paints.map(() => new Path2D())
+    : [new Path2D(), new Path2D(), new Path2D()]
   const signalEnergy = props.signal === 'active' ? 1.35 : props.signal === 'warning' ? 1.15 : props.signal === 'success' ? 1.08 : 1
   const driftAmount = reduceMotion.value ? 0 : (props.density === 'backdrop' ? 0.8 : props.density === 'ambient' ? 1.7 : 2.8) * signalEnergy
   const pulseAge = now - pulseStartedAt
@@ -258,8 +305,14 @@ function draw(now = performance.now()) {
     const x = particle.x + driftX
     const y = particle.y + driftY
     const energyScale = (props.signal === 'active' ? 1.16 : props.signal === 'warning' ? 1.08 : 1) * particle.size
-    const radius = (particle.tone === 2 ? 1.55 : particle.tone === 1 ? 1.05 : 0.78) * energyScale
-    const path = paths[particle.tone]
+    const baseRadius = paints
+      ? 1.02
+      : particle.tone === 2 ? 1.55 : particle.tone === 1 ? 1.05 : 0.78
+    const radius = baseRadius * energyScale
+    const pathIndex = paints
+      ? Math.min(paths.length - 1, Math.max(0, particle.paint))
+      : particle.tone
+    const path = paths[pathIndex]
     path.moveTo(x + radius, y)
     path.arc(x, y, radius, 0, Math.PI * 2)
 
@@ -294,21 +347,29 @@ function draw(now = performance.now()) {
       highlights.arc(x, y, highlightRadius, 0, Math.PI * 2)
     }
   }
-  context.globalAlpha = .72
-  context.fillStyle = palette.primary
-  context.fill(paths[0])
-  context.globalAlpha = .46
-  context.fillStyle = palette.secondary
-  context.fill(paths[1])
-  context.globalAlpha = .9
-  context.fillStyle = palette.accent
-  context.fill(paths[2])
-  if (highlights) {
-    context.globalAlpha = .34
-    context.fillStyle = palette.accent
-    context.fill(highlights)
+  if (paints) {
+    ctx.globalAlpha = .82
+    paints.forEach((color, index) => {
+      ctx.fillStyle = color
+      ctx.fill(paths[index])
+    })
+  } else {
+    ctx.globalAlpha = .72
+    ctx.fillStyle = palette.primary
+    ctx.fill(paths[0])
+    ctx.globalAlpha = .46
+    ctx.fillStyle = palette.secondary
+    ctx.fill(paths[1])
+    ctx.globalAlpha = .9
+    ctx.fillStyle = palette.accent
+    ctx.fill(paths[2])
   }
-  context.globalAlpha = 1
+  if (highlights) {
+    ctx.globalAlpha = .34
+    ctx.fillStyle = palette.accent
+    ctx.fill(highlights)
+  }
+  ctx.globalAlpha = 1
 }
 
 function renderFrame(now: number) {
@@ -414,13 +475,30 @@ function onMotionPreference(event: MediaQueryListEvent | MediaQueryList) {
   setShape(false)
 }
 
-watch(() => props.shape, () => setShape(true))
+watch(() => props.shape, () => { if (!portraitCloud) setShape(true) })
+watch(() => props.portraitId, id => { void applyPortrait(id) })
 watch(() => props.density, () => {
   stopLoop()
   resize()
   startLoop()
 })
 watch(() => props.signal, () => startLoop())
+
+/** 角色剪影点云异步接管：加载完成前维持现有形状，完成后平滑形变成人物轮廓。 */
+async function applyPortrait(id: string) {
+  const token = ++portraitToken
+  if (!id) {
+    portraitCloud = null
+    portraitPaints = []
+    setShape(true)
+    return
+  }
+  const cloud = await loadPortraitCloud(id)
+  if (token !== portraitToken) return
+  portraitCloud = cloud
+  portraitPaints = cloud ? cloud.palette.map(legibleColor) : []
+  setShape(true)
+}
 
 onMounted(() => {
   if (!host.value || !canvas.value) return
@@ -441,6 +519,7 @@ onMounted(() => {
   readPalette()
   resize()
   startLoop()
+  if (props.portraitId) void applyPortrait(props.portraitId)
 })
 
 onUnmounted(() => {

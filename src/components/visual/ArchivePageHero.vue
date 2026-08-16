@@ -20,6 +20,7 @@
     <SemanticParticleField
       class="archive-particles"
       :shape="shape"
+      :portrait-id="portraitId"
       :label="label"
       :caption="caption || `FILE ${chapter} / ${folio}`"
       :density="compact ? 'ambient' : 'hero'"
@@ -46,10 +47,13 @@ withDefaults(defineProps<{
   folio?: string
   caption?: string
   compact?: boolean
+  /** 角色形象粒子：有预生成点云时粒子重组为该角色剪影。 */
+  portraitId?: string
 }>(), {
   folio: '08',
   caption: '',
   compact: false,
+  portraitId: '',
 })
 
 const hero = ref<HTMLElement | null>(null)

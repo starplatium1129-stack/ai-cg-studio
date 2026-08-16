@@ -35,3 +35,25 @@
 ## 5. 本地视觉审核通道备忘
 
 `image-inspect`（CLIProxyAPI + gemini-3.7-flash-high）偶发上游 OAuth `EOF` 500，重试即恢复；对 64px 小尺寸元素（如头像缩略图）的"缺失/空白"判断不可靠，必须用 DOM/HTTP 探测复核（本次"角色头像大面积缺失"实为误报，全部 popular-*.png 均存在且 200）。
+
+## 6. 本机网络：PyPI 官方源与 GitHub 直连慢且损坏，装依赖一律走镜像（2026-08-16 实测）
+
+| 通道 | 实测速度 | 结论 |
+|---|---|---|
+| files.pythonhosted.org（PyPI 官方 CDN） | 44 KB/s，42MB 轮子稳定断在 ~29MB 处报哈希不匹配 | 禁用 |
+| **pypi.tuna.tsinghua.edu.cn（清华 TUNA）** | **15.1 MB/s，42MB 完整** | pip 首选 `-i https://pypi.tuna.tsinghua.edu.cn/simple` |
+| mirrors.aliyun.com/pypi | 4.9 MB/s | 备选 |
+| github.com 直连 | 22 KB/s | 禁用 |
+| **ghfast.top**（GitHub 加速） | ~1.0 MB/s（可断点续传） | 下载 release 资产用；mirror.ghproxy.com 已死，gh-proxy.com 可用但慢 |
+
+## 7. 角色形象粒子（剪影点云）管线（2026-08-16）
+
+「粒子跟角色形象对应」的落地链路：**离线预计算 + 前端重组**。
+
+- **数据前提**：`assets/characters/popular-*.png` 全部是 832×1216 复杂场景 CG（无透明通道、人物仅占 25-45%），运行时启发式抠图不可行 → 用 **rembg（U2-Net）离线抠图**。
+- **生成**：`python scripts/maintenance/build-particle-portraits.py [角色id]` → `assets/particles/p_<id>.json`（2400 点 + k-means 6 主色调色板；轮廓×5 / 结构线（亮度梯度）×3 / 内部按亮度加权采样）。35 角色全量已生成。
+  - rembg 安装：`pip install -i https://pypi.tuna.tsinghua.edu.cn/simple rembg numpy pillow`（完整链含 pymatting/numba，别用 `--no-deps` 绕）。
+  - 模型 `~/.u2net/u2net.onnx`（176MB，md5 `60024c5c889badc19c04ad937298a77b`）用 ghfast.top 断点续传手动放置，pooch 校验通过即跳过下载。
+- **前端**：`src/utils/particlePortrait.ts` 按需懒加载点云 → `SemanticParticleField` 新增 `portraitId` prop，点云就位后粒子以现有弹簧动画平滑重组为人物剪影；粒子按角色真实主色成像（深色自动提亮到亮度 0.34 保证可见）；剪影模式粒子数下限 ambient 1500 / hero 2000；无点云/加载失败自动回落 `characterParticleTheme` 抽象形状。
+- **质量验证**：点云渲染图视觉评分 8.5/10（雷姆：上部蓝发、中部黑白女仆装，一眼可辨）；实机截图复核两页 hero 均成像清晰。
+- **新增角色流程**：放好 `popular-<id>.png` → 跑一次生成脚本（单角色参数）即可；前端零改动。

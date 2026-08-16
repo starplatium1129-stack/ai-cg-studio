@@ -4,7 +4,8 @@
       chapter="03"
       section="Identity file"
       :shape="heroTheme.shape"
-      :label="`${current?.name || '角色'}的身份档案粒子标记`"
+      :portrait-id="current?.id || ''"
+      :label="`${current?.name || '角色'}的人物剪影粒子标记`"
       caption="PERSONA 03 / 08"
       compact
       :style="{ '--archive-blue': heroTheme.accent, '--character-aura': heroTheme.aura }"
