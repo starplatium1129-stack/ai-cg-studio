@@ -246,13 +246,14 @@ export function useControlStatus({ showToast, api = controlApi }: StatusHooks) {
         if (fresh.length) {
           logs.value.push(...fresh)
           if (logs.value.length > 300) logs.value = logs.value.slice(-200)
-          logIndex.value += data.logs.length
           await nextTick()
           if (logBoxEl.value) logBoxEl.value.scrollTop = logBoxEl.value.scrollHeight
-        } else {
-          logIndex.value += data.logs.length
         }
       }
+      // 2026-08-16 审计：游标改为服务端权威 controlLogs 总长（total），而不是按本批
+      // logs.length 自增——本批混入每文件 ≤30 行文件尾行，旧实现把游标逐轮推过头，
+      // 新 controlLogs 从此永不上屏（逐条吞日志）。服务端保证 total 不含尾行。
+      logIndex.value = data.total
     } catch (error) {
       if (logsRequest === controller && error instanceof ApiClientError && (error.status === 403 || error.status === 421)) {
         clearLogs()

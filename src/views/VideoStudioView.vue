@@ -319,7 +319,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import {
@@ -438,6 +438,7 @@ const canGenerate = computed(() => (selectedMode.value === 'text' || (selectedMo
   && parsedSeed.value !== null
   && status.value?.online === true
   && activeModel.value?.available === true
+  && activeModel.value?.modes?.includes(selectedMode.value) === true
   && !submitting.value
   && !jobActive.value)
 const submitTitle = computed(() => {
@@ -445,6 +446,9 @@ const submitTitle = computed(() => {
   if (!status.value?.online) return '先启动 ComfyUI'
   if (!activeModel.value?.available) return '先安装本地视频权重'
   if (selectedMode.value === 'image' && !videoImageId.value) return '先带入一张首帧图'
+  if (activeModel.value && !activeModel.value.modes?.includes(selectedMode.value)) {
+    return selectedMode.value === 'image' ? '当前模型不支持首帧，请在模型目录选择 MiniMax H3' : '当前模型不支持该创作方式'
+  }
   if (prompt.value.trim().length < 8) return '写下一个完整的镜头'
   if (parsedSeed.value === null) return 'Seed 格式不正确'
   return `${duration.value} 秒 · ${activeModel.value.label} · 本地生成`
@@ -479,6 +483,14 @@ async function loadStatus() {
     if (!next.models.some(model => model.id === selectedModelId.value)) {
       selectedModelId.value = next.defaults.modelId
     }
+    // 图生视频模式下自动落到支持 image 且已就绪的模型（默认 Wan 5B 只能文字成片）。
+    if (selectedMode.value === 'image') {
+      const current = next.models.find(model => model.id === selectedModelId.value)
+      if (!current || !current.modes.includes('image')) {
+        const imageReady = next.models.find(model => model.modes.includes('image') && model.available)
+        if (imageReady) selectedModelId.value = imageReady.id
+      }
+    }
   } catch (error) {
     statusError.value = error instanceof Error ? error.message : '视频环境检测失败'
   } finally {
@@ -510,6 +522,11 @@ async function applyVideoCtx(ctx: VideoCtxPayload) {
   selectedMode.value = 'image'
   // 首帧比例跟随原图，避免固定画幅拉伸（如 832x1216 出图 → 480x832 画布会变形）。
   aspectRatio.value = 'original'
+  // 图生视频只有支持 image 的模型可用（本机目录里即 MiniMax H3）；Wan 5B 会静默丢掉首帧，
+  // 这里直接选到 H3，避免用户带着首帧落到「文字成片」模型上。
+  if (status.value?.models.some(model => model.id === 'minimax-h3')) {
+    selectedModelId.value = 'minimax-h3'
+  }
   const composed = composeVideoPrompt(ctx)
   if (composed && composed.trim().length >= 4) prompt.value = composed
 }
@@ -518,7 +535,9 @@ async function applyVideoCtx(ctx: VideoCtxPayload) {
  * 跨页上下文 → 视频提示词（确定性组装，不做 tag 翻译）：
  * 1. 实际出图提示词（ctx.prompt，跟随用户对词条/角色/场景的最新修改）直接作为视频主描述；
  * 2. prompt 为空时回退用户写的 story；
- * 3. story 为空时，用场景预设的结构化字段：description（场景）+ action（动作）+ lighting（光线）；
+ * 3. story 为空时，用场景预设的结构化字段——优先英文 promptProse（Anima/Krea 自然语言，
+ *    场景/动作/光线都已写成可驱动视频的英文句，符合 H3 官方「英文改写」输出规则）；
+ *    promptProse 缺失时才回退中文 description + action + lighting；
  * 4. I2VA 首帧图已在后端按官方规范锁定角色/服装/场景（<Picture 1> 指令），
  *    身份描述如与画面冲突可在文本框手动删减，这里只做搬运不做裁剪。
  */
@@ -530,6 +549,9 @@ function composeVideoPrompt(ctx: VideoCtxPayload): string {
   if (ctx.blueprintId) {
     const bp = sceneStore.sceneBlueprints.find(item => item.id === ctx.blueprintId)
     if (bp) {
+      const prose = (bp.promptProse || '').trim()
+      if (prose) return prose
+      // 最后兜底：中文结构化字段（H3 官方要求英文，仅当蓝图缺英文散文时使用）。
       return [bp.description, bp.action, bp.lighting].filter(Boolean).join('，')
     }
   }
@@ -618,6 +640,11 @@ async function cancelJob() {
 function formatTime(timestamp: number) {
   return new Intl.DateTimeFormat('zh-CN', { hour: '2-digit', minute: '2-digit' }).format(timestamp)
 }
+
+// 离开图生视频模式时把「跟随原图」复位，避免文字成片带着 original 画幅被后端 400。
+watch(selectedMode, (mode) => {
+  if (mode !== 'image' && aspectRatio.value === 'original') aspectRatio.value = 'landscape'
+})
 
 onMounted(() => {
   void loadStatus()

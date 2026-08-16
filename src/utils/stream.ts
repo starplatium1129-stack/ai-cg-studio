@@ -153,6 +153,10 @@ export async function parseNdjsonResponse(response: Response, onEvent: (event: C
   const reader = response.body.getReader()
   const decoder = new TextDecoder()
   let buffer = ''
+  // 2026-08-16 审计：流必须收到终止事件（done/error）才算正常结束——服务端进程
+  // 崩溃/连接被掐时 reader 会以 done 结束但没有任何终止事件，此前会静默截断
+  // 对话（用户看到回复说了一半）。缺终止事件一律按「意外中断」抛错。
+  let sawTerminal = false
   const consume = async (line: string) => {
     if (!line.trim()) return
     let parsed: unknown
@@ -162,6 +166,7 @@ export async function parseNdjsonResponse(response: Response, onEvent: (event: C
     }
     const event = parseChatStreamEvent(parsed)
     if (!event) throw new Error('聊天流返回了无效事件')
+    if (event.type === 'done') sawTerminal = true
     await onEvent(event)
   }
   while (true) {
@@ -173,6 +178,7 @@ export async function parseNdjsonResponse(response: Response, onEvent: (event: C
   }
   buffer += decoder.decode()
   if (buffer.trim()) await consume(buffer)
+  if (!sawTerminal) throw new Error('聊天流意外中断（未收到完成事件）')
 }
 
 export function isAbortError(error: unknown): boolean {

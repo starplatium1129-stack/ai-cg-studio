@@ -7,6 +7,9 @@ import { onMounted, onUnmounted } from 'vue'
 export function useScrollReveal(selector = '[data-reveal]', options?: IntersectionObserverInit) {
   let observer: IntersectionObserver | null = null
   const seen = new WeakSet<Element>()
+  // 2026-08-16 审计：延迟重扫的定时器此前不保存、卸载时不清除，高频进出列表页
+  // 每次挂载泄漏最多 3 个待执行定时器。
+  const recheckTimers: number[] = []
 
   function observeAll() {
     if (!observer) return
@@ -36,10 +39,18 @@ export function useScrollReveal(selector = '[data-reveal]', options?: Intersecti
 
     observeAll()
     // 场景/作品是异步载入的，首帧观察不到；补几次重扫
-    ;[120, 400, 1200].forEach(delay => setTimeout(observeAll, delay))
+    ;[120, 400, 1200].forEach(delay => {
+      const timer = window.setTimeout(observeAll, delay)
+      recheckTimers.push(timer)
+    })
   })
 
-  onUnmounted(() => { observer?.disconnect(); observer = null })
+  onUnmounted(() => {
+    recheckTimers.forEach(timer => window.clearTimeout(timer))
+    recheckTimers.length = 0
+    observer?.disconnect()
+    observer = null
+  })
 
   return { observeAll }
 }

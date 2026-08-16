@@ -96,17 +96,28 @@ function checkAbortDequeue() {
     return new Promise(function (resolve) { setTimeout(resolve, 25); });
   });
 
-  const signal = { aborted: false };
-  const abandoned = q.run(function () { ran.push('abandoned'); return 'nope'; }, { signal: signal });
+  const controller = new AbortController();
+  const abandoned = q.run(function () { ran.push('abandoned'); return 'nope'; }, { signal: controller.signal });
   const real = q.run(function () { ran.push('real'); return 'yes'; });
 
-  signal.aborted = true;  // 还在排队时客户端就走了
+  assert.strictEqual(q.status().pending, 3, 'three tasks queued (head execute runs on next microtask)');
+  controller.abort();  // 还在排队时客户端走了
+  assert.strictEqual(q.status().pending, 2, 'abort while queued must release the pending slot immediately, not wait for FIFO front');
 
-  return Promise.allSettled([head, abandoned, real]).then(function (results) {
+  // 入队时信号已中止：不占槽、直接拒绝。
+  const preAborted = new AbortController();
+  preAborted.abort();
+  const neverQueued = q.run(function () { ran.push('never'); return 'nope'; }, { signal: preAborted.signal });
+  assert.strictEqual(q.status().pending, 2, 'already-aborted signal must not consume a pending slot');
+
+  return Promise.allSettled([head, abandoned, real, neverQueued]).then(function (results) {
     assert.strictEqual(results[1].status, 'rejected', 'aborted job must not run');
-    assert.strictEqual(results[1].reason.name, 'AbortError');
+    assert.strictEqual(results[1].reason && results[1].reason.name, 'AbortError');
     assert.strictEqual(results[2].status, 'fulfilled', 'the real job must still complete');
+    assert.strictEqual(results[3].status, 'rejected', 'pre-aborted job rejected');
+    assert.strictEqual(results[3].reason && results[3].reason.name, 'AbortError');
     assert.deepStrictEqual(ran, ['real'], 'abandoned work must never reach the GPU');
+    assert.strictEqual(q.status().active, 0, 'no leaked active count');
     assert.strictEqual(q.status().pending, 0, 'aborted job must leave the queue');
   });
 }

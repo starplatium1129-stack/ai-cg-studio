@@ -560,3 +560,17 @@ test('anima no-LoRA route contract: validate + workflow have no LoraLoader and k
   assert.strictEqual(hiresWf['12'].inputs.denoise, 0.35);
   assert.deepStrictEqual(hiresWf['8'].inputs.samples, ['12', 0]);
 });
+
+// 2026-08-16 审计：单条坏数据只被跳过并告警，不再让整份解析抛错丢弃。
+test('parse isolates a single invalid entry instead of failing the whole dataset', () => {
+  const charA = { id: 'ok_a', displayName: 'OK A', originalName: 'OK A', franchise: 'F', identityProse: 'a person', identityTokens: ['1girl'], exactTokens: [], exactPrefixes: [], recommendedEngine: 'anima-aesthetic-v1.1', supportedEngines: ['anima-aesthetic-v1.1'], adultEligibility: 'adult', outfits: [{ id: 'o1', name: 'O', prose: 'clothes', tokens: ['x'] }] };
+  const charB = { id: 'ok_b', displayName: 'OK B', originalName: 'OK B', franchise: 'F', identityProse: 'a person', identityTokens: ['1girl'], exactTokens: [], exactPrefixes: [], recommendedEngine: 'anima-aesthetic-v1.1', supportedEngines: ['anima-aesthetic-v1.1'], adultEligibility: 'adult', outfits: [{ id: 'o1', name: 'O', prose: 'clothes', tokens: ['x'] }] };
+  const chars = popular.parsePopularCharacters({ characters: [charA, { id: 'bad_char' }, charB] });
+  assert.strictEqual(chars.length, 2, 'invalid entry skipped, valid entries kept');
+  assert.deepStrictEqual(chars.map(c => c.id), ['ok_a', 'ok_b']);
+
+  const bpA = { id: 'bp_ok_a', title: 'T', category: 'C', description: 'D', location: 'L', action: 'A', timeOfDay: 'night', lighting: 'moon', camera: 'wide', mood: 'calm', sceneTags: [], promptProse: 'prose', promptTokens: ['t'], negativeTokens: [], recommendedSize: '832x1216' };
+  const bpB = { id: 'bp_ok_b', title: 'T', category: 'C', description: 'D', location: 'L', action: 'A', timeOfDay: 'night', lighting: 'moon', camera: 'wide', mood: 'calm', sceneTags: [], promptProse: 'prose', promptTokens: ['t'], negativeTokens: [], recommendedSize: '832x1216' };
+  const bps = popular.parseSceneBlueprints({ blueprints: [bpA, { id: 'bp_bad' }, bpB] });
+  assert.strictEqual(bps.length, 2, 'invalid blueprint skipped, valid ones kept');
+});

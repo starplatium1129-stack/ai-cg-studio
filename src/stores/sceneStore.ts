@@ -63,7 +63,7 @@ export interface TagMeta {
  * 改过 data/*.json 后 `npm run validate` 会提示这里该改成什么。
  * 以前是手动计数（曾到 15），现在由内容锁定，不会再出现"改数据忘升版本"。
  */
-export const DATA_VERSION = 2921653165
+export const DATA_VERSION = 1927222053
 
 /** 带 response.ok 检查的 JSON 读取 —— 否则 HTML 错误页会被当数据解析 */
 async function loadJson<T>(file: string, fallback: T, version: number): Promise<T> {
@@ -123,6 +123,9 @@ export const useSceneStore = defineStore('scenes', () => {
   const version = ref(DATA_VERSION)
 
   let inflight: Promise<void> | null = null
+  /** 2026-08-16 审计：inflight 槽的代际计数——只有自己这一代的 finally 才能清槽，
+   *  避免 force reload 与在途 load 并发时旧 promise 把新槽误清、触发重复全量加载。 */
+  let inflightGeneration = 0
   let shardCache: Partial<Record<ShardChar, Scene[]>> = {}
   let metaLoaded = false
   let coreLoaded = false
@@ -168,6 +171,7 @@ export const useSceneStore = defineStore('scenes', () => {
     if (force) { shardCache[shard] = undefined; loadedShards.value = new Set() }
     loading.value = true
     error.value = null
+    const generation = ++inflightGeneration
     inflight = (async () => {
       await loadMeta()
       const [shared, target] = await Promise.all([loadShard('shared'), loadShard(shard)])
@@ -176,7 +180,7 @@ export const useSceneStore = defineStore('scenes', () => {
       .catch((e) => { error.value = String((e as Error)?.message ?? e) })
       .finally(() => {
         loading.value = false
-        inflight = null
+        if (generation === inflightGeneration) inflight = null
       })
     return inflight
   }
@@ -187,6 +191,7 @@ export const useSceneStore = defineStore('scenes', () => {
     if (force) { shardCache = {}; loadedShards.value = new Set() }
     loading.value = true
     error.value = null
+    const generation = ++inflightGeneration
     inflight = (async () => {
       await loadMeta()
       const [shared, core] = await Promise.all([
@@ -199,7 +204,7 @@ export const useSceneStore = defineStore('scenes', () => {
       .catch((e) => { error.value = String((e as Error)?.message ?? e) })
       .finally(() => {
         loading.value = false
-        inflight = null
+        if (generation === inflightGeneration) inflight = null
       })
     return inflight
   }
@@ -234,6 +239,7 @@ export const useSceneStore = defineStore('scenes', () => {
     loading.value = true
     error.value = null
 
+    const generation = ++inflightGeneration
     inflight = (async () => {
       if (force) { shardCache = {}; loadedShards.value = new Set() }
       await loadMeta(force)
@@ -250,7 +256,7 @@ export const useSceneStore = defineStore('scenes', () => {
       })
       .finally(() => {
         loading.value = false
-        inflight = null
+        if (generation === inflightGeneration) inflight = null
       })
 
     return inflight

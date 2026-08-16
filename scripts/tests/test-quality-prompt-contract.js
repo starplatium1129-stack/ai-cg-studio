@@ -100,9 +100,11 @@ test('short prompt builder reproduces the sc300 contract without safe/nsfw contr
   assert.strictEqual(built.health.ok, true, built.health.errors.join('; '));
   assert.ok(built.prompt.includes('nene_witch_canonical'));
   assert.ok(built.prompt.includes('wooden_bar_counter'));
+  // 2026-08-16 审计：sc300（暖金咖啡馆的魔女休息日）已被评级归类为 R15——评级
+  // token 是 safe 而不是 nsfw；`nene_r18` 是服装/主题 token，与评级无关，保留。
   assert.ok(built.prompt.includes('nene_r18'));
-  assert.ok(built.prompt.includes('nsfw'));
-  assert.ok(!built.prompt.includes(', safe'));
+  assert.ok(built.prompt.includes('safe'));
+  assert.ok(!built.prompt.includes('nsfw'), '非成人场景不得出现 nsfw');
   assert.ok(built.prompt.includes('@muririn, @kobuichi'));
 });
 

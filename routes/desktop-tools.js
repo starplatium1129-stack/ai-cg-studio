@@ -7,6 +7,9 @@
  * - localOnly：仅本机可调（与 /api/training 同级别）。
  * - 所有路径解析后必须落在 AI 工作区（AI_WORKSPACE_ROOT）内（Windows 大小写不敏感）。
  * - 命令以参数数组 execFile 执行，不经过 shell —— 没有 `;`/`|`/`&&` 注入面。
+ * - 命令名白名单（python/pwsh/node/git 等解释器）或工作区内脚本的相对路径，
+ *   禁止任意系统可执行文件（2026-08-16 审计：此前无白名单，模型工具调用
+ *   可在本机执行任意命令；配合 chat 的 companionTools 仅本机放行，双保险）。
  * - 读 1MB / 写 512KB / 命令 120s 超时 + 64KB 输出上限。
  */
 
@@ -14,6 +17,7 @@ var express = require('express');
 var fs = require('fs');
 var path = require('path');
 var cp = require('child_process');
+var crypto = require('crypto');
 
 var MAX_READ_BYTES = 1024 * 1024;
 var MAX_WRITE_BYTES = 512 * 1024;
@@ -27,6 +31,39 @@ var IMAGE_MAGIC = [
   { magic: [0x52, 0x49, 0x46, 0x46], mime: 'image/webp' },
   { magic: [0x47, 0x49, 0x46], mime: 'image/gif' },
 ];
+
+/** run_command 白名单：只有这些解释器/常用工具可以裸名执行。 */
+var ALLOWED_COMMANDS = Object.freeze(new Set([
+  'python', 'python3', 'pythonw', 'pwsh', 'powershell',
+  'node', 'npm', 'npx', 'git', 'conda',
+].map(function (name) { return name.toLowerCase(); })));
+
+/**
+ * run_command 命令校验收紧：裸命令必须是白名单解释器；含路径分隔符时必须
+ * 是工作区内脚本的相对路径（禁止绝对路径与 `..` 穿越）。都是参数数组 execFile，
+ * 无 shell 注入面。
+ */
+function assertSafeCommand(root, command) {
+  var value = String(command || '').trim();
+  if (!value) throw new Error('缺少命令');
+  var hasPathSeparator = /[/\\]/.test(value);
+  if (!hasPathSeparator) {
+    var base = value.replace(/\.exe$/i, '').toLowerCase();
+    if (ALLOWED_COMMANDS.has(base)) return value;
+    throw new Error('命令不在允许列表（python/pwsh/node/npm/npx/git/conda）或缺少工作区内脚本相对路径');
+  }
+  if (/^[a-zA-Z]:/.test(value) || value.startsWith('/') || value.startsWith('\\')) {
+    throw new Error('只接受工作区内的相对脚本路径');
+  }
+  if (value.split(/[\\/]/).some(function (part) { return part === '..'; })) {
+    throw new Error('脚本路径不能包含 ..');
+  }
+  var resolved = path.resolve(root, value);
+  if (!isPathInsideWorkspace(root, resolved)) {
+    throw new Error('脚本路径超出 AI 工作区范围');
+  }
+  return value;
+}
 
 function sniffImageMime(buffer) {
   for (var i = 0; i < IMAGE_MAGIC.length; i += 1) {
@@ -128,7 +165,7 @@ function runTool(workspaceRoot, name, args) {
         if (content.length > MAX_WRITE_BYTES) throw new Error('内容超过 ' + (MAX_WRITE_BYTES / 1024) + 'KB 写入上限');
         return fs.promises.mkdir(path.dirname(writeFile), { recursive: true })
           .then(function () {
-            var temporary = writeFile + '.' + process.pid + '.tool.tmp';
+            var temporary = writeFile + '.' + process.pid + '-' + crypto.randomBytes(4).toString('hex') + '.tool.tmp';
             return fs.promises.writeFile(temporary, content, 'utf8')
               .then(function () { return fs.promises.rename(temporary, writeFile); });
           })
@@ -140,6 +177,8 @@ function runTool(workspaceRoot, name, args) {
         var command = String(args.command || '').trim();
         var rawArgs = Array.isArray(args.args) ? args.args.map(String) : [];
         if (!command) throw new Error('缺少命令');
+        // 2026-08-16 审计：命令校验收紧——白名单解释器或工作区内相对脚本。
+        assertSafeCommand(root, command);
         if (command.length > 256) throw new Error('命令名过长');
         if (rawArgs.length > 16) throw new Error('参数过多');
         if (rawArgs.some(function (arg) { return arg.length > 256; })) throw new Error('参数过长');

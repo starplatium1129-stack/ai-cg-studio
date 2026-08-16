@@ -285,6 +285,7 @@ function evaluateSeedReview(review, expectedSeeds) {
 module.exports = {
   QUALITY_TOKENS,
   REQUIRED_ARTISTS,
+  EXPLICIT_ADULT_TOKENS,
   IDENTITY_ANCHORS,
   QUALITY_CONTROL_TOKEN,
   REVIEW_DIMENSIONS,

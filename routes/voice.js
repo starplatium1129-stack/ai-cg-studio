@@ -34,6 +34,10 @@ async function relayAudio(source, res) {
 // 回放缓存，不再重复占用 GPU 队列。
 var ttsAudioCache = new Map();
 var TTS_CACHE_MAX_ENTRIES = 60;
+// 2026-08-16 审计：缓存此前只按条数（60）淘汰，单句 WAV 数 MB → 常驻数百 MB。
+// 增加总字节上限（128MB）双阈值淘汰；单条超上限时至少保留最新一条。
+var TTS_CACHE_MAX_BYTES = 128 * 1024 * 1024;
+var ttsAudioCacheBytes = 0;
 // 正在生成中的句子：cacheKey -> Promise<Buffer>。客户端重试或多位访客
 // 同时听到同一句时，直接共享同一次生成，不再重复占用 GPU 队列。
 // 首个请求断开（signal abort）会连带中止共享生成；等待方会拿到 abort
@@ -60,11 +64,18 @@ function fixWavHeaderServer(buffer) {
 }
 
 function cacheTtsAudio(key, buffer) {
-  if (ttsAudioCache.has(key)) ttsAudioCache.delete(key);
+  if (ttsAudioCache.has(key)) {
+    ttsAudioCacheBytes -= ttsAudioCache.get(key).length;
+    ttsAudioCache.delete(key);
+  }
   ttsAudioCache.set(key, buffer);
-  while (ttsAudioCache.size > TTS_CACHE_MAX_ENTRIES) {
+  ttsAudioCacheBytes += buffer.length;
+  while ((ttsAudioCache.size > TTS_CACHE_MAX_ENTRIES || ttsAudioCacheBytes > TTS_CACHE_MAX_BYTES)
+    && ttsAudioCache.size > 1) {
     var oldest = ttsAudioCache.keys().next().value;
     if (oldest === undefined) break;
+    var removed = ttsAudioCache.get(oldest);
+    ttsAudioCacheBytes -= removed.length;
     ttsAudioCache.delete(oldest);
   }
 }
@@ -266,12 +277,17 @@ function createVoiceRouter(config, dependencies) {
     }
 
     var chunks = [];
+    // 2026-08-16 审计：共享生成改用独立 AbortController——此前挂在首个请求的
+    // controller 上，首个访客断开会连带 abort 共享生成，所有等待方拿 502 且白耗
+    // 一次 GPU。独立信号让生成照常完成并入缓存（重播直接命中）；单句成本有界
+    // （上游 180s 超时兜底）；各等待方只与自己的断连解耦。
+    var sharedController = new AbortController();
     var generation = tts.stream(body, {
-      signal:controller.signal,
+      signal: sharedController.signal,
       onResponse:async function (result) {
-        if (controller.signal.aborted) throw httpClient.abortError();
+        if (sharedController.signal.aborted) throw httpClient.abortError();
         for await (var chunk of result.response) { chunks.push(Buffer.from(chunk)); }
-        if (controller.signal.aborted) throw httpClient.abortError();
+        if (sharedController.signal.aborted) throw httpClient.abortError();
       }
     }).then(function () {
       var audio = fixWavHeaderServer(Buffer.concat(chunks));

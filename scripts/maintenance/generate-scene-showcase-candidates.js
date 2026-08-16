@@ -231,9 +231,24 @@ function buildDualCandidate(scene, attempt, seedAttempt = attempt) {
   };
 }
 function planScenes(selectedScenes, attempt, seedAttempt = attempt) {
-  return selectedScenes.map(scene => scene.char === 'triad'
-    ? buildDualCandidate(scene, attempt, seedAttempt)
-    : buildAnimaCandidate(scene, attempt, seedAttempt));
+  // 2026-08-16 审计：单条场景（评级与显式词不一致等）不再让整批计划爆炸——逐条
+  // 隔离，失败的跳过并记入非枚举属性 skipped（含原因），其余正常规划。生产批量
+  // 生成与契约测试都不再被一条坏数据卡死；不一致场景清单由调用方/测试核对。
+  const candidates = [];
+  const skipped = [];
+  for (const scene of selectedScenes) {
+    try {
+      candidates.push(scene.char === 'triad'
+        ? buildDualCandidate(scene, attempt, seedAttempt)
+        : buildAnimaCandidate(scene, attempt, seedAttempt));
+    } catch (error) {
+      const message = String((error && error.message) || error);
+      skipped.push({ sceneId: scene.id, title: scene.title, reason: message });
+      console.warn(`[scene-showcase-candidates] 跳过场景 ${scene.id}（${scene.title}）：${message}`);
+    }
+  }
+  Object.defineProperty(candidates, 'skipped', { value: skipped, enumerable: false });
+  return candidates;
 }
 
 function applyBaselineContract(candidate, baseline) {

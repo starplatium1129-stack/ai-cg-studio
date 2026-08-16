@@ -69,7 +69,7 @@
                   <span v-else class="cb-avatar-fallback">{{ c.name.charAt(0) }}</span>
                 </span>
                 <span class="cb-name">{{ c.name }}</span>
-                <span class="cb-original">{{ c.alias?.[0] || c.source }}</span>
+                <span class="cb-original">{{ franchiseLabel(c.source) }}</span>
               </button>
             </div>
           </section>
@@ -176,6 +176,7 @@ import ArchivePageHero from '@/components/visual/ArchivePageHero.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useScrollReveal } from '@/composables/useScrollReveal'
+import { franchiseLabel } from '@/utils/franchiseLabel'
 import {
   parseCharacterProfiles,
   parseCharacterScenes,
@@ -196,23 +197,7 @@ useScrollReveal()
 const search = ref('')
 const activeFranchise = ref('')
 
-/** 作品展示名：优先纯汉字段（无假名），其次含 CJK 段，无 CJK 时保留整段（Fate/stay night 的斜杠是作品名一部分） */
-function franchiseLabel(source: string): string {
-  const s = String(source || '')
-  if (s === 'Arknights') return '明日方舟'
-  if (s === 'Arknights: Endfield') return '明日方舟：终末地'
-  const bracket = s.match(/《([^》]+)》/)
-  if (bracket) {
-    const inner = bracket[1]
-    const parts = inner.split('/').map(p => p.trim()).filter(Boolean)
-    const han = parts.find(p => /[\u4e00-\u9fff]/.test(p) && !/[\u3040-\u30ff]/.test(p))
-    if (han) return han
-    const cjk = parts.find(p => /[\u4e00-\u9fff]/.test(p))
-    if (cjk) return cjk
-    return inner
-  }
-  return s
-}
+/** 作品展示名：映射表优先 → 《》内纯汉字段 → 《》内 CJK 段 → 原文（见 utils/franchiseLabel.ts）。 */
 
 const keyword = computed(() => search.value.trim().toLowerCase())
 /** 搜索优先于作品筛选：有关键词时全量匹配，无关键词时按作品收敛 */
@@ -322,7 +307,7 @@ onMounted(() => { void loadProfiles() })
 .cb-search-icon { position: absolute; left: 12px; top: 50%; width: 15px; height: 15px; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; }
 .cb-search { width: 100%; padding: var(--s-3) var(--s-4) var(--s-3) 38px; background: var(--bg-deep); border: 1px solid var(--border-soft); border-radius: var(--r-lg); color: var(--text-primary); font-size: var(--fs-body); outline: none; }
 .cb-search:focus { border-color: var(--accent); }
-.cb-franchises { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-bottom: var(--s-4); }
+.cb-franchises { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-bottom: var(--s-4); padding: var(--s-3); border: 1px solid color-mix(in srgb, var(--archive-blue) 22%, var(--border-soft)); border-radius: var(--r-dossier); background: color-mix(in srgb, var(--bg-surface) 62%, transparent); }
 .cb-franchise { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border: 1px solid var(--border-soft); border-radius: var(--r-pill); background: var(--bg-surface); color: var(--text-secondary); font-size: var(--fs-label-sm); font-weight: 600; cursor: pointer; transition: border-color var(--t-fast), color var(--t-fast), background var(--t-fast); }
 .cb-franchise:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); }
 .cb-franchise.active { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }

@@ -4,7 +4,7 @@
       <div class="pop-hero-copy">
         <div class="page-kicker">Popular scene library / 热门角色场景库</div>
         <h1 class="title">角色场景</h1>
-        <p class="subtitle">18 位热门角色的全部场景蓝图，每一幕均已预设镜头、光线与叙事氛围；成人场景独立标注，可一键直达绘图页。</p>
+        <p class="subtitle">{{ characters.length }} 位热门角色的全部场景蓝图，每一幕均已预设镜头、光线与叙事氛围；成人场景独立标注，可一键直达绘图页。</p>
       </div>
       <div class="pop-hero-stat" aria-label="场景统计">
         <strong>{{ totalScenes }}</strong><span>场景蓝图</span>
@@ -13,26 +13,28 @@
     </section>
 
     <!-- 2026-08-15：作品筛选条 + 角色横排（按作品收敛，33 个不再一滚到底） -->
-    <div class="pop-franchise-strip" role="group" aria-label="按作品筛选角色">
-      <button type="button" class="pop-franchise" :class="{ active: activeFranchise === '' }"
-        :aria-pressed="activeFranchise === ''" @click="activeFranchise = ''">
-        全部 <span class="pop-franchise-count">{{ characters.length }}</span>
-      </button>
-      <button v-for="f in franchises" :key="f.name" type="button"
-        class="pop-franchise" :class="{ active: activeFranchise === f.name }"
-        :aria-pressed="activeFranchise === f.name" @click="pickFranchise(f.name)">
-        {{ f.label }} <span class="pop-franchise-count">{{ f.count }}</span>
-      </button>
-    </div>
-    <div class="pop-char-strip" role="group" aria-label="选择热门角色">
-      <button
-        v-for="character in stripCharacters" :key="character.id" type="button"
-        class="pop-char-btn" :class="{ active: selectedId === character.id }"
-        :aria-pressed="selectedId === character.id"
-        @click="selectCharacter(character.id)">
-        <strong>{{ character.displayName }}</strong>
-        <small>{{ character.franchise }}</small>
-      </button>
+    <div class="pop-char-area">
+      <div class="pop-franchise-strip" role="group" aria-label="按作品筛选角色">
+        <button type="button" class="pop-franchise" :class="{ active: activeFranchise === '' }"
+          :aria-pressed="activeFranchise === ''" @click="activeFranchise = ''">
+          全部 <span class="pop-franchise-count">{{ characters.length }}</span>
+        </button>
+        <button v-for="f in franchises" :key="f.name" type="button"
+          class="pop-franchise" :class="{ active: activeFranchise === f.name }"
+          :aria-pressed="activeFranchise === f.name" @click="pickFranchise(f.name)">
+          {{ f.label }} <span class="pop-franchise-count">{{ f.count }}</span>
+        </button>
+      </div>
+      <div class="pop-char-strip" role="group" aria-label="选择热门角色">
+        <button
+          v-for="character in stripCharacters" :key="character.id" type="button"
+          class="pop-char-btn" :class="{ active: selectedId === character.id }"
+          :aria-pressed="selectedId === character.id"
+          @click="selectCharacter(character.id)">
+          <strong>{{ character.displayName }}</strong>
+          <small>{{ franchiseLabel(character.franchise) }}</small>
+        </button>
+      </div>
     </div>
 
     <ArchiveStatePanel v-if="loading" kind="loading" title="正在读取角色场景" message="正在载入热门角色档案与场景蓝图。" />
@@ -121,6 +123,7 @@ import {
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
+import { franchiseLabel } from '@/utils/franchiseLabel'
 
 const route = useRoute()
 const sceneStore = useSceneStore()
@@ -138,22 +141,6 @@ const allBlueprints = computed<SceneBlueprint[]>(() => sceneStore.sceneBlueprint
 
 // 2026-08-15：角色选择条按作品筛选——先选作品，横排只显示该作品角色（33 个不再一滚到底）。
 const activeFranchise = ref('')
-
-const franchiseLabel = (name: string): string => {
-  if (name === 'Arknights') return '明日方舟'
-  if (name === 'Arknights: Endfield') return '明日方舟：终末地'
-  const bracket = String(name || '').match(/《([^》]+)》/)
-  if (bracket) {
-    const inner = bracket[1]
-    const parts = inner.split('/').map(p => p.trim()).filter(Boolean)
-    const han = parts.find(p => /[\u4e00-\u9fff]/.test(p) && !/[\u3040-\u30ff]/.test(p))
-    if (han) return han
-    const cjk = parts.find(p => /[\u4e00-\u9fff]/.test(p))
-    if (cjk) return cjk
-    return inner
-  }
-  return String(name || '')
-}
 
 const franchises = computed(() => {
   const seen = new Map<string, number>()
@@ -179,11 +166,13 @@ const pool = computed<SceneBlueprint[]>(() => {
   )
 })
 
-const totalScenes = computed(() => characters.value.length
-  ? allBlueprints.value.length
-  : 0)
+// 统计口径统一为「当前角色的可浏览池」，与成人数量同源（header 不再显示全局 336 与
+// 单人成人数的混搭数字）。
+const totalScenes = computed(() => pool.value.length)
 const adultCount = computed(() => pool.value.filter(bp => bp.adult).length)
 
+/** 分类条稳定排序：优先序列表 → 其余按数量降序 → 中文排序；成人固定垫底。 */
+const CATEGORY_ORDER = ['全部', '现代日常', '温馨日常', '和风奇幻', '奇幻', '泰拉日常', '泰拉都市', '泰拉自然']
 const categories = computed(() => {
   const counts = new Map<string, number>()
   counts.set('all', pool.value.length)
@@ -191,13 +180,18 @@ const categories = computed(() => {
     const key = bp.adult ? '成人' : bp.category
     counts.set(key, (counts.get(key) || 0) + 1)
   }
-  const order = ['全部', '现代日常', '温馨日常', '和风奇幻', '奇幻', '成人']
   return [...counts.entries()]
     .map(([label, count]) => ({ id: label === '全部' ? 'all' : label, label, count }))
     .sort((a, b) => {
-      const ia = order.indexOf(a.label)
-      const ib = order.indexOf(b.label)
-      return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib)
+      const ia = CATEGORY_ORDER.indexOf(a.label)
+      const ib = CATEGORY_ORDER.indexOf(b.label)
+      if (ia >= 0 || ib >= 0) {
+        const rankA = ia >= 0 ? ia : Number.MAX_SAFE_INTEGER
+        const rankB = ib >= 0 ? ib : Number.MAX_SAFE_INTEGER
+        if (rankA !== rankB) return rankA - rankB
+      }
+      if (a.count !== b.count) return b.count - a.count
+      return a.label.localeCompare(b.label, 'zh-CN')
     })
 })
 
@@ -360,7 +354,17 @@ onMounted(() => { void init() })
 .pop-hero-stat strong.adult { color: var(--danger-text); }
 .pop-hero-stat span { grid-column: 2; }
 
-.pop-franchise-strip { display: flex; flex-wrap: wrap; gap: var(--s-2); padding: var(--s-2) 0; }
+/* 「作品 → 角色」选择区：dossier 外壳，与下方筛选工具栏同构，收紧页面层级 */
+.pop-char-area {
+  display: grid;
+  gap: var(--s-2);
+  margin-bottom: var(--s-4);
+  padding: var(--s-3);
+  border: 1px solid color-mix(in srgb, var(--archive-cyan) 14%, var(--border-soft));
+  border-radius: var(--r-dossier);
+  background: color-mix(in srgb, var(--bg-surface) 62%, transparent);
+}
+.pop-franchise-strip { display: flex; flex-wrap: wrap; gap: var(--s-2); }
 .pop-franchise {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 5px 12px; border: 1px solid var(--border-soft); border-radius: var(--r-pill);
@@ -405,7 +409,9 @@ onMounted(() => { void init() })
 .pop-char-btn.active strong { color: var(--accent); }
 
 .pop-toolbar {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   gap: var(--s-3);
   margin-bottom: var(--s-4);
   padding: var(--s-3);
@@ -416,7 +422,7 @@ onMounted(() => { void init() })
   -webkit-backdrop-filter: blur(20px) saturate(130%);
   backdrop-filter: blur(20px) saturate(130%);
 }
-.pop-toolbar-primary { display: flex; align-items: center; gap: var(--s-3); flex-wrap: wrap; }
+.pop-toolbar-primary { flex: 1 1 100%; display: flex; align-items: center; gap: var(--s-3); flex-wrap: wrap; }
 .pop-search {
   flex: 1 1 280px;
   min-width: 0;
@@ -432,7 +438,7 @@ onMounted(() => { void init() })
 .pop-search::placeholder { color: var(--text-muted); }
 .pop-count { color: var(--text-muted); font: 600 var(--fs-mono-sm) var(--font-mono); white-space: nowrap; }
 .pop-count strong { color: var(--accent); }
-.pop-cats { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+.pop-cats { flex: 1 1 auto; display: flex; flex-wrap: wrap; gap: var(--s-2); }
 .pop-cat {
   display: inline-flex;
   align-items: center;
@@ -451,7 +457,7 @@ onMounted(() => { void init() })
   background: var(--accent-soft);
   color: var(--accent);
 }
-.pop-toolbar-meta { display: flex; justify-content: flex-end; }
+.pop-toolbar-meta { margin-left: auto; }
 .mature-toggle { display: inline-flex; align-items: center; gap: var(--s-2); color: var(--text-secondary); cursor: pointer; font-size: var(--fs-body-sm); }
 .mature-toggle em { font-style: normal; opacity: .6; }
 

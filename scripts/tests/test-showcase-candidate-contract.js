@@ -30,6 +30,9 @@ const { test } = require('node:test');
 const gen = require('../../scripts/maintenance/generate-showcase-candidates.js');
 const sceneGen = require('../../scripts/maintenance/generate-scene-showcase-candidates.js');
 const popularData = require('../../data/popular-characters.json');
+// 2026-08-16 审计：热门角色由 18 扩容到 33 后，本文件多处硬编码 18 漂移；
+// 统一改为数据派生计数，契约意图（全覆盖）不变。
+const popularCount = (Array.isArray(popularData) ? popularData : (popularData && popularData.characters) || []).length;
 const sceneBlueprints = require('../../data/scene-blueprints.json').blueprints;
 const artistCatalog = require('../../src/config/artistStyleCatalog.ts');
 const artistStyles = require('../../src/config/artistStyles.ts');
@@ -55,9 +58,9 @@ test('batch plan expands consistently with the curated artist catalog', () => {
   const genericSceneCount = sceneBlueprints.filter(bp => !bp.characterId).length;
   const popularGrid = Object.values(perCharScenes)
     .reduce((sum, owned) => sum + (owned + genericSceneCount), 0) * 2;
-  const expectedAttempt1 = artistVariants + 18 + 8 + popularGrid + artistVariants * 2;
+  const expectedAttempt1 = artistVariants + popularCount + 8 + popularGrid + artistVariants * 2;
   // 明细：artistVariants 张画师（29 画师 + no-artist，含 3 个重点画师追加轮）
-  //       + 18 popular（角色专属场景）+ 8 latest-lora（nene/natsume × sd/anima × closeup/fullbody）
+  //       + popularCount popular（角色专属场景）+ 8 latest-lora（nene/natsume × sd/anima × closeup/fullbody）
   //       + popularGrid popular-grid（18 角色 × 各自场景 + 3 通用 × 2 引擎，全部 adult 开放）
   //       + artistVariants×2 artist-grid
   const expectedTotal = expectedAttempt1 + 14 + 6 + 2;
@@ -72,7 +75,7 @@ test('batch plan expands consistently with the curated artist catalog', () => {
   assert.strictEqual(attempt4.length, 2);
   const legacy1 = attempt1.filter(item => item.batch !== 'popular-grid' && item.batch !== 'artist-grid');
   const counts = legacy1.reduce((acc, item) => { acc[item.batch] = (acc[item.batch] || 0) + 1; return acc; }, {});
-  assert.deepStrictEqual(counts, { artist: artistVariants, popular: 18, 'latest-lora': 8 });
+  assert.deepStrictEqual(counts, { artist: artistVariants, popular: popularCount, 'latest-lora': 8 });
   const gridCounts = plan.reduce((acc, item) => { acc[item.batch] = (acc[item.batch] || 0) + 1; return acc; }, {});
   assert.strictEqual(gridCounts['popular-grid'], popularGrid,
     `popular-grid must plan ${popularGrid} (per-character scenes + ${genericSceneCount} generic x 2 engines, data-derived)`);
@@ -441,13 +444,13 @@ test('artist batch: curated artists + 1 no-artist baseline, one artist tag each'
   }
 });
 
-test('popular batch covers all 18 characters with default outfit and safe blueprint', () => {
+test(`popular batch covers all ${popularCount} characters with default outfit and safe blueprint`, () => {
   const characters = popularData.characters || popularData;
-  assert.strictEqual(characters.length, 18);
+  assert.strictEqual(characters.length, popularCount);
   const popular = gen.popularBatch(20260812);
-  assert.strictEqual(popular.length, 18);
+  assert.strictEqual(popular.length, popularCount);
   const ids = new Set(popular.map(item => item.subject));
-  assert.strictEqual(ids.size, 18, 'all 18 characters must be present');
+  assert.strictEqual(ids.size, popularCount, `all ${popularCount} characters must be present`);
   for (const character of characters) {
     const item = popular.find(entry => entry.subject === character.id);
     assert.ok(item, `missing ${character.id}`);
@@ -524,7 +527,19 @@ test('single-character scene candidates use the audited short prompt and correct
   const scenes = require('../../data/scenes.json');
   const singles = scenes.filter(item => item.char === 'nene' || item.char === 'natsume');
   const candidates = sceneGen.planScenes(singles, 1);
-  assert.strictEqual(candidates.length, 292);
+  // 2026-08-16 审计（用户决策）：场景评级按实际出图结论设定（如 sc122 R15），词条与
+  // 提示词一律不动；健康检查对「safe 提示词含显式词」的不一致场景由 planScenes
+  // 逐条隔离（跳过 + 警告，不再整批爆炸）。隔离数由数据 + 契约显式词表派生，不硬编码。
+  const EXPLICIT = require('../maintenance/quality-prompt-contract.js').EXPLICIT_ADULT_TOKENS;
+  const expectedSkipped = singles.filter(item =>
+    Array.isArray(item.tags) && item.tags.some(tag => EXPLICIT.has(tag))
+    && String(item.rating || '').toUpperCase() !== 'R18' && item.mature !== true).length;
+  assert.strictEqual(candidates.skipped.length, expectedSkipped,
+    'inconsistent scenes must be skipped one-by-one, not abort the batch');
+  assert.strictEqual(candidates.length, singles.length - expectedSkipped,
+    `expected ${singles.length - expectedSkipped} planned, got ${candidates.length}`);
+  assert.ok(candidates.skipped.every(item => item.sceneId && item.reason),
+    'skipped entries must carry scene id and reason');
   for (const candidate of candidates) {
     const tagLine = candidate.prompt.split('\n')[0];
     assert.strictEqual(candidate.engine, 'anima', `${candidate.sceneId} engine`);
@@ -550,6 +565,13 @@ test('single-character scene candidates use the audited short prompt and correct
   assert.strictEqual(nene.loraId, 'L_NENE_V21_ANIMA');
   assert.strictEqual(nene.generationCharacter, 'nene');
   assert.strictEqual(sceneGen.buildSubmissionBody(nene).character, 'nene');
+
+  // 2026-08-16 审计（用户决策）：sc122 评级 R15 且词条/提示词不动——它属于被
+  // planScenes 隔离的场景（safe 提示词含显式词），不应出现在候选里；隔离清单
+  // 里有它且带原因即符合预期。
+  const sc122Skipped = candidates.skipped.find(item => item.sceneId === 'sc122');
+  assert.ok(sc122Skipped, 'sc122 must be skipped (safe prompt carries explicit words, rating stays R15)');
+  assert.ok(sc122Skipped.reason.includes('显式成人词'), `skip reason must explain: ${sc122Skipped.reason}`);
 
   const natsume = candidates.find(item => item.characterId === 'natsume');
   assert.strictEqual(natsume.loraId, 'L_NAT_V21_ANIMA');

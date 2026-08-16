@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, reactive, computed } from 'vue'
 import { sceneLighting, sceneShot, sceneColorMood, sceneComposition, sceneRecommendedSize } from '@/utils/sceneInference'
 import { resolveModelProfile, mutualGroupOf, membersOfMutualGroup, type LoraMeta, type ModelProfile } from '@/utils/promptPolicy'
-import { imgPut } from '@/composables/useImageStore'
+import { imgPut, imgDelete } from '@/composables/useImageStore'
 import { kvGet, kvSet } from '@/composables/useKVStore'
 import { blobThumbDataUrl, thumbKey } from '@/utils/imageThumb'
 import { useSceneStore } from '@/stores/sceneStore'
@@ -400,6 +400,8 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
       sceneBaseStory: sceneBaseStory.value,
       directorMode: directorMode.value,
       sdParams: { ...sdParams },
+      // 2026-08-16 审计：把用户已确认的参数键一并入草稿，恢复后不被 profile 覆盖。
+      sdParamsTouched: [...sdParamsTouched.value],
       projectId: projectId.value,
       ...subjectSnapshot,
     }
@@ -422,6 +424,12 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     artistStyleIds.value = normalizeArtistStyleIds(d.artistStyleIds)
     if (d.directorMode) directorMode.value = d.directorMode
     if (d.sdParams) Object.assign(sdParams, d.sdParams)
+    // 2026-08-16 审计：恢复草稿时同步重建 touched 集合——否则恢复的用户参数会被
+    // 后续 applyModelProfile（切底模/引擎等）当默认值静默覆盖。缺省（旧草稿）
+    // 保持原行为：不标记任何键。
+    if (Array.isArray(d.sdParamsTouched) && d.sdParamsTouched.length) {
+      sdParamsTouched.value = new Set(d.sdParamsTouched.filter(key => isSDParamKey(key)) as Array<keyof SDParams>)
+    }
     if (typeof d.projectId === 'string') projectId.value = d.projectId
     if (d.subject === 'popular' && d.characterId && d.outfitId) {
       subject.value = { kind: 'popular', characterId: d.characterId, outfitId: d.outfitId, blueprintId: d.blueprintId ?? null }
@@ -491,8 +499,9 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     loraId?: string | null; loraStrength?: number | null
     cfg?: number | string; steps?: number | string; sampler?: string; scheduler?: string
   }): Promise<HistoryEntry | null> {
+    let imageId = ''
     try {
-      const imageId = await imgPut(entry.blob)
+      imageId = await imgPut(entry.blob)
       void cacheThumbnail(imageId, entry.blob)
       const measured = await measureBlob(entry.blob)
       const now = Date.now()
@@ -550,10 +559,17 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
         artistStyleIds: normalizeArtistStyleIds(entry.artistStyleIds ?? (directorMode.value === 'pro' ? artistStyleIds.value : [])),
       }
       const updated = [...history.value, historyEntry]
-      history.value = updated
+      // 2026-08-16 审计：先持久化再提交内存态——此前 kvSet 失败会「内存已入册、
+      // 磁盘没写」，刷新后条目静默丢失且刚写入的图片成为孤儿 blob。
       await kvSet(HISTORY_STORAGE_KEY, updated)
+      history.value = updated
       return historyEntry
-    } catch (e) { console.warn('commitHistoryEntry failed', e); return null }
+    } catch (e) {
+      console.warn('commitHistoryEntry failed', e)
+      // 持久化失败：回收刚写入的孤儿图片，避免无历史引用的 blob 堆积。
+      if (imageId) void imgDelete(imageId).catch(() => {})
+      return null
+    }
   }
 
   async function removeHistoryEntry(id: number) {

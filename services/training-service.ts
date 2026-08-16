@@ -266,7 +266,9 @@ function applyOverridesToConfig(
   ensureDirectory(uiPlansDir);
   const stampText = new Date(stamp()).toISOString().replace(/[:.]/g, '-');
   const outPath = path.join(uiPlansDir, `${path.basename(configPath, '.json')}.ui_${stampText}.json`);
-  fs.writeFileSync(outPath, `${JSON.stringify(config, null, 2)}\n`, 'utf8');
+  // 2026-08-16 审计：覆盖副本原为直接 writeFileSync 非原子写，写入途中崩溃会留下
+  // 半写副本，OneTrainer 据此读到损坏配置。统一走 writeJsonAtomic（temp+rename）。
+  writeJsonAtomic(outPath, config);
   return outPath;
 }
 
@@ -715,12 +717,17 @@ function defaultKillProcess(
   platform: NodeJS.Platform,
 ): void {
   if (platform === 'win32') {
+    // 2026-08-16 审计：taskkill 由同步 execFileSync 改为异步 spawn（stdio ignore，
+    // 无管道捕获/背压）——同步版本会阻塞网关事件循环直到整棵进程树回收完毕
+    // （卡死进程时尤其明显），异步化后停止训练不再卡住同进程的聊天/TTS。
+    // managed child 的状态回收仍由 close 事件驱动，与原有容错语义一致。
     try {
-      childProcess.execFileSync('taskkill', ['/pid', String(pid), '/T', '/F'], {
+      const killer = childProcess.spawn('taskkill', ['/pid', String(pid), '/T', '/F'], {
         windowsHide: true,
         shell: false,
         stdio: 'ignore',
       });
+      killer.unref?.();
       return;
     } catch {
       // The process may have exited between the status check and taskkill.

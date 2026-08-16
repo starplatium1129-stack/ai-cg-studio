@@ -53,6 +53,12 @@ function createTranslationService(options: TranslationServiceOptions) {
   /** 启动探测轮询的 handle —— close() 必须清掉它，否则关服后计时器还活着 */
   let readyPoll: ReturnType<typeof setInterval> | null = null;
   const cache = new Map<string, TranslationResult>();
+  /**
+   * 2026-08-16 审计：降级路径 runLegacy 每次 translate 会独立 spawn 一个一次性
+   * python 子进程，此前只存在局部变量、不在 close() 清理范围 → 网关关停时孤儿进程
+   * 残留。这里登记全部 legacy 子进程，close() 统一回收，close 后自动移除。
+   */
+  const legacyChildren = new Set<ChildProcess>();
 
   function remember(text: string, result: TranslationResult): TranslationResult {
     cache.delete(text);
@@ -201,6 +207,8 @@ function createTranslationService(options: TranslationServiceOptions) {
         env: Object.assign({}, process.env, { PYTHONUTF8: '1' }),
         stdio: ['pipe', 'pipe', 'pipe']
       });
+      legacyChildren.add(legacy);
+      legacy.once('close', function () { legacyChildren.delete(legacy); });
       const timer = setTimeout(function () {
         if (!finished) killProcessTree(legacy);
       }, 180000);
@@ -291,6 +299,11 @@ function createTranslationService(options: TranslationServiceOptions) {
       }
     }
     child = null;
+    // 2026-08-16 审计：降级翻译子进程也要一并回收，避免网关关停后孤儿残留。
+    legacyChildren.forEach(function (legacy) {
+      try { killProcessTree(legacy); } catch { /* Best-effort */ }
+    });
+    legacyChildren.clear();
     ready = false;
   }
 

@@ -12,6 +12,8 @@ var anima = require('./anima');
 
 var MAX_PENDING = 4;
 var MAX_BODY = '64kb';
+var MAX_UPSTREAM_JSON_BYTES = 8 * 1024 * 1024;
+var WEB_JOB_TTL_MS = 2 * 60 * 60 * 1000;
 var CHECKPOINT = 'waiIllustriousSDXL_v170.safetensors';
 var OUTPUT_PREFIX = 'wai_app';
 var LORAS = Object.freeze({
@@ -171,7 +173,18 @@ function requestJson(config, hostKey, method, pathname, body, timeout) {
     var client = target.protocol === 'https:' ? https : http;
     var req = client.request({ protocol:target.protocol, hostname:target.hostname, port:target.port, path:target.pathname, method:method, timeout:timeout || 10000,
       headers:Object.assign({ Accept:'application/json' }, payload ? { 'Content-Type':'application/json', 'Content-Length':payload.length } : {}) }, function (res) {
-      var chunks = []; res.on('data', function (c) { chunks.push(c); }); res.on('end', function () {
+      // 2026-08-16 审计：响应体必须设上限，防止上游（本机 SD）返回超大 JSON 时
+      // 网关内存被无界撑高（之前 chunks 无限累加）；超过即掐断并按错误处理。
+      var chunks = []; var size = 0;
+      res.on('data', function (c) {
+        size += c.length;
+        if (size > MAX_UPSTREAM_JSON_BYTES) {
+          req.destroy(error(502, 'UPSTREAM_RESPONSE_TOO_LARGE', '上游响应过大'));
+          return;
+        }
+        chunks.push(c);
+      });
+      res.on('end', function () {
         var raw = Buffer.concat(chunks).toString('utf8'); var data; try { data = raw ? JSON.parse(raw) : null; } catch (e) { reject(error(502, 'INVALID_UPSTREAM_RESPONSE', '上游返回无效 JSON')); return; }
         if (res.statusCode < 200 || res.statusCode >= 300) { reject(error(502, 'UPSTREAM_ERROR', '上游请求失败', { status:res.statusCode, data:data })); return; }
         resolve(data);
@@ -239,6 +252,18 @@ function createGenerationRouter(config, dependencies) {
   dependencies = dependencies || {};
   var comfy = dependencies.waiComfy || anima.createAnimaService(config, { buildWorkflow:buildWorkflow, validateResources:function (input) { validateWaiResources(config, input); }, outputPrefix:OUTPUT_PREFIX, outputNodeId:'10', mediaNamespace:'wai', engine:'sd', routeBase:'/api/generation' });
   var jobs = new Map();
+  // 2026-08-16 审计：WebUI 出图任务此前只进 Map 从不回收（内存无上限泄漏）。
+  // 统一走 trackWebJob：TTL 后删除（含释放 result Buffer），与 Comfy 分支的
+  // gcTimer 对齐；结果送达后 result=null 已由取图端点处理。
+  function trackWebJob(webJob) {
+    jobs.set(webJob.id, webJob);
+    var timer = setTimeout(function () {
+      if (webJob.result) webJob.result = null;
+      jobs.delete(webJob.id);
+    }, WEB_JOB_TTL_MS);
+    if (typeof timer.unref === 'function') timer.unref();
+    return webJob;
+  }
   var router = express.Router();
   var limit = security.rateLimit({ capacity:12, refillMs:5000, label:'WAI 出图' });
 
@@ -282,7 +307,7 @@ function createGenerationRouter(config, dependencies) {
     var webuiUsable = webui.online && webui.waiAvailable;
       if (input.autoHires && webuiUsable && webuiSupportsSampler && webuiSupportsScheduler && webuiSupportsAnimeUpscaler) {
         var animeInput = Object.assign({}, input, { autoHires:false, hiresUpscaler:'R-ESRGAN 4x+ Anime6B', comfyHires:false, comfyUnsupported:true });
-        var animeJob = createWebUIJob(config, animeInput, owner(req)); jobs.set(animeJob.id, animeJob);
+        var animeJob = createWebUIJob(config, animeInput, owner(req)); trackWebJob(animeJob);
         return res.status(202).json({ ok:true, job:publicJob(animeJob) });
       }
       if (comfyUsable && !input.faceDetailer && !input.comfyUnsupported) {
@@ -304,11 +329,11 @@ function createGenerationRouter(config, dependencies) {
       }
       if (input.autoHires && webuiUsable) {
         var directInput = Object.assign({}, input, { autoHires:false, hiresFix:false, comfyHires:false, comfyUnsupported:false });
-        var directJob = createWebUIJob(config, directInput, owner(req)); jobs.set(directJob.id, directJob);
+        var directJob = createWebUIJob(config, directInput, owner(req)); trackWebJob(directJob);
         return res.status(202).json({ ok:true, job:publicJob(directJob) });
       }
       if (webuiUsable) {
-      var webJob = createWebUIJob(config, input, owner(req)); jobs.set(webJob.id, webJob);
+      var webJob = createWebUIJob(config, input, owner(req)); trackWebJob(webJob);
       return res.status(202).json({ ok:true, job:publicJob(webJob) });
     }
      if (input.faceDetailer) {

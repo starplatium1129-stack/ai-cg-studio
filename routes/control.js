@@ -29,6 +29,7 @@ var BUILD_SOURCE_GLOBS = ['index.html', 'vite.config.ts', 'src', 'public'];
 var WEB_BUILD_LOCK = null;
 var WEB_BUILD_TIMEOUT_MS = 10 * 60 * 1000;
 var WEBUI_START_TIMEOUT_MS = 6 * 60 * 1000;
+var MAX_LOCAL_JSON_BYTES = 8 * 1024 * 1024;
 
 function newestSourceMtime(rootDir) {
   var newest = 0;
@@ -142,8 +143,18 @@ function requestLocalJson(baseUrl, apiPath, body, timeoutMs) {
         headers: payload ? { 'Content-Type':'application/json', 'Content-Length': Buffer.byteLength(payload) } : {},
         timeout: timeoutMs || 4000
       }, function (res) {
+        // 2026-08-16 审计：探活/状态请求同样要设响应体上限，防止被探测的本机
+        // 服务（SD/TTS/Ollama）返回异常大响应时网关内存无界累积。
         var chunks = [];
-        res.on('data', function (c) { chunks.push(c); });
+        var size = 0;
+        res.on('data', function (c) {
+          size += c.length;
+          if (size > MAX_LOCAL_JSON_BYTES) {
+            req.destroy(new Error('response too large'));
+            return;
+          }
+          chunks.push(c);
+        });
         res.on('end', function () {
           var raw = Buffer.concat(chunks).toString('utf8');
           var data = null;
@@ -231,7 +242,10 @@ function createControlRouter(config, gatewayRef, dependencies) {
     ttsManaged: false,
     ollamaModels: [],
     ollamaVram: 0,
-    controlLogs: []
+    controlLogs: [],
+    // 2026-08-16 审计：控制日志游标要用单调递增序号，而不是环形缓冲长度——
+    // 缓冲满 200 后长度恒 200，纯长度游标再也拿不到新行。controlLogSeq 只增不减。
+    controlLogSeq: 0
   };
   var ops = createOperationManager(state);
   var watchdog = null;
@@ -258,6 +272,7 @@ function createControlRouter(config, gatewayRef, dependencies) {
   function controlLog(msg) {
     var line = '[' + new Date().toLocaleTimeString('zh-CN', { hour12:false }) + '] ' + msg;
     state.controlLogs.push(line);
+    state.controlLogSeq += 1;
     if (state.controlLogs.length > 200) state.controlLogs.shift();
     try {
       if (config.RUNTIME && config.RUNTIME.controlLog) {
@@ -866,7 +881,12 @@ function createControlRouter(config, gatewayRef, dependencies) {
   // GET /api/logs — 仅本机；日志过 redactText，避免把隧道 URL / token 原样回出去
   router.get('/api/logs', localOnly, function(req, res) {
     var since  = parseInt(req.query.since, 10) || 0;
-    var lines  = state.controlLogs.slice(since).map(diagnostics.redactText);
+    // 单调序号游标：缓冲首条序号 head = seq - length；客户端落后于裁剪头时从
+    // 当前头开始给（被裁掉的行此前已显示过）。total 恒为最新 seq。
+    var seq = state.controlLogSeq;
+    var head = seq - state.controlLogs.length;
+    var from = Math.min(seq, Math.max(since, head));
+    var lines  = state.controlLogs.slice(from - head).map(diagnostics.redactText);
     var logFiles = [
       config.RUNTIME && config.RUNTIME.gatewayLog,
       config.RUNTIME && config.RUNTIME.tunnelLog,
@@ -882,7 +902,11 @@ function createControlRouter(config, gatewayRef, dependencies) {
       lines = ['[' + new Date().toISOString().slice(0,19) + '] 网关已就绪，端口 ' + config.PORT];
     }
     res.setHeader('Cache-Control', 'no-store');
-    res.json({ logs:lines, total: since + lines.length, operation: state.operation });
+    // total 是权威游标（controlLogs 单调序号），不含文件尾行（尾行每次重读、
+    // 由前端按内容去重显示，不参与游标推进）。2026-08-16 审计：此前 total =
+    // since + lines.length 把 ≤30×3 行文件尾算进游标且纯按环形长度计数，
+    // 前端按数据长度自增 → 游标推过头/环形裁掉后，新 controlLogs 永不上屏。
+    res.json({ logs:lines, total: seq, operation: state.operation });
   });
 
   // 重新构建前端：公网分享伺服 dist/，源码改动后不重建分享出去就是旧版

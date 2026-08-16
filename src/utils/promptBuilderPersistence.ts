@@ -44,6 +44,9 @@ export interface PromptBuilderDraft {
   sceneBaseStory?: string
   directorMode?: 'basic' | 'pro'
   sdParams?: Partial<SDParams>
+  /** 2026-08-16 审计：用户手动确认过的出图参数键——恢复草稿时若不同步恢复
+   *  touched 集合，后续 applyModelProfile 会把恢复值当默认值静默覆盖。 */
+  sdParamsTouched?: string[]
   projectId?: string
   /** 热门角色无 LoRA 创作模式（旧草稿缺省为 studio，向后兼容）。 */
   subject?: 'studio' | 'popular'
@@ -165,6 +168,8 @@ export function parsePromptBuilderDraft(value: unknown): PromptBuilderDraft | nu
     sceneBaseStory: stringValue(value.sceneBaseStory),
     directorMode,
     sdParams: parseSDParams(value.sdParams),
+    // 只保留已知参数键，避免脏键污染 touched 集合。
+    sdParamsTouched: stringList(value.sdParamsTouched).filter(key => SD_PARAM_KEYS.has(key as keyof SDParams)),
     projectId: stringValue(value.projectId),
     subject: value.subject === 'popular' ? 'popular' : 'studio',
     characterId: stringValue(value.characterId),

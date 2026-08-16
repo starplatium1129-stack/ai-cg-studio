@@ -139,8 +139,11 @@ async function main() {
   // ── 2) H3 I2VA：与页面「出视频」联动一致（composeVideoPrompt 的降级组装） ──
   console.log('[2/4] 组装 H3 I2VA 提示词…');
   var config = { AI_WORKSPACE_ROOT: AI_ROOT, ROOT_DIR: ROOT };
-  var scenePrompt = [blueprint.description, blueprint.action, blueprint.lighting]
-    .filter(Boolean).join('，');
+  // 与 VideoStudioView.composeVideoPrompt 同源：优先英文 promptProse（可直接
+  // 驱动 H3 三段式），没有才回退中文结构化字段。
+  var scenePrompt = (blueprint.promptProse || '').trim()
+    || [blueprint.description, blueprint.action, blueprint.lighting]
+      .filter(Boolean).join('，');
   console.log('  场景描述: ' + scenePrompt);
   var input = videoRoute.validateInput({
     prompt: scenePrompt,

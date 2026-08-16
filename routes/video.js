@@ -8,6 +8,7 @@ var https = require('https');
 var path = require('path');
 var security = require('../server/security');
 var envelope = require('../server/http-envelope');
+var comfyClient = require('../server/comfy-client');
 
 var MAX_BODY = '32kb';
 var MAX_PENDING = 2;
@@ -189,6 +190,67 @@ var H3_STYLE = '2D-animated, cinematic';
 var H3_SOUNDSCAPE = 'Quiet ambient room tone with subtle movement sounds — soft fabric rustle and gentle breathing; no dialogue, no voiceover.';
 var H3_MUSIC = 'Soft piano notes at a slow tempo joined by sustained low strings, volume gently rising then fading at the end.';
 
+// 控制器句子与用户文案的冲突守卫（2026-08-15 审计：用户文案写「镜头缓慢推进」的
+// 同时控制器默认 still 会附加静态镜头句，互相矛盾；H3 是自然语言模型，矛盾指令
+// 会造成语义漂移）。文案里已出现明确的镜头运动/主体动作词时，控制器句子不再附加。
+// 中文词按字面匹配；英文词用 \b 词边界防误伤（"shade" 不能命中 "she"）。
+var CAMERA_MENTION_RE = /(推进|推近|推镜|推入|拉远|拉近|拉镜|横移|平移|环绕|环绕镜头|摇镜|摇摄|俯拍|仰拍|特写|推拉|运镜|镜头移|镜头从|镜头缓慢|镜头慢慢|视角转换|视角变化|\bzoom\s*(?:in|out)\b|\bpush\s*in\b|\bpull\s*out\b|\bpans?\b|\borbit\b|\barc\s*shot\b|\btracking\s*shot\b|\bdolly\b|\btilt\b|\bcamera\s*(?:moves|pushes|pulls|pans|arcs|tracks|zooms)\b|\bpov\b|\bclose-?up\b)/i;
+var MOTION_MENTION_RE = /(动作|运动|转身|回头|回眸|回望|站起|起身|坐下|躺下|跳跃|跳起|跳向|起舞|奔跑|跑向|跑进|跑出|走向|走进|走出|走到|走去|走来|举手|举起|挥手|挥动|挥舞|拿起|放下|端起|拾起|扭动|张开|伸出手|抬头|低头|转头|迈步|走动|踱步|舞动|跃起|跪下|跪坐|倚|偎|靠向|推开|拉开|打开|关上|翻页|弹奏|歌唱|哼唱|呼喊|微笑|轻笑|大笑|哭泣|仰望|俯身|弯腰|抱起|行走|跑动|爬出|\bmov(?:e|es|ed|ing)\b|\bwalk(?:s|ed|ing)\b|\brun(?:s|ning)\b|\bjump(?:s|ed|ing)\b|\bturn(?:s|ed|ing)\b|\brais(?:e|es|ed|ing)\b|\breach(?:es|ed|ing)\b|\bstand(?:s|ing)\b|\bsit(?:s|ting)\b|\bdanc(?:e|es|ed|ing)\b|\blift(?:s|ed|ing)\b|\bplac(?:e|es|ed|ing)\b|\bopen(?:s|ed|ing)\b|\bclos(?:e|es|ed|ing)\b|\bblink(?:s|ed|ing)\b|\bwav(?:e|es|ed|ing)\b|\bgrab(?:s|bed|bing)\b|\bstep(?:s|ped|ping)\b|\blean(?:s|ed|ing)\b|\bstretch(?:es|ed|ing)\b|\bbend(?:s|ing)\b|\bkneel(?:s|ing)\b|\bbow(?:s|ing)\b|\bspin(?:s|ning)\b|\bswing(?:s|ing)\b|\bpunch(?:es|ed|ing)\b|\bkick(?:s|ed|ing)\b|\bnod(?:s|ded|ding)\b|\bgestur(?:e|es|ed|ing)\b|\bsmil(?:e|es|ed|ing)\b|\blaugh(?:s|ed|ing)\b|\bwhisper(?:s|ed|ing)\b|\bspeak(?:s|ing)\b|\bsay(?:s|ing)\b|\bsing(?:s|ing)\b|\bsigh(?:s|ed|ing)\b|\bbreath(?:e|es|ed|ing)\b|\bflutter(?:s|ed|ing)\b|\bsway(?:s|ed|ing)\b)/i;
+
+function proseCarriesCameraMention(prompt) {
+  return CAMERA_MENTION_RE.test(String(prompt || ''));
+}
+function proseCarriesMotionMention(prompt) {
+  return MOTION_MENTION_RE.test(String(prompt || ''));
+}
+
+// 场景感知 soundscape/music（官方 4.6/4.7 要求与画面实际声音对应，固定室内模板
+// 会让雨夜/战场/海边的成片拿到错误的「quiet room tone」）。按信号优先级取第一条
+// 命中（雨夜 → 雨，而不是夜）；未命中任何信号时回退通用模板。全部为确定性匹配。
+var H3_SCENE_SOUND = Object.freeze([
+  // 雷/闪电只是视觉信号（幻想场景的紫色雷光 ≠ 雷雨），不派生雨声；雨声只看雨/storm。
+  { re:/雨|暴雨|雨水|雨夜|雷雨|雨滴|\brain\b|\brainfall\b|\bstorm\b|\bdownpour\b|\bdrizzle\b/i,
+    sound:'Steady rain falls across the scene, drumming on rooftops and pavement, with low thunder rumbling in the distance and water dripping from surfaces.' },
+  { re:/海|海滩|海滨|海浪|波浪|沙滩|\bsea\b|\bocean\b|\bbeach\b|\bwave\b/i,
+    sound:'Waves roll onto the shore with soft hissing foam, while a light sea breeze carries faint distant gull cries.' },
+  // 战斗音效只认明确的交战信号——持剑/佩枪的日常巡逻不该配打斗音（剑本身≠战斗）。
+  { re:/战斗|打斗|刀光|决战|战场|厮杀|\bfight\b|\bbattle\b|\bcombat\b/i,
+    sound:'Sharp impacts and whooshing blade cuts punctuate the scene, with heavy breathing and the scrape of feet on the ground.' },
+  { re:/森林|树林|林间|山间|原野|田野|花田|神社|雪原|鸟居|\bforest\b|\bwoods\b|\bmountain\b|\bmeadow\b|\bfield\b|\bgrass\b|\bsnow\b|\bice\b|\bfrozen\b|\btorii\b|\bshrine\b/i,
+    sound:'Wind moves through trees and grass with a soft rustle, while faint birdsong carries across the open space.' },
+  // 浴室/温泉只认明确的沐浴词——裸 steam 会误命中咖啡/拉面的热气场景。
+  { re:/温泉|浴池|浴缸|汤池|澡堂|泡汤|\bonsen\b|\bbath\b|\btub\b|\bsoak\b/i,
+    sound:'Gentle water laps and ripples in the bath while steam hisses softly and warm droplets fall back into the surface.' },
+  { re:/街道|街头|便利店|商店|车站|月台|电车|列车|马路|都市|城市|\bstreet\b|\bcity\b|\bshop\b|\bstation\b|\btrain\b|\bneon\b|\btraffic\b/i,
+    sound:'Distant city traffic hums beneath footsteps and ambient street noise, with occasional passing vehicles.' },
+  { re:/夜|深夜|夜晚|月光|\bmoonlight\b|\bnight\b/i,
+    sound:'Quiet night ambience: a soft breeze and distant low hums, with subtle movement sounds nearby.' },
+]);
+var H3_SCENE_MUSIC = Object.freeze([
+  // 配乐同理：剑随身不拔 ≠ 战斗配乐（深夜卧床持剑不该配驱动打击乐）。
+  { re:/战斗|决战|战场|刀光|厮杀|\bfight\b|\bbattle\b|\bcombat\b/i,
+    music:'Driving orchestral percussion at a fast tempo with surging brass and steady strings.' },
+  { re:/夜|深夜|月光|孤独|寂|思念|离别|伤感|\bmoonlight\b|\bnight\b|\blonely\b|\bsad\b|\bmelancholy\b/i,
+    music:'Sparse solo piano notes with wide silent gaps at a slow tempo, joined by a sustained low cello line.' },
+  { re:/欢快|活力|阳光|午后|集市|庆典|祭典|\bsunny\b|\bfestival\b|\bcelebration\b|\benergetic\b/i,
+    music:'Bright acoustic guitar and light percussion at a moderate tempo with a gently rising melody and clean tone.' },
+]);
+
+function deriveH3Soundscape(prompt) {
+  var source = String(prompt || '');
+  for (var i = 0; i < H3_SCENE_SOUND.length; i += 1) {
+    if (H3_SCENE_SOUND[i].re.test(source)) return H3_SCENE_SOUND[i].sound;
+  }
+  return H3_SOUNDSCAPE;
+}
+function deriveH3Music(prompt) {
+  var source = String(prompt || '');
+  for (var i = 0; i < H3_SCENE_MUSIC.length; i += 1) {
+    if (H3_SCENE_MUSIC[i].re.test(source)) return H3_SCENE_MUSIC[i].music;
+  }
+  return H3_MUSIC;
+}
+
 var ALLOWED_INPUT_KEYS = new Set([
   'prompt', 'negative', 'modelId', 'aspectRatio', 'duration',
   'camera', 'motion', 'seed', 'image', 'quality',
@@ -355,6 +417,11 @@ function validateInput(body, config) {
     if (typeof image !== 'string' || !IMAGE_INPUT_PATTERN.test(image)) {
       throw serviceError(400, 'INVALID_PARAMETER', '图片引用格式不受支持');
     }
+    // 模型不含 image 模式时坚决拒绝：buildWanWorkflow 不会消费 first_frame，
+    // 放行会导致「上传了首帧但任务静默按文字成片生成」的错误成片。
+    if (!model.modes.includes('image')) {
+      throw serviceError(400, 'MODEL_INPUT_MODE', '该模型不支持首帧图输入');
+    }
     if (config && !imageInputAvailable(config, image)) {
       throw serviceError(400, 'INVALID_PARAMETER', '图片文件不存在或已过期');
     }
@@ -389,40 +456,51 @@ function validateInput(body, config) {
   var isH3 = model.family === 'minimax-h3';
   var isI2va = isH3 && Boolean(image);
 
+  // 组装前的派生量：文案自带镜头/动作意图时控制器句子让位；
+  // soundscape/music 按场景信号派生（无信号回退通用模板）。
+  var userPrompt = body.prompt.trim();
+  var h3CameraLine = proseCarriesCameraMention(userPrompt) ? null : H3_CAMERA[body.camera];
+  var h3MotionLine = proseCarriesMotionMention(userPrompt) ? null : H3_MOTION[body.motion];
+  var wanCameraLine = proseCarriesCameraMention(userPrompt) ? null : CAMERA[body.camera];
+  var wanMotionLine = proseCarriesMotionMention(userPrompt) ? null : MOTION[body.motion];
+
   return Object.freeze({
     // H3 按官方三段式组装（MiniMax-AI/MiniMax-H3 h3-prompt-writing skill，
     // references/base-en.txt）：
     // - I2VA 首行 <Picture 1> 引用指令（逐字按官方模板），空一行再进三段式；
     // - [Shot 1] 开头声明整体风格（官方 4.1）；
-    // - 镜头/运动写成自然句（官方 4.3）；
-    // - soundscape/music 写具体声音与器乐节奏，不用抽象情绪词（官方 4.6/4.7）。
+    // - 镜头/运动写成自然句（官方 4.3）；文案已自带镜头/动作意图时不重复附加，
+    //   避免「用户写推进 + 控制器默认静止」这类矛盾指令（自然语言模型对
+    //   相互矛盾的指令会产生语义漂移）；
+    // - soundscape/music 按文案场景信号派生具体声音与器乐节奏（官方 4.6/4.7），
+    //   不用抽象情绪词，也不给雨夜/战场错误地配「quiet room tone」。
     prompt:isH3 ? (isI2va ? [
       'For the target video, at 0.00 seconds into the target video, <Picture 1> (from [Shot 1]) is fully referenced.',
       '',
-      'integrated_multimodal_description: [Shot 1] ' + H3_STYLE + ' — preserve the subject, clothing, hairstyle, and scene from <Picture 1>, then ' + body.prompt.trim(),
-      H3_CAMERA[body.camera],
-      H3_MOTION[body.motion],
+      'integrated_multimodal_description: [Shot 1] ' + H3_STYLE + ' — preserve the subject, clothing, hairstyle, and scene from <Picture 1>, then ' + userPrompt,
+      h3CameraLine,
+      h3MotionLine,
       'Character identity, clothing, lighting, and scene structure remain consistent from start to finish.',
       '',
-      'overall_soundscape: ' + H3_SOUNDSCAPE,
+      'overall_soundscape: ' + deriveH3Soundscape(userPrompt),
       '',
-      'non_diegetic_music: ' + H3_MUSIC,
-    ].join('\n') : [
-      'integrated_multimodal_description: [Shot 1] ' + H3_STYLE + ', ' + body.prompt.trim(),
-      H3_CAMERA[body.camera],
-      H3_MOTION[body.motion],
+      'non_diegetic_music: ' + deriveH3Music(userPrompt),
+    ].filter(function (line) { return line !== null; }).join('\n') : [
+      'integrated_multimodal_description: [Shot 1] ' + H3_STYLE + ', ' + userPrompt,
+      h3CameraLine,
+      h3MotionLine,
       'Character identity, clothing, lighting, and scene structure remain consistent from start to finish.',
       '',
-      'overall_soundscape: ' + H3_SOUNDSCAPE,
+      'overall_soundscape: ' + deriveH3Soundscape(userPrompt),
       '',
-      'non_diegetic_music: ' + H3_MUSIC,
-    ].join('\n')) : [
-      body.prompt.trim(),
-      CAMERA[body.camera],
-      MOTION[body.motion],
+      'non_diegetic_music: ' + deriveH3Music(userPrompt),
+    ].filter(function (line) { return line !== null; }).join('\n')) : [
+      userPrompt,
+      wanCameraLine,
+      wanMotionLine,
       '动作从开始到结束保持连续，角色身份、服装、光照和场景结构一致。',
-    ].join('\n'),
-    originalPrompt:body.prompt.trim(),
+    ].filter(function (line) { return line !== null; }).join('\n'),
+    originalPrompt:userPrompt,
     // H3 是自然语言模型：负向词会污染语义，保持空；Wan 仍走中文负面清单。
     negative:isH3 ? '' : [WAN_NEGATIVE, String(body.negative || '').trim()].filter(Boolean).join('，'),
     modelId:model.id,
@@ -779,7 +857,20 @@ function createVideoService(config, dependencies) {
   dependencies = dependencies || {};
   var jobs = new Map();
   var closed = false;
-  var clientId = 'aics-video-' + crypto.randomBytes(8).toString('hex');
+  var clientId = comfyClient.clientIdFor(config, 'video');
+  // 2026-08-16 审计（方案 A）：client_id 持久化复用 + 启动清理重启遗留的 ComfyUI 任务
+  // （旧任务无人轮询/取消会继续占 GPU）。立即 + 30s 后各试一次（网关常先于 ComfyUI
+  // 启动，重试幂等无害）。
+  function sweepOrphanPrompts() {
+    void comfyClient.cancelOrphanPrompts(config, clientId).then(function (cancelled) {
+      if (cancelled.length) {
+        console.warn('[video] 启动清理：已取消 ' + cancelled.length + ' 个重启遗留的 ComfyUI 任务');
+      }
+    });
+  }
+  sweepOrphanPrompts();
+  var orphanSweepRetry = setTimeout(sweepOrphanPrompts, 30 * 1000);
+  if (typeof orphanSweepRetry.unref === 'function') orphanSweepRetry.unref();
   var jobTimeoutMs = dependencies.jobTimeoutMs || JOB_TIMEOUT_MS;
   var jobTtlMs = dependencies.jobTtlMs || JOB_TTL_MS;
   var pollIntervalMs = dependencies.pollIntervalMs || POLL_INTERVAL_MS;
@@ -880,6 +971,16 @@ function createVideoService(config, dependencies) {
         return;
       }
       job.result = await materializeResult(config, job, output);
+      // 2026-08-16 审计：materialize 期间用户可能已取消（cancel 与 poll 竞态）——
+      // 材料化完成不代表任务仍有效；状态已离开 running 时丢弃结果文件，保持取消态，
+      // 避免「取消后任务静默复活为 succeeded」并残留下载文件。
+      if (job.status !== 'running') {
+        if (job.result && job.result.path) {
+          try { fs.unlinkSync(job.result.path); } catch (error) {}
+        }
+        job.result = null;
+        return;
+      }
       job.status = 'succeeded';
       job.error = null;
       job.errorCode = null;
@@ -913,6 +1014,21 @@ function createVideoService(config, dependencies) {
       throw serviceError(502, 'COMFY_INVALID_RESPONSE', 'ComfyUI 未返回有效任务 ID');
     }
     job.upstreamId = promptId;
+    // 提交期间被取消（cancel 与 submit 竞态）：不能把已经取消的任务又翻回
+    // running——否则用户按了取消，任务却复活跑完全程占 45 分钟 GPU。
+    // 这里直接把刚创建的上游任务一并取消，保持取消语义。
+    if (job.status !== 'queued') {
+      try {
+        await requestComfyJson(
+          config,
+          'POST',
+          '/api/jobs/' + encodeURIComponent(promptId) + '/cancel',
+          null,
+          10000
+        );
+      } catch (error) {}
+      return;
+    }
     job.status = 'running';
     schedulePoll(job, 0);
   }

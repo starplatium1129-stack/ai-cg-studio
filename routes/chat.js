@@ -59,6 +59,7 @@ function normalizeMultimodalContent(parts) {
     return { error:'多模态消息格式错误' };
   }
   var normalized = [];
+  var imageCount = 0;
   for (var i = 0; i < parts.length; i += 1) {
     var part = parts[i] || {};
     if (part.type === 'text') {
@@ -73,6 +74,10 @@ function normalizeMultimodalContent(parts) {
       if (!/^data:image\/(?:png|jpeg|webp|gif);base64,/.test(url) || url.length > 12 * 1024 * 1024) {
         return { error:'图片消息只接受工作区图片的 data URL' };
       }
+      // 2026-08-16 审计：单条消息图片数显式封顶（当前 read_image 视觉轮单图；防止
+      // 多图把 14MB 传输预算占满的同时仍绕开文本裁剪语义）。
+      imageCount += 1;
+      if (imageCount > 4) return { error:'图片消息过多（单条最多 4 张）' };
       normalized.push({ type:'image_url', image_url:{ url:url } });
       continue;
     }
@@ -578,6 +583,14 @@ function createChatRouter(config, dependencies) {
   router.post('/api/chat', chatLimit, express.json({ limit:'14mb' }), function (req, res) {
     var validation = validateChatBody(req.body);
     if (validation.error) return envelope.fail(res, 400, validation.error);
+
+    // 2026-08-16 审计：桌宠本地工具（list/read/write_file/run_command）只对本机会话
+    // 放行——远程隧道访客即使置 companionTools:true 也不附加工具 schema，
+    // 避免模型工具调用经共享 LLM 被远程访客诱发。执行端 /api/desktop-tools 本身
+    // 也是 localOnly，这里是第二道防线（不产生 tool-call 事件）。
+    if (validation.value.companionTools && !security.isDirectLocalRequest(req)) {
+      validation.value.companionTools = false;
+    }
 
     var controller = new AbortController();
     var doneSent = false;

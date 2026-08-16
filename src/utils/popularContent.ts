@@ -5,6 +5,7 @@
 import { createPromptPlan, renderPromptPlan, type PromptPlan } from './promptCompiler.ts'
 import {
   assembleNegative,
+  mergeTokenText,
   profileRatingTag,
   type ModelProfile,
 } from './promptPolicy.ts'
@@ -105,7 +106,13 @@ function stringList(value: unknown): string[] {
  * （2026-08-15 发现：336 个场景的场景级负面定制从未生效）。
  */
 function negativeStringList(value: unknown): string[] {
-  if (Array.isArray(value)) return value.filter((item): item is string => typeof item === 'string')
+  if (Array.isArray(value)) {
+    // 2026-08-15 审计：兼容历史「单元素数组内整段逗号串」格式（162/336 蓝图）。
+    // 任何数组元素都按逗号切分，保证按元素消费（includes/去重/UI chips）不踩坑。
+    return value.flatMap(item => typeof item === 'string'
+      ? item.split(',').map(segment => segment.trim()).filter(Boolean)
+      : [])
+  }
   if (typeof value === 'string' && value.trim()) {
     return value.split(',').map(item => item.trim()).filter(Boolean)
   }
@@ -171,11 +178,29 @@ export function parsePopularCharacter(value: unknown): PopularCharacter | null {
   }
 }
 
+/**
+ * 逐条解析并隔离坏数据：单条字段缺失/非法只跳过该条并告警，不再让整份
+ * 角色/蓝图解析整体抛错（2026-08-16 审计：fail-hard 会因一条录入错误
+ * 丢掉全部数据）。重复 id 等跨条目完整性检查仍由调用方保留（真数据 bug 必须报错）。
+ */
+function parsePopularList<T>(source: unknown[], parseOne: (item: unknown) => T | null, label: string): T[] {
+  const list: T[] = []
+  for (const item of source) {
+    try {
+      const parsed = parseOne(item)
+      if (parsed !== null) list.push(parsed)
+    } catch (error) {
+      console.warn(`[popular-data] 跳过无效${label}条目：`, error instanceof Error ? error.message : String(error))
+    }
+  }
+  return list
+}
+
 export function parsePopularCharacters(value: unknown): PopularCharacter[] {
   const source = isRecord(value) && Array.isArray(value.characters)
     ? value.characters
     : Array.isArray(value) ? value : []
-  const list = source.map(parsePopularCharacter).filter((item): item is PopularCharacter => item !== null)
+  const list = parsePopularList(source, parsePopularCharacter, '角色')
   const seen = new Set<string>()
   for (const character of list) {
     if (seen.has(character.id)) throw new Error(`popular data: duplicated character id ${character.id}`)
@@ -214,7 +239,10 @@ export function parseSceneBlueprint(value: unknown): SceneBlueprint | null {
     animaStyleHint: stringValue(value.animaStyleHint),
     adultArtistHint: stringValue(value.adultArtistHint),
     sampleRating: stringValue(value.sampleRating),
-    nsfwTokens: stringList(value.nsfwTokens),
+    // 2026-08-16 审计：nsfwTokens 与 negativeTokens 同属「标签清单」字段，此前用
+    // stringList（字符串→[] 静默丢词），与 negativeStringList 不一致；统一走
+    // negativeStringList，历史「逗号串」形态不再丢词。
+    nsfwTokens: negativeStringList(value.nsfwTokens),
     nsfwProse: stringValue(value.nsfwProse),
     outfitId: stringValue(value.outfitId),
   }
@@ -224,7 +252,7 @@ export function parseSceneBlueprints(value: unknown): SceneBlueprint[] {
   const source = isRecord(value) && Array.isArray(value.blueprints)
     ? value.blueprints
     : Array.isArray(value) ? value : []
-  const list = source.map(parseSceneBlueprint).filter((item): item is SceneBlueprint => item !== null)
+  const list = parsePopularList(source, parseSceneBlueprint, '场景蓝图')
   const seen = new Set<string>()
   for (const blueprint of list) {
     if (seen.has(blueprint.id)) throw new Error(`blueprints: duplicated blueprint id ${blueprint.id}`)
@@ -335,10 +363,13 @@ export function recommendBlueprints(
     ? list.filter(blueprint => blueprint.characterId === characterId)
     : list
   if (pool.length === 0) return []
-  if (pool.length <= count) return pool
+  // 2026-08-16 审计：候选数 ≤ 每批数量时此前直接 return pool，绕过轮换——
+  // 「换一批」永远返回同一排列（同批重复）。改为仍做确定性轮换，只改变顺序；
+  // 此场景集合恒同，防重循环最多重试一次足矣。
+  const maxAttempts = pool.length <= count ? 1 : 8
   let attempt = cursor
   let picked = rotateBlueprints(pool, key, attempt).slice(0, count)
-  while (sameIds(picked, previousIds) && attempt < cursor + 8) {
+  while (sameIds(picked, previousIds) && attempt < cursor + maxAttempts) {
     attempt += 1
     picked = rotateBlueprints(pool, key, attempt).slice(0, count)
   }
@@ -586,7 +617,10 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     rating: rating || (adultGranted ? 'nsfw' : ''),
     visualDescription: userVisual,
     subjectProse: identityWithoutOutfit(character.identityProse),
-    outfitProse: outfit.prose,
+    // 2026-08-16 审计：Anima 成人路径此前漏置空 outfitProse（Krea 分支 546 行已置空）。
+    // renderPromptPlan('anima') 会在 outfitProse 存在时渲染 "She wears {outfit}",
+    // 服装词会与成人 nsfwProse 的裸体词打架、压过显式词。与 Krea 三铁律「outfitProse 置空」对齐。
+    outfitProse: adultGranted ? '' : outfit.prose,
     sceneProse,
     // Anima 只接收模型原生短标签；Krea 的自然语言 lead 不进入标签流。
     style: style?.sd ? style.sd.split(',').map(token => token.trim()).filter(Boolean) : [],
@@ -608,8 +642,8 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   // 2026-08-15 增强：补 duplicate/extra person/1boy/2boys/crowd（R18 双人分身问题）；
   // 不加 mirror/reflection，避免误伤合法镜面/倒影场景（如浴室镜）。
   const panelSuppress = 'split image, split screen, split panel, two panels, diptych, triptych, comic strip, multiple frames, panel borders, frame borders, double exposure, double image, duplicated subject, duplicated body, multiple girls, second person, two people, duplicate, duplicated person, extra person, 1boy, 2boys, crowd, bystanders'
-  const finalNegative = negative
-    ? `${negative}, ${panelSuppress}`
-    : panelSuppress
+  // 2026-08-15 审计：panelSuppress 必须走整条去重管道（tokenize→normalizeKey→按 token 去重），
+  // 否则与蓝图负面重复（150 个蓝图含 multiple girls、6 个含 crowd，最终负面各出现两次）。
+  const finalNegative = mergeTokenText(negative, panelSuppress)
   return { plan, prompt: rendered.prompt, negative: finalNegative, adult }
 }

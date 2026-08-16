@@ -58,6 +58,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-vad-segmenter.js',
     'test-voice-baseline.js',
     'test-voice-profile-contract.js',
+    'test-video-prompt-prose.js',
     'test-wav-quality.js',
   ]),
   contract: Object.freeze([

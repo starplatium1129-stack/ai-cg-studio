@@ -463,8 +463,10 @@ test('popular creator · adult blueprint stays reachable across all characters (
 test('popular creator · scene library page deep-links character and blueprint into the director', async ({ page }) => {
   await page.goto(`http://127.0.0.1:${MOCK_PORTS.gateway}/popular-scenes`, { waitUntil: 'domcontentloaded' })
   await page.waitForTimeout(2500)
-  // 角色场景库：18 角色可选，卡片带 R18 标注。
-  await expect(page.locator('.pop-char-btn')).toHaveCount(18)
+  // 角色场景库：角色可选（2026-08-16 审计：mock 网关喂真实数据 33 角色，旧断言
+  // toHaveCount(18) 随扩容漂移；改为下限断言，数据继续扩容不红）。
+  const charCount = await page.locator('.pop-char-btn').count()
+  expect(charCount).toBeGreaterThanOrEqual(18)
   await page.locator('.pop-char-btn').filter({ hasText: '雷电将军' }).click()
   await page.locator('.pop-card').filter({ hasText: '花海逆光' }).first()
     .getByRole('link', { name: '开始绘制' }).click()

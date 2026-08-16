@@ -129,6 +129,10 @@ export interface EmotionRuntime {
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value))
 
+/** 情绪逼近过渡速率（原死常量 0.86）与保持时长（秒，原死常量 23）。 */
+const NUDGE_TRANSITION_AMOUNT = 0.86
+const NUDGE_HOLD_SECONDS = 23
+
 function lerpVAD(from: VADVector, to: VADVector, amount: number): VADVector {
   const mix = (a: number, b: number) => clamp(a + (b - a) * amount, -1, 1)
   return { valence: mix(from.valence, to.valence), arousal: mix(from.arousal, to.arousal), dominance: mix(from.dominance, to.dominance) }
@@ -295,11 +299,14 @@ export function createEmotionRuntime(config: EmotionRuntimeConfig): EmotionRunti
 
   function nudge(emotion: ChatEmotion) {
     const preset = emotionVAD[emotion] ?? emotionVAD.neutral
-    const amount = clamp(0.28 + 0.58 * 1, 0, 0.96)
+    // 2026-08-16 审计：原 `clamp(0.28 + 0.58 * 1, ...)` 与 `5 + 1 * 18` 是死魔法
+    // 常量（与参数无关的恒等式），所有情绪以相同速率/时长安插过渡。改为命名常量
+    // 便于后续按情绪/配置差异化（逼近速率已有 soullink targetApproachRate）。
+    const amount = NUDGE_TRANSITION_AMOUNT
     target.valence = clamp(target.valence + (preset.valence - target.valence) * amount, -1, 1)
     target.arousal = clamp(target.arousal + (preset.arousal - target.arousal) * amount, -1, 1)
     target.dominance = clamp(target.dominance + (preset.dominance - target.dominance) * amount, -1, 1)
-    holdSeconds = Math.max(holdSeconds, 5 + 1 * 18)
+    holdSeconds = Math.max(holdSeconds, NUDGE_HOLD_SECONDS)
     if (emotion !== 'neutral') presentIntensity = 1
   }
 

@@ -149,6 +149,47 @@ ComfyUI/models/
 - **验证**：测试断言更新（format/codec = 'auto'）后全绿；真实 ComfyUI 队列中 SaveVideo 以 auto/auto 执行不再报错。
 - **教训**：mock ComfyUI 不执行真实节点——**凡涉及动态 combo / 自定义节点参数的工作流改动，必须在真实 ComfyUI 上跑一次到执行阶段**，不能只信 validation 与 mock。
 
+## 全链路提示词审计与修复（2026-08-15，h3-prompt-writing skill 逐条对照）
+
+> 审核范围：绘图页「出视频」→ `tagsToVideoProse` → 视频页 `composeVideoPrompt` →
+> 后端 `routes/video.js` H3 三段式组装。逐条对照 `.agents/skills/h3-prompt-writing/` 官方 skill。
+
+### 与官方 skill / 官方示例的对照结论（无改动，仅留档）
+
+- **三段式字段名、顺序、空行分隔**：`integrated_multimodal_description` → （空行）→ `overall_soundscape` → （空行）→ `non_diegetic_music`，与 base-en.txt 一致。
+- **I2VA 首帧指令**：项目按 skill 2.1 的写法把 `For the target video, at 0.00 seconds…` 放在整段提示词首行、空一行再进三段式。ModelTC 官方 Turbo I2V 示例（`video_minimax_h3_i2v_lightx2v_turbo.json`）把同样的指令写在 `integrated_multimodal_description:` 字段标签同一行、`[Shot 1]` 前。两种都从文本最开头携带指令，语义等价；项目写法与 skill 文字逐字一致，保持现状。
+- **本机 ComfyUI 节点确认（`comfy_extras/nodes_minimax_h3.py`）**：`MiniMaxH3ImageToVideo` 的输入名 `first_frame`、`prompt`（multiline + dynamic_prompts）与项目工作流一致；`length` 训练区间提示为 124–362 帧（约 5s–15s），**3 秒档（73 帧）低于训练区间**——能用但 5 秒档是模型训练最下限，质量更稳；默认仍保留 3 秒（16GB 显存优先），文档记一笔不再改。
+- **负向词保持空**：H3 是自然语言模型，负向词污染语义（官方 skill 无负面字段），保持现状。
+- **动态提示词注意**：`MiniMaxH3ImageToVideo.prompt` 带 `dynamic_prompts=True`，提示词里出现 `{a|b}` 花括号会被 ComfyUI 随机展开——组装层不产生花括号，用户手动输入时自行留意。
+
+### 本次修复（现象 → 根因 → 修复 → 验证）
+
+1. **中文 story 标点被改写（`tagsToVideoProse`）**：含 ≥5 个逗号分句的中文文案会被误判为 tag 流，按 ASCII 逗号重拼，「，」→「, 」造成标点残渣。
+   - 修复：输入含 CJK / 全角标点（`CJK_RE`）一律原样返回；权重括号 `(tag:1.2)` 剥离后送 DROP_TAG 过滤；整词包裹括号剥一层；下划线 token 转空格（`surtr_(arknights)` → `surtr (arknights)`，与 AGENTS.md Anima exactTokens 空格规则同向，避免 H3 收下划线噪声）。
+   - 验证：`test-video-prompt-prose.js` 新增 2 用例（该文件此前没接进任何质量套件，已补进 `unit` 清单），8 用例全过。
+2. **场景预设兜底用中文 `description+action+lighting` 拼进 H3 提示词**：违反官方「英文改写」输出规则，且按中文逗号拼接产生残渣。
+   - 修复：`composeVideoPrompt` 蓝图兜底改为优先英文 `promptProse`（Anima/Krea 自然语言，可直接驱动视频），中文结构化字段仅作最后兜底（`evaluate-video-i2va.js` 同步同源）。
+3. **控制器镜头/动作句与用户文案打架**：用户写「镜头缓慢推进」而控制器默认 `still` 时，后端附加「The camera holds a static shot.」——自然语言模型拿到矛盾指令会语义漂移。
+   - 修复：`CAMERA_MENTION_RE` / `MOTION_MENTION_RE`（中英词汇表，英文带 `\b` 词边界）检测到文案已自带镜头运动/主体动作意图时，控制器句子让位（Wan 中文路径同样生效）；未检测到时行为不变。
+4. **soundscape/music 固定模板与画面错配**：雨夜/战场/海边成片拿「quiet room tone」违反官方 4.6/4.7「声音必须对应画面」。
+   - 修复：`deriveH3Soundscape` / `deriveH3Music` 按场景信号（雨/海/战斗/山林/温泉/城市/夜…）确定性派生，乐器/节奏描述符合 4.7（无抽象情绪词），无信号回退原模板。
+5. **Wan 5B（modes=['text']）允许携带首帧图**：UI 不校验模式 → `buildWanWorkflow` 不消费 first_frame → 用户上传首帧却按文字成片静默生成错误成片。
+   - 修复：服务端 `validateInput` 对不含 `image` 模式的模型 400 `MODEL_INPUT_MODE`；前端 `canGenerate` 增加 `activeModel.modes.includes(selectedMode)` 门禁，I2VA 上下文到达与状态刷新时自动切到支持 image 的模型（本机即 MiniMax H3），提交按钮给出明确提示。
+6. **cancel/submit 竞态**：任务提交期间用户取消，`submit` 回来仍把状态翻回 `running` 继续生成（白占 45 分钟 GPU）。
+   - 修复：`submit` 发现状态已离开 `queued` 时，直接取消刚创建的上游 prompt 并保持取消态。
+7. **切回「文字成片」时画幅残留 `original`**：`aspectRatio` 未复位 → 后端 400。加 `watch(selectedMode)` 离开 image 模式自动复位 landscape。
+
+### 验证
+
+- `test-video-routes.js`：新增冲突让位（中英）、雨景 soundscape 派生、非 image 模型拒绝首帧图断言，全套通过。
+- `node --test scripts/tests/test-video-prompt-prose.js`：8 用例通过。
+- `eslint`（6 个改动文件）、`npm run typecheck:app`、`npm run build` 通过。
+
+### 剩余观察（暂不动）
+
+- H3 3s（73 帧）低于模型训练区间下限 124 帧；产品保留 3s 起步（16GB 优先），已在「选型结论」注明。
+- 热门角色 exactTokens 的括号消歧（`rem_(re_zero)` → `rem (re zero)`）仍按 AGENTS.md 待办在 Anima 侧 A/B 验证后批量改；视频侧 `tagsToVideoProse` 已按空格规则处理下划线，两侧规则一致。
+
 ### 后续阶段
 
 ### P2 · 图生视频
@@ -169,6 +210,7 @@ ComfyUI/models/
   3. 身份/服装不重复描述——I2VA 首帧图已锁定，后端自动附加官方 `<Picture 1>` 首帧指令；
   4. 不做 `promptTokens`（SD tag）→ 自然语言"翻译"：tag 是碎片化标签，转译会引入错误语义；prose/story 本就是自然语言，复用质量最高。
   - 预填提示词始终可编辑；后续可增强「本地 LLM 按官方 skill 规范精修」为可选按钮。
+  - ⚠️ 2026-08-15 审计修订：上述第 2 条的场景预设兜底已改为**优先英文 `promptProse`**，中文 `description+action+lighting` 仅作最后兜底（理由与验证见下文「全链路提示词审计与修复」第 2 条）。
 
 **P2 后端已落地（2026-08-15，H3 I2VA 先行）**：
 

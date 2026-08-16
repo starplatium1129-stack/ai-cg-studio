@@ -12,6 +12,13 @@ import {
 import { extractMoodTag } from '@/utils/moodTag'
 import { hasChatUserProfile, type ChatUserProfile } from '@/utils/chatUserProfile'
 
+// 2026-08-16 审计：流式对话的两级超时兜底（此前无任何超时，上游挂起=无限 spinner）。
+// 首事件超时覆盖排队/连接期；事件间静默覆盖出流后的断流。两者都远大于正常节奏，
+// 仅兜底真实挂起。本地 run_command 最长 120s，工具执行期间有 touch 续命。
+const CHAT_FIRST_EVENT_TIMEOUT_MS = 180_000
+const CHAT_STREAM_IDLE_MS = 180_000
+const WATCHDOG_INTERVAL_MS = 4_000
+
 type ChatStorage = ReturnType<typeof useChatStorage>
 type VoiceController = ReturnType<typeof useVoice>
 
@@ -133,6 +140,24 @@ export function useChatConversation(options: ChatConversationOptions) {
 
     const controller = new AbortController()
     activeRequest = controller
+    // 2026-08-16 审计：挂起兜底看门狗——无首事件 / 事件间长时间静默即中断，
+    // 避免上游挂起时无限 spinner（idleTimedOut 区分用户主动停止与超时中断）。
+    let firstEventAt = 0
+    let idleTimedOut = false
+    let lastEventAt = Date.now()
+    const touch = () => {
+      const now = Date.now()
+      if (!firstEventAt) firstEventAt = now
+      lastEventAt = now
+    }
+    const watchdog = window.setInterval(() => {
+      const silentFor = Date.now() - lastEventAt
+      if ((!firstEventAt && silentFor > CHAT_FIRST_EVENT_TIMEOUT_MS)
+        || (firstEventAt && silentFor > CHAT_STREAM_IDLE_MS)) {
+        idleTimedOut = true
+        controller.abort()
+      }
+    }, WATCHDOG_INTERVAL_MS)
     options.voice.startTurn({
       mid: assistant.mid,
       voice: options.currentCharacter.value.voice,
@@ -192,6 +217,7 @@ export function useChatConversation(options: ChatConversationOptions) {
 
         const toolCalls: PendingToolCall[] = []
         await parseNdjsonResponse(response, async event => {
+          touch()
           if (event.type === 'meta' && event.model) {
             // 视觉轮（临时切到 Gemini 看图）的模型名不写回用户配置
             if (options.chatProvider.value === 'api' && !hostMode && !useVision) {
@@ -253,6 +279,7 @@ export function useChatConversation(options: ChatConversationOptions) {
           })),
         })
         for (const call of toolCalls) {
+          touch()
           options.onToolActivity?.(`正在执行 ${call.name}…`)
           let result: { ok: boolean; output: string; imageDataUrl?: string }
           try {
@@ -289,9 +316,18 @@ export function useChatConversation(options: ChatConversationOptions) {
       options.voice.finishTurn()
     } catch (error) {
       if (isAbortError(error)) {
-        assistant.content = assistant.content.trim()
-        assistant.stopped = Boolean(assistant.content)
-        if (!assistant.content) messages.splice(messages.indexOf(assistant), 1)
+        if (idleTimedOut) {
+          // 超时中断：与用户主动停止不同，按失败处理并给出可理解的提示。
+          messages.splice(messages.indexOf(assistant), 1)
+          options.voice.stop({ preserveMessageAudio: true, silent: true })
+          options.onError(firstEventAt
+            ? '对话长时间无响应，已中断，请重试。'
+            : '对话等待超时（长时间未开始），请重试。')
+        } else {
+          assistant.content = assistant.content.trim()
+          assistant.stopped = Boolean(assistant.content)
+          if (!assistant.content) messages.splice(messages.indexOf(assistant), 1)
+        }
       } else {
         messages.splice(messages.indexOf(assistant), 1)
         options.voice.stop({ preserveMessageAudio: true, silent: true })
@@ -303,6 +339,7 @@ export function useChatConversation(options: ChatConversationOptions) {
         ))
       }
     } finally {
+      window.clearInterval(watchdog)
       resetStreamEmotion()
       options.onToolActivity?.(null)
       options.onThinking?.(null)

@@ -48,7 +48,8 @@ async function run() {
   assert.equal(input.quality, 'standard', 'quality defaults to standard');
   assert.equal(input.frames, 73);
   assert.match(input.prompt, /镜头缓慢推进/);
-  assert.match(input.prompt, /细微运动/);
+  assert.doesNotMatch(input.prompt, /细微运动/,
+    '控制器运动句让位于文案已写明的动作（回头/看向）');
   assert.equal(video.validateInput(validBody({ quality:'fast' })).width, 608, 'fast quality uses 0.2MP canvas');
   assert.equal(video.validateInput(validBody({ quality:'fast' })).height, 352);
   assert.equal(video.validateInput(validBody({ quality:'fine' })).width, 960, 'fine quality uses 0.5MP canvas');
@@ -88,12 +89,51 @@ async function run() {
   assert.match(h3Input.prompt, /^non_diegetic_music:/m, 'H3 prompt must carry the music field');
   assert.match(h3Input.prompt, /The camera pushes in at a slow, steady pace/,
     'H3 camera motion must be a natural English sentence (type + pace)');
-  assert.match(h3Input.prompt, /subtle/);
+  assert.doesNotMatch(h3Input.prompt, /The subject moves only subtly/,
+    'H3 motion line yields to prose action words（回头/看向镜头）');
   assert.equal(h3Input.prompt.indexOf('负向'), -1);
   assert.equal(h3Input.width, 832);
   assert.equal(h3Input.height, 480);
   assert.equal(video.validateInput(validBody({ modelId:'minimax-h3', duration:5 })).frames, 124,
     'H3 5s must snap to 124 frames');
+
+  // 文案已自带镜头/动作意图时，控制器句子让位（避免「用户写推进 + 控制器静止」）
+  // 这类自相矛盾的指令——H3 是自然语言模型，矛盾指令会产生语义漂移。
+  var h3Conflict = video.validateInput(validBody({
+    modelId:'minimax-h3',
+    prompt:'镜头缓慢推进，少女向着站台走去',
+    camera:'still',
+    motion:'subtle',
+  }));
+  assert.doesNotMatch(h3Conflict.prompt, /The camera holds a static shot/,
+    'H3 camera line suppressed when prose already states camera movement');
+  assert.doesNotMatch(h3Conflict.prompt, /The subject moves only subtly/,
+    'H3 motion line suppressed when prose already states an action');
+  assert.match(h3Conflict.prompt, /^integrated_multimodal_description: \[Shot 1\]/);
+
+  var h3EnConflict = video.validateInput(validBody({
+    modelId:'minimax-h3',
+    prompt:'She walks toward the station, camera zooms in slowly',
+    camera:'still',
+    motion:'subtle',
+  }));
+  assert.doesNotMatch(h3EnConflict.prompt, /static shot/i, 'English camera mention suppresses the controller line');
+  assert.doesNotMatch(h3EnConflict.prompt, /moves only subtly/i, 'English action mention suppresses the controller line');
+
+  // 场景感知 soundscape（官方 4.6：声音必须与画面对应，雨夜不能配「quiet room tone」）。
+  var h3Rain = video.validateInput(validBody({
+    modelId:'minimax-h3',
+    prompt:'暴雨中的神社，少女撑着伞前行',
+  }));
+  assert.match(h3Rain.prompt, /Steady rain falls across the scene/,
+    'soundscape derives scene-consistent rain audio (official 4.6)');
+  assert.doesNotMatch(h3Rain.prompt, /Quiet ambient room tone/, 'rain scene must not get the generic room tone');
+
+  // 非 image 模式模型（Wan 5B 只支持文字）拒绝首帧图：buildWanWorkflow 不会消费
+  // first_frame，放行会导致「上传了首帧但按文字成片生成」的错误成片。
+  assert.throws(function () {
+    video.validateInput(validBody({ modelId:'wan2.2-ti2v-5b', image:'aics_video_input_abcdef0123456789.png' }));
+  }, /不支持首帧图输入/, 'non-image models reject first-frame input');
 
   var h3Graph = video.buildWorkflow(h3Input);
   assert.equal(h3Graph['11'].class_type, 'SaveVideo');

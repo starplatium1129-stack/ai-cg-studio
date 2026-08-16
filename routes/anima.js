@@ -9,6 +9,7 @@ var path = require('path');
 var security = require('../server/security');
 var envelope = require('../server/http-envelope');
 var generationContract = require('../server/anima-generation-contract');
+var comfyClient = require('../server/comfy-client');
 
 var MAX_BODY = '64kb';
 var MAX_PENDING = 4;
@@ -580,7 +581,20 @@ function createAnimaService(config, options) {
   var cancelTimeoutMs = Number(options.cancelTimeoutMs) > 0
     ? Number(options.cancelTimeoutMs) : CANCEL_TIMEOUT_MS;
   var jobs = new Map();
-  var clientId = 'aics-' + crypto.randomBytes(12).toString('hex');
+  // 2026-08-16 审计（方案 A）：client_id 持久化复用 + 启动清理重启遗留的 ComfyUI 任务，
+  // 避免「网关重启 → 旧任务无人轮询/取消，继续占 GPU」。立即 + 30s 后各试一次
+  // （网关常先于 ComfyUI 启动，重试幂等无害）。
+  var clientId = comfyClient.clientIdFor(config, 'anima');
+  function sweepOrphanPrompts() {
+    void comfyClient.cancelOrphanPrompts(config, clientId).then(function (cancelled) {
+      if (cancelled.length) {
+        console.warn('[anima] 启动清理：已取消 ' + cancelled.length + ' 个重启遗留的 ComfyUI 任务');
+      }
+    });
+  }
+  sweepOrphanPrompts();
+  var orphanSweepRetry = setTimeout(sweepOrphanPrompts, 30 * 1000);
+  if (typeof orphanSweepRetry.unref === 'function') orphanSweepRetry.unref();
   var closed = false;
 
   cleanupMediaRoot(config, mediaNamespace);
@@ -661,38 +675,47 @@ function createAnimaService(config, options) {
 
   async function confirmCancellation(job) {
     if (closed || job.status !== 'cancelling' || !job.upstreamId) return;
-    if (Date.now() > job.cancelDeadline) {
-      failCancellation(job);
-      return;
-    }
+    // 2026-08-16 审计：cancel() 的确认定时器与 poll() 的 cancelling 分支可能并发
+    // 进入本函数——两路同时推进 cancelChecks 会把「两次观测」误算成四次（提前
+    // 判定取消完成），或双跑完成路径。加 in-flight 串行锁，多余进入直接返回。
+    if (job.cancelPolling) return;
+    job.cancelPolling = true;
     try {
-      var queue = await requestComfyJson(config, 'GET', '/queue', null, 10000);
-      var running = queue && (queue.queue_running || queue.running);
-      var pending = queue && (queue.queue_pending || queue.pending);
-      if (queueHasPrompt(running, job.upstreamId) || queueHasPrompt(pending, job.upstreamId)) {
-        job.cancelChecks = 0;
-        scheduleCancelPoll(job);
+      if (Date.now() > job.cancelDeadline) {
+        failCancellation(job);
         return;
       }
-      var history = await requestComfyJson(config, 'GET', '/history/' + encodeURIComponent(job.upstreamId), null, 10000);
-      var entry = history && history[job.upstreamId];
-      var status = entry && entry.status && entry.status.status_str;
-      if (entry && status !== 'success' && status !== 'error' && status !== 'failed') {
-        job.cancelChecks = 0;
+      try {
+        var queue = await requestComfyJson(config, 'GET', '/queue', null, 10000);
+        var running = queue && (queue.queue_running || queue.running);
+        var pending = queue && (queue.queue_pending || queue.pending);
+        if (queueHasPrompt(running, job.upstreamId) || queueHasPrompt(pending, job.upstreamId)) {
+          job.cancelChecks = 0;
+          scheduleCancelPoll(job);
+          return;
+        }
+        var history = await requestComfyJson(config, 'GET', '/history/' + encodeURIComponent(job.upstreamId), null, 10000);
+        var entry = history && history[job.upstreamId];
+        var status = entry && entry.status && entry.status.status_str;
+        if (entry && status !== 'success' && status !== 'error' && status !== 'failed') {
+          job.cancelChecks = 0;
+          scheduleCancelPoll(job);
+          return;
+        }
+        // Require two consecutive queue/history observations so an interrupt
+        // acknowledgement is not mistaken for actual upstream termination.
+        job.cancelChecks += 1;
+        if (job.cancelChecks < 2) {
+          scheduleCancelPoll(job);
+          return;
+        }
+        finishCancellation(job);
+      } catch (error) {
+        job.cancelFailures += 1;
         scheduleCancelPoll(job);
-        return;
       }
-      // Require two consecutive queue/history observations so an interrupt
-      // acknowledgement is not mistaken for actual upstream termination.
-      job.cancelChecks += 1;
-      if (job.cancelChecks < 2) {
-        scheduleCancelPoll(job);
-        return;
-      }
-      finishCancellation(job);
-    } catch (error) {
-      job.cancelFailures += 1;
-      scheduleCancelPoll(job);
+    } finally {
+      job.cancelPolling = false;
     }
   }
 
@@ -741,6 +764,13 @@ function createAnimaService(config, options) {
       }
        job.result = await materializeResult(config, job, image, { outputPrefix:job.input.family === 'krea2' ? 'creative_app' : outputPrefix, mediaNamespace:mediaNamespace });
        job.resultConsumed = false;
+      // 2026-08-16 审计（与 video.js 同款）：materialize 期间用户可能已取消——
+      // 状态离开 running 时丢弃结果并保持取消流程，避免「取消后任务复活为
+      // succeeded」且残留结果文件。
+      if (job.status !== 'running') {
+        removeResult(job);
+        return;
+      }
       job.status = 'succeeded';
       job.error = null;
       job.errorCode = null;
@@ -816,7 +846,8 @@ function createAnimaService(config, options) {
       pollFailures:0,
       cancelFailures:0,
       cancelChecks:0,
-      cancelDeadline:0
+      cancelDeadline:0,
+      cancelPolling:false
     };
     jobs.set(job.id, job);
     function collect() {

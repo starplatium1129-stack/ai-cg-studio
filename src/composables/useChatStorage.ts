@@ -49,9 +49,30 @@ export interface ChatState {
   }
 }
 
+/**
+ * 2026-08-16 审计：多窗口并发聊天时单键 last-writer-wins 会静默丢消息。
+ * 方案：按 mid 去重合并（远端为基、本地唯一消息追尾——零丢失，极端交错时顺序
+ * 近似）+ storage 事件被动同步 + 保存前合并远端。settings 仍 last-writer-wins
+ * （可接受）；clear() 不合并（清除意图优先，跨窗口清除为已知边界）。
+ */
+let chatStorageSyncInstalled = false
+let chatStorageSyncHandler: (() => void) | null = null
+
+/** 按 mid 去重：remote 为基（较旧），local 独有的消息追加到尾部。 */
+function mergeHistories(local: ChatMessage[], remote: ChatMessage[]): ChatMessage[] {
+  const seen = new Set<string>()
+  const merged: ChatMessage[] = []
+  for (const message of [...remote, ...local]) {
+    if (!message || typeof message.mid !== 'string' || !message.mid) continue
+    if (seen.has(message.mid)) continue
+    seen.add(message.mid)
+    merged.push(message)
+  }
+  return merged
+}
+
 export function useChatStorage(onError: (msg: string) => void = () => {}) {
-  const state = reactive<ChatState>({
-    version: STORAGE_VERSION,
+  const state = reactive<ChatState>({    version: STORAGE_VERSION,
     active: 'nene',
     histories: Object.fromEntries(Object.keys(CHARACTERS).map(k => [k, []])),
     settings: {
@@ -91,6 +112,34 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
       archive.value = emptyChatArchive(Object.keys(CHARACTERS))
     }
   }
+
+  /** 把 localStorage 中其他窗口更新的历史合并进内存（按 mid 去重，零丢失）。 */
+  function mergeRemoteIntoState() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null')
+      if (!raw || typeof raw !== 'object') return
+      const remote = (raw as Record<string, unknown>).histories
+      if (!remote || typeof remote !== 'object') return
+      for (const char of Object.keys(CHARACTERS)) {
+        const list = (remote as Record<string, unknown>)[char]
+        if (!Array.isArray(list)) continue
+        const merged = mergeHistories(state.histories[char] || [], list as ChatMessage[])
+        if (merged.length !== (state.histories[char] || []).length) {
+          state.histories[char] = merged
+        }
+      }
+    } catch { /* 解析失败保持现状，下次保存仍会重试 */ }
+  }
+
+  // storage 事件只在本 tab 之外触发：其他窗口写入后被动合并，不写回（避免循环）。
+  if (!chatStorageSyncInstalled) {
+    chatStorageSyncInstalled = true
+    window.addEventListener('storage', (event) => {
+      if (event.key !== STORAGE_KEY) return
+      chatStorageSyncHandler?.()
+    })
+  }
+  chatStorageSyncHandler = mergeRemoteIntoState
 
   function saveArchive() {
     try {
@@ -192,8 +241,11 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
 
   loadArchive()
 
-  function save() {
+  function save(mergeRemote = true) {
     try {
+      // 2026-08-16 审计：写盘前先合并其他窗口的更新，避免单键 last-writer-wins
+      // 覆盖掉另一窗口的新消息。clear() 传 false 跳过（清除意图优先）。
+      if (mergeRemote) mergeRemoteIntoState()
       state.version = STORAGE_VERSION
       localStorage.setItem(STORAGE_KEY, serializeChatStorage(persistedState()))
       localStorage.setItem('aics_chat_model', state.settings.model || '')
@@ -294,7 +346,8 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   function clear(char?: string) {
     if (char) { state.histories[char] = [] }
     else { for (const k of Object.keys(CHARACTERS)) state.histories[k] = [] }
-    save()
+    // 清除不合并远端：用户显式清空不应被其他窗口的旧数据复活。
+    save(false)
   }
 
   return {

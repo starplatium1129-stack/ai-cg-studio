@@ -157,7 +157,9 @@ function parseEntry(value: unknown): ShowcaseEntry | null {
     category: typeof value.category === 'string' ? value.category : '',
     char,
     rating: value.rating,
-    attempt: Math.max(1, Math.trunc(nonNegativeNumber(value.attempt) ?? 1)),
+    // 2026-08-16 审计：外层 Math.max(1,·) 会把显式 attempt:0（未迭代首版）抬成 1，
+    // 与 provenance.attempt 的 Math.trunc 语义不一致。缺省 1、显式 0 保留。
+    attempt: Math.trunc(nonNegativeNumber(value.attempt) ?? 1),
     type,
   }
   const displayName = optionalString(value.displayName)
