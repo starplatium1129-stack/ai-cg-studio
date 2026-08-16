@@ -82,6 +82,35 @@ function checkAdmissionControl() {
     return bounded.run(function () { return 'ok'; });
   }).then(function (value) {
     assert.strictEqual(value, 'ok', 'queue must accept work again after draining');
+    return checkCapIncludesActive();
+  });
+}
+
+// 2026-08-16 审计：判满必须计入 active——此前只数 pending，队首任务转 active 后
+// 会空出一个槽，实际在途可达 maxPending+1（离一超限）。
+function checkCapIncludesActive() {
+  const q = new SerialQueue('cap-active', 2);
+  const ran = [];
+  const gate = new Promise(function (resolve) { setTimeout(resolve, 20); });
+  const first = q.run(function () {
+    ran.push('first');
+    return gate;
+  });
+  return gate.then(function () {
+    // 20ms 后 first 一定已转 active（microtask 远早于 timer 排空）
+    assert.strictEqual(q.status().active, 1, 'first task must be active once the gate resolves');
+    const second = q.run(function () { ran.push('second'); return 'two'; });
+    assert.strictEqual(q.status().pending, 1, 'second task queued behind the active one');
+    const third = q.run(function () { ran.push('third'); return 'three'; });
+    return third.then(function () {
+      throw new Error('active must count toward maxPending: 1 active + 2 pending must be QUEUE_FULL');
+    }, function (error) {
+      assert.strictEqual(error.code, 'QUEUE_FULL');
+      assert.strictEqual(error.status, 503);
+      return Promise.all([first, second]);
+    });
+  }).then(function () {
+    assert.deepStrictEqual(ran, ['first', 'second'], 'rejected task must never run');
     return checkAbortDequeue();
   });
 }

@@ -181,7 +181,8 @@ function createTrainingStub(previewFile) {
       getLogs:function (id, cursor, version) {
         requireJob(id);
         calls.getLogs.push({ id:id, cursor:cursor, version:version });
-        return {
+        // 2026-08-16 审计：路由已适配异步 getLogs（读前先 flush），桩必须返回 Promise。
+        return Promise.resolve({
           id:id,
           cursor:Number(cursor) || 0,
           nextCursor:19,
@@ -189,7 +190,7 @@ function createTrainingStub(previewFile) {
           version:3,
           text:'epoch 2/80 - loss 0.094',
           lines:['epoch 2/80 - loss 0.094']
-        };
+        });
       },
       startJob:function (id, overrides, dataset) {
         calls.startJob.push({ id:id, overrides:overrides, dataset:dataset });

@@ -114,16 +114,17 @@ function createTrainingRouter(config, dependencies) {
   });
 
   function logsHandler(req, res) {
-    try {
-      res.setHeader('Cache-Control', 'no-store');
-      return envelope.ok(res, service.getLogs(
-        idFromRequest(req),
-        req.query && req.query.cursor,
-        req.query && req.query.version
-      ));
-    } catch (error) {
+    // 2026-08-16 审计：getLogs 已异步化（读前先 flush 待写日志缓冲）。
+    res.setHeader('Cache-Control', 'no-store');
+    service.getLogs(
+      idFromRequest(req),
+      req.query && req.query.cursor,
+      req.query && req.query.version
+    ).then(function (logs) {
+      return envelope.ok(res, logs);
+    }).catch(function (error) {
       return serviceError(res, error);
-    }
+    });
   }
 
   router.get('/api/training/jobs/:id/logs', logsHandler);

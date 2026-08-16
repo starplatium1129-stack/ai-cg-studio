@@ -15,6 +15,9 @@ const JOB_IDS = ['lora-nene-v18', 'lora-natsume-v18', 'voice-nene', 'voice-natsu
 const IMAGE_EXTENSIONS = new Set(['.png', '.jpg', '.jpeg', '.webp', '.avif']);
 const LOG_MAX_BYTES_DEFAULT = 1024 * 1024;
 const LOG_READ_MAX_BYTES = 64 * 1024;
+const LOG_FLUSH_DEBOUNCE_MS = 50; // 日志合并落盘的最小间隔
+const LOG_FORCE_FLUSH_BYTES = 64 * 1024; // 缓冲超过该值不等 debounce 立即落盘
+const LOG_SIZE_CHECK_BYTES = 256 * 1024; // 累计写入超过该值做一次截尾尺寸检查
 const STATE_FILE_NAME = 'jobs.json';
 const ANSI_RE = /\u001b\][0-?]*[ -/]*[@-~]|\u001b\[[0-?]*[ -/]*[@-~]/g;
 const VOICE_DATASET_VERSION = 'datasets-v16';
@@ -523,6 +526,7 @@ function createTrainingService(options) {
     const children = new Map();
     const parserBuffers = new Map();
     const persistTimers = new Map();
+    const logSinks = new Map();
     ensureDirectory(trainingRoot);
     ensureDirectory(logRoot);
     const saved = readJson(stateFile);
@@ -595,36 +599,153 @@ function createTrainingService(options) {
     function logFileFor(id) {
         return path.join(logRoot, `${id}.log`);
     }
-    function appendBoundedLog(id, value) {
-        if (!value)
-            return false;
+    /**
+     * 2026-08-16 审计：日志热路径原为每 chunk 同步 appendFileSync + statSync + readSync +
+     * writeFileSync（截尾）——训练进程输出密集时每个 chunk 都要阻塞事件循环 4 次磁盘调用。
+     * 改为内存缓冲 + debounce 合并的异步批量写；截尾（超过 logMaxBytes 保留最近 75%）
+     * 也在 flush 周期内异步完成，不再触碰热路径。
+     */
+    function createLogSink(id) {
         const file = logFileFor(id);
-        ensureDirectory(path.dirname(file));
-        fs.appendFileSync(file, value, 'utf8');
-        let size = 0;
-        try {
-            size = fs.statSync(file).size;
+        let buffer = '';
+        let scheduled = false;
+        let flushing = null;
+        let lastFlushAt = 0;
+        let bytesSinceSizeCheck = LOG_SIZE_CHECK_BYTES; // 首次落盘即做一次尺寸检查
+        let errorReported = false;
+        let timer = null;
+        let immediate = null;
+        async function maybeTruncate() {
+            let stat = null;
+            try {
+                stat = await fs.promises.stat(file);
+            }
+            catch {
+                return;
+            }
+            if (!stat || stat.size <= logMaxBytes)
+                return;
+            const keepBytes = Math.floor(logMaxBytes * 0.75);
+            const start = Math.max(0, stat.size - keepBytes);
+            const length = stat.size - start;
+            let handle;
+            try {
+                handle = await fs.promises.open(file, 'r');
+            }
+            catch {
+                return;
+            }
+            let tail;
+            try {
+                const { buffer: readBuffer, bytesRead } = await handle.read(Buffer.alloc(length), 0, length, start);
+                const slice = readBuffer.subarray(0, bytesRead);
+                const firstBreak = slice.indexOf(0x0a);
+                tail = firstBreak >= 0 ? slice.subarray(firstBreak + 1) : slice;
+            }
+            finally {
+                await handle.close();
+            }
+            try {
+                await fs.promises.writeFile(file, tail);
+            }
+            catch {
+                return;
+            }
+            const state = stateFor(id);
+            state.logVersion += 1;
+            if (state.status === 'running' || state.status === 'stopping') {
+                state.progress.message = '日志已滚动保留最近内容';
+            }
         }
-        catch {
-            return false;
+        async function doFlush() {
+            const text = buffer;
+            buffer = '';
+            if (!text)
+                return;
+            try {
+                await fs.promises.appendFile(file, text, 'utf8');
+                lastFlushAt = Date.now();
+                bytesSinceSizeCheck += text.length;
+                if (bytesSinceSizeCheck >= LOG_SIZE_CHECK_BYTES) {
+                    bytesSinceSizeCheck = 0;
+                    await maybeTruncate();
+                }
+            }
+            catch (error) {
+                // 热路径绝不因写日志失败崩溃；丢的只是本次缓冲（错误只上报一次防刷屏）。
+                if (!errorReported) {
+                    errorReported = true;
+                    console.error(`  ❌ 训练日志写入失败（${id}）:`, error instanceof Error ? error.message : error);
+                }
+            }
         }
-        if (size <= logMaxBytes)
-            return false;
-        const keepBytes = Math.floor(logMaxBytes * 0.75);
-        const start = Math.max(0, size - keepBytes);
-        const fd = fs.openSync(file, 'r');
-        const buffer = Buffer.alloc(size - start);
-        try {
-            fs.readSync(fd, buffer, 0, buffer.length, start);
+        function flush() {
+            if (flushing)
+                return flushing;
+            flushing = doFlush().finally(function () { flushing = null; });
+            return flushing;
         }
-        finally {
-            fs.closeSync(fd);
+        function scheduleFlush() {
+            if (scheduled || !buffer)
+                return;
+            scheduled = true;
+            const delay = Math.max(0, LOG_FLUSH_DEBOUNCE_MS - (Date.now() - lastFlushAt));
+            if (buffer.length >= LOG_FORCE_FLUSH_BYTES || delay === 0) {
+                immediate = setImmediate(function () {
+                    immediate = null;
+                    scheduled = false;
+                    void flush();
+                });
+                immediate.unref?.();
+                return;
+            }
+            timer = setTimeout(function () {
+                timer = null;
+                scheduled = false;
+                void flush();
+            }, delay);
+            timer.unref?.();
         }
-        const firstBreak = buffer.indexOf(0x0a);
-        const tail = firstBreak >= 0 ? buffer.subarray(firstBreak + 1) : buffer;
-        fs.writeFileSync(file, tail);
-        stateFor(id).logVersion += 1;
-        return true;
+        return {
+            append: function (text) {
+                if (!text)
+                    return;
+                buffer += text;
+                scheduleFlush();
+            },
+            flush: flush,
+            drainSync: function () {
+                if (!buffer)
+                    return;
+                const text = buffer;
+                buffer = '';
+                try {
+                    fs.appendFileSync(file, text, 'utf8');
+                }
+                catch (error) {
+                    console.error(`  ❌ 训练日志落盘失败（${id}）:`, error instanceof Error ? error.message : error);
+                }
+            },
+            dispose: function () {
+                if (timer) {
+                    clearTimeout(timer);
+                    timer = null;
+                }
+                if (immediate) {
+                    clearImmediate(immediate);
+                    immediate = null;
+                }
+                scheduled = false;
+            },
+        };
+    }
+    function logSinkFor(id) {
+        let sink = logSinks.get(id);
+        if (!sink) {
+            sink = createLogSink(id);
+            logSinks.set(id, sink);
+        }
+        return sink;
     }
     function inspectJob(id, datasetId) {
         const definition = definitionFor(id);
@@ -981,12 +1102,12 @@ function createTrainingService(options) {
             if (!text)
                 return;
             const trimmed = text.length > 128 * 1024 ? text.slice(-128 * 1024) : text;
-            const trimmedLog = appendBoundedLog(id, trimmed);
+            // 2026-08-16 审计：只做内存追加，落盘由 LogSink 合并为异步批量写
+            // （截尾在 flush 周期内异步完成，热路径不再有任何同步磁盘 I/O）。
+            logSinkFor(id).append(trimmed);
             const parserText = `${parserBuffers.get(id) || ''}${trimmed}`.slice(-16 * 1024);
             parserBuffers.set(id, parserText);
             parseProgress(state, parserText, inspection.definition, aiRoot);
-            if (trimmedLog)
-                state.progress.message = '日志已滚动保留最近内容';
             const timestamp = now();
             if (timestamp - persistAt >= 1000) {
                 persistAt = timestamp;
@@ -1094,19 +1215,21 @@ function createTrainingService(options) {
         }
         return publicJob(id);
     }
-    function getLogs(value, cursorValue, versionValue) {
+    async function getLogs(value, cursorValue, versionValue) {
         const id = assertKnownId(value);
         const state = stateFor(id);
+        // 2026-08-16 审计：读前先把该任务的待写缓冲落盘——写路径已异步化，
+        // 不 flush 会读到落后的内容（轮询时丢尾巴）。
+        const sink = logSinks.get(id);
+        if (sink)
+            await sink.flush();
         const file = logFileFor(id);
-        if (!fs.existsSync(file)) {
-            return { id, cursor: 0, nextCursor: 0, reset: false, version: state.logVersion, text: '', lines: [] };
-        }
         let size = 0;
         try {
-            size = fs.statSync(file).size;
+            size = (await fs.promises.stat(file)).size;
         }
         catch {
-            return { id, cursor: 0, nextCursor: 0, reset: true, version: state.logVersion, text: '', lines: [] };
+            return { id, cursor: 0, nextCursor: 0, reset: false, version: state.logVersion, text: '', lines: [] };
         }
         let cursor = Number.isFinite(Number(cursorValue)) ? Math.max(0, Math.floor(Number(cursorValue))) : 0;
         const requestedVersion = Number.isFinite(Number(versionValue))
@@ -1119,21 +1242,28 @@ function createTrainingService(options) {
         }
         const length = Math.max(0, Math.min(LOG_READ_MAX_BYTES, size - cursor));
         let text = '';
+        let bytesRead = 0;
         if (length) {
-            const fd = fs.openSync(file, 'r');
-            const buffer = Buffer.alloc(length);
+            let handle;
             try {
-                fs.readSync(fd, buffer, 0, length, cursor);
+                handle = await fs.promises.open(file, 'r');
+            }
+            catch {
+                return { id, cursor, nextCursor: cursor, reset, version: state.logVersion, text: '', lines: [] };
+            }
+            try {
+                const result = await handle.read(Buffer.alloc(length), 0, length, cursor);
+                bytesRead = result.bytesRead;
+                text = result.buffer.subarray(0, bytesRead).toString('utf8');
             }
             finally {
-                fs.closeSync(fd);
+                await handle.close();
             }
-            text = buffer.toString('utf8');
         }
         return {
             id,
             cursor,
-            nextCursor: cursor + Buffer.byteLength(text),
+            nextCursor: cursor + bytesRead,
             reset,
             version: state.logVersion,
             text,
@@ -1145,6 +1275,27 @@ function createTrainingService(options) {
         for (const timer of persistTimers.values())
             clearTimeout(timer);
         persistTimers.clear();
+        // 2026-08-16 用户决策：优雅关闭网关 = 终止训练（不做「跨重启存活」——
+        // 网关退出会关闭子进程 stdout 管道读端，存活训练下次打印大概率 BrokenPipeError
+        // 崩溃，等于半死状态；终止是唯一确定语义）。defaultKillProcess 的 taskkill 是
+        // 异步 spawn + unref，网关进程退出后仍会落地，不会留孤儿 GPU 进程；子进程
+        // close 事件驱动的状态回收（stopped/failed + saveStates）照常进行。
+        for (const [id, child] of children) {
+            children.delete(id);
+            const state = states.get(id);
+            if (state && state.pid) {
+                try {
+                    killProcess(state.pid, child);
+                }
+                catch { /* 进程可能已退出 */ }
+            }
+        }
+        // 关闭前同步落盘剩余日志缓冲（关停路径的一次性同步写可接受，保证不丢尾巴）。
+        for (const sink of logSinks.values()) {
+            sink.dispose();
+            sink.drainSync();
+        }
+        logSinks.clear();
         try {
             saveStates();
         }

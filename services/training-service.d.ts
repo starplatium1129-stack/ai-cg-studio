@@ -193,7 +193,7 @@ declare function createTrainingService(options: TrainingServiceOptions): {
     getDatasetPreview: (datasetId: string, variant?: "signature" | "adult") => DatasetPreviewFile;
     getJob: (value: unknown) => PublicJob;
     getJobConfig: (value: unknown) => PublicJobConfig;
-    getLogs: (value: unknown, cursorValue: unknown, versionValue: unknown) => {
+    getLogs: (value: unknown, cursorValue: unknown, versionValue: unknown) => Promise<{
         id: TrainingJobId;
         cursor: number;
         nextCursor: number;
@@ -201,7 +201,7 @@ declare function createTrainingService(options: TrainingServiceOptions): {
         version: number;
         text: string;
         lines: string[];
-    };
+    }>;
     startJob: (value: unknown, overridesValue?: unknown, datasetValue?: unknown) => PublicJob;
     stopJob: (value: unknown) => PublicJob;
     close: () => void;

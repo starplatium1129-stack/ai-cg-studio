@@ -8,7 +8,7 @@ const { test } = require('node:test');
  * launching Python or touching the real GPU workspace.
  */
 
-test('training-service', () => {
+test('training-service', async () => {
 var assert = require('assert');
 var EventEmitter = require('events');
 var fs = require('fs');
@@ -42,7 +42,7 @@ function safeRemove(temporaryRoot) {
   fs.rmSync(resolved, { recursive:true, force:true });
 }
 
-function main() {
+async function main() {
   var temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'ai-cg-training-service-'));
   var aiRoot = path.join(temporaryRoot, 'AI');
   var runtimeRoot = path.join(temporaryRoot, 'runtime');
@@ -174,7 +174,8 @@ function main() {
     assert.strictEqual(running.progress.steps, 4);
     assert.strictEqual(running.progress.stage, 'LoRA 训练');
 
-    var logs = service.getLogs('lora-nene-v18', 0, 0);
+    // 2026-08-16 审计：getLogs 已异步化（读前先 flush 待写缓冲）。
+    var logs = await service.getLogs('lora-nene-v18', 0, 0);
     assert.ok(logs.text.indexOf('loss=0.1234') >= 0);
     assert.ok(logs.nextCursor > 0);
     assert.strictEqual(logs.reset, true);
@@ -282,10 +283,28 @@ function main() {
     voiceChild.emit('close', 0);
     assert.strictEqual(service.getJob('voice-nene').status, 'completed');
 
+    // 2026-08-16 用户决策：优雅关闭网关 = 终止训练——close() 必须 kill 在跑子进程，
+    // 并同步落盘剩余日志缓冲（异步批量写不丢尾巴）。
+    var closeKillRun = service.startJob('lora-nene-v18');
+    assert.strictEqual(closeKillRun.status, 'running');
+    child.stdout.emit('data', Buffer.from('close tail marker line\n', 'utf8'));
+    service.close();
+    assert.ok(
+      killed.some(function (entry) { return entry.pid === 4242; }),
+      'close() must kill running training children (graceful shutdown = stop training)'
+    );
+    var closeLog = fs.readFileSync(
+      path.join(runtimeRoot, 'training', 'logs', 'lora-nene-v18.log'),
+      'utf8'
+    );
+    assert.ok(
+      closeLog.indexOf('close tail marker line') >= 0,
+      'close() must drain pending log buffer synchronously'
+    );
+    service = null;
+
     // 网关重启时旧进程可能仍然存在；旧服务没有 child 句柄，后续必须在查询时
     // 重新校准，而不能让 jobs.json 永久停在 running。
-    service.close();
-    service = null;
     var stateFile = path.join(runtimeRoot, 'training', 'jobs.json');
     var persisted = JSON.parse(fs.readFileSync(stateFile, 'utf8'));
     persisted.jobs['lora-nene-v18'] = {
@@ -322,5 +341,5 @@ function main() {
   }
 }
 
-main();
+await main();
 });

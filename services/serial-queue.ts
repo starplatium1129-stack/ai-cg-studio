@@ -78,7 +78,10 @@ class SerialQueue {
     if (signal && signal.aborted) {
       return Promise.reject(abortError());
     }
-    if (queue.pending >= queue.maxPending) {
+    // 2026-08-16 审计：判满必须计入 active——此前只数 pending，队首任务转 active 后
+    // （pending 减一、active 加一）又会空出一个槽，实际在途（排队+执行）可达
+    // maxPending+1。合并计数后「上限」才是真实在途上限。
+    if (queue.pending + queue.active >= queue.maxPending) {
       return Promise.reject(new QueueFullError(queue.name, queue.maxPending));
     }
     queue.pending += 1;
