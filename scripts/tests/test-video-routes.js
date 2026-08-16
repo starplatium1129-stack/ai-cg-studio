@@ -248,6 +248,73 @@ async function run() {
     video.validateVideoReference({ filename:'ComfyUI.mp4', subfolder:'', type:'output' });
   }, /前缀/);
 
+  // ── P7 对白（官方 4.4：说话人 ID + <d>[语言标签] 原文</d> 块）──────────
+  var h3Dialogue = video.validateInput(validBody({
+    modelId:'minimax-h3',
+    dialogue:'我在这站下车。',
+  }));
+  assert.match(h3Dialogue.prompt,
+    /The subject in the frame \(S1\) says: <d>\[Chinese\] 我在这站下车。<\/d>/,
+    'H3 dialogue must use the official speaker-ID + <d> verbatim block');
+  var h3EnDialogue = video.validateInput(validBody({
+    modelId:'minimax-h3',
+    dialogue:'Wait for me!',
+  }));
+  assert.match(h3EnDialogue.prompt, /<d>\[English\] Wait for me!<\/d>/,
+    'non-CJK dialogue gets the English language tag');
+  assert.throws(function () {
+    video.validateInput(validBody({ modelId:'wan2.2-ti2v-5b', dialogue:'你好' }));
+  }, /对白仅支持 MiniMax H3/, 'non-H3 models reject dialogue input');
+  assert.throws(function () {
+    video.validateInput(validBody({ modelId:'minimax-h3', dialogue:'x'.repeat(301) }));
+  }, /对白需为 1—300/, 'dialogue length is capped');
+
+  // ── P5 景别（官方 4.1 构图句）──────────────────────────────────────────
+  var h3Wide = video.validateInput(validBody({ modelId:'minimax-h3', shotSize:'wide' }));
+  assert.match(h3Wide.prompt, /framed as a wide establishing shot/,
+    'shotSize renders an English composition sentence');
+  assert.throws(function () {
+    video.validateInput(validBody({ modelId:'minimax-h3', shotSize:'extreme' }));
+  }, /不支持的景别/);
+  assert.throws(function () {
+    video.validateInput(validBody({ modelId:'wan2.2-ti2v-5b', shotSize:'wide' }));
+  }, /景别仅支持 MiniMax H3/);
+
+  // ── P6 FL2VA / L2VA（官方 base-en.txt 2.1 参考对齐指令 + 尾帧节点）──────
+  var fl2vaInput = video.validateInput(validBody({
+    modelId:'minimax-h3',
+    image:'aics_video_input_abcdef0123456789.png',
+    lastFrame:'aics_video_input_0123456789abcdef.png',
+    duration:5,
+  }));
+  assert.match(fl2vaInput.prompt,
+    /^How the reference pictures align with the target video — Picture 1 \(from Shot 1\) aligns with the 0\.00-second mark of the target video; Picture 2 \(from Shot 1\) aligns with the 5\.00-second mark of the target video\./,
+    'FL2VA must open with the official first-and-last-frame alignment instruction');
+  assert.match(fl2vaInput.prompt, /settles into the final pose, spacing, and composition established by Picture 2/);
+  var fl2vaGraph = video.buildWorkflow(fl2vaInput);
+  assert.equal(fl2vaGraph['18'].class_type, 'LoadImage');
+  assert.equal(fl2vaGraph['18'].inputs.image, 'aics_video_input_0123456789abcdef.png');
+  assert.deepEqual(fl2vaGraph['5'].inputs.first_frame, ['17', 0]);
+  assert.deepEqual(fl2vaGraph['5'].inputs.last_frame, ['18', 0],
+    'FL2VA graph must feed the tail frame into MiniMaxH3ImageToVideo.last_frame');
+  var l2vaInput = video.validateInput(validBody({
+    modelId:'minimax-h3',
+    lastFrame:'aics_video_input_0123456789abcdef.png',
+    duration:3,
+  }));
+  assert.match(l2vaInput.prompt,
+    /^How the reference pictures align with the target video — <Picture 1> \(from \[Shot 1\]\) aligns with the 3\.00-second mark of the target video\./,
+    'L2VA must open with the official last-frame convergence instruction');
+  var l2vaGraph = video.buildWorkflow(l2vaInput);
+  assert.equal(l2vaGraph['5'].inputs.first_frame, undefined, 'L2VA has no first frame');
+  assert.deepEqual(l2vaGraph['5'].inputs.last_frame, ['18', 0]);
+  assert.throws(function () {
+    video.validateInput(validBody({ modelId:'minimax-h3', lastFrame:'../evil.png' }));
+  }, /尾帧图片引用格式/);
+  assert.throws(function () {
+    video.validateInput(validBody({ modelId:'wan2.2-ti2v-5b', lastFrame:'aics_video_input_0123456789abcdef.png' }));
+  }, /不支持尾帧图输入/, 'non-FL models reject last-frame input');
+
   var missingStack = await gatewayStack.start();
   try {
     var status = await json(await fetch(missingStack.baseUrl + '/api/video/status'));
@@ -431,6 +498,156 @@ async function run() {
     assert.equal((await fetch(readyStack.baseUrl + '/history/demo')).status, 404);
   } finally {
     await readyStack.close();
+  }
+
+  // ── P5/P6/P8 网关：分镜批量（逐镜排队 + 尾帧衔接 + 拼接）───────────────
+  var fakeFfmpeg = async function (args) {
+    var out = args[args.length - 1];
+    if (String(out).endsWith('.png')) {
+      fs.writeFileSync(out, Buffer.from(tinyPngBase64, 'base64'));
+    } else if (String(out).endsWith('.mp4')) {
+      fs.writeFileSync(out, Buffer.from('fake-batch-mp4'));
+    } else {
+      throw new Error('unexpected ffmpeg output: ' + out);
+    }
+  };
+  var batchStack = await gatewayStack.start({
+    prepare:function (context) {
+      var root = path.join(context.config.AI_WORKSPACE_ROOT, 'ComfyUI', 'models');
+      for (var model of video.constants.MODEL_CATALOG) {
+        for (var requirement of model.requirements) {
+          var dir = path.join(root, requirement[0]);
+          fs.mkdirSync(dir, { recursive:true });
+          fs.writeFileSync(path.join(dir, requirement[1]), requirement[1]);
+        }
+      }
+    },
+    services:{ runFfmpeg:fakeFfmpeg, batchPollIntervalMs:50 },
+  });
+  try {
+    // 参数契约：批量拒绝逐镜歧义画幅/空镜头/未知字段/超量镜头。
+    var badBatch = await fetch(batchStack.baseUrl + '/api/video/batches', {
+      method:'POST',
+      headers:{ 'content-type':'application/json' },
+      body:JSON.stringify({ modelId:'minimax-h3', aspectRatio:'original', shots:[{ prompt:'一镜' }] }),
+    });
+    assert.equal(badBatch.status, 400);
+    assert.equal((await json(badBatch)).code, 'INVALID_PARAMETER', 'batch rejects per-shot-ambiguous aspect');
+    var emptyShots = await fetch(batchStack.baseUrl + '/api/video/batches', {
+      method:'POST',
+      headers:{ 'content-type':'application/json' },
+      body:JSON.stringify({ modelId:'minimax-h3', aspectRatio:'landscape', shots:[] }),
+    });
+    assert.equal(emptyShots.status, 400);
+    var badShotKey = await fetch(batchStack.baseUrl + '/api/video/batches', {
+      method:'POST',
+      headers:{ 'content-type':'application/json' },
+      body:JSON.stringify({ modelId:'minimax-h3', aspectRatio:'landscape', shots:[{ prompt:'一镜', workflow:{} }] }),
+    });
+    assert.equal(badShotKey.status, 400);
+    assert.equal((await json(badShotKey)).code, 'UNKNOWN_PARAMETER');
+    var tooMany = await fetch(batchStack.baseUrl + '/api/video/batches', {
+      method:'POST',
+      headers:{ 'content-type':'application/json' },
+      body:JSON.stringify({
+        modelId:'minimax-h3', aspectRatio:'landscape',
+        shots:Array.from({ length:31 }, function () { return { prompt:'一镜' }; }),
+      }),
+    });
+    assert.equal(tooMany.status, 400);
+    assert.match((await json(tooMany)).error, /分镜数量/);
+
+    // 三镜批量：镜 1 上传首帧（I2VA），镜 2 由服务端续接首帧，镜 3 自带关键帧 + 自动衔接尾帧（FL2VA）。
+    var shot1Upload = await fetch(batchStack.baseUrl + '/api/video/images', {
+      method:'POST',
+      headers:{ 'content-type':'application/json' },
+      body:JSON.stringify({ data:tinyPngBase64 }),
+    });
+    var shot1Name = (await json(shot1Upload)).name;
+    var shot3Upload = await fetch(batchStack.baseUrl + '/api/video/images', {
+      method:'POST',
+      headers:{ 'content-type':'application/json' },
+      body:JSON.stringify({ data:tinyPngBase64 }),
+    });
+    var shot3Name = (await json(shot3Upload)).name;
+    var batchCreate = await fetch(batchStack.baseUrl + '/api/video/batches', {
+      method:'POST',
+      headers:{ 'content-type':'application/json' },
+      body:JSON.stringify({
+        modelId:'minimax-h3',
+        aspectRatio:'landscape',
+        quality:'standard',
+        linkLastFrame:true,
+        shots:[
+          { prompt:'雨夜少女撑着伞走向车站', image:shot1Name, shotSize:'wide' },
+          { prompt:'少女回眸看向镜头', dialogue:'我在这站下车。', camera:'push' },
+          { prompt:'少女推门走进车站大厅', image:shot3Name, duration:5 },
+        ],
+      }),
+    });
+    assert.equal(batchCreate.status, 202, 'batch submit must return 202');
+    var createdBatch = (await json(batchCreate)).batch;
+    assert.equal(createdBatch.status, 'running');
+    assert.equal(createdBatch.shots.length, 3);
+
+    var deadline = Date.now() + 20000;
+    var finalBatch;
+    while (Date.now() < deadline) {
+      finalBatch = (await json(await fetch(batchStack.baseUrl + '/api/video/batches/' + createdBatch.id))).batch;
+      if (finalBatch.status === 'done' || finalBatch.status === 'paused' || finalBatch.status === 'cancelled') break;
+      await new Promise(function (resolve) { setTimeout(resolve, 60); });
+    }
+    assert.equal(finalBatch.status, 'done', 'all shots must succeed');
+    assert.deepEqual(finalBatch.progress, { total:3, succeeded:3, failed:0 });
+    finalBatch.shots.forEach(function (shot) {
+      assert.equal(shot.status, 'succeeded');
+      assert.equal(shot.attempts, 1);
+      assert.equal(shot.resultAvailable, true);
+    });
+    assert.equal(finalBatch.shots[0].dialogue, null);
+    assert.equal(finalBatch.shots[1].dialogue, '我在这站下车。');
+    assert.equal(finalBatch.shots[1].shotSize, null);
+    assert.equal(finalBatch.shots[0].shotSize, 'wide');
+
+    // 尾帧衔接断言：镜 2 收到服务端抽取的受控尾帧（I2VA 续接），
+    // 镜 3 收到首帧 + 尾帧（FL2VA 官方指令）。
+    var batchComfyState = await json(await fetch(batchStack.upstreams.comfy.url + '/__mock/state'));
+    var shotPrompts = batchComfyState.calls.filter(function (call) {
+      return call.path === '/prompt' && call.body && call.body.prompt
+        && call.body.prompt['5'] && call.body.prompt['5'].class_type === 'MiniMaxH3ImageToVideo';
+    });
+    assert.ok(shotPrompts.length >= 3, 'batch must submit one ComfyUI prompt per shot');
+    var shot2Call = shotPrompts[1].body.prompt;
+    assert.match(shot2Call['17'].inputs.image, /^aics_video_input_[a-f0-9]{16}\.png$/,
+      'shot 2 receives the chained first frame from shot 1 tail');
+    assert.match(shot2Call['5'].inputs.prompt, /^For the target video, at 0\.00 seconds/,
+      'chained shot 2 runs as I2VA');
+    var shot3Call = shotPrompts[2].body.prompt;
+    assert.equal(shot3Call['17'].inputs.image, shot3Name, 'shot 3 keeps its own keyframe as first frame');
+    assert.match(shot3Call['18'].inputs.image, /^aics_video_input_[a-f0-9]{16}\.png$/,
+      'shot 3 receives the chained tail frame as last_frame');
+    assert.match(shot3Call['5'].inputs.prompt, /^How the reference pictures align with the target video/,
+      'shot 3 runs as FL2VA with the official alignment instruction');
+
+    // 拼接成片：至少两镜成功 → concat → Range 可读。
+    var concatRes = await fetch(batchStack.baseUrl + '/api/video/batches/' + createdBatch.id + '/concat', {
+      method:'POST',
+    });
+    assert.equal(concatRes.status, 200);
+    var concatBatch = (await json(concatRes)).batch;
+    assert.equal(concatBatch.concatAvailable, true);
+    assert.ok(concatBatch.concatUrl);
+    var concatGet = await fetch(batchStack.baseUrl + concatBatch.concatUrl, { headers:{ Range:'bytes=0-3' } });
+    assert.equal(concatGet.status, 206);
+    assert.equal((await concatGet.arrayBuffer()).byteLength, 4);
+
+    // 重抽语义：只有失败/取消镜可重抽。
+    var retryOk = await fetch(batchStack.baseUrl + '/api/video/batches/' + createdBatch.id + '/shots/2/retry', {
+      method:'POST',
+    });
+    assert.equal(retryOk.status, 409, 'succeeded shots are not retryable');
+  } finally {
+    await batchStack.close();
   }
 }
 

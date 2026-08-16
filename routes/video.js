@@ -1,5 +1,6 @@
 'use strict';
 
+var childProcess = require('child_process');
 var crypto = require('crypto');
 var express = require('express');
 var fs = require('fs');
@@ -19,6 +20,12 @@ var MAX_IMAGE_BYTES = 20 * 1024 * 1024;
 var IMAGE_INPUT_PREFIX = 'aics_video_input_';
 var JOB_TIMEOUT_MS = 45 * 60 * 1000;
 var JOB_TTL_MS = 2 * 60 * 60 * 1000;
+// 分镜批量（P5）：单批镜头数、请求体上限、对白长度、批量记录 TTL。
+var MAX_BATCH_SHOTS = 30;
+var MAX_BATCH_BODY = '1mb';
+var MAX_DIALOGUE_LENGTH = 300;
+var BATCH_TTL_MS = 24 * 60 * 60 * 1000;
+var BATCH_JOB_TTL_MS = 24 * 60 * 60 * 1000;
 var POLL_INTERVAL_MS = 1000;
 var OUTPUT_NODE_ID = '11';
 var OUTPUT_FILENAME_PREFIX = 'aics_video';
@@ -180,6 +187,15 @@ var H3_MOTION = Object.freeze({
   expressive:'The subject\'s action is more expressive while body structure and identity stay consistent.',
 });
 
+// 景别（H3 是自然语言模型：写成英文自然句，官方 4.1 构图描述规范，不堆标签）。
+var H3_SHOT_SIZE = Object.freeze({
+  wide:{ label:'全景', line:'The scene is framed as a wide establishing shot with the full environment visible.' },
+  medium:{ label:'中景', line:'The subject is framed in a medium shot from the waist up.' },
+  closeup:{ label:'特写', line:'The subject is framed in a close-up on the face.' },
+});
+// 对白语言标签判定（官方 4.4：<d> 内只放语言标签 + 原文，逐字保留）。
+var CJK_DIALOGUE_RE = /[\u3400-\u9fff\uf900-\ufaff]/;
+
 // H3 官方 base-en.txt 要求 [Shot 1] 开头声明整体风格与初始构图（4.1）；
 // 本项目出图链路全是二次元风格，默认 2D-animated, cinematic。
 var H3_STYLE = '2D-animated, cinematic';
@@ -254,6 +270,7 @@ function deriveH3Music(prompt) {
 var ALLOWED_INPUT_KEYS = new Set([
   'prompt', 'negative', 'modelId', 'aspectRatio', 'duration',
   'camera', 'motion', 'seed', 'image', 'quality',
+  'dialogue', 'lastFrame', 'shotSize',
 ]);
 
 function serviceError(status, code, message, detail) {
@@ -405,6 +422,7 @@ function validateInput(body, config) {
   var model = MODEL_BY_ID[body.modelId];
   if (!model) throw serviceError(400, 'UNKNOWN_MODEL', '未知视频模型');
   if (!model.executable) throw serviceError(409, 'MODEL_ADAPTER_UNAVAILABLE', '该模型仍在适配与实测阶段');
+  var isH3 = model.family === 'minimax-h3';
   var quality = body.quality === undefined || body.quality === null || body.quality === ''
     ? 'standard'
     : body.quality;
@@ -424,6 +442,43 @@ function validateInput(body, config) {
     }
     if (config && !imageInputAvailable(config, image)) {
       throw serviceError(400, 'INVALID_PARAMETER', '图片文件不存在或已过期');
+    }
+  }
+  // 尾帧图（FL2VA/L2VA）：与首帧同源受控文件名校验；只允许声明了
+  // first-last-frame 模式的模型（H3 原生节点 MiniMaxH3ImageToVideo 支持）。
+  var lastFrame = body.lastFrame;
+  if (lastFrame !== undefined && lastFrame !== null && lastFrame !== '') {
+    if (typeof lastFrame !== 'string' || !IMAGE_INPUT_PATTERN.test(lastFrame)) {
+      throw serviceError(400, 'INVALID_PARAMETER', '尾帧图片引用格式不受支持');
+    }
+    if (!model.modes.includes('first-last-frame')) {
+      throw serviceError(400, 'MODEL_INPUT_MODE', '该模型不支持尾帧图输入');
+    }
+    if (config && !imageInputAvailable(config, lastFrame)) {
+      throw serviceError(400, 'INVALID_PARAMETER', '图片文件不存在或已过期');
+    }
+  }
+  // 对白（P7）：H3 原生音画同步能力（官方 4.4 说话人 ID + <d> 原文块）；
+  // Wan 等无口型链路拒绝，避免「写了台词但画面没有对白」的错误成片。
+  var dialogue = body.dialogue;
+  if (dialogue !== undefined && dialogue !== null && dialogue !== '') {
+    if (!isH3) {
+      throw serviceError(400, 'MODEL_INPUT_MODE', '对白仅支持 MiniMax H3');
+    }
+    if (typeof dialogue !== 'string' || !dialogue.trim() || dialogue.length > MAX_DIALOGUE_LENGTH) {
+      throw serviceError(400, 'INVALID_PARAMETER', '对白需为 1—' + MAX_DIALOGUE_LENGTH + ' 字符');
+    }
+  }
+  // 景别（P5 分镜字段）：H3 自然语言句；Wan 链路不接受（避免歧义）。
+  var shotSize = body.shotSize === undefined || body.shotSize === null || body.shotSize === ''
+    ? null
+    : body.shotSize;
+  if (shotSize !== null) {
+    if (!isH3) {
+      throw serviceError(400, 'MODEL_INPUT_MODE', '景别仅支持 MiniMax H3');
+    }
+    if (!H3_SHOT_SIZE[shotSize]) {
+      throw serviceError(400, 'INVALID_PARAMETER', '不支持的景别');
     }
   }
   var aspect;
@@ -453,8 +508,9 @@ function validateInput(body, config) {
     throw serviceError(400, 'INVALID_PARAMETER', 'seed 需为 0—2147483647 的整数');
   }
 
-  var isH3 = model.family === 'minimax-h3';
-  var isI2va = isH3 && Boolean(image);
+  var isI2va = isH3 && Boolean(image) && !lastFrame;
+  var isFl2va = isH3 && Boolean(image) && Boolean(lastFrame);
+  var isL2va = isH3 && !image && Boolean(lastFrame);
 
   // 组装前的派生量：文案自带镜头/动作意图时控制器句子让位；
   // soundscape/music 按场景信号派生（无信号回退通用模板）。
@@ -464,37 +520,58 @@ function validateInput(body, config) {
   var wanCameraLine = proseCarriesCameraMention(userPrompt) ? null : CAMERA[body.camera];
   var wanMotionLine = proseCarriesMotionMention(userPrompt) ? null : MOTION[body.motion];
 
+  // H3 景别/对白派生句（官方 4.1/4.4）：景别写成构图自然句；对白用说话人 ID
+  // (S1) + <d>[语言标签] 原文</d> 块，逐字保留用户台词（不翻译不改写）。
+  var h3ShotLine = shotSize === null ? null : H3_SHOT_SIZE[shotSize].line;
+  var dialogueLine = dialogue
+    ? ' The subject in the frame (S1) says: <d>[' + (CJK_DIALOGUE_RE.test(dialogue) ? 'Chinese' : 'English') + '] ' + dialogue + '</d>'
+    : null;
+
+  // 参考图对齐指令（官方 base-en.txt 2.1）：I2VA 首帧 / FL2VA 首尾帧 / L2VA 尾帧，
+  // 均为提示词首行 + 空行后再进三段式。
+  var referenceInstruction = null;
+  var h3Description;
+  if (isFl2va) {
+    referenceInstruction = 'How the reference pictures align with the target video — Picture 1 (from Shot 1) aligns with the 0.00-second mark of the target video; Picture 2 (from Shot 1) aligns with the ' + duration.seconds.toFixed(2) + '-second mark of the target video.';
+    h3Description = 'integrated_multimodal_description: [Shot 1] ' + H3_STYLE + ' — ' + userPrompt
+      + ' The shot begins in the position, framing, and scene established by Picture 1 and settles into the final pose, spacing, and composition established by Picture 2 at the end of the shot.';
+  } else if (isL2va) {
+    referenceInstruction = 'How the reference pictures align with the target video — <Picture 1> (from [Shot 1]) aligns with the ' + duration.seconds.toFixed(2) + '-second mark of the target video.';
+    h3Description = 'integrated_multimodal_description: [Shot 1] ' + H3_STYLE + ' — ' + userPrompt
+      + ' The scene begins in a plausible earlier state and gradually converges to the pose, composition, lighting, and scene structure established by <Picture 1> by the end of the shot.';
+  } else if (isI2va) {
+    referenceInstruction = 'For the target video, at 0.00 seconds into the target video, <Picture 1> (from [Shot 1]) is fully referenced.';
+    h3Description = 'integrated_multimodal_description: [Shot 1] ' + H3_STYLE + ' — preserve the subject, clothing, hairstyle, and scene from <Picture 1>, then ' + userPrompt;
+  } else {
+    h3Description = 'integrated_multimodal_description: [Shot 1] ' + H3_STYLE + ', ' + userPrompt;
+  }
+  var h3Lines = [
+    h3Description,
+    h3ShotLine,
+    h3CameraLine,
+    h3MotionLine,
+    dialogueLine,
+    'Character identity, clothing, lighting, and scene structure remain consistent from start to finish.',
+  ].filter(function (line) { return line !== null; });
+  var h3Prompt = (referenceInstruction ? [referenceInstruction, ''] : []).concat(h3Lines, [
+    '',
+    'overall_soundscape: ' + deriveH3Soundscape(userPrompt),
+    '',
+    'non_diegetic_music: ' + deriveH3Music(userPrompt),
+  ]).join('\n');
+
   return Object.freeze({
     // H3 按官方三段式组装（MiniMax-AI/MiniMax-H3 h3-prompt-writing skill，
     // references/base-en.txt）：
-    // - I2VA 首行 <Picture 1> 引用指令（逐字按官方模板），空一行再进三段式；
+    // - I2VA/FL2VA/L2VA 首行参考图对齐指令（逐字按官方模板），空一行再进三段式；
     // - [Shot 1] 开头声明整体风格（官方 4.1）；
     // - 镜头/运动写成自然句（官方 4.3）；文案已自带镜头/动作意图时不重复附加，
     //   避免「用户写推进 + 控制器默认静止」这类矛盾指令（自然语言模型对
     //   相互矛盾的指令会产生语义漂移）；
+    // - 景别写成构图句（官方 4.1）；对白用 (S1) + <d> 原文块（官方 4.4）；
     // - soundscape/music 按文案场景信号派生具体声音与器乐节奏（官方 4.6/4.7），
     //   不用抽象情绪词，也不给雨夜/战场错误地配「quiet room tone」。
-    prompt:isH3 ? (isI2va ? [
-      'For the target video, at 0.00 seconds into the target video, <Picture 1> (from [Shot 1]) is fully referenced.',
-      '',
-      'integrated_multimodal_description: [Shot 1] ' + H3_STYLE + ' — preserve the subject, clothing, hairstyle, and scene from <Picture 1>, then ' + userPrompt,
-      h3CameraLine,
-      h3MotionLine,
-      'Character identity, clothing, lighting, and scene structure remain consistent from start to finish.',
-      '',
-      'overall_soundscape: ' + deriveH3Soundscape(userPrompt),
-      '',
-      'non_diegetic_music: ' + deriveH3Music(userPrompt),
-    ].filter(function (line) { return line !== null; }).join('\n') : [
-      'integrated_multimodal_description: [Shot 1] ' + H3_STYLE + ', ' + userPrompt,
-      h3CameraLine,
-      h3MotionLine,
-      'Character identity, clothing, lighting, and scene structure remain consistent from start to finish.',
-      '',
-      'overall_soundscape: ' + deriveH3Soundscape(userPrompt),
-      '',
-      'non_diegetic_music: ' + deriveH3Music(userPrompt),
-    ].filter(function (line) { return line !== null; }).join('\n')) : [
+    prompt:isH3 ? h3Prompt : [
       userPrompt,
       wanCameraLine,
       wanMotionLine,
@@ -515,6 +592,9 @@ function validateInput(body, config) {
     motion:body.motion,
     seed:seed,
     image:image || null,
+    lastFrame:lastFrame || null,
+    dialogue:dialogue || null,
+    shotSize:shotSize || null,
     steps:isH3 ? 8 : 20,
     cfg:5,
   });
@@ -606,6 +686,12 @@ function buildH3Workflow(input) {
   if (input.image) {
     graph['17'] = { class_type:'LoadImage', inputs:{ image:input.image } };
     graph['5'].inputs.first_frame = ['17', 0];
+  }
+  // FL2VA/L2VA：尾帧图作为 <Picture 2> / 收敛锚点（节点原生支持 last_frame，
+  // 2026-08-16 本机 object_info 与 nodes_minimax_h3.py 双重确认）。
+  if (input.lastFrame) {
+    graph['18'] = { class_type:'LoadImage', inputs:{ image:input.lastFrame } };
+    graph['5'].inputs.last_frame = ['18', 0];
   }
   return graph;
 }
@@ -914,6 +1000,7 @@ function createVideoService(config, dependencies) {
       try { fs.unlinkSync(job.result.path); } catch (error) {}
     }
     if (job.input && job.input.image) removeInputImage(config, job.input.image);
+    if (job.input && job.input.lastFrame) removeInputImage(config, job.input.lastFrame);
     jobs.delete(job.id);
   }
 
@@ -1033,10 +1120,12 @@ function createVideoService(config, dependencies) {
     schedulePoll(job, 0);
   }
 
-  function create(input, owner) {
+  function create(input, owner, opts) {
     if (pendingCount() >= MAX_PENDING) {
       throw serviceError(429, 'VIDEO_QUEUE_FULL', '视频队列已满，请等待当前任务完成');
     }
+    // 分镜批量任务延长 TTL：整批生成可能数十分钟，首镜结果需留到批处理完再取。
+    var ttlMs = opts && opts.ttlMs || jobTtlMs;
     var id = crypto.randomBytes(18).toString('hex');
     var createdAt = Date.now();
     var job = {
@@ -1055,7 +1144,7 @@ function createVideoService(config, dependencies) {
       pollFailures:0,
     };
     jobs.set(id, job);
-    job.gcTimer = setTimeout(function () { removeJob(job); }, jobTtlMs).unref();
+    job.gcTimer = setTimeout(function () { removeJob(job); }, ttlMs).unref();
     return job;
   }
 
@@ -1145,11 +1234,407 @@ function streamVideo(req, res, result) {
   fs.createReadStream(result.path, { start:start, end:end }).pipe(res);
 }
 
+// ── 分镜批量（P5：POST /api/video/batches）────────────────────────────────
+// 一次提交一组镜头：服务端逐镜排队生成（尊重 MAX_PENDING 与 16GB 显存，绝不
+// 并行多任务抢显存），单镜失败不打断整批，可在批内单独重抽；linkLastFrame 时
+// 用上一镜结果尾帧衔接下一镜（有首帧 → FL2VA 尾帧；无首帧 → 续接为 I2VA 首帧），
+// 全批成功后可用 ffmpeg 拼接成片（P8）。
+
+var BATCH_BODY_KEYS = new Set(['modelId', 'aspectRatio', 'quality', 'linkLastFrame', 'shots']);
+var BATCH_SHOT_KEYS = new Set(['prompt', 'dialogue', 'shotSize', 'camera', 'motion', 'duration', 'seed', 'image']);
+var BATCH_SHOT_DEFAULTS = Object.freeze({ camera:'still', motion:'subtle', duration:5 });
+
+function validateBatchInput(body, config) {
+  if (!isPlainObject(body)) throw serviceError(400, 'INVALID_BODY', '请求体必须是 JSON 对象');
+  Object.keys(body).forEach(function (key) {
+    if (!BATCH_BODY_KEYS.has(key)) {
+      throw serviceError(400, 'UNKNOWN_PARAMETER', '不支持的参数：' + key);
+    }
+  });
+  if (typeof body.modelId !== 'string' || !MODEL_BY_ID[body.modelId]) {
+    throw serviceError(400, 'UNKNOWN_MODEL', '未知视频模型');
+  }
+  var model = MODEL_BY_ID[body.modelId];
+  if (!model.executable) throw serviceError(409, 'MODEL_ADAPTER_UNAVAILABLE', '该模型仍在适配与实测阶段');
+  // 整批统一画幅与画质：拼接成片时分辨率必须一致，逐镜自由会破坏 P8 concat。
+  var aspectRatio = body.aspectRatio;
+  if (aspectRatio !== 'landscape' && aspectRatio !== 'portrait' && aspectRatio !== 'square') {
+    throw serviceError(400, 'INVALID_PARAMETER', '分镜整批需要统一的画幅（landscape/portrait/square）');
+  }
+  var quality = body.quality === undefined || body.quality === null || body.quality === ''
+    ? 'standard'
+    : body.quality;
+  if (typeof quality !== 'string' || !QUALITIES[quality]) {
+    throw serviceError(400, 'INVALID_PARAMETER', '不支持的画质档位');
+  }
+  var linkLastFrame = body.linkLastFrame === undefined || body.linkLastFrame === null
+    ? true
+    : body.linkLastFrame;
+  if (typeof linkLastFrame !== 'boolean') {
+    throw serviceError(400, 'INVALID_PARAMETER', 'linkLastFrame 需为布尔值');
+  }
+  if (!Array.isArray(body.shots) || body.shots.length < 1 || body.shots.length > MAX_BATCH_SHOTS) {
+    throw serviceError(400, 'INVALID_PARAMETER', '分镜数量需为 1—' + MAX_BATCH_SHOTS);
+  }
+  var shots = body.shots.map(function (shot, index) {
+    if (!isPlainObject(shot)) {
+      throw serviceError(400, 'INVALID_PARAMETER', '第 ' + (index + 1) + ' 个分镜必须是对象');
+    }
+    Object.keys(shot).forEach(function (key) {
+      if (!BATCH_SHOT_KEYS.has(key)) {
+        throw serviceError(400, 'UNKNOWN_PARAMETER', '分镜不支持参数：' + key);
+      }
+    });
+    // 单镜契约与单任务完全同源（validateInput 白名单/时长/景别/对白/图片校验）。
+    // lastFrame 由服务端衔接写入，客户端不接受；validateInput 返回冻结对象，
+    // 这里复制成可变副本，供 linkLastFrame 衔接时改写 image/lastFrame。
+    var input = Object.assign({}, validateInput(Object.assign({}, BATCH_SHOT_DEFAULTS, shot, {
+      modelId:model.id,
+      aspectRatio:aspectRatio,
+      quality:quality,
+    }), config));
+    return { input:input };
+  });
+  return Object.freeze({
+    modelId:model.id,
+    aspectRatio:aspectRatio,
+    quality:quality,
+    linkLastFrame:linkLastFrame,
+    shots:shots,
+  });
+}
+
+function createBatchService(config, videoService, dependencies) {
+  dependencies = dependencies || {};
+  var batches = new Map();
+  var closed = false;
+  var pollIntervalMs = dependencies.batchPollIntervalMs || 2000;
+  // ffmpeg 命令可注入（测试替身）；缺省走 child_process.execFile。
+  var runFfmpeg = dependencies.runFfmpeg || function (args) {
+    return new Promise(function (resolve, reject) {
+      childProcess.execFile('ffmpeg', args, { maxBuffer:8 * 1024 * 1024 }, function (error, stdout, stderr) {
+        if (error) reject(new Error('ffmpeg 执行失败: ' + String(stderr || error.message).slice(0, 300)));
+        else resolve(stdout);
+      });
+    });
+  };
+
+  function publicShot(shot) {
+    return {
+      index:shot.index,
+      status:shot.status,
+      prompt:shot.input.originalPrompt,
+      dialogue:shot.input.dialogue || null,
+      shotSize:shot.input.shotSize || null,
+      camera:shot.input.camera,
+      motion:shot.input.motion,
+      duration:shot.input.duration,
+      seed:shot.input.seed,
+      attempts:shot.attempts,
+      error:shot.error || null,
+      code:shot.errorCode || null,
+      resultAvailable:Boolean(shot.job && shot.job.result),
+      resultUrl:shot.job && shot.job.result
+        ? '/api/video/jobs/' + encodeURIComponent(shot.job.id) + '/result'
+        : null,
+    };
+  }
+
+  function publicBatch(batch) {
+    var total = batch.shots.length;
+    var succeeded = batch.shots.filter(function (s) { return s.status === 'succeeded'; }).length;
+    var failed = batch.shots.filter(function (s) { return s.status === 'failed'; }).length;
+    return {
+      id:batch.id,
+      status:batch.status,
+      modelId:batch.modelId,
+      aspectRatio:batch.aspectRatio,
+      quality:batch.quality,
+      linkLastFrame:batch.linkLastFrame,
+      progress:{ total:total, succeeded:succeeded, failed:failed },
+      createdAt:batch.createdAt,
+      shots:batch.shots.map(publicShot),
+      concatAvailable:Boolean(batch.concat),
+      concatUrl:batch.concat ? '/api/video/batches/' + encodeURIComponent(batch.id) + '/result' : null,
+    };
+  }
+
+  function get(id, owner) {
+    var batch = batches.get(String(id || ''));
+    return batch && batch.owner === owner ? batch : null;
+  }
+
+  // 从上一镜结果 MP4 抽取尾帧 → 受控输入文件（供下一镜 FL2VA 尾帧 / I2VA 首帧）。
+  async function extractLastFrame(shot) {
+    if (!shot.job || !shot.job.result || !shot.job.result.path) return null;
+    var name = IMAGE_INPUT_PREFIX + crypto.randomBytes(8).toString('hex') + '.png';
+    var root = imageInputRoot(config);
+    var target = path.resolve(root, name);
+    if (target.indexOf(path.resolve(root) + path.sep) !== 0) return null;
+    try {
+      await runFfmpeg(['-y', '-sseof', '-0.1', '-i', shot.job.result.path, '-frames:v', '1', '-update', '1', target]);
+    } catch (error) {
+      console.warn('[video] 尾帧抽取失败（镜头 ' + shot.index + '）：' + error.message);
+      return null;
+    }
+    if (!fs.existsSync(target) || !fs.statSync(target).size) return null;
+    return name;
+  }
+
+  // 批状态收敛：无待处理/运行中镜头时定终态；否则继续推进下一镜。
+  function finalizeStatus(batch) {
+    var pending = batch.shots.some(function (s) { return s.status === 'pending'; });
+    var active = batch.shots.some(function (s) { return s.status === 'queued' || s.status === 'running'; });
+    if (!pending && !active) {
+      var allSucceeded = batch.shots.every(function (s) { return s.status === 'succeeded'; });
+      var allTerminal = batch.shots.every(function (s) {
+        return s.status === 'succeeded' || s.status === 'cancelled';
+      });
+      batch.status = allSucceeded ? 'done' : (allTerminal ? 'cancelled' : 'paused');
+      return;
+    }
+    void kick(batch);
+  }
+
+  // linkLastFrame 衔接可能在提交前改写了 image/lastFrame（上一镜尾帧）：
+  // 提示词必须按当前输入模式重新组装（官方参考图指令随 I2VA/FL2VA/L2VA 变化），
+  // seed 显式传回保证确定性（重抽/重试不换随机种子）。
+  function recomposeInput(input, batch, config) {
+    var body = {
+      prompt:input.originalPrompt,
+      modelId:batch.modelId,
+      aspectRatio:batch.aspectRatio,
+      duration:input.duration,
+      camera:input.camera,
+      motion:input.motion,
+      seed:input.seed,
+      quality:input.quality,
+      image:input.image || undefined,
+      lastFrame:input.lastFrame || undefined,
+      dialogue:input.dialogue || undefined,
+      shotSize:input.shotSize || undefined,
+    };
+    if (input.negative) body.negative = input.negative;
+    return Object.assign({}, validateInput(body, config));
+  }
+
+  function scheduleWatch(batch) {
+    if (closed || batch.status === 'cancelled' || batch.watchTimer) return;
+    var tick = async function () {
+      batch.watchTimer = null;
+      if (closed || batch.status === 'cancelled') return;
+      var shot = batch.shots.find(function (s) {
+        return s.job && (s.status === 'queued' || s.status === 'running');
+      });
+      if (!shot) return;
+      var job = videoService.get(shot.job.id, batch.owner);
+      if (!job) {
+        shot.status = 'failed';
+        shot.error = '任务记录已过期';
+        shot.errorCode = 'JOB_EXPIRED';
+        finalizeStatus(batch);
+        return;
+      }
+      if (job.status === 'succeeded') {
+        shot.status = 'succeeded';
+        var next = batch.shots[shot.index]; // index 从 1 开始 → 数组下一项
+        if (batch.linkLastFrame && next && next.status === 'pending') {
+          var name = await extractLastFrame(shot);
+          if (name) {
+            if (next.input.image) next.input.lastFrame = name;
+            else next.input.image = name;
+          }
+        }
+        finalizeStatus(batch);
+        return;
+      }
+      if (job.status === 'failed' || job.status === 'cancelled') {
+        shot.status = job.status;
+        shot.error = job.error;
+        shot.errorCode = job.errorCode;
+        finalizeStatus(batch);
+        return;
+      }
+      batch.watchTimer = setTimeout(tick, pollIntervalMs);
+      if (batch.watchTimer.unref) batch.watchTimer.unref();
+    };
+    batch.watchTimer = setTimeout(tick, pollIntervalMs);
+    if (batch.watchTimer.unref) batch.watchTimer.unref();
+  }
+
+  async function kick(batch) {
+    if (closed || batch.status === 'cancelled' || batch.kicking) return;
+    var shot = batch.shots.find(function (s) { return s.status === 'pending'; });
+    if (!shot) {
+      finalizeStatus(batch);
+      return;
+    }
+    batch.kicking = true;
+    try {
+      shot.input = recomposeInput(shot.input, batch, config);
+      var job = videoService.create(shot.input, batch.owner, { ttlMs:BATCH_JOB_TTL_MS });
+      shot.job = job;
+      shot.attempts += 1;
+      shot.status = 'queued';
+      await videoService.submit(job);
+      scheduleWatch(batch);
+    } catch (error) {
+      shot.status = 'failed';
+      shot.error = error && error.message || '分镜提交失败';
+      shot.errorCode = error && error.code || 'BATCH_SUBMIT_FAILED';
+      if (shot.job) {
+        try { await videoService.cancel(shot.job); } catch (cancelError) {}
+        shot.job = null;
+      }
+      finalizeStatus(batch);
+    } finally {
+      batch.kicking = false;
+    }
+  }
+
+  function removeBatch(batch) {
+    if (batch.watchTimer) clearTimeout(batch.watchTimer);
+    if (batch.gcTimer) clearTimeout(batch.gcTimer);
+    if (batch.concat && batch.concat.path) {
+      try { fs.unlinkSync(batch.concat.path); } catch (error) {}
+    }
+    batches.delete(batch.id);
+  }
+
+  async function create(owner, batchInput) {
+    var availability = modelAvailability(config, MODEL_BY_ID[batchInput.modelId]);
+    if (!availability.available) {
+      throw serviceError(503, 'VIDEO_MODEL_UNAVAILABLE', '视频模型文件尚未安装', {
+        missing:availability.missing,
+      });
+    }
+    var id = crypto.randomBytes(18).toString('hex');
+    var batch = {
+      id:id,
+      owner:owner,
+      status:'running',
+      modelId:batchInput.modelId,
+      aspectRatio:batchInput.aspectRatio,
+      quality:batchInput.quality,
+      linkLastFrame:batchInput.linkLastFrame,
+      shots:batchInput.shots.map(function (entry, index) {
+        return {
+          index:index + 1,
+          input:entry.input,
+          status:'pending',
+          attempts:0,
+          error:null,
+          errorCode:null,
+          job:null,
+        };
+      }),
+      createdAt:Date.now(),
+      concat:null,
+      watchTimer:null,
+      gcTimer:null,
+      kicking:false,
+    };
+    batches.set(id, batch);
+    batch.gcTimer = setTimeout(function () { removeBatch(batch); }, BATCH_TTL_MS);
+    if (batch.gcTimer.unref) batch.gcTimer.unref();
+    void kick(batch);
+    return batch;
+  }
+
+  async function cancel(batch) {
+    if (batch.status === 'done') return batch;
+    batch.status = 'cancelled';
+    if (batch.watchTimer) { clearTimeout(batch.watchTimer); batch.watchTimer = null; }
+    for (var i = 0; i < batch.shots.length; i += 1) {
+      var shot = batch.shots[i];
+      if (shot.status === 'pending') shot.status = 'cancelled';
+      else if (shot.status === 'queued' || shot.status === 'running') {
+        if (shot.job) {
+          try { await videoService.cancel(shot.job); } catch (error) {}
+        }
+        if (shot.status !== 'cancelled') {
+          shot.status = 'cancelled';
+          shot.error = '任务已取消';
+          shot.errorCode = 'VIDEO_CANCELLED';
+        }
+      }
+    }
+    return batch;
+  }
+
+  async function retryShot(batch, index) {
+    var shot = batch.shots[index];
+    if (!shot) throw serviceError(404, 'SHOT_NOT_FOUND', '分镜不存在');
+    if (shot.status !== 'failed' && shot.status !== 'cancelled') {
+      throw serviceError(409, 'BATCH_SHOT_NOT_RETRYABLE', '只有失败或取消的分镜可以重抽');
+    }
+    shot.status = 'pending';
+    shot.error = null;
+    shot.errorCode = null;
+    shot.job = null;
+    batch.status = 'running';
+    void kick(batch);
+    return batch;
+  }
+
+  async function concat(batch) {
+    if (batch.concat) return batch.concat;
+    var succeeded = batch.shots.filter(function (s) { return s.status === 'succeeded'; });
+    if (succeeded.length < 2) {
+      throw serviceError(409, 'BATCH_CONCAT_NEEDS_SHOTS', '至少需要两个成功分镜才能拼接');
+    }
+    var root = ensureMediaRoot(config);
+    var listPath = path.join(root, 'batch_' + batch.id + '.txt');
+    var lines = succeeded.map(function (shot) {
+      return "file '" + String(shot.job.result.path).replace(/'/g, "'\\''") + "'";
+    });
+    fs.writeFileSync(listPath, lines.join('\n') + '\n');
+    var target = path.join(root, 'batch_' + batch.id + '.mp4');
+    var args = ['-y', '-f', 'concat', '-safe', '0', '-i', listPath,
+      '-c:v', 'libx264', '-preset', 'medium', '-crf', '19', '-pix_fmt', 'yuv420p',
+      '-c:a', 'aac', '-b:a', '192k', target];
+    try {
+      await runFfmpeg(args);
+    } catch (error) {
+      // 部分镜头可能无音轨导致音频编码失败：去掉音频轨重试（纯视频拼接）。
+      console.warn('[video] 带音轨拼接失败，回退纯视频拼接：' + error.message);
+      await runFfmpeg(['-y', '-f', 'concat', '-safe', '0', '-i', listPath,
+        '-c:v', 'libx264', '-preset', 'medium', '-crf', '19', '-pix_fmt', 'yuv420p',
+        '-an', target]);
+    } finally {
+      try { fs.unlinkSync(listPath); } catch (error) {}
+    }
+    if (!fs.existsSync(target) || !fs.statSync(target).size) {
+      throw serviceError(500, 'BATCH_CONCAT_FAILED', '视频拼接失败');
+    }
+    batch.concat = { path:target, mime:'video/mp4' };
+    return batch.concat;
+  }
+
+  function close() {
+    closed = true;
+    batches.forEach(removeBatch);
+  }
+
+  return {
+    create:create,
+    get:get,
+    cancel:cancel,
+    retryShot:retryShot,
+    concat:concat,
+    publicBatch:publicBatch,
+    close:close,
+  };
+}
+
 function createVideoRouter(config, dependencies) {
   var router = express.Router();
   var service = dependencies && dependencies.videoService
     ? dependencies.videoService
     : createVideoService(config, dependencies);
+  var batchService = dependencies && dependencies.batchService
+    ? dependencies.batchService
+    : createBatchService(config, service, dependencies);
   var jobLimit = security.rateLimit({ capacity:3, refillMs:60000, label:'视频生成' });
 
   router.get('/api/video/status', async function (req, res) {
@@ -1276,13 +1761,98 @@ function createVideoRouter(config, dependencies) {
     }
   });
 
-  return { router:router, service:service, close:service.close };
+  // ── 分镜批量（P5：批量生成 / P6：尾帧衔接 / P8：拼接成片）──────────────
+  router.post('/api/video/batches', jobLimit, express.json({ limit:MAX_BATCH_BODY }), async function (req, res) {
+    var batchInput;
+    try {
+      batchInput = validateBatchInput(req.body, config);
+    } catch (error) {
+      return envelope.fail(res, error.status || 400, error.message, {
+        code:error.code,
+        detail:error.detail,
+      });
+    }
+    var batch;
+    try {
+      batch = await batchService.create(requestOwner(req), batchInput);
+    } catch (error) {
+      return envelope.fail(res, error.status || 502,
+        error.status >= 500 ? '视频生成环境尚未就绪' : error.message,
+        { code:error.code || 'BATCH_SUBMIT_FAILED', detail:error.detail });
+    }
+    res.status(202);
+    envelope.ok(res, { batch:batchService.publicBatch(batch) });
+  });
+
+  router.get('/api/video/batches/:id', function (req, res) {
+    var batch = batchService.get(req.params.id, requestOwner(req));
+    if (!batch) return envelope.fail(res, 404, '分镜任务不存在', { code:'BATCH_NOT_FOUND' });
+    res.setHeader('Cache-Control', 'no-store');
+    envelope.ok(res, { batch:batchService.publicBatch(batch) });
+  });
+
+  router.delete('/api/video/batches/:id', async function (req, res) {
+    var batch = batchService.get(req.params.id, requestOwner(req));
+    if (!batch) return envelope.fail(res, 404, '分镜任务不存在', { code:'BATCH_NOT_FOUND' });
+    var cancelled = await batchService.cancel(batch);
+    envelope.ok(res, { batch:batchService.publicBatch(cancelled) });
+  });
+
+  // 重抽单个失败/取消分镜（同 seed 确定性复现，不重跑整批）。
+  router.post('/api/video/batches/:id/shots/:index/retry', async function (req, res) {
+    var batch = batchService.get(req.params.id, requestOwner(req));
+    if (!batch) return envelope.fail(res, 404, '分镜任务不存在', { code:'BATCH_NOT_FOUND' });
+    var index = Number(req.params.index);
+    if (!Number.isSafeInteger(index) || index < 1) {
+      return envelope.fail(res, 400, '分镜序号无效', { code:'SHOT_INDEX_INVALID' });
+    }
+    try {
+      await batchService.retryShot(batch, index - 1);
+    } catch (error) {
+      return envelope.fail(res, error.status || 400, error.message, { code:error.code || 'SHOT_RETRY_FAILED' });
+    }
+    res.status(202);
+    envelope.ok(res, { batch:batchService.publicBatch(batch) });
+  });
+
+  router.post('/api/video/batches/:id/concat', async function (req, res) {
+    var batch = batchService.get(req.params.id, requestOwner(req));
+    if (!batch) return envelope.fail(res, 404, '分镜任务不存在', { code:'BATCH_NOT_FOUND' });
+    try {
+      await batchService.concat(batch);
+    } catch (error) {
+      return envelope.fail(res, error.status || 500, error.message, { code:error.code || 'BATCH_CONCAT_FAILED' });
+    }
+    res.setHeader('Cache-Control', 'no-store');
+    envelope.ok(res, { batch:batchService.publicBatch(batch) });
+  });
+
+  router.get('/api/video/batches/:id/result', function (req, res) {
+    var batch = batchService.get(req.params.id, requestOwner(req));
+    if (!batch || !batch.concat) {
+      return envelope.fail(res, 404, '拼接结果不存在', { code:'RESULT_NOT_FOUND' });
+    }
+    try {
+      streamVideo(req, res, batch.concat);
+    } catch (error) {
+      if (!res.headersSent) envelope.fail(res, 404, '拼接结果不存在', { code:'RESULT_NOT_FOUND' });
+      else res.destroy();
+    }
+  });
+
+  var close = function () {
+    service.close();
+    batchService.close();
+  };
+  return { router:router, service:service, batchService:batchService, close:close };
 }
 
 module.exports = {
   createVideoRouter:createVideoRouter,
   createVideoService:createVideoService,
+  createBatchService:createBatchService,
   validateInput:validateInput,
+  validateBatchInput:validateBatchInput,
   buildWorkflow:buildWorkflow,
   validateVideoReference:validateVideoReference,
   constants:{
@@ -1292,5 +1862,7 @@ module.exports = {
     DURATIONS:DURATIONS,
     OUTPUT_NODE_ID:OUTPUT_NODE_ID,
     OUTPUT_FILENAME_PREFIX:OUTPUT_FILENAME_PREFIX,
+    MAX_BATCH_SHOTS:MAX_BATCH_SHOTS,
+    BATCH_TTL_MS:BATCH_TTL_MS,
   },
 };
