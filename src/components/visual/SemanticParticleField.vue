@@ -118,8 +118,6 @@ let lastFrame = 0
 let lastPhysicsFrame = 0
 let slowFrames = 0
 let qualityScale = 1
-/** 抽象形状的统一点径（setShape 按点距估算）；剪影模式用 portraitRadii。 */
-let abstractRadius = 0.9
 
 function preferredCount(): number {
   if (reduceMotion.value) return 420
@@ -183,9 +181,6 @@ function setShape(animate = true) {
     portraitRadii = portraitPaints.map(() => sample.spacing * 0.55)
   } else {
     shape = createParticleShape(props.shape, count)
-    // 抽象形状同样统一点径：按点数与场域面积估平均点距（形状约占场域 45%）
-    const spacing = Math.sqrt(Math.max(1, width * height * 0.45) / Math.max(1, shape.length))
-    abstractRadius = Math.min(3.4, Math.max(1.0, spacing * 0.62))
   }
   if (!shape.length) return
   const previous = particles.slice().sort((a, b) => {
@@ -279,8 +274,9 @@ function draw() {
   if (!context || !canvas.value) return
   const ctx = context
   ctx.clearRect(0, 0, width, height)
-  // 剪影模式按人物调色板分批填充；抽象形状沿用三档 tone 颜色（页面识别色）。
-  // 全站统一点径（无漂移、无指针高光）：静止锐利的规整点阵。
+  // 剪影模式按人物调色板分批填充 + 统一点径；抽象形状沿用三档 tone
+  // 颜色与三档点径（页面识别色 + 层次感）。动效全站统一：静止成像、
+  // 无漂移、无指针高光、慢回流物理。
   const paints = portraitCloud && portraitPaints.length ? portraitPaints : null
   const paths = paints
     ? paints.map(() => new Path2D())
@@ -291,9 +287,14 @@ function draw() {
     const pathIndex = paints
       ? Math.min(paths.length - 1, Math.max(0, particle.paint))
       : particle.tone
-    const baseRadius = paints ? (portraitRadii[pathIndex] || 1) : abstractRadius
-    const radius = baseRadius * energyScale * particle.size
     const path = paths[pathIndex]
+    // 图片点阵（剪影/整图复刻）统一点径；抽象形状维持经典三档点径
+    // （0.78/1.05/1.55 的层次 + 强调色亮点——2026-08-16 用户决策恢复，
+    // 统一大点径在稀疏轮廓形状上显得粗笨）
+    const baseRadius = paints
+      ? (portraitRadii[pathIndex] || 1)
+      : particle.tone === 2 ? 1.55 : particle.tone === 1 ? 1.05 : 0.78
+    const radius = baseRadius * energyScale * particle.size
     path.moveTo(particle.x + radius, particle.y)
     path.arc(particle.x, particle.y, radius, 0, Math.PI * 2)
   }
