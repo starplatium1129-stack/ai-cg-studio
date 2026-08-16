@@ -196,6 +196,17 @@ ChatCharacterStage / useLive2D
 
 **验证**：cargo test 22/22 通过（新增 `blink_state_cycles_open_closed_and_returns_to_open`、`blink_params_follow_frontend_mapping`）；cargo check 通过；需重新打包桌面端生效（`npm run build:tauri` → `package:tauri` → `setup.exe /S`）。
 
+**追加修复（8da53b8，同日晚）——"触发动作后眼睛又灰"**：眨眼修复后常态正常，但互动动作后眼睛复灰。根因（浏览器参数快照 + 动作曲线差集实证）：
+1. **前端复位统一写 0 错误**：Param37-43/52-55/58-61/63 的隐藏态是 **-1**（moc3 默认值，idle 采样实证）——写 0 落在显示区间 → 叠层半透明残留成重影（"衣服重复显示"）；Param18/44-51/56/57/62 隐藏态才是 0。**复位必须按参数分组写隐藏态**（前端 `NATSUME_RESET_PARAMS` 带 value 映射；native C++ 写 `GetParameterDefaultValue` 天然正确）。
+2. **Param37、Param64 被 Tap 驱动但不在任何复位清单**（双端遗漏，TapFoot_1 驱动 Param64）→ 补入。
+3. **浏览器端 Start 登场变体（Start_1 等）也驱动叠层参数，结束后无复位**（native 有）→ 前端 Start 成功后 5.6s 定时复位。
+4. 浏览器端 Start 后偶见"局部叠层残影"（颈部/胸口另一套姿态半透明轮廓）——已知浏览器后端画布残影问题的轻量表现（`companion-ui-research.md` 已记录），native 整帧重绘不受影响；用户实际环境走 native。
+
+**教训**：
+- **"动作后灰"的残留源不只是参数值，还有"复位值是否正确"**——复位到错误的值（0 vs -1）等于没复位，甚至更糟（中间态半显示）。
+- **复位清单要与动作曲线差集对齐并定期复查**（新动作/变体可能驱动清单外参数，如 Param64 是 TapFoot_1 独有）。
+- **隐藏态通过"模型加载后 idle 参数快照"实证**（无动作驱动时的值 = moc3 默认），不要猜。
+
 **教训**：
 - **"点击后正常"的循环现象 = 状态相关（动作 vs idle 参数差异），不是静态渲染 bug**——先按状态切分复现（idle/tap/结束后三段），再查参数曲线，比直接怀疑渲染器快得多。
 - **浏览器端正常不代表 native 正常**：浏览器有参数级 hack（blinkScheduler 覆写），native 只传意图——"双端行为差异"先查两端各自的前置覆写逻辑，再查渲染器。
