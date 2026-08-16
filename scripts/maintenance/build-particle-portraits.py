@@ -40,8 +40,9 @@ SOURCE_WIDTH = 200
 # 36 色 = base36 索引上限，比 32 色再压回一档量化断层
 PALETTE_SIZE = 36
 BASE36 = "0123456789abcdefghijklmnopqrstuvwxyz"
-# 边缘羽化：外圈按概率渐剔除点，打破"贴上去的矩形马赛克"感（与页面融合）
-FEATHER_RATIO = 0.14
+# 边缘羽化：外圈按概率渐剔除点，只软化矩形边框线（2026-08-16 用户反馈
+# 14% 削太多"像没拼完的拼图"，收敛到 5% 仅作边界过渡）
+FEATHER_RATIO = 0.05
 
 # 工作室角色立绘文件名与角色 id 的对应（热门角色固定 popular-<id>.png）
 STUDIO_PORTRAITS = {"nene": "nene-official.webp", "natsume": "natsume-official.webp"}
@@ -69,11 +70,9 @@ def kmeans_palette(pixels: np.ndarray, k: int, seed: str) -> list[tuple[int, int
 def grid_from_image(image: Image.Image, char_id: str) -> tuple[str, int, int, float, list[str]] | None:
     """返回 (cells, 网格宽, 网格高, 宽高比, 调色板)。整图量化，无抠像。
 
-    两项融合处理（2026-08-16 用户反馈"突兀"）：
-    - 近黑格剔除：luminance < 0.05 的格子记 '.'（屏幕混合下它们本就不可见，
-      剔掉省点数、去泥感）；
-    - 边缘羽化：四边 FEATHER_RATIO 区域内按 smoothstep 概率保留，边缘点
-      渐稀消散，矩形边界不再生硬。"""
+    边缘羽化：四边 FEATHER_RATIO 区域按 smoothstep 概率保留，仅软化矩形
+    边界（过大羽化+暗部剔除会让图像"像没拼完的拼图"，2026-08-16 用户
+    反馈后收敛为只做边界过渡，不再剔除暗部）。"""
     w0, h0 = image.size
     scale = SOURCE_WIDTH / w0
     small = image.resize((SOURCE_WIDTH, max(1, round(h0 * scale))), Image.LANCZOS).convert("RGBA")
@@ -89,10 +88,6 @@ def grid_from_image(image: Image.Image, char_id: str) -> tuple[str, int, int, fl
     nearest = dists.argmin(axis=1)
     color_index = np.full(mask.shape, -1, dtype=int)
     color_index[mask] = nearest
-
-    # 近黑格剔除
-    lum = (0.2126 * rgb[..., 0] + 0.7152 * rgb[..., 1] + 0.0722 * rgb[..., 2]) / 255.0
-    mask &= lum >= 0.05
 
     # 边缘羽化：确定性 smoothstep 概率（到最近边的距离归一后平滑过渡）
     gh, gw = mask.shape
