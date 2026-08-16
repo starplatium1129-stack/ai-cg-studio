@@ -171,6 +171,13 @@
           <details class="video-advanced">
             <summary>高级设置</summary>
             <div class="video-advanced-grid">
+              <label v-if="activeModel?.id === 'minimax-h3'" class="video-steps-toggle">
+                <input v-model="steps" type="checkbox" :true-value="4" :false-value="8" />
+                <span>
+                  <strong>极速 4 步</strong>
+                  <small>Turbo 蒸馏 4 步采样，约快一倍（实测 fast 5s 130s → 80s），质量略降，适合试镜与长片。</small>
+                </span>
+              </label>
               <label class="field">
                 <span class="field-label">负向描述</span>
                 <textarea
@@ -395,6 +402,7 @@ const negative = ref('')
 const selectedModelId = ref('wan2.2-ti2v-5b')
 const aspectRatio = ref<VideoDefaults['aspectRatio']>('landscape')
 const quality = ref<VideoDefaults['quality']>('standard')
+const steps = ref<4 | 8>(8)
 const duration = ref<VideoDefaults['duration']>(3)
 const camera = ref<VideoDefaults['camera']>('still')
 const motion = ref<VideoDefaults['motion']>('subtle')
@@ -619,6 +627,7 @@ async function submitVideo() {
       motion: motion.value,
       seed: typeof parsedSeed.value === 'number' ? parsedSeed.value : undefined,
       quality: quality.value,
+      steps: steps.value,
       image,
     })
     job.value = response.job
@@ -797,6 +806,10 @@ onBeforeUnmount(() => {
 .video-advanced { margin-top:var(--s-4); padding-top:var(--s-4); border-top:1px solid var(--border-soft); }
 .video-advanced summary { color:var(--text-secondary); font-weight:700; cursor:pointer; }
 .video-advanced-grid { display:grid; grid-template-columns:minmax(0,1.35fr) minmax(220px,.65fr); gap:var(--s-3); margin-top:var(--s-3); }
+.video-steps-toggle { display:flex; align-items:flex-start; gap:var(--s-2); padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-deep); cursor:pointer; }
+.video-steps-toggle input { margin-top:4px; accent-color:var(--accent); }
+.video-steps-toggle strong,.video-steps-toggle small { display:block; }
+.video-steps-toggle small { margin-top:2px; color:var(--text-muted); font-size:var(--fs-label-xs); line-height:1.5; }
 .video-submit-panel { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:var(--s-4); background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 7%,transparent),var(--bg-surface)); }
 .video-submit-panel[data-ready="true"] { border-color:color-mix(in srgb,var(--accent) 50%,var(--border-soft)); box-shadow:var(--shadow-md); }
 .video-submit-panel strong { font-size:var(--fs-title-xs); }

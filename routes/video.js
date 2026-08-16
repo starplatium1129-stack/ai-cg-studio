@@ -275,7 +275,7 @@ function deriveH3Music(prompt) {
 var ALLOWED_INPUT_KEYS = new Set([
   'prompt', 'negative', 'modelId', 'aspectRatio', 'duration',
   'camera', 'motion', 'seed', 'image', 'quality',
-  'dialogue', 'lastFrame', 'shotSize',
+  'dialogue', 'lastFrame', 'shotSize', 'steps',
 ]);
 
 function serviceError(status, code, message, detail) {
@@ -486,6 +486,18 @@ function validateInput(body, config) {
       throw serviceError(400, 'INVALID_PARAMETER', '不支持的景别');
     }
   }
+  // 步数（2026-08-16 真机实测：H3 Turbo 4 步 ≈ 8 步一半耗时，fast 5s 从 130s → 80s，
+  // 质量抽查可接受）。仅 H3；Wan 固定 20 步。
+  var steps = body.steps === undefined || body.steps === null || body.steps === ''
+    ? 8
+    : body.steps;
+  if (steps !== 4 && steps !== 8) {
+    throw serviceError(400, 'INVALID_PARAMETER', '步数只支持 4（极速）或 8（标准）');
+  }
+  if (!isH3 && body.steps !== undefined && body.steps !== null && body.steps !== '') {
+    throw serviceError(400, 'MODEL_INPUT_MODE', '极速步数仅支持 MiniMax H3');
+  }
+
   var aspect;
   if (body.aspectRatio === 'original') {
     // 跟随首帧图比例：读图片真实尺寸 → 按档位面积 + 原图比例计算画布（等比例无变形）。
@@ -605,7 +617,7 @@ function validateInput(body, config) {
     lastFrame:lastFrame || null,
     dialogue:dialogue || null,
     shotSize:shotSize || null,
-    steps:isH3 ? 8 : 20,
+    steps:isH3 ? steps : 20,
     cfg:5,
   });
 }
@@ -1250,7 +1262,7 @@ function streamVideo(req, res, result) {
 // 用上一镜结果尾帧衔接下一镜（有首帧 → FL2VA 尾帧；无首帧 → 续接为 I2VA 首帧），
 // 全批成功后可用 ffmpeg 拼接成片（P8）。
 
-var BATCH_BODY_KEYS = new Set(['modelId', 'aspectRatio', 'quality', 'linkLastFrame', 'shots']);
+var BATCH_BODY_KEYS = new Set(['modelId', 'aspectRatio', 'quality', 'linkLastFrame', 'steps', 'shots']);
 var BATCH_SHOT_KEYS = new Set(['prompt', 'dialogue', 'shotSize', 'camera', 'motion', 'duration', 'seed', 'image']);
 var BATCH_SHOT_DEFAULTS = Object.freeze({ camera:'still', motion:'subtle', duration:5 });
 
@@ -1283,6 +1295,15 @@ function validateBatchInput(body, config) {
   if (typeof linkLastFrame !== 'boolean') {
     throw serviceError(400, 'INVALID_PARAMETER', 'linkLastFrame 需为布尔值');
   }
+  var steps = body.steps === undefined || body.steps === null || body.steps === ''
+    ? 8
+    : body.steps;
+  if (steps !== 4 && steps !== 8) {
+    throw serviceError(400, 'INVALID_PARAMETER', '步数只支持 4（极速）或 8（标准）');
+  }
+  if (steps === 4 && model.family !== 'minimax-h3') {
+    throw serviceError(400, 'MODEL_INPUT_MODE', '极速步数仅支持 MiniMax H3');
+  }
   if (!Array.isArray(body.shots) || body.shots.length < 1 || body.shots.length > MAX_BATCH_SHOTS) {
     throw serviceError(400, 'INVALID_PARAMETER', '分镜数量需为 1—' + MAX_BATCH_SHOTS);
   }
@@ -1298,11 +1319,13 @@ function validateBatchInput(body, config) {
     // 单镜契约与单任务完全同源（validateInput 白名单/时长/景别/对白/图片校验）。
     // lastFrame 由服务端衔接写入，客户端不接受；validateInput 返回冻结对象，
     // 这里复制成可变副本，供 linkLastFrame 衔接时改写 image/lastFrame。
-    var input = Object.assign({}, validateInput(Object.assign({}, BATCH_SHOT_DEFAULTS, shot, {
+    var shotBody = Object.assign({}, BATCH_SHOT_DEFAULTS, shot, {
       modelId:model.id,
       aspectRatio:aspectRatio,
       quality:quality,
-    }), config));
+    });
+    if (model.family === 'minimax-h3') shotBody.steps = steps;
+    var input = Object.assign({}, validateInput(shotBody, config));
     return { input:input };
   });
   return Object.freeze({
@@ -1310,6 +1333,7 @@ function validateBatchInput(body, config) {
     aspectRatio:aspectRatio,
     quality:quality,
     linkLastFrame:linkLastFrame,
+    steps:steps,
     shots:shots,
   });
 }
@@ -1360,6 +1384,7 @@ function createBatchService(config, videoService, dependencies) {
       modelId:batch.modelId,
       aspectRatio:batch.aspectRatio,
       quality:batch.quality,
+      steps:batch.steps,
       linkLastFrame:batch.linkLastFrame,
       progress:{ total:total, succeeded:succeeded, failed:failed },
       createdAt:batch.createdAt,
@@ -1425,6 +1450,7 @@ function createBatchService(config, videoService, dependencies) {
       shotSize:input.shotSize || undefined,
     };
     if (input.negative) body.negative = input.negative;
+    if (batch.modelId === 'minimax-h3' && input.steps) body.steps = input.steps;
     return Object.assign({}, validateInput(body, config));
   }
 
@@ -1526,6 +1552,7 @@ function createBatchService(config, videoService, dependencies) {
       modelId:batchInput.modelId,
       aspectRatio:batchInput.aspectRatio,
       quality:batchInput.quality,
+      steps:batchInput.steps,
       linkLastFrame:batchInput.linkLastFrame,
       shots:batchInput.shots.map(function (entry, index) {
         return {

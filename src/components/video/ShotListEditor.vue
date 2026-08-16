@@ -53,6 +53,14 @@
           </span>
         </label>
 
+        <label class="shot-toggle">
+          <input v-model="steps" type="checkbox" :true-value="4" :false-value="8" />
+          <span>
+            <strong>极速 4 步（整批）</strong>
+            <small>Turbo 蒸馏 4 步采样，约快一倍（实测 fast 5s 130s → 80s），质量略降，适合试镜与长片。</small>
+          </span>
+        </label>
+
         <label class="field shot-identity-field">
           <span class="field-label">角色锚点（逐镜注入提示词开头，跨镜一致性关键）</span>
           <div class="shot-identity-row">
@@ -318,6 +326,7 @@ interface ShotDraft {
 
 const aspectRatio = ref<VideoBatch['aspectRatio']>('landscape')
 const quality = ref<VideoQuality>('standard')
+const steps = ref<4 | 8>(8)
 const linkLastFrame = ref(true)
 const identityCard = ref('')
 const characterId = ref('')
@@ -549,6 +558,7 @@ async function submitBatch() {
       modelId: 'minimax-h3',
       aspectRatio: aspectRatio.value,
       quality: quality.value,
+      steps: steps.value,
       linkLastFrame: linkLastFrame.value,
       shots: shots.value.map((shot) => {
         const prompt = [identityCard.value.trim(), shot.prompt.trim()].filter(Boolean).join('\n')

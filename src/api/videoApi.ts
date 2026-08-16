@@ -82,6 +82,8 @@ export interface CreateVideoJobInput {
   image?: string
   /** 画质档位：fast 0.2MP / standard 0.4MP（默认）/ fine 0.5MP。 */
   quality?: VideoQuality
+  /** 采样步数（H3 专属）：8 标准（默认）/ 4 极速（约快一倍，质量略降）。 */
+  steps?: 4 | 8
 }
 
 export interface VideoImageUploadResponse {
@@ -193,6 +195,7 @@ export interface VideoBatch {
   modelId: string
   aspectRatio: 'landscape' | 'portrait' | 'square'
   quality: VideoQuality
+  steps: 4 | 8
   linkLastFrame: boolean
   progress: { total: number; succeeded: number; failed: number }
   createdAt: number
@@ -219,6 +222,8 @@ export interface CreateVideoBatchInput {
   /** 整批统一画幅：拼接成片要求分辨率一致。 */
   aspectRatio: 'landscape' | 'portrait' | 'square'
   quality?: VideoQuality
+  /** 采样步数（H3 专属）：8 标准（默认）/ 4 极速（约快一倍，质量略降）。 */
+  steps?: 4 | 8
   /** 自动用上一镜尾帧衔接下一镜（FL2VA / I2VA 续接），默认开启。 */
   linkLastFrame?: boolean
   shots: CreateVideoBatchShotInput[]

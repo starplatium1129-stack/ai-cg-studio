@@ -280,6 +280,25 @@ async function run() {
     video.validateInput(validBody({ modelId:'wan2.2-ti2v-5b', shotSize:'wide' }));
   }, /景别仅支持 MiniMax H3/);
 
+  // ── 极速 4 步（2026-08-16 真机实测：fast 5s 130s → 80s，质量抽查可接受）──
+  assert.equal(video.validateInput(validBody({ modelId:'minimax-h3' })).steps, 8, 'H3 defaults to 8 steps');
+  var h3Fast4 = video.validateInput(validBody({ modelId:'minimax-h3', steps:4 }));
+  assert.equal(h3Fast4.steps, 4);
+  assert.equal(video.buildWorkflow(h3Fast4)['8'].inputs.steps, 4, '4-step graph drives BasicScheduler steps');
+  assert.throws(function () {
+    video.validateInput(validBody({ modelId:'minimax-h3', steps:6 }));
+  }, /步数只支持/, 'steps outside 4/8 rejected');
+  assert.throws(function () {
+    video.validateInput(validBody({ modelId:'wan2.2-ti2v-5b', steps:4 }));
+  }, /极速步数仅支持 MiniMax H3/, 'non-H3 models reject step override');
+
+  // H3 长镜档：10s/15s 在训练区间（124–362 帧）内，16GB 真机已验证（std10=430s, std15=671s）。
+  assert.equal(video.validateInput(validBody({ modelId:'minimax-h3', duration:10 })).frames, 243, 'H3 10s snaps to the 17k+5 grid (243)');
+  assert.equal(video.validateInput(validBody({ modelId:'minimax-h3', duration:15 })).frames, 362, 'H3 15s snaps to 362 frames');
+  assert.throws(function () {
+    video.validateInput(validBody({ modelId:'wan2.2-ti2v-5b', duration:10 }));
+  }, /只支持 3 秒或 5 秒/, 'Wan keeps 3/5 only');
+
   // ── P6 FL2VA / L2VA（官方 base-en.txt 2.1 参考对齐指令 + 尾帧节点）──────
   var fl2vaInput = video.validateInput(validBody({
     modelId:'minimax-h3',
@@ -577,6 +596,7 @@ async function run() {
         modelId:'minimax-h3',
         aspectRatio:'landscape',
         quality:'standard',
+        steps:4,
         linkLastFrame:true,
         shots:[
           { prompt:'雨夜少女撑着伞走向车站', image:shot1Name, shotSize:'wide' },
@@ -589,6 +609,7 @@ async function run() {
     var createdBatch = (await json(batchCreate)).batch;
     assert.equal(createdBatch.status, 'running');
     assert.equal(createdBatch.shots.length, 3);
+    assert.equal(createdBatch.steps, 4, 'batch exposes the 4-step fast tier');
 
     var deadline = Date.now() + 20000;
     var finalBatch;
@@ -617,6 +638,7 @@ async function run() {
         && call.body.prompt['5'] && call.body.prompt['5'].class_type === 'MiniMaxH3ImageToVideo';
     });
     assert.ok(shotPrompts.length >= 3, 'batch must submit one ComfyUI prompt per shot');
+    assert.equal(shotPrompts[0].body.prompt['8'].inputs.steps, 4, 'batch shots run with the 4-step fast tier');
     var shot2Call = shotPrompts[1].body.prompt;
     assert.match(shot2Call['17'].inputs.image, /^aics_video_input_[a-f0-9]{16}\.png$/,
       'shot 2 receives the chained first frame from shot 1 tail');
