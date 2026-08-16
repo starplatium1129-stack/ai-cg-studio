@@ -28,7 +28,8 @@ export interface VideoModelStatus {
 export interface VideoDefaults {
   modelId: string
   aspectRatio: 'landscape' | 'portrait' | 'square' | 'original'
-  duration: 3 | 5
+  /** H3 额外支持 10s/15s 长镜（训练区间 124–362 帧，16GB 真机已验证）。 */
+  duration: 3 | 5 | 10 | 15
   camera: 'still' | 'push' | 'pull' | 'pan' | 'orbit'
   motion: 'subtle' | 'natural' | 'expressive'
   quality: VideoQuality

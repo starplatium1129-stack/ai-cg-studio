@@ -10,8 +10,10 @@ const DEFAULT_BUDGETS = Object.freeze({
   // (src/api/generationApi.ts, roadmap "统一前端 API 层") rides in this chunk
   // through useSDGenerate. 2026-08-15「出视频」跨页联动只在此保留薄调用壳
   // （桥接逻辑已拆独立 chunk useVideoBridge，动态 import），故预算 140 → 145 KiB
-  // 留出该调用面余量；监控仍是硬上限，不允许无脑膨胀。
-  routeJavaScript: 145 * 1024,
+  // 留出该调用面余量；2026-08-16「加入分镜/去分镜短片」多图批量桥接
+  // （绘图页逐张入篮子 → 视频页分镜短片）再 +1 KiB（145 → 146，实测 148.9 KiB），
+  // 桥接主体仍在 useVideoBridge 独立 chunk；监控仍是硬上限，不允许无脑膨胀。
+  routeJavaScript: 146 * 1024,
   routeCss: 112 * 1024,
   // wl-live2d 懒加载块：pixi.js + pixi-live2d-display + cubism4 core 全内联，
   // 大小由依赖决定，这里监控防止未来升级/引入新依赖把它撑得更大。

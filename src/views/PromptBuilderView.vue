@@ -313,6 +313,27 @@
               <ArchiveIcon name="play" />
               <span>出视频</span>
             </button>
+            <button
+              v-if="displayResultUrl && (drawEngine === 'anima' || drawEngine === 'sd')"
+              class="btn btn-ghost btn-video-action"
+              type="button"
+              :disabled="generationBusy"
+              title="把当前成片作为分镜首帧，攒齐后到「分镜短片」整批生成"
+              @click="addToShots"
+            >
+              <ArchiveIcon name="gallery" />
+              <span>加入分镜</span>
+            </button>
+            <button
+              v-if="shotsPending > 0"
+              class="btn btn-primary btn-video-action"
+              type="button"
+              title="到视频页「分镜短片」，生成已加入的镜头"
+              @click="goToShots"
+            >
+              <ArchiveIcon name="play" />
+              <span>去分镜短片（{{ shotsPending }}）</span>
+            </button>
             <button class="btn btn-ghost" type="button" @click="saveResult">保存快照</button>
             <button class="btn btn-ghost" type="button" :disabled="!prevResult" @click="compareOpen = true">
               与上一张对比
@@ -1718,18 +1739,18 @@ async function saveHistory() {
 }
 
 /**
- * 「出视频」：把当前成片作为首帧带到视频页（薄封装；桥接逻辑在
+ * 「出视频」/「加入分镜」共用的当前成片上下文（薄封装；桥接逻辑在
  * useVideoBridge 独立 chunk，动态 import 不膨胀本路由块）。
  * 上下文：prompt（**该图实际生成时使用的提示词**，Anima 取结果 metadata、
  * SD 取提交时记录，不随面板后续修改漂移）+ story（场景描述，fallback）
  * + blueprintId（场景预设）。
  */
-async function goToVideo() {
+function videoTargetData() {
   const url = displayResultUrl.value
-  if (!url) { pb.flash('暂无可转视频的成片'); return }
+  if (!url) { pb.flash('暂无可转视频的成片'); return null }
   if (drawEngine.value !== 'sd' && !animaState.value.result) {
     pb.flash('成片数据已失效，请重新生成')
-    return
+    return null
   }
   const subject = pb.subject
   // 按图取词：优先该图实际生成时使用的提示词，面板实时组装值只作兜底。
@@ -1739,8 +1760,7 @@ async function goToVideo() {
   } else {
     usedPrompt = sd.resultPrompt.value || usedPrompt
   }
-  const { bridgeToVideo } = await import('@/composables/useVideoBridge')
-  await bridgeToVideo({
+  return {
     displayUrl: url,
     animaBlob: drawEngine.value !== 'sd' ? animaState.value.result?.blob ?? null : null,
     // 词条流 → 自然语言（H3 是自然语言模型；已像自然语言的提示词原样保留）。
@@ -1749,9 +1769,54 @@ async function goToVideo() {
     blueprintId: subject.kind === 'popular' ? (subject.blueprintId ?? null) : pb.sceneId,
     characterId: subject.kind === 'popular' ? subject.characterId : '',
     sceneId: pb.sceneId,
+  }
+}
+
+async function goToVideo() {
+  const data = videoTargetData()
+  if (!data) return
+  const { bridgeToVideo } = await import('@/composables/useVideoBridge')
+  await bridgeToVideo({
+    ...data,
     flash: message => pb.flash(message),
     push: path => router.push(path),
   })
+}
+
+/** 已「加入分镜」的镜头数（sessionStorage 持久，刷新不丢）。 */
+const shotsPending = ref(0)
+
+async function refreshShotsPending() {
+  try {
+    const { readShotsCtx } = await import('@/composables/useVideoBridge')
+    shotsPending.value = readShotsCtx().length
+  } catch { /* 保持 0 */ }
+}
+
+/** 「加入分镜」：把当前成片入 IndexedDB + 上下文追加到分镜待带入列表。 */
+async function addToShots() {
+  const data = videoTargetData()
+  if (!data) return
+  const { prepareVideoCtx, appendShotsCtx } = await import('@/composables/useVideoBridge')
+  const ctx = await prepareVideoCtx({
+    ...data,
+    flash: message => pb.flash(message),
+    push: async () => {},
+  })
+  if (!ctx) return
+  const count = appendShotsCtx(ctx)
+  shotsPending.value = count
+  pb.flash(`已加入分镜短片（当前 ${count} 个镜头）`)
+}
+
+/** 「去分镜短片」：跳转视频页分镜模式，一次性消费已加入的镜头。 */
+async function goToShots() {
+  const { readShotsCtx } = await import('@/composables/useVideoBridge')
+  if (!readShotsCtx().length) {
+    pb.flash('还没有加入任何镜头：先出图，再点「加入分镜」')
+    return
+  }
+  await router.push('/video-studio?mode=shots')
 }
 
 function saveResult() { saveHistory() }
@@ -2083,6 +2148,7 @@ watch(() => route.query, (q) => {
 
 // ── Lifecycle ─────────────────────────────────────────────────────────────
 onMounted(async () => {
+  void refreshShotsPending()
   void refreshAnimaBackend()
   // Anima 后端只在引擎激活时轮询：SD 引擎下每 15s 打一次 /api/creative/status
   // 会让网关反复探测 ComfyUI（2.5s 超时 + 磁盘资源检查），纯属浪费。

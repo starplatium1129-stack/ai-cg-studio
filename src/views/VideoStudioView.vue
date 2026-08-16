@@ -323,6 +323,7 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import ShotListEditor from '@/components/video/ShotListEditor.vue'
@@ -383,9 +384,12 @@ const motionOptions: Array<{ id: VideoDefaults['motion']; label: string }> = [
   { id: 'natural', label: '自然动作' },
   { id: 'expressive', label: '表现动作' },
 ]
-const durationOptions: Array<VideoDefaults['duration']> = [3, 5]
+const durationOptions = computed<Array<VideoDefaults['duration']>>(() =>
+  activeModel.value?.id === 'minimax-h3' ? [3, 5, 10, 15] : [3, 5])
 
 const selectedMode = ref<StudioMode>('text')
+const route = useRoute()
+const router = useRouter()
 const prompt = ref('')
 const negative = ref('')
 const selectedModelId = ref('wan2.2-ti2v-5b')
@@ -663,6 +667,11 @@ watch(selectedMode, (mode) => {
 })
 
 onMounted(() => {
+  // 绘图页「去分镜短片」深链：进入分镜模式并清掉 query（一次性消费）。
+  if (route.query.mode === 'shots') {
+    selectedMode.value = 'shots'
+    void router.replace({ query: {} })
+  }
   void loadStatus()
   consumeVideoCtx()
 })

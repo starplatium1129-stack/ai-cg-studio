@@ -158,6 +158,8 @@
                 <select v-model="shot.duration" class="select" :disabled="batchActive">
                   <option :value="3">3 秒</option>
                   <option :value="5">5 秒（推荐）</option>
+                  <option :value="10">10 秒 · 长镜</option>
+                  <option :value="15">15 秒 · 长镜</option>
                 </select>
               </label>
               <label class="field">
@@ -254,7 +256,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import {
   cancelVideoBatch,
   concatVideoBatch,
@@ -269,6 +271,8 @@ import {
   type VideoShotSize,
   type VideoStatusResponse,
 } from '@/api/videoApi'
+import { imgGet } from '@/composables/useImageStore'
+import { clearShotsCtx, readShotsCtx } from '@/composables/useVideoBridge'
 import { useSceneStore } from '@/stores/sceneStore'
 
 const props = defineProps<{
@@ -306,7 +310,7 @@ interface ShotDraft {
   shotSize: VideoShotSize | ''
   camera: VideoDefaults['camera']
   motion: VideoDefaults['motion']
-  duration: 3 | 5
+  duration: 3 | 5 | 10 | 15
   seedText: string
   imageName: string
   imageUrl: string
@@ -454,7 +458,7 @@ async function onFramePicked(index: number, event: Event) {
     return
   }
   try {
-    const dataUrl = await readFileAsDataURL(file)
+    const dataUrl = await readBlobAsDataURL(file)
     const comma = dataUrl.indexOf(',')
     if (comma < 0) throw new Error('图片编码失败')
     const upload = await uploadVideoImage(dataUrl.slice(comma + 1))
@@ -477,14 +481,58 @@ function clearFrame(index: number) {
   }
 }
 
-function readFileAsDataURL(file: File): Promise<string> {
+function readBlobAsDataURL(blob: Blob): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
     reader.onload = () => resolve(typeof reader.result === 'string' ? reader.result : '')
     reader.onerror = () => reject(reader.error ?? new Error('图片读取失败'))
-    reader.readAsDataURL(file)
+    reader.readAsDataURL(blob)
   })
 }
+
+// ── 绘图页「加入分镜」批量带入（一次性消费）──────────────────────────────
+async function importShotsFromDrawing() {
+  const list = readShotsCtx()
+  if (!list.length) return
+  clearShotsCtx()
+  let imported = 0
+  for (const ctx of list) {
+    const draft: ShotDraft = {
+      prompt: ctx.prompt || '',
+      dialogue: '',
+      shotSize: '',
+      camera: 'still',
+      motion: 'subtle',
+      duration: 5,
+      seedText: '',
+      imageName: '',
+      imageUrl: '',
+    }
+    try {
+      const blob = await imgGet(ctx.imageId)
+      if (blob) {
+        const dataUrl = await readBlobAsDataURL(blob)
+        const comma = dataUrl.indexOf(',')
+        if (comma >= 0) {
+          const upload = await uploadVideoImage(dataUrl.slice(comma + 1))
+          draft.imageName = upload.name
+          draft.imageUrl = URL.createObjectURL(blob)
+        }
+      }
+    } catch {
+      // 原图失效则不挂首帧（提示词照常带入），不影响其余镜头。
+    }
+    shots.value.push(draft)
+    imported += 1
+  }
+  if (imported) {
+    batchError.value = `已从绘图页带入 ${imported} 个镜头，首帧已自动挂载，可直接生成。`
+  }
+}
+
+onMounted(() => {
+  void importShotsFromDrawing()
+})
 
 function parsedSeed(shot: ShotDraft): number | undefined {
   if (!shot.seedText.trim()) return undefined

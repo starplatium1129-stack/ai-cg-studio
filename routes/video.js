@@ -149,6 +149,11 @@ var DURATIONS = Object.freeze({
   5:{ seconds:5, frames:121 },
 });
 
+// H3 长镜档：10s/15s 在模型训练区间（124–362 帧）内；16GB 显存可行性
+// 2026-08-16 真机实测确认（std10 ≈ 7 分钟，std15 ≈ 11 分钟，见 roadmap）。
+// Wan 5B 仍只支持 3/5。
+var H3_EXTRA_DURATIONS = new Set([10, 15]);
+
 // MiniMax H3 按 24fps 换算帧数后向上对齐到 17k+5 网格（模型训练网格，
 // 与官方模板 ComfyMathExpression 一致：count + (5 - count % 17) % 17）。
 function h3FrameCount(seconds) {
@@ -497,7 +502,12 @@ function validateInput(body, config) {
     if (!aspect) throw serviceError(400, 'INVALID_PARAMETER', '不支持的画面比例');
   }
   var duration = DURATIONS[body.duration];
-  if (!duration) throw serviceError(400, 'INVALID_PARAMETER', '时长只支持 3 秒或 5 秒');
+  if (!duration && isH3 && H3_EXTRA_DURATIONS.has(body.duration)) {
+    duration = { seconds:body.duration, frames:0 };
+  }
+  if (!duration) {
+    throw serviceError(400, 'INVALID_PARAMETER', isH3 ? '时长支持 3/5/10/15 秒' : '时长只支持 3 秒或 5 秒');
+  }
   if (!CAMERA[body.camera]) throw serviceError(400, 'INVALID_PARAMETER', '不支持的镜头运动');
   if (!MOTION[body.motion]) throw serviceError(400, 'INVALID_PARAMETER', '不支持的主体运动');
   var seed = body.seed;
