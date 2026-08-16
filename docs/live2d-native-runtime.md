@@ -181,3 +181,22 @@ ChatCharacterStage / useLive2D
 - 浏览器 wl-live2d 路径未隐藏三块板（/chat 中启用夏目 Live2D 仍会看到淡色底板）——需 pixi `internalModel.drawables` 的 per-frame 覆盖钩子研究后再做；桌面 native 已修复（用户实际环境）。
 - 渲染器仍无 MSAA（2× 超采样已等效 SSAA，无需再加）。
 - 桌面端 CDP 辅助脚本：`scripts/maintenance/cdp-shot.js`（WebView 窗口级截图 + DOM 状态）、`cdp-verify.js`（部署后验证）、`cdp-interact.js`/`cdp-taps.js`（分区点击回归）。
+
+## 夏目 idle 眼睛发灰（2026-08-16 疑难留档）
+
+**现象**：桌面 Companion 常态（Live2D idle）夏目眼睛灰暗无神（整个眼球泛灰白、虹彩极淡、无高光）；点击互动动作时正常；动作结束回 idle 又灰（循环）。
+
+**根因**（数据实证链）：
+1. **图片/CSS/浏览器路径全部正常**：静态立绘 `natsume-official.webp` 眼睛琥珀色+高光；CSS 仅 drop-shadow；浏览器 wl-live2d 复现脚本 idle/tap 截图眼睛均正常（vision 对比确认）。
+2. **动作曲线实锤**：解析全部 Idle/Tap motion3——夏目作者 Idle 眼曲线大量把 `ParamEyeLOpen/Open2` 压到 0~0.5（min=-0.1 全闭、左右眼不同步），而多数 Tap 动作（Chest_1/Frame_1/Hand_0 等）恒 1 全开 → idle 闭/半闭、互动全开、回 idle 又闭（循环吻合）。
+3. **native 缺覆写**：浏览器端 `blinkScheduler` 每帧 weight 1 覆写双眼参数（并随机眨眼），native 端 `live2d_overlay.rs` 此前**零眼睛参数逻辑**；C++ 侧 `CubismEyeBlink` 非眨眼期不写参数，救不了作者闭眼曲线。
+4. **排除项**：hidden_drawables 101/102/104 = ArtMesh60/61/63（背景板，浏览器 coreModel `getDrawableIds` 实证），眼睛是 Yanjing_L2(5)/Yanjing_R2(13) 带 mask，无误伤；模型无 pose 文件；motion PartOpacity 曲线全 1。
+
+**修复**：`desktop-tauri/src-tauri/src/live2d_overlay.rs` 实现 Rust 版覆盖式眨眼 `BlinkState`（与前端 `blinkScheduler.ts` 同参：2.5-5s 随机间隔、closing 0.09s / closed 0.06s / opening 0.16s，xorshift 随机源复用 motion_seed 同款），`step()` 在 `model.update` 后以 weight 1 覆写双眼参数（对齐前端"覆写必须在 UpdateMotion 之后"时序）；登场（Start 组）期间暂停覆写（作者登场眼曲线左右同步含开场闭眼，原样呈现，对齐前端 entranceUntil）。参数组 `blink_params_for` 对齐前端 `BLINK_PARAMS`：夏目 ParamEyeLOpen/Open2、宁宁 ParamEyeLOpen/ParamEyeROpen。
+
+**验证**：cargo test 22/22 通过（新增 `blink_state_cycles_open_closed_and_returns_to_open`、`blink_params_follow_frontend_mapping`）；cargo check 通过；需重新打包桌面端生效（`npm run build:tauri` → `package:tauri` → `setup.exe /S`）。
+
+**教训**：
+- **"点击后正常"的循环现象 = 状态相关（动作 vs idle 参数差异），不是静态渲染 bug**——先按状态切分复现（idle/tap/结束后三段），再查参数曲线，比直接怀疑渲染器快得多。
+- **浏览器端正常不代表 native 正常**：浏览器有参数级 hack（blinkScheduler 覆写），native 只传意图——"双端行为差异"先查两端各自的前置覆写逻辑，再查渲染器。
+- **drawable 索引映射用浏览器 coreModel 实证**（`getDrawableIds`/`getDrawableBlendMode`/`getDrawableMaskCounts`），别猜。
