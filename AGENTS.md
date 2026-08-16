@@ -49,6 +49,7 @@
 - **发布前检查角色覆盖**：`publish-popular-showcase.js` 会**删除源目录全部旧 pc_* 重建**——多批次合并发布时必须合并所有角色的 manifest（参考 `runtime/merge-publish-data.js`：v18 旧角色 + 新角色合并且按 key 取最新 attempt），dry-run 核对 typeCounts 与角色数，否则旧角色样张被静默删除。发布用 `--from <generation-manifest-merged.json>` + `--source <旧版本> --target <新版本> --apply --force`。
 - **数据格式一致性**：`scene-blueprints.json` 的 `negativeTokens` 历史为逗号分隔字符串——解析器必须用 `negativeStringList`（兼容字符串/数组，`stringList` 对字符串返回 `[]` 会静默丢词，2026-08-15 实锤 336 场景负面定制从未生效）。新增字段注意解析器与数据格式匹配，改后跑 `test-popular-content.js`。
 - **顽固场景止损（2026-08-15 教训）**：同一场景连续重出（≥5 次，含换 seed/强化负面/场景简化）仍出分身/双人时，**标记暂缓发布**（audit 保持 fail，从 showcase 剔除），不要无限重试烧 GPU；记录场景 id 与已试措施，留给后续换引擎/换构图再战（例：`kaltsit_arknights_r18_cabin_robe` 6 连败）。
+- **新增热门角色后跑点阵生成（2026-08-16 起）**：角色场景库/角色档案 hero 的粒子是整图点阵复刻，数据离线预生成——新增角色（放好 `assets/characters/popular-<id>.png` 后）必须跑 `npm run particles:build -- <id>` 生成 `assets/particles/p_<id>.json`，前端零改动；忘跑不会报错，但 hero 粒子会回落抽象形状。管线与可调参数见 `docs/particle-portrait-pipeline.md`。
 - **场景预设提示词是图生视频的上游输入（2026-08-15 用户指示）**：图生视频的提示词与场景预设（`scene-blueprints.json` 的 `promptProse`/`promptTokens`/`description`/`action`）息息相关——视频生成会复用/派生场景预设描述。因此场景预设必须写得**具体、可视觉化、构图与动作明确**（人物姿势、镜头、光线、氛围、叙事都在描述里），禁止模糊或留白；任何场景描述的修改都要假设会被下游图生视频直接引用，改完自查「这段描述能否直接驱动一段 5-10 秒的视频」。视频链路改动（`routes/video.js`、`VideoStudioView.vue`、`docs/video-generation-roadmap.md`）由负责图生视频的协作者维护，本会话不碰。
 
 ## 当前架构
