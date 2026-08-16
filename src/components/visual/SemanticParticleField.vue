@@ -47,6 +47,9 @@ const props = withDefaults(defineProps<{
 interface RuntimeParticle {
   x: number
   y: number
+  /** 上一帧位置：运动拖尾线段（对齐参考实现的残影流光；静止时无拖尾）。 */
+  prevX: number
+  prevY: number
   velocityX: number
   velocityY: number
   targetX: number
@@ -182,9 +185,10 @@ function setShape(animate = true) {
   if (portraitCloud) {
     const sample = samplePortraitPoints(portraitCloud, count, width, height)
     shape = sample.points
-    // 统一点径 = 0.55×点距（整图复刻点更密，略缩点径保留点阵质感同时
-    // 承载 32 色细节）；点径恒定才有规整点阵观感。
-    portraitRadii = portraitPaints.map(() => sample.spacing * 0.55)
+    // 统一点径 = 0.3×点距（2026-08-16 对齐参考实现 CONFIG.particleSize=3 /
+    // samplingStep=5 ≈ 0.3×间距）：点与点之间保留清晰负空间，还原点阵网格
+    // 空气感；此前 0.55× 点径让网点粘连成「位图」，失掉离散点阵质感。
+    portraitRadii = portraitPaints.map(() => sample.spacing * 0.3)
   } else {
     shape = createParticleShape(props.shape, count)
   }
@@ -203,6 +207,8 @@ function setShape(animate = true) {
     return {
       x,
       y,
+      prevX: current?.prevX ?? x,
+      prevY: current?.prevY ?? y,
       velocityX: current?.velocityX ?? 0,
       velocityY: current?.velocityY ?? 0,
       targetX: target.x,
@@ -211,8 +217,9 @@ function setShape(animate = true) {
       paint: point.paint ?? point.tone,
       phase: current?.phase ?? Math.random() * Math.PI * 2,
       depth: current?.depth ?? 0.55 + Math.random() * 0.45,
-      // 剪影模式收窄粒子尺寸抖动：点阵更均匀，成像更"实"
-      size: current?.size ?? (portraitCloud ? 0.94 + Math.random() * 0.12 : 0.88 + Math.random() * 0.24),
+      // 剪影模式粒子尺寸恒定（参考实现 particleSize 恒定，无抖动）：
+      // 点阵更均匀，成像更「实」；抽象形状保留尺寸层次。
+      size: current?.size ?? (portraitCloud ? 1 : 0.88 + Math.random() * 0.24),
     }
   })
 
@@ -243,6 +250,8 @@ function simulateParticles(now: number): boolean {
   let moving = pointerActive
 
   for (const particle of particles) {
+    particle.prevX = particle.x
+    particle.prevY = particle.y
     particle.velocityX += (particle.targetX - particle.x) * 0.01 * step
     particle.velocityY += (particle.targetY - particle.y) * 0.01 * step
 
@@ -287,6 +296,9 @@ function draw() {
   const paths = paints
     ? paints.map(() => new Path2D())
     : [new Path2D(), new Path2D(), new Path2D()]
+  // 运动拖尾（对齐参考实现的残影流光）：粒子位移超过阈值时连一条
+  // 上一帧→当前帧线段；静止粒子不入路径——空闲观感不变，交互涟漪带出流光。
+  const tailPaths = paths.map(() => new Path2D())
   const energyScale = props.signal === 'active' ? 1.16 : props.signal === 'warning' ? 1.08 : 1
 
   for (const particle of particles) {
@@ -301,13 +313,27 @@ function draw() {
       ? (portraitRadii[pathIndex] || 1)
       : particle.tone === 2 ? 1.55 : particle.tone === 1 ? 1.05 : 0.78
     const radius = baseRadius * energyScale * particle.size
+    const dx = particle.x - particle.prevX
+    const dy = particle.y - particle.prevY
+    if (dx * dx + dy * dy > 0.12) {
+      tailPaths[pathIndex].moveTo(particle.prevX, particle.prevY)
+      tailPaths[pathIndex].lineTo(particle.x, particle.y)
+    }
     path.moveTo(particle.x + radius, particle.y)
     path.arc(particle.x, particle.y, radius, 0, Math.PI * 2)
   }
+  // 先拖尾后头点：流光在点后，头点保持锐利；混合模式跟随主体（深色 screen 发光）。
+  ctx.lineCap = 'round'
   if (paints) {
+    ctx.globalCompositeOperation = darkTheme ? 'screen' : 'source-over'
+    paints.forEach((color, index) => {
+      ctx.globalAlpha = .32
+      ctx.strokeStyle = color
+      ctx.lineWidth = 1.4
+      ctx.stroke(tailPaths[index])
+    })
     // 图片点阵：深色主题 screen 混合（暗部隐入底色、亮部发光，与档案风融合）；
     // 浅色主题正常混合但整体透明度略降（暗部粒子在浅底上的硬度收敛 10-15%）
-    ctx.globalCompositeOperation = darkTheme ? 'screen' : 'source-over'
     ctx.globalAlpha = darkTheme ? .88 : .76
     paints.forEach((color, index) => {
       ctx.fillStyle = color
@@ -315,6 +341,14 @@ function draw() {
     })
     ctx.globalCompositeOperation = 'source-over'
   } else {
+    ctx.globalAlpha = .28
+    ctx.strokeStyle = palette.primary
+    ctx.lineWidth = 1.2
+    ctx.stroke(tailPaths[0])
+    ctx.strokeStyle = palette.secondary
+    ctx.stroke(tailPaths[1])
+    ctx.strokeStyle = palette.accent
+    ctx.stroke(tailPaths[2])
     ctx.globalAlpha = .72
     ctx.fillStyle = palette.primary
     ctx.fill(paths[0])

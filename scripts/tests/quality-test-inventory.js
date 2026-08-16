@@ -35,6 +35,7 @@ const QUALITY_TEST_SUITES = Object.freeze({
     'test-inpaint-showcase-candidates.js',
     'test-lora-catalog.js',
     'test-mood-tag.js',
+    'test-particle-portrait.js',
     'test-prompt-builder-modules.js',
     'test-prompt-compiler.js',
     'test-prompt-corpus.js',
