@@ -18,6 +18,7 @@ const path = require('path');
 const BASE = process.argv[2] || 'http://127.0.0.1:3123';
 const SCENE_MATCH = process.argv[3] || '';
 const BUDGET_MS = (Number(process.env.BUDGET) || 480) * 1000;
+const DURATION = Number(process.env.DURATION) || 15;
 const DATA_FILE = 'C:\\Program Files\\AI-CG-Studio\\gateway\\data\\scene-blueprints.json';
 
 const started = Date.now();
@@ -106,7 +107,7 @@ async function main() {
       prompt: scene.promptProse,
       modelId: 'minimax-h3',
       aspectRatio: 'landscape',
-      duration: 15,
+      duration: DURATION,
       steps: 4,
       camera: 'still',
       motion: 'subtle',

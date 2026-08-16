@@ -40,6 +40,20 @@
   （脚本 `scripts/maintenance/repro-h3-15s.js`，BUDGET=620）；
 - 失败组合对比：8-07+0.4.13 ❌ / 8-02+0.4.13 ❌ / 8-02+0.4.8 ✅。
 
+## T8 双时钟加速路径（2026-08-17 深夜启用，速度基准更新）
+
+- **慢的真正原因**：T8 双时钟采样器（MiniMaxH3DualClockSamplerT8 + 4 步加速
+  LoRA）此前未生效——3123 sidecar 启动时一次性探测缓存了旧 ComfyUI 状态。
+  **重启 3123 后 T8 路径启用**（`/object_info/MiniMaxH3DualClockSamplerT8`
+  存在即真；依赖：4step/8step LoRA + video/audio VAE 均已就位）。
+- **实测基准（4070 Ti SUPER，T8 双时钟 + 4 步）**：
+  - 5s 视频 66.5s（含冷加载；原生路径模型热时 92-97s）；
+  - **15s 视频全链路 293s（Anima 出图 21s + 视频 ~272s ≈ 4.5 分钟）**，
+    与社区「15s 480P 4 分钟」一致；原生路径 15s = 503s（8.4 分钟）。
+- 若再遇到「任务慢」先查：`/object_info/MiniMaxH3DualClockSamplerT8` 是否存在
+  + 3123 是否在 T8 启用**之后**启动（probe 是一次性的，ComfyUI 版本变动后
+  必须重启 3123）。
+
 ## 边界与备注（重要）
 
 - **内存（RAM）高占用是 DynamicVRAM 机制**：20GB H3 模型 staged 到系统内存
