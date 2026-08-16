@@ -37,8 +37,11 @@ CHAR_DIR = ROOT / "assets" / "characters"
 OUT_DIR = ROOT / "assets" / "particles"
 # 源网格宽：前端点阵 ≤ ~110×160，200px 源网格足够无混叠采样
 SOURCE_WIDTH = 200
-PALETTE_SIZE = 32
+# 36 色 = base36 索引上限，比 32 色再压回一档量化断层
+PALETTE_SIZE = 36
 BASE36 = "0123456789abcdefghijklmnopqrstuvwxyz"
+# 边缘羽化：外圈按概率渐剔除点，打破"贴上去的矩形马赛克"感（与页面融合）
+FEATHER_RATIO = 0.14
 
 # 工作室角色立绘文件名与角色 id 的对应（热门角色固定 popular-<id>.png）
 STUDIO_PORTRAITS = {"nene": "nene-official.webp", "natsume": "natsume-official.webp"}
@@ -64,7 +67,13 @@ def kmeans_palette(pixels: np.ndarray, k: int, seed: str) -> list[tuple[int, int
 
 
 def grid_from_image(image: Image.Image, char_id: str) -> tuple[str, int, int, float, list[str]] | None:
-    """返回 (cells, 网格宽, 网格高, 宽高比, 调色板)。整图量化，无抠像。"""
+    """返回 (cells, 网格宽, 网格高, 宽高比, 调色板)。整图量化，无抠像。
+
+    两项融合处理（2026-08-16 用户反馈"突兀"）：
+    - 近黑格剔除：luminance < 0.05 的格子记 '.'（屏幕混合下它们本就不可见，
+      剔掉省点数、去泥感）；
+    - 边缘羽化：四边 FEATHER_RATIO 区域内按 smoothstep 概率保留，边缘点
+      渐稀消散，矩形边界不再生硬。"""
     w0, h0 = image.size
     scale = SOURCE_WIDTH / w0
     small = image.resize((SOURCE_WIDTH, max(1, round(h0 * scale))), Image.LANCZOS).convert("RGBA")
@@ -81,16 +90,32 @@ def grid_from_image(image: Image.Image, char_id: str) -> tuple[str, int, int, fl
     color_index = np.full(mask.shape, -1, dtype=int)
     color_index[mask] = nearest
 
+    # 近黑格剔除
+    lum = (0.2126 * rgb[..., 0] + 0.7152 * rgb[..., 1] + 0.0722 * rgb[..., 2]) / 255.0
+    mask &= lum >= 0.05
+
+    # 边缘羽化：确定性 smoothstep 概率（到最近边的距离归一后平滑过渡）
+    gh, gw = mask.shape
+    rng = np.random.default_rng(sum(ord(c) for c in char_id) % (2 ** 32))
+    xs = np.arange(gw) / max(1, gw - 1)
+    ys = np.arange(gh) / max(1, gh - 1)
+    fx = np.clip(np.minimum(xs, 1 - xs) / FEATHER_RATIO, 0, 1)
+    fy = np.clip(np.minimum(ys, 1 - ys) / FEATHER_RATIO, 0, 1)
+    fx = fx * fx * (3 - 2 * fx)  # smoothstep
+    fy = fy * fy * (3 - 2 * fy)
+    keep = rng.random(mask.shape) < fy[:, None] * fx[None, :]
+    mask &= keep
+
     rows = [
         "".join(
-            "." if color_index[y, x] < 0 else BASE36[color_index[y, x]]
-            for x in range(SOURCE_WIDTH)
+            "." if color_index[y, x] < 0 or not mask[y, x] else BASE36[color_index[y, x]]
+            for x in range(gw)
         )
-        for y in range(mask.shape[0])
+        for y in range(gh)
     ]
-    aspect = SOURCE_WIDTH / mask.shape[0]
+    aspect = gw / gh
     palette = ["#%02x%02x%02x" % c for c in palette_rgb]
-    return "".join(rows), SOURCE_WIDTH, int(mask.shape[0]), aspect, palette
+    return "".join(rows), int(gw), int(gh), aspect, palette
 
 
 def build_one(char_id: str, source: Path) -> bool:

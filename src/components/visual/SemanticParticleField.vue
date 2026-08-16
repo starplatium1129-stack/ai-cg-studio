@@ -2,7 +2,7 @@
   <figure
     ref="host"
     class="semantic-particle-field"
-    :class="[`density-${density}`, `signal-${signal}`, { 'is-static': reduceMotion, 'has-canvas': canvasAvailable, 'is-bare': bare }]"
+    :class="[`density-${density}`, `signal-${signal}`, { 'is-static': reduceMotion, 'has-canvas': canvasAvailable, 'is-bare': bare, 'has-portrait': portraitActive }]"
     :role="decorative ? undefined : 'img'"
     :aria-label="decorative ? undefined : label"
     :aria-hidden="decorative ? 'true' : undefined"
@@ -68,6 +68,9 @@ const host = ref<HTMLElement | null>(null)
 const canvas = ref<HTMLCanvasElement | null>(null)
 const reduceMotion = ref(false)
 const canvasAvailable = ref(true)
+/** 深色主题下图片点阵用 screen 混合：暗部自然隐入页面底色、亮部发光，
+    消除"贴上去的彩色马赛克"突兀感（2026-08-16 用户反馈）。 */
+let darkTheme = true
 
 /** 角色形象点云：null = 用抽象形状。异步加载由 token 防竞态。 */
 let portraitCloud: PortraitCloud | null = null
@@ -76,6 +79,8 @@ let portraitPaints: string[] = []
 /** 半调点阵：每个调色板色的网点半径（剪影模式统一点径，见 setShape）。 */
 let portraitRadii: number[] = []
 let portraitToken = 0
+/** 图片点阵激活标记（模板用，隐藏画布中央的装饰菱形标记）。 */
+const portraitActive = ref(false)
 
 /** 主题可读性：人物原色可能过暗（黑裙/深发在深色主题不可见），提亮到最低亮度。 */
 function legibleColor(hex: string): string {
@@ -138,6 +143,7 @@ function preferredCount(): number {
 
 function readPalette() {
   if (!host.value) return
+  darkTheme = (document.documentElement.dataset.theme || 'dark') !== 'light'
   const style = getComputedStyle(host.value)
   palette = {
     primary: style.getPropertyValue('--text-primary').trim() || '#d9d5df',
@@ -299,11 +305,15 @@ function draw() {
     path.arc(particle.x, particle.y, radius, 0, Math.PI * 2)
   }
   if (paints) {
-    ctx.globalAlpha = .88
+    // 图片点阵：深色主题 screen 混合（暗部隐入底色、亮部发光，与档案风融合）；
+    // 浅色主题正常混合但整体透明度略降（暗部粒子在浅底上的硬度收敛 10-15%）
+    ctx.globalCompositeOperation = darkTheme ? 'screen' : 'source-over'
+    ctx.globalAlpha = darkTheme ? .88 : .76
     paints.forEach((color, index) => {
       ctx.fillStyle = color
       ctx.fill(paths[index])
     })
+    ctx.globalCompositeOperation = 'source-over'
   } else {
     ctx.globalAlpha = .72
     ctx.fillStyle = palette.primary
@@ -425,6 +435,7 @@ async function applyPortrait(id: string) {
     portraitCloud = null
     portraitPaints = []
     portraitRadii = []
+    portraitActive.value = false
     setShape(true)
     return
   }
@@ -434,6 +445,7 @@ async function applyPortrait(id: string) {
   portraitPaints = cloud ? cloud.palette.map(legibleColor) : []
   // 网点半径在 setShape 里按「点距 × 明暗」自适应计算（依赖粒子数与场域尺寸）
   portraitRadii = portraitPaints.map(() => 1)
+  portraitActive.value = cloud !== null
   setShape(true)
 }
 
@@ -505,6 +517,8 @@ onUnmounted(() => {
   transform:translate(-50%,-50%) rotate(45deg);
   opacity:.7;
 }
+/* 图片点阵成像时隐藏中央菱形标记：它透在图片上会读成"幽灵图元" */
+.has-portrait::after { display:none; }
 canvas { display:none; position:absolute; inset:0; width:100%; height:100%; z-index:var(--z-base); }
 .has-canvas canvas { display:block; }
 .particle-fallback { display:grid; position:absolute; inset:0; place-items:center; }
