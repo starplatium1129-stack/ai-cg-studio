@@ -114,7 +114,9 @@ function buildCandidate(character, blueprint, profile, attempt, seedAttempt = at
   // blueprint 级负面原样追加：anima profile 的 negative_mode=replace(boilerplate) 会把
   // blueprint negativeTokens 里的大部分词（2girls/clone/twin/inset image 等）当样板过滤掉，
   // 导致场景级负面定制从未生效（2026-08-15 人物数核查发现）。维护脚本在此强制补回。
-  const blueprintNegative = String(blueprint.negativeTokens || '').trim();
+  const blueprintNegative = Array.isArray(blueprint.negativeTokens)
+    ? blueprint.negativeTokens.join(', ').trim()
+    : String(blueprint.negativeTokens || '').trim();
   const negative = blueprintNegative
     ? `${result.negative}, ${blueprintNegative}`
     : result.negative;

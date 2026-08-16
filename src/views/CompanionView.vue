@@ -15,6 +15,17 @@
         <h1>与{{ currentCharacter.name }}相伴</h1>
       </div>
       <div class="companion-toolbar-actions">
+        <div v-if="desktopBridge" class="companion-char-switch" aria-label="切换角色">
+          <button
+            v-for="id in CHARACTER_IDS"
+            :key="id"
+            type="button"
+            :aria-pressed="activeChar === id ? 'true' : 'false'"
+            :class="{ active: activeChar === id }"
+            :title="`切换到${id === 'nene' ? '绫地宁宁' : '四季夏目'}`"
+            @click="switchCharacter(id)"
+          >{{ id === 'nene' ? '宁宁' : '夏目' }}</button>
+        </div>
         <button
           type="button"
           class="companion-settings-btn"
@@ -173,28 +184,27 @@
           </template>
         </div>
 
-        <div
-          v-if="!chatReady || voiceCapabilityState === 'offline' || preparingRoom"
-          class="companion-setup-inline"
-          :data-state="preparingRoom ? 'active' : 'warning'"
-        >
-          <ArchiveIcon name="gear" />
-          <span>{{ setupTitle }}</span>
-          <button
-            v-if="chatProvider === 'local' || (chatReady && voiceCapabilityState === 'offline')"
-            class="companion-setup-action"
-            type="button"
-            :disabled="preparingRoom"
-            @click="prepareRoom"
-          >{{ preparingRoom ? '准备中…' : '准备环境' }}</button>
-          <RouterLink v-else class="companion-setup-action" to="/chat">前往配置</RouterLink>
-        </div>
-
         <div v-if="toolActivity || thinkingActivity" class="companion-tool-indicator" role="status">
           <ArchiveIcon :name="toolActivity ? 'gear' : 'spark'" /> {{ toolActivity || '思考中…' }}
         </div>
 
         <div class="companion-composer">
+          <div
+            v-if="!chatReady || voiceCapabilityState === 'offline' || preparingRoom"
+            class="companion-setup-inline"
+            :data-state="preparingRoom ? 'active' : 'warning'"
+          >
+            <ArchiveIcon name="gear" />
+            <span>{{ setupTitle }}</span>
+            <button
+              v-if="chatProvider === 'local' || (chatReady && voiceCapabilityState === 'offline')"
+              class="companion-setup-action"
+              type="button"
+              :disabled="preparingRoom"
+              @click="prepareRoom"
+            >{{ preparingRoom ? '准备中…' : '准备环境' }}</button>
+            <RouterLink v-else class="companion-setup-action" to="/chat">前往配置</RouterLink>
+          </div>
           <textarea
             class="companion-input"
             v-model="inputText"
@@ -328,6 +338,8 @@ import { COMPANION_BEHAVIOR_KEY, COMPANION_LIVE2D_KEY } from '@/utils/storageKey
 import { useVoiceInput, type VoiceTextSource } from '@/composables/useVoiceInput'
 import { isSpeechInputReady, loadSpeechInputConfig } from '@/utils/speechInputConfig'
 import { createSpeechSession } from '@/utils/speechSession'
+
+const CHARACTER_IDS = ['nene', 'natsume'] as const
 
 const {
   chatListRef,

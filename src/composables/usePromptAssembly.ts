@@ -28,7 +28,7 @@ import {
   type PromptPart,
 } from '@/utils/promptPolicy'
 import { COLOR_MOODS, LIGHTING, SHOT, COMPOSITION } from '@/config/promptConstants'
-import { createPromptPlan, renderPromptPlan } from '@/utils/promptCompiler'
+import { createPromptPlan, plainEnglish, renderPromptPlan } from '@/utils/promptCompiler'
 import { artistStyleProse, artistTagsForEngine } from '@/config/artistStyles'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
@@ -253,7 +253,7 @@ export function usePromptAssembly(
     // 8) 光照
     if (selections.lighting) {
       const lighting = LIGHTING.find(option => option.id === selections.lighting)
-      if (lighting?.prompt) parts.push({ cls: 'c', text: format(lighting.prompt) })
+      if (lighting?.prompt) parts.push({ cls: 't', text: format(lighting.prompt) })
     }
     // 9) 构图
     if (selections.composition) {
@@ -327,9 +327,22 @@ export function usePromptAssembly(
   )
 
   const promptReport = computed(() => {
-    const parts = [...promptParts.value]
+    // 2026-08-15 审计：健康面板必须分析真正下发的 prompt——
+    // Anima/Krea 走 renderPromptPlan 渲染文本（含散文），不再分析 SD 风格的平行 parts
+    // （此前 token 数与冲突检测对应一份从未发送的组装结果）。
+    if (engine.value === 'sd') {
+      const parts = [...promptParts.value]
+      if (negativePrompt.value) parts.push({ cls: 'n', text: negativePrompt.value })
+      return analyzeParts(parts, 'sd')
+    }
+    const parts: Array<{ cls: 'q' | 'n'; text: string }> = []
+    if (positivePrompt.value) parts.push({ cls: 'q', text: positivePrompt.value })
     if (negativePrompt.value) parts.push({ cls: 'n', text: negativePrompt.value })
-    return analyzeParts(parts)
+    const report = analyzeParts(parts, engine.value)
+    if (pb.visualDescription && !plainEnglish(pb.visualDescription)) {
+      report.warnings.push('视觉描述含非 ASCII 字符，已按英文模型门控丢弃（请在画面描述里使用英文）')
+    }
+    return report
   })
 
   const artViolations = computed(() => checkArtDirection(positivePrompt.value))

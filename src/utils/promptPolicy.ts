@@ -773,12 +773,21 @@ export function checkArtDirection(text: string): string[] {
   )
 }
 
-/** 质量词堆叠：WAI0731 官方建议正向只用 3 个左右质量词，
- * 过多或过长的负面会降低成图质量（官方原话）。 */
-const QUALITY_TOKENS = new Set([
+/** 质量词唯一权威清单（Danbooru 下划线形式）。
+ *  三处消费方共用一份，禁止各自维护副本（2026-08-15 审计）：
+ *  QUALITY_TOKENS（堆叠计数）与 QUALITY_OR_SCORE_RE（Anima 剥离）均由本清单派生；
+ *  UI 分类（PromptHealthPanel）用空格形式派生；Krea 散文净化（promptCompiler）复用。 */
+export const QUALITY_WORDS = [
   'masterpiece', 'best_quality', 'amazing_quality', 'very_aesthetic',
   'absurdres', 'newest', 'highres', 'highly_detailed',
-])
+] as const
+
+/** 质量词堆叠：WAI0731 官方建议正向只用 3 个左右质量词，
+ * 过多或过长的负面会降低成图质量（官方原话）。 */
+export const QUALITY_TOKENS: ReadonlySet<string> = new Set(QUALITY_WORDS)
+
+/** 质量词 + score 评分词（Anima 正层剥离用）。 */
+export const QUALITY_OR_SCORE_RE = new RegExp(`^(?:${QUALITY_WORDS.join('|')}|score_\\d+)$`, 'i')
 
 /** 同一画面里出现两个以上服装族系会互相打架（校服 vs 泳装 vs 浴衣…） */
 const OUTFIT_FAMILIES: Array<{ name: string; tokens: string[] }> = [
@@ -834,8 +843,10 @@ export interface PromptReport {
   warnings: string[]
 }
 
-/** 逗号标签数统计（不冒充具体模型 tokenizer） */
-export function analyzeParts(parts: PromptPart[]): PromptReport {
+/** 逗号标签数统计（不冒充具体模型 tokenizer）。
+ *  engine 可选：传入非 SD 家族时启用引擎契约违规检测（Krea 权重语法/下划线/
+ *  score 质量词/负面恒空、Anima 与 Krea 的非 ASCII 混入、负面 token 重复）。 */
+export function analyzeParts(parts: PromptPart[], engine?: PromptEngine): PromptReport {
   const positive: string[] = []
   const negative: string[] = []
   let hasBreak = false
@@ -877,11 +888,35 @@ export function analyzeParts(parts: PromptPart[]): PromptReport {
   const negativeSet = new Set(negative)
   const overlap = [...new Set(positive.filter(tag => negativeSet.has(tag)))]
   if (overlap.length) warnings.push('正负词冲突：' + overlap.slice(0, 3).join('、'))
+
+  // ── 引擎契约违规检测（2026-08-15 审计新增）──────────────────────────────
+  // 输入必须是真实下发文本：usePromptAssembly / usePopularPromptAssembly 的
+  // 非 SD 家族已把渲染结果作为单个 part 传入，SD 家族仍传分块 parts。
+  const rawPositiveText = parts.filter(part => part.cls !== 'n').map(part => part.text).join('\n')
+  if (engine === 'krea2') {
+    const weights = rawPositiveText.match(/\(([^()\n]*[a-z][^()\n]*):\s*-?\d+(?:\.\d+)?\s*\)/gi) || []
+    if (weights.length) warnings.push(`Krea 散文残留权重语法：${[...new Set(weights)].slice(0, 3).join('、')}`)
+    const underscored = rawPositiveText.match(/[a-z0-9]+_[a-z0-9_]+/gi) || []
+    if (underscored.length) warnings.push(`Krea 散文混入下划线 token：${[...new Set(underscored)].slice(0, 3).join('、')}`)
+    const scoreQuality = rawPositiveText.match(new RegExp(`\\b(?:${QUALITY_WORDS.join('|')}|score_\\d+)\\b`, 'gi')) || []
+    if (scoreQuality.length) warnings.push(`Krea 散文混入 score/质量词：${[...new Set(scoreQuality)].slice(0, 3).join('、')}`)
+    if (negative.length) warnings.push('Krea 分支出现负面词（Krea 负面应恒空，出现即组装 bug）')
+  }
+  if (engine === 'krea2' || engine === 'anima') {
+    // 换行是标签流/散文的可审计边界（renderPromptPlan anima 分支），不算非 ASCII 混入。
+    if (/[^\x20-\x7e\n\r]/.test(rawPositiveText)) warnings.push('提示词混入非 ASCII 字符（英文模型将无法理解，视觉描述已按门控丢弃）')
+  }
+  const duplicateNegatives = [...new Set(negative.filter((token, index) => negative.indexOf(token) !== index))]
+  if (duplicateNegatives.length) warnings.push(`负面词重复：${duplicateNegatives.slice(0, 3).join('、')}`)
+
   let level: 'ok' | 'warn' | 'over' = 'ok'
   let label = '结构均衡'
-  if (positive.length > 90) { level = 'over'; label = '标签过载'; warnings.push('正向标签超过 90 个，模型容易忽略后段。') }
-  else if (positive.length > 72) { level = 'warn'; label = '偏长'; warnings.push('正向标签超过 72 个，建议精简。') }
-  else if (positive.length < 8) { level = 'warn'; label = '信息偏少'; warnings.push('正向标签过少，画面可能缺少细节。') }
+  // Krea 是纯散文：逗号切分出的「片段数」不是 token 数，跳过数量阈值，避免误报信息偏少/过载。
+  if (engine !== 'krea2') {
+    if (positive.length > 90) { level = 'over'; label = '标签过载'; warnings.push('正向标签超过 90 个，模型容易忽略后段。') }
+    else if (positive.length > 72) { level = 'warn'; label = '偏长'; warnings.push('正向标签超过 72 个，建议精简。') }
+    else if (positive.length < 8) { level = 'warn'; label = '信息偏少'; warnings.push('正向标签过少，画面可能缺少细节。') }
+  }
   const violations = checkArtDirection(parts.map(p => p.text).join(', '))
   if (violations.length) warnings.push('违反美术规范：' + violations.join(', '))
   if (warnings.length && level === 'ok') { level = 'warn'; label = warnings[0] }

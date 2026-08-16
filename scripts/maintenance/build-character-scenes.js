@@ -175,7 +175,13 @@ function main() {
     return;
   }
   fs.mkdirSync(path.dirname(OUT), { recursive: true });
-  var all = SCENES.concat(CHAR_ADULT_SCENES);
+  var all = SCENES.concat(CHAR_ADULT_SCENES).map(function (s) {
+    // 2026-08-15 审计：negativeTokens 统一输出真数组（历史单元素逗号串格式已废弃）。
+    var tokens = Array.isArray(s.negativeTokens)
+      ? s.negativeTokens.flatMap(function (item) { return typeof item === 'string' ? item.split(',').map(function (x) { return x.trim(); }).filter(Boolean) : []; })
+      : String(s.negativeTokens || '').split(',').map(function (x) { return x.trim(); }).filter(Boolean);
+    return Object.assign({}, s, { negativeTokens: tokens });
+  });
   fs.writeFileSync(OUT, JSON.stringify({ version: 2, blueprints: all }, null, 2) + '\n', 'utf8');
   console.log('written: ' + OUT + ' (' + all.length + ' scenes)');
 }

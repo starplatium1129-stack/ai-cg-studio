@@ -23,12 +23,15 @@ data.blueprints.forEach(bp => {
   bp.promptTokens = Array.from(tokens);
 
   // 2. negativeTokens 补充防面部阴影死黑与解剖瑕疵
-  const negList = bp.negativeTokens && bp.negativeTokens[0] ? bp.negativeTokens[0].split(',').map(s => s.trim()) : [];
-  const negSet = new Set(negList);
+  //    （2026-08-15 审计：统一输出真数组，废弃「单元素数组内整段逗号串」格式）
+  const source = Array.isArray(bp.negativeTokens)
+    ? bp.negativeTokens.flatMap(item => typeof item === 'string' ? item.split(',').map(s => s.trim()).filter(Boolean) : [])
+    : String(bp.negativeTokens || '').split(',').map(s => s.trim()).filter(Boolean);
+  const negSet = new Set(source);
   negSet.add('dark shadowed face');
   negSet.add('flat lighting');
   negSet.add('extra characters');
-  bp.negativeTokens = [Array.from(negSet).join(', ')];
+  bp.negativeTokens = Array.from(negSet);
 });
 
 fs.writeFileSync(blueprintPath, JSON.stringify(data, null, 2) + '\n', 'utf8');

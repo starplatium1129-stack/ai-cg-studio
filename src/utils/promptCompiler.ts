@@ -1,4 +1,10 @@
-import { formatPromptForEngine, tokenize, type ModelProfile } from './promptPolicy.ts'
+import {
+  formatPromptForEngine,
+  QUALITY_OR_SCORE_RE,
+  QUALITY_WORDS,
+  tokenize,
+  type ModelProfile,
+} from './promptPolicy.ts'
 import { sceneLighting, sceneShot } from './sceneInference.ts'
 
 export type PromptFamily = 'sd' | 'anima' | 'krea2'
@@ -381,7 +387,10 @@ function outfitPhrases(plan: PromptPlan): string[] {
     .filter(Boolean)
 }
 
-function plainEnglish(value: unknown): string {
+/** 纯英文门控：非 ASCII 输入直接丢弃（Anima/Krea 是英文模型）。
+ *  2026-08-15 审计：自由输入的 visualDescription 必须过此门控，禁止中文直入英文模型；
+ *  健康面板（composables）用同一函数提示用户描述被丢弃。 */
+export function plainEnglish(value: unknown): string {
   const text = String(value || '').trim()
   return text && /^[\x20-\x7e]+$/.test(text) ? text : ''
 }
@@ -681,7 +690,7 @@ export function createPromptPlan(input: PromptCompilerInput): PromptPlan {
     sceneVisualFragments: split(input.scenePrompt), emotion: [...(input.emotion || [])],
     camera: [...(input.camera || [])], lighting: [...(input.lighting || [])],
     composition: [...(input.composition || [])], manual: [...(input.manual || [])],
-    negative: split(input.negative), visualDescription: String(input.visualDescription || '').trim(),
+    negative: split(input.negative), visualDescription: plainEnglish(input.visualDescription),
     style: [...new Set(input.style || [])],
     medium: String(input.medium || '').trim(),
     subjectProse: String(input.subjectProse || '').trim(),
@@ -698,11 +707,40 @@ function allTags(plan: PromptPlan, includeStyle = true): string[] {
     ...plan.composition, ...plan.manual ].filter(Boolean)
 }
 
-const QUALITY_OR_SCORE_RE = /^(?:masterpiece|best_quality|amazing_quality|very_aesthetic|absurdres|newest|highres|highly_detailed|score_\d+)$/i
+/** Krea 散文禁词（score/质量词），由 promptPolicy.QUALITY_WORDS 单一清单派生。 */
+const KREA_BANNED_WORDS_RE = new RegExp(`\\b(?:${QUALITY_WORDS.join('|')}|score_\\d+)\\b`, 'gi')
+
+/**
+ * Krea 2 散文统一净化 —— krea2 渲染分支入口的唯一强制点（与「负面恒空」并列）。
+ * 三条铁律：禁 (tag:1.5) 权重语法、禁下划线 token、禁 score/质量词。
+ * subjectProse/outfitProse/sceneProse/visualDescription/artistProse/style/medium
+ * 全部先过这里，禁止在调用方各自擦除（2026-08-15 审计：此前 sceneProse 等只过
+ * clean()，场景模板里的 (xxx:1.5) 会以字面文本进入 Krea）。
+ */
+function sanitizeKreaProse(value: string): string {
+  return String(value || '')
+    .replace(/<lora:[^>]+>/gi, '')
+    .replace(/\bBREAK\b/gi, ', ')
+    .replace(/\(([^()\n]*[a-z][^()\n]*):\s*-?\d+(?:\.\d+)?\s*\)/gi, '$1')
+    .replace(KREA_BANNED_WORDS_RE, '')
+    .replace(/_/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
 
 export function renderPromptPlan(plan: PromptPlan, family: PromptFamily, profile?: ModelProfile | null): { prompt: string; negative: string } {
   if (family === 'krea2') {
-    return { prompt: buildStructuredKreaDescription(plan), negative: '' }
+    const proseSafe: PromptPlan = {
+      ...plan,
+      subjectProse: sanitizeKreaProse(plan.subjectProse),
+      outfitProse: sanitizeKreaProse(plan.outfitProse),
+      sceneProse: sanitizeKreaProse(plan.sceneProse),
+      visualDescription: sanitizeKreaProse(plan.visualDescription),
+      artistProse: sanitizeKreaProse(plan.artistProse),
+      style: plan.style.map(sanitizeKreaProse).filter(Boolean),
+      medium: sanitizeKreaProse(plan.medium),
+    }
+    return { prompt: buildStructuredKreaDescription(proseSafe), negative: '' }
   }
   let tags = allTags(plan)
   if (family === 'anima') {

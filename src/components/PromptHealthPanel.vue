@@ -67,6 +67,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { QUALITY_WORDS } from '@/utils/promptPolicy'
 import type { PromptReport } from '@/utils/promptPolicy'
 
 const props = withDefaults(defineProps<{
@@ -97,7 +98,9 @@ interface PromptLine {
   text?: string
 }
 
-const QUALITY_RE = /^(?:masterpiece|best quality|amazing quality|very aesthetic|absurdres|newest|highres|highly detailed|score_\d+|safe|sensitive|nsfw|general)/i
+// 质量词从 promptPolicy.QUALITY_WORDS 单一权威清单派生（空格形式匹配 Anima 展示态），
+// 评级/门控词仅用于本面板的 UI 分类（2026-08-15 审计：三处质量词清单合并为一处）。
+const QUALITY_RE = new RegExp(`^(?:${QUALITY_WORDS.join('|').replace(/_/g, ' ')}|score_\\d+|safe|sensitive|nsfw|general)`, 'i')
 const CHAR_IDENTITY_RE = /^(?:1girl|1boy|solo|ayachi[ _]nene|shiki[ _]natsume|nene|natsume|[a-z0-9_-]+(?:_[a-z0-9_-]+)*_(?:nene|natsume))/i
 const LORA_RE = /^<lora:[^>]+>$/i
 

@@ -38,3 +38,55 @@
 - 不动：Live2D 舞台与 ChatCharacterStage、useVoice/useChatStorage 生命周期、行为引擎。
 
 > 待办：[ ] 用户确认改造方向与范围；[ ] 分步实施（先结构后样式）；[ ] 截图回归对比（标准/沉浸/desktop 三态）。
+
+## 五、2026-08-16 落地记录（照片反馈修复，已完成）
+
+> 背景：用户提供两张桌宠窗口照片（540×760 桌面模式）。`image-inspect` 复核结论：
+> ① 底部对话区（气泡+语音未就绪提示条+输入栏）盖住角色膝盖以下；
+> ② 顶部「安静陪着你」状态胶囊、角色切换标签、Live2D 状态按钮压角色头/肩；
+> ③ 夏目背后的"黄色块"= 夏目主题色 `#f2bb68` 渲染的舞台背景光晕
+>    （`portrait-stage::before` / `companion-ambience::before` / `companion-page::before` / `companion-stage::after` 多层的 accent 径向渐变）。
+
+已实施（仅改 `src/views/CompanionView.vue` + `src/assets/css/companion.css`，未动共享组件/Rust）：
+
+1. **桌面模式改 flex 纵向三段**：顶栏 / 立绘（flex:1，自适应缩放）/ 对话面板（静态块排在立绘下方）——UI 与角色零重叠，头到脚始终完整可见；气泡多时立绘缩小而非被遮。
+2. **舞台悬浮件收敛**：角色切换移入顶栏分段控件（`.companion-char-switch`，仅桌面模式渲染）；状态胶囊与立绘状态按钮桌面模式 `display:none`（状态已并入输入面板状态行）。
+3. **语音未就绪提示条**收进输入面板内单行（`grid-column: 1 / -1`），不再占对话区整行。
+4. **空闲自动隐藏升级**：顶栏+对话面板 `display:none` 真正收起，立绘放大到整窗（角色为主）。
+5. **背景光晕去主题色**：桌面模式全部改中性暗色（`art-scrim`/黑），夏目黄色块消失。
+6. 互动提示（`.live2d-interaction-hint`）贴对话面板上沿，idle 时随 UI 隐藏。
+
+验证：`npm run typecheck:app` + `npm run build`（budget 通过）；E2E `studio.spec.ts` desktop companion + companion speech ×2 全过；540×760 桌面模式应用内截图（`.review-shots/companion-*.png`）经视觉模型复核——宁宁/夏目均头到脚完整可见、无黄色块、idle 模式角色明显放大。已通过 `deploy-desktop-quick.ps1` 部署到安装目录（应用已重启）。
+
+遗留观察：`Copy-Item` 从不清理安装目录 `dist/_app` 的旧 hash chunk（实测累积 21 个 CompanionView 版本），只增无害，后续可让部署脚本先清 `_app` 目录。
+
+## 六、2026-08-16 二轮修复：桌面壁纸透出"黄色块"（已完成）
+
+> 现象：一轮部署后用户再次反馈"还有黄色块"；新截图（022000）经 `image-inspect` 复核——
+> **应用内已无黄色**，黄色来源是透明窗口把桌面壁纸（右侧金色长发动漫插画）透出来；
+> 顶部/底部 UI 已隐藏时（空闲态）角色 100% 完整可见（一轮遮挡修复生效）。
+
+根因（两个叠加因素）：
+1. 桌宠窗口 540×760 透明大区把壁纸/图标/终端全部透进角色身后，亮色壁纸区域被误认作"Live2D 背景黄色块"；
+2. **presence「quiet」态会把 `.portrait-stage::before` 光晕 opacity 压到 0.48**（`.companion-page[data-presence="quiet"] .portrait-stage::before`，特异性 (0,3,1) 压过桌面通用规则）——光晕变半透明后壁纸金色重新透出，正是"安静陪着你"（默认空闲态）下黄色复现的直接原因。
+
+修复（`src/assets/css/companion.css`，桌面模式）：
+- `.portrait-stage::before` 改为**覆盖整个角色区的深色舞台卡**（`inset: 6px 4px 4px`、圆角 26-30px、径向 0.96→0.62→0.18 暗、`blur(6px)`），中心压成深炭黑，壁纸金色/图标/终端全部压入暗色氛围；
+- **显式覆盖存在态透明度**：`html.companion-desktop .companion-page[data-presence="quiet"] ... { opacity: .92 }`（特异性 (0,3,2) 反压 quiet 的 0.48），speaking=1 / attentive·listening=.97 / thinking=.95 / available=.92，舞台在任何 presence 下都保持高不透明度；
+- 验证（540×760 + 模拟金色壁纸 + 视觉模型复核）：主体金色压灭（深炭黑/深灰），角色轮廓锐利突出；边缘留柔和暗金氛围光晕（有意的 vignette）。
+
+备注：浏览器后端（wl-live2d）模拟截图在"舞台尺寸变化（UI 收起）"后偶见画布残影/双脸——原生 overlay（打包版）rect 变化时整帧重绘无此问题；用户实际运行走原生路径不受影响。如 dev 模式（浏览器后端）也复现再独立排查。
+
+## 七、2026-08-16 三轮迭代修正：深色舞台过黑 → 透明窗口+角色背光（已完成）
+
+> 二轮"深色舞台卡"被用户否决：窗口变成黑色矩形贴片、角色淹没。用户要求"自己截图看真实效果"。
+
+执行方式修正：**改为截取真实桌宠窗口的屏幕合成区域**（`GetWindowRect` + `BitBlt` 屏 DC，等价用户所见，含透出壁纸；不用 PrintWindow——它不含桌面透出）。并用像素矩阵（System.Drawing 降采样 RGB 表）逐格核对，不再只信视觉模型的文字描述。
+
+迭代结果：
+1. **三轮**：深色舞台换成"整窗透明 + 角色身后冷白径向背光（0.30→0.12→透明、blur 20px）"；真实截图复核：角色锐利清晰、无黄色，但视觉模型仍报告"下半身矩形半透明框"。
+2. **根因排查**：a) 枚举窗口发现原生 overlay（`aics_live2d_overlay`，rect=舞台区）存在且清屏色 `wgpu::Color::TRANSPARENT`——overlay 本身无框；b) 关键：**presence 态给 `.live2d-host` 的 `drop-shadow` 用 accent 色（夏目 #f2bb68）**——角色下半身一圈黄色光晕，疑似用户一直说的"黄色块"真身；
+3. **三点五轮（最终）**：① 桌面模式 `page::before/::after/ambience` 全部 `display:none`（整窗真正透明，无暗角/蒙版带）；② 背光改纯径向（225,231,255 冷白），Alpha 在元素边缘前归零无矩形；③ **`.live2d-host`/`.portrait-main` 的 accent drop-shadow 改中性深影 `rgba(5,3,10,0.4)`**，黄色光晕彻底移除。
+4. **真实验证（02:35 部署后截图）**：像素矩阵 = 顶部壁纸蓝天（无工具栏块）、角色中部亮色清晰竖带、底部为壁纸自身内容、无黄色、无黑色贴片；视觉模型复核确认黄色块与暗板均消失。
+
+结论：桌宠当前形态 = 透明窗口（壁纸可见）+ 角色居中清晰 + 无任何黄色/黑色伪影。chat 面板仅在交互时出现于立绘下方（flex 布局不遮角色）。遗留微调项（待用户反馈再动）：对话面板玻璃感可更轻；如用户嫌壁纸太花可再议局部压暗。
