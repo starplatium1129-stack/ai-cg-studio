@@ -66,6 +66,9 @@ var MODEL_CATALOG = Object.freeze([
       ['vae', 'minimax_h3_video_vae_fp16.safetensors'],
       ['vae', 'minimax_h3_audio_vae_fp32.safetensors'],
       ['loras', 'minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors'],
+      // 2026-08-16 T8 双时钟路径（默认）：4 步加速 LoRA（lightx2v 官方 4step 版），
+      // 配合 T8 双时钟采样器；无 T8 节点时回退 8 步 LoRA + 原生采样器。
+      ['loras', 'minimax_h3_fl2v_turbo_4step_v1.0_768p_comfyui_bf16.safetensors'],
     ],
   },
   {
@@ -104,6 +107,33 @@ var MODEL_BY_ID = Object.freeze(MODEL_CATALOG.reduce(function (result, model) {
   result[model.id] = model;
   return result;
 }, {}));
+
+// T8 双时钟采样路径可用性（2026-08-16）：MiniMaxH3DualClockSamplerT8 +
+// MiniMaxH3AudioConditioningT8 + MiniMaxH3AVDecodeT8 + 4 步加速 LoRA。
+// 真机基准（4070 Ti SUPER）：standard 5s 228s → 4 步 90s / 8 步 110s（≈2.5×），
+// 画质抽查可接受；无 T8 节点时回退原生采样器路径（8 步 LoRA）。
+// 模块默认 false：单元/网关测试（mock 无 T8）走原生路径不受影响；
+// 生产由 createVideoRouter 启动时探测真实 ComfyUI 后置 true。
+var t8Available = false;
+function setT8Available(value) {
+  t8Available = Boolean(value);
+}
+async function probeT8Nodes(config) {
+  try {
+    // object_info 返回 { <nodeName>: {...} }；必须确认节点键真实存在
+    // （mock 对任意路径返回 200 {} 时不得误判为可用）。
+    var data = await requestComfyJson(config, 'GET', '/object_info/MiniMaxH3DualClockSamplerT8', null, 10000);
+    setT8Available(Boolean(data && data.MiniMaxH3DualClockSamplerT8));
+    if (t8Available) {
+      console.log('[video] T8 双时钟采样路径可用（4 步加速 LoRA + DualClock）');
+    } else {
+      console.warn('[video] T8 双时钟节点不可用，回退原生采样路径');
+    }
+  } catch (error) {
+    setT8Available(false);
+    console.warn('[video] T8 双时钟节点不可用，回退原生采样路径');
+  }
+}
 
 var ASPECTS = Object.freeze({
   landscape:{ width:832, height:480, label:'横屏 16:9' },
@@ -623,8 +653,100 @@ function validateInput(body, config) {
 }
 
 function buildWorkflow(input) {
-  if (input.modelId === 'minimax-h3') return buildH3Workflow(input);
+  if (input.modelId === 'minimax-h3') {
+    return t8Available ? buildH3T8Workflow(input) : buildH3Workflow(input);
+  }
   return buildWanWorkflow(input);
+}
+
+// T8 双时钟采样路径（2026-08-16，默认当 T8 节点可用时启用）：
+// MiniMaxH3AudioConditioningT8（官方三段式提示词 + task_type 显式声明）→
+// LoraLoaderBypassModelOnly（4 步加速 LoRA）→ MiniMaxH3DualClockSamplerT8
+// （双时钟，steps 4 极速 / 8 标准，shift_video 12 / shift_audio 3）→
+// BasicGuider + SamplerCustomAdvanced → MiniMaxH3AVDecodeT8 → CreateVideo → SaveVideo。
+// 输出契约不变（SaveVideo 节点 11、aics_video 前缀）。真机实测 2.5× 提速。
+function buildH3T8Workflow(input) {
+  var taskType = input.image && input.lastFrame ? 'FL2VA'
+    : input.image ? 'I2VA'
+    : input.lastFrame ? 'L2VA'
+    : 'T2VA';
+  var graph = {
+    '1': { class_type:'UNETLoader', inputs:{
+      unet_name:'minimax_h3_fl2va_pruned_int8_convrot.safetensors',
+      weight_dtype:'default',
+    } },
+    '2': { class_type:'CLIPLoader', inputs:{
+      clip_name:'qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors',
+      type:'minimax',
+      device:'default',
+    } },
+    '3': { class_type:'VAELoader', inputs:{ vae_name:'minimax_h3_video_vae_fp16.safetensors' } },
+    '4': { class_type:'VAELoader', inputs:{ vae_name:'minimax_h3_audio_vae_fp32.safetensors' } },
+    '5': { class_type:'MiniMaxH3AudioConditioningT8', inputs:{
+      clip:['2', 0],
+      video_vae:['3', 0],
+      audio_vae:['4', 0],
+      prompt:input.prompt,
+      width:input.width,
+      height:input.height,
+      length:input.frames,
+      task_type:taskType,
+      audio_mode:'native',
+      audio_denoise_strength:1,
+      add_source_as_reference:false,
+      prompt_primary_audio_ordinal:0,
+      strict_prompt_tags:true,
+      ref_image_size:'match',
+      reference_video_policy:'official_2_to_15s',
+    } },
+    '15': { class_type:'LoraLoaderBypassModelOnly', inputs:{
+      model:['1', 0],
+      lora_name:'minimax_h3_fl2v_turbo_4step_v1.0_768p_comfyui_bf16.safetensors',
+      strength_model:1,
+    } },
+    '16': { class_type:'MiniMaxH3DualClockSamplerT8', inputs:{
+      model:['15', 0],
+      av_latent:['5', 1],
+      steps:input.steps,
+      shift_video:12,
+      shift_audio:3,
+    } },
+    '6': { class_type:'RandomNoise', inputs:{ noise_seed:input.seed } },
+    '9': { class_type:'BasicGuider', inputs:{ model:['16', 0], conditioning:['5', 0] } },
+    '10': { class_type:'SamplerCustomAdvanced', inputs:{
+      noise:['6', 0],
+      guider:['9', 0],
+      sampler:['16', 1],
+      sigmas:['16', 2],
+      latent_image:['5', 1],
+    } },
+    '12': { class_type:'MiniMaxH3AVDecodeT8', inputs:{
+      av_latent:['10', 0],
+      video_vae:['3', 0],
+      audio_vae:['4', 0],
+    } },
+    '14': { class_type:'CreateVideo', inputs:{
+      images:['12', 0],
+      audio:['12', 1],
+      fps:input.fps,
+      bit_depth:8,
+    } },
+    '11': { class_type:'SaveVideo', inputs:{
+      video:['14', 0],
+      filename_prefix:OUTPUT_FILENAME_PREFIX,
+      format:'auto',
+      codec:'auto',
+    } },
+  };
+  if (input.image) {
+    graph['17'] = { class_type:'LoadImage', inputs:{ image:input.image } };
+    graph['5'].inputs.first_frame = ['17', 0];
+  }
+  if (input.lastFrame) {
+    graph['18'] = { class_type:'LoadImage', inputs:{ image:input.lastFrame } };
+    graph['5'].inputs.last_frame = ['18', 0];
+  }
+  return graph;
 }
 
 // MiniMax H3 原生工作流（lightx2v Turbo 版，官方 ModelTC 推荐 T2VA 图）。
@@ -1678,6 +1800,13 @@ function createVideoRouter(config, dependencies) {
     ? dependencies.batchService
     : createBatchService(config, service, dependencies);
   var jobLimit = security.rateLimit({ capacity:3, refillMs:60000, label:'视频生成' });
+  // T8 双时钟采样路径（2026-08-16）：测试可注入 t8Available 固定路径；
+  // 生产启动时探测真实 ComfyUI（默认 false → 探测成功前走原生路径，幂等无害）。
+  if (dependencies && typeof dependencies.t8Available === 'boolean') {
+    setT8Available(dependencies.t8Available);
+  } else {
+    void probeT8Nodes(config);
+  }
 
   router.get('/api/video/status', async function (req, res) {
     var online = false;
@@ -1897,6 +2026,8 @@ module.exports = {
   validateBatchInput:validateBatchInput,
   buildWorkflow:buildWorkflow,
   validateVideoReference:validateVideoReference,
+  // 测试钩子：固定 T8 双时钟路径（生产由 createVideoRouter 探测 ComfyUI 决定）。
+  setT8Available:setT8Available,
   constants:{
     MODEL_CATALOG:MODEL_CATALOG,
     ASPECTS:ASPECTS,

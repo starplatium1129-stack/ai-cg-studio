@@ -334,6 +334,47 @@ async function run() {
     video.validateInput(validBody({ modelId:'wan2.2-ti2v-5b', lastFrame:'aics_video_input_0123456789abcdef.png' }));
   }, /不支持尾帧图输入/, 'non-FL models reject last-frame input');
 
+  // ── T8 双时钟路径（2026-08-16 默认提速路径；真机 standard 5s 228s → 90s）──
+  video.setT8Available(true);
+  try {
+    var t8Input = video.validateInput(validBody({ modelId:'minimax-h3', steps:4 }));
+    var t8Graph = video.buildWorkflow(t8Input);
+    assert.equal(t8Graph['5'].class_type, 'MiniMaxH3AudioConditioningT8', 'T8 path conditions via the T8 node');
+    assert.equal(t8Graph['5'].inputs.task_type, 'T2VA');
+    assert.equal(t8Graph['5'].inputs.audio_mode, 'native');
+    assert.equal(t8Graph['15'].class_type, 'LoraLoaderBypassModelOnly', 'T8 path loads the 4-step turbo LoRA');
+    assert.equal(t8Graph['15'].inputs.lora_name, 'minimax_h3_fl2v_turbo_4step_v1.0_768p_comfyui_bf16.safetensors');
+    assert.equal(t8Graph['16'].class_type, 'MiniMaxH3DualClockSamplerT8', 'T8 path samples via dual-clock');
+    assert.equal(t8Graph['16'].inputs.steps, 4);
+    assert.equal(t8Graph['16'].inputs.shift_video, 12);
+    assert.equal(t8Graph['16'].inputs.shift_audio, 3);
+    assert.equal(t8Graph['12'].class_type, 'MiniMaxH3AVDecodeT8');
+    assert.equal(t8Graph['14'].class_type, 'CreateVideo');
+    assert.equal(t8Graph['14'].inputs.audio[0], '12');
+    assert.equal(t8Graph['11'].class_type, 'SaveVideo');
+    assert.equal(t8Graph['11'].inputs.format, 'auto');
+    assert.equal(JSON.stringify(t8Graph).indexOf('MiniMaxH3ImageToVideo'), -1, 'T8 path must not use the stock node');
+    assert.equal(JSON.stringify(t8Graph).indexOf('MiniMaxH3SigmaShift'), -1, 'T8 path must not use the stock sigma shift');
+    var t8I2v = video.buildWorkflow(video.validateInput(validBody({
+      modelId:'minimax-h3', image:'aics_video_input_abcdef0123456789.png',
+    })));
+    assert.equal(t8I2v['5'].inputs.task_type, 'I2VA');
+    assert.deepEqual(t8I2v['5'].inputs.first_frame, ['17', 0]);
+    var t8Fl2v = video.buildWorkflow(video.validateInput(validBody({
+      modelId:'minimax-h3', image:'aics_video_input_abcdef0123456789.png',
+      lastFrame:'aics_video_input_0123456789abcdef.png',
+    })));
+    assert.equal(t8Fl2v['5'].inputs.task_type, 'FL2VA');
+    assert.deepEqual(t8Fl2v['5'].inputs.last_frame, ['18', 0]);
+    var t8L2v = video.buildWorkflow(video.validateInput(validBody({
+      modelId:'minimax-h3', lastFrame:'aics_video_input_0123456789abcdef.png',
+    })));
+    assert.equal(t8L2v['5'].inputs.task_type, 'L2VA');
+    assert.equal(t8L2v['5'].inputs.first_frame, undefined);
+  } finally {
+    video.setT8Available(false);
+  }
+
   var missingStack = await gatewayStack.start();
   try {
     var status = await json(await fetch(missingStack.baseUrl + '/api/video/status'));
@@ -360,6 +401,7 @@ async function run() {
       'vae/minimax_h3_video_vae_fp16.safetensors',
       'vae/minimax_h3_audio_vae_fp32.safetensors',
       'loras/minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors',
+      'loras/minimax_h3_fl2v_turbo_4step_v1.0_768p_comfyui_bf16.safetensors',
     ]);
     var missingResponse = await post(missingStack.baseUrl, validBody());
     assert.equal(missingResponse.status, 503);
@@ -517,6 +559,40 @@ async function run() {
     assert.equal((await fetch(readyStack.baseUrl + '/history/demo')).status, 404);
   } finally {
     await readyStack.close();
+  }
+
+  // ── T8 双时钟路径网关验证（t8Available 注入 → 提交 T8 图 → mock 全流程）──
+  var t8Stack = await gatewayStack.start({
+    prepare:function (context) {
+      var root = path.join(context.config.AI_WORKSPACE_ROOT, 'ComfyUI', 'models');
+      for (var model of video.constants.MODEL_CATALOG) {
+        for (var requirement of model.requirements) {
+          var dir = path.join(root, requirement[0]);
+          fs.mkdirSync(dir, { recursive:true });
+          fs.writeFileSync(path.join(dir, requirement[1]), requirement[1]);
+        }
+      }
+    },
+    services:{ t8Available:true },
+  });
+  try {
+    var t8Create = await post(t8Stack.baseUrl, validBody({ modelId:'minimax-h3', steps:4 }));
+    assert.equal(t8Create.status, 202);
+    var t8Job = (await json(t8Create)).job;
+    var t8State = await json(await fetch(t8Stack.upstreams.comfy.url + '/__mock/state'));
+    var t8Call = t8State.calls.find(function (call) {
+      return call.path === '/prompt' && call.body && call.body.prompt
+        && call.body.prompt['5'] && call.body.prompt['5'].class_type === 'MiniMaxH3AudioConditioningT8';
+    });
+    assert.ok(t8Call, 'T8-enabled gateway must submit the dual-clock conditioning node');
+    assert.equal(t8Call.body.prompt['16'].class_type, 'MiniMaxH3DualClockSamplerT8');
+    assert.equal(t8Call.body.prompt['16'].inputs.steps, 4);
+    assert.equal(t8Call.body.prompt['15'].class_type, 'LoraLoaderBypassModelOnly');
+    var t8Finished = await waitForJob(t8Stack.baseUrl, t8Job.id);
+    assert.equal(t8Finished.status, 'succeeded');
+    assert.equal(t8Finished.resultAvailable, true);
+  } finally {
+    await t8Stack.close();
   }
 
   // ── P5/P6/P8 网关：分镜批量（逐镜排队 + 尾帧衔接 + 拼接）───────────────

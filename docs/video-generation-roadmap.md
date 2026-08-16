@@ -354,3 +354,50 @@ ComfyUI/models/
   场景蓝图/角色上下文随行；镜头提示词仍可逐镜手改。
 - 推荐工作流：先按分镜表在绘图页逐镜出关键帧（场景蓝图 + 角色 LoRA 保证形象一致）→
   逐张「加入分镜」→ 去分镜短片一键整批生成。
+
+## ✅ T8 双时钟采样路径（2026-08-16，默认提速 2.5×；来源：B 站「双时钟加速」视频调研）
+
+> 调研出处：B 站 [BV1UquZ6vEwy](https://www.bilibili.com/video/BV1UquZ6vEwy/)
+> （Arwen_Studio「Minimax H3 双时钟加速实测：15秒480P视频仅需4分钟」）→ 溯源到
+> GitHub [neng320/minimax-h3-local-deployment](https://github.com/neng320/minimax-h3-local-deployment)
+> 与 [T8mars/comfyui-minimax-h3-audio-T8](https://github.com/T8mars/comfyui-minimax-h3-audio-T8)。
+> 「双时钟」= 视频/音频两条独立 sigma 时钟（shift_video 12 / shift_audio 3）的 Turbo
+> 采样器，配合 lightx2v **4 步**加速 LoRA。
+
+### 真机基准（4070 Ti SUPER 16GB，同提示词同分辨率，2026-08-16）
+
+| 配置 | 5s 实测 | 15s | 说明 |
+| --- | --- | --- | --- |
+| 原生采样 + 8 步 LoRA（旧默认） | 228s | ~684s | 基线 |
+| **T8 双时钟 + 4 步 LoRA + 4 步** | **90s** | **~270s ≈ 4.5 分钟** | 新默认（极速档） |
+| T8 双时钟 + 4 步 LoRA + 8 步 | 110s | ~330s ≈ 5.5 分钟 | 新默认（标准档） |
+| T8 fast 档 + 4 步 | 50s | ~150s ≈ 2.5 分钟 | 试镜档 |
+
+- **更正上节结论**：上节「standard 15s ≈ 11 分钟属硬件边界」基于旧采样路径；T8 双时钟
+  落地后 **standard 档 15s ≈ 4.5 分钟，已追平线上「480p 15s/4min」**——线上快不是因为
+  硬件不可逾越，而是因为它用双时钟/4 步组合，本地同组合即可达到同一量级。
+- 画质抽查：T8 4 步中间帧视觉复核「可接受」（面部/肢体无崩坏、无伪影）。
+- cu130（torch 2.9.1/2.13.0+cu130）单独实测**无明显收益**（210–240s）；「3–5×」来自
+  全栈组合（且 109s 数据点含已弃用的 TE-Speed）；SageAttention Windows 无预编译轮子未
+  采用。**本机收益全部来自 T8 双时钟 + 4 步 LoRA**（另注：ComfyUI 由 venv main.py 派生
+  系统 Python 子进程服务，属正常行为，非守护进程）。
+
+### 工程落地
+
+- `routes/video.js`：新增 `buildH3T8Workflow`——`MiniMaxH3AudioConditioningT8`（task_type
+  按输入模式 T2VA/I2VA/FL2VA/L2VA 显式声明 + audio_mode native）→
+  `LoraLoaderBypassModelOnly`（4 步 LoRA）→ `MiniMaxH3DualClockSamplerT8`（steps 4/8，
+  shift 12/3）→ BasicGuider + SamplerCustomAdvanced → `MiniMaxH3AVDecodeT8` → CreateVideo
+  → SaveVideo（输出契约不变，节点 11 / aics_video 前缀）。启动时探测真实 ComfyUI
+  `object_info` 确认 T8 节点存在才启用，缺失自动回退原生路径（测试可注入 `t8Available`）。
+- 依赖新增：T8 自定义节点（`custom_nodes/minimax-h3-audio-T8`，git clone）+ 4 步 LoRA
+  （`minimax_h3_fl2v_turbo_4step_v1.0_768p_comfyui_bf16.safetensors`，1.86GB，ModelScope
+  `lightx2v/Minimax-h3-Turbo`，实测 32MB/s）；H3 requirements 同时挂 8 步（回退）与 4 步
+  （主路径）两颗 LoRA。
+- 下载工具：`scripts/maintenance/download-torch-cu130.ps1`（8 段并行，阿里云镜像实测
+  22MB/s；单流速度实测：ModelScope 32MB/s > 阿里云 2.7MB/s > pytorch 官方 CDN 0.2MB/s、
+  hf-mirror 当日 0.1–0.3MB/s——**下载前必须测速选源**）。
+- 测试：T8 图结构断言（task_type 映射、4 步 LoRA、双时钟参数、AVDecode 接线、无原生
+  节点残留）+ 网关级 T8 注入全流程；原生路径既有断言全部保留（默认回退）。
+- 遗留：T8 的 MemoryEfficientSageAttentionPatch 在 1.18.x 未注册（示例为旧版），
+  SageAttention 无 Windows 轮子——两者未启用；若未来 Sage 可装，预计再省 1.5–2×。
