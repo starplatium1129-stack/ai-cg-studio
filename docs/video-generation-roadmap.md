@@ -401,3 +401,39 @@ ComfyUI/models/
   节点残留）+ 网关级 T8 注入全流程；原生路径既有断言全部保留（默认回退）。
 - 遗留：T8 的 MemoryEfficientSageAttentionPatch 在 1.18.x 未注册（示例为旧版），
   SageAttention 无 Windows 轮子——两者未启用；若未来 Sage 可装，预计再省 1.5–2×。
+
+## ✅ Ref2VA 参考卡链路落地（2026-08-17，短片流水线实锤修复）
+
+> 剧情短片「参考卡 → 批量 Ref2VA」链路打通（<Picture N> 身份声明 + 双角色参考图 + 尾帧衔接）。
+
+### 疑难 1：T8 Autogrow 槽名必须带前缀点号（9 镜批量全败根因）
+
+- **现象**：批量提交 10 镜（第 1 镜无参考图成功，其余带 references 的 9 镜全败），
+  错误均为「视频生成上游暂不可用」（`/prompt` 提交成功但执行期崩溃）。
+- **根因**：`buildH3T8Workflow` 把参考图写成裸槽名 `ref_image_1`，而 ComfyUI v0.30
+  expression API 的 Autogrow 动态输入在 workflow JSON 中的完整名是
+  `ref_images.ref_image_0`（Autogrow id 前缀点 + 模板名，序号从 0 起，见
+  `comfy_api/latest/_io.py` `finalize_prefix`）。裸 `ref_image_N` 提交能过 /prompt
+  schema 校验（node_errors 为空），但执行期被当成普通 kwarg 交给
+  `MiniMaxH3AudioConditioningT8.execute()` → `TypeError: ... got an unexpected
+  keyword argument 'ref_image_1'`。T8 官方测试
+  `custom_nodes/minimax-h3-audio-T8/tests/test_visual_reference_exp.py:163` 断言
+  `inputs["ref_images.ref_image_0"]` 即为正确写法。
+- **修复**：`ref_image_N` → `ref_images.ref_image_{N-1}`（N 从 1 编号、槽从 0 起）。
+- **验证**：单镜 probe 提交真机成功后，10 镜批量全部成功。
+
+### 疑难 2：参考图被启动清理误删（aics_video_input_ 前缀撞车）
+
+- **现象**：参考图上传后网关重启，批量提交报「参考图文件不存在或已过期」。
+- **根因**：参考图沿用首帧前缀 `aics_video_input_`，启动时 `cleanupImageInput` 把
+  无活动任务的这类文件当首帧孤儿全部删除。
+- **修复**：参考图独立前缀 `aics_video_ref_`（`IMAGE_REF_PATTERN` 校验、上传
+  `kind:'reference'` 用此前缀、`imageInputAvailable` 同时接受两种前缀、清理只删
+  `aics_video_input_`）。
+
+### 疑难 3：`imageInputAvailable` 只认 input 前缀导致 ref 校验恒 false
+
+- **现象**：改用 `aics_video_ref_` 前缀后仍报「参考图文件不存在或已过期」。
+- **根因**：`imageInputAvailable` 内部只用 `IMAGE_INPUT_PATTERN.test(name)`，ref 前缀
+  永远 false → 即使文件在磁盘上也被拒。
+- **修复**：函数内同时接受 `IMAGE_INPUT_PATTERN` 与 `IMAGE_REF_PATTERN`。
