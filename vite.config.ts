@@ -1,11 +1,32 @@
-import { defineConfig } from 'vite'
+import { defineConfig, type Plugin } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import { createProxyMiddleware } from 'http-proxy-middleware'
+import type { IncomingMessage, ServerResponse } from 'node:http'
 import { fileURLToPath, URL } from 'node:url'
 
 // Express 默认运行在 3000 端口；Vite dev server 在 5173
 // 生产时 Express 直接 serve dist/
 export default defineConfig(async ({ mode }) => {
-  const plugins = [vue()]
+  const plugins = [
+    vue(),
+    // /assets/ 两头都要服务：SFC 模板里的 /assets/*.svg 会被 plugin-vue 改写成
+    // 模块导入（?import），必须由 Vite 转换成 JS；其余（角色立绘等大文件）仍由
+    // Express 提供。写进 proxy 表会把 ?import 请求也转给 Express，返回
+    // image/svg+xml 触发模块 MIME 检查失败，dev 模式整条路由链路挂掉。
+    {
+      name: 'express-assets-conditional-proxy',
+      configureServer(server) {
+        server.middlewares.use((req: IncomingMessage, res: ServerResponse, next: (err?: unknown) => void) => {
+          const url = req.url ?? ''
+          if (!url.startsWith('/assets/') || url.includes('import')) return next()
+          return createProxyMiddleware({
+            target: 'http://127.0.0.1:3000',
+            changeOrigin: true
+          })(req, res, next)
+        })
+      }
+    } satisfies Plugin
+  ]
   if (mode === 'analyze') {
     const { visualizer } = await import('rollup-plugin-visualizer')
     plugins.push(visualizer({
@@ -26,8 +47,9 @@ export default defineConfig(async ({ mode }) => {
   server: {
     port: 5173,
     watch: {
-      // desktop-tauri Rust 构建产物会被锁（EBUSY 导致 dev server 崩溃）
-      ignored: ['**/desktop-tauri/**', '**/native-live2d/target/**', '**/src-tauri/**']
+      // desktop-tauri Rust 构建产物会被锁（EBUSY 导致 dev server 崩溃）；
+      // runtime/ 由网关随时写入 pid/日志，同样会触发 EBUSY
+      ignored: ['**/desktop-tauri/**', '**/native-live2d/target/**', '**/src-tauri/**', '**/runtime/**']
     },
     proxy: {
       '/api':         { target: 'http://127.0.0.1:3000', changeOrigin: true },
@@ -36,9 +58,9 @@ export default defineConfig(async ({ mode }) => {
       '/adetailer':   { target: 'http://127.0.0.1:3000', changeOrigin: true },
       '/scene-showcase': { target: 'http://127.0.0.1:3000', changeOrigin: true },
       '/data':        { target: 'http://127.0.0.1:3000', changeOrigin: true },
-      // dev 模式下 tools/ 和 assets/ 由 Express 提供，Vite 需转发
-      '/tools':       { target: 'http://127.0.0.1:3000', changeOrigin: true },
-      '/assets':      { target: 'http://127.0.0.1:3000', changeOrigin: true }
+      // dev 模式下 tools/ 由 Express 提供，Vite 需转发
+      // （/assets/ 见上方 express-assets-conditional-proxy 插件）
+      '/tools':       { target: 'http://127.0.0.1:3000', changeOrigin: true }
     }
   },
   build: {

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import type { SceneBlueprint } from '@/utils/popularContent'
 
 const props = defineProps<{
@@ -19,15 +20,36 @@ const emit = defineEmits<{
   rotate: []
   toggle: []
 }>()
+
+/** 分类计数从 pool 计算（与选择状态解耦）：全部最左、其余按数量降序、成人固定垫底独立色调。 */
+const categoryChips = computed(() => {
+  const chips = props.categories
+    .filter(name => name !== '全部' && name !== 'all')
+    .map(name => {
+      const adult = name === '成人'
+      return {
+        id: name,
+        label: name,
+        count: props.pool.filter(bp => (bp.adult ? '成人' : bp.category) === name).length,
+        adult,
+      }
+    })
+    .filter(chip => chip.count > 0)
+  chips.sort((a, b) => (a.adult ? 1 : b.adult ? -1 : b.count - a.count))
+  return [{ id: 'all', label: '全部', count: props.pool.length, adult: false }, ...chips]
+})
 </script>
 
 <template>
   <div class="blueprint-picker">
     <div class="blueprint-cats" role="group" aria-label="蓝图分类">
-      <button v-for="category in ['all', ...props.categories]" :key="category"
-        type="button" class="blueprint-cat-btn" :class="{ active: props.category === category }"
-        :aria-pressed="props.category === category"
-        @click="emit('update:category', category)">{{ category === 'all' ? '全部' : category }}</button>
+      <button v-for="chip in categoryChips" :key="chip.id"
+        type="button" class="blueprint-cat-btn"
+        :class="{ active: props.category === chip.id, adult: chip.adult }"
+        :aria-pressed="props.category === chip.id"
+        @click="emit('update:category', chip.id === 'all' ? 'all' : chip.id)">
+        {{ chip.label }}<em v-if="chip.count">{{ chip.count }}</em>
+      </button>
     </div>
     <div class="blueprint-reco-head">
       <span v-if="!props.showAll" class="blueprint-reco-note" role="status">推荐 {{ props.recommended.length }} 个场景</span>
@@ -69,17 +91,33 @@ const emit = defineEmits<{
   margin: var(--s-1) 0 var(--s-2);
 }
 .blueprint-cat-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   padding: 3px var(--s-3);
   border-radius: var(--r-pill);
-  border: 1px solid var(--border-strong);
+  border: 1px solid var(--border-soft);
   background: var(--glass-fill);
-  color: inherit;
-  font-size: var(--fs-mono-sm);
+  color: var(--text-secondary);
+  font: 650 var(--fs-label-sm) var(--font-sans);
   cursor: pointer;
+  transition: border-color var(--t-fast), color var(--t-fast), background var(--t-fast), transform var(--t-fast) var(--ease-out);
 }
+.blueprint-cat-btn:active { transform: translateY(1px) scale(.96); }
+.blueprint-cat-btn em { font-style: normal; font: 700 var(--fs-mono-xs) var(--font-mono); opacity: .55; }
+.blueprint-cat-btn:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); color: var(--text-primary); }
 .blueprint-cat-btn.active {
-  border-color: var(--pb-active);
+  border-color: var(--pb-active, var(--accent));
   background: color-mix(in srgb, var(--mood-love) 16%, transparent);
+  color: var(--accent);
+}
+.blueprint-cat-btn.adult { border-color: color-mix(in srgb, var(--danger-text) 40%, var(--border-soft)); }
+.blueprint-cat-btn.adult em { color: var(--danger-text); opacity: .9; }
+.blueprint-cat-btn.adult:hover,
+.blueprint-cat-btn.adult.active {
+  border-color: var(--danger-text);
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+  color: var(--danger-text);
 }
 .blueprint-reco-head {
   display: flex;
@@ -95,12 +133,15 @@ const emit = defineEmits<{
 .blueprint-reco-btn {
   padding: 3px var(--s-3);
   border-radius: var(--r-sm);
-  border: 1px solid var(--border-strong);
+  border: 1px solid var(--border-soft);
   background: var(--glass-fill);
-  color: inherit;
+  color: var(--text-secondary);
   font-size: var(--fs-mono-sm);
   cursor: pointer;
+  transition: border-color var(--t-fast), color var(--t-fast), transform var(--t-fast) var(--ease-out);
 }
+.blueprint-reco-btn:hover { border-color: var(--accent); color: var(--accent); }
+.blueprint-reco-btn:active { transform: translateY(1px) scale(.96); }
 .blueprint-list {
   display: flex;
   flex-direction: column;
@@ -114,14 +155,25 @@ const emit = defineEmits<{
   padding: var(--s-2) var(--s-3);
   border-radius: var(--r-md);
   border: 1px solid var(--border-soft);
+  border-left: 3px solid color-mix(in srgb, var(--border-strong) 60%, transparent);
   background: var(--glass-fill);
   color: inherit;
   cursor: pointer;
+  transition: border-color var(--t-fast), background var(--t-fast), transform var(--t-fast) var(--ease-out), box-shadow var(--t-fast);
+}
+.blueprint-card:hover {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--border-soft));
 }
 .blueprint-card.active {
-  border-color: var(--pb-active);
+  border-color: var(--pb-active, var(--accent));
+  border-left-color: var(--pb-active, var(--accent));
   background: color-mix(in srgb, var(--mood-love) 12%, transparent);
+  box-shadow: 0 0 0 2px var(--accent-glow);
 }
+.blueprint-card[data-adult="true"] { border-left-color: color-mix(in srgb, var(--danger-text) 55%, transparent); }
+.blueprint-card[data-adult="true"].active { border-left-color: var(--danger-text); }
+.blueprint-card:active { transform: translateY(0) scale(.99); }
 .blueprint-title {
   font-size: var(--fs-label);
   font-weight: 600;
@@ -133,6 +185,10 @@ const emit = defineEmits<{
   font-size: var(--fs-mono-sm);
   opacity: 0.7;
   line-height: 1.4;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 .blueprint-meta {
   display: flex;

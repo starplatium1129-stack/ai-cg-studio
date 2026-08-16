@@ -357,9 +357,18 @@ function resize() {
   canvas.value.style.width = `${width}px`
   canvas.value.style.height = `${height}px`
   try {
-    context = canvas.value.getContext('2d')
+    // desynchronized：让合成器直取 canvas 位图（低延迟呈现，GPU 合成路径），
+    // 不支持的环境会直接抛错/忽略，走 catch 里的普通上下文兜底。
+    context = canvas.value.getContext('2d', { desynchronized: true })
   } catch {
     context = null
+  }
+  if (!context) {
+    try {
+      context = canvas.value.getContext('2d')
+    } catch {
+      context = null
+    }
   }
   canvasAvailable.value = context !== null
   if (!context) {

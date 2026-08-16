@@ -5,11 +5,21 @@
         <div class="page-kicker">Popular scene library / 热门角色场景库</div>
         <h1 class="title">角色场景</h1>
         <p class="subtitle">{{ characters.length }} 位热门角色的全部场景蓝图，每一幕均已预设镜头、光线与叙事氛围；成人场景独立标注，可一键直达绘图页。</p>
+        <div class="pop-hero-stat" aria-label="场景统计">
+          <strong>{{ totalScenes }}</strong><span>场景蓝图</span>
+          <strong class="adult">{{ adultCount }}</strong><span>成人场景</span>
+        </div>
       </div>
-      <div class="pop-hero-stat" aria-label="场景统计">
-        <strong>{{ totalScenes }}</strong><span>场景蓝图</span>
-        <strong class="adult">{{ adultCount }}</strong><span>成人场景</span>
-      </div>
+      <!-- 2026-08-16：hero 粒子场——形状与主色跟随当前角色（characterParticleTheme），
+           切角色时粒子重新组合成她的轮廓；点击可激起脉冲。 -->
+      <SemanticParticleField
+        class="pop-hero-field"
+        :shape="particleTheme.shape"
+        :label="`${selectedCharacter?.displayName || '热门角色'}的专属粒子轮廓`"
+        :caption="`SCENES ${String(totalScenes).padStart(2, '0')}`"
+        density="ambient"
+        :style="{ '--archive-blue': particleTheme.accent, '--character-aura': particleTheme.aura }"
+      />
     </section>
 
     <!-- 2026-08-15：作品筛选条 + 角色横排（按作品收敛，33 个不再一滚到底） -->
@@ -43,21 +53,20 @@
     </ArchiveStatePanel>
 
     <template v-else>
-      <!-- 工具栏：搜索 + 分类 + 成人开关 -->
+      <!-- 工具栏：第一行 搜索+结果数+成人开关，第二行 分类（全部最左、成人垫底独立样式） -->
       <div class="pop-toolbar">
-        <div class="pop-toolbar-primary">
+        <div class="pop-toolbar-row">
           <label class="sr-only" for="popularSceneSearch">搜索场景</label>
           <input v-model="query" type="search" id="popularSceneSearch" class="pop-search"
             placeholder="搜索场景标题、描述、地点或氛围（如：浴、黑丝、月光）" />
-          <span class="pop-count" role="status">已显示 <strong>{{ filtered.length }}</strong> / {{ pool.length }} 个场景</span>
+          <span class="pop-count" role="status">已显示 <strong>{{ filtered.length }}</strong> / {{ pool.length }}</span>
+          <ToggleSwitch v-model="showMature" class="mature-toggle"><span>显示成人内容 <em>({{ adultCount }})</em></span></ToggleSwitch>
         </div>
         <div class="pop-cats" role="group" aria-label="场景分类">
           <button v-for="cat in categories" :key="cat.id" type="button" class="pop-cat"
-            :class="{ active: category === cat.id }" :aria-pressed="category === cat.id"
+            :class="{ active: category === cat.id, adult: cat.id === '成人' }"
+            :aria-pressed="category === cat.id"
             @click="category = cat.id">{{ cat.label }}<em>{{ cat.count }}</em></button>
-        </div>
-        <div class="pop-toolbar-meta">
-          <ToggleSwitch v-model="showMature" class="mature-toggle"><span>显示成人内容 <em>({{ adultCount }})</em></span></ToggleSwitch>
         </div>
       </div>
 
@@ -123,6 +132,8 @@ import {
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
+import SemanticParticleField from '@/components/visual/SemanticParticleField.vue'
+import { characterParticleTheme } from '@/utils/characterParticleTheme'
 import { franchiseLabel } from '@/utils/franchiseLabel'
 
 const route = useRoute()
@@ -158,20 +169,27 @@ const stripCharacters = computed(() =>
 )
 
 /** 当前角色的全部蓝图（资格按成熟开关收敛）。 */
-const pool = computed<SceneBlueprint[]>(() => {
-  const character = characters.value.find(item => item.id === selectedId.value) ?? null
-  return allBlueprints.value.filter(bp =>
+const selectedCharacter = computed(() =>
+  characters.value.find(item => item.id === selectedId.value) ?? null,
+)
+const pool = computed<SceneBlueprint[]>(() =>
+  allBlueprints.value.filter(bp =>
     bp.characterId === selectedId.value
-    && (!bp.adult || (showMature.value && character?.adultEligibility === 'adult')),
-  )
-})
+    && (!bp.adult || (showMature.value && selectedCharacter.value?.adultEligibility === 'adult')),
+  ),
+)
+
+/** hero 粒子主题：形状+主色随当前角色切换。 */
+const particleTheme = computed(() =>
+  characterParticleTheme(selectedId.value, selectedCharacter.value?.franchise),
+)
 
 // 统计口径统一为「当前角色的可浏览池」，与成人数量同源（header 不再显示全局 336 与
 // 单人成人数的混搭数字）。
 const totalScenes = computed(() => pool.value.length)
 const adultCount = computed(() => pool.value.filter(bp => bp.adult).length)
 
-/** 分类条稳定排序：优先序列表 → 其余按数量降序 → 中文排序；成人固定垫底。 */
+/** 分类条稳定排序：全部最左 → 优先序列表 → 其余按数量降序 → 中文排序；成人固定垫底。 */
 const CATEGORY_ORDER = ['全部', '现代日常', '温馨日常', '和风奇幻', '奇幻', '泰拉日常', '泰拉都市', '泰拉自然']
 const categories = computed(() => {
   const counts = new Map<string, number>()
@@ -180,9 +198,13 @@ const categories = computed(() => {
     const key = bp.adult ? '成人' : bp.category
     counts.set(key, (counts.get(key) || 0) + 1)
   }
+  // 2026-08-16 修复：counts 的键是 'all'，旧代码按 label==='全部' 匹配永远落空，
+  // 「全部」按钮一直渲染成英文 "all"。
   return [...counts.entries()]
-    .map(([label, count]) => ({ id: label === '全部' ? 'all' : label, label, count }))
+    .map(([key, count]) => ({ id: key === 'all' ? 'all' : key, label: key === 'all' ? '全部' : key, count }))
     .sort((a, b) => {
+      if (a.label === '成人' || a.id === '成人') return 1
+      if (b.label === '成人' || b.id === '成人') return -1
       const ia = CATEGORY_ORDER.indexOf(a.label)
       const ib = CATEGORY_ORDER.indexOf(b.label)
       if (ia >= 0 || ib >= 0) {
@@ -304,43 +326,39 @@ onMounted(() => { void init() })
 .pop-hero {
   position: relative;
   isolation: isolate;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--s-5);
+  display: grid;
+  grid-template-columns: minmax(0, .94fr) minmax(300px, 1fr);
   margin-bottom: var(--s-4);
-  padding: var(--s-5);
+  overflow: hidden;
   border: 1px solid var(--border-soft);
   border-radius: var(--r-xl);
   background:
-    radial-gradient(24rem 16rem at 88% 12%, var(--rella-glow-cyan), transparent 62%),
-    radial-gradient(20rem 14rem at 8% 88%, var(--rella-glow-violet), transparent 60%),
+    radial-gradient(24rem 16rem at 6% 10%, var(--rella-glow-cyan), transparent 62%),
     linear-gradient(145deg, var(--glass-highlight), transparent 28%),
     linear-gradient(160deg, color-mix(in srgb, var(--rella-night-soft) 60%, transparent), transparent 72%),
     var(--bg-surface);
   box-shadow: var(--shadow-glass-sm);
 }
-.pop-hero::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: var(--z-below);
-  pointer-events: none;
-  border-radius: inherit;
-  background:
-    radial-gradient(1.5px 1.5px at 18% 26%, color-mix(in srgb, var(--rella-star) 55%, transparent), transparent 100%),
-    radial-gradient(1px 1px at 74% 34%, color-mix(in srgb, var(--rella-cyan) 60%, transparent), transparent 100%),
-    radial-gradient(2px 2px at 92% 68%, color-mix(in srgb, var(--rella-violet) 55%, transparent), transparent 100%),
-    radial-gradient(1px 1px at 36% 82%, color-mix(in srgb, var(--rella-star) 50%, transparent), transparent 100%);
+.pop-hero-copy {
+  position: relative;
+  z-index: var(--z-base);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s-3);
+  padding: var(--s-5);
 }
-.pop-hero-copy, .pop-hero-stat { position: relative; z-index: var(--z-base); }
-.pop-hero-copy { max-width: 42rem; }
 .pop-hero-copy .subtitle { color: var(--text-secondary); line-height: 1.7; margin: 0; }
+.pop-hero-field {
+  min-width: 0;
+  min-height: 240px;
+  border-left: 1px solid color-mix(in srgb, var(--border-soft) 72%, transparent);
+}
 .pop-hero-stat {
-  display: grid;
-  grid-template-columns: auto auto;
-  gap: 2px var(--s-3);
+  display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
+  gap: 2px var(--s-4);
   padding: var(--s-3) var(--s-4);
   border: 1px solid var(--border-soft);
   border-radius: var(--r-lg);
@@ -352,7 +370,7 @@ onMounted(() => { void init() })
 }
 .pop-hero-stat strong { font-size: var(--fs-title-sm); color: var(--accent); line-height: 1; }
 .pop-hero-stat strong.adult { color: var(--danger-text); }
-.pop-hero-stat span { grid-column: 2; }
+.pop-hero-stat span { margin-left: 4px; }
 
 /* 「作品 → 角色」选择区：dossier 外壳，与下方筛选工具栏同构，收紧页面层级 */
 .pop-char-area {
@@ -382,7 +400,12 @@ onMounted(() => { void init() })
   overflow-x: auto;
   padding: var(--s-1) 0 var(--s-3);
   scrollbar-width: thin;
+  scroll-snap-type: x proximity;
+  /* 两侧渐隐提示可横向滚动（角色多时不再一屏铺完） */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 18px, #000 calc(100% - 30px), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 18px, #000 calc(100% - 30px), transparent 100%);
 }
+.pop-char-btn { scroll-snap-align: start; }
 .pop-char-btn {
   flex: 0 0 auto;
   display: flex;
@@ -422,7 +445,7 @@ onMounted(() => { void init() })
   -webkit-backdrop-filter: blur(20px) saturate(130%);
   backdrop-filter: blur(20px) saturate(130%);
 }
-.pop-toolbar-primary { flex: 1 1 100%; display: flex; align-items: center; gap: var(--s-3); flex-wrap: wrap; }
+.pop-toolbar-row { flex: 1 1 100%; display: flex; align-items: center; gap: var(--s-3); flex-wrap: wrap; }
 .pop-search {
   flex: 1 1 280px;
   min-width: 0;
@@ -450,15 +473,23 @@ onMounted(() => { void init() })
   color: var(--text-secondary);
   font: 650 var(--fs-label-sm) var(--font-sans);
   cursor: pointer;
+  transition: border-color var(--t-fast), color var(--t-fast), background var(--t-fast), transform var(--t-fast) var(--ease-out);
 }
+.pop-cat:active { transform: translateY(1px) scale(.97); }
 .pop-cat em { font-style: normal; opacity: .55; font: 700 var(--fs-mono-xs) var(--font-mono); }
 .pop-cat:hover, .pop-cat.active {
   border-color: var(--accent);
   background: var(--accent-soft);
   color: var(--accent);
 }
-.pop-toolbar-meta { margin-left: auto; }
-.mature-toggle { display: inline-flex; align-items: center; gap: var(--s-2); color: var(--text-secondary); cursor: pointer; font-size: var(--fs-body-sm); }
+.pop-cat.adult { border-color: color-mix(in srgb, var(--danger-text) 42%, var(--border-soft)); }
+.pop-cat.adult em { color: var(--danger-text); opacity: .9; }
+.pop-cat.adult:hover, .pop-cat.adult.active {
+  border-color: var(--danger-text);
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+  color: var(--danger-text);
+}
+.mature-toggle { display: inline-flex; align-items: center; gap: var(--s-2); margin-left: auto; color: var(--text-secondary); cursor: pointer; font-size: var(--fs-body-sm); white-space: nowrap; }
 .mature-toggle em { font-style: normal; opacity: .6; }
 
 .pop-empty {
@@ -484,6 +515,9 @@ onMounted(() => { void init() })
   background: var(--bg-elevated);
   box-shadow: inset 0 1px 0 var(--glass-highlight);
   transition: transform var(--t-fast) var(--ease-out), border-color var(--t-fast), box-shadow var(--t-fast);
+  /* 离屏卡片跳过布局/绘制/渲染，长列表滚动保持满帧（首屏外无需工作） */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 460px;
 }
 .pop-card:hover { transform: translateY(-2px); border-color: var(--accent); box-shadow: var(--shadow-sm); }
 .pop-card.adult { border-color: color-mix(in srgb, var(--danger-text) 45%, var(--border-soft)); }
@@ -552,21 +586,27 @@ onMounted(() => { void init() })
   color: var(--accent);
 }
 .pop-rating.rating-All { display: none; }
-.pop-desc { margin: 0; color: var(--text-secondary); font-size: var(--fs-label-sm); line-height: 1.55; }
+.pop-desc {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--fs-label-sm);
+  line-height: 1.55;
+}
 .pop-meta { display: flex; flex-wrap: wrap; gap: var(--s-1); color: var(--text-muted); font-size: var(--fs-mono-xs); }
 .pop-meta span + span::before { content: ' · '; margin-right: var(--s-1); color: var(--border-strong); }
+/* 2026-08-16 减压：决策行去底盒改轻量元数据行，把视觉焦点还给样张与 CTA */
 .pop-decision {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--s-2);
-  padding: var(--s-2) var(--s-3);
-  border: 1px solid var(--border-soft);
-  border-radius: var(--r-md);
-  background: var(--bg-deep);
+  gap: var(--s-1) var(--s-3);
   color: var(--text-muted);
-  font-size: var(--fs-mono-sm);
+  font-size: var(--fs-mono-xs);
 }
-.pop-decision strong { color: var(--text-primary); font-weight: 650; }
+.pop-decision strong { color: var(--text-secondary); font-weight: 650; }
 .pop-decision span + span::before { content: ' · '; margin-right: var(--s-2); color: var(--border-strong); }
 .pop-artist strong { color: var(--accent); }
 .pop-card-actions { margin-top: auto; }
@@ -586,8 +626,10 @@ onMounted(() => { void init() })
 }
 
 @media (max-width: 768px) {
-  .pop-hero { flex-direction: column; align-items: flex-start; }
+  .pop-hero { grid-template-columns: 1fr; }
+  .pop-hero-field { min-height: 180px; border-left: 0; border-top: 1px solid var(--border-soft); }
   .pop-grid { grid-template-columns: minmax(0, 1fr); }
   .pop-char-btn { min-width: 108px; }
+  .mature-toggle { margin-left: 0; }
 }
 </style>

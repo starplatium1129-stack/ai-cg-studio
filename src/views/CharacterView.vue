@@ -3,10 +3,11 @@
     <ArchivePageHero
       chapter="03"
       section="Identity file"
-      :shape="current?.id === 'natsume' ? 'lantern' : 'moon'"
+      :shape="heroTheme.shape"
       :label="`${current?.name || '角色'}的身份档案粒子标记`"
       caption="PERSONA 03 / 08"
       compact
+      :style="{ '--archive-blue': heroTheme.accent, '--character-aura': heroTheme.aura }"
     >
       <div class="page-kicker">Character routes</div>
       <h1 class="title">角色档案</h1>
@@ -58,18 +59,20 @@
         </div>
 
         <div v-if="grouped" class="cb-groups" role="group" aria-label="角色">
-          <section v-for="group in grouped" :key="group.source" class="cb-group">
+          <section v-for="group in grouped" :key="group.label" class="cb-group">
             <h4 class="cb-group-head">{{ group.label }}<span class="cb-group-count">{{ group.members.length }}</span></h4>
             <div class="cb-grid">
               <button v-for="c in group.members" :key="c.id" type="button" class="cb-card"
                 :class="{ active: current?.id === c.id }"
                 :aria-pressed="current?.id === c.id" @click="selectCharacter(c.id)">
                 <span class="cb-avatar">
-                  <img v-if="c.portrait?.image" :src="c.portrait.image" :alt="c.name" loading="lazy" decoding="async" />
-                  <span v-else class="cb-avatar-fallback">{{ c.name.charAt(0) }}</span>
+                  <img v-if="c.portrait?.image && !brokenPortraits.has(c.id)"
+                    :src="c.portrait.image" :alt="c.name" loading="lazy" decoding="async"
+                    @error="markPortraitBroken(c.id)" />
+                  <span v-else class="cb-avatar-fallback" :style="avatarStyle(c.id)">{{ c.name.charAt(0) }}</span>
                 </span>
                 <span class="cb-name">{{ c.name }}</span>
-                <span class="cb-original">{{ franchiseLabel(c.source) }}</span>
+                <span v-if="group.merged" class="cb-original">{{ franchiseLabel(c.source) }}</span>
               </button>
             </div>
           </section>
@@ -79,8 +82,10 @@
             :class="{ active: current?.id === c.id }"
             :aria-pressed="current?.id === c.id" @click="selectCharacter(c.id)">
             <span class="cb-avatar">
-              <img v-if="c.portrait?.image" :src="c.portrait.image" :alt="c.name" loading="lazy" decoding="async" />
-              <span v-else class="cb-avatar-fallback">{{ c.name.charAt(0) }}</span>
+              <img v-if="c.portrait?.image && !brokenPortraits.has(c.id)"
+                :src="c.portrait.image" :alt="c.name" loading="lazy" decoding="async"
+                @error="markPortraitBroken(c.id)" />
+              <span v-else class="cb-avatar-fallback" :style="avatarStyle(c.id)">{{ c.name.charAt(0) }}</span>
             </span>
             <span class="cb-name">{{ c.name }}</span>
             <span class="cb-original">{{ franchiseLabel(c.source) }}</span>
@@ -92,11 +97,12 @@
         </div>
       </div>
 
-      <section v-if="current" class="character-hero card-direct card-level-3" data-reveal data-reveal-delay="1">
+      <section v-if="current" ref="profileAnchor" class="character-hero card-direct card-level-3" data-reveal data-reveal-delay="1">
         <div class="portrait" :class="{ natsume: current.id === 'natsume' }">
-          <img v-if="current.portrait?.image" class="portrait-image"
+          <img v-if="current.portrait?.image && !brokenPortraits.has(current.id)" class="portrait-image"
             :src="current.portrait.image" :alt="current.portrait.alt || current.name"
-            loading="eager" decoding="async" />
+            loading="eager" decoding="async"
+            @error="markPortraitBroken(current.id)" />
           <span class="portrait-badge"><ArchiveIcon :name="current.id === 'natsume' ? 'natsume' : 'nene'" /> 官方角色立绘</span>
           <span class="portrait-source">{{ current.source }}</span>
         </div>
@@ -169,7 +175,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import { useSceneStore } from '@/stores/sceneStore'
 import ArchivePageHero from '@/components/visual/ArchivePageHero.vue'
@@ -177,6 +183,7 @@ import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import { franchiseLabel } from '@/utils/franchiseLabel'
+import { characterParticleTheme } from '@/utils/characterParticleTheme'
 import {
   parseCharacterProfiles,
   parseCharacterScenes,
@@ -224,20 +231,75 @@ const franchises = computed(() => {
     .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label, 'zh-CN'))
 })
 
-/** 无搜索时按作品分组；搜索/筛选时平铺 */
-const grouped = computed(() => {
+/** 无搜索时按作品分组；搜索/筛选时平铺。
+ *  2026-08-16：单角色小作品不再各占一节——不足 3 人的合并为「更多作品」，
+ *  消除 35 角色页一节一卡的纵向拉伸与右侧大面积空白。 */
+interface CharacterGroup {
+  source: string
+  label: string
+  members: CharacterProfile[]
+  merged: boolean
+}
+const MIN_GROUP_SIZE = 3
+const grouped = computed<CharacterGroup[] | null>(() => {
   if (keyword.value || activeFranchise.value) return null
-  const groups: { source: string; label: string; members: CharacterProfile[] }[] = []
+  const groups: CharacterGroup[] = []
+  const minor: CharacterProfile[] = []
   for (const f of franchises.value) {
     const members = characters.value.filter(c => c.source === f.source)
-    if (members.length) groups.push({ source: f.source, label: f.label, members })
+    if (!members.length) continue
+    if (members.length >= MIN_GROUP_SIZE) groups.push({ source: f.source, label: f.label, members, merged: false })
+    else minor.push(...members)
   }
+  if (minor.length) groups.push({ source: '', label: '更多作品', members: minor, merged: true })
   return groups
 })
 
+/** 粒子主题随当前角色切换（形状+主色），与角色场景库共享同一映射。 */
+const heroTheme = computed(() => characterParticleTheme(current.value?.id || '', current.value?.source))
+
+/** 缺头像的角色不再裸白圆：按 id 稳定取一组中饱和渐变做占位底（白色首字可读）。 */
+const AVATAR_GRADIENTS: ReadonlyArray<readonly [string, string]> = [
+  ['#8b6fd6', '#e08fb8'],
+  ['#4f7ddb', '#5bc3d9'],
+  ['#4dbfa8', '#8fd9a0'],
+  ['#e0b055', '#e88a72'],
+  ['#a37fe0', '#7fa8f0'],
+  ['#e08a94', '#f0a8c4'],
+  ['#7a68d9', '#b49ae8'],
+  ['#54a8d9', '#8fc0e8'],
+]
+function avatarStyle(id: string): Record<string, string> {
+  let hash = 5381
+  for (let index = 0; index < id.length; index += 1) hash = (hash * 33) ^ id.charCodeAt(index)
+  const [start, end] = AVATAR_GRADIENTS[(hash >>> 0) % AVATAR_GRADIENTS.length]
+  return { '--avatar-a': start, '--avatar-b': end }
+}
+
+/** 数据里人人都有 portrait 路径，但多数 popular-<id>.png 实际不存在；
+ *  加载失败时记入集合，用渐变首字占位替换破碎 <img>。 */
+const brokenPortraits = ref(new Set<string>())
+function markPortraitBroken(id: string) {
+  if (brokenPortraits.value.has(id)) return
+  brokenPortraits.value = new Set(brokenPortraits.value).add(id)
+}
+
+const profileAnchor = ref<HTMLElement | null>(null)
 function selectCharacter(id: string) {
   const found = characters.value.find(c => String(c.id) === id)
-  if (found) { current.value = found; bgExpanded.value = false }
+  if (!found) return
+  current.value = found
+  bgExpanded.value = false
+  // 点击卡片联动档案大卡：档案区不在视口内才平滑滚过去（已在视野内不打扰浏览）
+  void nextTick(() => {
+    const anchor = profileAnchor.value
+    if (!anchor) return
+    const rect = anchor.getBoundingClientRect()
+    const inView = rect.top < window.innerHeight * 0.9 && rect.bottom > 0
+    if (inView) return
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    anchor.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' })
+  })
 }
 function tagClass(index: unknown) { return 'm' + (Number(index) % 6) }
 
@@ -316,13 +378,29 @@ onMounted(() => { void loadProfiles() })
 .cb-group-head { display: flex; align-items: baseline; gap: var(--s-2); margin: 0 0 var(--s-2); font-size: var(--fs-title-xs); color: var(--text-secondary); }
 .cb-group-count { font: 650 var(--fs-mono-xs) var(--font-mono); color: var(--accent); }
 .cb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: var(--s-2); }
-.cb-card { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: var(--s-3) var(--s-2) var(--s-2); border: 1px solid var(--border-soft); border-radius: var(--r-lg); background: var(--bg-surface); color: var(--text-secondary); cursor: pointer; transition: border-color var(--t-fast), background var(--t-fast), color var(--t-fast), transform var(--t-fast) var(--ease-out); }
+.cb-card {
+  display: flex; flex-direction: column; align-items: center; gap: 6px; padding: var(--s-3) var(--s-2) var(--s-2);
+  border: 1px solid var(--border-soft); border-radius: var(--r-lg); background: var(--bg-surface);
+  color: var(--text-secondary); cursor: pointer;
+  transition: border-color var(--t-fast), background var(--t-fast), color var(--t-fast), transform var(--t-fast) var(--ease-out);
+  /* 离屏卡片跳过布局/绘制，35 角色长列表滚动满帧 */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 150px;
+}
+.cb-card:active { transform: translateY(1px) scale(.98); }
 .cb-card:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); transform: translateY(-1px); }
 .cb-card.active { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, var(--bg-surface)); }
 .cb-avatar { position: relative; width: 64px; height: 64px; border-radius: 50%; overflow: hidden; border: 1px solid var(--border-soft); background: var(--bg-deep); display: grid; place-items: center; }
 .cb-card.active .cb-avatar { border-color: var(--accent); }
 .cb-avatar img { width: 100%; height: 100%; object-fit: cover; }
-.cb-avatar-fallback { font-size: var(--fs-title-sm); font-weight: 800; color: var(--text-muted); }
+.cb-avatar-fallback {
+  width: 100%; height: 100%;
+  display: grid; place-items: center;
+  font-size: var(--fs-title-sm); font-weight: 800;
+  color: rgba(255, 255, 255, .94);
+  text-shadow: 0 1px 4px color-mix(in srgb, #000 34%, transparent);
+  background: linear-gradient(135deg, var(--avatar-a, #77717f), var(--avatar-b, #4a4553));
+}
 .cb-name { font-size: var(--fs-label-sm); font-weight: 700; color: var(--text-primary); text-align: center; line-height: 1.3; }
 .cb-original { font-size: var(--fs-mono-xs); color: var(--text-muted); max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .cb-empty { padding: var(--s-5); text-align: center; color: var(--text-muted); border: 1px dashed var(--border-soft); border-radius: var(--r-lg); }

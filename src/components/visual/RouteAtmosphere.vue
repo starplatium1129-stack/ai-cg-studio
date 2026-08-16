@@ -34,7 +34,7 @@
   </div>
   <!-- 樱花花雨是独立前景层：不继承氛围层的压制，
        飘在内容之上（pointer-events:none），参考站同款"前景花雨" -->
-  <div v-if="showSakura" class="sakura-fall" :class="{ 'is-coarse': coarsePointer }" aria-hidden="true">
+  <div v-if="showSakura" class="sakura-fall" :class="{ 'is-coarse': coarsePointer, 'is-dim': dimSakura }" aria-hidden="true">
     <span
       v-for="(leaf, index) in visibleSakuraLeaves"
       :key="index"
@@ -74,6 +74,7 @@ const ROUTE_META: Record<string, RouteAtmosphereMeta> = {
   '/prompt-builder': { code: '01', label: 'DIRECTOR CONSOLE', shape: 'frame' },
   '/video-studio': { code: '14', label: 'MOTION STUDIO', shape: 'frame' },
   '/scene-explorer': { code: '02', label: 'SCENE ARCHIVE', shape: 'mountain' },
+  '/popular-scenes': { code: '15', label: 'POPULAR SCENES', shape: 'heart' },
   '/character': { code: '03', label: 'IDENTITY FILE', shape: 'moon' },
   '/style': { code: '04', label: 'VISUAL GRAMMAR', shape: 'spark' },
   '/showcase': { code: '05', label: 'APPROVED WORKS', shape: 'atelier' },
@@ -91,6 +92,7 @@ const route = useRoute()
 const ROUTES_WITH_OWN_PARTICLES = new Set([
   '/',
   '/scene-explorer',
+  '/popular-scenes',
   '/character',
   '/style',
   '/showcase',
@@ -102,6 +104,7 @@ const ROUTES_WITH_SAKURA = new Set([
   '/',
   '/prompt-builder',
   '/scene-explorer',
+  '/popular-scenes',
   '/character',
   '/style',
   '/showcase',
@@ -110,6 +113,9 @@ const ROUTES_WITH_SAKURA = new Set([
   '/scenario',
   '/chat',
 ])
+// 密集工作台（导演台）上全强度前景花雨会压住标题与面板文本（2026-08-16 视觉
+// 审核实锤）；这类路由保留花雨但整体降噪，浏览页仍是完整花雨。
+const ROUTES_WITH_DIM_SAKURA = new Set(['/prompt-builder'])
 const routeHasOwnParticle = computed(() => ROUTES_WITH_OWN_PARTICLES.has(route.path))
 // 右下角水印与密集工作台面板实测碰撞（控制台 / 场景管理 / 视频台），且这些页
 // 的 WorkspaceArchiveBar 已承载档案编号与机读上下文，水印重复且遮挡内容。
@@ -117,6 +123,7 @@ const routeHasOwnParticle = computed(() => ROUTES_WITH_OWN_PARTICLES.has(route.p
 const ROUTES_WITHOUT_ROUTE_INDEX = new Set(['/control', '/scene-manager', '/video-studio'])
 const showRouteIndex = computed(() => !routeHasOwnParticle.value && !ROUTES_WITHOUT_ROUTE_INDEX.has(route.path))
 const showSakura = computed(() => ROUTES_WITH_SAKURA.has(route.path))
+const dimSakura = computed(() => ROUTES_WITH_DIM_SAKURA.has(route.path))
 const signalState = ref<ParticleSignalState>('idle')
 const signalShape = ref<ParticleShapeId | null>(null)
 const signalLabel = ref('')
@@ -486,6 +493,8 @@ onUnmounted(() => {
   .sakura-fall span { filter:none; box-shadow:none !important; will-change:auto; }
 }
 .sakura-fall.is-coarse span { filter:none; box-shadow:none !important; will-change:auto; }
+.sakura-fall.is-dim { opacity:.42; }
+.sakura-fall.is-dim span:nth-child(3n) { display:none; }
 @media (prefers-reduced-motion: reduce) {
   .route-atmosphere { transition:none; opacity:.1; }
   .route-scan { display:none; }

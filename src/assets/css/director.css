@@ -192,6 +192,7 @@
   .pb .focus-mode-btn { min-height:36px; display:inline-flex; align-items:center; justify-content:center; gap:var(--s-2); padding:0 var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-pill); color:var(--text-secondary); cursor:pointer; font:650 var(--fs-label-sm) var(--font-sans); transition:background var(--t-fast),border-color var(--t-fast),color var(--t-fast),transform var(--t-fast); }
   .pb .focus-mode-icon { display:inline-grid; place-items:center; font-size:var(--fs-body-lg); line-height:1; }
   .pb .focus-mode-btn:hover, .pb .focus-mode-btn[aria-pressed="true"] { border-color:color-mix(in srgb,var(--accent) 50%,var(--border-soft)); background:var(--bg-elevated); color:var(--accent); }
+  .pb .focus-mode-btn:active, .pb .utility-trigger:active { transform:scale(.95); }
   .pb .utility-menu { position:relative; }
   .pb .utility-trigger { width:36px; height:36px; display:grid; place-items:center; border:1px solid var(--border-soft); border-radius:50%; color:var(--text-secondary); cursor:pointer; font:800 var(--fs-label-sm) var(--font-mono); letter-spacing:.08em; transition:background var(--t-fast),border-color var(--t-fast),transform var(--t-fast); }
   .pb .utility-trigger:hover, .pb .utility-menu.open .utility-trigger { border-color:color-mix(in srgb,var(--accent) 50%,var(--border-soft)); background:var(--bg-elevated); }
@@ -241,9 +242,15 @@
   .pb .col-center > .stage-placeholder { order:0; }
   .pb .col-center > .result-image-wrap { order:0; }
   .pb .col-center > #stepResult { order:1; }
-  .pb .col-center > .monitor { order:2; }
-  .pb .col-center > .generation-settings { order:3; }
-  .pb .col-center > .expert-tag-panel { order:4; }
+  .pb .col-center > .expert-tag-panel { order:2; }
+  .pb .col-center > .monitor { order:3; }
+  .pb .col-center > .artist-style-picker { order:4; }
+  .pb .col-center > .generation-settings { order:5; }
+  .pb .col-center > .anima-quick-panel { order:6; }
+  /* 2026-08-16 布局合理化：中栏信息流固定为 画布 → 输出（生成/队列/配音）→
+     词条工作台 → Prompt 监视器 → 画风 → 出图参数 → Anima 面板。
+     旧顺序把「输出」埋在画风/参数之后、词条压到页面底部，核心动线被拉长；
+     生成区紧跟画布，专家参数面板仍可折叠（不违反「参数可折叠、生成不可隐藏」约束）。 */
   /* 画面舞台 */
   .pb .stage-placeholder {
     position:relative; isolation:isolate; overflow:hidden;
@@ -706,21 +713,23 @@
   }
   .pb .director-card:hover { border-color:color-mix(in srgb,var(--accent) 24%,var(--border-soft)); }
   .pb .director-mode-switch {
-    display:inline-flex; padding:2px;
+    display:inline-flex; padding:3px;
     border:1px solid var(--border-soft); border-radius:var(--r-pill);
     background:var(--bg-deep); flex-shrink:0;
+    box-shadow:inset 0 1px 3px color-mix(in srgb,var(--bg-base) 55%,transparent);
   }
   .pb .director-mode-option {
-    min-height:28px; padding:0 12px; border:0; border-radius:var(--r-pill);
-    background:transparent; color:var(--text-muted); cursor:pointer; font:650 var(--fs-mono-xs) var(--font-sans);
+    min-height:32px; padding:0 16px; border:0; border-radius:var(--r-pill);
+    background:transparent; color:var(--text-muted); cursor:pointer; font:700 var(--fs-label-sm) var(--font-sans);
     transition:background var(--t-base) var(--ease-out),color var(--t-base) var(--ease-out),
-               box-shadow var(--t-base) var(--ease-out),transform var(--t-base) var(--ease-out);
+               box-shadow var(--t-base) var(--ease-out),transform var(--t-fast) var(--ease-out);
   }
+  .pb .director-mode-option:active { transform:scale(.96); }
   .pb .director-mode-option.active {
     border:1px solid var(--glass-edge);
     background:linear-gradient(135deg,var(--glass-specular),var(--glass-fill-strong));
     color:var(--accent);
-    box-shadow:inset 0 1px 0 var(--glass-highlight),var(--shadow-sm);
+    box-shadow:inset 0 1px 0 var(--glass-highlight),var(--glow-sm);
   }
   .pb-managed-route-banner { margin-bottom: var(--s-3); }
   .pb .managed-route-card {

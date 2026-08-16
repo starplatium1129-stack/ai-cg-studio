@@ -18,7 +18,7 @@
       :subtitle="pb.isPopular ? popularCharacter?.displayName || '热门角色' : (pb.activeScene?.title || (pb.directorMode === 'basic' ? '场景模式' : '专家模式'))"
       :status="pb.isPopular ? 'POPULAR · NO LORA' : (pb.directorMode === 'basic' ? 'SCENE MODE' : 'PRO MODE')"
       :state="pb.isPopular ? 'active' : (pb.directorMode === 'basic' ? 'success' : 'active')"
-      :shape="pb.isPopular ? 'moon' : (pb.directorMode === 'pro' ? 'spark' : 'frame')"
+      :shape="archiveBarShape"
     />
 
     <div class="pb-topline">
@@ -680,6 +680,7 @@ import { useDirectorCatalog } from '@/composables/useDirectorCatalog'
 import { useDirectorDerived } from '@/composables/useDirectorDerived'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import { restoreHistorySceneStory } from '@/utils/promptBuilderPersistence'
+import { characterParticleTheme } from '@/utils/characterParticleTheme'
 import {
   findScenario,
   substituteScenarioPrompt,
@@ -851,6 +852,16 @@ const previousBlueprintIds = ref<string[] | null>(null)
 const popularCharacter = computed<PopularCharacter | null>(() => {
   if (pb.subject.kind !== 'popular') return null
   return findPopularCharacter(pb.popularCharacters, pb.subject.characterId)
+})
+/** 顶部档案条的粒子形状：热门角色跟随她的专属轮廓（与角色场景库/角色档案一致），
+    工作室角色按模式区分（专家=spark / 场景=frame）。 */
+const archiveBarShape = computed(() => {
+  if (pb.isPopular) {
+    return popularCharacter.value
+      ? characterParticleTheme(popularCharacter.value.id, popularCharacter.value.franchise).shape
+      : 'moon' as const
+  }
+  return pb.directorMode === 'pro' ? 'spark' as const : 'frame' as const
 })
 const managedRoute = ref<DrawingRouteRecommendation | null>(null)
 async function refreshManagedRoute(): Promise<DrawingRouteRecommendation> {
