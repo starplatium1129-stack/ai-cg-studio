@@ -380,3 +380,48 @@ export function rewriteVideoShot(input: VideoAiRewriteInput, signal?: AbortSigna
     validate: isVideoAiRewriteResponse,
   })
 }
+
+// ── 整批节奏编排（POST /api/video-ai/polish）───────────────────────────
+export interface VideoAiPolishShotInput {
+  prompt: string
+  shotSize?: VideoShotSize | null
+  camera?: VideoDefaults['camera']
+  motion?: VideoDefaults['motion']
+  dialogue?: string
+}
+
+export interface VideoAiPolishInput {
+  identity?: string
+  shots: VideoAiPolishShotInput[]
+}
+
+export interface VideoAiPolishShot {
+  /** null = 保持当前值（AI 认为不需要动）。 */
+  shotSize: VideoShotSize | null
+  camera: VideoDefaults['camera'] | null
+  motion: VideoDefaults['motion'] | null
+  dialogue: string | null
+}
+
+export interface VideoAiPolishResponse {
+  ok: true
+  source: 'api' | 'ollama'
+  model: string
+  shots: VideoAiPolishShot[]
+}
+
+function isVideoAiPolishResponse(value: Record<string, unknown>): boolean {
+  return value.ok === true
+    && (value.source === 'api' || value.source === 'ollama')
+    && Array.isArray(value.shots)
+}
+
+export function polishVideoShots(input: VideoAiPolishInput, signal?: AbortSignal): Promise<VideoAiPolishResponse> {
+  return apiClient.request<VideoAiPolishResponse>('/api/video-ai/polish', {
+    method: 'POST',
+    body: input,
+    signal,
+    timeoutMs: 150_000,
+    validate: isVideoAiPolishResponse,
+  })
+}

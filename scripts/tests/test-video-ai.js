@@ -161,6 +161,69 @@ async function run() {
     assert.equal((await postRewrite(stackApi.baseUrl, { prompt:'x', camera:'fly' })).status, 400);
     assert.equal((await postRewrite(stackApi.baseUrl, { prompt:'x', unknown:1 })).status, 400);
     assert.equal((await postRewrite(stackApi.baseUrl, { prompt:'x'.repeat(4001) })).status, 400);
+
+    // ── 整批节奏编排 /api/video-ai/polish ─────────────────────────────
+    function polishBody(overrides) {
+      return Object.assign({
+        shots:[
+          { prompt:'她走进咖啡店。', shotSize:'medium', camera:'still', motion:'subtle', dialogue:'' },
+          { prompt:'她端起咖啡杯。', shotSize:'medium', camera:'still', motion:'subtle', dialogue:'' },
+          { prompt:'她望向窗外。', shotSize:'medium', camera:'still', motion:'subtle', dialogue:'' },
+        ],
+      }, overrides || {});
+    }
+    async function postPolish(base, body) {
+      return fetch(base + '/api/video-ai/polish', {
+        method:'POST',
+        headers:{ 'content-type':'application/json' },
+        body:JSON.stringify(body)
+      });
+    }
+
+    // 编排成功：index 对齐应用，null 保持，请求体含整批镜头
+    apiMock.state.replies.push(JSON.stringify({
+      shots:[
+        { index:0, shotSize:null, camera:'push', motion:null, dialogue:null },
+        { index:1, shotSize:'closeup', camera:null, motion:'natural', dialogue:'好香。' },
+        { index:2, shotSize:null, camera:null, motion:null, dialogue:'' },
+      ]
+    }));
+    var polishOkRes = await postPolish(stackApi.baseUrl, polishBody());
+    assert.equal(polishOkRes.status, 200);
+    var polishOk = await polishOkRes.json();
+    assert.equal(polishOk.shots.length, 3);
+    assert.equal(polishOk.shots[0].camera, 'push', 'camera suggestion applied by index');
+    assert.equal(polishOk.shots[0].shotSize, null, 'null field keeps current value');
+    assert.equal(polishOk.shots[1].shotSize, 'closeup');
+    assert.equal(polishOk.shots[1].motion, 'natural');
+    assert.equal(polishOk.shots[1].dialogue, '好香。');
+    assert.equal(polishOk.shots[2].dialogue, '', 'empty dialogue suggestion clears the line');
+    assert.match(apiMock.state.requests[apiMock.state.requests.length - 1].body.messages[0].content, /rhythm editor/);
+    assert.match(apiMock.state.requests[apiMock.state.requests.length - 1].body.messages[1].content, /她走进咖啡店/);
+
+    // 清洗：非法枚举/越界 index 跳过（保持原值）
+    apiMock.state.replies.push(JSON.stringify({
+      shots:[
+        { index:0, shotSize:'bogus', camera:'fly', motion:'dance', dialogue:'x'.repeat(400) },
+        { index:99, shotSize:'closeup', camera:null, motion:null, dialogue:null },
+        { index:1, shotSize:null, camera:'pan', motion:null, dialogue:'可以。' },
+      ]
+    }));
+    var polishDirtyRes = await postPolish(stackApi.baseUrl, polishBody());
+    assert.equal(polishDirtyRes.status, 200);
+    var polishDirty = await polishDirtyRes.json();
+    assert.equal(polishDirty.shots[0].shotSize, null, 'unknown shot size -> keep');
+    assert.equal(polishDirty.shots[0].camera, null, 'unknown camera -> keep');
+    assert.equal(polishDirty.shots[0].motion, null, 'unknown motion -> keep');
+    assert.equal(polishDirty.shots[0].dialogue, null, 'oversized dialogue -> keep');
+    assert.equal(polishDirty.shots[1].shotSize, null, 'out-of-range index 99 entry skipped');
+    assert.equal(polishDirty.shots[1].camera, 'pan', 'valid index 1 entry still applied');
+    assert.equal(polishDirty.shots[2].camera, null, 'no entry for index 2 -> keep');
+
+    // 输入校验：单镜 / 非法镜头枚举 / 缺描述 400
+    assert.equal((await postPolish(stackApi.baseUrl, { shots:[{ prompt:'x' }] })).status, 400);
+    assert.equal((await postPolish(stackApi.baseUrl, polishBody({ shots:[{ prompt:'x', camera:'fly' }, { prompt:'y' }] }))).status, 400);
+    assert.equal((await postPolish(stackApi.baseUrl, { shots:[{ prompt:'' }, { prompt:'y' }] })).status, 400);
   } finally {
     await stackApi.close();
     await closeServer(apiMock.server);

@@ -104,6 +104,13 @@
             @click="runAiRewrite"
           >✦ AI 整理分镜</button>
           <button
+            class="btn btn-ghost"
+            type="button"
+            :disabled="aiBusy || batchActive || shots.length < 2"
+            title="用全局视角审整批镜头：调整景别/镜头运动/对白分布，让全片有节奏（不改描述本身）"
+            @click="runAiPolish"
+          >◎ AI 整批编排</button>
+          <button
             v-if="aiSnapshot"
             class="btn btn-ghost"
             type="button"
@@ -111,6 +118,14 @@
             title="恢复 AI 整理前的全部镜头内容"
             @click="restoreAiSnapshot"
           >撤销整理</button>
+          <button
+            v-if="polishSnapshot"
+            class="btn btn-ghost"
+            type="button"
+            :disabled="aiBusy || batchActive"
+            title="恢复 AI 整批编排前的全部镜头内容"
+            @click="restorePolishSnapshot"
+          >撤销编排</button>
           <button class="btn btn-ghost" type="button" :disabled="shots.length === 0 || batchActive" @click="clearShots">清空</button>
         </div>
         <p v-if="aiNote" class="shot-ai-note" :data-busy="aiBusy || undefined">{{ aiNote }}</p>
@@ -287,6 +302,7 @@ import {
   createVideoBatch,
   fetchVideoAiStatus,
   fetchVideoBatch,
+  polishVideoShots,
   retryVideoShot,
   rewriteVideoShot,
   uploadVideoImage,
@@ -609,6 +625,8 @@ const aiProgress = ref(0)
 const aiTotal = ref(0)
 const aiSnapshot = ref<ShotDraft[] | null>(null)
 const aiNote = ref('')
+/** 整批编排的独立快照：撤销编排只回编排前，不影响「AI 整理」的撤销。 */
+const polishSnapshot = ref<ShotDraft[] | null>(null)
 
 async function runAiRewrite() {
   if (aiBusy.value || batchActive.value || !shots.value.length) return
@@ -674,6 +692,79 @@ function restoreAiSnapshot() {
   shots.value = aiSnapshot.value
   aiSnapshot.value = null
   aiNote.value = '已撤销 AI 整理，恢复整理前内容。'
+}
+
+// ── 「AI 整批编排」：全局视角审整批镜头，只调构图字段（不动描述）──────
+// 一次 LLM 调用返回整批建议（index 对齐，null = 保持）；应用前独立快照，
+// 「撤销编排」只回编排前状态，与「AI 整理」的撤销互不干扰。
+async function runAiPolish() {
+  if (aiBusy.value || batchActive.value || shots.value.length < 2) return
+  aiNote.value = ''
+  let status: VideoAiStatusResponse
+  try {
+    status = await fetchVideoAiStatus()
+  } catch (error) {
+    aiNote.value = 'AI 状态读取失败：' + (error instanceof Error ? error.message : String(error))
+    return
+  }
+  if (!status.available) {
+    aiNote.value = status.reason || 'AI 编排暂不可用'
+    return
+  }
+  polishSnapshot.value = shots.value.map((shot) => ({ ...shot }))
+  aiBusy.value = true
+  aiNote.value = `AI 整批编排中（${status.label}）…`
+  try {
+    const response = await polishVideoShots({
+      identity: identityCard.value.trim() || undefined,
+      shots: shots.value.map((shot) => ({
+        prompt: shot.prompt,
+        shotSize: shot.shotSize || undefined,
+        camera: shot.camera,
+        motion: shot.motion,
+        dialogue: shot.dialogue || undefined,
+      })),
+    })
+    let changed = 0
+    response.shots.forEach((suggestion, index) => {
+      const shot = shots.value[index]
+      if (!shot) return
+      if (suggestion.shotSize && suggestion.shotSize !== shot.shotSize) {
+        shot.shotSize = suggestion.shotSize
+        changed += 1
+      }
+      if (suggestion.camera && suggestion.camera !== shot.camera) {
+        shot.camera = suggestion.camera
+        changed += 1
+      }
+      if (suggestion.motion && suggestion.motion !== shot.motion) {
+        shot.motion = suggestion.motion
+        changed += 1
+      }
+      if (suggestion.dialogue !== null && suggestion.dialogue !== shot.dialogue) {
+        shot.dialogue = suggestion.dialogue
+        changed += 1
+      }
+    })
+    aiNote.value = changed
+      ? `AI 整批编排完成：调整 ${changed} 处（景别/镜头/运动/对白分布），可逐镜微调或「撤销编排」恢复`
+      : 'AI 整批编排完成：当前镜头语言已比较均衡，未做调整。'
+  } catch (error) {
+    polishSnapshot.value = null
+    aiNote.value = 'AI 整批编排失败：' + (error instanceof Error ? error.message : String(error))
+  } finally {
+    aiBusy.value = false
+  }
+}
+
+function restorePolishSnapshot() {
+  if (!polishSnapshot.value) return
+  shots.value.forEach((shot) => {
+    if (shot.imageUrl) URL.revokeObjectURL(shot.imageUrl)
+  })
+  shots.value = polishSnapshot.value
+  polishSnapshot.value = null
+  aiNote.value = '已撤销 AI 整批编排，恢复编排前内容。'
 }
 
 onMounted(() => {

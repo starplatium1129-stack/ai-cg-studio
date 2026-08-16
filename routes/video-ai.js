@@ -87,6 +87,108 @@ function buildRewriteUserPrompt(value) {
 
 var REWRITE_BODY_KEYS = new Set(['identity', 'prompt', 'shotSize', 'camera', 'motion', 'dialogue']);
 
+// ── 整批节奏编排（/api/video-ai/polish）────────────────────────────────
+// 与逐镜 rewrite 的分工：rewrite 逐镜独立改写描述；polish 用全局视角审
+// 整批镜头，只调整构图字段（景别/镜头/运动/对白），让全片有节奏——
+// 景别不连续扎堆、镜头运动不全是固定、台词不连续挤爆、动作强度匹配。
+// 输出按 index 对齐，字段为 null = 保持当前值，绝不改动描述本身。
+var POLISH_SYSTEM_PROMPT = [
+  'You are a storyboard rhythm editor for an anime video.',
+  'Review the WHOLE shot list and adjust ONLY the composition choices so the sequence has rhythm and variety.',
+  '',
+  'Reply with ONLY a JSON object: {"shots":[{"index":0,"shotSize":null,"camera":null,"motion":null,"dialogue":null}, ...]}',
+  'with exactly one entry per shot, in the same order. No markdown, no commentary.',
+  '',
+  'Rules:',
+  '- Only set a field when you have a concrete reason; null keeps the current value.',
+  '- "shotSize": "wide" | "medium" | "closeup" - avoid long runs of the same size; open scenes wide, emotional beats closeup.',
+  '- "camera": "still" | "push" | "pull" | "pan" | "orbit" - avoid every shot being "still"; camera movement must serve the action described.',
+  '- "motion": "subtle" | "natural" | "expressive" - match the action intensity in the description.',
+  '- "dialogue": a short line (at most 20 Chinese characters); thin out dialogue when too many consecutive shots have lines; use "" when silence is better.',
+  '- NEVER change the shot description (prompt) itself, NEVER contradict explicit actions in the descriptions, NEVER invent new characters.',
+  '- If the whole list is already well varied, set every field to null (keep all).'
+].join('\n');
+
+var MAX_POLISH_SHOTS = 30;
+
+function validatePolishBody(body) {
+  if (!body || typeof body !== 'object' || Array.isArray(body)) {
+    return { error:'请求体必须是 JSON 对象' };
+  }
+  var identity = String(body.identity || '').trim().slice(0, 600);
+  if (!Array.isArray(body.shots) || body.shots.length < 2 || body.shots.length > MAX_POLISH_SHOTS) {
+    return { error:'分镜数量需为 2—' + MAX_POLISH_SHOTS };
+  }
+  var shots = [];
+  for (var i = 0; i < body.shots.length; i += 1) {
+    var shot = body.shots[i];
+    if (!shot || typeof shot !== 'object' || Array.isArray(shot)) {
+      return { error:'第 ' + (i + 1) + ' 个分镜必须是对象' };
+    }
+    var prompt = String(shot.prompt || '').trim();
+    if (!prompt || prompt.length > 4000) return { error:'第 ' + (i + 1) + ' 个分镜描述需为 1—4000 字符' };
+    var shotSize = shot.shotSize === null || shot.shotSize === undefined || shot.shotSize === ''
+      ? null
+      : String(shot.shotSize);
+    if (shotSize !== null && SHOT_SIZE_VALUES.indexOf(shotSize) === -1) {
+      return { error:'第 ' + (i + 1) + ' 个分镜景别不支持' };
+    }
+    var camera = String(shot.camera || 'still');
+    if (CAMERA_VALUES.indexOf(camera) === -1) return { error:'第 ' + (i + 1) + ' 个分镜镜头运动不支持' };
+    var motion = String(shot.motion || 'subtle');
+    if (MOTION_VALUES.indexOf(motion) === -1) return { error:'第 ' + (i + 1) + ' 个分镜主体运动不支持' };
+    var dialogue = String(shot.dialogue || '').trim().slice(0, 300);
+    shots.push({ prompt:prompt, shotSize:shotSize, camera:camera, motion:motion, dialogue:dialogue });
+  }
+  return { value:{ identity:identity, shots:shots } };
+}
+
+function buildPolishUserPrompt(value) {
+  var lines = [
+    'Identity anchor (for reference only): ' + (value.identity || '(none)'),
+    '',
+    'Shot list (index | shotSize | camera | motion | dialogue | description):'
+  ];
+  value.shots.forEach(function (shot, index) {
+    lines.push((index + 1) + '. ' + (shot.shotSize || 'default') + ' | ' + shot.camera + ' | ' + shot.motion
+      + ' | ' + (shot.dialogue ? JSON.stringify(shot.dialogue) : '""')
+      + ' | ' + shot.prompt.slice(0, 160));
+  });
+  lines.push('', 'Adjust the rhythm of this shot list:');
+  return lines.join('\n');
+}
+
+// 清洗编排输出：index 对齐 + 字段白名单；非法/越界条目整体跳过（保持原值）。
+function cleanPolishOutput(parsed, value) {
+  var out = value.shots.map(function () {
+    return { shotSize:null, camera:null, motion:null, dialogue:null };
+  });
+  if (!parsed || typeof parsed !== 'object' || !Array.isArray(parsed.shots)) return out;
+  for (var i = 0; i < parsed.shots.length; i += 1) {
+    var item = parsed.shots[i];
+    if (!item || typeof item !== 'object') continue;
+    var index = Number(item.index);
+    if (!Number.isInteger(index) || index < 0 || index >= out.length) continue;
+    var entry = out[index];
+    if (item.shotSize === null || item.shotSize === undefined || item.shotSize === '') {
+      entry.shotSize = null;
+    } else {
+      var shotSize = String(item.shotSize);
+      entry.shotSize = SHOT_SIZE_VALUES.indexOf(shotSize) !== -1 ? shotSize : null;
+    }
+    var camera = String(item.camera || '').trim();
+    entry.camera = CAMERA_VALUES.indexOf(camera) !== -1 ? camera : null;
+    var motion = String(item.motion || '').trim();
+    entry.motion = MOTION_VALUES.indexOf(motion) !== -1 ? motion : null;
+    // dialogue 语义：'' = 清空台词；合法短句 = 替换；null/undefined = 保持；超长 = 保持。
+    if (item.dialogue !== null && item.dialogue !== undefined) {
+      var dialogue = String(item.dialogue).trim();
+      entry.dialogue = dialogue.length <= 300 ? dialogue : null;
+    }
+  }
+  return out;
+}
+
 function validateRewriteBody(body) {
   if (!body || typeof body !== 'object' || Array.isArray(body)) {
     return { error:'请求体必须是 JSON 对象' };
@@ -287,6 +389,37 @@ function createVideoAiRouter(config, dependencies) {
     } catch (error) {
       if (httpClient.isAbortError(error)) return;
       envelope.fail(res, envelope.statusFor(error, 502), error.message || 'AI 整理失败', {
+        detail:error.detail || ''
+      });
+    }
+  });
+
+  router.post('/api/video-ai/polish', security.localOnly, express.json({ limit:'256kb' }), async function (req, res) {
+    var validation = validatePolishBody(req.body);
+    if (validation.error) return envelope.fail(res, 400, validation.error);
+    var value = validation.value;
+    var controller = new AbortController();
+    req.once('aborted', function () { controller.abort(); });
+    res.once('close', function () { if (!res.writableEnded) controller.abort(); });
+    try {
+      var source = await resolveSource();
+      if (!source) {
+        return envelope.fail(res, 409, 'AI 编排暂不可用：请先在聊天设置中配置 API 或启动 Ollama', {
+          code:'AI_LLM_UNAVAILABLE'
+        });
+      }
+      var messages = [
+        { role:'system', content:POLISH_SYSTEM_PROMPT },
+        { role:'user', content:buildPolishUserPrompt(value) }
+      ];
+      var content = source.source === 'api'
+        ? await callCompatibleApi(source, messages, controller.signal)
+        : await callOllama(ollama, messages, controller.signal);
+      var shots = cleanPolishOutput(extractJsonObject(content), value);
+      envelope.ok(res, { source:source.source, model:source.model, shots:shots });
+    } catch (error) {
+      if (httpClient.isAbortError(error)) return;
+      envelope.fail(res, envelope.statusFor(error, 502), error.message || 'AI 编排失败', {
         detail:error.detail || ''
       });
     }
