@@ -9,11 +9,13 @@ const DEFAULT_BUDGETS = Object.freeze({
   // chunk is about 136 KiB; the unified /api/generation client module
   // (src/api/generationApi.ts, roadmap "统一前端 API 层") rides in this chunk
   // through useSDGenerate. 2026-08-15「出视频」跨页联动只在此保留薄调用壳
-  // （桥接逻辑已拆独立 chunk useVideoBridge，动态 import），故预算 140 → 145 KiB
-  // 留出该调用面余量；2026-08-16「加入分镜/去分镜短片」多图批量桥接
-  // （绘图页逐张入篮子 → 视频页分镜短片）再 +1 KiB（145 → 146，实测 148.9 KiB），
-  // 桥接主体仍在 useVideoBridge 独立 chunk；监控仍是硬上限，不允许无脑膨胀。
-  routeJavaScript: 146 * 1024,
+  // （桥接逻辑已拆独立 chunk useVideoBridge，动态 import）；2026-08-16
+  // 「加入分镜/去分镜短片」多图批量桥接再 +1 KiB（145 → 146）。
+  // 2026-08-16 瘦身：tagMeaning 释义字典（~21 KiB 纯数据，仅 tooltip 用，
+  // 改为首次调用动态 import）与 videoPromptProse（出视频/分镜点击时才拉）
+  // 移出主块，路由块 148.9 → 124.8 KiB，预算随之 146 → 132 锁住收益；
+  // 视频桥接若再膨胀，优先继续拆独立 chunk 而不是抬高这里。
+  routeJavaScript: 132 * 1024,
   routeCss: 112 * 1024,
   // wl-live2d 懒加载块：pixi.js + pixi-live2d-display + cubism4 core 全内联，
   // 大小由依赖决定，这里监控防止未来升级/引入新依赖把它撑得更大。

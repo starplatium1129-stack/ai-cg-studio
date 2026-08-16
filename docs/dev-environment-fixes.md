@@ -150,3 +150,44 @@ v4 把"统一点径"推广到抽象形状后用户反馈"好粗好难看"——�
 `getContext('2d', { desynchronized: true })` 在部分 GPU/WebView2 的 overlay 路径
 会让画布整块渲染成**纯黑**（灵感场景/效果样张页实锤）。已回退为普通 2d 上下
 文——未经真机全环境验证的"合成器直取"优化不要上生产。
+
+## 8. 性能优化 2026-08-16：PromptBuilder 路由块瘦身 + Gallery 按需补图 + 部署残留清理
+
+### 8.1 路由块瘦身的方法与结论
+
+PromptBuilder 路由块曾 148.9 KiB、146 KiB 预算只剩 0.6 KiB。归因方法：
+`npx vite build --sourcemap --outDir dist-analysis` 后解析 chunk 的 `.map`，
+按 `sourcesContent` 长度对模块排序（也可用现成的 `--mode analyze` 出
+visualizer 报告）。两个易踩的坑：
+
+- **先确认模块是否真的只被本路由引用**：`promptBuilderPersistence.ts`
+  （9.5 KiB）看似只有视图用一个函数，但 store 值导入了它的 4 个解析器，
+  视图侧改动态 import 移不走它；`kreaStyleRecipes.ts` 被共享 chunk 引走，
+  根本不在路由块里。
+- **纯数据模块 minify 压不动**：tagMeaning 字典源码 20.6 KiB，移出后路由
+  块实减 ~21 KiB（比按压缩比的估算大得多）。
+
+实际改动：`tagMeaning` 字典改为首次调用动态 import（模板经同名包装函数，
+未就绪时退回目录中文标签，到位后 ref 重渲染补齐；运行时验证 72/72 chip
+正常出释义）；`videoPromptProse` 改为出视频/加分镜点击时 `await import`。
+路由块 145.4 → **121.9 KiB**，预算随之 146 → **132 KiB** 锁住收益
+（`check-bundle-budget.js` 注释有完整账目）。
+
+### 8.2 GalleryView HD 按需补图（数据层虚拟化）
+
+旧实现 `hydrateCards` 全量读出所有作品 HD blob 再 `trimCardUrls` 丢掉超出
+40 张的——几百张作品时绝大多数 IndexedDB 读取是纯浪费。新实现：缩略图
+（KV dataURL，便宜）仍全量补齐；HD 走 IntersectionObserver（rootMargin
+600px）只对进视口的卡片发起读取，LRU 上限 40 滚动淘汰，被淘汰卡再次可见
+时按需重读。契约测试锚点改为 `requestCardHydration` + `IntersectionObserver`
+（`scripts/tests/test-gallery.js`）。masonry 多列布局不适合 DOM 虚拟化
+（列平衡依赖全部子项高度），`content-visibility: auto` 已负责跳过离屏
+绘制，数据层窗口化才是对症的"虚拟列表"。
+
+### 8.3 快速部署脚本清理安装目录旧 hash chunk
+
+`deploy-desktop-quick.ps1` 的 `Copy-Item` 只合并不删除，安装目录
+`dist/_app` 会无限累积旧 hash chunk（2026-08-16 实测已积 21 个
+CompanionView 版本）。已在复制后按"新构建文件名集合"修剪（内容哈希同名
+即同内容，只删真正死掉的 chunk）。注意：仍开着旧 index.html 的标签页懒
+加载旧 chunk 会 404，重载即恢复——本地应用可接受。ps1 保持纯 ASCII。

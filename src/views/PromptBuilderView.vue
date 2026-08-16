@@ -693,7 +693,6 @@ import type { AnimaResult } from '@/types/anima'
 import { useAnimaSession, closestSupportedSize, ANIMA_LORA_BY_CHARACTER, ANIMA_CHARACTER_BY_CHARACTER, type AnimaRequest } from '@/composables/useAnimaSession'
 import { useSDGenerate } from '@/composables/useSDGenerate'
 import { usePromptAssembly } from '@/composables/usePromptAssembly'
-import { tagsToVideoProse } from '@/utils/videoPromptProse'
 import { EMOTION, SHOT, LIGHTING, COMPOSITION, COLOR_MOODS, SCENE_THEMES } from '@/config/promptConstants'
 import { useSDQueue, type SDQueueJob } from '@/composables/useSDQueue'
 import { classifySDError, SAFE_SAMPLING, LIGHT_LOAD, type SDErrorReport, type SDRecoveryId } from '@/utils/sdError'
@@ -725,7 +724,6 @@ import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIc
 import CornerFrame from '@/components/visual/CornerFrame.vue'
 import WorkspaceArchiveBar from '@/components/visual/WorkspaceArchiveBar.vue'
 import { readHiddenScenes, rememberRecent, recordSceneUsage } from '@/utils/sceneUX'
-import { tagMeaning } from '@/utils/tagMeaning'
 import {
   quickCreateSummary,
   readQuickCreate,
@@ -1745,7 +1743,7 @@ async function saveHistory() {
  * SD 取提交时记录，不随面板后续修改漂移）+ story（场景描述，fallback）
  * + blueprintId（场景预设）。
  */
-function videoTargetData() {
+async function videoTargetData() {
   const url = displayResultUrl.value
   if (!url) { pb.flash('暂无可转视频的成片'); return null }
   if (drawEngine.value !== 'sd' && !animaState.value.result) {
@@ -1760,10 +1758,12 @@ function videoTargetData() {
   } else {
     usedPrompt = sd.resultPrompt.value || usedPrompt
   }
+  // 词条流 → 自然语言（H3 是自然语言模型；已像自然语言的提示词原样保留）。
+  // 转换器只有「出视频/加入分镜」点击时才需要，随 useVideoBridge 一起按需拉取。
+  const { tagsToVideoProse } = await import('@/utils/videoPromptProse')
   return {
     displayUrl: url,
     animaBlob: drawEngine.value !== 'sd' ? animaState.value.result?.blob ?? null : null,
-    // 词条流 → 自然语言（H3 是自然语言模型；已像自然语言的提示词原样保留）。
     prompt: tagsToVideoProse(usedPrompt),
     story: pb.story || '',
     blueprintId: subject.kind === 'popular' ? (subject.blueprintId ?? null) : pb.sceneId,
@@ -1773,7 +1773,7 @@ function videoTargetData() {
 }
 
 async function goToVideo() {
-  const data = videoTargetData()
+  const data = await videoTargetData()
   if (!data) return
   const { bridgeToVideo } = await import('@/composables/useVideoBridge')
   await bridgeToVideo({
@@ -1795,7 +1795,7 @@ async function refreshShotsPending() {
 
 /** 「加入分镜」：把当前成片入 IndexedDB + 上下文追加到分镜待带入列表。 */
 async function addToShots() {
-  const data = videoTargetData()
+  const data = await videoTargetData()
   if (!data) return
   const { prepareVideoCtx, appendShotsCtx } = await import('@/composables/useVideoBridge')
   const ctx = await prepareVideoCtx({
@@ -2010,10 +2010,29 @@ function addTag(e: Event) {
   if (tag) { pb.toggleManualTag(tag); input.value = '' }
 }
 
-/** chip 里的中文释义；完全未知的词条不占位 */
+/* ── 词条释义字典（懒加载）───────────────────────────────────────────
+ * tagMeaning.ts 是 ~20KB 纯数据字典，只服务词条 chip 的 tooltip 与中文
+ * 副标题，静态导入会把它钉进路由主块（当时 146KiB 预算只剩 0.6KiB）。
+ * 改为首次调用时动态拉取：字典到位前退回目录中文标签或词条本身，
+ * 到位后 ref 触发重渲染补齐释义。 */
+type TagMeaningFn = typeof import('@/utils/tagMeaning')['tagMeaning']
+const tagMeaningLookup = ref<TagMeaningFn | null>(null)
+let tagMeaningRequested = false
+function tagMeaning(tag: string, catalogLabel = ''): string {
+  if (!tagMeaningRequested) {
+    tagMeaningRequested = true
+    void import('@/utils/tagMeaning').then(m => { tagMeaningLookup.value = m.tagMeaning })
+  }
+  const lookup = tagMeaningLookup.value
+  if (!lookup) return catalogLabel || tag
+  return lookup(tag, catalogLabel)
+}
+
+/** chip 里的中文释义；完全未知的词条不占位（字典未就绪时同样不占位） */
 function tagLabel(tag: string): string {
   const meaning = tagMeaning(tag)
-  return meaning === '未收录释义' ? '' : meaning
+  if (!tagMeaningLookup.value || meaning === '未收录释义') return ''
+  return meaning
 }
 
 /** 词条权重色彩热力等级（NovelAI 视觉分级：强增强、增强、弱化、标准） */

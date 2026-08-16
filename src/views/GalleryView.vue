@@ -1,5 +1,5 @@
 <template>
-  <article class="gallery-shell gallery-page">
+  <article class="gallery-shell gallery-page" ref="shellEl">
     <ArchivePageHero
       class="gallery-intro"
       chapter="06"
@@ -68,6 +68,7 @@
             :key="item.id"
             class="artwork"
             :class="{ 'artwork-pending': pendingDeleteId === item.id }"
+            :data-card-id="String(item.id)"
             :style="{ '--art-ratio': ratioOf(item) }"
           >
             <!-- 快捷工具条 -->
@@ -431,23 +432,34 @@ function revokeAll() {
 
 /* ---------- 图片加载 ---------- */
 /**
- * 数百张作品时逐张串行 await imgGet 会让长列表的后面全部等第一张，
- * 这里按固定并发数分块补齐：首屏卡片快速出现，后续成批补图。
+ * 缩略图（KV 小 dataURL）便宜：整墙全量补齐，先让每张卡有图。
+ * HD blob 贵且占内存（KeepAlive 后几百张大图数百 MB），改为可见性驱动：
+ * IntersectionObserver 只对进入视口 ±600px 的卡片发起 HD 读取，配合
+ * LRU 上限滚动淘汰。旧实现是「全量读出 → 丢掉超出 40 张的」，几百张
+ * 作品时绝大多数 IndexedDB 读取和 blob 创建都是纯浪费。
+ * 查看器大图单独走 hydrateViewer，不受上限影响。
  */
-const HYDRATE_CONCURRENCY = 4
 /** 缩略图是 KV 小 dataURL，读得快，并发放高 */
 const THUMB_CONCURRENCY = 8
-/**
- * KeepAlive 后 HD blob 常驻内存，几百张大图会吃掉数百 MB。
- * 只保留最近 HD_CACHE_LIMIT 张的 blob，超出释放并回落缩略图；
- * 查看器大图单独走 hydrateViewer，不受影响。
- */
+/** HD 读取并发 */
+const CARD_CONCURRENCY = 4
+/** 常驻 HD blob 上限，超出按 LRU 淘汰并回落缩略图 */
 const HD_CACHE_LIMIT = 40
+const cardLruOrder = new Map<string | number, 1>()
+const cardQueue: ArtworkRecord[] = []
+const queuedCardIds = new Set<string | number>()
+let cardWorkers = 0
+
+function touchCardLru(id: string | number) {
+  cardLruOrder.delete(id)
+  cardLruOrder.set(id, 1)
+}
+
 function trimCardUrls() {
-  const ids = Object.keys(cardUrls)
-  if (ids.length <= HD_CACHE_LIMIT) return
-  const excess = ids.length - HD_CACHE_LIMIT
-  for (const id of ids.slice(0, excess)) {
+  if (cardLruOrder.size <= HD_CACHE_LIMIT) return
+  const excess = cardLruOrder.size - HD_CACHE_LIMIT
+  for (const id of [...cardLruOrder.keys()].slice(0, excess)) {
+    cardLruOrder.delete(id)
     const url = cardUrls[id]
     if (url && url.startsWith('blob:')) {
       URL.revokeObjectURL(url)
@@ -456,6 +468,7 @@ function trimCardUrls() {
     delete cardUrls[id]
   }
 }
+
 async function hydrateThumbs() {
   const pending = visible.value.filter(item => !cardUrls[item.id] && !thumbUrls[item.id])
   let index = 0
@@ -476,30 +489,82 @@ async function hydrateThumbs() {
   await Promise.all(Array.from({ length: Math.min(THUMB_CONCURRENCY, pending.length) }, () => worker()))
 }
 
-async function hydrateCards() {
-  const pending = visible.value.filter(item => !cardUrls[item.id])
-  let index = 0
-  async function worker() {
-    while (index < pending.length) {
-      const item = pending[index++]
-      if (unmounted) return
-      if (!history.value.some(entry => entry.id === item.id)) continue
-      const fallback = safeImageUrl(item.image_url)
-      try {
-        const blob = item.image_id ? await imgGet(item.image_id) : null
-        if (unmounted) return
-        if (blob) cardUrls[item.id] = trackUrl(URL.createObjectURL(blob))
-        else if (fallback) cardUrls[item.id] = fallback
-        else if (item.image_data && String(item.image_data).startsWith('data:image/')) cardUrls[item.id] = item.image_data
-        else markImageMissing(item.id)
-      } catch {
-        if (fallback) cardUrls[item.id] = fallback
-        else markImageMissing(item.id)
-      }
-    }
+async function hydrateCard(item: ArtworkRecord) {
+  const fallback = safeImageUrl(item.image_url)
+  let resolved = false
+  try {
+    const blob = item.image_id ? await imgGet(item.image_id) : null
+    if (unmounted) return
+    if (blob) { cardUrls[item.id] = trackUrl(URL.createObjectURL(blob)); resolved = true }
+    else if (fallback) { cardUrls[item.id] = fallback; resolved = true }
+    else if (item.image_data && String(item.image_data).startsWith('data:image/')) { cardUrls[item.id] = item.image_data; resolved = true }
+    else markImageMissing(item.id)
+  } catch {
+    if (fallback) { cardUrls[item.id] = fallback; resolved = true }
+    else markImageMissing(item.id)
   }
-  await Promise.all(Array.from({ length: Math.min(HYDRATE_CONCURRENCY, pending.length) }, () => worker()))
+  if (!resolved) return
+  // 读取期间被删除的条目：URL 不入册直接释放，避免缓存里留下孤儿
+  if (!history.value.some(entry => entry.id === item.id)) {
+    const url = cardUrls[item.id]
+    if (url && url.startsWith('blob:')) { URL.revokeObjectURL(url); objectUrls.delete(url) }
+    delete cardUrls[item.id]
+    return
+  }
+  touchCardLru(item.id)
   trimCardUrls()
+}
+
+/** 只有走进视口的卡片才读 HD；再次可见的已淘汰卡片会按需重读 */
+function requestCardHydration(item: ArtworkRecord) {
+  if (cardUrls[item.id]) { touchCardLru(item.id); return }
+  if (missingImageIds.value.has(item.id) || queuedCardIds.has(item.id)) return
+  queuedCardIds.add(item.id)
+  cardQueue.push(item)
+  pumpCardQueue()
+}
+
+function pumpCardQueue() {
+  while (cardWorkers < CARD_CONCURRENCY && cardQueue.length) {
+    const item = cardQueue.shift()!
+    cardWorkers += 1
+    void hydrateCard(item).finally(() => {
+      cardWorkers -= 1
+      queuedCardIds.delete(item.id)
+      pumpCardQueue()
+    })
+  }
+}
+
+/* ---------- 可见性驱动 HD 补图 ---------- */
+const shellEl = ref<HTMLElement | null>(null)
+const observedCards = new Map<Element, ArtworkRecord>()
+let cardObserver: IntersectionObserver | null = null
+
+/**
+ * （重）扫描展墙卡片并挂观察器。筛选变化会重建部分节点，旧节点若不
+ * unobserve 会一直被 IntersectionObserver 强引用——所以每次全量重挂。
+ */
+function scanWallCards() {
+  if (!shellEl.value || !visible.value.length) return
+  if (!cardObserver) {
+    cardObserver = new IntersectionObserver(entries => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue
+        const item = observedCards.get(entry.target)
+        if (item) requestCardHydration(item)
+      }
+    }, { rootMargin: '600px 0px' })
+  }
+  for (const el of observedCards.keys()) cardObserver.unobserve(el)
+  observedCards.clear()
+  const byId = new Map(visible.value.map(item => [String(item.id), item]))
+  for (const el of shellEl.value.querySelectorAll<HTMLElement>('.artwork')) {
+    const item = byId.get(el.dataset.cardId || '')
+    if (!item) continue
+    observedCards.set(el, item)
+    cardObserver.observe(el)
+  }
 }
 
 async function hydrateViewer(item: ArtworkRecord) {
@@ -584,6 +649,7 @@ async function confirmDelete(item: ArtworkRecord) {
     const url = cardUrls[item.id]
     if (url && url.startsWith('blob:')) { URL.revokeObjectURL(url); objectUrls.delete(url) }
     delete cardUrls[item.id]
+    cardLruOrder.delete(item.id)
     delete thumbUrls[item.id]
     if (missingImageIds.value.delete(item.id)) missingImageIds.value = new Set(missingImageIds.value)
     delete measuredRatios[item.id]
@@ -747,17 +813,24 @@ onMounted(async () => {
     loras.value = sceneStore.loras
   } catch (e) { console.warn('gallery data load failed', e) }
   void hydrateThumbs()
-  void hydrateCards()
+  await nextTick()
+  scanWallCards()
 })
 
 onUnmounted(() => {
   unmounted = true
   viewerLoadToken += 1
+  cardObserver?.disconnect()
+  cardObserver = null
+  observedCards.clear()
   document.removeEventListener('keydown', onKeydown)
   revokeAll()
 })
 
-watch(visible, () => { hydrateThumbs(); hydrateCards() })
+watch(visible, () => {
+  void hydrateThumbs()
+  void nextTick(() => scanWallCards())
+})
 </script>
 
 <style scoped>

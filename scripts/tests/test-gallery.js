@@ -110,8 +110,8 @@ assert(
   'gallery must release object URLs to avoid leaking blobs',
 );
 assert(
-  view.includes('hydrateCards'),
-  'gallery must hydrate card images lazily rather than eagerly decoding everything',
+  view.includes('requestCardHydration') && view.includes('IntersectionObserver'),
+  'gallery must hydrate card images lazily (viewport-driven) rather than eagerly decoding everything',
 );
 assert(
   view.includes('viewerLoadToken') && view.includes('unmounted'),

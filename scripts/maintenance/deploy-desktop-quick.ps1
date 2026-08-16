@@ -61,6 +61,22 @@ foreach ($item in $map) {
   }
 }
 
+# Copy-Item merges, so hashed build assets under dist/_app accumulate forever
+# (21 stale CompanionView chunks observed on 2026-08-16). Prune files that are
+# not present in the fresh build; content-hashed names make same-name files
+# identical, so this only removes truly dead chunks. Tabs still holding an old
+# index.html may 404 a lazy chunk until reloaded - acceptable for a local app.
+$newApp = Join-Path $root 'dist\_app'
+$dstApp = Join-Path $gatewayDir 'dist\_app'
+if ((Test-Path $newApp) -and (Test-Path $dstApp)) {
+  $keep = @(Get-ChildItem -File $newApp | ForEach-Object { $_.Name })
+  $stale = @(Get-ChildItem -File $dstApp | Where-Object { $keep -notcontains $_.Name })
+  if ($stale.Count -gt 0) {
+    $stale | ForEach-Object { Remove-Item $_.FullName -Force -ErrorAction SilentlyContinue }
+    Write-Host "  pruned $($stale.Count) stale hashed asset(s) from dist/_app" -ForegroundColor DarkGray
+  }
+}
+
 # Defense in depth: clear WebView2 HTTP caches (Cache / Code Cache / GPUCache).
 # Even with data-first ordering, an immutable entry cached in a previous
 # broken window would keep shadowing the new data; caches are performance-only
