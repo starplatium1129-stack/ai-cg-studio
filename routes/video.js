@@ -114,7 +114,12 @@ var MODEL_BY_ID = Object.freeze(MODEL_CATALOG.reduce(function (result, model) {
 // 画质抽查可接受；无 T8 节点时回退原生采样器路径（8 步 LoRA）。
 // 模块默认 false：单元/网关测试（mock 无 T8）走原生路径不受影响；
 // 生产由 createVideoRouter 启动时探测真实 ComfyUI 后置 true。
+// 2026-08-17 修复：探测结果此前「启动时一次性、永不刷新」——3123 启动时
+// ComfyUI 未就绪/被卡死任务占满会导致探测失败并永久缓存 false，此后所有
+// 视频任务错走原生慢路径（15s 503s vs T8 272s）。现在提交任务前带 TTL 重探。
 var t8Available = false;
+var t8ProbeAt = 0;
+var T8_PROBE_TTL_MS = 60 * 1000;
 function setT8Available(value) {
   t8Available = Boolean(value);
 }
@@ -133,6 +138,14 @@ async function probeT8Nodes(config) {
     setT8Available(false);
     console.warn('[video] T8 双时钟节点不可用，回退原生采样路径');
   }
+}
+// 提交前确保探测是最新的：T8 未启用且超过 TTL 时重探一次（ComfyUI 恢复或
+// 节点就绪后，第一次提交自动重新发现 T8，不再需要重启网关）。
+async function ensureT8Probe(config) {
+  if (t8Available) return;
+  if (Date.now() - t8ProbeAt < T8_PROBE_TTL_MS) return;
+  t8ProbeAt = Date.now();
+  await probeT8Nodes(config);
 }
 
 var ASPECTS = Object.freeze({
@@ -1884,6 +1897,7 @@ function createVideoRouter(config, dependencies) {
   });
 
   router.post('/api/video/jobs', jobLimit, express.json({ limit:MAX_BODY }), async function (req, res) {
+    try { await ensureT8Probe(config); } catch (error) { /* 探测失败沿用旧值，提交照常 */ }
     var input;
     try { input = validateInput(req.body, config); } catch (error) {
       return envelope.fail(res, error.status || 400, error.message, {
@@ -1934,6 +1948,7 @@ function createVideoRouter(config, dependencies) {
 
   // ── 分镜批量（P5：批量生成 / P6：尾帧衔接 / P8：拼接成片）──────────────
   router.post('/api/video/batches', jobLimit, express.json({ limit:MAX_BATCH_BODY }), async function (req, res) {
+    try { await ensureT8Probe(config); } catch (error) { /* 探测失败沿用旧值，提交照常 */ }
     var batchInput;
     try {
       batchInput = validateBatchInput(req.body, config);
