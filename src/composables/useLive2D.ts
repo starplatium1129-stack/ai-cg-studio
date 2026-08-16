@@ -879,7 +879,16 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   }
 
   function bindInteractionEvents() {
-    if (!stageEl || pointerClickHandler) return
+    if (!stageEl) return
+    // 幂等重建：角色切换/重载会重建 session（onModelLoaded 再次进入），旧的
+    // click 监听与 native 订阅必须解绑后重建，否则新 session 的 hit-test 回调
+    // 无人接收（点击无任何反馈，2026-08-16 用户反馈"切换角色后无法点击"）。
+    if (pointerClickHandler) {
+      stageEl.removeEventListener('click', pointerClickHandler)
+      pointerClickHandler = null
+    }
+    if (nativeHitTestUnsubscribe) { nativeHitTestUnsubscribe(); nativeHitTestUnsubscribe = null }
+    if (nativeMotionFailedUnsubscribe) { nativeMotionFailedUnsubscribe(); nativeMotionFailedUnsubscribe = null }
     interactionHint.value = character.value === 'natsume'
       ? '移动鼠标可跟随视线；点击头部、手、胸前、裙子、腿或脚可互动'
       : '移动鼠标可跟随视线；点击呆毛、头部、脸、身体、两侧或裙摆可互动'

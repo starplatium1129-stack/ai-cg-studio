@@ -368,22 +368,35 @@ float l2d_model_get_parameter(l2d_model* m, const char* id)
 void l2d_model_reset_overlay_params(l2d_model* m)
 {
     if (!m || !m->model) { return; }
-    static const char* overlayParams[] = {
-        "Param18",
-        "Param37", "Param38", "Param39", "Param40", "Param41", "Param42", "Param43", "Param44", "Param45",
-        "Param46", "Param47", "Param48", "Param49", "Param50", "Param51", "Param52", "Param53",
-        "Param54", "Param55", "Param56", "Param57", "Param58", "Param59", "Param60", "Param61",
-        "Param62", "Param63", "Param64",
-        "ParamMouthForm5", "ParamMouthForm6", "ParamMouthForm7", "ParamMouthForm8",
-        "ParamMouthForm9", "ParamMouthForm10"
+    // Hidden-state values grouped by moc3 parameter defaults (verified via
+    // idle parameter snapshots 2026-08-16): most overlay params default to
+    // -1 (hidden); writing 0 lands in the "visible" range and leaves the
+    // overlay half-transparent (ghosting). Param18/44-51/56/57/62 default 0.
+    // Write explicit hidden values instead of GetParameterDefaultValue so
+    // native matches the frontend NATSUME_RESET_PARAMS exactly.
+    static const struct { const char* id; float value; } overlayParams[] = {
+        { "Param18", 0.0f },
+        { "Param44", 0.0f }, { "Param45", 0.0f }, { "Param46", 0.0f },
+        { "Param47", 0.0f }, { "Param48", 0.0f }, { "Param49", 0.0f },
+        { "Param50", 0.0f }, { "Param51", 0.0f }, { "Param56", 0.0f },
+        { "Param57", 0.0f }, { "Param62", 0.0f },
+        { "Param37", -1.0f }, { "Param38", -1.0f }, { "Param39", -1.0f },
+        { "Param40", -1.0f }, { "Param41", -1.0f }, { "Param42", -1.0f },
+        { "Param43", -1.0f }, { "Param52", -1.0f }, { "Param53", -1.0f },
+        { "Param54", -1.0f }, { "Param55", -1.0f }, { "Param58", -1.0f },
+        { "Param59", -1.0f }, { "Param60", -1.0f }, { "Param61", -1.0f },
+        { "Param63", -1.0f }, { "Param64", -1.0f },
+        { "ParamMouthForm5", 0.0f }, { "ParamMouthForm6", 0.0f },
+        { "ParamMouthForm7", 0.0f }, { "ParamMouthForm8", 0.0f },
+        { "ParamMouthForm9", 0.0f }, { "ParamMouthForm10", 0.0f }
     };
     for (csmUint32 i = 0; i < sizeof(overlayParams) / sizeof(overlayParams[0]); ++i)
     {
-        CubismIdHandle paramId = CubismFramework::GetIdManager()->GetId(overlayParams[i]);
+        CubismIdHandle paramId = CubismFramework::GetIdManager()->GetId(overlayParams[i].id);
         csmInt32 index = m->model->GetParameterIndex(paramId);
         if (index >= 0)
         {
-            m->model->SetParameterValue(index, m->model->GetParameterDefaultValue(index));
+            m->model->SetParameterValue(index, overlayParams[i].value);
         }
     }
 }
