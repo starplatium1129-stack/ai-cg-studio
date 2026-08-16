@@ -89,3 +89,30 @@ fn fs_mask(in: VsOut) -> @location(0) vec4<f32> {
     let a = tex.a;
     return vec4<f32>(1.0, 1.0, 1.0, a);
 }
+
+// Fullscreen blit for 2x supersampled rendering: sample the offscreen
+// supersample texture with linear filtering and write the downscaled frame
+// into the swapchain surface. The 2x downsample acts as SSAA (clean edges)
+// and keeps texture detail crisp at non-integer display scales, matching the
+// browser wl-live2d path (pixi resolution: 2).
+@vertex
+fn vs_blit(@builtin(vertex_index) vi: u32) -> VsOut {
+    var pos = vec2<f32>(0.0, 0.0);
+    if (vi == 0u) {
+        pos = vec2<f32>(-1.0, -1.0);
+    } else if (vi == 1u) {
+        pos = vec2<f32>(3.0, -1.0);
+    } else {
+        pos = vec2<f32>(-1.0, 3.0);
+    }
+    var out: VsOut;
+    out.position = vec4<f32>(pos, 0.0, 1.0);
+    out.uv = vec2<f32>(pos.x * 0.5 + 0.5, 0.5 - pos.y * 0.5);
+    out.mask_uv = vec2<f32>(0.0, 0.0);
+    return out;
+}
+
+@fragment
+fn fs_blit(in: VsOut) -> @location(0) vec4<f32> {
+    return textureSample(color_tex, color_sampler, in.uv);
+}

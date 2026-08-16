@@ -126,3 +126,58 @@ ChatCharacterStage / useLive2D
 - `useLive2D` 的窗口内与全局鼠标不再逐事件直写 focus/bridge，而是只更新凝视 target，由单一 RAF 以指数响应平滑追随；窗口外凝视钳制为 `0.82`，DOM 离开且无全局接管或窗口隐藏时自然回中。
 - `nativeBackend.ts` 对 `setGaze` 增加 latest-wins 背压：桥调用未完成时只保留最新目标，避免高刷新鼠标输入积压 Tauri command。Rust overlay 无需新增参数、动作或 IPC，只继续接收现有 `setGaze(x, y)` 意图。
 - 验证：Companion/Live2D/Native contract 定向单测 42/42，`npm run typecheck:app`、`npm run build` 通过；浏览器实测 1280×720 与 768×900 均无横向滚动，状态提示与左侧角色切换、右侧 Live2D 状态不重叠。
+
+## 2026-08-16 桌宠"透明框"、模型偏置、点击闪烁与清晰度全链路修复（用户照片反馈）
+
+> 现象 → 根因 → 修复 → 验证 完整记录。涉及前端 CSS、native renderer、overlay shell 三处，均已真机验证。
+
+### 现象
+
+1. 夏目 Live2D 整体外围有可见的"透明框"（浅色矩形底板），宁宁没有。
+2. 点击 Live2D "有机率闪烁"。
+3. 模型渲染"像没有抗锯齿"，放大后衣服纹理不如以前清晰。
+4. （顺带发现）桌宠点击角色任何分区都触发同一个"外框"反应。
+
+### 根因（逐条，均经像素/视觉/代码三重取证）
+
+1. **透明框 = 两层叠加**：
+   - CSS 层（WebView）：`html.companion-desktop .portrait-stage::before` 冷白径向光晕（`rgba(225,231,255,.34)`，0816 二轮加的"角色背光"）+ `.portrait-stage::after` 的 `--companion-wash` 亮色 1px 网格框线（14%/86%、25%/72% 四边）在桌面超透明窗上显成可见浅色框。
+   - 模型层（overlay）：夏目源模型自带三块可见的 4 顶点矩形 drawable——**d101 / d102（外框命中网格）/ d104（全画布底板）**，面积 3.545/0.652，合围成角色背后的浅色板。宁宁模型没有 → 宁宁正常。用户猜"是 live2d 本身自带的"——正确，就是模型自带的。
+   - 取证方法（重要，可复用）：overlay 窗口"可见 vs 隐藏"两帧像素差分（overlay 清屏 `Clear(TRANSPARENT)` 为真透明）；主窗口/overlay 矩形必须用 **DPI-aware 进程**测量（`SetProcessDPIAware` + `GetWindowRect`，本机 dpr=1.75，非 DPI-aware 的 GetWindowRect 全是虚拟化逻辑像素，曾导致大量错误截图结论——用户明确指出"窗口级截图"后改用 CDP `Page.captureScreenshot` + DPI-aware 物理矩形捕获）。
+
+2. **点击闪烁**：
+   - 主要来源 = 互动动作驱动的叠层显隐（Tap* 动作曲线改 PartOpacity/参数）叠加 `content_bounds` 只统计**当前可见** drawable——动作隐藏部件时拟合包围盒变化 → 角色整体跳位一帧 = 闪烁。另叠加"外框"大矩形命中区让每次点击都播 TapFrame 动作（叠层闪动最频繁的一组）。
+   - 修复后连拍 26 帧验证：动作平滑起止、无闪帧。
+
+3. **不清晰/像没抗锯齿**：
+   - native overlay 一直无 MSAA（`sample_count:1`，历史从未有过）；浏览器 wl-live2d 路径是 `resolution:2`（2× 超采样）→ 用户记忆中的"原先清晰"= 浏览器路径。native 1× 直渲在 1.75 dpr 下边缘阶梯 + 纹理细节不足。
+   - 修复 = **2× 超采样**（与 wl-live2d 对齐）：模型渲染进 2× 离屏目标（SSAA + 纹理细节翻倍），线性降采样 blit 回 swapchain。
+
+4. **点击分区失效**：model3.json HitAreas 顺序"外框"第一，且外框网格是覆盖角色躯干的大矩形 → Core 命中测试返回列表首个恒为外框 → 所有点击都播 TapFrame（"夏目抬眼看了你一下"）。
+
+### 修复
+
+- `src/assets/css/companion.css`：桌面模式 `.portrait-stage::before` / `::after` 一律 `display:none`（不再绘制任何背景层；保留脚部暗色地面投影与立绘深影）。
+- `desktop-tauri/native-live2d/src/model.rs`：
+  - `Model` 新增 `hidden_drawables`（`set_hidden_drawables`），`drawables_into` 对隐藏 id 置 `visible=false, opacity=0`（仅影响渲染快照，Core 状态/命中/动作不受影响——外框命中区 d102 仍可点）。
+  - `content_bounds()` 改为全量 drawable 静态包围盒（不再随动作可见性变化）→ 拟合永不跳动。
+  - `ViewTransform` 增加 `center_x/center_y`（fit_content 以内容包围盒中心对齐屏幕中心，兼容画布内偏置模型）。
+- `desktop-tauri/native-live2d/src/renderer.rs` + `shader.wgsl`：`draw_frame` 新增 `supersample` 参数——渲染进 2× 离屏目标（`ensure_ss_texture`），`vs_blit/fs_blit` 全屏三角线性降采样回 surface；mask 通道同样 2×（`ensure_mask_resource` 按尺寸自动重建）。环境变量 `L2D_SUPERSAMPLE=0` 可关闭。
+- `desktop-tauri/src-tauri/src/live2d_overlay.rs`：`hidden_drawables_for("natsume") → [101,102,104]`（`load_model` 挂载）；`render_frame`/`hit_test` 超采样时统一用 2× 渲染空间（fit_content、screen_to_canvas 同步），诊断 model_bounds 换算回显示空间。
+- `src/composables/useLive2D.ts`：`interactionFromHitAreas` 对夏目把非"外框"分区前置，外框仅作兜底（点击角色外框空白处仍触发"抬眼"）。
+- `desktop-tauri/native-live2d/examples/render_frame.rs`：新增 `--hide 101,102,104` 用于离线 A/B 验证。
+
+### 验证（真机）
+
+- 隐藏 101/102/104 后 overlay 可见/隐藏差分无低幅条带；角色两侧采样为纯壁纸色（103,158,206，不再是提亮色 130,165,210）；离线渲染差分证实三块板就是居中全高淡色条带。
+- 2× 超采样后角色区最强边缘过渡 27px → 14px（近 2 倍锐度）；颜色/合成正常；`L2D_SUPERSAMPLE=0` 可回退。
+- CDP 分区点击：裙区→"触发了裙摆互动"、腿区→"夏目别开了视线"（头/手区仅命中作者外框网格→抬眼，作者几何如此）。
+- 宁宁切换正常（隐藏列表仅夏目）。
+- 点击连拍 26 帧：无闪帧、动作平滑。
+- 打包链路：`npm run build:tauri` → `npm run package:tauri` → `setup.exe /S` 静默安装 → 清理 3123 → 带 CDP 重启验证（`WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS=--remote-debugging-port=9222`；注意：应用被提权启动时该环境变量无法从普通会话传入，且非提权 SendInput 无法点击提权窗口——验证需让应用以非提权运行）。
+
+### 遗留/后续
+
+- 浏览器 wl-live2d 路径未隐藏三块板（/chat 中启用夏目 Live2D 仍会看到淡色底板）——需 pixi `internalModel.drawables` 的 per-frame 覆盖钩子研究后再做；桌面 native 已修复（用户实际环境）。
+- 渲染器仍无 MSAA（2× 超采样已等效 SSAA，无需再加）。
+- 桌面端 CDP 辅助脚本：`scripts/maintenance/cdp-shot.js`（WebView 窗口级截图 + DOM 状态）、`cdp-verify.js`（部署后验证）、`cdp-interact.js`/`cdp-taps.js`（分区点击回归）。

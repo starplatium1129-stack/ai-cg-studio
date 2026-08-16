@@ -153,6 +153,12 @@ pub struct Renderer {
     texture_upload: TextureUploadState,
     resource_stats: RenderResourceStats,
     stats: RenderStats,
+    /// 2x supersample offscreen target: (width, height, texture, view).
+    /// Recreated when the render size changes; cleared per frame by the main
+    /// pass, then blitted (linear downsample) into the swapchain surface.
+    ss_texture: Option<(u32, u32, wgpu::Texture, wgpu::TextureView)>,
+    ss_bg: Option<wgpu::BindGroup>,
+    ss_pipeline: wgpu::RenderPipeline,
 }
 
 #[derive(Default, Debug, Clone)]
@@ -363,6 +369,40 @@ impl Renderer {
             PipelineKind::Mask,
         );
 
+        // 2x supersample blit pipeline: samples the offscreen supersample
+        // texture (group 0 = texture + sampler) with linear filtering and
+        // writes the downscaled frame into the swapchain surface.
+        let ss_layout = device.create_pipeline_layout(&wgpu::PipelineLayoutDescriptor {
+            label: Some("live2d-ss-blit-layout"),
+            bind_group_layouts: &[&tex_layout],
+            push_constant_ranges: &[],
+        });
+        let ss_pipeline = device.create_render_pipeline(&wgpu::RenderPipelineDescriptor {
+            label: Some("live2d-ss-blit"),
+            layout: Some(&ss_layout),
+            vertex: wgpu::VertexState {
+                module: &module,
+                entry_point: Some("vs_blit"),
+                compilation_options: Default::default(),
+                buffers: &[],
+            },
+            fragment: Some(wgpu::FragmentState {
+                module: &module,
+                entry_point: Some("fs_blit"),
+                compilation_options: Default::default(),
+                targets: &[Some(wgpu::ColorTargetState {
+                    format,
+                    blend: Some(wgpu::BlendState::REPLACE),
+                    write_mask: wgpu::ColorWrites::ALL,
+                })],
+            }),
+            primitive: wgpu::PrimitiveState::default(),
+            depth_stencil: None,
+            multisample: wgpu::MultisampleState::default(),
+            multiview: None,
+            cache: None,
+        });
+
         Renderer {
             device,
             queue,
@@ -388,6 +428,9 @@ impl Renderer {
             },
             resource_stats: RenderResourceStats::default(),
             stats: RenderStats::default(),
+            ss_texture: None,
+            ss_bg: None,
+            ss_pipeline,
         }
     }
 
@@ -532,6 +575,7 @@ impl Renderer {
             height,
             no_mask,
             only_drawable,
+            false,
         );
 
         // read back（DX12 强制 COPY_BYTES_PER_ROW_ALIGNMENT=256，需按行对齐）
@@ -609,6 +653,10 @@ impl Renderer {
 
     /// Render a frame directly into `target_view` and return the encoder. The
     /// caller owns submission and presentation of the returned command buffer.
+    ///
+    /// With `supersample` the model renders into a 2x offscreen target (SSAA +
+    /// crisp texture detail, matching the browser wl-live2d `resolution: 2`
+    /// path) and the frame is blitted down into `target_view`.
     pub fn draw_frame(
         &mut self,
         model: &Model,
@@ -619,14 +667,23 @@ impl Renderer {
         height: u32,
         no_mask: bool,
         only_drawable: Option<i32>,
+        supersample: bool,
     ) -> wgpu::CommandEncoder {
         self.stats = RenderStats::default();
         self.resource_stats.frame_creations = 0;
         let options = RenderOptions::from_env();
+        let (rw, rh) = if supersample {
+            (width.saturating_mul(2).max(1), height.saturating_mul(2).max(1))
+        } else {
+            (width, height)
+        };
+        if supersample {
+            self.ensure_ss_texture(rw, rh);
+        }
         let mut drawables = std::mem::take(&mut self.drawables_scratch);
         model.drawables_into(&mut drawables);
         self.ensure_model_cache(model, textures, &drawables);
-        self.prewarm_model_resources(&drawables, options.uv_flipped, width, height);
+        self.prewarm_model_resources(&drawables, options.uv_flipped, rw, rh);
         let texture_count = self
             .model_cache
             .as_ref()
@@ -743,7 +800,7 @@ impl Renderer {
             }
         }
         for &channel_index in &active_channels {
-            self.ensure_mask_resource(channel_index, width, height);
+            self.ensure_mask_resource(channel_index, rw, rh);
         }
 
         let mask_uniform_count: usize = {
@@ -762,8 +819,8 @@ impl Renderer {
                     transform,
                     false,
                     false,
-                    width,
-                    height,
+                    rw,
+                    rh,
                     options.x_shift,
                     options.debug_transform,
                 ));
@@ -779,8 +836,8 @@ impl Renderer {
                     transform,
                     masked,
                     masked && d.inverted_mask,
-                    width,
-                    height,
+                    rw,
+                    rh,
                     options.x_shift,
                     options.debug_transform,
                 ));
@@ -877,10 +934,18 @@ impl Renderer {
         }
 
         {
+            let main_view = if supersample {
+                self.ss_texture
+                    .as_ref()
+                    .map(|(_, _, _, view)| view)
+                    .expect("supersample target")
+            } else {
+                target_view
+            };
             let mut pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
                 label: Some("live2d-main-pass"),
                 color_attachments: &[Some(wgpu::RenderPassColorAttachment {
-                    view: &target_view,
+                    view: main_view,
                     resolve_target: None,
                     depth_slice: None,
                     ops: wgpu::Operations {
@@ -947,11 +1012,80 @@ impl Renderer {
             }
         }
 
+        if supersample {
+            // Downsample the 2x offscreen into the swapchain surface.
+            let ss_bg = self.ss_bg.as_ref().expect("supersample bind group");
+            let mut pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
+                label: Some("live2d-ss-blit-pass"),
+                color_attachments: &[Some(wgpu::RenderPassColorAttachment {
+                    view: target_view,
+                    resolve_target: None,
+                    depth_slice: None,
+                    ops: wgpu::Operations {
+                        load: wgpu::LoadOp::Load,
+                        store: wgpu::StoreOp::Store,
+                    },
+                })],
+                depth_stencil_attachment: None,
+                timestamp_writes: None,
+                occlusion_query_set: None,
+            });
+            pass.set_pipeline(&self.ss_pipeline);
+            pass.set_bind_group(0, ss_bg, &[]);
+            pass.draw(0..3, 0..1);
+        }
+
         self.stats.draw_calls = draw_calls;
         self.stats.mask_textures = active_channels.len();
         self.stats.total_vertices = total_vertices;
         self.drawables_scratch = drawables;
         encoder
+    }
+
+    /// Lazily create/recreate the 2x supersample offscreen target and its
+    /// bind group for the given render size.
+    fn ensure_ss_texture(&mut self, width: u32, height: u32) {
+        let current = self
+            .ss_texture
+            .as_ref()
+            .map(|(w, h, _, _)| (*w, *h))
+            .unwrap_or((0, 0));
+        if current == (width, height) {
+            return;
+        }
+        let texture = self.device.create_texture(&wgpu::TextureDescriptor {
+            label: Some("live2d-ss-target"),
+            size: wgpu::Extent3d {
+                width,
+                height,
+                depth_or_array_layers: 1,
+            },
+            mip_level_count: 1,
+            sample_count: 1,
+            dimension: wgpu::TextureDimension::D2,
+            format: self.format,
+            usage: wgpu::TextureUsages::RENDER_ATTACHMENT | wgpu::TextureUsages::TEXTURE_BINDING,
+            view_formats: &[],
+        });
+        let view = texture.create_view(&wgpu::TextureViewDescriptor::default());
+        let bind_group = self.device.create_bind_group(&wgpu::BindGroupDescriptor {
+            label: Some("live2d-ss-bg"),
+            layout: &self.tex_layout,
+            entries: &[
+                wgpu::BindGroupEntry {
+                    binding: 0,
+                    resource: wgpu::BindingResource::TextureView(&view),
+                },
+                wgpu::BindGroupEntry {
+                    binding: 1,
+                    resource: wgpu::BindingResource::Sampler(&self.sampler),
+                },
+            ],
+        });
+        self.ss_texture = Some((width, height, texture, view));
+        self.ss_bg = Some(bind_group);
+        self.resource_stats.textures_created += 1;
+        self.record_resource_creation();
     }
 
     /// Render a mask channel to a CPU buffer for debugging.

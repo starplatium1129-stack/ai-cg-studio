@@ -77,6 +77,11 @@ fn normalize_json(json: &[u8]) -> Result<Vec<u8>, String> {
 pub struct Model {
     ptr: *mut L2dModelOpaque,
     id: u64,
+    /// Drawable indices that must never be painted (per-character product
+    /// fixes, e.g. the natsume model's own backdrop/frame plates 101/102/104
+    /// that users perceive as a "transparent box" around the character).
+    /// Rendering-only: hit tests and content bounds are unaffected.
+    hidden_drawables: Vec<i32>,
 }
 
 unsafe impl Send for Model {}
@@ -92,7 +97,22 @@ impl Model {
             return Err("l2d_model_create failed".to_string());
         }
         let id = NEXT_MODEL_ID.fetch_add(1, Ordering::Relaxed);
-        Ok(Model { ptr, id })
+        Ok(Model {
+            ptr,
+            id,
+            hidden_drawables: Vec::new(),
+        })
+    }
+
+    /// Drawables in `ids` are dropped from the painted frame (opacity 0 and
+    /// invisible in the drawable snapshot). The Core model state is untouched:
+    /// hit areas, motions and content bounds keep their authored behavior.
+    pub fn set_hidden_drawables(&mut self, ids: &[i32]) {
+        self.hidden_drawables = ids.iter().copied().collect();
+    }
+
+    pub fn hidden_drawables(&self) -> &[i32] {
+        &self.hidden_drawables
     }
 
     /// Stable identity for renderer-side GPU caches.
@@ -246,15 +266,21 @@ impl Model {
         }
         for (index, drawable) in out.iter_mut().enumerate() {
             self.drawable_at_into(index as i32, drawable);
+            if self.hidden_drawables.contains(&(index as i32)) {
+                drawable.visible = false;
+                drawable.opacity = 0.0;
+            }
         }
     }
 
-    /// Bounding box of all visible drawables in canvas units. Some old
-    /// (Cubism 3) models have vertices whose unit differs from the canvas
-    /// size, so content-fit must use this rather than the canvas size.
+    /// Bounding box of all drawables (visible or not) in canvas units. The
+    /// fit must be stable across motion states: authored motions toggle
+    /// per-part visibility, and a visible-only bbox would shift the character
+    /// mid-animation (the "click flicker" symptom). Some old (Cubism 3)
+    /// models have vertices whose unit differs from the canvas size, so
+    /// content-fit must use this rather than the canvas size.
     pub fn content_bounds(&self) -> ([f32; 2], [f32; 2]) {
-        self.drawable_bounds(true)
-            .or_else(|| self.drawable_bounds(false))
+        self.drawable_bounds(false)
             .unwrap_or_else(|| {
                 let half_width = (self.canvas_width().abs() * 0.5).max(0.5);
                 let half_height = (self.canvas_height().abs() * 0.5).max(0.5);
@@ -431,10 +457,18 @@ pub struct HitArea {
 ///
 /// Cubism Core reports drawable vertices in *canvas space with the origin at
 /// the canvas center and Y pointing up*, already normalized by pixelsPerUnit.
-/// So mapping to screen/clip space is a pure uniform scale + centering.
+/// Mapping to screen/clip space is a uniform scale + a translation that puts
+/// the fitted content's center at the screen center. Models whose character is
+/// offset inside the canvas (Live2DViewerEX 解包工坊模型常见，如夏目
+/// 内容包围盒中心显著偏右) must center on the content bbox center rather
+/// than the canvas origin, otherwise the character hugs the stage edge.
 #[derive(Clone, Copy, Debug)]
 pub struct ViewTransform {
     pub scale: f32,
+    /// Canvas-space center of the fitted content. `fit_content` derives it
+    /// from the vertex bbox; `fit` keeps the canvas origin (0, 0).
+    pub center_x: f32,
+    pub center_y: f32,
 }
 
 impl ViewTransform {
@@ -447,12 +481,17 @@ impl ViewTransform {
         scale_override: Option<f32>,
     ) -> Self {
         let scale = scale_override.unwrap_or((width / canvas_w).min(height / canvas_h));
-        Self { scale }
+        Self {
+            scale,
+            center_x: 0.0,
+            center_y: 0.0,
+        }
     }
 
     /// Fit the *content* (vertex bbox) into (width x height), centered on the
-    /// canvas origin. Matches wl-live2d's content-fit behavior and works for
-    /// old Cubism 3 models whose vertex unit differs from the canvas size.
+    /// bbox center. Works for old Cubism 3 models whose vertex unit differs
+    /// from the canvas size and for models whose character is offset inside
+    /// the canvas (both must render centered, matching the static portrait).
     pub fn fit_content(
         bounds: ([f32; 2], [f32; 2]),
         width: f32,
@@ -463,32 +502,41 @@ impl ViewTransform {
         let w = (max[0] - min[0]).max(1e-6);
         let h = (max[1] - min[1]).max(1e-6);
         let scale = ((width * (1.0 - padding)) / w).min((height * (1.0 - padding)) / h);
-        Self { scale }
+        Self {
+            scale,
+            center_x: (min[0] + max[0]) * 0.5,
+            center_y: (min[1] + max[1]) * 0.5,
+        }
     }
 
     pub fn canvas_to_screen(&self, x: f32, y: f32, width: f32, height: f32) -> (f32, f32) {
-        (width * 0.5 + x * self.scale, height * 0.5 - y * self.scale)
+        (
+            width * 0.5 + (x - self.center_x) * self.scale,
+            height * 0.5 - (y - self.center_y) * self.scale,
+        )
     }
 
     pub fn screen_to_canvas(&self, x: f32, y: f32, width: f32, height: f32) -> (f32, f32) {
         (
-            (x - width * 0.5) / self.scale,
-            (height * 0.5 - y) / self.scale,
+            (x - width * 0.5) / self.scale + self.center_x,
+            (height * 0.5 - y) / self.scale + self.center_y,
         )
     }
 
-    /// Model canvas coordinate -> clip space (x right, y up; both already
-    /// centered on origin, so only the scale matters).
+    /// Model canvas coordinate -> clip space (x right, y up).
     pub fn canvas_to_clip(&self, x: f32, y: f32, width: f32, height: f32) -> [f32; 2] {
-        [x / width * 2.0 * self.scale, y / height * 2.0 * self.scale]
+        [
+            (x - self.center_x) / width * 2.0 * self.scale,
+            (y - self.center_y) / height * 2.0 * self.scale,
+        ]
     }
 
     pub fn as_uniform(&self, width: f32, height: f32) -> [f32; 4] {
         [
             2.0 * self.scale / width,
             2.0 * self.scale / height,
-            0.0,
-            0.0,
+            -self.center_x * 2.0 * self.scale / width,
+            -self.center_y * 2.0 * self.scale / height,
         ]
     }
 
@@ -497,8 +545,8 @@ impl ViewTransform {
         [
             2.0 * self.scale / width,
             2.0 * self.scale / height,
-            x_shift,
-            0.0,
+            x_shift - self.center_x * 2.0 * self.scale / width,
+            -self.center_y * 2.0 * self.scale / height,
         ]
     }
 }

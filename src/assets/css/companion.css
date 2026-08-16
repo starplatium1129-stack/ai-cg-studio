@@ -418,6 +418,7 @@ html.companion-mode body {
 }
 
 .companion-page .companion-composer {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto auto auto;
   gap: var(--s-2);
@@ -1495,18 +1496,14 @@ html.companion-desktop .companion-conversation {
 
 html.companion-desktop.companion-ui-hidden .companion-toolbar,
 html.companion-desktop.companion-ui-hidden .companion-conversation {
+  display: none;
   opacity: 0;
   pointer-events: none;
-  transform: translateY(10px);
 }
 
 html.companion-desktop.companion-ui-hidden .companion-presence-cue {
   opacity: .32;
   transform: translateX(-50%) translateY(-3px) scale(.96);
-}
-
-html.companion-desktop.companion-ui-hidden .companion-toolbar {
-  transform: translateY(-10px);
 }
 
 html.companion-desktop .companion-toolbar,
@@ -1759,12 +1756,13 @@ html.companion-immersive .companion-page {
   flex-shrink: 0;
 }
 
-/* —— 语音环境未就绪：紧凑单行（不再占大块） —— */
+/* —— 语音环境未就绪：紧凑单行（收进输入面板内，不再占对话区整行） —— */
 .companion-page .companion-setup-inline {
   display: flex;
   align-items: center;
   gap: var(--s-2);
-  padding: 0 2px var(--s-2);
+  grid-column: 1 / -1;
+  padding: 0 2px 6px;
   color: var(--text-muted);
   font-size: var(--fs-label-sm);
 }
@@ -1827,4 +1825,172 @@ html.companion-immersive .companion-page {
 }
 html.companion-immersive .companion-presence-cue {
   top: 12px;
+}
+
+/* ============================================================
+ * 2026-08-16 桌宠主角化布局（用户照片反馈修复）
+ * 现象：正常模式下顶栏下方的角色切换标签/状态胶囊/立绘状态按钮压在
+ *       角色头部上，底部对话面板（气泡+语音提示条+输入栏）盖住膝盖
+ *       以下；夏目（accent #f2bb68）的舞台背景光晕呈现为一大块黄色。
+ * 修复：
+ *  1) 桌面窗口改 flex 纵向三段（顶栏 / 立绘 / 对话面板），立绘占剩余
+ *     高度并自适应缩放，UI 永不与角色重叠；
+ *  2) 舞台悬浮件收敛：角色切换并入顶栏分段控件，状态胶囊与立绘状态
+ *     按钮在桌面模式隐藏（状态已并入输入面板状态行）；
+ *  3) 桌面模式背景光晕全部改中性暗色（art-scrim/黑），去掉 accent
+ *     色大色块，夏目不再出现黄色块，角色在任何桌面壁纸上都干净；
+ *  4) 空闲自动隐藏改为真正收起顶栏+对话面板（display:none），立绘
+ *     随之放大到整窗，最大化"角色为主"的桌面宠体验。
+ * ============================================================ */
+
+/* —— 1) flex 三段布局：顶栏 / 立绘 / 对话 —— */
+html.companion-desktop .companion-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  padding: var(--s-2);
+}
+
+html.companion-desktop .companion-page .companion-toolbar {
+  position: static;
+  top: auto;
+  right: auto;
+  left: auto;
+  flex: none;
+  min-height: 52px;
+}
+
+html.companion-desktop .companion-page .companion-identity {
+  min-width: 0;
+  overflow: hidden;
+}
+
+html.companion-desktop .companion-page .companion-identity h1 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+html.companion-desktop .companion-page .companion-stage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  height: auto;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+html.companion-desktop .companion-page .character-card {
+  position: relative;
+  inset: auto;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/* 对话面板脱离立绘：静态块排在立绘下方，气泡再多也不遮挡角色 */
+html.companion-desktop .companion-page .companion-conversation {
+  position: static;
+  inset: auto;
+  width: 100%;
+  margin: 0 0 6px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* —— 2) 舞台悬浮件收敛（角色切换进顶栏，状态进输入面板） —— */
+html.companion-desktop .companion-page .character-tabs,
+html.companion-desktop .companion-page .companion-presence-cue,
+html.companion-desktop .companion-page .avatar-status {
+  display: none;
+}
+
+/* 顶栏角色切换分段控件 */
+html.companion-desktop .companion-char-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-right: 2px;
+  padding: 2px;
+  border: 1px solid var(--companion-edge);
+  border-radius: var(--r-pill);
+  background: var(--companion-wash);
+}
+html.companion-desktop .companion-char-switch button {
+  min-height: 26px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--companion-ink-soft);
+  cursor: pointer;
+  font: 700 var(--fs-label-xs) var(--font-sans);
+  transition: background 160ms ease, color 160ms ease;
+}
+html.companion-desktop .companion-char-switch button:hover,
+html.companion-desktop .companion-char-switch button:focus-visible {
+  color: var(--companion-ink);
+}
+html.companion-desktop .companion-char-switch button.active {
+  background: color-mix(in srgb, var(--character-accent) 32%, var(--art-scrim));
+  color: var(--companion-ink);
+  box-shadow: inset 0 1px 0 var(--companion-highlight);
+}
+
+/* —— 3) 桌面模式背景：窗口保持透明，只留中性暗角 + 角色柔和背光 ——
+   教训（2026-08-16 二轮）：深色"舞台卡"把窗口变成黑色矩形贴片，
+   用户反馈角色淹没。改为：窗口背景完全不绘制（全透明，壁纸可见），
+   只在角色身后放一轮冷白柔光把角色"托"出来——不加色相（无黄色）、
+   不形成贴片、角色轮廓清晰。 */
+html.companion-desktop .companion-page::before,
+html.companion-desktop .companion-page::after,
+html.companion-desktop .companion-ambience {
+  display: none;
+}
+
+/* 舞台网格"框"（--companion-wash 亮色四边线在角色四周围出的透明框）：
+   桌面超透明窗上没有底色可依托，光线条反而在壁纸上显成一道可见的
+   浅色框边，用户判为"透明框"。桌面模式一律不绘制。 */
+html.companion-desktop .portrait-stage::after {
+  display: none;
+}
+
+/* 角色背光已移除（2026-08-16 三轮）：前两轮先后试过"深色舞台卡"
+   （整窗变黑贴片）与"冷白径向羽化光晕"（Alpha 归零前仍有肉眼可见的
+   亮度，用户判定为透明框并投诉）。竞相在壁纸上加光源只会留下"框"的
+   观感，现在彻底不绘制任何背景层：角色直接落在壁纸上，只保留下方
+   暗色地面投影与立绘自身的深影（均在角色脚部附近，不构成框）。 */
+html.companion-desktop .portrait-stage::before {
+  display: none;
+}
+
+/* 地面投影：柔和中性，稳定角色站位感 */
+html.companion-desktop .companion-stage::after {
+  background: radial-gradient(ellipse at center, rgba(5, 3, 10, 0.35), transparent 68%);
+}
+
+/* 立绘投影去主题色（关键）：presence 态原规则给 live2d-host 加
+   accent 色 drop-shadow（夏目 accent=#f2bb68 → 角色下半身一圈黄色
+   光晕，就是用户一直看到的"黄色块"）。桌面模式一律改中性深影。 */
+html.companion-desktop .companion-page .live2d-host,
+html.companion-desktop .companion-page .portrait-stage[data-presence="attentive"] .live2d-host,
+html.companion-desktop .companion-page .portrait-stage[data-presence="listening"] .live2d-host,
+html.companion-desktop .companion-page .portrait-stage[data-presence="thinking"] .live2d-host,
+html.companion-desktop .companion-page .portrait-stage[data-presence="speaking"] .live2d-host {
+  filter: drop-shadow(0 18px 26px rgba(5, 3, 10, 0.4));
+}
+html.companion-desktop .companion-page .portrait-main {
+  filter: drop-shadow(0 18px 26px rgba(5, 3, 10, 0.4));
+}
+
+/* 互动提示贴对话面板上沿，不压角色脚部；空闲隐藏时一并收起 */
+html.companion-desktop .companion-page .live2d-interaction-hint {
+  bottom: 6px;
+}
+html.companion-desktop.companion-ui-hidden .companion-page .live2d-interaction-hint {
+  display: none;
 }

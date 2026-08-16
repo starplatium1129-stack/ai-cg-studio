@@ -482,7 +482,20 @@ impl RenderContext {
             );
         }
     }
+}
 
+/// 按角色配置的"永不绘制" drawable 列表（产品修复，仅影响渲染，不影响
+/// 命中区/动作）。夏目源模型自带三块可见的矩形底板/外框 drawable
+/// （101/102/104，4 顶点），在透明桌宠窗口上呈现为用户投诉的"透明框"；
+/// 宁宁模型没有这类 drawable，列表为空。
+fn hidden_drawables_for(character: &str) -> Vec<i32> {
+    match character {
+        "natsume" => vec![101, 102, 104],
+        _ => Vec::new(),
+    }
+}
+
+impl RenderContext {
     fn load_model(&mut self, assets_root: &std::path::Path, character: &str) -> Result<(), String> {
         if let Some(renderer) = self.renderer.as_mut() {
             renderer.release_model_resources();
@@ -532,6 +545,7 @@ impl RenderContext {
         let mut motion_durations: HashMap<String, Vec<f32>> = HashMap::new();
 
         let mut m = Model::create(&moc, &model3_bytes)?;
+        m.set_hidden_drawables(&hidden_drawables_for(character));
         let mut textures: Vec<renderer::Texture> = Vec::new();
         if let Some(refs) = &manifest.file_references {
             if let Some(physics) = &refs.physics {
@@ -656,24 +670,29 @@ impl RenderContext {
             let model = self.model.as_ref().ok_or("no model")?;
             model.content_bounds()
         };
-        let transform =
-            ViewTransform::fit_content(bounds, rect.width as f32, rect.height as f32, 0.02);
-        let (min_x, min_y) = transform.canvas_to_screen(
-            bounds.0[0],
-            bounds.0[1],
-            rect.width as f32,
-            rect.height as f32,
-        );
-        let (max_x, max_y) = transform.canvas_to_screen(
-            bounds.1[0],
-            bounds.1[1],
-            rect.width as f32,
-            rect.height as f32,
-        );
-        let bx = (min_x.min(max_x)).floor().max(0.0) as i32;
-        let by = (min_y.min(max_y)).floor().max(0.0) as i32;
-        let bw = ((max_x - min_x).abs().ceil() as u32).max(1);
-        let bh = ((max_y - min_y).abs().ceil() as u32).max(1);
+        // 2x 超采样（对齐浏览器 wl-live2d resolution:2）：模型按两倍渲染尺寸
+        // 拟合到离屏目标，再线性降采样回 surface——边缘 SSAA + 纹理细节翻倍。
+        // 环境变量 L2D_SUPERSAMPLE=0 可关闭（诊断/低配）。
+        let supersample = std::env::var("L2D_SUPERSAMPLE")
+            .map(|v| v != "0")
+            .unwrap_or(true);
+        let (rw, rh) = if supersample {
+            (
+                (rect.width as f32 * 2.0).max(1.0),
+                (rect.height as f32 * 2.0).max(1.0),
+            )
+        } else {
+            (rect.width as f32, rect.height as f32)
+        };
+        let transform = ViewTransform::fit_content(bounds, rw, rh, 0.02);
+        let (min_x, min_y) = transform.canvas_to_screen(bounds.0[0], bounds.0[1], rw, rh);
+        let (max_x, max_y) = transform.canvas_to_screen(bounds.1[0], bounds.1[1], rw, rh);
+        // 诊断边界换算回显示空间（超采样渲染是 rw/rh 上的坐标）。
+        let disp_scale = if supersample { 2.0 } else { 1.0 };
+        let bx = ((min_x.min(max_x)).floor().max(0.0) / disp_scale) as i32;
+        let by = ((min_y.min(max_y)).floor().max(0.0) / disp_scale) as i32;
+        let bw = (((max_x - min_x).abs().ceil() as f32) / disp_scale) as u32;
+        let bh = (((max_y - min_y).abs().ceil() as f32) / disp_scale) as u32;
         // 诊断边界钳制在 overlay 内；输入事件由上层 WebView 转发，不再用它
         // 裁剪窗口可见区域。
         let clamp_x = (rect.x + bx).clamp(rect.x, rect.x + rect.width as i32);
@@ -697,6 +716,7 @@ impl RenderContext {
             rect.height,
             false,
             None,
+            supersample,
         );
         let _ = self.queue.submit(std::iter::once(encoder.finish()));
         frame.present();
@@ -704,6 +724,7 @@ impl RenderContext {
     }
 
     /// 归一化坐标（0..1，overlay 相对）→ 作者 HitArea 命中。
+    /// 超采样开启时渲染空间是 2x 离屏目标，命中映射必须换算到同一空间。
     fn hit_test(&self, rect: OverlayRect, nx: f32, ny: f32) -> Vec<String> {
         let Some(model) = self.model.as_ref() else {
             return vec![];
@@ -711,14 +732,21 @@ impl RenderContext {
         if rect.width == 0 || rect.height == 0 {
             return vec![];
         }
+        let supersample = std::env::var("L2D_SUPERSAMPLE")
+            .map(|v| v != "0")
+            .unwrap_or(true);
+        let (rw, rh) = if supersample {
+            (rect.width as f32 * 2.0, rect.height as f32 * 2.0)
+        } else {
+            (rect.width as f32, rect.height as f32)
+        };
         let bounds = model.content_bounds();
-        let transform =
-            ViewTransform::fit_content(bounds, rect.width as f32, rect.height as f32, 0.02);
+        let transform = ViewTransform::fit_content(bounds, rw, rh, 0.02);
         let (canvas_x, canvas_y) = transform.screen_to_canvas(
-            nx * rect.width as f32,
-            ny * rect.height as f32,
-            rect.width as f32,
-            rect.height as f32,
+            nx * rw,
+            ny * rh,
+            rw,
+            rh,
         );
         // 作者 HitArea id 表：由 setCharacter 时解析 model3.json 缓存。
         // 当前返回命中 id 列表（空 = 未命中或模型未加载）。

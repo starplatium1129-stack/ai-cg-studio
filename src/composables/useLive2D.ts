@@ -780,7 +780,14 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
 
   /** 原生路径：Cubism 原生 HitArea 命中（作者分区）→ 互动动作 */
   function interactionFromHitAreas(areas: string[]): Live2DInteraction | null {
-    return areas
+    // 夏目的"外框"是环绕角色的矩形命中区，与头/手/胸/裙/腿/脚分区重叠，
+    // 且 model3.json HitAreas 顺序排第一——直接取首个会让所有点击都变成
+    // "抬眼"反应（2026-08-16 实机：头/手/裙/腿点击全部命中外框）。
+    // 具体分区优先，外框只在没有其他分区命中时兜底（点到角色外的框空白处）。
+    const ordered = character.value === 'natsume'
+      ? [...areas.filter(area => area !== '外框'), ...areas.filter(area => area === '外框')]
+      : areas
+    return ordered
       .map(area => (character.value === 'natsume' ? NATSUME_HIT_AREA_MAP[area] : area))
       .map(area => (character.value === 'natsume' ? NATSUME_INTERACTIONS[area] : INTERACTION_MOTIONS[area]))
       .find((item): item is Live2DInteraction => Boolean(item)) ?? null

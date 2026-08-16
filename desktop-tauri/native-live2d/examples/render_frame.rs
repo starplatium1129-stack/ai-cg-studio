@@ -35,6 +35,7 @@ fn main() {
     let mut no_render = false;
     let mut no_motion = false;
     let mut only_drawable: Option<i32> = None;
+    let mut hide: Vec<i32> = Vec::new();
 
     let mut i = 1;
     while i < args.len() {
@@ -80,6 +81,13 @@ fn main() {
                 i += 1;
                 only_drawable = Some(args[i].parse().unwrap());
             }
+            "--hide" => {
+                i += 1;
+                hide = args[i]
+                    .split(',')
+                    .filter_map(|s| s.trim().parse::<i32>().ok())
+                    .collect();
+            }
             other => {
                 eprintln!("unknown arg: {other}");
                 std::process::exit(2);
@@ -113,6 +121,10 @@ fn main() {
     eprintln!("[manifest] {:#?}", manifest);
 
     let mut model = Model::create(&moc, &model3_bytes).expect("create model");
+    if !hide.is_empty() {
+        model.set_hidden_drawables(&hide);
+        eprintln!("[diag] hidden drawables: {hide:?}");
+    }
     let canvas_w = model.canvas_width();
     let canvas_h = model.canvas_height();
     println!(
