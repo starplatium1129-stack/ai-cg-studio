@@ -182,9 +182,9 @@ function setShape(animate = true) {
   if (portraitCloud) {
     const sample = samplePortraitPoints(portraitCloud, count, width, height)
     shape = sample.points
-    // 统一点径 = 0.75×点距（对标 Arknights-FlowingPoints 的 3px 点 + 1px 缝）：
-    // 点径恒定才有规整点阵质感；明暗层次全部交给调色板颜色表达。
-    portraitRadii = portraitPaints.map(() => sample.spacing * 0.75)
+    // 统一点径 = 0.62×点距（对标参考实现 3px 点/5px 距的 0.6 缝隙比，略放大
+    // 适配更小的场域）：点径恒定才有规整点阵质感；明暗层次全部交给调色板颜色。
+    portraitRadii = portraitPaints.map(() => sample.spacing * 0.62)
   } else {
     shape = createParticleShape(props.shape, count)
   }
@@ -233,15 +233,20 @@ function simulateParticles(now: number): boolean {
   const elapsed = lastPhysicsFrame ? Math.min(32, Math.max(1, now - lastPhysicsFrame)) : 16.67
   const step = elapsed / 16.67
   const recoveryReady = !pointerActive && now - pointerReleasedAt > 220
+  // 剪影模式物理对标 Arknights-FlowingPoints：恒定慢回位弹簧（流动感）+
+  // 固定 105px 斥力半径 + 平方衰减力 1.8 + 摩擦 0.15/帧；点击脉冲不参与。
+  const portrait = portraitCloud !== null
   const pulseAge = now - pulseStartedAt
-  const pulseActive = pulseAge >= 0 && pulseAge < 520
-  const interactionRadius = Math.min(150, Math.max(90, width * 0.22))
+  const pulseActive = !portrait && pulseAge >= 0 && pulseAge < 520
+  const interactionRadius = portrait ? 105 : Math.min(150, Math.max(90, width * 0.22))
   const interactionRadiusSquared = interactionRadius * interactionRadius
+  const repulsionForce = portrait ? 1.8 : 2.35
   let moving = pointerActive || pulseActive || !recoveryReady
 
   for (const particle of particles) {
-    // 剪影模式回弹弹簧更强：被扰散后更"脆"地复位成像
-    const spring = pointerActive ? 0.024 : recoveryReady ? (portraitCloud ? 0.075 : 0.054) : 0
+    const spring = portrait
+      ? 0.01
+      : pointerActive ? 0.024 : recoveryReady ? 0.054 : 0
     particle.velocityX += (particle.targetX - particle.x) * spring * step
     particle.velocityY += (particle.targetY - particle.y) * spring * step
 
@@ -253,7 +258,7 @@ function simulateParticles(now: number): boolean {
         const distance = Math.sqrt(distanceSquared)
         const directionX = distance > 0.1 ? dx / distance : Math.cos(particle.phase)
         const directionY = distance > 0.1 ? dy / distance : Math.sin(particle.phase)
-        const force = (1 - distance / interactionRadius) ** 2 * 2.35
+        const force = (1 - distance / interactionRadius) ** 2 * repulsionForce
         particle.velocityX += directionX * force * step
         particle.velocityY += directionY * force * step
       }
@@ -279,7 +284,7 @@ function simulateParticles(now: number): boolean {
       }
     }
 
-    const damping = Math.pow(pointerActive ? 0.84 : 0.86, step)
+    const damping = Math.pow(portrait ? 0.85 : (pointerActive ? 0.84 : 0.86), step)
     particle.velocityX *= damping
     particle.velocityY *= damping
     particle.x += particle.velocityX * step
@@ -305,12 +310,13 @@ function draw(now = performance.now()) {
     ? paints.map(() => new Path2D())
     : [new Path2D(), new Path2D(), new Path2D()]
   const signalEnergy = props.signal === 'active' ? 1.35 : props.signal === 'warning' ? 1.15 : props.signal === 'success' ? 1.08 : 1
-  // 剪影模式漂移近零：待机"呼吸"保留但不再糊掉画面（抽象形状保持原漂移幅度）
+  // 剪影模式完全静止成像（参考实现无待机漂移，漂移会把点阵糊掉）；
+  // 抽象形状保持原漂移幅度。
   const driftAmount = reduceMotion.value ? 0
-    : paints ? 0.3 * signalEnergy
+    : paints ? 0
       : (props.density === 'backdrop' ? 0.8 : props.density === 'ambient' ? 1.7 : 2.8) * signalEnergy
   const pulseAge = now - pulseStartedAt
-  const pulseActive = pulseAge >= 0 && pulseAge < 520
+  const pulseActive = !paints && pulseAge >= 0 && pulseAge < 520
   const highlights = pointerActive || pulseActive ? new Path2D() : null
   const interactionRadius = Math.min(150, Math.max(90, width * 0.22))
   const interactionRadiusSquared = interactionRadius * interactionRadius
