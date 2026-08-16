@@ -227,6 +227,7 @@
           @duplicate="duplicateHistory"
           @delete="deleteHistory"
           @to-shots="handleHistoryToShots"
+          @to-shots-batch="handleHistoryToShotsBatch"
         />
       </div>
 
@@ -2054,6 +2055,42 @@ async function handleHistoryToShots(entry: HistoryEntry) {
     pb.flash('加入分镜失败')
     console.warn(error)
   }
+}
+
+/** 历史多选批量加入分镜：逐张重建上下文（图片走 IndexedDB），成功/失败计数汇总。 */
+async function handleHistoryToShotsBatch(entries: HistoryEntry[]) {
+  if (!entries.length) return
+  const { prepareVideoCtx, appendShotsCtx, readShotsCtx } = await import('@/composables/useVideoBridge')
+  const { tagsToVideoProse } = await import('@/utils/videoPromptProse')
+  let added = 0
+  let failed = 0
+  for (const entry of entries) {
+    try {
+      const blob = await imgGet(entry.image_id)
+      if (!blob || !blob.size) { failed += 1; continue }
+      const ctx = await prepareVideoCtx({
+        displayUrl: '',
+        animaBlob: blob,
+        prompt: tagsToVideoProse(entry.prompt || entry.story || ''),
+        story: entry.story || '',
+        blueprintId: entry.blueprintId ?? null,
+        characterId: entry.characterId ?? '',
+        sceneId: entry.scene ?? null,
+        flash: () => {},
+        push: async () => {},
+      })
+      if (!ctx) { failed += 1; continue }
+      appendShotsCtx(ctx)
+      added += 1
+    } catch (error) {
+      failed += 1
+      console.warn(error)
+    }
+  }
+  shotsPending.value = readShotsCtx().length
+  pb.flash(failed
+    ? `已加入分镜 ${added} 张，${failed} 张失败（图片失效）`
+    : `已加入分镜 ${added} 张（当前共 ${shotsPending.value} 镜）`)
 }
 
 function saveResult() { saveHistory() }

@@ -1,13 +1,24 @@
 <template>
   <section class="history-wrap" aria-label="作品历史">
-    <div class="panel-title">历史 · History</div>
+    <div class="panel-title history-head">
+      <span>历史 · History</span>
+      <span v-if="selectedEntries.length" class="history-batch">
+        <button class="history-action primary" type="button" @click="$emit('to-shots-batch', selectedEntries)">
+          加入分镜 ({{ selectedEntries.length }})
+        </button>
+        <button class="history-action" type="button" @click="selectedSet.clear()">取消选择</button>
+      </span>
+    </div>
     <div v-if="!items.length" class="history-empty">还没有保存的作品。生成后点“保存快照”，我会把每一张都好好收着。</div>
     <div v-else class="history-list compact-history-list">
-      <article v-for="item in items" :key="item.id" class="history-item">
+      <article v-for="item in items" :key="item.id" class="history-item" :data-selected="selectedSet.has(item.id) || undefined">
         <div class="history-thumb">
           <img v-if="thumbs[item.id]" :src="thumbs[item.id]" alt="历史作品缩略图" loading="lazy">
           <img v-else class="history-placeholder" :src="placeholderUrl" alt="" aria-hidden="true">
           <span class="history-thumb-badge">v{{ item.version || 1 }}</span>
+          <label class="history-pick" title="勾选后可批量加入分镜">
+            <input v-model="selectedSet" type="checkbox" :value="item.id" />
+          </label>
         </div>
         <div class="history-main">
           <div class="history-card-title">{{ item.sceneTitle || item.story || '未命名作品' }}</div>
@@ -53,7 +64,12 @@ defineEmits<{
   duplicate: [entry: HistoryEntry]
   delete: [entry: HistoryEntry]
   'to-shots': [entry: HistoryEntry]
+  'to-shots-batch': [entries: HistoryEntry[]]
 }>()
+
+const selectedSet = reactive(new Set<number>())
+const selectedEntries = computed(() =>
+  props.history.filter(entry => selectedSet.has(entry.id)))
 
 const thumbs = reactive<Record<number, string>>({})
 const objectUrls = new Map<number, string>()
@@ -89,3 +105,19 @@ onBeforeUnmount(() => {
   objectUrls.clear()
 })
 </script>
+
+<style scoped>
+.history-head { display: flex; align-items: center; justify-content: space-between; gap: var(--s-2); }
+.history-batch { display: inline-flex; gap: var(--s-1); }
+.history-pick {
+  position: absolute; top: 4px; left: 4px;
+  display: grid; place-items: center;
+  width: 20px; height: 20px;
+  border-radius: var(--r-sm);
+  background: color-mix(in srgb, var(--bg-deep) 78%, transparent);
+  cursor: pointer;
+}
+.history-pick input { margin: 0; accent-color: var(--accent); }
+.history-item[data-selected="true"] { outline: 1px solid var(--accent); outline-offset: -1px; border-radius: var(--r-md); }
+.history-thumb { position: relative; }
+</style>
