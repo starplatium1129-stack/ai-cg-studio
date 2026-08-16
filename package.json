@@ -82,6 +82,7 @@
     "benchmark:voice-baseline": "node scripts/maintenance/check-voice-baseline.js",
     "audit:prompts": "node scripts/maintenance/audit-prompts.js",
     "scenes:build": "node scripts/maintenance/build-scenes.js",
+    "particles:build": "python scripts/maintenance/build-particle-portraits.py",
     "scenes:import": "node scripts/maintenance/split-scenes.js --write && node scripts/maintenance/build-scenes.js",
     "scenes:normalize": "node scripts/maintenance/classify-scene-ratings.js --write && node scripts/maintenance/optimize-scenes.js --write && node scripts/maintenance/validate-scenes.js",
     "optimize-scenes": "node scripts/maintenance/optimize-scenes.js --write",
