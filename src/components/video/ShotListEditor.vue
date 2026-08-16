@@ -100,16 +100,16 @@
             class="btn btn-ghost"
             type="button"
             :disabled="aiBusy || batchActive || !shots.length"
-            title="逐镜把静态绘图提示词改写成视频分镜描述，并推断景别/镜头/运动/对白（复用聊天 LLM 配置）"
+            title="第 1 步：逐镜把静态绘图提示词改写成视频分镜描述，并推断景别/镜头/运动/对白（复用聊天 LLM 配置）"
             @click="runAiRewrite"
-          >✦ AI 整理分镜</button>
+          >① ✦ AI 整理分镜</button>
           <button
             class="btn btn-ghost"
             type="button"
             :disabled="aiBusy || batchActive || shots.length < 2"
-            title="用全局视角审整批镜头：调整景别/镜头运动/对白分布，让全片有节奏（不改描述本身）"
+            title="第 2 步：用全局视角审整批镜头：调整景别/镜头运动/对白分布，让全片有节奏（不改描述本身）"
             @click="runAiPolish"
-          >◎ AI 整批编排</button>
+          >② ◎ AI 整批编排</button>
           <button
             v-if="aiSnapshot"
             class="btn btn-ghost"
@@ -129,6 +129,7 @@
           <button class="btn btn-ghost" type="button" :disabled="shots.length === 0 || batchActive" @click="clearShots">清空</button>
         </div>
         <p v-if="aiNote" class="shot-ai-note" :data-busy="aiBusy || undefined">{{ aiNote }}</p>
+        <p v-else-if="flowHint" class="shot-flow-hint">{{ flowHint }}</p>
 
         <article v-for="(shot, index) in shots" :key="index" class="shot-row">
           <header class="shot-row-head">
@@ -613,6 +614,7 @@ async function importShotsFromDrawing() {
   }
   if (imported) {
     batchError.value = `已从绘图页带入 ${imported} 个镜头，首帧已自动挂载，可直接生成。`
+    aiFlowStep.value = 0
   }
 }
 
@@ -627,6 +629,16 @@ const aiSnapshot = ref<ShotDraft[] | null>(null)
 const aiNote = ref('')
 /** 整批编排的独立快照：撤销编排只回编排前，不影响「AI 整理」的撤销。 */
 const polishSnapshot = ref<ShotDraft[] | null>(null)
+
+// ── AI 流程引导：推荐顺序 ① 逐镜整理 → ② 整批编排 → 生成 ──────────────
+// aiFlowStep：0=未整理 1=已整理 2=已编排；导入新镜头时重置。
+const aiFlowStep = ref(0)
+const flowHint = computed(() => {
+  if (!shots.value.length) return ''
+  if (aiFlowStep.value === 0) return '推荐流程：先点 ① AI 整理分镜（逐镜改写描述 + 推断台词/景别/镜头/运动）'
+  if (aiFlowStep.value === 1) return '推荐流程：再点 ② AI 整批编排（统稿全片节奏：景别/镜头/台词分布）'
+  return '镜头已整理并编排，可以直接「生成全部镜头」，或逐镜微调后生成。'
+})
 
 async function runAiRewrite() {
   if (aiBusy.value || batchActive.value || !shots.value.length) return
@@ -679,6 +691,7 @@ async function runAiRewrite() {
   }
   await Promise.all(Array.from({ length: Math.min(2, total) }, worker))
   aiBusy.value = false
+  if (failed < total) aiFlowStep.value = Math.max(aiFlowStep.value, 1)
   aiNote.value = failed
     ? `AI 整理完成：${total - failed}/${total} 镜已改写，${failed} 镜失败（保留原描述，可再点一次重试）`
     : `AI 整理完成：${total} 镜全部改写，可逐镜微调或直接生成。`
@@ -691,6 +704,7 @@ function restoreAiSnapshot() {
   })
   shots.value = aiSnapshot.value
   aiSnapshot.value = null
+  aiFlowStep.value = 0
   aiNote.value = '已撤销 AI 整理，恢复整理前内容。'
 }
 
@@ -749,6 +763,7 @@ async function runAiPolish() {
     aiNote.value = changed
       ? `AI 整批编排完成：调整 ${changed} 处（景别/镜头/运动/对白分布），可逐镜微调或「撤销编排」恢复`
       : 'AI 整批编排完成：当前镜头语言已比较均衡，未做调整。'
+    aiFlowStep.value = 2
   } catch (error) {
     polishSnapshot.value = null
     aiNote.value = 'AI 整批编排失败：' + (error instanceof Error ? error.message : String(error))
@@ -764,6 +779,7 @@ function restorePolishSnapshot() {
   })
   shots.value = polishSnapshot.value
   polishSnapshot.value = null
+  aiFlowStep.value = Math.min(aiFlowStep.value, 1)
   aiNote.value = '已撤销 AI 整批编排，恢复编排前内容。'
 }
 
@@ -939,6 +955,7 @@ onBeforeUnmount(() => {
 .shot-toolbar .select { width: auto; max-width: 300px; flex: 0 1 auto; }
 .shot-ai-note { margin: 0 0 var(--s-3); color: var(--accent); font-size: var(--fs-label-xs); line-height: 1.55; }
 .shot-ai-note[data-busy="true"] { color: var(--warning-text); }
+.shot-flow-hint { margin: 0 0 var(--s-3); color: var(--text-muted); font-size: var(--fs-label-xs); line-height: 1.55; }
 .shot-toggle { display: flex; align-items: flex-start; gap: var(--s-3); margin-top: var(--s-4); padding: var(--s-3); border: 1px solid var(--border-soft); border-radius: var(--r-md); background: var(--bg-deep); cursor: pointer; }
 .shot-toggle input { margin-top: 4px; accent-color: var(--accent); }
 .shot-toggle strong, .shot-toggle small { display: block; }
