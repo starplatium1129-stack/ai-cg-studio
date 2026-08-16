@@ -96,8 +96,24 @@
             </option>
           </select>
           <button class="btn btn-ghost" type="button" @click="addShot">＋ 添加镜头</button>
-          <button class="btn btn-ghost" type="button" :disabled="!shots.length" @click="clearShots">清空</button>
+          <button
+            class="btn btn-ghost"
+            type="button"
+            :disabled="aiBusy || batchActive || !shots.length"
+            title="逐镜把静态绘图提示词改写成视频分镜描述，并推断景别/镜头/运动/对白（复用聊天 LLM 配置）"
+            @click="runAiRewrite"
+          >✦ AI 整理分镜</button>
+          <button
+            v-if="aiSnapshot"
+            class="btn btn-ghost"
+            type="button"
+            :disabled="aiBusy || batchActive"
+            title="恢复 AI 整理前的全部镜头内容"
+            @click="restoreAiSnapshot"
+          >撤销整理</button>
+          <button class="btn btn-ghost" type="button" :disabled="shots.length === 0 || batchActive" @click="clearShots">清空</button>
         </div>
+        <p v-if="aiNote" class="shot-ai-note" :data-busy="aiBusy || undefined">{{ aiNote }}</p>
 
         <article v-for="(shot, index) in shots" :key="index" class="shot-row">
           <header class="shot-row-head">
@@ -269,9 +285,12 @@ import {
   cancelVideoBatch,
   concatVideoBatch,
   createVideoBatch,
+  fetchVideoAiStatus,
   fetchVideoBatch,
   retryVideoShot,
+  rewriteVideoShot,
   uploadVideoImage,
+  type VideoAiStatusResponse,
   type VideoBatch,
   type VideoBatchStatus,
   type VideoDefaults,
@@ -410,6 +429,32 @@ function addShot() {
     imageUrl: '',
   })
 }
+
+// ── 参数自动推断：按描述关键词选景别/镜头/主体运动（中英文都认）。
+// 与服务端「文案已带镜头/动作意图时自动句让位」互为镜像：描述里写了
+// 运镜词就把控制器选到对应档，语义一致不会打架。
+function inferShotParams(prompt: string): {
+  shotSize: ShotDraft['shotSize']
+  camera: ShotDraft['camera']
+  motion: ShotDraft['motion']
+} {
+  const text = String(prompt || '')
+  let shotSize: ShotDraft['shotSize'] = ''
+  if (/(特写|近景|大头|close-?up|face\s*shot|macro|脸部)/i.test(text)) shotSize = 'closeup'
+  else if (/(全景|远景|全身|wide\s*shot|establishing|full\s+body|long\s*shot)/i.test(text)) shotSize = 'wide'
+  else if (/(中景|腰部|medium\s*shot|waist)/i.test(text)) shotSize = 'medium'
+
+  let camera: ShotDraft['camera'] = 'still'
+  if (/(推进|推近|推入|推镜|push\s*in|zoom\s*in|dolly\s*in|前推)/i.test(text)) camera = 'push'
+  else if (/(拉远|拉近|拉镜|拉出|pull\s*(?:out|back)|zoom\s*out|dolly\s*out)/i.test(text)) camera = 'pull'
+  else if (/(横移|平移|摇镜|pan(?:ning)?|tracking|跟拍)/i.test(text)) camera = 'pan'
+  else if (/(环绕|环绕镜头|orbit|arc\s*around|绕行)/i.test(text)) camera = 'orbit'
+
+  let motion: ShotDraft['motion'] = 'subtle'
+  if (/(表现力|夸张|激烈|戏剧|爆发|expressive|dramatic|intense|energetic)/i.test(text)) motion = 'expressive'
+  else if (/(转身|回头|回望|回眸|奔跑|跑向|跑进|跑出|走向|走进|走出|走到|坐下|躺下|站起|起身|跳跃|跳起|跳向|起舞|挥手|挥动|举起|拿起|放下|端起|推开|拉开|打开|关上|翻页|弹奏|歌唱|呼喊|微笑|轻笑|大笑|哭泣|仰望|俯身|弯腰|行走|跑动|迈步|踱步|跪下|拥抱|亲吻|抬头|低头|转头|伸手|伸手|捡起|拾起|抱起|坐下|\bmov(?:e|es|ed|ing)\b|\bwalk(?:s|ed|ing)\b|\brun(?:s|ning)\b|\bjump(?:s|ed|ing)\b|\bturn(?:s|ed|ing)\b|\brais(?:e|es|ed|ing)\b|\breach(?:es|ed|ing)\b|\bstand(?:s|ing)\b|\bsit(?:s|ting)\b|\bdanc(?:e|es|ed|ing)\b|\blift(?:s|ed|ing)\b|\bplac(?:e|es|ed|ing)\b|\bopen(?:s|ed|ing)\b|\bclos(?:e|es|ed|ing)\b|\bwav(?:e|es|ed|ing)\b|\bgrab(?:s|bed|bing)\b|\bstep(?:s|ped|ping)\b|\blean(?:s|ed|ing)\b|\bbend(?:s|ing)\b|\bkneel(?:s|ing)\b|\bbow(?:s|ing)\b|\bnod(?:s|ded|ding)\b|\bsmil(?:e|es|ed|ing)\b|\blaugh(?:s|ed|ing)\b|\bwhisper(?:s|ed|ing)\b|\bspeak(?:s|ing)\b|\bsay(?:s|ing)\b|\bsing(?:s|ing)\b|\bsigh(?:s|ed|ing)\b)/i.test(text)) motion = 'natural'
+  return { shotSize, camera, motion }
+}
 function removeShot(index: number) {
   const shot = shots.value[index]
   if (shot?.imageUrl) URL.revokeObjectURL(shot.imageUrl)
@@ -438,7 +483,7 @@ watch(characterId, (id) => {
   }
 })
 
-// 场景蓝图 → 填入所有空镜头（用户已写的不覆盖）。
+// 场景蓝图 → 填入所有空镜头（用户已写的不覆盖），并顺带推断景别/镜头/运动。
 watch(sceneFillId, (id) => {
   if (!id) return
   const blueprint = sceneBlueprints.value.find((item) => item.id === id)
@@ -447,7 +492,13 @@ watch(sceneFillId, (id) => {
     || [blueprint.description, blueprint.action, blueprint.lighting].filter(Boolean).join('，')
   if (prose) {
     shots.value.forEach((shot) => {
-      if (!shot.prompt.trim()) shot.prompt = prose
+      if (!shot.prompt.trim()) {
+        shot.prompt = prose
+        const inferred = inferShotParams(prose)
+        shot.shotSize = inferred.shotSize
+        shot.camera = inferred.camera
+        shot.motion = inferred.motion
+      }
     })
   }
   sceneFillId.value = ''
@@ -504,14 +555,24 @@ async function importShotsFromDrawing() {
   const list = readShotsCtx()
   if (!list.length) return
   clearShotsCtx()
+  // 角色锚点自动填充：ctx 里带着出图时的 characterId（此前一直没用上），
+  // 命中热门角色则把身份锚点一次填好，跨镜一致性不用手动粘。
+  if (!identityCard.value) {
+    const identityId = list.find((ctx) => ctx.characterId)?.characterId
+    if (identityId) {
+      const character = popularCharacters.value.find((item) => item.id === identityId)
+      if (character?.identityProse) identityCard.value = character.identityProse
+    }
+  }
   let imported = 0
   for (const ctx of list) {
+    const inferred = inferShotParams(ctx.prompt || '')
     const draft: ShotDraft = {
       prompt: ctx.prompt || '',
       dialogue: '',
-      shotSize: '',
-      camera: 'still',
-      motion: 'subtle',
+      shotSize: inferred.shotSize,
+      camera: inferred.camera,
+      motion: inferred.motion,
       duration: 5,
       seedText: '',
       imageName: '',
@@ -537,6 +598,82 @@ async function importShotsFromDrawing() {
   if (imported) {
     batchError.value = `已从绘图页带入 ${imported} 个镜头，首帧已自动挂载，可直接生成。`
   }
+}
+
+// ── 「AI 整理分镜」：逐镜把静态绘图提示词改写成视频分镜描述 ──────────────
+// 复用聊天 LLM 配置（服务端自动选：站主 API → 本地 Ollama）；并发 2 逐镜
+// 改写（Ollama 有进程内串行队列，API 也不压上游）；失败单镜保留原内容，
+// 可再点一次重试；应用前整批快照，随时「撤销整理」恢复。
+const aiBusy = ref(false)
+const aiProgress = ref(0)
+const aiTotal = ref(0)
+const aiSnapshot = ref<ShotDraft[] | null>(null)
+const aiNote = ref('')
+
+async function runAiRewrite() {
+  if (aiBusy.value || batchActive.value || !shots.value.length) return
+  aiNote.value = ''
+  let status: VideoAiStatusResponse
+  try {
+    status = await fetchVideoAiStatus()
+  } catch (error) {
+    aiNote.value = 'AI 状态读取失败：' + (error instanceof Error ? error.message : String(error))
+    return
+  }
+  if (!status.available) {
+    aiNote.value = status.reason || 'AI 整理暂不可用'
+    return
+  }
+  const total = shots.value.length
+  aiSnapshot.value = shots.value.map((shot) => ({ ...shot }))
+  aiTotal.value = total
+  aiProgress.value = 0
+  aiBusy.value = true
+  aiNote.value = `AI 整理中 0/${total}（${status.label}）…`
+  let failed = 0
+  let cursor = 0
+  const worker = async () => {
+    while (cursor < total) {
+      const index = cursor
+      cursor += 1
+      try {
+        const response = await rewriteVideoShot({
+          identity: identityCard.value.trim() || undefined,
+          prompt: shots.value[index].prompt,
+          shotSize: shots.value[index].shotSize || undefined,
+          camera: shots.value[index].camera,
+          motion: shots.value[index].motion,
+          dialogue: shots.value[index].dialogue || undefined,
+        })
+        const shot = shots.value[index]
+        if (response.shot.prompt) shot.prompt = response.shot.prompt
+        if (response.shot.shotSize) shot.shotSize = response.shot.shotSize
+        shot.camera = response.shot.camera
+        shot.motion = response.shot.motion
+        shot.dialogue = response.shot.dialogue
+      } catch {
+        failed += 1
+      } finally {
+        aiProgress.value += 1
+        aiNote.value = `AI 整理中 ${aiProgress.value}/${total}（${status.label}）…`
+      }
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(2, total) }, worker))
+  aiBusy.value = false
+  aiNote.value = failed
+    ? `AI 整理完成：${total - failed}/${total} 镜已改写，${failed} 镜失败（保留原描述，可再点一次重试）`
+    : `AI 整理完成：${total} 镜全部改写，可逐镜微调或直接生成。`
+}
+
+function restoreAiSnapshot() {
+  if (!aiSnapshot.value) return
+  shots.value.forEach((shot) => {
+    if (shot.imageUrl) URL.revokeObjectURL(shot.imageUrl)
+  })
+  shots.value = aiSnapshot.value
+  aiSnapshot.value = null
+  aiNote.value = '已撤销 AI 整理，恢复整理前内容。'
 }
 
 onMounted(() => {
@@ -709,6 +846,8 @@ onBeforeUnmount(() => {
 
 .shot-toolbar { display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; margin-bottom: var(--s-3); }
 .shot-toolbar .select { width: auto; max-width: 300px; flex: 0 1 auto; }
+.shot-ai-note { margin: 0 0 var(--s-3); color: var(--accent); font-size: var(--fs-label-xs); line-height: 1.55; }
+.shot-ai-note[data-busy="true"] { color: var(--warning-text); }
 .shot-toggle { display: flex; align-items: flex-start; gap: var(--s-3); margin-top: var(--s-4); padding: var(--s-3); border: 1px solid var(--border-soft); border-radius: var(--r-md); background: var(--bg-deep); cursor: pointer; }
 .shot-toggle input { margin-top: 4px; accent-color: var(--accent); }
 .shot-toggle strong, .shot-toggle small { display: block; }

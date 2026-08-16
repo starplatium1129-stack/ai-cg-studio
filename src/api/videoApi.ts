@@ -307,3 +307,67 @@ export function concatVideoBatch(id: string, signal?: AbortSignal): Promise<Vide
     },
   )
 }
+
+// ── 分镜「AI 整理」（POST /api/video-ai/rewrite，复用聊天 LLM 配置）────────
+export interface VideoAiStatusResponse {
+  ok: true
+  available: boolean
+  source: 'api' | 'ollama' | null
+  model: string
+  label: string
+  reason?: string
+}
+
+export interface VideoAiRewriteInput {
+  /** 角色锚点（仅作身份参考，LLM 不在描述里重复它）。 */
+  identity?: string
+  prompt: string
+  shotSize?: VideoShotSize | null
+  camera?: VideoDefaults['camera']
+  motion?: VideoDefaults['motion']
+  dialogue?: string
+}
+
+export interface VideoAiRewriteResponse {
+  ok: true
+  source: 'api' | 'ollama'
+  model: string
+  shot: {
+    prompt: string
+    shotSize: VideoShotSize | null
+    camera: VideoDefaults['camera']
+    motion: VideoDefaults['motion']
+    dialogue: string
+  }
+}
+
+function isVideoAiStatusResponse(value: Record<string, unknown>): boolean {
+  return value.ok === true && typeof value.available === 'boolean'
+}
+
+function isVideoAiRewriteResponse(value: Record<string, unknown>): boolean {
+  return value.ok === true
+    && (value.source === 'api' || value.source === 'ollama')
+    && typeof value.model === 'string'
+    && isRecord(value.shot)
+    && typeof value.shot.prompt === 'string'
+}
+
+export function fetchVideoAiStatus(signal?: AbortSignal): Promise<VideoAiStatusResponse> {
+  return apiClient.request<VideoAiStatusResponse>('/api/video-ai/status', {
+    cache: 'no-store',
+    signal,
+    timeoutMs: 8_000,
+    validate: isVideoAiStatusResponse,
+  })
+}
+
+export function rewriteVideoShot(input: VideoAiRewriteInput, signal?: AbortSignal): Promise<VideoAiRewriteResponse> {
+  return apiClient.request<VideoAiRewriteResponse>('/api/video-ai/rewrite', {
+    method: 'POST',
+    body: input,
+    signal,
+    timeoutMs: 150_000,
+    validate: isVideoAiRewriteResponse,
+  })
+}

@@ -79,6 +79,7 @@ function createGateway(options) {
   var anima = createAnimaRouter(config, options.services);
   var generation = createGenerationRouter(config, options.services);
   var video = createVideoRouter(config, options.services);
+  var videoAi = require('./routes/video-ai').createVideoAiRouter(config, options.services);
   var desktopTools = require('./routes/desktop-tools').createDesktopToolsRouter({ security: security });
 
   // 控制面板路由需要访问 gateway 对象（tunnelUrl、startTunnel/stopTunnel）
@@ -102,6 +103,7 @@ function createGateway(options) {
   app.use(anima.router);
   app.use(generation.router);
   app.use(video.router);
+  app.use(videoAi.router);
   app.use(desktopTools);
 
   app.get('/api/health', function (req, res) {
