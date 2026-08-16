@@ -224,6 +224,87 @@ async function run() {
     assert.equal((await postPolish(stackApi.baseUrl, { shots:[{ prompt:'x' }] })).status, 400);
     assert.equal((await postPolish(stackApi.baseUrl, polishBody({ shots:[{ prompt:'x', camera:'fly' }, { prompt:'y' }] }))).status, 400);
     assert.equal((await postPolish(stackApi.baseUrl, { shots:[{ prompt:'' }, { prompt:'y' }] })).status, 400);
+
+    // ── 台词润色 /api/video-ai/dialogue ────────────────────────────────
+    apiMock.state.replies.push(JSON.stringify({
+      options:[
+        { text:'这杯咖啡，给你。', label:'简洁' },
+        { text:'一直想请你尝尝我的手艺。', label:'温柔' },
+        { text:'尝尝看，保证好喝！', label:'俏皮' },
+      ]
+    }));
+    var diaRes = await fetch(stackApi.baseUrl + '/api/video-ai/dialogue', {
+      method:'POST',
+      headers:{ 'content-type':'application/json' },
+      body:JSON.stringify({ prompt:'她递过咖啡。', currentDialogue:'给你。' })
+    });
+    assert.equal(diaRes.status, 200);
+    var dia = await diaRes.json();
+    assert.equal(dia.options.length, 3);
+    assert.equal(dia.options[0].text, '这杯咖啡，给你。');
+    assert.equal(dia.options[1].label, '温柔');
+    // 清洗：超长/空选项丢弃
+    apiMock.state.replies.push(JSON.stringify({ options:[{ text:'x'.repeat(200), label:'' }, { text:'', label:'' }, { text:'好。', label:'简' }, { text:'也可以。', label:'平' }] }));
+    var diaDirty = await (await fetch(stackApi.baseUrl + '/api/video-ai/dialogue', {
+      method:'POST',
+      headers:{ 'content-type':'application/json' },
+      body:JSON.stringify({ prompt:'她点头。' })
+    })).json();
+    assert.equal(diaDirty.options.length, 2);
+    assert.equal(diaDirty.options[0].text, '好。');
+    assert.equal((await fetch(stackApi.baseUrl + '/api/video-ai/dialogue', {
+      method:'POST', headers:{ 'content-type':'application/json' }, body:JSON.stringify({ prompt:'  ' })
+    })).status, 400);
+
+    // ── 质量检查 /api/video-ai/review ──────────────────────────────────
+    apiMock.state.replies.push(JSON.stringify({
+      issues:[
+        { index:0, severity:'error', field:'motion', message:'描述在奔跑但运动是细微', suggestion:'natural' },
+        { index:1, severity:'warn', field:'dialogue', message:'台词超 20 字', suggestion:'精简台词' },
+        { index:99, severity:'error', field:'prompt', message:'越界', suggestion:'x' },
+      ]
+    }));
+    var reviewRes = await fetch(stackApi.baseUrl + '/api/video-ai/review', {
+      method:'POST',
+      headers:{ 'content-type':'application/json' },
+      body:JSON.stringify({ shots:[{ prompt:'她跑向门口。', motion:'subtle' }, { prompt:'她停下。', dialogue:'这段台词实在是太长了不符合要求' }] })
+    });
+    assert.equal(reviewRes.status, 200);
+    var review = await reviewRes.json();
+    assert.equal(review.issues.length, 2, 'out-of-range index dropped');
+    assert.equal(review.issues[0].severity, 'error');
+    assert.equal(review.issues[0].suggestion, 'natural');
+    assert.equal((await fetch(stackApi.baseUrl + '/api/video-ai/review', {
+      method:'POST', headers:{ 'content-type':'application/json' }, body:JSON.stringify({ shots:[] })
+    })).status, 400);
+
+    // ── 全自动脚本 /api/video-ai/script ────────────────────────────────
+    apiMock.state.replies.push(JSON.stringify({
+      shots:[
+        { prompt:'She enters the cafe.', shotSize:'wide', camera:'push', motion:'natural', dialogue:'', duration:5 },
+        { prompt:'She reads the letter.', shotSize:'closeup', camera:'still', motion:'subtle', dialogue:'原来是你。', duration:5 },
+        { prompt:'Bad shot size.', shotSize:'bogus', camera:'fly', motion:'dance', dialogue:'x'.repeat(400), duration:99 },
+      ]
+    }));
+    var scriptRes = await fetch(stackApi.baseUrl + '/api/video-ai/script', {
+      method:'POST',
+      headers:{ 'content-type':'application/json' },
+      body:JSON.stringify({ story:'她走进咖啡店读信。', shotCount:8 })
+    });
+    assert.equal(scriptRes.status, 200);
+    var script = await scriptRes.json();
+    assert.equal(script.shots.length, 3, 'invalid fields fall back to defaults, shot kept');
+    assert.equal(script.shots[0].camera, 'push');
+    assert.equal(script.shots[1].dialogue, '原来是你。');
+    assert.equal(script.shots[1].duration, 5);
+    assert.equal(script.shots[2].shotSize, null, 'unknown shot size -> null');
+    assert.equal(script.shots[2].camera, 'still', 'unknown camera -> still');
+    assert.equal(script.shots[2].motion, 'subtle', 'unknown motion -> subtle');
+    assert.equal(script.shots[2].duration, 5, 'unknown duration -> 5s');
+    assert.equal(script.shots[2].dialogue.length, 300, 'oversized dialogue truncated');
+    assert.equal((await fetch(stackApi.baseUrl + '/api/video-ai/script', {
+      method:'POST', headers:{ 'content-type':'application/json' }, body:JSON.stringify({ story:'  ' })
+    })).status, 400);
   } finally {
     await stackApi.close();
     await closeServer(apiMock.server);

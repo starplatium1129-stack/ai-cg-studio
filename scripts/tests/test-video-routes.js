@@ -81,8 +81,7 @@ async function run() {
   assert.equal(graph['11'].inputs.codec, 'auto');
 
   var h3Input = video.validateInput(validBody({ modelId:'minimax-h3' }));
-  assert.equal(h3Input.frames, 73, 'H3 3s must snap to the 17k+5 grid (73)');
-  assert.equal(h3Input.negative, '', 'H3 is a natural-language model; negative must stay empty');
+  assert.equal(h3Input.frames, 73, 'H3 3s must snap to the 17k+5 grid (73)');  assert.equal(h3Input.negative, '', 'H3 is a natural-language model; negative must stay empty');
   assert.match(h3Input.prompt, /^integrated_multimodal_description: \[Shot 1\]/,
     'H3 prompt must open with the official multimodal description field');
   assert.match(h3Input.prompt, /^overall_soundscape:/m, 'H3 prompt must carry the soundscape field');
@@ -371,6 +370,37 @@ async function run() {
     })));
     assert.equal(t8L2v['5'].inputs.task_type, 'L2VA');
     assert.equal(t8L2v['5'].inputs.first_frame, undefined);
+
+    // Ref2VA 参考图（角色卡）：仅参考 → ref2va；参考+首帧 → hybrid；
+    // ref_image_N autogrow 槽 + <Picture N> 身份声明注入。
+    var t8Ref = video.buildWorkflow(video.validateInput(validBody({
+      modelId:'minimax-h3',
+      references:['aics_video_input_abcdef0123456789.png', 'aics_video_input_0123456789abcdef.png'],
+    })));
+    assert.equal(t8Ref['5'].inputs.task_type, 'ref2va');
+    assert.deepEqual(t8Ref['5'].inputs.ref_image_1, ['21', 0]);
+    assert.deepEqual(t8Ref['5'].inputs.ref_image_2, ['22', 0]);
+    assert.equal(t8Ref['21'].class_type, 'LoadImage');
+    assert.equal(t8Ref['21'].inputs.image, 'aics_video_input_abcdef0123456789.png');
+    assert.match(t8Ref['5'].inputs.prompt, /<Picture 1>/);
+    assert.match(t8Ref['5'].inputs.prompt, /<Picture 2>/);
+    var t8Hybrid = video.buildWorkflow(video.validateInput(validBody({
+      modelId:'minimax-h3',
+      image:'aics_video_input_abcdef0123456789.png',
+      references:['aics_video_input_0123456789abcdef.png'],
+    })));
+    assert.equal(t8Hybrid['5'].inputs.task_type, 'hybrid');
+    assert.deepEqual(t8Hybrid['5'].inputs.ref_image_1, ['21', 0]);
+    assert.throws(function () {
+      video.validateInput(validBody({
+        modelId:'minimax-h3', references:['bad name.png'],
+      }));
+    }, /格式不受支持/);
+    assert.throws(function () {
+      video.validateInput(validBody({
+        modelId:'wan2.2-ti2v-5b', references:['aics_video_input_abcdef0123456789.png'],
+      }));
+    }, /仅支持 MiniMax H3/);
   } finally {
     video.setT8Available(false);
   }

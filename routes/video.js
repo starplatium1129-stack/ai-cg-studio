@@ -332,7 +332,7 @@ function deriveH3Music(prompt) {
 var ALLOWED_INPUT_KEYS = new Set([
   'prompt', 'negative', 'modelId', 'aspectRatio', 'duration',
   'camera', 'motion', 'seed', 'image', 'quality',
-  'dialogue', 'lastFrame', 'shotSize', 'steps',
+  'dialogue', 'lastFrame', 'shotSize', 'steps', 'references',
 ]);
 
 function serviceError(status, code, message, detail) {
@@ -520,6 +520,27 @@ function validateInput(body, config) {
       throw serviceError(400, 'INVALID_PARAMETER', '图片文件不存在或已过期');
     }
   }
+  // 参考图（Ref2VA 多参考：角色卡）。仅 H3（T8 ref_images autogrow 1-9 槽）；
+  // Wan 无此链路，放行会造成「传了参考图但任务静默忽略」的错误成片。
+  var references = body.references;
+  if (references !== undefined && references !== null) {
+    if (!isH3) throw serviceError(400, 'MODEL_INPUT_MODE', '参考图仅支持 MiniMax H3');
+    if (!Array.isArray(references) || references.length < 1 || references.length > 9) {
+      throw serviceError(400, 'INVALID_PARAMETER', '参考图需为 1—9 张');
+    }
+    for (var refIndex = 0; refIndex < references.length; refIndex += 1) {
+      var refName = references[refIndex];
+      if (typeof refName !== 'string' || !IMAGE_INPUT_PATTERN.test(refName)) {
+        throw serviceError(400, 'INVALID_PARAMETER', '参考图引用格式不受支持');
+      }
+      if (config && !imageInputAvailable(config, refName)) {
+        throw serviceError(400, 'INVALID_PARAMETER', '参考图文件不存在或已过期：' + refName);
+      }
+    }
+  } else {
+    references = null;
+  }
+  var hasReferences = Array.isArray(references) && references.length > 0;
   // 对白（P7）：H3 原生音画同步能力（官方 4.4 说话人 ID + <d> 原文块）；
   // Wan 等无口型链路拒绝，避免「写了台词但画面没有对白」的错误成片。
   var dialogue = body.dialogue;
@@ -630,6 +651,10 @@ function validateInput(body, config) {
     h3CameraLine,
     h3MotionLine,
     dialogueLine,
+    hasReferences
+      ? 'Character identity anchors: ' + references.map(function (_, i) { return '<Picture ' + (i + 1) + '>'; }).join(', ')
+        + ' - keep the face, outfit and identity of each referenced character consistent with these pictures throughout the shot.'
+      : null,
     'Character identity, clothing, lighting, and scene structure remain consistent from start to finish.',
   ].filter(function (line) { return line !== null; });
   var h3Prompt = (referenceInstruction ? [referenceInstruction, ''] : []).concat(h3Lines, [
@@ -672,6 +697,7 @@ function validateInput(body, config) {
     seed:seed,
     image:image || null,
     lastFrame:lastFrame || null,
+    references:references,
     dialogue:dialogue || null,
     shotSize:shotSize || null,
     steps:isH3 ? steps : 20,
@@ -693,10 +719,15 @@ function buildWorkflow(input) {
 // BasicGuider + SamplerCustomAdvanced → MiniMaxH3AVDecodeT8 → CreateVideo → SaveVideo。
 // 输出契约不变（SaveVideo 节点 11、aics_video 前缀）。真机实测 2.5× 提速。
 function buildH3T8Workflow(input) {
-  var taskType = input.image && input.lastFrame ? 'FL2VA'
-    : input.image ? 'I2VA'
-    : input.lastFrame ? 'L2VA'
-    : 'T2VA';
+  // Ref2VA / Hybrid：有参考图（角色卡）时按 T8 resolve_task_type 语义选择；
+  // 参考图 + 首/尾帧 → hybrid（参考身份 + 关键帧构图），仅参考 → ref2va。
+  var hasReferences = Array.isArray(input.references) && input.references.length > 0;
+  var taskType = hasReferences
+    ? (input.image || input.lastFrame ? 'hybrid' : 'ref2va')
+    : input.image && input.lastFrame ? 'FL2VA'
+      : input.image ? 'I2VA'
+        : input.lastFrame ? 'L2VA'
+          : 'T2VA';
   var graph = {
     '1': { class_type:'UNETLoader', inputs:{
       unet_name:'minimax_h3_fl2va_pruned_int8_convrot.safetensors',
@@ -772,6 +803,15 @@ function buildH3T8Workflow(input) {
   if (input.lastFrame) {
     graph['18'] = { class_type:'LoadImage', inputs:{ image:input.lastFrame } };
     graph['5'].inputs.last_frame = ['18', 0];
+  }
+  // 参考图（Ref2VA 角色卡）：T8 ref_images autogrow 槽 ref_image_1..N，
+  // 每张一个 LoadImage（节点 21 起），提示词用 <Picture N> 标签引用。
+  if (hasReferences) {
+    input.references.forEach(function (refName, refIndex) {
+      var nodeId = String(21 + refIndex);
+      graph[nodeId] = { class_type:'LoadImage', inputs:{ image:refName } };
+      graph['5'].inputs['ref_image_' + (refIndex + 1)] = [nodeId, 0];
+    });
   }
   return graph;
 }
@@ -1427,7 +1467,7 @@ function streamVideo(req, res, result) {
 // 全批成功后可用 ffmpeg 拼接成片（P8）。
 
 var BATCH_BODY_KEYS = new Set(['modelId', 'aspectRatio', 'quality', 'linkLastFrame', 'steps', 'shots']);
-var BATCH_SHOT_KEYS = new Set(['prompt', 'dialogue', 'shotSize', 'camera', 'motion', 'duration', 'seed', 'image']);
+var BATCH_SHOT_KEYS = new Set(['prompt', 'dialogue', 'shotSize', 'camera', 'motion', 'duration', 'seed', 'image', 'references']);
 var BATCH_SHOT_DEFAULTS = Object.freeze({ camera:'still', motion:'subtle', duration:5 });
 
 function validateBatchInput(body, config) {
@@ -1610,6 +1650,7 @@ function createBatchService(config, videoService, dependencies) {
       quality:input.quality,
       image:input.image || undefined,
       lastFrame:input.lastFrame || undefined,
+      references:input.references || undefined,
       dialogue:input.dialogue || undefined,
       shotSize:input.shotSize || undefined,
     };

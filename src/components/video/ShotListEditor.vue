@@ -79,6 +79,49 @@
             </select>
           </div>
         </label>
+
+        <div class="shot-reference-section">
+          <span class="field-label">角色参考卡（Ref2VA · 跨镜锁定身份 · 每角色 ≤3 张）</span>
+          <div class="shot-reference-grid">
+            <div v-for="(card, cardIndex) in referenceCards" :key="cardIndex" class="shot-reference-card">
+              <div class="shot-reference-head">
+                <strong>角色 {{ cardIndex + 1 }}</strong>
+                <input
+                  v-model="card.label"
+                  class="input input-tight"
+                  maxlength="20"
+                  placeholder="角色名（如 宁宁）"
+                />
+              </div>
+              <div class="shot-reference-images">
+                <img
+                  v-for="(image, imageIndex) in card.images"
+                  :key="image.name"
+                  class="shot-reference-thumb"
+                  :src="image.url"
+                  :alt="image.name"
+                  loading="lazy"
+                  @click="removeReference(cardIndex, imageIndex)"
+                />
+                <button
+                  v-if="card.images.length < 3"
+                  class="btn btn-ghost btn-sm"
+                  type="button"
+                  :disabled="batchActive"
+                  @click="pickReference(cardIndex)"
+                >＋ 参考图</button>
+              </div>
+              <p v-if="card.images.length" class="shot-reference-hint">点击缩略图移除</p>
+              <input
+                :ref="(el) => setReferenceInput(el, cardIndex)"
+                type="file"
+                accept="image/png,image/jpeg,image/webp"
+                class="shot-frame-input"
+                @change="onReferencePicked(cardIndex, $event)"
+              />
+            </div>
+          </div>
+        </div>
       </section>
 
       <section class="video-panel">
@@ -111,6 +154,20 @@
             @click="runAiPolish"
           >② ◎ AI 整批编排</button>
           <button
+            class="btn btn-ghost"
+            type="button"
+            :disabled="scriptBusy || batchActive"
+            title="写个故事梗概，AI 直接生成完整分镜表（无首帧纯文字 T2VA 也可生成）"
+            @click="scriptOpen = true"
+          >✎ AI 生成脚本</button>
+          <button
+            class="btn btn-ghost"
+            type="button"
+            :disabled="reviewBusy || batchActive || !shots.length"
+            title="AI 审查整批镜头：描述不合格/字段矛盾/对白问题/衔接跳跃，生成前把关"
+            @click="runAiReview"
+          >◉ 质量检查</button>
+          <button
             v-if="aiSnapshot"
             class="btn btn-ghost"
             type="button"
@@ -131,9 +188,34 @@
         <p v-if="aiNote" class="shot-ai-note" :data-busy="aiBusy || undefined">{{ aiNote }}</p>
         <p v-else-if="flowHint" class="shot-flow-hint">{{ flowHint }}</p>
 
-        <article v-for="(shot, index) in shots" :key="index" class="shot-row">
+        <div v-if="reviewIssues.length" class="shot-review-list" aria-live="polite">
+          <div
+            v-for="(issue, issueIndex) in reviewIssues"
+            :key="issueIndex"
+            class="shot-review-item"
+            :data-severity="issue.severity"
+          >
+            <span class="shot-review-tag">{{ issue.severity === 'error' ? '必须修' : '建议' }}</span>
+            <span class="shot-review-copy">
+              镜头 {{ issue.index + 1 }} · {{ issue.message }}
+              <em v-if="issue.suggestion">→ {{ issue.suggestion }}</em>
+            </span>
+            <button
+              v-if="issue.suggestion"
+              class="btn btn-ghost btn-sm"
+              type="button"
+              :disabled="batchActive"
+              @click="applyReviewSuggestion(issue)"
+            >应用建议</button>
+          </div>
+        </div>
+
+        <article v-for="(shot, index) in shots" :key="index" class="shot-row" :data-issue="shotIssueCount(index) || undefined">
           <header class="shot-row-head">
             <span class="shot-index">镜头 {{ index + 1 }}</span>
+            <span v-if="shotIssueCount(index)" class="shot-issue-badge" :data-count="shotIssueCount(index)">
+              {{ shotIssueCount(index) }} 个问题
+            </span>
             <span v-if="serverShot(index)" class="shot-row-status" :data-state="serverShot(index)?.status">
               {{ shotStatusLabel(serverShot(index)?.status) }}
             </span>
@@ -162,16 +244,49 @@
 
             <label class="field shot-field-dialogue">
               <span class="field-label">对白（H3 原生语音 · 口型同步）</span>
-              <input
-                v-model="shot.dialogue"
-                class="input"
-                maxlength="300"
-                :disabled="batchActive"
-                placeholder="可选。单句 ≤20 字更稳，例如：我在这站下车。"
-              />
+              <div class="shot-dialogue-row">
+                <input
+                  v-model="shot.dialogue"
+                  class="input"
+                  maxlength="300"
+                  :disabled="batchActive"
+                  placeholder="可选。单句 ≤20 字更稳，例如：我在这站下车。"
+                />
+                <button
+                  class="btn btn-ghost btn-sm"
+                  type="button"
+                  :disabled="batchActive || dialogueBusy"
+                  title="AI 给 3 条台词备选（或润色你写的）"
+                  @click="runAiDialogue(index)"
+                >✦ AI 台词</button>
+              </div>
+              <div v-if="dialogueIndex === index" class="shot-dialogue-options">
+                <button
+                  v-for="option in dialogueOptions"
+                  :key="option.text"
+                  class="btn btn-ghost btn-sm"
+                  type="button"
+                  :disabled="batchActive"
+                  @click="applyDialogueOption(index, option.text)"
+                >{{ option.label }}：{{ option.text }}</button>
+                <button
+                  class="btn btn-ghost btn-sm"
+                  type="button"
+                  @click="dialogueIndex = -1"
+                >收起</button>
+              </div>
             </label>
 
             <div class="shot-selects">
+              <label class="field">
+                <span class="field-label">角色</span>
+                <select v-model="shot.cast" class="select" :disabled="batchActive" title="本镜出场角色（对应顶部角色参考卡，生成时自动带参考图）">
+                  <option value="">无参考</option>
+                  <option value="1">角色 1{{ referenceCards[0]?.label ? ' · ' + referenceCards[0].label : '' }}</option>
+                  <option value="2">角色 2{{ referenceCards[1]?.label ? ' · ' + referenceCards[1].label : '' }}</option>
+                  <option value="12">角色 1 + 2</option>
+                </select>
+              </label>
               <label class="field">
                 <span class="field-label">景别</span>
                 <select v-model="shot.shotSize" class="select" :disabled="batchActive">
@@ -240,6 +355,62 @@
         </p>
       </section>
 
+      <Teleport to="body">
+        <div v-if="scriptOpen" class="shot-script-overlay" @click.self="scriptOpen = false">
+          <section class="shot-script-panel" role="dialog" aria-modal="true" aria-label="AI 生成分镜脚本">
+            <header class="shot-script-head">
+              <div>
+                <span class="video-step">✎ AI 生成脚本</span>
+                <h2>故事梗概 → 完整分镜表</h2>
+                <p>AI 按叙事节奏切镜（景别/镜头/运动/台词/时长全自动），无首帧也可纯文字生成（T2VA）。</p>
+              </div>
+              <button class="btn btn-ghost" type="button" aria-label="关闭" @click="scriptOpen = false">✕</button>
+            </header>
+            <label class="field">
+              <span class="field-label">故事梗概（中文即可）</span>
+              <textarea
+                v-model="scriptStory"
+                class="textarea"
+                rows="5"
+                maxlength="2000"
+                placeholder="例如：宁宁在咖啡店值夜班，打烊前收到一封旧信，读完决定去找写信的人……"
+              ></textarea>
+            </label>
+            <div class="shot-script-row">
+              <label class="field">
+                <span class="field-label">镜头数</span>
+                <select v-model="scriptCount" class="select">
+                  <option :value="null">自动</option>
+                  <option :value="8">8 镜</option>
+                  <option :value="10">10 镜</option>
+                  <option :value="12">12 镜</option>
+                </select>
+              </label>
+              <label class="field">
+                <span class="field-label">总时长（秒）</span>
+                <select v-model="scriptTotal" class="select">
+                  <option :value="null">自动</option>
+                  <option :value="40">约 40s</option>
+                  <option :value="60">约 60s</option>
+                  <option :value="90">约 90s</option>
+                </select>
+              </label>
+            </div>
+            <footer class="shot-script-foot">
+              <span v-if="referenceCards.some(card => card.label)" class="shot-script-hint">
+                参考卡角色将作为 &lt;Picture N&gt; 注入：{{ referenceCards.filter(card => card.label).map(card => card.label).join('、') }}
+              </span>
+              <button
+                class="btn btn-primary"
+                type="button"
+                :disabled="scriptBusy || !scriptStory.trim()"
+                @click="runAiScript"
+              >{{ scriptBusy ? '生成中…' : '生成分镜表' }}</button>
+            </footer>
+          </section>
+        </div>
+      </Teleport>
+
       <section class="video-panel shot-submit-panel" :data-ready="canSubmit || undefined">
         <div>
           <strong>{{ submitTitle }}</strong>
@@ -303,10 +474,15 @@ import {
   createVideoBatch,
   fetchVideoAiStatus,
   fetchVideoBatch,
+  generateVideoScript,
   polishVideoShots,
   retryVideoShot,
+  reviewVideoShots,
   rewriteVideoShot,
+  suggestDialogue,
   uploadVideoImage,
+  type VideoAiIssue,
+  type VideoAiScriptShot,
   type VideoAiStatusResponse,
   type VideoBatch,
   type VideoBatchStatus,
@@ -358,6 +534,8 @@ interface ShotDraft {
   seedText: string
   imageName: string
   imageUrl: string
+  /** 出场角色：'' 无 / '1' 角色1 / '2' 角色2 / '12' 角色1+2（对应参考卡）。 */
+  cast: '' | '1' | '2' | '12'
 }
 
 const aspectRatio = ref<VideoBatch['aspectRatio']>('landscape')
@@ -369,6 +547,85 @@ const characterId = ref('')
 const sceneFillId = ref('')
 const shots = ref<ShotDraft[]>([])
 const frameInputs = ref<HTMLInputElement[]>([])
+
+// ── 角色参考卡（Ref2VA）：2 个角色槽，每槽最多 3 张参考图 ──────────────
+interface ReferenceImage {
+  name: string
+  url: string
+}
+interface ReferenceCard {
+  label: string
+  images: ReferenceImage[]
+}
+const referenceCards = ref<ReferenceCard[]>([
+  { label: '', images: [] },
+  { label: '', images: [] },
+])
+const referenceInputs = ref<HTMLInputElement[]>([])
+
+async function onReferencePicked(cardIndex: number, event: Event) {
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  input.value = ''
+  if (!file) return
+  const card = referenceCards.value[cardIndex]
+  if (card.images.length >= 3) {
+    batchError.value = '每个角色最多 3 张参考图'
+    return
+  }
+  if (file.size > 20 * 1024 * 1024) {
+    batchError.value = '参考图需 ≤20MB'
+    return
+  }
+  try {
+    const dataUrl = await readBlobAsDataURL(file)
+    const comma = dataUrl.indexOf(',')
+    if (comma < 0) throw new Error('图片编码失败')
+    const upload = await uploadVideoImage(dataUrl.slice(comma + 1))
+    card.images.push({ name: upload.name, url: URL.createObjectURL(file) })
+    batchError.value = ''
+  } catch (error) {
+    batchError.value = error instanceof Error ? error.message : '参考图上传失败'
+  }
+}
+
+function pickReference(cardIndex: number) {
+  referenceInputs.value[cardIndex]?.click()
+}
+
+function setReferenceInput(el: unknown, cardIndex: number) {
+  if (el) referenceInputs.value[cardIndex] = el as HTMLInputElement
+}
+
+function removeReference(cardIndex: number, imageIndex: number) {
+  const image = referenceCards.value[cardIndex].images[imageIndex]
+  if (image?.url) URL.revokeObjectURL(image.url)
+  referenceCards.value[cardIndex].images.splice(imageIndex, 1)
+}
+
+/** 镜头 → 参考图文件名数组（按出场角色合并参考卡）。 */
+function shotReferences(shot: ShotDraft): string[] | undefined {
+  if (!shot.cast) return undefined
+  const collect = (cardIndex: number) => (referenceCards.value[cardIndex]?.images ?? []).map(image => image.name)
+  const list = shot.cast === '1' ? collect(0)
+    : shot.cast === '2' ? collect(1)
+      : [...collect(0), ...collect(1)]
+  return list.length ? list : undefined
+}
+
+// ── 全自动脚本 / 台词润色 / 质量检查 状态 ───────────────────────────────
+const scriptOpen = ref(false)
+const scriptStory = ref('')
+const scriptCount = ref<number | null>(null)
+const scriptTotal = ref<number | null>(null)
+const scriptBusy = ref(false)
+/** 台词润色：当前弹出选项的镜头 index（-1 关闭）。 */
+const dialogueIndex = ref(-1)
+const dialogueOptions = ref<Array<{ text: string; label: string }>>([])
+const dialogueBusy = ref(false)
+/** 质量检查结果（index 对齐 shots）。 */
+const reviewIssues = ref<VideoAiIssue[]>([])
+const reviewBusy = ref(false)
 
 const batch = ref<VideoBatch | null>(null)
 const submitting = ref(false)
@@ -444,6 +701,7 @@ function addShot() {
     seedText: '',
     imageName: '',
     imageUrl: '',
+    cast: '',
   })
 }
 
@@ -594,6 +852,7 @@ async function importShotsFromDrawing() {
       seedText: '',
       imageName: '',
       imageUrl: '',
+      cast: '',
     }
     try {
       const blob = await imgGet(ctx.imageId)
@@ -783,6 +1042,133 @@ function restorePolishSnapshot() {
   aiNote.value = '已撤销 AI 整批编排，恢复编排前内容。'
 }
 
+// ── 「✎ AI 生成脚本」：故事梗概 → 完整分镜表（T2VA 可直接生成）─────────
+async function runAiScript() {
+  if (scriptBusy.value || !scriptStory.value.trim()) return
+  scriptBusy.value = true
+  aiNote.value = 'AI 生成分镜脚本中…'
+  try {
+    const cardLabels = referenceCards.value
+      .map(card => card.label.trim())
+      .filter(Boolean)
+    const response = await generateVideoScript({
+      identity: identityCard.value.trim() || undefined,
+      story: scriptStory.value.trim(),
+      shotCount: scriptCount.value ?? undefined,
+      totalSeconds: scriptTotal.value ?? undefined,
+      characterLabels: cardLabels.length ? cardLabels : undefined,
+    })
+    if (!response.shots.length) {
+      aiNote.value = 'AI 脚本生成为空，请调整故事梗概后重试'
+      return
+    }
+    // 替换现有镜头清单（保留参考卡与整批方向）。
+    shots.value.forEach((shot) => {
+      if (shot.imageUrl) URL.revokeObjectURL(shot.imageUrl)
+    })
+    shots.value = response.shots.map((shot: VideoAiScriptShot) => ({
+      prompt: shot.prompt,
+      dialogue: shot.dialogue,
+      shotSize: shot.shotSize ?? '',
+      camera: shot.camera,
+      motion: shot.motion,
+      duration: shot.duration,
+      seedText: '',
+      imageName: '',
+      imageUrl: '',
+      cast: '',
+    }))
+    aiFlowStep.value = 1
+    scriptOpen.value = false
+    scriptStory.value = ''
+    aiNote.value = `AI 脚本已生成：${shots.value.length} 镜（无首帧，纯文字 T2VA 可直接生成；也可逐镜上传首帧锁构图）`
+  } catch (error) {
+    aiNote.value = 'AI 脚本生成失败：' + (error instanceof Error ? error.message : String(error))
+  } finally {
+    scriptBusy.value = false
+  }
+}
+
+// ── 「✦ AI 台词」：3 条备选 / 润色 ──────────────────────────────────────
+async function runAiDialogue(index: number) {
+  const shot = shots.value[index]
+  if (!shot || dialogueBusy.value) return
+  dialogueBusy.value = true
+  dialogueIndex.value = index
+  dialogueOptions.value = []
+  try {
+    const response = await suggestDialogue({
+      identity: identityCard.value.trim() || undefined,
+      prompt: shot.prompt,
+      currentDialogue: shot.dialogue.trim() || undefined,
+    })
+    dialogueOptions.value = response.options
+    if (!response.options.length) {
+      dialogueIndex.value = -1
+      aiNote.value = 'AI 台词未返回可用选项，请重试'
+    }
+  } catch (error) {
+    dialogueIndex.value = -1
+    aiNote.value = 'AI 台词失败：' + (error instanceof Error ? error.message : String(error))
+  } finally {
+    dialogueBusy.value = false
+  }
+}
+
+function applyDialogueOption(index: number, text: string) {
+  const shot = shots.value[index]
+  if (!shot) return
+  shot.dialogue = text
+  dialogueIndex.value = -1
+  dialogueOptions.value = []
+}
+
+// ── 「◉ 质量检查」：整批审查 → 标红 + 建议应用 ──────────────────────────
+async function runAiReview() {
+  if (reviewBusy.value || !shots.value.length) return
+  reviewBusy.value = true
+  aiNote.value = 'AI 质量检查中…'
+  reviewIssues.value = []
+  try {
+    const response = await reviewVideoShots(shots.value.map(shot => ({
+      prompt: shot.prompt,
+      shotSize: shot.shotSize || undefined,
+      camera: shot.camera,
+      motion: shot.motion,
+      dialogue: shot.dialogue || undefined,
+    })))
+    reviewIssues.value = response.issues
+    aiNote.value = response.issues.length
+      ? `质量检查：发现 ${response.issues.length} 个问题（${response.issues.filter(i => i.severity === 'error').length} 个必须修），可点击建议应用`
+      : '质量检查：未发现问题，可以生成。'
+  } catch (error) {
+    aiNote.value = 'AI 质量检查失败：' + (error instanceof Error ? error.message : String(error))
+  } finally {
+    reviewBusy.value = false
+  }
+}
+
+/** 应用质量检查建议（按字段回写镜头）。 */
+function applyReviewSuggestion(issue: VideoAiIssue) {
+  const shot = shots.value[issue.index]
+  if (!shot || !issue.suggestion) return
+  if (issue.field === 'shotSize' && ['wide', 'medium', 'closeup'].includes(issue.suggestion)) {
+    shot.shotSize = issue.suggestion as VideoShotSize
+  } else if (issue.field === 'camera' && ['still', 'push', 'pull', 'pan', 'orbit'].includes(issue.suggestion)) {
+    shot.camera = issue.suggestion as VideoDefaults['camera']
+  } else if (issue.field === 'motion' && ['subtle', 'natural', 'expressive'].includes(issue.suggestion)) {
+    shot.motion = issue.suggestion as VideoDefaults['motion']
+  } else if (issue.field === 'dialogue' || issue.field === 'prompt') {
+    shot.dialogue = issue.suggestion.slice(0, 300)
+  }
+  reviewIssues.value = reviewIssues.value.filter(item => item !== issue)
+  aiNote.value = '已应用建议：' + issue.suggestion
+}
+
+function shotIssueCount(index: number): number {
+  return reviewIssues.value.filter(issue => issue.index === index).length
+}
+
 onMounted(() => {
   void importShotsFromDrawing()
 })
@@ -815,6 +1201,7 @@ async function submitBatch() {
           duration: shot.duration,
           seed: parsedSeed(shot),
           image: shot.imageName || undefined,
+          references: shotReferences(shot),
         }
       }),
     })
@@ -956,6 +1343,43 @@ onBeforeUnmount(() => {
 .shot-ai-note { margin: 0 0 var(--s-3); color: var(--accent); font-size: var(--fs-label-xs); line-height: 1.55; }
 .shot-ai-note[data-busy="true"] { color: var(--warning-text); }
 .shot-flow-hint { margin: 0 0 var(--s-3); color: var(--text-muted); font-size: var(--fs-label-xs); line-height: 1.55; }
+
+/* ── 参考卡 / 台词 / 质检 / 脚本弹层 ── */
+.shot-reference-section { display: grid; gap: var(--s-2); margin-top: var(--s-4); }
+.shot-reference-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); }
+.shot-reference-card { display: grid; gap: var(--s-2); padding: var(--s-3); border: 1px solid var(--border-soft); border-radius: var(--r-md); background: var(--bg-deep); }
+.shot-reference-head { display: flex; align-items: center; gap: var(--s-2); }
+.shot-reference-head strong { font-size: var(--fs-body-sm); white-space: nowrap; }
+.input-tight { min-height: 28px; padding: 2px var(--s-2); font-size: var(--fs-label-xs); }
+.shot-reference-images { display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; }
+.shot-reference-thumb { width: 64px; height: 64px; object-fit: cover; border-radius: var(--r-sm); border: 1px solid var(--border-soft); cursor: pointer; }
+.shot-reference-hint { margin: 0; color: var(--text-muted); font-size: var(--fs-label-xs); }
+.shot-dialogue-row { display: flex; gap: var(--s-2); align-items: center; }
+.shot-dialogue-row .input { flex: 1 1 auto; }
+.shot-dialogue-options { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-2); }
+.shot-dialogue-options .btn { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.shot-review-list { display: grid; gap: var(--s-2); margin: 0 0 var(--s-3); }
+.shot-review-item { display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; padding: var(--s-2) var(--s-3); border-radius: var(--r-md); font-size: var(--fs-body-sm); }
+.shot-review-item[data-severity="error"] { background: color-mix(in srgb, var(--danger) 10%, transparent); }
+.shot-review-item[data-severity="warn"] { background: color-mix(in srgb, var(--warning) 10%, transparent); }
+.shot-review-tag { padding: 1px var(--s-2); border-radius: var(--r-pill); font: 700 var(--fs-mono-xs) var(--font-mono); }
+.shot-review-item[data-severity="error"] .shot-review-tag { background: var(--danger); color: var(--text-inverse); }
+.shot-review-item[data-severity="warn"] .shot-review-tag { background: color-mix(in srgb, var(--warning) 40%, transparent); color: var(--warning-text); }
+.shot-review-copy { flex: 1 1 280px; min-width: 0; line-height: 1.55; }
+.shot-review-copy em { color: var(--text-secondary); font-style: normal; }
+.shot-issue-badge { padding: 1px var(--s-2); border-radius: var(--r-pill); background: color-mix(in srgb, var(--danger) 14%, transparent); color: var(--danger-text); font: 700 var(--fs-mono-xs) var(--font-mono); }
+.shot-row[data-issue] { outline: 1px solid color-mix(in srgb, var(--danger) 45%, transparent); outline-offset: -1px; border-radius: var(--r-lg); }
+.shot-script-overlay { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; padding: clamp(12px, 3vw, 32px); background: color-mix(in srgb, var(--bg-deep) 55%, transparent); backdrop-filter: blur(4px); }
+.shot-script-panel { width: min(560px, 100%); display: grid; gap: var(--s-4); padding: clamp(16px, 2.4vw, 26px); border: 1px solid var(--border-soft); border-radius: var(--r-xl); background: var(--bg-surface); box-shadow: var(--shadow-md); }
+.shot-script-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s-3); }
+.shot-script-head h2 { margin: 2px 0 4px; font-size: var(--fs-title-sm); }
+.shot-script-head p { margin: 0; color: var(--text-secondary); font-size: var(--fs-body-sm); line-height: 1.6; }
+.shot-script-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); }
+.shot-script-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-3); }
+.shot-script-hint { color: var(--text-muted); font-size: var(--fs-label-xs); }
+@media (max-width: 760px) {
+  .shot-reference-grid, .shot-script-row { grid-template-columns: 1fr; }
+}
 .shot-toggle { display: flex; align-items: flex-start; gap: var(--s-3); margin-top: var(--s-4); padding: var(--s-3); border: 1px solid var(--border-soft); border-radius: var(--r-md); background: var(--bg-deep); cursor: pointer; }
 .shot-toggle input { margin-top: 4px; accent-color: var(--accent); }
 .shot-toggle strong, .shot-toggle small { display: block; }

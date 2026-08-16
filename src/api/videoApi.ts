@@ -224,6 +224,8 @@ export interface CreateVideoBatchShotInput {
   seed?: number
   /** 首帧图：POST /api/video/images 返回的受控文件名。 */
   image?: string
+  /** 参考图（Ref2VA 角色卡）：受控文件名数组，≤9 张，仅 H3；prompt 用 <Picture N> 引用。 */
+  references?: string[]
 }
 
 export interface CreateVideoBatchInput {
@@ -423,5 +425,107 @@ export function polishVideoShots(input: VideoAiPolishInput, signal?: AbortSignal
     signal,
     timeoutMs: 150_000,
     validate: isVideoAiPolishResponse,
+  })
+}
+
+// ── 台词润色（POST /api/video-ai/dialogue）──────────────────────────────
+export interface VideoAiDialogueInput {
+  identity?: string
+  prompt: string
+  currentDialogue?: string
+  mood?: string
+}
+
+export interface VideoAiDialogueOption {
+  text: string
+  label: string
+}
+
+export interface VideoAiDialogueResponse {
+  ok: true
+  source: 'api' | 'ollama'
+  model: string
+  options: VideoAiDialogueOption[]
+}
+
+export function suggestDialogue(input: VideoAiDialogueInput, signal?: AbortSignal): Promise<VideoAiDialogueResponse> {
+  return apiClient.request<VideoAiDialogueResponse>('/api/video-ai/dialogue', {
+    method: 'POST',
+    body: input,
+    signal,
+    timeoutMs: 150_000,
+    validate: (value: Record<string, unknown>) =>
+      value.ok === true && Array.isArray(value.options),
+  })
+}
+
+// ── 分镜质量检查（POST /api/video-ai/review）────────────────────────────
+export interface VideoAiReviewShotInput {
+  prompt: string
+  shotSize?: VideoShotSize | null
+  camera?: VideoDefaults['camera']
+  motion?: VideoDefaults['motion']
+  dialogue?: string
+}
+
+export interface VideoAiIssue {
+  index: number
+  severity: 'error' | 'warn'
+  field: string
+  message: string
+  suggestion: string
+}
+
+export interface VideoAiReviewResponse {
+  ok: true
+  source: 'api' | 'ollama'
+  model: string
+  issues: VideoAiIssue[]
+}
+
+export function reviewVideoShots(shots: VideoAiReviewShotInput[], signal?: AbortSignal): Promise<VideoAiReviewResponse> {
+  return apiClient.request<VideoAiReviewResponse>('/api/video-ai/review', {
+    method: 'POST',
+    body: { shots },
+    signal,
+    timeoutMs: 150_000,
+    validate: (value: Record<string, unknown>) =>
+      value.ok === true && Array.isArray(value.issues),
+  })
+}
+
+// ── 全自动分镜脚本（POST /api/video-ai/script）──────────────────────────
+export interface VideoAiScriptInput {
+  identity?: string
+  story: string
+  shotCount?: number
+  totalSeconds?: number
+  characterLabels?: string[]
+}
+
+export interface VideoAiScriptShot {
+  prompt: string
+  shotSize: VideoShotSize | null
+  camera: VideoDefaults['camera']
+  motion: VideoDefaults['motion']
+  dialogue: string
+  duration: VideoDefaults['duration']
+}
+
+export interface VideoAiScriptResponse {
+  ok: true
+  source: 'api' | 'ollama'
+  model: string
+  shots: VideoAiScriptShot[]
+}
+
+export function generateVideoScript(input: VideoAiScriptInput, signal?: AbortSignal): Promise<VideoAiScriptResponse> {
+  return apiClient.request<VideoAiScriptResponse>('/api/video-ai/script', {
+    method: 'POST',
+    body: input,
+    signal,
+    timeoutMs: 180_000,
+    validate: (value: Record<string, unknown>) =>
+      value.ok === true && Array.isArray(value.shots),
   })
 }

@@ -425,7 +425,289 @@ function createVideoAiRouter(config, dependencies) {
     }
   });
 
+  // 统一 LLM 调用：选源 → 提示词 → 调用 → 返回原始文本。
+  async function callLlm(source, messages, signal) {
+    return source.source === 'api'
+      ? await callCompatibleApi(source, messages, signal)
+      : await callOllama(ollama, messages, signal);
+  }
+
+  router.post('/api/video-ai/dialogue', security.localOnly, express.json({ limit:'64kb' }), async function (req, res) {
+    var validation = validateDialogueBody(req.body);
+    if (validation.error) return envelope.fail(res, 400, validation.error);
+    var value = validation.value;
+    var controller = new AbortController();
+    req.once('aborted', function () { controller.abort(); });
+    res.once('close', function () { if (!res.writableEnded) controller.abort(); });
+    try {
+      var source = await resolveSource();
+      if (!source) return envelope.fail(res, 409, 'AI 台词暂不可用：请先在聊天设置中配置 API 或启动 Ollama', { code:'AI_LLM_UNAVAILABLE' });
+      var content = await callLlm(source, [
+        { role:'system', content:DIALOGUE_SYSTEM_PROMPT },
+        { role:'user', content:buildDialogueUserPrompt(value) }
+      ], controller.signal);
+      envelope.ok(res, { source:source.source, model:source.model, options:cleanDialogueOutput(extractJsonObject(content)) });
+    } catch (error) {
+      if (httpClient.isAbortError(error)) return;
+      envelope.fail(res, envelope.statusFor(error, 502), error.message || 'AI 台词失败', { detail:error.detail || '' });
+    }
+  });
+
+  router.post('/api/video-ai/review', security.localOnly, express.json({ limit:'256kb' }), async function (req, res) {
+    var validation = validateReviewBody(req.body);
+    if (validation.error) return envelope.fail(res, 400, validation.error);
+    var value = validation.value;
+    var controller = new AbortController();
+    req.once('aborted', function () { controller.abort(); });
+    res.once('close', function () { if (!res.writableEnded) controller.abort(); });
+    try {
+      var source = await resolveSource();
+      if (!source) return envelope.fail(res, 409, 'AI 质检暂不可用：请先在聊天设置中配置 API 或启动 Ollama', { code:'AI_LLM_UNAVAILABLE' });
+      var content = await callLlm(source, [
+        { role:'system', content:REVIEW_SYSTEM_PROMPT },
+        { role:'user', content:buildReviewUserPrompt(value) }
+      ], controller.signal);
+      envelope.ok(res, { source:source.source, model:source.model, issues:cleanReviewOutput(extractJsonObject(content), value) });
+    } catch (error) {
+      if (httpClient.isAbortError(error)) return;
+      envelope.fail(res, envelope.statusFor(error, 502), error.message || 'AI 质检失败', { detail:error.detail || '' });
+    }
+  });
+
+  router.post('/api/video-ai/script', security.localOnly, express.json({ limit:'64kb' }), async function (req, res) {
+    var validation = validateScriptBody(req.body);
+    if (validation.error) return envelope.fail(res, 400, validation.error);
+    var value = validation.value;
+    var controller = new AbortController();
+    req.once('aborted', function () { controller.abort(); });
+    res.once('close', function () { if (!res.writableEnded) controller.abort(); });
+    try {
+      var source = await resolveSource();
+      if (!source) return envelope.fail(res, 409, 'AI 脚本暂不可用：请先在聊天设置中配置 API 或启动 Ollama', { code:'AI_LLM_UNAVAILABLE' });
+      var content = await callLlm(source, [
+        { role:'system', content:SCRIPT_SYSTEM_PROMPT },
+        { role:'user', content:buildScriptUserPrompt(value) }
+      ], controller.signal);
+      envelope.ok(res, { source:source.source, model:source.model, shots:cleanScriptOutput(extractJsonObject(content)) });
+    } catch (error) {
+      if (httpClient.isAbortError(error)) return;
+      envelope.fail(res, envelope.statusFor(error, 502), error.message || 'AI 脚本失败', { detail:error.detail || '' });
+    }
+  });
+
   return { router:router };
+}
+
+// ── 台词润色 / 质量检查 / 全自动脚本（2026-08-17 短片流水线扩展）─────────
+var DIALOGUE_SYSTEM_PROMPT = [
+  'You are a dialogue writer for an anime video shot.',
+  'Write short natural spoken lines based on the shot description and character context.',
+  '',
+  'Reply with ONLY a JSON object: {"options":[{"text":"...","label":"..."}, ...]} with exactly 3 options.',
+  'No markdown, no commentary.',
+  '',
+  'Rules:',
+  '- Each line is at most 20 Chinese characters (or 60 English characters), natural spoken language, matching the scene language (Chinese scene -> Chinese line).',
+  '- The three options must differ in tone: one short and plain, one gentle/emotional, one slightly playful or dramatic.',
+  '- The line must fit the action and emotion of the shot; do not invent off-screen dialogue.',
+  '- "label" is a short Chinese tone tag (e.g. "简洁", "温柔", "俏皮").',
+  '- If a current dialogue is provided, the FIRST option must be a polished version of it (keep the meaning), the other two are fresh alternatives.',
+  '- If the shot does not need dialogue, still give 3 short fitting lines - never return empty options.'
+].join('\n');
+
+var REVIEW_SYSTEM_PROMPT = [
+  'You are a quality inspector for an anime video storyboard.',
+  'Review each shot for problems and reply with ONLY a JSON object:',
+  '{"issues":[{"index":0,"severity":"warn","field":"camera","message":"...","suggestion":"..."}]}',
+  'No markdown, no commentary. Use an empty "issues" array when everything is fine.',
+  '',
+  'Check for:',
+  '1. Description problems: too static (reads like a still image, no action or time flow), too short, or missing camera intent.',
+  '2. Field contradictions: e.g. description says running but motion is "subtle"; says close framing but shotSize is "wide".',
+  '3. Dialogue problems: longer than 20 Chinese characters, language mismatch (Chinese scene with English line), or too many consecutive shots with dialogue.',
+  '4. Continuity: a shot that clearly jumps in space/time from the previous one without a transition cue.',
+  '',
+  '"severity" is "error" (must fix) or "warn" (should improve).',
+  '"field" is one of "prompt","shotSize","camera","motion","dialogue","continuity".',
+  '"message" is a short Chinese explanation; "suggestion" is a concrete fix (max 60 chars each).'
+].join('\n');
+
+var SCRIPT_SYSTEM_PROMPT = [
+  'You are a director turning a story synopsis into an anime video shot list.',
+  'Reply with ONLY a JSON object:',
+  '{"shots":[{"prompt":"...","shotSize":"medium","camera":"still","motion":"natural","dialogue":"...","duration":5}, ...]}',
+  'No markdown, no commentary.',
+  '',
+  'Rules:',
+  '- Split the story into 8-15 shots (fewer for short synopses).',
+  '- "prompt": 1-3 English sentences describing what HAPPENS in the shot: subject action, camera intent, time flow. Keep identity, outfit and scene consistent.',
+  '- Use <Picture 1> / <Picture 2> labels when multiple characters are defined and appear in the shot (e.g. "Nene hands the letter to <Picture 2>.").',
+  '- "shotSize": "wide"|"medium"|"closeup" - vary for rhythm: open scenes wide, emotional beats closeup.',
+  '- "camera": "still"|"push"|"pull"|"pan"|"orbit" - vary; movement must serve the action.',
+  '- "motion": "subtle"|"natural"|"expressive" - match action intensity.',
+  '- "dialogue": a short line (at most 20 Chinese characters) for shots that need speech; "" for silent shots.',
+  '- "duration": 3, 5, 10 or 15 seconds - 5s is the default; use 10/15s sparingly for key shots.',
+  '- If a target total duration is given, keep the sum close to it.'
+].join('\n');
+
+function validateDialogueBody(body) {
+  if (!body || typeof body !== 'object' || Array.isArray(body)) return { error:'请求体必须是 JSON 对象' };
+  var prompt = String(body.prompt || '').trim();
+  if (!prompt || prompt.length > 4000) return { error:'镜头描述需为 1—4000 字符' };
+  var identity = String(body.identity || '').trim().slice(0, 600);
+  var currentDialogue = String(body.currentDialogue || '').trim().slice(0, 300);
+  var mood = String(body.mood || '').trim().slice(0, 60);
+  return { value:{ prompt:prompt, identity:identity, currentDialogue:currentDialogue, mood:mood } };
+}
+
+function buildDialogueUserPrompt(value) {
+  return [
+    'Identity anchor (for reference only): ' + (value.identity || '(none)'),
+    'Shot description: ' + value.prompt,
+    value.currentDialogue ? 'Current dialogue: ' + value.currentDialogue : '',
+    value.mood ? 'Requested mood: ' + value.mood : '',
+    '',
+    value.currentDialogue ? 'Polish the current dialogue and give two alternatives:' : 'Write three dialogue options for this shot:'
+  ].filter(Boolean).join('\n');
+}
+
+function cleanDialogueOutput(parsed) {
+  var options = [];
+  if (parsed && typeof parsed === 'object' && Array.isArray(parsed.options)) {
+    for (var i = 0; i < parsed.options.length && options.length < 3; i += 1) {
+      var item = parsed.options[i];
+      if (!item || typeof item !== 'object') continue;
+      var text = String(item.text || '').trim();
+      if (!text || text.length > 60) continue;
+      options.push({ text:text, label:String(item.label || '').trim().slice(0, 12) });
+    }
+  }
+  return options;
+}
+
+function validateReviewBody(body) {
+  if (!body || typeof body !== 'object' || Array.isArray(body)) return { error:'请求体必须是 JSON 对象' };
+  if (!Array.isArray(body.shots) || body.shots.length < 1 || body.shots.length > MAX_POLISH_SHOTS) {
+    return { error:'分镜数量需为 1—' + MAX_POLISH_SHOTS };
+  }
+  var shots = [];
+  for (var i = 0; i < body.shots.length; i += 1) {
+    var shot = body.shots[i];
+    if (!shot || typeof shot !== 'object') return { error:'第 ' + (i + 1) + ' 个分镜必须是对象' };
+    var prompt = String(shot.prompt || '').trim();
+    if (!prompt || prompt.length > 4000) return { error:'第 ' + (i + 1) + ' 个分镜描述需为 1—4000 字符' };
+    shots.push({
+      prompt:prompt,
+      shotSize:shot.shotSize === null || shot.shotSize === undefined || shot.shotSize === '' ? null : String(shot.shotSize),
+      camera:String(shot.camera || 'still'),
+      motion:String(shot.motion || 'subtle'),
+      dialogue:String(shot.dialogue || '').trim().slice(0, 300),
+    });
+  }
+  return { value:{ shots:shots } };
+}
+
+function buildReviewUserPrompt(value) {
+  var lines = ['Shot list (index | shotSize | camera | motion | dialogue | description):'];
+  value.shots.forEach(function (shot, index) {
+    lines.push((index + 1) + '. ' + (shot.shotSize || 'default') + ' | ' + shot.camera + ' | ' + shot.motion
+      + ' | ' + (shot.dialogue ? JSON.stringify(shot.dialogue) : '""')
+      + ' | ' + shot.prompt.slice(0, 200));
+  });
+  lines.push('', 'Inspect this shot list:');
+  return lines.join('\n');
+}
+
+var REVIEW_FIELDS = ['prompt', 'shotSize', 'camera', 'motion', 'dialogue', 'continuity'];
+
+function cleanReviewOutput(parsed, value) {
+  var issues = [];
+  if (!parsed || typeof parsed !== 'object' || !Array.isArray(parsed.issues)) return issues;
+  for (var i = 0; i < parsed.issues.length; i += 1) {
+    var item = parsed.issues[i];
+    if (!item || typeof item !== 'object') continue;
+    var index = Number(item.index);
+    if (!Number.isInteger(index) || index < 0 || index >= value.shots.length) continue;
+    var severity = String(item.severity || '').trim();
+    if (severity !== 'error' && severity !== 'warn') continue;
+    var field = String(item.field || '').trim();
+    if (REVIEW_FIELDS.indexOf(field) === -1) continue;
+    var message = String(item.message || '').trim().slice(0, 120);
+    if (!message) continue;
+    issues.push({
+      index:index,
+      severity:severity,
+      field:field,
+      message:message,
+      suggestion:String(item.suggestion || '').trim().slice(0, 120),
+    });
+  }
+  return issues;
+}
+
+function validateScriptBody(body) {
+  if (!body || typeof body !== 'object' || Array.isArray(body)) return { error:'请求体必须是 JSON 对象' };
+  var story = String(body.story || '').trim();
+  if (!story || story.length > 2000) return { error:'故事梗概需为 1—2000 字符' };
+  var identity = String(body.identity || '').trim().slice(0, 600);
+  var shotCount = body.shotCount === undefined || body.shotCount === null || body.shotCount === ''
+    ? null
+    : Number(body.shotCount);
+  if (shotCount !== null && (!Number.isInteger(shotCount) || shotCount < 4 || shotCount > 20)) {
+    return { error:'镜头数需为 4—20 的整数' };
+  }
+  var totalSeconds = body.totalSeconds === undefined || body.totalSeconds === null || body.totalSeconds === ''
+    ? null
+    : Number(body.totalSeconds);
+  if (totalSeconds !== null && (!Number.isInteger(totalSeconds) || totalSeconds < 15 || totalSeconds > 300)) {
+    return { error:'总时长需为 15—300 秒' };
+  }
+  var characterLabels = Array.isArray(body.characterLabels)
+    ? body.characterLabels.map(String).filter(Boolean).slice(0, 6)
+    : [];
+  return { value:{ story:story, identity:identity, shotCount:shotCount, totalSeconds:totalSeconds, characterLabels:characterLabels } };
+}
+
+function buildScriptUserPrompt(value) {
+  var lines = [
+    'Identity anchor (for reference only): ' + (value.identity || '(none)'),
+  ];
+  if (value.characterLabels.length) {
+    lines.push('Characters: ' + value.characterLabels.map(function (label, i) {
+      return '<Picture ' + (i + 1) + '> = ' + label;
+    }).join('; '));
+  }
+  lines.push('Story synopsis: ' + value.story);
+  if (value.shotCount) lines.push('Target shot count: ' + value.shotCount);
+  if (value.totalSeconds) lines.push('Target total duration: ' + value.totalSeconds + ' seconds');
+  lines.push('', 'Create the shot list:');
+  return lines.join('\n');
+}
+
+function cleanScriptOutput(parsed) {
+  var shots = [];
+  if (!parsed || typeof parsed !== 'object' || !Array.isArray(parsed.shots)) return shots;
+  for (var i = 0; i < parsed.shots.length && shots.length < 20; i += 1) {
+    var item = parsed.shots[i];
+    if (!item || typeof item !== 'object') continue;
+    var prompt = String(item.prompt || '').trim();
+    if (!prompt || prompt.length > 4000) continue;
+    var shotSize = String(item.shotSize || '');
+    var camera = String(item.camera || 'still');
+    var motion = String(item.motion || 'subtle');
+    var dialogue = String(item.dialogue || '').trim().slice(0, 300);
+    var duration = Number(item.duration);
+    if (![3, 5, 10, 15].includes(duration)) duration = 5;
+    shots.push({
+      prompt:prompt,
+      shotSize:SHOT_SIZE_VALUES.indexOf(shotSize) !== -1 ? shotSize : null,
+      camera:CAMERA_VALUES.indexOf(camera) !== -1 ? camera : 'still',
+      motion:MOTION_VALUES.indexOf(motion) !== -1 ? motion : 'subtle',
+      dialogue:dialogue,
+      duration:duration,
+    });
+  }
+  return shots;
 }
 
 module.exports = { createVideoAiRouter:createVideoAiRouter };
