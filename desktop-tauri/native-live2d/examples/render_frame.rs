@@ -808,6 +808,57 @@ fn main() {
                     renderer.stats().mask_textures,
                     renderer.stats().total_vertices,
                 );
+                // TEMP DIAG (2026-08-16 发灰排查): 主动作播完后
+                // - L2D_RESET_ALL=1: 全部参数重置为 moc3 默认值再渲染
+                // - L2D_AFTER_IDLE=1: 接 Idle_0 90 帧再渲染
+                let reset_all = std::env::var("L2D_RESET_ALL").is_ok();
+                let after_idle = std::env::var("L2D_AFTER_IDLE").is_ok();
+                if reset_all || after_idle {
+                    if reset_all {
+                        model.reset_all_parameters();
+                        model.update(1.0 / 60.0); // 刷新 drawable 快照
+                        eprintln!("[diag] all params reset to defaults + update");
+                    } else {
+                        let _ = model.start_motion("Idle", 0, model::PRIORITY_NORMAL);
+                        for _ in 0..90 {
+                            model.update(1.0 / 60.0);
+                        }
+                    }
+                    let pixels2 = renderer.render_to_image(
+                        &model, &transform, &textures, size, size, no_mask, only_drawable,
+                    );
+                    let tag = if reset_all { "reset-all" } else { "after-idle" };
+                    let mut out2 = out.clone();
+                    out2.set_file_name(format!(
+                        "{tag}_{}",
+                        out.file_name().unwrap().to_string_lossy()
+                    ));
+                    if std::env::var("L2D_TRANSPARENT_OUT").is_ok() {
+                        RgbaImage::from_raw(size, size, pixels2)
+                            .expect("rgba image2")
+                            .save(&out2)
+                            .expect("save png2");
+                    } else {
+                        let bg = Rgba([36, 24, 58, 255]);
+                        let mut canvas = RgbaImage::from_pixel(size, size, bg);
+                        for (x, y, p) in
+                            RgbaImage::from_raw(size, size, pixels2)
+                                .expect("rgba image2")
+                                .enumerate_pixels()
+                        {
+                            let a = p.0[3] as f32 / 255.0;
+                            if a > 0.0 {
+                                let px = canvas.get_pixel_mut(x, y);
+                                px.0[0] = (p.0[0] as f32 * a + px.0[0] as f32 * (1.0 - a)) as u8;
+                                px.0[1] = (p.0[1] as f32 * a + px.0[1] as f32 * (1.0 - a)) as u8;
+                                px.0[2] = (p.0[2] as f32 * a + px.0[2] as f32 * (1.0 - a)) as u8;
+                                px.0[3] = 255;
+                            }
+                        }
+                        canvas.save(&out2).expect("save png2");
+                    }
+                    eprintln!("[diag] {tag} saved {}", out2.display());
+                }
             }
         }
         println!("total wall time: {:.2}s", started.elapsed().as_secs_f32());

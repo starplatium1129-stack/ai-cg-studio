@@ -220,6 +220,11 @@ impl Model {
         unsafe { ffi::l2d_model_force_overlay_hidden(self.ptr) }
     }
 
+    /// TEMP DIAG: 把所有参数重置为 moc3 默认值。
+    pub fn reset_all_parameters(&mut self) {
+        unsafe { ffi::l2d_model_reset_all_parameters(self.ptr) }
+    }
+
     pub fn get_part_opacity(&self, id: &str) -> f32 {
         let id = ffi::CStringGuard::new(id);
         unsafe { ffi::l2d_model_get_part_opacity(self.ptr, id.as_ptr()) }

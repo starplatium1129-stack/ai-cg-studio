@@ -112,6 +112,7 @@ const POINTER_FOCUS_PARAMS = ['ParamAngleX', 'ParamAngleY', 'ParamEyeBallX', 'Pa
 // 依据：docs/live2d-natsume-overlay-research.md、docs/live2d-native-runtime.md。
 const NATSUME_RESET_PARAMS: ReadonlyArray<{ id: string; value: number }> = [
   { id: 'Param18', value: 0 },
+  { id: 'Param36', value: 0 },
   { id: 'Param44', value: 0 }, { id: 'Param45', value: 0 }, { id: 'Param46', value: 0 },
   { id: 'Param47', value: 0 }, { id: 'Param48', value: 0 }, { id: 'Param49', value: 0 },
   { id: 'Param50', value: 0 }, { id: 'Param51', value: 0 }, { id: 'Param56', value: 0 },

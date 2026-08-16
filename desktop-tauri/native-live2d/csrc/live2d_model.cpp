@@ -379,6 +379,7 @@ static void apply_overlay_hidden(l2d_model* m)
     if (!m || !m->model) { return; }
     static const struct { const char* id; float value; } overlayParams[] = {
         { "Param18", 0.0f },
+        { "Param36", 0.0f },
         { "Param44", 0.0f }, { "Param45", 0.0f }, { "Param46", 0.0f },
         { "Param47", 0.0f }, { "Param48", 0.0f }, { "Param49", 0.0f },
         { "Param50", 0.0f }, { "Param51", 0.0f }, { "Param56", 0.0f },
@@ -412,6 +413,17 @@ void l2d_model_reset_overlay_params(l2d_model* m)
 void l2d_model_force_overlay_hidden(l2d_model* m)
 {
     apply_overlay_hidden(m);
+}
+
+/* TEMP DIAG (2026-08-16): reset every parameter to its moc3 default value. */
+void l2d_model_reset_all_parameters(l2d_model* m)
+{
+    if (!m || !m->model) { return; }
+    const csmInt32 count = m->model->GetParameterCount();
+    for (csmInt32 i = 0; i < count; ++i)
+    {
+        m->model->SetParameterValue(i, m->model->GetParameterDefaultValue(i));
+    }
 }
 
 void l2d_model_set_part_opacity(l2d_model* m, const char* id, float opacity)
