@@ -437,3 +437,29 @@ ComfyUI/models/
 - **根因**：`imageInputAvailable` 内部只用 `IMAGE_INPUT_PATTERN.test(name)`，ref 前缀
   永远 false → 即使文件在磁盘上也被拒。
 - **修复**：函数内同时接受 `IMAGE_INPUT_PATTERN` 与 `IMAGE_REF_PATTERN`。
+
+### 疑难 4：Ref2VA 双人同框，<Picture 2> 角色被前一镜尾帧覆盖（宁宁化）
+
+- **现象**：linkLastFrame 批量衔接时，带 references 的角色切换镜头（如夏目读信）
+  成片画出前一镜主角（白发宁宁），<Picture 2> 的黑发夏目从不出现。
+- **根因**：参考图标签错位 + Hybrid 衔接双重叠加：
+  1. 首批传 6 张卡（宁宁3+夏目3），prompt 只引用 `<Picture 1>/<Picture 2>`，两个标签
+     都指向宁宁的图 → 夏目被锚成白发；
+  2. 修正为每角色 1 张 face 卡（<Picture N> 严格对齐）后，linkLastFrame 仍把上一镜
+     末帧写入下一镜 image → 带 references 时变 Hybrid（首帧=前主角 + 参考卡），
+     首帧像素锚定压过 `<Picture 2>` 参考 → 夏目继续宁宁化。
+- **修复**：
+  1. 每角色只用 1 张 face 主卡，`<Picture N>` 与 ref 槽 1:1 对齐；
+  2. 批量衔接：带 references 的镜头跳过尾帧衔接，保持纯 Ref2VA；
+  3. Anchor 声明按参考数分行：单参考 → "exactly one character, no duplicates"；
+     多参考 → "each <Picture N> is a distinct character, never swap or merge"。
+- **验证**：双人 probe（无衔接纯 Ref2VA）稳定出现白发紫瞳 + 黑发金瞳红发夹两角色；
+  v4/v5 全批双人镜头两角色均正确。
+
+### 疑难 5：单人参考镜头分身（镜像复制）
+
+- **现象**：单参考镜头（宁宁独擦杯）画面出现两名一模一样宁宁。
+- **根因**：Ref2VA 单图参考时模型把参考"渲染两次"，提示词"空无一人"不足以抑制。
+- **修复**：单参考 anchors 追加 "the shot contains exactly one character: <Picture 1>.
+  No other people, no reflections, no duplicate or mirrored copies."
+- **验证**：probe 3 帧全部唯一角色。
