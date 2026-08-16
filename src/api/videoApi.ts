@@ -43,6 +43,11 @@ export interface VideoStatusResponse {
   models: VideoModelStatus[]
   qualities: VideoQualityOption[]
   defaults: VideoDefaults
+  /** T8 双时钟加速路径状态（降级时前端应展示提示）。 */
+  t8: {
+    available: boolean
+    reason: string
+  }
 }
 
 export interface VideoJob {
@@ -50,6 +55,10 @@ export interface VideoJob {
   status: VideoJobStatus
   provider: 'comfy'
   progress: number
+  /** 预估总时长（秒）：帧数×步数×速率 + 加载余量（服务端校准）。 */
+  estimatedSeconds: number
+  /** 已运行秒数（时间外推进度用）。 */
+  elapsedSeconds: number
   modelId: string
   prompt: string
   width: number

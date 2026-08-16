@@ -148,6 +148,20 @@ async function ensureT8Probe(config) {
   await probeT8Nodes(config);
 }
 
+// 视频任务预估时长（秒）：帧数 × 步数 × 每帧每步耗时 + 加载/编码余量。
+// 真机校准（4070 Ti SUPER）：T8 双时钟 ≈ 0.125s/帧/步（15s 4 步实测 272s），
+// 原生采样 ≈ 0.25s/帧/步（15s 4 步实测 489s，含模型换入）；余量 90s 覆盖
+// 模型加载与首帧编码。用于：真实进度外推（替代固定 0.12）、卡死预警
+// （elapsed > 预估 × 1.5 提示异常）、动态超时（deadline = 预估 × 3）。
+var H3_PER_FRAME_STEP_SECONDS = { t8:0.125, native:0.25 };
+var H3_ESTIMATE_MARGIN_SECONDS = 90;
+function estimateH3Seconds(input) {
+  var rate = t8Available
+    ? H3_PER_FRAME_STEP_SECONDS.t8
+    : H3_PER_FRAME_STEP_SECONDS.native;
+  return Math.round(input.frames * input.steps * rate) + H3_ESTIMATE_MARGIN_SECONDS;
+}
+
 var ASPECTS = Object.freeze({
   landscape:{ width:832, height:480, label:'横屏 16:9' },
   portrait:{ width:480, height:832, label:'竖屏 9:16' },
@@ -1130,11 +1144,20 @@ function createVideoService(config, dependencies) {
   }
 
   function publicJob(job) {
+    // 进度由时间外推（elapsed/预估），不再用固定 0.12 假值误导等待；
+    // 上限 90% 保留采样完成后的编码/落盘余量，succeeded 才归 1。
+    var elapsedSeconds = Math.round((Date.now() - job.createdAt) / 1000);
+    var progress = job.status === 'succeeded' ? 1
+      : job.status === 'running'
+        ? Math.min(0.9, Math.max(0.02, elapsedSeconds / job.estimatedSeconds))
+        : 0;
     return {
       id:job.id,
       status:job.status,
       provider:'comfy',
-      progress:job.status === 'succeeded' ? 1 : (job.status === 'running' ? 0.12 : 0),
+      progress:progress,
+      estimatedSeconds:job.estimatedSeconds,
+      elapsedSeconds:elapsedSeconds,
       modelId:job.input.modelId,
       prompt:job.input.originalPrompt,
       width:job.input.width,
@@ -1184,7 +1207,9 @@ function createVideoService(config, dependencies) {
   async function poll(job) {
     if (closed || job.status !== 'running' || !job.upstreamId) return;
     if (Date.now() > job.deadline) {
-      failJob(job, serviceError(504, 'VIDEO_TIMEOUT', '视频生成超时'), 'VIDEO_TIMEOUT');
+      failJob(job, serviceError(504, 'VIDEO_TIMEOUT',
+        '视频任务疑似卡死（超过预估时长 ' + job.estimatedSeconds + ' 秒的 3 倍仍未完成），请检查 ComfyUI 状态后重试'),
+        'VIDEO_TIMEOUT');
       return;
     }
     try {
@@ -1285,13 +1310,17 @@ function createVideoService(config, dependencies) {
     var ttlMs = opts && opts.ttlMs || jobTtlMs;
     var id = crypto.randomBytes(18).toString('hex');
     var createdAt = Date.now();
+    // 动态超时：预估时长 × 3（下限 10 分钟）替代固定 45 分钟——卡死时
+    // 不用再硬等 45 分钟才失败（2026-08-17 可观测性审计）。
+    var estimatedSeconds = estimateH3Seconds(input);
     var job = {
       id:id,
       owner:owner,
       input:input,
       status:'queued',
       createdAt:createdAt,
-      deadline:createdAt + jobTimeoutMs,
+      estimatedSeconds:estimatedSeconds,
+      deadline:createdAt + Math.max(10 * 60 * 1000, estimatedSeconds * 3 * 1000),
       upstreamId:'',
       result:null,
       error:null,
@@ -1831,6 +1860,12 @@ function createVideoRouter(config, dependencies) {
         }),
       });
     });
+    var t8 = {
+      available:t8Available,
+      reason:t8Available
+        ? 'T8 双时钟采样 + 4 步加速 LoRA（最快路径）'
+        : '已降级：原生采样器（速度约慢 1 倍）；提交任务时会自动重新探测',
+    };
     var qualities = Object.keys(QUALITIES).map(function (id) {
       var quality = QUALITIES[id];
       return {
@@ -1858,6 +1893,7 @@ function createVideoRouter(config, dependencies) {
         motion:'subtle',
         quality:'standard',
       },
+      t8:t8,
     });
   });
 

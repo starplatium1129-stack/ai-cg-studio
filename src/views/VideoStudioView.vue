@@ -277,6 +277,9 @@
               <span class="video-step">任务队列</span>
               <h2>当前成片</h2>
             </div>
+            <span v-if="t8State" class="video-t8-badge" :data-state="t8State.available ? 'fast' : 'slow'">
+              {{ t8State.available ? '⚡ T8 双时钟加速' : '⚠ 原生采样（慢）' }}
+            </span>
           </div>
           <div v-if="!job" class="video-queue-empty">
             <ArchiveIcon name="play" />
@@ -293,8 +296,14 @@
               <span>Seed {{ job.seed }}</span>
             </div>
             <div v-if="job.status === 'queued' || job.status === 'running' || job.status === 'cancelling'" class="video-progress">
-              <i></i>
+              <i :style="{ width: progressPercent + '%' }"></i>
             </div>
+            <p v-if="job.status === 'running' && job.estimatedSeconds" class="video-job-eta">
+              {{ progressPercent }}% · 已 {{ formatSeconds(job.elapsedSeconds) }} / 预估 {{ formatSeconds(job.estimatedSeconds) }}
+            </p>
+            <p v-if="progressWarning" class="video-inline-message" :class="progressWarning.level === 'danger' ? 'error' : 'warning'">
+              {{ progressWarning.text }}
+            </p>
             <p v-if="job.error" class="video-inline-message error">{{ job.error }}</p>
             <button
               v-if="job.status === 'queued' || job.status === 'running'"
@@ -455,6 +464,39 @@ const parsedSeed = computed(() => {
 const jobActive = computed(() => job.value?.status === 'queued'
   || job.value?.status === 'running'
   || job.value?.status === 'cancelling')
+
+// ── 可观测性（2026-08-17）：真实进度外推 + 疑似卡死预警 + T8 状态徽章 ──
+function formatSeconds(total: number) {
+  const safe = Math.max(0, Math.round(total))
+  const minutes = Math.floor(safe / 60)
+  const seconds = safe % 60
+  return minutes ? `${minutes} 分 ${seconds} 秒` : `${seconds} 秒`
+}
+const progressPercent = computed(() => {
+  const current = job.value
+  if (!current) return 0
+  return Math.min(100, Math.round((current.progress || 0) * 100))
+})
+/** 运行时间异常预警：超过预估 1.5× 提示、2.5× 判疑似卡死。 */
+const progressWarning = computed<{ level: 'warn' | 'danger'; text: string } | null>(() => {
+  const current = job.value
+  if (!current || current.status !== 'running' || !current.estimatedSeconds) return null
+  const ratio = current.elapsedSeconds / current.estimatedSeconds
+  if (ratio >= 2.5) {
+    return {
+      level: 'danger',
+      text: `疑似卡死：已运行 ${formatSeconds(current.elapsedSeconds)}，超过预估 ${formatSeconds(current.estimatedSeconds)} 的 2.5 倍。请检查 ComfyUI（可能卡在模型加载/采样），必要时取消重试。`,
+    }
+  }
+  if (ratio >= 1.5) {
+    return {
+      level: 'warn',
+      text: `运行时间异常：已 ${formatSeconds(current.elapsedSeconds)}，预估 ${formatSeconds(current.estimatedSeconds)}。建议留意 ComfyUI 状态。`,
+    }
+  }
+  return null
+})
+const t8State = computed(() => status.value?.t8 ?? null)
 const canGenerate = computed(() => {
   const mode = selectedMode.value
   // 分镜模式走 ShotListEditor 自己的提交链路，不进单任务生成。
@@ -852,9 +894,14 @@ onBeforeUnmount(() => {
 .video-job-meta { display:flex; flex-wrap:wrap; gap:var(--s-2); margin:var(--s-3) 0; }
 .video-job-meta span { padding:3px var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-pill); color:var(--text-muted); font:600 var(--fs-mono-xs) var(--font-mono); }
 .video-progress { height:3px; margin:var(--s-3) 0; overflow:hidden; border-radius:var(--r-pill); background:var(--bg-deep); }
-.video-progress i { display:block; width:38%; height:100%; background:linear-gradient(90deg,transparent,var(--archive-cyan),var(--accent),transparent); animation:video-progress 1.1s linear infinite; }
+.video-progress i { display:block; height:100%; width:0; background:linear-gradient(90deg,var(--archive-cyan),var(--accent)); transition:width .6s ease; }
 .video-inline-message { padding:var(--s-2) var(--s-3); border-radius:var(--r-md); font-size:var(--fs-body-sm); line-height:1.55; }
 .video-inline-message.error { background:color-mix(in srgb,var(--danger) 10%,transparent); color:var(--danger-text); }
+.video-inline-message.warning { background:color-mix(in srgb,var(--warning) 12%,transparent); color:var(--warning-text); }
+.video-job-eta { margin:2px 0 0; color:var(--text-muted); font: 600 var(--fs-mono-xs) var(--font-mono); }
+.video-t8-badge { padding:3px var(--s-2); border-radius:var(--r-pill); font:700 var(--fs-mono-xs) var(--font-mono); white-space:nowrap; }
+.video-t8-badge[data-state="fast"] { background:color-mix(in srgb,var(--success) 14%,transparent); color:var(--success-text); }
+.video-t8-badge[data-state="slow"] { background:color-mix(in srgb,var(--warning) 14%,transparent); color:var(--warning-text); }
 .video-result-panel { margin-top:var(--s-5); }
 .video-player { display:block; width:100%; max-height:min(72vh,760px); border-radius:var(--r-lg); background:var(--bg-deep); }
 .video-review-checklist { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:var(--s-2); margin-top:var(--s-3); }
