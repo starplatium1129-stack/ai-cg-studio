@@ -414,7 +414,9 @@ const route = useRoute()
 const router = useRouter()
 const prompt = ref('')
 const negative = ref('')
-const selectedModelId = ref('wan2.2-ti2v-5b')
+// 默认选中 H3：主力模型（T8 双时钟加速 / 对白 / 长镜都靠它），Wan 仅作备选。
+// 此前默认 wan2.2 导致用户忘记切换就出片（2026-08-17 用户反馈）。
+const selectedModelId = ref('minimax-h3')
 const aspectRatio = ref<VideoDefaults['aspectRatio']>('landscape')
 const quality = ref<VideoDefaults['quality']>('standard')
 const steps = ref<4 | 8>(8)
