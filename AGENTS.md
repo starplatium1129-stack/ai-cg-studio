@@ -60,6 +60,7 @@
     1. **出图流水线**（`render-all-outfits-references.js`）：3 并发向 Anima 批量生成并自动落盘；
     2. **纯视觉审核池**（`pure-vision-audit.js`）：4 并发调用 Gemini 3.7 Flash 视觉模型严格八维初审，审核与出图解耦避免 GPU 队列争抢；状态落盘至 `runtime/multi-outfit-audit-report.json`；
     3. **定向微调自愈引擎**（`fine-tuned-repair.js`）：读懂审核不通过理由，针对顽固项（如特写易画成半身）动态剥离下半身词条并强化景别负向压制，自动换 Seed 重绘并复审直到绿灯。
+    4. **待精调归档清单**（`docs/character-reference-audit-pending.md`）：归档了剩余 75 张明日方舟高阶变体等边缘视角偏差点与修复配方，供后续空闲时一键定向微调。
   - **资产入库边界**：`assets/character-references/`（700+ 张高精 PNG，数百 MB）属本地生成媒体，**严禁提交入 Git 仓库**（已入 `.gitignore`）；仅提交规范数据 `data/character-reference-standards.json`、TS 映射契约 `src/utils/characterReferenceData.ts` 与维护脚本。
 
 ## 当前架构
