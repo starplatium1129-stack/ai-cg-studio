@@ -259,11 +259,16 @@ var H3_SHOT_SIZE = Object.freeze({
   closeup:{ label:'特写', line:'The subject is framed in a close-up on the face.' },
 });
 // 对白语言标签判定（官方 4.4：<d> 内只放语言标签 + 原文，逐字保留）。
+// 角色均出自日本动漫：平假名/片假名判定为日语（2026-08-17 用户指示
+// 「角色应该说话日语」）；中日韩统一归 CJK，其余归英语。
 var CJK_DIALOGUE_RE = /[\u3400-\u9fff\uf900-\ufaff]/;
+var JAPANESE_DIALOGUE_RE = /[\u3040-\u30ff]/;
 
 // H3 官方 base-en.txt 要求 [Shot 1] 开头声明整体风格与初始构图（4.1）；
-// 本项目出图链路全是二次元风格，默认 2D-animated, cinematic。
-var H3_STYLE = '2D-animated, cinematic';
+// 本项目出图链路全是二次元风格，默认注入 rella 画师风格文字锚
+// （梦幻夜景辉光/空灵色彩/电影照明，与 @rella 参考卡像素风格一致，
+// 收敛"特写贴 rella、中景回默认风"的画风漂移）。
+var H3_STYLE = "2D-animated anime illustration in rella's style, dreamy night glow, soft ethereal colors, cinematic lighting";
 
 // 官方 4.6/4.7：soundscape 用 1-4 句具体声音；music 写乐器/速度/节奏/动态，
 // 禁止抽象情绪词（"fits the mood" 之类）或解释配乐的情绪功能。
@@ -629,7 +634,7 @@ function validateInput(body, config) {
   // (S1) + <d>[语言标签] 原文</d> 块，逐字保留用户台词（不翻译不改写）。
   var h3ShotLine = shotSize === null ? null : H3_SHOT_SIZE[shotSize].line;
   var dialogueLine = dialogue
-    ? ' The subject in the frame (S1) says: <d>[' + (CJK_DIALOGUE_RE.test(dialogue) ? 'Chinese' : 'English') + '] ' + dialogue + '</d>'
+    ? ' The subject in the frame (S1) says: <d>[' + (JAPANESE_DIALOGUE_RE.test(dialogue) ? 'Japanese' : (CJK_DIALOGUE_RE.test(dialogue) ? 'Chinese' : 'English')) + '] ' + dialogue + '</d>'
     : null;
 
   // 参考图对齐指令（官方 base-en.txt 2.1）：I2VA 首帧 / FL2VA 首尾帧 / L2VA 尾帧，

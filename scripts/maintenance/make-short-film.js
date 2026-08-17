@@ -165,10 +165,18 @@ async function stageGenerate() {
         return '1';
       });
 
+  // 场景一致性锚（2026-08-17 用户反馈：切换画面背景漂移大——"看得出是
+  // 咖啡厅但每次都是不同咖啡厅"）。带参考卡的镜头因身份正确性跳过了尾帧
+  // 衔接，零场景锚定、各镜独立采样；这里给每镜 prompt 附加同一句场景定场
+  // 句收敛布景漂移。外景锚只用于第 1 镜（店外），其余统一用内景锚。
+  const SCENE_ANCHOR_OUT = '深夜街道同一家小咖啡店外观：玻璃门透出暖黄灯光，招牌微亮，安静的夜街。';
+  const SCENE_ANCHOR_IN = '这仍是同一家深夜咖啡馆内部：木质吧台、意式咖啡机、玻璃陈列架、圆形挂钟、暖黄吊灯、临街窗户。';
+
   const shots = script.shots.map((shot, i) => {
     const references = castRefs(casts[i]);
+    const anchor = i === 0 ? SCENE_ANCHOR_OUT : SCENE_ANCHOR_IN;
     return {
-      prompt: shot.prompt,
+      prompt: shot.prompt + ' ' + anchor,
       dialogue: shot.dialogue || undefined,
       shotSize: shot.shotSize || undefined,
       camera: shot.camera,
