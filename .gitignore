@@ -41,6 +41,9 @@ tunnel.log
 # Dual-pose skeleton images (generated)
 assets/dual-poses/*.png
 
+# 角色 4 视角参考图（本地离线/维护流水线生成资产，不入库）
+assets/character-references/
+
 # 预压产物（npm run precompress 生成，随构建重新产生）
 *.br
 *.gz

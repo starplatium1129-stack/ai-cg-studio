@@ -151,6 +151,56 @@
         </div>
       </section>
 
+      <section v-if="characterReferences" class="char-reference-section card-direct card-level-2" data-reveal data-reveal-delay="1.5">
+        <div class="recommend-head">
+          <div>
+            <div class="page-kicker">Cinematic Bible</div>
+            <h2 class="recommend-title">短剧 4 视角标准参考基准</h2>
+            <p>基于 Anima 真实渲染锁定的影视级基准参考库（锁死五官、发型、服装与身材比例，跨镜一致性核心保障）。</p>
+          </div>
+          <RouterLink class="btn btn-primary btn-sm" :to="`/video-studio?mode=shots&character=${encodeURIComponent(current?.id || '')}&outfit=${encodeURIComponent(activeOutfit?.outfitId || '')}`">
+            去分镜短片创作 ↗
+          </RouterLink>
+        </div>
+
+        <!-- 多服装 / 形态切换器 -->
+        <div v-if="characterReferences.outfits.length > 1" class="char-outfit-tabs" aria-label="角色服装与形态切换">
+          <button
+            v-for="outfit in characterReferences.outfits"
+            :key="outfit.outfitId"
+            type="button"
+            class="char-outfit-tab"
+            :class="{ active: activeOutfit?.outfitId === outfit.outfitId, 'tab-nsfw': outfit.isNsfw }"
+            @click="selectedOutfitId = outfit.outfitId"
+          >
+            <span class="outfit-tab-icon">{{ outfit.isNsfw ? '🔞' : '👗' }}</span>
+            <span class="outfit-tab-name">{{ outfit.outfitName }}</span>
+          </button>
+        </div>
+
+        <div v-if="activeOutfit" class="char-reference-grid">
+          <div v-for="refItem in activeOutfit.references" :key="refItem.id" class="char-ref-card">
+            <div class="char-ref-image-wrap">
+              <img
+                :src="`${refItem.url}?t=${refVersion}`"
+                :alt="refItem.name"
+                class="char-ref-image"
+                loading="lazy"
+              />
+              <span class="char-ref-badge">{{ refItem.shotType }}</span>
+            </div>
+            <div class="char-ref-info">
+              <h3 class="char-ref-title">{{ refItem.name }}</h3>
+              <p class="char-ref-lens"><code>{{ refItem.lens }}</code></p>
+              <p class="char-ref-desc">锁死 {{ current?.name }} · {{ activeOutfit.outfitName }} 的{{ refItem.name }}特征。</p>
+              <div class="char-ref-usages">
+                <span v-for="usage in refItem.targetUsage" :key="usage" class="char-ref-tag">{{ usage }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section v-if="recommendations.length" class="recommend-section" data-reveal data-reveal-delay="2">
         <div class="recommend-head">
           <div>
@@ -185,6 +235,7 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import { franchiseLabel } from '@/utils/franchiseLabel'
 import { characterParticleTheme } from '@/utils/characterParticleTheme'
+import { getCharacterReferences } from '@/utils/characterReferenceData'
 import {
   parseCharacterProfiles,
   parseCharacterScenes,
@@ -303,6 +354,21 @@ function selectCharacter(id: string) {
   })
 }
 function tagClass(index: unknown) { return 'm' + (Number(index) % 6) }
+
+const characterReferences = computed(() => {
+  if (!current.value) return undefined
+  return getCharacterReferences(current.value.id)
+})
+const selectedOutfitId = ref<string>('')
+const activeOutfit = computed(() => {
+  if (!characterReferences.value?.outfits?.length) return undefined
+  if (selectedOutfitId.value) {
+    const found = characterReferences.value.outfits.find(o => o.outfitId === selectedOutfitId.value)
+    if (found) return found
+  }
+  return characterReferences.value.outfits.find(o => o.isDefault) || characterReferences.value.outfits[0]
+})
+const refVersion = ref(Date.now())
 
 const hasIdentity = computed(() => {
   const id = current.value?.identity || {}
@@ -516,5 +582,168 @@ onMounted(() => { void loadProfiles() })
 .cg-title { margin-bottom:var(--s-1); font-size:var(--fs-title-xs); font-weight:800; }
 .cg-reason { margin-bottom:var(--s-2); color:var(--accent); font-size:var(--fs-label-sm); line-height:1.55; }
 .cg-story { color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:1.65; }
+
+/* 短剧 4 视角标准参考资产卡 */
+.char-reference-section {
+  position: relative;
+  margin-top: var(--s-7);
+  padding: var(--s-5);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-xl);
+}
+.char-outfit-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin-top: var(--s-3);
+  padding-bottom: var(--s-2);
+  border-bottom: 1px dashed var(--border-soft);
+}
+.char-outfit-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px var(--s-3);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-pill);
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  font-size: var(--fs-label-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--t-fast);
+}
+.char-outfit-tab:hover {
+  border-color: var(--accent);
+  color: var(--text-primary);
+}
+.char-outfit-tab.active {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--text-inverse);
+}
+.char-outfit-tab.tab-nsfw {
+  border-color: color-mix(in srgb, var(--danger) 40%, var(--border-soft));
+}
+.char-outfit-tab.tab-nsfw.active {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #fff;
+}
+.outfit-tab-icon {
+  font-size: 14px;
+}
+.char-reference-section::before {
+  content: "02 · CINEMATIC BIBLE";
+  position: absolute;
+  top: -0.55em;
+  left: var(--s-4);
+  padding: 0 var(--s-2);
+  background: var(--bg-base);
+  color: var(--archive-blue);
+  font: 650 var(--fs-mono-xs) var(--font-mono);
+  letter-spacing: 0.1em;
+}
+.char-reference-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--s-4);
+  margin-top: var(--s-4);
+}
+.char-ref-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  transition: transform var(--t-fast), border-color var(--t-fast);
+}
+.char-ref-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+}
+.char-ref-image-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 832 / 1216;
+  background: var(--bg-deep);
+  overflow: hidden;
+}
+.char-ref-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform var(--t-med);
+}
+.char-ref-card:hover .char-ref-image {
+  transform: scale(1.03);
+}
+.char-ref-badge {
+  position: absolute;
+  top: var(--s-2);
+  left: var(--s-2);
+  padding: 2px var(--s-2);
+  border-radius: var(--r-pill);
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  color: #fff;
+  font: 600 var(--fs-mono-xs) var(--font-mono);
+}
+.char-ref-info {
+  padding: var(--s-3);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.char-ref-title {
+  margin: 0 0 4px;
+  font-size: var(--fs-body-sm);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.char-ref-lens {
+  margin: 0 0 var(--s-2);
+}
+.char-ref-lens code {
+  color: var(--accent);
+  font-size: var(--fs-label-xs);
+  padding: 1px 4px;
+  border-radius: var(--r-xs);
+  background: var(--accent-soft);
+}
+.char-ref-desc {
+  margin: 0 0 var(--s-3);
+  font-size: var(--fs-label-xs);
+  color: var(--text-secondary);
+  line-height: 1.45;
+  flex: 1;
+}
+.char-ref-usages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.char-ref-tag {
+  padding: 2px 6px;
+  border-radius: var(--r-pill);
+  font-size: var(--fs-label-xs);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-soft);
+  color: var(--text-muted);
+}
+@media (max-width: 900px) {
+  .char-reference-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 560px) {
+  .char-reference-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media(max-width:700px){.character-hero{grid-template-columns:1fr}.portrait{min-height:0}.detail-grid{grid-template-columns:1fr}.recommend-head{align-items:flex-start;flex-direction:column}.character-actions .btn{flex:1 1 100%}}
 </style>

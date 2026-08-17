@@ -62,26 +62,30 @@
         </label>
 
         <label class="field shot-identity-field">
-          <span class="field-label">角色锚点（逐镜注入提示词开头，跨镜一致性关键）</span>
-          <div class="shot-identity-row">
-            <textarea
-              v-model="identityCard"
-              class="textarea"
-              rows="2"
-              maxlength="600"
-              placeholder="英文身份锚点：a girl with long silver hair and red eyes, wearing a dark coat …"
-            ></textarea>
-            <select v-model="characterId" class="select" aria-label="从热门角色填充角色锚点">
-              <option value="">热门角色 → 自动填入</option>
-              <option v-for="character in popularCharacters" :key="character.id" :value="character.id">
-                {{ character.displayName }}
-              </option>
-            </select>
-          </div>
+          <span class="field-label">角色身份锚点（逐镜注入提示词开头，跨镜一致性关键）</span>
+          <textarea
+            v-model="identityCard"
+            class="textarea"
+            rows="2"
+            maxlength="600"
+            placeholder="英文身份锚点：a girl with long silver hair and red eyes, wearing a dark coat …"
+          ></textarea>
         </label>
 
         <div class="shot-reference-section">
-          <span class="field-label">角色参考卡（Ref2VA · 跨镜锁定身份 · 每角色 ≤3 张）</span>
+          <div class="shot-reference-header-row">
+            <div class="shot-reference-title-group">
+              <span class="field-label">角色参考卡（Ref2VA · 跨镜锁定身份 · 支持多角色 4 视角装配）</span>
+              <span v-if="loadingRefCardIndex !== null" class="shot-ref-loading">✨ 正在为角色 {{ (loadingRefCardIndex ?? 0) + 1 }} 自动装配 4 视角基准图...</span>
+            </div>
+            <button
+              v-if="referenceCards.length < 4"
+              class="btn btn-ghost btn-xs"
+              type="button"
+              :disabled="batchActive"
+              @click="addReferenceCard"
+            >＋ 添加出场角色（最多 4 位）</button>
+          </div>
           <div class="shot-reference-grid">
             <div v-for="(card, cardIndex) in referenceCards" :key="cardIndex" class="shot-reference-card">
               <div class="shot-reference-head">
@@ -90,9 +94,50 @@
                   v-model="card.label"
                   class="input input-tight"
                   maxlength="20"
-                  placeholder="角色名（如 宁宁）"
+                  placeholder="角色名（如 宁宁 / 夏目）"
                 />
+                <select
+                  class="select select-tight shot-card-quick-select"
+                  aria-label="一键预设装配此角色"
+                  :value="card.characterId || ''"
+                  @change="onCardCharacterSelected(cardIndex, $event)"
+                >
+                  <option value="">⚡ 选择角色预设...</option>
+                  <optgroup label="✨ 主站主角">
+                    <option value="nene">绫地宁宁</option>
+                    <option value="natsume">四季夏目</option>
+                  </optgroup>
+                  <optgroup label="🌟 热门角色">
+                    <option v-for="character in popularCharacters" :key="character.id" :value="character.id">
+                      {{ character.displayName }}
+                    </option>
+                  </optgroup>
+                </select>
+                <button
+                  v-if="referenceCards.length > 1"
+                  class="btn btn-ghost btn-xs shot-card-remove-btn"
+                  type="button"
+                  :disabled="batchActive"
+                  title="移除此角色卡"
+                  @click="removeReferenceCard(cardIndex)"
+                >✕</button>
               </div>
+
+              <!-- 服装形态药丸选择器 (Outfit Pills) -->
+              <div v-if="getCharOutfits(card.characterId).length > 1" class="shot-card-outfit-pills">
+                <button
+                  v-for="outfit in getCharOutfits(card.characterId)"
+                  :key="outfit.outfitId"
+                  type="button"
+                  class="shot-card-outfit-pill"
+                  :class="{ active: (card.outfitId || 'default') === outfit.outfitId || (!card.outfitId && outfit.isDefault), 'pill-nsfw': outfit.isNsfw }"
+                  :disabled="batchActive"
+                  @click="switchCardOutfit(cardIndex, outfit.outfitId)"
+                >
+                  {{ outfit.isNsfw ? '🔞' : '👗' }} {{ outfit.outfitName }}
+                </button>
+              </div>
+
               <div class="shot-reference-images">
                 <img
                   v-for="(image, imageIndex) in card.images"
@@ -104,14 +149,14 @@
                   @click="removeReference(cardIndex, imageIndex)"
                 />
                 <button
-                  v-if="card.images.length < 3"
+                  v-if="card.images.length < 4"
                   class="btn btn-ghost btn-sm"
                   type="button"
                   :disabled="batchActive"
                   @click="pickReference(cardIndex)"
-                >＋ 参考图</button>
+                >＋ 本地上传</button>
               </div>
-              <p v-if="card.images.length" class="shot-reference-hint">点击缩略图移除</p>
+              <p v-if="card.images.length" class="shot-reference-hint">已装配 {{ card.images.length }}/4 张参考图 · 点击缩略图可移除</p>
               <input
                 :ref="(el) => setReferenceInput(el, cardIndex)"
                 type="file"
@@ -282,9 +327,16 @@
                 <span class="field-label">角色</span>
                 <select v-model="shot.cast" class="select" :disabled="batchActive" title="本镜出场角色（对应顶部角色参考卡，生成时自动带参考图）">
                   <option value="">无参考</option>
-                  <option value="1">角色 1{{ referenceCards[0]?.label ? ' · ' + referenceCards[0].label : '' }}</option>
-                  <option value="2">角色 2{{ referenceCards[1]?.label ? ' · ' + referenceCards[1].label : '' }}</option>
-                  <option value="12">角色 1 + 2</option>
+                  <option v-for="(card, cardIdx) in referenceCards" :key="cardIdx" :value="String(cardIdx + 1)">
+                    角色 {{ cardIdx + 1 }}{{ card.label ? ' · ' + card.label : '' }}
+                  </option>
+                  <option v-if="referenceCards.length >= 2" value="12">
+                    双人（角色 1 + 2）
+                  </option>
+                  <option v-if="referenceCards.length >= 3" value="123">
+                    三人（角色 1 + 2 + 3）
+                  </option>
+                  <option value="all">全员出场</option>
                 </select>
               </label>
               <label class="field">
@@ -468,6 +520,7 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import {
   cancelVideoBatch,
   concatVideoBatch,
@@ -494,6 +547,9 @@ import {
 import { imgGet } from '@/composables/useImageStore'
 import { clearShotsCtx, readShotsCtx } from '@/composables/useVideoBridge'
 import { useSceneStore } from '@/stores/sceneStore'
+import { getCharacterReferences } from '@/utils/characterReferenceData'
+
+const route = useRoute()
 
 const props = defineProps<{
   status: VideoStatusResponse | null
@@ -534,8 +590,8 @@ interface ShotDraft {
   seedText: string
   imageName: string
   imageUrl: string
-  /** 出场角色：'' 无 / '1' 角色1 / '2' 角色2 / '12' 角色1+2（对应参考卡）。 */
-  cast: '' | '1' | '2' | '12'
+  /** 出场角色：'' 无 / '1' 角色1 / '2' 角色2 / '12' 角色1+2 / 'all' 全部角色（对应参考卡）。 */
+  cast: '' | '1' | '2' | '3' | '4' | '12' | 'all' | string
 }
 
 const aspectRatio = ref<VideoBatch['aspectRatio']>('landscape')
@@ -548,13 +604,15 @@ const sceneFillId = ref('')
 const shots = ref<ShotDraft[]>([])
 const frameInputs = ref<HTMLInputElement[]>([])
 
-// ── 角色参考卡（Ref2VA）：2 个角色槽，每槽最多 3 张参考图 ──────────────
+// ── 角色参考卡（Ref2VA）：支持 1~4 个角色槽，每槽最多 4 张 4 视角参考图 ──────────────
 interface ReferenceImage {
   name: string
   url: string
 }
 interface ReferenceCard {
   label: string
+  characterId?: string
+  outfitId?: string
   images: ReferenceImage[]
 }
 const referenceCards = ref<ReferenceCard[]>([
@@ -562,6 +620,127 @@ const referenceCards = ref<ReferenceCard[]>([
   { label: '', images: [] },
 ])
 const referenceInputs = ref<HTMLInputElement[]>([])
+const loadingRefAssets = ref(false)
+const loadingRefCardIndex = ref<number | null>(null)
+
+function getCharOutfits(charId?: string) {
+  if (!charId) return []
+  const profile = getCharacterReferences(charId)
+  return profile?.outfits || []
+}
+
+function addReferenceCard() {
+  if (referenceCards.value.length >= 4) return
+  referenceCards.value.push({ label: '', images: [] })
+}
+
+function removeReferenceCard(index: number) {
+  if (referenceCards.value.length <= 1) return
+  const card = referenceCards.value[index]
+  if (card) {
+    card.images.forEach(img => { if (img.url) URL.revokeObjectURL(img.url) })
+  }
+  referenceCards.value.splice(index, 1)
+  updateMultiCharacterIdentity()
+}
+
+async function switchCardOutfit(cardIndex: number, outfitId: string) {
+  const card = referenceCards.value[cardIndex]
+  if (!card || !card.characterId) return
+  await autoLoadCharacterReferences(card.characterId, cardIndex, outfitId)
+}
+
+async function autoLoadCharacterReferences(charId: string, cardIndex: number = 0, outfitId?: string) {
+  const profile = getCharacterReferences(charId)
+  if (!profile) return
+
+  if (cardIndex < 0 || cardIndex >= referenceCards.value.length) return
+  const targetCard = referenceCards.value[cardIndex]
+
+  // 匹配特定 outfit 或默认 outfit
+  let chosenOutfit = profile.outfits.find(o => o.outfitId === outfitId)
+  if (!chosenOutfit) {
+    chosenOutfit = profile.outfits.find(o => o.isDefault) || profile.outfits[0]
+  }
+
+  // 记录角色元信息
+  targetCard.characterId = charId
+  targetCard.outfitId = chosenOutfit?.outfitId || ''
+  targetCard.label = profile.displayName + (chosenOutfit && !chosenOutfit.isDefault ? ` · ${chosenOutfit.outfitName}` : '')
+
+  // 释放原有旧图
+  targetCard.images.forEach((img) => {
+    if (img.url) URL.revokeObjectURL(img.url)
+  })
+  targetCard.images = []
+
+  loadingRefAssets.value = true
+  loadingRefCardIndex.value = cardIndex
+  try {
+    // 自动加载全部 4 张基准图（特写 / 半身 / 全身 / 侧后背影）
+    // 关键修复：加入时间戳与 no-cache，杜绝浏览器拉取旧缓存图片
+    const targets = chosenOutfit?.references.slice(0, 4) || []
+    for (const item of targets) {
+      const imgUrl = `${item.url}?t=${Date.now()}`
+      const resp = await fetch(imgUrl, { cache: 'no-cache' })
+      if (!resp.ok) continue
+      const blob = await resp.blob()
+      const dataUrl = await readBlobAsDataURL(blob)
+      const comma = dataUrl.indexOf(',')
+      if (comma < 0) continue
+      const upload = await uploadVideoImage(dataUrl.slice(comma + 1), 'reference')
+      targetCard.images.push({
+        name: upload.name,
+        url: URL.createObjectURL(blob),
+      })
+    }
+    updateMultiCharacterIdentity()
+  } catch (error) {
+    console.warn(`[ShotList] 自动装配角色 ${cardIndex + 1} 标准参考图失败:`, error)
+  } finally {
+    loadingRefAssets.value = false
+    loadingRefCardIndex.value = null
+  }
+}
+
+/**
+ * 智能更新多角色身份锚点：
+ * 将所有已装配角色的身份描述合并（单角色直接注入；多角色按 Role 1 / Role 2 结构化组织），
+ * 包含对特定服装（outfit prose）的细粒度描述拼接。
+ */
+function updateMultiCharacterIdentity() {
+  const activeDescriptions: string[] = []
+  referenceCards.value.forEach((card, idx) => {
+    if (!card.characterId && !card.label) return
+    const profile = card.characterId ? getCharacterReferences(card.characterId) : undefined
+    const baseProse = profile?.identityProse || ''
+    const outfitObj = profile?.outfits?.find(o => o.outfitId === card.outfitId)
+    const outfitProse = outfitObj?.prose ? `, ${outfitObj.prose}` : ''
+    const fullProse = (baseProse + outfitProse).trim()
+
+    if (fullProse) {
+      const displayName = profile?.displayName || card.label
+      activeDescriptions.push(
+        referenceCards.value.length > 1
+          ? `[Character ${idx + 1} - ${displayName}]: ${fullProse}`
+          : fullProse
+      )
+    }
+  })
+
+  if (activeDescriptions.length > 0) {
+    identityCard.value = activeDescriptions.join('\n\n')
+  }
+}
+
+async function onCardCharacterSelected(cardIndex: number, event: Event) {
+  const select = event.target as HTMLSelectElement
+  const charId = select.value
+  if (!charId) return
+
+  // 装配参考图到对应卡槽
+  await autoLoadCharacterReferences(charId, cardIndex)
+}
 
 async function onReferencePicked(cardIndex: number, event: Event) {
   const input = event.target as HTMLInputElement
@@ -569,8 +748,8 @@ async function onReferencePicked(cardIndex: number, event: Event) {
   input.value = ''
   if (!file) return
   const card = referenceCards.value[cardIndex]
-  if (card.images.length >= 3) {
-    batchError.value = '每个角色最多 3 张参考图'
+  if (card.images.length >= 4) {
+    batchError.value = '每个角色最多 4 张参考图（4 视角）'
     return
   }
   if (file.size > 20 * 1024 * 1024) {
@@ -603,14 +782,28 @@ function removeReference(cardIndex: number, imageIndex: number) {
   referenceCards.value[cardIndex].images.splice(imageIndex, 1)
 }
 
-/** 镜头 → 参考图文件名数组（按出场角色合并参考卡）。 */
+/** 镜头 → 参考图文件名数组（按出场角色合并参考卡，最多 9 张 Ref2VA）。 */
 function shotReferences(shot: ShotDraft): string[] | undefined {
   if (!shot.cast) return undefined
   const collect = (cardIndex: number) => (referenceCards.value[cardIndex]?.images ?? []).map(image => image.name)
-  const list = shot.cast === '1' ? collect(0)
-    : shot.cast === '2' ? collect(1)
-      : [...collect(0), ...collect(1)]
-  return list.length ? list : undefined
+
+  let list: string[] = []
+  if (shot.cast === 'all') {
+    referenceCards.value.forEach((_, idx) => {
+      list.push(...collect(idx))
+    })
+  } else if (/^\d+$/.test(shot.cast)) {
+    const indices = shot.cast.split('').map(c => Number(c) - 1)
+    indices.forEach(idx => {
+      if (idx >= 0 && idx < referenceCards.value.length) {
+        list.push(...collect(idx))
+      }
+    })
+  }
+
+  // 数组去重并限制在 Ref2VA 允许的 9 张以内
+  const unique = Array.from(new Set(list)).slice(0, 9)
+  return unique.length ? unique : undefined
 }
 
 // ── 全自动脚本 / 台词润色 / 质量检查 状态 ───────────────────────────────
@@ -748,9 +941,20 @@ function moveShot(index: number, delta: number) {
   shots.value.splice(target, 0, item)
 }
 
-// 角色锚点：热门角色 → identityProse 一键注入（跨镜统一身份描述）。
-watch(characterId, (id) => {
+// 角色锚点：选择角色 → 自动注入身份描述，并自动装配标准 3 视角参考图（Ref2VA）。
+watch(characterId, async (id) => {
   if (!id) return
+  const stdProfile = getCharacterReferences(id)
+  if (stdProfile) {
+    identityCard.value = stdProfile.identityProse || ''
+    await autoLoadCharacterReferences(id)
+    shots.value.forEach((s) => {
+      if (!s.cast) s.cast = '1'
+    })
+    characterId.value = ''
+    return
+  }
+
   const character = popularCharacters.value.find((item) => item.id === id)
   if (character?.identityProse) {
     identityCard.value = character.identityProse
@@ -825,23 +1029,54 @@ function readBlobAsDataURL(blob: Blob): Promise<string> {
   })
 }
 
-// ── 绘图页「加入分镜」批量带入（一次性消费）──────────────────────────────
+// ── 绘图页「加入分镜」批量带入（一次性消费 + 全自动多角色参考图装配）──────────────────────────────
 async function importShotsFromDrawing() {
   const list = readShotsCtx()
   if (!list.length) return
   clearShotsCtx()
-  // 角色锚点自动填充：ctx 里带着出图时的 characterId（此前一直没用上），
-  // 命中热门角色则把身份锚点一次填好，跨镜一致性不用手动粘。
-  if (!identityCard.value) {
-    const identityId = list.find((ctx) => ctx.characterId)?.characterId
-    if (identityId) {
-      const character = popularCharacters.value.find((item) => item.id === identityId)
+
+  // 1. 分析所有镜头涉及的角色列表（去重且保序）
+  const uniqueCharIds = Array.from(
+    new Set(list.map((ctx) => ctx.characterId).filter(Boolean))
+  ) as string[]
+
+  // 2. 如果涉及角色数超过当前卡槽，自动增加卡槽（最多 4 个）
+  while (referenceCards.value.length < uniqueCharIds.length && referenceCards.value.length < 4) {
+    referenceCards.value.push({ label: '', images: [] })
+  }
+
+  // 3. 全自动并行装配各角色的 4 视角标准参考图
+  const loadPromises = uniqueCharIds.slice(0, 4).map((charId, index) => {
+    return autoLoadCharacterReferences(charId, index)
+  })
+  void Promise.all(loadPromises)
+
+  // 4. 角色身份锚点填充（优先取第一个出场角色的标准人设描述）
+  if (!identityCard.value && uniqueCharIds.length > 0) {
+    const firstCharId = uniqueCharIds[0]
+    const stdProfile = getCharacterReferences(firstCharId)
+    if (stdProfile?.identityProse) {
+      identityCard.value = stdProfile.identityProse
+    } else {
+      const character = popularCharacters.value.find((item) => item.id === firstCharId)
       if (character?.identityProse) identityCard.value = character.identityProse
     }
   }
+
+  // 5. 导入镜头并自动绑定对应角色的出场标记（cast: 1, 2, 3, 4）
   let imported = 0
   for (const ctx of list) {
     const inferred = inferShotParams(ctx.prompt || '')
+
+    // 匹配该镜头角色在参考卡中的卡槽编号
+    let assignedCast = ''
+    if (ctx.characterId) {
+      const charIndex = uniqueCharIds.indexOf(ctx.characterId)
+      if (charIndex >= 0 && charIndex < 4) {
+        assignedCast = String(charIndex + 1)
+      }
+    }
+
     const draft: ShotDraft = {
       prompt: ctx.prompt || '',
       dialogue: '',
@@ -852,7 +1087,7 @@ async function importShotsFromDrawing() {
       seedText: '',
       imageName: '',
       imageUrl: '',
-      cast: '',
+      cast: (assignedCast || (uniqueCharIds.length === 1 ? '1' : '')) as '' | '1' | '2' | '12',
     }
     try {
       const blob = await imgGet(ctx.imageId)
@@ -1171,6 +1406,10 @@ function shotIssueCount(index: number): number {
 
 onMounted(() => {
   void importShotsFromDrawing()
+  const charParam = typeof route.query.character === 'string' ? route.query.character.trim() : ''
+  if (charParam) {
+    characterId.value = charParam
+  }
 })
 
 function parsedSeed(shot: ShotDraft): number | undefined {
@@ -1346,11 +1585,29 @@ onBeforeUnmount(() => {
 
 /* ── 参考卡 / 台词 / 质检 / 脚本弹层 ── */
 .shot-reference-section { display: grid; gap: var(--s-2); margin-top: var(--s-4); }
+.shot-reference-header-row { display: flex; align-items: center; justify-content: space-between; gap: var(--s-2); flex-wrap: wrap; }
+.shot-reference-title-group { display: flex; align-items: center; gap: var(--s-2); flex-wrap: wrap; }
+.shot-ref-loading { color: var(--accent); font-size: var(--fs-label-xs); font-weight: 600; animation: pulse 1.5s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 .shot-reference-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); }
+.shot-card-remove-btn { color: var(--danger-text); padding: 1px 6px; font-weight: bold; }
 .shot-reference-card { display: grid; gap: var(--s-2); padding: var(--s-3); border: 1px solid var(--border-soft); border-radius: var(--r-md); background: var(--bg-deep); }
-.shot-reference-head { display: flex; align-items: center; gap: var(--s-2); }
+.shot-reference-head { display: flex; align-items: center; gap: var(--s-2); flex-wrap: wrap; }
 .shot-reference-head strong { font-size: var(--fs-body-sm); white-space: nowrap; }
+.shot-card-quick-select { flex: 1 1 140px; min-height: 28px; padding: 2px var(--s-2); font-size: var(--fs-label-xs); border-color: var(--accent); }
 .input-tight { min-height: 28px; padding: 2px var(--s-2); font-size: var(--fs-label-xs); }
+.shot-card-outfit-pills { display: flex; flex-wrap: wrap; gap: 4px; padding: 2px 0; }
+.shot-card-outfit-pill {
+  display: inline-flex; align-items: center; gap: 3px;
+  padding: 2px 8px; border: 1px solid var(--border-soft);
+  border-radius: var(--r-pill); background: var(--bg-surface);
+  font-size: var(--fs-label-xs); color: var(--text-secondary);
+  cursor: pointer; transition: all var(--t-fast);
+}
+.shot-card-outfit-pill:hover { border-color: var(--accent); color: var(--text-primary); }
+.shot-card-outfit-pill.active { border-color: var(--accent); background: var(--accent); color: var(--text-inverse); font-weight: 600; }
+.shot-card-outfit-pill.pill-nsfw { border-color: color-mix(in srgb, var(--danger) 40%, var(--border-soft)); }
+.shot-card-outfit-pill.pill-nsfw.active { border-color: var(--danger); background: var(--danger); color: #fff; }
 .shot-reference-images { display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; }
 .shot-reference-thumb { width: 64px; height: 64px; object-fit: cover; border-radius: var(--r-sm); border: 1px solid var(--border-soft); cursor: pointer; }
 .shot-reference-hint { margin: 0; color: var(--text-muted); font-size: var(--fs-label-xs); }

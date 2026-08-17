@@ -51,6 +51,16 @@
 - **顽固场景止损（2026-08-15 教训）**：同一场景连续重出（≥5 次，含换 seed/强化负面/场景简化）仍出分身/双人时，**标记暂缓发布**（audit 保持 fail，从 showcase 剔除），不要无限重试烧 GPU；记录场景 id 与已试措施，留给后续换引擎/换构图再战（例：`kaltsit_arknights_r18_cabin_robe` 6 连败）。
 - **新增热门角色后跑点阵生成（2026-08-16 起）**：角色场景库/角色档案 hero 的粒子是整图点阵复刻，数据离线预生成——新增角色（放好 `assets/characters/popular-<id>.png` 后）必须跑 `npm run particles:build -- <id>` 生成 `assets/particles/p_<id>.json`，前端零改动；忘跑不会报错，但 hero 粒子会回落抽象形状。管线与可调参数见 `docs/particle-portrait-pipeline.md`。
 - **场景预设提示词是图生视频的上游输入（2026-08-15 用户指示）**：图生视频的提示词与场景预设（`scene-blueprints.json` 的 `promptProse`/`promptTokens`/`description`/`action`）息息相关——视频生成会复用/派生场景预设描述。因此场景预设必须写得**具体、可视觉化、构图与动作明确**（人物姿势、镜头、光线、氛围、叙事都在描述里），禁止模糊或留白；任何场景描述的修改都要假设会被下游图生视频直接引用，改完自查「这段描述能否直接驱动一段 5-10 秒的视频」。视频链路改动（`routes/video.js`、`VideoStudioView.vue`、`docs/video-generation-roadmap.md`）由负责图生视频的协作者维护，本会话不碰。
+- **角色 4 视角参考资产（Character Reference Bible）与全自动自愈流水线规范（2026-08-17 起）**：
+  - **4 视角电影级资产标准**：每套角色服装形态必须输出 `ref_01_face_closeup`（85mm f/1.4 浅景深面部特写）、`ref_02_half_medium`（50mm 3/4 半身定妆）、`ref_03_full_dynamic`（正面全身立姿无裁切）、`ref_04_back_rear`（45° 侧后背影/回眸），供下游 MiniMax H3 Ref2VA 精准锁死角色身份。
+  - **多形态与全裸纯粹形态（`nsfw_nude`）规范**：每位角色均支持常规服装 + `🔞 私密全裸 / 纯粹形态`。`nsfw_nude` 必须剥离一切衣物/浴袍/毛巾词汇，正向锁定 `completely naked, full body bare, natural skin`，负向禁止任何布料残留。
+  - **主站专属女主角 LoRA 强绑定**：绫地宁宁与四季夏目的全形态（含全裸）必须挂载专为 Anima 训练的 `ayachi_nene_v21_anima` 与 `shiki_natsume_v21_anima`（强度 0.85），严禁用通用纯提示词生成，确保泪痣、呆毛与神韵 100% 还原原作（脚本：`scripts/maintenance/render-heroines-anima-lora.js`）。
+  - **种族特征防串位（2026-08-17 洛琪希教训）**：洛琪希为米格路德族（正常人类圆耳，非精灵耳），生成时负向必须加权拦截 `(elf_ears:1.4), (pointy_ears:1.4)`，正向指定 `normal human ears, round ears`，防止魔法/魔女词条串出精灵尖耳。
+  - **出图与视觉审核彻底解耦 + 闭环自愈流水线**：
+    1. **出图流水线**（`render-all-outfits-references.js`）：3 并发向 Anima 批量生成并自动落盘；
+    2. **纯视觉审核池**（`pure-vision-audit.js`）：4 并发调用 Gemini 3.7 Flash 视觉模型严格八维初审，审核与出图解耦避免 GPU 队列争抢；状态落盘至 `runtime/multi-outfit-audit-report.json`；
+    3. **定向微调自愈引擎**（`fine-tuned-repair.js`）：读懂审核不通过理由，针对顽固项（如特写易画成半身）动态剥离下半身词条并强化景别负向压制，自动换 Seed 重绘并复审直到绿灯。
+  - **资产入库边界**：`assets/character-references/`（700+ 张高精 PNG，数百 MB）属本地生成媒体，**严禁提交入 Git 仓库**（已入 `.gitignore`）；仅提交规范数据 `data/character-reference-standards.json`、TS 映射契约 `src/utils/characterReferenceData.ts` 与维护脚本。
 
 ## 当前架构
 
