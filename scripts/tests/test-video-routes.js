@@ -175,7 +175,7 @@ async function run() {
     'I2VA prompt must open with the official first-frame instruction');
   assert.match(h3I2vInput.prompt,
     /preserve the subject, clothing, hairstyle, and scene from <Picture 1>/);
-  assert.match(h3I2vInput.prompt, /rella's style, dreamy night glow/, 'H3 prompt must open [Shot 1] with the rella style anchor (2026-08-17)');
+  assert.match(h3I2vInput.prompt, /\b2D-animated, cinematic\b/, 'H3 prompt must open [Shot 1] with a style anchor (official 4.1)');
   assert.match(h3I2vInput.prompt, /^overall_soundscape:/m);
   assert.doesNotMatch(h3I2vInput.prompt, /fits the mood/, 'H3 music must not use abstract mood words (official 4.7)');
   assert.equal(h3I2vInput.image, 'aics_video_input_abcdef0123456789.png');
@@ -267,8 +267,6 @@ async function run() {
   }));
   assert.match(h3JpDialogue.prompt, /<d>\[Japanese\] ありがとう。本当に。<\/d>/,
     'kana dialogue gets the Japanese language tag (2026-08-17 日漫角色说日语)');
-  assert.match(h3JpDialogue.prompt, /rella's style, dreamy night glow/,
-    'H3 style anchor injects the rella art direction for every shot');
   assert.throws(function () {
     video.validateInput(validBody({ modelId:'wan2.2-ti2v-5b', dialogue:'你好' }));
   }, /对白仅支持 MiniMax H3/, 'non-H3 models reject dialogue input');

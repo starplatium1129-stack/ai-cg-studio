@@ -265,10 +265,10 @@ var CJK_DIALOGUE_RE = /[\u3400-\u9fff\uf900-\ufaff]/;
 var JAPANESE_DIALOGUE_RE = /[\u3040-\u30ff]/;
 
 // H3 官方 base-en.txt 要求 [Shot 1] 开头声明整体风格与初始构图（4.1）；
-// 本项目出图链路全是二次元风格，默认注入 rella 画师风格文字锚
-// （梦幻夜景辉光/空灵色彩/电影照明，与 @rella 参考卡像素风格一致，
-// 收敛"特写贴 rella、中景回默认风"的画风漂移）。
-var H3_STYLE = "2D-animated anime illustration in rella's style, dreamy night glow, soft ethereal colors, cinematic lighting";
+// 本项目出图链路全是二次元风格，默认 2D-animated, cinematic。
+// 注意：rella 画师风格属短片测试资产（make-short-film.js 脚本层注入），
+// 不作为正式默认（2026-08-17 用户拍板：正式链路保持原样）。
+var H3_STYLE = '2D-animated, cinematic';
 
 // 官方 4.6/4.7：soundscape 用 1-4 句具体声音；music 写乐器/速度/节奏/动态，
 // 禁止抽象情绪词（"fits the mood" 之类）或解释配乐的情绪功能。

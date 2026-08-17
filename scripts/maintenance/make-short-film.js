@@ -171,12 +171,15 @@ async function stageGenerate() {
   // 句收敛布景漂移。外景锚只用于第 1 镜（店外），其余统一用内景锚。
   const SCENE_ANCHOR_OUT = '深夜街道同一家小咖啡店外观：玻璃门透出暖黄灯光，招牌微亮，安静的夜街。';
   const SCENE_ANCHOR_IN = '这仍是同一家深夜咖啡馆内部：木质吧台、意式咖啡机、玻璃陈列架、圆形挂钟、暖黄吊灯、临街窗户。';
+  // rella 画师风格文字锚：正式链路 H3_STYLE 保持原样（用户 2026-08-17 拍板），
+  // rella 风格只在测试脚本层注入，收敛"特写贴 rella、中景回默认风"的画风漂移。
+  const RELLA_STYLE = 'rella 画师风格：梦幻夜景辉光，空灵通透色彩，电影照明（@rella, dreamy night glow, ethereal colors, cinematic lighting）';
 
   const shots = script.shots.map((shot, i) => {
     const references = castRefs(casts[i]);
     const anchor = i === 0 ? SCENE_ANCHOR_OUT : SCENE_ANCHOR_IN;
     return {
-      prompt: shot.prompt + ' ' + anchor,
+      prompt: shot.prompt + ' ' + anchor + ' ' + RELLA_STYLE,
       dialogue: shot.dialogue || undefined,
       shotSize: shot.shotSize || undefined,
       camera: shot.camera,
