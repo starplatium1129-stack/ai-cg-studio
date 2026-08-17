@@ -267,6 +267,32 @@ async function run() {
   }));
   assert.match(h3JpDialogue.prompt, /<d>\[Japanese\] ありがとう。本当に。<\/d>/,
     'kana dialogue gets the Japanese language tag (2026-08-17 日漫角色说日语)');
+
+  // 显式语言标签优先于字符自动判定：中文台词想强制日语/英文，或日文想强制中文都行。
+  var h3ExplicitZh = video.validateInput(validBody({
+    modelId:'minimax-h3',
+    dialogue:'ありがとう。本当に。',
+    dialogueLang:'zh',
+  }));
+  assert.match(h3ExplicitZh.prompt, /<d>\[Chinese\] ありがとう。本当に。<\/d>/,
+    'dialogueLang:zh forces the Chinese tag even for kana text');
+  var h3ExplicitJa = video.validateInput(validBody({
+    modelId:'minimax-h3',
+    dialogue:'我在这站下车。',
+    dialogueLang:'ja',
+  }));
+  assert.match(h3ExplicitJa.prompt, /<d>\[Japanese\] 我在这站下车。<\/d>/,
+    'dialogueLang:ja forces the Japanese tag even for Chinese text');
+  var h3ExplicitEn = video.validateInput(validBody({
+    modelId:'minimax-h3',
+    dialogue:'我在这站下车。',
+    dialogueLang:'en',
+  }));
+  assert.match(h3ExplicitEn.prompt, /<d>\[English\] 我在这站下车。<\/d>/,
+    'dialogueLang:en forces the English tag');
+  assert.throws(function () {
+    video.validateInput(validBody({ modelId:'minimax-h3', dialogue:'你好', dialogueLang:'fr' }));
+  }, /对白语言仅支持 auto\/zh\/ja\/en/, 'unknown dialogueLang is rejected');
   assert.throws(function () {
     video.validateInput(validBody({ modelId:'wan2.2-ti2v-5b', dialogue:'你好' }));
   }, /对白仅支持 MiniMax H3/, 'non-H3 models reject dialogue input');

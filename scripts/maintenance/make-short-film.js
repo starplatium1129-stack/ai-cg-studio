@@ -175,12 +175,18 @@ async function stageGenerate() {
   // rella 风格只在测试脚本层注入，收敛"特写贴 rella、中景回默认风"的画风漂移。
   const RELLA_STYLE = 'rella 画师风格：梦幻夜景辉光，空灵通透色彩，电影照明（@rella, dreamy night glow, ethereal colors, cinematic lighting）';
 
+  // 对白语言：缺省 0 = 按台词字符自动判定（假名→日语、中文→中文）；
+  // 设 1 强制日语 / 2 强制中文（透传 dialogueLang 给网关：ja / zh）。
+  const DIALOGUE_FORCE = process.env.DIALOGUE_FORCE || '0';
+
   const shots = script.shots.map((shot, i) => {
     const references = castRefs(casts[i]);
     const anchor = i === 0 ? SCENE_ANCHOR_OUT : SCENE_ANCHOR_IN;
+    const dialogueLang = DIALOGUE_FORCE === '1' ? 'ja' : DIALOGUE_FORCE === '2' ? 'zh' : undefined;
     return {
       prompt: shot.prompt + ' ' + anchor + ' ' + RELLA_STYLE,
       dialogue: shot.dialogue || undefined,
+      dialogueLang,
       shotSize: shot.shotSize || undefined,
       camera: shot.camera,
       motion: shot.motion,

@@ -261,8 +261,18 @@ var H3_SHOT_SIZE = Object.freeze({
 // 对白语言标签判定（官方 4.4：<d> 内只放语言标签 + 原文，逐字保留）。
 // 角色均出自日本动漫：平假名/片假名判定为日语（2026-08-17 用户指示
 // 「角色应该说话日语」）；中日韩统一归 CJK，其余归英语。
+// auto 判定仅作缺省；显式 dialogueLang 传入时恒优先（zh/ja/en 三个取值）。
 var CJK_DIALOGUE_RE = /[\u3400-\u9fff\uf900-\ufaff]/;
 var JAPANESE_DIALOGUE_RE = /[\u3040-\u30ff]/;
+var DIALOGUE_LANGS = Object.freeze({ auto:true, zh:true, ja:true, en:true });
+function resolveDialogueLang(dialogue, dialogueLang) {
+  if (dialogueLang === 'zh') return 'Chinese';
+  if (dialogueLang === 'ja') return 'Japanese';
+  if (dialogueLang === 'en') return 'English';
+  return JAPANESE_DIALOGUE_RE.test(dialogue)
+    ? 'Japanese'
+    : CJK_DIALOGUE_RE.test(dialogue) ? 'Chinese' : 'English';
+}
 
 // H3 官方 base-en.txt 要求 [Shot 1] 开头声明整体风格与初始构图（4.1）；
 // 本项目出图链路全是二次元风格，默认 2D-animated, cinematic。
@@ -340,7 +350,7 @@ function deriveH3Music(prompt) {
 var ALLOWED_INPUT_KEYS = new Set([
   'prompt', 'negative', 'modelId', 'aspectRatio', 'duration',
   'camera', 'motion', 'seed', 'image', 'quality',
-  'dialogue', 'lastFrame', 'shotSize', 'steps', 'references',
+  'dialogue', 'dialogueLang', 'lastFrame', 'shotSize', 'steps', 'references',
 ]);
 
 function serviceError(status, code, message, detail) {
@@ -562,6 +572,15 @@ function validateInput(body, config) {
       throw serviceError(400, 'INVALID_PARAMETER', '对白需为 1—' + MAX_DIALOGUE_LENGTH + ' 字符');
     }
   }
+  // 对白语言：显式指定优先，auto 按字符自动判定（假名→Japanese、CJK→Chinese、
+  // 其余→English）。中文台词写中文即可走 Chinese，无需特殊处理；
+  // 需要强制某语言时才传 dialogueLang。
+  var dialogueLang = body.dialogueLang === undefined || body.dialogueLang === null || body.dialogueLang === ''
+    ? 'auto'
+    : body.dialogueLang;
+  if (typeof dialogueLang !== 'string' || !DIALOGUE_LANGS[dialogueLang]) {
+    throw serviceError(400, 'INVALID_PARAMETER', '对白语言仅支持 auto/zh/ja/en');
+  }
   // 景别（P5 分镜字段）：H3 自然语言句；Wan 链路不接受（避免歧义）。
   var shotSize = body.shotSize === undefined || body.shotSize === null || body.shotSize === ''
     ? null
@@ -634,7 +653,7 @@ function validateInput(body, config) {
   // (S1) + <d>[语言标签] 原文</d> 块，逐字保留用户台词（不翻译不改写）。
   var h3ShotLine = shotSize === null ? null : H3_SHOT_SIZE[shotSize].line;
   var dialogueLine = dialogue
-    ? ' The subject in the frame (S1) says: <d>[' + (JAPANESE_DIALOGUE_RE.test(dialogue) ? 'Japanese' : (CJK_DIALOGUE_RE.test(dialogue) ? 'Chinese' : 'English')) + '] ' + dialogue + '</d>'
+    ? ' The subject in the frame (S1) says: <d>[' + resolveDialogueLang(dialogue, dialogueLang) + '] ' + dialogue + '</d>'
     : null;
 
   // 参考图对齐指令（官方 base-en.txt 2.1）：I2VA 首帧 / FL2VA 首尾帧 / L2VA 尾帧，
@@ -711,6 +730,7 @@ function validateInput(body, config) {
     lastFrame:lastFrame || null,
     references:references,
     dialogue:dialogue || null,
+    dialogueLang:dialogueLang === 'auto' ? null : dialogueLang,
     shotSize:shotSize || null,
     steps:isH3 ? steps : 20,
     cfg:5,
@@ -1484,7 +1504,7 @@ function streamVideo(req, res, result) {
 // 全批成功后可用 ffmpeg 拼接成片（P8）。
 
 var BATCH_BODY_KEYS = new Set(['modelId', 'aspectRatio', 'quality', 'linkLastFrame', 'steps', 'shots']);
-var BATCH_SHOT_KEYS = new Set(['prompt', 'dialogue', 'shotSize', 'camera', 'motion', 'duration', 'seed', 'image', 'references']);
+var BATCH_SHOT_KEYS = new Set(['prompt', 'dialogue', 'dialogueLang', 'shotSize', 'camera', 'motion', 'duration', 'seed', 'image', 'references']);
 var BATCH_SHOT_DEFAULTS = Object.freeze({ camera:'still', motion:'subtle', duration:5 });
 
 function validateBatchInput(body, config) {
@@ -1669,6 +1689,7 @@ function createBatchService(config, videoService, dependencies) {
       lastFrame:input.lastFrame || undefined,
       references:input.references || undefined,
       dialogue:input.dialogue || undefined,
+      dialogueLang:input.dialogueLang || undefined,
       shotSize:input.shotSize || undefined,
     };
     if (input.negative) body.negative = input.negative;
