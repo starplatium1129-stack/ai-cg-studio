@@ -47,13 +47,15 @@ export const ARTIST_CATEGORIES: ReadonlyArray<{ id: 'all' | ArtistCategory; labe
 ] as const
 
 const ARTIST_STYLE_IDS = new Set(
-  'kantoku shirabi bunbun morikura_en anmi rella mika_pikazo nardack fuzichoco hxxg swav so-bin muririn kobuichi yoneyama_mai hiten_(hitenkei) lam_(ramdayo) tiv lack ask_(askzy) azuuru paryi hisasi suimya tsunako atdan jazz_jack kousaki_rui xinzoruo'.split(' '),
+  'kantoku shirabi bunbun morikura_en anmi rella mika_pikazo nardack fuzichoco hxxg swav so-bin muririn kobuichi yoneyama_mai hiten_(hitenkei) lam_(ramdayo) tiv lack ask_(askzy) azuuru paryi hisasi suimya tsunako atdan jazz_jack kousaki_rui xinzoruo nekotomi_chao'.split(' '),
 )
 
 const ARTIST_STYLE_ALIASES: Record<string, string> = {
   azure: 'azuuru',
   'azure_(azure_cpt)': 'azuuru',
   azuuru: 'azuuru',
+  nekotomi: 'nekotomi_chao',
+  nekotomi_chao: 'nekotomi_chao',
 }
 
 function artistDisplayName(id: string): string {

@@ -21,6 +21,7 @@ export const ARTIST_STYLE_OPTIONS: readonly ArtistStyleOption[] = Object.freeze(
   { id: 'suimya', name: 'Suimya', cnName: 'Suimya', waiTag: 'suimya', animaTag: '@suimya', description: '软色情氛围系、湿润光泽与慵懒私密感', category: 'pure', verification: 'curated', keywords: ['氛围', '湿润', '私密', '慵懒'] },
   { id: 'muririn', name: 'Muririn', cnName: '梦璃凛', waiTag: 'muririn', animaTag: '@muririn', description: '柚子社柔亮赛璐璐、圆润脸型与水灵透明感', category: 'pure', verification: 'project', keywords: ['柚子社', '宁宁', '夏目', '赛璐珞'] },
   { id: 'kobuichi', name: 'Kobuichi', cnName: '小舞一', waiTag: 'kobuichi', animaTag: '@kobuichi', description: '柚子社利落原画、清晰轮廓与鲜亮配色', category: 'pure', verification: 'project', keywords: ['柚子社', '原画', '鲜亮', '轮廓'] },
+  { id: 'nekotomi_chao', name: 'Nekotomi Chao', cnName: '猫富ちゃお', waiTag: 'nekotomi_chao', animaTag: '@nekotomi chao', description: '《俄妹》动画工房核心原画分镜、极灵动细线条、水灵大眼与通透赛璐珞', category: 'pure', verification: 'curated', keywords: ['俄妹', '艾莉', '不时以俄语遮羞', '动画工房', '灵动', '赛璐珞', '分镜', '原画', '萌系', 'doga kobo'] },
 
   // 潮流先锋与高饱和
   { id: 'lam_(ramdayo)', name: 'LAM', cnName: 'LAM', waiTag: 'lam_(ramdayo)', animaTag: '@lam (ramdayo)', description: '极高饱和霓虹、硬朗潮流眼妆与前卫图形', category: 'trend', verification: 'tag', keywords: ['赛博', '霓虹', '眼妆', '潮流', '撞色'] },

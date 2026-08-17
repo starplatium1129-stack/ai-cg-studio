@@ -74,7 +74,7 @@ test('prompt compiler renders curated artist styles in each model-native syntax'
 
 test('artist style catalog is unique, allowlisted, limited, and model-native', () => {
   const ids = artistCatalog.ARTIST_STYLE_OPTIONS.map(option => option.id);
-  assert.strictEqual(ids.length, 29);
+  assert.strictEqual(ids.length, 30);
   assert.strictEqual(new Set(ids).size, ids.length);
   assert.deepStrictEqual(artistStyles.normalizeArtistStyleIds(['kantoku', 'rella', 'swav', 'unknown']), ['kantoku', 'rella']);
   assert.deepStrictEqual(artistStyles.normalizeArtistStyleIds(['azure', 'rella']), ['azuuru', 'rella']);
