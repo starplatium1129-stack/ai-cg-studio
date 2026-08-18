@@ -3756,7 +3756,8 @@
         "red_eyes",
         "elf_ears",
         "pointed_ears",
-        "flat_chest"
+        "flat_chest",
+        "mushoku_tensei"
       ],
       "identityProse": "Sylphiette from Mushoku Tensei, a gentle elf girl with soft short white hair, delicate long pointed elf ears, and ruby red eyes, carrying a sweet, warm and shy demeanor.",
       "outfits": [
@@ -3858,7 +3859,7 @@
       ],
       "originalName": "希露菲叶特",
       "exactTokens": [
-        "sylphiette"
+        "sylphiette_(mushoku_tensei)"
       ],
       "supportedEngines": [
         "anima-aesthetic-v1.1",
@@ -3866,8 +3867,20 @@
       ],
       "exactPrefixes": [],
       "aliases": [
-        "希露菲叶特"
-      ]
+        "sylphiette",
+        "sylphie",
+        "sylphiette grayrat",
+        "mushoku tensei",
+        "希露菲叶特",
+        "希露菲"
+      ],
+      "canon": {
+        "world": "古典奇幻（无职转生·六面世界）",
+        "era": "中世纪风",
+        "formNotes": "米格路德族（长耳族）1/4 混血（人族1/2+兽族1/4+长耳族1/4）；又长又尖的双耳是个人标志（高兴/害羞时会扑腾）；幼年绿发→青年白发；红瞳；贫乳；不擅长火系魔术",
+        "research": "2026-08-18 调研"
+      },
+      "animeStudio": "studio bind, official anime screencap, anime coloring"
     },
     {
       "id": "yuigahama_yui",
@@ -3885,7 +3898,8 @@
         "hair_bun",
         "side_bun",
         "amber_eyes",
-        "large_breasts"
+        "large_breasts",
+        "oregairu"
       ],
       "identityProse": "Yui Yuigahama from Oregairu, an energetic high school girl with shoulder-length coral orange hair tied into a signature side bun, warm amber eyes, and a cheerful blushing smile.",
       "outfits": [
@@ -3997,8 +4011,21 @@
       ],
       "exactPrefixes": [],
       "aliases": [
-        "由比滨结衣"
-      ]
+        "yuigahama_yui",
+        "yui",
+        "yui yuigahama",
+        "oregairu",
+        "yahari ore no seishun",
+        "由比滨结衣",
+        "结衣"
+      ],
+      "canon": {
+        "world": "现代校园（春物·总武高中）",
+        "era": "当代",
+        "formNotes": "橙粉发色团子头（side bun）；琥珀瞳；官方身材丰满；侍奉部成员；开朗天然、善察人意",
+        "research": "2026-08-18 调研"
+      },
+      "animeStudio": "feel. (studio), official anime screencap, anime coloring"
     },
     {
       "id": "jeanne_alter",
@@ -4008,7 +4035,7 @@
       "adultEligibility": "adult",
       "defaultOutfitId": "avenger_black_armor",
       "identityTokens": [
-        "jeanne_d'arc_(alter)_(fate)",
+        "jeanne_d'arc_alter_(fate)",
         "jeanne_alter",
         "1girl",
         "solo",
@@ -4120,7 +4147,7 @@
       ],
       "originalName": "贞德[Alter]",
       "exactTokens": [
-        "jeanne_alter"
+        "jeanne_d'arc_alter_(fate)"
       ],
       "supportedEngines": [
         "anima-aesthetic-v1.1",
@@ -4128,8 +4155,21 @@
       ],
       "exactPrefixes": [],
       "aliases": [
-        "贞德[Alter]"
-      ]
+        "jeanne alter",
+        "jalter",
+        "jeanne d'arc alter",
+        "fate grand order",
+        "fgo",
+        "贞德[Alter]",
+        "黑贞德"
+      ],
+      "canon": {
+        "world": "现代奇幻（Fate/Grand Order）",
+        "era": "当代+英灵",
+        "formNotes": "银白短发；金色瞳；复仇者职阶；黑色战铠+龙之魔女披风+军旗；新宿篇皮夹克便服；水着黑色系带比基尼+武士刀；黑色高开叉晚礼服",
+        "research": "2026-08-18 调研"
+      },
+      "animeStudio": "type-moon, ufotable, official anime screencap"
     },
     {
       "id": "matou_sakura",
@@ -4147,7 +4187,8 @@
         "hair_ribbon",
         "red_ribbon",
         "purple_eyes",
-        "large_breasts"
+        "large_breasts",
+        "fate/stay_night"
       ],
       "identityProse": "Sakura Matou from Fate/stay night, a gentle purple-haired girl with a red ribbon tied on the left side of her hair, deep violet eyes, and a devoted, affectionate gaze.",
       "outfits": [
@@ -4256,8 +4297,21 @@
       ],
       "exactPrefixes": [],
       "aliases": [
-        "间桐樱"
-      ]
+        "matou sakura",
+        "sakura",
+        "sakura matou",
+        "fate stay night",
+        "fsn",
+        "间桐樱",
+        "樱"
+      ],
+      "canon": {
+        "world": "现代奇幻（Fate/stay night）",
+        "era": "当代",
+        "formNotes": "紫色长发；紫色瞳；红色缎带发饰；身材丰满；穗群原学园制服；黑化形态红纹礼服",
+        "research": "2026-08-18 调研"
+      },
+      "animeStudio": "type-moon, ufotable, official anime screencap"
     },
     {
       "id": "yor_forger",
@@ -4267,7 +4321,7 @@
       "adultEligibility": "adult",
       "defaultOutfitId": "thorn_princess_dress",
       "identityTokens": [
-        "yor_forger",
+        "yor_briar",
         "1girl",
         "solo",
         "black_hair",
@@ -4275,7 +4329,8 @@
         "updo",
         "red_eyes",
         "earrings",
-        "flower_earrings"
+        "flower_earrings",
+        "spy_x_family"
       ],
       "identityProse": "Yor Forger (Thorn Princess) from SPY x FAMILY, a lethal assassin and loving mother with elegant updo black hair, striking ruby red eyes, gold rose earrings, and an endearing innocent blush.",
       "outfits": [
@@ -4291,7 +4346,7 @@
             "heels",
             "hair_ornament"
           ],
-          "prose": "wearing her Thorn Princess assassin black halterneck dress with red rose patterned lining, golden headpiece, and stiletto stilettos",
+          "prose": "wearing her Thorn Princess assassin black halterneck dress with red rose patterned lining, golden headpiece, and black stiletto heels",
           "styleHint": "sharp cinematic assassin contrast",
           "isDefault": true,
           "default": true
@@ -4378,7 +4433,7 @@
       ],
       "originalName": "约尔·福杰",
       "exactTokens": [
-        "yor_forger"
+        "yor_briar"
       ],
       "supportedEngines": [
         "anima-aesthetic-v1.1",
@@ -4386,8 +4441,20 @@
       ],
       "exactPrefixes": [],
       "aliases": [
-        "约尔·福杰"
-      ]
+        "yor forger",
+        "yor briar",
+        "thorn princess",
+        "spy x family",
+        "约尔·福杰",
+        "约尔"
+      ],
+      "canon": {
+        "world": "现代日常+间谍（SPY x FAMILY）",
+        "era": "当代",
+        "formNotes": "黑色长发低发髻；红瞳；金色玫瑰耳环；荆棘公主（Thorn Princess）黑色露肩高叉礼服名场面；居家红色露肩毛衣；市政厅绿色职业装",
+        "research": "2026-08-18 调研"
+      },
+      "animeStudio": "WIT STUDIO, CloverWorks, official anime screencap, anime coloring"
     },
     {
       "id": "reze_chainsaw",
@@ -4507,7 +4574,7 @@
       ],
       "originalName": "蕾塞",
       "exactTokens": [
-        "reze_chainsaw"
+        "reze_(chainsaw_man)"
       ],
       "supportedEngines": [
         "anima-aesthetic-v1.1",
@@ -4515,8 +4582,18 @@
       ],
       "exactPrefixes": [],
       "aliases": [
+        "reze",
+        "reze chainsaw man",
+        "chainsaw man",
         "蕾塞"
-      ]
+      ],
+      "canon": {
+        "world": "现代都市+恶魔（电锯人·蕾塞篇）",
+        "era": "1997",
+        "formNotes": "粉紫短发；绿色瞳；标志性黑色颈环（choker）；无袖白衬衫+黑领带+黑短裤；咖啡厅打工围裙装；夜间学校泳池死库水；炸弹恶魔",
+        "research": "2026-08-18 调研"
+      },
+      "animeStudio": "MAPPA, official anime screencap, anime coloring"
     },
     {
       "id": "fern_frieren",
@@ -4526,7 +4603,7 @@
       "adultEligibility": "adult",
       "defaultOutfitId": "mage_white_robe",
       "identityTokens": [
-        "fern_(frieren)",
+        "fern_(sousou_no_frieren)",
         "fern",
         "1girl",
         "solo",
@@ -4636,7 +4713,7 @@
       ],
       "originalName": "菲伦",
       "exactTokens": [
-        "fern_frieren"
+        "fern_(sousou_no_frieren)"
       ],
       "supportedEngines": [
         "anima-aesthetic-v1.1",
@@ -4644,8 +4721,19 @@
       ],
       "exactPrefixes": [],
       "aliases": [
+        "fern",
+        "fern frieren",
+        "sousou no frieren",
+        "frieren beyond journeys end",
         "菲伦"
-      ]
+      ],
+      "canon": {
+        "world": "古典奇幻（葬送的芙莉莲）",
+        "era": "中世纪风",
+        "formNotes": "紫色长发低侧马尾；紫瞳；身材丰满；第一阶魔法使白袍；性格冷静、毒舌、爱睡懒觉",
+        "research": "2026-08-18 调研"
+      },
+      "animeStudio": "madhouse, official anime screencap, anime coloring"
     },
     {
       "id": "mimori_byakuya",
@@ -4677,7 +4765,7 @@
         "ribbon_bowtie",
         "flat_chest"
       ],
-      "identityProse": "Byakuya Mimori from The Magical Girl and the Evil Lieutenant anime, a delicate girl with flowing silver-white hair tied into signature twin spiral horn buns on each side of her head, straight bangs with long sidelocks, round gradient blue eyes with a soft deadpan innocent expression, wearing a pure white Victorian high-collar lolita dress with delicate frilled lace neckline and a small ribbon bowtie.",
+      "identityProse": "Byakuya Mimori from The Magical Girl and the Evil Officer, a delicate girl with flowing silver-white hair tied into twin spiral horn buns on each side of her head, straight bangs with long sidelocks, round gradient blue eyes, and a soft deadpan innocent expression.",
       "outfits": [
         {
           "id": "magical_girl_dress",
@@ -4784,8 +4872,19 @@
       ],
       "exactPrefixes": [],
       "aliases": [
+        "mimori byakuya",
+        "byakuya",
+        "glass happiness",
+        "magical girl and the evil officer",
         "深森白夜"
-      ]
+      ],
+      "canon": {
+        "world": "现代都市+魔法少女（魔法少女与恶曾是敌人，藤原可可亚）",
+        "era": "当代",
+        "formNotes": "银白发；蓝瞳；标志性双螺旋角发包；维多利亚蕾丝白色洋装；孤儿+打工族+贫穷；天然呆、不幸体质；魔法少女活动名 Glass Happiness",
+        "research": "2026-08-18 调研"
+      },
+      "animeStudio": "BONES, official anime screencap, anime coloring"
     },
     {
       "id": "saint_cecilia",
@@ -4814,9 +4913,10 @@
         "frilled_collar",
         "high_collar",
         "gold_necklace",
-        "cross_necklace"
+        "cross_necklace",
+        "large_breasts"
       ],
-      "identityProse": "Saint Cecilia from Saint Cecilia and Pastor Lawrence, a sweet and pure saint with soft pastel light mint-green hair styled in a low braided bun with a single long delicate sidelock, bright emerald green eyes with a soft cute blush, wearing a pure white holy saint habit with a frilled high collar, long wide sleeves, and a double-chain gold cross necklace.",
+      "identityProse": "Saint Cecilia from Saint Cecilia and Pastor Lawrence, a sweet and pure saint with soft pastel mint-green hair styled in a low braided bun with one long delicate sidelock, bright emerald green eyes, a gentle blush, and a soft innocent presence.",
       "outfits": [
         {
           "id": "saint_nun_habit",
@@ -4916,7 +5016,7 @@
       ],
       "originalName": "塞西莉亚",
       "exactTokens": [
-        "saint_cecilia"
+        "cecilia_(shiro_seijo_to_kuro_bokushi)"
       ],
       "supportedEngines": [
         "anima-aesthetic-v1.1",
@@ -4924,8 +5024,19 @@
       ],
       "exactPrefixes": [],
       "aliases": [
+        "cecilia",
+        "saint cecilia",
+        "shiro seijo to kuro bokushi",
+        "pastor lawrence",
         "塞西莉亚"
-      ]
+      ],
+      "canon": {
+        "world": "中世纪欧洲小镇（白圣女与黑牧师，和武叶佐乃）",
+        "era": "中世纪风",
+        "formNotes": "浅绿/薄荷嫩绿长发低盘发+不对称长鬓发+M形刘海；翠绿圆瞳；官方萌点巨乳；纯白圣女修女袍+头纱+十字架金项链；天然呆、怕打雷、平地摔；暗恋劳伦斯",
+        "research": "2026-08-18 调研"
+      },
+      "animeStudio": "doga kobo, official anime screencap, anime coloring"
     }
   ]
 }
