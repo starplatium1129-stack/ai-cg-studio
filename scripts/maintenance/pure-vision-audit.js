@@ -79,13 +79,26 @@ function runVisionInspect(imagePath, promptGuide) {
   });
 }
 
+function findActualFile(dir, persId) {
+  // 兼容两种磁盘命名：首批无前缀（ref_01_face_closeup.png）与
+  // 今日带前缀（<charId>_<outfitId>_ref_01_face_closeup.png）。
+  const plain = path.join(dir, `${persId}.png`);
+  if (fs.existsSync(plain)) return plain;
+  if (fs.existsSync(dir)) {
+    const files = fs.readdirSync(dir);
+    const match = files.find(f => f.includes(persId) && f.endsWith('.png'));
+    if (match) return path.join(dir, match);
+  }
+  return plain;
+}
+
 function getAllItems() {
   const items = [];
   for (const char of standards.characters) {
     for (const outfit of char.outfits) {
       for (const pers of standards.perspectives) {
         const key = `${char.id}/${outfit.id}/${pers.id}`;
-        const targetPath = path.join(OUT_BASE, char.id, outfit.id, `${pers.id}.png`);
+        const targetPath = findActualFile(path.join(OUT_BASE, char.id, outfit.id), pers.id);
         items.push({
           key,
           char,
@@ -123,9 +136,10 @@ async function main() {
   const allItems = getAllItems();
   
   while (true) {
-    // 找出磁盘上已有但尚未审核通过的项
+    // 找出磁盘上已有但尚未审核的项（2026-08-18 修复：已审过的条目无论 pass/fail 都跳过，
+    // 避免 fail 条目被无限重审；重渲染后的图请先清除对应 report 记录再跑）。
     const pendingItems = allItems.filter(item => {
-      if (auditReport[item.key]?.passed) return false;
+      if (auditReport[item.key]) return false;
       if (!fs.existsSync(item.targetPath)) return false;
       const stat = fs.statSync(item.targetPath);
       return stat.size > 20000;
@@ -133,13 +147,8 @@ async function main() {
 
     if (pendingItems.length === 0) {
       const passedCount = Object.values(auditReport).filter(r => r.passed).length;
-      if (passedCount >= allItems.length) {
-        console.log(`🎉 [Pure Auditor] 全量 ${allItems.length} 张图片已 100% 全部审核通过！`);
-        break;
-      }
-      console.log(`[Pure Auditor] 当前已通过: ${passedCount}/${allItems.length}，等待新图落盘中 (8s)...`);
-      await new Promise(r => setTimeout(r, 8000));
-      continue;
+      console.log(`[Pure Auditor] 无待审核项。已审 ${Object.keys(auditReport).length}/${allItems.length}，通过 ${passedCount}。`);
+      break;
     }
 
     console.log(`\n================================================`);

@@ -103,10 +103,12 @@ function buildCandidate(character, blueprint, profile, attempt, seedAttempt = at
   });
   if (!result) throw new Error(`popular prompt build failed for ${character.id} / ${blueprint.id}`);
   // 单人主体强化：压制主画面第二人（背景路人可接受，不强压 bystanders）。
+  // 2026-08-18 增强：分身/复制体压制（Anima 爱在舞会/咖啡店/超市等社交场景画同款第二主角）。
   // R18 场景双人/分身高发：额外加强 solo/1girl 权重与无路人压制（2026-08-15 用户反馈）。
+  const cloneGuard = '(no clone:1.4), (no duplicate:1.4), (no twin:1.3), no duplicated character, no second copy, no doppelganger, no double body, no mirror copy, single subject only';
   const soloGuard = adult
-    ? '(solo:1.5), (1girl:1.4), (single girl only:1.6), (one person only:1.6), (no second person:1.3), no other person, no bystanders, no background people'
-    : '(single girl only:1.4), (one person only:1.4), no second person, no other person';
+    ? `(solo:1.5), (1girl:1.4), (single girl only:1.6), (one person only:1.6), (no second person:1.3), no other person, no bystanders, no background people, ${cloneGuard}`
+    : `(single girl only:1.4), (one person only:1.4), no second person, no other person, ${cloneGuard}`;
   const prompt = result.prompt.includes('\n')
     ? result.prompt.replace('\n', `, ${soloGuard}\n`)
     : `${result.prompt}, ${soloGuard}`;
@@ -117,9 +119,9 @@ function buildCandidate(character, blueprint, profile, attempt, seedAttempt = at
   const blueprintNegative = Array.isArray(blueprint.negativeTokens)
     ? blueprint.negativeTokens.join(', ').trim()
     : String(blueprint.negativeTokens || '').trim();
-  const negative = blueprintNegative
-    ? `${result.negative}, ${blueprintNegative}`
-    : result.negative;
+  // 2026-08-18 增强：分身/复制体负面压制（社交场景出同款第二主角共性根因）。
+  const cloneNegative = 'duplicate, clone, copy, doppelganger, twin, two of her, second instance of her, duplicated subject, multiple girls, extra girl, same character twice';
+  const negative = [result.negative, blueprintNegative, cloneNegative].filter(Boolean).join(', ');
   return {
     batch: 'popular', key: `popular:${character.id}:${blueprint.id}`,
     recordId: `popular:${character.id}:${blueprint.id}@attempt-${attempt}`,
