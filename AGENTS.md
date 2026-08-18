@@ -191,6 +191,7 @@
 - 桌宠语音与演出增强（吸收 ZcChat2 精华）分阶段计划已记录在 `docs/companion-voice-roadmap.md`。P0/P1/P2（长按说话、会话状态机/唤醒词、`[mood=xxx]` 情绪标签协议）及 CompanionView 自动监听/热键接入、竞态复审已完成（2026-08-09）；剩余：P3 演出数据驱动、P4 自定义角色资产包——仍暂缓，每阶段独立验收，不串阶段。
 - 提示词三引擎（Krea 2 / Anima / WAI-Illustrious）调研基线见 `docs/three-engine-prompt-research.md`，供精细化配置人员使用；**待办：热门角色 exactTokens 的括号消歧按 Anima 官方空格规则改 `rem (re zero)` 形式（当前为 `rem_(re_zero)`），先 A/B 验证还原度不降再批量改**（影响 `test-popular-content.js` 断言）。
 - Live2D 方面仍只有在取得模型作者提供的、明确标注为情绪用途的原生 motion/expression 后，才增加非空 SoulLink native allowlist。
+- **热门角色场景样张：8 个难做场景待他人优化（2026-08-18 标注，勿盲目重试）**——`reze_old_bookstore_reading`（蕾塞旧书店）、`cecilia_garden_watering_flowers`（塞西莉亚浇花）、`cecilia_riverbank_evening_walk`（塞西莉亚河畔）、`sylphiette_grayrat_kitchen_morning`（希露菲厨房）、`yor_city_hall_desk_work`（约尔市政厅）、`yor_evening_sofa_knitting`（约尔织毛衣）、`yui_tennis_court_afternoon`（结衣网球）、`yui_r18_service_club_desk_afterschool`（结衣R18教室，疑似纯 API 问题可先重审）。成因=Anima 负面弱+主角唯一描述被复刻成同款分身；已试 7 轮（含「她独自一人」约束句、分身负面、正向空场 tokens，均已在数据里勿回退）；接手方向：换引擎（WAI/ComfyUI 更强负面遵循）/换构图/私密化改景。全细节与工具（`audit-fix-showcase-loop.js` 自动闭环）见 `docs/showcase-stubborn-scenes-2026-08-18.md`。**注意：`publish-popular-showcase.js` 发布会覆盖 `assets/characters/popular-*.png` 角色立绘，发布后必须从 git HEAD 恢复；`audit-results.json` 严禁并发写，审核任务须串行或隔离文件。**
 
 暂缓（已评估有结论，条件具备再动）：
 
