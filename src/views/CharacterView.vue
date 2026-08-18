@@ -284,15 +284,15 @@ const franchises = computed(() => {
 })
 
 /** 无搜索时按作品分组；搜索/筛选时平铺。
- *  2026-08-16：单角色小作品不再各占一节——不足 3 人的合并为「更多作品」，
- *  消除 35 角色页一节一卡的纵向拉伸与右侧大面积空白。 */
+ *  2人及以上同一作品的角色单独成组展示（如明日方舟、Fate 系列、葬送的芙莉莲、电锯人、春物、无职转生等）；
+ *  仅 1 人的独立作品合并为「更多经典作品」。 */
 interface CharacterGroup {
   source: string
   label: string
   members: CharacterProfile[]
   merged: boolean
 }
-const MIN_GROUP_SIZE = 3
+const MIN_GROUP_SIZE = 2
 const grouped = computed<CharacterGroup[] | null>(() => {
   if (keyword.value || activeFranchise.value) return null
   const groups: CharacterGroup[] = []
@@ -300,8 +300,11 @@ const grouped = computed<CharacterGroup[] | null>(() => {
   for (const f of franchises.value) {
     const members = characters.value.filter(c => c.source === f.source)
     if (!members.length) continue
-    if (members.length >= MIN_GROUP_SIZE) groups.push({ source: f.source, label: f.label, members, merged: false })
-    else minor.push(...members)
+    if (members.length >= MIN_GROUP_SIZE) {
+      groups.push({ source: f.source, label: f.label, members, merged: false })
+    } else {
+      minor.push(...members)
+    }
   }
   if (minor.length) groups.push({ source: '', label: '更多作品', members: minor, merged: true })
   return groups

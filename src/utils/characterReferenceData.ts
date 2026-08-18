@@ -14601,20 +14601,20 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
     "characterId": "fern_frieren",
     "displayName": "菲伦",
     "source": "Frieren: Beyond Journey's End",
-    "identityProse": "Fern from Frieren: Beyond Journey's End, a talented human mage with long straight purple hair tied in a low side ponytail, calm violet eyes, and a composed slightly pouty expression.",
+    "identityProse": "Fern from Frieren: Beyond Journey's End, a calm and mature mage with long dark purple hair styled in a half-updo ponytail bun, straight bangs, round pouty cute face, chubby cheeks, deep purple eyes, tall voluptuous soft figure with large breasts, wearing modest wizard robes.",
     "outfits": [
       {
-        "outfitId": "mage_white_robe",
-        "outfitName": "第一阶魔法使长袍",
+        "outfitId": "journey_robe",
+        "outfitName": "旅途魔法长袍",
         "isDefault": true,
         "isNsfw": false,
-        "prose": "wearing her signature long white mage hooded robe over a high-neck dark dress, holding her wooden staff",
+        "prose": "wearing her signature classic long black wizard coat over a pristine white high-collar dress, holding wooden magic staff, gentle modest drape",
         "references": [
           {
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
-            "fileName": "fern_frieren_mage_white_robe_ref_01_face_closeup.png",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -14622,13 +14622,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "url": "/assets/character-references/fern_frieren/mage_white_robe/fern_frieren_mage_white_robe_ref_01_face_closeup.png"
+            "url": "/assets/character-references/fern_frieren/journey_robe/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
-            "fileName": "fern_frieren_mage_white_robe_ref_02_half_medium.png",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -14636,13 +14636,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "url": "/assets/character-references/fern_frieren/mage_white_robe/fern_frieren_mage_white_robe_ref_02_half_medium.png"
+            "url": "/assets/character-references/fern_frieren/journey_robe/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
             "shotType": "全身 · 35mm 站姿",
-            "fileName": "fern_frieren_mage_white_robe_ref_03_full_dynamic.png",
+            "fileName": "ref_03_full_dynamic.png",
             "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
@@ -14650,13 +14650,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "全身动作",
               "空间交代"
             ],
-            "url": "/assets/character-references/fern_frieren/mage_white_robe/fern_frieren_mage_white_robe_ref_03_full_dynamic.png"
+            "url": "/assets/character-references/fern_frieren/journey_robe/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
-            "fileName": "fern_frieren_mage_white_robe_ref_04_back_rear.png",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -14664,22 +14664,22 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "url": "/assets/character-references/fern_frieren/mage_white_robe/fern_frieren_mage_white_robe_ref_04_back_rear.png"
+            "url": "/assets/character-references/fern_frieren/journey_robe/ref_04_back_rear.png"
           }
         ]
       },
       {
-        "outfitId": "winter_travel_coat",
-        "outfitName": "冬日旅行羊毛大衣",
+        "outfitId": "winter_coat",
+        "outfitName": "冬季厚风衣围巾装",
         "isDefault": false,
         "isNsfw": false,
-        "prose": "wearing a heavy winter traveler coat with thick knitted woolen scarf wrapped around her neck",
+        "prose": "wearing a warm beige winter overcoat with a large fluffy knit muffler scarf wrapped around neck, cute cold weather travel clothes",
         "references": [
           {
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
-            "fileName": "fern_frieren_winter_travel_coat_ref_01_face_closeup.png",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -14687,13 +14687,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "url": "/assets/character-references/fern_frieren/winter_travel_coat/fern_frieren_winter_travel_coat_ref_01_face_closeup.png"
+            "url": "/assets/character-references/fern_frieren/winter_coat/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
-            "fileName": "fern_frieren_winter_travel_coat_ref_02_half_medium.png",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -14701,13 +14701,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "url": "/assets/character-references/fern_frieren/winter_travel_coat/fern_frieren_winter_travel_coat_ref_02_half_medium.png"
+            "url": "/assets/character-references/fern_frieren/winter_coat/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
             "shotType": "全身 · 35mm 站姿",
-            "fileName": "fern_frieren_winter_travel_coat_ref_03_full_dynamic.png",
+            "fileName": "ref_03_full_dynamic.png",
             "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
@@ -14715,13 +14715,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "全身动作",
               "空间交代"
             ],
-            "url": "/assets/character-references/fern_frieren/winter_travel_coat/fern_frieren_winter_travel_coat_ref_03_full_dynamic.png"
+            "url": "/assets/character-references/fern_frieren/winter_coat/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
-            "fileName": "fern_frieren_winter_travel_coat_ref_04_back_rear.png",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -14729,22 +14729,22 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "url": "/assets/character-references/fern_frieren/winter_travel_coat/fern_frieren_winter_travel_coat_ref_04_back_rear.png"
+            "url": "/assets/character-references/fern_frieren/winter_coat/ref_04_back_rear.png"
           }
         ]
       },
       {
-        "outfitId": "noble_ball_dress",
-        "outfitName": "贵族舞会典雅深紫礼服",
+        "outfitId": "town_casual",
+        "outfitName": "城镇甜品便服",
         "isDefault": false,
         "isNsfw": false,
-        "prose": "wearing a gorgeous deep violet aristocratic ball gown with elbow-length white gloves and styled hair for a court dance",
+        "prose": "wearing a comfy soft knit cardigan, pleated long skirt, holding a small dessert fork, relaxed cute dating style",
         "references": [
           {
             "id": "ref_01_face_closeup",
             "name": "面部特写",
             "shotType": "特写 · 85mm 浅景深",
-            "fileName": "fern_frieren_noble_ball_dress_ref_01_face_closeup.png",
+            "fileName": "ref_01_face_closeup.png",
             "lens": "85mm f/1.4 Portrait Lens",
             "targetUsage": [
               "对白特写",
@@ -14752,13 +14752,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "情绪反应镜头",
               "台词对峙"
             ],
-            "url": "/assets/character-references/fern_frieren/noble_ball_dress/fern_frieren_noble_ball_dress_ref_01_face_closeup.png"
+            "url": "/assets/character-references/fern_frieren/town_casual/ref_01_face_closeup.png"
           },
           {
             "id": "ref_02_half_medium",
             "name": "3/4半身定妆",
             "shotType": "半身 · 中景",
-            "fileName": "fern_frieren_noble_ball_dress_ref_02_half_medium.png",
+            "fileName": "ref_02_half_medium.png",
             "lens": "50mm Medium Lens",
             "targetUsage": [
               "对话交互",
@@ -14766,13 +14766,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "室内中景",
               "双人互动"
             ],
-            "url": "/assets/character-references/fern_frieren/noble_ball_dress/fern_frieren_noble_ball_dress_ref_02_half_medium.png"
+            "url": "/assets/character-references/fern_frieren/town_casual/ref_02_half_medium.png"
           },
           {
             "id": "ref_03_full_dynamic",
             "name": "正面全身立姿",
             "shotType": "全身 · 35mm 站姿",
-            "fileName": "fern_frieren_noble_ball_dress_ref_03_full_dynamic.png",
+            "fileName": "ref_03_full_dynamic.png",
             "lens": "35mm Full Shot Lens",
             "targetUsage": [
               "登场走入",
@@ -14780,13 +14780,13 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "全身动作",
               "空间交代"
             ],
-            "url": "/assets/character-references/fern_frieren/noble_ball_dress/fern_frieren_noble_ball_dress_ref_03_full_dynamic.png"
+            "url": "/assets/character-references/fern_frieren/town_casual/ref_03_full_dynamic.png"
           },
           {
             "id": "ref_04_back_rear",
             "name": "45°侧后背影",
             "shotType": "侧后 · 轮廓光",
-            "fileName": "fern_frieren_noble_ball_dress_ref_04_back_rear.png",
+            "fileName": "ref_04_back_rear.png",
             "lens": "85mm Cinematic Edge",
             "targetUsage": [
               "过肩反打",
@@ -14794,81 +14794,16 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
               "背影叙事",
               "神秘氛围"
             ],
-            "url": "/assets/character-references/fern_frieren/noble_ball_dress/fern_frieren_noble_ball_dress_ref_04_back_rear.png"
-          }
-        ]
-      },
-      {
-        "outfitId": "inn_morning_nightgown",
-        "outfitName": "旅馆清晨纯棉睡裙",
-        "isDefault": false,
-        "isNsfw": false,
-        "prose": "wearing a loose white cotton nightgown with her long purple hair flowing loosely around her shoulders",
-        "references": [
-          {
-            "id": "ref_01_face_closeup",
-            "name": "面部特写",
-            "shotType": "特写 · 85mm 浅景深",
-            "fileName": "fern_frieren_inn_morning_nightgown_ref_01_face_closeup.png",
-            "lens": "85mm f/1.4 Portrait Lens",
-            "targetUsage": [
-              "对白特写",
-              "微表情",
-              "情绪反应镜头",
-              "台词对峙"
-            ],
-            "url": "/assets/character-references/fern_frieren/inn_morning_nightgown/fern_frieren_inn_morning_nightgown_ref_01_face_closeup.png"
-          },
-          {
-            "id": "ref_02_half_medium",
-            "name": "3/4半身定妆",
-            "shotType": "半身 · 中景",
-            "fileName": "fern_frieren_inn_morning_nightgown_ref_02_half_medium.png",
-            "lens": "50mm Medium Lens",
-            "targetUsage": [
-              "对话交互",
-              "过肩推拉",
-              "室内中景",
-              "双人互动"
-            ],
-            "url": "/assets/character-references/fern_frieren/inn_morning_nightgown/fern_frieren_inn_morning_nightgown_ref_02_half_medium.png"
-          },
-          {
-            "id": "ref_03_full_dynamic",
-            "name": "正面全身立姿",
-            "shotType": "全身 · 35mm 站姿",
-            "fileName": "fern_frieren_inn_morning_nightgown_ref_03_full_dynamic.png",
-            "lens": "35mm Full Shot Lens",
-            "targetUsage": [
-              "登场走入",
-              "全景走位",
-              "全身动作",
-              "空间交代"
-            ],
-            "url": "/assets/character-references/fern_frieren/inn_morning_nightgown/fern_frieren_inn_morning_nightgown_ref_03_full_dynamic.png"
-          },
-          {
-            "id": "ref_04_back_rear",
-            "name": "45°侧后背影",
-            "shotType": "侧后 · 轮廓光",
-            "fileName": "fern_frieren_inn_morning_nightgown_ref_04_back_rear.png",
-            "lens": "85mm Cinematic Edge",
-            "targetUsage": [
-              "过肩反打",
-              "转身离去",
-              "背影叙事",
-              "神秘氛围"
-            ],
-            "url": "/assets/character-references/fern_frieren/inn_morning_nightgown/fern_frieren_inn_morning_nightgown_ref_04_back_rear.png"
+            "url": "/assets/character-references/fern_frieren/town_casual/ref_04_back_rear.png"
           }
         ]
       },
       {
         "outfitId": "nsfw_nude",
-        "outfitName": "🔞 私密全裸 / 纯粹形态",
+        "outfitName": "私密全裸 / 丰满纯粹形态",
         "isDefault": false,
         "isNsfw": true,
-        "prose": "completely naked with zero clothes, very soft voluptuous body, exposed pink pussy, detailed vulva, very large soft breasts with pink nipples, pouting blush",
+        "prose": "completely naked, full body bare, large natural soft breasts, plush voluptuous curves, gentle shy blush, no clothes",
         "references": [
           {
             "id": "ref_01_face_closeup",
@@ -14938,10 +14873,10 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
     "outfits": [
       {
         "outfitId": "magical_girl_dress",
-        "outfitName": "魔法少女战斗服",
+        "outfitName": "魔法少女战服",
         "isDefault": true,
         "isNsfw": false,
-        "prose": "wearing her frilly pink and white magical girl transformation dress with black thighhigh stockings and magic wand",
+        "prose": "wearing her signature magical girl combat dress with ruffled frilled white and pink skirt, glowing magical accessories, detached puffy sleeves",
         "references": [
           {
             "id": "ref_01_face_closeup",
@@ -15003,10 +14938,10 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
       },
       {
         "outfitId": "poor_school_uniform",
-        "outfitName": "简朴公立高校水手服",
+        "outfitName": "褪色旧水手服",
         "isDefault": false,
         "isNsfw": false,
-        "prose": "wearing a faded navy blue classic sailor uniform with white scarf and slightly worn schoolbag",
+        "prose": "wearing a faded old navy and white sailor school uniform, frayed navy sailor collar with small red neckerchief, pleated navy skirt",
         "references": [
           {
             "id": "ref_01_face_closeup",
@@ -15068,10 +15003,10 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
       },
       {
         "outfitId": "part_time_maid_apron",
-        "outfitName": "打工女仆咖啡围裙",
+        "outfitName": "打工女仆围裙装",
         "isDefault": false,
         "isNsfw": false,
-        "prose": "wearing a simple black dress with a white frilly maid apron while working diligently at a cafe",
+        "prose": "wearing a cute black work dress with white frilled maid apron, white headband, bow on chest, working part-time",
         "references": [
           {
             "id": "ref_01_face_closeup",
@@ -15133,10 +15068,10 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
       },
       {
         "outfitId": "tattered_oversized_jersey",
-        "outfitName": "居家宽大旧运动外套",
+        "outfitName": "破旧宽大运动服",
         "isDefault": false,
         "isNsfw": false,
-        "prose": "wearing a loose vintage track jersey jacket over gym shorts while eating budget ramen at home",
+        "prose": "wearing an oversized baggy blue and white tracksuit jersey, zipper pulled down, slouchy homewear style, cute casual",
         "references": [
           {
             "id": "ref_01_face_closeup",
@@ -15198,10 +15133,10 @@ export const CHARACTER_REFERENCE_STANDARDS: Record<string, CharacterReferencePro
       },
       {
         "outfitId": "nsfw_nude",
-        "outfitName": "🔞 私密全裸 / 纯粹形态",
+        "outfitName": "私密全裸 / 纯粹形态",
         "isDefault": false,
         "isNsfw": true,
-        "prose": "completely naked with zero clothes, delicate slender petite frame, exposed pink pussy, detailed vulva, small pink nipples, deadpan cute blush",
+        "prose": "completely naked, full body bare, natural slender skin, delicate collarbone and flat chest, no clothes",
         "references": [
           {
             "id": "ref_01_face_closeup",

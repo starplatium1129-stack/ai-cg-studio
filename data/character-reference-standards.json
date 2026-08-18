@@ -6539,450 +6539,80 @@
       "displayName": "菲伦",
       "originalName": "菲伦",
       "source": "Frieren: Beyond Journey's End",
-      "identityProse": "Fern from Frieren: Beyond Journey's End, a talented human mage with long straight purple hair tied in a low side ponytail, calm violet eyes, and a composed slightly pouty expression.",
+      "identityProse": "Fern from Frieren: Beyond Journey's End, a calm and mature mage with long dark purple hair styled in a half-updo ponytail bun, straight bangs, round pouty cute face, chubby cheeks, deep purple eyes, tall voluptuous soft figure with large breasts, wearing modest wizard robes.",
       "identityTokens": [
         "fern_(frieren)",
-        "fern",
         "1girl",
         "solo",
-        "long_hair",
         "purple_hair",
-        "side_ponytail",
+        "long_hair",
+        "straight_bangs",
+        "half-updo",
+        "ponytail",
+        "hair_bun",
         "purple_eyes",
+        "round_face",
+        "chubby_cheeks",
+        "pout",
+        "voluptuous",
         "large_breasts"
       ],
       "recommendedEngine": "anima-aesthetic-v1.1",
       "adultEligibility": "adult",
       "outfits": [
         {
-          "id": "mage_white_robe",
-          "name": "第一阶魔法使长袍",
+          "id": "journey_robe",
+          "name": "旅途魔法长袍",
           "isDefault": true,
-          "isNsfw": false,
-          "prose": "wearing her signature long white mage hooded robe over a high-neck dark dress, holding her wooden staff",
+          "prose": "wearing her signature classic long black wizard coat over a pristine white high-collar dress, holding wooden magic staff, gentle modest drape",
           "tokens": [
-            "mage_robe",
-            "white_robe",
-            "high_neck_dress",
-            "black_dress",
-            "staff",
+            "black_coat",
+            "white_dress",
+            "high_collar",
+            "long_sleeves",
+            "magic_staff",
             "boots"
-          ],
-          "styleHint": "majestic fantasy landscape lighting",
-          "perspectives": [
-            {
-              "id": "ref_01_face_closeup",
-              "name": "面部特写",
-              "angle": "front-close",
-              "shotType": "特写 · 85mm 浅景深",
-              "lens": "85mm f/1.4 Portrait Lens",
-              "targetUsage": [
-                "对白特写",
-                "微表情",
-                "情绪反应镜头",
-                "台词对峙"
-              ],
-              "prompt": "@rella, fern_(frieren), fern, 1girl, solo, long_hair, purple_hair, side_ponytail, purple_eyes, large_breasts, mage_robe, white_robe, high_neck_dress, black_dress, staff, boots, wearing her signature long white mage hooded robe over a high-neck dark dress, holding her wooden staff, close-up, 85mm f/1.4, shallow depth of field, focused on beautiful face and expressive eyes, head and shoulders, simple clean background, studio rim lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, full body, wide shot, lower body, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "fern_frieren_mage_white_robe_ref_01_face_closeup.png",
-              "url": "/assets/character-references/fern_frieren/mage_white_robe/fern_frieren_mage_white_robe_ref_01_face_closeup.png"
-            },
-            {
-              "id": "ref_02_half_medium",
-              "name": "3/4半身定妆",
-              "angle": "three-quarter-medium",
-              "shotType": "半身 · 中景",
-              "lens": "50mm Medium Lens",
-              "targetUsage": [
-                "对话交互",
-                "过肩推拉",
-                "室内中景",
-                "双人互动"
-              ],
-              "prompt": "@rella, fern_(frieren), fern, 1girl, solo, long_hair, purple_hair, side_ponytail, purple_eyes, large_breasts, mage_robe, white_robe, high_neck_dress, black_dress, staff, boots, wearing her signature long white mage hooded robe over a high-neck dark dress, holding her wooden staff, medium shot, 50mm f/2.0, upper body, 3/4 angle view, clear outfit upper details, simple clean background, studio lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, extreme close-up, cropped head, feet, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "fern_frieren_mage_white_robe_ref_02_half_medium.png",
-              "url": "/assets/character-references/fern_frieren/mage_white_robe/fern_frieren_mage_white_robe_ref_02_half_medium.png"
-            },
-            {
-              "id": "ref_03_full_dynamic",
-              "name": "正面全身立姿",
-              "angle": "front-full",
-              "shotType": "全身 · 35mm 站姿",
-              "lens": "35mm Full Shot Lens",
-              "targetUsage": [
-                "登场走入",
-                "全景走位",
-                "全身动作",
-                "空间交代"
-              ],
-              "prompt": "@rella, fern_(frieren), fern, 1girl, solo, long_hair, purple_hair, side_ponytail, purple_eyes, large_breasts, mage_robe, white_robe, high_neck_dress, black_dress, staff, boots, wearing her signature long white mage hooded robe over a high-neck dark dress, holding her wooden staff, full body, 35mm f/2.8, full body standing, head to toe visible, uncropped shoes and feet, perfectly proportioned limbs, simple clean background, studio lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, cropped legs, cropped head, close-up, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "fern_frieren_mage_white_robe_ref_03_full_dynamic.png",
-              "url": "/assets/character-references/fern_frieren/mage_white_robe/fern_frieren_mage_white_robe_ref_03_full_dynamic.png"
-            },
-            {
-              "id": "ref_04_back_rear",
-              "name": "45°侧后背影",
-              "angle": "rear-three-quarter",
-              "shotType": "侧后 · 轮廓光",
-              "lens": "85mm Cinematic Edge",
-              "targetUsage": [
-                "过肩反打",
-                "转身离去",
-                "背影叙事",
-                "神秘氛围"
-              ],
-              "prompt": "@rella, fern_(frieren), fern, 1girl, solo, long_hair, purple_hair, side_ponytail, purple_eyes, large_breasts, mage_robe, white_robe, high_neck_dress, black_dress, staff, boots, wearing her signature long white mage hooded robe over a high-neck dark dress, holding her wooden staff, from behind, 45 degree rear three-quarter view, looking back over shoulder, clear back design and hairstyle, simple clean background, dramatic rim lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, front view, symmetry, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "fern_frieren_mage_white_robe_ref_04_back_rear.png",
-              "url": "/assets/character-references/fern_frieren/mage_white_robe/fern_frieren_mage_white_robe_ref_04_back_rear.png"
-            }
           ]
         },
         {
-          "id": "winter_travel_coat",
-          "name": "冬日旅行羊毛大衣",
+          "id": "winter_coat",
+          "name": "冬季厚风衣围巾装",
           "isDefault": false,
-          "isNsfw": false,
-          "prose": "wearing a heavy winter traveler coat with thick knitted woolen scarf wrapped around her neck",
+          "prose": "wearing a warm beige winter overcoat with a large fluffy knit muffler scarf wrapped around neck, cute cold weather travel clothes",
           "tokens": [
             "winter_coat",
-            "thick_coat",
-            "heavy_scarf",
+            "overcoat",
+            "scarf",
+            "muffler",
             "gloves",
             "boots"
-          ],
-          "styleHint": "crisp snowy mountain atmosphere",
-          "perspectives": [
-            {
-              "id": "ref_01_face_closeup",
-              "name": "面部特写",
-              "angle": "front-close",
-              "shotType": "特写 · 85mm 浅景深",
-              "lens": "85mm f/1.4 Portrait Lens",
-              "targetUsage": [
-                "对白特写",
-                "微表情",
-                "情绪反应镜头",
-                "台词对峙"
-              ],
-              "prompt": "@rella, fern_(frieren), fern, 1girl, solo, long_hair, purple_hair, side_ponytail, purple_eyes, large_breasts, winter_coat, thick_coat, heavy_scarf, gloves, boots, wearing a heavy winter traveler coat with thick knitted woolen scarf wrapped around her neck, close-up, 85mm f/1.4, shallow depth of field, focused on beautiful face and expressive eyes, head and shoulders, simple clean background, studio rim lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, full body, wide shot, lower body, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "fern_frieren_winter_travel_coat_ref_01_face_closeup.png",
-              "url": "/assets/character-references/fern_frieren/winter_travel_coat/fern_frieren_winter_travel_coat_ref_01_face_closeup.png"
-            },
-            {
-              "id": "ref_02_half_medium",
-              "name": "3/4半身定妆",
-              "angle": "three-quarter-medium",
-              "shotType": "半身 · 中景",
-              "lens": "50mm Medium Lens",
-              "targetUsage": [
-                "对话交互",
-                "过肩推拉",
-                "室内中景",
-                "双人互动"
-              ],
-              "prompt": "@rella, fern_(frieren), fern, 1girl, solo, long_hair, purple_hair, side_ponytail, purple_eyes, large_breasts, winter_coat, thick_coat, heavy_scarf, gloves, boots, wearing a heavy winter traveler coat with thick knitted woolen scarf wrapped around her neck, medium shot, 50mm f/2.0, upper body, 3/4 angle view, clear outfit upper details, simple clean background, studio lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, extreme close-up, cropped head, feet, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "fern_frieren_winter_travel_coat_ref_02_half_medium.png",
-              "url": "/assets/character-references/fern_frieren/winter_travel_coat/fern_frieren_winter_travel_coat_ref_02_half_medium.png"
-            },
-            {
-              "id": "ref_03_full_dynamic",
-              "name": "正面全身立姿",
-              "angle": "front-full",
-              "shotType": "全身 · 35mm 站姿",
-              "lens": "35mm Full Shot Lens",
-              "targetUsage": [
-                "登场走入",
-                "全景走位",
-                "全身动作",
-                "空间交代"
-              ],
-              "prompt": "@rella, fern_(frieren), fern, 1girl, solo, long_hair, purple_hair, side_ponytail, purple_eyes, large_breasts, winter_coat, thick_coat, heavy_scarf, gloves, boots, wearing a heavy winter traveler coat with thick knitted woolen scarf wrapped around her neck, full body, 35mm f/2.8, full body standing, head to toe visible, uncropped shoes and feet, perfectly proportioned limbs, simple clean background, studio lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, cropped legs, cropped head, close-up, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "fern_frieren_winter_travel_coat_ref_03_full_dynamic.png",
-              "url": "/assets/character-references/fern_frieren/winter_travel_coat/fern_frieren_winter_travel_coat_ref_03_full_dynamic.png"
-            },
-            {
-              "id": "ref_04_back_rear",
-              "name": "45°侧后背影",
-              "angle": "rear-three-quarter",
-              "shotType": "侧后 · 轮廓光",
-              "lens": "85mm Cinematic Edge",
-              "targetUsage": [
-                "过肩反打",
-                "转身离去",
-                "背影叙事",
-                "神秘氛围"
-              ],
-              "prompt": "@rella, fern_(frieren), fern, 1girl, solo, long_hair, purple_hair, side_ponytail, purple_eyes, large_breasts, winter_coat, thick_coat, heavy_scarf, gloves, boots, wearing a heavy winter traveler coat with thick knitted woolen scarf wrapped around her neck, from behind, 45 degree rear three-quarter view, looking back over shoulder, clear back design and hairstyle, simple clean background, dramatic rim lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, front view, symmetry, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "fern_frieren_winter_travel_coat_ref_04_back_rear.png",
-              "url": "/assets/character-references/fern_frieren/winter_travel_coat/fern_frieren_winter_travel_coat_ref_04_back_rear.png"
-            }
           ]
         },
         {
-          "id": "noble_ball_dress",
-          "name": "贵族舞会典雅深紫礼服",
+          "id": "town_casual",
+          "name": "城镇甜品便服",
           "isDefault": false,
-          "isNsfw": false,
-          "prose": "wearing a gorgeous deep violet aristocratic ball gown with elbow-length white gloves and styled hair for a court dance",
+          "prose": "wearing a comfy soft knit cardigan, pleated long skirt, holding a small dessert fork, relaxed cute dating style",
           "tokens": [
-            "evening_dress",
-            "purple_dress",
-            "ball_gown",
-            "white_gloves",
-            "updo_hair"
-          ],
-          "styleHint": "glamorous golden chandelier glow",
-          "perspectives": [
-            {
-              "id": "ref_01_face_closeup",
-              "name": "面部特写",
-              "angle": "front-close",
-              "shotType": "特写 · 85mm 浅景深",
-              "lens": "85mm f/1.4 Portrait Lens",
-              "targetUsage": [
-                "对白特写",
-                "微表情",
-                "情绪反应镜头",
-                "台词对峙"
-              ],
-              "prompt": "@rella, fern_(frieren), fern, 1girl, solo, long_hair, purple_hair, side_ponytail, purple_eyes, large_breasts, evening_dress, purple_dress, ball_gown, white_gloves, updo_hair, wearing a gorgeous deep violet aristocratic ball gown with elbow-length white gloves and styled hair for a court dance, close-up, 85mm f/1.4, shallow depth of field, focused on beautiful face and expressive eyes, head and shoulders, simple clean background, studio rim lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, full body, wide shot, lower body, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "fern_frieren_noble_ball_dress_ref_01_face_closeup.png",
-              "url": "/assets/character-references/fern_frieren/noble_ball_dress/fern_frieren_noble_ball_dress_ref_01_face_closeup.png"
-            },
-            {
-              "id": "ref_02_half_medium",
-              "name": "3/4半身定妆",
-              "angle": "three-quarter-medium",
-              "shotType": "半身 · 中景",
-              "lens": "50mm Medium Lens",
-              "targetUsage": [
-                "对话交互",
-                "过肩推拉",
-                "室内中景",
-                "双人互动"
-              ],
-              "prompt": "@rella, fern_(frieren), fern, 1girl, solo, long_hair, purple_hair, side_ponytail, purple_eyes, large_breasts, evening_dress, purple_dress, ball_gown, white_gloves, updo_hair, wearing a gorgeous deep violet aristocratic ball gown with elbow-length white gloves and styled hair for a court dance, medium shot, 50mm f/2.0, upper body, 3/4 angle view, clear outfit upper details, simple clean background, studio lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, extreme close-up, cropped head, feet, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "fern_frieren_noble_ball_dress_ref_02_half_medium.png",
-              "url": "/assets/character-references/fern_frieren/noble_ball_dress/fern_frieren_noble_ball_dress_ref_02_half_medium.png"
-            },
-            {
-              "id": "ref_03_full_dynamic",
-              "name": "正面全身立姿",
-              "angle": "front-full",
-              "shotType": "全身 · 35mm 站姿",
-              "lens": "35mm Full Shot Lens",
-              "targetUsage": [
-                "登场走入",
-                "全景走位",
-                "全身动作",
-                "空间交代"
-              ],
-              "prompt": "@rella, fern_(frieren), fern, 1girl, solo, long_hair, purple_hair, side_ponytail, purple_eyes, large_breasts, evening_dress, purple_dress, ball_gown, white_gloves, updo_hair, wearing a gorgeous deep violet aristocratic ball gown with elbow-length white gloves and styled hair for a court dance, full body, 35mm f/2.8, full body standing, head to toe visible, uncropped shoes and feet, perfectly proportioned limbs, simple clean background, studio lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, cropped legs, cropped head, close-up, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "fern_frieren_noble_ball_dress_ref_03_full_dynamic.png",
-              "url": "/assets/character-references/fern_frieren/noble_ball_dress/fern_frieren_noble_ball_dress_ref_03_full_dynamic.png"
-            },
-            {
-              "id": "ref_04_back_rear",
-              "name": "45°侧后背影",
-              "angle": "rear-three-quarter",
-              "shotType": "侧后 · 轮廓光",
-              "lens": "85mm Cinematic Edge",
-              "targetUsage": [
-                "过肩反打",
-                "转身离去",
-                "背影叙事",
-                "神秘氛围"
-              ],
-              "prompt": "@rella, fern_(frieren), fern, 1girl, solo, long_hair, purple_hair, side_ponytail, purple_eyes, large_breasts, evening_dress, purple_dress, ball_gown, white_gloves, updo_hair, wearing a gorgeous deep violet aristocratic ball gown with elbow-length white gloves and styled hair for a court dance, from behind, 45 degree rear three-quarter view, looking back over shoulder, clear back design and hairstyle, simple clean background, dramatic rim lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, front view, symmetry, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "fern_frieren_noble_ball_dress_ref_04_back_rear.png",
-              "url": "/assets/character-references/fern_frieren/noble_ball_dress/fern_frieren_noble_ball_dress_ref_04_back_rear.png"
-            }
-          ]
-        },
-        {
-          "id": "inn_morning_nightgown",
-          "name": "旅馆清晨纯棉睡裙",
-          "isDefault": false,
-          "isNsfw": false,
-          "prose": "wearing a loose white cotton nightgown with her long purple hair flowing loosely around her shoulders",
-          "tokens": [
-            "nightgown",
-            "white_nightgown",
-            "loose_dress",
-            "bare_shoulders",
-            "messy_hair"
-          ],
-          "styleHint": "gentle morning rustic inn lighting",
-          "perspectives": [
-            {
-              "id": "ref_01_face_closeup",
-              "name": "面部特写",
-              "angle": "front-close",
-              "shotType": "特写 · 85mm 浅景深",
-              "lens": "85mm f/1.4 Portrait Lens",
-              "targetUsage": [
-                "对白特写",
-                "微表情",
-                "情绪反应镜头",
-                "台词对峙"
-              ],
-              "prompt": "@rella, fern_(frieren), fern, 1girl, solo, long_hair, purple_hair, side_ponytail, purple_eyes, large_breasts, nightgown, white_nightgown, loose_dress, bare_shoulders, messy_hair, wearing a loose white cotton nightgown with her long purple hair flowing loosely around her shoulders, close-up, 85mm f/1.4, shallow depth of field, focused on beautiful face and expressive eyes, head and shoulders, simple clean background, studio rim lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, full body, wide shot, lower body, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "fern_frieren_inn_morning_nightgown_ref_01_face_closeup.png",
-              "url": "/assets/character-references/fern_frieren/inn_morning_nightgown/fern_frieren_inn_morning_nightgown_ref_01_face_closeup.png"
-            },
-            {
-              "id": "ref_02_half_medium",
-              "name": "3/4半身定妆",
-              "angle": "three-quarter-medium",
-              "shotType": "半身 · 中景",
-              "lens": "50mm Medium Lens",
-              "targetUsage": [
-                "对话交互",
-                "过肩推拉",
-                "室内中景",
-                "双人互动"
-              ],
-              "prompt": "@rella, fern_(frieren), fern, 1girl, solo, long_hair, purple_hair, side_ponytail, purple_eyes, large_breasts, nightgown, white_nightgown, loose_dress, bare_shoulders, messy_hair, wearing a loose white cotton nightgown with her long purple hair flowing loosely around her shoulders, medium shot, 50mm f/2.0, upper body, 3/4 angle view, clear outfit upper details, simple clean background, studio lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, extreme close-up, cropped head, feet, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "fern_frieren_inn_morning_nightgown_ref_02_half_medium.png",
-              "url": "/assets/character-references/fern_frieren/inn_morning_nightgown/fern_frieren_inn_morning_nightgown_ref_02_half_medium.png"
-            },
-            {
-              "id": "ref_03_full_dynamic",
-              "name": "正面全身立姿",
-              "angle": "front-full",
-              "shotType": "全身 · 35mm 站姿",
-              "lens": "35mm Full Shot Lens",
-              "targetUsage": [
-                "登场走入",
-                "全景走位",
-                "全身动作",
-                "空间交代"
-              ],
-              "prompt": "@rella, fern_(frieren), fern, 1girl, solo, long_hair, purple_hair, side_ponytail, purple_eyes, large_breasts, nightgown, white_nightgown, loose_dress, bare_shoulders, messy_hair, wearing a loose white cotton nightgown with her long purple hair flowing loosely around her shoulders, full body, 35mm f/2.8, full body standing, head to toe visible, uncropped shoes and feet, perfectly proportioned limbs, simple clean background, studio lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, cropped legs, cropped head, close-up, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "fern_frieren_inn_morning_nightgown_ref_03_full_dynamic.png",
-              "url": "/assets/character-references/fern_frieren/inn_morning_nightgown/fern_frieren_inn_morning_nightgown_ref_03_full_dynamic.png"
-            },
-            {
-              "id": "ref_04_back_rear",
-              "name": "45°侧后背影",
-              "angle": "rear-three-quarter",
-              "shotType": "侧后 · 轮廓光",
-              "lens": "85mm Cinematic Edge",
-              "targetUsage": [
-                "过肩反打",
-                "转身离去",
-                "背影叙事",
-                "神秘氛围"
-              ],
-              "prompt": "@rella, fern_(frieren), fern, 1girl, solo, long_hair, purple_hair, side_ponytail, purple_eyes, large_breasts, nightgown, white_nightgown, loose_dress, bare_shoulders, messy_hair, wearing a loose white cotton nightgown with her long purple hair flowing loosely around her shoulders, from behind, 45 degree rear three-quarter view, looking back over shoulder, clear back design and hairstyle, simple clean background, dramatic rim lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, front view, symmetry, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "fern_frieren_inn_morning_nightgown_ref_04_back_rear.png",
-              "url": "/assets/character-references/fern_frieren/inn_morning_nightgown/fern_frieren_inn_morning_nightgown_ref_04_back_rear.png"
-            }
+            "cardigan",
+            "long_skirt",
+            "blouse",
+            "ribbon"
           ]
         },
         {
           "id": "nsfw_nude",
-          "name": "🔞 私密全裸 / 纯粹形态",
+          "name": "私密全裸 / 丰满纯粹形态",
           "isDefault": false,
           "isNsfw": true,
-          "prose": "completely naked with zero clothes, very soft voluptuous body, exposed pink pussy, detailed vulva, very large soft breasts with pink nipples, pouting blush",
+          "prose": "completely naked, full body bare, large natural soft breasts, plush voluptuous curves, gentle shy blush, no clothes",
           "tokens": [
-            "nude",
             "completely_naked",
-            "uncensored",
             "full_body_bare",
             "large_breasts",
-            "exposed_pussy",
-            "detailed_vulva",
-            "pink_nipples",
-            "soft_skin",
-            "bare_feet"
-          ],
-          "styleHint": "soft cozy private room lighting",
-          "perspectives": [
-            {
-              "id": "ref_01_face_closeup",
-              "name": "面部特写",
-              "angle": "front-close",
-              "shotType": "特写 · 85mm 浅景深",
-              "lens": "85mm f/1.4 Portrait Lens",
-              "targetUsage": [
-                "对白特写",
-                "微表情",
-                "情绪反应镜头",
-                "台词对峙"
-              ],
-              "prompt": "@rella, fern_(frieren), fern, 1girl, solo, long_hair, purple_hair, side_ponytail, purple_eyes, large_breasts, nude, completely_naked, uncensored, full_body_bare, large_breasts, exposed_pussy, detailed_vulva, pink_nipples, soft_skin, bare_feet, completely naked with zero clothes, very soft voluptuous body, exposed pink pussy, detailed vulva, very large soft breasts with pink nipples, pouting blush, close-up, 85mm f/1.4, shallow depth of field, focused on beautiful face and expressive eyes, head and shoulders, simple clean background, studio rim lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, full body, wide shot, lower body, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "fern_frieren_nsfw_nude_ref_01_face_closeup.png",
-              "url": "/assets/character-references/fern_frieren/nsfw_nude/fern_frieren_nsfw_nude_ref_01_face_closeup.png"
-            },
-            {
-              "id": "ref_02_half_medium",
-              "name": "3/4半身定妆",
-              "angle": "three-quarter-medium",
-              "shotType": "半身 · 中景",
-              "lens": "50mm Medium Lens",
-              "targetUsage": [
-                "对话交互",
-                "过肩推拉",
-                "室内中景",
-                "双人互动"
-              ],
-              "prompt": "@rella, fern_(frieren), fern, 1girl, solo, long_hair, purple_hair, side_ponytail, purple_eyes, large_breasts, nude, completely_naked, uncensored, full_body_bare, large_breasts, exposed_pussy, detailed_vulva, pink_nipples, soft_skin, bare_feet, completely naked with zero clothes, very soft voluptuous body, exposed pink pussy, detailed vulva, very large soft breasts with pink nipples, pouting blush, medium shot, 50mm f/2.0, upper body, 3/4 angle view, clear outfit upper details, simple clean background, studio lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, extreme close-up, cropped head, feet, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "fern_frieren_nsfw_nude_ref_02_half_medium.png",
-              "url": "/assets/character-references/fern_frieren/nsfw_nude/fern_frieren_nsfw_nude_ref_02_half_medium.png"
-            },
-            {
-              "id": "ref_03_full_dynamic",
-              "name": "正面全身立姿",
-              "angle": "front-full",
-              "shotType": "全身 · 35mm 站姿",
-              "lens": "35mm Full Shot Lens",
-              "targetUsage": [
-                "登场走入",
-                "全景走位",
-                "全身动作",
-                "空间交代"
-              ],
-              "prompt": "@rella, fern_(frieren), fern, 1girl, solo, long_hair, purple_hair, side_ponytail, purple_eyes, large_breasts, nude, completely_naked, uncensored, full_body_bare, large_breasts, exposed_pussy, detailed_vulva, pink_nipples, soft_skin, bare_feet, completely naked with zero clothes, very soft voluptuous body, exposed pink pussy, detailed vulva, very large soft breasts with pink nipples, pouting blush, full body, 35mm f/2.8, full body standing, head to toe visible, uncropped shoes and feet, perfectly proportioned limbs, simple clean background, studio lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, cropped legs, cropped head, close-up, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "fern_frieren_nsfw_nude_ref_03_full_dynamic.png",
-              "url": "/assets/character-references/fern_frieren/nsfw_nude/fern_frieren_nsfw_nude_ref_03_full_dynamic.png"
-            },
-            {
-              "id": "ref_04_back_rear",
-              "name": "45°侧后背影",
-              "angle": "rear-three-quarter",
-              "shotType": "侧后 · 轮廓光",
-              "lens": "85mm Cinematic Edge",
-              "targetUsage": [
-                "过肩反打",
-                "转身离去",
-                "背影叙事",
-                "神秘氛围"
-              ],
-              "prompt": "@rella, fern_(frieren), fern, 1girl, solo, long_hair, purple_hair, side_ponytail, purple_eyes, large_breasts, nude, completely_naked, uncensored, full_body_bare, large_breasts, exposed_pussy, detailed_vulva, pink_nipples, soft_skin, bare_feet, completely naked with zero clothes, very soft voluptuous body, exposed pink pussy, detailed vulva, very large soft breasts with pink nipples, pouting blush, from behind, 45 degree rear three-quarter view, looking back over shoulder, clear back design and hairstyle, simple clean background, dramatic rim lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, front view, symmetry, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "fern_frieren_nsfw_nude_ref_04_back_rear.png",
-              "url": "/assets/character-references/fern_frieren/nsfw_nude/fern_frieren_nsfw_nude_ref_04_back_rear.png"
-            }
+            "curvy",
+            "cleavage",
+            "bare_shoulders"
           ]
         }
       ]
@@ -7013,432 +6643,68 @@
       "outfits": [
         {
           "id": "magical_girl_dress",
-          "name": "魔法少女战斗服",
+          "name": "魔法少女战服",
           "isDefault": true,
-          "isNsfw": false,
-          "prose": "wearing her frilly pink and white magical girl transformation dress with black thighhigh stockings and magic wand",
+          "prose": "wearing her signature magical girl combat dress with ruffled frilled white and pink skirt, glowing magical accessories, detached puffy sleeves",
           "tokens": [
-            "magical_girl",
-            "frilled_dress",
-            "pink_dress",
-            "black_thighhighs",
+            "magical_girl_dress",
+            "frilled_skirt",
+            "detached_sleeves",
             "magic_wand",
-            "ribbons"
-          ],
-          "styleHint": "sparkling magical starlight aesthetic",
-          "perspectives": [
-            {
-              "id": "ref_01_face_closeup",
-              "name": "面部特写",
-              "angle": "front-close",
-              "shotType": "特写 · 85mm 浅景深",
-              "lens": "85mm f/1.4 Portrait Lens",
-              "targetUsage": [
-                "对白特写",
-                "微表情",
-                "情绪反应镜头",
-                "台词对峙"
-              ],
-              "prompt": "@rella, mimori_byakuya, 1girl, solo, black_hair, very_long_hair, straight_hair, hime_cut, blunt_bangs, sidelocks, dark_eyes, flat_chest, ahoge, magical_girl, frilled_dress, pink_dress, black_thighhighs, magic_wand, ribbons, wearing her frilly pink and white magical girl transformation dress with black thighhigh stockings and magic wand, close-up, 85mm f/1.4, shallow depth of field, focused on beautiful face and expressive eyes, head and shoulders, simple clean background, studio rim lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, full body, wide shot, lower body, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "mimori_byakuya_magical_girl_dress_ref_01_face_closeup.png",
-              "url": "/assets/character-references/mimori_byakuya/magical_girl_dress/mimori_byakuya_magical_girl_dress_ref_01_face_closeup.png"
-            },
-            {
-              "id": "ref_02_half_medium",
-              "name": "3/4半身定妆",
-              "angle": "three-quarter-medium",
-              "shotType": "半身 · 中景",
-              "lens": "50mm Medium Lens",
-              "targetUsage": [
-                "对话交互",
-                "过肩推拉",
-                "室内中景",
-                "双人互动"
-              ],
-              "prompt": "@rella, mimori_byakuya, 1girl, solo, black_hair, very_long_hair, straight_hair, hime_cut, blunt_bangs, sidelocks, dark_eyes, flat_chest, ahoge, magical_girl, frilled_dress, pink_dress, black_thighhighs, magic_wand, ribbons, wearing her frilly pink and white magical girl transformation dress with black thighhigh stockings and magic wand, medium shot, 50mm f/2.0, upper body, 3/4 angle view, clear outfit upper details, simple clean background, studio lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, extreme close-up, cropped head, feet, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "mimori_byakuya_magical_girl_dress_ref_02_half_medium.png",
-              "url": "/assets/character-references/mimori_byakuya/magical_girl_dress/mimori_byakuya_magical_girl_dress_ref_02_half_medium.png"
-            },
-            {
-              "id": "ref_03_full_dynamic",
-              "name": "正面全身立姿",
-              "angle": "front-full",
-              "shotType": "全身 · 35mm 站姿",
-              "lens": "35mm Full Shot Lens",
-              "targetUsage": [
-                "登场走入",
-                "全景走位",
-                "全身动作",
-                "空间交代"
-              ],
-              "prompt": "@rella, mimori_byakuya, 1girl, solo, black_hair, very_long_hair, straight_hair, hime_cut, blunt_bangs, sidelocks, dark_eyes, flat_chest, ahoge, magical_girl, frilled_dress, pink_dress, black_thighhighs, magic_wand, ribbons, wearing her frilly pink and white magical girl transformation dress with black thighhigh stockings and magic wand, full body, 35mm f/2.8, full body standing, head to toe visible, uncropped shoes and feet, perfectly proportioned limbs, simple clean background, studio lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, cropped legs, cropped head, close-up, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "mimori_byakuya_magical_girl_dress_ref_03_full_dynamic.png",
-              "url": "/assets/character-references/mimori_byakuya/magical_girl_dress/mimori_byakuya_magical_girl_dress_ref_03_full_dynamic.png"
-            },
-            {
-              "id": "ref_04_back_rear",
-              "name": "45°侧后背影",
-              "angle": "rear-three-quarter",
-              "shotType": "侧后 · 轮廓光",
-              "lens": "85mm Cinematic Edge",
-              "targetUsage": [
-                "过肩反打",
-                "转身离去",
-                "背影叙事",
-                "神秘氛围"
-              ],
-              "prompt": "@rella, mimori_byakuya, 1girl, solo, black_hair, very_long_hair, straight_hair, hime_cut, blunt_bangs, sidelocks, dark_eyes, flat_chest, ahoge, magical_girl, frilled_dress, pink_dress, black_thighhighs, magic_wand, ribbons, wearing her frilly pink and white magical girl transformation dress with black thighhigh stockings and magic wand, from behind, 45 degree rear three-quarter view, looking back over shoulder, clear back design and hairstyle, simple clean background, dramatic rim lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, front view, symmetry, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "mimori_byakuya_magical_girl_dress_ref_04_back_rear.png",
-              "url": "/assets/character-references/mimori_byakuya/magical_girl_dress/mimori_byakuya_magical_girl_dress_ref_04_back_rear.png"
-            }
+            "hair_ornament"
           ]
         },
         {
           "id": "poor_school_uniform",
-          "name": "简朴公立高校水手服",
+          "name": "褪色旧水手服",
           "isDefault": false,
-          "isNsfw": false,
-          "prose": "wearing a faded navy blue classic sailor uniform with white scarf and slightly worn schoolbag",
+          "prose": "wearing a faded old navy and white sailor school uniform, frayed navy sailor collar with small red neckerchief, pleated navy skirt",
           "tokens": [
-            "school_uniform",
             "sailor_uniform",
-            "navy_sailor_collar",
+            "sailor_collar",
+            "red_neckerchief",
             "pleated_skirt",
-            "black_socks"
-          ],
-          "styleHint": "melancholic retro afternoon light",
-          "perspectives": [
-            {
-              "id": "ref_01_face_closeup",
-              "name": "面部特写",
-              "angle": "front-close",
-              "shotType": "特写 · 85mm 浅景深",
-              "lens": "85mm f/1.4 Portrait Lens",
-              "targetUsage": [
-                "对白特写",
-                "微表情",
-                "情绪反应镜头",
-                "台词对峙"
-              ],
-              "prompt": "@rella, mimori_byakuya, 1girl, solo, black_hair, very_long_hair, straight_hair, hime_cut, blunt_bangs, sidelocks, dark_eyes, flat_chest, ahoge, school_uniform, sailor_uniform, navy_sailor_collar, pleated_skirt, black_socks, wearing a faded navy blue classic sailor uniform with white scarf and slightly worn schoolbag, close-up, 85mm f/1.4, shallow depth of field, focused on beautiful face and expressive eyes, head and shoulders, simple clean background, studio rim lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, full body, wide shot, lower body, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "mimori_byakuya_poor_school_uniform_ref_01_face_closeup.png",
-              "url": "/assets/character-references/mimori_byakuya/poor_school_uniform/mimori_byakuya_poor_school_uniform_ref_01_face_closeup.png"
-            },
-            {
-              "id": "ref_02_half_medium",
-              "name": "3/4半身定妆",
-              "angle": "three-quarter-medium",
-              "shotType": "半身 · 中景",
-              "lens": "50mm Medium Lens",
-              "targetUsage": [
-                "对话交互",
-                "过肩推拉",
-                "室内中景",
-                "双人互动"
-              ],
-              "prompt": "@rella, mimori_byakuya, 1girl, solo, black_hair, very_long_hair, straight_hair, hime_cut, blunt_bangs, sidelocks, dark_eyes, flat_chest, ahoge, school_uniform, sailor_uniform, navy_sailor_collar, pleated_skirt, black_socks, wearing a faded navy blue classic sailor uniform with white scarf and slightly worn schoolbag, medium shot, 50mm f/2.0, upper body, 3/4 angle view, clear outfit upper details, simple clean background, studio lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, extreme close-up, cropped head, feet, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "mimori_byakuya_poor_school_uniform_ref_02_half_medium.png",
-              "url": "/assets/character-references/mimori_byakuya/poor_school_uniform/mimori_byakuya_poor_school_uniform_ref_02_half_medium.png"
-            },
-            {
-              "id": "ref_03_full_dynamic",
-              "name": "正面全身立姿",
-              "angle": "front-full",
-              "shotType": "全身 · 35mm 站姿",
-              "lens": "35mm Full Shot Lens",
-              "targetUsage": [
-                "登场走入",
-                "全景走位",
-                "全身动作",
-                "空间交代"
-              ],
-              "prompt": "@rella, mimori_byakuya, 1girl, solo, black_hair, very_long_hair, straight_hair, hime_cut, blunt_bangs, sidelocks, dark_eyes, flat_chest, ahoge, school_uniform, sailor_uniform, navy_sailor_collar, pleated_skirt, black_socks, wearing a faded navy blue classic sailor uniform with white scarf and slightly worn schoolbag, full body, 35mm f/2.8, full body standing, head to toe visible, uncropped shoes and feet, perfectly proportioned limbs, simple clean background, studio lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, cropped legs, cropped head, close-up, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "mimori_byakuya_poor_school_uniform_ref_03_full_dynamic.png",
-              "url": "/assets/character-references/mimori_byakuya/poor_school_uniform/mimori_byakuya_poor_school_uniform_ref_03_full_dynamic.png"
-            },
-            {
-              "id": "ref_04_back_rear",
-              "name": "45°侧后背影",
-              "angle": "rear-three-quarter",
-              "shotType": "侧后 · 轮廓光",
-              "lens": "85mm Cinematic Edge",
-              "targetUsage": [
-                "过肩反打",
-                "转身离去",
-                "背影叙事",
-                "神秘氛围"
-              ],
-              "prompt": "@rella, mimori_byakuya, 1girl, solo, black_hair, very_long_hair, straight_hair, hime_cut, blunt_bangs, sidelocks, dark_eyes, flat_chest, ahoge, school_uniform, sailor_uniform, navy_sailor_collar, pleated_skirt, black_socks, wearing a faded navy blue classic sailor uniform with white scarf and slightly worn schoolbag, from behind, 45 degree rear three-quarter view, looking back over shoulder, clear back design and hairstyle, simple clean background, dramatic rim lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, front view, symmetry, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "mimori_byakuya_poor_school_uniform_ref_04_back_rear.png",
-              "url": "/assets/character-references/mimori_byakuya/poor_school_uniform/mimori_byakuya_poor_school_uniform_ref_04_back_rear.png"
-            }
+            "knee_socks"
           ]
         },
         {
           "id": "part_time_maid_apron",
-          "name": "打工女仆咖啡围裙",
+          "name": "打工女仆围裙装",
           "isDefault": false,
-          "isNsfw": false,
-          "prose": "wearing a simple black dress with a white frilly maid apron while working diligently at a cafe",
+          "prose": "wearing a cute black work dress with white frilled maid apron, white headband, bow on chest, working part-time",
           "tokens": [
             "maid_apron",
-            "frilled_apron",
-            "black_dress",
-            "headband"
-          ],
-          "styleHint": "bright cheerful cafe ambiance",
-          "perspectives": [
-            {
-              "id": "ref_01_face_closeup",
-              "name": "面部特写",
-              "angle": "front-close",
-              "shotType": "特写 · 85mm 浅景深",
-              "lens": "85mm f/1.4 Portrait Lens",
-              "targetUsage": [
-                "对白特写",
-                "微表情",
-                "情绪反应镜头",
-                "台词对峙"
-              ],
-              "prompt": "@rella, mimori_byakuya, 1girl, solo, black_hair, very_long_hair, straight_hair, hime_cut, blunt_bangs, sidelocks, dark_eyes, flat_chest, ahoge, maid_apron, frilled_apron, black_dress, headband, wearing a simple black dress with a white frilly maid apron while working diligently at a cafe, close-up, 85mm f/1.4, shallow depth of field, focused on beautiful face and expressive eyes, head and shoulders, simple clean background, studio rim lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, full body, wide shot, lower body, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "mimori_byakuya_part_time_maid_apron_ref_01_face_closeup.png",
-              "url": "/assets/character-references/mimori_byakuya/part_time_maid_apron/mimori_byakuya_part_time_maid_apron_ref_01_face_closeup.png"
-            },
-            {
-              "id": "ref_02_half_medium",
-              "name": "3/4半身定妆",
-              "angle": "three-quarter-medium",
-              "shotType": "半身 · 中景",
-              "lens": "50mm Medium Lens",
-              "targetUsage": [
-                "对话交互",
-                "过肩推拉",
-                "室内中景",
-                "双人互动"
-              ],
-              "prompt": "@rella, mimori_byakuya, 1girl, solo, black_hair, very_long_hair, straight_hair, hime_cut, blunt_bangs, sidelocks, dark_eyes, flat_chest, ahoge, maid_apron, frilled_apron, black_dress, headband, wearing a simple black dress with a white frilly maid apron while working diligently at a cafe, medium shot, 50mm f/2.0, upper body, 3/4 angle view, clear outfit upper details, simple clean background, studio lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, extreme close-up, cropped head, feet, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "mimori_byakuya_part_time_maid_apron_ref_02_half_medium.png",
-              "url": "/assets/character-references/mimori_byakuya/part_time_maid_apron/mimori_byakuya_part_time_maid_apron_ref_02_half_medium.png"
-            },
-            {
-              "id": "ref_03_full_dynamic",
-              "name": "正面全身立姿",
-              "angle": "front-full",
-              "shotType": "全身 · 35mm 站姿",
-              "lens": "35mm Full Shot Lens",
-              "targetUsage": [
-                "登场走入",
-                "全景走位",
-                "全身动作",
-                "空间交代"
-              ],
-              "prompt": "@rella, mimori_byakuya, 1girl, solo, black_hair, very_long_hair, straight_hair, hime_cut, blunt_bangs, sidelocks, dark_eyes, flat_chest, ahoge, maid_apron, frilled_apron, black_dress, headband, wearing a simple black dress with a white frilly maid apron while working diligently at a cafe, full body, 35mm f/2.8, full body standing, head to toe visible, uncropped shoes and feet, perfectly proportioned limbs, simple clean background, studio lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, cropped legs, cropped head, close-up, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "mimori_byakuya_part_time_maid_apron_ref_03_full_dynamic.png",
-              "url": "/assets/character-references/mimori_byakuya/part_time_maid_apron/mimori_byakuya_part_time_maid_apron_ref_03_full_dynamic.png"
-            },
-            {
-              "id": "ref_04_back_rear",
-              "name": "45°侧后背影",
-              "angle": "rear-three-quarter",
-              "shotType": "侧后 · 轮廓光",
-              "lens": "85mm Cinematic Edge",
-              "targetUsage": [
-                "过肩反打",
-                "转身离去",
-                "背影叙事",
-                "神秘氛围"
-              ],
-              "prompt": "@rella, mimori_byakuya, 1girl, solo, black_hair, very_long_hair, straight_hair, hime_cut, blunt_bangs, sidelocks, dark_eyes, flat_chest, ahoge, maid_apron, frilled_apron, black_dress, headband, wearing a simple black dress with a white frilly maid apron while working diligently at a cafe, from behind, 45 degree rear three-quarter view, looking back over shoulder, clear back design and hairstyle, simple clean background, dramatic rim lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, front view, symmetry, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "mimori_byakuya_part_time_maid_apron_ref_04_back_rear.png",
-              "url": "/assets/character-references/mimori_byakuya/part_time_maid_apron/mimori_byakuya_part_time_maid_apron_ref_04_back_rear.png"
-            }
+            "maid_dress",
+            "headband",
+            "apron",
+            "white_frills"
           ]
         },
         {
           "id": "tattered_oversized_jersey",
-          "name": "居家宽大旧运动外套",
+          "name": "破旧宽大运动服",
           "isDefault": false,
-          "isNsfw": false,
-          "prose": "wearing a loose vintage track jersey jacket over gym shorts while eating budget ramen at home",
+          "prose": "wearing an oversized baggy blue and white tracksuit jersey, zipper pulled down, slouchy homewear style, cute casual",
           "tokens": [
-            "track_jacket",
-            "oversized_jacket",
-            "jersey",
-            "short_shorts",
-            "bare_legs"
-          ],
-          "styleHint": "warm cozy apartment interior",
-          "perspectives": [
-            {
-              "id": "ref_01_face_closeup",
-              "name": "面部特写",
-              "angle": "front-close",
-              "shotType": "特写 · 85mm 浅景深",
-              "lens": "85mm f/1.4 Portrait Lens",
-              "targetUsage": [
-                "对白特写",
-                "微表情",
-                "情绪反应镜头",
-                "台词对峙"
-              ],
-              "prompt": "@rella, mimori_byakuya, 1girl, solo, black_hair, very_long_hair, straight_hair, hime_cut, blunt_bangs, sidelocks, dark_eyes, flat_chest, ahoge, track_jacket, oversized_jacket, jersey, short_shorts, bare_legs, wearing a loose vintage track jersey jacket over gym shorts while eating budget ramen at home, close-up, 85mm f/1.4, shallow depth of field, focused on beautiful face and expressive eyes, head and shoulders, simple clean background, studio rim lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, full body, wide shot, lower body, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "mimori_byakuya_tattered_oversized_jersey_ref_01_face_closeup.png",
-              "url": "/assets/character-references/mimori_byakuya/tattered_oversized_jersey/mimori_byakuya_tattered_oversized_jersey_ref_01_face_closeup.png"
-            },
-            {
-              "id": "ref_02_half_medium",
-              "name": "3/4半身定妆",
-              "angle": "three-quarter-medium",
-              "shotType": "半身 · 中景",
-              "lens": "50mm Medium Lens",
-              "targetUsage": [
-                "对话交互",
-                "过肩推拉",
-                "室内中景",
-                "双人互动"
-              ],
-              "prompt": "@rella, mimori_byakuya, 1girl, solo, black_hair, very_long_hair, straight_hair, hime_cut, blunt_bangs, sidelocks, dark_eyes, flat_chest, ahoge, track_jacket, oversized_jacket, jersey, short_shorts, bare_legs, wearing a loose vintage track jersey jacket over gym shorts while eating budget ramen at home, medium shot, 50mm f/2.0, upper body, 3/4 angle view, clear outfit upper details, simple clean background, studio lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, extreme close-up, cropped head, feet, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "mimori_byakuya_tattered_oversized_jersey_ref_02_half_medium.png",
-              "url": "/assets/character-references/mimori_byakuya/tattered_oversized_jersey/mimori_byakuya_tattered_oversized_jersey_ref_02_half_medium.png"
-            },
-            {
-              "id": "ref_03_full_dynamic",
-              "name": "正面全身立姿",
-              "angle": "front-full",
-              "shotType": "全身 · 35mm 站姿",
-              "lens": "35mm Full Shot Lens",
-              "targetUsage": [
-                "登场走入",
-                "全景走位",
-                "全身动作",
-                "空间交代"
-              ],
-              "prompt": "@rella, mimori_byakuya, 1girl, solo, black_hair, very_long_hair, straight_hair, hime_cut, blunt_bangs, sidelocks, dark_eyes, flat_chest, ahoge, track_jacket, oversized_jacket, jersey, short_shorts, bare_legs, wearing a loose vintage track jersey jacket over gym shorts while eating budget ramen at home, full body, 35mm f/2.8, full body standing, head to toe visible, uncropped shoes and feet, perfectly proportioned limbs, simple clean background, studio lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, cropped legs, cropped head, close-up, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "mimori_byakuya_tattered_oversized_jersey_ref_03_full_dynamic.png",
-              "url": "/assets/character-references/mimori_byakuya/tattered_oversized_jersey/mimori_byakuya_tattered_oversized_jersey_ref_03_full_dynamic.png"
-            },
-            {
-              "id": "ref_04_back_rear",
-              "name": "45°侧后背影",
-              "angle": "rear-three-quarter",
-              "shotType": "侧后 · 轮廓光",
-              "lens": "85mm Cinematic Edge",
-              "targetUsage": [
-                "过肩反打",
-                "转身离去",
-                "背影叙事",
-                "神秘氛围"
-              ],
-              "prompt": "@rella, mimori_byakuya, 1girl, solo, black_hair, very_long_hair, straight_hair, hime_cut, blunt_bangs, sidelocks, dark_eyes, flat_chest, ahoge, track_jacket, oversized_jacket, jersey, short_shorts, bare_legs, wearing a loose vintage track jersey jacket over gym shorts while eating budget ramen at home, from behind, 45 degree rear three-quarter view, looking back over shoulder, clear back design and hairstyle, simple clean background, dramatic rim lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, front view, symmetry, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "mimori_byakuya_tattered_oversized_jersey_ref_04_back_rear.png",
-              "url": "/assets/character-references/mimori_byakuya/tattered_oversized_jersey/mimori_byakuya_tattered_oversized_jersey_ref_04_back_rear.png"
-            }
+            "oversized_jersey",
+            "tracksuit",
+            "zipper",
+            "baggy_clothes",
+            "casual_loungewear"
           ]
         },
         {
           "id": "nsfw_nude",
-          "name": "🔞 私密全裸 / 纯粹形态",
+          "name": "私密全裸 / 纯粹形态",
           "isDefault": false,
           "isNsfw": true,
-          "prose": "completely naked with zero clothes, delicate slender petite frame, exposed pink pussy, detailed vulva, small pink nipples, deadpan cute blush",
+          "prose": "completely naked, full body bare, natural slender skin, delicate collarbone and flat chest, no clothes",
           "tokens": [
-            "nude",
             "completely_naked",
-            "uncensored",
             "full_body_bare",
             "flat_chest",
-            "exposed_pussy",
-            "detailed_vulva",
-            "pink_nipples",
-            "slender_body",
-            "bare_feet"
-          ],
-          "styleHint": "soft pristine studio illumination",
-          "perspectives": [
-            {
-              "id": "ref_01_face_closeup",
-              "name": "面部特写",
-              "angle": "front-close",
-              "shotType": "特写 · 85mm 浅景深",
-              "lens": "85mm f/1.4 Portrait Lens",
-              "targetUsage": [
-                "对白特写",
-                "微表情",
-                "情绪反应镜头",
-                "台词对峙"
-              ],
-              "prompt": "@rella, mimori_byakuya, 1girl, solo, black_hair, very_long_hair, straight_hair, hime_cut, blunt_bangs, sidelocks, dark_eyes, flat_chest, ahoge, nude, completely_naked, uncensored, full_body_bare, flat_chest, exposed_pussy, detailed_vulva, pink_nipples, slender_body, bare_feet, completely naked with zero clothes, delicate slender petite frame, exposed pink pussy, detailed vulva, small pink nipples, deadpan cute blush, close-up, 85mm f/1.4, shallow depth of field, focused on beautiful face and expressive eyes, head and shoulders, simple clean background, studio rim lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, full body, wide shot, lower body, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "mimori_byakuya_nsfw_nude_ref_01_face_closeup.png",
-              "url": "/assets/character-references/mimori_byakuya/nsfw_nude/mimori_byakuya_nsfw_nude_ref_01_face_closeup.png"
-            },
-            {
-              "id": "ref_02_half_medium",
-              "name": "3/4半身定妆",
-              "angle": "three-quarter-medium",
-              "shotType": "半身 · 中景",
-              "lens": "50mm Medium Lens",
-              "targetUsage": [
-                "对话交互",
-                "过肩推拉",
-                "室内中景",
-                "双人互动"
-              ],
-              "prompt": "@rella, mimori_byakuya, 1girl, solo, black_hair, very_long_hair, straight_hair, hime_cut, blunt_bangs, sidelocks, dark_eyes, flat_chest, ahoge, nude, completely_naked, uncensored, full_body_bare, flat_chest, exposed_pussy, detailed_vulva, pink_nipples, slender_body, bare_feet, completely naked with zero clothes, delicate slender petite frame, exposed pink pussy, detailed vulva, small pink nipples, deadpan cute blush, medium shot, 50mm f/2.0, upper body, 3/4 angle view, clear outfit upper details, simple clean background, studio lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, extreme close-up, cropped head, feet, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "mimori_byakuya_nsfw_nude_ref_02_half_medium.png",
-              "url": "/assets/character-references/mimori_byakuya/nsfw_nude/mimori_byakuya_nsfw_nude_ref_02_half_medium.png"
-            },
-            {
-              "id": "ref_03_full_dynamic",
-              "name": "正面全身立姿",
-              "angle": "front-full",
-              "shotType": "全身 · 35mm 站姿",
-              "lens": "35mm Full Shot Lens",
-              "targetUsage": [
-                "登场走入",
-                "全景走位",
-                "全身动作",
-                "空间交代"
-              ],
-              "prompt": "@rella, mimori_byakuya, 1girl, solo, black_hair, very_long_hair, straight_hair, hime_cut, blunt_bangs, sidelocks, dark_eyes, flat_chest, ahoge, nude, completely_naked, uncensored, full_body_bare, flat_chest, exposed_pussy, detailed_vulva, pink_nipples, slender_body, bare_feet, completely naked with zero clothes, delicate slender petite frame, exposed pink pussy, detailed vulva, small pink nipples, deadpan cute blush, full body, 35mm f/2.8, full body standing, head to toe visible, uncropped shoes and feet, perfectly proportioned limbs, simple clean background, studio lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, cropped legs, cropped head, close-up, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "mimori_byakuya_nsfw_nude_ref_03_full_dynamic.png",
-              "url": "/assets/character-references/mimori_byakuya/nsfw_nude/mimori_byakuya_nsfw_nude_ref_03_full_dynamic.png"
-            },
-            {
-              "id": "ref_04_back_rear",
-              "name": "45°侧后背影",
-              "angle": "rear-three-quarter",
-              "shotType": "侧后 · 轮廓光",
-              "lens": "85mm Cinematic Edge",
-              "targetUsage": [
-                "过肩反打",
-                "转身离去",
-                "背影叙事",
-                "神秘氛围"
-              ],
-              "prompt": "@rella, mimori_byakuya, 1girl, solo, black_hair, very_long_hair, straight_hair, hime_cut, blunt_bangs, sidelocks, dark_eyes, flat_chest, ahoge, nude, completely_naked, uncensored, full_body_bare, flat_chest, exposed_pussy, detailed_vulva, pink_nipples, slender_body, bare_feet, completely naked with zero clothes, delicate slender petite frame, exposed pink pussy, detailed vulva, small pink nipples, deadpan cute blush, from behind, 45 degree rear three-quarter view, looking back over shoulder, clear back design and hairstyle, simple clean background, dramatic rim lighting, pristine anime aesthetic, masterpiece, best quality",
-              "negative": "bad anatomy, bad hands, extra limbs, blurry, lowres, signature, watermark, front view, symmetry, bad anatomy, bad hands, lowres, blurry",
-              "fileName": "mimori_byakuya_nsfw_nude_ref_04_back_rear.png",
-              "url": "/assets/character-references/mimori_byakuya/nsfw_nude/mimori_byakuya_nsfw_nude_ref_04_back_rear.png"
-            }
+            "collarbone",
+            "bare_skin"
           ]
         }
       ]

@@ -977,7 +977,7 @@
       "id": "tohsaka_rin",
       "displayName": "远坂凛",
       "originalName": "Tohsaka Rin",
-      "franchise": "Fate/stay night",
+      "franchise": "Fate",
       "aliases": [
         "tohsaka_rin",
         "rin",
@@ -1321,7 +1321,7 @@
       "id": "illyasviel_von_einzbern",
       "displayName": "伊莉雅丝菲尔",
       "originalName": "Illyasviel von Einzbern",
-      "franchise": "Fate/stay night",
+      "franchise": "Fate",
       "aliases": [
         "illyasviel_von_einzbern",
         "illya",
@@ -3872,7 +3872,7 @@
     {
       "id": "yuigahama_yui",
       "displayName": "由比滨结衣",
-      "franchise": "My Teen Romantic Comedy SNAFU",
+      "franchise": "Oregairu",
       "recommendedEngine": "anima-aesthetic-v1.1",
       "adultEligibility": "adult",
       "defaultOutfitId": "sobu_uniform",
